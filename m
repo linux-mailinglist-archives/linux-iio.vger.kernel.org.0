@@ -1,287 +1,118 @@
-Return-Path: <linux-iio+bounces-17292-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17293-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FE2EA73713
-	for <lists+linux-iio@lfdr.de>; Thu, 27 Mar 2025 17:40:55 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2377CA73734
+	for <lists+linux-iio@lfdr.de>; Thu, 27 Mar 2025 17:46:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E60DD189E3DA
-	for <lists+linux-iio@lfdr.de>; Thu, 27 Mar 2025 16:40:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F0933BFB76
+	for <lists+linux-iio@lfdr.de>; Thu, 27 Mar 2025 16:43:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 375601C8FB4;
-	Thu, 27 Mar 2025 16:39:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E5481FC7F4;
+	Thu, 27 Mar 2025 16:43:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="0J6ljeyg"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PQrmitgn"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx08-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5BC21A8F63;
-	Thu, 27 Mar 2025 16:39:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.207.212.93
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4BFB1CAA67;
+	Thu, 27 Mar 2025 16:43:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743093592; cv=none; b=GaCDoas+N163fLpGlIiLvLGl7b+wPMCN2tXP9k7cLhadKk+Z9NAIBgJs5MetxfdjVS7x9Xo2u3RGdzK1jOYm59rk5iSqxiWDk9OZNTkcWFxnx2nJE7BMXCaUdWritaQ8NuyNpjSo8D2nDOIAURuZc07ZxiAf/xnINXHSByiJ49k=
+	t=1743093825; cv=none; b=GwuU8RPH9TyDto3RTX+yGAto4Pp+NoL2EZIq5r/FU3nloNChRCYXOy0Znu2sPriboAFg9MJzgWz14wTo2dFZU44ydisvIdODuG0/CDy1ocaoycG8i9SQLBUWxxZ8Y4nz/FbRmSAEa/BFwzrp305eOePJdZVa+jdTcc7whV2TwjE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743093592; c=relaxed/simple;
-	bh=3+yFQl9MsrLmluPFUbyma5Bg/7hcDryJ/eM8UMUsSso=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=g5mpbsuYwy/aBEovry6oTVBmbPJwtvVDhfH6aWWvgGyTSYxb8s1tqbpkCM+tTCADH0Es35YRbhhkwgrbtUa0jwvSGAicDHVWHBKxjWdG5wZvJTj1aHkTmjmjmijQPfproWbv8QKR4ZTHzQKb6MSLVfw7s99pa12uLQ57aD9gCAE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=0J6ljeyg; arc=none smtp.client-ip=91.207.212.93
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
-Received: from pps.filterd (m0369457.ppops.net [127.0.0.1])
-	by mx07-00178001.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52RDilnT022015;
-	Thu, 27 Mar 2025 17:39:19 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=selector1; bh=
-	az0YCnmeyySHfJgjCSLhzolXq61fHw4p+GQsMO6NSxk=; b=0J6ljeygU3qcaI8y
-	8bWZLLYh00LdEbVFMd0OSckS8S7TmA+OfQCtQHY4HQRDzlMiisrqZG3YiV8KrS2f
-	cYKnrklharMXLL8knqJ2FQLppd50N9/I2D/kyUmOMcuKUHBMnacOvVNC+tEzjZxt
-	8N730tIwORhnQcYHGb3xlQ3k+ofQjCVXXOd/t49N8khu0laJ6WRFeZf4lAGFTkKF
-	HIJliiEMGa+BsNBhlD+iOAoXGiXoD0jV6Mt+2KLdYze/Z+bihwY/Mp+9H5NQ+2gO
-	UOa+FbHYUwhdX3senU1hGgScRih6j/CiikhlL2UU9H/lnlaIQeUCyKv3ehNzCRUf
-	35vwVA==
-Received: from beta.dmz-ap.st.com (beta.dmz-ap.st.com [138.198.100.35])
-	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 45j91sucg4-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 27 Mar 2025 17:39:18 +0100 (CET)
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-	by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id 9C88E40045;
-	Thu, 27 Mar 2025 17:38:01 +0100 (CET)
-Received: from Webmail-eu.st.com (eqndag1node4.st.com [10.75.129.133])
-	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 55A6890429F;
-	Thu, 27 Mar 2025 17:36:02 +0100 (CET)
-Received: from SAFDAG1NODE1.st.com (10.75.90.17) by EQNDAG1NODE4.st.com
- (10.75.129.133) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Thu, 27 Mar
- 2025 17:36:02 +0100
-Received: from [10.48.86.222] (10.48.86.222) by SAFDAG1NODE1.st.com
- (10.75.90.17) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Thu, 27 Mar
- 2025 17:36:00 +0100
-Message-ID: <30d13179-66fc-4856-ac70-af051ec5fe8f@foss.st.com>
-Date: Thu, 27 Mar 2025 17:36:00 +0100
+	s=arc-20240116; t=1743093825; c=relaxed/simple;
+	bh=TnJVCFD64o69mN5Hh/YDo52i9+KO2ogrvXQQhM53668=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=K1RWYJpi4QwztXpYEF3Rzni2pJrkNBsVEEf+59FPgGsfe2MMr0byDNEyta26tWHLq6/S7brq1pj07QsTRMOWwzQE8/xI/Z3+9/xcfUSwIvRUzk9RNaiktA6mLU6K0v7B0HX2fzaIfvUYc4fj11Pve3tYipP4DAnOKnS0ga0uTCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PQrmitgn; arc=none smtp.client-ip=209.85.214.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-226185948ffso27773185ad.0;
+        Thu, 27 Mar 2025 09:43:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1743093823; x=1743698623; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=lb1+R66+rUYGnBLRmPtMSXkNrgkfnJRiAlwP5fnx9QU=;
+        b=PQrmitgnryitbBrE41o4Jw4BNAWfwmNIbw2mUGgLVyCgjWinbr9zI35MCG8yHgTy5V
+         FJeqzRFGNKGggMWl60PBLIN2Gd7bRsUcSHAC6mxAa2UVbvvXFo/48PPJIMNsNxlPYDgU
+         Jwlj3trHsPa3Hb8bkn+89elH7JeW4Vl1QAExR/tyvZMeqBhcA/6FPwx12AwqPG8aVV0G
+         1FlvB01ggSEG79VpocRAAbqrtcAHN63/t71gp49K0Gst/sRxU8Bzae8D5AZW+BF1FmyQ
+         ZQflXLsgiUZW3Bj3yIoFwebt6pBQjp6dRLobtbXYmvi4EuqBDnwSinERq22uLXSk4GHo
+         l4iw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1743093823; x=1743698623;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lb1+R66+rUYGnBLRmPtMSXkNrgkfnJRiAlwP5fnx9QU=;
+        b=s/UdkaTBT80xqtX2NXN/X2A3QqHC0euIPBB4VE+05hkI+KOkPgwazH+Yq00CF7mFGf
+         HmS+HRhKsGQtrHnkdDe5/Nqtt54obMnTs6j9t1X/B+sQ0wRCKlImJLVa/4nJ2xOZJb+b
+         5PeuhHCjQMUOQqU5wk+gGF8qmk4KiYPZ2RKWDgAdtX/0/lsNee6gavHIUuG/0cHl4yJb
+         AN29SbuxdToqFNRVxInIFaUFU4Ox0AESay9VAHXQILd9hZTTEIb/sAa12aiARt0FSQiD
+         ESdavRtY/QZIwGIo4GeDHeMrge5NdujFyR3GuYfngvUeeW+g7exBIEi7jYj1vGdNBdMQ
+         JplA==
+X-Forwarded-Encrypted: i=1; AJvYcCUq+YkB4UZbBKgIuB/P+4lb5kaukPFr29anSCOShwfxcnTcE6BqNIOKzTeoiwqL/JOpazp2TozVU6iOyVio@vger.kernel.org, AJvYcCUuN1hXhpSP3fnDj1sIqOq3zvPiKuJBSGmAfjilpbQZAwzvIiLlv3brFNs0vQiFpWaf0YYYzpq7hHE=@vger.kernel.org, AJvYcCWl3uNLg6D9FTzA10f+LojatytekmfekaCB57vnDxyhBZi8WpiNBI5GkSXhLTsz5aulj6sTlLC/4a55@vger.kernel.org
+X-Gm-Message-State: AOJu0YwbKt+yDvwR/8zMVaNWD5RQCEetKfyHdwhjIE1Hr+13CadC3Wo/
+	jgsCv6pOSHA10ai1QvfRFW3kadjLY8rOZvhU/53EGu26nG8C0TG7
+X-Gm-Gg: ASbGnctBFYxUcMvtjppTqzVx2Jo6OgF2f2wRekiRkcdf6Os0IRYVmJLYCwhvXl1o1iv
+	7EBolyJVqDAiaQ/HxRcd3MGzQbDOrgfG9HqB5crtGjkVxYvPdO0Udj0QxCyfx+Wb4EyWirKAkuh
+	xrT6wA8PGgZHq77D64ieYXiXjBZM/OEdKazPGKEtimYJruLnmYM/I4b5vkrmXNKb1z13PBEjgEw
+	5BlK/3jewRMhmH4bDDYdwMJ/ldtQL20C3jzbDfm7I0B9fieW8JLwGz77fVqHUOQnpdBBPzokCoa
+	emQAg6pOwASnVgPqTcm+gNseDQzsHofkA9vOLnRl8KFS6mDCOD5FVA==
+X-Google-Smtp-Source: AGHT+IG9qnhCTor+SGyDKWAUyClWNk4AWFZpE4cZ+MxMyD0oepgvr5ve7N3BBCEMLaVTfMHbgN6Pew==
+X-Received: by 2002:a05:6a00:194d:b0:736:476b:fcd3 with SMTP id d2e1a72fcca58-739610d1e18mr7478554b3a.24.1743093822611;
+        Thu, 27 Mar 2025 09:43:42 -0700 (PDT)
+Received: from localhost ([2804:30c:b03:ee00:e0b8:a8b8:44aa:8d0b])
+        by smtp.gmail.com with UTF8SMTPSA id 41be03b00d2f7-af93ba10863sm87262a12.74.2025.03.27.09.43.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 27 Mar 2025 09:43:41 -0700 (PDT)
+Date: Thu, 27 Mar 2025 13:44:44 -0300
+From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Marcelo Schmitt <marcelo.schmitt@analog.com>, linux-iio@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	jic23@kernel.org, lars@metafoo.de, Michael.Hennerich@analog.com,
+	corbet@lwn.net
+Subject: Re: [PATCH v3 2/4] Documentation: iio: ad4000: Add new supported
+ parts
+Message-ID: <Z-WAfEIvsWTr5Q_v@debian-BULLSEYE-live-builder-AMD64>
+References: <cover.1742992305.git.marcelo.schmitt@analog.com>
+ <bb57e4452cb6bf9f644c0ea2c248d4b72ecc65b8.1742992305.git.marcelo.schmitt@analog.com>
+ <ab73f7d5-77fb-4264-ab4a-03ee78aeee06@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 3/8] iio: trigger: stm32-lptimer: add support for
- stm32mp25
-To: Jonathan Cameron <jic23@kernel.org>, <lee@kernel.org>
-CC: <ukleinek@kernel.org>, <alexandre.torgue@foss.st.com>,
-        <krzk+dt@kernel.org>, <conor+dt@kernel.org>,
-        <daniel.lezcano@linaro.org>, <tglx@linutronix.de>, <robh@kernel.org>,
-        <catalin.marinas@arm.com>, <will@kernel.org>,
-        <devicetree@vger.kernel.org>, <wbg@kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-        <linux-iio@vger.kernel.org>, <linux-pwm@vger.kernel.org>,
-        <olivier.moysan@foss.st.com>
-References: <20250314171451.3497789-1-fabrice.gasnier@foss.st.com>
- <20250314171451.3497789-4-fabrice.gasnier@foss.st.com>
- <20250315125615.065a2e74@jic23-huawei>
-Content-Language: en-US
-From: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-In-Reply-To: <20250315125615.065a2e74@jic23-huawei>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: EQNCAS1NODE3.st.com (10.75.129.80) To SAFDAG1NODE1.st.com
- (10.75.90.17)
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-03-27_02,2025-03-26_02,2024-11-22_01
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ab73f7d5-77fb-4264-ab4a-03ee78aeee06@baylibre.com>
 
-On 3/15/25 13:56, Jonathan Cameron wrote:
-> On Fri, 14 Mar 2025 18:14:46 +0100
-> Fabrice Gasnier <fabrice.gasnier@foss.st.com> wrote:
-> 
->> From: Olivier Moysan <olivier.moysan@foss.st.com>
->>
->> Add support for STM32MP25 SoC. Use newly introduced compatible to handle
->> this new HW variant. Add new trigger definitions that can be used by the
->> stm32 analog-to-digital converter. Use compatible data to identify them.
->>
->> Signed-off-by: Olivier Moysan <olivier.moysan@foss.st.com>
->> Signed-off-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-> 
-> How do you want this to merge?   If it's going through mfd because
-> of dependencies, then
-> Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> 
-> I haven't checked if there are any dependencies so shout if I should
-> pick this up directly for next cycle.
+On 03/27, David Lechner wrote:
+> On 3/26/25 8:25 AM, Marcelo Schmitt wrote:
+> > Commit <c3948d090080> ("iio: adc: ad4000: Add support for PulSAR devices"),
+> > extended the ad4000 driver supports many single-channel PulSAR devices.
+> > 
+> > Update IIO ad4000 documentation with the extra list of supported devices.
+> > 
+> > Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
+> > ---
+> Don't forget to pick up tags. I already gave my:
 
-Hi Jonathan, Lee,
+Oops, sorry. My bad.
+I've picked them now.
 
-There's no build dependency, but the dt-bindings that adds the
-compatible string.
-
-Perhaps Lee can pick it up along with the mfd bindings and driver ?
-
-I'm not sure what the most suitable option is.
-
-Best Regards,
-Fabrice
-> 
-> Thanks,
-> 
-> Jonathan
 > 
 > 
->> ---
->> Changes in v4:
->> - Jonathan's comment: simplify infrastructure by keeping
->>   devm_iio_trigger_register. Don't need to cast compatible data.
->> ---
->>  drivers/iio/trigger/stm32-lptimer-trigger.c   | 75 ++++++++++++++-----
->>  include/linux/iio/timer/stm32-lptim-trigger.h |  9 +++
->>  2 files changed, 67 insertions(+), 17 deletions(-)
->>
->> diff --git a/drivers/iio/trigger/stm32-lptimer-trigger.c b/drivers/iio/trigger/stm32-lptimer-trigger.c
->> index f1e18913236a..3dcc8d2fe093 100644
->> --- a/drivers/iio/trigger/stm32-lptimer-trigger.c
->> +++ b/drivers/iio/trigger/stm32-lptimer-trigger.c
->> @@ -16,16 +16,43 @@
->>  #include <linux/platform_device.h>
->>  #include <linux/property.h>
->>  
->> -/* List Low-Power Timer triggers */
->> -static const char * const stm32_lptim_triggers[] = {
->> -	LPTIM1_OUT,
->> -	LPTIM2_OUT,
->> -	LPTIM3_OUT,
->> +/* Maximum triggers + one trailing null entry to indicate the end of array */
->> +#define MAX_TRIGGERS 3
->> +
->> +struct stm32_lptim_cfg {
->> +	const char * const (*triggers)[MAX_TRIGGERS];
->> +	unsigned int nb_triggers;
->> +};
->> +
->> +/* List Low-Power Timer triggers for H7, MP13, MP15 */
->> +static const char * const stm32_lptim_triggers[][MAX_TRIGGERS] = {
->> +	{ LPTIM1_OUT,},
->> +	{ LPTIM2_OUT,},
->> +	{ LPTIM3_OUT,},
->> +};
->> +
->> +/* List Low-Power Timer triggers for STM32MP25 */
->> +static const char * const stm32mp25_lptim_triggers[][MAX_TRIGGERS] = {
->> +	{ LPTIM1_CH1, LPTIM1_CH2, },
->> +	{ LPTIM2_CH1, LPTIM2_CH2, },
->> +	{ LPTIM3_CH1,},
->> +	{ LPTIM4_CH1,},
->> +	{ LPTIM5_OUT,},
->> +};
->> +
->> +static const struct stm32_lptim_cfg stm32mp15_lptim_cfg = {
->> +	.triggers = stm32_lptim_triggers,
->> +	.nb_triggers = ARRAY_SIZE(stm32_lptim_triggers),
->> +};
->> +
->> +static const struct stm32_lptim_cfg stm32mp25_lptim_cfg = {
->> +	.triggers = stm32mp25_lptim_triggers,
->> +	.nb_triggers = ARRAY_SIZE(stm32mp25_lptim_triggers),
->>  };
->>  
->>  struct stm32_lptim_trigger {
->>  	struct device *dev;
->> -	const char *trg;
->> +	const char * const *triggers;
->>  };
->>  
->>  static int stm32_lptim_validate_device(struct iio_trigger *trig,
->> @@ -56,22 +83,33 @@ EXPORT_SYMBOL(is_stm32_lptim_trigger);
->>  
->>  static int stm32_lptim_setup_trig(struct stm32_lptim_trigger *priv)
->>  {
->> -	struct iio_trigger *trig;
->> +	const char * const *cur = priv->triggers;
->> +	int ret;
->>  
->> -	trig = devm_iio_trigger_alloc(priv->dev, "%s", priv->trg);
->> -	if  (!trig)
->> -		return -ENOMEM;
->> +	while (cur && *cur) {
->> +		struct iio_trigger *trig;
->>  
->> -	trig->dev.parent = priv->dev->parent;
->> -	trig->ops = &stm32_lptim_trigger_ops;
->> -	iio_trigger_set_drvdata(trig, priv);
->> +		trig = devm_iio_trigger_alloc(priv->dev, "%s", *cur);
->> +		if  (!trig)
->> +			return -ENOMEM;
->>  
->> -	return devm_iio_trigger_register(priv->dev, trig);
->> +		trig->dev.parent = priv->dev->parent;
->> +		trig->ops = &stm32_lptim_trigger_ops;
->> +		iio_trigger_set_drvdata(trig, priv);
->> +
->> +		ret = devm_iio_trigger_register(priv->dev, trig);
->> +		if (ret)
->> +			return ret;
->> +		cur++;
->> +	}
->> +
->> +	return 0;
->>  }
->>  
->>  static int stm32_lptim_trigger_probe(struct platform_device *pdev)
->>  {
->>  	struct stm32_lptim_trigger *priv;
->> +	struct stm32_lptim_cfg const *lptim_cfg;
->>  	u32 index;
->>  
->>  	priv = devm_kzalloc(&pdev->dev, sizeof(*priv), GFP_KERNEL);
->> @@ -81,17 +119,20 @@ static int stm32_lptim_trigger_probe(struct platform_device *pdev)
->>  	if (device_property_read_u32(&pdev->dev, "reg", &index))
->>  		return -EINVAL;
->>  
->> -	if (index >= ARRAY_SIZE(stm32_lptim_triggers))
->> +	lptim_cfg = device_get_match_data(&pdev->dev);
->> +
->> +	if (index >= lptim_cfg->nb_triggers)
->>  		return -EINVAL;
->>  
->>  	priv->dev = &pdev->dev;
->> -	priv->trg = stm32_lptim_triggers[index];
->> +	priv->triggers = lptim_cfg->triggers[index];
->>  
->>  	return stm32_lptim_setup_trig(priv);
->>  }
->>  
->>  static const struct of_device_id stm32_lptim_trig_of_match[] = {
->> -	{ .compatible = "st,stm32-lptimer-trigger", },
->> +	{ .compatible = "st,stm32-lptimer-trigger", .data = &stm32mp15_lptim_cfg },
->> +	{ .compatible = "st,stm32mp25-lptimer-trigger", .data = &stm32mp25_lptim_cfg},
->>  	{},
->>  };
->>  MODULE_DEVICE_TABLE(of, stm32_lptim_trig_of_match);
->> diff --git a/include/linux/iio/timer/stm32-lptim-trigger.h b/include/linux/iio/timer/stm32-lptim-trigger.h
->> index a34dcf6a6001..ce3cf0addb2e 100644
->> --- a/include/linux/iio/timer/stm32-lptim-trigger.h
->> +++ b/include/linux/iio/timer/stm32-lptim-trigger.h
->> @@ -14,6 +14,15 @@
->>  #define LPTIM1_OUT	"lptim1_out"
->>  #define LPTIM2_OUT	"lptim2_out"
->>  #define LPTIM3_OUT	"lptim3_out"
->> +#define LPTIM4_OUT	"lptim4_out"
->> +#define LPTIM5_OUT	"lptim5_out"
->> +
->> +#define LPTIM1_CH1	"lptim1_ch1"
->> +#define LPTIM1_CH2	"lptim1_ch2"
->> +#define LPTIM2_CH1	"lptim2_ch1"
->> +#define LPTIM2_CH2	"lptim2_ch2"
->> +#define LPTIM3_CH1	"lptim3_ch1"
->> +#define LPTIM4_CH1	"lptim4_ch1"
->>  
->>  #if IS_REACHABLE(CONFIG_IIO_STM32_LPTIMER_TRIGGER)
->>  bool is_stm32_lptim_trigger(struct iio_trigger *trig);
+> Reviewed-by: David Lechner <dlechner@baylibre.com>
 > 
+> 
+Thanks,
+Marcelo
 

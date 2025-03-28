@@ -1,47 +1,47 @@
-Return-Path: <linux-iio+bounces-17307-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17308-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CFD7A745D5
-	for <lists+linux-iio@lfdr.de>; Fri, 28 Mar 2025 09:59:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3B24A745EB
+	for <lists+linux-iio@lfdr.de>; Fri, 28 Mar 2025 10:03:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 99C727A7130
-	for <lists+linux-iio@lfdr.de>; Fri, 28 Mar 2025 08:57:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F05117BE5C
+	for <lists+linux-iio@lfdr.de>; Fri, 28 Mar 2025 09:03:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C90E2135C3;
-	Fri, 28 Mar 2025 08:58:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6293020E00B;
+	Fri, 28 Mar 2025 09:03:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QqZ8b8Ox"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GCadBRgK"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2630C213255;
-	Fri, 28 Mar 2025 08:58:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D44817BA3;
+	Fri, 28 Mar 2025 09:03:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743152297; cv=none; b=RQbRcikppCQxRJ7e7nLXALlDaf2NxBLEA3ZTnLjY4ewvDaDKlTMhwjRkAANV7MSCK5n8rhDbwb97Vr8xEqmiZLFi8hYvfrEvT/cSAOuOLl6FNYXlrtfbD0dKLgqXZxvragU41VH2HJHX/HrfazsgcKsy8OfJlNex03eL+OkyM/k=
+	t=1743152630; cv=none; b=d/4JsMI7SuaDLzgmvsa8x/xPTyl3SefJWkjVL1yK1v0aOb55eRLgw86JnhEkZudb+DN6qPkiV8ULTxSq6skcOpHKnszLoNJoCIkUlmrCNp80Ww+moZ8rsezkGgLkcirO8nALljt/wcFw39mvftU459SDTmTNQszobEJVMQXoA9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743152297; c=relaxed/simple;
-	bh=iG2vQX9C9wvH1r4TQLc3s9WUefTjRwU/KWarh7bNpaE=;
+	s=arc-20240116; t=1743152630; c=relaxed/simple;
+	bh=aEDTsF6b80LpwVYP24qiQyXcymUJFu9eUwvRwQIaX5E=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ERlnBp0zm9xfTGobLUbVI8ar6att2OhYxb2T8qizYigYUvx4v+8hIQXl+aG2Z/l2+o8VcKbjmvqlKxYuZ4n3AydpKMugrFu5iwAga5SbbOiG9YulRP8Ht8Gy02JuDMnIUHffWd/JvF5IjcnRFWKspSQ5pcYFIwZHeB09NXbX8a8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QqZ8b8Ox; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D869C4CEE4;
-	Fri, 28 Mar 2025 08:58:12 +0000 (UTC)
+	 MIME-Version:Content-Type; b=T9uYtQGrP9lYpG8giZKhWh1fNzHRvXBJcwJt/VVZTLbsRvgFDlEg55o1cJar10C2SdUcp5VoDjizHM0dnijW479HbpKB1t32GcBWnfPum6eOcSRZb/hhhHYNdP27cOqfmYDP16e5+Gbazr4DnG5pfKX+GkN00S0lzJdrc1xigL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GCadBRgK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E9E0C4CEE4;
+	Fri, 28 Mar 2025 09:03:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743152296;
-	bh=iG2vQX9C9wvH1r4TQLc3s9WUefTjRwU/KWarh7bNpaE=;
+	s=k20201202; t=1743152629;
+	bh=aEDTsF6b80LpwVYP24qiQyXcymUJFu9eUwvRwQIaX5E=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=QqZ8b8OxhMkKPGJYVT3jTlU0Y6kwOa3pDiGB0hhZ7KDzJg7Q5tukQ0ZHW0XlGpgq7
-	 hYu9kyftSQytjOy6wDDv2xDA0blQwdpSxNY9ShnhpELtSXOomlNeh5BJvQFJYBpiad
-	 cPg2CrP6R8n5Wwm/BDU5S5IVCCwRxlFwvccCejRke8/EPo8vCvwVwgnbKSf/f0P1AT
-	 0k4WE61puykFACM/TYbYOk3VAmmTfPz1K6GmmG5sOugtItf5KrWIfQHrPRClJ1d1CE
-	 lOCsKWFOU/TwK+ja+imkcz7AR5nqbPLTXljv6YOw4l8dqhw2fq0Q7zEHtChxX7sgUL
-	 JMppIe29k8GNA==
-Date: Fri, 28 Mar 2025 08:58:05 +0000
+	b=GCadBRgKBIjyrRC8okT6tF/E7f1Jt3GyBDoWiJu5caOuVQTdPsaMt54uFveu40tN3
+	 V/2/y5EiGp7TxffWc4MbPuG0Hmy94db1jYeRSYJsoUph2dIWdpf5NZjIv5Mbt6rm0D
+	 rUDNrVaf2ECYtGfqCaq5ZVRhc8eezzwAqgSkY5pseS31H9ccJn4Pr8bu1pDFF5EgL3
+	 YbdAgasWRZ9Uw2tvBJD6T8vsSLjxuxlGv5fb3R6K2jWlOVeV819qLTYujqllgtBpgj
+	 SBDKNu3XWtzE6XaGVLkTNNhRW5dHEITOPA8woTtMTr4LJuU5GrhgPrvyt8E4S+1TPr
+	 bXfTb0sKsYM+A==
+Date: Fri, 28 Mar 2025 09:03:41 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: Kim Seer Paller <kimseer.paller@analog.com>
 Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
@@ -49,12 +49,11 @@ Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
  Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
  <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
  <devicetree@vger.kernel.org>
-Subject: Re: [PATCH v2 2/4] iio: dac: ad3530r: Add ABI file for the AD3530R
- DAC
-Message-ID: <20250328085805.44122c63@jic23-huawei>
-In-Reply-To: <20250324-togreg-v2-2-f211d781923e@analog.com>
+Subject: Re: [PATCH v2 3/4] dt-bindings: iio: dac: Add adi,ad3530r.yaml
+Message-ID: <20250328090341.0d213f3d@jic23-huawei>
+In-Reply-To: <20250324-togreg-v2-3-f211d781923e@analog.com>
 References: <20250324-togreg-v2-0-f211d781923e@analog.com>
-	<20250324-togreg-v2-2-f211d781923e@analog.com>
+	<20250324-togreg-v2-3-f211d781923e@analog.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -65,136 +64,86 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, 24 Mar 2025 19:22:56 +0800
+On Mon, 24 Mar 2025 19:22:57 +0800
 Kim Seer Paller <kimseer.paller@analog.com> wrote:
 
-> Define muxout_select and muxout_select_available sysfs interface for the
-> AD3530R and AD3531R DAC.
+> Document the AD3530R/AD3530, an 8-Channel, 16-bit Voltage Output DAC,
+> while the AD3531R/AD3531 is a 4-Channel, 16-Bit Voltage Output DAC.
+> These devices include software-programmable gain controls that provide
+> full-scale output spans of 2.5V or 5V for reference voltages of 2.5V.
+> They operate from a single supply voltage range of 2.7V to 5.5V and are
+> guaranteed to be monotonic by design. Additionally, these devices
+> features a 2.5V, 5ppm/=C2=B0C internal reference, which is disabled by de=
+fault.
 >=20
 > Signed-off-by: Kim Seer Paller <kimseer.paller@analog.com>
 > ---
->  .../ABI/testing/sysfs-bus-iio-dac-ad3530r          | 68 ++++++++++++++++=
+>  .../devicetree/bindings/iio/dac/adi,ad3530r.yaml   | 91 ++++++++++++++++=
 ++++++
->  MAINTAINERS                                        |  7 +++
->  2 files changed, 75 insertions(+)
+>  MAINTAINERS                                        |  1 +
+>  2 files changed, 92 insertions(+)
 >=20
-> diff --git a/Documentation/ABI/testing/sysfs-bus-iio-dac-ad3530r b/Docume=
-ntation/ABI/testing/sysfs-bus-iio-dac-ad3530r
+> diff --git a/Documentation/devicetree/bindings/iio/dac/adi,ad3530r.yaml b=
+/Documentation/devicetree/bindings/iio/dac/adi,ad3530r.yaml
 > new file mode 100644
-> index 0000000000000000000000000000000000000000..9d3126952fd1c5214afb895c4=
-972dc4a891ed7d4
+> index 0000000000000000000000000000000000000000..e581472b50048bedda7422748=
+035423b9b020382
 > --- /dev/null
-> +++ b/Documentation/ABI/testing/sysfs-bus-iio-dac-ad3530r
-> @@ -0,0 +1,68 @@
-> +What:		/sys/bus/iio/devices/iio:deviceX/muxout_select
-> +KernelVersion:
-> +Contact:	linux-iio@vger.kernel.org
-> +Description:
-> +		Selects which of the multiplexer's input signals will be
-> +		monitored on the MUX_OUT pin.
-Hi Kim,
+> +++ b/Documentation/devicetree/bindings/iio/dac/adi,ad3530r.yaml
+> @@ -0,0 +1,91 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/dac/adi,ad3530r.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Analog Devices AD3530R and Similar DACs
+> +
+> +maintainers:
+> +  - Kim Seer Paller <kimseer.paller@analog.com>
+> +
+> +description: |
+> +  The AD3530/AD3530R are low power, 8-channel, 16-bit, buffered voltage =
+output,
+> +  digital-to-analog converters (DACs) that include software-programmable=
+ gain
+> +  controls that result in full-scale output spans of 2.5V or 5V for refe=
+rence
+> +  voltages of 2.5V. The devices operate from single, 2.7V to 5.5V supply=
+ ranges
+> +  and are guaranteed monotonic by design. The AD3530R also offers a 2.5V,
+> +  5ppm/=C2=B0C internal reference that is disabled by default.
+> +  Datasheet can be found here:
+> +  https://www.analog.com/media/en/technical-documentation/data-sheets/ad=
+3530_ad530r.pdf
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - adi,ad3530r
 
-Do we have a use case where the monitoring would not be by an ADC attached
-to the host CPU? (i.e. using a channel on an ADC that has it's own IIO driv=
-er)
+You mention this one as well as a variant without the r postfix in the 'des=
+cription'.=20
+So why not compatible for that?  If it's software compatible with the r ver=
+sion than
+a fallback compatible makes sense.  We probably still want to have separate
+compatibles though in case we get an errata that only applies to one of the=
+m.
 
-If no other use case, then support this as a consumer of an ADC channel from
-another device with all these exposed as different channels when a read is =
-requested.
-There are quite a few drivers doing this already.
+If they are the same silicon, perhaps with different ratings then make that=
+ clear
+in the description and perhaps it is fine to not have both compatibles list=
+ed.
+=20
+> +      - adi,ad3531r
 
-The source vs sink thing may need to be done via labels as it isn't a conce=
-pt
-that maps directly to ADC channel characteristics.
+This isn't mentioned in the description text.
 
-If this is being routed to some external hardware monitoring then most like
-this should be in device tree as doesn't make sense to switch dynamically in
-any cases that I recall from previous similar drivers.
+> +
+> +  reg:
+> +    maxItems: 1
+
+Thanks,
 
 Jonathan
-
-> +		* powered_down - MUX_OUT pin is powered down. An 80k=CE=A9 impedance
-> +				 can be seen at the MUX_OUT pin.
-> +		* vout0 - Voltage representation of VOUT0.
-> +		* iout0_source - Voltage representation of IOUT0 (source mode).
-> +		* iout0_sink - Voltage representation of IOUT0 (sink mode).
-> +		* vout1 - Voltage representation of VOUT1.
-> +		* iout1_source - Voltage representation of IOUT1 (source mode).
-> +		* iout1_sink - Voltage representation of IOUT1 (sink mode).
-> +		* vout2 - Voltage representation of VOUT2.
-> +		* iout2_source - Voltage representation of IOUT2 (source mode).
-> +		* iout2_sink - Voltage representation of IOUT2 (sink mode).
-> +		* vout3 - Voltage representation of VOUT3
-> +		* iout3_source - Voltage representation of IOUT3 (source mode).
-> +		* iout3_sink - Voltage representation of IOUT3 (sink mode).
-> +		* vout4 - Voltage representation of VOUT4.
-> +		* iout4_source - Voltage representation of IOUT4 (source mode).
-> +		* iout4_sink - Voltage representation of IOUT4 (sink mode).
-> +		* vout5 - Voltage representation of VOUT5.
-> +		* iout5_source - Voltage representation of IOUT5 (source mode).
-> +		* iout5_sink - Voltage representation of IOUT5 (sink mode).
-> +		* vout6 - Voltage representation of VOUT6.
-> +		* iout6_source - Voltage representation of IOUT6 (source mode).
-> +		* iout6_sink - Voltage representation of IOUT6 (sink mode).
-> +		* vout7 - Voltage representation of VOUT7.
-> +		* iout7_source - Voltage representation of IOUT7 (source mode).
-> +		* iout7_sink - Voltage representation of IOUT7 (sink mode).
-> +		* die_temp - Voltage representation of internal die temperature.
-> +		* agnd - MUX_OUT pin internally tied to AGND.
-> +
-> +What:		/sys/bus/iio/devices/iio:deviceX/muxout_select_available
-> +KernelVersion:
-> +Contact:	linux-iio@vger.kernel.org
-> +Description:
-> +		Reading this returns the valid values that can be written to the
-> +		muxout_select attribute:
-> +		* powered_down
-> +		* vout0
-> +		* iout0_source
-> +		* iout0_sink
-> +		* vout1
-> +		* iout1_source
-> +		* iout1_sink
-> +		* vout2
-> +		* iout2_source
-> +		* iout2_sink
-> +		* vout3
-> +		* iout3_source
-> +		* iout3_sink
-> +		* vout4
-> +		* iout4_source
-> +		* iout4_sink
-> +		* vout5
-> +		* iout5_source
-> +		* iout5_sink
-> +		* vout6
-> +		* iout6_source
-> +		* iout6_sink
-> +		* vout7
-> +		* iout7_source
-> +		* iout7_sink
-> +		* die_temp
-> +		* agnd
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index ffdb3f21fc4fb35b349449afbb30fecd4fe72978..2d3c31c74594ca1934c67e7aa=
-d0a179feeaa39bf 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -1289,6 +1289,13 @@ T:	git git://git.kernel.org/pub/scm/linux/kernel/g=
-it/netdev/net.git
->  T:	git git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next.git
->  F:	drivers/net/amt.c
-> =20
-> +ANALOG DEVICES INC AD3530R DRIVER
-> +M:	Kim Seer Paller <kimseer.paller@analog.com>
-> +L:	linux-iio@vger.kernel.org
-> +S:	Supported
-> +W:	https://ez.analog.com/linux-software-drivers
-> +F:	Documentation/ABI/testing/sysfs-bus-iio-dac-ad3530r
-> +
->  ANALOG DEVICES INC AD3552R DRIVER
->  M:	Nuno S=C3=A1 <nuno.sa@analog.com>
->  L:	linux-iio@vger.kernel.org
->=20
-
 

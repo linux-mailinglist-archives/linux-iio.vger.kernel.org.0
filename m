@@ -1,183 +1,200 @@
-Return-Path: <linux-iio+bounces-17306-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17307-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 793C2A74571
-	for <lists+linux-iio@lfdr.de>; Fri, 28 Mar 2025 09:31:47 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CFD7A745D5
+	for <lists+linux-iio@lfdr.de>; Fri, 28 Mar 2025 09:59:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 053853B3781
-	for <lists+linux-iio@lfdr.de>; Fri, 28 Mar 2025 08:31:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 99C727A7130
+	for <lists+linux-iio@lfdr.de>; Fri, 28 Mar 2025 08:57:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92B8D212FA3;
-	Fri, 28 Mar 2025 08:31:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C90E2135C3;
+	Fri, 28 Mar 2025 08:58:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jvWcrJ8k"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QqZ8b8Ox"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A311C153BE8;
-	Fri, 28 Mar 2025 08:31:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2630C213255;
+	Fri, 28 Mar 2025 08:58:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743150673; cv=none; b=WcEXjTyYOWwZ9DsKL6+eGWbEEutyngaMMclqLX+Vm1Vhpl34nDXBWiyeCx3NUqEdY5Jj+kuH1zTkWihTwImf6emyBm3hZg1ca7taj8O8HPHQOtbFRrW06MWMJPiiUqXeJca7py7Rj3Y9tZQg+/iQrh/5xjekSz+nSJmt9i9iMt4=
+	t=1743152297; cv=none; b=RQbRcikppCQxRJ7e7nLXALlDaf2NxBLEA3ZTnLjY4ewvDaDKlTMhwjRkAANV7MSCK5n8rhDbwb97Vr8xEqmiZLFi8hYvfrEvT/cSAOuOLl6FNYXlrtfbD0dKLgqXZxvragU41VH2HJHX/HrfazsgcKsy8OfJlNex03eL+OkyM/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743150673; c=relaxed/simple;
-	bh=RV0CjmH8QYRgCiBSGK3Cnp6V0pSiVXDyVBYkfINLB6I=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=I0XYWLU0+SFK5ICaqmphRHglXTpC7gfAsSUIv25HrgFb9OyKyJ9lqMigafDIZ4pfDAY1WybmeKYsZZ3h4lE3m4Xw1lyGc4MoWb10mrYqKhoW/YYbNcmk8eEpsFxQ574w/apHHPcoyjkfgIzfzQO7AwiQSlyS1JI6Ru33U4UqHAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jvWcrJ8k; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-43cef035a3bso13378875e9.1;
-        Fri, 28 Mar 2025 01:31:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743150670; x=1743755470; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:to:from:subject:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vQE8MJbln6l8bWbgcy+D13myK6deDTKtx1pmrOTSZWg=;
-        b=jvWcrJ8k7CwQdTR0MwbJngmnr7r5foRkg5RFBoDqBSnFBMILhDrO74tXJHlRjiTMMK
-         mfxLZnEK31Brq/miy1OCVNfauVOcxXa1FvU/29f/tTCHPaYPEercWZJ1ftjGrjdAATQU
-         Y+DS1vItEgX6B5W5RSYfaGv+Ov4EIZ8kgVYikuRdfitWtlS/cjw/RqGS/zdg95d+lEgR
-         6oUs1AN5qTrr09Zs/I9dj9CC4A0JPAghOPo0LEgitu45ZiOAFM8UvG/+u9WzGZdC9TYW
-         qOHrdjQj/ri+KWnpZR8jAbLPpbd5cgwEPXs6Js8AaVA1FmXAhiso+GUhc0/d01Pkq+rd
-         BSfg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743150670; x=1743755470;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:to:from:subject:message-id:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=vQE8MJbln6l8bWbgcy+D13myK6deDTKtx1pmrOTSZWg=;
-        b=EM0AuIxZcpWbsO5oAeZZEe644+HJ6jvFoOZ+G7kqj+zvcasdnKG3WRFN7A9Q3yS/UO
-         FGiiG8pQQmiVhnHjQFqDqaad5/uxKdAFLlS8K3ALiRzlaWa64wJZCRcfP9KIov8KTKn1
-         cYnbvRJN6Bd/zbEkomof6q/QRoeZ9RWmQxuBS0kp0rVaZvSpXHF/HA10jHL2mvofL7vW
-         EqCvMMDjRzKpuk+jPxoGYnsoxC5Jz0qJAx49TVXIgn5hIASsdgrQZjsiErf6tKuX2eqi
-         zQvO8Zd8sL9oHuj7xAlcj6jIabg83UN3uT/FYQaznApp/gvpBb3BPs9Mt3cbKgMbwqvq
-         MVRw==
-X-Forwarded-Encrypted: i=1; AJvYcCU5nZvDmnQUv/mPMVSruFvJ1+Ki2ZDvxrhRvPaTn5y8OK2gaieFTDMlPHeFEHLrKQ7+cWM+EM8od4LMZD/z@vger.kernel.org, AJvYcCUIRoz/ZmPFPY8Gmj+7J+4l2H/jghrEKOV9TH9kItWsnWSMejygLGEVyqfvPDgatQmyGR2tcZLu7tNh@vger.kernel.org, AJvYcCV9w/yT4Z5c3uf6PLMIzuwYHkwGzpbOiRNlptQGQu+oLM6NLBZKpL7gi/SbMEd3Yf8+gOd8furpQbOO@vger.kernel.org
-X-Gm-Message-State: AOJu0YwF4dNKTBSKfWBlg/3Qcqc+0ujz+k6ERf+nQdEiknMM4rDNJ15F
-	VMdOcxyL0sU+8C06Zk5RlCn6fnYTPW9PePQsTva9BAuEqtaSTWvC
-X-Gm-Gg: ASbGncun50f024270uwatbZMgoM14XjgP0dH1iEifosvlrFp5r1QxlyM2ZpLBSF+/Yp
-	4ZpjyeillZYrEmfIZQir61feypUzephJob8d8bjFaFrhzilgaAwfJX+nMWEgyreJDZacyFFXbmN
-	6rnE7d0ZGkFyxXtSGFRaqLZ44O3wGjgvQnJLuwMmrn32eb/WZOiQI8HJZOScTmdl7qE/0w+NiKe
-	zjgI1YUGb7J5wWjh6uENL89kKExvjI5o+8gMJdC/AucirghT9I6c5NUCUuks20lK7SxTM71Ubu1
-	rc4iXBJn4V2pnzXdmytv7hQ8/ogzSiIFOT0zWxUzthInT0ikWwrW7jV7Xd5w3kzjJzPZ4ZN6xa4
-	EcZrEvFDJ4O9XGcnweME=
-X-Google-Smtp-Source: AGHT+IGI2eJg7BHRpn3r51sDH5p+MRaRhGiL0S/Kaf3UkvfdxC0LWaMxZljHzx49GypwiWGPKM3cFQ==
-X-Received: by 2002:adf:b64f:0:b0:39c:dcc:5b2a with SMTP id ffacd0b85a97d-39c0dcc5b72mr742495f8f.39.1743150669634;
-        Fri, 28 Mar 2025 01:31:09 -0700 (PDT)
-Received: from ?IPv6:2001:818:ea56:d000:56e0:ceba:7da4:6673? ([2001:818:ea56:d000:56e0:ceba:7da4:6673])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39c0b7a41b4sm1869337f8f.85.2025.03.28.01.31.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 28 Mar 2025 01:31:09 -0700 (PDT)
-Message-ID: <c8ab344480e57ffe7eb0ec73d509de25ea5cea3a.camel@gmail.com>
-Subject: Re: [PATCH 1/5] iio: backend: add support for decimation ratio set
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: David Lechner <dlechner@baylibre.com>, Pop Ioan Daniel
- <pop.ioan-daniel@analog.com>, Lars-Peter Clausen <lars@metafoo.de>, Michael
- Hennerich <Michael.Hennerich@analog.com>, Jonathan Cameron
- <jic23@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
- <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Nuno Sa
- <nuno.sa@analog.com>, Olivier Moysan <olivier.moysan@foss.st.com>, Javier
- Carrasco <javier.carrasco.cruz@gmail.com>,  Andy Shevchenko
- <andriy.shevchenko@linux.intel.com>, Guillaume Stols <gstols@baylibre.com>,
- Trevor Gamblin <tgamblin@baylibre.com>, Dumitru Ceclan
- <mitrutzceclan@gmail.com>, Matteo Martelli <matteomartelli3@gmail.com>,
- =?ISO-8859-1?Q?Jo=E3o?= Paulo =?ISO-8859-1?Q?Gon=E7alves?=
- <joao.goncalves@toradex.com>, Alisa-Dariana Roman <alisadariana@gmail.com>,
-  Thomas Bonnefille <thomas.bonnefille@bootlin.com>, Herve Codina
- <herve.codina@bootlin.com>, Marcelo Schmitt <marcelo.schmitt@analog.com>,
- Dragos Bogdan <dragos.bogdan@analog.com>,  linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org,  linux-kernel@vger.kernel.org
-Date: Fri, 28 Mar 2025 08:31:25 +0000
-In-Reply-To: <9b565cb2-815b-4ca9-a7dc-8ca2e8eb5f72@baylibre.com>
-References: <20250324090813.2775011-1-pop.ioan-daniel@analog.com>
-	 <20250324090813.2775011-2-pop.ioan-daniel@analog.com>
-	 <9b565cb2-815b-4ca9-a7dc-8ca2e8eb5f72@baylibre.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
+	s=arc-20240116; t=1743152297; c=relaxed/simple;
+	bh=iG2vQX9C9wvH1r4TQLc3s9WUefTjRwU/KWarh7bNpaE=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ERlnBp0zm9xfTGobLUbVI8ar6att2OhYxb2T8qizYigYUvx4v+8hIQXl+aG2Z/l2+o8VcKbjmvqlKxYuZ4n3AydpKMugrFu5iwAga5SbbOiG9YulRP8Ht8Gy02JuDMnIUHffWd/JvF5IjcnRFWKspSQ5pcYFIwZHeB09NXbX8a8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QqZ8b8Ox; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D869C4CEE4;
+	Fri, 28 Mar 2025 08:58:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1743152296;
+	bh=iG2vQX9C9wvH1r4TQLc3s9WUefTjRwU/KWarh7bNpaE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=QqZ8b8OxhMkKPGJYVT3jTlU0Y6kwOa3pDiGB0hhZ7KDzJg7Q5tukQ0ZHW0XlGpgq7
+	 hYu9kyftSQytjOy6wDDv2xDA0blQwdpSxNY9ShnhpELtSXOomlNeh5BJvQFJYBpiad
+	 cPg2CrP6R8n5Wwm/BDU5S5IVCCwRxlFwvccCejRke8/EPo8vCvwVwgnbKSf/f0P1AT
+	 0k4WE61puykFACM/TYbYOk3VAmmTfPz1K6GmmG5sOugtItf5KrWIfQHrPRClJ1d1CE
+	 lOCsKWFOU/TwK+ja+imkcz7AR5nqbPLTXljv6YOw4l8dqhw2fq0Q7zEHtChxX7sgUL
+	 JMppIe29k8GNA==
+Date: Fri, 28 Mar 2025 08:58:05 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: Kim Seer Paller <kimseer.paller@analog.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
+ <Michael.Hennerich@analog.com>, Rob Herring <robh@kernel.org>, Krzysztof
+ Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+ <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <devicetree@vger.kernel.org>
+Subject: Re: [PATCH v2 2/4] iio: dac: ad3530r: Add ABI file for the AD3530R
+ DAC
+Message-ID: <20250328085805.44122c63@jic23-huawei>
+In-Reply-To: <20250324-togreg-v2-2-f211d781923e@analog.com>
+References: <20250324-togreg-v2-0-f211d781923e@analog.com>
+	<20250324-togreg-v2-2-f211d781923e@analog.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, 2025-03-24 at 13:53 -0500, David Lechner wrote:
-> On 3/24/25 4:07 AM, Pop Ioan Daniel wrote:
-> > Add backend support for setting the decimation ratio used.
-> >=20
-> > Signed-off-by: Pop Ioan Daniel <pop.ioan-daniel@analog.com>
-> > ---
-> > =C2=A0drivers/iio/industrialio-backend.c | 18 ++++++++++++++++++
-> > =C2=A0include/linux/iio/backend.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0 |=C2=A0 3 +++
-> > =C2=A02 files changed, 21 insertions(+)
-> >=20
-> > diff --git a/drivers/iio/industrialio-backend.c b/drivers/iio/industria=
-lio-
-> > backend.c
-> > index 363281272035..f4db6514944a 100644
-> > --- a/drivers/iio/industrialio-backend.c
-> > +++ b/drivers/iio/industrialio-backend.c
-> > @@ -417,6 +417,24 @@ int iio_backend_test_pattern_set(struct iio_backen=
-d *back,
-> > =C2=A0}
-> > =C2=A0EXPORT_SYMBOL_NS_GPL(iio_backend_test_pattern_set, "IIO_BACKEND")=
-;
-> > =C2=A0
-> > +/**
-> > + * iio_backend_set_dec_rate - set decimation ratio
->=20
-> In [1], we decided that for a similar chip we could use "decimation rate"=
- and
-> "oversampling ratio" interchangeably. And in [2], we recently added a bac=
-kend
-> op for setting the oversampling ratio. Would it make sense to use that he=
-re
-> as well instead of introducing a new function? If not, we'll want more of=
- an
-> explanation here on what the difference is. But from what I can tell, thi=
-s
-> sounds very similar to the other case where they are essentially the same=
- thing.
-> On the other hand, this is internal API and not userspace ABI, so having =
-a
-> separate name might not be so bad, especially if there is a chance we wou=
-ld ever
-> have both at the same time.
+On Mon, 24 Mar 2025 19:22:56 +0800
+Kim Seer Paller <kimseer.paller@analog.com> wrote:
 
-If it fits, I have preference for using existent interfaces...
+> Define muxout_select and muxout_select_available sysfs interface for the
+> AD3530R and AD3531R DAC.
+>=20
+> Signed-off-by: Kim Seer Paller <kimseer.paller@analog.com>
+> ---
+>  .../ABI/testing/sysfs-bus-iio-dac-ad3530r          | 68 ++++++++++++++++=
+++++++
+>  MAINTAINERS                                        |  7 +++
+>  2 files changed, 75 insertions(+)
+>=20
+> diff --git a/Documentation/ABI/testing/sysfs-bus-iio-dac-ad3530r b/Docume=
+ntation/ABI/testing/sysfs-bus-iio-dac-ad3530r
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..9d3126952fd1c5214afb895c4=
+972dc4a891ed7d4
+> --- /dev/null
+> +++ b/Documentation/ABI/testing/sysfs-bus-iio-dac-ad3530r
+> @@ -0,0 +1,68 @@
+> +What:		/sys/bus/iio/devices/iio:deviceX/muxout_select
+> +KernelVersion:
+> +Contact:	linux-iio@vger.kernel.org
+> +Description:
+> +		Selects which of the multiplexer's input signals will be
+> +		monitored on the MUX_OUT pin.
+Hi Kim,
 
-- Nuno S=C3=A1
+Do we have a use case where the monitoring would not be by an ADC attached
+to the host CPU? (i.e. using a channel on an ADC that has it's own IIO driv=
+er)
+
+If no other use case, then support this as a consumer of an ADC channel from
+another device with all these exposed as different channels when a read is =
+requested.
+There are quite a few drivers doing this already.
+
+The source vs sink thing may need to be done via labels as it isn't a conce=
+pt
+that maps directly to ADC channel characteristics.
+
+If this is being routed to some external hardware monitoring then most like
+this should be in device tree as doesn't make sense to switch dynamically in
+any cases that I recall from previous similar drivers.
+
+Jonathan
+
+> +		* powered_down - MUX_OUT pin is powered down. An 80k=CE=A9 impedance
+> +				 can be seen at the MUX_OUT pin.
+> +		* vout0 - Voltage representation of VOUT0.
+> +		* iout0_source - Voltage representation of IOUT0 (source mode).
+> +		* iout0_sink - Voltage representation of IOUT0 (sink mode).
+> +		* vout1 - Voltage representation of VOUT1.
+> +		* iout1_source - Voltage representation of IOUT1 (source mode).
+> +		* iout1_sink - Voltage representation of IOUT1 (sink mode).
+> +		* vout2 - Voltage representation of VOUT2.
+> +		* iout2_source - Voltage representation of IOUT2 (source mode).
+> +		* iout2_sink - Voltage representation of IOUT2 (sink mode).
+> +		* vout3 - Voltage representation of VOUT3
+> +		* iout3_source - Voltage representation of IOUT3 (source mode).
+> +		* iout3_sink - Voltage representation of IOUT3 (sink mode).
+> +		* vout4 - Voltage representation of VOUT4.
+> +		* iout4_source - Voltage representation of IOUT4 (source mode).
+> +		* iout4_sink - Voltage representation of IOUT4 (sink mode).
+> +		* vout5 - Voltage representation of VOUT5.
+> +		* iout5_source - Voltage representation of IOUT5 (source mode).
+> +		* iout5_sink - Voltage representation of IOUT5 (sink mode).
+> +		* vout6 - Voltage representation of VOUT6.
+> +		* iout6_source - Voltage representation of IOUT6 (source mode).
+> +		* iout6_sink - Voltage representation of IOUT6 (sink mode).
+> +		* vout7 - Voltage representation of VOUT7.
+> +		* iout7_source - Voltage representation of IOUT7 (source mode).
+> +		* iout7_sink - Voltage representation of IOUT7 (sink mode).
+> +		* die_temp - Voltage representation of internal die temperature.
+> +		* agnd - MUX_OUT pin internally tied to AGND.
+> +
+> +What:		/sys/bus/iio/devices/iio:deviceX/muxout_select_available
+> +KernelVersion:
+> +Contact:	linux-iio@vger.kernel.org
+> +Description:
+> +		Reading this returns the valid values that can be written to the
+> +		muxout_select attribute:
+> +		* powered_down
+> +		* vout0
+> +		* iout0_source
+> +		* iout0_sink
+> +		* vout1
+> +		* iout1_source
+> +		* iout1_sink
+> +		* vout2
+> +		* iout2_source
+> +		* iout2_sink
+> +		* vout3
+> +		* iout3_source
+> +		* iout3_sink
+> +		* vout4
+> +		* iout4_source
+> +		* iout4_sink
+> +		* vout5
+> +		* iout5_source
+> +		* iout5_sink
+> +		* vout6
+> +		* iout6_source
+> +		* iout6_sink
+> +		* vout7
+> +		* iout7_source
+> +		* iout7_sink
+> +		* die_temp
+> +		* agnd
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index ffdb3f21fc4fb35b349449afbb30fecd4fe72978..2d3c31c74594ca1934c67e7aa=
+d0a179feeaa39bf 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -1289,6 +1289,13 @@ T:	git git://git.kernel.org/pub/scm/linux/kernel/g=
+it/netdev/net.git
+>  T:	git git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next.git
+>  F:	drivers/net/amt.c
+> =20
+> +ANALOG DEVICES INC AD3530R DRIVER
+> +M:	Kim Seer Paller <kimseer.paller@analog.com>
+> +L:	linux-iio@vger.kernel.org
+> +S:	Supported
+> +W:	https://ez.analog.com/linux-software-drivers
+> +F:	Documentation/ABI/testing/sysfs-bus-iio-dac-ad3530r
+> +
+>  ANALOG DEVICES INC AD3552R DRIVER
+>  M:	Nuno S=C3=A1 <nuno.sa@analog.com>
+>  L:	linux-iio@vger.kernel.org
 >=20
-> [1]: https://lore.kernel.org/linux-iio/20250112122047.1e1978e0@jic23-huaw=
-ei/
-> [2]:
-> https://web.git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git/commit/=
-drivers/iio/industrialio-backend.c?h=3Dtesting&id=3D22894e0be908791e3df011c=
-dfac02589c2f340bd
->=20
-> > + * @back: Backend device
-> > + * @rate: Rate in decimal
-> > +
-> > + * Return:
-> > + * 0 on success, negative error number on failure.
-> > + */
-> > +
-> > +int iio_backend_set_dec_rate(struct iio_backend *back, unsigned int ra=
-te)
-> > +{
-> > +	if (!rate)
-> > +		return -EINVAL;
-> > +
-> > +	return iio_backend_op_call(back, set_dec_rate, rate);
-> > +}
-> > +EXPORT_SYMBOL_NS_GPL(iio_backend_set_dec_rate, "IIO_BACKEND");
-> > +
 
 

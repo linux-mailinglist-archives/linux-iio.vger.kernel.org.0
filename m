@@ -1,61 +1,61 @@
-Return-Path: <linux-iio+bounces-17320-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17321-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5E99A74FF9
-	for <lists+linux-iio@lfdr.de>; Fri, 28 Mar 2025 19:02:53 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17EC2A74FFB
+	for <lists+linux-iio@lfdr.de>; Fri, 28 Mar 2025 19:02:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 989C97A1B9F
-	for <lists+linux-iio@lfdr.de>; Fri, 28 Mar 2025 18:01:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 37C1D1893B89
+	for <lists+linux-iio@lfdr.de>; Fri, 28 Mar 2025 18:03:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 395D71E0E0A;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82CAB1E1DEB;
 	Fri, 28 Mar 2025 17:55:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=framepointer.org header.i=@framepointer.org header.b="iLOBS5zV"
+	dkim=pass (2048-bit key) header.d=framepointer.org header.i=@framepointer.org header.b="dv2YbKOu"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from out-09.pe-a.jellyfish.systems (out-09.pe-a.jellyfish.systems [198.54.127.69])
+Received: from out-10.pe-a.jellyfish.systems (out-10.pe-a.jellyfish.systems [198.54.127.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83EB71D54D6;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC6771DDC34;
 	Fri, 28 Mar 2025 17:55:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.54.127.69
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.54.127.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743184503; cv=none; b=c6WMljxdd2I92XawNWgmQ+wwDB6hNcc6QoHSS/n+ukJlVJtX+bYh+EgL+mTv77MOk20YWIWy8cToBX4suG9JNMiIyHLsQYecZ5HbZ3F5k+dMdICLCYMKmmnBFFkPZK/CuCGqNfCktdOCgrQ1/nmeQOWgW5zmn0d45pzn5F8bl+I=
+	t=1743184503; cv=none; b=Bo21GfSXu8ctfVp4uqNFY85NqOUh150PNFBopv9JipGtN5h53gEdR9ksptoudwF7sthm+iLp8gsJnz26snKrrLBHP55wPWkb5BpxXFolZwPsSZiRwYuuxwguZdubrea6LmzCb2z3AwgbxOxwDhTdukAtjTCj8UomQUxRDhyrPWs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1743184503; c=relaxed/simple;
-	bh=sIIeYp8PANGpE3s/i2ut7ke4KazsR9oUb1fQXJZMGYQ=;
+	bh=qindB+11Ls3Q9kbh41Qf1DgJD19+LpECy+VTjeVr7HI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KPTOH1esl0tL1/S3un0BCyZQinX2V7oKJItVofQgh+FteTxRHqBXqR19Yu4ehJNxH56ayIig20HN0HTf06XZIyaUlKHZfDprPxtoDl3x6MzhqF7J1R+EP7yAGeO3Vq8MuEDt9PU+uEKN8sMucB74fR1/5/JaDT9XVUCq5t05VtI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=framepointer.org; spf=pass smtp.mailfrom=framepointer.org; dkim=pass (2048-bit key) header.d=framepointer.org header.i=@framepointer.org header.b=iLOBS5zV; arc=none smtp.client-ip=198.54.127.69
+	 MIME-Version; b=IlfKmX0q+uh6/lTi82CbJUT/hEgjTcVkWSpz8ZluiPspp5GJ7fCxuJUis2Y6PnIiKguFhdgleCZPCXiBL77fD8BYTnv3clyNzWzVCg/cd+WRQ42ua6yYmY4G51ZNfB47GU8Omu2u/1fQLkvb7iZONSrsU+Jp6inJzyeRTYiUnq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=framepointer.org; spf=pass smtp.mailfrom=framepointer.org; dkim=pass (2048-bit key) header.d=framepointer.org header.i=@framepointer.org header.b=dv2YbKOu; arc=none smtp.client-ip=198.54.127.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=framepointer.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=framepointer.org
 Received: from prod-lbout-phx.jellyfish.systems (new-01-3.privateemail.com [66.29.159.56])
-	by pe-a.jellyfish.systems (Postfix) with ESMTPA id 4ZPShR4lvvz9sQC;
-	Fri, 28 Mar 2025 17:49:27 +0000 (UTC)
+	by pe-a.jellyfish.systems (Postfix) with ESMTPA id 4ZPShl4QPMz9sXD;
+	Fri, 28 Mar 2025 17:49:43 +0000 (UTC)
 Received: from MTA-14.privateemail.com (unknown [10.50.14.30])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by NEW-01-3.privateemail.com (Postfix) with ESMTPS id 4ZPShR3lZgz2Sd0Q;
-	Fri, 28 Mar 2025 13:49:27 -0400 (EDT)
+	by NEW-01-3.privateemail.com (Postfix) with ESMTPS id 4ZPShl3fqbz2Sd0Q;
+	Fri, 28 Mar 2025 13:49:43 -0400 (EDT)
 Received: from mta-14.privateemail.com (localhost [127.0.0.1])
-	by mta-14.privateemail.com (Postfix) with ESMTP id 4ZPShR2RZYz3hhTs;
-	Fri, 28 Mar 2025 13:49:27 -0400 (EDT)
+	by mta-14.privateemail.com (Postfix) with ESMTP id 4ZPShl2Kkmz3hhTs;
+	Fri, 28 Mar 2025 13:49:43 -0400 (EDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=framepointer.org;
-	s=default; t=1743184167;
-	bh=sIIeYp8PANGpE3s/i2ut7ke4KazsR9oUb1fQXJZMGYQ=;
+	s=default; t=1743184183;
+	bh=qindB+11Ls3Q9kbh41Qf1DgJD19+LpECy+VTjeVr7HI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iLOBS5zVLjzwEZHfs449Itxz7Xe9EyOdA7463nB9XUeZMWTjvt8yzmf4EzcxOdo8V
-	 R574WhugV/2YQ/bKxAtz9tqTWHVq5McUsDq7gmf8vaFnOgWXRtaT6gawa1rSKGzitM
-	 3gVvuBD9x+y4mcPdmR+U7ilM3YBgdRjT9VRvnSn2jFEVPz5u6s0Q+to1AGuNg/3Z8/
-	 3jW2IvXcnt0PKRhRZdILY/F2w9zz1Dg7xYLE/kuPunDt6bpmAZAaU8/F/y1x/n9Xpa
-	 sKM3/i7Oya/ccbZOJmySvGDkFGj2oucBvR2IzF5xRPgyecifisoZh25N63Bw9Jx/lP
-	 GMw3vkGyog51Q==
+	b=dv2YbKOuzCfK8fW6jjnq2M2QQJqwsfP96kfaYTGUliZPK4Sb3zUaBVAnjPb3tOcjv
+	 qhIhgdLoRv1d33iTtkhZuNCHyFWZLUaSxb6KpQIoryAA5UzIvrUeGPnsKWo44vHoNp
+	 WF7hUDBMWzjG0J04XttJ/qEV48QCNJVsV+4/OXpbZ2h4ABtQK6rxPlxJp55Rh6Kyu3
+	 rcfAj9sspxtnU1prRj7Gplmv0wTq87uPFisJzuYFwh0GdG2Y53e3GI5jMcfOdzFnUw
+	 drEUU/cEJT553/4gJimP/BPQEAyPCOkvdvY++/MhBnCzwyu9yQk360Z9npEzJTXJ7D
+	 V5NL37fjVlprw==
 Received: from 65YTFL3.secure.tethers.com (unknown [152.44.190.141])
 	by mta-14.privateemail.com (Postfix) with ESMTPA;
-	Fri, 28 Mar 2025 13:49:11 -0400 (EDT)
+	Fri, 28 Mar 2025 13:49:27 -0400 (EDT)
 From: Sam Winchenbach <sam.winchenbach@framepointer.org>
 To: linux-kernel@vger.kernel.org
 Cc: lars@metafoo.de,
@@ -70,9 +70,9 @@ Cc: lars@metafoo.de,
 	sam.winchenbach@framepointer.org,
 	bpellegrino@arka.org,
 	Sam Winchenbach <swinchenbach@arka.org>
-Subject: [PATCH v8 2/6] iio: filter: admv8818: fix band 4, state 15
-Date: Fri, 28 Mar 2025 13:48:27 -0400
-Message-ID: <20250328174831.227202-3-sam.winchenbach@framepointer.org>
+Subject: [PATCH v8 3/6] iio: filter: admv8818: fix integer overflow
+Date: Fri, 28 Mar 2025 13:48:28 -0400
+Message-ID: <20250328174831.227202-4-sam.winchenbach@framepointer.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250328174831.227202-1-sam.winchenbach@framepointer.org>
 References: <20250328174831.227202-1-sam.winchenbach@framepointer.org>
@@ -87,8 +87,8 @@ X-Virus-Scanned: ClamAV using ClamSMTP
 
 From: Sam Winchenbach <swinchenbach@arka.org>
 
-Corrects the upper range of LPF Band 4 from 18.5 GHz to 18.85 GHz per
-the ADMV8818 datasheet
+HZ_PER_MHZ is only unsigned long. This math overflows, leading to
+incorrect results.
 
 Fixes: f34fe888ad05 ("iio:filter:admv8818: add support for ADMV8818")
 Signed-off-by: Sam Winchenbach <swinchenbach@arka.org>
@@ -97,18 +97,18 @@ Signed-off-by: Sam Winchenbach <swinchenbach@arka.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/iio/filter/admv8818.c b/drivers/iio/filter/admv8818.c
-index d85b7d3de8660..3d8740caa1455 100644
+index 3d8740caa1455..cd3aff9a2f7bf 100644
 --- a/drivers/iio/filter/admv8818.c
 +++ b/drivers/iio/filter/admv8818.c
-@@ -103,7 +103,7 @@ static const unsigned long long freq_range_lpf[4][2] = {
- 	{2050000000ULL, 3850000000ULL},
- 	{3350000000ULL, 7250000000ULL},
- 	{7000000000, 13000000000},
--	{12550000000, 18500000000}
-+	{12550000000, 18850000000}
- };
+@@ -154,7 +154,7 @@ static int __admv8818_hpf_select(struct admv8818_state *st, u64 freq)
+ 	}
  
- static const struct regmap_config admv8818_regmap_config = {
+ 	/* Close HPF frequency gap between 12 and 12.5 GHz */
+-	if (freq >= 12000 * HZ_PER_MHZ && freq <= 12500 * HZ_PER_MHZ) {
++	if (freq >= 12000ULL * HZ_PER_MHZ && freq < 12500ULL * HZ_PER_MHZ) {
+ 		hpf_band = 3;
+ 		hpf_step = 15;
+ 	}
 -- 
 2.49.0
 

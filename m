@@ -1,156 +1,188 @@
-Return-Path: <linux-iio+bounces-17312-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17313-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3B5AA748AE
-	for <lists+linux-iio@lfdr.de>; Fri, 28 Mar 2025 11:49:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30288A74DBF
+	for <lists+linux-iio@lfdr.de>; Fri, 28 Mar 2025 16:31:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9B4747A6C37
-	for <lists+linux-iio@lfdr.de>; Fri, 28 Mar 2025 10:48:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D52097A62C7
+	for <lists+linux-iio@lfdr.de>; Fri, 28 Mar 2025 15:30:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D45F01F583D;
-	Fri, 28 Mar 2025 10:49:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C409614A627;
+	Fri, 28 Mar 2025 15:31:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pereznus.es header.i=@pereznus.es header.b="RDyuBwEi"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z8scltAu"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from p00-icloudmta-asmtp-us-east-2d-10-percent-1.p00-icloudmta-asmtp-vip.icloud-mail-production.svc.kube.us-east-2d.k8s.cloud.apple.com (p-east3-cluster6-host1-snip4-10.eps.apple.com [57.103.85.141])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f171.google.com (mail-yb1-f171.google.com [209.85.219.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 074FF1DE2C3
-	for <linux-iio@vger.kernel.org>; Fri, 28 Mar 2025 10:49:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.85.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C5E43594A;
+	Fri, 28 Mar 2025 15:31:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743158979; cv=none; b=iSOta44qRN3xtmQp7lexgzJlWGo4m0XQqnZHOKVgYq0MtOACxD0uYCjQayZ7HXx3BgekbbdWMVSt5AToMOtndlqkM2EBcevoz0GpEJ3ViyykWyKxa+RTeoCHENr5A0QeVs+NInomFPDfQhwo4/CF+7m45u5WP71h1eO8cCv8P6Y=
+	t=1743175876; cv=none; b=in2TwXYb6nIKCgzskKKP3TVBY9paCxxnccvMiTELX5ZOuY5oQ/EOvAGwHv8FwiFLoRiwv1m1CUjaPrTLaEPbPN2/Z1QN2ApYu6ZcjX831pPW+b5YRLMBh7sdNWArkZKm5aAFZeCzecCtCIgUwFVydQCnYd+LA44GWjQ+5zUFb2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743158979; c=relaxed/simple;
-	bh=7NAEPAX6m8dKJDfn+6jbCMWo5spDoAoaB7FaHgS8niY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=AdPPkBJT13ze87Kmve1GZn82bYP2FYGWkkyqIcLM/b0StFSIL83s3vpixnq2XRP5HKfCcqFKSorbsudaLtC2Uhne8CKLYpd/vnIKMFedKZxDlJf5BSC24IZG+Y5eelMieoKBig3SXF2fTy55Zm93xO3MhcArXTe80VNNoRLAiqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pereznus.es; spf=pass smtp.mailfrom=pereznus.es; dkim=pass (2048-bit key) header.d=pereznus.es header.i=@pereznus.es header.b=RDyuBwEi; arc=none smtp.client-ip=57.103.85.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pereznus.es
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pereznus.es
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pereznus.es; s=sig1;
-	bh=fvG19Ay+E96nIa+spIyHiWWlBnSI38cW9OJJz+SbdYw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type:x-icloud-hme;
-	b=RDyuBwEilAEbMBwO891hmRqrPo+ocYMFAlUOUMqEoMOlAT0vAjLJfnXCvQubLcT+4
-	 UiaO5ViyKWUllCUUOKgeteEWgTFPZZTEGQCQnAegvZ7qDngcioK+mE/n1amPwyO9Rc
-	 7lsyqlOXyoXCFwWQfBA6nEtBHLYYqQimQjpxcnyPYZz4WyXwhxZOLhJURpVtbhyQhP
-	 rJVtixcDXG2sOPuyD6OcbGczzu2lfRCY7uyghQ/ISXtgPjFZehCVW0EgOh0FTqxaOK
-	 tYm7PM+mZi2K6vvl7I2cMnEA6DZ9zF4LG+xPsqOth7uzbps5Nb6l8UNEjhVkPDKb0z
-	 NdKyHa0TpUIDg==
-Received: from [192.168.1.28] (qs-asmtp-me-k8s.p00.prod.me.com [17.57.155.37])
-	by p00-icloudmta-asmtp-us-east-2d-10-percent-1.p00-icloudmta-asmtp-vip.icloud-mail-production.svc.kube.us-east-2d.k8s.cloud.apple.com (Postfix) with ESMTPSA id 397EF180311E;
-	Fri, 28 Mar 2025 10:49:32 +0000 (UTC)
-Message-ID: <4c6c2096-4f30-41d5-ad18-74436e8d48a5@pereznus.es>
-Date: Fri, 28 Mar 2025 11:49:30 +0100
+	s=arc-20240116; t=1743175876; c=relaxed/simple;
+	bh=4vnD+DHEqSBzz+VCa+lT52SFxyofr7XdlrOyU0bKZKY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Mt0juNASEe2bd0VyTHz6ihbvo77AhxEUjJDFEtHFCAL8sMaEg4i45NDvBb82VasF0hUyOotCxsWYF3/BOaA1G03KQPWyTUOVy4sC0pzIGazAI5pXAD9e9f6SEwSey9qvwlw7TB4l6qY/KDiyCUYY3NutiO1VAh2Pwu3Y7xND//s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z8scltAu; arc=none smtp.client-ip=209.85.219.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yb1-f171.google.com with SMTP id 3f1490d57ef6-e636630da89so307977276.3;
+        Fri, 28 Mar 2025 08:31:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1743175874; x=1743780674; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2JEpnnBIQUbskXS0RqEeObZ5p7b6lVMjmPa4eVycTVU=;
+        b=Z8scltAuVpXuYxUuTHlgmATPXKUpOe53JOZE0ATFcLXWRDscOYydr3c5O0NttWaVsv
+         fChgy1CQ/1OFQf0RAUeR1szSXZQxpEvAcn2g6rBrI5qGTcCavlUvn89AbSsJyatQSadQ
+         /J5QceZtq7TcqR4YJgkSNvbtkaqqbjAJgfLxaY6ecSLBh3RyYieKFiB+U2IGdJo/f80h
+         YktxHmGg841azCdgqohasguKE/yFuswkmA8Vo4nXiSzyWUJHJtCl9iroE/9bNkboJ4g1
+         GNmiqVpi2ZqUuNg1Z4VYWrCD3ZDnmlKsNcr/fQZDQZ5UJcMmLTf8bSqklEj615Dy24Ok
+         Bnbg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1743175874; x=1743780674;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=2JEpnnBIQUbskXS0RqEeObZ5p7b6lVMjmPa4eVycTVU=;
+        b=pkfAzOOBPV7GgFcJNYe+dniRdZofHTKIo0Pjg/Nm20mgwABUpKT1zSz1dBm5DiHYOa
+         5+sYhPmL1RCWfGcsJ8nHNIu8zwjGrKO9iJbjqn59L4/isqDpYNXqJiJaaClod6HAfbw2
+         eri/wX6MEokg0og9wSnq+LKHIRfY0uAZCwe5+F3Ocd7Ik5jNP5J04Q2llRsRfsf9pF1U
+         6JHKs7LMluFCMUdJheoUXPxkmfznCaWw199zMFlxFGSt4t5X1yAnSPtU9JwidGKS4Bum
+         UD3rya5dJfM0FyHzH9slkq3gorG9R28LHUBeuwaJHSMIPcwal0mNbghDugiw364SeUkP
+         EwpQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU952fHR73DrhbotetMzh5nVpyPQccted4vEsmNk5cXXHoHu5mpzAvHetKuj/JCD4gpo7Re59elCrk=@vger.kernel.org, AJvYcCVAuJ9vNLpTYUgJT9hg0M8kbQBCZkFh9QFGijFiCQzzq00YspIwvKjvx1SRks+npgX1sk6Qr/lxAubiPyBO@vger.kernel.org
+X-Gm-Message-State: AOJu0YyulPy6LB3kuCxHZH+iN/U0xzF62PmrXanYlqyD3+3Bp8xsdwQV
+	mSE0gIpH3Uap7s5x3JwkPV5k7pWSO5Zw8dzm+8+BpTDfwxxw8LFDtX7FhffAbc00GBAOYTf8t9Z
+	FU7E8641TAqOObRMIFJqsSh+eCG4=
+X-Gm-Gg: ASbGncu9JlWuOSEpXWJVtc8nDQVYndJMjUDtqKAFB95riECItmnFwUsNqk3kmv5BwCB
+	whWHkB9ct8Q6WBpFhw4Cb26hINFVfisNENU0kOhTjGvTCXy0VA2fKmRTdMDiHVB3pIgiwlgOPAI
+	xK4eO2Nh7OtjNZ0rnlvQHcUsHdmg==
+X-Google-Smtp-Source: AGHT+IEmFYQlbFSKzS7Ov/gG/q6U2el7ppLAitV7rPzJjK8PneAM2r3Vc+d+PwkkA1le/1MwNu8aHgYeP8wjsbOeY9A=
+X-Received: by 2002:a05:6902:4792:b0:e60:974f:a03e with SMTP id
+ 3f1490d57ef6-e6945c0ecedmr4065411276.6.1743175873641; Fri, 28 Mar 2025
+ 08:31:13 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 1/2] dt-bindings: iio: light: bh1750: Add reset-gpios
- property
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Tomasz Duszynski <tduszyns@gmail.com>,
- Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-References: <20250324135920.6802-1-sergio@pereznus.es>
- <20250328094904.06ce0c96@jic23-huawei>
-Content-Language: es-ES, en-US, ca
-From: =?UTF-8?Q?Sergio_P=C3=A9rez?= <sergio@pereznus.es>
-In-Reply-To: <20250328094904.06ce0c96@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-GUID: Cu-FzO0OvO7mrghDlTHVXQu5Uu2xAf_U
-X-Proofpoint-ORIG-GUID: Cu-FzO0OvO7mrghDlTHVXQu5Uu2xAf_U
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-03-28_05,2025-03-27_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 clxscore=1030 mlxscore=0
- bulkscore=0 suspectscore=0 spamscore=0 phishscore=0 malwarescore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2503280074
+References: <20250313165049.48305-1-l.rubusch@gmail.com> <20250313165049.48305-5-l.rubusch@gmail.com>
+ <Z9ctSODRTxI53jAY@surfacebook.localdomain> <20250317105540.4b4a586f@jic23-huawei>
+ <CAHp75Vc=c=0yhtaKuiE4mZTTzQdrPywt89E7A1GuHha9=V=GUQ@mail.gmail.com>
+ <CAFXKEHacRWoGz59FYJJyYjOsg5CBTAFYPdwobvmF4jUqZJJAqw@mail.gmail.com> <CAHp75VeNXZB_sbrvLAdo-KunNeq2WwPVpA6AsF7t2P1TiBLB5w@mail.gmail.com>
+In-Reply-To: <CAHp75VeNXZB_sbrvLAdo-KunNeq2WwPVpA6AsF7t2P1TiBLB5w@mail.gmail.com>
+From: Lothar Rubusch <l.rubusch@gmail.com>
+Date: Fri, 28 Mar 2025 16:30:37 +0100
+X-Gm-Features: AQ5f1JqoKbADJZ3Ri2LYCfLFxCDTqU_d6R-Yia0wpFersMD6wGhcpUV3R8wsvCA
+Message-ID: <CAFXKEHbyc5t=v6TiX0vZNgZtJCG9d8-KSDv64UzmtyZU6BnZmA@mail.gmail.com>
+Subject: Re: [PATCH v4 04/14] iio: accel: adxl345: introduce
+ adxl345_push_event function
+To: Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: Jonathan Cameron <jic23@kernel.org>, lars@metafoo.de, Michael.Hennerich@analog.com, 
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, eraretuya@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+Hello Andy & IIO ML
+
+On Wed, Mar 26, 2025 at 10:33=E2=80=AFAM Andy Shevchenko
+<andy.shevchenko@gmail.com> wrote:
+>
+> On Tue, Mar 18, 2025 at 11:45=E2=80=AFAM Lothar Rubusch <l.rubusch@gmail.=
+com> wrote:
+> > On Mon, Mar 17, 2025 at 4:52=E2=80=AFPM Andy Shevchenko
+> > <andy.shevchenko@gmail.com> wrote:
+> > > On Mon, Mar 17, 2025 at 12:56=E2=80=AFPM Jonathan Cameron <jic23@kern=
+el.org> wrote:
+> > > > On Sun, 16 Mar 2025 21:58:00 +0200
+> > > > Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+> > > > > Thu, Mar 13, 2025 at 04:50:39PM +0000, Lothar Rubusch kirjoitti:
+>
+> ...
+>
+> > > > > > +   int ret =3D -ENOENT;
+> > >
+> > > Also note, this variable is redundant as far as I can see, just retur=
+n
+> > > the error code directly.
+> >
+> > The pre-initialization of ret is actually needed in the follow up
+> > patches. Anyway, I can return -ENOENT directly here.
+>
+> Just do it when it's needed, I mean that this patch can survive
+> without ret variable.
+>
+> > Evaluation of the sensor events in follow up patches then uses the
+> > ret. It is also possible that reading sensor events fails, then the
+> > error is returned. It is possible, that no sensor event happened, then
+> > it will fallback to -ENOENT. And, of course, if sensor event happened
+> > and could be handled - no error is returned.
+> >
+> > Is this approach acceptable? Say, if I'd describe it better in the
+> > commit comment? Could you think of a better approach here? I think
+> > returning 'samples' here does not make fully sense, though. First,
+> > 'samples' is not be used outside the called function. Second, I have
+> > to distinguish a case "no event handled" - This covers then all
+> > remaining events like e.g. OVERRUN, DATA READY,... which still need to
+> > have status registers reset, but won't be pushed - currently this is
+> > coveredy by the 'return -ENOENT;' fallback. Third, I need to be able
+> > to return error codes.
+>
+> But does the 'samples' contain an error code? Perhaps you should just
+> make it do so...
+
+I'd like to direct you to v5 of the patches. I'm returning 0 now for handle=
+d
+interrupt and/or read FIFO elements, or a negative error code in case of er=
+ror.
+I guess somehow I could not see the problem initially. Nevertheless, when
+preparing v5 it became clear. I did a small adjustement and hope v5 address=
+es
+the issue in a better way.
+
+Thank you, Andy, for pointing this out to me. So, no direct answers here,
+hope it's ok.
+
+Best,
+L
 
 
-El 28/03/2025 a las 10:49, Jonathan Cameron escribió:
-> On Mon, 24 Mar 2025 14:59:19 +0100
-> Sergio Perez <sergio@pereznus.es> wrote:
 >
->> Some BH1750 sensors require a hardware reset via GPIO before they can
->> be properly detected on the I2C bus. Add a new reset-gpios property
->> to the binding to support this functionality.
->>
->> The reset-gpios property allows specifying a GPIO that will be toggled
->> during driver initialization to reset the sensor.
->>
->> Signed-off-by: Sergio Perez <sergio@pereznus.es>
->> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> Series applied to the testing branch of iio.git. I'll rebase that
-> on rc1 once available and push out as my togreg branch.
+> > > +   if (FIELD_GET(ADXL345_INT_WATERMARK, int_stat)) {
+> > > > > > +           samples =3D adxl345_get_samples(st);
+> > > > > > +           if (samples < 0)
+> > > > >
+> > > > > > +                   return -EINVAL;
+> > > > >
+> > > > > In the original code it makes no difference, but if you are going=
+ to share
+> > > > > this, I would expect to see
+> > > > >
+> > > > >                       return samples;
+> > > > >
+> > > > > here. Why the error code is shadowed? If it's trully needed, it h=
+as to be
+> > > > > explained in the comment.
+> >
+> > As said above, 'samples' is just internally used inside this function.
+> > Basic question here also,
+> > since intuitively you'd expect it rather returning a samples number -
+> > should I rename the function
+> > to make it clearer?
 >
-> Thanks,
+> Perhaps renaming helps, but still, I don't see how a negative return
+> value can fit here. I would expect a negative to be a meaningful Linux
+> error code.
 >
-> Jonathan
-Thank you very much, I remain attentive in case anything needs to be done.
->> ---
->> Revision history:
->> v5 => v6:
->>   - Fixed include placement as commented by Krzysztof Kozlowski
->> v4 => v5:
->>   - Update description to reflect "active low" on reset signal as indicated by Krzysztof Kozlowski
->>   - Update description to clarify what pin of sensor is used to do reset (DVI) as mentioned by Krzysztof Kozlowski
->>   - Edit example to be coherent with "active low" as informed by Krzysztof Kozlowski
->>   - Added necessary include on example
->> v3 => v4:
->>   - No changes
->> v2 => v3:
->>   - Split in two patches: dtbinding and code
->>   - Ensure list off mantainers following instructions by Krzysztof Kozlowski
->>   - Delete redundant details on description as suggested by Jonathan Cameron
->>   - Added related example to existing one as suggested by Jonathan Cameron
->> v1 => v2:
->>   - Ensure check tests as commented by Rob Herring
->>   - Fixes some whitespaces and end lines
->> ---
->>   Documentation/devicetree/bindings/iio/light/bh1750.yaml | 6 ++++++
->>   1 file changed, 6 insertions(+)
->>
->> diff --git a/Documentation/devicetree/bindings/iio/light/bh1750.yaml b/Documentation/devicetree/bindings/iio/light/bh1750.yaml
->> index 1a88b3c253d5..9df81c271411 100644
->> --- a/Documentation/devicetree/bindings/iio/light/bh1750.yaml
->> +++ b/Documentation/devicetree/bindings/iio/light/bh1750.yaml
->> @@ -24,6 +24,10 @@ properties:
->>     reg:
->>       maxItems: 1
->>   
->> +  reset-gpios:
->> +    description: GPIO connected to the DVI reset pin (active low)
->> +    maxItems: 1
->> +
->>   required:
->>     - compatible
->>     - reg
->> @@ -32,6 +36,7 @@ additionalProperties: false
->>   
->>   examples:
->>     - |
->> +    #include <dt-bindings/gpio/gpio.h>
->>       i2c {
->>         #address-cells = <1>;
->>         #size-cells = <0>;
->> @@ -39,6 +44,7 @@ examples:
->>         light-sensor@23 {
->>           compatible = "rohm,bh1750";
->>           reg = <0x23>;
->> +        reset-gpios = <&gpio2 17 GPIO_ACTIVE_LOW>;
->>         };
->>       };
->>   
+> --
+> With Best Regards,
+> Andy Shevchenko
 

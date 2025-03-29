@@ -1,147 +1,133 @@
-Return-Path: <linux-iio+bounces-17324-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17325-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49CE4A75695
-	for <lists+linux-iio@lfdr.de>; Sat, 29 Mar 2025 15:22:21 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F496A756C2
+	for <lists+linux-iio@lfdr.de>; Sat, 29 Mar 2025 15:39:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E06C18907A6
-	for <lists+linux-iio@lfdr.de>; Sat, 29 Mar 2025 14:22:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 077DA16F79F
+	for <lists+linux-iio@lfdr.de>; Sat, 29 Mar 2025 14:39:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E8E51CFEC3;
-	Sat, 29 Mar 2025 14:22:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5C201C5485;
+	Sat, 29 Mar 2025 14:39:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Oqku1uwJ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Sn9Lxj5m"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97279322E;
-	Sat, 29 Mar 2025 14:22:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38577179A7
+	for <linux-iio@vger.kernel.org>; Sat, 29 Mar 2025 14:39:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743258136; cv=none; b=DOfhDq3kN78Ek8GiFI1sOMTuGtI2dzRteg2bDD1gaNSFYixTKpV8M3G1BERu2VwE183DCQpYNfQx0z422OvAuRPnbaRatp9XCKf2KaiPyBCxd87JnzQw75Ot5eRO72TiwSd05fk3EPbQPC+Vb7fUkVKuvn16Ynktv0IzbCv97IA=
+	t=1743259185; cv=none; b=ACt+/3WmWaFf2sQq1hRE44+jcadOv1KBxrh7upUPDZzi0PrahtudksDdG5bPbapuwV97zbB5z+zsG6DQFQbSax17xMErwhVsr2bWbfdDQLmp5dKBdm3sIBJXDeLp7/tl9DjtzzyG0MvMzZ5Lf7yNC/kug3KIuKdoNppcpH2oGJo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743258136; c=relaxed/simple;
-	bh=W5zXdE0gSDbdo+ZO1IehbQPjJEje+9os6N/+p39ckoc=;
+	s=arc-20240116; t=1743259185; c=relaxed/simple;
+	bh=Axar7b3Rz0YLILb5YtfmvtkY2bqJ7T4r/LV3vDrlwek=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=A//RQrSG1Crs4ATSxw0d1sKOzbO8IWYfJV646n8VLKXgUHmVKkHt/sJO76QNRxckCmGfhmfakIBHLag+IqzpXGPAHbtGQXL3S1xNw0IA/bc0VoTiaeT3qdsfXcAkkROXRi6Nj6udz0ZMIlHJfpG1ouYLjCr2NPeV4RCGQbrsyrE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Oqku1uwJ; arc=none smtp.client-ip=209.85.216.46
+	 Content-Type:Content-Disposition:In-Reply-To; b=iXL+IK0Qv3AqQdjInFUOHSa0YDLsHBbahZ72Aji8KIGeD0zMEw009RQTF80eEdcuH2s8aCAgXPf4ohKf+0kv0uIAi3Fdiv8XAytIgzN8CG19QXv0jyu4Xg6yE4060yECHG22Tl4tn/3OlUvz0NyLRUMux8Kd2nFgfiqJOlOle28=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Sn9Lxj5m; arc=none smtp.client-ip=209.85.214.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-301a4d5156aso5016576a91.1;
-        Sat, 29 Mar 2025 07:22:14 -0700 (PDT)
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-227914acd20so65372615ad.1
+        for <linux-iio@vger.kernel.org>; Sat, 29 Mar 2025 07:39:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743258134; x=1743862934; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1743259183; x=1743863983; darn=vger.kernel.org;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=ea4oCi4ZzhEYMXRj+gFFnpg9NYvTMUNz38hrWaosUeo=;
-        b=Oqku1uwJ+tqI2ilAkZCnXSZ5PDz31j7XLokUMpQfy5tnmVcnIeZTF69m8Vj3Nn1IwY
-         Zmma8xYDlb1CT9eqljC6tQvdzg2Hh8pOXKqboaXQLMxw0b/i3K7xjBDkDUJBPnznT7/V
-         N74HcmVByDks5ebg+PTiPaltIEHLNAbkqJW4xouqN1Xerzpps7zRQCd2ZleGuwdL4tJQ
-         EbFqt+FHVCRQOU5jkgRa3TWDD8XXVW08YfYhFZ9vTWixoiVmrQ2kOqTauspvEAIGD8BV
-         1Yr7er93Vr2h9RMHlLErkZFTvhrQhYnIk2l5kmZSTtSSKlGSNaqssFechRghICjG/vDt
-         N1hA==
+        bh=fq7TbKwerZuvwlMmCPYdBIvJ/BBAGbBluFtVE2Q4vIk=;
+        b=Sn9Lxj5mS6/AkpBedscnmz53i4P+uSdKk9J9LWzuNh2yz4USrZcTeFeLLLl96SgdX5
+         YKLkoyCQnMiu76lVxY4Lzlid4y4BNdp9h1yQrd80TrPLHxAdxT/EXf0DHZR+gcIDR8S2
+         /Sf+Rcyyhodnf2u34RTIVBLvCgOET612nKdKFcOSIT4ODRLy2EbuC7wMJL6bUpLyBhW9
+         yKsiaC3LybOFuAyhh7daDeewYeGuZ+COWuXm0MTt5Grd7imuY/egvtHzElR5XpyzPeUo
+         m43peA35d9MTykDdqxnrcCwkrLBqetcCtnOr50hNSTzIIchlBoDmYHlK/I3I+3T178F6
+         5Bxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743258134; x=1743862934;
+        d=1e100.net; s=20230601; t=1743259183; x=1743863983;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ea4oCi4ZzhEYMXRj+gFFnpg9NYvTMUNz38hrWaosUeo=;
-        b=Y+kwwB0drGisaYOD+4HeHCVQ/kHmVv1awmiRNsWDRn26j9PaG01pSU/ixQbkHhas9b
-         jzEFSus9pkJOeYUtJjj10WVNTWu1NUJ9F8AcVzPZknpS10Zs8Zaizq9GygCfPM+tkU7F
-         bVLKC2z4hHyehQxis6Clds+pOQ+i2jiVhNllPIDxgDmmUYjGpkztPuY3Iw1PyoRcQ9iI
-         d+NNv5Iz3Swyr3M5gCsJjlQNMVxtvIRSrfgpvdvYxSnPbFIOnr3IzIYGJz+5iFvgO4oa
-         xNGrQouQFMxnFYs3ni6I4hlugTCWa6RveCTwOTHx1zmRL804EDE0RUPeTV+2ZuvNlyXn
-         NRKg==
-X-Forwarded-Encrypted: i=1; AJvYcCVWtvdy59wOlRC4Y6H+yQNCzKW97LX0K64fsLlrMjqsEY+OcJVGbGhRFC7p9v8wcwkCYgxrLbeN9IAJmeGq@vger.kernel.org, AJvYcCX0g4xxI+tl667A5wAxMWxX2M+ryHcAh26PlK0o+1+3LQr4hBvHHjB6P5TfyM4fUS1z8f1edrV+NKQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyMEsnvwtbPTEq7PaljXJ2ky53tYxm9ceYIffjqOTq7xd6htBeu
-	sOTL5bitxQl2+XaMpb3LZAKsrN2X07pEDprUklKB6Pal1dLgVKGMVdLFB3ea
-X-Gm-Gg: ASbGncvpToxwVFsmayrquq/EL7CxeLlALlDo6P9CjWOoErVRyb4iG0eAf7DzjTzeQPe
-	qt5YqBvGwGKgj3cTta2nj53zGcNY/kSS+QA3H3vOQFyP7+I+0wKQKV2uUl5LYbMkeMXRLjvBqnj
-	9yghUJd1HEc64Vqrpudehw64Ae5E9LOWN24I/5xS84mthv6UXUhx2gNFoRY3o2jbEwMmEMJ+BSi
-	DH3KkIOi0Brl2YWEliDyceZjVqd16nOqeo0gHUn1JaSeoLZtCE2eaSBUnqm0y1GP32Y1zkROQMC
-	JlkRL6+wO+E7BfjzobGzN70UbRXToo+xaWpCldNHoeKcvh4AMkwRZw==
-X-Google-Smtp-Source: AGHT+IGcNqsUrcUuHeUJn55qlKvxmXVIIhmFGZGGh4XAsazGs1VCjfeK5+AAkcRyEIw9NxzbLlLU7A==
-X-Received: by 2002:a05:6a20:9f07:b0:1f5:9cb2:28a2 with SMTP id adf61e73a8af0-2009f644838mr4606265637.19.1743258133640;
-        Sat, 29 Mar 2025 07:22:13 -0700 (PDT)
+        bh=fq7TbKwerZuvwlMmCPYdBIvJ/BBAGbBluFtVE2Q4vIk=;
+        b=jRvVtu1P+gppCVfwiYZPh+lbJyfofHtMj5gbmf/KYLtJ+dPMCvFjg4545A+b4Fyoga
+         EKW7V0zmH094asnKIXzQ7G1RrXvj/iKLFqbnoKn4jJyHEf7x3bxEQ0fPw8bOL2ZFF2/l
+         /Cx+Z7lDI/OC8eUgu8oIjdPRG3Ci0b0cDKLpgHpxAuowQLWOBUXK26qLZOc9UKi6Cei/
+         dnFX4Myh0unSi/JhmCQ9qcqAgsEYVKD4QOcHep8i0jjynGVaadWX85Blu/CnYqjWB8El
+         O3MIUmXpDFf5KoHi04h1Vfv2MhjjCAvcLosnF8SVBpzsKtgGPSZESAIikQIcqlmcJPFU
+         nROA==
+X-Gm-Message-State: AOJu0YxsVulBETb5F6YCnfFq3Y1KumeJ94v+JwU44C2EuNf2LSffhzoo
+	w725noeRgLlODMl5XdCfYKTneTaGcgjfqcrJZwXEZ8yhxXcFSHs+
+X-Gm-Gg: ASbGnctiVTytyOns09IQSoP8F9GYwuC7BBYQ91fIp6xyVVw6qAtf2Vw7uvyxvvx2zDf
+	UZgVUuloLRTw1pjY+QIKAbDpMZkWaW91ye/UZBgavomtsmO7hkjICQCzpR77p2nk61dh6zbNb50
+	vrn5TluIifF1lBxoYFJTmxz3SeRbuXySycbFIgWS4Bj5kPYbnHPguDG6EYgmLn0LriSl2f5Q9Ok
+	PDSZNOwTl0nsFpCjl8XQnPsql5QBblYFuPzX5vHTfZcde0a9NmbUGToCin9JAKcapbbg91wi1n5
+	9sRhAtJ2mJgXCwy/uUqkqy8yX+B5rbZBY+hrqOLDjFb+3gsZroQ8MQ==
+X-Google-Smtp-Source: AGHT+IESGFMv2aeur4dHLkroxvqN277Ybm8aunJrMfwQi8LPCKFK+OMQiHYP15V3cmBMNbLYFYk7ng==
+X-Received: by 2002:a05:6a00:2d9a:b0:725:41c4:dbc7 with SMTP id d2e1a72fcca58-7397f369831mr5789463b3a.4.1743259183221;
+        Sat, 29 Mar 2025 07:39:43 -0700 (PDT)
 Received: from localhost ([2804:30c:b03:ee00:e0b8:a8b8:44aa:8d0b])
-        by smtp.gmail.com with UTF8SMTPSA id 41be03b00d2f7-af93b8ad842sm3278024a12.50.2025.03.29.07.22.12
+        by smtp.gmail.com with UTF8SMTPSA id d2e1a72fcca58-739710cce59sm3622154b3a.159.2025.03.29.07.39.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 29 Mar 2025 07:22:12 -0700 (PDT)
-Date: Sat, 29 Mar 2025 11:23:15 -0300
+        Sat, 29 Mar 2025 07:39:42 -0700 (PDT)
+Date: Sat, 29 Mar 2025 11:40:44 -0300
 From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-To: rose <i.roseoriana@gmail.com>
-Cc: marcelo.schmitt@analog.com, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, dragos.bogdan@analog.com
-Subject: Re: Guidance on GSoC 2025 and Future Involvement in IIO
-Message-ID: <Z-gCU0apzDaKu1h0@debian-BULLSEYE-live-builder-AMD64>
-References: <Z-HSqixMyrfqAtq1@epsilon>
+To: =?iso-8859-1?Q?Andr=E9_Luiz_R=2EC_da_N=F3brega?= <andreluizrodriguescastro@gmail.com>
+Cc: linux-iio@vger.kernel.org
+Subject: Re: iio: GSoC 2025: Analog Devices, Inc.'s ADE9113 proposal -
+ Community
+Message-ID: <Z-gGbKleF-stHxf6@debian-BULLSEYE-live-builder-AMD64>
+References: <CACDprpJx-eVFCX4req7fZLCGQ7=dbTYsji_j7k+WjttUTXb2mA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <Z-HSqixMyrfqAtq1@epsilon>
+In-Reply-To: <CACDprpJx-eVFCX4req7fZLCGQ7=dbTYsji_j7k+WjttUTXb2mA@mail.gmail.com>
 
-Hello Roseoriana,
+Hello André,
+
+On 03/22, André Luiz R.C da Nóbrega wrote:
+> Hello everyone,
+> 
+> I am André Luiz, a third-year student at UFPB (Federal University of
+> Paraíba, Brazil). I am pursuing my Bachelor's in Computer Science and
+> wish to participate in GSoC 2025 as part of The Linux Foundation under
+> the IIO workgroup.
 
 Glad to know about your interest in the IIO driver GSoC project.
 If you haven't already, please, have a look at the project page
 https://wiki.linuxfoundation.org/gsoc/2025-gsoc-iio-driver.
 
-On 03/25, rose wrote:
-> Hi everyone!
 > 
+> Following the proposed project from the IIO GSoC page, I would like to
+> work for the driver development for ADE9113. I am very interested in
+> the device since it's a challenging proposal and it offers a wide
+> array of learning opportunities. I have prepared a draft proposal and
+> would like to request a early feedback
 > 
-> 
-> Hope you're all doing well.I'm a CS student and has been interested in Linux kernel development,
-> 
-> While I'm still new to kernel contributions and open source in general,I'm really eager to learn and get started.
-> 
-> As a beginner, I find it a bit difficult to find good resources that could help me get comfortable with IIO or kernel
-> 
-> development. If anyone has some time, Iâ€™d really appreciate any suggestions or recommended resources that could help me.
 
-The Linux Foundation offers a free introductory course for kernel development:
-A Beginnerâ€™s Guide to Linux Kernel Development (LFD103)
-https://training.linuxfoundation.org/training/a-beginners-guide-to-linux-kernel-development-lfd103/
+In addition to general proposal writing tips, I've added a proposal template to
+IIO project page. Hope those help students elaborate consistent project proposals. 
+I'll review all proposals after they are submitted.
 
-Alternatively, I'd suggest to go through some of FLUSP's tutorials
-https://flusp.ime.usp.br/kernel/qemu-libvirt-setup/
-https://flusp.ime.usp.br/kernel/build-linux-for-arm/
-https://flusp.ime.usp.br/kernel/modules-intro/
-https://flusp.ime.usp.br/iio/iio-dummy-anatomy/
-https://flusp.ime.usp.br/iio/experiment-one-iio-dummy/
+> I'm very thrilled to fight for this unique opportunity to sharpen my
+> academic focus and professional future in the IIO workspace.
+> 
+> I'm not familiarized with IRC and IRC nicknames as of yet, so give me
+> your feedback.
+
+Usually, there is no much activity going on in IIO IRC channel so I wouldn't
+worry about IRC.
 
 > 
-> Iâ€™m also interested in participating in GSoC 2025, but after looking at past proposals and timelines  that is 
-> 
-> asking for the exact time line which i  dont  know  yet  and have no experince  in contributing  so ,  Iâ€™m not sure if
-> 
-> someone totally new to the Linux kernel would have a good chance of getting accepted. Do you think it's worth applying,
-> 
-> or should I focus on contributing first and try in the future? Any advice would be really helpful!
-> 
->  Looking forward to your thoughts.
-
-I've added a proposal template to the project's page that might help in planning
-a timeline. Though it will help you elaborate a good proposal if you have
-previous contribution experience. Anyway, both plans are valid. You may apply
-for GSoC 2025, and you may also start contributing to IIO. If you end up not
-being accepted for GSoC 2025, you may consider contributing to IIO throughout
-2025 and early 2026 to become a strong candidate for GSoC 2026. Choices are yours.
-
-> 
-> Thanks,
-> Roseoriana
+> Best regards,
+> André Luiz
 > 
 
 Regards and best of luck,

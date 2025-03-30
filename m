@@ -1,57 +1,58 @@
-Return-Path: <linux-iio+bounces-17362-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17363-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B657BA75B3F
-	for <lists+linux-iio@lfdr.de>; Sun, 30 Mar 2025 19:06:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF87AA75B4B
+	for <lists+linux-iio@lfdr.de>; Sun, 30 Mar 2025 19:08:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E3DA3188C301
-	for <lists+linux-iio@lfdr.de>; Sun, 30 Mar 2025 17:06:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 32B637A5664
+	for <lists+linux-iio@lfdr.de>; Sun, 30 Mar 2025 17:07:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 577CE1DC745;
-	Sun, 30 Mar 2025 17:04:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 099771C5F25;
+	Sun, 30 Mar 2025 17:08:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="okHXyUDp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GM+uuaso"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1289935973;
-	Sun, 30 Mar 2025 17:04:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB10635973;
+	Sun, 30 Mar 2025 17:08:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743354272; cv=none; b=q3/bmXVnOJpUrEscV1VCUnLbok1nu8mPfeOokBiW0RZGM0EOmsnTZKRTW0oK45e4uzfvxB28Ojo6KH1cv3xhIgO13xyIP6UaxgGuDRS5psF9YkxcO+QHivBndCnuCsPZH0h2b8Yj7fdR245Jb8tg8GatMNeUxs7Ee8M+8tgdNjw=
+	t=1743354529; cv=none; b=rxIu/FybtQIvp9XON4ZjKsBif58cTqR3J/6VOYQbMt3oujc1cucVNHpQF4BUMmiRnvoaJ5qg6ULW5uEblX1ktfCKSr0c5dWdj8YbtC0VvHH5Hh3N5k7799pjTxDY5OcVgUYwX+XIroK/7C8R0dh/R8BI1Os9A57AaQ/zjvoDUkA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743354272; c=relaxed/simple;
-	bh=43r6bjUcx0YTEMqsvYoJzkSo/VOX3GnZ0DuinvEwGuQ=;
+	s=arc-20240116; t=1743354529; c=relaxed/simple;
+	bh=3Xo51OAIBEGXV8OSmP6fgErtliftIacrPEMxpo37e+g=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oDtWRRK1AZGXd3UbSMAZl9IwUf+RlTl/N5+SXMxAuZEhhw4YijTN+e3E8ejhmN9Ymopv9mU2wRLqETqq8NNdJv/qtiE9Adw79g31fDA3AWM7P8SMs5cOXwTf7fZryF0TE6BsCs/imNfLxUxZ5mlBihmJoX0Ol8zvYlKswcOli3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=okHXyUDp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFAC0C4CEDD;
-	Sun, 30 Mar 2025 17:04:28 +0000 (UTC)
+	 MIME-Version:Content-Type; b=EdRie99aI3AyqCFYsH+4Fg7q3RTvx/4Wik/TvNxOpP45a4wxm78ulWuCifvk/Cv/ZkOXcSuOpAdNd7aZIFA3bGezR27hM8BzSvZtZ9IS/lF7xv7MkvtuRBvMFRh8A2NoD58pF0Ss24U3rmnn6Z51gqKBROIIchqLwomYRahgdgk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GM+uuaso; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABECCC4CEDD;
+	Sun, 30 Mar 2025 17:08:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743354271;
-	bh=43r6bjUcx0YTEMqsvYoJzkSo/VOX3GnZ0DuinvEwGuQ=;
+	s=k20201202; t=1743354529;
+	bh=3Xo51OAIBEGXV8OSmP6fgErtliftIacrPEMxpo37e+g=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=okHXyUDpmKsRWgFeB3wV5Bc+7lpg19jdh3jDfuviISvYSDfbh3c0xza/5dht57nPd
-	 LNPILV24e+ZTsF+mduCuu8NMzuyN3TOvMEDEX7PLBA9OZTqC3CudIY8jZuUCYm5LBP
-	 1MoJfnSe51JAJ4iC4DCawQpMoROzvGXIOJQ0OvrOq0gNCL9AQ9X5Tcdsuw9t6TfAOU
-	 a0f627OJN0qFHQBZ2gkZQYozL61p1EYaUUmGi5NvCuBf7zt0JwGm7vwensW4GaBZDC
-	 IhzWGq6+cXo4Cw3WrbX3I/FRUmFoURB9gO5vpOXPhnC8cMya6vX9IhDrPHW3SEuIwp
-	 XoBSOzEKcXIjg==
-Date: Sun, 30 Mar 2025 18:04:24 +0100
+	b=GM+uuasoAe85juqAo/HCycflDjXi3t74yL39JeDIFurDUFJ0W9k7xcKApREBB0Yqb
+	 kRvTktpH3/NCYl35AuzLdoJ0rgSNJ7L7TmwwXazlyvt3Vw8gDx8W200a3AW20S9bw9
+	 64yWs98aU7jYUv9uCZZYJ8etC2Mz6mcCI056Sc3NYOLUTmjJOzkgNQlWI1wPDE+Lqz
+	 aT/nKN+2cZHed/zauX7uMVQLKIZeUdSGTodQ6Nlh0Kib7HXqUNyb6gOy4Hnxi5e1Rc
+	 Aa/y6ifgyZxrp2+fl9lVwFBQpAFQiUQu1dpraF1YFOfo2TP76U6YnVNcveU7Bsyq9E
+	 67J/NEF7u9qzw==
+Date: Sun, 30 Mar 2025 18:08:42 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: David Lechner <dlechner@baylibre.com>
-Cc: linux-iio@vger.kernel.org, Michael Hennerich
- <Michael.Hennerich@analog.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
- Angelo Dureghello <adureghello@baylibre.com>, Jonathan Cameron
- <Jonathan.Cameron@huawei.com>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: adc: ad7380: disable offload before using SPI bus
-Message-ID: <20250330180424.0949ebb6@jic23-huawei>
-In-Reply-To: <20250320-iio-adc-ad7380-fix-spi-offload-buffer-predisable-v1-1-6912ac8c0ae0@baylibre.com>
-References: <20250320-iio-adc-ad7380-fix-spi-offload-buffer-predisable-v1-1-6912ac8c0ae0@baylibre.com>
+To: Jorge Marques <jorge.marques@analog.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, <dlechner@baylibre.com>,
+ <Michael.Hennerich@analog.com>, <linux-iio@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 1/2] Documentation: ABI: add events sampling frequency
+ in sysfs-bus-iio
+Message-ID: <20250330180842.0e0bbc5c@jic23-huawei>
+In-Reply-To: <20250321-abi-oversampling-events-frequency-v1-1-794c1ab2f079@analog.com>
+References: <20250321-abi-oversampling-events-frequency-v1-0-794c1ab2f079@analog.com>
+	<20250321-abi-oversampling-events-frequency-v1-1-794c1ab2f079@analog.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -62,63 +63,36 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 20 Mar 2025 11:21:52 -0500
-David Lechner <dlechner@baylibre.com> wrote:
+On Fri, 21 Mar 2025 15:50:01 +0100
+Jorge Marques <jorge.marques@analog.com> wrote:
 
-> Move disabling of the SPI offload before attempting to use the SPI bus
-> to write a register in ad7380_offload_buffer_predisable().
+> Some devices have an internal clock used by the events to space the
+> conversions.
+> The max1363 introduced the option in
+> commit 168c9d95a940 ("iio:adc:max1363 move from staging.")
+> and ad799x in
+> commit ba1d79613df3 ("staging:iio:ad799x: Use event spec for threshold
+> hysteresis")
 > 
-> This caused a crash in the spi_engine_irq() interrupt handler due to
-> being in an invalid state.
-> 
-> Fixes: bbeaec81a03e ("iio: ad7380: add support for SPI offload")
-> Signed-off-by: David Lechner <dlechner@baylibre.com>
-Hmm.  I've cheated a bit and created a temporary branch called
-fixes-togreg-testing that's based on char-misc-next
-
-That will all unwind once Linus (hopefully) takes Greg's pull request
-and I'll rebase on that or rc1.
-
-Anyhow, applied this patch to that magic branch.
-
-Thanks,
-
-Jonathan
+> Signed-off-by: Jorge Marques <jorge.marques@analog.com>
+Applied.
 
 > ---
->  drivers/iio/adc/ad7380.c | 7 +++----
->  1 file changed, 3 insertions(+), 4 deletions(-)
+>  Documentation/ABI/testing/sysfs-bus-iio | 1 +
+>  1 file changed, 1 insertion(+)
 > 
-> diff --git a/drivers/iio/adc/ad7380.c b/drivers/iio/adc/ad7380.c
-> index 4fcb49fdf56639784098f0147a9faef8dcb6b0f6..a2b41980c942e4cd1575bfe4f3846e297ad5d01d 100644
-> --- a/drivers/iio/adc/ad7380.c
-> +++ b/drivers/iio/adc/ad7380.c
-> @@ -1211,6 +1211,9 @@ static int ad7380_offload_buffer_predisable(struct iio_dev *indio_dev)
->  	struct ad7380_state *st = iio_priv(indio_dev);
->  	int ret;
->  
-> +	spi_offload_trigger_disable(st->offload, st->offload_trigger);
-> +	spi_unoptimize_message(&st->offload_msg);
-> +
->  	if (st->seq) {
->  		ret = regmap_update_bits(st->regmap,
->  					 AD7380_REG_ADDR_CONFIG1,
-> @@ -1222,10 +1225,6 @@ static int ad7380_offload_buffer_predisable(struct iio_dev *indio_dev)
->  		st->seq = false;
->  	}
->  
-> -	spi_offload_trigger_disable(st->offload, st->offload_trigger);
-> -
-> -	spi_unoptimize_message(&st->offload_msg);
-> -
->  	return 0;
->  }
->  
+> diff --git a/Documentation/ABI/testing/sysfs-bus-iio b/Documentation/ABI/testing/sysfs-bus-iio
+> index 722aa989baac43f694076074b307d134867b4533..33c09c4ac60a4feec82308461643134f5ba84b66 100644
+> --- a/Documentation/ABI/testing/sysfs-bus-iio
+> +++ b/Documentation/ABI/testing/sysfs-bus-iio
+> @@ -94,6 +94,7 @@ Description:
+>  What:		/sys/bus/iio/devices/iio:deviceX/sampling_frequency
+>  What:		/sys/bus/iio/devices/iio:deviceX/in_intensity_sampling_frequency
+>  What:		/sys/bus/iio/devices/iio:deviceX/buffer/sampling_frequency
+> +What:		/sys/bus/iio/devices/iio:deviceX/events/sampling_frequency
+>  What:		/sys/bus/iio/devices/triggerX/sampling_frequency
+>  KernelVersion:	2.6.35
+>  Contact:	linux-iio@vger.kernel.org
 > 
-> ---
-> base-commit: 9f36acefb2621d980734a5bb7d74e0e24e0af166
-> change-id: 20250320-iio-adc-ad7380-fix-spi-offload-buffer-predisable-a801dcfb9c00
-> 
-> Best regards,
 
 

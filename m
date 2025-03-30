@@ -1,58 +1,58 @@
-Return-Path: <linux-iio+bounces-17363-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17364-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF87AA75B4B
-	for <lists+linux-iio@lfdr.de>; Sun, 30 Mar 2025 19:08:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2273A75B4F
+	for <lists+linux-iio@lfdr.de>; Sun, 30 Mar 2025 19:13:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 32B637A5664
-	for <lists+linux-iio@lfdr.de>; Sun, 30 Mar 2025 17:07:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 96D871696E9
+	for <lists+linux-iio@lfdr.de>; Sun, 30 Mar 2025 17:13:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 099771C5F25;
-	Sun, 30 Mar 2025 17:08:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D71CC1D88D7;
+	Sun, 30 Mar 2025 17:13:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GM+uuaso"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U39vS1EG"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB10635973;
-	Sun, 30 Mar 2025 17:08:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 927EF6F305;
+	Sun, 30 Mar 2025 17:13:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743354529; cv=none; b=rxIu/FybtQIvp9XON4ZjKsBif58cTqR3J/6VOYQbMt3oujc1cucVNHpQF4BUMmiRnvoaJ5qg6ULW5uEblX1ktfCKSr0c5dWdj8YbtC0VvHH5Hh3N5k7799pjTxDY5OcVgUYwX+XIroK/7C8R0dh/R8BI1Os9A57AaQ/zjvoDUkA=
+	t=1743354808; cv=none; b=TrPKPv3LAI8YCArUQOGi/6B0oOMH7YxY6BVAe5KuBN6FSfJzr79lyZCfJTnMoULhHLAouNReJ+A+/u6YfUz/SFXhcigAIAMBXj6ADoO+OpheRzkv66PrsaErQh2hea/kLDrV+IU+wONWsg4tHEm3+PwiXPLpekDX8Ve6QFeoRE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743354529; c=relaxed/simple;
-	bh=3Xo51OAIBEGXV8OSmP6fgErtliftIacrPEMxpo37e+g=;
+	s=arc-20240116; t=1743354808; c=relaxed/simple;
+	bh=Q0qSpPl1HH6zE++FjNqKOT6fTavVluZWa0aAD+KRXfc=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EdRie99aI3AyqCFYsH+4Fg7q3RTvx/4Wik/TvNxOpP45a4wxm78ulWuCifvk/Cv/ZkOXcSuOpAdNd7aZIFA3bGezR27hM8BzSvZtZ9IS/lF7xv7MkvtuRBvMFRh8A2NoD58pF0Ss24U3rmnn6Z51gqKBROIIchqLwomYRahgdgk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GM+uuaso; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABECCC4CEDD;
-	Sun, 30 Mar 2025 17:08:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=NfwH832TvroeClqwri63aQNuk+l8hnTr6S99oecXj3RlGfRtNvhB8H7c/ogc/Vi9gkUWu4GJ9PdLozne5QqjgbNXUesjABpqh26DG0MFLwdL0rYhJkMO34u4ya1DqcWM0fMuj/lSHVGruHNDpFaOF0UITsYMjUVEQXnCwaQOxDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U39vS1EG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAF9EC4CEDD;
+	Sun, 30 Mar 2025 17:13:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743354529;
-	bh=3Xo51OAIBEGXV8OSmP6fgErtliftIacrPEMxpo37e+g=;
+	s=k20201202; t=1743354808;
+	bh=Q0qSpPl1HH6zE++FjNqKOT6fTavVluZWa0aAD+KRXfc=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=GM+uuasoAe85juqAo/HCycflDjXi3t74yL39JeDIFurDUFJ0W9k7xcKApREBB0Yqb
-	 kRvTktpH3/NCYl35AuzLdoJ0rgSNJ7L7TmwwXazlyvt3Vw8gDx8W200a3AW20S9bw9
-	 64yWs98aU7jYUv9uCZZYJ8etC2Mz6mcCI056Sc3NYOLUTmjJOzkgNQlWI1wPDE+Lqz
-	 aT/nKN+2cZHed/zauX7uMVQLKIZeUdSGTodQ6Nlh0Kib7HXqUNyb6gOy4Hnxi5e1Rc
-	 Aa/y6ifgyZxrp2+fl9lVwFBQpAFQiUQu1dpraF1YFOfo2TP76U6YnVNcveU7Bsyq9E
-	 67J/NEF7u9qzw==
-Date: Sun, 30 Mar 2025 18:08:42 +0100
+	b=U39vS1EGVVfM7r1h6lM8e3x4JuX5FlPcJY+L/ua4/9wy7O+lZ39KA2iAejXtoFvUY
+	 vVUUCSRjLNcxfEC56U8xeswNlSxGMLQOp9tygLvpBWsmJ8hto25OtELyTd9R5B2Bae
+	 fhCFvnZWYzsY05ytY9K+SsbCzcGToWBjmPkwvUwPd/BG3OCNQS1HmXFB38hZsbhycP
+	 JqlprtXAbG5DvVYhI16qilQ0+ABCrnjt4DhMM77Mh7Z4bk+5+iCwIflsmtioXwpcyH
+	 AzRwPYvzGT/rn5GmT1fRQknEpYyNFSBGJKPf9fv1tlnUCu/XURAUAkC9mS06NeWuBd
+	 i8LtanAcxNsRw==
+Date: Sun, 30 Mar 2025 18:13:20 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: Jorge Marques <jorge.marques@analog.com>
 Cc: Lars-Peter Clausen <lars@metafoo.de>, <dlechner@baylibre.com>,
  <Michael.Hennerich@analog.com>, <linux-iio@vger.kernel.org>,
  <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 1/2] Documentation: ABI: add events sampling frequency
- in sysfs-bus-iio
-Message-ID: <20250330180842.0e0bbc5c@jic23-huawei>
-In-Reply-To: <20250321-abi-oversampling-events-frequency-v1-1-794c1ab2f079@analog.com>
+Subject: Re: [PATCH 2/2] Documentation: ABI: add oversampling frequency in
+ sysfs-bus-iio
+Message-ID: <20250330181320.0ec4351c@jic23-huawei>
+In-Reply-To: <20250321-abi-oversampling-events-frequency-v1-2-794c1ab2f079@analog.com>
 References: <20250321-abi-oversampling-events-frequency-v1-0-794c1ab2f079@analog.com>
-	<20250321-abi-oversampling-events-frequency-v1-1-794c1ab2f079@analog.com>
+	<20250321-abi-oversampling-events-frequency-v1-2-794c1ab2f079@analog.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,36 +63,76 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 21 Mar 2025 15:50:01 +0100
+On Fri, 21 Mar 2025 15:50:02 +0100
 Jorge Marques <jorge.marques@analog.com> wrote:
 
-> Some devices have an internal clock used by the events to space the
-> conversions.
-> The max1363 introduced the option in
-> commit 168c9d95a940 ("iio:adc:max1363 move from staging.")
-> and ad799x in
-> commit ba1d79613df3 ("staging:iio:ad799x: Use event spec for threshold
-> hysteresis")
+> Some devices have an internal clock used to space out the conversion
+> trigger for the oversampling filter,
+> Consider an ADC with conversion and data ready pins topology:
 > 
-> Signed-off-by: Jorge Marques <jorge.marques@analog.com>
-Applied.
+>   Sampling trigger |       |       |       |       |
+>   ADC conversion   ++++    ++++    ++++    ++++    ++++
+>   ADC data ready      *       *       *       *       *
+> 
+> With the oversampling frequency, conversions can be evenly space between
+> the sampling edge:
 
+I'm not sure what this second example is providing.  Are you suggesting
+that if we don't provide oversampling frequency we should assume this
+pattern?  i.e. it is the default?
+
+> 
+>   Sampling trigger |       |       |       |       |
+>   ADC conversion   + + + + + + + + + + + + + + + + + + + +
+>   ADC data ready         *       *       *       *       *
+> 
+In general this patch needs to go in with the first driver using it.
+I don't think we have any such driver yet?
+
+> Signed-off-by: Jorge Marques <jorge.marques@analog.com>
 > ---
->  Documentation/ABI/testing/sysfs-bus-iio | 1 +
->  1 file changed, 1 insertion(+)
+>  Documentation/ABI/testing/sysfs-bus-iio | 17 +++++++++++++++++
+>  1 file changed, 17 insertions(+)
 > 
 > diff --git a/Documentation/ABI/testing/sysfs-bus-iio b/Documentation/ABI/testing/sysfs-bus-iio
-> index 722aa989baac43f694076074b307d134867b4533..33c09c4ac60a4feec82308461643134f5ba84b66 100644
+> index 33c09c4ac60a4feec82308461643134f5ba84b66..2317bacf6a2884691a08725d6f01d18555a96227 100644
 > --- a/Documentation/ABI/testing/sysfs-bus-iio
 > +++ b/Documentation/ABI/testing/sysfs-bus-iio
-> @@ -94,6 +94,7 @@ Description:
->  What:		/sys/bus/iio/devices/iio:deviceX/sampling_frequency
->  What:		/sys/bus/iio/devices/iio:deviceX/in_intensity_sampling_frequency
->  What:		/sys/bus/iio/devices/iio:deviceX/buffer/sampling_frequency
-> +What:		/sys/bus/iio/devices/iio:deviceX/events/sampling_frequency
->  What:		/sys/bus/iio/devices/triggerX/sampling_frequency
->  KernelVersion:	2.6.35
->  Contact:	linux-iio@vger.kernel.org
+> @@ -139,6 +139,23 @@ Contact:	linux-iio@vger.kernel.org
+>  Description:
+>  		Hardware dependent values supported by the oversampling filter.
+>  
+> +What:		/sys/bus/iio/devices/iio:deviceX/oversampling_frequency
+> +KernelVersion:	6.15
+> +Contact:	linux-iio@vger.kernel.org
+> +Description:
+> +		Some devices have internal clocks for the ADC oversampling.
+I wonder if we can hint at your diagram above?
+Maybe
+		Some devices have internal clocks for the ADC oversampling allowing
+		the over samples to be bunched up, rather than evenly spread over the
+		period set by the sampling frequency.
+
+> +		Sets the resulting sampling frequency to trigger a conversion
+> +		used by the oversampling filter.
+> +		Can be used to evenly space conversion between the sampling edge
+> +		on some devices.
+I'd skip this last line, or maybe say something like:
+
+		If not provided, the default assumption is that the oversamples
+		are evenly spread over the period of the sample.
+
+> +
+> +What:		/sys/bus/iio/devices/iio:deviceX/oversampling_frequency_available
+> +KernelVersion:	6.15
+> +Contact:	linux-iio@vger.kernel.org
+> +Description:
+> +		Hardware dependent values supported by the oversampling
+> +		frequency.
+> +
+>  What:		/sys/bus/iio/devices/iio:deviceX/in_voltageY_raw
+>  What:		/sys/bus/iio/devices/iio:deviceX/in_voltageY_supply_raw
+>  What:		/sys/bus/iio/devices/iio:deviceX/in_voltageY_i_raw
 > 
 
 

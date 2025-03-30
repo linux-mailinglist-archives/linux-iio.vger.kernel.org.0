@@ -1,231 +1,522 @@
-Return-Path: <linux-iio+bounces-17350-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17351-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C874A75AB5
-	for <lists+linux-iio@lfdr.de>; Sun, 30 Mar 2025 17:43:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9905DA75AC2
+	for <lists+linux-iio@lfdr.de>; Sun, 30 Mar 2025 18:01:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 131F918854F3
-	for <lists+linux-iio@lfdr.de>; Sun, 30 Mar 2025 15:44:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A193167C9D
+	for <lists+linux-iio@lfdr.de>; Sun, 30 Mar 2025 16:01:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B75CD1D6DBF;
-	Sun, 30 Mar 2025 15:43:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D46AD1CEADB;
+	Sun, 30 Mar 2025 16:01:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KKxyF+ty"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gsuFzpB9"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 134301CCEE0;
-	Sun, 30 Mar 2025 15:43:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C9B82F24;
+	Sun, 30 Mar 2025 16:01:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743349431; cv=none; b=jZNbxQT9YxvNPDwZ8XSQ2HII6jzeW5bTNqaoBtzQgv3vyHt6G9/z5P0Ts7q+1CwSE7gLbH09st1p14mKKbT0NVfWDzpB6yU2Rql6ceCAwi3foee7FYU/6GeDTG+qfJ8gx0ej7RmbSnryP0rm2y/1YFgAvJtejrFV73VoOigkS1g=
+	t=1743350485; cv=none; b=bTNtIt4hH+9VM0Li0UZ5oLRUmnGDWzYqq8iaxVvMg0xi9adMutn6H+3AdyotfWAmp7J3oZo1J1vGUGtpu1XJQqIXC127KTD4jpip0Gr05KnnCW72hVZEIqRUUn8bE0yva/8IjvSzIwGsdVQAIYrcGOVbe0hv65WnjhZYP8k26V8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743349431; c=relaxed/simple;
-	bh=DY/QoIgUcxlYWKWErAMultP4tK424psP9SLBssFPk1I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=n81+D6VN9MG02S2gtpsYYNLM6jG4xajvCHml0DTZbzrSovZibewiRzPZFTi1GmILI31+YiqbxPjnqE4RIn/ULYhafQKgJd4YoAg0kQYeePTNAI8jIrPxx3aa3W8E2+Ue4jbh8iaqfzRTdiZiI3KNiG+U4kNuxNuyR5dnjVLxj8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KKxyF+ty; arc=none smtp.client-ip=209.85.216.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-3035858c687so5032996a91.2;
-        Sun, 30 Mar 2025 08:43:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743349429; x=1743954229; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=uYhteagEyzg+N5CaIO1iHsEXBTHsWVMkEKuAyOQorjA=;
-        b=KKxyF+ty8voDiCAIANhraEC1/8WqY9g2wqSpsG4SJfBmW4/NzPbeEykaHF0fLJ5lTs
-         QCow8IiLVlbYVm6D/WancDXuXsSbq1rPOt2ggRXZnJBpvN9AuB3OvW2iLFcBWBVOSkMp
-         2JD6WwnTmxireofohz+Akh92OHcju73hbQ3aKjZZ7W1q6Hna6N7xUWcVjHIXjrIs/Twy
-         aCpv9GORzqFdtQURwtQ/D/8keX9I+tEF4iBvN2xHTTMiFRYFXqu15UO8XQQv82JmPGIA
-         aWaM1Ek1V+jalf2GmAJMkbKLbienJuha716h5kFiLMoGxyj0wHoLPsriVyvqO2fyOLtx
-         6rQg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743349429; x=1743954229;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uYhteagEyzg+N5CaIO1iHsEXBTHsWVMkEKuAyOQorjA=;
-        b=b71FEOmFyy3eSclrXQykWKppqs7psWrtFhYcUxwCEvkJE9epKFjF6iB9kf+mXuD4Sn
-         0UZ0JgwBl0QhsCuDb3qDMT7eUw0IazinsU8IocmNPZZWzkomUWYC4simYFwE1bJ9WGwk
-         k1D7zKsuydT398+lV3TnMowrhC8cZOc1S6W6DAQa1lUVQViDfE1gtGMyteNfN++LZd9m
-         +Zvy9Aai8G5/s3B3YihGDOjnESQnp2rnfm0T1LDnuOspDojIaizNBVAf6VGEBaZR+A81
-         CGPF7h+/swAEJVcKS1OYpJ5LrtfiyP0UemqjgXvpUXlwmJ5hlSxupR42hbCnDgY0K8Ky
-         ef8g==
-X-Forwarded-Encrypted: i=1; AJvYcCWTl4GGHnBZ30Srl17Niif4b7n2H8Iu1u00MDFXWZ9lkDArP0PhAi2//+kxQ5P9l5EcXgykO7BFnSSBsUA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxYBQC/WUtawmi8ofXILVH9SlyqDHv4I4Cwriangruz6u5PwEfC
-	3d0agHpbIjyJmYFqt/9mrcViMGtaBvqb+ZKl8hT+dSEAf2yfoZe2yeg83v6k
-X-Gm-Gg: ASbGncsBdDMHb9j3SwiyOFRHb6c2ZryI6Q0Xe5FJ9cM5C99jnX85rcgtrJg0maSJzZe
-	vLRpAk+qZWzIsC+Gcp6zKt1nvDKpDhmNrYYRLOfUPmVd7Ad1hNNCfkBJCFFrRm0jBszE1zkfyGl
-	oe5tkrBXefkCiokuCYyp6Wa/Lx+UfyS6PC44Tc/MRlyuYgWo0lqc8Zb29rmla88ba8Nqub2RAEj
-	6Qq5A6KixSDyvYI5fY3aK0a25u4vVER+MkxfEmXIO4RUIqA+ahPLBJ0iiM2LlOH73p3jIMbUbuT
-	ipuqwgrzDurYvdjlvh3++YQE8tkOmkZgh3uSrPRUBZCRKTRyoNshXL1TI6s93fXC
-X-Google-Smtp-Source: AGHT+IFQ1NR4OoxulZ7bvgn4OOzRV3N3uO6d2kuqzhU72/7pKS2qxDZ/gPmXAxdv5zgchB26Xkyk0A==
-X-Received: by 2002:a17:90b:2e88:b0:2fa:228d:5b03 with SMTP id 98e67ed59e1d1-305320afbbfmr9008735a91.19.1743349428908;
-        Sun, 30 Mar 2025 08:43:48 -0700 (PDT)
-Received: from localhost ([2804:30c:b03:ee00:e0b8:a8b8:44aa:8d0b])
-        by smtp.gmail.com with UTF8SMTPSA id 98e67ed59e1d1-30516d62964sm5567734a91.26.2025.03.30.08.43.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 30 Mar 2025 08:43:47 -0700 (PDT)
-Date: Sun, 30 Mar 2025 12:44:50 -0300
-From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-To: Siddharth Menon <simeddon@gmail.com>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-staging@lists.linux.dev, gregkh@linuxfoundation.org,
-	jic23@kernel.org, Michael.Hennerich@analog.com, lars@metafoo.de
-Subject: Re: [PATCH v5] iio: frequency: ad9832: Use FIELD_PREP macro to set
- bit fields
-Message-ID: <Z-lm8l1ILFuJE5YS@debian-BULLSEYE-live-builder-AMD64>
-References: <20250330135402.105418-1-simeddon@gmail.com>
+	s=arc-20240116; t=1743350485; c=relaxed/simple;
+	bh=PYlZ9mGpPSmaJoD5evON9fcMqA/5+b+72IIFzv4frEI=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=HWietQZ0cvNDecFQBjxAfXLo8okpIgoqr3lPa1rJsH1thNNP5dnqRVo+kKfPC6/yZVgoFGE7SF8xwQy0VRxTvVPBmis8y64WKhv8+kTdyqTfSm7/7r1RiLTWdEyMK40jqBe8EcPTzQ6ft6W2zM045xwjKupLmmsXSK5O9sr/rAU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gsuFzpB9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94F3CC4CEDD;
+	Sun, 30 Mar 2025 16:01:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1743350485;
+	bh=PYlZ9mGpPSmaJoD5evON9fcMqA/5+b+72IIFzv4frEI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=gsuFzpB9M0MhpmtUBMSBDlm960UpunzQS+HSVlg1Z9Jpyh4UVu+0mqysUhBEPRza2
+	 zyI/FqVArr4hXS68Ldd8ujk3Jqwx6xA3R3Njj/qAuwVdYZKGAMCGO00jIj8jjBevyj
+	 omxX8LJwACeSTyExnVNHP/qEBWqR4jFvGNAgd/YDW466k/AyD0v6dcDkFD8hI8gp4P
+	 +XJfqYbEl+uln85aHGisiPwLuFwF4Y/ypr2qpS5oxatth2vMUsmKq/GW79nF9PKQzr
+	 Hv4dxHxC68/GiS3m5t9gaC3CJ1TDMQJDoBT9QRPtxkMN7vfFQOolcQkqKOdQESn8Zb
+	 Myj4wFa4Wt9yQ==
+Date: Sun, 30 Mar 2025 17:01:11 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Pop Ioan Daniel <pop.ioan-daniel@analog.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
+ <Michael.Hennerich@analog.com>, "Rob Herring" <robh@kernel.org>, Krzysztof
+ Kozlowski <krzk+dt@kernel.org>, "Conor Dooley" <conor+dt@kernel.org>, Nuno
+ Sa <nuno.sa@analog.com>, Olivier Moysan <olivier.moysan@foss.st.com>, David
+ Lechner <dlechner@baylibre.com>, "Javier Carrasco"
+ <javier.carrasco.cruz@gmail.com>, Andy Shevchenko
+ <andriy.shevchenko@linux.intel.com>, Guillaume Stols <gstols@baylibre.com>,
+ Trevor Gamblin <tgamblin@baylibre.com>, Dumitru Ceclan
+ <mitrutzceclan@gmail.com>, Matteo Martelli <matteomartelli3@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ Alisa-Dariana Roman <alisadariana@gmail.com>, Michael Walle
+ <michael@walle.cc>, Herve Codina <herve.codina@bootlin.com>, "Thomas
+ Bonnefille" <thomas.bonnefille@bootlin.com>, Dragos Bogdan
+ <dragos.bogdan@analog.com>, <linux-iio@vger.kernel.org>,
+ <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 5/5] iio: adc: ad7405: add ad7405 driver
+Message-ID: <20250330170111.3469040f@jic23-huawei>
+In-Reply-To: <20250324090813.2775011-6-pop.ioan-daniel@analog.com>
+References: <20250324090813.2775011-1-pop.ioan-daniel@analog.com>
+	<20250324090813.2775011-6-pop.ioan-daniel@analog.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250330135402.105418-1-simeddon@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-Hi Siddharth,
+On Mon, 24 Mar 2025 11:08:00 +0200
+Pop Ioan Daniel <pop.ioan-daniel@analog.com> wrote:
 
-Some suggestions in addition to what Jonathan has provided in his review.
+> Add support for the AD7405/ADUM770x, a high performance isolated ADC,
+> 1-channel, 16-bit with a second-order =CE=A3-=CE=94 modulator that conver=
+ts an
+> analog input signal into a high speed, single-bit data stream.
+>=20
+> Signed-off-by: Pop Ioan Daniel <pop.ioan-daniel@analog.com>
+Hi Pop,
 
-On 03/30, Siddharth Menon wrote:
-> Use bitfield and bitmask macros to clearly specify AD9832 SPI
-> command fields to make register write code more readable.
-> 
-> Suggested-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-> Signed-off-by: Siddharth Menon <simeddon@gmail.com>
+I'll probably overlap with existing reviews but maybe there will
+be other stuff.
+
+Dragos is listed as the maintainer. If that's accurate should have a
+Co-developed by and sign off.
+
 > ---
->  v1->v2:
->  - remove CMD_SHIFT and ADD_SHIFT
->  - use GENMASK
->  - store regval in an array and iterate through it
->  v2->v3:
->  - add missing header
->  - refactor code in the previously introduced loops
->  v3->v4:
->  - update commit message with a better one
->  - convert AD9832_PHASE and RES_MASK to masks
->  - cleanup a few if else blocks
->  v4->v5
->  - remove unnecessary inversion (val ? 0 : 1) used
->    with AD9832_PHASE_MASK introduced in v4
->  - use ARRAY_SIZE instead of fixed integers
->  - use reverse xmas tree order
->  - align mask macros
->  drivers/staging/iio/frequency/ad9832.c | 85 +++++++++++++-------------
->  1 file changed, 44 insertions(+), 41 deletions(-)
-> 
-> diff --git a/drivers/staging/iio/frequency/ad9832.c b/drivers/staging/iio/frequency/ad9832.c
-> index 140ee4f9c137..e74d085fb4f2 100644
-> --- a/drivers/staging/iio/frequency/ad9832.c
-> +++ b/drivers/staging/iio/frequency/ad9832.c
-> @@ -16,6 +16,9 @@
->  #include <linux/slab.h>
->  #include <linux/spi/spi.h>
->  #include <linux/sysfs.h>
-> +#include <linux/bitfield.h>
-> +#include <linux/bits.h>
-> +#include <linux/unaligned.h>
->  
->  #include <linux/iio/iio.h>
->  #include <linux/iio/sysfs.h>
-> @@ -59,17 +62,18 @@
->  #define AD9832_CMD_SLEEPRESCLR	0xC
->  
->  #define AD9832_FREQ		BIT(11)
-> -#define AD9832_PHASE(x)		(((x) & 3) << 9)
-> +#define AD9832_PHASE_MASK	GENMASK(10, 9)
->  #define AD9832_SYNC		BIT(13)
->  #define AD9832_SELSRC		BIT(12)
->  #define AD9832_SLEEP		BIT(13)
->  #define AD9832_RESET		BIT(12)
->  #define AD9832_CLR		BIT(11)
-> -#define CMD_SHIFT		12
-> -#define ADD_SHIFT		8
->  #define AD9832_FREQ_BITS	32
->  #define AD9832_PHASE_BITS	12
-> -#define RES_MASK(bits)		((1 << (bits)) - 1)
-> +#define RES_MASK(bits)		GENMASK((bits) - 1, 0)
-I also don't see RES_MASK being used by ad9832 so just drop it.
+>  drivers/iio/adc/Kconfig  |  10 ++
+>  drivers/iio/adc/Makefile |   1 +
+>  drivers/iio/adc/ad7405.c | 301 +++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 312 insertions(+)
+>  create mode 100644 drivers/iio/adc/ad7405.c
+>=20
+> diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
+> index f64b5faeb257..321a1ee7304f 100644
+> --- a/drivers/iio/adc/Kconfig
+> +++ b/drivers/iio/adc/Kconfig
+> @@ -203,6 +203,16 @@ config AD7380
+>  	  To compile this driver as a module, choose M here: the module will be
+>  	  called ad7380.
+> =20
+> +config AD7405
+> +	tristate "Analog Device AD7405 ADC Driver"
+> +	select IIO_BACKEND
+> +	help
+> +	  Say yes here to build support for Analog Devices AD7405, ADUM7701,
+> +	  ADUM7702, ADUM7703 analog to digital converters (ADC).
 
-> +#define AD9832_CMD_MSK		GENMASK(15, 12)
-> +#define AD9832_ADD_MSK		GENMASK(11, 8)
-> +#define AD9832_DAT_MSK		GENMASK(7, 0)
->  
-...
->  	case AD9832_FREQ_SYM:
-> -		if (val == 1) {
-> -			st->ctrl_fp |= AD9832_FREQ;
-> -		} else if (val == 0) {
-> +		if (val == 1 || val == 0) {
->  			st->ctrl_fp &= ~AD9832_FREQ;
-> +			st->ctrl_fp |= FIELD_PREP(AD9832_FREQ, val ? 0 : 1);
-The previous implementation would set ctrl_fp if val == 1 and unset it if val == 0.
-This patch seems to be doing the reverse (setting ctrl_fp if val == 0, and
-unsetting it if val != 0). Was the previous implementation potentially buggy?
-If not, I think we can just do
+Maybe mention the bus?
 
-		st->ctrl_fp &= ~AD9832_FREQ;
-		st->ctrl_fp |= FIELD_PREP(AD9832_FREQ, !!val);
+> +
+> +	  To compile this driver as a module, choose M here: the module will be
+> +	  called ad7405.
+> +
 
->  		} else {
->  			ret = -EINVAL;
->  			break;
->  		}
-and drop the error path. Slight change in interface but guess no problem with that.
+> diff --git a/drivers/iio/adc/ad7405.c b/drivers/iio/adc/ad7405.c
+> new file mode 100644
+> index 000000000000..40fe072369d5
+> --- /dev/null
+> +++ b/drivers/iio/adc/ad7405.c
+> @@ -0,0 +1,301 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/*
+> + * Analog Devices AD7405 driver
+> + *
+> + * Copyright 2025 Analog Devices Inc.
+> + */
+> +
+> +#include <linux/module.h>
+> +#include <linux/log2.h>
+> +#include <linux/clk.h>
+> +#include <linux/platform_device.h>
+> +#include <linux/of.h>
 
-> -		st->data = cpu_to_be16((AD9832_CMD_FPSELECT << CMD_SHIFT) |
-> +		st->data = cpu_to_be16(FIELD_PREP(AD9832_CMD_MSK, AD9832_CMD_FPSELECT) |
->  					st->ctrl_fp);
->  		ret = spi_sync(st->spi, &st->msg);
->  		break;
-> @@ -224,21 +230,18 @@ static ssize_t ad9832_write(struct device *dev, struct device_attribute *attr,
->  			break;
->  		}
->  
-> -		st->ctrl_fp &= ~AD9832_PHASE(3);
-> -		st->ctrl_fp |= AD9832_PHASE(val);
-> +		st->ctrl_fp &= ~FIELD_PREP(AD9832_PHASE_MASK, 3);
-> +		st->ctrl_fp |= FIELD_PREP(AD9832_PHASE_MASK, val);
+Use property.h if you need to access firmware properties.
+For the table,  use
+mod_devicetable.h not of.h.
 
-This seems to be a typical modify use case as exemplified in
-include/linux/bitfield.h. So,
 
-		st->ctrl_fp &= ~AD9832_PHASE_MASK;
-		st->ctrl_fp |= FIELD_PREP(AD9832_PHASE_MASK, val);
+> +#include <linux/iio/iio.h>
+> +#include <linux/iio/backend.h>
+> +#include <linux/util_macros.h>
+> +#include <linux/regulator/consumer.h>
+> +
+> +#define AD7405_DEFAULT_DEC_RATE 1024
+> +
+> +const unsigned int ad7405_dec_rates[] =3D {
+> +		4096, 2048, 1024, 512, 256, 128, 64, 32,
 
->  
-> -		st->data = cpu_to_be16((AD9832_CMD_FPSELECT << CMD_SHIFT) |
-> +		st->data = cpu_to_be16(FIELD_PREP(AD9832_CMD_MSK, AD9832_CMD_FPSELECT) |
->  					st->ctrl_fp);
->  		ret = spi_sync(st->spi, &st->msg);
->  		break;
->  	case AD9832_OUTPUT_EN:
-> -		if (val)
-> -			st->ctrl_src &= ~(AD9832_RESET | AD9832_SLEEP |
-> -					AD9832_CLR);
-> -		else
-> -			st->ctrl_src |= AD9832_RESET;
-> +		st->ctrl_src &= ~(AD9832_RESET | AD9832_SLEEP | AD9832_CLR);
-> +		st->ctrl_src |= FIELD_PREP(AD9832_RESET, val ? 0 : 1);
-Hmm, this is modifying behavior. AD9832_SLEEP and AD9832_CLR were only being
-modified if something other than 0 was written to output enable sysfs file.
-Is the patch code mode appropriate than how the driver was before?
+1 tab only is enough here.
 
->  
-> -		st->data = cpu_to_be16((AD9832_CMD_SLEEPRESCLR << CMD_SHIFT) |
-> +		st->data = cpu_to_be16(FIELD_PREP(AD9832_CMD_MSK, AD9832_CMD_SLEEPRESCLR) |
->  					st->ctrl_src);
->  		ret = spi_sync(st->spi, &st->msg);
->  		break;
+> +};
+> +
+> +struct ad7405_chip_info {
+> +	const char *name;
+> +	unsigned int num_channels;
+> +	unsigned int max_rate;
+> +	unsigned int min_rate;
+> +	struct iio_chan_spec channel[3];
+Why 3?=20
 
-Regards,
-Marcelo
+> +	const unsigned long *available_mask;
+As below - this makes little sense. Drop it.
+
+> +};
+> +
+> +struct ad7405_state {
+> +	struct iio_backend *back;
+> +	struct clk *axi_clk_gen;
+> +	/* lock to protect multiple accesses to the device registers */
+
+Why  I assume this is about read modify update sequences?=20
+If so say something more about that.  For now I can't see any
+happening. All we have is an update of the backend sampling frequency.
+
+> +	struct mutex lock;
+> +	struct regmap *regmap;
+Note used. Drop it.=20
+> +	struct iio_info iio_info;
+As noted below, not obvious what this is for.
+
+> +	const struct ad7405_chip_info *info;
+> +	unsigned int sample_frequency_tbl[ARRAY_SIZE(ad7405_dec_rates)];
+> +	unsigned int sample_frequency;
+> +	unsigned int ref_frequency;
+> +};
+> +
+> +static void ad7405_fill_samp_freq_table(struct ad7405_state *st)
+> +{
+> +	int i;
+> +
+> +	for (i =3D 0; i < ARRAY_SIZE(ad7405_dec_rates); i++)
+> +		st->sample_frequency_tbl[i] =3D DIV_ROUND_CLOSEST_ULL(st->ref_frequenc=
+y, ad7405_dec_rates[i]);
+Wrap this line.
+		st->sample_frequency_tbl[i] =3D
+			DIV_ROUND_CLOSEST_ULL(st->ref_frequency, ad7405_dec_rates[i]);
+
+> +}
+> +
+> +static int ad7405_set_sampling_rate(struct iio_dev *indio_dev,
+> +				    const struct iio_chan_spec *chan,
+> +				    unsigned int samp_rate)
+> +{
+> +	struct ad7405_state *st =3D iio_priv(indio_dev);
+> +	unsigned int dec_rate, idx;
+> +	int ret;
+> +
+> +	dec_rate =3D DIV_ROUND_CLOSEST_ULL(st->ref_frequency, samp_rate);
+> +
+> +	idx =3D find_closest_descending(dec_rate, ad7405_dec_rates,
+> +				      ARRAY_SIZE(ad7405_dec_rates));
+> +
+> +	    dec_rate =3D ad7405_dec_rates[idx];
+
+Odd indent.
+
+> +
+> +	ret =3D iio_backend_set_dec_rate(st->back, dec_rate);
+> +	if (ret)
+> +		return ret;
+> +
+> +	st->sample_frequency =3D DIV_ROUND_CLOSEST_ULL(st->ref_frequency, dec_r=
+ate);
+> +
+> +	return 0;
+> +}
+> +
+> +static int ad7405_update_scan_mode(struct iio_dev *indio_dev,
+> +				   const unsigned long *scan_mask)
+> +{
+> +	struct ad7405_state *st =3D iio_priv(indio_dev);
+> +	unsigned int c;
+> +	int ret;
+> +
+
+This is odd given you only have one channel.
+Either do the enable in probe() or in postenable callback and
+disable in predisable callback.
+
+
+> +	for (c =3D 0; c < indio_dev->num_channels; c++) {
+> +		if (test_bit(c, scan_mask))
+> +			ret =3D iio_backend_chan_enable(st->back, c);
+> +		else
+> +			ret =3D iio_backend_chan_disable(st->back, c);
+> +		if (ret)
+> +			return ret;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static int ad7405_read_raw(struct iio_dev *indio_dev,
+> +			   const struct iio_chan_spec *chan, int *val,
+> +			   int *val2, long info)
+> +{
+> +	struct ad7405_state *st =3D iio_priv(indio_dev);
+> +
+> +	switch (info) {
+> +	case IIO_CHAN_INFO_SAMP_FREQ:
+> +			*val =3D st->sample_frequency;
+> +
+> +			return IIO_VAL_INT;
+> +	default:
+> +			return -EINVAL;
+> +	}
+> +}
+> +
+> +static int ad7405_write_raw(struct iio_dev *indio_dev,
+> +			    struct iio_chan_spec const *chan, int val,
+> +			    int val2, long info)
+> +{
+> +	switch (info) {
+> +	case IIO_CHAN_INFO_SAMP_FREQ:
+> +
+> +			return ad7405_set_sampling_rate(indio_dev, chan, val);
+> +
+> +	default:
+> +			return -EINVAL;
+> +	}
+> +}
+> +
+> +static int ad7405_read_avail(struct iio_dev *indio_dev,
+> +			     struct iio_chan_spec const *chan,
+> +				 const int **vals, int *type, int *length,
+> +				 long info)
+> +{
+> +	struct ad7405_state *st =3D iio_priv(indio_dev);
+> +
+> +	switch (info) {
+> +	case IIO_CHAN_INFO_SAMP_FREQ:
+> +			*vals =3D st->sample_frequency_tbl;
+> +			*length =3D ARRAY_SIZE(st->sample_frequency_tbl);
+> +			*type =3D IIO_VAL_INT;
+> +			return IIO_AVAIL_LIST;
+> +	default:
+> +			return -EINVAL;
+> +	}
+> +}
+> +
+> +static const struct iio_info ad7405_iio_info =3D {
+> +	.read_raw =3D &ad7405_read_raw,
+> +	.write_raw =3D &ad7405_write_raw,
+> +	.read_avail =3D &ad7405_read_avail,
+> +	.update_scan_mode =3D ad7405_update_scan_mode,
+> +};
+> +
+> +#define AD7405_IIO_CHANNEL(_chan, _bits, _sign)		  \
+> +	{ .type =3D IIO_VOLTAGE,					  \
+	{
+		.type =3D IIO_VOLTAGE,					\
+etc.
+
+That is keep to normal formatting.  If you go over 80 chars for readability
+reasons that is fine.
+> +	  .info_mask_shared_by_all =3D BIT(IIO_CHAN_INFO_SAMP_FREQ), \
+> +	  .info_mask_shared_by_all_available =3D BIT(IIO_CHAN_INFO_SAMP_FREQ), \
+> +	  .indexed =3D 1,						 \
+> +	  .channel =3D _chan,					 \
+
+For now channel always 0 so just set to 0.
+Bring in the parameter only when you need it.
+
+> +	  .scan_type =3D {				\
+> +		.sign =3D _sign,				\
+> +		.realbits =3D _bits,			\
+> +		.storagebits =3D 16,			\
+> +		.shift =3D 0,				\
+
+Never any need to set shift to 0. It's the obvious default and the c spec
+ensures it is set to 0 if you leave it unspecified.
+
+> +	  },						\
+> +	}
+> +
+> +static const unsigned long ad7405_channel_masks[] =3D {
+> +		BIT(0),
+
+If there is only one channel this serves no useful purpose.
+Drop it.
+
+> +		0,
+> +};
+> +
+> +static const struct ad7405_chip_info ad7405_chip_info =3D {
+> +		.name =3D "AD7405",
+> +		.max_rate =3D 625000UL,
+> +		.min_rate =3D 4883UL,
+> +		.num_channels =3D 1,
+> +		.channel =3D {
+> +			AD7405_IIO_CHANNEL(0, 16, 'u'),
+> +		},
+> +		.available_mask =3D ad7405_channel_masks,
+> +};
+> +
+> +static const struct ad7405_chip_info adum7701_chip_info =3D {
+> +		.name =3D "ADUM7701",
+> +		.max_rate =3D 656250UL,
+> +		.min_rate =3D 5127UL,
+> +		.num_channels =3D 1,
+> +		.channel =3D {
+> +			AD7405_IIO_CHANNEL(0, 16, 'u'),
+> +		},
+> +		.available_mask =3D ad7405_channel_masks,
+> +};
+
+> +static int ad7405_probe(struct platform_device *pdev)
+> +{
+> +	const struct ad7405_chip_info *chip_info;
+> +	struct device *dev =3D &pdev->dev;
+> +	struct iio_dev *indio_dev;
+> +	struct ad7405_state *st;
+> +	int ret;
+> +
+> +	indio_dev =3D devm_iio_device_alloc(dev, sizeof(*st));
+> +	if (!indio_dev)
+> +		return -ENOMEM;
+> +
+> +	st =3D iio_priv(indio_dev);
+> +
+> +	ret =3D devm_mutex_init(dev, &st->lock);
+> +	if (ret)
+> +		return ret;
+> +
+> +	chip_info =3D &ad7405_chip_info;
+> +
+> +	platform_set_drvdata(pdev, indio_dev);
+Is this used anywhere? If not drop it.
+
+> +
+> +	st->axi_clk_gen =3D devm_clk_get(dev, NULL);
+> +	if (IS_ERR(st->axi_clk_gen))
+> +		return PTR_ERR(st->axi_clk_gen);
+> +
+> +	ret =3D clk_prepare_enable(st->axi_clk_gen);
+
+why not dev_clk_get_enabled()?
+
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret =3D devm_regulator_bulk_get_enable(dev, ARRAY_SIZE(ad7405_power_sup=
+plies),
+> +					     ad7405_power_supplies);
+> +
+> +	if (ret)
+> +		return dev_err_probe(dev, ret, "failed to get and enable supplies");
+> +
+> +	st->ref_frequency =3D clk_get_rate(st->axi_clk_gen);
+> +
+> +	ad7405_fill_samp_freq_table(st);
+> +
+> +	indio_dev->dev.parent =3D dev;
+
+Set by the IIO core for you, so no need to do it explicitly unless you want
+to modify it for a non obvious parent.
+
+
+> +	indio_dev->name =3D pdev->dev.of_node->name;
+
+First of all, don't use of_node directly. Always use the property.h accesso=
+rs.
+Secondly don't get the name from there - just hard code it so we can immedi=
+ate
+see what it is here. Given you are supporting multiple parts, and already
+have it in the chip specific structure, just get it from there.
+
+
+> +	indio_dev->modes =3D INDIO_DIRECT_MODE;
+> +
+> +	indio_dev->channels =3D chip_info->channel;
+> +	indio_dev->num_channels =3D chip_info->num_channels;
+> +
+> +	st->iio_info =3D ad7405_iio_info;
+Why is the extra copy needed? =20
+> +	indio_dev->info =3D &st->iio_info;
+> +
+> +	st->back =3D devm_iio_backend_get(dev, NULL);
+> +	if (IS_ERR(st->back))
+> +		return dev_err_probe(dev, PTR_ERR(st->back),
+> +				     "failed to get IIO backend");
+> +
+> +	ret =3D devm_iio_backend_request_buffer(dev, st->back, indio_dev);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret =3D devm_iio_backend_enable(dev, st->back);
+> +	if (ret)
+> +		return ret;
+> +
+> +	/* Reset all HDL Cores */
+
+Needs more info.  Why is that needed for this specific part but not
+for others?  I'd also expect the final one to be the devm case
+if this sequence is needed.
+
+
+> +	iio_backend_disable(st->back);
+> +	iio_backend_enable(st->back);
+> +
+> +	ret =3D ad7405_set_sampling_rate(indio_dev, &indio_dev->channels[0],
+> +				       chip_info->max_rate);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret =3D devm_iio_device_register(dev, indio_dev);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return 0;
+
+	return devm_iio...
+
+> +}
+> +
+> +/* Match table for of_platform binding */
+> +static const struct of_device_id ad7405_of_match[] =3D {
+> +	{ .compatible =3D "adi,ad7405", .data =3D &ad7405_chip_info, },
+> +	{ .compatible =3D "adi,adum7701", .data =3D &adum7701_chip_info, },
+> +	{ .compatible =3D "adi,adum7702", .data =3D &adum7701_chip_info, },
+> +	{ .compatible =3D "adi,adum7703", .data =3D &adum7701_chip_info, },
+> +	{ /* end of list */ },
+> +};
+
+Similar to below. Common to not have a blank line here given
+close association of macro and table.
+
+> +
+> +MODULE_DEVICE_TABLE(of, ad7405_of_match);
+> +
+> +static struct platform_driver ad7405_driver =3D {
+> +	.driver =3D {
+> +		.name =3D "ad7405",
+> +		.owner =3D THIS_MODULE,
+> +		.of_match_table =3D ad7405_of_match,
+> +	},
+> +	.probe =3D ad7405_probe,
+> +};
+> +
+Common practice to not have a blank line here as the association
+between the following macro and the platform_driver structure is
+very close.
+> +module_platform_driver(ad7405_driver);
+> +
+> +MODULE_AUTHOR("Dragos Bogdan <dragos.bogdan@analog.com>");
+
+As above. If this is correct then from + sign-offs above may be inapproprit=
+e.
+
+> +MODULE_DESCRIPTION("Analog Devices AD7405 driver");
+> +MODULE_LICENSE("GPL");
+> +MODULE_IMPORT_NS("IIO_BACKEND");
+
 

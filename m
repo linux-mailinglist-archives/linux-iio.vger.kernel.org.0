@@ -1,294 +1,520 @@
-Return-Path: <linux-iio+bounces-17338-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17339-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9E6BA75A40
-	for <lists+linux-iio@lfdr.de>; Sun, 30 Mar 2025 15:54:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A76FDA75A45
+	for <lists+linux-iio@lfdr.de>; Sun, 30 Mar 2025 16:04:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F119C3A9CDF
-	for <lists+linux-iio@lfdr.de>; Sun, 30 Mar 2025 13:54:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 33CFB1648C2
+	for <lists+linux-iio@lfdr.de>; Sun, 30 Mar 2025 14:04:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1A7A6DCE1;
-	Sun, 30 Mar 2025 13:54:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 214B319CD07;
+	Sun, 30 Mar 2025 14:04:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fR1PxzJV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L5ZaKBip"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E64213FE4;
-	Sun, 30 Mar 2025 13:54:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDC723FE4;
+	Sun, 30 Mar 2025 14:04:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743342854; cv=none; b=RFnAZQlUQUwGgfmD2v1m8ul0mjhghwXVToj6rgEI64zaeu8IvG1BJ0qr72Nu6aJITE8xmiA/687d8TNoTtIiVW5G8AzrDpVEsLLtepsR1IsIJ3JgKD7Ee8xGtj56MYynJBDH35lZ/SSZszEVc7UX+uHDTpnIRowUB+YUaorH0E4=
+	t=1743343458; cv=none; b=T/GLqJmymrmd0iv/w28KfY8SDQdeurFaUdFszjHq387Wa0SAGiRGaaWKVb3gzjStB963mPx6XX8Wu7Ag4DL3AiXDiDJ9im2+Nj1xMWm7ZmnvFl0eZ1EFOz2oR3PyxS78qYzFMnsAoer6DK7xr4tS9wGbjJ7XM4u2/oUZDqctpQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743342854; c=relaxed/simple;
-	bh=DXt+GXeV4mp0WRGLCUGBLPVEPVQcKyAxaH7Wq8tfIJU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lnJSZbw5K8mUuuNbSvjchS2xUis3pazrr2x7KnbipzeiZMuxW3GKo8+yPPzc84COC8hY5yawKo543wLQUZCTyjs4ZhQlWq2MAHzHi3EjT+PVyL6742KSiPGhDfQVOAJ9G793zr8ZuuZcmENxCdwxlIBtpi7FGygKdD3Q8QhoRy0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fR1PxzJV; arc=none smtp.client-ip=209.85.216.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-3014ae35534so5171061a91.0;
-        Sun, 30 Mar 2025 06:54:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743342852; x=1743947652; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=cja7WXf88weQH2Ms3egRtRNJB0hV1hLf9dov+aKpUCA=;
-        b=fR1PxzJV8c8QhuhputE3qfEwAYU0EfgKJ4Q1rn7/v2kah+PFq23ztzWMnKiScAISrJ
-         3tUGmFRgyV1anbSJHNgeEK2nEzL+1Ewuq0uWZ0gHP2TMRrObvIzIZEWSadvACO2iG/AD
-         uLop589I/syqbu0fKVgZsTC0+0xUkjNi9/e7oALEasD6yq4a2obAPKKkf9woS1NoNkND
-         yu3cFbSPcrSZnsD1Q7dABqTRkIBMzL4QiZzw2J/10RBRIQfUifEtBXmKJgsEMXtQEq2u
-         utF7Mv2V7lr/FY62uz6ASDJforZ2RZVumrNiZTrUSA3Z8mq4/C/iEkBPwhWMq5PCmM/m
-         erfQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743342852; x=1743947652;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=cja7WXf88weQH2Ms3egRtRNJB0hV1hLf9dov+aKpUCA=;
-        b=nrb5YKfKuao0tUCf7eUnQwf2b6MfArp7TuO53L9TIN5His5x8aRF3dUW1IPCHnrB+B
-         oBXlEM+o8CuSTY0xC7lj/6VbxOIsnSRKP6EpuzqUnDRajejM8BwnuLOLTZF/dvDVjQ5S
-         nXZvUcuD/Sy12qCmoFGxIvBSQv8cYuTWVDuiMKLMOV31CPIsoSWkf80NceNhEcvN9pQs
-         MTGcVtlLJDhnQXJcgaLqcySX8L3spG6sf+ErRv03jMkTJe907o9IVT7/olh1YzoFqrVi
-         BNAMjZSd+EbsXyNEhNUMqi7FelqkFpEW+dAZeK1sDuPIFxzJFUhCxEvFGm9MQ90c14U9
-         03lA==
-X-Gm-Message-State: AOJu0YxqSx+1OkiWTF3A3i/6rfng5AnrdOhiizNJYeAeExAe+AocLL1L
-	5Dm6u8S3F05hyxLH3ezOGj7PJeR5j6/XwgtZj9bWfWsxc9hI0lvKpgRRudpGX4s=
-X-Gm-Gg: ASbGncuyjYC3jXzct30KStKodzC5vxzjZm5ZzDwizepoVjWZe5ijc5RdkJkdJcExBCo
-	ZMaDtDoH5Pf0BW94V++Gzjeiw5pl0+eJKYCDhqWipf9Bhzmz+cEEEU5emYW3zov0rcUNeUNdoXI
-	ieyKekWQvkRCpjcVJAg3M/ht83mzsoNglgaNLw17DaOAbFjyiIEhkAQ/1pxOUS3xuKK2pPLOk/5
-	z6rUQ063RX0b4CL+EaDtRXi3iMMIySN8rqIgv3Wv9jy5o7sTKs7QZ1X1HJeejtVQIgZTfu68rZ4
-	dHde0ySUeh0BeaRV1a1eBS5LGcjnO30niOu73FgevBK9c1RY+7i5iVDs7nVDh51NK+Y=
-X-Google-Smtp-Source: AGHT+IGJRRD5SUgH1BoqMZGKNSNNsdWWHJiTdd51Gyk8ADVMgC2QcXtjhGAmxE4p//k5Ni8tp81dJQ==
-X-Received: by 2002:a17:90a:fc46:b0:2ff:52e1:c4b4 with SMTP id 98e67ed59e1d1-3053216eb64mr8498809a91.32.1743342851805;
-        Sun, 30 Mar 2025 06:54:11 -0700 (PDT)
-Received: from fedora.am.students.amrita.edu ([175.184.253.10])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2291f1cdfbbsm51889505ad.146.2025.03.30.06.54.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 30 Mar 2025 06:54:11 -0700 (PDT)
-From: Siddharth Menon <simeddon@gmail.com>
-To: linux-iio@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	linux-staging@lists.linux.dev,
-	gregkh@linuxfoundation.org,
-	jic23@kernel.org,
-	Michael.Hennerich@analog.com,
-	lars@metafoo.de,
-	marcelo.schmitt1@gmail.com,
-	Siddharth Menon <simeddon@gmail.com>
-Subject: [PATCH v5] iio: frequency: ad9832: Use FIELD_PREP macro to set bit fields
-Date: Sun, 30 Mar 2025 19:19:51 +0530
-Message-ID: <20250330135402.105418-1-simeddon@gmail.com>
-X-Mailer: git-send-email 2.49.0
+	s=arc-20240116; t=1743343458; c=relaxed/simple;
+	bh=dW2fWipsc15woelUWZHZ417w3TciACM4wNgZtCQfZyk=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=uzTqaicV/hu/kzlKir8JZ6k29ZQhjvahkn2JigryGPkbg/nakdMdgPEb56Uy4igLZma6muquKrD+QgaMtYs9NCvHMI2fuvhI/LmjhjwPwvQOUgE5r0F6BFYy3iwNmtNI6oPe0YbD0B26CN7AoVx03C5pwfyr/84dl3i5oLJYr4c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L5ZaKBip; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38A05C4CEDD;
+	Sun, 30 Mar 2025 14:04:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1743343456;
+	bh=dW2fWipsc15woelUWZHZ417w3TciACM4wNgZtCQfZyk=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=L5ZaKBip0v6FtzGwUGqKmhmQRUbsqvFOmDgryUfAc3TTUYGxrQfZeuS6uGDKmGYoE
+	 P/viM8het/sCzjGyATREKFU7ZXdMbtp9QbVV0KeLiZeRyXtd94T0RL3TaV6qpSi+Oq
+	 XB94xJwQCRkPugbphMGzMmMm8WGreEExJgI0Zf1t1BQdTdI4S1wLoNsbgykZtWmxnj
+	 SnTUqNYXGp7xDqm5lO/62ycK4DRH4YNAFSzoVCkm3IvlDMIrHPfUsABLnmB1tGhkqs
+	 YWl9Dc40Zpk5l5leav76jkrxD6VOtoQwrwVAnNi0l+oNBg+I+UnfKF1mhHoaJ5lUrf
+	 pbOOCwDPRF1og==
+Date: Sun, 30 Mar 2025 15:04:10 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Gyeyoung Baek <gye976@gmail.com>
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, lars@metafoo.de,
+ gustavograzs@gmail.com, javier.carrasco.cruz@gmail.com, robh@kernel.org,
+ krzk+dt@kernel.org, conor+dt@kernel.org
+Subject: Re: [PATCH 1/3] iio: chemical: add support for winsen MHZ19B CO2
+ sensor
+Message-ID: <20250330150410.23b148da@jic23-huawei>
+In-Reply-To: <20250329164905.632491-2-gye976@gmail.com>
+References: <20250329164905.632491-1-gye976@gmail.com>
+	<20250329164905.632491-2-gye976@gmail.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Use bitfield and bitmask macros to clearly specify AD9832 SPI
-command fields to make register write code more readable.
+On Sun, 30 Mar 2025 01:49:03 +0900
+Gyeyoung Baek <gye976@gmail.com> wrote:
 
-Suggested-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-Signed-off-by: Siddharth Menon <simeddon@gmail.com>
----
- v1->v2:
- - remove CMD_SHIFT and ADD_SHIFT
- - use GENMASK
- - store regval in an array and iterate through it
- v2->v3:
- - add missing header
- - refactor code in the previously introduced loops
- v3->v4:
- - update commit message with a better one
- - convert AD9832_PHASE and RES_MASK to masks
- - cleanup a few if else blocks
- v4->v5
- - remove unnecessary inversion (val ? 0 : 1) used
-   with AD9832_PHASE_MASK introduced in v4
- - use ARRAY_SIZE instead of fixed integers
- - use reverse xmas tree order
- - align mask macros
- drivers/staging/iio/frequency/ad9832.c | 85 +++++++++++++-------------
- 1 file changed, 44 insertions(+), 41 deletions(-)
+> Add support for winsen MHZ19B CO2 sensor.
+Hi,
 
-diff --git a/drivers/staging/iio/frequency/ad9832.c b/drivers/staging/iio/frequency/ad9832.c
-index 140ee4f9c137..e74d085fb4f2 100644
---- a/drivers/staging/iio/frequency/ad9832.c
-+++ b/drivers/staging/iio/frequency/ad9832.c
-@@ -16,6 +16,9 @@
- #include <linux/slab.h>
- #include <linux/spi/spi.h>
- #include <linux/sysfs.h>
-+#include <linux/bitfield.h>
-+#include <linux/bits.h>
-+#include <linux/unaligned.h>
- 
- #include <linux/iio/iio.h>
- #include <linux/iio/sysfs.h>
-@@ -59,17 +62,18 @@
- #define AD9832_CMD_SLEEPRESCLR	0xC
- 
- #define AD9832_FREQ		BIT(11)
--#define AD9832_PHASE(x)		(((x) & 3) << 9)
-+#define AD9832_PHASE_MASK	GENMASK(10, 9)
- #define AD9832_SYNC		BIT(13)
- #define AD9832_SELSRC		BIT(12)
- #define AD9832_SLEEP		BIT(13)
- #define AD9832_RESET		BIT(12)
- #define AD9832_CLR		BIT(11)
--#define CMD_SHIFT		12
--#define ADD_SHIFT		8
- #define AD9832_FREQ_BITS	32
- #define AD9832_PHASE_BITS	12
--#define RES_MASK(bits)		((1 << (bits)) - 1)
-+#define RES_MASK(bits)		GENMASK((bits) - 1, 0)
-+#define AD9832_CMD_MSK		GENMASK(15, 12)
-+#define AD9832_ADD_MSK		GENMASK(11, 8)
-+#define AD9832_DAT_MSK		GENMASK(7, 0)
- 
- /**
-  * struct ad9832_state - driver instance specific data
-@@ -131,6 +135,8 @@ static int ad9832_write_frequency(struct ad9832_state *st,
- {
- 	unsigned long clk_freq;
- 	unsigned long regval;
-+	u8 regval_bytes[4];
-+	u16 freq_cmd;
- 
- 	clk_freq = clk_get_rate(st->mclk);
- 
-@@ -138,19 +144,15 @@ static int ad9832_write_frequency(struct ad9832_state *st,
- 		return -EINVAL;
- 
- 	regval = ad9832_calc_freqreg(clk_freq, fout);
-+	put_unaligned_be32(regval, regval_bytes);
- 
--	st->freq_data[0] = cpu_to_be16((AD9832_CMD_FRE8BITSW << CMD_SHIFT) |
--					(addr << ADD_SHIFT) |
--					((regval >> 24) & 0xFF));
--	st->freq_data[1] = cpu_to_be16((AD9832_CMD_FRE16BITSW << CMD_SHIFT) |
--					((addr - 1) << ADD_SHIFT) |
--					((regval >> 16) & 0xFF));
--	st->freq_data[2] = cpu_to_be16((AD9832_CMD_FRE8BITSW << CMD_SHIFT) |
--					((addr - 2) << ADD_SHIFT) |
--					((regval >> 8) & 0xFF));
--	st->freq_data[3] = cpu_to_be16((AD9832_CMD_FRE16BITSW << CMD_SHIFT) |
--					((addr - 3) << ADD_SHIFT) |
--					((regval >> 0) & 0xFF));
-+	for (int i = 0; i < ARRAY_SIZE(regval_bytes); i++) {
-+		freq_cmd = (i % 2 == 0) ? AD9832_CMD_FRE8BITSW : AD9832_CMD_FRE16BITSW;
-+
-+		st->freq_data[i] = cpu_to_be16(FIELD_PREP(AD9832_CMD_MSK, freq_cmd) |
-+			FIELD_PREP(AD9832_ADD_MSK, addr - i) |
-+			FIELD_PREP(AD9832_DAT_MSK, regval_bytes[i]));
-+	}
- 
- 	return spi_sync(st->spi, &st->freq_msg);
- }
-@@ -158,15 +160,21 @@ static int ad9832_write_frequency(struct ad9832_state *st,
- static int ad9832_write_phase(struct ad9832_state *st,
- 			      unsigned long addr, unsigned long phase)
- {
-+	u8 phase_bytes[2];
-+	u16 phase_cmd;
-+
- 	if (phase >= BIT(AD9832_PHASE_BITS))
- 		return -EINVAL;
- 
--	st->phase_data[0] = cpu_to_be16((AD9832_CMD_PHA8BITSW << CMD_SHIFT) |
--					(addr << ADD_SHIFT) |
--					((phase >> 8) & 0xFF));
--	st->phase_data[1] = cpu_to_be16((AD9832_CMD_PHA16BITSW << CMD_SHIFT) |
--					((addr - 1) << ADD_SHIFT) |
--					(phase & 0xFF));
-+	put_unaligned_be16(phase, phase_bytes);
-+
-+	for (int i = 0; i < ARRAY_SIZE(phase_bytes); i++) {
-+		phase_cmd = (i % 2 == 0) ? AD9832_CMD_PHA8BITSW : AD9832_CMD_PHA16BITSW;
-+
-+		st->phase_data[i] = cpu_to_be16(FIELD_PREP(AD9832_CMD_MSK, phase_cmd) |
-+			FIELD_PREP(AD9832_ADD_MSK, addr - i) |
-+			FIELD_PREP(AD9832_DAT_MSK, phase_bytes[i]));
-+	}
- 
- 	return spi_sync(st->spi, &st->phase_msg);
- }
-@@ -197,24 +205,22 @@ static ssize_t ad9832_write(struct device *dev, struct device_attribute *attr,
- 		ret = ad9832_write_phase(st, this_attr->address, val);
- 		break;
- 	case AD9832_PINCTRL_EN:
--		if (val)
--			st->ctrl_ss &= ~AD9832_SELSRC;
--		else
--			st->ctrl_ss |= AD9832_SELSRC;
--		st->data = cpu_to_be16((AD9832_CMD_SYNCSELSRC << CMD_SHIFT) |
-+		st->ctrl_ss &= ~AD9832_SELSRC;
-+		st->ctrl_ss |= FIELD_PREP(AD9832_SELSRC, val ? 0 : 1);
-+
-+		st->data = cpu_to_be16(FIELD_PREP(AD9832_CMD_MSK, AD9832_CMD_SYNCSELSRC) |
- 					st->ctrl_ss);
- 		ret = spi_sync(st->spi, &st->msg);
- 		break;
- 	case AD9832_FREQ_SYM:
--		if (val == 1) {
--			st->ctrl_fp |= AD9832_FREQ;
--		} else if (val == 0) {
-+		if (val == 1 || val == 0) {
- 			st->ctrl_fp &= ~AD9832_FREQ;
-+			st->ctrl_fp |= FIELD_PREP(AD9832_FREQ, val ? 0 : 1);
- 		} else {
- 			ret = -EINVAL;
- 			break;
- 		}
--		st->data = cpu_to_be16((AD9832_CMD_FPSELECT << CMD_SHIFT) |
-+		st->data = cpu_to_be16(FIELD_PREP(AD9832_CMD_MSK, AD9832_CMD_FPSELECT) |
- 					st->ctrl_fp);
- 		ret = spi_sync(st->spi, &st->msg);
- 		break;
-@@ -224,21 +230,18 @@ static ssize_t ad9832_write(struct device *dev, struct device_attribute *attr,
- 			break;
- 		}
- 
--		st->ctrl_fp &= ~AD9832_PHASE(3);
--		st->ctrl_fp |= AD9832_PHASE(val);
-+		st->ctrl_fp &= ~FIELD_PREP(AD9832_PHASE_MASK, 3);
-+		st->ctrl_fp |= FIELD_PREP(AD9832_PHASE_MASK, val);
- 
--		st->data = cpu_to_be16((AD9832_CMD_FPSELECT << CMD_SHIFT) |
-+		st->data = cpu_to_be16(FIELD_PREP(AD9832_CMD_MSK, AD9832_CMD_FPSELECT) |
- 					st->ctrl_fp);
- 		ret = spi_sync(st->spi, &st->msg);
- 		break;
- 	case AD9832_OUTPUT_EN:
--		if (val)
--			st->ctrl_src &= ~(AD9832_RESET | AD9832_SLEEP |
--					AD9832_CLR);
--		else
--			st->ctrl_src |= AD9832_RESET;
-+		st->ctrl_src &= ~(AD9832_RESET | AD9832_SLEEP | AD9832_CLR);
-+		st->ctrl_src |= FIELD_PREP(AD9832_RESET, val ? 0 : 1);
- 
--		st->data = cpu_to_be16((AD9832_CMD_SLEEPRESCLR << CMD_SHIFT) |
-+		st->data = cpu_to_be16(FIELD_PREP(AD9832_CMD_MSK, AD9832_CMD_SLEEPRESCLR) |
- 					st->ctrl_src);
- 		ret = spi_sync(st->spi, &st->msg);
- 		break;
-@@ -396,7 +399,7 @@ static int ad9832_probe(struct spi_device *spi)
- 	spi_message_add_tail(&st->phase_xfer[1], &st->phase_msg);
- 
- 	st->ctrl_src = AD9832_SLEEP | AD9832_RESET | AD9832_CLR;
--	st->data = cpu_to_be16((AD9832_CMD_SLEEPRESCLR << CMD_SHIFT) |
-+	st->data = cpu_to_be16(FIELD_PREP(AD9832_CMD_MSK, AD9832_CMD_SLEEPRESCLR) |
- 					st->ctrl_src);
- 	ret = spi_sync(st->spi, &st->msg);
- 	if (ret) {
--- 
-2.49.0
+Good to add a little more detail here.
+> 
+Ideally add a
+DataSheet tag here so we have a record in the git log on where to find
+a datasheet.
+
+Various comments inline.
+
+The big stuff is that you are adding ABI without documentation.
+Also that ABI doesn't seem that well aligned with existing calibration related
+ABI.
+
+> Signed-off-by: Gyeyoung Baek <gye976@gmail.com>
+> ---
+>  drivers/iio/chemical/Kconfig  |   6 +
+>  drivers/iio/chemical/Makefile |   1 +
+>  drivers/iio/chemical/mhz19b.c | 354 ++++++++++++++++++++++++++++++++++
+>  3 files changed, 361 insertions(+)
+>  create mode 100644 drivers/iio/chemical/mhz19b.c
+> 
+
+> diff --git a/drivers/iio/chemical/mhz19b.c b/drivers/iio/chemical/mhz19b.c
+> new file mode 100644
+> index 000000000000..de900131035b
+> --- /dev/null
+> +++ b/drivers/iio/chemical/mhz19b.c
+> @@ -0,0 +1,354 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * mh-z19b co2 sensor driver
+> + *
+> + * Copyright (c) 2025 Gyeyoung Baek <gye976@gmail.com>
+> + */
+> +
+> +#include <linux/module.h>
+> +#include <linux/kernel.h>
+> +#include <linux/init.h>
+> +#include <linux/serdev.h>
+> +#include <linux/of.h>
+Shouldn't be needed here. I'd guess you want
+mod_devicetable.h
+
+> +#include <linux/device.h>
+> +#include <linux/iio/iio.h>
+> +#include <linux/mutex.h>
+> +#include <linux/cleanup.h>
+Alphabetical order preferred for includes.  As it's an IIO driver
+you can pull that out to a separate include block at the end if you
+like. I'm fine with it in alphabetical order with the other headers
+if you prefer that.
+
+> +
+> +struct mhz19b_state {
+> +	struct serdev_device *serdev;
+> +
+> +	/* serdev receive buffer */
+> +	char buf[9];
+> +	int buf_idx;
+> +
+> +	/* protect access to mhz19b_state */
+Be more specific. I'd imagine it's the buffer rather
+than the serdev pointer...
+> +	struct mutex lock;
+> +};
+> +
+> +/* ABC logig on/off */
+
+If the names of command defines are good then we don't need the comments.
+I'd modify them a little to make that true here and drop the comments
+unless they are adding something more
+
+> +#define MHZ19B_ABC_LOGIC_CMD		0x79
+> +/* read CO2 concentration */
+> +#define MHZ19B_READ_CO2_CMD		0x86
+> +/* calibrate Zero Point */
+> +#define MHZ19B_ZERO_POINT_CMD		0x87
+> +/* calibrate Span Point */
+> +#define MHZ19B_SPAN_POINT_CMD		0x88
+> +/* set sensor detection range */
+> +#define MHZ19B_DETECTION_RANGE_CMD	0x99
+}
+> +
+> +static int mhz19b_serdev_cmd(struct iio_dev *indio_dev, int cmd, const char *str)
+> +{
+> +	int ret = 0;
+> +	struct serdev_device *serdev;
+> +	struct mhz19b_state *mhz19b;
+> +	struct device *dev;
+> +
+> +	mhz19b = iio_priv(indio_dev);
+> +	serdev = mhz19b->serdev;
+> +	dev = &indio_dev->dev;
+These can all be combined with declarations to save a few lines of code.
+
+> +
+> +	/*
+> +	 * commands have following format:
+> +	 *
+> +	 * +------+------+-----+------+------+------+------+------+-------+
+> +	 * | 0xFF | 0x01 | cmd | arg0 | arg1 | 0x00 | 0x00 | 0x00 | cksum |
+> +	 * +------+------+-----+------+------+------+------+------+-------+
+> +	 */
+> +	uint8_t cmd_buf[MHZ19B_CMD_SIZE] = {
+> +		0xFF, 0x01, cmd,
+> +	};
+> +
+> +	switch (cmd) {
+> +	case MHZ19B_ABC_LOGIC_CMD:
+> +	{
+
+I'd move the { to the line above.
+
+
+> +		bool enable;
+> +
+> +		ret = kstrtobool(str, &enable);
+> +		if (ret)
+> +			return ret;
+> +
+> +		cmd_buf[3] = enable ? 0xA0 : 0x00;
+> +		break;
+> +	}
+> +	case MHZ19B_SPAN_POINT_CMD:
+> +	{
+> +		uint16_t ppm;
+> +
+> +		ret = kstrtou16(str, 10, &ppm);
+> +		if (ret)
+> +			return ret;
+> +
+> +		/* at least 1000ppm */
+> +		if (ppm < 1000 || ppm > 5000) {
+> +			dev_dbg(&indio_dev->dev, "span point ppm should be 1000~5000");
+> +			return -EINVAL;
+> +		}
+> +
+> +		cmd_buf[3] = ppm / 256;
+> +		cmd_buf[4] = ppm % 256;
+
+That's an elaborate way of doing
+		unaligned_put_be16()
+so use that instead as it's also clearly documenting what is going on.
+
+> +		break;
+> +	}
+> +	case MHZ19B_DETECTION_RANGE_CMD:
+> +	{
+> +		uint16_t range;
+> +
+> +		ret = kstrtou16(str, 10, &range);
+> +		if (ret)
+> +			return ret;
+> +
+> +		/* Detection Range should be 2000 or 5000 */
+> +		if (!(range == 2000 || range == 5000)) {
+> +			dev_dbg(&indio_dev->dev, "detection range should be 2000 or 5000");
+> +			return -EINVAL;
+> +		}
+> +
+> +		cmd_buf[3] = range / 256;
+> +		cmd_buf[4] = range % 256;
+Same as above.
+> +		break;
+> +	}
+> +	default:
+> +		break;
+> +	}
+> +	cmd_buf[MHZ19B_CMD_SIZE - 1] = mhz19b_get_checksum(cmd_buf);
+> +
+> +	scoped_guard(mutex, &mhz19b->lock) {
+> +		ret = serdev_device_write(serdev, cmd_buf, MHZ19B_CMD_SIZE, 0);
+> +		mhz19b->buf_idx = 0;
+> +
+> +		if (ret != MHZ19B_CMD_SIZE) {
+> +			dev_err(dev, "write err, %d bytes written", ret);
+> +			return -EINVAL;
+> +		}
+> +
+> +		switch (cmd) {
+> +		case MHZ19B_READ_CO2_CMD:
+> +			if (mhz19b->buf[MHZ19B_CMD_SIZE - 1] != mhz19b_get_checksum(mhz19b->buf)) {
+> +				dev_err(dev, "checksum err");
+> +				return -EINVAL;
+> +			}
+> +
+> +			ret = (mhz19b->buf[2] << 8) + mhz19b->buf[3];
+
+That's an unaligned_get_be16() I think. If so use that instead of opencoding.
+
+> +			break;
+> +		default:
+> +			/* no response commands. */
+Might as well return early in each of these cases.
+
+> +			ret = 0;
+> +			break;
+> +		}
+> +	}
+> +
+> +	return ret;
+> +}
+> +
+> +static int mhz19b_read_raw(struct iio_dev *indio_dev, struct iio_chan_spec const *chan,
+Trivial but for IIO I'd prefer we try to keep under 80 chars still when it does
+not effect readability.  Here adding a wrap after indio_dev doesn't make it harder
+to read.
+
+> +	int *val, int *val2, long mask)
+Align after ( 
+
+> +{
+> +	struct mhz19b_state *mhz19b;
+> +	int ret;
+> +
+> +	mhz19b = iio_priv(indio_dev);
+	struct mhz19b_state *mhz19b = iio_priv(indio_dev);
+at the point of declaration above.
+
+> +
+> +	ret = mhz19b_serdev_cmd(indio_dev, MHZ19B_READ_CO2_CMD, NULL);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	*val = ret;
+> +	return IIO_VAL_INT;
+> +}
+> +
+> +static const struct iio_info mhz19b_info = {
+> +	.read_raw = mhz19b_read_raw,
+> +};
+
+> +
+> +struct iio_chan_spec_ext_info mhz19b_co2_ext_info[] = {
+> +	{
+> +		.name = "zero_point",
+
+This is custom ABI.  Before we consider that in detail we
+need documentation in
+Documentation/ABI/testing/sysfs-bus-iio-mhz19b
+It is much easier to review ABI with docs.
+All 3 are direct commands to the device, so I've no idea from
+what we have here on what they do.
+
+Superficially this one looks like a calibration control.
+There is existing ABI for that.
+
+
+> +		.write = mhz19b_zero_point_write,
+> +	},
+> +	{
+> +		.name = "span_point",
+> +		.write = mhz19b_span_point_write,
+Also looks like calibration.  See if you can come
+up with ABI that matches with what we already have for calibration
+of ADCs etc.
+> +	},
+> +	{
+> +		.name = "abc_logic",
+
+Definitely not good logic. ABC is a term they made up as far
+as i can tell.  See if you can find existing ABI for this.
+I think we have other controls for autonomous calibration cycles.
+
+> +		.write = mhz19b_abc_logic_write,
+> +	},
+> +	{}
+	{ }
+preferred for IIO code.
+
+> +};
+> +
+> +static const struct iio_chan_spec mhz19b_channels[] = {
+> +	{
+> +		.type = IIO_CONCENTRATION,
+> +		.channel2 = IIO_MOD_CO2,
+> +		.modified = 1,
+> +		.info_mask_separate = BIT(IIO_CHAN_INFO_PROCESSED),
+> +
+> +		.ext_info = mhz19b_co2_ext_info,
+> +	},
+> +};
+> +
+> +static int mhz19b_core_probe(struct device *dev)
+
+As below.  This function isn't sufficiently complex to justify
+a separate function.
+
+> +{
+> +	int ret;
+> +
+> +	struct serdev_device *serdev;
+> +	struct mhz19b_state *mhz19b;
+> +	struct iio_dev *indio_dev;
+> +
+> +	indio_dev = devm_iio_device_alloc(dev, sizeof(struct mhz19b_state));
+
+sizeof(*mhz19b));
+
+> +	if (indio_dev == NULL)
+> +		return ret;
+> +
+> +	dev_set_drvdata(dev, indio_dev);
+> +
+> +	mhz19b = iio_priv(indio_dev);
+> +
+> +	mhz19b->buf_idx = 0;
+No need to explicitly zero as it is allocated by kzalloc.  Fine to
+keep it though if you think it adds benefit as 'documentation'.
+> +	ret = devm_mutex_init(dev, &mhz19b->lock);
+> +	if (ret)
+> +		return ret;
+> +
+> +	serdev = container_of(dev, struct serdev_device, dev);
+
+breaking out the _core_probe() makes this more complex as in the
+caller serdev is already available.
+
+> +
+> +	mhz19b->serdev = serdev;
+> +
+> +	indio_dev->name = "mh-z19b";
+> +	indio_dev->channels = mhz19b_channels;
+> +	indio_dev->num_channels = ARRAY_SIZE(mhz19b_channels);
+> +	indio_dev->info = &mhz19b_info;
+> +
+> +	ret = devm_iio_device_register(dev, indio_dev);
+
+return devm_iio_device_register()
+
+> +	if (ret)
+> +		return ret;
+> +
+> +	return 0;
+> +}
+> +
+> +static size_t mhz19b_receive_buf(struct serdev_device *serdev, const u8 *data, size_t len)
+> +{
+> +	struct iio_dev *indio_dev;
+	struct iio_dev *indio_dev = dev_get_drvdata(&serdev->dev);
+	struct mhz19b_state *mhz19b = iio_priv(indio_dev);
+
+to save a few lines.
+
+
+> +	struct mhz19b_state *mhz19b;
+> +
+> +	indio_dev = dev_get_drvdata(&serdev->dev);
+> +	mhz19b = iio_priv(indio_dev);
+> +
+> +	for (int i = 0; i < len; i++)
+> +		mhz19b->buf[mhz19b->buf_idx++] = data[i];
+> +
+> +	return len;
+> +}
+> +
+> +static void mhz19b_write_wakeup(struct serdev_device *serdev)
+> +{
+> +	struct iio_dev *indio_dev;
+> +
+> +	indio_dev = dev_get_drvdata(&serdev->dev);
+> +
+> +	dev_dbg(&indio_dev->dev, "mhz19b_write_wakeup");
+
+This doesn't do anything which makes me suspicious. Would
+using serdev_device_write_wakeup() as the callback make
+sense?  I'm not that familiar with serial drivers but I can
+see that a number of other drivers do that.
+
+> +}
+> +
+> +static const struct serdev_device_ops mhz19b_ops = {
+> +	.receive_buf = mhz19b_receive_buf,
+> +	.write_wakeup = mhz19b_write_wakeup,
+> +};
+> +
+> +static int mhz19b_probe(struct serdev_device *serdev)
+> +{
+> +	int ret;
+> +
+> +	struct device *dev;
+> +
+> +	dev = &serdev->dev;
+> +	serdev_device_set_client_ops(serdev, &mhz19b_ops);
+> +
+> +	ret = devm_serdev_device_open(dev, serdev);
+> +	if (ret)
+> +		return ret;
+> +
+> +	serdev_device_set_baudrate(serdev, 9600);
+> +	serdev_device_set_flow_control(serdev, false);
+> +	ret = serdev_device_set_parity(serdev, SERDEV_PARITY_NONE);
+> +	if (ret < 0)
+> +		return ret;
+
+Why check return value from this call but not the previous two?
+I'm not immediately able to see a reason this is more likely to fail.
+
+> +
+> +	ret = mhz19b_core_probe(dev);
+
+Having a separate _core_probe() seems unnecessary. I'd jut have a single
+probe function and put all that code inline here.
+
+> +	if (ret)
+> +		return ret;
+> +
+
+return mhz19b_core_probe();
+
+> +	return 0;
+> +}
+> +
+> +static const struct of_device_id mhz19b_of_match[] = {
+> +	{ .compatible = "winsen,mhz19b", },
+> +	{}
+
+Trivial: I'm trying to standardize formatting of these in IIO
+and made the random choice of
+	{ }
+as the terminating entry style.
+
+> +};
+
+Similar to below, it is common practice to have no blank line
+between this array of structs and the MODULE_DEVICE_TABLE
+to reflect how tightly they are coupled.
+
+> +
+> +MODULE_DEVICE_TABLE(of, mhz19b_of_match);
+> +
+> +static struct serdev_device_driver mhz19b_driver = {
+> +	.driver = {
+> +		.name = "mhz19b",
+> +		.of_match_table = mhz19b_of_match,
+> +	},
+> +	.probe = mhz19b_probe,
+> +};
+> +
+
+Typical style for these module* lines is to couple them
+closely with the struct. That is done by having no blank line here.
+
+> +module_serdev_device_driver(mhz19b_driver);
+> +
+> +MODULE_LICENSE("GPL");
+> +MODULE_AUTHOR("Gyeyoung Baek");
+> +MODULE_DESCRIPTION("MH-Z19B CO2 sensor driver using serdev interface");
 
 

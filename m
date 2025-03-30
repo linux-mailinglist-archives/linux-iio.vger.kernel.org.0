@@ -1,60 +1,58 @@
-Return-Path: <linux-iio+bounces-17365-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17366-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 703DBA75B58
-	for <lists+linux-iio@lfdr.de>; Sun, 30 Mar 2025 19:21:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FD95A75B61
+	for <lists+linux-iio@lfdr.de>; Sun, 30 Mar 2025 19:26:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 654FF3AA22F
-	for <lists+linux-iio@lfdr.de>; Sun, 30 Mar 2025 17:21:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6B54A188BBB8
+	for <lists+linux-iio@lfdr.de>; Sun, 30 Mar 2025 17:26:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0D031D61A2;
-	Sun, 30 Mar 2025 17:21:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61ED11D7E57;
+	Sun, 30 Mar 2025 17:26:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CPOxEPWb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M+24Q5v3"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E8821F949;
-	Sun, 30 Mar 2025 17:21:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D00235973;
+	Sun, 30 Mar 2025 17:26:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743355280; cv=none; b=HVY3bg1AaVurIsPfbXwZ2sWSuK6SQfV544bDyA39spKCHvfrQtJAbZ60OfL5JOZAc/nTarYf+5Lyk4m8ZzhvO5AqwQQihAq/wl1bUi/teepfyyIzKbs3iOmvsFl/vJCxHY4Osg9dZMPBFnHJ5tH3QK70TdqNUTfRFvGgv72oq6A=
+	t=1743355590; cv=none; b=KZ/ilMLlpG1pBzI3h6lpPh/2xKR4Eq/yV94MZ2jPQKmFSOanjZHTPBWBqB7JiZzHZU7XtAbYSYKn7C89nguvPQsa8J681QdML2C6IZeCVj/4dXXxHGPcNZ17SxFv2YHPJmkMcpUMK8mMn+nUhale8zdkYlwEn7c/T//3GUS/VAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743355280; c=relaxed/simple;
-	bh=mdqL5gZ5wjkKfQ4GE4hISVH6jnkTiiPUOOr9XfuvuH8=;
+	s=arc-20240116; t=1743355590; c=relaxed/simple;
+	bh=jdL58PCllKHBIvS44vFW+1+R0r+CF7p06KsU5L/lG5s=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=D31xAq8OuRq4mbgMHd67uqdZriCtVKEp4OrgppA/m1Eaa0yFtw+BP+Ay0fSmL0DxHOcHS1z8fIylzK5A2dV7et/7aZzttOy+pY5ApnpK8dyfnWYTl7MWD38RSBsy+nohyKshZEknebqEWz22AolQrnyxExxKEeMD5nmvQ9LBHMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CPOxEPWb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C554CC4CEDD;
-	Sun, 30 Mar 2025 17:21:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BNSmiPrYDULvRq/YOjS+5w+BINYJiKgw3dpe5lus+GdamMw8TEJ2CAtLmwAga8gyAN4Qj8snL9swZcdOybZN9DUSG0pGD3Pb49wy+sRid3hmwIlN495DJHqYojh/kPf7Ix0hgHQBKzKalckzpVCp0yeEiIgz6J5IFe8hsHvwIuw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M+24Q5v3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF20FC4CEDD;
+	Sun, 30 Mar 2025 17:26:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743355280;
-	bh=mdqL5gZ5wjkKfQ4GE4hISVH6jnkTiiPUOOr9XfuvuH8=;
+	s=k20201202; t=1743355589;
+	bh=jdL58PCllKHBIvS44vFW+1+R0r+CF7p06KsU5L/lG5s=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=CPOxEPWbN5bzgEVSGWmKGhkxVWqQUF2hakrVXw9zfsv3GRTd4/RWZzE2BkCXzYtK4
-	 Q2f+BMFnfFH3gtB9jAQySR65iBOYskPiBevoDZPJpEOb023GmemmflaUTO5+3l37eb
-	 HR+wUy3F/4Y6H6J1ktVRh4YbYTGkSJeKgIrjEz69NyjJaP6iYC0saDh0q9H8wl4Ngp
-	 skfvKHANop0s8TyvZ9/F9Qn2L5RYhcUoB7fczlWv6DDbSfAWiWuwgilpuMniKWZPyx
-	 lfFnIwtkZP5+xIg61cryhND/qA9VK9+vF91l0qoox7SNhRJARrGLYSv04LJZRlGHF7
-	 MpIClsKO7WMfQ==
-Date: Sun, 30 Mar 2025 18:21:10 +0100
+	b=M+24Q5v3TXulsdOSlWWjR+Bu36AEq/frEWHHnu2N3ukr7P4afqH6DeWRdrKbiqP/l
+	 fkFzPjJ9plf5mkALm6ETWIUHPRIIkhMe34l7lFkCIWn996nshiKOQX3BBBRZP+xHR6
+	 8m7wv3cae1zRDMR2MpFnitdfckugePxdPDc5uRlwMk0/Smm03W+IT/e7036k3UinuY
+	 djr5vo84aW8Ac0+7uU6yD/AVZQW7Bev1zmvkmB8uBq34WG1DaUi9asRlaGkUzjX8GC
+	 fTbgdfHW+hq0Gq19uwRTFs9vkDoNykYAGRDY0tRsZivOp0l6hQfDB2hJvccAVGDwxZ
+	 2MSSqL8wKSVSg==
+Date: Sun, 30 Mar 2025 18:26:22 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Felipe Balbi <balbi@ti.com>,
- Andreas Dannenberg <dannenberg@ti.com>, David Frey <dpfrey@gmail.com>, Emil
- Gedenryd <emil.gedenryd@axis.com>, Alexander Koch <mail@alexanderkoch.net>,
- Jiri Valek - 2N <valek@2n.cz>, Hui Pu <Hui.Pu@gehealthcare.com>, Thomas
- Petazzoni <thomas.petazzoni@bootlin.com>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] iio: light: opt3001: fix deadlock due to concurrent
- flag access
-Message-ID: <20250330182110.5373d1a0@jic23-huawei>
-In-Reply-To: <20250321-opt3001-irq-fix-v1-1-6c520d851562@bootlin.com>
-References: <20250321-opt3001-irq-fix-v1-1-6c520d851562@bootlin.com>
+To: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
+Cc: david@ixit.cz, Lars-Peter Clausen <lars@metafoo.de>, Svyatoslav Ryhel
+ <clamor95@gmail.com>, Robert Eckelmann <longnoserob@gmail.com>,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 01/13] iio: light: al3010: Use unsigned int for the
+ indexing
+Message-ID: <20250330182622.7cb826d9@jic23-huawei>
+In-Reply-To: <20250319-al3010-iio-regmap-v2-1-1310729d0543@ixit.cz>
+References: <20250319-al3010-iio-regmap-v2-0-1310729d0543@ixit.cz>
+	<20250319-al3010-iio-regmap-v2-1-1310729d0543@ixit.cz>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,69 +61,38 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
 
-On Fri, 21 Mar 2025 19:10:00 +0100
-Luca Ceresoli <luca.ceresoli@bootlin.com> wrote:
+On Wed, 19 Mar 2025 21:59:40 +0100
+David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org> wrote:
 
-> The threaded IRQ function in this driver is reading the flag twice: once =
-to
-> lock a mutex and once to unlock it. Even though the code setting the flag
-> is designed to prevent it, there are subtle cases where the flag could be
-> true at the mutex_lock stage and false at the mutex_unlock stage. This
-> results in the mutex not being unlocked, resulting in a deadlock.
+> From: David Heidelberg <david@ixit.cz>
+> 
+> The integer is used as array index which cannot be negative.
+> 
+> Signed-off-by: David Heidelberg <david@ixit.cz>
+I do find it hard to care about these, but you are making
+other changes so fair enough I guess.
 
-=46rom a quick look I think that only occurs if the triggering write
-reports an error but the device accepts it anyway (maybe a bus
-error on the ack going back to the host).
+Applied patches 1-2
 
-I'm not a fan of this locking dance, but I'm also not keen on
-touching it too much without test hardware. Let's go with your fix which
-looks safe to me.
-
-Applied.
->=20
-> Fix it by making the opt3001_irq() code generally more robust, reading the
-> flag into a variable and using the variable value at both stages.
->=20
-> Fixes: 94a9b7b1809f ("iio: light: add support for TI's opt3001 light sens=
-or")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 > ---
->  drivers/iio/light/opt3001.c | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
->=20
-> diff --git a/drivers/iio/light/opt3001.c b/drivers/iio/light/opt3001.c
-> index 65b295877b41588d40234ca7681bfee291e937c2..393a3d2fbe1d7320a243d3b67=
-20e98b90f17baca 100644
-> --- a/drivers/iio/light/opt3001.c
-> +++ b/drivers/iio/light/opt3001.c
-> @@ -788,8 +788,9 @@ static irqreturn_t opt3001_irq(int irq, void *_iio)
->  	int ret;
->  	bool wake_result_ready_queue =3D false;
->  	enum iio_chan_type chan_type =3D opt->chip_info->chan_type;
-> +	bool ok_to_ignore_lock =3D opt->ok_to_ignore_lock;
-> =20
-> -	if (!opt->ok_to_ignore_lock)
-> +	if (!ok_to_ignore_lock)
->  		mutex_lock(&opt->lock);
-> =20
->  	ret =3D i2c_smbus_read_word_swapped(opt->client, OPT3001_CONFIGURATION);
-> @@ -826,7 +827,7 @@ static irqreturn_t opt3001_irq(int irq, void *_iio)
->  	}
-> =20
->  out:
-> -	if (!opt->ok_to_ignore_lock)
-> +	if (!ok_to_ignore_lock)
->  		mutex_unlock(&opt->lock);
-> =20
->  	if (wake_result_ready_queue)
->=20
-> ---
-> base-commit: 250a4b882cf37d9719874253f055aad211f2c317
-> change-id: 20250321-opt3001-irq-fix-f7eecd4e2e9c
->=20
-> Best regards,
+>  drivers/iio/light/al3010.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/iio/light/al3010.c b/drivers/iio/light/al3010.c
+> index 7cbb8b203300907a88f4a0ab87da89cabdd087f3..4c2fd88ab32cd73f4735b0fa3014af084037c94d 100644
+> --- a/drivers/iio/light/al3010.c
+> +++ b/drivers/iio/light/al3010.c
+> @@ -145,7 +145,7 @@ static int al3010_write_raw(struct iio_dev *indio_dev,
+>  			    int val2, long mask)
+>  {
+>  	struct al3010_data *data = iio_priv(indio_dev);
+> -	int i;
+> +	unsigned int i;
+>  
+>  	switch (mask) {
+>  	case IIO_CHAN_INFO_SCALE:
+> 
 
 

@@ -1,47 +1,47 @@
-Return-Path: <linux-iio+bounces-17359-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17360-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2ECFEA75B0B
-	for <lists+linux-iio@lfdr.de>; Sun, 30 Mar 2025 18:50:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B4F0A75B0F
+	for <lists+linux-iio@lfdr.de>; Sun, 30 Mar 2025 18:54:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C8F641663FA
-	for <lists+linux-iio@lfdr.de>; Sun, 30 Mar 2025 16:50:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1607D3A7876
+	for <lists+linux-iio@lfdr.de>; Sun, 30 Mar 2025 16:53:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32B951D89E4;
-	Sun, 30 Mar 2025 16:50:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 761981D7E57;
+	Sun, 30 Mar 2025 16:53:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HmNxCI+P"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uaIEU0zv"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE54B13C9A3;
-	Sun, 30 Mar 2025 16:50:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C4CB524F;
+	Sun, 30 Mar 2025 16:53:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743353433; cv=none; b=JlVHFWcVSlggI7cQWRb8OiLd69JzaCJAQcxC3swfc1K09jEoMlWsey9f9XAMzYZVhC/YmaQi/teEosrP6a8dnC0AJmIZWx0mlRwzB3E2jvuuDb6vRLfDIrhwbebSCJmiH6s/cHb85RKqfd028YihnXo9bN8cXfCaq2y56T5mIBA=
+	t=1743353637; cv=none; b=JUEn//+PkfLmJBfwxusfcymeEF/q7+UdSwJD1sYY6Blpa8q80CHV+8mlqcGa8sryK2ngCmcklRZ9yqC5WJl7EjnuA9+3HkyfgpgUd82A00KXrOZVes98OVP4MveMIq76T4HainQ2K6b74OEhfh89BmEAZYGD8RdslHua9khFDGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743353433; c=relaxed/simple;
-	bh=T2nZgkmBO2IAZub8uryRdB9Li1xQtqd5x+s1ykAv2wU=;
+	s=arc-20240116; t=1743353637; c=relaxed/simple;
+	bh=hSoAvav/HO8H75lU2bgG5hy9eofT6f2Z4mnIG7Uv5no=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OHO4pSeIfF4/H8+1cwLNRd4qIU9g70708x+y8YtR52pPLTeUSZ+UnAQXvx77G3kRZBum0mhU5be770Og4LM39/DJPS/6rqnFQ2Km0d0GzMNQ0KOWP2eGlwGgQ0esiGIgQW6X9f3rEw6rpVC9EgiaeSVPEBxeL+g2V3sB3K+FZLk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HmNxCI+P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9D8DC4CEDD;
-	Sun, 30 Mar 2025 16:50:28 +0000 (UTC)
+	 MIME-Version:Content-Type; b=asaX0u8YerbCxVV353yf/DFy+AllIjte183qkSyh3GcLpDJNWlHEi75ieo+2NXMIjDDXonyKz8aBfmsjEdp5a7yvWhS34lBVRNLipuyw+5ejb0fm9ZnK/I/6aoNIla4MAX0WjxoJyye7y+wmf9CTTpWV7ZAxQnbkANx/Rfb1KmU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uaIEU0zv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B448AC4CEDD;
+	Sun, 30 Mar 2025 16:53:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743353432;
-	bh=T2nZgkmBO2IAZub8uryRdB9Li1xQtqd5x+s1ykAv2wU=;
+	s=k20201202; t=1743353635;
+	bh=hSoAvav/HO8H75lU2bgG5hy9eofT6f2Z4mnIG7Uv5no=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=HmNxCI+Plibu7TQjH0YW7pC1zWuSm/AASoGx/Vgn8+apYn42fmFJY7TrohgTafFNQ
-	 JVPqHdsFeJxX7wleXERD+krYYKbF0I3qAICBTekwBOHOGLTZdAVPQZ1EAM+rspIIwU
-	 rmDqqTIN0U7GswP7Rvl3Rt7yx3W8ziLzVuSUR0H8VKPLctmirLnkYoMP0aPrg3UsE/
-	 1TwhlHNVbwa9ThRGPCnT8EwoGtF/833xOfNp86i9KwEkXKJTJo/W/hSu2cHl78nM33
-	 GuWGcbZ7ttq0SYTPBzBJUiVmoPAFfgEwadmofvKZIInvS9nFrdw4cI+d8iPmG/vdKX
-	 bboLhHpFacdvg==
-Date: Sun, 30 Mar 2025 17:50:24 +0100
+	b=uaIEU0zvPwAQuptNcFWV2YFXVJnetpk0V/TQgn6J8qQi+qfpmqiHaCZGTVA+l3dR0
+	 omGqGGMVT4iMnG/u6bVXggPFt14XjR16g4egievkIXUz2XBI/RKO1LpO9bXVxSpyxf
+	 gYlsEhhp+yUSAOCoJG+hwlSWXj0OKA5TDKkgYmo9EFC5vdbIilMLGh0JXqJVT1QkZw
+	 KbeSQzfMciGneQK+GmoITbUXAzjsnvrej/0N2e2nHxuT5LBBOSSwbhz0X/X+pzYoeD
+	 jsri0dzfkAssMhfecVk1jq2XW6EzOv8GIn5i9nItXpTdbBcYTZGyZ5spRY0wls0DUh
+	 q8fuQm/lIaZUA==
+Date: Sun, 30 Mar 2025 17:53:50 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: Angelo Dureghello <adureghello@baylibre.com>
 Cc: Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Lars-Peter Clausen
@@ -49,11 +49,11 @@ Cc: Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Lars-Peter Clausen
  <olivier.moysan@foss.st.com>, Michael Hennerich
  <Michael.Hennerich@analog.com>, linux-iio@vger.kernel.org,
  linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/4] docs: iio: add documentation for ad3552r driver
-Message-ID: <20250330175024.2319b8eb@jic23-huawei>
-In-Reply-To: <20250321-wip-bl-ad3552r-fixes-v1-1-3c1aa249d163@baylibre.com>
+Subject: Re: [PATCH 0/4] iio: ad3552r-hs: add support for internal ramp
+ generator
+Message-ID: <20250330175350.6cebf779@jic23-huawei>
+In-Reply-To: <20250321-wip-bl-ad3552r-fixes-v1-0-3c1aa249d163@baylibre.com>
 References: <20250321-wip-bl-ad3552r-fixes-v1-0-3c1aa249d163@baylibre.com>
-	<20250321-wip-bl-ad3552r-fixes-v1-1-3c1aa249d163@baylibre.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -61,145 +61,59 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Fri, 21 Mar 2025 21:28:48 +0100
+On Fri, 21 Mar 2025 21:28:47 +0100
 Angelo Dureghello <adureghello@baylibre.com> wrote:
 
-> From: Angelo Dureghello <adureghello@baylibre.com>
->=20
-> Add documentation for ad3552r driver, needed to describe the high-speed
-> driver debugfs attributes and shows how the user may use them.
->=20
+> Add support to enable the HDL IP core internal ramp generator,
+> actually managed by the adi-axi-dac backend. 
+
+What is it for?  Circuit testing or something else?
+We have in the past had pattern generators in IIO (currently under
+frequency drivers, though I'm not sure what we have in the way of
+waveforms in the stuff outside staging) so I'd like to be sure
+this is about debug rather than a pattern that is actually expected
+to be useful.
+
+Jonathan
+
+> 
+> It works this way:
+> 
+> /sys/bus/iio/devices/iio:device0# echo 1 > buffer0/out_voltage0_en 
+> /sys/bus/iio/devices/iio:device0# echo 1 > buffer0/out_voltage1_en                                           
+> /sys/bus/iio/devices/iio:device0# echo 1 > buffer0/enable 
+> 
+> Activating ramp generator:
+> 
+> /sys/kernel/debug/iio/iio:device0# echo -n backend-ramp-generator > data_source
+> 
+> Deactivating:
+> 
+> /sys/kernel/debug/iio/iio:device0# echo -n iio-buffer > data_source
+> 
 > Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
 > ---
->  Documentation/iio/ad3552r.rst | 65 +++++++++++++++++++++++++++++++++++++=
-++++++
->  Documentation/iio/index.rst   |  1 +
->  MAINTAINERS                   |  1 +
->  3 files changed, 67 insertions(+)
->=20
-> diff --git a/Documentation/iio/ad3552r.rst b/Documentation/iio/ad3552r.rst
-> new file mode 100644
-> index 0000000000000000000000000000000000000000..638a62c99fb876cca026a0b1d=
-f469c81ba39ff29
-> --- /dev/null
-> +++ b/Documentation/iio/ad3552r.rst
-> @@ -0,0 +1,65 @@
-> +.. SPDX-License-Identifier: GPL-2.0-only
-> +
-> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> +AD3552R driver
-> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> +
-> +Device driver for Analog Devices Inc. AD35XXR series of DACs. The module=
- name
-> +is ``ad3552r``.
-> +With the same module name, two different driver variants are available, =
-the
-> +``generic spi`` variant, to be used with any classic SPI controllers, an=
-d the
-> +``hs`` (high speed) variant, for an ADI ``axi-dac`` (IP core) based cont=
-roller
-> +that allows to reach the maximum sample rate supported from the DACs, us=
-ing the
-> +DMA transfer and all the SPI lines available (D/QDSPI)..
-> +The high speed driver variant is intended to be used with the ``adi-axi-=
-dac``
-> +backend support enabled, that is enabled by default when the driver is s=
-elected.
-> +
-> +Supported devices
-> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> +
-> +* `AD3541R <https://www.analog.com/en/products/ad3541r.html>`_
-> +* `AD3542R <https://www.analog.com/en/products/ad3542r.html>`_
-> +* `AD3551R <https://www.analog.com/en/products/ad3551r.html>`_
-> +* `AD3552R <https://www.analog.com/en/products/ad3552r.html>`_
-> +
-> +Wiring connections
-> +------------------
-> +
-> +::
-> +
-> +    .-----------------.                .-------.
-> +    |                 |--- D/QSPI -----|       |
-> +    |   DAC IP CORE   |--- SPI S_CLK --|  DAC  |
-> +    |                 |--- SPI CS -----|       |
-> +    |                 |--- LDAC -------|       |
-> +    |                 |--- RESET ------|       |
-> +    |_________________|                |_______|
-> +
-> +
-> +High speed features
-> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> +
-> +Device attributes
-> +-----------------
-> +
-> +The following table shows the ad35xxr related device debug files, found =
-in the
-> +specific device debug folder path ``/sys/kernel/debug/iio/iio:deviceX``.
-> +
-> ++----------------------+------------------------------------------------=
--------+
-> +| Debugfs device files | Description                                    =
-       |
-> ++----------------------+------------------------------------------------=
--------+
-> +| data_source          | The used data source,                          =
-       |
-> +|                      | as ``iio-buffer`` or ``backend-ramp-generator``=
-.      |
-> ++----------------------+------------------------------------------------=
--------+
-Hmm. I'm not convinced yet that this is something that belongs in debugfs b=
-ut will
-read on through the series.
-
-> +
-> +Usage examples
-> +--------------
-> +
-> +. code-block:: bash
-> +	root:/sys/bus/iio/devices/iio:device0# cat data_source
-> +	iio-buffer
-> +	root:/sys/bus/iio/devices/iio:device0# echo -n backend-ramp-generator >=
- data_source
-> +	root:/sys/bus/iio/devices/iio:device0# cat data_source=E2=8F=8E
-
-Not sure what the trailing character is.
-
-> +	backend-ramp-generator
-> +
-> +
-> diff --git a/Documentation/iio/index.rst b/Documentation/iio/index.rst
-> index bbb2edce8272e7483acca500d1a757bbcc11c1e0..2d6afc5a8ed54a90cd8d5723f=
-0dc5212b8593d16 100644
-> --- a/Documentation/iio/index.rst
-> +++ b/Documentation/iio/index.rst
-> @@ -19,6 +19,7 @@ Industrial I/O Kernel Drivers
->  .. toctree::
->     :maxdepth: 1
-> =20
-> +   ad3552r
->     ad4000
->     ad4030
->     ad4695
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 57eaab00f6cb53df52a4799eb2c1afbbd1e77a1e..52bc56a9ee22c66b90555681c=
-4757ea4399adae1 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -1295,6 +1295,7 @@ L:	linux-iio@vger.kernel.org
->  S:	Supported
->  W:	https://ez.analog.com/linux-software-drivers
->  F:	Documentation/devicetree/bindings/iio/dac/adi,ad3552r.yaml
-> +F:	Documentation/iio/ad3552r.rst
->  F:	drivers/iio/dac/ad3552r.c
-> =20
->  ANALOG DEVICES INC AD4000 DRIVER
->=20
+> Angelo Dureghello (4):
+>       docs: iio: add documentation for ad3552r driver
+>       iio: backend: add support for data source get
+>       iio: dac: adi-axi-dac: add data source get
+>       iio: dac: ad3552r-hs: add support for internal ramp
+> 
+>  Documentation/iio/ad3552r.rst      |  65 +++++++++++++++++++++++
+>  Documentation/iio/index.rst        |   1 +
+>  MAINTAINERS                        |   1 +
+>  drivers/iio/dac/ad3552r-hs.c       | 106 ++++++++++++++++++++++++++++++++++---
+>  drivers/iio/dac/adi-axi-dac.c      |  27 ++++++++++
+>  drivers/iio/industrialio-backend.c |  28 ++++++++++
+>  include/linux/iio/backend.h        |   5 ++
+>  7 files changed, 227 insertions(+), 6 deletions(-)
+> ---
+> base-commit: eb870a5af7db1e5ca59330875125230b28e630f9
+> change-id: 20250321-wip-bl-ad3552r-fixes-4a386944c170
+> 
+> Best regards,
 
 

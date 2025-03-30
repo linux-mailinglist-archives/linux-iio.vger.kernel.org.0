@@ -1,48 +1,48 @@
-Return-Path: <linux-iio+bounces-17331-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17332-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0E43A75929
-	for <lists+linux-iio@lfdr.de>; Sun, 30 Mar 2025 11:38:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D037A7592C
+	for <lists+linux-iio@lfdr.de>; Sun, 30 Mar 2025 11:39:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E1883AB2B0
-	for <lists+linux-iio@lfdr.de>; Sun, 30 Mar 2025 09:37:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2117F167889
+	for <lists+linux-iio@lfdr.de>; Sun, 30 Mar 2025 09:39:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10A4A175D53;
-	Sun, 30 Mar 2025 09:37:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0844B189BB0;
+	Sun, 30 Mar 2025 09:39:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pFgcvD5P"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LlT7zU5k"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB84F184F;
-	Sun, 30 Mar 2025 09:37:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6BE57E107;
+	Sun, 30 Mar 2025 09:39:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743327477; cv=none; b=NG+rraufi1eeuhrC+FO4K4Rpr25lAyjwp9RvYDyZBbyl46IlnvHgh2jQnNUDMIKq/WyDljCS1CjpG8qKWGM6MdNxz98oQaoe9CXRoIlJQgI9ueL7tp9zhwx8HaBDCRzDvCKRy/+lK6+eEFSkhcHZsmWpR5vgihFD4xL2TIgM+j0=
+	t=1743327549; cv=none; b=jI+1AkC+Sa4vqOWkzL+upyCwj04j8F89JF3nFBAmXklNyiDZUD7tNEQl6Q5g1a5I9nmwONVVu/7JPBLNeOuyuWpUTNlSEJiWv+MOyDpajKUNKwavSrJSC8omtg3mBelV20UEkLHwpf/EufAzjH2w5f16b57Byz/1bnlszldtBNc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743327477; c=relaxed/simple;
-	bh=ZAMYJsGQYXJoeHSUJdx39GRkS+durNBNrZUdPm+FfQU=;
+	s=arc-20240116; t=1743327549; c=relaxed/simple;
+	bh=nb+s4geoLKiT4WvuOstHlXUTAwuIvv89Yx9RssgX5Ik=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qrg760rmA+7Ghd2jnvnOSanHK9V+fp8IS7GdyB4r2GTDh23fdYzG5dXNXh+W//S4Md78wrlY81Lfi2wffRC56tzwOyK5MZvRxfNttF69g0ofWdG2sb71apLEgsrLBRwuUQ5Xo9d2mxbQBnWAn6zCrEKTOioGTqInHt+lTl8bhIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pFgcvD5P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DE99C4CEDD;
-	Sun, 30 Mar 2025 09:37:53 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=OFJYL8ittwMKAlIblU6XEK8VfYs+2zvwoSH+AWPlxC6ftTBhB/C93XCa935LPy7Vr6alOpYQzCtwjOUPqKr1HjolrJmvTa0vVc2JWf+LvSJsQ9fIe6/7+mbWywukf44Kuqu0NRsHGM9OENmSXR1f/99nQcPJil71OvLlqR5ZqC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LlT7zU5k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A92A2C4CEDD;
+	Sun, 30 Mar 2025 09:39:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743327477;
-	bh=ZAMYJsGQYXJoeHSUJdx39GRkS+durNBNrZUdPm+FfQU=;
+	s=k20201202; t=1743327549;
+	bh=nb+s4geoLKiT4WvuOstHlXUTAwuIvv89Yx9RssgX5Ik=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=pFgcvD5P2W057bY01kS0lTSxnHpaCAibDoxYcy61jMLXsPr6kifYO/dNPhh6ExY1j
-	 EtOm88gphic5P3dEMz2mEpX0K6uSVquXbcu/qXLbwp/L7rSsroDylgeDVp7x+a1bnl
-	 IFcBxDOcBFBrs9A0Ai47LSeAFEw5ePp/oiHLuLB3n+Ank5u8sTIjllC0pmC1vcSQa1
-	 Zw2UY8MLEd+YfyEeZrPnyo8Cv37MjuCVNUeyyxEjObqVL1SHJwfOIp1pLuDTX3me0m
-	 xhRewdIH/oIq68JIs5JHSb/w/ji02tFyNXRbf0COHz+kaxjsmUWGPuLZfq32//ZXUn
-	 KrEVXQbQUqe7w==
-Message-ID: <864f223f-2d0b-4202-b46d-824ee61fc817@kernel.org>
-Date: Sun, 30 Mar 2025 11:37:50 +0200
+	b=LlT7zU5kSLfRnjdUV33notU1ulYd+sZhp8W+KDat/rwfcnTzBQnBpLY0Qg7M/MGdr
+	 9I5DFEKdsfGEtbIiTLippEECyxgqv9ONIT4sTRoOFIivAROxF8DO/dU9ZuRyXhV0PQ
+	 mN4oalVdOY1nQ8LiLVgZI6nEtRbaU96sWBq9pHuVo0ZtUFayuO3QmFu/VFcr/SnOpP
+	 TPJuLnH1M43qLiH5uTrTwRZyG6ChNNa2MnRuNrm+VsdmfyUEfbXCY+MRHUIu5iIfux
+	 x6eByRFUeeiTDAJ1J6cYUcPu2awAlhHERLeE4Kx1UGUec3mBsw+rO3uDbPbI+Thk1M
+	 IwvUZQyVuifPQ==
+Message-ID: <3c8f431c-f399-46a9-a031-b1fe39ccc9d4@kernel.org>
+Date: Sun, 30 Mar 2025 11:39:03 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -50,13 +50,14 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/3] dt-bindings: add winsen to the vendor prefixes
+Subject: Re: [PATCH 2/3] dt-bindings: add device tree support for winsen
+ MHZ19B CO2 sensor
 To: Gyeyoung Baek <gye976@gmail.com>, jic23@kernel.org
 Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, lars@metafoo.de,
  gustavograzs@gmail.com, javier.carrasco.cruz@gmail.com, robh@kernel.org,
  krzk+dt@kernel.org, conor+dt@kernel.org
 References: <20250329164905.632491-1-gye976@gmail.com>
- <20250329164905.632491-4-gye976@gmail.com>
+ <20250329164905.632491-3-gye976@gmail.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -102,19 +103,64 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20250329164905.632491-4-gye976@gmail.com>
+In-Reply-To: <20250329164905.632491-3-gye976@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 29/03/2025 17:49, Gyeyoung Baek wrote:
-> Add winsen to the vendor prefixes.
+> Add device tree support for winsen MHZ19B sensor.
 > 
 > Signed-off-by: Gyeyoung Baek <gye976@gmail.com>
 > ---
-Your patches are ordered entirely in opposite order. First you use the
-binding, then you document. First you use prefix, then you document it.
+>  .../bindings/iio/chemical/winsen,mhz19b.yaml  | 31 +++++++++++++++++++
+>  1 file changed, 31 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/chemical/winsen,mhz19b.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/chemical/winsen,mhz19b.yaml b/Documentation/devicetree/bindings/iio/chemical/winsen,mhz19b.yaml
+> new file mode 100644
+> index 000000000000..c08681e43281
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/chemical/winsen,mhz19b.yaml
+> @@ -0,0 +1,31 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/chemical/dht11.yaml#
 
-It's not bisectable. Reverse everything (see also DT submitting patches).
+Never tested.
+
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: MHZ19B CO2 sensor
+> +
+> +maintainers:
+> +  - Gyeyoung Baek <gye976@gmail.com>
+> +
+> +description: |
+> +   CO2 sensor using UART serdev bus interface.
+
+serdev is Linux thing. Just drop description.
+
+> +
+> +properties:
+> +  compatible:
+> +    const: winsen,mhz19b
+> +
+> +required:
+> +  - compatible
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    serial {
+> +      mhz19b-co2-sensor {
+
+Node names should be generic. See also an explanation and list of
+examples (not exhaustive) in DT specification:
+https://devicetree-specification.readthedocs.io/en/latest/chapter2-devicetree-basics.html#generic-names-recommendation
+
+
 
 Best regards,
 Krzysztof

@@ -1,181 +1,104 @@
-Return-Path: <linux-iio+bounces-17371-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17372-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 728C2A75B6F
-	for <lists+linux-iio@lfdr.de>; Sun, 30 Mar 2025 19:34:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C944A75B73
+	for <lists+linux-iio@lfdr.de>; Sun, 30 Mar 2025 19:37:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7B3E71884AA5
-	for <lists+linux-iio@lfdr.de>; Sun, 30 Mar 2025 17:35:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 842153A9AF4
+	for <lists+linux-iio@lfdr.de>; Sun, 30 Mar 2025 17:36:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BC1C1DB13A;
-	Sun, 30 Mar 2025 17:34:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 669561DAC81;
+	Sun, 30 Mar 2025 17:37:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="w2mwmBur"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PD6Wg3Cr"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oi1-f169.google.com (mail-oi1-f169.google.com [209.85.167.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1063D1AF0B4
-	for <linux-iio@vger.kernel.org>; Sun, 30 Mar 2025 17:34:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 233111C84CE;
+	Sun, 30 Mar 2025 17:37:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743356086; cv=none; b=TBSbt0Np1+zVzY0tNZ8vFWNsPAuZKcNNnVTa3WUhx7tLntK43w+4vzyoBu7XkPRRcPdCNrpapf1LrdsRPiXiBtnUlvp25J+84yfgdJj6jMUNGADJHt1W0Rkz57PAovzg2LOP2cQrSn2nvdb5elhmTU4eG6BvWK+VKRK/p6Tu6cQ=
+	t=1743356224; cv=none; b=GkR79ztSBk7v9fkSa5PcjzNMZwbzOzGpba6yTbFxiZrWTmItiRJeCBvyo8Nv8AjnXf9oMDsbdqRAPIbRqvIPSYLTJ9D/WDpLiOq/0aU5DSS+eEd5ZlLS2eW7dHynbpdIoqqlK2wf+TMTRioEioLEo2F4txTtQ8mZYCryW0gGLWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743356086; c=relaxed/simple;
-	bh=5U4Clltkv80WoyfzgJ6eTMysFZQXQPuuPC+tduvLBCM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XbR6l4VSY4q2LBT8iEWR7MId6aWW1ul9kjN8MEteQDiK8QCc7judPs08UWLnjBYnm0gsJfqOWZjrVMyZxaudnIQdwL+IUB5oQElgomYVM7W9yWXSbRvz54ZYZfdNWBEwAb8VBC9wibafgItE+mbuXGBUbyuWle2LdmllYIcfDKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=w2mwmBur; arc=none smtp.client-ip=209.85.167.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oi1-f169.google.com with SMTP id 5614622812f47-3fe9fe62295so1100139b6e.0
-        for <linux-iio@vger.kernel.org>; Sun, 30 Mar 2025 10:34:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1743356083; x=1743960883; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=iBuISF6jbYBXth4JoPLKPG1nY0sGBae58GEnveT2Zws=;
-        b=w2mwmBurSdjQDXRwGxtElR+z9AzymUcuB9lGPfUOc+5shelRZFWOwVuadd9kD4rGCw
-         90nIkPQ325AAP8Tmp9pfv41W3hVLPf/UbG2iYUSZx5AxK6DfyICKbK021QbZhicoSahA
-         OGuR9hqcwyKU1Sq2n4BCsFwL4IOInPru53h11BvENfTyji1peCDziJ+on2yaZQMcMlf7
-         38/dxrhe+VYyzXZcNy8IJ3N4i3UNrIriMBA5dlOcJPmN5c+X9omKUDEPrLeardA2GtTs
-         ib1pSJddTVmAewtkoYQWCQ+V7VtSWOQoMWoyU0yyv1q76Ut7Hi1bAtp5X6c751saopmK
-         4OrQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743356083; x=1743960883;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=iBuISF6jbYBXth4JoPLKPG1nY0sGBae58GEnveT2Zws=;
-        b=Xi376mDjszaFQlcp8ec/aToAZFfs9Cx6icgpjgRWoQxSrtZBxXUfD+aznqI3AG7E44
-         guzIbKFCkZDs3wlpOEnaDpdABnfdG75O2ZQnhbMa2t74I6P/6igAK/tf8Zivp1d+UTz4
-         wTgZTOEPa9EpjWZTZg1yMdKHD0zcRZVLh7crYtnyH860M0MDKjYo277fXcfw9GZPdYML
-         fv8C7t5COBP9WEZ63/oolBoS2T1fYC1sXZajyP2dgl8jQM5WnnECn1Q089JXrxZD2kJ/
-         SSA+IyEjQnM61rgrGKJ7xAD9jYQyGlKnDRy7CtBl4Lmatd5zFRtq8YiHHxykmYvdK++9
-         QYpQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUKmivR0MQWwjKA++Y/Wdtcn1LDFK0H3CZuPwAKX3DmHmEeZhmXwR/y7Z31Oz98FXYGIQGTjawHWQ4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzXUyeUTWysuGQ0ELWBEUrEatgi79lxTQBVGlQ6qs0NyWm8rI7Q
-	S3XJo6F5DwciVfRJyDXJzzpFBqWYvCCN9x/JJjpDwum58uHQVSs2aRBBpiDYeZh/Q5tB2p8It9X
-	vqTs=
-X-Gm-Gg: ASbGncsXYfKandnZuut2VkWkoZ60hBzRKdm0wH2r/Op7sYv7HTTBxyNv8596A7+wDJF
-	Lix9Ujt6HW7r53430Y5YFzqtHw3QCewMF3Ii9DukhY1m2px5ezSajjSffRi2N04ZYjxApBeIuml
-	uf5miQ4eIb2P7zIp8ZvCNhZ9zDUYP7xRQAPPRv+GIcPaZIxJGqEYH978aCZTqd7rWcUppjzvwiX
-	polfrBBOfnUltuUzwYihxqeGk4Uvc8Gh5Ht6k6+slolHODJwWJWv1PntrZthdHm3pojWNSR6Wfp
-	I2Soo3lWpGz40M93IJ4wYUISuL29dgOKFPggWJLamnNlcm+6AyOjTecAmoxhb7hcFZ2FYY6TTUQ
-	c1ZRQ0g==
-X-Google-Smtp-Source: AGHT+IFKNqyLxoS7q9afhTJ9PDwxwlzxNhC+QwhLSfePM4OfbMQPkD2Wtprcexa5g1W4C6bNtwH9Ug==
-X-Received: by 2002:a05:6808:2e4b:b0:3f6:ab0d:8dc0 with SMTP id 5614622812f47-3ff0f59b9famr4159919b6e.24.1743356082956;
-        Sun, 30 Mar 2025 10:34:42 -0700 (PDT)
-Received: from [192.168.0.113] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-602845027b6sm1197779eaf.16.2025.03.30.10.34.40
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 30 Mar 2025 10:34:41 -0700 (PDT)
-Message-ID: <3ad6f137-5f67-4448-b0c9-2e760bd935a7@baylibre.com>
-Date: Sun, 30 Mar 2025 12:34:39 -0500
+	s=arc-20240116; t=1743356224; c=relaxed/simple;
+	bh=Z5iQ6l4T7EHuMNLeeQlrjmUTMQ9QLlcLdD59kVsa2cM=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=NgpLMcEd+LlyTX7xV5XdY6xK0aYOeO8b/wvVKHpwKHVzACPbbqmVbJxazyOJ4BSMnfxa/3xnG2L0Eh8xo5kRyMrmxHLWfNsnqCC85Z1TdrExZAKcjUzV3F7fcq/wadCtRuWJEjSAi8kXr9l5zgyi+Jckfo8LglHVwPff1LzT4YM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PD6Wg3Cr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2551C4CEDD;
+	Sun, 30 Mar 2025 17:37:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1743356223;
+	bh=Z5iQ6l4T7EHuMNLeeQlrjmUTMQ9QLlcLdD59kVsa2cM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=PD6Wg3CrjHbt2AKlEzF/MoYg0vG95x1DukeNNFie7yep3rXgfhj7Y8Y2JG2J05G6e
+	 pcR5pwo3fmZTbDomPIP9IPmqjN7jCGU+svejBGGVOul0MIlPrvyKZDCjQoaaFRZrGa
+	 xBvpvvwgAf9rAPh+B7JH911o8DJnLrcp6gKUf5D++ZBbxXUohRra8PHMWMExY8WL7R
+	 R/EKMh8IHOMWqgVHnTLFEbHqTIOhJXgQ/gnLMy83U3Jf4zONo1eT8BZ0CcR3gOURD7
+	 x4TtgJKDXkNSzpfX4p8I8A5oW3qw2lNgrfsySSsUN01emplYXJxK9OJe9F4dEx6+X2
+	 GUAdNUA5rIBCw==
+Date: Sun, 30 Mar 2025 18:36:55 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
+Cc: david@ixit.cz, Lars-Peter Clausen <lars@metafoo.de>, Svyatoslav Ryhel
+ <clamor95@gmail.com>, Robert Eckelmann <longnoserob@gmail.com>,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 10/13] iio: light: al3010: Improve al3010_init error
+ handling with dev_err_probe
+Message-ID: <20250330183655.58bd22e8@jic23-huawei>
+In-Reply-To: <20250319-al3010-iio-regmap-v2-10-1310729d0543@ixit.cz>
+References: <20250319-al3010-iio-regmap-v2-0-1310729d0543@ixit.cz>
+	<20250319-al3010-iio-regmap-v2-10-1310729d0543@ixit.cz>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] Documentation: ABI: add oversampling frequency in
- sysfs-bus-iio
-To: Jonathan Cameron <jic23@kernel.org>,
- Jorge Marques <jorge.marques@analog.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael.Hennerich@analog.com,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20250321-abi-oversampling-events-frequency-v1-0-794c1ab2f079@analog.com>
- <20250321-abi-oversampling-events-frequency-v1-2-794c1ab2f079@analog.com>
- <20250330181320.0ec4351c@jic23-huawei>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <20250330181320.0ec4351c@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On 3/30/25 12:13 PM, Jonathan Cameron wrote:
-> On Fri, 21 Mar 2025 15:50:02 +0100
-> Jorge Marques <jorge.marques@analog.com> wrote:
-> 
->> Some devices have an internal clock used to space out the conversion
->> trigger for the oversampling filter,
->> Consider an ADC with conversion and data ready pins topology:
->>
->>   Sampling trigger |       |       |       |       |
->>   ADC conversion   ++++    ++++    ++++    ++++    ++++
->>   ADC data ready      *       *       *       *       *
->>
->> With the oversampling frequency, conversions can be evenly space between
->> the sampling edge:
-> 
-> I'm not sure what this second example is providing.  Are you suggesting
-> that if we don't provide oversampling frequency we should assume this
-> pattern?  i.e. it is the default?
-> 
->>
->>   Sampling trigger |       |       |       |       |
->>   ADC conversion   + + + + + + + + + + + + + + + + + + + +
->>   ADC data ready         *       *       *       *       *
->>
-> In general this patch needs to go in with the first driver using it.
-> I don't think we have any such driver yet?
-> 
->> Signed-off-by: Jorge Marques <jorge.marques@analog.com>
->> ---
->>  Documentation/ABI/testing/sysfs-bus-iio | 17 +++++++++++++++++
->>  1 file changed, 17 insertions(+)
->>
->> diff --git a/Documentation/ABI/testing/sysfs-bus-iio b/Documentation/ABI/testing/sysfs-bus-iio
->> index 33c09c4ac60a4feec82308461643134f5ba84b66..2317bacf6a2884691a08725d6f01d18555a96227 100644
->> --- a/Documentation/ABI/testing/sysfs-bus-iio
->> +++ b/Documentation/ABI/testing/sysfs-bus-iio
->> @@ -139,6 +139,23 @@ Contact:	linux-iio@vger.kernel.org
->>  Description:
->>  		Hardware dependent values supported by the oversampling filter.
->>  
->> +What:		/sys/bus/iio/devices/iio:deviceX/oversampling_frequency
->> +KernelVersion:	6.15
->> +Contact:	linux-iio@vger.kernel.org
->> +Description:
->> +		Some devices have internal clocks for the ADC oversampling.
-> I wonder if we can hint at your diagram above?
-> Maybe
-> 		Some devices have internal clocks for the ADC oversampling allowing
-> 		the over samples to be bunched up, rather than evenly spread over the
-> 		period set by the sampling frequency.
-> 
->> +		Sets the resulting sampling frequency to trigger a conversion
->> +		used by the oversampling filter.
->> +		Can be used to evenly space conversion between the sampling edge
->> +		on some devices.
-> I'd skip this last line, or maybe say something like:
-> 
-> 		If not provided, the default assumption is that the oversamples
-> 		are evenly spread over the period of the sample.
+On Wed, 19 Mar 2025 21:59:49 +0100
+David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org> wrote:
 
-Does that mean we should go through existing drivers and add this new
-attribute if appropriate? For example, ad7380 comes to mind. It has a
-fixed-rate internal clock for oversampling, so would have a read-only
-oversampling_frequency attribute.
-
+> From: David Heidelberg <david@ixit.cz>
 > 
->> +
->> +What:		/sys/bus/iio/devices/iio:deviceX/oversampling_frequency_available
->> +KernelVersion:	6.15
->> +Contact:	linux-iio@vger.kernel.org
->> +Description:
->> +		Hardware dependent values supported by the oversampling
->> +		frequency.
->> +
->>  What:		/sys/bus/iio/devices/iio:deviceX/in_voltageY_raw
->>  What:		/sys/bus/iio/devices/iio:deviceX/in_voltageY_supply_raw
->>  What:		/sys/bus/iio/devices/iio:deviceX/in_voltageY_i_raw
->>
+> Slight simplification of the code.
+> 
+> Signed-off-by: David Heidelberg <david@ixit.cz>
+This one is fine but given I've not picked up 9 I can't pick this up either
+for this version.
+
+Thanks,
+
+Jonathan
+
+> ---
+>  drivers/iio/light/al3010.c | 6 ++----
+>  1 file changed, 2 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/iio/light/al3010.c b/drivers/iio/light/al3010.c
+> index 8098c92c9572befe92d00ef0785ded5e1a08d587..af7ed028259837f2232f30072b87cc0da7c77f37 100644
+> --- a/drivers/iio/light/al3010.c
+> +++ b/drivers/iio/light/al3010.c
+> @@ -184,10 +184,8 @@ static int al3010_probe(struct i2c_client *client)
+>  	indio_dev->modes = INDIO_DIRECT_MODE;
+>  
+>  	ret = al3010_init(data);
+> -	if (ret < 0) {
+> -		dev_err(dev, "al3010 chip init failed\n");
+> -		return ret;
+> -	}
+> +	if (ret)
+> +		return dev_err_probe(dev, ret, "failed to init ALS\n");
+>  
+>  	ret = devm_add_action_or_reset(dev, al3010_set_pwr_off, data);
+>  	if (ret)
 > 
 
 

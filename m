@@ -1,73 +1,66 @@
-Return-Path: <linux-iio+bounces-17353-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17354-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16D89A75AD0
-	for <lists+linux-iio@lfdr.de>; Sun, 30 Mar 2025 18:08:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C27FEA75AED
+	for <lists+linux-iio@lfdr.de>; Sun, 30 Mar 2025 18:35:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D595A1889CA7
-	for <lists+linux-iio@lfdr.de>; Sun, 30 Mar 2025 16:08:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D2303A790E
+	for <lists+linux-iio@lfdr.de>; Sun, 30 Mar 2025 16:35:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 757C81D79BE;
-	Sun, 30 Mar 2025 16:08:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DF621D5172;
+	Sun, 30 Mar 2025 16:35:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vd9BOLmb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eV2cZxLS"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E20F9461;
-	Sun, 30 Mar 2025 16:08:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AE589461;
+	Sun, 30 Mar 2025 16:35:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743350881; cv=none; b=PHfLhot+71Eit3v8N25IuZn2m0ux1bEHGjcsGuRJjr4ahGRVjgnyNouHp+RC2PFT5eV5qKm3vY08O85ClPU7sXw1gO6BdBKjQxpVgV+yYajxJ5JjSCzswVZkl3ssjg/s0qH9OI3irBkexBtirigk20WxcjnrRg6xlc/IumaiS0o=
+	t=1743352522; cv=none; b=RXnyTUt7Uqai+/U5nYkgsWhSk60LHZAy6ENEZPKwCjpacaklgUpVkszd0qTDdKibabfqnsSoQ8IsABJHL43aaAovrXZC/liRE5fdbfOejz772l4cq8xTqlhaisv5hvtykpyvWpFLjWyPKihN9bmSg+jBVEjBXimXU04t2Iid88U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743350881; c=relaxed/simple;
-	bh=H+MtWmTdkziBn0VV5vZW/5X6QRHEOhzJFpXEfO/uuYM=;
+	s=arc-20240116; t=1743352522; c=relaxed/simple;
+	bh=O0QJ1S+tuxSySVX10I5InTFb4LaPHEWfNmS9eJeW4i8=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QPo2Z+IiVXMZKOK2MKH6HPC2KhyyPyAo+DVLD9ZNCK0sqES5SivNLakZ9c1+DQtJxxZ+VzKpBkOaAqy7ubEfHxjUBuGI200OjrWVtnkfpGlTHwnkKhwCx0LvPzggnFEPG9jXgY0WFF0a5Nl308bSO3VQuDFeUdN8KQxWbW94xJo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vd9BOLmb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5B76C4CEDD;
-	Sun, 30 Mar 2025 16:07:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=eYOxzMOyletd1sh0xZI8vUtJ85O73jx7HJ65iBrcUvO/rfVuPuf3wSwMrRXqyLbmGVbe5Cvuv6DuEhzcWAMyCA2SRpjyFov2nJatPhdrpmeMJAsC6XUDLZUvjK0KdJYIFx/K88HdwKQ3qTQoCLhtSUZPj1QYm4uPc/I210AvFcA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eV2cZxLS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4ED8C4CEDD;
+	Sun, 30 Mar 2025 16:35:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743350880;
-	bh=H+MtWmTdkziBn0VV5vZW/5X6QRHEOhzJFpXEfO/uuYM=;
+	s=k20201202; t=1743352521;
+	bh=O0QJ1S+tuxSySVX10I5InTFb4LaPHEWfNmS9eJeW4i8=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Vd9BOLmb075F+HnfLLGKxhbHRX0hJJX5BI4L04rjlF/64bkg3m4Je0iC8TADr+FMG
-	 lldP4dFPVBrTUStmKGetqxwU7XftMHotWF96OvgidAZK7uGK4N+DvzFFE1g9sqEDxA
-	 qsQAUE0QCAQq387ldy8hawwWgYdgNy23X4Ujt6UNiDRXj7j7dkkUyJa61ahuGhZZow
-	 oPpJm8vFk/yMNn5cMZPC2F3rD4gLZvhB91ofA7oSc1zHm3Y6H7NiemTMnaAeztEKAa
-	 FGPWGJvkbAvk8x6ioZ166CNp+81D53AO2keT4PDNRdmBffZwOIj/QooDczn7KGhrxe
-	 fLSLvvo00EqUw==
-Date: Sun, 30 Mar 2025 17:07:49 +0100
+	b=eV2cZxLSdjl03dd/h5OucJBUm+skfwhgNH4u6LqnmIDooH0wEbTZzJdDx5NQV0cNp
+	 kDp65+jBQ6hinrXemX+9QisDy3XtvF/9tbQaMLLunNYvnJhwywEUnbWojVgg6DjpEg
+	 B+FxMzRcY90V48t5nkJeGSK+IJ/UqihfQH1Wfab14TBF4yovbuLoWU6ZgO9vTJRZMF
+	 NwI0o+ejp7W0KuJVCCUdWT0mzVg7nX+oHn+UdAdJCpO4pSZSejXvpCCdnZjEf96Ew5
+	 50cS2hq+iupRqCjM/uVZJKHX/hjzzlzK+XGEJ1SjNoVVya8C7DfxVGdm38SE5CZNoj
+	 ns4t3/IG5+J6A==
+Date: Sun, 30 Mar 2025 17:35:11 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Matti Vaittinen <mazziesaccount@gmail.com>
-Cc: Sakari Ailus <sakari.ailus@linux.intel.com>, Matti Vaittinen
- <matti.vaittinen@fi.rohmeurope.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Daniel Scally <djrscally@gmail.com>, Heikki Krogerus
- <heikki.krogerus@linux.intel.com>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- Danilo Krummrich <dakr@kernel.org>, Claudiu Manoil
- <claudiu.manoil@nxp.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
- Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
- netdev@vger.kernel.org, Laurent Pinchart
- <laurent.pinchart@ideasonboard.com>
-Subject: Re: [PATCH v8 02/10] property: Add functions to iterate named child
-Message-ID: <20250330170749.7fe553cd@jic23-huawei>
-In-Reply-To: <726281b2-66f5-45e9-94f2-4f79b4ab159d@gmail.com>
-References: <cover.1742225817.git.mazziesaccount@gmail.com>
-	<9c3880f74476436f39d796b5c10c540ae50b722c.1742225817.git.mazziesaccount@gmail.com>
-	<Z9mQPJwnKAkPHriT@kekkonen.localdomain>
-	<b6b62ddd-ab59-4112-8f6e-c72618c45910@gmail.com>
-	<Z9rhfJUlCbi7kA2m@kekkonen.localdomain>
-	<726281b2-66f5-45e9-94f2-4f79b4ab159d@gmail.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Matti Vaittinen <mazziesaccount@gmail.com>, Matti Vaittinen
+ <matti.vaittinen@fi.rohmeurope.com>, Lars-Peter Clausen <lars@metafoo.de>,
+ Nuno Sa <nuno.sa@analog.com>, David Lechner <dlechner@baylibre.com>, Javier
+ Carrasco <javier.carrasco.cruz@gmail.com>, Olivier Moysan
+ <olivier.moysan@foss.st.com>, Guillaume Stols <gstols@baylibre.com>,
+ Dumitru Ceclan <mitrutzceclan@gmail.com>, Trevor Gamblin
+ <tgamblin@baylibre.com>, Matteo Martelli <matteomartelli3@gmail.com>,
+ Alisa-Dariana Roman <alisadariana@gmail.com>, =?UTF-8?B?Sm/Do28=?= Paulo
+ =?UTF-8?B?R29uw6dhbHZlcw==?= <joao.goncalves@toradex.com>, AngeloGioacchino
+ Del Regno <angelogioacchino.delregno@collabora.com>,
+ linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
+Subject: Re: [PATCH v10 6/8] iio: adc: Support ROHM BD79124 ADC
+Message-ID: <20250330173511.16ea9ebc@jic23-huawei>
+In-Reply-To: <Z-EWmK2r6VgmPAqa@smile.fi.intel.com>
+References: <cover.1742560649.git.mazziesaccount@gmail.com>
+	<ca3886c9abcb268ca976e62cd7da28bf5d6e6382.1742560649.git.mazziesaccount@gmail.com>
+	<Z-EWmK2r6VgmPAqa@smile.fi.intel.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -78,122 +71,78 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 20 Mar 2025 08:43:44 +0200
-Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+On Mon, 24 Mar 2025 10:23:52 +0200
+Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
 
-> On 19/03/2025 17:23, Sakari Ailus wrote:
-> > On Wed, Mar 19, 2025 at 08:02:24AM +0200, Matti Vaittinen wrote:  
-> >> On 18/03/2025 17:24, Sakari Ailus wrote:  
-> >>> On Mon, Mar 17, 2025 at 05:50:38PM +0200, Matti Vaittinen wrote:  
-> >>>> There are a few use-cases where child nodes with a specific name need to
-> >>>> be parsed. Code like:  
+> On Mon, Mar 24, 2025 at 09:13:42AM +0200, Matti Vaittinen wrote:
+> > The ROHM BD79124 is a 12-bit, 8-channel, SAR ADC. The ADC supports
+> > an automatic measurement mode, with an alarm interrupt for out-of-window
+> > measurements. The window is configurable for each channel.
+> > 
+> > The I2C protocol for manual start of the measurement and data reading is
+> > somewhat peculiar. It requires the master to do clock stretching after
+> > sending the I2C slave-address until the slave has captured the data.
+> > Needless to say this is not well suopported by the I2C controllers.
+> > 
+> > Thus do not support the BD79124's manual measurement mode but implement
+> > the measurements using automatic measurement mode, relying on the
+> > BD79124's ability of storing latest measurements into register.
+> > 
+> > Support also configuring the threshold events for detecting the
+> > out-of-window events.
+> > 
+> > The BD79124 keeps asserting IRQ for as long as the measured voltage is
+> > out of the configured window. Thus, prevent the user-space from choking
+> > on the events and mask the received event for a fixed duration (1 second)
+> > when an event is handled.
+> > 
+> > The ADC input pins can be also configured as general purpose outputs.
+> > Make those pins which don't have corresponding ADC channel node in the
+> > device-tree controllable as GPO.  
+> 
+> Thank you for the nicely written driver!
+> However, I have one big issue with it (see below).
 > 
 > ...
 > 
-> >>>> --- a/include/linux/property.h
-> >>>> +++ b/include/linux/property.h
-> >>>> @@ -167,10 +167,18 @@ struct fwnode_handle *fwnode_get_next_available_child_node(
-> >>>>    	for (child = fwnode_get_next_child_node(fwnode, NULL); child;	\
-> >>>>    	     child = fwnode_get_next_child_node(fwnode, child))
-> >>>> +#define fwnode_for_each_named_child_node(fwnode, child, name)		\
-> >>>> +	fwnode_for_each_child_node(fwnode, child)			\
-> >>>> +		if (!fwnode_name_eq(child, name)) { } else
-> >>>> +
-> >>>>    #define fwnode_for_each_available_child_node(fwnode, child)		       \
-> >>>>    	for (child = fwnode_get_next_available_child_node(fwnode, NULL); child;\
-> >>>>    	     child = fwnode_get_next_available_child_node(fwnode, child))
-> >>>> +#define fwnode_for_each_available_named_child_node(fwnode, child, name)	\
-> >>>> +	fwnode_for_each_available_child_node(fwnode, child)		\
-> >>>> +		if (!fwnode_name_eq(child, name)) { } else
-> >>>> +  
-> >>>
-> >>> OF only enumerates available nodes via the fwnode API, software nodes don't
-> >>> have the concept but on ACPI I guess you could have a difference in nodes
-> >>> where you have device sub-nodes that aren't available. Still, these ACPI
-> >>> device nodes don't have meaningful names in this context (they're
-> >>> 4-character object names) so you wouldn't use them like this anyway.  
-> >>
-> >> I believe you have far better understanding on these concepts than I do. The
-> >> reason behind adding fwnode_for_each_available_child_node() was the patch
-> >> 10/10:
-> >>
-> >> -	fwnode_for_each_available_child_node(sensors, node) {
-> >> -		if (fwnode_name_eq(node, "sensor")) {
-> >> -			if (!thp7312_sensor_parse_dt(thp7312, node))
-> >> -				num_sensors++;
-> >> -		}
-> >> +	fwnode_for_each_available_named_child_node(sensors, node, "sensor") {
-> >> +		if (!thp7312_sensor_parse_dt(thp7312, node))
-> >> +			num_sensors++;
-> >>   	}
-> >>
-> >>  
-> >>> So my question is: is it useful to provide this besides
-> >>> fwnode_for_each_named_child_node(), given that both are effectively the
-> >>> same?  
-> >>
-> >> So, I suppose you're saying the existing thp7312 -driver has no real reason
-> >> to use the 'fwnode_for_each_available_child_node()', but it could be using
-> >> fwnode_for_each_child_node() instead?
-> >>
-> >> If so, I am Ok with dropping the
-> >> 'fwnode_for_each_available_named_child_node()' and changing the 10/10 to:
-> >>
-> >> -	fwnode_for_each_available_child_node(sensors, node) {
-> >> -		if (fwnode_name_eq(node, "sensor")) {
-> >> -			if (!thp7312_sensor_parse_dt(thp7312, node))
-> >> -				num_sensors++;
-> >> -		}
-> >> +	fwnode_for_each_named_child_node(sensors, node, "sensor") {
-> >> +		if (!thp7312_sensor_parse_dt(thp7312, node))
-> >> +			num_sensors++;
-> >>   	}
-> >>
-> >> Do you think that'd be correct?  
-> > 
-> > I'd say so. Feel free to cc me to the last patch as well.  
+> > +static void bd79124gpo_set(struct gpio_chip *gc, unsigned int offset, int value)
+> > +static void bd79124gpo_set_multiple(struct gpio_chip *gc, unsigned long *mask,
+> > +				    unsigned long *bits)  
 > 
-> Thanks. I'll drop the fwnode_for_each_available_named_child_node() then.
-> 
-> > I guess one way to make this clearer is to switch to
-> > fwnode_for_each_child_node() in a separate patch before
-> > fwnode_for_each_named_child_node() conversion.  
-> 
-> I suppose this makes sense.
+> These will be _rv variants anyway as there is no chance this series goes before that.
 
-this _available_ thing is ancient history that has tripped us up
-many times before. I've very keen to not see another case sneaking
-in.  Whether we can definitely 'fix' all existing cases is a different
-question..
+I don't mind seeing this as a follow up series, but I would like that
+to hit this cycle if possible.
 
 > 
-> I think this series can't make it to 6.15-rc1. Meaning, these 
-> *_named_*() APIs perhaps land in 6.16-rc1. I assume these *_named_*() 
-> APIs will go through the IIO. This rather simple IIO driver's review 
-> took longer than I predicted, with more versions I intended (as always) 
-> - and I kind of dislike respinning the whole series, with this large 
-> audience, when changes are not interesting to the most.
+> ...
 > 
-> Maybe it is simplest to drop the thp7312 (and gianfar) from this series, 
-> and respin them only when the 6.16-rc1 is out. It's going to be couple 
-> of months though - so there's always a risk that I forget.
+> > +struct bd79124_raw {
+> > +	u8 val_bit3_0; /* Is set in high bits of the byte */
+> > +	u8 val_bit11_4;
+> > +};
+> > +#define BD79124_RAW_TO_INT(r) ((r.val_bit11_4 << 4) | (r.val_bit3_0 >> 4))
+> > +#define BD79124_INT_TO_RAW(val) {					\
+> > +	.val_bit11_4 = (val) >> 4,					\
+> > +	.val_bit3_0 = (val) << 4,					\
+> > +}  
 > 
-> The proposed change for the thp7312, from 
-> fwnode_for_each_available_child_node() to fwnode_for_each_child_node() 
-> can be done earlier though.
-> 
-> > There are also just a handful of users of
-> > fwnode_for_each_available_child_node() and I guess these could be
-> > converted, too, but I think it's outside the scope of the set.  
-> 
-> Definitely not in the scope of the bd79124 support :)
-Agreed. Break this series up however you like and entirely up to
-you whether you do further cleanup of other bits of the kernel!
+> All the rest is fine to me and looks good, but above is a principal impediment
+> to give you my tag. In case you update the type to __le16, feel free to add
+> my Reviewed-by tag.
+
+Matti, I think after all the back and forth it is clear I should have
+been fussier about this in the RFC as it would have saved time.
+My advice in future is once something has been poked twice by reviewers
+just change it.  For what it is worth I prefer what Andy is asking for
+but not enough to hold this longer.
+
+So applied (with tweak as per other mail) and with assumption you'll chase
+this with the gpio chip stuff cleaned up to use the new functions.
+
+Thanks,
 
 Jonathan
 
-> 
-> Yours,
-> 	-- Matti
 
 

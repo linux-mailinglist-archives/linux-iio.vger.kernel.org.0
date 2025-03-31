@@ -1,59 +1,63 @@
-Return-Path: <linux-iio+bounces-17427-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17428-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47ACDA764FC
-	for <lists+linux-iio@lfdr.de>; Mon, 31 Mar 2025 13:33:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 589CFA7651E
+	for <lists+linux-iio@lfdr.de>; Mon, 31 Mar 2025 13:44:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EE927168236
-	for <lists+linux-iio@lfdr.de>; Mon, 31 Mar 2025 11:33:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EBFF5188AEE6
+	for <lists+linux-iio@lfdr.de>; Mon, 31 Mar 2025 11:44:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B45AC1DE4E3;
-	Mon, 31 Mar 2025 11:33:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 034671E22FC;
+	Mon, 31 Mar 2025 11:44:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sTBINCfu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vsrul7ii"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75A8117A2FA
-	for <linux-iio@vger.kernel.org>; Mon, 31 Mar 2025 11:33:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD4271E1A32
+	for <linux-iio@vger.kernel.org>; Mon, 31 Mar 2025 11:44:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743420807; cv=none; b=UI6jxSLA1uNqJ8X2gRFJhp/IdeTBVnRzQVURjE6UxiDxYHNpi9J1tdLHg1oCaAFZLjkzJtaenupuu5Nnn8k2IQgTl7uGc9AtdIm5+wQtF9DgLvsbJxsIiZq/hj/0lEKyUiOPxZKO/MqdeuYhyCVZurOjnI8eDGH2lhpz6L5hIh0=
+	t=1743421457; cv=none; b=Z3l5JOyGwcGBbUVcLTYKNtbwOFe64qwIDd3lpDNlEPLErYiQdsAUsNkbMhN/ofroLcMS0EgfDT6liQZlrf2UEfhmtk2e90XA8CJIbpYYqLDwedEtT17SLTrHfAN2IoHv/pZAlZ1oWl5aEUXPOZ471TwG45EsWZRnuopeXvX1t5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743420807; c=relaxed/simple;
-	bh=AG7Q5BnJaUJud+ti/GAsZ/1ojpJoiEAvRtx93mtiIlI=;
+	s=arc-20240116; t=1743421457; c=relaxed/simple;
+	bh=GpnPGCtC/shzKDShFbfhSBboG6OYlmhjtMQ8Kf7Rs9w=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NDFQW5tP7l7I1gZ0r7/jbYcIu+fkNvOQsN16hCURCA5CxRXSb0GnrisTAD+CcLBeazeQApIVncnV35f0rSG3VOoarXam48ACBiBsCpsfi4F2SuF8QdKC+CQnMdSA/auzWKEtgz/jIUgciGepgdaQUIXPGsB1+4oWW/VvPhhVPiI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sTBINCfu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB6A3C4CEE3;
-	Mon, 31 Mar 2025 11:33:24 +0000 (UTC)
+	 MIME-Version:Content-Type; b=YaK0DwErxHRo8glBVJVdeyKQBTSYBJ508vkj6j0XfEOkwcdXIihFhh9lc9Zt6Nhkq4H4Pl4XrRLIt6AOxf6K5nUFOB3eeXXCXtPdgwEMeletvWXQNKyMi5EJ1YrdkRQXuxRFsrx7bCfTWf5r0fVKCYJdFw4Y2BJiM8wLX6NRlUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vsrul7ii; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30D58C4CEE3;
+	Mon, 31 Mar 2025 11:44:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743420807;
-	bh=AG7Q5BnJaUJud+ti/GAsZ/1ojpJoiEAvRtx93mtiIlI=;
+	s=k20201202; t=1743421457;
+	bh=GpnPGCtC/shzKDShFbfhSBboG6OYlmhjtMQ8Kf7Rs9w=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=sTBINCfu1vE1hvlmOhAGZrxlHFSTQfuTGjEbf1GXOaXYwgqYVfl/Wmouladcq1VYh
-	 mWdiXXhEF/WaS5mbtecSmw7wfadmwP3zNy2GTNeq3gttCkAWWj+Bvb5Rkv3KgzDjxc
-	 26yt12L4cUzEgTJN9fkn3Vy5hIMYsnqQuWs7/R4ZkS1lN+26U0/PssdL0F862NdXrA
-	 6YdcdGd21/70yCATBKG8l/0Tny5AUTn8HC7HhYZJCNjWy278iy6WnWdTzLZgbiik0l
-	 t6xJ22gpyWi4NKWcQeTX0TatXvRU0bxq3oDYGuoZSPd0hqLaoEnxcAShVwSZU4NbXO
-	 IFgAPC8xpHi1w==
-Date: Mon, 31 Mar 2025 12:33:21 +0100
+	b=Vsrul7iivxBxpsgpqBQNcZyJT0Fw/corb2okPFIbipX/R92cXsHRFx3lxU61Bu9Mo
+	 kF8IiOkryFC6KJoBpGnLrtP713eirPwkt0jqgIQSP3zzItDIfAYd+BUH3SwmXz8jPC
+	 Z/AdGSYI9ywUgfQKZohdV/zhptLyWeRmefwodHDfPe3qBiz2LJU0SwPRlUf+/19gqX
+	 yjlwv02rI1Vqg7hxpzsdjc8im4DD0e0uOvow++tDuZIcz79y8Zers6hD3DCLqTrrT2
+	 yB31U67tx9ZsOF/4dhdQNIkga+rtjJBNqXkxg0YBjqkCsbxPqjy4iu5WlajvDiD12t
+	 coA11Ap1OGnkQ==
+Date: Mon, 31 Mar 2025 12:44:08 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: David Lechner <dlechner@baylibre.com>
-Cc: Frank Li <Frank.Li@nxp.com>, Marek Vasut
- <marek.vasut+renesas@gmail.com>, linux-iio@vger.kernel.org, Nuno
- =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>, Marek Vasut <marex@denx.de>, Mike
- Looijmans <mike.looijmans@topic.nl>, Nuno =?UTF-8?B?U8Oh?=
+Cc: linux-iio@vger.kernel.org, Nuno =?UTF-8?B?U8Oh?=
+ <noname.nuno@gmail.com>, Astrid Rost <astrid.rost@axis.com>, Matti
+ Vaittinen <mazziesaccount@gmail.com>, Per-Daniel Olsson
+ <perdaniel.olsson@axis.com>, Javier Carrasco
+ <javier.carrasco.cruz@gmail.com>, Subhajit Ghosh
+ <subhajit.ghosh@tweaklogic.com>, Nuno =?UTF-8?B?U8Oh?=
  <nuno.sa@analog.com>, Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH v2 0/8] IIO: ADCs: Sparse friendly claim of direct mode
-Message-ID: <20250331123321.640c8c6e@jic23-huawei>
-In-Reply-To: <c1ffdd06-4907-4f6a-8cfa-698be64a1e79@baylibre.com>
-References: <20250309165819.1346684-1-jic23@kernel.org>
-	<c1ffdd06-4907-4f6a-8cfa-698be64a1e79@baylibre.com>
+Subject: Re: [PATCH 17/18] iio: light: vcnl4000: Switch to sparse friendly
+ iio_device_claim/release_direct()
+Message-ID: <20250331124408.69c27d42@jic23-huawei>
+In-Reply-To: <4d1666ef-8683-4d54-bb4b-7d858569c5a3@baylibre.com>
+References: <20250309170633.1347476-1-jic23@kernel.org>
+	<20250309170633.1347476-18-jic23@kernel.org>
+	<4d1666ef-8683-4d54-bb4b-7d858569c5a3@baylibre.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -64,27 +68,36 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 10 Mar 2025 18:21:30 -0500
+On Tue, 11 Mar 2025 14:11:16 -0500
 David Lechner <dlechner@baylibre.com> wrote:
 
-> On 3/9/25 11:58 AM, Jonathan Cameron wrote:
+> On 3/9/25 12:06 PM, Jonathan Cameron wrote:
 > > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > > 
-> > Resend of remaining unreviewed updates in drivers/iio/adc/*
+> > These new functions allow sparse to find failures to release
+> > direct mode reducing chances of bugs over the claim_direct_mode()
+> > functions that are deprecated.
 > > 
-> > I will eventually just apply these, but I'd much rather someone
-> > else took a quick look to check I haven't done anything stupid!
-> >   
-> Only managed to find one little potential oversight in patch 5/8.
-Fixed that up.
+> > Also split the enabling and disabling of thresholds into separate
+> > functions given overlap is small.  
 > 
-> Reviewed-by: David Lechner <dlechner@baylibre.com>
-> 
-Applied to the testing branch of iio.git.
+> Should be 2 patches since doing 2 different things?
 
-Thanks for reviewing!
+They are messily overlapped because of the oddity that we only
+take the direct mode state if enabling.  It is in theory possible to
+do the split of functions first but that will result in messier functions
+that we then clean up.  I'm not keen on that complexity so going to be
+lazy this time and not do it.
+
+I'll add something to the patch description to say that.
 
 Jonathan
 
+
+> 
+> > 
+> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > Cc: Astrid Rost <astrid.rost@axis.com>
+> > ---  
 
 

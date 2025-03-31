@@ -1,46 +1,46 @@
-Return-Path: <linux-iio+bounces-17438-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17439-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62A28A7657E
-	for <lists+linux-iio@lfdr.de>; Mon, 31 Mar 2025 14:14:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6A2AA7657F
+	for <lists+linux-iio@lfdr.de>; Mon, 31 Mar 2025 14:14:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 43E217A3414
-	for <lists+linux-iio@lfdr.de>; Mon, 31 Mar 2025 12:13:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 27AB47A3440
+	for <lists+linux-iio@lfdr.de>; Mon, 31 Mar 2025 12:13:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49DEF1E3780;
-	Mon, 31 Mar 2025 12:14:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F5F11E3780;
+	Mon, 31 Mar 2025 12:14:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RhCEl4/q"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e2J2y7gF"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B2691E32DD
-	for <linux-iio@vger.kernel.org>; Mon, 31 Mar 2025 12:14:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4000B1E32A0
+	for <linux-iio@vger.kernel.org>; Mon, 31 Mar 2025 12:14:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743423266; cv=none; b=sKXNzowwMtLtlQI7NaTm4Q2545VSQ3KuymwAqBAy2yhl9orEd6MvsUss99pX2JYFjftGMdXZJiLtxPzEo5iOX02sWC6B7F9HlBSrDZSQmSJzCAeFXWoMUTgf6lz2bPp0QPE9O5/DshbW8u3PqgX4LdQ0uAztACg4JqPE312wzv0=
+	t=1743423272; cv=none; b=bYd+dV7WZDnTL+XLbRIISHeVsddAoWAVy4hrT5OJdJooag4nX/SwvieFWcvbzPSa02ChY5/RuvyVGSV9XygAJqLiQsr0+1TFFc00PMFxob5EwKOKFLZ4b6EjjI/lh9q7AEDjWPiY0Z+bvCJ1VHeOOvlYwd2vLSQda1M2BHepUus=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743423266; c=relaxed/simple;
-	bh=1G8+RedA+cYnYN6BK8VVC6Ap1ZihZtFWfZ/E2J5ieZk=;
+	s=arc-20240116; t=1743423272; c=relaxed/simple;
+	bh=PMhnEKlnga3mxdWZiMXvLCRVbwuIgA20A9EgmuvdvjA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cbpi/cx6UdKTPfwGoYs5xa/wATRZKFGfLKBtBr4TeW5JqvgQ5A3cwiyVizglj6PgdzlQnYTb0FDRspOwCGmov0y9DsHxBMPQFpDGKoZVYWggyvkkMK/XIFlRbJoSHyb3y135qDj3mMRBLeh0bcP13fBWZlVygEKsReNKzUxuB0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RhCEl4/q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB07EC4CEE3;
-	Mon, 31 Mar 2025 12:14:19 +0000 (UTC)
+	 MIME-Version; b=cdBKcXSDu2jcZxPcBHvVd2tA6jgV7akTchQvmXKQ3Ow2vVhMKF+fArUfYpgWf87WvzUf9AuQBFlxDc/Ib3QolDC1YajtzkvyoeTATPJAhsrezmcVRU7fQPfa5m0fPCULGiqXQ/KbbNUGXL+srRb6tky3uxev58BbyXmrL1GF++w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e2J2y7gF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34BEAC4CEE3;
+	Mon, 31 Mar 2025 12:14:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743423265;
-	bh=1G8+RedA+cYnYN6BK8VVC6Ap1ZihZtFWfZ/E2J5ieZk=;
+	s=k20201202; t=1743423271;
+	bh=PMhnEKlnga3mxdWZiMXvLCRVbwuIgA20A9EgmuvdvjA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RhCEl4/qfzQQRC2+6iPm4HvCTrLdv5bobXZQp49aLUiMKUKQ1PfXr8V/URUdl0psz
-	 dsOmMDkqzSGYrHjRuNXnkb13311FidaofioGmttaDeXw6mSxXJLnGLuPV1DiqA2H45
-	 2Ou1pZ2RBQX1AGmYVOGadEEqS3kIKIUYR7DedMKGr8lQr4SsWaz8dqIBtQh9UzvgOe
-	 0z6YLPxEyYDr2HQ9Ku2UaVgxuwfUY3IX8IUYc96vk1lZzk/5ocogm4ZjO1BIEGF86Y
-	 Q0davvvZQ2l/Y2enZxL/22pS+L5ufQmzKw3/fx+oOpx5bPp9uqgf4DevE0zp/oMWTf
-	 FMDPkZpw0M+NQ==
+	b=e2J2y7gFjQctSnyeDnXpe+1SD2o1IWPgeo8RPV1L/1aQaL1W7QT5GotSTjkTdFsXa
+	 DE1inXNCMdx8DvYGifqkLRaM2z9kuWlFpcOizoMfWTtErAmPfadrBI+w1LKzlg7aha
+	 /a2nkll6GyEOUhwvWI8sJnNHwZuUyvYD1JegfrArPt/zxKTv/ucZEXVTgCymx75bX9
+	 DwZYY0Z1CM9yu1vOeKbZJbL5JkUp97Yu8qlOxiNqwPYIjvRvsWcO370kzO8xSMNCKy
+	 HXC05cRX7LnSKZl87p3cCaiKwWL7pugYPBp9CzyYb0W2TuY0Oe6GwKG4FlshQHao4v
+	 RhCHNL8PdMTBA==
 From: Jonathan Cameron <jic23@kernel.org>
 To: linux-iio@vger.kernel.org
 Cc: David Lechner <dlechner@baylibre.com>,
@@ -57,9 +57,9 @@ Cc: David Lechner <dlechner@baylibre.com>,
 	Yasin Lee <yasin.lee.x@gmail.com>,
 	Andy Shevchenko <andy.shevchenko@gmail.com>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 08/37] iio: gyro: adxrs290: Switch to sparse friendly iio_device_claim/release_direct()
-Date: Mon, 31 Mar 2025 13:12:48 +0100
-Message-ID: <20250331121317.1694135-9-jic23@kernel.org>
+Subject: [PATCH 09/37] iio: health: max30102: Switch to sparse friendly iio_device_claim/release_direct()
+Date: Mon, 31 Mar 2025 13:12:49 +0100
+Message-ID: <20250331121317.1694135-10-jic23@kernel.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250331121317.1694135-1-jic23@kernel.org>
 References: <20250331121317.1694135-1-jic23@kernel.org>
@@ -75,60 +75,33 @@ From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
 These new functions allow sparse to find failures to release
 direct mode reducing chances of bugs over the claim_direct_mode()
-functions that are deprecated.
+functions that are deprecated. This particular case is about ensuring
+the mode does not change rather than ensuring we are in direct mode.
+A follow up may cleanup the buffer mode claim.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Nishant Malpani <nish.malpani25@gmail.com>
 ---
- drivers/iio/gyro/adxrs290.c | 14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
+ drivers/iio/health/max30102.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/iio/gyro/adxrs290.c b/drivers/iio/gyro/adxrs290.c
-index 223fc181109c..8fcb41f45baa 100644
---- a/drivers/iio/gyro/adxrs290.c
-+++ b/drivers/iio/gyro/adxrs290.c
-@@ -290,9 +290,8 @@ static int adxrs290_read_raw(struct iio_dev *indio_dev,
+diff --git a/drivers/iio/health/max30102.c b/drivers/iio/health/max30102.c
+index 1d074eb6a8c5..dacc489f7293 100644
+--- a/drivers/iio/health/max30102.c
++++ b/drivers/iio/health/max30102.c
+@@ -484,11 +484,11 @@ static int max30102_read_raw(struct iio_dev *indio_dev,
+ 			 * things cannot concurrently change. And we just keep
+ 			 * trying until we get one of the modes...
+ 			 */
+-			if (iio_device_claim_direct_mode(indio_dev))
++			if (!iio_device_claim_direct(indio_dev))
+ 				goto any_mode_retry;
  
- 	switch (mask) {
- 	case IIO_CHAN_INFO_RAW:
--		ret = iio_device_claim_direct_mode(indio_dev);
--		if (ret)
--			return ret;
-+		if (!iio_device_claim_direct(indio_dev))
-+			return -EBUSY;
- 
- 		switch (chan->type) {
- 		case IIO_ANGL_VEL:
-@@ -316,7 +315,7 @@ static int adxrs290_read_raw(struct iio_dev *indio_dev,
- 			break;
- 		}
- 
--		iio_device_release_direct_mode(indio_dev);
-+		iio_device_release_direct(indio_dev);
- 		return ret;
- 	case IIO_CHAN_INFO_SCALE:
- 		switch (chan->type) {
-@@ -366,9 +365,8 @@ static int adxrs290_write_raw(struct iio_dev *indio_dev,
- 	struct adxrs290_state *st = iio_priv(indio_dev);
- 	int ret, lpf_idx, hpf_idx;
- 
--	ret = iio_device_claim_direct_mode(indio_dev);
--	if (ret)
--		return ret;
-+	if (!iio_device_claim_direct(indio_dev))
-+		return -EBUSY;
- 
- 	switch (mask) {
- 	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
-@@ -408,7 +406,7 @@ static int adxrs290_write_raw(struct iio_dev *indio_dev,
- 		break;
- 	}
- 
--	iio_device_release_direct_mode(indio_dev);
-+	iio_device_release_direct(indio_dev);
- 	return ret;
- }
- 
+ 			ret = max30102_get_temp(data, val, true);
+-			iio_device_release_direct_mode(indio_dev);
++			iio_device_release_direct(indio_dev);
+ 		} else {
+ 			ret = max30102_get_temp(data, val, false);
+ 			iio_device_release_buffer_mode(indio_dev);
 -- 
 2.48.1
 

@@ -1,46 +1,46 @@
-Return-Path: <linux-iio+bounces-17455-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17456-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAEAFA76593
-	for <lists+linux-iio@lfdr.de>; Mon, 31 Mar 2025 14:16:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 202BCA76594
+	for <lists+linux-iio@lfdr.de>; Mon, 31 Mar 2025 14:16:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 92A3416A3C4
-	for <lists+linux-iio@lfdr.de>; Mon, 31 Mar 2025 12:16:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5CBD31889803
+	for <lists+linux-iio@lfdr.de>; Mon, 31 Mar 2025 12:16:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FC981E47D9;
-	Mon, 31 Mar 2025 12:16:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C2E51E4928;
+	Mon, 31 Mar 2025 12:16:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BXDSZYTc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OL22rUjh"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60EC513B59B
-	for <linux-iio@vger.kernel.org>; Mon, 31 Mar 2025 12:16:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B9451E500C
+	for <linux-iio@vger.kernel.org>; Mon, 31 Mar 2025 12:16:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743423372; cv=none; b=JGuYI3sEJFNdVji/ZLamzVEMYwFoT4Hnewga7lxfXZ8iqgLzbw5CG/D8sUgi9GjBiKV+2r8MTORETROggW0+FAd00AOk8jSgIB8IVX0GZvWxwMxBJIqbSFHjc6eu3Sm8tRQX1ly2X/7nuKkUbsZKdXtvrNYa9rVCCCNQrMJwqf0=
+	t=1743423379; cv=none; b=lgWhkytMVZ8UYilpqTRnxHbfwHLqwdFX9AYeASmPa1Oq7PJfblKa6pr4e0WV35+gzXnIj21bvSQnlPQZFGiW1vAfctdtCzYYxeElapXl9yb0MTijAIaYdpD++yOizrAFbi17ii+1QOsGz9qmdW5VF0SiyHxtj8P472i1DgJhUSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743423372; c=relaxed/simple;
-	bh=a22iHUVEWcITkEW175cLzjZ/93VY9FSxJOe3GeehRec=;
+	s=arc-20240116; t=1743423379; c=relaxed/simple;
+	bh=maMHlrcpg9cp/PofwmTKahkmOwMVxbiFXs/Yqza8F2k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c+gQ2OhGX6pYn+n2wCyxiMaIbfD3Ojtd6xR8rBqCQbZio0o4AFKg4xZ2duaTURbEYVxNHgszMVDFt1+Aox6zMGCRZhTjuY4za8R0B5qr6uAXc9GRkFMiBD9XYrOKEcaylC6XPOXVtqW3uRtkCjDd+s3PTiu2SfJr3IoOif91AIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BXDSZYTc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58E64C4CEE3;
-	Mon, 31 Mar 2025 12:16:06 +0000 (UTC)
+	 MIME-Version; b=KOiS1foJL1nYQdPqt0ma+RAvGHwBhmbI7kuHyzWIRbYoxKRY6fImTB387ZVbWG56xibsv2w/YX0+CqD36PndYERQLOYi8BluyOxBuXqSVzfSAOMt23AQPNLkMIQnuSpK2tCwEAz/gza6MjD9Vni7rpzP4arcpE8HsayFAaTjtT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OL22rUjh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05663C4CEE3;
+	Mon, 31 Mar 2025 12:16:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743423372;
-	bh=a22iHUVEWcITkEW175cLzjZ/93VY9FSxJOe3GeehRec=;
+	s=k20201202; t=1743423378;
+	bh=maMHlrcpg9cp/PofwmTKahkmOwMVxbiFXs/Yqza8F2k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BXDSZYTctw4yB1dWpqvlYk2HYCqYel4f9dSYjOqtBLddq3MEJ1aT+/GKdkAvvDz1A
-	 wXNEji7D8h7mQia4JYlHMQiJe1KAID7g4wmI93p0FGArxadFAHxCZYZnCnORDmhCRI
-	 hDVa8SqDndsWt0MAN7NvyQ/Mqqgi4kVNN4//E+CvzFbstsGw+h4VXEqk9qlU7GA3Wt
-	 Spk3irfADk5xTXRPHgj6Oua/hmebFLH9YQ03ZKwojppn2gLyZPv6ZZF14kJvZjvh5L
-	 OijaFT8ClHc/vQMgwGS3ycLHWcOHWZ/NrFuElrS6oZcdut4IaSZ6anHKiXnZPE2HdZ
-	 e4WJD+WNKs7FQ==
+	b=OL22rUjhslthYPKc4lX9GWBAyWkAfUjndMurUr19vBulTqscgeIUKrEuhRI38CiTN
+	 Rb4DM0MJoH6fOMJpKK6oqghcMfkD/BBiiU4S4WnEhgsi4Kaj8+eKHSgis0J7W0SCqe
+	 HGCqdQd2zqaqaK4YzXLBMEZWsg/p8uWO3lLtCIOFakXi3nQiEXiKx7PiS0byPaE06b
+	 gw3BGVinZCKCwv+/r9PaO7he7/yT2obM5KQC8HaxX5iuJUPSQZHiIMhBUoUYKz8y38
+	 1lexiPRlNFnTNuZa2Xv1X4lboivkar2HnAZn71/IHkXdrcYm7L9Nb7OOmCVCQCr3ml
+	 FDEKza279opSg==
 From: Jonathan Cameron <jic23@kernel.org>
 To: linux-iio@vger.kernel.org
 Cc: David Lechner <dlechner@baylibre.com>,
@@ -57,9 +57,9 @@ Cc: David Lechner <dlechner@baylibre.com>,
 	Yasin Lee <yasin.lee.x@gmail.com>,
 	Andy Shevchenko <andy.shevchenko@gmail.com>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 25/37] iio: pressure: icp10100: Switch to sparse friendly iio_device_claim/release_direct()
-Date: Mon, 31 Mar 2025 13:13:05 +0100
-Message-ID: <20250331121317.1694135-26-jic23@kernel.org>
+Subject: [PATCH 26/37] iio: pressure: mpl3115: factor out core of IIO_INFO_RAW read to simplify code flow
+Date: Mon, 31 Mar 2025 13:13:06 +0100
+Message-ID: <20250331121317.1694135-27-jic23@kernel.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250331121317.1694135-1-jic23@kernel.org>
 References: <20250331121317.1694135-1-jic23@kernel.org>
@@ -73,65 +73,123 @@ Content-Transfer-Encoding: 8bit
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-These new functions allow sparse to find failures to release
-direct mode reducing chances of bugs over the claim_direct_mode()
-functions that are deprecated.
+Apply guard(mutex) to remove the need for manual release of the lock.
+Factor out the code that occurs under the direct claim.
+These two changes allow for direct returns simplifying code flow.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/pressure/icp10100.c | 15 ++++++---------
- 1 file changed, 6 insertions(+), 9 deletions(-)
+ drivers/iio/pressure/mpl3115.c | 90 ++++++++++++++++++----------------
+ 1 file changed, 47 insertions(+), 43 deletions(-)
 
-diff --git a/drivers/iio/pressure/icp10100.c b/drivers/iio/pressure/icp10100.c
-index 3e0bf5d31ad7..1951c1cc84cf 100644
---- a/drivers/iio/pressure/icp10100.c
-+++ b/drivers/iio/pressure/icp10100.c
-@@ -343,9 +343,8 @@ static int icp10100_read_raw_measures(struct iio_dev *indio_dev,
- 	uint32_t pressure_mPa;
- 	int ret;
- 
--	ret = iio_device_claim_direct_mode(indio_dev);
--	if (ret)
--		return ret;
-+	if (!iio_device_claim_direct(indio_dev))
-+		return -EBUSY;
- 
- 	ret = icp10100_get_measures(st, &raw_pressure, &raw_temp);
- 	if (ret)
-@@ -370,7 +369,7 @@ static int icp10100_read_raw_measures(struct iio_dev *indio_dev,
- 	}
- 
- error_release:
--	iio_device_release_direct_mode(indio_dev);
-+	iio_device_release_direct(indio_dev);
- 	return ret;
+diff --git a/drivers/iio/pressure/mpl3115.c b/drivers/iio/pressure/mpl3115.c
+index 71ded2eee060..207031b5ff72 100644
+--- a/drivers/iio/pressure/mpl3115.c
++++ b/drivers/iio/pressure/mpl3115.c
+@@ -69,6 +69,52 @@ static int mpl3115_request(struct mpl3115_data *data)
+ 	return 0;
  }
  
-@@ -439,7 +438,6 @@ static int icp10100_write_raw(struct iio_dev *indio_dev,
- {
- 	struct icp10100_state *st = iio_priv(indio_dev);
- 	unsigned int mode;
--	int ret;
++static int mpl3115_read_info_raw(struct mpl3115_data *data,
++				 struct iio_chan_spec const *chan, int *val)
++{
++	int ret;
++
++	switch (chan->type) {
++	case IIO_PRESSURE: { /* in 0.25 pascal / LSB */
++		__be32 tmp = 0;
++
++		guard(mutex)(&data->lock);
++		ret = mpl3115_request(data);
++		if (ret < 0)
++			return ret;
++
++		ret = i2c_smbus_read_i2c_block_data(data->client,
++						    MPL3115_OUT_PRESS,
++						    3, (u8 *) &tmp);
++		if (ret < 0)
++			return ret;
++
++		*val = be32_to_cpu(tmp) >> chan->scan_type.shift;
++		return IIO_VAL_INT;
++	}
++	case IIO_TEMP: { /* in 0.0625 celsius / LSB */
++		__be16 tmp;
++
++		guard(mutex)(&data->lock);
++		ret = mpl3115_request(data);
++		if (ret < 0)
++			return ret;
++
++		ret = i2c_smbus_read_i2c_block_data(data->client,
++						    MPL3115_OUT_TEMP,
++						    2, (u8 *) &tmp);
++		if (ret < 0)
++			return ret;
++
++		*val = sign_extend32(be16_to_cpu(tmp) >> chan->scan_type.shift,
++				     chan->scan_type.realbits - 1);
++		return IIO_VAL_INT;
++	}
++	default:
++		return -EINVAL;
++	}
++}
++
+ static int mpl3115_read_raw(struct iio_dev *indio_dev,
+ 			    struct iio_chan_spec const *chan,
+ 			    int *val, int *val2, long mask)
+@@ -82,49 +128,7 @@ static int mpl3115_read_raw(struct iio_dev *indio_dev,
+ 		if (ret)
+ 			return ret;
  
- 	switch (mask) {
- 	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
-@@ -449,13 +447,12 @@ static int icp10100_write_raw(struct iio_dev *indio_dev,
- 		mode = ilog2(val);
- 		if (mode >= ICP10100_MODE_NB)
- 			return -EINVAL;
--		ret = iio_device_claim_direct_mode(indio_dev);
--		if (ret)
--			return ret;
-+		if (!iio_device_claim_direct(indio_dev))
-+			return -EBUSY;
- 		mutex_lock(&st->lock);
- 		st->mode = mode;
- 		mutex_unlock(&st->lock);
--		iio_device_release_direct_mode(indio_dev);
-+		iio_device_release_direct(indio_dev);
- 		return 0;
- 	default:
- 		return -EINVAL;
+-		switch (chan->type) {
+-		case IIO_PRESSURE: { /* in 0.25 pascal / LSB */
+-			__be32 tmp = 0;
+-
+-			mutex_lock(&data->lock);
+-			ret = mpl3115_request(data);
+-			if (ret < 0) {
+-				mutex_unlock(&data->lock);
+-				break;
+-			}
+-			ret = i2c_smbus_read_i2c_block_data(data->client,
+-				MPL3115_OUT_PRESS, 3, (u8 *) &tmp);
+-			mutex_unlock(&data->lock);
+-			if (ret < 0)
+-				break;
+-			*val = be32_to_cpu(tmp) >> chan->scan_type.shift;
+-			ret = IIO_VAL_INT;
+-			break;
+-		}
+-		case IIO_TEMP: { /* in 0.0625 celsius / LSB */
+-			__be16 tmp;
+-
+-			mutex_lock(&data->lock);
+-			ret = mpl3115_request(data);
+-			if (ret < 0) {
+-				mutex_unlock(&data->lock);
+-				break;
+-			}
+-			ret = i2c_smbus_read_i2c_block_data(data->client,
+-				MPL3115_OUT_TEMP, 2, (u8 *) &tmp);
+-			mutex_unlock(&data->lock);
+-			if (ret < 0)
+-				break;
+-			*val = sign_extend32(be16_to_cpu(tmp) >> chan->scan_type.shift,
+-					     chan->scan_type.realbits - 1);
+-			ret = IIO_VAL_INT;
+-			break;
+-		}
+-		default:
+-			ret = -EINVAL;
+-			break;
+-		}
+-
++		ret = mpl3115_read_info_raw(data, chan, val);
+ 		iio_device_release_direct_mode(indio_dev);
+ 		return ret;
+ 
 -- 
 2.48.1
 

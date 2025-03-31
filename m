@@ -1,65 +1,57 @@
-Return-Path: <linux-iio+bounces-17412-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17413-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6450CA763CB
-	for <lists+linux-iio@lfdr.de>; Mon, 31 Mar 2025 12:04:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78712A7640E
+	for <lists+linux-iio@lfdr.de>; Mon, 31 Mar 2025 12:22:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8F0A87A2DF3
-	for <lists+linux-iio@lfdr.de>; Mon, 31 Mar 2025 10:03:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BDC04188A101
+	for <lists+linux-iio@lfdr.de>; Mon, 31 Mar 2025 10:22:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8FC31DEFDC;
-	Mon, 31 Mar 2025 10:04:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ED761DF75B;
+	Mon, 31 Mar 2025 10:22:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Olha6VKy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uQYe0TXg"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A8A41BD00C;
-	Mon, 31 Mar 2025 10:04:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B64E1DE892;
+	Mon, 31 Mar 2025 10:22:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743415487; cv=none; b=YaludfSJ9dPfdsTC4KM4FkExerYYovi3zFFCworu4RoheMiTDRYBlUDItv2aiecH/UHXqEISu9UbnrcFlf+on3n3YQxKciPVNfJDBNjRq8jqz/0oicDOPjcAzK0Jqcv9bLGItsPVmgn16QX/fMxzHSqhprOOXFxlHXzhz/e6Bhs=
+	t=1743416534; cv=none; b=nUyOwoD9G6iBQXT3XMBGPkKANqlFiyPg5E/HSwmHahsbM8tii7trQi5R7eLzk04UGHLGTOhlM4s/F+HaLeE7LMZqMItLdSyg8oux9al6TKBmToOC9FVej3ycWqKT1pWlLgrhwVgfrBwgF1CVlKWfy9+wwshBaLOGyZ1S8pwOHTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743415487; c=relaxed/simple;
-	bh=WtzLinbXy3Fwr2WfhYAFy3MIbifKzfAyDAq6yh8KZdw=;
+	s=arc-20240116; t=1743416534; c=relaxed/simple;
+	bh=vKRUMgcWb9UyjN7FvkeSjwbIlIKvKrgZrhoWgtJYVHg=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=q88fn1CJvmIOqpUSFor7BHnZejIh/WUngT0kJGbZSmyaIWdpoos2QnBMCp1fUChJX/my7hZjitQnHP0rqxSFfLnVoPeeW4O2u99FMWdgRowFVpci5rh9QPEPPWQPBNGPHk6loSSfTHt7T9LFaT+97CLXBRK4Fuk3LW++m2HargM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Olha6VKy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED166C4CEEB;
-	Mon, 31 Mar 2025 10:04:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=VKEiT1zmnC5mH4ko50qH5D+WRScH0UghWBJj5v11bNS1RRZSxOjkMaML2BKNtUCpYWPzfOwmoyUx3GM4Bjh40F1SbErJ4QrHGah15ukFMexfIU59gn+MRIp27MQzr5JxelC7+wMvJpLvAU+M2K+ckAVx0MYu+LwkNqNQ0aWx7js=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uQYe0TXg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 586A1C4CEE3;
+	Mon, 31 Mar 2025 10:22:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743415487;
-	bh=WtzLinbXy3Fwr2WfhYAFy3MIbifKzfAyDAq6yh8KZdw=;
+	s=k20201202; t=1743416533;
+	bh=vKRUMgcWb9UyjN7FvkeSjwbIlIKvKrgZrhoWgtJYVHg=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Olha6VKyprn8Do63e/IQcMQFClU+a0DaReCkz9AyuzufuKRxPX/XlV0R23urfP6ji
-	 Pianwfz0YKZZU+KTYJVu5kOsN9SigaIdrZ5Bbuz3aEZeDzlMXUVYOLQsN830Ix9lID
-	 gEUVA6Be8aoSc4lANtxO2GHEExT9rv8XQklTka5d2N5b+S+tFyOnVVeiCadpC8YyzQ
-	 S7nRhp3HgJh05BOoKlM5tTw7VeTlB287biI7sRrX08HbTp5SjQqc54hwuxGshgvzlm
-	 Kkr8HFivsF8XVLd4gzSjnKyeJppAW+JgBnvjmyX7+V1w0sxVPDXGuSGCI1My1Qslwg
-	 5UWTxxVwJKoLw==
-Date: Mon, 31 Mar 2025 11:04:35 +0100
+	b=uQYe0TXgb7fvhOF87U7EizzuwDOb4SkAOnDJU2F+YM6a643tHHXK23Plic1JRIP61
+	 mK9mDH/3Pu/L+m5fRyu+W5yy7/2dBG4c5GIwu/9tTCdM8t1qEZzvPALQOeyny2joLD
+	 ij9OpJc7f6E1o1rbWBWdA9oIEixKAeZg3Us1a2BWAIVMTB6xDyYONII5yGcFz/ENCu
+	 YGtYBKDzNqEBD/6rDDvUl36uhECvRitwICeqaS4MGqnJ/qsYKDG84fguQtGfmhEKWg
+	 +irKvn9cqgqt4jYFWYhRBXru3pxEseLW1TYM/WQP6hhSAcKuh7IoarugLxkY/+z6pt
+	 vIFUIEkeHYDFQ==
+Date: Mon, 31 Mar 2025 11:22:05 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-Cc: <lee@kernel.org>, <ukleinek@kernel.org>, <alexandre.torgue@foss.st.com>,
- <krzk+dt@kernel.org>, <conor+dt@kernel.org>, <daniel.lezcano@linaro.org>,
- <tglx@linutronix.de>, <robh@kernel.org>, <catalin.marinas@arm.com>,
- <will@kernel.org>, <devicetree@vger.kernel.org>, <wbg@kernel.org>,
- <linux-stm32@st-md-mailman.stormreply.com>,
- <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
- <linux-iio@vger.kernel.org>, <linux-pwm@vger.kernel.org>,
- <olivier.moysan@foss.st.com>
-Subject: Re: [PATCH v4 3/8] iio: trigger: stm32-lptimer: add support for
- stm32mp25
-Message-ID: <20250331110435.26157ebe@jic23-huawei>
-In-Reply-To: <30d13179-66fc-4856-ac70-af051ec5fe8f@foss.st.com>
-References: <20250314171451.3497789-1-fabrice.gasnier@foss.st.com>
-	<20250314171451.3497789-4-fabrice.gasnier@foss.st.com>
-	<20250315125615.065a2e74@jic23-huawei>
-	<30d13179-66fc-4856-ac70-af051ec5fe8f@foss.st.com>
+To: Lothar Rubusch <l.rubusch@gmail.com>
+Cc: lars@metafoo.de, Michael.Hennerich@analog.com,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ eraretuya@gmail.com
+Subject: Re: [PATCH v5 02/11] iio: accel: adxl345: add single tap feature
+Message-ID: <20250331112205.2457d829@jic23-huawei>
+In-Reply-To: <20250318230843.76068-3-l.rubusch@gmail.com>
+References: <20250318230843.76068-1-l.rubusch@gmail.com>
+	<20250318230843.76068-3-l.rubusch@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -67,205 +59,90 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, 27 Mar 2025 17:36:00 +0100
-Fabrice Gasnier <fabrice.gasnier@foss.st.com> wrote:
+On Tue, 18 Mar 2025 23:08:34 +0000
+Lothar Rubusch <l.rubusch@gmail.com> wrote:
 
-> On 3/15/25 13:56, Jonathan Cameron wrote:
-> > On Fri, 14 Mar 2025 18:14:46 +0100
-> > Fabrice Gasnier <fabrice.gasnier@foss.st.com> wrote:
-> >   
-> >> From: Olivier Moysan <olivier.moysan@foss.st.com>
-> >>
-> >> Add support for STM32MP25 SoC. Use newly introduced compatible to handle
-> >> this new HW variant. Add new trigger definitions that can be used by the
-> >> stm32 analog-to-digital converter. Use compatible data to identify them.
-> >>
-> >> Signed-off-by: Olivier Moysan <olivier.moysan@foss.st.com>
-> >> Signed-off-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>  
-> > 
-> > How do you want this to merge?   If it's going through mfd because
-> > of dependencies, then
-> > Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > 
-> > I haven't checked if there are any dependencies so shout if I should
-> > pick this up directly for next cycle.  
-> 
-> Hi Jonathan, Lee,
-> 
-> There's no build dependency, but the dt-bindings that adds the
-> compatible string.
-> 
-> Perhaps Lee can pick it up along with the mfd bindings and driver ?
-> 
-> I'm not sure what the most suitable option is.
-We don't normally worry if bindings and driver end up going through different
-trees.  Applied this patch to the testing branch of iio.git. I'll rebase
-on rc1 once available and push out as normal togreg branch.
+> Add the single tap feature with a threshold in 62.5mg/LSB points and a
+> scaled duration in us. Keep singletap threshold in regmap cache but
+> the scaled value of duration in us as member variable.
+>=20
+> Both use IIO channels for individual enable of the x/y/z axis. Initializes
+> threshold and duration with reasonable content. When an interrupt is
+> caught it will be pushed to the according IIO channel.
+>=20
+> Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
 
-Thanks,
+A couple of build issues plus one comment inline
+(I was going to tweak that thing whilst applying but the axis_en one is mor=
+e complex).
 
-Jonathan
-> 
-> Best Regards,
-> Fabrice
-> > 
-> > Thanks,
-> > 
-> > Jonathan
-> > 
-> >   
-> >> ---
-> >> Changes in v4:
-> >> - Jonathan's comment: simplify infrastructure by keeping
-> >>   devm_iio_trigger_register. Don't need to cast compatible data.
-> >> ---
-> >>  drivers/iio/trigger/stm32-lptimer-trigger.c   | 75 ++++++++++++++-----
-> >>  include/linux/iio/timer/stm32-lptim-trigger.h |  9 +++
-> >>  2 files changed, 67 insertions(+), 17 deletions(-)
-> >>
-> >> diff --git a/drivers/iio/trigger/stm32-lptimer-trigger.c b/drivers/iio/trigger/stm32-lptimer-trigger.c
-> >> index f1e18913236a..3dcc8d2fe093 100644
-> >> --- a/drivers/iio/trigger/stm32-lptimer-trigger.c
-> >> +++ b/drivers/iio/trigger/stm32-lptimer-trigger.c
-> >> @@ -16,16 +16,43 @@
-> >>  #include <linux/platform_device.h>
-> >>  #include <linux/property.h>
-> >>  
-> >> -/* List Low-Power Timer triggers */
-> >> -static const char * const stm32_lptim_triggers[] = {
-> >> -	LPTIM1_OUT,
-> >> -	LPTIM2_OUT,
-> >> -	LPTIM3_OUT,
-> >> +/* Maximum triggers + one trailing null entry to indicate the end of array */
-> >> +#define MAX_TRIGGERS 3
-> >> +
-> >> +struct stm32_lptim_cfg {
-> >> +	const char * const (*triggers)[MAX_TRIGGERS];
-> >> +	unsigned int nb_triggers;
-> >> +};
-> >> +
-> >> +/* List Low-Power Timer triggers for H7, MP13, MP15 */
-> >> +static const char * const stm32_lptim_triggers[][MAX_TRIGGERS] = {
-> >> +	{ LPTIM1_OUT,},
-> >> +	{ LPTIM2_OUT,},
-> >> +	{ LPTIM3_OUT,},
-> >> +};
-> >> +
-> >> +/* List Low-Power Timer triggers for STM32MP25 */
-> >> +static const char * const stm32mp25_lptim_triggers[][MAX_TRIGGERS] = {
-> >> +	{ LPTIM1_CH1, LPTIM1_CH2, },
-> >> +	{ LPTIM2_CH1, LPTIM2_CH2, },
-> >> +	{ LPTIM3_CH1,},
-> >> +	{ LPTIM4_CH1,},
-> >> +	{ LPTIM5_OUT,},
-> >> +};
-> >> +
-> >> +static const struct stm32_lptim_cfg stm32mp15_lptim_cfg = {
-> >> +	.triggers = stm32_lptim_triggers,
-> >> +	.nb_triggers = ARRAY_SIZE(stm32_lptim_triggers),
-> >> +};
-> >> +
-> >> +static const struct stm32_lptim_cfg stm32mp25_lptim_cfg = {
-> >> +	.triggers = stm32mp25_lptim_triggers,
-> >> +	.nb_triggers = ARRAY_SIZE(stm32mp25_lptim_triggers),
-> >>  };
-> >>  
-> >>  struct stm32_lptim_trigger {
-> >>  	struct device *dev;
-> >> -	const char *trg;
-> >> +	const char * const *triggers;
-> >>  };
-> >>  
-> >>  static int stm32_lptim_validate_device(struct iio_trigger *trig,
-> >> @@ -56,22 +83,33 @@ EXPORT_SYMBOL(is_stm32_lptim_trigger);
-> >>  
-> >>  static int stm32_lptim_setup_trig(struct stm32_lptim_trigger *priv)
-> >>  {
-> >> -	struct iio_trigger *trig;
-> >> +	const char * const *cur = priv->triggers;
-> >> +	int ret;
-> >>  
-> >> -	trig = devm_iio_trigger_alloc(priv->dev, "%s", priv->trg);
-> >> -	if  (!trig)
-> >> -		return -ENOMEM;
-> >> +	while (cur && *cur) {
-> >> +		struct iio_trigger *trig;
-> >>  
-> >> -	trig->dev.parent = priv->dev->parent;
-> >> -	trig->ops = &stm32_lptim_trigger_ops;
-> >> -	iio_trigger_set_drvdata(trig, priv);
-> >> +		trig = devm_iio_trigger_alloc(priv->dev, "%s", *cur);
-> >> +		if  (!trig)
-> >> +			return -ENOMEM;
-> >>  
-> >> -	return devm_iio_trigger_register(priv->dev, trig);
-> >> +		trig->dev.parent = priv->dev->parent;
-> >> +		trig->ops = &stm32_lptim_trigger_ops;
-> >> +		iio_trigger_set_drvdata(trig, priv);
-> >> +
-> >> +		ret = devm_iio_trigger_register(priv->dev, trig);
-> >> +		if (ret)
-> >> +			return ret;
-> >> +		cur++;
-> >> +	}
-> >> +
-> >> +	return 0;
-> >>  }
-> >>  
-> >>  static int stm32_lptim_trigger_probe(struct platform_device *pdev)
-> >>  {
-> >>  	struct stm32_lptim_trigger *priv;
-> >> +	struct stm32_lptim_cfg const *lptim_cfg;
-> >>  	u32 index;
-> >>  
-> >>  	priv = devm_kzalloc(&pdev->dev, sizeof(*priv), GFP_KERNEL);
-> >> @@ -81,17 +119,20 @@ static int stm32_lptim_trigger_probe(struct platform_device *pdev)
-> >>  	if (device_property_read_u32(&pdev->dev, "reg", &index))
-> >>  		return -EINVAL;
-> >>  
-> >> -	if (index >= ARRAY_SIZE(stm32_lptim_triggers))
-> >> +	lptim_cfg = device_get_match_data(&pdev->dev);
-> >> +
-> >> +	if (index >= lptim_cfg->nb_triggers)
-> >>  		return -EINVAL;
-> >>  
-> >>  	priv->dev = &pdev->dev;
-> >> -	priv->trg = stm32_lptim_triggers[index];
-> >> +	priv->triggers = lptim_cfg->triggers[index];
-> >>  
-> >>  	return stm32_lptim_setup_trig(priv);
-> >>  }
-> >>  
-> >>  static const struct of_device_id stm32_lptim_trig_of_match[] = {
-> >> -	{ .compatible = "st,stm32-lptimer-trigger", },
-> >> +	{ .compatible = "st,stm32-lptimer-trigger", .data = &stm32mp15_lptim_cfg },
-> >> +	{ .compatible = "st,stm32mp25-lptimer-trigger", .data = &stm32mp25_lptim_cfg},
-> >>  	{},
-> >>  };
-> >>  MODULE_DEVICE_TABLE(of, stm32_lptim_trig_of_match);
-> >> diff --git a/include/linux/iio/timer/stm32-lptim-trigger.h b/include/linux/iio/timer/stm32-lptim-trigger.h
-> >> index a34dcf6a6001..ce3cf0addb2e 100644
-> >> --- a/include/linux/iio/timer/stm32-lptim-trigger.h
-> >> +++ b/include/linux/iio/timer/stm32-lptim-trigger.h
-> >> @@ -14,6 +14,15 @@
-> >>  #define LPTIM1_OUT	"lptim1_out"
-> >>  #define LPTIM2_OUT	"lptim2_out"
-> >>  #define LPTIM3_OUT	"lptim3_out"
-> >> +#define LPTIM4_OUT	"lptim4_out"
-> >> +#define LPTIM5_OUT	"lptim5_out"
-> >> +
-> >> +#define LPTIM1_CH1	"lptim1_ch1"
-> >> +#define LPTIM1_CH2	"lptim1_ch2"
-> >> +#define LPTIM2_CH1	"lptim2_ch1"
-> >> +#define LPTIM2_CH2	"lptim2_ch2"
-> >> +#define LPTIM3_CH1	"lptim3_ch1"
-> >> +#define LPTIM4_CH1	"lptim4_ch1"
-> >>  
-> >>  #if IS_REACHABLE(CONFIG_IIO_STM32_LPTIMER_TRIGGER)
-> >>  bool is_stm32_lptim_trigger(struct iio_trigger *trig);  
-> >   
+  drivers/iio/accel/adxl345_core.c: In function =E2=80=98adxl345_is_tap_en=
+=E2=80=99:
+  drivers/iio/accel/adxl345_core.c:201:14: warning: variable =E2=80=98axis_=
+en=E2=80=99 set but not used [-Wunused-but-set-variable]
+    201 |         bool axis_en;
+        |              ^~~~~~~
+Not sure what intent was in this code.
+
+  drivers/iio/accel/adxl345_core.c: At top level:
+  drivers/iio/accel/adxl345_core.c:818:31: error: initialization of =E2=80=
+=98int (*)(struct iio_dev *, const struct iio_chan_spec *, enum iio_event_t=
+ype,  enum iio_event_direction, bool)=E2=80=99 {aka =E2=80=98int (*)(struct=
+ iio_dev *, const struct iio_chan_spec *, enum iio_event_type,  enum iio_ev=
+ent_direction,  _Bool)=E2=80=99} from incompatible pointer type =E2=80=98in=
+t (*)(struct iio_dev *, const struct iio_chan_spec *, enum iio_event_type, =
+ enum iio_event_direction,  int)=E2=80=99 [-Wincompatible-pointer-types]
+     818 |         .write_event_config =3D adxl345_write_event_config,
+        |                               ^~~~~~~~~~~~~~~~~~~~~~~~~~
+   drivers/iio/accel/adxl345_core.c:818:31: note: (near initialization for =
+=E2=80=98adxl345_info.write_event_config=E2=80=99)
+
+This is a change in the core to take a boolean for the last parameter.  Tha=
+t one I'd have
+just fixed up whilst applying if not for the axis_en one above.
+
+> =20
+> -static int adxl345_push_event(struct iio_dev *indio_dev, int int_stat)
+> +static int adxl345_push_event(struct iio_dev *indio_dev, int int_stat,
+> +			      enum iio_modifier tap_dir)
+>  {
+> +	s64 ts =3D iio_get_time_ns(indio_dev);
+>  	struct adxl345_state *st =3D iio_priv(indio_dev);
+>  	int samples;
+> +	int ret =3D -ENOENT;
+> +
+> +	if (FIELD_GET(ADXL345_INT_SINGLE_TAP, int_stat)) {
+> +		ret =3D iio_push_event(indio_dev,
+> +				     IIO_MOD_EVENT_CODE(IIO_ACCEL, 0, tap_dir,
+> +							IIO_EV_TYPE_GESTURE,
+> +							IIO_EV_DIR_SINGLETAP),
+> +				     ts);
+> +		if (ret)
+> +			return ret;
+> +	}
+> =20
+>  	if (FIELD_GET(ADXL345_INT_WATERMARK, int_stat)) {
+>  		samples =3D adxl345_get_samples(st);
+> @@ -428,9 +751,11 @@ static int adxl345_push_event(struct iio_dev *indio_=
+dev, int int_stat)
+> =20
+>  		if (adxl345_fifo_push(indio_dev, samples) < 0)
+>  			return -EINVAL;
+> +
+> +		return 0;
+I'm normally a fan of early returns but in this one corner case I think
+		ret =3D 0;
+makes it more consistent with the other field matches.
+It is just coincidence that the other one sets the value of ret inside
+the if block.
+
+>  	}
+> =20
+> -	return 0;
+> +	return ret;
+>  }
 
 

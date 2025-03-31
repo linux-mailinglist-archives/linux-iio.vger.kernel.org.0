@@ -1,46 +1,46 @@
-Return-Path: <linux-iio+bounces-17457-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17458-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 245FDA76595
-	for <lists+linux-iio@lfdr.de>; Mon, 31 Mar 2025 14:16:29 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E745A76597
+	for <lists+linux-iio@lfdr.de>; Mon, 31 Mar 2025 14:16:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF9C416A1ED
-	for <lists+linux-iio@lfdr.de>; Mon, 31 Mar 2025 12:16:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 818FE7A35A2
+	for <lists+linux-iio@lfdr.de>; Mon, 31 Mar 2025 12:15:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FC691E503D;
-	Mon, 31 Mar 2025 12:16:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 917A01E51EF;
+	Mon, 31 Mar 2025 12:16:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z+BRhsWN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JKnMD10C"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2070F1E4928
-	for <linux-iio@vger.kernel.org>; Mon, 31 Mar 2025 12:16:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5146E1E3DFC
+	for <linux-iio@vger.kernel.org>; Mon, 31 Mar 2025 12:16:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743423385; cv=none; b=VEvuf1o6wMiatEtxTehMDOy9eStTeRLyTtt35bx4KE6WFq6FMmEy1n96q03X1Lxv/nURUbmCj8ZLf0DJUjvL+cYDC+hR5CEU1Uz2fnebOjCqvJTw0tVtkf4ArHGTIPttaIon4ac8RtQqzfIoCgs7A40iJEYyeNLyG8WmDRhSV7g=
+	t=1743423391; cv=none; b=FtbFepDL4kEE29zpOOnXoYpNCEXgN9VkOOMm6BFqVZeNeMRUmdakR81UvswbzJGyTedzNswM6rrJtwQS5QO0nl4aMbZgGmJ8VHzQp4KzaAFAKvYNeUkOwaynk1ZtxxvYhgqfN81wdwOvvqVbd4Y2eQJwaqePmLeF7he7UVVAdUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743423385; c=relaxed/simple;
-	bh=ZcZGIii6/Ox7LyowmCk1Unk9ygW9GtczF1dAspq7l0s=;
+	s=arc-20240116; t=1743423391; c=relaxed/simple;
+	bh=Iz4qiV8Ly1KzdhGnc1n/KWhYz9IveIFj9UfC1DZr6/M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uGI+RH3KlnVwM+wLrqt6ylb569N1gOlupm8hYc6azpJV7Vd4M+zTkKU8PR+ERGlglzfcucWWjBLZO8FhXxwABUl/CFiY1lI1cmamdZiwxq4D+MGu3xG60SNg4pvKz6XOMTIfM/tAKgn4vBJNh4/9WbrlT7TbYIlJnAx/y+oc/aE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z+BRhsWN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71A4BC4CEE3;
-	Mon, 31 Mar 2025 12:16:19 +0000 (UTC)
+	 MIME-Version; b=MAJhASxaSESVuW47uns921BpKmUCa7b/KOhL3SezhGAWpOlG5AqBiLDONdzfD86kbuFVLJizj1wKO7s6Jxrv1AkTtq6aERwpBJIhTW2/0YfnobssGhXtFMLBPESesNCbtrkOM/0J51mISFZ7KFE0AUKbLH7040iCAEAjuGB0+NE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JKnMD10C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73877C4CEE3;
+	Mon, 31 Mar 2025 12:16:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743423384;
-	bh=ZcZGIii6/Ox7LyowmCk1Unk9ygW9GtczF1dAspq7l0s=;
+	s=k20201202; t=1743423391;
+	bh=Iz4qiV8Ly1KzdhGnc1n/KWhYz9IveIFj9UfC1DZr6/M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z+BRhsWNqZ4LGWlXzwDJtuGC2QvSAu32BnKXjoPOLFEy7wf6SpYEcANqUFK0g8+DQ
-	 fJvwpjWrRRq1hpSmUb43gKCZ80ikqpdpwj4QIiZiHXSBe/knTP/K0hWzPRSO2BxexF
-	 QQjZmJ3jf15bbryzp1e4DwJ/+o2H+vFIuqKHIX2VyOblCPipQvDD8xzlY1hddv8jSH
-	 tvKgnPvk0VXAHhvEZTHREFbWG7H0s/6qn6tqUetf+MjFT81bz7P7/NjOX6Xs7QmOLZ
-	 /7/Dy5XfExM9M+LFPfo5pwavJ7OyTmxxPN8g7WsKhkQY0r7PRN5PJm0Qg8LicwQNBx
-	 faTr4baFyvjIg==
+	b=JKnMD10C0ipWUvbEmYzf9KuRV+PqW2GYJBtrLWn7huLpojtVr0VvwDYQ99S5ZKyQG
+	 /wN7e3kvuEldkiJ+7Y04DfaO232SZyYzJlNocOqUmt286Cz0MbEKeh64hZrAZ8M5NW
+	 IymYWkiZjzv7T4xomYevTAlhpuMLdh06X8NkxZ+JAIbafjCtMduVvs5oR1qk1yyRAl
+	 59EgOJoJA11spP4en2vAWwVOLH1bjMBn+f+OWG2nq2vl/5sS382fykjA5VAkmvLato
+	 eVNurZphBTegCr8lbhO3IjGGPVlKGLgU6IXacm/vLZD0ub3htAkH9camBhQXJsJdeA
+	 0lzoawSby6J0A==
 From: Jonathan Cameron <jic23@kernel.org>
 To: linux-iio@vger.kernel.org
 Cc: David Lechner <dlechner@baylibre.com>,
@@ -57,9 +57,9 @@ Cc: David Lechner <dlechner@baylibre.com>,
 	Yasin Lee <yasin.lee.x@gmail.com>,
 	Andy Shevchenko <andy.shevchenko@gmail.com>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 27/37] iio: pressure: mpl3115: Switch to sparse friendly iio_device_claim/release_direct()
-Date: Mon, 31 Mar 2025 13:13:07 +0100
-Message-ID: <20250331121317.1694135-28-jic23@kernel.org>
+Subject: [PATCH 28/37] iio: pressure: ms5611: Switch to sparse friendly iio_device_claim/release_direct()
+Date: Mon, 31 Mar 2025 13:13:08 +0100
+Message-ID: <20250331121317.1694135-29-jic23@kernel.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250331121317.1694135-1-jic23@kernel.org>
 References: <20250331121317.1694135-1-jic23@kernel.org>
@@ -79,29 +79,42 @@ functions that are deprecated.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/pressure/mpl3115.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/iio/pressure/ms5611_core.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/iio/pressure/mpl3115.c b/drivers/iio/pressure/mpl3115.c
-index 207031b5ff72..8397155555bd 100644
---- a/drivers/iio/pressure/mpl3115.c
-+++ b/drivers/iio/pressure/mpl3115.c
-@@ -124,12 +124,11 @@ static int mpl3115_read_raw(struct iio_dev *indio_dev,
+diff --git a/drivers/iio/pressure/ms5611_core.c b/drivers/iio/pressure/ms5611_core.c
+index 00c077b2a2a4..bdac27bd5a5d 100644
+--- a/drivers/iio/pressure/ms5611_core.c
++++ b/drivers/iio/pressure/ms5611_core.c
+@@ -308,7 +308,6 @@ static int ms5611_write_raw(struct iio_dev *indio_dev,
+ {
+ 	struct ms5611_state *st = iio_priv(indio_dev);
+ 	const struct ms5611_osr *osr = NULL;
+-	int ret;
  
- 	switch (mask) {
- 	case IIO_CHAN_INFO_RAW:
--		ret = iio_device_claim_direct_mode(indio_dev);
--		if (ret)
--			return ret;
-+		if (!iio_device_claim_direct(indio_dev))
-+			return -EBUSY;
+ 	if (mask != IIO_CHAN_INFO_OVERSAMPLING_RATIO)
+ 		return -EINVAL;
+@@ -322,9 +321,8 @@ static int ms5611_write_raw(struct iio_dev *indio_dev,
+ 	if (!osr)
+ 		return -EINVAL;
  
- 		ret = mpl3115_read_info_raw(data, chan, val);
--		iio_device_release_direct_mode(indio_dev);
-+		iio_device_release_direct(indio_dev);
- 		return ret;
+-	ret = iio_device_claim_direct_mode(indio_dev);
+-	if (ret)
+-		return ret;
++	if (!iio_device_claim_direct(indio_dev))
++		return -EBUSY;
  
- 	case IIO_CHAN_INFO_SCALE:
+ 	mutex_lock(&st->lock);
+ 
+@@ -334,7 +332,7 @@ static int ms5611_write_raw(struct iio_dev *indio_dev,
+ 		st->pressure_osr = osr;
+ 
+ 	mutex_unlock(&st->lock);
+-	iio_device_release_direct_mode(indio_dev);
++	iio_device_release_direct(indio_dev);
+ 
+ 	return 0;
+ }
 -- 
 2.48.1
 

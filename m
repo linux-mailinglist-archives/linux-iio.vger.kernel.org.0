@@ -1,46 +1,46 @@
-Return-Path: <linux-iio+bounces-17464-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17465-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA1EBA7659F
-	for <lists+linux-iio@lfdr.de>; Mon, 31 Mar 2025 14:17:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B95FA765A0
+	for <lists+linux-iio@lfdr.de>; Mon, 31 Mar 2025 14:17:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 031961889893
-	for <lists+linux-iio@lfdr.de>; Mon, 31 Mar 2025 12:17:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 89B031889869
+	for <lists+linux-iio@lfdr.de>; Mon, 31 Mar 2025 12:17:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 694621E51EF;
-	Mon, 31 Mar 2025 12:17:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B63C1E51F1;
+	Mon, 31 Mar 2025 12:17:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KeiMFdPt"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="luF/nWhI"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29CD713B59B
-	for <linux-iio@vger.kernel.org>; Mon, 31 Mar 2025 12:17:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BC1513B59B
+	for <linux-iio@vger.kernel.org>; Mon, 31 Mar 2025 12:17:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743423430; cv=none; b=Gk+8dke6HovXK+cQR9+Wf7sAhpeblb2QIPHFtuf9ue7Z2GjKM29pzRSxTAIPz3xthDNpqBpXU5fbuHcFMSuuA7sVIWiiFPnA2KV0yYo3Sv+K2/loDTvWWOf5xil6q0aSsZ6dHD16QZq91Q8HMiyWvfZp3/546ib0oUM5OURm5eY=
+	t=1743423438; cv=none; b=Pr9HhJ5O45HPJE/AKyzCHa+37Dk43t3axnu3FmJs83U1JlHpeLOOMbbHvrqrGiEoxgrkGDGfeZQIYgg0L/rEP0ax2RK1bs143tkG7yeFGouGUpOgdwlaRfEMXjp4Hw4a9Yr2cQeWmqLncTtRx3AGmmt3Ls/Ddxi4gYRQoi623PI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743423430; c=relaxed/simple;
-	bh=xblcPfOMh6aAs8TN16Jsn6pxnoWcn5GCCb3XLYu3Bsk=;
+	s=arc-20240116; t=1743423438; c=relaxed/simple;
+	bh=63bsLeNRCvs3h9uskeEtJydLXLceBFgeQFJiyYQhQvA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M25WPhOz2lPS0EdwZbfJvSUS5/V/EDXLy7b5CvZ/vBnxHD27ySSWo9LLyDPqRsSWWrborwNzeJKoKhEjvUF61ADU8s9bHZyUH8qRcGEutBYxnAQWTbhEQ1GqA5/tJD5iZ4yg5WieJIqC9nKcb/v1rCa7woRbnwObvD2oBnGC13o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KeiMFdPt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7F95C4CEE3;
-	Mon, 31 Mar 2025 12:17:03 +0000 (UTC)
+	 MIME-Version; b=pXaOM3cpvMm4zaXMYG6FPG2kZ8vA2WTVPGe0RU8fZIKcEZpgTjPD45h63J875/YJ5ZDoXNlcOCwJm9j7yqREnT0jOyopUsN0Tq10f0ev5mcCmTzencwdoxs2Guq0doJtKQjVYAa9PJgx1ReREU4eIA/tm7m2zR0vKXm+s4jKb4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=luF/nWhI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2708DC4CEE5;
+	Mon, 31 Mar 2025 12:17:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743423429;
-	bh=xblcPfOMh6aAs8TN16Jsn6pxnoWcn5GCCb3XLYu3Bsk=;
+	s=k20201202; t=1743423435;
+	bh=63bsLeNRCvs3h9uskeEtJydLXLceBFgeQFJiyYQhQvA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KeiMFdPtcgUBM8DGK17oYRvA2RW/3hxkClHoVJZ2f3FmvUet3kkkUDHoNE9p9SZoO
-	 KsARWnvwCcPbDYjZGMPDTYgtrw3o/58A8JixWhifEcVy6GqmQlxZLnv67KiGVPHgD4
-	 msk4Ie4iOYDFNw6QgtiZMdTqeVS427ZSrieqxL/NC8y4tzPlL5UKO4Rw0mKOvuA4qq
-	 9esVAS6w1b0zS0c5PRJGMdk1nHJ59T4E0RfyzIKasqgVRgiXQ/W+jLgfC8MMjQKNRT
-	 lSQ+QfgmrOk0SAPh8kZ2Ff95CVFm/+lnSITcuSWjKlo6T8zElHot6NvXkjvpa7UUB5
-	 l/oUFCBJYC6kA==
+	b=luF/nWhIZSLoTCu1nzxx5o6aQXXCqm5RcrxmDoHl6MhPpWD9vSpi8pqrBvAO4pSJM
+	 cG5LDLR0q4Mj6RtIlvgCwNgFBFYQoOTjcr/vQgW6yLHkwd3nNYlyCffz5fwPV4Rx0d
+	 BFBE+r9rkbjtlnpCIaLKUBE0JRGq3ZhbZccdIcKU5S7XLfghtf+Li4OhLpCGniIJVS
+	 NrSUfxTI0VTWwiQDXwfu3vQVcIzdbE/JeJQS4uqdFe1HwISZ1Go+Taz04zu7cSZZ8W
+	 qT3exbO8j9RoweuSDniHhGFrxmC4U72rqlH5FsTdT7c01uyW2qFFBNE/HKrCHJ4TTY
+	 ECtN/M+eJlMQw==
 From: Jonathan Cameron <jic23@kernel.org>
 To: linux-iio@vger.kernel.org
 Cc: David Lechner <dlechner@baylibre.com>,
@@ -57,9 +57,9 @@ Cc: David Lechner <dlechner@baylibre.com>,
 	Yasin Lee <yasin.lee.x@gmail.com>,
 	Andy Shevchenko <andy.shevchenko@gmail.com>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 34/37] iio: temp: maxim_thermocouple: Switch to sparse friendly iio_device_claim/release_direct()
-Date: Mon, 31 Mar 2025 13:13:14 +0100
-Message-ID: <20250331121317.1694135-35-jic23@kernel.org>
+Subject: [PATCH 35/37] iio: temp: maxim_thermocouple: Drop unused mutex.h include.
+Date: Mon, 31 Mar 2025 13:13:15 +0100
+Message-ID: <20250331121317.1694135-36-jic23@kernel.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250331121317.1694135-1-jic23@kernel.org>
 References: <20250331121317.1694135-1-jic23@kernel.org>
@@ -73,74 +73,25 @@ Content-Transfer-Encoding: 8bit
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-These new functions allow sparse to find failures to release
-direct mode reducing chances of bugs over the claim_direct_mode()
-functions that are deprecated.
-
-Tidy up a few direct returns whilst here.
+There are no mutex related calls in this driver.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/temperature/maxim_thermocouple.c | 29 ++++++++------------
- 1 file changed, 12 insertions(+), 17 deletions(-)
+ drivers/iio/temperature/maxim_thermocouple.c | 1 -
+ 1 file changed, 1 deletion(-)
 
 diff --git a/drivers/iio/temperature/maxim_thermocouple.c b/drivers/iio/temperature/maxim_thermocouple.c
-index c28a7a6dea5f..a1c213d5c469 100644
+index a1c213d5c469..a13efde76397 100644
 --- a/drivers/iio/temperature/maxim_thermocouple.c
 +++ b/drivers/iio/temperature/maxim_thermocouple.c
-@@ -183,40 +183,35 @@ static int maxim_thermocouple_read_raw(struct iio_dev *indio_dev,
- 				       int *val, int *val2, long mask)
- {
- 	struct maxim_thermocouple_data *data = iio_priv(indio_dev);
--	int ret = -EINVAL;
-+	int ret;
- 
- 	switch (mask) {
- 	case IIO_CHAN_INFO_RAW:
--		ret = iio_device_claim_direct_mode(indio_dev);
--		if (ret)
--			return ret;
-+		if (!iio_device_claim_direct(indio_dev))
-+			return -EBUSY;
- 
- 		ret = maxim_thermocouple_read(data, chan, val);
--		iio_device_release_direct_mode(indio_dev);
--
--		if (!ret)
--			return IIO_VAL_INT;
-+		iio_device_release_direct(indio_dev);
-+		if (ret)
-+			return ret;
- 
--		break;
-+		return IIO_VAL_INT;
- 	case IIO_CHAN_INFO_SCALE:
- 		switch (chan->channel2) {
- 		case IIO_MOD_TEMP_AMBIENT:
- 			*val = 62;
- 			*val2 = 500000; /* 1000 * 0.0625 */
--			ret = IIO_VAL_INT_PLUS_MICRO;
--			break;
-+			return IIO_VAL_INT_PLUS_MICRO;
- 		default:
- 			*val = 250; /* 1000 * 0.25 */
--			ret = IIO_VAL_INT;
-+			return IIO_VAL_INT;
- 		}
--		break;
- 	case IIO_CHAN_INFO_THERMOCOUPLE_TYPE:
- 		*val = data->tc_type;
--		ret = IIO_VAL_CHAR;
--		break;
-+		return IIO_VAL_CHAR;
-+	default:
-+		return -EINVAL;
- 	}
--
--	return ret;
- }
- 
- static const struct iio_info maxim_thermocouple_info = {
+@@ -9,7 +9,6 @@
+ #include <linux/init.h>
+ #include <linux/mod_devicetable.h>
+ #include <linux/module.h>
+-#include <linux/mutex.h>
+ #include <linux/err.h>
+ #include <linux/spi/spi.h>
+ #include <linux/iio/iio.h>
 -- 
 2.48.1
 

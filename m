@@ -1,46 +1,46 @@
-Return-Path: <linux-iio+bounces-17443-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17444-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04D72A76584
-	for <lists+linux-iio@lfdr.de>; Mon, 31 Mar 2025 14:15:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 679A8A76585
+	for <lists+linux-iio@lfdr.de>; Mon, 31 Mar 2025 14:15:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B048716992B
-	for <lists+linux-iio@lfdr.de>; Mon, 31 Mar 2025 12:15:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C00133AA0FF
+	for <lists+linux-iio@lfdr.de>; Mon, 31 Mar 2025 12:14:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F5B51E3DFC;
-	Mon, 31 Mar 2025 12:14:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD88E1E501C;
+	Mon, 31 Mar 2025 12:15:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o+PmDPCr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jGTgi5hv"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50CFC1E3DC8
-	for <linux-iio@vger.kernel.org>; Mon, 31 Mar 2025 12:14:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 896671D618E
+	for <linux-iio@vger.kernel.org>; Mon, 31 Mar 2025 12:15:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743423298; cv=none; b=nV79kGzvlZoZzxLxNprX6F8VFyH+BpHAjshl79jbxztT/dM7KR+KXG55f0qozJF7kCFuNGCi1dN5zVoFiDWWDDFvFdlpIonxCrpWYjxOBLwZ1GdWRtgc0wlkgKezFL65TA4triL11bzolaO0TkaUfjn/JY2++k8j+Utb3MnG6KQ=
+	t=1743423303; cv=none; b=SkAI/Henf+GUR8diwNwkTD+kx4/9IwSqpCX7aYzqkZUSfU7Cj4KJuB+amYVIl/71h317xqEv9kbIINktFDUaJX0+wDJCAJtx/xFmZQDCP9v+MHZmnZdyyR2n8JNCjZMdQ7vboZN0HYQS9TXstZQl26bNzKRM1YyD6MLW5Pkb2Rs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743423298; c=relaxed/simple;
-	bh=0DAhGbMUnpRdCeGbudpqzFmD25sMNs0GOAoM2aWccSM=;
+	s=arc-20240116; t=1743423303; c=relaxed/simple;
+	bh=pLMwio6p4cgakr7w7elqwXNuJ5aTmzh6oRZZ5EckWeM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NG46Uvve9Pic8P/VAXSO/qMQt0KWY+t3pJze/YuTNM/eHsIkR1E3FF5VYSuHB9KNk4RBghfjCZO/AH+BQHlEE4GD6SjSubB2K3MyIKA7/vvewTRnl4lRoPHm0JPXfGdm4twlbWCBfRphG9wQPhWSaYcVjmLEtyK2BKD42ljWr+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o+PmDPCr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BE56C4CEE3;
-	Mon, 31 Mar 2025 12:14:51 +0000 (UTC)
+	 MIME-Version; b=URXQyGOwWrlNuW6h2OvNiM5S7Lj1o2fWs3AisvUkgYq7Bzh/vUZJ3LS6B9e8J3sZAAY8PaT3ZHTuPmjlbnHzdSEm9ixh9q7sT+/Vr1qaqw/Ew/RY4gtC1zMFET1hVM/m0uwN2UZA13DwZarqUu3cpfuhmt7mNYq4s1xyBttXjcE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jGTgi5hv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D10BC4CEE5;
+	Mon, 31 Mar 2025 12:14:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743423296;
-	bh=0DAhGbMUnpRdCeGbudpqzFmD25sMNs0GOAoM2aWccSM=;
+	s=k20201202; t=1743423303;
+	bh=pLMwio6p4cgakr7w7elqwXNuJ5aTmzh6oRZZ5EckWeM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o+PmDPCr9mUwg9N95JKx4gS0XfGjEc8WIWqstYzA4VWx0PNMm52A0VXBf1y1hWYdb
-	 lHJBRTLoSwkPhNt89V4d8tZPbVzVnRAYif7+uhypxBI9VwQyAzbUxzTaywNGt3uzTx
-	 xLYlwgmiC0lTNkhq4jJidM1klXVil5gbYzJqNSn7wftvbOMZ+qX2Sc2RJYf1szYXFu
-	 MB7JLjqQ6W5Yf1EyCgZXFNR8PICE6QsU17o8VoLWwq7HATQxqoHNBzgegnJGHAYJpo
-	 g0UR8hH7uW+AY3jni49RcHmX+7t1ZG85uPHafSkWo7OCQiL/fdGFIVtLmcZ6tthkbx
-	 sEnbnBkgLZpbQ==
+	b=jGTgi5hvyp4VomJ81/yxIeQbrbBeBs7x595vNMIT4MyGlXzUtzeNiLJ3W7WEVZyHA
+	 c/hXuXDNZYDjIDFo3JkCzSF/ltG9unHrrQ1yNBfUYP9xyWisJu3MsOpPuzQSwp7xX2
+	 SkZb7K3WgFlionnnzSKfCvO9vAqyOY2f1ibTxEyBN6hpbJQzk1ISE0+x/HdWxwueVM
+	 kJJzSgj9WQVZ+6uq/EnFpsp3d5zOLscQFQV76ESAsxrbYgROtr8LZM4qqQp76tUTH+
+	 /dugkbCJhR71+oR9GX5NuhigKwCMRX42EBNU1AH2M4Dv1plFrxS6lgQiVwugZJ7lR6
+	 JAhYSMN89BlAA==
 From: Jonathan Cameron <jic23@kernel.org>
 To: linux-iio@vger.kernel.org
 Cc: David Lechner <dlechner@baylibre.com>,
@@ -57,9 +57,9 @@ Cc: David Lechner <dlechner@baylibre.com>,
 	Yasin Lee <yasin.lee.x@gmail.com>,
 	Andy Shevchenko <andy.shevchenko@gmail.com>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 13/37] iio: humidity: hts211: Factor out everything under direct mode claim into helper functions.
-Date: Mon, 31 Mar 2025 13:12:53 +0100
-Message-ID: <20250331121317.1694135-14-jic23@kernel.org>
+Subject: [PATCH 14/37] iio: humidity: hts211: Switch to sparse friendly iio_device_claim/release_direct()
+Date: Mon, 31 Mar 2025 13:12:54 +0100
+Message-ID: <20250331121317.1694135-15-jic23@kernel.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250331121317.1694135-1-jic23@kernel.org>
 References: <20250331121317.1694135-1-jic23@kernel.org>
@@ -73,160 +73,53 @@ Content-Transfer-Encoding: 8bit
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Pulling out the functionality of read_raw() and write_raw() callbacks
-so that only the mode claim is done in the initial call allows for
-direct returns and simpler error handling in the new __hts211_write_raw()
-/ __hts211_read_raw() functions.
+These new functions allow sparse to find failures to release
+direct mode reducing chances of bugs over the claim_direct_mode()
+functions that are deprecated.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/humidity/hts221_core.c | 89 +++++++++++++++---------------
- 1 file changed, 45 insertions(+), 44 deletions(-)
+ drivers/iio/humidity/hts221_core.c | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
 diff --git a/drivers/iio/humidity/hts221_core.c b/drivers/iio/humidity/hts221_core.c
-index 0be11470730c..ca4746f2ecba 100644
+index ca4746f2ecba..bfeb0a60d3af 100644
 --- a/drivers/iio/humidity/hts221_core.c
 +++ b/drivers/iio/humidity/hts221_core.c
-@@ -418,31 +418,22 @@ static int hts221_read_oneshot(struct hts221_hw *hw, u8 addr, int *val)
- 	return IIO_VAL_INT;
- }
- 
--static int hts221_read_raw(struct iio_dev *iio_dev,
--			   struct iio_chan_spec const *ch,
--			   int *val, int *val2, long mask)
-+static int __hts221_read_raw(struct iio_dev *iio_dev,
-+			     struct iio_chan_spec const *ch,
-+			     int *val, int *val2, long mask)
+@@ -464,13 +464,12 @@ static int hts221_read_raw(struct iio_dev *iio_dev,
  {
- 	struct hts221_hw *hw = iio_priv(iio_dev);
--	int ret;
--
+ 	int ret;
+ 
 -	ret = iio_device_claim_direct_mode(iio_dev);
 -	if (ret)
 -		return ret;
++	if (!iio_device_claim_direct(iio_dev))
++		return -EBUSY;
  
- 	switch (mask) {
- 	case IIO_CHAN_INFO_RAW:
--		ret = hts221_read_oneshot(hw, ch->address, val);
--		break;
-+		return hts221_read_oneshot(hw, ch->address, val);
- 	case IIO_CHAN_INFO_SCALE:
--		ret = hts221_get_sensor_scale(hw, ch->type, val, val2);
--		break;
-+		return hts221_get_sensor_scale(hw, ch->type, val, val2);
- 	case IIO_CHAN_INFO_OFFSET:
--		ret = hts221_get_sensor_offset(hw, ch->type, val, val2);
--		break;
-+		return hts221_get_sensor_offset(hw, ch->type, val, val2);
- 	case IIO_CHAN_INFO_SAMP_FREQ:
- 		*val = hw->odr;
--		ret = IIO_VAL_INT;
--		break;
-+		return IIO_VAL_INT;
- 	case IIO_CHAN_INFO_OVERSAMPLING_RATIO: {
- 		u8 idx;
- 		const struct hts221_avg *avg;
-@@ -452,62 +443,72 @@ static int hts221_read_raw(struct iio_dev *iio_dev,
- 			avg = &hts221_avg_list[HTS221_SENSOR_H];
- 			idx = hw->sensors[HTS221_SENSOR_H].cur_avg_idx;
- 			*val = avg->avg_avl[idx];
--			ret = IIO_VAL_INT;
--			break;
-+			return IIO_VAL_INT;
- 		case IIO_TEMP:
- 			avg = &hts221_avg_list[HTS221_SENSOR_T];
- 			idx = hw->sensors[HTS221_SENSOR_T].cur_avg_idx;
- 			*val = avg->avg_avl[idx];
--			ret = IIO_VAL_INT;
--			break;
-+			return IIO_VAL_INT;
- 		default:
--			ret = -EINVAL;
--			break;
-+			return -EINVAL;
- 		}
--		break;
- 	}
- 	default:
--		ret = -EINVAL;
--		break;
-+		return -EINVAL;
- 	}
--
+ 	ret = __hts221_read_raw(iio_dev, ch, val, val2, mask);
+ 
 -	iio_device_release_direct_mode(iio_dev);
--
--	return ret;
- }
++	iio_device_release_direct(iio_dev);
  
--static int hts221_write_raw(struct iio_dev *iio_dev,
--			    struct iio_chan_spec const *chan,
--			    int val, int val2, long mask)
-+static int hts221_read_raw(struct iio_dev *iio_dev,
-+			   struct iio_chan_spec const *ch,
-+			   int *val, int *val2, long mask)
+ 	return ret;
+ }
+@@ -504,13 +503,12 @@ static int hts221_write_raw(struct iio_dev *iio_dev,
  {
--	struct hts221_hw *hw = iio_priv(iio_dev);
  	int ret;
  
- 	ret = iio_device_claim_direct_mode(iio_dev);
- 	if (ret)
- 		return ret;
+-	ret = iio_device_claim_direct_mode(iio_dev);
+-	if (ret)
+-		return ret;
++	if (!iio_device_claim_direct(iio_dev))
++		return -EBUSY;
  
-+	ret = __hts221_read_raw(iio_dev, ch, val, val2, mask);
-+
-+	iio_device_release_direct_mode(iio_dev);
-+
-+	return ret;
-+}
-+
-+static int __hts221_write_raw(struct iio_dev *iio_dev,
-+			      struct iio_chan_spec const *chan,
-+			      int val, long mask)
-+{
-+	struct hts221_hw *hw = iio_priv(iio_dev);
-+
- 	switch (mask) {
- 	case IIO_CHAN_INFO_SAMP_FREQ:
--		ret = hts221_update_odr(hw, val);
--		break;
-+		return hts221_update_odr(hw, val);
- 	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
- 		switch (chan->type) {
- 		case IIO_HUMIDITYRELATIVE:
--			ret = hts221_update_avg(hw, HTS221_SENSOR_H, val);
--			break;
-+			return hts221_update_avg(hw, HTS221_SENSOR_H, val);
- 		case IIO_TEMP:
--			ret = hts221_update_avg(hw, HTS221_SENSOR_T, val);
--			break;
-+			return hts221_update_avg(hw, HTS221_SENSOR_T, val);
- 		default:
--			ret = -EINVAL;
--			break;
-+			return -EINVAL;
- 		}
--		break;
- 	default:
--		ret = -EINVAL;
--		break;
-+		return -EINVAL;
- 	}
-+}
-+
-+static int hts221_write_raw(struct iio_dev *iio_dev,
-+			    struct iio_chan_spec const *chan,
-+			    int val, int val2, long mask)
-+{
-+	int ret;
-+
-+	ret = iio_device_claim_direct_mode(iio_dev);
-+	if (ret)
-+		return ret;
-+
-+	ret = __hts221_write_raw(iio_dev, chan, val, mask);
+ 	ret = __hts221_write_raw(iio_dev, chan, val, mask);
  
- 	iio_device_release_direct_mode(iio_dev);
+-	iio_device_release_direct_mode(iio_dev);
++	iio_device_release_direct(iio_dev);
  
+ 	return ret;
+ }
 -- 
 2.48.1
 

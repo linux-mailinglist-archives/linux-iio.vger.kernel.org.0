@@ -1,199 +1,183 @@
-Return-Path: <linux-iio+bounces-17484-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17485-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24414A76C31
-	for <lists+linux-iio@lfdr.de>; Mon, 31 Mar 2025 18:49:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF217A76C7D
+	for <lists+linux-iio@lfdr.de>; Mon, 31 Mar 2025 19:24:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 07EC016B1D1
-	for <lists+linux-iio@lfdr.de>; Mon, 31 Mar 2025 16:49:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 018FB18889EB
+	for <lists+linux-iio@lfdr.de>; Mon, 31 Mar 2025 17:24:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C579A215076;
-	Mon, 31 Mar 2025 16:48:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69D2A214A92;
+	Mon, 31 Mar 2025 17:24:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="HeKuP6fe"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bcOCNgVc"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+Received: from mail-yb1-f175.google.com (mail-yb1-f175.google.com [209.85.219.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13AF886337
-	for <linux-iio@vger.kernel.org>; Mon, 31 Mar 2025 16:48:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A157542A94;
+	Mon, 31 Mar 2025 17:23:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743439721; cv=none; b=A9s6lhyTndpQgyZg1PZ+poyPDmOpfKvnPZ+J7nPxkvR33kNK1oLV9tsLRoJc3iWF9QOg9hX2VU4Aa04DPmRFjvt1k7fkhU/44UVZBQS6s/nXjM31/K+lNw/UBvlGI7m9HPcmkA+rtapTe5fQhHTpgl6q4XxvzHzyqQOyhBL5IV0=
+	t=1743441841; cv=none; b=QDE5/qPnXNlzOBIrYmmkgT+C6w1YulitcGxSTkIE+3C6qt5olSIGvHb1u7CRT4d4zdEHBpVqJem1r/jupQNHl64/oMhzyPQeLTl5I8YxeP9k9UlKdn/nUJow4mIFIpsKUycqJtTX2s6RLqRWF3cEWr4wKU7V8rmAH0D8Sb9RVxA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743439721; c=relaxed/simple;
-	bh=/Ml7N2eC8DLx+ini9moz/rIqFI6r/eoVnw1iyxVjvKc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=S13STfiM9V7IPU0T+7cNoaIF7j6kIzeo5Vb78eIf+CrgRNzTT0y3r/8lXhWUuMjnciGu8ufMAOp9n8Bcxlu1KVdTfS2e5uxTnox5vs67t/k4xbTXAII19/JP+a7rvz7H0msSWKLY06FqpiHR5UjftwraCTWYARS157D2+8svoO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=HeKuP6fe; arc=none smtp.client-ip=209.85.214.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-22438c356c8so91814325ad.1
-        for <linux-iio@vger.kernel.org>; Mon, 31 Mar 2025 09:48:39 -0700 (PDT)
+	s=arc-20240116; t=1743441841; c=relaxed/simple;
+	bh=bVJ061wVgNRKZRJHbB/7eTIRMbIioUYkRMdIyide3+s=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=MsGy5iKidYhBIbS3gLHWwQ02YYqlzLtDcZiCTadIx4aEfl6cIIySROe1tv9b18C/Bxtl04vSs7Ld1bwhyv4qN28kHH0RrR2tO8bM9C/PzdxTn/MSJGDVI1Iiovi0FHMBVM9DuC/R/6YAVa8y+8vdYjTSxyZdf2eysbehkQl2CIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bcOCNgVc; arc=none smtp.client-ip=209.85.219.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yb1-f175.google.com with SMTP id 3f1490d57ef6-e63dbd3d135so611675276.3;
+        Mon, 31 Mar 2025 10:23:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1743439719; x=1744044519; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Qt+KFlGVqPv32OaHgTtc6K8wA3HBhqq+sb6w5Nh3F8A=;
-        b=HeKuP6feKSnhtyaLQ01GXETultNWDNnBd+TqgTIdaENmmigbecRdMGJML9Rtva5eEW
-         GaaCRxp5siCOVPAD3oJS3VM3cTLgteKnDeqi6/WqrS8rEo6+yh6jLE9ZYJ95luvnXiGD
-         lRD6XUBCS1lMDTbTWR5Iz0kAPbNteHBn135NE=
+        d=gmail.com; s=20230601; t=1743441838; x=1744046638; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=o07hwfiMpLEBbCh4LVHZ84R+SoFB1PtcMrDSIEkGBBc=;
+        b=bcOCNgVcj6ZIoF44rc+8+480EedwRMwjTPVzgYf5l6dgbRhsQQEEX6y/24rj10Wmh+
+         EhHCNB9Zh4tzh/Z9pMiBifMZZWFBmRAur2Ta9AnAEU/8LC2Fax4MOQ72coqgrttpLrth
+         0PBYUzKB8OtFyCpXg14mztYgzQvwgDS82L+91eVsb8gbyUThRrxDFylcE5P1Qtkdeoyj
+         4zpyTJrKrd3ayCgwEkLWQzkw9qFo2goBhkWznanWjq0z6iY2Hnfy/N4cb54Gne25hnjg
+         1tBOvmXgYwKL4EMi1pqntw5rbkW7hUylY+/cgeumhOm/Qhxa0LdH+5uyajlWe8djkw7C
+         xJfQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743439719; x=1744044519;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Qt+KFlGVqPv32OaHgTtc6K8wA3HBhqq+sb6w5Nh3F8A=;
-        b=VS4VRwfsYrA7ETLf4o4clE9a1Q4d7ZhK4vIgplKeff4/CptzZvc2avdESoPpyxALQJ
-         4QYHfbcwIrhRtpZZLJT0pLCFGKA2MrsTCE2PQAEPsp7xchAvcYNkNtiG5lKsNGLj7kPC
-         KzAQxRwdscZTzDPEOzS9MY38ISBy7S7aJyNe+ZruFee0YkZG0FYbktPwjFBcZ7GZcq+W
-         9AVRIIUeHxrOYP9vOmDZ/D7VDtLKB74te49loFyl1L3R9rla2eh/FTg5w96es4xHxoJg
-         6H5By0eiAltXgOplQPuNsewTRewBZew1xthXS6nXrO2SbHKVi7PCUPFms8C9Bl9FBwkM
-         bazw==
-X-Gm-Message-State: AOJu0YzJ3cIZagCZkhc4Q5ZoRVjv/5bIbIRvEQZAYJp7t3pyvB031KsB
-	leU5OudN43Q9KcVm1N3TVni+XSsHtfqhaZHFwA1j3WI916bsPXqVmMSS09xMlQ==
-X-Gm-Gg: ASbGncsHabaxo2p5+yTs+375ITNJyih+aLHExuLmG694qSnj8s7QPgT2+jlsZRIQrfH
-	+rHGOi4jdaJWOcdaZdGIUEzlu9+/1zzPLzSZL06Q8sou4/RrW/EYzji71MYkuTxLDD90BzYtQ13
-	w5EyW6T3SZcbBCa3RaHoI5BxInR0uqtUpd8Ed8xdXacgmEZWqhMiVHvtOtV2Yr/NeRj1TFBsp8R
-	s/vhk7sysG64dHow9Br46e4hiQJqGNhtJNSZcFrjDXgym8+4NlDSA9o3DbGvprch1zUAN5ttudw
-	nPpHkeV8SEpn1jHnyw2FOVRuATqFKmNOfPXEmA==
-X-Google-Smtp-Source: AGHT+IET2IGY1bkBg5zL2SVho439a24OFmrzQ2RadOLGAwXRbRNSq7QM+dEU7zPM2lLyYAYrxvzCJQ==
-X-Received: by 2002:a17:902:c943:b0:224:1005:7280 with SMTP id d9443c01a7336-2292f9ee0c0mr128471695ad.38.1743439719375;
-        Mon, 31 Mar 2025 09:48:39 -0700 (PDT)
-Received: from localhost ([2620:15c:9d:2:9a21:5ba5:99d6:3daa])
-        by smtp.gmail.com with UTF8SMTPSA id d9443c01a7336-2291eec693esm71337745ad.31.2025.03.31.09.48.37
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 31 Mar 2025 09:48:38 -0700 (PDT)
-From: Gwendal Grignou <gwendal@chromium.org>
-To: jic23@kernel.org
-Cc: linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	chrome-platform@lists.linux.dev,
-	Gwendal Grignou <gwendal@chromium.org>
-Subject: [PATCH] drivers: iio: cros_ec_sensors: Flush changing the FIFO timeout
-Date: Mon, 31 Mar 2025 09:48:32 -0700
-Message-ID: <20250331164832.4039379-1-gwendal@chromium.org>
-X-Mailer: git-send-email 2.49.0.472.ge94155a9ec-goog
+        d=1e100.net; s=20230601; t=1743441838; x=1744046638;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=o07hwfiMpLEBbCh4LVHZ84R+SoFB1PtcMrDSIEkGBBc=;
+        b=ay9tfz7nCaNiGsYQ6g47YnO9/rm2MmtwyndQJ72IoQQl6SOdrEOZxG/qyssqM6Dycp
+         nE6BgS/yhkD8Kcbixmr13iG02ORqwcRQfpdEyPZqfLCilPDF58b8AajUg6uhyhf93Ogc
+         BMiMdyLUl4OReiyOvVmv5HwSIKNLXBAuOg7vqsEgWAnaQkkSiogcAs8RMTJB8N3b69ox
+         72JrIYH/4uE3PfuVDO7Dw8KUbLRe1WFOaXb0p8/MpObHEByrh9QsqWu10UmWlOiq+pCj
+         NaRpcSbTGU8L9sGqKIAag4zCoBhQcctKcXIc7WvlQn6Chso7+OrFbC5mJQru9gSk7FTR
+         VYTg==
+X-Forwarded-Encrypted: i=1; AJvYcCULLRW4t87C2SQmJR/mpCg7TE66rb+ItLzuuCqtQgaBtp5Pc7kr+uiKcEcGXVLirH224ikxqhoZBzU=@vger.kernel.org, AJvYcCWn377U+6M6zcbkmdgyfnx6Exw/OOBKV+nBmxu+3p2OQwTVfqxx2qQ5Vd9VAhjh/Hes3jiz4MMC3Qjx6NFk@vger.kernel.org
+X-Gm-Message-State: AOJu0YweJT6y6svSL7KxHbQ+gI4ofT5OoLj5ebKST5+RxBiw6wHFgK1I
+	pJdiVs4Oi8Vw0s6Y83hCAN1Zrf9sxRnrZP+/qKbftcGXVB+rzuQ3fQqOr4YwL/I0iW3DnVpWbhQ
+	2nXNtuyZkMzsYZ5em4XQIBAaKbFe+hQ==
+X-Gm-Gg: ASbGncucNhzql4/hNNGsMdSoh4GgmUp1Sdkg7ZVDp/6+J98l4K+KLRmQGEr8afmbFLV
+	8kdPBpG9wMRBrdbr/VHS39zqUWZAFkVeIUueVyo6DB8Ott+00DDX7dBNi05vVT7+d5eetk7wxSf
+	SHej+046eLvV+UdTh2WTv9EafxRQ==
+X-Google-Smtp-Source: AGHT+IGmw3c2+Lwdd/F8uB5cjr+TUjvNtqnjp7SE2z5kFo0mehDfyHaZ7uEe6fqIMMscsB6teQR3bzJnKdrps/YT3rE=
+X-Received: by 2002:a05:6902:2e0c:b0:e5b:4019:50fb with SMTP id
+ 3f1490d57ef6-e6b83acc996mr5516246276.8.1743441838300; Mon, 31 Mar 2025
+ 10:23:58 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250318230843.76068-1-l.rubusch@gmail.com> <20250318230843.76068-6-l.rubusch@gmail.com>
+ <20250331112839.78c2bc71@jic23-huawei>
+In-Reply-To: <20250331112839.78c2bc71@jic23-huawei>
+From: Lothar Rubusch <l.rubusch@gmail.com>
+Date: Mon, 31 Mar 2025 19:23:22 +0200
+X-Gm-Features: AQ5f1JrqaKUNLa2CyJwwV4UIormZlXTOJ6wU_endFPTyRK4uIqsxzUGfErFD7V0
+Message-ID: <CAFXKEHYMgv1-rt6Sc65fCoki14v==NqQTY6J3WnQBG+ASoLeaw@mail.gmail.com>
+Subject: Re: [PATCH v5 05/11] iio: accel: adxl345: add freefall feature
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: lars@metafoo.de, Michael.Hennerich@analog.com, linux-iio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, eraretuya@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-fifo_timeout is used by the EC firmware only when a new sample is
-available.
-When the timeout changes, espcially when the new timeout is shorter than
-the current one, we need to send the samples waiting in the FIFO to the
-host.
-We also need to flush when a sensor is suspended (ODR set to 0).
+Hi Jonathan & IIO Mailing List'ers
 
-Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
----
- .../cros_ec_sensors/cros_ec_sensors_core.c    | 51 ++++++++++++-------
- 1 file changed, 33 insertions(+), 18 deletions(-)
+On Mon, Mar 31, 2025 at 12:28=E2=80=AFPM Jonathan Cameron <jic23@kernel.org=
+> wrote:
+>
+> On Tue, 18 Mar 2025 23:08:37 +0000
+> Lothar Rubusch <l.rubusch@gmail.com> wrote:
+>
+> > Add the freefall detection of the sensor together with a threshold and
+> > time parameter. A freefall event is detected if the measuring signal
+> > falls below the threshold.
+> >
+> > Introduce a freefall threshold stored in regmap cache, and a freefall
+> > time, having the scaled time value stored as a member variable in the
+> > state instance.
+> >
+> > Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
+> Hi Lothar,
+>
+> Apologies for the slow review!  Just catching up after travel
+> and I did it reverse order.
 
-diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-index b1abd6e16c4ba..4486c7e1e5b42 100644
---- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-+++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-@@ -103,22 +103,6 @@ static void get_default_min_max_freq(enum motionsensor_type type,
- 	}
- }
- 
--static int cros_ec_sensor_set_ec_rate(struct cros_ec_sensors_core_state *st,
--				      int rate)
--{
--	int ret;
--
--	if (rate > U16_MAX)
--		rate = U16_MAX;
--
--	mutex_lock(&st->cmd_lock);
--	st->param.cmd = MOTIONSENSE_CMD_EC_RATE;
--	st->param.ec_rate.data = rate;
--	ret = cros_ec_motion_send_host_cmd(st, 0);
--	mutex_unlock(&st->cmd_lock);
--	return ret;
--}
--
- static ssize_t cros_ec_sensor_set_report_latency(struct device *dev,
- 						 struct device_attribute *attr,
- 						 const char *buf, size_t len)
-@@ -134,7 +118,25 @@ static ssize_t cros_ec_sensor_set_report_latency(struct device *dev,
- 
- 	/* EC rate is in ms. */
- 	latency = integer * 1000 + fract / 1000;
--	ret = cros_ec_sensor_set_ec_rate(st, latency);
-+
-+	mutex_lock(&st->cmd_lock);
-+	st->param.cmd = MOTIONSENSE_CMD_EC_RATE;
-+	st->param.ec_rate.data = min(U16_MAX, latency);
-+	ret = cros_ec_motion_send_host_cmd(st, 0);
-+	mutex_unlock(&st->cmd_lock);
-+	if (ret < 0)
-+		return ret;
-+
-+	/*
-+	 * Flush samples currently in the FIFO, especially when the new latency
-+	 * is shorter than the old one: new timeout value is only considered when
-+	 * there is a new sample available. It can take a while for a slow
-+	 * sensor.
-+	 */
-+	mutex_lock(&st->cmd_lock);
-+	st->param.cmd = MOTIONSENSE_CMD_FIFO_FLUSH;
-+	ret = cros_ec_motion_send_host_cmd(st, 0);
-+	mutex_unlock(&st->cmd_lock);
- 	if (ret < 0)
- 		return ret;
- 
-@@ -152,7 +154,6 @@ static ssize_t cros_ec_sensor_get_report_latency(struct device *dev,
- 	mutex_lock(&st->cmd_lock);
- 	st->param.cmd = MOTIONSENSE_CMD_EC_RATE;
- 	st->param.ec_rate.data = EC_MOTION_SENSE_NO_VALUE;
--
- 	ret = cros_ec_motion_send_host_cmd(st, 0);
- 	latency = st->resp->ec_rate.ret;
- 	mutex_unlock(&st->cmd_lock);
-@@ -764,6 +765,8 @@ EXPORT_SYMBOL_GPL(cros_ec_sensors_capture);
-  * @mask:	specifies which values to be requested
-  *
-  * Return:	the type of value returned by the device
-+ *
-+ * cmd_lock mutex held.
-  */
- int cros_ec_sensors_core_read(struct cros_ec_sensors_core_state *st,
- 			  struct iio_chan_spec const *chan,
-@@ -836,6 +839,8 @@ EXPORT_SYMBOL_GPL(cros_ec_sensors_core_read_avail);
-  * @mask:	specifies which values to write
-  *
-  * Return:	the type of value returned by the device
-+ *
-+ * cmd_lock mutex held.
-  */
- int cros_ec_sensors_core_write(struct cros_ec_sensors_core_state *st,
- 			       struct iio_chan_spec const *chan,
-@@ -853,6 +858,16 @@ int cros_ec_sensors_core_write(struct cros_ec_sensors_core_state *st,
- 		st->param.sensor_odr.roundup = 1;
- 
- 		ret = cros_ec_motion_send_host_cmd(st, 0);
-+
-+		/* Flush the FIFO in case we are stopping a sensor.
-+		 * If the FIFO has just been emptied, pending samples will be
-+		 * stuck until new samples are available. It will not happen
-+		 * when all the sensors are stopped.
-+		 */
-+		if (frequency == 0) {
-+			st->param.cmd = MOTIONSENSE_CMD_FIFO_FLUSH;
-+			cros_ec_motion_send_host_cmd(st, 0);
-+		}
- 		break;
- 	default:
- 		ret = -EINVAL;
--- 
-2.49.0.472.ge94155a9ec-goog
+No problem a all, hope you had a great trip! I'm glad this goes for
+another version. In the meanwhile I was messing with the zephyr driver
+implementation for this sensor and had some findings and final
+thoughts about the ADXL345.
 
+First, set_measure_en() I use to enable/disable the measurement by
+setting a bit in the POWER_CTL register using regmap_write(). This was
+ok until adding the act/inact feature. For adding power modes to
+inactivity, I'm going to set the link bit in the same POWER_CTL reg.
+So you already guess, yet another call  to set_measure_en() simply
+wipes this link bit out immediately. I'll probably replace
+regmap_write() using regmap_update_bits() still in this series.
+
+Second, while playing with the zephyr driver and another setup I
+discovered, that probably the sensor is capable of mapping events to
+both interrupt lines in parallel. Currently, either all events to to
+INT1 or to INT2, not both. This affects actually 8 interrupt events:
+data ready, single tap, double tap, activity, inactivity, free fall,
+watermark, overrun. Actually they could individually be mapped either
+to INT1 or INT2.
+Initially I assumed they all need to go either to INT1 or INT2
+altogether. I appologize for this, I was wrong due to the breakout
+board I was using. That's a kind of crazy feature, and I think of
+implement it perhaps in a follow up series. Anyway, I was curisous
+about the approach, currently only can think of introducing 8x new DTS
+properties. Are you aware of sensors with similar features, what is
+usually the approach how to implement that? What is your oppinion on
+this?
+
+Third item, there are 4 FIFO modes: Bypass and Streaming are currently
+used. There is another FIFO mode and further a Trigger mode i.e. only
+when the sensor got triggered it fills up the FIFO with data (also
+this is mappable by the INT1 or INT2 line then). What would be a way
+to configure such feature? I know many of the Analog accelerometers
+seem to have FIFO modes. Is this to be configured by DT properties?
+What would be means to configure it? Also, this would be a separate
+patch set.
+
+Best,
+L
+
+>
+> > +
+> > +static int adxl345_set_ff_en(struct adxl345_state *st, bool cmd_en)
+> > +{
+> > +     unsigned int regval, ff_threshold;
+> > +     const unsigned int freefall_mask =3D 0x02;
+>
+> Where did this mask come from?   Feels like it should be a define
+> (just use ADXL345_INT_FREE_FALL probably)
+> or if not that at lest use BIT(1) to make it clear it's a bit rather
+> than the number 2.
+>
+> > +     bool en;
+> > +     int ret;
+> > +
+> > +     ret =3D regmap_read(st->regmap, ADXL345_REG_THRESH_FF, &ff_thresh=
+old);
+> > +     if (ret)
+> > +             return ret;
+> > +
+> > +     en =3D cmd_en && ff_threshold > 0 && st->ff_time_ms > 0;
+> > +
+> > +     regval =3D en ? ADXL345_INT_FREE_FALL : 0x00;
+> > +
+> > +     return regmap_update_bits(st->regmap, ADXL345_REG_INT_ENABLE,
+> > +                               freefall_mask, regval);
+> > +}
+>
+> Jonathan
 

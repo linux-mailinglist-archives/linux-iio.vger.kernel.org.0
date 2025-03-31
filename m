@@ -1,47 +1,47 @@
-Return-Path: <linux-iio+bounces-17421-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17422-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B10C6A764C7
-	for <lists+linux-iio@lfdr.de>; Mon, 31 Mar 2025 13:13:31 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EFC4A764CE
+	for <lists+linux-iio@lfdr.de>; Mon, 31 Mar 2025 13:14:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 10E623A6C11
-	for <lists+linux-iio@lfdr.de>; Mon, 31 Mar 2025 11:13:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9E8237A483B
+	for <lists+linux-iio@lfdr.de>; Mon, 31 Mar 2025 11:12:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB1931E1041;
-	Mon, 31 Mar 2025 11:13:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B21F31E1E13;
+	Mon, 31 Mar 2025 11:13:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SVnYzOuL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IOS8xdNq"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 706521DD0F2;
-	Mon, 31 Mar 2025 11:13:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57F891E1A18;
+	Mon, 31 Mar 2025 11:13:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743419605; cv=none; b=OHuA86zyh76dVAlUpTnlJdjC/93cGhw75D76nAeHCpxqgUjh1RJQBm7pAYsuOksRSb+LiuZE/UXZtUwuBDYugV4+cJfsFz39eU9jf4nZCmhtcvXh4oLorcRkx1fcUvEhEjySJDz81btO9PT587prSeEOP1pEDdw/iqtTW9xdrjM=
+	t=1743419634; cv=none; b=ctVMjNh+866Nrw8Y+lVlUVm8vVIp4ySdK1o467zSS14LfKehN000Thgo+YIAnc/wSI5CRYA44iXzf3nj3703X+LK8AbUQMKoTRYNEDTMYhSOcstP4jthaVl3rT6poWUlqtH9k9Q3anuCC5lad2gVweWujzTNXwRPlD93BP2igm8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743419605; c=relaxed/simple;
-	bh=xC5d5HV9g/QMKwpUqadQc8/+qiEuKkPATB2RIFwwMkE=;
+	s=arc-20240116; t=1743419634; c=relaxed/simple;
+	bh=3rCkGOmOkhpyde92kwpKR8IpDoKL9jWkmNM0tJmN/r8=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HqJCqyl8r4jt9bI4u+Y6BMxOBw/d1NMK81/dGrFKWMkOGNN7xftQWCEjHhM2qOXLywl9xD0qXixicbuskx3iPqxyPqZfBiC4EITF0qvtr2eVYuRjC8yA/N9IepZ65NGCLtRb/PCKdNiZbfsaSDMez5MTWJfjZ0knrb0DwVIn5w8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SVnYzOuL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A707DC4CEE3;
-	Mon, 31 Mar 2025 11:13:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=MkCD5DdMOFBX5asT/Dp11qT8edY1wvSY2YEra8bDtMI1BTzjRT/sfnk9RGotmNKfmkrTvno2P4RgVdBabtTdtDafx4zwYAxUCcT36LMD3vlp7plj4Go1iTz3M5ReOTgbr2dzISf/fEmTR0k01r+ADuERR/6rPw+nbsvnkUMPAow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IOS8xdNq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B692CC4CEE3;
+	Mon, 31 Mar 2025 11:13:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743419604;
-	bh=xC5d5HV9g/QMKwpUqadQc8/+qiEuKkPATB2RIFwwMkE=;
+	s=k20201202; t=1743419633;
+	bh=3rCkGOmOkhpyde92kwpKR8IpDoKL9jWkmNM0tJmN/r8=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=SVnYzOuLQJw6S/ItccfCmmtnOXug52M/1LqdxqbL8wGZTQCmSvmvteJ7Sx61sI/UV
-	 1X7w5cGglO4PkHOhCPOmCfdmBB/0HwWaIIMKuO0EZDGrDVQJfACDhO3tHdAxSpgcax
-	 EX5Qzxd7iDeQTj+Hi2mJhZ0M0wqzFnz23IKlTV9uJE2XQs8A/2JDyORkPOWSA+4wL2
-	 r9HeNuVGOthM8KB6j2AVoVesarBWe4CJU1dC6AB4EI8vmHbU4f7p/90reaO4YgkcXD
-	 LjZ7pbt5zb/dsoZVD6FdekcMpnR+L36xZViV5lav5XcV/a9EbR9FYp61mQ7i8zZlRG
-	 q2GzqhiiNwNzw==
-Date: Mon, 31 Mar 2025 12:13:15 +0100
+	b=IOS8xdNqz4igVY5Qaf0VUmsfy15E3hrWl6ScN4ynzKdYWNlDvyKhQTCmK6ehsh5Z6
+	 Fyj2mqxvtvLzFRazN8r+e+lBPDVqMgsk9Pf84brEYX7v1o68hhDHLUIKqsKM//XId+
+	 hIlqJX+2lBc8UB70aPij+SF3Hn8JQsoyhsXrmOzl5p0bZB3q3M6kfFyPdf7Yfl7o0y
+	 WqjHMkl1buseU/KFXi1ip2wb+RNw8rMjsG34HlRZFbXl5Ym1p0zjJ8cRwbAuHddvhA
+	 3v0zZ/fOcLChkURvTnhr5RL96pPR3cyBGjKU08glUHiUxiQXXOMtUV7zOoj0N8dGD1
+	 xqTWEdLUCg+Uw==
+Date: Mon, 31 Mar 2025 12:13:44 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: Matti Vaittinen <mazziesaccount@gmail.com>
 Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>, Lars-Peter Clausen
@@ -50,11 +50,11 @@ Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>, Lars-Peter Clausen
  <nuno.sa@analog.com>, David Lechner <dlechner@baylibre.com>, Javier
  Carrasco <javier.carrasco.cruz@gmail.com>, linux-iio@vger.kernel.org,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/6] iio: adc: ti-adc128s052: Be consistent with arrays
-Message-ID: <20250331121315.78178349@jic23-huawei>
-In-Reply-To: <49966043aabecad8db8eb81908d0d2995b0cfc38.1742474322.git.mazziesaccount@gmail.com>
+Subject: Re: [PATCH 4/6] iio: adc: ti-adc128s052: Use devm_mutex_init()
+Message-ID: <20250331121344.0d4af6a7@jic23-huawei>
+In-Reply-To: <c424b2c234fb82faf40a7832dc410e0178a3a8fd.1742474322.git.mazziesaccount@gmail.com>
 References: <cover.1742474322.git.mazziesaccount@gmail.com>
-	<49966043aabecad8db8eb81908d0d2995b0cfc38.1742474322.git.mazziesaccount@gmail.com>
+	<c424b2c234fb82faf40a7832dc410e0178a3a8fd.1742474322.git.mazziesaccount@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -65,21 +65,15 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 31 Mar 2025 11:03:13 +0300
+On Mon, 31 Mar 2025 11:03:30 +0300
 Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 
-> The ti-adc128s052 driver has NULL terminated ID arrays for the
-> of_device_id, spi_device_id and acpi_device_id. All of these are
-> terminated by having an empty string as the last member of an array.
-> Only the of_device_id array uses the /* sentinel */ comment.
+> Quoting Jonathan:
+> "Whilst it doesn't bring huge advantage, now we have devm_mutex_init()
+> it seems reasonable to use it and maybe catch a use after free for the
+> lock"
 > 
-> It's better to be consistent.
-> 
-> This /* sentinel */ comment serves no real purpose these days as people
-> are used to seeing these ID lists terminated with an empty array
-> element.
-> 
-> Drop the /* sentinel */ from the of_device_id.
+> Switch to use devm_mutex_init() while working on this file.
 > 
 > Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
 > ---
@@ -87,30 +81,21 @@ Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 >  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
 > diff --git a/drivers/iio/adc/ti-adc128s052.c b/drivers/iio/adc/ti-adc128s052.c
-> index d1e31122ea0d..dd1e405bf172 100644
+> index dd1e405bf172..90b23c68daea 100644
 > --- a/drivers/iio/adc/ti-adc128s052.c
 > +++ b/drivers/iio/adc/ti-adc128s052.c
-> @@ -185,7 +185,7 @@ static const struct of_device_id adc128_of_match[] = {
->  	{ .compatible = "ti,adc124s021", .data = &adc128_config[2] },
->  	{ .compatible = "ti,adc124s051", .data = &adc128_config[2] },
->  	{ .compatible = "ti,adc124s101", .data = &adc128_config[2] },
-> -	{ /* sentinel */ },
-> +	{ },
-
-Whilst here, drop the trailing ,
-
-More 'modern' style in kernel tends not to use them as we don't want to make it
-easy to put anything after it.
-
-If there is another such case drop the comma on that as well as part of this
-patch.
-
-I don't care that much about the /* sentinel */ though as I've let at least
-one more of those in over the weekend. Still consistency is a valid argument.
-
-
->  };
->  MODULE_DEVICE_TABLE(of, adc128_of_match);
+> @@ -172,7 +172,7 @@ static int adc128_probe(struct spi_device *spi)
+>  	if (ret)
+>  		return ret;
 >  
+> -	mutex_init(&adc->lock);
+> +	devm_mutex_init(&spi->dev, &adc->lock);
+	ret = devm_mutex_init(&spi->dev, &adc->lock);
+	if (ret)
+		return ret;
+
+>  
+>  	return devm_iio_device_register(&spi->dev, indio_dev);
+>  }
 
 

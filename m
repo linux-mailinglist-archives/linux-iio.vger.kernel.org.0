@@ -1,46 +1,46 @@
-Return-Path: <linux-iio+bounces-17448-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17449-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4199EA7658B
-	for <lists+linux-iio@lfdr.de>; Mon, 31 Mar 2025 14:15:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 814BAA7658C
+	for <lists+linux-iio@lfdr.de>; Mon, 31 Mar 2025 14:15:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 76ED17A3512
-	for <lists+linux-iio@lfdr.de>; Mon, 31 Mar 2025 12:14:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA057188919F
+	for <lists+linux-iio@lfdr.de>; Mon, 31 Mar 2025 12:15:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A80631E230E;
-	Mon, 31 Mar 2025 12:15:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B3901E3DFA;
+	Mon, 31 Mar 2025 12:15:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kqlQ7Jzx"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HwsCch5C"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 687DE154C15
-	for <linux-iio@vger.kernel.org>; Mon, 31 Mar 2025 12:15:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CBD413B59B
+	for <linux-iio@vger.kernel.org>; Mon, 31 Mar 2025 12:15:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743423328; cv=none; b=pIihtEIm7CKNeTqXqCyRXASBVFb37pR4KfxOSB8SmQCjyYgF9IbKeTCR5Q5v6e4oDvHaZg6IcOB2w6CZ8qPvMe4PPc3P28X/dQziN9x1filRKfl8PCQxiedLIa8+KtWz8R0DiBZeiNIgdRgkvEurwAvUXwln2gvFYRLH+AqgOS8=
+	t=1743423334; cv=none; b=BgGMHzzpO6oxi1EyyJ6JCbP0OAFlvqAE6HPpUFwNeN88/wYqWIK/cmthrlMq1G1TWxO+6xMrQ0pe65ADJbkhKyDOmQKmT2/l3kQz97KPWSrB3SH55YSJWU6YHgMYsYnCH1//JQ6aQUGPH0/9xdSDKcQLVmBayYxwUhiYnLu5iq4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743423328; c=relaxed/simple;
-	bh=JjWPuy+b+QXmgLam8m5ZykHsPQVA7cECRMcOy85gTR0=;
+	s=arc-20240116; t=1743423334; c=relaxed/simple;
+	bh=jrfpwY9AnpDdjNfVj8WPPVFTu9qh9emfIv3+kOxZ45s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r4erCjn9MRgUlmxlLvM8QgdjDufXUnYjeEUpFQF1hm77jgXtQRzAO2/7SZmei0ocezcO9Ivu0FwVceQH3PiQNEZQHtdEQyWlMwgNFwiZhukzQdjtCO3yIaOQbRUApLscAwtW7yyR8OjL4IGehvWjq0oh5akkxDDe3ySAiDRCBR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kqlQ7Jzx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 685A2C4CEE5;
-	Mon, 31 Mar 2025 12:15:22 +0000 (UTC)
+	 MIME-Version; b=eHo44cbC9S1zZs5RSccdVeHlOBktNts8DHs4CaZXS89ew78rU4oFZIPRUuOucoGe0rG24ZvhTv47t5M5tPD2T0+XQPqLTyrXdwfyHOat4iztfPjfJAKUI8XxCS1zpyPH4zOMOUYI3KzSD7vXV6V5f/Rpqcp/YFVRSR+8bdS5FVM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HwsCch5C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7280AC4CEE3;
+	Mon, 31 Mar 2025 12:15:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743423327;
-	bh=JjWPuy+b+QXmgLam8m5ZykHsPQVA7cECRMcOy85gTR0=;
+	s=k20201202; t=1743423334;
+	bh=jrfpwY9AnpDdjNfVj8WPPVFTu9qh9emfIv3+kOxZ45s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kqlQ7JzxXzOQ48slTqRSTGIqW32LJAo0X2dd1rQgf4wWkIfA9flxQxqShXjVQ9Dc/
-	 +xbmG7VOxBpcPWaq60K2jkCFUK+g0W4wUhKw94B8lV8lo4y/j91KvIzPp4f3i+Fn3I
-	 eqbqC8vXQeT2xiVIzR87h1cEJmv9A0o7XpTszxMh+hYnAage/tDQXbqmcWeRTIFO8/
-	 M9sy1+ks7WYlJfJDs4+C1ieXtoIxoZ7xxq8M5Mi6oScRd7izEnzrHTf960C8wjrkcv
-	 HW6kmvrNAXUpTjjM4zPzozdIB+sspVyhulXUwH/EjrcekJcFjy5X70zXAjc+QBxh4Y
-	 5YWYqvDbm7FsA==
+	b=HwsCch5CodVgMq5xjfpxQsfhS507G+Z8iz5C6Raci+pxR6iRNHPXKyn6At2DZw2vf
+	 rF5Q5+7ffe9ibEvh1G8zALKgN4+tET7TKlIfegrHjWH035yDitCnYkeuTAbyI16TOx
+	 gdUBaBEPyHMnzxgoxl2UX5uUK8689x6+IjyM32dXQQbsLoM7KcPKFq9Bx5d88+LcP/
+	 ktDoRFJyYNDyNk8SWa/HAZ7LDrzvHzu325FNyTVCR5Lr0RjEHOgstQM7hKz4of1JkQ
+	 lOkmyqJ4fiZlrLwaSjLkbYUD5lQ21Klz3onPyOjPPONf2iXsyF7PPAxkaQbllZC+l1
+	 jXv8fdtPa47hQ==
 From: Jonathan Cameron <jic23@kernel.org>
 To: linux-iio@vger.kernel.org
 Cc: David Lechner <dlechner@baylibre.com>,
@@ -57,9 +57,9 @@ Cc: David Lechner <dlechner@baylibre.com>,
 	Yasin Lee <yasin.lee.x@gmail.com>,
 	Andy Shevchenko <andy.shevchenko@gmail.com>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 18/37] iio: imu: st_lsm6dsx: Factor out parts of st_lsm6dsx_shub_write_raw() to allow direct returns
-Date: Mon, 31 Mar 2025 13:12:58 +0100
-Message-ID: <20250331121317.1694135-19-jic23@kernel.org>
+Subject: [PATCH 19/37] iio: imu: st_lsm6dsx: Switch to sparse friendly claim/release_direct()
+Date: Mon, 31 Mar 2025 13:12:59 +0100
+Message-ID: <20250331121317.1694135-20-jic23@kernel.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250331121317.1694135-1-jic23@kernel.org>
 References: <20250331121317.1694135-1-jic23@kernel.org>
@@ -73,109 +73,59 @@ Content-Transfer-Encoding: 8bit
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-By factoring out all the code that occurs with direct mode claimed
-to a helper function, that helper function can directly return simplifying
-code flow.
+This driver caused a false positive with __cond_lock() style solution
+but is fine with the simple boolean return approach now used.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Cc: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c | 65 +++++++++++---------
- 1 file changed, 35 insertions(+), 30 deletions(-)
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 16 +++++++---------
+ 1 file changed, 7 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
-index c1b444520d2a..17a74f5adfc0 100644
---- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
-+++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
-@@ -614,53 +614,58 @@ st_lsm6dsx_shub_set_full_scale(struct st_lsm6dsx_sensor *sensor,
- }
+diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+index 4fdcc2acc94e..670cd217eb50 100644
+--- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
++++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+@@ -1804,12 +1804,11 @@ static int st_lsm6dsx_read_raw(struct iio_dev *iio_dev,
  
- static int
--st_lsm6dsx_shub_write_raw(struct iio_dev *iio_dev,
--			  struct iio_chan_spec const *chan,
--			  int val, int val2, long mask)
-+__st_lsm6dsx_shub_write_raw(struct iio_dev *iio_dev,
-+			    struct iio_chan_spec const *chan,
-+			    int val, int val2, long mask)
+ 	switch (mask) {
+ 	case IIO_CHAN_INFO_RAW:
+-		ret = iio_device_claim_direct_mode(iio_dev);
+-		if (ret)
+-			break;
++		if (!iio_device_claim_direct(iio_dev))
++			return -EBUSY;
+ 
+ 		ret = st_lsm6dsx_read_oneshot(sensor, ch->address, val);
+-		iio_device_release_direct_mode(iio_dev);
++		iio_device_release_direct(iio_dev);
+ 		break;
+ 	case IIO_CHAN_INFO_SAMP_FREQ:
+ 		*val = sensor->odr / 1000;
+@@ -1834,11 +1833,10 @@ static int st_lsm6dsx_write_raw(struct iio_dev *iio_dev,
+ 				int val, int val2, long mask)
  {
  	struct st_lsm6dsx_sensor *sensor = iio_priv(iio_dev);
- 	int err;
+-	int err;
++	int err = 0;
  
 -	err = iio_device_claim_direct_mode(iio_dev);
 -	if (err)
 -		return err;
--
++	if (!iio_device_claim_direct(iio_dev))
++		return -EBUSY;
+ 
  	switch (mask) {
- 	case IIO_CHAN_INFO_SAMP_FREQ: {
-+		struct st_lsm6dsx_hw *hw = sensor->hw;
-+		struct st_lsm6dsx_sensor *ref_sensor;
-+		u8 odr_val;
- 		u16 data;
-+		int odr;
- 
- 		val = val * 1000 + val2 / 1000;
- 		err = st_lsm6dsx_shub_get_odr_val(sensor, val, &data);
--		if (!err) {
--			struct st_lsm6dsx_hw *hw = sensor->hw;
--			struct st_lsm6dsx_sensor *ref_sensor;
--			u8 odr_val;
--			int odr;
--
--			ref_sensor = iio_priv(hw->iio_devs[ST_LSM6DSX_ID_ACC]);
--			odr = st_lsm6dsx_check_odr(ref_sensor, val, &odr_val);
--			if (odr < 0) {
--				err = odr;
--				goto release;
--			}
--
--			sensor->ext_info.slv_odr = val;
--			sensor->odr = odr;
--		}
--		break;
-+		if (err)
-+			return err;
-+
-+		ref_sensor = iio_priv(hw->iio_devs[ST_LSM6DSX_ID_ACC]);
-+		odr = st_lsm6dsx_check_odr(ref_sensor, val, &odr_val);
-+		if (odr < 0)
-+			return odr;
-+
-+		sensor->ext_info.slv_odr = val;
-+		sensor->odr = odr;
-+		return 0;
- 	}
  	case IIO_CHAN_INFO_SCALE:
--		err = st_lsm6dsx_shub_set_full_scale(sensor, val2);
--		break;
-+		return st_lsm6dsx_shub_set_full_scale(sensor, val2);
- 	default:
--		err = -EINVAL;
--		break;
-+		return -EINVAL;
+@@ -1860,7 +1858,7 @@ static int st_lsm6dsx_write_raw(struct iio_dev *iio_dev,
+ 		break;
  	}
-+}
-+
-+static int
-+st_lsm6dsx_shub_write_raw(struct iio_dev *iio_dev,
-+			  struct iio_chan_spec const *chan,
-+			  int val, int val2, long mask)
-+{
-+	int ret;
-+
-+	ret = iio_device_claim_direct_mode(iio_dev);
-+	if (ret)
-+		return ret;
-+
-+	ret = __st_lsm6dsx_shub_write_raw(iio_dev, chan, val, val2, mask);
  
--release:
- 	iio_device_release_direct_mode(iio_dev);
+-	iio_device_release_direct_mode(iio_dev);
++	iio_device_release_direct(iio_dev);
  
--	return err;
-+	return ret;
+ 	return err;
  }
- 
- static ssize_t
 -- 
 2.48.1
 

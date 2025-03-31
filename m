@@ -1,183 +1,161 @@
-Return-Path: <linux-iio+bounces-17485-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17486-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF217A76C7D
-	for <lists+linux-iio@lfdr.de>; Mon, 31 Mar 2025 19:24:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D5F0A76D2C
+	for <lists+linux-iio@lfdr.de>; Mon, 31 Mar 2025 21:05:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 018FB18889EB
-	for <lists+linux-iio@lfdr.de>; Mon, 31 Mar 2025 17:24:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0909F188CDE7
+	for <lists+linux-iio@lfdr.de>; Mon, 31 Mar 2025 19:05:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69D2A214A92;
-	Mon, 31 Mar 2025 17:24:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2818218E97;
+	Mon, 31 Mar 2025 19:04:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bcOCNgVc"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="WsMJjIcM"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-yb1-f175.google.com (mail-yb1-f175.google.com [209.85.219.175])
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A157542A94;
-	Mon, 31 Mar 2025 17:23:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90BD621764B
+	for <linux-iio@vger.kernel.org>; Mon, 31 Mar 2025 19:04:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743441841; cv=none; b=QDE5/qPnXNlzOBIrYmmkgT+C6w1YulitcGxSTkIE+3C6qt5olSIGvHb1u7CRT4d4zdEHBpVqJem1r/jupQNHl64/oMhzyPQeLTl5I8YxeP9k9UlKdn/nUJow4mIFIpsKUycqJtTX2s6RLqRWF3cEWr4wKU7V8rmAH0D8Sb9RVxA=
+	t=1743447846; cv=none; b=PDL2lfLGZ4+465ixrSVfvR0uScYu1uhyRku6B9XCYEJshHhTfzu2QIGAArF3b4kmnb/rJQPypxM6PyndvrG4MOtPYtiY2F4aP96+zVfgwxeUjVS6igpNM5xnS1MFPjHZjX8CKSLs6XvkTkaFZfc+nk+0/7Gl6iD+wUayjls+F2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743441841; c=relaxed/simple;
-	bh=bVJ061wVgNRKZRJHbB/7eTIRMbIioUYkRMdIyide3+s=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=MsGy5iKidYhBIbS3gLHWwQ02YYqlzLtDcZiCTadIx4aEfl6cIIySROe1tv9b18C/Bxtl04vSs7Ld1bwhyv4qN28kHH0RrR2tO8bM9C/PzdxTn/MSJGDVI1Iiovi0FHMBVM9DuC/R/6YAVa8y+8vdYjTSxyZdf2eysbehkQl2CIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bcOCNgVc; arc=none smtp.client-ip=209.85.219.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yb1-f175.google.com with SMTP id 3f1490d57ef6-e63dbd3d135so611675276.3;
-        Mon, 31 Mar 2025 10:23:59 -0700 (PDT)
+	s=arc-20240116; t=1743447846; c=relaxed/simple;
+	bh=KCzCQK5KfTNTXVj3QAb70ZvZJIWC5xLub+VrbQLHf60=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=fBRsxm5+x4AZvxIK7KFnK+DRtPn/JQ/HagyrcFAU2FwpVHj7MtKPwb4SN8Rd7YxVKuvuWeGrDBcEET3k/Rss67Vs7g4D2M5eUVxlgSPqDSeYVMgjtsOMMfhgTR6/C27rgEOfBfYK+ACq23ylxksRZW77i3AxdOLaBhwd4mYkFKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=WsMJjIcM; arc=none smtp.client-ip=209.85.218.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-ac73723b2d5so478883066b.3
+        for <linux-iio@vger.kernel.org>; Mon, 31 Mar 2025 12:04:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743441838; x=1744046638; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=o07hwfiMpLEBbCh4LVHZ84R+SoFB1PtcMrDSIEkGBBc=;
-        b=bcOCNgVcj6ZIoF44rc+8+480EedwRMwjTPVzgYf5l6dgbRhsQQEEX6y/24rj10Wmh+
-         EhHCNB9Zh4tzh/Z9pMiBifMZZWFBmRAur2Ta9AnAEU/8LC2Fax4MOQ72coqgrttpLrth
-         0PBYUzKB8OtFyCpXg14mztYgzQvwgDS82L+91eVsb8gbyUThRrxDFylcE5P1Qtkdeoyj
-         4zpyTJrKrd3ayCgwEkLWQzkw9qFo2goBhkWznanWjq0z6iY2Hnfy/N4cb54Gne25hnjg
-         1tBOvmXgYwKL4EMi1pqntw5rbkW7hUylY+/cgeumhOm/Qhxa0LdH+5uyajlWe8djkw7C
-         xJfQ==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1743447842; x=1744052642; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=o3EOzlYlRNAiJ4+uUWCt9BJ21v6gCuzJhG6mflO89SQ=;
+        b=WsMJjIcMQuHGuqHk7oPK0lSDmr4KCRyTZ1ew2THFefYrrYbQZwLwNLDvjGOXgyNrmg
+         PsHT7FRCZvh5qgG04/7QuHs+kJfm70JJXrTcsQhE/q7OvrudMujMkFcVEDfXlLu6N0Ol
+         t+K+swTplZqslhFFmNNI8gDDdujtQfETFxizLghs1aCFF59UIj8bDiHT7hJpwIC55P6G
+         qpf6rBdyfFvF7Nu1ABwZkvDaFcD7XjbAzi9ax5aJ4SDToKhJ1WRIuq6dgH/gSowJ0o1Y
+         75RzZU+IrNUkneoeKy46SaSnJT30NFkccTR7V+n8a87lMUA/WnAvvdNR5pMSQYXcAhgn
+         Vykw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743441838; x=1744046638;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=o07hwfiMpLEBbCh4LVHZ84R+SoFB1PtcMrDSIEkGBBc=;
-        b=ay9tfz7nCaNiGsYQ6g47YnO9/rm2MmtwyndQJ72IoQQl6SOdrEOZxG/qyssqM6Dycp
-         nE6BgS/yhkD8Kcbixmr13iG02ORqwcRQfpdEyPZqfLCilPDF58b8AajUg6uhyhf93Ogc
-         BMiMdyLUl4OReiyOvVmv5HwSIKNLXBAuOg7vqsEgWAnaQkkSiogcAs8RMTJB8N3b69ox
-         72JrIYH/4uE3PfuVDO7Dw8KUbLRe1WFOaXb0p8/MpObHEByrh9QsqWu10UmWlOiq+pCj
-         NaRpcSbTGU8L9sGqKIAag4zCoBhQcctKcXIc7WvlQn6Chso7+OrFbC5mJQru9gSk7FTR
-         VYTg==
-X-Forwarded-Encrypted: i=1; AJvYcCULLRW4t87C2SQmJR/mpCg7TE66rb+ItLzuuCqtQgaBtp5Pc7kr+uiKcEcGXVLirH224ikxqhoZBzU=@vger.kernel.org, AJvYcCWn377U+6M6zcbkmdgyfnx6Exw/OOBKV+nBmxu+3p2OQwTVfqxx2qQ5Vd9VAhjh/Hes3jiz4MMC3Qjx6NFk@vger.kernel.org
-X-Gm-Message-State: AOJu0YweJT6y6svSL7KxHbQ+gI4ofT5OoLj5ebKST5+RxBiw6wHFgK1I
-	pJdiVs4Oi8Vw0s6Y83hCAN1Zrf9sxRnrZP+/qKbftcGXVB+rzuQ3fQqOr4YwL/I0iW3DnVpWbhQ
-	2nXNtuyZkMzsYZ5em4XQIBAaKbFe+hQ==
-X-Gm-Gg: ASbGncucNhzql4/hNNGsMdSoh4GgmUp1Sdkg7ZVDp/6+J98l4K+KLRmQGEr8afmbFLV
-	8kdPBpG9wMRBrdbr/VHS39zqUWZAFkVeIUueVyo6DB8Ott+00DDX7dBNi05vVT7+d5eetk7wxSf
-	SHej+046eLvV+UdTh2WTv9EafxRQ==
-X-Google-Smtp-Source: AGHT+IGmw3c2+Lwdd/F8uB5cjr+TUjvNtqnjp7SE2z5kFo0mehDfyHaZ7uEe6fqIMMscsB6teQR3bzJnKdrps/YT3rE=
-X-Received: by 2002:a05:6902:2e0c:b0:e5b:4019:50fb with SMTP id
- 3f1490d57ef6-e6b83acc996mr5516246276.8.1743441838300; Mon, 31 Mar 2025
- 10:23:58 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1743447842; x=1744052642;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=o3EOzlYlRNAiJ4+uUWCt9BJ21v6gCuzJhG6mflO89SQ=;
+        b=eoy9qsDl/S1Egrdy+8cbbMVXPgbB1aFOZhLYWzm0wuHlISNGM8PoB+71Pxa1QiycDg
+         I0EUUQZVbkYaHe4XgHOxvWzIg8W0wgOFS9QaS4ilNtgstAkUIYEGYyv9qYjImGiEbjWT
+         Afz5RP/EAT5FdzRsZt0Fg0/8xAAVDmZcNihHtj0Du4+57uKJkXWNYZ6zxl7zuPlKVwIb
+         i36qL1er6EbIWnaq30XJU2Bh/GfwotTVFVs7oR+fXujn6X/WfSqAgobO+XjOf9Ql7L5+
+         ew0hUwCeb0e1mKj0TlvnCpC+Agi6liZowoWKmipFSwDj41OYLENmNMXUY1lcVZsIbTMC
+         zi3Q==
+X-Gm-Message-State: AOJu0Yzphfmi5//7xopGpfopcGN0/VmMIid7yuQ0EjkjusOE+9GTt3IW
+	xo/IrHC6+rh+I18lBjblFr6+HYPDCCfytylAGFPoPIkh5NUEME9CytVGGaNdnwI=
+X-Gm-Gg: ASbGncvGZywaEF3jjLgd4vCYdgU/D093AcIrdTAiIYNzcPyRXteK5htZOwSKAhco5UR
+	24jyY7dy3y3F3InuHWgd9vO0vzv6MQLTYf5dhJ1r7GSKsBtrF125uHq7YIGJ3l33uaPmRd1z/gF
+	STl8O6xvkLgeAUDoMdS52eDi9ovOsWVDXe3GU2LPNhG5gAgTqOp5MsroLSDCfRoyr5MQBKdSmrE
+	ztr8fxEH/cOOl5UaqtACCKQ7UM83aFlvxdEfMoIAVQaZlY1hVuA5AVHkrWD9P3Cxv6WIPcKwtFb
+	xXUCB+jQH1Rb5L9Q6QRV10+805/3rFjZ9U/3Neo5tj1nujDAlQl/mNWfxllQukKlz0TZf8fE7LG
+	F39G5aM0QvksKZ0dwGPkN7kiA4MGv
+X-Google-Smtp-Source: AGHT+IG6x2cQV9rQNT/dNa4oIVCMlwksMuE5agsbtSttDyBJNmy1EbpQYwO/1wjMinTPo+R7D0RWPQ==
+X-Received: by 2002:a17:907:9629:b0:ac3:991:a631 with SMTP id a640c23a62f3a-ac738a9a6b5mr822914366b.34.1743447841909;
+        Mon, 31 Mar 2025 12:04:01 -0700 (PDT)
+Received: from [192.168.0.2] (host-80-116-51-172.pool80116.interbusiness.it. [80.116.51.172])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ac71961f9cfsm652288566b.122.2025.03.31.12.04.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 31 Mar 2025 12:04:01 -0700 (PDT)
+From: Angelo Dureghello <adureghello@baylibre.com>
+X-Google-Original-From: Angelo Dureghello <adureghello@baylibre.org>
+Subject: [PATCH v2 0/5] iio: ad3552r-hs: add support for internal ramp
+ generator
+Date: Mon, 31 Mar 2025 21:02:43 +0200
+Message-Id: <20250331-wip-bl-ad3552r-fixes-v2-0-cdedb430497e@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250318230843.76068-1-l.rubusch@gmail.com> <20250318230843.76068-6-l.rubusch@gmail.com>
- <20250331112839.78c2bc71@jic23-huawei>
-In-Reply-To: <20250331112839.78c2bc71@jic23-huawei>
-From: Lothar Rubusch <l.rubusch@gmail.com>
-Date: Mon, 31 Mar 2025 19:23:22 +0200
-X-Gm-Features: AQ5f1JrqaKUNLa2CyJwwV4UIormZlXTOJ6wU_endFPTyRK4uIqsxzUGfErFD7V0
-Message-ID: <CAFXKEHYMgv1-rt6Sc65fCoki14v==NqQTY6J3WnQBG+ASoLeaw@mail.gmail.com>
-Subject: Re: [PATCH v5 05/11] iio: accel: adxl345: add freefall feature
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: lars@metafoo.de, Michael.Hennerich@analog.com, linux-iio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, eraretuya@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIANPm6mcC/4WNTQ6CMBCFr0Jm7Zj+orjyHoZFaUeZBClpDUoId
+ 7dyAZffe/neWyFTYspwqVZINHPmOBZQhwp878YHIYfCoISyQiuJb56wG9AFba1KeOcPZTROn+v
+ GGC9PAoo6JdqLYt7awj3nV0zL/jLLX/pncJYoUHvpnDJNkLW+dm4ZuEt09PEJ7bZtX+MWp0O7A
+ AAA
+X-Change-ID: 20250321-wip-bl-ad3552r-fixes-4a386944c170
+To: =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, 
+ Jonathan Corbet <corbet@lwn.net>, 
+ Olivier Moysan <olivier.moysan@foss.st.com>, 
+ Michael Hennerich <Michael.Hennerich@analog.com>
+Cc: linux-iio@vger.kernel.org, linux-doc@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Angelo Dureghello <adureghello@baylibre.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1948;
+ i=adureghello@baylibre.com; h=from:subject:message-id;
+ bh=KCzCQK5KfTNTXVj3QAb70ZvZJIWC5xLub+VrbQLHf60=;
+ b=owGbwMvMwCXGf3bn1e/btlsznlZLYkh/9eyWU/Z71/OsNwqv/Pr96d4JyZ5sriPHzypasbepZ
+ y7cvcRuekcpC4MYF4OsmCJLXWKESejtUCnlBYyzYeawMoEMYeDiFICJCAUzMrQuvPeQ5cHJ+rOV
+ z7Wf3du46qlbcTH79+JFLkr7L3e2X3jB8N9P09Elmu+SYvWKqkkKv79LPp15dNnd92YB7I7HdpQ
+ JPuMBAA==
+X-Developer-Key: i=adureghello@baylibre.com; a=openpgp;
+ fpr=703CDFAD8B573EB00850E38366D1CB9419AF3953
 
-Hi Jonathan & IIO Mailing List'ers
+Add support to enable the HDL IP core internal ramp generator,
+actually managed by the adi-axi-dac backend. 
 
-On Mon, Mar 31, 2025 at 12:28=E2=80=AFPM Jonathan Cameron <jic23@kernel.org=
-> wrote:
->
-> On Tue, 18 Mar 2025 23:08:37 +0000
-> Lothar Rubusch <l.rubusch@gmail.com> wrote:
->
-> > Add the freefall detection of the sensor together with a threshold and
-> > time parameter. A freefall event is detected if the measuring signal
-> > falls below the threshold.
-> >
-> > Introduce a freefall threshold stored in regmap cache, and a freefall
-> > time, having the scaled time value stored as a member variable in the
-> > state instance.
-> >
-> > Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
-> Hi Lothar,
->
-> Apologies for the slow review!  Just catching up after travel
-> and I did it reverse order.
+It works this way:
 
-No problem a all, hope you had a great trip! I'm glad this goes for
-another version. In the meanwhile I was messing with the zephyr driver
-implementation for this sensor and had some findings and final
-thoughts about the ADXL345.
+/sys/bus/iio/devices/iio:device0# echo 1 > buffer0/out_voltage0_en 
+/sys/bus/iio/devices/iio:device0# echo 1 > buffer0/out_voltage1_en                                           
+/sys/bus/iio/devices/iio:device0# echo 1 > buffer0/enable 
 
-First, set_measure_en() I use to enable/disable the measurement by
-setting a bit in the POWER_CTL register using regmap_write(). This was
-ok until adding the act/inact feature. For adding power modes to
-inactivity, I'm going to set the link bit in the same POWER_CTL reg.
-So you already guess, yet another call  to set_measure_en() simply
-wipes this link bit out immediately. I'll probably replace
-regmap_write() using regmap_update_bits() still in this series.
+Activating ramp generator:
 
-Second, while playing with the zephyr driver and another setup I
-discovered, that probably the sensor is capable of mapping events to
-both interrupt lines in parallel. Currently, either all events to to
-INT1 or to INT2, not both. This affects actually 8 interrupt events:
-data ready, single tap, double tap, activity, inactivity, free fall,
-watermark, overrun. Actually they could individually be mapped either
-to INT1 or INT2.
-Initially I assumed they all need to go either to INT1 or INT2
-altogether. I appologize for this, I was wrong due to the breakout
-board I was using. That's a kind of crazy feature, and I think of
-implement it perhaps in a follow up series. Anyway, I was curisous
-about the approach, currently only can think of introducing 8x new DTS
-properties. Are you aware of sensors with similar features, what is
-usually the approach how to implement that? What is your oppinion on
-this?
+/sys/kernel/debug/iio/iio:device0# echo -n backend-ramp-generator > data_source
 
-Third item, there are 4 FIFO modes: Bypass and Streaming are currently
-used. There is another FIFO mode and further a Trigger mode i.e. only
-when the sensor got triggered it fills up the FIFO with data (also
-this is mappable by the INT1 or INT2 line then). What would be a way
-to configure such feature? I know many of the Analog accelerometers
-seem to have FIFO modes. Is this to be configured by DT properties?
-What would be means to configure it? Also, this would be a separate
-patch set.
+Deactivating:
 
-Best,
-L
+/sys/kernel/debug/iio/iio:device0# echo -n iio-buffer > data_source
 
->
-> > +
-> > +static int adxl345_set_ff_en(struct adxl345_state *st, bool cmd_en)
-> > +{
-> > +     unsigned int regval, ff_threshold;
-> > +     const unsigned int freefall_mask =3D 0x02;
->
-> Where did this mask come from?   Feels like it should be a define
-> (just use ADXL345_INT_FREE_FALL probably)
-> or if not that at lest use BIT(1) to make it clear it's a bit rather
-> than the number 2.
->
-> > +     bool en;
-> > +     int ret;
-> > +
-> > +     ret =3D regmap_read(st->regmap, ADXL345_REG_THRESH_FF, &ff_thresh=
-old);
-> > +     if (ret)
-> > +             return ret;
-> > +
-> > +     en =3D cmd_en && ff_threshold > 0 && st->ff_time_ms > 0;
-> > +
-> > +     regval =3D en ? ADXL345_INT_FREE_FALL : 0x00;
-> > +
-> > +     return regmap_update_bits(st->regmap, ADXL345_REG_INT_ENABLE,
-> > +                               freefall_mask, regval);
-> > +}
->
-> Jonathan
+Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
+---
+Changes in v2:
+- doc, add few words for generic spi driver version,
+- axi-dac, add a separate patch to check cntrl chan validity,
+- axi-dac, return EIO on a wrong source on get, 
+- add a lock on debugfs file access,
+- use const strings and strlen on file access.
+- Link to v1: https://lore.kernel.org/r/20250321-wip-bl-ad3552r-fixes-v1-0-3c1aa249d163@baylibre.com
+
+---
+Angelo Dureghello (5):
+      iio: dac: adi-axi-dac: add cntrl chan check
+      docs: iio: add documentation for ad3552r driver
+      iio: backend: add support for data source get
+      iio: dac: adi-axi-dac: add data source get
+      iio: dac: ad3552r-hs: add support for internal ramp
+
+ Documentation/iio/ad3552r.rst      |  72 ++++++++++++++++++++++
+ Documentation/iio/index.rst        |   1 +
+ MAINTAINERS                        |   1 +
+ drivers/iio/dac/ad3552r-hs.c       | 122 +++++++++++++++++++++++++++++++++++--
+ drivers/iio/dac/adi-axi-dac.c      |  54 ++++++++++++++++
+ drivers/iio/industrialio-backend.c |  28 +++++++++
+ include/linux/iio/backend.h        |   5 ++
+ 7 files changed, 277 insertions(+), 6 deletions(-)
+---
+base-commit: eb870a5af7db1e5ca59330875125230b28e630f9
+change-id: 20250321-wip-bl-ad3552r-fixes-4a386944c170
+
+Best regards,
+-- 
+Angelo Dureghello <adureghello@baylibre.com>
+
 

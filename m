@@ -1,190 +1,232 @@
-Return-Path: <linux-iio+bounces-17467-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17468-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FF70A765A2
-	for <lists+linux-iio@lfdr.de>; Mon, 31 Mar 2025 14:17:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 307D8A76622
+	for <lists+linux-iio@lfdr.de>; Mon, 31 Mar 2025 14:36:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B1ED33AA081
-	for <lists+linux-iio@lfdr.de>; Mon, 31 Mar 2025 12:17:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C7DDF16AA67
+	for <lists+linux-iio@lfdr.de>; Mon, 31 Mar 2025 12:36:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EF971E51F3;
-	Mon, 31 Mar 2025 12:17:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 002681E5B60;
+	Mon, 31 Mar 2025 12:36:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Lu8OROTx"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QuqeWSHu"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FD8E13B59B
-	for <linux-iio@vger.kernel.org>; Mon, 31 Mar 2025 12:17:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B08DB1E47B4;
+	Mon, 31 Mar 2025 12:36:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743423448; cv=none; b=BmJpnhgSUa5myQVBm4MqwIO4CNlo/g0UwtOXzvj/PM1+jMtpx3pkexfdHlqL5jS2n1QZWKkDr9fWe5/tQvgZsrTatvphHv6U3qaoyqtjZ4dSoK70LIrQH5k6Gtc5bM9cGDbccoahYG5FqKCxbePpGqWt77vdvysNPM3eoSkpOGQ=
+	t=1743424601; cv=none; b=VgSsDW8RyalID6Tv0ed//4q0wPJFDMQpx+U7E7tnwzWmMrgnIkIPlArGuMGlPC3p1gnmiWT1MiGRDAu2nL6Wt4HXA2QbZqiA2a9SCwIiPKfHLHDq6Twsjzz31BQtXIGFnVTgJp6XXbxjkYCwG2JnVnHVnspaEIFKn20pB/QrDi8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743423448; c=relaxed/simple;
-	bh=gyRG0WSpnGxX1JfNmcWVKw7XM9R86VTb7f+w/nMow0k=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u77Ts/0NIBqR2MoJ9YU0Vv/X597k+Z4NgvJ9JppwCGol6nghbQigBgQ8FAfqcDPUvQX/0CSl6D1xiaiitIWxHxXovGPC4xJ1oag3alCzsJCerb1YMBUHDkp5yxNcAvAPTfwNLBcnHHqAsnv2OHEo9nJZaaka0cv5ytv8aOO6Rxw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Lu8OROTx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B69F2C4CEE3;
-	Mon, 31 Mar 2025 12:17:22 +0000 (UTC)
+	s=arc-20240116; t=1743424601; c=relaxed/simple;
+	bh=HpbaK4zMAdqazzak29BwALJAc9M3zvgIDlqTytH8Etg=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=jQEesDrg5BfxBHZwr58iDZ7o9lTxZF4ZG6Le4P+2Dy99Zo1Yr/Bd0y6bM+Bgr6PAIoZ9HZZ3UfzYJU1Ane/5gzcEN/9GUzORgqY8fs7Ags7uMmrFpSvsqy2YyuoVfRO9XeMe3v/LehP2L+XPJtkpOkTJVdh8JVa0AzmEh8aXLiA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QuqeWSHu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52A42C4CEE3;
+	Mon, 31 Mar 2025 12:36:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743423447;
-	bh=gyRG0WSpnGxX1JfNmcWVKw7XM9R86VTb7f+w/nMow0k=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Lu8OROTxQAh45oFcKsuL5TlJ3+XeQMY8SWpD9e7QCH2hoOCcREpY3QhQhbcXIqnhq
-	 jYn1fYwMk6cvJ/dvU97HgqTit37xof/iqxGYCL5SFGRB6J3tboCD4VGNIlIL2WlsA5
-	 I1gBJAV0h0AnzaKw7p+xE97nXzB2z80+8b88Fp6me8stKz4uyEe8TOXvy897XT0Duj
-	 KN9+4OqZZ+DU4xLPNY8tzUIsHBOeKL/aXlHt0bKhNeb1+pD2K/kFB+qdOa5iDDYhbn
-	 LinJnQ29wNSS7Vwww8JaUlhH+AVWwfgdmkj0tZCYvCRosmSsmYAatnqVmu+KJN+0+Y
-	 UPwzj1ur583HA==
+	s=k20201202; t=1743424601;
+	bh=HpbaK4zMAdqazzak29BwALJAc9M3zvgIDlqTytH8Etg=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=QuqeWSHucf//6sXOO9j3WVLBZEcHN7RqhNTq27erPT0c+43gPI99+aP1jPGeJhQ6+
+	 lUCA6x95hsW/ateSEspgolul2epZ0Gd6mdivTUiMP7hZPWW6SvLLyZb+SgN/HoW7ix
+	 GgHIWjlrK2D2EeHHPVDhBwPkq2HL6g16ZbGxyuINfYTUylDq4cmhhYuIOqmsgivVQS
+	 ne/KlhJKQlcWdIwBqLsgsvDbBuiSNpMI7tu3y7GK9GHJFFKDmuY0PUd7/oQVbNXE6i
+	 VmQg8Nlb08dKp1sB5MB1Ec9HJenDpGW9GiZdVXoTGJejQBFdPN83+wRMhn6td7VV5Q
+	 bGck4+ve3B3HA==
+Date: Mon, 31 Mar 2025 13:36:33 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: linux-iio@vger.kernel.org
-Cc: David Lechner <dlechner@baylibre.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Cosmin Tanislav <demonsingur@gmail.com>,
-	Roan van Dijk <roan@protonic.nl>,
-	Jyoti Bhayana <jbhayana@google.com>,
-	Nishant Malpani <nish.malpani25@gmail.com>,
-	Eugene Zaikonnikov <ez@norphonic.com>,
-	Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
-	Shen Jianping <Jianping.Shen@de.bosch.com>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Matti Vaittinen <mazziesaccount@gmail.com>,
-	Yasin Lee <yasin.lee.x@gmail.com>,
-	Andy Shevchenko <andy.shevchenko@gmail.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 37/37] iio: Adjust internals of handling of direct mode claiming to suit new API.
-Date: Mon, 31 Mar 2025 13:13:17 +0100
-Message-ID: <20250331121317.1694135-38-jic23@kernel.org>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250331121317.1694135-1-jic23@kernel.org>
-References: <20250331121317.1694135-1-jic23@kernel.org>
+To: Lothar Rubusch <l.rubusch@gmail.com>
+Cc: lars@metafoo.de, Michael.Hennerich@analog.com,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ eraretuya@gmail.com
+Subject: Re: [PATCH v4 05/14] iio: accel: adxl345: add single tap feature
+Message-ID: <20250331133633.370bc50b@jic23-huawei>
+In-Reply-To: <CAFXKEHZ+4OyA4AFPkAayetoK3pWfzf8ubrbozJjcjTqTAnHqFw@mail.gmail.com>
+References: <20250313165049.48305-1-l.rubusch@gmail.com>
+	<20250313165049.48305-6-l.rubusch@gmail.com>
+	<20250316112057.638626bd@jic23-huawei>
+	<CAFXKEHZ+4OyA4AFPkAayetoK3pWfzf8ubrbozJjcjTqTAnHqFw@mail.gmail.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+On Wed, 19 Mar 2025 00:08:24 +0100
+Lothar Rubusch <l.rubusch@gmail.com> wrote:
 
-Now there are no remaining callers of iio_device_claim_direct_mode()
-and iio_device_release_direct_mode() rename those functions to ensure
-they are no used in new drivers. Also make them now return booleans
-in line with the sparse friendly static inline wrappers.
+> On Sun, Mar 16, 2025 at 12:22=E2=80=AFPM Jonathan Cameron <jic23@kernel.o=
+rg> wrote:
+> >
+> > On Thu, 13 Mar 2025 16:50:40 +0000
+> > Lothar Rubusch <l.rubusch@gmail.com> wrote:
+> > =20
+> > > Add the single tap feature with a threshold in 62.5mg/LSB points and a
+> > > scaled duration in us. Keep singletap threshold in regmap cache but
+> > > the scaled value of duration in us as member variable.
+> > >
+> > > Both use IIO channels for individual enable of the x/y/z axis. Initia=
+lizes
+> > > threshold and duration with reasonable content. When an interrupt is
+> > > caught it will be pushed to the according IIO channel.
+> > > =20
+> > =20
+> > > Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com> =20
+> >
+> > Hi Lothar,
+> >
+> > A few things in here are from the discussion that was continuing
+> > on v3 so I may have said more replying to that.
+> >
+> > Anyhow, for now I'll hold off on applying from this point on as
+> > a few more things to respond to inline.
+> >
+> > Jonathan
+> > =20
+> > >
+> > >  #include "adxl345.h"
+> > > @@ -31,6 +33,33 @@
+> > >  #define ADXL345_INT1                 0
+> > >  #define ADXL345_INT2                 1
+> > >
+> > > +#define ADXL345_REG_TAP_AXIS_MSK     GENMASK(2, 0)
+> > > +
+> > > +enum adxl345_axis {
+> > > +     ADXL345_Z_EN =3D BIT(0),
+> > > +     ADXL345_Y_EN =3D BIT(1),
+> > > +     ADXL345_X_EN =3D BIT(2),
+> > > +     /* Suppress double tap detection if value > tap threshold */
+> > > +     ADXL345_TAP_SUPPRESS =3D BIT(3),
+> > > +}; =20
+> > As per feedback (after you sent this!) on v3, I'd drop
+> > the last value out of the enum, or just use defines and a u8 for
+> > the one place this is used for local variable storage.
+> >
+> > =20
+> > > @@ -198,6 +387,132 @@ static int adxl345_write_raw(struct iio_dev *in=
+dio_dev,
+> > >       return -EINVAL;
+> > >  }
+> > >
+> > > +static int adxl345_read_event_config(struct iio_dev *indio_dev,
+> > > +                                  const struct iio_chan_spec *chan,
+> > > +                                  enum iio_event_type type,
+> > > +                                  enum iio_event_direction dir)
+> > > +{
+> > > +     struct adxl345_state *st =3D iio_priv(indio_dev);
+> > > +     bool int_en;
+> > > +     int ret =3D -EFAULT; =20
+> > Not used?
+> > =20
+> > > +
+> > > +     switch (type) {
+> > > +     case IIO_EV_TYPE_GESTURE:
+> > > +             switch (dir) {
+> > > +             case IIO_EV_DIR_SINGLETAP:
+> > > +                     ret =3D adxl345_is_tap_en(st, chan->channel2,
+> > > +                                             ADXL345_SINGLE_TAP, &in=
+t_en);
+> > > +                     if (ret)
+> > > +                             return ret;
+> > > +                     return int_en;
+> > > +             default:
+> > > +                     return -EINVAL;
+> > > +             }
+> > > +     default:
+> > > +             return -EINVAL;
+> > > +     }
+> > > +} =20
+> > =20
+> > > +static int adxl345_write_event_value(struct iio_dev *indio_dev,
+> > > +                                  const struct iio_chan_spec *chan,
+> > > +                                  enum iio_event_type type,
+> > > +                                  enum iio_event_direction dir,
+> > > +                                  enum iio_event_info info,
+> > > +                                  int val, int val2)
+> > > +{
+> > > +     struct adxl345_state *st =3D iio_priv(indio_dev);
+> > > +     int ret;
+> > > +
+> > > +     ret =3D adxl345_set_measure_en(st, false);
+> > > +     if (ret)
+> > > +             return ret;
+> > > + =20
+> > So in my brief reply to the v3 discussion I suggested perhaps
+> > factoring out everything from here... =20
+> > > +     switch (type) {
+> > > +     case IIO_EV_TYPE_GESTURE:
+> > > +             switch (info) {
+> > > +             case IIO_EV_INFO_VALUE:
+> > > +                     ret =3D regmap_write(st->regmap, ADXL345_REG_TH=
+RESH_TAP,
+> > > +                                        min(val, 0xFF));
+> > > +                     break;
+> > > +             case IIO_EV_INFO_TIMEOUT:
+> > > +                     ret =3D adxl345_set_tap_duration(st, val, val2);
+> > > +                     break;
+> > > +             default:
+> > > +                     ret =3D -EINVAL;
+> > > +                     break;
+> > > +             }
+> > > +             break;
+> > > +     default:
+> > > +             ret =3D -EINVAL;
+> > > +             break;
+> > > +     } =20
+> > to here, so as to allow simple direct returns.
+> >
+> > I think that will make the code more readable given the need to reenable
+> > measurements and that you want to leave it off on error.
+> > =20
+>=20
+> Sorry for replying again on this topic. Pls, find my solution in v5.
+>=20
+> After some thinking, I implemented it now using returns directly leaving =
+the
+> measurement on/off as is. I'm unsure if it actually makes sense, after an=
+ error
+> here to turn measurement on again? I can imagine a situation where a wrong
+> input might result in an error. Nothing is changed, and measurement
+> could/should continue. Now, it will probably stop, in case of wrong
+> input. But is
+> wrong input actually an issue here?
 
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
----
- drivers/iio/industrialio-core.c | 28 ++++++++++++++++------------
- include/linux/iio/iio.h         | 10 ++++------
- 2 files changed, 20 insertions(+), 18 deletions(-)
+If a userspace control input is out of range etc, then returning an error
+but leaving things on makes sense.  If what we see is a comms error
+it gets less clear on what we should do. =20
 
-diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
-index c9955a1c1090..c1921b55cfc5 100644
---- a/drivers/iio/industrialio-core.c
-+++ b/drivers/iio/industrialio-core.c
-@@ -2157,17 +2157,19 @@ int __devm_iio_device_register(struct device *dev, struct iio_dev *indio_dev,
- EXPORT_SYMBOL_GPL(__devm_iio_device_register);
- 
- /**
-- * iio_device_claim_direct_mode - Keep device in direct mode
-+ * __iio_device_claim_direct - Keep device in direct mode
-  * @indio_dev:	the iio_dev associated with the device
-  *
-  * If the device is in direct mode it is guaranteed to stay
-- * that way until iio_device_release_direct_mode() is called.
-+ * that way until __iio_device_release_direct() is called.
-  *
-- * Use with iio_device_release_direct_mode()
-+ * Use with __iio_device_release_direct().
-  *
-- * Returns: 0 on success, -EBUSY on failure.
-+ * Drivers should only call iio_device_claim_direct()
-+ *
-+ * Returns: true on success, false on failure.
-  */
--int iio_device_claim_direct_mode(struct iio_dev *indio_dev)
-+bool __iio_device_claim_direct(struct iio_dev *indio_dev)
- {
- 	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(indio_dev);
- 
-@@ -2175,26 +2177,28 @@ int iio_device_claim_direct_mode(struct iio_dev *indio_dev)
- 
- 	if (iio_buffer_enabled(indio_dev)) {
- 		mutex_unlock(&iio_dev_opaque->mlock);
--		return -EBUSY;
-+		return false;
- 	}
--	return 0;
-+	return true;
- }
--EXPORT_SYMBOL_GPL(iio_device_claim_direct_mode);
-+EXPORT_SYMBOL_GPL(__iio_device_claim_direct);
- 
- /**
-- * iio_device_release_direct_mode - releases claim on direct mode
-+ * __iio_device_release_direct - releases claim on direct mode
-  * @indio_dev:	the iio_dev associated with the device
-  *
-  * Release the claim. Device is no longer guaranteed to stay
-  * in direct mode.
-  *
-- * Use with iio_device_claim_direct_mode()
-+ * Drivers should only call iio_device_release_direct()
-+ *
-+ * Use with __iio_device_claim_direct()
-  */
--void iio_device_release_direct_mode(struct iio_dev *indio_dev)
-+void __iio_device_release_direct(struct iio_dev *indio_dev)
- {
- 	mutex_unlock(&to_iio_dev_opaque(indio_dev)->mlock);
- }
--EXPORT_SYMBOL_GPL(iio_device_release_direct_mode);
-+EXPORT_SYMBOL_GPL(__iio_device_release_direct);
- 
- /**
-  * iio_device_claim_buffer_mode - Keep device in buffer mode
-diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
-index 07a0e8132e88..638cf2420fbd 100644
---- a/include/linux/iio/iio.h
-+++ b/include/linux/iio/iio.h
-@@ -659,8 +659,8 @@ void iio_device_unregister(struct iio_dev *indio_dev);
- int __devm_iio_device_register(struct device *dev, struct iio_dev *indio_dev,
- 			       struct module *this_mod);
- int iio_push_event(struct iio_dev *indio_dev, u64 ev_code, s64 timestamp);
--int iio_device_claim_direct_mode(struct iio_dev *indio_dev);
--void iio_device_release_direct_mode(struct iio_dev *indio_dev);
-+bool __iio_device_claim_direct(struct iio_dev *indio_dev);
-+void __iio_device_release_direct(struct iio_dev *indio_dev);
- 
- /*
-  * Helper functions that allow claim and release of direct mode
-@@ -671,9 +671,7 @@ void iio_device_release_direct_mode(struct iio_dev *indio_dev);
-  */
- static inline bool iio_device_claim_direct(struct iio_dev *indio_dev)
- {
--	int ret = iio_device_claim_direct_mode(indio_dev);
--
--	if (ret)
-+	if (!__iio_device_claim_direct(indio_dev))
- 		return false;
- 
- 	__acquire(iio_dev);
-@@ -683,7 +681,7 @@ static inline bool iio_device_claim_direct(struct iio_dev *indio_dev)
- 
- static inline void iio_device_release_direct(struct iio_dev *indio_dev)
- {
--	iio_device_release_direct_mode(indio_dev);
-+	__iio_device_release_direct(indio_dev);
- 	__release(indio_dev);
- }
- 
--- 
-2.48.1
+>=20
+> As other alternative, I can think of is to shift measurement on/off
+> into the called
+> functions directly. I think, this approach was used also in the
+> ADXL380 and seems
+> to be common. Let me know what you think.
+>=20
+Moving it up or down a layer can work by allowing direct returns and always
+trying to reenable if that makes sense.
+
+Sadly in error handling there is often not a right answer on what to do!
+
+Jonathan
+
+> > > +
+> > > +     if (ret)
+> > > +             return ret; /* measurement stays off */
+> > > +
+> > > +     return adxl345_set_measure_en(st, true);
+> > > +} =20
+> > =20
 
 

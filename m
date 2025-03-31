@@ -1,209 +1,172 @@
-Return-Path: <linux-iio+bounces-17477-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17479-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F65FA76896
-	for <lists+linux-iio@lfdr.de>; Mon, 31 Mar 2025 16:49:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0372A768F7
+	for <lists+linux-iio@lfdr.de>; Mon, 31 Mar 2025 16:59:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B0D8C188716A
-	for <lists+linux-iio@lfdr.de>; Mon, 31 Mar 2025 14:46:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5040B3B2E70
+	for <lists+linux-iio@lfdr.de>; Mon, 31 Mar 2025 14:52:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C90D21638D;
-	Mon, 31 Mar 2025 14:36:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A878721A43B;
+	Mon, 31 Mar 2025 14:41:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PsKpsuVi"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="iSa0YJmr"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44250226D18;
-	Mon, 31 Mar 2025 14:36:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81F662144BE
+	for <linux-iio@vger.kernel.org>; Mon, 31 Mar 2025 14:41:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743431790; cv=none; b=j/b6DpUja7NGaLThNdWzn4aW06KTd7M/Qli2KjaalxVo75/gh6nSLbseNHaQHGDItwHaThJ7ZXFgSJ5OzcxhcXfLTkTvpD185B5kjkWrEE8kxdX8MGVubwWBxHgb/8/S7PB8vXYgm9S8NWqQLQdD9WwN/2yHLlN44VPtMs3hd70=
+	t=1743432098; cv=none; b=TBbV5v+d3HXAxTDCasc5b3c0RTCz2j5ftLm46n7UkKOqM/CyuwClBe9/Z8hqA8Xij51lGKmz4A7iHt5j38U13cvLy657CpIc8SZ17PD8xf4yHUOoRbXdECOnaZ1xvOp4KQbrH/CbpKqPvTN1E8c/Q4dLb2LSVbYx13HhH+nW/Bw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743431790; c=relaxed/simple;
-	bh=gTkTfbAuq15gZso4bpVxix7pTVeRXjBC1DNAQ66niYM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=SaeJkqpBWZz2wOn5Fv6ur35udlMf5c8e6Op54ljFOeGDUZHM+xGnX7za2Hj2nexlToI1vQwFnnrMCQT2ZOim3EN6mSanmduwbcz++m/5L+Z1d+a5skZ6ZAQmpYnqtm4dyKcEhDWhGvVQgUzkLghS6bmH9OlpVmmfgjB5c7ORBOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PsKpsuVi; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-22438c356c8so89169235ad.1;
-        Mon, 31 Mar 2025 07:36:28 -0700 (PDT)
+	s=arc-20240116; t=1743432098; c=relaxed/simple;
+	bh=tYar64a7LJgzPpBoDPfByq9zrSr9vfE+S3XfNMgean4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BNhCeJIPIslnCqh0DXgOrJ9maVAF5Qu+gzWSsedvJmN5EUpAgn3gvJm1djD7fT46xj0GC2HPwfjtO4/4B9UPvYwH2DLPI1Gd3WjKBL8ldRA00UhdnDaDNzpRI7EwExy4UmC0Xg9Q38aTJucFeZJEKhSgbZ131wN/y8ga7sAZ9aE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=iSa0YJmr; arc=none smtp.client-ip=209.85.218.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-ac339f53df9so819034866b.1
+        for <linux-iio@vger.kernel.org>; Mon, 31 Mar 2025 07:41:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743431788; x=1744036588; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=LL7vG5/tQduxfNKHAQVZyLzm1JLahcZCX114BxDCx+0=;
-        b=PsKpsuViUPfVz1pb/zh4b9Rxy/1yAcVAXqGkVNHbbDR5gwb+WocyC3Iyywp2MpkWpk
-         Guj96vteHH79jRob2QKr2/w0xxgYIvG45W85O3slsGu4TfS5xvbj7+np5YgcktgoXn9+
-         TalIFLhsFZd+d3xF1t2LFI2tPOadRHm7w8w/JGY2Ve7u72w296YkVBCBXXRvVOHAbZk5
-         K8lkXnrbgW22NB8RoyVkS8mhd9Pd5QMPW6okbCWYSgKvTAydp/cAZO6/GsO3cJBAgvEK
-         q7bHvJbpJ1fPUQVcjxyr48ox/8TbhqV7LIOD3sIPYr+lCY5AFglUxmaOk+V7o3x52fCb
-         cK8A==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1743432095; x=1744036895; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=2joevmLMx/nCxcJS4GzPP4F+qPu43CQEw2Tr1q0fZPU=;
+        b=iSa0YJmr0RHx36jdCXRKkNWc/Y3mUOcH/CfbCqZaERwQYMjcZJlc15i8W+coAdimty
+         4hTHzW5VJCga0YRInVg21jd07pr4kANXXl4Foy2zqyVumoAP6xYwmJJov8X1rE7Haeos
+         zYGNdQIGdQzo1w7RBTpTq2Glw46mpC5yp6UKr3/5VyZ5AuWOPN8JZheIytbYUu4rGjQb
+         2GgqV8SkuzwjdPe5A7qfvHotR0xCbPG/XnlDRk7aIoYAGUvpcjM4wAG4MupNdHKHDkWC
+         8aXvzL8BMQ22ra96LaMKiiuisdwmOnQrQDDaueiGLdWR92CLcCZZM+qWTcY1CzlLEnTy
+         Tolw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743431788; x=1744036588;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=LL7vG5/tQduxfNKHAQVZyLzm1JLahcZCX114BxDCx+0=;
-        b=qBMSA8F0dvRAvMhR83o41E68dOPKoui/f/Kp7k7Do9uOb5v+8HZWsmk6PikqAbEg8O
-         3pxNbpCBB1onvBoWHJFtzaIX5zC3L88dgn/qG+LRxybfACvKTm5JJHkHv9PegzASZxIU
-         k/ikSuuELsjRy+DpdFsLcTwIgsDhnguAsHmHbAJT+93THAA3+nQP5k56tOo6z+kgyi/5
-         C6WN5psVrlhKNrlz0ktjjoBg6djiagBVNVQxlXH4h+hPe+K9Mx6Hvxaeg4uQSy7l+kaI
-         yt27ZhXq1z1B5MSnuIJeu5m21j8g38u9r6LJePC7hM6ihn9UVjHbS6zJnBi4sWNp/CVN
-         P8mA==
-X-Forwarded-Encrypted: i=1; AJvYcCWPaXhUa3499Xe9B2xoevUrqPcQhTh1Hc1GojttHITU823k1/VkdFnA8D1bZj1rf1dwE1LDrkGrIQp4@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx1vAArDTkWKOWXEobIX3VeCO3m+LoBXl42I5FIL/HmdIPTDF1L
-	ixTjcfpq7cxMwDFqysQCUoiYiWtE7WkTbN3ePLk4uXrxysyWk7g14Er53Mv/BJCrn1OPDE6SAct
-	iLT5AXVs+vQI1jgHAKDg6WCKzpCc=
-X-Gm-Gg: ASbGncvFQzm+JuQq3k3F/0B1LyE5B75FdpBJYTcUn4YLKnAiVzvdgvh1zfSsqyKZUZ7
-	e0SB0eSx18dYKB+f6XaTnM53a0fXPbwWPw2/vGVQWGYMwQ3KxXQxIArK88yJmqQ9kP6CCbZ2Lgs
-	MZ9REOOMNUfe6v7dd7kEfAhRPnQFk=
-X-Google-Smtp-Source: AGHT+IEl+3TwIlPc8xntIMk5HRocdNKS4IRtch/DXwy3r5uEzJLN0+htJhvRxRWs9ReXWP1XEPGgVZVSs0C5mlQO3WM=
-X-Received: by 2002:a17:90b:2801:b0:2fc:ec7c:d371 with SMTP id
- 98e67ed59e1d1-30531f79fe9mr13283832a91.3.1743431788183; Mon, 31 Mar 2025
- 07:36:28 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1743432095; x=1744036895;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=2joevmLMx/nCxcJS4GzPP4F+qPu43CQEw2Tr1q0fZPU=;
+        b=msGTS7dRS/meFUiNf0rND7J4gwu7ffDP+Kgr9U9tyLJay3Ij3k7zoact3RtzRsg6ZG
+         hmu91tFxy3Q+tMWsmfz+7b4ECOQqM+15KkI+NU+3Pqw3d5zqN+TANQcwgC7GQ/J4UvJW
+         3uVpGndFdnHYJHellFepod+aiHAPSEYR8u4YfPstPeiErmDUCKi5vEXIJFcqKvmwYfVo
+         gCWQo6pQN8KPvUkQULH9pgIWToNcwKeYWgNs1VlzVUqXeQgzDrjJQ9CDU8/+GppSYxGk
+         9FfAF2HpsywgFTdD/MFqn4W2uEMgXWulgWnriKgMK7dcnO2ChGEQBZy2sxr710/hQoPU
+         UYYg==
+X-Forwarded-Encrypted: i=1; AJvYcCXpx/nIs5eOxGpHnwJAJugr/CriKbk5j5yodRF2Za6imXS9hc/Nm0CrY6z9XJMpSjcFLFkw+Rbii6o=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwxCyzflhFwNbf7soEGkQVCt019xkhtGxu+3mlMT/XQF3GhiHe4
+	J9K3Mv8weXRqh2HiggOo87c6DUC9feWDo7irXBJ+V8lNadCoq45LX1RsEzp+psk=
+X-Gm-Gg: ASbGncuJpsqk9QyMIJCymkdXFtGE0XEeUweFKSu3BEMFkVbZI1j50af+07dldMNKCt0
+	+9E9ycAmAe68dVc9lfq2jAdXVFkriFxecxE+0Co/4+XwRWQXwBx0HO74hNVY6Hpk9vxa38muBy0
+	BshnGl2F7yN0E+gt9o7EGTEqXX2jyUfdUTf4yF63z2UDnHqZX7t4bPONoF1c/oiVW+2JM2FrRA0
+	3mitbm0u5n8+JiqFU8PBqipI+q4bSu8/x4qyzMDMY/bmcthMBGuIcsSAcI3783p2nrJfgQgmEyr
+	h/qVsvUpjyj/OmENbdPKUj2LXbxDJJVv3CxO6/41Lz7APx+5cmAKocJ2Npg5KGb1YjTe5DQr1hP
+	CQvbKSxS0VTJQ4IO4W0v2k0k=
+X-Google-Smtp-Source: AGHT+IF1U3QWc8JPArGLqoT/gBbbv0Yoen8kIp/Txzj1BypW2JMf+MKRmbSd9tBOJY+YsGViY97BOg==
+X-Received: by 2002:a17:907:6d05:b0:ac6:bca0:eb70 with SMTP id a640c23a62f3a-ac738bfef11mr824600366b.56.1743432094778;
+        Mon, 31 Mar 2025 07:41:34 -0700 (PDT)
+Received: from archlinux (host-80-116-51-172.pool80116.interbusiness.it. [80.116.51.172])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ac71922bf43sm628845666b.6.2025.03.31.07.41.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 31 Mar 2025 07:41:34 -0700 (PDT)
+Date: Mon, 31 Mar 2025 16:40:23 +0200
+From: Angelo Dureghello <adureghello@baylibre.com>
+To: Nuno =?utf-8?B?U8Oh?= <noname.nuno@gmail.com>
+Cc: Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>, 
+	Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, 
+	Jonathan Corbet <corbet@lwn.net>, Olivier Moysan <olivier.moysan@foss.st.com>, 
+	Michael Hennerich <Michael.Hennerich@analog.com>, linux-iio@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 3/4] iio: dac: adi-axi-dac: add data source get
+Message-ID: <7bacip7jwyz7w2fsnnpwbhxg67pwakej46a7bpwxilwkl265d5@jfz7yee7arly>
+References: <20250321-wip-bl-ad3552r-fixes-v1-0-3c1aa249d163@baylibre.com>
+ <20250321-wip-bl-ad3552r-fixes-v1-3-3c1aa249d163@baylibre.com>
+ <88c86ac453ccf968422350d788ab35fd55dd8496.camel@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250329164905.632491-1-gye976@gmail.com> <20250329164905.632491-2-gye976@gmail.com>
- <20250330150410.23b148da@jic23-huawei>
-In-Reply-To: <20250330150410.23b148da@jic23-huawei>
-From: gyeyoung <gye976@gmail.com>
-Date: Mon, 31 Mar 2025 23:36:17 +0900
-X-Gm-Features: AQ5f1JoZbFBHT33j6UAwVVBPHIG8N5B-wGlpOGkmQfVIjzjGWmYYS66YbuYl89g
-Message-ID: <CAKbEznv9hRhto2tF5zwrGJ=7zfT=VKq2POdWKCRgY1UjgP6pUg@mail.gmail.com>
-Subject: Re: [PATCH 1/3] iio: chemical: add support for winsen MHZ19B CO2 sensor
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, lars@metafoo.de, 
-	gustavograzs@gmail.com, javier.carrasco.cruz@gmail.com, robh@kernel.org, 
-	krzk+dt@kernel.org, conor+dt@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <88c86ac453ccf968422350d788ab35fd55dd8496.camel@gmail.com>
 
-Hello Jonathan, thank you for the review.
-Sorry for the late response.
-
-> > +
-> > +             /* at least 1000ppm */
-> > +             if (ppm < 1000 || ppm > 5000) {
-> > +                     dev_dbg(&indio_dev->dev, "span point ppm should be 1000~5000");
-> > +                     return -EINVAL;
-> > +             }
-> > +
-> > +             cmd_buf[3] = ppm / 256;
-> > +             cmd_buf[4] = ppm % 256;
->
-> That's an elaborate way of doing
->                 unaligned_put_be16()
-> so use that instead as it's also clearly documenting what is going on.
-
-Since I couldn't find a function like 'unaligned_put_be16',
-but I found a function like 'be16_to_cpu', so I will use that.
-
-
-
-
-> > +struct iio_chan_spec_ext_info mhz19b_co2_ext_info[] = {
-> > +     {
-> > +             .name = "zero_point",
->
-> This is custom ABI.  Before we consider that in detail we
-> need documentation in
-> Documentation/ABI/testing/sysfs-bus-iio-mhz19b
-> It is much easier to review ABI with docs.
-> All 3 are direct commands to the device, so I've no idea from
-> what we have here on what they do.
->
-> Superficially this one looks like a calibration control.
-> There is existing ABI for that.
-
- I did it arbitrarily. I will refer to the documentation
-and rewrite it to be as compatible as possible with the existing ABI, thanks.
-
-
-
-
->
-> > +
-> > +static void mhz19b_write_wakeup(struct serdev_device *serdev)
+On 28.03.2025 08:15, Nuno Sá wrote:
+> On Fri, 2025-03-21 at 21:28 +0100, Angelo Dureghello wrote:
+> > From: Angelo Dureghello <adureghello@baylibre.com>
+> > 
+> > Add data source getter.
+> > 
+> > Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
+> > ---
+> >  drivers/iio/dac/adi-axi-dac.c | 27 +++++++++++++++++++++++++++
+> >  1 file changed, 27 insertions(+)
+> > 
+> > diff --git a/drivers/iio/dac/adi-axi-dac.c b/drivers/iio/dac/adi-axi-dac.c
+> > index
+> > 892d770aec69c4259de777058801c9ab33c79923..a6abd828ebdb34800cc08a2151e52a9acda9eba1
+> > 100644
+> > --- a/drivers/iio/dac/adi-axi-dac.c
+> > +++ b/drivers/iio/dac/adi-axi-dac.c
+> > @@ -514,6 +514,32 @@ static int axi_dac_data_source_set(struct iio_backend *back,
+> > unsigned int chan,
+> >  	}
+> >  }
+> >  
+> > +static int axi_dac_data_source_get(struct iio_backend *back, unsigned int chan,
+> > +				   enum iio_backend_data_source *data)
 > > +{
-> > +     struct iio_dev *indio_dev;
+> > +	struct axi_dac_state *st = iio_backend_get_priv(back);
+> > +	int ret;
+> > +	u32 val;
 > > +
-> > +     indio_dev = dev_get_drvdata(&serdev->dev);
-> > +
-> > +     dev_dbg(&indio_dev->dev, "mhz19b_write_wakeup");
+> > +	ret = regmap_read(st->regmap, AXI_DAC_CHAN_CNTRL_7_REG(chan), &val);
+> > +	if (ret)
+> > +		return ret;
+> 
+> Is chan something that we can validate? Do we reliable know max number of channels?
 >
-> This doesn't do anything which makes me suspicious. Would
-> using serdev_device_write_wakeup() as the callback make
-> sense?  I'm not that familiar with serial drivers but I can
-> see that a number of other drivers do that.
+
+Ack, will set it to 15, 0 to 15 is what the documentation says.
+But at this point should be set in a diffetrent patch for the "set"
+too.
+
+Btw, there is something odd here. I tested the generator and it works,
+i am enabling RAMP for both channels 0 and 1.
+The channel offset here is 0x40, while in ad3552r and generic dac doc
+it is 0x58. So, since ramp is working i am supposing the documentation 
+can be wrong. 
+ 
+> > +
+> > +	switch (val) {
+> > +	case AXI_DAC_DATA_INTERNAL_TONE:
+> > +		*data = IIO_BACKEND_INTERNAL_CONTINUOUS_WAVE;
+> > +		return 0;
+> > +	case AXI_DAC_DATA_DMA:
+> > +		*data = IIO_BACKEND_EXTERNAL;
+> > +		return 0;
+> > +	case AXI_DAC_DATA_INTERNAL_RAMP_16BIT:
+> > +		*data = IIO_BACKEND_INTERNAL_RAMP_16BIT;
+> > +		return 0;
+> > +	default:
+> > +		return -EINVAL;
+> 
+> More of a nitpick comment but I would some other error code. This is not really an
+> "Invalid argument" situation. Maybe -EIO as the HW is giving something unexpected? or
+> ENOTSUPP (likely not exactly like this)...
 >
-
-'serdev_device_write_wakeup' member function is mandatory.
-If this function is not set and remains NULL, the
-'serdev_device_write' function will just return -EINVAL.
-
-The following is a part of serdev_device_write().
-------------
-ssize_t serdev_device_write(struct serdev_device *serdev, const u8 *buf,
-   size_t count, long timeout)
-{
-struct serdev_controller *ctrl = serdev->ctrl;
-size_t written = 0;
-ssize_t ret;
-
-if (!ctrl || !ctrl->ops->write_buf || !serdev->ops->write_wakeup)
-return -EINVAL;
-.
-.
-.
-------------
-
-> > +}
-> > +
-> > +static const struct serdev_device_ops mhz19b_ops = {
-> > +     .receive_buf = mhz19b_receive_buf,
-> > +     .write_wakeup = mhz19b_write_wakeup,
-> > +};
-
-
-
-
-> > +static int mhz19b_probe(struct serdev_device *serdev)
-> > +{
-> > +     int ret;
-> > +
-> > +     struct device *dev;
-> > +
-> > +     dev = &serdev->dev;
-> > +     serdev_device_set_client_ops(serdev, &mhz19b_ops);
-> > +
-> > +     ret = devm_serdev_device_open(dev, serdev);
-> > +     if (ret)
-> > +             return ret;
-> > +
-> > +     serdev_device_set_baudrate(serdev, 9600);
-> > +     serdev_device_set_flow_control(serdev, false);
-> > +     ret = serdev_device_set_parity(serdev, SERDEV_PARITY_NONE);
-> > +     if (ret < 0)
-> > +             return ret;
->
-> Why check return value from this call but not the previous two?
-> I'm not immediately able to see a reason this is more likely to fail.
-
-'serdev_device_set_flow_control' is a void function.
-and as far as I know, 'serdev_device_set_baudrate' does not return an error.
-but I'll check again.
-
-I'll revise it considering your overall coding style guide.
-
-Thanks,
-Gyeyoung Baek
+Correct, will set EIO.
+ 
+> - Nuno Sá
+> 
+> >  	.ddr_disable = axi_dac_ddr_disable,
+> >  	.data_stream_enable = axi_dac_data_stream_enable,
+> > 
+> 
 

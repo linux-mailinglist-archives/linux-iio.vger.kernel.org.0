@@ -1,46 +1,46 @@
-Return-Path: <linux-iio+bounces-17452-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17453-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50954A7658F
-	for <lists+linux-iio@lfdr.de>; Mon, 31 Mar 2025 14:15:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1409EA76590
+	for <lists+linux-iio@lfdr.de>; Mon, 31 Mar 2025 14:16:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8CB6D18891E5
-	for <lists+linux-iio@lfdr.de>; Mon, 31 Mar 2025 12:16:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 663633AA092
+	for <lists+linux-iio@lfdr.de>; Mon, 31 Mar 2025 12:15:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E4B11E47A5;
-	Mon, 31 Mar 2025 12:15:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A5AB1E47A5;
+	Mon, 31 Mar 2025 12:15:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UEpSffGT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pPRQIWbc"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EE5913B59B
-	for <linux-iio@vger.kernel.org>; Mon, 31 Mar 2025 12:15:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BE4613B59B
+	for <linux-iio@vger.kernel.org>; Mon, 31 Mar 2025 12:15:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743423353; cv=none; b=QB4tZ8ooHuW7Ff2dYAQxrdDXp2Vwzx1YYtfMFIsqexoKXc3D4EsMkRQ34AgcS8LxSC7MvhCuuY3Gx2vhP6WBxd9RZ60+KonlA/yvISkKZRmKqzcayoEM+62bxCl/1CPcgbhc1BK+h8uqS2gD2PXj4xnIS89AqadXhOIBnzH9MaU=
+	t=1743423359; cv=none; b=fiWLipaP7YIe6mgFv+tn7oNYXY4OK0ujv06ZSdA8KGhlqlqlDzgRKUBtZrtp2JBmPlIuCZIAz5hvwAmU4IQeERWsStPl6+dzRyxMY5TWRNOkLjW52WsW+pRidcoc2xL8HPWFqnfErVwI+tAQXYMJV2X8MUeB/QiIM7FCjXZvAAw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743423353; c=relaxed/simple;
-	bh=wWP4OSLDet9MTXy562O5het7Nk518Oxk5Zy2gCcxGfQ=;
+	s=arc-20240116; t=1743423359; c=relaxed/simple;
+	bh=QbPjGNiEH56YpA27SkR3HxIXYFc7fD2SJi0T8/AzEy8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tyF0pheATNf4Q2V0Qy3eTpStARYiOx7uf5ux24pWx0sD1ccKLp4/tZsACQMkPsvGwnRw1XPJvBGZB9vg8Qgx90nbi6BpmpnnDYOgJG4QLEiZ9Vnk+BjKW+KjtLFvLTJvXCeyexRgB3inZpTNq4lWgpzmhw+haOfpJPoTGecGiYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UEpSffGT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D08AC4CEE3;
-	Mon, 31 Mar 2025 12:15:47 +0000 (UTC)
+	 MIME-Version; b=YnWXd+XaOTGDZtDGgPKxKIxWhcG8YII7lbwsF64oI5acmgd1mcZiDQGOa33w+RGp0oooV9QBao3fcFpDu20GWH1e8UxhJoiK/0GE2uSnmcKgnCRjhWl1RUWGFe7sHf4QviVMdnfe+2cEw95T0PdIAxAAXjtJ9P+WTIHyyk0vs3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pPRQIWbc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA1C9C4CEE5;
+	Mon, 31 Mar 2025 12:15:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743423353;
-	bh=wWP4OSLDet9MTXy562O5het7Nk518Oxk5Zy2gCcxGfQ=;
+	s=k20201202; t=1743423359;
+	bh=QbPjGNiEH56YpA27SkR3HxIXYFc7fD2SJi0T8/AzEy8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UEpSffGTNQwgeiDrguQrPhHABBu57Fd/BZRXe1hVu5tgvtISE5qOrQoSOWs4d2g8R
-	 rK2yFtkAeR5xHCCM8Cpu8pPAL1ZJqWuvUIQd4pv87+iJwsSeNc5ynSNQKRJhm4hfrn
-	 TiK/hRSKxqF6gDCXN19v2uebUWc8sp4kCuUvKRsZ9EZ3hRWrEAcOi31Vg8zzzXrYLI
-	 RtaWRIi7j8HkseeIgq4S2wsy4W3C40DugYzY7kuX6UXCD9DbWQQi+eDAIZW4Cp5jOT
-	 /TXX6r2L3fu9Ehr2i1erbLIO+ISvOEACjWHdc01oXug6prsPd6bppOoMTPy9CXjXkD
-	 K332MY33w3VQA==
+	b=pPRQIWbc9xraM8Ij5wFma0LAuCT2xhYhB64RTTV9pBjPPpODseSGudYTkOy+t12KM
+	 HSa7CveJUeiwoYWH0K7GLnfSnMFun+mz3c+hGiPrD5iwSGfdAETD5SLYohty2YoEx+
+	 MWpEim4UIXKhy5VvYz0kyYEHVTwNnw53KtR75lrOa+cyN2g4yiG2IK427oXHBLArda
+	 ri5sKQcGE1raJY95kw3ihrqj2n29jB4EJbxjt6xLYbmCS8Ue53IKlZdAfP8mbyIJ4X
+	 WYeNWjn07nC2NtS34+su5qwmPIe71oPlkpx7jsw1/MJfYThpRiTK85uWcKbR07euI5
+	 Hr/sbdeKc8OKg==
 From: Jonathan Cameron <jic23@kernel.org>
 To: linux-iio@vger.kernel.org
 Cc: David Lechner <dlechner@baylibre.com>,
@@ -57,9 +57,9 @@ Cc: David Lechner <dlechner@baylibre.com>,
 	Yasin Lee <yasin.lee.x@gmail.com>,
 	Andy Shevchenko <andy.shevchenko@gmail.com>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 22/37] iio: magnetometer: mag3110: Switch to sparse friendly iio_device_claim/release_direct()
-Date: Mon, 31 Mar 2025 13:13:02 +0100
-Message-ID: <20250331121317.1694135-23-jic23@kernel.org>
+Subject: [PATCH 23/37] iio: magnetometer: rm3100: Switch to sparse friendly iio_device_claim/release_direct()
+Date: Mon, 31 Mar 2025 13:13:03 +0100
+Message-ID: <20250331121317.1694135-24-jic23@kernel.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250331121317.1694135-1-jic23@kernel.org>
 References: <20250331121317.1694135-1-jic23@kernel.org>
@@ -79,43 +79,29 @@ functions that are deprecated.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/magnetometer/mag3110.c | 14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
+ drivers/iio/magnetometer/rm3100-core.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/iio/magnetometer/mag3110.c b/drivers/iio/magnetometer/mag3110.c
-index b633bdf793ed..92d4511ed372 100644
---- a/drivers/iio/magnetometer/mag3110.c
-+++ b/drivers/iio/magnetometer/mag3110.c
-@@ -303,11 +303,10 @@ static int mag3110_read_raw(struct iio_dev *indio_dev,
+diff --git a/drivers/iio/magnetometer/rm3100-core.c b/drivers/iio/magnetometer/rm3100-core.c
+index c99694a77a14..e5162ee64e01 100644
+--- a/drivers/iio/magnetometer/rm3100-core.c
++++ b/drivers/iio/magnetometer/rm3100-core.c
+@@ -399,12 +399,11 @@ static int rm3100_read_raw(struct iio_dev *indio_dev,
  
  	switch (mask) {
  	case IIO_CHAN_INFO_RAW:
 -		ret = iio_device_claim_direct_mode(indio_dev);
--		if (ret)
+-		if (ret < 0)
 -			return ret;
 +		if (!iio_device_claim_direct(indio_dev))
 +			return -EBUSY;
- 		ret = __mag3110_read_info_raw(data, chan, val);
+ 
+ 		ret = rm3100_read_mag(data, chan->scan_index, val);
 -		iio_device_release_direct_mode(indio_dev);
 +		iio_device_release_direct(indio_dev);
+ 
  		return ret;
- 
  	case IIO_CHAN_INFO_SCALE:
-@@ -378,11 +377,10 @@ static int mag3110_write_raw(struct iio_dev *indio_dev,
- 	struct mag3110_data *data = iio_priv(indio_dev);
- 	int ret;
- 
--	ret = iio_device_claim_direct_mode(indio_dev);
--	if (ret)
--		return ret;
-+	if (!iio_device_claim_direct(indio_dev))
-+		return -EBUSY;
- 	ret = __mag3110_write_raw(data, chan, val, val2, mask);
--	iio_device_release_direct_mode(indio_dev);
-+	iio_device_release_direct(indio_dev);
- 
- 	return ret;
- }
 -- 
 2.48.1
 

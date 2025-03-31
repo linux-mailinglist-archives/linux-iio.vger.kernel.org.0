@@ -1,58 +1,57 @@
-Return-Path: <linux-iio+bounces-17416-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17417-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73C01A76471
-	for <lists+linux-iio@lfdr.de>; Mon, 31 Mar 2025 12:40:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 529FAA76481
+	for <lists+linux-iio@lfdr.de>; Mon, 31 Mar 2025 12:47:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BB8C91885E92
-	for <lists+linux-iio@lfdr.de>; Mon, 31 Mar 2025 10:40:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7357F1889357
+	for <lists+linux-iio@lfdr.de>; Mon, 31 Mar 2025 10:47:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0693E1DF738;
-	Mon, 31 Mar 2025 10:40:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C37761E1C09;
+	Mon, 31 Mar 2025 10:47:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bpgrFv7/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KIzpGlpb"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6D491D514E;
-	Mon, 31 Mar 2025 10:40:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FA1C1E1A3B;
+	Mon, 31 Mar 2025 10:47:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743417636; cv=none; b=WhmpZqw4QCjNgWox5a+F0kpylUGqd3Mzi5zmFgwg5U6u1GA3GY1j/d7/trxaz7ojEuHpXuC5rf/nojVmSgqZZ5Ov7/nd7hkSYRgCkkX1/eIYQC5nPsebFbArk9CpwlO30xhpfEfM57Wip7cUqhd5RE3J0j15uPpR94WvJ+lYJgk=
+	t=1743418051; cv=none; b=Rz/HdCxJvCyLExEXndsj1TPNnJZCgzCRu5QMWYAoW+qILb3OP6/oAcfM/5/n6uHhs1nlpKfuL7CYY+KvPrNufJptXbv3FSAdhQ/xSetVpcDe6xaG+LvwxSnIkR/Xn4CX/yKB8gZSqhif4S2bImw7cJj7oBzVPdrLvgy/pnF4qf8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743417636; c=relaxed/simple;
-	bh=xNHvghKTAooo5rUet2CY72pCirZRWaZON5GFTGGSXn4=;
+	s=arc-20240116; t=1743418051; c=relaxed/simple;
+	bh=S137TtYHdRApnd/ionbntMo0ZSY3w1xaepUPlR3u1z0=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kS5EtBoILvCzGzKQJ/L4olY0xbFEvywgHwOOjBMqId8MG5vo7hoIEtIPsCpF/kYsULcYE+81NaW2p+FUJn7kYeoiraXUSxPvzhDSpzmJIZrUhn/DUuyit3Kt2CTxf/PZ7+WvfmFKcAzGLa59FPRFamK/uLPaDy0vOXD8upQw9uE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bpgrFv7/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 841BAC4CEE3;
-	Mon, 31 Mar 2025 10:40:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Ux8gw/i/Ta6jEkMVnvJAI+s69b8SlP/IeEpy0Xoa44nVfeqQC6KZb20F51hSf9gMC5sIzSCLmsDX/Jg/A+ZJlWEykm34w+nc5kxNQJVZmXDqtU0ZbIKFxydWon/OiSgsYWI81ZWbLwLe2miiZ3zSBZYjNtU1MMyq6Qv6QlI9Xb8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KIzpGlpb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5968EC4CEE3;
+	Mon, 31 Mar 2025 10:47:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743417636;
-	bh=xNHvghKTAooo5rUet2CY72pCirZRWaZON5GFTGGSXn4=;
+	s=k20201202; t=1743418051;
+	bh=S137TtYHdRApnd/ionbntMo0ZSY3w1xaepUPlR3u1z0=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=bpgrFv7/XH6Y2DdGNw/jrtUgbqUcrPo/VpBGiCAx2Td12l45EXOifI1O7FvgvKvsy
-	 mLYJTGz2T2EAMG9x44+7BrlcXDdiU2CTsiz04aIthXkJJl29Chyh+ilA3bqeGWwAlw
-	 I5N7jm8QIQcmL+oTdTcl3waCUsN/W4Xv3JPs8vvtLMAOPVT1rqW6wZZjn9BnxK01oJ
-	 8HgU1Z0wvmsv+Mn8fo5dv2UvCXCuHD0pn1vmX/4l8bzNolxnh2afBMbzQFE5CUIdXP
-	 oE6pRDIsQcOMlMDxIQ4WCFm8S0t/umA3J7ILq1UpludgdcpKfMQRxJg2oQzv2s23g3
-	 2muOKQk71l23Q==
-Date: Mon, 31 Mar 2025 11:40:29 +0100
+	b=KIzpGlpbj3mB6TTuD16gGaHYa9LobvnKcztR9l1tppwh/e1jPP/F01xqTTK91lyQ/
+	 +BqFsqsqwkrXd0FMYk/TAfdLAcoFW7YjXq6cH/Vr4o+/la8LTgH/9NOkjkXKfrWekc
+	 u2Bf3g5EK49SkkccwN/n5rJ+pYPneLThUFH2aw4VU2Ype04CJZIyxOjiYdIJTUDJ6R
+	 v2sfuvsaZPNyvTmhArRPoCTVJ83E+0YtYo7jVml5fnUIx3vIoumuXi4XEQ5M83GZsp
+	 t41IZbCHhEh2Qk56ldgjrax21iK/8IblihkJpNrSAOJ/OgLC1kyHv/VIgFRotj4ATt
+	 MrAH+jFHhoqlg==
+Date: Mon, 31 Mar 2025 11:47:23 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: Lothar Rubusch <l.rubusch@gmail.com>
 Cc: lars@metafoo.de, Michael.Hennerich@analog.com,
  linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
  eraretuya@gmail.com
-Subject: Re: [PATCH v5 08/11] iio: accel: adxl345: add activity event
- feature
-Message-ID: <20250331114029.2d828b19@jic23-huawei>
-In-Reply-To: <20250318230843.76068-9-l.rubusch@gmail.com>
+Subject: Re: [PATCH v5 09/11] iio: accel: adxl345: add inactivity feature
+Message-ID: <20250331114724.2c2c2e9b@jic23-huawei>
+In-Reply-To: <20250318230843.76068-10-l.rubusch@gmail.com>
 References: <20250318230843.76068-1-l.rubusch@gmail.com>
-	<20250318230843.76068-9-l.rubusch@gmail.com>
+	<20250318230843.76068-10-l.rubusch@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,137 +62,154 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 18 Mar 2025 23:08:40 +0000
+On Tue, 18 Mar 2025 23:08:41 +0000
 Lothar Rubusch <l.rubusch@gmail.com> wrote:
 
-> Make the sensor detect and issue interrupts at activity. Activity
-> events are configured by a threshold stored in regmap cache. Initialize
-> the activity threshold register to a reasonable default value in probe.
-> The value is taken from the older ADXL345 input driver, to provide a
-> similar behavior. Reset the activity/inactivity direction enabling
-> register in probe. Reset and initialization shall bring the sensor in a
-> defined initial state to prevent dangling settings when warm restarting
-> the sensor.
+> Add the inactivity feature of the sensor. When activity and inactivity
+> are enabled, a link bit will be set linking activity and inactivity
+> handling. Additionally, the auto-sleep mode will be enabled. Due to the
+> link bit the sensor is going to auto-sleep when inactivity was
+> detected.
 > 
-> Activity, ODR configuration together with the range setting prepare the
-> activity/inactivity hystersesis setup, implemented in a follow up patch.
+> Inactivity detection needs a threshold to be configured, and a time
+> after which it will go into inactivity state if measurements under
+> threshold.
+> 
+> When a ODR is configured this time for inactivity is adjusted with a
+> corresponding reasonable default value, in order to have higher
+> frequencies and lower inactivity times, and lower sample frequency but
+> give more time until inactivity. Both with reasonable upper and lower
+> boundaries, since many of the sensor's features (e.g. auto-sleep) will
+> need to operate beween 12.5 Hz and 400 Hz. This is a default setting
+> when actively changing sample frequency, explicitly setting the time
+> until inactivity will overwrite the default.
+> 
+> Similarly, setting the g-range will provide a default value for the
+> activity and inactivity thresholds. Both are implicit defaults, but
+> equally can be overwritten to be explicitly configured.
 > 
 > Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
 
-> +static int adxl345_is_act_inact_en(struct adxl345_state *st,
-> +				   enum iio_modifier axis,
-> +				   enum adxl345_activity_type type, bool *en)
-> +{
-> +	unsigned int regval;
-> +	bool axis_en;
-> +	u32 axis_ctrl;
-> +	int ret;
-> +
-> +	ret = regmap_read(st->regmap, ADXL345_REG_ACT_INACT_CTRL, &axis_ctrl);
-> +	if (ret)
-> +		return ret;
-> +
-> +	if (type == ADXL345_ACTIVITY) {
+A few comments inline.  The magic handling of the value 0 is
+a bit of unexpected ABI.
+
+Jonathan
+
+> @@ -327,6 +358,7 @@ static int adxl345_set_act_inact_en(struct adxl345_state *st,
+>  				    bool cmd_en)
+>  {
+>  	bool axis_en, en;
+> +	unsigned int inact_time_s;
+>  	unsigned int threshold;
+>  	u32 axis_ctrl = 0;
+>  	int ret;
+> @@ -345,6 +377,20 @@ static int adxl345_set_act_inact_en(struct adxl345_state *st,
+>  		default:
+>  			return -EINVAL;
+>  		}
+> +	} else {
 > +		switch (axis) {
 > +		case IIO_MOD_X:
-> +			axis_en = FIELD_GET(ADXL345_ACT_X_EN, axis_ctrl);
+> +			axis_ctrl = ADXL345_INACT_X_EN;
 > +			break;
 > +		case IIO_MOD_Y:
-> +			axis_en = FIELD_GET(ADXL345_ACT_Y_EN, axis_ctrl);
+> +			axis_ctrl = ADXL345_INACT_Y_EN;
 > +			break;
 > +		case IIO_MOD_Z:
-> +			axis_en = FIELD_GET(ADXL345_ACT_Z_EN, axis_ctrl);
-Same as in earlier patch; axis_en is never used.
+> +			axis_ctrl = ADXL345_INACT_Z_EN;
 > +			break;
 > +		default:
 > +			return -EINVAL;
 > +		}
-> +	}
-> +
-> +	ret = regmap_read(st->regmap, ADXL345_REG_INT_ENABLE, &regval);
-> +	if (ret)
-> +		return ret;
-> +
-> +	*en = (adxl345_act_int_reg[type] & regval) > 0;
-> +
-> +	return 0;
-> +}
-> +
-> +static int adxl345_set_act_inact_en(struct adxl345_state *st,
-> +				    enum iio_modifier axis,
-> +				    enum adxl345_activity_type type,
-> +				    bool cmd_en)
-> +{
-> +	bool axis_en, en;
-> +	unsigned int threshold;
-> +	u32 axis_ctrl = 0;
-> +	int ret;
-> +
-> +	if (type == ADXL345_ACTIVITY) {
-> +		switch (axis) {
-> +		case IIO_MOD_X:
-> +			axis_ctrl = ADXL345_ACT_X_EN;
-> +			break;
-> +		case IIO_MOD_Y:
-> +			axis_ctrl = ADXL345_ACT_Y_EN;
-> +			break;
-> +		case IIO_MOD_Z:
-> +			axis_ctrl = ADXL345_ACT_Z_EN;
-> +			break;
-> +		default:
-> +			return -EINVAL;
-> +		}
-> +	}
-> +
-> +	if (cmd_en)
-> +		ret = regmap_set_bits(st->regmap,
-> +				      ADXL345_REG_ACT_INACT_CTRL, axis_ctrl);
-> +	else
-> +		ret = regmap_clear_bits(st->regmap,
-> +					ADXL345_REG_ACT_INACT_CTRL, axis_ctrl);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = regmap_read(st->regmap, adxl345_act_thresh_reg[type], &threshold);
-> +	if (ret)
-> +		return ret;
-> +
-> +	en = false;
-> +
-> +	if (type == ADXL345_ACTIVITY) {
-> +		axis_en = FIELD_GET(ADXL345_REG_ACT_AXIS_MSK, axis_ctrl) > 0;
-The > 0 doesn't add anything as this can't be negative.
-
-Drag declaration of axis_en down here as only used in this block.
-or just combine with previous and next bit as
-		en = (type === ADXL345_ACTIVITY) &&
-		     FIELD_GET(ADXL345_REG_ACT_AXIS_MSK, axis_ctrl) &&
-		     (threshold > 0);
-
-> +		en = axis_en && threshold > 0;
-> +	}
-> +
-> +	return regmap_update_bits(st->regmap, ADXL345_REG_INT_ENABLE,
-> +				  adxl345_act_int_reg[type],
-> +				  en ? adxl345_act_int_reg[type] : 0);
-> +}
-> +
->  /* tap */
+>  	}
 >  
+>  	if (cmd_en)
+> @@ -365,11 +411,67 @@ static int adxl345_set_act_inact_en(struct adxl345_state *st,
+>  	if (type == ADXL345_ACTIVITY) {
+>  		axis_en = FIELD_GET(ADXL345_REG_ACT_AXIS_MSK, axis_ctrl) > 0;
+>  		en = axis_en && threshold > 0;
+> +	} else {
 
+So previous suggestion on setting en doesn't work but you can still combine
+the bits other than the type match to simplify code and get rid of axis_en
+in both paths.
 
-
-> @@ -1347,6 +1542,14 @@ int adxl345_core_probe(struct device *dev, struct regmap *regmap,
->  		if (ret)
->  			return ret;
->  
-> +		ret = regmap_write(st->regmap, ADXL345_REG_ACT_INACT_CTRL, 0);
+> +		ret = regmap_read(st->regmap, ADXL345_REG_TIME_INACT, &inact_time_s);
 > +		if (ret)
 > +			return ret;
 > +
-> +		ret = regmap_write(st->regmap, ADXL345_REG_THRESH_ACT, 6);
+> +		axis_en = FIELD_GET(ADXL345_REG_INACT_AXIS_MSK, axis_ctrl) > 0;
+> +		en = axis_en && threshold > 0 && inact_time_s > 0;
+>  	}
 
-6 is a fairly random number. Add a comment for why this default.
+> +/**
+> + * adxl345_set_inact_time_s - Configure inactivity time explicitly or by ODR.
+> + * @st: The sensor state instance.
+> + * @val_s: A desired time value, between 0 and 255.
+> + *
+> + * If val_s is 0, a default inactivity time will be computed. It should take
+> + * power consumption into consideration. Thus it shall be shorter for higher
+> + * frequencies and longer for lower frequencies. Hence, frequencies above 255 Hz
+> + * shall default to 10 s and frequencies below 10 Hz shall result in 255 s to
+> + * detect inactivity.
+
+I'd missed this previously.  I've no problem with a default time being set
+on driver load, but a later write of 0 should not result in something very different
+as that's not standard use of the ABI.  If a user wants to go back to a sensible
+default then they should have stored out what was set initially.
+
+I don't mind if you update the default until the point where they first override
+it, but from there on we should obey what they request or error out if the
+value requested is not possible.
+
+> + *
+> + * The approach simply subtracts the pre-decimal figure of the configured
+> + * sample frequency from 255 s to compute inactivity time [s]. Sub-Hz are thus
+> + * ignored in this estimation. The recommended ODRs for various features
+> + * (activity/inactivity, sleep modes, free fall, etc.) lie between 12.5 Hz and
+> + * 400 Hz, thus higher or lower frequencies will result in the boundary
+> + * defaults or need to be explicitly specified via val_s.
+> + *
+> + * Return: 0 or error value.
+> + */
+> +static int adxl345_set_inact_time_s(struct adxl345_state *st, u32 val_s)
+> +{
+> +	unsigned int max_boundary = 255;
+> +	unsigned int min_boundary = 10;
+> +	unsigned int val = min(val_s, max_boundary);
+> +	enum adxl345_odr odr;
+> +	unsigned int regval;
+> +	int ret;
+> +
+> +	if (val == 0) {
+> +		ret = regmap_read(st->regmap, ADXL345_REG_BW_RATE, &regval);
+> +		if (ret)
+> +			return ret;
+> +		odr = FIELD_GET(ADXL345_BW_RATE_MSK, regval);
+> +
+> +		val = (adxl345_odr_tbl[odr][0] > max_boundary)
+> +			? min_boundary : max_boundary -	adxl345_odr_tbl[odr][0];
+> +	}
+> +
+> +	return regmap_write(st->regmap, ADXL345_REG_TIME_INACT, val);
+>  }
+>  
+
+> @@ -1546,10 +1697,18 @@ int adxl345_core_probe(struct device *dev, struct regmap *regmap,
+>  		if (ret)
+>  			return ret;
+>  
+> +		ret = regmap_write(st->regmap, ADXL345_REG_TIME_INACT, 3);
+> +		if (ret)
+> +			return ret;
+> +
+>  		ret = regmap_write(st->regmap, ADXL345_REG_THRESH_ACT, 6);
+>  		if (ret)
+>  			return ret;
+>  
+> +		ret = regmap_write(st->regmap, ADXL345_REG_THRESH_INACT, 4);
+
+Comments on defaults are good.
 
 > +		if (ret)
 > +			return ret;

@@ -1,160 +1,139 @@
-Return-Path: <linux-iio+bounces-17397-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17398-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63901A75ED9
-	for <lists+linux-iio@lfdr.de>; Mon, 31 Mar 2025 08:33:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 29149A76033
+	for <lists+linux-iio@lfdr.de>; Mon, 31 Mar 2025 09:37:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0C991167999
-	for <lists+linux-iio@lfdr.de>; Mon, 31 Mar 2025 06:33:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C5A1516835B
+	for <lists+linux-iio@lfdr.de>; Mon, 31 Mar 2025 07:37:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2233B158DAC;
-	Mon, 31 Mar 2025 06:33:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E2491C3C08;
+	Mon, 31 Mar 2025 07:37:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dKzYlxg3"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="H+BuwBX2"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 250D52C190;
-	Mon, 31 Mar 2025 06:33:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DF211BD9E3;
+	Mon, 31 Mar 2025 07:37:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743402800; cv=none; b=NBm6rvpxM/dlU94FD8rmrnnbTqvsXxh7s1iXckG+RbT80fiOdkQpXtGlWXeoSNbh3urlbqdbfzqOTioS/oJDSnizIUJFy3VevKVqwVbcdps1zRTKh/VAZQiQqf5O5Skxgs6LfmZUMAvXQ/pFVkZ6UHtMOoeAyoZ4I06gK3cDAm8=
+	t=1743406634; cv=none; b=aId4VykM6C2nN/oRBEJpfAUrldWmxbcgsiWjd36GP6Y67vPE6PIsO5yaRZE3SFLuB766C25+oAtjRAf7whW5SUQ53nmh4UuxPjE1OSiQKAIVWrRIi/2R97Cu4zNirLHMl8oBFG3rC4KnWd51zJ/8UFb0BrtmErsyLjjru8GC1L0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743402800; c=relaxed/simple;
-	bh=4NnAUAHh4SQBN5bZMa3zy/EsBd3xBQ3NCNjqNDn22Po=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MXoOpHHEDlpxYdZpeiqM4R9hxburzOYHQPBsvNFYCLMw9raQTLSNHfgTL3Apmq+dRZ0tJLB/kKXmdcUm6FtzjaRp027CQaZ1YfPFBT4m1G6AulNT9jAs/5gJXL9vkRRBsVdeVQbaVg0kN/6uiyzJ+TKEvqT7armai+knpS0PbL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dKzYlxg3; arc=none smtp.client-ip=209.85.167.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-54b09cb06b0so3100541e87.1;
-        Sun, 30 Mar 2025 23:33:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743402797; x=1744007597; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=e3BN4S9BGk3MzK6oLk/K+BbptIILiBKGzFpM2o4Ops8=;
-        b=dKzYlxg3GUjHA1LnagX3/XkZqJc3fhg0jINN26VG+BGqyj9dya4lCXuQfqgF3xlYg6
-         O5yUmkuCawI0iZ+yxDqoFziUYfyooYKGV2XcOHiiPQ5jBF4QxJYqS2F9/Ab5gEOTlnhp
-         TcbiiERgt0OemRzmMHIWMuwWb3qEUaE05m1CHRWwmA4Q9HBZlE3jljapHpGxC0rCGPOi
-         Z0J6d2N01h0juTnDp5PRxGqV5BvlOiavsinLWaIhYdXf6yrLZ/XXAsWS2enlF4sKXN+2
-         YlCbCfbRJu/DCKSMe6H3cxIhEY14k0LUbSCZgqwEoiQc/yy7evsLwucNSpZ+aeO28+x6
-         8Zdg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743402797; x=1744007597;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=e3BN4S9BGk3MzK6oLk/K+BbptIILiBKGzFpM2o4Ops8=;
-        b=FS3lAX2+etPf+CPUdE5fYgy4QFRVIAfSwz9wIhfX46dq+ciX3Gpp3MEQfzZRe++ohv
-         Km16furvbBitr6RA1nF3yEOEysrMFjlzzf7mw9qCS+a+m0tSRBO9RhQpZ9IkGn9VGix0
-         OK4aNGDeWSFNr4qMSfJ34zhjUiUlvag/BmbjhLckn+ga3145WpXQ3PIIC/6PJGL9wRCc
-         QKhCb4ZsixO3usoYF7KCk5tabW72qjSO2T3I3b90ForBiGK53uOztgVwZjQHK0OXAsoR
-         Fm+x0OIhZgn3i8IZFyfnA48ykc6GVSkkM0yZbKqVPpOJwIc/RocFsOO3TzyM2j3M152I
-         dZxg==
-X-Forwarded-Encrypted: i=1; AJvYcCV3HQyTiOxzjhYsOLGImH/yryqLAlWDM0fLHXqkhLgOn3DEk18gSdC+0tLth4zsn3XU93lrwUgtkhE=@vger.kernel.org, AJvYcCXOhoXBSk8Nor0w7KZ3Le/GPmXe+gSaTzcatZkw9TgYjPdib4KH1Y2yHk62fTKk5ID7ZyamtmS+mrcN6dkM@vger.kernel.org
-X-Gm-Message-State: AOJu0YxmxVu8/KX95ewgmq3rY1DN9gJXbUcxOJ9cAnnA/nj3l1oOPicJ
-	db6ex/BJVzYJ5AY2AmqMmLFtmvg2CUlstNTFjTr2AdWlUT6tJeGw
-X-Gm-Gg: ASbGncuxYhjrfUDYNb0yO6H0Ok1Y5YVZsEgyqVNYQj8LYw/cNxcuxTJOuECmZcNNNVW
-	zZqS1BdCO0a656gLUPRiTtYYzNMDDc0Gn1eqyK2U4uumYMMOScXCan0EeItULUxPCxYLTDOefXj
-	qS0R/qtWTMI+DHReB7547xhlZcTQTHUIDML9ew9X2HJiC6QPqdNWLBa7FTOIWtG0lChF9Al/x+G
-	3hRLGeVg7V0rpNXh2OqA4COt1K7P192o6tu0tSiJ0SGiBcPN6mlcHrKtIXRWbpAIMPz7iejXeXe
-	ZEhtRFPIf2JXLg1NhzQQdsvxzakp31Ip660nrk7itmhcG+5SK3i9UfliDUJwcYYKleGu/OyGJyr
-	7bVKCOIlHaZqsQUEHMbqvcfG59qsrOuRx6ViT
-X-Google-Smtp-Source: AGHT+IEw0QVUl1K06muVSHUKs6EbBPkwd75jQZnDGb13MH0A+Eq1NYGcsvurFL26aqQVF+isbh9lZg==
-X-Received: by 2002:a05:6512:398a:b0:545:d27:e367 with SMTP id 2adb3069b0e04-54b1110e012mr2176119e87.42.1743402796928;
-        Sun, 30 Mar 2025 23:33:16 -0700 (PDT)
-Received: from ?IPV6:2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703? ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-54b094bb3c3sm1068357e87.2.2025.03.30.23.33.14
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 30 Mar 2025 23:33:16 -0700 (PDT)
-Message-ID: <591e09b5-f446-497d-ba3b-c235dba87e6a@gmail.com>
-Date: Mon, 31 Mar 2025 09:33:14 +0300
+	s=arc-20240116; t=1743406634; c=relaxed/simple;
+	bh=pq0XkENy6BPmERuIcHD+0mcyeJVx4XQVikkemxoOxBY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PyztrvDkPu2NJEB7kzM7EKANTTERqAinbqWTqg+UsNVLMCoLP2AYyk8uNm/YpbTo6TB9o4OEdeLbUXhMPMMBAK09TnXKEI/IyDFOV2TNmpPmhchSbqYBjO8chh8LFtTRcR+LlxOX5hcKdZoNasz+9rQ0zDlGp+pmG1q4uOVhzyQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=H+BuwBX2; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1743406633; x=1774942633;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=pq0XkENy6BPmERuIcHD+0mcyeJVx4XQVikkemxoOxBY=;
+  b=H+BuwBX2P8x0xjkC7/mJyZZ5Sv8+PxxBsRxC+Fqj4GLXSXOTZiRC3lT/
+   39Ml/UckHeXkGA4HvpJxl606BUQQ3WdtpBEORmInuwwCjbuv2b5ljdopJ
+   GKBYXKFmBXfuaJpaOL9CIQO8kS5H0+f3VwbIimzK04z2L6kzXwBtdjmlf
+   56VvasqRn8I0tqyjJ/KGjCIsaFiuwF/qTMxeO+T6o6JuBfSHTMbJZlcOx
+   YCSMqnwYFbFITNenIexaEF8w6/3I+B8sVKQZ0B4+6fBGfdoDcPKtUUvOl
+   FFLU62IInNdPqcygBsTHiqWLyMQuEgO9Epshn/P7v4+2bR9WljbdLSTzb
+   g==;
+X-CSE-ConnectionGUID: x5xVMc+GRQm6LJWmzzwBRg==
+X-CSE-MsgGUID: MOjbb3QsTD+C81N7orsw7Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11389"; a="70043517"
+X-IronPort-AV: E=Sophos;i="6.14,290,1736841600"; 
+   d="scan'208";a="70043517"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Mar 2025 00:37:12 -0700
+X-CSE-ConnectionGUID: m//Nq2RmSa2yReBtlve5bg==
+X-CSE-MsgGUID: WZ31RkDkQYiHbwBX3hZhWg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.14,290,1736841600"; 
+   d="scan'208";a="157012270"
+Received: from smile.fi.intel.com ([10.237.72.58])
+  by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Mar 2025 00:37:08 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1tz9hh-00000007apW-043q;
+	Mon, 31 Mar 2025 10:37:05 +0300
+Date: Mon, 31 Mar 2025 10:37:04 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Matti Vaittinen <mazziesaccount@gmail.com>,
+	Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+	Lars-Peter Clausen <lars@metafoo.de>, Nuno Sa <nuno.sa@analog.com>,
+	David Lechner <dlechner@baylibre.com>,
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Olivier Moysan <olivier.moysan@foss.st.com>,
+	Guillaume Stols <gstols@baylibre.com>,
+	Dumitru Ceclan <mitrutzceclan@gmail.com>,
+	Trevor Gamblin <tgamblin@baylibre.com>,
+	Matteo Martelli <matteomartelli3@gmail.com>,
+	Alisa-Dariana Roman <alisadariana@gmail.com>,
+	=?iso-8859-1?Q?Jo=E3o_Paulo_Gon=E7alves?= <joao.goncalves@toradex.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
+Subject: Re: [PATCH v7 06/10] iio: adc: Support ROHM BD79124 ADC
+Message-ID: <Z-pGIMC7cu0QPBzi@smile.fi.intel.com>
+References: <cover.1741849323.git.mazziesaccount@gmail.com>
+ <b6c02a5d75a20bbbf8c3370ccee615d269620117.1741849323.git.mazziesaccount@gmail.com>
+ <20250316110237.0b558248@jic23-huawei>
+ <222c5fa7-283b-48ce-9d01-34ca633674eb@gmail.com>
+ <20250330170436.0fc14b64@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 6/8] iio: adc: Support ROHM BD79124 ADC
-To: Jonathan Cameron <jic23@kernel.org>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
- Lars-Peter Clausen <lars@metafoo.de>, Nuno Sa <nuno.sa@analog.com>,
- David Lechner <dlechner@baylibre.com>,
- Javier Carrasco <javier.carrasco.cruz@gmail.com>,
- Olivier Moysan <olivier.moysan@foss.st.com>,
- Guillaume Stols <gstols@baylibre.com>,
- Dumitru Ceclan <mitrutzceclan@gmail.com>,
- Trevor Gamblin <tgamblin@baylibre.com>,
- Matteo Martelli <matteomartelli3@gmail.com>,
- Alisa-Dariana Roman <alisadariana@gmail.com>,
- =?UTF-8?Q?Jo=C3=A3o_Paulo_Gon=C3=A7alves?= <joao.goncalves@toradex.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
-References: <cover.1742560649.git.mazziesaccount@gmail.com>
- <ca3886c9abcb268ca976e62cd7da28bf5d6e6382.1742560649.git.mazziesaccount@gmail.com>
- <Z-EWmK2r6VgmPAqa@smile.fi.intel.com> <20250330173511.16ea9ebc@jic23-huawei>
-Content-Language: en-US, en-AU, en-GB, en-BW
-From: Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <20250330173511.16ea9ebc@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250330170436.0fc14b64@jic23-huawei>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On 30/03/2025 19:35, Jonathan Cameron wrote:
-> On Mon, 24 Mar 2025 10:23:52 +0200
-> Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+On Sun, Mar 30, 2025 at 05:04:36PM +0100, Jonathan Cameron wrote:
+> On Mon, 17 Mar 2025 13:24:07 +0200
+> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+> > On 16/03/2025 13:02, Jonathan Cameron wrote:
+> > > On Thu, 13 Mar 2025 09:19:03 +0200
+> > > Matti Vaittinen <mazziesaccount@gmail.com> wrote:  
+
+...
+
+> > >> +	return (data->alarm_monitored[chan->channel] & BIT(dir));  
+> > > 
+> > > Drop the outer brackets as not adding anything.  
+> > 
+> > I just noticed that the integer returned from here is directly provided 
+> > to the user-space. I don't know the history, but it feels a bit off to 
+> > me. I mean, I would expect the read from sysfs file "*_en" to return '1' 
+> > or '0' - not 0x04.
+> > 
+> > Oh well, I suppose it's too late to change this in the IIO core - but 
+> > I'll do:
+> > 	return !!(data->alarm_monitored[chan->channel] & BIT(dir));
 > 
->> On Mon, Mar 24, 2025 at 09:13:42AM +0200, Matti Vaittinen wrote:
->>> The ROHM BD79124 is a 12-bit, 8-channel, SAR ADC. The ADC supports
->>> an automatic measurement mode, with an alarm interrupt for out-of-window
->>> measurements. The window is configurable for each channel.
->>>
->>> The I2C protocol for manual start of the measurement and data reading is
->>> somewhat peculiar. It requires the master to do clock stretching after
->>> sending the I2C slave-address until the slave has captured the data.
->>> Needless to say this is not well suopported by the I2C controllers.
->>>
->>> Thus do not support the BD79124's manual measurement mode but implement
->>> the measurements using automatic measurement mode, relying on the
->>> BD79124's ability of storing latest measurements into register.
->>>
->>> Support also configuring the threshold events for detecting the
->>> out-of-window events.
->>>
->>> The BD79124 keeps asserting IRQ for as long as the measured voltage is
->>> out of the configured window. Thus, prevent the user-space from choking
->>> on the events and mask the received event for a fixed duration (1 second)
->>> when an event is handled.
->>>
->>> The ADC input pins can be also configured as general purpose outputs.
->>> Make those pins which don't have corresponding ADC channel node in the
->>> device-tree controllable as GPO.
->>
->> Thank you for the nicely written driver!
->> However, I have one big issue with it (see below).
->>
->> ...
->>
->>> +static void bd79124gpo_set(struct gpio_chip *gc, unsigned int offset, int value)
->>> +static void bd79124gpo_set_multiple(struct gpio_chip *gc, unsigned long *mask,
->>> +				    unsigned long *bits)
->>
->> These will be _rv variants anyway as there is no chance this series goes before that.
+> Agreed it should be returning 1 or 0.
 > 
-> I don't mind seeing this as a follow up series, but I would like that
-> to hit this cycle if possible.
+> This stuff is a little bit messy.  I'd not be against that ABI
+> cleanup if we squashed the values to 0,1 in the core as a follow up.
+> 
+> I doubt anyone relies on getting 0x4 as that would be very driver
+> specific userspace code!
 
-Should be possible :) I think the use of _rv will nicely tidy-up the 
-set_multiple. I'll cook a patch when rc1 is out - or when IIO has the 
-_rv variants in a branch where I can base the changes.
+FWIW, the time this discussion was held, I looked at the code and it seems
+we have such drivers. I doubt we can change it without potential breakage of
+(some) user space tools.
 
-Yours,
-	-- Matti
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
 

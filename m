@@ -1,167 +1,136 @@
-Return-Path: <linux-iio+bounces-17493-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17494-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD30AA76D7D
-	for <lists+linux-iio@lfdr.de>; Mon, 31 Mar 2025 21:30:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6817AA76D7E
+	for <lists+linux-iio@lfdr.de>; Mon, 31 Mar 2025 21:31:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C17F1656FC
-	for <lists+linux-iio@lfdr.de>; Mon, 31 Mar 2025 19:30:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B23AB3A9D45
+	for <lists+linux-iio@lfdr.de>; Mon, 31 Mar 2025 19:30:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4DE6219A91;
-	Mon, 31 Mar 2025 19:30:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 861C21DE2C6;
+	Mon, 31 Mar 2025 19:30:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="FheK0Ma/"
+	dkim=pass (2048-bit key) header.d=framepointer.org header.i=@framepointer.org header.b="aQPvP/ce"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oo1-f53.google.com (mail-oo1-f53.google.com [209.85.161.53])
+Received: from out-09.pe-a.jellyfish.systems (out-09.pe-a.jellyfish.systems [198.54.127.69])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7A2B2185B1
-	for <linux-iio@vger.kernel.org>; Mon, 31 Mar 2025 19:30:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A97F12114;
+	Mon, 31 Mar 2025 19:30:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.54.127.69
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743449405; cv=none; b=C+HeQhNGQ3S4VIuSX/ozS+wkXcLQs0XxShXpqY27G7Oi51KMBWgvgwp52UP/OQjq0s1W+BaUot3TmFOdaLD487nDQlCqls0eCq+27TWdO9QERphlv5Il9AB4nPSUgNNDf9dRhGKtkwsZhxtu/BXC/2D2Ib9cIk8yxilY2tbjrFo=
+	t=1743449459; cv=none; b=Ob0cluFKc61HntPgUrp7BKe/IJperFbvBCN1BF5qzZmopSSC3TrwN1tprKsxUAUEXuAmOuPcYwX0ZIH4847+gPDvfeTVQ5lI+4z74l6C49XM7og+rzBRHaLIqS5pHZkyHndToGWbcTc9mRkindxkGWioEAbrGYcg7BLJayBoDDw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743449405; c=relaxed/simple;
-	bh=NahM+36knhi00KTWV4WyzXhlwvnW7iE7xJQnqrUZJwU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=stYNOaeyFV8gb25lUM4yP1vh9sKw5slrOKRwFjHVM7WGiap5r9rj/lhK3nl4sTNAo3WvC2Ht3zNTIqyDTMBqt4LHqRdlNpAWvzs93/gKb6PH8rzuK6o68xut7EqiyM+47sjSz/SRyYRDtYOOPyG1qqb5AdHfb+V/HFLeFCOvoLk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=FheK0Ma/; arc=none smtp.client-ip=209.85.161.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oo1-f53.google.com with SMTP id 006d021491bc7-60208b7a6d6so1387044eaf.1
-        for <linux-iio@vger.kernel.org>; Mon, 31 Mar 2025 12:30:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1743449401; x=1744054201; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=n7Sr8yp1NV624AmBrK5QYW6xtTPJmFymnATfGqV6IEY=;
-        b=FheK0Ma/loPD1EeELAgTSMDSSvHdibinr8Jkg3g4OM5NAayNtA5SeDB3pT+A+2v/U+
-         SeuX/0bayAfM7uYNw4g/eKoo1x5JCKWuPz/K5I5wTq6FcXaJHOzq8zc+pS8QKVpAuzhY
-         4V7W0DBfLsEVMVdyNTphI6Fhy20TmIu5Acbctx9KpviwfAQ6sp+EUwD5jTC7TljpSEps
-         LlW2mYG3YAmChI+Zs385+exZy53qK5hnfY39XPINgSF2IJRZYd2mhM6Rbv2WahvMKYl5
-         +pWITIenPNqSTS1F0ktTJmjxr96tyEhWCdHzLjKnUD9ILlK9Thrau6aELueUUglp4R3T
-         SdQg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743449401; x=1744054201;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=n7Sr8yp1NV624AmBrK5QYW6xtTPJmFymnATfGqV6IEY=;
-        b=v1xHrBOKK2z3zKNpGqZRBupsxKqUG0da5RKPLE1sRTHqsiIChdP5UMd5sjnFo17R9R
-         tt83UJrLeAIkGIs9s0/0XLb3+aB/um4HFAAtF5Chb7b7HfcGbTCIiiiOeQHgWauKVyew
-         CXHJKE2f2EoX3oqZKgbv/ZhwzRoJ4KbYTuhOLmUrpCEyr4EVxjGMlae7U7DHDoqGMz5M
-         8OKT4q75LnmNeQKkQjELB96y0YyVsqMXoUJhItGutdlT8IH428G5N0Uizlx1SgX/pC+N
-         OjIORpBcOmUvURQgzgQkl8Pfu16IQl58FS/+QRUQ5s+HxTskm80NbvbhM8VskeYZTlHY
-         oB3Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUYByuMogSAwOlqjYqWO37zsMLEpT+rMsHstJg1/ta/fbsLYTg2yZxUGSffyDsX/blbcm02KmCgY20=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy1psIu8HrnzjeMiyohEqXtb23XiADncMHMJTDLV7xc4qx6AobD
-	b92mKniPIdKogKkpz93FnswgvX3cty+KOyU6jsNp9Q78IUFTzSDBdQ91vUNKZmM=
-X-Gm-Gg: ASbGncsks8b4dU17xK3BUpT+1GsGS71g75k134RpoGbITYI8/S0dmxR34AiyMFGBlun
-	4UX7lPdOGJzpzjxtQKoIFfGjnSTzfbc8xxflHSLai692pqtg8WEAiB4kGa3CgsZeewsOa/JwuUV
-	QHxDgngb06jLe3kdQXF7A8U/zoImmQWQCz0yDti2+sMrgxd/XBjF2hBvZ/crHkc1SBayrFnN6sy
-	WWZp14WO2K0jBUjgWqmRMlNhT9yzUs79ZYgIgjMnCdsEuADJFDzcwzOBYctgsPQEJIWa2VOf8V+
-	GVJzaPAEumMq5FmUm5QlX6yLw3ItOqStrJWN32pO2WAXTYggEcPRQUIqCkf+BWhcy8YP5Eo7nlV
-	2
-X-Google-Smtp-Source: AGHT+IH9+27d56YPKAkDDx/efqJvupFTgR/XenGgMEQV8HGPeVZZ6OEL7idwkp+Gp2Oks1tfGDtZhA==
-X-Received: by 2002:a05:6808:150f:b0:3f8:acb4:8d7b with SMTP id 5614622812f47-3ff0f641e38mr6637534b6e.28.1743449400540;
-        Mon, 31 Mar 2025 12:30:00 -0700 (PDT)
-Received: from [127.0.1.1] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-3ff051aa1f1sm1640831b6e.22.2025.03.31.12.29.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 31 Mar 2025 12:29:59 -0700 (PDT)
-From: David Lechner <dlechner@baylibre.com>
-Date: Mon, 31 Mar 2025 14:29:54 -0500
-Subject: [PATCH] iio: adc: ad7944: drop bits_per_word hack
+	s=arc-20240116; t=1743449459; c=relaxed/simple;
+	bh=5fDvWYlmklSJIuIH3nKjwJPHW4lF+afHO6be9jzEMOU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OIEkoLD5KcWl77EeHLQ98d6j/mrWi+CvHhMUQ0HcWOlQ9Q4ZFG4HCKrci2voMaFkOwvLeBiG3JMkxagjWAcdNxGpI4QDXYCype013hXlp/csdbI5okba492DK+XcrGafkHeCZAnfHJuWRCUg7CKQMfTdVPJLQ64YjRlh+q6gPY8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=framepointer.org; spf=pass smtp.mailfrom=framepointer.org; dkim=pass (2048-bit key) header.d=framepointer.org header.i=@framepointer.org header.b=aQPvP/ce; arc=none smtp.client-ip=198.54.127.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=framepointer.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=framepointer.org
+Received: from prod-lbout-phx.jellyfish.systems (new-01-3.privateemail.com [66.29.159.56])
+	by pe-a.jellyfish.systems (Postfix) with ESMTPA id 4ZRLp13Wdcz9sNx;
+	Mon, 31 Mar 2025 19:30:49 +0000 (UTC)
+Received: from MTA-13.privateemail.com (unknown [10.50.14.29])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by NEW-01-3.privateemail.com (Postfix) with ESMTPS id 4ZRLp067Mtz2Sd0R;
+	Mon, 31 Mar 2025 15:30:48 -0400 (EDT)
+Received: from mta-13.privateemail.com (localhost [127.0.0.1])
+	by mta-13.privateemail.com (Postfix) with ESMTP id 4ZRLp04kqvz3hhXJ;
+	Mon, 31 Mar 2025 15:30:48 -0400 (EDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=framepointer.org;
+	s=default; t=1743449448;
+	bh=5fDvWYlmklSJIuIH3nKjwJPHW4lF+afHO6be9jzEMOU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=aQPvP/ceXuB3n2EoUlKP/9KyjbFSJYLfUBIXSa04DucEv39456vr1eXW7oHXPDua1
+	 5G3YldXC5O2YTc7ZKw8XM2ZUtQsNwGCg6HVcQ5O0LUJz3n67yRDlymGykMU2n7jvnY
+	 t298jQktcfrm9W263IJmslM2mklfsYUeYKjd/BzV8Kmcay/uTYBNijXx4CEeEk1+/R
+	 J8twU46j9LR0ptxLG8tGqFjBLUr5IpZ6/pb9qfl+Dc5bg80oytgdNLP47HOmEF5sIG
+	 0HfFaWsayI/j6tUzvQ3HOUcOOCq1Kt3n3YwhCyuMZ7ul56I9Diuf/dH7/Lm0DgDtnY
+	 tKw5IOyFP0L/Q==
+Received: from 65YTFL3.secure.tethers.com (unknown [152.44.190.141])
+	by mta-13.privateemail.com (Postfix) with ESMTPA;
+	Mon, 31 Mar 2025 15:30:35 -0400 (EDT)
+Date: Mon, 31 Mar 2025 15:30:37 -0400
+From: Sam Winchenbach <sam.winchenbach@framepointer.org>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: linux-kernel@vger.kernel.org, lars@metafoo.de, 
+	Michael.Hennerich@analog.com, antoniu.miclaus@analog.com, robh@kernel.org, krzk+dt@kernel.org, 
+	conor+dt@kernel.org, linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
+	bpellegrino@arka.org, Sam Winchenbach <swinchenbach@arka.org>
+Subject: Re: [PATCH v8 0/6] Update auto corner freq calculation
+Message-ID: <npxfioo7wvjaduggdlk765uwna2umnwhmndgmk3mcwcjyi3jwd@wi6mbnfpvmss>
+References: <20250328174831.227202-1-sam.winchenbach@framepointer.org>
+ <20250330162300.4c318897@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250331-iio-adc-ad7944-drop-bits_per_word-hack-v1-1-2b952e033340@baylibre.com>
-X-B4-Tracking: v=1; b=H4sIADHt6mcC/x2NQQqDMBAAvyJ77oJJFGm/Uoqs2U1dCiZspC2If
- 2/oYQ5zmTmgiqlUuHUHmLy1at6auEsHcaXtKajcHHzvxz4Eh6oZiWNjug4DsuWCi+51LmLzJxv
- jSvGFNLnF8+gShQQtVkySfv+j++M8f1I/Qu94AAAA
-X-Change-ID: 20250331-iio-adc-ad7944-drop-bits_per_word-hack-a71b2d51fa3f
-To: Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org
-Cc: Michael Hennerich <michael.hennerich@analog.com>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, linux-kernel@vger.kernel.org, 
- David Lechner <dlechner@baylibre.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2173; i=dlechner@baylibre.com;
- h=from:subject:message-id; bh=NahM+36knhi00KTWV4WyzXhlwvnW7iE7xJQnqrUZJwU=;
- b=owEBgwJ8/ZANAwAKAR+K+IyC93wDAcsmYgBn6u00IQV7wI3kL4cLzccCSccA/JuODpOnD/Oou
- Mnj9e2p+1GJAkkEAAEKADMWIQSKc9gqah9QmQfzc4gfiviMgvd8AwUCZ+rtNBUcZGF2aWRAbGVj
- aG5vbG9neS5jb20ACgkQH4r4jIL3fAPQvxAAhcTiJYF4XN1pbER609LA7tYr/YKu9SUK1ym8O6z
- riDmweDAorMy8nAgu0s5GYn+xx00s5s9SnW+KifuDupBnYjIlQA2WHdIwkzYQzgpUElCSHa4USZ
- OXCGt/4SnsOlp2zZGpP/dUe5xCTx/4DPMXgQ/FX8ceQh90+0XB/eDIBUxeNOj8S7KXqhOU/CPIU
- 6ire+9Xk2/otJI0nTcz7l9CHd5vewWUuwKpbSKuCQuz9JhGUa4IeO5KcT54N+354+JK5JbT+5wQ
- qZUmiqZIHyDoUa4uW7jkCWJrQIJUHf+Qns1ImYMM2h0JmJuYOb8XV93cZDqD1qn6avNsdIObZ7Q
- x4YIylNC6TwOnKbMHCf/K5gCdLeif7tT18dPn2hJBtpGJaZd5GXkBpc93hn5noG3huDayXGv27I
- j8EJpkjpcEaSIuqCTWQUkXhq65/0VReeyjOhEj3PvX0/5NidxH7//2KzSu8LLyg2zgcSuetrFVD
- qhYmnv+hkXKdUPZSBFDnydBzV1HbD/XO5yBFWEca/qC1L0HrqPxDw0BgHqG1N5wW4AN9pdL1PkO
- NppGAfk0QegcHEUJUxduITv0ZaBOQ4qk9vr0GvtzT8zsknhOgqMlblEEBhc8az27deuD4VfbJTC
- 3+DhR4TuSvSPLhMRIq+/rs6/cJwF0B5xs91SRiS0KCxw=
-X-Developer-Key: i=dlechner@baylibre.com; a=openpgp;
- fpr=8A73D82A6A1F509907F373881F8AF88C82F77C03
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250330162300.4c318897@jic23-huawei>
+X-Virus-Scanned: ClamAV using ClamSMTP
 
-Remove setting bits_per_word in SPI xfers without data. The shortcoming
-that this was working around was fixed in the SPI controller driver, so
-it is no longer necessary. And we don't need this to be cargo-culted to
-new drivers.
+On Sun, Mar 30, 2025 at 04:23:00PM +0100, Jonathan Cameron wrote:
+> On Fri, 28 Mar 2025 13:48:25 -0400
+> Sam Winchenbach <sam.winchenbach@framepointer.org> wrote:
+> 
+> > From: Sam Winchenbach <swinchenbach@arka.org>
+> > 
+> > v1: Initial submission
+> > v2: Cleaned up wording of commit message
+> > v3: Add DTS properties to control corner frequency margins
+> > v4: Fixed wrapping
+> >     Added maintainers to CC
+> > v5: Remove magic numbers
+> >     Break out patches into features
+> >     Small coding style fixes
+> > v6: Converted dts property from hz to mhz
+> >     Removed blank lines in dts binding documentation
+> > v7: Updated author/sign-off address
+> >     fixed patch path description
+> > v8: Added missing Reviewed-By tag in v7
+> > 
+> > Brian Pellegrino (1):
+> >   iio: filter: admv8818: Support frequencies >= 2^32
+> Applied to the togreg branch of iio.git and initially pushed out as testing.
+> 
+> I thought about splitting off the fixes and sending them a faster path, but that
+> last fix is rather large for that so I haven't.
+> 
+> Shout if you think I should try to get the fixes upstream quickly and
+> I can move them to my fixes branch.
+> 
+> Jonathan
 
-Signed-off-by: David Lechner <dlechner@baylibre.com>
----
- drivers/iio/adc/ad7944.c | 11 -----------
- 1 file changed, 11 deletions(-)
+This sounds fine to me. I don't understand the differences between the branches
+so I am more than happy to defer to your expertise.
 
-diff --git a/drivers/iio/adc/ad7944.c b/drivers/iio/adc/ad7944.c
-index 2f949fe5587318957f2e423029294ced0a6f803d..70f313545af2393a625ae2ec3c2cff2e29153ffb 100644
---- a/drivers/iio/adc/ad7944.c
-+++ b/drivers/iio/adc/ad7944.c
-@@ -189,11 +189,6 @@ static int ad7944_3wire_cs_mode_init_msg(struct device *dev, struct ad7944_adc *
- 						   : adc->timing_spec->conv_ns;
- 	struct spi_transfer *xfers = adc->xfers;
- 
--	/*
--	 * NB: can get better performance from some SPI controllers if we use
--	 * the same bits_per_word in every transfer.
--	 */
--	xfers[0].bits_per_word = chan->scan_type.realbits;
- 	/*
- 	 * CS is tied to CNV and we need a low to high transition to start the
- 	 * conversion, so place CNV low for t_QUIET to prepare for this.
-@@ -208,7 +203,6 @@ static int ad7944_3wire_cs_mode_init_msg(struct device *dev, struct ad7944_adc *
- 	xfers[1].cs_off = 1;
- 	xfers[1].delay.value = t_conv_ns;
- 	xfers[1].delay.unit = SPI_DELAY_UNIT_NSECS;
--	xfers[1].bits_per_word = chan->scan_type.realbits;
- 
- 	/* Then we can read the data during the acquisition phase */
- 	xfers[2].rx_buf = &adc->sample.raw;
-@@ -227,11 +221,6 @@ static int ad7944_4wire_mode_init_msg(struct device *dev, struct ad7944_adc *adc
- 						   : adc->timing_spec->conv_ns;
- 	struct spi_transfer *xfers = adc->xfers;
- 
--	/*
--	 * NB: can get better performance from some SPI controllers if we use
--	 * the same bits_per_word in every transfer.
--	 */
--	xfers[0].bits_per_word = chan->scan_type.realbits;
- 	/*
- 	 * CS has to be high for full conversion time to avoid triggering the
- 	 * busy indication.
+I don't believe these fixes are critical, although the behavior is incorrect.
 
----
-base-commit: f8ffc92ae9052e6615896052f0c5b808bfc17520
-change-id: 20250331-iio-adc-ad7944-drop-bits_per_word-hack-a71b2d51fa3f
+Thank you, happy to see patchset making some progress.
+-Sam
 
-Best regards,
--- 
-David Lechner <dlechner@baylibre.com>
-
+> 
+> > 
+> > Sam Winchenbach (5):
+> >   dt-bindings: iio: filter: Add lpf/hpf freq margins
+> >   iio: filter: admv8818: fix band 4, state 15
+> >   iio: filter: admv8818: fix integer overflow
+> >   iio: filter: admv8818: fix range calculation
+> >   iio: core: Add support for writing 64 bit attrs
+> > 
+> >  .../bindings/iio/filter/adi,admv8818.yaml     |  20 ++
+> >  drivers/iio/filter/admv8818.c                 | 224 +++++++++++++-----
+> >  drivers/iio/industrialio-core.c               |  12 +
+> >  3 files changed, 202 insertions(+), 54 deletions(-)
+> > 
+> 
 

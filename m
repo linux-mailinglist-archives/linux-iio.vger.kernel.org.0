@@ -1,46 +1,46 @@
-Return-Path: <linux-iio+bounces-17466-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17467-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AABFA765A1
-	for <lists+linux-iio@lfdr.de>; Mon, 31 Mar 2025 14:17:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FF70A765A2
+	for <lists+linux-iio@lfdr.de>; Mon, 31 Mar 2025 14:17:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 42FDE16A295
-	for <lists+linux-iio@lfdr.de>; Mon, 31 Mar 2025 12:17:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B1ED33AA081
+	for <lists+linux-iio@lfdr.de>; Mon, 31 Mar 2025 12:17:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C546C1E51F5;
-	Mon, 31 Mar 2025 12:17:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EF971E51F3;
+	Mon, 31 Mar 2025 12:17:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fx4sQHh8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Lu8OROTx"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8662F1E51F3
-	for <linux-iio@vger.kernel.org>; Mon, 31 Mar 2025 12:17:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FD8E13B59B
+	for <linux-iio@vger.kernel.org>; Mon, 31 Mar 2025 12:17:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743423442; cv=none; b=Ejp49fhEKEm1r40UovprgVNYdBeb7onCjXSlbJA4b3FOGXXJ3JiFFgC6/U+Vo0xov9fHGNhJvn8qCIx9nwhQQPTwPP1O/r04uJR/xTsXZEOecO8QTi1KspzTxBWcPATj0nByBLEcuQju3ZHXrngCgnOC/R5AtDfsqa1hRdOrWXk=
+	t=1743423448; cv=none; b=BmJpnhgSUa5myQVBm4MqwIO4CNlo/g0UwtOXzvj/PM1+jMtpx3pkexfdHlqL5jS2n1QZWKkDr9fWe5/tQvgZsrTatvphHv6U3qaoyqtjZ4dSoK70LIrQH5k6Gtc5bM9cGDbccoahYG5FqKCxbePpGqWt77vdvysNPM3eoSkpOGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743423442; c=relaxed/simple;
-	bh=DHd94nGDnYSPb9QKvVExslBDhfDX6ifKjxIsWc983VY=;
+	s=arc-20240116; t=1743423448; c=relaxed/simple;
+	bh=gyRG0WSpnGxX1JfNmcWVKw7XM9R86VTb7f+w/nMow0k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=REOgFD3114F06WKILTlUykVfFAEV2Cp9WXKNOfycPJx+0Jn2xft0q2xb6vH/pVM0h0qbp4Hyzp9t1NUt0or0/buWZO6CQ2s+nMIaCZ5GbAtYVJzmFLWKD5fELve8AlQjeu88mnGVOe6o79cv2YjHr2VhSSjGyEsUiugJF1vcfSU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fx4sQHh8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63157C4CEE3;
-	Mon, 31 Mar 2025 12:17:16 +0000 (UTC)
+	 MIME-Version; b=u77Ts/0NIBqR2MoJ9YU0Vv/X597k+Z4NgvJ9JppwCGol6nghbQigBgQ8FAfqcDPUvQX/0CSl6D1xiaiitIWxHxXovGPC4xJ1oag3alCzsJCerb1YMBUHDkp5yxNcAvAPTfwNLBcnHHqAsnv2OHEo9nJZaaka0cv5ytv8aOO6Rxw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Lu8OROTx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B69F2C4CEE3;
+	Mon, 31 Mar 2025 12:17:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743423442;
-	bh=DHd94nGDnYSPb9QKvVExslBDhfDX6ifKjxIsWc983VY=;
+	s=k20201202; t=1743423447;
+	bh=gyRG0WSpnGxX1JfNmcWVKw7XM9R86VTb7f+w/nMow0k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fx4sQHh89jJw2QdrxGxe3yiv30Dhn+BnuXoi2QJMy9jlCE3BxRc7YLRUOW3rkhAzz
-	 57sWHzqTqGxrbnmvEFBetU2oq3AD2O28XQOBAaIBd7W2I0x2eRctMRdr9F6HgG0OSZ
-	 1FoOvz1xuuy3w9Ex0XteV3StTZm23f+mSufbAE6e3JOGCbYAOMT6VtVz/4aQq8zkp9
-	 1JxUkRi6fVhLZRw2uZEF4eWgFjlnS9P+LsxwkBp5Ebqdlc5irNez7hdTD2LzKh4fJv
-	 3jF+C5xREUwpmCCns+dnJOpSZkr6laKuwLICUAUpyRMVSVUMKberEht2WP/rEeAWCp
-	 UsLSjYKPFCTKQ==
+	b=Lu8OROTxQAh45oFcKsuL5TlJ3+XeQMY8SWpD9e7QCH2hoOCcREpY3QhQhbcXIqnhq
+	 jYn1fYwMk6cvJ/dvU97HgqTit37xof/iqxGYCL5SFGRB6J3tboCD4VGNIlIL2WlsA5
+	 I1gBJAV0h0AnzaKw7p+xE97nXzB2z80+8b88Fp6me8stKz4uyEe8TOXvy897XT0Duj
+	 KN9+4OqZZ+DU4xLPNY8tzUIsHBOeKL/aXlHt0bKhNeb1+pD2K/kFB+qdOa5iDDYhbn
+	 LinJnQ29wNSS7Vwww8JaUlhH+AVWwfgdmkj0tZCYvCRosmSsmYAatnqVmu+KJN+0+Y
+	 UPwzj1ur583HA==
 From: Jonathan Cameron <jic23@kernel.org>
 To: linux-iio@vger.kernel.org
 Cc: David Lechner <dlechner@baylibre.com>,
@@ -57,9 +57,9 @@ Cc: David Lechner <dlechner@baylibre.com>,
 	Yasin Lee <yasin.lee.x@gmail.com>,
 	Andy Shevchenko <andy.shevchenko@gmail.com>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 36/37] staging: iio: ad5933: Switch to sparse friendly iio_device_claim/release_direct()
-Date: Mon, 31 Mar 2025 13:13:16 +0100
-Message-ID: <20250331121317.1694135-37-jic23@kernel.org>
+Subject: [PATCH 37/37] iio: Adjust internals of handling of direct mode claiming to suit new API.
+Date: Mon, 31 Mar 2025 13:13:17 +0100
+Message-ID: <20250331121317.1694135-38-jic23@kernel.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250331121317.1694135-1-jic23@kernel.org>
 References: <20250331121317.1694135-1-jic23@kernel.org>
@@ -73,106 +73,115 @@ Content-Transfer-Encoding: 8bit
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-These new functions allow sparse to find failures to release
-direct mode reducing chances of bugs over the claim_direct_mode()
-functions that are deprecated.
+Now there are no remaining callers of iio_device_claim_direct_mode()
+and iio_device_release_direct_mode() rename those functions to ensure
+they are no used in new drivers. Also make them now return booleans
+in line with the sparse friendly static inline wrappers.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- .../staging/iio/impedance-analyzer/ad5933.c   | 38 ++++++++++---------
- 1 file changed, 21 insertions(+), 17 deletions(-)
+ drivers/iio/industrialio-core.c | 28 ++++++++++++++++------------
+ include/linux/iio/iio.h         | 10 ++++------
+ 2 files changed, 20 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/staging/iio/impedance-analyzer/ad5933.c b/drivers/staging/iio/impedance-analyzer/ad5933.c
-index d5544fc2fe98..5aaa43e94c52 100644
---- a/drivers/staging/iio/impedance-analyzer/ad5933.c
-+++ b/drivers/staging/iio/impedance-analyzer/ad5933.c
-@@ -271,11 +271,12 @@ static ssize_t ad5933_show_frequency(struct device *dev,
- 		u8 d8[4];
- 	} dat;
+diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
+index c9955a1c1090..c1921b55cfc5 100644
+--- a/drivers/iio/industrialio-core.c
++++ b/drivers/iio/industrialio-core.c
+@@ -2157,17 +2157,19 @@ int __devm_iio_device_register(struct device *dev, struct iio_dev *indio_dev,
+ EXPORT_SYMBOL_GPL(__devm_iio_device_register);
  
--	ret = iio_device_claim_direct_mode(indio_dev);
--	if (ret)
--		return ret;
-+	if (!iio_device_claim_direct(indio_dev))
-+		return -EBUSY;
-+
- 	ret = ad5933_i2c_read(st->client, this_attr->address, 3, &dat.d8[1]);
--	iio_device_release_direct_mode(indio_dev);
-+
-+	iio_device_release_direct(indio_dev);
- 	if (ret < 0)
- 		return ret;
+ /**
+- * iio_device_claim_direct_mode - Keep device in direct mode
++ * __iio_device_claim_direct - Keep device in direct mode
+  * @indio_dev:	the iio_dev associated with the device
+  *
+  * If the device is in direct mode it is guaranteed to stay
+- * that way until iio_device_release_direct_mode() is called.
++ * that way until __iio_device_release_direct() is called.
+  *
+- * Use with iio_device_release_direct_mode()
++ * Use with __iio_device_release_direct().
+  *
+- * Returns: 0 on success, -EBUSY on failure.
++ * Drivers should only call iio_device_claim_direct()
++ *
++ * Returns: true on success, false on failure.
+  */
+-int iio_device_claim_direct_mode(struct iio_dev *indio_dev)
++bool __iio_device_claim_direct(struct iio_dev *indio_dev)
+ {
+ 	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(indio_dev);
  
-@@ -305,11 +306,12 @@ static ssize_t ad5933_store_frequency(struct device *dev,
- 	if (val > AD5933_MAX_OUTPUT_FREQ_Hz)
- 		return -EINVAL;
+@@ -2175,26 +2177,28 @@ int iio_device_claim_direct_mode(struct iio_dev *indio_dev)
  
--	ret = iio_device_claim_direct_mode(indio_dev);
--	if (ret)
--		return ret;
-+	if (!iio_device_claim_direct(indio_dev))
-+		return -EBUSY;
-+
- 	ret = ad5933_set_freq(st, this_attr->address, val);
--	iio_device_release_direct_mode(indio_dev);
-+
-+	iio_device_release_direct(indio_dev);
- 
- 	return ret ? ret : len;
- }
-@@ -384,9 +386,9 @@ static ssize_t ad5933_store(struct device *dev,
- 			return ret;
+ 	if (iio_buffer_enabled(indio_dev)) {
+ 		mutex_unlock(&iio_dev_opaque->mlock);
+-		return -EBUSY;
++		return false;
  	}
- 
--	ret = iio_device_claim_direct_mode(indio_dev);
--	if (ret)
--		return ret;
-+	if (!iio_device_claim_direct(indio_dev))
-+		return -EBUSY;
-+
- 	mutex_lock(&st->lock);
- 	switch ((u32)this_attr->address) {
- 	case AD5933_OUT_RANGE:
-@@ -438,7 +440,8 @@ static ssize_t ad5933_store(struct device *dev,
- 	}
- 
- 	mutex_unlock(&st->lock);
--	iio_device_release_direct_mode(indio_dev);
-+
-+	iio_device_release_direct(indio_dev);
- 	return ret ? ret : len;
+-	return 0;
++	return true;
  }
+-EXPORT_SYMBOL_GPL(iio_device_claim_direct_mode);
++EXPORT_SYMBOL_GPL(__iio_device_claim_direct);
  
-@@ -506,9 +509,9 @@ static int ad5933_read_raw(struct iio_dev *indio_dev,
+ /**
+- * iio_device_release_direct_mode - releases claim on direct mode
++ * __iio_device_release_direct - releases claim on direct mode
+  * @indio_dev:	the iio_dev associated with the device
+  *
+  * Release the claim. Device is no longer guaranteed to stay
+  * in direct mode.
+  *
+- * Use with iio_device_claim_direct_mode()
++ * Drivers should only call iio_device_release_direct()
++ *
++ * Use with __iio_device_claim_direct()
+  */
+-void iio_device_release_direct_mode(struct iio_dev *indio_dev)
++void __iio_device_release_direct(struct iio_dev *indio_dev)
+ {
+ 	mutex_unlock(&to_iio_dev_opaque(indio_dev)->mlock);
+ }
+-EXPORT_SYMBOL_GPL(iio_device_release_direct_mode);
++EXPORT_SYMBOL_GPL(__iio_device_release_direct);
  
- 	switch (m) {
- 	case IIO_CHAN_INFO_RAW:
--		ret = iio_device_claim_direct_mode(indio_dev);
--		if (ret)
--			return ret;
-+		if (!iio_device_claim_direct(indio_dev))
-+			return -EBUSY;
-+
- 		ret = ad5933_cmd(st, AD5933_CTRL_MEASURE_TEMP);
- 		if (ret < 0)
- 			goto out;
-@@ -521,7 +524,8 @@ static int ad5933_read_raw(struct iio_dev *indio_dev,
- 				      2, (u8 *)&dat);
- 		if (ret < 0)
- 			goto out;
--		iio_device_release_direct_mode(indio_dev);
-+
-+		iio_device_release_direct(indio_dev);
- 		*val = sign_extend32(be16_to_cpu(dat), 13);
+ /**
+  * iio_device_claim_buffer_mode - Keep device in buffer mode
+diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
+index 07a0e8132e88..638cf2420fbd 100644
+--- a/include/linux/iio/iio.h
++++ b/include/linux/iio/iio.h
+@@ -659,8 +659,8 @@ void iio_device_unregister(struct iio_dev *indio_dev);
+ int __devm_iio_device_register(struct device *dev, struct iio_dev *indio_dev,
+ 			       struct module *this_mod);
+ int iio_push_event(struct iio_dev *indio_dev, u64 ev_code, s64 timestamp);
+-int iio_device_claim_direct_mode(struct iio_dev *indio_dev);
+-void iio_device_release_direct_mode(struct iio_dev *indio_dev);
++bool __iio_device_claim_direct(struct iio_dev *indio_dev);
++void __iio_device_release_direct(struct iio_dev *indio_dev);
  
- 		return IIO_VAL_INT;
-@@ -533,7 +537,7 @@ static int ad5933_read_raw(struct iio_dev *indio_dev,
+ /*
+  * Helper functions that allow claim and release of direct mode
+@@ -671,9 +671,7 @@ void iio_device_release_direct_mode(struct iio_dev *indio_dev);
+  */
+ static inline bool iio_device_claim_direct(struct iio_dev *indio_dev)
+ {
+-	int ret = iio_device_claim_direct_mode(indio_dev);
+-
+-	if (ret)
++	if (!__iio_device_claim_direct(indio_dev))
+ 		return false;
  
- 	return -EINVAL;
- out:
+ 	__acquire(iio_dev);
+@@ -683,7 +681,7 @@ static inline bool iio_device_claim_direct(struct iio_dev *indio_dev)
+ 
+ static inline void iio_device_release_direct(struct iio_dev *indio_dev)
+ {
 -	iio_device_release_direct_mode(indio_dev);
-+	iio_device_release_direct(indio_dev);
- 	return ret;
++	__iio_device_release_direct(indio_dev);
+ 	__release(indio_dev);
  }
  
 -- 

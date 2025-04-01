@@ -1,50 +1,50 @@
-Return-Path: <linux-iio+bounces-17499-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17500-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3099A77478
-	for <lists+linux-iio@lfdr.de>; Tue,  1 Apr 2025 08:28:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45BBAA7747C
+	for <lists+linux-iio@lfdr.de>; Tue,  1 Apr 2025 08:29:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 216563A9143
-	for <lists+linux-iio@lfdr.de>; Tue,  1 Apr 2025 06:28:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 94F5518874E9
+	for <lists+linux-iio@lfdr.de>; Tue,  1 Apr 2025 06:30:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79B471E1041;
-	Tue,  1 Apr 2025 06:28:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F0961E1C29;
+	Tue,  1 Apr 2025 06:29:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BkMyRPMq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aHFvZeVO"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37E2416C684
-	for <linux-iio@vger.kernel.org>; Tue,  1 Apr 2025 06:28:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D369F1DFE00
+	for <linux-iio@vger.kernel.org>; Tue,  1 Apr 2025 06:29:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743488917; cv=none; b=fBm1QBwETm6VRbqstybsOELXWe6+tgp9aoqWw/mmHWpRaCPFcqAA1qlx3BGEavExy5DoZqKwv5LzW4g/KkvGFeDIAyyq2PxX9KxyrMTblYAAa5Pw2vaSG2DgZHvjn1laPfxZjloXc2mzMFTbtKVEP49H8ioqF4iIKyRU39wbAI0=
+	t=1743488988; cv=none; b=ti0/a6duO4rg6IZVfC4RAOZEwXL4a3xM3VZ4M8Z6kku10+LOV8s55/cJ+1NZrsuVaTEum1lC8k1FOkKIjxm8XLsrseG52eyF3FYS9QixKf195Gs7TrM4zN3ekP6oOXMfCSk6xDU3YI3rhrsacvOQ1s36lJCF4St93K2BJMcRvhI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743488917; c=relaxed/simple;
-	bh=C+xzmlC2J2eEFiaRTw+dZublEKqmWJNqa3+ZHXL0U0E=;
+	s=arc-20240116; t=1743488988; c=relaxed/simple;
+	bh=NYSLOa3ahgk8l2PEqlDhlUslrk8PpM0I96D5HWG1Ops=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=u2kVo3kEonvGI6NTZHDqw5nXmavKFFpzQfvWOAlsIQtVxll4IXQauQ0H4B6ZxoMugRL/Go8uID7cqrEIuduGNUX//jmMdfhalLp8dI6oGZkOzadvxGU7KKXdOcBfcaMSCw1lsLsLqzb+5r7WVhgWpm0zc00F7efpJwnNa2T4I2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BkMyRPMq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45BDDC4CEE8;
-	Tue,  1 Apr 2025 06:28:36 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=rqtd+hK1gLni2vFzW9r/6+qcfctTIDSpw9vFXmi+k4jVl/xeLSCjhlF5rjw5EZ211k96HJJyS6X0Nq8WSSH6I/KcIy2rZT92ZHRvjssd8DvVmXG9vuCNqVwZWylpWdE7qu8utHDC1etubAfm98QariLjQSd/yxPRm66zSqEsfiI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aHFvZeVO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54459C4CEE8;
+	Tue,  1 Apr 2025 06:29:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743488916;
-	bh=C+xzmlC2J2eEFiaRTw+dZublEKqmWJNqa3+ZHXL0U0E=;
+	s=k20201202; t=1743488988;
+	bh=NYSLOa3ahgk8l2PEqlDhlUslrk8PpM0I96D5HWG1Ops=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BkMyRPMqJXfkJDEAzzrHZ4lzPzq822OliGSqP4dtSi4QJcZ4rekXJ+Son2kM7QHwu
-	 40WUTazeJ5uwEFziu3owRi5c8EbBF2z8keW8DTOwnaGCLaWKMTPor5J2pDkpvl9dwG
-	 uGhg8Nv+Z2t3tSxeY1uFCfQikpdVO/J51Yxsr5NL72jkz6Juis4yNA0mZUrbypmYpY
-	 7zKeY3cKXQPwArK542iXEkCPBCJxT0v7j14y16ztM8uFV3Lz7goGtv3mja+2mttudq
-	 X8C+b3JZmom9dYu5O72srPyh3BVL5kuh1eIAHfpbJjflMqZah1W5yPyjNTaiy7E18A
-	 JAqwJqVc9f1oQ==
-Date: Tue, 1 Apr 2025 08:28:34 +0200
+	b=aHFvZeVO/wt2zcHEo4Zh23iHtSv4766tthzEIJojZugy9CtqlsQxAbptJZf0dM4YA
+	 3q/JvkSuwY/fZn1bdnFcoko9XIsz4kbL+SqfnHDYvp1ICRBAbHa0D003GyAo4MN+hY
+	 0c5OzSoyXGwf397ZUex3X2T2hxVgvy6Q62HGVKKzyouXaBk0sJQU8m54+PBNVooCCh
+	 WEMY42x2gNghOPqhAd7QUaXf7K2px98viLa+lQIFYx219NGfI6S+65GvkIgEb3hgnd
+	 ozkzPb+3q9cRLSkW586cqzKDB9WX4Y+nWuOT5Fcezz6kjH1jTMNJJstSJpVmnzLZVJ
+	 CQRZ7LfaXH5Pw==
+Date: Tue, 1 Apr 2025 08:29:46 +0200
 From: Lorenzo Bianconi <lorenzo@kernel.org>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: linux-iio@vger.kernel.org, David Lechner <dlechner@baylibre.com>,
 	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
 	Cosmin Tanislav <demonsingur@gmail.com>,
 	Roan van Dijk <roan@protonic.nl>,
@@ -57,12 +57,11 @@ Cc: Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
 	Yasin Lee <yasin.lee.x@gmail.com>,
 	Andy Shevchenko <andy.shevchenko@gmail.com>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH 18/37] iio: imu: st_lsm6dsx: Factor out parts of
- st_lsm6dsx_shub_write_raw() to allow direct returns
-Message-ID: <Z-uHkmGOXu1venxl@lore-desk>
+Subject: Re: [PATCH 20/37] iio: imu: st_lsm6dsx: Switch to sparse friendly
+ iio_device_claim/release_direct()
+Message-ID: <Z-uH2jYGKXt6w8V3@lore-desk>
 References: <20250331121317.1694135-1-jic23@kernel.org>
- <20250331121317.1694135-19-jic23@kernel.org>
- <4ad0f22c-fdb9-47cb-b5a1-2802f47124d4@baylibre.com>
+ <20250331121317.1694135-21-jic23@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -70,81 +69,83 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="FW151l2sZ93UvbGT"
+	protocol="application/pgp-signature"; boundary="cvW8XjschqHDj1KA"
 Content-Disposition: inline
-In-Reply-To: <4ad0f22c-fdb9-47cb-b5a1-2802f47124d4@baylibre.com>
+In-Reply-To: <20250331121317.1694135-21-jic23@kernel.org>
 
 
---FW151l2sZ93UvbGT
+--cvW8XjschqHDj1KA
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-> On 3/31/25 7:12 AM, Jonathan Cameron wrote:
-> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> >=20
-> > By factoring out all the code that occurs with direct mode claimed
-> > to a helper function, that helper function can directly return simplify=
-ing
-> > code flow.
-> >=20
-> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > Cc: Lorenzo Bianconi <lorenzo@kernel.org>
-> > ---
-> >  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c | 65 +++++++++++---------
-> >  1 file changed, 35 insertions(+), 30 deletions(-)
-> >=20
-> > diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c b/drivers/iio=
-/imu/st_lsm6dsx/st_lsm6dsx_shub.c
-> > index c1b444520d2a..17a74f5adfc0 100644
-> > --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
-> > +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
-> > @@ -614,53 +614,58 @@ st_lsm6dsx_shub_set_full_scale(struct st_lsm6dsx_=
-sensor *sensor,
-> >  }
-> > =20
-> >  static int
-> > -st_lsm6dsx_shub_write_raw(struct iio_dev *iio_dev,
-> > -			  struct iio_chan_spec const *chan,
-> > -			  int val, int val2, long mask)
-> > +__st_lsm6dsx_shub_write_raw(struct iio_dev *iio_dev,
-> > +			    struct iio_chan_spec const *chan,
-> > +			    int val, int val2, long mask)
-> >  {
-> >  	struct st_lsm6dsx_sensor *sensor =3D iio_priv(iio_dev);
-> >  	int err;
-> > =20
-> > -	err =3D iio_device_claim_direct_mode(iio_dev);
-> > -	if (err)
-> > -		return err;
-> > -
-> >  	switch (mask) {
-> >  	case IIO_CHAN_INFO_SAMP_FREQ: {
-> > +		struct st_lsm6dsx_hw *hw =3D sensor->hw;
-> > +		struct st_lsm6dsx_sensor *ref_sensor;
-> > +		u8 odr_val;
-> >  		u16 data;
-> > +		int odr;
-> > =20
-> I would be tempted to rename `err` to `ret` so we don't have to introduce
-> a new `odr` variable.
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>=20
+> These new functions allow sparse to find failures to release
+> direct mode reducing chances of bugs over the claim_direct_mode()
+> functions that are deprecated.
+>=20
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Cc: Lorenzo Bianconi <lorenzo@kernel.org>
 
-I guess keeping odr variable makes the code more readable.
+Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
 
-Regards,
-Lorenzo
+> ---
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c | 14 ++++++--------
+>  1 file changed, 6 insertions(+), 8 deletions(-)
+>=20
+> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c b/drivers/iio/i=
+mu/st_lsm6dsx/st_lsm6dsx_shub.c
+> index 17a74f5adfc0..3c5e65dc0f97 100644
+> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
+> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
+> @@ -558,12 +558,11 @@ st_lsm6dsx_shub_read_raw(struct iio_dev *iio_dev,
+> =20
+>  	switch (mask) {
+>  	case IIO_CHAN_INFO_RAW:
+> -		ret =3D iio_device_claim_direct_mode(iio_dev);
+> -		if (ret)
+> -			break;
+> +		if (!iio_device_claim_direct(iio_dev))
+> +			return -EBUSY;
+> =20
+>  		ret =3D st_lsm6dsx_shub_read_oneshot(sensor, ch, val);
+> -		iio_device_release_direct_mode(iio_dev);
+> +		iio_device_release_direct(iio_dev);
+>  		break;
+>  	case IIO_CHAN_INFO_SAMP_FREQ:
+>  		*val =3D sensor->ext_info.slv_odr / 1000;
+> @@ -657,13 +656,12 @@ st_lsm6dsx_shub_write_raw(struct iio_dev *iio_dev,
+>  {
+>  	int ret;
+> =20
+> -	ret =3D iio_device_claim_direct_mode(iio_dev);
+> -	if (ret)
+> -		return ret;
+> +	if (!iio_device_claim_direct(iio_dev))
+> +		return -EBUSY;
+> =20
+>  	ret =3D __st_lsm6dsx_shub_write_raw(iio_dev, chan, val, val2, mask);
+> =20
+> -	iio_device_release_direct_mode(iio_dev);
+> +	iio_device_release_direct(iio_dev);
+> =20
+>  	return ret;
+>  }
+> --=20
+> 2.48.1
+>=20
 
-
---FW151l2sZ93UvbGT
+--cvW8XjschqHDj1KA
 Content-Type: application/pgp-signature; name=signature.asc
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCZ+uHkgAKCRA6cBh0uS2t
-rH6nAQC/5jf/kEzhRNKTZkZo3VOdpPDNzhypogKD7FO0WjVRpAEAjRm3/OBt7Qko
-7X2nHt3mPlAsntDO1HqsllQ4EunEoQU=
-=4nQZ
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCZ+uH2gAKCRA6cBh0uS2t
+rGKEAP9O/C/S1POIfGPWyURiZBf2iJUAd5lhrKBkGlTy4mRsIAEA6ZfenTn66ubv
+jT8+fOEQmmfLaKfNsdnT7cctVnihqQo=
+=ltiR
 -----END PGP SIGNATURE-----
 
---FW151l2sZ93UvbGT--
+--cvW8XjschqHDj1KA--
 

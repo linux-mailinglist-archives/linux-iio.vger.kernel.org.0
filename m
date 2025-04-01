@@ -1,114 +1,109 @@
-Return-Path: <linux-iio+bounces-17519-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17520-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D6B2A782A3
-	for <lists+linux-iio@lfdr.de>; Tue,  1 Apr 2025 21:13:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC216A78498
+	for <lists+linux-iio@lfdr.de>; Wed,  2 Apr 2025 00:18:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC3E83A6E21
-	for <lists+linux-iio@lfdr.de>; Tue,  1 Apr 2025 19:13:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F31116E0CF
+	for <lists+linux-iio@lfdr.de>; Tue,  1 Apr 2025 22:18:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3A5220FABA;
-	Tue,  1 Apr 2025 19:13:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78E40203714;
+	Tue,  1 Apr 2025 22:16:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="v7M+ScL0"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lc3F5AXN"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ot1-f44.google.com (mail-ot1-f44.google.com [209.85.210.44])
+Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com [209.85.219.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E2A71A7253
-	for <linux-iio@vger.kernel.org>; Tue,  1 Apr 2025 19:13:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AACA422154A;
+	Tue,  1 Apr 2025 22:16:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743534810; cv=none; b=Ri1wUMfbHjERnMoeKBYmX94dXGn8YDsc1inXA0Bqt1p8Nnbp+KEtX3XXypccU7U6dhrCkF9dTtcV+QwfbbeZHpb4nZHprrO9xsinc7A8/rwkJlokyOC+yC1uDNCYFsmMW3PqNz918H7WkmC9WB4K1WsOm/TPaSYu2j2s9rVAw58=
+	t=1743545790; cv=none; b=q52i3XA4H5OziNedysRKUQMxmLOTsu6xke0WSTYg4Okce6L/mTpq33cVIBC4r5kcC45IE4lHJlxabL1cozA4eW/FNj5UDeDTi1SLBwCl+q7IhXV5iRmT0yXI4t0q+15wkWfO8jIVOtEu2aqLVItVGpBq56NHONlBhUce7Vojfyc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743534810; c=relaxed/simple;
-	bh=RVAglS4/TFepcEDW3jXL56WH0OCsWttOjIUmxqO0RH4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Nm7OMxXKG7rp2apaka4wz98fczKXQScYGZcxQEa4TPSsIiKhM4RBpxIYbWiZdQOHOLYmo1BKi83xgbpWfzDiQ7xjCPDnG1YDUQ1610OSZgSQfGpS6KPVXop22Vsgxdra25Zd3CbA4CbI3R5PJhqFxg+cK23/pzFJRcCymkszwz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=v7M+ScL0; arc=none smtp.client-ip=209.85.210.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ot1-f44.google.com with SMTP id 46e09a7af769-72c7332128eso1217792a34.0
-        for <linux-iio@vger.kernel.org>; Tue, 01 Apr 2025 12:13:27 -0700 (PDT)
+	s=arc-20240116; t=1743545790; c=relaxed/simple;
+	bh=4ZZoMk7Bzxg7EPnIPY4kMYP5TXrvahs3Zqj6VZqMzGM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=pt5JBherCbAaGZqf2Zkx7j8pjjo4XKlcVN/fCYP8TgZGNUxNoW1Ak7x46uEp7Zmgp+k6ffiqsR/S5kKyYg3jZH+MFfYRhY/uOioKU7t8BdqD9Bz0NoMxuqR/GWSnqZIVa48kRH8WRv6a8jrzHsaT+gQHfxdBRoJRC+mJ3T1GMVE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lc3F5AXN; arc=none smtp.client-ip=209.85.219.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yb1-f177.google.com with SMTP id 3f1490d57ef6-e6dd991a0e6so1113206276.1;
+        Tue, 01 Apr 2025 15:16:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1743534807; x=1744139607; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=eC1QHAefHqt1UzvseRFaUCloi/7TI79j+QqQ697I/qw=;
-        b=v7M+ScL0df3TUBgepyEAk1D7k+AgqCnFx0GQqgQNl5WRk9loDmBzLL7Rc2y454a+0m
-         aV1eUUiZyCAgjARgFnsFqzAi1cepPn1FbE7j6klu3+/xWzhCrhUM79LHkQp4Hz0lLrhy
-         fEGCw68gUjM1vj0lqNk7Tib9si5J4XdV4MkpsBUjqEXxgWuJjjc+Re0OmnnSr0BbYhjr
-         P1Q6vh/hff1w9RJW3eSMggDoI1XZTWgaslCNuShfSr1DnSsAa7x/WBJcDT64WfasJ4c7
-         wdqaTu8ef/xikVpQdxVwa8Qzu5+ULu110X+u9kB0SMMsKl2VBF6p9Im+7ZNpzVwujUL7
-         DThg==
+        d=gmail.com; s=20230601; t=1743545787; x=1744150587; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=4ZZoMk7Bzxg7EPnIPY4kMYP5TXrvahs3Zqj6VZqMzGM=;
+        b=lc3F5AXNccPhfFVI5WVz16JVtagdxy8jwpZYO/z2ezaC0TquM/bnMTJycj8wjspJb3
+         JsDAlSatlmCOEQo8dQEUfCuvNbvPFhuWCeOBU55EuYQlVCgLO82FOVkrD0Xk44sYpL7M
+         k/aLD61+ZFhH7zwSlZlRr95LA0myPBzYQJjHs/Hk9wLv9YpBlvNstIvopYjSUdW16m1I
+         D3MUhRxK0PVvsD/y4LlXX7NSxNaljPOatHvuZhlEiwhSYVpozl2KyaVraHzcFvIA6NV4
+         +b2dxTaxte6VvsC6XCvDesC7Pq5BctwuiY4KYAK1p2w7A7WY4BFOiwGyNdRw1FfaNhgk
+         S2EA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743534807; x=1744139607;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=eC1QHAefHqt1UzvseRFaUCloi/7TI79j+QqQ697I/qw=;
-        b=sHYSUUcj0zwQ31i8AnvFczjoV5xgJJZRbeoEVVE7YZO9PocPM0WYG699KNmNnJY9l4
-         hvEwbTjRUuRPPSirItlCm0Y+VPlen06RB5RgItBIZm8k7Y7F51VpBbS6vMzOS/zKfZ2V
-         MDk9Wc/sdHznTt746W5AIGhcoQCM4nTzaz4vZOrpnYkwlrIBmJLZUJrwUmHeoggAVLZZ
-         gH7moAb7zFTr/zAX6yq3ZR5C/yyvYgTxRl15wmsbWgM7NqXNm4coFJUyhAQCGx9fz95J
-         xy3GYu9JNpkyCpXX/Ki/zQHv0nRsoq5JrCQiyetSv2xpDi4uYBVwjMsliB/5bELFkwTE
-         PZEA==
-X-Forwarded-Encrypted: i=1; AJvYcCVowUZ9UmpMUE/17bWyhUqSHWNMC//llsfsHUt8b+Z63w6EFzFssNZ9s+WmYgOwC01tu+i8h9e13ek=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxXETDfS3PVN1yGl4QaPNbBybqSrfF8CwVp5yoI8U3P7n4uP/mi
-	zntb/VI3tixUYVF+CPLa1b19fqx62hVmIUJ+FGm5xJKjVWmIXjX1NWN7Hxikigw=
-X-Gm-Gg: ASbGncsLrPVMDwzLXcwdIpEh+s8ScQh90pNbe9TBa+imox18fiyAorlt27V2kJPOvVW
-	3mDmi+QNIOeGoavIPM/VX8/ZsLJKWd+VDIdwCJdOhhPV+kItbXHxGPdYfU10x5OqePoZofQNaT8
-	qtiLqjyKylp3MtZ+hDjWJS1JakV7kqjPNWw7QRaMW0FzRHKlDBR3gs3mcIC+Gjd8IXIFFXiQtNe
-	ahfG35GqWPCV9KhBLxkaSD71TJXnA++TW+29DRXq9mfVlQRUqtYF5bwotNpuHAGDbY/+HeJOvzD
-	zQBFPqEQ6qRy2rP0MDV3hnix9iBxxa4KnWq2WixXvtCWBq0t58p3oeBhRyHcwZfJERBQNCelIdO
-	N335efX4+kDrFTjf6
-X-Google-Smtp-Source: AGHT+IH0Vr2S6OqTtV4GI13XvHaoKkhJCn1kOZsgh+uD2AOSlGA3Sv/UFZWiKdKcpqkqgZ/njYfx8w==
-X-Received: by 2002:a05:6830:2808:b0:72a:f44b:13ed with SMTP id 46e09a7af769-72c637771c3mr8141852a34.2.1743534807275;
-        Tue, 01 Apr 2025 12:13:27 -0700 (PDT)
-Received: from [192.168.0.113] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-72c5826741bsm1975222a34.45.2025.04.01.12.13.25
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 01 Apr 2025 12:13:26 -0700 (PDT)
-Message-ID: <795a7c97-4d11-4277-91ba-77a5641759de@baylibre.com>
-Date: Tue, 1 Apr 2025 14:13:24 -0500
+        d=1e100.net; s=20230601; t=1743545787; x=1744150587;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=4ZZoMk7Bzxg7EPnIPY4kMYP5TXrvahs3Zqj6VZqMzGM=;
+        b=efTH64R6+DCuGTlG9r6KHXGFMOVDiqiNvufJZ1Lyusr9h7LnEnbpJ6PS3GtTwQ1wSf
+         LrslimZ7kM7NyRFTX0DYmvJV7JXrz5a5xMr3Fjm3zD/cpTx4JU5HG1YMu7xvF8yinBfN
+         SbTLEwopI0VvFuTSwOoFTkeHjc04fZXgy7elbwbP5mZ2sT811jHPEzX4K32zomz+2dEl
+         6zHLe43f4B/wu3GlY/0B2V/D8RxuKm/OrP098aLquYpHYEPOrZTMD2QXUT+GOOFxBzxc
+         atfzxrvaDOx4yzZHVKhJ8UQKSCJxfijXsRfEA568ec/KrYdfXRQp0Lzkh2M3iWZVYPqa
+         S2Vw==
+X-Forwarded-Encrypted: i=1; AJvYcCXu2nJSnw6UVdLKybZ/USWijxsZA6uw7XWsRptArgUbwepLdMZPajpyMVfC/okxLcsF6zqAlUnc3JA+g7U=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyDv9wsFP5jswaOFqNCwtB/dcSsN8q0TvuBP7YWADM4ou8+38Sc
+	pTRl20W3T7kUcPIgZBtKG8sBiTFqD2Rw2KVo0JF/9Keu3Nv/Z2J0yE7iJK+YDwOSuA5vHlaIwcZ
+	IvDf+cz54fq+BXypU4bqnt1Ocw2c=
+X-Gm-Gg: ASbGncthxThGQAubeDmXDarGtX2/h0FlUR39L1dKFLojAxpW2TLlRm/kjvSorrStEbI
+	SDV7oyuOlGRHW/9Y9uhg5Mr/+gpQihuiWS9xSoxt6FQ7+y6xMsbRXjnF1TihgXxCUAm+8SXQxET
+	0eoX2w2IuiW+lvBF2y8dTFAYIHgcs=
+X-Google-Smtp-Source: AGHT+IFyrBa8Q+V3emMv0/lFeitl4RCHClPtJE1kMBHwIgnDpEGVlYmEqnl5qU4nw4mkToEp+7y4aeRAOhEpWv50Gqs=
+X-Received: by 2002:a05:6902:2747:b0:e6d:f287:bf3 with SMTP id
+ 3f1490d57ef6-e6df2870d3cmr1158460276.28.1743545787458; Tue, 01 Apr 2025
+ 15:16:27 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/37] IIO: Sparse friendly claim of direct mode (the
- rest)
-To: Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org
-Cc: =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
- Cosmin Tanislav <demonsingur@gmail.com>, Roan van Dijk <roan@protonic.nl>,
- Jyoti Bhayana <jbhayana@google.com>,
- Nishant Malpani <nish.malpani25@gmail.com>,
- Eugene Zaikonnikov <ez@norphonic.com>,
- Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
- Shen Jianping <Jianping.Shen@de.bosch.com>,
- Lorenzo Bianconi <lorenzo@kernel.org>,
- Matti Vaittinen <mazziesaccount@gmail.com>, Yasin Lee
- <yasin.lee.x@gmail.com>, Andy Shevchenko <andy.shevchenko@gmail.com>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>
-References: <20250331121317.1694135-1-jic23@kernel.org>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <20250331121317.1694135-1-jic23@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20250330135402.105418-1-simeddon@gmail.com> <Z-lm8l1ILFuJE5YS@debian-BULLSEYE-live-builder-AMD64>
+In-Reply-To: <Z-lm8l1ILFuJE5YS@debian-BULLSEYE-live-builder-AMD64>
+From: Siddharth Menon <simeddon@gmail.com>
+Date: Wed, 2 Apr 2025 03:45:51 +0530
+X-Gm-Features: AQ5f1JqRj0rIFNX3PN0empxqba0H3yBaX-Fa98HS939Csdmd4a9CT6Ad5e9h1pQ
+Message-ID: <CAGd6pzPe71oY=+cy3WqKPyZ150q3pOM3LrPE0_ENeKgd+OvnfQ@mail.gmail.com>
+Subject: Re: [PATCH v5] iio: frequency: ad9832: Use FIELD_PREP macro to set
+ bit fields
+To: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-staging@lists.linux.dev, gregkh@linuxfoundation.org, jic23@kernel.org, 
+	Michael.Hennerich@analog.com, lars@metafoo.de
+Content-Type: text/plain; charset="UTF-8"
 
-On 3/31/25 7:12 AM, Jonathan Cameron wrote:
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> 
-> Firstly, sorry for the huge patch set!
-> 
+On Sun, 30 Mar 2025 at 21:13, Marcelo Schmitt
+<marcelo.schmitt1@gmail.com> wrote:
+> The previous implementation would set ctrl_fp if val == 1 and unset it if val == 0.
+> This patch seems to be doing the reverse (setting ctrl_fp if val == 0, and
+> unsetting it if val != 0). Was the previous implementation potentially buggy?
 
+My apologies, I seem to have made a mistake here.
 
-Reviewed-by: David Lechner <dlechner@baylibre.com>
+> Hmm, this is modifying behavior. AD9832_SLEEP and AD9832_CLR were only being
+> modified if something other than 0 was written to output enable sysfs file.
+> Is the patch code mode appropriate than how the driver was before?
+
+I shall address the aforementioned issues along with the ones pointed out by
+Jonathan in my next patch.
+
+Thank you for taking the time to review my patches.
+
+Regards,
+Siddharth Menon
 

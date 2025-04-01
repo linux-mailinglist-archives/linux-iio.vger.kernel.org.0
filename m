@@ -1,173 +1,208 @@
-Return-Path: <linux-iio+bounces-17497-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17498-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98D7FA773A4
-	for <lists+linux-iio@lfdr.de>; Tue,  1 Apr 2025 06:50:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F646A77476
+	for <lists+linux-iio@lfdr.de>; Tue,  1 Apr 2025 08:27:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD19C18877A9
-	for <lists+linux-iio@lfdr.de>; Tue,  1 Apr 2025 04:50:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A99CB3A90F6
+	for <lists+linux-iio@lfdr.de>; Tue,  1 Apr 2025 06:27:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 134E618FDBD;
-	Tue,  1 Apr 2025 04:50:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD90F1E1021;
+	Tue,  1 Apr 2025 06:27:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ATcAp+8V"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25F272114
-	for <linux-iio@vger.kernel.org>; Tue,  1 Apr 2025 04:50:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A69216C684
+	for <linux-iio@vger.kernel.org>; Tue,  1 Apr 2025 06:27:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743483041; cv=none; b=GvzKMK3TEXaYVY41DGekE54VNzjzAUVGfebE6WMskpet+OeC8vXG2zRvQIoaULGjvyYBbbVAu84kLwADxqznX6vt0q7XdZ3CHRjgcrgN4jdXtQ5S/JIoeLAI5QDrd1QmeoKejb/AJES3yQ4ymUVuJcxbh0r9pIw704Zx5nbxZbQ=
+	t=1743488860; cv=none; b=h92xj7ATY9m1k3hd2hMivvNgXCC94whcbFR/y2wC/kSjfrgEbFYIsKL4U6Ly++frKgKvwqG4mGI/ejaOP+XkwlDbq1LM+M8u412Bqx90WrzRrTAK53RXcKIPyFbVzqherOkujcWRzGboKjlNH4vWVV7DrQ2fRK3e/m9Z+BeXwhs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743483041; c=relaxed/simple;
-	bh=YMqeGFEfZuafwnrB5kJbEH3IDII0/ZT08GZH7KupvlE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VQjwj7BappWR/dOBIsar79mTHnavtwfLD2NXktV6d2bGnUNn6KrPe/Lxb5byAasAB5C9A98EeoNMt1qwbZNEDyEvLiJ+bXMaxXhbT4++YjhyNETEJEubiaXco1kkHRyUN//lVd6ZHN77vODK0CCz9Yon2tZLNr7fnonHgwWyB2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tzTa7-0006yV-IQ; Tue, 01 Apr 2025 06:50:35 +0200
-Message-ID: <059003d1-d725-4439-a6d7-cb354fba161b@pengutronix.de>
-Date: Tue, 1 Apr 2025 06:50:33 +0200
+	s=arc-20240116; t=1743488860; c=relaxed/simple;
+	bh=1b/VfZ3BzGsq4okw8Ym39UODVHHMfVev7nPp0lItVO8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ovUxvyo6COU32OlBEvr18hoPw+4Z2ZtegRiy8mCPmSP+G7Z72z4ZNgL/8Gj9eQ9+agjcuN09/vrI0OS2RlzIR4UMtoqets9UXLaYtx4XlJpG2EcJYRAwFKy7rPfrlbUgOLfKUHcKEgoUSAzDv/Pv0H6H2uCmNu3FKIlldlkEBps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ATcAp+8V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94B3BC4CEE9;
+	Tue,  1 Apr 2025 06:27:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1743488859;
+	bh=1b/VfZ3BzGsq4okw8Ym39UODVHHMfVev7nPp0lItVO8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ATcAp+8VPbCr1N6OmJ1bfPu0OwWqCOjxf2wbsmVK4Dcy+w/foaCF3QnAboftBaWfI
+	 odKM5fJj15b8bwmgEYIKn94LQrOwl8UBH86DI8EPaLyYj9BD6Vn3RxWqh/JYesmgr4
+	 sI4qP+hroAOHpTmQQrme2Y1IGHcExnsea6ssKSAoGQfJyixf4fo2JWpb5vKm97Pwy3
+	 HXh/yPP5VOFMEVRAA3OPX0C1+5OLCGKw0GYhanCzUkap5azyRAgSntCoPkSzpfzVe+
+	 FmGpt5E5UAdUKBqwL6lr5Tz8Mz7zHl9CJyEOxnvVplplzALhQVxGFldwIFWdnE5nF2
+	 lYa141Rua4X/Q==
+Date: Tue, 1 Apr 2025 08:27:37 +0200
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: linux-iio@vger.kernel.org, David Lechner <dlechner@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Cosmin Tanislav <demonsingur@gmail.com>,
+	Roan van Dijk <roan@protonic.nl>,
+	Jyoti Bhayana <jbhayana@google.com>,
+	Nishant Malpani <nish.malpani25@gmail.com>,
+	Eugene Zaikonnikov <ez@norphonic.com>,
+	Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
+	Shen Jianping <Jianping.Shen@de.bosch.com>,
+	Matti Vaittinen <mazziesaccount@gmail.com>,
+	Yasin Lee <yasin.lee.x@gmail.com>,
+	Andy Shevchenko <andy.shevchenko@gmail.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH 18/37] iio: imu: st_lsm6dsx: Factor out parts of
+ st_lsm6dsx_shub_write_raw() to allow direct returns
+Message-ID: <Z-uHWYQ8tLU63B1T@lore-desk>
+References: <20250331121317.1694135-1-jic23@kernel.org>
+ <20250331121317.1694135-19-jic23@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] counter: interrupt-cnt: Protect enable/disable OPs with
- mutex
-To: "A. Sverdlin" <alexander.sverdlin@siemens.com>, linux-iio@vger.kernel.org
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>, linux-kernel@vger.kernel.org,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- William Breathitt Gray <wbg@kernel.org>
-References: <20250331163642.2382651-1-alexander.sverdlin@siemens.com>
-Content-Language: en-US
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20250331163642.2382651-1-alexander.sverdlin@siemens.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
-X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-iio@vger.kernel.org
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="cCyhYw81pHGT7F27"
+Content-Disposition: inline
+In-Reply-To: <20250331121317.1694135-19-jic23@kernel.org>
 
-Hello Alexander,
 
-On 31.03.25 18:36, A. Sverdlin wrote:
-> From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
-> 
-> Enable/disable seems to be racy on SMP, consider the following scenario:
-> 
-> CPU0					CPU1
-> 
-> interrupt_cnt_enable_write(true)
-> {
-> 	if (priv->enabled == enable)
-> 		return 0;
-> 
-> 	if (enable) {
-> 		priv->enabled = true;
-> 					interrupt_cnt_enable_write(false)
-> 					{
-> 						if (priv->enabled == enable)
-> 							return 0;
-> 
-> 						if (enable) {
-> 							priv->enabled = true;
-> 							enable_irq(priv->irq);
-> 						} else {
-> 							disable_irq(priv->irq)
-> 							priv->enabled = false;
-> 						}
-> 		enable_irq(priv->irq);
-> 	} else {
-> 		disable_irq(priv->irq);
-> 		priv->enabled = false;
-> 	}
-> 
-> The above would result in priv->enabled == false, but IRQ left enabled.
-> Protect both write (above race) and read (to propagate the value on SMP)
-> callbacks with a mutex.
+--cCyhYw81pHGT7F27
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Doesn't sysfs/kernfs already ensure that the ops may not be called concurrently
-on the same open file?
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>=20
+> By factoring out all the code that occurs with direct mode claimed
+> to a helper function, that helper function can directly return simplifying
+> code flow.
+>=20
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Cc: Lorenzo Bianconi <lorenzo@kernel.org>
 
-Thanks,
-Ahmad
+Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
 
-> 
-> Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
 > ---
->  drivers/counter/interrupt-cnt.c | 9 +++++++++
->  1 file changed, 9 insertions(+)
-> 
-> diff --git a/drivers/counter/interrupt-cnt.c b/drivers/counter/interrupt-cnt.c
-> index 949598d51575a..d83848d0fe2af 100644
-> --- a/drivers/counter/interrupt-cnt.c
-> +++ b/drivers/counter/interrupt-cnt.c
-> @@ -3,12 +3,14 @@
->   * Copyright (c) 2021 Pengutronix, Oleksij Rempel <kernel@pengutronix.de>
->   */
->  
-> +#include <linux/cleanup.h>
->  #include <linux/counter.h>
->  #include <linux/gpio/consumer.h>
->  #include <linux/interrupt.h>
->  #include <linux/irq.h>
->  #include <linux/mod_devicetable.h>
->  #include <linux/module.h>
-> +#include <linux/mutex.h>
->  #include <linux/platform_device.h>
->  #include <linux/types.h>
->  
-> @@ -19,6 +21,7 @@ struct interrupt_cnt_priv {
->  	struct gpio_desc *gpio;
->  	int irq;
->  	bool enabled;
-> +	struct mutex lock;
->  	struct counter_signal signals;
->  	struct counter_synapse synapses;
->  	struct counter_count cnts;
-> @@ -41,6 +44,8 @@ static int interrupt_cnt_enable_read(struct counter_device *counter,
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c | 65 +++++++++++---------
+>  1 file changed, 35 insertions(+), 30 deletions(-)
+>=20
+> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c b/drivers/iio/i=
+mu/st_lsm6dsx/st_lsm6dsx_shub.c
+> index c1b444520d2a..17a74f5adfc0 100644
+> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
+> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
+> @@ -614,53 +614,58 @@ st_lsm6dsx_shub_set_full_scale(struct st_lsm6dsx_se=
+nsor *sensor,
+>  }
+> =20
+>  static int
+> -st_lsm6dsx_shub_write_raw(struct iio_dev *iio_dev,
+> -			  struct iio_chan_spec const *chan,
+> -			  int val, int val2, long mask)
+> +__st_lsm6dsx_shub_write_raw(struct iio_dev *iio_dev,
+> +			    struct iio_chan_spec const *chan,
+> +			    int val, int val2, long mask)
 >  {
->  	struct interrupt_cnt_priv *priv = counter_priv(counter);
->  
-> +	guard(mutex)(&priv->lock);
+>  	struct st_lsm6dsx_sensor *sensor =3D iio_priv(iio_dev);
+>  	int err;
+> =20
+> -	err =3D iio_device_claim_direct_mode(iio_dev);
+> -	if (err)
+> -		return err;
+> -
+>  	switch (mask) {
+>  	case IIO_CHAN_INFO_SAMP_FREQ: {
+> +		struct st_lsm6dsx_hw *hw =3D sensor->hw;
+> +		struct st_lsm6dsx_sensor *ref_sensor;
+> +		u8 odr_val;
+>  		u16 data;
+> +		int odr;
+> =20
+>  		val =3D val * 1000 + val2 / 1000;
+>  		err =3D st_lsm6dsx_shub_get_odr_val(sensor, val, &data);
+> -		if (!err) {
+> -			struct st_lsm6dsx_hw *hw =3D sensor->hw;
+> -			struct st_lsm6dsx_sensor *ref_sensor;
+> -			u8 odr_val;
+> -			int odr;
+> -
+> -			ref_sensor =3D iio_priv(hw->iio_devs[ST_LSM6DSX_ID_ACC]);
+> -			odr =3D st_lsm6dsx_check_odr(ref_sensor, val, &odr_val);
+> -			if (odr < 0) {
+> -				err =3D odr;
+> -				goto release;
+> -			}
+> -
+> -			sensor->ext_info.slv_odr =3D val;
+> -			sensor->odr =3D odr;
+> -		}
+> -		break;
+> +		if (err)
+> +			return err;
 > +
->  	*enable = priv->enabled;
->  
->  	return 0;
-> @@ -51,6 +56,8 @@ static int interrupt_cnt_enable_write(struct counter_device *counter,
->  {
->  	struct interrupt_cnt_priv *priv = counter_priv(counter);
->  
-> +	guard(mutex)(&priv->lock);
+> +		ref_sensor =3D iio_priv(hw->iio_devs[ST_LSM6DSX_ID_ACC]);
+> +		odr =3D st_lsm6dsx_check_odr(ref_sensor, val, &odr_val);
+> +		if (odr < 0)
+> +			return odr;
 > +
->  	if (priv->enabled == enable)
->  		return 0;
->  
-> @@ -227,6 +234,8 @@ static int interrupt_cnt_probe(struct platform_device *pdev)
->  	if (ret)
->  		return ret;
->  
-> +	mutex_init(&priv->lock);
+> +		sensor->ext_info.slv_odr =3D val;
+> +		sensor->odr =3D odr;
+> +		return 0;
+>  	}
+>  	case IIO_CHAN_INFO_SCALE:
+> -		err =3D st_lsm6dsx_shub_set_full_scale(sensor, val2);
+> -		break;
+> +		return st_lsm6dsx_shub_set_full_scale(sensor, val2);
+>  	default:
+> -		err =3D -EINVAL;
+> -		break;
+> +		return -EINVAL;
+>  	}
+> +}
 > +
->  	ret = devm_counter_add(dev, counter);
->  	if (ret < 0)
->  		return dev_err_probe(dev, ret, "Failed to add counter\n");
+> +static int
+> +st_lsm6dsx_shub_write_raw(struct iio_dev *iio_dev,
+> +			  struct iio_chan_spec const *chan,
+> +			  int val, int val2, long mask)
+> +{
+> +	int ret;
+> +
+> +	ret =3D iio_device_claim_direct_mode(iio_dev);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret =3D __st_lsm6dsx_shub_write_raw(iio_dev, chan, val, val2, mask);
+> =20
+> -release:
+>  	iio_device_release_direct_mode(iio_dev);
+> =20
+> -	return err;
+> +	return ret;
+>  }
+> =20
+>  static ssize_t
+> --=20
+> 2.48.1
+>=20
 
+--cCyhYw81pHGT7F27
+Content-Type: application/pgp-signature; name=signature.asc
 
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCZ+uHWQAKCRA6cBh0uS2t
+rPpQAQC5sK6w8OHlwLrK4oUWulVhnSgVCz+H/6DG/kGZfucIfAD7BWvTWXYbS4Tg
+B5z5Rt4S6shVGbqsC/1cMx22LBZgGQ0=
+=vXFX
+-----END PGP SIGNATURE-----
+
+--cCyhYw81pHGT7F27--
 

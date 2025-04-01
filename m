@@ -1,47 +1,47 @@
-Return-Path: <linux-iio+bounces-17500-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17501-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45BBAA7747C
-	for <lists+linux-iio@lfdr.de>; Tue,  1 Apr 2025 08:29:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F28B7A77489
+	for <lists+linux-iio@lfdr.de>; Tue,  1 Apr 2025 08:31:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 94F5518874E9
-	for <lists+linux-iio@lfdr.de>; Tue,  1 Apr 2025 06:30:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3CE523A925D
+	for <lists+linux-iio@lfdr.de>; Tue,  1 Apr 2025 06:31:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F0961E1C29;
-	Tue,  1 Apr 2025 06:29:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D778F1E22FC;
+	Tue,  1 Apr 2025 06:31:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aHFvZeVO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J+jH6uAA"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D369F1DFE00
-	for <linux-iio@vger.kernel.org>; Tue,  1 Apr 2025 06:29:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96BEB1D63F7
+	for <linux-iio@vger.kernel.org>; Tue,  1 Apr 2025 06:31:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743488988; cv=none; b=ti0/a6duO4rg6IZVfC4RAOZEwXL4a3xM3VZ4M8Z6kku10+LOV8s55/cJ+1NZrsuVaTEum1lC8k1FOkKIjxm8XLsrseG52eyF3FYS9QixKf195Gs7TrM4zN3ekP6oOXMfCSk6xDU3YI3rhrsacvOQ1s36lJCF4St93K2BJMcRvhI=
+	t=1743489097; cv=none; b=iZi6W9wJcNkAArXfenmpAdf41ucFu2xkOt/Yz9N50C2BlreT4jhI3DMIJpUzeA2YkDc7+PBsM5jRBDIX17cQLjoIfULvOZ7UdQFlqHoSDK33J/PMEw8sYEMtZbp10fip6Ie1XwIDVwN8sz3xV4HalWVu/iIJ5hRno6kSoBaJdtc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743488988; c=relaxed/simple;
-	bh=NYSLOa3ahgk8l2PEqlDhlUslrk8PpM0I96D5HWG1Ops=;
+	s=arc-20240116; t=1743489097; c=relaxed/simple;
+	bh=Oklh6D9QCAfQT3mUKoc12UHgx+8o8PQqL3ZuYC+sU7Y=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rqtd+hK1gLni2vFzW9r/6+qcfctTIDSpw9vFXmi+k4jVl/xeLSCjhlF5rjw5EZ211k96HJJyS6X0Nq8WSSH6I/KcIy2rZT92ZHRvjssd8DvVmXG9vuCNqVwZWylpWdE7qu8utHDC1etubAfm98QariLjQSd/yxPRm66zSqEsfiI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aHFvZeVO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54459C4CEE8;
-	Tue,  1 Apr 2025 06:29:48 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=Z8w2qotKtjGOTswybbj2Ufi0/XEMqfva1n1CXW9yee+EC3OPFOcQ7H4OYNrwuHJYEsMiUFAf5s7tO5wK2noSbfcv/3uYA53hGUPywwil4stOu5YJOtsJlegJ/6C7H3GADjdCP3k+sV0kGsgNV7cHaDKmB1VTL6zL//cKJbVub2I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J+jH6uAA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FDA7C4CEE8;
+	Tue,  1 Apr 2025 06:31:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743488988;
-	bh=NYSLOa3ahgk8l2PEqlDhlUslrk8PpM0I96D5HWG1Ops=;
+	s=k20201202; t=1743489097;
+	bh=Oklh6D9QCAfQT3mUKoc12UHgx+8o8PQqL3ZuYC+sU7Y=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=aHFvZeVO/wt2zcHEo4Zh23iHtSv4766tthzEIJojZugy9CtqlsQxAbptJZf0dM4YA
-	 3q/JvkSuwY/fZn1bdnFcoko9XIsz4kbL+SqfnHDYvp1ICRBAbHa0D003GyAo4MN+hY
-	 0c5OzSoyXGwf397ZUex3X2T2hxVgvy6Q62HGVKKzyouXaBk0sJQU8m54+PBNVooCCh
-	 WEMY42x2gNghOPqhAd7QUaXf7K2px98viLa+lQIFYx219NGfI6S+65GvkIgEb3hgnd
-	 ozkzPb+3q9cRLSkW586cqzKDB9WX4Y+nWuOT5Fcezz6kjH1jTMNJJstSJpVmnzLZVJ
-	 CQRZ7LfaXH5Pw==
-Date: Tue, 1 Apr 2025 08:29:46 +0200
+	b=J+jH6uAATWS0sHQ9LLPFgs42YqGpBQ1tjFmfROrMOQbGFzmcXioJiNRiTfs4vD7Ji
+	 6+ScBoyqfnikkF4aLxrMxgg2YKdAA9I5DpkCUC+fZvNckIp/Mw12dKUGYtmBoAU+ep
+	 oKFS1enDjhpdZVWvp66RxP71WgZhhgj9VTIRRGXKhHVDGics2ZF1lJiHt/ucmZeosc
+	 0n1EVmFZAK8Fcbsgog8EJe6fV9PV3zh/oW9cBNRncxtEdhTDIYAm35RSMBGscqk5hT
+	 quw0ttimwA/uM4NaO0J6j7rxxvgbLPRFVw2IOluxBsPo63SQ5SX9FPeWwGaiRBXUiT
+	 zh/BZZdiNeD5A==
+Date: Tue, 1 Apr 2025 08:31:34 +0200
 From: Lorenzo Bianconi <lorenzo@kernel.org>
 To: Jonathan Cameron <jic23@kernel.org>
 Cc: linux-iio@vger.kernel.org, David Lechner <dlechner@baylibre.com>,
@@ -57,11 +57,11 @@ Cc: linux-iio@vger.kernel.org, David Lechner <dlechner@baylibre.com>,
 	Yasin Lee <yasin.lee.x@gmail.com>,
 	Andy Shevchenko <andy.shevchenko@gmail.com>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH 20/37] iio: imu: st_lsm6dsx: Switch to sparse friendly
- iio_device_claim/release_direct()
-Message-ID: <Z-uH2jYGKXt6w8V3@lore-desk>
+Subject: Re: [PATCH 19/37] iio: imu: st_lsm6dsx: Switch to sparse friendly
+ claim/release_direct()
+Message-ID: <Z-uIRiwXVz2S-C0z@lore-desk>
 References: <20250331121317.1694135-1-jic23@kernel.org>
- <20250331121317.1694135-21-jic23@kernel.org>
+ <20250331121317.1694135-20-jic23@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -69,21 +69,20 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="cvW8XjschqHDj1KA"
+	protocol="application/pgp-signature"; boundary="ts7SMauCzh7jJVDP"
 Content-Disposition: inline
-In-Reply-To: <20250331121317.1694135-21-jic23@kernel.org>
+In-Reply-To: <20250331121317.1694135-20-jic23@kernel.org>
 
 
---cvW8XjschqHDj1KA
+--ts7SMauCzh7jJVDP
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
 > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 >=20
-> These new functions allow sparse to find failures to release
-> direct mode reducing chances of bugs over the claim_direct_mode()
-> functions that are deprecated.
+> This driver caused a false positive with __cond_lock() style solution
+> but is fine with the simple boolean return approach now used.
 >=20
 > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > Cc: Lorenzo Bianconi <lorenzo@kernel.org>
@@ -91,15 +90,16 @@ Content-Transfer-Encoding: quoted-printable
 Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
 
 > ---
->  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c | 14 ++++++--------
->  1 file changed, 6 insertions(+), 8 deletions(-)
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 16 +++++++---------
+>  1 file changed, 7 insertions(+), 9 deletions(-)
 >=20
-> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c b/drivers/iio/i=
-mu/st_lsm6dsx/st_lsm6dsx_shub.c
-> index 17a74f5adfc0..3c5e65dc0f97 100644
-> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
-> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
-> @@ -558,12 +558,11 @@ st_lsm6dsx_shub_read_raw(struct iio_dev *iio_dev,
+> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/i=
+mu/st_lsm6dsx/st_lsm6dsx_core.c
+> index 4fdcc2acc94e..670cd217eb50 100644
+> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> @@ -1804,12 +1804,11 @@ static int st_lsm6dsx_read_raw(struct iio_dev *ii=
+o_dev,
 > =20
 >  	switch (mask) {
 >  	case IIO_CHAN_INFO_RAW:
@@ -109,43 +109,52 @@ mu/st_lsm6dsx/st_lsm6dsx_shub.c
 > +		if (!iio_device_claim_direct(iio_dev))
 > +			return -EBUSY;
 > =20
->  		ret =3D st_lsm6dsx_shub_read_oneshot(sensor, ch, val);
+>  		ret =3D st_lsm6dsx_read_oneshot(sensor, ch->address, val);
 > -		iio_device_release_direct_mode(iio_dev);
 > +		iio_device_release_direct(iio_dev);
 >  		break;
 >  	case IIO_CHAN_INFO_SAMP_FREQ:
->  		*val =3D sensor->ext_info.slv_odr / 1000;
-> @@ -657,13 +656,12 @@ st_lsm6dsx_shub_write_raw(struct iio_dev *iio_dev,
+>  		*val =3D sensor->odr / 1000;
+> @@ -1834,11 +1833,10 @@ static int st_lsm6dsx_write_raw(struct iio_dev *i=
+io_dev,
+>  				int val, int val2, long mask)
 >  {
->  	int ret;
+>  	struct st_lsm6dsx_sensor *sensor =3D iio_priv(iio_dev);
+> -	int err;
+> +	int err =3D 0;
 > =20
-> -	ret =3D iio_device_claim_direct_mode(iio_dev);
-> -	if (ret)
-> -		return ret;
+> -	err =3D iio_device_claim_direct_mode(iio_dev);
+> -	if (err)
+> -		return err;
 > +	if (!iio_device_claim_direct(iio_dev))
 > +		return -EBUSY;
 > =20
->  	ret =3D __st_lsm6dsx_shub_write_raw(iio_dev, chan, val, val2, mask);
+>  	switch (mask) {
+>  	case IIO_CHAN_INFO_SCALE:
+> @@ -1860,7 +1858,7 @@ static int st_lsm6dsx_write_raw(struct iio_dev *iio=
+_dev,
+>  		break;
+>  	}
 > =20
 > -	iio_device_release_direct_mode(iio_dev);
 > +	iio_device_release_direct(iio_dev);
 > =20
->  	return ret;
+>  	return err;
 >  }
 > --=20
 > 2.48.1
 >=20
 
---cvW8XjschqHDj1KA
+--ts7SMauCzh7jJVDP
 Content-Type: application/pgp-signature; name=signature.asc
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCZ+uH2gAKCRA6cBh0uS2t
-rGKEAP9O/C/S1POIfGPWyURiZBf2iJUAd5lhrKBkGlTy4mRsIAEA6ZfenTn66ubv
-jT8+fOEQmmfLaKfNsdnT7cctVnihqQo=
-=ltiR
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCZ+uIRgAKCRA6cBh0uS2t
+rP5jAQDzew0CQmJ7lfUkAHolrJIafVEPkv1A1e7FhYJ4jhUfoQD+JbKJqYx7BGay
+Lbq8D006FzLVN+aDWkda9jR3ZTpsmwo=
+=U6e3
 -----END PGP SIGNATURE-----
 
---cvW8XjschqHDj1KA--
+--ts7SMauCzh7jJVDP--
 

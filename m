@@ -1,284 +1,290 @@
-Return-Path: <linux-iio+bounces-17559-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17560-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3985EA795EC
-	for <lists+linux-iio@lfdr.de>; Wed,  2 Apr 2025 21:34:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C43F4A7968D
+	for <lists+linux-iio@lfdr.de>; Wed,  2 Apr 2025 22:28:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8547D170DE6
-	for <lists+linux-iio@lfdr.de>; Wed,  2 Apr 2025 19:33:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B71393B4ADB
+	for <lists+linux-iio@lfdr.de>; Wed,  2 Apr 2025 20:27:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49AD01EE7C0;
-	Wed,  2 Apr 2025 19:33:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B70A81F12F1;
+	Wed,  2 Apr 2025 20:27:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZXBpFQUV"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="JXfaWFVC"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f46.google.com (mail-oa1-f46.google.com [209.85.160.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEDA81E2847;
-	Wed,  2 Apr 2025 19:33:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ADB91DE2A5
+	for <linux-iio@vger.kernel.org>; Wed,  2 Apr 2025 20:27:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743622412; cv=none; b=Sqgp4VNszVgmYOsZoGZV5/0kDd2wtnIYToa1AvqT25dUAVij6U2E0Atqdnm29e9uYfROcDtls1A4PXQkNxycw2kntuBtpowkTYD7W8GmqUYznbHinmcVKg0pCq9pnR0a6cLhmSxk9cfSRRjpG8F1wyWsFSQuG4DHHvEfLYuk2Uw=
+	t=1743625678; cv=none; b=u8xIoR2VITR0z6D0wQJ3A2VGfACQa/mlHQvcm3j4dhKc7b+PTS8RQn4xGnrzEPNEyyYtOlfmk8X+RvkjPcLQP5Gx9+C33z8YtAoJkz3CTTMc8P14/lrJBHlQL74mGIL5vsWwvRZZd2h/GjUPy3BocNroK/M5C85bvze1ndC0G70=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743622412; c=relaxed/simple;
-	bh=ZQ5rXtxFpcftxO9BKYVGOH3WBUnbDNUjD+xKM7Odu9w=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=AmAcQwEI9yxgp8qbCHo23MMeoc/Qlu3AUTmGfvz4FgwJEGg6ECOKdIu/NGh8qA3yLxSh742ykw7oGFCklpZeu2RzGrfLyfmrWENJxIGWOPFaeFUb2dNArFRDNS58umbVq4rd+0rYWwAztJdsM1zeDGrJ5VVWh194f1qNUaU6fuM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZXBpFQUV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 7855CC4CEF1;
-	Wed,  2 Apr 2025 19:33:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743622412;
-	bh=ZQ5rXtxFpcftxO9BKYVGOH3WBUnbDNUjD+xKM7Odu9w=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=ZXBpFQUVMUXo7CyFR/i0RG2m7m0ejcT2qSmszm9oasu0NDb7hISayzIQyLwI9e3dC
-	 RgeZviifmPoxkFaTTDBXvWtnCMRix6sOjZCbcccWPggD7UumWgbSXBbhXnVST5i3NW
-	 zcC0eXkvhQD68FtpvygCH6/k9xr25RJdQp6z4hpCuyN4NMqYIvtxl1V7zhRa2EPfxp
-	 Yaym+dXzJUdSRoNLSfIHioYqj8rkNv3gXh5qSOT/4EdB5woypshpfLRDVn/pRr//pI
-	 rcU1oZ4sIIRiQse/uqWe4OnGbAwrOj9MkTuZgmuAFhK1K8Yhu5EyirLfZ4n6wvcZUX
-	 S6hlarWi7fskg==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6DCDCC36018;
-	Wed,  2 Apr 2025 19:33:32 +0000 (UTC)
-From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Date: Wed, 02 Apr 2025 21:33:28 +0200
-Subject: [PATCH v4 5/5] iio: light: al3320a: Implement regmap support
+	s=arc-20240116; t=1743625678; c=relaxed/simple;
+	bh=iL+v0YyDgRKPSv4xdqmcB4SFH3CEqcRuTZ8liW/+9JY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gQYbSpnrX8GzgI2djDiAMOfMt6aE7x7GxCZ34xNRtDg95dJ79Br3gWVr/ZBeLQC0NgC0yjo6ctDRAX07HdgKayYhU5ye8Q4ov1+kv+/bLZLwX+APan92Krs+8PQTtDeB7VwS31yxW5uoHBqBh5umsb2lVSBSuM3odYJz7nGNKL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=JXfaWFVC; arc=none smtp.client-ip=209.85.160.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-2a01bcd0143so140998fac.2
+        for <linux-iio@vger.kernel.org>; Wed, 02 Apr 2025 13:27:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1743625674; x=1744230474; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=bb3uLjaaplMI5rmcO3yUoLQoxyYMzts0THKqJNK384g=;
+        b=JXfaWFVCyxteJrsHYCy/JNknRQPYh9ea+sHbUBl01dPwvT2CmoCMOujmRidZJP04Mg
+         8RggPW7O/0Sc3f8XefW6u5TCBdJg3+jE+fiwqt0uNVAls8EmsOgRrqBOK6AwxKI0nYRM
+         WHkB+6koiO7ZtvFKRfRRJMrm2CpzNsRdHC0qByWDxQWhwvMV5De1NjicLkn8dG3FYXKl
+         sbNxXnRCaLRjQt4H0YJTETKJOdbIoKNh5u+zJf7A1aKbVPp+dgMghRlZ/32eGFZS/CGU
+         65fgwKezAq+8D7oEhqnaJeEfq1Vv7WYpCbKtP42WQ0pchORPCd1FZDuqnIi6bJ+owkX2
+         6pQA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1743625674; x=1744230474;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=bb3uLjaaplMI5rmcO3yUoLQoxyYMzts0THKqJNK384g=;
+        b=HvWVMrpNQiHomis8tH6W13yme9jIeysEQMwlFRnTjCfo5icyp/jRFvMbxV9YuQecJX
+         8RLgdHnWCCUZ20kmG3/DVZmHLXkZf4gohZX40kbryXRRF6i4xPB+JpkmM1+Begc/dt/7
+         1//8ES3QZig3SCDWUBMgklHdkkKsXqMoG1JqB/mYwEuBnfoAsiqFHrKM2WfHN9m/81X0
+         6znOWCzGzDqqT7TeLz6tCt578HMvRgHInkC0QJbGzAod19Z2MjZXd/lC9pgJUjQC8W+K
+         NAUgwRQTJULxiTbJjKhvY8cX+LDjqpQHt71aqzvDguHgJnnu24swEktd9I77jfOCTQ5j
+         2peg==
+X-Forwarded-Encrypted: i=1; AJvYcCWrSrf3VtoYyOqWF4Ofok8U90Fy0aPNS6oYzEyrKhAH5qg/tsXYBT05oQEDJQxzZ3XBgaBox1ZyA88=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxOxo5szskC43ctKXYS0w5rYlstd+okhl5ssAzILKrAZtCND/N1
+	C1dkGVos9DJT+/o9nKfsYe57YLzsgGx3S1s261ykKWsi+asGSQlGp4LUkEZi4rE=
+X-Gm-Gg: ASbGncuvRJwebOjclAjwQTej1ugQcIB5mzWdGeMm60XRoWwYZMfNqPdSFMPw5hLAhIe
+	ZXO5WlyeI4uptVqvl7qXwbxUAzhLs1Dvx/vBBWY+xw/XCXywnQBtqSCoUM0M2G2M7tjfVXF3aTr
+	bMblKbylHm/FBqseFh4WpsHJ2Wx1P2vRqn+MUVN5D3iDgG+n2XBnPjb4rFVrIO1GvsDGGshpoTs
+	Dgq5H3s3aqv9gnTOd7kCGgf7dlTZqJ0dGETHoTi8M/8om/26iJqXeMW8gg4aFiQ28ub32CGUJoG
+	trw/25RpDgYLBCIZAPP1LMShOUEw2UdKeKweWdoIj6pkOX+OYT0s/+ShxjXfGimzAfgsNzT281o
+	DAqhuDg==
+X-Google-Smtp-Source: AGHT+IEt8RP1WvtnuTRTfpnfybVllpyHk6xGLunHxwe8XiEec7EztheZvoJ3VjB2D1Z7tNHFkLyDmQ==
+X-Received: by 2002:a05:6870:e0d2:b0:29e:4d0e:a2b6 with SMTP id 586e51a60fabf-2cbcf4a1e6fmr11102767fac.10.1743625674383;
+        Wed, 02 Apr 2025 13:27:54 -0700 (PDT)
+Received: from [192.168.0.113] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2c86a4a3984sm2976967fac.17.2025.04.02.13.27.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 02 Apr 2025 13:27:52 -0700 (PDT)
+Message-ID: <20e8538f-7a73-42a5-87b1-0c04b54375c6@baylibre.com>
+Date: Wed, 2 Apr 2025 15:27:51 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] Documentation: ABI: add oversampling frequency in
+ sysfs-bus-iio
+To: Jorge Marques <gastmaier@gmail.com>, Jonathan Cameron <jic23@kernel.org>
+Cc: Jorge Marques <jorge.marques@analog.com>,
+ Lars-Peter Clausen <lars@metafoo.de>, Michael.Hennerich@analog.com,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250321-abi-oversampling-events-frequency-v1-0-794c1ab2f079@analog.com>
+ <20250321-abi-oversampling-events-frequency-v1-2-794c1ab2f079@analog.com>
+ <20250330181320.0ec4351c@jic23-huawei>
+ <3ad6f137-5f67-4448-b0c9-2e760bd935a7@baylibre.com>
+ <20250330185353.150fc33a@jic23-huawei>
+ <hf5dwxs62oof3gom43c6rkdsq3gky6eplxej627t46ktt5blfr@kpmjpxku4inc>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <hf5dwxs62oof3gom43c6rkdsq3gky6eplxej627t46ktt5blfr@kpmjpxku4inc>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250402-al3010-iio-regmap-v4-5-d189bea87261@ixit.cz>
-References: <20250402-al3010-iio-regmap-v4-0-d189bea87261@ixit.cz>
-In-Reply-To: <20250402-al3010-iio-regmap-v4-0-d189bea87261@ixit.cz>
-To: Jonathan Cameron <jic23@kernel.org>, 
- Lars-Peter Clausen <lars@metafoo.de>
-Cc: Svyatoslav Ryhel <clamor95@gmail.com>, 
- Robert Eckelmann <longnoserob@gmail.com>, linux-iio@vger.kernel.org, 
- linux-kernel@vger.kernel.org, David Heidelberg <david@ixit.cz>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5966; i=david@ixit.cz;
- h=from:subject:message-id;
- bh=KF7wfd386VFn0Qab9eMCBOMC7w8cF3bp15+z7GtVxKg=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBn7ZEKANUDM7It0EXHF5Zdp51cw6YGYAR+pS7gk
- diU+mWsUt2JAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCZ+2RCgAKCRBgAj/E00kg
- choBEACyrkpl681CZgf8ZKOvVH6HO5wDcd0B4Hu9xdZHhuETVbVMknY0sYRNDwvdf4gSxjOcCW1
- siWO9ydJeNafHoi3uZZulQc84FnIx1/tC3YLBX9aVPAW9zsJPJM9e04HhW+LJWgOIZidhuzyWIJ
- SlFM4QfEJ82VDsZP58PvcYS2jhldS54Pb0mnUz4Db52zFKkncLclkByBye217sjPlPmwAqoJpcK
- uBaQFfzVW57nn4gB0dpHK5cTlcJtV6yVdbGp30yI84Tiht7wNvLbmUrQnmEeSumxw0vt4oHOSnC
- AvXIorG0/uUM9BnlpWOB9PRtTTlinjihN9iDCPg9ZzOwaFmDmQPWxZcz7EPl/UjhFVA5YdrCIY3
- uHpf7BZdtuVRbIBlurAOK1UmNo/gNODeFyR5Ls9rRXsuJ4KTeeyX9+OLonMujyJ/SlUEPkNtXO/
- pgWAGMCqKKa1jPQ9WTTU+g2N1CVeOMD7JsUMXnV9meQpqbYXtsazOseIYq/NQKgMsqwtkVJh3Ex
- EWx0kKIA1j4AxevvdsWXYyxI3ljTXix1Ke2M9GP7hTPWiRwkKEE2pJUKyxeM9czaLbotnIqhsQa
- /fv02G9Rdg9yb2s6J54xYGZ3F5oHYMtLSlT0Ke/2qRs9XctnnhtywP9d/XpZ9xqAJ6sRSLFAanz
- 0qCT5mok3aauaNw==
-X-Developer-Key: i=david@ixit.cz; a=openpgp;
- fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
-X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
-X-Original-From: David Heidelberg <david@ixit.cz>
-Reply-To: david@ixit.cz
 
-From: David Heidelberg <david@ixit.cz>
+On 4/2/25 8:47 AM, Jorge Marques wrote:
+> On Sun, Mar 30, 2025 at 06:53:53PM +0100, Jonathan Cameron wrote:
+>> On Sun, 30 Mar 2025 12:34:39 -0500
+>> David Lechner <dlechner@baylibre.com> wrote:
+>>
+>>> On 3/30/25 12:13 PM, Jonathan Cameron wrote:
+>>>> On Fri, 21 Mar 2025 15:50:02 +0100
+>>>> Jorge Marques <jorge.marques@analog.com> wrote:
 
-Modernize and clean up the driver using the regmap framework.
+Once you dig into it, the current situation is even more complicated than
+I expected. :-o
 
-With the regmap implementation, the compiler produces
-a significantly smaller module.
+This reply has ended up being mostly a brain dump of my observations. I hope
+it isn't too confusing. Consider this more of a brainstorm on a future
+documentation page on sampling rates rather than commenting on what to do
+on this particular patch. :-)
 
-Size before: 72 kB
-Size after:  58 kB
-
-Signed-off-by: David Heidelberg <david@ixit.cz>
 ---
- drivers/iio/light/al3320a.c | 89 +++++++++++++++++++++++++--------------------
- 1 file changed, 49 insertions(+), 40 deletions(-)
 
-diff --git a/drivers/iio/light/al3320a.c b/drivers/iio/light/al3320a.c
-index 1fa693d54ae2a6e5ead3a9c7ac7018afeba9b760..988a3dd3a8449f10c657eb75fd744b2a9db2965e 100644
---- a/drivers/iio/light/al3320a.c
-+++ b/drivers/iio/light/al3320a.c
-@@ -15,6 +15,7 @@
- #include <linux/bitfield.h>
- #include <linux/i2c.h>
- #include <linux/module.h>
-+#include <linux/regmap.h>
- #include <linux/mod_devicetable.h>
- 
- #include <linux/iio/iio.h>
-@@ -57,8 +58,14 @@ static const int al3320a_scales[][2] = {
- 	{0, 512000}, {0, 128000}, {0, 32000}, {0, 10000}
- };
- 
-+static const struct regmap_config al3320a_regmap_config = {
-+	.reg_bits = 8,
-+	.val_bits = 8,
-+	.max_register = AL3320A_REG_HIGH_THRESH_HIGH,
-+};
-+
- struct al3320a_data {
--	struct i2c_client *client;
-+	struct regmap *regmap;
- };
- 
- static const struct iio_chan_spec al3320a_channels[] = {
-@@ -80,50 +87,47 @@ static const struct attribute_group al3320a_attribute_group = {
- 	.attrs = al3320a_attributes,
- };
- 
--static int al3320a_set_pwr_on(struct i2c_client *client)
-+static int al3320a_set_pwr_on(struct al3320a_data *data)
- {
--	return i2c_smbus_write_byte_data(client, AL3320A_REG_CONFIG, AL3320A_CONFIG_ENABLE);
-+	return regmap_write(data->regmap, AL3320A_REG_CONFIG, AL3320A_CONFIG_ENABLE);
- }
- 
- static void al3320a_set_pwr_off(void *_data)
- {
- 	struct al3320a_data *data = _data;
-+	struct device *dev = regmap_get_device(data->regmap);
-+	int ret;
- 
--	i2c_smbus_write_byte_data(data->client, AL3320A_REG_CONFIG, AL3320A_CONFIG_DISABLE);
-+	ret = regmap_write(data->regmap, AL3320A_REG_CONFIG, AL3320A_CONFIG_DISABLE);
-+	if (ret)
-+		dev_err(dev, "failed to write system register\n");
- }
- 
- static int al3320a_init(struct al3320a_data *data)
- {
-+	struct device *dev = regmap_get_device(data->regmap);
- 	int ret;
- 
--	ret = al3320a_set_pwr_on(data->client);
--
--	if (ret < 0)
-+	ret = al3320a_set_pwr_on(data);
-+	if (ret)
- 		return ret;
- 
--	ret = devm_add_action_or_reset(&data->client->dev,
--				       al3320a_set_pwr_off,
--				       data);
-+	ret = devm_add_action_or_reset(dev, al3320a_set_pwr_off, data);
- 	if (ret)
--		return dev_err_probe(&data->client->dev, ret, "failed to add action\n");
--
--	ret = i2c_smbus_write_byte_data(data->client, AL3320A_REG_CONFIG_RANGE,
--					FIELD_PREP(AL3320A_GAIN_MASK,
--						   AL3320A_RANGE_3));
--	if (ret < 0)
--		return ret;
-+		return dev_err_probe(dev, ret, "failed to add action\n");
- 
--	ret = i2c_smbus_write_byte_data(data->client, AL3320A_REG_MEAN_TIME,
--					AL3320A_DEFAULT_MEAN_TIME);
--	if (ret < 0)
-+	ret = regmap_write(data->regmap, AL3320A_REG_CONFIG_RANGE,
-+			   FIELD_PREP(AL3320A_GAIN_MASK, AL3320A_RANGE_3));
-+	if (ret)
- 		return ret;
- 
--	ret = i2c_smbus_write_byte_data(data->client, AL3320A_REG_WAIT,
--					AL3320A_DEFAULT_WAIT_TIME);
--	if (ret < 0)
-+	ret = regmap_write(data->regmap, AL3320A_REG_MEAN_TIME,
-+			   AL3320A_DEFAULT_MEAN_TIME);
-+	if (ret)
- 		return ret;
- 
--	return 0;
-+	return regmap_write(data->regmap, AL3320A_REG_WAIT,
-+			    AL3320A_DEFAULT_WAIT_TIME);
- }
- 
- static int al3320a_read_raw(struct iio_dev *indio_dev,
-@@ -131,7 +135,7 @@ static int al3320a_read_raw(struct iio_dev *indio_dev,
- 			    int *val2, long mask)
- {
- 	struct al3320a_data *data = iio_priv(indio_dev);
--	int ret;
-+	int ret, gain, raw;
- 
- 	switch (mask) {
- 	case IIO_CHAN_INFO_RAW:
-@@ -140,21 +144,21 @@ static int al3320a_read_raw(struct iio_dev *indio_dev,
- 		 * - low byte of output is stored at AL3320A_REG_DATA_LOW
- 		 * - high byte of output is stored at AL3320A_REG_DATA_LOW + 1
- 		 */
--		ret = i2c_smbus_read_word_data(data->client,
--					       AL3320A_REG_DATA_LOW);
--		if (ret < 0)
-+		ret = regmap_read(data->regmap, AL3320A_REG_DATA_LOW, &raw);
-+		if (ret)
- 			return ret;
--		*val = ret;
-+
-+		*val = raw;
-+
- 		return IIO_VAL_INT;
- 	case IIO_CHAN_INFO_SCALE:
--		ret = i2c_smbus_read_byte_data(data->client,
--					       AL3320A_REG_CONFIG_RANGE);
--		if (ret < 0)
-+		ret = regmap_read(data->regmap, AL3320A_REG_CONFIG_RANGE, &gain);
-+		if (ret)
- 			return ret;
- 
--		ret = FIELD_GET(AL3320A_GAIN_MASK, ret);
--		*val = al3320a_scales[ret][0];
--		*val2 = al3320a_scales[ret][1];
-+		gain = FIELD_GET(AL3320A_GAIN_MASK, gain);
-+		*val = al3320a_scales[gain][0];
-+		*val2 = al3320a_scales[gain][1];
- 
- 		return IIO_VAL_INT_PLUS_MICRO;
- 	}
-@@ -175,9 +179,8 @@ static int al3320a_write_raw(struct iio_dev *indio_dev,
- 			    val2 != al3320a_scales[i][1])
- 				continue;
- 
--			return i2c_smbus_write_byte_data(data->client,
--					AL3320A_REG_CONFIG_RANGE,
--					FIELD_PREP(AL3320A_GAIN_MASK, i));
-+			return regmap_write(data->regmap, AL3320A_REG_CONFIG_RANGE,
-+					    FIELD_PREP(AL3320A_GAIN_MASK, i));
- 		}
- 		break;
- 	}
-@@ -203,7 +206,11 @@ static int al3320a_probe(struct i2c_client *client)
- 
- 	data = iio_priv(indio_dev);
- 	i2c_set_clientdata(client, indio_dev);
--	data->client = client;
-+
-+	data->regmap = devm_regmap_init_i2c(client, &al3320a_regmap_config);
-+	if (IS_ERR(data->regmap))
-+		return dev_err_probe(dev, PTR_ERR(data->regmap),
-+				     "cannot allocate regmap\n");
- 
- 	indio_dev->info = &al3320a_info;
- 	indio_dev->name = "al3320a";
-@@ -230,7 +237,9 @@ static int al3320a_suspend(struct device *dev)
- 
- static int al3320a_resume(struct device *dev)
- {
--	return al3320a_set_pwr_on(to_i2c_client(dev));
-+	struct al3320a_data *data = iio_priv(dev_get_drvdata(dev));
-+
-+	return al3320a_set_pwr_on(data);
- }
- 
- static DEFINE_SIMPLE_DEV_PM_OPS(al3320a_pm_ops, al3320a_suspend,
+To make sure we are clear, I think we need to define some precise terminology,
+especially with regard to "sample rate" since that can be used to mean a
+lot of different things.
 
--- 
-2.49.0
+There is the "IIO sample rate" (could also call it the "effective sample rate")
+that is the rate that we push one complete set of data to an IIO buffer. In
+many cases, this would be the frequency of the hrtimer trigger that is configured
+as the trigger for the iio:deviceX.
+
+On the other end of the spectrum, we have the "conversion rate" which is the
+rate that individual ADC conversions can happen.
+
+What I had not seen before, but now I see in existing drivers, is that these
+may actually be completely independent. In other words, the hrtimer trigger
+only triggers reading the most recent set of conversions and conversions are
+driven by a completely separate trigger, generally some sort of clock in the
+ADC itself.
+
+So I think we should expand the diagrams below to show more layers for the
+completely general case.
+
+>>>>   
+>>>>> Some devices have an internal clock used to space out the conversion
+>>>>> trigger for the oversampling filter,
+>>>>> Consider an ADC with conversion and data ready pins topology:
+>>>>>
+>>>>>   Sampling trigger |       |       |       |       |
+>>>>>   ADC conversion   ++++    ++++    ++++    ++++    ++++
+>>>>>   ADC data ready      *       *       *       *       *
+>>>>>
+
+For terminology, let's call this "burst mode" oversampling (maybe also
+referred to as "triggered mode" in some data sheets).
+
+>>>>> With the oversampling frequency, conversions can be evenly space between
+>>>>> the sampling edge:  
+>>>>
+>>>> I'm not sure what this second example is providing.  Are you suggesting
+>>>> that if we don't provide oversampling frequency we should assume this
+>>>> pattern?  i.e. it is the default?
+>>>>   
+> 
+> The default is to do the n-conversions sequentially (n*t_conv),
+> "left-aligned" as in the diagram above.
+> The main application for oversampling is to average out the noise over a wider
+> bandwidth.
+> 
+> I looked into some of the drivers with oversampling and the supported devices
+> datasheets:
+> 
+> * ADS1298: Single field for sampling rate and oversampling,
+>            I assume the values are the maximum values that the
+> 	   oversampling time does not exceed the sampling period.
+> * RTQ6056: Field for oversampling and conversion time,
+>            maximum sampling period is roughly n*t_ovr.
+> * MCP3561: Field for oversampling and conversion time.
+>            maximum sampling period is roughly n*t_ovr.
+> * AD7380:  Field for oversampling and fixed conversion time,
+>            3 MSPS for the AD7380 and 4 MSPS for AD7381,
+>            maximum sampling period is n*t_ovr, e.g. f_samp=(6/4MSPS).
+> 
+> None will or claim to stretch over the sampling period the oversampling
+> conversions, but rather, do the n-conversions at oversampling rate,
+> providing the conversion as soon as it is ready and idling until the
+> next edge of the sampling frequency.
+> 
+>>>>>
+>>>>>   Sampling trigger |       |       |       |       |
+>>>>>   ADC conversion   + + + + + + + + + + + + + + + + + + + +
+>>>>>   ADC data ready         *       *       *       *       *
+>>>>> 
+
+And let's call this one "continuous mode".
+
+But as we will see, both of these are a bit ambiguous in their current
+form. The complete picture is a bit more nuanced.
+
+---
+
+Let's take the RTQ6056 case (since I actually looked at that one before
+as inspiration for developing another driver).
+
+The chip itself is programmable and can operate in either a burst/triggered
+mode or in a continuous mode. However, the way the IIO driver is implemented,
+it is configured in continuous mode to trigger ADC conversions. But uses an
+independent IIO trigger that triggers reading sample data. So from the point of
+view of the data in a buffered read, it looks like burst mode. But the value
+of the sampling_frequency attribute (the ADC device attribute, not the hrtimer
+trigger attribute) is for the hardware continuous mode.
+
+Hardware:
+sampling_frequency   |       |       |       |       |
+ADC conversion       + + + + + + + + + + + + + + + + + + + +
+ADC data ready             *       *       *       *       *
+sample number              S0      S1      S2      S3      S4
+
+IIO:
+hrtimer frequency               |                     |
+I2C read                         *                     *
+push to buffer                   S0                    S3
+
+The IIO (hrtimer) trigger only reads the most recently available data, it
+doesn't trigger any conversion. The clocks are asynchronous.
+
+I think adding an oversampling_frequency attribute to this driver could make
+it easier to used/understand since oversampling_frequency would be exactly
+the "conversion rate". Compared to the current situation where the "conversion
+rate" is the sampling_frequency / oversampling_ratio.
+
+It is also interesting to consider that if someone decided to add SPI offload
+support to this driver, then there would be the possibility of using burst/
+trigggered mode or continuous mode and might want to support both even. In
+fact this is exactly the possibility we have with ad7606 that I mentioned in
+a previous reply. So we might even need an oversampling_mode attribute to allow
+selecting one or the other. But that is something to save for a ad7606 patch
+series.
+
+---
+
+Another driver probably worth considering is ad4030. In this one, there is no
+internal clock to drive conversions. So, for oversampling, the sample rate is
+just "as fast as possible" (currently bit-banging a GPIO). So it doesn't actually
+have an oversampling frequency.
+
+If someone ever decided to hook it up to some hardware that could actually
+trigger a finite number of pulses at a specific rate, then this new attribute
+for oversampling_frequency would become useful. For this particular driver,
+the presence or absence of an oversampling_frequency attribute would have
+a meaning, but I don't think this generalizes to other ADCs.
+
+---
+
+AD4695 is an interesting case to consider as well. When used without SPI offload
+support, we actually don't allow oversampling currently. If we did though, it
+be similar to the ad4030 in that we could either make it "as fast as possible"
+by banging a GPIO or the CS line depending on how the chip was wired up. Or it
+could use some specialized hardware to generate a pulse train to actually get
+a known conversion rate.
+
+For now though, oversampling is only implemented when using a SPI offload.
+It works like this:
+
+Channel		1   2       3 1   2       3 1   2       3
+OSR		2   4       1 2   4       1 2   4       1
+Trigger		| | | | | | | | | | | | | | | | | | | | |
+ADC Conversion	+ + + + + + + + + + + + + + + + + + + + +
+ADC data ready	   *       * *   *       * *   *       * *
+IIO sample                   S0            S1            S2
+
+In this case, there isn't a "sample" trigger that triggers a burst of
+samples. Rather, there is only a "conversion" trigger that triggers
+individual conversion. In other words, we would call this "continuous mode".
+And it also shows that some chips allow individual channels to have
+different oversampling ratios.
+
+In this case, it would be nice to have an oversampling_frequency
+attribute as well because it would exactly correspond to the conversion
+rate. Currently each channel has a sampling_frequency attribute that
+is oversampling_frequency / oversampling_ratio (same as RTQ6056).
+
+---
+
+So my conclusion here is that the new proposed oversampling_frequency
+attribute has nothing to do with "burst mode" or "continuous mode" it
+has the same meaning in both cases. It is effectively the rate for
+individual ADC conversions.
 
 
 

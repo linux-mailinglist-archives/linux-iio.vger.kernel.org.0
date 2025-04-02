@@ -1,77 +1,77 @@
-Return-Path: <linux-iio+bounces-17540-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17541-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A36CBA78844
-	for <lists+linux-iio@lfdr.de>; Wed,  2 Apr 2025 08:46:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB0C8A7884B
+	for <lists+linux-iio@lfdr.de>; Wed,  2 Apr 2025 08:47:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5326516ECC2
-	for <lists+linux-iio@lfdr.de>; Wed,  2 Apr 2025 06:46:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 75B593AAED9
+	for <lists+linux-iio@lfdr.de>; Wed,  2 Apr 2025 06:46:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFFB6232395;
-	Wed,  2 Apr 2025 06:46:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F127A23315E;
+	Wed,  2 Apr 2025 06:46:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="c3BFJMR8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mM8yFs2r"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
+Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B360D3C17;
-	Wed,  2 Apr 2025 06:46:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF9D4233120;
+	Wed,  2 Apr 2025 06:46:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743576399; cv=none; b=KNmjlv9icN8OziKsvFyBYdzI4nri6YQCHmy5jv39iouQcnYil5X5IMReElY09wnjsxKKkw5HmZLmU3BvKaV3ZJ6zIy97ovUIxHAPoGYRZOBFhkInT3ukuVN3ygTlEnBSSq3XJDFcJ3XS/Rr6wHmHuZW5+8aBhDNsVujAQwdtUYc=
+	t=1743576414; cv=none; b=s3ibM9mDNVQMHpITAe8gNirZBbFeR+jDrWid/J/I7gdxEb9OojCAb7L4mZgUiXU8YFsbjbIgwr3+9F8/XGGAtOv9MyQW5pRZ9sW5uT8gnZAq2qLsoV7RWDHRdb+J3y9xMIm6OIjMUfmO/OOwg0lvQDQA0Z3++WaTxbUzm15p3jA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743576399; c=relaxed/simple;
-	bh=IUwdUbHeFL0dqDwaq4iIV3I6pbitR6/LH0Nohc/Vqqc=;
+	s=arc-20240116; t=1743576414; c=relaxed/simple;
+	bh=nkRavN6buF/gDxrwD8ipXn3zBnd8c92ETh2ZfteLGR8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Z6/dykrfJqONla0IO6VmVPHvUmnkNy/Rxz9ntwDTazl4AbN062xEICUd3necyM+Dw56zKEmdDSngfZZwjbe6XLdaIz/kU8DRa95LAPmL3iJrujiqtqKKreahdK8jUKBcrGfCSlA3nrtcVZsYe7uHEUtGBYHBTR6opjWeKtlU4MM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=c3BFJMR8; arc=none smtp.client-ip=209.85.167.42
+	 Content-Type:Content-Disposition:In-Reply-To; b=uAJrU92S2KCwKb/waKursCXLPd482FEiaZoEZRRq1Y6U6sCQ58a43aC7+hrnvU4dxTLd4aIABvt2TDzTC4smwGIKPfnspitE5McvRHFTYwXGGKWV8bhHfb+NrDWAcDn5m+6P/n/7lK/aXYQRA+mCAx+5+yWCBe+m7ZgOBeh+fF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mM8yFs2r; arc=none smtp.client-ip=209.85.167.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-54acc0cd458so654492e87.0;
-        Tue, 01 Apr 2025 23:46:37 -0700 (PDT)
+Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-5493b5bc6e8so7368976e87.2;
+        Tue, 01 Apr 2025 23:46:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743576396; x=1744181196; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1743576411; x=1744181211; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=TApx6q5zRSyJu5vFDntepnYrxk7e4Dyv7PtEpuL5hI4=;
-        b=c3BFJMR8jrQygWYcOi4RH/D7So5ON5G0UTAZJfqdELycOCCO69rYthanBhsQb7ipu2
-         K0A8kfgFBLkZDcO8QhbKZUkNhIEksB6gh6TWlg7CpXC4KYH7AMY6Bpi9RpS8tChszX66
-         1hKINopQFEmqqNxalqf9PyoyeEOAMXDv9P5HqIVUy/8wWjz0AIOCbFEab35J/2XZPZTv
-         r0LMK4rUjARMSDulsTKflVeaPIRWco3Y35kefAZtYVFav3hI+fZwZAuDYrenRlv9tMdN
-         megAAZaA0IpxHX87gsieH6OpUOgDP/DCAlAkR9XcxppoWUUro8TO28qtejYGC33SeEgJ
-         a/XQ==
+        bh=ayqc2RZYibXbV7INci6LOKqfBRG/lehCl0hQkPSJT3w=;
+        b=mM8yFs2rmn4ZVe88nac6UjRD/jRF/94wFRGSYoNlxAnKp8YdI89JqPucd8X2ylCA17
+         gw5TeqYgOQhZU42eOUBItFPJZc76HHmkacajuNowU8kT5L6uLSk9XxTMeV+Uycrd4XK3
+         2umQaAEEqp3UNgKOEykqEp6xhEwvzNKCXOvJWshIPFNnFgz5rVfDkMpIw6Loqoi9Ktdn
+         RFzFfcwlteHlVycGgn8Ei4iTC6iCJggt+zZB7bkTXoHoZ4VVuOZONIZErE2KenOFaOmu
+         T8H3Gc187O/j4cwDFmn1tdgtNQmoBKLiFiab8NKp31IRE9J/hm3KCPz6z7RP9tFg8Ck8
+         k/Mg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743576396; x=1744181196;
+        d=1e100.net; s=20230601; t=1743576411; x=1744181211;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=TApx6q5zRSyJu5vFDntepnYrxk7e4Dyv7PtEpuL5hI4=;
-        b=CLeek4db6WO8uH8LdpfR3ycKSgCZ0G7iGTvkDQrtyJ9sk+OT6SuR6mr/uuZESlitnB
-         +D2xYHDGgFOkKgyCH3F4gJfo+lvh0VhsjeUQVccQHZV++sjqyjouqKlgyD/0mvJ83HjM
-         RBsVvaskIw8OMLV9jMGrfdFnZK+ZjHkNTKDCa3ap8Dlgyx0njbzu1wDvnSiSf+9piS6+
-         ViU01yaEpfi59HdiGR611/S1EzYKhLz7fXwL4wVIatYTVz9N+bHhbPM0q4WARXrs9k0Y
-         dAgFlBJkcol3gdXPNL/32Rq1PoD48OlPvh6L1FjZc/l9Nda0knLqrP3zGaN+iJGNYlIt
-         9JjA==
-X-Forwarded-Encrypted: i=1; AJvYcCVyYeCNpPUBfca0doEaxdgiNm6+m9eXL4nZuUl4gVNi1GxfqAsLUgnqjNkRVhEvDavXOFLqyEjS3N03@vger.kernel.org, AJvYcCWQiWBgzAX/DtVGLd7b/XziPVH9bSnlWCLtRfACJn6EZLooma37kAYQ7L0zAsbGo2ONifj/4jIa2XLWZRVw@vger.kernel.org, AJvYcCXN8VyETmbgIuGfhLFfP6dC6+j0ZAbn+ZEOEKfK5Zh2v5JPfldF7GXtmkRZEo/i70pyfrUf5PTRQeJ5@vger.kernel.org
-X-Gm-Message-State: AOJu0YzOCNgfhSauqhFGOL9XIGMMMsULDWd9/tQJyx0R8aX6j5bn2QfY
-	Sheewg128O++jTEK4c2TPZDH9K079kmVZ9lF7536mXSlXOKk4ccx
-X-Gm-Gg: ASbGncsDx08LKz7yzxem43809aWCpAsOfX3Jkf6s8Uo6K8HNfIdB/h6gHcHbHTgbY6w
-	U/jjn7dA/OWC43JGlKj1FjmpXNdNZ1RTzXf15iM3qGXjg7eJRpPV2zWKgpfZIOLngLDIC5sXfL4
-	e5eqk+9z7f/bGSaLpr+MepT6/NOw2nSklZfy7I70cPaNd9d3LoyjNLK6Yp4+/4A0eSDZNmiJ9PU
-	cw7dr8lTCFHlTEf54pgvxEucupMdvo77wS26ofNCazv5MZ/aqSq7DYEJfDCrAJBElOiHHWDn0hf
-	X+VSJI64EFycYhKviRScOAl6cth1Vb+u970cy/Dj8iia0IDO9HM=
-X-Google-Smtp-Source: AGHT+IHB1cqHIml6QCpYB2EIlpijEXbykwLbiu/6J4VIivRNVo2eFNPbbx98QtlmqxGoDkmvo9h1IQ==
-X-Received: by 2002:a05:6512:3e08:b0:545:f70:8aa7 with SMTP id 2adb3069b0e04-54c19c6b888mr393715e87.32.1743576395582;
-        Tue, 01 Apr 2025 23:46:35 -0700 (PDT)
+        bh=ayqc2RZYibXbV7INci6LOKqfBRG/lehCl0hQkPSJT3w=;
+        b=B+90LEJXUPI3NRVgkZtMFjLNMxkwqDs15kHw+rEF1+LJEYibOwuScnKhQjPV8/M2J5
+         UzmRI5TQ8id9p6Wqj54VLWwIm3tY6G8IF0xbO28GpHEceK+x4XA6+Wm0hmFuBC0KDHMF
+         ixswtW7fEMRBpO+4PTVf2WYSYUM++nqGoErnSKnW+G1PIZV/PeA8sx4Pb/BhoxEylR6T
+         BTdGMLLjob6tgHayiAp8+isqNZbvHKGF9JqE4mac0T79MwBd30elBguiZbIfhcRLfO1V
+         8f+2sZHnAskwM1VBdQqcvmvQ/Mt2k8hSDU/bIHa/zqGE3f7Bo40wMkC1jEY6amMEMjgu
+         luPQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUZp3E/Rjk/mmD/kBFyZ59Q9FRQLafFDmMjdb5asql9YndISOMJs+75JoaVwtQ6zGYbljY/yjVbI0qVSAIB@vger.kernel.org, AJvYcCUow+I+x9kGVU+PRAxxVUhys/xn+vJSP5yccTqrTu9t4w9hhI9WKlI79eG8AZB+WGu0VijHFPVTXqMG@vger.kernel.org, AJvYcCUvUsvnvTIwKFMrMvUisSxCiRwDXp6uGnhe7PfMOommwvaGaZE7rjDNFu6j4SIjR0ZrAWLjjalalF5M@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy1cvQeuICzt1HVywnpTOdYvD9ebfAFsVOSvrO20tlWNdweHWng
+	AAtCKK+PQXfUaEyBWCWaDLNGpnz3O/hCcB55LRBLdqjeBhrCruW84BoSzA==
+X-Gm-Gg: ASbGncssVBABde2ym0fm2tQ4dVi95JtuNB/EXUpB8AxcPVSErCxDtOc8X351LfigFad
+	es78NQTt3o6iLFhGL6PiOx4COzg70ACUW32XeQh9pPnph5PaZYZuI7kNnJwa+7k0wNTatP6kdel
+	IuO/D+zwA2cCdycEHyWOJ/S52WSXxZ1tw4XcIutbMF7INNabdqfxJKc0K0RWeQGg8hQu2EJjJWa
+	93VIhhVtFhQxqxdz3yXW68Abk3525VQIEDYjmpA+wt5/y0bObSPSdcb/WrUHPNxjZid77uf/+hG
+	B7vduE9d/NLXQBYtd/ONmNE9DavYjt1Ug3IV3W2ZN9Yd2emDqaQ=
+X-Google-Smtp-Source: AGHT+IFR9Ck0yqG+KnntspR+Gy2gkKn6NFQkQkePv1P78O/icStSCVvG66ZUA06QNn200dki2vpisw==
+X-Received: by 2002:a05:6512:3d89:b0:548:526c:fb99 with SMTP id 2adb3069b0e04-54b10dc8aaemr4923042e87.18.1743576410838;
+        Tue, 01 Apr 2025 23:46:50 -0700 (PDT)
 Received: from mva-rohm ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-54b094bb3fasm1528319e87.25.2025.04.01.23.46.34
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-54b095a20b1sm1552549e87.246.2025.04.01.23.46.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Apr 2025 23:46:34 -0700 (PDT)
-Date: Wed, 2 Apr 2025 09:46:30 +0300
+        Tue, 01 Apr 2025 23:46:49 -0700 (PDT)
+Date: Wed, 2 Apr 2025 09:46:44 +0300
 From: Matti Vaittinen <mazziesaccount@gmail.com>
 To: Matti Vaittinen <mazziesaccount@gmail.com>,
 	Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
@@ -82,8 +82,8 @@ Cc: Jonathan Cameron <jic23@kernel.org>,
 	Matti Vaittinen <mazziesaccount@gmail.com>,
 	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 4/5] iio: bd79703: Support BD79700 and BD79701
-Message-ID: <845aa45974f6fb81c83046368a24a0674e9a8b0e.1743576022.git.mazziesaccount@gmail.com>
+Subject: [PATCH 5/5] iio: dac: bd79703: Support ROHM BD79702
+Message-ID: <0ba243a63115dd4af03ebf9656c65b8c259a3e34.1743576022.git.mazziesaccount@gmail.com>
 References: <cover.1743576022.git.mazziesaccount@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -92,136 +92,113 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="Mi8RUyLGxKqxdEB+"
+	protocol="application/pgp-signature"; boundary="dpnicPI7H1IrQ5f0"
 Content-Disposition: inline
 In-Reply-To: <cover.1743576022.git.mazziesaccount@gmail.com>
 
 
---Mi8RUyLGxKqxdEB+
+--dpnicPI7H1IrQ5f0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-The BD79700 and BD79701 look like almost exact subsets of the BD79703.
-The BD79703 contains 6 channels (channels 0 to 5). The BD79700 provides
-only 2 channels, matching the BD79703 channels 0 and 1. The BD79701
-provides 3 channels (matching BD79703 channels 0, 1, and 2).
+The ROHM BD79702 is similar to the BD79703, except that it has only 4
+channels whereas BD79703 has 6 channels. The channel 'addresses' of the
+first two channels (used to identify the channel when data is read over
+SPI) are same for both ICs. The next two channels of the BD79702 have
+same addresses as the last two channels of the BD79703. This means the
+BD79702 channel addresses do not follow the channel numbers with a
+constant offset. Thus, we need to specify the addresses separately,
+instead of directly deriving them from the channel number with a
+constant offset.
 
-Furthermore, the BD79700 and BD79701 do not have separate VFS pin but
-use VCC for the full-scale voltage.
+It's worth noting that the data-sheet describes the BD79702 as a device
+having channels 1,2,5 and 6. The driver however represents channels
+0,1,2,3 to the users - with no gaps in the numbering - which may be more
+familiar view for the application software.
 
-Suopport these ICs using the BD79703 driver.
+Support ROHM BD79702 DAC.
 
 Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
 ---
- drivers/iio/dac/rohm-bd79703.c | 57 +++++++++++++++++++++++++++++-----
- 1 file changed, 49 insertions(+), 8 deletions(-)
+ drivers/iio/dac/rohm-bd79703.c | 28 ++++++++++++++++++++++++++--
+ 1 file changed, 26 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/iio/dac/rohm-bd79703.c b/drivers/iio/dac/rohm-bd79703.c
-index 35e1b1134ec6..63a70fbd7e0e 100644
+index 63a70fbd7e0e..a35c37d2261d 100644
 --- a/drivers/iio/dac/rohm-bd79703.c
 +++ b/drivers/iio/dac/rohm-bd79703.c
-@@ -49,6 +49,7 @@ struct bd7970x_chip_data {
- 	const char *name;
- 	const struct iio_chan_spec *channels;
- 	int num_channels;
-+	bool has_vfs;
+@@ -84,16 +84,18 @@ static const struct iio_info bd79703_info =3D {
+ 	.write_raw =3D bd79703_write_raw,
  };
 =20
- static int bd79703_read_raw(struct iio_dev *idev,
-@@ -93,6 +94,17 @@ static const struct iio_info bd79703_info =3D {
- 	.address =3D (_chan + 1),					\
+-#define BD79703_CHAN(_chan) {					\
++#define BD79703_CHAN_ADDR(_chan, _addr) {			\
+ 	.type =3D IIO_VOLTAGE,					\
+ 	.indexed =3D 1,						\
+ 	.output =3D 1,						\
+ 	.channel =3D (_chan),					\
+ 	.info_mask_separate =3D BIT(IIO_CHAN_INFO_RAW),		\
+ 	.info_mask_shared_by_type =3D BIT(IIO_CHAN_INFO_SCALE),	\
+-	.address =3D (_chan + 1),					\
++	.address =3D (_addr),					\
  }
 =20
-+static const struct iio_chan_spec bd79700_channels[] =3D {
-+	BD79703_CHAN(0),
-+	BD79703_CHAN(1),
-+};
++#define BD79703_CHAN(_chan) BD79703_CHAN_ADDR((_chan), (_chan) + 1)
 +
-+static const struct iio_chan_spec bd79701_channels[] =3D {
-+	BD79703_CHAN(0),
-+	BD79703_CHAN(1),
-+	BD79703_CHAN(2),
+ static const struct iio_chan_spec bd79700_channels[] =3D {
+ 	BD79703_CHAN(0),
+ 	BD79703_CHAN(1),
+@@ -105,6 +107,19 @@ static const struct iio_chan_spec bd79701_channels[] =
+=3D {
+ 	BD79703_CHAN(2),
+ };
+=20
++/*
++ * The BD79702 has 4 channels. They aren't mapped to BD79703 channels 0, 1=
+, 2
++ * and 3, but to the channels 0, 1, 4, 5. So the addressing used with SPI
++ * accesses is 1, 2, 5 and 6 for them. Thus, they're not constant offset to
++ * the channel number as with other IC variants.
++ */
++static const struct iio_chan_spec bd79702_channels[] =3D {
++	BD79703_CHAN_ADDR(0, 1),
++	BD79703_CHAN_ADDR(1, 2),
++	BD79703_CHAN_ADDR(2, 5),
++	BD79703_CHAN_ADDR(3, 6),
 +};
 +
  static const struct iio_chan_spec bd79703_channels[] =3D {
  	BD79703_CHAN(0),
  	BD79703_CHAN(1),
-@@ -102,10 +114,25 @@ static const struct iio_chan_spec bd79703_channels[] =
-=3D {
- 	BD79703_CHAN(5),
+@@ -128,6 +143,13 @@ static const struct bd7970x_chip_data bd79701_chip_dat=
+a =3D {
+ 	.has_vfs =3D false,
  };
 =20
-+static const struct bd7970x_chip_data bd79700_chip_data =3D {
-+	.name =3D "bd79700",
-+	.channels =3D bd79700_channels,
-+	.num_channels =3D ARRAY_SIZE(bd79700_channels),
-+	.has_vfs =3D false,
-+};
-+
-+static const struct bd7970x_chip_data bd79701_chip_data =3D {
-+	.name =3D "bd79701",
-+	.channels =3D bd79701_channels,
-+	.num_channels =3D ARRAY_SIZE(bd79701_channels),
-+	.has_vfs =3D false,
++static const struct bd7970x_chip_data bd79702_chip_data =3D {
++	.name =3D "bd79702",
++	.channels =3D bd79702_channels,
++	.num_channels =3D ARRAY_SIZE(bd79702_channels),
++	.has_vfs =3D true,
 +};
 +
  static const struct bd7970x_chip_data bd79703_chip_data =3D {
  	.name =3D "bd79703",
  	.channels =3D bd79703_channels,
- 	.num_channels =3D ARRAY_SIZE(bd79703_channels),
-+	.has_vfs =3D true,
- };
-=20
- static int bd79703_probe(struct spi_device *spi)
-@@ -131,15 +158,25 @@ static int bd79703_probe(struct spi_device *spi)
- 		return dev_err_probe(dev, PTR_ERR(data->regmap),
- 				     "Failed to initialize Regmap\n");
-=20
--	ret =3D devm_regulator_get_enable(dev, "vcc");
--	if (ret)
--		return dev_err_probe(dev, ret, "Failed to enable VCC\n");
--
--	ret =3D devm_regulator_get_enable_read_voltage(dev, "vfs");
--	if (ret < 0)
--		return dev_err_probe(dev, ret, "Failed to get Vfs\n");
--
-+	/*
-+	 * BD79703 has a separate VFS pin, whereas the BD79700 and BD79701 use
-+	 * VCC for their full-scale output voltage.
-+	 */
-+	if (cd->has_vfs) {
-+		ret =3D devm_regulator_get_enable(dev, "vcc");
-+		if (ret)
-+			return dev_err_probe(dev, ret, "Failed to enable VCC\n");
-+
-+		ret =3D devm_regulator_get_enable_read_voltage(dev, "vfs");
-+		if (ret < 0)
-+			return dev_err_probe(dev, ret, "Failed to get Vfs\n");
-+	} else {
-+		ret =3D devm_regulator_get_enable_read_voltage(dev, "vcc");
-+		if (ret < 0)
-+			return dev_err_probe(dev, ret, "Failed to get VCC\n");
-+	}
- 	data->vfs =3D ret;
-+
- 	idev->channels =3D cd->channels;
- 	idev->num_channels =3D cd->num_channels;
- 	idev->modes =3D INDIO_DIRECT_MODE;
-@@ -155,12 +192,16 @@ static int bd79703_probe(struct spi_device *spi)
- }
-=20
+@@ -194,6 +216,7 @@ static int bd79703_probe(struct spi_device *spi)
  static const struct spi_device_id bd79703_id[] =3D {
-+	{ "bd79700", (kernel_ulong_t)&bd79700_chip_data },
-+	{ "bd79701", (kernel_ulong_t)&bd79701_chip_data },
+ 	{ "bd79700", (kernel_ulong_t)&bd79700_chip_data },
+ 	{ "bd79701", (kernel_ulong_t)&bd79701_chip_data },
++	{ "bd79702", (kernel_ulong_t)&bd79702_chip_data },
  	{ "bd79703", (kernel_ulong_t)&bd79703_chip_data },
  	{ }
  };
- MODULE_DEVICE_TABLE(spi, bd79703_id);
-=20
+@@ -202,6 +225,7 @@ MODULE_DEVICE_TABLE(spi, bd79703_id);
  static const struct of_device_id bd79703_of_match[] =3D {
-+	{ .compatible =3D "rohm,bd79700", .data =3D &bd79700_chip_data },
-+	{ .compatible =3D "rohm,bd79701", .data =3D &bd79701_chip_data },
+ 	{ .compatible =3D "rohm,bd79700", .data =3D &bd79700_chip_data },
+ 	{ .compatible =3D "rohm,bd79701", .data =3D &bd79701_chip_data },
++	{ .compatible =3D "rohm,bd79702", .data =3D &bd79702_chip_data },
  	{ .compatible =3D "rohm,bd79703", .data =3D &bd79703_chip_data },
  	{ }
  };
@@ -229,20 +206,20 @@ index 35e1b1134ec6..63a70fbd7e0e 100644
 2.49.0
 
 
---Mi8RUyLGxKqxdEB+
+--dpnicPI7H1IrQ5f0
 Content-Type: application/pgp-signature; name=signature.asc
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmfs3UYACgkQeFA3/03a
-ocXjYQgAkgkv9yo+85PplwAjjjyZ/4R/cgGh67WDBoQ7WIWvoWAbo1AGsx7HlyNJ
-Rbcuf/VqfFHYOiC9l9lx6jchk6tZZNRXj/JBfFzdXBX3Xc5J8h5/MF5BH0G/WbMy
-7MY7o+27dvtrP+z6w6ZImM95aD+Un/bXy7iLFi+ydznn2zbvWtTb9n7toK2zka4g
-FvjqUvHH6qvTAB0XTfx3ay/V/S70bLPgPAvk/qVq21nckQQGD48L087OF+m5rOBn
-vhrsFgr1KgvrBomePxRyydxgztR70ciOxjRC8s9mw2laSkEFSmEjuAKv006dKFyw
-gMGb3kdEdAJMhS1tm2a5aXC6VJyB6g==
-=d4tv
+iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmfs3VQACgkQeFA3/03a
+ocWnzggAl1pmpYYPBpPn9Ywnsmf3dzAkbq5CyQK6teKXaGoS2JdPYvcRAx7q3MLt
+yJ3EbJ90f3ZaBJMXL8mOBk2RDPbQ81AM7AvRG/pvbx8163mL/K1f4ff815hc/LBM
+5JaK5LLNXMNPS8xka/4345FfPWcJEdK3Oo87Tpcsshz6rka3T8DLvWuBcLvPd59k
+rlywgJr0MUKltbJC8+3K3WFBbJC+QixuUWqCwHj+uuPvwKvEmdF5+UXe4tT0TdHV
+xlP8mOV4FXKRdtyKScn3xG+9GMcR/ANqjmyh+X9/UW6I+2K4YtjYUa0Jpqgt99oY
+0RWS8k5A9P04NZtOGyXyhT0tXu58pQ==
+=+5c0
 -----END PGP SIGNATURE-----
 
---Mi8RUyLGxKqxdEB+--
+--dpnicPI7H1IrQ5f0--
 

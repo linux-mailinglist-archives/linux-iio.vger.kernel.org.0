@@ -1,77 +1,77 @@
-Return-Path: <linux-iio+bounces-17537-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17538-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 824D4A7883A
-	for <lists+linux-iio@lfdr.de>; Wed,  2 Apr 2025 08:45:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 43AACA7883E
+	for <lists+linux-iio@lfdr.de>; Wed,  2 Apr 2025 08:46:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B9213B06D6
-	for <lists+linux-iio@lfdr.de>; Wed,  2 Apr 2025 06:44:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 005023A6B94
+	for <lists+linux-iio@lfdr.de>; Wed,  2 Apr 2025 06:45:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 245872327AE;
-	Wed,  2 Apr 2025 06:44:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F21A232368;
+	Wed,  2 Apr 2025 06:46:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="L0Eq3dVU"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hIw3jWvM"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
+Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24157231CAE;
-	Wed,  2 Apr 2025 06:44:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8894C3C17;
+	Wed,  2 Apr 2025 06:46:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743576287; cv=none; b=GqbjU/e7lMJvvmzKPLfk6vmB4dGtjSkRClOsvewgZ1230M7gTOph7NfXBqbp1w4mEYu4pc4e8kgnkHQmeqwdlKwFmxgPorqKwrNixLeIomeoAoVGLYtkHUasWUlFql7A29DXXrZi23/QH79i5pWQzJYFH9X5pKGIGpTG0qPdo2c=
+	t=1743576366; cv=none; b=OKMFr4se7QNoijdhH79PRkWUysAWZWI6NRpnOiyLR6UvqG2aIUHYoGmqJ9mFsgGn1JqfGmLpFLCGpQp88U9WswYYyHEDLXotOnGiJyLo2h6gnZZtedDVzaXW2PsjXKUJM3DUGC80O0h7oHA2a9yJVcj8B0oztb8/mvaUU5eaXgQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743576287; c=relaxed/simple;
-	bh=w59FUeUJ5lPfldVA7sWBkOtZqptARVo6IrhNG/64huQ=;
+	s=arc-20240116; t=1743576366; c=relaxed/simple;
+	bh=NuDLQRs5l0dChPpwOQQfl42OYxc8n6kig9UU+8ovl4k=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=siJUiJodDsaCfP6LJELaPUZiKgV52uHYblfNPRwJjQyOAFYnpgbs6spdS6fjtGKptmULUAa4KjQTfRgNp/4WXYNzUU83YJ3UI5w1GGxN/ShHV5yGnYj4b+UptKMyMuzcuAk7pVo28+qPwqBo0F33bHCXOqOJhTfDVdUfaUQlUCI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=L0Eq3dVU; arc=none smtp.client-ip=209.85.167.47
+	 Content-Type:Content-Disposition:In-Reply-To; b=syaGrVe6uXBQ8Qe28rBXdo4q+GzBRYNTo3m9cLrOJncOmAkiKtMBFqVv7LbWZOgcN9upaDWKhWA6HaOXM6J9hEr0j/1OlPVwzAo87OWP/BGGx8X7IVQHBvE8XzcQi5wCp8gSGnTJwgwLs2wNxJ3XKcBZrkEE7py+CwZEv784jEE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hIw3jWvM; arc=none smtp.client-ip=209.85.167.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-5499659e669so1877428e87.3;
-        Tue, 01 Apr 2025 23:44:43 -0700 (PDT)
+Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-5499659e669so1878441e87.3;
+        Tue, 01 Apr 2025 23:46:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743576282; x=1744181082; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1743576363; x=1744181163; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=LlH9M3OOE5qNDtaUmP7iITtLaH6D+OBrVLCEyeDjplA=;
-        b=L0Eq3dVULScAZfDhvtuQha6vnu8sHnGOUxWVyLSbRsS+fTtXJDp/6BX/YletD1S6ud
-         YT+BDUi3gXYc6dYYd6BqsDP6jEVcigAc49l/5Grvenj76nlFZv/fVu34kQkPNLeRGpo0
-         ISXnynhxFDJrv0z3ifeYA4bN1t286v7CyXaZuNOp0DdZUFRBPikVYf+HBiWIkcl+k2E+
-         CEE+BStAh4lrfdzV84daoyCauNS41t1Gq5BSO5FJA+d7SZpBlfCSo/PQAYC8SiGWHdJQ
-         kfvBjBpnqhAxQqJFUe/FVnRvapYgn/wMyCaLEQoQOUav3ZzX/RcnQty+hEQer4W5SHNx
-         DsSw==
+        bh=4EA3jhMqOTPL7EhQ50J1i67Md0hhqleTtmmrsXC2hOk=;
+        b=hIw3jWvMo6HAqC7Gs/6kK9HUjHYlD4mbaemEP4lHZ91qILQ6U0pwJRt0bn3Q/RXehV
+         kc+Mg4jnTrKu/miOBXHLx1ZmhLjJTH+xKJKL3bL9QAZFQmPf7mgT2BDa04ks61fE9XYJ
+         2r2jPFWAvIvNQcxsrqboEikkdgWaJOLXGJORqzkfZnScCmIVaryJ6vvYxV0cz+Tx3y1C
+         BbNIsO+JX+67eOeMEd39LiCmrd/RSd/KTDe98SPkJRsPJ9tM17VF0E4OlO5ABpJqZWe5
+         7Ccjjl7QU5tw8lkkts/XlyVluCVIKz3hi8udy94mOtlGkxr6uQSWpdoEuGO14UvOFcmR
+         oT7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743576282; x=1744181082;
+        d=1e100.net; s=20230601; t=1743576363; x=1744181163;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=LlH9M3OOE5qNDtaUmP7iITtLaH6D+OBrVLCEyeDjplA=;
-        b=arN0AikuE/Qyqjb2GrXs9kmHwEjKCIjY5YdaCGWFSBT5dR2kzaJ+MO6U32OoVBRh9J
-         BrHCuI7YYJJJqAi+Tr5exBAFcez38rfgpJprenSevROwcn98SZwASQFfby3kl5AOUbI6
-         hWLtJQPeG9XzkMxKvK+A/bdZ9n1VC4N0/AWzkseNJ93hhMyd4MIm1kZiCs4YtcoGQ305
-         6DUy0cElgAqbpN2K8GDr1lfvrAViShonEzOipSDFoFyNaQaiQfm9+0g9TyxBpTSX6qPh
-         YwTsYTuvYWQRivzlo8y9a7lEhAm/yntZN4+PO5fN/RZVRcbjKu+zar6t08xlYXJ2tzdp
-         jwbw==
-X-Forwarded-Encrypted: i=1; AJvYcCV0PjPjR2M0G7Oyp9npRbjdw7azFYkTD0jNmu5F5KaSHvUNo8LtIMR1FHVCZeNTBZY/0utGQDMZir62@vger.kernel.org, AJvYcCVAGU4lfGDoeEXegnlL3YT3JrXtgYqd6PVXvaQNS/IEfTCfvBiu7USHQo4hgipkmE9PkicTRZc2nxp15gpW@vger.kernel.org, AJvYcCX/tjllaRaRGw1MWjctV64MbqLnsSzOElsxFhZRpSW7N2Rki910q4OBmjUf/YHQyaAdNq48cTU0Vj6N@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxbm97k5FbMDXRsiHeL363S3aFl10NaDAaF1Nov3Gxcar5F/cXT
-	w0ublwmMWz8bVIGQMatINUGmCBP5GU/RtIs/G8Mf951X2kYI+6Jw
-X-Gm-Gg: ASbGncu1+1sbAf1fMEySaAP4kztpz8TdzH+6PztzQY1OWxHkMuIrgal/FVNr7J4/Ubz
-	UIJV3UNprlHTrEYZCQz09jAWIFpj8XDzwIu1DZSaOUucGAXA878Qd03cO3oorTZz9shXo0LCbsU
-	EXatBbNk7PEjpxrV4uQIhPQ6ujQe49+cEMi+WqmUIW1w38rOpvA3SRQOIJHUp0VR+z3galHS8KJ
-	yc7fnpRzYSWOXkHu/0B1SKYdtE2GH+yLckmi/YY6r+7zpmz9WkkRhrjv/1WOF7jRpadp28MLPu8
-	UkkBdsIAIapikmSNh+0vExzuXCx4Kicca6NdZb3B79tK4+ags9s=
-X-Google-Smtp-Source: AGHT+IGFT6J2izO71CRheocjLo5evyR65cdzQ6iy3ERf8IGLMKjqQ1niS6wikLh0W4i40nsVElLc6Q==
-X-Received: by 2002:a05:6512:3c9a:b0:545:2cb6:af31 with SMTP id 2adb3069b0e04-54c0a4bfa6amr1552669e87.15.1743576281785;
-        Tue, 01 Apr 2025 23:44:41 -0700 (PDT)
+        bh=4EA3jhMqOTPL7EhQ50J1i67Md0hhqleTtmmrsXC2hOk=;
+        b=dtqYgFdx3bKSXpbl1jwji7HIlSJM+6H6pr8UlaauY+HHWJKu0agZQQdI9opq738wd/
+         FRKNhNO98lEDsrA6YITXQ1IsBcakWIMptQcCOLy8H813NBqgKBc9OQBVSVq584kjIWTU
+         TT3vkJKgr/uEt5kSZr5jtnAGDLz76pR8qdnvSfCPbIxq60+bTjUBkiNL807TkMOqnyn5
+         nBBFFmpcU3/mWsAKq22wfw027vxsJaNfyNkn3tsnFHNkIGTm0ihHYbKl+Nov0DhHu0BJ
+         /U4uiGrfe9JzA6d6LqNFU5PunIw7ocZv+cboDy6FFaRDHfPMReRD8YVDB2RhxOP/U/lh
+         UF2w==
+X-Forwarded-Encrypted: i=1; AJvYcCVZ83Md9e54LNtacLJbRMfuAI5wT4tQAvEtF+I3VPd57Vc8cXGiVDfM941qvT/8eghsCnwO3CukM5af34+g@vger.kernel.org, AJvYcCX2mbG8Xsm+5D+o1iPmgIsbaAKF8SqBvjN2CwrfFxxiyst66yK/JO0ywzhSvCDGPnreKC2PKdy2QUFb@vger.kernel.org, AJvYcCXgNKQfdbWp4TPGbJ+MaIAOtVJV6okcRo9lVr65rDzG7/EhkHo/UgSq/OCnFEMlq1eemp/b9Oipd5SE@vger.kernel.org
+X-Gm-Message-State: AOJu0YyUcnD+jCKo3tWHkp5RngeJsB8uRF1P/zDoOmXxeAPU/27m8DqD
+	t90Xf90pr4KvPdpQAevwoOgWx7ieDWw/694i4dgjcJ5MCeMLTfybnnqGiw==
+X-Gm-Gg: ASbGncugE3H/ghj6Q82S3izxtfBQBbm7ChwFmCWgmoP+GLyI9SlnWFogZRIyZV4MOsj
+	j0iBT13sHQkon9hM7pPrBTyP0jCEOOvPO3bEcfisMNsu9XM1WUxUWEQnvJKio2O0o0DWBHT6T7M
+	mR/OUJpGm65oNN3SaMzQxe2d1HrduBn9wS32sdxNDwCdzptAdV9wCjNdyN3xP8zkBLrX0vZi3hp
+	I/2OFMbt9/AkvliSyLLcksRjT4HOEnKAylGr7QgOtJ5PHHLTtr1C5gplLa2q3kEzRlJPsKdkCq7
+	Fiir7GAsL0xv+PEEyBzFan+a6JuwnRez6T+QrUbHMmFGeP5Ljcc=
+X-Google-Smtp-Source: AGHT+IH5GCpE6QqU5Mq/4YURzGIUmuOkOuIthVzMwLwK3aArcaQtDZ/O+W0/TUDnugU1nkzcTIbJcQ==
+X-Received: by 2002:a05:6512:3b25:b0:54a:cc76:1676 with SMTP id 2adb3069b0e04-54c0a52846dmr1605252e87.44.1743576362479;
+        Tue, 01 Apr 2025 23:46:02 -0700 (PDT)
 Received: from mva-rohm ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-54b094bb4f8sm1598873e87.36.2025.04.01.23.44.39
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-54b094bb0e1sm1551511e87.52.2025.04.01.23.45.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Apr 2025 23:44:40 -0700 (PDT)
-Date: Wed, 2 Apr 2025 09:44:36 +0300
+        Tue, 01 Apr 2025 23:46:01 -0700 (PDT)
+Date: Wed, 2 Apr 2025 09:45:56 +0300
 From: Matti Vaittinen <mazziesaccount@gmail.com>
 To: Matti Vaittinen <mazziesaccount@gmail.com>,
 	Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
@@ -82,8 +82,8 @@ Cc: Jonathan Cameron <jic23@kernel.org>,
 	Matti Vaittinen <mazziesaccount@gmail.com>,
 	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 1/5] dt-bindings: Add ROHM BD7970x variants
-Message-ID: <0a114565e4de52bf8f98c4f9d17943e5148b0112.1743576022.git.mazziesaccount@gmail.com>
+Subject: [PATCH 2/5] iio: dac: bd79703 Store device address to 'address'
+Message-ID: <e53cb4120d16a3c678e1f391b600af630d6767ce.1743576022.git.mazziesaccount@gmail.com>
 References: <cover.1743576022.git.mazziesaccount@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -92,124 +92,77 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="97tzLPq4bVak8Y3T"
+	protocol="application/pgp-signature"; boundary="9MsS00R+CXwbngT5"
 Content-Disposition: inline
 In-Reply-To: <cover.1743576022.git.mazziesaccount@gmail.com>
 
 
---97tzLPq4bVak8Y3T
+--9MsS00R+CXwbngT5
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-The ROHM BD79700, BD79701 and BD79702 are subsets of the BD79703 DAC.
-The main difference is the number of the channels. BD79703 has 6
-channels.
+The ROHM BD79703 needs to identify a channel which we are reading from
+in the SPI transfers. This can be seen as an address for the device.
 
-The BD79702 has 4, BD79701 3 and BD79700 2 channels. Additionally, the
-BD79700 and BD79701 do not have separate Vfs pin but use the Vcc also
-for the full-scale voltage.
+For the bd79703 the address is nicely aligned with the channel number,
+so the driver uses the channel ID for the SPI transfers. This, however,
+does not need to be the case. The iio_chan_spec has a separate 'address'
+field, which we can populate directly with this information.
 
-Add properties for the BD79700, BD79701 and BD79702.
+This helps adding new ICs like the ROHM BD79702 where the channel ID is
+different from this address to be handled by this driver, so we don't
+need to have separate, IC specific mapping for channel numbers <=3D>
+addresses.
+
+Make the 'address' field in the iio_chan_spec to contain the SPI protocol
+address for the channel, and use this value in the transfers.
 
 Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
 ---
- .../bindings/iio/dac/rohm,bd79703.yaml        | 33 +++++++++++++++----
- 1 file changed, 26 insertions(+), 7 deletions(-)
+ drivers/iio/dac/rohm-bd79703.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/iio/dac/rohm,bd79703.yaml b/=
-Documentation/devicetree/bindings/iio/dac/rohm,bd79703.yaml
-index 188b00333dfb..c00fa50e42e8 100644
---- a/Documentation/devicetree/bindings/iio/dac/rohm,bd79703.yaml
-+++ b/Documentation/devicetree/bindings/iio/dac/rohm,bd79703.yaml
-@@ -5,19 +5,26 @@
- $id: http://devicetree.org/schemas/iio/dac/rohm,bd79703.yaml#
- $schema: http://devicetree.org/meta-schemas/core.yaml#
+diff --git a/drivers/iio/dac/rohm-bd79703.c b/drivers/iio/dac/rohm-bd79703.c
+index e998ab51052e..236aa98bf005 100644
+--- a/drivers/iio/dac/rohm-bd79703.c
++++ b/drivers/iio/dac/rohm-bd79703.c
+@@ -67,7 +67,7 @@ static int bd79703_write_raw(struct iio_dev *idev,
+ 	if (val < 0 || val >=3D 1 << BD79703_DAC_BITS)
+ 		return -EINVAL;
 =20
--title: ROHM BD79703 DAC device driver
-+title: ROHM BD79700, BD79701, BD79702 and BD79703 DACs
+-	return regmap_write(data->regmap, chan->channel + 1, val);
++	return regmap_write(data->regmap, chan->address, val);
+ };
 =20
- maintainers:
-   - Matti Vaittinen <mazziesaccount@gmail.com>
+ static const struct iio_info bd79703_info =3D {
+@@ -82,7 +82,7 @@ static const struct iio_info bd79703_info =3D {
+ 	.channel =3D (_chan),					\
+ 	.info_mask_separate =3D BIT(IIO_CHAN_INFO_RAW),		\
+ 	.info_mask_shared_by_type =3D BIT(IIO_CHAN_INFO_SCALE),	\
+-	.address =3D (_chan),					\
++	.address =3D (_chan + 1),					\
+ }
 =20
- description: |
--  The ROHM BD79703 is a 6 channel, 8-bit DAC.
--  Datasheet can be found here:
-+  The ROHM BD7970[0,1,2,3] are 8-bit DACs. The BD79700 has 2 channels,
-+  BD79701 3 channels, BD79702 4 channels and BD79703 has 6 channels.
-+  Datasheets for BD79702 and BD79703 can be found from
-   https://fscdn.rohm.com/en/products/databook/datasheet/ic/data_converter/=
-dac/bd79702fv-lb_bd79703fv-lb-e.pdf
-+  and for the BD79700 and the BD79701 from
-+  https://fscdn.rohm.com/en/products/databook/datasheet/ic/data_converter/=
-dac/bd79700fvm-lb_bd79701fvm-lb-e.pdf
-=20
- properties:
-   compatible:
--    const: rohm,bd79703
-+    enum:
-+      - rohm,bd79700
-+      - rohm,bd79701
-+      - rohm,bd79702
-+      - rohm,bd79703
-=20
-   reg:
-     maxItems: 1
-@@ -27,19 +34,31 @@ properties:
-=20
-   vfs-supply:
-     description:
--      The regulator to use as a full scale voltage. The voltage should be =
-between 2.7V .. VCC
-+      The regulator to use as a full scale voltage. The voltage should be
-+      between 2.7V .. VCC. Not present on BD79700 and BD79701.
-=20
-   vcc-supply:
-     description:
--      The regulator supplying the operating voltage. Should be between 2.7=
-V ... 5.5V
-+      The regulator supplying the operating voltage. Should be between
-+      2.7V ... 5.5V. Is used also as a Vfs on BD79700 and BD79701.
-=20
- required:
-   - compatible
-   - reg
-   - spi-max-frequency
--  - vfs-supply
-   - vcc-supply
-=20
-+if:
-+  properties:
-+    compatible:
-+      contains:
-+        enum:
-+          - rohm,bd79702
-+          - rohm,bd79703
-+then:
-+  required:
-+    - vfs-supply
-+
- allOf:
-   - $ref: /schemas/spi/spi-peripheral-props.yaml#
-=20
+ static const struct iio_chan_spec bd79703_channels[] =3D {
 --=20
 2.49.0
 
 
---97tzLPq4bVak8Y3T
+--9MsS00R+CXwbngT5
 Content-Type: application/pgp-signature; name=signature.asc
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmfs3NQACgkQeFA3/03a
-ocXOewf9EwridfLIvSb5efM+QpzkBC6NGFig8m0ZjdaOStYtJC5xq/zAnIwkT/gZ
-RHoKpoOOTntAacbY87m5YJ1Gutksp39TQ/qGzpum+EYuXt4wGxdcwPx+1FetgQ1K
-iO5bEJAMpIskc+6lNnC905YIaRSM7Zus6lHDMqyCK7bYpLlNzFPx/nQBc1vd5Dd6
-ru5Jh3R3qB6yqC5nDGRUqR7xK9Pr3i09pQxBQYvd3Z6WFIEiiXKC7tYCOO6Lnu79
-xGiQe+c8LbuaEKY/djUnu9PBPJTv1lrP3o5z+vXGrpbdIaPPOoHqgUedAR6sRLZj
-/VV2zUB3ErYAbQuA8Ra0V1t1mcqnNQ==
-=MxLF
+iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmfs3SQACgkQeFA3/03a
+ocXcqAgAr1E03RS2gse8NPhoymcVGw0Qu+fG8IYXPGUGcOpLUvrS4kXr6GUMpjr3
+UWA/fsI03TeotrtnB3qxvvWsI/TT7B6aARbIjD0h/Uysr1tldPoetg9h4gsM6CU4
+KH3aNpCjjjMlagsR8pt5dLS/0rNhqH6/pvpMgf4h0L/JG5Bs51aK3IAk6vENpJ9C
+Vy8+2kvh4UGtIVfJt6BVo7v5Q8bOk6GREiftumHgEOIsNizYgWFJ6b2KFQycAvRc
+OOPDbeYScJJUugEWcQOb8P15CFKZVjHBa2SY2GmZmn+NiK7Sw2YQ2i1u9UU/9b9g
+xMUDRYpDQuVlc60SUP4i5zxRvGHipw==
+=5cZJ
 -----END PGP SIGNATURE-----
 
---97tzLPq4bVak8Y3T--
+--9MsS00R+CXwbngT5--
 

@@ -1,48 +1,48 @@
-Return-Path: <linux-iio+bounces-17585-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17586-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92D2BA79CD6
-	for <lists+linux-iio@lfdr.de>; Thu,  3 Apr 2025 09:23:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D94BEA79D58
+	for <lists+linux-iio@lfdr.de>; Thu,  3 Apr 2025 09:48:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 365727A10F1
-	for <lists+linux-iio@lfdr.de>; Thu,  3 Apr 2025 07:22:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 556DB189376F
+	for <lists+linux-iio@lfdr.de>; Thu,  3 Apr 2025 07:48:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D049B2405F9;
-	Thu,  3 Apr 2025 07:23:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 213A61C5F13;
+	Thu,  3 Apr 2025 07:48:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y2AE6PEO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZA4oPdOj"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85A5F23F42D;
-	Thu,  3 Apr 2025 07:23:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D05C6DDA9;
+	Thu,  3 Apr 2025 07:48:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743664982; cv=none; b=IxQLaM4chgFpAL0YfupPcPuaH/Uj/oJm5r2+jRiVfOgeh3RE/hjH1AO6WjFG8zMzFIhbIrkShxQaBVuwtHgo9AqF8T6bPkzS6fykLBz9sc/KCYqvS5BK7+HF39VFLgagFBQ54M2nEk0IRNUtLevWVdaxxZXAaLCjN2taUulifig=
+	t=1743666507; cv=none; b=Z1d1F39D1f1GrMhqpS5RpyH6s9gevscl4jyZtcJPCWZZ4q9wpmz5rOzXEF88SKAmDXdIOVbQYhTihGpWg0EZDB7/9kYoZi9NHeWtRb2039hkyK0bCBIGcpnuoCGO3ZD2OFH7rASbNKxeROeNtORGz0ZgtXPD9et8Q6+V99CfyD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743664982; c=relaxed/simple;
-	bh=qF/6twPYnAMUicUtlKfxUrETUTqICv90PRL1kTQcIdI=;
+	s=arc-20240116; t=1743666507; c=relaxed/simple;
+	bh=L/aqGF82Kjmfo2N3Fk5MCCaP9uBR3BX3/YNwgDfINVE=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IgotVd/Cj9ViZl362yiEy/3iPPB+EDaYcq5uj+adiQxTCo2kk/NkGXaQGbQ3it+KeRRnBazoGikjkbwkHnwEsst/IprXW6ZENLwkh39QxeS2vS++ztv1Nf68rSXgmQ4vyXNnoTa2pKRiK6pjk0mY3kLr4MBEQnh3CiNQy+ZghQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y2AE6PEO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8A7FC4CEE8;
-	Thu,  3 Apr 2025 07:22:58 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=WYDuEsezF3EQX+VmdkPVWhfxBRI13zI4332TG+N98YubNRJQenld/tNQlIuiHGgOUMTzIo21dH47GcH1Vo2913Kt6ApO2zfpZ32M4QMPxWbI6OhqrAW84Q1aRgMOfSNcNBl1wJWjMtCpuD3Zb7fpncMkHYeaJwBYBpXIyKGSfB0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZA4oPdOj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83F94C4CEE3;
+	Thu,  3 Apr 2025 07:48:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743664982;
-	bh=qF/6twPYnAMUicUtlKfxUrETUTqICv90PRL1kTQcIdI=;
+	s=k20201202; t=1743666507;
+	bh=L/aqGF82Kjmfo2N3Fk5MCCaP9uBR3BX3/YNwgDfINVE=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Y2AE6PEOUUiKwlR3zBFbFrxfG2LV1In1L/mMvbDKX/5caSct69Chucp1EiVq9nHzD
-	 ZgeeQfqpmxLd7fSVWRbOV0SBdTgLI2HDnhkBfnb4ZYEQWewZ3SJcivPHJLL3BrlMRt
-	 esmULP8vA+j5NzvFVG/DldPO9CMNzc2UBhF/Ft+c3+2tWwwAQjIqzUZCmU5vVTIWVV
-	 A3YdQz0siJH9dE03Kz5HuHTOJWiZ4msioJJarDg2xKrlqP7PiXc86g867pWFYZbqpG
-	 wkD8JDfALmgaYdN4nV+8WMM8L7OKfn2yxXt3j6b3wDWbGZKxxm2i9pi3HCPJvkZIxB
-	 IfVZIk20y6v3A==
-Message-ID: <6b3caec6-9fea-4d25-b05c-2578f973a36c@kernel.org>
-Date: Thu, 3 Apr 2025 09:22:56 +0200
+	b=ZA4oPdOj3n3DgVUvEgCT1zqOl+GhvhPEkhYuY+HcdPapCNoOIsVX55b/SLWQfPaLV
+	 /9rQKc4o+iV8XFdGZmThnMw6MuTf1TcA+J3kJWVrKrp8GjrgejySEWn7KaEj0fCrqX
+	 8u3MmKKjC2nHVgcRbyvwDc4qHkqmoBNFPFDmBrbXncd/XjW44ZwCTloaUDB/jI/UGH
+	 yeMnkF7xLHxBHvILblHe/ZYR1JztYe03n41lyr5nCpjss/CZdSE01gSdvvLVYiNBaJ
+	 IejnpR9UpmEgyaRltn8ZIf0WLK7CcGSi18LOaMCkKSAM+/D+uNCBAKu3uJP/af8w/A
+	 XolKg541AQLHQ==
+Message-ID: <537287ab-4b10-405b-a539-bf3a68a6f4b8@kernel.org>
+Date: Thu, 3 Apr 2025 09:48:20 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -50,16 +50,13 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/3] dt-bindings: iio: dac: Add adi,ad3530r.yaml
-To: Kim Seer Paller <kimseer.paller@analog.com>,
- Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
- Michael Hennerich <Michael.Hennerich@analog.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- devicetree@vger.kernel.org
-References: <20250403-togreg-v3-0-d4b06a4af5a9@analog.com>
- <20250403-togreg-v3-2-d4b06a4af5a9@analog.com>
+Subject: Re: [PATCH v1 1/5] dt-bindings: add winsen to the vendor prefixes
+To: Gyeyoung Baek <gye976@gmail.com>, jic23@kernel.org
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, lars@metafoo.de,
+ gustavograzs@gmail.com, javier.carrasco.cruz@gmail.com, robh@kernel.org,
+ krzk+dt@kernel.org, conor+dt@kernel.org
+References: <20250403053225.298308-1-gye976@gmail.com>
+ <20250403053225.298308-2-gye976@gmail.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -105,23 +102,42 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20250403-togreg-v3-2-d4b06a4af5a9@analog.com>
+In-Reply-To: <20250403053225.298308-2-gye976@gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-On 03/04/2025 07:33, Kim Seer Paller wrote:
-> Document the AD3530/AD3530R (8-channel) and AD3531/AD3531R (4-channel)
-> low-power, 16-bit, buffered voltage output DACs with software-
-> programmable gain controls. They provide full-scale output spans of 2.5V
-> or 5V for reference voltages of 2.5V. These devices operate on a single
-> 2.7V to 5.5V supply and are guaranteed to be monotonic by design.
-> The "R" variants include a 2.5V, 5ppm/°C internal reference, which is
-> disabled by default.
+On 03/04/2025 07:32, Gyeyoung Baek wrote:
+> Add winsen to the vendor prefixes.
 > 
-> Signed-off-by: Kim Seer Paller <kimseer.paller@analog.com>
-> ---
+> Signed-off-by: Gyeyoung Baek <gye976@gmail.com>
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+I am pretty sure you sent v1, so this is v2. And if this is anyhow
+confusing, then just use standard tools - b4 - which would do this right.
+
+
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+
+
+---
+
+<form letter>
+This is an automated instruction, just in case, because many review tags
+are being ignored. If you know the process, you can skip it (please do
+not feel offended by me posting it here - no bad intentions intended).
+If you do not know the process, here is a short explanation:
+
+Please add Acked-by/Reviewed-by/Tested-by tags when posting new versions
+of patchset, under or above your Signed-off-by tag, unless patch changed
+significantly (e.g. new properties added to the DT bindings). Tag is
+"received", when provided in a message replied to you on the mailing
+list. Tools like b4 can help here. However, there's no need to repost
+patches *only* to add the tags. The upstream maintainer will do that for
+tags received on the version they apply.
+
+Full context and explanation:
+https://elixir.bootlin.com/linux/v6.12-rc3/source/Documentation/process/submitting-patches.rst#L577
+</form letter>
+
 
 Best regards,
 Krzysztof

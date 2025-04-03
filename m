@@ -1,203 +1,198 @@
-Return-Path: <linux-iio+bounces-17564-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17565-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 898AFA79925
-	for <lists+linux-iio@lfdr.de>; Thu,  3 Apr 2025 01:56:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38EF7A79B26
+	for <lists+linux-iio@lfdr.de>; Thu,  3 Apr 2025 07:16:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 42FAB170742
-	for <lists+linux-iio@lfdr.de>; Wed,  2 Apr 2025 23:56:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3B7CA3B678D
+	for <lists+linux-iio@lfdr.de>; Thu,  3 Apr 2025 05:16:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 614651F891F;
-	Wed,  2 Apr 2025 23:56:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F3C918FDD8;
+	Thu,  3 Apr 2025 05:16:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="dpH1DHpc"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NNB/FTcK"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ot1-f49.google.com (mail-ot1-f49.google.com [209.85.210.49])
+Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61DBA1F8742
-	for <linux-iio@vger.kernel.org>; Wed,  2 Apr 2025 23:56:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 323ED8460;
+	Thu,  3 Apr 2025 05:16:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743638187; cv=none; b=MPKItYPokuvFEozbyJNndx72fOibNhA51iA6+ZNlNI0x1Nz8JBHyzgMlh7S7Wj5Iwsk6g3HShxO0EpfQfybw9tACPyEx0yjHr0C8Mmq/zvEGTPxeOVSVnYky+o7cz0NvTz06YC0C/8OjtCPJz6xg3zjFWWoYiQHmjMnz0Xl6D4k=
+	t=1743657409; cv=none; b=m4cL4ak+bupfClNRVjcsAgujjtt9v9GItoanzPBU8mMrkgp5cLS8SnUkA4rNCdm/CU0hnjoTloBp8kaQ1nSby21DByCdxeWlJe8QtiMnM4+xGOEiQjkZyG6VAnllNgb4syxJrcVUK1sfikr2C9tlB4Jp6R+6V3AAXw05H+Rsbr8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743638187; c=relaxed/simple;
-	bh=uiizrBkkBTqW3XgNsdY+NKHr9C+xFnQzIJMmto1lSL0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=uLI0Wl/WOHo6C1iY5ipT3AKwSoS7sRKzaJjL19GO2O+/rZZPTUzRWUS/G9UfTUhpiCTPy+/4+lMGrWldxp58Ov02BJj0MOYAyeRZfMp6PRMrLgbLuUpTWgO6WM3Ia1jzmlNN2Omh18iJ2cYvPE3LXM5/nE0THeLd9NbymiF60qw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=dpH1DHpc; arc=none smtp.client-ip=209.85.210.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ot1-f49.google.com with SMTP id 46e09a7af769-72c40235c34so136876a34.3
-        for <linux-iio@vger.kernel.org>; Wed, 02 Apr 2025 16:56:24 -0700 (PDT)
+	s=arc-20240116; t=1743657409; c=relaxed/simple;
+	bh=lNEwq541WDDDm2IgFe5/GIfhWT4xyzg68oQsT7TD30c=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=i9lyG7ikv9WMHs1/4q+KxrIssSRQxIwjaoXz1s25qzEk3WWjIUl2FrwJZvvsXhxBW2k7Mc/WgxTy20pa7WOEjhlpM1f0SVidaa9PrM1a46x631fpHZ2NuOWoLmG0+69CZgLT08MkvTsDogmeYslaEaCYDNi28cVHLnuM6VaJz94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NNB/FTcK; arc=none smtp.client-ip=209.85.208.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-30db1bc464dso4434851fa.0;
+        Wed, 02 Apr 2025 22:16:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1743638183; x=1744242983; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=U84fsGmbM0MYlvtDoSFJcWVBHsJh/MexnRXMIlE8VF0=;
-        b=dpH1DHpca1nitaWCr18zuw/64GnG8wadNesVW/dntc5vV1MnXG+zfR+YzlftRCoPFR
-         vcSIltzhihU6rcgc79F71KTPsms/2qI/ZjfM1Qi3D/zU5M/5P96z6TK1+jjWK0EEifaU
-         vZEQ1NYkkDUojDuszZkLxVlGq3/HrQMuvLUGXYFNWpwKObh9anTzUGOgvBl8Tl79FnFs
-         GcPsplnsqWTkhDxLsD2AAHflF/dlGDL4t4ZMGcSQ6DmhayFP8bJ5WjsRMqhhAx4pk5w6
-         3+akVkD5S0VjJ1SyyHlNR/XnukD8qa+lSWO4ZgWhfBEIN8ugtJLj6EQpssgAsu/nKwf3
-         SIMA==
+        d=gmail.com; s=20230601; t=1743657405; x=1744262205; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=lUnfrWM8O0y0Hox6uRP5nfk3TnR4bWTw87hOsdjgoNg=;
+        b=NNB/FTcK+tMMyZ6dUau4j02MiRiTHzcKpMSXCDLBr1F5xUwfVQfZDj3cgn8MzwcS2I
+         qKHgMwfRkXmEmyPIPnOLRrHcem3UxpMwcAxzQoqEtbLeCTFJH4kiOQM+hVodU9Np1Wmh
+         6xbGPEjiANlS3p9P+v4eadfqwdIUOaEXZSByfUIccDuaiw0giRgUOfQTQiepj1naECP9
+         yK5tpvRLtYF8N41eWVVaxGul/+jx5lQRDzk6uEBBZOhPFREfeo/Sp96v4pBuWdOrw93p
+         mkbRy35rGVUzkaeGIShPIIS634MVxrYBgdmjvSSyWlIWeQnoZLP5OgPIA6nUqsfW8X5J
+         HoBA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743638183; x=1744242983;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=U84fsGmbM0MYlvtDoSFJcWVBHsJh/MexnRXMIlE8VF0=;
-        b=MBT1BHdT7kXizI2XS2PWWpFJPP+FuaXiWCBMrtCfK+wyNAAKg4o9HpXwTp7+uPCHkd
-         roQdrQhqkdYtKdai2Q69zfA0zuDatioA9sbTlhmJVrI+NI4fc2oo4mHtm8/x7V0v0U0t
-         x2OBoGZwyN7Cac+7W7BQ9otSgDVRAeXZYPFvh9Nt1CuruRrslHiCReCzQMHUd0gDQfpf
-         JQM7+33c0vvL0UKSoRNBg92QrhWzSiIgVtR7mEbfrwVz4uDxIm8b6MQH3DwNFbGkM5rd
-         K3eWrIWIqSeh/huyYEXt3JjLTuENAKMskq1YSIHMmIB+AT6cX/AAPpbq+tUQ/ep5Rp76
-         Xbag==
-X-Forwarded-Encrypted: i=1; AJvYcCVlml4US4+vxHF17yd+ks+U9vbJNVctj+RRGMZfo7GnK+GvBDZ17IMORDJmla3KOtDw/qcY1M4+eW8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxQrX/2DtUe1YaNraxmmp//JFjL0TyMC+xVfWTNJFNbySEm7KVA
-	E62tGPeqzi72/88GCXhiHRVy3SvCW5TDlvTk+VOCKc0qwd/zApQr5GkaX1TNnEs=
-X-Gm-Gg: ASbGncuWOEhMWWySJt3xMEvueEHQBHMcv61QN1XojfsyMT8dvRT/DrW3tuhZQo/aTfB
-	9Y71nVwesMDsKpv808a4Lwfrdn7FDtWK0QDsYr6fty/DX4NKyDcJgshuafw+wl0judH1Gx3BG00
-	eGWcRc/wP05zGjuZuHqV2oqkO31ldTiuwGtxAYYiBSHhEhvKXM9Pe1SgBwgueAYnxcYkGk+SuYw
-	v4/yOBzdTrYvzGEnAbTt/uV927426+rqRIdA0S08EfxzxD0EXKTyulJwYL6gqCv5cKKUfivHAHB
-	/fRDouF7T4naS0tj0cPYpzENt9pr8NaJSDYlaUzLoIjG93K7s4nOoifyY730kBfQt+nVOMoU2ju
-	U
-X-Google-Smtp-Source: AGHT+IHxwavlcu3eVlrKaPi0mNNmlbrWHSl3n8JBOTFFwrww1D/K6A1MV5UrnbV0rAf1H/jNtJ/cAQ==
-X-Received: by 2002:a05:6820:1849:b0:603:fada:ac47 with SMTP id 006d021491bc7-6040b699933mr372311eaf.1.1743638183135;
-        Wed, 02 Apr 2025 16:56:23 -0700 (PDT)
-Received: from [127.0.1.1] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-6040c58f694sm46205eaf.30.2025.04.02.16.56.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Apr 2025 16:56:22 -0700 (PDT)
-From: David Lechner <dlechner@baylibre.com>
-Date: Wed, 02 Apr 2025 18:55:58 -0500
-Subject: [PATCH] iio: adc: ad7380: fix event threshold shift
+        d=1e100.net; s=20230601; t=1743657405; x=1744262205;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=lUnfrWM8O0y0Hox6uRP5nfk3TnR4bWTw87hOsdjgoNg=;
+        b=To773Nr74UJOhCeDiHyP5hhfWjaVRtf283pRSbQakfYH9ha6VwDfpKd+nce0MtuREE
+         IH9igaEio2NSU9lYZMflVqoOHRyMo+lQmFD+tSswOJvWAQ7VHyqxUQ2n3k6NcGXzPFQa
+         LcMUFi3+U3/GUzlJ9olmnaZImV7p/B4X9Q2eSA4AG9cr3CNv0FcKAJPIV8uHDXDlnhi8
+         Ob9dlQpBOemqbfJdWiLO5thW1uxcDHNaGU8wCviKvbZX8eBkHzGnOpuMBkf2/fG5J65C
+         EF95GwF7kDAe2iEMsBn61GZ0oM0l+Mag+57D6jSuuRtgxXtlbqm9PNPf1aAFU/D7bIVI
+         EpCQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVQr5dbfbI5jdckJG4r5ztbYNBqQreHObGvssDvm4PbjdOUUzgN/KqnX45T88w6IsCZnXx3b9UyMWMs@vger.kernel.org, AJvYcCVqIFa8vVOw6rJIq1lNmhdUr1Nr8nuAHlqQDyvVzJa4maERMh9X6GuoQ+jfS2R6l2xWcBlulK9tq45M@vger.kernel.org, AJvYcCWNv/U8Tm8m/D+SmUIRVaKEjgsgy+3elbj2b0OOt2+vqU9p07gmE93a6iihQEn/SKn5/bnj1naPWmOqHS6F@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy+r/kaCwb5QcNhWpjroElLvxtRMqcy8ReRi+TFTxCDv22yEkst
+	23pJaVj0TclpOiZRkhP/iCj0CYQd7h2x5HeTsQTdk8GFv54zxgMW
+X-Gm-Gg: ASbGncsAojDXjcrLyrjVn4tbA5w0cj6DRylsEh4WSiZ0isw9LobTPWbRhi/+q5QkgnQ
+	ehidnNeQgJxeDhDrn4NsIv13IVBNDOEw0dDZFKg9F0gFpmO4FX7B073P4eHI/jyohoiQTWVr8d3
+	KNfiezYwgHa+lTtWu/EFZNM4PXY9tj28h1Y9+upGmu0quGVZIdzXVr328eoHAeEEcRPtWjwHeYl
+	nsPyySpGGAfLnbd7msLGEgCrbbmMWm66t0xVmo3CMv4ng73ZJvtYYQPRmHm4PSVAVCZ5I/YhSq9
+	SKN9q8OaLlCzbCdLKoO3s0xCa/ZSvDwegF63HsfqkhYvo+CP4EGN1HISP55DLCrhtWDRG4z6WN3
+	UnckdCe8pQI4WpVL7Qx+Jvd1J0Q==
+X-Google-Smtp-Source: AGHT+IGo6U30lLCPfVEYuHbUU2svN+XQS4RolYNy9mZ6oSYmU0C6mOzGLsPpQarJYB1Hd0HHA1mvyw==
+X-Received: by 2002:a2e:bc8f:0:b0:30c:4610:9e9e with SMTP id 38308e7fff4ca-30ef91cd073mr17825741fa.35.1743657405008;
+        Wed, 02 Apr 2025 22:16:45 -0700 (PDT)
+Received: from ?IPV6:2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703? ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-30f031bcdb1sm828641fa.80.2025.04.02.22.16.43
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 02 Apr 2025 22:16:44 -0700 (PDT)
+Message-ID: <1189b539-adb4-46f9-9783-c6577b57a304@gmail.com>
+Date: Thu, 3 Apr 2025 08:16:43 +0300
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/7] iio: adc: ti-adc128s052: Simplify using
+ be16_to_cpu()
+To: David Lechner <dlechner@baylibre.com>,
+ Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
+Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen
+ <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Nuno Sa <nuno.sa@analog.com>,
+ Javier Carrasco <javier.carrasco.cruz@gmail.com>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <cover.1743573284.git.mazziesaccount@gmail.com>
+ <feeabbfd3d3916c7497dfd94423ff83ef5f654f1.1743573284.git.mazziesaccount@gmail.com>
+ <4c3e0d23-2582-4acf-8e90-542c8f8c385f@baylibre.com>
+Content-Language: en-US, en-AU, en-GB, en-BW
+From: Matti Vaittinen <mazziesaccount@gmail.com>
+In-Reply-To: <4c3e0d23-2582-4acf-8e90-542c8f8c385f@baylibre.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250402-iio-adc-ad7380-fix-event-threshold-shift-v1-1-ad4975c296b2@baylibre.com>
-X-B4-Tracking: v=1; b=H4sIAI3O7WcC/x2NQQrDMAwEvxJ0rkB20qb0KyUHJ5ZrQbGLZUIh5
- O8VPcxhYNg9QLkJKzyGAxrvolKLibsMsOVQXowSzcGTv9JEHkUqhrgZ83gnTPJF3rl07Lmx5vq
- OqFlSx/Xmpri6MNKcwOY+jS3+Xz2X8/wBsgAs0XoAAAA=
-X-Change-ID: 20250402-iio-adc-ad7380-fix-event-threshold-shift-b614db1a307f
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Michael Hennerich <michael.hennerich@analog.com>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Julien Stephan <jstephan@baylibre.com>, linux-iio@vger.kernel.org, 
- linux-kernel@vger.kernel.org, David Lechner <dlechner@baylibre.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2994; i=dlechner@baylibre.com;
- h=from:subject:message-id; bh=uiizrBkkBTqW3XgNsdY+NKHr9C+xFnQzIJMmto1lSL0=;
- b=owEBgwJ8/ZANAwAKAR+K+IyC93wDAcsmYgBn7c6PQwT/FsqVTGfQ+Cy2P7sFYLqv9X/lN5muy
- RCBYSwd77yJAkkEAAEKADMWIQSKc9gqah9QmQfzc4gfiviMgvd8AwUCZ+3OjxUcZGF2aWRAbGVj
- aG5vbG9neS5jb20ACgkQH4r4jIL3fAPjig//aH3rHftvitgIbG1fMeJqdqD5hG4fTb59GJse2Wm
- nAdW0NWgLl1M0OyQTrlAAKqLPB6NTx3Ewb0youn4YLBnQCGwWWD8AwBkbzl93uPDZn0dO8VSPdL
- pQ/Gh91TFDZjXM1YehCUPc+3o/9NAhTjip72kktBi+KbTaTbv1uQSwsauADVjNcF3Fgz30tCYKV
- Fb0NW3SuidglwqTWn6+cnT7KYjOtB/ruuI16GvT1IjEa0JR8EPFpVdL8CCF5ZZxSfKu56zbAzg5
- Y0k4THWlgpk2/Jj0tYlhNCmRN/7QjwDd/nAPl5p4LjewYjFFzs/3b6RM5dAG7ACQLPpP78ryCpM
- 85wL3OCNA6SW7Il7qJi1V8AmsSq3h/nCApdWlQNnfDA5SKmLwj/ipmvoXu/nZ+TOEDZ3yolDMD/
- 3x2nUCIJqRoHL2A2q8St7bjyXOPi6pierP6gELmyxbnkvtkb7iskE6jZDs7YpT7PaT0w+fw0CYO
- 1C2UqcJCYii4AO1EjnXHolb6IX3n4I9boWzZJO83rioQXqUICb2BAQPIh6TghTLqsuNMq7if/KB
- kD5LhYswrsc1UxhuZVGgoGUssAf8lAnWDsvKZ8YXA4rLLsD7XPwO8gWlnbyw2noUEtXWpBQa+Ip
- UFWCkcmmI84VN/ozIbiZwLqo6tg3rtqwalsCMOtjfhrg=
-X-Developer-Key: i=dlechner@baylibre.com; a=openpgp;
- fpr=8A73D82A6A1F509907F373881F8AF88C82F77C03
 
-Add required bit shift to the event threshold read function to get
-correct scaling.
+On 03/04/2025 00:04, David Lechner wrote:
+> On 4/2/25 1:09 AM, Matti Vaittinen wrote:
+>> The register data is 12-bit big-endian data. Use be16_to_cpu() to do
+>> the conversion, and simple bitwise AND for masking to make it more
+>> obvious.
+>>
+>> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+>> ---
+>> Revision history:
+>> v1 => v2:
+>>   - Fix commit msg to reflect the fact there was no bug
+>>   - Drop Fixes tag
+>>   - Use union for rx / tx buffer to avoid casting
+>>   - Keep the shared message protected by the mutex
+>> ---
+>>   drivers/iio/adc/ti-adc128s052.c | 18 ++++++++++--------
+>>   1 file changed, 10 insertions(+), 8 deletions(-)
+>>
+>> diff --git a/drivers/iio/adc/ti-adc128s052.c b/drivers/iio/adc/ti-adc128s052.c
+>> index a456ea78462f..3e69a5fce010 100644
+>> --- a/drivers/iio/adc/ti-adc128s052.c
+>> +++ b/drivers/iio/adc/ti-adc128s052.c
+>> @@ -28,32 +28,34 @@ struct adc128 {
+>>   	struct regulator *reg;
+>>   	struct mutex lock;
+>>   
+>> -	u8 buffer[2] __aligned(IIO_DMA_MINALIGN);
+>> +	union {
+>> +		__be16 rx_buffer;
+>> +		u8 tx_buffer[2];
+>> +	} __aligned(IIO_DMA_MINALIGN);
+>>   };
+>>   
+>>   static int adc128_adc_conversion(struct adc128 *adc, u8 channel)
+>>   {
+>>   	int ret;
+>> +	char *msg = &adc->tx_buffer[0];
+>>   
+>>   	mutex_lock(&adc->lock);
+>>   
+>> -	adc->buffer[0] = channel << 3;
+>> -	adc->buffer[1] = 0;
+>> +	msg[0] = channel << 3;
+>> +	msg[1] = 0;
+>>   
+>> -	ret = spi_write(adc->spi, &adc->buffer, 2);
+>> +	ret = spi_write(adc->spi, msg, sizeof(adc->tx_buffer));
+>>   	if (ret < 0) {
+>>   		mutex_unlock(&adc->lock);
+>>   		return ret;
+>>   	}
+>>   
+>> -	ret = spi_read(adc->spi, &adc->buffer, 2);
+>> -
+>> +	ret = spi_read(adc->spi, &adc->rx_buffer, 2);
+>>   	mutex_unlock(&adc->lock);
+>> -
+>>   	if (ret < 0)
+>>   		return ret;
+>>   
+>> -	return ((adc->buffer[0] << 8 | adc->buffer[1]) & 0xFFF);
+>> +	return be16_to_cpu(adc->rx_buffer) & 0xFFF;
+> 
+> 
+> The cast isn't exactly beautiful, but this would save a lot of
+> lines of diff and a few lines of code by avoiding the need for
+> the union and the local msg variable.
+> 
+> 	return be16_to_cpup((__be16 *)adc->buffer) & 0xFFF;
 
-When alert support was added, the write function correctly included the
-required shift needed to convert the threshold register value to the
-same scale as the raw ADC value. However, the shift got missed in the
-read function.
+Thanks again for the review David :)
 
-Fixes: 27d1a4dbe1e1 ("iio: adc: ad7380: add alert support")
-Signed-off-by: David Lechner <dlechner@baylibre.com>
----
- drivers/iio/adc/ad7380.c | 25 +++++++++++++++++++------
- 1 file changed, 19 insertions(+), 6 deletions(-)
+I am unsure which way to go. I kind of like having the __be16 in the 
+struct, as it immediately yells "data from device is big-endian". OTOH, 
+I've never loved unions (and, it silences the above "yelling" quite a 
+bit). I still think this might be the first time I really see a valid 
+use-case for an union :) And, you're right this adds more lines, 
+besides, the cast doesn't look that ugly to me. Yet, I originally had a 
+cast probably as simple as this (and I also had the __be16 in the 
+struct), and Jonathan suggested using union to avoid it...
 
-diff --git a/drivers/iio/adc/ad7380.c b/drivers/iio/adc/ad7380.c
-index 4fcb49fdf56639784098f0147a9faef8dcb6b0f6..f3962a45e1e5b88cebf712cc867fbb576d3ca058 100644
---- a/drivers/iio/adc/ad7380.c
-+++ b/drivers/iio/adc/ad7380.c
-@@ -1611,11 +1611,25 @@ static int ad7380_write_event_config(struct iio_dev *indio_dev,
- 	return ret;
- }
- 
--static int ad7380_get_alert_th(struct ad7380_state *st,
-+static int ad7380_get_alert_th(struct iio_dev *indio_dev,
-+			       const struct iio_chan_spec *chan,
- 			       enum iio_event_direction dir,
- 			       int *val)
- {
--	int ret, tmp;
-+	struct ad7380_state *st = iio_priv(indio_dev);
-+	const struct iio_scan_type *scan_type;
-+	int ret, tmp, shift;
-+
-+	scan_type = iio_get_current_scan_type(indio_dev, chan);
-+	if (IS_ERR(scan_type))
-+		return PTR_ERR(scan_type);
-+
-+	/*
-+	 * The register value is 12-bits and is compared to the most significant
-+	 * bits of raw value, therefore a shift is required to convert this to
-+	 * the same scale as the raw value.
-+	 */
-+	shift = scan_type->realbits - 12;
- 
- 	switch (dir) {
- 	case IIO_EV_DIR_RISING:
-@@ -1625,7 +1639,7 @@ static int ad7380_get_alert_th(struct ad7380_state *st,
- 		if (ret)
- 			return ret;
- 
--		*val = FIELD_GET(AD7380_ALERT_HIGH_TH, tmp);
-+		*val = FIELD_GET(AD7380_ALERT_HIGH_TH, tmp) << shift;
- 		return IIO_VAL_INT;
- 	case IIO_EV_DIR_FALLING:
- 		ret = regmap_read(st->regmap,
-@@ -1634,7 +1648,7 @@ static int ad7380_get_alert_th(struct ad7380_state *st,
- 		if (ret)
- 			return ret;
- 
--		*val = FIELD_GET(AD7380_ALERT_LOW_TH, tmp);
-+		*val = FIELD_GET(AD7380_ALERT_LOW_TH, tmp) << shift;
- 		return IIO_VAL_INT;
- 	default:
- 		return -EINVAL;
-@@ -1648,7 +1662,6 @@ static int ad7380_read_event_value(struct iio_dev *indio_dev,
- 				   enum iio_event_info info,
- 				   int *val, int *val2)
- {
--	struct ad7380_state *st = iio_priv(indio_dev);
- 	int ret;
- 
- 	switch (info) {
-@@ -1656,7 +1669,7 @@ static int ad7380_read_event_value(struct iio_dev *indio_dev,
- 		if (!iio_device_claim_direct(indio_dev))
- 			return -EBUSY;
- 
--		ret = ad7380_get_alert_th(st, dir, val);
-+		ret = ad7380_get_alert_th(indio_dev, chan, dir, val);
- 
- 		iio_device_release_direct(indio_dev);
- 		return ret;
+At the end of the day, I suppose I am Okay with any of these 3 
+approaches. Original cast, union or this cast you suggest. Jonathan, any 
+preferences on your side?
 
----
-base-commit: f8ffc92ae9052e6615896052f0c5b808bfc17520
-change-id: 20250402-iio-adc-ad7380-fix-event-threshold-shift-b614db1a307f
+> 
+>>   }
+>>   
+>>   static int adc128_read_raw(struct iio_dev *indio_dev,
+> 
 
-Best regards,
--- 
-David Lechner <dlechner@baylibre.com>
+Yours,
+	-- Matti
 
 

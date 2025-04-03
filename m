@@ -1,119 +1,137 @@
-Return-Path: <linux-iio+bounces-17597-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17598-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF63FA7A78A
-	for <lists+linux-iio@lfdr.de>; Thu,  3 Apr 2025 18:06:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C260DA7A7CA
+	for <lists+linux-iio@lfdr.de>; Thu,  3 Apr 2025 18:21:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB5471897CF8
-	for <lists+linux-iio@lfdr.de>; Thu,  3 Apr 2025 16:06:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 156261891A1B
+	for <lists+linux-iio@lfdr.de>; Thu,  3 Apr 2025 16:21:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E9D22512C1;
-	Thu,  3 Apr 2025 16:06:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C118251788;
+	Thu,  3 Apr 2025 16:20:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A3e6gLeQ"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="aN1cneoN"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94B30250C02;
-	Thu,  3 Apr 2025 16:06:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71D642505A4
+	for <linux-iio@vger.kernel.org>; Thu,  3 Apr 2025 16:20:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743696368; cv=none; b=KYoAsQPcO/hwpXVlMIvfyNOMZeU7FUy/0uOH50vAdYge/daRAbYO1J57QtXjOUPdjIQZTg9ssUvJsrbWY3+7JM4oNtemAy4yRN/1vNQnsEuZuxu6pkGbTQJGlfV32L2lHSnk1AKUO65I/+qhe53h8rd+5X/AbgT3cEkoIRVHvp8=
+	t=1743697231; cv=none; b=DA+/Nr113UDtsy4QUhYqWCC1TX2CprI8DSYeqbSTJ3hTvknQTnm72Y3UxD4s4Jve4lPq7veuZD1GBP+52PULLUGval9w28+Fy4ycjetM/a9C1BnaYaqDTOM3URGdheB+wDXqot/LfXsEltw2CQXssYwiAL39BZuzdTHh66V30Sg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743696368; c=relaxed/simple;
-	bh=YjGjdrzIlECzocgsLLX2osfw8C9zWevju6nHuE11dbY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CZjwoAvVQa5hK62cEDUsVQpzviTj+QlqqnW/RFCPyWZg1nnUEA8tMbtEFhMDTsrqdH6ZOECbGKESlE+0y5uFscEU49x0hSQ3ClXtwR/moFmf42tJSHy0shr3kyg+ttk26/HTbeitAi4ZYzlJO8KD1cU1c169TSvOAn/H9pctiOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A3e6gLeQ; arc=none smtp.client-ip=209.85.210.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-736ee709c11so996855b3a.1;
-        Thu, 03 Apr 2025 09:06:06 -0700 (PDT)
+	s=arc-20240116; t=1743697231; c=relaxed/simple;
+	bh=1iOywepJB9D1Cs5fFJUAHOEJHl07Klqnogg9LfO9XxY=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=gv654PIodW9telwvmj4wzCioeMdbuwiTW5PuFvB4SKId02H1N4pDytKEMosM/ny99Pn8S9i/SgHDVwrh2B8/Fiq3kOM89pTuA8dgTv83ue2KaqyYcOK9P3CTXQy2TWLncX4jpnGbxEB6qsGQEagpluAtFqJPz5Uz8CRZ9HBWaiE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=aN1cneoN; arc=none smtp.client-ip=209.85.221.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-39ac8e7688aso852758f8f.2
+        for <linux-iio@vger.kernel.org>; Thu, 03 Apr 2025 09:20:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743696366; x=1744301166; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=6CUM1YGBsiV36kXf/ewqX0Mf86Kw8OHi0hTrNzy0FCQ=;
-        b=A3e6gLeQUQfUwEmR7vLNzul8A0YWMzx8NanbyERcUp8vB9o7UXJaYEY0d+fwdYrNIV
-         432orqrlW8OidnfIY5hv1zASHHbSRdyyEoUTIKKCSlj1tQQeFpaVK3zZIgYZAFCWpqqB
-         HhY2mVdY7Xdx0nZQTBR+394I/ccH0zpkHlzz88UPuMK/E69kOPQCj8zrcZP5fwyl16qe
-         A5/4xeR5kPgdSsxCc9MDUwT6pjlAHbn0KcthUkDuxPHCCOHxBiWbOzMwvn5D0fiash1l
-         cgveInlft3JA9yh5vyNU/mVnx9QnkYc/mgqMSXGlhRVnL+BrjQWXXJaH6ZWxJKCfHdR8
-         G8OQ==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1743697226; x=1744302026; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=uBVhL7yTpzF4aCvVs+zDC3x7gXGoHrEnyJnBgzx0lPI=;
+        b=aN1cneoN4fAGjeNete/43fsr05bCaB9UZ//8VKbsomTvqXPUU+ivTk6AnZXcw1KCFP
+         askYWR7CGm8DFTPCSAxRiBCHPVK0ynEDymmz4hR3MkEVU36WYY7U9GYnBQV3okcHN+ho
+         u/eqSR1dSWPmO95JK5D9lDOTAS6q6AxWwZKafvYP3o+iORT5OVKotQn3y3znQD0ZHB5j
+         Uw2/EMugWItXYH55T48AUCBk0z44FHgnPD3NdUgaxK65n3EUAVRICeDrCktmbMKvST5O
+         iThSNX13BaOmMiXn3Oj8ggclNyptogjmoM79YTNhttjwZJuI0m6HIMjSED4vWSo3wZDf
+         Z8MQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743696366; x=1744301166;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6CUM1YGBsiV36kXf/ewqX0Mf86Kw8OHi0hTrNzy0FCQ=;
-        b=DxhX1+4yxOJr59Dbo96PItwKvE2SmoFLWfyOBHDyDTCuzkRKZM9C5MXfI6bCYm6wk3
-         dh/BEyM/XumguKxuguFoJVxb+eqNABWXrwi/tf6XUCiMtzBUVQSTkfrlAYpHhvdJM/Cc
-         RxqAndsq8Hphf+2qzKWJOJTtIgI7cGUD/97VWhFbjPR7Z6/Xd0nYERmGB3DemjkuSE7k
-         QDNSg4Uasz9IPIP9nP9RsyxTZyhnU8dBD+36jwdAHf0ywn+4btzcwcYYTVDZsXeGybET
-         bxFBn/1OUyMsbE+HkGVtvc3HuCl2xnLTjCYYbKcNC4kYX/4tOhv4BYRLQcRQkvJD7aE7
-         adbA==
-X-Forwarded-Encrypted: i=1; AJvYcCUkU+4hnaLEVS7LEWuNhGI4eDRDeCNrcQKRXTynwVlExL5JnddIirpBepdt9Rb8uUVOZjkusKfYrz9SyjM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwlPVvJ2OBJuwUi26Lbrf05hEaNvcz2H5IbpHX5G6E6TVg8o/eZ
-	4RxpisnlH5q6bwuAXuaPvxMjv10UQuouOIzVxDEqWA4yFbeM1BId
-X-Gm-Gg: ASbGncsX7/t43yRyad1FwmGwDQcRLKE46A1pIVhFQ/wC6+q3vELs2ivXY+FWkGcn8x+
-	G0EpHaF3zgvPdf6ljtncFZLFPrLKLw6hEEQR0pfr/ci/+occG4XKRGK2RmvX+tLg9NhrJ6W+IP3
-	v2eMRZGrE5jgtoqiZEy54+HgZXXVFhCc5Hu6n4JF/EoylmgG01W6Lq7J8K5D6c5cZyDf2b6YUuW
-	kGnAufwe/ND+yC/Q43v/bcMu1tKF0PU796DzE+nV0rTrbGFrWkc5ywjDX8dxhJ2XnG6R+hr0Ai4
-	cNuujtHMMpcHebPhn0HIQ5f1SwrphdwTezyF8P6C/QD1ZzJxHT61qBM=
-X-Google-Smtp-Source: AGHT+IFuyj8PnUH67QJmQuVRh5chNtphraUZc7jj56nG+Xj2gh/lxU2i3HorqQk0IXcClAQRgY6fUg==
-X-Received: by 2002:a05:6a00:c8b:b0:736:3954:d78c with SMTP id d2e1a72fcca58-739e4b49da9mr162206b3a.6.1743696365725;
-        Thu, 03 Apr 2025 09:06:05 -0700 (PDT)
-Received: from localhost ([2804:30c:1f4f:6800:9245:316f:6226:cc1e])
-        by smtp.gmail.com with UTF8SMTPSA id d2e1a72fcca58-739d97effb7sm1736215b3a.60.2025.04.03.09.06.03
+        d=1e100.net; s=20230601; t=1743697226; x=1744302026;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=uBVhL7yTpzF4aCvVs+zDC3x7gXGoHrEnyJnBgzx0lPI=;
+        b=KlQuDYY3hl1ZTfissOFbaHgOT8f000zkSrOj/W1o3faQm4ZflD1bSCWcZnEMdFnPB7
+         +f8vy9oSiyQn6/zgZTbvF5fgDIZZtHfmFzlNAa9r9u4ZweMBj+WA105hW7VUh6brUZhm
+         I2I4iWVsLn7GdchGgAn25IvIdQlJBVQPgD0aAaTItfSMZJw9Dwifc96wnzSSI26ZHwD7
+         3JoA4Ms74Nn1n79HjBR/b7WwwFGr2DtrCzfAaZ65HwunONmtpn9QZGvzWUi+z547A+/0
+         5MR1PnI10ZPJg0Zm6HatibmcOClYR0HccmRqER5PvSZWFUePlWYpwS9fHEpGUzoSYNFe
+         F7Nw==
+X-Forwarded-Encrypted: i=1; AJvYcCUTqgfNXunbUpd/YQk6/UQge84d8ieDy2vP2GkCgQyhoZEXIHiDWsmMs3kZeTRtbzZy7tFmJVNXMUI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyOszWoKNG6ZKiMBHHhITa/wguiPZYvToEu39HrvVHIlHmQEIVB
+	eY27kyYcOkCye4zuqTcNPDXkeIpIiYOKwL3uUdbbJAGk2da4N3kEjIn4YvW6ywQ=
+X-Gm-Gg: ASbGncu3wdpIaaUm9LNTZaxrwF/auGuGn8GyHHbaSPOo7ad4eRSvDGL6w6ora0/L7Fg
+	zG8OhtZ14id/O3CkfGXtjiLUS8WraCV4yX2+OuVa23PygZGUTM8BEeX4IwYJYxR8qlTHMBeNdJl
+	Vkg5f3LA1RiVNUKxFct4TTDmzrq3yj17aXoTMzpqPNsRvFqxLPH8HmUtMyN1CtIiFWYqYuKPy4T
+	RI0MnHIoEEZkafKlVxmE5ofqdvi0YLWnjb+xCHgHhVYGxxFtgjTOmAEBnDb10znsluuctOax1RR
+	H1id7NOu8h98Dm/6JR1KvHFblzQff8Vnav4neKz0DNkFJMo11BeiNxB7SqLzJ4PaITQwslWVIM5
+	EAwKfa0ZKkT7GAa/DTabpng==
+X-Google-Smtp-Source: AGHT+IGJDhMx8oCC7Tp11JFpxULIlT3VQCaTVwlQL+bVnYZZqD0E+NDnAZopToyMwMZDTLy+RipN5g==
+X-Received: by 2002:a05:6000:402b:b0:391:ab2:9e71 with SMTP id ffacd0b85a97d-39c2975188dmr6368451f8f.20.1743697225664;
+        Thu, 03 Apr 2025 09:20:25 -0700 (PDT)
+Received: from [192.168.0.2] (host-79-30-116-65.retail.telecomitalia.it. [79.30.116.65])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39c3020d68esm2197657f8f.67.2025.04.03.09.20.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Apr 2025 09:06:04 -0700 (PDT)
-Date: Thu, 3 Apr 2025 13:07:09 -0300
-From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-To: Siddharth Menon <simeddon@gmail.com>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-staging@lists.linux.dev, gregkh@linuxfoundation.org,
-	jic23@kernel.org, Michael.Hennerich@analog.com, lars@metafoo.de
-Subject: Re: [PATCH v5] iio: frequency: ad9832: Use FIELD_PREP macro to set
- bit fields
-Message-ID: <Z-6yLe1GyNsFJlph@debian-BULLSEYE-live-builder-AMD64>
-References: <20250330135402.105418-1-simeddon@gmail.com>
- <Z-lm8l1ILFuJE5YS@debian-BULLSEYE-live-builder-AMD64>
- <CAGd6pzPe71oY=+cy3WqKPyZ150q3pOM3LrPE0_ENeKgd+OvnfQ@mail.gmail.com>
+        Thu, 03 Apr 2025 09:20:25 -0700 (PDT)
+From: Angelo Dureghello <adureghello@baylibre.com>
+X-Google-Original-From: Angelo Dureghello <adureghello@baylibre.org>
+Subject: [PATCH 0/3] iio: ad7606: add SPI offload support
+Date: Thu, 03 Apr 2025 18:19:03 +0200
+Message-Id: <20250403-wip-bl-spi-offload-ad7606-v1-0-1b00cb638b12@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAGd6pzPe71oY=+cy3WqKPyZ150q3pOM3LrPE0_ENeKgd+OvnfQ@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAPe07mcC/x3MQQqDMBBA0avIrDuQRk1rryIuYmZiB4IJCagg3
+ t3g8i3+P6FwFi7wa07IvEmRuFa8Xw24v10XRqFq0Er3qlMt7pJwDliSYPQ+REto6WOUQedpGDT
+ pr7Ed1D5l9nI873G6rhsqmluEawAAAA==
+X-Change-ID: 20250403-wip-bl-spi-offload-ad7606-cfd992d286a4
+To: Lars-Peter Clausen <lars@metafoo.de>, 
+ Michael Hennerich <Michael.Hennerich@analog.com>, 
+ Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
+ David Lechner <dlechner@baylibre.com>
+Cc: Michael Hennerich <michael.hennerich@analog.com>, 
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+ Angelo Dureghello <adureghello@baylibre.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1005;
+ i=adureghello@baylibre.com; h=from:subject:message-id;
+ bh=1iOywepJB9D1Cs5fFJUAHOEJHl07Klqnogg9LfO9XxY=;
+ b=owGbwMvMwCXGf3bn1e/btlsznlZLYkh/t5XxyIyq2Z9+3MsNaDwlUKCz5WuTZU6c5d+tlRu/W
+ c34UfXMoqOUhUGMi0FWTJGlLjHCJPR2qJTyAsbZMHNYmUCGMHBxCsBE/EwY/tnq7rt2g8v7o9eW
+ D3Psb20S0j39u/xx2oL1ATOCpxgzcS5k+Ct+VvX4JbVNfBoNVduPz2IrrFhqW3z0mnfw0qxzrH8
+ /xrMCAA==
+X-Developer-Key: i=adureghello@baylibre.com; a=openpgp;
+ fpr=703CDFAD8B573EB00850E38366D1CB9419AF3953
 
-On 04/02, Siddharth Menon wrote:
-> On Sun, 30 Mar 2025 at 21:13, Marcelo Schmitt
-> <marcelo.schmitt1@gmail.com> wrote:
-> > The previous implementation would set ctrl_fp if val == 1 and unset it if val == 0.
-> > This patch seems to be doing the reverse (setting ctrl_fp if val == 0, and
-> > unsetting it if val != 0). Was the previous implementation potentially buggy?
-> 
-> My apologies, I seem to have made a mistake here.
+Add SPI offload support for the ad7606 ADC.
 
-No worries. It's okay to change/update device drivers to make them better (e.g.
-implement new features, fix bugs). If the proposed change was fixing something,
-then it could be put into a separate patch with a Fixes tag. Though, I had
-another look at the datasheet and my understanding is that the freq bit (bit 11)
-should be set if the user writes 1 to out_altvoltageX_frequencysymbol (ABI
-documented in drivers/staging/iio/Documentation/sysfs-bus-iio-dds).
-By the way, I now think my suggestion of doing
-st->ctrl_fp |= FIELD_PREP(AD9832_FREQ, !!val) was not a good idea since that
-wouldn't follow the proposed ABI.
-Anyway, it's okay to propose more changes/patches if you want. Just separate the
-patches according to their logical change if you make more changes to the driver.
+Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
+---
+Angelo Dureghello (3):
+      dt-bindings: iio: adc: adi,ad7606: add SPI offload properties
+      doc: iio: ad7606: describe offload support
+      iio: adc: ad7606: add SPI offload support
 
-Regards,
-Marcelo
+ .../devicetree/bindings/iio/adc/adi,ad7606.yaml    |   8 +
+ Documentation/iio/ad7606.rst                       |  45 +++++
+ drivers/iio/adc/Kconfig                            |   2 +
+ drivers/iio/adc/ad7606.c                           |  50 ++++-
+ drivers/iio/adc/ad7606.h                           |  12 ++
+ drivers/iio/adc/ad7606_spi.c                       | 210 +++++++++++++++++++++
+ include/dt-bindings/iio/adc/adi,ad7606.h           |   9 +
+ 7 files changed, 326 insertions(+), 10 deletions(-)
+---
+base-commit: 8f159ea5a253d40682e041daec007933d6caf01b
+change-id: 20250403-wip-bl-spi-offload-ad7606-cfd992d286a4
+
+Best regards,
+-- 
+Angelo Dureghello <adureghello@baylibre.com>
+
 

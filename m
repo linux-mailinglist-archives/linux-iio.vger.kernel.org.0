@@ -1,129 +1,119 @@
-Return-Path: <linux-iio+bounces-17596-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17597-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7526CA7A4DA
-	for <lists+linux-iio@lfdr.de>; Thu,  3 Apr 2025 16:16:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF63FA7A78A
+	for <lists+linux-iio@lfdr.de>; Thu,  3 Apr 2025 18:06:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 92CFE3BB02B
-	for <lists+linux-iio@lfdr.de>; Thu,  3 Apr 2025 14:10:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB5471897CF8
+	for <lists+linux-iio@lfdr.de>; Thu,  3 Apr 2025 16:06:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1920B250C15;
-	Thu,  3 Apr 2025 14:09:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E9D22512C1;
+	Thu,  3 Apr 2025 16:06:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JSPNUcdG"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A3e6gLeQ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85671250C1A;
-	Thu,  3 Apr 2025 14:09:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94B30250C02;
+	Thu,  3 Apr 2025 16:06:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743689379; cv=none; b=XMNA3dWgIV9MhPPCRAQ3d8c6HzGAfulGdVPoO/KD4TdBkP11pAHedNxqeYUETOzR9jkkFpmclifpcoGHS2hza8x+YLXSS/w4Gpsc8rV9v9HTZTs4mRTyCLCIz5FuulAvujvLy+X+lNdIhxJAi+TUPBvLHN6U0LzJK0aBNqzEd7s=
+	t=1743696368; cv=none; b=KYoAsQPcO/hwpXVlMIvfyNOMZeU7FUy/0uOH50vAdYge/daRAbYO1J57QtXjOUPdjIQZTg9ssUvJsrbWY3+7JM4oNtemAy4yRN/1vNQnsEuZuxu6pkGbTQJGlfV32L2lHSnk1AKUO65I/+qhe53h8rd+5X/AbgT3cEkoIRVHvp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743689379; c=relaxed/simple;
-	bh=DZL+IcQ5DVyD5+vgddwK1LITbtPnt58fksxz6Q/slnI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Asg66ESbS57UISTpqMimB8+U1rLxWrTQaC9Tqo5eLMTT66E8AvCcff9K94gEM+xxK4ohoQavQR0IBS8iaDkJU/3At+MBtg4bmVG45DRD6FiwqHk3jWfzpZvceK+p8AJJQQNV+L8xs1yZD6DD7HxKUeXdYofUCkGEseLKG67aYrM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JSPNUcdG; arc=none smtp.client-ip=209.85.216.51
+	s=arc-20240116; t=1743696368; c=relaxed/simple;
+	bh=YjGjdrzIlECzocgsLLX2osfw8C9zWevju6nHuE11dbY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CZjwoAvVQa5hK62cEDUsVQpzviTj+QlqqnW/RFCPyWZg1nnUEA8tMbtEFhMDTsrqdH6ZOECbGKESlE+0y5uFscEU49x0hSQ3ClXtwR/moFmf42tJSHy0shr3kyg+ttk26/HTbeitAi4ZYzlJO8KD1cU1c169TSvOAn/H9pctiOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A3e6gLeQ; arc=none smtp.client-ip=209.85.210.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-2ff799d99dcso886237a91.1;
-        Thu, 03 Apr 2025 07:09:38 -0700 (PDT)
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-736ee709c11so996855b3a.1;
+        Thu, 03 Apr 2025 09:06:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743689378; x=1744294178; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xgLIPOgjO+4Gtz9uWMW47y6AgutNbQcH7sc+seuGtK4=;
-        b=JSPNUcdGx/yM1+qJHK/ikP0T+C2iI2nw/DQ88CXrt9YNm0UnjqAFL8sWIOKmH1KLIX
-         /b0cHP0A3G1uwEK53hjCbMfoy+y93Th88m/wbA6h1c2IuzhuuY/xg6ozSTW7uL2K6eQU
-         U04oJaU67ybzrQlt901AL4kwGX5nLNE+a41Jlcj74Yl2OQzct7FvWJr7K+DaZRkoFPww
-         jrXvLZnpE/8VHxUNRD2XdGf8JVlhKGCXvZpfypNR+Pv3Conumk12EXmAUa0s2Zu41Yn5
-         9GEZaF/ouI7Ue+m89SJ2NYtlfoCHYZPZIU2K0bXYCF0Owi4Si78rrxjOJz1iSaLOLfDY
-         lGUQ==
+        d=gmail.com; s=20230601; t=1743696366; x=1744301166; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=6CUM1YGBsiV36kXf/ewqX0Mf86Kw8OHi0hTrNzy0FCQ=;
+        b=A3e6gLeQUQfUwEmR7vLNzul8A0YWMzx8NanbyERcUp8vB9o7UXJaYEY0d+fwdYrNIV
+         432orqrlW8OidnfIY5hv1zASHHbSRdyyEoUTIKKCSlj1tQQeFpaVK3zZIgYZAFCWpqqB
+         HhY2mVdY7Xdx0nZQTBR+394I/ccH0zpkHlzz88UPuMK/E69kOPQCj8zrcZP5fwyl16qe
+         A5/4xeR5kPgdSsxCc9MDUwT6pjlAHbn0KcthUkDuxPHCCOHxBiWbOzMwvn5D0fiash1l
+         cgveInlft3JA9yh5vyNU/mVnx9QnkYc/mgqMSXGlhRVnL+BrjQWXXJaH6ZWxJKCfHdR8
+         G8OQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743689378; x=1744294178;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=xgLIPOgjO+4Gtz9uWMW47y6AgutNbQcH7sc+seuGtK4=;
-        b=ZY8GJIc6epWrErDdS003EBW2UR/cIyCKWEsgSkP40jRfqVdZSR8aRQ1lZOW8x0FJNg
-         X6PEgZRRWNZWeWdVP1vkzn/cX1xHROhF16rzsbWY5aP8v7N4LMV1MicCE3ERPqyN7Bys
-         ue3bSc7aKZsg1iT9OnY2LgOEradCjhWfTWnAxzlyRU7CdplJMKbRVuTLq/pwzXFVvHjP
-         U92D/if85gkv8Tkz0l+71PkronaFRSnn0gkMFNqHFW8YKsG6J4T1Yd/qAkiparG2JX0Y
-         nVqPqkqnDB/4j0WNKECxqJUvzV/XBjxmIFOLG3x9ATU7MWKHbsWMyk8wvdgG3yVkfARz
-         rZnQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV0xEEHZ1+5CcBdhFh2WHHbzJTkMMLO94usM+M6obgaDbjnKTpwD5gjDyjt3CYbwSdiLf2fafDs6QlM@vger.kernel.org, AJvYcCVOTIJMP9ALdK/uONqBGmh7glvpqIUnMzbI9XZpbD0Ux7FZ9uRp7QlMfvfx2CJMIw7M+LsUlt8PfTY3@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx4rPXHRaKB3pnR3/qJUR+8FYwSqgNGDfHIdoh5D28O25Risdn4
-	N7cTd44yrYOMavgluP13Gilb2jNkUxOIaOxny6S9SFKRPxXwT5OrPpPX1J1/Qeb3IQNc1ZW4XTp
-	ZTonZtLX6jhnjhbh+aqEzyQj9DYiE0gzX5tU=
-X-Gm-Gg: ASbGncuFP61lB9BZlZL1syj3wkVQ44TEWlWtkOVl8BXUkSpyI2pobGZsmW8HG4fm9Bn
-	HTLmJi8Ox+nxO4Dc2K7BkBrfJhw7yJU0qac81OAc0mVvB2OV6alqS5+00Kcc4gjrWYG2ZXjU5fP
-	k8fAbVFf5rrmREM/fPFc1G5p83lzw=
-X-Google-Smtp-Source: AGHT+IFoZpcMywnaS2mRwYVI8L/R3NuCjWvp8MO3Z21H4tZRH0PC83Ij5D25TsgorSXh32lXrVl+/bawT5D6hsIZ2is=
-X-Received: by 2002:a17:90b:1f91:b0:2ff:693a:7590 with SMTP id
- 98e67ed59e1d1-305321705f1mr35076708a91.33.1743689377600; Thu, 03 Apr 2025
- 07:09:37 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1743696366; x=1744301166;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6CUM1YGBsiV36kXf/ewqX0Mf86Kw8OHi0hTrNzy0FCQ=;
+        b=DxhX1+4yxOJr59Dbo96PItwKvE2SmoFLWfyOBHDyDTCuzkRKZM9C5MXfI6bCYm6wk3
+         dh/BEyM/XumguKxuguFoJVxb+eqNABWXrwi/tf6XUCiMtzBUVQSTkfrlAYpHhvdJM/Cc
+         RxqAndsq8Hphf+2qzKWJOJTtIgI7cGUD/97VWhFbjPR7Z6/Xd0nYERmGB3DemjkuSE7k
+         QDNSg4Uasz9IPIP9nP9RsyxTZyhnU8dBD+36jwdAHf0ywn+4btzcwcYYTVDZsXeGybET
+         bxFBn/1OUyMsbE+HkGVtvc3HuCl2xnLTjCYYbKcNC4kYX/4tOhv4BYRLQcRQkvJD7aE7
+         adbA==
+X-Forwarded-Encrypted: i=1; AJvYcCUkU+4hnaLEVS7LEWuNhGI4eDRDeCNrcQKRXTynwVlExL5JnddIirpBepdt9Rb8uUVOZjkusKfYrz9SyjM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwlPVvJ2OBJuwUi26Lbrf05hEaNvcz2H5IbpHX5G6E6TVg8o/eZ
+	4RxpisnlH5q6bwuAXuaPvxMjv10UQuouOIzVxDEqWA4yFbeM1BId
+X-Gm-Gg: ASbGncsX7/t43yRyad1FwmGwDQcRLKE46A1pIVhFQ/wC6+q3vELs2ivXY+FWkGcn8x+
+	G0EpHaF3zgvPdf6ljtncFZLFPrLKLw6hEEQR0pfr/ci/+occG4XKRGK2RmvX+tLg9NhrJ6W+IP3
+	v2eMRZGrE5jgtoqiZEy54+HgZXXVFhCc5Hu6n4JF/EoylmgG01W6Lq7J8K5D6c5cZyDf2b6YUuW
+	kGnAufwe/ND+yC/Q43v/bcMu1tKF0PU796DzE+nV0rTrbGFrWkc5ywjDX8dxhJ2XnG6R+hr0Ai4
+	cNuujtHMMpcHebPhn0HIQ5f1SwrphdwTezyF8P6C/QD1ZzJxHT61qBM=
+X-Google-Smtp-Source: AGHT+IFuyj8PnUH67QJmQuVRh5chNtphraUZc7jj56nG+Xj2gh/lxU2i3HorqQk0IXcClAQRgY6fUg==
+X-Received: by 2002:a05:6a00:c8b:b0:736:3954:d78c with SMTP id d2e1a72fcca58-739e4b49da9mr162206b3a.6.1743696365725;
+        Thu, 03 Apr 2025 09:06:05 -0700 (PDT)
+Received: from localhost ([2804:30c:1f4f:6800:9245:316f:6226:cc1e])
+        by smtp.gmail.com with UTF8SMTPSA id d2e1a72fcca58-739d97effb7sm1736215b3a.60.2025.04.03.09.06.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 03 Apr 2025 09:06:04 -0700 (PDT)
+Date: Thu, 3 Apr 2025 13:07:09 -0300
+From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+To: Siddharth Menon <simeddon@gmail.com>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-staging@lists.linux.dev, gregkh@linuxfoundation.org,
+	jic23@kernel.org, Michael.Hennerich@analog.com, lars@metafoo.de
+Subject: Re: [PATCH v5] iio: frequency: ad9832: Use FIELD_PREP macro to set
+ bit fields
+Message-ID: <Z-6yLe1GyNsFJlph@debian-BULLSEYE-live-builder-AMD64>
+References: <20250330135402.105418-1-simeddon@gmail.com>
+ <Z-lm8l1ILFuJE5YS@debian-BULLSEYE-live-builder-AMD64>
+ <CAGd6pzPe71oY=+cy3WqKPyZ150q3pOM3LrPE0_ENeKgd+OvnfQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250403053225.298308-1-gye976@gmail.com> <20250403053225.298308-4-gye976@gmail.com>
- <e8167849-57e7-44cf-bf35-5313e54908d5@kernel.org>
-In-Reply-To: <e8167849-57e7-44cf-bf35-5313e54908d5@kernel.org>
-From: gyeyoung <gye976@gmail.com>
-Date: Thu, 3 Apr 2025 23:09:26 +0900
-X-Gm-Features: AQ5f1Jrg13cpPMNX-6s5f6-NeloDH6EGHq33MiXITjzaIAC7XTyjXvKlI2q6BEI
-Message-ID: <CAKbEzntcF9XHg4hitV1WnOcZe2=yVk+W5wghvY1VeHjZeZqymQ@mail.gmail.com>
-Subject: Re: [PATCH v1 3/5] ABI: iio: add new ABI doc for mhz19b
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: jic23@kernel.org, linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
-	lars@metafoo.de, gustavograzs@gmail.com, javier.carrasco.cruz@gmail.com, 
-	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAGd6pzPe71oY=+cy3WqKPyZ150q3pOM3LrPE0_ENeKgd+OvnfQ@mail.gmail.com>
 
-On Thu, Apr 3, 2025 at 4:51=E2=80=AFPM Krzysztof Kozlowski <krzk@kernel.org=
-> wrote:
->
-> On 03/04/2025 07:32, Gyeyoung Baek wrote:
-> > Add support for winsen MHZ19B CO2 sensor.
-> >
-> > Signed-off-by: Gyeyoung Baek <gye976@gmail.com>
-> > ---
-> >  Documentation/ABI/testing/sysfs-bus-iio-chemical-mhz19b | 7 +++++++
-> >  1 file changed, 7 insertions(+)
-> >  create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-chemical-mh=
-z19b
-> >
-> > diff --git a/Documentation/ABI/testing/sysfs-bus-iio-chemical-mhz19b b/=
-Documentation/ABI/testing/sysfs-bus-iio-chemical-mhz19b
-> > new file mode 100644
-> > index 000000000000..6cdfd34be016
-> > --- /dev/null
-> > +++ b/Documentation/ABI/testing/sysfs-bus-iio-chemical-mhz19b
-> > @@ -0,0 +1,7 @@
-> > +What:                /sys/bus/iio/devices/co2_range
->
-> Incomplete path
->
-> > +Date:                April 2025
->
-> Not possible. This will be probably June.
->
-> > +KernelVersion:       6.14
->
-> No way you can put ABI into version already released. It's impossible.
-> That's v6.16.
+On 04/02, Siddharth Menon wrote:
+> On Sun, 30 Mar 2025 at 21:13, Marcelo Schmitt
+> <marcelo.schmitt1@gmail.com> wrote:
+> > The previous implementation would set ctrl_fp if val == 1 and unset it if val == 0.
+> > This patch seems to be doing the reverse (setting ctrl_fp if val == 0, and
+> > unsetting it if val != 0). Was the previous implementation potentially buggy?
+> 
+> My apologies, I seem to have made a mistake here.
 
-sorry, I'll read the kernel doc more carefully.
+No worries. It's okay to change/update device drivers to make them better (e.g.
+implement new features, fix bugs). If the proposed change was fixing something,
+then it could be put into a separate patch with a Fixes tag. Though, I had
+another look at the datasheet and my understanding is that the freq bit (bit 11)
+should be set if the user writes 1 to out_altvoltageX_frequencysymbol (ABI
+documented in drivers/staging/iio/Documentation/sysfs-bus-iio-dds).
+By the way, I now think my suggestion of doing
+st->ctrl_fp |= FIELD_PREP(AD9832_FREQ, !!val) was not a good idea since that
+wouldn't follow the proposed ABI.
+Anyway, it's okay to propose more changes/patches if you want. Just separate the
+patches according to their logical change if you make more changes to the driver.
 
-Thanks,
-Gyeyoung
+Regards,
+Marcelo
 

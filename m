@@ -1,74 +1,71 @@
-Return-Path: <linux-iio+bounces-17575-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17576-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0AC5A79B61
-	for <lists+linux-iio@lfdr.de>; Thu,  3 Apr 2025 07:35:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AE24A79B62
+	for <lists+linux-iio@lfdr.de>; Thu,  3 Apr 2025 07:35:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 50B4D18969E4
-	for <lists+linux-iio@lfdr.de>; Thu,  3 Apr 2025 05:35:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 76E313B125F
+	for <lists+linux-iio@lfdr.de>; Thu,  3 Apr 2025 05:35:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A5CA1A2C11;
-	Thu,  3 Apr 2025 05:34:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8C8419EED7;
+	Thu,  3 Apr 2025 05:35:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="ultfLU8d"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="CpbKMxn+"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B9061A08A4;
-	Thu,  3 Apr 2025 05:34:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7836919E96B;
+	Thu,  3 Apr 2025 05:35:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743658494; cv=none; b=SyHy8l0f+zR7BuW7aJYdDom2tv3W01TYMHoEceja+35rqF26Ld83gx+3rkY2x8/0hwAVkEvDP840W2215OvOB0gF2mtIwKqnVeAPoAtmWmRUN1P8v9xWVbnZcx+/lJ1FxYx9ytF28NEzn/jbP4AO5oSIqkLGE8+hVn2cr7J0OWA=
+	t=1743658508; cv=none; b=CcqLv5cNFi9T4idiiuwSWQIcCHbHmqNUi3TnIpYn6DsNSg1BfwAXUeDxs+TEBv0Ao/TuVZel762zunl97PlR3GOaG2B/SGWTSAF60OW//+PKSSDExv+GDsy7K4H/CLNcVekp24QIYUcd2gXQ2agPeyqI/a6l4vi8dCP8J1542ak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743658494; c=relaxed/simple;
-	bh=7PVZFg/mttp4Mk1LhhjNtFGRC5zgjuH/ud4f+i3dC4Q=;
+	s=arc-20240116; t=1743658508; c=relaxed/simple;
+	bh=Un5EFLsYEZH7d/lkTRxklKhIT7Y7NMBSUwTgRGVUT84=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=dJZ5suOc323XJmLbU+6Y37YgVXhKNkSQzYhVPIDGgv4vuJfvK4YUggWUZX3hoE/hVHgZxt9Xp1gynjSjIxz23tkhQOlllzrjoHZwOvmP8G5AoWxqN542Qgv5V9zfKy98kkbwJ2p5pptfO9SkLeH2UIfCMPXRBAslbLeSbMxz68c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=ultfLU8d; arc=none smtp.client-ip=148.163.135.77
+	 In-Reply-To:To:CC; b=btl2YFbySRZiwNFwXE5+Yb5VUaUgV2cDCvInu584Injq7Zj5T2aHvhnK+K6LQmoyGPAVwTK9XRxEaBhg2w2uLVW0TH+ljFe9dk512xiSQY5Hoig3YVVGB75RufXcQh8gRRlChofCbKpuYAK0jy6H5UD/gVfJbIOpQpYgUrTYLe8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=CpbKMxn+; arc=none smtp.client-ip=148.163.135.77
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
-Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-	by mx0a-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5331ZXnr018101;
-	Thu, 3 Apr 2025 01:34:40 -0400
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+	by mx0a-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5331f2pr023310;
+	Thu, 3 Apr 2025 01:34:52 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=DKIM; bh=rLRNS
-	DYj0b6B0I64vRD+ifbAOSuabG42pasRymHii/8=; b=ultfLU8dlQ0Z/y1e8BoME
-	7vq1FUqsn2wwXICRsQ6yNVwvwcmNjMegh177iGhd/I8dSiai1c31Zq7lnFIOBEqV
-	imoagYNhSQvc6NhQ/QYjAn1wROHiodn4h7eMDx8M2/VICUyf4Qy37Tkqv/6Aek2n
-	nYYxb2+KgfpHB+YxQxevD5i9NOq8Ace2oDN84krIJOtJ2uVv+B9bpykpplnAxbir
-	ZZuhwdC4j8GqzpfzrkzV9jDnlbnS1HUjaR/VQKXp9xRBAuWcNNgvEqGt8OrWPqvo
-	HwptUDmW3IEaRU/BrGD123Osxuq/X2N84rtIbsAPbN/vA2iaGvUQHqWKdRh09vR/
-	g==
+	:message-id:mime-version:references:subject:to; s=DKIM; bh=Gvcg4
+	/kgqzLh0uD6fZfLrd7FA6WvfLBzGYiVnYou4Ts=; b=CpbKMxn+tFalBSVzj+gEP
+	vxcyYFStYFZf+YWHRE1GAb9LrEyKZHMaDEpXXkQaqsVmrozI4BEHFctiTmLP8vqz
+	9OR6QZjhnugZLhD4Udemajyv4e4H9EUxYtuLBy/W9tDrbWqLQf5oBZD439V3r//H
+	EE/XW5rAOrWYGc5dLWf0UowMDFDmfTyTiv9e+h5KKpMiL4WQaGrUr2+n57i5bFM6
+	/U+sPJmhhMQ4solbvoxAX65hcekp9//ZFVFUD1kS+oddCFG6V2kc6OUQMAgVU67g
+	3/MzBd6pQdNljIds+E1OZRupSevz8ilW0nLQFCDuG+7UUOwbKg62151U7DRQx3k4
+	A==
 Received: from nwd2mta4.analog.com ([137.71.173.58])
-	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 45rcrx40k2-1
+	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 45rcrwkx6v-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 03 Apr 2025 01:34:39 -0400 (EDT)
+	Thu, 03 Apr 2025 01:34:51 -0400 (EDT)
 Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
-	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 5335YcEs004219
+	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 5335YgiQ004227
 	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Thu, 3 Apr 2025 01:34:38 -0400
-Received: from ASHBCASHYB5.ad.analog.com (10.64.17.133) by
- ASHBMBX8.ad.analog.com (10.64.17.5) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.14; Thu, 3 Apr 2025 01:34:38 -0400
-Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by
- ASHBCASHYB5.ad.analog.com (10.64.17.133) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.14; Thu, 3 Apr 2025 01:34:38 -0400
+	Thu, 3 Apr 2025 01:34:42 -0400
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Thu, 3 Apr 2025
+ 01:34:41 -0400
 Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
  (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Thu, 3 Apr 2025 01:34:38 -0400
+ Transport; Thu, 3 Apr 2025 01:34:41 -0400
 Received: from [10.0.2.15] (KPALLER2-L03.ad.analog.com [10.116.18.50])
-	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 5335YHaW007295;
-	Thu, 3 Apr 2025 01:34:30 -0400
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 5335YHaX007295;
+	Thu, 3 Apr 2025 01:34:33 -0400
 From: Kim Seer Paller <kimseer.paller@analog.com>
-Date: Thu, 3 Apr 2025 13:33:56 +0800
-Subject: [PATCH v3 2/3] dt-bindings: iio: dac: Add adi,ad3530r.yaml
+Date: Thu, 3 Apr 2025 13:33:57 +0800
+Subject: [PATCH v3 3/3] iio: dac: ad3530r: Add driver for AD3530R and
+ AD3531R
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -77,7 +74,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-ID: <20250403-togreg-v3-2-d4b06a4af5a9@analog.com>
+Message-ID: <20250403-togreg-v3-3-d4b06a4af5a9@analog.com>
 References: <20250403-togreg-v3-0-d4b06a4af5a9@analog.com>
 In-Reply-To: <20250403-togreg-v3-0-d4b06a4af5a9@analog.com>
 To: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
@@ -91,165 +88,610 @@ CC: <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
         <devicetree@vger.kernel.org>,
         Kim Seer Paller <kimseer.paller@analog.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1743658457; l=4769;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1743658457; l=17262;
  i=kimseer.paller@analog.com; s=20250213; h=from:subject:message-id;
- bh=7PVZFg/mttp4Mk1LhhjNtFGRC5zgjuH/ud4f+i3dC4Q=;
- b=jotOp6mArbmQvGcUnAvjKh4b9U10XqwGAVlv4j/2+EYBo66V+fNJ96nda5IQ9sAU55zE/zGc/
- OnpGsfugcxlCZvd0P5q2afryaWFi/a4pjeX/IXERA+W0drRlHMHoxLI
+ bh=Un5EFLsYEZH7d/lkTRxklKhIT7Y7NMBSUwTgRGVUT84=;
+ b=VGI1WApt1QBlP5jQij3lD3ne74r57H+dmQTPduioPwQ8uIKwrIlzxpjYqe37LS8ny9PipCsX1
+ 6nPo3JRqe/0Bmywx3Sp4g0EDHXOaKTmGpP8ySU3YZAGOIqz7yGZQ+W4
 X-Developer-Key: i=kimseer.paller@analog.com; a=ed25519;
  pk=SPXIwGLg4GFKUNfuAavY+YhSDsx+Q+NwGLceiKwm8Ac=
 X-ADIRuleOP-NewSCL: Rule Triggered
-X-Authority-Analysis: v=2.4 cv=KqVN2XWN c=1 sm=1 tr=0 ts=67ee1def cx=c_pps a=3WNzaoukacrqR9RwcOSAdA==:117 a=3WNzaoukacrqR9RwcOSAdA==:17 a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=gEfo2CItAAAA:8 a=gAnH3GRIAAAA:8 a=VwQbUJbxAAAA:8 a=Mm4sZ1b9CvxOHCGzALoA:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=sptkURWiP4Gy88Gu7hUp:22
-X-Proofpoint-GUID: Jz-V0c9_r2nEqq2SVlP2vxaKU5nnZ5h-
-X-Proofpoint-ORIG-GUID: Jz-V0c9_r2nEqq2SVlP2vxaKU5nnZ5h-
+X-Proofpoint-GUID: 5RhS4vO4x36MJWqFVEuSibnK_lvNrv0a
+X-Proofpoint-ORIG-GUID: 5RhS4vO4x36MJWqFVEuSibnK_lvNrv0a
+X-Authority-Analysis: v=2.4 cv=Aszu3P9P c=1 sm=1 tr=0 ts=67ee1dfb cx=c_pps a=3WNzaoukacrqR9RwcOSAdA==:117 a=3WNzaoukacrqR9RwcOSAdA==:17 a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=gAnH3GRIAAAA:8 a=VwQbUJbxAAAA:8 a=gSiz_irBYLZb22r3yjwA:9 a=3ZKOabzyN94A:10
+ a=QEXdDO2ut3YA:10
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-04-03_01,2025-04-02_03,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0
- lowpriorityscore=0 bulkscore=0 phishscore=0 impostorscore=0 malwarescore=0
- clxscore=1015 mlxlogscore=999 adultscore=0 mlxscore=0 priorityscore=1501
- suspectscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ definitions=2025-04-03_02,2025-04-02_03,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 mlxscore=0
+ malwarescore=0 mlxlogscore=999 spamscore=0 clxscore=1015 impostorscore=0
+ bulkscore=0 priorityscore=1501 phishscore=0 suspectscore=0
+ lowpriorityscore=0 classifier=spam authscore=0 authtc=n/a authcc=
  route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
- definitions=main-2504030027
+ definitions=main-2504030028
 
-Document the AD3530/AD3530R (8-channel) and AD3531/AD3531R (4-channel)
+The AD3530/AD3530R (8-channel) and AD3531/AD3531R (4-channel) are
 low-power, 16-bit, buffered voltage output DACs with software-
-programmable gain controls. They provide full-scale output spans of 2.5V
-or 5V for reference voltages of 2.5V. These devices operate on a single
-2.7V to 5.5V supply and are guaranteed to be monotonic by design.
-The "R" variants include a 2.5V, 5ppm/°C internal reference, which is
-disabled by default.
+programmable gain controls, providing full-scale output spans of 2.5V or
+5V for reference voltages of 2.5V. These devices operate from a single
+2.7V to 5.5V supply and are guaranteed monotonic by design. The "R"
+variants include a 2.5V, 5ppm/°C internal reference, which is disabled
+by default.
 
 Signed-off-by: Kim Seer Paller <kimseer.paller@analog.com>
 ---
- .../devicetree/bindings/iio/dac/adi,ad3530r.yaml   | 99 ++++++++++++++++++++++
- MAINTAINERS                                        |  7 ++
- 2 files changed, 106 insertions(+)
+ MAINTAINERS               |   1 +
+ drivers/iio/dac/Kconfig   |  11 +
+ drivers/iio/dac/Makefile  |   1 +
+ drivers/iio/dac/ad3530r.c | 514 ++++++++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 527 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/iio/dac/adi,ad3530r.yaml b/Documentation/devicetree/bindings/iio/dac/adi,ad3530r.yaml
-new file mode 100644
-index 0000000000000000000000000000000000000000..cf4a3eb98f1fa30afdeb0740bba7f052d8ec2cd4
---- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/dac/adi,ad3530r.yaml
-@@ -0,0 +1,99 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/iio/dac/adi,ad3530r.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Analog Devices AD3530R and Similar DACs
-+
-+maintainers:
-+  - Kim Seer Paller <kimseer.paller@analog.com>
-+
-+description: |
-+  The AD3530/AD3530R (8-channel) and AD3531/AD3531R (4-channel) are low-power,
-+  16-bit, buffered voltage output digital-to-analog converters (DACs) with
-+  software-programmable gain controls, providing full-scale output spans of 2.5V
-+  or 5V for reference voltages of 2.5V. These devices operate from a single 2.7V
-+  to 5.5V supply and are guaranteed monotonic by design. The "R" variants
-+  include a 2.5V, 5ppm/°C internal reference, which is disabled by default.
-+  Datasheet can be found here:
-+  https://www.analog.com/media/en/technical-documentation/data-sheets/ad3530_ad530r.pdf
-+
-+properties:
-+  compatible:
-+    enum:
-+      - adi,ad3530
-+      - adi,ad3530r
-+      - adi,ad3531
-+      - adi,ad3531r
-+
-+  reg:
-+    maxItems: 1
-+
-+  spi-max-frequency:
-+    maximum: 50000000
-+
-+  vdd-supply:
-+    description: Power Supply Input.
-+
-+  iovdd-supply:
-+    description: Digital Power Supply Input.
-+
-+  io-channels:
-+    description:
-+      ADC channel used to monitor internal die temperature, output voltages, and
-+      current of a selected channel via the MUXOUT pin.
-+    maxItems: 1
-+
-+  ref-supply:
-+    description:
-+      Reference Input/Output. The voltage at the REF pin sets the full-scale
-+      range of all channels. If not provided the internal reference is used and
-+      also provided on the VREF pin.
-+
-+  reset-gpios:
-+    description:
-+      Active low signal that is falling edge sensitive. When it is deasserted,
-+      the digital core initialization is performed and all DAC registers except
-+      the Interface Configuration A register are reset to their default values.
-+    maxItems: 1
-+
-+  ldac-gpios:
-+    description:
-+      LDAC pin to be used as a hardware trigger to update the DAC channels. If
-+      not present, the DAC channels are updated by Software LDAC.
-+    maxItems: 1
-+
-+  adi,range-double:
-+    description:
-+      Configure the output range for all channels. If the property is present,
-+      the output will range from 0V to 2Vref. If the property is not
-+      present, the output will range from 0V to Vref.
-+    type: boolean
-+
-+required:
-+  - compatible
-+  - reg
-+  - vdd-supply
-+  - iovdd-supply
-+
-+allOf:
-+  - $ref: /schemas/spi/spi-peripheral-props.yaml#
-+
-+unevaluatedProperties: false
-+
-+examples:
-+  - |
-+    spi {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+        dac@0 {
-+            compatible = "adi,ad3530r";
-+            reg = <0>;
-+            spi-max-frequency = <1000000>;
-+
-+            vdd-supply = <&vdd>;
-+            iovdd-supply = <&iovdd>;
-+        };
-+    };
-+...
 diff --git a/MAINTAINERS b/MAINTAINERS
-index ffdb3f21fc4fb35b349449afbb30fecd4fe72978..9deaf2561ade5b1319cef3cb31b997a4297c0cff 100644
+index 9deaf2561ade5b1319cef3cb31b997a4297c0cff..6e64525fadd4ab5fea20279ce6b5cd80ff4c749c 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -1289,6 +1289,13 @@ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git
- T:	git git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next.git
- F:	drivers/net/amt.c
+@@ -1295,6 +1295,7 @@ L:	linux-iio@vger.kernel.org
+ S:	Supported
+ W:	https://ez.analog.com/linux-software-drivers
+ F:	Documentation/devicetree/bindings/iio/dac/adi,ad3530r.yaml
++F:	drivers/iio/dac/ad3530r.c
  
-+ANALOG DEVICES INC AD3530R DRIVER
-+M:	Kim Seer Paller <kimseer.paller@analog.com>
-+L:	linux-iio@vger.kernel.org
-+S:	Supported
-+W:	https://ez.analog.com/linux-software-drivers
-+F:	Documentation/devicetree/bindings/iio/dac/adi,ad3530r.yaml
-+
  ANALOG DEVICES INC AD3552R DRIVER
  M:	Nuno Sá <nuno.sa@analog.com>
- L:	linux-iio@vger.kernel.org
+diff --git a/drivers/iio/dac/Kconfig b/drivers/iio/dac/Kconfig
+index 4811ea973125a0dea1f8a9cdee1e0c045bc21981..e0996dc014a3d538ab6b4e0d50ff54ede50f1527 100644
+--- a/drivers/iio/dac/Kconfig
++++ b/drivers/iio/dac/Kconfig
+@@ -6,6 +6,17 @@
+ 
+ menu "Digital to analog converters"
+ 
++config AD3530R
++	tristate "Analog Devices AD3530R and Similar DACs driver"
++	depends on SPI
++	select REGMAP_SPI
++	help
++	  Say yes here to build support for Analog Devices AD3530R, AD3531R
++	  Digital to Analog Converter.
++
++	  To compile this driver as a module, choose M here: the
++	  module will be called ad3530r.
++
+ config AD3552R_HS
+ 	tristate "Analog Devices AD3552R DAC High Speed driver"
+ 	select AD3552R_LIB
+diff --git a/drivers/iio/dac/Makefile b/drivers/iio/dac/Makefile
+index 8dd6cce81ed1152be4cf0af9ef877b5482ceb347..3684cd52b7fa9bc0ad9f855323dcbb2e4965c404 100644
+--- a/drivers/iio/dac/Makefile
++++ b/drivers/iio/dac/Makefile
+@@ -4,6 +4,7 @@
+ #
+ 
+ # When adding new entries keep the list in alphabetical order
++obj-$(CONFIG_AD3530R) += ad3530r.o
+ obj-$(CONFIG_AD3552R_HS) += ad3552r-hs.o
+ obj-$(CONFIG_AD3552R_LIB) += ad3552r-common.o
+ obj-$(CONFIG_AD3552R) += ad3552r.o
+diff --git a/drivers/iio/dac/ad3530r.c b/drivers/iio/dac/ad3530r.c
+new file mode 100644
+index 0000000000000000000000000000000000000000..4b757e19f0c8349999f72e53abb1a4f483a44eb2
+--- /dev/null
++++ b/drivers/iio/dac/ad3530r.c
+@@ -0,0 +1,514 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * AD3530R/AD3530 8-channel, 16-bit Voltage Output DAC Driver
++ * AD3531R/AD3531 4-channel, 16-bit Voltage Output DAC Driver
++ *
++ * Copyright 2025 Analog Devices Inc.
++ */
++
++#include <linux/bitfield.h>
++#include <linux/bits.h>
++#include <linux/cleanup.h>
++#include <linux/delay.h>
++#include <linux/device.h>
++#include <linux/gpio/consumer.h>
++#include <linux/iio/iio.h>
++#include <linux/kernel.h>
++#include <linux/module.h>
++#include <linux/mod_devicetable.h>
++#include <linux/mutex.h>
++#include <linux/property.h>
++#include <linux/regmap.h>
++#include <linux/regulator/consumer.h>
++#include <linux/spi/spi.h>
++
++#define AD3530R_INTERFACE_CONFIG_A		0x00
++#define AD3530R_OUTPUT_OPERATING_MODE_0		0x20
++#define AD3530R_OUTPUT_OPERATING_MODE_1		0x21
++#define AD3530R_OUTPUT_CONTROL_0		0x2A
++#define AD3530R_REFERENCE_CONTROL_0		0x3C
++#define AD3530R_SW_LDAC_TRIG_A			0xE5
++#define AD3530R_INPUT_CH(c)			(2 * (c) + 0xEB)
++
++#define AD3531R_SW_LDAC_TRIG_A			0xDD
++#define AD3531R_INPUT_CH(c)			(2 * (c) + 0xE3)
++
++#define AD3530R_SW_LDAC_TRIG_MASK		BIT(7)
++#define AD3530R_OUTPUT_CONTROL_MASK		BIT(2)
++#define AD3530R_REFERENCE_CONTROL_MASK		BIT(0)
++#define AD3530R_REG_VAL_MASK			GENMASK(15, 0)
++
++#define AD3530R_SW_RESET			(BIT(7) | BIT(0))
++#define AD3530R_MAX_CHANNELS			8
++#define AD3531R_MAX_CHANNELS			4
++#define AD3530R_CH(c)				(c)
++#define AD3530R_32KOHM_POWERDOWN_MODE		3
++#define AD3530R_INTERNAL_VREF_MV		2500
++#define AD3530R_LDAC_PULSE_US			100
++
++struct ad3530r_chan {
++	unsigned int powerdown_mode;
++	bool powerdown;
++};
++
++struct ad3530r_chip_info {
++	const char *name;
++	const struct iio_chan_spec *channels;
++	int (*input_ch_reg)(unsigned int c);
++	const int iio_chan;
++	unsigned int num_channels;
++	unsigned int sw_ldac_trig_reg;
++	bool internal_ref_support;
++};
++
++struct ad3530r_state {
++	struct regmap *regmap;
++	/* lock to protect against multiple access to the device and shared data */
++	struct mutex lock;
++	struct ad3530r_chan chan[AD3530R_MAX_CHANNELS];
++	const struct ad3530r_chip_info *chip_info;
++	struct gpio_desc *ldac_gpio;
++	int vref_mv;
++	u8 ldac;
++	bool range_multiplier;
++};
++
++static int ad3530r_input_ch_reg(unsigned int c)
++{
++	return AD3530R_INPUT_CH(c);
++}
++
++static int ad3531r_input_ch_reg(unsigned int c)
++{
++	return AD3531R_INPUT_CH(c);
++}
++
++static const char * const ad3530r_powerdown_modes[] = {
++	"1kohm_to_gnd",
++	"7.7kohm_to_gnd",
++	"32kohm_to_gnd",
++};
++
++static int ad3530r_get_powerdown_mode(struct iio_dev *indio_dev,
++				      const struct iio_chan_spec *chan)
++{
++	struct ad3530r_state *st = iio_priv(indio_dev);
++
++	guard(mutex)(&st->lock);
++	return st->chan[chan->channel].powerdown_mode - 1;
++}
++
++static int ad3530r_set_powerdown_mode(struct iio_dev *indio_dev,
++				      const struct iio_chan_spec *chan,
++				      unsigned int mode)
++{
++	struct ad3530r_state *st = iio_priv(indio_dev);
++
++	guard(mutex)(&st->lock);
++	st->chan[chan->channel].powerdown_mode = mode + 1;
++
++	return 0;
++}
++
++static const struct iio_enum ad3530r_powerdown_mode_enum = {
++	.items = ad3530r_powerdown_modes,
++	.num_items = ARRAY_SIZE(ad3530r_powerdown_modes),
++	.get = ad3530r_get_powerdown_mode,
++	.set = ad3530r_set_powerdown_mode,
++};
++
++static ssize_t ad3530r_get_dac_powerdown(struct iio_dev *indio_dev,
++					 uintptr_t private,
++					 const struct iio_chan_spec *chan,
++					 char *buf)
++{
++	struct ad3530r_state *st = iio_priv(indio_dev);
++
++	guard(mutex)(&st->lock);
++	return sysfs_emit(buf, "%d\n", st->chan[chan->channel].powerdown);
++}
++
++static ssize_t ad3530r_set_dac_powerdown(struct iio_dev *indio_dev,
++					 uintptr_t private,
++					 const struct iio_chan_spec *chan,
++					 const char *buf, size_t len)
++{
++	struct ad3530r_state *st = iio_priv(indio_dev);
++	int ret;
++	unsigned int mask, val;
++	bool powerdown;
++
++	ret = kstrtobool(buf, &powerdown);
++	if (ret)
++		return ret;
++
++	guard(mutex)(&st->lock);
++	switch (chan->channel) {
++	case AD3530R_CH(0) ... AD3530R_CH(AD3531R_MAX_CHANNELS - 1):
++		mask = GENMASK(chan->channel * 2 + 1, chan->channel * 2);
++		val = (powerdown ? st->chan[chan->channel].powerdown_mode : 0)
++		      << (chan->channel * 2);
++
++		ret = regmap_update_bits(st->regmap,
++					 AD3530R_OUTPUT_OPERATING_MODE_0,
++					 mask, val);
++		if (ret)
++			return ret;
++
++		st->chan[chan->channel].powerdown = powerdown;
++		return len;
++	case AD3530R_CH(AD3531R_MAX_CHANNELS) ...
++	     AD3530R_CH(AD3530R_MAX_CHANNELS - 1):
++		mask = GENMASK((chan->channel - 4) * 2 + 1,
++			       (chan->channel - 4) * 2);
++		val = (powerdown ? st->chan[chan->channel].powerdown_mode : 0)
++		      << ((chan->channel - 4) * 2);
++
++		ret = regmap_update_bits(st->regmap,
++					 AD3530R_OUTPUT_OPERATING_MODE_1,
++					 mask, val);
++		if (ret)
++			return ret;
++
++		st->chan[chan->channel].powerdown = powerdown;
++		return len;
++	default:
++		return -EINVAL;
++	}
++}
++
++static int ad3530r_trigger_hw_ldac(struct gpio_desc *ldac_gpio)
++{
++	gpiod_set_value_cansleep(ldac_gpio, 1);
++	fsleep(AD3530R_LDAC_PULSE_US);
++	gpiod_set_value_cansleep(ldac_gpio, 0);
++
++	return 0;
++}
++
++static int ad3530r_dac_write(struct ad3530r_state *st, unsigned int chan,
++			     unsigned int val)
++{
++	int ret;
++	__be16 reg_val;
++
++	guard(mutex)(&st->lock);
++	reg_val = cpu_to_be16(val);
++
++	ret = regmap_bulk_write(st->regmap, st->chip_info->input_ch_reg(chan),
++				&reg_val, sizeof(reg_val));
++	if (ret)
++		return ret;
++
++	if (st->ldac_gpio)
++		return ad3530r_trigger_hw_ldac(st->ldac_gpio);
++
++	return regmap_update_bits(st->regmap, st->chip_info->sw_ldac_trig_reg,
++				  AD3530R_SW_LDAC_TRIG_MASK,
++				  FIELD_PREP(AD3530R_SW_LDAC_TRIG_MASK, 1));
++}
++
++static int ad3530r_read_raw(struct iio_dev *indio_dev,
++			    struct iio_chan_spec const *chan,
++			    int *val, int *val2, long info)
++{
++	struct ad3530r_state *st = iio_priv(indio_dev);
++	int ret;
++	__be16 reg_val;
++
++	switch (info) {
++	case IIO_CHAN_INFO_RAW:
++		ret = regmap_bulk_read(st->regmap,
++				       st->chip_info->input_ch_reg(chan->channel),
++				       &reg_val, sizeof(reg_val));
++		if (ret)
++			return ret;
++
++		*val = FIELD_GET(AD3530R_REG_VAL_MASK, be16_to_cpu(reg_val));
++
++		return IIO_VAL_INT;
++	case IIO_CHAN_INFO_SCALE:
++		*val = st->vref_mv;
++		*val2 = 16;
++
++		return IIO_VAL_FRACTIONAL_LOG2;
++	default:
++		return -EINVAL;
++	}
++}
++
++static int ad3530r_write_raw(struct iio_dev *indio_dev,
++			     struct iio_chan_spec const *chan,
++			     int val, int val2, long info)
++{
++	struct ad3530r_state *st = iio_priv(indio_dev);
++
++	switch (info) {
++	case IIO_CHAN_INFO_RAW:
++		if (val < 0 || val > U16_MAX)
++			return -EINVAL;
++
++		return ad3530r_dac_write(st, chan->channel, val);
++	default:
++		return -EINVAL;
++	}
++}
++
++static int ad3530r_reg_access(struct iio_dev *indio_dev, unsigned int reg,
++			      unsigned int writeval, unsigned int *readval)
++{
++	struct ad3530r_state *st = iio_priv(indio_dev);
++
++	if (readval)
++		return regmap_read(st->regmap, reg, readval);
++
++	return regmap_write(st->regmap, reg, writeval);
++}
++
++#define AD3530R_CHAN_EXT_INFO(_name, _what, _shared, _read, _write) {	\
++	.name = (_name),						\
++	.read = (_read),						\
++	.write = (_write),						\
++	.private = (_what),						\
++	.shared = (_shared),						\
++}
++
++static const struct iio_chan_spec_ext_info ad3530r_ext_info[] = {
++	AD3530R_CHAN_EXT_INFO("powerdown", 0, IIO_SEPARATE,
++			      ad3530r_get_dac_powerdown,
++			      ad3530r_set_dac_powerdown),
++	IIO_ENUM("powerdown_mode", IIO_SEPARATE, &ad3530r_powerdown_mode_enum),
++	IIO_ENUM_AVAILABLE("powerdown_mode", IIO_SHARED_BY_TYPE,
++			   &ad3530r_powerdown_mode_enum),
++	{ },
++};
++
++#define AD3530R_CHAN(_chan) {						\
++	.type = IIO_VOLTAGE,						\
++	.indexed = 1,							\
++	.channel = _chan,						\
++	.output = 1,							\
++	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |			\
++			      BIT(IIO_CHAN_INFO_SCALE),			\
++	.ext_info = ad3530r_ext_info,					\
++}
++
++static const struct iio_chan_spec ad3530r_channels[] = {
++	AD3530R_CHAN(0),
++	AD3530R_CHAN(1),
++	AD3530R_CHAN(2),
++	AD3530R_CHAN(3),
++	AD3530R_CHAN(4),
++	AD3530R_CHAN(5),
++	AD3530R_CHAN(6),
++	AD3530R_CHAN(7),
++};
++
++static const struct iio_chan_spec ad3531r_channels[] = {
++	AD3530R_CHAN(0),
++	AD3530R_CHAN(1),
++	AD3530R_CHAN(2),
++	AD3530R_CHAN(3),
++};
++
++static const struct ad3530r_chip_info ad3530_chip = {
++	.name = "ad3530",
++	.channels = ad3530r_channels,
++	.num_channels = ARRAY_SIZE(ad3530r_channels),
++	.sw_ldac_trig_reg = AD3530R_SW_LDAC_TRIG_A,
++	.input_ch_reg = ad3530r_input_ch_reg,
++	.internal_ref_support = false,
++};
++
++static const struct ad3530r_chip_info ad3530r_chip = {
++	.name = "ad3530r",
++	.channels = ad3530r_channels,
++	.num_channels = ARRAY_SIZE(ad3530r_channels),
++	.sw_ldac_trig_reg = AD3530R_SW_LDAC_TRIG_A,
++	.input_ch_reg = ad3530r_input_ch_reg,
++	.internal_ref_support = true,
++};
++
++static const struct ad3530r_chip_info ad3531_chip = {
++	.name = "ad3531",
++	.channels = ad3531r_channels,
++	.num_channels = ARRAY_SIZE(ad3531r_channels),
++	.sw_ldac_trig_reg = AD3531R_SW_LDAC_TRIG_A,
++	.input_ch_reg = ad3531r_input_ch_reg,
++	.internal_ref_support = false,
++};
++
++static const struct ad3530r_chip_info ad3531r_chip = {
++	.name = "ad3531r",
++	.channels = ad3531r_channels,
++	.num_channels = ARRAY_SIZE(ad3531r_channels),
++	.sw_ldac_trig_reg = AD3531R_SW_LDAC_TRIG_A,
++	.input_ch_reg = ad3531r_input_ch_reg,
++	.internal_ref_support = true,
++};
++
++static int ad3530r_setup(struct ad3530r_state *st)
++{
++	const struct ad3530r_chip_info *chip_info = st->chip_info;
++	struct device *dev = regmap_get_device(st->regmap);
++	struct gpio_desc *reset_gpio;
++	int i, ret;
++
++	reset_gpio = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_HIGH);
++	if (IS_ERR(reset_gpio))
++		return dev_err_probe(dev, PTR_ERR(reset_gpio),
++				     "Failed to get reset GPIO\n");
++
++	if (reset_gpio) {
++		/* Perform hardware reset */
++		fsleep(1000);
++		gpiod_set_value_cansleep(reset_gpio, 0);
++	} else {
++		/* Perform software reset */
++		ret = regmap_update_bits(st->regmap, AD3530R_INTERFACE_CONFIG_A,
++					 AD3530R_SW_RESET, AD3530R_SW_RESET);
++		if (ret)
++			return ret;
++	}
++
++	fsleep(10000);
++
++	/* Set operating mode to normal operation. */
++	ret = regmap_write(st->regmap, AD3530R_OUTPUT_OPERATING_MODE_0, 0);
++	if (ret)
++		return ret;
++
++	if (chip_info->num_channels > AD3531R_MAX_CHANNELS) {
++		ret = regmap_write(st->regmap, AD3530R_OUTPUT_OPERATING_MODE_1, 0);
++		if (ret)
++			return ret;
++	}
++
++	for (i = 0; i < chip_info->num_channels; i++)
++		st->chan[i].powerdown_mode = AD3530R_32KOHM_POWERDOWN_MODE;
++
++	st->ldac_gpio = devm_gpiod_get_optional(dev, "ldac", GPIOD_OUT_HIGH);
++	if (IS_ERR(st->ldac_gpio))
++		return dev_err_probe(dev, PTR_ERR(st->ldac_gpio),
++				     "Failed to get ldac GPIO\n");
++
++	if (device_property_present(dev, "adi,double-output-range")) {
++		st->range_multiplier = true;
++
++		return regmap_update_bits(st->regmap, AD3530R_OUTPUT_CONTROL_0,
++					  AD3530R_OUTPUT_CONTROL_MASK,
++					  FIELD_PREP(AD3530R_OUTPUT_CONTROL_MASK, 1));
++	}
++
++	return 0;
++}
++
++static const struct regmap_config ad3530r_regmap_config = {
++	.reg_bits = 16,
++	.val_bits = 8,
++};
++
++static const struct iio_info ad3530r_info = {
++	.read_raw = ad3530r_read_raw,
++	.write_raw = ad3530r_write_raw,
++	.debugfs_reg_access = &ad3530r_reg_access,
++};
++
++static int ad3530r_probe(struct spi_device *spi)
++{
++	static const char * const regulators[] = { "vdd", "iovdd" };
++	const struct ad3530r_chip_info *chip_info;
++	struct device *dev = &spi->dev;
++	struct iio_dev *indio_dev;
++	struct ad3530r_state *st;
++	int ret;
++
++	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*st));
++	if (!indio_dev)
++		return -ENOMEM;
++
++	st = iio_priv(indio_dev);
++
++	st->regmap = devm_regmap_init_spi(spi, &ad3530r_regmap_config);
++	if (IS_ERR(st->regmap))
++		return dev_err_probe(dev, PTR_ERR(st->regmap),
++				     "Failed to init regmap");
++
++	ret = devm_mutex_init(dev, &st->lock);
++	if (ret)
++		return ret;
++
++	chip_info = spi_get_device_match_data(spi);
++	if (!chip_info)
++		return -ENODEV;
++
++	st->chip_info = chip_info;
++
++	ret = ad3530r_setup(st);
++	if (ret)
++		return ret;
++
++	ret = devm_regulator_bulk_get_enable(dev, ARRAY_SIZE(regulators),
++					     regulators);
++	if (ret)
++		return dev_err_probe(dev, ret, "Failed to enable regulators\n");
++
++	ret = devm_regulator_get_enable_read_voltage(dev, "ref");
++	if (ret < 0 && ret != -ENODEV)
++		return ret;
++
++	if (chip_info->internal_ref_support && ret == -ENODEV) {
++		/* Internal reference. */
++		ret = regmap_update_bits(st->regmap, AD3530R_REFERENCE_CONTROL_0,
++					 AD3530R_REFERENCE_CONTROL_MASK,
++					 FIELD_PREP(AD3530R_REFERENCE_CONTROL_MASK, 1));
++		if (ret)
++			return ret;
++
++		st->vref_mv = st->range_multiplier ?
++			      2 * AD3530R_INTERNAL_VREF_MV :
++			      AD3530R_INTERNAL_VREF_MV;
++	} else {
++		st->vref_mv = st->range_multiplier ? 2 * ret / 1000 : ret / 1000;
++	}
++
++	indio_dev->name = chip_info->name;
++	indio_dev->info = &ad3530r_info;
++	indio_dev->modes = INDIO_DIRECT_MODE;
++	indio_dev->channels = chip_info->channels;
++	indio_dev->num_channels = chip_info->num_channels;
++
++	return devm_iio_device_register(&spi->dev, indio_dev);
++}
++
++static const struct spi_device_id ad3530r_id[] = {
++	{ "ad3530", (kernel_ulong_t)&ad3530_chip },
++	{ "ad3530r", (kernel_ulong_t)&ad3530r_chip },
++	{ "ad3531", (kernel_ulong_t)&ad3531_chip },
++	{ "ad3531r", (kernel_ulong_t)&ad3531r_chip },
++	{ }
++};
++MODULE_DEVICE_TABLE(spi, ad3530r_id);
++
++static const struct of_device_id ad3530r_of_match[] = {
++	{ .compatible = "adi,ad3530", .data = &ad3530_chip },
++	{ .compatible = "adi,ad3530r", .data = &ad3530r_chip },
++	{ .compatible = "adi,ad3531", .data = &ad3531_chip },
++	{ .compatible = "adi,ad3531r", .data = &ad3531r_chip },
++	{ }
++};
++MODULE_DEVICE_TABLE(of, ad3530r_of_match);
++
++static struct spi_driver ad3530r_driver = {
++	.driver = {
++		.name = "ad3530r",
++		.of_match_table = ad3530r_of_match,
++	},
++	.probe = ad3530r_probe,
++	.id_table = ad3530r_id,
++};
++module_spi_driver(ad3530r_driver);
++
++MODULE_AUTHOR("Kim Seer Paller <kimseer.paller@analog.com>");
++MODULE_DESCRIPTION("Analog Devices AD3530R and Similar DACs Driver");
++MODULE_LICENSE("GPL");
 
 -- 
 2.34.1

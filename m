@@ -1,226 +1,367 @@
-Return-Path: <linux-iio+bounces-17589-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17590-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C44AFA79D80
-	for <lists+linux-iio@lfdr.de>; Thu,  3 Apr 2025 09:56:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21B18A79E48
+	for <lists+linux-iio@lfdr.de>; Thu,  3 Apr 2025 10:36:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C89713B6B2E
-	for <lists+linux-iio@lfdr.de>; Thu,  3 Apr 2025 07:56:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6B638189667C
+	for <lists+linux-iio@lfdr.de>; Thu,  3 Apr 2025 08:36:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5600A24113A;
-	Thu,  3 Apr 2025 07:56:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD1111EF361;
+	Thu,  3 Apr 2025 08:35:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bonBzEVS"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Bc46lm7H"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08D561A23B9;
-	Thu,  3 Apr 2025 07:56:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A91171A01B0;
+	Thu,  3 Apr 2025 08:35:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743666985; cv=none; b=DUnITqdE8/inz9iYcrP5BZVSs4arfmcz6J05TRE/V8+npyZhV0zrb0anxo+yYCWC+OQoJe+7GrVCrg2shUD7+/RLk9OP+NJCILtu0Rs3XcVDxOtOqRAZh1s13y4c8rlBrNjBgaLDczTZAvjp7p+Q0i6KNXcGe0qRnivch0c1/YI=
+	t=1743669355; cv=none; b=rNlVftbkMZlUrA1RjmzasyqihVuWyaryfIFrNTYKEIPmMF2UiqmbMOiLfJmyl3gas74deIzVQzwVhox0tzY1X3nc0o8804Ox+My8IfZd2z/4QNA/lqpGG6LqYcXFUFPwpgoYi2mF19aJTW51V527uwVPJYPN0XyYAX9LVwSN/G8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743666985; c=relaxed/simple;
-	bh=cVRFaKCtW9EkxwJD2YpJ360jCAHaYC2eciW066lxdFU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qYwohDRKon6kXd49lwvWXctJzwuCwzg2w9XZsf0fU7b5wNHHkZwadUZ2gMd3I/h7z+FkQL2SihbRCFenPk9Sw1Fimp80Q5OpH9BJz7siPIF7n08+rFGxTXPmJC7RlHMBE8defxqG3VGnuKL6Y8LZYL47g3hhYRjlPSW/eWkhCG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bonBzEVS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6476C4CEE3;
-	Thu,  3 Apr 2025 07:56:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743666984;
-	bh=cVRFaKCtW9EkxwJD2YpJ360jCAHaYC2eciW066lxdFU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=bonBzEVSVoBnVEgQWRYoKgknAKOUDADEaP47hbMlx+5WcwMJ649KOoRA2gk3LfZoA
-	 5mDLoNayTSzruS4RnCJFX6Ujgwvo62L0hdP/0g9S3YpTiSPU81tJLXKrO2EXWXVu37
-	 l1bE3BG6FYS2485SguDHiPVsoo34iO59KPXVQH5yKXTqtq4TQ8+SezxnXz850RctYf
-	 2QnQJSmCmSYMjolKn9vEdjuKgzi7qka6xsGa6Z7+jfAHaL0zywqQM4WwMuYoFmlDh0
-	 4EnItzhew47vLwDaN/I2385VP1S5sp43OrY1TqWH4kI2FC1H4D0FhaX9dN0YQ26Phh
-	 yzxNM/UsKwxBQ==
-Message-ID: <28f4a7e5-ff96-4c7f-9eab-6bf358f19007@kernel.org>
-Date: Thu, 3 Apr 2025 09:56:18 +0200
+	s=arc-20240116; t=1743669355; c=relaxed/simple;
+	bh=nB88aIuK+GXRGu/1hePx19gtUS3ySa203EKXV4Y3MRk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QTfpzZYbE2lsD7E6rgaKfyZWBN3DlTA9tPFoLbSFvkUOMtSvX6X1dEBXOPkguq8sdG49rUaKmV5fxPFnBIivj18mtN9bDCKPsBsq2WnZVPeMUo906AmkagdYsdRapkcHfNWlHWq1LYZjj9HRIKF7hTFlJEjL2aA1LyytJLBbKFI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Bc46lm7H; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4394a0c65fcso5542105e9.1;
+        Thu, 03 Apr 2025 01:35:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1743669352; x=1744274152; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=r9lazPUWMeeXGDT8GL53BUL0dRgSLWRjWydFayIVnBY=;
+        b=Bc46lm7HBhFQ8nWIbH+Fuq0kHRucT0ydhwkcIk3s11PQ+8Jn3D3jXlgm5nO1jhsX1V
+         NpG08BLp6IS99cDW8JEydEQ5HPuijclET6rx2cIKlQPIB236bp90/WeOO7wDM1HgJYXu
+         b5pVEIc3C8qfCjPttwCZAePJKe5jP4QaArHKFWZKoQWbzYzjc0JJ722RLKO5TllhMHcy
+         tCj/AJTUznjEBbPGSFlFqCkVbuFe+5P7o5VOKoNnffF8qtqXmTr3MSKOGAx3R79+s1u1
+         MlEMJ9T3IjPb7+YV2qjdfpfVcJNAUdKfsG5HkJxIZ5mCfyZwRZpEJLj0eag1XL25ICZT
+         HrPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1743669352; x=1744274152;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=r9lazPUWMeeXGDT8GL53BUL0dRgSLWRjWydFayIVnBY=;
+        b=pSv+SomQJ73aZczC8iZIDptgEdKo/O0Jf2SVkZfucUqOPWne6euPkOgmOlhVpEFtU3
+         2BF4rCLSWJvFpKMvgJfxzxo5oGlW1b2GEqcQDhwG9ylvDfCRBjzfwvUIn4F0DW7XQqUF
+         c2Ta9Z+91BBV4Q2cK31mwPnEErSuTsVSI0mr2i5sIUomrv7ZwT6RHT1YxnvV6Wc3YDam
+         nlB6a0MGWOpI887RsIT4tkNq2zEWNNe5s+F2FDK1NkOO0yMj4fAPOLrisNzFn+yn2RAY
+         XemKPZw5aZjso3YRSk06PpQjXJbPspZhmhd8UI7ZbjDCCKRJJkuFPa1D2H8m8/EeZiOq
+         0X1w==
+X-Forwarded-Encrypted: i=1; AJvYcCXIACsLdQDoDsjeSV8DhdK6nFyKUqaxPoKXXzzEXx5ly0HD6TNpftD3Fk0m9fnR45H07zxmY9hJLjcOzQsI@vger.kernel.org, AJvYcCXipTKFB421/upMd2hllAkwYT1b4nFOyHQK3bDhqKJKpN+Zaz0Agzy5PJFu9+QvC3sQDWzCecHFTbk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw0xQLaoXEycwSUmJc1aWVoy30ASDav3ZaGkxl3NFDH5gESYaDY
+	3OHfM2hgfonaVEhAfehK9aOscyB0KDEg3qslxf+vhFcxwFWPpGN7
+X-Gm-Gg: ASbGncvDBIJSvAGkNEhZBSirSpywdwVs1JRxqH7dPSppPD67z9CfKYP3Eose5FyD7Zs
+	0OlzDdT0Ysrsl6qP2Dyj2qiTY9qkbSjOG7IyQKI6ToUfNRz7GjYzLZt0R7clo3P+oavgvswNXr8
+	ckpKRS5jbhcAdp/Y1U3gH8ey0690sNOzoBAIujf71U5K9+XL6PveW8rQH78WflKU+XfWjJ6vlZ3
+	4WQ1gWSJv0HHdfIMvRdtGpGW7cVGlQV+KA9NDRz/JFnKmnL6KieCj9jWg5OFt7UnJkarEmvNfq2
+	KuymsPYvsYE+LQcDi4bO3hRHktRqAWC9UmNDZjKhr6da/yclIzSjGn3Z0nHURsXP5g==
+X-Google-Smtp-Source: AGHT+IEOn4903b+1QbZsryGx30m9Q2J6NlCejhHxkm19JdjJuGO18neb4wh5B6lAbiLZXvJ55LjHaw==
+X-Received: by 2002:a05:600c:1907:b0:43d:23fe:e8a6 with SMTP id 5b1f17b1804b1-43ec133ba19mr12651335e9.5.1743669351669;
+        Thu, 03 Apr 2025 01:35:51 -0700 (PDT)
+Received: from HYB-DlYm71t3hSl.ad.analog.com ([137.71.226.91])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43ec16602bbsm14873535e9.9.2025.04.03.01.35.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 03 Apr 2025 01:35:51 -0700 (PDT)
+Date: Thu, 3 Apr 2025 10:35:48 +0200
+From: Jorge Marques <gastmaier@gmail.com>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Jonathan Cameron <jic23@kernel.org>, 
+	Jorge Marques <jorge.marques@analog.com>, Lars-Peter Clausen <lars@metafoo.de>, 
+	Michael.Hennerich@analog.com, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/2] Documentation: ABI: add oversampling frequency in
+ sysfs-bus-iio
+Message-ID: <pzqfq3w3phov244vnuxpl3t3bololdb3uqyx25ekvg3wzvbco3@jrokyjyc57fl>
+References: <20250321-abi-oversampling-events-frequency-v1-0-794c1ab2f079@analog.com>
+ <20250321-abi-oversampling-events-frequency-v1-2-794c1ab2f079@analog.com>
+ <20250330181320.0ec4351c@jic23-huawei>
+ <3ad6f137-5f67-4448-b0c9-2e760bd935a7@baylibre.com>
+ <20250330185353.150fc33a@jic23-huawei>
+ <hf5dwxs62oof3gom43c6rkdsq3gky6eplxej627t46ktt5blfr@kpmjpxku4inc>
+ <20e8538f-7a73-42a5-87b1-0c04b54375c6@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 4/5] iio: chemical: add support for winsen MHZ19B CO2
- sensor
-To: Gyeyoung Baek <gye976@gmail.com>, jic23@kernel.org
-Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, lars@metafoo.de,
- gustavograzs@gmail.com, javier.carrasco.cruz@gmail.com, robh@kernel.org,
- krzk+dt@kernel.org, conor+dt@kernel.org
-References: <20250403053225.298308-1-gye976@gmail.com>
- <20250403053225.298308-5-gye976@gmail.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <20250403053225.298308-5-gye976@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20e8538f-7a73-42a5-87b1-0c04b54375c6@baylibre.com>
 
-On 03/04/2025 07:32, Gyeyoung Baek wrote:
-> Add support for winsen MHZ19B CO2 sensor.
+On Wed, Apr 02, 2025 at 03:27:51PM -0500, David Lechner wrote:
+> On 4/2/25 8:47 AM, Jorge Marques wrote:
+> > On Sun, Mar 30, 2025 at 06:53:53PM +0100, Jonathan Cameron wrote:
+> >> On Sun, 30 Mar 2025 12:34:39 -0500
+> >> David Lechner <dlechner@baylibre.com> wrote:
+> >>
+> >>> On 3/30/25 12:13 PM, Jonathan Cameron wrote:
+> >>>> On Fri, 21 Mar 2025 15:50:02 +0100
+> >>>> Jorge Marques <jorge.marques@analog.com> wrote:
 > 
-> Datasheet:
-> https://www.winsen-sensor.com/d/files/infrared-gas-sensor/mh-z19b-co2-ver1_0.pdf
+> Once you dig into it, the current situation is even more complicated than
+> I expected. :-o
 > 
-> Signed-off-by: Gyeyoung Baek <gye976@gmail.com>
+> This reply has ended up being mostly a brain dump of my observations. I hope
+> it isn't too confusing. Consider this more of a brainstorm on a future
+> documentation page on sampling rates rather than commenting on what to do
+> on this particular patch. :-)
+> 
 > ---
->  drivers/iio/chemical/Kconfig  |  10 +
->  drivers/iio/chemical/Makefile |   1 +
->  drivers/iio/chemical/mhz19b.c | 386 ++++++++++++++++++++++++++++++++++
->  3 files changed, 397 insertions(+)
->  create mode 100644 drivers/iio/chemical/mhz19b.c
 > 
-> diff --git a/drivers/iio/chemical/Kconfig b/drivers/iio/chemical/Kconfig
-> index 330fe0af946f..bb4dfe3986f6 100644
-> --- a/drivers/iio/chemical/Kconfig
-> +++ b/drivers/iio/chemical/Kconfig
-> @@ -108,6 +108,16 @@ config IAQCORE
->  	  iAQ-Core Continuous/Pulsed VOC (Volatile Organic Compounds)
->  	  sensors
+> To make sure we are clear, I think we need to define some precise terminology,
+> especially with regard to "sample rate" since that can be used to mean a
+> lot of different things.
 > 
-> +config MHZ19B
+> There is the "IIO sample rate" (could also call it the "effective sample rate")
+> that is the rate that we push one complete set of data to an IIO buffer. In
+> many cases, this would be the frequency of the hrtimer trigger that is configured
+> as the trigger for the iio:deviceX.
 
-probably WINSEN_MHZ19B
+Yes.
 
-> +	tristate "MHZ19B CO2 sensor"
+> 
+> On the other end of the spectrum, we have the "conversion rate" which is the
+> rate that individual ADC conversions can happen.
 
-Similarly here
+Yes.
 
-> +	depends on SERIAL_DEV_BUS
-> +	help
-> +	  Say Y here to build Serdev binterface support for the MHZ19B
+> 
+> What I had not seen before, but now I see in existing drivers, is that these
+> may actually be completely independent. In other words, the hrtimer trigger
+> only triggers reading the most recent set of conversions and conversions are
+> driven by a completely separate trigger, generally some sort of clock in the
+> ADC itself.
+> 
+> So I think we should expand the diagrams below to show more layers for the
+> completely general case.
+> 
+> >>>>   
+> >>>>> Some devices have an internal clock used to space out the conversion
+> >>>>> trigger for the oversampling filter,
+> >>>>> Consider an ADC with conversion and data ready pins topology:
+> >>>>>
+> >>>>>   Sampling trigger |       |       |       |       |
+> >>>>>   ADC conversion   ++++    ++++    ++++    ++++    ++++
+> >>>>>   ADC data ready      *       *       *       *       *
+> >>>>>
+> 
+> For terminology, let's call this "burst mode" oversampling (maybe also
+> referred to as "triggered mode" in some data sheets).
+> 
+> >>>>> With the oversampling frequency, conversions can be evenly space between
+> >>>>> the sampling edge:  
+> >>>>
+> >>>> I'm not sure what this second example is providing.  Are you suggesting
+> >>>> that if we don't provide oversampling frequency we should assume this
+> >>>> pattern?  i.e. it is the default?
+> >>>>   
+> > 
+> > The default is to do the n-conversions sequentially (n*t_conv),
+> > "left-aligned" as in the diagram above.
+> > The main application for oversampling is to average out the noise over a wider
+> > bandwidth.
+> > 
+> > I looked into some of the drivers with oversampling and the supported devices
+> > datasheets:
+> > 
+> > * ADS1298: Single field for sampling rate and oversampling,
+> >            I assume the values are the maximum values that the
+> > 	   oversampling time does not exceed the sampling period.
+> > * RTQ6056: Field for oversampling and conversion time,
+> >            maximum sampling period is roughly n*t_ovr.
+> > * MCP3561: Field for oversampling and conversion time.
+> >            maximum sampling period is roughly n*t_ovr.
+> > * AD7380:  Field for oversampling and fixed conversion time,
+> >            3 MSPS for the AD7380 and 4 MSPS for AD7381,
+> >            maximum sampling period is n*t_ovr, e.g. f_samp=(6/4MSPS).
+> > 
+> > None will or claim to stretch over the sampling period the oversampling
+> > conversions, but rather, do the n-conversions at oversampling rate,
+> > providing the conversion as soon as it is ready and idling until the
+> > next edge of the sampling frequency.
+> > 
+> >>>>>
+> >>>>>   Sampling trigger |       |       |       |       |
+> >>>>>   ADC conversion   + + + + + + + + + + + + + + + + + + + +
+> >>>>>   ADC data ready         *       *       *       *       *
+> >>>>> 
+> 
+> And let's call this one "continuous mode".
+> 
+> But as we will see, both of these are a bit ambiguous in their current
+> form. The complete picture is a bit more nuanced.
+> 
+> ---
+> 
+> Let's take the RTQ6056 case (since I actually looked at that one before
+> as inspiration for developing another driver).
+> 
+> The chip itself is programmable and can operate in either a burst/triggered
+> mode or in a continuous mode. However, the way the IIO driver is implemented,
+> it is configured in continuous mode to trigger ADC conversions. But uses an
+> independent IIO trigger that triggers reading sample data. So from the point of
+> view of the data in a buffered read, it looks like burst mode. But the value
+> of the sampling_frequency attribute (the ADC device attribute, not the hrtimer
+> trigger attribute) is for the hardware continuous mode.
+> 
+> Hardware:
+> sampling_frequency   |       |       |       |       |
+> ADC conversion       + + + + + + + + + + + + + + + + + + + +
+> ADC data ready             *       *       *       *       *
+> sample number              S0      S1      S2      S3      S4
+> 
+> IIO:
+> hrtimer frequency               |                     |
+> I2C read                         *                     *
+> push to buffer                   S0                    S3
+> 
+> The IIO (hrtimer) trigger only reads the most recently available data, it
+> doesn't trigger any conversion. The clocks are asynchronous.
 
-Typo, interface
+That implementation sure works for low-speed converters where power-consuption
+is not a concern.
 
-> +	  CO2 sensor.
-> +
-> +	  To compile this driver as a module, choose M here: the module will
-> +	  be called mhz19b.
-> +
->  config PMS7003
->  	tristate "Plantower PMS7003 particulate matter sensor"
->  	depends on SERIAL_DEV_BUS
-> diff --git a/drivers/iio/chemical/Makefile b/drivers/iio/chemical/Makefile
-> index 4866db06bdc9..c63daebf39ac 100644
-> --- a/drivers/iio/chemical/Makefile
-> +++ b/drivers/iio/chemical/Makefile
-> @@ -15,6 +15,7 @@ obj-$(CONFIG_ENS160) += ens160_core.o
->  obj-$(CONFIG_ENS160_I2C) += ens160_i2c.o
->  obj-$(CONFIG_ENS160_SPI) += ens160_spi.o
->  obj-$(CONFIG_IAQCORE)		+= ams-iaq-core.o
-> +obj-$(CONFIG_MHZ19B) += mhz19b.o
->  obj-$(CONFIG_PMS7003) += pms7003.o
->  obj-$(CONFIG_SCD30_CORE) += scd30_core.o
->  obj-$(CONFIG_SCD30_I2C) += scd30_i2c.o
-> diff --git a/drivers/iio/chemical/mhz19b.c b/drivers/iio/chemical/mhz19b.c
-> new file mode 100644
-> index 000000000000..f8f06c01623f
-> --- /dev/null
-> +++ b/drivers/iio/chemical/mhz19b.c
-> @@ -0,0 +1,386 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * mh-z19b co2 sensor driver
-> + *
-> + * Copyright (c) 2025 Gyeyoung Baek <gye976@gmail.com>
-> + *
-> + * Datasheet:
-> + * https://www.winsen-sensor.com/d/files/infrared-gas-sensor/mh-z19b-co2-ver1_0.pdf
-> + *
-> + * TODO:
-> + *  - vin supply regulator
-> + */
-> +
-> +#include <linux/cleanup.h>
-> +#include <linux/completion.h>
-> +#include <linux/device.h>
-> +#include <linux/iio/iio.h>
-> +#include <linux/iio/sysfs.h>
-> +#include <linux/init.h>
-> +#include <linux/kernel.h>
-> +#include <linux/mod_devicetable.h>
-> +#include <linux/module.h>
-> +#include <linux/mutex.h>
-> +#include <linux/regulator/consumer.h>
-> +#include <linux/serdev.h>
-> +#include <linux/unaligned.h>
-> +
-> +struct mhz19b_state {
-> +	struct serdev_device *serdev;
-> +
-> +	/* TO DO, nothing for now.*/
-> +	struct regulator *vin_supply;
+> I think adding an oversampling_frequency attribute to this driver could make
+> it easier to used/understand since oversampling_frequency would be exactly
+> the "conversion rate". Compared to the current situation where the "conversion
+> rate" is the sampling_frequency / oversampling_ratio.
 
-Drop. Don't add dead code.
+I agree.
+Applicable only for devices where sampling_frequency and
+oversampling_frequency are detached.
+Devices that provide a value for the fixed oversampling_frequency
+frequency could have the attribute as read-only (e.g AD7380).
 
-> +
-> +	/* serdev receive buffer.
-> +	 * When data is received from the MH-Z19B,
-> +	 * the 'mhz19b_receive_buf' callback function is called and fills this buffer.
-> +	 */
-> +	char buf[9];
-> +	int buf_idx;
-> +
-> +	/* must wait the 'buf' is filled with 9 bytes.*/
-> +	struct completion buf_ready;
-> +
-> +	/* protect access to mhz19b_state */
-> +	struct mutex lock;
+> 
+> It is also interesting to consider that if someone decided to add SPI offload
+> support to this driver, then there would be the possibility of using burst/
+> trigggered mode or continuous mode and might want to support both even. In
+> fact this is exactly the possibility we have with ad7606 that I mentioned in
+> a previous reply. So we might even need an oversampling_mode attribute to allow
+> selecting one or the other. But that is something to save for a ad7606 patch
+> series.
 
-mhz19b_receive_buf() does not need any locking?
+For AD4052:
 
+* iio raw read is the usual low-speed, CNV->DRDY->Read.
+* iio buffer: uses offload, samp_freq is PWM node freq.
+  - iio triggered buffer: not included on proposed series,
+                          but doable as a fallback if offload
+                          not available.
+* iio events: monitor mode, device exits monitor mode on event
+              (device specific behaviour, cannot be changed),
+              the irq is propagated as iio event.
 
-Best regards,
-Krzysztof
+iio oversampling changes the iio raw and iio buffer readings behaviour
+(takes longer to get a sample out).
+
+> 
+> ---
+> 
+> Another driver probably worth considering is ad4030. In this one, there is no
+> internal clock to drive conversions. So, for oversampling, the sample rate is
+> just "as fast as possible" (currently bit-banging a GPIO). So it doesn't actually
+> have an oversampling frequency.
+>
+>
+> If someone ever decided to hook it up to some hardware that could actually
+> trigger a finite number of pulses at a specific rate, then this new attribute
+> for oversampling_frequency would become useful. For this particular driver,
+> the presence or absence of an oversampling_frequency attribute would have
+> a meaning, but I don't think this generalizes to other ADCs.
+> 
+
+The hardware is the usual CNV trigger, so it is not really about hooking
+up more hardware, but changing the behaviour
+(takes n-CNV triggers to get a sample out).
+
+The AD4052 also supports what you described, it is the "Averaging Mode" (p.31),
+while the implemented uses the "Burst Averaging Mode" (p.32).
+In the "Averaging Mode", effective sampling rate is
+sampling_frequency / oversampling_ratio, while in
+"Burst Averaging Mode" is sampling_frequency.
+
+So, in "Burst Averaging Mode", the oversampling_frequency is *detached*
+from sampling_frequency.
+
+The driver could hide away the effective sampling frequency discrepancy
+by reading the state and scaling sampling_frequency based on
+oversampling_ratio, exactly like RTQ6056.
+
+> ---
+> 
+> AD4695 is an interesting case to consider as well. When used without SPI offload
+> support, we actually don't allow oversampling currently. If we did though, it
+> be similar to the ad4030 in that we could either make it "as fast as possible"
+> by banging a GPIO or the CS line depending on how the chip was wired up. Or it
+> could use some specialized hardware to generate a pulse train to actually get
+> a known conversion rate.
+> 
+> For now though, oversampling is only implemented when using a SPI offload.
+> It works like this:
+> 
+> Channel		1   2       3 1   2       3 1   2       3
+> OSR		2   4       1 2   4       1 2   4       1
+> Trigger		| | | | | | | | | | | | | | | | | | | | |
+> ADC Conversion	+ + + + + + + + + + + + + + + + + + + + +
+> ADC data ready	   *       * *   *       * *   *       * *
+> IIO sample                   S0            S1            S2
+> 
+> In this case, there isn't a "sample" trigger that triggers a burst of
+> samples. Rather, there is only a "conversion" trigger that triggers
+> individual conversion. In other words, we would call this "continuous mode".
+> And it also shows that some chips allow individual channels to have
+> different oversampling ratios.
+
+I find this "continuous mode" name confusing, maybe stick with
+"averaging mode", where each CNV pulse triggers a conversion and
+"burst averaging mode", where a CNV pulse triggers a burst of
+conversions.
+
+> 
+> In this case, it would be nice to have an oversampling_frequency
+> attribute as well because it would exactly correspond to the conversion
+> rate. Currently each channel has a sampling_frequency attribute that
+> is oversampling_frequency / oversampling_ratio (same as RTQ6056).
+
+I don't mind that, is the "hide away" I mentioned earlier.
+I believe that, when oversampling is a driver feature,
+oversampling_frequency is either:
+ * The RW conversion frequency:
+   - averaging mode:       oversampling_frequency, sampling_frequency,
+                           and oversampling_ratio affect each other,
+                           due to "hide away" logic.
+                           One CNV one conversion.
+   - burst averaging mode: sampling frequency and conversion frequency
+                           are detached, doesn't need "hide away" logic.
+                           One CNV one sample.
+ * The RO conversion frequency with the role of maximum conversion frequency.
+
+> 
+> ---
+> 
+> So my conclusion here is that the new proposed oversampling_frequency
+> attribute has nothing to do with "burst mode" or "continuous mode" it
+> has the same meaning in both cases.
+
+It depends if it is detached from sampling_frequency or not.
+If the norm is to "hide away" with extra logic in "averaging mode",
+they become interdependent.
+If sampling frequency and conversion frequency are detached from each
+other, oversampling_frequency for sure needs to exist.
+
+>                                     It is effectively the rate for
+> individual ADC conversions.
+> 
+
+Yes.
 

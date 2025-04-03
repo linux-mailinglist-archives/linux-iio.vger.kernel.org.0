@@ -1,48 +1,48 @@
-Return-Path: <linux-iio+bounces-17586-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17587-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D94BEA79D58
-	for <lists+linux-iio@lfdr.de>; Thu,  3 Apr 2025 09:48:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 466CCA79D5F
+	for <lists+linux-iio@lfdr.de>; Thu,  3 Apr 2025 09:49:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 556DB189376F
-	for <lists+linux-iio@lfdr.de>; Thu,  3 Apr 2025 07:48:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 683CD3B5EF5
+	for <lists+linux-iio@lfdr.de>; Thu,  3 Apr 2025 07:48:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 213A61C5F13;
-	Thu,  3 Apr 2025 07:48:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B44A24169E;
+	Thu,  3 Apr 2025 07:48:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZA4oPdOj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q22hGZeT"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D05C6DDA9;
-	Thu,  3 Apr 2025 07:48:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 181EF241678;
+	Thu,  3 Apr 2025 07:48:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743666507; cv=none; b=Z1d1F39D1f1GrMhqpS5RpyH6s9gevscl4jyZtcJPCWZZ4q9wpmz5rOzXEF88SKAmDXdIOVbQYhTihGpWg0EZDB7/9kYoZi9NHeWtRb2039hkyK0bCBIGcpnuoCGO3ZD2OFH7rASbNKxeROeNtORGz0ZgtXPD9et8Q6+V99CfyD4=
+	t=1743666537; cv=none; b=Zy9M85zoMmEuEZX4Z0t6CFDHw8tLzUuJUkv3FHgNBv59jEF+Q6r90vsPIVQIR9VuewoouhRLHfsVWvQ5yEkmPF8IPbPw58eXlA2AhLtNu8iVqEZqJMxa/XcVPdZx9k66TX2DLBJE4SHs/uA8T/aZ+9boJ7AFr5pGF5qi6CmSu/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743666507; c=relaxed/simple;
-	bh=L/aqGF82Kjmfo2N3Fk5MCCaP9uBR3BX3/YNwgDfINVE=;
+	s=arc-20240116; t=1743666537; c=relaxed/simple;
+	bh=Vr4si7ixlPxd6opw48b6lQ8k+gzl34/7+6vnnPmTGhY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WYDuEsezF3EQX+VmdkPVWhfxBRI13zI4332TG+N98YubNRJQenld/tNQlIuiHGgOUMTzIo21dH47GcH1Vo2913Kt6ApO2zfpZ32M4QMPxWbI6OhqrAW84Q1aRgMOfSNcNBl1wJWjMtCpuD3Zb7fpncMkHYeaJwBYBpXIyKGSfB0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZA4oPdOj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83F94C4CEE3;
-	Thu,  3 Apr 2025 07:48:23 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=CffOdPm6aUjbHyPN3tT275TjdazQxF8/KHl1KkD2ANuoG3sg7ORAPGWX01bjmkF3+lUKjrluJo5arC8JPB48qocte0wDzdSsgS6craa57kKNS35zrlX9oXbhKGVchoGw7RaSj6gQT5hnG8ymbfpOMUE28lb2ZG9Eidd1x+pg5nQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q22hGZeT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0AC1C4CEE3;
+	Thu,  3 Apr 2025 07:48:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743666507;
-	bh=L/aqGF82Kjmfo2N3Fk5MCCaP9uBR3BX3/YNwgDfINVE=;
+	s=k20201202; t=1743666536;
+	bh=Vr4si7ixlPxd6opw48b6lQ8k+gzl34/7+6vnnPmTGhY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ZA4oPdOj3n3DgVUvEgCT1zqOl+GhvhPEkhYuY+HcdPapCNoOIsVX55b/SLWQfPaLV
-	 /9rQKc4o+iV8XFdGZmThnMw6MuTf1TcA+J3kJWVrKrp8GjrgejySEWn7KaEj0fCrqX
-	 8u3MmKKjC2nHVgcRbyvwDc4qHkqmoBNFPFDmBrbXncd/XjW44ZwCTloaUDB/jI/UGH
-	 yeMnkF7xLHxBHvILblHe/ZYR1JztYe03n41lyr5nCpjss/CZdSE01gSdvvLVYiNBaJ
-	 IejnpR9UpmEgyaRltn8ZIf0WLK7CcGSi18LOaMCkKSAM+/D+uNCBAKu3uJP/af8w/A
-	 XolKg541AQLHQ==
-Message-ID: <537287ab-4b10-405b-a539-bf3a68a6f4b8@kernel.org>
-Date: Thu, 3 Apr 2025 09:48:20 +0200
+	b=q22hGZeTuolBhUR3D1yuGJjc+CJ04uZsG6dqCc7QGxP/wN9DwEYopW+gDZBU+Ws5q
+	 h+csRTrP8W78D03WQI6NMMV6BF7g0jg1kieIGKiM9mMk3RxQUVRmJ7zeHQZH2l5tKp
+	 2eZN8zajd1cHuB6Tcqe2NgB09Zv+o9Sv/1Ghn83kgNCAiInwKV80ithlBF2Ef6M85n
+	 jwkjNHJ1BDky8jsl493GrnM05aNJzBjWct/6yJEoIIoJfRu7Ryi7mfDaUsbJf5UtGR
+	 C3+YF04EBL2Ldwd7nvNnMwRP6AmwSUaTyh3XF4ovSyOGadbQQf/1i0UJIU++BgCYxX
+	 UWmGRiIw9So+A==
+Message-ID: <295d87f4-2606-4249-a130-28f31da35b42@kernel.org>
+Date: Thu, 3 Apr 2025 09:48:50 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -50,13 +50,14 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 1/5] dt-bindings: add winsen to the vendor prefixes
+Subject: Re: [PATCH v1 2/5] dt-bindings: add device tree support for winsen
+ MHZ19B CO2 sensor
 To: Gyeyoung Baek <gye976@gmail.com>, jic23@kernel.org
 Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, lars@metafoo.de,
  gustavograzs@gmail.com, javier.carrasco.cruz@gmail.com, robh@kernel.org,
  krzk+dt@kernel.org, conor+dt@kernel.org
 References: <20250403053225.298308-1-gye976@gmail.com>
- <20250403053225.298308-2-gye976@gmail.com>
+ <20250403053225.298308-3-gye976@gmail.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -102,20 +103,17 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20250403053225.298308-2-gye976@gmail.com>
+In-Reply-To: <20250403053225.298308-3-gye976@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 03/04/2025 07:32, Gyeyoung Baek wrote:
-> Add winsen to the vendor prefixes.
+> Add device tree support for winsen MHZ19B sensor.
 > 
 > Signed-off-by: Gyeyoung Baek <gye976@gmail.com>
+> ---
 
-I am pretty sure you sent v1, so this is v2. And if this is anyhow
-confusing, then just use standard tools - b4 - which would do this right.
-
-
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
 
 ---
@@ -137,7 +135,6 @@ tags received on the version they apply.
 Full context and explanation:
 https://elixir.bootlin.com/linux/v6.12-rc3/source/Documentation/process/submitting-patches.rst#L577
 </form letter>
-
 
 Best regards,
 Krzysztof

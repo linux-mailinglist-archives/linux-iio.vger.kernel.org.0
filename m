@@ -1,48 +1,48 @@
-Return-Path: <linux-iio+bounces-17584-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17585-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6E50A79CD1
-	for <lists+linux-iio@lfdr.de>; Thu,  3 Apr 2025 09:22:55 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92D2BA79CD6
+	for <lists+linux-iio@lfdr.de>; Thu,  3 Apr 2025 09:23:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 728C53AACFD
-	for <lists+linux-iio@lfdr.de>; Thu,  3 Apr 2025 07:22:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 365727A10F1
+	for <lists+linux-iio@lfdr.de>; Thu,  3 Apr 2025 07:22:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E85BA2405E7;
-	Thu,  3 Apr 2025 07:22:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D049B2405F9;
+	Thu,  3 Apr 2025 07:23:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KXTTprQk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y2AE6PEO"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 992EC23FC4C;
-	Thu,  3 Apr 2025 07:22:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85A5F23F42D;
+	Thu,  3 Apr 2025 07:23:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743664967; cv=none; b=qmOM3V5SocSGSqBx3MT7cmCP7ZWrSn3vViicK+jgKlH1xw1L7SZcGn4noBFOmrsoX7aTB/nf/N2QLAScs8TezAYcaN6dZCQPpvLEcP8+xVJKEoi3ZFz8vTDa+6VkN9DFuNi76w183mwW6XewrVezjMDy6dBzSltIbkVOU3uB2fU=
+	t=1743664982; cv=none; b=IxQLaM4chgFpAL0YfupPcPuaH/Uj/oJm5r2+jRiVfOgeh3RE/hjH1AO6WjFG8zMzFIhbIrkShxQaBVuwtHgo9AqF8T6bPkzS6fykLBz9sc/KCYqvS5BK7+HF39VFLgagFBQ54M2nEk0IRNUtLevWVdaxxZXAaLCjN2taUulifig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743664967; c=relaxed/simple;
-	bh=RFG7lnfOJHpS88J1H+CtmcWRswWAW9RbeQS1d7xeVVI=;
+	s=arc-20240116; t=1743664982; c=relaxed/simple;
+	bh=qF/6twPYnAMUicUtlKfxUrETUTqICv90PRL1kTQcIdI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=trVvh/3chOeCwRQe0FlGLWRQp/gMfah/mR2LMFOOzprHuUrMYAHQw6B0bKW7eU6CwZLC4tyIL/HaMo5AHkJQSqmwKX/l/ulydHIRXYYmWsX41Ga72EAuKVYXQVpbvKSBjaFkWp8hekOgL+sZugCiTwl+JR0iNz7Gxynw/KLBQBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KXTTprQk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BD38C4CEE8;
-	Thu,  3 Apr 2025 07:22:42 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=IgotVd/Cj9ViZl362yiEy/3iPPB+EDaYcq5uj+adiQxTCo2kk/NkGXaQGbQ3it+KeRRnBazoGikjkbwkHnwEsst/IprXW6ZENLwkh39QxeS2vS++ztv1Nf68rSXgmQ4vyXNnoTa2pKRiK6pjk0mY3kLr4MBEQnh3CiNQy+ZghQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y2AE6PEO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8A7FC4CEE8;
+	Thu,  3 Apr 2025 07:22:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743664967;
-	bh=RFG7lnfOJHpS88J1H+CtmcWRswWAW9RbeQS1d7xeVVI=;
+	s=k20201202; t=1743664982;
+	bh=qF/6twPYnAMUicUtlKfxUrETUTqICv90PRL1kTQcIdI=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=KXTTprQkJDIIREFZalxzQmma6RsBHJ9lnCe7jHVlw+uOqFVLerNpsTWjzl3GEF1NT
-	 w1/GZH5hyW42P4leHQNHffGib4P8JLiteSDEEgaQdusM1F4hCkhDmHBK9VeOUAjHdt
-	 sEJs7ANeV1QxZptR+iQoO0P3dIv3skRLtNIr5SEq0/eGfiTSA0Cag5AnwRIgGwtikF
-	 ex7YVV2xs4qcaJYfECmVVGy+LueWNS1++fF4k3E8uVx01ImxyMt2lWNZ65cLNcA2bj
-	 KCQ1PT//xtPzq6CXD1BWliGo30tZTYEmCuTohsEu35TOBHoEtnZZ4GzJcLHpk6jCDt
-	 2VboCPo+p9E7Q==
-Message-ID: <430a8cbd-0193-4c2d-a471-434bacab5914@kernel.org>
-Date: Thu, 3 Apr 2025 09:22:40 +0200
+	b=Y2AE6PEOUUiKwlR3zBFbFrxfG2LV1In1L/mMvbDKX/5caSct69Chucp1EiVq9nHzD
+	 ZgeeQfqpmxLd7fSVWRbOV0SBdTgLI2HDnhkBfnb4ZYEQWewZ3SJcivPHJLL3BrlMRt
+	 esmULP8vA+j5NzvFVG/DldPO9CMNzc2UBhF/Ft+c3+2tWwwAQjIqzUZCmU5vVTIWVV
+	 A3YdQz0siJH9dE03Kz5HuHTOJWiZ4msioJJarDg2xKrlqP7PiXc86g867pWFYZbqpG
+	 wkD8JDfALmgaYdN4nV+8WMM8L7OKfn2yxXt3j6b3wDWbGZKxxm2i9pi3HCPJvkZIxB
+	 IfVZIk20y6v3A==
+Message-ID: <6b3caec6-9fea-4d25-b05c-2578f973a36c@kernel.org>
+Date: Thu, 3 Apr 2025 09:22:56 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -51,22 +51,17 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v3 2/3] dt-bindings: iio: dac: Add adi,ad3530r.yaml
-To: "Paller, Kim Seer" <KimSeer.Paller@analog.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen
- <lars@metafoo.de>, "Hennerich, Michael" <Michael.Hennerich@analog.com>,
+To: Kim Seer Paller <kimseer.paller@analog.com>,
+ Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+ Michael Hennerich <Michael.Hennerich@analog.com>,
  Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>,
- "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+ Conor Dooley <conor+dt@kernel.org>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org
 References: <20250403-togreg-v3-0-d4b06a4af5a9@analog.com>
  <20250403-togreg-v3-2-d4b06a4af5a9@analog.com>
- <20250403-ebony-coua-of-tornado-71d4ad@krzk-bin>
- <PH0PR03MB7141FEBAD45D612440B85698F9AE2@PH0PR03MB7141.namprd03.prod.outlook.com>
- <6d6e85e2-a339-4904-a596-f2866d37739b@kernel.org>
- <PH0PR03MB71412F4BD377ED5E1D6729D5F9AE2@PH0PR03MB7141.namprd03.prod.outlook.com>
-Content-Language: en-US
 From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
  cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
@@ -110,35 +105,23 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <PH0PR03MB71412F4BD377ED5E1D6729D5F9AE2@PH0PR03MB7141.namprd03.prod.outlook.com>
+In-Reply-To: <20250403-togreg-v3-2-d4b06a4af5a9@analog.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 03/04/2025 09:11, Paller, Kim Seer wrote:
->>>>>
->>>>> Signed-off-by: Kim Seer Paller <kimseer.paller@analog.com>
->>>>> ---
->>>>>  .../devicetree/bindings/iio/dac/adi,ad3530r.yaml   | 99
->>>> ++++++++++++++++++++++
->>>>>  MAINTAINERS                                        |  7 ++
->>>>>  2 files changed, 106 insertions(+)
->>>>
->>>> You got report about error in v2, which you did not respond to.
->>>>
->>>> You send v3... with same error. I don't understand this.
->>>
->>> I'm not sure, but based on the information provided, the errors might be
->>> unrelated to the driver, or I might have missed something.
->>
->> It's your job to respond to errors one way or another (unless there are
->> obviously false positives). Ignoring them means this is marked as
->> "changes requested".
+On 03/04/2025 07:33, Kim Seer Paller wrote:
+> Document the AD3530/AD3530R (8-channel) and AD3531/AD3531R (4-channel)
+> low-power, 16-bit, buffered voltage output DACs with software-
+> programmable gain controls. They provide full-scale output spans of 2.5V
+> or 5V for reference voltages of 2.5V. These devices operate on a single
+> 2.7V to 5.5V supply and are guaranteed to be monotonic by design.
+> The "R" variants include a 2.5V, 5ppm/°C internal reference, which is
+> disabled by default.
 > 
-> My bad, I'll take note of that. I think the bindings error reported in v3 is
-> still unrelated to the current changes.
-Indeed, looks like. So in the future just respond to that email that you
-checked it is not related or put some short note in the changelog of
-that patch (---).
+> Signed-off-by: Kim Seer Paller <kimseer.paller@analog.com>
+> ---
+
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
 Best regards,
 Krzysztof

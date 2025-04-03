@@ -1,666 +1,452 @@
-Return-Path: <linux-iio+bounces-17601-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17602-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1004A7A7DE
-	for <lists+linux-iio@lfdr.de>; Thu,  3 Apr 2025 18:22:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5864AA7A7F6
+	for <lists+linux-iio@lfdr.de>; Thu,  3 Apr 2025 18:28:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 797FA176F4C
-	for <lists+linux-iio@lfdr.de>; Thu,  3 Apr 2025 16:21:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 785FA1888674
+	for <lists+linux-iio@lfdr.de>; Thu,  3 Apr 2025 16:28:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F076A2512E1;
-	Thu,  3 Apr 2025 16:20:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 048E92512C5;
+	Thu,  3 Apr 2025 16:28:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="TcThyohW"
+	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="Bpsuto1n"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx08-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1084125179D
-	for <linux-iio@vger.kernel.org>; Thu,  3 Apr 2025 16:20:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B361927706;
+	Thu,  3 Apr 2025 16:28:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.207.212.93
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743697234; cv=none; b=Wg5fpxYsp3athdtPq8ztv+S6Nx0+W0qouO3VovIFGPSXn8WOs1pAH4hcthis/TSJywAfVfZQ+POy5rXPUCKaXLU9BI6UncqRzpScdjGsm3VoJhg/GmZvJOkkoT9jCjHC4oJLtLddzKoW/KA2FLEeh2Tm4SjcdyDHkD7J9BmHssY=
+	t=1743697705; cv=none; b=bpWAHbpafa/uITHdUpcmM/3AbHaeRhY5W7pbxg1B/VmzMqXJfnKn2ULx2UoRQwaF1VY+SYR1WRPnHbKZaGKl8lS035kqIoYOEGbjt3mHShY3wOjDeYbG/gjbObOtWsWRh8Hni3GSIdA6vZMBE9MJlQU/O+MPk+7l6kzqgu3nhvk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743697234; c=relaxed/simple;
-	bh=GAuwtVV2LPz6cQ7YQ57GL+yH6PAnOCH4FqR/ZBoZFx8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Wk5Fyf61IQkJ3ayZVLCTgBPPeQEcSLvxG30z1Qn1BLmg8ERbHUMxD1CQCFsw/oiMyP059+1W3IWTWceGuSjvDQLv62r5SgrEc9z5BK8eb4+GXMgZUsGpKC2BB714jQNLsfKJCIHe2FdVzHMMPym1mKPAM+HQF6uoBxdStofYiwA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=TcThyohW; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-43ce71582e9so7675935e9.1
-        for <linux-iio@vger.kernel.org>; Thu, 03 Apr 2025 09:20:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1743697230; x=1744302030; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=4TfY4qSk60hX3lLReIodKR9Eo5X5vrCTMKVPYT7mkh8=;
-        b=TcThyohWsd9nE11N9Tb7t+NaAEWUfNZgcjfQH3J8A9QxE4Sl5ekYHuPkFJPb6hxpRt
-         yL4Gju40zSP84rm067YWflR8cMUXvd7EiWu3LoFY+iAHcSnw3VvVEJESkew4g2OUNbI1
-         hqM8gKRwDdadQBde/vdsmKiOHnS5Jdu4zxdXe6/IXRtVi2/oaEiv5QlUeONLunAP1tXI
-         +ObFPLziJglA4oHC4N6x9BnNzKvnVLUx+E7VzQN0kOrIio+FwPHatBMYtD0pVAvcei3N
-         nWnmqMFpRAMnFBifBRmDLU5wfQDplf73CnVBjyctVAzbSCDBxAFYKoHnJNkqZ+hyNWcC
-         Telg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743697230; x=1744302030;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=4TfY4qSk60hX3lLReIodKR9Eo5X5vrCTMKVPYT7mkh8=;
-        b=jjuoIabw4n9i+NPihELKxNRj7b+FlhoIyP9L/5iwKsJ2VD07vo8jlhGsujECO4ea2Q
-         snONP+xxOzStVrSSUIhhYBYnCziS8SfWTjn8mP8MgJl32tnqQo+ToTmfbkW1d8B+0q1j
-         RT7PXF/d80N/1fF1qGsrlHpkolX6Q6bQIUWFjzoil5+v4Ke5KeX8bsT8oSxD94zcx8XB
-         qnDhOyYLLF6khZI6+QcOlclT7h8FRp693gL6xzQhY682iVNoV7fX46sV7wHmZ+B8rxr6
-         ye8dbH7ef669S0asvVSPeFcaeOqZOK73oCnURZ5VqhjpfSV+09zLdpf2tRW356xrAEqZ
-         YGhg==
-X-Forwarded-Encrypted: i=1; AJvYcCUUc6o2qAX3EY96oYSLLGxNIsoWGaHNqW6vHsizKFYHI8azkCtSbgwd8pNz30t4T0BgWV9GZYzANPc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxnSMQCOA6pXgcl+4y/sjNskhi8hwdORztyDdT+yGWIh0AmMAbs
-	5yv049i2DPdzIuhGKaP9DsXy3GcqanLSJoE8vrah6dofvbj84nNMwkQMNops6PISD7/PwolOFcN
-	X
-X-Gm-Gg: ASbGncskQG1KaHx5vablvVWhjiry60p0ZrgkdFUeU1jeqm75lrFULmhEyYStSs8FLws
-	vsTzQJwirZuuheJtryyVSr6dFFh8ohV/y5tSxAIARxGorK5p1OLlkPVgx9gG2GS1Bq81//sGeZe
-	5X6p/OLa+HudYhbOffGSk3D/wUEgVqFTnQFrB/s/DPuqwJ4SXlOqgjedwz0fd1jtVtSsQsVDvRJ
-	4+rMaF6w9sQMbQ4Z/rJ9g/HEQtgkXTMtbfhP057zINe8IaWPa6P9qz1oyyyzUV8+R5ejzMgZsru
-	eRyEOkzDdRLEU/Jov9n+KSDMPFtOtGFsrPI/GVmP3P+anZoHkFUna21zZQLx75KG0paKtSvZPZq
-	CwJnucbXuz3vuLPAF9BN2rQ==
-X-Google-Smtp-Source: AGHT+IF8xYIBszIt76N3/Vj2/PAhkC7PlGgmLrnJ+KJlZmDpzXDRD/T6jtosHO8b5MQ8RilTZSurvg==
-X-Received: by 2002:a05:600c:3547:b0:439:86fb:7340 with SMTP id 5b1f17b1804b1-43eb06bd359mr95792075e9.30.1743697230016;
-        Thu, 03 Apr 2025 09:20:30 -0700 (PDT)
-Received: from [192.168.0.2] (host-79-30-116-65.retail.telecomitalia.it. [79.30.116.65])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39c3020d68esm2197657f8f.67.2025.04.03.09.20.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Apr 2025 09:20:29 -0700 (PDT)
-From: Angelo Dureghello <adureghello@baylibre.com>
-X-Google-Original-From: Angelo Dureghello <adureghello@baylibre.org>
-Date: Thu, 03 Apr 2025 18:19:06 +0200
-Subject: [PATCH 3/3] iio: adc: ad7606: add SPI offload support
+	s=arc-20240116; t=1743697705; c=relaxed/simple;
+	bh=iz9RtCcFsyRRUIKRGNAGl1Uovc4URosI4sBMVQgpMeY=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=kAB9PhC9za1Z1+6zYtX+gOzaFP5BR5jRnFip8xUekzsiD4BSGEpf/Svmk2y3tcRvQCdufBsCtDxNUiQQddGyWXQEnMnCoGZ9XF/J9uCFXrs1B6DWiOI9Ylx3sJEF8yRayOcS5esSmS0fB74AkUWX8Cvara0edQ1zH0B77f+Wjmc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=Bpsuto1n; arc=none smtp.client-ip=91.207.212.93
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
+Received: from pps.filterd (m0369457.ppops.net [127.0.0.1])
+	by mx07-00178001.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 533BPkd8024168;
+	Thu, 3 Apr 2025 18:28:02 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=selector1; bh=Ah0TZGtUrsVvEFBC1fVW/Y
+	qrrmYj+hZ4lBmeNXKbcZM=; b=Bpsuto1naypPj/7FNujwTbvYkxWE3xsuM0Tlva
+	VSxwJwK8qogA12QCLDCIBcxfGabnbXgIo6fwCaLW2AQyFofetj2tS2HiD8AVpCaR
+	5GrG62sYWAUMWtIEWm8xyAJww/Xz+8XoDDcrQPhH8C6WtA7+x/4CAFhReXFFOw4x
+	Wv12FsNGS3XZHazEci1SqACJEYW9JvbWnlawCewOvHVuWgWGOgLtG4nJVgHnhhbZ
+	bBMC6hA86uVTG5B4CaV1k1hZdFI0A8q9HGOkhvW/3OiONEY3Exxu6evAYUpixqe4
+	PEtfCbSDiMaqP2Rz6l6bW3hVWcY1FBlguUJZlZdPRDzCpL1w==
+Received: from beta.dmz-ap.st.com (beta.dmz-ap.st.com [138.198.100.35])
+	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 45s2c7fdwx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 03 Apr 2025 18:28:02 +0200 (MEST)
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+	by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id 6E4924007E;
+	Thu,  3 Apr 2025 18:26:37 +0200 (CEST)
+Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
+	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id E01CE8C49E5;
+	Thu,  3 Apr 2025 18:24:31 +0200 (CEST)
+Received: from localhost (10.48.87.151) by SHFDAG1NODE1.st.com (10.75.129.69)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Thu, 3 Apr
+ 2025 18:24:31 +0200
+From: Olivier Moysan <olivier.moysan@foss.st.com>
+To: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue
+	<alexandre.torgue@foss.st.com>
+CC: Olivier Moysan <olivier.moysan@foss.st.com>,
+        Fabrice Gasnier
+	<fabrice.gasnier@foss.st.com>,
+        <linux-iio@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>
+Subject: [PATCH v2] iio: adc: stm32: add oversampling support
+Date: Thu, 3 Apr 2025 18:23:57 +0200
+Message-ID: <20250403162358.1257370-1-olivier.moysan@foss.st.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250403-wip-bl-spi-offload-ad7606-v1-3-1b00cb638b12@baylibre.com>
-References: <20250403-wip-bl-spi-offload-ad7606-v1-0-1b00cb638b12@baylibre.com>
-In-Reply-To: <20250403-wip-bl-spi-offload-ad7606-v1-0-1b00cb638b12@baylibre.com>
-To: Lars-Peter Clausen <lars@metafoo.de>, 
- Michael Hennerich <Michael.Hennerich@analog.com>, 
- Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
- David Lechner <dlechner@baylibre.com>
-Cc: Michael Hennerich <michael.hennerich@analog.com>, 
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
- Angelo Dureghello <adureghello@baylibre.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=19074;
- i=adureghello@baylibre.com; h=from:subject:message-id;
- bh=sTlXALFQnPjy07d36wd4636kyW9SEMVlwtfX04R/tNc=;
- b=owGbwMvMwCXGf3bn1e/btlsznlZLYkh/t5Up+LqA22x+LxZdISUx9X+Muh826k2c5qu7nOGOy
- hxb3imxHaUsDGJcDLJiiix1iREmobdDpZQXMM6GmcPKBDKEgYtTACZycBkjw8foP32eVS3P20PU
- dvNb/Hhc2yCb3XZmjz0zw4qeWVMYTRkZ3m1s/eHCrOEaaLm08c/Rbi6nBLY/Ww+0LZtRdGnK57O
- HmAE=
-X-Developer-Key: i=adureghello@baylibre.com; a=openpgp;
- fpr=703CDFAD8B573EB00850E38366D1CB9419AF3953
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SHFCAS1NODE1.st.com (10.75.129.72) To SHFDAG1NODE1.st.com
+ (10.75.129.69)
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-04-03_07,2025-04-03_01,2024-11-22_01
 
-From: Angelo Dureghello <adureghello@baylibre.com>
+Add oversampling support for STM32H7, STM32MP15 & STM32MP13.
+STM32F4 ADC has no oversampling feature.
 
-Add SPI offload support for this family.
+The current support of the oversampling feature aims at increasing
+the data SNR, without changing the data resolution.
+As the oversampling by itself increases data resolution,
+a right shift is applied to keep initial resolution.
+Only the oversampling ratio corresponding to a power of two are
+supported here, to get a direct link between right shift and
+oversampling ratio. (2exp(n) ratio <=> n right shift)
 
-Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
+The oversampling ratio is shared by all channels, whatever channel type.
+(e.g. single ended or differential).
+
+Oversampling can be configured using IIO ABI:
+- in_voltage_oversampling_ratio_available
+- in_voltage_oversampling_ratio
+
+Signed-off-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+Signed-off-by: Olivier Moysan <olivier.moysan@foss.st.com>
+
 ---
- drivers/iio/adc/Kconfig      |   2 +
- drivers/iio/adc/ad7606.c     |  50 ++++++++---
- drivers/iio/adc/ad7606.h     |  12 +++
- drivers/iio/adc/ad7606_spi.c | 210 +++++++++++++++++++++++++++++++++++++++++++
- 4 files changed, 264 insertions(+), 10 deletions(-)
+Changes in v2:
+- Remove useless header files
+- Use FIELD_PREP macro
+- Reorder stm32_adc_write_raw() function
+---
+ drivers/iio/adc/stm32-adc-core.h |  14 ++++
+ drivers/iio/adc/stm32-adc.c      | 137 +++++++++++++++++++++++++++++++
+ 2 files changed, 151 insertions(+)
 
-diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-index 859c77f40f1d1893d0fc92212ad538150f0992c8..df90db609f683217cffaeb605aa9b6f022cf2b9b 100644
---- a/drivers/iio/adc/Kconfig
-+++ b/drivers/iio/adc/Kconfig
-@@ -284,6 +284,8 @@ config AD7606_IFACE_SPI
- 	tristate "Analog Devices AD7606 ADC driver with spi interface support"
- 	depends on SPI
- 	select AD7606
-+	select IIO_BUFFER_DMAENGINE
-+	select SPI_OFFLOAD
- 	help
- 	  Say yes here to build spi interface support for Analog Devices:
- 	  ad7605-4, ad7606, ad7606-6, ad7606-4 analog to digital converters (ADC).
-diff --git a/drivers/iio/adc/ad7606.c b/drivers/iio/adc/ad7606.c
-index 843c30fddc7346d0dec7d791e26ca16e2c1ea0cf..aa6ae2c1b06acfa5d38229827e37fed1c2f82870 100644
---- a/drivers/iio/adc/ad7606.c
-+++ b/drivers/iio/adc/ad7606.c
-@@ -138,6 +138,7 @@ const struct ad7606_chip_info ad7606_6_info = {
- 	.oversampling_avail = ad7606_oversampling_avail,
- 	.oversampling_num = ARRAY_SIZE(ad7606_oversampling_avail),
- 	.scale_setup_cb = ad7606_16bit_chan_scale_setup,
-+	.offload_storagebits = 32,
- };
- EXPORT_SYMBOL_NS_GPL(ad7606_6_info, "IIO_AD7606");
+diff --git a/drivers/iio/adc/stm32-adc-core.h b/drivers/iio/adc/stm32-adc-core.h
+index 73b2c2e91c08..bfd42c5456bf 100644
+--- a/drivers/iio/adc/stm32-adc-core.h
++++ b/drivers/iio/adc/stm32-adc-core.h
+@@ -91,6 +91,7 @@
+ #define STM32H7_ADC_IER			0x04
+ #define STM32H7_ADC_CR			0x08
+ #define STM32H7_ADC_CFGR		0x0C
++#define STM32H7_ADC_CFGR2		0x10
+ #define STM32H7_ADC_SMPR1		0x14
+ #define STM32H7_ADC_SMPR2		0x18
+ #define STM32H7_ADC_PCSEL		0x1C
+@@ -160,6 +161,13 @@
+ #define STM32H7_DMNGT_SHIFT		0
+ #define STM32H7_DMNGT_MASK		GENMASK(1, 0)
  
-@@ -149,6 +150,7 @@ const struct ad7606_chip_info ad7606_4_info = {
- 	.oversampling_avail = ad7606_oversampling_avail,
- 	.oversampling_num = ARRAY_SIZE(ad7606_oversampling_avail),
- 	.scale_setup_cb = ad7606_16bit_chan_scale_setup,
-+	.offload_storagebits = 32,
- };
- EXPORT_SYMBOL_NS_GPL(ad7606_4_info, "IIO_AD7606");
- 
-@@ -161,6 +163,7 @@ const struct ad7606_chip_info ad7606b_info = {
- 	.oversampling_num = ARRAY_SIZE(ad7606_oversampling_avail),
- 	.scale_setup_cb = ad7606_16bit_chan_scale_setup,
- 	.sw_setup_cb = ad7606b_sw_mode_setup,
-+	.offload_storagebits = 32,
- };
- EXPORT_SYMBOL_NS_GPL(ad7606b_info, "IIO_AD7606");
- 
-@@ -173,6 +176,7 @@ const struct ad7606_chip_info ad7606c_16_info = {
- 	.oversampling_num = ARRAY_SIZE(ad7606_oversampling_avail),
- 	.scale_setup_cb = ad7606c_16bit_chan_scale_setup,
- 	.sw_setup_cb = ad7606b_sw_mode_setup,
-+	.offload_storagebits = 32,
- };
- EXPORT_SYMBOL_NS_GPL(ad7606c_16_info, "IIO_AD7606");
- 
-@@ -184,6 +188,7 @@ const struct ad7606_chip_info ad7607_info = {
- 	.oversampling_avail = ad7606_oversampling_avail,
- 	.oversampling_num = ARRAY_SIZE(ad7606_oversampling_avail),
- 	.scale_setup_cb = ad7607_chan_scale_setup,
-+	.offload_storagebits = 32,
- };
- EXPORT_SYMBOL_NS_GPL(ad7607_info, "IIO_AD7606");
- 
-@@ -195,6 +200,7 @@ const struct ad7606_chip_info ad7608_info = {
- 	.oversampling_avail = ad7606_oversampling_avail,
- 	.oversampling_num = ARRAY_SIZE(ad7606_oversampling_avail),
- 	.scale_setup_cb = ad7608_chan_scale_setup,
-+	.offload_storagebits = 32,
- };
- EXPORT_SYMBOL_NS_GPL(ad7608_info, "IIO_AD7606");
- 
-@@ -206,6 +212,7 @@ const struct ad7606_chip_info ad7609_info = {
- 	.oversampling_avail = ad7606_oversampling_avail,
- 	.oversampling_num = ARRAY_SIZE(ad7606_oversampling_avail),
- 	.scale_setup_cb = ad7609_chan_scale_setup,
-+	.offload_storagebits = 32,
- };
- EXPORT_SYMBOL_NS_GPL(ad7609_info, "IIO_AD7606");
- 
-@@ -218,6 +225,7 @@ const struct ad7606_chip_info ad7606c_18_info = {
- 	.oversampling_num = ARRAY_SIZE(ad7606_oversampling_avail),
- 	.scale_setup_cb = ad7606c_18bit_chan_scale_setup,
- 	.sw_setup_cb = ad7606b_sw_mode_setup,
-+	.offload_storagebits = 32,
- };
- EXPORT_SYMBOL_NS_GPL(ad7606c_18_info, "IIO_AD7606");
- 
-@@ -232,6 +240,7 @@ const struct ad7606_chip_info ad7616_info = {
- 	.os_req_reset = true,
- 	.scale_setup_cb = ad7606_16bit_chan_scale_setup,
- 	.sw_setup_cb = ad7616_sw_mode_setup,
-+	.offload_storagebits = 16,
- };
- EXPORT_SYMBOL_NS_GPL(ad7616_info, "IIO_AD7606");
- 
-@@ -514,7 +523,7 @@ static int ad7606_pwm_set_high(struct ad7606_state *st)
- 	return ret;
- }
- 
--static int ad7606_pwm_set_low(struct ad7606_state *st)
-+int ad7606_pwm_set_low(struct ad7606_state *st)
- {
- 	struct pwm_state cnvst_pwm_state;
- 	int ret;
-@@ -527,8 +536,9 @@ static int ad7606_pwm_set_low(struct ad7606_state *st)
- 
- 	return ret;
- }
-+EXPORT_SYMBOL_NS_GPL(ad7606_pwm_set_low, "IIO_AD7606");
- 
--static int ad7606_pwm_set_swing(struct ad7606_state *st)
-+int ad7606_pwm_set_swing(struct ad7606_state *st)
- {
- 	struct pwm_state cnvst_pwm_state;
- 
-@@ -538,6 +548,7 @@ static int ad7606_pwm_set_swing(struct ad7606_state *st)
- 
- 	return pwm_apply_might_sleep(st->cnvst_pwm, &cnvst_pwm_state);
- }
-+EXPORT_SYMBOL_NS_GPL(ad7606_pwm_set_swing, "IIO_AD7606");
- 
- static bool ad7606_pwm_is_swinging(struct ad7606_state *st)
- {
-@@ -626,7 +637,7 @@ static int ad7606_scan_direct(struct iio_dev *indio_dev, unsigned int ch,
- 	 * will not happen because IIO_CHAN_INFO_RAW is not supported for the backend.
- 	 * TODO: Add support for reading a single value when the backend is used.
- 	 */
--	if (!st->back) {
-+	if (st->trig) {
- 		ret = wait_for_completion_timeout(&st->completion,
- 						  msecs_to_jiffies(1000));
- 		if (!ret) {
-@@ -634,7 +645,12 @@ static int ad7606_scan_direct(struct iio_dev *indio_dev, unsigned int ch,
- 			goto error_ret;
- 		}
- 	} else {
--		fsleep(1);
-+		/*
-+		 * If the BUSY interrupt is not available, wait enough time for
-+		 * the longest possible conversion (max for the whole family is
-+		 * around 350us).
-+		 */
-+		fsleep(400);
- 	}
- 
- 	ret = ad7606_read_samples(st);
-@@ -1201,7 +1217,7 @@ static int ad7606_probe_channels(struct iio_dev *indio_dev)
- 	bool slow_bus;
- 	int ret, i;
- 
--	slow_bus = !st->bops->iio_backend_config;
-+	slow_bus = !(st->bops->iio_backend_config || st->offload_en);
- 	indio_dev->num_channels = st->chip_info->num_adc_channels;
- 
- 	/* Slow buses also get 1 more channel for soft timestamp */
-@@ -1222,7 +1238,14 @@ static int ad7606_probe_channels(struct iio_dev *indio_dev)
- 		chan->scan_index = i;
- 		chan->scan_type.sign = 's';
- 		chan->scan_type.realbits = st->chip_info->bits;
--		chan->scan_type.storagebits = st->chip_info->bits > 16 ? 32 : 16;
-+		/*
-+		 * If in SPI offload mode, storagebits are set based
-+		 * on the spi-engine hw implementation.
-+		 */
-+		chan->scan_type.storagebits = st->offload_en ?
-+			st->chip_info->offload_storagebits :
-+			(st->chip_info->bits > 16 ? 32 : 16);
++/* STM32H7_ADC_CFGR2 bit fields */
++#define STM32H7_OVSR_MASK		GENMASK(25, 16) /* Correspond to OSVR field in datasheet */
++#define STM32H7_OVSR(v)			FIELD_PREP(STM32H7_OVSR_MASK, v)
++#define STM32H7_OVSS_MASK		GENMASK(8, 5)
++#define STM32H7_OVSS(v)			FIELD_PREP(STM32H7_OVSS_MASK, v)
++#define STM32H7_ROVSE			BIT(0)
 +
- 		chan->scan_type.endianness = IIO_CPU;
+ enum stm32h7_adc_dmngt {
+ 	STM32H7_DMNGT_DR_ONLY,		/* Regular data in DR only */
+ 	STM32H7_DMNGT_DMA_ONESHOT,	/* DMA one shot mode */
+@@ -226,6 +234,12 @@ enum stm32h7_adc_dmngt {
+ #define STM32MP13_RES_SHIFT		3
+ #define STM32MP13_RES_MASK		GENMASK(4, 3)
  
- 		if (indio_dev->modes & INDIO_DIRECT_MODE)
-@@ -1340,6 +1363,13 @@ int ad7606_probe(struct device *dev, int irq, void __iomem *base_address,
- 	indio_dev->modes = st->bops->iio_backend_config ? 0 : INDIO_DIRECT_MODE;
- 	indio_dev->name = chip_info->name;
++/* STM32MP13_ADC_CFGR2 bit fields */
++#define STM32MP13_OVSR_MASK		GENMASK(4, 2)
++#define STM32MP13_OVSR(v)		FIELD_PREP(STM32MP13_OVSR_MASK, v)
++#define STM32MP13_OVSS_MASK		GENMASK(8, 5)
++#define STM32MP13_OVSS(v)		FIELD_PREP(STM32MP13_OVSS_MASK, v)
++
+ /* STM32MP13_ADC_DIFSEL - bit fields */
+ #define STM32MP13_DIFSEL_MASK		GENMASK(18, 0)
  
-+	/* Using spi-engine with offload support ? */
-+	if (st->bops->offload_config) {
-+		ret = st->bops->offload_config(dev, indio_dev);
+diff --git a/drivers/iio/adc/stm32-adc.c b/drivers/iio/adc/stm32-adc.c
+index 5dbf5f136768..0f0910e05de8 100644
+--- a/drivers/iio/adc/stm32-adc.c
++++ b/drivers/iio/adc/stm32-adc.c
+@@ -6,6 +6,7 @@
+  * Author: Fabrice Gasnier <fabrice.gasnier@st.com>.
+  */
+ 
++#include <linux/bitfield.h>
+ #include <linux/clk.h>
+ #include <linux/debugfs.h>
+ #include <linux/delay.h>
+@@ -202,11 +203,13 @@ struct stm32_adc;
+  * @has_boostmode:	boost mode support flag
+  * @has_linearcal:	linear calibration support flag
+  * @has_presel:		channel preselection support flag
++ * @has_oversampling:	oversampling support flag
+  * @prepare:		optional prepare routine (power-up, enable)
+  * @start_conv:		routine to start conversions
+  * @stop_conv:		routine to stop conversions
+  * @unprepare:		optional unprepare routine (disable, power-down)
+  * @irq_clear:		routine to clear irqs
++ * @set_ovs:		routine to set oversampling configuration
+  * @smp_cycles:		programmable sampling time (ADC clock cycles)
+  * @ts_int_ch:		pointer to array of internal channels minimum sampling time in ns
+  */
+@@ -219,11 +222,13 @@ struct stm32_adc_cfg {
+ 	bool has_boostmode;
+ 	bool has_linearcal;
+ 	bool has_presel;
++	bool has_oversampling;
+ 	int (*prepare)(struct iio_dev *);
+ 	void (*start_conv)(struct iio_dev *, bool dma);
+ 	void (*stop_conv)(struct iio_dev *);
+ 	void (*unprepare)(struct iio_dev *);
+ 	void (*irq_clear)(struct iio_dev *indio_dev, u32 msk);
++	void (*set_ovs)(struct iio_dev *indio_dev, u32 ovs_idx);
+ 	const unsigned int *smp_cycles;
+ 	const unsigned int *ts_int_ch;
+ };
+@@ -255,6 +260,7 @@ struct stm32_adc_cfg {
+  * @num_diff:		number of differential channels
+  * @int_ch:		internal channel indexes array
+  * @nsmps:		number of channels with optional sample time
++ * @ovs_idx:		current oversampling ratio index (in oversampling array)
+  */
+ struct stm32_adc {
+ 	struct stm32_adc_common	*common;
+@@ -282,6 +288,7 @@ struct stm32_adc {
+ 	u32			num_diff;
+ 	int			int_ch[STM32_ADC_INT_CH_NB];
+ 	int			nsmps;
++	int			ovs_idx;
+ };
+ 
+ struct stm32_adc_diff_channel {
+@@ -293,12 +300,24 @@ struct stm32_adc_diff_channel {
+  * struct stm32_adc_info - stm32 ADC, per instance config data
+  * @max_channels:	Number of channels
+  * @resolutions:	available resolutions
++ * @oversampling:	available oversampling ratios
+  * @num_res:		number of available resolutions
++ * @num_ovs:		number of available oversampling ratios
+  */
+ struct stm32_adc_info {
+ 	int max_channels;
+ 	const unsigned int *resolutions;
++	const unsigned int *oversampling;
+ 	const unsigned int num_res;
++	const unsigned int num_ovs;
++};
++
++static const unsigned int stm32h7_adc_oversampling_avail[] = {
++1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024
++};
++
++static const unsigned int stm32mp13_adc_oversampling_avail[] = {
++1, 2, 4, 8, 16, 32, 64, 128, 256
+ };
+ 
+ static const unsigned int stm32f4_adc_resolutions[] = {
+@@ -322,14 +341,18 @@ static const unsigned int stm32h7_adc_resolutions[] = {
+ static const struct stm32_adc_info stm32h7_adc_info = {
+ 	.max_channels = STM32_ADC_CH_MAX,
+ 	.resolutions = stm32h7_adc_resolutions,
++	.oversampling = stm32h7_adc_oversampling_avail,
+ 	.num_res = ARRAY_SIZE(stm32h7_adc_resolutions),
++	.num_ovs = ARRAY_SIZE(stm32h7_adc_oversampling_avail),
+ };
+ 
+ /* stm32mp13 can have up to 19 channels */
+ static const struct stm32_adc_info stm32mp13_adc_info = {
+ 	.max_channels = 19,
+ 	.resolutions = stm32f4_adc_resolutions,
++	.oversampling = stm32mp13_adc_oversampling_avail,
+ 	.num_res = ARRAY_SIZE(stm32f4_adc_resolutions),
++	.num_ovs = ARRAY_SIZE(stm32mp13_adc_oversampling_avail),
+ };
+ 
+ /*
+@@ -889,6 +912,41 @@ static void stm32mp13_adc_start_conv(struct iio_dev *indio_dev, bool dma)
+ 	stm32_adc_set_bits(adc, STM32H7_ADC_CR, STM32H7_ADSTART);
+ }
+ 
++static void stm32h7_adc_set_ovs(struct iio_dev *indio_dev, u32 ovs_idx)
++{
++	struct stm32_adc *adc = iio_priv(indio_dev);
++	u32 ovsr_bits, bits, msk;
++
++	msk = STM32H7_ROVSE | STM32H7_OVSR_MASK | STM32H7_OVSS_MASK;
++	stm32_adc_clr_bits(adc, STM32H7_ADC_CFGR2, msk);
++
++	if (!ovs_idx)
++		return;
++
++	ovsr_bits = (1 << ovs_idx) - 1;
++	bits = STM32H7_ROVSE | STM32H7_OVSS(ovs_idx) | STM32H7_OVSR(ovsr_bits);
++
++	stm32_adc_set_bits(adc, STM32H7_ADC_CFGR2, bits & msk);
++}
++
++static void stm32mp13_adc_set_ovs(struct iio_dev *indio_dev, u32 ovs_idx)
++{
++	struct stm32_adc *adc = iio_priv(indio_dev);
++	u32 bits, msk;
++
++	msk = STM32H7_ROVSE | STM32MP13_OVSR_MASK | STM32MP13_OVSS_MASK;
++	stm32_adc_clr_bits(adc, STM32H7_ADC_CFGR2, msk);
++
++	if (!ovs_idx)
++		return;
++
++	bits = STM32H7_ROVSE | STM32MP13_OVSS(ovs_idx);
++	if (ovs_idx - 1)
++		bits |= STM32MP13_OVSR(ovs_idx - 1);
++
++	stm32_adc_set_bits(adc, STM32H7_ADC_CFGR2, bits & msk);
++}
++
+ static int stm32h7_adc_exit_pwr_down(struct iio_dev *indio_dev)
+ {
+ 	struct stm32_adc *adc = iio_priv(indio_dev);
+@@ -1461,6 +1519,69 @@ static int stm32_adc_single_conv(struct iio_dev *indio_dev,
+ 	return ret;
+ }
+ 
++static int stm32_adc_write_raw(struct iio_dev *indio_dev,
++			       struct iio_chan_spec const *chan,
++			       int val, int val2, long mask)
++{
++	struct stm32_adc *adc = iio_priv(indio_dev);
++	struct device *dev = indio_dev->dev.parent;
++	int nb = adc->cfg->adc_info->num_ovs;
++	u32 idx;
++	int ret;
++
++	switch (mask) {
++	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
++		if (val2)
++			return -EINVAL;
++
++		for (idx = 0; idx < nb; idx++)
++			if (adc->cfg->adc_info->oversampling[idx] == val)
++				break;
++
++		if (idx >= nb)
++			return -EINVAL;
++
++		ret = iio_device_claim_direct_mode(indio_dev);
 +		if (ret)
 +			return ret;
-+	}
 +
- 	ret = ad7606_probe_channels(indio_dev);
- 	if (ret)
- 		return ret;
-@@ -1355,7 +1385,7 @@ int ad7606_probe(struct device *dev, int irq, void __iomem *base_address,
- 	}
- 
- 	/* If convst pin is not defined, setup PWM. */
--	if (!st->gpio_convst) {
-+	if (!st->gpio_convst || st->offload_en) {
- 		st->cnvst_pwm = devm_pwm_get(dev, NULL);
- 		if (IS_ERR(st->cnvst_pwm))
- 			return PTR_ERR(st->cnvst_pwm);
-@@ -1394,8 +1424,7 @@ int ad7606_probe(struct device *dev, int irq, void __iomem *base_address,
- 			return ret;
- 
- 		indio_dev->setup_ops = &ad7606_backend_buffer_ops;
--	} else {
--
-+	} else if (!st->offload_en) {
- 		/* Reserve the PWM use only for backend (force gpio_convst definition) */
- 		if (!st->gpio_convst)
- 			return dev_err_probe(dev, -EINVAL,
-@@ -1433,7 +1462,8 @@ int ad7606_probe(struct device *dev, int irq, void __iomem *base_address,
- 	st->write_scale = ad7606_write_scale_hw;
- 	st->write_os = ad7606_write_os_hw;
- 
--	if (st->sw_mode_en) {
-+	/* Offload needs 1 DOUT line, applying this setting in sw_setup_cb. */
-+	if (st->sw_mode_en || st->offload_en) {
- 		indio_dev->info = &ad7606_info_sw_mode;
- 		st->chip_info->sw_setup_cb(indio_dev);
- 	}
-diff --git a/drivers/iio/adc/ad7606.h b/drivers/iio/adc/ad7606.h
-index f0b262fb4554f0bf244338c98ca585143321d616..89d49551eaf515bab9706c12bff056dfcb707b67 100644
---- a/drivers/iio/adc/ad7606.h
-+++ b/drivers/iio/adc/ad7606.h
-@@ -60,6 +60,7 @@ typedef int (*ad7606_sw_setup_cb_t)(struct iio_dev *indio_dev);
-  * @os_req_reset:	some devices require a reset to update oversampling
-  * @init_delay_ms:	required delay in milliseconds for initialization
-  *			after a restart
-+ * @offload_storagebits: storage bits used by the offload hw implementation
-  */
- struct ad7606_chip_info {
- 	unsigned int			max_samplerate;
-@@ -72,6 +73,7 @@ struct ad7606_chip_info {
- 	unsigned int			oversampling_num;
- 	bool				os_req_reset;
- 	unsigned long			init_delay_ms;
-+	u8				offload_storagebits;
- };
- 
- /**
-@@ -118,6 +120,8 @@ struct ad7606_chan_scale {
-  * @trig:		The IIO trigger associated with the device.
-  * @completion:		completion to indicate end of conversion
-  * @data:		buffer for reading data from the device
-+ * @offload_en:		SPI offload enabled
-+ * @bus_data:		bus-specific variables
-  * @d16:		be16 buffer for reading data from the device
-  */
- struct ad7606_state {
-@@ -145,6 +149,9 @@ struct ad7606_state {
- 	struct iio_trigger		*trig;
- 	struct completion		completion;
- 
-+	bool				offload_en;
-+	void				*bus_data;
++		ret = pm_runtime_resume_and_get(dev);
++		if (ret < 0)
++			goto err;
 +
- 	/*
- 	 * DMA (thus cache coherency maintenance) may require the
- 	 * transfer buffers to live in their own cache lines.
-@@ -165,6 +172,8 @@ struct ad7606_state {
-  * @read_block:		function pointer for reading blocks of data
-  * @sw_mode_config:	pointer to a function which configured the device
-  *			for software mode
-+ * @offload_config:     function pointer for configuring offload support,
-+ *			where any
-  * @reg_read:		function pointer for reading spi register
-  * @reg_write:		function pointer for writing spi register
-  * @update_scan_mode:	function pointer for handling the calls to iio_info's
-@@ -174,6 +183,7 @@ struct ad7606_state {
- struct ad7606_bus_ops {
- 	/* more methods added in future? */
- 	int (*iio_backend_config)(struct device *dev, struct iio_dev *indio_dev);
-+	int (*offload_config)(struct device *dev, struct iio_dev *indio_dev);
- 	int (*read_block)(struct device *dev, int num, void *data);
- 	int (*sw_mode_config)(struct iio_dev *indio_dev);
- 	int (*reg_read)(struct ad7606_state *st, unsigned int addr);
-@@ -199,6 +209,8 @@ int ad7606_probe(struct device *dev, int irq, void __iomem *base_address,
- 		 const struct ad7606_bus_ops *bops);
- 
- int ad7606_reset(struct ad7606_state *st);
-+int ad7606_pwm_set_swing(struct ad7606_state *st);
-+int ad7606_pwm_set_low(struct ad7606_state *st);
- 
- extern const struct ad7606_chip_info ad7605_4_info;
- extern const struct ad7606_chip_info ad7606_8_info;
-diff --git a/drivers/iio/adc/ad7606_spi.c b/drivers/iio/adc/ad7606_spi.c
-index b2b975fb7fea4d1af6caef59e75ca495501bc140..b086122497eb22042171580878160334f56baa23 100644
---- a/drivers/iio/adc/ad7606_spi.c
-+++ b/drivers/iio/adc/ad7606_spi.c
-@@ -6,15 +6,31 @@
-  */
- 
- #include <linux/err.h>
-+#include <linux/math.h>
- #include <linux/module.h>
-+#include <linux/pwm.h>
-+#include <linux/spi/offload/consumer.h>
-+#include <linux/spi/offload/provider.h>
- #include <linux/spi/spi.h>
- #include <linux/types.h>
-+#include <linux/units.h>
- 
-+#include <linux/iio/buffer-dmaengine.h>
- #include <linux/iio/iio.h>
++		adc->cfg->set_ovs(indio_dev, idx);
 +
-+#include <dt-bindings/iio/adc/adi,ad7606.h>
++		pm_runtime_mark_last_busy(dev);
++		pm_runtime_put_autosuspend(dev);
 +
- #include "ad7606.h"
- 
- #define MAX_SPI_FREQ_HZ		23500000	/* VDRIVE above 4.75 V */
- 
-+struct spi_bus_data {
-+	struct spi_offload *offload;
-+	struct spi_offload_trigger *offload_trigger;
-+	struct spi_transfer offload_xfer;
-+	struct spi_message offload_msg;
-+};
++		adc->ovs_idx = idx;
 +
- static u16 ad7616_spi_rd_wr_cmd(int addr, char is_write_op)
- {
- 	/*
-@@ -125,19 +141,211 @@ static int ad7606b_sw_mode_config(struct iio_dev *indio_dev)
- 				   AD7606_SINGLE_DOUT);
- }
- 
-+static const struct spi_offload_config ad7606_spi_offload_config = {
-+	.capability_flags = SPI_OFFLOAD_CAP_TRIGGER |
-+			    SPI_OFFLOAD_CAP_RX_STREAM_DMA,
-+};
++err:
++		iio_device_release_direct_mode(indio_dev);
 +
-+static int ad7606_spi_offload_buffer_postenable(struct iio_dev *indio_dev)
-+{
-+	const struct iio_scan_type *scan_type;
-+	struct ad7606_state *st = iio_priv(indio_dev);
-+	struct spi_bus_data *bus_data = st->bus_data;
-+	struct spi_transfer *xfer = &bus_data->offload_xfer;
-+	struct spi_device *spi = to_spi_device(st->dev);
-+	struct spi_offload_trigger_config config = {
-+		.type = SPI_OFFLOAD_TRIGGER_DATA_READY,
-+	};
-+	int ret;
-+
-+	scan_type = &indio_dev->channels[0].scan_type;
-+
-+	xfer->bits_per_word = scan_type->realbits;
-+	xfer->offload_flags = SPI_OFFLOAD_XFER_RX_STREAM;
-+	/*
-+	 * Using SPI offload, storagebits are related to the spi-engine
-+	 * hw implementation, can be 16 or 32, so can't be used to compute
-+	 * struct spi_transfer.len. Using realbits instead.
-+	 */
-+	xfer->len = (scan_type->realbits > 16 ? 4 : 2) *
-+		    st->chip_info->num_adc_channels;
-+
-+	spi_message_init_with_transfers(&bus_data->offload_msg, xfer, 1);
-+	bus_data->offload_msg.offload = bus_data->offload;
-+
-+	ret = spi_optimize_message(spi, &bus_data->offload_msg);
-+	if (ret) {
-+		dev_err(st->dev, "failed to prepare offload, err: %d\n", ret);
 +		return ret;
++	default:
++		return -EINVAL;
 +	}
-+
-+	ret = spi_offload_trigger_enable(bus_data->offload,
-+					 bus_data->offload_trigger,
-+					 &config);
-+	if (ret)
-+		goto err_unoptimize_message;
-+
-+	ret = ad7606_pwm_set_swing(st);
-+	if (ret)
-+		goto err_offload_exit_conversion_mode;
-+
-+	return 0;
-+
-+err_offload_exit_conversion_mode:
-+	spi_offload_trigger_disable(bus_data->offload,
-+				    bus_data->offload_trigger);
-+
-+err_unoptimize_message:
-+	spi_unoptimize_message(&bus_data->offload_msg);
-+
-+	return ret;
 +}
 +
-+static int ad7606_spi_offload_buffer_predisable(struct iio_dev *indio_dev)
++static int stm32_adc_read_avail(struct iio_dev *indio_dev,
++				struct iio_chan_spec const *chan,
++				const int **vals, int *type, int *length, long m)
 +{
-+	struct ad7606_state *st = iio_priv(indio_dev);
-+	struct spi_bus_data *bus_data = st->bus_data;
-+	int ret;
++	struct stm32_adc *adc = iio_priv(indio_dev);
 +
-+	ret = ad7606_pwm_set_low(st);
-+	if (ret)
-+		return ret;
-+
-+	spi_offload_trigger_disable(bus_data->offload,
-+				    bus_data->offload_trigger);
-+	spi_unoptimize_message(&bus_data->offload_msg);
-+
-+	return 0;
-+}
-+
-+static const struct iio_buffer_setup_ops ad7606_offload_buffer_setup_ops = {
-+	.postenable = ad7606_spi_offload_buffer_postenable,
-+	.predisable = ad7606_spi_offload_buffer_predisable,
-+};
-+
-+static bool ad7606_spi_offload_trigger_match(
-+				struct spi_offload_trigger *trigger,
-+				enum spi_offload_trigger_type type,
-+				u64 *args, u32 nargs)
-+{
-+	if (type != SPI_OFFLOAD_TRIGGER_DATA_READY)
-+	       return false;
-+
-+	/*
-+	 * Requires 1 arg:
-+	 * args[0] is the trigger event.
-+	 */
-+	if (nargs != 1 || args[0] != AD7606_TRIGGER_EVENT_BUSY)
-+		return false;
-+
-+	return true;
-+}
-+
-+static int ad7606_spi_offload_trigger_request(
-+				struct spi_offload_trigger *trigger,
-+				enum spi_offload_trigger_type type,
-+				u64 *args, u32 nargs)
-+{
-+	/* Should already be validated by match, but just in case. */
-+	if (nargs != 1)
++	switch (m) {
++	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
++		*type = IIO_VAL_INT;
++		*length = adc->cfg->adc_info->num_ovs;
++		*vals = adc->cfg->adc_info->oversampling;
++		return IIO_AVAIL_LIST;
++	default:
 +		return -EINVAL;
-+
-+	return 0;
++	}
 +}
 +
-+static int ad7606_spi_offload_trigger_validate(
-+				struct spi_offload_trigger *trigger,
-+				struct spi_offload_trigger_config *config)
-+{
-+	if (config->type != SPI_OFFLOAD_TRIGGER_DATA_READY)
-+		return -EINVAL;
+ static int stm32_adc_read_raw(struct iio_dev *indio_dev,
+ 			      struct iio_chan_spec const *chan,
+ 			      int *val, int *val2, long mask)
+@@ -1502,6 +1623,10 @@ static int stm32_adc_read_raw(struct iio_dev *indio_dev,
+ 			*val = 0;
+ 		return IIO_VAL_INT;
+ 
++	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
++		*val = adc->cfg->adc_info->oversampling[adc->ovs_idx];
++		return IIO_VAL_INT;
 +
-+	return 0;
-+}
-+
-+static const struct spi_offload_trigger_ops ad7606_offload_trigger_ops = {
-+	.match = ad7606_spi_offload_trigger_match,
-+	.request = ad7606_spi_offload_trigger_request,
-+	.validate = ad7606_spi_offload_trigger_validate,
-+};
-+
-+static int ad7606_spi_offload_probe(struct device *dev,
-+				    struct iio_dev *indio_dev)
-+{
-+	struct ad7606_state *st = iio_priv(indio_dev);
-+	struct spi_device *spi = to_spi_device(dev);
-+	struct spi_bus_data *bus_data;
-+	struct dma_chan *rx_dma;
-+	struct spi_offload_trigger_info trigger_info = {
-+		.fwnode = dev_fwnode(dev),
-+		.ops = &ad7606_offload_trigger_ops,
-+		.priv = st,
-+	};
-+	int ret;
-+
-+	bus_data = devm_kzalloc(dev, sizeof(*bus_data), GFP_KERNEL);
-+	if (!bus_data)
-+		return -ENOMEM;
-+	st->bus_data = bus_data;
-+
-+	bus_data->offload = devm_spi_offload_get(dev, spi,
-+						 &ad7606_spi_offload_config);
-+	ret = PTR_ERR_OR_ZERO(bus_data->offload);
-+	if (ret && ret != -ENODEV)
-+		return dev_err_probe(dev, ret, "failed to get SPI offload\n");
-+	/* Allow main ad7606_probe function to continue. */
-+	if (ret == -ENODEV)
-+		return 0;
-+
-+	ret = devm_spi_offload_trigger_register(dev, &trigger_info);
-+	if (ret)
-+		return dev_err_probe(dev, ret,
-+				     "failed to register offload trigger\n");
-+
-+	bus_data->offload_trigger = devm_spi_offload_trigger_get(dev,
-+		bus_data->offload, SPI_OFFLOAD_TRIGGER_DATA_READY);
-+	if (IS_ERR(bus_data->offload_trigger))
-+		return dev_err_probe(dev, PTR_ERR(bus_data->offload_trigger),
-+				     "failed to get offload trigger\n");
-+
-+	/* TODO: PWM setup should be ok, done for the backend. PWM mutex ? */
-+	rx_dma = devm_spi_offload_rx_stream_request_dma_chan(dev,
-+							     bus_data->offload);
-+	if (IS_ERR(rx_dma))
-+		return dev_err_probe(dev, PTR_ERR(rx_dma),
-+				     "failed to get offload RX DMA\n");
-+
-+	ret = devm_iio_dmaengine_buffer_setup_with_handle(dev, indio_dev,
-+		rx_dma, IIO_BUFFER_DIRECTION_IN);
-+	if (ret)
-+		return dev_err_probe(dev, PTR_ERR(rx_dma),
-+				     "failed to setup offload RX DMA\n");
-+
-+	/* Use offload ops. */
-+	indio_dev->setup_ops = &ad7606_offload_buffer_setup_ops;
-+
-+	st->offload_en = true;
-+
-+	return 0;
-+}
-+
- static const struct ad7606_bus_ops ad7606_spi_bops = {
-+	.offload_config = ad7606_spi_offload_probe,
- 	.read_block = ad7606_spi_read_block,
+ 	default:
+ 		return -EINVAL;
+ 	}
+@@ -1678,6 +1803,8 @@ static int stm32_adc_debugfs_reg_access(struct iio_dev *indio_dev,
+ 
+ static const struct iio_info stm32_adc_iio_info = {
+ 	.read_raw = stm32_adc_read_raw,
++	.write_raw = stm32_adc_write_raw,
++	.read_avail = stm32_adc_read_avail,
+ 	.validate_trigger = stm32_adc_validate_trigger,
+ 	.hwfifo_set_watermark = stm32_adc_set_watermark,
+ 	.update_scan_mode = stm32_adc_update_scan_mode,
+@@ -1971,6 +2098,10 @@ static void stm32_adc_chan_init_one(struct iio_dev *indio_dev,
+ 		chan->info_mask_separate = BIT(IIO_CHAN_INFO_RAW);
+ 	chan->info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE) |
+ 					 BIT(IIO_CHAN_INFO_OFFSET);
++	if (adc->cfg->has_oversampling) {
++		chan->info_mask_shared_by_all |= BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO);
++		chan->info_mask_shared_by_all_available = BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO);
++	}
+ 	chan->scan_type.sign = 'u';
+ 	chan->scan_type.realbits = adc->cfg->adc_info->resolutions[adc->res];
+ 	chan->scan_type.storagebits = 16;
+@@ -2587,6 +2718,7 @@ static const struct stm32_adc_cfg stm32h7_adc_cfg = {
+ 	.has_boostmode = true,
+ 	.has_linearcal = true,
+ 	.has_presel = true,
++	.has_oversampling = true,
+ 	.start_conv = stm32h7_adc_start_conv,
+ 	.stop_conv = stm32h7_adc_stop_conv,
+ 	.prepare = stm32h7_adc_prepare,
+@@ -2594,6 +2726,7 @@ static const struct stm32_adc_cfg stm32h7_adc_cfg = {
+ 	.smp_cycles = stm32h7_adc_smp_cycles,
+ 	.irq_clear = stm32h7_adc_irq_clear,
+ 	.ts_int_ch = stm32_adc_min_ts_h7,
++	.set_ovs = stm32h7_adc_set_ovs,
  };
  
- static const struct ad7606_bus_ops ad7607_spi_bops = {
-+	.offload_config = ad7606_spi_offload_probe,
- 	.read_block = ad7606_spi_read_block14to16,
+ static const unsigned int stm32_adc_min_ts_mp1[] = { 100, 100, 100, 4300, 9800 };
+@@ -2607,6 +2740,7 @@ static const struct stm32_adc_cfg stm32mp1_adc_cfg = {
+ 	.has_boostmode = true,
+ 	.has_linearcal = true,
+ 	.has_presel = true,
++	.has_oversampling = true,
+ 	.start_conv = stm32h7_adc_start_conv,
+ 	.stop_conv = stm32h7_adc_stop_conv,
+ 	.prepare = stm32h7_adc_prepare,
+@@ -2614,6 +2748,7 @@ static const struct stm32_adc_cfg stm32mp1_adc_cfg = {
+ 	.smp_cycles = stm32h7_adc_smp_cycles,
+ 	.irq_clear = stm32h7_adc_irq_clear,
+ 	.ts_int_ch = stm32_adc_min_ts_mp1,
++	.set_ovs = stm32h7_adc_set_ovs,
  };
  
- static const struct ad7606_bus_ops ad7608_spi_bops = {
-+	.offload_config = ad7606_spi_offload_probe,
- 	.read_block = ad7606_spi_read_block18to32,
+ static const unsigned int stm32_adc_min_ts_mp13[] = { 100, 0, 0, 4300, 9800 };
+@@ -2623,6 +2758,7 @@ static const struct stm32_adc_cfg stm32mp13_adc_cfg = {
+ 	.regs = &stm32mp13_adc_regspec,
+ 	.adc_info = &stm32mp13_adc_info,
+ 	.trigs = stm32h7_adc_trigs,
++	.has_oversampling = true,
+ 	.start_conv = stm32mp13_adc_start_conv,
+ 	.stop_conv = stm32h7_adc_stop_conv,
+ 	.prepare = stm32h7_adc_prepare,
+@@ -2630,6 +2766,7 @@ static const struct stm32_adc_cfg stm32mp13_adc_cfg = {
+ 	.smp_cycles = stm32mp13_adc_smp_cycles,
+ 	.irq_clear = stm32h7_adc_irq_clear,
+ 	.ts_int_ch = stm32_adc_min_ts_mp13,
++	.set_ovs = stm32mp13_adc_set_ovs,
  };
  
- static const struct ad7606_bus_ops ad7616_spi_bops = {
-+	.offload_config = ad7606_spi_offload_probe,
- 	.read_block = ad7606_spi_read_block,
- 	.reg_read = ad7606_spi_reg_read,
- 	.reg_write = ad7606_spi_reg_write,
-@@ -145,6 +353,7 @@ static const struct ad7606_bus_ops ad7616_spi_bops = {
- };
- 
- static const struct ad7606_bus_ops ad7606b_spi_bops = {
-+	.offload_config = ad7606_spi_offload_probe,
- 	.read_block = ad7606_spi_read_block,
- 	.reg_read = ad7606_spi_reg_read,
- 	.reg_write = ad7606_spi_reg_write,
-@@ -153,6 +362,7 @@ static const struct ad7606_bus_ops ad7606b_spi_bops = {
- };
- 
- static const struct ad7606_bus_ops ad7606c_18_spi_bops = {
-+	.offload_config = ad7606_spi_offload_probe,
- 	.read_block = ad7606_spi_read_block18to32,
- 	.reg_read = ad7606_spi_reg_read,
- 	.reg_write = ad7606_spi_reg_write,
-
+ static const struct of_device_id stm32_adc_of_match[] = {
 -- 
-2.49.0
+2.25.1
 
 

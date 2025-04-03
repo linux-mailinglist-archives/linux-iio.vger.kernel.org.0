@@ -1,48 +1,48 @@
-Return-Path: <linux-iio+bounces-17587-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17588-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 466CCA79D5F
-	for <lists+linux-iio@lfdr.de>; Thu,  3 Apr 2025 09:49:24 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19E1AA79D6B
+	for <lists+linux-iio@lfdr.de>; Thu,  3 Apr 2025 09:51:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 683CD3B5EF5
-	for <lists+linux-iio@lfdr.de>; Thu,  3 Apr 2025 07:48:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BD5E47A3D48
+	for <lists+linux-iio@lfdr.de>; Thu,  3 Apr 2025 07:50:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B44A24169E;
-	Thu,  3 Apr 2025 07:48:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9238423F417;
+	Thu,  3 Apr 2025 07:51:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q22hGZeT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M9u/9RCl"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 181EF241678;
-	Thu,  3 Apr 2025 07:48:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AF36DDA9;
+	Thu,  3 Apr 2025 07:51:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743666537; cv=none; b=Zy9M85zoMmEuEZX4Z0t6CFDHw8tLzUuJUkv3FHgNBv59jEF+Q6r90vsPIVQIR9VuewoouhRLHfsVWvQ5yEkmPF8IPbPw58eXlA2AhLtNu8iVqEZqJMxa/XcVPdZx9k66TX2DLBJE4SHs/uA8T/aZ+9boJ7AFr5pGF5qi6CmSu/Y=
+	t=1743666667; cv=none; b=DwLuw36IIenoUJ0EDKqykJ3zfq4Xhj+IxsFgQNy+JTMnY+5+jGHBVd1c+oacPaHPsDaKX8Fg8QyifEN32pZ7GWptV0DdG4uqVPzNU7ZJZrd7CTrx0hmbn2+VOx8jSFrGHDBTMW4+BOtMdH2PTEeFAuU83mN7kZ3womsKBu3WpoM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743666537; c=relaxed/simple;
-	bh=Vr4si7ixlPxd6opw48b6lQ8k+gzl34/7+6vnnPmTGhY=;
+	s=arc-20240116; t=1743666667; c=relaxed/simple;
+	bh=nRc0EWczp/PVOXpXXgoknEbyWIjCtPVWfccwtnCudaY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CffOdPm6aUjbHyPN3tT275TjdazQxF8/KHl1KkD2ANuoG3sg7ORAPGWX01bjmkF3+lUKjrluJo5arC8JPB48qocte0wDzdSsgS6craa57kKNS35zrlX9oXbhKGVchoGw7RaSj6gQT5hnG8ymbfpOMUE28lb2ZG9Eidd1x+pg5nQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q22hGZeT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0AC1C4CEE3;
-	Thu,  3 Apr 2025 07:48:52 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=YZaOrZFfX3CAABn/OukEciV8TFnYlfLeGiC/ZrRm+APSdhsvvPD9Fvht4gnJZOuPdDsmkiQs1YnV8ZTiCE3I7cMUGhvsqgy9AUcVTZj5Qgv447jXtLbl37GnSPTFojux44JzdWnxeRa5flSKC36iAMSk431UWwORJDRBC/2wYlM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M9u/9RCl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44C91C4CEE3;
+	Thu,  3 Apr 2025 07:51:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743666536;
-	bh=Vr4si7ixlPxd6opw48b6lQ8k+gzl34/7+6vnnPmTGhY=;
+	s=k20201202; t=1743666666;
+	bh=nRc0EWczp/PVOXpXXgoknEbyWIjCtPVWfccwtnCudaY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=q22hGZeTuolBhUR3D1yuGJjc+CJ04uZsG6dqCc7QGxP/wN9DwEYopW+gDZBU+Ws5q
-	 h+csRTrP8W78D03WQI6NMMV6BF7g0jg1kieIGKiM9mMk3RxQUVRmJ7zeHQZH2l5tKp
-	 2eZN8zajd1cHuB6Tcqe2NgB09Zv+o9Sv/1Ghn83kgNCAiInwKV80ithlBF2Ef6M85n
-	 jwkjNHJ1BDky8jsl493GrnM05aNJzBjWct/6yJEoIIoJfRu7Ryi7mfDaUsbJf5UtGR
-	 C3+YF04EBL2Ldwd7nvNnMwRP6AmwSUaTyh3XF4ovSyOGadbQQf/1i0UJIU++BgCYxX
-	 UWmGRiIw9So+A==
-Message-ID: <295d87f4-2606-4249-a130-28f31da35b42@kernel.org>
-Date: Thu, 3 Apr 2025 09:48:50 +0200
+	b=M9u/9RClzR2NfmMdlcaWg4a+hlRh3pWXO8GxRL1t/90ce9uHYnB31zZoL3VZj/qK/
+	 0GnEbivgZvBWqDaVmbFlIz8aYwm/IsYO1OoFVexlMc1kpjYrrRSftVviZMCmiVLu98
+	 ffCg6A5TNYgoZ5ewT6VpDUiSvMH8TGz1xDnXyDwe7wRs1Cbf6VF6uMbt1N4kcu3BJo
+	 19pcxdPQVI2VCH95M6snl6F+tOlCSIAab2xxTxWX5Xs7cJ17SwFbJlHKfWOdTHycaC
+	 Cgt8btYsdNInIXofJ6c+rbXgxWvAiXyy0KPJSbdYpDFtJiZN3cdmWZoAXyxUAv0UKz
+	 b1nib3qxc+K9Q==
+Message-ID: <e8167849-57e7-44cf-bf35-5313e54908d5@kernel.org>
+Date: Thu, 3 Apr 2025 09:51:00 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -50,14 +50,13 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 2/5] dt-bindings: add device tree support for winsen
- MHZ19B CO2 sensor
+Subject: Re: [PATCH v1 3/5] ABI: iio: add new ABI doc for mhz19b
 To: Gyeyoung Baek <gye976@gmail.com>, jic23@kernel.org
 Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, lars@metafoo.de,
  gustavograzs@gmail.com, javier.carrasco.cruz@gmail.com, robh@kernel.org,
  krzk+dt@kernel.org, conor+dt@kernel.org
 References: <20250403053225.298308-1-gye976@gmail.com>
- <20250403053225.298308-3-gye976@gmail.com>
+ <20250403053225.298308-4-gye976@gmail.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -103,39 +102,39 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20250403053225.298308-3-gye976@gmail.com>
+In-Reply-To: <20250403053225.298308-4-gye976@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 03/04/2025 07:32, Gyeyoung Baek wrote:
-> Add device tree support for winsen MHZ19B sensor.
+> Add support for winsen MHZ19B CO2 sensor.
 > 
 > Signed-off-by: Gyeyoung Baek <gye976@gmail.com>
 > ---
+>  Documentation/ABI/testing/sysfs-bus-iio-chemical-mhz19b | 7 +++++++
+>  1 file changed, 7 insertions(+)
+>  create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-chemical-mhz19b
+> 
+> diff --git a/Documentation/ABI/testing/sysfs-bus-iio-chemical-mhz19b b/Documentation/ABI/testing/sysfs-bus-iio-chemical-mhz19b
+> new file mode 100644
+> index 000000000000..6cdfd34be016
+> --- /dev/null
+> +++ b/Documentation/ABI/testing/sysfs-bus-iio-chemical-mhz19b
+> @@ -0,0 +1,7 @@
+> +What:		/sys/bus/iio/devices/co2_range
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Incomplete path
 
+> +Date:		April 2025
 
----
+Not possible. This will be probably June.
 
-<form letter>
-This is an automated instruction, just in case, because many review tags
-are being ignored. If you know the process, you can skip it (please do
-not feel offended by me posting it here - no bad intentions intended).
-If you do not know the process, here is a short explanation:
+> +KernelVersion:	6.14
 
-Please add Acked-by/Reviewed-by/Tested-by tags when posting new versions
-of patchset, under or above your Signed-off-by tag, unless patch changed
-significantly (e.g. new properties added to the DT bindings). Tag is
-"received", when provided in a message replied to you on the mailing
-list. Tools like b4 can help here. However, there's no need to repost
-patches *only* to add the tags. The upstream maintainer will do that for
-tags received on the version they apply.
+No way you can put ABI into version already released. It's impossible.
+That's v6.16.
 
-Full context and explanation:
-https://elixir.bootlin.com/linux/v6.12-rc3/source/Documentation/process/submitting-patches.rst#L577
-</form letter>
-
+> +
 Best regards,
 Krzysztof
 

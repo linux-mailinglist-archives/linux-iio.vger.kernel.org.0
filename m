@@ -1,104 +1,110 @@
-Return-Path: <linux-iio+bounces-17608-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17609-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 697DEA7B777
-	for <lists+linux-iio@lfdr.de>; Fri,  4 Apr 2025 07:48:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAE7CA7BB9C
+	for <lists+linux-iio@lfdr.de>; Fri,  4 Apr 2025 13:34:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 496903A6EBF
-	for <lists+linux-iio@lfdr.de>; Fri,  4 Apr 2025 05:48:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 04920189EAC5
+	for <lists+linux-iio@lfdr.de>; Fri,  4 Apr 2025 11:33:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41726146588;
-	Fri,  4 Apr 2025 05:48:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ViWQgd7a"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1204F1DDC12;
+	Fri,  4 Apr 2025 11:33:16 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B50A933FD
-	for <linux-iio@vger.kernel.org>; Fri,  4 Apr 2025 05:48:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C1561DB34C;
+	Fri,  4 Apr 2025 11:33:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743745708; cv=none; b=jTYtGuzt0DWZ5B7tbMKRl6XUOam6ydo2e2e9Y/p+WdNEPbqn5Q4KSs/JPHC1jBUO4KBtrJ1OUJAP/9tHewKXclTcualrqtNHa9ZgmYpHd3T5Ew/WLnElRxIjUdjO/wsgCRxfrniUUwIA2RgO32xpLlgSbWATxKeNzwiXEcRy084=
+	t=1743766395; cv=none; b=CnxsDhqSz6tdO3fRvpM0cK1YcM0YwhF8p4rfkoErnopFxagZHw37qWLlYpzHRT6/ppTMHfU+Vbu0rZPJmPfiAkndvjBurbs7lWH2ZuKxt9sguVqLzwDEN/h6CuAMu1ZhTk8vx9jRIQZttstkCWHM+Tb1LlODKLtZfllec5QfM4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743745708; c=relaxed/simple;
-	bh=gEfbIOS49tvFyxXADsU8TbJC2xaKAb57QQ5hctMwjVM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GYzFZafP9RmqobDWWi3tVO5d0fOBFo9poGVuuGZNobhsUtf/gawdRDgTjmfwiMjx2Ut13bRV8imJjLuS6HcwGAXSFc3AWYPWum2BvRe5Tc25rZ6N1uQyIQOEKqMU4nhldCFqrUP29CGyLfL33FBjdq99NHr2supCBe8gjt2f/qQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ViWQgd7a; arc=none smtp.client-ip=209.85.214.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-22622ddcc35so22172015ad.2
-        for <linux-iio@vger.kernel.org>; Thu, 03 Apr 2025 22:48:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743745706; x=1744350506; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=VTcWaO6eBYlej6qUM/WPyXXrSN9pkFHtRACE5MUPFd8=;
-        b=ViWQgd7aoc5pAUALYQjDkgbGHJ01I3kqGJRV58Sfc3VANXTIKtEEGEszPrTylnLDOl
-         Be+y0cWgLlxwx1mEgWObqXU1KexjOAKNtDHYcLTVve7O43D7upEfSVdwy0ZT+RPyjF/l
-         KCVk7yo/Tt+R97gEnwODYHYmpy0PE1cDKxwpNkYfS+6plI9LTNetKA69dlB3Ymj0Tfjo
-         rgroFxiuIFjbpHxYTA8vr9OxpzYSk4FVT2PrSVrf2Pb+Aaiqv5MDsU2W/gH/Aw4kMEUa
-         YInrWCc9mvykwCR0D2xCm0ZkQtkj8m0UfP0c3KiOzh4wBKgUtsvMwVcycmXqZF1Xt4xR
-         YxXA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743745706; x=1744350506;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=VTcWaO6eBYlej6qUM/WPyXXrSN9pkFHtRACE5MUPFd8=;
-        b=u8hTsLA6n9TKL5KFUH3ZOhoK9eur9h2jVb7YrZ2DV1Ph+h8NL/sOpxMIQuDiXWQmw0
-         5nukngf6+eBSiKkpUe5yqDc/KYG+SKeBtNdMRmrcVNvIcLLdzs62z5RHD5HDMBeM0Jc0
-         4JuTm9AaI6qADrXpoDcNjDZTTyOavdUSHox7BhH+3lFxdsz/ScL9hW+Tq+SSYityMCBq
-         69qSsZDj1qxpOZnWCun7cEp97Of0EPwmuz5dDhHqgD3RrmMpOiiC5MXRcY5tRNeX0yxZ
-         lqWTFNlXwj06+ppZAslDJO+ZrPwUhVgn4AQgawPlMAPiuZ5HsbB54Usk7Mf+kM0HhnCK
-         seKA==
-X-Gm-Message-State: AOJu0Yzt/x5cbsFt5dnI7Iv+mz4gdIz9unBI53rCGcSkpiXYXCN6VFq9
-	58hYDbcw/4t1shosuQDWQwRDLRbCx1RSOzUlUIuwO8iMCZPGNWze
-X-Gm-Gg: ASbGncuqxolkPM1ocVsUWATFCq59KXJs3jH50b2mBbI1h6xighu3qH2H/YVYcHAveeR
-	cgoZpQkH6U9HhoY1eEevHMPzAfcyetc/J/aDiR/7+fq+trJo6LGt5dKnW8072nwgleajPEA2/i4
-	Z7GiPds9KQsbVNi0ur8hLYxNj7QwKtJvMFWtbd2BhnlTHXEx+FJ0GO3JYi1iJiBO/chxsCfI8bA
-	wskK2fEhHQDIkl84+1JRSaQjkMB9uYuNpSsKugY/WZEhjyjxY3O2T3copojFYsNgVIDetA8/d0d
-	gJwlP/loQ6+VXwydTOPlS445tWhsB6IpsvEwEUAlBbMmGsFd8LGPnt1NWTLQ
-X-Google-Smtp-Source: AGHT+IErFLeISeZtf0yqmu+b+A0mYBQdMGfySycVblx2pto437BzbWuKDneliOgRC0Kl9s/5VEHK9A==
-X-Received: by 2002:a17:902:ecd1:b0:224:a79:5fe9 with SMTP id d9443c01a7336-22a8a07cb49mr17593035ad.30.1743745705476;
-        Thu, 03 Apr 2025 22:48:25 -0700 (PDT)
-Received: from localhost.localdomain ([172.96.160.174])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-739da0e7c82sm2596670b3a.178.2025.04.03.22.48.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Apr 2025 22:48:25 -0700 (PDT)
-From: Yuanfang Zhao <yf768672249@gmail.com>
-To: marcelo.schmitt@analog.com,
-	dragos.bogdan@analog.com,
-	alexandru.Ardelean@analog.com
-Cc: linux-iio@vger.kernel.org
-Subject: [GSoC 2025] IIO ADE9113 Proposal
-Date: Fri,  4 Apr 2025 13:39:48 +0800
-Message-ID: <20250404053946.514132-5-yf768672249@gmail.com>
-X-Mailer: git-send-email 2.49.0
+	s=arc-20240116; t=1743766395; c=relaxed/simple;
+	bh=Vr/dgQUKtxPOzkS4b3b681oYLIy6EF0mAL1Hy8UKmKY=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=b6XxYKGHbpYsRuHbX60xzyHeoeU9opOXRd3zgG3KFWjYGvv1MVocuahdbcZYAD7sujNyF6MsQRcAe01OOrEiJdyOVOofLCOkfAL1aAS1wL6ri5J3LACp2Bv6d6Dq6PgYG1xNDR2iEnUDPCPIbVkn40zuzas/6NAD+SPBBitHVb4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4ZTc0D23XVz6L4wP;
+	Fri,  4 Apr 2025 19:32:28 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+	by mail.maildlp.com (Postfix) with ESMTPS id 7C25B1400D3;
+	Fri,  4 Apr 2025 19:33:10 +0800 (CST)
+Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Fri, 4 Apr
+ 2025 13:33:09 +0200
+Date: Fri, 4 Apr 2025 12:33:08 +0100
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+To: Gyeyoung Baek <gye976@gmail.com>
+CC: <jic23@kernel.org>, <linux-iio@vger.kernel.org>,
+	<devicetree@vger.kernel.org>, <lars@metafoo.de>, <gustavograzs@gmail.com>,
+	<javier.carrasco.cruz@gmail.com>, <robh@kernel.org>, <krzk+dt@kernel.org>,
+	<conor+dt@kernel.org>
+Subject: Re: [PATCH v1 3/5] ABI: iio: add new ABI doc for mhz19b
+Message-ID: <20250404123308.00003d72@huawei.com>
+In-Reply-To: <20250403053225.298308-4-gye976@gmail.com>
+References: <20250403053225.298308-1-gye976@gmail.com>
+	<20250403053225.298308-4-gye976@gmail.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml500010.china.huawei.com (7.191.174.240) To
+ frapeml500008.china.huawei.com (7.182.85.71)
 
-Hello,
+On Thu,  3 Apr 2025 14:32:23 +0900
+Gyeyoung Baek <gye976@gmail.com> wrote:
 
-My name is Yuanfang Zhao, and I am a computer science student
-interested in contributing to the IIO subsystem of the Linux kernel.
-I am excited to apply for GSoC 2025 and would appreciate any feedback
-on my proposal:
-https://docs.google.com/document/d/1uSaM5B9ubh4ccHz7EghQBBEcsIZSUSCRgu6PTIncj94.
-My goal is to contribute to IIO continuously over the long term and
-look forward to learning from the community.
-It would be really great if anyone could comment on it.
-Sorry for the last minute submission, 
+> Add support for winsen MHZ19B CO2 sensor.
+> 
+> Signed-off-by: Gyeyoung Baek <gye976@gmail.com>
+> ---
+>  Documentation/ABI/testing/sysfs-bus-iio-chemical-mhz19b | 7 +++++++
+>  1 file changed, 7 insertions(+)
+>  create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-chemical-mhz19b
+> 
+> diff --git a/Documentation/ABI/testing/sysfs-bus-iio-chemical-mhz19b b/Documentation/ABI/testing/sysfs-bus-iio-chemical-mhz19b
+> new file mode 100644
+> index 000000000000..6cdfd34be016
+> --- /dev/null
+> +++ b/Documentation/ABI/testing/sysfs-bus-iio-chemical-mhz19b
+> @@ -0,0 +1,7 @@
+> +What:		/sys/bus/iio/devices/co2_range
+> +Date:		April 2025
+> +KernelVersion:	6.14
+> +Contact:	Gyeyoung Baek <gye976@gmail.com>
+> +Description:
+> +		Writing a value adjust maximum measurable PPM.
+> +		should be 2000 or 5000.
 
-Thanks in advance,
+I haven't checked but assume this also results in a scaling of the
+measure _raw values?  If so the control should be via the standard
+ABI scale.  If you need to be able to establish the range, provide
+the _available for the _raw via the read_avail() callback and setting
+appropriate bit in info_mask_separate_available
 
-Yuanfang Zhao
+General rule is don't introduce new ABI unless it is impossible to
+provide the same information via existing interfaces.  The decision
+to use scale rather than range info to control channel scaling was
+made a very long time ago and having a mixture of the two would
+make for very complex userspace code.
+
+Jonathan
+
+> --
+> 2.34.1
+> 
+> 
+
 

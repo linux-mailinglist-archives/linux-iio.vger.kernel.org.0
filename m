@@ -1,173 +1,305 @@
-Return-Path: <linux-iio+bounces-17617-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17618-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D468A7C0FD
-	for <lists+linux-iio@lfdr.de>; Fri,  4 Apr 2025 17:53:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20205A7C15F
+	for <lists+linux-iio@lfdr.de>; Fri,  4 Apr 2025 18:15:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B150718996ED
-	for <lists+linux-iio@lfdr.de>; Fri,  4 Apr 2025 15:52:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D4736177A7D
+	for <lists+linux-iio@lfdr.de>; Fri,  4 Apr 2025 16:15:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D38A51F7095;
-	Fri,  4 Apr 2025 15:52:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5467D20A5E1;
+	Fri,  4 Apr 2025 16:15:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P1fjKzc3"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="YIQ2ACEn"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f53.google.com (mail-oo1-f53.google.com [209.85.161.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B1FE1F63F0;
-	Fri,  4 Apr 2025 15:52:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B91D20A5E4
+	for <linux-iio@vger.kernel.org>; Fri,  4 Apr 2025 16:15:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743781931; cv=none; b=R9dKRqtgCVjKxXkJ5mbybL/LmL88uhf9TBvCw0PtQqEn6sleA6wMRW5I0uUHOu5jus+f/VjDbzUi/LzU2KTYgPkDvHSC7NpS6vvGW80/AGUVKrV51uFTgpZIWFTFMdeB+iIW00QF66iJLIsZYYBWulFAjXlSFiGtR9EUG2BSH78=
+	t=1743783327; cv=none; b=UKvdvTiFLJ1WXmHndkfASBk/zez0uoE7w2KDpIDqRcdrFe23XS1jJkc3X24jH1KDnPRpin+Djb+DyZhQw1J8NnI2eqd3HQwkBamnCeK+ZbT0/BS1UrlmmpjV7IwOSRWxdpNVUJQYb9rR4DCxOzkwge+8R1wg5LOVKuWunABI0wU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743781931; c=relaxed/simple;
-	bh=pcYSAYWTjqkxlR36E9MUlFnt4MSwvXEXlSFsCIsJPXc=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ZhNdBL9wbxDxDN8T3wo1z30I0tsMUwHlZ+/6/+tsoRq/klybk+f3pWdOd8VzO/IB3yMDEGRnJqg/DXgYgfeeS+k9orN5CXeWdFdwxOr3zrOZf02leRF37CARRfTFF19uM0RM1S4/w7HSjHJeun7NNUdhek6yM2VPnL9j/w7tx8A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P1fjKzc3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id C0C68C4CEE8;
-	Fri,  4 Apr 2025 15:52:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743781929;
-	bh=pcYSAYWTjqkxlR36E9MUlFnt4MSwvXEXlSFsCIsJPXc=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=P1fjKzc3eGvhquRsSY3kKtexSoesNyLLuy3gvu/bDKBUPf+pI3WcDWcM/yPCsoBYC
-	 wwnzIc4Go6I6exYpmwYPe9y1tj5Ns4T657M6S/ploo1T+IAlQVE2LXH4a6GfTp5lvf
-	 WLG9kjv36EeO+CTl7ZQhxgMFuv3XXZUmWCcswOAsRWNQNWaaDRR0Wvkt+bbhygOdRd
-	 IOrBm15UXGInQ3STw7jJidFfDKCmr+dlScoLZHEuNxalpRXbT9I1ClHUh20mGVEYAI
-	 ByzVNlcBBev5Shvx/2bMyxFpfaRHBKX/v3/Z47MtvLTi2C+6kbub1RZH9G9X1zDrWk
-	 FCxigDZhzM5Lw==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A541CC369A2;
-	Fri,  4 Apr 2025 15:52:09 +0000 (UTC)
-From: Jean-Baptiste Maneyrol via B4 Relay <devnull+jean-baptiste.maneyrol.tdk.com@kernel.org>
-Date: Fri, 04 Apr 2025 17:52:03 +0200
-Subject: [PATCH 2/2] iio: imu: inv_icm42600: switch to use generic name irq
- get
+	s=arc-20240116; t=1743783327; c=relaxed/simple;
+	bh=no3QAYqdItguKs3ATDS0SdIbnO/7BXoObTeJnj2tz6c=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FWaSKADtCU+7M6qIj/k72+fUhKknwJ0yKcgc2Yar3SOHVL/+1Q/lfJGT/ehdkLx/hp7hEE7ptKpP3Fkz0J0NynjRVabmJnHx4W04jxmQNICoINUSNuUYGroSV3iGhoy0kcDtrJXyfN/vppH+6mpK0F5uH8xOgDspt3ftxjvsDeY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=YIQ2ACEn; arc=none smtp.client-ip=209.85.161.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oo1-f53.google.com with SMTP id 006d021491bc7-601c469cce3so560987eaf.2
+        for <linux-iio@vger.kernel.org>; Fri, 04 Apr 2025 09:15:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1743783322; x=1744388122; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=G2j3x93HYeHwY5tSNUGE91ADq/ThMEsShqde0z89gCY=;
+        b=YIQ2ACEninaJ1/vaFLNAn+lUMFr/zyToNRn0usnmmLBFFNsDdePlzk/5X5IPBWg+/h
+         f18bL7Axno8fcqCpvOHk+b/DNlizjab2PSyK5iOeuLdI/QZhemnyeFljivl3ZIgoK8Or
+         auyrEAiiJp6QqKMA0oCoDWFolUL08SSifMz/pyUHuvMWtw3OKMs2sohtXCk1uPUkq36x
+         99IryBrAy54y7cgYts/lOzgA5HSuBx1ys4FakUR2oK51Y5oE1k7OwnsjD4i3BPab6X0J
+         W1Tg+521gsmyqzHYA41dwk9kpSsJpnrR2cepcJTtXit99bdOU4ENk1tSkkuGGOJe/0/h
+         uCPw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1743783322; x=1744388122;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=G2j3x93HYeHwY5tSNUGE91ADq/ThMEsShqde0z89gCY=;
+        b=Mf9SDql6pZ7XKqKB+jkwthWU1E8O7EL9zOwrSUrQxGo4sJxK16DGAC7OrzeMkX4RMj
+         TUepJaxYFxCZtzJVnzDXlA0ApVc+C1Z6xHwwMtToFWu+JxDsRw6FyJwyDaXG4WF7pnlz
+         0zJEwBM/NOTWgnJuvldaylJKRpmJUlUFPJ7gBUWLWgkwZ3BhTUSO5+QbQRVzorGaKgfd
+         jnPjt6ucowQpPAGzBRNb3oqPp26b4C0lbSW3KdP6gXZNfw3vVZGlE5of+nTux2zes649
+         6/S0Q8D5c33cVF/QJlBasubwokOXZW+Eqk7oQh0PlOaRE8+ACrsCnZ/IolZ2z7t8X9N7
+         uMEA==
+X-Forwarded-Encrypted: i=1; AJvYcCW5REkykR1iUHUkt8RLZ6BuhQhbRccwEeGIgI+EExy1lTDBCGN3C3owezz3hrx202CzfNDpVgY47Gc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxwRH6/jFQRLJJ5DFS5J7evxbKWDuhH57xoOMVaVQqesGKGkyy6
+	9nf38PPjavGaWpf4B/28/9Pq61xcRXI1wkGaHXyUpb8TjXUASzAwJi/UBF4xw+U=
+X-Gm-Gg: ASbGncviEkVWwAIds833nwbn/yvn12g2SODxRut5JLabrirsIOCdLQI8Vg/3dDV+Icq
+	tMxYlr0JVa8S/hOeQ4yWZ1p70lgZpJSZc9qoJZjIebNdEsQLzdHQe6h+ZFH2S86p7rlEzAH0n83
+	qIBxymhC8Ad0rBNAMN0BPo6mT3J5N1begfB4VER82t1uDnadjG7LY3jHKcUHq7FNvMirLg672VR
+	IYW4GkupYZR98+M0/2LVETJ5omdYVlbOFzT5FyMlaIIxpIiXbkQ5xtGsPGQ/j1+DMSvExfjwzXq
+	ghZtEuEzFy0ad99UEs/tntylIGqqkt16jNqqSc2CoEjgeoZC3osv2WZoGa6XcTmFaUu9sLBVk8l
+	leLOmCw==
+X-Google-Smtp-Source: AGHT+IGeD0DN5s5NpX38+vrcEe8pmX0dglCUeK/9Wn3VmmDArglW7QUf9t5hzJw6MmeVoRIoUy9CaA==
+X-Received: by 2002:a05:6808:2444:b0:3f8:30c1:cca7 with SMTP id 5614622812f47-4004557f18fmr2465378b6e.8.1743783322149;
+        Fri, 04 Apr 2025 09:15:22 -0700 (PDT)
+Received: from [192.168.0.113] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-4003ff9be6dsm662896b6e.25.2025.04.04.09.15.19
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 04 Apr 2025 09:15:20 -0700 (PDT)
+Message-ID: <25b34e60-5392-4bfb-b994-49212dfbdb22@baylibre.com>
+Date: Fri, 4 Apr 2025 11:15:18 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] iio: adc: stm32: add oversampling support
+To: Olivier Moysan <olivier.moysan@foss.st.com>,
+ Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>
+Cc: Fabrice Gasnier <fabrice.gasnier@foss.st.com>, linux-iio@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20250403162358.1257370-1-olivier.moysan@foss.st.com>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <20250403162358.1257370-1-olivier.moysan@foss.st.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250404-iio-imu-inv-icm42600-rework-interrupt-using-names-v1-2-72ed5100da14@tdk.com>
-References: <20250404-iio-imu-inv-icm42600-rework-interrupt-using-names-v1-0-72ed5100da14@tdk.com>
-In-Reply-To: <20250404-iio-imu-inv-icm42600-rework-interrupt-using-names-v1-0-72ed5100da14@tdk.com>
-To: Jonathan Cameron <jic23@kernel.org>, 
- Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, 
- Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1743781928; l=3719;
- i=jean-baptiste.maneyrol@tdk.com; s=20240923; h=from:subject:message-id;
- bh=aK+9d09n/DXh1B0QAO9MWRE0rSAinKtcE5JJVNT3Ho0=;
- b=byMnHzROPs8DLM2mn3cabTWIUFGWHCYa7CvT5NK8dMafO+wt5IyQInBVadqaxAQpFsbvxPSNB
- bWxW0fplXRVBMrLQhTM21wdXrJe3RHHtBmHInes/rgtZX9OxA9+lB4r
-X-Developer-Key: i=jean-baptiste.maneyrol@tdk.com; a=ed25519;
- pk=bRqF1WYk0hR3qrnAithOLXSD0LvSu8DUd+quKLxCicI=
-X-Endpoint-Received: by B4 Relay for
- jean-baptiste.maneyrol@tdk.com/20240923 with auth_id=218
-X-Original-From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-Reply-To: jean-baptiste.maneyrol@tdk.com
 
-From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+On 4/3/25 11:23 AM, Olivier Moysan wrote:
+> Add oversampling support for STM32H7, STM32MP15 & STM32MP13.
+> STM32F4 ADC has no oversampling feature.
+> 
+> The current support of the oversampling feature aims at increasing
+> the data SNR, without changing the data resolution.
+> As the oversampling by itself increases data resolution,
+> a right shift is applied to keep initial resolution.
 
-Use generic fwnode_irq_get_byname() for getting interrupt pin using
-interrupt name.
-Only INT1 is supported by the driver currently.
----
- drivers/iio/imu/inv_icm42600/inv_icm42600.h      |  2 +-
- drivers/iio/imu/inv_icm42600/inv_icm42600_core.c | 13 +++++++++++--
- drivers/iio/imu/inv_icm42600/inv_icm42600_i2c.c  |  2 +-
- drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c  |  2 +-
- 4 files changed, 14 insertions(+), 5 deletions(-)
+Why do we not want the extra bits too? I guess if we wanted the extra bits
+in the future we could make the in_voltage_scale attribute writable to
+select the resolution.
 
-diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600.h b/drivers/iio/imu/inv_icm42600/inv_icm42600.h
-index 18787a43477b89db12caee597ab040af5c8f52d5..f893dbe6996506a33eb5d3be47e6765a923665c9 100644
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600.h
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600.h
-@@ -426,7 +426,7 @@ int inv_icm42600_set_temp_conf(struct inv_icm42600_state *st, bool enable,
- int inv_icm42600_debugfs_reg(struct iio_dev *indio_dev, unsigned int reg,
- 			     unsigned int writeval, unsigned int *readval);
- 
--int inv_icm42600_core_probe(struct regmap *regmap, int chip, int irq,
-+int inv_icm42600_core_probe(struct regmap *regmap, int chip,
- 			    inv_icm42600_bus_setup bus_setup);
- 
- struct iio_dev *inv_icm42600_gyro_init(struct inv_icm42600_state *st);
-diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-index ef9875d3b79db116f9fb4f6d881a7979292c1792..bfdd7cd5fafae87ad7c6204f6dd3bef17935b3f9 100644
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-@@ -683,12 +683,13 @@ static void inv_icm42600_disable_pm(void *_data)
- 	pm_runtime_disable(dev);
- }
- 
--int inv_icm42600_core_probe(struct regmap *regmap, int chip, int irq,
-+int inv_icm42600_core_probe(struct regmap *regmap, int chip,
- 			    inv_icm42600_bus_setup bus_setup)
- {
- 	struct device *dev = regmap_get_device(regmap);
- 	struct inv_icm42600_state *st;
--	int irq_type;
-+	struct fwnode_handle *fwnode;
-+	int irq, irq_type;
- 	bool open_drain;
- 	int ret;
- 
-@@ -697,6 +698,14 @@ int inv_icm42600_core_probe(struct regmap *regmap, int chip, int irq,
- 		return -ENODEV;
- 	}
- 
-+	/* get INT1 only supported interrupt */
-+	fwnode = dev_fwnode(dev);
-+	if (!fwnode)
-+		return -ENODEV;
-+	irq = fwnode_irq_get_byname(fwnode, "INT1");
-+	if (irq < 0)
-+		return dev_err_probe(dev, irq, "error missing INT1 interrupt\n");
-+
- 	irq_type = irq_get_trigger_type(irq);
- 	if (!irq_type)
- 		irq_type = IRQF_TRIGGER_FALLING;
-diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_i2c.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_i2c.c
-index 04e440fe023aa3869529b0f0be003ea0544bfb8d..38cc0d7834fcb96dabc401f29d613cf9fc75b8f5 100644
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_i2c.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_i2c.c
-@@ -67,7 +67,7 @@ static int inv_icm42600_probe(struct i2c_client *client)
- 	if (IS_ERR(regmap))
- 		return PTR_ERR(regmap);
- 
--	return inv_icm42600_core_probe(regmap, chip, client->irq,
-+	return inv_icm42600_core_probe(regmap, chip,
- 				       inv_icm42600_i2c_bus_setup);
- }
- 
-diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c
-index 2bd2c4c8e50c3fe081e882aca6c64736510b474c..f40a09c4cbfc673e76922d13d61a3634785300ec 100644
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c
-@@ -64,7 +64,7 @@ static int inv_icm42600_probe(struct spi_device *spi)
- 	if (IS_ERR(regmap))
- 		return PTR_ERR(regmap);
- 
--	return inv_icm42600_core_probe(regmap, chip, spi->irq,
-+	return inv_icm42600_core_probe(regmap, chip,
- 				       inv_icm42600_spi_bus_setup);
- }
- 
+> Only the oversampling ratio corresponding to a power of two are
+> supported here, to get a direct link between right shift and
+> oversampling ratio. (2exp(n) ratio <=> n right shift)
+> 
+> The oversampling ratio is shared by all channels, whatever channel type.
+> (e.g. single ended or differential).
+> 
+> Oversampling can be configured using IIO ABI:
+> - in_voltage_oversampling_ratio_available
+> - in_voltage_oversampling_ratio
 
--- 
-2.49.0
+This would require info_mask_shared_by_type but the patch uses
+info_mask_shared_by_all, so the attributes will be:
+
+- oversampling_ratio
+- oversampling_ratio_available
+
+I guess currently it doesn't matter which one gets used if there are only
+voltage channels, but it could make a difference, e.g. if a temperature
+channel was ever added.
+
+In any case, the description should match what is actually implemented.
+
+> 
+> Signed-off-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+> Signed-off-by: Olivier Moysan <olivier.moysan@foss.st.com>
+> 
+> ---
+> Changes in v2:
+> - Remove useless header files
+> - Use FIELD_PREP macro
+> - Reorder stm32_adc_write_raw() function
+
+Link to v1? (for the lazy reviewer :-p)
+
+> ---
+>  drivers/iio/adc/stm32-adc-core.h |  14 ++++
+>  drivers/iio/adc/stm32-adc.c      | 137 +++++++++++++++++++++++++++++++
+>  2 files changed, 151 insertions(+)
+> 
+> diff --git a/drivers/iio/adc/stm32-adc-core.h b/drivers/iio/adc/stm32-adc-core.h
+> index 73b2c2e91c08..bfd42c5456bf 100644
+> --- a/drivers/iio/adc/stm32-adc-core.h
+> +++ b/drivers/iio/adc/stm32-adc-core.h
+> @@ -91,6 +91,7 @@
+>  #define STM32H7_ADC_IER			0x04
+>  #define STM32H7_ADC_CR			0x08
+>  #define STM32H7_ADC_CFGR		0x0C
+> +#define STM32H7_ADC_CFGR2		0x10
+>  #define STM32H7_ADC_SMPR1		0x14
+>  #define STM32H7_ADC_SMPR2		0x18
+>  #define STM32H7_ADC_PCSEL		0x1C
+> @@ -160,6 +161,13 @@
+>  #define STM32H7_DMNGT_SHIFT		0
+>  #define STM32H7_DMNGT_MASK		GENMASK(1, 0)
+>  
+> +/* STM32H7_ADC_CFGR2 bit fields */
+> +#define STM32H7_OVSR_MASK		GENMASK(25, 16) /* Correspond to OSVR field in datasheet */
+
+nit: Comment seems obvious and can be left out.
+
+> +#define STM32H7_OVSR(v)			FIELD_PREP(STM32H7_OVSR_MASK, v)
+> +#define STM32H7_OVSS_MASK		GENMASK(8, 5)
+> +#define STM32H7_OVSS(v)			FIELD_PREP(STM32H7_OVSS_MASK, v)
+> +#define STM32H7_ROVSE			BIT(0)
+> +
+
+...
+
+> +static const unsigned int stm32h7_adc_oversampling_avail[] = {
+> +1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024
+
+Normal style is to have 1 tab indent here.
+
+> +};
+> +
+> +static const unsigned int stm32mp13_adc_oversampling_avail[] = {
+> +1, 2, 4, 8, 16, 32, 64, 128, 256
+
+And here.
+
+>  };
+>  
+
+...
+
+> @@ -889,6 +912,41 @@ static void stm32mp13_adc_start_conv(struct iio_dev *indio_dev, bool dma)
+>  	stm32_adc_set_bits(adc, STM32H7_ADC_CR, STM32H7_ADSTART);
+>  }
+>  
+> +static void stm32h7_adc_set_ovs(struct iio_dev *indio_dev, u32 ovs_idx)
+> +{
+> +	struct stm32_adc *adc = iio_priv(indio_dev);
+> +	u32 ovsr_bits, bits, msk;
+> +
+> +	msk = STM32H7_ROVSE | STM32H7_OVSR_MASK | STM32H7_OVSS_MASK;
+> +	stm32_adc_clr_bits(adc, STM32H7_ADC_CFGR2, msk);
+> +
+> +	if (!ovs_idx)
+> +		return;
+> +
+> +	ovsr_bits = (1 << ovs_idx) - 1;
+> +	bits = STM32H7_ROVSE | STM32H7_OVSS(ovs_idx) | STM32H7_OVSR(ovsr_bits);
+> +
+> +	stm32_adc_set_bits(adc, STM32H7_ADC_CFGR2, bits & msk);
+> +}
+> +
+> +static void stm32mp13_adc_set_ovs(struct iio_dev *indio_dev, u32 ovs_idx)
+> +{
+> +	struct stm32_adc *adc = iio_priv(indio_dev);
+> +	u32 bits, msk;
+> +
+> +	msk = STM32H7_ROVSE | STM32MP13_OVSR_MASK | STM32MP13_OVSS_MASK;
+> +	stm32_adc_clr_bits(adc, STM32H7_ADC_CFGR2, msk);
+> +
+> +	if (!ovs_idx)
+> +		return;
+> +
+> +	bits = STM32H7_ROVSE | STM32MP13_OVSS(ovs_idx);
+> +	if (ovs_idx - 1)
+> +		bits |= STM32MP13_OVSR(ovs_idx - 1);
+> +
+> +	stm32_adc_set_bits(adc, STM32H7_ADC_CFGR2, bits & msk);
+> +}
 
 
+Some comments in these functions could be useful to avoid needing the
+datasheet to understand all the different things that are happening here
+and more importantly, why it was decided to do it this way when there are
+many other possibilities (i.e. repeat the bit from commit message about
+always using 12-bit output).
+
+> @@ -1461,6 +1519,69 @@ static int stm32_adc_single_conv(struct iio_dev *indio_dev,
+>  	return ret;
+>  }
+>  
+> +static int stm32_adc_write_raw(struct iio_dev *indio_dev,
+> +			       struct iio_chan_spec const *chan,
+> +			       int val, int val2, long mask)
+> +{
+> +	struct stm32_adc *adc = iio_priv(indio_dev);
+> +	struct device *dev = indio_dev->dev.parent;
+> +	int nb = adc->cfg->adc_info->num_ovs;
+> +	u32 idx;
+> +	int ret;
+> +
+> +	switch (mask) {
+> +	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
+> +		if (val2)
+> +			return -EINVAL;
+> +
+> +		for (idx = 0; idx < nb; idx++)
+> +			if (adc->cfg->adc_info->oversampling[idx] == val)
+> +				break;
+> +
+> +		if (idx >= nb)
+> +			return -EINVAL;
+> +
+> +		ret = iio_device_claim_direct_mode(indio_dev);
+> +		if (ret)
+> +			return ret;
+
+We've been replacing this everywhere with:
+
+		if (!iio_device_claim_direct(indio_dev))
+			return -EBUSY;
+
+See: https://lore.kernel.org/linux-iio/20250331121317.1694135-1-jic23@kernel.org/
+
+> +
+> +		ret = pm_runtime_resume_and_get(dev);
+> +		if (ret < 0)
+> +			goto err;
+> +
+> +		adc->cfg->set_ovs(indio_dev, idx);
+> +
+> +		pm_runtime_mark_last_busy(dev);
+> +		pm_runtime_put_autosuspend(dev);
+> +
+> +		adc->ovs_idx = idx;
+> +
+> +err:
+> +		iio_device_release_direct_mode(indio_dev);
+
+		iio_device_release_direct(indio_dev);
+
+> +
+> +		return ret;
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +}
 

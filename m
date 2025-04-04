@@ -1,48 +1,48 @@
-Return-Path: <linux-iio+bounces-17624-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17625-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BA51A7C251
-	for <lists+linux-iio@lfdr.de>; Fri,  4 Apr 2025 19:21:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02C71A7C254
+	for <lists+linux-iio@lfdr.de>; Fri,  4 Apr 2025 19:22:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3218717BB96
-	for <lists+linux-iio@lfdr.de>; Fri,  4 Apr 2025 17:21:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C52B917C1FB
+	for <lists+linux-iio@lfdr.de>; Fri,  4 Apr 2025 17:22:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D15362144DC;
-	Fri,  4 Apr 2025 17:21:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C248E21480B;
+	Fri,  4 Apr 2025 17:22:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BfD+If7p"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nyxzCXgE"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 882E613D539;
-	Fri,  4 Apr 2025 17:21:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77D2413D539;
+	Fri,  4 Apr 2025 17:22:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743787278; cv=none; b=HiUFp4G2Bq12p5CXlJrnJ/fG3Miv5GnR9fDZQw1QHeHHS4npZp1ToD/lLOzlpTg8QdcYHVyzURHDXtIbBw75Kebx9JYO/qzI1F2TB6gC3ZXxn76SY0L7m86bgBKipZdLiTsJZch1BFPnA7CRpIOw4lmvvwWAavJYBpUa4gGZomw=
+	t=1743787325; cv=none; b=D6W9CBE2S68Kh1GO5W3zfrLNFoY5AFSMZgmmN721N8sLuLtgyFx6NmrZs9bZMNN3WGM9L95r7fUVXGhDfKw7g1Ws92FBWytxZZHju8Kml5pqOAbTUfU8fkVHYi8E6usivtPSd6TVqyOSd566Ieph14SDiu2B02f59MliPchFH64=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743787278; c=relaxed/simple;
-	bh=P3cPhH84HUJ6qxrN+BqVgk0FMB+z2MGzFpRpVOoSXUE=;
+	s=arc-20240116; t=1743787325; c=relaxed/simple;
+	bh=Y9XxofYqasuo0zueCm8YR/pkUi2kYgS91APGyJHgwpM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cpotkNFlHa/zMDehzBZQqTZ67rW3HyODwXRXSnMwOLslwHBe9Tt6BJONzpOvi3eL+oHG473aEJtMidJli4KZxcXpR/FGHeWjPYVLO4EF4P58xE6AKXljUnBiOVGB346PYb+u3UWcU+ienmALeud+jLxK6tYvTPRTyPSCMff9ugI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BfD+If7p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C8C6C4CEDD;
-	Fri,  4 Apr 2025 17:21:15 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=V5dzopNwsmP+O7gZyJJ6NVG5X6XPKFIVjo5Lb4PEvlCz3zLmiA5DPVQlD4vJANJLshRM/u3cHjA3auf0879duCcLX2wonnuQCv2KmAiB7if1Z2xix702efkKpmsngD2cyKnk2uMRF1hrRQZOy6d6GMoLRnFVBfvpn0GB9WNDK7w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nyxzCXgE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2636C4CEDD;
+	Fri,  4 Apr 2025 17:22:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743787277;
-	bh=P3cPhH84HUJ6qxrN+BqVgk0FMB+z2MGzFpRpVOoSXUE=;
+	s=k20201202; t=1743787324;
+	bh=Y9XxofYqasuo0zueCm8YR/pkUi2kYgS91APGyJHgwpM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=BfD+If7pcXqHtEGjYIIuxM9MhgbhibGVkpY0WsSzRS/TbVgiFYLWW3BXyQyj5U4it
-	 VTZOoPKjlpz1PITrav1awFjKiARG3PTe2TLOpPKkl+zgILQDGXDNgmliWNKrAnd1HW
-	 cCUEJeNjx/nOSDOUOg8M5kaCtX4dWUwrq5BTcUFK6kwsh6NPZGjnz9MH0Iutuq2DXB
-	 FuniR37SciHc18J5HJ/E7lq7uMYD3IMN19Vr2y0u9nz+YIOav2xvUSrvU/ylmKvJoi
-	 /O5bAddU/KpO8uZtpYKxASBIGEPnUFedOsBBsRcQVZo3RUrOWQFadNNxr7uvVWFvok
-	 ujMiMpOui6dEQ==
-Message-ID: <6012032b-d202-430f-9077-0869be27b481@kernel.org>
-Date: Fri, 4 Apr 2025 19:21:13 +0200
+	b=nyxzCXgE2s8Zhnayugacd0XLFgX4a+oIOzX+4s7WZ9ikZgU3i6dAHU+0LpQvLNjVK
+	 tFRBqPNymcgcR9WCdf9xKS1S9hN75azXjb/uHCx4RkgVILpwuE9WyAC9Nkivd0n+LT
+	 /IaAUezTl7WG1gfMG1VLOXkgjoV4lFTB1fAjuU0S1FDGMXb8VjMKCsA/ShGwtbWW70
+	 5va3/uMd83ImYb03gRkCr/Kb2dFxvtynevh2nGzQdMwg0DPT+qrBYg+96BqtF3+0xk
+	 nNIL5DSlClKGxbw1R3P5vBCfWNFq6xlePbsz/tCM+6vzRYekVXRdDwZy6bmK/PIEnk
+	 7pxEVdfjdCQXg==
+Message-ID: <7962134d-6380-44a6-8d1e-02aafa510531@kernel.org>
+Date: Fri, 4 Apr 2025 19:22:00 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -50,17 +50,15 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] dt-bindings: iio: imu: icm42600: add interrupt naming
- support
-To: Conor Dooley <conor@kernel.org>, jean-baptiste.maneyrol@tdk.com
-Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen
- <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/2] iio: imu: inv_icm42600: switch to use generic name
+ irq get
+To: jean-baptiste.maneyrol@tdk.com, Jonathan Cameron <jic23@kernel.org>,
+ Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
 References: <20250404-iio-imu-inv-icm42600-rework-interrupt-using-names-v1-0-72ed5100da14@tdk.com>
- <20250404-iio-imu-inv-icm42600-rework-interrupt-using-names-v1-1-72ed5100da14@tdk.com>
- <20250404-entering-rebel-fee1d02020b3@spud>
+ <20250404-iio-imu-inv-icm42600-rework-interrupt-using-names-v1-2-72ed5100da14@tdk.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -106,46 +104,21 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20250404-entering-rebel-fee1d02020b3@spud>
+In-Reply-To: <20250404-iio-imu-inv-icm42600-rework-interrupt-using-names-v1-2-72ed5100da14@tdk.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 04/04/2025 18:53, Conor Dooley wrote:
-> On Fri, Apr 04, 2025 at 05:52:02PM +0200, Jean-Baptiste Maneyrol via B4 Relay wrote:
->> From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
->>
->> Add interrupt-names field for specifying interrupt used.
->> Only INT1 is supported by the driver currently.
+On 04/04/2025 17:52, Jean-Baptiste Maneyrol via B4 Relay wrote:
+>  
+> +	/* get INT1 only supported interrupt */
+> +	fwnode = dev_fwnode(dev);
+> +	if (!fwnode)
+> +		return -ENODEV;
+> +	irq = fwnode_irq_get_byname(fwnode, "INT1");
+> +	if (irq < 0)
+> +		return dev_err_probe(dev, irq, "error missing INT1 interrupt\n");
 
-
-Please run scripts/checkpatch.pl and fix reported warnings. After that,
-run also `scripts/checkpatch.pl --strict` and (probably) fix more
-warnings. Some warnings can be ignored, especially from --strict run,
-but the code here looks like it needs a fix. Feel free to get in touch
-if the warning is not clear.
-
->> ---
->>  .../devicetree/bindings/iio/imu/invensense,icm42600.yaml          | 8 ++++++++
->>  1 file changed, 8 insertions(+)
->>
->> diff --git a/Documentation/devicetree/bindings/iio/imu/invensense,icm42600.yaml b/Documentation/devicetree/bindings/iio/imu/invensense,icm42600.yaml
->> index 7e4492bbd0278a336587dc5ac04da7153453da29..f19cdfd7450e04e7c984dc987f3c23f5ad89a248 100644
->> --- a/Documentation/devicetree/bindings/iio/imu/invensense,icm42600.yaml
->> +++ b/Documentation/devicetree/bindings/iio/imu/invensense,icm42600.yaml
->> @@ -41,6 +41,12 @@ properties:
->>    interrupts:
->>      maxItems: 1
->>  
->> +  interrupt-names:
->> +    enum:
->> +      - INT1
-> 
-> An enum with one entry is just a const.
-
-It's not one entry and that's the problem. Instead it should be items
-with one const.
-
-
+That's an ABI break.
 
 Best regards,
 Krzysztof

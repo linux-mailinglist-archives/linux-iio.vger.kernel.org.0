@@ -1,79 +1,80 @@
-Return-Path: <linux-iio+bounces-17628-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17629-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DB56A7C2CF
-	for <lists+linux-iio@lfdr.de>; Fri,  4 Apr 2025 19:49:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A316FA7C31F
+	for <lists+linux-iio@lfdr.de>; Fri,  4 Apr 2025 20:14:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 91B991B61178
-	for <lists+linux-iio@lfdr.de>; Fri,  4 Apr 2025 17:49:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 53C65172F72
+	for <lists+linux-iio@lfdr.de>; Fri,  4 Apr 2025 18:14:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E27DF21930D;
-	Fri,  4 Apr 2025 17:48:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5295F21507F;
+	Fri,  4 Apr 2025 18:14:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="hs2AZ0EN"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="lA6t2n3R"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oi1-f174.google.com (mail-oi1-f174.google.com [209.85.167.174])
+Received: from mail-ot1-f45.google.com (mail-ot1-f45.google.com [209.85.210.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A637F18FC92
-	for <linux-iio@vger.kernel.org>; Fri,  4 Apr 2025 17:48:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB87F15DBB3
+	for <linux-iio@vger.kernel.org>; Fri,  4 Apr 2025 18:14:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743788918; cv=none; b=E2vcFjsQcky3LS8KplUUrguYRLp+mXmxuBnpPHydv7DUjbbiOermv/c6stN/Usow4NSP6xAggiU36uz1C0Dn6CmAjcWYdxrz3evht4RYJp/brYSIpwJBDhVfN7joxniCaGSvWMlT4XNDBieSV8Y2BhxmdFBxVfglvXLrdOhU+L8=
+	t=1743790474; cv=none; b=P6HGAvCu2nmJTQH6j37jamSzdNea2JG+tjRh8vzvgit77Gw7Bx5Hk80VdkFJ6F28yDWL3Gbt+Ek6vZ6139xLhWLI4LS+rU7uVkLUH5LIBtygA4hzz///emyUMdFOeOdAo00R9PikcxhYoRI6PRtkMjf/f682HUoQL82SaxFPcZ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743788918; c=relaxed/simple;
-	bh=a7gWH2nkFeOsDGvRh7sMqCcn7di8a5/TuweiIDdEAJM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OKqCko+Kd7rOiLalR3jB+849K0QsHHBflQPf/VnXx9ygH0Zu++jq+v98xawBzI/o5GSw+DcdhzGSdqbH10TfM2ORhiXs6Xd29Ic5LWtPGKGXmW61T3ftWZpltP+qNnd9PQx4sxEwkmvha05Ue+qGh2KHvt4ca9JXZPQx6FZOdr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=hs2AZ0EN; arc=none smtp.client-ip=209.85.167.174
+	s=arc-20240116; t=1743790474; c=relaxed/simple;
+	bh=b0yXdSPPEM/BHzIydaiOQ1im9W4vvz4ftY78YQdRybw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=j83+HkSKgu7KUNnv653I1NaxvYRdM/mEzwr6yzLyK54VRMpTqQPx2hXwWRtvJWUKFt/Nd62wKRCgXQmVCXzZ3i2lew3Y7My4axJ4hKBn8iTTwaVT/ewvEXxJbS+GcGpnOChsyIQmZi6+QFUxRbBgcI8s7RBkDw6i1WQCaL0uryg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=lA6t2n3R; arc=none smtp.client-ip=209.85.210.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oi1-f174.google.com with SMTP id 5614622812f47-3fe83c8cbdbso721942b6e.3
-        for <linux-iio@vger.kernel.org>; Fri, 04 Apr 2025 10:48:36 -0700 (PDT)
+Received: by mail-ot1-f45.google.com with SMTP id 46e09a7af769-72bb9725de1so618683a34.2
+        for <linux-iio@vger.kernel.org>; Fri, 04 Apr 2025 11:14:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1743788915; x=1744393715; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1743790470; x=1744395270; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=AvY/WWNlUB6k/evBE4GY6Felovk+eaQUcXiraaY6y74=;
-        b=hs2AZ0ENN8R6LMo7idEt9/okS+usW6gqmZ/KjwBIiPQtTDCIZtXVPOblAXo1rO+Ey5
-         P+di0LWGRc0NL/q4nMb+X6su/YS/NavZ9E+afnTxFZKFfvQURYhQEEUg2aQ5oc2FumFw
-         ggC+0klEcjCkonyTCzcL9BQ/S0wTzGwW8pQpmRy1+rWq7fbHnajWQgNQYXqvqhcT7f4j
-         fRuTOXNWf7xYJzGtKb52E1ArGeOeC4ZJFzUrhjyhiJIg2ug0Uv5/OXFkE4t0Ae3bKIl5
-         Fl1ws/Ku0cS0PyRkmFDnTUOzCg2BR45FXF0ymOl5dmHXvhMQAN3pL5tle4QhPCaXWZG6
-         xwpQ==
+         :references:to:subject:user-agent:mime-version:date:message-id:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=hPS0By6+PX0Bry+3YPCkUrIWlS533GAkXzvPAqPcARU=;
+        b=lA6t2n3R3GzpLqYMQYqyvLrYKy/0ljAuR4y4tOWZba0zCS/jH8WVMbxfnrnx5A1VaA
+         /f81xM/MCk9UjO6n2GuFfwvEX+gMGG2PLxAMUVS7xUNyE1msw6F55zl8+/CZqaxsxH1k
+         Pafy4O1cKmYunvOeL52HmbNMiK5F//VVgAWOhGr9mkeAWooKR8zO1sIg1AXtpD6fvLg9
+         Yo3tw7Ve3amfr0N2X3np9nElBpyIIqqb/7QLvt1/5F6/Ptr0loXrXSjOgaEEdkj73F10
+         gJv1XDukNVXx383nKjyqhD6ZmKl+wHCHtQlOLmTvYWzR5kdbEbxieSZQDLFsuu5/WzJa
+         MhPw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743788915; x=1744393715;
+        d=1e100.net; s=20230601; t=1743790470; x=1744395270;
         h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :references:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=AvY/WWNlUB6k/evBE4GY6Felovk+eaQUcXiraaY6y74=;
-        b=WszXe0Af54u0eR3UZLzcCZBNwYkbCpKQPZyduDtXO0CyW6YuLbJvVwTi4522TSjkhk
-         /PvzWRtdalB72yAHftQrRkhwR0TwJP2lD9K3TUcMfjWwCSeZ6YddpKiZ9JSEEGDCIClN
-         mxF3PwlKfp2dXv0mMJLKfAcs+Ta+ZFgYrZmz+AH6KnSkfQFl/OV1QjHm1rZ9WS4oFGSm
-         ynDIV2pp9EuMHboc1QVYXTqA88W3Qnw1WrUvhrxbIoxgxBu9yeMISwdm6flpwFHgbLZF
-         EYnyKSoXjw+BbcJedb5koAMKZagQBNeJr+T0JQvIZBrb4NNyqA2ASglrL5UW7oO74XWT
-         J3uQ==
-X-Gm-Message-State: AOJu0Yy86WI9tXEWQCRIrmzUf+RLLCvQO1g1GykkW/f7JMNruz0oM1HJ
-	jRPUejd28unjatHsge8vUisBpUW96iDMtXeBRvW0onPWOFtkHaDYZHNRGarrMzA=
-X-Gm-Gg: ASbGncvlvpfHAl99VCAtYCfU3QcYTqJ/aXY0mo37JGpG2dGsUfoOJ9I/lK2toa+clCq
-	kTDGCSe+Xm9UPkooEBGKdk4X9jG73t3Zf/kRVZ4BTn416R6inhAMK5zRCGmnvtOeEc7R4dia2iW
-	3ENLUjHo2c2kYTItqT/W7indMyZEVrLkh5IyV18/W1vggAiA+mKf2ist/IEKBv5/EbQ+8kcpIFe
-	UmPbPZeE0Z+4F2Xo2WdlKNMZijk2ZtcqEglpntrw0IHJbMB1wChzn2NLwfOzr7MG+CmKTgPRMg0
-	ecoZWp0556JOyEfaAM/A6ArrAZwdY7Pztao7FlSz6hnXAlvOIa5pU477t3VcqAu2HjOlT7VAIRx
-	ZTRDQ8g==
-X-Google-Smtp-Source: AGHT+IHqN/zEntunmQti7QvdnI+zzlxqeFja7+5qeHzwZxJcenPeVZY1WnD3J92Ab5TIEbOJlcUA3g==
-X-Received: by 2002:a05:6808:199c:b0:3fa:51c5:d9a7 with SMTP id 5614622812f47-400455970b9mr1550054b6e.10.1743788915363;
-        Fri, 04 Apr 2025 10:48:35 -0700 (PDT)
+        bh=hPS0By6+PX0Bry+3YPCkUrIWlS533GAkXzvPAqPcARU=;
+        b=b73YRRStzFavOsWBK/FPCOe40TpEzFWs2+mG6DtU5wLhbL8AgY55hNFEQ1/JTbGIvY
+         Qu4x/cdISrxHvMCsWS1Xxn485TkfK6yIv6d3zEnajMsQegceHa+Zuim+OyG6lAYCwbDJ
+         7XP2wNTVeFX5tkHHq2SPZyHgYQu/bMXVrblXPCn30NdMHBXfrDxQfxPNlQoxkDC3wI3/
+         h8W8EPb7CV+ZPNHGYLsfjanxEfRpAuXG1awHVN+EbUx7tHcS3aTPLXsimKBuS8gzo+B6
+         o48OijAKT+ELzVbKFgK+RTChhprsCus+tfaUkprMGGkauE6c4Pa9tSEDKAsn7ZjAMuI4
+         q7QQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUZNTlI2dFJ8UKBk7kNPG5xg7E2ecMXEVdEiHeqrTy8pdnko9HzbeQpACKPQkfELjBIgQSEat4OXjg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyIT+e3AhG21UhjqoRo4Syu6LBvyJgNGiY3mz40Ccv3uvwCOH0Q
+	c55rox6Qf470H/TynODG1mobY5R+dv1lVI2WCGf6K46pja4hVTC5gDJR6VEj5Ss=
+X-Gm-Gg: ASbGnctO0nlxi8gyfxyaA+jF9NJgng29Z8D5zdxIZM7yWV4UPiE8DDrN78OEuTcvDgC
+	xP0E/8htIQo7yioLCICCFas+U1wlz2ExLquKUaVyc3P20ZvHO4j8FbKuNKYVr8VIENGaQpkoExB
+	Q5uEjwKKrGZnqueBV1y8dTKlSR0/Slwy5T0KMFDXHqi4elcScK/vwvUe0F6Lcl+Q3ZYfwk0jEOj
+	KgCkBkCczIUs2Pyn6AYIN1/5G4iaaS5n0CoeJal/rhFhipZupp83rYHABpZMCkPeKvMdfY4UXcE
+	356QhRMWBElZOK1qRbt7DZ2Zh9gUBCmAVOaPYP947WB0jp4l870jGFdIxfCotXvEMjehdEc/Ao5
+	uyFbTcQ==
+X-Google-Smtp-Source: AGHT+IH+c/0KyFINSsy4htn2eLc1MKq9dlVFyXv9Z9HE42ccBET5q3pYMHtKHHpxUnsEKtgL/3Krmw==
+X-Received: by 2002:a05:6830:6388:b0:727:4356:9f07 with SMTP id 46e09a7af769-72e367e510cmr2849237a34.14.1743790469499;
+        Fri, 04 Apr 2025 11:14:29 -0700 (PDT)
 Received: from [192.168.0.113] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-4003ff99759sm686880b6e.21.2025.04.04.10.48.32
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-72e3059a457sm750027a34.51.2025.04.04.11.14.28
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 04 Apr 2025 10:48:33 -0700 (PDT)
-Message-ID: <fd2116bd-b0e2-4db4-97ff-1a1e88545413@baylibre.com>
-Date: Fri, 4 Apr 2025 12:48:32 -0500
+        Fri, 04 Apr 2025 11:14:29 -0700 (PDT)
+Message-ID: <7035837b-e98f-4c36-ad44-f189cd91ce4a@baylibre.com>
+Date: Fri, 4 Apr 2025 13:14:28 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -81,412 +82,155 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 3/3] iio: dac: ad3530r: Add driver for AD3530R and
- AD3531R
-To: Kim Seer Paller <kimseer.paller@analog.com>,
- Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
- Michael Hennerich <Michael.Hennerich@analog.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- devicetree@vger.kernel.org
-References: <20250403-togreg-v3-0-d4b06a4af5a9@analog.com>
- <20250403-togreg-v3-3-d4b06a4af5a9@analog.com>
+Subject: Re: Kernel Crash: iio_dummy: General protection fault and
+ null-ptr-deref in iio_simple_dummy_events_register
+To: Waseem Riaz <waseem.riaz.9999@gmail.com>, linux-iio@vger.kernel.org
+References: <CAGehKVX1bLj67wSVxDkNBLFP7nXs572z+WQVcnfiOTEoY4sygQ@mail.gmail.com>
 Content-Language: en-US
 From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <20250403-togreg-v3-3-d4b06a4af5a9@analog.com>
+In-Reply-To: <CAGehKVX1bLj67wSVxDkNBLFP7nXs572z+WQVcnfiOTEoY4sygQ@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-On 4/3/25 12:33 AM, Kim Seer Paller wrote:
-> The AD3530/AD3530R (8-channel) and AD3531/AD3531R (4-channel) are
-> low-power, 16-bit, buffered voltage output DACs with software-
-> programmable gain controls, providing full-scale output spans of 2.5V or
-> 5V for reference voltages of 2.5V. These devices operate from a single
-> 2.7V to 5.5V supply and are guaranteed monotonic by design. The "R"
-> variants include a 2.5V, 5ppm/°C internal reference, which is disabled
-> by default.
+On 3/25/25 10:26 PM, Waseem Riaz wrote:
+> Hi,
 > 
-> Signed-off-by: Kim Seer Paller <kimseer.paller@analog.com>
-> ---
+> I'm encountering a kernel crash when trying to create a dummy device
+> in the IIO subsystem using configfs. This occurs when executing:
+> 
+>     mkdir /config/iio/devices/dummy/my_dummy_device
+> 
+> The error manifests as a general protection fault with KASAN reporting
+> a null pointer dereference. The crash occurs in
+> __x86_indirect_thunk_r13 during iio_simple_dummy_events_register.
+> 
+> ## Environment
+> - Kernel version: 6.14.0-rc1-g2014c95afece
+> - Architecture: x86_64
+> - Testing environment: QEMU VM
+> 
+> ## Steps to reproduce
+> 1. Build the kernel with CONFIG_IIO_CONFIGFS,
+> CONFIG_IIO_SIMPLE_DUMMY=m, and CONFIG_IIO_DUMMY_EVGEN=m
+> 2. Start qemu with the kernel and bullseye image with the following command
+>          qemu-system-x86_64 \
+>         -m 2G \
+>         -smp 2 \
+>         -kernel iio/arch/x86/boot/bzImage \
+>         -append "console=ttyS0 root=/dev/sda earlyprintk=serial net.ifnames=0" \
+>         -drive file= image/bullseye.img,format=raw \
+>         -net user,host=10.0.2.10,hostfwd=tcp:127.0.0.1:10021-:22 \
+>         -net nic,model=e1000 \
+>         -enable-kvm \
+>         -nographic \
+>         -pidfile vm.pid \
+>         2>&1 | tee vm.log
+> 3. Mount configfs to /config
+>          mount -t configfs none /config
+> 4. Load the modules in order
+> 5. Create a dummy device in /config/iio/devices/dummy/
 
-...
+Thanks for the detailed bug report. :-)
 
-> +#define AD3530R_INTERFACE_CONFIG_A		0x00
-> +#define AD3530R_OUTPUT_OPERATING_MODE_0		0x20
-> +#define AD3530R_OUTPUT_OPERATING_MODE_1		0x21
-> +#define AD3530R_OUTPUT_CONTROL_0		0x2A
-> +#define AD3530R_REFERENCE_CONTROL_0		0x3C
-> +#define AD3530R_SW_LDAC_TRIG_A			0xE5
-> +#define AD3530R_INPUT_CH(c)			(2 * (c) + 0xEB)
-> +
-> +#define AD3531R_SW_LDAC_TRIG_A			0xDD
-> +#define AD3531R_INPUT_CH(c)			(2 * (c) + 0xE3)
-> +
-> +#define AD3530R_SW_LDAC_TRIG_MASK		BIT(7)
-> +#define AD3530R_OUTPUT_CONTROL_MASK		BIT(2)
-> +#define AD3530R_REFERENCE_CONTROL_MASK		BIT(0)
-> +#define AD3530R_REG_VAL_MASK			GENMASK(15, 0)
-> +
-> +#define AD3530R_SW_RESET			(BIT(7) | BIT(0))
-> +#define AD3530R_MAX_CHANNELS			8
-> +#define AD3531R_MAX_CHANNELS			4
-> +#define AD3530R_CH(c)				(c)
-> +#define AD3530R_32KOHM_POWERDOWN_MODE		3
-> +#define AD3530R_INTERNAL_VREF_MV		2500
-> +#define AD3530R_LDAC_PULSE_US			100
-> +
-> +struct ad3530r_chan {
-> +	unsigned int powerdown_mode;
+> 
+> ## Crash Log
+> [   99.037889] Oops: general protection fault, probably for
+> non-canonical address 0xdffffc0000000000: 000I
+> [   99.044568] KASAN: null-ptr-deref in range
+> [0x0000000000000000-0x0000000000000007]
+> [   99.046591] CPU: 1 UID: 0 PID: 236 Comm: mkdir Not tainted
+> 6.14.0-rc1-g2014c95afece #8
+> [   99.048575] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996),
+> BIOS Arch Linux 1.16.3-1-1 04/01/204
+> [   99.050516] RIP: 0010:__x86_indirect_thunk_r13+0xa/0x20
+> [   99.051818] Code: e8 01 00 00 00 cc 4c 89 24 24 c3 cc cc cc cc 90
+> 66 66 2e 0f 1f 84 00 00 00 00 00 0f 0
+> [   99.056765] RSP: 0018:ffff8880035a7bd0 EFLAGS: 00010246
+> [   99.057870] RAX: dffffc0000000000 RBX: ffff888008687828 RCX: 1ffff11000725946
+> [   99.059311] RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffff888008686000
+> [   99.060580] RBP: ffff88800392ca00 R08: 0000000000000001 R09: ffffed10006b4f78
+> [   99.061419] R10: ffff8880035a7bc7 R11: ffffffff8ca58570 R12: 0000000000000000
+> [   99.062269] R13: 65645f7974743a72 R14: ffffffff8c5e5420 R15: ffff888008687870
+> [   99.063254] FS:  00007fe43adc2400(0000) GS:ffff88806d300000(0000)
+> knlGS:0000000000000000
+> [   99.064734] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> [   99.065649] CR2: 000056088dfb66c0 CR3: 0000000001fc2000 CR4: 00000000000006f0
+> [   99.066599] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+> [   99.067627] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+> [   99.068726] Call Trace:
+> [   99.069106]  <TASK>
+> [   99.069442]  ? __die_body.cold+0x19/0x29
+> [   99.069862]  ? die_addr+0x41/0x70
+> [   99.070222]  ? exc_general_protection+0x13f/0x210
+> [   99.071005]  ? asm_exc_general_protection+0x26/0x30
+> [   99.071809]  ? __pfx_irq_sim_request_resources+0x10/0x10
+> [   99.072639]  ? kasan_save_stack+0x30/0x50
+> [   99.073263]  ? __x86_indirect_thunk_r13+0xa/0x20
+> [   99.074055]  ? irq_sim_request_resources+0xf3/0x160
+> [   99.074871]  ? setup_irq_thread+0xfa/0x180
+> [   99.075576]  ? __setup_irq+0x747/0x1a20
+> [   99.076207]  ? kasan_save_track+0x14/0x30
+> [   99.077482]  ? request_threaded_irq+0x20b/0x350
+> [   99.077954]  ? __pfx_iio_simple_dummy_event_handler+0x10/0x10 [iio_dummy]
+> [   99.078647]  ? iio_simple_dummy_events_register+0x104/0x1a0 [iio_dummy]
+> [   99.079356]  ? kstrdup+0x8b/0xb0
+> [   99.079991]  ? iio_dummy_probe+0x3d7/0x5c0 [iio_dummy]
 
-IMHO, code would be easier to understand if this was an enum.
+Apparently, the IRQ is already triggered and the handler is called
+before the indio_dev is fully registered.
 
-> +	bool powerdown;
-> +};
-> +
-> +struct ad3530r_chip_info {
-> +	const char *name;
-> +	const struct iio_chan_spec *channels;
-> +	int (*input_ch_reg)(unsigned int c);
-> +	const int iio_chan;
-> +	unsigned int num_channels;
-> +	unsigned int sw_ldac_trig_reg;
-> +	bool internal_ref_support;
-> +};
-> +
-> +struct ad3530r_state {
-> +	struct regmap *regmap;
-> +	/* lock to protect against multiple access to the device and shared data */
-> +	struct mutex lock;
-> +	struct ad3530r_chan chan[AD3530R_MAX_CHANNELS];
-> +	const struct ad3530r_chip_info *chip_info;
-> +	struct gpio_desc *ldac_gpio;
-> +	int vref_mv;
-> +	u8 ldac;
-> +	bool range_multiplier;
+We should probably be passing the IRQF_NO_AUTOEN flag when requesting
+the IRQ and use the iio_simple_dummy_write_event_config() function to
+actually enable and disable the IRQ.
 
-nit: call this has_range_multiplier or change to u8 and save the actual multipler value here.
-
-> +};
-> +
-
-...
-
-> +static ssize_t ad3530r_set_dac_powerdown(struct iio_dev *indio_dev,
-> +					 uintptr_t private,
-> +					 const struct iio_chan_spec *chan,
-> +					 const char *buf, size_t len)
-> +{
-> +	struct ad3530r_state *st = iio_priv(indio_dev);
-> +	int ret;
-> +	unsigned int mask, val;
-> +	bool powerdown;
-> +
-> +	ret = kstrtobool(buf, &powerdown);
-> +	if (ret)
-> +		return ret;
-> +
-> +	guard(mutex)(&st->lock);
-> +	switch (chan->channel) {
-> +	case AD3530R_CH(0) ... AD3530R_CH(AD3531R_MAX_CHANNELS - 1):
-
-Switch seems hard to read and not needed since there aren't any gaps.
-
-	if (chan->channel < AD3531R_MAX_CHANNELS)
-
-shoud work, no?
-
-
-> +		mask = GENMASK(chan->channel * 2 + 1, chan->channel * 2);
-
-Could use the chan->address field to hide the calucation a bit.
-
-> +		val = (powerdown ? st->chan[chan->channel].powerdown_mode : 0)
-> +		      << (chan->channel * 2);
-
-I saw a series that proposed a non-const field_prep function recently. Not sure
-that made it through the bikeshedding though. Could be nice to hide some of this
-in a macro for readability if that isn't available.
-
-> +
-> +		ret = regmap_update_bits(st->regmap,
-> +					 AD3530R_OUTPUT_OPERATING_MODE_0,
-> +					 mask, val);
-> +		if (ret)
-> +			return ret;
-> +
-> +		st->chan[chan->channel].powerdown = powerdown;
-> +		return len;
-> +	case AD3530R_CH(AD3531R_MAX_CHANNELS) ...
-> +	     AD3530R_CH(AD3530R_MAX_CHANNELS - 1):
-> +		mask = GENMASK((chan->channel - 4) * 2 + 1,
-> +			       (chan->channel - 4) * 2);
-> +		val = (powerdown ? st->chan[chan->channel].powerdown_mode : 0)
-> +		      << ((chan->channel - 4) * 2);
-> +
-> +		ret = regmap_update_bits(st->regmap,
-> +					 AD3530R_OUTPUT_OPERATING_MODE_1,
-> +					 mask, val);
-> +		if (ret)
-> +			return ret;
-> +
-> +		st->chan[chan->channel].powerdown = powerdown;
-> +		return len;
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +}
-> +
-> +static int ad3530r_trigger_hw_ldac(struct gpio_desc *ldac_gpio)
-> +{
-> +	gpiod_set_value_cansleep(ldac_gpio, 1);
-> +	fsleep(AD3530R_LDAC_PULSE_US);
-> +	gpiod_set_value_cansleep(ldac_gpio, 0);
-> +
-> +	return 0;
-> +}
-> +
-> +static int ad3530r_dac_write(struct ad3530r_state *st, unsigned int chan,
-> +			     unsigned int val)
-> +{
-> +	int ret;
-> +	__be16 reg_val;
-> +
-> +	guard(mutex)(&st->lock);
-> +	reg_val = cpu_to_be16(val);
-> +
-> +	ret = regmap_bulk_write(st->regmap, st->chip_info->input_ch_reg(chan),
-> +				&reg_val, sizeof(reg_val));
-> +	if (ret)
-> +		return ret;
-> +
-> +	if (st->ldac_gpio)
-> +		return ad3530r_trigger_hw_ldac(st->ldac_gpio);
-> +
-> +	return regmap_update_bits(st->regmap, st->chip_info->sw_ldac_trig_reg,
-> +				  AD3530R_SW_LDAC_TRIG_MASK,
-> +				  FIELD_PREP(AD3530R_SW_LDAC_TRIG_MASK, 1));
-
-Can be simplifed with regmap_set_bits().
+And it would be good to understand why the interrupt was already
+triggered.
 
 
-> +}
-> +
-> +static int ad3530r_read_raw(struct iio_dev *indio_dev,
-> +			    struct iio_chan_spec const *chan,
-> +			    int *val, int *val2, long info)
-> +{
-> +	struct ad3530r_state *st = iio_priv(indio_dev);
-> +	int ret;
-> +	__be16 reg_val;
-> +
-> +	switch (info) {
-> +	case IIO_CHAN_INFO_RAW:
-> +		ret = regmap_bulk_read(st->regmap,
-> +				       st->chip_info->input_ch_reg(chan->channel),
-> +				       &reg_val, sizeof(reg_val));
-> +		if (ret)
-> +			return ret;
-> +
-> +		*val = FIELD_GET(AD3530R_REG_VAL_MASK, be16_to_cpu(reg_val));
-> +
-> +		return IIO_VAL_INT;
-> +	case IIO_CHAN_INFO_SCALE:
-> +		*val = st->vref_mv;
-> +		*val2 = 16;
+> [   99.080761]  ? iio_sw_device_create+0x137/0x230
+> [   99.081447]  ? __pfx_device_make_group+0x10/0x10
+> [   99.082234]  ? device_make_group+0x33/0x80
+> [   99.083106]  ? configfs_mkdir+0x449/0xdf0
+> [   99.083836]  ? vfs_mkdir+0x452/0x760
+> [   99.084457]  ? do_mkdirat+0x17b/0x330
+> [   99.085022]  ? __pfx_do_mkdirat+0x10/0x10
+> [   99.085543]  ? strncpy_from_user+0x129/0x210
+> [   99.085998]  ? __x64_sys_mkdir+0xe6/0x130
+> [   99.086506]  ? do_syscall_64+0x9e/0x1a0
+> [   99.087118]  ? entry_SYSCALL_64_after_hwframe+0x77/0x7f
+> [   99.087936]  </TASK>
+> [   99.088323] Modules linked in: iio_dummy iio_dummy_evgen
+> [   99.088949] ---[ end trace 0000000000000000 ]---
+> [   99.089526] RIP: 0010:__x86_indirect_thunk_r13+0xa/0x20
+> [   99.090194] Code: e8 01 00 00 00 cc 4c 89 24 24 c3 cc cc cc cc 90
+> 66 66 2e 0f 1f 84 00 00 00 00 00 0f 0
+> [   99.093617] RSP: 0018:ffff8880035a7bd0 EFLAGS: 00010246
+> [   99.094379] RAX: dffffc0000000000 RBX: ffff888008687828 RCX: 1ffff11000725946
+> [   99.095596] RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffff888008686000
+> [   99.097176] RBP: ffff88800392ca00 R08: 0000000000000001 R09: ffffed10006b4f78
+> [   99.098109] R10: ffff8880035a7bc7 R11: ffffffff8ca58570 R12: 0000000000000000
+> [   99.098893] R13: 65645f7974743a72 R14: ffffffff8c5e5420 R15: ffff888008687870
+> [   99.101368] FS:  00007fe43adc2400(0000) GS:ffff88806d300000(0000)
+> knlGS:0000000000000000
+> [   99.102606] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> [   99.105567] CR2: 000056088dfb66c0 CR3: 0000000001fc2000 CR4: 00000000000006f0
+> [   99.107410] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+> [   99.108835] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+> Segmentation fault
+> 
+> Any help or guidance would be appreciated
+> 
+> I'm planning to apply for GSOC but I think it's already late. Should I
+> try writing a proposal?
 
-This needs to take into account the range multipler.
+It looks like there are still a few days left before the deadline.
 
-> +
-> +		return IIO_VAL_FRACTIONAL_LOG2;
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +}
+If you haven't seen the other recent discussions, you will probably find some
+useful info here: https://lore.kernel.org/linux-iio/?q=gsoc
 
-...
+> 
+> Thank you,
+> Waseem
+> 
 
-> +static const struct iio_chan_spec_ext_info ad3530r_ext_info[] = {
-> +	AD3530R_CHAN_EXT_INFO("powerdown", 0, IIO_SEPARATE,
-> +			      ad3530r_get_dac_powerdown,
-> +			      ad3530r_set_dac_powerdown),
-> +	IIO_ENUM("powerdown_mode", IIO_SEPARATE, &ad3530r_powerdown_mode_enum),
-> +	IIO_ENUM_AVAILABLE("powerdown_mode", IIO_SHARED_BY_TYPE,
-> +			   &ad3530r_powerdown_mode_enum),
-> +	{ },
-
-iio style is no trailing comma on sentinil  
-
-	{ }
-
-> +};
-> +
-
-...
-
-> +static int ad3530r_setup(struct ad3530r_state *st)
-> +{
-> +	const struct ad3530r_chip_info *chip_info = st->chip_info;
-> +	struct device *dev = regmap_get_device(st->regmap);
-> +	struct gpio_desc *reset_gpio;
-> +	int i, ret;
-> +
-> +	reset_gpio = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_HIGH);
-> +	if (IS_ERR(reset_gpio))
-> +		return dev_err_probe(dev, PTR_ERR(reset_gpio),
-> +				     "Failed to get reset GPIO\n");
-> +
-> +	if (reset_gpio) {
-> +		/* Perform hardware reset */
-> +		fsleep(1000);
-> +		gpiod_set_value_cansleep(reset_gpio, 0);
-> +	} else {
-> +		/* Perform software reset */
-> +		ret = regmap_update_bits(st->regmap, AD3530R_INTERFACE_CONFIG_A,
-> +					 AD3530R_SW_RESET, AD3530R_SW_RESET);
-> +		if (ret)
-> +			return ret;
-> +	}
-> +
-> +	fsleep(10000);
-> +
-> +	/* Set operating mode to normal operation. */
-> +	ret = regmap_write(st->regmap, AD3530R_OUTPUT_OPERATING_MODE_0, 0);
-> +	if (ret)
-> +		return ret;
-> +
-> +	if (chip_info->num_channels > AD3531R_MAX_CHANNELS) {
-> +		ret = regmap_write(st->regmap, AD3530R_OUTPUT_OPERATING_MODE_1, 0);
-> +		if (ret)
-> +			return ret;
-> +	}
-> +
-> +	for (i = 0; i < chip_info->num_channels; i++)
-> +		st->chan[i].powerdown_mode = AD3530R_32KOHM_POWERDOWN_MODE;
-> +
-> +	st->ldac_gpio = devm_gpiod_get_optional(dev, "ldac", GPIOD_OUT_HIGH);
-> +	if (IS_ERR(st->ldac_gpio))
-> +		return dev_err_probe(dev, PTR_ERR(st->ldac_gpio),
-> +				     "Failed to get ldac GPIO\n");
-> +
-> +	if (device_property_present(dev, "adi,double-output-range")) {
-
-This is not documented in the DT bindings.
-
-This could instead be implemented by making the out_voltage_scale attribute
-writeable.
-
-If we really do need it in the devicetree because we want to protect against
-someone accidentally setting it too high, then the property should be the
-actual multipler value with an enum specifier of 1, 2 and a default of 1
-rather than a flag (e.g. adi,output-multipler).
-
-> +		st->range_multiplier = true;
-> +
-> +		return regmap_update_bits(st->regmap, AD3530R_OUTPUT_CONTROL_0,
-> +					  AD3530R_OUTPUT_CONTROL_MASK,
-> +					  FIELD_PREP(AD3530R_OUTPUT_CONTROL_MASK, 1));
-
-nit: can be simplified with regmap_set_bits().
-
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static const struct regmap_config ad3530r_regmap_config = {
-> +	.reg_bits = 16,
-> +	.val_bits = 8,
-
-Should have at least a .max_register.
-
-.reg_read and .reg_write tables can make debuging easier too.
-
-> +};
-> +
-> +static const struct iio_info ad3530r_info = {
-> +	.read_raw = ad3530r_read_raw,
-> +	.write_raw = ad3530r_write_raw,
-> +	.debugfs_reg_access = &ad3530r_reg_access,
-
-nit: style is not consistent - can omit &.
-
-> +};
-> +
-> +static int ad3530r_probe(struct spi_device *spi)
-> +{
-> +	static const char * const regulators[] = { "vdd", "iovdd" };
-> +	const struct ad3530r_chip_info *chip_info;
-> +	struct device *dev = &spi->dev;
-> +	struct iio_dev *indio_dev;
-> +	struct ad3530r_state *st;
-> +	int ret;
-> +
-> +	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*st));
-> +	if (!indio_dev)
-> +		return -ENOMEM;
-> +
-> +	st = iio_priv(indio_dev);
-> +
-> +	st->regmap = devm_regmap_init_spi(spi, &ad3530r_regmap_config);
-> +	if (IS_ERR(st->regmap))
-> +		return dev_err_probe(dev, PTR_ERR(st->regmap),
-> +				     "Failed to init regmap");
-> +
-> +	ret = devm_mutex_init(dev, &st->lock);
-> +	if (ret)
-> +		return ret;
-> +
-> +	chip_info = spi_get_device_match_data(spi);
-> +	if (!chip_info)
-> +		return -ENODEV;
-> +
-> +	st->chip_info = chip_info;
-
-nit: local variable isn't that useful since st->chip_info is short enough.
-
-> +
-> +	ret = ad3530r_setup(st);
-> +	if (ret)
-> +		return ret;
-
-Setting up the chip before turning on power would not work well if the
-regulators are actually controlled. :-)
-
-> +
-> +	ret = devm_regulator_bulk_get_enable(dev, ARRAY_SIZE(regulators),
-> +					     regulators);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret, "Failed to enable regulators\n");
-> +
-> +	ret = devm_regulator_get_enable_read_voltage(dev, "ref");
-> +	if (ret < 0 && ret != -ENODEV)
-> +		return ret;
-> +
-> +	if (chip_info->internal_ref_support && ret == -ENODEV) {
-> +		/* Internal reference. */
-> +		ret = regmap_update_bits(st->regmap, AD3530R_REFERENCE_CONTROL_0,
-> +					 AD3530R_REFERENCE_CONTROL_MASK,
-> +					 FIELD_PREP(AD3530R_REFERENCE_CONTROL_MASK, 1));
-> +		if (ret)
-> +			return ret;
-> +
-> +		st->vref_mv = st->range_multiplier ?
-> +			      2 * AD3530R_INTERNAL_VREF_MV :
-> +			      AD3530R_INTERNAL_VREF_MV;
-> +	} else {
-> +		st->vref_mv = st->range_multiplier ? 2 * ret / 1000 : ret / 1000;
-
-ret can be -ENODEV here if !chip_info->internal_ref_support
-
-> +	}> +
-> +	indio_dev->name = chip_info->name;
-> +	indio_dev->info = &ad3530r_info;
-> +	indio_dev->modes = INDIO_DIRECT_MODE;
-> +	indio_dev->channels = chip_info->channels;
-> +	indio_dev->num_channels = chip_info->num_channels;
-> +
-> +	return devm_iio_device_register(&spi->dev, indio_dev);
-> +}
-> +
 

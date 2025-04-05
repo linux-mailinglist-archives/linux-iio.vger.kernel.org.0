@@ -1,178 +1,116 @@
-Return-Path: <linux-iio+bounces-17631-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17632-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8C2DA7C739
-	for <lists+linux-iio@lfdr.de>; Sat,  5 Apr 2025 03:17:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBA80A7C7DB
+	for <lists+linux-iio@lfdr.de>; Sat,  5 Apr 2025 08:24:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 28746189ED96
-	for <lists+linux-iio@lfdr.de>; Sat,  5 Apr 2025 01:17:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4668D1704A1
+	for <lists+linux-iio@lfdr.de>; Sat,  5 Apr 2025 06:24:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA99E1DFCB;
-	Sat,  5 Apr 2025 01:17:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFFE61C3F30;
+	Sat,  5 Apr 2025 06:23:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YRnurKuH"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JjlPS6iu"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1155F2E62C1;
-	Sat,  5 Apr 2025 01:17:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69C8C1392;
+	Sat,  5 Apr 2025 06:23:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743815848; cv=none; b=Sc8gzpWqGIh2GS44P+bmhBD5J/psYQwr1jz92yZbcmmnpAzHY4TIA2mTTH0+slwtKLeVykYubqD4PJUwmjbmKcxxdkgkNKA9Z3okfAVKGfApwo82BOLVjxXzuQep/xMofsjOckYNx8FdO/VJuafemIGBlJ/v7VPxTxt5tNkqJqo=
+	t=1743834235; cv=none; b=ZPTHL8bWaxRBAxx+/E+R6gX2zMaLQt4xiMm6x70MJVgejXiFxVB79bJjPyJwdsyFvGzgN8WXU1e+IWnax/VTlraRrUUU48WsT4bMN/gjjmV1FSpIsh4eXxF/6USkPMEABNu9hWU3X4u9KYU+suEAucnRZrF88BOpJc8gE9a42c8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743815848; c=relaxed/simple;
-	bh=f3i7y9qJZMSTYCRTNPf2EJF6SHSdbXnOdImAqF1W99g=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
-	 In-Reply-To:Content-Type; b=KwPRGuLq/r+uRRcMvlsTrxmbpue912LVugJGBSjOPteHARpxK9tWjQv5yEweZEvtSe8MIHzH7gzFDjanseh9fQjpegP717+rSbRtzZOBNFSI31ZgZNlDPIIndWyY+wRdeBt0BR32l7XrDg101n5CzI8Fu7VyRomrYH8+S8UsRRk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YRnurKuH; arc=none smtp.client-ip=209.85.214.178
+	s=arc-20240116; t=1743834235; c=relaxed/simple;
+	bh=H3lMjJstZIxzthUGoR8r9ZIlBsGe1hsGapDGGNpx+1s=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=WMfdCCz6H9S09El83Yh9q0asInZwxAT2IYX3M1iZSThnB1CJJQ92UoxXO4RlyDBWhBz02pO2UD6GY/RREQKE6sYbwnBpvDFoPKp6WlBvcXdNmQMu1+Y3eLDfC4dQBQ19KHtlxYtTWeM2DaQ9xmzU30l2Qj7ByzhgfpNCjZhZW/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JjlPS6iu; arc=none smtp.client-ip=209.85.214.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2243803b776so37806955ad.0;
-        Fri, 04 Apr 2025 18:17:26 -0700 (PDT)
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-227d6b530d8so24539775ad.3;
+        Fri, 04 Apr 2025 23:23:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743815846; x=1744420646; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language:subject
-         :references:cc:to:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=NRiuL4Sy1s+c/lXgB3vFyCUJTB29r4cpXB4vQmrcmqI=;
-        b=YRnurKuH0qf8QZ1KCUwm5y0Za2vb8zsJBV5R9jIeOPcHdOS2Y1x2cC9u18+sOLLm3V
-         Vgao4vJjL7NF1PUiRYzGDDwSvbsJr4iEgNRAvvUwKQQFPg4FDRGXPwf9vwatDsYut9RP
-         r2RgB7tx8Pm3ecjNlusVzcWtgXYg2tisennGcVuDQt64BV4jGjFT8ebw3CJ6k7/fTscF
-         5p0rHmXQd3P0JUGdGGtvjjYZeeALHHVJoHFSa8Xdpy+8IULCU2KrSfJp6fPSLbhmaYRd
-         Pr9jo7SrBt3qoQ24Bf4Oi48YcL6Lu5sXehSxcZmBDNkR7kRLSt2c+dow5tDaUrr/TFNg
-         bZLg==
+        d=gmail.com; s=20230601; t=1743834233; x=1744439033; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=H3lMjJstZIxzthUGoR8r9ZIlBsGe1hsGapDGGNpx+1s=;
+        b=JjlPS6iuwYcuHXRk8BG3nUHEFIeMItRQ+eNzIEYIY6qhTyWX4+xmE53J3dSJEXkP0N
+         E31l9SLoyPyMiatiuESxMMgilL7O5K7V4/4i85rzSBykaUtxHRGqh2SNh+okMrfb95Sl
+         IRQ9b9kEVoewToa4OY8v6LO/2qmBNMxzOpM1VAJlWVgnu9+PluL+4oDPoOVQJHw6EbGk
+         VPVg7zZwTte+n+mi1bNfRFrODQTjYv3vfnIxIiZ/OG8TN1x6Oz+Bw5EdbuDHdss8/n/j
+         EcjjNafWM+BLs+2DgrJ6tU356OT+FaUwEvQei2d9pO2WC26RTQL43ALU0eSLzZ724Hu/
+         QOmA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743815846; x=1744420646;
-        h=content-transfer-encoding:in-reply-to:from:content-language:subject
-         :references:cc:to:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=NRiuL4Sy1s+c/lXgB3vFyCUJTB29r4cpXB4vQmrcmqI=;
-        b=JHLrp3NVp/SMPJ1GTJaDcfNB78Xr9OvSse6kWADJGEKlTf+RjJA4Fkah4epIGQigGH
-         juqh0LlakK+D162kGm6hXKSfssMM2WiN7E9f85+2WcGqghwhZOlmBUGpE5FkozdTA16G
-         qALNOwgIk0ImH9vVPCXQ75LvqAhnBwwOpnC+Ob8J7+VIA/r0KXSB7EzwBczecF9l5wSi
-         0vmu/KbwAK/u78Vi8gm84GIsrn6ACreBXE/a9J/YeA5fTkEJj9mGawIz+yvzy62ZqP3t
-         /82nn5WLqy+h2roZoTvsAlzFq/TLSW1RrwrwRJJAyF6e1OFAM8RMNvRwlP2lOg9JOo8r
-         6OwA==
-X-Forwarded-Encrypted: i=1; AJvYcCUWlDFizJ72L4JaLpGMGIXwPVkkry0CxprxOxHRciM+kbDmneQ/BvwS/4Z9t6b6hHswwZsZIhEUcr66SQ9s@vger.kernel.org, AJvYcCV5YymNw437k3DF6kKFAwfK3U2exxJWUISpUaX+DQIMatGKsTnW7b51mOoli9iXf8Jm6BVqH9MY483MU/YGLg==@vger.kernel.org, AJvYcCV73uF6MlopNrW2+1X8virrsE1CN1EbJ82LQ3FfZSkFJ+ek2Ms0nesputnSByKTAhpkx+yT0XK/@vger.kernel.org, AJvYcCVMi0tnSlpsyUu9NCHb33HIHlEWwl25WXGtTP0H5l19Gh81q5ug1vd/CfdjApdJoCuSvRjAiSm7Zw4tAssV6DBY@vger.kernel.org, AJvYcCVNCQVqTlSFPXisH9bZc4eTOctWFTgsksSkc3GHeu/NuKsr3Qzkgwi2Te2fYJKcQ5BaPZ+1wgdVWCLw@vger.kernel.org, AJvYcCWhZFY9l4lNdSkHoLCWyE3EuOFxfqkiLQah38cNgKePAtSELcneThA51vDR3UHagmV8RSQZaQfCGSc=@vger.kernel.org, AJvYcCWlrI/JSZ/JuzS25BJBuyhHkRldgpr04/5qaY/YnqEBG1YHrboHaYDpqGjpmTgrNJP3ChrkytKYAEs=@vger.kernel.org, AJvYcCX6Ssa8979EneFfYhtaAKodjajDjHOfsHL5SXVQjWL+Wpt/AirlpUm/5S9S3MkohbdN32hAInPZsS3k@vger.kernel.org, AJvYcCXGOZOkI9lE0ylnkW0ktt7aPVyh/RRvJqqZibl8nWD0+nU5bBc4/Jn50bSdtN32AQibAfnZmQxuLyTG/XU=@vger.kernel.org, AJvYcCXMMuu1sTDouy7+bUG/G9YWJANt
- U5x7ZyVtgwZpr347i2TCa6jfm7ldLE32U0FxTgjN+pO4rSUPcf7Iew0=@vger.kernel.org, AJvYcCXRKSALrXbi3YbfbNZTUz7Ps+pdGKDPFa5OCJciAmpTHN3Su5BptmzAObQG6GDmH08H2h7+Q9Vhm0vp@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxr3CPhGm8W4iDr6QTqTstL9azX+Uw+8RfXnyLamw8fGI/bUBtC
-	YUmaEC7MECJEamEdzBjCIxA++D9v2aQD7VB7huqGNe63OUgohkpK
-X-Gm-Gg: ASbGnct0KFiIGSMKavchuzIRbJohlzYkeVSZP914WZK+mCplAHw3Yoy/mlyvKfJsgye
-	Cf2C4Bs4B2WNfX6Cnqvwo6zR1/QValY51yjC3Sg3KrsJ58GwlOJzW/5y8SJriFsdgnVnqMhZTL3
-	PTfsq25FUzSCX9ZzIUin0Z/QwIKZ3lenAGyKYxGF/KBrKjNd3IE6uZ5ynP5BeCriY4Rg7VxjH83
-	Hrf1ArhW4TpfLkSJ8AO9YujF7wAVjYscCfZCHxq0g+OX/Tb+mTI6RlVEfoyj7fLQyv+dVJwn5K5
-	wI9ck+8z03mRtxCCet1nvTA97oh58E89BEywJeZaMHosMno2zLF53pJHEiS2coOqaWJ1h5ZeqXQ
-	4LekjcPW+js7527c=
-X-Google-Smtp-Source: AGHT+IGrKFiapGLIEGHnSEZIAujUvj6ZJLSj064m/nFeE0wcOjOeNVFt0u8EmZ8qnV5tFeQau4dR7A==
-X-Received: by 2002:a17:903:3c6b:b0:224:24d3:6103 with SMTP id d9443c01a7336-22a955734f5mr25800795ad.35.1743815846125;
-        Fri, 04 Apr 2025 18:17:26 -0700 (PDT)
-Received: from [10.0.2.15] (KD106167137155.ppp-bb.dion.ne.jp. [106.167.137.155])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-229785b352esm39374225ad.18.2025.04.04.18.17.18
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 04 Apr 2025 18:17:25 -0700 (PDT)
-Message-ID: <811c4103-08b1-4288-9a15-bd9795bc59f4@gmail.com>
-Date: Sat, 5 Apr 2025 10:17:16 +0900
+        d=1e100.net; s=20230601; t=1743834233; x=1744439033;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=H3lMjJstZIxzthUGoR8r9ZIlBsGe1hsGapDGGNpx+1s=;
+        b=aN4foqWAPl5FeSRp+Sy6D1Kg8YKRHMWmaA2uSV/9jIIcZQ0dif5suDjgsvXUDacmQJ
+         R8bSVXjg7BJeDZF4rl/UihPmKTW+bmBFkAYpcc1oia5fYrhpSCcjvfy1juUmTWGRQve8
+         MR5T12NEyIG546izhB1xYzoQFrlCeYsjxYOC3twJhCW+gn9tW0YUEneCcuXT05aGrJKt
+         enYnf58BX5/J2ZNG2zjA6QOHK082SHL+cH7CBvZXdjhTuoBo+LLz1pSECfOHbzGiokkO
+         OYmNVgYqvn+IjYMswpG54JSaGYlPuEfbKSx1ROFtyh1jQZTF7P9CWm6EvC3nknfdeg09
+         uHAQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX2jyesTS5WBOwNOu84GNkEl0tigUaJNoBinRdaiFoTzLUL3tnjlljYHQ7y6q1AbEacivOD4vQaU7C/BM8F@vger.kernel.org, AJvYcCX8ujAnKlu91Y26a6mzEhqpKoIFCEFyRfusAuXTzk5mMH+vtvo/HYzI7oJF3Qj8Qy6UsZdeW6GY29Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywh2hDjl8MiadTlv2wEttzoG2HaFHgYwT3p5RwsmBBeBmbpxplb
+	p1SXt2Q8kFkRADEeIh/HqtkXlHx5c4VuMBNtCKD7qWJkBzuJ4q6c
+X-Gm-Gg: ASbGncuqV36IPA7kQFGTLOaFfiuV7mXsMeWf0MT3cC31aTbkAN+BFOFvg5RwEV2IQ6B
+	2OFY18Wod3nnEbYM1SXc+srhKNQVCNChJWitj+LjAJKI1MRDLotSqx2rSamxlFLtBPT0aJ6XGWL
+	lRVUeYdV7BAMQvRTkyyURiYBDGtmDxx3SUArHjQVTGVH8eWV/I0I/ihOgWUT5lWlaPLv4JoJCc7
+	oT3vCb0/oJKgqyNr+P3peY46jc7Hyh6nX2Lpce5KSEXATmXwFN5xI+7QTpO+1Hy3QQjstl60pHP
+	xtIMrRl1RsQ4GNfWv2CYQujAnxE2Vfh3eY0+zu6F+Aa76Ht5brNmHMN83mYI9F7R2qh+
+X-Google-Smtp-Source: AGHT+IFsNUFu1VL458GDUqiNDTLs8HJioVMW9055o+WQu/szUrWXSNruETi7fQbSK5bhUWhVJz5l4w==
+X-Received: by 2002:a17:903:1a6b:b0:223:fb3a:8631 with SMTP id d9443c01a7336-22a8a06b7ebmr91344945ad.24.1743834233452;
+        Fri, 04 Apr 2025 23:23:53 -0700 (PDT)
+Received: from danascape.tail34aafc.ts.net ([2402:e280:218d:2e5:8608:d339:4e74:f302])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2297877275fsm42984665ad.221.2025.04.04.23.23.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 04 Apr 2025 23:23:53 -0700 (PDT)
+From: Saalim Quadri <danascape@gmail.com>
+To: jic23@kernel.org
+Cc: danascape@gmail.com,
+	dragos.bogdan@analog.com,
+	linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	marcelo.schmitt1@gmail.com,
+	marcelo.schmitt@analog.com
+Subject: Re: GSoC Proposal 2025
+Date: Sat,  5 Apr 2025 11:53:48 +0530
+Message-Id: <20250405062348.43025-1-danascape@gmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250309161905.4b029278@jic23-huawei>
+References: <20250309161905.4b029278@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: nfraprado@collabora.com
-Cc: James.Bottomley@HansenPartnership.com, akpm@linux-foundation.org,
- anton.ivanov@cambridgegreys.com, corbet@lwn.net, davem@davemloft.net,
- dmaengine@vger.kernel.org, ebiggers@kernel.org, edumazet@google.com,
- horms@kernel.org, jaegeuk@kernel.org, jarkko@kernel.org, jic23@kernel.org,
- johannes@sipsolutions.net, kernel@collabora.com, keyrings@vger.kernel.org,
- kuba@kernel.org, lars@metafoo.de, linux-doc@vger.kernel.org,
- linux-fscrypt@vger.kernel.org, linux-iio@vger.kernel.org,
- linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-media@vger.kernel.org, linux-mm@kvack.org,
- linux-sound@vger.kernel.org, linux-um@lists.infradead.org,
- maxime.chevallier@bootlin.com, mchehab@kernel.org, netdev@vger.kernel.org,
- pabeni@redhat.com, perex@perex.cz, richard@nod.at, tiwai@suse.com,
- tytso@mit.edu, vkoul@kernel.org, workflows@vger.kernel.org,
- zohar@linux.ibm.com, Akira Yokosawa <akiyks@gmail.com>
-References: <20250404-doc-paths-unliteral-v1-1-74718785444e@collabora.com>
-Subject: Re: [PATCH] docs: Remove literal markup from Documentation/ paths
-Content-Language: en-US
-From: Akira Yokosawa <akiyks@gmail.com>
-In-Reply-To: <20250404-doc-paths-unliteral-v1-1-74718785444e@collabora.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Hi,
+Thank you very much for the responses, albeit late, it took me sometime
+I was studying about the working on IIO, and the proposed driver on the GSoC page [1]
 
-Nícolas F. R. A. Prado wrote:
-> Given that the automarkup Sphinx plugin cross-references
-> "Documentation/*.rst" strings in the text to the corresponding
-> documents, surrounding those strings with the literal markup (``) not
-> only adds unnecessary markup in the source files, but actually prevents
-> the automatic cross-referencing to happen (as it doesn't happen in
-> literal blocks).
-> 
-> Remove all the occurrences of the literal markup in
-> "Documentation/*.rst" paths, except when the actual source file is being
-> referred. Also change the surrounding text when needed so it reads well
-> both in the source and the web page (eg. 'see file Doc...' -> 'see
-> Doc...').
-> 
-> Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-> ---
-[...]
+This is my draft proposal: [2]
+I am continuing on the same thread, as you mentioned, to keep it on the public list.
+I have enabled comments, to ease up the review on your end, such that you can identify if any issue is present and point it out.
 
->  Documentation/process/submit-checklist.rst                | 7 ++++---
+My major doubt in the proposal is regarding the timeline of the project.
 
-I have updated ja_JP translation of this recently.
+I also would like to suggest, if we are able to complete our first driver before the evaluation, then we can discuss working on
+a second sensor, if that is alright and if we are able to complete it within the time.
 
-> diff --git a/Documentation/process/submit-checklist.rst b/Documentation/process/submit-checklist.rst
-> index beb7f94279fdb6a1d9b4aa86b2bea031f140732b..3ae31c5af2cb5c374658c1fb7125e70bf36e911c 100644
-> --- a/Documentation/process/submit-checklist.rst
-> +++ b/Documentation/process/submit-checklist.rst
-> @@ -30,7 +30,8 @@ Review Kconfig changes
->  
->  1) Any new or modified ``CONFIG`` options do not muck up the config menu and
->     default to off unless they meet the exception criteria documented in
-> -   ``Documentation/kbuild/kconfig-language.rst`` Menu attributes: default value.
-> +   Documentation/kbuild/kconfig-language.rst, under "Menu attributes", "default
-> +   value".
+[1]: https://wiki.linuxfoundation.org/gsoc/2025-gsoc-iio-driver
+[2]: https://docs.google.com/document/d/18R_ZNWn36mAG9gb2TqepuxBwj-Hck3CrZHFfWUuNmyo/edit?usp=sharing
 
-I have made the same change in the translation, but failed to submit a patch...
+Thank you very much,
 
->  
->  2) All new ``Kconfig`` options have help text.
->  
-> @@ -47,7 +48,7 @@ Provide documentation
->  2) All new ``/proc`` entries are documented under ``Documentation/``
->  
->  3) All new kernel boot parameters are documented in
-> -   ``Documentation/admin-guide/kernel-parameters.rst``.
-> +   Documentation/admin-guide/kernel-parameters.rst.
-
-Hmm, this item is asking "Have you documented the new params in that
-particular file?", so I don't think this change should be made.
-
->  
->  4) All new module parameters are documented with ``MODULE_PARM_DESC()``
->  
-> @@ -58,7 +59,7 @@ Provide documentation
->     linux-api@vger.kernel.org.
->  
->  6) If any ioctl's are added by the patch, then also update
-> -   ``Documentation/userspace-api/ioctl/ioctl-number.rst``.
-> +   Documentation/userspace-api/ioctl/ioctl-number.rst.
-
-Ditto.
-
-        Thanks, Akira
-
->  
->  Check your code with tools
->  ==========================
-
+Sincerely,
+Saalim Quadri
 

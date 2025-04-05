@@ -1,57 +1,61 @@
-Return-Path: <linux-iio+bounces-17640-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17641-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12CBCA7CA31
-	for <lists+linux-iio@lfdr.de>; Sat,  5 Apr 2025 18:21:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DA51A7CA3B
+	for <lists+linux-iio@lfdr.de>; Sat,  5 Apr 2025 18:26:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CFD8A3B92EE
-	for <lists+linux-iio@lfdr.de>; Sat,  5 Apr 2025 16:21:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A0791893355
+	for <lists+linux-iio@lfdr.de>; Sat,  5 Apr 2025 16:26:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 767E91537DA;
-	Sat,  5 Apr 2025 16:21:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12F7C15ECDF;
+	Sat,  5 Apr 2025 16:25:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kTpEFuVj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WZfRhWha"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32AC52C9D;
-	Sat,  5 Apr 2025 16:21:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB786535D8;
+	Sat,  5 Apr 2025 16:25:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743870098; cv=none; b=H4CygYrnJP1U7YSMjukBbZa94Q0+BPLC2La1cDC7LdONb3MhoqUfkkiEjTkEtC4iInyI12xwuXfjGAjwZ4nq4IBYNdqWIFssls/d1yPC9uIjTXLs540qjBJJdRRMspDWz/1P64HcD5DLAuSmI8Gs42F4KkE6MFOBcQXgfrRzPkM=
+	t=1743870356; cv=none; b=BydO4Yh9m0sxLtw4Dl9aAJWwJ+v81gOCCY7NvGPx0NZ4v4Xl/Ghr0tL2O8p6tBBctOxwgGA8ohSim7ZgpX9ediaM/icK47l1hTxizpcnynebromk+1vW0o9myeQ9DleHiNdhG5oMGJODqdCeXowFh7Aa1BwuO6pzDISm213YBfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743870098; c=relaxed/simple;
-	bh=FMZsCjVJoDuC4NgUGqJMQBqh8VxxWlRRa7DVpA+BNz8=;
+	s=arc-20240116; t=1743870356; c=relaxed/simple;
+	bh=9R51YVvFpedGOOfa/HArTN7EaPaCOdkm9MmZsv4uSLE=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Dst2p1pBPGHBcTlMa2otlGvRcj1v+3a8qFHY6es/UNbBeRifiGBgH+VVqn5p7gODSEPrtIb5Kcwd4MvammbrYMNQQLv1ZZ49Y/JKC05gr8ehpzQLID4zS/PvsmA+4ThaHECtsN7D+b8HNqMZbcqpGA0/0iFnWnbzB7xEle1jgqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kTpEFuVj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F58BC4CEE4;
-	Sat,  5 Apr 2025 16:21:35 +0000 (UTC)
+	 MIME-Version:Content-Type; b=GgGMkpjA7u5HfN77bjBQodKT6TFKWvrtt83oJy3JYIaaK+ctynqFbKlLrszT+Iu2o+Y/l1uvRhvY7qgnmhRh6+pEDZLtUg9yr/7irOnZ4w9hUBWa9Ybo+HrGo58+/HFfKNyAS67OoFw5kf/tAvrcAmpl7b5utmdNjabeUXnEf84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WZfRhWha; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E11A4C4CEE4;
+	Sat,  5 Apr 2025 16:25:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743870097;
-	bh=FMZsCjVJoDuC4NgUGqJMQBqh8VxxWlRRa7DVpA+BNz8=;
+	s=k20201202; t=1743870356;
+	bh=9R51YVvFpedGOOfa/HArTN7EaPaCOdkm9MmZsv4uSLE=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=kTpEFuVj9WbNNF0JOAUOLOzD02K9mz5bX9PGJGxcGVPiMmdetz3CfdLCvv1JGSdG0
-	 QI0mtEGCVzWR5i8on75QqhwgmM60YmhkAsncPmXhzOdSjGm+JMWsibClEP60B/Qiq8
-	 P9jwFv9cGPsNszJ+zYwb4mlO808zrskESmXWWIkS8tk3Rsz56xgmS54PadhIiQvOIZ
-	 Y8B56mRSdpDmd9rbVdBzuOw0YM7tFn2DmqPMMpGM9DHlKL3mEpH3XZUtfqwPwAidZY
-	 gecW013ZzURN1j+Riwl8ZPgNB1CF6SdgBK42nUwYcTseBtRWI2tWC/sgnvdUG4t9D+
-	 khSyy0Gh+Clzg==
-Date: Sat, 5 Apr 2025 17:21:33 +0100
+	b=WZfRhWhaND4CSSKaZzuCrtrVZ1I//D39DgMH/uUXCLkRYnzwLHKlq4xU/mHJkSefI
+	 icGw/QU8XV2ytk/sRzgwMmSR+3l4zEkz7lB+IvCgfIs0HfmHTDYyzG2Mm/yH+wEwJQ
+	 O9nYIet/m965kkqts95bs1S+SPbxpsSV9zbnvG0j4CcPxB4g1e2+TJFwHS5cbcwkRy
+	 MlN5Ru84fnbacK/ItTDcWtrFgU2YFSjNWycb84pDKrezC8NVRyyriz3C9EfRbGzrf7
+	 szTQBb7bz6khdr293fnpASduFQJMRG5cz3BoL9O5RbEkMYpuCrhv9pece5qUjuU+lT
+	 tZqp3C+4oIeLQ==
+Date: Sat, 5 Apr 2025 17:25:41 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Julien Stephan <jstephan@baylibre.com>
-Cc: David Lechner <dlechner@baylibre.com>, Michael Hennerich
- <michael.hennerich@analog.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: adc: ad7380: fix event threshold shift
-Message-ID: <20250405172133.3262bed0@jic23-huawei>
-In-Reply-To: <CAEHHSvbt7v7OCbW4PEwgop74n_5NW8Una1-R3w3yUqu8-22=Dg@mail.gmail.com>
-References: <20250402-iio-adc-ad7380-fix-event-threshold-shift-v1-1-ad4975c296b2@baylibre.com>
-	<CAEHHSvbt7v7OCbW4PEwgop74n_5NW8Una1-R3w3yUqu8-22=Dg@mail.gmail.com>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Matti Vaittinen <mazziesaccount@gmail.com>, Matti Vaittinen
+ <matti.vaittinen@fi.rohmeurope.com>, Lars-Peter Clausen <lars@metafoo.de>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Nuno Sa <nuno.sa@analog.com>, Javier
+ Carrasco <javier.carrasco.cruz@gmail.com>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH RFC v2 7/7] iio: ti-adc128s052: Drop variable vref
+Message-ID: <20250405172541.641ddb39@jic23-huawei>
+In-Reply-To: <c42b1dc3-34d9-4419-ae2e-5bacffa070b6@baylibre.com>
+References: <cover.1743573284.git.mazziesaccount@gmail.com>
+	<dda9e0710a9293a9f52e64c092f79afd4b719536.1743573284.git.mazziesaccount@gmail.com>
+	<c42b1dc3-34d9-4419-ae2e-5bacffa070b6@baylibre.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -59,125 +63,64 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Thu, 3 Apr 2025 13:45:41 +0200
-Julien Stephan <jstephan@baylibre.com> wrote:
+On Wed, 2 Apr 2025 15:49:01 -0500
+David Lechner <dlechner@baylibre.com> wrote:
 
-> Le jeu. 3 avr. 2025 =C3=A0 01:56, David Lechner <dlechner@baylibre.com> a=
- =C3=A9crit :
-> >
-> > Add required bit shift to the event threshold read function to get
-> > correct scaling.
-> >
-> > When alert support was added, the write function correctly included the
-> > required shift needed to convert the threshold register value to the
-> > same scale as the raw ADC value. However, the shift got missed in the
-> > read function. =20
->=20
-> Hi David,
->=20
-> Thank you for fixing that. LGTM
->=20
-> Reviewed-by: Julien Stephan <jstephan@baylibre.com>
-Applied to the fixes-togreg branch of iio.git
+> On 4/2/25 1:10 AM, Matti Vaittinen wrote:
+> > According to Jonathan, variable reference voltages are very rare. It is
+> > unlikely it is needed, and supporting it makes the code a bit more
+> > complex.  
+> 
+> There is also around 60 other drivers where we could do something like this
+> in case anyone is bored. :-p
 
-Thanks,
+Hmm. It would be a gamble but also a nice cleanup.
+
+We 'might' meet a case where someone notices it but seems fairly unlikely...
 
 J
->=20
-> >
-> > Fixes: 27d1a4dbe1e1 ("iio: adc: ad7380: add alert support")
-> > Signed-off-by: David Lechner <dlechner@baylibre.com>
+> 
+> > 
+> > Simplify the driver and drop the variable vref support.
+> > 
+> > Suggested-by: Jonathan Cameron <jic23@kernel.org>
+> > Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
 > > ---
-> >  drivers/iio/adc/ad7380.c | 25 +++++++++++++++++++------
-> >  1 file changed, 19 insertions(+), 6 deletions(-)
-> >
-> > diff --git a/drivers/iio/adc/ad7380.c b/drivers/iio/adc/ad7380.c
-> > index 4fcb49fdf56639784098f0147a9faef8dcb6b0f6..f3962a45e1e5b88cebf712c=
-c867fbb576d3ca058 100644
-> > --- a/drivers/iio/adc/ad7380.c
-> > +++ b/drivers/iio/adc/ad7380.c
-> > @@ -1611,11 +1611,25 @@ static int ad7380_write_event_config(struct iio=
-_dev *indio_dev,
-> >         return ret;
-> >  }
-> >
-> > -static int ad7380_get_alert_th(struct ad7380_state *st,
-> > +static int ad7380_get_alert_th(struct iio_dev *indio_dev,
-> > +                              const struct iio_chan_spec *chan,
-> >                                enum iio_event_direction dir,
-> >                                int *val)
-> >  {
-> > -       int ret, tmp;
-> > +       struct ad7380_state *st =3D iio_priv(indio_dev);
-> > +       const struct iio_scan_type *scan_type;
-> > +       int ret, tmp, shift;
-> > +
-> > +       scan_type =3D iio_get_current_scan_type(indio_dev, chan);
-> > +       if (IS_ERR(scan_type))
-> > +               return PTR_ERR(scan_type);
-> > +
-> > +       /*
-> > +        * The register value is 12-bits and is compared to the most si=
-gnificant
-> > +        * bits of raw value, therefore a shift is required to convert =
-this to
-> > +        * the same scale as the raw value.
-> > +        */
-> > +       shift =3D scan_type->realbits - 12;
-> >
-> >         switch (dir) {
-> >         case IIO_EV_DIR_RISING:
-> > @@ -1625,7 +1639,7 @@ static int ad7380_get_alert_th(struct ad7380_stat=
-e *st,
-> >                 if (ret)
-> >                         return ret;
-> >
-> > -               *val =3D FIELD_GET(AD7380_ALERT_HIGH_TH, tmp);
-> > +               *val =3D FIELD_GET(AD7380_ALERT_HIGH_TH, tmp) << shift;
-> >                 return IIO_VAL_INT;
-> >         case IIO_EV_DIR_FALLING:
-> >                 ret =3D regmap_read(st->regmap,
-> > @@ -1634,7 +1648,7 @@ static int ad7380_get_alert_th(struct ad7380_stat=
-e *st,
-> >                 if (ret)
-> >                         return ret;
-> >
-> > -               *val =3D FIELD_GET(AD7380_ALERT_LOW_TH, tmp);
-> > +               *val =3D FIELD_GET(AD7380_ALERT_LOW_TH, tmp) << shift;
-> >                 return IIO_VAL_INT;
-> >         default:
-> >                 return -EINVAL;
-> > @@ -1648,7 +1662,6 @@ static int ad7380_read_event_value(struct iio_dev=
- *indio_dev,
-> >                                    enum iio_event_info info,
-> >                                    int *val, int *val2)
-> >  {
-> > -       struct ad7380_state *st =3D iio_priv(indio_dev);
-> >         int ret;
-> >
-> >         switch (info) {
-> > @@ -1656,7 +1669,7 @@ static int ad7380_read_event_value(struct iio_dev=
- *indio_dev,
-> >                 if (!iio_device_claim_direct(indio_dev))
-> >                         return -EBUSY;
-> >
-> > -               ret =3D ad7380_get_alert_th(st, dir, val);
-> > +               ret =3D ad7380_get_alert_th(indio_dev, chan, dir, val);
-> >
-> >                 iio_device_release_direct(indio_dev);
-> >                 return ret;
-> >
+> > Revision History:
+> >  v2:
+> >   - New patch
 > > ---
-> > base-commit: f8ffc92ae9052e6615896052f0c5b808bfc17520
-> > change-id: 20250402-iio-adc-ad7380-fix-event-threshold-shift-b614db1a30=
-7f
-> >
-> > Best regards,
-> > --
-> > David Lechner <dlechner@baylibre.com>
-> > =20
+> >  drivers/iio/adc/ti-adc128s052.c | 29 ++++++-----------------------
+> >  1 file changed, 6 insertions(+), 23 deletions(-)
+> > 
+> > diff --git a/drivers/iio/adc/ti-adc128s052.c b/drivers/iio/adc/ti-adc128s052.c
+> > index 0f93c6266527..0bfe4e558c69 100644
+> > --- a/drivers/iio/adc/ti-adc128s052.c
+> > +++ b/drivers/iio/adc/ti-adc128s052.c
+> > @@ -29,13 +29,12 @@ struct adc128_configuration {
+> >  struct adc128 {
+> >  	struct spi_device *spi;
+> >  
+> > -	struct regulator *reg;
+> >  	/*
+> >  	 * Serialize the SPI 'write-channel + read data' accesses and protect
+> >  	 * the shared buffer.
+> >  	 */
+> >  	struct mutex lock;
+> > -
+> > +	int vref;  
+> 
+> Units in the name are helpful: vref_uv.
+> 
+> Could also consider doing division in probe and storing vref_mv instead
+> since we never use the microvolts part.
+> 
+> >  	union {
+> >  		__be16 rx_buffer;
+> >  		u8 tx_buffer[2];  
+> 
 
 

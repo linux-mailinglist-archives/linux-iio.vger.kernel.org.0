@@ -1,57 +1,58 @@
-Return-Path: <linux-iio+bounces-17647-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17648-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E45C3A7CA95
-	for <lists+linux-iio@lfdr.de>; Sat,  5 Apr 2025 19:12:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E688A7CAC6
+	for <lists+linux-iio@lfdr.de>; Sat,  5 Apr 2025 19:18:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B7996177BA7
-	for <lists+linux-iio@lfdr.de>; Sat,  5 Apr 2025 17:12:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3539618910E1
+	for <lists+linux-iio@lfdr.de>; Sat,  5 Apr 2025 17:19:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B25A819A2A3;
-	Sat,  5 Apr 2025 17:12:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49AF818DB37;
+	Sat,  5 Apr 2025 17:18:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Of4FwQRs"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t55EW1aN"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68CD01993B2;
-	Sat,  5 Apr 2025 17:12:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F12261474CC;
+	Sat,  5 Apr 2025 17:18:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743873138; cv=none; b=R7VZArB8BJ/5YLe3CONLlKolBVDBZs0IGp7CMYgi0Gt25zM6BbRraqzisEBloQC6/Bo/bHjfIQNS5BcoWxalLnkyn/ayHYex28JZ+oer2UkNh7SiVvjRh4FnoLlYnuj0m0CSq/7//Sjp1ywgJIiYzZwHByrFRt0EkVVR0oJECKo=
+	t=1743873526; cv=none; b=t8QM0/DuPnOlflFbV1lGipTiOix7LTxIvu9L3LFvCpKWAFuC1fY5n6j1740LPi3ZZFT8VwTuolZ/ixMauoolMV9zg9IU7JE/Uq4JfkXUppAti4pfSKXDCQ310PhayT92zu2Z+nugyE7zy5137Ayqb5Zju5A3xiv+N7AJFtc7xOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743873138; c=relaxed/simple;
-	bh=Oc4uyqHtOPFNtYHEZPJaclnM3in6j64NjiX3Ew8Xm5U=;
+	s=arc-20240116; t=1743873526; c=relaxed/simple;
+	bh=tUDO7KE2LDmxNo+dRhla6N2NEHvM+6/Y3ILAr8KrEKk=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PuE1PR6tPDyLmAd+5obfkwE6Tsw+FOf4+IL1jPkcJNpfjUbao3xYVPMimwwgueNY6oV7MUu0Bhg036adtVkxOqICbv+x/fjnLWOHbN/e6NLFh7GRkyAhSarG0/7m0FN5SHCU6LHKBA7VhWVWm7H8RkFSpsA5og1j7U0H64N6cR8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Of4FwQRs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E29FC4CEE4;
-	Sat,  5 Apr 2025 17:12:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=irerb2jRsCQkAP9R6xKqlHykKXQpaYSaQIl00evYTlsdLceRxS6Vnhk6B3pu8tTwxc+6MgfTgbRcCrVsoeKZ8zT56YykSLvhPij9yANbBUZ9l4J80Gyc+asY7TOkasnlPITlkGYTnmJKScazq3DhPWEOhRMztEHJXfnGaWdP71I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t55EW1aN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F45EC4CEE4;
+	Sat,  5 Apr 2025 17:18:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743873137;
-	bh=Oc4uyqHtOPFNtYHEZPJaclnM3in6j64NjiX3Ew8Xm5U=;
+	s=k20201202; t=1743873525;
+	bh=tUDO7KE2LDmxNo+dRhla6N2NEHvM+6/Y3ILAr8KrEKk=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Of4FwQRszpMcns+kgRM4Apg1oV7ZC7LZWaz1ZMoxOHHSC5p6DkM8MTkq6Fub7LcL0
-	 99GIGrIvz+6zu1nWA6auKVu2JRpMH78lHYp+ulqZqjrK6OX4bzeDn+CtV5b5mMCWAK
-	 sjvVFjZR8WTBO0vW5voAyw+Pv+wGzWLs3LOLipDReO3oDCQWlH3ls7PwI7ddpis3EG
-	 yHm2GQ1gbTVn3/qb9ieBgC1QRro8xYefAOYPVlKBbvn6LVzR1aSwvOvnr3ZfdnRM6o
-	 g//upi+9V2bYmzyIb2HKkcHXHm+z/OTT+lq1jeDlhA142xhoL3eYDRvT34EK51b/CD
-	 Us25Zmz+Cvxuw==
-Date: Sat, 5 Apr 2025 18:12:10 +0100
+	b=t55EW1aNg3uWps14ROD/NcBui28NjbYS5TsP3rD3knnPCVBWO6vid5qH6hT/WLOf3
+	 zTSoGhYx7rp2k+X5ElKHwN9nSr55N35U2hcKrX22mJnhHS7D/F1eQcp3ldSJ4IHSvb
+	 d6gedEaQJLzlrcCQlDqq1FWPD6Olbno2BJdvskNulag4uCyTrlNc+bOLyph6WhK7Po
+	 BWE1WTotwT4zc3faTx3uMaJjxzoJ6AFzxy2yRTvdrmImhxgTTm3Dor7tsc9w8W0xZB
+	 90CBqYjieOlRmiWvvInaBpk+mIF4kW7Tz51sF4fi95Y8C12mXiwgBQa74QdDF2ydfR
+	 zdNqRC+QHrrnA==
+Date: Sat, 5 Apr 2025 18:18:38 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Cc: david@ixit.cz, Lars-Peter Clausen <lars@metafoo.de>, Svyatoslav Ryhel
- <clamor95@gmail.com>, Robert Eckelmann <longnoserob@gmail.com>,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 0/5] iio: light: Modernize al3010 and al3320a
- codebase
-Message-ID: <20250405181210.5e7a181a@jic23-huawei>
-In-Reply-To: <20250402-al3010-iio-regmap-v4-0-d189bea87261@ixit.cz>
-References: <20250402-al3010-iio-regmap-v4-0-d189bea87261@ixit.cz>
+To: Matti Vaittinen <mazziesaccount@gmail.com>
+Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>, Lars-Peter Clausen
+ <lars@metafoo.de>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+ <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/5] Support ROHM BD797xx DACs
+Message-ID: <20250405181838.1498be04@jic23-huawei>
+In-Reply-To: <cover.1743576022.git.mazziesaccount@gmail.com>
+References: <cover.1743576022.git.mazziesaccount@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -62,69 +63,45 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 02 Apr 2025 21:33:23 +0200
-David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org> wrote:
+On Wed, 2 Apr 2025 09:44:20 +0300
+Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 
-> This series aims to improve code readability and modernize it to align
-> with the recently upstreamed AL3000a.
+> Support ROHM BD797xx DACs
 > 
-> Apart from slightly improved error reporting, and error handling
-> there should be no functional changes.
+> ROHM BD79700, BD79701 and BD79702 are very similar to the already
+> sipported BD79703. Main difference is the reduced number of channels.
+supported.
+> Also, the *00 and *01 variants lack of the separate Vfs pin.
 > 
-> Module  before after
-> al3010  72 kB  58 kB
-> al3320a 72 kB  58 kB
+> This series adds support for the BD79700, BD79701 and BD79702.
+
+Series was nearly perfect but I tweaked one thing...
 > 
-> Signed-off-by: David Heidelberg <david@ixit.cz>
 > ---
-Applied, but with tweaks to not add print messages as described in patches 1 and 3.
-That meant a bunch of hand application was needed for 4-5.  Please check the result
-in the testing branch of iio.git.
+> 
+> Matti Vaittinen (5):
+>   dt-bindings: Add ROHM BD7970x variants
+>   iio: dac: bd79703 Store device address to 'address'
+>   dac: bd79703: Add chip data
+>   iio: bd79703: Support BD79700 and BD79701
+>   iio: dac: bd79703: Support ROHM BD79702
+Made the last 4 patch titles all start with
+iio: dac: bd79703: 
+rather than this random mixture of prefixes.
+
+Applied to the testing branch of iio.git which will get rebase
+on rc1 sometime in next few days.
 
 Thanks,
 
 Jonathan
 
-> Changes in v4:
-> - Fixed mixed-up rebase changes between commits and added
->   regmap_get_device into _init functions to get the device.
-> - Link to v3: https://lore.kernel.org/r/20250402-al3010-iio-regmap-v3-0-cc3da273b5b2@ixit.cz
 > 
-> Changes in v3:
-> - Stripped patches merged from second version of patchset.
-> - Dropped iio: light: al3010: Move devm_add_action_or_reset back to _probe
->   in favor of opposite approach moving devm_add.. to _init for al3xx0a:
->   - iio: light: al3000a: Fix an error handling path in al3000a_probe()
->   - iio: light: al3320a: Fix an error handling path in al3320a_probe()
-> - Link to v2: https://lore.kernel.org/r/20250319-al3010-iio-regmap-v2-0-1310729d0543@ixit.cz
+>  .../bindings/iio/dac/rohm,bd79703.yaml        |  33 +++--
+>  drivers/iio/dac/rohm-bd79703.c                | 116 +++++++++++++++---
+>  2 files changed, 126 insertions(+), 23 deletions(-)
 > 
-> Changes in v2:
-> - Dropped Daniel's email update.
-> - Dropped DRV_NAME introduction for al3000a
-> - Added DRV_NAME define removal for al3010 and al3320a.
-> - Splitted unsigned int conversion into separate patches.
-> - Replaced generic value with specific raw and gain variable.
-> - Use dev_err_probe() for error handling.
-> - Separated devm_add_action_or_reset move from _init back to _probe.
-> - Dropped copyright update.
-> - Link to v1: https://lore.kernel.org/r/20250308-al3010-iio-regmap-v1-0-b672535e8213@ixit.cz
 > 
-> ---
-> David Heidelberg (5):
->       iio: light: al3010: Improve al3010_init error handling with dev_err_probe()
->       iio: light: al3000a: Fix an error handling path in al3000a_probe()
->       iio: light: al3320a: Fix an error handling path in al3320a_probe()
->       iio: light: al3010: Implement regmap support
->       iio: light: al3320a: Implement regmap support
-> 
->  drivers/iio/light/al3000a.c |  9 +++--
->  drivers/iio/light/al3010.c  | 85 +++++++++++++++++++++++--------------------
->  drivers/iio/light/al3320a.c | 89 +++++++++++++++++++++++++--------------------
->  3 files changed, 100 insertions(+), 83 deletions(-)
-> ---
-> base-commit: f8ffc92ae9052e6615896052f0c5b808bfc17520
-> change-id: 20250308-al3010-iio-regmap-038cea39f85d
-> 
-> Best regards,
+> base-commit: 543da6252b48bbfe13e194fb980bdd2b161f6838
 
 

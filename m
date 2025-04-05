@@ -1,164 +1,178 @@
-Return-Path: <linux-iio+bounces-17630-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17631-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29E3DA7C550
-	for <lists+linux-iio@lfdr.de>; Fri,  4 Apr 2025 23:11:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8C2DA7C739
+	for <lists+linux-iio@lfdr.de>; Sat,  5 Apr 2025 03:17:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E48E61897E50
-	for <lists+linux-iio@lfdr.de>; Fri,  4 Apr 2025 21:11:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 28746189ED96
+	for <lists+linux-iio@lfdr.de>; Sat,  5 Apr 2025 01:17:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE3F919CC05;
-	Fri,  4 Apr 2025 21:11:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA99E1DFCB;
+	Sat,  5 Apr 2025 01:17:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="D4jYuA3/"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YRnurKuH"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 272B213CA9C;
-	Fri,  4 Apr 2025 21:11:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1155F2E62C1;
+	Sat,  5 Apr 2025 01:17:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743801085; cv=none; b=pmAA3N+1KlZON7926nvE5b/wisaW9PigiWdrK+9q89Q+TlzOHPcLJDLoOl16ZxttAq3ug8c/OWX64IEcaoY6z86ny3Z4dvz4ghtD88qusYrMxvg3aI6xaV6DGk5PE9ysfvMLjdpPdS1gzG5Z0GtjjTfQ6VOx3DscFNeLsadyvU0=
+	t=1743815848; cv=none; b=Sc8gzpWqGIh2GS44P+bmhBD5J/psYQwr1jz92yZbcmmnpAzHY4TIA2mTTH0+slwtKLeVykYubqD4PJUwmjbmKcxxdkgkNKA9Z3okfAVKGfApwo82BOLVjxXzuQep/xMofsjOckYNx8FdO/VJuafemIGBlJ/v7VPxTxt5tNkqJqo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743801085; c=relaxed/simple;
-	bh=MjG7WDVtAWWUYawY2kCjjrRaSUwGOVTw+twD7YyzniI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ti1u1LlelY0l03pLSBS0hJGlpfNZUc3Ag+DWO7mFtYvMdmDkwLN2Zh6FaSG+BXTjLT57HR7FbGx4gTVdB4rGkck7unoQBqgsaWOib0TdObsar8EmDHeHiNwFSTnzSy69C6LXjpIeRKyOuwu/ZShFhxXXYubdN2n/E5DCofzldF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=D4jYuA3/; arc=none smtp.client-ip=209.85.210.181
+	s=arc-20240116; t=1743815848; c=relaxed/simple;
+	bh=f3i7y9qJZMSTYCRTNPf2EJF6SHSdbXnOdImAqF1W99g=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=KwPRGuLq/r+uRRcMvlsTrxmbpue912LVugJGBSjOPteHARpxK9tWjQv5yEweZEvtSe8MIHzH7gzFDjanseh9fQjpegP717+rSbRtzZOBNFSI31ZgZNlDPIIndWyY+wRdeBt0BR32l7XrDg101n5CzI8Fu7VyRomrYH8+S8UsRRk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YRnurKuH; arc=none smtp.client-ip=209.85.214.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-7399838db7fso2313046b3a.0;
-        Fri, 04 Apr 2025 14:11:23 -0700 (PDT)
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2243803b776so37806955ad.0;
+        Fri, 04 Apr 2025 18:17:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743801083; x=1744405883; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=xJ5Ax+b/+r9SViBdjupPBgBblmSsLmDgYIPTd3L/ObA=;
-        b=D4jYuA3//wFS15gywYlnET75MvbPnO5EpPVbaqT46kgDKTXuN4iKIKHv1ROEawpWWQ
-         j3FcBVx2OVVORpB1oBzUSWtZYH4GqQCUDrzSq79SOgnbI7wIv5iRkcmhy3ZVciEHWYn2
-         7E2sXK15+wf3+RDkfDfWpAbkFJ550dtMYCAGNSsmswPJMJw4km2puWUtRK7PofUu4XOZ
-         tppZSqputv/NYFO+CDOaU4y2AXbwAboltjw17fSKnkG/MWY2HWrPVt177yFWzygSESUN
-         EOEe817hmpnLkz/GKSGmp3wPLiUn9t6xEHEO4YnWqYKNPeeZ+kSrkRUPPDdLcltskQ1s
-         jqCA==
+        d=gmail.com; s=20230601; t=1743815846; x=1744420646; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language:subject
+         :references:cc:to:user-agent:mime-version:date:message-id:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=NRiuL4Sy1s+c/lXgB3vFyCUJTB29r4cpXB4vQmrcmqI=;
+        b=YRnurKuH0qf8QZ1KCUwm5y0Za2vb8zsJBV5R9jIeOPcHdOS2Y1x2cC9u18+sOLLm3V
+         Vgao4vJjL7NF1PUiRYzGDDwSvbsJr4iEgNRAvvUwKQQFPg4FDRGXPwf9vwatDsYut9RP
+         r2RgB7tx8Pm3ecjNlusVzcWtgXYg2tisennGcVuDQt64BV4jGjFT8ebw3CJ6k7/fTscF
+         5p0rHmXQd3P0JUGdGGtvjjYZeeALHHVJoHFSa8Xdpy+8IULCU2KrSfJp6fPSLbhmaYRd
+         Pr9jo7SrBt3qoQ24Bf4Oi48YcL6Lu5sXehSxcZmBDNkR7kRLSt2c+dow5tDaUrr/TFNg
+         bZLg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743801083; x=1744405883;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xJ5Ax+b/+r9SViBdjupPBgBblmSsLmDgYIPTd3L/ObA=;
-        b=HUChG22IMSTCmq/2M593KEn9mmqf+quLFjMgwVMeMf6xMA5iz6uBEby80A3K8R6NxK
-         Tlpa9VrWHahAnbsRclk8WTMMaoY9y3Fe0IguRGep54uco+gHxKlFFvxnouUP6cX9Dr/F
-         WT/+BA2jva0+gpJUlSPO61xgDel7V0CQo2U5djhqZMYf9Z2fu0o5/u0Azqaadz58O2Ct
-         gm1KznT1n3p2C6w6kF8aOns8bkNWRN7Oge81dWTpGs4X6quts3FfJ32G8iYina/urCW9
-         FhbFXLyi7xCyZV3bsRA0MRxenRZszDeG8x1mTKNGTdrYI9RcLvlt0BYn6n1D/yuJksKY
-         CWHQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUI8C0goORXpsHNZfxpRl1sDW4XKyINWfh4V3UMh8Frb5pD2EK7CCdryZ1x4ykvNP2fND7yVRETSZcQ7Q==@vger.kernel.org, AJvYcCVHMXUT+7lFdvGKLCYywtaAe1ME1E7C564IRYRNfbowgKtF0mN/GUVOETaAAM+3jkvoG/2C4M8k/cKk4/YL@vger.kernel.org, AJvYcCXklX+vRakGu78R2O43CBVX3cmdUjykv3m2Mo3uee94a0a1VTk/BRgFfASChv2KSTwdG5rK+8Svuher@vger.kernel.org
-X-Gm-Message-State: AOJu0YzsZQHEhszeTqgf++1tJR0BCTYfHmSdAKyMptoZGtVXhywOp35O
-	YpgHdTcYDCpI7P327474ifhlJhG8L5heRXxEqdhRl6KB8idH9T8Q
-X-Gm-Gg: ASbGncuST1JH2Dxsd0ZFU+K3SSRNghZHYYw2b/59iaB7wzL0xbdh2+HudUsO16OaxM6
-	QHYSYitVPLpGgiyW6PZJ5UsMMI14EEnWZ6t6/wFvVq1iX/MqmyPYQ4Sf06tu67/2P/M99qGzIR2
-	4Mw4yJiaG9c5e7hOUXghRZwxIrFpv21jjrUCrNB2tWbLdIsY8f56rKqzprsY2cRgx3O349n2Ag6
-	6pSUwBWTNmP+ome9ySOX830WsCbgk0J3gKH17hs8UUkUSp7tdvJf3D3OHZlz8JL0yxW55+d7T/0
-	Erv9ReAt7g2GpQUZHUVO8KMHooq6+Sxcde+wQavvSzgQ5RUPMtiPxQ0=
-X-Google-Smtp-Source: AGHT+IH42CCq/W/EvmBslR7WSG2Y/2tJDvNHR8eQZSvFsgksiebLqGqMnBl3sbjeiQ3LoEp5Fd0/Cw==
-X-Received: by 2002:a05:6a00:3242:b0:732:56a7:a935 with SMTP id d2e1a72fcca58-739d65872a2mr12032822b3a.12.1743801083259;
-        Fri, 04 Apr 2025 14:11:23 -0700 (PDT)
-Received: from localhost ([2804:30c:1f4f:6800:9245:316f:6226:cc1e])
-        by smtp.gmail.com with UTF8SMTPSA id d2e1a72fcca58-739d9ea097asm4021937b3a.90.2025.04.04.14.11.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 04 Apr 2025 14:11:22 -0700 (PDT)
-Date: Fri, 4 Apr 2025 18:12:26 -0300
-From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-To: Jonathan Santos <Jonathan.Santos@analog.com>
-Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
-	Sergiu Cuciurean <sergiu.cuciurean@analog.com>, lars@metafoo.de,
-	Michael.Hennerich@analog.com, marcelo.schmitt@analog.com,
-	jic23@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, linus.walleij@linaro.org, brgl@bgdev.pl,
-	lgirdwood@gmail.com, broonie@kernel.org, dlechner@baylibre.com,
-	jonath4nns@gmail.com
-Subject: Re: [PATCH v4 12/17] iio: adc: ad7768-1: Add GPIO controller support
-Message-ID: <Z_BLOjVxtPF_eyOj@debian-BULLSEYE-live-builder-AMD64>
-References: <cover.1741268122.git.Jonathan.Santos@analog.com>
- <efdbddad734021f38a43cc9d101a22424e71dcef.1741268122.git.Jonathan.Santos@analog.com>
+        d=1e100.net; s=20230601; t=1743815846; x=1744420646;
+        h=content-transfer-encoding:in-reply-to:from:content-language:subject
+         :references:cc:to:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=NRiuL4Sy1s+c/lXgB3vFyCUJTB29r4cpXB4vQmrcmqI=;
+        b=JHLrp3NVp/SMPJ1GTJaDcfNB78Xr9OvSse6kWADJGEKlTf+RjJA4Fkah4epIGQigGH
+         juqh0LlakK+D162kGm6hXKSfssMM2WiN7E9f85+2WcGqghwhZOlmBUGpE5FkozdTA16G
+         qALNOwgIk0ImH9vVPCXQ75LvqAhnBwwOpnC+Ob8J7+VIA/r0KXSB7EzwBczecF9l5wSi
+         0vmu/KbwAK/u78Vi8gm84GIsrn6ACreBXE/a9J/YeA5fTkEJj9mGawIz+yvzy62ZqP3t
+         /82nn5WLqy+h2roZoTvsAlzFq/TLSW1RrwrwRJJAyF6e1OFAM8RMNvRwlP2lOg9JOo8r
+         6OwA==
+X-Forwarded-Encrypted: i=1; AJvYcCUWlDFizJ72L4JaLpGMGIXwPVkkry0CxprxOxHRciM+kbDmneQ/BvwS/4Z9t6b6hHswwZsZIhEUcr66SQ9s@vger.kernel.org, AJvYcCV5YymNw437k3DF6kKFAwfK3U2exxJWUISpUaX+DQIMatGKsTnW7b51mOoli9iXf8Jm6BVqH9MY483MU/YGLg==@vger.kernel.org, AJvYcCV73uF6MlopNrW2+1X8virrsE1CN1EbJ82LQ3FfZSkFJ+ek2Ms0nesputnSByKTAhpkx+yT0XK/@vger.kernel.org, AJvYcCVMi0tnSlpsyUu9NCHb33HIHlEWwl25WXGtTP0H5l19Gh81q5ug1vd/CfdjApdJoCuSvRjAiSm7Zw4tAssV6DBY@vger.kernel.org, AJvYcCVNCQVqTlSFPXisH9bZc4eTOctWFTgsksSkc3GHeu/NuKsr3Qzkgwi2Te2fYJKcQ5BaPZ+1wgdVWCLw@vger.kernel.org, AJvYcCWhZFY9l4lNdSkHoLCWyE3EuOFxfqkiLQah38cNgKePAtSELcneThA51vDR3UHagmV8RSQZaQfCGSc=@vger.kernel.org, AJvYcCWlrI/JSZ/JuzS25BJBuyhHkRldgpr04/5qaY/YnqEBG1YHrboHaYDpqGjpmTgrNJP3ChrkytKYAEs=@vger.kernel.org, AJvYcCX6Ssa8979EneFfYhtaAKodjajDjHOfsHL5SXVQjWL+Wpt/AirlpUm/5S9S3MkohbdN32hAInPZsS3k@vger.kernel.org, AJvYcCXGOZOkI9lE0ylnkW0ktt7aPVyh/RRvJqqZibl8nWD0+nU5bBc4/Jn50bSdtN32AQibAfnZmQxuLyTG/XU=@vger.kernel.org, AJvYcCXMMuu1sTDouy7+bUG/G9YWJANt
+ U5x7ZyVtgwZpr347i2TCa6jfm7ldLE32U0FxTgjN+pO4rSUPcf7Iew0=@vger.kernel.org, AJvYcCXRKSALrXbi3YbfbNZTUz7Ps+pdGKDPFa5OCJciAmpTHN3Su5BptmzAObQG6GDmH08H2h7+Q9Vhm0vp@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxr3CPhGm8W4iDr6QTqTstL9azX+Uw+8RfXnyLamw8fGI/bUBtC
+	YUmaEC7MECJEamEdzBjCIxA++D9v2aQD7VB7huqGNe63OUgohkpK
+X-Gm-Gg: ASbGnct0KFiIGSMKavchuzIRbJohlzYkeVSZP914WZK+mCplAHw3Yoy/mlyvKfJsgye
+	Cf2C4Bs4B2WNfX6Cnqvwo6zR1/QValY51yjC3Sg3KrsJ58GwlOJzW/5y8SJriFsdgnVnqMhZTL3
+	PTfsq25FUzSCX9ZzIUin0Z/QwIKZ3lenAGyKYxGF/KBrKjNd3IE6uZ5ynP5BeCriY4Rg7VxjH83
+	Hrf1ArhW4TpfLkSJ8AO9YujF7wAVjYscCfZCHxq0g+OX/Tb+mTI6RlVEfoyj7fLQyv+dVJwn5K5
+	wI9ck+8z03mRtxCCet1nvTA97oh58E89BEywJeZaMHosMno2zLF53pJHEiS2coOqaWJ1h5ZeqXQ
+	4LekjcPW+js7527c=
+X-Google-Smtp-Source: AGHT+IGrKFiapGLIEGHnSEZIAujUvj6ZJLSj064m/nFeE0wcOjOeNVFt0u8EmZ8qnV5tFeQau4dR7A==
+X-Received: by 2002:a17:903:3c6b:b0:224:24d3:6103 with SMTP id d9443c01a7336-22a955734f5mr25800795ad.35.1743815846125;
+        Fri, 04 Apr 2025 18:17:26 -0700 (PDT)
+Received: from [10.0.2.15] (KD106167137155.ppp-bb.dion.ne.jp. [106.167.137.155])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-229785b352esm39374225ad.18.2025.04.04.18.17.18
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 04 Apr 2025 18:17:25 -0700 (PDT)
+Message-ID: <811c4103-08b1-4288-9a15-bd9795bc59f4@gmail.com>
+Date: Sat, 5 Apr 2025 10:17:16 +0900
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <efdbddad734021f38a43cc9d101a22424e71dcef.1741268122.git.Jonathan.Santos@analog.com>
+User-Agent: Mozilla Thunderbird
+To: nfraprado@collabora.com
+Cc: James.Bottomley@HansenPartnership.com, akpm@linux-foundation.org,
+ anton.ivanov@cambridgegreys.com, corbet@lwn.net, davem@davemloft.net,
+ dmaengine@vger.kernel.org, ebiggers@kernel.org, edumazet@google.com,
+ horms@kernel.org, jaegeuk@kernel.org, jarkko@kernel.org, jic23@kernel.org,
+ johannes@sipsolutions.net, kernel@collabora.com, keyrings@vger.kernel.org,
+ kuba@kernel.org, lars@metafoo.de, linux-doc@vger.kernel.org,
+ linux-fscrypt@vger.kernel.org, linux-iio@vger.kernel.org,
+ linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-media@vger.kernel.org, linux-mm@kvack.org,
+ linux-sound@vger.kernel.org, linux-um@lists.infradead.org,
+ maxime.chevallier@bootlin.com, mchehab@kernel.org, netdev@vger.kernel.org,
+ pabeni@redhat.com, perex@perex.cz, richard@nod.at, tiwai@suse.com,
+ tytso@mit.edu, vkoul@kernel.org, workflows@vger.kernel.org,
+ zohar@linux.ibm.com, Akira Yokosawa <akiyks@gmail.com>
+References: <20250404-doc-paths-unliteral-v1-1-74718785444e@collabora.com>
+Subject: Re: [PATCH] docs: Remove literal markup from Documentation/ paths
+Content-Language: en-US
+From: Akira Yokosawa <akiyks@gmail.com>
+In-Reply-To: <20250404-doc-paths-unliteral-v1-1-74718785444e@collabora.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Hey Jonathan, 
+Hi,
 
-The AD7768-1 GPIO controller support looks good to me.
-Besides reviewing it, I've also inspired on your patch to implement GPIO
-controller support for AD4170. I have one inline suggestion, though.
-
-With that sorted out
-Reviewed-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
-
-Thanks,
-Marcelo
-
-On 03/06, Jonathan Santos wrote:
-> From: Sergiu Cuciurean <sergiu.cuciurean@analog.com>
+Nícolas F. R. A. Prado wrote:
+> Given that the automarkup Sphinx plugin cross-references
+> "Documentation/*.rst" strings in the text to the corresponding
+> documents, surrounding those strings with the literal markup (``) not
+> only adds unnecessary markup in the source files, but actually prevents
+> the automatic cross-referencing to happen (as it doesn't happen in
+> literal blocks).
 > 
-> The AD7768-1 has the ability to control other local hardware (such as gain
-> stages),to power down other blocks in the signal chain, or read local
-> status signals over the SPI interface.
+> Remove all the occurrences of the literal markup in
+> "Documentation/*.rst" paths, except when the actual source file is being
+> referred. Also change the surrounding text when needed so it reads well
+> both in the source and the web page (eg. 'see file Doc...' -> 'see
+> Doc...').
 > 
-> Add direct mode conditional locks in the gpio callbacks to prevent register
-> access when the device is in buffered mode.
-> 
-> This change exports the AD7768-1's four gpios and makes them accessible
-> at an upper layer.
-> 
-> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-> Signed-off-by: Sergiu Cuciurean <sergiu.cuciurean@analog.com>
-> Co-developed-by: Jonathan Santos <Jonathan.Santos@analog.com>
-> Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
+> Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
 > ---
-...
-> ---
->  drivers/iio/adc/ad7768-1.c | 143 ++++++++++++++++++++++++++++++++++++-
->  1 file changed, 141 insertions(+), 2 deletions(-)
-> 
-...
-> +static int ad7768_gpio_init(struct iio_dev *indio_dev)
-> +{
-> +	struct ad7768_state *st = iio_priv(indio_dev);
-> +	int ret;
-> +
-> +	ret = regmap_write(st->regmap, AD7768_REG_GPIO_CONTROL,
-> +			   AD7768_GPIO_UNIVERSAL_EN);
-> +	if (ret)
-> +		return ret;
-> +
-> +	st->gpiochip = (struct gpio_chip) {
-> +		.label = "ad7768_1_gpios",
-> +		.base = -1,
-> +		.ngpio = 4,
-> +		.parent = &st->spi->dev,
-> +		.can_sleep = true,
-> +		.direction_input = ad7768_gpio_direction_input,
-> +		.direction_output = ad7768_gpio_direction_output,
-> +		.get = ad7768_gpio_get,
-> +		.set = ad7768_gpio_set,
-> +		.owner = THIS_MODULE,
-> +	};
-> +
-> +	return gpiochip_add_data(&st->gpiochip, indio_dev);
-Use devm_gpiochip_add_data(), otherwise the gpiochip is not removed on device
-detach.
+[...]
 
-> +}
-> +
+>  Documentation/process/submit-checklist.rst                | 7 ++++---
+
+I have updated ja_JP translation of this recently.
+
+> diff --git a/Documentation/process/submit-checklist.rst b/Documentation/process/submit-checklist.rst
+> index beb7f94279fdb6a1d9b4aa86b2bea031f140732b..3ae31c5af2cb5c374658c1fb7125e70bf36e911c 100644
+> --- a/Documentation/process/submit-checklist.rst
+> +++ b/Documentation/process/submit-checklist.rst
+> @@ -30,7 +30,8 @@ Review Kconfig changes
+>  
+>  1) Any new or modified ``CONFIG`` options do not muck up the config menu and
+>     default to off unless they meet the exception criteria documented in
+> -   ``Documentation/kbuild/kconfig-language.rst`` Menu attributes: default value.
+> +   Documentation/kbuild/kconfig-language.rst, under "Menu attributes", "default
+> +   value".
+
+I have made the same change in the translation, but failed to submit a patch...
+
+>  
+>  2) All new ``Kconfig`` options have help text.
+>  
+> @@ -47,7 +48,7 @@ Provide documentation
+>  2) All new ``/proc`` entries are documented under ``Documentation/``
+>  
+>  3) All new kernel boot parameters are documented in
+> -   ``Documentation/admin-guide/kernel-parameters.rst``.
+> +   Documentation/admin-guide/kernel-parameters.rst.
+
+Hmm, this item is asking "Have you documented the new params in that
+particular file?", so I don't think this change should be made.
+
+>  
+>  4) All new module parameters are documented with ``MODULE_PARM_DESC()``
+>  
+> @@ -58,7 +59,7 @@ Provide documentation
+>     linux-api@vger.kernel.org.
+>  
+>  6) If any ioctl's are added by the patch, then also update
+> -   ``Documentation/userspace-api/ioctl/ioctl-number.rst``.
+> +   Documentation/userspace-api/ioctl/ioctl-number.rst.
+
+Ditto.
+
+        Thanks, Akira
+
+>  
+>  Check your code with tools
+>  ==========================
+
 

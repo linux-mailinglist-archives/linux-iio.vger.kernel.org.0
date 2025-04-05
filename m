@@ -1,75 +1,60 @@
-Return-Path: <linux-iio+bounces-17637-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17638-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F4B3A7C9F0
-	for <lists+linux-iio@lfdr.de>; Sat,  5 Apr 2025 17:32:24 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8536A7C9FD
+	for <lists+linux-iio@lfdr.de>; Sat,  5 Apr 2025 17:41:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 550603BBAB3
-	for <lists+linux-iio@lfdr.de>; Sat,  5 Apr 2025 15:32:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EB6B27A8494
+	for <lists+linux-iio@lfdr.de>; Sat,  5 Apr 2025 15:39:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 345A61537DA;
-	Sat,  5 Apr 2025 15:32:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C75281531F0;
+	Sat,  5 Apr 2025 15:40:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jVK6JF8R"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YD7sGTlY"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACE337404E;
-	Sat,  5 Apr 2025 15:32:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 729322BCF5;
+	Sat,  5 Apr 2025 15:40:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743867135; cv=none; b=d36Pwr56D6G4cyCQN2SY8MZKD75n/dxTNYNElzkSQvD1kwmg/HBOBaM+AiGjH7jLnYOKU7ddmNDXHQCymIKOrjfBi1Lz2L4TvfhOwojMBTB8pdrg1VW/1yAoGhmpjzjXy5kpphZhwVQjjRbkXfJqTZ5eBoe8VcvPXROjeEwDtNE=
+	t=1743867651; cv=none; b=XshH5zWqwJCAaXCkZyuc562YEILNuqfsNXWCmwisO3O1w2rch0iAbDmU+E3DJ4BwvfuSbS6oXptQKdqLmMk0AHS3FtmDqipcnEx1toLRm5RN9LWUD3yq/usn9VyjC+mfdJEhp0p9+VrLEDugK4AgCAxxiNVZBqGoAIIUf8xbcus=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743867135; c=relaxed/simple;
-	bh=RdPSb3R/N8g0+oYT6+2V0LNQyAZKsrTfROQEnTne+ak=;
+	s=arc-20240116; t=1743867651; c=relaxed/simple;
+	bh=LI2K+tXsrt+xkorD2Q3Y2V8s6J7dF31sI326xEe91tk=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=i9ukhjP9rSkq2+bxD6dDUDlaAbQAyCLWIvM2aKxmqIU+OP8jSQ1BmrFr17uEspx9SDJW/YNux1ZKpbG6loYeFOVGwoT8JpgOz3uFiHCrWMp9hgT4GD5twxzQ8c0P0jgI/2bRwoUh3SMH0YOkQN7edndpQ25C+GSBAFxQARJvtDY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jVK6JF8R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23B8AC4CEE4;
-	Sat,  5 Apr 2025 15:32:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=LAp/gAoA2/JkE42ZtAREoqRMNn1r7QMMTfdVu1plqq/sF2GfF8wyl3mCSSwqwqVwHme3OZi1NkgXHyfDublZ0KTR1VkTXpfD1X+D8xZ1YI/AWQNKq1frZWaVMcNsGkj1hYL2yCsEvoXsRr81FAMSqdlucSWxOGFBxzYrnaCrFH0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YD7sGTlY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A521C4CEE4;
+	Sat,  5 Apr 2025 15:40:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743867134;
-	bh=RdPSb3R/N8g0+oYT6+2V0LNQyAZKsrTfROQEnTne+ak=;
+	s=k20201202; t=1743867650;
+	bh=LI2K+tXsrt+xkorD2Q3Y2V8s6J7dF31sI326xEe91tk=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=jVK6JF8RzIa2fTbodJS2FISwWudNboXPBdoMoty0m2mNay6iJThuDSiveMToI7V8O
-	 6g42eS8E8LtVI1QtvaMdw0SCKHNRCfLy0HhQZ9huqFtTKXXYLeE0vgxLVvbbhyeWV9
-	 /2AcgLtXGwCv+ZtdoJsPxpFgNHty72ixEgcls3MiRRT57BMJNjgXWrqquPIHsgUjWo
-	 Xrc3yG2qtgjXemyHrcmVgYcq10cFR7TTNYhQzl+nTvdm+Ef7qp75wk6UO/6XQFrscS
-	 v1OjaKgVM6dR70zKrI+gtG7dOiGVaMpbieSrkNOSwc3LpO/u9ElY/UEveU82g3GLiz
-	 NgnIiJ3gmDWxw==
-Date: Sat, 5 Apr 2025 16:31:58 +0100
+	b=YD7sGTlYUKBbnuaoKQmSMvR/QYHogoeKBE7mehUn1BmB8R2qyPou0TzsIyTOWW7ud
+	 DYKruRV1pEnIwWqMcsAy21UaGgVZJJ8GomHU+O0GvlgE8clTpwGDNo5RQ6crH82KV4
+	 uLikPWrHH1Kx9HBL8oZDiVSg7hUbLcDwEX+94GOdAEXfAkbVksVgMSricsbNKOfuaM
+	 EYRw3BxpA03BSHuo1Ka4pNnJNTckUVQy2StXiRDs4PDmAWIXuEbWkTqWps3Lf+ZXC6
+	 Z+HrSfoEHAqd7aF0t4rBSMG1fhwWalNg5bnq0Ed3jZ9Pg9/5hOfDaBnoYgtJjCL0Gg
+	 omsXkE47++gNQ==
+Date: Sat, 5 Apr 2025 16:40:41 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Jonathan Corbet <corbet@lwn.net>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, "=?UTF-8?B?TsOtY29s?=
- =?UTF-8?B?YXM=?= F. R. A. Prado" <nfraprado@collabora.com>, Andrew Morton
- <akpm@linux-foundation.org>, Vinod Koul <vkoul@kernel.org>, Eric Biggers
- <ebiggers@kernel.org>, "Theodore Y. Ts'o" <tytso@mit.edu>, Jaegeuk Kim
- <jaegeuk@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
- Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
- <horms@kernel.org>, Maxime Chevallier <maxime.chevallier@bootlin.com>,
- James Bottomley <James.Bottomley@HansenPartnership.com>, Jarkko Sakkinen
- <jarkko@kernel.org>, Mimi Zohar <zohar@linux.ibm.com>, Jaroslav Kysela
- <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, Mauro Carvalho Chehab
- <mchehab@kernel.org>, Richard Weinberger <richard@nod.at>, Anton Ivanov
- <anton.ivanov@cambridgegreys.com>, Johannes Berg
- <johannes@sipsolutions.net>, kernel@collabora.com, linux-mm@kvack.org,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- dmaengine@vger.kernel.org, linux-fscrypt@vger.kernel.org,
- linux-iio@vger.kernel.org, netdev@vger.kernel.org,
- workflows@vger.kernel.org, linux-integrity@vger.kernel.org,
- keyrings@vger.kernel.org, linux-sound@vger.kernel.org,
- linux-media@vger.kernel.org, linux-um@lists.infradead.org
-Subject: Re: [PATCH] docs: Remove literal markup from Documentation/ paths
-Message-ID: <20250405163158.55935fdf@jic23-huawei>
-In-Reply-To: <874iz3g6w1.fsf@trenco.lwn.net>
-References: <20250404-doc-paths-unliteral-v1-1-74718785444e@collabora.com>
-	<20250404182006.000038cc@huawei.com>
-	<874iz3g6w1.fsf@trenco.lwn.net>
+To: Angelo Dureghello <adureghello@baylibre.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
+ <Michael.Hennerich@analog.com>, Rob Herring <robh@kernel.org>, Krzysztof
+ Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+ Jonathan Corbet <corbet@lwn.net>, David Lechner <dlechner@baylibre.com>,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: Re: [PATCH 3/3] iio: adc: ad7606: add SPI offload support
+Message-ID: <20250405164041.7d2e586b@jic23-huawei>
+In-Reply-To: <20250403-wip-bl-spi-offload-ad7606-v1-3-1b00cb638b12@baylibre.com>
+References: <20250403-wip-bl-spi-offload-ad7606-v1-0-1b00cb638b12@baylibre.com>
+	<20250403-wip-bl-spi-offload-ad7606-v1-3-1b00cb638b12@baylibre.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -77,56 +62,92 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Fri, 04 Apr 2025 11:42:54 -0600
-Jonathan Corbet <corbet@lwn.net> wrote:
+On Thu, 03 Apr 2025 18:19:06 +0200
+Angelo Dureghello <adureghello@baylibre.com> wrote:
 
-> Jonathan Cameron <Jonathan.Cameron@huawei.com> writes:
->=20
-> > On Fri, 04 Apr 2025 11:37:28 -0400
-> > N=C3=ADcolas F. R. A. Prado <nfraprado@collabora.com> wrote:
-> > =20
-> >> Given that the automarkup Sphinx plugin cross-references
-> >> "Documentation/*.rst" strings in the text to the corresponding
-> >> documents, surrounding those strings with the literal markup (``) not
-> >> only adds unnecessary markup in the source files, but actually prevents
-> >> the automatic cross-referencing to happen (as it doesn't happen in
-> >> literal blocks).
-> >>=20
-> >> Remove all the occurrences of the literal markup in
-> >> "Documentation/*.rst" paths, except when the actual source file is bei=
-ng
-> >> referred. Also change the surrounding text when needed so it reads well
-> >> both in the source and the web page (eg. 'see file Doc...' -> 'see
-> >> Doc...').
-> >>=20
-> >> Signed-off-by: N=C3=ADcolas F. R. A. Prado <nfraprado@collabora.com>
-> >> ---
-> >>  Documentation/admin-guide/mm/numa_memory_policy.rst       | 2 +-
-> >>  Documentation/admin-guide/serial-console.rst              | 2 +-
-> >>  Documentation/driver-api/dmaengine/client.rst             | 2 +-
-> >>  Documentation/driver-api/nvdimm/security.rst              | 2 +-
-> >>  Documentation/filesystems/fscrypt.rst                     | 4 ++--
-> >>  Documentation/iio/adis16475.rst                           | 4 ++--
-> >>  Documentation/iio/adis16480.rst                           | 4 ++--
-> >>  Documentation/iio/adis16550.rst                           | 4 ++--
-> >>  Documentation/iio/adxl380.rst                             | 4 ++-- =20
-> >
-> > Split patch up by subsystem would be a good thing here as we may
-> > get other changes to these docs during the cycle and resulting
-> > merge conflicts if this all goes in as one patch. =20
->=20
-> That seems like a way to add a significant amount of pain to a basic
-> (but indeed useful) cleanup patch like this.  If the relevant
-> maintainers insist on it then that's how it has to be done, but I bet I
-> could just take the whole thing through docs with almost no trouble.
->=20
-hmm.  I'll go with maybe. Let's cross fingers then.
+> From: Angelo Dureghello <adureghello@baylibre.com>
+> 
+> Add SPI offload support for this family.
+> 
+> Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
+Hi Angelo,
 
-Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Code looks fine, but there is a TODO I'd like to know more about
+as it sounds 'ominous'. 
 
-> jon
+Otherwise this needs a dt review for patch 1 before I queue it up.
+
+Jonathan
+> diff --git a/drivers/iio/adc/ad7606_spi.c b/drivers/iio/adc/ad7606_spi.c
+> index b2b975fb7fea4d1af6caef59e75ca495501bc140..b086122497eb22042171580878160334f56baa23 100644
+> --- a/drivers/iio/adc/ad7606_spi.c
+> +++ b/drivers/iio/adc/ad7606_spi.c
+
+> +static int ad7606_spi_offload_probe(struct device *dev,
+> +				    struct iio_dev *indio_dev)
+> +{
+> +	struct ad7606_state *st = iio_priv(indio_dev);
+> +	struct spi_device *spi = to_spi_device(dev);
+> +	struct spi_bus_data *bus_data;
+> +	struct dma_chan *rx_dma;
+> +	struct spi_offload_trigger_info trigger_info = {
+> +		.fwnode = dev_fwnode(dev),
+> +		.ops = &ad7606_offload_trigger_ops,
+> +		.priv = st,
+> +	};
+> +	int ret;
+> +
+> +	bus_data = devm_kzalloc(dev, sizeof(*bus_data), GFP_KERNEL);
+> +	if (!bus_data)
+> +		return -ENOMEM;
+> +	st->bus_data = bus_data;
+> +
+> +	bus_data->offload = devm_spi_offload_get(dev, spi,
+> +						 &ad7606_spi_offload_config);
+> +	ret = PTR_ERR_OR_ZERO(bus_data->offload);
+> +	if (ret && ret != -ENODEV)
+> +		return dev_err_probe(dev, ret, "failed to get SPI offload\n");
+> +	/* Allow main ad7606_probe function to continue. */
+> +	if (ret == -ENODEV)
+> +		return 0;
+> +
+> +	ret = devm_spi_offload_trigger_register(dev, &trigger_info);
+> +	if (ret)
+> +		return dev_err_probe(dev, ret,
+> +				     "failed to register offload trigger\n");
+> +
+> +	bus_data->offload_trigger = devm_spi_offload_trigger_get(dev,
+> +		bus_data->offload, SPI_OFFLOAD_TRIGGER_DATA_READY);
+> +	if (IS_ERR(bus_data->offload_trigger))
+> +		return dev_err_probe(dev, PTR_ERR(bus_data->offload_trigger),
+> +				     "failed to get offload trigger\n");
+> +
+> +	/* TODO: PWM setup should be ok, done for the backend. PWM mutex ? */
+
+I don't understand this todo. Perhaps some more details?
+
+> +	rx_dma = devm_spi_offload_rx_stream_request_dma_chan(dev,
+> +							     bus_data->offload);
+> +	if (IS_ERR(rx_dma))
+> +		return dev_err_probe(dev, PTR_ERR(rx_dma),
+> +				     "failed to get offload RX DMA\n");
+> +
+> +	ret = devm_iio_dmaengine_buffer_setup_with_handle(dev, indio_dev,
+> +		rx_dma, IIO_BUFFER_DIRECTION_IN);
+> +	if (ret)
+> +		return dev_err_probe(dev, PTR_ERR(rx_dma),
+> +				     "failed to setup offload RX DMA\n");
+> +
+> +	/* Use offload ops. */
+> +	indio_dev->setup_ops = &ad7606_offload_buffer_setup_ops;
+> +
+> +	st->offload_en = true;
+> +
+> +	return 0;
+> +}
+
 
 

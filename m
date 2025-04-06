@@ -1,66 +1,64 @@
-Return-Path: <linux-iio+bounces-17667-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17668-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F24FAA7CE09
-	for <lists+linux-iio@lfdr.de>; Sun,  6 Apr 2025 15:16:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF48EA7CE18
+	for <lists+linux-iio@lfdr.de>; Sun,  6 Apr 2025 15:21:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DBB467A607D
-	for <lists+linux-iio@lfdr.de>; Sun,  6 Apr 2025 13:15:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 821BA188D5BB
+	for <lists+linux-iio@lfdr.de>; Sun,  6 Apr 2025 13:21:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C186F1A4F1F;
-	Sun,  6 Apr 2025 13:16:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F2192036E2;
+	Sun,  6 Apr 2025 13:21:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nckVRFiK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SuTOp6Nr"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 813452AEE0
-	for <linux-iio@vger.kernel.org>; Sun,  6 Apr 2025 13:16:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CF4B42A83
+	for <linux-iio@vger.kernel.org>; Sun,  6 Apr 2025 13:21:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743945361; cv=none; b=F/mhlyMNenZdTd0tkOvpn1Q3C9M4nnNhF5ErCTPJSIIOG9wKeZZHnLBZzpvyfPfnTh49VVQjZnjec0i5efWlvGvABPwpG1mfWx7hvPHAzKZDG7xP/hybEA2QbfWDeQVNA9cPqqcdHfoMUzROc1jyff7qltt+1YFa/SuEb2Njhdk=
+	t=1743945662; cv=none; b=pCR7zbZ7PVtPuYIptcGg3UHDuiO+SRkRfnMLnnThzqmt0MTptaHvksaV+TiARbYHZ9fwqro0XyMT+y9MzJA39oFhiFoBSn6LyIKKTKc68l7wCYC8Xx48WNI/qU+JseNOb6OcNj9Ea1iuak0eWjCOtqr7r13qFfYLAWsYolQGy9k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743945361; c=relaxed/simple;
-	bh=Xi5ElabfPIusXEZFG0IsVj5lw0zk5gOsHLKusqtwf/o=;
+	s=arc-20240116; t=1743945662; c=relaxed/simple;
+	bh=/9G2G34+joPDjZ5qrLnwos/gEDQF/3m2xSJq7XXg8TM=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=f6Y7deBHu+6WM6KIliWWf7n42yZjb7yVPRn02Dj9h3YGyxwgNIV5w9rzchOSpfoXvD1ImxndqNFY40lQwWDC0/z6Y8D3pxQoL7gNh9OkF8Up2sagUN9FNDTbE6Xufuxw7bQttUu7AhP+2j2u4YGij24xa9noRHLBgs2e7GxcvRk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nckVRFiK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61B6CC4CEE8;
-	Sun,  6 Apr 2025 13:15:55 +0000 (UTC)
+	 MIME-Version:Content-Type; b=fl6/XqyeOTqHTLBujCErdsrpSxNmcPQDBsiB2hkYGRNPuavqcUJsmDVTJ2JODMAhF4qkgPrKb3dQjxVdNqjCXRJxhajgJjLdrSjVD+UGii9dxgj8JD5KHHF9PInIrPB+b5+lwkwPwbCU0XQ5aj2lcc6OG8SBB8llGDault3wVHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SuTOp6Nr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5DF4C4CEE3;
+	Sun,  6 Apr 2025 13:20:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743945360;
-	bh=Xi5ElabfPIusXEZFG0IsVj5lw0zk5gOsHLKusqtwf/o=;
+	s=k20201202; t=1743945661;
+	bh=/9G2G34+joPDjZ5qrLnwos/gEDQF/3m2xSJq7XXg8TM=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=nckVRFiKHDqCwh3tA1BmgIQYaPI1uCXDpLCTGdVsC1CtNe39ErBVM9D5tObvvRkXM
-	 O55RwOAgCbSBuy0EDzhBSyiNwRodj0ojK7HbDHZNIFWPEtlvLNsokFJ4duAGpedAc9
-	 Bv7ELwuhbFf5j0O3rCbSqpOD1hexs9GxwhsYZ61WP50dxtxNXnHkTCeVBymQmu+Cy+
-	 PObEroL0+UnsXOeisgzZxb5+x24q7vD1kWg1wOzoJXXFOp63cwMBeRDzW3xO4/cGLd
-	 hr8hHSM42iBqNzO6YJlQxRGYVQHg0fV/ryf2d023F4LDr25EkLSZhPRfl219pridkP
-	 PyedQYQk/IkTA==
-Date: Sun, 6 Apr 2025 14:15:52 +0100
+	b=SuTOp6NrzTcU4xajx6sgYMJOVvH4EZDVwAX2pz8WifxYo7fNwxUp5mQo4zJWelJng
+	 WzcUBSI78/ZhPwfGbWKQFzUYoZExSLfmo3luPyHrsLiGKDXfpauUsTGNiN2dBS7WpC
+	 viJ6DOX2bT5T59MvytuoSDrqU6bsBA4GefMCM3yCPFUUiUHANSJ6Ref9FKTr8uCrj+
+	 3K+06/3hWmUzcRI+CufWrwOP7Zz0HOKaX9/Sa6jlrUVDaet+kL1dy1aBZHM3+nFG7U
+	 ykSOdaKL5oBSuszlNOO+KawN/AjN+nvRWUi7gSj8x1gW/kvxqkUY0UgGZ0tDyxiJhD
+	 Pu4OG2w08SQwQ==
+Date: Sun, 6 Apr 2025 14:20:50 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Lorenzo Bianconi <lorenzo@kernel.org>
-Cc: David Lechner <dlechner@baylibre.com>, linux-iio@vger.kernel.org, Nuno
- =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Cosmin Tanislav
- <demonsingur@gmail.com>, Roan van Dijk <roan@protonic.nl>, Jyoti Bhayana
- <jbhayana@google.com>, Nishant Malpani <nish.malpani25@gmail.com>, Eugene
- Zaikonnikov <ez@norphonic.com>, Jean-Baptiste Maneyrol
- <jean-baptiste.maneyrol@tdk.com>, Shen Jianping
- <Jianping.Shen@de.bosch.com>, Matti Vaittinen <mazziesaccount@gmail.com>,
- Yasin Lee <yasin.lee.x@gmail.com>, Andy Shevchenko
- <andy.shevchenko@gmail.com>, Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH 18/37] iio: imu: st_lsm6dsx: Factor out parts of
- st_lsm6dsx_shub_write_raw() to allow direct returns
-Message-ID: <20250406141552.38325230@jic23-huawei>
-In-Reply-To: <Z-uHkmGOXu1venxl@lore-desk>
+To: David Lechner <dlechner@baylibre.com>
+Cc: linux-iio@vger.kernel.org, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
+ Cosmin Tanislav <demonsingur@gmail.com>, Roan van Dijk <roan@protonic.nl>,
+ Jyoti Bhayana <jbhayana@google.com>, Nishant Malpani
+ <nish.malpani25@gmail.com>, Eugene Zaikonnikov <ez@norphonic.com>,
+ Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>, Shen Jianping
+ <Jianping.Shen@de.bosch.com>, Lorenzo Bianconi <lorenzo@kernel.org>, Matti
+ Vaittinen <mazziesaccount@gmail.com>, Yasin Lee <yasin.lee.x@gmail.com>,
+ Andy Shevchenko <andy.shevchenko@gmail.com>, Jonathan Cameron
+ <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH 00/37] IIO: Sparse friendly claim of direct mode (the
+ rest)
+Message-ID: <20250406142050.33977c41@jic23-huawei>
+In-Reply-To: <795a7c97-4d11-4277-91ba-77a5641759de@baylibre.com>
 References: <20250331121317.1694135-1-jic23@kernel.org>
-	<20250331121317.1694135-19-jic23@kernel.org>
-	<4ad0f22c-fdb9-47cb-b5a1-2802f47124d4@baylibre.com>
-	<Z-uHkmGOXu1venxl@lore-desk>
+	<795a7c97-4d11-4277-91ba-77a5641759de@baylibre.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -71,63 +69,29 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 1 Apr 2025 08:28:34 +0200
-Lorenzo Bianconi <lorenzo@kernel.org> wrote:
+On Tue, 1 Apr 2025 14:13:24 -0500
+David Lechner <dlechner@baylibre.com> wrote:
 
-> > On 3/31/25 7:12 AM, Jonathan Cameron wrote:  
-> > > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > > 
-> > > By factoring out all the code that occurs with direct mode claimed
-> > > to a helper function, that helper function can directly return simplifying
-> > > code flow.
-> > > 
-> > > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > > Cc: Lorenzo Bianconi <lorenzo@kernel.org>
-> > > ---
-> > >  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c | 65 +++++++++++---------
-> > >  1 file changed, 35 insertions(+), 30 deletions(-)
-> > > 
-> > > diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
-> > > index c1b444520d2a..17a74f5adfc0 100644
-> > > --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
-> > > +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
-> > > @@ -614,53 +614,58 @@ st_lsm6dsx_shub_set_full_scale(struct st_lsm6dsx_sensor *sensor,
-> > >  }
-> > >  
-> > >  static int
-> > > -st_lsm6dsx_shub_write_raw(struct iio_dev *iio_dev,
-> > > -			  struct iio_chan_spec const *chan,
-> > > -			  int val, int val2, long mask)
-> > > +__st_lsm6dsx_shub_write_raw(struct iio_dev *iio_dev,
-> > > +			    struct iio_chan_spec const *chan,
-> > > +			    int val, int val2, long mask)
-> > >  {
-> > >  	struct st_lsm6dsx_sensor *sensor = iio_priv(iio_dev);
-> > >  	int err;
-> > >  
-> > > -	err = iio_device_claim_direct_mode(iio_dev);
-> > > -	if (err)
-> > > -		return err;
-> > > -
-> > >  	switch (mask) {
-> > >  	case IIO_CHAN_INFO_SAMP_FREQ: {
-> > > +		struct st_lsm6dsx_hw *hw = sensor->hw;
-> > > +		struct st_lsm6dsx_sensor *ref_sensor;
-> > > +		u8 odr_val;
-> > >  		u16 data;
-> > > +		int odr;
-> > >    
-> > I would be tempted to rename `err` to `ret` so we don't have to introduce
-> > a new `odr` variable.  
+> On 3/31/25 7:12 AM, Jonathan Cameron wrote:
+> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > 
+> > Firstly, sorry for the huge patch set!
+> >   
 > 
-> I guess keeping odr variable makes the code more readable.
-Hmm. I'm not sure either way.  Will keep this as a potential follow up.
+> 
+> Reviewed-by: David Lechner <dlechner@baylibre.com>
+
+I've applied all these to the testing branch of iio.git.
+Only changes were the typos and punctuation that Andy pointed out in
+the final patch.  They didn't feel like the justified a v2.
+
+Note that I'm not planning to push this out as non rebasing
+until next weekend, so there is still time for additional review.
+
+The namespace question can wait for another time.
+
+Thanks,
 
 Jonathan
-
-> 
-> Regards,
-> Lorenzo
-> 
 
 

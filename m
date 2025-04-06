@@ -1,66 +1,60 @@
-Return-Path: <linux-iio+bounces-17659-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17660-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5C49A7CD99
-	for <lists+linux-iio@lfdr.de>; Sun,  6 Apr 2025 12:49:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D0782A7CD9F
+	for <lists+linux-iio@lfdr.de>; Sun,  6 Apr 2025 12:54:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5CB00188BD9A
-	for <lists+linux-iio@lfdr.de>; Sun,  6 Apr 2025 10:49:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B420188D488
+	for <lists+linux-iio@lfdr.de>; Sun,  6 Apr 2025 10:54:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E13631A5B8C;
-	Sun,  6 Apr 2025 10:49:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9856019C546;
+	Sun,  6 Apr 2025 10:54:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ciAvouRs"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fr5Ff5x4"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E5512AE66;
-	Sun,  6 Apr 2025 10:49:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 585FF1C27
+	for <linux-iio@vger.kernel.org>; Sun,  6 Apr 2025 10:54:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743936551; cv=none; b=b8JQZzkKY47/nPaZgF0iV5r0rxtyRwlQ+Qm5CDZsEU6O3giuw/yiGpIeBo4TvU4ordAI52fXQT/UrTTGUs2KvZK/uHA3RhRqS2Q8yfsScRLCxB7rwp5SB5xUqb49+r89yRmc+7gEr5ABV9FXsXvlAi+Q2JZ1Uckqd2M8fVwi9TA=
+	t=1743936866; cv=none; b=oTH/Z2V7Fejf9YPE7fnzhlvV5BXA+IBNvnb0rHo89E3sZLXmVqYn575A4nUaeKJCNV7rrCO071wn/Z6xilf+3ZLz+J6sMCtDFKXCN3YcLnSl0j5RBtFVzIZrYTnafxDa1Cq9JW6gbLzpH397pNKTHdAsRo7O4ofOC5nu5ZnOeV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743936551; c=relaxed/simple;
-	bh=494c0ISnHCeFKQx/wB17nPBOe6V1ke7jMKsUxQ+P/gs=;
+	s=arc-20240116; t=1743936866; c=relaxed/simple;
+	bh=AI3VwxhC48ab58YuPeSp4QwxNjpNQsANwom2Wa6mlbU=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=U87k91M2sXAr1wubE9tq1dHuAhDNEU3EMeds9xlVCET+dP6f0X/R6UuviOlt+ln7vnP/pPJotUL/gika3Vue4Vv4QAzC0rWf0E1znNZR0UTvnsWj8gXNwPaNMSFfyRFAOFsCYUkX07sv+Bw52YDFhh5Lm/S+nRKDAARb+9K3Boc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ciAvouRs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78306C4CEE3;
-	Sun,  6 Apr 2025 10:49:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=eIM0nzYRbb8VQ1gvzOhtuneM4GbDlts8j9dCh/EyvRpCKfT9x7CYPJ2Dq6ZiLwCZ+Wvkm8HEyE7A7ZJE8TgglWnIeMXwc6MvhbmVzaVkwkMjknt/Wy8InyoYGbE6yBA8FlrG5AZw3B6NDOJAQ2HjxBNGzxj95idVNDkcND1ZJPs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fr5Ff5x4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FF80C4CEE3;
+	Sun,  6 Apr 2025 10:54:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743936550;
-	bh=494c0ISnHCeFKQx/wB17nPBOe6V1ke7jMKsUxQ+P/gs=;
+	s=k20201202; t=1743936865;
+	bh=AI3VwxhC48ab58YuPeSp4QwxNjpNQsANwom2Wa6mlbU=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ciAvouRs2+BcILKzdeZpnj8Za1Hdcnlo7D0Kr593zBiu6fGA5J59cVTeVWlGlJrcn
-	 9Q8fU6IkVXqJMf37K2yA9arnDsQao9lfcn+WUOanR39fzGcI5TktgxyRSdZGSArdZ9
-	 QO0CrJlxAUsbolSf1Q37HH7b73tmw/Johe/1YOB686T128cPuU6qhGJhKFEnS6JfXF
-	 iAxBPRc/8lwV9LWNkp15L+nN0UTwFdxh8fOv9eNOYzURltrkkwj5cn3bCpMZ9hOdXX
-	 T+/D8b0FUv4rEbPVIIdiMC/hklrdzkiwh0Q+mcT3X2kdUDMFQ2+5o09HvU+WPsAABY
-	 93cipIMCs9wnA==
-Date: Sun, 6 Apr 2025 11:49:01 +0100
+	b=Fr5Ff5x4b8Hn0F3TDh5vhwKzwBB4T8h8nUI6sgzolzE0UQZpjoBvksUPeTqLk4lg3
+	 UgajN1Xv0DFpPwhJnXs5lT+L6GQg4UPlAhHXvfO/BjBfl0W11QRepTTsKM+n1beSfl
+	 nf9X5rDizpcXWkDV9m5P5QdiDy/N1xzE5IFSs/ZcOfAzXDtAp1N2PH4Q3vyfe+rVsW
+	 /K2Jm5wjqhG7kddDNmz/jW+ENp5Nt7IOv1LvW3LA9/wl5BxdX5hbzy2DAEnL6pdfiY
+	 ZvtNejS9L14heoku9xi8o7kRSuY9sBReV1/4mh5p3s9gFLVTmsAYFjOm0X9LW9DRVp
+	 7OjJptAyMlHVA==
+Date: Sun, 6 Apr 2025 11:54:18 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Jonathan Santos <jonath4nns@gmail.com>
-Cc: 20250308135620.3c95b951@jic23-huawei.smtp.subspace.kernel.org,
-	Jonathan Santos <Jonathan.Santos@analog.com>,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
-	lars@metafoo.de, Michael.Hennerich@analog.com,
-	marcelo.schmitt@analog.com, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, linus.walleij@linaro.org, brgl@bgdev.pl,
-	lgirdwood@gmail.com, broonie@kernel.org, dlechner@baylibre.com,
-	marcelo.schmitt1@gmail.com, Pop Paul <paul.pop@analog.com>
-Subject: Re: [PATCH v4 16/17] iio: adc: ad7768-1: add filter type and
- oversampling ratio attributes
-Message-ID: <20250406114901.0e3c885d@jic23-huawei>
-In-Reply-To: <Z+swyCusIwl8zixt@JSANTO12-L01.ad.analog.com>
-References: <cover.1741268122.git.Jonathan.Santos@analog.com>
-	<3586a75e3b7bf09c271a44390b2fed9f1ffc8565.1741268122.git.Jonathan.Santos@analog.com>
-	<20250308135620.3c95b951@jic23-huawei>
-	<Z+swyCusIwl8zixt@JSANTO12-L01.ad.analog.com>
+To: Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <u.kleine-koenig@baylibre.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
+ <Michael.Hennerich@analog.com>, Nuno =?UTF-8?B?U8Oh?=
+ <noname.nuno@gmail.com>, linux-iio@vger.kernel.org
+Subject: Re: [PATCH v2 0/3] iio: adc: ad7124: Fix 3dB filter frequency
+ reading
+Message-ID: <20250406115418.47f2d397@jic23-huawei>
+In-Reply-To: <20250331110214.1eec2513@jic23-huawei>
+References: <20250317115247.3735016-5-u.kleine-koenig@baylibre.com>
+	<20250317190031.22c822c4@jic23-huawei>
+	<fgd3vr46ijt3kr6onvtulmfulgbr2jpshcyk3dr2pvz7vqs2fq@mka4q2zqmpwe>
+	<20250331110214.1eec2513@jic23-huawei>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -68,190 +62,78 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, 31 Mar 2025 21:18:16 -0300
-Jonathan Santos <jonath4nns@gmail.com> wrote:
+On Mon, 31 Mar 2025 11:02:14 +0100
+Jonathan Cameron <jic23@kernel.org> wrote:
 
-> On 03/08, Jonathan Cameron wrote:
-> > On Thu, 6 Mar 2025 18:04:24 -0300
-> > Jonathan Santos <Jonathan.Santos@analog.com> wrote:
-> >   
-> > > Separate filter type and decimation rate from the sampling frequency
-> > > attribute. The new filter type attribute enables sinc3, sinc3+rej60
-> > > and wideband filters, which were previously unavailable.
-> > > 
-> > > Previously, combining decimation and MCLK divider in the sampling
-> > > frequency obscured performance trade-offs. Lower MCLK divider
-> > > settings increase power usage, while lower decimation rates reduce
-> > > precision by decreasing averaging. By creating an oversampling
-> > > attribute, which controls the decimation, users gain finer control
-> F> > over performance.
-> > > 
-> > > The addition of those attributes allows a wider range of sampling
-> > > frequencies and more access to the device features. Sampling frequency
-> > > table is updated after every digital filter paramerter change.
-> > > 
-> > > Co-developed-by: Pop Paul <paul.pop@analog.com>
-> > > Signed-off-by: Pop Paul <paul.pop@analog.com>
-> > > Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
-> > > ---
-> > > v4 Changes:
-> > > * Sampling frequency table is dinamically updated after every  
-> > 
-> > Good to spell check. Dynamically
-> >   
-> > >   filter configuration.  
-> > 
-> > Currently this runs into the potential race conditions we get with
-> > read_avail callbacks.  If we update the avail values in parallel
-> > with consumer code in a kernel driver reading them we can get tearing.
-> > So better if possible to do it all before those interfaces are exposed
-> > and just pick from a set of static arrays.
-> >   
-> I understand the problem, but the number of possible sampling
-> frequencies is quite large because of the decimation/OSR:
-> 
-> -> For wideband there are 6 decimations available.
-> -> For Sinc5 there are 8 decimations.
-> -> For sinc3 (here's the problem) we have up to 5119 decimation options.  
-> From x32 to x163,840 (mclk_div = 2) with a 32 step.
-> 
-> BTW, that's why we use ranges for `oversampling_ratio_available`
-> attribute.
+> On Mon, 24 Mar 2025 10:44:52 +0100
+> Uwe Kleine-K=C3=B6nig <u.kleine-koenig@baylibre.com> wrote:
+>=20
+> > Hello Jonathan,
+> >=20
+> > On Mon, Mar 17, 2025 at 07:00:31PM +0000, Jonathan Cameron wrote: =20
+> > > On Mon, 17 Mar 2025 12:52:46 +0100
+> > > Uwe Kleine-K=C3=B6nig <u.kleine-koenig@baylibre.com> wrote:
+> > >    =20
+> > > > Hello,
+> > > >=20
+> > > > (implicit) v1 of this patch set is available at
+> > > > https://lore.kernel.org/linux-iio/cover.1741801853.git.u.kleine-koe=
+nig@baylibre.com
+> > > > .
+> > > >=20
+> > > > Changes since then:
+> > > >=20
+> > > >  - Reorder patches to have the cleanup ("Make register naming
+> > > >    consistent") last
+> > > >  - Drop write support for the filter_low_pass_3db_frequency property
+> > > >    which is completely broken.
+> > > >  - trivially rebase to todays iio/togreg
+> > > >=20
+> > > > I wonder if there is a way to remove the writable permission of the
+> > > > filter_low_pass_3db_frequency sysfs file instead of erroring out wh=
+en a
+> > > > value is written. Hints welcome.   =20
+> > >=20
+> > > Unfortunately not. With a lot of hindsight that is a flaw in the way
+> > > we generate sysfs attributes. IIRC when hwmon added similar they
+> > > avoided that trap.  To retrofit it onto IIO now we'd have to have
+> > > some form of complex permissions query or duplicate all the masks
+> > > to allow r and w separately.   =20
+> >=20
+> > OK, fine for me, so I didn't miss anything :-)
+> >=20
+> > I have another patch in my queue for ad7124. For that it would be great
+> > to know if you intend to apply this patch set. If yes, I continue to
+> > build on top of this stack. =20
+>=20
+> Sorry for slow reply.  Bunch of travel (and being a tourist on either end
+> of the work bit ;)
+>=20
+> Subject to the question on patch 1 from Marcelo I'm fine with this.
+>=20
+> I'll probably take all 3 for next merge window though as patch 1 is
+> a minor fix I think in something that people probably haven't really=20
+> been using and splitting it makes for a messy cycle.
+>=20
+Not sure how I managed it, but I had patch 2 already on my tree. Anyhow
+backed that out and applied the whole series to the testing branch of iio.g=
+it.
 
-Ah, understood now.  Another case where I guess we need to fix up in the long
-term.  Short term not a problem as I don't think any consumers yet read the filter
-parameters anyway.
+Thanks,
 
-> 
-> To reflect all sampling frequencies combinations (fref/(mclk_div *
-> OSR)), we would need a considerably large array. We did not have this
-> problem before because we were not supporting the sinc3 filter.
-> 
-> > > +static struct iio_chan_spec_ext_info ad7768_ext_info[] = {
-> > > +	IIO_ENUM("filter_type", IIO_SHARED_BY_ALL, &ad7768_flt_type_iio_enum),
-> > > +	IIO_ENUM_AVAILABLE("filter_type", IIO_SHARED_BY_ALL, &ad7768_flt_type_iio_enum),
-> > > +	{ },  
-> > 
-> > No trailing comma on a terminating entry as we don't want it to be easy
-> > to accidentally add stuff after this.
-> >   
-> > > +};  
-> > 
-> >   
-> > > +static int ad7768_configure_dig_fil(struct iio_dev *dev,
-> > > +				    enum ad7768_filter_type filter_type,
-> > > +				    unsigned int dec_rate)
-> > > +{
-> > > +	struct ad7768_state *st = iio_priv(dev);
-> > > +	unsigned int dec_rate_idx, dig_filter_regval;
-> > > +	int ret;
-> > > +
-> > > +	switch (filter_type) {
-> > > +	case AD7768_FILTER_SINC3:
-> > > +		dig_filter_regval = AD7768_DIG_FIL_FIL(AD7768_FILTER_REGVAL_SINC3);
-> > > +		break;
-> > > +	case AD7768_FILTER_SINC3_REJ60:
-> > > +		dig_filter_regval = AD7768_DIG_FIL_FIL(AD7768_FILTER_REGVAL_SINC3_REJ60);
-> > > +		break;
-> > > +	case AD7768_FILTER_WIDEBAND:
-> > > +		/* Skip decimations 8 and 16, not supported by the wideband filter */
-> > > +		dec_rate_idx = find_closest(dec_rate, &ad7768_dec_rate_values[2],
-> > > +					    ARRAY_SIZE(ad7768_dec_rate_values) - 2);
-> > > +		dig_filter_regval = AD7768_DIG_FIL_FIL(AD7768_FILTER_REGVAL_WIDEBAND) |
-> > > +				    AD7768_DIG_FIL_DEC_RATE(dec_rate_idx);
-> > > +		/* Correct the index offset */
-> > > +		dec_rate_idx += 2;
-> > > +		break;
-> > > +	case AD7768_FILTER_SINC5:
-> > > +		dec_rate_idx = find_closest(dec_rate, ad7768_dec_rate_values,
-> > > +					    ARRAY_SIZE(ad7768_dec_rate_values));
-> > > +
-> > > +		/*
-> > > +		 * Decimations 8 (idx 0) and 16 (idx 1) are set in the
-> > > +		 * FILTER[6:4] field. The other decimations are set in the
-> > > +		 * DEC_RATE[2:0] field, and the idx need to be offsetted by two.
-> > > +		 */
-> > > +		if (dec_rate_idx == 0)
-> > > +			dig_filter_regval = AD7768_DIG_FIL_FIL(AD7768_FILTER_REGVAL_SINC5_X8);
-> > > +		else if (dec_rate_idx == 1)
-> > > +			dig_filter_regval = AD7768_DIG_FIL_FIL(AD7768_FILTER_REGVAL_SINC5_X16);
-> > > +		else
-> > > +			dig_filter_regval = AD7768_DIG_FIL_FIL(AD7768_FILTER_REGVAL_SINC5) |
-> > > +					    AD7768_DIG_FIL_DEC_RATE(dec_rate_idx - 2);
-> > > +		break;
-> > > +	}
-> > > +
-> > > +	ret = regmap_write(st->regmap, AD7768_REG_DIGITAL_FILTER, dig_filter_regval);
-> > > +	if (ret)
-> > >  		return ret;
-> > >  
-> > > -	/* A sync-in pulse is required every time the filter dec rate changes */
-> > > +	st->filter_type = filter_type;
-> > > +	/*
-> > > +	 * The decimation for SINC3 filters are configured in different
-> > > +	 * registers
-> > > +	 */
-> > > +	if (filter_type == AD7768_FILTER_SINC3 ||
-> > > +	    filter_type == AD7768_FILTER_SINC3_REJ60) {
-> > > +		ret = ad7768_set_sinc3_dec_rate(st, dec_rate);
-> > > +		if (ret)
-> > > +			return ret;
-> > > +	} else {
-> > > +		st->oversampling_ratio =  ad7768_dec_rate_values[dec_rate_idx];  
-> > 
-> > Looks like an extra space after =
-> >   
-> 
-> Sorry about that
-> 
-> > > +	}
-> > > +
-> > > +	ad7768_fill_samp_freq_tbl(st);  
-> > 
-> > This is opens a potentially complex race condition if we have the an
-> > in kernel consumer reading the data in this array as it is being updated
-> > (currently we can't stop that happening though solutions to that problem
-> > have been much discussed). 
-> > 
-> > There aren't that many oversampling ratios so perhaps it is better
-> > to precalculate all the potential available values as an array indexed  
-> 
-> As I said above, unfortunately there are many OSR options.
-> 
-> > by oversampling ratio.  That way all the data is const, it's just possible
-> > to get stale pointer to the wrong entry which can always happen anyway
-> > if the read vs update happen in different entities.
-> >   
-> > > +
-> > > +	/* A sync-in pulse is required after every configuration change */
-> > >  	return ad7768_send_sync_pulse(st);
-> > >  }  
-> >   
-> > >  
-> > > +static int ad7768_write_raw(struct iio_dev *indio_dev,
-> > > +			    struct iio_chan_spec const *chan,
-> > > +			    int val, int val2, long info)
-> > > +{
-> > > +	int ret;
-> > > +
-> > > +	ret = iio_device_claim_direct_mode(indio_dev);  
-> > 
-> > update to use if (!iio_device_claim_direct())
-> >   
-> 
-> OK!
-> 
-> > > +	if (ret)
-> > > +		return ret;
-> > > +
-> > > +	ret = __ad7768_write_raw(indio_dev, chan, val, val2, info);
-> > > +	iio_device_release_direct_mode(indio_dev);
-> > > +
-> > > +	return ret;
-> > > +}  
-> >   
+Jonathan
+
+> Jonathan
+>=20
+>=20
+>=20
+> >=20
+> > Best regards
+> > Uwe =20
+>=20
+>=20
 
 

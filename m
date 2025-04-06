@@ -1,55 +1,55 @@
-Return-Path: <linux-iio+bounces-17707-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17708-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A982A7CF2C
-	for <lists+linux-iio@lfdr.de>; Sun,  6 Apr 2025 19:21:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F492A7CF2D
+	for <lists+linux-iio@lfdr.de>; Sun,  6 Apr 2025 19:21:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3060E188D5CF
-	for <lists+linux-iio@lfdr.de>; Sun,  6 Apr 2025 17:21:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C39016C05F
+	for <lists+linux-iio@lfdr.de>; Sun,  6 Apr 2025 17:21:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9EFC18FDD2;
-	Sun,  6 Apr 2025 17:21:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29162190678;
+	Sun,  6 Apr 2025 17:21:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VeRR/IhY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EiZdYpqF"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ACAE1487F6
-	for <linux-iio@vger.kernel.org>; Sun,  6 Apr 2025 17:21:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCC401487F6
+	for <linux-iio@vger.kernel.org>; Sun,  6 Apr 2025 17:21:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743960072; cv=none; b=R07eIYwt8LQn83MG3zW0udKghk/T1pcdkKmoaxhGPHkNK9TpUc2K1vMfmaiyEBP90NmCMe0w9Lad36ArP8fzTxLKZHY7dvPPXFomsd5AcXEbJnqrXi8rjbXUkjyyQKRE7efKNAhjIpnbgVIxn7V0BJZZVJXV3IYdrMpBec1KP3E=
+	t=1743960073; cv=none; b=UMZFBLhUc4kjZmKX1tFJydJ4bjl0OXYZufO1r6wbYbj0sU/bASmwqViAgkjeZ4NL0eXZB2sVqUrM/NN9R2fdIDZ8EJWAgoiwT/M8IeLXVNb8mfHAb4u9o2z692GoLjwGk5XlZF6Kr7uXU66wLFelpbVufRJP+Zfu4Yo8yOR3n50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743960072; c=relaxed/simple;
-	bh=Jso09oURncs+WA7m5qihotdrpcfVf4B+AAstsv0BA0I=;
+	s=arc-20240116; t=1743960073; c=relaxed/simple;
+	bh=yKTrtyJtsORhzbs/Q/E6Ysgguin49g4DjTe16XauQk0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k6cQ2utGRn3yRMIBT09bk17cU1bOVIk3wH9bRWUzOPGrzrKZsYD10rkb3wtMitRCCmwEbnYPcVBGwsrxixKKVqBah1V3gDEn3pH2+ARnLH+z9rmxgDLIaxnzQMaKEwktba8Ksn2VKpDG70f732C/V9DW1ek+30idRWWMrdBP53Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VeRR/IhY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FC58C4CEE3;
-	Sun,  6 Apr 2025 17:21:08 +0000 (UTC)
+	 MIME-Version; b=OupQKajA+xGiFyziiT5YnYryK8MvmVDxbEVHJ0e1of6yJ2TLyvfIWuYAkVo7T58UjiJtw74zZNMXGh8iGu//ETRnDX9rHMjfR1jTUI9oOqyevVl7BjkiyRsxLd7jsCNCYjCHfY6FDs4k7o2aH1zBxWCFsjPHUdJ9BkR6T5y4k1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EiZdYpqF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8749CC4CEE7;
+	Sun,  6 Apr 2025 17:21:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743960070;
-	bh=Jso09oURncs+WA7m5qihotdrpcfVf4B+AAstsv0BA0I=;
+	s=k20201202; t=1743960073;
+	bh=yKTrtyJtsORhzbs/Q/E6Ysgguin49g4DjTe16XauQk0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VeRR/IhYjvD4fNqKS31hfbdAydX4xOMxC07FQUjJ1VKXXNQl+31HFuvlfBX3rEwLH
-	 FNYaN2WzO0zkL6JJeoMsIQrXDrvTCVGpdU7hw4RfXtfjXvl6eFzFfYnX10jxCkIxc+
-	 FqWuZcurrpqH6Mq3ce/E8JuctuKZl6tKLxE0vtOUaqBS5iU3TN7ksPvS0sfbID4IfX
-	 GFeVyeuGMz7qvre3N7LM/4ujb6a8CwT7nzPXJchD7B5Gucx8+7JZ3zNWnpYxJn2h51
-	 N1eGlW5H9pgsa1jGvUbjoIWRpo4YKSWWt52MKB1yZDt6a0IdCRY7TuB+d6BulW3JXi
-	 /bnck1acW/skQ==
+	b=EiZdYpqFDCHVjteI/IMZ0m5xhK+kmG14OC4Qwbx2LsGL0r8DVPIqIze3FMlrln8j4
+	 kvwlhwx7wgI9Mg/4CvJqtAPCr1ewKioDp8zvKfT9CjAF3h+F786OYVqb6414++qgIV
+	 BorVIOdjn+9WXBD7vYy44uMGFGJRMgy1hTHpIX8mXFg5hjSQf9JrQLvVJMRGuXix4E
+	 TH8kTWkrIarfsCordR+J0k0YjKOlaS2JODwWhko8PeWpwr+cF7kdq+NycMVggYkdmJ
+	 Ccq/EpLHFm3Ohq4TvEAe/HFR2wYpSqUwAawJz5L8a4DGuMUEBMeUVOGym3Hw2y+3aX
+	 YsikdyxTVnFwQ==
 From: Jonathan Cameron <jic23@kernel.org>
 To: linux-iio@vger.kernel.org,
 	David Lechner <dlechner@baylibre.com>,
 	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
 	Andy Shevchenko <andy@kernel.org>
 Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH v2 19/20] iio: pressure: Use iio_push_to_buffers_with_ts() to provide length for runtime checks.
-Date: Sun,  6 Apr 2025 18:20:00 +0100
-Message-ID: <20250406172001.2167607-20-jic23@kernel.org>
+Subject: [PATCH v2 20/20] iio: magnetometer: Use iio_push_to_buffers_with_ts() to provide length for runtime checks.
+Date: Sun,  6 Apr 2025 18:20:01 +0100
+Message-ID: <20250406172001.2167607-21-jic23@kernel.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250406172001.2167607-1-jic23@kernel.org>
 References: <20250406172001.2167607-1-jic23@kernel.org>
@@ -69,153 +69,167 @@ either a static buffer or a structure is used in the drivers.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/pressure/bmp280-core.c      | 25 +++++++++++++++----------
- drivers/iio/pressure/hid-sensor-press.c |  5 +++--
- drivers/iio/pressure/hsc030pa.c         |  4 ++--
- drivers/iio/pressure/mpl3115.c          |  4 ++--
- drivers/iio/pressure/rohm-bm1390.c      |  3 ++-
- drivers/iio/pressure/zpa2326.c          |  4 ++--
- 6 files changed, 26 insertions(+), 19 deletions(-)
+ drivers/iio/magnetometer/af8133j.c       | 3 ++-
+ drivers/iio/magnetometer/ak8974.c        | 5 +++--
+ drivers/iio/magnetometer/ak8975.c        | 4 ++--
+ drivers/iio/magnetometer/als31300.c      | 4 ++--
+ drivers/iio/magnetometer/bmc150_magn.c   | 4 ++--
+ drivers/iio/magnetometer/hmc5843.h       | 2 +-
+ drivers/iio/magnetometer/hmc5843_core.c  | 4 ++--
+ drivers/iio/magnetometer/mag3110.c       | 4 ++--
+ drivers/iio/magnetometer/rm3100-core.c   | 4 ++--
+ drivers/iio/magnetometer/yamaha-yas530.c | 5 +++--
+ 10 files changed, 21 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
-index d44ab65c94cb..c20cc4a98c9c 100644
---- a/drivers/iio/pressure/bmp280-core.c
-+++ b/drivers/iio/pressure/bmp280-core.c
-@@ -1142,8 +1142,9 @@ static irqreturn_t bmp280_trigger_handler(int irq, void *p)
- 	chans[0] = comp_press;
- 	chans[1] = comp_temp;
+diff --git a/drivers/iio/magnetometer/af8133j.c b/drivers/iio/magnetometer/af8133j.c
+index c1fc339e85b4..192ba2da94e2 100644
+--- a/drivers/iio/magnetometer/af8133j.c
++++ b/drivers/iio/magnetometer/af8133j.c
+@@ -370,7 +370,8 @@ static irqreturn_t af8133j_trigger_handler(int irq, void *p)
+ 	if (ret)
+ 		goto out_done;
  
--	iio_push_to_buffers_with_timestamp(indio_dev, data->sensor_data,
--					   iio_get_time_ns(indio_dev));
-+	iio_push_to_buffers_with_ts(indio_dev, data->sensor_data,
-+				    sizeof(data->sensor_data),
-+				    iio_get_time_ns(indio_dev));
+-	iio_push_to_buffers_with_timestamp(indio_dev, &sample, timestamp);
++	iio_push_to_buffers_with_ts(indio_dev, &sample, sizeof(sample),
++				    timestamp);
  
- out:
+ out_done:
  	iio_trigger_notify_done(indio_dev->trig);
-@@ -1273,8 +1274,9 @@ static irqreturn_t bme280_trigger_handler(int irq, void *p)
- 	chans[1] = comp_temp;
- 	chans[2] = comp_humidity;
- 
--	iio_push_to_buffers_with_timestamp(indio_dev, data->sensor_data,
--					   iio_get_time_ns(indio_dev));
-+	iio_push_to_buffers_with_ts(indio_dev, data->sensor_data,
-+				    sizeof(data->sensor_data),
-+				    iio_get_time_ns(indio_dev));
- 
- out:
- 	iio_trigger_notify_done(indio_dev->trig);
-@@ -1936,8 +1938,9 @@ static irqreturn_t bmp380_trigger_handler(int irq, void *p)
- 	chans[0] = comp_press;
- 	chans[1] = comp_temp;
- 
--	iio_push_to_buffers_with_timestamp(indio_dev, data->sensor_data,
--					   iio_get_time_ns(indio_dev));
-+	iio_push_to_buffers_with_ts(indio_dev, data->sensor_data,
-+				    sizeof(data->sensor_data),
-+				    iio_get_time_ns(indio_dev));
- 
- out:
- 	iio_trigger_notify_done(indio_dev->trig);
-@@ -2630,8 +2633,9 @@ static irqreturn_t bmp580_trigger_handler(int irq, void *p)
- 	/* Temperature calculations */
- 	memcpy(&data->sensor_data[offset], &data->buf[0], 3);
- 
--	iio_push_to_buffers_with_timestamp(indio_dev, data->sensor_data,
--					   iio_get_time_ns(indio_dev));
-+	iio_push_to_buffers_with_ts(indio_dev, data->sensor_data,
-+				    sizeof(data->sensor_data),
-+				    iio_get_time_ns(indio_dev));
- 
- out:
- 	iio_trigger_notify_done(indio_dev->trig);
-@@ -2969,8 +2973,9 @@ static irqreturn_t bmp180_trigger_handler(int irq, void *p)
- 	chans[0] = comp_press;
- 	chans[1] = comp_temp;
- 
--	iio_push_to_buffers_with_timestamp(indio_dev, data->sensor_data,
--					   iio_get_time_ns(indio_dev));
-+	iio_push_to_buffers_with_ts(indio_dev, data->sensor_data,
-+				    sizeof(data->sensor_data),
-+				    iio_get_time_ns(indio_dev));
- 
- out:
- 	iio_trigger_notify_done(indio_dev->trig);
-diff --git a/drivers/iio/pressure/hid-sensor-press.c b/drivers/iio/pressure/hid-sensor-press.c
-index f7273d30c5f0..a8561df9f666 100644
---- a/drivers/iio/pressure/hid-sensor-press.c
-+++ b/drivers/iio/pressure/hid-sensor-press.c
-@@ -176,8 +176,9 @@ static int press_proc_event(struct hid_sensor_hub_device *hsdev,
- 		if (!press_state->timestamp)
- 			press_state->timestamp = iio_get_time_ns(indio_dev);
- 
--		iio_push_to_buffers_with_timestamp(
--			indio_dev, &press_state->scan, press_state->timestamp);
-+		iio_push_to_buffers_with_ts(
-+			indio_dev, &press_state->scan,
-+			sizeof(press_state->scan), press_state->timestamp);
+diff --git a/drivers/iio/magnetometer/ak8974.c b/drivers/iio/magnetometer/ak8974.c
+index 44d8428a69b0..6b784af7d779 100644
+--- a/drivers/iio/magnetometer/ak8974.c
++++ b/drivers/iio/magnetometer/ak8974.c
+@@ -673,8 +673,9 @@ static void ak8974_fill_buffer(struct iio_dev *indio_dev)
+ 		goto out_unlock;
  	}
  
- 	return 0;
-diff --git a/drivers/iio/pressure/hsc030pa.c b/drivers/iio/pressure/hsc030pa.c
-index 168245818cfe..2d00c0656259 100644
---- a/drivers/iio/pressure/hsc030pa.c
-+++ b/drivers/iio/pressure/hsc030pa.c
-@@ -314,8 +314,8 @@ static irqreturn_t hsc_trigger_handler(int irq, void *private)
- 	memcpy(&data->scan.chan[0], &data->buffer[0], 2);
- 	memcpy(&data->scan.chan[1], &data->buffer[2], 2);
+-	iio_push_to_buffers_with_timestamp(indio_dev, &ak8974->scan,
+-					   iio_get_time_ns(indio_dev));
++	iio_push_to_buffers_with_ts(indio_dev, &ak8974->scan,
++				    sizeof(ak8974->scan),
++				    iio_get_time_ns(indio_dev));
+ 
+  out_unlock:
+ 	mutex_unlock(&ak8974->lock);
+diff --git a/drivers/iio/magnetometer/ak8975.c b/drivers/iio/magnetometer/ak8975.c
+index ef1363126cc2..abe9f4fccf00 100644
+--- a/drivers/iio/magnetometer/ak8975.c
++++ b/drivers/iio/magnetometer/ak8975.c
+@@ -882,8 +882,8 @@ static void ak8975_fill_buffer(struct iio_dev *indio_dev)
+ 	data->scan.channels[1] = clamp_t(s16, le16_to_cpu(fval[1]), -def->range, def->range);
+ 	data->scan.channels[2] = clamp_t(s16, le16_to_cpu(fval[2]), -def->range, def->range);
  
 -	iio_push_to_buffers_with_timestamp(indio_dev, &data->scan,
 -					   iio_get_time_ns(indio_dev));
 +	iio_push_to_buffers_with_ts(indio_dev, &data->scan, sizeof(data->scan),
 +				    iio_get_time_ns(indio_dev));
  
- error:
- 	iio_trigger_notify_done(indio_dev->trig);
-diff --git a/drivers/iio/pressure/mpl3115.c b/drivers/iio/pressure/mpl3115.c
-index 8397155555bd..d6715997f137 100644
---- a/drivers/iio/pressure/mpl3115.c
-+++ b/drivers/iio/pressure/mpl3115.c
-@@ -191,8 +191,8 @@ static irqreturn_t mpl3115_trigger_handler(int irq, void *p)
- 	}
- 	mutex_unlock(&data->lock);
+ 	return;
  
--	iio_push_to_buffers_with_timestamp(indio_dev, buffer,
--		iio_get_time_ns(indio_dev));
-+	iio_push_to_buffers_with_ts(indio_dev, buffer, sizeof(buffer),
+diff --git a/drivers/iio/magnetometer/als31300.c b/drivers/iio/magnetometer/als31300.c
+index 87b60c4e81fa..d5db4c8343ce 100644
+--- a/drivers/iio/magnetometer/als31300.c
++++ b/drivers/iio/magnetometer/als31300.c
+@@ -245,8 +245,8 @@ static irqreturn_t als31300_trigger_handler(int irq, void *p)
+ 	scan.channels[0] = x;
+ 	scan.channels[1] = y;
+ 	scan.channels[2] = z;
+-	iio_push_to_buffers_with_timestamp(indio_dev, &scan,
+-					   pf->timestamp);
++	iio_push_to_buffers_with_ts(indio_dev, &scan, sizeof(scan),
++				    pf->timestamp);
+ 
+ trigger_out:
+ 	iio_trigger_notify_done(indio_dev->trig);
+diff --git a/drivers/iio/magnetometer/bmc150_magn.c b/drivers/iio/magnetometer/bmc150_magn.c
+index 88bb673e40d8..f9c51ceae011 100644
+--- a/drivers/iio/magnetometer/bmc150_magn.c
++++ b/drivers/iio/magnetometer/bmc150_magn.c
+@@ -678,8 +678,8 @@ static irqreturn_t bmc150_magn_trigger_handler(int irq, void *p)
+ 	if (ret < 0)
+ 		goto err;
+ 
+-	iio_push_to_buffers_with_timestamp(indio_dev, &data->scan,
+-					   pf->timestamp);
++	iio_push_to_buffers_with_ts(indio_dev, &data->scan, sizeof(data->scan),
++				    pf->timestamp);
+ 
+ err:
+ 	mutex_unlock(&data->mutex);
+diff --git a/drivers/iio/magnetometer/hmc5843.h b/drivers/iio/magnetometer/hmc5843.h
+index ffd669b1ee7c..7a3faf7ffed4 100644
+--- a/drivers/iio/magnetometer/hmc5843.h
++++ b/drivers/iio/magnetometer/hmc5843.h
+@@ -34,7 +34,7 @@ enum hmc5843_ids {
+  * @regmap:		hardware access register maps
+  * @variant:		describe chip variants
+  * @scan:		buffer to pack data for passing to
+- *			iio_push_to_buffers_with_timestamp()
++ *			iio_push_to_buffers_with_ts()
+  */
+ struct hmc5843_data {
+ 	struct device *dev;
+diff --git a/drivers/iio/magnetometer/hmc5843_core.c b/drivers/iio/magnetometer/hmc5843_core.c
+index 2fc84310e2cc..fc16ebd314f7 100644
+--- a/drivers/iio/magnetometer/hmc5843_core.c
++++ b/drivers/iio/magnetometer/hmc5843_core.c
+@@ -452,8 +452,8 @@ static irqreturn_t hmc5843_trigger_handler(int irq, void *p)
+ 	if (ret < 0)
+ 		goto done;
+ 
+-	iio_push_to_buffers_with_timestamp(indio_dev, &data->scan,
+-					   iio_get_time_ns(indio_dev));
++	iio_push_to_buffers_with_ts(indio_dev, &data->scan, sizeof(data->scan),
 +				    iio_get_time_ns(indio_dev));
  
  done:
  	iio_trigger_notify_done(indio_dev->trig);
-diff --git a/drivers/iio/pressure/rohm-bm1390.c b/drivers/iio/pressure/rohm-bm1390.c
-index c48231739f48..cf5f48874a68 100644
---- a/drivers/iio/pressure/rohm-bm1390.c
-+++ b/drivers/iio/pressure/rohm-bm1390.c
-@@ -652,7 +652,8 @@ static irqreturn_t bm1390_trigger_handler(int irq, void *p)
- 		}
+diff --git a/drivers/iio/magnetometer/mag3110.c b/drivers/iio/magnetometer/mag3110.c
+index 92d4511ed372..ff09250a06e7 100644
+--- a/drivers/iio/magnetometer/mag3110.c
++++ b/drivers/iio/magnetometer/mag3110.c
+@@ -404,8 +404,8 @@ static irqreturn_t mag3110_trigger_handler(int irq, void *p)
+ 		data->scan.temperature = ret;
  	}
  
--	iio_push_to_buffers_with_timestamp(idev, &data->buf, data->timestamp);
-+	iio_push_to_buffers_with_ts(idev, &data->buf, sizeof(data->buf),
-+				    data->timestamp);
- 	iio_trigger_notify_done(idev->trig);
+-	iio_push_to_buffers_with_timestamp(indio_dev, &data->scan,
+-		iio_get_time_ns(indio_dev));
++	iio_push_to_buffers_with_ts(indio_dev, &data->scan, sizeof(data->scan),
++				    iio_get_time_ns(indio_dev));
  
- 	return IRQ_HANDLED;
-diff --git a/drivers/iio/pressure/zpa2326.c b/drivers/iio/pressure/zpa2326.c
-index 30f007794f5b..1640aa3717ed 100644
---- a/drivers/iio/pressure/zpa2326.c
-+++ b/drivers/iio/pressure/zpa2326.c
-@@ -618,8 +618,8 @@ static int zpa2326_fill_sample_buffer(struct iio_dev               *indio_dev,
+ done:
+ 	iio_trigger_notify_done(indio_dev->trig);
+diff --git a/drivers/iio/magnetometer/rm3100-core.c b/drivers/iio/magnetometer/rm3100-core.c
+index e5162ee64e01..81da063fb38c 100644
+--- a/drivers/iio/magnetometer/rm3100-core.c
++++ b/drivers/iio/magnetometer/rm3100-core.c
+@@ -515,8 +515,8 @@ static irqreturn_t rm3100_trigger_handler(int irq, void *p)
+ 	 * Always using the same buffer so that we wouldn't need to set the
+ 	 * paddings to 0 in case of leaking any data.
  	 */
- 	zpa2326_dbg(indio_dev, "filling raw samples buffer");
+-	iio_push_to_buffers_with_timestamp(indio_dev, data->buffer,
+-					   pf->timestamp);
++	iio_push_to_buffers_with_ts(indio_dev, data->buffer,
++				    sizeof(data->buffer), pf->timestamp);
+ done:
+ 	iio_trigger_notify_done(indio_dev->trig);
  
--	iio_push_to_buffers_with_timestamp(indio_dev, &sample,
--					   private->timestamp);
-+	iio_push_to_buffers_with_ts(indio_dev, &sample, sizeof(sample),
-+				    private->timestamp);
- 
- 	return 0;
+diff --git a/drivers/iio/magnetometer/yamaha-yas530.c b/drivers/iio/magnetometer/yamaha-yas530.c
+index 28012b20c64f..6ff34b3b6a62 100644
+--- a/drivers/iio/magnetometer/yamaha-yas530.c
++++ b/drivers/iio/magnetometer/yamaha-yas530.c
+@@ -674,8 +674,9 @@ static void yas5xx_fill_buffer(struct iio_dev *indio_dev)
+ 	yas5xx->scan.channels[1] = x;
+ 	yas5xx->scan.channels[2] = y;
+ 	yas5xx->scan.channels[3] = z;
+-	iio_push_to_buffers_with_timestamp(indio_dev, &yas5xx->scan,
+-					   iio_get_time_ns(indio_dev));
++	iio_push_to_buffers_with_ts(indio_dev, &yas5xx->scan,
++				    sizeof(yas5xx->scan),
++				    iio_get_time_ns(indio_dev));
  }
+ 
+ static irqreturn_t yas5xx_handle_trigger(int irq, void *p)
 -- 
 2.49.0
 

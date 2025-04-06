@@ -1,133 +1,312 @@
-Return-Path: <linux-iio+bounces-17684-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17685-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A5BCA7CF0E
-	for <lists+linux-iio@lfdr.de>; Sun,  6 Apr 2025 19:02:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1ECC5A7CF0F
+	for <lists+linux-iio@lfdr.de>; Sun,  6 Apr 2025 19:03:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5330216F3FA
-	for <lists+linux-iio@lfdr.de>; Sun,  6 Apr 2025 17:02:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AEE26188A112
+	for <lists+linux-iio@lfdr.de>; Sun,  6 Apr 2025 17:03:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10AED1474A9;
-	Sun,  6 Apr 2025 17:02:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B27D615746E;
+	Sun,  6 Apr 2025 17:02:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="B7oUJ8wk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eufMYO9C"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oa1-f41.google.com (mail-oa1-f41.google.com [209.85.160.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FE3FA29
-	for <linux-iio@vger.kernel.org>; Sun,  6 Apr 2025 17:02:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 712E7A29
+	for <linux-iio@vger.kernel.org>; Sun,  6 Apr 2025 17:02:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743958962; cv=none; b=TDdrwLMlGN+l37XkTY1X8zIhJLNt1aHToCqw8WwDcmYVUN1yO2vZNHq4mPMYAdVB7SYwMv4gQtKmD7GJXKWtXskZsYhzfqKJHbEL+BfmsRcLw0lNbbjYVUwkJ/V7W1+ZGMhMlwIoxQasz22Z7sk8Ecnv+Tud+y9plKULvHowg+w=
+	t=1743958974; cv=none; b=W97OafYkB1CttV9yOV368BVW8bqfJ/itKDQRHsUTyeTmNDPUuNn7SrIqvKH3ZzkS1rZMVFmWfi/sXaJJzGuocQlWtCG8ofSp1LA1mOo+6qV9JqKsj/aS/gKHgMd2twXFtsQY02peUhPUoO9iAwfoZI04rlcpXQ/UF2LLCsUha4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743958962; c=relaxed/simple;
-	bh=sVkkpLP7iZfpvlgUeGjvb9DimFUxKIpw3Id2bsFSlR8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XAIdHWDkaj3S94z7qe6Esce9EVQn9oVz0E/s6bqVePX4KZjusYc1/7Bmc6hZqchf8ixrclWAeiocu9EwJa7xAh9UAi6LouJ3WdKVbFS1PqFLnPLrOtV66EzY4gurnZF3LDE+/DToe/Q0utZKviiqq+8JpLgt51XyAcrpvp38NHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=B7oUJ8wk; arc=none smtp.client-ip=209.85.160.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oa1-f41.google.com with SMTP id 586e51a60fabf-2c12b7af278so2647304fac.0
-        for <linux-iio@vger.kernel.org>; Sun, 06 Apr 2025 10:02:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1743958959; x=1744563759; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Rw9Z5qtWBs4EXQgomj6GCqaEcI3IQFjUfANJX8Mm8lM=;
-        b=B7oUJ8wkrh8tJqYbq/llM7fL3NwGlTkKnrEC0tjbPUnxeueZEjzUmqakQE8wF6Llzy
-         3LHqmC8Qu2c9clL7mrV00D7SzQvNqt8mLFcuA0k/sWHwTn2Dz1AApyaaVI/s/W2hne+i
-         vioUeQEgl23R+6Z7deAm0mu0DvvCdynb0n51dtN1jp4PfVkGkaG43CuaTFKYBXofdTQ/
-         rD9IukBXaTyHuJpmihHKFNYmD8QeXxzxszPdf3tbdJEU0qH91OhEcwp1k7jsCJZsGT9A
-         9qXYJGGlDolGTp4v7ZFqt1O5JWqq+PBUV/85tr/C1n81XoqOX/Q9k4/IsJ3NShjmFpOI
-         xyhw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743958959; x=1744563759;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Rw9Z5qtWBs4EXQgomj6GCqaEcI3IQFjUfANJX8Mm8lM=;
-        b=Bp9n3O/LICDxnkJB4TIcUIsTI0pv4gKPif5FxxK+KiR4nvgGuj1/hSiwqMuJE2IXLF
-         xq1rsJwzNP9YnHpqwePfI3DNUo3+3NZ6PsRB39Hh7UTVxdXeGH1vPj6OlJQzqlXXTdo2
-         PkYCk6OaPGBEUUKejXd8XZHnxf14sz/vOoox8NYMRi4zenJh7xi3WfUlOGwVl+bqTRpV
-         T7tQ3FsD5qXxH/DVusxTjh1rOrooAn1pZYkWhHeZC9rCUUqBJJj+B6JhSl4YFMQETraL
-         AMSMS0cjUX9rNTb2aDdVOO3jeTR0qpBSly0oIWeozdUUzzrNW+OrhkPgt84Bsn9tIljk
-         6Pzg==
-X-Forwarded-Encrypted: i=1; AJvYcCXJLOfZ1ZXqYOeA0fqjqhARcmyapkAvq/SMca04ZLaf/wulsrkA/Qqbl43sFWaQ8fiWSqooE0ivT0U=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzd9NEgtkwTCZm7gwraKkzpxkTLJuG29Vfucmjwe+DYbDt4oEgs
-	sGXEtojAfYDEnCH0MudA+r6pjdvQjM6Qlmd0fhWX2MWRXjdNq0mhqgrP0HqwzDk=
-X-Gm-Gg: ASbGncvi9PBffNkDroEpjuJ9e9EFYv+yy6DV54r9cHY2sp1FXTRgXo50NAdkYuwMVEl
-	xSLSorEscGlCE7LUM/nqfu/lcB7mq0mZervnEsHTns775XEedu3dAOLKvAdItVwDKLVDZ5tlZHc
-	yjKorlT7Y71RvGP+daZpFM14UvIMx8s796MBGBoV96h+5PxDwfF5CyWPFlEThq0Y6cpMWGQzYK6
-	q0BcKFN2l1hSQDF1F9rFUFsTI+nVHKmTbT7Ey+32RklQEUjxGyEopc72jEw0v+4W/neE0uh86hA
-	dUCYwAPG7TiuV/mDGlLinW60PDSDdcXX3wnZqTk477C++xqfe4Ldn9DUNwNtWjCx20QFzwyG8gx
-	oRq06kQ==
-X-Google-Smtp-Source: AGHT+IGqhxoKWzaXcY2LPhg1usyAYv0//jZYOjiQ43dpVByFfgbP1Znkp78kS6pZ5ih8gDHAHodxEQ==
-X-Received: by 2002:a05:6871:410d:b0:2b7:5726:c931 with SMTP id 586e51a60fabf-2cc9eec07f7mr5616775fac.5.1743958958982;
-        Sun, 06 Apr 2025 10:02:38 -0700 (PDT)
-Received: from [192.168.0.113] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2cc8454c669sm1642631fac.3.2025.04.06.10.02.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 06 Apr 2025 10:02:37 -0700 (PDT)
-Message-ID: <2367372e-e620-4a43-8385-61e7f9257264@baylibre.com>
-Date: Sun, 6 Apr 2025 12:02:35 -0500
+	s=arc-20240116; t=1743958974; c=relaxed/simple;
+	bh=RLHrayU6KSL8XyZEBRequkcP7jk+GTsFOwzbiW0LMeE=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=m0po7QTs1jRzXFDjYlmz6ql2IJP5MSpObASRJDrd8j3h70Tpk6PzI7R3caQE16cX+or2c0Vo22JmsHIoz2u42vAtd6e325zRH9xd10YFG03SLDZs9ZfxPDKa/NZZ9u3Sin0rrxjhpVAi95zmPeuxPdkKzFtxN53QHlAcjCd1/ZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eufMYO9C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1D5CC4CEE3;
+	Sun,  6 Apr 2025 17:02:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1743958973;
+	bh=RLHrayU6KSL8XyZEBRequkcP7jk+GTsFOwzbiW0LMeE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=eufMYO9CS1HErs4H5tr0nu+xa4f2rCl427ZCMz3agN6458HW/OppDPJj+oRtULZak
+	 L9oPYXPRRsjE3vFtUgjHM4mgkQQnXYn3cX33YYceCck/uB4Awta15CHfiQnO9sEe+5
+	 BxSJsZMm3/qRTr+noI1/JX/Mq4irglqF3B27Y67EOWJAVrMWpO34wQvjP5yuVNdUPL
+	 Ije3TCvxHpcjQjhZDmcyWYBYmRNXwABZUxrq+cTxyLmXCPLL6o1J2NPB2VM+FUKkwW
+	 Xns/7Mx7yQEAXSMssvLl9dQzi5yaAsx3s14o1on7j7VwIIfXiOXMVt12t1XsIWGtMY
+	 SbXJlWzYC3K8A==
+Date: Sun, 6 Apr 2025 18:02:46 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: David Lechner <dlechner@baylibre.com>
+Cc: linux-iio@vger.kernel.org, Nuno =?UTF-8?B?U8Oh?=
+ <noname.nuno@gmail.com>, Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH 05/16] iio: adc: Use iio_push_to_buffers_with_ts() to
+ provide length for runtime checks.
+Message-ID: <20250406180246.108a58a5@jic23-huawei>
+In-Reply-To: <b282990a-de51-4120-abde-9b628847d9f9@baylibre.com>
+References: <20250309182100.1351128-1-jic23@kernel.org>
+	<20250309182100.1351128-6-jic23@kernel.org>
+	<b282990a-de51-4120-abde-9b628847d9f9@baylibre.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] MAINTAINERS: IIO: Update reviewers for the subsystem
-To: Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
- Lars-Peter Clausen <lars@metafoo.de>, =?UTF-8?Q?Nuno_S=C3=A1?=
- <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-References: <20250406153120.2129133-1-jic23@kernel.org>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <20250406153120.2129133-1-jic23@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On 4/6/25 10:31 AM, Jonathan Cameron wrote:
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> 
-> Lars-Peter has not been active in IIO reviewing for some time. Without
-> David, Nuno and Andy, along with many others who review IIO patches, I
-> would not be able to keep up with the rate of change and would have
-> become a bottleneck to development.
-> 
-> Hence update the MAINTAINERS entry to more accurately reflect reality.
-> This is not intended to give the 3 of them any more work or to oblige
-> them to review any particular series, so if there are any series waiting
-> a long time continue to poke me via the list.
-> 
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> ---
->  MAINTAINERS | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 559620786634..0762170e9740 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -11518,7 +11518,9 @@ F:	drivers/iio/common/scmi_sensors/scmi_iio.c
->  
->  IIO SUBSYSTEM AND DRIVERS
->  M:	Jonathan Cameron <jic23@kernel.org>
-> -R:	Lars-Peter Clausen <lars@metafoo.de>
-> +R:	David Lechner <dlechner@baylibre.com>
-> +R:	Nuno Sá <nuno.sa@analog.com>
-> +R:	Andy Shevchenko <andy@kernel.org>
->  L:	linux-iio@vger.kernel.org
->  S:	Maintained
->  T:	git git://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git
+On Mon, 10 Mar 2025 16:49:18 -0500
+David Lechner <dlechner@baylibre.com> wrote:
 
-Acked-by: David Lechner <dlechner@baylibre.com>
+> On 3/9/25 1:20 PM, Jonathan Cameron wrote:
+> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > 
+> > This new function allows us to perform debug checks in the helper to ensure
+> > that the overrun does not occur.  Use it in all the simple cases where
+> > either a static buffer or a structure is used in the drivers.
+> > 
+> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > ---  
+> 
+> ...
+> 
+> > diff --git a/drivers/iio/adc/ad4030.c b/drivers/iio/adc/ad4030.c
+> > index 9a020680885d..77c5dd414d36 100644
+> > --- a/drivers/iio/adc/ad4030.c
+> > +++ b/drivers/iio/adc/ad4030.c
+> > @@ -706,8 +706,9 @@ static irqreturn_t ad4030_trigger_handler(int irq, void *p)
+> >  	if (ret)
+> >  		goto out;
+> >  
+> > -	iio_push_to_buffers_with_timestamp(indio_dev, st->rx_data.raw,
+> > -					   pf->timestamp);
+> > +	iio_push_to_buffers_with_ts(indio_dev, st->rx_data.raw,  
+> 
+> Would &st->rx_data be more correct? I guess it doesn't really matter in this case.
+Feels slightly more logical to use rx_data so changed.
+
+> 
+> > +				    sizeof(st->rx_data.raw),
+> > +				    pf->timestamp);
+> >  
+> >  out:
+> >  	iio_trigger_notify_done(indio_dev->trig);  
+> 
+> ...
+> 
+> > diff --git a/drivers/iio/adc/ad7266.c b/drivers/iio/adc/ad7266.c
+> > index 18559757f908..4217d3963455 100644
+> > --- a/drivers/iio/adc/ad7266.c
+> > +++ b/drivers/iio/adc/ad7266.c
+> > @@ -87,8 +87,9 @@ static irqreturn_t ad7266_trigger_handler(int irq, void *p)
+> >  
+> >  	ret = spi_read(st->spi, st->data.sample, 4);
+> >  	if (ret == 0) {
+> > -		iio_push_to_buffers_with_timestamp(indio_dev, &st->data,
+> > -			    pf->timestamp);
+> > +		iio_push_to_buffers_with_ts(indio_dev, &st->data,
+> > +					    sizeof(st->data),  
+> 
+> This one has `s64 timestamp;` which should be aligned_s64.
+Ah. That's an old bug!  Guess no one rand this on x86_32 :)
+
+I'll add a precursor fix.
+Note I didn't include some other drivers in this series because they are
+also broken, but I missed this one. Good spot.
+> 
+> > +					    pf->timestamp);
+> >  	}
+> >  
+> >  	iio_trigger_notify_done(indio_dev->trig);
+> > diff --git a/drivers/iio/adc/ad7298.c b/drivers/iio/adc/ad7298.c
+> > index 28b88092b4aa..def5f91dc343 100644
+> > --- a/drivers/iio/adc/ad7298.c
+> > +++ b/drivers/iio/adc/ad7298.c
+> > @@ -155,8 +155,9 @@ static irqreturn_t ad7298_trigger_handler(int irq, void *p)
+> >  	if (b_sent)
+> >  		goto done;
+> >  
+> > -	iio_push_to_buffers_with_timestamp(indio_dev, st->rx_buf,
+> > -		iio_get_time_ns(indio_dev));
+> > +	iio_push_to_buffers_with_ts(indio_dev, st->rx_buf,  
+> 
+> Does this one actually have enough room in rx_buf for 9 16-bit channels and a
+> an aligned timestamp?
+
+Only 8 channels have scan_index != -1 so this is fine I think.
+-1 is magic for don't allow this one to be used in buffered mode.
+
+> 
+> __be16	rx_buf[12] __aligned(IIO_DMA_MINALIGN);
+> 
+> 
+> > +				    sizeof(st->rx_buf),
+> > +				    iio_get_time_ns(indio_dev));
+> >  
+> >  done:
+> >  	iio_trigger_notify_done(indio_dev->trig);  
+> 
+> ...
+> 
+> > diff --git a/drivers/iio/adc/ad7606.c b/drivers/iio/adc/ad7606.c
+> > index 631e83717167..3ffa11b2e060 100644
+> > --- a/drivers/iio/adc/ad7606.c
+> > +++ b/drivers/iio/adc/ad7606.c
+> > @@ -679,8 +679,8 @@ static irqreturn_t ad7606_trigger_handler(int irq, void *p)
+> >  	if (ret)
+> >  		goto error_ret;
+> >  
+> > -	iio_push_to_buffers_with_timestamp(indio_dev, &st->data,
+> > -					   iio_get_time_ns(indio_dev));
+> > +	iio_push_to_buffers_with_ts(indio_dev, &st->data, sizeof(st->data),  
+> 
+> This one might need ALIGNED in the buffer declarations. I'm working on this
+> driver though, so can fix it up.
+Corner case.  It's actually fine because IIO_DMA_MINALIGN is >= 8 but
+that's not obvious and may not remain true for all future architectures so
+indeed good to tidy that up at somepoint with the additional markings.
+
+> 
+> > +				    iio_get_time_ns(indio_dev));
+> >  error_ret:
+> >  	iio_trigger_notify_done(indio_dev->trig);
+> >  	/* The rising edge of the CONVST signal starts a new conversion. */
+> > diff --git a/drivers/iio/adc/ad7768-1.c b/drivers/iio/adc/ad7768-1.c
+> > index 5a863005aca6..4eb586d473ce 100644
+> > --- a/drivers/iio/adc/ad7768-1.c
+> > +++ b/drivers/iio/adc/ad7768-1.c
+> > @@ -474,8 +474,9 @@ static irqreturn_t ad7768_trigger_handler(int irq, void *p)
+> >  	if (ret < 0)
+> >  		goto out;
+> >  
+> > -	iio_push_to_buffers_with_timestamp(indio_dev, &st->data.scan,
+> > -					   iio_get_time_ns(indio_dev));
+> > +	iio_push_to_buffers_with_ts(indio_dev, &st->data.scan,
+> > +				    sizeof(st->data.scan),  
+> 
+> This one could use aligned_s64 on the timestamp.
+Definitely. Another bug I'll put a separate fix in for this.
+
+> 
+> > +				    iio_get_time_ns(indio_dev));
+> >  
+> >  out:
+> >  	iio_trigger_notify_done(indio_dev->trig);  
+> 
+> ...
+> 
+> > diff --git a/drivers/iio/adc/ad7923.c b/drivers/iio/adc/ad7923.c
+> > index 87945efb940b..0369151c7db1 100644
+> > --- a/drivers/iio/adc/ad7923.c
+> > +++ b/drivers/iio/adc/ad7923.c
+> > @@ -207,8 +207,8 @@ static irqreturn_t ad7923_trigger_handler(int irq, void *p)
+> >  	if (b_sent)
+> >  		goto done;
+> >  
+> > -	iio_push_to_buffers_with_timestamp(indio_dev, st->rx_buf,
+> > -					   iio_get_time_ns(indio_dev));
+> > +	iio_push_to_buffers_with_ts(indio_dev, st->rx_buf, sizeof(st->rx_buf),  
+> 
+> This one is similar to ad7298 but doesn't have a temperature channel, so
+> probably OK. Still could use ALIGNED in the buffer declaration to make it more
+> obvious that we have a timestamp.
+
+Also relies on IIO_DMA_MINALIGN >= 8
+It's a bit messy to force alignment twice so I'll leave this for now.
+
+> 
+> > +				    iio_get_time_ns(indio_dev));
+> >  
+> >  done:
+> >  	iio_trigger_notify_done(indio_dev->trig);
+> > diff --git a/drivers/iio/adc/dln2-adc.c b/drivers/iio/adc/dln2-adc.c
+> > index a1e48a756a7b..5ffb4b5f5c99 100644
+> > --- a/drivers/iio/adc/dln2-adc.c
+> > +++ b/drivers/iio/adc/dln2-adc.c
+> > @@ -488,8 +488,8 @@ static irqreturn_t dln2_adc_trigger_h(int irq, void *p)
+> >  		       (void *)dev_data.values + t->from, t->length);
+> >  	}
+> >  
+> > -	iio_push_to_buffers_with_timestamp(indio_dev, &data,
+> > -					   iio_get_time_ns(indio_dev));
+> > +	iio_push_to_buffers_with_ts(indio_dev, &data, sizeof(data),  
+> 
+> Could use aligned_s64 on timestamp_space.
+
+This one is more subtle as the structure is big enough but the overall
+structure might be misaligned. I'll add a patch fixing it but not sure
+it is suitable for a backport.
+
+> 
+> > +				    iio_get_time_ns(indio_dev));
+> >  
+> >  done:
+> >  	iio_trigger_notify_done(indio_dev->trig);  
+> 
+> ...
+> 
+> > diff --git a/drivers/iio/adc/mxs-lradc-adc.c b/drivers/iio/adc/mxs-lradc-adc.c
+> > index 8f1e6acea53b..92baf3f5f560 100644
+> > --- a/drivers/iio/adc/mxs-lradc-adc.c
+> > +++ b/drivers/iio/adc/mxs-lradc-adc.c
+> > @@ -425,7 +425,8 @@ static irqreturn_t mxs_lradc_adc_trigger_handler(int irq, void *p)
+> >  		j++;
+> >  	}
+> >  
+> > -	iio_push_to_buffers_with_timestamp(iio, adc->buffer, pf->timestamp);
+> > +	iio_push_to_buffers_with_ts(iio, adc->buffer, sizeof(adc->buffer),  
+> 
+> u32			buffer[10] __aligned(8);
+> 
+> Technically OK, but could use ALIGN. There are some other drivers like this
+> but I won't call all of them out since they should be OK.
+
+You mean to calculate the number of entrees in the array?
+
+Jonathan
+
+> 
+> > +				    pf->timestamp);
+> >  
+> >  	iio_trigger_notify_done(iio->trig);
+> >    
+> 
+> ...
+> 
+> > diff --git a/drivers/iio/adc/stm32-adc.c b/drivers/iio/adc/stm32-adc.c
+> > index 5dbf5f136768..32e7938b3892 100644
+> > --- a/drivers/iio/adc/stm32-adc.c
+> > +++ b/drivers/iio/adc/stm32-adc.c
+> > @@ -1858,8 +1858,8 @@ static irqreturn_t stm32_adc_trigger_handler(int irq, void *p)
+> >  
+> >  	/* reset buffer index */
+> >  	adc->bufi = 0;
+> > -	iio_push_to_buffers_with_timestamp(indio_dev, adc->buffer,
+> > -					   pf->timestamp);
+> > +	iio_push_to_buffers_with_ts(indio_dev, adc->buffer, sizeof(adc->buffer),  
+> 
+> u16			buffer[STM32_ADC_MAX_SQ + 4] __aligned(8);
+> 
+> Could use ALIGN for timestamp instead of assuming STM32_ADC_MAX_SQ * 2 is the
+> correct alignment. There are also a few more drivers like this that depend on
+> a macro being even or multiple of 4 to get the correct alignment, which seems
+> like it could be fragile, e.g. if a temperature channel was added.
+> 
+> > +				    pf->timestamp);
+> >  	iio_trigger_notify_done(indio_dev->trig);
+> >  
+> >  	/* re-enable eoc irq */  
+> 
+> ...
+> 
+> 
 
 

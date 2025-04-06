@@ -1,137 +1,181 @@
-Return-Path: <linux-iio+bounces-17653-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17654-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F9E6A7CB34
-	for <lists+linux-iio@lfdr.de>; Sat,  5 Apr 2025 20:25:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E88E2A7CD63
+	for <lists+linux-iio@lfdr.de>; Sun,  6 Apr 2025 11:07:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A57B9177CAF
-	for <lists+linux-iio@lfdr.de>; Sat,  5 Apr 2025 18:25:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C7DDC16DE48
+	for <lists+linux-iio@lfdr.de>; Sun,  6 Apr 2025 09:07:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7DDF1A23BB;
-	Sat,  5 Apr 2025 18:25:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B0A219E96A;
+	Sun,  6 Apr 2025 09:07:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="im0xEPSG"
+	dkim=pass (2048-bit key) header.d=it-klinger.de header.i=@it-klinger.de header.b="RCiVDabu"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from www571.your-server.de (www571.your-server.de [78.46.3.230])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23B82199E94;
-	Sat,  5 Apr 2025 18:25:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D93F3186E20;
+	Sun,  6 Apr 2025 09:07:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.46.3.230
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743877515; cv=none; b=b3z65htrNl3dCNGmdaldsJwRia/3xCv6kuE4Z6LoeLqjDRKH9JO9YFZAg6zYpeiokliCLQEXXGwLjfZJrBApWuu2jJKC3hv1wVk2emsULb+T9JwKm4LS7qxbvrFyun3qExFhJbk+PV+Iq9Gt5xN2Croa76LcgMR8mwBdbxQeQjw=
+	t=1743930466; cv=none; b=GdhcfWK/keNuwJB48yF7zNYYYXfoL952y0cvqphPN/bmHu/1/JZJfKL53/uvXCY59ae8rcZAfp+WummRsgvM3FkvA07DS2Uh7b/zwTmRqW2kMB+pzPfw3J4gN1vJhgmktyQTa/73FbIaoe8oFvRAXY9xehVuU+0FNYLO4y+nwak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743877515; c=relaxed/simple;
-	bh=Kmh0m40Q+BhvO7eXvmH87q7FUqp9NDHftacPbN+IbLM=;
+	s=arc-20240116; t=1743930466; c=relaxed/simple;
+	bh=+PWWCS63/CbxJpONq3AEhtxPWS3WKuwnVusvHLRtnAw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bF9iRw2jrdsiOD7NOfUATwWlR4FeG85PhuGZH+mdO/huLycSS+m6x+maEnffrpmX4Acw5RRA4aSntGmrXvZgzvKBBd/zQtd2I8GhHTc+APndPMqZRdDXSs1RUBb872C1VqWZveeMjBup5UXP/+VPXkMg0LvXqWwYiRHPxFzhdJk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=im0xEPSG; arc=none smtp.client-ip=209.85.210.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-73712952e1cso2784675b3a.1;
-        Sat, 05 Apr 2025 11:25:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743877513; x=1744482313; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=F7ewSWaS2GVG56nYgK2WLjkB3agbziznkvkwItHJZzw=;
-        b=im0xEPSGmEFBxvbE8XOOx6aDE4yNAq6C5pIA2e5K6dGa/K7OcbnapO1fgT80fUHwLX
-         UyPriJtyhuM8+QTmLfOyfvkB9OwRYNV3qQ4eBCnRK/9OnOMvhcgx5SCPAiOkZuXOUe/5
-         +zADmoLcYz9XdNGo0i+U9LgE7BwDB+vqiF/5pSkK7emZsmXVLpkwn1fDZpZeLHsMtvf+
-         qO9nbGTPAAUt8C2NwvKe3ZdiUFRX4pXebwaG6K5ZSDOzXBdwGGDj3NlpVxPsT83/+B0b
-         Ztyp0RXNrkvlUr1l8NUDg2lPGdZisnxpSgxZ2egPbd6isG/oEKHUt9qyJ+ScdM1NpUGr
-         UEfw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743877513; x=1744482313;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=F7ewSWaS2GVG56nYgK2WLjkB3agbziznkvkwItHJZzw=;
-        b=TOCoVdTu1pj2zVqSJxLrY2ZxH0hLkW9EvBIvOHOdEwHbH2xXCRyOEDyKvjStaFL1FO
-         HnS/JX7/9sVDjJGzipCfhWgcr64cCSO2KeM5Jimi85VetT5zKDxVzKNeeSXVy+Q4ShPy
-         iznsgjKuAAjsmpuLRPgvzrGEbGQU0Puxyhmr7Bo42kzlfNoNqqscaPUdN3CKNoxjXMgR
-         dC3wGm7+XLUlzcJCPXklqf0VZw+k1NK/pRc/BoktAnt+Sx2di7QDbq2qtttn9vTMslE8
-         uQesS1rfDDtBZh2j0wUSPFgsfVIN9YWrwYkCOIS2qVkqezJrMRRRpmwb2t5fVh2bCw/k
-         YZug==
-X-Forwarded-Encrypted: i=1; AJvYcCXebsoQm3k7yW6ilq6CmlSDlDfRaoRpnLWGDYNAQpUGP697FPxlOvqwAwOsiYL3VP7YWWd2WXUlufA=@vger.kernel.org, AJvYcCXehtWO0puOyrrmsoKdl0eDfjjK2yD4KxsEpoFxEmk1EqTbxFgqbOImcqMNW80ELKwTS9ldFvaMGzvoodrK@vger.kernel.org
-X-Gm-Message-State: AOJu0YxraC1hEaUKVcxyJF7VVSRIo24t92SoKHUbBlTf7K0eAahjdHfi
-	IM+3b//7+lFDb+znekB4v6cmTn6RYfug7NcQAk3zZqTKYaMZA+v9
-X-Gm-Gg: ASbGnctuTZgxBsIu0QR7Ao0jv1QP8B3Ddf6LgfN5FV0cxkYPQYfFFUSfBzsEyeXT1v9
-	DK7Vq5CCorXwdoQUoShKKhSJFT7ZGPwVITb0oIKr4iW4urIu6ocsMch4aJpUdxsSvS65tBALxm/
-	KM4vkZqxYX1rLdQSj039EFctAV+IHO6YCYXdgcgGTf+Cr1ctmPVnYkmX+6gx/t9QKfglyXw5Z56
-	9r2yJBSZdYPiO4yhFsBcIcD3AxT53q7YQ/JsrxoKmKQbB+WlqCkYP82WD+9rIi2Mkb8QSTzaqCj
-	zyrLWNx+dCJWaqtRMk+x8FKofBw8XAFGAWJYy2qrGIPgfmHRLbJ0rLE=
-X-Google-Smtp-Source: AGHT+IFO1XcsQBOIYFVKaw4dyooP2Io5d1+/q+uwLQDAK9JS5XR9w23ocEXj/CPJYCJ4P5CoT1Pwsg==
-X-Received: by 2002:a05:6a21:3942:b0:1f5:59e5:8adb with SMTP id adf61e73a8af0-20103fd9495mr11402778637.0.1743877513060;
-        Sat, 05 Apr 2025 11:25:13 -0700 (PDT)
-Received: from localhost ([2804:30c:1f4f:6800:9245:316f:6226:cc1e])
-        by smtp.gmail.com with UTF8SMTPSA id d2e1a72fcca58-739d9ea0a71sm5500382b3a.113.2025.04.05.11.25.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 05 Apr 2025 11:25:12 -0700 (PDT)
-Date: Sat, 5 Apr 2025 15:26:17 -0300
-From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-To: Saalim Quadri <danascape@gmail.com>
-Cc: jic23@kernel.org, dragos.bogdan@analog.com, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, marcelo.schmitt@analog.com
-Subject: Re: GSoC Proposal 2025
-Message-ID: <Z_F1ybM7B3g2WHvx@debian-BULLSEYE-live-builder-AMD64>
-References: <20250309161905.4b029278@jic23-huawei>
- <20250405062348.43025-1-danascape@gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=J4PaXMyOkRavowha/7v+vY0GJJ3DLFhxbQDDykvzRsDwntBXrVUftWYbS4SBXPvfvqvTsKsdL0qBaUAhyWWoSMAVgkJDvVH/2JnEQRKHZFCuZNfWGOMYKLNq6o0aG9rvsjveEz7y57jrCIDtSqt694rUT2IW7qwMG43H1c1RX3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=it-klinger.de; spf=pass smtp.mailfrom=it-klinger.de; dkim=pass (2048-bit key) header.d=it-klinger.de header.i=@it-klinger.de header.b=RCiVDabu; arc=none smtp.client-ip=78.46.3.230
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=it-klinger.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=it-klinger.de
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=it-klinger.de; s=default2502; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=mhp6ovL8zavoyaSxkv5HYHmsZacM5L2V4hmeVvMF4l4=; b=RCiVDabuoQ59c0QZCA399+Bwv6
+	5ORzt0YRL5HT1GFyd264QOsg6XJ3+8FLBUZh7So2Iu9wGw0tBNqM3Na2YGTaTDHcTgprycmR5Q/WJ
+	UnUKlYZDcsOWKSK1NrTn3F+LOjinv3T0KFJqO+kCoi7kzTpNEigCSYXmyHOXKBPfa+qzVhmXOaXgw
+	wXNOvjqew3x9s55pyh3v2SAzCTCN/RxUWtPqObMOX+m110Ei6y+ST96ngSaFLCz4kP+qoSdspNLC3
+	wzxgoccsTY0xa79rikNuTNzyzkvFd0eBIchyvugd8KRbVuaYgorWG70U4SGvJ4vuaKHf5zU/cgZsk
+	g7CjKDbw==;
+Received: from sslproxy05.your-server.de ([78.46.172.2])
+	by www571.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <ak@it-klinger.de>)
+	id 1u1LbB-000MBB-2l;
+	Sun, 06 Apr 2025 10:43:25 +0200
+Received: from [31.220.115.242] (helo=mail.your-server.de)
+	by sslproxy05.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ak@it-klinger.de>)
+	id 1u1LbB-000LS7-1S;
+	Sun, 06 Apr 2025 10:43:25 +0200
+Date: Sun, 6 Apr 2025 10:43:23 +0200
+From: Andreas Klinger <ak@it-klinger.de>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	lars@metafoo.de, linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	javier.carrasco.cruz@gmail.com, mazziesaccount@gmail.com,
+	subhajit.ghosh@tweaklogic.com, muditsharma.info@gmail.com,
+	arthur.becker@sentec.com, ivan.orlov0322@gmail.com
+Subject: Re: [PATCH 2/3] iio: light: add support for veml6046x00 RGBIR color
+ sensor
+Message-ID: <Z_I-qwzUrTNz1DZp@mail.your-server.de>
+References: <20250316113131.62884-1-ak@it-klinger.de>
+ <20250316113131.62884-3-ak@it-klinger.de>
+ <20250317115005.72a539a0@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="OfXP2FohRUruAtNP"
 Content-Disposition: inline
-In-Reply-To: <20250405062348.43025-1-danascape@gmail.com>
+In-Reply-To: <20250317115005.72a539a0@jic23-huawei>
+X-Authenticated-Sender: ak@it-klinger.de
+X-Virus-Scanned: Clear (ClamAV 1.0.7/27599/Sat Apr  5 10:34:42 2025)
 
-Hi Saalim,
 
-On 04/05, Saalim Quadri wrote:
-> Thank you very much for the responses, albeit late, it took me sometime
-> I was studying about the working on IIO, and the proposed driver on the GSoC page [1]
-> 
-> This is my draft proposal: [2]
-> I am continuing on the same thread, as you mentioned, to keep it on the public list.
-> I have enabled comments, to ease up the review on your end, such that you can identify if any issue is present and point it out.
-> 
-> My major doubt in the proposal is regarding the timeline of the project.
+--OfXP2FohRUruAtNP
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-I've added a proposal template to the IIO project page. The template has a
-timeline initial draft. You may check out the template and adapt/extend the
-initial timeline from there.
+Hi Jonathan,
 
-Elaborating a good work plan is probably the hardest part of making a good
-proposal and requires students to either study the provided material in the
-project page or have some development experience (or both). The work schedule
-doesn't need to describe everything in detail, but the more reasonable your plan
-to achieve project goals is, the better it may convey you as a good candidate.
+I need to pick up the meaning of scale once again for clarification.
 
-I'll review all proposals after they are submitted.
+Jonathan Cameron <jic23@kernel.org> schrieb am Mo, 17. M=C3=A4r 11:50:
+> On Sun, 16 Mar 2025 12:31:30 +0100
+> Andreas Klinger <ak@it-klinger.de> wrote:
+>=20
+> > +static int veml6046x00_get_scale(struct veml6046x00_data *data,
+> > +				 int *val, int *val2)
+>=20
+> How is this related to integration time?  I'd normally expect
+> to see that read in here somewhere as well as doubling integration
+> time tends to double scale.
 
-> 
-> I also would like to suggest, if we are able to complete our first driver before the evaluation, then we can discuss working on
-> a second sensor, if that is alright and if we are able to complete it within the time.
+In the documentation file "sysfs-bus-iio" it says:
+"
+What:           /sys/.../iio:deviceX/in_illuminanceY_raw
+[...]
+Description:
+                Illuminance measurement, units after application of scale
+                                and offset are lux.
+"
 
-When time and energy allow, the sky is the limit. My estimation, though, is that
-developing a driver for one part will be more than enough work for a GSoC.
-Still, if you are excited about doing more for IIO, then sure, add that to your
-proposal.
+This means that the scale should be the real factor and not the gain multip=
+lied
+by photodiode size (PDDIV) as i implemented it so far.
 
-> 
-> [1]: https://wiki.linuxfoundation.org/gsoc/2025-gsoc-iio-driver
-> [2]: https://docs.google.com/document/d/18R_ZNWn36mAG9gb2TqepuxBwj-Hck3CrZHFfWUuNmyo/edit?usp=sharing
-> 
-> Thank you very much,
-> 
-> Sincerely,
-> Saalim Quadri
+This means also that doubling integration time should halve the scale. The
+higher raw value should lead to the same lux value.
 
-Regards,
-Marcelo
+The documentation of the sensor (veml6046x00.pdf) provides us the calculati=
+on
+between raw green values and lux.
+Wouldn't it be better to give the user the real factor to be able to get lu=
+x?
+
+The fact that only the green channel can be used for calculation could be
+documented in the driver.
+
+Then i found the "in_illuminance_hardwaregain" property. It seems that this=
+ is
+exactly what the combination of gain and PDDIV is used for.
+
+So what is the scale at the moment could become the hardwaregain and the sc=
+ale
+the factor from raw value to lux.
+
+
+To sum up the suggested interface under /sys/bus/iio/devices/iio\:deviceX w=
+ould
+be something like:
+
+in_illuminance_hardwaregain --> set and get gain and PDDIV on the sensor
+
+integration_time            --> set and get integration time on the sensor
+
+integration_time_available  --> show available integration time values
+
+scale                       --> (only) get real calculation value, taken fr=
+om
+                                sensor documenation, e.g. 1.3440
+
+scale_available             --> not existing anymore
+
+
+What do you think?
+
+Andreas
+
+
+--OfXP2FohRUruAtNP
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQGzBAABCgAdFiEE7/NrAFtB/Pj7rTUyyHDM+xwPAVEFAmfyPqsACgkQyHDM+xwP
+AVGLqwv/baxRfp2PxoUBztYueZOw/nCf/0TWvxbwS+onIe8CUgUsJsyeV24ij/Ff
+XUhfyo1PZZqYCSfoJ2T353NAP5e2htqrhJmZ49Mj9MOh82bXxORBuUc0pyRFlzIJ
+C4bwFG2tU5ToIMRMWI3S9nZJDpKyyVK2A4xYwfZ4CXdg9rRrh6SEJll6AyL/huTA
+RwqTBlJgz7r62ZW+Zh3LYLQ5FUcVh4Rald4F+SO0r4H2xT92xvs1PhoDMNh4w+jK
+goLmmMYtsV6PuRgWCqotl1+9tdMnQh6O49VMa3I57mQlD8naQNDVDq7x+yBbPrS0
+JlJFQyVoM/s3OSmpw8Et6TyjJn848klSEIdiZpPk0Yea2/g0ez0IO+eDZk32TzJM
+3xviaZcDNa678t42Xzxkxb6OxFNiSfVmo5glD8Iq7DDp3mdwpNqd9vdROsPV0aOx
+ZpSwDiMUTWsn8OXLzpLtbE56o5RcmsvK6ZE/tjhl6EdrYxOhAJfcCqZBVYjenF3P
+N7YJRdJq
+=wPB5
+-----END PGP SIGNATURE-----
+
+--OfXP2FohRUruAtNP--
 

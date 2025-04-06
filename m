@@ -1,55 +1,55 @@
-Return-Path: <linux-iio+bounces-17701-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17702-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92D1EA7CF26
-	for <lists+linux-iio@lfdr.de>; Sun,  6 Apr 2025 19:20:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30BBBA7CF27
+	for <lists+linux-iio@lfdr.de>; Sun,  6 Apr 2025 19:21:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 50C1A188D5D8
-	for <lists+linux-iio@lfdr.de>; Sun,  6 Apr 2025 17:21:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 78C9316BD7F
+	for <lists+linux-iio@lfdr.de>; Sun,  6 Apr 2025 17:20:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99D5E18BB8E;
-	Sun,  6 Apr 2025 17:20:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 233FA187346;
+	Sun,  6 Apr 2025 17:20:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GviZu8I7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZVYHUsRv"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 599931487F6
-	for <linux-iio@vger.kernel.org>; Sun,  6 Apr 2025 17:20:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D54B71487F6
+	for <linux-iio@vger.kernel.org>; Sun,  6 Apr 2025 17:20:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743960055; cv=none; b=QhEeZD3/aPQlFAAH91qmkfl6Owfc1fv0b669mlpBpE/l+p9YEsNLfXzEh3rW4E/RkacqYCjwWjCMc5QWXRHePu8xzVTwlNzynWgoPMOV6y6BofxJcBwk+ZmHF3h+y6PtNgi0ccqTaV62nKy/9xOmWmspUObvPblNe4k8AeA90LQ=
+	t=1743960057; cv=none; b=gtbE/RzRDpjtiaTk6HJQcKH7s7g9vh5tR2UIACacRsZjSXXjz0XxAuCLBJu3lCywb1ZD/aGsp121GdKEutVz+UU23I6QY/l2dcGG7KsfMuY8xo5XlQaTN0/je4t2v+yc04qVG5zONgb7U8S4Z6CzNb5qCcapM5d5PZaNA8Hp5Hc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743960055; c=relaxed/simple;
-	bh=9uy1gDWjKJ2sFZwUHmxI8KKbNHVtzGcCIRyEpJTX0Rc=;
+	s=arc-20240116; t=1743960057; c=relaxed/simple;
+	bh=n7wIqSLwJOIAOMsQrvyspqYXyNkAYFwi+RB/2RRduzQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qisheIvGH1UFKeFbBzxzmuttXgedCIiAEXGA2wMKzsejS4OrvAkFahtMR98NGJFFehScDDoGPuhELxt24yM5k3VUdgcRpEJHQq0yFeq6O0Z7p4gFg1azUKMa1qnjFd/LQYz/SRUXbrocsuy5+9fKz+Pd1Mc2Te0rirwewTXG6vg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GviZu8I7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E02D3C4CEE3;
-	Sun,  6 Apr 2025 17:20:52 +0000 (UTC)
+	 MIME-Version; b=Y35azBXlYRA42nlIVS+o8x3c34tvbk7j00bh3XpCE75YtXRdcHtF2p5Kut0OnIxIhETsga2D6Y0YB460+boo6JtwvA7VULJMjcwGSdoscWMPOa4ixMQhv8ZzqVLpWUT/vb8VyYBYq6H1YWM0AD12I91t6LjMFF1uLG4xOg0tRUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZVYHUsRv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16203C4CEE3;
+	Sun,  6 Apr 2025 17:20:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743960055;
-	bh=9uy1gDWjKJ2sFZwUHmxI8KKbNHVtzGcCIRyEpJTX0Rc=;
+	s=k20201202; t=1743960057;
+	bh=n7wIqSLwJOIAOMsQrvyspqYXyNkAYFwi+RB/2RRduzQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GviZu8I7RAEO7rj5yNvruclX5icAt17Tl/uprFSluuyBqpohOWLkAVvkB3+LBjuDQ
-	 n4gib2qES2++2BbWGbf9+8OGCCBB25E4rDmE6omZTBMouzbIxA9z1GEtbEdwNg2oQj
-	 qzeOT/FRlkFidHjT7fujh+V9f2TB8r8QNpGhmRNxn+Cyn53Rj/ZeBOG1FPeSUCzoHK
-	 o3xtErq1UZGZhRtKZHx/QEhTLqutTesEwtTVM8o5niQJ9Jx7UWubVGsGVBZj5+i8aJ
-	 U7YMq2qBGVS3a+xcl1TxW85f1zst1WbZRLFxAHwtdXF0RGBLmaPBKf35G7sERqhTjs
-	 01Fm2sSmI+9lA==
+	b=ZVYHUsRvyaDzauNi6iUxqYZP8Jlg4889Q8V8Gt5obDW4wHuQvsoKH+D/KSkdHYvO9
+	 4pONtKOW+9xAhEebhr8rIS5cDFbs4VAZbgdIbiQnFzXs1z7/Xwdhh41Guk56YZlgfI
+	 AcuJz4Te+3bxj5jgiXpqJ7hdl/Xnkc3ks/Dt3cdg8siF6v49KhXrd6LIfw0ABg9cZN
+	 SA5lFHxJB80YTX3bKHm0Ob8eL/tv+wgeQe8V1uaCWxX/6XM9lZWInjiHgA8Q3xj5BK
+	 CljoGtps4grCoMArfGAOD7yvrrX3NgOTYIQ4plsayagKy5zw/FPpZo3fujdOjlkb4r
+	 zk1G2c1pu6WzQ==
 From: Jonathan Cameron <jic23@kernel.org>
 To: linux-iio@vger.kernel.org,
 	David Lechner <dlechner@baylibre.com>,
 	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
 	Andy Shevchenko <andy@kernel.org>
 Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH v2 13/20] iio: temp: maxim-thermocouple: Fix potential lack of DMA safe buffer.
-Date: Sun,  6 Apr 2025 18:19:54 +0100
-Message-ID: <20250406172001.2167607-14-jic23@kernel.org>
+Subject: [PATCH v2 14/20] iio: temperature: Use iio_push_to_buffers_with_ts() to provide length for runtime checks.
+Date: Sun,  6 Apr 2025 18:19:55 +0100
+Message-ID: <20250406172001.2167607-15-jic23@kernel.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250406172001.2167607-1-jic23@kernel.org>
 References: <20250406172001.2167607-1-jic23@kernel.org>
@@ -63,33 +63,64 @@ Content-Transfer-Encoding: 8bit
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-The trick of using __aligned(IIO_DMA_MINALIGN) ensures that there is
-no overlap between buffers used for DMA and those used for driver
-state storage that are before the marking. It doesn't ensure
-anything above state variables found after the marking. Hence
-move this particular bit of state earlier in the structure.
+This new function allows us to perform debug checks in the helper to ensure
+that the overrun does not occur.  Use it in all the simple cases where
+either a static buffer or a structure is used in the drivers.
 
-Fixes: 10897f34309b ("iio: temp: maxim_thermocouple: Fix alignment for DMA safety")
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/temperature/maxim_thermocouple.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/temperature/hid-sensor-temperature.c | 5 +++--
+ drivers/iio/temperature/maxim_thermocouple.c     | 5 +++--
+ drivers/iio/temperature/tmp006.c                 | 4 ++--
+ 3 files changed, 8 insertions(+), 6 deletions(-)
 
+diff --git a/drivers/iio/temperature/hid-sensor-temperature.c b/drivers/iio/temperature/hid-sensor-temperature.c
+index 692520e1c497..005106a9e03b 100644
+--- a/drivers/iio/temperature/hid-sensor-temperature.c
++++ b/drivers/iio/temperature/hid-sensor-temperature.c
+@@ -131,8 +131,9 @@ static int temperature_proc_event(struct hid_sensor_hub_device *hsdev,
+ 	struct temperature_state *temp_st = iio_priv(indio_dev);
+ 
+ 	if (atomic_read(&temp_st->common_attributes.data_ready))
+-		iio_push_to_buffers_with_timestamp(indio_dev, &temp_st->scan,
+-						   iio_get_time_ns(indio_dev));
++		iio_push_to_buffers_with_ts(indio_dev, &temp_st->scan,
++					    sizeof(temp_st->scan),
++					    iio_get_time_ns(indio_dev));
+ 
+ 	return 0;
+ }
 diff --git a/drivers/iio/temperature/maxim_thermocouple.c b/drivers/iio/temperature/maxim_thermocouple.c
-index a13efde76397..db2149d5f78c 100644
+index db2149d5f78c..2db13d381dbd 100644
 --- a/drivers/iio/temperature/maxim_thermocouple.c
 +++ b/drivers/iio/temperature/maxim_thermocouple.c
-@@ -120,9 +120,9 @@ static const struct maxim_thermocouple_chip maxim_thermocouple_chips[] = {
- struct maxim_thermocouple_data {
- 	struct spi_device *spi;
- 	const struct maxim_thermocouple_chip *chip;
-+	char tc_type;
+@@ -168,8 +168,9 @@ static irqreturn_t maxim_thermocouple_trigger_handler(int irq, void *private)
  
- 	u8 buffer[16] __aligned(IIO_DMA_MINALIGN);
--	char tc_type;
- };
+ 	ret = spi_read(data->spi, data->buffer, data->chip->read_size);
+ 	if (!ret) {
+-		iio_push_to_buffers_with_timestamp(indio_dev, data->buffer,
+-						   iio_get_time_ns(indio_dev));
++		iio_push_to_buffers_with_ts(indio_dev, data->buffer,
++					    sizeof(data->buffer),
++					    iio_get_time_ns(indio_dev));
+ 	}
  
- static int maxim_thermocouple_read(struct maxim_thermocouple_data *data,
+ 	iio_trigger_notify_done(indio_dev->trig);
+diff --git a/drivers/iio/temperature/tmp006.c b/drivers/iio/temperature/tmp006.c
+index b5c94b7492f5..29bff9d8859d 100644
+--- a/drivers/iio/temperature/tmp006.c
++++ b/drivers/iio/temperature/tmp006.c
+@@ -269,8 +269,8 @@ static irqreturn_t tmp006_trigger_handler(int irq, void *p)
+ 		goto err;
+ 	scan.channels[1] = ret;
+ 
+-	iio_push_to_buffers_with_timestamp(indio_dev, &scan,
+-					   iio_get_time_ns(indio_dev));
++	iio_push_to_buffers_with_ts(indio_dev, &scan, sizeof(scan),
++				    iio_get_time_ns(indio_dev));
+ err:
+ 	iio_trigger_notify_done(indio_dev->trig);
+ 	return IRQ_HANDLED;
 -- 
 2.49.0
 

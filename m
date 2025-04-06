@@ -1,60 +1,63 @@
-Return-Path: <linux-iio+bounces-17660-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17661-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0782A7CD9F
-	for <lists+linux-iio@lfdr.de>; Sun,  6 Apr 2025 12:54:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3644A7CDAE
+	for <lists+linux-iio@lfdr.de>; Sun,  6 Apr 2025 13:09:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B420188D488
-	for <lists+linux-iio@lfdr.de>; Sun,  6 Apr 2025 10:54:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A52A23B293A
+	for <lists+linux-iio@lfdr.de>; Sun,  6 Apr 2025 11:08:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9856019C546;
-	Sun,  6 Apr 2025 10:54:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36C991C549E;
+	Sun,  6 Apr 2025 11:08:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fr5Ff5x4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qxrpw9x/"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 585FF1C27
-	for <linux-iio@vger.kernel.org>; Sun,  6 Apr 2025 10:54:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAF5D1C3BE3;
+	Sun,  6 Apr 2025 11:08:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743936866; cv=none; b=oTH/Z2V7Fejf9YPE7fnzhlvV5BXA+IBNvnb0rHo89E3sZLXmVqYn575A4nUaeKJCNV7rrCO071wn/Z6xilf+3ZLz+J6sMCtDFKXCN3YcLnSl0j5RBtFVzIZrYTnafxDa1Cq9JW6gbLzpH397pNKTHdAsRo7O4ofOC5nu5ZnOeV4=
+	t=1743937715; cv=none; b=kxrEIbtKQpkf0NSNLv9UlnIAyLtuZcNoYmwKaYgXfDWkEuKgcyzTCmNErwNg2Q7vxG8AXNxDbEES9/UfIONquQt0tEDf5uIOJYYbgWbixvXTa5/HX/keV18nhy1IN+f2SpGNu2MCWmOiEZSHkH/sg7Iww2O0F6EhhcH4aVLRnWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743936866; c=relaxed/simple;
-	bh=AI3VwxhC48ab58YuPeSp4QwxNjpNQsANwom2Wa6mlbU=;
+	s=arc-20240116; t=1743937715; c=relaxed/simple;
+	bh=oBmAzxjhp7mJqD6p6LasQZgVUcBakosqINxBsK7ZtXs=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eIM0nzYRbb8VQ1gvzOhtuneM4GbDlts8j9dCh/EyvRpCKfT9x7CYPJ2Dq6ZiLwCZ+Wvkm8HEyE7A7ZJE8TgglWnIeMXwc6MvhbmVzaVkwkMjknt/Wy8InyoYGbE6yBA8FlrG5AZw3B6NDOJAQ2HjxBNGzxj95idVNDkcND1ZJPs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fr5Ff5x4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FF80C4CEE3;
-	Sun,  6 Apr 2025 10:54:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=nPkR8FmvPaZz1Gxzfr6iXLc26xgxLtKUFrrRgfuwdisy7g5keYq+g1wkuGVdmTkUleq1niKL526VrEtQwBlpnaAmsoa087FgMd5mH+hGToKA0eus3s0Sowoe6pHfQYIju/uZFeKNXeZgG9EhqRkPy+o2pe4NZEQfGjAzep6y3Ss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qxrpw9x/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 150E4C4CEEA;
+	Sun,  6 Apr 2025 11:08:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743936865;
-	bh=AI3VwxhC48ab58YuPeSp4QwxNjpNQsANwom2Wa6mlbU=;
+	s=k20201202; t=1743937714;
+	bh=oBmAzxjhp7mJqD6p6LasQZgVUcBakosqINxBsK7ZtXs=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Fr5Ff5x4b8Hn0F3TDh5vhwKzwBB4T8h8nUI6sgzolzE0UQZpjoBvksUPeTqLk4lg3
-	 UgajN1Xv0DFpPwhJnXs5lT+L6GQg4UPlAhHXvfO/BjBfl0W11QRepTTsKM+n1beSfl
-	 nf9X5rDizpcXWkDV9m5P5QdiDy/N1xzE5IFSs/ZcOfAzXDtAp1N2PH4Q3vyfe+rVsW
-	 /K2Jm5wjqhG7kddDNmz/jW+ENp5Nt7IOv1LvW3LA9/wl5BxdX5hbzy2DAEnL6pdfiY
-	 ZvtNejS9L14heoku9xi8o7kRSuY9sBReV1/4mh5p3s9gFLVTmsAYFjOm0X9LW9DRVp
-	 7OjJptAyMlHVA==
-Date: Sun, 6 Apr 2025 11:54:18 +0100
+	b=qxrpw9x/zFnW1kQVc8EhU1TdH52+BExKfz5WOlP2aKjGoydpOuPDG0d4q17bZVeG3
+	 1XDbxZqu3pK0ztfe+buvsXyHyWeNq0S+Lu34mg+origft2rJzxnujIOHlBB4eFsKG0
+	 vcdgGSium+SHE4uimHqLuOoU6pdHxzhk0VQl/ZQ2f1QMpyqYbINM9isEk0mZb9AH1M
+	 G8sKM5ry4aOyfJjZEVL6fb9iAZB5aESPrnvePl1Y8C1gfe2YMxARUWH0ZUw/J2QUPa
+	 f0dPoUV2RiQqQoILvap/5Fr3kG/k2Z/u39NIbOPuOZQuWeqTzdIlWK08+48xfNskoX
+	 QCO98XgGNVm3w==
+Date: Sun, 6 Apr 2025 12:08:25 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <u.kleine-koenig@baylibre.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
- <Michael.Hennerich@analog.com>, Nuno =?UTF-8?B?U8Oh?=
- <noname.nuno@gmail.com>, linux-iio@vger.kernel.org
-Subject: Re: [PATCH v2 0/3] iio: adc: ad7124: Fix 3dB filter frequency
- reading
-Message-ID: <20250406115418.47f2d397@jic23-huawei>
-In-Reply-To: <20250331110214.1eec2513@jic23-huawei>
-References: <20250317115247.3735016-5-u.kleine-koenig@baylibre.com>
-	<20250317190031.22c822c4@jic23-huawei>
-	<fgd3vr46ijt3kr6onvtulmfulgbr2jpshcyk3dr2pvz7vqs2fq@mka4q2zqmpwe>
-	<20250331110214.1eec2513@jic23-huawei>
+To: Andreas Klinger <ak@it-klinger.de>
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ lars@metafoo.de, linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, javier.carrasco.cruz@gmail.com,
+ mazziesaccount@gmail.com, subhajit.ghosh@tweaklogic.com,
+ muditsharma.info@gmail.com, arthur.becker@sentec.com,
+ ivan.orlov0322@gmail.com, Matti Vaittinen <mazziesaccount@gmail.com>
+Subject: Re: [PATCH 2/3] iio: light: add support for veml6046x00 RGBIR color
+ sensor
+Message-ID: <20250406120825.41b2575c@jic23-huawei>
+In-Reply-To: <Z_I-qwzUrTNz1DZp@mail.your-server.de>
+References: <20250316113131.62884-1-ak@it-klinger.de>
+	<20250316113131.62884-3-ak@it-klinger.de>
+	<20250317115005.72a539a0@jic23-huawei>
+	<Z_I-qwzUrTNz1DZp@mail.your-server.de>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -65,75 +68,119 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, 31 Mar 2025 11:02:14 +0100
-Jonathan Cameron <jic23@kernel.org> wrote:
+On Sun, 6 Apr 2025 10:43:23 +0200
+Andreas Klinger <ak@it-klinger.de> wrote:
 
-> On Mon, 24 Mar 2025 10:44:52 +0100
-> Uwe Kleine-K=C3=B6nig <u.kleine-koenig@baylibre.com> wrote:
+> Hi Jonathan,
 >=20
-> > Hello Jonathan,
+> I need to pick up the meaning of scale once again for clarification.
+>=20
+> Jonathan Cameron <jic23@kernel.org> schrieb am Mo, 17. M=C3=A4r 11:50:
+> > On Sun, 16 Mar 2025 12:31:30 +0100
+> > Andreas Klinger <ak@it-klinger.de> wrote:
+> >  =20
+> > > +static int veml6046x00_get_scale(struct veml6046x00_data *data,
+> > > +				 int *val, int *val2) =20
 > >=20
-> > On Mon, Mar 17, 2025 at 07:00:31PM +0000, Jonathan Cameron wrote: =20
-> > > On Mon, 17 Mar 2025 12:52:46 +0100
-> > > Uwe Kleine-K=C3=B6nig <u.kleine-koenig@baylibre.com> wrote:
-> > >    =20
-> > > > Hello,
-> > > >=20
-> > > > (implicit) v1 of this patch set is available at
-> > > > https://lore.kernel.org/linux-iio/cover.1741801853.git.u.kleine-koe=
-nig@baylibre.com
-> > > > .
-> > > >=20
-> > > > Changes since then:
-> > > >=20
-> > > >  - Reorder patches to have the cleanup ("Make register naming
-> > > >    consistent") last
-> > > >  - Drop write support for the filter_low_pass_3db_frequency property
-> > > >    which is completely broken.
-> > > >  - trivially rebase to todays iio/togreg
-> > > >=20
-> > > > I wonder if there is a way to remove the writable permission of the
-> > > > filter_low_pass_3db_frequency sysfs file instead of erroring out wh=
-en a
-> > > > value is written. Hints welcome.   =20
-> > >=20
-> > > Unfortunately not. With a lot of hindsight that is a flaw in the way
-> > > we generate sysfs attributes. IIRC when hwmon added similar they
-> > > avoided that trap.  To retrofit it onto IIO now we'd have to have
-> > > some form of complex permissions query or duplicate all the masks
-> > > to allow r and w separately.   =20
-> >=20
-> > OK, fine for me, so I didn't miss anything :-)
-> >=20
-> > I have another patch in my queue for ad7124. For that it would be great
-> > to know if you intend to apply this patch set. If yes, I continue to
-> > build on top of this stack. =20
+> > How is this related to integration time?  I'd normally expect
+> > to see that read in here somewhere as well as doubling integration
+> > time tends to double scale. =20
 >=20
-> Sorry for slow reply.  Bunch of travel (and being a tourist on either end
-> of the work bit ;)
+> In the documentation file "sysfs-bus-iio" it says:
+> "
+> What:           /sys/.../iio:deviceX/in_illuminanceY_raw
+> [...]
+> Description:
+>                 Illuminance measurement, units after application of scale
+>                                 and offset are lux.
+> "
 >=20
-> Subject to the question on patch 1 from Marcelo I'm fine with this.
+> This means that the scale should be the real factor and not the gain mult=
+iplied
+> by photodiode size (PDDIV) as i implemented it so far.
 >=20
-> I'll probably take all 3 for next merge window though as patch 1 is
-> a minor fix I think in something that people probably haven't really=20
-> been using and splitting it makes for a messy cycle.
->=20
-Not sure how I managed it, but I had patch 2 already on my tree. Anyhow
-backed that out and applied the whole series to the testing branch of iio.g=
-it.
+> This means also that doubling integration time should halve the scale. The
+> higher raw value should lead to the same lux value.
 
-Thanks,
+Sounds correct.
+
+>=20
+> The documentation of the sensor (veml6046x00.pdf) provides us the calcula=
+tion
+> between raw green values and lux.
+> Wouldn't it be better to give the user the real factor to be able to get =
+lux?
+
+Absolutely.  That's the expectation if we are providing illuminance_raw and
+illuminance_scale.
+
+>=20
+> The fact that only the green channel can be used for calculation could be
+> documented in the driver.
+
+Ah. One of these devices.  Hmm. Why do people pretend they can get from
+Green to illuminance.  That has to assume 'white light'.
+I get grumpy about this, but if it is the best we can do I guess we have
+to live with it (I might not be consistent on this).
+
+>=20
+> Then i found the "in_illuminance_hardwaregain" property. It seems that th=
+is is
+> exactly what the combination of gain and PDDIV is used for.
+>=20
+> So what is the scale at the moment could become the hardwaregain and the =
+scale
+> the factor from raw value to lux.
+
+If it is useful to export it separately that works, however it's not typica=
+lly
+the control attribute - those tend to be read only because, without access =
+to
+datasheets simple software has no idea how to control them.
+
+The alternative is the GTS helpers that attempt to figure out the best
+way to meet the user requirements in setting the integration time and ampli=
+fier
+gain when a scale is requested.
+
++CC Matti who is the expert on those.
+
+
+>=20
+>=20
+> To sum up the suggested interface under /sys/bus/iio/devices/iio\:deviceX=
+ would
+> be something like:
+>=20
+> in_illuminance_hardwaregain --> set and get gain and PDDIV on the sensor
+
+This is usually the read only one as it reflects things that aren't
+easy for a userspace program / user to tune.  They typically want to control
+integration time because it reflects noise level and scale because they want
+to avoid saturation etc and because we need it to get to the actual value
+in lux.
+
+>=20
+> integration_time            --> set and get integration time on the sensor
+driving these directly is fine.
+>=20
+> integration_time_available  --> show available integration time values
+>=20
+> scale                       --> (only) get real calculation value, taken =
+from
+>                                 sensor documenation, e.g. 1.3440
+This should remain a main control attribute.
+>=20
+> scale_available             --> not existing anymore
+This gets tricky but the GTS helpers will calculate it for you I think.
 
 Jonathan
 
-> Jonathan
 >=20
 >=20
+> What do you think?
 >=20
-> >=20
-> > Best regards
-> > Uwe =20
->=20
+> Andreas
 >=20
 
 

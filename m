@@ -1,55 +1,55 @@
-Return-Path: <linux-iio+bounces-17693-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17694-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33941A7CF1E
-	for <lists+linux-iio@lfdr.de>; Sun,  6 Apr 2025 19:20:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27D59A7CF1F
+	for <lists+linux-iio@lfdr.de>; Sun,  6 Apr 2025 19:20:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 32A4D7A41DC
-	for <lists+linux-iio@lfdr.de>; Sun,  6 Apr 2025 17:19:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0249B16BC48
+	for <lists+linux-iio@lfdr.de>; Sun,  6 Apr 2025 17:20:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1ABB17A2E6;
-	Sun,  6 Apr 2025 17:20:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9C0B175D47;
+	Sun,  6 Apr 2025 17:20:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OfoanVXP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hUVd3RwC"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 611D61487F6
-	for <linux-iio@vger.kernel.org>; Sun,  6 Apr 2025 17:20:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9ECB1487F6
+	for <linux-iio@vger.kernel.org>; Sun,  6 Apr 2025 17:20:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743960032; cv=none; b=ChD1nKa45IDRAcusVfmDt4bs+t36kMG1zqPBUcMXd4tPuok7oWTSxKwAfbZzc+6gzVU40nk0NdsPOxZBtsdmWMSLiE4tCm1Hr2UezdGasiX2GXsRCosylGc8NQRxdfvOdzWAlxOXlZZvnjLlHOBY1HgAe8RoXeNApeYQvsoUfgA=
+	t=1743960036; cv=none; b=DnbKj6c6YRfP43lInXTdIMA7tCtNG5SvEYTsFbMv6k9x6v0Ctqvc0BkX1pJmx57Mc0nKnDNlb8ww3KnR4sOJNlP2zNK2IgXgt9uZmYhY0H03tzB0KMicFNi+W8eVKvt2uKkmYL4CTd7jXN65zD9mvLqcfZfFBt1ZnJKvfv/rcBg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743960032; c=relaxed/simple;
-	bh=/7pW/XwveocHbDYzDGr6Y+qEQgCQ2M31wVRjMsYrUW4=;
+	s=arc-20240116; t=1743960036; c=relaxed/simple;
+	bh=gkpXFhKfjFsrwr+J1Mh/7swCsWVpkiy27IDthZqCm9Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JG01PAJR8wbnVgOlbFD8QLxfTcE2bBe6jMxDBaJYApNVG+i5mbekLYdnRfG2LKudPXFDGV9edqaqtrA9TnRqe27wyz/Mr4vp98YD1jQWUqB7m95YoXM64VzuX9HylFrlic/uDQm4Ykrty7jHeY31nPocpLeRYKQdmDkII+T1fTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OfoanVXP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DF26C4CEE3;
-	Sun,  6 Apr 2025 17:20:29 +0000 (UTC)
+	 MIME-Version; b=OVOt53IJgJSabZTHg24jiws63z9kW0rRPNNRi94/oPBtQlsoOIcRfcuhkS2jEnAvD4CyhUTtSEjdgLC7vTy17wWPwLCsFZgphSCahDkVNtz7t7gvGeKEwpAJ0BBQOF3F45Y69bb0RMOvp/lWDmBAng2BXvZoR8zxGOJt0Jz9gQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hUVd3RwC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF8EBC4CEE7;
+	Sun,  6 Apr 2025 17:20:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743960032;
-	bh=/7pW/XwveocHbDYzDGr6Y+qEQgCQ2M31wVRjMsYrUW4=;
+	s=k20201202; t=1743960035;
+	bh=gkpXFhKfjFsrwr+J1Mh/7swCsWVpkiy27IDthZqCm9Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OfoanVXPbVFSOA625rvlGzCbidpvTgERhjSDtRhnQoxFugM965A7YiK216fTRO+/F
-	 mHuSHRry2JLlHVn+SvYff9cLwSuTIW7g05qUK1YVWD4mRV5eTZ6gZ35+Fvhcs3GZVY
-	 iRSxg7mFfqtf6qCUu5pXzC+zryd03Dh6djyif3SEOH+nRUr8rezNe2olSHQLVZhShW
-	 0vOX02/S0hLBeKSCktKbuRl33imGC4BfzjJPeuf6nwgLAHchjMwpCVtiNBpj1azFr0
-	 d6vcRcZbwE4DiaeVOfz8TsIqIGgX76EJVbUS4/q45dNtZVLGB+WE64kT+TFc5/I6OD
-	 jdnR5rcVA7uWA==
+	b=hUVd3RwCw8QwFyU0CJNrdYex5Emulr9tVyshbU6+u+slKz+8OBARzxZb9n970xGyt
+	 xzpXX9GlPPzn1pB7jeb4V2zlu2yHOB6EHuyVEeualQLfQiRR0GxuEfaX35lhOQ61yu
+	 pPdmb2p9zIuZfAEFjLCRPbF4uS3AvVwu5Rt9y73CRA4qYs8aUIji+gnkr28i1J+Xu2
+	 ToVzB8UIxMDskIVpkz6grvxmVlHYakqpGQ7/qzTgIMhX1zbBBZuKANZuH/4yZx99+K
+	 juagD2fHeK2yEHbrCid70Jl7mJnB4gSiBIeUzpxiWIKoQ1wEXzlTzARlAsj9jDRKf6
+	 WicSR5jTz6QSA==
 From: Jonathan Cameron <jic23@kernel.org>
 To: linux-iio@vger.kernel.org,
 	David Lechner <dlechner@baylibre.com>,
 	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
 	Andy Shevchenko <andy@kernel.org>
 Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH v2 05/20] iio: introduced iio_push_to_buffers_with_ts() that takes a data_total_len argument.
-Date: Sun,  6 Apr 2025 18:19:46 +0100
-Message-ID: <20250406172001.2167607-6-jic23@kernel.org>
+Subject: [PATCH v2 06/20] iio: dummy: Use a fixed structure to build up scan to push to buffers.
+Date: Sun,  6 Apr 2025 18:19:47 +0100
+Message-ID: <20250406172001.2167607-7-jic23@kernel.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250406172001.2167607-1-jic23@kernel.org>
 References: <20250406172001.2167607-1-jic23@kernel.org>
@@ -63,46 +63,63 @@ Content-Transfer-Encoding: 8bit
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Check that data_total_len argument against iio_dev->scan_bytes.
+It has long been discouraged for drivers to make use of iio_dev->scan_bytes
+directly as that is an implementation detail of the core. As such our
+example driver should definitely not be doing so.
 
-The size needs to be at least as big as the scan. It can be larger,
-which is typical if only part of fixed sized storage is used due to
-a subset of channels being enabled.
+A simple anonymous structure definition suffices here as even though
+we have a mixture of signed and unsigned channels only the signed ones
+use the full storage so the unsigned channels can used signed types as
+well.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
-v2:
-- Rename size to data_total_len to make it clear that it is about
-  data but also that it isn't simply the length to be used.
-- Added an unlikely marking.
+v2: Add a comment about stack buffers not being DMA safe.
 ---
- include/linux/iio/buffer.h | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ drivers/iio/dummy/iio_simple_dummy_buffer.c | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/include/linux/iio/buffer.h b/include/linux/iio/buffer.h
-index 3b8d618bb3df..49c5347f35ea 100644
---- a/include/linux/iio/buffer.h
-+++ b/include/linux/iio/buffer.h
-@@ -45,6 +45,19 @@ static inline int iio_push_to_buffers_with_timestamp(struct iio_dev *indio_dev,
- 	return iio_push_to_buffers(indio_dev, data);
- }
+diff --git a/drivers/iio/dummy/iio_simple_dummy_buffer.c b/drivers/iio/dummy/iio_simple_dummy_buffer.c
+index 288880346707..eca5f0652d23 100644
+--- a/drivers/iio/dummy/iio_simple_dummy_buffer.c
++++ b/drivers/iio/dummy/iio_simple_dummy_buffer.c
+@@ -46,11 +46,14 @@ static irqreturn_t iio_simple_dummy_trigger_h(int irq, void *p)
+ 	struct iio_poll_func *pf = p;
+ 	struct iio_dev *indio_dev = pf->indio_dev;
+ 	int i = 0, j;
+-	u16 *data;
+-
+-	data = kzalloc(indio_dev->scan_bytes, GFP_KERNEL);
+-	if (!data)
+-		goto done;
++	/*
++	 * Note that some buses such as SPI require DMA safe buffers which
++	 * cannot be on the stack.
++	 */
++	struct {
++		s16 data[ARRAY_SIZE(fakedata)];
++		aligned_s64 timestamp;
++	} scan;
  
-+static inline int iio_push_to_buffers_with_ts(struct iio_dev *indio_dev,
-+					      void *data, size_t data_total_len,
-+					      int64_t timestamp)
-+{
-+	if (unlikely(data_total_len < indio_dev->scan_bytes)) {
-+		dev_err(&indio_dev->dev,
-+			"Undersized storage pushed to buffer\n");
-+		return -ENOSPC;
-+	}
-+
-+	return iio_push_to_buffers_with_timestamp(indio_dev, data, timestamp);
-+}
-+
- int iio_push_to_buffers_with_ts_unaligned(struct iio_dev *indio_dev,
- 					  const void *data, size_t data_sz,
- 					  int64_t timestamp);
+ 	/*
+ 	 * Three common options here:
+@@ -69,14 +72,11 @@ static irqreturn_t iio_simple_dummy_trigger_h(int irq, void *p)
+ 	 * constant table fakedata.
+ 	 */
+ 	iio_for_each_active_channel(indio_dev, j)
+-		data[i++] = fakedata[j];
++		scan.data[i++] = fakedata[j];
+ 
+-	iio_push_to_buffers_with_timestamp(indio_dev, data,
++	iio_push_to_buffers_with_timestamp(indio_dev, &scan,
+ 					   iio_get_time_ns(indio_dev));
+ 
+-	kfree(data);
+-
+-done:
+ 	/*
+ 	 * Tell the core we are done with this trigger and ready for the
+ 	 * next one.
 -- 
 2.49.0
 

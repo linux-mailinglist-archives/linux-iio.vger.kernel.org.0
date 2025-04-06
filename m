@@ -1,236 +1,118 @@
-Return-Path: <linux-iio+bounces-17708-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17709-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F492A7CF2D
-	for <lists+linux-iio@lfdr.de>; Sun,  6 Apr 2025 19:21:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19E0EA7CF48
+	for <lists+linux-iio@lfdr.de>; Sun,  6 Apr 2025 19:41:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C39016C05F
-	for <lists+linux-iio@lfdr.de>; Sun,  6 Apr 2025 17:21:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C30821885278
+	for <lists+linux-iio@lfdr.de>; Sun,  6 Apr 2025 17:41:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29162190678;
-	Sun,  6 Apr 2025 17:21:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D309199FA4;
+	Sun,  6 Apr 2025 17:41:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EiZdYpqF"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="L33FozdD"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCC401487F6
-	for <linux-iio@vger.kernel.org>; Sun,  6 Apr 2025 17:21:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E5F5190485;
+	Sun,  6 Apr 2025 17:41:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743960073; cv=none; b=UMZFBLhUc4kjZmKX1tFJydJ4bjl0OXYZufO1r6wbYbj0sU/bASmwqViAgkjeZ4NL0eXZB2sVqUrM/NN9R2fdIDZ8EJWAgoiwT/M8IeLXVNb8mfHAb4u9o2z692GoLjwGk5XlZF6Kr7uXU66wLFelpbVufRJP+Zfu4Yo8yOR3n50=
+	t=1743961292; cv=none; b=jU/zYTFZMPYxROvo5zvJnF6t/KVtJeMKDWuaxDWCHFf4RhYIwpfkwMaGAUo9hkw69BkzZUDx1AeGPfQ0jdjuFCqyl07GSGvDPRbH9cp4cBR1OloB7rF2iZru645mn65bbLCvEYx2z7BBEUJeZXpYa+pp7jMjE7GDdOaH4F/SFQs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743960073; c=relaxed/simple;
-	bh=yKTrtyJtsORhzbs/Q/E6Ysgguin49g4DjTe16XauQk0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OupQKajA+xGiFyziiT5YnYryK8MvmVDxbEVHJ0e1of6yJ2TLyvfIWuYAkVo7T58UjiJtw74zZNMXGh8iGu//ETRnDX9rHMjfR1jTUI9oOqyevVl7BjkiyRsxLd7jsCNCYjCHfY6FDs4k7o2aH1zBxWCFsjPHUdJ9BkR6T5y4k1U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EiZdYpqF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8749CC4CEE7;
-	Sun,  6 Apr 2025 17:21:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743960073;
-	bh=yKTrtyJtsORhzbs/Q/E6Ysgguin49g4DjTe16XauQk0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EiZdYpqFDCHVjteI/IMZ0m5xhK+kmG14OC4Qwbx2LsGL0r8DVPIqIze3FMlrln8j4
-	 kvwlhwx7wgI9Mg/4CvJqtAPCr1ewKioDp8zvKfT9CjAF3h+F786OYVqb6414++qgIV
-	 BorVIOdjn+9WXBD7vYy44uMGFGJRMgy1hTHpIX8mXFg5hjSQf9JrQLvVJMRGuXix4E
-	 TH8kTWkrIarfsCordR+J0k0YjKOlaS2JODwWhko8PeWpwr+cF7kdq+NycMVggYkdmJ
-	 Ccq/EpLHFm3Ohq4TvEAe/HFR2wYpSqUwAawJz5L8a4DGuMUEBMeUVOGym3Hw2y+3aX
-	 YsikdyxTVnFwQ==
-From: Jonathan Cameron <jic23@kernel.org>
-To: linux-iio@vger.kernel.org,
-	David Lechner <dlechner@baylibre.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH v2 20/20] iio: magnetometer: Use iio_push_to_buffers_with_ts() to provide length for runtime checks.
-Date: Sun,  6 Apr 2025 18:20:01 +0100
-Message-ID: <20250406172001.2167607-21-jic23@kernel.org>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250406172001.2167607-1-jic23@kernel.org>
-References: <20250406172001.2167607-1-jic23@kernel.org>
+	s=arc-20240116; t=1743961292; c=relaxed/simple;
+	bh=G2395PngP8PsRzf5cZT+gxfYRLzzHwxQWLBxuqMtvvc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pF+F/R2Tie5sYS+OadLenHdvd5DbXXshTLqQwFypYFM6jmJn2lahNxoM3SAdQFYA1GVhjueOVhcfIRIbF5M0nGqhzoDRBl0GkrhONggDWgdjQV8CaN/VWQs/qNNeRd3mOKJkGVcdL2GJaKiVuD1yMOYuHVF7Lyf3XJyU9JNoEx4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=L33FozdD; arc=none smtp.client-ip=209.85.215.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-af55b7d56a1so2454267a12.2;
+        Sun, 06 Apr 2025 10:41:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1743961289; x=1744566089; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=JxmLRtJEJyieHfXxKBBazkkTPndIt5Qq1s+Aw5ot+y8=;
+        b=L33FozdD12iM1/oGLwoZgPwdJ4rJG9KjB3oIogWBkxsul5c33tpNPcHcV8W1NaCyS2
+         nZS1k3gqJ2yEjpKbM0RyeCK9FHFLT/PdDAsmAjSl3Vr8AN//Mx4ldXpj46HP7rNlmd4n
+         xMwS0AZjSVQRr1cYchw8DhM+96AcCNu4/qf3vLOgfj6U4w1G5fjcKQgEDgMFCGJlIObr
+         s6bHJh95sRRCQLW5QeV/BUzR/37SqiN0JwI25BHGtECpGumpphTPn2NkwhaXUD9b6o2P
+         a6QULaVBW5zr3btf448kMoOsxJjqZ2oozJpj44qGTI9WRuzhbE6r0C/NbQCXr2wBBpmf
+         VGBw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1743961289; x=1744566089;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=JxmLRtJEJyieHfXxKBBazkkTPndIt5Qq1s+Aw5ot+y8=;
+        b=rMwJyuRVlDcgIDS3JlPAoiO8UiXLUoV3b8WaqedJTurJ0vsngdRW4HEATWGnpIfuJZ
+         1DyM4MsVbPnU+H6VGeTGemcI6vizbzzAFCIgxn/7plAjfGpGKxeTlPPonpmuiLwCF6Y7
+         0n3+hk6CPOvFl+1g2o8zsN85ATX/TA19ieiwaIE8A76K5LJaAgIJ0ZBbSb4ZBvGj5px0
+         qcyo0kNNojpgZ2wCjah6CjUhSa4CBzucQdKChrjsXcQQLlvdMDXadnAhq119yXZa11or
+         whPEopIEYSAIm1LzT3RtMNdA0vBv99xN5hVGF691WEbBcE/c4l2EQbayFDAFcKp4fZg0
+         cCdw==
+X-Forwarded-Encrypted: i=1; AJvYcCUpDAI/7iYH6SC1ErGW5uMh8wy9YGtf6DHGpOLj+0AmHEn+q+ESnNrr2IvUiRDd7dt6IdgBjW62Mf3q4iU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxOP0a4gLkcu4ooL6S/pQ+nkSWBwZ4KzH1fHFmxtE+sjwlRMF8R
+	3VrVZaXLriW82w966KRto+M4SuPfSTcizqapx4PiUt8NaztATl0T
+X-Gm-Gg: ASbGncueJGsNf7dVhir4A4svoZthu9xqxLNph+O/guMR8PpazfzCaGPF3uNENeIiv0z
+	CqYH3M7Ui6sJJPVpLAfFOFJjp8zHnjlz+CCRJYXgxJO7byNtGbj8r2IXbcqAZDC6ICaHOXpyHQr
+	ix0ClcSGpq5r+HPm0oy3f8hcAkdgwQS3t1ivcuQPyxO3dlViD/FN3Yl5qgolDQ9h2yMK/XIgjk+
+	1A5fb55FIwe2j+UyWcHv/0cPU+hj6beWgrChd4D6KBBjyNOUuut4Oc23qs8VRBGMzyhRc11XA6B
+	FXs4Y/g68rersJrzBNHKQNyMw6xqEcDPc6bJO+Mzx0UgSku+tOfterk=
+X-Google-Smtp-Source: AGHT+IHwY2vuse98936Fl6H6zUtJp8rDxk44jwOFGR0olWLhO2gXaZYHn5gUfApakL4mwJUnSqXvAw==
+X-Received: by 2002:a17:90b:1d43:b0:2fe:a8b1:7d8 with SMTP id 98e67ed59e1d1-306a4b6fd75mr13167733a91.25.1743961288843;
+        Sun, 06 Apr 2025 10:41:28 -0700 (PDT)
+Received: from localhost ([2804:30c:1f4f:6800:9245:316f:6226:cc1e])
+        by smtp.gmail.com with UTF8SMTPSA id 98e67ed59e1d1-3057ca7fb75sm7378808a91.22.2025.04.06.10.41.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 06 Apr 2025 10:41:26 -0700 (PDT)
+Date: Sun, 6 Apr 2025 14:42:32 -0300
+From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+To: Brajesh Patil <brajeshpatil11@gmail.com>
+Cc: linux-iio@vger.kernel.org, jic23@kernel.org, lars@metafoo.de,
+	linux-kernel@vger.kernel.org, outreachy@lists.linux.dev
+Subject: Re: [PATCH v1 1/1] iio: dummy: Add 3-axis compass (magnetometer)
+ channels to the iio_simple_dummy
+Message-ID: <Z_K9CFItAcYS8r4a@debian-BULLSEYE-live-builder-AMD64>
+References: <20250406133349.50633-1-brajeshpatil11@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250406133349.50633-1-brajeshpatil11@gmail.com>
 
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Hi Brajesh,
 
-This new function allows us to perform debug checks in the helper to ensure
-that the overrun does not occur.  Use it in all the simple cases where
-either a static buffer or a structure is used in the drivers.
+On 04/06, Brajesh Patil wrote:
+> This patch adds support for 3-axis magnetometer data (X, Y, Z) in the
+> iio_simple_dummy driver. It introduces three new IIO_MAGN channels and
+> populates them with dummy values for testing and prototyping purposes.
+> 
+> Signed-off-by: Brajesh Patil <brajeshpatil11@gmail.com>
+> ---
+>  drivers/iio/dummy/iio_simple_dummy.c | 71 +++++++++++++++++++++++++++-
+>  drivers/iio/dummy/iio_simple_dummy.h |  6 +++
+>  2 files changed, 75 insertions(+), 2 deletions(-)
+> 
 
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
----
- drivers/iio/magnetometer/af8133j.c       | 3 ++-
- drivers/iio/magnetometer/ak8974.c        | 5 +++--
- drivers/iio/magnetometer/ak8975.c        | 4 ++--
- drivers/iio/magnetometer/als31300.c      | 4 ++--
- drivers/iio/magnetometer/bmc150_magn.c   | 4 ++--
- drivers/iio/magnetometer/hmc5843.h       | 2 +-
- drivers/iio/magnetometer/hmc5843_core.c  | 4 ++--
- drivers/iio/magnetometer/mag3110.c       | 4 ++--
- drivers/iio/magnetometer/rm3100-core.c   | 4 ++--
- drivers/iio/magnetometer/yamaha-yas530.c | 5 +++--
- 10 files changed, 21 insertions(+), 18 deletions(-)
+I'm pretty sure the changes introduced in the IIO dummy tutorial [1] were 
+for learning purposes only and not intended for upstreaming.
+I don't see a reason for updating the upstream dummy driver with those.
+It would also make the tutorial less interesting.
 
-diff --git a/drivers/iio/magnetometer/af8133j.c b/drivers/iio/magnetometer/af8133j.c
-index c1fc339e85b4..192ba2da94e2 100644
---- a/drivers/iio/magnetometer/af8133j.c
-+++ b/drivers/iio/magnetometer/af8133j.c
-@@ -370,7 +370,8 @@ static irqreturn_t af8133j_trigger_handler(int irq, void *p)
- 	if (ret)
- 		goto out_done;
- 
--	iio_push_to_buffers_with_timestamp(indio_dev, &sample, timestamp);
-+	iio_push_to_buffers_with_ts(indio_dev, &sample, sizeof(sample),
-+				    timestamp);
- 
- out_done:
- 	iio_trigger_notify_done(indio_dev->trig);
-diff --git a/drivers/iio/magnetometer/ak8974.c b/drivers/iio/magnetometer/ak8974.c
-index 44d8428a69b0..6b784af7d779 100644
---- a/drivers/iio/magnetometer/ak8974.c
-+++ b/drivers/iio/magnetometer/ak8974.c
-@@ -673,8 +673,9 @@ static void ak8974_fill_buffer(struct iio_dev *indio_dev)
- 		goto out_unlock;
- 	}
- 
--	iio_push_to_buffers_with_timestamp(indio_dev, &ak8974->scan,
--					   iio_get_time_ns(indio_dev));
-+	iio_push_to_buffers_with_ts(indio_dev, &ak8974->scan,
-+				    sizeof(ak8974->scan),
-+				    iio_get_time_ns(indio_dev));
- 
-  out_unlock:
- 	mutex_unlock(&ak8974->lock);
-diff --git a/drivers/iio/magnetometer/ak8975.c b/drivers/iio/magnetometer/ak8975.c
-index ef1363126cc2..abe9f4fccf00 100644
---- a/drivers/iio/magnetometer/ak8975.c
-+++ b/drivers/iio/magnetometer/ak8975.c
-@@ -882,8 +882,8 @@ static void ak8975_fill_buffer(struct iio_dev *indio_dev)
- 	data->scan.channels[1] = clamp_t(s16, le16_to_cpu(fval[1]), -def->range, def->range);
- 	data->scan.channels[2] = clamp_t(s16, le16_to_cpu(fval[2]), -def->range, def->range);
- 
--	iio_push_to_buffers_with_timestamp(indio_dev, &data->scan,
--					   iio_get_time_ns(indio_dev));
-+	iio_push_to_buffers_with_ts(indio_dev, &data->scan, sizeof(data->scan),
-+				    iio_get_time_ns(indio_dev));
- 
- 	return;
- 
-diff --git a/drivers/iio/magnetometer/als31300.c b/drivers/iio/magnetometer/als31300.c
-index 87b60c4e81fa..d5db4c8343ce 100644
---- a/drivers/iio/magnetometer/als31300.c
-+++ b/drivers/iio/magnetometer/als31300.c
-@@ -245,8 +245,8 @@ static irqreturn_t als31300_trigger_handler(int irq, void *p)
- 	scan.channels[0] = x;
- 	scan.channels[1] = y;
- 	scan.channels[2] = z;
--	iio_push_to_buffers_with_timestamp(indio_dev, &scan,
--					   pf->timestamp);
-+	iio_push_to_buffers_with_ts(indio_dev, &scan, sizeof(scan),
-+				    pf->timestamp);
- 
- trigger_out:
- 	iio_trigger_notify_done(indio_dev->trig);
-diff --git a/drivers/iio/magnetometer/bmc150_magn.c b/drivers/iio/magnetometer/bmc150_magn.c
-index 88bb673e40d8..f9c51ceae011 100644
---- a/drivers/iio/magnetometer/bmc150_magn.c
-+++ b/drivers/iio/magnetometer/bmc150_magn.c
-@@ -678,8 +678,8 @@ static irqreturn_t bmc150_magn_trigger_handler(int irq, void *p)
- 	if (ret < 0)
- 		goto err;
- 
--	iio_push_to_buffers_with_timestamp(indio_dev, &data->scan,
--					   pf->timestamp);
-+	iio_push_to_buffers_with_ts(indio_dev, &data->scan, sizeof(data->scan),
-+				    pf->timestamp);
- 
- err:
- 	mutex_unlock(&data->mutex);
-diff --git a/drivers/iio/magnetometer/hmc5843.h b/drivers/iio/magnetometer/hmc5843.h
-index ffd669b1ee7c..7a3faf7ffed4 100644
---- a/drivers/iio/magnetometer/hmc5843.h
-+++ b/drivers/iio/magnetometer/hmc5843.h
-@@ -34,7 +34,7 @@ enum hmc5843_ids {
-  * @regmap:		hardware access register maps
-  * @variant:		describe chip variants
-  * @scan:		buffer to pack data for passing to
-- *			iio_push_to_buffers_with_timestamp()
-+ *			iio_push_to_buffers_with_ts()
-  */
- struct hmc5843_data {
- 	struct device *dev;
-diff --git a/drivers/iio/magnetometer/hmc5843_core.c b/drivers/iio/magnetometer/hmc5843_core.c
-index 2fc84310e2cc..fc16ebd314f7 100644
---- a/drivers/iio/magnetometer/hmc5843_core.c
-+++ b/drivers/iio/magnetometer/hmc5843_core.c
-@@ -452,8 +452,8 @@ static irqreturn_t hmc5843_trigger_handler(int irq, void *p)
- 	if (ret < 0)
- 		goto done;
- 
--	iio_push_to_buffers_with_timestamp(indio_dev, &data->scan,
--					   iio_get_time_ns(indio_dev));
-+	iio_push_to_buffers_with_ts(indio_dev, &data->scan, sizeof(data->scan),
-+				    iio_get_time_ns(indio_dev));
- 
- done:
- 	iio_trigger_notify_done(indio_dev->trig);
-diff --git a/drivers/iio/magnetometer/mag3110.c b/drivers/iio/magnetometer/mag3110.c
-index 92d4511ed372..ff09250a06e7 100644
---- a/drivers/iio/magnetometer/mag3110.c
-+++ b/drivers/iio/magnetometer/mag3110.c
-@@ -404,8 +404,8 @@ static irqreturn_t mag3110_trigger_handler(int irq, void *p)
- 		data->scan.temperature = ret;
- 	}
- 
--	iio_push_to_buffers_with_timestamp(indio_dev, &data->scan,
--		iio_get_time_ns(indio_dev));
-+	iio_push_to_buffers_with_ts(indio_dev, &data->scan, sizeof(data->scan),
-+				    iio_get_time_ns(indio_dev));
- 
- done:
- 	iio_trigger_notify_done(indio_dev->trig);
-diff --git a/drivers/iio/magnetometer/rm3100-core.c b/drivers/iio/magnetometer/rm3100-core.c
-index e5162ee64e01..81da063fb38c 100644
---- a/drivers/iio/magnetometer/rm3100-core.c
-+++ b/drivers/iio/magnetometer/rm3100-core.c
-@@ -515,8 +515,8 @@ static irqreturn_t rm3100_trigger_handler(int irq, void *p)
- 	 * Always using the same buffer so that we wouldn't need to set the
- 	 * paddings to 0 in case of leaking any data.
- 	 */
--	iio_push_to_buffers_with_timestamp(indio_dev, data->buffer,
--					   pf->timestamp);
-+	iio_push_to_buffers_with_ts(indio_dev, data->buffer,
-+				    sizeof(data->buffer), pf->timestamp);
- done:
- 	iio_trigger_notify_done(indio_dev->trig);
- 
-diff --git a/drivers/iio/magnetometer/yamaha-yas530.c b/drivers/iio/magnetometer/yamaha-yas530.c
-index 28012b20c64f..6ff34b3b6a62 100644
---- a/drivers/iio/magnetometer/yamaha-yas530.c
-+++ b/drivers/iio/magnetometer/yamaha-yas530.c
-@@ -674,8 +674,9 @@ static void yas5xx_fill_buffer(struct iio_dev *indio_dev)
- 	yas5xx->scan.channels[1] = x;
- 	yas5xx->scan.channels[2] = y;
- 	yas5xx->scan.channels[3] = z;
--	iio_push_to_buffers_with_timestamp(indio_dev, &yas5xx->scan,
--					   iio_get_time_ns(indio_dev));
-+	iio_push_to_buffers_with_ts(indio_dev, &yas5xx->scan,
-+				    sizeof(yas5xx->scan),
-+				    iio_get_time_ns(indio_dev));
- }
- 
- static irqreturn_t yas5xx_handle_trigger(int irq, void *p)
--- 
-2.49.0
+[1]: https://flusp.ime.usp.br/iio/experiment-one-iio-dummy/
 
+So NACK for this patch.
+
+Regards,
+Marcelo
 

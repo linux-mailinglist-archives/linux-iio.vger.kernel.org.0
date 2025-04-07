@@ -1,60 +1,60 @@
-Return-Path: <linux-iio+bounces-17786-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17787-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFB0EA7EC46
-	for <lists+linux-iio@lfdr.de>; Mon,  7 Apr 2025 21:13:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BD9AA7EC9A
+	for <lists+linux-iio@lfdr.de>; Mon,  7 Apr 2025 21:20:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 843027A1A5D
-	for <lists+linux-iio@lfdr.de>; Mon,  7 Apr 2025 19:12:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 90D271887A0E
+	for <lists+linux-iio@lfdr.de>; Mon,  7 Apr 2025 19:16:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AD15224237;
-	Mon,  7 Apr 2025 18:55:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BB95258CDE;
+	Mon,  7 Apr 2025 18:58:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MWVs4z45"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D0fvdEA9"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22E39221568;
-	Mon,  7 Apr 2025 18:55:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AC3823FC52;
+	Mon,  7 Apr 2025 18:58:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744052126; cv=none; b=nhDfEV6Cq4xYglWuY4EJjI9/QI5/StB+3Pmt/d2zfMRDPQsGlvLMPVN7A7+YLyf7qg2TJia4Gu7PTRszT6wGrQ7eIehNE4FO77Mu0Idge5KJccu+Q9Om226mhL9wKKvStwMqEaEJUfV2zr0bXPXnt9dYZ/kCGPPFkYRF1gP8Jns=
+	t=1744052308; cv=none; b=fAVgZJWBHTh9y3ROId+BU32jB3JjV/rQIyVhGOHDiWdS2qNlRPg2G7kvG+iEsQ07SOWRIll+IUBwyn+UPcLoMeuOEgu5vA7jvmu4V1G/zKQO9yc9cSXBXJqJguYR42WvcQ1Sd5hToJCqxUypU4MX8iEwfXdrfbecF0qrPzIFPXk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744052126; c=relaxed/simple;
-	bh=Moj/1kZ8srPT+idoTQAOyty7DgC0HH43YMiryJ+T8ek=;
+	s=arc-20240116; t=1744052308; c=relaxed/simple;
+	bh=kpnlwU1ua4w3405cDEFSviiFMiWPttNWuxqNWJ6xrhg=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=k4iV5/Vvzc/GWhaRWTVsVxukmzBdWyE2fVqaxjbm5nkvk73WZZhmDVFXDn8j7bHPGyTZSqq2i8obbU4ETIwwdb194wtl/QFUgIYbb5TP4hhgqMZFEDRp6Xkvij47leGsLc7PrGyAC+nxBOLgoxQFqCGZklDr2aSS2EvC/zekdaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MWVs4z45; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02F5AC4CEDD;
-	Mon,  7 Apr 2025 18:55:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=FZYYThZS7AMTMOHGTT9yZ0QzT3mEiZgIcOEab6AALY6u+tVj57P4P5B6dKur8Mm6EWwe7m3qt1l5HRZvCixf+FdRC2jSG9ZjnAMIeTMPLNHmgblCwNVlZJ5Snnod16iXpGFYe/GqBDfGf4JgTYXahcOAfsEzPNsSAFuiAmfwbOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D0fvdEA9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8B0BC4CEFE;
+	Mon,  7 Apr 2025 18:58:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744052125;
-	bh=Moj/1kZ8srPT+idoTQAOyty7DgC0HH43YMiryJ+T8ek=;
+	s=k20201202; t=1744052307;
+	bh=kpnlwU1ua4w3405cDEFSviiFMiWPttNWuxqNWJ6xrhg=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=MWVs4z456T4G/IuHwXmA53G4NmBacviUcELzaggWtvakUcOIu3EtGFb7KG/dR445M
-	 cByPgGfc25jYJtm/fTuuOyQhjwpIljrRvTu+nigr369l/7mRv1yyulb0wQn0Li2lOh
-	 73MGwMM9rpI+XABT58/leWs8p/feYVsxAOiq6GBl14M7pTKzvMiFFEbz0TZHrRywz8
-	 IMrIk6Ihfz/NF2EYSz3PL9tPC983lZ8GUikyZ1Gh8PIcY9SLoN7j0nZiFKj3O8t199
-	 RFRMal8ms64QXA2JQX4cCe/huomPg2P/mbEWcZuRi9hko6EBWdVU/uqwKTpda3ulBy
-	 El7NsexxUNmrQ==
-Date: Mon, 7 Apr 2025 19:55:15 +0100
+	b=D0fvdEA9QYp9ibxMxuVd+ukYS2ASZtxn6COss2F01rOz4/UptfXi7frDT5l6MyO4N
+	 yWzDF+OcFCgdWR8pj6VAdc1YoOC3K/QA0QGF/8bWOyIXNb/vdIhjvJUHu8XBMcfKiq
+	 G5pM57vd/Nt8xKSUs8oCv58SQf89qqhc0rzwqFubjZR2X4gCamJoT/XEUIDXlSY4HJ
+	 GcinFmITK+bnmhkYdD1vJ6a+2qm8P8PjVD6wu+bbKjtRwANw95phihW3dgzbXE0r/h
+	 sUqo0Lxy3NGoKWtNpXvFdGQQdN0gIadPCs0nYA86PnA22VdaofSD/7Yt/pF1YPo+KY
+	 6hP1cPvNh3C2g==
+Date: Mon, 7 Apr 2025 19:58:19 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Angelo Dureghello <adureghello@baylibre.com>, Lars-Peter Clausen
- <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, Rob
- Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor
- Dooley <conor+dt@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+To: Angelo Dureghello <adureghello@baylibre.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
+ <Michael.Hennerich@analog.com>, Rob Herring <robh@kernel.org>, Krzysztof
+ Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+ Jonathan Corbet <corbet@lwn.net>, David Lechner <dlechner@baylibre.com>,
  linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
-Subject: Re: [PATCH 0/3] iio: ad7606: add SPI offload support
-Message-ID: <20250407195515.38b571e0@jic23-huawei>
-In-Reply-To: <c146175f-6a21-4039-8c81-5933a9ef5ef6@baylibre.com>
+Subject: Re: [PATCH 3/3] iio: adc: ad7606: add SPI offload support
+Message-ID: <20250407195819.506e4d6f@jic23-huawei>
+In-Reply-To: <20250403-wip-bl-spi-offload-ad7606-v1-3-1b00cb638b12@baylibre.com>
 References: <20250403-wip-bl-spi-offload-ad7606-v1-0-1b00cb638b12@baylibre.com>
-	<c146175f-6a21-4039-8c81-5933a9ef5ef6@baylibre.com>
+	<20250403-wip-bl-spi-offload-ad7606-v1-3-1b00cb638b12@baylibre.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -65,22 +65,15 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 3 Apr 2025 11:48:09 -0500
-David Lechner <dlechner@baylibre.com> wrote:
+On Thu, 03 Apr 2025 18:19:06 +0200
+Angelo Dureghello <adureghello@baylibre.com> wrote:
 
-> On 4/3/25 11:19 AM, Angelo Dureghello wrote:
-> > Add SPI offload support for the ad7606 ADC.
-> > 
-> > Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
-> > ---  
+> From: Angelo Dureghello <adureghello@baylibre.com>
 > 
-> Reviewed-by: David Lechner <dlechner@baylibre.com>
+> Add SPI offload support for this family.
 > 
+> Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
+Missing import of the IIO_DMAENGINE_BUFFER in the spi module.
 
-Dropped the todo and applied to the togreg branch of iio.git.
-Initially pushed out as testing for 0-day to work it's magic.
-
-Thanks,
-
-Jonathan
+Added.
 

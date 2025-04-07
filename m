@@ -1,64 +1,59 @@
-Return-Path: <linux-iio+bounces-17782-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17783-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF672A7EC6F
-	for <lists+linux-iio@lfdr.de>; Mon,  7 Apr 2025 21:16:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44D8DA7EC5A
+	for <lists+linux-iio@lfdr.de>; Mon,  7 Apr 2025 21:15:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 221573AFDEA
-	for <lists+linux-iio@lfdr.de>; Mon,  7 Apr 2025 19:09:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 976B11885812
+	for <lists+linux-iio@lfdr.de>; Mon,  7 Apr 2025 19:10:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A045B23A9B6;
-	Mon,  7 Apr 2025 18:44:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E56D256C8B;
+	Mon,  7 Apr 2025 18:46:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n/S7fgZq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="upzcL7hy"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 571852236FC;
-	Mon,  7 Apr 2025 18:44:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F186F1B042E;
+	Mon,  7 Apr 2025 18:46:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744051480; cv=none; b=o3lbufi/CcBNY3E29Oz+bVANl5gNJt3B94IaxB0JCS1bdqP/wxxxNd39aZLjkxCjasH6POJjrnPPtRA79WTT/WPoRa6oMfs8WkEKpkMf2hkLb/5LAboEf14b92/axLlvPiAPVAs0xzTJqw0/HguZeHedp5nRd4vBIGypqmwiBT8=
+	t=1744051590; cv=none; b=W03jblO/G/lXA7HtbYwoBd1n+o0a4oKwNo6cNEUvnmitHUdUdrCeVnT7irYR1T6sx1pbG/Hfjpg/8KUg/0HIlu/7eiIxORT58pbpJ7TB32Cj+2aDUqVfSzpixmKIu5UEHHJUTGJ9DV5WgvHovbrASkgwbcyWmW9Mtmd7dVqb6gY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744051480; c=relaxed/simple;
-	bh=RqSC3Srh3U89lKqqWS+lHg9U3+jo4ZP+CbHYE7BdyKA=;
+	s=arc-20240116; t=1744051590; c=relaxed/simple;
+	bh=t93cdI/wL24j2HR4ce39FZz6lJqa0QJlRalczKG2iHE=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lJLw1ptgNl4/dbj6urMBNb+3ebWkLpr3UrQ7idjDfy1KD+lU87A40oorsu0B1NKVxlW9ETuxTWs0Lx01hO27S2JldDqekn+jIX3ohynO+c967BOSJQ1U8Kape1gT0WX9WgeejJ5WRDl+m7miSmG1dFd5JH6OdGLzXZ9WA5OL/Jo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n/S7fgZq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18E64C4CEDD;
-	Mon,  7 Apr 2025 18:44:35 +0000 (UTC)
+	 MIME-Version:Content-Type; b=jRtBdAYrua0wPcu67kvORdjiXEDiCdJFFWH1wwoKhGD3r+n0L/VsrLdN+N5HAFOicX1ub66PC6KKOFfNnsxK9LY0DhhAkeN01oqJaQEWMER3Tq11Enk0upatqhVcpwskCdK/1UPRMKYCbRlIRZmo6yDD5P2FfPv7oFXijEC0QPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=upzcL7hy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59521C4CEDD;
+	Mon,  7 Apr 2025 18:46:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744051479;
-	bh=RqSC3Srh3U89lKqqWS+lHg9U3+jo4ZP+CbHYE7BdyKA=;
+	s=k20201202; t=1744051589;
+	bh=t93cdI/wL24j2HR4ce39FZz6lJqa0QJlRalczKG2iHE=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=n/S7fgZqKKuR9mnct7HEK/26N+EKZzoPoPB80PH2Cs9Fk+i/WyY8uHyR3gHuWO/zM
-	 mXjjay9eDCstWsPcyaIrwoMnWXO1sEJkD9znKBxZFjUpzsFAqHwGfSbkGYkGBj+JdP
-	 LJC16/Gl/7Wd+ZzyipXzgGF6tXMrMKwUJC0lFMpMzOVCvkbXsXNBRxwDK4cq3X4xfW
-	 0LKoF7gIxNh0RTfG0K1iMw61TWhrAPjBTPuBUIlQWghoZl+qg5SgrIn7PrQyKfXAUP
-	 UC5Uj+9+aUlf3csIY9Yo8Olw0kKLtLFe3KKg+nfv9K/3lxW6hSEihFiEWOAOtl7Q60
-	 4M0d8ASqeheGg==
-Date: Mon, 7 Apr 2025 19:44:31 +0100
+	b=upzcL7hygJ/keMMrQfuERZ7goqYflE9P2ZNFyBvMwS++4GRb3FsbSPrc8ij6Il9mj
+	 h/iUwF5PfmCV7Uy/m3OY+WnepzR9VBlmyzXRX8wYKLF68DoTIJIKpCvq9+KHN/hutb
+	 ZPKeQRsnqXmUH4A49TYmoxucX1yPwpYtXLqZ1dQ5tdwhe9luhudB2O01dTRHiDvdA5
+	 FZHzjguUtWd1tvyhky5O9Y3G21VywD6t9vYee21/qvxhM0xIai3rp1saQFuY9BPvUQ
+	 V2pm9bs+ZdxNau5iAG4YX7e7/J28He7y+R19cdT/8z6IriHEfE/+AfFCoEVt3cHkKG
+	 1LUtbbqogcZFg==
+Date: Mon, 7 Apr 2025 19:46:20 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Matti Vaittinen <mazziesaccount@gmail.com>
-Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>, Lars-Peter Clausen
- <lars@metafoo.de>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
- <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Nuno Sa
- <nuno.sa@analog.com>, David Lechner <dlechner@baylibre.com>, Javier
- Carrasco <javier.carrasco.cruz@gmail.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 6/6] iio: adc: ti-adc128s052: Support ROHM BD79104
-Message-ID: <20250407194431.44b03a77@jic23-huawei>
-In-Reply-To: <99d1d972-d9a5-4ca3-811a-b22083bea4e6@gmail.com>
-References: <cover.1742474322.git.mazziesaccount@gmail.com>
-	<8e10f2d82362ca7c207324a5a97bb1759581acea.1742474322.git.mazziesaccount@gmail.com>
-	<20250331122247.05c6b09d@jic23-huawei>
-	<a35ab4b1-4d6a-4b95-963a-96b2ab4c05e9@gmail.com>
-	<20250405184346.3c4b1234@jic23-huawei>
-	<99d1d972-d9a5-4ca3-811a-b22083bea4e6@gmail.com>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org, Michael
+ Hennerich <Michael.Hennerich@analog.com>, Nuno =?UTF-8?B?U8Oh?=
+ <nuno.sa@analog.com>, Jonathan Corbet <corbet@lwn.net>,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org
+Subject: Re: [PATCH 0/5] iio: adc: ad7380: add ad7389-4 support
+Message-ID: <20250407194620.7d5e92df@jic23-huawei>
+In-Reply-To: <20250401-iio-ad7380-add-ad7389-4-v1-0-23d2568aa24f@baylibre.com>
+References: <20250401-iio-ad7380-add-ad7389-4-v1-0-23d2568aa24f@baylibre.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -69,121 +64,44 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 7 Apr 2025 09:10:05 +0300
-Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+On Tue, 01 Apr 2025 17:50:07 -0500
+David Lechner <dlechner@baylibre.com> wrote:
 
-> On 05/04/2025 20:43, Jonathan Cameron wrote:
-> > On Tue, 1 Apr 2025 15:33:15 +0300
-> > Matti Vaittinen <mazziesaccount@gmail.com> wrote:
-> >   
-> >> On 31/03/2025 14:22, Jonathan Cameron wrote:  
-> >>> On Mon, 31 Mar 2025 11:03:58 +0300
-> >>> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
-> >>>      
-> >>>> The ROHM BD79104 ADC has identical SPI communication logic as the
-> >>>> ti-adc128s052. Eg, SPI transfer should be 16 clk cycles, conversion is
-> >>>> started when the CS is pulled low, and channel selection is done by
-> >>>> writing the channel ID after two zero bits. Data is contained in
-> >>>> big-endian format in the last 12 bits.  
-> >>>
-> >>> Nicely found match.  Sometimes these are tricky to spot.
-> >>>      
-> >>>>
-> >>>> The BD79104 has two input voltage pins. Data sheet uses terms "vdd" and
-> >>>> "iovdd". The "vdd" is used also as an analog reference voltage. Hence
-> >>>> the driver expects finding these from the device-tree, instead of having
-> >>>> the "vref" only as TI's driver.
-> >>>>
-> >>>> NOTE: The TI's data sheet[1] does show that the TI's IC does actually
-> >>>> have two voltage inputs as well. Pins are called Va (analog reference)
-> >>>> and Vd (digital supply pin) - but I keep the existing driver behaviour
-> >>>> for the TI's IC "as is", because I have no HW to test changes, and
-> >>>> because I have no real need to touch it.
-> >>>>
-> >>>> NOTE II: The BD79104 requires SPI MODE 3.
-> >>>>
-> >>>> NOTE III: I used evaluation board "BD79104FV-EVK-001" made by ROHM. With
-> >>>> this board I had to drop the SPI speed below the 20M which is mentioned
-> >>>> in the data-sheet [2]. This, however, may be a limitation of the EVK
-> >>>> board, not the component itself.
-> >>>>
-> >>>> [1]: https://www.ti.com/lit/ds/symlink/adc128s052.pdf
-> >>>>
-> >>>> [2]:
-> >>>> https://fscdn.rohm.com/en/products/databook/datasheet/ic/data_converter/dac/bd79104fv-la-e.pdf
-> >>>>     
-> >>> Prefer Datasheet tags with # [1]
-> >>> after them for the cross references.
-> >>>
-> >>> Those belong here in the tag block (no blank lines)  
-> >>>> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>  
-> >>>
-> >>> One request for an additional cleanup precursor patch given you are
-> >>> touching the relevant code anyway.   It's a small one that you can
-> >>> test so hope you don't mind doing that whilst here.
-> >>>
-> >>> I'm relying on the incredibly small chance anyone has a variable
-> >>> regulator wired up to the reference that they are modifying at runtime.
-> >>> I have seen that done (once long ago on a crazy dev board for a really
-> >>> noisy humidity sensor) when the reference was VDD but not on a separate
-> >>> reference pin.  That means we almost certainly won't break the existing
-> >>> parts and can't have a regression on your new one so we should be fine
-> >>> to make the change.  
-> >>
-> >> The change you ask for is indeed small. I have no real objections
-> >> against implementing it (and I actually wrote it already) - but I am
-> >> still somewhat hesitant. As you say, (it seems like) the idea of the
-> >> original code is to allow changing the vref at runtime. It looks to me
-> >> this might've been intentional choice. I am not terribly happy about
-> >> dropping the working functionality, when the gained simplification isn't
-> >> particularly massive.  
-> > 
-> > Hmm. I suspect this was added at my request (or copied from where I requested
-> > it)  Back when we did this there was no advantage in doing it at probe
-> > as it was just a question of store a value or store a pointer we had
-> > to get anyway.  So I tended to advocate what I now think was a bit silly,
-> > that someone elses board might have it changing...
-> > 
-> > User space wise, what code checks for random scaling changes?  So it
-> > was best effort at best anyway!  
+> While developing this driver, we glossed over AD7389-4 since we didn't
+> have hardware to test it. However, it should be trivial enough to add
+> support without testing. It is basically the same as AD7380-4 but
+> instead of no internal reference, it has no external reference. And we
+> already have support for chips with internal reference only (ADAQ).
 > 
-> Ah, right. I suppose this should've been accompanied with scale setting 
-> which could've changed the regulator voltage - and I have no idea if 
-> such hardware would make any sense.
+> We have the typical DT bindings/driver/documentation patches for it plus
+> a few patches to shuffle around the existing code for supporting chips
+> with internal-reference-only to make it generic enough to support this
+> chip as well.
+Series applied to the togreg branch of iio.git (which I just rebased on rc1)
+Will initially push out as testing though to let 0-day have a first poke
+at it.
 
-In theory possible but I suspect expensive as a controllable precision
-reference would be needed (a DAC probably wouldn't have enough current?)
+Thanks,
+
+Jonathan
 
 > 
-> The slim chance I can imagine is that the reference voltage can't be 
-> set/known at probe time.
-
-Agreed. It can in theory happen and did on one ancient board I had
-where the reference voltage was wired to a pair of devices and one
-had a higher minimum voltage than the other. That was pre DT times though
-and I suspect now we'd just put the voltage that works for both in DT.
-
+> ---
+> David Lechner (5):
+>       dt-bindings: iio: adc: ad7380: add AD7389-4
+>       iio: adc: ad7380: rename internal_ref_only
+>       iio: adc: ad7380: move internal reference voltage to chip_info
+>       iio: adc: ad7380: add ad7389-4
+>       Documentation: iio: ad7380: add AD7389-4
 > 
-> >> Because of this, I am thinking of adding the patch dropping the
-> >> functionality as an RFC. Leaving that floating on the list for a while
-> >> would at least have my ass partially covered ;)
-> >>
-> >> I'd rather not delayed the support for the BD79104 though. So - would it
-> >> be okay if I didn't implement the clean-up as a precursory patch, but
-> >> did it as a last patch of the series? That will make it a tad more
-> >> complex to review, but it'd allow taking the BD79104 changes in while
-> >> leaving the RFC to float on a list. (Also, I'm not sure if you can push
-> >> an RFC in next without taking it in for the cycle?)  
-> > 
-> > I'll probably just merge it even as an RFC :)  That way it's my
-> > fault if we break someone and they shout!  
+>  .../devicetree/bindings/iio/adc/adi,ad7380.yaml    | 11 +++++
+>  Documentation/iio/ad7380.rst                       |  7 +++
+>  drivers/iio/adc/ad7380.c                           | 50 +++++++++++++++++++---
+>  3 files changed, 61 insertions(+), 7 deletions(-)
+> ---
+> base-commit: f8ffc92ae9052e6615896052f0c5b808bfc17520
+> change-id: 20250401-iio-ad7380-add-ad7389-4-1f6d3d7dc749
 > 
-> That's fine for me. Well, doing it this way around (as a last patch) 
-> should ease reverting, should it be needed.
-Absolutely.
-
-> 
-> Yours
-> 	-- Matti
+> Best regards,
 
 

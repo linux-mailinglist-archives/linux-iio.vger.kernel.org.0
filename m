@@ -1,80 +1,80 @@
-Return-Path: <linux-iio+bounces-17717-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17718-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68FA8A7D36E
-	for <lists+linux-iio@lfdr.de>; Mon,  7 Apr 2025 07:23:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01EEFA7D3AB
+	for <lists+linux-iio@lfdr.de>; Mon,  7 Apr 2025 07:52:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B703D188A77A
-	for <lists+linux-iio@lfdr.de>; Mon,  7 Apr 2025 05:23:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8EA063AD00B
+	for <lists+linux-iio@lfdr.de>; Mon,  7 Apr 2025 05:52:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14B272222A2;
-	Mon,  7 Apr 2025 05:23:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFDDD224890;
+	Mon,  7 Apr 2025 05:52:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aargRNwS"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VSElE8Sh"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
+Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E224A8494;
-	Mon,  7 Apr 2025 05:23:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FD4F224235;
+	Mon,  7 Apr 2025 05:52:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744003393; cv=none; b=JEguFtxJeWo25n4rYbMZ2FAz3Cyb9OuVN+aEChJqmt2NjcFE7VMrlHFmwEzs8RdCYH8LEKOyXmddv/sSdOG1J1ds5Ev26n8Xs1wc3tj8SL4elLHEUbkp/OQt08+McusArUibCp9vMDIeENNmfTLpMkkq/hRzfDmOTSKEjIDDng0=
+	t=1744005138; cv=none; b=oFRjmNpkE0Wlael/F3MyiPQ+62Obau0iCRrus5M+mh+ueSB58uf9V2Mq4AEELSxcYHnJ4MhYUxeuHw8Jc2qja2H7lx712HTtKfdlnCFPYZ7YpAXS7dED0n8DCuch98iAbaTXsbJ60YOL4+qV0ehhmwgyAndspG9Em5cbHCE3fKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744003393; c=relaxed/simple;
-	bh=4Uw7pJFtBIeo6dVfZ8PPt8rulIb8ur1utK/lmAzQrQs=;
+	s=arc-20240116; t=1744005138; c=relaxed/simple;
+	bh=jBaeYUzJAGugTJHPn0N6Y2WgGPRzJv8LCxUPcOYqkZg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=t7OWLkPyeFK7E+XKzHoqhmbgB+ubIXLLPFWieNkJ0GPxSO2o38xZ/FjNxiY+pHfbMTSRhCLwUSbefIVI3oCg9axWvlRFZQgaub4nB3oCcDdii+Nu1clRRSZ3/ozzwqcyhdjhc68VfPZWJUPTCU9nPk6KSx1Iu00gdghdx8NpEOg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aargRNwS; arc=none smtp.client-ip=209.85.208.173
+	 In-Reply-To:Content-Type; b=F7C4rcUzAuVDstvLGawSL+DLbLzpvD5I4rCIqyDCybjHD1h9L1Jr6m4q7QhkuQSPyMzH3zAe3BY2zF+MPlVo1BULc9+5tMtWD8rnGLZRUsIZ8kDSIocDTyqjzQ83uTe2gEYKQFJZRDf4BGuN9mTpnNko9SyDOtS3stKuLPt3GiY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VSElE8Sh; arc=none smtp.client-ip=209.85.167.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-30bd21f887aso32688611fa.1;
-        Sun, 06 Apr 2025 22:23:11 -0700 (PDT)
+Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-54b166fa41bso4369190e87.0;
+        Sun, 06 Apr 2025 22:52:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744003390; x=1744608190; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1744005135; x=1744609935; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=KZANaSp06H/1zuBfOX6aMv95xWnp689wwAWAXkSh8Fo=;
-        b=aargRNwSlXq7QA6rnvFI+g9lUhzDzuGuIYsPN7sAhkfZkAtYPXf21uncAXPdl93bKN
-         o/13mpjiH3pFow/IL7dbzcG37Q+EmCfICsbUJK74Qw7q2U/oQDltDv4wfm91nVhwcGwv
-         X9ph4iuNETo+jLDTN93S58CjxKgpNShjStIalD9XvEX+IDVj8fTGj95ssSFDqJfbXtJC
-         RnodNnRiEeIxa7KmSmGX/a2MgqY0dKTzUeRenhoMzzj3bivURpVvfY7ye5vEayalb1jB
-         kzlOPaRMSxw3hGbQ4GUR436NzOiRAFwFo3vSj6sX1bM63GHIgZ8ILBYYubcJ8gpuAYUp
-         ZI1g==
+        bh=1x9OzLiUk0YHaHOhzgSUQSq/4r9AGAfSiHxrDKxb61s=;
+        b=VSElE8ShoXyvb9X2GtO+rKG3JQ8P45VtKPW8GSmwZ3Zl8aOc1020dIEh87y48x7qFv
+         um8baY6soJy+CdKkXQUnUH+DL57sTiC/EN+S4C7WFI/4n/8kYqfTlhMUyuA/Hr+i2ymn
+         16pSHD0CC63JU6AYxFsCuW9X2UyslU6dGctPJUG6jyJb7bciToyCqnsXYUZiEaoaI0FI
+         h2iJxjOYLjXM+19+KqLt1XkGjJMEKeTFWkk7ebaVBgfQBZpLEqM2/fzSUnfPEZ3pK7me
+         GBIs1XNUsou7Bz9Yw6zeMFnFDiYrk2HuRudLX/LQtrjAROkRX5BFDJcGGl2K+oImCjwo
+         SWIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744003390; x=1744608190;
+        d=1e100.net; s=20230601; t=1744005135; x=1744609935;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=KZANaSp06H/1zuBfOX6aMv95xWnp689wwAWAXkSh8Fo=;
-        b=io6mKg9XutKY7TCADHrqEcvhAn7f+MaSse199wLby7BjaB/1rpsd6fq7SGb3fFPfVz
-         E+3FQxJs64Ez5m9Hd4n0UBhnnzZIpz3tSfQm89PKcWNNnSIi3x9H0MLhnl0LX9uSnXQO
-         S00/6IhMrxVMAsl6T4dK1DiVPeznCEVRX/SheyXQnWobVXo5P5qj7N5RRmjDaoUmeSpw
-         arK7Re1x4NzkrHaIUstkQSTjt/0W1Z/5DKzxIjxmYei4ZShVXq1ykcXjLX4yUIQiSm9a
-         y1PPNxqW735t8GpaaZrNZyu4oIZIZ1JnqRSxqGS+1rsmf789LXXGXBrJTeYS+AE2jCVT
-         dn3g==
-X-Forwarded-Encrypted: i=1; AJvYcCUyHphQu5juVcFblHOFGTg8IZOJ4XOAXNgfQC8lTwlxnRa5H68IVa6YOhOVfP6PcIi2xk4bP7j2xiRdy9wQ@vger.kernel.org, AJvYcCWTuyy5vnFmSCIvsB7sk0R56MFiWkZIt2hNX12O/23t7jvunIQfoo6GgUZ+eZnoO0G8OrUN1ya1oExC@vger.kernel.org, AJvYcCXzVz+jorC/vQNAan8VC7c2jLJ+Qcm/ebS6oZsP1Ul9vevnopxycP4oU/9awfyK4OlOX1Qy+iGhCX2A@vger.kernel.org
-X-Gm-Message-State: AOJu0YxW12Cox6n3pQDvp4fWDnPTQ+Adma5ulrYLN2ftsvBi2hFPaQTZ
-	ZF951PKi2MnRkK5e+N3LD0KU6NaqrrEYR5TWhNlufzFkahtkDxZM
-X-Gm-Gg: ASbGnct7BxVZDNJz4/Ot4dm0Q1Y5nNAqz/MQRt6BewaDKKAf00hqiLok4LxEujnCERD
-	0ps+r/PsXlzSqGbQwEI5t9XHkI6mCqsMhcrtop9CJG+F3xyDYY1YTTOmmPBXtL1fn1okAL1VBNr
-	3NNmUNfhVIsTaZ0bhhacYjd7/nyvkmJkutGL+wdjdcDfbC4yYEYWbl1JfVyv+EzDB/TiCX3qvA+
-	SWD8cJsqRZOQ5LZIM1gaaKB/bthF0bwSUzYIU8azg6s3bo3h/nxP8ipBgp7B3GI6NykY7BbtAsr
-	NNRchRhyaAaCntac+2MZbBENLgLSyhFsBl//7yPKlBxvjyzFZ6dKdnXA/sARpseBl0/pmYkmxdv
-	LsfrPeDVRb4FOWUkDDuDqvA98PA==
-X-Google-Smtp-Source: AGHT+IEgySfLI1L1T8MWtXptzRJN9uFoexwic2gP0ZiQ3d7z3jM4gXG3jDpwUyK/HKryt32JM60Fhg==
-X-Received: by 2002:a2e:bd88:0:b0:308:fbd5:9d2d with SMTP id 38308e7fff4ca-30f0c07084amr32615301fa.37.1744003389759;
-        Sun, 06 Apr 2025 22:23:09 -0700 (PDT)
+        bh=1x9OzLiUk0YHaHOhzgSUQSq/4r9AGAfSiHxrDKxb61s=;
+        b=NGTeX0QCjfP/UiOs9XU+/MgGcLUkkZoTjiEsLmRHdIrxjkxEo89Lp+dyeMRJU+hpFY
+         lrphQXLrl5usnhqYTlIe6w4BR91bSTK6JQaQXh8UJE+K36Ps+Y4HQEm9pmd6fsMkgyEm
+         TpSHQ67TzHtXyCxMyMfcQVZaXfwPoEXxDKoThx7h6Jo4BaOlYSOlsKd4UqAS9zb0NdSA
+         vKnxnKMuLwiKAhzPnwlev4TK+ETRRAivg+63TswrkeypFrUBYIkcECu49YlilkMpIgdZ
+         D3oiH3JvbYbmFKQ9eWGvC2/HiyJi9TEym/giyUtdgb1t8vcn0GIZlPMqeJoatSho2kKo
+         8sug==
+X-Forwarded-Encrypted: i=1; AJvYcCX4DkGo9fSwCpwGGxi+GWNyVWBjHLEGwUpexC9ahbW56AxVi0uh9KZv42bIw9ZvXcDgjqGOiHsQ0GVV@vger.kernel.org, AJvYcCXV4VGyK09QQqRVek1qzRHSICvrjv5zNyOHFBImFfrgqnsOLBKKP6Mlvq3ZwYxQ4GXEXXfrvE2SITIv@vger.kernel.org, AJvYcCXhV0s622/MBZUQmMtdIQISIWEoMydci3EP38zRDr6TAfOtfd509AOOnKWmVPsU8CRZRemHCY0/aro/DKdw@vger.kernel.org
+X-Gm-Message-State: AOJu0YyTKl0pFWVwDuCW/Af7v6i7srTSvxPhghLLFV+q/f0qhsEM4/Rq
+	WRJQLv92pBWGBOxnBKfWULZRa2h44FsJ0eckLk4rUxp1osQBLWMc
+X-Gm-Gg: ASbGncs3WTHNeM+W/H5u6jVqFBPPs2NhzyQbHc+7pziw4i1M5eZEREHLnKLTd/Nb3E+
+	H+UjFOWZpoZ1AQijleqJahD2mVueVyigIGbOqRrn6iQYRvYepHt9T+HpnrqloHd4YNRECLUfs8c
+	SfDsOhQ/r4BwsOL0e7cUoQvEuutpAL2w0J8eZAwaMt4DOsG4tVv0tnKrM6zOsc9CMx3Muiuex44
+	5GaP8t4+L+rHQ7Q0QDEHh3Qhq4Kma/0f4jZIxpETpzwfdOSWejqDO1iu6vJCwrJVKWlAvNzhQXP
+	5S/4HouVnB7tOJhactmk3WIysVDBtWnsMtUkwN+uOKf0WrPGFAeJya+88s20mhgoVyBLRSQ3tAG
+	kf2zQcLCujMq5MIzY/aB/iMG2aw==
+X-Google-Smtp-Source: AGHT+IGnaYMdNKDkJ9NFjy01KX8Te8EQ1pIMZ50jtMW/2GYwNw8hqmck+TBwlME8jZTEY4rV0FFhYw==
+X-Received: by 2002:a05:6512:138f:b0:54b:117c:a06e with SMTP id 2adb3069b0e04-54c2335e5ecmr2960739e87.55.1744005134439;
+        Sun, 06 Apr 2025 22:52:14 -0700 (PDT)
 Received: from ?IPV6:2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703? ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-30f0313f374sm14219601fa.24.2025.04.06.22.23.07
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-30f0314b87fsm14683621fa.57.2025.04.06.22.52.13
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 06 Apr 2025 22:23:08 -0700 (PDT)
-Message-ID: <4f099833-5aa6-47cc-917c-7a466cb644b9@gmail.com>
-Date: Mon, 7 Apr 2025 08:23:07 +0300
+        Sun, 06 Apr 2025 22:52:13 -0700 (PDT)
+Message-ID: <ecb2844c-feb5-47d4-b4db-12171380a9cb@gmail.com>
+Date: Mon, 7 Apr 2025 08:52:12 +0300
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -82,157 +82,154 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/7] iio: adc: ti-adc128s052: Simplify using
- be16_to_cpu()
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: David Lechner <dlechner@baylibre.com>,
- Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
- Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Nuno Sa <nuno.sa@analog.com>,
- Javier Carrasco <javier.carrasco.cruz@gmail.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <cover.1743573284.git.mazziesaccount@gmail.com>
- <feeabbfd3d3916c7497dfd94423ff83ef5f654f1.1743573284.git.mazziesaccount@gmail.com>
- <4c3e0d23-2582-4acf-8e90-542c8f8c385f@baylibre.com>
- <1189b539-adb4-46f9-9783-c6577b57a304@gmail.com>
- <20250405182947.06d5e67f@jic23-huawei>
+Subject: Re: [PATCH 2/3] iio: light: add support for veml6046x00 RGBIR color
+ sensor
+To: Jonathan Cameron <jic23@kernel.org>, Andreas Klinger <ak@it-klinger.de>
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ lars@metafoo.de, linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, javier.carrasco.cruz@gmail.com,
+ subhajit.ghosh@tweaklogic.com, muditsharma.info@gmail.com,
+ arthur.becker@sentec.com, ivan.orlov0322@gmail.com
+References: <20250316113131.62884-1-ak@it-klinger.de>
+ <20250316113131.62884-3-ak@it-klinger.de>
+ <20250317115005.72a539a0@jic23-huawei> <Z_I-qwzUrTNz1DZp@mail.your-server.de>
+ <20250406120825.41b2575c@jic23-huawei>
 Content-Language: en-US, en-AU, en-GB, en-BW
 From: Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <20250405182947.06d5e67f@jic23-huawei>
+In-Reply-To: <20250406120825.41b2575c@jic23-huawei>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 05/04/2025 20:29, Jonathan Cameron wrote:
-> On Thu, 3 Apr 2025 08:16:43 +0300
-> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+On 06/04/2025 14:08, Jonathan Cameron wrote:
+> On Sun, 6 Apr 2025 10:43:23 +0200
+> Andreas Klinger <ak@it-klinger.de> wrote:
 > 
->> On 03/04/2025 00:04, David Lechner wrote:
->>> On 4/2/25 1:09 AM, Matti Vaittinen wrote:
->>>> The register data is 12-bit big-endian data. Use be16_to_cpu() to do
->>>> the conversion, and simple bitwise AND for masking to make it more
->>>> obvious.
->>>>
->>>> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
->>>> ---
->>>> Revision history:
->>>> v1 => v2:
->>>>    - Fix commit msg to reflect the fact there was no bug
->>>>    - Drop Fixes tag
->>>>    - Use union for rx / tx buffer to avoid casting
->>>>    - Keep the shared message protected by the mutex
->>>> ---
->>>>    drivers/iio/adc/ti-adc128s052.c | 18 ++++++++++--------
->>>>    1 file changed, 10 insertions(+), 8 deletions(-)
->>>>
->>>> diff --git a/drivers/iio/adc/ti-adc128s052.c b/drivers/iio/adc/ti-adc128s052.c
->>>> index a456ea78462f..3e69a5fce010 100644
->>>> --- a/drivers/iio/adc/ti-adc128s052.c
->>>> +++ b/drivers/iio/adc/ti-adc128s052.c
->>>> @@ -28,32 +28,34 @@ struct adc128 {
->>>>    	struct regulator *reg;
->>>>    	struct mutex lock;
->>>>    
->>>> -	u8 buffer[2] __aligned(IIO_DMA_MINALIGN);
->>>> +	union {
->>>> +		__be16 rx_buffer;
->>>> +		u8 tx_buffer[2];
-> As below. Maybe
-> 		__be16 buffer16;
-> 		u8 buffer[2];
-
-Ok.
-
->>>> +	} __aligned(IIO_DMA_MINALIGN);
->>>>    };
->>>>    
->>>>    static int adc128_adc_conversion(struct adc128 *adc, u8 channel)
->>>>    {
->>>>    	int ret;
->>>> +	char *msg = &adc->tx_buffer[0];
->>>>    
->>>>    	mutex_lock(&adc->lock);
->>>>    
->>>> -	adc->buffer[0] = channel << 3;
->>>> -	adc->buffer[1] = 0;
->>>> +	msg[0] = channel << 3;
->>>> +	msg[1] = 0;
->>>>    
->>>> -	ret = spi_write(adc->spi, &adc->buffer, 2);
->>>> +	ret = spi_write(adc->spi, msg, sizeof(adc->tx_buffer));
-> 
-> I'd get rid of msg as it's now just confusing given we are
-> using the sizeof() here.
-
-Ok.
-
->>>>    	if (ret < 0) {
->>>>    		mutex_unlock(&adc->lock);
->>>>    		return ret;
->>>>    	}
->>>>    
->>>> -	ret = spi_read(adc->spi, &adc->buffer, 2);
->>>> -
->>>> +	ret = spi_read(adc->spi, &adc->rx_buffer, 2);
-> 
-> sizeof(adc->rx_buffer)
-
-I was thinking of this but went with raw 2 - because we need to read 
-exactly 2 bytes from the device. Sizeof buffer is matter of software 
-where as the 2 bytes is dictated by the device. (Sure the size of buffer 
-needs to be large enough).
-
-I don't care it that much though, so I can go with the sizeof() if 
-that's what you prefer. Just explaining that the '2' here was a 
-conscious choice :)
-
->>>>    	mutex_unlock(&adc->lock);
->>>> -
->>>>    	if (ret < 0)
->>>>    		return ret;
->>>>    
->>>> -	return ((adc->buffer[0] << 8 | adc->buffer[1]) & 0xFFF);
->>>> +	return be16_to_cpu(adc->rx_buffer) & 0xFFF;
->>>
->>>
->>> The cast isn't exactly beautiful, but this would save a lot of
->>> lines of diff and a few lines of code by avoiding the need for
->>> the union and the local msg variable.
->>>
->>> 	return be16_to_cpup((__be16 *)adc->buffer) & 0xFFF;
-> 
-> The cast only works because we have forced the alignment for DMA safety.
-> That to me is a little fragile.
-> 
-> You could do get_unaligned_be16() which doesn't need the cast then carry
-> on using the original buffer.
+>> Hi Jonathan,
 >>
->> Thanks again for the review David :)
+>> I need to pick up the meaning of scale once again for clarification.
 >>
->> I am unsure which way to go. I kind of like having the __be16 in the
->> struct, as it immediately yells "data from device is big-endian". OTOH,
->> I've never loved unions (and, it silences the above "yelling" quite a
->> bit). I still think this might be the first time I really see a valid
->> use-case for an union :) And, you're right this adds more lines,
->> besides, the cast doesn't look that ugly to me. Yet, I originally had a
->> cast probably as simple as this (and I also had the __be16 in the
->> struct), and Jonathan suggested using union to avoid it...
+>> Jonathan Cameron <jic23@kernel.org> schrieb am Mo, 17. Mär 11:50:
+>>> On Sun, 16 Mar 2025 12:31:30 +0100
+>>> Andreas Klinger <ak@it-klinger.de> wrote:
+>>>    
+>>>> +static int veml6046x00_get_scale(struct veml6046x00_data *data,
+>>>> +				 int *val, int *val2)
+>>>
+>>> How is this related to integration time?  I'd normally expect
+>>> to see that read in here somewhere as well as doubling integration
+>>> time tends to double scale.
 >>
->> At the end of the day, I suppose I am Okay with any of these 3
->> approaches. Original cast, union or this cast you suggest. Jonathan, any
->> preferences on your side?
+>> In the documentation file "sysfs-bus-iio" it says:
+>> "
+>> What:           /sys/.../iio:deviceX/in_illuminanceY_raw
+>> [...]
+>> Description:
+>>                  Illuminance measurement, units after application of scale
+>>                                  and offset are lux.
+>> "
+>>
+>> This means that the scale should be the real factor and not the gain multiplied
+>> by photodiode size (PDDIV) as i implemented it so far.
+>>
+>> This means also that doubling integration time should halve the scale. The
+>> higher raw value should lead to the same lux value.
 > 
-> Majority of the diff is really about renaming buffer to tx_buffer.
-> Could just not bother doing that and instead have buffer and buffer16
-> as the two union elements. With msg gone as suggested above, then the diff
-> becomes only a few lines and you get to keep the nicety of it being either
-> a pair of u8s or a __be16.
+> Sounds correct.
 
-I was tempted to try using the spi_write_then_read() - but I suppose 
-this may be kind of a hot path.
+I was CC'd due to the GTS (gain-time-scale)-helpers. The above is the 
+beef of those helpers - which, attempt to aid drivers to convert the 
+impact of the hardware gain + integration time into a single scale 
+value. This approach has some caveats, but the goal is to fulfill the 
+expectations of those user-space apps which expect only scale to change 
+the gain, while also need to have the integration time controllable (for 
+example to reduce the measurement time for one reason or another).
 
-I'll go with (not)renaming the buffer and dropping the msg, to squeeze 
-the diff.
+Problem is that, especially when there are multiple channels with 
+separate gain control but common integration time, there will be some 
+situations where the integration time change _will_ cause changes to 
+"total gain (E.g. scale)" too. There may also be cases where some scale 
+values can be met only with certain integration times, or where a scale 
+for a channel can't be met maintaining the scale for other channels etc.
+
+All in all, I am not sure if the 'unchangeable hardware gain' approach 
+makes things as simple as possible - but as long as we want to have it, 
+the GTS helpers may be of use :) There are couple of drivers using them 
+- feel free to take a look. "git grep gts_ drivers/iio/light/" should 
+point you the current users.
+
+>> The documentation of the sensor (veml6046x00.pdf) provides us the calculation
+>> between raw green values and lux.
+>> Wouldn't it be better to give the user the real factor to be able to get lux?
+> 
+> Absolutely.  That's the expectation if we are providing illuminance_raw and
+> illuminance_scale.
+> 
+>>
+>> The fact that only the green channel can be used for calculation could be
+>> documented in the driver.
+> 
+> Ah. One of these devices.  Hmm. Why do people pretend they can get from
+> Green to illuminance.  That has to assume 'white light'.
+> I get grumpy about this, but if it is the best we can do I guess we have
+> to live with it (I might not be consistent on this).
+> 
+>>
+>> Then i found the "in_illuminance_hardwaregain" property. It seems that this is
+>> exactly what the combination of gain and PDDIV is used for.
+>>
+>> So what is the scale at the moment could become the hardwaregain and the scale
+>> the factor from raw value to lux.
+> 
+> If it is useful to export it separately that works, however it's not typically
+> the control attribute - those tend to be read only because, without access to
+> datasheets simple software has no idea how to control them.
+> 
+> The alternative is the GTS helpers that attempt to figure out the best
+> way to meet the user requirements in setting the integration time and amplifier
+> gain when a scale is requested.
+> 
+> +CC Matti who is the expert on those.
+
+Seems it doesn't take much to be an expert XD
+
+I have understood that the simplest way to go is to always use the 
+maximum integration time which provides the required scale. This should 
+probably result the most accurate readings. If users for some reason 
+want to explicitly set a shorter time, then the GTS helpers might be useful.
+
+>> To sum up the suggested interface under /sys/bus/iio/devices/iio\:deviceX would
+>> be something like:
+>>
+>> in_illuminance_hardwaregain --> set and get gain and PDDIV on the sensor
+> 
+> This is usually the read only one as it reflects things that aren't
+> easy for a userspace program / user to tune.  They typically want to control
+> integration time because it reflects noise level and scale because they want
+> to avoid saturation etc and because we need it to get to the actual value
+> in lux.
+> 
+>>
+>> integration_time            --> set and get integration time on the sensor
+> driving these directly is fine.
+>>
+>> integration_time_available  --> show available integration time values
+>>
+>> scale                       --> (only) get real calculation value, taken from
+>>                                  sensor documenation, e.g. 1.3440
+> This should remain a main control attribute.
+>>
+>> scale_available             --> not existing anymore
+> This gets tricky but the GTS helpers will calculate it for you I think.
+
+The GTS helpers can (or, at least should be able to) calculate the 
+available_scales. AFAIR they offer two approaches for this. First one is 
+listing _all_ scales which can be achieved by changing both the 
+integration time and the hardware gain. The second one lists only the 
+scales which can be set with the currently selected integration time.
+
+I think that all of the current GTS users use this first approach of 
+listing all the values, so the 'per time tables' - approach is not very 
+thoroughly tested. Please, let me know if you hit to any hiccups.
 
 Yours,
 	-- Matti

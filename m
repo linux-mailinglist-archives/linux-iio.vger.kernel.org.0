@@ -1,80 +1,80 @@
-Return-Path: <linux-iio+bounces-17716-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17717-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9CD7A7D35B
-	for <lists+linux-iio@lfdr.de>; Mon,  7 Apr 2025 07:12:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68FA8A7D36E
+	for <lists+linux-iio@lfdr.de>; Mon,  7 Apr 2025 07:23:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 798497A42BB
-	for <lists+linux-iio@lfdr.de>; Mon,  7 Apr 2025 05:11:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B703D188A77A
+	for <lists+linux-iio@lfdr.de>; Mon,  7 Apr 2025 05:23:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 989DA221F11;
-	Mon,  7 Apr 2025 05:12:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14B272222A2;
+	Mon,  7 Apr 2025 05:23:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="f/qn1esx"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aargRNwS"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
+Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB22B38FA3;
-	Mon,  7 Apr 2025 05:12:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E224A8494;
+	Mon,  7 Apr 2025 05:23:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744002727; cv=none; b=Vq3Yez0jbqVz0e73NP8nzhcH7N8Slk7z+hAzero53j0ynKybX/tY6LDrD5TToHSP+us6G6kcQDYDOmTR9vEAzN+7mUSrspfgtxqBF3cZTEnfw6VD4p/41l/wswxHJzna8Zeh3fR20QekMwv25M01UFAvxzz6kryvcdqXZIj9Oao=
+	t=1744003393; cv=none; b=JEguFtxJeWo25n4rYbMZ2FAz3Cyb9OuVN+aEChJqmt2NjcFE7VMrlHFmwEzs8RdCYH8LEKOyXmddv/sSdOG1J1ds5Ev26n8Xs1wc3tj8SL4elLHEUbkp/OQt08+McusArUibCp9vMDIeENNmfTLpMkkq/hRzfDmOTSKEjIDDng0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744002727; c=relaxed/simple;
-	bh=QaBsiaRQOjWtXaA81fyL42VtV0lP2uT41YRIkX74bKQ=;
+	s=arc-20240116; t=1744003393; c=relaxed/simple;
+	bh=4Uw7pJFtBIeo6dVfZ8PPt8rulIb8ur1utK/lmAzQrQs=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=e1lWCEqouJFacvrsxX5WBsjC6mL10gnQRhGocSUbqJWHWvP8oZiyWHbTgk0bnaC8K1eBb8o/++ZUthmxMcYSJZAYi0BAw6DXVSHDLzQCUplB5ntBeDC6Buc+Cdl+xfm3UIeFojTvzhN8+YhDA/bFQzBxAovPjzvBwti/dMJKciU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=f/qn1esx; arc=none smtp.client-ip=209.85.167.42
+	 In-Reply-To:Content-Type; b=t7OWLkPyeFK7E+XKzHoqhmbgB+ubIXLLPFWieNkJ0GPxSO2o38xZ/FjNxiY+pHfbMTSRhCLwUSbefIVI3oCg9axWvlRFZQgaub4nB3oCcDdii+Nu1clRRSZ3/ozzwqcyhdjhc68VfPZWJUPTCU9nPk6KSx1Iu00gdghdx8NpEOg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aargRNwS; arc=none smtp.client-ip=209.85.208.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-549946c5346so4662744e87.2;
-        Sun, 06 Apr 2025 22:12:05 -0700 (PDT)
+Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-30bd21f887aso32688611fa.1;
+        Sun, 06 Apr 2025 22:23:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744002724; x=1744607524; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1744003390; x=1744608190; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=YvKDzlFyoKpEFPzUMWqfy2uX/HPiJporHZaSe0I1Tv8=;
-        b=f/qn1esxn6wW16bo8ZTKhvKjDXcST4Hh/FGhveejASlBPvrmWY27s/QRczSc4ULujJ
-         c5ApaAy7Q6zerbZ7hKDpJcjzNa9b7KNm2Jr9UHRLcyd+cOKUJX62fMnyIbkWbdbuC0xk
-         Ebh4YtlwseAJ3MiT4TUJe8lEosz9RcI5OGcTMPe1kRpkU6B7D87zKRg5t+iE0B8xAANW
-         jrE3JAf/8JatN9HK8Zf6swLBqAJMlOYFoD/0BU90IEOxl3YOdiOyW7BIeOSlw9XC5HOy
-         njYGs/KCzwzMim7YzIKCQFP2StajrJpjpeYyLDaGXdPdkilAV4ENoOAb3lYuRihSWAxq
-         YJ/A==
+        bh=KZANaSp06H/1zuBfOX6aMv95xWnp689wwAWAXkSh8Fo=;
+        b=aargRNwSlXq7QA6rnvFI+g9lUhzDzuGuIYsPN7sAhkfZkAtYPXf21uncAXPdl93bKN
+         o/13mpjiH3pFow/IL7dbzcG37Q+EmCfICsbUJK74Qw7q2U/oQDltDv4wfm91nVhwcGwv
+         X9ph4iuNETo+jLDTN93S58CjxKgpNShjStIalD9XvEX+IDVj8fTGj95ssSFDqJfbXtJC
+         RnodNnRiEeIxa7KmSmGX/a2MgqY0dKTzUeRenhoMzzj3bivURpVvfY7ye5vEayalb1jB
+         kzlOPaRMSxw3hGbQ4GUR436NzOiRAFwFo3vSj6sX1bM63GHIgZ8ILBYYubcJ8gpuAYUp
+         ZI1g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744002724; x=1744607524;
+        d=1e100.net; s=20230601; t=1744003390; x=1744608190;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=YvKDzlFyoKpEFPzUMWqfy2uX/HPiJporHZaSe0I1Tv8=;
-        b=eVN0Pz7tyOMIQSIIDuthDbJ5rLsIHSdzD+ObM9ZitasF3pxCNnd3MNZHq8AhmkDLTE
-         RPQ9SrjJwIXXkQPZL4MAHtems6hrtxfTVFuUFplWQP/gwbjr0uNN+nHLP8x8/978IaZh
-         /AnlVG7qlbBzaUeAHUnB/kJfcC6KquuWzw0eIMSgqBP7g9iaxMkSe/qz2bJZIdKxtErt
-         ufFLs35dWwRNL5aWDpYV1u80nfLamlIxq46b6Fivg6pLxJDO3czE4yt0uIr0pI93qvgY
-         b59h7bvKWPpe4f3SvG16BeN2znMhRRu54Ze3BjZOi3OnRa1EGyNY57vq5fpTAiXM71cn
-         SRvw==
-X-Forwarded-Encrypted: i=1; AJvYcCVaxE2OXZnzYRc+L83mML1joZlLF0JeSfCuBFX1oGaNI/dMXSDFCwVx3oFUQ07iFw4zHQshUbPTOq62cbuq@vger.kernel.org, AJvYcCWg6LDJSPyZSYgZpx3Y+5MQdMJbBdbKdQykrAL6/dyZD8vpenECEeRww0odrcTVGTS4NyXfxLKmJOu/@vger.kernel.org, AJvYcCXogD5CYoLAfJSX6FHX2tm7Om6btig54y0jB4vubZAYesguh0vygEZgXP+jib38sgJ2l7ooZP5ZQOd+@vger.kernel.org
-X-Gm-Message-State: AOJu0YzHXRcRmIeR+lTRrJ3NvoQ4P0JGAesuEXft4ZHHURBDJ1q3iX5r
-	LTWNxhh3/yVyQ8cDFR31UtYvU6KCgJBs7ELWSEKjVRjBc2rrmCdU
-X-Gm-Gg: ASbGncvxyH+iEXnQA5yaJQx0s08YRWIV6T8dWp01m93Sq+nSeb7rrebZJLW2/QzeH4K
-	j31xVjDUZqGnrd24drs4gcwfcT9VSrnoE5UWByjdCf8sYQoGGRs9PlNEWzVg2EkIK9WnqA78Ny7
-	TABgAbW/ZDcdY14CYystxIK6GEBbu3TURQRoYCnn8yAQcPEd46+EtF40rGnWnaMwnMJvKwfE+fM
-	lBy/35QfXSx+NAZCj3NiPHdDhj4Pg2o2/3Q7BfRVjTEipsRRMpGZwnW3GwpcUfMgGEhi54Nh2Rh
-	G1msyZA7qr+hrmabDMLfsBduR60HFZIFaiNGZgE3/XIe/3Pjwsum6rLNrZmSZ4xwAwUgYLvj9u/
-	i9DLGWAJQunExoq9UGdu9RmhOLA==
-X-Google-Smtp-Source: AGHT+IEZdkpm+GH6ymlGVCC0K5uFHI5UN/7NCy5b6FhS0dRNmLedbbGhMNo2qMGwv5dW4mUctXfQnw==
-X-Received: by 2002:a05:6512:2316:b0:545:1082:918d with SMTP id 2adb3069b0e04-54c227dc802mr3418200e87.41.1744002723669;
-        Sun, 06 Apr 2025 22:12:03 -0700 (PDT)
+        bh=KZANaSp06H/1zuBfOX6aMv95xWnp689wwAWAXkSh8Fo=;
+        b=io6mKg9XutKY7TCADHrqEcvhAn7f+MaSse199wLby7BjaB/1rpsd6fq7SGb3fFPfVz
+         E+3FQxJs64Ez5m9Hd4n0UBhnnzZIpz3tSfQm89PKcWNNnSIi3x9H0MLhnl0LX9uSnXQO
+         S00/6IhMrxVMAsl6T4dK1DiVPeznCEVRX/SheyXQnWobVXo5P5qj7N5RRmjDaoUmeSpw
+         arK7Re1x4NzkrHaIUstkQSTjt/0W1Z/5DKzxIjxmYei4ZShVXq1ykcXjLX4yUIQiSm9a
+         y1PPNxqW735t8GpaaZrNZyu4oIZIZ1JnqRSxqGS+1rsmf789LXXGXBrJTeYS+AE2jCVT
+         dn3g==
+X-Forwarded-Encrypted: i=1; AJvYcCUyHphQu5juVcFblHOFGTg8IZOJ4XOAXNgfQC8lTwlxnRa5H68IVa6YOhOVfP6PcIi2xk4bP7j2xiRdy9wQ@vger.kernel.org, AJvYcCWTuyy5vnFmSCIvsB7sk0R56MFiWkZIt2hNX12O/23t7jvunIQfoo6GgUZ+eZnoO0G8OrUN1ya1oExC@vger.kernel.org, AJvYcCXzVz+jorC/vQNAan8VC7c2jLJ+Qcm/ebS6oZsP1Ul9vevnopxycP4oU/9awfyK4OlOX1Qy+iGhCX2A@vger.kernel.org
+X-Gm-Message-State: AOJu0YxW12Cox6n3pQDvp4fWDnPTQ+Adma5ulrYLN2ftsvBi2hFPaQTZ
+	ZF951PKi2MnRkK5e+N3LD0KU6NaqrrEYR5TWhNlufzFkahtkDxZM
+X-Gm-Gg: ASbGnct7BxVZDNJz4/Ot4dm0Q1Y5nNAqz/MQRt6BewaDKKAf00hqiLok4LxEujnCERD
+	0ps+r/PsXlzSqGbQwEI5t9XHkI6mCqsMhcrtop9CJG+F3xyDYY1YTTOmmPBXtL1fn1okAL1VBNr
+	3NNmUNfhVIsTaZ0bhhacYjd7/nyvkmJkutGL+wdjdcDfbC4yYEYWbl1JfVyv+EzDB/TiCX3qvA+
+	SWD8cJsqRZOQ5LZIM1gaaKB/bthF0bwSUzYIU8azg6s3bo3h/nxP8ipBgp7B3GI6NykY7BbtAsr
+	NNRchRhyaAaCntac+2MZbBENLgLSyhFsBl//7yPKlBxvjyzFZ6dKdnXA/sARpseBl0/pmYkmxdv
+	LsfrPeDVRb4FOWUkDDuDqvA98PA==
+X-Google-Smtp-Source: AGHT+IEgySfLI1L1T8MWtXptzRJN9uFoexwic2gP0ZiQ3d7z3jM4gXG3jDpwUyK/HKryt32JM60Fhg==
+X-Received: by 2002:a2e:bd88:0:b0:308:fbd5:9d2d with SMTP id 38308e7fff4ca-30f0c07084amr32615301fa.37.1744003389759;
+        Sun, 06 Apr 2025 22:23:09 -0700 (PDT)
 Received: from ?IPV6:2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703? ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-54c1e65db99sm1134600e87.207.2025.04.06.22.12.02
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-30f0313f374sm14219601fa.24.2025.04.06.22.23.07
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 06 Apr 2025 22:12:03 -0700 (PDT)
-Message-ID: <b77155e4-9f60-42f5-94db-1d2e4c0aed55@gmail.com>
-Date: Mon, 7 Apr 2025 08:12:02 +0300
+        Sun, 06 Apr 2025 22:23:08 -0700 (PDT)
+Message-ID: <4f099833-5aa6-47cc-917c-7a466cb644b9@gmail.com>
+Date: Mon, 7 Apr 2025 08:23:07 +0300
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -82,52 +82,157 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/5] Support ROHM BD797xx DACs
+Subject: Re: [PATCH v2 2/7] iio: adc: ti-adc128s052: Simplify using
+ be16_to_cpu()
 To: Jonathan Cameron <jic23@kernel.org>
-Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+Cc: David Lechner <dlechner@baylibre.com>,
+ Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
  Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
  Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
+ <conor+dt@kernel.org>, Nuno Sa <nuno.sa@analog.com>,
+ Javier Carrasco <javier.carrasco.cruz@gmail.com>, linux-iio@vger.kernel.org,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <cover.1743576022.git.mazziesaccount@gmail.com>
- <20250405181838.1498be04@jic23-huawei>
+References: <cover.1743573284.git.mazziesaccount@gmail.com>
+ <feeabbfd3d3916c7497dfd94423ff83ef5f654f1.1743573284.git.mazziesaccount@gmail.com>
+ <4c3e0d23-2582-4acf-8e90-542c8f8c385f@baylibre.com>
+ <1189b539-adb4-46f9-9783-c6577b57a304@gmail.com>
+ <20250405182947.06d5e67f@jic23-huawei>
 Content-Language: en-US, en-AU, en-GB, en-BW
 From: Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <20250405181838.1498be04@jic23-huawei>
+In-Reply-To: <20250405182947.06d5e67f@jic23-huawei>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 05/04/2025 20:18, Jonathan Cameron wrote:
-> On Wed, 2 Apr 2025 09:44:20 +0300
+On 05/04/2025 20:29, Jonathan Cameron wrote:
+> On Thu, 3 Apr 2025 08:16:43 +0300
 > Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 > 
->> Support ROHM BD797xx DACs
->>
->> ROHM BD79700, BD79701 and BD79702 are very similar to the already
->> sipported BD79703. Main difference is the reduced number of channels.
-> supported.
->> Also, the *00 and *01 variants lack of the separate Vfs pin.
->>
->> This series adds support for the BD79700, BD79701 and BD79702.
+>> On 03/04/2025 00:04, David Lechner wrote:
+>>> On 4/2/25 1:09 AM, Matti Vaittinen wrote:
+>>>> The register data is 12-bit big-endian data. Use be16_to_cpu() to do
+>>>> the conversion, and simple bitwise AND for masking to make it more
+>>>> obvious.
+>>>>
+>>>> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+>>>> ---
+>>>> Revision history:
+>>>> v1 => v2:
+>>>>    - Fix commit msg to reflect the fact there was no bug
+>>>>    - Drop Fixes tag
+>>>>    - Use union for rx / tx buffer to avoid casting
+>>>>    - Keep the shared message protected by the mutex
+>>>> ---
+>>>>    drivers/iio/adc/ti-adc128s052.c | 18 ++++++++++--------
+>>>>    1 file changed, 10 insertions(+), 8 deletions(-)
+>>>>
+>>>> diff --git a/drivers/iio/adc/ti-adc128s052.c b/drivers/iio/adc/ti-adc128s052.c
+>>>> index a456ea78462f..3e69a5fce010 100644
+>>>> --- a/drivers/iio/adc/ti-adc128s052.c
+>>>> +++ b/drivers/iio/adc/ti-adc128s052.c
+>>>> @@ -28,32 +28,34 @@ struct adc128 {
+>>>>    	struct regulator *reg;
+>>>>    	struct mutex lock;
+>>>>    
+>>>> -	u8 buffer[2] __aligned(IIO_DMA_MINALIGN);
+>>>> +	union {
+>>>> +		__be16 rx_buffer;
+>>>> +		u8 tx_buffer[2];
+> As below. Maybe
+> 		__be16 buffer16;
+> 		u8 buffer[2];
+
+Ok.
+
+>>>> +	} __aligned(IIO_DMA_MINALIGN);
+>>>>    };
+>>>>    
+>>>>    static int adc128_adc_conversion(struct adc128 *adc, u8 channel)
+>>>>    {
+>>>>    	int ret;
+>>>> +	char *msg = &adc->tx_buffer[0];
+>>>>    
+>>>>    	mutex_lock(&adc->lock);
+>>>>    
+>>>> -	adc->buffer[0] = channel << 3;
+>>>> -	adc->buffer[1] = 0;
+>>>> +	msg[0] = channel << 3;
+>>>> +	msg[1] = 0;
+>>>>    
+>>>> -	ret = spi_write(adc->spi, &adc->buffer, 2);
+>>>> +	ret = spi_write(adc->spi, msg, sizeof(adc->tx_buffer));
 > 
-> Series was nearly perfect but I tweaked one thing...
->>
->> ---
->>
->> Matti Vaittinen (5):
->>    dt-bindings: Add ROHM BD7970x variants
->>    iio: dac: bd79703 Store device address to 'address'
->>    dac: bd79703: Add chip data
->>    iio: bd79703: Support BD79700 and BD79701
->>    iio: dac: bd79703: Support ROHM BD79702
-> Made the last 4 patch titles all start with
-> iio: dac: bd79703:
-> rather than this random mixture of prefixes.
+> I'd get rid of msg as it's now just confusing given we are
+> using the sizeof() here.
 
-Oh! Thanks! "iio: dac:" is obviously the right prefix for all of them!
+Ok.
 
-> Applied to the testing branch of iio.git which will get rebase
-> on rc1 sometime in next few days.
+>>>>    	if (ret < 0) {
+>>>>    		mutex_unlock(&adc->lock);
+>>>>    		return ret;
+>>>>    	}
+>>>>    
+>>>> -	ret = spi_read(adc->spi, &adc->buffer, 2);
+>>>> -
+>>>> +	ret = spi_read(adc->spi, &adc->rx_buffer, 2);
+> 
+> sizeof(adc->rx_buffer)
+
+I was thinking of this but went with raw 2 - because we need to read 
+exactly 2 bytes from the device. Sizeof buffer is matter of software 
+where as the 2 bytes is dictated by the device. (Sure the size of buffer 
+needs to be large enough).
+
+I don't care it that much though, so I can go with the sizeof() if 
+that's what you prefer. Just explaining that the '2' here was a 
+conscious choice :)
+
+>>>>    	mutex_unlock(&adc->lock);
+>>>> -
+>>>>    	if (ret < 0)
+>>>>    		return ret;
+>>>>    
+>>>> -	return ((adc->buffer[0] << 8 | adc->buffer[1]) & 0xFFF);
+>>>> +	return be16_to_cpu(adc->rx_buffer) & 0xFFF;
+>>>
+>>>
+>>> The cast isn't exactly beautiful, but this would save a lot of
+>>> lines of diff and a few lines of code by avoiding the need for
+>>> the union and the local msg variable.
+>>>
+>>> 	return be16_to_cpup((__be16 *)adc->buffer) & 0xFFF;
+> 
+> The cast only works because we have forced the alignment for DMA safety.
+> That to me is a little fragile.
+> 
+> You could do get_unaligned_be16() which doesn't need the cast then carry
+> on using the original buffer.
+>>
+>> Thanks again for the review David :)
+>>
+>> I am unsure which way to go. I kind of like having the __be16 in the
+>> struct, as it immediately yells "data from device is big-endian". OTOH,
+>> I've never loved unions (and, it silences the above "yelling" quite a
+>> bit). I still think this might be the first time I really see a valid
+>> use-case for an union :) And, you're right this adds more lines,
+>> besides, the cast doesn't look that ugly to me. Yet, I originally had a
+>> cast probably as simple as this (and I also had the __be16 in the
+>> struct), and Jonathan suggested using union to avoid it...
+>>
+>> At the end of the day, I suppose I am Okay with any of these 3
+>> approaches. Original cast, union or this cast you suggest. Jonathan, any
+>> preferences on your side?
+> 
+> Majority of the diff is really about renaming buffer to tx_buffer.
+> Could just not bother doing that and instead have buffer and buffer16
+> as the two union elements. With msg gone as suggested above, then the diff
+> becomes only a few lines and you get to keep the nicety of it being either
+> a pair of u8s or a __be16.
+
+I was tempted to try using the spi_write_then_read() - but I suppose 
+this may be kind of a hot path.
+
+I'll go with (not)renaming the buffer and dropping the msg, to squeeze 
+the diff.
 
 Yours,
 	-- Matti

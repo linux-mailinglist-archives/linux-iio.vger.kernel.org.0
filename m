@@ -1,181 +1,237 @@
-Return-Path: <linux-iio+bounces-17761-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17762-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8550A7DF94
-	for <lists+linux-iio@lfdr.de>; Mon,  7 Apr 2025 15:39:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A70D9A7DFD5
+	for <lists+linux-iio@lfdr.de>; Mon,  7 Apr 2025 15:45:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D9CCD7A52CF
-	for <lists+linux-iio@lfdr.de>; Mon,  7 Apr 2025 13:37:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 16387175292
+	for <lists+linux-iio@lfdr.de>; Mon,  7 Apr 2025 13:42:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F359618C03A;
-	Mon,  7 Apr 2025 13:38:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D13D91A316D;
+	Mon,  7 Apr 2025 13:42:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=epita.fr header.i=@epita.fr header.b="OcFuUPQX"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MuRnNh2u"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from PA5P264CU001.outbound.protection.outlook.com (mail-francecentralazon11020143.outbound.protection.outlook.com [52.101.167.143])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDD6A18C02E
-	for <linux-iio@vger.kernel.org>; Mon,  7 Apr 2025 13:38:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.167.143
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744033090; cv=fail; b=eyfrECMCqrBqFYZJIWbxm7d4NgIiyaTLWGNNvmZ09izJ7/HWu9HX3cMntEMTRgDKGEBfpdd1+OxUnFqOw8qf0kwrk30W93pQR6oRRnAm5PEztMrjjSf2FnSrSZNcOG/SfjJzKRLldi1sf+VIOX+k2Al7oGLXpkiWg6SkvZPlQq4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744033090; c=relaxed/simple;
-	bh=UiOCsmf6iOZTEqNuMDvtGwNjUjWm5KnkU645KSMckXI=;
-	h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version; b=upixi5aab7oCPDh03sT2ZEZNRGWr6+OLuuzMxc0hMQy+TDNGfWhyIj6qpbmDzy0aISYhIetvWYI40xTAh+ex1yAk0dn9+qGkkuBKVm9gz3mOIuzyEvCTwKJk6vqpaGasXdykqkidyXaX0U82KAeR+U5LRv9BrXIIsALkH0ma6dc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=epita.fr; spf=pass smtp.mailfrom=epita.fr; dkim=pass (2048-bit key) header.d=epita.fr header.i=@epita.fr header.b=OcFuUPQX; arc=fail smtp.client-ip=52.101.167.143
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=epita.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=epita.fr
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=T3mMl//8hEWU2ueaTUEMAZBbQMM45tmawRV13yWW6Wmfo21mFOYg6Eko0ukMVfI6VUcKcR/vjCdNhB7CDzlJpvusc9R0wr18pXbZamRZ8dxcuqScG/HsaADgcoQsgxQ+6fMfYOpse/syMul/y2Yl/uLnOyPBgY374KIOilcMQI/YYvDN99ahDvD/H3WMB7WAwyeXd7XMqpObmaFaYpHkwU1G3NXbxGKYkWR4/ijF2p0JqnpiKkMIL/YRMv9+WZXPh9Rbiw4tyNu9Itp9+MtAob5WlZsT0eWk0efnt8YgYKd4TbL6OORHfCp0hCZMMTu1ddGSGdPUBnrLxFOOzpgruw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=UiOCsmf6iOZTEqNuMDvtGwNjUjWm5KnkU645KSMckXI=;
- b=ahnSjP8WOuW+2tpOo/F2tJoaSp2mx1AVkXAGcrpEqFFK+ISjJAowj+cjXxL5V/ZoAo1MFA37ZXI1oSzSaQ0rrO57uwXjJJpp3NAyOWNjVE05vKzKHw2sPVjeiDGSegAOSquEF05rxjzqidkSfn9Qmm0lSwh0YO0nLNfxAck4Gtb2KdbbzrJnTJWNcOMt7KZ53pPK14453xO356yxMSqokNcbqSGskXEKGePs+WaYNBYFLYJpv5HXkQVYbQ0imyXLH/q8y0+JA0R9GVFEoPmC3uywlZP91tRtIDBC3jZgD0sG6+M0gAtgTK2Ru/zCdZzbftdmWjw0Jum95LlkRPwa+g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=epita.fr; dmarc=pass action=none header.from=epita.fr;
- dkim=pass header.d=epita.fr; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=epita.fr; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=UiOCsmf6iOZTEqNuMDvtGwNjUjWm5KnkU645KSMckXI=;
- b=OcFuUPQXNxx/QlfEWUxCxgqHeMaIgJrUFnuMRp66aeSGsyBQdJy2kEI2nIbh/7aK+ssYkMNOWfZxJnbwp1ceIRNc9j0NkBtxWONfBbSWQ2kh5vF4Mav1dOBNXZ1INnRcQjuDQNiJkU2Tq8Y1v/WTLGnzTG9LYvTqdrSxMf/nGD8h7QVhhYZOEY7ACZttDjszY1SIYXYFsRQuSNLv9P02xz/+GX1I7psUUJ8x5xKA+yrNwSMxQ9inizXzSkNr+ErJV36YfgxfciOOb2U97LFCDq9tDQrLSekcXZzM6IvDkpBGPzIBZfPodIdFRuEyeAG4sDBDs5aYo/3JaeM2sTyCXg==
-Received: from PR0P264MB0811.FRAP264.PROD.OUTLOOK.COM (2603:10a6:100:5::21) by
- PATP264MB5557.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:3fe::13) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8606.34; Mon, 7 Apr 2025 13:38:05 +0000
-Received: from PR0P264MB0811.FRAP264.PROD.OUTLOOK.COM
- ([fe80::5c3e:89ad:a15e:454c]) by PR0P264MB0811.FRAP264.PROD.OUTLOOK.COM
- ([fe80::5c3e:89ad:a15e:454c%3]) with mapi id 15.20.8606.027; Mon, 7 Apr 2025
- 13:38:05 +0000
-From: Lyes Bourennani <lyes.bourennani@epita.fr>
-To: "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-Subject: GSoC 2025 Proposal: IIO Driver for ADE9113 chips
-Thread-Topic: GSoC 2025 Proposal: IIO Driver for ADE9113 chips
-Thread-Index: AQHbp8Iq/D6d6ewirUqbSSv1FG5ZWg==
-Date: Mon, 7 Apr 2025 13:38:04 +0000
-Message-ID:
- <PR0P264MB08119CB8A7505C0B447ADFF08DAA2@PR0P264MB0811.FRAP264.PROD.OUTLOOK.COM>
-Accept-Language: fr-FR, en-US
-Content-Language: fr-FR
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=epita.fr;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PR0P264MB0811:EE_|PATP264MB5557:EE_
-x-ms-office365-filtering-correlation-id: e3d6a385-9072-4034-637f-08dd75d96cc9
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|366016|10070799003|1800799024|376014|38070700018|3613699012;
-x-microsoft-antispam-message-info:
- =?Windows-1252?Q?nhbVFQHuBDld1C9cG8ZGqFKMl4iaX2jAdmxzY1HyqtdKEHTIhYVqY5vL?=
- =?Windows-1252?Q?8WLSbenopJ8xpZOSJqVExsRLQ7kCRQcgbF0c4KPh2IvOplJPrgUVI+kD?=
- =?Windows-1252?Q?NYnsUsBjkbK8fv4ZmD7E5q97K93cCnr1E2FV4f/Gwrrt4QUCm8wxjUAW?=
- =?Windows-1252?Q?WOwOlgxckMVBuU7xEwdjr7qD9tELr2KCE8bRwBRAy7zuiGYj7tTLTuA+?=
- =?Windows-1252?Q?osRn6AX+cPRJERXOrwOIb9nLaxPJlg5dQamXxEO2pCvKklBoLGweFs2Z?=
- =?Windows-1252?Q?ebFGngeUJkoQ9Knp2nhYh0yBuWFjiiw9O04KM1SN/xW+9MeDxrace8lx?=
- =?Windows-1252?Q?LGfC3Yl00FkXvOxUYO1rFXbW3enT9vTNb3iCDHVu/Tk0et8C0zrirLnj?=
- =?Windows-1252?Q?LZ9vh6Dl6TbisiHUkKBNlj6bAGal4mvx3MjrjpC7T9wFV8DYibicbMqZ?=
- =?Windows-1252?Q?qaNmXrhmLE66iFGVqVe8Z1fTkUOx0N/VQYkgRJmE5w/wi9mkfOTqxjLB?=
- =?Windows-1252?Q?+uLJnc9GiNVQGkPGghnBOFx7lucelF68e8vsUaNXKn9i2ng4ry5gxROc?=
- =?Windows-1252?Q?4SEAa4ad9oAHG6a68TsaDmDCJj+KUjp6k7tArx01sBUE6K0vbQF51bBV?=
- =?Windows-1252?Q?q4O1tHQjBcxHCwWqKKBxcPa/iILvpmoSRiMW1eBttBC+s1nYxX0VWnbd?=
- =?Windows-1252?Q?IzJFLfO0cBmWw/1NlbH7pWGq34O4++3D3l70YWI0ba5X1P8mnQ9tNG3v?=
- =?Windows-1252?Q?uonwp1m8Az+ePjeU6Zc+hL0/BZGJbMnhEZmGjCtqrVRdM5aikg70l2I+?=
- =?Windows-1252?Q?M7Prdxzbylc/oaXG0GGM0ujb42tmUORqp26gTrBXEWIMHNBdxfFP/Xe5?=
- =?Windows-1252?Q?n0eVxu6DhMdJS4ee1/lql+2wzn8ApkIppQ/mexlIx7uh4G7V0c99jwXF?=
- =?Windows-1252?Q?wsBmsx119DHHPyHpZppEnOMJIUMVlVzvYa8flqzWHLekXNMmwrayHRmY?=
- =?Windows-1252?Q?7C8lEpjKjZa8ceMisiJjAF6HDPNaxqOSzMIzUsuwQ8nUw+E9Ngu2k9wJ?=
- =?Windows-1252?Q?D4oYYK65UWpYmHZl9fBV3/QDNJ0oPRvbXH+XmQznZ9LBkCZazpcsrgai?=
- =?Windows-1252?Q?NK/5gobneFiECCqI5/XddXITNB3GnhUZmWxYOyJ/SnkA6o7rRoe/pioh?=
- =?Windows-1252?Q?+HIuSXqtUfrbQYPZi5F/C6KD2wzFOGBaXsqE4zRLweMyuf+jUU2o6DfR?=
- =?Windows-1252?Q?EfG6OwAlMkkN0EzRvEhMeSLThZH1BPc2HQLF3aY+4ahpDC27h+Vwkkka?=
- =?Windows-1252?Q?vpr7Ru4Z1+3ODMunmQ4OA78xd23BgeE1Zc997P1YuAzCBkzscqfw8iCF?=
- =?Windows-1252?Q?xZaaUnqD2xslDE239b6ambQYW2gdBDSB73nfMUeXaPtaUHfqKbf7TxI2?=
- =?Windows-1252?Q?dXGrcT+XspPmftqbPqhHA7sxNjKEehqdi3XqUCD4RWY1DqNWoAyZsV6c?=
- =?Windows-1252?Q?hNb4gChl3P/SlTINbMgiqQi8DHY7nA=3D=3D?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PR0P264MB0811.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(10070799003)(1800799024)(376014)(38070700018)(3613699012);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?Windows-1252?Q?KCRkTjvzPA7i/vhFJ2xqQKgFKceB/xeoYulw0iPWXraqk5AAh1A45Z6r?=
- =?Windows-1252?Q?e0gOct/awNtUZFYXMNO2z/f/74q5zhtT3d3bTkKqi6GVm2Xh9N72edOs?=
- =?Windows-1252?Q?44IMV++ugl+ABLkpBqJB3nIB9HTbthL9lRAsfxuII1GMVpWMEwwdF+SG?=
- =?Windows-1252?Q?Og2RlXEta/QdiIhDBMwkuuiZ3h4e7NAs//8VirH9BlI0OkUIs6y76Fk3?=
- =?Windows-1252?Q?6v+zo1NejXmDec5GgoKFbahjfV72JDJD0tVkN8oTLaX8VelGM/3sPTiY?=
- =?Windows-1252?Q?994Jlld3GQZrfg2fHSkom+e8kCEu3ejZYaOKWv/aH6iC5eHOr4CHAFdC?=
- =?Windows-1252?Q?ppjtJD6E9z6AHw0IONHuOfIN0pd/exVTbr4UD8/pUaXkAQU2k5PgVWLc?=
- =?Windows-1252?Q?nzLarAjsgDf3Fwq70aMFiHEGxU+iWu0EHPgdsVqIXII2i+//dLHDzx5O?=
- =?Windows-1252?Q?QdPwHN6kURSx6BB3ma8UBhh6fgSK/L9vYJBdnJHjBfZbkt6j84JeqGvI?=
- =?Windows-1252?Q?KDuvi7h+Fcdz9EB+ZKd4Q4ud3GCy5eoPsXpglNtJi3hhnV8dpawdGYiR?=
- =?Windows-1252?Q?36ulCZk2Rz8/FjvviQ+IB3wf/IjA2lElfApkC5zS45UbzVWgeDZgPpsY?=
- =?Windows-1252?Q?WX3EutWbkk1sCV0a+5jhWHMdMxoMIIDJZVus/KICqcrXfDyx3ZpZQQxK?=
- =?Windows-1252?Q?0exFXEougHheW93Rzl4U4jc/VJ+lbJpfwnXzle08+osAQD8uWA0ynAKA?=
- =?Windows-1252?Q?aNAQd7ewTwE2e3C6DqDqpV9tF0OOTEtk94rPIi9j3xkvgST2t23d1o2E?=
- =?Windows-1252?Q?KjlMNVowcS1YmwQ6BhflXvDdLK9IcPID/xh++zgvw9SSZqpUuXdWOmX6?=
- =?Windows-1252?Q?/OlAX2mDc2Pm1oyLMwmovJHahicARIRz6bFTJawCD9C8DfsYdbmcwsii?=
- =?Windows-1252?Q?TLStXlXnqmLRKbq1jZStLu/gdJiF6MtjsROmOiTgMUDfU+STxUEbj/k+?=
- =?Windows-1252?Q?/t4iW8L8BWjvXbMKD+MSeWd6OKJ19Vz7r3iColTVml8TCgX/94R79/dT?=
- =?Windows-1252?Q?z+zHzn7IsdEUR8OfSUFyMprUVygHb5PQvnYKLyHX6euGYzwp0KvpQ4Hp?=
- =?Windows-1252?Q?B5TYeJQPxyYOKw+XII5gYgTCBYBdXbANLEfl2qKgw53mXnW1kE+x2seS?=
- =?Windows-1252?Q?vc+kyqvREIEa9GtVtM0DtJr7gC8sdUvQwssmXdVFIDqNe/7p6lo+5751?=
- =?Windows-1252?Q?wGN8My6T9A8dbalJZNi9IRWSS9ai4AvDNItIJmW4hyNOeZhjZjyKgQry?=
- =?Windows-1252?Q?12Rx71nSNSDiZ1TCFr3jy6/VPbzNGqvNNPPp1mXyWkN0+uhL4u1+B9ob?=
- =?Windows-1252?Q?Es/e9BOlnp2pnKQo2L/h5RguA6UJ+9hF2VWs6PmoXnMWsQ0K8oH+hSFv?=
- =?Windows-1252?Q?U1t9Q3iaSeouaNxR01CjeAR3jSO+g61ci5eTSqNFk/bCAIRuKr6fXsQ+?=
- =?Windows-1252?Q?P/Aoth2pnyq9ir5/mqK4LlNkAzmzp7qzEEnv3xtgxVB53bt1B36YG6Ys?=
- =?Windows-1252?Q?mrlHWO5+h/NknnRL1BZXyJniS9/nS0DKDRHseQG/Jwhc514JJywbXYMb?=
- =?Windows-1252?Q?HMn8HoC/eZTlk2u/d6nz/W+qGYDUCaWy7lLKFKUaOK1LKmugXDIEkiU6?=
- =?Windows-1252?Q?SFYfB1ojXTNCNEk3RT2I1QHBIXIH2e4LHDHZ0F73nN46ho9Z1AAKo9RX?=
- =?Windows-1252?Q?bXvzemnCvQIv1W7Bi8rlJGRbtZZgLEEvX0aAPeuE?=
-Content-Type: text/plain; charset="Windows-1252"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D189319D086;
+	Mon,  7 Apr 2025 13:42:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1744033341; cv=none; b=lxIix9pzGNOl+pZUSiNcQ3s90eqQDzu5Qsk3ErPMc+Nd5ggKJbj4yM3YbuNKWCzxlW8L4LZvsujMfB0LASpWavYTEHgwCK36Q4OMzWlwaao2YbXB3bXTQiA4CH72Ma6M7uuyibT/xlhcwN7V8xmZ2S2iCCNBd8whJXu8gGWmIP0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1744033341; c=relaxed/simple;
+	bh=1r4Y1xGaIw6Z2bMc6PG2RocXTnsmf+k7C3olFVHVcc8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=AY0DsVXAs7ijow9WwRXbzRTg1zElro4xmf6frsgRFGxlW28P2XmsAGACCutYZ3AbasFrVP1NWh+gOH+H3QclDOsnf8oqn/qVu2/C2pihbVp/ZK/hJT7qzPX/IMGL/ZAHJAb7N4HBqBRhtFchq+3j3lkPmwsCdyOZAaX5AkKcosU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MuRnNh2u; arc=none smtp.client-ip=209.85.208.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-5e6194e9d2cso8363902a12.2;
+        Mon, 07 Apr 2025 06:42:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1744033338; x=1744638138; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Wa6KU2wdxERyxbNkzxJOW0BR3XtH5OL92vINFtJKy6o=;
+        b=MuRnNh2u9+QBx055fC9222qHYI6qmsrlbRzRBYvN/XHgpjZXRoslV/G2t1+SZ0DldY
+         IPbKlCc/yPNWThOWSCDJ+r2tIYPLHzPjoC2JKg4xGdEU5VZQUwIaPFvSQSa7PLpxFV0v
+         /xaSCBkmcyUbeOKbFGIVhFoX2c8dGVWbvhviVtXuGN0xh2WxLtahTD8QZyP8HprY8LU5
+         Z37RGbnuO0AXTwyQRdl9YTUo4vKE8IRCaE/GCvdfd5UGQb7DRJiyMafzpw74pja3xAfv
+         NWyxw93G7YGHgV3Y0ZHb7WufNs9Fixk+mVcplpkkpXaOE1xvJ6ku2PBwiERU1K4w3g7L
+         9FpA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744033338; x=1744638138;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Wa6KU2wdxERyxbNkzxJOW0BR3XtH5OL92vINFtJKy6o=;
+        b=Xq2RMhCh+SIVvrk9qfNDixufOmMNcKgdml0Qx2ar4klXfCK7v1OeO5MiU++rml2++s
+         xNlnYbQ+OuqyWWv7++lgzQs6TZmHW7rJWpixHL+yu0VXvvLC6kJ47fu48/WVdGt9Hitb
+         jgfl4IlCHQZ0g3dh/LOC1MdOhB1m9UsEsMTLCNvDYoyVdTLpCa3ZSCzYeL7jgtJ78cx2
+         mHDP+KXUC9v/Zvh9VKArY35xB4PGa67gjULwYry/zchlAyNKNMU6aqDWO5iqKnNU2MVY
+         1aeA5lleIeAcvGjWa+O2dv1t96qeOzB0GOUGhcMPwPUhO7lBCJpFTGKOp+fy6fSf73Ry
+         /Kfw==
+X-Forwarded-Encrypted: i=1; AJvYcCUQHjwF6381twxu1+ZVSjmeEW2A8SS28Ga/uUidC8eqjRqlYT2Ar+Jo4qtrFszicrAKEX0XCspd7sBQ@vger.kernel.org, AJvYcCUy/enEj9hdeN+AN1eb5Lm2Ml8KD7UvDcgpBXrp90PMrxUe84TmRgRbhGx2upp96LxhGpZu0fsLbfpc30TH@vger.kernel.org, AJvYcCVOMPFpF8iBSfCXdpX91pgBob7JndjA3C8ooAayUYXNsBRtdBnnAHDXVVZ2O9Xt2AU4QBpiNw8PpTVk@vger.kernel.org
+X-Gm-Message-State: AOJu0YzPv6EkEOU1uMCOKJscMQplWKZ5YfNpblrOigA4Cce4HfmU/3zx
+	aJMn4Q9eS4jO3oh6ckSiR6DAllsmn0oKJTtC8Wc9gBLJSrFQVtsNzslQRABI529PyD3e2epcVpa
+	4h3OiKHBKfeFQHf6pGNugepL88tE=
+X-Gm-Gg: ASbGncsh/P0s3IeChclbC5kJa181efjPa6lZE2H9pEKiKLbYytlIz52WXn5Azkf6wd/
+	Q1XYJJKW82FitZKXs3OUcsXyyueBUDSKPxKJpJ7yvZh2TIc4WtyvMKhbptfPhj+z7BO1LvahTrn
+	CfDvu7gXmVWAbG+841qozebftO
+X-Google-Smtp-Source: AGHT+IHhtn/MY8uQvzJzvMpoMO8/8pCPRUNklZgOaGuOQVfqvhUggICmePL4U7XBoQsuoXMMgsVnU6yzTxAsZQISebE=
+X-Received: by 2002:a17:907:7216:b0:ac3:8899:d2a6 with SMTP id
+ a640c23a62f3a-ac7d185ce57mr1279671566b.12.1744033337483; Mon, 07 Apr 2025
+ 06:42:17 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: epita.fr
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PR0P264MB0811.FRAP264.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: e3d6a385-9072-4034-637f-08dd75d96cc9
-X-MS-Exchange-CrossTenant-originalarrivaltime: 07 Apr 2025 13:38:04.9570
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 3534b3d7-316c-4bc9-9ede-605c860f49d2
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: PYg0RICANmhWYLlwWFGvQHocUcGkHlDLYtwYGfkA2/e38SpeV3eT7qGMbYwnBt6HCvusIyaNYt8ufmE7PsPEmq0dT/PfJ7ehPnBvg7DLxmg=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PATP264MB5557
+References: <20250221090918.1487689-1-j2anfernee@gmail.com>
+ <20250221090918.1487689-2-j2anfernee@gmail.com> <8975b119-fe24-463a-b163-dce702df3cdd@baylibre.com>
+In-Reply-To: <8975b119-fe24-463a-b163-dce702df3cdd@baylibre.com>
+From: Yu-Hsian Yang <j2anfernee@gmail.com>
+Date: Mon, 7 Apr 2025 21:41:19 +0800
+X-Gm-Features: ATxdqUE_5Q4GslleR9QLgSAVfxgRYmQtklJyPCOrpUHS44T56v3qQ5wCflyg1WM
+Message-ID: <CA+4VgcK=R=BF-qk4w-pLkwbTypgMmpJ=7joYN8nioT2Dx3_Z7w@mail.gmail.com>
+Subject: Re: [PATCH v4 1/2] dt-bindings: iio: adc: add NCT7201 ADCs
+To: David Lechner <dlechner@baylibre.com>
+Cc: avifishman70@gmail.com, tmaimon77@gmail.com, tali.perry1@gmail.com, 
+	venture@google.com, yuenn@google.com, benjaminfair@google.com, 
+	jic23@kernel.org, lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org, 
+	conor+dt@kernel.org, nuno.sa@analog.com, javier.carrasco.cruz@gmail.com, 
+	andriy.shevchenko@linux.intel.com, gstols@baylibre.com, 
+	olivier.moysan@foss.st.com, mitrutzceclan@gmail.com, tgamblin@baylibre.com, 
+	matteomartelli3@gmail.com, marcelo.schmitt@analog.com, alisadariana@gmail.com, 
+	joao.goncalves@toradex.com, thomas.bonnefille@bootlin.com, 
+	ramona.nechita@analog.com, herve.codina@bootlin.com, 
+	chanh@os.amperecomputing.com, KWLIU@nuvoton.com, yhyang2@nuvoton.com, 
+	openbmc@lists.ozlabs.org, linux-iio@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi everyone,=0A=
-=0A=
-My name is Lyes Bourennani, and I=92m currently in the 4th year of a 5-year=
- Master=92s program in Systems, Networks, and Security at EPITA, France. I=
-=92m very interested in working on the IIO driver for ADE9113 chips as part=
- of the GSoC 2025 program. I=92ve prepared a proposal and initially tried r=
-eaching out to the listed mentors via email, but unfortunately haven=92t re=
-ceived any responses. I now understand that mentors may not be expected to =
-provide direct feedback on proposals.=0A=
-That=92s why I=92m reaching out here via the mailing list, albeit a bit lat=
-e, to connect with the IIO community. I take full responsibility for not un=
-derstanding the process earlier. Still, I wanted to express my enthusiasm f=
-or the project and make contact with the community. Even if I=92m not selec=
-ted for GSoC, I remain eager to contribute and get involved.=0A=
-=0A=
-Here is my proposal :=0A=
-https://drive.google.com/file/d/1f1nq32dWJD5P4sJAa3IQPHazrbCNnr94/view?usp=
-=3Dsharing=0A=
-=0A=
-Looking forward to hearing from you.=0A=
-=0A=
-Sincerely,=0A=
-Lyes BOURENNANI=
+Dear David Lechner,
+
+Thanks again for the review, I'll do the changes here and send next patch.
+
+David Lechner <dlechner@baylibre.com> =E6=96=BC 2025=E5=B9=B42=E6=9C=8821=
+=E6=97=A5 =E9=80=B1=E4=BA=94 =E4=B8=8B=E5=8D=8811:56=E5=AF=AB=E9=81=93=EF=
+=BC=9A
+>
+> On 2/21/25 3:09 AM, Eason Yang wrote:
+> > Add a binding specification for the Nuvoton NCT7201/NCT7202 up to 12-bi=
+t
+> > ADCs with I2C interface.
+> >
+> > Signed-off-by: Eason Yang <j2anfernee@gmail.com>
+> > ---
+> >  .../bindings/iio/adc/nuvoton,nct7201.yaml     | 57 +++++++++++++++++++
+> >  MAINTAINERS                                   |  1 +
+> >  2 files changed, 58 insertions(+)
+> >  create mode 100644 Documentation/devicetree/bindings/iio/adc/nuvoton,n=
+ct7201.yaml
+> >
+> > diff --git a/Documentation/devicetree/bindings/iio/adc/nuvoton,nct7201.=
+yaml b/Documentation/devicetree/bindings/iio/adc/nuvoton,nct7201.yaml
+> > new file mode 100644
+> > index 000000000000..830c37fd9f22
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/iio/adc/nuvoton,nct7201.yaml
+> > @@ -0,0 +1,57 @@
+> > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> > +%YAML 1.2
+> > +---
+> > +$id: http://devicetree.org/schemas/iio/adc/nuvoton,nct7201.yaml#
+> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > +
+> > +title: Nuvoton nct7201 and similar ADCs
+> > +
+> > +maintainers:
+> > +  - Eason Yang <j2anfernee@gmail.com>
+> > +
+> > +description: |
+> > +  The NCT7201/NCT7202 is a Nuvoton Hardware Monitor IC, contains up to=
+ 12 voltage
+> > +  monitoring channels, with SMBus interface, and up to 4 sets SMBus ad=
+dress
+> > +  selection by ADDR connection. It also provides ALERT# signal for eve=
+nt
+> > +  notification and reset input RSTIN# to recover it from a fault condi=
+tion.
+> > +
+> > +properties:
+> > +  compatible:
+> > +    enum:
+> > +      - nuvoton,nct7201
+> > +      - nuvoton,nct7202
+> > +
+> > +  reg:
+> > +    maxItems: 1
+> > +
+> > +  interrupts:
+> > +    maxItems: 1
+> > +
+> > +  reset-gpios:
+> > +    maxItems: 1
+> > +
+>
+> Maybe this was brought up before, but no power supply?
+>
+
+  vdd-supply:
+    description:
+      A 3.3V to supply that powers the chip.
+
+  vref-supply:
+    description:
+      The regulator supply for the ADC reference voltage.
+
+> > +required:
+> > +  - compatible
+> > +  - reg
+> > +
+> > +additionalProperties: false
+> > +
+> > +examples:
+> > +  - |
+> > +
+> > +    #include <dt-bindings/gpio/gpio.h>
+> > +    #include <dt-bindings/interrupt-controller/irq.h>
+> > +
+> > +    i2c {
+> > +        #address-cells =3D <1>;
+> > +        #size-cells =3D <0>;
+> > +
+> > +        adc@1d {
+> > +            compatible =3D "nuvoton,nct7202";
+> > +            reg =3D <0x1d>;
+
+            vdd-supply =3D <&vdd>;
+            vref-supply =3D <&vref>;
+
+> > +            interrupt-parent =3D <&gpio3>;
+> > +            interrupts =3D <30 IRQ_TYPE_LEVEL_LOW>;
+> > +            reset-gpios =3D <&gpio3 28 GPIO_ACTIVE_LOW>;
+> > +        };
+> > +    };
+> > +...
+> > diff --git a/MAINTAINERS b/MAINTAINERS
+> > index 3864d473f52f..fdc4aa5c7eff 100644
+> > --- a/MAINTAINERS
+> > +++ b/MAINTAINERS
+> > @@ -2831,6 +2831,7 @@ L:      openbmc@lists.ozlabs.org (moderated for n=
+on-subscribers)
+> >  S:   Supported
+> >  F:   Documentation/devicetree/bindings/*/*/*npcm*
+> >  F:   Documentation/devicetree/bindings/*/*npcm*
+> > +F:   Documentation/devicetree/bindings/iio/adc/nuvoton,nct7201.yaml
+
+Remove F:   Documentation/devicetree/bindings/iio/adc/nuvoton,nct7201.yaml
+>
+> This (ARM/NUVOTON NPCM ARCHITECTURE) doesn't look like the right place fo=
+r
+> adding a stand-alone chip. You will need to start a new section like:
+>
+> NUVOTON NCT7201 IIO DRIVER
+>
+
+NUVOTON NCT7201 IIO DRIVER
+M: Eason Yang <j2anfernee@gmail.com>
+L: linux-iio@vger.kernel.org
+S: Maintained
+F: Documentation/devicetree/bindings/iio/adc/nuvoton,nct7201.yaml
+F: drivers/iio/adc/nct7201.c
+
+> >  F:   Documentation/devicetree/bindings/rtc/nuvoton,nct3018y.yaml
+> >  F:   arch/arm/boot/dts/nuvoton/nuvoton-npcm*
+> >  F:   arch/arm/mach-npcm/
+>
 

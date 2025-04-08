@@ -1,158 +1,89 @@
-Return-Path: <linux-iio+bounces-17831-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17832-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2600A8122E
-	for <lists+linux-iio@lfdr.de>; Tue,  8 Apr 2025 18:24:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81CEAA81399
+	for <lists+linux-iio@lfdr.de>; Tue,  8 Apr 2025 19:27:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 46BEA7B0F06
-	for <lists+linux-iio@lfdr.de>; Tue,  8 Apr 2025 16:23:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6A6D14A2003
+	for <lists+linux-iio@lfdr.de>; Tue,  8 Apr 2025 17:27:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 354A922E3FA;
-	Tue,  8 Apr 2025 16:23:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7211523C361;
+	Tue,  8 Apr 2025 17:27:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Lcz9Sx02"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="unmgh+wx"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFCD222DFA4;
-	Tue,  8 Apr 2025 16:23:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19EBC1D61A2;
+	Tue,  8 Apr 2025 17:27:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744129436; cv=none; b=PPENIHTw/yEsWDxW7Fwj1RC7/pBLss6X3m0P7PhyZVkK8cwvaR6u7Rbd+If4PPqkdFXduN7pdpHJyGKiHV2I6xzMi1JlA1rrO0u0cylJXQnpu0FWoee+mt1adYyQBiqbB+C3CUIQuj1VF+JE67lGmOo6BuAb+Z+y8Ubz00t25cY=
+	t=1744133229; cv=none; b=U9BTom7Ropp+Bjg22MrUR2NXQ3IzaqGuapdWe+n14hoONEt8LBOw2J8NypUW6RYI/EkwiqvKmKwb6aAZQSONN1K5+WBkdHW33MD7Lju+Os0oH36ES88gVQ+LmvpMg/j2eLgMhxKA/wkC8mLf7MbigJNhSF1dL8ZY3fnqsz2oNjM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744129436; c=relaxed/simple;
-	bh=weuM5HHgCtZNBPja0bMhFSdjHzltz9a4z0dVDbIuEn0=;
+	s=arc-20240116; t=1744133229; c=relaxed/simple;
+	bh=aLx0mUhM3Bq/zV6SJmFIXECD9k2eFzF4YueLPJkyMII=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=br5EmkZnXVUlKqOdgNFsYsmc1IoQ23KVmUaDdk3dQfZYJVBhA6jO2s4i06IPBtUjiHMG3BrhlVil/dJRnyZXmNr7PsLhWNOzjJ5s7VyZqqkDqeY3GGVVgE7Hbt/58JkLn6qJb6qNVUndp5ZC7tQykkm1VH0eaeFfEUWBYbaANx8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Lcz9Sx02; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6D56C4CEE5;
-	Tue,  8 Apr 2025 16:23:53 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=hJgQzYvSmaQiRQQ3pl7t+m98js5rbJs8oB+/5eQfWWnpXmiZ0vgEF0uLtW7H18Z0lzj3SCcY+ITOBCtfm3KMVFTqK5D9dHqrELZqT5+YfZh4ay0d5saO5t59x1nBQEA4EN84pxQVHixxlhoL+Gb/6VMvPH1Zlw2QI2OeBn1BukM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=unmgh+wx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C45CC4CEE5;
+	Tue,  8 Apr 2025 17:27:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744129435;
-	bh=weuM5HHgCtZNBPja0bMhFSdjHzltz9a4z0dVDbIuEn0=;
+	s=k20201202; t=1744133228;
+	bh=aLx0mUhM3Bq/zV6SJmFIXECD9k2eFzF4YueLPJkyMII=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Lcz9Sx02EkL93wNfEQgiN+4bu3Mry8XBiie4IWFmbJrdYzR/7HOm+EMCwxM7u3jgh
-	 cBv0DAJ327eotLodf2+R0WA+3bLPy8XI62PDSNVk+YNvNiYn/80foCrXRuCH1Ic6D8
-	 0LgCE4wao6dnF1ZKlaF08T5mogoE+pgj2rEfownT/ffUmkbfq9oko0pSKTcVFZo0Dq
-	 NuFtqn/rRJVEBo3MPw79Utp+zu4zgUhqhN8iFcPyEr+J4w6xlbyHtFtqYp1YgHKe/l
-	 w2Z3ke6GiXlNbL5tiRBAOp9npfJ/+5AxXvNebMrzkulSrjIXUQV0yPGX0IAE/CGN/k
-	 Tt/+3/Dz0whZg==
-Date: Tue, 8 Apr 2025 17:23:51 +0100
-From: Conor Dooley <conor@kernel.org>
-To: jean-baptiste.maneyrol@tdk.com
-Cc: Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
+	b=unmgh+wxykjk9tR3YGgjNWRwY6ElejEHHU19KaQ8LEQI9JCTmcilRpLInBUaSzsw1
+	 9kXAr58nGziKPUoa6ojX7Xo13s8sBUuOuo9CaESB03aKbim61OQX82m0m2xGWoG9VE
+	 V5dqs9W2QuNRo2VktvYdu82zP6nXH8a5OAyqQ+so/auKaUGNf6osms70qvPd0qbmuw
+	 7Nnk2xaG1yjD6uJK+t9h4xXDxgRKZFV2ckV3m3Pn3f117fHmmF//cLTR0GYrhueWJ4
+	 f6saZ3+ro9C2gdKLf4fcqZgOcpVLyCDa8pal9JobmMFFdvwpjd6Qdd65+F7Xkhub99
+	 CERiMnXgXtjGQ==
+Date: Tue, 8 Apr 2025 12:27:07 -0500
+From: Rob Herring <robh@kernel.org>
+To: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
+Cc: Linus Walleij <linus.walleij@linaro.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] dt-bindings: iio: imu: icm42600: add interrupt
- naming support
-Message-ID: <20250408-dandy-rental-c76bcb4a5788@spud>
-References: <20250407-iio-imu-inv-icm42600-rework-interrupt-using-names-v2-0-c278acf587b2@tdk.com>
- <20250407-iio-imu-inv-icm42600-rework-interrupt-using-names-v2-1-c278acf587b2@tdk.com>
+	Conor Dooley <conor+dt@kernel.org>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>,
+	William Breathitt Gray <wbg@kernel.org>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Kever Yang <kever.yang@rock-chips.com>, linux-gpio@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-pwm@vger.kernel.org, linux-iio@vger.kernel.org,
+	kernel@collabora.com, Jonas Karlman <jonas@kwiboo.se>,
+	Detlev Casanova <detlev.casanova@collabora.com>
+Subject: Re: [PATCH 1/7] dt-bindings: pinctrl: rockchip: increase max amount
+ of device functions
+Message-ID: <20250408172707.GA2283098-robh@kernel.org>
+References: <20250408-rk3576-pwm-v1-0-a49286c2ca8e@collabora.com>
+ <20250408-rk3576-pwm-v1-1-a49286c2ca8e@collabora.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="ct6e+utvgFb1PaQy"
-Content-Disposition: inline
-In-Reply-To: <20250407-iio-imu-inv-icm42600-rework-interrupt-using-names-v2-1-c278acf587b2@tdk.com>
-
-
---ct6e+utvgFb1PaQy
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20250408-rk3576-pwm-v1-1-a49286c2ca8e@collabora.com>
 
-On Mon, Apr 07, 2025 at 09:57:16PM +0200, Jean-Baptiste Maneyrol via B4 Rel=
-ay wrote:
-> From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
->=20
-> Add interrupt-names field for specifying interrupt used. Only INT1
-> is supported by the driver currently.
->=20
-> Add minItems 1 for interrupts since interrupt is mandatory for the driver.
->=20
-> Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-> ---
->  .../devicetree/bindings/iio/imu/invensense,icm42600.yaml    | 13 +++++++=
-++++++
->  1 file changed, 13 insertions(+)
->=20
-> diff --git a/Documentation/devicetree/bindings/iio/imu/invensense,icm4260=
-0.yaml b/Documentation/devicetree/bindings/iio/imu/invensense,icm42600.yaml
-> index 7e4492bbd0278a336587dc5ac04da7153453da29..707f2169ce9a3ca41d81560be=
-d15786fe010109e 100644
-> --- a/Documentation/devicetree/bindings/iio/imu/invensense,icm42600.yaml
-> +++ b/Documentation/devicetree/bindings/iio/imu/invensense,icm42600.yaml
-> @@ -41,6 +41,17 @@ properties:
->    interrupts:
->      maxItems: 1
-> =20
-> +  interrupt-names:
-> +    minItems: 1
-> +    maxItems: 1
-> +    items:
-> +      enum:
-> +        - INT1
-> +        - INT2
+On Tue, Apr 08, 2025 at 02:32:13PM +0200, Nicolas Frattaroli wrote:
+> With the introduction of the RK3576, the maximum device function ID used
+> increased to 14, as anyone can easily verify for themselves with:
+> 
+>   rg -g '*-pinctrl.dtsi' '<\d+\s+RK_P..\s+(?<func>\d+)\s.*>;$' --trim \
+>   -NI -r '$func' arch/arm64/boot/dts/rockchip/ | sort -g | uniq
+> 
+> Unfortunately, this wasn't caught by dt-validate as those pins are
+> omit-if-no-ref and we had no reference to them in any tree so far.
 
-I might be misremembering from looking up the datasheet, but it gave the
-impression that either all interrupts can be wired to int1 or int1 and
-int2 are usable. How come maxItems is set to one here, not two? Surely
-someone could wire them both up, even if the driver only ever uses the
-former.
+Sounds like we need a way to disable that for validation. We'd need a 
+dtc flag to ignore that and then set that flag for CHECK_DTBS.
 
-> +    description: |
-> +      choose chip interrupt pin to be used as interrupt input, beware th=
-at the
-> +      only support interrupt pin is INT1 for the moment.
-
-What linux supports should not be part of the hardware description.
-
-> +
->    drive-open-drain:
->      type: boolean
-> =20
-> @@ -76,6 +87,7 @@ examples:
->              reg =3D <0x68>;
->              interrupt-parent =3D <&gpio2>;
->              interrupts =3D <7 IRQ_TYPE_EDGE_FALLING>;
-> +            interrupt-names =3D "INT1";
->              vdd-supply =3D <&vdd>;
->              vddio-supply =3D <&vddio>;
->          };
-> @@ -95,6 +107,7 @@ examples:
->              spi-cpol;
->              interrupt-parent =3D <&gpio1>;
->              interrupts =3D <2 IRQ_TYPE_EDGE_FALLING>;
-> +            interrupt-names =3D "INT1";
->              vdd-supply =3D <&vdd>;
->              vddio-supply =3D <&vddio>;
->          };
->=20
-> --=20
-> 2.49.0
->=20
->=20
-
---ct6e+utvgFb1PaQy
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZ/VNlwAKCRB4tDGHoIJi
-0rS2AQCnm9DYKRvtnDPGowZ4dvJAqiYQE6oES141rk+xib1wuAEA9xoFkksxQwRU
-fLx3hu6Y9gvxMJR06DgEn+9VQ5/+NgU=
-=a6IA
------END PGP SIGNATURE-----
-
---ct6e+utvgFb1PaQy--
+Rob
 

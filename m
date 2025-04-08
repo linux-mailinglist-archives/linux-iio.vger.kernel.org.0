@@ -1,48 +1,80 @@
-Return-Path: <linux-iio+bounces-17824-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17825-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2790EA80EA3
-	for <lists+linux-iio@lfdr.de>; Tue,  8 Apr 2025 16:44:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 866D3A80EB1
+	for <lists+linux-iio@lfdr.de>; Tue,  8 Apr 2025 16:45:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 94A8B8A7242
-	for <lists+linux-iio@lfdr.de>; Tue,  8 Apr 2025 14:37:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0BCF7189AA4D
+	for <lists+linux-iio@lfdr.de>; Tue,  8 Apr 2025 14:43:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA92121C9E0;
-	Tue,  8 Apr 2025 14:33:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 014AF1F4199;
+	Tue,  8 Apr 2025 14:43:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i4Ie52fF"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="2x91VZV8"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f45.google.com (mail-oo1-f45.google.com [209.85.161.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F0551A9B34;
-	Tue,  8 Apr 2025 14:33:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64C4214F123
+	for <linux-iio@vger.kernel.org>; Tue,  8 Apr 2025 14:43:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744122837; cv=none; b=AQd2dmDpaI+DcQiXvcv+NjB3aZY4kmLTV/yL0MvYgVA1LR/kfEJY9wJrRQQTM1jHaazn0nl6NkQh7Wff7ZKYTdWFCcmeuzQbop2sGQ+TqL6ywt+RhJcVObOFPiHDl6JvMNwe3uJNTgJqzbqV9vRERIa409KlWc+eJzreSkFSVWY=
+	t=1744123396; cv=none; b=rUgQHB4D+/ZdaI9+6k5KhOt2EYP/jrYnqRUq9EUHWPDygCUOmVL+ziYgg+mTLhHCWY7We31KZ8Bkj95NoZllcJc4ODZ73V3grjinmSVq/3rcx11dfUumaXXisjv0HjmSAwxSoHPSPJv3lC+ugPicXC7+kFltmvrL0SmegEY6A6c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744122837; c=relaxed/simple;
-	bh=WV1NnOm7mQgBNIY8pYSfL1+y3D3B2dOITkOdGnccMYQ=;
+	s=arc-20240116; t=1744123396; c=relaxed/simple;
+	bh=5X7WiAHhEsNxH6J2yVsjgQxTBS34hllTgevGnMaFPII=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=e6MFwr1kbE5zKSo5y9zUr2iXxROo0Fk/+TuXhu2UQeX/9FqRXh8mwyVELoxeQbcBJrg/FjJJXnduIoaj748wETtsZs4D5acVzH6BJtEsjs30nbIGTgRHAfD4k2NMJRBFKhSeiF/jrvMjtMA57AHA89GV6eXrllLoMRbGzoSl+ds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i4Ie52fF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4841BC4CEE5;
-	Tue,  8 Apr 2025 14:33:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744122837;
-	bh=WV1NnOm7mQgBNIY8pYSfL1+y3D3B2dOITkOdGnccMYQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=i4Ie52fFronk8AZ4Tn2GfxjKIBPaqb8q7RKCoQYMh8FL/FEm4qROueQ9OVFsQAZlX
-	 8RxUMfpy/ZRtjtjz3SvyyR0Mz8jCoI85zGMjgFmsSFHhoqbidnoiHIROO8Kmcvumdr
-	 FKn0C3E4yIIcKNWOb4IHulKlxYkEB3Egt7FDw2s5Uhw9CltlSvdKHe8W4N+ZjT2xG6
-	 G5Xs+48ZpTGLru+IG78pVBT1ZQNVQo+KH2R+zA+AFb9fE1Wf8wmzQ4jjfpMmMlvy6Q
-	 WZO3tmM9D4qKEPx8uMdXvoSjGIG9cqeQIBg85z/ITCOdP5uEIcby94fsW8FtfVT7g/
-	 WuOoFuKk9X6ow==
-Message-ID: <81988268-7690-46c7-9469-79cefcf30792@kernel.org>
-Date: Tue, 8 Apr 2025 16:33:52 +0200
+	 In-Reply-To:Content-Type; b=PlycUawrzOPBwiBWJbYFZoEKntR1cel/OBpjBiBIGgereOSExdJQ/F/BJ3488+X1J4Qj1yJfndrDdBxwW+9KN6W34f/IbkiIRzh262hK6yFS6wrFnHl5TMqtdzwf4vSub5q+tZWTbMAaphByFAqmBfvvmiEyh5vPSjX0aPjELwc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=2x91VZV8; arc=none smtp.client-ip=209.85.161.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oo1-f45.google.com with SMTP id 006d021491bc7-5fcef5dc742so1644778eaf.1
+        for <linux-iio@vger.kernel.org>; Tue, 08 Apr 2025 07:43:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1744123393; x=1744728193; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ZX0aGXRptTCUQcorsU5tL8EzdmJ/4Dcw0VhDpZ9VkFw=;
+        b=2x91VZV8Lly/cctXzyrQ9Zb8URKEcOh3hZczKan0mwYIBwc7K09W0xTihHXoH5Ss7H
+         Ml4vaOEsD/eo9wBYYNdMFIjfrv/EHJbWQMufaAsIw+tN2enhc6UanttFzH77AlshTAEo
+         Zfw+pjvpz5mJt6BuoS7RxnH73/6MDSpcioNGRJnYHl0zL1Q1I6wPKKnZCpiqL6ixcePM
+         yAmzcmbrxN4OSLH99v9ESU+zIvVSxuKR43ATYZaMbMlHsV/wCf6IXTX9TV/Rj7WpBBsH
+         7x71k1HV/t+apiPBcLms0nDe2cGMeyMBK3i6Fk2Wy/Y+EYbsLtn2xE2+9UAYq9Uur6mL
+         obgA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744123393; x=1744728193;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZX0aGXRptTCUQcorsU5tL8EzdmJ/4Dcw0VhDpZ9VkFw=;
+        b=gFQnSVA4SyXxL/S2S892RECl9FdAf3EWwGDJSN52CRemufKz9t4XPaVE0z2dY84MUg
+         /QBYcvD2fPhRe2qUmtowTMBzzrFytB4o1ctMnLoROpB39h1cc/YwecCizt1XHLewHOUK
+         H04TN6swux7WPoEUxWEFHdKmVdzTTMmEKMwvFRnNF12KmAHQ0mHQszXS7fAscIwyRtDu
+         JP38T+V6Vc4nbgzT4tq7vNh6uZuzQe9kjnxkcJOiBgOU9OPsW5OdjG1ribC6elussmW4
+         7bl2i/iiwttrSnl0Xw9ui14n4jlN8+EYRI8YUtvoimfm8W41K3LQon18LfeOTJ5Qkg/J
+         OqXQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXIA+zBjD8UywvkUvFm/onlSgZiEazdbR5uRrn1xJBsBeDiPzeboVu4YrC+uf6uFJOHzij9jptxm8o=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwVbuBI1wdt0cMLFkuKDCsKDID9W9ClUMhrDYoEB3fipu0j+0w2
+	YascLvy0/dYDT0ciefy/XItlAhx3bhsmST2ipeTrIKlJsp+iSOXz0B6fEVWp2KQ=
+X-Gm-Gg: ASbGncvdD2ENQ/0cxZNryzVwPfUe/A1hgbzA6W9DiXxPpvNufvlHXoaCJj4hRPovhxG
+	nsMjazEsZv+PnvuEtcgXG/c2X05enVKDrXpImu+Rzh1H+lHrWxxmG/6O5S8OxWVDMEKxSQUbN/o
+	6090qSghz0N7hAAtG/7BS60vgKnMObUPXNSxlG+YecF9vqX0W3KubR5TM1MqEoUJ9ri3hZxtbh0
+	yVSz0mG6/7+hROXpCTkeiWogvEj1ZWah6eKEg/Pj4A4Bhr1fppHkT7lb5T9HsFZnmnXLWb2Ywi9
+	rG/JIUf2xzvWnLNWnLd5QRowm5769OeaGM97XfK0uO5BiMkj/TvbBBfZiNC6Zfa7ICBjanr60N1
+	Sf4kYfeyyUojfHkWq
+X-Google-Smtp-Source: AGHT+IHydLilQvszzuRpWvpl8zBnzCfe2oBsCFFQZFAPCcrx+PW2NEIcAFyuNBZbinDzJI3j0Elo8w==
+X-Received: by 2002:a05:6808:4493:b0:3f8:7c69:561b with SMTP id 5614622812f47-4004d99ffe3mr7838878b6e.14.1744123393329;
+        Tue, 08 Apr 2025 07:43:13 -0700 (PDT)
+Received: from [192.168.0.113] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-40069105b97sm475279b6e.13.2025.04.08.07.43.12
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 08 Apr 2025 07:43:12 -0700 (PDT)
+Message-ID: <0550fb58-cff3-47fd-b5f4-cbc19113436c@baylibre.com>
+Date: Tue, 8 Apr 2025 09:43:11 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -50,86 +82,43 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] dt-bindings: iio: adc: ti,adc128s052: Add adc08c and
- adc10c family
-To: Sukrut Bellary <sbellary@baylibre.com>,
+Subject: Re: [PATCH v2] iio: adc: stm32: add oversampling support
+To: Olivier MOYSAN <olivier.moysan@foss.st.com>,
  Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>,
- Angelo Compagnucci <angelo.compagnucci@gmail.com>
-Cc: Nishanth Menon <nm@ti.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-References: <20250408132120.836461-1-sbellary@baylibre.com>
- <20250408132120.836461-2-sbellary@baylibre.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>
+Cc: Fabrice Gasnier <fabrice.gasnier@foss.st.com>, linux-iio@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20250403162358.1257370-1-olivier.moysan@foss.st.com>
+ <25b34e60-5392-4bfb-b994-49212dfbdb22@baylibre.com>
+ <6d12b6fe-85fb-4345-bf32-02c0fbb1a27a@foss.st.com>
 Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <20250408132120.836461-2-sbellary@baylibre.com>
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <6d12b6fe-85fb-4345-bf32-02c0fbb1a27a@foss.st.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 08/04/2025 15:21, Sukrut Bellary wrote:
+On 4/7/25 11:07 AM, Olivier MOYSAN wrote:
+> Hi David,
 > 
-> Complete datasheets are available at TI's website here:
-> https://www.ti.com/lit/gpn/adc<bb><c>s<sss>.pdf
+> Thanks for reviewing,
 > 
-> Co-developed-by: Nishanth Menon <nm@ti.com>
-> Signed-off-by: Nishanth Menon <nm@ti.com>
-> Signed-off-by: Sukrut Bellary <sbellary@baylibre.com>
-> Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> ---
-> Changes in v3:
-> 	- No changes in dt-bindings
-> - Link to v2:  https://lore.kernel.org/lkml/20231022031203.632153-1-sukrut.bellary@linux.com/
-> 
-> Changes in v2: 
->         - No changes in dt-bindings
-> - Link to v1: https://lore.kernel.org/all/20220701042919.18180-2-nm@ti.com/
-So that's a v3 or v1? Just start using b4 to avoid such issues.
+> On 4/4/25 18:15, David Lechner wrote:
+>> On 4/3/25 11:23 AM, Olivier Moysan wrote:
 
-Best regards,
-Krzysztof
+...
+
+>>> +#define STM32H7_OVSR_MASK        GENMASK(25, 16) /* Correspond to OSVR field in datasheet */
+>>
+>> nit: Comment seems obvious and can be left out.
+>>
+> 
+> Oversampling bit name is "OSVR" in datasheet H7, while oversampling shift is "OVSS". For naming consistency, I used OVSR instead of OSVR,
+> and highlighted it with a comment. As an alternative, STM32H7_OVSR could be renamed, but I would rather keep it unchanged.
+> 
+
+Ah, my eyes do not easily see the difference between OSVR and OVSR.
+
+Makes sense to keep it so grep picks up both spellings.
 

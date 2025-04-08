@@ -1,73 +1,82 @@
-Return-Path: <linux-iio+bounces-17803-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17804-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B641A7F7B3
-	for <lists+linux-iio@lfdr.de>; Tue,  8 Apr 2025 10:23:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A9CEA7FBCA
+	for <lists+linux-iio@lfdr.de>; Tue,  8 Apr 2025 12:27:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1213E18926E9
-	for <lists+linux-iio@lfdr.de>; Tue,  8 Apr 2025 08:21:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A77D188DB97
+	for <lists+linux-iio@lfdr.de>; Tue,  8 Apr 2025 10:23:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21A052641D7;
-	Tue,  8 Apr 2025 08:21:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01351264F8A;
+	Tue,  8 Apr 2025 10:20:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="1x7W2PRw"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="yG0wFQCk"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E9E02641C0;
-	Tue,  8 Apr 2025 08:21:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A3D2267F5F
+	for <linux-iio@vger.kernel.org>; Tue,  8 Apr 2025 10:20:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744100468; cv=none; b=Yf2IRznI/RGfEivTaJgD4pxBcXQeB08HZt5HFaE5rsrxN3Zy+3BcxOt9yLv5E0c3/XdBiK+MpcqQX8vsu2m7AjIPMM9vs9JmozmKHujr3dphpQvhKxPsGzY6iA+54tuR/+w9d7YPyxZ6wml1XxE3d1hUs6kYfNZZGLsm9ym6W4g=
+	t=1744107617; cv=none; b=gOun6XZMpPq28ITnMuicXEWIHS337ANvW0eaZThWJ/DKac4u8A1OkyQVXisVU/wBsMBisz9OuRA6eBC4rMeEXhEKxm5zFcPpWzPOI0Ac3LK0jxq2+Xsr64VVj/PU/VgT4tLA24rv78IG1u099IW6u4YmBv2LBrUt++OU4XHNCwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744100468; c=relaxed/simple;
-	bh=nKfoNFWReOFyONDTFWwdX4RSHSGV441gkBmYnn2xXcs=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:To:CC; b=aFAC4Kk9ipt/OQQbgYzq4zY7L1BIWMd8d4pWql8TwH86dBBi18L7SgdL/k82ylLMSRiQEAYZoKVAshYySCGrBxvRy1cTEKLKVCdISP7ZEHNvNnh39osz31kKbeW8dH3g7AhtelVbOgFnirNzCEVXNs87vbpDE6O+GicqFgK8JdI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=1x7W2PRw; arc=none smtp.client-ip=148.163.135.77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
-Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-	by mx0a-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53870DKn020436;
-	Tue, 8 Apr 2025 04:20:50 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
-	:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=DKIM; bh=Rf2nluUByTfme7Cv3TdBT5MtVyZ
-	rDKfqEqnO7yl5/O8=; b=1x7W2PRwDrK5Qr27TUpk2ne9lfeSc0FDpOkzUPnQ5yc
-	L1U7vlMFwdP2PLnDwhT97Nbl8wz4VRkBesutMiWXBE+FNQVMCp02cl/QsUw+Ugwc
-	B9SYLdOR+4vQca3+cjP9BC/Y0m/C5y+bpSsnjy/k3M1/EBvwVJyH52tbLTAARknV
-	pXFgmKHCGfAG8yN5bDGCbI/TrOghcZVxf2POMUoH6WkvMSR8QXzEGmlCtmLX+Twd
-	DoFMW/520EHKC18wQtCcH1AxicNvxcLWCITX3bOFliWn/32wcL/sP8kuek5e3eoO
-	iso7FFQMu+D1EWZlxGx3QYLpQDEhSLOk8MoOsuUjfIg==
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 45txc5xta6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 08 Apr 2025 04:20:48 -0400 (EDT)
-Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
-	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 5388Klgc018091
-	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Tue, 8 Apr 2025 04:20:47 -0400
-Received: from ASHBCASHYB5.ad.analog.com (10.64.17.133) by
- ASHBMBX9.ad.analog.com (10.64.17.10) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.14; Tue, 8 Apr 2025 04:20:47 -0400
-Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by
- ASHBCASHYB5.ad.analog.com (10.64.17.133) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.14; Tue, 8 Apr 2025 04:20:47 -0400
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Tue, 8 Apr 2025 04:20:47 -0400
-Received: from HYB-DlYm71t3hSl.ad.analog.com (HYB-DlYm71t3hSl.ad.analog.com [10.44.3.69])
-	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 5388KbEV001610;
-	Tue, 8 Apr 2025 04:20:39 -0400
-From: Jorge Marques <jorge.marques@analog.com>
-Date: Tue, 8 Apr 2025 10:20:29 +0200
-Subject: [PATCH v2] Documentation: ABI: add oversampling frequency in
- sysfs-bus-iio
+	s=arc-20240116; t=1744107617; c=relaxed/simple;
+	bh=VqkQDwdjjBLXg0xsTy9tSOcc4xRmbJVc0CLEPpdho78=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=F5b+xzVKh4ojvU1O2vUvQreLhuovdh+6LP5s3quffE8pEI/AGXuTN9p0RtD8OZvJCSaxKfsIXbcS+R8/WnMFPY9UhnD7RsmQgv8NVEDdi2TV8maC9O6PjJ2D73BYzohjtlvqsjTGhqcuzKeoByZMDypakDjDjPBVP1s+flOy3DU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=yG0wFQCk; arc=none smtp.client-ip=209.85.221.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-39ac8e7688aso3978654f8f.2
+        for <linux-iio@vger.kernel.org>; Tue, 08 Apr 2025 03:20:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1744107613; x=1744712413; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=vaQaFHxZ5nKN+lY9D9HQ1Xp3+zQ5MlJgomgir2Nxsdg=;
+        b=yG0wFQCkfMXYslCHGeRjYoRhcxA0LZBji6cmfW1P4gIAELPkpS7pIyMT7kxL9Rb71L
+         hx3RiXyGm9TV9qV+QspyR0LYC1nfFwghJ1TTlE4A8EvManyuApTUK9HZbLbfsU0S41Nj
+         2H8+/8rSY1GC1dwyVP00y7zRoiR0O7KkBHFgbsL/+bEuGssyOW7YvX/naWqMvEM4iWXh
+         kA0UZkeyS7Q3ouncoVH/y1d2rZP/xasbsKd8PR5zLeL7/sgxt1l9gv/yD7bw/YVjGleQ
+         lMJ+jwfslFz4yOy9nUpKzEfBMMKvkY/V9OPVwtFjBfiMf3ti+dycUvkor8IO782pgvC5
+         b+MQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744107613; x=1744712413;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=vaQaFHxZ5nKN+lY9D9HQ1Xp3+zQ5MlJgomgir2Nxsdg=;
+        b=jsF9RSNn1Y0P7gHaumW/+fDMN5KIif9r7QuWOPTr8Yd1I5tdtOc281JbnJddPxG2L8
+         uj7N+1CAb+kfdGziycAJBl+1yHdmB521cx8UIRQ/OgpJtIeb8/SaTt/uhCtJBQMq20Xh
+         uFc7Qhm8P3CN1XtRZW6Kp9S6e62eru1LOp8H8rnq5aHe7FqecjQ7ctXCDSTYb3ZQaNp9
+         wZYKVgpTNphRU3lm2+amuMPluKhSaqD3TJqFotGEaNae/ydTB9g9DvINGja2ayIyIsqh
+         VVpzGBnmgfe67dmCbSoCVbM5YYSYRwjopbuug0H/T41g+06bBQXckG/xcS1O3dgVs4ZQ
+         C+lQ==
+X-Gm-Message-State: AOJu0YwBXmC1M6KqnondvjNIbnNKB6gcAs40osUrwgwLNMuhCS043sYQ
+	m1j5I3i4qMP4QOLBqOqga/sv4MWJSTnxBj1ETUoah3A854gCLsJLzcxFuH+AYNA+Q+UW3RtbiDN
+	y
+X-Gm-Gg: ASbGncvdueEk71EzYqTfyF/M3i7eh1FdPwVXo9yckZeTerdthdI4uBRDGSCVQ1IOXca
+	8eO38vncEAWAbymlSnwTOmfsDCnS8hH/BZrVyM/jw5YG6K7WXkvWAi39RQB1iCLHFsW9gJY/CDM
+	0gVzi5Io7Y90VVCQeeSA/wm011UXnttb1QvsotlDik2WA6OTnyPz+vXF86t/wm8vqS+BYITpYrR
+	sXWbdWnt7LbUv2QiqbzFXLnrwJbrABCQ8cRAlh9PU6UzMf4rEaE/1NgaxDJ+Vx6gAG33k9h7xwk
+	4Bh8pEVSW3XIBydJJVTnwb7iGyzXTCHLn/8TOexgOhF9psvh0a3HUEd6rvQ7jqHLSNj3/p7M3pc
+	7qTyQow1f48dFX7vAvsW/Cw==
+X-Google-Smtp-Source: AGHT+IGcbz9EPZCqgrBKNQ8aQeRDCGZyMg6GG7p5JvSkTyWeu0NoTLGjdTFe1Q3xhSgsj7nwDpOzeA==
+X-Received: by 2002:a05:6000:2410:b0:391:4389:f36a with SMTP id ffacd0b85a97d-39d6fd0229bmr9811971f8f.48.1744107612907;
+        Tue, 08 Apr 2025 03:20:12 -0700 (PDT)
+Received: from [192.168.0.2] (host-87-15-70-119.retail.telecomitalia.it. [87.15.70.119])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39d7c6d838bsm4396138f8f.69.2025.04.08.03.20.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 08 Apr 2025 03:20:12 -0700 (PDT)
+From: Angelo Dureghello <adureghello@baylibre.com>
+X-Google-Original-From: Angelo Dureghello <adureghello@baylibre.org>
+Subject: [PATCH v4 0/5] iio: ad3552r-hs: add support for internal ramp
+ generator
+Date: Tue, 08 Apr 2025 12:18:50 +0200
+Message-Id: <20250408-wip-bl-ad3552r-fixes-v4-0-b33c0264bd78@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -76,123 +85,91 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-ID: <20250408-abi-oversampling-events-frequency-v2-1-4059272b7364@analog.com>
-X-B4-Tracking: v=1; b=H4sIAEzc9GcC/5WNQQ6CMBAAv2J6dk1bEIIn/2E4lHULm0CLLTYSw
- t+t/MDjzGFmE5ECUxS30yYCJY7sXQZ9PgkcjOsJ+JlZaKmvstAKTMfgE4Vopnlk1wMlcksEG+j
- 1JocrlEWFVWmRkKTInTmQ5c/xeLSZB46LD+uxTOpn/6knBRLqpkRlOm1l3dyNM6PvL+gn0e77/
- gWg2VrG0wAAAA==
-X-Change-ID: 20250321-abi-oversampling-events-frequency-436c64fcece0
-To: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>
-CC: <dlechner@baylibre.com>, <Michael.Hennerich@analog.com>,
-        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        Jorge Marques
-	<jorge.marques@analog.com>
+X-B4-Tracking: v=1; b=H4sIAAr49GcC/4XNTQ6CMBAF4KuYrq1pO0MBV97DuOjPIE0QSGtQY
+ 7i71Y3GSFy+N3nf3FmiGCix7erOIk0hhaHPAdcr5lrTH4kHnzNTQhUClOSXMHLbceOhKFTkTbh
+ S4mig0jWik6VgeTpGeh3ycn/IuQ3pPMTb68skn+0fcJJccHDSGIW1lxp21ty6YCNt3HBiT3NSH
+ w4sOSo7zpO3CALrkn448HZQlAsOZEfLqkShC6tF8+XM8/wAjaWTHUsBAAA=
+X-Change-ID: 20250321-wip-bl-ad3552r-fixes-4a386944c170
+To: =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, 
+ Jonathan Corbet <corbet@lwn.net>, 
+ Olivier Moysan <olivier.moysan@foss.st.com>, 
+ Michael Hennerich <Michael.Hennerich@analog.com>
+Cc: linux-iio@vger.kernel.org, linux-doc@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Angelo Dureghello <adureghello@baylibre.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1744100437; l=3676;
- i=jorge.marques@analog.com; s=20250303; h=from:subject:message-id;
- bh=nKfoNFWReOFyONDTFWwdX4RSHSGV441gkBmYnn2xXcs=;
- b=dM0mJfygHjSA3nj+6Kwb2tCisme3XgV6PD5Lhqoq6hCNGZla4ai54FMwsDkNuRjGIsY8phn7M
- 2r/eEBraf8YCH6GPmiq2q/eo4/QyDq/qWgQJhL6epikj+0jxWKz4kbM
-X-Developer-Key: i=jorge.marques@analog.com; a=ed25519;
- pk=NUR1IZZMH0Da3QbJ2tBSznSPVfRpuoWdhBzKGSpAdbg=
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-GUID: DCbFVyY31ACCErKNRrR2xZlT39WNTyK9
-X-Proofpoint-ORIG-GUID: DCbFVyY31ACCErKNRrR2xZlT39WNTyK9
-X-Authority-Analysis: v=2.4 cv=KePSsRYD c=1 sm=1 tr=0 ts=67f4dc61 cx=c_pps a=3WNzaoukacrqR9RwcOSAdA==:117 a=3WNzaoukacrqR9RwcOSAdA==:17 a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=VwQbUJbxAAAA:8 a=gAnH3GRIAAAA:8 a=G02aU-f3XFZu7WhG8HgA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-04-08_03,2025-04-07_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 bulkscore=0
- impostorscore=0 suspectscore=0 spamscore=0 lowpriorityscore=0
- clxscore=1015 mlxlogscore=999 adultscore=0 phishscore=0 mlxscore=0
- priorityscore=1501 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
- definitions=main-2504080059
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2510;
+ i=adureghello@baylibre.com; h=from:subject:message-id;
+ bh=VqkQDwdjjBLXg0xsTy9tSOcc4xRmbJVc0CLEPpdho78=;
+ b=owGbwMvMwCXGf3bn1e/btlsznlZLYkj/8kOQZ064XHzXNd2ubwkCv658uW316gnT28kl19/We
+ 3AEijT+7ShlYRDjYpAVU2SpS4wwCb0dKqW8gHE2zBxWJpAhDFycAjCRDesZ/lfX9vDc1n2qyv7Z
+ 7o/e72MrG09/uFOepHx98orn13zzth5nZHifeUWureeFD+9pxy/pb5fzB9tbG8rnXXnlsD7euT5
+ LmxcA
+X-Developer-Key: i=adureghello@baylibre.com; a=openpgp;
+ fpr=703CDFAD8B573EB00850E38366D1CB9419AF3953
 
-Some devices have an internal clock used to space out the conversion
-trigger for the oversampling filter,
-Consider an ADC with conversion and data ready pins topology:
+Add support to enable the HDL IP core internal ramp generator,
+actually managed by the adi-axi-dac backend. 
 
-  Sampling trigger |       |       |       |       |
-  ADC conversion   ++++    ++++    ++++    ++++    ++++
-  ADC data ready      *       *       *       *       *
+It works this way:
 
-With the oversampling frequency, conversions are spaced:
+/sys/bus/iio/devices/iio:device0# echo 1 > buffer0/out_voltage0_en 
+/sys/bus/iio/devices/iio:device0# echo 1 > buffer0/out_voltage1_en                                           
+/sys/bus/iio/devices/iio:device0# echo 1 > buffer0/enable 
 
-  Sampling trigger |       |       |       |       |
-  ADC conversion   + + + + + + + + + + + + + + + + + + + +
-  ADC data ready         *       *       *       *       *
+Activating ramp generator:
 
-In some devices and ranges, this internal clock can be used to evenly
-space the conversions between the sampling edge.
-In other devices the oversampling frequency is fixed or is computed
-based on the sampling frequency parameter, and the parameter is
-read only.
+/sys/kernel/debug/iio/iio:device0# echo -n backend-ramp-generator > data_source
 
-Signed-off-by: Jorge Marques <jorge.marques@analog.com>
+Deactivating:
+
+/sys/kernel/debug/iio/iio:device0# echo -n iio-buffer > data_source
+
+Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
 ---
-Some device families such as Analog Device's max1363, ad7606, ad799x, and
-ad4052 contain internal clocks used by monitor modes and oversampling.
-Devices' monitor modes are exposed as IIO events.
-The max1363 driver included the events/sampling_frequency in
-commit 168c9d95a940 ("iio:adc:max1363 move from staging.")
-and ad799x in
-commit ba1d79613df3 ("staging:iio:ad799x: Use event spec for threshold
-hysteresis")
-but went undocumented so far.
+Changes in v4:
+- set data source based on hw channels available (model_data),
+- use a string array for data_source debugfs attribute,
+- modify debugfs accessors to use the string array,
+- add new "data_source_available" debugfs attr,
+- fix documentation accordingly.
+- Link to v3: https://lore.kernel.org/r/20250407-wip-bl-ad3552r-fixes-v3-0-61874065b60f@baylibre.com
 
-The oversampling sampling frequency is a planned feature to be patched
-onto the ad7606 driver.
-In this particular device, it is called oversampling padding.
-The upcoming ad4052 linux driver will utilize both entries,
-it is worth noting, however, there is a single register for both
-options. Since the device is never concurrently in both modes, the
-values will be safely cached on the device state.
----
+Changes in v3:
+- add mutex description,
+- use devm_mutex_init and check for return value.
+- Link to v2: https://lore.kernel.org/r/20250331-wip-bl-ad3552r-fixes-v2-0-cdedb430497e@baylibre.com
+
 Changes in v2:
-- Updated oversampling frequency description according to discussion 
-- Don't include already applied
-  commit 3a8fee68faf2 ("Documentation: ABI: add events sampling frequency in sysfs-bus-iio")
-- Link to v1: https://lore.kernel.org/r/20250321-abi-oversampling-events-frequency-v1-0-794c1ab2f079@analog.com
----
- Documentation/ABI/testing/sysfs-bus-iio | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
-
-diff --git a/Documentation/ABI/testing/sysfs-bus-iio b/Documentation/ABI/testing/sysfs-bus-iio
-index 722aa989baac43f694076074b307d134867b4533..6f5c4060704742ae5f5672a861271b88084ac8f8 100644
---- a/Documentation/ABI/testing/sysfs-bus-iio
-+++ b/Documentation/ABI/testing/sysfs-bus-iio
-@@ -138,6 +138,23 @@ Contact:	linux-iio@vger.kernel.org
- Description:
- 		Hardware dependent values supported by the oversampling filter.
- 
-+What:		/sys/bus/iio/devices/iio:deviceX/oversampling_frequency
-+KernelVersion:	6.15
-+Contact:	linux-iio@vger.kernel.org
-+Description:
-+		Some devices have internal clocks for oversampling.
-+		Sets the resulting frequency in Hz to trigger a conversion used by
-+		the oversampling filter.
-+		If the device has a fixed internal clock or is computed based on
-+		the sampling frequency parameter, the parameter is read only.
-+
-+What:		/sys/bus/iio/devices/iio:deviceX/oversampling_frequency_available
-+KernelVersion:	6.15
-+Contact:	linux-iio@vger.kernel.org
-+Description:
-+		Hardware dependent values supported by the oversampling
-+		frequency.
-+
- What:		/sys/bus/iio/devices/iio:deviceX/in_voltageY_raw
- What:		/sys/bus/iio/devices/iio:deviceX/in_voltageY_supply_raw
- What:		/sys/bus/iio/devices/iio:deviceX/in_voltageY_i_raw
+- doc, add few words for generic spi driver version,
+- axi-dac, add a separate patch to check cntrl chan validity,
+- axi-dac, return EIO on a wrong source on get, 
+- add a lock on debugfs file access,
+- use const strings and strlen on file access.
+- Link to v1: https://lore.kernel.org/r/20250321-wip-bl-ad3552r-fixes-v1-0-3c1aa249d163@baylibre.com
 
 ---
-base-commit: 9f36acefb2621d980734a5bb7d74e0e24e0af166
-change-id: 20250321-abi-oversampling-events-frequency-436c64fcece0
+Angelo Dureghello (5):
+      iio: dac: adi-axi-dac: add cntrl chan check
+      docs: iio: add documentation for ad3552r driver
+      iio: backend: add support for data source get
+      iio: dac: adi-axi-dac: add data source get
+      iio: dac: ad3552r-hs: add support for internal ramp
+
+ Documentation/iio/ad3552r.rst      |  73 ++++++++++++++++
+ Documentation/iio/index.rst        |   1 +
+ MAINTAINERS                        |   1 +
+ drivers/iio/dac/ad3552r-hs.c       | 166 +++++++++++++++++++++++++++++++++++--
+ drivers/iio/dac/adi-axi-dac.c      |  54 ++++++++++++
+ drivers/iio/industrialio-backend.c |  28 +++++++
+ include/linux/iio/backend.h        |   5 ++
+ 7 files changed, 322 insertions(+), 6 deletions(-)
+---
+base-commit: eb870a5af7db1e5ca59330875125230b28e630f9
+change-id: 20250321-wip-bl-ad3552r-fixes-4a386944c170
 
 Best regards,
 -- 
-Jorge Marques <jorge.marques@analog.com>
+Angelo Dureghello <adureghello@baylibre.com>
 
 

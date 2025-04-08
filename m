@@ -1,109 +1,135 @@
-Return-Path: <linux-iio+bounces-17823-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17824-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F778A80D9D
-	for <lists+linux-iio@lfdr.de>; Tue,  8 Apr 2025 16:17:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2790EA80EA3
+	for <lists+linux-iio@lfdr.de>; Tue,  8 Apr 2025 16:44:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 868D617F6A1
-	for <lists+linux-iio@lfdr.de>; Tue,  8 Apr 2025 14:13:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 94A8B8A7242
+	for <lists+linux-iio@lfdr.de>; Tue,  8 Apr 2025 14:37:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B957A1B4243;
-	Tue,  8 Apr 2025 14:13:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA92121C9E0;
+	Tue,  8 Apr 2025 14:33:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hN3VN5VS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i4Ie52fF"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 352A215ECD7
-	for <linux-iio@vger.kernel.org>; Tue,  8 Apr 2025 14:13:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F0551A9B34;
+	Tue,  8 Apr 2025 14:33:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744121610; cv=none; b=NCUhWhWCvS76CAkbNvtYPw6MFKj5RGJP6GAD+8Ek+Ixfcmc0vdFGuuOM+RDwfvhJaP2G7Uf7zCbr8SppwOZS0E5eVCgfquVUUs8KgjqYWJWRbBWKQDEnOXMT4ycpMJTDYIaEpyiUOHR00OTOUIdcmMoKQSxxvMdfVS8ss55uA40=
+	t=1744122837; cv=none; b=AQd2dmDpaI+DcQiXvcv+NjB3aZY4kmLTV/yL0MvYgVA1LR/kfEJY9wJrRQQTM1jHaazn0nl6NkQh7Wff7ZKYTdWFCcmeuzQbop2sGQ+TqL6ywt+RhJcVObOFPiHDl6JvMNwe3uJNTgJqzbqV9vRERIa409KlWc+eJzreSkFSVWY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744121610; c=relaxed/simple;
-	bh=ahx8cR05k3qNGaOJea8NLD9wd9EkhgVI2XiZ9fruzls=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=bn1GFY9d5OeQJjO3i94FQXewHzQXXoc7dy0n+qcNJgcl+9vC0gaFIStY0X4AxCs4k/BUDCwynLvgsDXjbAt9LUdIM+o03sCwHxoUQV83kWVkJGh0nfGQKdGDLbf+PnRulj8FiEHo6LJ5qE8nNAnNMKaEnJ7F9iXrw1agK9oXbSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hN3VN5VS; arc=none smtp.client-ip=209.85.215.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-af590aea813so5246403a12.0
-        for <linux-iio@vger.kernel.org>; Tue, 08 Apr 2025 07:13:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744121608; x=1744726408; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-disposition:mime-version
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=l74Yci16jgG4pkaeHBNwts2U3/tJ+WNAfsUx5ggK314=;
-        b=hN3VN5VScCEarDxVg+hW8pxPRcGUHSaB2j8yUENsxr7XPryJwym2TL/u2UE05FRVZg
-         SHzgGbYuoY6k3Cgrllo+lAJWkJTMzR1DRy2xC05ky9i/r6lFDm/qNxvr3NSTf15p2Wt9
-         XCseKHLUQ9BrmAmZOtwNbaIjfjU13UpXnATpBpszwT0EQi1GfGha1xeY9N6D8O1KOIU+
-         uSc96ZFsRQ99TD6DtPocq3ktkn1ggswJ+H3eFBpqfUxvTK6fcGKst+3ADiLXlKuA3bqA
-         Ebt6PIgRWlTTxhPuhJJzCAbGGlypiFqgeriVOsCYWAkAVeHha6TmJbS+IeVICLnJgsC8
-         Pv1w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744121608; x=1744726408;
-        h=content-transfer-encoding:content-disposition:mime-version
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=l74Yci16jgG4pkaeHBNwts2U3/tJ+WNAfsUx5ggK314=;
-        b=Ng8OhQ7eliBic5cdDkgVj2g2zS8t7zd83+OfO+ydT/8Px87QsAIciBIoJ0TR0nLGCq
-         DNK+VhlN7cacWGAD9VEiKsfnOsa8Ec38nRZpod0ya9m1TxdMX902t4Y+s1i4YzCLFK/U
-         CPTAu5zXFWWA9qXWdsPu0fcLGYkLCZTz126/cBC17MoNLf2TyZooBQsGgrqcIm1w62O/
-         fKQ4k/oN3e9HB1rN5Ng8rvyM5tA6obbBUvFeeVSnLf2i7/CY8XLqtY8esM5q0ruwELra
-         bq/KuM6X1PwtkdKRGFPSKMERtMIyMl141hjxikvrKLCfk2nsFp/X5w1KIFc3WqnjhA22
-         ZH5w==
-X-Gm-Message-State: AOJu0YzZsXey8W74TVCMbnZWyJxzqVPYfoXcTAfnIRV6ftUoRECcFduf
-	ERxL0jxsl6AEyaRbaPdiJhcALIvzi4qUF7mvqjjaI7QCgkChucTC
-X-Gm-Gg: ASbGncv4bNKZkeavnO/jK6px8wSh4hWKolGLexozYn2eh9k6Cdp4fnRB9qCwyDi1J9s
-	hYJGDHUeeKb7ZCQLoIO9O3nwJk3crE02MvjUmyDmsdKjFBj+f5oeco/y8VMJibl28qVXSu2iAnc
-	AgopetOGNLyuEgrb1tLZrdd/32BKS30laNgZ/DMeBqrITZqmvz3nsYe3Au6i1VlW6Z9BUQwgn9q
-	aVwDbHz/LAHP83w+EBYWltcyA+UBve9n1W9sqtX1jDY9NponMyVaJsPED8t/RUaBV5NB5NtP4Gk
-	H5E0jDHOdmZl4ipfp+EGQoenMpBJlXLnJLQbaTCWMk7PatwusFM6h7Qr/dHvfnV5bwsvwQ==
-X-Google-Smtp-Source: AGHT+IHZX3qWi+9w7wRE4f4VneyQqn5NThwdUYw4hqYIXr2nYNjjtblEyqozTJxUpq3ch6WLxGIBJg==
-X-Received: by 2002:a17:90a:f944:b0:2ff:53d6:2b82 with SMTP id 98e67ed59e1d1-306d0d1d6e8mr4847557a91.11.1744121608272;
-        Tue, 08 Apr 2025 07:13:28 -0700 (PDT)
-Received: from brajesh-IdeaPad-3-15IAU7 ([103.205.128.234])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-305983b8726sm10910210a91.33.2025.04.08.07.13.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Apr 2025 07:13:27 -0700 (PDT)
-Date: Tue, 8 Apr 2025 19:43:24 +0530
-From: Brajesh Patil <brajeshpatil11@gmail.com>
-To: jic23@kernel.org
-Cc: linux-iio@vger.kernel.org, marcelo.schmitt1@gmail.com
-Subject: Adding support for QMC5883L magnetometer to IIO subsystem
-Message-ID: <Z_UvBIsQ4rdIYTN8@brajesh-IdeaPad-3-15IAU7>
+	s=arc-20240116; t=1744122837; c=relaxed/simple;
+	bh=WV1NnOm7mQgBNIY8pYSfL1+y3D3B2dOITkOdGnccMYQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=e6MFwr1kbE5zKSo5y9zUr2iXxROo0Fk/+TuXhu2UQeX/9FqRXh8mwyVELoxeQbcBJrg/FjJJXnduIoaj748wETtsZs4D5acVzH6BJtEsjs30nbIGTgRHAfD4k2NMJRBFKhSeiF/jrvMjtMA57AHA89GV6eXrllLoMRbGzoSl+ds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i4Ie52fF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4841BC4CEE5;
+	Tue,  8 Apr 2025 14:33:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744122837;
+	bh=WV1NnOm7mQgBNIY8pYSfL1+y3D3B2dOITkOdGnccMYQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=i4Ie52fFronk8AZ4Tn2GfxjKIBPaqb8q7RKCoQYMh8FL/FEm4qROueQ9OVFsQAZlX
+	 8RxUMfpy/ZRtjtjz3SvyyR0Mz8jCoI85zGMjgFmsSFHhoqbidnoiHIROO8Kmcvumdr
+	 FKn0C3E4yIIcKNWOb4IHulKlxYkEB3Egt7FDw2s5Uhw9CltlSvdKHe8W4N+ZjT2xG6
+	 G5Xs+48ZpTGLru+IG78pVBT1ZQNVQo+KH2R+zA+AFb9fE1Wf8wmzQ4jjfpMmMlvy6Q
+	 WZO3tmM9D4qKEPx8uMdXvoSjGIG9cqeQIBg85z/ITCOdP5uEIcby94fsW8FtfVT7g/
+	 WuOoFuKk9X6ow==
+Message-ID: <81988268-7690-46c7-9469-79cefcf30792@kernel.org>
+Date: Tue, 8 Apr 2025 16:33:52 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] dt-bindings: iio: adc: ti,adc128s052: Add adc08c and
+ adc10c family
+To: Sukrut Bellary <sbellary@baylibre.com>,
+ Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ Angelo Compagnucci <angelo.compagnucci@gmail.com>
+Cc: Nishanth Menon <nm@ti.com>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+References: <20250408132120.836461-1-sbellary@baylibre.com>
+ <20250408132120.836461-2-sbellary@baylibre.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <20250408132120.836461-2-sbellary@baylibre.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-I have a QMC5883L magnetometer module that I’ve been trying to integrate with my 
-Raspberry Pi using a kernel-space driver. While checking the mainline kernel, I 
-found that there is a driver for the HMC5883L (under the hmc5843 driver), but nothing 
-for QMC5883L.
+On 08/04/2025 15:21, Sukrut Bellary wrote:
+> 
+> Complete datasheets are available at TI's website here:
+> https://www.ti.com/lit/gpn/adc<bb><c>s<sss>.pdf
+> 
+> Co-developed-by: Nishanth Menon <nm@ti.com>
+> Signed-off-by: Nishanth Menon <nm@ti.com>
+> Signed-off-by: Sukrut Bellary <sbellary@baylibre.com>
+> Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> ---
+> Changes in v3:
+> 	- No changes in dt-bindings
+> - Link to v2:  https://lore.kernel.org/lkml/20231022031203.632153-1-sukrut.bellary@linux.com/
+> 
+> Changes in v2: 
+>         - No changes in dt-bindings
+> - Link to v1: https://lore.kernel.org/all/20220701042919.18180-2-nm@ti.com/
+So that's a v3 or v1? Just start using b4 to avoid such issues.
 
-I compared the datasheets for both devices and confirmed that they are not 
-register-compatible — the QMC5883L has a different I2C address and an entirely different 
-register map from the HMC5883L.
-
-Given that this sensor is widely used (often as a drop-in replacement for the 
-now-discontinued HMC5883L), I was thinking of writing a new driver for it under the IIO 
-subsystem.
-
-Would it make sense to move forward with this? If so, I’d appreciate any guidance or 
-suggestions from the community.
-
-Thanks,  
-Brajesh 
-
+Best regards,
+Krzysztof
 

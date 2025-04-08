@@ -1,80 +1,69 @@
-Return-Path: <linux-iio+bounces-17825-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17826-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 866D3A80EB1
-	for <lists+linux-iio@lfdr.de>; Tue,  8 Apr 2025 16:45:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 471D9A80EFB
+	for <lists+linux-iio@lfdr.de>; Tue,  8 Apr 2025 16:56:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0BCF7189AA4D
-	for <lists+linux-iio@lfdr.de>; Tue,  8 Apr 2025 14:43:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B1673189B430
+	for <lists+linux-iio@lfdr.de>; Tue,  8 Apr 2025 14:52:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 014AF1F4199;
-	Tue,  8 Apr 2025 14:43:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00F03223706;
+	Tue,  8 Apr 2025 14:51:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="2x91VZV8"
+	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="oO1x1MwF"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oo1-f45.google.com (mail-oo1-f45.google.com [209.85.161.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx07-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64C4214F123
-	for <linux-iio@vger.kernel.org>; Tue,  8 Apr 2025 14:43:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFD72221DB0;
+	Tue,  8 Apr 2025 14:51:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.207.212.93
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744123396; cv=none; b=rUgQHB4D+/ZdaI9+6k5KhOt2EYP/jrYnqRUq9EUHWPDygCUOmVL+ziYgg+mTLhHCWY7We31KZ8Bkj95NoZllcJc4ODZ73V3grjinmSVq/3rcx11dfUumaXXisjv0HjmSAwxSoHPSPJv3lC+ugPicXC7+kFltmvrL0SmegEY6A6c=
+	t=1744123899; cv=none; b=qEuxBHwPUWlK3FZJsObiAgAThCbLS6e3oeOZTnJihpC1uIsdOAwqJY/aaShvHazvMYD1197G1kDVIWPUlrtS8b/ZDFOyhVMoN/1sHUAk3+SXvmMwF+oniPIyA416VVVNEugXF7cIenW4stkMhreFb25aAI8iB9HdYYZUb+DV3t8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744123396; c=relaxed/simple;
-	bh=5X7WiAHhEsNxH6J2yVsjgQxTBS34hllTgevGnMaFPII=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PlycUawrzOPBwiBWJbYFZoEKntR1cel/OBpjBiBIGgereOSExdJQ/F/BJ3488+X1J4Qj1yJfndrDdBxwW+9KN6W34f/IbkiIRzh262hK6yFS6wrFnHl5TMqtdzwf4vSub5q+tZWTbMAaphByFAqmBfvvmiEyh5vPSjX0aPjELwc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=2x91VZV8; arc=none smtp.client-ip=209.85.161.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oo1-f45.google.com with SMTP id 006d021491bc7-5fcef5dc742so1644778eaf.1
-        for <linux-iio@vger.kernel.org>; Tue, 08 Apr 2025 07:43:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1744123393; x=1744728193; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ZX0aGXRptTCUQcorsU5tL8EzdmJ/4Dcw0VhDpZ9VkFw=;
-        b=2x91VZV8Lly/cctXzyrQ9Zb8URKEcOh3hZczKan0mwYIBwc7K09W0xTihHXoH5Ss7H
-         Ml4vaOEsD/eo9wBYYNdMFIjfrv/EHJbWQMufaAsIw+tN2enhc6UanttFzH77AlshTAEo
-         Zfw+pjvpz5mJt6BuoS7RxnH73/6MDSpcioNGRJnYHl0zL1Q1I6wPKKnZCpiqL6ixcePM
-         yAmzcmbrxN4OSLH99v9ESU+zIvVSxuKR43ATYZaMbMlHsV/wCf6IXTX9TV/Rj7WpBBsH
-         7x71k1HV/t+apiPBcLms0nDe2cGMeyMBK3i6Fk2Wy/Y+EYbsLtn2xE2+9UAYq9Uur6mL
-         obgA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744123393; x=1744728193;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZX0aGXRptTCUQcorsU5tL8EzdmJ/4Dcw0VhDpZ9VkFw=;
-        b=gFQnSVA4SyXxL/S2S892RECl9FdAf3EWwGDJSN52CRemufKz9t4XPaVE0z2dY84MUg
-         /QBYcvD2fPhRe2qUmtowTMBzzrFytB4o1ctMnLoROpB39h1cc/YwecCizt1XHLewHOUK
-         H04TN6swux7WPoEUxWEFHdKmVdzTTMmEKMwvFRnNF12KmAHQ0mHQszXS7fAscIwyRtDu
-         JP38T+V6Vc4nbgzT4tq7vNh6uZuzQe9kjnxkcJOiBgOU9OPsW5OdjG1ribC6elussmW4
-         7bl2i/iiwttrSnl0Xw9ui14n4jlN8+EYRI8YUtvoimfm8W41K3LQon18LfeOTJ5Qkg/J
-         OqXQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXIA+zBjD8UywvkUvFm/onlSgZiEazdbR5uRrn1xJBsBeDiPzeboVu4YrC+uf6uFJOHzij9jptxm8o=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwVbuBI1wdt0cMLFkuKDCsKDID9W9ClUMhrDYoEB3fipu0j+0w2
-	YascLvy0/dYDT0ciefy/XItlAhx3bhsmST2ipeTrIKlJsp+iSOXz0B6fEVWp2KQ=
-X-Gm-Gg: ASbGncvdD2ENQ/0cxZNryzVwPfUe/A1hgbzA6W9DiXxPpvNufvlHXoaCJj4hRPovhxG
-	nsMjazEsZv+PnvuEtcgXG/c2X05enVKDrXpImu+Rzh1H+lHrWxxmG/6O5S8OxWVDMEKxSQUbN/o
-	6090qSghz0N7hAAtG/7BS60vgKnMObUPXNSxlG+YecF9vqX0W3KubR5TM1MqEoUJ9ri3hZxtbh0
-	yVSz0mG6/7+hROXpCTkeiWogvEj1ZWah6eKEg/Pj4A4Bhr1fppHkT7lb5T9HsFZnmnXLWb2Ywi9
-	rG/JIUf2xzvWnLNWnLd5QRowm5769OeaGM97XfK0uO5BiMkj/TvbBBfZiNC6Zfa7ICBjanr60N1
-	Sf4kYfeyyUojfHkWq
-X-Google-Smtp-Source: AGHT+IHydLilQvszzuRpWvpl8zBnzCfe2oBsCFFQZFAPCcrx+PW2NEIcAFyuNBZbinDzJI3j0Elo8w==
-X-Received: by 2002:a05:6808:4493:b0:3f8:7c69:561b with SMTP id 5614622812f47-4004d99ffe3mr7838878b6e.14.1744123393329;
-        Tue, 08 Apr 2025 07:43:13 -0700 (PDT)
-Received: from [192.168.0.113] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-40069105b97sm475279b6e.13.2025.04.08.07.43.12
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 08 Apr 2025 07:43:12 -0700 (PDT)
-Message-ID: <0550fb58-cff3-47fd-b5f4-cbc19113436c@baylibre.com>
-Date: Tue, 8 Apr 2025 09:43:11 -0500
+	s=arc-20240116; t=1744123899; c=relaxed/simple;
+	bh=qHKVhMeNu+6uyMJqrkcJu9sxTEx1ISyc3gVts+BKlVE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=CQPJARpVaUes1d8N8lSk+3NhAfFCB8ELhGl3wozFaj4t9S4uYLuoyszZbBvT6+Ye//FMeZi3glVmoEWSHSbGAWBE9JqcsDASdJ+f3SOQfAyuXkRCwgq6XPK8FEJn2KY+oxapgkV76VqXtf6jh+a3/QM+HmpcGslC8NBwezX2K2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=oO1x1MwF; arc=none smtp.client-ip=91.207.212.93
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
+Received: from pps.filterd (m0046661.ppops.net [127.0.0.1])
+	by mx07-00178001.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 538AxRGf008721;
+	Tue, 8 Apr 2025 16:51:13 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=selector1; bh=
+	3RQmySbuo/UCyRNQmzbHNRcOJc6ylALW0myadTLuAJI=; b=oO1x1MwF4IqH7lel
+	i7TxuO7cgSSQ2R1sZZWjEkr09m7XArQeSZ3GF5TRsACoc0jhtT9lnauTQRF0qSrR
+	zxvQ8MUe+KMXhpetm4bw+9cJ4hjautcsdL6MWFc8L1M5etZUhZW9hOgV40hA9/xC
+	7HewaMMiBZpYYE5CQ9BTbg+O5+/CnTc0UJLfg9nBeoZ/0PwUoXzFAWktktQPQsk1
+	5nA/ovi6Rkd9Ualzuk0+s7EzZqeSxJt+J3QOaXxd+9iCs6YnsX+6VBFklsP5R/9F
+	nXUtFZ9J4lHj1mQq3BUxFgmHk28f7sOIH2nnaY1ib7CywwEy91aCU3POrtXM0DSy
+	3fm8cw==
+Received: from beta.dmz-ap.st.com (beta.dmz-ap.st.com [138.198.100.35])
+	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 45tw2gwmpt-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 08 Apr 2025 16:51:12 +0200 (MEST)
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+	by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id A351040045;
+	Tue,  8 Apr 2025 16:50:02 +0200 (CEST)
+Received: from Webmail-eu.st.com (eqndag1node4.st.com [10.75.129.133])
+	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 196509245C5;
+	Tue,  8 Apr 2025 16:48:52 +0200 (CEST)
+Received: from SAFDAG1NODE1.st.com (10.75.90.17) by EQNDAG1NODE4.st.com
+ (10.75.129.133) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 8 Apr
+ 2025 16:48:51 +0200
+Received: from [10.252.0.136] (10.252.0.136) by SAFDAG1NODE1.st.com
+ (10.75.90.17) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 8 Apr
+ 2025 16:48:50 +0200
+Message-ID: <d66bd978-820a-4700-92c2-ba52d7db4efb@foss.st.com>
+Date: Tue, 8 Apr 2025 16:48:50 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -82,43 +71,148 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] iio: adc: stm32: add oversampling support
-To: Olivier MOYSAN <olivier.moysan@foss.st.com>,
- Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>
-Cc: Fabrice Gasnier <fabrice.gasnier@foss.st.com>, linux-iio@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20250403162358.1257370-1-olivier.moysan@foss.st.com>
- <25b34e60-5392-4bfb-b994-49212dfbdb22@baylibre.com>
- <6d12b6fe-85fb-4345-bf32-02c0fbb1a27a@foss.st.com>
+Subject: Re: [PATCH v4 4/8] clocksource: stm32-lptimer: add support for
+ stm32mp25
+To: <lee@kernel.org>, <alexandre.torgue@foss.st.com>,
+        <daniel.lezcano@linaro.org>, <tglx@linutronix.de>
+CC: <krzk+dt@kernel.org>, <jic23@kernel.org>, <conor+dt@kernel.org>,
+        <ukleinek@kernel.org>, <robh@kernel.org>, <catalin.marinas@arm.com>,
+        <will@kernel.org>, <devicetree@vger.kernel.org>, <wbg@kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+        <linux-iio@vger.kernel.org>, <linux-pwm@vger.kernel.org>,
+        <olivier.moysan@foss.st.com>
+References: <20250314171451.3497789-1-fabrice.gasnier@foss.st.com>
+ <20250314171451.3497789-5-fabrice.gasnier@foss.st.com>
 Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <6d12b6fe-85fb-4345-bf32-02c0fbb1a27a@foss.st.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+In-Reply-To: <20250314171451.3497789-5-fabrice.gasnier@foss.st.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SHFCAS1NODE2.st.com (10.75.129.73) To SAFDAG1NODE1.st.com
+ (10.75.90.17)
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-04-08_06,2025-04-08_03,2024-11-22_01
 
-On 4/7/25 11:07 AM, Olivier MOYSAN wrote:
-> Hi David,
+On 3/14/25 18:14, Fabrice Gasnier wrote:
+> On stm32mp25, DIER (former IER) must only be modified when the lptimer
+> is enabled. On earlier SoCs, it must be only be modified when it is
+> disabled. There's also a new DIEROK flag, to ensure register access
+> has completed.
+> Add a new "set_evt" routine to be used on stm32mp25, called depending
+> on the version register, read by the MFD core (LPTIM_VERR).
 > 
-> Thanks for reviewing,
+> Signed-off-by: Patrick Delaunay <patrick.delaunay@foss.st.com>
+> Signed-off-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+> ---
+> Changes in V4:
+> - Daniel suggests to encapsulate IER write into a separate function
+>   that manages the enabling/disabling of the LP timer. In addition,
+>   DIEROK and ARROK flags checks have been added. So adopt a new routine
+>   to set the event into ARR register and enable the interrupt.
+
+Hi all, Daniel,
+
+Does anybody else have additional remarks on this driver ?
+
+I think Lee is waiting for review, before merging the MFD part (at least).
+
+Best Regards,
+Thanks,
+Fabrice
+
+> Changes in V2:
+> - rely on fallback compatible as no specific .data is associated to the
+>   driver. Use version data from MFD core.
+> - Added interrupt enable register access update in (missed in V1)
+> ---
+>  drivers/clocksource/timer-stm32-lp.c | 51 +++++++++++++++++++++++++---
+>  1 file changed, 47 insertions(+), 4 deletions(-)
 > 
-> On 4/4/25 18:15, David Lechner wrote:
->> On 4/3/25 11:23 AM, Olivier Moysan wrote:
-
-...
-
->>> +#define STM32H7_OVSR_MASK        GENMASK(25, 16) /* Correspond to OSVR field in datasheet */
->>
->> nit: Comment seems obvious and can be left out.
->>
-> 
-> Oversampling bit name is "OSVR" in datasheet H7, while oversampling shift is "OVSS". For naming consistency, I used OVSR instead of OSVR,
-> and highlighted it with a comment. As an alternative, STM32H7_OVSR could be renamed, but I would rather keep it unchanged.
-> 
-
-Ah, my eyes do not easily see the difference between OSVR and OVSR.
-
-Makes sense to keep it so grep picks up both spellings.
+> diff --git a/drivers/clocksource/timer-stm32-lp.c b/drivers/clocksource/timer-stm32-lp.c
+> index 928da2f6de69..e58932300fb4 100644
+> --- a/drivers/clocksource/timer-stm32-lp.c
+> +++ b/drivers/clocksource/timer-stm32-lp.c
+> @@ -27,6 +27,7 @@ struct stm32_lp_private {
+>  	u32 psc;
+>  	struct device *dev;
+>  	struct clk *clk;
+> +	u32 version;
+>  };
+>  
+>  static struct stm32_lp_private*
+> @@ -47,12 +48,37 @@ static int stm32_clkevent_lp_shutdown(struct clock_event_device *clkevt)
+>  	return 0;
+>  }
+>  
+> -static int stm32_clkevent_lp_set_timer(unsigned long evt,
+> -				       struct clock_event_device *clkevt,
+> -				       int is_periodic)
+> +static int stm32mp25_clkevent_lp_set_evt(struct stm32_lp_private *priv, unsigned long evt)
+>  {
+> -	struct stm32_lp_private *priv = to_priv(clkevt);
+> +	int ret;
+> +	u32 val;
+> +
+> +	/* Enable LPTIMER to be able to write into IER and ARR registers */
+> +	regmap_write(priv->reg, STM32_LPTIM_CR, STM32_LPTIM_ENABLE);
+> +	/* set next event counter */
+> +	regmap_write(priv->reg, STM32_LPTIM_ARR, evt);
+> +	/* enable ARR interrupt */
+> +	regmap_write(priv->reg, STM32_LPTIM_IER, STM32_LPTIM_ARRMIE);
+> +
+> +	/* Poll DIEROK and ARROK to ensure register access has completed */
+> +	ret = regmap_read_poll_timeout_atomic(priv->reg, STM32_LPTIM_ISR, val,
+> +					      (val & STM32_LPTIM_DIEROK_ARROK) ==
+> +					      STM32_LPTIM_DIEROK_ARROK,
+> +					      10, 500);
+> +	if (ret) {
+> +		dev_err(priv->dev, "access to LPTIM timed out\n");
+> +		/* Disable LPTIMER */
+> +		regmap_write(priv->reg, STM32_LPTIM_CR, 0);
+> +		return ret;
+> +	}
+> +	/* Clear DIEROK and ARROK flags */
+> +	regmap_write(priv->reg, STM32_LPTIM_ICR, STM32_LPTIM_DIEROKCF_ARROKCF);
+> +
+> +	return 0;
+> +}
+>  
+> +static void stm32_clkevent_lp_set_evt(struct stm32_lp_private *priv, unsigned long evt)
+> +{
+>  	/* disable LPTIMER to be able to write into IER register*/
+>  	regmap_write(priv->reg, STM32_LPTIM_CR, 0);
+>  	/* enable ARR interrupt */
+> @@ -61,6 +87,22 @@ static int stm32_clkevent_lp_set_timer(unsigned long evt,
+>  	regmap_write(priv->reg, STM32_LPTIM_CR, STM32_LPTIM_ENABLE);
+>  	/* set next event counter */
+>  	regmap_write(priv->reg, STM32_LPTIM_ARR, evt);
+> +}
+> +
+> +static int stm32_clkevent_lp_set_timer(unsigned long evt,
+> +				       struct clock_event_device *clkevt,
+> +				       int is_periodic)
+> +{
+> +	struct stm32_lp_private *priv = to_priv(clkevt);
+> +	int ret;
+> +
+> +	if (priv->version == STM32_LPTIM_VERR_23) {
+> +		ret = stm32mp25_clkevent_lp_set_evt(priv, evt);
+> +		if (ret)
+> +			return ret;
+> +	} else {
+> +		stm32_clkevent_lp_set_evt(priv, evt);
+> +	}
+>  
+>  	/* start counter */
+>  	if (is_periodic)
+> @@ -176,6 +218,7 @@ static int stm32_clkevent_lp_probe(struct platform_device *pdev)
+>  		return -ENOMEM;
+>  
+>  	priv->reg = ddata->regmap;
+> +	priv->version = ddata->version;
+>  	priv->clk = ddata->clk;
+>  	ret = clk_prepare_enable(priv->clk);
+>  	if (ret)
 

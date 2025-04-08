@@ -1,338 +1,135 @@
-Return-Path: <linux-iio+bounces-17835-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17836-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B646A8163F
-	for <lists+linux-iio@lfdr.de>; Tue,  8 Apr 2025 22:03:20 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D5ACA81726
+	for <lists+linux-iio@lfdr.de>; Tue,  8 Apr 2025 22:50:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 05E4C468334
-	for <lists+linux-iio@lfdr.de>; Tue,  8 Apr 2025 20:03:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 200037B0CF2
+	for <lists+linux-iio@lfdr.de>; Tue,  8 Apr 2025 20:49:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 487172459CE;
-	Tue,  8 Apr 2025 20:03:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56AE724EAAC;
+	Tue,  8 Apr 2025 20:50:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b="QOnjGrf7"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="sYj25Yay"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7A96244186;
-	Tue,  8 Apr 2025 20:03:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.11.138.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B788023C8C1
+	for <linux-iio@vger.kernel.org>; Tue,  8 Apr 2025 20:50:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744142596; cv=none; b=AquduS4QlkxJ0m1tc44vFE0t15Bz1FWuGm+Bc4hv4DidwSlu3GGBhpeI7liyXCzWqQwpuRBDhuyWMxiKRndmxVD3yQQ4LnWg2ygkMwN2YF/d73IrJNJys4eMs1m+5ACCYBI3fnDQFC5gfN8SP1TBPMwIJJ1I3zwwjKNpSyDm9D4=
+	t=1744145436; cv=none; b=WoVt38QUuOOKOzBuJH4KBDHfjqn3dD0SeqqtPi+kT0TTxRaHDG/XR9YSkSfxNS9lStI5L/JGy+wZsqlTUxGg0XeCL/dFi6ppQH+pNrNF0V3O3jUyIm0n6yYwJjrdVUl4NeAFHQTiqeoQaOKVLvBMUPbhe/Xzlz1+fHs6dsYWEmQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744142596; c=relaxed/simple;
-	bh=2Z4TqMhJgMVGMdEWKFKm8oqk6IobRWcr5GzyRiHD9X0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=R75FpAQ/b7oz64Vk1RLGV3eGcmfjdBQbfWIQYbMnor0fuH5qA//QJATK7F9oopbByjXEouSNVldfNnLuBqKfjif03H44YqUQXsZosWXQ2n+/SHihmsPL10AGN+XfnwbB+dVSSsH4NzJeML/ej6w23yCZfT6E3ozaOT33Zw0YllQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de; spf=pass smtp.mailfrom=sntech.de; dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b=QOnjGrf7; arc=none smtp.client-ip=185.11.138.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sntech.de
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=sntech.de;
-	s=gloria202408; h=Content-Type:Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=FxiVMMavbeVJat0Fg13/bdPyEQi5kd3dq3ZqRtNTT1k=; b=QOnjGrf7X9PrCbh55TklsvWBSV
-	RpDtdVx3YJhCSYVlvWD8r5SitRALVtYyrVe4AjNSmP0rf0XqJROu31YDlFYA/9R9Oequlznuxc+Ka
-	hASbdH7877Vj9UPZ8la+BO50aButo8PYEaf6wpSUiFylT01JejCZbV+4F3tim+4ss9RnrlBURjL+5
-	hd2oQW0TN9pAP9/KHhvVTA87RPnAX37KJRkgV8bH3Y9BVRjAEU7GUkFHp/GgIJfrOB+II2JQ2GApD
-	u5V6Xu8Nj4TXSsvNybh4kDPTmhuxsgUd5uVb8JzO+AuZ5UE10Dcvbkl4NFm4jRRXfBZc1suO3l8J4
-	mWFi6LWg==;
-Received: from i53875b95.versanet.de ([83.135.91.149] helo=diego.localnet)
-	by gloria.sntech.de with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <heiko@sntech.de>)
-	id 1u2F9z-00023n-2e; Tue, 08 Apr 2025 22:03:03 +0200
-From: Heiko =?UTF-8?B?U3TDvGJuZXI=?= <heiko@sntech.de>
-To: Linus Walleij <linus.walleij@linaro.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
- Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <ukleinek@kernel.org>,
- William Breathitt Gray <wbg@kernel.org>,
- Sebastian Reichel <sebastian.reichel@collabora.com>,
- Kever Yang <kever.yang@rock-chips.com>,
- Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
-Cc: linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org,
- linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org,
- linux-iio@vger.kernel.org, kernel@collabora.com,
- Jonas Karlman <jonas@kwiboo.se>,
- Detlev Casanova <detlev.casanova@collabora.com>,
- Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
-Subject: Re: [PATCH 4/7] soc: rockchip: add mfpwm driver
-Date: Tue, 08 Apr 2025 22:03:01 +0200
-Message-ID: <5559308.Sb9uPGUboI@diego>
-In-Reply-To: <20250408-rk3576-pwm-v1-4-a49286c2ca8e@collabora.com>
-References:
- <20250408-rk3576-pwm-v1-0-a49286c2ca8e@collabora.com>
- <20250408-rk3576-pwm-v1-4-a49286c2ca8e@collabora.com>
+	s=arc-20240116; t=1744145436; c=relaxed/simple;
+	bh=8P9HdtuuJEcYjisIpBzJjU4A/0Fv9PbdTpy10z/2Wwk=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=dWl1W2NkZOCLkLRT0iFeMHdLvtB1xPbhtlY8Xw0/k0YCmfPVBtMt97fH7MCaEp5nVVoIlYUpyEfOdxtHFY5OywBWhhweXMDuTU+pdC2X1bFFx+OBdhaoPcuUJFrg9M0Ba9HeO2DzsqX2qBmqqzHUZYkFkMb9JR3fK7epajyYOXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=sYj25Yay; arc=none smtp.client-ip=209.85.221.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-39c1ee0fd43so5029874f8f.0
+        for <linux-iio@vger.kernel.org>; Tue, 08 Apr 2025 13:50:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1744145432; x=1744750232; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ISeBfv1lorqaekgIceJMICGTv4GtIv7vI6GAFDIKa+s=;
+        b=sYj25Yay+6M0fYGj322VyqjTmQoJZ/a7NXQpdXXCOSf9i6rE7ii5GpyIUZ1WYUZin1
+         XpEJad8WwhLwzvjV2cvxvUZVYktoMpgoElFAaZdoEX8RfXyoBJcYZhwNJlN2fDJYDYm9
+         PGUvDisSa99StrJ9wn+LCkQrj0506qcN6YunLVWbMeJFGbIX/r9DKu+ei3BK8JaCPHnV
+         DP6Kub4LmN93Z0aPHFdgQjs1T+nR4hKAEKiKm996ydnqvCLcdeaI4JLpUPbePHH9vRyS
+         GxHFuFqYcGgqccvPLlQXWu/i9Mmqw2lT3Gogx/nz6szMzotF2dx1c+nwdK6Vr18LU0kf
+         Tpzg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744145432; x=1744750232;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ISeBfv1lorqaekgIceJMICGTv4GtIv7vI6GAFDIKa+s=;
+        b=pBdBW4XNYk3fq5o86Pfg7K11jS0Nen+A/7zbCY5A0FE+MogxWUgABzlGTQ3Ljt4ya4
+         yZ92pf0bj09AifJp/e4LXLQa7nEhhh7arBuUCF+mSqfLtbgw5za6lGBlpUi+gt5bFKlN
+         HfjZEb3VLi04zU8CJwZfjQLtcg+Ajw3aWHPMtSdzVpVf9oPiOE2124HW2zv0R6yilDRh
+         Z/YoxO8inKjnIV91w8w0Is6K/vAg4+5FPc24cQYB1w0gvDMoYSQ7QfLxGbwWBTQzupJH
+         t27EEJNJ9iQjButjUm1FZvnKQjW036TaMipjALLgJ5o/pR4lgH4kU/WGaQsL1lhEDaru
+         yXVA==
+X-Gm-Message-State: AOJu0Yy3E3FMvTiaCLn8KcR/cqnOVmve4BSi+I7GUInPv1sseRuojYIo
+	SYsyWYV7dou236PoWAW5lIksJD6N8Tiwrvd8dNhw1o7XGF+S5KLX7/5/C0uxkUY=
+X-Gm-Gg: ASbGncvc2VND3Dsic6/bCVdo96BOfqFs5VxX1l4qLjpuRv8jBY5sWrBjO3yA1Ki6sJc
+	PiPHtwwVliTH/cA7gNSyAMrjaHSI0iH9P7oDbkhtuUk8u6bvCwtjp4tdGWkcce+slEsMeCAoLJy
+	tBbe4pau9AB5il/WW0W37OUks7ogsZgCjfYBHacha5rZMyRKcbV0/dUyoJevBFT0bGZqFIWS+Pk
+	XH0yL/iRcaB3BF2e4UwR+WyuOChAX/n5Dc3eO12l2RH/wnuNGQ4/rG3oAsbjFzRA12tEEENyWOc
+	00AgTM9rd81oeCUDmcX641LDJHk9nAtnYVlKRWJcWhkuwsUNmhJDGqz+psW5Sd5gPEzYGGvpAuM
+	rbcTc7jEyQKd/iwwgGdWmXJfH2/9j0wtb
+X-Google-Smtp-Source: AGHT+IG5W28GZiheanSviQoo3X3XSZbhL0agfFNkdxCO9+pBFRUz1xd/X+1aybGSx+mUbqFZukSxCg==
+X-Received: by 2002:a05:6000:178d:b0:39c:16a0:feef with SMTP id ffacd0b85a97d-39d885617e8mr103923f8f.38.1744145431309;
+        Tue, 08 Apr 2025 13:50:31 -0700 (PDT)
+Received: from [192.168.0.2] (host-87-15-70-119.retail.telecomitalia.it. [87.15.70.119])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39c30226da7sm16367156f8f.98.2025.04.08.13.50.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 08 Apr 2025 13:50:30 -0700 (PDT)
+From: Angelo Dureghello <adureghello@baylibre.com>
+X-Google-Original-From: Angelo Dureghello <adureghello@baylibre.org>
+Subject: [PATCH 0/2] iio: dac: adi-axi-dac: fix for wrong bus read
+Date: Tue, 08 Apr 2025 22:48:59 +0200
+Message-Id: <20250408-ad3552r-fix-bus-read-v1-0-37add66aeb08@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIALuL9WcC/x2MQQqAMAzAviI9W9iqE/Er4mFzVXuZ0qEI4t8dH
+ kNIHsiswhmG6gHlS7LsqYCtK5g3n1ZGiYWBDDnTmh59bJwjxUVuDGdGZR/ROqKOaAmRApT0UC7
+ +347T+37aals7ZgAAAA==
+X-Change-ID: 20250408-ad3552r-fix-bus-read-1522622fbd2b
+To: Nuno Sa <nuno.sa@analog.com>, Lars-Peter Clausen <lars@metafoo.de>, 
+ Michael Hennerich <Michael.Hennerich@analog.com>, 
+ Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
+ Andy Shevchenko <andy@kernel.org>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
+ Angelo Dureghello <adureghello@baylibre.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1062;
+ i=adureghello@baylibre.com; h=from:subject:message-id;
+ bh=8P9HdtuuJEcYjisIpBzJjU4A/0Fv9PbdTpy10z/2Wwk=;
+ b=owGbwMvMwCXGf3bn1e/btlsznlZLYkj/2n0o45aYa62LS1JW7YIepQmeyTaqlTcrz/DN31okP
+ p3DUMu8o5SFQYyLQVZMkaUuMcIk9HaolPICxtkwc1iZQIYwcHEKwETydRgZHv5+8vduyevlYfEn
+ XDvsGxXedwSdnGXpYB9045Ht6gNx+YwM3yYed7RKy089vpYt7PI0rYr4/44cEdfevn0w4e8bxsw
+ SXgA=
+X-Developer-Key: i=adureghello@baylibre.com; a=openpgp;
+ fpr=703CDFAD8B573EB00850E38366D1CB9419AF3953
 
-Hi,
+This patchset is intended to fix a random wrong chip ID read, or a
+scratchpad test mismatch, tests done in the ad3552r-hs driver probe. The 
+bus "read" operation must always check for busy flag before reading.
 
-not a full review, just me making a first pass.
+First patch reorganizes a bit the busy-wait polling code, second patch
+fixes the wrong bus read occurence. 
 
-> +unsigned long mfpwm_clk_get_rate(struct rockchip_mfpwm *mfpwm)
-> +{
-> +	if (!mfpwm || !mfpwm->chosen_clk)
-> +		return 0;
-> +
-> +	return clk_get_rate(mfpwm->chosen_clk);
-> +}
-> +EXPORT_SYMBOL_NS_GPL(mfpwm_clk_get_rate, "ROCKCHIP_MFPWM");
+NOTE: due to ongoing changes in adi-axi-dac.c, this patch is intended to be
+applied after the linked "ramp generator" patch.
 
-aren't you just re-implemeting a clk-mux with the whole chosen-clk
-mechanism? See drivers/clk/clk-mux.c, so in theory you should be
-able to just do a clk_register_mux(...) similar to for example
-sound/soc/samsung/i2s.c .
+Link: https://lore.kernel.org/linux-iio/20250408-wip-bl-ad3552r-fixes-v4-0-b33c0264bd78@baylibre.com
+Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
+---
+Angelo Dureghello (2):
+      iio: dac: adi-axi-dac: use unique bus free check
+      iio: dac: adi-axi-dac: fix bus read
 
+ drivers/iio/dac/adi-axi-dac.c | 40 +++++++++++++++++++++++++---------------
+ 1 file changed, 25 insertions(+), 15 deletions(-)
+---
+base-commit: 6fb85f14853ddde06d57030c753168402bf69cd9
+change-id: 20250408-ad3552r-fix-bus-read-1522622fbd2b
 
-> +
-> +__attribute__((nonnull))
-> +static int mfpwm_do_acquire(struct rockchip_mfpwm_func *pwmf)
-> +{
-> +	struct rockchip_mfpwm *mfpwm = pwmf->parent;
-> +	unsigned int cnt;
-> +
-> +	if (mfpwm->active_func && pwmf->id != mfpwm->active_func->id)
-> +		return -EBUSY;
-> +
-> +	if (!mfpwm->active_func)
-> +		mfpwm->active_func = pwmf;
-> +
-> +	if (!check_add_overflow(mfpwm->acquire_cnt, 1, &cnt)) {
-> +		mfpwm->acquire_cnt = cnt;
-> +	} else {
-> +		WARN(1, "prevented acquire counter overflow in %s\n", __func__);
-
-dev_warn, as you have the mfpwm pointing to a pdev?
-
-> +		return -EOVERFLOW;
-> +	}
-> +
-> +	dev_dbg(&mfpwm->pdev->dev, "%d acquired mfpwm, acquires now at %u\n",
-> +		pwmf->id, mfpwm->acquire_cnt);
-> +
-> +	return clk_enable(mfpwm->pclk);
-> +}
-
-> +/**
-> + * mfpwm_get_clk_src - read the currently selected clock source
-> + * @mfpwm: pointer to the driver's private &struct rockchip_mfpwm instance
-> + *
-> + * Read the device register to extract the currently selected clock source,
-> + * and return it.
-> + *
-> + * Returns:
-> + * * the numeric clock source ID on success, 0 <= id <= 2
-> + * * negative errno on error
-> + */
-> +static int mfpwm_get_clk_src(struct rockchip_mfpwm *mfpwm)
-> +{
-> +	u32 val;
-> +
-> +	clk_enable(mfpwm->pclk);
-> +	val = mfpwm_reg_read(mfpwm->base, PWMV4_REG_CLK_CTRL);
-> +	clk_disable(mfpwm->pclk);
-> +
-> +	return (val & PWMV4_CLK_SRC_MASK) >> PWMV4_CLK_SRC_SHIFT;
-> +}
-> +
-> +static int mfpwm_choose_clk(struct rockchip_mfpwm *mfpwm)
-> +{
-> +	int ret;
-> +
-> +	ret = mfpwm_get_clk_src(mfpwm);
-> +	if (ret < 0) {
-> +		dev_err(&mfpwm->pdev->dev, "couldn't get current clock source: %pe\n",
-> +			ERR_PTR(ret));
-> +		return ret;
-> +	}
-> +	if (ret == PWMV4_CLK_SRC_CRYSTAL) {
-> +		if (mfpwm->osc_clk) {
-> +			mfpwm->chosen_clk = mfpwm->osc_clk;
-> +		} else {
-> +			dev_warn(&mfpwm->pdev->dev, "initial state wanted 'osc' as clock source, but it's unavailable. Defaulting to 'pwm'.\n");
-> +			mfpwm->chosen_clk = mfpwm->pwm_clk;
-> +		}
-> +	} else {
-> +		mfpwm->chosen_clk = mfpwm->pwm_clk;
-> +	}
-> +
-> +	return clk_rate_exclusive_get(mfpwm->chosen_clk);
-> +}
->
-> +/**
-> + * mfpwm_switch_clk_src - switch between PWM clock sources
-> + * @mfpwm: pointer to &struct rockchip_mfpwm driver data
-> + * @clk_src: one of either %PWMV4_CLK_SRC_CRYSTAL or %PWMV4_CLK_SRC_PLL
-> + *
-> + * Switch between clock sources, ``_exclusive_put``ing the old rate,
-> + * ``clk_rate_exclusive_get``ing the new one, writing the registers and
-> + * swapping out the &struct_rockchip_mfpwm->chosen_clk.
-> + *
-> + * Returns:
-> + * * %0        - Success
-> + * * %-EINVAL  - A wrong @clk_src was given or it is unavailable
-> + * * %-EBUSY   - Device is currently in use, try again later
-> + */
-> +__attribute__((nonnull))
-> +static int mfpwm_switch_clk_src(struct rockchip_mfpwm *mfpwm,
-> +					  unsigned int clk_src)
-> +{
-> +	struct clk *prev;
-> +	int ret = 0;
-> +
-> +	scoped_cond_guard(spinlock_try, return -EBUSY, &mfpwm->state_lock) {
-> +		/* Don't fiddle with any of this stuff if the PWM is on */
-> +		if (mfpwm->active_func)
-> +			return -EBUSY;
-> +
-> +		prev = mfpwm->chosen_clk;
-> +		ret = mfpwm_get_clk_src(mfpwm);
-> +		if (ret < 0)
-> +			return ret;
-> +		if (ret == clk_src)
-> +			return 0;
-> +
-> +		switch (clk_src) {
-> +		case PWMV4_CLK_SRC_PLL:
-> +			mfpwm->chosen_clk = mfpwm->pwm_clk;
-> +			break;
-> +		case PWMV4_CLK_SRC_CRYSTAL:
-> +			if (!mfpwm->osc_clk)
-> +				return -EINVAL;
-> +			mfpwm->chosen_clk = mfpwm->osc_clk;
-> +			break;
-> +		default:
-> +			return -EINVAL;
-> +		}
-> +
-> +		clk_enable(mfpwm->pclk);
-> +
-> +		mfpwm_reg_write(mfpwm->base, PWMV4_REG_CLK_CTRL,
-> +				PWMV4_CLK_SRC(clk_src));
-> +		clk_rate_exclusive_get(mfpwm->chosen_clk);
-> +		if (prev)
-> +			clk_rate_exclusive_put(prev);
-> +
-> +		clk_disable(mfpwm->pclk);
-> +	}
-> +
-> +	return ret;
-> +}
-
-ok, the relevant part might be the 
-	/* Don't fiddle with any of this stuff if the PWM is on */
-thing, which will require special set_rate operation, but in general I
-think, if it ticks like a clock, it probably should be a real clock ;-) .
-
-
-> +static ssize_t chosen_clock_show(struct device *dev,
-> +				 struct device_attribute *attr, char *buf)
-> +{
-> +	struct rockchip_mfpwm *mfpwm = dev_get_drvdata(dev);
-> +	unsigned long clk_src = 0;
-> +
-> +	/*
-> +	 * Why the weird indirection here? I have the suspicion that if we
-> +	 * emitted to sysfs with the lock still held, then a nefarious program
-> +	 * could hog the lock by somehow forcing a full buffer condition and
-> +	 * then refusing to read from it. Don't know whether that's feasible
-> +	 * to achieve in reality, but I don't want to find out the hard way
-> +	 * either.
-> +	 */
-> +	scoped_guard(spinlock, &mfpwm->state_lock) {
-> +		if (mfpwm->chosen_clk == mfpwm->pwm_clk)
-> +			clk_src = PWMV4_CLK_SRC_PLL;
-> +		else if (mfpwm->osc_clk && mfpwm->chosen_clk == mfpwm->osc_clk)
-> +			clk_src = PWMV4_CLK_SRC_CRYSTAL;
-> +		else
-> +			return -ENODEV;
-> +	}
-> +
-> +	if (clk_src == PWMV4_CLK_SRC_PLL)
-> +		return sysfs_emit(buf, "pll\n");
-> +	else if (clk_src == PWMV4_CLK_SRC_CRYSTAL)
-> +		return sysfs_emit(buf, "crystal\n");
-> +
-> +	return -ENODEV;
-> +}
-
-which brings me to my main point of contention. Why does userspace
-need to select a clock source for the driver via sysfs.
-
-Neither the commit message nor the code does seem to explain that,
-or I'm just blind - which is also a real possibility.
-
-In general I really think, userspace should not need to care about if
-a PLL or directly the oscillator is used a clock input.
-I assume which is needed results from some runtime factor, so the
-driver should be able to select the correct one?
-
-A mux-clock could ust use clk_mux_determine_rate_flags() to select
-the best parent depending on a requested rate instead.
-
-
-> +static ssize_t chosen_clock_store(struct device *dev,
-> +				  struct device_attribute *attr,
-> +				  const char *buf, size_t count)
-> +{
-> +	struct rockchip_mfpwm *mfpwm = dev_get_drvdata(dev);
-> +	int ret;
-> +
-> +	if (sysfs_streq(buf, "pll")) {
-> +		ret = mfpwm_switch_clk_src(mfpwm, PWMV4_CLK_SRC_PLL);
-> +		if (ret)
-> +			return ret;
-> +		return count;
-> +	} else if (sysfs_streq(buf, "crystal")) {
-> +		ret = mfpwm_switch_clk_src(mfpwm, PWMV4_CLK_SRC_CRYSTAL);
-> +		if (ret)
-> +			return ret;
-> +		return count;
-> +	} else {
-> +		return -EINVAL;
-> +	}
-> +}
-> +
-> +static DEVICE_ATTR_RW(chosen_clock);
-> +
-> +static ssize_t available_clocks_show(struct device *dev,
-> +				     struct device_attribute *attr, char *buf)
-> +{
-> +	struct rockchip_mfpwm *mfpwm = dev_get_drvdata(dev);
-> +	ssize_t size = 0;
-> +
-> +	size += sysfs_emit_at(buf, size, "pll\n");
-> +	if (mfpwm->osc_clk)
-> +		size += sysfs_emit_at(buf, size, "crystal\n");
-> +
-> +	return size;
-> +}
-> +
-> +static DEVICE_ATTR_RO(available_clocks);
-> +
-> +static struct attribute *mfpwm_attrs[] = {
-> +	&dev_attr_available_clocks.attr,
-> +	&dev_attr_chosen_clock.attr,
-> +	NULL,
-> +};
-
-Not understanding the need for the sysfs stuff was my main point this
-evening :-)
-
-Heiko
-
+Best regards,
+-- 
+Angelo Dureghello <adureghello@baylibre.com>
 
 

@@ -1,135 +1,338 @@
-Return-Path: <linux-iio+bounces-17834-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17835-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4088A8161F
-	for <lists+linux-iio@lfdr.de>; Tue,  8 Apr 2025 21:57:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B646A8163F
+	for <lists+linux-iio@lfdr.de>; Tue,  8 Apr 2025 22:03:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 67157461C8F
-	for <lists+linux-iio@lfdr.de>; Tue,  8 Apr 2025 19:56:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 05E4C468334
+	for <lists+linux-iio@lfdr.de>; Tue,  8 Apr 2025 20:03:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C001241683;
-	Tue,  8 Apr 2025 19:56:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 487172459CE;
+	Tue,  8 Apr 2025 20:03:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NiN6JWfA"
+	dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b="QOnjGrf7"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-yb1-f172.google.com (mail-yb1-f172.google.com [209.85.219.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D271F22F145;
-	Tue,  8 Apr 2025 19:56:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7A96244186;
+	Tue,  8 Apr 2025 20:03:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.11.138.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744142191; cv=none; b=c/aXlCSK33RH79SxQivhzv5nx1UKzYX2krW/3bJA5jV3ufN9ktBqWsXjqrqdtAO14Ov7qOVsh0Y2fN+T0eXwekAAwEsuPJfhAn0EqwXEAC4gS4X5sjbfG/GJGfg1VoF0gdfu2DTB/NQBgcS6uMd+BTvCc/LqmWtjVGlCGqY+P/k=
+	t=1744142596; cv=none; b=AquduS4QlkxJ0m1tc44vFE0t15Bz1FWuGm+Bc4hv4DidwSlu3GGBhpeI7liyXCzWqQwpuRBDhuyWMxiKRndmxVD3yQQ4LnWg2ygkMwN2YF/d73IrJNJys4eMs1m+5ACCYBI3fnDQFC5gfN8SP1TBPMwIJJ1I3zwwjKNpSyDm9D4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744142191; c=relaxed/simple;
-	bh=qjwrFyqSZiIBplQuQi4BEbeIde22oGa7JC/EofrU9aM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=g4cd+U9sWBBQgtkMa8xsfGLNup105OensLJ71LFTlZTP9uEmytMmq7zzrXdT5d37aLwc853ABUNqEhvVheyovEc44MUqNcDvsJTqWBy2DdU9ehx/l5IBUv22ezXkFv1CZ3hZ7uXM7giXmWUCZkeNH4DfycwiDBL6sgvGhyCltjk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NiN6JWfA; arc=none smtp.client-ip=209.85.219.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yb1-f172.google.com with SMTP id 3f1490d57ef6-e3978c00a5aso4787358276.1;
-        Tue, 08 Apr 2025 12:56:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744142188; x=1744746988; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=D6cDbUybM1KG7HZRBqaHKVMVEzJc7+qySRY9tjTb2U4=;
-        b=NiN6JWfAMwSfrqRpxXXFwJLrxioDGhUPRrHcvOUitJvYxjOQvbVIao6+09C9Xj0mV3
-         2Qzi69Dd4S82gG5j1+yNQPvtegpYeC6Y3WfqY90zMd66fUOH7JRpxJPFhqKriwb6saVD
-         J8aHXNNOLk6u4EV4PFV/aYdFjAXzRuP3leAZfevE7xuGqZl6x5NidEapjTtniEuksrdC
-         Psyqs+vZUtn1Dof2mlNt3pNnapmpMfIiGaOcButhZLfkSnGsG4T9aXIbohpFYV//efO2
-         DYjpPAIIWxx9j7Az/GNhQ/GxsbUnTYZvsL2lPMfqsBDRGVosuYBzGJGyiJErCjDVfrLz
-         TWfQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744142188; x=1744746988;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=D6cDbUybM1KG7HZRBqaHKVMVEzJc7+qySRY9tjTb2U4=;
-        b=OLfKPeNyV8qvPVy0Al16gnb3g+rh4BXvOSrHyUDqcMy/hOLa8bwe08Ngt9JnVe5huk
-         0dNwk1tq9NPbZPEHf/ji3unhArFMHq3eOycOE4P7jRXpvVYLM55wMqZAbGgyUGpSvvqi
-         S9OEfGzJMv1n7wzVRcRfi/f/MxXnCMBXemfla484ZLkwpHUDpNUfP80UTH+4r3/9LGRl
-         iDh0maGM6al21xQXUzLNC53wj1E2wSFbE11Esl6mxj9iNOJ3rnu+zokOuv2PaC/de/vZ
-         KxOZ8XQe7CJet1DHAjf8ayTInZpFo1V3CL1rYJchMyqLkJStEaC9vm11U5JMAsgSsGAC
-         i6eA==
-X-Forwarded-Encrypted: i=1; AJvYcCWFHeBeptErLDCYN/43nZVCfvvq4GH3bhjpyaZ8y+l8PkZe6+2g7lFzPhvhx/0m6pDsdQppUedxYqmSud4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzJZM5syLjLHinyDK/JoXFreWCDz6c+B7UyYujVPLaeX0APvyMr
-	4ncBHs+LZz63O/kXvSS4QV6NpHKMeY+wtG7V8JjUoUVRDgKZPiSIiM1op5BlOT00NozyBfBQ7hg
-	RLJQV7KmNI38DY4UGYsodMPqWNFY=
-X-Gm-Gg: ASbGncsepYidNd7DQQ2QTF7OvzS4qxB0xQCUBZJtIA0JABz/ul5vM3IvDrV42+CO1eo
-	p75oOPaJKE4l/MoqtiCfQCXXUmlNgFJPIzMm4BP/s2EQYDE1PPNMJa6wkXz+EjtL7b1xfnF1R6+
-	7oIfVz3bqCZtdlBPmYvA3bv7Lk5F48YGhJyFOACL/wBZ8EvW98SsMfdlm1900=
-X-Google-Smtp-Source: AGHT+IH0R09ialjzR7tBCVZSJpPb1eM5DyxBf37vmd2V9TKgBmQHBgF2t7u9Ira6Et6V2dHcNRqnHToxvM78YRXL21w=
-X-Received: by 2002:a05:6902:2381:b0:e6d:e429:1d70 with SMTP id
- 3f1490d57ef6-e702f5c7df7mr29068276.12.1744142188598; Tue, 08 Apr 2025
- 12:56:28 -0700 (PDT)
+	s=arc-20240116; t=1744142596; c=relaxed/simple;
+	bh=2Z4TqMhJgMVGMdEWKFKm8oqk6IobRWcr5GzyRiHD9X0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=R75FpAQ/b7oz64Vk1RLGV3eGcmfjdBQbfWIQYbMnor0fuH5qA//QJATK7F9oopbByjXEouSNVldfNnLuBqKfjif03H44YqUQXsZosWXQ2n+/SHihmsPL10AGN+XfnwbB+dVSSsH4NzJeML/ej6w23yCZfT6E3ozaOT33Zw0YllQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de; spf=pass smtp.mailfrom=sntech.de; dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b=QOnjGrf7; arc=none smtp.client-ip=185.11.138.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sntech.de
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=sntech.de;
+	s=gloria202408; h=Content-Type:Content-Transfer-Encoding:MIME-Version:
+	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=FxiVMMavbeVJat0Fg13/bdPyEQi5kd3dq3ZqRtNTT1k=; b=QOnjGrf7X9PrCbh55TklsvWBSV
+	RpDtdVx3YJhCSYVlvWD8r5SitRALVtYyrVe4AjNSmP0rf0XqJROu31YDlFYA/9R9Oequlznuxc+Ka
+	hASbdH7877Vj9UPZ8la+BO50aButo8PYEaf6wpSUiFylT01JejCZbV+4F3tim+4ss9RnrlBURjL+5
+	hd2oQW0TN9pAP9/KHhvVTA87RPnAX37KJRkgV8bH3Y9BVRjAEU7GUkFHp/GgIJfrOB+II2JQ2GApD
+	u5V6Xu8Nj4TXSsvNybh4kDPTmhuxsgUd5uVb8JzO+AuZ5UE10Dcvbkl4NFm4jRRXfBZc1suO3l8J4
+	mWFi6LWg==;
+Received: from i53875b95.versanet.de ([83.135.91.149] helo=diego.localnet)
+	by gloria.sntech.de with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <heiko@sntech.de>)
+	id 1u2F9z-00023n-2e; Tue, 08 Apr 2025 22:03:03 +0200
+From: Heiko =?UTF-8?B?U3TDvGJuZXI=?= <heiko@sntech.de>
+To: Linus Walleij <linus.walleij@linaro.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+ Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <ukleinek@kernel.org>,
+ William Breathitt Gray <wbg@kernel.org>,
+ Sebastian Reichel <sebastian.reichel@collabora.com>,
+ Kever Yang <kever.yang@rock-chips.com>,
+ Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
+Cc: linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org,
+ linux-iio@vger.kernel.org, kernel@collabora.com,
+ Jonas Karlman <jonas@kwiboo.se>,
+ Detlev Casanova <detlev.casanova@collabora.com>,
+ Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
+Subject: Re: [PATCH 4/7] soc: rockchip: add mfpwm driver
+Date: Tue, 08 Apr 2025 22:03:01 +0200
+Message-ID: <5559308.Sb9uPGUboI@diego>
+In-Reply-To: <20250408-rk3576-pwm-v1-4-a49286c2ca8e@collabora.com>
+References:
+ <20250408-rk3576-pwm-v1-0-a49286c2ca8e@collabora.com>
+ <20250408-rk3576-pwm-v1-4-a49286c2ca8e@collabora.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250330135402.105418-1-simeddon@gmail.com> <20250330152044.18cf81f6@jic23-huawei>
-In-Reply-To: <20250330152044.18cf81f6@jic23-huawei>
-From: Siddharth Menon <simeddon@gmail.com>
-Date: Wed, 9 Apr 2025 01:25:52 +0530
-X-Gm-Features: ATxdqUH9sgSrCRUYQW9CwHIhT1t8pCayapMz7lxbogfE6j6N7Se-rKUcJD9Z6HA
-Message-ID: <CAGd6pzP470VDxGoP4e_2hVXsKrJhnhbv-WgFzCq7tMX9RjOLwg@mail.gmail.com>
-Subject: Re: [PATCH v5] iio: frequency: ad9832: Use FIELD_PREP macro to set
- bit fields
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-staging@lists.linux.dev, gregkh@linuxfoundation.org, 
-	Michael.Hennerich@analog.com, lars@metafoo.de, marcelo.schmitt1@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="utf-8"
 
-On Sun, 30 Mar 2025 at 19:50, Jonathan Cameron <jic23@kernel.org> wrote:
-> > +     for (int i =3D 0; i < ARRAY_SIZE(regval_bytes); i++) {
-> > +             freq_cmd =3D (i % 2 =3D=3D 0) ? AD9832_CMD_FRE8BITSW : AD=
-9832_CMD_FRE16BITSW;
-> > +
-> > +             st->freq_data[i] =3D cpu_to_be16(FIELD_PREP(AD9832_CMD_MS=
-K, freq_cmd) |
-> > +                     FIELD_PREP(AD9832_ADD_MSK, addr - i) |
-> > +                     FIELD_PREP(AD9832_DAT_MSK, regval_bytes[i]));
-> Looking at the data layout here, this seems like an interesting dance to =
-fill two unrelated
-> u8 values - it's not a be16 at all.
+Hi,
+
+not a full review, just me making a first pass.
+
+> +unsigned long mfpwm_clk_get_rate(struct rockchip_mfpwm *mfpwm)
+> +{
+> +	if (!mfpwm || !mfpwm->chosen_clk)
+> +		return 0;
+> +
+> +	return clk_get_rate(mfpwm->chosen_clk);
+> +}
+> +EXPORT_SYMBOL_NS_GPL(mfpwm_clk_get_rate, "ROCKCHIP_MFPWM");
+
+aren't you just re-implemeting a clk-mux with the whole chosen-clk
+mechanism? See drivers/clk/clk-mux.c, so in theory you should be
+able to just do a clk_register_mux(...) similar to for example
+sound/soc/samsung/i2s.c .
+
+
+> +
+> +__attribute__((nonnull))
+> +static int mfpwm_do_acquire(struct rockchip_mfpwm_func *pwmf)
+> +{
+> +	struct rockchip_mfpwm *mfpwm = pwmf->parent;
+> +	unsigned int cnt;
+> +
+> +	if (mfpwm->active_func && pwmf->id != mfpwm->active_func->id)
+> +		return -EBUSY;
+> +
+> +	if (!mfpwm->active_func)
+> +		mfpwm->active_func = pwmf;
+> +
+> +	if (!check_add_overflow(mfpwm->acquire_cnt, 1, &cnt)) {
+> +		mfpwm->acquire_cnt = cnt;
+> +	} else {
+> +		WARN(1, "prevented acquire counter overflow in %s\n", __func__);
+
+dev_warn, as you have the mfpwm pointing to a pdev?
+
+> +		return -EOVERFLOW;
+> +	}
+> +
+> +	dev_dbg(&mfpwm->pdev->dev, "%d acquired mfpwm, acquires now at %u\n",
+> +		pwmf->id, mfpwm->acquire_cnt);
+> +
+> +	return clk_enable(mfpwm->pclk);
+> +}
+
+> +/**
+> + * mfpwm_get_clk_src - read the currently selected clock source
+> + * @mfpwm: pointer to the driver's private &struct rockchip_mfpwm instance
+> + *
+> + * Read the device register to extract the currently selected clock source,
+> + * and return it.
+> + *
+> + * Returns:
+> + * * the numeric clock source ID on success, 0 <= id <= 2
+> + * * negative errno on error
+> + */
+> +static int mfpwm_get_clk_src(struct rockchip_mfpwm *mfpwm)
+> +{
+> +	u32 val;
+> +
+> +	clk_enable(mfpwm->pclk);
+> +	val = mfpwm_reg_read(mfpwm->base, PWMV4_REG_CLK_CTRL);
+> +	clk_disable(mfpwm->pclk);
+> +
+> +	return (val & PWMV4_CLK_SRC_MASK) >> PWMV4_CLK_SRC_SHIFT;
+> +}
+> +
+> +static int mfpwm_choose_clk(struct rockchip_mfpwm *mfpwm)
+> +{
+> +	int ret;
+> +
+> +	ret = mfpwm_get_clk_src(mfpwm);
+> +	if (ret < 0) {
+> +		dev_err(&mfpwm->pdev->dev, "couldn't get current clock source: %pe\n",
+> +			ERR_PTR(ret));
+> +		return ret;
+> +	}
+> +	if (ret == PWMV4_CLK_SRC_CRYSTAL) {
+> +		if (mfpwm->osc_clk) {
+> +			mfpwm->chosen_clk = mfpwm->osc_clk;
+> +		} else {
+> +			dev_warn(&mfpwm->pdev->dev, "initial state wanted 'osc' as clock source, but it's unavailable. Defaulting to 'pwm'.\n");
+> +			mfpwm->chosen_clk = mfpwm->pwm_clk;
+> +		}
+> +	} else {
+> +		mfpwm->chosen_clk = mfpwm->pwm_clk;
+> +	}
+> +
+> +	return clk_rate_exclusive_get(mfpwm->chosen_clk);
+> +}
 >
-> I'd be tempted to split the freq_data into u8s and then you will just hav=
-e
->                 st->freq_data[i][0] =3D FIELD_PREP(AD9832_CMD_MSK, freq_c=
-md) |
->                                       FIELD_PREP(AD9832_ADD_SMK, addr - i=
-);
-> //with masks adjusted appropriately.
->                 st->freq_data[i][1] =3D regval_bytes[i];
->
+> +/**
+> + * mfpwm_switch_clk_src - switch between PWM clock sources
+> + * @mfpwm: pointer to &struct rockchip_mfpwm driver data
+> + * @clk_src: one of either %PWMV4_CLK_SRC_CRYSTAL or %PWMV4_CLK_SRC_PLL
+> + *
+> + * Switch between clock sources, ``_exclusive_put``ing the old rate,
+> + * ``clk_rate_exclusive_get``ing the new one, writing the registers and
+> + * swapping out the &struct_rockchip_mfpwm->chosen_clk.
+> + *
+> + * Returns:
+> + * * %0        - Success
+> + * * %-EINVAL  - A wrong @clk_src was given or it is unavailable
+> + * * %-EBUSY   - Device is currently in use, try again later
+> + */
+> +__attribute__((nonnull))
+> +static int mfpwm_switch_clk_src(struct rockchip_mfpwm *mfpwm,
+> +					  unsigned int clk_src)
+> +{
+> +	struct clk *prev;
+> +	int ret = 0;
+> +
+> +	scoped_cond_guard(spinlock_try, return -EBUSY, &mfpwm->state_lock) {
+> +		/* Don't fiddle with any of this stuff if the PWM is on */
+> +		if (mfpwm->active_func)
+> +			return -EBUSY;
+> +
+> +		prev = mfpwm->chosen_clk;
+> +		ret = mfpwm_get_clk_src(mfpwm);
+> +		if (ret < 0)
+> +			return ret;
+> +		if (ret == clk_src)
+> +			return 0;
+> +
+> +		switch (clk_src) {
+> +		case PWMV4_CLK_SRC_PLL:
+> +			mfpwm->chosen_clk = mfpwm->pwm_clk;
+> +			break;
+> +		case PWMV4_CLK_SRC_CRYSTAL:
+> +			if (!mfpwm->osc_clk)
+> +				return -EINVAL;
+> +			mfpwm->chosen_clk = mfpwm->osc_clk;
+> +			break;
+> +		default:
+> +			return -EINVAL;
+> +		}
+> +
+> +		clk_enable(mfpwm->pclk);
+> +
+> +		mfpwm_reg_write(mfpwm->base, PWMV4_REG_CLK_CTRL,
+> +				PWMV4_CLK_SRC(clk_src));
+> +		clk_rate_exclusive_get(mfpwm->chosen_clk);
+> +		if (prev)
+> +			clk_rate_exclusive_put(prev);
+> +
+> +		clk_disable(mfpwm->pclk);
+> +	}
+> +
+> +	return ret;
+> +}
 
-Hello Jonathan,
+ok, the relevant part might be the 
+	/* Don't fiddle with any of this stuff if the PWM is on */
+thing, which will require special set_rate operation, but in general I
+think, if it ticks like a clock, it probably should be a real clock ;-) .
 
-I briefly went through the datasheet for the device.
-From what I understand, the device is expecting 16 bit write operations whe=
-re:
-- First 4 bits: Operation type (frequency/phase)
-- Next 4 bits: Destination register address
-- Last 8 bits: Data
-so these fields would need to be combined into a single 16-bit value regard=
-less.
 
-As I am unable to procure a testing unit at this time, I=E2=80=99m hesitant=
- to make
-changes that could unintentionally break the existing driver.
+> +static ssize_t chosen_clock_show(struct device *dev,
+> +				 struct device_attribute *attr, char *buf)
+> +{
+> +	struct rockchip_mfpwm *mfpwm = dev_get_drvdata(dev);
+> +	unsigned long clk_src = 0;
+> +
+> +	/*
+> +	 * Why the weird indirection here? I have the suspicion that if we
+> +	 * emitted to sysfs with the lock still held, then a nefarious program
+> +	 * could hog the lock by somehow forcing a full buffer condition and
+> +	 * then refusing to read from it. Don't know whether that's feasible
+> +	 * to achieve in reality, but I don't want to find out the hard way
+> +	 * either.
+> +	 */
+> +	scoped_guard(spinlock, &mfpwm->state_lock) {
+> +		if (mfpwm->chosen_clk == mfpwm->pwm_clk)
+> +			clk_src = PWMV4_CLK_SRC_PLL;
+> +		else if (mfpwm->osc_clk && mfpwm->chosen_clk == mfpwm->osc_clk)
+> +			clk_src = PWMV4_CLK_SRC_CRYSTAL;
+> +		else
+> +			return -ENODEV;
+> +	}
+> +
+> +	if (clk_src == PWMV4_CLK_SRC_PLL)
+> +		return sysfs_emit(buf, "pll\n");
+> +	else if (clk_src == PWMV4_CLK_SRC_CRYSTAL)
+> +		return sysfs_emit(buf, "crystal\n");
+> +
+> +	return -ENODEV;
+> +}
 
-Would it be acceptable to limit the scope of this patch to introducing
-bitfield macros and addressing the remaining feedback?
+which brings me to my main point of contention. Why does userspace
+need to select a clock source for the driver via sysfs.
 
-Regards,
-Siddharth Menon
+Neither the commit message nor the code does seem to explain that,
+or I'm just blind - which is also a real possibility.
+
+In general I really think, userspace should not need to care about if
+a PLL or directly the oscillator is used a clock input.
+I assume which is needed results from some runtime factor, so the
+driver should be able to select the correct one?
+
+A mux-clock could ust use clk_mux_determine_rate_flags() to select
+the best parent depending on a requested rate instead.
+
+
+> +static ssize_t chosen_clock_store(struct device *dev,
+> +				  struct device_attribute *attr,
+> +				  const char *buf, size_t count)
+> +{
+> +	struct rockchip_mfpwm *mfpwm = dev_get_drvdata(dev);
+> +	int ret;
+> +
+> +	if (sysfs_streq(buf, "pll")) {
+> +		ret = mfpwm_switch_clk_src(mfpwm, PWMV4_CLK_SRC_PLL);
+> +		if (ret)
+> +			return ret;
+> +		return count;
+> +	} else if (sysfs_streq(buf, "crystal")) {
+> +		ret = mfpwm_switch_clk_src(mfpwm, PWMV4_CLK_SRC_CRYSTAL);
+> +		if (ret)
+> +			return ret;
+> +		return count;
+> +	} else {
+> +		return -EINVAL;
+> +	}
+> +}
+> +
+> +static DEVICE_ATTR_RW(chosen_clock);
+> +
+> +static ssize_t available_clocks_show(struct device *dev,
+> +				     struct device_attribute *attr, char *buf)
+> +{
+> +	struct rockchip_mfpwm *mfpwm = dev_get_drvdata(dev);
+> +	ssize_t size = 0;
+> +
+> +	size += sysfs_emit_at(buf, size, "pll\n");
+> +	if (mfpwm->osc_clk)
+> +		size += sysfs_emit_at(buf, size, "crystal\n");
+> +
+> +	return size;
+> +}
+> +
+> +static DEVICE_ATTR_RO(available_clocks);
+> +
+> +static struct attribute *mfpwm_attrs[] = {
+> +	&dev_attr_available_clocks.attr,
+> +	&dev_attr_chosen_clock.attr,
+> +	NULL,
+> +};
+
+Not understanding the need for the sysfs stuff was my main point this
+evening :-)
+
+Heiko
+
+
 

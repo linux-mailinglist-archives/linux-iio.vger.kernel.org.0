@@ -1,328 +1,418 @@
-Return-Path: <linux-iio+bounces-17883-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17884-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6758AA82C2B
-	for <lists+linux-iio@lfdr.de>; Wed,  9 Apr 2025 18:20:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9962A82C4E
+	for <lists+linux-iio@lfdr.de>; Wed,  9 Apr 2025 18:27:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D206D174253
-	for <lists+linux-iio@lfdr.de>; Wed,  9 Apr 2025 16:13:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4DC9C3A37B0
+	for <lists+linux-iio@lfdr.de>; Wed,  9 Apr 2025 16:19:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7B81265638;
-	Wed,  9 Apr 2025 16:13:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 353DD26869D;
+	Wed,  9 Apr 2025 16:19:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b="KkiOXpox"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="a3iIuENC"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A9A325E46A
-	for <linux-iio@vger.kernel.org>; Wed,  9 Apr 2025 16:12:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF39A267F77;
+	Wed,  9 Apr 2025 16:19:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744215182; cv=none; b=PAi56L1/7b6ZRcB842yEK2cXWP48Mr28ciksLVka7JGaQa952deWYZLCZnrOOGBFjq+JMubGHfsexe6tpFtkxxItfdf8pgK5mXpMdOHCyCI6QpL6IKNGzbBr3QoznBfH+x0Y2Ot3bXC0hhlRrasAvtFYYAr7th6xYToCgsWLrUw=
+	t=1744215583; cv=none; b=kVD0f7QUe9SK9XZvWvAJNmjYowsgzDreKZe+/2YBTgB8tnI077dYKV6FXTt2IwBooGzEKB18LNULhLrtUrjtulZ8psWm/RdXt4dtdOCt9e6Vf1aIVht2pdQcGmo+dt0nam/uDT7pCjG/7wBwIQpLTujKgBwDIwMNNuK4l+zckYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744215182; c=relaxed/simple;
-	bh=g4sPkyUfQbqmXduEIf7ptrQ33g79m+Ssct92jkbx3fA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rFjvv4YerxlRLVPBkovolnCbdkxg/2BjtDbD5eQ9oAZhGsG5h2trkm1vNAEOg8C6SmwroLQQlOIJemnwZToPSalxfMtVEGK0aXB40OLS8EG7tNmluOFtmXROCE3Q/JATMCm853fLh/pfernjBZcxn5RDh+guDrPeM0DFzsMb/+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev; spf=pass smtp.mailfrom=tuxon.dev; dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b=KkiOXpox; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tuxon.dev
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-43cf680d351so6294975e9.0
-        for <linux-iio@vger.kernel.org>; Wed, 09 Apr 2025 09:12:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=tuxon.dev; s=google; t=1744215178; x=1744819978; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=9sKt23q2aQtmSrPCYvx6HeAh8otmPNdy3C8vHeYH6wc=;
-        b=KkiOXpoxYyU3fYzfwhNApKAzUJIkBfwUt8TifUQal4wKZR2k+xfnnOiS02Tp5tY2Sd
-         xNXdEx/nJ+UQLRnh61DVHmI3pUxk5r1EFUdhbz95qHW5YY8IcM4f3UmWUk0OyM87Lxvc
-         Q5nZTcCYXBGCOcUKp1YHoFmxNQ/5Rmky+uLYLhXWKXaDb+TaF5WSvUTPKR21levjfT/B
-         mrd9Y+Dkrz/FyO2ntKkqsAaicYYrUpmmlmygEPbpc8B+UIhe9IGesfKt86vQ//vUvEcR
-         7Lq/5mVmCtPel/KaJEMdg996JdM/SuhK4M1SO8wItJBYG7HmgBggOt1mVgFGTlbRKPlY
-         q44Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744215178; x=1744819978;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=9sKt23q2aQtmSrPCYvx6HeAh8otmPNdy3C8vHeYH6wc=;
-        b=vm+o1cgah5epDUsGBPEA3O2zUGcWZ5NYEoTcfNksV4KBo5ZqLdDavwDP57VaEl2lnR
-         w96326j8UgAOFpkBeOH9NPEEABKPTJl2N7nIfOjR6UXBowJW9gSInRbgPCsMs5n2a6TQ
-         AvrL+hDllcf41v+KFzD8U/o97+O+ArORjmqVj9soMLXCpEjyuGT3naoXazEEpGVMA04I
-         XaIMCFsgWCSI9ph6pEUZ66wTOzOjwn0oLFSWx/NjWUyBpdgR26olFhl4gNa+grIMQju+
-         0Glz4RKa5jWST9R5FxKACZgVu14p+P2801s62q8bytr4NkwEqdEAK2ueCPL7n4cgC16W
-         7Ypw==
-X-Forwarded-Encrypted: i=1; AJvYcCXdWvcvpJ0GO29MLuwO2V7ohfAmw41w0BprAshtxS9p5aA9iKYj1PULf6yxuAA+eA1VpNekxfD0afA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywpg+wu9hrQVRZf5OA2clX6dX5AG0eUpV4ZVhZssbo3z2u3p2xR
-	X7HIenLPmZzH5ZnXgHwyXDMem7x3rB+ErUo3aA95P3zpRoMaLyOfKFGr6Y1QUlU=
-X-Gm-Gg: ASbGncv5EgULSF7fCyhKsLqQP/hOXLov/mmCIyOqdZjGnpeR2UVOOxLRrtCnQBuBbT2
-	UzE/t0Og9i436GcP2h9iIAxY9ii8omaEKtVy1mHs3GsLa4dqoPBM0j5s5kwRaywYbPWOYA9kdqo
-	G9aV0gtVZavw335iiPtamb4/8niVZxM/2mV7C77PRw8+JysrdK/WorscUYFUFxV7R9N/FF4Kk9d
-	kHGpzDvMKNmLVa6gwi4KRdudpb57Aas5ubSWnMo+UiJBxeVmlf1/MCrcWljmGZ8KgtIIEly7dAX
-	G4pEPMExcfBWUa/c/2HGQFv+Ywho0nVP9sO5Wf000dyPJpKT581bqmDvCto=
-X-Google-Smtp-Source: AGHT+IEY3oLmF7VcjnruHjGtnDoJJv8mz1b2Hq5Ozgdhln6XAv+aAD3h2eFvJP3GOUFwt2xhYEhXZQ==
-X-Received: by 2002:a7b:c44d:0:b0:43c:ec72:3daf with SMTP id 5b1f17b1804b1-43f0e6496b5mr70904115e9.14.1744215177772;
-        Wed, 09 Apr 2025 09:12:57 -0700 (PDT)
-Received: from [192.168.50.4] ([82.78.167.57])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43f2075fc99sm24579475e9.29.2025.04.09.09.12.56
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 09 Apr 2025 09:12:57 -0700 (PDT)
-Message-ID: <5bca6dfd-fe03-4c44-acf4-a51673124338@tuxon.dev>
-Date: Wed, 9 Apr 2025 19:12:56 +0300
+	s=arc-20240116; t=1744215583; c=relaxed/simple;
+	bh=GMRPI97U1Hug2kQvBLIECMIBNRKCRkXiOj7Sxd7X3sE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YjWxJHpzcAAHfoFKl1Oy1SMNaIT7gYRVxyzLyS0LrFZWMFAEjkQnJ+usYa/jqOvc3i/WDX8O6ZA58XLW7ThyY6hJCBn9GklUoJMhHY93bKPTf+1fBKz/EzUHsgbFicqh3LNsKLp8cr3mVZ4ecE77q5si2Te2nL+KIcSqTSGlMTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=a3iIuENC; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1744215581; x=1775751581;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=GMRPI97U1Hug2kQvBLIECMIBNRKCRkXiOj7Sxd7X3sE=;
+  b=a3iIuENCBV1o1n2CXJWLnO4KeJU1RBltdme7EXw4mUojGqtLJgf/irMU
+   DCMwhetekeXcYIBHUa/DGEJ1EogN/CrORomaXZ0zrYkd+y6JVxVOqhNeV
+   xh14yhmrRRKoPAabhIeWGW6nmjOXBCTm+flyuNNjpBOvv+pn0boQ5wJif
+   b7w40fBxl02KTkpYm35TtgDkcL3zNpvH3TU3vK0PJvjulIR7zODKsGPKo
+   E5ftyIseIqu8BL/zUSnqlAmvpAVUl1BI3a79mLeOwXtaKyEwNrGq2tgFy
+   egj+B2JMN/0Py9Sr68AV2C4uV8bz4ERYeRg0eIWNSYixdBls6IHp7Gl1v
+   A==;
+X-CSE-ConnectionGUID: KlisvDznT06Xue1LnxzkSg==
+X-CSE-MsgGUID: pDyRfE04RuSpe/Srmfq/0A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11399"; a="56685533"
+X-IronPort-AV: E=Sophos;i="6.15,200,1739865600"; 
+   d="scan'208";a="56685533"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Apr 2025 09:19:39 -0700
+X-CSE-ConnectionGUID: kKlx20ezQeaAJHLpSUMu+g==
+X-CSE-MsgGUID: mzE2yxYSR968/PbENHSlnA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,200,1739865600"; 
+   d="scan'208";a="129468522"
+Received: from smile.fi.intel.com ([10.237.72.58])
+  by fmviesa009.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Apr 2025 09:19:34 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1u2Y9C-0000000AnBH-3u8U;
+	Wed, 09 Apr 2025 19:19:30 +0300
+Date: Wed, 9 Apr 2025 19:19:30 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Eason Yang <j2anfernee@gmail.com>
+Cc: jic23@kernel.org, lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, dlechner@baylibre.com, nuno.sa@analog.com,
+	javier.carrasco.cruz@gmail.com, gstols@baylibre.com,
+	tgamblin@baylibre.com, alisadariana@gmail.com,
+	antoniu.miclaus@analog.com, eblanc@baylibre.com,
+	jstephan@baylibre.com, matteomartelli3@gmail.com,
+	angelogioacchino.delregno@collabora.com, herve.codina@bootlin.com,
+	marcelo.schmitt@analog.com, chanh@os.amperecomputing.com,
+	KWLIU@nuvoton.com, yhyang2@nuvoton.com, linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5 2/2] iio: adc: add support for Nuvoton NCT7201
+Message-ID: <Z_aeEuIk9brES6dM@smile.fi.intel.com>
+References: <20250409012351.2543450-1-j2anfernee@gmail.com>
+ <20250409012351.2543450-3-j2anfernee@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] driver core: platform: Use devres group to free driver
- probe resources
-To: Jonathan Cameron <jic23@kernel.org>, "Rafael J. Wysocki"
- <rafael@kernel.org>
-Cc: Daniel Lezcano <daniel.lezcano@linaro.org>, dakr@kernel.org,
- ulf.hansson@linaro.org, linux-kernel@vger.kernel.org,
- linux-pm@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
- geert@linux-m68k.org, Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-iio@vger.kernel.org,
- Dmitry Torokhov <dmitry.torokhov@gmail.com>
-References: <20250215130849.227812-1-claudiu.beznea.uj@bp.renesas.com>
- <2025021539-untrained-prompter-a48f@gregkh>
- <4bf01946-90e3-4169-91fa-10d9f90310e9@tuxon.dev>
- <8d83ea72-bb81-4c63-bf69-28cf5848ae20@tuxon.dev>
- <20250305140309.744866b2@jic23-huawei> <Z8k8lDxA53gUJa0n@google.com>
- <f74085be-7b14-4551-a0a7-779318a5dc70@tuxon.dev>
- <20250330163129.02f24afb@jic23-huawei>
-From: Claudiu Beznea <claudiu.beznea@tuxon.dev>
-Content-Language: en-US
-In-Reply-To: <20250330163129.02f24afb@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250409012351.2543450-3-j2anfernee@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-Hi, Rafael,
+On Wed, Apr 09, 2025 at 09:23:51AM +0800, Eason Yang wrote:
+> Add Nuvoton NCT7201/NCT7202 system voltage monitor 12-bit ADC driver
+> 
+> NCT7201/NCT7202 supports up to 12 analog voltage monitor inputs and up to
+> 4 SMBus addresses by ADDR pin. Meanwhile, ALERT# hardware event pins for
+> independent alarm signals, and all the threshold values could be set for
+> system protection without any timing delay. It also supports reset input
+> RSTIN# to recover system from a fault condition.
+> 
+> Currently, only single-edge mode conversion and threshold events are
+> supported.
 
-On 30.03.2025 18:31, Jonathan Cameron wrote:
-> On Thu, 27 Mar 2025 18:47:53 +0200
-> Claudiu Beznea <claudiu.beznea@tuxon.dev> wrote:
-> 
->> Hi, Rafael,
->>
->> On 06.03.2025 08:11, Dmitry Torokhov wrote:
->>> On Wed, Mar 05, 2025 at 02:03:09PM +0000, Jonathan Cameron wrote:  
->>>> On Wed, 19 Feb 2025 14:45:07 +0200
->>>> Claudiu Beznea <claudiu.beznea@tuxon.dev> wrote:
->>>>  
->>>>> Hi, Daniel, Jonathan,
->>>>>
->>>>> On 15.02.2025 15:51, Claudiu Beznea wrote:  
->>>>>> Hi, Greg,
->>>>>>
->>>>>> On 15.02.2025 15:25, Greg KH wrote:    
->>>>>>> On Sat, Feb 15, 2025 at 03:08:49PM +0200, Claudiu wrote:    
->>>>>>>> From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
->>>>>>>>
->>>>>>>> On the Renesas RZ/G3S (and other Renesas SoCs, e.g., RZ/G2{L, LC, UL}),
->>>>>>>> clocks are managed through PM domains. These PM domains, registered on
->>>>>>>> behalf of the clock controller driver, are configured with
->>>>>>>> GENPD_FLAG_PM_CLK. In most of the Renesas drivers used by RZ SoCs, the
->>>>>>>> clocks are enabled/disabled using runtime PM APIs. The power domains may
->>>>>>>> also have power_on/power_off support implemented. After the device PM
->>>>>>>> domain is powered off any CPU accesses to these domains leads to system
->>>>>>>> aborts.
->>>>>>>>
->>>>>>>> During probe, devices are attached to the PM domain controlling their
->>>>>>>> clocks and power. Similarly, during removal, devices are detached from the
->>>>>>>> PM domain.
->>>>>>>>
->>>>>>>> The detachment call stack is as follows:
->>>>>>>>
->>>>>>>> device_driver_detach() ->
->>>>>>>>   device_release_driver_internal() ->
->>>>>>>>     __device_release_driver() ->
->>>>>>>>       device_remove() ->
->>>>>>>>         platform_remove() ->
->>>>>>>> 	  dev_pm_domain_detach()
->>>>>>>>
->>>>>>>> During driver unbind, after the device is detached from its PM domain,
->>>>>>>> the device_unbind_cleanup() function is called, which subsequently invokes
->>>>>>>> devres_release_all(). This function handles devres resource cleanup.
->>>>>>>>
->>>>>>>> If runtime PM is enabled in driver probe via devm_pm_runtime_enable(), the
->>>>>>>> cleanup process triggers the action or reset function for disabling runtime
->>>>>>>> PM. This function is pm_runtime_disable_action(), which leads to the
->>>>>>>> following call stack of interest when called:
->>>>>>>>
->>>>>>>> pm_runtime_disable_action() ->
->>>>>>>>   pm_runtime_dont_use_autosuspend() ->
->>>>>>>>     __pm_runtime_use_autosuspend() ->
->>>>>>>>       update_autosuspend() ->
->>>>>>>>         rpm_idle()
->>>>>>>>
->>>>>>>> The rpm_idle() function attempts to resume the device at runtime. However,
->>>>>>>> at the point it is called, the device is no longer part of a PM domain
->>>>>>>> (which manages clocks and power states). If the driver implements its own
->>>>>>>> runtime PM APIs for specific functionalities - such as the rzg2l_adc
->>>>>>>> driver - while also relying on the power domain subsystem for power
->>>>>>>> management, rpm_idle() will invoke the driver's runtime PM API. However,
->>>>>>>> since the device is no longer part of a PM domain at this point, the PM
->>>>>>>> domain's runtime PM APIs will not be called. This leads to system aborts on
->>>>>>>> Renesas SoCs.
->>>>>>>>
->>>>>>>> Another identified case is when a subsystem performs various cleanups
->>>>>>>> using device_unbind_cleanup(), calling driver-specific APIs in the process.
->>>>>>>> A known example is the thermal subsystem, which may call driver-specific
->>>>>>>> APIs to disable the thermal device. The relevant call stack in this case
->>>>>>>> is:
->>>>>>>>
->>>>>>>> device_driver_detach() ->
->>>>>>>>   device_release_driver_internal() ->
->>>>>>>>     device_unbind_cleanup() ->
->>>>>>>>       devres_release_all() ->
->>>>>>>>         devm_thermal_of_zone_release() ->
->>>>>>>> 	  thermal_zone_device_disable() ->
->>>>>>>> 	    thermal_zone_device_set_mode() ->
->>>>>>>> 	      struct thermal_zone_device_ops::change_mode()
->>>>>>>>
->>>>>>>> At the moment the driver-specific change_mode() API is called, the device
->>>>>>>> is no longer part of its PM domain. Accessing its registers without proper
->>>>>>>> power management leads to system aborts.
->>>>>>>>
->>>>>>>> Open a devres group before calling the driver probe, and close it
->>>>>>>> immediately after the driver remove function is called and before
->>>>>>>> dev_pm_domain_detach(). This ensures that driver-specific devm actions or
->>>>>>>> reset functions are executed immediately after the driver remove function
->>>>>>>> completes. Additionally, it prevents driver-specific runtime PM APIs from
->>>>>>>> being called when the device is no longer part of its power domain.
->>>>>>>>
->>>>>>>> Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
->>>>>>>> ---
->>>>>>>>
->>>>>>>> Hi,  
->>>>
->>>> Hi Claudiu, Greg,
->>>>
->>>> Sorry, I missed this thread whilst travelling and only saw it because
->>>> of reference from the in driver solution.
->>>>  
->>>>>>>>
->>>>>>>> Although Ulf gave its green light for the approaches on both IIO [1],
->>>>>>>> [2] and thermal subsystems [3], Jonathan considered unacceptable the
->>>>>>>> approaches in [1], [2] as he considered it may lead to dificult to
->>>>>>>> maintain code and code opened to subtle bugs (due to the potential of
->>>>>>>> mixing devres and non-devres calls). He pointed out a similar approach
->>>>>>>> that was done for the I2C bus [4], [5].
->>>>>>>>
->>>>>>>> As the discussions in [1], [2] stopped w/o a clear conclusion, this
->>>>>>>> patch tries to revive it by proposing a similar approach that was done
->>>>>>>> for the I2C bus.
->>>>>>>>
->>>>>>>> Please let me know you input.    
->>>>>>>
->>>>>>> I'm with Jonathan here, the devres stuff is getting crazy here and you
->>>>>>> have drivers mixing them and side affects happening and lots of
->>>>>>> confusion.  Your change here is only going to make it even more
->>>>>>> confusing, and shouldn't actually solve it for other busses (i.e. what
->>>>>>> about iio devices NOT on the platform bus?)    
->>>>
->>>> In some cases they are already carrying the support as per the link
->>>> above covering all i2c drivers.  I'd like to see a generic solution and
->>>> I suspect pushing it to the device drivers rather than the bus code
->>>> will explode badly and leave us with subtle bugs where people don't
->>>> realise it is necessary. 
->>>>
->>>> https://lore.kernel.org/all/20250224120608.1769039-1-claudiu.beznea.uj@bp.renesas.com/
->>>> is a lot nastier looking than what we have here. I'll review that in a minute
->>>> to show that it need not be that bad, but none the less not pleasant.
->>>>
->>>> +CC linux-iio to join up threads and Dmitry wrt to i2c case (and HID that does
->>>> similar)  
->>>
->>> We should not expect individual drivers handle this, because this is a
->>> layering violation: they need to know implementation details of the bus
->>> code to know if the bus is using non-devres managed resources, and
->>> adjust their behavior. Moving this into driver core is also not
->>> feasible, as not all buses need it. So IMO this should belong to
->>> individual bus code.
->>>
->>> Instead of using devres group a bus may opt to use
->>> devm_add_action_or_reset() and other devm APIs to make sure bus'
->>> resource unwinding is carried in the correct order relative to freeing
->>> driver-owned resources.  
->>
->> Can you please let us know your input on the approach proposed in this
->> patch? Or if you would prefer devm_add_action_or_reset() as suggested by
->> Dmitry? Or if you consider another approach would fit better?
->>
->> Currently there were issues identified with the rzg2l-adc driver (driver
->> based solution proposed in [1]) and with the rzg3s thermal driver (solved
->> by function rzg3s_thermal_probe() from [2]).
->>
->> As expressed previously by Jonathan and Dimitry this is a common problem
->> and as the issue is due to a call in the bus driver, would be better and
->> simpler to handle it in the bus driver. Otherwise, individual drivers would
->> have to be adjusted in a similar way.
->>
-> 
-> Rafael,
-> 
-> Greg suggested we ask for your input on the right option:
-> 
-> https://lore.kernel.org/all/2025032703-genre-excitable-9473@gregkh/
-> (that thread has the other option).
+> +#include <linux/array_size.h>
+> +#include <linux/bitfield.h>
+> +#include <linux/bits.h>
+> +#include <linux/delay.h>
+> +#include <linux/device.h>
+> +#include <linux/err.h>
+> +#include <linux/i2c.h>
+> +#include <linux/mod_devicetable.h>
+> +#include <linux/module.h>
+> +#include <linux/regmap.h>
+> +#include <linux/types.h>
+> +#include <linux/unaligned.h>
 
-Can you please let us know your opinion on this?
+...
 
-Thank you,
-Claudiu
+> +#define NCT7201_VIN_MAX				12
 
-> 
-> Jonathan
-> 
->> Thank you,
->> Claudiu
->>
->> [1]
->> https://lore.kernel.org/all/20250324122627.32336-2-claudiu.beznea.uj@bp.renesas.com/
->> [2]
->> https://lore.kernel.org/all/20250324135701.179827-3-claudiu.beznea.uj@bp.renesas.com/
->>
->>>   
->>>>  
->>>>>>
->>>>>> You're right, other busses will still have this problem.
->>>>>>     
->>>>>>>
->>>>>>> Why can't your individual driver handle this instead?    
->>>>
->>>> In my mind because it's the bus code that is doing the unexpected part by
->>>> making calls in the remove path that are effectively not in the same order
->>>> as probe because they occur between driver remove and related devres cleanup
->>>> for stuff registered in probe.
->>>>  
->>>>>>
->>>>>> Initially I tried it at the driver level by using non-devres PM runtime
->>>>>> enable API but wasn't considered OK by all parties.
->>>>>>
->>>>>> I haven't thought about having devres_open_group()/devres_close_group() in
->>>>>> the driver itself but it should work.    
->>>>>
->>>>> Are you OK with having the devres_open_group()/devres_close_group() in the
->>>>> currently known affected drivers (drivers/iio/adc/rzg2l_adc.c and the
->>>>> proposed drivers/thermal/renesas/rzg3s_thermal.c [1]) ?  
->>>>
->>>> I guess it may be the best of a bunch of not particularly nasty solutions...  
->>>
->>> We need to update _ALL_ platform drivers using devm then, and this is
->>> clearly not scalable.
->>>
->>> Thanks.
->>>   
->>
-> 
+Is this in volts? Can you add a unit suffix?
+
+...
+
+> +#define NCT7201_IN_SCALING				4995
+
+Interesting number, just want to confirm it's indeed 4995 and not 4095.
+
+...
+
+> +static int nct7201_read_event_value(struct iio_dev *indio_dev,
+> +				    const struct iio_chan_spec *chan,
+> +				    enum iio_event_type type,
+> +				    enum iio_event_direction dir,
+> +				    enum iio_event_info info,
+> +				    int *val, int *val2)
+> +{
+> +	struct nct7201_chip_info *chip = iio_priv(indio_dev);
+> +	unsigned int value;
+> +	int err;
+> +
+> +	if (chan->type != IIO_VOLTAGE)
+> +		return -EOPNOTSUPP;
+> +
+> +	if (info != IIO_EV_INFO_VALUE)
+> +		return -EINVAL;
+
+> +	if (dir == IIO_EV_DIR_FALLING) {
+> +		err = regmap_read(chip->regmap16, NCT7201_REG_VIN_LOW_LIMIT(chan->address),
+> +				  &value);
+> +		if (err < 0)
+> +			return err;
+> +	} else {
+> +		err = regmap_read(chip->regmap16, NCT7201_REG_VIN_HIGH_LIMIT(chan->address),
+> +				  &value);
+> +		if (err < 0)
+> +			return err;
+> +	}
+
+	if (dir == IIO_EV_DIR_FALLING) {
+		err = regmap_read(chip->regmap16, NCT7201_REG_VIN_LOW_LIMIT(chan->address),
+				  &value);
+	} else {
+		err = regmap_read(chip->regmap16, NCT7201_REG_VIN_HIGH_LIMIT(chan->address),
+				  &value);
+	}
+	if (err)
+		return err;
+
+Here and elsewhere why ' < 0' is used? Do you expect positive return values
+from those?
+
+> +	*val = FIELD_GET(NCT7201_REG_VIN_MASK, value);
+> +
+> +	return IIO_VAL_INT;
+> +}
+
+...
+
+> +static int nct7201_write_event_value(struct iio_dev *indio_dev,
+> +				     const struct iio_chan_spec *chan,
+> +				     enum iio_event_type type,
+> +				     enum iio_event_direction dir,
+> +				     enum iio_event_info info,
+> +				     int val, int val2)
+> +{
+> +	struct nct7201_chip_info *chip = iio_priv(indio_dev);
+
+> +	int  err = 0;
+
+Useless assignment.
+
+> +	if (chan->type != IIO_VOLTAGE)
+> +		return -EOPNOTSUPP;
+> +
+> +	if (info != IIO_EV_INFO_VALUE)
+> +		return -EOPNOTSUPP;
+> +
+> +	if (dir == IIO_EV_DIR_FALLING) {
+> +		err = regmap_write(chip->regmap16, NCT7201_REG_VIN_LOW_LIMIT(chan->address),
+> +				   FIELD_PREP(NCT7201_REG_VIN_MASK, val));
+> +		if (err < 0)
+> +			return err;
+> +	} else {
+> +		err = regmap_write(chip->regmap16, NCT7201_REG_VIN_HIGH_LIMIT(chan->address),
+> +				   FIELD_PREP(NCT7201_REG_VIN_MASK, val));
+> +		if (err < 0)
+> +			return err;
+> +	}
+> +
+> +	return 0;
+
+	if (dir == IIO_EV_DIR_FALLING) {
+		err = regmap_write(chip->regmap16, NCT7201_REG_VIN_LOW_LIMIT(chan->address),
+				   FIELD_PREP(NCT7201_REG_VIN_MASK, val));
+	} else {
+		err = regmap_write(chip->regmap16, NCT7201_REG_VIN_HIGH_LIMIT(chan->address),
+				   FIELD_PREP(NCT7201_REG_VIN_MASK, val));
+	}
+	return err;
+
+
+> +}
+
+...
+
+> +static int nct7201_write_event_config(struct iio_dev *indio_dev,
+> +				      const struct iio_chan_spec *chan,
+> +				      enum iio_event_type type,
+> +				      enum iio_event_direction dir,
+> +				      bool state)
+> +{
+> +	struct nct7201_chip_info *chip = iio_priv(indio_dev);
+> +	unsigned int mask;
+> +	int err;
+> +
+> +	if (chan->type != IIO_VOLTAGE)
+> +		return -EOPNOTSUPP;
+> +
+> +	mask = BIT(chan->address);
+> +
+> +	if (state)
+> +		chip->vin_mask |= mask;
+> +	else
+> +		chip->vin_mask &= ~mask;
+
+> +	if (chip->num_vin_channels <= 8) {
+> +		err = regmap_write(chip->regmap, NCT7201_REG_CHANNEL_ENABLE_1,
+> +				   chip->vin_mask);
+> +		if (err < 0)
+> +			return err;
+> +	} else {
+> +		err = regmap_bulk_write(chip->regmap, NCT7201_REG_CHANNEL_ENABLE_1,
+> +					&chip->vin_mask, sizeof(chip->vin_mask));
+> +		if (err < 0)
+> +			return err;
+> +	}
+> +
+> +	return 0;
+
+Same as above.
+
+> +}
+
+...
+
+> +static int nct7201_init_chip(struct nct7201_chip_info *chip)
+> +{
+> +	u8 data[2] = {0};
+
+'0' is not needed. Shouldn't this be __le16 or __be16 instead?
+
+> +	unsigned int value;
+> +	int err;
+> +
+> +	err = regmap_write(chip->regmap, NCT7201_REG_CONFIGURATION,
+> +			   NCT7201_BIT_CONFIGURATION_RESET);
+> +	if (err < 0)
+> +		return dev_err_probe(&chip->client->dev, -EIO,
+
+	struct device *dev = &chip->client->dev;
+
+at the top of the function will help a lot in tiding up the below code.
+
+Shadowed error code, why?
+
+> +				     "Failed to write NCT7201_REG_CONFIGURATION\n");
+> +
+> +	/*
+> +	 * After about 25 msecs, the device should be ready and then the Power
+> +	 * Up bit will be set to 1. If not, wait for it.
+> +	 */
+> +	mdelay(25);
+
+No sleep? Why? Can't you use fsleep()?
+
+> +	err = regmap_read(chip->regmap, NCT7201_REG_BUSY_STATUS, &value);
+> +	if (err < 0)
+> +		return err;
+> +	if (!(value & NCT7201_BIT_PWR_UP))
+> +		return dev_err_probe(&chip->client->dev, -EIO,
+
+Shadowed error code, why?
+
+> +				     "Failed to power up after reset\n");
+> +
+> +	/* Enable Channel */
+> +	if (chip->num_vin_channels <= 8) {
+> +		data[0] = NCT7201_REG_CHANNEL_ENABLE_1_MASK;
+> +		err = regmap_write(chip->regmap, NCT7201_REG_CHANNEL_ENABLE_1, data[0]);
+> +		if (err < 0)
+> +			return dev_err_probe(&chip->client->dev, -EIO,
+
+Why error code is shadowed?
+
+> +					     "Failed to write NCT7201_REG_CHANNEL_ENABLE_1\n");
+> +	} else {
+> +		data[0] = NCT7201_REG_CHANNEL_ENABLE_1_MASK;
+> +		data[1] = NCT7201_REG_CHANNEL_ENABLE_2_MASK;
+> +		err = regmap_bulk_write(chip->regmap, NCT7201_REG_CHANNEL_ENABLE_1,
+> +					data, ARRAY_SIZE(data));
+> +		if (err < 0)
+> +			return dev_err_probe(&chip->client->dev, -EIO,
+
+Ditto.
+
+> +					     "Failed to write NCT7201_REG_CHANNEL_ENABLE_1 and NCT7201_REG_CHANNEL_ENABLE_2\n");
+> +	}
+
+Just make it 16-bit type, define one value and use just simple English
+in the error message: "Failed to write channel enable mask\n");
+
+Same to all your error messages.
+
+> +	chip->vin_mask = get_unaligned_le16(data);
+> +
+> +	/* Start monitoring if needed */
+> +	err = regmap_read(chip->regmap, NCT7201_REG_CONFIGURATION, &value);
+> +	if (err < 0)
+> +		return dev_err_probe(&chip->client->dev, -EIO,
+> +				     "Failed to read NCT7201_REG_CONFIGURATION\n");
+
+> +	regmap_set_bits(chip->regmap, NCT7201_REG_CONFIGURATION, NCT7201_BIT_CONFIGURATION_START);
+
+> +	return 0;
+
+No error check? Why?
+
+> +}
+
+...
+
+> +static int nct7201_probe(struct i2c_client *client)
+> +{
+> +	const struct nct7201_adc_model_data *model_data;
+
+	struct device *dev = &client->dev;
+
+> +	struct nct7201_chip_info *chip;
+> +	struct iio_dev *indio_dev;
+> +	int ret;
+> +
+> +	model_data = i2c_get_match_data(client);
+> +	if (!model_data)
+> +		return -EINVAL;
+
+ENODEV is more suitable here.
+
+> +
+> +	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*chip));
+> +	if (!indio_dev)
+> +		return -ENOMEM;
+> +	chip = iio_priv(indio_dev);
+> +
+> +	chip->regmap = devm_regmap_init_i2c(client, &nct7201_regmap8_config);
+> +	if (IS_ERR(chip->regmap))
+> +		return dev_err_probe(&client->dev, PTR_ERR(chip->regmap),
+> +				     "Failed to init regmap\n");
+> +
+> +	chip->regmap16 = devm_regmap_init_i2c(client, &nct7201_regmap16_config);
+> +	if (IS_ERR(chip->regmap16))
+> +		return dev_err_probe(&client->dev, PTR_ERR(chip->regmap16),
+> +				     "Failed to init regmap16\n");
+> +
+> +	chip->num_vin_channels = model_data->num_vin_channels;
+
+> +	chip->client = client;
+
+How exactly is _client_ used elsewhere? Shouldn't it be just a struct device
+pointer?
+
+> +	ret = nct7201_init_chip(chip);
+> +	if (ret < 0)
+
+Do you expect positive returned values? What is their meaning?
+Why do you skip them?
+
+> +		return ret;
+> +
+> +	indio_dev->name = model_data->model_name;
+> +	indio_dev->channels = model_data->channels;
+> +	indio_dev->num_channels = model_data->num_channels;
+> +	if (client->irq)
+> +		indio_dev->info = &nct7201_info;
+> +	else
+> +		indio_dev->info = &nct7201_info_no_irq;
+> +	indio_dev->modes = INDIO_DIRECT_MODE;
+> +
+> +	return devm_iio_device_register(&client->dev, indio_dev);
+> +}
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
 
 

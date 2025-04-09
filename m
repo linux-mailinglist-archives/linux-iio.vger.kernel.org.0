@@ -1,277 +1,673 @@
-Return-Path: <linux-iio+bounces-17865-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17866-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0320A820F8
-	for <lists+linux-iio@lfdr.de>; Wed,  9 Apr 2025 11:26:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B72CA824A4
+	for <lists+linux-iio@lfdr.de>; Wed,  9 Apr 2025 14:27:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4682D4A175B
-	for <lists+linux-iio@lfdr.de>; Wed,  9 Apr 2025 09:26:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C090F7B61FC
+	for <lists+linux-iio@lfdr.de>; Wed,  9 Apr 2025 12:25:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5604525D548;
-	Wed,  9 Apr 2025 09:26:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD35626656F;
+	Wed,  9 Apr 2025 12:24:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="t1+zmKGV"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="nwoShZpF"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ABE92528F0
-	for <linux-iio@vger.kernel.org>; Wed,  9 Apr 2025 09:26:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 780EC266565;
+	Wed,  9 Apr 2025 12:24:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744190764; cv=none; b=PFZvTQi3XWixKbGueJN48KZXCrtb7qLB5+/CaaFbKaWx4iKda0DauE8PQqLc3vg4qPNvJF8c/UzREbQL8PSPIJcea+0KXhSwxiaB+77TlCo0U6Ai70F4xxusynxfN6UzI22t62a9TfPIf19PojMFNswYHvK5ZfOwPp0y8lLxn7g=
+	t=1744201492; cv=none; b=b9yP4Dhk6xvgsDSfExWvyTooBHnPUFGZBO3b6jyoy4O3zsxisosW0RJQP43/h3hK7Q4d9zi2637QSBit49nqiKKHQkpGEQTnVj/Q5Bo0hFccP0isr7DP3puH4hABMGrsKDPIvIoISvTYeZnAmOUppROFwMSALr7ejZ+QE/LHTxY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744190764; c=relaxed/simple;
-	bh=jcwBfldelS5c0jSTsE4Kp6YvMT4Tu091LMvQ8hLdekE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jjqdN2AczMbTCatXw5KluhJ0i3F3pNUJzFsnrCuQQWZ44l3/kXVUVlKfFS0QOSiM1EIQxCy3C6gJFyER86pi474483bD5EsCEqgqhsif71P0Wy3n0mp9J/Y5UGbGegM2ticYzpJHZfAPel9UOJIqwztAmPHvQ1OZHaabM6VsOUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=t1+zmKGV; arc=none smtp.client-ip=209.85.221.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-39149bccb69so6118415f8f.2
-        for <linux-iio@vger.kernel.org>; Wed, 09 Apr 2025 02:26:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1744190759; x=1744795559; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=Wt3P/PZ2A+bsUg/oTQhsQUkmjpYKm6Jh4MgXrIAoQbk=;
-        b=t1+zmKGV1bgktYlXXAhes+oDH56rkv0/iEL73HoXu7gLvofVjObyxOw2gYcy6oEf8E
-         JX3XTNduyc/dTDxfBGE2sON8Y8pSXJ4pxggz9zfraYUrhiKgs6orSZAJCagBPSFsWjRs
-         k6MCPD9aPe0EdVklwYSEjg1EDi/2SaQm1V+LWIfM6VQsN31zFGccNTQgyOxAuNaz2tZv
-         BIewm+qKQ1dy1RXwc52uci0mV4e93T/yhpI38wavxphoBU/Jajy1NLn+j2D32aJqGwdG
-         8UjqfdulVDEVzoAzMqWThZ+nTXq8N+0iJE9kQKXMZUYnJEeXC6I/3+mmOn3ouPYhbD/F
-         2kbQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744190759; x=1744795559;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Wt3P/PZ2A+bsUg/oTQhsQUkmjpYKm6Jh4MgXrIAoQbk=;
-        b=noDV2qd3T35vPlbjRuzT1E52YzlH6Ihgcky92YzdsBMgbbib3zau61ev0+ZUyJnILk
-         cE02Z2th1LB5SjJ4BuyNPFAbujH4E4PAgFmV2SvyF+THg1QCvAA4N9oakxxnEAs14qFV
-         wan3FsPtiKmbCljOfUoQMk99Q9+dF/uPSNCYwDUApJtO9ESUn66c+bX+n/FuEqVob+/c
-         rHIuFX+gjOtF/1heBlG3VE9l9USH0+seQCNcSiNuoqHVZrP/QFeQfiRr9EEHQmuDc+ab
-         6whfsdOgytWDBKkCqrDSemDt6T/3PwGxvHr0wjIbttyds083jzQqQem1wFuHNjXk7Yz+
-         5I5A==
-X-Forwarded-Encrypted: i=1; AJvYcCXmBzmYLgw6y4Ve1aQX00rIFVETSR7sPsoUnR7tqsU3LNxV6D44c9pja+VHe7/YYuuZA0X8NxoGQMU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy3kzDRFcqBjPILBw8GPRy6hQVSLKiHc74hi7qny3U4Ebcb44O7
-	I+QAUDwWc0kAGEF3h5joivMxA2Qp3qIMVJCTdijoonRYPQk4CWLRWBT9jOX6Qyc=
-X-Gm-Gg: ASbGncvMEyABcLZ2ogHcPml8U7Ykml3Cu60JT71ZD2X7pVbzY3duVE3t72Vz/s+cZNz
-	8xfbYPfPFCkpaP+i2ve0IZZTGM/uGBKlOcozZw+Ex/sF0SHBl1ZCyd1zIF+dK7adK+Es5GJprPF
-	zuKrVz8EtQ+7mkjonJmhs9wmRQGh/9K5iOnmMReRDHHGq1TA4hvWNzdFe2fi8lHlf7H+Rk37i39
-	YrciKe0yKyO0KG83bZ9sGWf5TmwZ1BQUk88t/sheDxhXz0OROu8d/Esd5UD9AHCmtLcDbyO5o+H
-	7Qy+EeYkHrET7tUB2xunQM4DCN8iF1qEH8R/dCTmNN1lQjQT/RC2D12GVn7J4mVO1r8b9RWuLtF
-	M77YjNBh+fQ2J
-X-Google-Smtp-Source: AGHT+IF2W60HyjSsanXCbQ9L1wsO5+PxuL8njMCAxCqnMoNOXFuOtG6P0fbWAqj4LGVy335MUd1DNA==
-X-Received: by 2002:a05:6000:4285:b0:391:487f:2828 with SMTP id ffacd0b85a97d-39d87aa1ff1mr1996324f8f.10.1744190758752;
-        Wed, 09 Apr 2025 02:25:58 -0700 (PDT)
-Received: from archlinux (host-87-15-70-119.retail.telecomitalia.it. [87.15.70.119])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39d893fdf84sm1046430f8f.86.2025.04.09.02.25.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Apr 2025 02:25:58 -0700 (PDT)
-Date: Wed, 9 Apr 2025 11:24:42 +0200
-From: Angelo Dureghello <adureghello@baylibre.com>
-To: Nuno =?utf-8?B?U8Oh?= <noname.nuno@gmail.com>
-Cc: Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>, 
-	Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, 
-	Jonathan Corbet <corbet@lwn.net>, Olivier Moysan <olivier.moysan@foss.st.com>, 
-	Michael Hennerich <Michael.Hennerich@analog.com>, linux-iio@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 5/5] iio: dac: ad3552r-hs: add support for internal
- ramp
-Message-ID: <ldn4jhz7oeo7sxygifra36daydbo3mdsf6dznxbugoixwmn7ci@gok34zr2mund>
-References: <20250408-wip-bl-ad3552r-fixes-v4-0-b33c0264bd78@baylibre.com>
- <20250408-wip-bl-ad3552r-fixes-v4-5-b33c0264bd78@baylibre.com>
- <0900650872a1533a344df375e99ce116046b3ee0.camel@gmail.com>
+	s=arc-20240116; t=1744201492; c=relaxed/simple;
+	bh=QQpdP/15cOmBrlm28nL8N9uPhriBMqt+oEMMzljbTsU=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=RElQFZZXGZLaUiw6DFWMetlxUF7wx9fnapcaGTUvwcoaC7B5Wqpv3H9CoTCQvEOnFOEsx0amC8DJ30fVyOrCZ4Db6TRSLU3JlL6y8V29Wa9eK47EK75ZimG+sQj6R8irZFWO39axoanNcolDpCTASgOsyzajCPKDkcBytuHjjwU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=nwoShZpF; arc=none smtp.client-ip=148.163.135.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+	by mx0a-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5399CPra010114;
+	Wed, 9 Apr 2025 08:24:34 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=DKIM; bh=ZiFY7
+	m5mtzeMBrTBaTEl3Iv0dVHft9MAxEOZxhRG08A=; b=nwoShZpF4N6tvaDs5B35Z
+	sUk0+LBHLVl+01mJgb8VudeWfxR1Pskn9auiTyu/RETon9J1HyHQ0JmPceCeucUF
+	9hweH7bKAReubUhtgMtRukKqge1evD4nAbJvvO1MhjiAGNri/lKztenbnnY34lja
+	f7Ss9vkeOiVdItdgE0vY82mDiBPFroypJK6PQ0ove9R9VOWy0Lvho6MSpPv2FPxI
+	3pcVOzpabvjiKUpOv0bktUosX6bEsLCeabJuVNt/WO4Ey6c4YJrr9EmNfF6ao47h
+	A28oISrDbad55xYaPdamilMFbrqVoYwKARislVmFZngIxHDvTp2syWOxa3hbDD6Z
+	w==
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 45txc66a92-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 09 Apr 2025 08:24:34 -0400 (EDT)
+Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
+	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 539COXWk052208
+	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Wed, 9 Apr 2025 08:24:33 -0400
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by ASHBMBX9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Wed, 9 Apr 2025
+ 08:24:32 -0400
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Wed, 9 Apr 2025 08:24:32 -0400
+Received: from work.ad.analog.com (HYB-hERzalRezfV.ad.analog.com [10.65.205.9])
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 539COJLO016900;
+	Wed, 9 Apr 2025 08:24:22 -0400
+From: Marcelo Schmitt <marcelo.schmitt@analog.com>
+To: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+CC: <jic23@kernel.org>, <lars@metafoo.de>, <Michael.Hennerich@analog.com>,
+        <dlechner@baylibre.com>, <nuno.sa@analog.com>, <andy@kernel.org>,
+        <robh@kernel.org>, <krzk+dt@kernel.org>, <conor+dt@kernel.org>,
+        <marcelo.schmitt1@gmail.com>
+Subject: [PATCH v1 1/7] dt-bindings: iio: adc: Add AD4170
+Date: Wed, 9 Apr 2025 09:24:18 -0300
+Message-ID: <d2f8e8227022afe411005882cfd269124cd81e01.1744200264.git.marcelo.schmitt@analog.com>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <cover.1744200264.git.marcelo.schmitt@analog.com>
+References: <cover.1744200264.git.marcelo.schmitt@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <0900650872a1533a344df375e99ce116046b3ee0.camel@gmail.com>
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-GUID: gjdeHZ1icUa02N4HoeNGR7_H0kNM5EHK
+X-Proofpoint-ORIG-GUID: gjdeHZ1icUa02N4HoeNGR7_H0kNM5EHK
+X-Authority-Analysis: v=2.4 cv=KePSsRYD c=1 sm=1 tr=0 ts=67f66702 cx=c_pps a=PpDZqlmH/M8setHirZLBMw==:117 a=PpDZqlmH/M8setHirZLBMw==:17 a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=gEfo2CItAAAA:8 a=gAnH3GRIAAAA:8 a=VwQbUJbxAAAA:8 a=WNIpHu94SUlyTeZhJcUA:9
+ a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=sptkURWiP4Gy88Gu7hUp:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-04-09_04,2025-04-08_04,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 bulkscore=0
+ impostorscore=0 suspectscore=0 spamscore=0 lowpriorityscore=0
+ clxscore=1015 mlxlogscore=999 adultscore=0 phishscore=0 mlxscore=0
+ priorityscore=1501 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
+ definitions=main-2504090074
 
-On 09.04.2025 07:32, Nuno Sá wrote:
-> On Tue, 2025-04-08 at 12:18 +0200, Angelo Dureghello wrote:
-> > From: Angelo Dureghello <adureghello@baylibre.com>
-> > 
-> > The ad3552r can be feeded from the HDL controller by an internally
-> > generated 16bit ramp, useful for debug pourposes. Add debugfs a file
-> > to enable or disable it.
-> > 
-> > Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
-> > ---
+Add device tree documentation for AD4170 and similar sigma-delta ADCs.
+The AD4170 is a 24-bit, multichannel, sigma-delta ADC.
 
-Hi Nuno,
-> 
-> Hi Angelo,
-> 
-> One issue that needs a respin and then a minor comment... With it,
-> 
-> Reviewed-by: Nuno Sá <nuno.sa@analog.com>
-> 
-> >  drivers/iio/dac/ad3552r-hs.c | 166 +++++++++++++++++++++++++++++++++++++++++--
-> >  1 file changed, 160 insertions(+), 6 deletions(-)
-> > 
-> > diff --git a/drivers/iio/dac/ad3552r-hs.c b/drivers/iio/dac/ad3552r-hs.c
-> > index
-> > 37397e188f225a8099745ec03f7c604da76960b1..9a8eed7a06e4f2e7b23d59764b8f2fc21e2c4537
-> > 100644
-> > --- a/drivers/iio/dac/ad3552r-hs.c
-> > +++ b/drivers/iio/dac/ad3552r-hs.c
-> > @@ -7,6 +7,7 @@
-> >   */
-> >  
-> >  #include <linux/bitfield.h>
-> > +#include <linux/debugfs.h>
-> >  #include <linux/delay.h>
-> >  #include <linux/gpio/consumer.h>
-> >  #include <linux/iio/backend.h>
-> > @@ -54,6 +55,18 @@ struct ad3552r_hs_state {
-> >  	struct ad3552r_hs_platform_data *data;
-> >  	/* INTERFACE_CONFIG_D register cache, in DDR we cannot read values. */
-> >  	u32 config_d;
-> > +	/* Protects backend I/O operations from concurrent accesses. */
-> > +	struct mutex lock;
-> > +};
-> > +
-> > +enum ad3552r_sources {
-> > +	AD3552R_SRC_IIO_BUFFER,
-> > +	AD3552R_SRC_BACKEND_RAMP_GEN,
-> > +};
-> > +
-> > +static const char * const dbgfs_attr_source[] = {
-> > +	[AD3552R_SRC_IIO_BUFFER] = "iio-buffer",
-> > +	[AD3552R_SRC_BACKEND_RAMP_GEN] = "backend-ramp-generator",
-> >  };
-> 
-> nit: I would use more generic strings. I assume "iio-buffer" is just the "normal"
-> data so use something like that. For the ramp, is it 16 bits? I would just use ex:
-> RAMP_16. I do not thing that the "backend" prefix (as well as "-generator") to add
-> much.
-> >  
+Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
+---
+The AD4170 design has features to aid interfacing with weigh scale and RTD
+sensors that are expected to be setup with external circuitry for proper
+sensor operation. A key characteristic of those sensors is that the circuit
+they are in must be excited with a pair of signals. The external circuit
+can be excited either by voltage supply or by AD4170 excitation signals.
+The sensor can then be read through a different pair of lines that are
+connected to AD4170 ADC.
 
-are 
-"normal", "ramp-16bit"
-ok ?
-Or please let me know the names you prefer.
+ .../bindings/iio/adc/adi,ad4170.yaml          | 527 ++++++++++++++++++
+ MAINTAINERS                                   |   7 +
+ 2 files changed, 534 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad4170.yaml
 
-> 
-> ...
-> 
-> > +
-> > +static ssize_t ad3552r_hs_show_data_source_avail(struct file *f,
-> > +						 char __user *userbuf,
-> > +						 size_t count, loff_t *ppos)
-> > +{
-> > +	ssize_t len = 0;
-> > +	char *buf;
-> > +	int i;
-> > +
-> > +	buf = kmalloc(PAGE_SIZE, GFP_KERNEL);
-> > +	if (!buf)
-> > +		return -ENOMEM;
-> > +
-> 
-> When are we freeing this memory? I also do not see the point for a PAGE_SIZE
-> allocation for such a small string table. I would say to simplify things and use a
-> local buffer with 64/128 bytes (should be more than enough). If you see this growing
-> in the future, you can also go with seq_file.
->
-agh, frogot the free. Sorry.
-Ok, i'll use 128.
+diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad4170.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad4170.yaml
+new file mode 100644
+index 000000000000..93fe3b4648a0
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/adc/adi,ad4170.yaml
+@@ -0,0 +1,527 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/adc/adi,ad4170.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Analog Devices AD4170 and similar Analog to Digital Converters
++
++maintainers:
++  - Marcelo Schmitt <marcelo.schmitt@analog.com>
++
++description: |
++  Analog Devices AD4170 series of Sigma-delta Analog to Digital Converters.
++  Specifications can be found at:
++    https://www.analog.com/media/en/technical-documentation/data-sheets/ad4170-4.pdf
++    https://www.analog.com/media/en/technical-documentation/data-sheets/ad4190-4.pdf
++    https://www.analog.com/media/en/technical-documentation/data-sheets/ad4195-4.pdf
++
++$ref: /schemas/spi/spi-peripheral-props.yaml#
++
++$defs:
++  sensor-node:
++    type: object
++    description: |
++      Common properties of external sensor circuitry connected to the ADC.
++
++    properties:
++      reg:
++        description:
++          Channel number. Connects the sensor to the channel with this number
++          of the device.
++        minimum: 1
++        maximum: 16
++
++      diff-channels:
++        $ref: /schemas/types.yaml#/definitions/uint32-array
++        maxItems: 2
++        minItems: 2
++        description: |
++          ADC analog input pins to which the sensor circuit is connected.
++          The first value specifies the positive input pin, the second
++          specifies the negative input pin. See adc.yaml for details.
++
++      bipolar:
++        $ref: /schemas/types.yaml#/definitions/flag
++        description: If provided, the channel is to be used in bipolar mode.
++
++      adi,sensor-type:
++        description: Type of sensor connected to the device.
++        $ref: /schemas/types.yaml#/definitions/uint8
++
++      adi,ac-excited:
++        type: boolean
++        description: |
++          Whether the external circuit has to be AC or DC excited.
++
++      adi,excitation-pins:
++        $ref: /schemas/types.yaml#/definitions/uint32-array
++        description: |
++          ADC pins used for external circuit excitation. Some applications
++          require optimum matching between excitation currents. Using excitation
++          current pairs minimizes the excitation current mismatch and the
++          excitation current drift matching on the ADC. Must describe either 1
++          or 2 pairs of pins. E.g. <0 1>; <2 3>; <0 1>, <2 3>.
++
++      adi,excitation-current-microamp:
++        description: |
++          Excitation current in microamperes to be output to each excitation pin
++          specified by adi,excitation-pins property.
++        enum: [0, 10, 50, 100, 250, 500, 1000, 1500]
++        default: 0
++
++      adi,reference-select:
++        description: |
++          Select the reference source to use when converting on the specific
++          channel. Valid values are:
++          0: Differential reference voltage REFIN+ - REFINâˆ’.
++          1: Differential reference voltage REFIN2+ - REFIN2âˆ’.
++          2: Internal 2.5V referece (REFOUT) relative to AVSS.
++          3: Analog supply voltage (AVDD) relative AVSS.
++          If this field is left empty, the first external reference is selected.
++        $ref: /schemas/types.yaml#/definitions/uint8
++        enum: [0, 1, 2, 3]
++        default: 0
++
++    required:
++      - reg
++      - diff-channels
++      - bipolar
++      - adi,sensor-type
++      - adi,excitation-pins
++      - adi,reference-select
++
++properties:
++  compatible:
++    enum:
++      - adi,ad4170
++      - adi,ad4190
++      - adi,ad4195
++
++  avss-supply:
++    description:
++      Referece voltage supply for AVSS. If provided, describes the magnitude
++      (absolute value) of the negative voltage supplied to the AVSS pin. Since
++      AVSS must be âˆ’2.625V minimum and 0V maximum, the declared supply voltage
++      must be between 0 and 2.65V. If not provided, AVSS is assumed to be at
++      system ground (0V).
++
++  avdd-supply:
++    description:
++      A supply of 4.75V to 5.25V relative to AVSS that powers the chip (AVDD).
++
++  iovdd-supply:
++    description: 1.7V to 5.25V reference supply to the serial interface (IOVDD).
++
++  refin1p-supply:
++    description: REFIN+ supply that can be used as reference for conversion.
++
++  refin1n-supply:
++    description: REFIN- supply that can be used as reference for conversion. If
++      provided, describes the magnitude (absolute value) of the negative voltage
++      supplied to the REFIN- pin.
++
++  refin2p-supply:
++    description: REFIN2+ supply that can be used as reference for conversion.
++
++  refin2n-supply:
++    description: REFIN2- supply that can be used as reference for conversion. If
++      provided, describes the magnitude (absolute value) of the negative voltage
++      supplied to the REFIN2- pin.
++
++  spi-cpol: true
++
++  spi-cpha: true
++
++  interrupts:
++    maxItems: 1
++
++  interrupt-names:
++    description: |
++      Specify which pin should be configured as Data Ready interrupt.
++      Default if not supplied is sdo.
++    enum:
++      - sdo
++      - dig_aux1
++
++  clocks:
++    maxItems: 1
++    description:
++      Optional external clock source. Can specify either an external clock or
++      external crystal.
++
++  clock-names:
++    enum:
++      - ext-clk
++      - xtal
++
++  '#clock-cells':
++    const: 0
++
++  gpio-controller: true
++
++  "#gpio-cells":
++    const: 2
++    description: |
++      The first cell is for the GPIO number: 0 to 3.
++      The second cell takes standard GPIO flags.
++
++  ldac-gpios:
++    description:
++      GPIO connected to DIG_AUX2 pin to be used as LDAC toggle to control the
++      transfer of data from the DAC_INPUT_A register to the DAC.
++    maxItems: 1
++
++  '#address-cells':
++    const: 1
++
++  '#size-cells':
++    const: 0
++
++patternProperties:
++  "^channel@[0-9a-f]$":
++    $ref: adc.yaml
++    type: object
++    unevaluatedProperties: false
++    description: |
++      Represents the external channels which are connected to the ADC.
++
++    properties:
++      reg:
++        description: |
++          The channel number.
++        items:
++          minimum: 0
++          maximum: 15
++
++      diff-channels:
++        description: |
++          This property is used for defining the inputs of a differential
++          voltage channel. The first value is the positive input and the second
++          value is the negative input of the channel.
++
++          Besides the analog input pins AIN0 to AIN8, there are special inputs
++          that can be selected with the following values:
++          17: Internal temperature sensor
++          18: (AVDD-AVSS)/5
++          19: (IOVDD-DGND)/5
++          20: DAC output
++          21: ALDO
++          22: DLDO
++          23: AVSS
++          24: DGND
++          25: REFIN+
++          26: REFIN-
++          27: REFIN2+
++          28: REFIN2-
++          29: REFOUT
++          For the internal temperature sensor, use the input number for both
++          inputs (i.e. diff-channels = <17 17>).
++        items:
++          enum: [0, 1, 2, 3, 4, 5, 6, 7, 8, 17, 18, 19, 20, 21, 22, 23, 24, 25,
++                 26, 27, 28, 29]
++
++      single-channel: true
++
++      common-mode-channel: true
++
++      bipolar: true
++
++      adi,sensor-type:
++        description: Sensor type for direct ADC sensors.
++        $ref: /schemas/types.yaml#/definitions/uint8
++        const: 0
++
++      adi,buffered-positive:
++        description: |
++          Enable precharge buffer, full buffer, or skip reference buffering of
++          the positive voltage reference. Because the output impedance of the
++          source driving the voltage reference inputs may be dynamic, RC
++          combinations of those inputs can cause DC gain errors if the reference
++          inputs go unbuffered into the ADC. Enable reference buffering if the
++          provided reference source has dynamic high impedance output. Note the
++          absolute voltage allowed on positive reference inputs (REFIN+,
++          REFIN2+) is from AVSS âˆ’ 50 mV to AVDD + 50 mV when the reference
++          buffers are disabled but narrows to AVSS to AVDD when reference
++          buffering is enabled or in precharge mode.
++          0: Reference precharge buffer.
++          1: Full Buffer.
++          2: Bypass reference buffers (buffering disabled).
++        $ref: /schemas/types.yaml#/definitions/uint8
++        enum: [0, 1, 2]
++        default: 0
++
++      adi,buffered-negative:
++        description: |
++          Enable precharge buffer, full buffer, or skip reference buffering of
++          the negative voltage reference. Because the output impedance of the
++          source driving the voltage reference inputs may be dynamic, RC
++          combinations of those inputs can cause DC gain errors if the reference
++          inputs go unbuffered into the ADC. Enable reference buffering if the
++          provided reference source has dynamic high impedance output. Note the
++          absolute voltage allowed on negative reference inputs (REFIN-,
++          REFIN2-) is from AVSS âˆ’ 50 mV to AVDD + 50 mV when the reference
++          buffers are disabled but narrows to AVSS to AVDD when reference
++          buffering is enabled or in precharge mode.
++          0: Reference precharge buffer.
++          1: Full Buffer.
++          2: Bypass reference buffers (buffering disabled).
++        $ref: /schemas/types.yaml#/definitions/uint8
++        enum: [0, 1, 2]
++        default: 0
++
++      adi,reference-select:
++        description: |
++          Select the reference source to use when converting on the specific
++          channel. Valid values are:
++          0: Differential reference voltage REFIN+ - REFINâˆ’.
++          1: Differential reference voltage REFIN2+ - REFIN2âˆ’.
++          2: Internal 2.5V referece (REFOUT) relative to AVSS.
++          3: Analog supply voltage (AVDD) relative AVSS.
++          If this field is left empty, the internal reference is selected.
++        $ref: /schemas/types.yaml#/definitions/uint8
++        enum: [0, 1, 2, 3]
++        default: 2
++
++    required:
++      - reg
++
++    allOf:
++      - oneOf:
++          - required: [single-channel]
++            properties:
++              diff-channels: false
++          - required: [diff-channels]
++            properties:
++              single-channel: false
++              common-mode-channel: false
++
++  "^weighscale@":
++    $ref: '#/$defs/sensor-node'
++    unevaluatedProperties: false
++
++    properties:
++      diff-channels: true
++      bipolar: true
++
++      adi,sensor-type:
++        description: Weigh scale sensor.
++        $ref: /schemas/types.yaml#/definitions/uint8
++        const: 1
++
++      adi,excitation-pins:
++        description: |
++          ADC pins to use for weigh scale bridge circuit excitation. Must
++          describe either 1 or 2 pairs of pins. E.g. <0 1>; <2 3>; <0 1>, <2 3>.
++        $ref: /schemas/types.yaml#/definitions/uint32-array
++        minItems: 2
++        maxItems: 4
++        items:
++          minimum: 0
++          maximum: 20
++
++      adi,excitation-current-microamp:
++        description: |
++          Excitation current in microamperes to be output to each excitation pin
++          specified by adi,excitation-pins property. If not provided and
++          adi,ac-excited is true, use predefined ACX1, ACX1 negated, ACX2, and
++          ACX2 negated signals to AC excite the weigh scale bridge. Those
++          singals are output on GPIO2, GPIO0, GPIO3, and GPIO1, respectively.
++        enum: [0, 10, 50, 100, 250, 500, 1000, 1500]
++
++      adi,power-down-switch-pin:
++        description: |
++          Number of the GPIO used as power-down switch for the bridge circuit.
++        $ref: /schemas/types.yaml#/definitions/uint8
++        enum: [0, 1]
++
++  "^thermocouple@":
++    $ref: '#/$defs/sensor-node'
++    unevaluatedProperties: false
++
++    properties:
++      diff-channels: true
++      bipolar: true
++
++      adi,sensor-type:
++        description: Thermocouple sensor.
++        $ref: /schemas/types.yaml#/definitions/uint8
++        const: 2
++
++      adi,excitation-pins:
++        description: |
++          ADC pins to use for bridge circuit excitation. Must describe either 1
++          or 2 pairs of pins. E.g. <0 1>; <2 3>; <0 1>, <2 3>.
++        $ref: /schemas/types.yaml#/definitions/uint32-array
++        minItems: 2
++        maxItems: 4
++        items:
++          minimum: 0
++          maximum: 20
++
++      adi,excitation-current-microamp:
++        description: |
++          Excitation current in microamperes to be output to each excitation pin
++          specified by adi,excitation-pins property. If not provided and
++          adi,ac-excited is true, use predefined ACX1, ACX1 negated, ACX2, and
++          ACX2 negated signals to AC excite the bridge circuit. Those singals
++          are output on GPIO2, GPIO0, GPIO3, and GPIO1, respectively.
++        enum: [0, 10, 50, 100, 250, 500, 1000, 1500]
++
++      adi,vbias:
++        type: boolean
++        description: |
++          For unbiased thermocouple applications, the voltage generated by the
++          thermocouple must be biased around some DC voltage. When present, this
++          property specifies a bias voltage of (AVDD + AVSS)/2 to be applied as
++          common-mode voltage for the sensor.
++
++      adi,power-down-switch-pin:
++        description: |
++          Number of the GPIO used as power-down switch for the bridge circuit.
++        $ref: /schemas/types.yaml#/definitions/uint8
++        enum: [0, 1]
++
++  "^rtd@":
++    $ref: '#/$defs/sensor-node'
++    unevaluatedProperties: false
++
++    properties:
++      diff-channels: true
++      bipolar: true
++
++      adi,sensor-type:
++        description: RTD sensor.
++        $ref: /schemas/types.yaml#/definitions/uint8
++        const: 3
++
++      adi,excitation-pins:
++        description: |
++          ADC pins to use for RTD circuit excitation. Must describe a pair of
++          pins. E.g. <0 1>; <2 3>.
++        $ref: /schemas/types.yaml#/definitions/uint32-array
++        minItems: 2
++        maxItems: 2
++        items:
++          minimum: 0
++          maximum: 20
++
++      adi,excitation-current-microamp: true
++
++    required:
++      - adi,excitation-current-microamp
++
++required:
++  - compatible
++  - reg
++  - avdd-supply
++  - iovdd-supply
++  - spi-cpol
++  - spi-cpha
++
++allOf:
++  # Some devices don't have integrated DAC
++  - if:
++      properties:
++        compatible:
++          contains:
++            enum:
++              - adi,ad4190
++              - adi,ad4195
++    then:
++      properties:
++        ldac-gpios: false
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/interrupt-controller/irq.h>
++    spi {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        adc@0 {
++            compatible = "adi,ad4170";
++            reg = <0>;
++            spi-max-frequency = <20000000>;
++            spi-cpol;
++            spi-cpha;
++            avdd-supply = <&avdd>;
++            iovdd-supply = <&iovdd>;
++            interrupt-parent = <&gpio_in>;
++            interrupts = <0 IRQ_TYPE_EDGE_FALLING>;
++            #address-cells = <1>;
++            #size-cells = <0>;
++
++            // Sample AIN0 with respect to AIN1 throughout AVDD/AVSS input range
++            // Differential bipolar. If AVSS < 0V, differential true bipolar
++            channel@0 {
++                reg = <0>;
++                bipolar;
++                diff-channels = <0 1>;
++                adi,sensor-type = /bits/ 8 <0>;
++                adi,reference-select = /bits/ 8 <3>;
++            };
++            // Sample AIN2 with respect to DGND throughout AVDD/DGND input range
++            // Pseudo-differential unipolar (fig. 2a)
++            channel@1 {
++                reg = <1>;
++                single-channel = <2>;
++                common-mode-channel = <24>;
++                adi,sensor-type = /bits/ 8 <0>;
++                adi,reference-select = /bits/ 8 <3>;
++            };
++            // Sample AIN3 with respect to 2.5V throughout AVDD/AVSS input range
++            // Pseudo-differential bipolar (fig. 2b)
++            channel@2 {
++                reg = <2>;
++                bipolar;
++                single-channel = <3>;
++                common-mode-channel = <29>;
++                adi,sensor-type = /bits/ 8 <0>;
++                adi,reference-select = /bits/ 8 <3>;
++            };
++            // Sample AIN4 with respect to DGND throughout AVDD/AVSS input range
++            // Pseudo-differential bipolar (fig. 2c)
++            channel@3 {
++                reg = <3>;
++                bipolar;
++                single-channel = <4>;
++                common-mode-channel = <24>;
++                adi,sensor-type = /bits/ 8 <0>;
++                adi,reference-select = /bits/ 8 <3>;
++            };
++            // Sample AIN5 with respect to 2.5V throughout AVDD/AVSS input range
++            // Pseudo-differential unipolar (AD4170 datasheet page 46 example)
++            channel@4 {
++                reg = <4>;
++                single-channel = <5>;
++                common-mode-channel = <29>;
++                adi,sensor-type = /bits/ 8 <0>;
++                adi,reference-select = /bits/ 8 <3>;
++            };
++            // Sample AIN6 with respect to 2.5V throughout REFIN+/REFIN- input range
++            // Pseudo-differential bipolar
++            channel@5 {
++                reg = <5>;
++                bipolar;
++                single-channel = <6>;
++                common-mode-channel = <29>;
++                adi,sensor-type = /bits/ 8 <0>;
++                adi,reference-select = /bits/ 8 <0>;
++            };
++            // Weigh scale sensor
++            weighscale@6 {
++                reg = <6>;
++                bipolar;
++                diff-channels = <7 8>;
++                adi,sensor-type = /bits/ 8 <1>;
++                adi,ac-excited;
++                adi,excitation-pins = <17 18>, <19 20>;
++                adi,reference-select = /bits/ 8 <0>;
++            };
++        };
++    };
++...
++
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 030d90d38341..991b6e2e373a 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -1337,6 +1337,13 @@ F:	Documentation/ABI/testing/sysfs-bus-iio-adc-ad4130
+ F:	Documentation/devicetree/bindings/iio/adc/adi,ad4130.yaml
+ F:	drivers/iio/adc/ad4130.c
  
-> - Nuno Sá
-> 
-> > +	for (i = 0; i < ARRAY_SIZE(dbgfs_attr_source); i++) {
-> > +		len += scnprintf(buf + len, PAGE_SIZE - len, "%s ",
-> > +				 dbgfs_attr_source[i]);
-> > +	}
-> > +	buf[len - 1] = '\n';
-> > +
-> > +	return simple_read_from_buffer(userbuf, count, ppos, buf, len);
-> > +}
-> > +
-> > +static const struct file_operations ad3552r_hs_data_source_fops = {
-> > +	.owner = THIS_MODULE,
-> > +	.write = ad3552r_hs_write_data_source,
-> > +	.read = ad3552r_hs_show_data_source,
-> > +};
-> > +
-> > +static const struct file_operations ad3552r_hs_data_source_avail_fops = {
-> > +	.owner = THIS_MODULE,
-> > +	.read = ad3552r_hs_show_data_source_avail,
-> > +};
-> > +
-> >  static int ad3552r_hs_setup(struct ad3552r_hs_state *st)
-> >  {
-> >  	u16 id;
-> > @@ -550,11 +678,7 @@ static int ad3552r_hs_setup(struct ad3552r_hs_state *st)
-> >  	if (ret)
-> >  		return ret;
-> >  
-> > -	ret = iio_backend_data_source_set(st->back, 0, IIO_BACKEND_EXTERNAL);
-> > -	if (ret)
-> > -		return ret;
-> > -
-> > -	ret = iio_backend_data_source_set(st->back, 1, IIO_BACKEND_EXTERNAL);
-> > +	ret = ad3552r_hs_set_data_source(st, IIO_BACKEND_EXTERNAL);
-> >  	if (ret)
-> >  		return ret;
-> >  
-> > @@ -661,6 +785,26 @@ static const struct iio_info ad3552r_hs_info = {
-> >  	.debugfs_reg_access = &ad3552r_hs_reg_access,
-> >  };
-> >  
-> > +static void ad3552r_hs_debugfs_init(struct iio_dev *indio_dev)
-> > +{
-> > +	struct ad3552r_hs_state *st = iio_priv(indio_dev);
-> > +	struct dentry *d = iio_get_debugfs_dentry(indio_dev);
-> > +
-> > +	if (!IS_ENABLED(CONFIG_DEBUG_FS))
-> > +		return;
-> > +
-> > +	d = iio_get_debugfs_dentry(indio_dev);
-> > +	if (!d) {
-> > +		dev_warn(st->dev, "can't set debugfs in driver dir\n");
-> > +		return;
-> > +	}
-> > +
-> > +	debugfs_create_file("data_source", 0600, d, st,
-> > +			    &ad3552r_hs_data_source_fops);
-> > +	debugfs_create_file("data_source_available", 0600, d, st,
-> > +			    &ad3552r_hs_data_source_avail_fops);
-> > +}
-> > +
-> >  static int ad3552r_hs_probe(struct platform_device *pdev)
-> >  {
-> >  	struct ad3552r_hs_state *st;
-> > @@ -705,7 +849,17 @@ static int ad3552r_hs_probe(struct platform_device *pdev)
-> >  	if (ret)
-> >  		return ret;
-> >  
-> > -	return devm_iio_device_register(&pdev->dev, indio_dev);
-> > +	ret = devm_iio_device_register(&pdev->dev, indio_dev);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	ret = devm_mutex_init(&pdev->dev, &st->lock);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	ad3552r_hs_debugfs_init(indio_dev);
-> > +
-> > +	return ret;
-> >  }
-> >  
-> >  static const struct of_device_id ad3552r_hs_of_id[] = {
-> > 
-> 
++ANALOG DEVICES INC AD4170 DRIVER
++M:	Marcelo Schmitt <marcelo.schmitt@analog.com>
++L:	linux-iio@vger.kernel.org
++S:	Supported
++W:	https://ez.analog.com/linux-software-drivers
++F:	Documentation/devicetree/bindings/iio/adc/adi,ad4170.yaml
++
+ ANALOG DEVICES INC AD4695 DRIVER
+ M:	Michael Hennerich <michael.hennerich@analog.com>
+ M:	Nuno SÃ¡ <nuno.sa@analog.com>
+-- 
+2.47.2
+
 

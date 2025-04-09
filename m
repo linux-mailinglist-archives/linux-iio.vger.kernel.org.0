@@ -1,128 +1,141 @@
-Return-Path: <linux-iio+bounces-17849-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17850-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 583CFA81B45
-	for <lists+linux-iio@lfdr.de>; Wed,  9 Apr 2025 04:45:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07B56A81C6C
+	for <lists+linux-iio@lfdr.de>; Wed,  9 Apr 2025 07:56:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 41DA41B819A0
-	for <lists+linux-iio@lfdr.de>; Wed,  9 Apr 2025 02:45:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0B21E4671E8
+	for <lists+linux-iio@lfdr.de>; Wed,  9 Apr 2025 05:56:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E0191ACEDC;
-	Wed,  9 Apr 2025 02:45:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0066D1DE3A8;
+	Wed,  9 Apr 2025 05:56:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DTVijmDH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e2/BfBjp"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AEB410E3;
-	Wed,  9 Apr 2025 02:45:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8D0D1DDC23;
+	Wed,  9 Apr 2025 05:56:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744166707; cv=none; b=bL+QZZ/bsIXGrZuRxAvDrczfkAO62d6BSyBm9RAg14Sy4B/GHN3XMT5rqMWHBNp/KvCPofaNygPRsRclsT0XjAW5sVPsMQbIwDWL9/tLDLHy+gaJGLlxD0GcHWgYkSPLn4Io0gHM0Yt3n/SpNOWuDPkeytJLZS3rzfSyFC6QJOo=
+	t=1744178163; cv=none; b=T8hxHKj4GwtYfOV2sgVNhZ8IbIylP1iDR0aWWPWjw1mt6639eyr4+515fxjetsJYNeCetT4qHhHSxZom/fhJT44mv7vrIjMgHxlz4lG0ubW8NloDJx3Ht6ESoLe6itVU1Pd/H8c28mrMSsKl0dfZvlU8OLiEhOZemjx0Eoa9mkk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744166707; c=relaxed/simple;
-	bh=tw6H1xLtOVYh7S/iwsffCZ/m6HAPAqRPYX9ZP5qwnwM=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UBlE+jsrhPbe5bC63UZSYoarLzN0PqXbWXeSlqsyD1JFcbR/ar1Ofj+8/roGCF8fIDencz1yRF1aXMseUnx70gHZLRoA3lYqRlGbN2yxhL5crNj3Ew8CXQC9IctEJK7mz1NxqdED3mCSC/sdBjmTIZt5W811mqiE2VuLTpzbWSw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DTVijmDH; arc=none smtp.client-ip=209.85.210.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-736ee709c11so5242069b3a.1;
-        Tue, 08 Apr 2025 19:45:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744166705; x=1744771505; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/zx/eUsGggMkH58+ue/SK5eQbqgj8QkhTocD4L4C3oE=;
-        b=DTVijmDH0IO2wV95Tu/kaPHiS6qOpRTGPNC+AGn4IPUgdI98QFj/noejp1ERQGiSYj
-         Vuim/WPplj4YZepTnXsY2vGlrNPMHBlnfRw9m/kiHC+3GLUm/cI598PlHwFDtYCCMliN
-         Q6GoiS6lfl51wErp3yQa3CjkfEpfm1ZHkezbliV+rdeOFasrxcWYQPTi/pA0hJhopZF8
-         TWWZFo8o6eWRdxx9aTH8QbbaZXHyoKLHZJbaslVOd5A6Skjom/Dpovfw9fJn3L1d85nG
-         5KBlZMYrdPH19xgAWD7M6eb9p0LjqZ///VQmEgO82/YIhnqcBfyncV+dw0rQJ0QDsYBz
-         /ufw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744166705; x=1744771505;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=/zx/eUsGggMkH58+ue/SK5eQbqgj8QkhTocD4L4C3oE=;
-        b=WL/kQ7nqe7t17QMZbKu+TptRM7v2oAPdDFhj/EAAgVIKCTlXFKWJRmF8D2nOjjjGdM
-         oChL73BiYjm/LMX3YWkWAR/pN8h5PcnEhEaCRqxpVqjgqo5yCCmoHCIkK3d8SYds6189
-         0CHaJS2J5Y86rR0zB9ck9x5OKVnk7prdTQxP2LW14s5AyG7OVVHq22rbj+aC888IyNnt
-         cO3iLgGYKAq5oKbO1TqW4ZAq+N+PUaL93cf/uLrSIT13KGy+iN9iPOE7prZiTEZk3jTC
-         UjqX5r4S8LUO13TY9o+uQQXv3pK9fKR5qd4xYsPksgTqDBOka4x8SwSyQ7lBLvTlrZqj
-         ycAQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW02LaZAgPnTHOxZZR2p00A8+dHc9BIMApZ9uNkdz5ujPeTlYRd3RDuYCtW3iRHjn2ScUJyGYMmUIP7@vger.kernel.org, AJvYcCXewxY2ibQmXsT7Aib0Ou/c+DRgfl3nYqKbhphQ1nuzoZcGPe+lKBpsUw4Us1QLEEHP3T+dg85sp9XC@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywp9HSmjIAKT0VyBZbBU7kMlr6pYYghJWcCPB4BN4PvpdygQU8I
-	aWOP/lS8xKsrs1lafCbVE2Fucs1r8XfuIveTLzpV2+EGOCjN2Au1
-X-Gm-Gg: ASbGncuZKu0+bHFfzqMuBeLVqpV7/uZxFmg9dkXH1L2q8z2n9WGnYFkzaI1gFDT4EuJ
-	g3n3yn31iy4+nFG6BWAs/zEqEhne/k3lVXTW5tmn2Dr5GgcOiClcGV307vf7YmGzbxDc1CafR2+
-	wzdskxcstyGoC5XNxziveM4wDC+2sffRk4VkXN30ngj1yKAblw7W3Sv/Tiaz6EmvpjnrKdmtrR+
-	xcZ4yLpkp3IZmWEtusOFhN2+XOV8lC7hbZQ9JNZzRzkmCaAE+kQtvltPYogSV1wnRkHN/uvi+E6
-	jT6qwK5ZKiK4X6azIbSe47k7xhzpWT230pK/N22GX3Hiw8xPXQ==
-X-Google-Smtp-Source: AGHT+IFDEVc0OImbQAR90RoF41pfJKqrYEOPT606mekoU7emBnqkiK1MsUQhiYNREH5h+6yuwK5eSQ==
-X-Received: by 2002:a05:6a00:391d:b0:737:6d4b:f5f8 with SMTP id d2e1a72fcca58-73bae5272ddmr1555377b3a.17.1744166705252;
-        Tue, 08 Apr 2025 19:45:05 -0700 (PDT)
-Received: from gye-ThinkPad-T590.. ([61.108.38.194])
-        by smtp.googlemail.com with ESMTPSA id 41be03b00d2f7-b02a2d3abffsm114028a12.48.2025.04.08.19.45.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Apr 2025 19:45:05 -0700 (PDT)
-From: Gyeyoung Baek <gye976@gmail.com>
-To: jic23@kernel.org
-Cc: Gyeyoung Baek <gye976@gmail.com>,
-	linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	dlechner@baylibre.com,
-	nuno.sa@analog.com,
-	andy@kernel.org,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org
-Subject: [PATCH v3 4/4] MAINTAINERS: Add WINSEN MHZ19B
-Date: Wed,  9 Apr 2025 11:43:11 +0900
-Message-Id: <20250409024311.19466-6-gye976@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250409024311.19466-1-gye976@gmail.com>
-References: <20250409024311.19466-1-gye976@gmail.com>
+	s=arc-20240116; t=1744178163; c=relaxed/simple;
+	bh=KT1GTf9jH0Y0noounuaWF7hX7ztxlRY+I+TkMzC5KKI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fAZj6jViVTKImK5zsKGY8yr2JZkxk+dL/DJpTuoZJK1jFLtSQoM38dcByJBbEg5YljaxFkdmoFiwqg5XtOGxa7okQ3YcIb7Ado8D8fg6g4Vzk0PM5CsMJE2P5xIbd4HRDRiSzQsrcWzqs/hstxjJ0feCnOIsCkYyFghvgG0fQy4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e2/BfBjp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4304CC4CEE7;
+	Wed,  9 Apr 2025 05:55:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744178163;
+	bh=KT1GTf9jH0Y0noounuaWF7hX7ztxlRY+I+TkMzC5KKI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=e2/BfBjpcaAQiyUmR7eaad4qI3B7d+60BmczQ28uXhD2N33w7GFW0ZbtBYZ6ktiU8
+	 SwHOf82JDvrpHNPmO96+yExS/50r2LdfQeVvXrfIMsoT0gJIb6TpPJF1r5XyN1K7YO
+	 q92WdTRljQsC1lWQiPY9Ql7gYBJb6qBWRAdSgMc2+7yBIg8Xkj69AYJo0umjUNreHh
+	 zgGDyrS87BgNuqHw3ij52Vh7E6yDjoVRAsFvU51y+U/cJcEvUpcXC4RVm/Zw5S8Dk/
+	 +9XipP548+Zfn4lfqrCOPy0VgDqyYAqduRpyx50Z/w1DarBSArx3OtuiiQxAn8sX2p
+	 1o1NPVVQm4VjA==
+Message-ID: <7f2d4894-788e-4ba7-bbfc-67ac0903b6fb@kernel.org>
+Date: Wed, 9 Apr 2025 07:55:53 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 1/2] dt-bindings: iio: adc: add NCT7201 ADCs
+To: Eason Yang <j2anfernee@gmail.com>, jic23@kernel.org, lars@metafoo.de,
+ robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ dlechner@baylibre.com, nuno.sa@analog.com, javier.carrasco.cruz@gmail.com,
+ gstols@baylibre.com, tgamblin@baylibre.com, alisadariana@gmail.com,
+ antoniu.miclaus@analog.com, eblanc@baylibre.com,
+ andriy.shevchenko@linux.intel.com, jstephan@baylibre.com,
+ matteomartelli3@gmail.com, angelogioacchino.delregno@collabora.com,
+ herve.codina@bootlin.com, marcelo.schmitt@analog.com,
+ chanh@os.amperecomputing.com, KWLIU@nuvoton.com, yhyang2@nuvoton.com
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20250409012351.2543450-1-j2anfernee@gmail.com>
+ <20250409012351.2543450-2-j2anfernee@gmail.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <20250409012351.2543450-2-j2anfernee@gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-Add undersigned as a maintainer for the WINSEN MHZ19B.
+On 09/04/2025 03:23, Eason Yang wrote:
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +  reset-gpios:
+> +    maxItems: 1
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +
 
-Signed-off-by: Gyeyoung Baek <gye976@gmail.com>
----
- MAINTAINERS | 6 ++++++
- 1 file changed, 6 insertions(+)
+If you are going to send a new version, drop blank line here.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 030d90d38341..8135d1bbda68 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -26008,6 +26008,12 @@ M:	David Härdeman <david@hardeman.nu>
- S:	Maintained
- F:	drivers/media/rc/winbond-cir.c
 
-+WINSEN MHZ19B
-+M:	Gyeyoung Baek <gye976@gmail.com>
-+S:	Maintained
-+F:	Documentation/devicetree/bindings/iio/chemical/winsen,mhz19b.yaml
-+F:	drivers/iio/chemical/mhz19b.c
-+
- WINSYSTEMS EBC-C384 WATCHDOG DRIVER
- L:	linux-watchdog@vger.kernel.org
- S:	Orphan
---
-2.34.1
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
+
+Best regards,
+Krzysztof
 

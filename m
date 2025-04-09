@@ -1,77 +1,77 @@
-Return-Path: <linux-iio+bounces-17848-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17849-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21BCDA81B41
-	for <lists+linux-iio@lfdr.de>; Wed,  9 Apr 2025 04:45:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 583CFA81B45
+	for <lists+linux-iio@lfdr.de>; Wed,  9 Apr 2025 04:45:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D90DD1B8189B
-	for <lists+linux-iio@lfdr.de>; Wed,  9 Apr 2025 02:45:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 41DA41B819A0
+	for <lists+linux-iio@lfdr.de>; Wed,  9 Apr 2025 02:45:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EF481ADC6D;
-	Wed,  9 Apr 2025 02:45:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E0191ACEDC;
+	Wed,  9 Apr 2025 02:45:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hvS0gz61"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DTVijmDH"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 658E419E96D;
-	Wed,  9 Apr 2025 02:45:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AEB410E3;
+	Wed,  9 Apr 2025 02:45:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744166704; cv=none; b=fUqn9NlDr+eNY1Hna3+TWQ9gxqmrmQN1GbUVNR/+TzrKWgmxHyVG0oUmKk7xkM8SNR2OvUK9lHB7k+ta6D/SI9RoIHlLOho7kh39knnUSPdDR5yjeTjRJ47lAdzDeq9IHBKm/OhT5zZ365TpA6KhRcQ9Qd+eksu6250f3ZkWQ88=
+	t=1744166707; cv=none; b=bL+QZZ/bsIXGrZuRxAvDrczfkAO62d6BSyBm9RAg14Sy4B/GHN3XMT5rqMWHBNp/KvCPofaNygPRsRclsT0XjAW5sVPsMQbIwDWL9/tLDLHy+gaJGLlxD0GcHWgYkSPLn4Io0gHM0Yt3n/SpNOWuDPkeytJLZS3rzfSyFC6QJOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744166704; c=relaxed/simple;
-	bh=bKLkOGUwqCdmPkcWqIjwvGcivH7dFMI7MfFhT8W9KUY=;
+	s=arc-20240116; t=1744166707; c=relaxed/simple;
+	bh=tw6H1xLtOVYh7S/iwsffCZ/m6HAPAqRPYX9ZP5qwnwM=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=j5/g8WO5tltxEFT95Q2x1IIiJxlusBibm2Ofgz19JExHs2BZKbjkR8ZsIhqTtrfGKu52o05lD73gx1o5ZQZBuvIrByhpiaBeQqG9dCt0Zuf14GQjdZbe+3UAMVvOvb4mgyXoxHxFGDPFaX2fkpdebp641idpATxvrfm2HrAjidE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hvS0gz61; arc=none smtp.client-ip=209.85.210.172
+	 MIME-Version:Content-Type; b=UBlE+jsrhPbe5bC63UZSYoarLzN0PqXbWXeSlqsyD1JFcbR/ar1Ofj+8/roGCF8fIDencz1yRF1aXMseUnx70gHZLRoA3lYqRlGbN2yxhL5crNj3Ew8CXQC9IctEJK7mz1NxqdED3mCSC/sdBjmTIZt5W811mqiE2VuLTpzbWSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DTVijmDH; arc=none smtp.client-ip=209.85.210.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-736bfa487c3so5336305b3a.1;
-        Tue, 08 Apr 2025 19:45:02 -0700 (PDT)
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-736ee709c11so5242069b3a.1;
+        Tue, 08 Apr 2025 19:45:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744166701; x=1744771501; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1744166705; x=1744771505; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=v0c9N0c2if6tASPIExhW8nPuwQDHso6Huz4Iz3nGTbM=;
-        b=hvS0gz61WFfibhgf7Q69qBIrXAbQ+xpEno4R9iujFd4aGKd8JRCNfbOCd50vVB0w89
-         TcRaNXM1w828JBeiBs67E6GbXPEPYl3tG4j+aptENlsgwzxhOlOxbF0HxhlbAs4WpiRe
-         8s97JtZcncnMfi0VDNGcc9f6o9xT6Z178wyT+s71PiQV/eO86dY2tgnQONxUt7gYn6RR
-         jU6eOQlXKu5hjdTDLMjDGlzNIfHJSnVyhqlBgQSpxEQCexIQiN9xfJ00XPcKXn+uk9aY
-         x7/GtMl1z5RK9wIX11wacQZyhd5NzRYpaI7+1S7cG9krJlcdT34eqBxwcytApc8MUIIJ
-         lA0g==
+        bh=/zx/eUsGggMkH58+ue/SK5eQbqgj8QkhTocD4L4C3oE=;
+        b=DTVijmDH0IO2wV95Tu/kaPHiS6qOpRTGPNC+AGn4IPUgdI98QFj/noejp1ERQGiSYj
+         Vuim/WPplj4YZepTnXsY2vGlrNPMHBlnfRw9m/kiHC+3GLUm/cI598PlHwFDtYCCMliN
+         Q6GoiS6lfl51wErp3yQa3CjkfEpfm1ZHkezbliV+rdeOFasrxcWYQPTi/pA0hJhopZF8
+         TWWZFo8o6eWRdxx9aTH8QbbaZXHyoKLHZJbaslVOd5A6Skjom/Dpovfw9fJn3L1d85nG
+         5KBlZMYrdPH19xgAWD7M6eb9p0LjqZ///VQmEgO82/YIhnqcBfyncV+dw0rQJ0QDsYBz
+         /ufw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744166701; x=1744771501;
+        d=1e100.net; s=20230601; t=1744166705; x=1744771505;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=v0c9N0c2if6tASPIExhW8nPuwQDHso6Huz4Iz3nGTbM=;
-        b=F1CqW8gikASDWFVkgO1g/JJW2RWpWFTZsRFnXJ1gaKNlYTCQ9BEC0wiFDZZnbM8iKq
-         GwI7LM5NHTaonPbByALP8WbP/iw1FBuWtn/K6eit4vwroXgxez9UgAc0Epd65/RNJ9gk
-         7y6Jeh7Es+Bxtv6rfXhcOW51LdYCwrm+YEAxLjQXLziYOuM9NPv4JdsDZ/wlS6ImqM5u
-         3b+4Z/F38F3EAb2HPItH2oohLny3rZsiLI8eaAUI2IDuMk6aotML1PKU9lNY2wRRIcxp
-         sY2XoOvrOt6WUEpeDKK6VKRZ0sOc+f4m9T0Wm3o1+XtiGNvgL2XA7DKRkO4Kn4G7eqhn
-         GU1A==
-X-Forwarded-Encrypted: i=1; AJvYcCVC5OUZpHxM78TUr2z0agXXw4Z9ZMB2UhKfoKqM/0w92KCJhzyMOpDk2UVHL0qSdLDDTQNUeH5drrUR@vger.kernel.org, AJvYcCVEFjopkWOdJhsNSvaBvVbdFTS/oy611KE/DUwC122/b+/qcqRn5FgrLAgVnE4+BfGJyDcLp1oduK7y@vger.kernel.org
-X-Gm-Message-State: AOJu0YzCsZX+NXJpK6La17el0I71thtX2LIZrMG5TZ9n+wYQixCSh/I4
-	43ewpNaT/dwCpYO+ELIu3ywg+OZ61cUdHWVHYoKFOdeu/oQTEnFV
-X-Gm-Gg: ASbGncul6Jhqsdg6NKJzQSJrVnZ+qU1u9QUyqiY1AIm77lcwqsZ+6NGy40BNx1ccObf
-	TuiIOhSxatF0SBdQr4qFp/cO7wOzxj+cgNeGVW7e1dj+8SWTkbYdDAem2WVE6FuKBAkZDjpf11e
-	K+b5DuJQBDloAUTdwUT6nlf6fqF6nnNXq3pOASg4R1onWEK61C66Q1y5vqt0+anvi1/qRq3k/VN
-	yDKMUgH9R/IhB+ZuLD1SCUcxzisU9LhcoJ9hA9rF7gje52aLgmqptSFwQL8fVAJnC3h0fg5jwTt
-	4WQ7bmoLRe1IRQLlA0MeEqIWik3vuNafFfnPeQofqeglH6IgiA==
-X-Google-Smtp-Source: AGHT+IH/ep6f1TPzA9TZ9s4GBeBQQafX90m1Bcpf3jI5wwYl3ZV8u7r4An9RbX9L6cDkQOwtoKcMeQ==
-X-Received: by 2002:a05:6a21:4a4c:b0:1f5:8153:93fb with SMTP id adf61e73a8af0-2015aec733dmr1150995637.10.1744166701546;
-        Tue, 08 Apr 2025 19:45:01 -0700 (PDT)
+        bh=/zx/eUsGggMkH58+ue/SK5eQbqgj8QkhTocD4L4C3oE=;
+        b=WL/kQ7nqe7t17QMZbKu+TptRM7v2oAPdDFhj/EAAgVIKCTlXFKWJRmF8D2nOjjjGdM
+         oChL73BiYjm/LMX3YWkWAR/pN8h5PcnEhEaCRqxpVqjgqo5yCCmoHCIkK3d8SYds6189
+         0CHaJS2J5Y86rR0zB9ck9x5OKVnk7prdTQxP2LW14s5AyG7OVVHq22rbj+aC888IyNnt
+         cO3iLgGYKAq5oKbO1TqW4ZAq+N+PUaL93cf/uLrSIT13KGy+iN9iPOE7prZiTEZk3jTC
+         UjqX5r4S8LUO13TY9o+uQQXv3pK9fKR5qd4xYsPksgTqDBOka4x8SwSyQ7lBLvTlrZqj
+         ycAQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW02LaZAgPnTHOxZZR2p00A8+dHc9BIMApZ9uNkdz5ujPeTlYRd3RDuYCtW3iRHjn2ScUJyGYMmUIP7@vger.kernel.org, AJvYcCXewxY2ibQmXsT7Aib0Ou/c+DRgfl3nYqKbhphQ1nuzoZcGPe+lKBpsUw4Us1QLEEHP3T+dg85sp9XC@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywp9HSmjIAKT0VyBZbBU7kMlr6pYYghJWcCPB4BN4PvpdygQU8I
+	aWOP/lS8xKsrs1lafCbVE2Fucs1r8XfuIveTLzpV2+EGOCjN2Au1
+X-Gm-Gg: ASbGncuZKu0+bHFfzqMuBeLVqpV7/uZxFmg9dkXH1L2q8z2n9WGnYFkzaI1gFDT4EuJ
+	g3n3yn31iy4+nFG6BWAs/zEqEhne/k3lVXTW5tmn2Dr5GgcOiClcGV307vf7YmGzbxDc1CafR2+
+	wzdskxcstyGoC5XNxziveM4wDC+2sffRk4VkXN30ngj1yKAblw7W3Sv/Tiaz6EmvpjnrKdmtrR+
+	xcZ4yLpkp3IZmWEtusOFhN2+XOV8lC7hbZQ9JNZzRzkmCaAE+kQtvltPYogSV1wnRkHN/uvi+E6
+	jT6qwK5ZKiK4X6azIbSe47k7xhzpWT230pK/N22GX3Hiw8xPXQ==
+X-Google-Smtp-Source: AGHT+IFDEVc0OImbQAR90RoF41pfJKqrYEOPT606mekoU7emBnqkiK1MsUQhiYNREH5h+6yuwK5eSQ==
+X-Received: by 2002:a05:6a00:391d:b0:737:6d4b:f5f8 with SMTP id d2e1a72fcca58-73bae5272ddmr1555377b3a.17.1744166705252;
+        Tue, 08 Apr 2025 19:45:05 -0700 (PDT)
 Received: from gye-ThinkPad-T590.. ([61.108.38.194])
-        by smtp.googlemail.com with ESMTPSA id 41be03b00d2f7-b02a2d3abffsm114028a12.48.2025.04.08.19.44.58
+        by smtp.googlemail.com with ESMTPSA id 41be03b00d2f7-b02a2d3abffsm114028a12.48.2025.04.08.19.45.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Apr 2025 19:45:01 -0700 (PDT)
+        Tue, 08 Apr 2025 19:45:05 -0700 (PDT)
 From: Gyeyoung Baek <gye976@gmail.com>
 To: jic23@kernel.org
 Cc: Gyeyoung Baek <gye976@gmail.com>,
@@ -83,9 +83,9 @@ Cc: Gyeyoung Baek <gye976@gmail.com>,
 	robh@kernel.org,
 	krzk+dt@kernel.org,
 	conor+dt@kernel.org
-Subject: [PATCH v3 3/4] iio: chemical: add support for winsen MHZ19B CO2 sensor
-Date: Wed,  9 Apr 2025 11:43:10 +0900
-Message-Id: <20250409024311.19466-5-gye976@gmail.com>
+Subject: [PATCH v3 4/4] MAINTAINERS: Add WINSEN MHZ19B
+Date: Wed,  9 Apr 2025 11:43:11 +0900
+Message-Id: <20250409024311.19466-6-gye976@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250409024311.19466-1-gye976@gmail.com>
 References: <20250409024311.19466-1-gye976@gmail.com>
@@ -95,402 +95,33 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Add support for winsen MHZ19B CO2 sensor.
-
-Datasheet:
-https://www.winsen-sensor.com/d/files/infrared-gas-sensor/mh-z19b-co2-ver1_0.pdf
+Add undersigned as a maintainer for the WINSEN MHZ19B.
 
 Signed-off-by: Gyeyoung Baek <gye976@gmail.com>
 ---
- drivers/iio/chemical/Kconfig  |  10 +
- drivers/iio/chemical/Makefile |   1 +
- drivers/iio/chemical/mhz19b.c | 347 ++++++++++++++++++++++++++++++++++
- 3 files changed, 358 insertions(+)
- create mode 100644 drivers/iio/chemical/mhz19b.c
+ MAINTAINERS | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/iio/chemical/Kconfig b/drivers/iio/chemical/Kconfig
-index 330fe0af946f..641bf9b35915 100644
---- a/drivers/iio/chemical/Kconfig
-+++ b/drivers/iio/chemical/Kconfig
-@@ -237,4 +237,14 @@ config VZ89X
- 	  Sensortech MiCS VZ89X VOC (Volatile Organic Compounds)
- 	  sensors
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 030d90d38341..8135d1bbda68 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -26008,6 +26008,12 @@ M:	David Härdeman <david@hardeman.nu>
+ S:	Maintained
+ F:	drivers/media/rc/winbond-cir.c
 
-+config WINSEN_MHZ19B
-+	tristate "Winsen MHZ19B CO2 sensor"
-+	depends on SERIAL_DEV_BUS
-+	help
-+	  Say Y here to build Serdev interface support for the Winsen
-+	  MHZ19B CO2 sensor.
-+
-+	  To compile this driver as a module, choose M here: the module will
-+	  be called mhz19b.
-+
- endmenu
-diff --git a/drivers/iio/chemical/Makefile b/drivers/iio/chemical/Makefile
-index 4866db06bdc9..deed437dd396 100644
---- a/drivers/iio/chemical/Makefile
-+++ b/drivers/iio/chemical/Makefile
-@@ -27,3 +27,4 @@ obj-$(CONFIG_SPS30) += sps30.o
- obj-$(CONFIG_SPS30_I2C) += sps30_i2c.o
- obj-$(CONFIG_SPS30_SERIAL) += sps30_serial.o
- obj-$(CONFIG_VZ89X)		+= vz89x.o
-+obj-$(CONFIG_WINSEN_MHZ19B) += mhz19b.o
-diff --git a/drivers/iio/chemical/mhz19b.c b/drivers/iio/chemical/mhz19b.c
-new file mode 100644
-index 000000000000..d9a16e022b36
---- /dev/null
-+++ b/drivers/iio/chemical/mhz19b.c
-@@ -0,0 +1,347 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * mh-z19b co2 sensor driver
-+ *
-+ * Copyright (c) 2025 Gyeyoung Baek <gye976@gmail.com>
-+ *
-+ * Datasheet:
-+ * https://www.winsen-sensor.com/d/files/infrared-gas-sensor/mh-z19b-co2-ver1_0.pdf
-+ */
-+
-+#include <linux/cleanup.h>
-+#include <linux/completion.h>
-+#include <linux/device.h>
-+#include <linux/iio/iio.h>
-+#include <linux/iio/sysfs.h>
-+#include <linux/init.h>
-+#include <linux/kernel.h>
-+#include <linux/mod_devicetable.h>
-+#include <linux/module.h>
-+#include <linux/regulator/consumer.h>
-+#include <linux/serdev.h>
-+#include <linux/unaligned.h>
-+
-+struct mhz19b_state {
-+	struct serdev_device *serdev;
-+	struct regulator *vin;
-+
-+	/*
-+	 * serdev receive buffer.
-+	 * When data is received from the MH-Z19B,
-+	 * the 'mhz19b_receive_buf' callback function is called and fills this buffer.
-+	 */
-+	char buf[9];
-+	int buf_idx;
-+
-+	/* must wait the 'buf' is filled with 9 bytes.*/
-+	struct completion buf_ready;
-+};
-+
-+/*
-+ * commands have following format:
-+ *
-+ * +------+------+-----+------+------+------+------+------+-------+
-+ * | 0xFF | 0x01 | cmd | arg0 | arg1 | 0x00 | 0x00 | 0x00 | cksum |
-+ * +------+------+-----+------+------+------+------+------+-------+
-+ */
-+#define MHZ19B_CMD_SIZE 9
-+
-+#define MHZ19B_ABC_LOGIC_CMD		0x79
-+#define MHZ19B_READ_CO2_CMD		0x86
-+#define MHZ19B_SPAN_POINT_CMD		0x88
-+#define MHZ19B_ZERO_POINT_CMD		0x87
-+
-+#define MHZ19B_ABC_LOGIC_OFF_CKSUM	0x86
-+#define MHZ19B_ABC_LOGIC_ON_CKSUM	0xE6
-+#define MHZ19B_READ_CO2_CKSUM		0x79
-+#define MHZ19B_ZERO_POINT_CKSUM	0x78
-+
-+/* ABC logic in MHZ19B means auto calibration. */
-+
-+#define MHZ19B_SERDEV_TIMEOUT	msecs_to_jiffies(100)
-+
-+static uint8_t mhz19b_get_checksum(uint8_t *packet)
-+{
-+	uint8_t i, checksum = 0;
-+
-+	for (i = 1; i < 8; i++)
-+		checksum += packet[i];
-+
-+	checksum = 0xff - checksum;
-+	checksum += 1;
-+
-+	return checksum;
-+}
-+
-+static int mhz19b_serdev_cmd(struct iio_dev *indio_dev,
-+	int cmd, void *arg)
-+{
-+	struct mhz19b_state *st = iio_priv(indio_dev);
-+	struct serdev_device *serdev = st->serdev;
-+	struct device *dev = &indio_dev->dev;
-+	int ret;
-+
-+	/*
-+	 * cmd_buf[3,4] : arg0,1
-+	 * cmd_buf[8]	: checksum
-+	 */
-+	uint8_t cmd_buf[MHZ19B_CMD_SIZE] = {
-+		0xFF, 0x01, cmd,
-+	};
-+
-+	switch (cmd) {
-+	case MHZ19B_ABC_LOGIC_CMD: {
-+		bool enable = *((bool *)arg);
-+
-+		if (enable) {
-+			cmd_buf[3] = 0xA0;
-+			cmd_buf[8] = MHZ19B_ABC_LOGIC_ON_CKSUM;
-+		} else {
-+			cmd_buf[3] = 0;
-+			cmd_buf[8] = MHZ19B_ABC_LOGIC_OFF_CKSUM;
-+		}
-+		break;
-+	} case MHZ19B_READ_CO2_CMD: {
-+		cmd_buf[8] = MHZ19B_READ_CO2_CKSUM;
-+		break;
-+	} case MHZ19B_SPAN_POINT_CMD: {
-+		uint16_t ppm = *((uint16_t *)arg);
-+
-+		put_unaligned_be16(ppm, &cmd_buf[3]);
-+		cmd_buf[MHZ19B_CMD_SIZE - 1] = mhz19b_get_checksum(cmd_buf);
-+		break;
-+	} case MHZ19B_ZERO_POINT_CMD: {
-+		cmd_buf[8] = MHZ19B_ZERO_POINT_CKSUM;
-+		break;
-+	} default:
-+		break;
-+	}
-+
-+	/* write buf to uart ctrl syncronously */
-+	ret = serdev_device_write(serdev, cmd_buf, MHZ19B_CMD_SIZE, 0);
-+	if (ret != MHZ19B_CMD_SIZE) {
-+		dev_err(dev, "write err, %d bytes written", ret);
-+		return -EINVAL;
-+	}
-+
-+	switch (cmd) {
-+	case MHZ19B_READ_CO2_CMD:
-+		ret = wait_for_completion_interruptible_timeout(&st->buf_ready,
-+			MHZ19B_SERDEV_TIMEOUT);
-+		if (ret < 0)
-+			return ret;
-+		if (!ret)
-+			return -ETIMEDOUT;
-+
-+		ret = mhz19b_get_checksum(st->buf);
-+		if (st->buf[MHZ19B_CMD_SIZE - 1] != mhz19b_get_checksum(st->buf)) {
-+			dev_err(dev, "checksum err");
-+			return -EINVAL;
-+		}
-+
-+		ret = get_unaligned_be16(&st->buf[2]);
-+		return ret;
-+	default:
-+		/* no response commands. */
-+		return 0;
-+	}
-+}
-+
-+static int mhz19b_read_raw(struct iio_dev *indio_dev,
-+	struct iio_chan_spec const *chan,
-+	int *val, int *val2, long mask)
-+{
-+	int ret = mhz19b_serdev_cmd(indio_dev, MHZ19B_READ_CO2_CMD, NULL);
-+
-+	if (ret < 0)
-+		return ret;
-+
-+	*val = ret;
-+	return IIO_VAL_INT;
-+}
-+
-+/*
-+ * MHZ19B only supports writing configuration values.
-+ *
-+ * echo 0 > calibration_auto_enable : ABC logic off
-+ * echo 1 > calibration_auto_enable : ABC logic on
-+ *
-+ * echo 0 > calibration_forced_value : zero point calibration
-+ *	(make sure the sensor had been worked under 400ppm for over 20 minutes.)
-+ * echo [1000 1 5000] > calibration_forced_value : span point calibration
-+ *	(make sure the sensor had been worked under a certain level co2 for over 20 minutes.)
-+ */
-+static ssize_t calibration_auto_enable_store(struct device *dev,
-+	struct device_attribute *attr,
-+	const char *buf, size_t len)
-+{
-+	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
-+	bool enable;
-+	int ret = kstrtobool(buf, &enable);
-+
-+	if (ret)
-+		return ret;
-+
-+	ret = mhz19b_serdev_cmd(indio_dev, MHZ19B_ABC_LOGIC_CMD, &enable);
-+	if (ret < 0)
-+		return ret;
-+
-+	return len;
-+}
-+static IIO_DEVICE_ATTR_WO(calibration_auto_enable, 0);
-+
-+static ssize_t calibration_forced_value_store(struct device *dev,
-+	struct device_attribute *attr,
-+	const char *buf, size_t len)
-+{
-+	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
-+	uint16_t ppm;
-+	int cmd, ret;
-+
-+	ret = kstrtou16(buf, 10, &ppm);
-+	if (ret)
-+		return ret;
-+
-+	/* at least 1000ppm */
-+	if (ppm) {
-+		if (ppm < 1000 || ppm > 5000) {
-+			dev_dbg(&indio_dev->dev,
-+				"span point ppm should be 1000~5000");
-+			return -EINVAL;
-+		}
-+
-+		cmd = MHZ19B_SPAN_POINT_CMD;
-+	} else {
-+		cmd = MHZ19B_ZERO_POINT_CMD;
-+	}
-+
-+	ret = mhz19b_serdev_cmd(indio_dev, cmd, &ppm);
-+	if (ret < 0)
-+		return ret;
-+
-+	return len;
-+}
-+static IIO_DEVICE_ATTR_WO(calibration_forced_value, 0);
-+
-+static struct attribute *mhz19b_attrs[] = {
-+	&iio_dev_attr_calibration_auto_enable.dev_attr.attr,
-+	&iio_dev_attr_calibration_forced_value.dev_attr.attr,
-+	NULL
-+};
-+
-+static const struct attribute_group mhz19b_attr_group = {
-+	.attrs = mhz19b_attrs,
-+};
-+
-+static const struct iio_info mhz19b_info = {
-+	.attrs = &mhz19b_attr_group,
-+	.read_raw = mhz19b_read_raw,
-+};
-+
-+static const struct iio_chan_spec mhz19b_channels[] = {
-+	{
-+		.type = IIO_CONCENTRATION,
-+		.channel2 = IIO_MOD_CO2,
-+		.modified = 1,
-+		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
-+	},
-+};
-+
-+static size_t mhz19b_receive_buf(struct serdev_device *serdev,
-+	const u8 *data, size_t len)
-+{
-+	struct iio_dev *indio_dev = dev_get_drvdata(&serdev->dev);
-+	struct mhz19b_state *st = iio_priv(indio_dev);
-+
-+	for (int i = 0; i < len; i++)
-+		st->buf[st->buf_idx++] = data[i];
-+
-+	if (st->buf_idx == MHZ19B_CMD_SIZE) {
-+		st->buf_idx = 0;
-+		complete(&st->buf_ready);
-+	}
-+
-+	return len;
-+}
-+
-+static const struct serdev_device_ops mhz19b_ops = {
-+	.receive_buf = mhz19b_receive_buf,
-+	.write_wakeup = serdev_device_write_wakeup,
-+};
-+
-+static int mhz19b_probe(struct serdev_device *serdev)
-+{
-+	int ret;
-+	struct device *dev = &serdev->dev;
-+	struct iio_dev *indio_dev;
-+	struct mhz19b_state *st;
-+
-+	serdev_device_set_client_ops(serdev, &mhz19b_ops);
-+
-+	ret = devm_serdev_device_open(dev, serdev);
-+	if (ret)
-+		return ret;
-+
-+	ret = serdev_device_set_baudrate(serdev, 9600);
-+	if (ret < 0)
-+		return ret;
-+
-+	serdev_device_set_flow_control(serdev, false);
-+
-+	ret = serdev_device_set_parity(serdev, SERDEV_PARITY_NONE);
-+	if (ret < 0)
-+		return ret;
-+
-+	indio_dev = devm_iio_device_alloc(dev, sizeof(struct mhz19b_state));
-+	if (!indio_dev)
-+		return ret;
-+	dev_set_drvdata(dev, indio_dev);
-+
-+	st = iio_priv(indio_dev);
-+	st->serdev = serdev;
-+
-+	init_completion(&st->buf_ready);
-+
-+	st->vin = devm_regulator_get(dev, "vin");
-+	if (IS_ERR(st->vin))
-+		return PTR_ERR(st->vin);
-+
-+	ret = regulator_enable(st->vin);
-+	if (ret)
-+		return ret;
-+
-+	indio_dev->name = "mh-z19b";
-+	indio_dev->channels = mhz19b_channels;
-+	indio_dev->num_channels = ARRAY_SIZE(mhz19b_channels);
-+	indio_dev->info = &mhz19b_info;
-+
-+	return devm_iio_device_register(dev, indio_dev);
-+}
-+
-+static void mhz19b_remove(struct serdev_device *serdev)
-+{
-+	struct iio_dev *indio_dev = dev_get_drvdata(&serdev->dev);
-+	struct mhz19b_state *st = iio_priv(indio_dev);
-+
-+	regulator_disable(st->vin);
-+}
-+
-+static const struct of_device_id mhz19b_of_match[] = {
-+	{ .compatible = "winsen,mhz19b", },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(of, mhz19b_of_match);
-+
-+static struct serdev_device_driver mhz19b_driver = {
-+	.driver = {
-+		.name = "mhz19b",
-+		.of_match_table = mhz19b_of_match,
-+	},
-+	.probe = mhz19b_probe,
-+	.remove = mhz19b_remove,
-+};
-+module_serdev_device_driver(mhz19b_driver);
-+
-+MODULE_AUTHOR("Gyeyoung Baek");
-+MODULE_DESCRIPTION("MH-Z19B CO2 sensor driver using serdev interface");
-+MODULE_LICENSE("GPL");
++WINSEN MHZ19B
++M:	Gyeyoung Baek <gye976@gmail.com>
++S:	Maintained
++F:	Documentation/devicetree/bindings/iio/chemical/winsen,mhz19b.yaml
++F:	drivers/iio/chemical/mhz19b.c
++
+ WINSYSTEMS EBC-C384 WATCHDOG DRIVER
+ L:	linux-watchdog@vger.kernel.org
+ S:	Orphan
 --
 2.34.1
 

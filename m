@@ -1,67 +1,67 @@
-Return-Path: <linux-iio+bounces-17870-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17871-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB47EA824BF
-	for <lists+linux-iio@lfdr.de>; Wed,  9 Apr 2025 14:29:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9B5FA824D5
+	for <lists+linux-iio@lfdr.de>; Wed,  9 Apr 2025 14:32:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 624FC7A7D43
-	for <lists+linux-iio@lfdr.de>; Wed,  9 Apr 2025 12:27:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E8B6C19E5251
+	for <lists+linux-iio@lfdr.de>; Wed,  9 Apr 2025 12:28:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BA44263C82;
-	Wed,  9 Apr 2025 12:26:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9020262D29;
+	Wed,  9 Apr 2025 12:26:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="BrANpxds"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="HE2pd0Ix"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F43625F7BA;
-	Wed,  9 Apr 2025 12:26:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 305CA25F793;
+	Wed,  9 Apr 2025 12:26:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744201573; cv=none; b=ZV453OoQbLSNonql+/S/+/ehZfFRmLgLeREMtNvvByu1Yrpwa6/Ug4bWz5RuA/LQ9g3yJVyCB1gBz/pkYzdna+bn6NUri650lf0/YhCWHMEWhE3mZYx3e3UaQWVXhPIKFOPI32kGdkwGZ5y8Auu5nVImvOLYRi6d/R/maYzmsTk=
+	t=1744201600; cv=none; b=Tnosl9kwQOOd0Rd/T+4qXdw0BYp59R0li8p1B7iZrg6dLdyFYAOeHK6HXRQO723BSs6cdr4+X2eG8ffuSTeLU6Uefh/1v5xngW5p5P1p0WP3Q8O1Sq5MnBsbYZKxafPn6Z1frOGfL1r66uXPWlnMedILK0KC1Hsk7DmuHGQl2k0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744201573; c=relaxed/simple;
-	bh=9tfM/kaooL9C4Rth+aizrQuILx26QObxp9PHSlsx2OU=;
+	s=arc-20240116; t=1744201600; c=relaxed/simple;
+	bh=QcKK2U+2tUOL2j7TDY2TCatzACyLM65E5Y1E3wSeLwk=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oLl5uLWgyMdEf8SwWbljyB/Rb5OEBFuqXptrcf7BK4jtt0I0fIsvlLtanBXTu5LH5LcddL5ZIDVnMoRhd+zoACwOan3eyiVomcj1QmIWm/O/LTRoRVVxMQXcO1nqNf33rdK8YvnWwb2dod/go+EWLvprpGMUx/UoQBZ/K9nrM30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=BrANpxds; arc=none smtp.client-ip=148.163.135.77
+	 MIME-Version:Content-Type; b=G46Az+5xLt1O/jXyTsjC5DBakp4edqXrsAxQENNZ3yMGFsTAKJTtf6TP4U137ZA03eXtRFkVokQ944H0zqtlBMkadSYSNyzD7z6tW/RfKjGzzPGONF5V0JvMxIhazwpcj++L1GNVlLUgXStG/F0UlHCgVafiv9NPeQ0AJDyI+zc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=HE2pd0Ix; arc=none smtp.client-ip=148.163.135.77
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
 Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-	by mx0a-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53999D10002733;
-	Wed, 9 Apr 2025 08:25:54 -0400
+	by mx0a-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5399QrKx002764;
+	Wed, 9 Apr 2025 08:26:25 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=DKIM; bh=u5Qxr
-	F9u32dWo5z+bCbwinzVK+Nus/W8Cfj2qOJhRZk=; b=BrANpxdsEO//LVn5AXGDQ
-	IQH84PQQooLzVk14i+R+OB++I1CiPG/qHNKTAjtXsV2wz17laINmxIZOIMfMpSIm
-	6gLI3ibkTX9VRkaURkbqtj+JmR5gbta70bzSXJ935H+9xpdxS8kDzU6OX0H+OXuW
-	PY7E3J4f1V0uLfLxg1J2Nhzs5Omosf9kG1Y9E0Sx83SewtOemIGxEembRIX6Odkz
-	mI1CSALRClI0zsqs8HHY6QcM0+m9CJWNNXScsndxMY4DkjL4ABeA94jna2WvWbh6
-	cgGf0A51vpTrblSN2yP0mPW80erluF91NLRyBnvMSMstXDOvDIqldacBW6+iOXEH
-	w==
+	:message-id:mime-version:references:subject:to; s=DKIM; bh=hS5Zw
+	kntZFL1o8dtnWK8VrXGimZrhUHS5zbQQp3JWYg=; b=HE2pd0Ix1IvNGv1MwaGfi
+	8Zde7Rd1i1Jfr6srx8NW3wFhTTQ+ip0fGtWu6Y0xApeWmUII5Nz1urIn1zVy8jZX
+	p0oVwKrx6pe4ICoEl3JBLDy7HzpUvx9LsLJ7f2pWrL1NN8/1/zwhXC4nXT4sRXuo
+	YcErdXVfdMuhaQJtgCfsIAFsxH/W7X824q9eCX3JrdYL1tv6ookX+6cwfiCPqG3f
+	WkZ7uFRxNOGQo3Z+lktkqqVekGigFjCT3wbQd44OH6iJJGhBi5kW8hsJ/zqYbaQP
+	HtiUQVbsAkUFB9x1o5UsmhK3fhzsg6a3++WS2yor2tW8rCQLf+3abSEJ/xs1Eyph
+	A==
 Received: from nwd2mta4.analog.com ([137.71.173.58])
-	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 45u1e6dquu-1
+	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 45u1e6dqwn-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 09 Apr 2025 08:25:53 -0400 (EDT)
+	Wed, 09 Apr 2025 08:26:24 -0400 (EDT)
 Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
-	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 539CPqpT041950
+	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 539CQNrU041991
 	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Wed, 9 Apr 2025 08:25:52 -0400
+	Wed, 9 Apr 2025 08:26:23 -0400
 Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by ASHBMBX8.ad.analog.com
  (10.64.17.5) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Wed, 9 Apr 2025
- 08:25:52 -0400
+ 08:26:23 -0400
 Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
  (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Wed, 9 Apr 2025 08:25:52 -0400
+ Transport; Wed, 9 Apr 2025 08:26:23 -0400
 Received: from work.ad.analog.com (HYB-hERzalRezfV.ad.analog.com [10.65.205.9])
-	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 539CPbSL016960;
-	Wed, 9 Apr 2025 08:25:39 -0400
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 539CQ7Es016969;
+	Wed, 9 Apr 2025 08:26:10 -0400
 From: Marcelo Schmitt <marcelo.schmitt@analog.com>
 To: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
         <linux-kernel@vger.kernel.org>
@@ -69,9 +69,9 @@ CC: <jic23@kernel.org>, <lars@metafoo.de>, <Michael.Hennerich@analog.com>,
         <dlechner@baylibre.com>, <nuno.sa@analog.com>, <andy@kernel.org>,
         <robh@kernel.org>, <krzk+dt@kernel.org>, <conor+dt@kernel.org>,
         <marcelo.schmitt1@gmail.com>
-Subject: [PATCH v1 5/7] iio: adc: ad4170: Add GPIO controller support
-Date: Wed, 9 Apr 2025 09:25:35 -0300
-Message-ID: <247566f848cdf2a245a8b6da6a84c22e155beeb7.1744200264.git.marcelo.schmitt@analog.com>
+Subject: [PATCH v1 6/7] iio: adc: ad4170: Add support for internal temperature sensor
+Date: Wed, 9 Apr 2025 09:26:06 -0300
+Message-ID: <33ed56211aed85df1bcb86d5fea83991441dbec0.1744200264.git.marcelo.schmitt@analog.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1744200264.git.marcelo.schmitt@analog.com>
 References: <cover.1744200264.git.marcelo.schmitt@analog.com>
@@ -81,12 +81,12 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
 X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-ORIG-GUID: VO6Yi72DCrhj3f3zFaCuobqc67y-u4z2
-X-Authority-Analysis: v=2.4 cv=cdjSrmDM c=1 sm=1 tr=0 ts=67f66752 cx=c_pps a=3WNzaoukacrqR9RwcOSAdA==:117 a=3WNzaoukacrqR9RwcOSAdA==:17 a=XR8D0OoHHMoA:10 a=gAnH3GRIAAAA:8 a=26uHqrsnSEcdkGl8FGcA:9
-X-Proofpoint-GUID: VO6Yi72DCrhj3f3zFaCuobqc67y-u4z2
+X-Proofpoint-ORIG-GUID: 4P1jzgQxKGkpBfwsoyYRdq2ymJtB4xXG
+X-Authority-Analysis: v=2.4 cv=cdjSrmDM c=1 sm=1 tr=0 ts=67f66770 cx=c_pps a=3WNzaoukacrqR9RwcOSAdA==:117 a=3WNzaoukacrqR9RwcOSAdA==:17 a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=gAnH3GRIAAAA:8 a=o3DtMFfdRpqB0q9FUmIA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: 4P1jzgQxKGkpBfwsoyYRdq2ymJtB4xXG
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-04-09_04,2025-04-08_04,2024-11-22_01
@@ -97,233 +97,118 @@ X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspect
  route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
  definitions=main-2504090073
 
-The AD4170 has four multifunctional pins that can be used as GPIOs. The
-GPIO functionality can be accessed when the AD4170 chip is not busy
-performing continuous data capture or handling any other register
-read/write request. Also, the AD4170 does not provide any interrupt based
-on GPIO pin states so AD4170 GPIOs can't be used as interrupt sources.
-
-Implement gpio_chip callbacks so to make AD4170 GPIO pins controllable
-through the gpiochip interface.
+The AD4170 has an internal temperature sensor that can be read using the
+ADC. Whenever possible, configure an IIO channel to provide the chip's
+temperature.
 
 Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
 ---
- drivers/iio/adc/ad4170.c | 167 ++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 166 insertions(+), 1 deletion(-)
+ drivers/iio/adc/ad4170.c | 72 ++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 69 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/iio/adc/ad4170.c b/drivers/iio/adc/ad4170.c
-index 97cf4465038f..b382e7f3dbe0 100644
+index b382e7f3dbe0..d204f8ca840f 100644
 --- a/drivers/iio/adc/ad4170.c
 +++ b/drivers/iio/adc/ad4170.c
-@@ -12,6 +12,7 @@
- #include <linux/delay.h>
- #include <linux/device.h>
- #include <linux/err.h>
-+#include <linux/gpio/driver.h>
- #include <linux/iio/buffer.h>
- #include <linux/iio/iio.h>
- #include <linux/iio/sysfs.h>
-@@ -79,6 +80,7 @@
- #define AD4170_FIR_CTRL					0x141
- #define AD4170_COEFF_DATA_REG				0x14A
- #define AD4170_COEFF_ADDR_REG				0x14C
-+#define AD4170_GPIO_MODE_REG				0x191
- #define AD4170_GPIO_OUTPUT_REG				0x193
- #define AD4170_GPIO_INPUT_REG				0x195
+@@ -922,6 +922,27 @@ static const struct iio_chan_spec ad4170_channel_template = {
+ 	},
+ };
  
-@@ -189,6 +191,7 @@
- /* Device properties and auxiliary constants */
- 
- #define AD4170_NUM_ANALOG_PINS				9
-+#define AD4170_NUM_GPIO_PINS				4
- #define AD4170_MAX_CHANNELS				16
- #define AD4170_MAX_ANALOG_PINS				8
- #define AD4170_MAX_SETUPS				8
-@@ -340,6 +343,7 @@ struct ad4170_state {
- 	struct clk *ext_clk;
- 	struct clk_hw int_clk_hw;
- 	int pins_fn[AD4170_NUM_ANALOG_PINS];
-+	struct gpio_chip gpiochip;
- 	u32 int_pin_sel;
- 	int sps_tbl[ARRAY_SIZE(ad4170_filt_names)][AD4170_MAX_FS_TBL_SIZE][2];
- 	struct completion completion;
-@@ -1553,6 +1557,156 @@ static int ad4170_soft_reset(struct ad4170_state *st)
- 	return 0;
- }
- 
-+static int ad4170_gpio_get(struct gpio_chip *gc, unsigned int offset)
-+{
-+	struct iio_dev *indio_dev = gpiochip_get_data(gc);
-+	struct ad4170_state *st = iio_priv(indio_dev);
-+	unsigned int val;
-+	int ret;
++static const struct iio_chan_spec ad4170_temp_channel_template = {
++	.type = IIO_TEMP,
++	.indexed = 0,
++	.channel = 17,
++	.channel2 = 17,
++	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
++			      BIT(IIO_CHAN_INFO_SCALE) |
++			      BIT(IIO_CHAN_INFO_OFFSET) |
++			      BIT(IIO_CHAN_INFO_CALIBSCALE) |
++			      BIT(IIO_CHAN_INFO_CALIBBIAS) |
++			      BIT(IIO_CHAN_INFO_SAMP_FREQ),
++	.info_mask_separate_available = BIT(IIO_CHAN_INFO_SAMP_FREQ),
++	.scan_type = {
++		.sign = 's',
++		.realbits = 24,
++		.storagebits = 32,
++		.shift = 8,
++		.endianness = IIO_BE,
++	},
++};
 +
-+	if (!iio_device_claim_direct(indio_dev))
-+		return -EBUSY;
-+
-+	ret = regmap_read(st->regmap16, AD4170_GPIO_MODE_REG, &val);
-+	if (ret)
-+		goto err_release;
-+
-+	/*
-+	 * If the GPIO is configured as an input, read the current value from
-+	 * AD4170_GPIO_INPUT_REG. Otherwise, read the input value from
-+	 * AD4170_GPIO_OUTPUT_REG.
-+	 */
-+	if (val & BIT(offset * 2))
-+		ret = regmap_read(st->regmap16, AD4170_GPIO_INPUT_REG, &val);
-+	else
-+		ret = regmap_read(st->regmap16, AD4170_GPIO_OUTPUT_REG, &val);
-+	if (ret)
-+		goto err_release;
-+
-+	ret = !!(val & BIT(offset));
-+err_release:
-+	iio_device_release_direct(indio_dev);
-+
-+	return ret;
-+}
-+
-+static int ad4170_gpio_set(struct gpio_chip *gc, unsigned int offset, int value)
-+{
-+	struct iio_dev *indio_dev = gpiochip_get_data(gc);
-+	struct ad4170_state *st = iio_priv(indio_dev);
-+	unsigned int val;
-+	int ret;
-+
-+	if (!iio_device_claim_direct(indio_dev))
-+		return -EBUSY;
-+
-+	ret = regmap_read(st->regmap16, AD4170_GPIO_MODE_REG, &val);
-+	if (ret)
-+		goto err_release;
-+
-+	if (val & BIT(offset * 2 + 1))
-+		ret = regmap_update_bits(st->regmap16, AD4170_GPIO_OUTPUT_REG,
-+					 BIT(offset), value << offset);
-+
-+err_release:
-+	iio_device_release_direct(indio_dev);
-+	return ret;
-+}
-+
-+static int ad4170_gpio_get_direction(struct gpio_chip *gc, unsigned int offset)
-+{
-+	struct iio_dev *indio_dev = gpiochip_get_data(gc);
-+	struct ad4170_state *st = iio_priv(indio_dev);
-+	unsigned int val;
-+	int ret;
-+
-+	if (!iio_device_claim_direct(indio_dev))
-+		return -EBUSY;
-+
-+	ret = regmap_read(st->regmap16, AD4170_GPIO_MODE_REG, &val);
-+	if (ret)
-+		goto err_release;
-+
-+	if (val & BIT(offset * 2 + 1))
-+		ret = GPIO_LINE_DIRECTION_OUT;
-+	else
-+		ret = GPIO_LINE_DIRECTION_IN;
-+
-+err_release:
-+	iio_device_release_direct(indio_dev);
-+
-+	return ret;
-+}
-+
-+static int ad4170_gpio_direction_input(struct gpio_chip *gc, unsigned int offset)
-+{
-+	struct iio_dev *indio_dev = gpiochip_get_data(gc);
-+	struct ad4170_state *st = iio_priv(indio_dev);
-+	int ret;
-+
-+	if (!iio_device_claim_direct(indio_dev))
-+		return -EBUSY;
-+
-+	ret = regmap_clear_bits(st->regmap16, AD4170_GPIO_MODE_REG,
-+				BIT(offset * 2 + 1));
-+	if (ret)
-+		goto err_release;
-+
-+	ret = regmap_set_bits(st->regmap16, AD4170_GPIO_MODE_REG,
-+			      BIT(offset * 2));
-+
-+err_release:
-+	iio_device_release_direct(indio_dev);
-+
-+	return ret;
-+}
-+
-+static int ad4170_gpio_direction_output(struct gpio_chip *gc,
-+					unsigned int offset, int value)
-+{
-+	struct iio_dev *indio_dev = gpiochip_get_data(gc);
-+	struct ad4170_state *st = iio_priv(indio_dev);
-+	int ret;
-+
-+	if (!iio_device_claim_direct(indio_dev))
-+		return -EBUSY;
-+
-+	ret = regmap_clear_bits(st->regmap16, AD4170_GPIO_MODE_REG,
-+				BIT(offset * 2));
-+	if (ret)
-+		goto err_release;
-+
-+	ret = regmap_set_bits(st->regmap16, AD4170_GPIO_MODE_REG,
-+			      BIT(offset * 2 + 1));
-+
-+err_release:
-+	iio_device_release_direct(indio_dev);
-+
-+	ad4170_gpio_set(gc, offset, value);
-+	return ret;
-+}
-+
-+static int ad4170_gpio_init(struct iio_dev *indio_dev)
-+{
-+	struct ad4170_state *st = iio_priv(indio_dev);
-+
-+	st->gpiochip = (struct gpio_chip) {
-+		.label = "ad4170_gpios",
-+		.base = -1,
-+		.ngpio = 4,
-+		.parent = &st->spi->dev,
-+		.can_sleep = true,
-+		.get_direction = ad4170_gpio_get_direction,
-+		.direction_input = ad4170_gpio_direction_input,
-+		.direction_output = ad4170_gpio_direction_output,
-+		.get = ad4170_gpio_get,
-+		.set_rv = ad4170_gpio_set,
-+		.owner = THIS_MODULE,
-+	};
-+
-+	return devm_gpiochip_add_data(&st->spi->dev, &st->gpiochip, indio_dev);
-+}
-+
- static int ad4170_parse_reference(struct ad4170_state *st,
- 				  struct fwnode_handle *child,
- 				  struct ad4170_setup *setup)
-@@ -1855,7 +2009,18 @@ static int ad4170_parse_firmware(struct iio_dev *indio_dev)
- 	if (ret)
+ /*
+  * Receives the number of a multiplexed AD4170 input (ain_n), and stores the
+  * voltage (in µV) of the specified input into ain_voltage. If the input number
+@@ -1209,9 +1230,27 @@ static int ad4170_read_raw(struct iio_dev *indio_dev,
  		return ret;
- 
--	return ad4170_parse_channels(indio_dev);
-+	ret = ad4170_parse_channels(indio_dev);
-+	if (ret)
-+		return ret;
+ 	case IIO_CHAN_INFO_SCALE:
+ 		pga = FIELD_GET(AD4170_AFE_PGA_GAIN_MSK, setup->afe);
+-		*val = chan_info->scale_tbl[pga][0];
+-		*val2 = chan_info->scale_tbl[pga][1];
+-		return IIO_VAL_INT_PLUS_NANO;
++		switch (chan->type) {
++		case IIO_VOLTAGE:
++			*val = chan_info->scale_tbl[pga][0];
++			*val2 = chan_info->scale_tbl[pga][1];
++			return IIO_VAL_INT_PLUS_NANO;
 +
-+	/* Only create a GPIO chip if flagged for it */
-+	if (device_property_read_bool(&st->spi->dev, "gpio-controller")) {
-+		ret = ad4170_gpio_init(indio_dev);
++		case IIO_TEMP:
++			/*
++			 * The scale_tbl converts output codes to mV units so
++			 * multiply by MILLI to make the factor convert to µV.
++			 * Then, apply the temperature sensor change sensitivity
++			 * of 477 μV/K. Finally, multiply the result by MILLI
++			 * again to comply with milli degrees Celsius IIO ABI.
++			 */
++			*val = 0; /* The scale integer part is always 0. */
++			*val2 = DIV_ROUND_CLOSEST(chan_info->scale_tbl[pga][1] * MILLI,
++						  477) * MILLI;
++			return IIO_VAL_INT_PLUS_NANO;
++		default:
++			return -EINVAL;
++		}
+ 	case IIO_CHAN_INFO_OFFSET:
+ 		pga = FIELD_GET(AD4170_AFE_PGA_GAIN_MSK, setup->afe);
+ 		*val = chan_info->offset_tbl[pga];
+@@ -1855,12 +1894,39 @@ static int ad4170_parse_channels(struct iio_dev *indio_dev)
+ 	if (num_channels > AD4170_MAX_CHANNELS)
+ 		return dev_err_probe(dev, -EINVAL, "Too many channels\n");
+ 
++	/* Add one for temperature */
++	num_channels = min(num_channels + 1, AD4170_MAX_CHANNELS);
++
+ 	device_for_each_child_node_scoped(dev, child) {
+ 		ret = ad4170_parse_channel_node(indio_dev, child, chan_num++);
+ 		if (ret)
+ 			return ret;
+ 	}
+ 
++	/*
++	 * Add internal temperature sensor channel if the maximum number of
++	 * channels has not been reached.
++	 */
++	if (num_channels < AD4170_MAX_CHANNELS) {
++		struct ad4170_setup *setup = &st->chan_infos[chan_num].setup;
++
++		st->chans[chan_num] = ad4170_temp_channel_template;
++		st->chans[chan_num].address = chan_num;
++		st->chans[chan_num].scan_index = chan_num;
++
++		st->chan_infos[chan_num].setup_num = AD4170_INVALID_SETUP;
++		st->chan_infos[chan_num].initialized = true;
++
++		setup->afe |= FIELD_PREP(AD4170_AFE_REF_SELECT_MSK,
++					 AD4170_REF_AVDD);
++
++		ret = ad4170_get_input_range(st, &st->chans[chan_num], chan_num,
++					     AD4170_REF_AVDD);
 +		if (ret < 0)
-+			return ret;
-+	}
++			return dev_err_probe(dev, ret, "Invalid input config\n");
 +
-+	return 0;
- }
- 
- static int ad4170_initial_config(struct iio_dev *indio_dev)
++		st->chan_infos[chan_num].input_range_uv = ret;
++	}
+ 	indio_dev->num_channels = num_channels;
+ 	indio_dev->channels = st->chans;
+ 	return 0;
 -- 
 2.47.2
 

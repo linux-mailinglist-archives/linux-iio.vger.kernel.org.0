@@ -1,156 +1,204 @@
-Return-Path: <linux-iio+bounces-17876-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17877-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4313A82732
-	for <lists+linux-iio@lfdr.de>; Wed,  9 Apr 2025 16:08:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53B22A8294D
+	for <lists+linux-iio@lfdr.de>; Wed,  9 Apr 2025 17:06:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A328F17DBE4
-	for <lists+linux-iio@lfdr.de>; Wed,  9 Apr 2025 14:08:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 30C9017464B
+	for <lists+linux-iio@lfdr.de>; Wed,  9 Apr 2025 15:00:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1913C265618;
-	Wed,  9 Apr 2025 14:08:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 948A926B2C5;
+	Wed,  9 Apr 2025 14:54:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AZUbyl1x"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="SmByAWa+"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3561915530C;
-	Wed,  9 Apr 2025 14:08:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2CA326B0A2
+	for <linux-iio@vger.kernel.org>; Wed,  9 Apr 2025 14:54:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744207707; cv=none; b=q1NsE6j+zjsghs5+7Gmp45zO8A+7MqVAqCtv2f4+6EsUPgV6aK1d4TYAX9hjmHP/Mbqe2sJ/XEhYLshS8Sdo445Umst6PYD+ueE0ORn1sVIURSyAfMfuxfFr7AiX027Vw6l57VQ3/B7VyBIh4PXx/J5m01Nx6mTZADuuMrDSFyE=
+	t=1744210456; cv=none; b=E9SP+zqcaHCTIK4BPVX1LjeynQeCk/pInMHHfwIi4K3YU5piR8iwTr0qr7MCqXhHwOU6xk3wvlhBbjw9U7cgZoy0p62CoTXU1gBHedYAQNYe2ZnKY8HegYKhX2CSZX0N7SjZwATjzw3lAfWwoUKzYA3Dy1StcKXfUa/G/xuC9Qc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744207707; c=relaxed/simple;
-	bh=rIHKh/mKxsxJnpgNyrdNVBlS2Bla89rn1+FP7nB0RD4=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=JFGnaudZ0wO2W+w88DRBixWlGslnosUdXlB4Q05rXCJQxJ2kkuswHBDqm4Tie5vR5XbomqOmkOeqUbki1sgau4Z7+n9L4GQZsmXJdlAc/l06CvJQp6tKj3sn2LK5KuSV1KHo9jQj3TMHC8npbzfXW5FfJDzeggHIGwHCF4tvEDM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AZUbyl1x; arc=none smtp.client-ip=209.85.128.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4394a0c65fcso63522245e9.1;
-        Wed, 09 Apr 2025 07:08:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744207704; x=1744812504; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=rIHKh/mKxsxJnpgNyrdNVBlS2Bla89rn1+FP7nB0RD4=;
-        b=AZUbyl1xxZKNLlUvnxkoFGN8BfW6LLAAVMdqjon6xJM1n+xp5MGX+2gmrvqwBdiagL
-         YqcDL1IpMrx6CxNJgxsG1gh4osyMA+LH9RWKMH1uBB5h5qyfaibcgmqBzhDedduOIoMI
-         RLxP2F1hlAzDQOHLpfj+P1BusPQArSmai1W4n1GMbWa1SdheokIvZmAjhlOhTomtc4sG
-         eIGVN+Ajl4RbNgqUK3bYh6obo0lq7mPPw9bqCSLrBhNUiiCNrdsgCutLThLT/vlxrGnF
-         ojh/GFdF7SGnqbHaScZM6f721XCRMRb0uxKoFaNeD6ogX7Ei2QzB5YmDBt/chgINhgcE
-         1h2g==
+	s=arc-20240116; t=1744210456; c=relaxed/simple;
+	bh=6g0TfWDuvigbnJLDqJYb2R4PL8SRBJ82ihr5x2bmHek=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=nwYT4g/mA++HOdSrQ0ofxKvsFy7CqkzgrNKWzoVZa+0oQ/Pjq6AdrNiUKKD68DDSyNERSS3Ld1WXjB5btS/4giq0QMp+lAFX8IiBzd5OdP2exlbUrrSAt0Pfza66WLgNxUVYQSvMbxRgnK+bNb06uZq+uoJMgiHMkW2J+Pe8tl4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=SmByAWa+; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5398mwsQ006884
+	for <linux-iio@vger.kernel.org>; Wed, 9 Apr 2025 14:54:13 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	2e+zhortkq1PPVBPRYcJak6GvfMLkq1x12up5ZcdsG0=; b=SmByAWa+1AfXtVKW
+	kW7NxtxG4xNKWwjKtwsoXDRknfKrd0cOocRlx/ZRWIKIALZyUZO6ev74eZtaEz8J
+	xHSw3qj7m0wyc2QaL/KMHZaTzMiFg321kMfnnwqPqJ1IGG51YE58+cc1wNmdTfGR
+	3ZBCbW/h9f00z2qK+UwPzT1U+8vG0Rf2WiVQkTuv3IoCenouGJOdl9V5rAX5MvlP
+	H/f99YsjRpjz6r971m7juzNyEPQ23qICulBfVU/MiiR/gvvzT+CgrOSrySFjEJWy
+	bNHaAzU8A1uKsKhT8Q18IiX3YOzn8gHx5Jh6SZbXnNjJiMv6CesYI4A+qjc60OZD
+	MfNUUA==
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com [209.85.222.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45twg3kqbj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-iio@vger.kernel.org>; Wed, 09 Apr 2025 14:54:12 +0000 (GMT)
+Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-7c54734292aso162346785a.2
+        for <linux-iio@vger.kernel.org>; Wed, 09 Apr 2025 07:54:12 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744207704; x=1744812504;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=rIHKh/mKxsxJnpgNyrdNVBlS2Bla89rn1+FP7nB0RD4=;
-        b=teFx2gtX5pI41AIb8sMnob+KMQmsm8nX2Ca8wHPAmbgCBIY/PfmFCfOOROsIaKloy5
-         5ApfXedvBWEQPu53ktjAxDyptICvU28dAgMI2oxcXgdNxXOs/xMXPj83qA5ScUS0qwLm
-         kX9B8VG+0Vl5St4smfYN11EOuKNSoVs+Br/6Pn8JbdOTmUC6qU28hLYiL7E6RcxCPzf0
-         r+VpWbVqKEoM44pbGT5MPX86KcGRvEkSxXNQ5mQJsBJ0+9kPKz7KIR/n5urOKGqJ8jm1
-         MUzVhkPgepoxC51DG+jT2CO6jnr979/Q0pZE/J7NnQ91lJCpmbXo4+RyelEtXVXv8Na5
-         jXgw==
-X-Forwarded-Encrypted: i=1; AJvYcCUwriqWBQhxh5/eqJMaNPC/RWa6zsdroedc6hiyR1Zi4Z256PBjl/FScRnPP/eRAhJ+4WZkgi5mVU9P@vger.kernel.org, AJvYcCXXAJ/a+v01LCngk4Swf2llCdSmvE0zFyJkML6zJfLG3L8ltJjamwhvUEe1/u50rdD+7l8HKly3jZDCsMq/@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz6sVee9tF9YMP32liexncvAw/zoVbXOzzGg3ILDIC59E0JX012
-	mSGSGmMAboCTDCR1T1+wCnmtFJPorOAxuF5ZTeBFSK56g19Mo239
-X-Gm-Gg: ASbGncuE1lTuX7wu6G/mfsAjATT6PCbJDMOmxKCcCBWgSiXqt1rvh7mbicCZPwRuIO7
-	mymThUo9rmTzhtjHIbOjPiU07jLVx/2kClkHTr+L/UVKscYpdewjJCVDxx0GcjyjP1CKoPlDm+o
-	B2egfZ0yz0rYe/YRj8fZVW2e2+8PWW1jPem0/0D3cN4bZiknCylyvuMYLdEgqHeV532kY+MSu4j
-	Vkk2+kaWzBs40Wi/Djirn33MyJ/JeRiuPBvs3mU3C7iSSJCWv9uvqZfFmGkZMm6L5clUdUGUjeE
-	/juO15YS8fIz/0GyERUcxNbEtwDwMRaEgU33CoiTlWGw2wZwiLAjiPx6PjiR5tdDORHOn4HW1bQ
-	uYUYYP/uWq0pM
-X-Google-Smtp-Source: AGHT+IHZM3GjBdR+VWRxB6LzvXt749A9KyeZWvexdiGbDsu9DpF/8Q0G/EfwUOqiKkNDA2XYXLcHOw==
-X-Received: by 2002:a05:600c:580f:b0:43c:f575:e305 with SMTP id 5b1f17b1804b1-43f203273c9mr17560175e9.8.1744207704289;
-        Wed, 09 Apr 2025 07:08:24 -0700 (PDT)
-Received: from ?IPv6:2001:818:ea8e:7f00:2575:914:eedd:620e? ([2001:818:ea8e:7f00:2575:914:eedd:620e])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43f233c817dsm17231585e9.23.2025.04.09.07.08.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Apr 2025 07:08:23 -0700 (PDT)
-Message-ID: <a160ad15944f28159a0d1145cdf4584fb2972d6d.camel@gmail.com>
-Subject: Re: [PATCH v2 0/7] iio: convert GPIO chips to using new value
- setters
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Bartosz Golaszewski <brgl@bgdev.pl>, Lars-Peter Clausen
- <lars@metafoo.de>,  Michael Hennerich <Michael.Hennerich@analog.com>,
- Jonathan Cameron <jic23@kernel.org>, Linus Walleij	
- <linus.walleij@linaro.org>, Cosmin Tanislav <cosmin.tanislav@analog.com>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-gpio@vger.kernel.org, Bartosz Golaszewski
- <bartosz.golaszewski@linaro.org>
-Date: Wed, 09 Apr 2025 15:08:24 +0100
-In-Reply-To: <20250409-gpiochip-set-rv-iio-v2-0-4b36428f39cb@linaro.org>
-References: <20250409-gpiochip-set-rv-iio-v2-0-4b36428f39cb@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.0 
+        d=1e100.net; s=20230601; t=1744210452; x=1744815252;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=2e+zhortkq1PPVBPRYcJak6GvfMLkq1x12up5ZcdsG0=;
+        b=ICGcl7aLL14v5CKiQcdQXBrZlDQuYqgKVXt3/ygqLYV1iSMIkS0NoP9AIcMu65alUH
+         YEQIXfyEAEfD8VwTP1OeXF/NbRT4we+krC7LuC/9+NKehXbC9UqRvxPY9RmO1pylKzW3
+         JhJKcxbSFw6mwV1UDp5zWjnKEeyoxn3z6TB2DJwa053BSX3XIF6RJJc66PFEmR7/ulKl
+         zLfMEqymdItsRcuMF6IBxY7Wi+ocfZFi4+HmrHlamxTw8M4Nsk4rpa7CrVNMLw4z5q2D
+         hNePj/X5EPs5tMbanbPERMZw3zdw5qOlHl+WvW3IBqDfmp0PH1LcTGeEFtOYL4GXFdRW
+         reXQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXVu5AoOJrlGs7Yl0XesCNeMzMW9MELf+fAMSYsnYsxFc9RqEljebURQ6ozonnf+CANNgZZ+jrAEgY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzEWDgL+itsJQJuhENTz1gnaO5RCSSVz/z2rOmHGt/qn8EwqiCG
+	t4tZYikUd4lbltucnt4zR9ZHsCyQfzATHlpxSzdrLr1p1yyWgQxI5FRgXNn4pK+poJ9YAuJ6JRl
+	ADw/KsA/Te/sRjyzlCaa57tUOgoGgjbt4ppA7qql5+1d6UhB7f5AINEDtWkg=
+X-Gm-Gg: ASbGncvsGq6VxuwZIlqj3wmYwl3K9LPGfnmA4ctnRRbbqPXhI7JvWPTUg7FKU/wT/W2
+	uWLeo5lfcdVBHIf/HoGNuUkKu7HJikHzPduIQAga7i4C/dxAKzTuaze/strMTMb3P334I8AoDys
+	zwNFssk8kfVXsLCLhvuq+sFmTu3IzjTmgmyAHJXtz3JvDchVx2DeEEHkzusPu8w2PlwVsnTr4Qu
+	T3ezQU5+zTe4oLBsdkIhsKDlhRgQP80V7wXxk2W5RO6t9G5mpxQX7GVfpNgq3kNe1LqqTYtSJWv
+	a8guMf9QQF5CtfsezB8EjEqlIRMRuF3Xd46/c8BFnfvv8pHIXpqxlf5/51cMgcJy+A==
+X-Received: by 2002:a05:620a:d8d:b0:7c3:c814:591d with SMTP id af79cd13be357-7c79cbcad39mr181548685a.1.1744210451968;
+        Wed, 09 Apr 2025 07:54:11 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEkhEFX9jW2lxjwZtZRt5wSID+lKfDUWjDhK7POIeIFuD1YPW0A5mtnATcnc6+c78jlhAPyDg==
+X-Received: by 2002:a05:620a:d8d:b0:7c3:c814:591d with SMTP id af79cd13be357-7c79cbcad39mr181545185a.1.1744210451558;
+        Wed, 09 Apr 2025 07:54:11 -0700 (PDT)
+Received: from [192.168.65.90] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-acaa1cb4142sm108209666b.101.2025.04.09.07.54.06
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 09 Apr 2025 07:54:10 -0700 (PDT)
+Message-ID: <fb61323b-aabd-4661-a202-02da7da557ea@oss.qualcomm.com>
+Date: Wed, 9 Apr 2025 16:54:05 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/3] net: qrtr: Define macro to convert QMI version and
+ instance to QRTR instance
+To: Yassine Oudjana <y.oudjana@protonmail.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>,
+        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nicolas Schier <nicolas.schier@linux.dev>,
+        Alexander Sverdlin <alexander.sverdlin@gmail.com>,
+        Sean Nyekjaer <sean@geanix.com>,
+        Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+        Matti Vaittinen <mazziesaccount@gmail.com>,
+        Antoniu Miclaus <antoniu.miclaus@analog.com>,
+        Ramona Gradinariu <ramona.gradinariu@analog.com>,
+        "Yo-Jung (Leo) Lin" <0xff07@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        =?UTF-8?B?QmFybmFiw6FzIEN6w6ltw6Fu?= <barnabas.czeman@mainlining.org>,
+        Danila Tikhonov <danila@jiaxyga.com>,
+        Antoni Pokusinski <apokusinski01@gmail.com>,
+        Vasileios Amoiridis <vassilisamir@gmail.com>,
+        Petar Stoykov <pd.pstoykov@gmail.com>,
+        shuaijie wang <wangshuaijie@awinic.com>,
+        Yasin Lee <yasin.lee.x@gmail.com>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+        Ingo Molnar <mingo@kernel.org>
+Cc: Yassine Oudjana <yassine.oudjana@gmail.com>, linux-kernel@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kbuild@vger.kernel.org
+References: <20250406140706.812425-1-y.oudjana@protonmail.com>
+ <20250406140706.812425-3-y.oudjana@protonmail.com>
+Content-Language: en-US
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+In-Reply-To: <20250406140706.812425-3-y.oudjana@protonmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-GUID: T2RNBrP4ySyIOwo-7tNSDIg1jLAlaTzi
+X-Proofpoint-ORIG-GUID: T2RNBrP4ySyIOwo-7tNSDIg1jLAlaTzi
+X-Authority-Analysis: v=2.4 cv=I/9lRMgg c=1 sm=1 tr=0 ts=67f68a14 cx=c_pps a=50t2pK5VMbmlHzFWWp8p/g==:117 a=FpWmc02/iXfjRdCD7H54yg==:17 a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=sfOm8-O8AAAA:8 a=PIWKGJPQcB-H7wabpAUA:9 a=QEXdDO2ut3YA:10
+ a=IoWCM6iH3mJn3m4BftBB:22 a=TvTJqdcANYtsRzA46cdi:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-04-09_05,2025-04-08_04,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 mlxscore=0
+ phishscore=0 suspectscore=0 mlxlogscore=999 lowpriorityscore=0 spamscore=0
+ clxscore=1011 malwarescore=0 adultscore=0 priorityscore=1501
+ impostorscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
+ definitions=main-2504090093
 
-On Wed, 2025-04-09 at 10:40 +0200, Bartosz Golaszewski wrote:
-> struct gpio_chip now has callbacks for setting line values that return
-> an integer, allowing to indicate failures. We're in the process of
-> converting all GPIO drivers to using the new API. This series converts
-> all the IIO GPIO controllers and also contains some additional
-> refactoring patches for ad5592r in preparation for the conversion.
->=20
-> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+On 4/6/25 4:07 PM, Yassine Oudjana wrote:
+> Move QRTR instance conversion from qmi_interface into a new macro in order
+> to reuse it in QRTR device ID tables.
+> 
+> Signed-off-by: Yassine Oudjana <y.oudjana@protonmail.com>
 > ---
+>  drivers/soc/qcom/qmi_interface.c | 5 +++--
+>  include/linux/soc/qcom/qrtr.h    | 2 ++
+>  2 files changed, 5 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/soc/qcom/qmi_interface.c b/drivers/soc/qcom/qmi_interface.c
+> index bc6d6379d8b1..cb57b7e1f252 100644
+> --- a/drivers/soc/qcom/qmi_interface.c
+> +++ b/drivers/soc/qcom/qmi_interface.c
+> @@ -14,6 +14,7 @@
+>  #include <linux/workqueue.h>
+>  #include <trace/events/sock.h>
+>  #include <linux/soc/qcom/qmi.h>
+> +#include <linux/soc/qcom/qrtr.h>
+>  
+>  static struct socket *qmi_sock_create(struct qmi_handle *qmi,
+>  				      struct sockaddr_qrtr *sq);
+> @@ -173,7 +174,7 @@ static void qmi_send_new_lookup(struct qmi_handle *qmi, struct qmi_service *svc)
+>  	memset(&pkt, 0, sizeof(pkt));
+>  	pkt.cmd = cpu_to_le32(QRTR_TYPE_NEW_LOOKUP);
+>  	pkt.server.service = cpu_to_le32(svc->service);
+> -	pkt.server.instance = cpu_to_le32(svc->version | svc->instance << 8);
+> +	pkt.server.instance = cpu_to_le32(QRTR_INSTANCE(svc->version, svc->instance));
+>  
+>  	sq.sq_family = qmi->sq.sq_family;
+>  	sq.sq_node = qmi->sq.sq_node;
+> @@ -236,7 +237,7 @@ static void qmi_send_new_server(struct qmi_handle *qmi, struct qmi_service *svc)
+>  	memset(&pkt, 0, sizeof(pkt));
+>  	pkt.cmd = cpu_to_le32(QRTR_TYPE_NEW_SERVER);
+>  	pkt.server.service = cpu_to_le32(svc->service);
+> -	pkt.server.instance = cpu_to_le32(svc->version | svc->instance << 8);
+> +	pkt.server.instance = cpu_to_le32(QRTR_INSTANCE(svc->version, svc->instance));
+>  	pkt.server.node = cpu_to_le32(qmi->sq.sq_node);
+>  	pkt.server.port = cpu_to_le32(qmi->sq.sq_port);
+>  
+> diff --git a/include/linux/soc/qcom/qrtr.h b/include/linux/soc/qcom/qrtr.h
+> index 4d7f25c64c56..10c89a35cbb9 100644
+> --- a/include/linux/soc/qcom/qrtr.h
+> +++ b/include/linux/soc/qcom/qrtr.h
+> @@ -13,6 +13,8 @@ struct qrtr_device {
+>  
+>  #define to_qrtr_device(d) container_of(d, struct qrtr_device, dev)
+>  
+> +#define QRTR_INSTANCE(qmi_version, qmi_instance) (qmi_version | qmi_instance << 8)
 
-LGTM,
+Please use FIELD_PREP + GENMASK to avoid potential overflows
 
-Reviewed-by: Nuno S=C3=A1 <nuno.sa@analog.com>
-
-> Changes in v2:
-> - move devm_mutex_init() earlier in probe() to avoid using a goto
-> - rework returning on error in ad5592r_set_channel_modes(): return
-> =C2=A0 immediately instead of saving the return value and going to the bo=
-ttom
-> =C2=A0 of the function
-> - use scoped_guard() in one more place to fix a build warning reported
-> =C2=A0 by the build bot
-> - Link to v1:
-> https://lore.kernel.org/r/20250407-gpiochip-set-rv-iio-v1-0-8431b003a145@=
-linaro.org
->=20
-> ---
-> Bartosz Golaszewski (7):
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 iio: dac: ad5592r: destroy mutexes in deta=
-ch paths
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 iio: dac: ad5592r: use lock guards
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 iio: dac: ad5592r: use new GPIO line value=
- setter callbacks
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 iio: adc: ti-ads7950: use new GPIO line va=
-lue setter callbacks
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 iio: adc: ad4130: use new GPIO line value =
-setter callbacks
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 iio: addac: ad74413r: use new GPIO line va=
-lue setter callbacks
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 iio: addac: ad74115: use new GPIO line val=
-ue setter callbacks
->=20
-> =C2=A0drivers/iio/adc/ad4130.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=
-=A0 10 +--
-> =C2=A0drivers/iio/adc/ti-ads7950.c=C2=A0=C2=A0 |=C2=A0 17 +++--
-> =C2=A0drivers/iio/addac/ad74115.c=C2=A0=C2=A0=C2=A0 |=C2=A0 18 +++--
-> =C2=A0drivers/iio/addac/ad74413r.c=C2=A0=C2=A0 |=C2=A0 28 ++++----
-> =C2=A0drivers/iio/dac/ad5592r-base.c | 147 ++++++++++++++++++------------=
-----------
-> -
-> =C2=A05 files changed, 103 insertions(+), 117 deletions(-)
-> ---
-> base-commit: 0af2f6be1b4281385b618cb86ad946eded089ac8
-> change-id: 20250401-gpiochip-set-rv-iio-b064ce43791d
->=20
-> Best regards,
+Konrad
 

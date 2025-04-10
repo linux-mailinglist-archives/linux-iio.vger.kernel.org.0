@@ -1,142 +1,161 @@
-Return-Path: <linux-iio+bounces-17921-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17922-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E1F4A8493A
-	for <lists+linux-iio@lfdr.de>; Thu, 10 Apr 2025 18:07:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57DDFA84A91
+	for <lists+linux-iio@lfdr.de>; Thu, 10 Apr 2025 18:59:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 506403A9797
-	for <lists+linux-iio@lfdr.de>; Thu, 10 Apr 2025 16:07:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C7A1D16B93A
+	for <lists+linux-iio@lfdr.de>; Thu, 10 Apr 2025 16:58:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE9541EB5FD;
-	Thu, 10 Apr 2025 16:07:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B76F41F03F3;
+	Thu, 10 Apr 2025 16:58:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iMPR7vgG"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HnzZaNqD"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0E49189F5C;
-	Thu, 10 Apr 2025 16:07:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ABD31E9B14;
+	Thu, 10 Apr 2025 16:58:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744301244; cv=none; b=rTsfQ1OTP+AxGIkXGcLtIr3rFMwkEnbYorAVYJMlvYUlXg9kpuTsMePtoNzAl86YdtuufSq/+QB7P2rx3vWh5Yg3c9Uvhsuummvo5LEooAX8YJnqoQ28nhg8U0HIrMwd/4Ib7CriEPe4i4F48bcjQBzU7b0eZG31zdCtCl3CxuA=
+	t=1744304309; cv=none; b=rKYXAH2gYeQUY+qByHn0YMcs3ql0feP+3DGxeYMm0I6bu33xS5UvXtwomBilWjWRqY0xNZRelcI1Gsb7G+nG1a24HkBi7KiOLy7h5yt3kx+kVFx1GniYa8vr8UR6yTkZbA8b6NvGdwrPz1MMnALWh3f3dJm++B9bLJa+8AFpHEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744301244; c=relaxed/simple;
-	bh=vKTeQFFCmt46JdP7DyCiIVywztk+IaK0aYIzzD8T+Jo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GDJkt3IKZxi5IvjrUHe2M+2YSLJWQS6H8/vuswbVkUbi1/IIIMLqbdlaGS56yIUV9hHR3cwm/Vm0wC7k4YlPN6GAvbLsR3K+yGHaDdQz2oxiS/QljdgIfmROF5mP1H3zFFKF5JEU7MrcfYPTx30essFAn4sZekS74fbyh32eEcI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iMPR7vgG; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1744301243; x=1775837243;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=vKTeQFFCmt46JdP7DyCiIVywztk+IaK0aYIzzD8T+Jo=;
-  b=iMPR7vgGHmnvT/E+2eypgXdahpO/smz7LhCF6ghXnxbQyEO4WFRU7u4d
-   9vNCxetzNYi7IMQN1HYttYyw1fuIIe8UR1xSOYZ0bOOjYf19T4VM17IZi
-   BlBMkUhqG9t8AI3utO4NuCQloK2+Ei/VVohzq7bUM00YL9RnqjfY/2n10
-   SAy/Wg2nAaoQ7/PWrIhWsrjeOzfFsJVZpPDBMPrl4Xu5cmjovlg1PQG7/
-   s0bEkN8pDwxMhD9fm3d0SN20glZuvYWB4bH1epju2Lmpzj3yKHdXBdaP/
-   lTBXHpfdux+OEfjoE31ynxQ08MYs7Q/e4uEClyU+BZ4u6XQOmgYgs8rIA
-   g==;
-X-CSE-ConnectionGUID: 9tqa/V1TQ9imIIMe7DvoYA==
-X-CSE-MsgGUID: GvQq0lM0Rgye050lXhAHBQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11400"; a="68321257"
-X-IronPort-AV: E=Sophos;i="6.15,202,1739865600"; 
-   d="scan'208";a="68321257"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Apr 2025 09:07:22 -0700
-X-CSE-ConnectionGUID: G2NMB3yxTr6Jlw4dDbGdvQ==
-X-CSE-MsgGUID: hjUqUviBT8C0/8Ovewh4ww==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,202,1739865600"; 
-   d="scan'208";a="129286470"
-Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Apr 2025 09:07:15 -0700
-Received: from kekkonen.localdomain (localhost [127.0.0.1])
-	by kekkonen.fi.intel.com (Postfix) with SMTP id 349EB11F74E;
-	Thu, 10 Apr 2025 19:07:12 +0300 (EEST)
-Date: Thu, 10 Apr 2025 16:07:12 +0000
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
-To: Matti Vaittinen <mazziesaccount@gmail.com>
-Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Chen-Yu Tsai <wens@csie.org>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Samuel Holland <samuel@sholland.org>, Nuno Sa <nuno.sa@analog.com>,
-	David Lechner <dlechner@baylibre.com>,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Guillaume Stols <gstols@baylibre.com>,
-	Olivier Moysan <olivier.moysan@foss.st.com>,
-	Dumitru Ceclan <mitrutzceclan@gmail.com>,
-	Trevor Gamblin <tgamblin@baylibre.com>,
-	Matteo Martelli <matteomartelli3@gmail.com>,
-	Alisa-Dariana Roman <alisadariana@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	=?iso-8859-1?Q?Jo=E3o_Paulo_Gon=E7alves?= <joao.goncalves@toradex.com>,
-	Ramona Alexandra Nechita <ramona.nechita@analog.com>,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev
-Subject: Re: [PATCH v10 2/8] property: Add functions to iterate named child
-Message-ID: <Z_fssEg3QZXyaTzx@kekkonen.localdomain>
-References: <cover.1742560649.git.mazziesaccount@gmail.com>
- <2767173b7b18e974c0bac244688214bd3863ff06.1742560649.git.mazziesaccount@gmail.com>
+	s=arc-20240116; t=1744304309; c=relaxed/simple;
+	bh=QSrLQbtKHzNu7BnbMHKydpM2WZqiXvwGP3dlepduIZY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=HkkokOJ9bRUeLEvRdzx41ZIDjKlD0l0kblkAQZ9YoulaEReLzV7oXXVK3JUkyDpedZo/MmOCNpYcpF0pBjsDtxV2ARiAUwg9CdVX1UGmtZT0TF+DOuWmenSnvSShQL86z0poZv7oT4c+FAlGrOW9wShIwJt71BYYFMXoZ341PzE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HnzZaNqD; arc=none smtp.client-ip=209.85.210.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-72d3b48d2ffso1123658b3a.2;
+        Thu, 10 Apr 2025 09:58:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1744304307; x=1744909107; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Fb4ywqjWz2GIsG+JDj8glrtq3YuAKw64ngABr/SVSQY=;
+        b=HnzZaNqDJFm8O3uQ4kczWO+1QxUNPrGQ7fBiQO6VU63Qf1E+A+xpytbBnwEsm6aPDG
+         3AiW6GhNENqD2VuqJ1El1ETi4GnRLSerJpzP3rTSloOLpk8QO1RLsVaplBSONKMYI/5T
+         2y1uNfaI43W+xUu2Iw8j1bZmsfcdxipEwvu4l5x41/Ox8Kww0CDqezaCkOD9bedwWvAP
+         hjasGsncuFTZYR9I7tygpQ/3vKrVyFSvaX2Qgqj/ChBW59bzlVaUAhB60oWJ/E8eBk/j
+         e2F0F1WRmqJY2zO49VPRL4zfhqbW8ardyrHNcYZ0jZ5m7EpRg9b443m82akFuwR9Keff
+         WwRQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744304307; x=1744909107;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Fb4ywqjWz2GIsG+JDj8glrtq3YuAKw64ngABr/SVSQY=;
+        b=cDPg+vXZAP5UW5gvz/vVURaQLdVPUkwcSG/yZLsmEO/7+n68kr2lEugRI/okG5WPpt
+         otsrcWQURtmwCT2nlmrzuMyRE9rFDNTiVnQHnEnUUmPWEUFUWpq7mMDuxGHC1woUYoyd
+         EafehhkkSSSpN6PpJB3PJ3eBWuvRFdlFYOZhm8nbd7uS7IvvzRW5UTeQgwzhfGlVwdwd
+         QnYgUNe1/qrszpGaYB9v6ljkawcbsi7HclN7wRS/5Udz2eaNB0SOGa4xRIQy8+0CZxxe
+         8hBC8xDFu4o0B+v1l8UYwdedwSZgNeJD9yHfizAMxgDGLBEl4CUrpkXIsZU19p6V1UQr
+         ZnGQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVJG1DfYhs4BT7UWo8dq4M2QN6RS9M7LeyRrJu+hBXppUSZ+yoUkyOnOyBIJ8mQnUPQzA7lnBNhWggFqBQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy+vk1Fl32oIHdJZRp0Z6igh5hdM7GeSj0RhRSwTV8XEw3zJi69
+	Jbxr7SjDM08D9l/mU2nrVIUDQAeQCXCTEn5cOP0WMqNEq4RWtZI5JbFMbs2s
+X-Gm-Gg: ASbGnctk8R7nQ05Oeuq1AWeNLunjWqX4FeuEFsXmmHmEiJBe9KR/ZfIIF7m8NkpcA7s
+	0mFgx8gSSeyf35FHCT9SmdCX9ivv3Ro+yq28T6p5MeVblziwM7gaRNqOAX5K4YnD5/Gn2gOnWv4
+	lzIqhNJX/Crk7NOv3kbSrOcqnYAUAihXJvfwYUduwnTyDAbqEcPYW78G7YbV6aLN6pXAXbTkgl+
+	A4nW7dx/75y40cjSyjkgv9Knh+hgWl+ejEW4ylm6qybPRoMscQ/PWgzCXhytCwudPoA9CgpwKIT
+	UgYtWghM/YfsVILZj10MgfUXGIRVOyW4ZZlOMEpXoTx4fEDCinv/FlcZRbzPVNEegcKHxHafJFp
+	FTPLXo12k6cIdVL+RZw==
+X-Google-Smtp-Source: AGHT+IG0e8qIqAIM5EIct+y0ySqTLEOJKSzlXpmPtTuYYh2lvIRJSPXsoYZJ+u7VgR1oUo1i/OLpow==
+X-Received: by 2002:a05:6a00:2185:b0:736:5dc6:a14b with SMTP id d2e1a72fcca58-73bbee82aa0mr4935340b3a.13.1744304307109;
+        Thu, 10 Apr 2025 09:58:27 -0700 (PDT)
+Received: from ?IPV6:2409:4080:204:a537:70f5:9c3d:61d0:62b9? ([2409:4080:204:a537:70f5:9c3d:61d0:62b9])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73bb1d6ae7dsm3532778b3a.82.2025.04.10.09.58.23
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 10 Apr 2025 09:58:26 -0700 (PDT)
+Message-ID: <c3ad805b-4ccf-4218-8b81-66a8977e2928@gmail.com>
+Date: Thu, 10 Apr 2025 22:28:20 +0530
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2767173b7b18e974c0bac244688214bd3863ff06.1742560649.git.mazziesaccount@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] iio: adc: ad_sigma_delta: Fix use of uninitialized
+ variable status_pos
+To: =?UTF-8?Q?Nuno_S=C3=A1?= <noname.nuno@gmail.com>, lars@metafoo.de,
+ Michael.Hennerich@analog.com, jic23@kernel.org
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250409200151.201327-1-purvayeshi550@gmail.com>
+ <3ed7564cf2749ee207da8ddc5ef06b54d8aea881.camel@gmail.com>
+Content-Language: en-US
+From: Purva Yeshi <purvayeshi550@gmail.com>
+In-Reply-To: <3ed7564cf2749ee207da8ddc5ef06b54d8aea881.camel@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Mon, Mar 24, 2025 at 09:12:50AM +0200, Matti Vaittinen wrote:
-> There are a few use-cases where child nodes with a specific name need to
-> be parsed. Code like:
+On 10/04/25 16:39, Nuno Sá wrote:
+> Hi Purva,
 > 
-> fwnode_for_each_child_node()
-> 	if (fwnode_name_eq())
-> 		...
+> Thanks for your patch... See below
+> On Thu, 2025-04-10 at 01:31 +0530, Purva Yeshi wrote:
+>> Fix Smatch-detected error:
+>> drivers/iio/adc/ad_sigma_delta.c:604 ad_sd_trigger_handler() error:
+>> uninitialized symbol 'status_pos'.
+>>
+>> The variable `status_pos` was only initialized in specific switch cases
+>> (1, 2, 3, 4), which could leave it uninitialized if `reg_size` had an
+>> unexpected value.
+>>
+>> Fix by validating `reg_size` before the switch block. If it’s not
+>> one of the expected values, return early and log an error. This ensures
+>> `status_pos` is always initialized before use and prevents undefined
+>> behavior.
+>>
+>> Signed-off-by: Purva Yeshi <purvayeshi550@gmail.com>
+>> ---
+>>   drivers/iio/adc/ad_sigma_delta.c | 5 +++++
+>>   1 file changed, 5 insertions(+)
+>>
+>> diff --git a/drivers/iio/adc/ad_sigma_delta.c
+>> b/drivers/iio/adc/ad_sigma_delta.c
+>> index 6c37f8e21120..d3b59d90b728 100644
+>> --- a/drivers/iio/adc/ad_sigma_delta.c
+>> +++ b/drivers/iio/adc/ad_sigma_delta.c
+>> @@ -568,6 +568,11 @@ static irqreturn_t ad_sd_trigger_handler(int irq, void
+>> *p)
+>>   	else
+>>   		transfer_size = reg_size;
+>>   
+>> +	if (reg_size != 1 && reg_size != 2 && reg_size != 3 && reg_size != 4)
+>> {
+>> +		dev_err(&indio_dev->dev, "Unsupported reg_size: %u\n",
+>> reg_size);
+>> +		return IRQ_HANDLED;
+>> +	}
+>> +
 > 
-> can be found from a various drivers/subsystems. Adding a macro for this
-> can simplify things a bit.
+> Use the switch case for this. Add a default branch for the invalid case. You
+> should also use dev_err_ratelimited() and instead of 'return IRQ_HANDLED', do
+> 'goto irq_handled'.
 > 
-> In a few cases the data from the found nodes is later added to an array,
-> which is allocated based on the number of found nodes. One example of
-> such use is the IIO subsystem's ADC channel nodes, where the relevant
-> nodes are named as channel[@N].
-> 
-> Add helpers for iterating and counting device's sub-nodes with certain
-> name instead of open-coding this in every user.
-> 
-> Suggested-by: Jonathan Cameron <jic23@kernel.org>
-> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
-> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> Reviewed-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+> Thx!
+> - Nuno Sá
 
-Kiitos!
+Hi Nuno,
 
-Acked-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Thank you for the review and guidance.
 
--- 
-Sakari Ailus
+I’ve updated the patch to address your suggestions and will send the 
+next version shortly.
+
+Best regards,
+Purva
+
+> 
+>>   	switch (reg_size) {
+>>   	case 4:
+>>   	case 2:
+
 

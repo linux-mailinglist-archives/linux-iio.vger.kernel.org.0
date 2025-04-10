@@ -1,425 +1,743 @@
-Return-Path: <linux-iio+bounces-17898-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17900-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B911A83386
-	for <lists+linux-iio@lfdr.de>; Wed,  9 Apr 2025 23:42:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27F33A83B55
+	for <lists+linux-iio@lfdr.de>; Thu, 10 Apr 2025 09:36:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE5373BA510
-	for <lists+linux-iio@lfdr.de>; Wed,  9 Apr 2025 21:42:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 011CB3A3D20
+	for <lists+linux-iio@lfdr.de>; Thu, 10 Apr 2025 07:31:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13E8E2AC17;
-	Wed,  9 Apr 2025 21:42:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7A7B1D90AD;
+	Thu, 10 Apr 2025 07:31:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="hgn7ZW8J"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TnYPjaCI"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F24C2116F1
-	for <linux-iio@vger.kernel.org>; Wed,  9 Apr 2025 21:42:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 591541D61BB;
+	Thu, 10 Apr 2025 07:31:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744234953; cv=none; b=jKGgTqBuSHebSdS/BfZVSttpKJMScP/QWcoSBgpmXpS3hD775f3WOi5her6vlq9sBr468ZYXCaKNxH5znsowVtvl4Q3iO9UGoR9eee5kp6xvaHiV+1AlJjnwjf+RHNLFvl4oHQOu+zu400seXf5bzHF68KPsD8VniP7ODVFGMr4=
+	t=1744270305; cv=none; b=ExcR1QfcSGFL0/sWuGL5QtuJsnfRb1WT77RRJfoFneUuQNKJfLWKES7tFz7GuMp+brc1hsD4Rf3WTY7BxCEyYjgaPlE/pf0dKqte9JCvklvPVLo3UZUTcacGcCvKmmVcCjApZyp55Vnjd9XpeAx6EkdbazrnaqO3jssYGYsxh3c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744234953; c=relaxed/simple;
-	bh=cfJPQ2csCV/nOg33ipaPN6bsrYIHeDxIzO5gVFkRRmI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YpJ2gUacRj6q0bwWBQJhDMjpQ+VHJZSO6Iqb4PCFmYmn8xDnRQF70jwnJtdgdsi1AFKtgHegW/k2aBrXHumi7mfOTrnHIUcqqZ4I3wzoQpS0nKE5RfDVZrOiKVaVZhkva4H9qobw2TC/ZQUjXc0xZGrr676LRmRXOjjDOcAdItM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=hgn7ZW8J; arc=none smtp.client-ip=209.85.210.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-73bb647eb23so82204b3a.0
-        for <linux-iio@vger.kernel.org>; Wed, 09 Apr 2025 14:42:30 -0700 (PDT)
+	s=arc-20240116; t=1744270305; c=relaxed/simple;
+	bh=x3CrBGxwvw24DkP4YIzmlpFaOvqBoXiN6BuA45vfztQ=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=IENMSmRFYPMoCSSIqTWF8qCMMAbCcWSZJ86aP7KiqRTNWX6oc3GNGTPQ1lnNxzgw1QuZImqIICAZ0RiqUiA65xxBVS/afQypQLFmAnB8sZj0kGaYgrkojEofZgwGNss8WlFvalMRS+8mIEmli0DEd7bM4xUknMTHxq6NiCZRJzM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TnYPjaCI; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-43cf848528aso3764345e9.2;
+        Thu, 10 Apr 2025 00:31:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1744234950; x=1744839750; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=PSDf8jS5yD0Drp3/LuCz3kudLOGiq/80jWmpcNRXqNw=;
-        b=hgn7ZW8JgijVkOVYgE66WvtMh+ImSW1Fc0Fx4ibIkbCipABWVRC4K4Am0itYJAdrN5
-         +Yhwsu8llaUXgg6fmArilgAdHjcUvNi0GnP8YOe/BA9DJRT0J3cUliNZHyleXImBfYUC
-         v9gRIJt56J8u9yjzb9bcNbp4yx0oUOrpfnoEktMCnbr4+g2snRMn5X+i1ng1D8SZNkms
-         6GfXEJsefor6OLaRaffXGr8OkSRPq/nIrRw+B/wUbMwSKQQRFhju95G6PYmlbOMrXFmd
-         TVAOh424q1bCqJ2g6qj3XzK2sj5z1J5h4o9NBcUax0/AOGm02bCqua9lbb7Vg1xDqGYg
-         tnMg==
+        d=gmail.com; s=20230601; t=1744270302; x=1744875102; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=J0XXK2XRI5t+UpVn0uQ99Ecvx1YK+boTgIFSUaat814=;
+        b=TnYPjaCI5icVj7YPc/ApSUGoXGp3sXuEjVdUxeHUF3FVUO/ADhkdz3sT3UvqZbSQG7
+         oA+FQiZsHxNTSV1hkCqzRPw7siFdzE7QCPag8l0IknjoKlkIaDZSfnQam/4DuLg7fCAV
+         kHgMkCpU1pUA9XrvwR5G2uOW/dpaqJ9bVR7JkRLHsfo6WOS9xpgO9o76Me/OmNu+IEY8
+         RzV3il7OcRz8MvaVIfrfjenv9xQFhRNDIFnMyEof32EMXnrjvBjAxx5HfUCk9eoERagi
+         djLS2m543nEFaJf2yE+9gagYUChOW2SIza9r6nYCz5shkdrISLlhwx3dphUbAHF9/bEv
+         RF3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744234950; x=1744839750;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PSDf8jS5yD0Drp3/LuCz3kudLOGiq/80jWmpcNRXqNw=;
-        b=YJ6mVAeVt8VAQ9SSkh+QB7ernKPZ5UxhcmfHs8/RgVNqttK5KjFqsy2AkV3P5ftOma
-         //LwyHIX18WHBT3gdo49QCGWsj52wvfbnxBKU/GrgDKi95kz32n7Md++q+gpW3CAL1dx
-         PfmXIaNi3gA0Y22FHxICAV11w3Er4+ZNwJzuSWBm5UigD5odRll++vlB8Ylc8zIdkRT6
-         o/sbUpF4fhG3qDbicWuMdFkW6fN9Hpi4uSQjLKgXF0GKSsotZ+a9d2ZiKhRkpauuHfFI
-         6un7aS7Uvs55bDXl4M0+bgiW88GRjYD+NBWQMQ2r8MsqYZLsui0UyRq7aFdxjOEoLZ+k
-         ExCg==
-X-Forwarded-Encrypted: i=1; AJvYcCWEQLsLhNm9TV/SCaGoIvCw6H0+HFOE+GgmNx5GvjtDfep1CAjpU/vkgU5jZDe0xgPS6cA6mUqUrcY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YypBOSX+N/AQaDnKF2Sy2z9bdTH+one2fn68Y4wRReZC2U9qEG6
-	KWRm7WYN/qEi9LCKA1F3hN5i8AEGsxpX8EHGdo7GDXOcY1gkAcugzTuyb9afaao=
-X-Gm-Gg: ASbGncvUlnpHJDuhVlx1FvLlzLSRTM4uT1Q8b+X85R2TyDnfD3ffjVXgssWUgiyw0PW
-	dvCOOrLJsYFzZ/icP2/mZYIYle3HWtBQg5YMKEGb8GMons/nCb7h5SwC9IxevrrhpSJoJOQn1mf
-	phPgv5zUfeMYvbs+WpBnqY+nB28Y9snFwmlTPeCVqRmVMz/r9ij23jKGutVsA+pSaNbc9eHjuUy
-	kVVAZq5kfukyTdLHfY1QLRrIorPVLERjr8BIVdQjEOiouepvcUJFImTZ9QNwf7VmcVxMGo+LB8a
-	9JKRzdGYwP2adZCbH9Y2j7OJ2sKSzl9D5FJX2/YJ53SaKJTuwONiw1SU7zdZy1TLtEDJ3TQCGOn
-	fqwlXJNGN888=
-X-Google-Smtp-Source: AGHT+IH21z3+gRyC6UEn+n4zbaJfKLGfAM719YHE8Kw8mV7/twG26me6iN7MJkg2sySpsZTxa/N0aA==
-X-Received: by 2002:a05:6a00:1152:b0:736:54c9:df2c with SMTP id d2e1a72fcca58-73bbefa53edmr484440b3a.15.1744234949597;
-        Wed, 09 Apr 2025 14:42:29 -0700 (PDT)
-Received: from dev-linux (syn-076-088-115-008.res.spectrum.com. [76.88.115.8])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73bb1e51f48sm1925155b3a.147.2025.04.09.14.42.28
+        d=1e100.net; s=20230601; t=1744270302; x=1744875102;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=J0XXK2XRI5t+UpVn0uQ99Ecvx1YK+boTgIFSUaat814=;
+        b=VtilMO7V947Aey3/qKsPuJDebugLaMECH59qxfqYZ4fJi/UFAOAS011xkg3VFAwY7i
+         jWwfMJDkZdY/iiJ0Eyn7GYggeqhZr3vv/g7/HUnhqqq1ZocPWgpADUfXvHPrL9bWrcxE
+         0FqfC4EmAIe7gkQqJHlRb1iS1PTPAHRlqJ99FrugSAPIeQL8ttEbhA6a/2cTYJPCeFox
+         nwCzUcW9Y6Bfo+HhXKnP1VhygeoHjMcF5Ud1g3MwfFnqeB1cUpWavrcUPYpnxt5HyO5N
+         V9GnMX9ZNkK2VLnffObZyMlNcWqhRwOoZOr2S6/6O4i8TEsStQUqTE0WIFsAm2ac3yb9
+         JJdA==
+X-Forwarded-Encrypted: i=1; AJvYcCUYfNFEXDz07Cho5qsqchc8m4OtJFXGMvizryxwCBSphqFXuT2RMcD0jooyXDH9dsOfZvjLGMnogvyb@vger.kernel.org, AJvYcCUuyCeWLCaW5YgMdjfu1vLFxLopNuZ/nY8V1E9k2VfL2gdBcL7gKQZyLfJh+pn8GqEdNB+zkH/f86PJ@vger.kernel.org, AJvYcCVGjQ9E6x3v1xw4oLgA56e/jtU6Fe3xvyJSGm0iQ2pvv5nvMT3Ng0oxQypfVX28TIFz1Xv23K8KgfxOJen6@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx1cDXHpoDl1VvS+eOapw57rTLpUso6c2j53D7hdaE+tBcMZSXs
+	f49uP335D7QuEfITNwDPzJluHrVMXbNmPFKHtLOHXvzWekO0TCbm
+X-Gm-Gg: ASbGncundXi9zubZtkv+gNIXUDnuTTQ3C+SLTLLi8XtKG3pVJ12ittomDJE2VuyNid/
+	UJVCdogr9g0zny+ODwUwmhLZeTme73DESF9CTuXEAWLkJ4pGHawE3jRyitPTvALgnKx2vcR9ax3
+	yZoMu7nM77aszOkx3txxpfHMfCDKZFIWnGSQbGvOKcWTDSe0PfflMsMLvFozM79X63yMxyWhCSy
+	p/9RQZfHZPMwMny/0YGKabmewKpZh29dxkGnpCl7nA9fGA6p5WorYqP9InSDXgVu3UGKxLvHGes
+	1/t8jF3MfF1pwv1IVLMA+qV/cr4Qk6XNCDnSJYd9QSpQ/A47zZRhegWNtapOiYyiGsvc9MI7iPC
+	sNSA06UoG6xjlPr0=
+X-Google-Smtp-Source: AGHT+IEtZRBxgmlgPhwHUGlooSJYY+pqiYnO6gJJowPn6VrK0lqpKBYku3zEh0fEBORqS1qy68UmQQ==
+X-Received: by 2002:a05:600c:2904:b0:43c:f78d:82eb with SMTP id 5b1f17b1804b1-43f2f6d0079mr10195745e9.15.1744270301321;
+        Thu, 10 Apr 2025 00:31:41 -0700 (PDT)
+Received: from ?IPv6:2001:818:ea56:d000:56e0:ceba:7da4:6673? ([2001:818:ea56:d000:56e0:ceba:7da4:6673])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43f23572c43sm42609365e9.25.2025.04.10.00.31.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Apr 2025 14:42:29 -0700 (PDT)
-Date: Wed, 9 Apr 2025 14:42:26 -0700
-From: Sukrut Bellary <sbellary@baylibre.com>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Angelo Compagnucci <angelo.compagnucci@gmail.com>,
-	Nishanth Menon <nm@ti.com>, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] iio: adc: ti-adc128s052: Add lower resolution
- devices support
-Message-ID: <Z/bpwq/i91+Xlljf@dev-linux>
-References: <20250408132120.836461-1-sbellary@baylibre.com>
- <20250408132120.836461-3-sbellary@baylibre.com>
- <25291cca-a456-4f6c-8aac-466cd6124683@baylibre.com>
+        Thu, 10 Apr 2025 00:31:40 -0700 (PDT)
+Message-ID: <9c115086bd574b6c778a093143ebf54e14d7202b.camel@gmail.com>
+Subject: Re: [PATCH v1 2/7] iio: adc: Add basic support for AD4170
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: Marcelo Schmitt <marcelo.schmitt@analog.com>, linux-iio@vger.kernel.org,
+  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: Ana-Maria Cusco <ana-maria.cusco@analog.com>, jic23@kernel.org, 
+	lars@metafoo.de, Michael.Hennerich@analog.com, dlechner@baylibre.com, 
+	nuno.sa@analog.com, andy@kernel.org, robh@kernel.org, krzk+dt@kernel.org, 
+	conor+dt@kernel.org, marcelo.schmitt1@gmail.com
+Date: Thu, 10 Apr 2025 07:31:59 +0100
+In-Reply-To: <5f79007f0b9f9f67360d04fb904b6a59111a4ebe.1744200264.git.marcelo.schmitt@analog.com>
+References: <cover.1744200264.git.marcelo.schmitt@analog.com>
+	 <5f79007f0b9f9f67360d04fb904b6a59111a4ebe.1744200264.git.marcelo.schmitt@analog.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <25291cca-a456-4f6c-8aac-466cd6124683@baylibre.com>
 
-On Tue, Apr 08, 2025 at 03:57:32PM -0500, David Lechner wrote:
-> On 4/8/25 8:21 AM, Sukrut Bellary wrote:
-> > The adcxx4s communicates with a host processor via an SPI/Microwire Bus
-> > interface. The device family responds with 12-bit data, of which the LSB
-> > bits are transmitted by the lower resolution devices as 0.
-> > The unavailable bits are 0 in LSB.
-> > Shift is calculated per resolution and used in scaling and
-> > raw data read.
-> 
-> Could improve the line wrapping in the commit message if there is a v4.
+Hi Marecelo,
 
-Thanks for the review.
-Ok, I will improve in v4.
+First, superficial look...
 
-> > 
-> > Lets reuse the driver to support the family of devices with name
-> > ADC<bb><c>S<sss>, where
-> > * bb is the resolution in number of bits (8, 10, 12)
-> > * c is the number of channels (1, 2, 4, 8)
-> > * sss is the maximum conversion speed (021 for 200 kSPS, 051 for 500 kSPS
-> > and 101 for 1 MSPS)
-> > 
-> > Complete datasheets are available at TI's website here:
-> > https://www.ti.com/lit/gpn/adc<bb><c>s<sss>.pdf
-> > 
-> > Tested only with ti-adc102s051 on BegalePlay SBC.
-> > https://www.beagleboard.org/boards/beagleplay
-> > 
-> > Co-developed-by: Nishanth Menon <nm@ti.com>
-> > Signed-off-by: Nishanth Menon <nm@ti.com>
-> > Signed-off-by: Sukrut Bellary <sbellary@baylibre.com>
-> > ---
-> 
-> I didn't see any serious issues, just some room for more polish...
-> 
-> > Changes in v3: 
-> >         - used be16_to_cpu() for the endian conversion.
-> >         - used config index enum while setting up the adc128_config[]
-> > 
-> > - Link to v2: 
-> >         https://lore.kernel.org/lkml/20231022031203.632153-1-sukrut.bellary@linux.com/
-> > 
-> > Changes in v2:
-> >         - Arranged of_device_id and spi_device_id in numeric order.
-> >         - Used enum to index into adc128_config.
-> >         - Reorder adc128_config in alphabetical.
-> >         - Include channel resolution information.
-> >         - Shift is calculated per resolution and used in scaling and 
-> >         raw data read.
-> > 
-> > - Link to v1: https://lore.kernel.org/all/20220701042919.18180-1-nm@ti.com/
-> > ---
-> >  drivers/iio/adc/ti-adc128s052.c | 149 ++++++++++++++++++++++++--------
-> >  1 file changed, 112 insertions(+), 37 deletions(-)
-> > 
-> > diff --git a/drivers/iio/adc/ti-adc128s052.c b/drivers/iio/adc/ti-adc128s052.c
-> > index a456ea78462f..d4b76fd85abd 100644
-> > --- a/drivers/iio/adc/ti-adc128s052.c
-> > +++ b/drivers/iio/adc/ti-adc128s052.c
-> > @@ -7,6 +7,22 @@
-> >   * https://www.ti.com/lit/ds/symlink/adc128s052.pdf
-> >   * https://www.ti.com/lit/ds/symlink/adc122s021.pdf
-> >   * https://www.ti.com/lit/ds/symlink/adc124s021.pdf
-> > + *
-> > + * The adcxx4s communicates with a host processor via an SPI/Microwire Bus
-> > + * interface. This driver supports the whole family of devices with a name
-> > + * ADC<bb><c>S<sss>, where
-> > + * bb is the resolution in number of bits (8, 10, 12)
-> > + * c is the number of channels (1, 2, 4, 8)
-> > + * sss is the maximum conversion speed (021 for 200 kSPS, 051 for 500 kSPS
-> > + * and 101 for 1 MSPS)
-> 
-> Looks like odd line wrapping. I assume bullet points were meant here?
+On Wed, 2025-04-09 at 09:24 -0300, Marcelo Schmitt wrote:
+> From: Ana-Maria Cusco <ana-maria.cusco@analog.com>
+>=20
+> Add support for the AD4170 ADC with the following features:
+> - Single-shot read.
+> - Analog front end PGA configuration.
+> - Digital filter and sampling frequency configuration.
+> - Calibration gain and offset configuration.
+> - Differential and pseudo-differential input configuration.
+>=20
+> Signed-off-by: Ana-Maria Cusco <ana-maria.cusco@analog.com>
+> Co-developed-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
+> Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
+> ---
+> =C2=A0MAINTAINERS=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=A0 1 +
+> =C2=A0drivers/iio/adc/Kconfig=C2=A0 |=C2=A0=C2=A0 16 +
+> =C2=A0drivers/iio/adc/Makefile |=C2=A0=C2=A0=C2=A0 1 +
+> =C2=A0drivers/iio/adc/ad4170.c | 1950 +++++++++++++++++++++++++++++++++++=
++++
+> =C2=A04 files changed, 1968 insertions(+)
+> =C2=A0create mode 100644 drivers/iio/adc/ad4170.c
+>=20
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 991b6e2e373a..56cd87028dfd 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -1343,6 +1343,7 @@ L:	linux-iio@vger.kernel.org
+> =C2=A0S:	Supported
+> =C2=A0W:	https://ez.analog.com/linux-software-drivers
+> =C2=A0F:	Documentation/devicetree/bindings/iio/adc/adi,ad4170.yaml
+> +F:	drivers/iio/adc/ad4170.c
+> =C2=A0
+> =C2=A0ANALOG DEVICES INC AD4695 DRIVER
+> =C2=A0M:	Michael Hennerich <michael.hennerich@analog.com>
+> diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
+> index 636469392945..de7139fc2a1f 100644
+> --- a/drivers/iio/adc/Kconfig
+> +++ b/drivers/iio/adc/Kconfig
+> @@ -70,6 +70,22 @@ config AD4130
+> =C2=A0	=C2=A0 To compile this driver as a module, choose M here: the modu=
+le will be
+> =C2=A0	=C2=A0 called ad4130.
+> =C2=A0
+> +
+> +config AD4170
+> +	tristate "Analog Device AD4170 ADC Driver"
+> +	depends on SPI
+> +	depends on GPIOLIB
+> +	select IIO_BUFFER
+> +	select IIO_TRIGGERED_BUFFER
+> +	select REGMAP_SPI
+> +	depends on COMMON_CLK
+> +	help
+> +	=C2=A0 Say yes here to build support for Analog Devices AD4170 SPI anal=
+og
+> +	=C2=A0 to digital converters (ADC).
+> +
+> +	=C2=A0 To compile this driver as a module, choose M here: the module wi=
+ll be
+> +	=C2=A0 called ad4170.
+> +
+> =C2=A0config AD4695
+> =C2=A0	tristate "Analog Device AD4695 ADC Driver"
+> =C2=A0	depends on SPI
+> diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
+> index 07d4b832c42e..d3a1376d1f96 100644
+> --- a/drivers/iio/adc/Makefile
+> +++ b/drivers/iio/adc/Makefile
+> @@ -11,6 +11,7 @@ obj-$(CONFIG_AD_SIGMA_DELTA) +=3D ad_sigma_delta.o
+> =C2=A0obj-$(CONFIG_AD4000) +=3D ad4000.o
+> =C2=A0obj-$(CONFIG_AD4030) +=3D ad4030.o
+> =C2=A0obj-$(CONFIG_AD4130) +=3D ad4130.o
+> +obj-$(CONFIG_AD4170) +=3D ad4170.o
+> =C2=A0obj-$(CONFIG_AD4695) +=3D ad4695.o
+> =C2=A0obj-$(CONFIG_AD4851) +=3D ad4851.o
+> =C2=A0obj-$(CONFIG_AD7091R) +=3D ad7091r-base.o
+> diff --git a/drivers/iio/adc/ad4170.c b/drivers/iio/adc/ad4170.c
+> new file mode 100644
+> index 000000000000..0d24286ac2ab
+> --- /dev/null
+> +++ b/drivers/iio/adc/ad4170.c
+> @@ -0,0 +1,1950 @@
+> +// SPDX-License-Identifier: GPL-2.0+
+> +/*
+> + * Copyright (C) 2024 Analog Devices, Inc.
+> + * Author: Ana-Maria Cusco <ana-maria.cusco@analog.com>
+> + * Author: Marcelo Schmitt <marcelo.schmitt@analog.com>
+> + */
+> +
+> +#include <linux/bitfield.h>
+> +#include <linux/bitops.h>
+> +#include <linux/delay.h>
+> +#include <linux/device.h>
+> +#include <linux/err.h>
+> +#include <linux/iio/iio.h>
+> +#include <linux/iio/sysfs.h>
+> +#include <linux/iio/trigger.h>
+> +#include <linux/iio/trigger_consumer.h>
+> +#include <linux/interrupt.h>
+> +#include <linux/irq.h>
+> +#include <linux/kernel.h>
+> +#include <linux/math64.h>
+> +#include <linux/module.h>
+> +#include <linux/property.h>
+> +#include <linux/regmap.h>
+> +#include <linux/regulator/consumer.h>
+> +#include <linux/spi/spi.h>
+> +#include <linux/unaligned.h>
+> +#include <linux/units.h>
+> +#include <linux/util_macros.h>
+> +
 
-* were part of comments. I will fix line wrapping.
+...
 
-> * ... where:
-> * - bb is ...
-> * - c is ...
-> * - sss is ...
-> 
-> > + *
-> > + * Complete datasheets are available at TI's website here:
-> > + *   https://www.ti.com/lit/gpn/adc<bb><c>s<sss>.pdf
-> > + *
-> > + * 8, 10, and 12 bits converters send 12-bit data with
-> > + * unavailable bits set to 0 in LSB.
-> > + * Shift is calculated per resolution and used in scaling and
-> > + * raw data read.
-> >   */
-> >  
-> >  #include <linux/err.h>
-> > @@ -53,7 +69,7 @@ static int adc128_adc_conversion(struct adc128 *adc, u8 channel)
-> >  	if (ret < 0)
-> >  		return ret;
-> >  
-> > -	return ((adc->buffer[0] << 8 | adc->buffer[1]) & 0xFFF);
-> > +	return be16_to_cpu(*((__be16 *)adc->buffer));
-> >  }
-> >  
-> >  static int adc128_read_raw(struct iio_dev *indio_dev,
-> > @@ -70,7 +86,8 @@ static int adc128_read_raw(struct iio_dev *indio_dev,
-> >  		if (ret < 0)
-> >  			return ret;
-> >  
-> > -		*val = ret;
-> > +		*val = (ret >> channel->scan_type.shift) &
-> > +			GENMASK(channel->scan_type.realbits - 1, 0);
-> 
-> It's a bit odd to do this here instead of in the helper function since
-> the helper function is doing some rearranging of bits already.
-> 
-> Could pass scan_type to the helper function and do it all in one
-> place.
+> +
+> +static int ad4170_read_sample(struct iio_dev *indio_dev,
+> +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct iio_chan_spec const *chan, int =
+*val)
+> +{
+> +	struct ad4170_state *st =3D iio_priv(indio_dev);
+> +	int settling_time_ms, ret;
+> +
+> +	guard(mutex)(&st->lock);
+> +	/*
+> +	 * The ADC sequences through all enabled channels. That can lead to
+> +	 * incorrect channel being sampled if a previous read would have left a
+> +	 * different channel enabled. Thus, always enable and disable the
+> +	 * channel on single-shot read.
+> +	 */
+> +	ret =3D ad4170_set_channel_enable(st, chan->address, true);
+> +	if (ret)
+> +		return ret;
+> +
+> +	reinit_completion(&st->completion);
 
-Ok, I will try with helper in v4.
+I would do the above right before wait_for_completion_timeout()...
 
-> >  		return IIO_VAL_INT;
-> >  
-> >  	case IIO_CHAN_INFO_SCALE:
-> > @@ -80,7 +97,7 @@ static int adc128_read_raw(struct iio_dev *indio_dev,
-> >  			return ret;
-> >  
-> >  		*val = ret / 1000;
-> > -		*val2 = 12;
-> > +		*val2 = channel->scan_type.realbits;
-> >  		return IIO_VAL_FRACTIONAL_LOG2;
-> >  
-> >  	default:
-> > @@ -89,24 +106,34 @@ static int adc128_read_raw(struct iio_dev *indio_dev,
-> >  
-> >  }
-> >  
-> > -#define ADC128_VOLTAGE_CHANNEL(num)	\
-> > -	{ \
-> > -		.type = IIO_VOLTAGE, \
-> > -		.indexed = 1, \
-> > -		.channel = (num), \
-> > -		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW), \
-> > -		.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE) \
-> > +#define _ADC128_VOLTAGE_CHANNEL(num, real_bits, store_bits)		\
-> > +	{								\
-> > +		.type = IIO_VOLTAGE,					\
-> > +		.indexed = 1,						\
-> > +		.channel = (num),					\
-> > +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),		\
-> > +		.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE),	\
-> > +		.scan_index = (num),					\
-> > +		.scan_type = {						\
-> > +			.sign = 'u',					\
-> > +			.realbits = (real_bits),			\
-> > +			.storagebits = (store_bits),			\
-> 
-> It looks like storagebits is always 16, so we could drop that parameter.
+> +
+> +	ret =3D ad4170_set_mode(st, AD4170_ADC_CTRL_MODE_SINGLE);
+> +	if (ret)
+> +		goto err_disable;
+>=20
 
-Sure, I will drop storagebits.
+...
 
-> > +			.shift = (12 - real_bits),			\
-> > +		},							\
-> >  	}
-> >  
-> > -static const struct iio_chan_spec adc128s052_channels[] = {
-> > -	ADC128_VOLTAGE_CHANNEL(0),
-> > -	ADC128_VOLTAGE_CHANNEL(1),
-> > -	ADC128_VOLTAGE_CHANNEL(2),
-> > -	ADC128_VOLTAGE_CHANNEL(3),
-> > -	ADC128_VOLTAGE_CHANNEL(4),
-> > -	ADC128_VOLTAGE_CHANNEL(5),
-> > -	ADC128_VOLTAGE_CHANNEL(6),
-> > -	ADC128_VOLTAGE_CHANNEL(7),
-> > +#define ADC082_VOLTAGE_CHANNEL(num) _ADC128_VOLTAGE_CHANNEL(num, 8, 16)
-> > +#define ADC102_VOLTAGE_CHANNEL(num) _ADC128_VOLTAGE_CHANNEL(num, 10, 16)
-> > +#define ADC128_VOLTAGE_CHANNEL(num) _ADC128_VOLTAGE_CHANNEL(num, 12, 16)
-> > +
-> > +static const struct iio_chan_spec adc082s021_channels[] = {
-> > +	ADC082_VOLTAGE_CHANNEL(0),
-> > +	ADC082_VOLTAGE_CHANNEL(1),
-> > +};
-> > +
-> > +static const struct iio_chan_spec adc102s021_channels[] = {
-> > +	ADC102_VOLTAGE_CHANNEL(0),
-> > +	ADC102_VOLTAGE_CHANNEL(1),
-> >  };
-> >  
-> >  static const struct iio_chan_spec adc122s021_channels[] = {
-> > @@ -121,10 +148,46 @@ static const struct iio_chan_spec adc124s021_channels[] = {
-> >  	ADC128_VOLTAGE_CHANNEL(3),
-> >  };
-> >  
-> > +static const struct iio_chan_spec adc128s052_channels[] = {
-> > +	ADC128_VOLTAGE_CHANNEL(0),
-> > +	ADC128_VOLTAGE_CHANNEL(1),
-> > +	ADC128_VOLTAGE_CHANNEL(2),
-> > +	ADC128_VOLTAGE_CHANNEL(3),
-> > +	ADC128_VOLTAGE_CHANNEL(4),
-> > +	ADC128_VOLTAGE_CHANNEL(5),
-> > +	ADC128_VOLTAGE_CHANNEL(6),
-> > +	ADC128_VOLTAGE_CHANNEL(7),
-> > +};
-> > +
-> > +enum adc128_configuration_index {
-> > +	ADC128_CONFIG_INDEX_082S,
-> > +	ADC128_CONFIG_INDEX_102S,
-> > +	ADC128_CONFIG_INDEX_122S,
-> > +	ADC128_CONFIG_INDEX_124S,
-> > +	ADC128_CONFIG_INDEX_128S,
-> > +};
-> > +
-> >  static const struct adc128_configuration adc128_config[] = {
-> 
-> I would have rather removed the array here. Adding the enum just
-> makes lots more code to read without any technical benefit.
-> 
-> > -	{ adc128s052_channels, ARRAY_SIZE(adc128s052_channels) },
-> > -	{ adc122s021_channels, ARRAY_SIZE(adc122s021_channels) },
-> > -	{ adc124s021_channels, ARRAY_SIZE(adc124s021_channels) },
-> > +	[ADC128_CONFIG_INDEX_082S] = {
-> > +		.channels = adc082s021_channels,
-> > +		.num_channels = ARRAY_SIZE(adc082s021_channels)
-> > +	},
-> > +	[ADC128_CONFIG_INDEX_102S] = {
-> > +		.channels = adc102s021_channels,
-> > +		.num_channels = ARRAY_SIZE(adc102s021_channels)
-> > +	},
-> > +	[ADC128_CONFIG_INDEX_122S] = {
-> > +		.channels = adc122s021_channels,
-> > +		.num_channels = ARRAY_SIZE(adc122s021_channels)
-> > +	},
-> > +	[ADC128_CONFIG_INDEX_124S] = {
-> > +		.channels = adc124s021_channels,
-> > +		.num_channels = ARRAY_SIZE(adc124s021_channels)
-> > +	},
-> > +	[ADC128_CONFIG_INDEX_128S] = {
-> > +		.channels = adc128s052_channels,
-> > +		.num_channels = ARRAY_SIZE(adc128s052_channels)
-> > +	},
-> >  };
-> 
-> I.e. instead:
-> 
-> static const struct adc128_configuration adc08s021_config = {
-> 	.channels = adc082s021_channels,
-> 	.num_channels = ARRAY_SIZE(adc082s021_channels),
-> };
-> 
-> static const struct adc128_configuration adc10s021_config = {
-> 	.channels = adc102s021_channels,
-> 	.num_channels = ARRAY_SIZE(adc102s021_channels)
-> };
-> 
-> ...
+> +
+> +static int ad4170_set_pga(struct ad4170_state *st,
+> +			=C2=A0 struct iio_chan_spec const *chan, int val, int val2)
+> +{
+> +	struct ad4170_chan_info *chan_info =3D &st->chan_infos[chan->address];
+> +	struct ad4170_setup *setup =3D &chan_info->setup;
+> +	unsigned int old_pga =3D FIELD_GET(AD4170_AFE_PGA_GAIN_MSK, setup->afe)=
+;
+> +	unsigned int pga;
+> +	int ret =3D 0;
+> +
+> +	for (pga =3D 0; pga < AD4170_NUM_PGA_OPTIONS; pga++) {
+> +		if (val =3D=3D chan_info->scale_tbl[pga][0] &&
+> +		=C2=A0=C2=A0=C2=A0 val2 =3D=3D chan_info->scale_tbl[pga][1])
+> +			break;
+> +	}
+> +
+> +	if (pga =3D=3D AD4170_NUM_PGA_OPTIONS)
+> +		return -EINVAL;
+> +
+> +	if (pga =3D=3D old_pga)
+> +		return 0;
+> +
+> +	setup->afe &=3D ~AD4170_AFE_PGA_GAIN_MSK;
+> +	setup->afe |=3D FIELD_PREP(AD4170_AFE_PGA_GAIN_MSK, pga);
+>=20
 
-OK, I will remove enum.
+ditto...
 
-> >  
-> >  static const struct iio_info adc128_info = {
-> > @@ -177,31 +240,43 @@ static int adc128_probe(struct spi_device *spi)
-> >  }
-> >  
-> >  static const struct of_device_id adc128_of_match[] = {
-> > -	{ .compatible = "ti,adc128s052", .data = &adc128_config[0] },
-> > -	{ .compatible = "ti,adc122s021", .data = &adc128_config[1] },
-> > -	{ .compatible = "ti,adc122s051", .data = &adc128_config[1] },
-> > -	{ .compatible = "ti,adc122s101", .data = &adc128_config[1] },
-> > -	{ .compatible = "ti,adc124s021", .data = &adc128_config[2] },
-> > -	{ .compatible = "ti,adc124s051", .data = &adc128_config[2] },
-> > -	{ .compatible = "ti,adc124s101", .data = &adc128_config[2] },
-> > +	{ .compatible = "ti,adc082s021", .data = &adc128_config[ADC128_CONFIG_INDEX_082S] },
-> > +	{ .compatible = "ti,adc082s051", .data = &adc128_config[ADC128_CONFIG_INDEX_082S] },
-> > +	{ .compatible = "ti,adc082s101", .data = &adc128_config[ADC128_CONFIG_INDEX_082S] },
-> > +	{ .compatible = "ti,adc102s021", .data = &adc128_config[ADC128_CONFIG_INDEX_102S] },
-> > +	{ .compatible = "ti,adc102s051", .data = &adc128_config[ADC128_CONFIG_INDEX_102S] },
-> > +	{ .compatible = "ti,adc102s101", .data = &adc128_config[ADC128_CONFIG_INDEX_102S] },
-> > +	{ .compatible = "ti,adc122s021", .data = &adc128_config[ADC128_CONFIG_INDEX_122S] },
-> > +	{ .compatible = "ti,adc122s051", .data = &adc128_config[ADC128_CONFIG_INDEX_122S] },
-> > +	{ .compatible = "ti,adc122s101", .data = &adc128_config[ADC128_CONFIG_INDEX_122S] },
-> > +	{ .compatible = "ti,adc124s021", .data = &adc128_config[ADC128_CONFIG_INDEX_124S] },
-> > +	{ .compatible = "ti,adc124s051", .data = &adc128_config[ADC128_CONFIG_INDEX_124S] },
-> > +	{ .compatible = "ti,adc124s101", .data = &adc128_config[ADC128_CONFIG_INDEX_124S] },
-> > +	{ .compatible = "ti,adc128s052", .data = &adc128_config[ADC128_CONFIG_INDEX_128S] },
-> >  	{ /* sentinel */ },
-> >  };
-> >  MODULE_DEVICE_TABLE(of, adc128_of_match);
-> 
-> It would be easier to see what is new and what is changed if we split out the
-> "cleanup" to a separate patch.
+> +
+> +	guard(mutex)(&st->lock);
+> +	ret =3D ad4170_write_channel_setup(st, chan->address, false);
+> +	if (ret) {
+> +		setup->afe &=3D ~AD4170_AFE_PGA_GAIN_MSK;
+> +		setup->afe |=3D FIELD_PREP(AD4170_AFE_PGA_GAIN_MSK, old_pga);
+> +	}
+> +
+> +	return ret;
+> +}
+> +
+> +static int ad4170_set_channel_freq(struct ad4170_state *st,
+> +				=C2=A0=C2=A0 struct iio_chan_spec const *chan, int val,
+> +				=C2=A0=C2=A0 int val2)
+> +{
+> +	struct ad4170_chan_info *chan_info =3D &st->chan_infos[chan->address];
+> +	struct ad4170_setup *setup =3D &chan_info->setup;
+> +	enum ad4170_filter_type f_type =3D __ad4170_get_filter_type(setup->filt=
+er);
+> +	int filt_fs_tbl_size, i, ret =3D 0;
+> +	unsigned int old_filter_fs;
+> +
+> +	switch (f_type) {
+> +	case AD4170_SINC5_AVG:
+> +		fallthrough;
+> +	case AD4170_SINC3:
+> +		filt_fs_tbl_size =3D ARRAY_SIZE(ad4170_sinc3_filt_fs_tbl);
+> +		break;
+> +	case AD4170_SINC5:
+> +		filt_fs_tbl_size =3D ARRAY_SIZE(ad4170_sinc5_filt_fs_tbl);
+> +		break;
+> +	}
+> +
+> +	for (i =3D 0; i < filt_fs_tbl_size; i++) {
+> +		if (st->sps_tbl[f_type][i][0] =3D=3D val &&
+> +		=C2=A0=C2=A0=C2=A0 st->sps_tbl[f_type][i][1] =3D=3D val2)
+> +			break;
+> +	}
+> +	if (i >=3D filt_fs_tbl_size)
+> +		return -EINVAL;
+> +
+> +	old_filter_fs =3D setup->filter_fs;
+> +	if (f_type =3D=3D AD4170_SINC5)
+> +		setup->filter_fs =3D ad4170_sinc5_filt_fs_tbl[i];
+> +	else
+> +		setup->filter_fs =3D ad4170_sinc3_filt_fs_tbl[i];
+> +
+> +	guard(mutex)(&st->lock);
 
-This is not a cleanup. Addressed the review comments on v1 i.e., to
-arrange of_device_id and spi_device_id in a numeric order. And added
-more device ids used enum.
+Shouldn't the lock also protect the 'setup' struct?
 
-> >  
-> >  static const struct spi_device_id adc128_id[] = {
-> > -	{ "adc128s052", (kernel_ulong_t)&adc128_config[0] },
-> > -	{ "adc122s021",	(kernel_ulong_t)&adc128_config[1] },
-> > -	{ "adc122s051",	(kernel_ulong_t)&adc128_config[1] },
-> > -	{ "adc122s101",	(kernel_ulong_t)&adc128_config[1] },
-> > -	{ "adc124s021", (kernel_ulong_t)&adc128_config[2] },
-> > -	{ "adc124s051", (kernel_ulong_t)&adc128_config[2] },
-> > -	{ "adc124s101", (kernel_ulong_t)&adc128_config[2] },
-> > +	{ "adc082s021", (kernel_ulong_t)&adc128_config[ADC128_CONFIG_INDEX_082S] },
-> > +	{ "adc082s051", (kernel_ulong_t)&adc128_config[ADC128_CONFIG_INDEX_082S] },
-> > +	{ "adc082s101", (kernel_ulong_t)&adc128_config[ADC128_CONFIG_INDEX_082S] },
-> > +	{ "adc102s021", (kernel_ulong_t)&adc128_config[ADC128_CONFIG_INDEX_102S] },
-> > +	{ "adc102s051", (kernel_ulong_t)&adc128_config[ADC128_CONFIG_INDEX_102S] },
-> > +	{ "adc102s101", (kernel_ulong_t)&adc128_config[ADC128_CONFIG_INDEX_102S] },
-> > +	{ "adc122s021",	(kernel_ulong_t)&adc128_config[ADC128_CONFIG_INDEX_122S] },
-> > +	{ "adc122s051",	(kernel_ulong_t)&adc128_config[ADC128_CONFIG_INDEX_122S] },
-> > +	{ "adc122s101",	(kernel_ulong_t)&adc128_config[ADC128_CONFIG_INDEX_122S] },
-> > +	{ "adc124s021", (kernel_ulong_t)&adc128_config[ADC128_CONFIG_INDEX_124S] },
-> > +	{ "adc124s051", (kernel_ulong_t)&adc128_config[ADC128_CONFIG_INDEX_124S] },
-> > +	{ "adc124s101", (kernel_ulong_t)&adc128_config[ADC128_CONFIG_INDEX_124S] },
-> > +	{ "adc128s052", (kernel_ulong_t)&adc128_config[ADC128_CONFIG_INDEX_128S] },
-> >  	{ }
-> >  };
-> >  MODULE_DEVICE_TABLE(spi, adc128_id);
-> >  
-> >  static const struct acpi_device_id adc128_acpi_match[] = {
-> > -	{ "AANT1280", (kernel_ulong_t)&adc128_config[2] },
-> > +	{ "AANT1280", (kernel_ulong_t)&adc128_config[ADC128_CONFIG_INDEX_124S] },
-> >  	{ }
-> >  };
-> >  MODULE_DEVICE_TABLE(acpi, adc128_acpi_match);
-> 
+> +	ret =3D ad4170_write_channel_setup(st, chan->address, false);
+> +	if (ret)
+> +		setup->filter_fs =3D old_filter_fs;
+> +
+> +	return ret;
+> +}
+> +
+> +static int ad4170_set_calib_offset(struct ad4170_state *st,
+> +				=C2=A0=C2=A0 struct iio_chan_spec const *chan, int val)
+> +{
+> +	struct ad4170_chan_info *chan_info =3D &st->chan_infos[chan->address];
+> +	struct ad4170_setup *setup =3D &chan_info->setup;
+> +	u32 old_offset;
+> +	int ret;
+> +
+> +	old_offset =3D setup->offset;
+> +	setup->offset =3D val;
+> +
+> +	guard(mutex)(&st->lock);
+> +	ret =3D ad4170_write_channel_setup(st, chan->address, false);
+> +	if (ret)
+> +		setup->offset =3D old_offset;
+> +
+> +	return ret;
+> +}
+> +
+> +static int ad4170_set_calib_gain(struct ad4170_state *st,
+> +				 struct iio_chan_spec const *chan, int val)
+> +{
+> +	struct ad4170_chan_info *chan_info =3D &st->chan_infos[chan->address];
+> +	struct ad4170_setup *setup =3D &chan_info->setup;
+> +	u32 old_gain;
+> +	int ret;
+> +
+> +	old_gain =3D setup->gain;
+> +	setup->gain =3D val;
+> +
+> +	guard(mutex)(&st->lock);
+> +	ret =3D ad4170_write_channel_setup(st, chan->address, false);
+> +	if (ret)
+> +		setup->gain =3D old_gain;
+> +
+> +	return ret;
+> +}
+> +
+> +static int __ad4170_write_raw(struct iio_dev *indio_dev,
+> +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct iio_chan_spec const *chan, int =
+val,
+> +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 int val2, long info)
+> +{
+> +	struct ad4170_state *st =3D iio_priv(indio_dev);
+> +
+> +	switch (info) {
+> +	case IIO_CHAN_INFO_SCALE:
+> +		return ad4170_set_pga(st, chan, val, val2);
+> +	case IIO_CHAN_INFO_SAMP_FREQ:
+> +		return ad4170_set_channel_freq(st, chan, val, val2);
+> +	case IIO_CHAN_INFO_CALIBBIAS:
+> +		return ad4170_set_calib_offset(st, chan, val);
+> +	case IIO_CHAN_INFO_CALIBSCALE:
+> +		return ad4170_set_calib_gain(st, chan, val);
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +}
+> +
+> +static int ad4170_write_raw(struct iio_dev *indio_dev,
+> +			=C2=A0=C2=A0=C2=A0 struct iio_chan_spec const *chan, int val,
+> +			=C2=A0=C2=A0=C2=A0 int val2, long info)
+> +{
+> +	int ret;
+> +
+> +	if (!iio_device_claim_direct(indio_dev))
+> +		return -EBUSY;
+> +
+> +	ret =3D __ad4170_write_raw(indio_dev, chan, val, val2, info);
+> +	iio_device_release_direct(indio_dev);
+> +	return ret;
+> +}
+> +
+> +static int ad4170_write_raw_get_fmt(struct iio_dev *indio_dev,
+> +				=C2=A0=C2=A0=C2=A0 struct iio_chan_spec const *chan,
+> +				=C2=A0=C2=A0=C2=A0 long info)
+> +{
+> +	switch (info) {
+> +	case IIO_CHAN_INFO_SCALE:
+> +		return IIO_VAL_INT_PLUS_NANO;
+> +	case IIO_CHAN_INFO_SAMP_FREQ:
+> +		return IIO_VAL_INT_PLUS_MICRO;
+> +	case IIO_CHAN_INFO_CALIBBIAS:
+> +	case IIO_CHAN_INFO_CALIBSCALE:
+> +		return IIO_VAL_INT;
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +}
+> +
+> +static const struct iio_info ad4170_info =3D {
+> +	.read_raw =3D ad4170_read_raw,
+> +	.read_avail =3D ad4170_read_avail,
+> +	.write_raw =3D ad4170_write_raw,
+> +	.write_raw_get_fmt =3D ad4170_write_raw_get_fmt,
+> +	.debugfs_reg_access =3D ad4170_debugfs_reg_access,
+> +};
+> +
+> +static int ad4170_soft_reset(struct ad4170_state *st)
+> +{
+> +	int ret;
+> +
+> +	ret =3D regmap_write(st->regmap8, AD4170_CONFIG_A_REG,
+> +			=C2=A0=C2=A0 AD4170_SW_RESET_MSK);
+> +	if (ret)
+> +		return ret;
+> +
+> +	/* AD4170-4 requires 1 ms between reset and any register access. */
+> +	fsleep(MILLI);
+> +
+> +	return 0;
+> +}
+> +
+> +static int ad4170_parse_reference(struct ad4170_state *st,
+> +				=C2=A0 struct fwnode_handle *child,
+> +				=C2=A0 struct ad4170_setup *setup)
+> +{
+> +	struct device *dev =3D &st->spi->dev;
+> +	int ret;
+> +	u8 aux;
+> +
+> +	/* Positive reference buffer setup */
+> +	aux =3D AD4170_REF_BUF_PRE; /* Default to have precharge buffer enabled=
+. */
+> +	ret =3D fwnode_property_read_u8(child, "adi,buffered-positive", &aux);
+> +	if (ret) {
+
+Shouldn't this be if (!ret)?
+
+> +		if (aux < AD4170_REF_BUF_PRE || aux > AD4170_REF_BUF_BYPASS)
+> +			return dev_err_probe(dev, -EINVAL,
+> +					=C2=A0=C2=A0=C2=A0=C2=A0 "Invalid adi,buffered-positive:
+> %u\n",
+> +					=C2=A0=C2=A0=C2=A0=C2=A0 aux);
+> +	}
+> +	setup->afe |=3D FIELD_PREP(AD4170_AFE_REF_BUF_P_MSK, aux);
+> +
+> +	/* Negative reference buffer setup */
+> +	aux =3D AD4170_REF_BUF_PRE; /* Default to have precharge buffer enabled=
+. */
+> +	ret =3D fwnode_property_read_u8(child, "adi,buffered-negative", &aux);
+> +	if (ret) {
+
+ditto
+
+> +		if (aux < AD4170_REF_BUF_PRE || aux > AD4170_REF_BUF_BYPASS)
+> +			return dev_err_probe(dev, -EINVAL,
+> +					=C2=A0=C2=A0=C2=A0=C2=A0 "Invalid adi,buffered-negative:
+> %u\n",
+> +					=C2=A0=C2=A0=C2=A0=C2=A0 aux);
+> +	}
+> +	setup->afe |=3D FIELD_PREP(AD4170_AFE_REF_BUF_M_MSK, aux);
+> +
+> +	/* Voltage reference selection */
+> +	aux =3D AD4170_REF_REFOUT; /* Default reference selection. */
+> +	fwnode_property_read_u8(child, "adi,reference-select", &aux);
+> +	if (aux > AD4170_REF_AVDD)
+> +		return dev_err_probe(dev, -EINVAL,
+> +				=C2=A0=C2=A0=C2=A0=C2=A0 "Invalid reference selected %u\n", aux);
+> +	setup->afe |=3D FIELD_PREP(AD4170_AFE_REF_SELECT_MSK, aux);
+> +
+> +	return 0;
+> +}
+> +
+> +static int ad4170_parse_adc_channel_type(struct device *dev,
+> +					 struct fwnode_handle *child,
+> +					 struct iio_chan_spec *chan)
+> +{
+> +	u32 pins[2];
+> +	int ret;
+> +
+> +	ret =3D fwnode_property_read_u32_array(child, "diff-channels", pins,
+> +					=C2=A0=C2=A0=C2=A0=C2=A0 ARRAY_SIZE(pins));
+> +	if (!ret) {
+> +		chan->differential =3D true;
+> +		chan->channel =3D pins[0];
+> +		chan->channel2 =3D pins[1];
+> +		return 0;
+> +	}
+> +	ret =3D fwnode_property_read_u32(child, "single-channel", &pins[0]);
+> +	if (!ret) {
+> +		chan->differential =3D false;
+> +		chan->channel =3D pins[0];
+> +
+> +		ret =3D fwnode_property_read_u32(child, "common-mode-channel",
+> +					=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 &pins[1]);
+> +		if (ret)
+> +			return dev_err_probe(dev, ret,
+> +				"single-ended channels must define common-mode-
+> channel\n");
+> +
+> +		chan->channel2 =3D pins[1];
+> +		return 0;
+> +	}
+
+Kind of a nitpick but for the above I would flip the logic. First check for=
+ errors in
+the single-channel case and then you can have one less of level of indentat=
+ion...
+
+> +	return dev_err_probe(dev, ret,
+> +		"Channel must define one of diff-channels or single-channel.\n");
+> +}
+> +
+> +static int ad4170_parse_channel_node(struct iio_dev *indio_dev,
+> +				=C2=A0=C2=A0=C2=A0=C2=A0 struct fwnode_handle *child,
+> +				=C2=A0=C2=A0=C2=A0=C2=A0 unsigned int chan_num)
+> +{
+> +	struct ad4170_state *st =3D iio_priv(indio_dev);
+> +	struct device *dev =3D &st->spi->dev;
+> +	struct ad4170_chan_info *chan_info;
+> +	struct ad4170_setup *setup;
+> +	struct iio_chan_spec *chan;
+> +	unsigned int ch_reg;
+> +	u8 ref_select;
+> +	bool bipolar;
+> +	int ret;
+> +
+> +	ret =3D fwnode_property_read_u32(child, "reg", &ch_reg);
+> +	if (ret)
+> +		return ret;
+> +
+
+Could also deserve a log message?
+
+> +	if (ch_reg >=3D AD4170_MAX_CHANNELS)
+> +		return dev_err_probe(dev, -EINVAL,
+> +				=C2=A0=C2=A0=C2=A0=C2=A0 "Channel idx greater than no of channels\n"=
+);
+>=20
+
+...
+
+>=20
+> +
+> +static int ad4170_trigger_setup(struct iio_dev *indio_dev)
+> +{
+> +	struct ad4170_state *st =3D iio_priv(indio_dev);
+> +	int ret;
+> +
+> +	st->trig =3D devm_iio_trigger_alloc(indio_dev->dev.parent, "%s-trig%d",
+> +					=C2=A0 indio_dev->name,
+> +					=C2=A0 iio_device_id(indio_dev));
+> +	if (!st->trig)
+> +		return -ENOMEM;
+> +
+> +	st->trig->ops =3D &ad4170_trigger_ops;
+> +	st->trig->dev.parent =3D indio_dev->dev.parent;
+> +
+> +	iio_trigger_set_drvdata(st->trig, indio_dev);
+> +	ret =3D devm_iio_trigger_register(indio_dev->dev.parent, st->trig);
+> +	if (ret)
+> +		return ret;
+> +
+> +	indio_dev->trig =3D iio_trigger_get(st->trig);
+> +
+> +	return request_irq(st->spi->irq, &ad4170_irq_handler, IRQF_ONESHOT,
+> +			=C2=A0=C2=A0 indio_dev->name, indio_dev);
+
+devm_request_irq()...
+
+> +}
+> +
+> +static int ad4170_regulator_setup(struct ad4170_state *st)
+> +{
+> +	struct device *dev =3D &st->spi->dev;
+> +	int ret;
+> +
+> +	/* Required regulators */
+> +	ret =3D devm_regulator_get_enable_read_voltage(dev, "avdd");
+> +	if (ret < 0)
+> +		return dev_err_probe(dev, ret, "Failed to get AVDD voltage.\n");
+> +
+> +	st->vrefs_uv[AD4170_AVDD_SUP] =3D ret;
+> +
+> +	ret =3D devm_regulator_get_enable_read_voltage(dev, "iovdd");
+> +	if (ret < 0)
+> +		return dev_err_probe(dev, ret, "Failed to get IOVDD voltage.\n");
+> +
+> +	st->vrefs_uv[AD4170_IOVDD_SUP] =3D ret;
+> +
+> +	/* Optional regulators */
+> +	ret =3D devm_regulator_get_enable_read_voltage(dev, "avss");
+> +	if (ret < 0 && ret !=3D -ENODEV)
+> +		return dev_err_probe(dev, ret, "Failed to get AVSS voltage.\n");
+> +
+> +	/* Assume AVSS at GND (0V) if not provided */
+> +	st->vrefs_uv[AD4170_AVSS_SUP] =3D ret =3D=3D -ENODEV ? 0 : -ret;
+> +
+> +	ret =3D devm_regulator_get_enable_read_voltage(dev, "refin1p");
+> +	if (ret < 0 && ret !=3D -ENODEV)
+> +		return dev_err_probe(dev, ret, "Failed to get REFIN+ voltage.\n");
+> +
+> +	st->vrefs_uv[AD4170_REFIN1P_SUP] =3D ret;
+> +
+> +	ret =3D devm_regulator_get_enable_read_voltage(dev, "refin1n");
+> +	if (ret < 0 && ret !=3D -ENODEV)
+> +		return dev_err_probe(dev, ret, "Failed to get REFIN- voltage.\n");
+> +
+> +	/* Negative supplies are assumed to provide negative voltage */
+> +	st->vrefs_uv[AD4170_REFIN1N_SUP] =3D ret =3D=3D -ENODEV ? -ENODEV : -re=
+t;
+
+Maybe to early for me but the comment does not make it clear to me why the =
+negation?
+Won't the regulator return a negative voltage?
+
+> +
+> +	ret =3D devm_regulator_get_enable_read_voltage(dev, "refin2p");
+> +	if (ret < 0 && ret !=3D -ENODEV)
+> +		return dev_err_probe(dev, ret, "Failed to get REFIN2+
+> voltage.\n");
+> +
+> +	st->vrefs_uv[AD4170_REFIN2P_SUP] =3D ret;
+> +
+> +	ret =3D devm_regulator_get_enable_read_voltage(dev, "refin2n");
+> +	if (ret < 0 && ret !=3D -ENODEV)
+> +		return dev_err_probe(dev, ret, "Failed to get REFIN2-
+> voltage.\n");
+> +
+> +	/* Negative supplies are assumed to provide negative voltage */
+> +	st->vrefs_uv[AD4170_REFIN2N_SUP] =3D ret =3D=3D -ENODEV ? -ENODEV : -re=
+t;
+> +
+> +	return 0;
+> +}
+> +
+> +static int ad4170_probe(struct spi_device *spi)
+> +{
+> +	struct device *dev =3D &spi->dev;
+> +	struct iio_dev *indio_dev;
+> +	struct ad4170_state *st;
+> +	const char *dev_name;
+> +	int ret;
+> +
+> +	indio_dev =3D devm_iio_device_alloc(&spi->dev, sizeof(*st));
+> +	if (!indio_dev)
+> +		return -ENOMEM;
+> +
+> +	st =3D iio_priv(indio_dev);
+> +	devm_mutex_init(dev, &st->lock);
+
+check for errors...
+
+> +
+> +	dev_name =3D spi_get_device_match_data(spi);
+> +	if (!dev_name)
+> +		return -EINVAL;
+> +
+> +	indio_dev->name =3D dev_name;
+> +	indio_dev->info =3D &ad4170_info;
+> +
+> +	st->spi =3D spi;
+> +	st->regmap8 =3D devm_regmap_init_spi(spi, &ad4170_regmap8_config);
+> +	if (IS_ERR(st->regmap8))
+> +		return dev_err_probe(dev, PTR_ERR(st->regmap8),
+> +				=C2=A0=C2=A0=C2=A0=C2=A0 "Failed to initialize regmap8\n");
+> +
+> +	st->regmap16 =3D devm_regmap_init_spi(spi, &ad4170_regmap16_config);
+> +	if (IS_ERR(st->regmap16))
+> +		return dev_err_probe(dev, PTR_ERR(st->regmap16),
+> +				=C2=A0=C2=A0=C2=A0=C2=A0 "Failed to initialize regmap16\n");
+> +
+> +	st->regmap24 =3D devm_regmap_init_spi(spi, &ad4170_regmap24_config);
+> +	if (IS_ERR(st->regmap24))
+> +		return dev_err_probe(dev, PTR_ERR(st->regmap24),
+> +				=C2=A0=C2=A0=C2=A0=C2=A0 "Failed to initialize regmap24\n");
+> +
+
+Hmm, interesting idea... but I would expect an explanation on why can't we =
+have bulk
+reads for the 16 and 24 bit cases? Without it, I have to ask why not?
+=20
+> +	ret =3D ad4170_regulator_setup(st);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret =3D ad4170_soft_reset(st);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret =3D ad4170_parse_firmware(indio_dev);
+> +	if (ret)
+> +		return dev_err_probe(dev, ret, "Failed to parse firmware\n");
+> +
+> +	ret =3D ad4170_initial_config(indio_dev);
+> +	if (ret)
+> +		return dev_err_probe(dev, ret, "Failed to setup device\n");
+> +
+> +	init_completion(&st->completion);
+> +
+> +	if (spi->irq) {
+> +		ret =3D ad4170_trigger_setup(indio_dev);
+> +		if (ret)
+> +			return dev_err_probe(dev, ret, "Failed to setup
+> trigger\n");
+
+Typically it's better to log the errors inside ad4170_trigger_setup() unles=
+s you use
+it outside probe.
+
+- Nuno S=C3=A1
+>=20
+> +MODULE_AUTHOR("Marcelo Schmitt <marcelo.schmitt@analog.com>");
+> +MODULE_DESCRIPTION("Analog Devices AD4170 SPI driver");
+> +MODULE_LICENSE("GPL");
+
 

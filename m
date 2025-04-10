@@ -1,134 +1,123 @@
-Return-Path: <linux-iio+bounces-17916-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17917-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C3C2A84755
-	for <lists+linux-iio@lfdr.de>; Thu, 10 Apr 2025 17:09:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C34FDA84760
+	for <lists+linux-iio@lfdr.de>; Thu, 10 Apr 2025 17:10:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1738D9A4B08
-	for <lists+linux-iio@lfdr.de>; Thu, 10 Apr 2025 15:07:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9DDC8178E94
+	for <lists+linux-iio@lfdr.de>; Thu, 10 Apr 2025 15:10:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F2311DDC11;
-	Thu, 10 Apr 2025 15:07:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25F731DD889;
+	Thu, 10 Apr 2025 15:10:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y4fQScCd"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="KuLJm3Cg"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
+Received: from mail-oa1-f45.google.com (mail-oa1-f45.google.com [209.85.160.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D22F84039;
-	Thu, 10 Apr 2025 15:07:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0736B1DE3C7
+	for <linux-iio@vger.kernel.org>; Thu, 10 Apr 2025 15:10:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744297643; cv=none; b=e3Ip/wn9+eTdPXx8xjGr8XiJL23okCk/sOS9kluPtavJMYqjvxL6GFAMDPvR1qk++WUJqtRvDxs6pPk1rzBaKudV2AyJhlEvs1oIxaAmUqu6MU0tnIb4urKMRu+dTzRYsg8eGQobFALBTtzkKRDSLrjRTM+LkR6ASpBqzRYPZZ8=
+	t=1744297815; cv=none; b=cPdU68MDn0yySnR4iYzrVM7xM8Q7OjDnXT2jNiCHrqM9kKIDQzr2/CNqXmaaOQf6PKZHofIK76t6g1A1Fvm6xx9mL/GlckCNOZV/1T0SgbwwXt6NqadEJ6kdTBZXhwDJT31ZUlkxRl4i73MlgWcJC1s7HonP6LV/cBGLyaulTRg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744297643; c=relaxed/simple;
-	bh=eboaS5c05OyvAb+NBPFm2wN3NGNx/XKe73+3Wz4fRNs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Gce9G60G8BWWqmbu1gvD6tBJabixUEaOJVKCIMxri5SsHbi46lFRu6ppVWakWuq2IHR4UlbGr6PGOP86k/LRtMpLxVT+xBVHhpBq2KDcGVyG8Yd7dTbgjro2uCcipcNlZfzngGPuNJODQqnVj/eF2PpBsw1YSDRcsHA1+Afosg0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Y4fQScCd; arc=none smtp.client-ip=209.85.215.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-af28bc68846so916266a12.1;
-        Thu, 10 Apr 2025 08:07:21 -0700 (PDT)
+	s=arc-20240116; t=1744297815; c=relaxed/simple;
+	bh=clQ76r5v5NBAAlxlXOnSgck78T+r1c8I2ly4pB3R084=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qj0e3u5sY/96I31oWON9LIvD7ZoB8dGQHzBr4gT4Ki9F0M5oQSvb0Cbmp6/+rOn3enc8qsP2vwUYqTV4MB1t+up45VysM6XgYUan7ZTU9sFp+92YvnLF7KKF83OtwknpXKUTY+FcFq96YETr6MH24Q/ZhMaQxewIcT9dAXsaIMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=KuLJm3Cg; arc=none smtp.client-ip=209.85.160.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oa1-f45.google.com with SMTP id 586e51a60fabf-2c7b2c14455so541597fac.2
+        for <linux-iio@vger.kernel.org>; Thu, 10 Apr 2025 08:10:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744297641; x=1744902441; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=brD0jvjX625bzsG6fgbmQ6q3jKQyaVH5CAKGozygZW4=;
-        b=Y4fQScCdBm7TYTc2CO/GK2xHK2xFEykki0+FIk13PeMSfMZSbypl3klPQdjaHfqCNh
-         sdwHCz2ccdYIKyb1TjGx2lz8PaOfEfSJEsQBjzXX9PcIRIz/AGguNDB2R1Je5iOOlvAR
-         FexJxObppUR/dXUUtLT+XKzR5oJfVymXGux/qcz2hqxQFTvQD50axZ3Avtz+xAqWD9Tu
-         AdhDyc0osLPhQ6FSitAIQ7T83Bk+p6EJTgbM3Svuj+Pw3FsWqhr2WhK510mE4MRFybRq
-         7YgMVlzMoW1bCs2INXe7FIRn611na87jiyjZgz4Z+k6d56r+BRCjPgTk0DX/IQItCsOK
-         NSkQ==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1744297812; x=1744902612; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=kSVaecQLnHoOQXz9idkykvGiR6nfobFtIIlrAziyXag=;
+        b=KuLJm3CgZsuf8ZNhuk/bXr7CRETbcAgaO6hZ/tfWcNT8o4COB/SNMb3RPTyxiJdcoG
+         4u769Pp/Ya6G5MQksxfZYD+SlMSBzKP9VmCEtL26qdesaG0XFzgRBApME8D2trCxnQ1D
+         EYltQRVcMjGpIdv9mO+inWHG3wHpopmxsynpVnDEDWL1UoKv3Nd/chymvBP/yea+HjHn
+         EOAwiBobjS/gzxQq9uj5caHfpRQ9lBZSPtVa0tNJLr1seMfcU0SFbyT1gUwomST2e9Gp
+         GsHXqPFcVSTzHdbtrQxZJVNLD5HGxjwojDhYo5Bjzf+fUFzmQwI7rWvcuJ2O3+E6eb2x
+         xm3g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744297641; x=1744902441;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=brD0jvjX625bzsG6fgbmQ6q3jKQyaVH5CAKGozygZW4=;
-        b=m61RxGzGY7+4IvBJhEYepWHS1BB3sp4b0uNkGcsf9JWKchkUIpn0ZDdeuZf0ggv8Ji
-         ziO2fgJhR+kzPQw82gnKdh3dWG5/GyUk1tLVpghN7uk72xFdcRxhhsaXHPYjC5ABh3H5
-         +28xZOmU0zXQfVA6/+fBjG4IjsM4R3FvzuueZsOfgJnwGfFepZQoDB1j4NF5NgHLdHkA
-         Rl+v0DF8NR3ct6o607WSmBGI7SYKrHVB73vai8GGvnNc1SfUHPtMsPS+XI5m9hDPsEA3
-         FrE37v34ee9XCs5L5eHxa345EUOB56YMQKnUKm2n9vKSIc9R8l/zo1JTtvFj2eYhb9a4
-         lDQg==
-X-Forwarded-Encrypted: i=1; AJvYcCVkake7YC+Cx7FIZVy8aaheNTdbh1BxYIKq59S7C6DI8kKmG7rIFXwWHfroBPWaOQZYB+EIBr2U5EBJ@vger.kernel.org, AJvYcCWOoPTpuowzbexyL11ACVpltt2AHkZKD6WSp6CTWtrn0Q0yE2gLJqd6f8oOS9MK0TXj6/Dr0K1roco=@vger.kernel.org, AJvYcCXquWq+VjRxMtO3cAbC6gZrBs34MxRPNZuMaV64U8e3W5GKqK6lmehzVB0z9yMm0evJOejQnecN1yBcifW3@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz0RVEu3eY4oflf70ioG3l+DaYESkK5rSS19xeUrdIyH/7ejwyt
-	m8n61z2PKJ16ZTpZHOIANlDd7bzXOxOI4YCXQPlkMKiw+WDBJKjN
-X-Gm-Gg: ASbGncuOUce8+83DGyypqMzVm0ghJKr7dY9d/SuR5KY8hSOtcvRPjzG8vn1atrymToD
-	mtgFJuWHJhHnJyqqPuZi3UfXtnyERTNWeOfBInJsw9YLxu7rmBmtGg/npXnDs69LkO13RZTbXAc
-	aAHQvbgRrbraf7hTEXCVdBWEDI5upWdRT9HCBKehFB5/zy+b9Ri78BtWjuFF5bTHc3Jj797hhmq
-	LlxCtuUW+mBsdz+K4jdrMrkD/h6BwJE2Hp7YBBqIY0Xd0qmVwJ82Jtm8lLe/z/oPW1qOEfyjXjX
-	6BolBf9X2uCrwZNzdK1TGeZ/Qs6ef+rMzVx3lkcRVVxQueCSuA==
-X-Google-Smtp-Source: AGHT+IFipQ50ghFnCXKI8zRF8Bt+A/DpNB00DQaIIZ1RLRoPjkBbjJFwo/iHx851n7lTd+u7pGjTKA==
-X-Received: by 2002:a05:6a21:9214:b0:1f5:8153:9407 with SMTP id adf61e73a8af0-2016cd5ec22mr4138335637.20.1744297641304;
-        Thu, 10 Apr 2025 08:07:21 -0700 (PDT)
-Received: from localhost ([2804:30c:979:8400:d3a1:d5f7:94ea:b576])
-        by smtp.gmail.com with UTF8SMTPSA id d2e1a72fcca58-73bb1d46586sm3471204b3a.64.2025.04.10.08.07.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Apr 2025 08:07:20 -0700 (PDT)
-Date: Thu, 10 Apr 2025 12:08:27 -0300
-From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Marcelo Schmitt <marcelo.schmitt@analog.com>, linux-iio@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	jic23@kernel.org, lars@metafoo.de, Michael.Hennerich@analog.com,
-	corbet@lwn.net
-Subject: Re: [PATCH v4 1/4] iio: adc: ad4000: Add support for SPI offload
-Message-ID: <Z_fe69bn90oVjPNk@debian-BULLSEYE-live-builder-AMD64>
-References: <cover.1743110188.git.marcelo.schmitt@analog.com>
- <386ce043a0e3fc9e8ff71f17aef8de128ce5869e.1743110188.git.marcelo.schmitt@analog.com>
- <97d0cc16-cdd4-449c-87f5-f62e0515de97@baylibre.com>
+        d=1e100.net; s=20230601; t=1744297812; x=1744902612;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=kSVaecQLnHoOQXz9idkykvGiR6nfobFtIIlrAziyXag=;
+        b=DLLinWvle08FZrIOyVCNSZxOllr7oCIDlUjT6UhGjGvA71QlChQ+LSJlMaa0ICfmSz
+         aLWuqXZY+kGer1xATvQyTOYD18m+wsdKY6k1gQH+0QztuUf2Jwh407tYQyhRDwKh0MqL
+         Ces0SVnt0+BTnjvMJg08Pqab/XbRe8ZzO6ZeieNH9TXxRKSrKD1it+xdLGrhneWkHw2W
+         jMk8CzYAQYm5qwO3PRpMiRZt5RS3tu0E7/VJEUt9bw1TypF19ZXjezriiwN9HsrsYauN
+         ndxYYxEUsNpZ2ST0VNf227wUIDNbRmSyZ3pNza/najP0lh8/fuMdhMjbgruD2GcqrWyq
+         +zHw==
+X-Gm-Message-State: AOJu0YyRAI12J279+jTBJyALMC2CeEl2WnhUMFHzavXV64bIXNPOskR6
+	KNZOr1YJQwa94vo88TK13uHwtSzWyg0+NHYOjnGD+euf/Jqe1pltc4VSHAlsQ74=
+X-Gm-Gg: ASbGncux0qd9EbWK+LIHa4XhDnP9+MwXt8AM9bfH4+1OvTLYYLOOc3XZgox+wwkwzTI
+	jgcGzZzfqZnijzMYJBoPw/EApqVQ4egv7KwAxsdze6CWuSrq1eFtTtN+HI0hybpVCnOn/gt0E+S
+	vi12VOEuwVCEmmuKcQ5Z4IZ/vAAOyNiAeTloTJc6FFdbWweOZnNkWsJZL/h//bPTfAKorxQht21
+	1cgsOcl19cYMMMfZuSNhUPdFmVW7uj2KHLgkwf2xbQ7QOh83DpS5ax+biZ0CNg487Fgk6x9laLK
+	Oibgg8moPKm4FBm2+qlLh2Ah1g/Ugfc/XSQcD3FkQCgRIRYCRimcwWqKgN8Fy0X/VY+mhRQPjuH
+	Czg==
+X-Google-Smtp-Source: AGHT+IFJDDCvJdEYXfHiAwKLzA0w8KMAfVXNdsnsfoajtcszQBzW7GYmADv0+34QgN8Gqv7LYEuNTA==
+X-Received: by 2002:a05:6871:a608:b0:2c2:5639:3a4d with SMTP id 586e51a60fabf-2d0b38b5e45mr1563111fac.38.1744297812101;
+        Thu, 10 Apr 2025 08:10:12 -0700 (PDT)
+Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2d0969b722fsm702882fac.28.2025.04.10.08.10.10
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 10 Apr 2025 08:10:10 -0700 (PDT)
+Message-ID: <22034f6d-f2ee-4792-a3c0-a5c0d69ef25f@baylibre.com>
+Date: Thu, 10 Apr 2025 10:10:10 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <97d0cc16-cdd4-449c-87f5-f62e0515de97@baylibre.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: Adding support for QMC5883L magnetometer to IIO subsystem
+To: Brajesh Patil <brajeshpatil11@gmail.com>, jic23@kernel.org
+Cc: linux-iio@vger.kernel.org, marcelo.schmitt1@gmail.com
+References: <Z_UvBIsQ4rdIYTN8@brajesh-IdeaPad-3-15IAU7>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <Z_UvBIsQ4rdIYTN8@brajesh-IdeaPad-3-15IAU7>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On 04/09, David Lechner wrote:
-> On 3/27/25 4:24 PM, Marcelo Schmitt wrote:
-> > FPGA HDL projects can include a PWM generator in addition to SPI-Engine.
-> > The PWM IP is used to trigger SPI-Engine offload modules that in turn set
-> > SPI-Engine to execute transfers to poll data from the ADC. That allows data
-> > to be read at the maximum sample rates. Also, it is possible to set a
-> > specific sample rate by setting the proper PWM duty cycle and related state
-> > parameters, thus allowing an adjustable ADC sample rate when a PWM (offload
-> > trigger) is used in combination with SPI-Engine.
-> > 
-> > Add support for SPI offload.
-> > 
-> > Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
-> > ---
+On 4/8/25 9:13 AM, Brajesh Patil wrote:
+> I have a QMC5883L magnetometer module that I’ve been trying to integrate with my 
+> Raspberry Pi using a kernel-space driver. While checking the mainline kernel, I 
+> found that there is a driver for the HMC5883L (under the hmc5843 driver), but nothing 
+> for QMC5883L.
 > 
-> I think I spotted a bug. With that fixed...
+> I compared the datasheets for both devices and confirmed that they are not 
+> register-compatible — the QMC5883L has a different I2C address and an entirely different 
+> register map from the HMC5883L.
 > 
-> Reviewed-by: David Lechner <dlechner@baylibre.com>
+> Given that this sensor is widely used (often as a drop-in replacement for the 
+> now-discontinued HMC5883L), I was thinking of writing a new driver for it under the IIO 
+> subsystem.
 > 
-> > @@ -690,6 +942,15 @@ static int ad4000_prepare_3wire_mode_message(struct ad4000_state *st,
-> >  
-> >  	xfers[1].rx_buf = &st->scan.data;
-> >  	xfers[1].len = BITS_TO_BYTES(chan->scan_type.storagebits);
+> Would it make sense to move forward with this? If so, I’d appreciate any guidance or 
+> suggestions from the community.
 > 
-> Now this needs to be:
+> Thanks,  
+> Brajesh 
 > 
-> 	xfer->len = chan->scan_type.realbits > 16 ? 4 : 2;
 > 
-> Otherwise when there is SPI offload, this could read 2 words because
-> storagebits is always == 32.
 
-I've just tested both versions with ADAQ4003 and with AD7687.
-There's no practical difference between the suggestion and what already is in
-IIO testing. I don't mind sending a patch with the change, but don't think it
-fixes anything.
+Go for it. :-)
 
-Thanks,
-Marcelo
+My advice for writing a new driver: Don't try to implement every feature in one
+patch (or even one patch series). Just start with the most basic functionality.
+Then add more features in separate patches as they are needed. (Devicetree
+bindings are an exception and should be as complete as possible in the first
+patch.)
 

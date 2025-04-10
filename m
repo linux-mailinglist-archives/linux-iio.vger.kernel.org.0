@@ -1,123 +1,131 @@
-Return-Path: <linux-iio+bounces-17917-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17918-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C34FDA84760
-	for <lists+linux-iio@lfdr.de>; Thu, 10 Apr 2025 17:10:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 592D2A84847
+	for <lists+linux-iio@lfdr.de>; Thu, 10 Apr 2025 17:43:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9DDC8178E94
-	for <lists+linux-iio@lfdr.de>; Thu, 10 Apr 2025 15:10:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1F6DD1B639EA
+	for <lists+linux-iio@lfdr.de>; Thu, 10 Apr 2025 15:42:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25F731DD889;
-	Thu, 10 Apr 2025 15:10:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85A611EBFEB;
+	Thu, 10 Apr 2025 15:40:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="KuLJm3Cg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qJe693PR"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oa1-f45.google.com (mail-oa1-f45.google.com [209.85.160.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0736B1DE3C7
-	for <linux-iio@vger.kernel.org>; Thu, 10 Apr 2025 15:10:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 397F71EB5F0;
+	Thu, 10 Apr 2025 15:40:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744297815; cv=none; b=cPdU68MDn0yySnR4iYzrVM7xM8Q7OjDnXT2jNiCHrqM9kKIDQzr2/CNqXmaaOQf6PKZHofIK76t6g1A1Fvm6xx9mL/GlckCNOZV/1T0SgbwwXt6NqadEJ6kdTBZXhwDJT31ZUlkxRl4i73MlgWcJC1s7HonP6LV/cBGLyaulTRg=
+	t=1744299635; cv=none; b=nMQMRhreXvNnrp9SJvb03Y6Oua5b+S/IxNh+/rd2+TynYjodqP+QBgbRoqHDSECgMEf6nMd3YSj9Ltbr3PA4ltDx0sx6suEBpF4A0eLieWGOagy9P4KpFnm2eU6ZREXUFz+7PxvjCLvT2P7J4FmHNipSw9fHkjw7e3txJqVlFzo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744297815; c=relaxed/simple;
-	bh=clQ76r5v5NBAAlxlXOnSgck78T+r1c8I2ly4pB3R084=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qj0e3u5sY/96I31oWON9LIvD7ZoB8dGQHzBr4gT4Ki9F0M5oQSvb0Cbmp6/+rOn3enc8qsP2vwUYqTV4MB1t+up45VysM6XgYUan7ZTU9sFp+92YvnLF7KKF83OtwknpXKUTY+FcFq96YETr6MH24Q/ZhMaQxewIcT9dAXsaIMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=KuLJm3Cg; arc=none smtp.client-ip=209.85.160.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oa1-f45.google.com with SMTP id 586e51a60fabf-2c7b2c14455so541597fac.2
-        for <linux-iio@vger.kernel.org>; Thu, 10 Apr 2025 08:10:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1744297812; x=1744902612; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=kSVaecQLnHoOQXz9idkykvGiR6nfobFtIIlrAziyXag=;
-        b=KuLJm3CgZsuf8ZNhuk/bXr7CRETbcAgaO6hZ/tfWcNT8o4COB/SNMb3RPTyxiJdcoG
-         4u769Pp/Ya6G5MQksxfZYD+SlMSBzKP9VmCEtL26qdesaG0XFzgRBApME8D2trCxnQ1D
-         EYltQRVcMjGpIdv9mO+inWHG3wHpopmxsynpVnDEDWL1UoKv3Nd/chymvBP/yea+HjHn
-         EOAwiBobjS/gzxQq9uj5caHfpRQ9lBZSPtVa0tNJLr1seMfcU0SFbyT1gUwomST2e9Gp
-         GsHXqPFcVSTzHdbtrQxZJVNLD5HGxjwojDhYo5Bjzf+fUFzmQwI7rWvcuJ2O3+E6eb2x
-         xm3g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744297812; x=1744902612;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=kSVaecQLnHoOQXz9idkykvGiR6nfobFtIIlrAziyXag=;
-        b=DLLinWvle08FZrIOyVCNSZxOllr7oCIDlUjT6UhGjGvA71QlChQ+LSJlMaa0ICfmSz
-         aLWuqXZY+kGer1xATvQyTOYD18m+wsdKY6k1gQH+0QztuUf2Jwh407tYQyhRDwKh0MqL
-         Ces0SVnt0+BTnjvMJg08Pqab/XbRe8ZzO6ZeieNH9TXxRKSrKD1it+xdLGrhneWkHw2W
-         jMk8CzYAQYm5qwO3PRpMiRZt5RS3tu0E7/VJEUt9bw1TypF19ZXjezriiwN9HsrsYauN
-         ndxYYxEUsNpZ2ST0VNf227wUIDNbRmSyZ3pNza/najP0lh8/fuMdhMjbgruD2GcqrWyq
-         +zHw==
-X-Gm-Message-State: AOJu0YyRAI12J279+jTBJyALMC2CeEl2WnhUMFHzavXV64bIXNPOskR6
-	KNZOr1YJQwa94vo88TK13uHwtSzWyg0+NHYOjnGD+euf/Jqe1pltc4VSHAlsQ74=
-X-Gm-Gg: ASbGncux0qd9EbWK+LIHa4XhDnP9+MwXt8AM9bfH4+1OvTLYYLOOc3XZgox+wwkwzTI
-	jgcGzZzfqZnijzMYJBoPw/EApqVQ4egv7KwAxsdze6CWuSrq1eFtTtN+HI0hybpVCnOn/gt0E+S
-	vi12VOEuwVCEmmuKcQ5Z4IZ/vAAOyNiAeTloTJc6FFdbWweOZnNkWsJZL/h//bPTfAKorxQht21
-	1cgsOcl19cYMMMfZuSNhUPdFmVW7uj2KHLgkwf2xbQ7QOh83DpS5ax+biZ0CNg487Fgk6x9laLK
-	Oibgg8moPKm4FBm2+qlLh2Ah1g/Ugfc/XSQcD3FkQCgRIRYCRimcwWqKgN8Fy0X/VY+mhRQPjuH
-	Czg==
-X-Google-Smtp-Source: AGHT+IFJDDCvJdEYXfHiAwKLzA0w8KMAfVXNdsnsfoajtcszQBzW7GYmADv0+34QgN8Gqv7LYEuNTA==
-X-Received: by 2002:a05:6871:a608:b0:2c2:5639:3a4d with SMTP id 586e51a60fabf-2d0b38b5e45mr1563111fac.38.1744297812101;
-        Thu, 10 Apr 2025 08:10:12 -0700 (PDT)
-Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2d0969b722fsm702882fac.28.2025.04.10.08.10.10
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 10 Apr 2025 08:10:10 -0700 (PDT)
-Message-ID: <22034f6d-f2ee-4792-a3c0-a5c0d69ef25f@baylibre.com>
-Date: Thu, 10 Apr 2025 10:10:10 -0500
+	s=arc-20240116; t=1744299635; c=relaxed/simple;
+	bh=WWPgjrypLq+FtwiDGFQDw69WqwGWqMZd39vBNg9H2Ek=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=pemJ9dEzb3jWaC1xmaBXDxKTdJLNEapq+oOP8/GvL+PSYcv83hf6PPzu+CRg42XRSIKq8DPRqpDS3wzygxgyi8EGEjHJru3nC2yoTPT7BrZ+xHM3iifFCtv+wNPGh3v64ux15zEM6cGUS+4g7+2QkZT2La5391Qd+jYSjPM3Adg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qJe693PR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 95CDEC4CEDD;
+	Thu, 10 Apr 2025 15:40:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744299634;
+	bh=WWPgjrypLq+FtwiDGFQDw69WqwGWqMZd39vBNg9H2Ek=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=qJe693PRS+hQ6mlDmBvuZUfvssTMkQwUs0dlIPhRoGai+Is66UbQhQMRcrTWFuTMW
+	 voSg8/H9A6tN/W2wtWMhDEwA6niGtF1fSzzFdMtsQBrlgFe+PPD0vCX6+64b7QwNEA
+	 MJA2mF49cyLLl0UffUnGpm097TBDKGVyfGCAphTZSzVX5PlUVW4ltDUDLTYV963dQU
+	 V5OTlmsf+/xjXVR5c6kAPvsbOxDMaD+POpP6yUNNFYwTm/HaAfwAPDE206OyvHAHY0
+	 hrNVV/d+CXFR+hUD6v38NozEEVySA7TkkIQ0UTNqShiHrPr5SV1KKvDmrvfsJZul8P
+	 r6aakh8SbxC3w==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8A6EBC3601E;
+	Thu, 10 Apr 2025 15:40:34 +0000 (UTC)
+From: Jean-Baptiste Maneyrol via B4 Relay <devnull+jean-baptiste.maneyrol.tdk.com@kernel.org>
+Subject: [PATCH v4 0/2] iio: imu: inv_icm42600: switch to use generic name
+ irq get
+Date: Thu, 10 Apr 2025 17:39:39 +0200
+Message-Id: <20250410-iio-imu-inv-icm42600-rework-interrupt-using-names-v4-0-19e4e2f8f7eb@tdk.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Adding support for QMC5883L magnetometer to IIO subsystem
-To: Brajesh Patil <brajeshpatil11@gmail.com>, jic23@kernel.org
-Cc: linux-iio@vger.kernel.org, marcelo.schmitt1@gmail.com
-References: <Z_UvBIsQ4rdIYTN8@brajesh-IdeaPad-3-15IAU7>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <Z_UvBIsQ4rdIYTN8@brajesh-IdeaPad-3-15IAU7>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIADvm92cC/53OsW7CMBDG8VdBnnvIOdt16NT3qDo49gEnFBvZi
+ dsK5d1rYADWjN8Nv/9dRKHMVMTH5iIyVS6cYhv6bSP80cUDAYe2BUo0UqEB5gQ8zsCxAvtR47u
+ UkOkn5VO7TZTzfJ5gLhwPEN1IBQa1s56CxV4Z0dxzpj3/3ppf320fuUwp/91eqN31eq9pqVfUa
+ gcSLFIwnZTBdfpzCqetT6O4tio++3aNj833aHvn96a3A7766tnfrfFV84MbeuOksx6Hh78syz/
+ 8+/aesAEAAA==
+X-Change-ID: 20250325-iio-imu-inv-icm42600-rework-interrupt-using-names-b397ced72835
+To: Jonathan Cameron <jic23@kernel.org>, 
+ Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, David Lechner <dlechner@baylibre.com>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Andy Shevchenko <andy@kernel.org>
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1744299633; l=1934;
+ i=jean-baptiste.maneyrol@tdk.com; s=20240923; h=from:subject:message-id;
+ bh=WWPgjrypLq+FtwiDGFQDw69WqwGWqMZd39vBNg9H2Ek=;
+ b=3e/zhaM3q8MUpKaDXmv/uRr+PITc98IwwQe13/LQSk4jVoPOcTJJ33hLF96luG1fIYPRXL3Pq
+ A3cD4uIaS4LAJM0LAjxh2fSqIfnVUO2DcKzF7rZj9nUexhL/fKD66HO
+X-Developer-Key: i=jean-baptiste.maneyrol@tdk.com; a=ed25519;
+ pk=bRqF1WYk0hR3qrnAithOLXSD0LvSu8DUd+quKLxCicI=
+X-Endpoint-Received: by B4 Relay for
+ jean-baptiste.maneyrol@tdk.com/20240923 with auth_id=218
+X-Original-From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+Reply-To: jean-baptiste.maneyrol@tdk.com
 
-On 4/8/25 9:13 AM, Brajesh Patil wrote:
-> I have a QMC5883L magnetometer module that I’ve been trying to integrate with my 
-> Raspberry Pi using a kernel-space driver. While checking the mainline kernel, I 
-> found that there is a driver for the HMC5883L (under the hmc5843 driver), but nothing 
-> for QMC5883L.
-> 
-> I compared the datasheets for both devices and confirmed that they are not 
-> register-compatible — the QMC5883L has a different I2C address and an entirely different 
-> register map from the HMC5883L.
-> 
-> Given that this sensor is widely used (often as a drop-in replacement for the 
-> now-discontinued HMC5883L), I was thinking of writing a new driver for it under the IIO 
-> subsystem.
-> 
-> Would it make sense to move forward with this? If so, I’d appreciate any guidance or 
-> suggestions from the community.
-> 
-> Thanks,  
-> Brajesh 
-> 
-> 
+The purpose of this series is to switch to fwnode_irq_get_by_name()
+in the core module instead of using irq from the bus parsing.
 
-Go for it. :-)
+Add in dt binding interrupt naming and up to 2 interrupts support.
 
-My advice for writing a new driver: Don't try to implement every feature in one
-patch (or even one patch series). Just start with the most basic functionality.
-Then add more features in separate patches as they are needed. (Devicetree
-bindings are an exception and should be as complete as possible in the first
-patch.)
+Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+---
+Changes in v4:
+- Change dt-binding commit message to be more explicit about interrupt
+  support.
+- Simplify fwnode usage, NULL checking is already done automatically.
+- Link to v3: https://lore.kernel.org/r/20250409-iio-imu-inv-icm42600-rework-interrupt-using-names-v3-0-dab85a0a7c2b@tdk.com
+
+Changes in v3:
+- Update dt-binding to report support of the 2 interrupts and delete
+  remark about driver feature support.
+- Link to v2: https://lore.kernel.org/r/20250407-iio-imu-inv-icm42600-rework-interrupt-using-names-v2-0-c278acf587b2@tdk.com
+
+Changes in v2:
+- Add INT2 in interrupt-names enum and fix enum
+- Add fallback to first interrupt if naming is not here to ensure
+  backward compatibility
+- Link to v1: https://lore.kernel.org/r/20250404-iio-imu-inv-icm42600-rework-interrupt-using-names-v1-0-72ed5100da14@tdk.com
+
+---
+Jean-Baptiste Maneyrol (2):
+      dt-bindings: iio: imu: icm42600: add interrupt naming support
+      iio: imu: inv_icm42600: switch to use generic name irq get
+
+ .../devicetree/bindings/iio/imu/invensense,icm42600.yaml   | 13 ++++++++++++-
+ drivers/iio/imu/inv_icm42600/inv_icm42600.h                |  2 +-
+ drivers/iio/imu/inv_icm42600/inv_icm42600_core.c           | 14 ++++++++++++--
+ drivers/iio/imu/inv_icm42600/inv_icm42600_i2c.c            |  2 +-
+ drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c            |  2 +-
+ 5 files changed, 27 insertions(+), 6 deletions(-)
+---
+base-commit: 1c2409fe38d5c19015d69851d15ba543d1911932
+change-id: 20250325-iio-imu-inv-icm42600-rework-interrupt-using-names-b397ced72835
+
+Best regards,
+-- 
+Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+
+
 

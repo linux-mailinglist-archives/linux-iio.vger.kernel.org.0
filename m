@@ -1,53 +1,53 @@
-Return-Path: <linux-iio+bounces-17949-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17950-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0688A85EF4
-	for <lists+linux-iio@lfdr.de>; Fri, 11 Apr 2025 15:29:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42374A85EF9
+	for <lists+linux-iio@lfdr.de>; Fri, 11 Apr 2025 15:30:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 182F91895262
-	for <lists+linux-iio@lfdr.de>; Fri, 11 Apr 2025 13:29:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 908A94A44E0
+	for <lists+linux-iio@lfdr.de>; Fri, 11 Apr 2025 13:29:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D59A31DB13A;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3DE31DC198;
 	Fri, 11 Apr 2025 13:28:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o3u4g3pt"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AB2z5jxh"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8713D1C6FF4;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 936FB1C84BC;
 	Fri, 11 Apr 2025 13:28:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744378122; cv=none; b=r4gbhe61MAXUdE0g1n/zB3pb9lt28R+b4sOfpH2redeanjnvlAU/ELGDYTQ8YNjYeHwT5SKdQ+8V4H1QqFxV7WGKFbLeHhNTxggOLSSuHhDq0lsBu0aDMDJ2wUWeLbWVQ2tl/okIQN0yM5SMv1v+IAUGpjZ35sYgbOEdLBBESPc=
+	t=1744378122; cv=none; b=cx3MUmhgo0jZ1ezuBOnUEeb+150sRmIIwK7ipvHgJfWVnZumf8q5IWuWN7VtMpIFHq+5zG7xwYlAOqcVir9i8ghH/UTYzCK/k0I08K3a5J5xLtWdcG+NZAs6l3ZInRrcFasF4ar4rWnK+0b8H1zR1OAlaiWUcxZ2SNjpMxV/6pw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1744378122; c=relaxed/simple;
-	bh=0nY/AtFpoH954yRrlAuta5Tv6bDZX8S17v1gqTdTo8g=;
+	bh=06F3uWhubW/MmNs70dPjAwsBGFSu4UP7REe4gzXRvrc=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Vmg43WdOPPaaa0/gqgHsUVicztYL4iK8TtSXQFrhmWM4l99ur0BxKhYZySU34Fl2YqUpDdGsSgtO7ggZv854fIIqIcKmhlUNnhKkTKvv22kijscWDwRpzSlMa2Gz4pD1DRYPW6p8oO9rZDWEOOOBIkUQC8uMJqF656oENXdgfx8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o3u4g3pt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id BA9DBC4CEF4;
+	 In-Reply-To:To:Cc; b=GVIQFca2pNpp8oeJZvrN79sHeusTWC32A9vOb61Hif47Bi3cNHlVTP58kndnvJnN93pE73xPeA2/nfoIYFSkZ2VbhK31Ch7Bl8CiCf1gT1ymC92zHkF+9rpe7uE6+43Qx97lkfthFUAQfh1RnSEYNH9Mk0mQ7SOAP4V1Fej7ENI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AB2z5jxh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id CE666C4CEFB;
 	Fri, 11 Apr 2025 13:28:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1744378121;
-	bh=0nY/AtFpoH954yRrlAuta5Tv6bDZX8S17v1gqTdTo8g=;
+	bh=06F3uWhubW/MmNs70dPjAwsBGFSu4UP7REe4gzXRvrc=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=o3u4g3ptHX+0CgGY3p6yrXTUXYSnKKdCXEClQ3qS3L6xn24TSg6z83crJwsfGsam+
-	 MumWhsca8qNEXZsExpAtm8f3T+85hyJFK4pFlVtZY0i9HHm02t4jRWq2Ju71+ftCPR
-	 60L6Y5QaddfPyyN8VeveNhpVRRPSwUPrb5oIDkjNPA9gG7/BXEEZWTMYc4TldGut4q
-	 NZ38AR+yzghzoRINuX29wmnq5qpg9AH4BVo4CHPlqn2Zn/5Pniasr4OdYkO+w3cttK
-	 8mHsrwZ7dEIcUPN0/BFiEzkI/H0XHyXMMn7BlsuzzvRUSRTmq+GuCeakRyOyCmQVmJ
-	 7nZXP1yGuTNQw==
+	b=AB2z5jxhDYDnx+mAZAbLs6h67qSfstJEns1HckWAOu0+x9WZxhbQfF3PX7b45eefO
+	 7I6PX643rGFMs3mCkrxZHHtfnLyAncPHtHdEdqB5q9VvbZ8W+/pBnWimMH2EKjzTpV
+	 m8+oWCASG7ka1KDwFYdtcmbd7F+XowcQlxqC02sByGIq8EtDuSwYF9I5KMSUATfaOe
+	 uB0FQPc7x/YzieldKM52juGBPsX088Xn7MbEAq3z3MHipMfvEOQdDwG8YCn+nK4qKn
+	 oEOANgDCcRQQ4hESAQrElQ4JQHODH0R68t+VptyM+GyfKl/Lx7ha4VcDdR05o523wZ
+	 Apu4bI7eqdhxQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B0D81C369AE;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C0F6AC369B1;
 	Fri, 11 Apr 2025 13:28:41 +0000 (UTC)
 From: Remi Buisson via B4 Relay <devnull+remi.buisson.tdk.com@kernel.org>
-Date: Fri, 11 Apr 2025 13:28:37 +0000
-Subject: [PATCH 5/8] iio: imu: inv_icm45600: add buffer support in iio
- devices
+Date: Fri, 11 Apr 2025 13:28:38 +0000
+Subject: [PATCH 6/8] iio: imu: add Kconfig and Makefile for inv_icm45600
+ driver
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -56,7 +56,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250411-add_newport_driver-v1-5-15082160b019@tdk.com>
+Message-Id: <20250411-add_newport_driver-v1-6-15082160b019@tdk.com>
 References: <20250411-add_newport_driver-v1-0-15082160b019@tdk.com>
 In-Reply-To: <20250411-add_newport_driver-v1-0-15082160b019@tdk.com>
 To: Jonathan Cameron <jic23@kernel.org>, 
@@ -68,11 +68,11 @@ To: Jonathan Cameron <jic23@kernel.org>,
 Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org, 
  devicetree@vger.kernel.org, Remi Buisson <remi.buisson@tdk.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1744378119; l=21460;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1744378119; l=4140;
  i=remi.buisson@tdk.com; s=20250411; h=from:subject:message-id;
- bh=shWLFNOSbbL6CH4BKWqSsJcmmzEV7CGMLBJhh0eB/Dg=;
- b=jJjMV3KRKxjUYcvJlYudevJebWaPY/1G2u/GFKmRkKnSNBfPVm4Qts2WYSCjVi5fHZ+yS5UTz
- eSxnvLMpwI+CIwnaj/EMwqRb4m+MfHv1YsdjPuaME8kgXEWQc2P2uHe
+ bh=JKi2GN1rX4ptrduYYDNWdyAYIQv9H73qs4FmqmLloQw=;
+ b=/TXZTOwq25RwAGuqKUwN+ZtntsPPAgi8phGEgNImREFZdnkwGsxs6M44j1HgXhFIVxc41u4Hc
+ K+VDRjApQERBtMJkC2O9bT+vgPICtUnF+dcq5R1ht8xr2zyoB9jD58+
 X-Developer-Key: i=remi.buisson@tdk.com; a=ed25519;
  pk=yDVMi4C7RpXN4dififo42A7fDDt3THYzoZoNq9lUZuo=
 X-Endpoint-Received: by B4 Relay for remi.buisson@tdk.com/20250411 with
@@ -82,703 +82,143 @@ Reply-To: remi.buisson@tdk.com
 
 From: Remi Buisson <remi.buisson@tdk.com>
 
-Add all FIFO parsing and reading functions. Add accel and gyro
-kfifo buffer and FIFO data parsing. Use device interrupt for
-reading data FIFO and launching accel and gyro parsing.
-
-Support hwfifo watermark by multiplexing gyro and accel settings.
-Support hwfifo flush.
+Add 4 modules:
+- inv-icm45600
+- inv-icm45600-i2c
+- inv-icm45600-spi
+- inv-icm45600-i3c.
 
 Signed-off-by: Remi Buisson <remi.buisson@tdk.com>
 ---
- drivers/iio/imu/inv_icm45600/inv_icm45600_buffer.c | 572 +++++++++++++++++++++
- drivers/iio/imu/inv_icm45600/inv_icm45600_buffer.h | 100 ++++
- 2 files changed, 672 insertions(+)
+ drivers/iio/imu/Kconfig               |  1 +
+ drivers/iio/imu/Makefile              |  1 +
+ drivers/iio/imu/inv_icm45600/Kconfig  | 70 +++++++++++++++++++++++++++++++++++
+ drivers/iio/imu/inv_icm45600/Makefile | 17 +++++++++
+ 4 files changed, 89 insertions(+)
 
-diff --git a/drivers/iio/imu/inv_icm45600/inv_icm45600_buffer.c b/drivers/iio/imu/inv_icm45600/inv_icm45600_buffer.c
+diff --git a/drivers/iio/imu/Kconfig b/drivers/iio/imu/Kconfig
+index 15612f0f189b5114deb414ef840339678abdc562..9d732bed9fcdac12a13713dba3455c1fdf9f4a53 100644
+--- a/drivers/iio/imu/Kconfig
++++ b/drivers/iio/imu/Kconfig
+@@ -109,6 +109,7 @@ config KMX61
+ 	  be called kmx61.
+ 
+ source "drivers/iio/imu/inv_icm42600/Kconfig"
++source "drivers/iio/imu/inv_icm45600/Kconfig"
+ source "drivers/iio/imu/inv_mpu6050/Kconfig"
+ 
+ config SMI240
+diff --git a/drivers/iio/imu/Makefile b/drivers/iio/imu/Makefile
+index e901aea498d37e5897e8b71268356a19eac2cb59..2ae6344f84699b2f85fff1c8077cb412f6ae2658 100644
+--- a/drivers/iio/imu/Makefile
++++ b/drivers/iio/imu/Makefile
+@@ -25,6 +25,7 @@ obj-$(CONFIG_FXOS8700_I2C) += fxos8700_i2c.o
+ obj-$(CONFIG_FXOS8700_SPI) += fxos8700_spi.o
+ 
+ obj-y += inv_icm42600/
++obj-y += inv_icm45600/
+ obj-y += inv_mpu6050/
+ 
+ obj-$(CONFIG_KMX61) += kmx61.o
+diff --git a/drivers/iio/imu/inv_icm45600/Kconfig b/drivers/iio/imu/inv_icm45600/Kconfig
 new file mode 100644
-index 0000000000000000000000000000000000000000..ed6f46eb4865fa3299b0240cc5f520e0326a7648
+index 0000000000000000000000000000000000000000..4fade8852a0dcf54df2bbd67b9269ed2c59f8699
 --- /dev/null
-+++ b/drivers/iio/imu/inv_icm45600/inv_icm45600_buffer.c
-@@ -0,0 +1,572 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+/*
-+ * Copyright (C) 2025 Invensense, Inc.
-+ */
-+
-+#include <linux/delay.h>
-+#include <linux/device.h>
-+#include <linux/iio/buffer.h>
-+#include <linux/iio/common/inv_sensors_timestamp.h>
-+#include <linux/iio/iio.h>
-+#include <linux/kernel.h>
-+#include <linux/mutex.h>
-+#include <linux/pm_runtime.h>
-+#include <linux/regmap.h>
-+
-+#include "inv_icm45600_buffer.h"
-+#include "inv_icm45600.h"
-+
-+/* FIFO header: 1 byte */
-+#define INV_ICM45600_FIFO_EXT_HEADER		BIT(7)
-+#define INV_ICM45600_FIFO_HEADER_ACCEL		BIT(6)
-+#define INV_ICM45600_FIFO_HEADER_GYRO		BIT(5)
-+#define INV_ICM45600_FIFO_HEADER_HIGH_RES	BIT(4)
-+#define INV_ICM45600_FIFO_HEADER_TMST_FSYNC	GENMASK(3, 2)
-+#define INV_ICM45600_FIFO_HEADER_ODR_ACCEL	BIT(1)
-+#define INV_ICM45600_FIFO_HEADER_ODR_GYRO	BIT(0)
-+
-+struct inv_icm45600_fifo_1sensor_packet {
-+	uint8_t header;
-+	struct inv_icm45600_fifo_sensor_data data;
-+	int8_t temp;
-+} __packed;
-+#define INV_ICM45600_FIFO_1SENSOR_PACKET_SIZE		8
-+
-+struct inv_icm45600_fifo_2sensors_packet {
-+	uint8_t header;
-+	struct inv_icm45600_fifo_sensor_data accel;
-+	struct inv_icm45600_fifo_sensor_data gyro;
-+	int8_t temp;
-+	__le16 timestamp;
-+} __packed;
-+#define INV_ICM45600_FIFO_2SENSORS_PACKET_SIZE		16
-+
-+ssize_t inv_icm45600_fifo_decode_packet(const void *packet, const void **accel,
-+					const void **gyro, const int8_t **temp,
-+					const void **timestamp, unsigned int *odr)
-+{
-+	const struct inv_icm45600_fifo_1sensor_packet *pack1 = packet;
-+	const struct inv_icm45600_fifo_2sensors_packet *pack2 = packet;
-+	uint8_t header = *((const uint8_t *)packet);
-+
-+	/* FIFO extended header */
-+	if (header & INV_ICM45600_FIFO_EXT_HEADER) {
-+		/* Not yet supported */
-+		return 0;
-+	}
-+
-+	/* handle odr flags */
-+	*odr = 0;
-+	if (header & INV_ICM45600_FIFO_HEADER_ODR_GYRO)
-+		*odr |= INV_ICM45600_SENSOR_GYRO;
-+	if (header & INV_ICM45600_FIFO_HEADER_ODR_ACCEL)
-+		*odr |= INV_ICM45600_SENSOR_ACCEL;
-+
-+	/* accel + gyro */
-+	if ((header & INV_ICM45600_FIFO_HEADER_ACCEL) &&
-+	    (header & INV_ICM45600_FIFO_HEADER_GYRO)) {
-+		*accel = &pack2->accel;
-+		*gyro = &pack2->gyro;
-+		*temp = &pack2->temp;
-+		*timestamp = &pack2->timestamp;
-+		return INV_ICM45600_FIFO_2SENSORS_PACKET_SIZE;
-+	}
-+
-+	/* accel only */
-+	if (header & INV_ICM45600_FIFO_HEADER_ACCEL) {
-+		*accel = &pack1->data;
-+		*gyro = NULL;
-+		*temp = &pack1->temp;
-+		*timestamp = NULL;
-+		return INV_ICM45600_FIFO_1SENSOR_PACKET_SIZE;
-+	}
-+
-+	/* gyro only */
-+	if (header & INV_ICM45600_FIFO_HEADER_GYRO) {
-+		*accel = NULL;
-+		*gyro = &pack1->data;
-+		*temp = &pack1->temp;
-+		*timestamp = NULL;
-+		return INV_ICM45600_FIFO_1SENSOR_PACKET_SIZE;
-+	}
-+
-+	/* invalid packet if here */
-+	return -EINVAL;
-+}
-+
-+void inv_icm45600_buffer_update_fifo_period(struct inv_icm45600_state *st)
-+{
-+	uint32_t period_gyro, period_accel, period;
-+
-+	if (st->fifo.en & INV_ICM45600_SENSOR_GYRO)
-+		period_gyro = inv_icm45600_odr_to_period(st->conf.gyro.odr);
-+	else
-+		period_gyro = U32_MAX;
-+
-+	if (st->fifo.en & INV_ICM45600_SENSOR_ACCEL)
-+		period_accel = inv_icm45600_odr_to_period(st->conf.accel.odr);
-+	else
-+		period_accel = U32_MAX;
-+
-+	if (period_gyro <= period_accel)
-+		period = period_gyro;
-+	else
-+		period = period_accel;
-+
-+	st->fifo.period = period;
-+}
-+
-+int inv_icm45600_buffer_set_fifo_en(struct inv_icm45600_state *st,
-+				    unsigned int fifo_en)
-+{
-+	unsigned int mask, val;
-+	int ret;
-+
-+	/* update only FIFO EN bits */
-+	mask = INV_ICM45600_FIFO_CONFIG3_GYRO_EN |
-+	       INV_ICM45600_FIFO_CONFIG3_ACCEL_EN;
-+
-+	val = 0;
-+	if ((fifo_en & INV_ICM45600_SENSOR_GYRO) || (fifo_en & INV_ICM45600_SENSOR_ACCEL))
-+		val = (INV_ICM45600_FIFO_CONFIG3_GYRO_EN | INV_ICM45600_FIFO_CONFIG3_ACCEL_EN);
-+
-+	ret = regmap_update_bits(st->map, INV_ICM45600_REG_FIFO_CONFIG3, mask, val);
-+	if (ret)
-+		return ret;
-+
-+	st->fifo.en = fifo_en;
-+	inv_icm45600_buffer_update_fifo_period(st);
-+
-+	return 0;
-+}
-+
-+static unsigned int inv_icm45600_wm_truncate(unsigned int watermark, size_t packet_size,
-+					     unsigned int fifo_period)
-+{
-+	size_t watermark_max, grace_samples;
-+
-+	/* keep 20ms for processing FIFO */
-+	grace_samples = (20U * 1000000U) / fifo_period;
-+	if (grace_samples < 1)
-+		grace_samples = 1;
-+
-+	watermark_max = INV_ICM45600_FIFO_SIZE_MAX / packet_size;
-+	watermark_max -= grace_samples;
-+
-+	if (watermark > watermark_max)
-+		watermark = watermark_max;
-+
-+	return watermark;
-+}
-+
-+/**
-+ * inv_icm45600_buffer_update_watermark - update watermark FIFO threshold
-+ * @st:	driver internal state
-+ *
-+ * Returns 0 on success, a negative error code otherwise.
-+ *
-+ * FIFO watermark threshold is computed based on the required watermark values
-+ * set for gyro and accel sensors. Since watermark is all about acceptable data
-+ * latency, use the smallest setting between the 2. It means choosing the
-+ * smallest latency but this is not as simple as choosing the smallest watermark
-+ * value. Latency depends on watermark and ODR. It requires several steps:
-+ * 1) compute gyro and accel latencies and choose the smallest value.
-+ * 2) adapt the chosen latency so that it is a multiple of both gyro and accel
-+ *    ones. Otherwise it is possible that you don't meet a requirement. (for
-+ *    example with gyro @100Hz wm 4 and accel @100Hz with wm 6, choosing the
-+ *    value of 4 will not meet accel latency requirement because 6 is not a
-+ *    multiple of 4. You need to use the value 2.)
-+ * 3) Since all periods are multiple of each others, watermark is computed by
-+ *    dividing this computed latency by the smallest period, which corresponds
-+ *    to the FIFO frequency.
-+ */
-+int inv_icm45600_buffer_update_watermark(struct inv_icm45600_state *st)
-+{
-+	const size_t packet_size = INV_ICM45600_FIFO_2SENSORS_PACKET_SIZE;
-+	unsigned int wm_gyro, wm_accel, watermark;
-+	uint32_t period_gyro, period_accel, period;
-+	uint32_t latency_gyro, latency_accel, latency;
-+	__le16 raw_wm;
-+	int ret;
-+
-+	/* compute sensors latency, depending on sensor watermark and odr */
-+	wm_gyro = inv_icm45600_wm_truncate(st->fifo.watermark.gyro, packet_size,
-+					   st->fifo.period);
-+	wm_accel = inv_icm45600_wm_truncate(st->fifo.watermark.accel, packet_size,
-+					    st->fifo.period);
-+	/* use us for odr to avoid overflow using 32 bits values */
-+	period_gyro = inv_icm45600_odr_to_period(st->conf.gyro.odr) / 1000UL;
-+	period_accel = inv_icm45600_odr_to_period(st->conf.accel.odr) / 1000UL;
-+	latency_gyro = period_gyro * wm_gyro;
-+	latency_accel = period_accel * wm_accel;
-+
-+	/* 0 value for watermark means that the sensor is turned off */
-+	if (wm_gyro == 0 && wm_accel == 0)
-+		return 0;
-+
-+	if (latency_gyro == 0) {
-+		watermark = wm_accel;
-+		st->fifo.watermark.eff_accel = wm_accel;
-+	} else if (latency_accel == 0) {
-+		watermark = wm_gyro;
-+		st->fifo.watermark.eff_gyro = wm_gyro;
-+	} else {
-+		/* compute the smallest latency that is a multiple of both */
-+		if (latency_gyro <= latency_accel)
-+			latency = latency_gyro - (latency_accel % latency_gyro);
-+		else
-+			latency = latency_accel - (latency_gyro % latency_accel);
-+		/* use the shortest period */
-+		if (period_gyro <= period_accel)
-+			period = period_gyro;
-+		else
-+			period = period_accel;
-+		/* all this works because periods are multiple of each others */
-+		watermark = latency / period;
-+		if (watermark < 1)
-+			watermark = 1;
-+		/* update effective watermark */
-+		st->fifo.watermark.eff_gyro = latency / period_gyro;
-+		if (st->fifo.watermark.eff_gyro < 1)
-+			st->fifo.watermark.eff_gyro = 1;
-+		st->fifo.watermark.eff_accel = latency / period_accel;
-+		if (st->fifo.watermark.eff_accel < 1)
-+			st->fifo.watermark.eff_accel = 1;
-+	}
-+
-+	raw_wm = INV_ICM45600_FIFO_WATERMARK_VAL(watermark);
-+	memcpy(st->buffer, &raw_wm, sizeof(raw_wm));
-+	ret = regmap_bulk_write(st->map, INV_ICM45600_REG_FIFO_WATERMARK,
-+				st->buffer, sizeof(raw_wm));
-+	if (ret)
-+		return ret;
-+
-+	return 0;
-+}
-+
-+static int inv_icm45600_buffer_preenable(struct iio_dev *indio_dev)
-+{
-+	struct inv_icm45600_state *st = iio_device_get_drvdata(indio_dev);
-+	struct device *dev = regmap_get_device(st->map);
-+	struct inv_icm45600_sensor_state *sensor_st = iio_priv(indio_dev);
-+	struct inv_sensors_timestamp *ts = &sensor_st->ts;
-+
-+	pm_runtime_get_sync(dev);
-+
-+	guard(mutex)(&st->lock);
-+	inv_sensors_timestamp_reset(ts);
-+
-+	return 0;
-+}
-+
-+/*
-+ * update_scan_mode callback is turning sensors on and setting data FIFO enable
-+ * bits.
-+ */
-+static int inv_icm45600_buffer_postenable(struct iio_dev *indio_dev)
-+{
-+	struct inv_icm45600_state *st = iio_device_get_drvdata(indio_dev);
-+	int ret;
-+
-+	guard(mutex)(&st->lock);
-+
-+	/* exit if FIFO is already on */
-+	if (st->fifo.on) {
-+		ret = 0;
-+		goto out_on;
-+	}
-+
-+	/* flush FIFO data */
-+	ret = regmap_set_bits(st->map, INV_ICM45600_REG_FIFO_CONFIG2,
-+			   INV_ICM45600_REG_FIFO_CONFIG2_FIFO_FLUSH);
-+	if (ret)
-+		return ret;
-+
-+	/* set FIFO threshold and full interrupt */
-+	ret = regmap_set_bits(st->map, INV_ICM45600_REG_INT1_CONFIG0,
-+			      INV_ICM45600_INT1_CONFIG0_FIFO_THS_EN |
-+			      INV_ICM45600_INT1_CONFIG0_FIFO_FULL_EN);
-+	if (ret)
-+		return ret;
-+
-+	/* set FIFO in streaming mode */
-+	ret = regmap_update_bits(st->map, INV_ICM45600_REG_FIFO_CONFIG0,
-+				 INV_ICM45600_FIFO_CONFIG0_MODE_MASK,
-+				 INV_ICM45600_FIFO_CONFIG0_MODE_STREAM);
-+	if (ret)
-+		return ret;
-+
-+	/* enable writing sensor data to FIFO */
-+	ret = regmap_set_bits(st->map, INV_ICM45600_REG_FIFO_CONFIG3,
-+			      INV_ICM45600_FIFO_CONFIG3_IF_EN);
-+	if (ret)
-+		return ret;
-+
-+out_on:
-+	/* increase FIFO on counter */
-+	st->fifo.on++;
-+	return ret;
-+}
-+
-+static int inv_icm45600_buffer_predisable(struct iio_dev *indio_dev)
-+{
-+	struct inv_icm45600_state *st = iio_device_get_drvdata(indio_dev);
-+	int ret;
-+
-+	guard(mutex)(&st->lock);
-+
-+	/* exit if there are several sensors using the FIFO */
-+	if (st->fifo.on > 1) {
-+		ret = 0;
-+		goto out_off;
-+	}
-+
-+	/* disable writing sensor data to FIFO */
-+	ret = regmap_clear_bits(st->map, INV_ICM45600_REG_FIFO_CONFIG3,
-+				INV_ICM45600_FIFO_CONFIG3_IF_EN);
-+	if (ret)
-+		return ret;
-+
-+	/* set FIFO in bypass mode */
-+	ret = regmap_update_bits(st->map, INV_ICM45600_REG_FIFO_CONFIG0,
-+				 INV_ICM45600_FIFO_CONFIG0_MODE_MASK,
-+				 INV_ICM45600_FIFO_CONFIG0_MODE_BYPASS);
-+	if (ret)
-+		return ret;
-+
-+	/* disable FIFO threshold and full interrupt */
-+	ret = regmap_clear_bits(st->map, INV_ICM45600_REG_INT1_CONFIG0,
-+				INV_ICM45600_INT1_CONFIG0_FIFO_THS_EN |
-+				INV_ICM45600_INT1_CONFIG0_FIFO_FULL_EN);
-+	if (ret)
-+		return ret;
-+
-+	/* flush FIFO data */
-+	ret = regmap_set_bits(st->map, INV_ICM45600_REG_FIFO_CONFIG2,
-+			   INV_ICM45600_REG_FIFO_CONFIG2_FIFO_FLUSH);
-+	if (ret)
-+		return ret;
-+
-+out_off:
-+	/* decrease FIFO on counter */
-+	st->fifo.on--;
-+	return ret;
-+}
-+
-+static int inv_icm45600_buffer_postdisable(struct iio_dev *indio_dev)
-+{
-+	struct inv_icm45600_state *st = iio_device_get_drvdata(indio_dev);
-+	struct device *dev = regmap_get_device(st->map);
-+	unsigned int sensor;
-+	unsigned int *watermark;
-+	struct inv_icm45600_sensor_conf conf = INV_ICM45600_SENSOR_CONF_INIT;
-+	unsigned int sleep_temp = 0;
-+	unsigned int sleep_sensor = 0;
-+	unsigned int sleep;
-+	int ret;
-+
-+	if (indio_dev == st->indio_gyro) {
-+		sensor = INV_ICM45600_SENSOR_GYRO;
-+		watermark = &st->fifo.watermark.gyro;
-+	} else if (indio_dev == st->indio_accel) {
-+		sensor = INV_ICM45600_SENSOR_ACCEL;
-+		watermark = &st->fifo.watermark.accel;
-+	} else {
-+		return -EINVAL;
-+	}
-+
-+	scoped_guard(mutex, &st->lock) {
-+		ret = inv_icm45600_buffer_set_fifo_en(st, st->fifo.en & ~sensor);
-+		if (ret)
-+			break;
-+
-+		*watermark = 0;
-+		ret = inv_icm45600_buffer_update_watermark(st);
-+		if (ret)
-+			break;
-+
-+		conf.mode = INV_ICM45600_SENSOR_MODE_OFF;
-+		if (sensor == INV_ICM45600_SENSOR_GYRO)
-+			ret = inv_icm45600_set_gyro_conf(st, &conf, &sleep_sensor);
-+		else
-+			ret = inv_icm45600_set_accel_conf(st, &conf, &sleep_sensor);
-+	}
-+	/* sleep maximum required time */
-+	sleep = max(sleep_sensor, sleep_temp);
-+	if (sleep)
-+		msleep(sleep);
-+
-+	pm_runtime_mark_last_busy(dev);
-+	pm_runtime_put_autosuspend(dev);
-+
-+	return ret;
-+}
-+
-+const struct iio_buffer_setup_ops inv_icm45600_buffer_ops = {
-+	.preenable = inv_icm45600_buffer_preenable,
-+	.postenable = inv_icm45600_buffer_postenable,
-+	.predisable = inv_icm45600_buffer_predisable,
-+	.postdisable = inv_icm45600_buffer_postdisable,
-+};
-+
-+int inv_icm45600_buffer_fifo_read(struct inv_icm45600_state *st,
-+				  unsigned int max)
-+{
-+	const ssize_t packet_size = INV_ICM45600_FIFO_2SENSORS_PACKET_SIZE;
-+	__le16 *raw_fifo_count;
-+	size_t fifo_nb, i;
-+	ssize_t size;
-+	const void *accel, *gyro, *timestamp;
-+	const int8_t *temp;
-+	unsigned int odr;
-+	int ret;
-+
-+	/* reset all samples counters */
-+	st->fifo.count = 0;
-+	st->fifo.nb.gyro = 0;
-+	st->fifo.nb.accel = 0;
-+	st->fifo.nb.total = 0;
-+
-+	/* read FIFO count value */
-+	raw_fifo_count = (__le16 *)st->buffer;
-+	ret = regmap_bulk_read(st->map, INV_ICM45600_REG_FIFO_COUNT,
-+			       raw_fifo_count, sizeof(*raw_fifo_count));
-+	if (ret)
-+		return ret;
-+	fifo_nb = le16_to_cpup(raw_fifo_count);
-+
-+	/* check and limit number of samples if requested */
-+	if (fifo_nb == 0)
-+		return 0;
-+	if (max > 0 && fifo_nb > max)
-+		fifo_nb = max;
-+
-+	/* Try to read all FIFO data in internal buffer */
-+	st->fifo.count = fifo_nb * packet_size;
-+	ret = regmap_noinc_read(st->map, INV_ICM45600_REG_FIFO_DATA,
-+				st->fifo.data, st->fifo.count);
-+	if (ret == -ENOTSUPP || ret == -EFBIG) {
-+		/* Read full fifo is not supported, read samples one by one */
-+		ret = 0;
-+		for (i = 0; i < st->fifo.count && ret == 0; i += packet_size)
-+			ret = regmap_noinc_read(st->map, INV_ICM45600_REG_FIFO_DATA,
-+							&st->fifo.data[i], packet_size);
-+	}
-+	if (ret)
-+		return ret;
-+
-+	for (i = 0; i < st->fifo.count; i += size) {
-+		size = inv_icm45600_fifo_decode_packet(&st->fifo.data[i],
-+			&accel, &gyro, &temp, &timestamp, &odr);
-+		if (size <= 0)
-+			break;
-+		if (gyro != NULL && inv_icm45600_fifo_is_data_valid(gyro))
-+			st->fifo.nb.gyro++;
-+		if (accel != NULL && inv_icm45600_fifo_is_data_valid(accel))
-+			st->fifo.nb.accel++;
-+		st->fifo.nb.total++;
-+	}
-+
-+	return 0;
-+}
-+
-+int inv_icm45600_buffer_fifo_parse(struct inv_icm45600_state *st)
-+{
-+	struct inv_icm45600_sensor_state *gyro_st = iio_priv(st->indio_gyro);
-+	struct inv_icm45600_sensor_state *accel_st = iio_priv(st->indio_accel);
-+	struct inv_sensors_timestamp *ts;
-+	int ret;
-+
-+	if (st->fifo.nb.total == 0)
-+		return 0;
-+
-+	/* handle gyroscope timestamp and FIFO data parsing */
-+	if (st->fifo.nb.gyro > 0) {
-+		ts = &gyro_st->ts;
-+		inv_sensors_timestamp_interrupt(ts, st->fifo.watermark.eff_gyro,
-+						st->timestamp.gyro);
-+		ret = inv_icm45600_gyro_parse_fifo(st->indio_gyro);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	/* handle accelerometer timestamp and FIFO data parsing */
-+	if (st->fifo.nb.accel > 0) {
-+		ts = &accel_st->ts;
-+		inv_sensors_timestamp_interrupt(ts, st->fifo.watermark.eff_accel,
-+						st->timestamp.accel);
-+		ret = inv_icm45600_accel_parse_fifo(st->indio_accel);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	return 0;
-+}
-+
-+int inv_icm45600_buffer_hwfifo_flush(struct inv_icm45600_state *st,
-+				     unsigned int count)
-+{
-+	struct inv_icm45600_sensor_state *gyro_st = iio_priv(st->indio_gyro);
-+	struct inv_icm45600_sensor_state *accel_st = iio_priv(st->indio_accel);
-+	struct inv_sensors_timestamp *ts;
-+	int64_t gyro_ts, accel_ts;
-+	int ret;
-+
-+	gyro_ts = iio_get_time_ns(st->indio_gyro);
-+	accel_ts = iio_get_time_ns(st->indio_accel);
-+
-+	ret = inv_icm45600_buffer_fifo_read(st, count);
-+	if (ret)
-+		return ret;
-+
-+	if (st->fifo.nb.total == 0)
-+		return 0;
-+
-+	if (st->fifo.nb.gyro > 0) {
-+		ts = &gyro_st->ts;
-+		inv_sensors_timestamp_interrupt(ts, st->fifo.nb.gyro, gyro_ts);
-+		ret = inv_icm45600_gyro_parse_fifo(st->indio_gyro);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	if (st->fifo.nb.accel > 0) {
-+		ts = &accel_st->ts;
-+		inv_sensors_timestamp_interrupt(ts, st->fifo.nb.accel, accel_ts);
-+		ret = inv_icm45600_accel_parse_fifo(st->indio_accel);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	return 0;
-+}
-+
-+int inv_icm45600_buffer_init(struct inv_icm45600_state *st)
-+{
-+	int ret;
-+
-+	st->fifo.watermark.eff_gyro = 1;
-+	st->fifo.watermark.eff_accel = 1;
-+
-+	/* Disable all FIFO EN bits. */
-+	ret = regmap_write(st->map, INV_ICM45600_REG_FIFO_CONFIG3, 0);
-+	if (ret)
-+		return ret;
-+
-+	/* Disable FIFO and set depth */
-+	ret = regmap_write(st->map, INV_ICM45600_REG_FIFO_CONFIG0,
-+			   INV_ICM45600_FIFO_CONFIG0_MODE_BYPASS |
-+			   INV_ICM45600_FIFO_CONFIG0_FIFO_DEPTH_MAX);
-+	if (ret)
-+		return ret;
-+
-+	/* enable only timestamp in fifo, disable compression */
-+	ret = regmap_write(st->map, INV_ICM45600_REG_FIFO_CONFIG4,
-+			   INV_ICM45600_FIFO_CONFIG4_TMST_FSYNC_EN);
-+	if (ret)
-+		return ret;
-+
-+	/* Enable FIFO continuous watermark interrupt. */
-+	return regmap_set_bits(st->map, INV_ICM45600_REG_FIFO_CONFIG2,
-+			       INV_ICM45600_REG_FIFO_CONFIG2_WM_GT_TH);
-+}
-diff --git a/drivers/iio/imu/inv_icm45600/inv_icm45600_buffer.h b/drivers/iio/imu/inv_icm45600/inv_icm45600_buffer.h
++++ b/drivers/iio/imu/inv_icm45600/Kconfig
+@@ -0,0 +1,70 @@
++# SPDX-License-Identifier: GPL-2.0-or-later
++
++config INV_ICM45600
++	tristate
++	select IIO_BUFFER
++	select IIO_KFIFO_BUF
++	select IIO_INV_SENSORS_TIMESTAMP
++
++config INV_ICM45600_I2C
++	tristate "InvenSense ICM-456xx I2C driver"
++	depends on I2C
++	select INV_ICM45600
++	select REGMAP_I2C
++	help
++	  This driver supports the InvenSense ICM-456xx motion tracking
++	  devices over I2C.
++	  Supported devices:
++	  - ICM-45605
++	  - ICM-45686
++	  - ICM-45688-P
++	  - ICM-45608
++	  - ICM-45634
++	  - ICM-45689
++	  - ICM-45606
++	  - ICM-45687
++
++	  This driver can be built as a module. The module will be called
++	  inv-icm45600-i2c.
++
++config INV_ICM45600_SPI
++	tristate "InvenSense ICM-456xx SPI driver"
++	depends on SPI_MASTER
++	select INV_ICM45600
++	select REGMAP_SPI
++	help
++	  This driver supports the InvenSense ICM-456xx motion tracking
++	  devices over SPI.
++	  Supported devices:
++	  - ICM-45605
++	  - ICM-45686
++	  - ICM-45688-P
++	  - ICM-45608
++	  - ICM-45634
++	  - ICM-45689
++	  - ICM-45606
++	  - ICM-45687
++
++	  This driver can be built as a module. The module will be called
++	  inv-icm45600-spi.
++
++config INV_ICM45600_I3C
++	tristate "InvenSense ICM-456xx I3C driver"
++	depends on I3C
++	select INV_ICM45600
++	select REGMAP_I3C
++	help
++	  This driver supports the InvenSense ICM-456xx motion tracking
++	  devices over I3C.
++	  Supported devices:
++	  - ICM-45605
++	  - ICM-45686
++	  - ICM-45688-P
++	  - ICM-45608
++	  - ICM-45634
++	  - ICM-45689
++	  - ICM-45606
++	  - ICM-45687
++
++	  This driver can be built as a module. The module will be called
++	  inv-icm45600-i3c.
+diff --git a/drivers/iio/imu/inv_icm45600/Makefile b/drivers/iio/imu/inv_icm45600/Makefile
 new file mode 100644
-index 0000000000000000000000000000000000000000..f725f841e07bc1e738ca7df07accd50484c8ceda
+index 0000000000000000000000000000000000000000..0fd6fbce0286f24504dbfe71925f9c35e717c446
 --- /dev/null
-+++ b/drivers/iio/imu/inv_icm45600/inv_icm45600_buffer.h
-@@ -0,0 +1,100 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+/*
-+ * Copyright (C) 2025 Invensense, Inc.
-+ */
++++ b/drivers/iio/imu/inv_icm45600/Makefile
+@@ -0,0 +1,17 @@
++# SPDX-License-Identifier: GPL-2.0-or-later
 +
-+#ifndef INV_ICM45600_BUFFER_H_
-+#define INV_ICM45600_BUFFER_H_
++obj-$(CONFIG_INV_ICM45600) += inv-icm45600.o
++inv-icm45600-y += inv_icm45600_core.o
++inv-icm45600-y += inv_icm45600_gyro.o
++inv-icm45600-y += inv_icm45600_accel.o
++inv-icm45600-y += inv_icm45600_temp.o
++inv-icm45600-y += inv_icm45600_buffer.o
 +
-+#include <linux/bits.h>
-+#include <linux/kernel.h>
++obj-$(CONFIG_INV_ICM45600_I2C) += inv-icm45600-i2c.o
++inv-icm45600-i2c-y += inv_icm45600_i2c.o
 +
-+struct inv_icm45600_state;
++obj-$(CONFIG_INV_ICM45600_SPI) += inv-icm45600-spi.o
++inv-icm45600-spi-y += inv_icm45600_spi.o
 +
-+#define INV_ICM45600_SENSOR_GYRO	BIT(0)
-+#define INV_ICM45600_SENSOR_ACCEL	BIT(1)
-+#define INV_ICM45600_SENSOR_TEMP	BIT(2)
-+
-+/**
-+ * struct inv_icm45600_fifo - FIFO state variables
-+ * @on:		reference counter for FIFO on.
-+ * @en:		bits field of INV_ICM45600_SENSOR_* for FIFO EN bits.
-+ * @period:	FIFO internal period.
-+ * @watermark:	watermark configuration values for accel and gyro.
-+ * @count:	number of bytes in the FIFO data buffer.
-+ * @nb:		gyro, accel and total samples in the FIFO data buffer.
-+ * @data:	FIFO data buffer aligned for DMA (8kB)
-+ */
-+struct inv_icm45600_fifo {
-+	unsigned int on;
-+	unsigned int en;
-+	uint32_t period;
-+	struct {
-+		unsigned int gyro;
-+		unsigned int accel;
-+		unsigned int eff_gyro;
-+		unsigned int eff_accel;
-+	} watermark;
-+	size_t count;
-+	struct {
-+		size_t gyro;
-+		size_t accel;
-+		size_t total;
-+	} nb;
-+	uint8_t data[8192] __aligned(IIO_DMA_MINALIGN);
-+};
-+
-+/* FIFO data packet */
-+struct inv_icm45600_fifo_sensor_data {
-+	__le16 x;
-+	__le16 y;
-+	__le16 z;
-+} __packed;
-+#define INV_ICM45600_FIFO_DATA_INVALID		-32768
-+
-+static inline int16_t inv_icm45600_fifo_get_sensor_data(__le16 d)
-+{
-+	return le16_to_cpu(d);
-+}
-+
-+static inline bool
-+inv_icm45600_fifo_is_data_valid(const struct inv_icm45600_fifo_sensor_data *s)
-+{
-+	int16_t x, y, z;
-+
-+	x = inv_icm45600_fifo_get_sensor_data(s->x);
-+	y = inv_icm45600_fifo_get_sensor_data(s->y);
-+	z = inv_icm45600_fifo_get_sensor_data(s->z);
-+
-+	if (x == INV_ICM45600_FIFO_DATA_INVALID &&
-+	    y == INV_ICM45600_FIFO_DATA_INVALID &&
-+	    z == INV_ICM45600_FIFO_DATA_INVALID)
-+		return false;
-+
-+	return true;
-+}
-+
-+ssize_t inv_icm45600_fifo_decode_packet(const void *packet, const void **accel,
-+					const void **gyro, const int8_t **temp,
-+					const void **timestamp, unsigned int *odr);
-+
-+extern const struct iio_buffer_setup_ops inv_icm45600_buffer_ops;
-+
-+int inv_icm45600_buffer_init(struct inv_icm45600_state *st);
-+
-+void inv_icm45600_buffer_update_fifo_period(struct inv_icm45600_state *st);
-+
-+int inv_icm45600_buffer_set_fifo_en(struct inv_icm45600_state *st,
-+				    unsigned int fifo_en);
-+
-+int inv_icm45600_buffer_update_watermark(struct inv_icm45600_state *st);
-+
-+int inv_icm45600_buffer_fifo_read(struct inv_icm45600_state *st,
-+				  unsigned int max);
-+
-+int inv_icm45600_buffer_fifo_parse(struct inv_icm45600_state *st);
-+
-+int inv_icm45600_buffer_hwfifo_flush(struct inv_icm45600_state *st,
-+				     unsigned int count);
-+
-+#endif
++obj-$(CONFIG_INV_ICM45600_I3C) += inv-icm45600-i3c.o
++inv-icm45600-i3c-y += inv_icm45600_i3c.o
 
 -- 
 2.34.1

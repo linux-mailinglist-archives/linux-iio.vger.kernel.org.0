@@ -1,111 +1,174 @@
-Return-Path: <linux-iio+bounces-17953-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17954-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB2B2A860E7
-	for <lists+linux-iio@lfdr.de>; Fri, 11 Apr 2025 16:43:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80C1CA8620A
+	for <lists+linux-iio@lfdr.de>; Fri, 11 Apr 2025 17:37:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8C45A18909D4
-	for <lists+linux-iio@lfdr.de>; Fri, 11 Apr 2025 14:40:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1469E460351
+	for <lists+linux-iio@lfdr.de>; Fri, 11 Apr 2025 15:37:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 707591F4E3B;
-	Fri, 11 Apr 2025 14:40:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8178620FA90;
+	Fri, 11 Apr 2025 15:37:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l+ZmcKGp"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MwTXJXH9"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2562045948;
-	Fri, 11 Apr 2025 14:40:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B02438FAD;
+	Fri, 11 Apr 2025 15:37:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744382400; cv=none; b=BElfpUcsO4lO3zLq6qwG8YOp3WUtdYUeL07xDIsTdQGBInAkdx8C0MUiM6SpeZa/C8OgPixrlDYfAqkVLAodnxdSEAu6lDLCTQl3X/Xl5C24nKohFUCsyGWykWpQ/oWyoNH6dMDPneU7x5VfevAXvcX4D/6RfRy8lOWYWqGycMQ=
+	t=1744385851; cv=none; b=Sfvx4uxF3LEfWnGC3G7fYceUtO2pCRUVerBokye0KtlPbrSALEiHHayxiPQo6z/x2hptmeLRLNYwLCM2AXmi5b85pVRXfOP4BmdXia/mmw1YvHaavSb/9d/J+QQdvK/6CtTpYWtNgatx5FP34alwx09nrZ/IPC4dsqJr7nMYE6Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744382400; c=relaxed/simple;
-	bh=Z97OYE/NcKg9tLL41XS8aSmgXASHjHGExZoZa0NkhD8=;
-	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
-	 Message-Id:Subject; b=lsTP6jEV+dS1NSv+Vfm6g8AhVAA6fXs8OwJRE236rawvtPSTEk/It0VwIQuQfa7gXWrmf1CVLyb6hH5dZvHyuokVO1OIvS4RrItgFRrZ6ODtOtJuyb70aICfOYBvVTL7iqCdNfaK/0A2vbbhq14SnnWCdiRZvA1MnpnfGDlk8Hk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l+ZmcKGp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC0EBC4CEE2;
-	Fri, 11 Apr 2025 14:39:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744382400;
-	bh=Z97OYE/NcKg9tLL41XS8aSmgXASHjHGExZoZa0NkhD8=;
-	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
-	b=l+ZmcKGpu9gylYDItuBlArpzuIFChrqQ0YaBFmQwUyg14zNonQLO4ixzLmoQD/iLN
-	 GNpvPYm6Q1reFU+HHmBYkNKRBli2zbkiRAO8Pp9waRi6aTNChGdmCzGtvYZBcsl0nn
-	 xyLHIcEVG90p9+ZtDbnpCXTrWpa1/icIWG+JwIJYyGUDktCrP7pmz5VW487BoVPPVY
-	 kahWR4fIIG5iCQfkYa79q+l8+1pXh0vg964gyeo1pfr/vZdNmc38Z/XRg6jEE9XpAw
-	 /Kwuf9zMdHQyw1bPjX2MLc7pzQrQSHlU7rJZ7DKOY+ANnjESn1o6ofwkp58Rlm3y+Y
-	 +hnNW+gW1bQ+Q==
-Date: Fri, 11 Apr 2025 09:39:58 -0500
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=arc-20240116; t=1744385851; c=relaxed/simple;
+	bh=fDRRe0Vo8MsJlmXmjA8331kCKEUcsy/Mwqle2vPH27A=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=O3qGj23XZvor+a8hlxWmCrMV+V29CjFg2OShNt9S7/dUxpa+qE4tLjGFh0eYMwXc2ds1SjaFATw3qEMeWhN56o6FY7M/6aB0eWB+Eo/qDGcrFHCE0PMQJfOoaoQYX6z8nTWJmvO/Q+aILGw9VPk5aSPxxE6It+7FtxYbO7XwJGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MwTXJXH9; arc=none smtp.client-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-43d0359b1fcso14971275e9.0;
+        Fri, 11 Apr 2025 08:37:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1744385848; x=1744990648; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:to:from:subject:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=NtHELzGhuW6IkR/SmUv1y38cOrSHAmRqhP7AdXLw9DY=;
+        b=MwTXJXH9BJoZK9VYudkwUjFlmgj2b9eods4y5kyfC4OIdaJRGyqcNAY9z8jCQaOGsg
+         OSgm9rgNa9liohkr27Imc7VhkgqJEnEW9UdLpY7SFaFmwDxBaXjx6R/Rc+eOh+583i8i
+         sZbESCwmWlIr13eqkjdiAzMrZmbxTBW1ES9sge65i17Z8j9hvHvPmo7csQoRFgFYyNLl
+         dSJayIIfh+Fv6JetONNbN2RXTdAUaSom0N/zJymkOR07NUZA70tBa2fuUnc+YRETBm6z
+         ANY5vxG/zVJXSJ/RCX1hd3jB24/h5u8bWIMTkZDZ4/8suSEFop5adTnf7ESNW5IhX+V8
+         blow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744385848; x=1744990648;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:to:from:subject:message-id:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=NtHELzGhuW6IkR/SmUv1y38cOrSHAmRqhP7AdXLw9DY=;
+        b=SqchQjueKhoU8Q5vcmCawkx5JV86jehZyWGFOfsmekNKGGwGNKRVxS8Xbz6xwEQOon
+         4z+DIHf8q9FyNhwuddMjUWkO5AvW3uTleW+P7zS39nhXGVBCJ76azxaA0tl6IDeA2qRy
+         hDdGrImq+jiG1qsVI9zFExL+k7ZMjsrCARLKF60AHw93yNw8b+paJuOUrRHJ0HplcBLG
+         PCnrdCBh0IA0A1+kcwVlggq77FNsvhyFY/OECz0P++N0OE8/zhyPLcPy2/ngRwL7KHs/
+         u65dldO0HF4z5le4wHuIyElaOULnfVute5E36gRmehtA2JuLPS/lltQpO2cTQ0WMDFT8
+         WWoA==
+X-Forwarded-Encrypted: i=1; AJvYcCVnmBYIADdd3wYw1weSJNxb7loCK1fEK4K1CfRC8hqberMKZdgz5M6WX8fDiqy6WrZc/wmgHoOGZKZT@vger.kernel.org, AJvYcCW6uiNennPZIBJtMsr59Km16xJl1WBYrNxoNvs2HauCRuhD90QpH4mwiniNGtNz5LYUidaxy1ZtNk0T5oaa@vger.kernel.org, AJvYcCWI8itfHdisOVs8oQBBLDTP+m+o94vJUJRpN0t6FD5GLolQCr+SGZ08jb73nSVFg4H0z58+YvvS16l3@vger.kernel.org
+X-Gm-Message-State: AOJu0YxfY927X7BLvB4oPmJgHKx1OGDUtnB6q4hK0fhaATwQ1pm8H4BH
+	9rGzp3COKQEJSHTz6bfvqjJ7ooICVGxa6GkTaVtVndM0gsUHePwfB+pqlHThtfUW0w==
+X-Gm-Gg: ASbGncuLhu6JIaS6qIn65etA4rmLssmWsoD2IE8m6kkxGxRzP/J+Mr9bNGizKRGgA99
+	vUwKEoa8MbJONtqa1H+6lVIaR7p6+EVDmmkQS1Qho52cSlvq54r7rV7YtN4wiMoWhtTvyG9obyE
+	w8TQWF47eQQTA0xGJvfUpTgCnxGCpYXDjbyIZCtyFNJXeNxeceMwVVj4i+tEkuF7BR0JvlB9BPE
+	K876hZFLFHgWDXnvo/APinW5SLbVStsumkfYXx++Lhp/QfAzfFWYGkEA6Q6kvFfFwLRSO/+66YB
+	yYVGZkKcUOAnXSYeoLyHlLntQa3gCTY7Y6TwyzqcTUC+uPbu0Umisqrqh4z+1CJuwbpGaFxz+il
+	T3DL6L0+X9K8R
+X-Google-Smtp-Source: AGHT+IGWFccAgv+5F837HqeaOX+7V6jFIxHpLZX6I3O2n7dkRELlFksUoypsTSa/82r3riMQSkeIiw==
+X-Received: by 2002:a05:600c:54ed:b0:43c:f680:5c2e with SMTP id 5b1f17b1804b1-43f2eb960b7mr56574855e9.13.1744385847472;
+        Fri, 11 Apr 2025 08:37:27 -0700 (PDT)
+Received: from ?IPv6:2001:818:ea8e:7f00:2575:914:eedd:620e? ([2001:818:ea8e:7f00:2575:914:eedd:620e])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43f235a5ec3sm88152935e9.39.2025.04.11.08.37.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 11 Apr 2025 08:37:27 -0700 (PDT)
+Message-ID: <c352c000a9d2c855dc4e5b01e16682a239e8cae7.camel@gmail.com>
+Subject: Re: [PATCH v2 01/13] iio: backend: add support for filter config
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: Antoniu Miclaus <antoniu.miclaus@analog.com>, jic23@kernel.org, 
+	robh@kernel.org, conor+dt@kernel.org, linux-iio@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Fri, 11 Apr 2025 16:37:28 +0100
+In-Reply-To: <20250411123627.6114-2-antoniu.miclaus@analog.com>
+References: <20250411123627.6114-1-antoniu.miclaus@analog.com>
+	 <20250411123627.6114-2-antoniu.miclaus@analog.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.0 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: linux-iio@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>, 
- Andy Shevchenko <andy@kernel.org>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, David Lechner <dlechner@baylibre.com>, 
- Jonathan Cameron <jic23@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>
-To: Remi Buisson <remi.buisson@tdk.com>
-In-Reply-To: <20250411-add_newport_driver-v1-7-15082160b019@tdk.com>
-References: <20250411-add_newport_driver-v1-0-15082160b019@tdk.com>
- <20250411-add_newport_driver-v1-7-15082160b019@tdk.com>
-Message-Id: <174438239866.3224246.7536607585769069581.robh@kernel.org>
-Subject: Re: [PATCH 7/8] dt-bindings: iio: imu: Add inv_icm45600
- documentation
 
+Hi Antoniu,
 
-On Fri, 11 Apr 2025 13:28:39 +0000, Remi Buisson wrote:
-> Document the ICM-456xxx devices devicetree bindings.
-> Describe custom sysfs API for controlling the power modes.
-> 
-> Signed-off-by: Remi Buisson <remi.buisson@tdk.com>
+I do not have time today for going through all the series but I'll already =
+leave
+my comment on this on..
+
+On Fri, 2025-04-11 at 15:36 +0300, Antoniu Miclaus wrote:
+> Add backend support for digital filter enable/disable.
+>=20
+> This setting can be adjusted within the IP cores interfacing devices.
+>=20
+> The IP core can be configured based on the state of the actual
+> digital filter configuration of the part.
+>=20
+> Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
 > ---
->  .../ABI/testing/sysfs-bus-iio-inv_icm45600         |  37 ++++++
->  .../bindings/iio/imu/invensense,icm45600.yaml      | 136 +++++++++++++++++++++
->  2 files changed, 173 insertions(+)
-> 
+> changes in v2:
+> =C2=A0- improve commit description
+> =C2=A0drivers/iio/industrialio-backend.c | 26 ++++++++++++++++++++++++++
+> =C2=A0include/linux/iio/backend.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0 |=C2=A0 6 ++++++
+> =C2=A02 files changed, 32 insertions(+)
+>=20
+> diff --git a/drivers/iio/industrialio-backend.c b/drivers/iio/industriali=
+o-
+> backend.c
+> index d4ad36f54090..ffafe7c73508 100644
+> --- a/drivers/iio/industrialio-backend.c
+> +++ b/drivers/iio/industrialio-backend.c
+> @@ -778,6 +778,32 @@ static int __devm_iio_backend_get(struct device *dev=
+,
+> struct iio_backend *back)
+> =C2=A0	return 0;
+> =C2=A0}
+> =C2=A0
+> +/**
+> + * iio_backend_filter_enable - Enable filter
+> + * @back: Backend device
+> + *
+> + * RETURNS:
+> + * 0 on success, negative error number on failure.
+> + */
+> +int iio_backend_filter_enable(struct iio_backend *back)
+> +{
+> +	return iio_backend_op_call(back, filter_enable);
+> +}
+> +EXPORT_SYMBOL_NS_GPL(iio_backend_filter_enable, "IIO_BACKEND");
+> +
+> +/**
+> + * iio_backend_filter_disable - Disable filter
+> + * @back: Backend device
+> + *
+> + * RETURNS:
+> + * 0 on success, negative error number on failure.
+> + */
+> +int iio_backend_filter_disable(struct iio_backend *back)
+> +{
+> +	return iio_backend_op_call(back, filter_disable);
+> +}
+> +EXPORT_SYMBOL_NS_GPL(iio_backend_filter_disable, "IIO_BACKEND");
 
-My bot found errors running 'make dt_binding_check' on your patch:
+This seems to resemble the filter_type IIO attr so I would likely be more
+explicit in the API naming. Like 'iio_backend_filter_type_set()'. And that =
+also
+takes me into the more important point. I would consider having this API ta=
+king
+an unsigned int filter_type (or an enum with the same possibilities as defi=
+ned
+in the ABI) argument rather than an enable vs disable thing. Like this, we'=
+re
+just thinking about this particular usecase but it can very well happen tha=
+t in
+the future some backends might need to know the specific filter being
+configured. Sure we could change things later on but doing it now is pretty
+straight so why not :)?
 
-yamllint warnings/errors:
-
-dtschema/dtc warnings/errors:
-Error: Documentation/devicetree/bindings/iio/imu/invensense,icm45600.example.dts:35.33-34 syntax error
-FATAL ERROR: Unable to parse input tree
-make[2]: *** [scripts/Makefile.dtbs:131: Documentation/devicetree/bindings/iio/imu/invensense,icm45600.example.dtb] Error 1
-make[2]: *** Waiting for unfinished jobs....
-make[1]: *** [/builds/robherring/dt-review-ci/linux/Makefile:1525: dt_binding_check] Error 2
-make: *** [Makefile:248: __sub-make] Error 2
-
-doc reference errors (make refcheckdocs):
-[WARNING] /sys/bus/iio/devices/iio:deviceX/in_accel_power_mode is defined 2 times: ./Documentation/ABI/testing/sysfs-bus-iio-inv_icm42600:1; ./Documentation/ABI/testing/sysfs-bus-iio-inv_icm45600:1
-[WARNING] /sys/bus/iio/devices/iio:deviceX/in_accel_power_mode_available is defined 2 times: ./Documentation/ABI/testing/sysfs-bus-iio-inv_icm42600:13; ./Documentation/ABI/testing/sysfs-bus-iio-inv_icm45600:13
-
-See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20250411-add_newport_driver-v1-7-15082160b019@tdk.com
-
-The base for the series is generally the latest rc1. A different dependency
-should be noted in *this* patch.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit after running the above command yourself. Note
-that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-your schema. However, it must be unset to test all examples with your schema.
+- Nuno S=C3=A1
 
 

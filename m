@@ -1,284 +1,205 @@
-Return-Path: <linux-iio+bounces-18000-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18001-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFBA5A86CB7
-	for <lists+linux-iio@lfdr.de>; Sat, 12 Apr 2025 13:06:41 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C752A86CBF
+	for <lists+linux-iio@lfdr.de>; Sat, 12 Apr 2025 13:21:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E4841886C78
-	for <lists+linux-iio@lfdr.de>; Sat, 12 Apr 2025 11:06:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A05FA7B36F5
+	for <lists+linux-iio@lfdr.de>; Sat, 12 Apr 2025 11:20:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 902061C84A4;
-	Sat, 12 Apr 2025 11:06:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 895281DD9D3;
+	Sat, 12 Apr 2025 11:21:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h0M4aMFR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oM6fDVwJ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B87938DE1;
-	Sat, 12 Apr 2025 11:06:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3335F19F42C;
+	Sat, 12 Apr 2025 11:21:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744455981; cv=none; b=lP0+SlQbF7EaKBpQ5lizYjhICBuWct1rE22g8B0NGIhAP0IWxEdNDPw9qY4qahVwIuLnFCh/aQqKht5ccaAJMRtaC4nYXgnHmw6ZcfOZFGgYAXmCyy9Wtra+I7AX8argMWfwTgDm8Nt4ZiT3E02lHED2YDz0UQtHPTEqGZTxTBI=
+	t=1744456897; cv=none; b=SbjdBOxKCHtbgjQGZvqoGVngLQyyMZ2DnTE4lxDTMP7RxiJ2sbChARrqFwa0vmFS3tKlOSZgeVKUMbepoQq8ZaUXG7nTvNr5B7DINxRR4kkJ3PJ4kfhJ9vhEBaHe1IdZnaH2CJEPSRCkLKPRCcGj2284O5XMAsyuXy5spIFTa60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744455981; c=relaxed/simple;
-	bh=Xwx2n1w11EeGH25kbdk3hQrYNioLty2KWpYPiiPJeg8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=SZ9oMfy/6sIOvc5pSUEIamLnSpCuevib8HUrbZAtWfd7aSIQVzlMzl+YvtysGR+vy6pmfZubsyVlJ4wN5f0EpzJtlmu3VvRXpgcGs4wajnOh7ynJvx6rTcDCKrE7pHU2uLgUXZlL9v99x3jzCFefNkguvQTi1yPUA5/wbw0ZF84=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h0M4aMFR; arc=none smtp.client-ip=209.85.221.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-39c2688619bso1785202f8f.1;
-        Sat, 12 Apr 2025 04:06:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744455977; x=1745060777; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uEQKH0bkHPyosdE+9+BuKjjvelVzT/W2rCC4QTg9N0w=;
-        b=h0M4aMFR23zaWvoTgnNS8AK2eOhsG4uVkIowXysmeJ2HnLAd1ASY6ygTk2K1qY/mCO
-         Qz3NrMj2ytBmtVXRHumCRjIx3Yv2iirbo9S3PD69d9AuxhlfWmKN1XRt0w6DFqmvPVg5
-         PLgnVfMfTyz/WarB1vz15NHIgioCx/6/FczP3yPM0SNrRqWHe/MXoF1ipZKAzmhv+eHZ
-         sBZCmTEeD1ISBbfqL3xinws8jmLEJTsKEu4ThLQW2nED07Ypknoq3YbHZbp+fuoamUQU
-         NifkHr6QPH9o+wedhjdpwBP5Ju58ahqTgQAUmgrG+mDok7kwgdOVHxkv/sisI6Isgxia
-         E/Rg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744455977; x=1745060777;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=uEQKH0bkHPyosdE+9+BuKjjvelVzT/W2rCC4QTg9N0w=;
-        b=uVHNkypLy2k8ZsAtr4Jib1xRPuQhoGm/zUXbzfUJxOfUpEPDle0KMkQkj6BXpBtfdX
-         yK24lZ57FV5xZ/9qp3v69zWRPny5fBonCQ1a970E/Vj/mxyE1UrAJPgEmSiSxO3WOL/E
-         ktXbPNh93PMLuYz4z9v6s1wu4NGUXjsPg4ySzd5VFKosohmvUhf0p5LAZlL6qsRPfrVA
-         ZdaJuoSp1J5qqn+xfEnCU/ZeBnjQUFr6A8Ey2YtTzXvZHpw1RaSx/z7utLz0NfWNSfND
-         +ZgnsR5VKZ7RxRDnd5Np83D3L+w0vjLqcMKPhxOPKd907k5xFjzlXZ7E6rWm2pXrdqrf
-         2IOQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVlxpSCUjZgCjpxf+OgYoEp38vMMfF9dW2LIi/0dElRE9X59NIR9ndgrUyhrzZe+3zGJ4cgxXE6BU+m@vger.kernel.org, AJvYcCW10fXH/LIqbtIT7jtYf7ui51Rx9FDjq7kplXgKz3dAOiUbX72665QrurO8ZR9BjNVGgkhWIiNOf6UH@vger.kernel.org, AJvYcCW2cQZug74WXGed5nq/dYFJh+7GmdvPjc2iaovPd6/EbkPFMzb4J9Ymgw9rXPtSqbYUkB8//pkbYEA=@vger.kernel.org, AJvYcCXPAP0COjhhLlGvyxl/0JtP5EXvJ7p7JXeW+oQAZFdLWh25DhXt55s1ObyMzuC2QIy71Rus3dhg1s22vj2i@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxuk3i8lgPv5VwgzK9aj1mV8tdSUbPAaEVuY+apiFFBytQ+H6ie
-	oYMauWVK9eJ8wZohWlmecyhamW4+n+j7/LjNhTnD1SST2FLIKi4VNDqOUk9sgGBdErYQRKxk5tV
-	swgg0mGWeU1kkH/Rt5h9IHXIe410=
-X-Gm-Gg: ASbGncso1aq+5YIRfvFKkGKwA1YDvHibwqIjiFOhVugZ4llzruaai1CT3V4R1bXeJTy
-	wouHOiWNcexz6gOyjC31ViHjLn4O/ZwpoqxuG6KT/3+vbyiw69barFJYVlRtM2v9A2wyuy3npvM
-	8RSm/0WmvMEso8+oyLlhJPYrM=
-X-Google-Smtp-Source: AGHT+IFmZ9oSGKG8dQnChiY0Qy83xIScN31TSX/I698NuGB8xKYytYAsdO+ebPVVg4Dtrnt5oRYr3cSReLYxizZaxOU=
-X-Received: by 2002:a05:6000:184e:b0:39c:cc7:3c5f with SMTP id
- ffacd0b85a97d-39eaaecdacemr5299545f8f.45.1744455977263; Sat, 12 Apr 2025
- 04:06:17 -0700 (PDT)
+	s=arc-20240116; t=1744456897; c=relaxed/simple;
+	bh=YfOlKE6PAfGsLaLJzFsbc4yvi3sBWRZ8irx5t8xPNqU=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=FZmwwwDCtwNviyZlFtvJnQB7H/OL+xbGBO65b4tXLX6rGCug4jKdLQtBNb341maYfgyboymTp5cQV3UpMu7H6wDvlKR3Jb9DPad6/lm4kd1XZAaj5aqtQfzpC78a6TfeOx9a53jRQU3x3oQoRWFgh9yTeE5ot+ktbQxjUd8ldvI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oM6fDVwJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B17BC4CEE3;
+	Sat, 12 Apr 2025 11:21:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744456896;
+	bh=YfOlKE6PAfGsLaLJzFsbc4yvi3sBWRZ8irx5t8xPNqU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=oM6fDVwJXVvIiSz6YzL+sqXFarnOxeDB/V9gDHvtXh2pStzqt+qSSOGhrDe39m8r1
+	 QN91NiF9YguPYt8vikQ7haD+S/t7MWG8OSROc3VqFDJ8/RHspiNsz/6yO6f9uw79xz
+	 zi9OMDnNtNWFSNV2kaA4DE6PDZZ68BsPFDfybAdzE3TnSCS1DCu21C0wipU67YV8RK
+	 udS9kl08sM77TgcPIccOuGUAKdHa90+KqG4bkTnqxCJRoW1ibn5RTeA5dQmDzTiHcR
+	 Uswr9VCQZq0sUezMCh+qEXR8Ub3VMNCtso88fnhRg9Rsu8jH9CUy6Qt73d0HZSWr8g
+	 pqztiNKbrLUPQ==
+Date: Sat, 12 Apr 2025 12:21:22 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Yassine Oudjana <y.oudjana@protonmail.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Bjorn Andersson
+ <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, Manivannan
+ Sadhasivam <manivannan.sadhasivam@linaro.org>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+ <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+ <horms@kernel.org>, Masahiro Yamada <masahiroy@kernel.org>, Nathan
+ Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas.schier@linux.dev>,
+ Alexander Sverdlin <alexander.sverdlin@gmail.com>, Sean Nyekjaer
+ <sean@geanix.com>, Javier Carrasco <javier.carrasco.cruz@gmail.com>, Matti
+ Vaittinen <mazziesaccount@gmail.com>, Antoniu Miclaus
+ <antoniu.miclaus@analog.com>, Ramona Gradinariu
+ <ramona.gradinariu@analog.com>, "Yo-Jung (Leo) Lin" <0xff07@gmail.com>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Neil Armstrong
+ <neil.armstrong@linaro.org>, =?UTF-8?B?QmFybmFiw6FzIEN6w6ltw6Fu?=
+ <barnabas.czeman@mainlining.org>, Danila Tikhonov <danila@jiaxyga.com>,
+ Antoni Pokusinski <apokusinski01@gmail.com>, Vasileios Amoiridis
+ <vassilisamir@gmail.com>, Petar Stoykov <pd.pstoykov@gmail.com>, shuaijie
+ wang <wangshuaijie@awinic.com>, Yasin Lee <yasin.lee.x@gmail.com>,
+ "Borislav Petkov (AMD)" <bp@alien8.de>, Dave Hansen
+ <dave.hansen@linux.intel.com>, Tony Luck <tony.luck@intel.com>, Pawan Gupta
+ <pawan.kumar.gupta@linux.intel.com>, Ingo Molnar <mingo@kernel.org>,
+ Yassine Oudjana <yassine.oudjana@gmail.com>, linux-kernel@vger.kernel.org,
+ linux-iio@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ netdev@vger.kernel.org, linux-kbuild@vger.kernel.org
+Subject: Re: [PATCH 3/3] iio: Add Qualcomm Sensor Manager drivers
+Message-ID: <20250412122122.43d1b2a7@jic23-huawei>
+In-Reply-To: <fc9af95b-abbf-454c-97e1-b884baa5317c@protonmail.com>
+References: <20250406140706.812425-1-y.oudjana@protonmail.com>
+	<20250406140706.812425-4-y.oudjana@protonmail.com>
+	<20250406172904.1521881e@jic23-huawei>
+	<fc9af95b-abbf-454c-97e1-b884baa5317c@protonmail.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250310075638.6979-1-clamor95@gmail.com> <20250310075638.6979-3-clamor95@gmail.com>
- <CAPVz0n0NA+=+4da8izPvTn3XacdJndyxrvyMY-QvHdie206wVg@mail.gmail.com> <20250412115354.0b266fae@jic23-huawei>
-In-Reply-To: <20250412115354.0b266fae@jic23-huawei>
-From: Svyatoslav Ryhel <clamor95@gmail.com>
-Date: Sat, 12 Apr 2025 14:06:06 +0300
-X-Gm-Features: ATxdqUGxoEk1uo883jpX_CkWOlni3XNy2ZUsgKoxuixGs8lUae_HVUKcGAp1E10
-Message-ID: <CAPVz0n0eqLEjVgMX=4A8jZZ++Ffb_vfCRdqYdizDmuLbXjVb1w@mail.gmail.com>
-Subject: Re: [PATCH v4 2/2] thermal: thermal-generic-adc: add temperature
- sensor channel
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Daniel Lezcano <daniel.lezcano@linaro.org>, 
-	Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Laxman Dewangan <ldewangan@nvidia.com>, linux-pm@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-=D1=81=D0=B1, 12 =D0=BA=D0=B2=D1=96=D1=82. 2025=E2=80=AF=D1=80. =D0=BE 13:5=
-4 Jonathan Cameron <jic23@kernel.org> =D0=BF=D0=B8=D1=88=D0=B5:
->
-> On Sat, 5 Apr 2025 18:23:25 +0300
-> Svyatoslav Ryhel <clamor95@gmail.com> wrote:
->
-> > =D0=BF=D0=BD, 10 =D0=B1=D0=B5=D1=80. 2025=E2=80=AF=D1=80. =D0=BE 09:57 =
-Svyatoslav Ryhel <clamor95@gmail.com> =D0=BF=D0=B8=D1=88=D0=B5:
-> > >
-> > > To avoid duplicating sensor functionality and conversion tables, this
-> > > design allows converting an ADC IIO channel's output directly into a
-> > > temperature IIO channel. This is particularly useful for devices wher=
-e
-> > > hwmon isn't suitable or where temperature data must be accessible thr=
-ough
-> > > IIO.
-> > >
-> > > One such device is, for example, the MAX17040 fuel gauge.
-> > >
-> > > The temperature data, while technically a product of conversion and t=
-hus
-> > > categorized as IIO_CHAN_INFO_PROCESSED, maintains its unscaled state
-> > > (milli-degree). To account for this, IIO_CHAN_INFO_RAW is used along =
-with
-> > > IIO_CHAN_INFO_SCALE to provide different degrees of accuracy.
->
-> You've lost me in this description.  The base units of an IIO temperature=
- channel
-> are milli-degrees so if the scaling is already right for that you would
-> be fine using a IIO_CHAN_INFO_PROCESSED channel.
->
-> A few other minor things inline.
->
-> > >
-> > > Signed-off-by: Svyatoslav Ryhel <clamor95@gmail.com>
-> > > ---
-> > >  drivers/thermal/thermal-generic-adc.c | 62 +++++++++++++++++++++++++=
-+-
-> > >  1 file changed, 61 insertions(+), 1 deletion(-)
-> > >
-> > > diff --git a/drivers/thermal/thermal-generic-adc.c b/drivers/thermal/=
-thermal-generic-adc.c
-> > > index ee3d0aa31406..7dcc2e1168a4 100644
-> > > --- a/drivers/thermal/thermal-generic-adc.c
-> > > +++ b/drivers/thermal/thermal-generic-adc.c
-> > > @@ -7,6 +7,7 @@
-> > >   * Author: Laxman Dewangan <ldewangan@nvidia.com>
-> > >   */
-> > >  #include <linux/iio/consumer.h>
-> > > +#include <linux/iio/iio.h>
-> > >  #include <linux/kernel.h>
-> > >  #include <linux/module.h>
-> > >  #include <linux/platform_device.h>
-> > > @@ -73,6 +74,65 @@ static const struct thermal_zone_device_ops gadc_t=
-hermal_ops =3D {
-> > >         .get_temp =3D gadc_thermal_get_temp,
-> > >  };
-> > >
-> > > +static const struct iio_chan_spec gadc_thermal_iio_channel[] =3D {
-> Even though there is only one. If it is an array use channels.
->
-> or stop it being an array and just take a pointer to a single channel
-> instance.
->
+> >> +
+> >> +static void qcom_smgr_accel_remove(struct platform_device *pdev)  
+> > 
+> > I'm surprised to see a platform device here - will read on but I
+> > doubt that is the way to go.  Maybe an auxbus or similar or
+> > just squashing this all down to be registered directly by
+> > the parent driver.  
+> I got the idea from cros_ec_sensors which also deals with a similar 
+> sensor hub paradigm.
 
-There should not be more channels, but tbh, you never know, I will
-rename to channels.
+Generally the use of platform drivers for subfunctions of something
+is now not considered the way to go.  Here there seems to be little
+point in spinning out another layer of devices.
+> >   
+> >> +static void qcom_smgr_buffering_report_handler(struct qmi_handle *hdl,
+> >> +					       struct sockaddr_qrtr *sq,
+> >> +					       struct qmi_txn *txn,
+> >> +					       const void *data)
+> >> +{
+> >> +	struct qcom_smgr *smgr =
+> >> +		container_of(hdl, struct qcom_smgr, sns_smgr_hdl);
+> >> +	struct sns_smgr_buffering_report_ind *ind =
+> >> +		(struct sns_smgr_buffering_report_ind *)data;  
+> > 
+> > Casting away a const isn't a good sign. Why do you need to do that?
+> > 	const struct sns_smg_buffer_repor_ind *ind = data;
+> > should be fine I think.  
+> 
+> The casted struct was previously not const so I was only casting from 
+> void *. I made it const lately but didn't notice this cast. Will change it.
 
-> > > +       {
-> > > +               .type =3D IIO_TEMP,
-> > > +               .info_mask_separate =3D BIT(IIO_CHAN_INFO_RAW) |
-> > > +                                     BIT(IIO_CHAN_INFO_SCALE),
-> > > +       }
-> > > +};
-> > > +
-> > > +static int gadc_thermal_read_raw(struct iio_dev *indio_dev,
-> > > +                                struct iio_chan_spec const *chan,
-> > > +                                int *val, int *val2, long mask)
-> > > +{
-> > > +       struct gadc_thermal_info *gtinfo =3D iio_priv(indio_dev);
-> > > +       int ret;
-> > > +
-> > > +       switch (mask) {
-> > > +       case IIO_CHAN_INFO_RAW:
-> > > +               ret =3D gadc_thermal_get_temp(gtinfo->tz_dev, val);
-> > > +               if (ret)
-> > > +                       return ret;
-> > > +
-> > > +               return IIO_VAL_INT;
-> > > +
-> > > +       case IIO_CHAN_INFO_SCALE:
-> > > +               /* scale to a degree centigrade */
->
-> As above.  See Documentation/ABI/testing/sysfs-bus-iio
-> entries from temperature. Scaling of a temperature channel is milli-degre=
-es
->
-> This is a bit of a historical artefact. Way back at the start of IIO
-> when we had relatively few channel types, where possible I matched the
-> scaling to hwmon.  With hindsight that made things a bit inconsistent
-> but we are stuck with it as ABI :(
->
+Ok. But never a reason to cast from a void *.  The C spec says that
+happens implicitly just fine.
 
-RAW channel is in milli-degrees, or this is not enough? I don't get
-your point here tbh. What is wrong? Battery driver requires
-temperature in degree centigrade hence it is scaled to it.
+> >> +	ret = qcom_smgr_request_all_sensor_info(smgr, &smgr->sensors);
+> >> +	if (ret < 0) {
+> >> +		dev_err(smgr->dev, "Failed to get available sensors: %pe\n",
+> >> +			ERR_PTR(ret));
+> >> +		return ret;
+> >> +	}
+> >> +	smgr->sensor_count = ret;
+> >> +
+> >> +	/* Get primary and secondary sensors from each sensor ID */
+> >> +	for (i = 0; i < smgr->sensor_count; i++) {
+> >> +		ret = qcom_smgr_request_single_sensor_info(smgr,
+> >> +							   &smgr->sensors[i]);
+> >> +		if (ret < 0) {
+> >> +			dev_err(smgr->dev,
+> >> +				"Failed to get sensors from ID 0x%02x: %pe\n",
+> >> +				smgr->sensors[i].id, ERR_PTR(ret));
+> >> +			return ret;
+> >> +		}
+> >> +
+> >> +		for (j = 0; j < smgr->sensors[i].data_type_count; j++) {
+> >> +			/* Default to maximum sample rate */
+> >> +			smgr->sensors[i].data_types->cur_sample_rate =
+> >> +				smgr->sensors[i].data_types->max_sample_rate;
+> >> +
+> >> +			dev_dbg(smgr->dev, "0x%02x,%d: %s %s\n",
+> >> +				smgr->sensors[i].id, j,
+> >> +				smgr->sensors[i].data_types[j].vendor,
+> >> +				smgr->sensors[i].data_types[j].name);
+> >> +		}
+> >> +
+> >> +		qcom_smgr_register_sensor(smgr, &smgr->sensors[i]);  
+> > Above I suggest that maybe you should just skip the platform devices and register
+> > directly with IIO as you find the sensors. So have the struct iio_dev->device
+> > parent directly off this one.  
+> 
+> As I said previously I followed the model used in cros_ec_sensors, and 
+> it made sense to me since I always see platform devices used to 
+> represent firmware-backed devices like this.
 
-> Jonathan
->
-> > > +               *val =3D 1;
-> > > +               *val2 =3D 1000;
-> > > +               return IIO_VAL_FRACTIONAL;
-> > > +
-> > > +       default:
-> > > +               return -EINVAL;
-> > > +       }
-> > > +}
-> > > +
-> > > +static const struct iio_info gadc_thermal_iio_info =3D {
-> > > +       .read_raw =3D gadc_thermal_read_raw,
-> > > +};
-> > > +
-> > > +static int gadc_iio_register(struct device *dev, struct gadc_thermal=
-_info *gti)
-> > > +{
-> > > +       struct gadc_thermal_info *gtinfo;
-> > > +       struct iio_dev *indio_dev;
-> > > +
-> > > +       indio_dev =3D devm_iio_device_alloc(dev, sizeof(struct gadc_t=
-hermal_info));
-> > > +       if (!indio_dev)
-> > > +               return -ENOMEM;
-> > > +
-> > > +       gtinfo =3D iio_priv(indio_dev);
-> > > +       memcpy(gtinfo, gti, sizeof(struct gadc_thermal_info));
->
-> sizeof(*gtinfo) probably slightly better.
->
-> > > +
-> > > +       indio_dev->name =3D dev_name(dev);
->
-> What does this end up as?  The convention in IIO is to name after
-> a part number.  If you have duplicates this isn't how you tell them
-> apart.  So I'd kind of expect thermal-generic-temp or
-> something like that.
->
+In this case you end up with
 
-it is "generic-adc-thermal" with this name, it is not present anywhere in I=
-IO.
+parent device
+    |
+    |____________________
+    |         |          |
+ChildA     ChildB       ChildC  (all platform devices)
+    |         |          |
+IIODevA    IIODevB      IIODEVC
 
-> > > +       indio_dev->info =3D &gadc_thermal_iio_info;
-> > > +       indio_dev->modes =3D INDIO_DIRECT_MODE;
-> > > +       indio_dev->channels =3D gadc_thermal_iio_channel;
-> As above, I'd stop that being an array and use
->         indio_dev->channels =3D &gadc_thermal_iio_chanel;
->         indio_dev->channels =3D 1;
->
-> Unless you think maybe we will get more channels in future, in which case
-> just rename it channels (which happens to have one element this time)
->
-> > > +       indio_dev->num_channels =3D ARRAY_SIZE(gadc_thermal_iio_chann=
-el);
-> > > +
-> > > +       return devm_iio_device_register(dev, indio_dev);
-> > > +}
-> > > +
-> > >  static int gadc_thermal_read_linear_lookup_table(struct device *dev,
-> > >                                                  struct gadc_thermal_=
-info *gti)
-> > >  {
-> > > @@ -153,7 +213,7 @@ static int gadc_thermal_probe(struct platform_dev=
-ice *pdev)
-> > >
-> > >         devm_thermal_add_hwmon_sysfs(dev, gti->tz_dev);
-> > >
-> > > -       return 0;
-> > > +       return gadc_iio_register(&pdev->dev, gti);
-> > >  }
-> > >
-> > >  static const struct of_device_id of_adc_thermal_match[] =3D {
-> > > --
-> > > 2.43.0
-> > >
-> >
-> > Added Jonathan Cameron and linux-iio@vger.kernel.org to list.
-> >
-> > Jonathan, this is newer version of the thermal-generic-adc you have
-> > reviewed recently with channels adjusted like proposed in v3.
->
+Today we'd probably do those child devices using auxiliary devices but
+aside from that, the only reason to do this is you want to have separate
+drivers for each child.
+
+You can just do
+
+parent device
+   |
+   |_______________________
+   |         |             |
+IIODevA    IIODevB       IIODevC
+
+for the case where there no separate child drivers.
+
+That is the parent driver can just instantiate the IIO Bus Devices
+directly (it's kind of a Class really but a bus for historical reasons).
+Various IMUs do this when they have separately controlled sampling frequencies
+for different types of sensor or even separate fifos. (They are really
+sensor hubs, just connected of SPI or similar).
+
+So it's up to you whether you want the separate per channel type devices and
+to handle the potential races around those going away.
+qcom_smgr_buffering_report_handler() for instance needs a lock to
+stop the child driver being unbound between the checks on iio_dev and the
+use of it. With one driver that complexity doesn't occur.
+See for example drivers/iio/st_lsm6dsx/ that does it this way.
+
+Also possible would be a single IIO device with multiple buffers.
+We only have a few of those though so you might run into missing bits of ABI
+taking that path.
+
+Jonathan
+
+
 

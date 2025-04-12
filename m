@@ -1,119 +1,120 @@
-Return-Path: <linux-iio+bounces-18026-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18027-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B6BCA86E9A
-	for <lists+linux-iio@lfdr.de>; Sat, 12 Apr 2025 20:08:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A179A86EA1
+	for <lists+linux-iio@lfdr.de>; Sat, 12 Apr 2025 20:11:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A1F24407EA
-	for <lists+linux-iio@lfdr.de>; Sat, 12 Apr 2025 18:08:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6A33916BFCC
+	for <lists+linux-iio@lfdr.de>; Sat, 12 Apr 2025 18:11:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CF6B205E3B;
-	Sat, 12 Apr 2025 18:08:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F4852080F4;
+	Sat, 12 Apr 2025 18:11:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UHI0/OLx"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mmsEAa59"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E9181F0E21;
-	Sat, 12 Apr 2025 18:08:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DBDB1A23B1;
+	Sat, 12 Apr 2025 18:11:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744481301; cv=none; b=heYXb8IPgHj+FFKrp9inrcgrhg5xdZO8PkwQxi3V0bB3OsEtmzUigK/o5klAXfaOY6nfHVmD//NM/DDYnqoaV+PfmY7WQelAma/rXU5sF78pQU8ERDkNoNVVK4clT4TerWF7WteGQ4v3UI1hpcczxzTWV647H81pGNtaqM4LGN4=
+	t=1744481498; cv=none; b=ni5+9jz6oFsxia0wbKtswvNmQtm6OpI41QFTiDZ9WUJMQqV4VXena+RpYe/qGbPrZy6rhlGGPjbwci8y8yX/G10+HW0uvZlNeFCS2DQL5KCo7MZXdNC2xfiqXSeX2DR4GiHnkoN9CrczWdrSeKrX3hmKxu2aJp+8sRkq8u78vL0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744481301; c=relaxed/simple;
-	bh=4dTqsGRTGY0t5K+LIOjuDzlZh6c2Mj0q/pqOoIFtsZM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BFeoZv74/IbGvWhxO1Hh2MHVvS4ky5x+yCDhogEMu9cPPQRxlWgNdkgqVCLciCIiGIxJXd5j8mcBVJlcP52U5OG9CYViUI8h1lJobL/W/fJe2pa7rV2t/V1/sQ76uDq9XtNce9c8Kw/XQfraIVd6lmSlHkHRYCepju9K09xUeCk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UHI0/OLx; arc=none smtp.client-ip=209.85.218.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-ac6ed4ab410so505319466b.1;
-        Sat, 12 Apr 2025 11:08:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744481297; x=1745086097; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4dTqsGRTGY0t5K+LIOjuDzlZh6c2Mj0q/pqOoIFtsZM=;
-        b=UHI0/OLxITdYsfBwH6phs3V/8O4Mv/dVbjSJaXiygKWowe6b5hHnhZF/nRf35u7BL/
-         8sMVzQY8/lLs6H/syMeYBVbLzBRh5YncDmIOuwNlGOqpfJw3DI1lpfKCGgZdzR/u9/pf
-         Cxw//1Dw1Ulk2h+E1kNHtsQDsXhueD7Qt8a1Ufqzx6ZgeAOrivdZMqt2L8VLAAP2gY8U
-         Wwap7YBmdc1sk7qDeBs/2TJr+gQRXTtYvQ2Wxnw/pNiAW9It28Ytmo94GxBu355piPsH
-         yRuy8q4zIVgmPI8L9RPcQVMMDwdzFDhs3hifDiPSUjNn/waMQUltROP9rwo8rRbWoA0S
-         TBGw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744481298; x=1745086098;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=4dTqsGRTGY0t5K+LIOjuDzlZh6c2Mj0q/pqOoIFtsZM=;
-        b=mETM0CTWmuKZN0X0A8sG1QaWg/oZUwXyW0bZQAAZGv6Pc0mG8dLT+xwEuGSpMFFgxn
-         iKYJ1shqI+IMCFjLTSD75lZZQvIinn6DYPMeCn5hBaFDmJqYkfJVAYqaJ63Idq1Zs5x1
-         lRJf78jd1sxjvKoJBakPICnT0kTvWs1Xt9o7HPwSTZT3sJxqJOLoldpmu0zYby94mdKA
-         9Is+PWPSqmH6QwZTQS5bHAFRzx+1Y7NL/1HJGhiInzHFvRr0nLEnAW47CBpI1q57dYx4
-         A86nyLGxopcwrImzDcx7DFGax6vkr5dAxl6XAVGP4EDtEDmCClpYlNWzWuqH8KnvRzHw
-         bLJw==
-X-Forwarded-Encrypted: i=1; AJvYcCUHX4IW9ut0HJqZKaCks+8cba0SBD0gDmO+lQ7AB7h1ELeIry1qiWPpyRaJ9C6j2cfPwX1HVeT0+70=@vger.kernel.org, AJvYcCUcWC+YQ3yHO5xnW1fepM5+xzxW5y6Nmv5QhJXXqsAxKXcyV8ESjr0eYxlPE/FkG/p3i+fdC54JXRbKBoGw@vger.kernel.org
-X-Gm-Message-State: AOJu0YxRymwFBgAkc3Mx0y8wXUaAJ3bUCWvPXpQtihhU+c04umuTuR5U
-	LiNChzVgIo+m6EbU5me18ThfJ74Q+b66YXnM1uRhiwQSN5jlGa/GGy8+hT4eFVHx7IlqIgH5hgK
-	HhUDD33nIpQ24HKKWoIQ/ZHyA5KE=
-X-Gm-Gg: ASbGncsu0BGYFMlO6hbekAPgsXwhbhgQaqvOHLt1WrrduDCB/5q6F3fu5M8b1a2NJ12
-	cvqBZrmy9Z5hOiOlxDKwKWae+zutUv+hU57A56lZsBQhn3HuqOz/v6/v2Y+iMQlR1aiHgJf/ppD
-	aNJnd2GwBTE61QxLAP1qbtyA==
-X-Google-Smtp-Source: AGHT+IHwlMauSDYb3F4+xs9iOl49uDgO0Bqw97Xx22A+KavQlXG+0XcEY/aOXY8qAnhH/8FJz/p3UexMTPyWevIHvSk=
-X-Received: by 2002:a17:907:8694:b0:aca:cc2c:862a with SMTP id
- a640c23a62f3a-acad3456e74mr687348866b.5.1744481297320; Sat, 12 Apr 2025
- 11:08:17 -0700 (PDT)
+	s=arc-20240116; t=1744481498; c=relaxed/simple;
+	bh=b3HaXXW+MR1VOkMnYXtzpEuVhn4y0K81DcGV47y/ueg=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=rbKUh2DYTaLsgKVAmTZb93J/ehrwl8jHix1NsatIxWofZW9MoNOzQOknsXclb+VFLz/4v6AJDgApMUARbrUmmCUd9QajKZYFSIOtNh8GgN5pjUT4s17QA0XQpLhbDbeITjitSSO30zJc+6wWMOA0YK9aAcrtA1pwdb+07M8KQtY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mmsEAa59; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A616C4CEE3;
+	Sat, 12 Apr 2025 18:11:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744481497;
+	bh=b3HaXXW+MR1VOkMnYXtzpEuVhn4y0K81DcGV47y/ueg=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=mmsEAa59dTWc4y15WeR8qPZcy1o85rX7iSQrRXWxqfJsPyfKbhnmdzeb4buEDW/bD
+	 I2IGLnW+dIggXRY7Gpa4W6JAmJ8C0GOLuigBDxLn9bbJlq2rko5CSGuZ7nAfUOGLoo
+	 uM+2dA3vnEWaNt2X72wPt3LgTkEeVQGsbd3PRMUjuQp+eYXK4tfi7X9Fhf/KzEDEn6
+	 hzRsDF2Gb1jXabhNNR5obU24ed8MxfpnjY3jXr8KFnSePNU9JQkygO6PZTd3n685Po
+	 edqSAzcmQu0JKO9KxzeAEOL6zNVDV0VLC/I2+1izvSZ2CNoxKE5PkfWmGYXnAuCsuX
+	 lZpXd8M6l0c8A==
+Date: Sat, 12 Apr 2025 19:11:26 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Jonathan Santos <Jonathan.Santos@analog.com>
+Cc: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <linux-gpio@vger.kernel.org>,
+ <lars@metafoo.de>, <Michael.Hennerich@analog.com>,
+ <marcelo.schmitt@analog.com>, <robh@kernel.org>, <krzk+dt@kernel.org>,
+ <conor+dt@kernel.org>, <marcelo.schmitt1@gmail.com>,
+ <linus.walleij@linaro.org>, <brgl@bgdev.pl>, <lgirdwood@gmail.com>,
+ <broonie@kernel.org>, <jonath4nns@gmail.com>, <dlechner@baylibre.com>, Pop
+ Paul <paul.pop@analog.com>
+Subject: Re: [PATCH v5 13/14] iio: adc: ad7768-1: add filter type and
+ oversampling ratio attributes
+Message-ID: <20250412191126.06c19115@jic23-huawei>
+In-Reply-To: <e5ea27f88607d1cc12daecf310c18f71383a3bbe.1744325346.git.Jonathan.Santos@analog.com>
+References: <cover.1744325346.git.Jonathan.Santos@analog.com>
+	<e5ea27f88607d1cc12daecf310c18f71383a3bbe.1744325346.git.Jonathan.Santos@analog.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250410135836.2091238-1-olivier.moysan@foss.st.com> <20250412142606.66673634@jic23-huawei>
-In-Reply-To: <20250412142606.66673634@jic23-huawei>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Sat, 12 Apr 2025 21:07:41 +0300
-X-Gm-Features: ATxdqUHG8l2dJ0PpOTJX-K4td1_yt9Tsr0rZ-bQ6xLHZ1IHBrZe_mC4b0mFcaRk
-Message-ID: <CAHp75VfUkStzq4zrKkaQ67REuuTSGhoD9o1LXU-YohUULBnd=w@mail.gmail.com>
-Subject: Re: [PATCH v4] iio: adc: stm32: add oversampling support
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Olivier Moysan <olivier.moysan@foss.st.com>, David Lechner <dlechner@baylibre.com>, 
-	=?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Andy Shevchenko <andy@kernel.org>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
-	Alexandre Torgue <alexandre.torgue@foss.st.com>, 
-	Fabrice Gasnier <fabrice.gasnier@foss.st.com>, linux-iio@vger.kernel.org, 
-	linux-stm32@st-md-mailman.stormreply.com, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Sat, Apr 12, 2025 at 4:26=E2=80=AFPM Jonathan Cameron <jic23@kernel.org>=
- wrote:
-> On Thu, 10 Apr 2025 15:58:35 +0200
-> Olivier Moysan <olivier.moysan@foss.st.com> wrote:
 
-...
 
-> > The current support of the oversampling feature aims at increasing
-> > the data SNR, without changing the data resolution.
-> > As the oversampling by itself increases data resolution,
-> > a right shift is applied to keep initial resolution.
-> > Only the oversampling ratio corresponding to a power of two are
-> > supported here, to get a direct link between right shift and
-> > oversampling ratio. (2exp(n) ratio <=3D> n right shift)
+>  
+> -static int ad7768_set_dig_fil(struct ad7768_state *st,
+> -			      enum ad7768_dec_rate dec_rate)
+> +static int ad7768_set_sinc3_dec_rate(struct ad7768_state *st,
+> +				     unsigned int dec_rate)
+>  {
+> -	unsigned int mode;
+> +	unsigned int max_dec_rate;
+> +	u8 dec_rate_reg[2];
+>  	int ret;
+>  
+> -	if (dec_rate == AD7768_DEC_RATE_8 || dec_rate == AD7768_DEC_RATE_16)
+> -		mode = AD7768_DIG_FIL_FIL(dec_rate);
+> -	else
+> -		mode = AD7768_DIG_FIL_DEC_RATE(dec_rate);
+> +	/*
+> +	 * Maximum dec_rate is limited by the MCLK_DIV value
+> +	 * and by the ODR. The edge case is for MCLK_DIV = 2
+> +	 * ODR = 50 SPS.
+> +	 * max_dec_rate <= MCLK / (2 * 50)
+> +	 */
+> +	max_dec_rate = st->mclk_freq / 100;
+> +	dec_rate = clamp_t(unsigned int, dec_rate, 32, max_dec_rate);
+> +	/*
+> +	 * Calculate the equivalent value to sinc3 decimation ratio
+> +	 * to be written on the SINC3_DECIMATION_RATE register:
+> +	 *  Value = (DEC_RATE / 32) -1
+> +	 */
+> +	dec_rate = DIV_ROUND_UP(dec_rate, 32) - 1;
+> +	dec_rate_reg[0] = FIELD_GET(AD7768_SINC3_DEC_RATE_MSB_MSK, dec_rate);
+> +	dec_rate_reg[1] = FIELD_GET(AD7768_SINC3_DEC_RATE_LSB_MSK, dec_rate);
+Looks like a larger big endian value. It's a little messy because of
+the 12 bit mask but I think still clearer as
 
-I have just noticed the interesting (and perhaps misleading) symbols
-in formulas here and in the comment in the code.
+	u16 regval = FIELD_PREP(GENMASK(11, 0), dec_rate);
+	
+	unaligned_put_be16(dec_rate_reg, regval);
 
-I would expect to see the above as 2^n. Because exp makes me think
-about e (natural logarithm base) rather than about power.
+Avoids the use of masks to get bytes from the dec_rate value which is
+is sort of backwards.
 
---=20
-With Best Regards,
-Andy Shevchenko
+
+> +	ret = regmap_bulk_write(st->regmap, AD7768_REG_SINC3_DEC_RATE_MSB,
+> +				dec_rate_reg, 2);
+> +	if (ret)
+> +		return ret;
+> 
 

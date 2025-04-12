@@ -1,404 +1,118 @@
-Return-Path: <linux-iio+bounces-18030-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18031-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B83A8A86EBA
-	for <lists+linux-iio@lfdr.de>; Sat, 12 Apr 2025 20:26:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C99A6A86EBC
+	for <lists+linux-iio@lfdr.de>; Sat, 12 Apr 2025 20:27:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EBCE37B15A7
-	for <lists+linux-iio@lfdr.de>; Sat, 12 Apr 2025 18:25:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0A882189F8EE
+	for <lists+linux-iio@lfdr.de>; Sat, 12 Apr 2025 18:27:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 312D32080F4;
-	Sat, 12 Apr 2025 18:26:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 361D520E70E;
+	Sat, 12 Apr 2025 18:27:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XtyJ9Xov"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MpV+TzIy"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A1B8170A23;
-	Sat, 12 Apr 2025 18:26:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FA5B1C3C08;
+	Sat, 12 Apr 2025 18:27:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744482363; cv=none; b=cTPqlAkP9avxwCksrnHlsQpQr9996QNZlyPxGNk5+VzZ1pBI22XCM12Sw83g2JFGJe2gKreWKoXjLEdsDmYxOEF3QfAKdc24/HA4Ryx4/aFtriINHRdB3gZNRaTmXPZXZX8wU5lszb+mnPn2M8jOmUWctznHc4SLBisNYi2uKaw=
+	t=1744482451; cv=none; b=ttYjOZX0WwLGNTHADUWNUEgWtWBKNNBFJtVS9N+4COknvqz4jQksXpknlIWxT1mfjPyl5pkAWC7ZAOiyBJHIXY86wl4RnTGpCMu/fDN/mHmbn6NFQ2OIvHTB7vvLu/KN3S/4zTjeo/tqyBsTQhOLmIDI5rITy0D0y5H/5sjpaRM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744482363; c=relaxed/simple;
-	bh=64+M0drviQ2Lsfpaj+ZS6kkXeiGA6LezE7CpKqjDyho=;
+	s=arc-20240116; t=1744482451; c=relaxed/simple;
+	bh=Tskq+K7zK+lTQikjqFG5d9o/wEzX5mULVhPt4y3t5o4=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=JeugLi0Atc8X4ZIgyDNnMvEs8iSU0T1jaI6E+AS2HYBcVfEm4EhbPBUB1Gn7lK0ozdIRVRBa7STWwM5Llj9UAAbRa59wWq8GEK0oRA8eIM2gf2T5ocDUjNsGSPNlsJi5Gg5dkpy2N94q6j7lRqHG8QT3Uuxb23xa3EIABt7jkrE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XtyJ9Xov; arc=none smtp.client-ip=209.85.218.43
+	 To:Cc:Content-Type; b=E+XwjJvEel4ihzNwjYcj4Ee/VT5Si0uIk8gAo2JNfCKh6ku6cALVfcVK2uwCUU4gaB1emk+ug9QL8uOuSz4oFClYEnnfuMV16LdOf1eBex+QE5nkY0GB6DqkJLijD4BauOZb+5Cy0FAkBgeNPoxpKdFwan3CsHlGCaiOfjMj8nM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MpV+TzIy; arc=none smtp.client-ip=209.85.208.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-ac2a81e41e3so541736266b.1;
-        Sat, 12 Apr 2025 11:26:00 -0700 (PDT)
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-5e6f4b3ebe5so5098136a12.0;
+        Sat, 12 Apr 2025 11:27:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744482359; x=1745087159; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1744482447; x=1745087247; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=zVzZCv/PVThpxrXePrstfoBW3nrq6zhwEWI/tuSD1L0=;
-        b=XtyJ9XovVSzzbIOHKAsLeognM9RRkTIEIPwHg5kGbAGA4cpC6Gro2xgJ999sk1FHNk
-         7x6HS5+JSOkBMcpS2kSbsrDmLQVhRxOd9XFc0MQ71GyR1SG6Qr9JsReMYV1jcspw13AI
-         UyAomVZiObQrRITn6B0fbViWakIERYUe32hWH7rEtLdiRqr/IusAvL0cCGaSIGqG7X03
-         Z0vnI5MWSbjp6Yln83GkQER7a9gEYdtw193llA9+tRDEtWx0s5oV3RSH9uWvRJpg1ELb
-         lt3eoKBLgJzVjScz3O4A2oywQu0XNye1Uk7ElZYmnA4+xgudIcAD6S9swWSEs8fEjS78
-         x7fQ==
+        bh=8OuVdSBAYNzkN5ACXz9m/9B8zVMUdQvEL0boKkmXDBY=;
+        b=MpV+TzIyZpERNGMUGTUQ4J9Ax4OdZ9vO8JbZOquGqqRdQbe5pGR1Jx88YZ9ip8HGjl
+         5m0f7LQaJgxC/N6mR2qCdDmoo13SyT0a0FyDB9Pz1qV2LIx38UDPqUGbvL9ml74W5jZ2
+         YQAvKmKJDcCr/rMrbhSC1dNw/bRM9uYVi2wCMdWuMSJQcrDUYJGb9esJC+FL4kbtvrdm
+         KYP3YadCwsCpaTMb6tqWUBwy6nZGQKq6HLDpGCRKQxgwunrV0sVQUgzD+dyR5dnII6o7
+         vOy7b89Y7cEtzP11IMdZiCfhfLOKup4bRHySh4DQFrzeEqFTTqer2XTNP2lBAH33yMPO
+         qTjw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744482359; x=1745087159;
+        d=1e100.net; s=20230601; t=1744482447; x=1745087247;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=zVzZCv/PVThpxrXePrstfoBW3nrq6zhwEWI/tuSD1L0=;
-        b=G5tCioUZNgvDtcrz9tUpGSZAAYo7HIIQrq+r7FDsV406svzobgYy5479mG5KfBJ5JU
-         Z51kWJBvFUXbu5PomREYiPd3DrWF/XOiQ17nIr19qLHmWIc1ZjEhrC0Dw2p3UlIWmvbY
-         dfEzr8VfGcVLWwb8GsSzpk/gxu/DO6k3Sb3qTVScSJzP157QmN0SzJZXvCSCwUMX3Thi
-         ktzboq/bnAGUA7+Z4pQxRKQhcndIM97QTW6Wcf83Otk7RdfOphMgHW7cOMYmSCbJVsTS
-         gHUPjNmpQ+zXafyVbltOGJl+aHMsrQJN7ns4kacDxESrC15tJVXe7dnKX+K+CDOwUwwP
-         Av0Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVrjrYJ+HLhYzkYpSpFY6h5dZSPKPNUzwDYW67o0yT6GaiaoKUkIBLCNIeRtUGvdD/NQ/gIkKKvPHby@vger.kernel.org, AJvYcCWOI1vRJE8Uh55xoy6daT7lOIvd1tO3KqX7R0JbbSVMGnEHetcgP+aPmXqKeGcqs5qRLNjrQvzEGtpe@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxds106vXxASQi0RJfCvJGYdZx6eJS4HNBBrIARHMIoOFb9SJZo
-	dPFgAy2GvktGPwpo2ODcaDby1t4Cfm4RejZVv8H4ENwsSYq+AziUnl1CyRSXL7d9JWU0TqtlxcL
-	OszSQDpobvFB7aL1gbx90PFxGWvw=
-X-Gm-Gg: ASbGncvx3NTLTKo2VPd8wTt4FjC1qViyQjNVc+IuiN+Cm1vrcQuGQz6Sfa6vnLCwmZ4
-	H6AmpiC4mjABwgl2JXom8YvdVx04MptvDd/7tKweXdVRpC4gaZfqw2G6VBjdSGSzMLmDA3cNSIP
-	pjN6z1fVAywztfyzqK+M/GWA==
-X-Google-Smtp-Source: AGHT+IGk7aQeN8A/RHthEjAjbSJEUf1JEuMxAXwyjWUBeK1qXfSBXdnKKrl1cCbFTRr7mUkYG1dMtuaBRrrIDApYxSc=
-X-Received: by 2002:a17:906:730a:b0:aca:cac6:3ca9 with SMTP id
- a640c23a62f3a-acad34c62eemr535014366b.27.1744482359198; Sat, 12 Apr 2025
- 11:25:59 -0700 (PDT)
+        bh=8OuVdSBAYNzkN5ACXz9m/9B8zVMUdQvEL0boKkmXDBY=;
+        b=NEvmjhU4jR6PjTTKYc0KhslvIxTEtkyqt7DlL7xdZzCmDDF66lavIwJpD6UmHTOky4
+         G3gr1W5pSWX2Qbje4AdiRgx6Gfyw57ao7RuY9S/W7myBe042VBr1Je9NoxQgEEY3wV1R
+         ax9R2MS7Os212O3eixKMdebctXqWX9Blo/7p2gyJEFZxwZN4ktUaZYR+Gaog/+T5MZ/r
+         TUBWyAS3E6UZHMXIAoeTseo72u5u3uWkDLFaDl086t1wkfIAlz5yZyUnCfuugPDBVDpR
+         A/hDmZHOnxxk1a5/ZnPdHPoqMAa3B3eU1oD5BHI91CpB9zOrvwUG22ezsofCmgwZpBno
+         m/XQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUY4UFULxN1s+418yEIrcfaLVB0cr/TqBxuegbWUDNVeOkZwBi4iYKIMfb4j4/bO+xQPir0F5+tRpNx@vger.kernel.org, AJvYcCV36sa2zaqEVviHPtX3AJkITAPHPV0t8I+3XM9YvkdpRfVmR2ryu18fyRHbdDiHXEtlBx11k0/NlP3a@vger.kernel.org, AJvYcCW6gfGQSehCmvSH9ieJloTB33T4UJ/XMWi0hNOuqgIgzD0WpdCHNar/3/4WexXU2kPapxN4UzZV/zqO7pdN@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzmw/9F7vV9DoQ1XlAGjzYYHz+TXgVB5BTTtvQ2tTBafRX/NrcT
+	I8YwoX/wxTZ/G/ljJYDBPBRqdH5k2ZDH19VAQwryrETvY5hI8GZc379Xd6oSrglkFuefJEUB03c
+	C2b4mUgxAGhol59JM+mDAo4gUVWc=
+X-Gm-Gg: ASbGncujVr0cKbWZA1OCTep6GTifjHrm8Sd1jopJ8NiZpkCFCkOlgfDAywsEH3KoIR+
+	WtYTr/e8vrY1HjHKqztgMRK9jd9J8dLdx6Ab3HiWjjSqxnhuZdePBU0sqBYMs/sZWIllhuzQExy
+	XzKSp2SaQiF0t1eLjg9ylHQA==
+X-Google-Smtp-Source: AGHT+IHc4ZV1P7ynTyHLm1QGXBaMol+cFbhDf48jO9NGzxQ0vHQZWQY38cjCVetpAQ5WQtemrSIMzO+he4Al3LbIyjY=
+X-Received: by 2002:a17:907:3d4d:b0:ac7:391b:e688 with SMTP id
+ a640c23a62f3a-acad36d913fmr686501666b.58.1744482447405; Sat, 12 Apr 2025
+ 11:27:27 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250409024311.19466-1-gye976@gmail.com> <20250409024311.19466-5-gye976@gmail.com>
-In-Reply-To: <20250409024311.19466-5-gye976@gmail.com>
+References: <cover.1744200264.git.marcelo.schmitt@analog.com>
+ <5f79007f0b9f9f67360d04fb904b6a59111a4ebe.1744200264.git.marcelo.schmitt@analog.com>
+ <9c115086bd574b6c778a093143ebf54e14d7202b.camel@gmail.com>
+ <Z_k3e1DfxmcJgQeu@debian-BULLSEYE-live-builder-AMD64> <20250412171920.531993c1@jic23-huawei>
+In-Reply-To: <20250412171920.531993c1@jic23-huawei>
 From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Sat, 12 Apr 2025 21:25:22 +0300
-X-Gm-Features: ATxdqUFkQaa4xwXOz5fOMbuPPTy0t9E4V0bmp5KOf7Jc52Sk9YrkhbROKI7cun0
-Message-ID: <CAHp75VfMHdw-6vrELbjjD3T323uDz7U9wRP5YSk2jZ26wBuLTQ@mail.gmail.com>
-Subject: Re: [PATCH v3 3/4] iio: chemical: add support for winsen MHZ19B CO2 sensor
-To: Gyeyoung Baek <gye976@gmail.com>
-Cc: jic23@kernel.org, linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
+Date: Sat, 12 Apr 2025 21:26:50 +0300
+X-Gm-Features: ATxdqUHaXOzoFAHryghLc_0-mJRqsg5cMpy8W5CVqSA_SjwIDSriuNUCGSYS18c
+Message-ID: <CAHp75VdN4xhhq7KbEXW25cFxKfQTe=Z87=yobtg1f-w-Mz0psw@mail.gmail.com>
+Subject: Re: [PATCH v1 2/7] iio: adc: Add basic support for AD4170
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Marcelo Schmitt <marcelo.schmitt1@gmail.com>, =?UTF-8?B?TnVubyBTw6E=?= <noname.nuno@gmail.com>, 
+	Marcelo Schmitt <marcelo.schmitt@analog.com>, linux-iio@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Ana-Maria Cusco <ana-maria.cusco@analog.com>, lars@metafoo.de, Michael.Hennerich@analog.com, 
 	dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org, robh@kernel.org, 
 	krzk+dt@kernel.org, conor+dt@kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Apr 9, 2025 at 5:45=E2=80=AFAM Gyeyoung Baek <gye976@gmail.com> wro=
-te:
->
-> Add support for winsen MHZ19B CO2 sensor.
->
-> Datasheet:
-> https://www.winsen-sensor.com/d/files/infrared-gas-sensor/mh-z19b-co2-ver=
-1_0.pdf
+On Sat, Apr 12, 2025 at 7:19=E2=80=AFPM Jonathan Cameron <jic23@kernel.org>=
+ wrote:
+> On Fri, 11 Apr 2025 12:38:35 -0300
+> Marcelo Schmitt <marcelo.schmitt1@gmail.com> wrote:
 
-Make the above one line...
+> A general efficiency comment.  If you agree with a comment, no
+> need to reply.  Better to crop that bit of the thread out and
+> reply only to those parts where there is more to add.
 
->
+> Cuts down on what reviewers need to read!  We assume anything
+> you don't comment on is something you are happy with changing as
+> suggested!
 
-...and remove this blank line, hence this becomes a tag in the commit messa=
-ge.
++ 1000!
 
-> Signed-off-by: Gyeyoung Baek <gye976@gmail.com>
+> I normally only point this out to people who are sending a lot
+> of code as it's just not worth it for one time contributors.
+> So bad luck you get me being fussier ;)
 
-...
-
-> +#include <linux/kernel.h>
-
-No usual driver has a business to include the  kernel.h. Just follow
-the IWYU principle and make sure what you include is what you use
-here.
-
-...
-
-> +struct mhz19b_state {
-> +       struct serdev_device *serdev;
-> +       struct regulator *vin;
-> +
-> +       /*
-> +        * serdev receive buffer.
-> +        * When data is received from the MH-Z19B,
-> +        * the 'mhz19b_receive_buf' callback function is called and fills=
- this buffer.
-> +        */
-> +       char buf[9];
-
-Should it be DMA-safe?
-
-> +       int buf_idx;
-> +
-> +       /* must wait the 'buf' is filled with 9 bytes.*/
-
-...wait until the...
-
-> +       struct completion buf_ready;
-> +};
-
-Have you run `pahole` to check if this is the best layout?
-
-...
-
-> +/*
-> + * commands have following format:
-
-Commands
-
-> + *
-> + * +------+------+-----+------+------+------+------+------+-------+
-> + * | 0xFF | 0x01 | cmd | arg0 | arg1 | 0x00 | 0x00 | 0x00 | cksum |
-> + * +------+------+-----+------+------+------+------+------+-------+
-> + */
-
-...
-
-> +static uint8_t mhz19b_get_checksum(uint8_t *packet)
-
-What's wrong with u8 here and everywhere else?
-
-> +{
-> +       uint8_t i, checksum =3D 0;
-> +
-> +       for (i =3D 1; i < 8; i++)
-
-Shouldn't you use sizeof here? It seems related to that 9 above.
-
-> +               checksum +=3D packet[i];
-
-> +       checksum =3D 0xff - checksum;
-> +       checksum +=3D 1;
-> +
-> +       return checksum;
-
-Looks to me like these lines can be simplified to
-
-  return -checksum;
-
-> +}
-
-...
-
-> +       case MHZ19B_ABC_LOGIC_CMD: {
-> +               bool enable =3D *((bool *)arg);
-
-Oh, no. The boolean type is a tricky one and here you probably break
-all the possible implementation defined behaviours esp. on bigendian
-systems.
-
-> +               if (enable) {
-> +                       cmd_buf[3] =3D 0xA0;
-> +                       cmd_buf[8] =3D MHZ19B_ABC_LOGIC_ON_CKSUM;
-> +               } else {
-> +                       cmd_buf[3] =3D 0;
-> +                       cmd_buf[8] =3D MHZ19B_ABC_LOGIC_OFF_CKSUM;
-> +               }
-> +               break;
-
-> +       } case MHZ19B_SPAN_POINT_CMD: {
-
-Please, split the leading } from the case (everywhere). This is an
-unusual style.
-
-> +               uint16_t ppm =3D *((uint16_t *)arg);
-
-Do you guarantee the alignment?
-
-> +               put_unaligned_be16(ppm, &cmd_buf[3]);
-> +               cmd_buf[MHZ19B_CMD_SIZE - 1] =3D mhz19b_get_checksum(cmd_=
-buf);
-> +               break;
-> +       } case MHZ19B_ZERO_POINT_CMD: {
-> +               cmd_buf[8] =3D MHZ19B_ZERO_POINT_CKSUM;
-> +               break;
-> +       } default:
-> +               break;
-> +       }
-
-...
-
-> +       /* write buf to uart ctrl syncronously */
-
-UART
-synchronously
-
-Perhaps a spellchecker to run?
-
-> +       ret =3D serdev_device_write(serdev, cmd_buf, MHZ19B_CMD_SIZE, 0);
-> +       if (ret !=3D MHZ19B_CMD_SIZE) {
-> +               dev_err(dev, "write err, %d bytes written", ret);
-
-> +               return -EINVAL;
-
-Can ret be negative? In such a case, please propagate the actual error code=
-.
-
-> +       }
-
-...
-
-> +               ret =3D mhz19b_get_checksum(st->buf);
-
-How ret is being used? And if it may hold an error code, it should be
-return to the upper layers, otherwise the ret variable is a bad choice
-to keep this locally.
-
-> +               if (st->buf[MHZ19B_CMD_SIZE - 1] !=3D mhz19b_get_checksum=
-(st->buf)) {
-> +                       dev_err(dev, "checksum err");
-> +                       return -EINVAL;
-> +               }
-> +
-> +               ret =3D get_unaligned_be16(&st->buf[2]);
-> +               return ret;
-
-...
-
-> +static int mhz19b_read_raw(struct iio_dev *indio_dev,
-> +       struct iio_chan_spec const *chan,
-> +       int *val, int *val2, long mask)
-> +{
-> +       int ret =3D mhz19b_serdev_cmd(indio_dev, MHZ19B_READ_CO2_CMD, NUL=
-L);
-> +
-> +       if (ret < 0)
-> +               return ret;
-
-It's better to use the form of
-
-   int ret;
-
-   ret =3D ...
-   if (ret)
-      ...
-
-Also why do you have ' < 0' parts? Please, double check that you use
-this form of the errorcheck if and only if the callee may return a
-positive value.
-
-> +       *val =3D ret;
-> +       return IIO_VAL_INT;
-> +}
-
-...
-
-> +/*
-> + * MHZ19B only supports writing configuration values.
-> + *
-> + * echo 0 > calibration_auto_enable : ABC logic off
-> + * echo 1 > calibration_auto_enable : ABC logic on
-> + *
-> + * echo 0 > calibration_forced_value : zero point calibration
-> + *     (make sure the sensor had been worked under 400ppm for over 20 mi=
-nutes.)
-
-has been working / had been working ?
-
-> + * echo [1000 1 5000] > calibration_forced_value : span point calibratio=
-n
-> + *     (make sure the sensor had been worked under a certain level co2 f=
-or over 20 minutes.)
-> + */
-
-...
-
-> +{
-> +       struct iio_dev *indio_dev =3D dev_to_iio_dev(dev);
-> +       bool enable;
-
-> +       int ret =3D kstrtobool(buf, &enable);
-> +
-> +       if (ret)
-> +               return ret;
-
-Same comment to everywhere where you assign in the definition block
-and check that in the code later on, this form is harder to maintain.
-
-> +
-> +       ret =3D mhz19b_serdev_cmd(indio_dev, MHZ19B_ABC_LOGIC_CMD, &enabl=
-e);
-> +       if (ret < 0)
-> +               return ret;
-> +
-> +       return len;
-> +}
-
-...
-
-> +       uint16_t ppm;
-
-u16. Please, use kernel types everywhere.
-
-...
-
-> +       ret =3D kstrtou16(buf, 10, &ppm);
-
-No hex?
-
-> +       if (ret)
-> +               return ret;
-
-...
-
-> +               if (ppm < 1000 || ppm > 5000) {
-
-in_range()
-
-> +                       dev_dbg(&indio_dev->dev,
-> +                               "span point ppm should be 1000~5000");
-> +                       return -EINVAL;
-> +               }
-
-...
-
-> +static const struct attribute_group mhz19b_attr_group =3D {
-> +       .attrs =3D mhz19b_attrs,
-> +};
-
-ATTRIBUTE_GROUP() ?
-
-...
-
-> +static size_t mhz19b_receive_buf(struct serdev_device *serdev,
-> +       const u8 *data, size_t len)
-> +{
-> +       struct iio_dev *indio_dev =3D dev_get_drvdata(&serdev->dev);
-> +       struct mhz19b_state *st =3D iio_priv(indio_dev);
-> +
-> +       for (int i =3D 0; i < len; i++)
-
-Why signed?
-
-> +               st->buf[st->buf_idx++] =3D data[i];
-> +
-> +       if (st->buf_idx =3D=3D MHZ19B_CMD_SIZE) {
-> +               st->buf_idx =3D 0;
-> +               complete(&st->buf_ready);
-> +       }
-> +
-> +       return len;
-> +}
-
-...
-
-> +       ret =3D serdev_device_set_baudrate(serdev, 9600);
-> +       if (ret < 0)
-
-Why < 0?
-
-> +               return ret;
-> +
-> +       serdev_device_set_flow_control(serdev, false);
-> +
-> +       ret =3D serdev_device_set_parity(serdev, SERDEV_PARITY_NONE);
-> +       if (ret < 0)
-
-Why < 0?
-
-> +               return ret;
 
 --=20
 With Best Regards,

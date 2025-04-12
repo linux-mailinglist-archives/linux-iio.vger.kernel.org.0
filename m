@@ -1,63 +1,80 @@
-Return-Path: <linux-iio+bounces-17997-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17998-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FBDFA86C9F
-	for <lists+linux-iio@lfdr.de>; Sat, 12 Apr 2025 12:54:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1CC2A86CAD
+	for <lists+linux-iio@lfdr.de>; Sat, 12 Apr 2025 12:58:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 943F9445E8F
-	for <lists+linux-iio@lfdr.de>; Sat, 12 Apr 2025 10:54:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 93C8C1B6039E
+	for <lists+linux-iio@lfdr.de>; Sat, 12 Apr 2025 10:58:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0095A1D7995;
-	Sat, 12 Apr 2025 10:54:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CD0B1D89E3;
+	Sat, 12 Apr 2025 10:58:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L3DHAZiY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pT/VsOF5"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A09D2194A65;
-	Sat, 12 Apr 2025 10:54:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C4BF1A5B91;
+	Sat, 12 Apr 2025 10:58:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744455244; cv=none; b=GReEx/SrysBfjQjl5DyK0+Yw8ZkVtRwgKZM0wSyqOYiVeIAyIR7jELssjusxS9YaeXi2utMa5z87r5imdZS3AgMBTQcaj3C0lbYYk3mgw8zKOy7jx4aA/o114buZuZA6RhSKCRYNrbraAZ/qXPOP3XWcEC2igHeQn7rCcETHZBg=
+	t=1744455516; cv=none; b=UcWq73Sp+AskzsGEa3gJoNi2r/7nrC4MUmIQuGcUq0yUDFkWPl417+P2ynVmEOxuR08MT/m6N9631uHyzDwHm3xGCNbUVh/g1R8Ohw1JFnPuGEjNBQeZCBqT3hZ9th2F/Xgl5bAOSGOar5xh32QmnyKFlvtKRbZuIvWTqQRwUnA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744455244; c=relaxed/simple;
-	bh=I0q5hlyfi0DSBsZsUO4t2QmA7tXZThTrX+ardg7gVTQ=;
+	s=arc-20240116; t=1744455516; c=relaxed/simple;
+	bh=v1schcvx/waqBZ5un5XqVAQVNS19s1oAx1ITFiQcrpE=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YVfG4nNoiqcUK06IIrm45aqV8snmD/KI8g/YWU4IGGnH4wjdc9LT/hsqJCJc66nPaX32paXbWmTtsmEHHZb9V2LdnrH/wRtZpacGazXTQJQ1jh1TgshWH/5Dp3v7I/x/TRKxytUW5EM6LD/xoVBKzuzsM0lV0cWOWihYZmq+WX8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L3DHAZiY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAAD2C4CEE3;
-	Sat, 12 Apr 2025 10:53:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=kAAUceAC2ULRQ/06D2qTrV/DjoNhJ616v6gMtxEOHQDVYERGBKV661PLY5/6MrDWo0YC390UY3lOwZsUZdKnFeoam3xbMJMAVplOzaCD5muqWeOXFvPgznhzpvgFn5qFMk/G59MLCHxYJ8iKgDWV2juwVdoVoqol2lYu8VJnhZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pT/VsOF5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1102CC4CEE3;
+	Sat, 12 Apr 2025 10:58:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744455244;
-	bh=I0q5hlyfi0DSBsZsUO4t2QmA7tXZThTrX+ardg7gVTQ=;
+	s=k20201202; t=1744455516;
+	bh=v1schcvx/waqBZ5un5XqVAQVNS19s1oAx1ITFiQcrpE=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=L3DHAZiY2tTG8iowbIP1s5Yxhy1ks/Xx1iRMVmRr/mGfrH2N35pLGZuwcO/z7WybU
-	 YHLaXoRg/F8KcMlqJmC3zzKTRgEYZWCjGxhwckyo84lPNXMF+kDNh8XvHABYaf1KBl
-	 q70OoGK5WCqsRXoF/anElOaO6pJBoQTE4PfRU76Ik+HQCe6yDxWL3LYtcpl5KpTsML
-	 ubPSg0NYLZrpES4/TxZqJ8KvctTGX7JXt4ZHbqdDgNaW5R+6Dv1UhjU2l1plcbvWEv
-	 sYuPEss/1TSMK0acXetAo97LVX7hn29swhC75mH6EqhRpYVJfC7Qpqr3sobOYFoFA4
-	 AQo1IX1O0sVqA==
-Date: Sat, 12 Apr 2025 11:53:54 +0100
+	b=pT/VsOF5b+4t5DIlcEnuLMdNtbl7VP9O+54QQsU9sdRQVz/CT15xo4WkXVJbUsHpY
+	 thgH0oJNZOA12yp7RyUWEVgKR+s3BW+E+6AahjBthYf7EOpxYj3XdhA7UMxkyKEY2T
+	 TcX8SBCYPrYUwPpat/DuqWXfmrd8n1nHDcfU/zMbC/OXPJhLnkA9aKQJHaMttgMe27
+	 PM6T+Cv9VCeX5UcQf698EfS4S44EXmh+IzvzTH6LLBCtyz6LCuSmN1Uuy4Ssj8uCCu
+	 VCIqIn/3olCUDrItzMQcmUMAbil4kjtOougBPv0pXZalmWYJ08F2qvsZJOFZ0dHLsO
+	 PvdTgqSSMGXNA==
+Date: Sat, 12 Apr 2025 11:58:21 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Svyatoslav Ryhel <clamor95@gmail.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Daniel Lezcano
- <daniel.lezcano@linaro.org>, Zhang Rui <rui.zhang@intel.com>, Lukasz Luba
- <lukasz.luba@arm.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
- <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Laxman Dewangan
- <ldewangan@nvidia.com>, linux-pm@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-iio@vger.kernel.org
-Subject: Re: [PATCH v4 2/2] thermal: thermal-generic-adc: add temperature
- sensor channel
-Message-ID: <20250412115354.0b266fae@jic23-huawei>
-In-Reply-To: <CAPVz0n0NA+=+4da8izPvTn3XacdJndyxrvyMY-QvHdie206wVg@mail.gmail.com>
-References: <20250310075638.6979-1-clamor95@gmail.com>
-	<20250310075638.6979-3-clamor95@gmail.com>
-	<CAPVz0n0NA+=+4da8izPvTn3XacdJndyxrvyMY-QvHdie206wVg@mail.gmail.com>
+To: Yassine Oudjana <y.oudjana@protonmail.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Bjorn Andersson
+ <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, Manivannan
+ Sadhasivam <manivannan.sadhasivam@linaro.org>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+ <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+ <horms@kernel.org>, Masahiro Yamada <masahiroy@kernel.org>, Nathan
+ Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas.schier@linux.dev>,
+ Alexander Sverdlin <alexander.sverdlin@gmail.com>, Sean Nyekjaer
+ <sean@geanix.com>, Javier Carrasco <javier.carrasco.cruz@gmail.com>, Matti
+ Vaittinen <mazziesaccount@gmail.com>, Antoniu Miclaus
+ <antoniu.miclaus@analog.com>, Ramona Gradinariu
+ <ramona.gradinariu@analog.com>, "Yo-Jung (Leo) Lin" <0xff07@gmail.com>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Neil Armstrong
+ <neil.armstrong@linaro.org>, =?UTF-8?B?QmFybmFiw6FzIEN6w6ltw6Fu?=
+ <barnabas.czeman@mainlining.org>, Danila Tikhonov <danila@jiaxyga.com>,
+ Antoni Pokusinski <apokusinski01@gmail.com>, Vasileios Amoiridis
+ <vassilisamir@gmail.com>, Petar Stoykov <pd.pstoykov@gmail.com>, shuaijie
+ wang <wangshuaijie@awinic.com>, Yasin Lee <yasin.lee.x@gmail.com>,
+ "Borislav Petkov (AMD)" <bp@alien8.de>, Dave Hansen
+ <dave.hansen@linux.intel.com>, Tony Luck <tony.luck@intel.com>, Pawan Gupta
+ <pawan.kumar.gupta@linux.intel.com>, Ingo Molnar <mingo@kernel.org>,
+ Yassine Oudjana <yassine.oudjana@gmail.com>, linux-kernel@vger.kernel.org,
+ linux-iio@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ netdev@vger.kernel.org, linux-kbuild@vger.kernel.org
+Subject: Re: [PATCH 1/3] net: qrtr: Turn QRTR into a bus
+Message-ID: <20250412115821.72f35c07@jic23-huawei>
+In-Reply-To: <02aeebee-0acc-4a03-a7f1-a920a34fb378@protonmail.com>
+References: <20250406140706.812425-1-y.oudjana@protonmail.com>
+	<20250406140706.812425-2-y.oudjana@protonmail.com>
+	<20250406170111.7a11437a@jic23-huawei>
+	<02aeebee-0acc-4a03-a7f1-a920a34fb378@protonmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -65,176 +82,130 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Sat, 5 Apr 2025 18:23:25 +0300
-Svyatoslav Ryhel <clamor95@gmail.com> wrote:
+On Thu, 10 Apr 2025 12:10:54 +0000
+Yassine Oudjana <y.oudjana@protonmail.com> wrote:
 
-> =D0=BF=D0=BD, 10 =D0=B1=D0=B5=D1=80. 2025=E2=80=AF=D1=80. =D0=BE 09:57 Sv=
-yatoslav Ryhel <clamor95@gmail.com> =D0=BF=D0=B8=D1=88=D0=B5:
-> >
-> > To avoid duplicating sensor functionality and conversion tables, this
-> > design allows converting an ADC IIO channel's output directly into a
-> > temperature IIO channel. This is particularly useful for devices where
-> > hwmon isn't suitable or where temperature data must be accessible throu=
-gh
-> > IIO.
-> >
-> > One such device is, for example, the MAX17040 fuel gauge.
-> >
-> > The temperature data, while technically a product of conversion and thus
-> > categorized as IIO_CHAN_INFO_PROCESSED, maintains its unscaled state
-> > (milli-degree). To account for this, IIO_CHAN_INFO_RAW is used along wi=
-th
-> > IIO_CHAN_INFO_SCALE to provide different degrees of accuracy.
+> On 06/04/2025 7:01 pm, Jonathan Cameron wrote:
+> > On Sun, 06 Apr 2025 14:07:43 +0000
+> > Yassine Oudjana <y.oudjana@protonmail.com> wrote:
+> >   
+> >> Implement a QRTR bus to allow for creating drivers for individual QRTR
+> >> services. With this in place, devices are dynamically registered for QRTR
+> >> services as they become available, and drivers for these devices are
+> >> matched using service and instance IDs.
+> >>
+> >> In smd.c, replace all current occurences of qdev with qsdev in order to
+> >> distinguish between the newly added QRTR device which represents a QRTR
+> >> service with the existing QRTR SMD device which represents the endpoint
+> >> through which services are provided.
+> >>
+> >> Signed-off-by: Yassine Oudjana <y.oudjana@protonmail.com>  
+> > Hi Yassine
+> > 
+> > Just took a quick look through.
+> > 
+> > It might make more sense to do this with an auxiliary_bus rather
+> > than defining a new bus.
+> > 
+> > I'd also split out the renames as a precursor patch.
+> > 
+> > Various other comments inline.
+> > 
+> > Jonathan
+> >   
+> >> diff --git a/net/qrtr/af_qrtr.c b/net/qrtr/af_qrtr.c
+> >> index 00c51cf693f3..e11682fd7960 100644
+> >> --- a/net/qrtr/af_qrtr.c
+> >> +++ b/net/qrtr/af_qrtr.c
+> >> @@ -435,6 +435,7 @@ static void qrtr_node_assign(struct qrtr_node *node, unsigned int nid)
+> >>   int qrtr_endpoint_post(struct qrtr_endpoint *ep, const void *data, size_t len)
+> >>   {
+> >>   	struct qrtr_node *node = ep->node;
+> >> +	const struct qrtr_ctrl_pkt *pkt;
+> >>   	const struct qrtr_hdr_v1 *v1;
+> >>   	const struct qrtr_hdr_v2 *v2;
+> >>   	struct qrtr_sock *ipc;
+> >> @@ -443,6 +444,7 @@ int qrtr_endpoint_post(struct qrtr_endpoint *ep, const void *data, size_t len)
+> >>   	size_t size;
+> >>   	unsigned int ver;
+> >>   	size_t hdrlen;
+> >> +	int ret = 0;
+> >>
+> >>   	if (len == 0 || len & 3)
+> >>   		return -EINVAL;
+> >> @@ -516,12 +518,24 @@ int qrtr_endpoint_post(struct qrtr_endpoint *ep, const void *data, size_t len)
+> >>
+> >>   	qrtr_node_assign(node, cb->src_node);
+> >>
+> >> +	pkt = data + hdrlen;
+> >> +
+> >>   	if (cb->type == QRTR_TYPE_NEW_SERVER) {
+> >>   		/* Remote node endpoint can bridge other distant nodes */
+> >> -		const struct qrtr_ctrl_pkt *pkt;
+> >> -
+> >> -		pkt = data + hdrlen;
+> >>   		qrtr_node_assign(node, le32_to_cpu(pkt->server.node));
+> >> +
+> >> +		/* Create a QRTR device */
+> >> +		ret = ep->add_device(ep, le32_to_cpu(pkt->server.node),
+> >> +					       le32_to_cpu(pkt->server.port),
+> >> +					       le32_to_cpu(pkt->server.service),
+> >> +					       le32_to_cpu(pkt->server.instance));
+> >> +		if (ret)
+> >> +			goto err;
+> >> +	} else if (cb->type == QRTR_TYPE_DEL_SERVER) {
+> >> +		/* Remove QRTR device corresponding to service */
+> >> +		ret = ep->del_device(ep, le32_to_cpu(pkt->server.port));
+> >> +		if (ret)
+> >> +			goto err;
+> >>   	}
+> >>
+> >>   	if (cb->type == QRTR_TYPE_RESUME_TX) {
+> >> @@ -543,8 +557,7 @@ int qrtr_endpoint_post(struct qrtr_endpoint *ep, const void *data, size_t len)
+> >>
+> >>   err:
+> >>   	kfree_skb(skb);
+> >> -	return -EINVAL;
+> >> -
+> >> +	return ret ? ret : -EINVAL;  
+> > How do we get here with non error value given we couldn't before?  
+> 
+> We don't, but we may have errors in ret other than -EINVAL returned by 
+> the newly added add_device and del_device which we should propagate.
 
-You've lost me in this description.  The base units of an IIO temperature c=
-hannel
-are milli-degrees so if the scaling is already right for that you would
-be fine using a IIO_CHAN_INFO_PROCESSED channel.
+Ah. Got it (I misread that!).  Personally I'd go for setting ret in the
+other error paths explicitly to -EINVAL.  Mixing two styles of handling
+where you have some paths setting ret and some not is rather confusing to read.
 
-A few other minor things inline.
 
-> >
-> > Signed-off-by: Svyatoslav Ryhel <clamor95@gmail.com>
-> > ---
-> >  drivers/thermal/thermal-generic-adc.c | 62 ++++++++++++++++++++++++++-
-> >  1 file changed, 61 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/thermal/thermal-generic-adc.c b/drivers/thermal/th=
-ermal-generic-adc.c
-> > index ee3d0aa31406..7dcc2e1168a4 100644
-> > --- a/drivers/thermal/thermal-generic-adc.c
-> > +++ b/drivers/thermal/thermal-generic-adc.c
-> > @@ -7,6 +7,7 @@
-> >   * Author: Laxman Dewangan <ldewangan@nvidia.com>
-> >   */
-> >  #include <linux/iio/consumer.h>
-> > +#include <linux/iio/iio.h>
-> >  #include <linux/kernel.h>
-> >  #include <linux/module.h>
-> >  #include <linux/platform_device.h>
-> > @@ -73,6 +74,65 @@ static const struct thermal_zone_device_ops gadc_the=
-rmal_ops =3D {
-> >         .get_temp =3D gadc_thermal_get_temp,
-> >  };
-> >
-> > +static const struct iio_chan_spec gadc_thermal_iio_channel[] =3D {
-Even though there is only one. If it is an array use channels.
 
-or stop it being an array and just take a pointer to a single channel
-instance.
 
-> > +       {
-> > +               .type =3D IIO_TEMP,
-> > +               .info_mask_separate =3D BIT(IIO_CHAN_INFO_RAW) |
-> > +                                     BIT(IIO_CHAN_INFO_SCALE),
-> > +       }
-> > +};
-> > +
-> > +static int gadc_thermal_read_raw(struct iio_dev *indio_dev,
-> > +                                struct iio_chan_spec const *chan,
-> > +                                int *val, int *val2, long mask)
-> > +{
-> > +       struct gadc_thermal_info *gtinfo =3D iio_priv(indio_dev);
-> > +       int ret;
-> > +
-> > +       switch (mask) {
-> > +       case IIO_CHAN_INFO_RAW:
-> > +               ret =3D gadc_thermal_get_temp(gtinfo->tz_dev, val);
-> > +               if (ret)
-> > +                       return ret;
-> > +
-> > +               return IIO_VAL_INT;
-> > +
-> > +       case IIO_CHAN_INFO_SCALE:
-> > +               /* scale to a degree centigrade */
+> >> +
+> >> +	return qdev->port == port;
+> >> +}
+> >> +
+> >> +static void qcom_smd_qrtr_add_device_worker(struct work_struct *work)
+> >> +{
+> >> +	struct qrtr_new_server *new_server = container_of(work, struct qrtr_new_server, work);
+> >> +	struct qrtr_smd_dev *qsdev = new_server->parent;
+> >> +	struct qrtr_device *qdev;
+> >> +	int ret;
+> >> +
+> >> +	qdev = kzalloc(sizeof(*qdev), GFP_KERNEL);
+> >> +	if (!qdev)
+> >> +		return;
+> >> +  
+> > Maybe
+> > 	*qdev = (struct qrtr_device *) {
+> > 	};  
+> 
+> (struct qrtr_device)
 
-As above.  See Documentation/ABI/testing/sysfs-bus-iio
-entries from temperature. Scaling of a temperature channel is milli-degrees
+oops. Indeed that!
 
-This is a bit of a historical artefact. Way back at the start of IIO
-when we had relatively few channel types, where possible I matched the
-scaling to hwmon.  With hindsight that made things a bit inconsistent
-but we are stuck with it as ABI :(
 
 Jonathan
-
-> > +               *val =3D 1;
-> > +               *val2 =3D 1000;
-> > +               return IIO_VAL_FRACTIONAL;
-> > +
-> > +       default:
-> > +               return -EINVAL;
-> > +       }
-> > +}
-> > +
-> > +static const struct iio_info gadc_thermal_iio_info =3D {
-> > +       .read_raw =3D gadc_thermal_read_raw,
-> > +};
-> > +
-> > +static int gadc_iio_register(struct device *dev, struct gadc_thermal_i=
-nfo *gti)
-> > +{
-> > +       struct gadc_thermal_info *gtinfo;
-> > +       struct iio_dev *indio_dev;
-> > +
-> > +       indio_dev =3D devm_iio_device_alloc(dev, sizeof(struct gadc_the=
-rmal_info));
-> > +       if (!indio_dev)
-> > +               return -ENOMEM;
-> > +
-> > +       gtinfo =3D iio_priv(indio_dev);
-> > +       memcpy(gtinfo, gti, sizeof(struct gadc_thermal_info));
-
-sizeof(*gtinfo) probably slightly better.
-
-> > +
-> > +       indio_dev->name =3D dev_name(dev);
-
-What does this end up as?  The convention in IIO is to name after
-a part number.  If you have duplicates this isn't how you tell them
-apart.  So I'd kind of expect thermal-generic-temp or
-something like that.
-
-> > +       indio_dev->info =3D &gadc_thermal_iio_info;
-> > +       indio_dev->modes =3D INDIO_DIRECT_MODE;
-> > +       indio_dev->channels =3D gadc_thermal_iio_channel;
-As above, I'd stop that being an array and use
-	indio_dev->channels =3D &gadc_thermal_iio_chanel;
-	indio_dev->channels =3D 1;
-
-Unless you think maybe we will get more channels in future, in which case
-just rename it channels (which happens to have one element this time)
-
-> > +       indio_dev->num_channels =3D ARRAY_SIZE(gadc_thermal_iio_channel=
-);
-> > +
-> > +       return devm_iio_device_register(dev, indio_dev);
-> > +}
-> > +
-> >  static int gadc_thermal_read_linear_lookup_table(struct device *dev,
-> >                                                  struct gadc_thermal_in=
-fo *gti)
-> >  {
-> > @@ -153,7 +213,7 @@ static int gadc_thermal_probe(struct platform_devic=
-e *pdev)
-> >
-> >         devm_thermal_add_hwmon_sysfs(dev, gti->tz_dev);
-> >
-> > -       return 0;
-> > +       return gadc_iio_register(&pdev->dev, gti);
-> >  }
-> >
-> >  static const struct of_device_id of_adc_thermal_match[] =3D {
-> > --
-> > 2.43.0
-> > =20
->=20
-> Added Jonathan Cameron and linux-iio@vger.kernel.org to list.
->=20
-> Jonathan, this is newer version of the thermal-generic-adc you have
-> reviewed recently with channels adjusted like proposed in v3.
-
 

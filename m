@@ -1,61 +1,61 @@
-Return-Path: <linux-iio+bounces-18005-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18006-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E69E7A86CD2
-	for <lists+linux-iio@lfdr.de>; Sat, 12 Apr 2025 13:42:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64306A86D07
+	for <lists+linux-iio@lfdr.de>; Sat, 12 Apr 2025 14:50:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D4DBC17443C
-	for <lists+linux-iio@lfdr.de>; Sat, 12 Apr 2025 11:42:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 96E5F1B67746
+	for <lists+linux-iio@lfdr.de>; Sat, 12 Apr 2025 12:50:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A77E61DF975;
-	Sat, 12 Apr 2025 11:42:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 333C71E991D;
+	Sat, 12 Apr 2025 12:50:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hm5JAmTT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PIT1qZ1T"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52B201DB13A;
-	Sat, 12 Apr 2025 11:42:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF2AB19F41C;
+	Sat, 12 Apr 2025 12:50:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744458158; cv=none; b=C1eEX4RxPjbEdmgZiwLUrhRLW5+6rWYCHroIgNGF/0CV6fmaOKIS116ViQozVRpa/+Tb0+N3uJj0bN2tMBSu+C1ff8lV5AqIU81LUiYivvzNFFm406JuFz6ITGikSmKP+gbdgPWFYdnY9LbEENz8Jd/qJ/JuVZB60SrflJLih6E=
+	t=1744462209; cv=none; b=HnXxA2OVNi2Wt6Vb8X0nWTR3R7bK063CmnqZhoSyZDxhde2DmauBmiO5iuXczQ3RFOcXnD7UJThYhR8iirvfvV/eHoCYsZtOfHX6OB+YJfXI8gTOphM1t8ukCSf1G/OJIZETi2bb9Jn8JY9i5LfjdkmLMSk6q3EVB9YPx4yF/t4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744458158; c=relaxed/simple;
-	bh=HS9BffI3qqC4JoBQVgCoiOiCi+evWrXoorn+7+Ndd2I=;
+	s=arc-20240116; t=1744462209; c=relaxed/simple;
+	bh=M92R1sA/oaQWHhu9rd2suZHFanauK8ygZLX96I1zQRc=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=d2Mso09sCBcGyvpb53TmH7ImL+HNKT5dVH7gOwAckLtzoiFGHBRER5QBSfm4wAqZhm3DwL6JUsl12W34XbeTQU/qJqo35cqSLVzHqqf0Kl09XGpiwyrc21vTyuc+ys1kEZ6a4mhsMDiomXUMwLl8fAfpjUet9P9ZPF2E3qmvHSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hm5JAmTT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0949CC4CEE3;
-	Sat, 12 Apr 2025 11:42:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=PlabFmQ121IaVj1Q7OcRFyuezHJxW7OVxbxy8tCED6UVNh0NllUpMymTVnsUngZ+dm+9JlNLKHmtCagUZxiffT+6OytoZNckAQ6MXVEdXoWpB+XqJO75e4c6IMhybq8biG9LoP1s4/1C6xPNhBbpmU3xc4FsjiOGn9b09URJ+kM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PIT1qZ1T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96209C4CEE3;
+	Sat, 12 Apr 2025 12:50:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744458157;
-	bh=HS9BffI3qqC4JoBQVgCoiOiCi+evWrXoorn+7+Ndd2I=;
+	s=k20201202; t=1744462208;
+	bh=M92R1sA/oaQWHhu9rd2suZHFanauK8ygZLX96I1zQRc=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Hm5JAmTThx7NtaYDGMtFzaXfNnyC7j3SGhOYl/eJvfwXZSAuo1n0ZuO1C3rExj+JW
-	 3lTuVYExTRXMbPJQXUIg9Rilw9wc4RWJ8cslwhTQX5QhyZEB+ePzcnjaBFPP/tpMgl
-	 Xst8XdyWHsh8NOs28TUFcO8RQREbIynfyL2hzd/qukNaBiFK7J2HXGeg+4e2aciXmY
-	 Rj/x4pyTFyYUzqw6EZctwnHuHhbVzDZgdDDQfU+nd9i77M1GwL2931sj65z4nEW1et
-	 YXP3EdSL1gRucZrkrmvwIkg/8WgJK/0wKb520LASVs3Ma92tvNrFQQYXztppaiR51R
-	 7wva6g+9NhbuA==
-Date: Sat, 12 Apr 2025 12:42:29 +0100
+	b=PIT1qZ1TjFW+TkZPQAfbPOFCRytrnJWL7NTue0aJuoS0nTm7fhpZIqg/syJrPgzDe
+	 arnYhlGoq3gBLLPnqCtc0YY9nlwnmFL7kJvkW8x/sZfMfXducQ9GJf62i2gaUi7FW0
+	 5EWYJekcvdHEe4I6zDHgUOI2rNWieQhYyqNhuclIHDSmb75+hdenGaYfWSHUq7Akj2
+	 vABlVfrfgPfaqT4F0r6kkFC4Z5A6hm/P/hNmAMJrVOTD9NVY12FUS0qNcGghEt6p2s
+	 oLLWo6qMBo00wRKY75jqDwfKysVguTFIAfeeiYQFWOX6A9I3Y1lAD6NLb1SU5RQhks
+	 yBCZWZPBVyrZw==
+Date: Sat, 12 Apr 2025 13:50:01 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Matti Vaittinen <mazziesaccount@gmail.com>, Matti Vaittinen
- <matti.vaittinen@fi.rohmeurope.com>, Lars-Peter Clausen <lars@metafoo.de>,
+To: Jean-Baptiste Maneyrol via B4 Relay
+ <devnull+jean-baptiste.maneyrol.tdk.com@kernel.org>
+Cc: jean-baptiste.maneyrol@tdk.com, Lars-Peter Clausen <lars@metafoo.de>,
  Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Nuno Sa <nuno.sa@analog.com>, Javier
- Carrasco <javier.carrasco.cruz@gmail.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH RFC v3 8/8] iio: ti-adc128s052: Drop variable vref
-Message-ID: <20250412124229.7917e2df@jic23-huawei>
-In-Reply-To: <78d17b05-3f0d-4903-afe3-8051d4bd051d@baylibre.com>
-References: <cover.1744022065.git.mazziesaccount@gmail.com>
-	<db5cb2e1543e03d5a9953faa3934d66f4621cd12.1744022065.git.mazziesaccount@gmail.com>
-	<78d17b05-3f0d-4903-afe3-8051d4bd051d@baylibre.com>
+ Conor Dooley <conor+dt@kernel.org>, David Lechner <dlechner@baylibre.com>,
+ Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko
+ <andy@kernel.org>, linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 0/2] iio: imu: inv_icm42600: switch to use generic
+ name irq get
+Message-ID: <20250412135001.7a8489e6@jic23-huawei>
+In-Reply-To: <20250410-iio-imu-inv-icm42600-rework-interrupt-using-names-v4-0-19e4e2f8f7eb@tdk.com>
+References: <20250410-iio-imu-inv-icm42600-rework-interrupt-using-names-v4-0-19e4e2f8f7eb@tdk.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -66,74 +66,55 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 11 Apr 2025 08:34:42 -0500
-David Lechner <dlechner@baylibre.com> wrote:
+On Thu, 10 Apr 2025 17:39:39 +0200
+Jean-Baptiste Maneyrol via B4 Relay <devnull+jean-baptiste.maneyrol.tdk.com@kernel.org> wrote:
 
-> On 4/7/25 6:37 AM, Matti Vaittinen wrote:
-> > According to Jonathan, variable reference voltages are very rare. It is
-> > unlikely it is needed, and supporting it makes the code a bit more
-> > complex.
-> > 
-> > Simplify the driver and drop the variable vref support.
-> > 
-> > Suggested-by: Jonathan Cameron <jic23@kernel.org>
-> > Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
-> > 
-> > ---  
+> The purpose of this series is to switch to fwnode_irq_get_by_name()
+> in the core module instead of using irq from the bus parsing.
 > 
-> ...
+> Add in dt binding interrupt naming and up to 2 interrupts support.
 > 
-> >  static int adc128_probe(struct spi_device *spi)
-> >  {
-> >  	const struct adc128_configuration *config;
-> > @@ -183,17 +173,12 @@ static int adc128_probe(struct spi_device *spi)
-> >  	indio_dev->channels = config->channels;
-> >  	indio_dev->num_channels = config->num_channels;
-> >  
-> > -	adc->reg = devm_regulator_get(&spi->dev, config->refname);
-> > -	if (IS_ERR(adc->reg))
-> > -		return PTR_ERR(adc->reg);
-> > +	adc->vref_mv = devm_regulator_get_enable_read_voltage(&spi->dev,
-> > +							   config->refname);
-> > +	if (adc->vref_mv < 0)
-> > +		return adc->vref_mv;
-> >  
-> > -	ret = regulator_enable(adc->reg);
-> > -	if (ret < 0)
-> > -		return ret;
-> > -	ret = devm_add_action_or_reset(&spi->dev, adc128_disable_regulator,
-> > -				       adc->reg);
-> > -	if (ret)
-> > -		return ret;
-> > +	adc->vref_mv /= 1000;  
-> 
-> In other drivers, we've been doing:
-> 
-> ret = devm_regulator_get_enable_read_voltage(...);
-> if (ret < 0)
-> 	return dev_err_probe(dev, ret, "failed to read '%s' voltage, ...);
-> 
-> adc->vref_mv = ret / 1000;
-> 
-> It can be easy to make a typo or forget to specify the voltage when creating
-> a .dts, so I think the error message is helpful to catch that.
-> 
-> And we use ret to avoid having adc->vref_mv temporarily holding a
-> value with the wrong units (and can make it have an unsigned type).
+> Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+Applied to the togreg branch of iio.git. Initially pushing that out as
+testing for 0-day to poke at it.
 
-Good idea. 
-Applied patches 1-7. I did tweak this one as well but then couldn't make
-up my mind on whether to change the type of vref_mv so I'll avoid making
-a decision and will leave patch 8 for a v4 from Matti :)
+Thanks,
 
 Jonathan
 
-
-
+> ---
+> Changes in v4:
+> - Change dt-binding commit message to be more explicit about interrupt
+>   support.
+> - Simplify fwnode usage, NULL checking is already done automatically.
+> - Link to v3: https://lore.kernel.org/r/20250409-iio-imu-inv-icm42600-rework-interrupt-using-names-v3-0-dab85a0a7c2b@tdk.com
 > 
-> >  
-> >  	if (config->num_other_regulators) {
-> >  		ret = devm_regulator_bulk_get_enable(&spi->dev,  
+> Changes in v3:
+> - Update dt-binding to report support of the 2 interrupts and delete
+>   remark about driver feature support.
+> - Link to v2: https://lore.kernel.org/r/20250407-iio-imu-inv-icm42600-rework-interrupt-using-names-v2-0-c278acf587b2@tdk.com
 > 
+> Changes in v2:
+> - Add INT2 in interrupt-names enum and fix enum
+> - Add fallback to first interrupt if naming is not here to ensure
+>   backward compatibility
+> - Link to v1: https://lore.kernel.org/r/20250404-iio-imu-inv-icm42600-rework-interrupt-using-names-v1-0-72ed5100da14@tdk.com
+> 
+> ---
+> Jean-Baptiste Maneyrol (2):
+>       dt-bindings: iio: imu: icm42600: add interrupt naming support
+>       iio: imu: inv_icm42600: switch to use generic name irq get
+> 
+>  .../devicetree/bindings/iio/imu/invensense,icm42600.yaml   | 13 ++++++++++++-
+>  drivers/iio/imu/inv_icm42600/inv_icm42600.h                |  2 +-
+>  drivers/iio/imu/inv_icm42600/inv_icm42600_core.c           | 14 ++++++++++++--
+>  drivers/iio/imu/inv_icm42600/inv_icm42600_i2c.c            |  2 +-
+>  drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c            |  2 +-
+>  5 files changed, 27 insertions(+), 6 deletions(-)
+> ---
+> base-commit: 1c2409fe38d5c19015d69851d15ba543d1911932
+> change-id: 20250325-iio-imu-inv-icm42600-rework-interrupt-using-names-b397ced72835
+> 
+> Best regards,
 
 

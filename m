@@ -1,61 +1,59 @@
-Return-Path: <linux-iio+bounces-18009-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18010-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D3E4A86D13
-	for <lists+linux-iio@lfdr.de>; Sat, 12 Apr 2025 15:01:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46C44A86D23
+	for <lists+linux-iio@lfdr.de>; Sat, 12 Apr 2025 15:11:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D9331754F8
-	for <lists+linux-iio@lfdr.de>; Sat, 12 Apr 2025 13:01:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 772B61B669D1
+	for <lists+linux-iio@lfdr.de>; Sat, 12 Apr 2025 13:11:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E8711E5B82;
-	Sat, 12 Apr 2025 13:00:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 882E21E7C2B;
+	Sat, 12 Apr 2025 13:10:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HAKosJcs"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dOlxZbke"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5842D1C863B;
-	Sat, 12 Apr 2025 13:00:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D7C7190057;
+	Sat, 12 Apr 2025 13:10:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744462855; cv=none; b=FoRBTY9lX7XEdAOnk8fdFgBDBQLQBHaBA2J6SUsbZ8zsfax2PGM3g9IcGcIl6hqIrNPh3XaJJoj5oz/uS6VcsXcBAlSrJ41C6jngaMlDZbrR+Uha3v7v8UckwjfQ/4/QVhEcbF8jzjpYWzNqkJYkCCezdpMWu3uXJq04a9i1dPk=
+	t=1744463456; cv=none; b=p8+jSCLJm89vzZS7KOREqTkzS5qiS/d4gOEqzG+EHhjge7/zSSTTsoez9cbwZ9tINFGqYqAixd0cw7e6wOMuuCB7PSxGEGSG/L0kLy7F0LNSqVjlHhhoSJhxsFD30KzEmnmLtOQYEauGZZTXk37VPU9blE6nn0Y5msJ3JP8HtIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744462855; c=relaxed/simple;
-	bh=XaCjGjuuKGemFcDirTV9nohPdOduesquW/qdw6eHyaY=;
+	s=arc-20240116; t=1744463456; c=relaxed/simple;
+	bh=zPnjWEDnV//Fj6ip5BNwiywdF2j4nrxppCfJXU4SIiE=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Jy3yagvkILVgaU3cWguBUq0SuP+c2fQpNL50C9YX+Z6VgJRAUCZ2SsAGQQKBu857sIf48wSGLofvKzJ2RtapZj70C+UtqG6Qpqqz3QN82wtjSZwgS4WhtkIco+tlZ4HjihHXdj+K3kwI7FIamILyhleMkoJ0xwgYeNA3zvztgFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HAKosJcs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56A53C4CEE3;
-	Sat, 12 Apr 2025 13:00:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=gzMYuvihbMm1X4jG8/V3JkrO4qi8dDTov6ToeJDh6lTnvHoUAuJcYqGeX2vsg6HMEIMTniesvqtpVwq7JaAR2B5Zl9gKHMah1a2uqbDTKlM9Mu7B1ARd4cC8kHeHwFUhA1dWBsiBQ9ZPyo6qb1B91/Ce62d/8ShTK/gnWLRUcek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dOlxZbke; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B7E2C4CEE3;
+	Sat, 12 Apr 2025 13:10:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744462854;
-	bh=XaCjGjuuKGemFcDirTV9nohPdOduesquW/qdw6eHyaY=;
+	s=k20201202; t=1744463455;
+	bh=zPnjWEDnV//Fj6ip5BNwiywdF2j4nrxppCfJXU4SIiE=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=HAKosJcspkbNU8RQvlJ0UNRkZbPj0t7PgeCWtdpIJiuTVQ6g3Wik+sMFJJ8Mhrzgy
-	 i2jJabIshykW9qMHNLNVeArkVRXYRle1U2s23YWtSzSCY8/YTQTgjy9ZYnG2YAfLeV
-	 labS+pjfLp/L55HUjTq+kkn8ESg+aueBNRAEuUWr9lPD1ik91E7dTERTx2HAbaztNn
-	 MEeA02j/VnuOzv7fN6Vdp9uUhnqxp68ZUjHcZCbfrO8xOVNXoh7YNYZ5/QkI9nKvOH
-	 PPtP7zYgaTl+GTb8QkJcOmTh4uajGCXM6iFHqOWt/soYA4JtsRIXDQtCmF9WrCGC+9
-	 RWEagkT5rrlcA==
-Date: Sat, 12 Apr 2025 14:00:46 +0100
+	b=dOlxZbkemQ3VFrv+YVoBOCstAPSS4ga/uAaU+NIyXUjPYZuLIRgDVSRh68bfKMMQV
+	 QUWlgaV6Lu8KSj3NPf0tQshqa6AQeoRWFJow24bnCbguRIu2yAW/T8tbBg5t9OvlJe
+	 JqKee/+Ru049ziXLZa9rJ9hBwKUWV/D3iGhaBW527dT3RTQ5vtYWmca0uyNR6lIy/Q
+	 SX4Qgbwwk9zrSeySupKB4PMunbIpf3cXpwhYkTXzqxTp8+V2xKD+J3zigYxcF1Yhmi
+	 Wx+1MaN8b1ytChtF1jtTyaK6/94UuGSj3LpfU+LZkJFIUed3A952O+obDTNt9U7mRF
+	 QPiCreCNf9e5w==
+Date: Sat, 12 Apr 2025 14:10:47 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Andy Shevchenko <andy@kernel.org>
-Cc: Angelo Dureghello <adureghello@baylibre.com>, Nuno Sa
- <nuno.sa@analog.com>, Lars-Peter Clausen <lars@metafoo.de>, Michael
- Hennerich <Michael.Hennerich@analog.com>, David Lechner
- <dlechner@baylibre.com>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, Jonathan Cameron
- <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH v2 1/2] iio: dac: adi-axi-dac: fix bus read
-Message-ID: <20250412140046.164bb4bc@jic23-huawei>
-In-Reply-To: <Z_alFXGBhFxk-h0e@smile.fi.intel.com>
-References: <20250409-ad3552r-fix-bus-read-v2-0-34d3b21e8ca0@baylibre.com>
-	<20250409-ad3552r-fix-bus-read-v2-1-34d3b21e8ca0@baylibre.com>
-	<Z_alFXGBhFxk-h0e@smile.fi.intel.com>
+To: Sukrut Bellary <sbellary@baylibre.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Angelo Compagnucci <angelo.compagnucci@gmail.com>,
+ Nishanth Menon <nm@ti.com>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, Matti Vaittinen
+ <mazziesaccount@gmail.com>
+Subject: Re: [PATCH 0/2] iio: adc: ti-adc128s052: Add support for adc102s021
+Message-ID: <20250412141047.4273a8b1@jic23-huawei>
+In-Reply-To: <20250408132120.836461-1-sbellary@baylibre.com>
+References: <20250408132120.836461-1-sbellary@baylibre.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -66,40 +64,70 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 9 Apr 2025 19:49:25 +0300
-Andy Shevchenko <andy@kernel.org> wrote:
+On Tue,  8 Apr 2025 06:21:18 -0700
+Sukrut Bellary <sbellary@baylibre.com> wrote:
 
-> On Wed, Apr 09, 2025 at 11:16:54AM +0200, Angelo Dureghello wrote:
-> > From: Angelo Dureghello <adureghello@baylibre.com>
-> > 
-> > Fix bus read function.
-> > 
-> > Testing the driver, on a random basis, wrong reads was detected, mainly
-> > by a wrong DAC chip ID read at first boot.
-> > Before reading the expected value from the AXI regmap, need always to
-> > wait for busy flag to be cleared.  
+> The patch series adds the support for adc102s021 and family.
 > 
-> ...
-> 
-> > +	ret = regmap_read_poll_timeout(st->regmap,
-> > +				AXI_DAC_UI_STATUS_REG, ival,
-> > +				FIELD_GET(AXI_DAC_UI_STATUS_IF_BUSY, ival) == 0,
-> > +				10, 100 * KILO);  
-> 
-> It's timeout, we have special constants for that, I believe you wanted to have
-> USEC_PER_MSEC here.
+> The family of devices are easier to
+> support since they all (no matter the resolution) seem to respond in
+> 12-bits with the LSBs set to 0 for the reduced resolution devices.
 
-This is an odd corner case.  If we had a define for that 100 along the lines
-of X_TIMEOUT_MSEC then I'd agree that using USEC_PER_MSEC makes complete sense.
-All we have is a bare number which has no defined units.  I'd just go with 100000 and
-not use the units.h defines at all.  They make sense when lots of zeros are involved
-or for standard conversions, but to me not worth it here.
+This has raced against Matti's series
+https://lore.kernel.org/linux-iio/cover.1744022065.git.mazziesaccount@gmail.com/
+Support ROHM BD79104 ADC
+
+With hindsight that wasn't obvious from the patch series name though
+which should ideally have been
+iio: adc: ti-adc128s052: Support ROHM BD79104 ADC
+
+Please rebase on the iio testing branch on kernel.org or on top of that series.
+Technically I've only applied the first 7 patches so far, but the 8th
+should be a simple change from that v3.
+ 
+Matti, you volunteered as maintainer :)  Hence please take a look at
+this one.
+
+One nice thing in there is we now have a __be16 buffer16 element that
+can avoid at least one cast in patch 2.
+
+Thanks,
 
 Jonathan
 
 > 
-> > +	if (ret)
-> > +		return ret;  
+> Changes in v3:
+> 	Patch 1:
+>         - No changes in dt-bindings
+> 
+> 	Patch 2:
+> 	- used be16_to_cpu() for the endian conversion.
+> 	- used config index enum while setting up the adc128_config[]
+> 
+> - Link to v2:
+> 	https://lore.kernel.org/lkml/20231022031203.632153-1-sukrut.bellary@linux.com/
+> 
+> Changes in v2:
+> 	Patch 1:
+> 	- No changes in dt-bindings
+> 
+> 	Patch 2:
+> 	- Arranged of_device_id and spi_device_id in numeric order.
+> 	- Used enum to index into adc128_config.
+> 	- Reorder adc128_config in alphabetical.
+> 	- Include channel resolution information.
+> 	- Shift is calculated per resolution and used in scaling and
+> 	raw data read.
+> 
+> - Link to v1: https://lore.kernel.org/all/20220701042919.18180-1-nm@ti.com/
+> 
+> Sukrut Bellary (2):
+>   dt-bindings: iio: adc: ti,adc128s052: Add adc08c and adc10c family
+>   iio: adc: ti-adc128s052: Add lower resolution devices support
+> 
+>  .../bindings/iio/adc/ti,adc128s052.yaml       |   6 +
+>  drivers/iio/adc/ti-adc128s052.c               | 149 +++++++++++++-----
+>  2 files changed, 118 insertions(+), 37 deletions(-)
 > 
 
 

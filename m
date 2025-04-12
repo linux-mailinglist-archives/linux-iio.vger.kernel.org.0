@@ -1,60 +1,59 @@
-Return-Path: <linux-iio+bounces-17994-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17995-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53075A86C7F
-	for <lists+linux-iio@lfdr.de>; Sat, 12 Apr 2025 12:29:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF89EA86C8A
+	for <lists+linux-iio@lfdr.de>; Sat, 12 Apr 2025 12:33:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C674E7A86AB
-	for <lists+linux-iio@lfdr.de>; Sat, 12 Apr 2025 10:27:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 97B5B17A914
+	for <lists+linux-iio@lfdr.de>; Sat, 12 Apr 2025 10:33:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 246A71A83FF;
-	Sat, 12 Apr 2025 10:29:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B6C319E7ED;
+	Sat, 12 Apr 2025 10:33:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n5s9VgC0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lt3/M182"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCA6D5339D;
-	Sat, 12 Apr 2025 10:29:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03FD028FF;
+	Sat, 12 Apr 2025 10:33:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744453740; cv=none; b=StfrH4jlN8dcSNcI3jxaxjuABTXpvIpGML6sZ0XJ8IhmLfgPWoOQx8qxsQG+wzTtdxOVJFclHiq+Wky7shhLqK8qq9xxyDpVuoex5YSv817wVoRjZM3seTJTxCuRWI4qKSyfKHXkrhHH94UVgoxm1ocUJef9IcdAOpZX2LJZcQg=
+	t=1744454030; cv=none; b=mjWtnICr60MxjWPg450OTySDJ7/TOe1lU3Oqfhc5weBcbAAmxlKFGOv5ei7WzTHgxVGHqFa33wktOC8JjRZ52vH0uEfFJJnrB50P6wqqf57LuX/G7aZh5GnRBjKrmy8gPxQwKvbyV/doRnE/O8Vfhn5emG53unKoMb9s9j31Pbw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744453740; c=relaxed/simple;
-	bh=rTZue6TIWXirhiH6eYRqm8lVBetcgKb0L2l3SJ0K36Y=;
+	s=arc-20240116; t=1744454030; c=relaxed/simple;
+	bh=+PhhzIK1QIE56uYa9MoSKWYNCOfwLRwgWFjqY9gwMn8=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EFOUyEskjN95HJ63rDkMEwmxztX+VTk5Vwx6cZx9hlfaOEqogeSXD6LbFyQb0GF0hpVi4qAzHttRGy9mHTQSHI7nxCGJyceUYykg1OhrKB3R+5OLMSPucKij8yLcYDGR0HptCrd3Un8BFJVddlvoZcMoOTZfENU5b5c5RSEn0YU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n5s9VgC0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD7B1C4CEE3;
-	Sat, 12 Apr 2025 10:28:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=biKoalNiVUhUD5xPiHdBVZCfX7pe/dUJe86qm/36qMhIYG3/wOMEh7E+9wfuVEOT9fvgkYwd7kGhwZJa6la6iEIRVWKowaRL/3cMqvuMEQoK9qVTeo8iWcJl/iOaaaCYiuhCudniAqIqSljcRuzUECvnNhv6b+CmrRvjfbqKZuI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lt3/M182; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29DDBC4CEE3;
+	Sat, 12 Apr 2025 10:33:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744453740;
-	bh=rTZue6TIWXirhiH6eYRqm8lVBetcgKb0L2l3SJ0K36Y=;
+	s=k20201202; t=1744454029;
+	bh=+PhhzIK1QIE56uYa9MoSKWYNCOfwLRwgWFjqY9gwMn8=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=n5s9VgC0vKBUxU8c4kQLOuBDb/fKbCyDB7xZ6x8aZsoQpgEyOXUx/L2hyinnhiTx7
-	 95y2pCneoLIL5YXTsCfgoIHU2+aso84xHbXy6rD3zLfAF8gKWZc18xT4E5PFcYqShy
-	 7pt6BTGNhoXDDo+mk3PxlD5q+SO2UYu+ltj5WX985GuLh/7iRW3exHPt8J1v03YtbX
-	 ca5zZ4pGAm4HoEfNAdndS7a5lmtrpFBIIXseieCoGGtgZQlu3njvzKnUFVD3Ibo3ZU
-	 FrH8TLrdUq5XLI5XRJluuv7mT1KnLYI4sKpeVprrhb0dDfNviuAlUH7A6Bpc7FYXCm
-	 FVGGvb629Q4gQ==
-Date: Sat, 12 Apr 2025 11:28:52 +0100
+	b=lt3/M182/kPikzhJcBSQvkO9CbtuYFLw0jTODGMciwawPRMS+eVgGyamEK8EMeaGl
+	 abeaulEqpLNpKLsw8CvwwBYVM2VPbGkCPVVBN7ZvBHl0bCOoFXcDEIdI9LXNvr8bJF
+	 4JfNnTdDmnMk6vT8Y4ekjUBJDxfrFNw0oXtH4LunRwuKdee1D4+h3JRWcga/pz7fFs
+	 2uAvU1CtmXDyxD3JOPfN1jMrzB2Efb++OyOgwWCVSQRw8KqVf6eVYpJ4LlgL76Di+S
+	 XIVLqcu/fwthCYUqkelYqe7Umo6zM+Iwsqhi1bODyuOqoIwpxj0D0mah6FD+Do8EFY
+	 DZm49XVDpdZng==
+Date: Sat, 12 Apr 2025 11:33:40 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-Cc: David Lechner <dlechner@baylibre.com>, Marcelo Schmitt
- <marcelo.schmitt@analog.com>, linux-iio@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, lars@metafoo.de,
- Michael.Hennerich@analog.com, corbet@lwn.net
-Subject: Re: [PATCH v4 1/4] iio: adc: ad4000: Add support for SPI offload
-Message-ID: <20250412112852.19eacac3@jic23-huawei>
-In-Reply-To: <Z_fe69bn90oVjPNk@debian-BULLSEYE-live-builder-AMD64>
-References: <cover.1743110188.git.marcelo.schmitt@analog.com>
-	<386ce043a0e3fc9e8ff71f17aef8de128ce5869e.1743110188.git.marcelo.schmitt@analog.com>
-	<97d0cc16-cdd4-449c-87f5-f62e0515de97@baylibre.com>
-	<Z_fe69bn90oVjPNk@debian-BULLSEYE-live-builder-AMD64>
+To: Siddharth Menon <simeddon@gmail.com>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-staging@lists.linux.dev, gregkh@linuxfoundation.org,
+ Michael.Hennerich@analog.com, lars@metafoo.de, marcelo.schmitt1@gmail.com
+Subject: Re: [PATCH v5] iio: frequency: ad9832: Use FIELD_PREP macro to set
+ bit fields
+Message-ID: <20250412113340.6934a8e0@jic23-huawei>
+In-Reply-To: <CAGd6pzP470VDxGoP4e_2hVXsKrJhnhbv-WgFzCq7tMX9RjOLwg@mail.gmail.com>
+References: <20250330135402.105418-1-simeddon@gmail.com>
+	<20250330152044.18cf81f6@jic23-huawei>
+	<CAGd6pzP470VDxGoP4e_2hVXsKrJhnhbv-WgFzCq7tMX9RjOLwg@mail.gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -62,54 +61,72 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, 10 Apr 2025 12:08:27 -0300
-Marcelo Schmitt <marcelo.schmitt1@gmail.com> wrote:
+On Wed, 9 Apr 2025 01:25:52 +0530
+Siddharth Menon <simeddon@gmail.com> wrote:
 
-> On 04/09, David Lechner wrote:
-> > On 3/27/25 4:24 PM, Marcelo Schmitt wrote:  
-> > > FPGA HDL projects can include a PWM generator in addition to SPI-Engine.
-> > > The PWM IP is used to trigger SPI-Engine offload modules that in turn set
-> > > SPI-Engine to execute transfers to poll data from the ADC. That allows data
-> > > to be read at the maximum sample rates. Also, it is possible to set a
-> > > specific sample rate by setting the proper PWM duty cycle and related state
-> > > parameters, thus allowing an adjustable ADC sample rate when a PWM (offload
-> > > trigger) is used in combination with SPI-Engine.
-> > > 
-> > > Add support for SPI offload.
-> > > 
-> > > Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
-> > > ---  
-> > 
-> > I think I spotted a bug. With that fixed...
-> > 
-> > Reviewed-by: David Lechner <dlechner@baylibre.com>
-> >   
-> > > @@ -690,6 +942,15 @@ static int ad4000_prepare_3wire_mode_message(struct ad4000_state *st,
-> > >  
-> > >  	xfers[1].rx_buf = &st->scan.data;
-> > >  	xfers[1].len = BITS_TO_BYTES(chan->scan_type.storagebits);  
-> > 
-> > Now this needs to be:
-> > 
-> > 	xfer->len = chan->scan_type.realbits > 16 ? 4 : 2;
-> > 
-> > Otherwise when there is SPI offload, this could read 2 words because
-> > storagebits is always == 32.  
-> 
-> I've just tested both versions with ADAQ4003 and with AD7687.
-> There's no practical difference between the suggestion and what already is in
-> IIO testing. I don't mind sending a patch with the change, but don't think it
-> fixes anything.
-If it is an unnecessary over read in some cases, probably sensible to either
-reduce the length or add a comment on why we don't care.
+> On Sun, 30 Mar 2025 at 19:50, Jonathan Cameron <jic23@kernel.org> wrote:
+> > > +     for (int i =3D 0; i < ARRAY_SIZE(regval_bytes); i++) {
+> > > +             freq_cmd =3D (i % 2 =3D=3D 0) ? AD9832_CMD_FRE8BITSW : =
+AD9832_CMD_FRE16BITSW;
+> > > +
+> > > +             st->freq_data[i] =3D cpu_to_be16(FIELD_PREP(AD9832_CMD_=
+MSK, freq_cmd) |
+> > > +                     FIELD_PREP(AD9832_ADD_MSK, addr - i) |
+> > > +                     FIELD_PREP(AD9832_DAT_MSK, regval_bytes[i])); =
+=20
+> > Looking at the data layout here, this seems like an interesting dance t=
+o fill two unrelated
+> > u8 values - it's not a be16 at all.
+> >
+> > I'd be tempted to split the freq_data into u8s and then you will just h=
+ave
+> >                 st->freq_data[i][0] =3D FIELD_PREP(AD9832_CMD_MSK, freq=
+_cmd) |
+> >                                       FIELD_PREP(AD9832_ADD_SMK, addr -=
+ i);
+> > //with masks adjusted appropriately.
+> >                 st->freq_data[i][1] =3D regval_bytes[i];
+> > =20
+>=20
+> Hello Jonathan,
+>=20
+> I briefly went through the datasheet for the device.
+> From what I understand, the device is expecting 16 bit write operations w=
+here:
+> - First 4 bits: Operation type (frequency/phase)
+> - Next 4 bits: Destination register address
+> - Last 8 bits: Data
+> so these fields would need to be combined into a single 16-bit value rega=
+rdless.
+
+Hmm. That is really a documentation thing rather than anything real.
+If they had been documented it as a control value of 8 bits and a data valu=
+e of 8
+bits then it would naturally map to an array.
+
+>=20
+> As I am unable to procure a testing unit at this time, I=E2=80=99m hesita=
+nt to make
+> changes that could unintentionally break the existing driver.
+Sure.  It is always a bit of a risk assessment for changes like this.
+I'm less nervous about breaking staging drivers than others, but we should
+still do our best to not do so.  Probably not worth spinning up some emulat=
+ion
+for this change!
+
+>=20
+> Would it be acceptable to limit the scope of this patch to introducing
+> bitfield macros and addressing the remaining feedback?
+Sure.  We can perhaps revisit this suggestion in a future series.
 
 Jonathan
 
-> 
-> Thanks,
-> Marcelo
+>=20
+> Regards,
+> Siddharth Menon
+>=20
 
 

@@ -1,47 +1,47 @@
-Return-Path: <linux-iio+bounces-18022-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18023-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2400A86E7A
-	for <lists+linux-iio@lfdr.de>; Sat, 12 Apr 2025 19:53:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95176A86E82
+	for <lists+linux-iio@lfdr.de>; Sat, 12 Apr 2025 19:55:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DEDB0189E1C5
-	for <lists+linux-iio@lfdr.de>; Sat, 12 Apr 2025 17:53:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA8A0189E6BA
+	for <lists+linux-iio@lfdr.de>; Sat, 12 Apr 2025 17:55:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 808AB2045AD;
-	Sat, 12 Apr 2025 17:52:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E062C204C2E;
+	Sat, 12 Apr 2025 17:54:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nm3ash60"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LjEffrJ5"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35A5C1EB180;
-	Sat, 12 Apr 2025 17:52:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 924E5537E9;
+	Sat, 12 Apr 2025 17:54:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744480364; cv=none; b=sE3xy6fwclBaa4agH9+zJo7agOSFPcWqLYLdiIop0M0XDikFl/b7k38iaU0rnUK/q58qyQR519QWfzvpp2Uoi7dYLZRhlUEU8DlDzGz6vun7fEleDsPIkoIeIDlAkRIDEGMv6ZLUp/zBgJToy8uiwU3TmWd98zhgScKGHcN4C1M=
+	t=1744480495; cv=none; b=OHcOs0SoZpkFDMAjx+z28rbsbMdlGlO3q+sgMF/YPg3+WVmsfufCY94jss19Xt6wFDy8vWJK0dk/4UGVw2dql9VL0R/gg8iLi5nA5kPZiNHA5CNk43OKFCeaq8UVlOWgzjG/AqpQaAx4Jl2wPrRz3biBDN+c5+LK8g8oREe5Yf0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744480364; c=relaxed/simple;
-	bh=tVAyxGy5hcA+WYeQKPWG6gOJgxABjUD9Lx8l+XEH1aY=;
+	s=arc-20240116; t=1744480495; c=relaxed/simple;
+	bh=xbuahpSaPVBnjCNO9bAbRwZ2X9nVJlK9Sky4zEZfwYo=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oqtoh9+6gQPJl/YKAUIbH+KI6FS35sIAmjgec67tkMszS2UjFwgef0G/oGz0HAMMKYVo26/jZmEzyWrX/jGyJEyISK9lJkdnk5n/jpBgeMfr61F3NW93kSx0u5BbxzoTgM48ClK51ML1Xe0NDndrwLFDHf+laUQvc+YoK9Ts4fo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nm3ash60; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B688C4CEE3;
-	Sat, 12 Apr 2025 17:52:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=K+ztVzHfWNKJ+Xz6pnyk82li1ag7IQWtlGEOJHPbGqBhf2Y7p8eyVh3sOUiVyK2jHwLRDo/zfRMf9GoDSTanzbGoZi9SjdsWDkAH6fm5WBVQj3YAT3U+lbMSNVqmM1fjRyMEESuU8mLUTIDxDkymp2S+Uw91l8mr90waSIIRKb8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LjEffrJ5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E605FC4CEE3;
+	Sat, 12 Apr 2025 17:54:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744480363;
-	bh=tVAyxGy5hcA+WYeQKPWG6gOJgxABjUD9Lx8l+XEH1aY=;
+	s=k20201202; t=1744480495;
+	bh=xbuahpSaPVBnjCNO9bAbRwZ2X9nVJlK9Sky4zEZfwYo=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=nm3ash60fpHYNwv7Av5atBaI+eLMLLEhBuQy2Gxw7VfAvCZ32e4302/EfB5nx9LWq
-	 uUWYh+1sWxOYPtIrTSpxPnp/qaHLZls/L3bsRwnCor2pjk+GdaREZC7kD/2rrUSj9U
-	 kLs8qydzHPpUfBY8Sca+ULbszDKI9pk7E91xmue/6UZ8UuJyl6pye1fFZbFUcvEhG+
-	 A0KuSGb49PhV3Mxmy3GOC90eSJasvi2K9Drb4Luxuu3sP5tafpwQCBhQd/gYwQa3bs
-	 knOk5oNFQlOw38wHoq1vxK1KYH4BC75ciuU57x2l9khZBKhEtND08G+4XOBeCzC7oP
-	 OcaRUdGBzhoOQ==
-Date: Sat, 12 Apr 2025 18:52:32 +0100
+	b=LjEffrJ57lGbS0AP7tLcVx8PLKoOUZT2H4CQuwGnUaf5xNC66zkGxGEpSJqYQ1Srp
+	 D2e4A357/Rt7BMM8BWRy5VQJwrjUQxtLG8EGJHqID/u492rTZqECE7dshW8eXlgAnX
+	 2a2Nh3Rc9O/1VnCRKm6/QFgsJVuXCK5VWtL36koWnhtGz2CClZhqFF+/Iehfk+g324
+	 7MkMWT0BAAmNo3R1SO7CKTlzBz3sjXUtS1juXkzg+3f0upPfgJa+c4p9HzdPVCfBpj
+	 BgwClaKswVTSHu8zaWbBOgeRtlH5W/gUXA/I0KiAe6rAyUXrfb0LPxaFQCOTw+ZD7/
+	 nqfaSB5PN19Jg==
+Date: Sat, 12 Apr 2025 18:54:44 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: Jonathan Santos <Jonathan.Santos@analog.com>
 Cc: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
@@ -52,11 +52,12 @@ Cc: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
  <marcelo.schmitt1@gmail.com>, <linus.walleij@linaro.org>, <brgl@bgdev.pl>,
  <lgirdwood@gmail.com>, <broonie@kernel.org>, <jonath4nns@gmail.com>,
  <dlechner@baylibre.com>
-Subject: Re: [PATCH v5 06/14] iio: adc: ad7768-1: Add reset gpio
-Message-ID: <20250412185232.478d1c57@jic23-huawei>
-In-Reply-To: <25a413babeddf29583f1c26abf4234dfd606a595.1744325346.git.Jonathan.Santos@analog.com>
+Subject: Re: [PATCH v5 07/14] iio: adc: ad7768-1: Move buffer allocation to
+ a separate function
+Message-ID: <20250412185444.6bdf9dd4@jic23-huawei>
+In-Reply-To: <11c1777b406875ce1a7216dc4b094ff99af8da7f.1744325346.git.Jonathan.Santos@analog.com>
 References: <cover.1744325346.git.Jonathan.Santos@analog.com>
-	<25a413babeddf29583f1c26abf4234dfd606a595.1744325346.git.Jonathan.Santos@analog.com>
+	<11c1777b406875ce1a7216dc4b094ff99af8da7f.1744325346.git.Jonathan.Santos@analog.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -67,21 +68,28 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 11 Apr 2025 12:57:09 -0300
+On Fri, 11 Apr 2025 12:57:23 -0300
 Jonathan Santos <Jonathan.Santos@analog.com> wrote:
 
 > From: Sergiu Cuciurean <sergiu.cuciurean@analog.com>
 > 
-> Implement asynchronous hardware reset GPIO.
+> This change moves the buffer allocation and related trigger allocation
+> in a separate function, making space for adding another type of iio
+> buffer if needed.
 > 
-> Reviewed-by: David Lechner <dlechner@baylibre.com>
 > Reviewed-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
+> Reviewed-by: David Lechner <dlechner@baylibre.com>
 > Signed-off-by: Sergiu Cuciurean <sergiu.cuciurean@analog.com>
-> Co-developed-by: Jonathan Santos <Jonathan.Santos@analog.com>
 > Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
-Applied to the togreg branch of iio.git and pushed out as testing.
+Applied.
 
-Thanks,
+Given the next patch uses the new dt binding (which is queued
+behind bindings we are still discussing) I'll stop here.
+
+Hopefully having merged a few patches will make it easier to
+focus in on the stuff that needs more review!
+It also makes patchwork look less scary :)
 
 Jonathan
+
 

@@ -1,58 +1,88 @@
-Return-Path: <linux-iio+bounces-18064-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18065-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D163A8719C
-	for <lists+linux-iio@lfdr.de>; Sun, 13 Apr 2025 12:35:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6587AA871EC
+	for <lists+linux-iio@lfdr.de>; Sun, 13 Apr 2025 14:04:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 44BF216EB9D
-	for <lists+linux-iio@lfdr.de>; Sun, 13 Apr 2025 10:35:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E8E9D3BB702
+	for <lists+linux-iio@lfdr.de>; Sun, 13 Apr 2025 12:03:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 930E51A08AB;
-	Sun, 13 Apr 2025 10:35:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A0641ACEAF;
+	Sun, 13 Apr 2025 12:04:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lCnhGAgd"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="E1fJZRuF"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51931191F91
-	for <linux-iio@vger.kernel.org>; Sun, 13 Apr 2025 10:35:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEA4E1AB6D4;
+	Sun, 13 Apr 2025 12:04:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744540549; cv=none; b=slIlQPeMNwPtLQ9JUc4WyBfkbl72o7CJzZ5+J4igLcK1JfQYUzERzrMaCS331z2fjaLSTbDVTfVJb5jm14GsLqNL1nlt/YMeOMBld2Plrt9zKLoogkge1YUvde43ihujEHyXpTfY15dBtIbitZIx+oul0W4Vs3elCaRyeZjvQPk=
+	t=1744545850; cv=none; b=J2LsFVCZ8O+GgE5CYMTYEdSTC225D4YYKNxqpT5KzbeBxrUbmt199yvr+LGBng2uBt9YAugl8xMEvzVXAv9aAx8Ku8BBDJ9Vc4BttrWzHU5t3yb0UFEyXHkrdrOEb8OD+WGS9c7OtE+VaAkjUN5KBZKzIVzq7Eesf2n4C+CfCYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744540549; c=relaxed/simple;
-	bh=GlsI+wkq7cKwF7XxxzJyw0aNOV4TLBHaoiAvYb/qAvE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AAa8A/OLxIu1n/al6p3PPs66ahlVV5FgUhdhkrUw+ehrS+WCbI6RXFJrb4EUpjsSWojygJ1cvZIylKJlp6f+6BhGYdKdqY6T7dr1pO2NVc4Kt5VzfuQcysh/4Lo3A7f01eP+JbjM8qNEDrL+pVdwlj1S06u1REYTa3nFs427lMg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lCnhGAgd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 776A8C4CEDD;
-	Sun, 13 Apr 2025 10:35:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744540548;
-	bh=GlsI+wkq7cKwF7XxxzJyw0aNOV4TLBHaoiAvYb/qAvE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lCnhGAgdkMeK/8YebISm1510vlU6okmhf7S7baWumpjApGhVBE/izH6tD4YkBsZa3
-	 /1yZmtMJr1PhruXtRX/MLPJGKcuD+V7JwfzVmokOeHp46tMLTRt9tZijrzZzIkYqvQ
-	 PrOEjhsEl7ousVDnl1kLUhfE0nAs4zpyWx1ckHTt8rsbgYES8qkO49PwOW0sm8Ch5M
-	 Q7zXszP7omWUVgNt8SPcUkRhQCzScakeemjMgcY+nJUEzMx7XP06GBGNmh1ndiT+O/
-	 69mv436HzptyJPwb1GVMqgz6xmgIGWAnkYnG+lXDZFolKnfKH/JuvWFTvHvWyTlwnJ
-	 AOujNtM767B3Q==
-From: Jonathan Cameron <jic23@kernel.org>
+	s=arc-20240116; t=1744545850; c=relaxed/simple;
+	bh=fpZdPZZm+2ktYrurYWmcig3+Cd/pQF+gLXoKrv0KSYg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=puA3o9SLaZx+nu47+F/2UMMpknV0Ahhj2kjeZv+UWQxXGFL96tA8YoPyTkc/mgtVLT2iIC8/rLZSrM4k0ddUeKZ6lL2MujXf4e33gyYgIAUBpF6odeUi5o6GUBxm35Erwk6vaqeEjgO+Umjl50hkYDnOmV+4bnMr1Z6x2hc+DJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=E1fJZRuF; arc=none smtp.client-ip=209.85.215.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-b03bc416962so2365516a12.0;
+        Sun, 13 Apr 2025 05:04:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1744545848; x=1745150648; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=NsmAlfCRzyGmechmgg5qWPZv83qkNivGO06jWmaWuoE=;
+        b=E1fJZRuFZQh5PFs3KZjXANQDCE85QAmhC1oz2KcpNrNDgejvGTsFPz5aDfoESj08/O
+         B+8LqWIbq2fdTtVJpgcVYp47XKFmKNccrUcg4Aa0ooyYLhDoCGr8ZA/WFTqkO2Uo7dQS
+         4UMHoEUe0iF2kzmVaL4W4EaDOo0C0GfVZSLxuhMp1OtLXlIqITZ3X1bhIfZGE/oHaXm2
+         MNSM4aV5ASM36PpbZ2IFSYt/LHK1ixOKsQ2UhRsi+rIZImPm17pcaW2sDAvpfhG/gDz2
+         KJslXsr9DMlCCzITlQ3zDd3mWXWD07fHtnfZfvF39qlWcbF3HX6e7AVjpEMlSpK5x6jy
+         A1nw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744545848; x=1745150648;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=NsmAlfCRzyGmechmgg5qWPZv83qkNivGO06jWmaWuoE=;
+        b=QGS/MnOCiqcJFou5ZUL+xG3MyPQYcatc/u/pWv+fUeBD7eBiZfeeEou12Dh7FptIvm
+         +36A5e32R4F8e3w1Twq3Ah96aQ87r5fzoSoSY0YUYmuNsPhJfXx5PEEqB4rzmWnEYpi1
+         wSAdAOfxdUb1nku9YgyG0zAuTxyyTzRyqzXtux0u3K2Rgu/vf7GQ1rVl1wBGnIDGfHzs
+         tcDFKUQyGoT0UzMUjCP5dne/Ub5nKtRVLNjQYPiXtL24U+V4rgvKQ2hxk1HpW7pcv4JJ
+         i84qKyMawsbR7vCregcq6TzfT++7gHfrqRoedrYSo2z0Bt8bYkpOo/c0GNQnLbYh6SPP
+         kN8Q==
+X-Gm-Message-State: AOJu0Yw26UzBG1kYZx6zLSYGkQlrY5PgVjp6WbG0AW8oyiE4us3khfyv
+	LmlYYxscegcYnpMwNJeOsFh6CWU+eeZIEsAub/TDjTdB97aDdjB3fNjG3WK7WJ6iNQ==
+X-Gm-Gg: ASbGncvh/Qp0XCrZ+5aZvThmnLEXfZ0onN+Ao6mPLMk6tR6L9f2v2o7h2hdPob/YHw1
+	iN2sez1ZCe0jw9tEQPWLVgDcP9n8rKI+w/2FfxF2xk4IfBXNRKQYF+wRSw62z77jvYzQW63kZ0a
+	PLQGi9+MMWttE5nVJ4RsD4A9ATBSpG4U+lhrXCNKvC0/W6G8pTil+VHrOaR6AVCtB5Z3Vk+qHDQ
+	JCCCpvocuatAYl49S3+7ijU8GUddGwHTgy6TG35MFIa1aN4AD/SwLcWEVOEu6qYsWXpPgq0ufpr
+	dBo+JGJ/+3ot1R1S4mEO4aBg/5b2tTxgTsdXQA==
+X-Google-Smtp-Source: AGHT+IFs4PjDO6xQlge22RyfBv9IzqRee4AkDklXKjBk6GKqNxaRSJVuGRq/PZ4DBbS9afT5sx/H8w==
+X-Received: by 2002:a17:90b:264b:b0:2ff:7331:18bc with SMTP id 98e67ed59e1d1-308237a838fmr12125835a91.26.1744545847551;
+        Sun, 13 Apr 2025 05:04:07 -0700 (PDT)
+Received: from fedora.. ([2405:201:f022:f80b:bc98:df72:df5a:60fa])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-306df0823aasm9162239a91.20.2025.04.13.05.04.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 13 Apr 2025 05:04:07 -0700 (PDT)
+From: Siddharth Menon <simeddon@gmail.com>
 To: linux-iio@vger.kernel.org,
-	David Lechner <dlechner@baylibre.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH v3 20/20] iio: magnetometer: Use iio_push_to_buffers_with_ts() to provide length for runtime checks.
-Date: Sun, 13 Apr 2025 11:34:43 +0100
-Message-ID: <20250413103443.2420727-21-jic23@kernel.org>
+	lars@metafoo.de,
+	Michael.Hennerich@analog.com,
+	jic23@kernel.org,
+	gregkh@linuxfoundation.org
+Cc: linux-kernel@vger.kernel.org,
+	linux-staging@lists.linux.dev,
+	marcelo.schmitt1@gmail.com,
+	Siddharth Menon <simeddon@gmail.com>
+Subject: [PATCH v6] iio: frequency: ad9832: Use FIELD_PREP macro to set bit fields
+Date: Sun, 13 Apr 2025 17:28:13 +0530
+Message-ID: <20250413120354.19163-1-simeddon@gmail.com>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250413103443.2420727-1-jic23@kernel.org>
-References: <20250413103443.2420727-1-jic23@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -61,172 +91,216 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Use bitfield and bitmask macros to clearly specify AD9832 SPI
+command fields to make register write code more readable.
 
-This new function allows us to perform debug checks in the helper to ensure
-that the overrun does not occur.  Use it in all the simple cases where
-either a static buffer or a structure is used in the drivers.
-
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Suggested-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+Signed-off-by: Siddharth Menon <simeddon@gmail.com>
 ---
- drivers/iio/magnetometer/af8133j.c       | 3 ++-
- drivers/iio/magnetometer/ak8974.c        | 4 ++--
- drivers/iio/magnetometer/ak8975.c        | 4 ++--
- drivers/iio/magnetometer/als31300.c      | 3 +--
- drivers/iio/magnetometer/bmc150_magn.c   | 4 ++--
- drivers/iio/magnetometer/hmc5843.h       | 2 +-
- drivers/iio/magnetometer/hmc5843_core.c  | 4 ++--
- drivers/iio/magnetometer/mag3110.c       | 4 ++--
- drivers/iio/magnetometer/rm3100-core.c   | 4 ++--
- drivers/iio/magnetometer/yamaha-yas530.c | 4 ++--
- 10 files changed, 18 insertions(+), 18 deletions(-)
+ The error path for AD9832_FREQ_SYM was not removed as initially
+ suggested by Marcelo, since he changed his mind, considering it
+ would not follow the proposed ABI
+ v1->v2:
+ - remove CMD_SHIFT and ADD_SHIFT
+ - use GENMASK
+ - store regval in an array and iterate through it
+ v2->v3:
+ - add missing header
+ - refactor code in the previously introduced loops
+ v3->v4:
+ - update commit message with a better one
+ - convert AD9832_PHASE and RES_MASK to masks
+ - cleanup a few if else blocks
+ v4->v5
+ - remove unnecessary inversion (val ? 0 : 1) used
+   with AD9832_PHASE_MASK introduced in v4
+ - use ARRAY_SIZE instead of fixed integers
+ - use reverse xmas tree order
+ - align mask macros
+ v5->v6
+ - rearranged includes to be alphabetical
+ - remove unused RES_MASK
+ - corrected logical errors pointed out by Marcelo
+ drivers/staging/iio/frequency/ad9832.c | 82 ++++++++++++++------------
+ 1 file changed, 43 insertions(+), 39 deletions(-)
 
-diff --git a/drivers/iio/magnetometer/af8133j.c b/drivers/iio/magnetometer/af8133j.c
-index c1fc339e85b4..192ba2da94e2 100644
---- a/drivers/iio/magnetometer/af8133j.c
-+++ b/drivers/iio/magnetometer/af8133j.c
-@@ -370,7 +370,8 @@ static irqreturn_t af8133j_trigger_handler(int irq, void *p)
- 	if (ret)
- 		goto out_done;
+diff --git a/drivers/staging/iio/frequency/ad9832.c b/drivers/staging/iio/frequency/ad9832.c
+index 140ee4f9c137..7893bf9f5264 100644
+--- a/drivers/staging/iio/frequency/ad9832.c
++++ b/drivers/staging/iio/frequency/ad9832.c
+@@ -7,6 +7,8 @@
  
--	iio_push_to_buffers_with_timestamp(indio_dev, &sample, timestamp);
-+	iio_push_to_buffers_with_ts(indio_dev, &sample, sizeof(sample),
-+				    timestamp);
+ #include <asm/div64.h>
  
- out_done:
- 	iio_trigger_notify_done(indio_dev->trig);
-diff --git a/drivers/iio/magnetometer/ak8974.c b/drivers/iio/magnetometer/ak8974.c
-index 7cc4690b5cdd..f9e92e3cb385 100644
---- a/drivers/iio/magnetometer/ak8974.c
-+++ b/drivers/iio/magnetometer/ak8974.c
-@@ -673,8 +673,8 @@ static void ak8974_fill_buffer(struct iio_dev *indio_dev)
- 		goto out_unlock;
- 	}
++#include <linux/bitfield.h>
++#include <linux/bits.h>
+ #include <linux/clk.h>
+ #include <linux/device.h>
+ #include <linux/err.h>
+@@ -16,6 +18,7 @@
+ #include <linux/slab.h>
+ #include <linux/spi/spi.h>
+ #include <linux/sysfs.h>
++#include <linux/unaligned.h>
  
--	iio_push_to_buffers_with_timestamp(indio_dev, &ak8974->scan,
--					   iio_get_time_ns(indio_dev));
-+	iio_push_to_buffers_with_ts(indio_dev, &ak8974->scan, sizeof(ak8974->scan),
-+				    iio_get_time_ns(indio_dev));
+ #include <linux/iio/iio.h>
+ #include <linux/iio/sysfs.h>
+@@ -59,17 +62,17 @@
+ #define AD9832_CMD_SLEEPRESCLR	0xC
  
-  out_unlock:
- 	mutex_unlock(&ak8974->lock);
-diff --git a/drivers/iio/magnetometer/ak8975.c b/drivers/iio/magnetometer/ak8975.c
-index f8393576f463..a1e92b2abffd 100644
---- a/drivers/iio/magnetometer/ak8975.c
-+++ b/drivers/iio/magnetometer/ak8975.c
-@@ -882,8 +882,8 @@ static void ak8975_fill_buffer(struct iio_dev *indio_dev)
- 	data->scan.channels[1] = clamp_t(s16, le16_to_cpu(fval[1]), -def->range, def->range);
- 	data->scan.channels[2] = clamp_t(s16, le16_to_cpu(fval[2]), -def->range, def->range);
+ #define AD9832_FREQ		BIT(11)
+-#define AD9832_PHASE(x)		(((x) & 3) << 9)
++#define AD9832_PHASE_MASK	GENMASK(10, 9)
+ #define AD9832_SYNC		BIT(13)
+ #define AD9832_SELSRC		BIT(12)
+ #define AD9832_SLEEP		BIT(13)
+ #define AD9832_RESET		BIT(12)
+ #define AD9832_CLR		BIT(11)
+-#define CMD_SHIFT		12
+-#define ADD_SHIFT		8
+ #define AD9832_FREQ_BITS	32
+ #define AD9832_PHASE_BITS	12
+-#define RES_MASK(bits)		((1 << (bits)) - 1)
++#define AD9832_CMD_MSK		GENMASK(15, 12)
++#define AD9832_ADD_MSK		GENMASK(11, 8)
++#define AD9832_DAT_MSK		GENMASK(7, 0)
  
--	iio_push_to_buffers_with_timestamp(indio_dev, &data->scan,
--					   iio_get_time_ns(indio_dev));
-+	iio_push_to_buffers_with_ts(indio_dev, &data->scan, sizeof(data->scan),
-+				    iio_get_time_ns(indio_dev));
+ /**
+  * struct ad9832_state - driver instance specific data
+@@ -131,6 +134,8 @@ static int ad9832_write_frequency(struct ad9832_state *st,
+ {
+ 	unsigned long clk_freq;
+ 	unsigned long regval;
++	u8 regval_bytes[4];
++	u16 freq_cmd;
  
- 	return;
+ 	clk_freq = clk_get_rate(st->mclk);
  
-diff --git a/drivers/iio/magnetometer/als31300.c b/drivers/iio/magnetometer/als31300.c
-index 85eb1428a849..f72af829715f 100644
---- a/drivers/iio/magnetometer/als31300.c
-+++ b/drivers/iio/magnetometer/als31300.c
-@@ -245,8 +245,7 @@ static irqreturn_t als31300_trigger_handler(int irq, void *p)
- 	scan.channels[0] = x;
- 	scan.channels[1] = y;
- 	scan.channels[2] = z;
--	iio_push_to_buffers_with_timestamp(indio_dev, &scan,
--					   pf->timestamp);
-+	iio_push_to_buffers_with_ts(indio_dev, &scan, sizeof(scan), pf->timestamp);
+@@ -138,19 +143,15 @@ static int ad9832_write_frequency(struct ad9832_state *st,
+ 		return -EINVAL;
  
- trigger_out:
- 	iio_trigger_notify_done(indio_dev->trig);
-diff --git a/drivers/iio/magnetometer/bmc150_magn.c b/drivers/iio/magnetometer/bmc150_magn.c
-index 88bb673e40d8..f9c51ceae011 100644
---- a/drivers/iio/magnetometer/bmc150_magn.c
-+++ b/drivers/iio/magnetometer/bmc150_magn.c
-@@ -678,8 +678,8 @@ static irqreturn_t bmc150_magn_trigger_handler(int irq, void *p)
- 	if (ret < 0)
- 		goto err;
+ 	regval = ad9832_calc_freqreg(clk_freq, fout);
++	put_unaligned_be32(regval, regval_bytes);
  
--	iio_push_to_buffers_with_timestamp(indio_dev, &data->scan,
--					   pf->timestamp);
-+	iio_push_to_buffers_with_ts(indio_dev, &data->scan, sizeof(data->scan),
-+				    pf->timestamp);
+-	st->freq_data[0] = cpu_to_be16((AD9832_CMD_FRE8BITSW << CMD_SHIFT) |
+-					(addr << ADD_SHIFT) |
+-					((regval >> 24) & 0xFF));
+-	st->freq_data[1] = cpu_to_be16((AD9832_CMD_FRE16BITSW << CMD_SHIFT) |
+-					((addr - 1) << ADD_SHIFT) |
+-					((regval >> 16) & 0xFF));
+-	st->freq_data[2] = cpu_to_be16((AD9832_CMD_FRE8BITSW << CMD_SHIFT) |
+-					((addr - 2) << ADD_SHIFT) |
+-					((regval >> 8) & 0xFF));
+-	st->freq_data[3] = cpu_to_be16((AD9832_CMD_FRE16BITSW << CMD_SHIFT) |
+-					((addr - 3) << ADD_SHIFT) |
+-					((regval >> 0) & 0xFF));
++	for (int i = 0; i < ARRAY_SIZE(regval_bytes); i++) {
++		freq_cmd = (i % 2 == 0) ? AD9832_CMD_FRE8BITSW : AD9832_CMD_FRE16BITSW;
++
++		st->freq_data[i] = cpu_to_be16(FIELD_PREP(AD9832_CMD_MSK, freq_cmd) |
++			FIELD_PREP(AD9832_ADD_MSK, addr - i) |
++			FIELD_PREP(AD9832_DAT_MSK, regval_bytes[i]));
++	}
  
- err:
- 	mutex_unlock(&data->mutex);
-diff --git a/drivers/iio/magnetometer/hmc5843.h b/drivers/iio/magnetometer/hmc5843.h
-index ffd669b1ee7c..7a3faf7ffed4 100644
---- a/drivers/iio/magnetometer/hmc5843.h
-+++ b/drivers/iio/magnetometer/hmc5843.h
-@@ -34,7 +34,7 @@ enum hmc5843_ids {
-  * @regmap:		hardware access register maps
-  * @variant:		describe chip variants
-  * @scan:		buffer to pack data for passing to
-- *			iio_push_to_buffers_with_timestamp()
-+ *			iio_push_to_buffers_with_ts()
-  */
- struct hmc5843_data {
- 	struct device *dev;
-diff --git a/drivers/iio/magnetometer/hmc5843_core.c b/drivers/iio/magnetometer/hmc5843_core.c
-index 2fc84310e2cc..fc16ebd314f7 100644
---- a/drivers/iio/magnetometer/hmc5843_core.c
-+++ b/drivers/iio/magnetometer/hmc5843_core.c
-@@ -452,8 +452,8 @@ static irqreturn_t hmc5843_trigger_handler(int irq, void *p)
- 	if (ret < 0)
- 		goto done;
- 
--	iio_push_to_buffers_with_timestamp(indio_dev, &data->scan,
--					   iio_get_time_ns(indio_dev));
-+	iio_push_to_buffers_with_ts(indio_dev, &data->scan, sizeof(data->scan),
-+				    iio_get_time_ns(indio_dev));
- 
- done:
- 	iio_trigger_notify_done(indio_dev->trig);
-diff --git a/drivers/iio/magnetometer/mag3110.c b/drivers/iio/magnetometer/mag3110.c
-index 92d4511ed372..ff09250a06e7 100644
---- a/drivers/iio/magnetometer/mag3110.c
-+++ b/drivers/iio/magnetometer/mag3110.c
-@@ -404,8 +404,8 @@ static irqreturn_t mag3110_trigger_handler(int irq, void *p)
- 		data->scan.temperature = ret;
- 	}
- 
--	iio_push_to_buffers_with_timestamp(indio_dev, &data->scan,
--		iio_get_time_ns(indio_dev));
-+	iio_push_to_buffers_with_ts(indio_dev, &data->scan, sizeof(data->scan),
-+				    iio_get_time_ns(indio_dev));
- 
- done:
- 	iio_trigger_notify_done(indio_dev->trig);
-diff --git a/drivers/iio/magnetometer/rm3100-core.c b/drivers/iio/magnetometer/rm3100-core.c
-index e5162ee64e01..2b2884425746 100644
---- a/drivers/iio/magnetometer/rm3100-core.c
-+++ b/drivers/iio/magnetometer/rm3100-core.c
-@@ -515,8 +515,8 @@ static irqreturn_t rm3100_trigger_handler(int irq, void *p)
- 	 * Always using the same buffer so that we wouldn't need to set the
- 	 * paddings to 0 in case of leaking any data.
- 	 */
--	iio_push_to_buffers_with_timestamp(indio_dev, data->buffer,
--					   pf->timestamp);
-+	iio_push_to_buffers_with_ts(indio_dev, data->buffer, sizeof(data->buffer),
-+				    pf->timestamp);
- done:
- 	iio_trigger_notify_done(indio_dev->trig);
- 
-diff --git a/drivers/iio/magnetometer/yamaha-yas530.c b/drivers/iio/magnetometer/yamaha-yas530.c
-index 46bc64e676b1..340607111d9a 100644
---- a/drivers/iio/magnetometer/yamaha-yas530.c
-+++ b/drivers/iio/magnetometer/yamaha-yas530.c
-@@ -674,8 +674,8 @@ static void yas5xx_fill_buffer(struct iio_dev *indio_dev)
- 	yas5xx->scan.channels[1] = x;
- 	yas5xx->scan.channels[2] = y;
- 	yas5xx->scan.channels[3] = z;
--	iio_push_to_buffers_with_timestamp(indio_dev, &yas5xx->scan,
--					   iio_get_time_ns(indio_dev));
-+	iio_push_to_buffers_with_ts(indio_dev, &yas5xx->scan, sizeof(yas5xx->scan),
-+				    iio_get_time_ns(indio_dev));
+ 	return spi_sync(st->spi, &st->freq_msg);
  }
+@@ -158,15 +159,21 @@ static int ad9832_write_frequency(struct ad9832_state *st,
+ static int ad9832_write_phase(struct ad9832_state *st,
+ 			      unsigned long addr, unsigned long phase)
+ {
++	u8 phase_bytes[2];
++	u16 phase_cmd;
++
+ 	if (phase >= BIT(AD9832_PHASE_BITS))
+ 		return -EINVAL;
  
- static irqreturn_t yas5xx_handle_trigger(int irq, void *p)
+-	st->phase_data[0] = cpu_to_be16((AD9832_CMD_PHA8BITSW << CMD_SHIFT) |
+-					(addr << ADD_SHIFT) |
+-					((phase >> 8) & 0xFF));
+-	st->phase_data[1] = cpu_to_be16((AD9832_CMD_PHA16BITSW << CMD_SHIFT) |
+-					((addr - 1) << ADD_SHIFT) |
+-					(phase & 0xFF));
++	put_unaligned_be16(phase, phase_bytes);
++
++	for (int i = 0; i < ARRAY_SIZE(phase_bytes); i++) {
++		phase_cmd = (i % 2 == 0) ? AD9832_CMD_PHA8BITSW : AD9832_CMD_PHA16BITSW;
++
++		st->phase_data[i] = cpu_to_be16(FIELD_PREP(AD9832_CMD_MSK, phase_cmd) |
++			FIELD_PREP(AD9832_ADD_MSK, addr - i) |
++			FIELD_PREP(AD9832_DAT_MSK, phase_bytes[i]));
++	}
+ 
+ 	return spi_sync(st->spi, &st->phase_msg);
+ }
+@@ -197,24 +204,22 @@ static ssize_t ad9832_write(struct device *dev, struct device_attribute *attr,
+ 		ret = ad9832_write_phase(st, this_attr->address, val);
+ 		break;
+ 	case AD9832_PINCTRL_EN:
+-		if (val)
+-			st->ctrl_ss &= ~AD9832_SELSRC;
+-		else
+-			st->ctrl_ss |= AD9832_SELSRC;
+-		st->data = cpu_to_be16((AD9832_CMD_SYNCSELSRC << CMD_SHIFT) |
++		st->ctrl_ss &= ~AD9832_SELSRC;
++		st->ctrl_ss |= FIELD_PREP(AD9832_SELSRC, val ? 0 : 1);
++
++		st->data = cpu_to_be16(FIELD_PREP(AD9832_CMD_MSK, AD9832_CMD_SYNCSELSRC) |
+ 					st->ctrl_ss);
+ 		ret = spi_sync(st->spi, &st->msg);
+ 		break;
+ 	case AD9832_FREQ_SYM:
+-		if (val == 1) {
+-			st->ctrl_fp |= AD9832_FREQ;
+-		} else if (val == 0) {
++		if (val == 1 || val == 0) {
+ 			st->ctrl_fp &= ~AD9832_FREQ;
++			st->ctrl_fp |= FIELD_PREP(AD9832_FREQ, val ? 1 : 0);
+ 		} else {
+ 			ret = -EINVAL;
+ 			break;
+ 		}
+-		st->data = cpu_to_be16((AD9832_CMD_FPSELECT << CMD_SHIFT) |
++		st->data = cpu_to_be16(FIELD_PREP(AD9832_CMD_MSK, AD9832_CMD_FPSELECT) |
+ 					st->ctrl_fp);
+ 		ret = spi_sync(st->spi, &st->msg);
+ 		break;
+@@ -224,21 +229,20 @@ static ssize_t ad9832_write(struct device *dev, struct device_attribute *attr,
+ 			break;
+ 		}
+ 
+-		st->ctrl_fp &= ~AD9832_PHASE(3);
+-		st->ctrl_fp |= AD9832_PHASE(val);
++		st->ctrl_fp &= ~AD9832_PHASE_MASK;
++		st->ctrl_fp |= FIELD_PREP(AD9832_PHASE_MASK, val);
+ 
+-		st->data = cpu_to_be16((AD9832_CMD_FPSELECT << CMD_SHIFT) |
++		st->data = cpu_to_be16(FIELD_PREP(AD9832_CMD_MSK, AD9832_CMD_FPSELECT) |
+ 					st->ctrl_fp);
+ 		ret = spi_sync(st->spi, &st->msg);
+ 		break;
+ 	case AD9832_OUTPUT_EN:
+ 		if (val)
+-			st->ctrl_src &= ~(AD9832_RESET | AD9832_SLEEP |
+-					AD9832_CLR);
++			st->ctrl_src &= ~(AD9832_RESET | AD9832_SLEEP | AD9832_CLR);
+ 		else
+-			st->ctrl_src |= AD9832_RESET;
++			st->ctrl_src |= FIELD_PREP(AD9832_RESET, 1);
+ 
+-		st->data = cpu_to_be16((AD9832_CMD_SLEEPRESCLR << CMD_SHIFT) |
++		st->data = cpu_to_be16(FIELD_PREP(AD9832_CMD_MSK, AD9832_CMD_SLEEPRESCLR) |
+ 					st->ctrl_src);
+ 		ret = spi_sync(st->spi, &st->msg);
+ 		break;
+@@ -396,7 +400,7 @@ static int ad9832_probe(struct spi_device *spi)
+ 	spi_message_add_tail(&st->phase_xfer[1], &st->phase_msg);
+ 
+ 	st->ctrl_src = AD9832_SLEEP | AD9832_RESET | AD9832_CLR;
+-	st->data = cpu_to_be16((AD9832_CMD_SLEEPRESCLR << CMD_SHIFT) |
++	st->data = cpu_to_be16(FIELD_PREP(AD9832_CMD_MSK, AD9832_CMD_SLEEPRESCLR) |
+ 					st->ctrl_src);
+ 	ret = spi_sync(st->spi, &st->msg);
+ 	if (ret) {
 -- 
 2.49.0
 

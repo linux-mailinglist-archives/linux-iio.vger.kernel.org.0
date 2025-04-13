@@ -1,55 +1,55 @@
-Return-Path: <linux-iio+bounces-18048-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18049-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDA62A8718C
-	for <lists+linux-iio@lfdr.de>; Sun, 13 Apr 2025 12:35:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E454A8718D
+	for <lists+linux-iio@lfdr.de>; Sun, 13 Apr 2025 12:35:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C035B3AF364
-	for <lists+linux-iio@lfdr.de>; Sun, 13 Apr 2025 10:34:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D03473AF312
+	for <lists+linux-iio@lfdr.de>; Sun, 13 Apr 2025 10:34:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3252199948;
-	Sun, 13 Apr 2025 10:35:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCB9F19D8B7;
+	Sun, 13 Apr 2025 10:35:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o0ttk5ci"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Yt80Nq9G"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82AFE2AD3E
-	for <linux-iio@vger.kernel.org>; Sun, 13 Apr 2025 10:35:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 748D32AD3E
+	for <linux-iio@vger.kernel.org>; Sun, 13 Apr 2025 10:35:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744540505; cv=none; b=DMPqHgNt+tMDWvViE9cWEmbLDMAYP4ftr7ou32Nmz1IkxfZzKmrMMfapQCARdaB2boLyz72OUoC/6ykMczzVJ4lIb/yxrVQCZ8wNMo5kaZlB2dr0T4f+nlP+mffKV0lmbgM+GKZi3DDeawmsQztiwhrk6W939bbiXxRqXxpvhlY=
+	t=1744540507; cv=none; b=PD2THS8Cn9yuQr7W0/uebI/nbVO2lBYTt2UV8wvSM/M16fQthSPaRxcolNXjP7MWN2j+koNj6Lz6gOF9ZpSlzZRuxXK2jpSEy9ZlPJLOiqNygi547W9TAr0EZ2U7aTGbrwuUUPZZ1peabRuhuOdYAtRd0Xk4pRI/PoNjzCu1AUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744540505; c=relaxed/simple;
-	bh=yzWI3D1EHxTcehBtBHTfo4+WqmM2zvl/N/j64Ca+kqQ=;
+	s=arc-20240116; t=1744540507; c=relaxed/simple;
+	bh=a5SVTYnZmk+/a6ZCAwSH/vhLhQo2QYaGNjqSou2BsdQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mCLqW5SyHLiN3jTHHC/lbmUsAUisUTXGyOEsfkvzX5OYE5x1Y+SWYKPIkYiMWj7Mkzz/W91wwPasoCmjsW8bA4tH82TDZnw+yE6V77v7KuGaNMo0lIjpN5aBuzhwKsCbTMuWacuWxiB3u6TVDlXEXyKqSGRvOr7VbOcHwFwg9rQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o0ttk5ci; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE2A3C4CEDD;
-	Sun, 13 Apr 2025 10:35:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=KDw9P2pEZz3o+R8bb6l03OJoFKAYGno9at3/LvhYES3JDH1fLCK6YWmZbFdZWWjZrWJvp5P8rbMlgWvXryPOU2FavFvsviKXSYJHdfX3IfirY6VIJL1QOROnWJ1rylDyEgKql1X+MUWZ18jTm2OroqjOe5ynrYpiMGxehqyjCVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Yt80Nq9G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B3D4C4CEEA;
+	Sun, 13 Apr 2025 10:35:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744540505;
-	bh=yzWI3D1EHxTcehBtBHTfo4+WqmM2zvl/N/j64Ca+kqQ=;
+	s=k20201202; t=1744540507;
+	bh=a5SVTYnZmk+/a6ZCAwSH/vhLhQo2QYaGNjqSou2BsdQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o0ttk5ciWyYJrFOzzS3wS67rmJ6f0KmDEHTIjjiDedigSgHLKQIukh453icQLvlY+
-	 0iWxsN0HTDTz84QdKn9TDhRRa1NUZmY9bK+RzqyX2SxjABEHSzq7F1/ofrDsyUbuEQ
-	 iJb9/HmCx5yfG+0ibHH+Z8I7nj/UMTkSRBlaTF1LEkAkPSyHjJwbT5egosOaG7PXkc
-	 alDyshjyl9zJOwTBXqdYOtNxDjNBZ5vRbAzbzaGGjcOgTKCSQ+k9G6eFhNe4PClDZR
-	 l/qjem1fBM8OXvmAVPgRr08iAcvDMzlvOsRtAGddCsbu/fxnaxHvM+pa2YNfT0EVe5
-	 QKuouRgMlAWBg==
+	b=Yt80Nq9GCKz2alFK9YprUzDavanzJ56+C0rPNTlXFFpU0KcGuRIjm+h+sHiXCY3Kk
+	 2xqlg7vwDe8Q367ONZXrXu3CeZ7L0nPRcQk0OcfJF0jp9gdnEhUMfpzGQ8nokyvi6e
+	 IKCGdUWUdL7HwEVwtdlr2M0c3tNbWPxtSXw15Lvc2XwYxa1mU8t5QwwllgLMQ9ocaX
+	 H2zhoXdPL1oZP3F1V6ZFt9nSaUtT4ALQn02H/Zgu0gnxlTPJ10359uqACvJiX7VFr2
+	 u6pWXcmnN8IDzU2V+gb7eKL+1qgl8FHOrMpuYQbmKRdId6SRnrvKEKekPRjA4wxda3
+	 QVPjjqKwdHHkA==
 From: Jonathan Cameron <jic23@kernel.org>
 To: linux-iio@vger.kernel.org,
 	David Lechner <dlechner@baylibre.com>,
 	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
 	Andy Shevchenko <andy@kernel.org>
 Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH v3 04/20] iio: accel: adxl355: Make timestamp 64-bit aligned using aligned_s64
-Date: Sun, 13 Apr 2025 11:34:27 +0100
-Message-ID: <20250413103443.2420727-5-jic23@kernel.org>
+Subject: [PATCH v3 05/20] iio: introduced iio_push_to_buffers_with_ts() that takes a data_total_len argument.
+Date: Sun, 13 Apr 2025 11:34:28 +0100
+Message-ID: <20250413103443.2420727-6-jic23@kernel.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250413103443.2420727-1-jic23@kernel.org>
 References: <20250413103443.2420727-1-jic23@kernel.org>
@@ -64,31 +64,49 @@ Content-Transfer-Encoding: 8bit
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-The IIO ABI requires 64-bit aligned timestamps. In this case insufficient
-padding would have been added on architectures where an s64 is only 32-bit
-aligned.  Use aligned_s64 to enforce the correct alignment.
+Check that data_total_len argument against iio_dev->scan_bytes.
 
-Fixes: 327a0eaf19d5 ("iio: accel: adxl355: Add triggered buffer support")
-Reported-by: David Lechner <dlechner@baylibre.com>
+The size needs to be at least as big as the scan. It can be larger,
+which is typical if only part of fixed sized storage is used due to
+a subset of channels being enabled.
+
 Reviewed-by: Nuno Sá <nuno.sa@analog.com>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/accel/adxl355_core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+v3:
+- Use an s64 instead of int64_t for the new function (Andy)
 
-diff --git a/drivers/iio/accel/adxl355_core.c b/drivers/iio/accel/adxl355_core.c
-index e8cd21fa77a6..cbac622ef821 100644
---- a/drivers/iio/accel/adxl355_core.c
-+++ b/drivers/iio/accel/adxl355_core.c
-@@ -231,7 +231,7 @@ struct adxl355_data {
- 		u8 transf_buf[3];
- 		struct {
- 			u8 buf[14];
--			s64 ts;
-+			aligned_s64 ts;
- 		} buffer;
- 	} __aligned(IIO_DMA_MINALIGN);
- };
+v2:
+- Rename size to data_total_len to make it clear that it is about
+  data but also that it isn't simply the length to be used.
+- Added an unlikely marking.
+---
+ include/linux/iio/buffer.h | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+diff --git a/include/linux/iio/buffer.h b/include/linux/iio/buffer.h
+index 3b8d618bb3df..5c84ec4a9810 100644
+--- a/include/linux/iio/buffer.h
++++ b/include/linux/iio/buffer.h
+@@ -45,6 +45,18 @@ static inline int iio_push_to_buffers_with_timestamp(struct iio_dev *indio_dev,
+ 	return iio_push_to_buffers(indio_dev, data);
+ }
+ 
++static inline int iio_push_to_buffers_with_ts(struct iio_dev *indio_dev,
++					      void *data, size_t data_total_len,
++					      s64 timestamp)
++{
++	if (unlikely(data_total_len < indio_dev->scan_bytes)) {
++		dev_err(&indio_dev->dev, "Undersized storage pushed to buffer\n");
++		return -ENOSPC;
++	}
++
++	return iio_push_to_buffers_with_timestamp(indio_dev, data, timestamp);
++}
++
+ int iio_push_to_buffers_with_ts_unaligned(struct iio_dev *indio_dev,
+ 					  const void *data, size_t data_sz,
+ 					  int64_t timestamp);
 -- 
 2.49.0
 

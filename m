@@ -1,55 +1,55 @@
-Return-Path: <linux-iio+bounces-18061-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18062-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47AD6A87199
-	for <lists+linux-iio@lfdr.de>; Sun, 13 Apr 2025 12:35:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 748F0A8719A
+	for <lists+linux-iio@lfdr.de>; Sun, 13 Apr 2025 12:35:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 882311890EFC
-	for <lists+linux-iio@lfdr.de>; Sun, 13 Apr 2025 10:35:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B4B9F1890E43
+	for <lists+linux-iio@lfdr.de>; Sun, 13 Apr 2025 10:35:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3787D1A0728;
-	Sun, 13 Apr 2025 10:35:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 085361A0BE0;
+	Sun, 13 Apr 2025 10:35:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X244P7Vu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BKxdfmoM"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA9B019D880
-	for <linux-iio@vger.kernel.org>; Sun, 13 Apr 2025 10:35:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE4E51A08DF
+	for <linux-iio@vger.kernel.org>; Sun, 13 Apr 2025 10:35:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744540542; cv=none; b=Uwsd1qzvgP7fzm0+D8l8hqb+O7RFOyPACD7VV7utrcn5I/IEI+qA7Bx6kssRjGhZQki3OqNdenUKtVoKSoLJLID80A9Nw+Ib/xtyZyqOXhb60qzZYEw1bGZzHsIBslH9pJzObhyu90mPZfLdgVyubYMdLTw3aOzWsV067GwbwzA=
+	t=1744540543; cv=none; b=vFcW3eYzw5RBpo4VKZ8Qz9LTrbxgt5fQifHUYqAcQ+9yQ+0jjzcLKbUpEWdOLaTB1CAWOMDKGHritAJbI6mZqj2nVaW8WtJrvaNOa4La6KdjKC50PEHyMPnwJoyS2TEnGJU0YJFN3BHrwzlrRZosL7FuIoURa+YMGfkUBvrbrD0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744540542; c=relaxed/simple;
-	bh=1gKVZKU5wXiQAjF+2FL8EMVU35MVsQHfFJGdAQZiHBI=;
+	s=arc-20240116; t=1744540543; c=relaxed/simple;
+	bh=5r9r31RBMx2dIw84YeSoHYW0RX5ZPKdhfXyjCUzNHc4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tv5lECaRdD79mC2NF8qU2wtcxa+QNdEUDaJU6ImZDmyM45e3atZeLIHCib3YBS+ZaZwmDA5EWZbwpdYCreQ8wTODSx1fB4NXV6Vl+J8bXFQTGlNB9i/i1pJIu3QegW83mF140vJrLdRnN5fd1odH25IC3woHKdj42RQFZqmAJ4c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X244P7Vu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F9E7C4CEEA;
-	Sun, 13 Apr 2025 10:35:39 +0000 (UTC)
+	 MIME-Version; b=VFjiLWSJ06oII72vsBbgFjzbFfLrL9DfHUHD2gBGEm/V2pZBYI696rsu+heZVLV+7Vzoqsx6L+JH1kyfAepQWNRJYoXhnLDs48VOLeFGQYu2e5pGdIYrmKTdAuNoCPa4YAX/nWxbmhP0BB1R1kQCjgHGaR4yqJ5AP6/LnILA7J8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BKxdfmoM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F10AC4CEDD;
+	Sun, 13 Apr 2025 10:35:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744540541;
-	bh=1gKVZKU5wXiQAjF+2FL8EMVU35MVsQHfFJGdAQZiHBI=;
+	s=k20201202; t=1744540543;
+	bh=5r9r31RBMx2dIw84YeSoHYW0RX5ZPKdhfXyjCUzNHc4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X244P7Vu+5/Oj4CNKkrEvqab/NS8u9dtXE97lcBehzAP8hiPI+/rgsi47/nFcDTAm
-	 2cLpH8TBzOxVQxt7KT60srisQ/MTrvxqvEk0nDL5HZ6GObFO0PntBpQOiBRkWsQLA9
-	 4dUluyU8fLKGQXPSh4fFk7SamxzyeRPBRG7nRksdZ1aqMAtOWQWdd4w2z0PAmcjNfm
-	 Iic46DzUa1GaOknPjffZVL29T711liAGbR0lQKWH82geCt5ov368HN9I8HJJ5m5Xcw
-	 YCTLl75intHnIRcWzzASnE306/N8uv31142NpXMIY9pUYt9EAv6wANGHBggqCVNCkK
-	 zuEHrDTzIRHxQ==
+	b=BKxdfmoM2g1z6h455C2W+yYdwfR31dwvmA/mMlis6O4QwuRHzLxImBOpttaaidypd
+	 FIh2jOTy/52iijMpzcTfNya0KXlDYmEPixHxmfMqooaMnDDQaZIZHwIbMyQ7PGWsRL
+	 RPE71SOgEEe7WuMBh4x3KbXgsN63B7/UxTsL000BJy6jGNJrmHd8+ysQudiuUWVt+f
+	 eccXUcEB2qNTSzugMpVuY5ltS9zWW3jn6Zu3xyvUQ9dcL0iT0WPwLEcKCgjwnI3jnc
+	 6huxua6DwEQFNLOUIOrmu12IM5ReY10d0f8mtyCKnte5W1jYru4e5BkbsWuRQF9mez
+	 9A/yKic+XRTEg==
 From: Jonathan Cameron <jic23@kernel.org>
 To: linux-iio@vger.kernel.org,
 	David Lechner <dlechner@baylibre.com>,
 	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
 	Andy Shevchenko <andy@kernel.org>
 Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH v3 17/20] iio: proximity: Use iio_push_to_buffers_with_ts() to provide length for runtime checks.
-Date: Sun, 13 Apr 2025 11:34:40 +0100
-Message-ID: <20250413103443.2420727-18-jic23@kernel.org>
+Subject: [PATCH v3 18/20] iio: pressure: zpa2326: Use aligned_s64 for the timestamp
+Date: Sun, 13 Apr 2025 11:34:41 +0100
+Message-ID: <20250413103443.2420727-19-jic23@kernel.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250413103443.2420727-1-jic23@kernel.org>
 References: <20250413103443.2420727-1-jic23@kernel.org>
@@ -63,127 +63,27 @@ Content-Transfer-Encoding: 8bit
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-This new function allows us to perform debug checks in the helper to ensure
-that the overrun does not occur. Use it in all the simple cases where
-either a static buffer or a structure is used in the drivers.
+On x86_32 s64 fields are only 32-bit aligned.  Hence force the alignment of
+the field and padding in the structure by using aligned_s64 instead.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/proximity/as3935.c                    | 4 ++--
- drivers/iio/proximity/hx9023s.c                   | 4 ++--
- drivers/iio/proximity/mb1232.c                    | 4 ++--
- drivers/iio/proximity/pulsedlight-lidar-lite-v2.c | 5 +++--
- drivers/iio/proximity/srf08.c                     | 4 ++--
- drivers/iio/proximity/sx_common.c                 | 4 ++--
- drivers/iio/proximity/vl53l0x-i2c.c               | 4 ++--
- 7 files changed, 15 insertions(+), 14 deletions(-)
+ drivers/iio/pressure/zpa2326.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iio/proximity/as3935.c b/drivers/iio/proximity/as3935.c
-index d48d7b572878..f1018b14aecf 100644
---- a/drivers/iio/proximity/as3935.c
-+++ b/drivers/iio/proximity/as3935.c
-@@ -231,8 +231,8 @@ static irqreturn_t as3935_trigger_handler(int irq, void *private)
- 		goto err_read;
+diff --git a/drivers/iio/pressure/zpa2326.c b/drivers/iio/pressure/zpa2326.c
+index 0a510d5fc1d4..30f007794f5b 100644
+--- a/drivers/iio/pressure/zpa2326.c
++++ b/drivers/iio/pressure/zpa2326.c
+@@ -582,7 +582,7 @@ static int zpa2326_fill_sample_buffer(struct iio_dev               *indio_dev,
+ 	struct {
+ 		u32 pressure;
+ 		u16 temperature;
+-		u64 timestamp;
++		aligned_s64 timestamp;
+ 	}   sample;
+ 	int err;
  
- 	st->scan.chan = val & AS3935_DATA_MASK;
--	iio_push_to_buffers_with_timestamp(indio_dev, &st->scan,
--					   iio_get_time_ns(indio_dev));
-+	iio_push_to_buffers_with_ts(indio_dev, &st->scan, sizeof(st->scan),
-+				    iio_get_time_ns(indio_dev));
- err_read:
- 	iio_trigger_notify_done(indio_dev->trig);
- 
-diff --git a/drivers/iio/proximity/hx9023s.c b/drivers/iio/proximity/hx9023s.c
-index f2037fd99a8d..33781c314728 100644
---- a/drivers/iio/proximity/hx9023s.c
-+++ b/drivers/iio/proximity/hx9023s.c
-@@ -953,8 +953,8 @@ static irqreturn_t hx9023s_trigger_handler(int irq, void *private)
- 		data->buffer.channels[i++] = cpu_to_le16(data->ch_data[index].diff);
- 	}
- 
--	iio_push_to_buffers_with_timestamp(indio_dev, &data->buffer,
--					   pf->timestamp);
-+	iio_push_to_buffers_with_ts(indio_dev, &data->buffer,
-+				    sizeof(data->buffer), pf->timestamp);
- 
- out:
- 	iio_trigger_notify_done(indio_dev->trig);
-diff --git a/drivers/iio/proximity/mb1232.c b/drivers/iio/proximity/mb1232.c
-index 24524edae0b4..01783486bc7d 100644
---- a/drivers/iio/proximity/mb1232.c
-+++ b/drivers/iio/proximity/mb1232.c
-@@ -125,8 +125,8 @@ static irqreturn_t mb1232_trigger_handler(int irq, void *p)
- 	if (data->scan.distance < 0)
- 		goto err;
- 
--	iio_push_to_buffers_with_timestamp(indio_dev, &data->scan,
--					   pf->timestamp);
-+	iio_push_to_buffers_with_ts(indio_dev, &data->scan, sizeof(data->scan),
-+				    pf->timestamp);
- 
- err:
- 	iio_trigger_notify_done(indio_dev->trig);
-diff --git a/drivers/iio/proximity/pulsedlight-lidar-lite-v2.c b/drivers/iio/proximity/pulsedlight-lidar-lite-v2.c
-index fbf9f8513055..1deaf70e92ce 100644
---- a/drivers/iio/proximity/pulsedlight-lidar-lite-v2.c
-+++ b/drivers/iio/proximity/pulsedlight-lidar-lite-v2.c
-@@ -238,8 +238,9 @@ static irqreturn_t lidar_trigger_handler(int irq, void *private)
- 
- 	ret = lidar_get_measurement(data, &data->scan.chan);
- 	if (!ret) {
--		iio_push_to_buffers_with_timestamp(indio_dev, &data->scan,
--						   iio_get_time_ns(indio_dev));
-+		iio_push_to_buffers_with_ts(indio_dev, &data->scan,
-+					    sizeof(data->scan),
-+					    iio_get_time_ns(indio_dev));
- 	} else if (ret != -EINVAL) {
- 		dev_err(&data->client->dev, "cannot read LIDAR measurement");
- 	}
-diff --git a/drivers/iio/proximity/srf08.c b/drivers/iio/proximity/srf08.c
-index 940fad6aeaa4..6e32fdfd161b 100644
---- a/drivers/iio/proximity/srf08.c
-+++ b/drivers/iio/proximity/srf08.c
-@@ -191,8 +191,8 @@ static irqreturn_t srf08_trigger_handler(int irq, void *p)
- 	mutex_lock(&data->lock);
- 
- 	data->scan.chan = sensor_data;
--	iio_push_to_buffers_with_timestamp(indio_dev,
--					   &data->scan, pf->timestamp);
-+	iio_push_to_buffers_with_ts(indio_dev, &data->scan, sizeof(data->scan),
-+				    pf->timestamp);
- 
- 	mutex_unlock(&data->lock);
- err:
-diff --git a/drivers/iio/proximity/sx_common.c b/drivers/iio/proximity/sx_common.c
-index f70198a1f0d1..59b35e40739b 100644
---- a/drivers/iio/proximity/sx_common.c
-+++ b/drivers/iio/proximity/sx_common.c
-@@ -379,8 +379,8 @@ static irqreturn_t sx_common_trigger_handler(int irq, void *private)
- 		data->buffer.channels[i++] = val;
- 	}
- 
--	iio_push_to_buffers_with_timestamp(indio_dev, &data->buffer,
--					   pf->timestamp);
-+	iio_push_to_buffers_with_ts(indio_dev, &data->buffer,
-+				    sizeof(data->buffer), pf->timestamp);
- 
- out:
- 	mutex_unlock(&data->mutex);
-diff --git a/drivers/iio/proximity/vl53l0x-i2c.c b/drivers/iio/proximity/vl53l0x-i2c.c
-index 87d10faaff9b..ef4aa7b2835e 100644
---- a/drivers/iio/proximity/vl53l0x-i2c.c
-+++ b/drivers/iio/proximity/vl53l0x-i2c.c
-@@ -94,8 +94,8 @@ static irqreturn_t vl53l0x_trigger_handler(int irq, void *priv)
- 		return -EREMOTEIO;
- 
- 	data->scan.chan = get_unaligned_be16(&buffer[10]);
--	iio_push_to_buffers_with_timestamp(indio_dev, &data->scan,
--					iio_get_time_ns(indio_dev));
-+	iio_push_to_buffers_with_ts(indio_dev, &data->scan, sizeof(data->scan),
-+				    iio_get_time_ns(indio_dev));
- 
- 	iio_trigger_notify_done(indio_dev->trig);
- 	vl53l0x_clear_irq(data);
 -- 
 2.49.0
 

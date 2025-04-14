@@ -1,60 +1,59 @@
-Return-Path: <linux-iio+bounces-18098-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18099-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D98DA88AF4
-	for <lists+linux-iio@lfdr.de>; Mon, 14 Apr 2025 20:24:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB721A88B0A
+	for <lists+linux-iio@lfdr.de>; Mon, 14 Apr 2025 20:29:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD2303B39A6
-	for <lists+linux-iio@lfdr.de>; Mon, 14 Apr 2025 18:24:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 19430177616
+	for <lists+linux-iio@lfdr.de>; Mon, 14 Apr 2025 18:28:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CB6828B50A;
-	Mon, 14 Apr 2025 18:24:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5894128BA94;
+	Mon, 14 Apr 2025 18:28:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QbJwJVMh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="snjgvQkD"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A9F5280A4D;
-	Mon, 14 Apr 2025 18:24:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1398928BA88;
+	Mon, 14 Apr 2025 18:28:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744655070; cv=none; b=G7s+EM6LaOZrYgFfZPFS066T5EOiYnd39TMWjtH4j1ECVQaZ6QNdqF3AbreJl/Zo87dLSfZcjWFxZ8FCbbwBBUJj3AT35D4G8DIE9wHMD5NZDITA2rmSa9TlvXUzOwvh22eZl882VgylQdYAzIcGuLHnq4LQ18KB7oRHh116BVA=
+	t=1744655328; cv=none; b=dtjJ2s8/6orySdw5noH4Zy9n+QpzSmEP70Nk+aB6IiLjq51IgRfTaF7F7XFByPy5ydoiVKLSkLkE4lEGLsmw1lqUsV9bYshbLbr56whqaw0f7uyZQpJsfvWzvwAfT6veWPTkQhuhqOW7Tci7+Mp8SzbI4oZ+09boTtxbDp+6yvg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744655070; c=relaxed/simple;
-	bh=u1SSCsR65+z/52ozbHPvT+TScO/1kMgnydsLbhQEYF8=;
+	s=arc-20240116; t=1744655328; c=relaxed/simple;
+	bh=mC2BUTSr6K9M5H82HVF6sdpNUZeudf8LZ6dRlOe1ETU=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=arlKctBRkrihHoMqdBIJqc9I+FPXlKqXyVvhr/3tlPHdaoH5RxPYYAj+G2fZxV2cmdw5hjX/XLdXGmWwWcltJUig011XJPv5p0f1xsdYz+SluINWzOZpp5i2QkgPgg1fmC7J7/modIaI2e+9EuiDI/vU04G1qFtDqVRMUMfok64=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QbJwJVMh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFF52C4CEE2;
-	Mon, 14 Apr 2025 18:24:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Nh6n6S1MbeShy2Isj2FPVX7JBGDjmveEvc37u8WKD/fI/c2jI1qgCSM+SaRyvx67+xviLTRf9QNXFIBW3tJ/mdpwU8yrFKE2f2eKs/t5McP4ycG8oukxHmJTvPG06oVDUjI6OjXiOvP/GzLoAqOXlxcvgwnK2HgTuhSjHduMIDE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=snjgvQkD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40A49C4CEEB;
+	Mon, 14 Apr 2025 18:28:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744655069;
-	bh=u1SSCsR65+z/52ozbHPvT+TScO/1kMgnydsLbhQEYF8=;
+	s=k20201202; t=1744655327;
+	bh=mC2BUTSr6K9M5H82HVF6sdpNUZeudf8LZ6dRlOe1ETU=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=QbJwJVMh+kwVSRlafiLsR9NsZhKRc23wpBBil5TPnGF46i+c6S3NjHpChwxmGT7g8
-	 jkfyhK+4pXh/3o8KSmPU8HwplLS/H5CMpbQrq+Xi4Iw6cJLQMM86syEILgfdVM31W2
-	 dQnxVc8iKpwaoF3eR7jCTnbozSpgv3QUhpGYsOoGb6ra/cSAqdVNWx6nvB17MWtw49
-	 htu0GCew+cwGs/DtlIkTCVS1feL0ba/UrmKhcbyhZ3EAiTql0mAyPlzQzYZaruTT8N
-	 XB5btK3BTlJCkbA4IKM5TyHI68uj7hn61huKFzGai1m8cRlmCd7I+VpNsmKS73zk0r
-	 tUpOlLE+bgY1w==
-Date: Mon, 14 Apr 2025 19:24:22 +0100
+	b=snjgvQkDsJMRcE9FlwHD039ZUU5KS88+JIYIteGHLIQzeBob2MOYKJ3GZV1frW9iA
+	 TVIMAoyDG2oHoopr1HuAwHNM1i1vkNLmg1wfOTycr/ZmY9F4Bl1x/QsCHUcUe39EkD
+	 af42AHdfjd3aAFI4oMcDMz4O6bgk7OkwmiG3hvUhWvE73ajIMEpcYCxtx9oBxf38yP
+	 1MwN7v8I7SfelIU7gaSvB7eZTpc3Q5e7mP98P8ysMaS5aB8XGJtWkN7EB1RR3gAR2W
+	 G/ufAIf99GJloCj8f3fTlr1ab4Z3YYtp2Rr6EsKJ5wxm9Ctkw2pPDIkbzlCW6BseIR
+	 1EHMd6kvi2sxA==
+Date: Mon, 14 Apr 2025 19:28:40 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Angelo Dureghello <adureghello@baylibre.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
- <Michael.Hennerich@analog.com>, Rob Herring <robh@kernel.org>, Krzysztof
- Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
- Jonathan Corbet <corbet@lwn.net>, David Lechner <dlechner@baylibre.com>,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
-Subject: Re: [PATCH 3/3] iio: adc: ad7606: add SPI offload support
-Message-ID: <20250414192422.039817b7@jic23-huawei>
-In-Reply-To: <20250403-wip-bl-spi-offload-ad7606-v1-3-1b00cb638b12@baylibre.com>
-References: <20250403-wip-bl-spi-offload-ad7606-v1-0-1b00cb638b12@baylibre.com>
-	<20250403-wip-bl-spi-offload-ad7606-v1-3-1b00cb638b12@baylibre.com>
+To: Lothar Rubusch <l.rubusch@gmail.com>
+Cc: lars@metafoo.de, Michael.Hennerich@analog.com,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ eraretuya@gmail.com
+Subject: Re: [PATCH v5 05/11] iio: accel: adxl345: add freefall feature
+Message-ID: <20250414192840.0147bb97@jic23-huawei>
+In-Reply-To: <CAFXKEHZ6pozMTw_8hT9i7rp_OtPZMaFXEisW925oYgFFJeXv=Q@mail.gmail.com>
+References: <20250318230843.76068-1-l.rubusch@gmail.com>
+	<20250318230843.76068-6-l.rubusch@gmail.com>
+	<20250331112839.78c2bc71@jic23-huawei>
+	<CAFXKEHZ6pozMTw_8hT9i7rp_OtPZMaFXEisW925oYgFFJeXv=Q@mail.gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -62,70 +61,89 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+On Mon, 14 Apr 2025 16:30:35 +0200
+Lothar Rubusch <l.rubusch@gmail.com> wrote:
+
+> On Mon, Mar 31, 2025 at 12:28=E2=80=AFPM Jonathan Cameron <jic23@kernel.o=
+rg> wrote:
+> >
+> > On Tue, 18 Mar 2025 23:08:37 +0000
+> > Lothar Rubusch <l.rubusch@gmail.com> wrote:
+> > =20
+> > > Add the freefall detection of the sensor together with a threshold and
+> > > time parameter. A freefall event is detected if the measuring signal
+> > > falls below the threshold.
+> > >
+> > > Introduce a freefall threshold stored in regmap cache, and a freefall
+> > > time, having the scaled time value stored as a member variable in the
+> > > state instance.
+> > >
+> > > Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com> =20
+> > Hi Lothar,
+> >
+> > Apologies for the slow review!  Just catching up after travel
+> > and I did it reverse order.
+> > =20
+> > > +
+> > > +static int adxl345_set_ff_en(struct adxl345_state *st, bool cmd_en)
+> > > +{
+> > > +     unsigned int regval, ff_threshold;
+> > > +     const unsigned int freefall_mask =3D 0x02; =20
+> >
+> > Where did this mask come from?   Feels like it should be a define
+> > (just use ADXL345_INT_FREE_FALL probably)
+> > or if not that at lest use BIT(1) to make it clear it's a bit rather
+> > than the number 2.
+> > =20
+> > > +     bool en;
+> > > +     int ret;
+> > > +
+> > > +     ret =3D regmap_read(st->regmap, ADXL345_REG_THRESH_FF, &ff_thre=
+shold);
+> > > +     if (ret)
+> > > +             return ret;
+> > > +
+> > > +     en =3D cmd_en && ff_threshold > 0 && st->ff_time_ms > 0;
+> > > +
+> > > +     regval =3D en ? ADXL345_INT_FREE_FALL : 0x00;
+> > > +
+> > > +     return regmap_update_bits(st->regmap, ADXL345_REG_INT_ENABLE,
+> > > +                               freefall_mask, regval);
+> > > +} =20
+> > =20
+>=20
+> This raises for me a bit of a general question. I face this situation
+> quite often when using FIELD_GET() or, like here,
+> regmap_update_bits(). In general, when I need to apply a mask on a
+> value to be set or unset.
+>=20
+> A fixed version of the above could be this:
+>  421         regval =3D en ? ADXL345_INT_FREE_FALL : 0x00;
+>  422
+>  423         return regmap_update_bits(st->regmap,
+> ADXL345_REG_INT_ENABLE,
+>  424                                   ADXL345_INT_FREE_FALL, regval);
+>=20
+> Actually, (suppose we have uint8_t, and mask only masks a single bit),
+> I tend more and more to prefer 0xff over the particular bit, so...
+> 421         regval =3D en ? 0xff : 0x00;
+>=20
+> ...and then apply the mask on it. Is there any opinion on using 0xff
+> or rather using the exact bit? Or, do you, Jonathan, care more about
+> one or the other?
+
+The actual bit(s) would be my preference.  Whilst I agree it would in theory
+be fine to use 0xff that would require me going to check the register
+width.  Using ~0 might always work but that is just weird to look at.
+
+Jonathan
 
 
-> +static int ad7606_spi_offload_probe(struct device *dev,
-> +				    struct iio_dev *indio_dev)
-> +{
-> +	struct ad7606_state *st = iio_priv(indio_dev);
-> +	struct spi_device *spi = to_spi_device(dev);
-> +	struct spi_bus_data *bus_data;
-> +	struct dma_chan *rx_dma;
-> +	struct spi_offload_trigger_info trigger_info = {
-> +		.fwnode = dev_fwnode(dev),
-> +		.ops = &ad7606_offload_trigger_ops,
-> +		.priv = st,
-> +	};
-> +	int ret;
-> +
-> +	bus_data = devm_kzalloc(dev, sizeof(*bus_data), GFP_KERNEL);
-> +	if (!bus_data)
-> +		return -ENOMEM;
-> +	st->bus_data = bus_data;
-> +
-> +	bus_data->offload = devm_spi_offload_get(dev, spi,
-> +						 &ad7606_spi_offload_config);
-> +	ret = PTR_ERR_OR_ZERO(bus_data->offload);
-> +	if (ret && ret != -ENODEV)
-> +		return dev_err_probe(dev, ret, "failed to get SPI offload\n");
-> +	/* Allow main ad7606_probe function to continue. */
-> +	if (ret == -ENODEV)
-> +		return 0;
-> +
-> +	ret = devm_spi_offload_trigger_register(dev, &trigger_info);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret,
-> +				     "failed to register offload trigger\n");
-> +
-> +	bus_data->offload_trigger = devm_spi_offload_trigger_get(dev,
-> +		bus_data->offload, SPI_OFFLOAD_TRIGGER_DATA_READY);
-> +	if (IS_ERR(bus_data->offload_trigger))
-> +		return dev_err_probe(dev, PTR_ERR(bus_data->offload_trigger),
-> +				     "failed to get offload trigger\n");
-> +
-> +	/* TODO: PWM setup should be ok, done for the backend. PWM mutex ? */
-> +	rx_dma = devm_spi_offload_rx_stream_request_dma_chan(dev,
-> +							     bus_data->offload);
-> +	if (IS_ERR(rx_dma))
-> +		return dev_err_probe(dev, PTR_ERR(rx_dma),
-> +				     "failed to get offload RX DMA\n");
-> +
-> +	ret = devm_iio_dmaengine_buffer_setup_with_handle(dev, indio_dev,
-> +		rx_dma, IIO_BUFFER_DIRECTION_IN);
-> +	if (ret)
+>=20
+> Best,
+> L
 
-should be ret;  Thanks to 0-day for the report and fixed up.
-
-> +		return dev_err_probe(dev, PTR_ERR(rx_dma),
-> +				     "failed to setup offload RX DMA\n");
-> +
-> +	/* Use offload ops. */
-> +	indio_dev->setup_ops = &ad7606_offload_buffer_setup_ops;
-> +
-> +	st->offload_en = true;
-> +
-> +	return 0;
-> +}
 

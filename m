@@ -1,121 +1,195 @@
-Return-Path: <linux-iio+bounces-18085-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18086-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC005A88639
-	for <lists+linux-iio@lfdr.de>; Mon, 14 Apr 2025 17:04:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F308A886C8
+	for <lists+linux-iio@lfdr.de>; Mon, 14 Apr 2025 17:19:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4DBBF188A603
-	for <lists+linux-iio@lfdr.de>; Mon, 14 Apr 2025 14:55:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93D4758542A
+	for <lists+linux-iio@lfdr.de>; Mon, 14 Apr 2025 14:56:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AC702750ED;
-	Mon, 14 Apr 2025 14:52:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA2482472BB;
+	Mon, 14 Apr 2025 14:56:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="e8xaB2mx"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="JaxqYAPb"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from fllvem-ot04.ext.ti.com (fllvem-ot04.ext.ti.com [198.47.19.246])
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11013022.outbound.protection.outlook.com [52.101.67.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E5702750EB;
-	Mon, 14 Apr 2025 14:52:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.246
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744642358; cv=none; b=oxes8V35fwMHJxLPiGTnqOOIvB/Zb3SETbkJAyHLYJJBiSclyunHzodJfbWGOaG1Zhjvz4SMEji45KCQYTfjXGsbUDacww3wAYvZhMyimGNgTFz/LhPvO+3gce2pg+8uZ6GtDxgS2oU7TYG/3by6dBSvSPlVMbXR3mAznIgXDoI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744642358; c=relaxed/simple;
-	bh=hcMWM0G9vEZfGmzIr7O1gnEoUkP0rDsSrVH60fHRMYI=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PlwNzk+dUzaLTQ/LmE+Xi2YDilX0DFzAWkHL0qNUFbL/i3UF54EydTaGFRFjMq1E8cyUVYNfoiacSzkJ/XnO1UQq1bvigLssLlouSsC85q56WtCWBLZTdgA1b43iNJho/YyvciT/6xiD1a5qGzkNvzZH6OTbN/ksVmN71ikTjgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=e8xaB2mx; arc=none smtp.client-ip=198.47.19.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-	by fllvem-ot04.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 53EEqCCW2787576
-	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 14 Apr 2025 09:52:12 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1744642332;
-	bh=7DgyALPRj27V3u4dS9N8ZYrgbkAagFNpTbCFLxgzwlQ=;
-	h=Date:From:To:CC:Subject:References:In-Reply-To;
-	b=e8xaB2mx0+lFI9uLSUkuZzpAlT7BwWkh7jg9b1J45o8r3n1aTc/SzKGeY/irvHMnQ
-	 Vqj/cIthOKvs0VmGDhcRjYzvn7E7H1GThsm/I7OTH4K8VjdJeqKuWSWQdUBxre/a/I
-	 rfcNKwrv8jH0Ev34cz/pLD0R6+m+m66G9TG0Ank4=
-Received: from DLEE106.ent.ti.com (dlee106.ent.ti.com [157.170.170.36])
-	by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 53EEqCro012307
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Mon, 14 Apr 2025 09:52:12 -0500
-Received: from DLEE100.ent.ti.com (157.170.170.30) by DLEE106.ent.ti.com
- (157.170.170.36) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Mon, 14
- Apr 2025 09:52:12 -0500
-Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DLEE100.ent.ti.com
- (157.170.170.30) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Mon, 14 Apr 2025 09:52:12 -0500
-Received: from localhost (uda0133052.dhcp.ti.com [128.247.81.232])
-	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 53EEqCYp035762;
-	Mon, 14 Apr 2025 09:52:12 -0500
-Date: Mon, 14 Apr 2025 09:52:12 -0500
-From: Nishanth Menon <nm@ti.com>
-To: Matti Vaittinen <mazziesaccount@gmail.com>
-CC: Sukrut Bellary <sbellary@baylibre.com>,
-        Jonathan Cameron
-	<jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>, Rob Herring
-	<robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley
-	<conor+dt@kernel.org>,
-        Angelo Compagnucci <angelo.compagnucci@gmail.com>,
-        <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 2/2] iio: adc: ti-adc128s052: Add lower resolution
- devices support
-Message-ID: <20250414145212.7fcybmngv7rnuvnm@hatchet>
-References: <20250408132120.836461-1-sbellary@baylibre.com>
- <20250408132120.836461-3-sbellary@baylibre.com>
- <cb81cba4-0fa3-431a-924f-b362fd0c4638@gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D260539A;
+	Mon, 14 Apr 2025 14:56:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.67.22
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1744642578; cv=fail; b=fQtYAwr6bMo1vU3A9qb1c2ShPg1KzauN0IMubah+hEh5lQ0OoCVkSVq4agKHJzhQucPVj5HWEdWjqo8l6FMSnNFEEDm9gavQc08/2usQcd9TvldCYuOF71E9/HxsVqiRtxvSjwboLJvWnn2waemQ3zuY7/VpPvay3AzlbrLGaas=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1744642578; c=relaxed/simple;
+	bh=iLzn8ttjJugvFiE7V/ht2iTXHj2dPGdXHlPSklvHR/w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=Kx6ZH9DjUZZS9mVfhrl58R0IYD10fW8Cvy4S5x3WRxnZypU2fITNBc7BzVB/Lp6tBgDWeVqbQciH8b3sdXUut9G+QSq0Gijh3ceFkHTF/9EENWdgGJ04L6QNBONhq8TxFRNmBvM11udA8K7iElwrsQJ8qqsIHt9cPQO9FlCjAiQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=JaxqYAPb; arc=fail smtp.client-ip=52.101.67.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=lImUt1ZLgjoFg1YakYWbKgS/vB9G1vq63I+7C0u0lsYcSYjwSuIyGkH4ErTWyO7XdG+tnvsapCnvmT1kOcny0aGpxKVXVYtm7XK9jkZTgKN+PxpnlLXyOUb3lAnV1vwK75rEcnxi6NztO1dc0ez0B8vaVAoftaIdhdz1QdM+YMvNL2kDyA1fYxBV0KdjFbmiZm7+ABzucno2PDHrv62/+55F6dBctHU9xtX8Dz1gwp4S9ApWm6iZu1Tn9KUrez5wbqhSR7bpFIjfY6oGTByVAPiVXroq5Q3dKd0zsLVKF+wBcnDpwWjqe4hS8RLZrtt4m1kMNi1MQvbG24lPTph2IQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=WGDzh7JRZ5F+Kjk1GInhB/j0vpCc4ack2sxFKapcwYw=;
+ b=zWuVTT0dIkhBjT2uKDcX9wiV40zohJW/MImpQ8DyjDHHAevPEwk2rYBLrPuqwh3JxMjLN/D+y5sgCmDtBJmt4ZTpiZsbcELBeyW5xfx2mG4FzUgtdfbDOCEk5M6GvIvhOM9l8yVkFox/HWmdZBzWeWQvSkIXAzpjpeaEKHaujBNbjXRksfjPm1F5EGCNXfg4WY0NuJcqxP22Mv0svbg5Ju8UqXVk5hBlkKwoAZ/BIRmObBI6I2fL0rrr9GLtDhi2SS9K/Etd3LqPPrP8KMgRqboB6wo8nQvPcK36CyZm9idu8ask+epK/R5RDyi6vvwiEy+Wkhiy54tB+HgmWkGreA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=WGDzh7JRZ5F+Kjk1GInhB/j0vpCc4ack2sxFKapcwYw=;
+ b=JaxqYAPbmg/3eJX6lx5GPTvpb6ZTOUSwyZPp/O3bm7mLPlzQIpNPvrkv7sCfnVw72oeWxtZ/oyZ2txMsfor1AsxVNQ1boa3rhGKo2Ad1BLNSz86l6itjs0A9D3zoKWvHSOntG2PklXFd9kkZYTdH6QGfgnKSS3KyuGsViBZrdpV18c/kxyrh9QDlaGbmThGNInSfVUOnJgc5sWZt4ZfKFI+1v8ZLCAc0kodsGgLfGJa+fWzV3jztE40bfkPg5qPeI4WJ8q7DqqskEELD0zuiS4RaJmuHT2xOJ6OOehxRnN0+325XvJRN6AF/ClEt623ksD7FSiP5Ovm2uwkcGTfTsw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by DU4PR04MB10861.eurprd04.prod.outlook.com (2603:10a6:10:592::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8632.31; Mon, 14 Apr
+ 2025 14:56:13 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%2]) with mapi id 15.20.8632.030; Mon, 14 Apr 2025
+ 14:56:13 +0000
+Date: Mon, 14 Apr 2025 10:56:03 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Lukas Bulwahn <lbulwahn@redhat.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Patrick Havelange <patrick.havelange@essensium.com>,
+	devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
+	kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Lukas Bulwahn <lukas.bulwahn@redhat.com>
+Subject: Re: [PATCH] MAINTAINERS: adjust file entry in FLEXTIMER FTM-QUADDEC
+ DRIVER
+Message-ID: <Z/0iA9Et7MlviJTv@lizhi-Precision-Tower-5810>
+References: <20250414093124.19683-1-lukas.bulwahn@redhat.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250414093124.19683-1-lukas.bulwahn@redhat.com>
+X-ClientProxiedBy: SJ0PR13CA0162.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c7::17) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <cb81cba4-0fa3-431a-924f-b362fd0c4638@gmail.com>
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|DU4PR04MB10861:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1075cf9c-fcb0-440a-189b-08dd7b648010
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|7416014|376014|52116014|1800799024|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?LFPYBAHK4VVQC/06cQdXYzvaC/H8+Fj4Ot04t1HMK1VHyMZLF2wVxZrOtjgd?=
+ =?us-ascii?Q?i4xeX2DT//zOJS6C4zNfP4p+OBwLebbmWczF6CafYbdNRLnzbHPPcrj56Y53?=
+ =?us-ascii?Q?P8eRz3FjWPDD3PN9gV8XHHjc9o1/8tLFYKEXBUNiy/OZu1U/5MYeVdY2dIsv?=
+ =?us-ascii?Q?1Y5jjLni/dGHIG/vUiO/gq6aoX87pn6/TNiT7f0Fgm2IFzcaEIiJ1453Bd1I?=
+ =?us-ascii?Q?U7iewPOjQJ5eZcEp+1j3elIVWmXHcv1BhMfWqXsoD0bSjFGp2bU2CwlGn8R5?=
+ =?us-ascii?Q?zBlFnRacXEr7FaQSDVOUEk6pNGrw4wgRGaOSD8OAsF//qVj+IDKO14vTVG5M?=
+ =?us-ascii?Q?1cDRrwjc1ipEi0aDQp/Sbfrp/loT2SQINqx59D2O9r/mucdpkWDPA3cu50NU?=
+ =?us-ascii?Q?f4hV0JvR//ko3xCGq/IR72iHGDH6lIbIPPf5DJcMpZFUObcFG+yLIHTZm/nX?=
+ =?us-ascii?Q?UuvvXoR0GpXWZgiJFvoxLQs/KXgIeuAcZqxvm5FKwYWbWdN790fQBOrgKWKq?=
+ =?us-ascii?Q?7TyY0EfVSNIdRphEH5iyQ7ML0QyPHL56PhhRhMHo2NqEY5o6h5BS9bzMYmJm?=
+ =?us-ascii?Q?ygkpq1voNE6ClIpnmr7EiV4gUpuu3vUr3dnLg7f/q7gDx7aM/mxsv51ptsv3?=
+ =?us-ascii?Q?v/2a9mAP4tD9K5uzD/wxh/W5VecESNqWNU4COX4rzNoYvq4HPfrCRrBcZM4j?=
+ =?us-ascii?Q?zzCTsbusMnrMWgemTqVHt5xWXQsHB34JBCLq3uWixyxu40C6nfEydteoDECW?=
+ =?us-ascii?Q?p9S3f9VUGRGgQ9T+HWSVdmcmPZ9E5CtwEV32Pp1nJQ4oJ1MNowtdlwqFVZDU?=
+ =?us-ascii?Q?QHhUoDC7YfaNjTPWGKIV+3d7pD7dcuhLB5ESl4nENLcQtA/M0s0mqIIU/kMc?=
+ =?us-ascii?Q?2uHRIyZW6f1FQ8QQpNDeiXgN00OXaS/BD2hZVIQrwfYCZfRRH6NVm5gy2Caf?=
+ =?us-ascii?Q?w+XhqbtXp8ey8aZN50dTJqsrTxPbZ203kVequHENjkwW7WGcaYiksuujklTj?=
+ =?us-ascii?Q?sWgaE53AXTB2l/TcRJR/qKQ+kCQ5ysDOpKYShzSK5AbOICjIzFXLW1UqVY/L?=
+ =?us-ascii?Q?ovXj2PKmhaHDkTWW5rDmHMIjj7R7tA3M5V4T4ip8N4PsgR1zFa71x0Eg0exA?=
+ =?us-ascii?Q?z0LVCQYFRpJZQeIWpqjEZsoHiYkDRggjKmEoWTQL7fGKy4c1YH1gJTwPdg9R?=
+ =?us-ascii?Q?EK1PBWFKzzUisjrZ+DuSjWkCE89efHtPnV4AzJ30hSf2BMMo/Tj9mpzTs0tB?=
+ =?us-ascii?Q?EUA5L8e1U2cSwfz0bag7AKj0N2zyqZ/x1VJivjiPgjdqFDk5J3qrpEkhX05m?=
+ =?us-ascii?Q?lmZgqMXIDo4witrDjLpYzNCJh3QAXszWrX5PX0fMAPFK/MRSlrphmmWjEenx?=
+ =?us-ascii?Q?Qz7JNGiaCQBUj6CbBi2Pe5R7+cwk17y1x4Ife1LxZaopYmR+qqQsXpWcyOdK?=
+ =?us-ascii?Q?DQa5viYRKcu25trGhgLN7mHf39u0gHP6Sz8KRtst466Y+PyNdDcNfw=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(52116014)(1800799024)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?QYR1DULc+gd3ddOZZymjsqZM4iJfDFbGNQ7q0wFJIxk880OwxWhTkW8yiNdT?=
+ =?us-ascii?Q?hlLlWbKJpBufXlXrcO0X6Is4JVKwxFV7a2OSZPUB2JlaYNJ9Wj0Sh63xbZhz?=
+ =?us-ascii?Q?cU4t7oqAIpWl3/aU6mWkSSwwS4PyO+JS+e02oST2BiQoy6PzpdQ85guR1DJp?=
+ =?us-ascii?Q?cUYAMiCZQPd7L2T61jTHqbpNvBjjDJUWOUCo+LbO4+/YhBVXkkWtWfs+RUWc?=
+ =?us-ascii?Q?3AvxbvHPTfyI1rb34v1zq44XfDS6lLVyMcaxVwfaSMdNoRHvzxZZ4LzTzIjG?=
+ =?us-ascii?Q?xAq5Oaz8TaTP+sr58Zty5g6hwfSQJWOTCixT1oqJhSqVtvHyCHZH4/rorRj1?=
+ =?us-ascii?Q?64Hj/Sm4jy7u5o7c8kOArFJ82Buabwm+Wz5HnOyYOlJA3DJlOqQP1U4sw302?=
+ =?us-ascii?Q?RmpgrNO7I6wUODbqqlbyUnU9lhks16EFofItK5NjMlsDzz0YYT+dnAzkbaZM?=
+ =?us-ascii?Q?1krBvKFgjWMJST/sEa5+2IzcpRL2QM+lAvIbjddCyO7jPLCA3LnB43DK21zO?=
+ =?us-ascii?Q?uxWu5FUr3GD+P93UgKRckG9VqorovE0UjNexHq/DaV5b1RiOeTD6rG5GZhsF?=
+ =?us-ascii?Q?3Cq2h7fhBy5jfHZD8ciHx6S+UkesUufd+SV24yeECM8cXzZdL9xqArjw2XYt?=
+ =?us-ascii?Q?ECCSLGZIYGRbC6H4wufMC/suTapbD9wb95FODR4gzQwLnMy5X1vwf7XsltKT?=
+ =?us-ascii?Q?0y/+wPyqs/eWdVSs6H+XyM1RF7YbAn8CLx1TMCGZNc67OPR0E0pnZrLsezc+?=
+ =?us-ascii?Q?Z0I3i0lT0KD0Ag24y+mg0DzXajc3ntF7HSWc8iRXiDTtV3wLiqEEIgvoiY5a?=
+ =?us-ascii?Q?C5U/Os7aTpisJDuxjKq/QNvUiMZTh0lFYx5f/DetJFa3leFaGuga6YShWKQi?=
+ =?us-ascii?Q?QF5RoGvc0YRs2l2sHtiBiqWppHUjUBg7j9UXRwb41u65ijd9+ap893ZZ4I3r?=
+ =?us-ascii?Q?EZ1Ei9GqW0Nt4UzGo99K+9NCIMf22dl+B5sFKSfmuytdDJrEbC9RJuDomyef?=
+ =?us-ascii?Q?NoLzh/tnZG2pO4XVgy49IAlzytzuAfQhi84dmCr5HX1SfFbh+F61ShU7YNI7?=
+ =?us-ascii?Q?0xtoyoLDMNGygwbXofn8xHANvFdpC7m2N4OtxLs3o5WAD6Vj5mpIfGdI08mZ?=
+ =?us-ascii?Q?JzNfgLhheJFSgqJudLoi6CjGraSrRgNE31S5HlZnccUsiIAvrdsNfO0vQciz?=
+ =?us-ascii?Q?HQc40qrjp67qI3rAUNHPxwUE9Y/o7IoCad88Phmic+Yulskf8+cmDLEaC5oj?=
+ =?us-ascii?Q?V6iJS8xtS0o3SoIGvzig/h6oUDL50Zyrc0I75yhjsGbDl6Kln7bVVWpIf5cK?=
+ =?us-ascii?Q?izCKlZ8pAQJhL4vtrSsgrj2Fmx8l8cnv2prjppwpgmCsc4o+UJnq3BpfaCtV?=
+ =?us-ascii?Q?W2r4vlWUaFLQZ65F+5ldihkcH6jH+n3kTdqXb0qvwcAU3kGRgK9XVoq64SZi?=
+ =?us-ascii?Q?q5ypLbAsO/4s3WAzWM8WlpMjy87o0JyLyO8h3TanHkkI1ZZKQDB9kNi/J7n+?=
+ =?us-ascii?Q?pTGpU3aygF4N8Z2mHi7WeaHlX+ur2HUIJECBr1idmMSxPqY9RtRtpK9mJuQl?=
+ =?us-ascii?Q?NLcutWTFmzvIwAyqYdM=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1075cf9c-fcb0-440a-189b-08dd7b648010
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Apr 2025 14:56:13.5498
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: U4/oCMREk+yLlmPnipZNk0kZtvQbzNzlrN+YKuTtqYBr4ywjabYwcqHywayNcPLBAVuKS5wcGD/H1NEs8p8g8A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU4PR04MB10861
 
-On 09:40-20250414, Matti Vaittinen wrote:
-> On 08/04/2025 16:21, Sukrut Bellary wrote:
-> > The adcxx4s communicates with a host processor via an SPI/Microwire Bus
-> > interface. The device family responds with 12-bit data, of which the LSB
-> > bits are transmitted by the lower resolution devices as 0.
-> > The unavailable bits are 0 in LSB.
-> > Shift is calculated per resolution and used in scaling and
-> > raw data read.
-> > 
-> > Lets reuse the driver to support the family of devices with name
-> > ADC<bb><c>S<sss>, where
-> > * bb is the resolution in number of bits (8, 10, 12)
-> > * c is the number of channels (1, 2, 4, 8)
-> > * sss is the maximum conversion speed (021 for 200 kSPS, 051 for 500 kSPS
-> > and 101 for 1 MSPS)
-> > 
-> > Complete datasheets are available at TI's website here:
-> > https://www.ti.com/lit/gpn/adc<bb><c>s<sss>.pdf
-> 
-> I tried looking up:
-> https://www.ti.com/lit/gpn/adc102s051.pdf
+On Mon, Apr 14, 2025 at 11:31:24AM +0200, Lukas Bulwahn wrote:
+> From: Lukas Bulwahn <lukas.bulwahn@redhat.com>
+>
+> Commit b7549ed5edc6 ("dt-bindings: counter: Convert ftm-quaddec.txt to yaml
+> format") renames ftm-quaddec.txt to fsl,ftm-quaddec.yaml in
+> Documentation/devicetree/bindings/counter as part of this dt-binding
+> conversion, but misses to adjust the file entry in FLEXTIMER FTM-QUADDEC
+> DRIVER.
+>
+> Adjust the file entry after the conversion.
+>
+> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@redhat.com>
+> ---
 
-Gaah - the IT folks keep messing with the URLs :( -> dropping .pdf in
-the url should get you to the pdf #facepalm :( (sidenote: that wasn't
-the case a year back :( - hopefully this will stay).
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
 
--- 
-Regards,
-Nishanth Menon
-Key (0xDDB5849D1736249D) / Fingerprint: F8A2 8693 54EB 8232 17A3  1A34 DDB5 849D 1736 249D
+>  MAINTAINERS | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index af3537005de3..661419d7c71b 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -9216,7 +9216,7 @@ FLEXTIMER FTM-QUADDEC DRIVER
+>  M:	Patrick Havelange <patrick.havelange@essensium.com>
+>  L:	linux-iio@vger.kernel.org
+>  S:	Maintained
+> -F:	Documentation/devicetree/bindings/counter/ftm-quaddec.txt
+> +F:	Documentation/devicetree/bindings/counter/fsl,ftm-quaddec.yaml
+>  F:	drivers/counter/ftm-quaddec.c
+>
+>  FLOPPY DRIVER
+> --
+> 2.49.0
+>
 

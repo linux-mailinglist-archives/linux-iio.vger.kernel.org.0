@@ -1,135 +1,195 @@
-Return-Path: <linux-iio+bounces-18074-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18075-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA12EA87BE7
-	for <lists+linux-iio@lfdr.de>; Mon, 14 Apr 2025 11:31:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09D4DA87F6C
+	for <lists+linux-iio@lfdr.de>; Mon, 14 Apr 2025 13:42:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0091A167CDD
-	for <lists+linux-iio@lfdr.de>; Mon, 14 Apr 2025 09:31:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 39D767AA89B
+	for <lists+linux-iio@lfdr.de>; Mon, 14 Apr 2025 11:41:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A731B25E822;
-	Mon, 14 Apr 2025 09:31:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 652D5298CA8;
+	Mon, 14 Apr 2025 11:42:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="f9uzhIcU"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A8Uo6uZe"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f176.google.com (mail-yb1-f176.google.com [209.85.219.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD5D925A2B5
-	for <linux-iio@vger.kernel.org>; Mon, 14 Apr 2025 09:31:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F417280CDC;
+	Mon, 14 Apr 2025 11:41:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744623098; cv=none; b=WZLqan1zCalOn+o2/VlZgxrXcnhWy0nqLIbf4Lxcut6sb1xzPbpL6yR0dABj6E5lgQXzmCTdWzbPLHI6jnhXbElMv52DWgUcGm7V/M2dg4DlRNoyPg6R4SI00bK/sdkjLBZfcjZrQI3PIJd7ca+5pUu8rK9YuRBK6X67bPOV0RA=
+	t=1744630920; cv=none; b=jH5qUybvKKton1mRNJqKO52eLbttZTYy5liWNFJOkNfHZjk2f+fdMwHCkqy7QvplakyKO7BB/wjU3Al+sGuEQqXpoZHk6eMPUve1OdFr84sKsqqiQjzbeC0Cv8yUUBwRphyqul6r5D7XjXrqJNnXbLwdpUt8Wb/TVLPiblUGQ1c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744623098; c=relaxed/simple;
-	bh=WEfGh8/JZ50VI42QY/UzDVj5QGsc8xf1TZieBe4ZvGo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mGhdYSqGYbE8u0k5m63VeIQljUtu0TVHjE9W6EqvY9espV8FsFE1L3Re6v2qEsAnVsy6CL1lNf7PSCu3jG/CwTCJTRQvkgpSShpiDCpJX0iAUiL/NzpAMyg3Vj+ckOy3Snee4jIq3HtC5K3PT5rVZhb4qzQPlYnFN8Nk+wNDYmA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=f9uzhIcU; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1744623095;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=DcJtOZqqmGG/GNqQfI/h8Deen7z+Z9B2I6ayBe0ZS9Y=;
-	b=f9uzhIcUe6aZkaGBH/hLegnGxmUqjCHJGBm7/oI3eoPbJjUMCVvNakG/Jco98wWX7vduCF
-	831hqCtVX5WsTLccu/6fYrFsGZqdExZc9gG/XQwY2idRd1PRPyLGGL1gXcbXiExtiaWZiE
-	1fgHztZ/qOhd6pI5ZjjVnNp+nCwsRIQ=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-372-olu5v_6mPj29DOzdZ-IUmw-1; Mon, 14 Apr 2025 05:31:29 -0400
-X-MC-Unique: olu5v_6mPj29DOzdZ-IUmw-1
-X-Mimecast-MFC-AGG-ID: olu5v_6mPj29DOzdZ-IUmw_1744623088
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-43d5ca7c86aso25072955e9.0
-        for <linux-iio@vger.kernel.org>; Mon, 14 Apr 2025 02:31:29 -0700 (PDT)
+	s=arc-20240116; t=1744630920; c=relaxed/simple;
+	bh=+flCr9B8P37u4bBFb3aOCmmw+SZCIGiAOZIqkNB3dU0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=asKPde/59VNjgPbeKirBVA2Hu9CBzT/6UVTRTFMusRjG4Eh21mcjF2ocAUg4Nw0YO3smvwAa62UrsxvpCgWrf3XRAQQir1DuLIeUn/b7z4Hh4CvAEqXtcIM1s6cLWzZ4K0mgLiNysSNfKBBANGSc5zqCveOIpoBVAAyKfg6QiBo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A8Uo6uZe; arc=none smtp.client-ip=209.85.219.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yb1-f176.google.com with SMTP id 3f1490d57ef6-e6e01e8f4cdso530179276.2;
+        Mon, 14 Apr 2025 04:41:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1744630917; x=1745235717; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0evTumqrDq5rgQu+eyGkQcd4gB3aTt7ZM+UWsJy63Qg=;
+        b=A8Uo6uZeYPj1rQzlqOIw+ZGnSzftDojEHVlwV+P8B+n6FjXQkrjepsBPnc1uwsMvss
+         r337kgFaxjdXySjdMZoSW/EaMZ6BMwb+0sZbNvYotGHYphavJkS7kj1Ol7+cG4vVh8ec
+         HlrhAiMdoeKW+/gSNfR9TTPGE22gdaNb/ioT87ceM1w3z6yACUFCxQuGqSltVM2FuRDe
+         tAW/GCVLGPr7v616OQvUkGuato8A9CeQg7atiT1XkdMidbiYJLqowcNsduCiLwrleYWP
+         sgsGhLVdABrf4HCbhRqVc/RSjsW0aOhjfkBSDhu3kZZPkGQAExq89N1GVX3vOKjnCGhH
+         5kOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744623088; x=1745227888;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=DcJtOZqqmGG/GNqQfI/h8Deen7z+Z9B2I6ayBe0ZS9Y=;
-        b=piBtBAXUDHNoSPEF5+MOrG232/uY4QnOoxpRdkPutLUv4/jMDJcO4EGFg3dsJarFLP
-         JF5Tkxhfiv09LZbjBwcG65Y3DiR8nsUg+zxhuEY77oBFRFh/6hsuf55hCMOwjE/wTokY
-         J83BBKi4zkuljppbf6Z/YV/lr0LamsPFVvAxPE0q7mMiwrFJmog6gxZSfAlsZQD1wQnY
-         0QP57iZSIlCDCvgLC0t1Q4YEd/fYlLsdPbaAchOBVWO+0i8kcextZWwYwIrmqGYmgNz7
-         +ZZDr9bx+WW0j83LJbIQd7d5sKHMMBfG+DbNePp37Bwk8A0X7Do+yy8qPq1CUEDkdLdX
-         uM6A==
-X-Forwarded-Encrypted: i=1; AJvYcCXXNfid1W3dcmcTsUGZo2Iy2ASGoP/HuLhTbM1YcJlV5BOlS9S56OhHg8pG1i2EDkFohiO+4zg3m7A=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzBgw+4kAEeDise44g42pASubmikp/HMmHdToVkqmsJRbLo6EIJ
-	cJGsjJwu9VUHBUBG5my7m6gCAIHK1Gp3lT/5nqvpZzgi/IZrnuEaml4nmS6ajcCYkaWssLI26FT
-	nEroDTPDhoyckscIIH2D9tq6O1qsghblu5hURm0ztTvkor9rmDgb2ABet1g==
-X-Gm-Gg: ASbGncstpYpNes9BAE3VRV/BKjucimDUqZMSr8ztrGsl+TaSUj2dQij6T7LlT/lmNNi
-	SvW6Jrd5lqbOsDI5RNiCgh5KICbZXTuSkk9+B5feqbMHdREsD5SpZ7uZ6vO3bJsw+qxv2uzCYrd
-	mWYP8hUQO3ePldgoCS3dcV4r1lvG1nzMm02TsR2wurlbI0A+3Htyu58vx+nieV9fN6nNnnYQweS
-	OyA88kxSp3DtHsjN8qrhAnjQoKcYaGTO2cRquUkgp5rVVEApKJBoN0uTtszmzWHrxSpqFVIJYWs
-	+D32JloQGDqflVXuK/qh+FwF7oGFXIF6PP9GNyMGoHZSaO4QgcbZm9hP2w==
-X-Received: by 2002:a5d:6d8f:0:b0:39c:dfa:e1bb with SMTP id ffacd0b85a97d-39eaaecd89amr8181813f8f.42.1744623088002;
-        Mon, 14 Apr 2025 02:31:28 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFIf80qJHQp64UqJH+NY2wPEKUU4CFrtiWzV4xC6O7YO6zvGgMGZVZiou6pYI9qUGO0MpoZFw==
-X-Received: by 2002:a5d:6d8f:0:b0:39c:dfa:e1bb with SMTP id ffacd0b85a97d-39eaaecd89amr8181783f8f.42.1744623087487;
-        Mon, 14 Apr 2025 02:31:27 -0700 (PDT)
-Received: from lbulwahn-thinkpadx1carbongen9.rmtde.csb ([2a02:810d:7e01:ef00:b52:2ad9:f357:f709])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43f233a2a13sm169193675e9.10.2025.04.14.02.31.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Apr 2025 02:31:26 -0700 (PDT)
-From: Lukas Bulwahn <lbulwahn@redhat.com>
-X-Google-Original-From: Lukas Bulwahn <lukas.bulwahn@redhat.com>
-To: Frank Li <Frank.Li@nxp.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Patrick Havelange <patrick.havelange@essensium.com>,
-	devicetree@vger.kernel.org,
-	linux-iio@vger.kernel.org
-Cc: kernel-janitors@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Lukas Bulwahn <lukas.bulwahn@redhat.com>
-Subject: [PATCH] MAINTAINERS: adjust file entry in FLEXTIMER FTM-QUADDEC DRIVER
-Date: Mon, 14 Apr 2025 11:31:24 +0200
-Message-ID: <20250414093124.19683-1-lukas.bulwahn@redhat.com>
-X-Mailer: git-send-email 2.49.0
+        d=1e100.net; s=20230601; t=1744630917; x=1745235717;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=0evTumqrDq5rgQu+eyGkQcd4gB3aTt7ZM+UWsJy63Qg=;
+        b=XfhInPEjh1lQ+JuKbK+FO/uZz9q1rPYt6/33/7rKjSty9FGEcuhSshzEw63UIq7jIN
+         TObqZ36laIgmy2ufy6ftRvA7SiqB3PtAX2CW0EYWczO0LZNZVdoRs4NA0AIBbph8c8Lh
+         ves0Dic+s5iN50PGv5rrOadqA/htyjahJfZV+t/zqLu4uyo0S/0R8elRGYJiOpbE58w8
+         CMplLJO3vWuBTQ8LZlya34GFQDS21NiJhuge+CKSsaEdsy0fne0qUJo2WtUlrVtnnJip
+         t06Mvh6+t5aJmNcnMIZ37VxTwBnKwKr3ybaDPOzinBZd+hlbRCrn5lXNig2nqIyTZ61a
+         M16A==
+X-Forwarded-Encrypted: i=1; AJvYcCV+yQEIkUwqp9Xj84Pd+rPhOJQ0MiUMIEAdp+1h6TTpSD083aU0/ixuhO4t8ivGoy3b045QXH1Hh68=@vger.kernel.org, AJvYcCV5eX+l/T8W/N3ilHz3e7Ga3B8AFSADMiDOv5dAOi4e3YguWj+IGSp4wzTq6gU98FVpzPXrtFZSMe3Hh63d@vger.kernel.org
+X-Gm-Message-State: AOJu0YzFhhfqTgPt6qh2Ftw+vpNZVgu9WE5Z3At+qmETTnjyJCB8DdOa
+	kpocjfLfzB59gMktXyS548sS3GXsjlxTORi7SA1jbK+EgBOwvASQXneGoNiywgMCU5m8BNrREwK
+	sAeDSLixTmPWrgBPqmMYQ7izCQAw=
+X-Gm-Gg: ASbGncvYnVaYtx9M/GStrCWqbcR3L2Ac+QoGzTkudjEQnRAXYO/xuMjxxPg3JYRE8oI
+	T0MTSpMSG2hZzoQ93N4HTlPxSlDDA/WOWn9q5blSaikXU3LShV3WgY2yL793p4kgMAeOGlLUcaY
+	WBLuyc1PJlcESBLQhNp03sag==
+X-Google-Smtp-Source: AGHT+IFDomMNYVsrWNhO0Ec+GPOxt3o6S//Vn3Jrwr6Xb1c+fiIJiCnf/nVaQcMB0WQLscuTGS6QO8aX6JkUHEsKsQE=
+X-Received: by 2002:a05:690c:60c4:b0:704:3da8:f8cf with SMTP id
+ 00721157ae682-70559abb1b0mr85861067b3.7.1744630917021; Mon, 14 Apr 2025
+ 04:41:57 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250318230843.76068-1-l.rubusch@gmail.com> <20250318230843.76068-7-l.rubusch@gmail.com>
+ <20250331113300.08379a5a@jic23-huawei>
+In-Reply-To: <20250331113300.08379a5a@jic23-huawei>
+From: Lothar Rubusch <l.rubusch@gmail.com>
+Date: Mon, 14 Apr 2025 13:41:20 +0200
+X-Gm-Features: ATxdqUFT2CFgzE3Or-cOLwHoJMOZ6Ky5yPqesU3WPs1SKmDmfbPBAjyLfLgpHGU
+Message-ID: <CAFXKEHau6n2o_MPimiEkYRNvE3TO9f5j_tDH0FwJYsk6V5B9WA@mail.gmail.com>
+Subject: Re: [PATCH v5 06/11] iio: accel: adxl345: extend sample frequency adjustments
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: lars@metafoo.de, Michael.Hennerich@analog.com, linux-iio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, eraretuya@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Lukas Bulwahn <lukas.bulwahn@redhat.com>
+On Mon, Mar 31, 2025 at 12:33=E2=80=AFPM Jonathan Cameron <jic23@kernel.org=
+> wrote:
+>
+> On Tue, 18 Mar 2025 23:08:38 +0000
+> Lothar Rubusch <l.rubusch@gmail.com> wrote:
+>
+> > Introduce enums and functions to work with the sample frequency
+> > adjustments. Let the sample frequency adjust via IIO and configure
+> > a reasonable default.
+> >
+> > Replace the old static sample frequency handling. During adjustment of
+> > bw registers, measuring is disabled and afterwards enabled again.
+> >
+> > Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
+> One minor thing inline.
+>
+>
+> >       return -EINVAL;
+> > @@ -504,7 +581,12 @@ static int adxl345_write_raw(struct iio_dev *indio=
+_dev,
+> >                            int val, int val2, long mask)
+> >  {
+> >       struct adxl345_state *st =3D iio_priv(indio_dev);
+> > -     s64 n;
+> > +     enum adxl345_odr odr;
+> > +     int ret;
+> > +
+> > +     ret =3D adxl345_set_measure_en(st, false);
+>
+> Why is this necessary but wasn't before?
+> If it should always have been done for existing calibbias etc,
+> perhaps a separate precursor patch is appropriate?
+>
 
-Commit b7549ed5edc6 ("dt-bindings: counter: Convert ftm-quaddec.txt to yaml
-format") renames ftm-quaddec.txt to fsl,ftm-quaddec.yaml in
-Documentation/devicetree/bindings/counter as part of this dt-binding
-conversion, but misses to adjust the file entry in FLEXTIMER FTM-QUADDEC
-DRIVER.
+On the one side the datasheet recommends to have measurement disabled,
+when adjusting certain sensor registers, mostly related to interrupt
+events. Before the sensor was operated in FIFO_BYPASS mode only
+without using the sensor events. With interrupt based events, it will
+operate in FIFO_STREAM or similar. Then it seems to me to be a better
+approach to put it generally in standby mode when configuring
+registers to avoid ending up e.g. in FIFO overrun or the like. On the
+other side, I saw similar approaches in the sources of Analog sensors.
+Enable/disable measurement was done there in the particular functions.
+In the particular case of adxl345_write_raw, odr and range values are
+going to be set and I implement enable/disable measurement directly in
+the write_raw. In comparison to the ADXL380 (different sensor!) where
+this is done, too, but down in the specific setter functions. I can
+see a bit of an advantage, if something fails, the sensor generally
+stays turned off. I'll keep this in v6 of the patches.
 
-Adjust the file entry after the conversion.
+Pls,  note, I did not observe faulty behavior due to that or analyzed
+it thoroughly if and where it is probably better to have measurement
+turned off. At best, it won't make any difference and is probably
+rather kind of "best practice". If not, I would expect rather sporadic
+minor issues.
 
-Signed-off-by: Lukas Bulwahn <lukas.bulwahn@redhat.com>
----
- MAINTAINERS | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+As always, pls consider my patch(es) as a proposal, sometimes with an
+invisible question mark ;) If you have a contrary opinion and/or
+experience, please let me know.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index af3537005de3..661419d7c71b 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -9216,7 +9216,7 @@ FLEXTIMER FTM-QUADDEC DRIVER
- M:	Patrick Havelange <patrick.havelange@essensium.com>
- L:	linux-iio@vger.kernel.org
- S:	Maintained
--F:	Documentation/devicetree/bindings/counter/ftm-quaddec.txt
-+F:	Documentation/devicetree/bindings/counter/fsl,ftm-quaddec.yaml
- F:	drivers/counter/ftm-quaddec.c
- 
- FLOPPY DRIVER
--- 
-2.49.0
-
+>
+> > +     if (ret)
+> > +             return ret;
+> >
+> >       switch (mask) {
+> >       case IIO_CHAN_INFO_CALIBBIAS:
+> > @@ -512,20 +594,26 @@ static int adxl345_write_raw(struct iio_dev *indi=
+o_dev,
+> >                * 8-bit resolution at +/- 2g, that is 4x accel data scal=
+e
+> >                * factor
+> >                */
+> > -             return regmap_write(st->regmap,
+> > -                                 ADXL345_REG_OFS_AXIS(chan->address),
+> > -                                 val / 4);
+> > +             ret =3D regmap_write(st->regmap,
+> > +                                ADXL345_REG_OFS_AXIS(chan->address),
+> > +                                val / 4);
+> > +             if (ret)
+> > +                     return ret;
+> > +             break;
+> >       case IIO_CHAN_INFO_SAMP_FREQ:
+> > -             n =3D div_s64(val * NANOHZ_PER_HZ + val2,
+> > -                         ADXL345_BASE_RATE_NANO_HZ);
+> > +             ret =3D adxl345_find_odr(st, val, val2, &odr);
+> > +             if (ret)
+> > +                     return ret;
+> >
+> > -             return regmap_update_bits(st->regmap, ADXL345_REG_BW_RATE=
+,
+> > -                                       ADXL345_BW_RATE,
+> > -                                       clamp_val(ilog2(n), 0,
+> > -                                                 ADXL345_BW_RATE));
+> > +             ret =3D adxl345_set_odr(st, odr);
+> > +             if (ret)
+> > +                     return ret;
+> > +             break;
+> > +     default:
+> > +             return -EINVAL;
+> >       }
+> >
+> > -     return -EINVAL;
+> > +     return adxl345_set_measure_en(st, true);
+> >  }
 

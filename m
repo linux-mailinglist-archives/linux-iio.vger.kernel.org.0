@@ -1,269 +1,315 @@
-Return-Path: <linux-iio+bounces-18119-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18120-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2A75A88BE2
-	for <lists+linux-iio@lfdr.de>; Mon, 14 Apr 2025 21:03:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7E9EA88C04
+	for <lists+linux-iio@lfdr.de>; Mon, 14 Apr 2025 21:15:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 96D2F1773C5
-	for <lists+linux-iio@lfdr.de>; Mon, 14 Apr 2025 19:03:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 289261899FE5
+	for <lists+linux-iio@lfdr.de>; Mon, 14 Apr 2025 19:15:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6667F2820C1;
-	Mon, 14 Apr 2025 19:03:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D50F1D6193;
+	Mon, 14 Apr 2025 19:15:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C+hrtS9p"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y6ckRRo/"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 162BE4C74;
-	Mon, 14 Apr 2025 19:03:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B75F28DF07;
+	Mon, 14 Apr 2025 19:15:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744657400; cv=none; b=X/WDis//bU13QnT4fznmKpB9PKV/sNCGJsuNlfMK2HJye5zlKYAsuafH0XyRYCvYGSdSe6jW3NvlsNOJ9PjJxu5RVd/oEH+klG1l0WNcPXC3dqGYxGgQUGbMxBzaJzWSfIG+p8v71t6a6Rd79LBYCDaldz9I6podYpabH9cZmhA=
+	t=1744658103; cv=none; b=CEO6ge02IwCpdgjFESjBog7A2tQUUO9FZUs4sfoxd57wy70eLVNBRTC+op53PmB+21T2RYrvyyY/bSnvMA2Kwda1sfgRBi9E+ZDQ0o3nvginVoBTOJ+SSYx1NPRdrONezWGWpLnfwa5KW6nKsy4mez6TiT0KQdw/8+aZD4ohcz0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744657400; c=relaxed/simple;
-	bh=se/vRsTZaPEhVgAiD0XO6GX4CH2RBgPSUSoyyjeFias=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QdKJRZ4V42+/q+SWxfB4skWjq2yT+FC6V+VFxmV7XZ1JogSWJ+9C2ButVYa4z/66VmMAhA+JQUYA3ECc0iwQ4PRWv3iDt/keFqxZKDQRO3+Uy9ef8CJF35f+jTNKLUUzFz7/TujlUQToTPjkMzroW96Qqlm6Jla7pfc89qTuhoE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C+hrtS9p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F948C4CEE2;
-	Mon, 14 Apr 2025 19:03:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744657399;
-	bh=se/vRsTZaPEhVgAiD0XO6GX4CH2RBgPSUSoyyjeFias=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=C+hrtS9p9moVrGAbSthm9AOWFsL58+N/YA+7g572Z/Bu/wkBSKBh3Wi+IhuF+pW2i
-	 S1+J5vsFe/fhTdhjALPWu2/7wcRs5fMPGutZnHw4oS5hhlJig6qfxKOJLLhXQGMo+Q
-	 1sz20sfHOsuTbUiPAHDS8iKkMHYfF/suuuxt7J8DUCO8DIUqfxNjoGPwNKNlZutAFF
-	 +RwFy4kmeZLNekrXhyrmmpBBypjyPah3ZZomV+jqWH6sfDqE68jwIV7xdfnvNkVxvF
-	 yOejvymwC8muNksXF01n+680/tZ6ZhfhscYtwwW2HTCbEgv2qEsNBG4qeCB8geFcAe
-	 +EaiXTskq47Yg==
-Date: Mon, 14 Apr 2025 20:03:12 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Siddharth Menon <simeddon@gmail.com>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-staging@lists.linux.dev, gregkh@linuxfoundation.org,
- Michael.Hennerich@analog.com, lars@metafoo.de, marcelo.schmitt1@gmail.com
-Subject: Re: [PATCH] Documentation: iio: Document ad9832 driver
-Message-ID: <20250414200312.0b9eeb10@jic23-huawei>
-In-Reply-To: <20250414164811.36879-1-simeddon@gmail.com>
-References: <20250414164811.36879-1-simeddon@gmail.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1744658103; c=relaxed/simple;
+	bh=SZLc80JSRS4bke1tP8vkfy2i+0aEBhWWMyEdEXjfRfU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ge32r0d2s//rZ+qUJ6UCkG9xxcnFPQqGs08HuZNIIR+42+cFIG1M5HplgoukTbtPd6uoBSFuNtWwp1QJX296gdjsG8BvMlUIkLvybivTVR/NzeytroQ28DatNJYZvyQVdivErI/ZD8SWDtyd1Wnkajk0PNqfTdp/DbShhcKNgY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Y6ckRRo/; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-227cf12df27so38049645ad.0;
+        Mon, 14 Apr 2025 12:15:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1744658100; x=1745262900; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=BYDKbWQ4u2NcbGHsioG5Cqiy01R5mCg0Ne+nPydVgbU=;
+        b=Y6ckRRo/GboJcSrl5heGN0rNc2Vl+kakmdP43IHvtALpGtGziiyVEHwOfnGj/PpVCJ
+         ncW6SPRuwrkohQFByK2EKtw5UcKn/wW4awjv+77xjWOJT/SM4QOHWmARs6qOx8acwqp0
+         IGrZGkPHaBbJ9FJE76XLJkjpeuFHQQTM61Zk4vlMzRCGaFLxqAFtv3kVspjwAjDn5nVX
+         Se2sDXtj5K+jhFx65ynJD4bTGegtNHYZGIIe7kyY94hcxJSeYPlmY1XVW0A6CiqhjGC/
+         Rnl0TLKCI+wGFjTDDOSIZqkpfK2+1qUyQ0AK66MxwAPC8kNRhcDJHLyahOF5UuGV4iZD
+         /65g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744658100; x=1745262900;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=BYDKbWQ4u2NcbGHsioG5Cqiy01R5mCg0Ne+nPydVgbU=;
+        b=gXCvHNcVmcUF5mn+OcM/PceKwbvwFxEXkSzQcqvVhTTs694o5vnA4iiOQB+Z+bXK5J
+         TeQafNaOWDDhnZhKnZ2u/eNVTkqkn/xuzCKcQo5OeIJSEMH00TuXImthQmk1OPvDJY4E
+         YtOSiHvVN05ZnmPxeHnWwemrN614rLjRY7s3jKgPyIQd5nEAZEBuiHZcGtiiVCxyoHu2
+         WqTogVxpq3/QhknvTryaqvRADCMQchyyHFcYynsjUKfV6GKGlDQEsc9+K6qwWPwZPdWb
+         ho7R32XSp+iQQcHTdxEhAMteSGA3aAbhD8Ksx/Nm4p9FFExh0xwW6qSqe+jtod5N5tv+
+         ix4Q==
+X-Gm-Message-State: AOJu0YwtsdhPfAU8UY5q9QgFEFZgag8/218PiU45i7+tMUU2Na0AAO4S
+	6HiDYankahHYll6d1h6ZXEfPZwtClOSwKVkPlpRAyMJeW1TzZzMW8MPjYZgIPa8=
+X-Gm-Gg: ASbGncufWrO0T1B8BhSy1EzYNGw0n0PzCGpy5LM20fmI4ZsxaLOwrTwDbp7wmWewJZn
+	lJ6auAkhoCvae4FwvhA6S8avLsDx1g+qEWAey0gT357xKvbwTdSKc3GL4JMeNyDzJIAd0M8sCxs
+	UuPH4X7NO3TdpNjQkSYL3F0HV5CHm/p25IRTrUQGQgef+YLpRb2qnMSZK9lI5S9HyXiNlR0uYA6
+	6CCF8IJCp7DMFlSkuX0K/cJIdzToj36InijqRAKTOk3mB1i6/W6B7y7ZR11JcWMMLeLTNsZ/Tpq
+	I+D3IHDVc24TFeHB07/MaCuSTEONWezUmWBohw==
+X-Google-Smtp-Source: AGHT+IEuerABYWz61bn0kK9fA1Um8mNSN54Ov1FV120MP0ffB1+zwyz3P8qouSb5mAU25KZelhS0GA==
+X-Received: by 2002:a17:903:fa5:b0:221:89e6:ccb6 with SMTP id d9443c01a7336-22c249c9ec4mr8568325ad.25.1744658100165;
+        Mon, 14 Apr 2025 12:15:00 -0700 (PDT)
+Received: from fedora.. ([2405:201:f022:f80b:bc98:df72:df5a:60fa])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22ac7ccbe16sm102483705ad.246.2025.04.14.12.14.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 14 Apr 2025 12:14:59 -0700 (PDT)
+From: Siddharth Menon <simeddon@gmail.com>
+To: linux-iio@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	linux-staging@lists.linux.dev,
+	gregkh@linuxfoundation.org,
+	jic23@kernel.org,
+	Michael.Hennerich@analog.com,
+	lars@metafoo.de,
+	marcelo.schmitt1@gmail.com,
+	Siddharth Menon <simeddon@gmail.com>
+Subject: [PATCH v7] iio: frequency: ad9832: Use FIELD_PREP macro to set bit fields
+Date: Tue, 15 Apr 2025 00:42:26 +0530
+Message-ID: <20250414191453.10222-1-simeddon@gmail.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Mon, 14 Apr 2025 22:17:49 +0530
-Siddharth Menon <simeddon@gmail.com> wrote:
+Use bitfield and bitmask macros to clearly specify AD9832 SPI
+command fields to make register write code more readable.
 
-> The Analog Devices Inc. AD983X chips will benefit from a detailed
-> driver documentation.
->=20
-> This documents the current features supported by the driver.
+Reviewed-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+Suggested-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+Signed-off-by: Siddharth Menon <simeddon@gmail.com>
+---
+ v1->v2:
+ - remove CMD_SHIFT and ADD_SHIFT
+ - use GENMASK
+ - store regval in an array and iterate through it
+ v2->v3:
+ - add missing header
+ - refactor code in the previously introduced loops
+ v3->v4:
+ - update commit message with a better one
+ - convert AD9832_PHASE and RES_MASK to masks
+ - cleanup a few if else blocks
+ v4->v5
+ - remove unnecessary inversion (val ? 0 : 1) used
+   with AD9832_PHASE_MASK introduced in v4
+ - use ARRAY_SIZE instead of fixed integers
+ - use reverse xmas tree order
+ - align mask macros
+ v5->v6
+ - rearranged includes to be alphabetical
+ - remove unused RES_MASK
+ - corrected logical errors pointed out by Marcelo
+ v6->v7
+ - fix st->ctrl_x alignment
+ drivers/staging/iio/frequency/ad9832.c | 92 ++++++++++++++------------
+ 1 file changed, 48 insertions(+), 44 deletions(-)
 
-Hi Siddharth,
-
-Whilst I'm fine with better documentation, I'm not keen to merge if for
-a staging driver until we have that cleaned up and moved out of staging.
-
-Anyhow, that doesn't stop us reviewing what you have here!
-
-My main comment is that we should be focusing on what is useful to someone
-reading the kernel docs rather than providing detailed description of the
-device.  If anyone has one of these and wants to know more they can
-get the data sheet.  As such most of what you have here is a case
-of too much information.=20
-
-Jonathan
-
->=20
-> Suggested-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-> Signed-off-by: Siddharth Menon <simeddon@gmail.com>
-> ---
->  Documentation/iio/ad9832.rst | 119 +++++++++++++++++++++++++++++++++++
->  1 file changed, 119 insertions(+)
->  create mode 100644 Documentation/iio/ad9832.rst
->=20
-> diff --git a/Documentation/iio/ad9832.rst b/Documentation/iio/ad9832.rst
-> new file mode 100644
-> index 000000000000..a3a58569ff89
-> --- /dev/null
-> +++ b/Documentation/iio/ad9832.rst
-> @@ -0,0 +1,119 @@
-> +.. SPDX-License-Identifier: GPL-2.0-only
-> +
-> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> +AD9832 driver
-> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> +
-> +Direct Digital Synthesizer driver for Analog Devices Inc. AD9832 and AD9=
-835.
-> +
-> +Supported devices
-> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> +
-> +The following chips are supported by this driver:
-> +
-> +* `AD9832 <https://www.analog.com/AD9832>`_
-> +* `AD9835 <https://www.analog.com/AD9835>`_
-> +
-> +The AD9832 is a numerically controlled oscillator employing
-
-Very short wrap.  For docs keep to a 80 char limit (or over that if=20
-necessary for links etc.
-
-> +a phase accumulator, a sine look-up table, and a 10-bit digital-
-> +to-analog converter (DAC) integrated on a single CMOS chip.
-> +
-> +Supported features
-> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> +
-> +SPI wiring modes
-> +----------------
-> +
-> +The driver currently supports the following SPI wiring configuration:
-
-This one is very straight forward unidirectional SPI. The only thing docume=
-nting
-it brings is perhaps to make it clear we can never read anything back from
-the device.
-
-We tend to have these diagrams so as to add information relevant to what the
-driver does internally and any limitations on what is supported based
-on particular wiring.
-
-> +
-> +3-wire mode
-> +^^^^^^^^^^^
-> +
-> +In this mode, communication occurs via SCLK, SDATA, and FSYNC signals.
-> +
-> +.. code-block::
-> +
-> +    +-------------+         +-------------+
-> +    |       FSYNC |<--------| CS/GPIO     |
-> +    |             |         |             |
-> +    |    AD983X   |         |     HOST    |
-> +    |             |         |             |
-> +    |       SDATA |<--------| MOSI        |
-> +    |        SCLK |<--------| SCK         |
-> +    +-------------+         +-------------+
-> +
-> +
-> +Channel configuration
-> +---------------------
-> +
-> +The AD9832 features two frequency registers (FREQ0 and FREQ1) and
-> +four phase registers (PHASE0, PHASE1, PHASE2, and PHASE3).
-> +The selection of which of these registers is actively used to generate
-> +the output waveform can be controlled in two ways: via external pins or
-> +via internal control bits.
-> +
-> +* Pin Control: The ``FSELECT`` pin determines whether FREQ0 REG or FREQ1
-> +  REG is used.
-> +* The ``PSEL0`` and ``PSEL1`` pins select which of the four PHASE regist=
-ers
-> +  is active.
-
-This seems to be documenting a mode we don't support in the driver? That
-level of extra detail doesn't belong in the kernel documentation.
-
-These docs should focus on what the driver provides rather than the full
-scope of what it could provide.  We'll update the docs when we add
-new features.
-
-
-> +* These pins are sampled on the rising edge of the master clock (MCLK).
-> +* Bit Control: This is utilized by the driver for the selection of the
-> +  frequency and phase registers can be controlled using internal bits.
-> +* Bit D11 (within a control word) can select the FREQx REG, and Bits D9 =
-and
-> +  D10 can select the PHASEx REG.
-> +
-> +The source of control, whether from the external pins or the internal bi=
-ts,
-> +is determined by the SELSRC bit (Select Source bit, D12) within a control
-> +register.
-> +When SELSRC =3D 0, the pins are used for selection, which is the default=
- state
-> +after the CLR (Clear) bit is set high. When SELSRC =3D 1,
-> +the internal bits are used for selection.
-> +
-> +Synchronization
-> +---------------
-> +
-> +The SYNC bit (D13) determines how the reading of the FSELECT, PSEL0, and
-> +PSEL1 pins (when SELSRC =3D 0) is synchronized with the master clock (MC=
-LK):
-> +
-> +When SYNC =3D 1: The reading of the pins is synchronized with the rising=
- edge
-> +of MCLK. This ensures the inputs are valid at the sampling instant, even=
- if
-> +the setup and hold times are violated. This mode introduces a latency of=
- 8
-> +MCLK cycles.
-> +When SYNC =3D 0: The sampling occurs asynchronously, and the latency is =
-reduced
-> +to 6 MCLK cycles if the timing characteristics are met.
-> +
-> +The SYNC bit is particularly important in applications where the timing =
-of
-> +register selection changes is critical or when interfacing with control =
-systems
-> +that may not strictly adhere to the setup and hold time requirements.
-> +
-> +Power Supply
-> +------------
-> +
-> +The AD9832 supports separate power supply pins for the analog and digital
-> +sections via the ``AVDD`` and ``DVDD`` inputs. Both pins support voltage
-> +ranges from 2.97V to 5.5V (5V =C2=B110% or 3.3V =C2=B110%).
-> +
-> +Proper decoupling is critical: both AVDD and DVDD should be decoupled wi=
-th
-> +0.1=C2=B5F ceramic capacitors in parallel with 10=C2=B5F tantalum capaci=
-tors to AGND
-> +and DGND respectively.
-> +
-> +The device also supports a low power sleep mode, reducing current
-> +consumption to 350=C2=B5A maximum. When powered down using the power-dow=
-n bit,
-> +power consumption is reduced to 5mW (5V) or 3mW (3V).
-
-This bit isn't really relevant for kernel docs.  Whoever designed the board
-ought to know this.
-
-> +
-> +Reference Voltage
-> +-----------------
-> +
-> +The AD9832 supports using either an internal 1.21V reference or an exter=
-nal
-> +reference voltage via the ``REFIN`` input.
-> +
-> +If ``refin-supply`` is present, then an external reference of 1.21V nomi=
-nal is
-> +supplied to the REFIN pin. If not specified, the internal reference is u=
-sed
-> +and is available at the ``REFOUT`` pin.
-> +
-> +The internal reference has an accuracy of 1.21V =C2=B17% min/max across =
-the full
-> +temperature range (-40=C2=B0C to +85=C2=B0C) with a typical temperature =
-coefficient of
-> +100 ppm/=C2=B0C. The REFOUT pin should be decoupled with a 10nF capacito=
-r to AGND.
-> +
-> +For applications requiring reduced wake-up time at low power supplies and
-> +low temperatures, the use of an external reference is recommended.
+diff --git a/drivers/staging/iio/frequency/ad9832.c b/drivers/staging/iio/frequency/ad9832.c
+index 140ee4f9c137..08891d66b896 100644
+--- a/drivers/staging/iio/frequency/ad9832.c
++++ b/drivers/staging/iio/frequency/ad9832.c
+@@ -7,6 +7,8 @@
+ 
+ #include <asm/div64.h>
+ 
++#include <linux/bitfield.h>
++#include <linux/bits.h>
+ #include <linux/clk.h>
+ #include <linux/device.h>
+ #include <linux/err.h>
+@@ -16,6 +18,7 @@
+ #include <linux/slab.h>
+ #include <linux/spi/spi.h>
+ #include <linux/sysfs.h>
++#include <linux/unaligned.h>
+ 
+ #include <linux/iio/iio.h>
+ #include <linux/iio/sysfs.h>
+@@ -59,17 +62,17 @@
+ #define AD9832_CMD_SLEEPRESCLR	0xC
+ 
+ #define AD9832_FREQ		BIT(11)
+-#define AD9832_PHASE(x)		(((x) & 3) << 9)
++#define AD9832_PHASE_MASK	GENMASK(10, 9)
+ #define AD9832_SYNC		BIT(13)
+ #define AD9832_SELSRC		BIT(12)
+ #define AD9832_SLEEP		BIT(13)
+ #define AD9832_RESET		BIT(12)
+ #define AD9832_CLR		BIT(11)
+-#define CMD_SHIFT		12
+-#define ADD_SHIFT		8
+ #define AD9832_FREQ_BITS	32
+ #define AD9832_PHASE_BITS	12
+-#define RES_MASK(bits)		((1 << (bits)) - 1)
++#define AD9832_CMD_MSK		GENMASK(15, 12)
++#define AD9832_ADD_MSK		GENMASK(11, 8)
++#define AD9832_DAT_MSK		GENMASK(7, 0)
+ 
+ /**
+  * struct ad9832_state - driver instance specific data
+@@ -131,6 +134,8 @@ static int ad9832_write_frequency(struct ad9832_state *st,
+ {
+ 	unsigned long clk_freq;
+ 	unsigned long regval;
++	u8 regval_bytes[4];
++	u16 freq_cmd;
+ 
+ 	clk_freq = clk_get_rate(st->mclk);
+ 
+@@ -138,19 +143,15 @@ static int ad9832_write_frequency(struct ad9832_state *st,
+ 		return -EINVAL;
+ 
+ 	regval = ad9832_calc_freqreg(clk_freq, fout);
++	put_unaligned_be32(regval, regval_bytes);
+ 
+-	st->freq_data[0] = cpu_to_be16((AD9832_CMD_FRE8BITSW << CMD_SHIFT) |
+-					(addr << ADD_SHIFT) |
+-					((regval >> 24) & 0xFF));
+-	st->freq_data[1] = cpu_to_be16((AD9832_CMD_FRE16BITSW << CMD_SHIFT) |
+-					((addr - 1) << ADD_SHIFT) |
+-					((regval >> 16) & 0xFF));
+-	st->freq_data[2] = cpu_to_be16((AD9832_CMD_FRE8BITSW << CMD_SHIFT) |
+-					((addr - 2) << ADD_SHIFT) |
+-					((regval >> 8) & 0xFF));
+-	st->freq_data[3] = cpu_to_be16((AD9832_CMD_FRE16BITSW << CMD_SHIFT) |
+-					((addr - 3) << ADD_SHIFT) |
+-					((regval >> 0) & 0xFF));
++	for (int i = 0; i < ARRAY_SIZE(regval_bytes); i++) {
++		freq_cmd = (i % 2 == 0) ? AD9832_CMD_FRE8BITSW : AD9832_CMD_FRE16BITSW;
++
++		st->freq_data[i] = cpu_to_be16(FIELD_PREP(AD9832_CMD_MSK, freq_cmd) |
++			FIELD_PREP(AD9832_ADD_MSK, addr - i) |
++			FIELD_PREP(AD9832_DAT_MSK, regval_bytes[i]));
++	}
+ 
+ 	return spi_sync(st->spi, &st->freq_msg);
+ }
+@@ -158,15 +159,21 @@ static int ad9832_write_frequency(struct ad9832_state *st,
+ static int ad9832_write_phase(struct ad9832_state *st,
+ 			      unsigned long addr, unsigned long phase)
+ {
++	u8 phase_bytes[2];
++	u16 phase_cmd;
++
+ 	if (phase >= BIT(AD9832_PHASE_BITS))
+ 		return -EINVAL;
+ 
+-	st->phase_data[0] = cpu_to_be16((AD9832_CMD_PHA8BITSW << CMD_SHIFT) |
+-					(addr << ADD_SHIFT) |
+-					((phase >> 8) & 0xFF));
+-	st->phase_data[1] = cpu_to_be16((AD9832_CMD_PHA16BITSW << CMD_SHIFT) |
+-					((addr - 1) << ADD_SHIFT) |
+-					(phase & 0xFF));
++	put_unaligned_be16(phase, phase_bytes);
++
++	for (int i = 0; i < ARRAY_SIZE(phase_bytes); i++) {
++		phase_cmd = (i % 2 == 0) ? AD9832_CMD_PHA8BITSW : AD9832_CMD_PHA16BITSW;
++
++		st->phase_data[i] = cpu_to_be16(FIELD_PREP(AD9832_CMD_MSK, phase_cmd) |
++			FIELD_PREP(AD9832_ADD_MSK, addr - i) |
++			FIELD_PREP(AD9832_DAT_MSK, phase_bytes[i]));
++	}
+ 
+ 	return spi_sync(st->spi, &st->phase_msg);
+ }
+@@ -197,25 +204,23 @@ static ssize_t ad9832_write(struct device *dev, struct device_attribute *attr,
+ 		ret = ad9832_write_phase(st, this_attr->address, val);
+ 		break;
+ 	case AD9832_PINCTRL_EN:
+-		if (val)
+-			st->ctrl_ss &= ~AD9832_SELSRC;
+-		else
+-			st->ctrl_ss |= AD9832_SELSRC;
+-		st->data = cpu_to_be16((AD9832_CMD_SYNCSELSRC << CMD_SHIFT) |
+-					st->ctrl_ss);
++		st->ctrl_ss &= ~AD9832_SELSRC;
++		st->ctrl_ss |= FIELD_PREP(AD9832_SELSRC, val ? 0 : 1);
++
++		st->data = cpu_to_be16(FIELD_PREP(AD9832_CMD_MSK, AD9832_CMD_SYNCSELSRC) |
++							st->ctrl_ss);
+ 		ret = spi_sync(st->spi, &st->msg);
+ 		break;
+ 	case AD9832_FREQ_SYM:
+-		if (val == 1) {
+-			st->ctrl_fp |= AD9832_FREQ;
+-		} else if (val == 0) {
++		if (val == 1 || val == 0) {
+ 			st->ctrl_fp &= ~AD9832_FREQ;
++			st->ctrl_fp |= FIELD_PREP(AD9832_FREQ, val ? 1 : 0);
+ 		} else {
+ 			ret = -EINVAL;
+ 			break;
+ 		}
+-		st->data = cpu_to_be16((AD9832_CMD_FPSELECT << CMD_SHIFT) |
+-					st->ctrl_fp);
++		st->data = cpu_to_be16(FIELD_PREP(AD9832_CMD_MSK, AD9832_CMD_FPSELECT) |
++							st->ctrl_fp);
+ 		ret = spi_sync(st->spi, &st->msg);
+ 		break;
+ 	case AD9832_PHASE_SYM:
+@@ -224,22 +229,21 @@ static ssize_t ad9832_write(struct device *dev, struct device_attribute *attr,
+ 			break;
+ 		}
+ 
+-		st->ctrl_fp &= ~AD9832_PHASE(3);
+-		st->ctrl_fp |= AD9832_PHASE(val);
++		st->ctrl_fp &= ~AD9832_PHASE_MASK;
++		st->ctrl_fp |= FIELD_PREP(AD9832_PHASE_MASK, val);
+ 
+-		st->data = cpu_to_be16((AD9832_CMD_FPSELECT << CMD_SHIFT) |
+-					st->ctrl_fp);
++		st->data = cpu_to_be16(FIELD_PREP(AD9832_CMD_MSK, AD9832_CMD_FPSELECT) |
++							st->ctrl_fp);
+ 		ret = spi_sync(st->spi, &st->msg);
+ 		break;
+ 	case AD9832_OUTPUT_EN:
+ 		if (val)
+-			st->ctrl_src &= ~(AD9832_RESET | AD9832_SLEEP |
+-					AD9832_CLR);
++			st->ctrl_src &= ~(AD9832_RESET | AD9832_SLEEP | AD9832_CLR);
+ 		else
+-			st->ctrl_src |= AD9832_RESET;
++			st->ctrl_src |= FIELD_PREP(AD9832_RESET, 1);
+ 
+-		st->data = cpu_to_be16((AD9832_CMD_SLEEPRESCLR << CMD_SHIFT) |
+-					st->ctrl_src);
++		st->data = cpu_to_be16(FIELD_PREP(AD9832_CMD_MSK, AD9832_CMD_SLEEPRESCLR) |
++							st->ctrl_src);
+ 		ret = spi_sync(st->spi, &st->msg);
+ 		break;
+ 	default:
+@@ -396,8 +400,8 @@ static int ad9832_probe(struct spi_device *spi)
+ 	spi_message_add_tail(&st->phase_xfer[1], &st->phase_msg);
+ 
+ 	st->ctrl_src = AD9832_SLEEP | AD9832_RESET | AD9832_CLR;
+-	st->data = cpu_to_be16((AD9832_CMD_SLEEPRESCLR << CMD_SHIFT) |
+-					st->ctrl_src);
++	st->data = cpu_to_be16(FIELD_PREP(AD9832_CMD_MSK, AD9832_CMD_SLEEPRESCLR) |
++						st->ctrl_src);
+ 	ret = spi_sync(st->spi, &st->msg);
+ 	if (ret) {
+ 		dev_err(&spi->dev, "device init failed\n");
+-- 
+2.49.0
 
 

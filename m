@@ -1,182 +1,161 @@
-Return-Path: <linux-iio+bounces-18083-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18084-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 240DCA8858D
-	for <lists+linux-iio@lfdr.de>; Mon, 14 Apr 2025 16:46:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EDA6A885F6
+	for <lists+linux-iio@lfdr.de>; Mon, 14 Apr 2025 16:57:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B7B01673FE
-	for <lists+linux-iio@lfdr.de>; Mon, 14 Apr 2025 14:42:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8F4861940089
+	for <lists+linux-iio@lfdr.de>; Mon, 14 Apr 2025 14:44:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CDDE2951C8;
-	Mon, 14 Apr 2025 14:25:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B28A274650;
+	Mon, 14 Apr 2025 14:31:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WWlt2Eto"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nHLcmgjN"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+Received: from mail-yb1-f179.google.com (mail-yb1-f179.google.com [209.85.219.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3631B27FD5A;
-	Mon, 14 Apr 2025 14:25:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48D772DFA53;
+	Mon, 14 Apr 2025 14:31:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744640737; cv=none; b=sa3PpRbIuGgr1xKY+I1njEeYB57iqAeVf6e75ymbJS7v5S6Xf4iJ8Jw13d5Oafsbp5OWqxks0zMIHRNOUBXxojiyYyswC+r4kTqWyUK0kq9xqWRbzvj5uZBIIxrkQZTsmjlCKsf3BtM96jig+SSGL4h1waGKVsNeS7c2Cv0oB0g=
+	t=1744641073; cv=none; b=W8jDUMs5QXgMgmHma0a+5Uvhse3a3DNDYjnR7a9VRau0LJGRfmM900vZd9LtHw7awuAtsC9fNdtFFmoVkSDuvjN0f82ipjwNZyZPGdOaIf/cfa6PU7euTXtSy9TC98X6/x8w4Bk/th7V3aEWPq0RLQxpO991S+RUpRKWMzxjwV0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744640737; c=relaxed/simple;
-	bh=4M1D99PAVqvZi96MOYQWeD6ZcQwnEQ4Bpbi2arizon8=;
+	s=arc-20240116; t=1744641073; c=relaxed/simple;
+	bh=yIcJvnTptscJjpkr9x3k7c3iyRNfLlqyxEVAgXj4nQw=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NLdPWbhTAV5FcK0Ewc8DH/kYtBHOy8qeoWqGfbh1Y7o73MGOVuHFYWn2mRbPwRIR6uRUdnun9rD0tXjGFeFpEC0Qjipu0hRkAYlP7A1FLX8pFcSI1MG5qQouJxubirHRwrWmISJS8uR30cnMUmrVqMu41a5zWzzDciaHwfgpsTc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WWlt2Eto; arc=none smtp.client-ip=209.85.218.43
+	 To:Cc:Content-Type; b=LOhqiqXw6aLqFhH6H5FV41NI8vK6Y4hgyUbikRfavzJ8YBnPaowuykdYX+lKXvMvBHHtupb6W8QwlEtI70ZUHKXyys2PQPMEFZP2R8DLu3htM1yDF4qcJNyg4atqLlL1aKBQURIWZVZxNfvLNZ6F6wA9oUiAxoWlaRbGQoyvgvY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nHLcmgjN; arc=none smtp.client-ip=209.85.219.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-ac289147833so882154766b.2;
-        Mon, 14 Apr 2025 07:25:35 -0700 (PDT)
+Received: by mail-yb1-f179.google.com with SMTP id 3f1490d57ef6-e638269b1deso519380276.3;
+        Mon, 14 Apr 2025 07:31:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744640734; x=1745245534; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1744641071; x=1745245871; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=0+i03KpPoesYplL/qUIjpUO++rCb/s/V2SLn3HX44rs=;
-        b=WWlt2EtoJrK2pDfD+x91wBOv3XwvN4eLM9mCpehMWB10GPGRoV90RRM1wXA66mHoBs
-         waZ/UjxtcYoDDgE4J/XM7L3d3Wh0IgqasczzFTY3VacJ9osYR3zw9pSGLSkzFE6DvxiV
-         d8CPN+3hCc6Ruhq9ySTR63cfDzdRtUQHUveVXWZodyRKwS8LZFc3UHvXD7JNKiCrIIk9
-         1kV4TyJE2U0dzRJI5pyZf2MCV/wE+BG/N3XXnqMNHLfTPQPSBwyMkYvhRrZBdSYxo8x3
-         bf3eMTtvAyNhamPq9POi8hO58cA4OIkSM8B0TBQFI6h5iM2/H7eaJyu0CZTpTcQ6tov4
-         7VhA==
+        bh=jk43/7PYX5zGyHo+8Azq9MrRSbWSna8DaWT5qYwPs9w=;
+        b=nHLcmgjN5JUPmMt+h/hjaqa7ksfZsvz2zt+TELQvgdOpXO6VP+wGTvzuFSOS+DhBMp
+         zooVYldsI9gzYjHifuA72d+2P3mbAvUwu8FPIF3t3M62ph6x7zRSAWMwaT2i2qPqGLoK
+         O/dm07LtFnIb7H9yb72izo9ibL/xi6hC9T7+bf7IDS84yxH3mAhXGq2Nf08AJkX0C7Dy
+         /gXW+GzIPjDBRYuKY+YVZWp/tHRZBfTCuB1wOUUL/0tLtdU19PLlmRrbbo1X6lihecSQ
+         Vj6fC1pxaK09v9vpicDXD/SJmg7lm1bq48E7NC/YUU9HkzBuXiP1858Z4tskSH7gzrMU
+         CO2Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744640734; x=1745245534;
+        d=1e100.net; s=20230601; t=1744641071; x=1745245871;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=0+i03KpPoesYplL/qUIjpUO++rCb/s/V2SLn3HX44rs=;
-        b=tDMMFLSb9a2QgCiwLmPrLFBkHcIEfnzuuDAlais4Z9czFQF2V9ZMSp+tVHZEVdC0xt
-         6v0J6hX3quzweGcQFDgPr9R14VNUt1e4m+0AX3SmiKhKXY6p14uwQonA4QNeMHIo4yKK
-         ZkU3BAAw8lGk6O3eou7lmVaAcDkXKPyewjQ+/gYXsbeAVfSboZv4EOotwgR5Z6c61l9j
-         XbYjuFO3PUYjiGOmNxqk3U06E92/D9NV8sniU+Ug/dae00wWM8u2bhqGukLcN/X6df3b
-         x9fGoBvqafkh+j8KV/U98k+2xV6/6FzDLHCrBbHL8Sk2KRHZ1uO4eLGcO4CEM/hjGJ1P
-         iT7w==
-X-Forwarded-Encrypted: i=1; AJvYcCWVQTNFG1bqc4sgt0XHzWeU5QM/7l04KTYiI2sCR2bted/liyhUtoLW7dcHn1dhy7AitPIMqLUDL6Dv@vger.kernel.org, AJvYcCWq5nreiIj/ZQA6XllMTYgQpr+n985HuusVpBh8uu2dpOte3qy3WH4DAM3wEVb1n4DoS8eE63e5W0t/jJRl@vger.kernel.org
-X-Gm-Message-State: AOJu0YzFHEoNAwzoP7VllRDRxSNkkTEsjclxRi8wGt0G2IiMjt4kPiA8
-	HXxxf/pgCqT7oaqVivYhwcafM451O9Ioxc8Na/Vd3pRHNCUofjEbjmKQQvHYDyZJsjkhtd4zFBj
-	H+EzEZIDlAxuWgSSR6MJmtrF7kOJGvksuqEI=
-X-Gm-Gg: ASbGncu3Yy7b3E9DLtoblhQ15KzkLT/1kG7AU2YkGq5xNZGNyLJzDNpx4/srhKjyuQc
-	lcElPwQjkWojdtkLK9JWYuAMPjOUJbI4zuyazslfWSMoTwii1DkDJqeidUfB1DwwJqYH+iBvGUV
-	LYU0H/3i4WRyyB9g/u0FkdPw==
-X-Google-Smtp-Source: AGHT+IEYDHe/CyayPDTDqvHH4oIbkb5IHFVr7IgvWmBdzKWAYSHg3a4OGWTd63RP+MkrvE177Dbl49YlDHB/xdWMl9k=
-X-Received: by 2002:a17:907:7e81:b0:ac3:3d10:6f with SMTP id
- a640c23a62f3a-acad345696fmr932095366b.8.1744640734274; Mon, 14 Apr 2025
- 07:25:34 -0700 (PDT)
+        bh=jk43/7PYX5zGyHo+8Azq9MrRSbWSna8DaWT5qYwPs9w=;
+        b=pV3icrCI/+sp+HCbhQUu+jeOdFEAL4NX+/HhcnSbcznTNc7nXYDJ3LOJ5mwWsE9Dii
+         OWSeZ8VooZsoYtuDccwvncNfJqnYcihiQjBYl0GhnzbxDTYZEOX8xgZnTfnppCA0RN97
+         30BbgYKRLOls1ELTSp8AvFsGsA/iqUG0X3mv1wAX4rHKZIR/2tNImrrvyhtWAFAyazaK
+         mqFv+8FYSadHsxhNMlI/A2l7KLP9PON+GPfcUXgaNeGilcz8pkyektHwYruthsX4S12K
+         yOnkKqEvj4ZrST9Z5GI9qriVPcZWOatIsC0y5VAHIBT0q00KXYzTFJEtTMLfvrf+zyc8
+         I08g==
+X-Forwarded-Encrypted: i=1; AJvYcCUFnyz6pUdL4lU5mrPt1PGzxuNY4szQxt/fDGdAWwW0K+sMbbrFIA8wGnS+QHMx/eW9eRTkV0kzhgCQfWbK@vger.kernel.org, AJvYcCW0JYSS5q2crLbDjse1KNiYsjyf6noJ4HeyBuEyq/C4khyRRhDZu7gt7QYMEWSi3oBv4OYyu2tqGjs=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz8YMMiArEdLJJZ68WtF/V1sjLxSGPpJPXUPTg7Kivwbrodan2i
+	sDXY8PkiBaVZAN1EpmPTGI9vFSCICNL/kCwjawQzFu/WDGZgG7YsMfjkgmaB+bOKFDQksyjHdIl
+	VB+UIJq7DEM/SVoMow+5H1lbb91XDNW9J
+X-Gm-Gg: ASbGncuaatp0M9/WNIIYvPxZRjcQNLhGhY2hkrBnga15WRLH4sn63Zy4NRsmyRjmiK7
+	8/7EEI1h7Yzs3h0FwXq/jJHAti5mS5EStUknzZcW6PVh7iYoP1SdGB5BBy2K1OtCVQkA7Jp1olI
+	iKre+XRklYiDSCvpR/tfRbEUa6L+SaKyqk
+X-Google-Smtp-Source: AGHT+IGcL57gO/PCoW3qRcfjFE8xCZaDj7USONuvi1WJebEYrLw1kRMp0+d+u4evmaDEZLo7bz6ChyTDhP268VSfT0k=
+X-Received: by 2002:a05:6902:248c:b0:e6b:7f6a:2169 with SMTP id
+ 3f1490d57ef6-e704de9c1ffmr8629617276.3.1744641070940; Mon, 14 Apr 2025
+ 07:31:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1744200264.git.marcelo.schmitt@analog.com> <247566f848cdf2a245a8b6da6a84c22e155beeb7.1744200264.git.marcelo.schmitt@analog.com>
-In-Reply-To: <247566f848cdf2a245a8b6da6a84c22e155beeb7.1744200264.git.marcelo.schmitt@analog.com>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Mon, 14 Apr 2025 17:24:56 +0300
-X-Gm-Features: ATxdqUGWdI8hC2QgSnrOE_-PLsI5VnqZbkBRp-jyeE-Ur815irq6_hSV1BgqeX8
-Message-ID: <CAHp75VfyZ-f+KMVjyFVMitmQA65enJwHV+nBdC=XqE_Pz5cP1g@mail.gmail.com>
-Subject: Re: [PATCH v1 5/7] iio: adc: ad4170: Add GPIO controller support
-To: Marcelo Schmitt <marcelo.schmitt@analog.com>
-Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, jic23@kernel.org, lars@metafoo.de, 
-	Michael.Hennerich@analog.com, dlechner@baylibre.com, nuno.sa@analog.com, 
-	andy@kernel.org, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
-	marcelo.schmitt1@gmail.com
+References: <20250318230843.76068-1-l.rubusch@gmail.com> <20250318230843.76068-6-l.rubusch@gmail.com>
+ <20250331112839.78c2bc71@jic23-huawei>
+In-Reply-To: <20250331112839.78c2bc71@jic23-huawei>
+From: Lothar Rubusch <l.rubusch@gmail.com>
+Date: Mon, 14 Apr 2025 16:30:35 +0200
+X-Gm-Features: ATxdqUFag1tZrsm9IdAEgyHF7e_WW1c3GX7R9C38HDNQwLyqFNQKy9n-w0JdGns
+Message-ID: <CAFXKEHZ6pozMTw_8hT9i7rp_OtPZMaFXEisW925oYgFFJeXv=Q@mail.gmail.com>
+Subject: Re: [PATCH v5 05/11] iio: accel: adxl345: add freefall feature
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: lars@metafoo.de, Michael.Hennerich@analog.com, linux-iio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, eraretuya@gmail.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Apr 9, 2025 at 3:26=E2=80=AFPM Marcelo Schmitt
-<marcelo.schmitt@analog.com> wrote:
+On Mon, Mar 31, 2025 at 12:28=E2=80=AFPM Jonathan Cameron <jic23@kernel.org=
+> wrote:
 >
-> The AD4170 has four multifunctional pins that can be used as GPIOs. The
-> GPIO functionality can be accessed when the AD4170 chip is not busy
-> performing continuous data capture or handling any other register
-> read/write request. Also, the AD4170 does not provide any interrupt based
-> on GPIO pin states so AD4170 GPIOs can't be used as interrupt sources.
+> On Tue, 18 Mar 2025 23:08:37 +0000
+> Lothar Rubusch <l.rubusch@gmail.com> wrote:
 >
-> Implement gpio_chip callbacks so to make AD4170 GPIO pins controllable
+> > Add the freefall detection of the sensor together with a threshold and
+> > time parameter. A freefall event is detected if the measuring signal
+> > falls below the threshold.
+> >
+> > Introduce a freefall threshold stored in regmap cache, and a freefall
+> > time, having the scaled time value stored as a member variable in the
+> > state instance.
+> >
+> > Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
+> Hi Lothar,
+>
+> Apologies for the slow review!  Just catching up after travel
+> and I did it reverse order.
+>
+> > +
+> > +static int adxl345_set_ff_en(struct adxl345_state *st, bool cmd_en)
+> > +{
+> > +     unsigned int regval, ff_threshold;
+> > +     const unsigned int freefall_mask =3D 0x02;
+>
+> Where did this mask come from?   Feels like it should be a define
+> (just use ADXL345_INT_FREE_FALL probably)
+> or if not that at lest use BIT(1) to make it clear it's a bit rather
+> than the number 2.
+>
+> > +     bool en;
+> > +     int ret;
+> > +
+> > +     ret =3D regmap_read(st->regmap, ADXL345_REG_THRESH_FF, &ff_thresh=
+old);
+> > +     if (ret)
+> > +             return ret;
+> > +
+> > +     en =3D cmd_en && ff_threshold > 0 && st->ff_time_ms > 0;
+> > +
+> > +     regval =3D en ? ADXL345_INT_FREE_FALL : 0x00;
+> > +
+> > +     return regmap_update_bits(st->regmap, ADXL345_REG_INT_ENABLE,
+> > +                               freefall_mask, regval);
+> > +}
+>
 
-callbacks to
+This raises for me a bit of a general question. I face this situation
+quite often when using FIELD_GET() or, like here,
+regmap_update_bits(). In general, when I need to apply a mask on a
+value to be set or unset.
 
-> through the gpiochip interface.
+A fixed version of the above could be this:
+ 421         regval =3D en ? ADXL345_INT_FREE_FALL : 0x00;
+ 422
+ 423         return regmap_update_bits(st->regmap,
+ADXL345_REG_INT_ENABLE,
+ 424                                   ADXL345_INT_FREE_FALL, regval);
 
-...
+Actually, (suppose we have uint8_t, and mask only masks a single bit),
+I tend more and more to prefer 0xff over the particular bit, so...
+421         regval =3D en ? 0xff : 0x00;
 
-> +static int ad4170_gpio_direction_output(struct gpio_chip *gc,
-> +                                       unsigned int offset, int value)
-> +{
-> +       struct iio_dev *indio_dev =3D gpiochip_get_data(gc);
-> +       struct ad4170_state *st =3D iio_priv(indio_dev);
-> +       int ret;
-> +
-> +       if (!iio_device_claim_direct(indio_dev))
-> +               return -EBUSY;
-> +
-> +       ret =3D regmap_clear_bits(st->regmap16, AD4170_GPIO_MODE_REG,
-> +                               BIT(offset * 2));
-> +       if (ret)
-> +               goto err_release;
-> +
-> +       ret =3D regmap_set_bits(st->regmap16, AD4170_GPIO_MODE_REG,
-> +                             BIT(offset * 2 + 1));
-> +
-> +err_release:
-> +       iio_device_release_direct(indio_dev);
-> +
-> +       ad4170_gpio_set(gc, offset, value);
+...and then apply the mask on it. Is there any opinion on using 0xff
+or rather using the exact bit? Or, do you, Jonathan, care more about
+one or the other?
 
-This is incorrect ordering, you will have glitches. Can you set the
-value beforehands? Or is it broken hardware?
-
-> +       return ret;
-> +}
-
-...
-
-> +static int ad4170_gpio_init(struct iio_dev *indio_dev)
-> +{
-> +       struct ad4170_state *st =3D iio_priv(indio_dev);
-
-> +       st->gpiochip =3D (struct gpio_chip) {
-> +               .label =3D "ad4170_gpios",
-> +               .base =3D -1,
-> +               .ngpio =3D 4,
-> +               .parent =3D &st->spi->dev,
-> +               .can_sleep =3D true,
-> +               .get_direction =3D ad4170_gpio_get_direction,
-> +               .direction_input =3D ad4170_gpio_direction_input,
-> +               .direction_output =3D ad4170_gpio_direction_output,
-> +               .get =3D ad4170_gpio_get,
-> +               .set_rv =3D ad4170_gpio_set,
-> +               .owner =3D THIS_MODULE,
-> +       };
-
-I think it would be better to have it field by field initialised.
-
-> +       return devm_gpiochip_add_data(&st->spi->dev, &st->gpiochip, indio=
-_dev);
-> +}
-
-...
-
-> +       /* Only create a GPIO chip if flagged for it */
-> +       if (device_property_read_bool(&st->spi->dev, "gpio-controller")) =
-{
-> +               ret =3D ad4170_gpio_init(indio_dev);
-> +               if (ret < 0)
-
-< 0 ? What is the meaning of the positive values that you expect from
-this function?
-
-> +                       return ret;
-> +       }
-
---=20
-With Best Regards,
-Andy Shevchenko
+Best,
+L
 

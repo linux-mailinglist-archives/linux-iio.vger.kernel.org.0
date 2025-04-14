@@ -1,260 +1,180 @@
-Return-Path: <linux-iio+bounces-18076-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18077-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69EB1A87FE0
-	for <lists+linux-iio@lfdr.de>; Mon, 14 Apr 2025 13:58:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFA7EA8801C
+	for <lists+linux-iio@lfdr.de>; Mon, 14 Apr 2025 14:12:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A5A7C7A3312
-	for <lists+linux-iio@lfdr.de>; Mon, 14 Apr 2025 11:57:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7CA3C3A7EE8
+	for <lists+linux-iio@lfdr.de>; Mon, 14 Apr 2025 12:12:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D19D293462;
-	Mon, 14 Apr 2025 11:58:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9034C29DB7F;
+	Mon, 14 Apr 2025 12:12:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UELLLcKD"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Xtm/BFNm"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-yb1-f175.google.com (mail-yb1-f175.google.com [209.85.219.175])
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85CFA18DB1E;
-	Mon, 14 Apr 2025 11:58:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D290225A2AB;
+	Mon, 14 Apr 2025 12:12:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744631925; cv=none; b=aHfswJUYXZxCwjENmfhLOxbxZeftnvPH1HliuOoaGvL4FLhXGiJS76uB52ULQp2NOvIQ+1G0+ES2yY50O+0fpmex7dIFdE4fJoULFjV9wrCK59wUZsE7TNDQGeCQoabV1cmfs3lzhz4u5h75XPlBoRJybxj7BmXv9IKjjP9Kqt4=
+	t=1744632727; cv=none; b=BXaCxdydxA+YLrGhoMyKBT0gwOE+I/VKZSL4olVTH99NC983r4ty9Zi38GyVKG4v1nWib611T6ZC0f5bKpx+eJy5HG9JGNH7+g4d9jHn2zKfy8zIQId+NkqCsvAYpQreY4zmlqUePV9Xe7uWJiuDczJ6zzBucgv0OQJpozznGIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744631925; c=relaxed/simple;
-	bh=p0hGLbGgu1jLONsCJWAOLw4+sUxI4WfIBSsvqjmso4U=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qSDcv153VBGwlTcyJPzwJXN25HXKbMvSV79hvarItUmqTvr53PbDyU0Fj+pGbqia2wVOC9+HTvsrgAFqAXJtU+0ZP21XtYM59L11RKibghfpdRm0sP7j5fmn+xLyc8eIdWHLYZ7z/6JOqlY51V0h0XnuhlGKSi7RCG0wAX8qC9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UELLLcKD; arc=none smtp.client-ip=209.85.219.175
+	s=arc-20240116; t=1744632727; c=relaxed/simple;
+	bh=7HiWJUY7k3PBjq+nyjLuTF5RMOFecFY79b69z1xvKkQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Q+grnK+mkZq1TGw11A5mILG/IakKQLtFG+NsHeaL+TwlaQJyOcsZdJChupH5CsLTxB4O0TFHXlqczx9RGZBFREkCbYlEpa8CDmy1U6FtpbgJjeVJ7iExCX7Bc8BCc4FIhFoUCyakGQFXxkdg1aHgWU40POh+cLQyORc1u0gV7WY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Xtm/BFNm; arc=none smtp.client-ip=209.85.210.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yb1-f175.google.com with SMTP id 3f1490d57ef6-e638269b1deso499732276.3;
-        Mon, 14 Apr 2025 04:58:43 -0700 (PDT)
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-7370a2d1981so3154516b3a.2;
+        Mon, 14 Apr 2025 05:12:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744631922; x=1745236722; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=M46YccT3MF0DvncrxUNZwzbhc/mDYvaIcE3Z7FSsvmo=;
-        b=UELLLcKD0JVwkerpV5873du0AKhdzUjuMhtwnjODXpXO2ZgSvLlHT93HC/3MlF5wDF
-         +pLtxdnkdNJZDapiFJj/DnsdORuuiVB8+hfbUY+WZpRWuW2ZhLTO5XQQeMNXRG0SBEXW
-         29Xyf9qpaJ1Slsqs4s45rs4nlGSUWNRlfGFJDrq/kENpFhwrUBjsFED3zlHnFpNNHL6+
-         OAxkIvgjORYMUo/bizwuK7hqktmKM9RP3fxdLLOUm6p22udLxOsPbLdYzqJBRRqju0hq
-         DWzcnRIi7QB1XEXCNRAljArDvuo7/Bf2aefWJ0oKJvEHQTJ8d6eU8W0d+BevFh1+LsBo
-         tjMg==
+        d=gmail.com; s=20230601; t=1744632725; x=1745237525; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=1NVHglvUlYKOGcz6TwIpfPLcwNgLnD8HxMiutrlB7jI=;
+        b=Xtm/BFNmvXWSVuDNPf9Cg7W6Q4O1UQ7/0j0YGLAWQK3OgFrExazip+KiK19Uh6GGS+
+         MGWAsR/5hfUZSW9VLRxH+oB1PYn+wZxK//ZQGU2nKvLOvQcPWYPUdydRk2GuuK38KFIq
+         yb8DPluhltxHyDAI/zUtPQl/3hZKRQoz9loLDS8QaUJtE9K51JmVDp2W96LLNP3VUHWV
+         v7qYANzNUsLwb1jvKf/pKoMQVGWLg5Y3kSRlSk9jWO/mGAKszkfMxK4gXOAhsxHe9RI0
+         26BJQWkpoyP9tUKCAOaE41pBwh5YSgWitz3hYhW2sSV88oLvUjgmgow9RLI1UfvpGgOV
+         t8jQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744631922; x=1745236722;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=M46YccT3MF0DvncrxUNZwzbhc/mDYvaIcE3Z7FSsvmo=;
-        b=TUgUsNhHu/Ue0MhsGnP0+KFxU0/NT5vQCJcDXq9lqrWGh7NrauEA1Vgb+M38tRWkVp
-         ctMBsXi++ebAEkB5jIykf5EgQKTBQd7CATycIMFV3nAg/1+hp7qS05BVFHxTLoLdF5r6
-         Ne3q8cp/Gr8ehsSAJgwhiBlFrCO4/2CMWC6yYpeKYY06QKpA21x/vwyZLv2VJg0uR99/
-         HSVxCp6X0dQk8LXreok8RBfGm/qhXwBAjnGtPip2P2jXSQJvc28zSi1ZfUIC6+IJZQ5q
-         +b1zBmqFd9WUhQrY+zn+yx4MuxTp2kxCNLIpJ4T9dE2wd69HXW4s5TMQuHZKAOx+ewkj
-         kN8A==
-X-Forwarded-Encrypted: i=1; AJvYcCWQRk80grnkbi73yDU+mOGU65Qm2aHEgd9u1g0FVs4ADfF8g6Tast/v/zUqvAcz7CvA4nE5hlXlpFWM8zde@vger.kernel.org, AJvYcCXGQkz/klttfwuT0zuOWpBuBqJ9+rkzlNp+vRy6sXx3G/X8zj1feehrwfICK3D71wQ4uSb18qeRu5Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwGZ5LFke2sv2D8ScPwuiomhVBMsrw6bMV7xUFQe7Twb3ZplwtH
-	qilSSFnG3gnIkZW11agVrnRyMTcWJzmY8S/IvJJFRWkjVliAeGjA38LwR1iz0d/KNxXOMwCrEcS
-	RZnghrK7MPgUMtylRSPU9bw8uc/Q=
-X-Gm-Gg: ASbGncsH9B9bqNV9AHEC4SfBqC1eiTEoSFipPXxJuKDp4RgkBSqgC4pIw+8RsPW86Ir
-	3THw32liP7Uxtt7SJxhTYL5LLwSjRkuHA7b3OtGj1FfBfj8VWSLbOAXmpTTzJs9LUlx2mhBTTtZ
-	ATNHhPuYV2hYQ7Wv53XHHRtw==
-X-Google-Smtp-Source: AGHT+IGchwMv5md/5rNHB4RGLUBmwvHCTSP5W/iq/RcKNa9Gji6iVSutuVLmUL4QpJ9ChvSOy/7AbPXH2+N2WrOwHjU=
-X-Received: by 2002:a05:6902:cc6:b0:e60:aa9c:8c94 with SMTP id
- 3f1490d57ef6-e704de9fcacmr7658828276.4.1744631922347; Mon, 14 Apr 2025
- 04:58:42 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1744632725; x=1745237525;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1NVHglvUlYKOGcz6TwIpfPLcwNgLnD8HxMiutrlB7jI=;
+        b=WbLAmXswXX5ylfGHPTug6OkWXs8Hf1qlyLTo+4OHO6EdCKgzO4WYSAwwH7N0xAOS6A
+         krDDFA9mgLN+9wpDQLr8SUErM9QZ27BYqT84jpLmNtMP8vaLZJqzC+UFHkVuhEXk2mRo
+         uooknkVv80/308DIaIaycJVVr3nlxmrAh1pqE5CQHxS1ldlOx2TSnHZhkGtzxG/7c23W
+         R+GVaQaHMOgTd6Wz9B9WBaOYSbyPuDbDm4coCZ2mNuqsZZ0U5tiFrLhddHmYuYlPmk+C
+         DeXSNhCMJV3WBfICWAhZDsjNt2wuONw1ogSJijZ5kUZS56AAjWdtTM471WxTniHoo39N
+         2Irg==
+X-Forwarded-Encrypted: i=1; AJvYcCUA5b+nOTor7wjPydz4Fu8Ne8uAiuilvbTsVJzjZcn/cpITNivI5ObcwuB0DdwlEgO6BjeUWmKJoD5q@vger.kernel.org, AJvYcCUVeULhvQbTID3ZHwhmzuqCOW5v3Gfgbk1JTfo93Rttje3HWiMh5ctP7PXVBmDlFbLFQ84JVup/W+XvHYKC@vger.kernel.org, AJvYcCVXIYJZNjs0cLN9RO428DmK9AXhmSndG/Gw2pDhS/GwMvA6coHH9DRr+vAydgx+h6X00cUASdrPxp0C@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw+flAXPamKdGYpD8Y21wdfasVjOcmjwUvbIFD2ZJkkVBTG2Se1
+	I/c++UYkWKfT08NA1PdPf9MNqhvbX7a1Ki2K4tgu3AxfphGc4NBdj0xWz/25jzo=
+X-Gm-Gg: ASbGncu7xxzu7iGlBbVqCJ+zxiEWddWgBDlLUTfyY5WMlb7PL20RM14rkgqvQXZXBjI
+	UM+zoQKyBIy0dtikOQWPHZATmVr9ux0uWZQXkXgCNbpmxN32mXQrvJvf6XuzZNG93gFczp6HKjA
+	pBLE8h93FtilWeO+kCuYy5IUPkppkwL4R3yt8Sj8hiPARkJ6BjX12/OlMkXr8MRuwAl7++gNT+e
+	Rxo4CDZovJZ85Vu82W+BUNKWvtg1Lqk98QGD2fUi+G3m1qA1dze/ROfDjIY0aIBzqGL1fZwyVqh
+	lS8q2jcxC4FNjKOKwaNFMUmcpKve6UU5I6Z53EXpVRSkdt7d
+X-Google-Smtp-Source: AGHT+IF+TIVrbFGinU7ywTDvjK5W6y83fY1DKIZT07Xcs1cZRpqvJc3wIS0iwg8lLbaz6rT1AlurdQ==
+X-Received: by 2002:a05:6a20:d49a:b0:1ee:dd60:194f with SMTP id adf61e73a8af0-201799683ecmr16377045637.26.1744632724786;
+        Mon, 14 Apr 2025 05:12:04 -0700 (PDT)
+Received: from localhost ([2804:30c:92d:f600:d5e4:543:c403:4767])
+        by smtp.gmail.com with UTF8SMTPSA id 41be03b00d2f7-b06161333a8sm4331209a12.7.2025.04.14.05.12.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 14 Apr 2025 05:12:03 -0700 (PDT)
+Date: Mon, 14 Apr 2025 09:13:12 -0300
+From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Marcelo Schmitt <marcelo.schmitt@analog.com>, linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Ana-Maria Cusco <ana-maria.cusco@analog.com>, lars@metafoo.de,
+	Michael.Hennerich@analog.com, dlechner@baylibre.com,
+	nuno.sa@analog.com, andy@kernel.org, robh@kernel.org,
+	krzk+dt@kernel.org, conor+dt@kernel.org
+Subject: Re: [PATCH v1 2/7] iio: adc: Add basic support for AD4170
+Message-ID: <Z_z72J_gcZqW14CE@debian-BULLSEYE-live-builder-AMD64>
+References: <cover.1744200264.git.marcelo.schmitt@analog.com>
+ <5f79007f0b9f9f67360d04fb904b6a59111a4ebe.1744200264.git.marcelo.schmitt@analog.com>
+ <20250412174710.33afb04d@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250318230843.76068-1-l.rubusch@gmail.com> <20250318230843.76068-9-l.rubusch@gmail.com>
- <20250331114029.2d828b19@jic23-huawei>
-In-Reply-To: <20250331114029.2d828b19@jic23-huawei>
-From: Lothar Rubusch <l.rubusch@gmail.com>
-Date: Mon, 14 Apr 2025 13:58:05 +0200
-X-Gm-Features: ATxdqUH6TTBkHd9LLMeHElK5gcSWAYTL3Fs_VX0A2M5aUyxE5VARfQkapTN1KiQ
-Message-ID: <CAFXKEHY59F54Wq7Z7MXc4cnDBq3E2gCNM6Js7CS7K+CarbwSiQ@mail.gmail.com>
-Subject: Re: [PATCH v5 08/11] iio: accel: adxl345: add activity event feature
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: lars@metafoo.de, Michael.Hennerich@analog.com, linux-iio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, eraretuya@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250412174710.33afb04d@jic23-huawei>
 
-On Mon, Mar 31, 2025 at 12:40=E2=80=AFPM Jonathan Cameron <jic23@kernel.org=
-> wrote:
->
-> On Tue, 18 Mar 2025 23:08:40 +0000
-> Lothar Rubusch <l.rubusch@gmail.com> wrote:
->
-> > Make the sensor detect and issue interrupts at activity. Activity
-> > events are configured by a threshold stored in regmap cache. Initialize
-> > the activity threshold register to a reasonable default value in probe.
-> > The value is taken from the older ADXL345 input driver, to provide a
-> > similar behavior. Reset the activity/inactivity direction enabling
-> > register in probe. Reset and initialization shall bring the sensor in a
-> > defined initial state to prevent dangling settings when warm restarting
-> > the sensor.
-> >
-> > Activity, ODR configuration together with the range setting prepare the
-> > activity/inactivity hystersesis setup, implemented in a follow up patch=
-.
-> >
-> > Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
->
-> > +static int adxl345_is_act_inact_en(struct adxl345_state *st,
-> > +                                enum iio_modifier axis,
-> > +                                enum adxl345_activity_type type, bool =
-*en)
+Hi Jonathan,
+
+Thank you for reviewing this set.
+Clarifying some bits inline. Will apply all other suggested changes.
+
+Thanks,
+Marcelo
+
+On 04/12, Jonathan Cameron wrote:
+> On Wed, 9 Apr 2025 09:24:35 -0300
+> Marcelo Schmitt <marcelo.schmitt@analog.com> wrote:
+> 
+> > From: Ana-Maria Cusco <ana-maria.cusco@analog.com>
+> > 
+> > Add support for the AD4170 ADC with the following features:
+> > - Single-shot read.
+> > - Analog front end PGA configuration.
+> > - Digital filter and sampling frequency configuration.
+> > - Calibration gain and offset configuration.
+> > - Differential and pseudo-differential input configuration.
+> > 
+> > Signed-off-by: Ana-Maria Cusco <ana-maria.cusco@analog.com>
+> > Co-developed-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
+> > Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
+> Hi.
+> 
+> Clearly this is a massive driver, even with it broken up like this.
+> So it might take a few cycles to review enough that we don't find
+> new things :(
+
+No worries. Yeah, I tried my best to make it concise but this is still not small
+piece of code.
+
+> 
+> I can't think of a good way to split it up further though
+> 
+> Jonathan
+> 
+> > diff --git a/drivers/iio/adc/ad4170.c b/drivers/iio/adc/ad4170.c
+> > new file mode 100644
+> > index 000000000000..0d24286ac2ab
+> > --- /dev/null
+> > +++ b/drivers/iio/adc/ad4170.c
+> 
+> 
+...
+> > +static int ad4170_regulator_setup(struct ad4170_state *st)
 > > +{
-> > +     unsigned int regval;
-> > +     bool axis_en;
-> > +     u32 axis_ctrl;
-> > +     int ret;
+> > +	struct device *dev = &st->spi->dev;
+> > +	int ret;
 > > +
-> > +     ret =3D regmap_read(st->regmap, ADXL345_REG_ACT_INACT_CTRL, &axis=
-_ctrl);
-> > +     if (ret)
-> > +             return ret;
+> > +	/* Required regulators */
+> > +	ret = devm_regulator_get_enable_read_voltage(dev, "avdd");
+> > +	if (ret < 0)
+> > +		return dev_err_probe(dev, ret, "Failed to get AVDD voltage.\n");
 > > +
-> > +     if (type =3D=3D ADXL345_ACTIVITY) {
-> > +             switch (axis) {
-> > +             case IIO_MOD_X:
-> > +                     axis_en =3D FIELD_GET(ADXL345_ACT_X_EN, axis_ctrl=
-);
-> > +                     break;
-> > +             case IIO_MOD_Y:
-> > +                     axis_en =3D FIELD_GET(ADXL345_ACT_Y_EN, axis_ctrl=
-);
-> > +                     break;
-> > +             case IIO_MOD_Z:
-> > +                     axis_en =3D FIELD_GET(ADXL345_ACT_Z_EN, axis_ctrl=
-);
-> Same as in earlier patch; axis_en is never used.
-> > +                     break;
-> > +             default:
-> > +                     return -EINVAL;
-> > +             }
-> > +     }
+> > +	st->vrefs_uv[AD4170_AVDD_SUP] = ret;
 > > +
-> > +     ret =3D regmap_read(st->regmap, ADXL345_REG_INT_ENABLE, &regval);
-> > +     if (ret)
-> > +             return ret;
-> > +
-> > +     *en =3D (adxl345_act_int_reg[type] & regval) > 0;
-> > +
-> > +     return 0;
-> > +}
-> > +
-> > +static int adxl345_set_act_inact_en(struct adxl345_state *st,
-> > +                                 enum iio_modifier axis,
-> > +                                 enum adxl345_activity_type type,
-> > +                                 bool cmd_en)
-> > +{
-> > +     bool axis_en, en;
-> > +     unsigned int threshold;
-> > +     u32 axis_ctrl =3D 0;
-> > +     int ret;
-> > +
-> > +     if (type =3D=3D ADXL345_ACTIVITY) {
-> > +             switch (axis) {
-> > +             case IIO_MOD_X:
-> > +                     axis_ctrl =3D ADXL345_ACT_X_EN;
-> > +                     break;
-> > +             case IIO_MOD_Y:
-> > +                     axis_ctrl =3D ADXL345_ACT_Y_EN;
-> > +                     break;
-> > +             case IIO_MOD_Z:
-> > +                     axis_ctrl =3D ADXL345_ACT_Z_EN;
-> > +                     break;
-> > +             default:
-> > +                     return -EINVAL;
-> > +             }
-> > +     }
-> > +
-> > +     if (cmd_en)
-> > +             ret =3D regmap_set_bits(st->regmap,
-> > +                                   ADXL345_REG_ACT_INACT_CTRL, axis_ct=
-rl);
-> > +     else
-> > +             ret =3D regmap_clear_bits(st->regmap,
-> > +                                     ADXL345_REG_ACT_INACT_CTRL, axis_=
-ctrl);
-> > +     if (ret)
-> > +             return ret;
-> > +
-> > +     ret =3D regmap_read(st->regmap, adxl345_act_thresh_reg[type], &th=
-reshold);
-> > +     if (ret)
-> > +             return ret;
-> > +
-> > +     en =3D false;
-> > +
-> > +     if (type =3D=3D ADXL345_ACTIVITY) {
-> > +             axis_en =3D FIELD_GET(ADXL345_REG_ACT_AXIS_MSK, axis_ctrl=
-) > 0;
-> The > 0 doesn't add anything as this can't be negative.
->
-> Drag declaration of axis_en down here as only used in this block.
-> or just combine with previous and next bit as
->                 en =3D (type =3D=3D=3D ADXL345_ACTIVITY) &&
->                      FIELD_GET(ADXL345_REG_ACT_AXIS_MSK, axis_ctrl) &&
->                      (threshold > 0);
->
-> > +             en =3D axis_en && threshold > 0;
-> > +     }
-> > +
-> > +     return regmap_update_bits(st->regmap, ADXL345_REG_INT_ENABLE,
-> > +                               adxl345_act_int_reg[type],
-> > +                               en ? adxl345_act_int_reg[type] : 0);
-> > +}
-> > +
-> >  /* tap */
-> >
->
->
->
-> > @@ -1347,6 +1542,14 @@ int adxl345_core_probe(struct device *dev, struc=
-t regmap *regmap,
-> >               if (ret)
-> >                       return ret;
-> >
-> > +             ret =3D regmap_write(st->regmap, ADXL345_REG_ACT_INACT_CT=
-RL, 0);
-> > +             if (ret)
-> > +                     return ret;
-> > +
-> > +             ret =3D regmap_write(st->regmap, ADXL345_REG_THRESH_ACT, =
-6);
->
-> 6 is a fairly random number. Add a comment for why this default.
->
+> > +	ret = devm_regulator_get_enable_read_voltage(dev, "iovdd");
+> 
+> If no channel uses this reference is it not optional?  Maybe not worth the
+> complexity of handling that.  We have sometime bothered to do so in the past
+> by first figuring out which references are in use, then trying to get the
+> appropriate regulators with small changes for cases like this where
+> it needs to be enabled but we might not need the voltage.
 
-My general intention is to provide +/- reasonable default configs,
-rather than leave it all to 0 or undefined, to allow to turn the event
-on and already catch at least something. In many cases those
-will be the default values from the older input driver, to keep a bit
-of a compatibility.
-Particular cases have actually recommendations in the datasheet and
-differ slightly to the input
-driver. I'm aware that the input driver probably is not a golden
-standard, but it worked at least for
-my tests. I may leave a general comment on the section, pls have a
-look into v6 if this is ok.
+We can set the channel multiplexer to use IOVDD reference as diff chan negative
+input. Similar thing can be done for the other reference supplies. I think
+the examples in dt-binding don't use IOVDD but they could. Since the driver is
+supporting other regulators, maybe support IOVDD too?
 
-> > +             if (ret)
-> > +                     return ret;
+> 
+> > +	if (ret < 0)
+> > +		return dev_err_probe(dev, ret, "Failed to get IOVDD voltage.\n");
 > > +
-> >               ret =3D regmap_write(st->regmap, ADXL345_REG_THRESH_TAP, =
-tap_threshold);
-> >               if (ret)
-> >                       return ret;
->
+> > +	st->vrefs_uv[AD4170_IOVDD_SUP] = ret;
+> > +
+> > +	/* Optional regulators */
+> > +	ret = devm_regulator_get_enable_read_voltage(dev, "avss");
+> > +	if (ret < 0 && ret != -ENODEV)
+> > +		return dev_err_probe(dev, ret, "Failed to get AVSS voltage.\n");
+> > +
 

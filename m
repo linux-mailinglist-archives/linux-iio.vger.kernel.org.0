@@ -1,295 +1,517 @@
-Return-Path: <linux-iio+bounces-18078-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18079-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 203F5A881B3
-	for <lists+linux-iio@lfdr.de>; Mon, 14 Apr 2025 15:22:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41F5AA88458
+	for <lists+linux-iio@lfdr.de>; Mon, 14 Apr 2025 16:18:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 33D643B931E
-	for <lists+linux-iio@lfdr.de>; Mon, 14 Apr 2025 13:21:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6A1D81902229
+	for <lists+linux-iio@lfdr.de>; Mon, 14 Apr 2025 14:11:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6F4123D2B7;
-	Mon, 14 Apr 2025 13:20:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EA302DFA35;
+	Mon, 14 Apr 2025 13:41:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fFfvTj02"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dJwNylCd"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-yb1-f172.google.com (mail-yb1-f172.google.com [209.85.219.172])
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8A052904;
-	Mon, 14 Apr 2025 13:20:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D5CA24729D;
+	Mon, 14 Apr 2025 13:41:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744636831; cv=none; b=O4eunnPFJhThMztOkyHJTAHFa7rKcq0ZE0EHJwDLyOZvRjb3SOavq9NKr3am7jxEyxLKDL2dj6SrAMb7z/9PRnFTFIlTFM1u/XzgOzD4kZ7mVHn4qDUwcAFV6lBeJD5vWW0aXerOPOHJagMEGDaGbvh0hfOQSDxfKaXQgkYVHgI=
+	t=1744638104; cv=none; b=N1WRCM+DDEGMSvWo3LFBbPSCmevlpBT8ndqrzJkq9BRAyjiaFgst6NmcR39ANvoFBlUI661e5UtLJbxhA68X/4EXagfL+wmXOyJ3ghe4+iDW16h99VC/nQh82fFTN8n4hlN0TzzjmqJ7+lV6BYjDBQcixawZgArUfODaBRtuvTU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744636831; c=relaxed/simple;
-	bh=qLr88WKimglQqeHOQLqpTJLNV8oFxlm/UJuYGO5HLw4=;
+	s=arc-20240116; t=1744638104; c=relaxed/simple;
+	bh=VFIZ8IUvl6sQu41G6YkpR8xVraIpjUX1phEG6i0UBh4=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=q4e1O+9keRPeq/Ub137eKRPQjxzvY5IbqkmU/Ou0nJWCuHD/U5VzhT9kptTR/7oqUJVnscTSgkggZCcl+Hr+8tNZPiwGBNfYgIwZE66iO1gAouRy3jdG6hG34AEyb2YZoY6lTA6bynii0vD6Jw7QPjolAY0DWAcpzj4VkKPKLJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fFfvTj02; arc=none smtp.client-ip=209.85.219.172
+	 To:Cc:Content-Type; b=KVtyu7ims0GRtdnu63wNbDS3CgWN0HSo9Gc7Pqg3A/OvsmOXmxjFqgWQZjxKyOqEp9avB3J1Ox9hrjgLHBQ2OcnQ2Quq7bboWAa9ECPk9dGya+rAn17Xo4pwRoK3Fn5PJkiOC6RzS6zmP6pzGDztQvcPT0BYaoo/dMavjV4dfio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dJwNylCd; arc=none smtp.client-ip=209.85.218.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yb1-f172.google.com with SMTP id 3f1490d57ef6-e6b78b80393so529738276.1;
-        Mon, 14 Apr 2025 06:20:29 -0700 (PDT)
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-aaee2c5ee6eso684032266b.1;
+        Mon, 14 Apr 2025 06:41:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744636828; x=1745241628; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1744638100; x=1745242900; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=LENjcn0F6sVkTrTGTYqlO5GapuitcYgZ9GkCzUrs3jw=;
-        b=fFfvTj02eMiUJ2RK+saW0F5L23aB9VEwLUcBb9DHy4Cnn61VFiwHzbA2RaDFhXW3TS
-         rVBFaRu2eFWIHOmwHPZrQqgi/fqhb6CArfRZ1S2myMLxVL2NLuMSMzwk0wST8y36j0zj
-         MJqnP4mUYPVXGxPBp+8yqxBgKuLa1PSDsj4B+uF9267o8QRjhz9loV5s9eWaFqNtb8xr
-         dbwJPIsH1Lln0oDhxkVqer9EzKJpX7K64PlpGiZtA613e82ZQQ7WD71XnwCgfs08p6Od
-         Z4oRDIzVDJ9JgnxZlOykB1QNIwyvHba5eZkzdGpt5SJZ2pRmvMYOtFo8c52TQeKrNJQ9
-         hUFA==
+        bh=73xHJ9IYiHIaK02xaTMdK7NbfrF6WDOxYWmZYyt7is4=;
+        b=dJwNylCdCqAMh9rhlRUpmT2FEWjZTvZ3PzEdy9z8ZrzOEAyvdtJTOZV+7Bw7kkFH7d
+         QfqtDEZEGC2K54GJBvh043i40Xx9A5pOagaznc2MYeZQUfqPutG5a4/ZHcbkWtlQnuug
+         jNOQqgOoWK5S5mNf/BtXrtFuhLHa++p7yRghcFnysiF7MaoYxk5honll9FQHRgGXfm7W
+         XQwHuES2/WzjCrP4wNeIXWbc+iQiPi6K40UUDG0/rnWAeZrWxqhqCMbxb2fm8IOEVIPL
+         GoTyw15D+px2kCX+OcMaEiR1iGyN/KfFDtgcLBNiqZJTN+14dW1u1SK5An1RiHWQcoc/
+         WrZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744636828; x=1745241628;
+        d=1e100.net; s=20230601; t=1744638100; x=1745242900;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=LENjcn0F6sVkTrTGTYqlO5GapuitcYgZ9GkCzUrs3jw=;
-        b=JH9HhrtyTnYB3TeqIaStihJI/p2J9Iqv0nEIQ/duj+vJeEM3IS7agDrnnMeryTtlsN
-         XMf1fkM7lJt5NY/mpa46/xOGVRPjHQ3pWgaE2RXGRCzuN4P77kiKULaRq4oyN+LAIRz2
-         Mla+KKnYHGnKMsyIvoEZ2kJOC8gabQzUOd+V9tGI7uDSzp8GJfF0PCFuOPupp16Hn3k7
-         RrMF9h2LxtDdZrbNthlmp5uzbCfcXTQERyvkBgD7RVR5FZZ5wk885n4bLhwNBuz3/lGM
-         9Me6qRMHBsXgC4ecKqKzbQcInAydbupJDYgF4YaWI+Io5ycDdg3vwqhOd1ZRCkDEkNnl
-         Q5wA==
-X-Forwarded-Encrypted: i=1; AJvYcCUmF9eFb1awaidDbE60MkfsUngQ4eQkJG1pvxkmImjQgzxDcEnQPLa4yGOV/06QAhY65Z5r8/J/7qo=@vger.kernel.org, AJvYcCVxRDBZtib3ZSqqB41rO5ZNZgQNVHSyAR/r3yM1oc2l5tHQWCo/4WCDtV25vnt7/605h7XsjpdWn9IeBXcN@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz1aOfupJjraqMcblerZTGUhwUQ5xZGAwK5UR3Y2kXF9Qa7l3jI
-	YHyd/Wl9y8uU0jZ0L+Ue7ez5EA/i2GJAs3c1rWLS8lATyDJ5cWNvPUvSxCTKJh9paxVEeh4GzAp
-	c45kmMiwaviMdgQrLGKin/EpCEPg=
-X-Gm-Gg: ASbGnctvMxfnUl2Gt49dJwjBpzat7CnLb19DEoaaS0bKfq9rOp7BIErsU79vHcHqYyp
-	EevVa6lFwaqzIMTCwUnu86jpMa6nXBdf+Ud4WEvdJe6MWKRwfFZwzPRiGeO1skIqA/1yWndb6SP
-	Q1mpna/TZGJ0vgreuPY2k9Gw==
-X-Google-Smtp-Source: AGHT+IG2amwl5JKM5eKY909aHAmkd1x9CqgxNixASnHhRi3izkvF6iqhpJrxOPH6EgyiMOQdrtstSyaBk1Ahg1+Q45c=
-X-Received: by 2002:a05:6902:f83:b0:e60:9fb1:1f9f with SMTP id
- 3f1490d57ef6-e7070ccbca0mr8397968276.1.1744636828461; Mon, 14 Apr 2025
- 06:20:28 -0700 (PDT)
+        bh=73xHJ9IYiHIaK02xaTMdK7NbfrF6WDOxYWmZYyt7is4=;
+        b=kXwBBToDa9a/9JQVBdvCTVHpUrwnQ9cslx17JGRWVo6TdX6+tPgPqOIBXPCWMxbx1N
+         RdVr1tL/UdrOy8zsqJw0exg7F0H2ZPcp9yQU8s1DFTWNTkxOPOeh5iZXK0OL2vKlJ/XN
+         XF38U0FTI+b7DL47sitq8G7lLQmKFFgOZ0CnaRUGL+J7InVwYwxuOW4YmALOD+216LGR
+         O7Dz7LrYn7oWpxz6EP7M5o4r8Y6Zn1Nw7zRNMglX+z+bO/Mm2NpVx7i2g9c5OJP/VvzB
+         vxthz8rlysucz0JmMUJKLJJdF8e/2ZZivYsIz4F9O4AT7Y7gEGvRd5Dx6UTb/42T8/pH
+         R/iw==
+X-Forwarded-Encrypted: i=1; AJvYcCU4WjMXcS3kUSK1jNZb/dEFMkMKrANxbbdBgHzVhWtO9fUjYBWhPZruAdRW22W+I9ZPx1/EUEV5UmuW@vger.kernel.org, AJvYcCUjQfSOcrLuU8SPqbItUoE9KmHuUQmI26Lh0oOuD570HxtUFUI4vZwLPJQcmLvBe2AML3RJfFwAyV3W9YGO@vger.kernel.org, AJvYcCXUTcqJ0GFPdMOgAgkLhFgD9JBkIdwTH1SJ4FTT/DgnlUAkwfRyAnzbbIoujLCgU0APUB5U5nDWLotp@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywqk3mi7lDbytJkI4OddnHA7rcYZq5H7be5JYjSYF2punu5j7rD
+	W22pGSnG3WbZSuoNIsWnm4ocyWHXgmAIxY0XDZadLbYFvY1416npYjJSgzOvajGOEi36vrC1DCW
+	Bm4lT+nEDZOHuh+7wyiUeaQtM6nY=
+X-Gm-Gg: ASbGncsAS4gawhGZKp0vlIVIyLK5gs0h/BXKq7mJ4bG+MLixPF9Fc4XqA+UCgAmmipx
+	LXsIqoIbTS0o7pnBYeu/Yk7i/MaWJGryWTpPT3j4F57pzaC+WmrfzTKW31HnO/fTff+ca5Z5EuU
+	914caiG6oOFW9vLH3zGgPlsQ==
+X-Google-Smtp-Source: AGHT+IEUBXB+ktsYxUFxin7yI8JSpLsDLbeEGr6D25mEE6RXhiuDW8CRdDgitNFauJwognP5bX/GANHUvSy3sHEAg7Q=
+X-Received: by 2002:a17:907:944e:b0:ac7:81b2:c6e5 with SMTP id
+ a640c23a62f3a-acad36d04fdmr1043991366b.55.1744638099971; Mon, 14 Apr 2025
+ 06:41:39 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250318230843.76068-1-l.rubusch@gmail.com> <20250318230843.76068-10-l.rubusch@gmail.com>
- <20250331114724.2c2c2e9b@jic23-huawei>
-In-Reply-To: <20250331114724.2c2c2e9b@jic23-huawei>
-From: Lothar Rubusch <l.rubusch@gmail.com>
-Date: Mon, 14 Apr 2025 15:19:52 +0200
-X-Gm-Features: ATxdqUHSoigYjNJ2OuCxPbSfz6S3orfIqN5K-YaZtimTd6RfqqB4OLGiGnX2DEA
-Message-ID: <CAFXKEHYXnN9ddSM3wzgRTCZDu3JiaBJ6n8htQEBCiS52G+QzQQ@mail.gmail.com>
-Subject: Re: [PATCH v5 09/11] iio: accel: adxl345: add inactivity feature
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: lars@metafoo.de, Michael.Hennerich@analog.com, linux-iio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, eraretuya@gmail.com
+References: <20250409012351.2543450-1-j2anfernee@gmail.com>
+ <20250409012351.2543450-3-j2anfernee@gmail.com> <Z_aeEuIk9brES6dM@smile.fi.intel.com>
+In-Reply-To: <Z_aeEuIk9brES6dM@smile.fi.intel.com>
+From: Yu-Hsian Yang <j2anfernee@gmail.com>
+Date: Mon, 14 Apr 2025 21:40:35 +0800
+X-Gm-Features: ATxdqUG2e8O27VtT5a1XgBKf9cFzDJdly9huEPojacM_h6OgLdhDriMAHMCYe70
+Message-ID: <CA+4VgcKG2EEsicysds0zu7y1xDhg88m3heGUBaQZ7-MVWanCaw@mail.gmail.com>
+Subject: Re: [PATCH v5 2/2] iio: adc: add support for Nuvoton NCT7201
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: jic23@kernel.org, lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org, 
+	conor+dt@kernel.org, dlechner@baylibre.com, nuno.sa@analog.com, 
+	javier.carrasco.cruz@gmail.com, gstols@baylibre.com, tgamblin@baylibre.com, 
+	alisadariana@gmail.com, antoniu.miclaus@analog.com, eblanc@baylibre.com, 
+	jstephan@baylibre.com, matteomartelli3@gmail.com, 
+	angelogioacchino.delregno@collabora.com, herve.codina@bootlin.com, 
+	marcelo.schmitt@analog.com, chanh@os.amperecomputing.com, KWLIU@nuvoton.com, 
+	yhyang2@nuvoton.com, linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Mar 31, 2025 at 12:47=E2=80=AFPM Jonathan Cameron <jic23@kernel.org=
-> wrote:
+Dear Andy,
+
+Thanks for the review and the comments.
+Will fix all.
+
+Andy Shevchenko <andriy.shevchenko@linux.intel.com> =E6=96=BC 2025=E5=B9=B4=
+4=E6=9C=8810=E6=97=A5 =E9=80=B1=E5=9B=9B =E4=B8=8A=E5=8D=8812:19=E5=AF=AB=
+=E9=81=93=EF=BC=9A
 >
-> On Tue, 18 Mar 2025 23:08:41 +0000
-> Lothar Rubusch <l.rubusch@gmail.com> wrote:
->
-> > Add the inactivity feature of the sensor. When activity and inactivity
-> > are enabled, a link bit will be set linking activity and inactivity
-> > handling. Additionally, the auto-sleep mode will be enabled. Due to the
-> > link bit the sensor is going to auto-sleep when inactivity was
-> > detected.
+> On Wed, Apr 09, 2025 at 09:23:51AM +0800, Eason Yang wrote:
+> > Add Nuvoton NCT7201/NCT7202 system voltage monitor 12-bit ADC driver
 > >
-> > Inactivity detection needs a threshold to be configured, and a time
-> > after which it will go into inactivity state if measurements under
-> > threshold.
-> >
-> > When a ODR is configured this time for inactivity is adjusted with a
-> > corresponding reasonable default value, in order to have higher
-> > frequencies and lower inactivity times, and lower sample frequency but
-> > give more time until inactivity. Both with reasonable upper and lower
-> > boundaries, since many of the sensor's features (e.g. auto-sleep) will
-> > need to operate beween 12.5 Hz and 400 Hz. This is a default setting
-> > when actively changing sample frequency, explicitly setting the time
-> > until inactivity will overwrite the default.
-> >
-> > Similarly, setting the g-range will provide a default value for the
-> > activity and inactivity thresholds. Both are implicit defaults, but
-> > equally can be overwritten to be explicitly configured.
-> >
-> > Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
->
-> A few comments inline.  The magic handling of the value 0 is
-> a bit of unexpected ABI.
->
-> Jonathan
->
-> > @@ -327,6 +358,7 @@ static int adxl345_set_act_inact_en(struct adxl345_=
-state *st,
-> >                                   bool cmd_en)
-> >  {
-> >       bool axis_en, en;
-> > +     unsigned int inact_time_s;
-> >       unsigned int threshold;
-> >       u32 axis_ctrl =3D 0;
-> >       int ret;
-> > @@ -345,6 +377,20 @@ static int adxl345_set_act_inact_en(struct adxl345=
-_state *st,
-> >               default:
-> >                       return -EINVAL;
-> >               }
-> > +     } else {
-> > +             switch (axis) {
-> > +             case IIO_MOD_X:
-> > +                     axis_ctrl =3D ADXL345_INACT_X_EN;
-> > +                     break;
-> > +             case IIO_MOD_Y:
-> > +                     axis_ctrl =3D ADXL345_INACT_Y_EN;
-> > +                     break;
-> > +             case IIO_MOD_Z:
-> > +                     axis_ctrl =3D ADXL345_INACT_Z_EN;
-> > +                     break;
-> > +             default:
-> > +                     return -EINVAL;
-> > +             }
-> >       }
-> >
-> >       if (cmd_en)
-> > @@ -365,11 +411,67 @@ static int adxl345_set_act_inact_en(struct adxl34=
-5_state *st,
-> >       if (type =3D=3D ADXL345_ACTIVITY) {
-> >               axis_en =3D FIELD_GET(ADXL345_REG_ACT_AXIS_MSK, axis_ctrl=
-) > 0;
-> >               en =3D axis_en && threshold > 0;
-> > +     } else {
->
-> So previous suggestion on setting en doesn't work but you can still combi=
-ne
-> the bits other than the type match to simplify code and get rid of axis_e=
-n
-> in both paths.
->
-> > +             ret =3D regmap_read(st->regmap, ADXL345_REG_TIME_INACT, &=
-inact_time_s);
-> > +             if (ret)
-> > +                     return ret;
-> > +
-> > +             axis_en =3D FIELD_GET(ADXL345_REG_INACT_AXIS_MSK, axis_ct=
-rl) > 0;
-> > +             en =3D axis_en && threshold > 0 && inact_time_s > 0;
-> >       }
->
-> > +/**
-> > + * adxl345_set_inact_time_s - Configure inactivity time explicitly or =
-by ODR.
-> > + * @st: The sensor state instance.
-> > + * @val_s: A desired time value, between 0 and 255.
-> > + *
-> > + * If val_s is 0, a default inactivity time will be computed. It shoul=
-d take
-> > + * power consumption into consideration. Thus it shall be shorter for =
-higher
-> > + * frequencies and longer for lower frequencies. Hence, frequencies ab=
-ove 255 Hz
-> > + * shall default to 10 s and frequencies below 10 Hz shall result in 2=
-55 s to
-> > + * detect inactivity.
->
-> I'd missed this previously.  I've no problem with a default time being se=
+> > NCT7201/NCT7202 supports up to 12 analog voltage monitor inputs and up =
+to
+> > 4 SMBus addresses by ADDR pin. Meanwhile, ALERT# hardware event pins fo=
+r
+> > independent alarm signals, and all the threshold values could be set fo=
+r
+> > system protection without any timing delay. It also supports reset inpu=
 t
-> on driver load, but a later write of 0 should not result in something ver=
-y different
-> as that's not standard use of the ABI.  If a user wants to go back to a s=
-ensible
-> default then they should have stored out what was set initially.
+> > RSTIN# to recover system from a fault condition.
+> >
+> > Currently, only single-edge mode conversion and threshold events are
+> > supported.
 >
-> I don't mind if you update the default until the point where they first o=
-verride
-> it, but from there on we should obey what they request or error out if th=
-e
-> value requested is not possible.
+> > +#include <linux/array_size.h>
+> > +#include <linux/bitfield.h>
+> > +#include <linux/bits.h>
+> > +#include <linux/delay.h>
+> > +#include <linux/device.h>
+> > +#include <linux/err.h>
+> > +#include <linux/i2c.h>
+> > +#include <linux/mod_devicetable.h>
+> > +#include <linux/module.h>
+> > +#include <linux/regmap.h>
+> > +#include <linux/types.h>
+> > +#include <linux/unaligned.h>
+>
+> ...
+>
+> > +#define NCT7201_VIN_MAX                              12
+>
+> Is this in volts? Can you add a unit suffix?
+
+Rename it as
+#define NCT7201_MAX_CHANNEL 12
+
+>
+> ...
+>
+> > +#define NCT7201_IN_SCALING                           4995
+> > +#define NCT720X_IN_SCALING_FACTOR         10000
+> Interesting number, just want to confirm it's indeed 4995 and not 4095.
 >
 
-Hm, I'm unsure if I got this wrong. It is not supposed to be an
-automatic feature to kick in and change user configured values,
-actually. Let me try to explain it differently:
-Setting a threshold for an inactivity time in [s] is always applied as
-a user wishes. Setting 0s for inactivity time IMHO does not make much
-sense, where one could also simply disable the sensor event. So, what
-I did now is I implemented when 0s was set by a user for inactivity
-time, it will result in an automatic adjustment of inactivity time,
-depending on range and odr.
+These definitions are for real voltage calculations,
+the formula is Voltage(V) =3D 13bitCountValue * 0.0004995
+However, the definitions are not used anymore.
+So remove them.
 
-In v6 I will try to refrase the text, and double-check it's contained
-in documentation, too. Pls, let me know what you think.
-
-> > + *
-> > + * The approach simply subtracts the pre-decimal figure of the configu=
-red
-> > + * sample frequency from 255 s to compute inactivity time [s]. Sub-Hz =
-are thus
-> > + * ignored in this estimation. The recommended ODRs for various featur=
-es
-> > + * (activity/inactivity, sleep modes, free fall, etc.) lie between 12.=
-5 Hz and
-> > + * 400 Hz, thus higher or lower frequencies will result in the boundar=
-y
-> > + * defaults or need to be explicitly specified via val_s.
-> > + *
-> > + * Return: 0 or error value.
-> > + */
-> > +static int adxl345_set_inact_time_s(struct adxl345_state *st, u32 val_=
-s)
+> ...
+>
+> > +static int nct7201_read_event_value(struct iio_dev *indio_dev,
+> > +                                 const struct iio_chan_spec *chan,
+> > +                                 enum iio_event_type type,
+> > +                                 enum iio_event_direction dir,
+> > +                                 enum iio_event_info info,
+> > +                                 int *val, int *val2)
 > > +{
-> > +     unsigned int max_boundary =3D 255;
-> > +     unsigned int min_boundary =3D 10;
-> > +     unsigned int val =3D min(val_s, max_boundary);
-> > +     enum adxl345_odr odr;
-> > +     unsigned int regval;
-> > +     int ret;
+> > +     struct nct7201_chip_info *chip =3D iio_priv(indio_dev);
+> > +     unsigned int value;
+> > +     int err;
 > > +
-> > +     if (val =3D=3D 0) {
-> > +             ret =3D regmap_read(st->regmap, ADXL345_REG_BW_RATE, &reg=
-val);
-> > +             if (ret)
-> > +                     return ret;
-> > +             odr =3D FIELD_GET(ADXL345_BW_RATE_MSK, regval);
+> > +     if (chan->type !=3D IIO_VOLTAGE)
+> > +             return -EOPNOTSUPP;
 > > +
-> > +             val =3D (adxl345_odr_tbl[odr][0] > max_boundary)
-> > +                     ? min_boundary : max_boundary - adxl345_odr_tbl[o=
-dr][0];
+> > +     if (info !=3D IIO_EV_INFO_VALUE)
+> > +             return -EINVAL;
+>
+> > +     if (dir =3D=3D IIO_EV_DIR_FALLING) {
+> > +             err =3D regmap_read(chip->regmap16, NCT7201_REG_VIN_LOW_L=
+IMIT(chan->address),
+> > +                               &value);
+> > +             if (err < 0)
+> > +                     return err;
+> > +     } else {
+> > +             err =3D regmap_read(chip->regmap16, NCT7201_REG_VIN_HIGH_=
+LIMIT(chan->address),
+> > +                               &value);
+> > +             if (err < 0)
+> > +                     return err;
+> > +     }
+>
+>         if (dir =3D=3D IIO_EV_DIR_FALLING) {
+>                 err =3D regmap_read(chip->regmap16, NCT7201_REG_VIN_LOW_L=
+IMIT(chan->address),
+>                                   &value);
+>         } else {
+>                 err =3D regmap_read(chip->regmap16, NCT7201_REG_VIN_HIGH_=
+LIMIT(chan->address),
+>                                   &value);
+>         }
+>         if (err)
+>                 return err;
+>
+> Here and elsewhere why ' < 0' is used? Do you expect positive return valu=
+es
+> from those?
+>
+
+In regmap_read function, A value of zero will be returned on success,
+a negative errno will be returned in error cases.
+We don't have a positive return case.
+
+
+> > +     *val =3D FIELD_GET(NCT7201_REG_VIN_MASK, value);
+> > +
+> > +     return IIO_VAL_INT;
+> > +}
+>
+> ...
+>
+> > +static int nct7201_write_event_value(struct iio_dev *indio_dev,
+> > +                                  const struct iio_chan_spec *chan,
+> > +                                  enum iio_event_type type,
+> > +                                  enum iio_event_direction dir,
+> > +                                  enum iio_event_info info,
+> > +                                  int val, int val2)
+> > +{
+> > +     struct nct7201_chip_info *chip =3D iio_priv(indio_dev);
+>
+> > +     int  err =3D 0;
+>
+> Useless assignment.
+>
+
+> > +     if (chan->type !=3D IIO_VOLTAGE)
+> > +             return -EOPNOTSUPP;
+> > +
+> > +     if (info !=3D IIO_EV_INFO_VALUE)
+> > +             return -EOPNOTSUPP;
+> > +
+> > +     if (dir =3D=3D IIO_EV_DIR_FALLING) {
+> > +             err =3D regmap_write(chip->regmap16, NCT7201_REG_VIN_LOW_=
+LIMIT(chan->address),
+> > +                                FIELD_PREP(NCT7201_REG_VIN_MASK, val))=
+;
+> > +             if (err < 0)
+> > +                     return err;
+> > +     } else {
+> > +             err =3D regmap_write(chip->regmap16, NCT7201_REG_VIN_HIGH=
+_LIMIT(chan->address),
+> > +                                FIELD_PREP(NCT7201_REG_VIN_MASK, val))=
+;
+> > +             if (err < 0)
+> > +                     return err;
 > > +     }
 > > +
-> > +     return regmap_write(st->regmap, ADXL345_REG_TIME_INACT, val);
-> >  }
-> >
+> > +     return 0;
 >
-> > @@ -1546,10 +1697,18 @@ int adxl345_core_probe(struct device *dev, stru=
-ct regmap *regmap,
-> >               if (ret)
-> >                       return ret;
-> >
-> > +             ret =3D regmap_write(st->regmap, ADXL345_REG_TIME_INACT, =
-3);
-> > +             if (ret)
-> > +                     return ret;
+>         if (dir =3D=3D IIO_EV_DIR_FALLING) {
+>                 err =3D regmap_write(chip->regmap16, NCT7201_REG_VIN_LOW_=
+LIMIT(chan->address),
+>                                    FIELD_PREP(NCT7201_REG_VIN_MASK, val))=
+;
+>         } else {
+>                 err =3D regmap_write(chip->regmap16, NCT7201_REG_VIN_HIGH=
+_LIMIT(chan->address),
+>                                    FIELD_PREP(NCT7201_REG_VIN_MASK, val))=
+;
+>         }
+>         return err;
+>
+>
+> > +}
+>
+> ...
+>
+> > +static int nct7201_write_event_config(struct iio_dev *indio_dev,
+> > +                                   const struct iio_chan_spec *chan,
+> > +                                   enum iio_event_type type,
+> > +                                   enum iio_event_direction dir,
+> > +                                   bool state)
+> > +{
+> > +     struct nct7201_chip_info *chip =3D iio_priv(indio_dev);
+> > +     unsigned int mask;
+> > +     int err;
 > > +
-> >               ret =3D regmap_write(st->regmap, ADXL345_REG_THRESH_ACT, =
-6);
-> >               if (ret)
-> >                       return ret;
-> >
-> > +             ret =3D regmap_write(st->regmap, ADXL345_REG_THRESH_INACT=
-, 4);
->
-> Comments on defaults are good.
->
-> > +             if (ret)
-> > +                     return ret;
+> > +     if (chan->type !=3D IIO_VOLTAGE)
+> > +             return -EOPNOTSUPP;
 > > +
-> >               ret =3D regmap_write(st->regmap, ADXL345_REG_THRESH_TAP, =
-tap_threshold);
-> >               if (ret)
-> >                       return ret;
+> > +     mask =3D BIT(chan->address);
+> > +
+> > +     if (state)
+> > +             chip->vin_mask |=3D mask;
+> > +     else
+> > +             chip->vin_mask &=3D ~mask;
+>
+> > +     if (chip->num_vin_channels <=3D 8) {
+> > +             err =3D regmap_write(chip->regmap, NCT7201_REG_CHANNEL_EN=
+ABLE_1,
+> > +                                chip->vin_mask);
+> > +             if (err < 0)
+> > +                     return err;
+> > +     } else {
+> > +             err =3D regmap_bulk_write(chip->regmap, NCT7201_REG_CHANN=
+EL_ENABLE_1,
+> > +                                     &chip->vin_mask, sizeof(chip->vin=
+_mask));
+> > +             if (err < 0)
+> > +                     return err;
+> > +     }
+> > +
+> > +     return 0;
+>
+> Same as above.
+>
+> > +}
+>
+> ...
+>
+> > +static int nct7201_init_chip(struct nct7201_chip_info *chip)
+> > +{
+> > +     u8 data[2] =3D {0};
+>
+> '0' is not needed. Shouldn't this be __le16 or __be16 instead?
+>
+
++ __be16 data =3D NCT7201_REG_CHANNEL_ENABLE_MASK;
+
+> > +     unsigned int value;
+> > +     int err;
+> > +
+> > +     err =3D regmap_write(chip->regmap, NCT7201_REG_CONFIGURATION,
+> > +                        NCT7201_BIT_CONFIGURATION_RESET);
+> > +     if (err < 0)
+> > +             return dev_err_probe(&chip->client->dev, -EIO,
+>
+>         struct device *dev =3D &chip->client->dev;
+>
+> at the top of the function will help a lot in tiding up the below code.
+>
+> Shadowed error code, why?
+>
+
+Do not shadow the return code by -EIO and let the regmap API caller decide.
+
+> > +                                  "Failed to write NCT7201_REG_CONFIGU=
+RATION\n");
+> > +
+> > +     /*
+> > +      * After about 25 msecs, the device should be ready and then the =
+Power
+> > +      * Up bit will be set to 1. If not, wait for it.
+> > +      */
+> > +     mdelay(25);
+>
+> No sleep? Why? Can't you use fsleep()?
+>
+
++ msleep(25);
+
+> > +     err =3D regmap_read(chip->regmap, NCT7201_REG_BUSY_STATUS, &value=
+);
+> > +     if (err < 0)
+> > +             return err;
+> > +     if (!(value & NCT7201_BIT_PWR_UP))
+> > +             return dev_err_probe(&chip->client->dev, -EIO,
+>
+> Shadowed error code, why?
+
+Do not shadow the return code by -EIO and let the regmap API caller decide.
+
+>
+> > +                                  "Failed to power up after reset\n");
+> > +
+> > +     /* Enable Channel */
+> > +     if (chip->num_vin_channels <=3D 8) {
+> > +             data[0] =3D NCT7201_REG_CHANNEL_ENABLE_1_MASK;
+> > +             err =3D regmap_write(chip->regmap, NCT7201_REG_CHANNEL_EN=
+ABLE_1, data[0]);
+> > +             if (err < 0)
+> > +                     return dev_err_probe(&chip->client->dev, -EIO,
+>
+> Why error code is shadowed?
+>
+
+Do not shadow the return code by -EIO and let the regmap API caller decide.
+
+> > +                                          "Failed to write NCT7201_REG=
+_CHANNEL_ENABLE_1\n");
+> > +     } else {
+> > +             data[0] =3D NCT7201_REG_CHANNEL_ENABLE_1_MASK;
+> > +             data[1] =3D NCT7201_REG_CHANNEL_ENABLE_2_MASK;
+> > +             err =3D regmap_bulk_write(chip->regmap, NCT7201_REG_CHANN=
+EL_ENABLE_1,
+> > +                                     data, ARRAY_SIZE(data));
+> > +             if (err < 0)
+> > +                     return dev_err_probe(&chip->client->dev, -EIO,
+>
+> Ditto.
+>
+> > +                                          "Failed to write NCT7201_REG=
+_CHANNEL_ENABLE_1 and NCT7201_REG_CHANNEL_ENABLE_2\n");
+> > +     }
+>
+> Just make it 16-bit type, define one value and use just simple English
+> in the error message: "Failed to write channel enable mask\n");
+>
+> Same to all your error messages.
+>
+
+We would examine all the error messages in simple English.
+
+> > +     chip->vin_mask =3D get_unaligned_le16(data);
+> > +
+> > +     /* Start monitoring if needed */
+> > +     err =3D regmap_read(chip->regmap, NCT7201_REG_CONFIGURATION, &val=
+ue);
+> > +     if (err < 0)
+> > +             return dev_err_probe(&chip->client->dev, -EIO,
+> > +                                  "Failed to read NCT7201_REG_CONFIGUR=
+ATION\n");
+>
+> > +     regmap_set_bits(chip->regmap, NCT7201_REG_CONFIGURATION, NCT7201_=
+BIT_CONFIGURATION_START);
+>
+> > +     return 0;
+>
+> No error check? Why?
+>
+
++ err =3D regmap_set_bits(chip->regmap, NCT7201_REG_CONFIGURATION,
++       NCT7201_BIT_CONFIGURATION_START);
++ if (err)
++ return dev_err_probe(dev, err, "Failed to start monitoring\n");
+
+
+> > +}
+>
+> ...
+>
+> > +static int nct7201_probe(struct i2c_client *client)
+> > +{
+> > +     const struct nct7201_adc_model_data *model_data;
+>
+>         struct device *dev =3D &client->dev;
+>
+> > +     struct nct7201_chip_info *chip;
+> > +     struct iio_dev *indio_dev;
+> > +     int ret;
+> > +
+> > +     model_data =3D i2c_get_match_data(client);
+> > +     if (!model_data)
+> > +             return -EINVAL;
+>
+> ENODEV is more suitable here.
+>
++ return -ENODEV
+
+> > +
+> > +     indio_dev =3D devm_iio_device_alloc(&client->dev, sizeof(*chip));
+> > +     if (!indio_dev)
+> > +             return -ENOMEM;
+> > +     chip =3D iio_priv(indio_dev);
+> > +
+> > +     chip->regmap =3D devm_regmap_init_i2c(client, &nct7201_regmap8_co=
+nfig);
+> > +     if (IS_ERR(chip->regmap))
+> > +             return dev_err_probe(&client->dev, PTR_ERR(chip->regmap),
+> > +                                  "Failed to init regmap\n");
+> > +
+> > +     chip->regmap16 =3D devm_regmap_init_i2c(client, &nct7201_regmap16=
+_config);
+> > +     if (IS_ERR(chip->regmap16))
+> > +             return dev_err_probe(&client->dev, PTR_ERR(chip->regmap16=
+),
+> > +                                  "Failed to init regmap16\n");
+> > +
+> > +     chip->num_vin_channels =3D model_data->num_vin_channels;
+>
+> > +     chip->client =3D client;
+>
+> How exactly is _client_ used elsewhere? Shouldn't it be just a struct dev=
+ice
+> pointer?
+
+Yes, it is just a struct device pointer.
+In nct7201_init_chip(chip), we would use the chip->client->dev as
+dev_err_probe() parameter
+>
+> > +     ret =3D nct7201_init_chip(chip);
+> > +     if (ret < 0)
+>
+> Do you expect positive returned values? What is their meaning?
+> Why do you skip them?
+>
+
+No, we don't expect positive return values.
+
+> > +             return ret;
+> > +
+> > +     indio_dev->name =3D model_data->model_name;
+> > +     indio_dev->channels =3D model_data->channels;
+> > +     indio_dev->num_channels =3D model_data->num_channels;
+> > +     if (client->irq)
+> > +             indio_dev->info =3D &nct7201_info;
+> > +     else
+> > +             indio_dev->info =3D &nct7201_info_no_irq;
+> > +     indio_dev->modes =3D INDIO_DIRECT_MODE;
+> > +
+> > +     return devm_iio_device_register(&client->dev, indio_dev);
+> > +}
+>
+> --
+> With Best Regards,
+> Andy Shevchenko
+>
 >
 

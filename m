@@ -1,517 +1,146 @@
-Return-Path: <linux-iio+bounces-18079-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18080-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41F5AA88458
-	for <lists+linux-iio@lfdr.de>; Mon, 14 Apr 2025 16:18:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45D35A88523
+	for <lists+linux-iio@lfdr.de>; Mon, 14 Apr 2025 16:36:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6A1D81902229
-	for <lists+linux-iio@lfdr.de>; Mon, 14 Apr 2025 14:11:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4995D19023B0
+	for <lists+linux-iio@lfdr.de>; Mon, 14 Apr 2025 14:24:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EA302DFA35;
-	Mon, 14 Apr 2025 13:41:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 728692C0332;
+	Mon, 14 Apr 2025 14:00:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dJwNylCd"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mCxAurar"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D5CA24729D;
-	Mon, 14 Apr 2025 13:41:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C309028A1EA;
+	Mon, 14 Apr 2025 14:00:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744638104; cv=none; b=N1WRCM+DDEGMSvWo3LFBbPSCmevlpBT8ndqrzJkq9BRAyjiaFgst6NmcR39ANvoFBlUI661e5UtLJbxhA68X/4EXagfL+wmXOyJ3ghe4+iDW16h99VC/nQh82fFTN8n4hlN0TzzjmqJ7+lV6BYjDBQcixawZgArUfODaBRtuvTU=
+	t=1744639210; cv=none; b=SVtOZb8XIf5q9bzXulJfpZe4ZA3U95VKJ5KxOLjFk2JZejvxXGlEMYUuv8OZG9k6JKjoSwB15YpnavIxR4+cZ18YAn6XdeEyx5RODPPbxkqsPlik+DvoZjdMWr65mO+9R6NCByGuaXao4mtW45Q6zesH1tD1kH+RTJ8IshP7vK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744638104; c=relaxed/simple;
-	bh=VFIZ8IUvl6sQu41G6YkpR8xVraIpjUX1phEG6i0UBh4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KVtyu7ims0GRtdnu63wNbDS3CgWN0HSo9Gc7Pqg3A/OvsmOXmxjFqgWQZjxKyOqEp9avB3J1Ox9hrjgLHBQ2OcnQ2Quq7bboWAa9ECPk9dGya+rAn17Xo4pwRoK3Fn5PJkiOC6RzS6zmP6pzGDztQvcPT0BYaoo/dMavjV4dfio=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dJwNylCd; arc=none smtp.client-ip=209.85.218.50
+	s=arc-20240116; t=1744639210; c=relaxed/simple;
+	bh=uO+eV4aZVfBwQEB4CC07gNteKYe4Wixr9odzUwRols4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=I2u3MTKuUJxBul+PmbIsAfJTX6ZQ4Da0pHsRdJhSK0mmTso12Rk+45flJerYee3VjV/7nqOGVwwrq+VCbVHreXawJ4wU4Pg+U5JJb3Czm6q7ZQ5m3xorjivxw1dUoGaBJ++7VUaByOjZMDiQXJfwtjRaR9G6RLy6Jb1+fjA1FtY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mCxAurar; arc=none smtp.client-ip=209.85.210.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-aaee2c5ee6eso684032266b.1;
-        Mon, 14 Apr 2025 06:41:41 -0700 (PDT)
+Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-7399a2dc13fso5836103b3a.2;
+        Mon, 14 Apr 2025 07:00:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744638100; x=1745242900; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=73xHJ9IYiHIaK02xaTMdK7NbfrF6WDOxYWmZYyt7is4=;
-        b=dJwNylCdCqAMh9rhlRUpmT2FEWjZTvZ3PzEdy9z8ZrzOEAyvdtJTOZV+7Bw7kkFH7d
-         QfqtDEZEGC2K54GJBvh043i40Xx9A5pOagaznc2MYeZQUfqPutG5a4/ZHcbkWtlQnuug
-         jNOQqgOoWK5S5mNf/BtXrtFuhLHa++p7yRghcFnysiF7MaoYxk5honll9FQHRgGXfm7W
-         XQwHuES2/WzjCrP4wNeIXWbc+iQiPi6K40UUDG0/rnWAeZrWxqhqCMbxb2fm8IOEVIPL
-         GoTyw15D+px2kCX+OcMaEiR1iGyN/KfFDtgcLBNiqZJTN+14dW1u1SK5An1RiHWQcoc/
-         WrZw==
+        d=gmail.com; s=20230601; t=1744639208; x=1745244008; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=VC1oKsvn3gXo/XMH+Dp5lmVzBwV+v49dkge2W+EDw4w=;
+        b=mCxAurarGo5GDqBZPmr0TLqXy4PPLg/ex5MfOAincp+g1U361ytb/sm4/kcHHeYLZO
+         7tXmnhsmE1gqilbCKPf4p5N71j60H3bI/50yfWcF2LyIh5PIhhg2xHmApl8mdI4jn9H6
+         W23vLp7O6aPEadCxd54JEEh6SAdf7UN49GyOhkFwESU768Wk3cYrPFDk9mOrgXvG/xjZ
+         nUghyKkSynku1ObVlEOYPDMjbSS8Zv/Vo4DfwtRNfYcHZpQVCy+LpU/pyTw1Jw38na9r
+         Cl1kFt6oBU5BFexw+fh3n68WePjTiHUR7wjq3fhwNI/sq1jXfPomwWUKd7hafyCGSk8U
+         +TCA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744638100; x=1745242900;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=73xHJ9IYiHIaK02xaTMdK7NbfrF6WDOxYWmZYyt7is4=;
-        b=kXwBBToDa9a/9JQVBdvCTVHpUrwnQ9cslx17JGRWVo6TdX6+tPgPqOIBXPCWMxbx1N
-         RdVr1tL/UdrOy8zsqJw0exg7F0H2ZPcp9yQU8s1DFTWNTkxOPOeh5iZXK0OL2vKlJ/XN
-         XF38U0FTI+b7DL47sitq8G7lLQmKFFgOZ0CnaRUGL+J7InVwYwxuOW4YmALOD+216LGR
-         O7Dz7LrYn7oWpxz6EP7M5o4r8Y6Zn1Nw7zRNMglX+z+bO/Mm2NpVx7i2g9c5OJP/VvzB
-         vxthz8rlysucz0JmMUJKLJJdF8e/2ZZivYsIz4F9O4AT7Y7gEGvRd5Dx6UTb/42T8/pH
-         R/iw==
-X-Forwarded-Encrypted: i=1; AJvYcCU4WjMXcS3kUSK1jNZb/dEFMkMKrANxbbdBgHzVhWtO9fUjYBWhPZruAdRW22W+I9ZPx1/EUEV5UmuW@vger.kernel.org, AJvYcCUjQfSOcrLuU8SPqbItUoE9KmHuUQmI26Lh0oOuD570HxtUFUI4vZwLPJQcmLvBe2AML3RJfFwAyV3W9YGO@vger.kernel.org, AJvYcCXUTcqJ0GFPdMOgAgkLhFgD9JBkIdwTH1SJ4FTT/DgnlUAkwfRyAnzbbIoujLCgU0APUB5U5nDWLotp@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywqk3mi7lDbytJkI4OddnHA7rcYZq5H7be5JYjSYF2punu5j7rD
-	W22pGSnG3WbZSuoNIsWnm4ocyWHXgmAIxY0XDZadLbYFvY1416npYjJSgzOvajGOEi36vrC1DCW
-	Bm4lT+nEDZOHuh+7wyiUeaQtM6nY=
-X-Gm-Gg: ASbGncsAS4gawhGZKp0vlIVIyLK5gs0h/BXKq7mJ4bG+MLixPF9Fc4XqA+UCgAmmipx
-	LXsIqoIbTS0o7pnBYeu/Yk7i/MaWJGryWTpPT3j4F57pzaC+WmrfzTKW31HnO/fTff+ca5Z5EuU
-	914caiG6oOFW9vLH3zGgPlsQ==
-X-Google-Smtp-Source: AGHT+IEUBXB+ktsYxUFxin7yI8JSpLsDLbeEGr6D25mEE6RXhiuDW8CRdDgitNFauJwognP5bX/GANHUvSy3sHEAg7Q=
-X-Received: by 2002:a17:907:944e:b0:ac7:81b2:c6e5 with SMTP id
- a640c23a62f3a-acad36d04fdmr1043991366b.55.1744638099971; Mon, 14 Apr 2025
- 06:41:39 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1744639208; x=1745244008;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=VC1oKsvn3gXo/XMH+Dp5lmVzBwV+v49dkge2W+EDw4w=;
+        b=ocSzbnSa7jmiL3OSdDQ1qS4BaIhV1YXMHuMF4HeIANXR/+srXBPhmLT7Nsvke047Gw
+         eC0ztRj9hRppd6L5sZjNJSxiAUm+XcyNaJuzCl3S9/uBBp+tfb1h523AjwgIV/qYrsqb
+         Tu82rO9L8Ecal+qfMBFA4SrigUokiQFXqnLovd+kCvg+6eJZpMtU1dSWEZBsT5tAfq9m
+         z/PYUUdgCi7px9f1fsiaSTuGs6tFInd84kEPja4S1iYz97TsYy1wpXUGDIAxkIeCGpLa
+         iBcOPKHFVNjO8z8AR/wvH9QkeAOdWVunE1NHZ/8vTGetrUonseOmGxmsYzi/TUWJryPl
+         m/vg==
+X-Forwarded-Encrypted: i=1; AJvYcCV6a1JB5b8LTTK5wFk8rejtBsAoueA9I8V1W0RhSSehq4BohBA5lZy0EnsHnRm7AioO9EhJ5EiijpTu@vger.kernel.org, AJvYcCVGzTR8SdavgAoF7T+2qEGSN/MEHaFp68xGWIe7xrN1Hs0txz56FoEKX6AZio87y+8UBDIyaqJlj1Xz0bOC@vger.kernel.org, AJvYcCXBJEMWLj42VqKodjFd7cES3lxZSmKUwc0dCmWeTP/PGgo88ysTeP1aTgUlSkBaBkZxPtV+HxAuZJAC@vger.kernel.org
+X-Gm-Message-State: AOJu0YwvaHBdz5M2969OETqby//R6zlFRDSjHaO0zlY895c4AFtMK3CD
+	Rt2m2U9vAIcUpcTNRiOQBRWYmkFOxqA7t1YE7Jk8c6X0Qk/Za1Y0
+X-Gm-Gg: ASbGncuUDoaz/VNw5iQf1JG39OenAwN6F3pfiAtE7RcthZ+3q1QozGOeqeZ6kTOvzsT
+	28E6MHnKGiyHNJAj0AhbHg6hHeiAvWeIQFwIcHCmFGhaXD4YZRCmLk+q7vJd5bza6dIjd46Ec0e
+	tl1S7PI+DtlkBIuoHy+6DnREJIdAd7kJLwayOnRep3yJdQ7083NK7ePb83ENmsv08aIf2TI6Zc+
+	TgAXPdFZXuS7asazql+tdDMxo+gEPH08eu2rXUT/VSb8diO1nsDE+Y5sVYvNMNUAfcmOt/tngVV
+	+E1baf+3gp1XtgpNyWe5XILahR7s7Q6jnHGdDCRXXAcBn4fT
+X-Google-Smtp-Source: AGHT+IEkvLlbcPEcypR/Qtt7sHwVK3dG3MFbG7DrjmG7RajsJrDFKOd6e/1/23IkcgiQxLcY6pjA2A==
+X-Received: by 2002:a05:6a00:3a25:b0:739:b1df:2410 with SMTP id d2e1a72fcca58-73bd12a1eacmr16940619b3a.20.1744639207554;
+        Mon, 14 Apr 2025 07:00:07 -0700 (PDT)
+Received: from localhost ([2804:30c:92d:f600:d5e4:543:c403:4767])
+        by smtp.gmail.com with UTF8SMTPSA id d2e1a72fcca58-73bd22f0fddsm6603043b3a.112.2025.04.14.07.00.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 14 Apr 2025 07:00:06 -0700 (PDT)
+Date: Mon, 14 Apr 2025 11:01:16 -0300
+From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Nuno =?iso-8859-1?Q?S=E1?= <noname.nuno@gmail.com>,
+	Marcelo Schmitt <marcelo.schmitt@analog.com>,
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Ana-Maria Cusco <ana-maria.cusco@analog.com>, lars@metafoo.de,
+	Michael.Hennerich@analog.com, dlechner@baylibre.com,
+	nuno.sa@analog.com, andy@kernel.org, robh@kernel.org,
+	krzk+dt@kernel.org, conor+dt@kernel.org
+Subject: Re: [PATCH v1 2/7] iio: adc: Add basic support for AD4170
+Message-ID: <Z_0VLLmnefbzOj2y@debian-BULLSEYE-live-builder-AMD64>
+References: <cover.1744200264.git.marcelo.schmitt@analog.com>
+ <5f79007f0b9f9f67360d04fb904b6a59111a4ebe.1744200264.git.marcelo.schmitt@analog.com>
+ <9c115086bd574b6c778a093143ebf54e14d7202b.camel@gmail.com>
+ <Z_k3e1DfxmcJgQeu@debian-BULLSEYE-live-builder-AMD64>
+ <20250412171920.531993c1@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250409012351.2543450-1-j2anfernee@gmail.com>
- <20250409012351.2543450-3-j2anfernee@gmail.com> <Z_aeEuIk9brES6dM@smile.fi.intel.com>
-In-Reply-To: <Z_aeEuIk9brES6dM@smile.fi.intel.com>
-From: Yu-Hsian Yang <j2anfernee@gmail.com>
-Date: Mon, 14 Apr 2025 21:40:35 +0800
-X-Gm-Features: ATxdqUG2e8O27VtT5a1XgBKf9cFzDJdly9huEPojacM_h6OgLdhDriMAHMCYe70
-Message-ID: <CA+4VgcKG2EEsicysds0zu7y1xDhg88m3heGUBaQZ7-MVWanCaw@mail.gmail.com>
-Subject: Re: [PATCH v5 2/2] iio: adc: add support for Nuvoton NCT7201
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: jic23@kernel.org, lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org, 
-	conor+dt@kernel.org, dlechner@baylibre.com, nuno.sa@analog.com, 
-	javier.carrasco.cruz@gmail.com, gstols@baylibre.com, tgamblin@baylibre.com, 
-	alisadariana@gmail.com, antoniu.miclaus@analog.com, eblanc@baylibre.com, 
-	jstephan@baylibre.com, matteomartelli3@gmail.com, 
-	angelogioacchino.delregno@collabora.com, herve.codina@bootlin.com, 
-	marcelo.schmitt@analog.com, chanh@os.amperecomputing.com, KWLIU@nuvoton.com, 
-	yhyang2@nuvoton.com, linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250412171920.531993c1@jic23-huawei>
 
-Dear Andy,
+> > > > +	ret = devm_regulator_get_enable_read_voltage(dev, "refin1n");
+> > > > +	if (ret < 0 && ret != -ENODEV)
+> > > > +		return dev_err_probe(dev, ret, "Failed to get REFIN- voltage.\n");
+> > > > +
+> > > > +	/* Negative supplies are assumed to provide negative voltage */
+> > > > +	st->vrefs_uv[AD4170_REFIN1N_SUP] = ret == -ENODEV ? -ENODEV : -ret;  
+> > > 
+> > > Maybe to early for me but the comment does not make it clear to me why the negation?
+> > > Won't the regulator return a negative voltage?  
+> > 
+> > devm_regulator_get_enable_read_voltage(), regulator_get_voltage(), and anything
+> > about reading the regulator voltage returns either a positive voltage value or
+> > a negative error code. I couldn't find out how to read a negative voltage with
+> > regulator API. So, for now, this is making the simplifying assumption that
+> > the negative end of external reference supplies is always below GND level (even
+> > though they could be positive).
+> 
+> Hmm. We went around this a long time back but I can't remember what the outcome was...
+> https://lore.kernel.org/linux-iio/544AC56F16B56944AEC3BD4E3D59177137546EF3FC@LIMKCMBX1.ad.analog.com/ 
+> looks like the thread.
+> 
+> Take a look at dac/ad5791.c for example of a negative reference
 
-Thanks for the review and the comments.
-Will fix all.
+AD5791 references are always either only negative (V_REFNF, V_REFNS) or only
+positive (V_REFPS, V_REFPF) so the driver is fine with only adding a negative
+sign to the voltage obtained from the negative supply.
 
-Andy Shevchenko <andriy.shevchenko@linux.intel.com> =E6=96=BC 2025=E5=B9=B4=
-4=E6=9C=8810=E6=97=A5 =E9=80=B1=E5=9B=9B =E4=B8=8A=E5=8D=8812:19=E5=AF=AB=
-=E9=81=93=EF=BC=9A
->
-> On Wed, Apr 09, 2025 at 09:23:51AM +0800, Eason Yang wrote:
-> > Add Nuvoton NCT7201/NCT7202 system voltage monitor 12-bit ADC driver
-> >
-> > NCT7201/NCT7202 supports up to 12 analog voltage monitor inputs and up =
-to
-> > 4 SMBus addresses by ADDR pin. Meanwhile, ALERT# hardware event pins fo=
-r
-> > independent alarm signals, and all the threshold values could be set fo=
-r
-> > system protection without any timing delay. It also supports reset inpu=
-t
-> > RSTIN# to recover system from a fault condition.
-> >
-> > Currently, only single-edge mode conversion and threshold events are
-> > supported.
->
-> > +#include <linux/array_size.h>
-> > +#include <linux/bitfield.h>
-> > +#include <linux/bits.h>
-> > +#include <linux/delay.h>
-> > +#include <linux/device.h>
-> > +#include <linux/err.h>
-> > +#include <linux/i2c.h>
-> > +#include <linux/mod_devicetable.h>
-> > +#include <linux/module.h>
-> > +#include <linux/regmap.h>
-> > +#include <linux/types.h>
-> > +#include <linux/unaligned.h>
->
-> ...
->
-> > +#define NCT7201_VIN_MAX                              12
->
-> Is this in volts? Can you add a unit suffix?
+AD4170 external references can be set to a negative voltage in some setups, or
+to positive voltages on other setups. They're also constrained on the resulting
+nominal reference voltage (REFIN+ − REFIN−) which is typically 2.5V but can
+range from 1V minmum AVDD maximum. From that perspective, maybe this could be
+abstracted as a differential voltage supply? Though, the multiplexer in the
+chip can bet set to connect individual REFIN+, REFIN−, ..., REFIN2- supplies
+ends to ADC analog inputs so an API like get_voltage(reg, &voltage)) would make
+it easier to handle those configurations.
 
-Rename it as
-#define NCT7201_MAX_CHANNEL 12
+From the mentioned thread, I see no hard objection to extending the regulator
+framework in that sense so I'll start working on something to provide better
+support for these cases where we have negative voltage.
 
->
-> ...
->
-> > +#define NCT7201_IN_SCALING                           4995
-> > +#define NCT720X_IN_SCALING_FACTOR         10000
-> Interesting number, just want to confirm it's indeed 4995 and not 4095.
->
-
-These definitions are for real voltage calculations,
-the formula is Voltage(V) =3D 13bitCountValue * 0.0004995
-However, the definitions are not used anymore.
-So remove them.
-
-> ...
->
-> > +static int nct7201_read_event_value(struct iio_dev *indio_dev,
-> > +                                 const struct iio_chan_spec *chan,
-> > +                                 enum iio_event_type type,
-> > +                                 enum iio_event_direction dir,
-> > +                                 enum iio_event_info info,
-> > +                                 int *val, int *val2)
-> > +{
-> > +     struct nct7201_chip_info *chip =3D iio_priv(indio_dev);
-> > +     unsigned int value;
-> > +     int err;
-> > +
-> > +     if (chan->type !=3D IIO_VOLTAGE)
-> > +             return -EOPNOTSUPP;
-> > +
-> > +     if (info !=3D IIO_EV_INFO_VALUE)
-> > +             return -EINVAL;
->
-> > +     if (dir =3D=3D IIO_EV_DIR_FALLING) {
-> > +             err =3D regmap_read(chip->regmap16, NCT7201_REG_VIN_LOW_L=
-IMIT(chan->address),
-> > +                               &value);
-> > +             if (err < 0)
-> > +                     return err;
-> > +     } else {
-> > +             err =3D regmap_read(chip->regmap16, NCT7201_REG_VIN_HIGH_=
-LIMIT(chan->address),
-> > +                               &value);
-> > +             if (err < 0)
-> > +                     return err;
-> > +     }
->
->         if (dir =3D=3D IIO_EV_DIR_FALLING) {
->                 err =3D regmap_read(chip->regmap16, NCT7201_REG_VIN_LOW_L=
-IMIT(chan->address),
->                                   &value);
->         } else {
->                 err =3D regmap_read(chip->regmap16, NCT7201_REG_VIN_HIGH_=
-LIMIT(chan->address),
->                                   &value);
->         }
->         if (err)
->                 return err;
->
-> Here and elsewhere why ' < 0' is used? Do you expect positive return valu=
-es
-> from those?
->
-
-In regmap_read function, A value of zero will be returned on success,
-a negative errno will be returned in error cases.
-We don't have a positive return case.
-
-
-> > +     *val =3D FIELD_GET(NCT7201_REG_VIN_MASK, value);
-> > +
-> > +     return IIO_VAL_INT;
-> > +}
->
-> ...
->
-> > +static int nct7201_write_event_value(struct iio_dev *indio_dev,
-> > +                                  const struct iio_chan_spec *chan,
-> > +                                  enum iio_event_type type,
-> > +                                  enum iio_event_direction dir,
-> > +                                  enum iio_event_info info,
-> > +                                  int val, int val2)
-> > +{
-> > +     struct nct7201_chip_info *chip =3D iio_priv(indio_dev);
->
-> > +     int  err =3D 0;
->
-> Useless assignment.
->
-
-> > +     if (chan->type !=3D IIO_VOLTAGE)
-> > +             return -EOPNOTSUPP;
-> > +
-> > +     if (info !=3D IIO_EV_INFO_VALUE)
-> > +             return -EOPNOTSUPP;
-> > +
-> > +     if (dir =3D=3D IIO_EV_DIR_FALLING) {
-> > +             err =3D regmap_write(chip->regmap16, NCT7201_REG_VIN_LOW_=
-LIMIT(chan->address),
-> > +                                FIELD_PREP(NCT7201_REG_VIN_MASK, val))=
-;
-> > +             if (err < 0)
-> > +                     return err;
-> > +     } else {
-> > +             err =3D regmap_write(chip->regmap16, NCT7201_REG_VIN_HIGH=
-_LIMIT(chan->address),
-> > +                                FIELD_PREP(NCT7201_REG_VIN_MASK, val))=
-;
-> > +             if (err < 0)
-> > +                     return err;
-> > +     }
-> > +
-> > +     return 0;
->
->         if (dir =3D=3D IIO_EV_DIR_FALLING) {
->                 err =3D regmap_write(chip->regmap16, NCT7201_REG_VIN_LOW_=
-LIMIT(chan->address),
->                                    FIELD_PREP(NCT7201_REG_VIN_MASK, val))=
-;
->         } else {
->                 err =3D regmap_write(chip->regmap16, NCT7201_REG_VIN_HIGH=
-_LIMIT(chan->address),
->                                    FIELD_PREP(NCT7201_REG_VIN_MASK, val))=
-;
->         }
->         return err;
->
->
-> > +}
->
-> ...
->
-> > +static int nct7201_write_event_config(struct iio_dev *indio_dev,
-> > +                                   const struct iio_chan_spec *chan,
-> > +                                   enum iio_event_type type,
-> > +                                   enum iio_event_direction dir,
-> > +                                   bool state)
-> > +{
-> > +     struct nct7201_chip_info *chip =3D iio_priv(indio_dev);
-> > +     unsigned int mask;
-> > +     int err;
-> > +
-> > +     if (chan->type !=3D IIO_VOLTAGE)
-> > +             return -EOPNOTSUPP;
-> > +
-> > +     mask =3D BIT(chan->address);
-> > +
-> > +     if (state)
-> > +             chip->vin_mask |=3D mask;
-> > +     else
-> > +             chip->vin_mask &=3D ~mask;
->
-> > +     if (chip->num_vin_channels <=3D 8) {
-> > +             err =3D regmap_write(chip->regmap, NCT7201_REG_CHANNEL_EN=
-ABLE_1,
-> > +                                chip->vin_mask);
-> > +             if (err < 0)
-> > +                     return err;
-> > +     } else {
-> > +             err =3D regmap_bulk_write(chip->regmap, NCT7201_REG_CHANN=
-EL_ENABLE_1,
-> > +                                     &chip->vin_mask, sizeof(chip->vin=
-_mask));
-> > +             if (err < 0)
-> > +                     return err;
-> > +     }
-> > +
-> > +     return 0;
->
-> Same as above.
->
-> > +}
->
-> ...
->
-> > +static int nct7201_init_chip(struct nct7201_chip_info *chip)
-> > +{
-> > +     u8 data[2] =3D {0};
->
-> '0' is not needed. Shouldn't this be __le16 or __be16 instead?
->
-
-+ __be16 data =3D NCT7201_REG_CHANNEL_ENABLE_MASK;
-
-> > +     unsigned int value;
-> > +     int err;
-> > +
-> > +     err =3D regmap_write(chip->regmap, NCT7201_REG_CONFIGURATION,
-> > +                        NCT7201_BIT_CONFIGURATION_RESET);
-> > +     if (err < 0)
-> > +             return dev_err_probe(&chip->client->dev, -EIO,
->
->         struct device *dev =3D &chip->client->dev;
->
-> at the top of the function will help a lot in tiding up the below code.
->
-> Shadowed error code, why?
->
-
-Do not shadow the return code by -EIO and let the regmap API caller decide.
-
-> > +                                  "Failed to write NCT7201_REG_CONFIGU=
-RATION\n");
-> > +
-> > +     /*
-> > +      * After about 25 msecs, the device should be ready and then the =
-Power
-> > +      * Up bit will be set to 1. If not, wait for it.
-> > +      */
-> > +     mdelay(25);
->
-> No sleep? Why? Can't you use fsleep()?
->
-
-+ msleep(25);
-
-> > +     err =3D regmap_read(chip->regmap, NCT7201_REG_BUSY_STATUS, &value=
-);
-> > +     if (err < 0)
-> > +             return err;
-> > +     if (!(value & NCT7201_BIT_PWR_UP))
-> > +             return dev_err_probe(&chip->client->dev, -EIO,
->
-> Shadowed error code, why?
-
-Do not shadow the return code by -EIO and let the regmap API caller decide.
-
->
-> > +                                  "Failed to power up after reset\n");
-> > +
-> > +     /* Enable Channel */
-> > +     if (chip->num_vin_channels <=3D 8) {
-> > +             data[0] =3D NCT7201_REG_CHANNEL_ENABLE_1_MASK;
-> > +             err =3D regmap_write(chip->regmap, NCT7201_REG_CHANNEL_EN=
-ABLE_1, data[0]);
-> > +             if (err < 0)
-> > +                     return dev_err_probe(&chip->client->dev, -EIO,
->
-> Why error code is shadowed?
->
-
-Do not shadow the return code by -EIO and let the regmap API caller decide.
-
-> > +                                          "Failed to write NCT7201_REG=
-_CHANNEL_ENABLE_1\n");
-> > +     } else {
-> > +             data[0] =3D NCT7201_REG_CHANNEL_ENABLE_1_MASK;
-> > +             data[1] =3D NCT7201_REG_CHANNEL_ENABLE_2_MASK;
-> > +             err =3D regmap_bulk_write(chip->regmap, NCT7201_REG_CHANN=
-EL_ENABLE_1,
-> > +                                     data, ARRAY_SIZE(data));
-> > +             if (err < 0)
-> > +                     return dev_err_probe(&chip->client->dev, -EIO,
->
-> Ditto.
->
-> > +                                          "Failed to write NCT7201_REG=
-_CHANNEL_ENABLE_1 and NCT7201_REG_CHANNEL_ENABLE_2\n");
-> > +     }
->
-> Just make it 16-bit type, define one value and use just simple English
-> in the error message: "Failed to write channel enable mask\n");
->
-> Same to all your error messages.
->
-
-We would examine all the error messages in simple English.
-
-> > +     chip->vin_mask =3D get_unaligned_le16(data);
-> > +
-> > +     /* Start monitoring if needed */
-> > +     err =3D regmap_read(chip->regmap, NCT7201_REG_CONFIGURATION, &val=
-ue);
-> > +     if (err < 0)
-> > +             return dev_err_probe(&chip->client->dev, -EIO,
-> > +                                  "Failed to read NCT7201_REG_CONFIGUR=
-ATION\n");
->
-> > +     regmap_set_bits(chip->regmap, NCT7201_REG_CONFIGURATION, NCT7201_=
-BIT_CONFIGURATION_START);
->
-> > +     return 0;
->
-> No error check? Why?
->
-
-+ err =3D regmap_set_bits(chip->regmap, NCT7201_REG_CONFIGURATION,
-+       NCT7201_BIT_CONFIGURATION_START);
-+ if (err)
-+ return dev_err_probe(dev, err, "Failed to start monitoring\n");
-
-
-> > +}
->
-> ...
->
-> > +static int nct7201_probe(struct i2c_client *client)
-> > +{
-> > +     const struct nct7201_adc_model_data *model_data;
->
->         struct device *dev =3D &client->dev;
->
-> > +     struct nct7201_chip_info *chip;
-> > +     struct iio_dev *indio_dev;
-> > +     int ret;
-> > +
-> > +     model_data =3D i2c_get_match_data(client);
-> > +     if (!model_data)
-> > +             return -EINVAL;
->
-> ENODEV is more suitable here.
->
-+ return -ENODEV
-
-> > +
-> > +     indio_dev =3D devm_iio_device_alloc(&client->dev, sizeof(*chip));
-> > +     if (!indio_dev)
-> > +             return -ENOMEM;
-> > +     chip =3D iio_priv(indio_dev);
-> > +
-> > +     chip->regmap =3D devm_regmap_init_i2c(client, &nct7201_regmap8_co=
-nfig);
-> > +     if (IS_ERR(chip->regmap))
-> > +             return dev_err_probe(&client->dev, PTR_ERR(chip->regmap),
-> > +                                  "Failed to init regmap\n");
-> > +
-> > +     chip->regmap16 =3D devm_regmap_init_i2c(client, &nct7201_regmap16=
-_config);
-> > +     if (IS_ERR(chip->regmap16))
-> > +             return dev_err_probe(&client->dev, PTR_ERR(chip->regmap16=
-),
-> > +                                  "Failed to init regmap16\n");
-> > +
-> > +     chip->num_vin_channels =3D model_data->num_vin_channels;
->
-> > +     chip->client =3D client;
->
-> How exactly is _client_ used elsewhere? Shouldn't it be just a struct dev=
-ice
-> pointer?
-
-Yes, it is just a struct device pointer.
-In nct7201_init_chip(chip), we would use the chip->client->dev as
-dev_err_probe() parameter
->
-> > +     ret =3D nct7201_init_chip(chip);
-> > +     if (ret < 0)
->
-> Do you expect positive returned values? What is their meaning?
-> Why do you skip them?
->
-
-No, we don't expect positive return values.
-
-> > +             return ret;
-> > +
-> > +     indio_dev->name =3D model_data->model_name;
-> > +     indio_dev->channels =3D model_data->channels;
-> > +     indio_dev->num_channels =3D model_data->num_channels;
-> > +     if (client->irq)
-> > +             indio_dev->info =3D &nct7201_info;
-> > +     else
-> > +             indio_dev->info =3D &nct7201_info_no_irq;
-> > +     indio_dev->modes =3D INDIO_DIRECT_MODE;
-> > +
-> > +     return devm_iio_device_register(&client->dev, indio_dev);
-> > +}
->
-> --
-> With Best Regards,
-> Andy Shevchenko
->
->
+Thanks,
+Marcelo
 

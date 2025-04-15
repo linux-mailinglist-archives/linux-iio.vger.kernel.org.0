@@ -1,152 +1,120 @@
-Return-Path: <linux-iio+bounces-18135-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18138-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06E63A8A049
-	for <lists+linux-iio@lfdr.de>; Tue, 15 Apr 2025 15:56:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F870A8A17F
+	for <lists+linux-iio@lfdr.de>; Tue, 15 Apr 2025 16:47:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F7E5445D80
-	for <lists+linux-iio@lfdr.de>; Tue, 15 Apr 2025 13:56:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A0D2B17F07D
+	for <lists+linux-iio@lfdr.de>; Tue, 15 Apr 2025 14:47:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FC661D9A41;
-	Tue, 15 Apr 2025 13:54:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 653971FDE0E;
+	Tue, 15 Apr 2025 14:47:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ku3wig1A"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zk1CgVzY"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE6A01DC9A8;
-	Tue, 15 Apr 2025 13:54:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AB1017A317;
+	Tue, 15 Apr 2025 14:47:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744725264; cv=none; b=Fw3GFsMwhe0YvZgt16p4C/UcAyREW0fsIZT5jte7GQUOQ+WbXGRUrWbfjWMzSk6Jyx1+SKu3r0AUD6OyxG77At5hzKh4lkm5b77HrEI6F2h+7BYeV9rIAdnsXxVcFREUmgyMeDzQvAYI6OpG54Ok5fi1eS1gWuDBu5F5y4YqTmM=
+	t=1744728456; cv=none; b=jPLdLQc5EM8XU/7gtTRaM/IOsexqnC2GYujnK7+nM8/HUX+XBJ4OUjTPRl0UxRU6EMvNepBhv+Ufm4BouX3wvIqF0kVLDDAuKVXGdlTI3u3AI2A89qHrmhdDsdu1GRmcQVsHrlI8WLJQC/rNaFruh7sFnfXtqV51xLanKat05Gs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744725264; c=relaxed/simple;
-	bh=OrjfuIsLyMWBHpdPMqn3UuNzRJEMzPl4gvGx5zjyKQY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qygIf2V/0RNfV9qy7C5u7ZBmw7Kvgw0ncTGrqb7AYDcOxdlYd7qUWZEpsnS2sEthc6b0N2BjXO81/OHY6fYzK5z7EsPyVAoqqIkp7EviR0uDpkHBBOq9U0ZqooePfXP+GwTgkVt/s5op/ctSePOUQnsOCoX9nPAEbohpVWKVbjw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ku3wig1A; arc=none smtp.client-ip=209.85.160.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-47698757053so64454321cf.0;
-        Tue, 15 Apr 2025 06:54:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744725262; x=1745330062; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8u/AmDRTyguVPS15vuo1k2JAoSJfdZVWVLXGNvKqIt0=;
-        b=ku3wig1AiWHBNkRAJfejif03uN3tO2uDfduvHjk+/WRar3/mhNKf4tskEHF7PAmLec
-         Xns4szP/HFvKooK01lO/uOr+Xx+BIU6/qJY3gcKKn3yO7Bw0lqShoXMC0UCSczJWB5fg
-         eXAdTFkk+fiApgT5aqDBaw4HwHCl6FShBaRbsALMPVUYVay99fSmln/FwaRyHMPjZ7Cu
-         F76RtTo8WG1M5xEb90CxeD6RwPHPhK7Wl5MFKaFY6hDFM2SznAthmfjLMJSc3CuS94zK
-         uawmVZZ+HbxwTDWwq+jMqgJ3Bf3ZNR/GURPjwuKQH4NK9yn1lqAowYpQ3K9xTIM7CBYC
-         BRgQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744725262; x=1745330062;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8u/AmDRTyguVPS15vuo1k2JAoSJfdZVWVLXGNvKqIt0=;
-        b=Dh2XmOzOApTxXb2P9aIw+KlfrJXAyCvQ6YtGg530rQcDEi0nWd/ZGSLGF3kYxI9/IE
-         FztDlPIAxS7Qqnhu99dTLhBzd6BHWKFEG0GyBbJacWBwl/IVzJPN/olX9DKXQ4O2dRD0
-         C/8htqLo829vjhFOTig0b+GBwuhugUtcYAFCzyPTSHdRQZFYwPepm7x5fe97g6Eh3myX
-         7xwm1UNeonoCblvuzkR9x4CFGAMockMgWhddGx1PZ0gA2VjAP5HcPUI6JL4Vb4y54ofX
-         U/HL69fNQXRVozGi4pX1sGH+ziR9wkrafTQSou7dl+uc7bUEf45R9u/WHL92TGFcJ4Yw
-         OcZA==
-X-Forwarded-Encrypted: i=1; AJvYcCUiHS2s+crOKWiBTt8m20XWdaxkImHB98GQ8dV1RLb23pHe+mI22DfpKTD3WX4uXNOT6pMohd7B0kQ=@vger.kernel.org, AJvYcCVj+KD9KsaOPVErVNw2BB1ecS/GqbFddxaN+OgkyxbBk+uGNxfSpfd4avaLMQyaXbVeHS7HoePzLteKYijG@vger.kernel.org, AJvYcCXd9swfJtQcwlgjeo1uX8oMAQdabY5mv772EY5ENGc/V/KFl/UBRZkt4PnBw5YiKYHA+tHJ/hQd@vger.kernel.org
-X-Gm-Message-State: AOJu0YyxQyPcSh6V4+Jza6iJUVtrSuaFDaPEb/Ab6xfyKjU5m4Qf6A+R
-	nrsZkTVH5WAgLxBdEvY8jUEuS1smdXESKzvKgY4JW47tAh0KwLbOiTo9VFBDRylj9lq9GWI67q3
-	aLDUSpLsdQ6BIa+M02MNMraUPhAY=
-X-Gm-Gg: ASbGncuJSwTZHfpl7aUbODhJgZJLK23li3TCDlqGkGI0fxaejb1IkZGAQWm5tBbCgDt
-	nVo9rLgemngdrSjlOv3n7jrxjCfvTmCe2btY3f2ZA8uG6AkDA86b4ZlkKiQwavm3n2AkLU3/PUS
-	brFzPOSrVoCPcS8oqfKjDw2fwpl9M7cQPMnaOMY0ZtFO+ryUOj6sYxdClrIRfoGOk=
-X-Google-Smtp-Source: AGHT+IFncftquQsvM6bfh/Y2dgpRTHBlyTEX3Cse3b1bJHNcdPkrggiROQdsJEycAmbcnvsivaFxwRd0WVtvqZwZ3eU=
-X-Received: by 2002:ac8:5ac3:0:b0:478:e507:f6ec with SMTP id
- d75a77b69052e-47977562f45mr289779871cf.23.1744725261700; Tue, 15 Apr 2025
- 06:54:21 -0700 (PDT)
+	s=arc-20240116; t=1744728456; c=relaxed/simple;
+	bh=GW6rmLEB+/jR0gzntBZE6oCSjXW/0GJVVJVpvKoCtfc=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=LUQclM/BKQ3GefStw+qQvBPe4kAgaHQ5UPeVy6Rk8PwQXgmM7I3GAT4iIuid3D4G5HmEN91p2c4LIeI9nsLCo3l67zybIQv307VoCSwtWGcgmALiu739ZEkO8VgGbkaQ5A7QUJH/Bgfzc791Ja24N6oIBXc7ngcH8CU/hJqJLlo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zk1CgVzY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 878D9C4CEE5;
+	Tue, 15 Apr 2025 14:47:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744728455;
+	bh=GW6rmLEB+/jR0gzntBZE6oCSjXW/0GJVVJVpvKoCtfc=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=Zk1CgVzYnx7oMucamAHdVdoOfUm3MSz3BoP5sXAOgTjqF5vv7Fwm3JObOowYPkYPJ
+	 Q5zstOHUGiOwTXgIZZMXB0Crb+6S4FSWMhncbcpo3xoDFggqaix4kk7rnc6v9lxJS5
+	 UJqmhdh3z5pcL8aHmFaYT3c5kryybotKAgziWSZLjLM0CWotnALbvuU0Pxv3QAqcwO
+	 gxtSCPsjoqr2Uo+ZgmvdHC7CdSFlsAU4pN8zc1S/iJCaKiQ00QZMAf+OUQcdljc1bo
+	 DfoRWaHhXmvkyA2akaw3QO7OtRqHMz0VZciqCv6pzBM0k9PUUYaCfmslZwulyZ8q/j
+	 lWuDZP+D7GumA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7D767C369AB;
+	Tue, 15 Apr 2025 14:47:35 +0000 (UTC)
+From: Jean-Baptiste Maneyrol via B4 Relay <devnull+jean-baptiste.maneyrol.tdk.com@kernel.org>
+Subject: [PATCH v2 0/2] Add support for WoM (Wake-on-Motion) feature
+Date: Tue, 15 Apr 2025 16:47:30 +0200
+Message-Id: <20250415-losd-3-inv-icm42600-add-wom-support-v2-0-de94dfb92b7e@tdk.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250414154050.469482-1-gshahrouzi@gmail.com> <1fb5f1c5e61ce386cb431d48296e952bdd560a6c.camel@gmail.com>
-In-Reply-To: <1fb5f1c5e61ce386cb431d48296e952bdd560a6c.camel@gmail.com>
-From: Gabriel Shahrouzi <gshahrouzi@gmail.com>
-Date: Tue, 15 Apr 2025 09:54:00 -0400
-X-Gm-Features: ATxdqUHDElwhcKQXFR5mLMfMHxqVt-H7NGE6w7tSv_4jShaz4NFmHUQo7t9FlX4
-Message-ID: <CAKUZ0zLiP_w-4xOXfBDdZbm+M8yVYvd+A=M73fnRT_kMyWwk7Q@mail.gmail.com>
-Subject: Re: [PATCH v3] iio: adc: Correct conditional logic for store mode
-To: =?UTF-8?B?TnVubyBTw6E=?= <noname.nuno@gmail.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, 
-	Jonathan Cameron <jic23@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-iio@vger.kernel.org, 
-	linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	skhan@linuxfoundation.org, kernelmentees@lists.linuxfoundation.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAIJx/mcC/5WNSw6CMBBAr0Jm7Zhx+GhdeQ/DAmgrE4WSFquGc
+ HcrN3D53uK9BYLxYgKcswW8iRLEjQl4l0HXN+PNoOjEwMQlMRM+XNCYo4wRpRsKroiw0RpfbsD
+ wnCbnZ6SKyRqrdMs5pNLkjZX3drnWiXsJs/OfbRoPP/tfPx6QULUqP1p1qlRZXGZ933dugHpd1
+ y/W0xKX1AAAAA==
+X-Change-ID: 20250220-losd-3-inv-icm42600-add-wom-support-0620fef9db23
+To: Jonathan Cameron <jic23@kernel.org>, 
+ Lars-Peter Clausen <lars@metafoo.de>, David Lechner <dlechner@baylibre.com>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Andy Shevchenko <andy@kernel.org>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1744728454; l=1534;
+ i=jean-baptiste.maneyrol@tdk.com; s=20240923; h=from:subject:message-id;
+ bh=GW6rmLEB+/jR0gzntBZE6oCSjXW/0GJVVJVpvKoCtfc=;
+ b=Yb4lqMPuRKStcCXktJRLJOTaN8pYqhSL6Bbwgc6KcEZO3aE2jCejFsr5xle77v3m3Eir8k3ht
+ sua8y/RfdJ3D12NX37dIHDPeN8OUOWzEix/l2R1JqJpgNHX8XstWl2x
+X-Developer-Key: i=jean-baptiste.maneyrol@tdk.com; a=ed25519;
+ pk=bRqF1WYk0hR3qrnAithOLXSD0LvSu8DUd+quKLxCicI=
+X-Endpoint-Received: by B4 Relay for
+ jean-baptiste.maneyrol@tdk.com/20240923 with auth_id=218
+X-Original-From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+Reply-To: jean-baptiste.maneyrol@tdk.com
 
-On Tue, Apr 15, 2025 at 5:13=E2=80=AFAM Nuno S=C3=A1 <noname.nuno@gmail.com=
-> wrote:
->
-> On Mon, 2025-04-14 at 11:40 -0400, Gabriel Shahrouzi wrote:
-> > The mode setting logic in ad7816_store_mode was reversed due to
-> > incorrect handling of the strcmp return value. strcmp returns 0 on
-> > match, so the `if (strcmp(buf, "full"))` block executed when the
-> > input was not "full".
-> >
-> > This resulted in "full" setting the mode to AD7816_PD (power-down) and
-> > other inputs setting it to AD7816_FULL.
-> >
-> > Fix this by checking it against 0 to correctly check for "full" and
-> > "power-down", mapping them to AD7816_FULL and AD7816_PD respectively.
-> >
-> > Fixes: 7924425db04a ("staging: iio: adc: new driver for AD7816 devices"=
-)
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Gabriel Shahrouzi <gshahrouzi@gmail.com>
-> > ---
->
-> LGTM, do you happen to have this device? It would more interesting to mov=
-e this
-> driver out of staging :)
-Unfortunately, I do not have this device. However, I would still be
-interested in contributing if possible. I was looking over
-https://lore.kernel.org/all/20230716144024.30ded663@jic23-huawei/T/
-where the goal seemed to be to modernize it by replacing the sysfs
-interface with the iio channel. I also looked through the datasheet
-and it seemed to be missing some stuff like a channel that can be
-selected.
->
-> Acked-by: Nuno S=C3=A1 <nuno.sa@analog.com>
->
-> > Changes since v3:
-> >       - Tag stable@vger.kernel.org instead of an email CC
-> >       - Use the correct version for patch
-> > Changes since v2:
-> >       - Add fixes tag that references commit that introduced the bug.
-> >         - Replace sysfs_streq with strcmp.
-> > ---
-> >  drivers/staging/iio/adc/ad7816.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/staging/iio/adc/ad7816.c
-> > b/drivers/staging/iio/adc/ad7816.c
-> > index 6c14d7bcdd675..081b17f498638 100644
-> > --- a/drivers/staging/iio/adc/ad7816.c
-> > +++ b/drivers/staging/iio/adc/ad7816.c
-> > @@ -136,7 +136,7 @@ static ssize_t ad7816_store_mode(struct device *dev=
-,
-> >       struct iio_dev *indio_dev =3D dev_to_iio_dev(dev);
-> >       struct ad7816_chip_info *chip =3D iio_priv(indio_dev);
-> >
-> > -     if (strcmp(buf, "full")) {
-> > +     if (strcmp(buf, "full") =3D=3D 0) {
-> >               gpiod_set_value(chip->rdwr_pin, 1);
-> >               chip->mode =3D AD7816_FULL;
-> >       } else {
+Similar to feature present in older chip, it compares the magnitude of
+the last 2 accel samples against a threshold and returns an interrupt
+even if the value is higher.
+
+WoM maps best to accel x|y|z ROC event. This series add system wakeup
+functionality if WoM is on and wakeup is enabled when system suspends.
+
+This series also prepare the driver for supporting further APEX
+features like pedometer, tilt, ... It introduces an apex structure that
+will hold all APEX settings and track the enable state.
+
+Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+---
+Changes in v2:
+- change struct order to avoir DMA overflow
+- separate wom enable/disable in 2 functions
+- delete mutex rework
+- Link to v1: https://lore.kernel.org/r/20250220-losd-3-inv-icm42600-add-wom-support-v1-0-9b937f986954@tdk.com
+
+---
+Jean-Baptiste Maneyrol (2):
+      iio: imu: inv_icm42600: add WoM support
+      iio: imu: inv_icm42600: add wakeup functionality for Wake-on-Motion
+
+ drivers/iio/imu/inv_icm42600/inv_icm42600.h        |  56 +++-
+ drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c  | 283 ++++++++++++++++++++-
+ drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c |   2 +-
+ drivers/iio/imu/inv_icm42600/inv_icm42600_core.c   | 103 +++++++-
+ 4 files changed, 430 insertions(+), 14 deletions(-)
+---
+base-commit: d3d6cb27a945c6fc7ddd3e7423c4303b4b6bad36
+change-id: 20250220-losd-3-inv-icm42600-add-wom-support-0620fef9db23
+
+Best regards,
+-- 
+Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+
+
 

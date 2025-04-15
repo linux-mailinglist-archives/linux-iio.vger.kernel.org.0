@@ -1,168 +1,122 @@
-Return-Path: <linux-iio+bounces-18122-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18123-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E16C0A88CA7
-	for <lists+linux-iio@lfdr.de>; Mon, 14 Apr 2025 22:02:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CEB0A89112
+	for <lists+linux-iio@lfdr.de>; Tue, 15 Apr 2025 03:16:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8AB8617BA85
-	for <lists+linux-iio@lfdr.de>; Mon, 14 Apr 2025 20:02:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E0C017AC08
+	for <lists+linux-iio@lfdr.de>; Tue, 15 Apr 2025 01:16:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1C651DE3BB;
-	Mon, 14 Apr 2025 20:00:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EFC51F4CBE;
+	Tue, 15 Apr 2025 01:16:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="kZfvKh6g"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Eee3aKhU"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7194E1EF380
-	for <linux-iio@vger.kernel.org>; Mon, 14 Apr 2025 20:00:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A44C2E62C;
+	Tue, 15 Apr 2025 01:16:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744660847; cv=none; b=T98efO8CCID+0BiKEbSVRuG6Ce4VTyCAOTXHFpdhuUNkhsYU78eEp8Dds3BhtnGilcrNTLX/EJC8Siu4p1P87DYLl756Kbkj+MjvynhZ7FHrJlIgppY2uu005LuEgpHzxo2AaTiWBNLLKjssauXUAIKp/GcLuXSE5otVjTmemCk=
+	t=1744679797; cv=none; b=hrP7Rc3fOUTqW1LheUknOqEOmE7XnFrI6FDhxwTKYEO1C19MHAHnFvvxt83H44gQGHO2/8ErFowI8ahyfhM0cpgHIM8d5v4OtP9vRr+mMhay7AYPzvq1qtN7VrSaUPcf4O3j6PDLvLgWjlqE26gbqt7ugRKq+7tH81pOj+lGIoY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744660847; c=relaxed/simple;
-	bh=Nw0LcWGPT7ovb/UapvxLHTltKihzzl3S+Aj3yFzA+Kg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=N3B18cVxr/D1RtkTTbsLTpDqzwmetBmSk8Fyd04APWguaQg+TalthCyu3fASAhwvSbu2BOGbmUw35xdj0TnDNmvhhxDK4FL+R49lmt734SSAA/bK0i5h1Mi0V4gcUVf8DkFzgGrFhgK7revAyA4ihnZIqelraK1itfRJaZfepRM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=kZfvKh6g; arc=none smtp.client-ip=209.85.221.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-39c1ef4acf2so3043669f8f.0
-        for <linux-iio@vger.kernel.org>; Mon, 14 Apr 2025 13:00:45 -0700 (PDT)
+	s=arc-20240116; t=1744679797; c=relaxed/simple;
+	bh=3AB+ECf5kRFUMb8Ghyva4AZG28Wl4rG6qolNBiF49po=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=q/cJb+clvQP3C8ukfY67Gx+ZdfsQO9s5V7n83U1EUmWlNm81+GaEAWx0mG+c6Hb2Q9OZjOS2rxPCYsEo5AIuQAiDWHY10YWms/2AJcPXUOQsLaeXIn6SF0brw9eSFjd1V4Sxfr89I1aYZCoeLMT4NTRrqwmHraFxs9lAnu09WbM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Eee3aKhU; arc=none smtp.client-ip=209.85.216.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-3011737dda0so4109476a91.1;
+        Mon, 14 Apr 2025 18:16:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1744660844; x=1745265644; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=I+dr467YMrCXRlo27LgBCAnCDb+4zH3txMsyWAkJpXA=;
-        b=kZfvKh6gMXpNUV6sClVyHYdPqfb+wW1IM/qlKhhPFRHyQJb+GhloSOAV896kTNzjmI
-         gd9Ea/2REUYl8wgmFykz0blSSxnOb99j6LJKDleNlqMckgjXDITuoUiZ10P0VinxdNa7
-         N8MhKxnfjxVOg6I+JUMbGtzDPwjvSz1J21m5hH2mzJ3Ms9i4a9VMruNKWBDKq95P3eTx
-         dSLT3X0lFjab/jQMZeT3N9c9H4vHGLDuFr5rFl2ZM3IVr4Cau+YYIo06CZXq/2bZipue
-         We8DMpHIzYN4P6kgGcovvr9o9+rdRI7T6SfUlLyMvKBYIhlXjcVVYtAY7Menu4IZ+Hl4
-         aBsw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744660844; x=1745265644;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1744679795; x=1745284595; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=I+dr467YMrCXRlo27LgBCAnCDb+4zH3txMsyWAkJpXA=;
-        b=akjSijQBH+6t4Rgx3pBqnvG3I9doniorZC8q5gBEoETTtmrVIcvMNy9aoAhAGfJfsY
-         JxzdnPLuYGSU72BF/XqJSfWRdlZlZMZm7xj4/fEwTS3eNJPRM5JwaitnVskzd7eydtW5
-         rIgMG4Uqh4At0OyUIvjmWJtb6MgNhRapHhvarVPNpmGQYEUIVAjGhqGY8xsQ+vN2GMUE
-         /E78DVfE0dohyHchhE2g/eVKJOe45toP+yaK6bNtxWJfcxJiRUrzB6EduW93UWlmY2xh
-         7w5gdOxDLoRtTbsIAYx//8Dt1Mh5qMvBMTBljjF27akPtaeVeBUMdlGnHhKN6k/2TPhv
-         lTag==
-X-Forwarded-Encrypted: i=1; AJvYcCWL0aNAMHoZXHhvlc0BFy3lnaDIRDrJ4Ov2xSj1EnCUDKnhLF7pXgvpqUo45/kDczXyT9ZpjnIF/9A=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzlwOx5V3qjkMWfTHoWPeCGZGkMbOukCokA8Xg8IJo7HDqUGQpu
-	MWhEaCuYbk/V+tKu2hcamHS5pg5f3dcrGdxAPdiWl+Cq1Mf9NFvhLDI6mLEitk8=
-X-Gm-Gg: ASbGncutrK/u2AY/jwgQph0/zc58UFhCWXirTiCEYnBhUMElYS13vRDX/WcBAWedpBc
-	8g3qfiyEPYv48qtiaE26sxaJSLCiwkBNGpLzYCv+ZtUJ4tHDMJUZiMaLlk9SNX1IIOOuH02solT
-	WuJThNy+KASnuJV8yfH3nY069sm9xnCfaDo43PVlmC5/OlIMldDYb8qC/C26vcSAH5bn9eHN/Fu
-	/T0lcKeaDjo+lQAgOTUy0gaRTOmnw9iMZBtu2imtmzKFmskijmFhFXPIY3seSbSYO6MwFz+QEmP
-	Zf4IJ/qRVrWxCVXmer8KiapbRmCQa34wYM069jzTEtHNnib460F0e77CUuNhNOivDYDyb+gstUL
-	cnMQkbpMr+M3XhXVKt88b+mU=
-X-Google-Smtp-Source: AGHT+IG6KMFrnxI51KOYugO7FGCSBaq/lcvpClmyxP06XlPfwq97MevV0T43qHWbhAawMclBkpDoXg==
-X-Received: by 2002:a5d:6daa:0:b0:39c:310a:f87e with SMTP id ffacd0b85a97d-39ea51f59eamr11814936f8f.16.1744660843596;
-        Mon, 14 Apr 2025 13:00:43 -0700 (PDT)
-Received: from archlinux (host-87-15-70-119.retail.telecomitalia.it. [87.15.70.119])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39eae9640a9sm11987383f8f.10.2025.04.14.13.00.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Apr 2025 13:00:42 -0700 (PDT)
-Date: Mon, 14 Apr 2025 21:59:16 +0200
-From: Angelo Dureghello <adureghello@baylibre.com>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, 
-	Michael Hennerich <Michael.Hennerich@analog.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Jonathan Corbet <corbet@lwn.net>, David Lechner <dlechner@baylibre.com>, linux-iio@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
-Subject: Re: [PATCH 3/3] iio: adc: ad7606: add SPI offload support
-Message-ID: <alstwly2ya6qtb3usscpwavofzpinakmtx4dugt3aoey3fyjqz@sfnxwjt72jjj>
-References: <20250403-wip-bl-spi-offload-ad7606-v1-0-1b00cb638b12@baylibre.com>
- <20250403-wip-bl-spi-offload-ad7606-v1-3-1b00cb638b12@baylibre.com>
- <20250414192422.039817b7@jic23-huawei>
+        bh=5Nuj753ea7qfkVgx/WDLsxf+XIOdvwBj7hh/Oj4q+pg=;
+        b=Eee3aKhUu6ijcDmM554IoPl9bWFVYNQ8qZ9tJbPeK2awAmGZaFN5WLZNETKBaqxFbv
+         Dgbb6ZUv8PAoUcpLpWCWpISP/PWdB8BM7GbgaKBHpGXtPXI+2phq5GmWCIVa0awBxTAf
+         CWubK0BVjtxVTEHsnJkrZNaJ6Sd4qrLDf823Q1gVR15tYq69/etHxGzYdUH8vkVeMCY/
+         M/4+JT5ZKwvNH8gCviYAu+Rk5erEnsLEqTYNRZOOC7jfXeEZiPTbYoUqju2s7BkJ72PS
+         wIGpQAz8FAgmrocTXmrBPqEWKtPY/OuyfzBwyayVr6dJ/EHvHGmcMI09drtvF/YqKUVg
+         FVxQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744679795; x=1745284595;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=5Nuj753ea7qfkVgx/WDLsxf+XIOdvwBj7hh/Oj4q+pg=;
+        b=fuSmOeSzsmNyoDLLaIgESBI7bCfPuTkQu4Uel90Osnitdx0dBjLINVU/dxj/NcL+gZ
+         w+rPawYJ8Y4lg88uqEse9F+DnwSyqUtRqb8xj3fTPZwTcnRNiCZHxAkjGX1hL5PohzjE
+         leB4WqIXKi93pA+dcaJzttc/3rAFMsXHat+Digc3g1htAufsevsENCIMJ8YR1www20vK
+         SJjy90Vlkg3h7BfOe/AqY7hugtbX91dp3piXjKRbpk6rGzXK+Vov9ymrMJu54/sqdcNz
+         7gx9LMv67MZrpKjX8ij+u6/HDhlVMzgcmcHPB5IBXx3mdAZNRmCjB7PD6GGNsGMH14qa
+         Hm/A==
+X-Forwarded-Encrypted: i=1; AJvYcCUYkIWU64yzEAXOjiSGxi9j6LsZWG77KUtZJd6fl4rGjVGEMLZQ99/DlDb+bCnCH9N2YdLLP8UmtVgJ@vger.kernel.org, AJvYcCXs28TN/+ov1/CnhlNCwikfVvLi/7FBYmP4jPM2WUSVGBN8dASokJz9cqIfIE9kMI0rMovQeNj2QA4l@vger.kernel.org
+X-Gm-Message-State: AOJu0YwbcL90Z57q19uRDlolph2zKzKlxTyS92EMtA95jti3UvoNTuVd
+	FXLi3+yK74uk8FuNJG6NL5wjoBt+0DI7SE28dBgvz0CB7/LY4hdOTVrAKEF9DokLsKPugHd1jMI
+	ikSMLXxhgtcqjDfq/qhDtQ6SOHJo=
+X-Gm-Gg: ASbGncsRFBA5qhCDllK2lhX0fHrdWIUF2CqsS3xahQ9vwabKqP7996pQ8v7B3EWeNNo
+	m0RCIE7aIbVuiORFi6rLAMRebpNgCO6VAtAUbwRKLDY3DbpYvGWbOELQ8u2FRBK1E0phyQuOXe2
+	w5rmfssvfAFLdjfBFzw3tWeQ==
+X-Google-Smtp-Source: AGHT+IGgzIi9F7lrPtwIjA/TgWVY27GzdEaPDW+rB2zEcrkEC9WU+5JbizaK/UgvXU+4DZVPqT404HSnJ4WznO/cmtk=
+X-Received: by 2002:a17:90a:e183:b0:2fa:15ab:4df5 with SMTP id
+ 98e67ed59e1d1-308237c1177mr17682632a91.34.1744679794805; Mon, 14 Apr 2025
+ 18:16:34 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250414192422.039817b7@jic23-huawei>
+References: <20250409024311.19466-1-gye976@gmail.com> <20250409024311.19466-5-gye976@gmail.com>
+ <CAHp75VfMHdw-6vrELbjjD3T323uDz7U9wRP5YSk2jZ26wBuLTQ@mail.gmail.com>
+ <CAKbEznsVxexdrXX72G-tCUHjznx6na1h8MrCFPKrHd27GXht8A@mail.gmail.com> <CAHp75VeU5sERbVz-4OxkJNC-pjT3B5AvfAMj09LXd6v4MdeDeg@mail.gmail.com>
+In-Reply-To: <CAHp75VeU5sERbVz-4OxkJNC-pjT3B5AvfAMj09LXd6v4MdeDeg@mail.gmail.com>
+From: gyeyoung <gye976@gmail.com>
+Date: Tue, 15 Apr 2025 10:16:23 +0900
+X-Gm-Features: ATxdqUEiwFZntbAkoQGSF2tTQBTaV6RNaL9vi1FwBU_O_Jnsedb1BjG3xpiQYhc
+Message-ID: <CAKbEznsAJ1U+QBs_ZM66Apa-ji4i2BAihP8w++EnAh=8eDaogg@mail.gmail.com>
+Subject: Re: [PATCH v3 3/4] iio: chemical: add support for winsen MHZ19B CO2 sensor
+To: Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: jic23@kernel.org, linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
+	dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org, robh@kernel.org, 
+	krzk+dt@kernel.org, conor+dt@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 14.04.2025 19:24, Jonathan Cameron wrote:
-> 
-> > +static int ad7606_spi_offload_probe(struct device *dev,
-> > +				    struct iio_dev *indio_dev)
-> > +{
-> > +	struct ad7606_state *st = iio_priv(indio_dev);
-> > +	struct spi_device *spi = to_spi_device(dev);
-> > +	struct spi_bus_data *bus_data;
-> > +	struct dma_chan *rx_dma;
-> > +	struct spi_offload_trigger_info trigger_info = {
-> > +		.fwnode = dev_fwnode(dev),
-> > +		.ops = &ad7606_offload_trigger_ops,
-> > +		.priv = st,
-> > +	};
-> > +	int ret;
-> > +
-> > +	bus_data = devm_kzalloc(dev, sizeof(*bus_data), GFP_KERNEL);
-> > +	if (!bus_data)
-> > +		return -ENOMEM;
-> > +	st->bus_data = bus_data;
-> > +
-> > +	bus_data->offload = devm_spi_offload_get(dev, spi,
-> > +						 &ad7606_spi_offload_config);
-> > +	ret = PTR_ERR_OR_ZERO(bus_data->offload);
-> > +	if (ret && ret != -ENODEV)
-> > +		return dev_err_probe(dev, ret, "failed to get SPI offload\n");
-> > +	/* Allow main ad7606_probe function to continue. */
-> > +	if (ret == -ENODEV)
-> > +		return 0;
-> > +
-> > +	ret = devm_spi_offload_trigger_register(dev, &trigger_info);
-> > +	if (ret)
-> > +		return dev_err_probe(dev, ret,
-> > +				     "failed to register offload trigger\n");
-> > +
-> > +	bus_data->offload_trigger = devm_spi_offload_trigger_get(dev,
-> > +		bus_data->offload, SPI_OFFLOAD_TRIGGER_DATA_READY);
-> > +	if (IS_ERR(bus_data->offload_trigger))
-> > +		return dev_err_probe(dev, PTR_ERR(bus_data->offload_trigger),
-> > +				     "failed to get offload trigger\n");
-> > +
-> > +	/* TODO: PWM setup should be ok, done for the backend. PWM mutex ? */
-> > +	rx_dma = devm_spi_offload_rx_stream_request_dma_chan(dev,
-> > +							     bus_data->offload);
-> > +	if (IS_ERR(rx_dma))
-> > +		return dev_err_probe(dev, PTR_ERR(rx_dma),
-> > +				     "failed to get offload RX DMA\n");
-> > +
-> > +	ret = devm_iio_dmaengine_buffer_setup_with_handle(dev, indio_dev,
-> > +		rx_dma, IIO_BUFFER_DIRECTION_IN);
-> > +	if (ret)
-> 
-> should be ret;  Thanks to 0-day for the report and fixed up.
-> 
+On Tue, Apr 15, 2025 at 2:21=E2=80=AFAM Andy Shevchenko
+<andy.shevchenko@gmail.com> wrote:
+>
+> On Mon, Apr 14, 2025 at 6:49=E2=80=AFPM gyeyoung <gye976@gmail.com> wrote=
+:
+>
+> ...
+>
+> > > > +#include <linux/kernel.h>
+> > >
+> > > No usual driver has a business to include the  kernel.h. Just follow
+> > > the IWYU principle and make sure what you include is what you use
+> > > here.
+> >
+> > I thought "linux/kernel.h" was a globally essential header.
+>
+> Not at all, it's a big mess which no driver should use.
+> And on top of that (to any header) you should not use 'proxy' headers.
+> It's a bad style and practice with the real consequences as build time
+> and headache for the others who want to clean up header dependencies
+> in the future.
 
-thanks for fixing it.
+Now I see. I had been referring to some legacy examples, but looking
+at it again,
+It makes more sense to explicitly include only what's needed.
+Thank you for pointing out the good practice.
 
-Regards,
-angelo
-
-> > +		return dev_err_probe(dev, PTR_ERR(rx_dma),
-> > +				     "failed to setup offload RX DMA\n");
-> > +
-> > +	/* Use offload ops. */
-> > +	indio_dev->setup_ops = &ad7606_offload_buffer_setup_ops;
-> > +
-> > +	st->offload_en = true;
-> > +
-> > +	return 0;
-> > +}
+Thanks,
+Gyeyoung
 

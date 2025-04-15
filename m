@@ -1,416 +1,147 @@
-Return-Path: <linux-iio+bounces-18143-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18144-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47B8AA8A6A0
-	for <lists+linux-iio@lfdr.de>; Tue, 15 Apr 2025 20:19:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADC88A8A6DC
+	for <lists+linux-iio@lfdr.de>; Tue, 15 Apr 2025 20:35:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 30ADA7A973B
-	for <lists+linux-iio@lfdr.de>; Tue, 15 Apr 2025 18:18:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4F4973BD5B4
+	for <lists+linux-iio@lfdr.de>; Tue, 15 Apr 2025 18:35:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7384A2206B2;
-	Tue, 15 Apr 2025 18:19:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5483C226CF6;
+	Tue, 15 Apr 2025 18:35:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IGi+G+7+"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XKOLlz8c"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CD0C2DFA58;
-	Tue, 15 Apr 2025 18:19:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CB0922157E;
+	Tue, 15 Apr 2025 18:35:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744741159; cv=none; b=Yvk1eW3iQ4KC/oV4HkCv+KsfowDQa1IYgpyX2qCfWz4Q0iHPWO/lpgEymvzAj5iSMhSuybGmmayFXKp9paDJeVKk9kdVu5+yIp/WodcqS75MYyLUWtuqcpY6Pi+WxGd19M0UkcM4JHnkDf53A+JXWLFJ4B08vf6Xs0j3ZQQeDTM=
+	t=1744742122; cv=none; b=Jn+CNrTcq2Z3+r4Xu9n6XdR8iR+0og5xXStiLHHs7JMUvcp+80VMbtYhctlHbacMv4I7eg72qArdNbbg7/QJqWrlG7PCP/ipti990VxAD0V+lpYGtiF0DlR5uR7T2pnwfLzMGBMTHkDOwiWPm6BEfEakjCpWZMZazu5O6NpH0aA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744741159; c=relaxed/simple;
-	bh=Gws1wIvg9siKK58DXTdW+CIQSwFMBVuhPeqgwZ/OWjM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nn47/0Fze5mVcyitK2I9BbNrmudyADdMlUUWy4FXrNbcR8cfEwRYbMLLYsnEBZLVKF2EF1cAskQ7ZxdL4A/sde8bIb1OqVZdMrlOPRtpcxT2awlVQPoMZvheUwxICZVFah6FHhhtWuYEO7u/DdxCM9DN1w3Ydd3zKASe3MYBH6k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IGi+G+7+; arc=none smtp.client-ip=209.85.218.44
+	s=arc-20240116; t=1744742122; c=relaxed/simple;
+	bh=m0ngbikheMR+1AzBKdPAopMMX2/FHuoyguBS+J0KTQw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=O3cmTumJrR+hvLZyp2rK7Ljldba6PL/EfarcJB7+XM42SGJuBiFBgQ4GsbqGt9hWD0pV6UhXrsXLLuzVV4Jgdk+k3Lmf6S18Ym+2RpIqzavDCOFYQaho2haa+jXjjGmp0YXDec1gjVZJJGnVMpR33H8OGnNJnNGRn3B8TZ3ojac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XKOLlz8c; arc=none smtp.client-ip=209.85.222.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-acacb8743a7so887268166b.1;
-        Tue, 15 Apr 2025 11:19:17 -0700 (PDT)
+Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-7c5568355ffso484251185a.0;
+        Tue, 15 Apr 2025 11:35:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744741156; x=1745345956; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hPZCbg626WMu8lisEMtyqcoplCJWzV6TAyAoZ850/GI=;
-        b=IGi+G+7+8f9Y/sv9hJehVT1dG5yZVan2c5fl8fb27v+wjVeDHTPq6c23NR7jyZ7duy
-         Cjb1b2GwBhvBTYz6gSNugmGrwSYBNii8uMWvOUpRDuBFZm+1WpO3HOsZHMY+IIAoauN9
-         v/bPR0SWuvcshHPy87VHBvArzPjNLc8SR0/ha41Y4NVJA+DrWNAlIo+Wrf7T3rPUdwbK
-         uIFfUrAiLKKuVNKRKXaeh7ymhCX+EiqD0PTzdMFCUKy3tELDQhj8/5bmLYbw/oU/UxID
-         uzSRjNLCnZniplpiqL3faftzi1yOo7tvkNJreLuOaHXfsS5Cuigc/NLBxwTDox67WDjC
-         sU5Q==
+        d=gmail.com; s=20230601; t=1744742118; x=1745346918; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=97X8AfJzSEM+SJ3Sxi/vdcxd/nCQ6ViCFDXjOmjTF6E=;
+        b=XKOLlz8ce2zSa/PiJfDoEzUMJhOzgAO6FXqTozX1v4jD3DMeKIm8vUdQmzDrVi41sc
+         MyYLp4Ev+vpjQRzLv4YR+TARtlxAy6UPMfU/BxhsD+PKro5eFDqafzvP8oI1604jqgDr
+         kHynkwQITmr+dS6a/549eNYr9chHBUv0iL6TDmW3LMuTuAiiLEBiE59py05Lf9UIUtQU
+         bXM3Db6NQ2Qbux3qvBKzIWsJ5Yfc0iRn3o+1nWrjvCjrIwUH2cGGvcGAnbTZ+bfA25oU
+         h2k5XYwozB3OPmejlkk4S3h2UT9eBX5yylva1AfgOGLYLTi7ddQLcLLrJmAJcgbjc3ON
+         Gc2A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744741156; x=1745345956;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=hPZCbg626WMu8lisEMtyqcoplCJWzV6TAyAoZ850/GI=;
-        b=UjGSVEYBY36mgJf7d/WzHM1bR51h3Sdsl+FgSxyDS6Nt1hTPzYcuyZib/vHLeIzZp8
-         +p99aOXAbC70dILkgAx+RnkCvbkYgkG+/2ZYRIz2QxmABxZUvPPS2QjXeGl1b+kZ3uUH
-         KAZQJ6l4E/p1eQJVPDUjODCKuz3VQktr7fvlliJwxYA7DA0ZgiYsfeqYV9+YE5KZKQH6
-         CBvFSgkDkkZjalwZ19NTxLeWuLKz8STwfXU9XaDiWK1CC7A/GtkY+s4jJ+AS8hLIcoiF
-         hHAhY6RdO9Y1gA2ZqZLneH+pSIAcF5eL9GbK7n7oBNDAKXkQ3lupJ5iQ6Jl4tVF31OlJ
-         54HA==
-X-Forwarded-Encrypted: i=1; AJvYcCVCXe1bvjfB+JWw9n+53EdFrMGPxZYPgXgv6590mdpdybzSU6AEh0QaB/ojoK+YCh5SujWRlHCwtkY=@vger.kernel.org, AJvYcCWV2nc62zw+ODnKaGM4XtVq/8X3uaNDcBUASO81o1lOJA1VFVlzV4WPsS/JsF+Iqgo593dWIgBqXKVKlr/S@vger.kernel.org
-X-Gm-Message-State: AOJu0YwR3IxXAV5N4LZrxpLFE0o7zqkvAe96XQHch2/THP9xwMilBHOE
-	mRn/IKbqJ+prDI/dxvzBEdz+wYW9wwM8ylzhuel+JA5HqzCkKreGa0sKowJwuiVfRK6o15eff/+
-	A6ery4sqTu6fWvf/s2xHlNbMhzb0=
-X-Gm-Gg: ASbGncuShvkG54eV3cmNZ07nvXpzNg2gItjAumplzwey+oCSLx0kCF2FXTu9pYcaL79
-	70MKeaRit+r4ry6nLaKhUnS5Af9GTZVjmbhVXEykCeYJ8bwYV4Vrlex896VQbjFGZHrT1MflJHd
-	espcYDZPSwqZeEZ/q/WGyhYA==
-X-Google-Smtp-Source: AGHT+IHaoZWyw+82+PVB7AdmUylxYQg3UPV10NA/4oQfwzG9Kpb8HU+IW5Vx0fiz1Vk0epFaNCInel1iGpVcztthndE=
-X-Received: by 2002:a17:907:7211:b0:aca:d276:fa5 with SMTP id
- a640c23a62f3a-acb3558fc6bmr50021566b.0.1744741155443; Tue, 15 Apr 2025
- 11:19:15 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1744742118; x=1745346918;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=97X8AfJzSEM+SJ3Sxi/vdcxd/nCQ6ViCFDXjOmjTF6E=;
+        b=v9/ZrlREWPY7JnYk/BzJqoKsnXq7wIlbsfAj7ZN/DSof/RM/w/bkM3rLm6vGp/5Esl
+         +DuCyzDN9EImmsLm6VH8H//1DGm/NaJ3E6alp2MYbrKgp6NENSk1VNoggCDgMnGggLLX
+         2dp/EfjvoE6EfEhn0eeijd8Z1wEAS8wwktxrhDed0bJVUxQY7uHFV7sRMw3fmTVuCJMp
+         iCVu80r3/wDC627qabfLpx1O+PbwB+OIPeH8gZgE39PIa2tljR+GlcZC/VltCWhBmSNB
+         NMPyiacIER4Ktig92bLocFQFkCQ+BLShe3o54OI1zlZSVDbJYTtAuv0YPWXCbwo1sdLk
+         LtSQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWNn7YZb9vuIjNlYWyyUKKyWVOfuPimW/GUb3HqM0VSBs1Xd++B9AEqgydf/OFFi6wLAeJNs+Wd+ck=@vger.kernel.org, AJvYcCXASDhFMqM5v6bnTR2bz73QNuPz8VfuYf5ChuILPyr95b3zBIz144VMz3ysgTTlF/QLrcEtfzHJ@vger.kernel.org, AJvYcCXKrU/U4CzG4x8BDfHKV4EfYW+c+q+bxU7okDm3p6iCbYAdmDeggJCDnxTmu+Qj4qnyDxXZk1dkVKd/i0Sn@vger.kernel.org
+X-Gm-Message-State: AOJu0YwpvY8nILG14W268eOzyKtnLw1KMKyqKnjGxyd8zifMet4SDHMb
+	XGpMaHUJ5xMsx06u/cQ4zsXf0nxbERJqLw3POumimxAopxWWgcrT
+X-Gm-Gg: ASbGncvlfJM7o/3bSYJC8kmehRPjF4dxc4aFmu4CLMla9evRaeUMEsTHIuIH9x23Tcg
+	ItAaaV7UIndUrYn8To1XMS/XZRV+YLKwwx8Ftvb7x+XJ9274q6ZdVAQjHtUNSQeHx56YEbq3CzA
+	swjNk5IhAafkOYwZ+l/T8uvCrvstBSp2xYpOOpfsJ5pt80hqYO4GgXK9UgzShqiYCy2srrViq3u
+	b7dtg5mSFQuiU8TdyHVZ41TQqEFibg4cot9BcEn67BjO3dPKM1mONLS+7Vjk3nKVgE1YswKcg3o
+	YS+lq2F3J34xULV4Zr/Ll6b/RC95ve2yRfqEZBItJxfLazaHUNPNLvM=
+X-Google-Smtp-Source: AGHT+IFDLnaf693CbcJqHa7n4MDj3QAjiwK9YeW53EEizGcBL+eM4f0LfY8bkzMCvFDj4Hto48V/uA==
+X-Received: by 2002:a05:620a:2991:b0:7c7:a59b:4b07 with SMTP id af79cd13be357-7c91419a469mr70542485a.3.1744742118218;
+        Tue, 15 Apr 2025 11:35:18 -0700 (PDT)
+Received: from theriatric.mshome.net ([73.123.232.110])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c7a8a0de11sm936533185a.101.2025.04.15.11.35.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 15 Apr 2025 11:35:17 -0700 (PDT)
+From: Gabriel Shahrouzi <gshahrouzi@gmail.com>
+To: gregkh@linuxfoundation.org,
+	jic23@kernel.org,
+	lars@metafoo.de,
+	linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-staging@lists.linux.dev,
+	Michael.Hennerich@analog.com,
+	sonic.zhang@analog.com,
+	vapier@gentoo.org
+Cc: gshahrouzi@gmail.com,
+	skhan@linuxfoundation.org,
+	kernelmentees@lists.linuxfoundation.org,
+	stable@vger.kernel.org
+Subject: [PATCH] iio: adc: Revoke valid channel for error path
+Date: Tue, 15 Apr 2025 14:20:38 -0400
+Message-ID: <20250415182038.523186-1-gshahrouzi@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250415-losd-3-inv-icm42600-add-wom-support-v2-0-de94dfb92b7e@tdk.com>
- <20250415-losd-3-inv-icm42600-add-wom-support-v2-1-de94dfb92b7e@tdk.com>
-In-Reply-To: <20250415-losd-3-inv-icm42600-add-wom-support-v2-1-de94dfb92b7e@tdk.com>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Tue, 15 Apr 2025 21:18:38 +0300
-X-Gm-Features: ATxdqUFl6iqEMWz7LC3M1qjUo8P9zpCz6tPTSRFk6Q4Wg1o84FisiL1TwyrHdAg
-Message-ID: <CAHp75VdZDovPuRqQMpP=TkjeBr9AgRssPFJfmsjnXC=wUXxFHg@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] iio: imu: inv_icm42600: add WoM support
-To: jean-baptiste.maneyrol@tdk.com
-Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, 
-	David Lechner <dlechner@baylibre.com>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+
+According to the datasheet on page 9 under the channel selection table,
+all devices (AD7816/7/8) are able to use the channel marked as 7. This
+channel is used for diagnostic purposes by routing the internal 1.23V
+bandgap source through the MUX to the input of the ADC.
+
+Replace checking for string equality with checking for the same chip ID
+to reduce time complexity.
+
+Group invalid channels for all devices together because they are
+processed the same way.
+
+Fixes: 7924425db04a ("staging: iio: adc: new driver for AD7816 devices")
+Cc: stable@vger.kernel.org
+Signed-off-by: Gabriel Shahrouzi <gshahrouzi@gmail.com>
+---
+ drivers/staging/iio/adc/ad7816.c | 15 +++++----------
+ 1 file changed, 5 insertions(+), 10 deletions(-)
+
+diff --git a/drivers/staging/iio/adc/ad7816.c b/drivers/staging/iio/adc/ad7816.c
+index 6c14d7bcdd675..d880fe0257697 100644
+--- a/drivers/staging/iio/adc/ad7816.c
++++ b/drivers/staging/iio/adc/ad7816.c
+@@ -186,17 +186,12 @@ static ssize_t ad7816_store_channel(struct device *dev,
+ 	if (ret)
+ 		return ret;
+ 
+-	if (data > AD7816_CS_MAX && data != AD7816_CS_MASK) {
+-		dev_err(&chip->spi_dev->dev, "Invalid channel id %lu for %s.\n",
+-			data, indio_dev->name);
+-		return -EINVAL;
+-	} else if (strcmp(indio_dev->name, "ad7818") == 0 && data > 1) {
+-		dev_err(&chip->spi_dev->dev,
+-			"Invalid channel id %lu for ad7818.\n", data);
+-		return -EINVAL;
+-	} else if (strcmp(indio_dev->name, "ad7816") == 0 && data > 0) {
++	if (data != AD7816_CS_MASK &&
++	    (data > AD7816_CS_MAX ||
++	    (chip->id == ID_AD7818 && data > 1) ||
++	    (chip->id == ID_AD7816 && data > 0))) {
+ 		dev_err(&chip->spi_dev->dev,
+-			"Invalid channel id %lu for ad7816.\n", data);
++			"Invalid channel id %lu for %s.\n", data, indio_dev->name);
+ 		return -EINVAL;
+ 	}
+ 
+-- 
+2.43.0
 
-On Tue, Apr 15, 2025 at 5:47=E2=80=AFPM Jean-Baptiste Maneyrol via B4 Relay
-<devnull+jean-baptiste.maneyrol.tdk.com@kernel.org> wrote:
->
-> From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
->
-> Add WoM as accel roc rising x|y|z event.
-
-...
-
-> +struct inv_icm42600_apex {
-> +       unsigned int on;
-> +       struct {
-> +               bool enable;
-> +               uint64_t value;
-
-Why not kernel types? It seems in many places in the driver the
-*intXX_t are used instead of simple uXX/sXX.
-
-> +       } wom;
-
-Have you run `pahole`? To me it seems swapping the members in the
-outer struct will save some memory at run time.
-
-> +};
-
-...
-
->         struct {
->                 int64_t gyro;
->                 int64_t accel;
-
-s64 ?
-
->         } timestamp;
-
-...
-
-> +       uint8_t buffer[3] __aligned(IIO_DMA_MINALIGN);
-
-u8 ?
-
-...
-
-> +static unsigned int inv_icm42600_accel_convert_roc_to_wom(uint64_t roc,
-
-u64
-
-> +                                                         int accel_hz, i=
-nt accel_uhz)
-> +{
-> +       /* 1000/256mg per LSB converted in m/s=C2=B2 in micro (1000000) *=
-/
-
-That 1000000 is redundant, just properly spell the units.
-
-> +       const unsigned int convert =3D (1000U * 9807U) / 256U;
-> +       uint64_t value;
-> +       uint64_t freq_uhz;
-
-u64
-
-> +       /* return 0 only if roc is 0 */
-> +       if (roc =3D=3D 0)
-> +               return 0;
-> +
-> +       freq_uhz =3D (uint64_t)accel_hz * 1000000U + (uint64_t)accel_uhz;
-
-u64
-
-MICRO?
-
-> +       value =3D div64_u64(roc * 1000000U, freq_uhz * (uint64_t)convert)=
-;
-
-MICRO
-
-> +       /* limit value to 8 bits and prevent 0 */
-> +       return min(255, max(1, value));
-
-Reinvention of the clamp() ?
-
-> +}
-
-...
-
-> +static uint64_t inv_icm42600_accel_convert_wom_to_roc(unsigned int thres=
-hold,
-> +                                                     int accel_hz, int a=
-ccel_uhz)
-
-Similar comments as per above.
-
-...
-
-> +static int inv_icm42600_accel_enable_wom(struct iio_dev *indio_dev)
-> +{
-> +       struct inv_icm42600_state *st =3D iio_device_get_drvdata(indio_de=
-v);
-> +       struct inv_icm42600_sensor_state *accel_st =3D iio_priv(indio_dev=
-);
-> +       struct device *pdev =3D regmap_get_device(st->map);
-> +       struct inv_icm42600_sensor_conf conf =3D INV_ICM42600_SENSOR_CONF=
-_INIT;
-> +       unsigned int sleep_ms =3D 0;
-> +       int ret;
-> +
-> +       ret =3D pm_runtime_resume_and_get(pdev);
-> +       if (ret)
-> +               return ret;
-> +
-> +       scoped_guard(mutex, &st->lock) {
-> +               /* turn on accel sensor */
-> +               conf.mode =3D accel_st->power_mode;
-> +               conf.filter =3D accel_st->filter;
-> +               ret =3D inv_icm42600_set_accel_conf(st, &conf, &sleep_ms)=
-;
-> +               if (ret)
-> +                       goto error_suspend;
-> +       }
-
-> +       if (sleep_ms)
-
-Do you need this check?
-
-> +               msleep(sleep_ms);
-> +
-> +       scoped_guard(mutex, &st->lock) {
-> +               ret =3D inv_icm42600_enable_wom(st);
-> +               if (ret)
-> +                       goto error_suspend;
-> +               st->apex.on++;
-> +               st->apex.wom.enable =3D true;
-> +       }
-> +
-> +       return 0;
-> +
-> +error_suspend:
-> +       pm_runtime_mark_last_busy(pdev);
-> +       pm_runtime_put_autosuspend(pdev);
-> +       return ret;
-> +}
-> +
-> +static int inv_icm42600_accel_disable_wom(struct iio_dev *indio_dev)
-> +{
-> +       struct inv_icm42600_state *st =3D iio_device_get_drvdata(indio_de=
-v);
-> +       struct device *pdev =3D regmap_get_device(st->map);
-> +       struct inv_icm42600_sensor_conf conf =3D INV_ICM42600_SENSOR_CONF=
-_INIT;
-> +       unsigned int sleep_ms =3D 0;
-> +       int ret;
-> +
-> +       scoped_guard(mutex, &st->lock) {
-> +               st->apex.wom.enable =3D false;
-> +               st->apex.on--;
-> +               ret =3D inv_icm42600_disable_wom(st);
-> +               if (ret)
-> +                       break;
-> +               /* turn off accel sensor if not used */
-> +               if (!st->apex.on && !iio_buffer_enabled(indio_dev)) {
-> +                       conf.mode =3D INV_ICM42600_SENSOR_MODE_OFF;
-> +                       ret =3D inv_icm42600_set_accel_conf(st, &conf, &s=
-leep_ms);
-> +                       if (ret)
-> +                               break;
-> +               }
-> +       }
-
-> +       if (sleep_ms)
-
-Ditto.
-
-> +               msleep(sleep_ms);
-
-
-> +       pm_runtime_mark_last_busy(pdev);
-> +       pm_runtime_put_autosuspend(pdev);
-> +
-> +       return ret;
-> +}
-
-...
-
-> +void inv_icm42600_accel_handle_events(struct iio_dev *indio_dev,
-> +                                     unsigned int status2, unsigned int =
-status3,
-> +                                     int64_t timestamp)
-
-Okay, I believe here int64_t is inherited from IIO definitions.
-
-> +{
-> +       struct inv_icm42600_state *st =3D iio_device_get_drvdata(indio_de=
-v);
-> +       uint64_t ev_code;
-
-u64.
-
-> +       /* handle WoM event */
-> +       if (st->apex.wom.enable && (status2 & INV_ICM42600_INT_STATUS2_WO=
-M_INT)) {
-> +               ev_code =3D IIO_MOD_EVENT_CODE(IIO_ACCEL, 0, IIO_MOD_X_OR=
-_Y_OR_Z,
-> +                                            IIO_EV_TYPE_ROC, IIO_EV_DIR_=
-RISING);
-> +               iio_push_event(indio_dev, ev_code, timestamp);
-> +       }
-> +}
-
-...
-
-> +static int inv_icm42600_accel_write_event_config(struct iio_dev *indio_d=
-ev,
-> +                                                const struct iio_chan_sp=
-ec *chan,
-> +                                                enum iio_event_type type=
-,
-> +                                                enum iio_event_direction=
- dir,
-> +                                                bool state)
-> +{
-> +       struct inv_icm42600_state *st =3D iio_device_get_drvdata(indio_de=
-v);
-> +
-> +       /* handle WoM (roc rising) event */
-> +       if (type =3D=3D IIO_EV_TYPE_ROC && dir =3D=3D IIO_EV_DIR_RISING) =
-{
-
-Invert the conditional to reduce indentation of the below. It will
-also follow the traditional pattern, i.e. checking for the errors
-first.
-
-> +               scoped_guard(mutex, &st->lock) {
-> +                       if (st->apex.wom.enable =3D=3D state)
-> +                               return 0;
-> +               }
-> +               if (state)
-> +                       return inv_icm42600_accel_enable_wom(indio_dev);
-
-> +               else
-
-Redundant 'else', but in this case for the sake of symmetry it can be left.
-
-> +                       return inv_icm42600_accel_disable_wom(indio_dev);
-> +       }
-> +
-> +       return -EINVAL;
-> +}
-
-...
-
-> +       if (type =3D=3D IIO_EV_TYPE_ROC && dir =3D=3D IIO_EV_DIR_RISING) =
-{
-
-Invert the conditional.
-
-> +               /* return value in micro */
-> +               *val =3D div_u64_rem(st->apex.wom.value, 1000000U, &rem);
-> +               *val2 =3D rem;
-> +               return IIO_VAL_INT_PLUS_MICRO;
-> +       }
-> +
-> +       return -EINVAL;
-
-...
-
-> +static int inv_icm42600_accel_write_event_value(struct iio_dev *indio_de=
-v,
-> +                                               const struct iio_chan_spe=
-c *chan,
-> +                                               enum iio_event_type type,
-> +                                               enum iio_event_direction =
-dir,
-> +                                               enum iio_event_info info,
-> +                                               int val, int val2)
-> +{
-> +       struct inv_icm42600_state *st =3D iio_device_get_drvdata(indio_de=
-v);
-> +       struct device *dev =3D regmap_get_device(st->map);
-> +       uint64_t value;
-
-u64
-
-> +       unsigned int accel_hz, accel_uhz;
-> +       int ret;
-> +
-> +       /* handle WoM (roc rising) event value */
-> +       if (type =3D=3D IIO_EV_TYPE_ROC && dir =3D=3D IIO_EV_DIR_RISING) =
-{
-
-Invert the conditional.
-
-> +               if (val < 0 || val2 < 0)
-> +                       return -EINVAL;
-
-This can be checked even before anything else, but see above. With
-that it will automatically get on the same indentation level as
-previous one.
-
-> +               value =3D (uint64_t)val * 1000000ULL + (uint64_t)val2;
-
-MICRO.
-ULL is not needed, the first one already ULL.
-
-> +               pm_runtime_get_sync(dev);
-> +               scoped_guard(mutex, &st->lock) {
-> +                       ret =3D inv_icm42600_accel_read_odr(st, &accel_hz=
-, &accel_uhz);
-> +                       if (ret >=3D 0)
-> +                               ret =3D inv_icm42600_accel_set_wom_thresh=
-old(st, value,
-> +                                                                        =
-  accel_hz, accel_uhz);
-> +               }
-> +               pm_runtime_mark_last_busy(dev);
-> +               pm_runtime_put_autosuspend(dev);
-> +               return ret;
-> +       }
-> +
-> +       return -EINVAL;
-> +}
-
---=20
-With Best Regards,
-Andy Shevchenko
 

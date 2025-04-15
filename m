@@ -1,147 +1,191 @@
-Return-Path: <linux-iio+bounces-18144-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18145-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADC88A8A6DC
-	for <lists+linux-iio@lfdr.de>; Tue, 15 Apr 2025 20:35:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E65E7A8A6F2
+	for <lists+linux-iio@lfdr.de>; Tue, 15 Apr 2025 20:39:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4F4973BD5B4
-	for <lists+linux-iio@lfdr.de>; Tue, 15 Apr 2025 18:35:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EAE00442FF4
+	for <lists+linux-iio@lfdr.de>; Tue, 15 Apr 2025 18:39:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5483C226CF6;
-	Tue, 15 Apr 2025 18:35:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80EF622A4E7;
+	Tue, 15 Apr 2025 18:39:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XKOLlz8c"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M3YBn7OS"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CB0922157E;
-	Tue, 15 Apr 2025 18:35:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96F50222568;
+	Tue, 15 Apr 2025 18:39:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744742122; cv=none; b=Jn+CNrTcq2Z3+r4Xu9n6XdR8iR+0og5xXStiLHHs7JMUvcp+80VMbtYhctlHbacMv4I7eg72qArdNbbg7/QJqWrlG7PCP/ipti990VxAD0V+lpYGtiF0DlR5uR7T2pnwfLzMGBMTHkDOwiWPm6BEfEakjCpWZMZazu5O6NpH0aA=
+	t=1744742387; cv=none; b=IvHFVkGRlIQ+mt1at7ogzc/NcddLRi0sycT/kkir0whX+QMMe7pBdEDQsLNxX8neRwr0CjQFdwBK/FO3t7sUHNFsciiwMqqOnFUMK99ox3hAmryqbgefhIjkEY7gl4kxHeXRtv7Qmo+mxY8ov56Oqvn/Gth7gcN2MNlbZb9oXcI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744742122; c=relaxed/simple;
-	bh=m0ngbikheMR+1AzBKdPAopMMX2/FHuoyguBS+J0KTQw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=O3cmTumJrR+hvLZyp2rK7Ljldba6PL/EfarcJB7+XM42SGJuBiFBgQ4GsbqGt9hWD0pV6UhXrsXLLuzVV4Jgdk+k3Lmf6S18Ym+2RpIqzavDCOFYQaho2haa+jXjjGmp0YXDec1gjVZJJGnVMpR33H8OGnNJnNGRn3B8TZ3ojac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XKOLlz8c; arc=none smtp.client-ip=209.85.222.179
+	s=arc-20240116; t=1744742387; c=relaxed/simple;
+	bh=qmJc2MyLlEUxcwBk5X+Clsm2SNsgozIxnrGPnZqoGcA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=GqYD9olAZDDzP9cEaAxH0CTePIeBSqj2hs5Yq6NSlMoKJQl8b+w5SX1oYvNsZaYG9UXqEVgMKm4R9lx4++DxPrCBXvX8i4EhvmWvsuZwTnm/exrMTIJRWtx4BpqIZM0lc6uzAgmjQbRjzIYPGz/Hjzz/IMmQHkQpCI+dkvBrXxE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=M3YBn7OS; arc=none smtp.client-ip=209.85.208.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-7c5568355ffso484251185a.0;
-        Tue, 15 Apr 2025 11:35:19 -0700 (PDT)
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-5e60cfef9cfso9727200a12.2;
+        Tue, 15 Apr 2025 11:39:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744742118; x=1745346918; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=97X8AfJzSEM+SJ3Sxi/vdcxd/nCQ6ViCFDXjOmjTF6E=;
-        b=XKOLlz8ce2zSa/PiJfDoEzUMJhOzgAO6FXqTozX1v4jD3DMeKIm8vUdQmzDrVi41sc
-         MyYLp4Ev+vpjQRzLv4YR+TARtlxAy6UPMfU/BxhsD+PKro5eFDqafzvP8oI1604jqgDr
-         kHynkwQITmr+dS6a/549eNYr9chHBUv0iL6TDmW3LMuTuAiiLEBiE59py05Lf9UIUtQU
-         bXM3Db6NQ2Qbux3qvBKzIWsJ5Yfc0iRn3o+1nWrjvCjrIwUH2cGGvcGAnbTZ+bfA25oU
-         h2k5XYwozB3OPmejlkk4S3h2UT9eBX5yylva1AfgOGLYLTi7ddQLcLLrJmAJcgbjc3ON
-         Gc2A==
+        d=gmail.com; s=20230601; t=1744742383; x=1745347183; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=MuxD6d+TE3jsbY2UIjFJC1hqHPSQGHUKcYAlc4rVPHI=;
+        b=M3YBn7OSyA/43jy/FZo9EAaSKw5ACjblMVSQ5nILIpZGr6c/Qtexw+y1j+mgJJBOL5
+         rjhb30obhDQUAZ9kUAKePeTxoo2tl9sPzqr0AZAiR5Jn0TUTrqmZpTzGE8vKETsmY6sT
+         5bjjhVi2HK3mRO2+z0u8bl7AWCnNlRh2XzMycYUzXetLo7X9I/un6wkbWOS1lTPTIoT3
+         Ni+pDeLB5OplfVTx80YfhGadGDRu69WjJBjCbSezIgMVEKyV+x5uHlQyMBgziXRAA8hK
+         eK6PnUuhRbwarxh+++1MGz0M0z+54An4ygYE7gUQQnRWXE/Rb4IQ7CuvUckov9zSmDE9
+         6e9w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744742118; x=1745346918;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=97X8AfJzSEM+SJ3Sxi/vdcxd/nCQ6ViCFDXjOmjTF6E=;
-        b=v9/ZrlREWPY7JnYk/BzJqoKsnXq7wIlbsfAj7ZN/DSof/RM/w/bkM3rLm6vGp/5Esl
-         +DuCyzDN9EImmsLm6VH8H//1DGm/NaJ3E6alp2MYbrKgp6NENSk1VNoggCDgMnGggLLX
-         2dp/EfjvoE6EfEhn0eeijd8Z1wEAS8wwktxrhDed0bJVUxQY7uHFV7sRMw3fmTVuCJMp
-         iCVu80r3/wDC627qabfLpx1O+PbwB+OIPeH8gZgE39PIa2tljR+GlcZC/VltCWhBmSNB
-         NMPyiacIER4Ktig92bLocFQFkCQ+BLShe3o54OI1zlZSVDbJYTtAuv0YPWXCbwo1sdLk
-         LtSQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWNn7YZb9vuIjNlYWyyUKKyWVOfuPimW/GUb3HqM0VSBs1Xd++B9AEqgydf/OFFi6wLAeJNs+Wd+ck=@vger.kernel.org, AJvYcCXASDhFMqM5v6bnTR2bz73QNuPz8VfuYf5ChuILPyr95b3zBIz144VMz3ysgTTlF/QLrcEtfzHJ@vger.kernel.org, AJvYcCXKrU/U4CzG4x8BDfHKV4EfYW+c+q+bxU7okDm3p6iCbYAdmDeggJCDnxTmu+Qj4qnyDxXZk1dkVKd/i0Sn@vger.kernel.org
-X-Gm-Message-State: AOJu0YwpvY8nILG14W268eOzyKtnLw1KMKyqKnjGxyd8zifMet4SDHMb
-	XGpMaHUJ5xMsx06u/cQ4zsXf0nxbERJqLw3POumimxAopxWWgcrT
-X-Gm-Gg: ASbGncvlfJM7o/3bSYJC8kmehRPjF4dxc4aFmu4CLMla9evRaeUMEsTHIuIH9x23Tcg
-	ItAaaV7UIndUrYn8To1XMS/XZRV+YLKwwx8Ftvb7x+XJ9274q6ZdVAQjHtUNSQeHx56YEbq3CzA
-	swjNk5IhAafkOYwZ+l/T8uvCrvstBSp2xYpOOpfsJ5pt80hqYO4GgXK9UgzShqiYCy2srrViq3u
-	b7dtg5mSFQuiU8TdyHVZ41TQqEFibg4cot9BcEn67BjO3dPKM1mONLS+7Vjk3nKVgE1YswKcg3o
-	YS+lq2F3J34xULV4Zr/Ll6b/RC95ve2yRfqEZBItJxfLazaHUNPNLvM=
-X-Google-Smtp-Source: AGHT+IFDLnaf693CbcJqHa7n4MDj3QAjiwK9YeW53EEizGcBL+eM4f0LfY8bkzMCvFDj4Hto48V/uA==
-X-Received: by 2002:a05:620a:2991:b0:7c7:a59b:4b07 with SMTP id af79cd13be357-7c91419a469mr70542485a.3.1744742118218;
-        Tue, 15 Apr 2025 11:35:18 -0700 (PDT)
-Received: from theriatric.mshome.net ([73.123.232.110])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c7a8a0de11sm936533185a.101.2025.04.15.11.35.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Apr 2025 11:35:17 -0700 (PDT)
-From: Gabriel Shahrouzi <gshahrouzi@gmail.com>
-To: gregkh@linuxfoundation.org,
-	jic23@kernel.org,
-	lars@metafoo.de,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-staging@lists.linux.dev,
-	Michael.Hennerich@analog.com,
-	sonic.zhang@analog.com,
-	vapier@gentoo.org
-Cc: gshahrouzi@gmail.com,
-	skhan@linuxfoundation.org,
-	kernelmentees@lists.linuxfoundation.org,
-	stable@vger.kernel.org
-Subject: [PATCH] iio: adc: Revoke valid channel for error path
-Date: Tue, 15 Apr 2025 14:20:38 -0400
-Message-ID: <20250415182038.523186-1-gshahrouzi@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        d=1e100.net; s=20230601; t=1744742383; x=1745347183;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=MuxD6d+TE3jsbY2UIjFJC1hqHPSQGHUKcYAlc4rVPHI=;
+        b=eBSGDNBaje23ziKaxNHzrlKmqsdtG004G3hcMVBo4Qb+z7cYxIXNb9cQcsnDfdNDt8
+         xlpInc9xwJN9RmslIqxfdQsSdNA4ND/h/rd5i818XO6ZSVFb9jf9j0LBMNMoVaTe2Lqj
+         COZBS8qVfN+Ppw0okdbWIH9MPTAIfvn39RKxNFvSz8Kab6eSb4EPMZYP0paYLjqEXSBh
+         WO6sBeDgLZCDQsxm1Wlxp7+AItT1D193YAz2v9FdKEY2eCiJRKoFdpp8Dl50dX6H3plo
+         wJFV1mmHzSKWfYV3o8lii2ilb20No1XA8cCC+zKOQkC6tANAjv1H0YkqpQqeFWEEFNXM
+         WhLg==
+X-Forwarded-Encrypted: i=1; AJvYcCWFNBZy+fAo6P3rAaEIMhxkMNyJrAvMctnEI1PDAN5zH1H6LTTFsDkU61Z5oerRzEX1ugyCKRqrSBuaXM8B@vger.kernel.org, AJvYcCWr+MhctU7LPnatGAj/CXjVNVisDmLEgB6BxTVVB/oDn59Pip6mfiMXu6eaCHqfQH3T1H82ud8fFg8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzgS6laAb4Yg7iXVAwL4DLtZZT+LeCxEE70qYGGoHP3HtKxO12j
+	ghH0t2IOJclcoCkkhEly3tLfua4GAd5sDB1pnXKSXs64LXFW/pjpoogB6dcUalCU6c795FpkniC
+	DjDK3tFyflwSgW4Ax5G26CK6Xjbk=
+X-Gm-Gg: ASbGncu/QptNgsb/fWrhcF35MOJzkz/VrbaWK2jUbIif+Uf8aAlyULOQwTzZpVUYjJA
+	Pjw+eM4Hs5i1yv2Bg2KblprFk9Hz5Zs489clMVde73WQ+thnnSMnRFRb9+dctjkKbrJbZT6lYBl
+	/Ivv2bSIBKCbyEJQzBwOFsKA==
+X-Google-Smtp-Source: AGHT+IEisiwVczW2Sf8mkqkbd1qMc0N+ZCObtgQq+MjEOc6IRfS8cIH59uCiLcWPYmA3XlAX9I6cpJIhvMKb7CtM6QM=
+X-Received: by 2002:a17:907:7f8b:b0:ac7:ed27:974 with SMTP id
+ a640c23a62f3a-acb3826464amr11355366b.20.1744742382684; Tue, 15 Apr 2025
+ 11:39:42 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250415-losd-3-inv-icm42600-add-wom-support-v2-0-de94dfb92b7e@tdk.com>
+ <20250415-losd-3-inv-icm42600-add-wom-support-v2-2-de94dfb92b7e@tdk.com>
+In-Reply-To: <20250415-losd-3-inv-icm42600-add-wom-support-v2-2-de94dfb92b7e@tdk.com>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Tue, 15 Apr 2025 21:39:06 +0300
+X-Gm-Features: ATxdqUECvbr-Dz-xvlev5FJ7fdhC999j7ns3HMlVrNdQB14LcWiptXGSsn4Npnw
+Message-ID: <CAHp75VcgEJaWRPCGV1NOUKd1Kxw90=cyMT6d4mcRvQSWJ99RUg@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] iio: imu: inv_icm42600: add wakeup functionality
+ for Wake-on-Motion
+To: jean-baptiste.maneyrol@tdk.com
+Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, 
+	David Lechner <dlechner@baylibre.com>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
+	Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-According to the datasheet on page 9 under the channel selection table,
-all devices (AD7816/7/8) are able to use the channel marked as 7. This
-channel is used for diagnostic purposes by routing the internal 1.23V
-bandgap source through the MUX to the input of the ADC.
+On Tue, Apr 15, 2025 at 5:47=E2=80=AFPM Jean-Baptiste Maneyrol via B4 Relay
+<devnull+jean-baptiste.maneyrol.tdk.com@kernel.org> wrote:
+>
+> From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+>
+> When Wake-on-Motion is on, enable system wakeup and keep chip on for
 
-Replace checking for string equality with checking for the same chip ID
-to reduce time complexity.
+keep the chip
 
-Group invalid channels for all devices together because they are
-processed the same way.
+> waking up system with interrupt.
 
-Fixes: 7924425db04a ("staging: iio: adc: new driver for AD7816 devices")
-Cc: stable@vger.kernel.org
-Signed-off-by: Gabriel Shahrouzi <gshahrouzi@gmail.com>
----
- drivers/staging/iio/adc/ad7816.c | 15 +++++----------
- 1 file changed, 5 insertions(+), 10 deletions(-)
+up the system
+with an interrupt.
 
-diff --git a/drivers/staging/iio/adc/ad7816.c b/drivers/staging/iio/adc/ad7816.c
-index 6c14d7bcdd675..d880fe0257697 100644
---- a/drivers/staging/iio/adc/ad7816.c
-+++ b/drivers/staging/iio/adc/ad7816.c
-@@ -186,17 +186,12 @@ static ssize_t ad7816_store_channel(struct device *dev,
- 	if (ret)
- 		return ret;
- 
--	if (data > AD7816_CS_MAX && data != AD7816_CS_MASK) {
--		dev_err(&chip->spi_dev->dev, "Invalid channel id %lu for %s.\n",
--			data, indio_dev->name);
--		return -EINVAL;
--	} else if (strcmp(indio_dev->name, "ad7818") == 0 && data > 1) {
--		dev_err(&chip->spi_dev->dev,
--			"Invalid channel id %lu for ad7818.\n", data);
--		return -EINVAL;
--	} else if (strcmp(indio_dev->name, "ad7816") == 0 && data > 0) {
-+	if (data != AD7816_CS_MASK &&
-+	    (data > AD7816_CS_MAX ||
-+	    (chip->id == ID_AD7818 && data > 1) ||
-+	    (chip->id == ID_AD7816 && data > 0))) {
- 		dev_err(&chip->spi_dev->dev,
--			"Invalid channel id %lu for ad7816.\n", data);
-+			"Invalid channel id %lu for %s.\n", data, indio_dev->name);
- 		return -EINVAL;
- 	}
- 
--- 
-2.43.0
 
+
+
+> +       /* keep chip on and wake-up capable if APEX and wakeup on */
+> +       accel_dev =3D &st->indio_accel->dev;
+> +       wakeup =3D (st->apex.on && device_may_wakeup(accel_dev)) ? true :=
+ false;
+
+Redundant ternary.
+
+> +
+
+This blank line should be rather after the accel_dev =3D ... line.
+
+> +       if (!wakeup) {
+
+Can we use positive conditionals? Generally they are easier to read.
+
+> +               /* disable APEX features and accel if wakeup disabled */
+> +               if (st->apex.wom.enable) {
+> +                       ret =3D inv_icm42600_disable_wom(st);
+> +                       if (ret)
+> +                               goto out_unlock;
+> +               }
+> +               accel_conf =3D INV_ICM42600_SENSOR_MODE_OFF;
+> +       } else {
+> +               /* keep accel on and setup irq for wakeup */
+> +               accel_conf =3D st->conf.accel.mode;
+> +               enable_irq_wake(st->irq);
+> +               disable_irq(st->irq);
+>         }
+
+...
+
+> +       /* check wakeup capability */
+> +       accel_dev =3D &st->indio_accel->dev;
+> +       wakeup =3D (st->apex.on && device_may_wakeup(accel_dev)) ? true :=
+ false;
+> +
+> +       /* restore vddio if cut off or irq state */
+> +       if (!wakeup) {
+
+Same comments as per above.
+
+> +               ret =3D inv_icm42600_enable_regulator_vddio(st);
+> +               if (ret)
+> +                       goto out_unlock;
+> +       } else {
+> +               enable_irq(st->irq);
+> +               disable_irq_wake(st->irq);
+> +       }
+
+...
+
+> +       /* restore APEX features if disabled */
+> +       if (!wakeup) {
+> +               if (st->apex.wom.enable) {
+
+This is effectively if (foo && bar).
+
+> +                       ret =3D inv_icm42600_enable_wom(st);
+> +                       if (ret)
+> +                               goto out_unlock;
+> +               }
+>         }
+
+...
+
+> @@ -924,6 +955,8 @@ static int inv_icm42600_resume(struct device *dev)
+>                 inv_sensors_timestamp_reset(&accel_st->ts);
+>                 ret =3D regmap_write(st->map, INV_ICM42600_REG_FIFO_CONFI=
+G,
+>                                    INV_ICM42600_FIFO_CONFIG_STREAM);
+> +               if (ret)
+> +                       goto out_unlock;
+>         }
+
+>  out_unlock:
+
+Stray / unneeded change.
+
+--=20
+With Best Regards,
+Andy Shevchenko
 

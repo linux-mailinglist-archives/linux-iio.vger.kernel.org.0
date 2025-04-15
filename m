@@ -1,143 +1,129 @@
-Return-Path: <linux-iio+bounces-18125-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18126-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F208A89588
-	for <lists+linux-iio@lfdr.de>; Tue, 15 Apr 2025 09:46:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65A1EA8969F
+	for <lists+linux-iio@lfdr.de>; Tue, 15 Apr 2025 10:30:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C91387ABCDB
-	for <lists+linux-iio@lfdr.de>; Tue, 15 Apr 2025 07:45:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A0B293B95F0
+	for <lists+linux-iio@lfdr.de>; Tue, 15 Apr 2025 08:30:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 893B027990C;
-	Tue, 15 Apr 2025 07:45:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B320228A1F6;
+	Tue, 15 Apr 2025 08:27:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="ANpTy5e6"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="a3U2rZCA"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50C412798F8
-	for <linux-iio@vger.kernel.org>; Tue, 15 Apr 2025 07:45:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 255E528A1C3;
+	Tue, 15 Apr 2025 08:27:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744703145; cv=none; b=kZVyVZkyH4YYAgRdElRE1OiYXHzEgaWHmrjIdC4WQS4kDBZXfTBq02L7Ei/w/XlXe5uIvOw9fb++nWNnA5yrNB7UsZFZHAXF8qWByjsLqzepz7gsRYX6Hm10PXaigF78ByMJVHc1/Ctc4rUm0e49ybieQNOpUo2TppHobzGfI0o=
+	t=1744705660; cv=none; b=uhGqyJ3gKv0OhEq+azKqovJkGD0eRKJ81pN6ilcMuOs1JbDNFthzgMJs7Y1xoF0sB5MBuubnZ+cV0DvlHwDU8YXvj61e5NBQ6/MOuX1ubal34yxA8XEKG/oJBFpKZu8JwKI6+em61AHUe1AdtXzWOWUrWJXFE2KmQ6KWe2LcfD8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744703145; c=relaxed/simple;
-	bh=LYTo/8Wrk86/MtiAPfbdDE26Hplmwpiabqw+vW+JUaI=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=E0JFfjcL2QKS9M0dY3hMMXwrSwgcnD8CnsKV/hLKdqi5Rm8DjbTODiXWHj/HuqKdI+xgpT4v0dfOeHAmWj/m//zmSpWeoUSBhXDFvQZr5xECbqGu0wldf6LAunUUe9FNi3rC8XFaq6xPbFxbggpiBfLT3h1Jn3WPgFb4QTLl7YM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=ANpTy5e6; arc=none smtp.client-ip=209.85.221.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-39c30d9085aso3217488f8f.1
-        for <linux-iio@vger.kernel.org>; Tue, 15 Apr 2025 00:45:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1744703141; x=1745307941; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=uZGd0w9zY9e8wiKe6AcqxmAzlgtf9nDIhq/RZijuzI0=;
-        b=ANpTy5e6H88t8JoihICGKrnOBDrQKp5o9rEInBSkFqeYXIzI83BED+wdqSIGAdWY58
-         Pk73XBzL5i5KW10GgOnkwSUU5LLQTrwhl2htyk8BBBnNSdQbZiv+q9CNe28g/yzL61pC
-         0PLmQuRx5HBv/Fdzor/CbgdExPacB/6oqmiasoWVWNbdlpS2386mB4+9iMHQfDM3RhqC
-         Irbqh3NcBIvpENxqOUVVX2M7TsWHB0bL1lMUTGex/Ga5FOt5JJ0TObhpI3csRFWDazR0
-         Arnh30fztajOvlp4kQ5MblEqACN4QqoyFB1anXZybzNGWzPl8S920bKgD70GOjr+1xfn
-         56Hg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744703141; x=1745307941;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=uZGd0w9zY9e8wiKe6AcqxmAzlgtf9nDIhq/RZijuzI0=;
-        b=LUMX+fdBdM8pJYpuESFfOdUZ2X9+cifc/5rzGoen+KijFMJ55mSJy3Fbg6tW1+7jhz
-         Hnvy0LYfJbAShCLJfrQhqqFgpFzsq5iPjNPZQguIWLLvNE73jHxaDdzNnfxPTmPtGs5X
-         8z3WxyJCoTWjlnKcG7ZTpLjvV4X3NX3kfZMYXI2653FGklKMnbWGb3mbk7wACL/vZDHH
-         VhemJMr5vyfG0fxCXvfEfiH/Dbfq7tZ5iUAB0frd3azaV2WaRNSU3QThPUj7GehxBfGz
-         58rsXa4NXeVa2vQRuj9QzrDo4of4mWRuMzh39U2AA1iCqNs6QUbiHQCNBqjN99/3tqyn
-         503w==
-X-Forwarded-Encrypted: i=1; AJvYcCVorqe8XYfz0bY69WiYsLdnpQK6YVs5tmkxoLrhZwKFJdlZs/dl690NkywrM7XWZZ7tYXoyRmpo+ss=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzlyodQZy4dybaXrHkBBg33yIsJOjp/Gew7Xzl7IVxxG+eYScfy
-	ozuv4l6C5SwIRfNVUTJCd9LZldNUhM2IeSWAXFpqayfcKltTeeDpeI+jL06uj04=
-X-Gm-Gg: ASbGnctdk8lkBZHP8DnsNjTAYwwvb2E1jHsgGWH2Lr+9Fwv/ZGxj3zGl51a6quaudSg
-	bfTyVmrauf6+0kVbU3AN3Wv5atMT20LFrQG5JTe+DWk3XrKs8a3JM3FTwDMD1rzQn9dWAqONomf
-	UMP0w2TXF/93SmgflB+PCXSSucCxEKNtjrRh/nIXcWEcLRG6omYGchwtA+1FwT2kfZ9SZM97TFm
-	0rGQjs5kLRiDZINONbc0gY6nMDtfPvdSTN5P1iFg0OznqmpMn8XoBb1ZOWtPg2K8xL6liq4NMXX
-	bIB0i64G4OxGxFP33isQsWsk2ygeVxMAp4BjlKxCtGoLJNV7N4lWSbJW09SVR/ynIfhV5xfSpfB
-	CigrdQIH2ERHYU7OWxw==
-X-Google-Smtp-Source: AGHT+IHV7T+O8BH10hFsQ0yYigBYFXjp4027w7i9ivXroOobo0vEoRWLMN+TMIMe0o1dY3KNhquw+A==
-X-Received: by 2002:a05:6000:40d9:b0:39c:16a0:fee4 with SMTP id ffacd0b85a97d-39ea52133cbmr13519488f8f.27.1744703141589;
-        Tue, 15 Apr 2025 00:45:41 -0700 (PDT)
-Received: from [192.168.0.2] (host-87-15-70-119.retail.telecomitalia.it. [87.15.70.119])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39eaf445270sm13137060f8f.81.2025.04.15.00.45.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Apr 2025 00:45:40 -0700 (PDT)
-From: Angelo Dureghello <adureghello@baylibre.com>
-X-Google-Original-From: Angelo Dureghello <adureghello@baylibre.org>
-Date: Tue, 15 Apr 2025 09:44:12 +0200
-Subject: [PATCH] docs: iio: ad3552r: fix malformed table
+	s=arc-20240116; t=1744705660; c=relaxed/simple;
+	bh=/NWQer13qfQtTS0IPMGbnftEkMcL2u4+nq/Oeev8wi0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=g2FtpTNqrf2qNe6vYD1ifY16slJv20q4VLrwZyb6zdhQ8Sf/zycqDNLv7C9iRU9uGOGAazkbP6rTR9+u+m61OrJHALdylmccFRl92o2K52FER8U9u61l4xVklDtBxjHJSKeu/gJPJlGWS268YG2hlo1rBrQXl98obLEoe+/qaz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=a3U2rZCA; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1744705659; x=1776241659;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=/NWQer13qfQtTS0IPMGbnftEkMcL2u4+nq/Oeev8wi0=;
+  b=a3U2rZCARQVjrpZuRLpKnGGoK0EogJN4Rl2Bs0ifXJGJlXfGd8C+URFa
+   ibRBGomjzlQelZDt4Dyg8cfvnyogzDm2/AZ74NimLWcKP4WgXlKwK0GcH
+   6i3APbuWdnRJIPtP4QkJ0JwjGh33u2WAprFJ6PmwoTN8o6DX3Hcj9o7lP
+   YnPZVM2qH/5QyEeVmwhQ7f0Mvbbv0kCbea8VAiLV6p+WFUGLYUPzFvV6j
+   5kUq3SUMG/2qQDCFKGMdZC5FvVPLMGELYj/wYfT1RZrmwyHlWCKEzfXik
+   h06Xlg8pf7FotgFCxVmmJD7YnpMwaonvwu0wDClGLK7Dy5hnw95rtaEx5
+   A==;
+X-CSE-ConnectionGUID: tHaVRnPaRlKIeVA+SX4+KA==
+X-CSE-MsgGUID: 9RCRcqzHTL63RxL8gsfq0A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11403"; a="45914696"
+X-IronPort-AV: E=Sophos;i="6.15,213,1739865600"; 
+   d="scan'208";a="45914696"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Apr 2025 01:26:32 -0700
+X-CSE-ConnectionGUID: qrpIY++ySUCX/8SUuS4vUA==
+X-CSE-MsgGUID: xgVmuuT2QAu6SMtEtu38Ew==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,213,1739865600"; 
+   d="scan'208";a="130374897"
+Received: from smile.fi.intel.com ([10.237.72.58])
+  by fmviesa008.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Apr 2025 01:26:26 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1u4bcd-0000000CUHm-0iFL;
+	Tue, 15 Apr 2025 11:26:23 +0300
+Date: Tue, 15 Apr 2025 11:26:22 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Yu-Hsian Yang <j2anfernee@gmail.com>
+Cc: jic23@kernel.org, lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, dlechner@baylibre.com, nuno.sa@analog.com,
+	javier.carrasco.cruz@gmail.com, gstols@baylibre.com,
+	tgamblin@baylibre.com, alisadariana@gmail.com,
+	antoniu.miclaus@analog.com, eblanc@baylibre.com,
+	jstephan@baylibre.com, matteomartelli3@gmail.com,
+	angelogioacchino.delregno@collabora.com, herve.codina@bootlin.com,
+	marcelo.schmitt@analog.com, chanh@os.amperecomputing.com,
+	KWLIU@nuvoton.com, yhyang2@nuvoton.com, linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5 2/2] iio: adc: add support for Nuvoton NCT7201
+Message-ID: <Z_4YLq_uR_6uroNd@smile.fi.intel.com>
+References: <20250409012351.2543450-1-j2anfernee@gmail.com>
+ <20250409012351.2543450-3-j2anfernee@gmail.com>
+ <Z_aeEuIk9brES6dM@smile.fi.intel.com>
+ <CA+4VgcKG2EEsicysds0zu7y1xDhg88m3heGUBaQZ7-MVWanCaw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250415-wip-bl-ad3552r-fix-doc-table-v1-1-717ffd320c9d@baylibre.com>
-X-B4-Tracking: v=1; b=H4sIAEsO/mcC/x3MTQqEMAxA4atI1gZqOxHrVcRFf6IGRKUVZ0C8+
- xSXHzzeDZmTcIa+uiHxJVn2raCpKwiL22ZGicWglSb1aQi/cqBf0UVDpBNO8sO4BzydXxmps9q
- aYH3XKiiLI3EJ3v0wPs8fCe7Ikm4AAAA=
-X-Change-ID: 20250415-wip-bl-ad3552r-fix-doc-table-589293c9b860
-To: =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
- Andy Shevchenko <andy@kernel.org>, Jonathan Corbet <corbet@lwn.net>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
- linux-iio@vger.kernel.org, linux-doc@vger.kernel.org, 
- linux-kernel@vger.kernel.org, sfr@canb.auug.org.au, 
- Angelo Dureghello <adureghello@baylibre.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1466;
- i=adureghello@baylibre.com; h=from:subject:message-id;
- bh=uyyyxJVkC1X19c9K6rX5j2f5tLF1UJIDKdItLe/uiwA=;
- b=owGbwMvMwCXGf3bn1e/btlsznlZLYkj/x+dX8FdT6cgy2T+eN9l1VjlW3s5XKq64YBookfUmZ
- 8KsRkXjjlIWBjEuBlkxRZa6xAiT0NuhUsoLGGfDzGFlAhnCwMUpABOpm8nI8FPDqaq0NvpIql3C
- n1PTJ39gOtL5prT6bNlfyVU3Pte1hzP8Dz39Lz64fH+AElPa+bmJRxdd0S5b01nxptTi+2ITnad
- qLAA=
-X-Developer-Key: i=adureghello@baylibre.com; a=openpgp;
- fpr=703CDFAD8B573EB00850E38366D1CB9419AF3953
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CA+4VgcKG2EEsicysds0zu7y1xDhg88m3heGUBaQZ7-MVWanCaw@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-From: Angelo Dureghello <adureghello@baylibre.com>
+On Mon, Apr 14, 2025 at 09:40:35PM +0800, Yu-Hsian Yang wrote:
+> Andy Shevchenko <andriy.shevchenko@linux.intel.com> 於 2025年4月10日 週四 上午12:19寫道：
+> > On Wed, Apr 09, 2025 at 09:23:51AM +0800, Eason Yang wrote:
 
-Fix malformed table.
+...
 
-Fixes: 9a259b51e3ea ("docs: iio: add documentation for ad3552r driver")
-Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
----
-Fix malformed table.
----
- Documentation/iio/ad3552r.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> > Here and elsewhere why ' < 0' is used? Do you expect positive return values
+> > from those?
+> 
+> In regmap_read function, A value of zero will be returned on success,
+> a negative errno will be returned in error cases.
+> We don't have a positive return case.
 
-diff --git a/Documentation/iio/ad3552r.rst b/Documentation/iio/ad3552r.rst
-index 582507abe8c4c2ecb51a1f8389d7deec44d20222..f5d59e4e86c7ec8338f3f4e82d7a07587e3d8404 100644
---- a/Documentation/iio/ad3552r.rst
-+++ b/Documentation/iio/ad3552r.rst
-@@ -56,7 +56,7 @@ specific debugfs path ``/sys/kernel/debug/iio/iio:deviceX``.
- | Debugfs device files  | Description                                          |
- +-----------------------+------------------------------------------------------+
- | data_source           | The used data source, as                             |
--|                       | ``normal``, ``ramp-16bit``, etc.                        |
-+|                       | ``normal``, ``ramp-16bit``, etc.                     |
- +-----------------------+------------------------------------------------------+
- | data_source_available | The available data sources.                          |
- +-----------------------+------------------------------------------------------+
+So, can we remove ' < 0' parts where they are not required, please?
 
----
-base-commit: 31c52fe3b2efeebfc72cc5336653baaa9889b41e
-change-id: 20250415-wip-bl-ad3552r-fix-doc-table-589293c9b860
+...
 
-Best regards,
+> > > +     chip->client = client;
+> >
+> > How exactly is _client_ used elsewhere? Shouldn't it be just a struct device
+> > pointer?
+> 
+> Yes, it is just a struct device pointer.
+> In nct7201_init_chip(chip), we would use the chip->client->dev as
+> dev_err_probe() parameter
+
+Just save there struct device *dev and use chip->dev instead.
+
 -- 
-Angelo Dureghello <adureghello@baylibre.com>
+With Best Regards,
+Andy Shevchenko
+
 
 

@@ -1,127 +1,179 @@
-Return-Path: <linux-iio+bounces-18158-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18159-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D34E1A8B27E
-	for <lists+linux-iio@lfdr.de>; Wed, 16 Apr 2025 09:44:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CC39A8B34D
+	for <lists+linux-iio@lfdr.de>; Wed, 16 Apr 2025 10:20:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5727C3A7505
-	for <lists+linux-iio@lfdr.de>; Wed, 16 Apr 2025 07:44:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 53FD75A5294
+	for <lists+linux-iio@lfdr.de>; Wed, 16 Apr 2025 08:19:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F4F822D7A1;
-	Wed, 16 Apr 2025 07:44:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A1CA22FF5E;
+	Wed, 16 Apr 2025 08:17:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Iw9rziFQ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S23LeSGY"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D67922D4DC
-	for <linux-iio@vger.kernel.org>; Wed, 16 Apr 2025 07:44:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF58122E406;
+	Wed, 16 Apr 2025 08:17:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744789453; cv=none; b=bR+Er4wSDR50ixD/LrAe0DhtZugOJgJaJ9V+rqulsoULEQR6iwENx5eqYhQEs5WLBnrEM1kI5lrOWISVm/8BydN86492FJciNUWBxnNS1almqdNt+EL8CfbQxmqYh2V1UC/clD4Hf4bFUYXxXDXIAUcsOFt/M7/RuIe6tU2aSZk=
+	t=1744791470; cv=none; b=QGfSmoHMMk2jVclH31BpVWYHukmN0/Ic4odg/tVgLqyF8icDwV72S6NruhAceVxG4yP6qEdMlvoV59Pjpjb1cv9NlytJgXN2b7YWg2awUaixuSKepoWjJoHe0j3szvN0V3BwcqKWxm8Btq3+KGg6Fk5tYsOhbPiBkMceH3OTA4E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744789453; c=relaxed/simple;
-	bh=w7BUvBYqTMm1Ze0afEibdThADpsOyoFKneytr7BCkqU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=XQfUrEYhrv2YBXkvnibMFkY0U4nDZ/clxOi9lhDRyzajZzVU5wPposT49hW3JNJtO0FkjjyMJDv/fVFALp5ngkLCFIm5LSiiV+Wh6s+RuLQhKtTURKAnae84IxDmmAIMgHhi+7HFXcksh9HoKRO51p4j6t8lCS04RUPTms9Fb8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Iw9rziFQ; arc=none smtp.client-ip=209.85.167.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-54998f865b8so1485840e87.3
-        for <linux-iio@vger.kernel.org>; Wed, 16 Apr 2025 00:44:11 -0700 (PDT)
+	s=arc-20240116; t=1744791470; c=relaxed/simple;
+	bh=eBhnnAGZzydVrHE2B0Hn0yJ211LrD50RXVmFPWd6lgk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=sgjcCn9f1i5p3B9+DiVSAvHmtlTklGGvCxcV98cUmmw+t51t/DSLnIugSc3bAHsklht9QmkiPbxZQDLWU5Mhuu/4+yBr6pzfMvajGHUcVTJvTyM2ZKdS7V5sE1cgtebtWOpA5Kl6SgRpsmWWZmMVD0RZwOjLcoBYJZaPxlReKRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S23LeSGY; arc=none smtp.client-ip=209.85.214.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2241053582dso89469765ad.1;
+        Wed, 16 Apr 2025 01:17:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1744789449; x=1745394249; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=w7BUvBYqTMm1Ze0afEibdThADpsOyoFKneytr7BCkqU=;
-        b=Iw9rziFQ0zflq0thJE07XZeRtG5fvZ/UHqo7sL7GBaNh2gWnF/3MHaGz5+4ixr6pk7
-         V/lAf/TNIXxPlzuBL7+uhsdWqGzWGj7dwoqFVbnrMFQkCdgF4tI+lx0ay5Nv0HdfTtDw
-         IgM1sFW6iPaEc89Yr3Lvnus9Qb7n33KGMypsVe+P4GyClXjIeNd1O/WfNBG/nroXjPjn
-         hn69/rtZhnOSiBg5G5lv+cL+yi7nOjttmz01oO0VGhGF2fkXXj2k4D1SJxveuHxvt6hr
-         owg1y23r5FbLoiRiMFV48r048dIcmIc8SfiRqGQ8KCxFcDxZGW5bJZbjWeoNbSpHUeQp
-         U60A==
+        d=gmail.com; s=20230601; t=1744791468; x=1745396268; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=0oATAwbosz0DdswmzapQQqA784eLgKtbb7VT6D86p6g=;
+        b=S23LeSGYnyNP5z6+Uuy16zYAx1Asz5wu2hRC95L8PWDv8BatVyQkPwikaD10cgaCWq
+         JgQmPANrPeQjEOL+W03hTo7OluBMwZ4ZrySLpNYul4ySJL9qcy73BjF6JKrXcZr7uPdO
+         HEUOJnF8UnE6D9treDKyaV/RA1/+40li7cAPENpKNAQDKuKTeMb0QT0gvENhDbZ+iAir
+         tXNMNmRttB5VhMDN4zzf9W/HO5BQCCqLHyeI3V0MtIeM3ogC9Nn0odE+6o4mB412SaAu
+         Gjzse3qxCjTUY1KPLoGe6Yi6uSvhH7qY1Huv1vg4mCdy3xmTsY+ZzTluHzFIx+CWK5Dw
+         2Dpg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744789449; x=1745394249;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=w7BUvBYqTMm1Ze0afEibdThADpsOyoFKneytr7BCkqU=;
-        b=lekEDyug5R1Z7BtoghuwTJxP5L9+sskK0hN90U2LxBmB9T3vWSWC+RLg61SkA+Deb5
-         Yg1uyT19yrATcOUlH2nQU+DdYgApIGhF2HI4c6CVLZgdi93Uu/V0FyYfrxAQ+ZonUQq5
-         UoNHxBJVRVF1jgM0TtaMzNNqdRVvQHZe6bYjqeVPA49h4SpFz6mh6JdG1MrnGNz6wLH6
-         Ui5d8RKwxEIYdV1Rr9JeJ9Le9r9l/yDhB2NPcv6a1gqPDuU4yoEZHSEOzKRd1KO7kb9w
-         8ST9sA+dUv3Ac1FtuzQ3maRavoYM1W6xBJXIvwCod4IAneWtJbSWqNzsYO309LKxMdIy
-         k8Gw==
-X-Gm-Message-State: AOJu0YzVIoBsLE2BWTzMPS+Pmx5o0Ztl4UE7eHeRY5xnHxmpp/1wEALd
-	xN4rQ2u4n4OWjcsgfC92G1txW5b+hjWM86e7xw1PfPJdSSNH93VPaCGrTiWZztXrcNwsgkONJTU
-	B44p7QZXKJxVaZE9GXGgkrFCp4juWG0SqWDBQzQ==
-X-Gm-Gg: ASbGncuVlEzIVVCMn0yZGKCn0Ez5Op+Hj3ixFjoTNJJUxKYXqGBVtLhW3vjSmG5Lh+n
-	sDS2u1vU8vmvTMvAdDwjyStOXKPoT31ubXPl8iagojKKLBIS9wW4yBjnPo9FSvN1ASt6nUppgsL
-	zUi0XQapacq76YM5/GSERgsA==
-X-Google-Smtp-Source: AGHT+IG0Lwyub0udHPr2t5fpOsIZ2RLg7Lkae30HWcbs+tlOsVB08fWQavStEVsRHF6ju8VE3aya9e5Yj0LjLkUgobg=
-X-Received: by 2002:a05:6512:118e:b0:546:2f4c:7f4f with SMTP id
- 2adb3069b0e04-54d64ab0b47mr201581e87.28.1744789449414; Wed, 16 Apr 2025
- 00:44:09 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1744791468; x=1745396268;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=0oATAwbosz0DdswmzapQQqA784eLgKtbb7VT6D86p6g=;
+        b=fGhp7xoo0/a0M0juwPzXJzIeiTVRWrMQFceHLEs9OHWYIWTfRjuIoZX05W9gLlAsb3
+         QiFZcNSM3c0XmeLkEFqpSU7UGWw2YcEOreC/O9Suf032HRFNfJNwOYguMs1VSU5YclwH
+         da12Ev28FkCYVIraq4YqreLhCMMjy5iOWwl5jtfWiHqW/psun8xnVJNU42w15ULn9iQs
+         f/ZsSo6mVDQZKbztTdPdQVd3SeXklkjnhi1/XS9KISPg0zCeG3dX6Put+z5F4jFJqT5p
+         BYIrVIXqZdtB4rDNxD5TxjugojvQiZZm+qNZrXaCVmEN9XKuo8q1zDqMZfPmv3iRYWd/
+         18rQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWtUBEoa0SuTfC6KJ1Sof8M4woE8hGfN8raaVnLLM9Lxk/vcOP90JF3mqF8NDKWlHT53KCy4LhPZ71Q@vger.kernel.org, AJvYcCXofosMaaYrEv4J57NIjQY9H2temKBm9yc4w2waPzNxCVnf83Hji6HuF+jeaRDHHWSD3nVHTWdfB+UzSPB1@vger.kernel.org
+X-Gm-Message-State: AOJu0YzLjDZ/Z4yFoj4KfUpZ40t5VDo6Y2uc48qSjO9+WmQRTZqfw0V5
+	JR9+tdquV+XCrX5iA4VJ/+Jw01fWHkykEYgO+7PQUJY6G+eakkDH
+X-Gm-Gg: ASbGncuZABK/FpQeUsqDge/WIv8BUYG5KwXjTF65x94wzbMamyLxBazgVWORAT5tD1c
+	ux4GA3HEcj/5WVA07A6pPohly9QQJzfRprMQacwhYDTQtRhe0fgHPBDWJzI5qC9IJbPyRNkQ6cJ
+	e3IiYCh+SVyPTin8oBSTkE8oYfdo2FAbfzYXdtDorj20HY6BhTTGVXyAcNWubYe/Vw0oMy4nB6Q
+	42FCCZ9eDO8u1D7jol4sLqtrzm6v16Fz8RoT1sQMeoL8cQ1+hKC/7/cmi9LIZjJlR6KE4u5kdc8
+	9dXpitGCzz6SAEdnYHgUtyhVTvH8J3kx9fOXQHdUYH4YLTASepVK73wqNhx6FgY24REReQwP
+X-Google-Smtp-Source: AGHT+IGZDOiHWyQ+UndS30b4R9KUrQEBau/3toTW95BlhJl30/S4mz20CPLgfkr67OFqa8xaf93ZqQ==
+X-Received: by 2002:a17:902:dacf:b0:21f:1202:f2f5 with SMTP id d9443c01a7336-22c358c5950mr10677835ad.8.1744791467692;
+        Wed, 16 Apr 2025 01:17:47 -0700 (PDT)
+Received: from openbmc.. (211-23-34-211.hinet-ip.hinet.net. [211.23.34.211])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22c33faac6fsm8190925ad.124.2025.04.16.01.17.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 16 Apr 2025 01:17:47 -0700 (PDT)
+From: Eason Yang <j2anfernee@gmail.com>
+To: jic23@kernel.org,
+	lars@metafoo.de,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	dlechner@baylibre.com,
+	nuno.sa@analog.com,
+	javier.carrasco.cruz@gmail.com,
+	gstols@baylibre.com,
+	alisadariana@gmail.com,
+	tgamblin@baylibre.com,
+	olivier.moysan@foss.st.com,
+	antoniu.miclaus@analog.com,
+	eblanc@baylibre.com,
+	andriy.shevchenko@linux.intel.com,
+	joao.goncalves@toradex.com,
+	tobias.sperling@softing.com,
+	marcelo.schmitt@analog.com,
+	angelogioacchino.delregno@collabora.com,
+	thomas.bonnefille@bootlin.com,
+	herve.codina@bootlin.com,
+	chanh@os.amperecomputing.com,
+	KWLIU@nuvoton.com,
+	yhyang2@nuvoton.com
+Cc: linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Eason Yang <j2anfernee@gmail.com>
+Subject: [PATCH v6 0/2] iio: adc: add Nuvoton NCT7201 ADC driver
+Date: Wed, 16 Apr 2025 16:17:32 +0800
+Message-Id: <20250416081734.563111-1-j2anfernee@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1744325346.git.Jonathan.Santos@analog.com> <414f5b60b81f87f99b4e18b9a55eb51f29d2225a.1744325346.git.Jonathan.Santos@analog.com>
-In-Reply-To: <414f5b60b81f87f99b4e18b9a55eb51f29d2225a.1744325346.git.Jonathan.Santos@analog.com>
-From: Linus Walleij <linus.walleij@linaro.org>
-Date: Wed, 16 Apr 2025 09:43:58 +0200
-X-Gm-Features: ATxdqUFrHLfUgDMhA2bIeO0emn67mugRA29Aq8hS3KKX_3FOQ4i_PWerQ3Zb48o
-Message-ID: <CACRpkdauyPb3bhgK4MTYN4Xq0cM80vwT8i_jcKoQcicpvMo7yg@mail.gmail.com>
-Subject: Re: [PATCH v5 01/14] dt-bindings: trigger-source: add generic GPIO
- trigger source
-To: Jonathan Santos <Jonathan.Santos@analog.com>
-Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org, lars@metafoo.de, 
-	Michael.Hennerich@analog.com, marcelo.schmitt@analog.com, jic23@kernel.org, 
-	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
-	marcelo.schmitt1@gmail.com, brgl@bgdev.pl, lgirdwood@gmail.com, 
-	broonie@kernel.org, jonath4nns@gmail.com, dlechner@baylibre.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Hi Jonathan,
+Change since version 6:
+ - Fix comments
+ - Add use_single_read in regmap_config
+ - Remove unused definitions
+ - Do not shadow the return code by -EIO and let regmap API caller to decide
+ - Use simple English in all error messages
+ - Use a local variable for the struct device pointers. This increases 
+   code readability with shortened lines.
+ - Use `fsleep` instead of `mdelay`
+ - Use 16 bits type __le16 instead of u8 data[2]
 
-thanks for your patch!
+Change since version 5:
+ - Fix comments
+ - Add NUVOTON NCT7201 IIO DRIVER section in MAINTAINERS
+ - Add vdd-supply and vref-supply to the DT example
+ - Remove mutex since the regmap should already have an internal lock
+ - Remove redundant assigning values
+ - Check errors on regmap_write
 
-On Fri, Apr 11, 2025 at 5:56=E2=80=AFPM Jonathan Santos
-<Jonathan.Santos@analog.com> wrote:
+Change since version 4:
+ - Fix comments
+ - Add interrupts and reset-gpios to the DT example
+ - Use the FIELD_PREP and FIELD_GET
+ - Add use_single_write in regmap_config
+ - Use regmap_access_table
 
-> Inspired by pwn-trigger, create a new binding for using a GPIO
-> pin as a trigger source.
->
-> Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
+Change since version 3:
+ - Fix comments
+ - Don't put nct720"x" in the name, just call it nct7201
+ - Remove differential inputs until conversions are finished
+ - Add NCT7201_ prefix in all macros and avoid the tables
+ - Correct event threshold values in raw units
+ - Add with and without interrupt callback function to have the event
+   config part and one that doesn't
+ - Remove print an error message if regmap_wirte failed case
 
-Is this actually documenting the trigger sources I implemented for LED
-here?
-https://lore.kernel.org/all/20230926-gpio-led-trigger-dt-v2-0-e06e458b788e@=
-linaro.org/
+Change since version 2:
+ - Remvoe read-vin-data-size property, default use read word vin data
+ - Use regmap instead of i2c smbus API
+ - IIO should be IIO_CHAN_INFO_RAW and _SCALE not _PROCESSED
+ - Use dev_xxx_probe in probe function and dev_xxx in other functions
+ - Use devm_iio_device_register replace of iio_device_register
+ - Use guard(mutex) replace of mutex_lock
+ - Use get_unaligned_le16 conversion API
 
-Then maybe put this in as Link:
+Changes since version 1:
+ - Add new property in iio:adc binding document
+ - Add new driver for Nuvoton NCT720x driver
 
-I tried to figure out how to properly document it but I think it was part o=
-f
-dtsschema and that may have confused me.
+Eason Yang (2):
+  dt-bindings: iio: adc: add NCT7201 ADCs
+  iio: adc: add support for Nuvoton NCT7201
 
-> +title: Generic trigger source using GPIO
-> +
-> +description: Remaps a GPIO pin as a trigger source.
+ .../bindings/iio/adc/nuvoton,nct7201.yaml     |  70 +++
+ MAINTAINERS                                   |   7 +
+ drivers/iio/adc/Kconfig                       |  11 +
+ drivers/iio/adc/Makefile                      |   1 +
+ drivers/iio/adc/nct7201.c                     | 471 ++++++++++++++++++
+ 5 files changed, 560 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/nuvoton,nct7201.yaml
+ create mode 100644 drivers/iio/adc/nct7201.c
 
-Please write "GPIO line" instead of "GPIO pin".
+-- 
+2.34.1
 
-The reason is that not all GPIOs are pins. Some are other stuff.
-
-Yours,
-Linus Walleij
 

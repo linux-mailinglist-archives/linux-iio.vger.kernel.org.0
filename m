@@ -1,224 +1,120 @@
-Return-Path: <linux-iio+bounces-18151-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18152-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A85C6A8AB46
-	for <lists+linux-iio@lfdr.de>; Wed, 16 Apr 2025 00:27:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4B0CA8AFE9
+	for <lists+linux-iio@lfdr.de>; Wed, 16 Apr 2025 07:58:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F2480189823C
-	for <lists+linux-iio@lfdr.de>; Tue, 15 Apr 2025 22:27:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C60B94414D5
+	for <lists+linux-iio@lfdr.de>; Wed, 16 Apr 2025 05:58:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF961284687;
-	Tue, 15 Apr 2025 22:27:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9AA222B8AD;
+	Wed, 16 Apr 2025 05:58:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OliikUH7"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BFdWzR/d"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
+Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 236EC2517BC;
-	Tue, 15 Apr 2025 22:26:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D02322DFA2D;
+	Wed, 16 Apr 2025 05:58:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744756020; cv=none; b=q1MA3BsiVaZCJ13bzPor0ZqrPPjETxLkK1ZJCVsRaWZ6wW97QwrwOjoCBuVR42Hzme/TktMebJ2Yne+LXm5bPB8pI2ZcX9yjbawTg6uk+/Bf9xA8wBKnxOo2PtA/I+F2a2Mbt8L7BXpgxEK4bj9UVN2zMGMnnSNUnHBOTttbV1A=
+	t=1744783100; cv=none; b=QOrWLz1of5w7jcAa2zzeAnjmV35j436wumTBhbBAmiXBMm+Ca8U4HxeiDoRObh0NLRSjZSsveHGTj8xAv0kT1Ac4k+xsNpT1PsZmZG92I9rwN9L+AEns9MeSJSVOKG/08MWPOUecqZjHsi80O61Lr3VZ1I8wVadNiZVeAGEMzhI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744756020; c=relaxed/simple;
-	bh=zsi89bgSmtU7lZblT+BF8md3DDnpqHXHre5LbRWl+o4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YuX6WPwqyeMMVw7DF18AItIKB4pPtnU8o24yZk0F5ImZQ59cl/FGdDi38E1JFgTix9HXRNTIQWrmaIc2DRB6+XWBixbt6oXlBZU72FfLIe0KlDreaIBN1q7L2VgHH66ifFq8XHajNzPLWDIVMUMhnEFmgZgxJy0tH9Pr/RCu8fA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OliikUH7; arc=none smtp.client-ip=209.85.222.171
+	s=arc-20240116; t=1744783100; c=relaxed/simple;
+	bh=HxdTTSYdcKTmZuva99KFhsmVW9uUnPfSDOH6UrLMP2U=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=X2Dl1MjzDK0dwCcc12Oa/Wio0xXSBPpt9nmyXjnljzPF50Y2lp5BD7QbrOG5mhGxGudogWi8k0HlQXJsiiiHwe/rJPMZLfAqRAmXrkIbdvSL+mgDxXPIBWfFcOLfss67xaAwTspv/hA5NltFFr0EHOh8TdLtVRAPLSF1FFSnw3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BFdWzR/d; arc=none smtp.client-ip=209.85.167.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-7c08f9d0ef3so358844085a.2;
-        Tue, 15 Apr 2025 15:26:58 -0700 (PDT)
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-54b09cb06b0so6614767e87.1;
+        Tue, 15 Apr 2025 22:58:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744756018; x=1745360818; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=tEYNZDctBCSE23/ne3WNMM44X6P5xxUVs1sGie06hNs=;
-        b=OliikUH7gnYvgkoOtXLt8ljQ2nDvaMRMGS5vVzn7+PTiVyqRg4ZJmvKV92vRigU3Wt
-         sCs9Eg/SyXiCg1LOxlvEwx9I/WrGfgGJMiwRPsB3nJ3zbTbVlpqmXvKWtPVh3wAkfbL7
-         CsxBzE026vQcRC/5PYV8watREqX4eZwGwJrTJ2NTNdsmHrh6zsw4RSNaIZGHXmeJUqa4
-         o+018zz7rZ05S9DOMDgvhWsJq2HzuEzBPLaV4NS53wyYeXDcGMeyltQNyJtclPCl4wd0
-         xFhlVxXdmPu29eLT7zP7Sv9pQ0/aPKXXufo2TnFyAZfy/bTLRjgeM1L64hMdoEdnUTrf
-         +2sg==
+        d=gmail.com; s=20230601; t=1744783096; x=1745387896; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=U0K6PKDXF90sHSVqTWnaPvjEgYs/LRDDmGtwLelc3Gg=;
+        b=BFdWzR/dxW9YAv8jcA5wPadJCmbnkmeJZtXkLQpbg5A2gEXQ18AgARPzUVtR6wo++C
+         o9E6HXPlY0/xNzcRvvtj36ts/IpF6TsqXcQw9juRtmLjCm6cVVpblVZ8vW86myeV7znG
+         34j97pFVMZFXi+OQGJfhxizeltuF2+Pp6oVRb7PpgYyEMWyt5MmofPEEUkthJOlROwHC
+         ZDkdm95CvvDSCXKhRONnVsMDKT/6G8pleQtWD0Ys1dcT5ENTp6/yLLKpTJQFmkbdEmh9
+         ONWs738cV1kBtl8GGUVJ6dPn0pZWq107CDcvdhntbXSrNjHlIOAzeFww9iyqjZlFIxTg
+         XY3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744756018; x=1745360818;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=tEYNZDctBCSE23/ne3WNMM44X6P5xxUVs1sGie06hNs=;
-        b=rWWTKaX5/c+tRDm4e+gV+OXB5Xmvfm5luekfr3fgBVOpWu+/0vR4Dwv9yA2veixZo5
-         XuvhjFv03sL90PJ56QN1AaxxoTkC+Q3RhYOpQAnh9EBeyxkixzjbR5RGOCl35proKeJW
-         orbLTFbIuvcZHc7A5k8kVHYNl41olYktxvmV0hBxLu8MoHYOOdW3f974aCRPVs83XyuF
-         tJlM1PvlWiXu2b0IeRHMZM9shsXNKiUsa4Y9AxIJ5m3dTBcKACd94BW3dfs4kB5NbKq0
-         fjKJBJm2F6d5YRKN3Gd0oJ8e2ZpjKfPcKQg9pxMvzrfGb/AOg+KYsB8Q4FJ6OCSx/YrC
-         rnFw==
-X-Forwarded-Encrypted: i=1; AJvYcCV046dcZvJ7lNWegFP2wEoSIsyM/jOQxp+FIt1kbosT0iylBiYpNqZRTUJ0iViieCaw12YH4Vy9flk=@vger.kernel.org, AJvYcCXHcqU/ACoRFw+MYLW4ucfDFqUf5WsxiFZ6OgVtOTnD5efCHKSGM+gYJn+B6TyFpJxDtQciS0P7h5Rm8mFX@vger.kernel.org
-X-Gm-Message-State: AOJu0YywoEYxM7eLam6F40AYqYc1hC28VXRv9dl52UdRWKiW6GzlnXMS
-	LbtTjS1UpnwTgBDeyBdkCWI7vcHnjrwF/UDq1kNbEdZcDSMqtvHr
-X-Gm-Gg: ASbGnctV/x23OXvR71MmffkYSvz6FB4NTBxZPfw1R/fKDRbZCte/QTaAqGGyI6pnZCA
-	UspG8RS0vC73FoAKXkbS30vgBSWpZcAF6OkJdT1pj/DR/+l3guP//++aBIXkxwyfg/2m5kNAGcV
-	xCmjOdTWkCEBgqeRT1fe8Z2HUSlEjfmgQ0o6s8NP1n/kNbRD0DPSG3Q+ftCdDqHna/ztW7EODSi
-	UqatgOHFwf84OaE22Znj+sfYPMSrtxIajRMH9MPOXoDqvGZj3AqLMWTvpkHJuuNDWsju6RFweAy
-	XQ39hAWcnTPT3Lf1P4tV8TT6Df7RyMbN5sBVQPheMXmfSrUa5lTTxPQ=
-X-Google-Smtp-Source: AGHT+IFBHn0VTQXG525RZ9QG9jMGNPm1rALizW+qaDZYU0/aS/yRxxUN3aj2878kI9kfa9Z9sCaOVg==
-X-Received: by 2002:a05:620a:31a3:b0:7c5:9b93:8f64 with SMTP id af79cd13be357-7c91424103emr213318985a.37.1744756017807;
-        Tue, 15 Apr 2025 15:26:57 -0700 (PDT)
-Received: from theriatric.mshome.net ([73.123.232.110])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4796edc1af2sm98154531cf.69.2025.04.15.15.26.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Apr 2025 15:26:57 -0700 (PDT)
-From: Gabriel Shahrouzi <gshahrouzi@gmail.com>
-To: gregkh@linuxfoundation.org,
-	jic23@kernel.org,
-	lars@metafoo.de,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-staging@lists.linux.dev,
-	Michael.Hennerich@analog.com
-Cc: gshahrouzi@gmail.com,
-	skhan@linuxfoundation.org,
-	kernelmentees@lists.linuxfoundation.org
-Subject: [PATCH] iio: accel: adis16203: Fix single-axis representation and CALIBBIAS handling
-Date: Tue, 15 Apr 2025 18:26:52 -0400
-Message-ID: <20250415222652.545026-1-gshahrouzi@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        d=1e100.net; s=20230601; t=1744783096; x=1745387896;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=U0K6PKDXF90sHSVqTWnaPvjEgYs/LRDDmGtwLelc3Gg=;
+        b=ofo3LmDQqjWo5GxbRxUk4ftB4DqELWpWmtuUlbSnpjM1cEkL09qJEVQG66wMtCiRbD
+         +qF0jG26CohNBXNDIRLefhY0ugt8ZZLk6XrOSmdlGU8XG0ZDqasb14OYSTUnw3SBuRY3
+         htUCYJPBhfgpC/x7mC0uL54X4n3M+U6VOq+4hRcBBzIjHX182PgPtR10d3yGmK272RWS
+         xnB3gJPPIjsjP4w5azPqFjm4uS9egoDA6VbJTM0E4ynyqH8ep/8Ubj4dv1dcO4UgCHs4
+         ZyEtvtWYiUO52fJ0woGV0IDsXL6QYwKc7XDoZ6+P14KhczTDXX/OI0zO/kLVUhnb04Q0
+         dr1A==
+X-Forwarded-Encrypted: i=1; AJvYcCVF02njqAv8W41vf5aSvjMPu72rxzdPlWwEzEQ0WlJghapsxwbJ6ckIbNcr+rR6Tcevc0/BNjaAXNfq@vger.kernel.org, AJvYcCWAYMlBvY3Ll+Ar0ofc+PPi+uer22CCppb+8BjCeUX6rew0UiCanGSrZHBOlYKv+qO/w/SFtRgJWPUI@vger.kernel.org, AJvYcCXLhLxtom7pB8hae6aLWJbFA1JWRjqHHs1p3S9WBrqllbNjKzmd20I5t20YiiNMC7E4YuuoiHUACgZa0bRk@vger.kernel.org
+X-Gm-Message-State: AOJu0YwsAwemnlHT558GVqiyRbM/EPVrwSAyalaCC5SzlqTC4Rt4qduI
+	XVG23v/Zsh6+iCPgO3c4H8S+FthuU7RMwCMc+fYL8VHp0IZHJHJl2Kz9iQ==
+X-Gm-Gg: ASbGncvaUSKeGbAhbbchI7RBlYZGCfx1uh5W6MgZoSSX0BOM2jgi8TuVM3FP58qqNft
+	U5sYioc/v4ub38b3e4g/hjZ9Gygak8dam9vkyLKmOFKzl5sMibvxJcNmJpb/lLGnITttRewevLL
+	MSdGuoo7qkN+IeEzkDUfBawM6uipi5N8QUR/sTt/mIS9GjeyBeRTCd2yC3/U60gnCflYXnPztdf
+	4Odd7zBsQvhx3MXkq5esLjcfHoqIBeEgU71ECjZZmrHvcI1tNgkzB2CRMVPjpMesNMv1LKZ8aw9
+	+ThetNTDXMmlih6vR6jrzlYsupTdFnHFA/640oiXhXoo1nEVvfRkUtDOyhcrzJQYTC4PtERPeM6
+	BBDMS94KTJl670MYORYsblw==
+X-Google-Smtp-Source: AGHT+IGVpodMsei7D8Ugi3wyH26NExd1z9hFpsh50IjGEY/jDppoCTMZF3oy+VqUXdplF6hwReupsA==
+X-Received: by 2002:a05:6512:1088:b0:545:fad:a747 with SMTP id 2adb3069b0e04-54d64a7b7camr148915e87.5.1744783095591;
+        Tue, 15 Apr 2025 22:58:15 -0700 (PDT)
+Received: from ?IPV6:2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703? ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-54d3d50f647sm1595634e87.163.2025.04.15.22.58.12
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 15 Apr 2025 22:58:13 -0700 (PDT)
+Message-ID: <76cae799-0612-41e1-aee9-66358b9f5046@gmail.com>
+Date: Wed, 16 Apr 2025 08:58:11 +0300
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] iio: adc: ti-adc128s052: Add lower resolution devices
+ support
+To: Sukrut Bellary <sbellary@baylibre.com>,
+ Jonathan Cameron <jic23@kernel.org>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Angelo Compagnucci <angelo.compagnucci@gmail.com>,
+ Nishanth Menon <nm@ti.com>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250408132120.836461-1-sbellary@baylibre.com>
+ <20250408132120.836461-3-sbellary@baylibre.com>
+ <20250412141253.6d57032e@jic23-huawei> <Z/7btoHi03NftNQJ@dev-linux>
+Content-Language: en-US, en-AU, en-GB, en-BW
+From: Matti Vaittinen <mazziesaccount@gmail.com>
+In-Reply-To: <Z/7btoHi03NftNQJ@dev-linux>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-The ADIS16203 is a single-axis 360 degree inclinometer. The previous
-driver code incorrectly represented this by defining separate X and Y
-inclination channels based on the two different output format registers
-(0x0C for 0-360 deg, 0x0E for +/-180 deg). This violated IIO conventions
-and misrepresented the hardware's single angle output. The 'Fixme'
-comment on the original Y channel definition indicated this known issue.
+On 16/04/2025 01:20, Sukrut Bellary wrote:
+> On Sat, Apr 12, 2025 at 02:12:53PM +0100, Jonathan Cameron wrote:
+>> On Tue,  8 Apr 2025 06:21:20 -0700
+>> Sukrut Bellary <sbellary@baylibre.com> wrote:
+>>
+>> Matti took on maintaining that driver because he wanted to see any changes
+>> that might affect the Rohm part it now supports.  If anyone wants to volunteer
+>> from the TI side of things that would be ideal - just send a patch adding to
+>> the new MAINTAINERS entry.
+> 
+> Thanks for the review.
+> Sure, I can work on the TI side of things.
 
-Signed-off-by: Gabriel Shahrouzi <gshahrouzi@gmail.com>
----
-Not sure to put a fixes tag here or not because the driver used to be
-spread out across multiple files until it was whittled down to one file
-using a common interface for similar devices.
----
- drivers/staging/iio/accel/adis16203.c | 52 ++++++++++++++++-----------
- 1 file changed, 31 insertions(+), 21 deletions(-)
+Thanks Sukrut! That's great as I have no TI devices to run tests with. :)
 
-diff --git a/drivers/staging/iio/accel/adis16203.c b/drivers/staging/iio/accel/adis16203.c
-index c1c73308800c5..73288121bf0bd 100644
---- a/drivers/staging/iio/accel/adis16203.c
-+++ b/drivers/staging/iio/accel/adis16203.c
-@@ -28,11 +28,11 @@
- /* Output, temperature */
- #define ADIS16203_TEMP_OUT       0x0A
- 
--/* Output, x-axis inclination */
--#define ADIS16203_XINCL_OUT      0x0C
-+/* Output, 360 deg format */
-+#define ADIS16203_INCL_OUT       0x0C
- 
--/* Output, y-axis inclination */
--#define ADIS16203_YINCL_OUT      0x0E
-+/* Output, +/-180 deg format */
-+#define ADIS16203_INCL_180_OUT   0x0E
- 
- /* Incline null calibration */
- #define ADIS16203_INCL_NULL      0x18
-@@ -128,8 +128,7 @@
- #define ADIS16203_ERROR_ACTIVE          BIT(14)
- 
- enum adis16203_scan {
--	 ADIS16203_SCAN_INCLI_X,
--	 ADIS16203_SCAN_INCLI_Y,
-+	 ADIS16203_SCAN_INCLI,
- 	 ADIS16203_SCAN_SUPPLY,
- 	 ADIS16203_SCAN_AUX_ADC,
- 	 ADIS16203_SCAN_TEMP,
-@@ -137,10 +136,6 @@ enum adis16203_scan {
- 
- #define DRIVER_NAME		"adis16203"
- 
--static const u8 adis16203_addresses[] = {
--	[ADIS16203_SCAN_INCLI_X] = ADIS16203_INCL_NULL,
--};
--
- static int adis16203_write_raw(struct iio_dev *indio_dev,
- 			       struct iio_chan_spec const *chan,
- 			       int val,
-@@ -148,10 +143,15 @@ static int adis16203_write_raw(struct iio_dev *indio_dev,
- 			       long mask)
- {
- 	struct adis *st = iio_priv(indio_dev);
--	/* currently only one writable parameter which keeps this simple */
--	u8 addr = adis16203_addresses[chan->scan_index];
- 
--	return adis_write_reg_16(st, addr, val & 0x3FFF);
-+	switch (mask) {
-+	case IIO_CHAN_INFO_CALIBBIAS:
-+		if (chan->scan_index != ADIS16203_SCAN_INCLI)
-+			return -EINVAL;
-+		return adis_write_reg_16(st, ADIS16203_INCL_NULL, val & 0x3FFF);
-+	default:
-+		return -EINVAL;
-+	}
- }
- 
- static int adis16203_read_raw(struct iio_dev *indio_dev,
-@@ -161,7 +161,6 @@ static int adis16203_read_raw(struct iio_dev *indio_dev,
- {
- 	struct adis *st = iio_priv(indio_dev);
- 	int ret;
--	u8 addr;
- 	s16 val16;
- 
- 	switch (mask) {
-@@ -194,8 +193,9 @@ static int adis16203_read_raw(struct iio_dev *indio_dev,
- 		*val = 25000 / -470 - 1278; /* 25 C = 1278 */
- 		return IIO_VAL_INT;
- 	case IIO_CHAN_INFO_CALIBBIAS:
--		addr = adis16203_addresses[chan->scan_index];
--		ret = adis_read_reg_16(st, addr, &val16);
-+		if (chan->scan_index != ADIS16203_SCAN_INCLI)
-+			return -EINVAL;
-+		ret = adis_read_reg_16(st, ADIS16203_INCL_NULL, &val16);
- 		if (ret)
- 			return ret;
- 		*val = sign_extend32(val16, 13);
-@@ -206,13 +206,23 @@ static int adis16203_read_raw(struct iio_dev *indio_dev,
- }
- 
- static const struct iio_chan_spec adis16203_channels[] = {
-+	{
-+		.type = IIO_INCLI,
-+		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
-+					BIT(IIO_CHAN_INFO_SCALE) |
-+					BIT(IIO_CHAN_INFO_CALIBBIAS),
-+		.address = ADIS16203_INCL_180_OUT,
-+		.scan_index = ADIS16203_SCAN_INCLI,
-+		.scan_type = {
-+			.sign = 's',
-+			.realbits = 14,
-+			.storagebits = 16,
-+			.shift = 0,
-+			.endianness = IIO_CPU,
-+		},
-+	},
- 	ADIS_SUPPLY_CHAN(ADIS16203_SUPPLY_OUT, ADIS16203_SCAN_SUPPLY, 0, 12),
- 	ADIS_AUX_ADC_CHAN(ADIS16203_AUX_ADC, ADIS16203_SCAN_AUX_ADC, 0, 12),
--	ADIS_INCLI_CHAN(X, ADIS16203_XINCL_OUT, ADIS16203_SCAN_INCLI_X,
--			BIT(IIO_CHAN_INFO_CALIBBIAS), 0, 14),
--	/* Fixme: Not what it appears to be - see data sheet */
--	ADIS_INCLI_CHAN(Y, ADIS16203_YINCL_OUT, ADIS16203_SCAN_INCLI_Y,
--			0, 0, 14),
- 	ADIS_TEMP_CHAN(ADIS16203_TEMP_OUT, ADIS16203_SCAN_TEMP, 0, 12),
- 	IIO_CHAN_SOFT_TIMESTAMP(5),
- };
--- 
-2.43.0
-
+Yours,
+	-- Matti
 

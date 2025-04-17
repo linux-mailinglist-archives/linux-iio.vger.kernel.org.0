@@ -1,79 +1,79 @@
-Return-Path: <linux-iio+bounces-18183-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18184-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 259B9A912F3
-	for <lists+linux-iio@lfdr.de>; Thu, 17 Apr 2025 07:44:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2ABAA9133E
+	for <lists+linux-iio@lfdr.de>; Thu, 17 Apr 2025 07:48:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7370F1888692
-	for <lists+linux-iio@lfdr.de>; Thu, 17 Apr 2025 05:44:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 927641898411
+	for <lists+linux-iio@lfdr.de>; Thu, 17 Apr 2025 05:49:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BD701F237B;
-	Thu, 17 Apr 2025 05:43:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89B541DEFD9;
+	Thu, 17 Apr 2025 05:48:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b5D8VjIv"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NmMUgnFq"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AD0B1E5216;
-	Thu, 17 Apr 2025 05:43:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E674B1DE2DB;
+	Thu, 17 Apr 2025 05:48:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744868607; cv=none; b=aNAt5+CbeoF5j1Q/3Ok3Wqt4InkZSItVYmSZxK1Gv8odLkZJFIcVdZVpi/UZp7Fo/FVq88RWPcgdGOK//AU+m5JGgZeBOKQ4uiHHR5T8uplMEBJPJTfkgdBIdMR2TvStmfq/Sgr76ve8fKYy1AAjtuI3ePp7SaUNAjW2EJ7uAgU=
+	t=1744868930; cv=none; b=mHcoCt6Oek7zsBfJauDxfWnIqeZ9X1pjFXON66w2+X4pUXuZbE2Fu4+7axwBYupzGcqkhqpbiqHrD2WfMdv/+N+Rn13rX93WCeb3ItxYDTlTpy6tJgGCC5OEblrjDBzlCr7dd3nALStDlmwFttFMbfeVzB8f29Ihl2Gozei6kcU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744868607; c=relaxed/simple;
-	bh=FMIpPYafwfnkDabtlrEmI7ulS7B4pPOqair5B9WAoBA=;
+	s=arc-20240116; t=1744868930; c=relaxed/simple;
+	bh=j1ZBYuVBrZJCmWxUwT77cthlWHAR/U5idBaQjE3I0oE=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=n3JdZUrt+ND6v/aBYlUMMfrCmdNRRu40huacE1FNDY2jcW+SvMYrzwyWZFkb/eYcGx/qx/8xYD5JKww7722rRYNyV6tQAqLnAfZ4fzmkUdegJwDRuwhouzC8X84qtEd9X02fIFsoYHZopzOrEUDBwBmh3YTjoPHVxObTosKzlAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=b5D8VjIv; arc=none smtp.client-ip=209.85.215.178
+	 In-Reply-To:Content-Type; b=QHeVsiUPQJ5dpPjL8d6v+hram5NjNenDBmL1Rm8ubNVifyBDulkYxOsSzBHPEtcig3DOSTYXb5rjDbpwOa/gWDhrWFwA332PS9mSK3ptCx0FHYaLQGHXH9iyxaCLq1e9WjZFXZbAa5yjEqsP3TP87ZqKewRawTnrpe8ffUlvjLs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NmMUgnFq; arc=none smtp.client-ip=209.85.214.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-b0b2d1f2845so260015a12.3;
-        Wed, 16 Apr 2025 22:43:25 -0700 (PDT)
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-22c33e4fdb8so4274215ad.2;
+        Wed, 16 Apr 2025 22:48:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744868605; x=1745473405; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1744868928; x=1745473728; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=9g+SVkavFRSacmyVfOEHphPFAH3/AYZFW+0PJY+HSIA=;
-        b=b5D8VjIvGC5XDDKEvWy2z+f+K+PiH6K0OaCzgE2OtlHUnjqojXu4z+VTkCkMAsdzEn
-         TaGkSMrEK6tN2WKRA55m8tomOZuyQr7pAq9JgYI0BGpM4cGfXsXieIOFNsAzT5AZkMqI
-         qZFU6twUA5BmDJ6Lq2hnakI74p/Tq3EtZj89yhMJdcvAHBw/PGpnwY3I+weXA6ArBJj9
-         NdIGHrqB5Z/OUNIt5wR06Z1UjOziJVIBKWuLFMvEn92y65dLPYl2bUBSRcw94pXQXYOn
-         sA2qCyWx8PM5LJPZ1t6Ueu04wXYKzHYIWTu6aDB3U3IAQp/yruPbu+NSY4fSE/lkkset
-         mcgA==
+        bh=cNsf6WXByV5kGLNoh4Utq0sYrI3KSxAvmYlZ4eczIl4=;
+        b=NmMUgnFqhXXRZh1NwEfzAtz2A/zfPZNQ1W2AWpOP8Pr56JW5EEM+PCK79W6JBeiWQK
+         SuQlZR6CcXa5Vvf+okA53/D/Wfu+rngAMfxeijtwsLyhn5m1OJwjQzIMHdgPVhkPYF93
+         m4vy09LKg6M54XbHJud+DKm5PK46atVAxof3CfplyafoTXfYFSSnzgK4Jd1V0VHAEUUZ
+         ZOazRTs6Zqd7Ruhjm3mZKqEQFcXid2JSrLjMBHfx2VvOaavqXl4Z3+dkeaejEB6i3ZYU
+         LCKTWTGAHDaIdpzwLB2HVkFd4fNEbEASl5uAGpwqC0Y50a1Vu//BH2MVGDXQA6zpltg4
+         nteA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744868605; x=1745473405;
+        d=1e100.net; s=20230601; t=1744868928; x=1745473728;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=9g+SVkavFRSacmyVfOEHphPFAH3/AYZFW+0PJY+HSIA=;
-        b=IDOzg0BCIrsOurJAF7TesLHB41CEjv+w3YUj1BgFyestH6lgVhXOfcdaKXykONDYSB
-         umKB6fjZngXDSXV2mmOduSy8+jhv02NYUuRN4mUV1wKwLWwGBsR6U2CbHS+63V6L8tIx
-         awYMaYeMQrRPDxpdVft6MGVYBTsTk1FP/6MNYjRK0JGpzwgrN6MeKSbr8yo6z4T4HUWV
-         4M01LDVeFJs5enWXkNHBtwDHVzvNjZWh1bnU9sIviowewU4guGJXoCGzyVGgXn7RXq0G
-         gMSyarze0eTJ2Za9qimCX1KqGi1y0RiNMXlthgSSrb0Kq7s+jhwWAEiUjdAQlUiU76J2
-         fZqg==
-X-Forwarded-Encrypted: i=1; AJvYcCUioEPMq8KfIgtVA7mltYZcSa+48L5Y9wOCN1Q4TdzWZArUhoNq4p9tI7ubwc7TSj7TgQ13iSj5ahzSMVE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzWZlmlW9YhR3mxrfWwVc9tgbcGFjbhFP0BUpbDhFNWmfB4nBr4
-	rXnlRARi+yGwIsiryuB5vFiwYchTIrX7fsl1Lg9PtlPhLBtjhWp4
-X-Gm-Gg: ASbGncuagXxyEL3NPYHwuAHdgPgoPA56qLgtV98aUSpQGZfdsEh1bDFHuhNAVOzeAFR
-	Vr0pC7nld9y5X48x3xE1AjgrKPkylepKTEuR0uY92C0pZqdetrN9Kik8BKuNO12hx/D7d2swZqk
-	fExh82Rk+SJUoMHgURT0tmPG/3u57vqaRD8EiTf78FqNeUZDIWU78w9soOsk6xfO9b9Cbh9obEF
-	qUW+Ru45TVOFV8IWvLphBnZ3MmmEnIHRz1ugyxUwS5uUwYpgJfSC7nNlbacoWVKiyxI63dCvE3X
-	UML86HXLylFkTv2aP28nw54O9Mm7mm/4pT2oM9+1FZmuZtAv+g==
-X-Google-Smtp-Source: AGHT+IGDFwjAU8gK8vB7c4HiWkRT1h+o4JFppXo1da2T6aikyD9BsPygXAqD6QGn+Ck9y4Ccqmemnw==
-X-Received: by 2002:a17:90b:5683:b0:2f8:34df:5652 with SMTP id 98e67ed59e1d1-30863f303f7mr6544849a91.21.1744868604686;
-        Wed, 16 Apr 2025 22:43:24 -0700 (PDT)
+        bh=cNsf6WXByV5kGLNoh4Utq0sYrI3KSxAvmYlZ4eczIl4=;
+        b=kigWe2CuRum5XdwtFWI3lhIKOPylwAaaNX+QLoEdiIEY05jKsOceWbcizvvO4BtCLn
+         VedP5CJf1cUMPgtROrCY2Y2+cURd3qo7lWAGVNbxufltHByd7vsxjdld43YZd/IY/a11
+         +8JjcHCdxLLfmyzEo883Dxz8I3p//XARBaM+Ps82H2iwAMpYlayT0SJnf/x9/naIsdnS
+         TZjqx0mZ8pL0aCzNWDcdzBYbuKLDPySMUGDWbU1hXbLzLXA1rA5Y1+Ze/c2EFAIBT3qE
+         gxITvaEwuX8yusn2UWYHPq5vDDSUB6SxK9AA5pVRNTr9vgccjdjgpWUQNLuw7T9cxIJ/
+         H82g==
+X-Forwarded-Encrypted: i=1; AJvYcCVqsBiAy+dI9b1+PtVzxqYaeuzKULnvZ6WV7cvQX2f2Ho0O6utooMlA2eI+44W0d9LRPNWxZQFKZDg=@vger.kernel.org, AJvYcCVrFRvHus5H8sNMjLjbpWERRe4feElvaCKJeFidJqO1xHS0nmWYwfSnY72mBFgs1Fbt4E8eqL/HPIQbkV6F@vger.kernel.org
+X-Gm-Message-State: AOJu0YwZJ7aqYoW0u9xDGZ+pHML6qXAAcPex1mjANjPYt8bQWkMuNwtu
+	tOeTgJIkiw+Bxe/AV+taPPBpSMMw2TaStPSRZKbT5ejZX2VmdcimlXGBsxmQ
+X-Gm-Gg: ASbGnctU56sXzl+4Dx8D29VfRVFujHmqL1u0U6T6+QEiYOYYLWh4Q8QIj16wiugCxeh
+	0Cd7reSM4DNdqNeou+Ks+e68Zd6FeRyDrujoOMgWTVuDCttg5H8y1qqSMqf6y7Fi8SWPYQIEoTD
+	sb/SFWipWWAUFZITWgReqJvpJVLP76I+GzBP3YPYCCaCHwbWYeHDSCoR87PdDjCapC/c1LD45Ae
+	2er4ezJogxAi0vvDgbpG197Fj1acsRyqPkmZ7dNJ0DvmezZ5Y8V4eL/6lZ5W9iNBrvX5uOFArpR
+	RcNQhAhaICdQnqXXjyrnGXKC/BVLomcEjEOKZHQ2aYn1eIgJdP4Z7EOcJ3/f
+X-Google-Smtp-Source: AGHT+IHezBF0z9ROPg31/enyGAUOnxCTQmX38YqiUYlSWdkhSgmUwXaiD6iT9D/Ho+BmJm9yeUyJ/g==
+X-Received: by 2002:a17:903:2409:b0:21f:bd66:cafa with SMTP id d9443c01a7336-22c358db577mr64486325ad.17.1744868928047;
+        Wed, 16 Apr 2025 22:48:48 -0700 (PDT)
 Received: from [192.168.0.161] ([14.139.108.62])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-30861212c3esm2698249a91.25.2025.04.16.22.43.20
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73bd21c388fsm11881651b3a.54.2025.04.16.22.48.45
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 16 Apr 2025 22:43:24 -0700 (PDT)
-Message-ID: <383030aa-2312-4f11-ba80-c8dd54fc9010@gmail.com>
-Date: Thu, 17 Apr 2025 11:13:19 +0530
+        Wed, 16 Apr 2025 22:48:47 -0700 (PDT)
+Message-ID: <471d32cb-89d2-4abe-bfbd-772466184d0d@gmail.com>
+Date: Thu, 17 Apr 2025 11:18:43 +0530
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -81,115 +81,73 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] iio: addac: ad74115: Fix use of uninitialized variable
- rate
-To: =?UTF-8?Q?Nuno_S=C3=A1?= <noname.nuno@gmail.com>,
- David Lechner <dlechner@baylibre.com>, cosmin.tanislav@analog.com,
- lars@metafoo.de, Michael.Hennerich@analog.com, jic23@kernel.org
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20250409202945.205088-1-purvayeshi550@gmail.com>
- <1254dfd7-e872-4c65-bd17-8015e1b2eba4@baylibre.com>
- <10a9dd5cdf55b6a9845fb9543cdef5f2251ffa6a.camel@gmail.com>
- <f5f40475-fae5-487f-b5ce-dc6c5dfe3600@gmail.com>
- <5cb7ab70be67f8b97b5fd09eefab0f2c33d99d20.camel@gmail.com>
+Subject: Re: [PATCH v2] iio: adc: ad_sigma_delta: Fix use of uninitialized
+ status_pos
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: lars@metafoo.de, Michael.Hennerich@analog.com, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20250410170408.8585-1-purvayeshi550@gmail.com>
+ <20250412180046.62f9eab4@jic23-huawei>
 Content-Language: en-US
 From: Purva Yeshi <purvayeshi550@gmail.com>
-In-Reply-To: <5cb7ab70be67f8b97b5fd09eefab0f2c33d99d20.camel@gmail.com>
+In-Reply-To: <20250412180046.62f9eab4@jic23-huawei>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-On 11/04/25 17:47, Nuno Sá wrote:
-> On Fri, 2025-04-11 at 14:39 +0530, Purva Yeshi wrote:
->> On 11/04/25 11:19, Nuno Sá wrote:
->>> On Thu, 2025-04-10 at 09:51 -0500, David Lechner wrote:
->>>> On 4/9/25 3:29 PM, Purva Yeshi wrote:
->>>>> Fix Smatch-detected error:
->>>>> drivers/iio/addac/ad74115.c:823 _ad74115_get_adc_code() error:
->>>>> uninitialized symbol 'rate'.
->>>>>
->>>>> The variable rate was declared but not given any value before being used
->>>>> in a division. If the code reached that point without setting rate, it
->>>>> would cause unpredictable behavior.
->>>>>
->>>>> Declare and initialize 'rate' to zero inside the 'else' block where it
->>>>> is
->>>>> used. This ensures 'rate' is always initialized before being passed to
->>>>> DIV_ROUND_CLOSEST.
->>>>>
->>>>> Signed-off-by: Purva Yeshi <purvayeshi550@gmail.com>
->>>>> ---
->>>>>    drivers/iio/addac/ad74115.c | 2 +-
->>>>>    1 file changed, 1 insertion(+), 1 deletion(-)
->>>>>
->>>>> diff --git a/drivers/iio/addac/ad74115.c b/drivers/iio/addac/ad74115.c
->>>>> index a7e480f2472d..26770c68e5fa 100644
->>>>> --- a/drivers/iio/addac/ad74115.c
->>>>> +++ b/drivers/iio/addac/ad74115.c
->>>>> @@ -814,7 +814,7 @@ static int _ad74115_get_adc_code(struct
->>>>> ad74115_state *st,
->>>>>    			return -ETIMEDOUT;
->>>>>    	} else {
->>>>>    		unsigned int regval, wait_time;
->>>>> -		int rate;
->>>>> +		int rate = 0;
->>>>>    
->>>>>    		ret = ad74115_get_adc_rate(st, channel, &rate);
->>>>>    		if (ret < 0)
->>>>
->>>> I don't see how rate could be used uninitialized since we are
->>>> returning the error if ad74115_get_adc_rate() fails.
->>>>
->>>> Also, initializing to 0 would then cause a divide by 0 error
->>>> if that value was actually used later in the code.
->>>>
->>>
->>> Agreed... A better check could actually be (in ad74115_get_adc_rate()):
->>>
->>>
->>> if (i >= ARRAY_SIZE(ad74115_get_adc_rate))
->>>       return -EIO;
->>>
->>> Kind of a paranoid check but just making sure a faulty chip does not lead to
->>> an out
->>> of bounds access.
->>>
->>> - Nuno Sá
->>
->> Hi Nuno,
->>
->> Thank you for your suggestion regarding the paranoid check.
->>
->> However, ad74115_get_adc_rate is a function, not an array, pointer, or
->> vector. Therefore, using ARRAY_SIZE on it results in a compilation error.
->>
->> I believe the intended check was:
->>
->> if (i >= ARRAY_SIZE(ad74115_adc_conv_rate_tbl))
->>       return -EIO;
->>
+On 12/04/25 22:30, Jonathan Cameron wrote:
+> On Thu, 10 Apr 2025 22:34:08 +0530
+> Purva Yeshi <purvayeshi550@gmail.com> wrote:
 > 
-> Oh yes, bad copy-paste...
-> 
+>> Fix Smatch-detected issue:
+>> drivers/iio/adc/ad_sigma_delta.c:604 ad_sd_trigger_handler() error:
+>> uninitialized symbol 'status_pos'.
 >>
->> This ensures that the index i does not exceed the bounds of the
->> ad74115_adc_conv_rate_tbl array, preventing potential out-of-bounds access.
+>> The variable `status_pos` was only initialized in specific switch cases
+>> (1, 2, 3, 4), which could leave it uninitialized if `reg_size` had an
+>> unexpected value.
 >>
->> This check prevents potential out-of-bounds access, it does not address
->> the Smatch warning about the uninitialized variable 'rate'. Smatch may
->> still flag 'rate' as potentially uninitialized if it cannot determine
->> that ad74115_get_adc_rate() always initializes it before use.
+>> Fix by adding a default case to the switch block to catch unexpected
+>> values of `reg_size`. Use `dev_err_ratelimited()` for error logging and
+>> `goto irq_handled` instead of returning early.
 >>
+>> Signed-off-by: Purva Yeshi <purvayeshi550@gmail.com>
+> Seems like reasonable hardening of the code.
 > 
-> Well, as said, this is a false positive...
+> Applied.
 > 
-> - Nuno Sá
-> 
+> Thanks,
 
-Hi Nuno,
+Hi Jonathan,
 
-Thank you for the review. I'll drop the patch.
+Thank you for reviewing and applying the patch.
+
+> 
+>> ---
+>> V1 - https://lore.kernel.org/all/20250409200151.201327-1-purvayeshi550@gmail.com/
+>> V2 - Moved the reg_size validation inside the switch statement using a default case,
+>> replaced dev_err() with dev_err_ratelimited(), and replaced return IRQ_HANDLED
+>> with goto irq_handled;
+>>
+>>   drivers/iio/adc/ad_sigma_delta.c | 4 ++++
+>>   1 file changed, 4 insertions(+)
+>>
+>> diff --git a/drivers/iio/adc/ad_sigma_delta.c b/drivers/iio/adc/ad_sigma_delta.c
+>> index 6c37f8e21120..4c5f8d29a559 100644
+>> --- a/drivers/iio/adc/ad_sigma_delta.c
+>> +++ b/drivers/iio/adc/ad_sigma_delta.c
+>> @@ -587,6 +587,10 @@ static irqreturn_t ad_sd_trigger_handler(int irq, void *p)
+>>   		 * byte set to zero. */
+>>   		ad_sd_read_reg_raw(sigma_delta, data_reg, transfer_size, &data[1]);
+>>   		break;
+>> +
+>> +	default:
+>> +		dev_err_ratelimited(&indio_dev->dev, "Unsupported reg_size: %u\n", reg_size);
+>> +		goto irq_handled;
+>>   	}
+>>   
+>>   	/*
+> 
 
 Best regards,
 Purva
-
 

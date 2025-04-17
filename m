@@ -1,138 +1,102 @@
-Return-Path: <linux-iio+bounces-18222-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18223-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93AAAA923F3
-	for <lists+linux-iio@lfdr.de>; Thu, 17 Apr 2025 19:27:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A189A92404
+	for <lists+linux-iio@lfdr.de>; Thu, 17 Apr 2025 19:29:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B31637ABBDE
-	for <lists+linux-iio@lfdr.de>; Thu, 17 Apr 2025 17:26:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD2B33BFF4D
+	for <lists+linux-iio@lfdr.de>; Thu, 17 Apr 2025 17:28:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DFF925524F;
-	Thu, 17 Apr 2025 17:27:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b="L7AHkC6E"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CC68255235;
+	Thu, 17 Apr 2025 17:29:04 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2350F25523B
-	for <linux-iio@vger.kernel.org>; Thu, 17 Apr 2025 17:27:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6E5F1ADC8D;
+	Thu, 17 Apr 2025 17:29:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744910828; cv=none; b=JarsWe6sEqmPxQYTVqI4YUp/6kK67OZYU2vnRjixKJsrUj0yMTebwgMyLk/pReVozIZEozHb3rtkf3sxDWvOCXRM3883PC5q3s/2ukqiVQ5/NM39JHwHk7+PzNy96mDUIAeeHa25Y9Xx+kDIBmyFL5vFouOjq1HgK9yrLBpzzug=
+	t=1744910944; cv=none; b=V2vHnv0pDBHYIDdJthIjLG1kXlZXBdVkgE67keVfEx90KdKxaH1PYOgSeThSwA/cvex6arkoBiKI4OczxqCpzAyzr/AnH+lWULjiCH1uOH80xQvmFoYzGhlS7SVqe7kZCeN9coaS6EY6ABhchhOIDeHVVxVvPVv3j4gq0lyET6c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744910828; c=relaxed/simple;
-	bh=n5minbvQKRDdzRXAgO5LmYLGqHrSYkxYUYinpIYV8MY=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=cvxNnKVaCivTmbrJVCe3LzWKr1CA9BtsYc0/P1fkeDLYL+RlCl+mvYDNub5GpH63YpfcyKnYMRNG7Vbtbu5C511uJV4EKzS1ZYeUcVrP7AGVQKSmzuGRFTwwT+6QKv2O50UJ+ZtCMOhc/FhjdNJ27jSjFd3jSa/w++f4EgZ574Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net; spf=pass smtp.mailfrom=posteo.net; dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b=L7AHkC6E; arc=none smtp.client-ip=185.67.36.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.net
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout02.posteo.de (Postfix) with ESMTPS id 1BEF3240101
-	for <linux-iio@vger.kernel.org>; Thu, 17 Apr 2025 19:27:03 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.net; s=2017;
-	t=1744910823; bh=n5minbvQKRDdzRXAgO5LmYLGqHrSYkxYUYinpIYV8MY=;
-	h=Message-ID:Subject:From:To:Cc:Date:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version:From;
-	b=L7AHkC6E5RBkL1rT1997zm3B7ie3EDz68H5HIW2eOKb03e9onfATyQxiLiUdEE62v
-	 TIu6OmncN/41P0WlXHoSLnCkDyPj0YSVCBTF/Ys7UIjy7nrPvwxFU8CExwVP1Ji+Gc
-	 z1z51WJ/uFDi3RjSBq1+ERDOZKW/SiOr8FGyQ0bT4dLqcus1TqqThD4wHVUNF2f8b1
-	 RSqtnai/6a7ruIVVw8iLrmQTj2vvpj6g0i8NO/Gj5dW7pEl+gGjCdOneNm/VvpuNIW
-	 wk0InwnpldGmQxzx8K1iw9QPj3zeGrE7yMw1BfN+CS4AG0MZ7vUxvFpjHqLSEkDPIA
-	 peG6E5VdxzRGw==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4ZdlFK2NvTz6tvd;
-	Thu, 17 Apr 2025 19:27:01 +0200 (CEST)
-Message-ID: <8578fcea4ae682e8bb8b60b21df3c27d757b019c.camel@posteo.net>
-Subject: Re: [PATCH] iio: frequency:: Remove unused parameter from data
- documentation
-From: Charalampos Mitrodimas <charmitro@posteo.net>
-To: Gabriel Shahrouzi <gshahrouzi@gmail.com>
-Cc: skhan@linuxfoundation.org, linux-kernel-mentees@lists.linux.dev, 
-	gregkh@linuxfoundation.org, jic23@kernel.org, lars@metafoo.de, 
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-staging@lists.linux.dev, Michael.Hennerich@analog.com
-Date: Thu, 17 Apr 2025 17:26:57 +0000
-In-Reply-To: <CAKUZ0zK58DgEN6C9U34dyxrVuoq3PoQFQ1_O0ve4GQYy+bUJOA@mail.gmail.com>
-References: <20250417143220.572261-1-gshahrouzi@gmail.com>
-	 <56edfb88d3f31939fb343149bfad436f24671f9d.camel@posteo.net>
-	 <2cc70f19c1b001ea7f2cf0632618d060f69faef0.camel@posteo.net>
-	 <CAKUZ0zK58DgEN6C9U34dyxrVuoq3PoQFQ1_O0ve4GQYy+bUJOA@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1744910944; c=relaxed/simple;
+	bh=k9js8k1DblZUqKO1N8ynxGv/BOYalCNLHuHhyMjosWk=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=dzgd6F4bMStGQzt5aHGaG0Ib76nuIOhWZ8Q5L+IrT6TPucwKFI6uOsO0If54nwN/C/uoXw74UEJ2hn0HbZD03Q/AJds+vnx9fDBj+rMAIcdQukfBJ0pfjq8JPGShSfr3+mdoQBUoba5uuRQ2keVKbnZfd2ThA4n9BOw15/9Zz0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4ZdlBd67RWz6K8r4;
+	Fri, 18 Apr 2025 01:24:41 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+	by mail.maildlp.com (Postfix) with ESMTPS id 71D3D140145;
+	Fri, 18 Apr 2025 01:28:59 +0800 (CST)
+Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 17 Apr
+ 2025 19:28:58 +0200
+Date: Thu, 17 Apr 2025 18:28:57 +0100
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+To: David Lechner <dlechner@baylibre.com>
+CC: Jonathan Cameron <jic23@kernel.org>, Nuno =?ISO-8859-1?Q?S=E1?=
+	<nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Matthias Brugger
+	<matthias.bgg@gmail.com>, AngeloGioacchino Del Regno
+	<angelogioacchino.delregno@collabora.com>, Lars-Peter Clausen
+	<lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, "Cosmin
+ Tanislav" <cosmin.tanislav@analog.com>, Tomasz Duszynski
+	<tduszyns@gmail.com>, Jean-Baptiste Maneyrol
+	<jean-baptiste.maneyrol@tdk.com>, Andreas Klinger <ak@it-klinger.de>, "Petre
+ Rodan" <petre.rodan@subdimension.ro>, <linux-iio@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-mediatek@lists.infradead.org>
+Subject: Re: [PATCH 1/8] iio: adc: dln2-adc: use aligned_s64 for timestamp
+Message-ID: <20250417182857.00002561@huawei.com>
+In-Reply-To: <20250417-iio-more-timestamp-alignment-v1-1-eafac1e22318@baylibre.com>
+References: <20250417-iio-more-timestamp-alignment-v1-0-eafac1e22318@baylibre.com>
+	<20250417-iio-more-timestamp-alignment-v1-1-eafac1e22318@baylibre.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml500011.china.huawei.com (7.191.174.215) To
+ frapeml500008.china.huawei.com (7.182.85.71)
 
-On Thu, 2025-04-17 at 13:17 -0400, Gabriel Shahrouzi wrote:
-> On Thu, Apr 17, 2025 at 11:57=E2=80=AFAM Charalampos Mitrodimas
-> <charmitro@posteo.net> wrote:
-> >=20
-> > On Thu, 2025-04-17 at 15:53 +0000, Charalampos Mitrodimas wrote:
-> > > On Thu, 2025-04-17 at 10:32 -0400, Gabriel Shahrouzi wrote:
-> > > > The AD9832 driver uses the Common Clock Framework (CCF) to
-> > > > obtain
-> > > > the
-> > > > master clock (MCLK) frequency rather than relying on a
-> > > > frequency
-> > > > value
-> > > > passed from platform data.
-> > > >=20
-> > > > Signed-off-by: Gabriel Shahrouzi <gshahrouzi@gmail.com>
-> > > > ---
-> > > > =C2=A0drivers/staging/iio/frequency/ad9832.h | 1 -
-> > > > =C2=A01 file changed, 1 deletion(-)
-> > > >=20
-> > > > diff --git a/drivers/staging/iio/frequency/ad9832.h
-> > > > b/drivers/staging/iio/frequency/ad9832.h
-> > > > index 98dfbd9289ab8..d0d840edb8d27 100644
-> > > > --- a/drivers/staging/iio/frequency/ad9832.h
-> > > > +++ b/drivers/staging/iio/frequency/ad9832.h
-> > > > @@ -13,7 +13,6 @@
-> > > >=20
-> > > > =C2=A0/**
-> > > > =C2=A0 * struct ad9832_platform_data - platform specific informatio=
-n
-> > > > - * @mclk:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 master clock in Hz
-> > >=20
-> > > Hi Gabriel,
-> > >=20
-> > > This seems to be a leftover from
-> > > 566564e80b0ed23ffa4c40f7ad4224bf3327053a ("staging: iio: ad9832:
-> > > use
-> > > clock framework for clock reference")
-> Ah ok. I will include this in the body as a reference. I guess for
-> small clean up patches like this, they would have been most likely to
-> be included in a larger patch that covered other changes but
-> forgotten. In this case, should they be referenced?
+On Thu, 17 Apr 2025 11:52:33 -0500
+David Lechner <dlechner@baylibre.com> wrote:
 
-Yes, you can just have a reference to it on your v2 (if a v2 is
-needed).
+> Follow the pattern of other drivers and use aligned_s64 for the
+> timestamp. This will ensure the struct itself it also 8-byte aligned.
+> 
+> Signed-off-by: David Lechner <dlechner@baylibre.com>
+> ---
+>  drivers/iio/adc/dln2-adc.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/iio/adc/dln2-adc.c b/drivers/iio/adc/dln2-adc.c
+> index a1e48a756a7b519105393f77c4aebde1f2f85d50..359e26e3f5bcfe16d723f621bdfc01df2dfcf6a9 100644
+> --- a/drivers/iio/adc/dln2-adc.c
+> +++ b/drivers/iio/adc/dln2-adc.c
+> @@ -466,7 +466,7 @@ static irqreturn_t dln2_adc_trigger_h(int irq, void *p)
+>  	struct iio_dev *indio_dev = pf->indio_dev;
+>  	struct {
+>  		__le16 values[DLN2_ADC_MAX_CHANNELS];
+> -		int64_t timestamp_space;
+> +		aligned_s64 timestamp_space;
+Bug :( So needs a fixes tag ideally.  Fine to just reply with one
+(or I might go digging if I get time).
 
-> >=20
-> > That said, a Fixes: tag might be helpful?
-> >=20
-> > >=20
-> > >=20
-> > >=20
-> > > > =C2=A0 * @freq0:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 power up freq0 tuning word in Hz
-> > > > =C2=A0 * @freq1:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 power up freq1 tuning word in Hz
-> > > > =C2=A0 * @phase0:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0 power up phase0 value [0..4095]
-> > > > correlates
-> > > > with 0..2PI
-> > >=20
-> > >=20
-> >=20
+>  	} data;
+>  	struct dln2_adc_get_all_vals dev_data;
+>  	struct dln2_adc *dln2 = iio_priv(indio_dev);
+> 
 
 

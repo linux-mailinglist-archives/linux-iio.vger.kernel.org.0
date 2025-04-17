@@ -1,107 +1,101 @@
-Return-Path: <linux-iio+bounces-18231-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18232-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B088EA92458
-	for <lists+linux-iio@lfdr.de>; Thu, 17 Apr 2025 19:49:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4401A925CB
+	for <lists+linux-iio@lfdr.de>; Thu, 17 Apr 2025 20:07:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 311DF7AFBD6
-	for <lists+linux-iio@lfdr.de>; Thu, 17 Apr 2025 17:48:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C16DE467C41
+	for <lists+linux-iio@lfdr.de>; Thu, 17 Apr 2025 18:07:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C50C92561DF;
-	Thu, 17 Apr 2025 17:49:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 320A9258CE0;
+	Thu, 17 Apr 2025 18:05:50 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBC6A245020;
-	Thu, 17 Apr 2025 17:49:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AE391EB1BF;
+	Thu, 17 Apr 2025 18:05:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744912145; cv=none; b=OpTenI+yQKiE2aN+RfaiKQdOQyZ3qgMqz0nC2ju0gR+3rp8sdblZD/2/DScr4unLoNpY75ycBSaDDNBa2lqWJt989fPwjYWC2l65qQvuXejz/EFHWAASqiztX58DC2N1wCLtJ54FDsarfar1CkLgZjP3XzwFutjMpw0qEOgErcY=
+	t=1744913150; cv=none; b=hrVzhp1LGHS1r8Y9Cq65XReM6ZcjIVeiyb4dfDIDzGYQ0vlQHPvjlILnqLhBmnjtaicBrmD5IZ0rg0xz6j5em53HgkqLDGvok/wHj9XxqTb5J+D2xVzbqySsoYCFP5Jr2yLq/dMd81JX3QNxOlhMlfpIx4vExD+VfZ4yZ6tAoK4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744912145; c=relaxed/simple;
-	bh=Gl6X76E/Y69emDlKlmglVZZYGIfgcpDZ9gti6vs+Be8=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ETHuPq2qsSyKI1zLO3WzBI7ZDjYk+PuZ/nuA3THhfZKoSzmmH5d86lWsoy+M+ntlY/6BsYtM84LhHjUapmFKIFOjumG3D1VNU6EWx5ncQEpHFtrgc22MrVJhKWSlp6KIAnSCDhuuqi7RyXC0oEHcXi/kV0yuxvsvrAsPYaRBdJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Zdlf45xxcz6M4Mj;
-	Fri, 18 Apr 2025 01:45:00 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
-	by mail.maildlp.com (Postfix) with ESMTPS id 99ED6140145;
-	Fri, 18 Apr 2025 01:49:01 +0800 (CST)
-Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
- (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 17 Apr
- 2025 19:49:00 +0200
-Date: Thu, 17 Apr 2025 18:48:59 +0100
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-To: David Lechner <dlechner@baylibre.com>
-CC: Jonathan Cameron <jic23@kernel.org>, Nuno =?ISO-8859-1?Q?S=E1?=
-	<nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Matthias Brugger
-	<matthias.bgg@gmail.com>, AngeloGioacchino Del Regno
-	<angelogioacchino.delregno@collabora.com>, Lars-Peter Clausen
-	<lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, "Cosmin
- Tanislav" <cosmin.tanislav@analog.com>, Tomasz Duszynski
-	<tduszyns@gmail.com>, Jean-Baptiste Maneyrol
-	<jean-baptiste.maneyrol@tdk.com>, Andreas Klinger <ak@it-klinger.de>, "Petre
- Rodan" <petre.rodan@subdimension.ro>, <linux-iio@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-mediatek@lists.infradead.org>
-Subject: Re: [PATCH 8/8] iio: pressure: mprls0025pa: use aligned_s64 for
- timestamp
-Message-ID: <20250417184859.000022a3@huawei.com>
-In-Reply-To: <20250417-iio-more-timestamp-alignment-v1-8-eafac1e22318@baylibre.com>
+	s=arc-20240116; t=1744913150; c=relaxed/simple;
+	bh=WbPXtrJD4e+1MerB5YEGsdmrV13j1pGb7hyI6GVu36Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZbETxbiZlTqp32+0NET9PiHL6SQx8b4UYCftmGcNyPWhCIX0RvWJlB47TyzxX3eXCTrybcm/YhFJXAh7yotTC3l+DNuJhgo86Ff2ccWX34Bd6IFSoBJTrsaGS7qhV4fEVTtM9GkR4V/qCYsbXK6TqWUQ6y7ei2j45VhQ7DtTHN0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=fail smtp.mailfrom=kernel.org; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=kernel.org
+X-CSE-ConnectionGUID: QOFXU/LwQYqJo0FGpik9Lg==
+X-CSE-MsgGUID: +CFY9vQ0RTSusHEEDU7YTA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11406"; a="46532036"
+X-IronPort-AV: E=Sophos;i="6.15,219,1739865600"; 
+   d="scan'208";a="46532036"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2025 11:05:47 -0700
+X-CSE-ConnectionGUID: jvbAVVcRTyWpNKwlXETWVg==
+X-CSE-MsgGUID: tE0oBpFAQhGv3V7jEkqq3A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,219,1739865600"; 
+   d="scan'208";a="130658952"
+Received: from smile.fi.intel.com ([10.237.72.58])
+  by orviesa009.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2025 11:05:44 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
+	(envelope-from <andy@kernel.org>)
+	id 1u5TcK-0000000DH8g-0xU8;
+	Thu, 17 Apr 2025 21:05:40 +0300
+Date: Thu, 17 Apr 2025 21:05:40 +0300
+From: Andy Shevchenko <andy@kernel.org>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: David Lechner <dlechner@baylibre.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Cosmin Tanislav <cosmin.tanislav@analog.com>,
+	Tomasz Duszynski <tduszyns@gmail.com>,
+	Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
+	Andreas Klinger <ak@it-klinger.de>,
+	Petre Rodan <petre.rodan@subdimension.ro>,
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org
+Subject: Re: [PATCH 0/8] iio: more timestamp alignment
+Message-ID: <aAFC9FsTRNya6eDU@smile.fi.intel.com>
 References: <20250417-iio-more-timestamp-alignment-v1-0-eafac1e22318@baylibre.com>
-	<20250417-iio-more-timestamp-alignment-v1-8-eafac1e22318@baylibre.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+ <aAEz2ZD0Ipd1Xuy6@smile.fi.intel.com>
+ <20250417184716.000044bb@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml500011.china.huawei.com (7.191.174.215) To
- frapeml500008.china.huawei.com (7.182.85.71)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250417184716.000044bb@huawei.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Thu, 17 Apr 2025 11:52:40 -0500
-David Lechner <dlechner@baylibre.com> wrote:
+On Thu, Apr 17, 2025 at 06:47:16PM +0100, Jonathan Cameron wrote:
+> On Thu, 17 Apr 2025 20:01:13 +0300
+> Andy Shevchenko <andy@kernel.org> wrote:
+> > On Thu, Apr 17, 2025 at 11:52:32AM -0500, David Lechner wrote:
 
-> Follow the pattern of other drivers and use aligned_s64 for the
-> timestamp. This will ensure the struct itself it also 8-byte aligned.
-> 
-> Signed-off-by: David Lechner <dlechner@baylibre.com>
-> ---
->  drivers/iio/pressure/mprls0025pa.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/iio/pressure/mprls0025pa.h b/drivers/iio/pressure/mprls0025pa.h
-> index 9d5c30afa9d69a6a606662aa7906a76347329cef..9fe9eb35e79d992b2a576e5d0af71113c6c47400 100644
-> --- a/drivers/iio/pressure/mprls0025pa.h
-> +++ b/drivers/iio/pressure/mprls0025pa.h
-> @@ -41,7 +41,7 @@ struct mpr_ops;
->   */
->  struct mpr_chan {
->  	s32 pres;
-> -	s64 ts;
-> +	aligned_s64 ts;
->  };
-Whilst you are here, no point in there being a named type for this.
-Would you mind just pushing it into the struct mpr_data definition.
+...
 
-Might be a bug (I can't be bothered to work out the structure padding
-to see if we end up with a gap after this) so fixes tag appropriate for
-this one I think.
+> > > Signed-off-by: David Lechner <dlechner@baylibre.com>  
+> Also no need to sign off on cover letters as they don't end up in git.
 
->  
->  enum mpr_func_id {
-> 
+It depends if you use `b4 shazam` or not. I like that feature.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
 
 

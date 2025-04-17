@@ -1,144 +1,116 @@
-Return-Path: <linux-iio+bounces-18199-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18200-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86D64A9224D
-	for <lists+linux-iio@lfdr.de>; Thu, 17 Apr 2025 18:10:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 724A7A9227D
+	for <lists+linux-iio@lfdr.de>; Thu, 17 Apr 2025 18:17:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A53CF16E0D2
-	for <lists+linux-iio@lfdr.de>; Thu, 17 Apr 2025 16:10:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 902DB167D4A
+	for <lists+linux-iio@lfdr.de>; Thu, 17 Apr 2025 16:17:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64B8325484F;
-	Thu, 17 Apr 2025 16:10:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 113B8254867;
+	Thu, 17 Apr 2025 16:17:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dgeHBa3r"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="I08ChHFl"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+Received: from mail-oo1-f42.google.com (mail-oo1-f42.google.com [209.85.161.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DB95347B4;
-	Thu, 17 Apr 2025 16:10:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B5BF253F04
+	for <linux-iio@vger.kernel.org>; Thu, 17 Apr 2025 16:17:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744906243; cv=none; b=U94IRt4VQYk/VHaNRXhw04uXnEtTr7n6aXr56UN2fOlJO8w877QlecASKVIKqf623Os2FrYK4MExY9mjHHbEzEX8IlOOFIe6F4E6ReaESJjgJKbrPtG7ZUpEOtm6Qtz+dp0jaEeSAC0pYp+sRrwAu2EJV/C3qTD0+LT+v6z3wpY=
+	t=1744906662; cv=none; b=mDHqOu4JcM3mTPKZOY/LkSVp9SHCtGXhXdHLh1sKdlQ1xUm2B10B2M6OY83MQHUSQj5+bq8QatF9OThAAlOBaIdFTHZkOu7qn6zUbQXM8PU+DO9hSs+vncdQ7FyDx4hh8NyHui5bib3OpSR5dzFoZX+3wkQZCCX/lClX+WDcyZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744906243; c=relaxed/simple;
-	bh=HkAdHd8gpS42Z7HDfjzr3JCk7eoCi2Sb1S8krTF/8pk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HwlC53OAPCANddMo0ekL1PGxMzVmRi0YxS3NsH4b2PdwwFMbTvctJLqvq3CcIE8/mO05dwx0HvXVBACc3a1tOEIB5zmaX65wb7/1KoMzsNR9zPDE2xvO3+C8xB2tfCn/pSa0AWaojYxLJoYjhDnFUsruu/MHBf5C5KWXpjA7jrA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dgeHBa3r; arc=none smtp.client-ip=209.85.218.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-acb415dd8faso148543466b.2;
-        Thu, 17 Apr 2025 09:10:41 -0700 (PDT)
+	s=arc-20240116; t=1744906662; c=relaxed/simple;
+	bh=YdyGYQvJPxptB7Ud1K9823h/vEclrujKLrEKCBQa44w=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=jh+fha7b+rKBKL0yJqsLsocYyEOKK0/r0PTl5WZbLEwCPuRdNrC3xNUFMsGaNOEhg3E9sgr2GOQZSfYCSpdUS9VWVB5DWoTxCpfOgOg/FH8gMdz7ru4Mx2V3PPZwTm2su/3dMcmQb8mjjsjUFyRwtkfgoLeqa0pg8h+9uGiqPc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=I08ChHFl; arc=none smtp.client-ip=209.85.161.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oo1-f42.google.com with SMTP id 006d021491bc7-60288fd4169so461405eaf.3
+        for <linux-iio@vger.kernel.org>; Thu, 17 Apr 2025 09:17:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744906240; x=1745511040; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tbPve1uvYPOzo7umjR855m+N4T3daG9Z1kh0/VM2qUA=;
-        b=dgeHBa3r5nHmuGuoPCGPu7mhUgq+rtDDDdqphxS3eWFvPSs9Z1E8PokATEUnKssLhL
-         3HX9cFErFCp5eKKzpWjPYLDAHFPPJqkDBhSljCUzoqDUKq6jGeU2xdaMs4KT+s8BVAHg
-         Ns68s48DTgSQR0PHPY34GfvvxN6F07eLOAYo/PebUhL05X8pe0AmTDFNN51TVhGGKU8P
-         2b37l9gMguslxRvqWKe/lNj5M+1WguaL7fqTNYSJVi4XaxNHRgY3YHtvn9RB8SMvjfAy
-         bf4tZpem1h3CBCNyDD4ZJDjWMATSKGz0J4bZ6hNh8Maem2C7czDGyf6rGf1oO8Qwg9yM
-         OYhQ==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1744906659; x=1745511459; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=uJ86ga6RjrBQ4jtVg7iGsvEs2Pk/5xuTneiTlVnUO0k=;
+        b=I08ChHFl421jGUWX3hDKOeCEnaE2W6myEHnSc/t5arLr/NjtnLLOb/6WQqjUeLO1lN
+         Ykzpa0tDs7OOL15YMenVo6fimibiO27iVp3tNFmKtoUFjNTDPBRpv2Y1JNkY6uspB8rE
+         m+D3e7Glzdtpc0Hpe+UmFVcXFgjM1XsSIM9f6wlVC4Eh6VC1kD6suIBnKgt6SPFQUTT0
+         7V2vzSKFf1+MJiEG8R2g1iQzw5S2aX47IKFPAudL5k9x7ZkzC/0Gpgt+E5V4tf7ChoR2
+         mJK50Oyb9CZx27ZbOcCUL/focZmNQTZt6VXq1L8c9Rj6NEGyaFtlO58rQYBKWgDXOvRq
+         em2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744906240; x=1745511040;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=tbPve1uvYPOzo7umjR855m+N4T3daG9Z1kh0/VM2qUA=;
-        b=Jy8gaNrJxbQflNcZLHt+yQtoq1E2VAZJSLrgbqKfrUmzurtThaudFqrthWdVAC2gqx
-         odmRU5y/rMuJUOhcmaC8QORb3i4cx2RglUPFexamUap5qk23mMaRis5JOPOYufmSFgdC
-         WIwyeg2yxTPwba9Q7rc37/Sw5/km+aH5eMAEoXubCZfrWxG0QPXK4kByUYAzMCu//MKw
-         3g76HfNw22qhIbilrA0BqpDhtDlbHloatsah7Mow96W5IVPAi/YPzlAmL+nsjLCTaCmR
-         Go767VVaaZTJzuscCWhJimoTqOyFcf9qgk53AXCggNNh31qCD9XhpseOJlw8MAS0O9bc
-         jXRg==
-X-Forwarded-Encrypted: i=1; AJvYcCX7m0MBurc0FI1GgbgPfPBud2brGxxxe/QwSxhpxo1pf/DqT0Iaw4Y3iv7ZNBFTrpA1rxXa/wh4OLg=@vger.kernel.org, AJvYcCXgDEu+qdZQ5DqPSjpeV2h/dW3Z+pWsVuudLHvfolCd28mbdxd45bNmNJEMUVDQ9YOq/YkBKZtKIlOphZuX@vger.kernel.org
-X-Gm-Message-State: AOJu0YzRsdToBmsyNFuFyLY0vRc7tWFD/YEdENFFr2LRFeOBCgdt1vR3
-	z62cQPT5KLiq/BRGnoINKyRQtV6CtBaO//eH0la74bbM/nrKLguEhFSBQUQEZ4hCjgf8zUQVkhn
-	Oy03ueJacDK1kGNLvNvg7N0YNJiE=
-X-Gm-Gg: ASbGncvfyrealMFBlxdRlWqIT9MMftVNEuuh0m8Bib6ffbfBlV9qcp3UFttDAXIOTph
-	bB/UKvl8kwhM9CXRcGrQweA6HL+I9uU8+49x9hg0lLQZQg7DDIVO6pplY/HSQSebfKw3kOgQqnb
-	xMrs6uUKpgHCgr2wpBBz71fptv
-X-Google-Smtp-Source: AGHT+IFoGx7J9uYtzFyupfPUt8X32SjyduVEB58JftV7nr+5ZGIrPbnKu7I7scjxL3eiTU2jZ/pKfKkaTV7WedmdHLU=
-X-Received: by 2002:a17:906:f5a9:b0:ac2:cf0b:b809 with SMTP id
- a640c23a62f3a-acb429ed4d2mr702253466b.31.1744906239458; Thu, 17 Apr 2025
- 09:10:39 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1744906659; x=1745511459;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=uJ86ga6RjrBQ4jtVg7iGsvEs2Pk/5xuTneiTlVnUO0k=;
+        b=GALMrVX0dt5jxNy3D4xVzrhYVA8GiPZoR/0mXx4CCsSPk+C0ebwqEV6awtAgfi94N0
+         r6DPp3pzNvlBzHwV7E/r/3xM4Vzec/41y70LT1ghKGEeuOEbVK5UksElzopisiaPlVhs
+         8+/7rQ698PqKH8YskkVRodTZu18lQfCz/WLnNi+6MBZiREADOwCmYub2w1keBUj/yWzB
+         1NAoRYk6NGwLa/IKtO6yTLRJ2+3tUqAhpVRKbDbDTnzMlLoMnxJE85c10aQuEt8vjn/T
+         SmLVBsvUjxgJlKcoLDUpQvNrJJOJz5m+0Y8QQDK4NF+t/QrTW4hn0mJ1KOtMH/1X5JnW
+         Qo8g==
+X-Forwarded-Encrypted: i=1; AJvYcCUl2WrroHZupwwfvxIx1ykHcNtWGV7nnJLQVanLmD+3lkHzcaH7I18Us4gDwhY1BCFCWi5SehPeceA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YySgdmtFSV0IcO0F/jgpk4hjBO2tHrZ7koK6G8+ple3dAmYsRCO
+	tBa3vvPMlbysu/lpDHDnaekLFHTjSNwJHdIVy2vCI+IBiityYCM+tiE6+G32njdPw1zB+iGk/iu
+	eOyE=
+X-Gm-Gg: ASbGncucIKoBbt6VajTlT03zS6FmPK8TSUwoo7T3h3FTY8KuwiqoV9qDSVEvbsfZP9C
+	JZ7DLTmyiz+QrZxIz+dtZec4pd0H4dbDhlF2vpT8Tw5x8zEG83NScBznIa9kI6H1aE2T/KiaQFy
+	BREN4BiQQtDOw+Y42ZVNzcwu7FY82Jc9DZGUrwSq2IquUNMGj4b3BTxBJDQRecSg8OXyVidOGa2
+	CRC2exiTr47EtkIeGgUH1eAYz2LSk+aLyPJT6psIuOqfk0UsoRvdJ7I5Bi2yv3srzgPEVYVysxp
+	4uuzxyqxsza5wfARy0UglhmG9pmm62aA1enXoF/Ph7EZhLvyab0L03op7GMZirPhpjzzDAWgOst
+	/ibGtdiVKN5jnpqnLLA==
+X-Google-Smtp-Source: AGHT+IGBBgE75fsVkLXxYoZqV19j+mS6o4e4vTLZSbr9DKTQoVtLZ0+RYC5g8QIKrdP0fbpy7FLYJQ==
+X-Received: by 2002:a05:6820:1e13:b0:604:6b0:c259 with SMTP id 006d021491bc7-604a931e696mr3952610eaf.4.1744906659563;
+        Thu, 17 Apr 2025 09:17:39 -0700 (PDT)
+Received: from ?IPV6:2600:8803:e7e4:1d00:c91b:eea3:7afd:2dee? ([2600:8803:e7e4:1d00:c91b:eea3:7afd:2dee])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-605ff6aacf5sm12896eaf.39.2025.04.17.09.17.37
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 17 Apr 2025 09:17:39 -0700 (PDT)
+Message-ID: <cd50b4eb-ef6c-4842-88cd-932042ca2629@baylibre.com>
+Date: Thu, 17 Apr 2025 11:17:37 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250415-losd-3-inv-icm42600-add-wom-support-v2-0-de94dfb92b7e@tdk.com>
- <20250415-losd-3-inv-icm42600-add-wom-support-v2-1-de94dfb92b7e@tdk.com>
- <CAHp75VdZDovPuRqQMpP=TkjeBr9AgRssPFJfmsjnXC=wUXxFHg@mail.gmail.com> <FR3P281MB17570E56798219E17F8C0814CEBC2@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
-In-Reply-To: <FR3P281MB17570E56798219E17F8C0814CEBC2@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Thu, 17 Apr 2025 19:10:03 +0300
-X-Gm-Features: ATxdqUHBRj8Mee1rXojwcphqLoRKp5e4YGtOJLfRaG7565FqHXoTW72eOrKA1PM
-Message-ID: <CAHp75VeUYyjZqLsxS8BQn0K9uRGCibKsNTgrCdf58ukCrMgSsA@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] iio: imu: inv_icm42600: add WoM support
-To: Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, 
-	David Lechner <dlechner@baylibre.com>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Andy Shevchenko <andy@kernel.org>, "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] iio: frequency:: Remove unused parameter from data
+ documentation
+To: Gabriel Shahrouzi <gshahrouzi@gmail.com>, gregkh@linuxfoundation.org,
+ jic23@kernel.org, lars@metafoo.de, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-staging@lists.linux.dev,
+ Michael.Hennerich@analog.com
+Cc: skhan@linuxfoundation.org, linux-kernel-mentees@lists.linux.dev
+References: <20250417143220.572261-1-gshahrouzi@gmail.com>
+From: David Lechner <dlechner@baylibre.com>
+Content-Language: en-US
+In-Reply-To: <20250417143220.572261-1-gshahrouzi@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Apr 17, 2025 at 5:25=E2=80=AFPM Jean-Baptiste Maneyrol
-<Jean-Baptiste.Maneyrol@tdk.com> wrote:
-> > On Tue, Apr 15, 2025 at 5:47=E2=80=AFPM Jean-Baptiste Maneyrol via B4 R=
-elay
-> > <devnull+jean-baptiste.maneyrol.tdk.com@kernel.org> wrote:
+On 4/17/25 9:32 AM, Gabriel Shahrouzi wrote:
+> The AD9832 driver uses the Common Clock Framework (CCF) to obtain the
+> master clock (MCLK) frequency rather than relying on a frequency value
+> passed from platform data.
+> 
+> Signed-off-by: Gabriel Shahrouzi <gshahrouzi@gmail.com>
+> ---
+>  drivers/staging/iio/frequency/ad9832.h | 1 -
+>  1 file changed, 1 deletion(-)
+> 
+Please include the driver name in your patch subjects. Otherwise readers will
+assume that this is something that affects all IIO frequency drivers. I noticed
+you are doing this on all of the patches you are sending, not just this one.
 
-...
 
-> > > +       /* 1000/256mg per LSB converted in m/s=C2=B2 in micro (100000=
-0) */
-> >
-> > That 1000000 is redundant, just properly spell the units.
->
-> I will use um/s=C2=B2
-
-FWIW, you may even use a Greek MU letter, kernel is UTF-8 compatible :-)
-=CE=BCm/s=C2=B2
-
-...
-
-> > > +       /* limit value to 8 bits and prevent 0 */
-> > > +       return min(255, max(1, value));
-> >
-> > Reinvention of the clamp() ?
->
-> It was a copy-paste of an older driver, at the time clamp was not here.
-> I will replace by clamp, it is much more readable.
-
-For the curious, read this https://lwn.net/Articles/983965/.
-The min(max()) may have really unexpected side effects :-)
-
-...
-
-> > > +       if (sleep_ms)
-> >
-> > Do you need this check?
->
-> We need this check in the case sleep_ms is 0. It will happen if accel is
-> already on. msleep(0) was usually doing a sleep before. I don't know if i=
-t
-> is still the case.
-
-I'm wondering if it's documented anywhere, do we need to update /
-improve a documentation?
-
-> > > +               msleep(sleep_ms);
-
---=20
-With Best Regards,
-Andy Shevchenko
+[PATCH] iio: frequency: ad9832: Remove unused parameter from data documentation
 

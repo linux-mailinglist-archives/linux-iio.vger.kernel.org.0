@@ -1,129 +1,125 @@
-Return-Path: <linux-iio+bounces-18201-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18202-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FB53A922F6
-	for <lists+linux-iio@lfdr.de>; Thu, 17 Apr 2025 18:48:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DCAC0A92308
+	for <lists+linux-iio@lfdr.de>; Thu, 17 Apr 2025 18:52:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9ECCE4633A2
-	for <lists+linux-iio@lfdr.de>; Thu, 17 Apr 2025 16:48:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED1ED464CE1
+	for <lists+linux-iio@lfdr.de>; Thu, 17 Apr 2025 16:52:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C07DD254B0B;
-	Thu, 17 Apr 2025 16:47:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27D642550CF;
+	Thu, 17 Apr 2025 16:52:09 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6B0525290D;
-	Thu, 17 Apr 2025 16:47:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68E822248AE;
+	Thu, 17 Apr 2025 16:52:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744908471; cv=none; b=u/fuAHdNRIpYzZmK2t3go7Cdu3JXhl1YDoBtXUx8iNiq+ODERPLZlBhKHollx9/bGInJLnvR3nr0OJ3LT4KNEXrjukCCXsZjvx0n6pVhBG1HR/moh8/uCQdqrhZ+j5yxFDPRaiYRiGgiHkxSj9D4Fbdbfx8eYmPV8naVUNYRFq4=
+	t=1744908729; cv=none; b=E6G7nnwwLCwG/hj+v8haWhzpo25IQHRaHWw8Ff34CZl5X7bQ+MreSI9GwGMKp1i7kzYK/PN5matIpRwFQC5O3amleWJWqvSZLe7Kw9Bq0WruPGsggjFmoYdYYNQnmimyt4/iLzv0sxvmTKVbciKE/KravsJmzhtOfeauQx+OzbA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744908471; c=relaxed/simple;
-	bh=nWrQDIlA8rQPuxUJkMr95BwMdVJ0m+hXPuyEJovSlKg=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZGlGsMbRBSfsr8IRwbznEUCccIl5hbbC59dpbm3AjIch/CXbcyqR03XXywfVU/yJVIMrL+ixxcYycgRA1LBnZQ6AmSpKwLPWP3/jwV5GiYBiynRMSXgIV/q41YArCqa3Aj26mtWRjf+QL2XzjGfWUCoEeYTys0mWurCeMBZxSVA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.31])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4ZdkH468gxz6K9Nk;
-	Fri, 18 Apr 2025 00:43:28 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
-	by mail.maildlp.com (Postfix) with ESMTPS id 58361140146;
-	Fri, 18 Apr 2025 00:47:46 +0800 (CST)
-Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
- (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 17 Apr
- 2025 18:47:45 +0200
-Date: Thu, 17 Apr 2025 17:47:44 +0100
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-To: Charalampos Mitrodimas <charmitro@posteo.net>
-CC: Gabriel Shahrouzi <gshahrouzi@gmail.com>, <skhan@linuxfoundation.org>,
-	<linux-kernel-mentees@lists.linux.dev>, <gregkh@linuxfoundation.org>,
-	<jic23@kernel.org>, <lars@metafoo.de>, <linux-iio@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-staging@lists.linux.dev>,
-	<Michael.Hennerich@analog.com>
-Subject: Re: [PATCH] iio: frequency:: Remove unused parameter from data
- documentation
-Message-ID: <20250417174744.00007ea6@huawei.com>
-In-Reply-To: <2cc70f19c1b001ea7f2cf0632618d060f69faef0.camel@posteo.net>
-References: <20250417143220.572261-1-gshahrouzi@gmail.com>
-	<56edfb88d3f31939fb343149bfad436f24671f9d.camel@posteo.net>
-	<2cc70f19c1b001ea7f2cf0632618d060f69faef0.camel@posteo.net>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	s=arc-20240116; t=1744908729; c=relaxed/simple;
+	bh=ZX5+ZMuzN0+oeRvlRrAinL5qAKSvOLrYyM7VzdvBIws=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=A4nl2GDutyuRChe0u2u3pwPE0LjM9ZmzJQND03fbl+6aWU7U5olb0RlX9EBFcJ3ENH1guTbyfygQC4yzcT5o6zFGanzwKu1QbGlxtC4HxTThBNNMud8dqEpXBtmEkdkCokZHzryTrxoVby/bdWgGGGBZRPf4kKwcuNX7HK44uNY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com; spf=fail smtp.mailfrom=gmail.com; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=gmail.com
+X-CSE-ConnectionGUID: KgnVKv9GReKnyeb0I9jr7A==
+X-CSE-MsgGUID: v2QFJM1oRSiOBjbsG91hMQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11406"; a="45645317"
+X-IronPort-AV: E=Sophos;i="6.15,219,1739865600"; 
+   d="scan'208";a="45645317"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2025 09:52:06 -0700
+X-CSE-ConnectionGUID: CzbQI+88Q4+q7Fw8S7Pmrg==
+X-CSE-MsgGUID: W9ni30eDQ46n1sV9xFuHew==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,219,1739865600"; 
+   d="scan'208";a="131400371"
+Received: from smile.fi.intel.com ([10.237.72.58])
+  by orviesa007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2025 09:52:03 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
+	(envelope-from <andy.shevchenko@gmail.com>)
+	id 1u5ST2-0000000DG3p-0MvS;
+	Thu, 17 Apr 2025 19:52:00 +0300
+Date: Thu, 17 Apr 2025 19:51:59 +0300
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+To: gyeyoung <gye976@gmail.com>
+Cc: jic23@kernel.org, linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	dlechner@baylibre.com, nuno.sa@analog.com, robh@kernel.org,
+	krzk+dt@kernel.org, conor+dt@kernel.org
+Subject: Re: [PATCH v3 3/4] iio: chemical: add support for winsen MHZ19B CO2
+ sensor
+Message-ID: <aAExr-YPkYAsSQTc@smile.fi.intel.com>
+References: <20250409024311.19466-1-gye976@gmail.com>
+ <20250409024311.19466-5-gye976@gmail.com>
+ <CAHp75VfMHdw-6vrELbjjD3T323uDz7U9wRP5YSk2jZ26wBuLTQ@mail.gmail.com>
+ <CAKbEznsVxexdrXX72G-tCUHjznx6na1h8MrCFPKrHd27GXht8A@mail.gmail.com>
+ <CAHp75VeU5sERbVz-4OxkJNC-pjT3B5AvfAMj09LXd6v4MdeDeg@mail.gmail.com>
+ <CAKbEznvXdfszfiuXma_GWhYLwj7mR_WX_H4r6iHZWKp2=41tJw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: lhrpeml100009.china.huawei.com (7.191.174.83) To
- frapeml500008.china.huawei.com (7.182.85.71)
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAKbEznvXdfszfiuXma_GWhYLwj7mR_WX_H4r6iHZWKp2=41tJw@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Thu, 17 Apr 2025 15:57:48 +0000
-Charalampos Mitrodimas <charmitro@posteo.net> wrote:
+On Thu, Apr 17, 2025 at 11:03:12PM +0900, gyeyoung wrote:
+> On Tue, Apr 15, 2025 at 2:21 AM Andy Shevchenko
+> <andy.shevchenko@gmail.com> wrote:
 
-> On Thu, 2025-04-17 at 15:53 +0000, Charalampos Mitrodimas wrote:
-> > On Thu, 2025-04-17 at 10:32 -0400, Gabriel Shahrouzi wrote: =20
-> > > The AD9832 driver uses the Common Clock Framework (CCF) to obtain
-> > > the
-> > > master clock (MCLK) frequency rather than relying on a frequency
-> > > value
-> > > passed from platform data.
-> > >=20
-> > > Signed-off-by: Gabriel Shahrouzi <gshahrouzi@gmail.com>
-> > > ---
-> > > =A0drivers/staging/iio/frequency/ad9832.h | 1 -
-> > > =A01 file changed, 1 deletion(-)
-> > >=20
-> > > diff --git a/drivers/staging/iio/frequency/ad9832.h
-> > > b/drivers/staging/iio/frequency/ad9832.h
-> > > index 98dfbd9289ab8..d0d840edb8d27 100644
-> > > --- a/drivers/staging/iio/frequency/ad9832.h
-> > > +++ b/drivers/staging/iio/frequency/ad9832.h
-> > > @@ -13,7 +13,6 @@
-> > > =A0
-> > > =A0/**
-> > > =A0 * struct ad9832_platform_data - platform specific information
-> > > - * @mclk:=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0master clock in H=
-z =20
-> >=20
-> > Hi Gabriel,
-> >=20
-> > This seems to be a leftover from
-> > 566564e80b0ed23ffa4c40f7ad4224bf3327053a ("staging: iio: ad9832: use
-> > clock framework for clock reference") =20
->=20
-> That said, a Fixes: tag might be helpful?
+...
 
-Not for a documentation fix in a staging driver.  A reference
-in the commit message is fine though.
+> > > > > +       /*
+> > > > > +        * serdev receive buffer.
+> > > > > +        * When data is received from the MH-Z19B,
+> > > > > +        * the 'mhz19b_receive_buf' callback function is called and fills this buffer.
+> > > > > +        */
+> > > > > +       char buf[9];
+> > > >
+> > > > Should it be DMA-safe?
+> > >
+> > > I'm not sure if I understood your point correctly,
+> > > This code isn't DMA-safe. I'm currently understanding why DMA-safe is necessary.
+> > > (but actually other drivers implementing 'serdev ops' use non-DMA-safe buffers.)
+> > > I will verify this part and then send the next patch.
+> >
+> > Because some of the UART drivers may enable DMA by default if it's
+> > available and your code won't work on them, right? But double check if
+> > serdev makes it DMA-safe before use.
+> 
+> It seems that the serdev buf doesn't need to be DMA-safe. I looked
+> into the PL011 driver as an example,
+> which uses DMA, and found that the data received via DMA is firstly
+> stored in the buffer within the 'uart_amba_port' structure, and then
+> copied into the 'tty_bufhead' within the tty_port. Later, in serdev's
+> receive_buf(), it simply copies from the tty_bufhead to into serdev
+> buf. So I think there's no need to consider DMA-safe in the serdev buf
+> itself.
 
-Fixes tags tend to make people look at is as a possible thing to backport
-and this is not something where that makes sense.
+But who will give those guarantees (note, the code is most likely may be run on
+different UART controllers (PL011 is just one of many), have you checked all
+supported drivers for DMA?
 
-Jonathan
+> would this make sense? If so, I think there is no need to change the
+> code related to the buffer.
 
->=20
-> >=20
-> >=20
-> >  =20
-> > > =A0 * @freq0:=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0power up freq0 tu=
-ning word in Hz
-> > > =A0 * @freq1:=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0power up freq1 tu=
-ning word in Hz
-> > > =A0 * @phase0:=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0power up phase0 val=
-ue [0..4095] correlates
-> > > with 0..2PI =20
-> >=20
-> >  =20
->=20
->=20
+The bare minimum is to make sure this buffer occupies the cacheline.
+Read about DMA safety for the cache coherency.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
 
 

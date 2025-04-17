@@ -1,157 +1,195 @@
-Return-Path: <linux-iio+bounces-18182-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18183-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47B5EA9103C
-	for <lists+linux-iio@lfdr.de>; Thu, 17 Apr 2025 02:23:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 259B9A912F3
+	for <lists+linux-iio@lfdr.de>; Thu, 17 Apr 2025 07:44:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CA09E7AEAF0
-	for <lists+linux-iio@lfdr.de>; Thu, 17 Apr 2025 00:22:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7370F1888692
+	for <lists+linux-iio@lfdr.de>; Thu, 17 Apr 2025 05:44:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 178397081E;
-	Thu, 17 Apr 2025 00:23:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BD701F237B;
+	Thu, 17 Apr 2025 05:43:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Enc9rsIM"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b5D8VjIv"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
+Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58BA5322B;
-	Thu, 17 Apr 2025 00:23:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AD0B1E5216;
+	Thu, 17 Apr 2025 05:43:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744849385; cv=none; b=MF4MDQWxNBHlwe/2UHsjbijFYeMxF644bmf04RFbubSSKQz+ShxNf7zey846Utcr687sdyFcGJv5ym6CiaTyvE32he7OKRI4D1KrfVtNaT6wIGsctQIhEiDO8Pr5619EvFiix7Cf8GtFoU1uLutLq52r6iheHUvvf5dBqsTH/Lk=
+	t=1744868607; cv=none; b=aNAt5+CbeoF5j1Q/3Ok3Wqt4InkZSItVYmSZxK1Gv8odLkZJFIcVdZVpi/UZp7Fo/FVq88RWPcgdGOK//AU+m5JGgZeBOKQ4uiHHR5T8uplMEBJPJTfkgdBIdMR2TvStmfq/Sgr76ve8fKYy1AAjtuI3ePp7SaUNAjW2EJ7uAgU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744849385; c=relaxed/simple;
-	bh=P2M08ruexrZHu161VwGKdySd0fawpX9Wi5FalmxYizc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NzrF6qMfuxOdumMycmqmvq427DmUsFjExUPYRzZDlnVz0w9dHStiCvQnJN0jDUddqXfyjjCGrMdP3iADEGXXnwHGQOCyXSpfNZ2qZRjEM378MPlRstzsiozDXzVxHeVpp6eOpgiy6O+QFWuzMycWZm/EYxpmswm2GJCBhwStXXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Enc9rsIM; arc=none smtp.client-ip=209.85.219.50
+	s=arc-20240116; t=1744868607; c=relaxed/simple;
+	bh=FMIpPYafwfnkDabtlrEmI7ulS7B4pPOqair5B9WAoBA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=n3JdZUrt+ND6v/aBYlUMMfrCmdNRRu40huacE1FNDY2jcW+SvMYrzwyWZFkb/eYcGx/qx/8xYD5JKww7722rRYNyV6tQAqLnAfZ4fzmkUdegJwDRuwhouzC8X84qtEd9X02fIFsoYHZopzOrEUDBwBmh3YTjoPHVxObTosKzlAU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=b5D8VjIv; arc=none smtp.client-ip=209.85.215.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-6e8ff1b051dso477176d6.1;
-        Wed, 16 Apr 2025 17:23:04 -0700 (PDT)
+Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-b0b2d1f2845so260015a12.3;
+        Wed, 16 Apr 2025 22:43:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744849383; x=1745454183; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=EpTfqX5Cd/jNRBttBS5DQbBPjkK8XAGkNy1DKLn6s0E=;
-        b=Enc9rsIM6+EZXe6ekdNaznRd0Vgr6SyHBfMPZCxChWpRm7GQHP9SeJ2ReIf/0zXA2w
-         zEute2s3XE8yeqqWpi3/1SYs06V4VAQ37+NmxfBHdYp0EvGKiM9DqC1VlsH3gnFGdd8x
-         HmhwE7CHgN94dVO4h63kCqac55XwL7VZDURBDfWpVksbmzi2eHIUp//iZgqsXkSSTPQU
-         s6vfyWJg+aD+DJHZ1ke3EmsRgl1gjSgWxjXx9/frerUTb9c/Lg2u70055qKslGCNbQgX
-         s5Y1vriv+ZY+OQx64eI/CE1biENX5zApga0EVCvnzz7QdIxZeC/nAvalszWhVa6AUQtE
-         4bJg==
+        d=gmail.com; s=20230601; t=1744868605; x=1745473405; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=9g+SVkavFRSacmyVfOEHphPFAH3/AYZFW+0PJY+HSIA=;
+        b=b5D8VjIvGC5XDDKEvWy2z+f+K+PiH6K0OaCzgE2OtlHUnjqojXu4z+VTkCkMAsdzEn
+         TaGkSMrEK6tN2WKRA55m8tomOZuyQr7pAq9JgYI0BGpM4cGfXsXieIOFNsAzT5AZkMqI
+         qZFU6twUA5BmDJ6Lq2hnakI74p/Tq3EtZj89yhMJdcvAHBw/PGpnwY3I+weXA6ArBJj9
+         NdIGHrqB5Z/OUNIt5wR06Z1UjOziJVIBKWuLFMvEn92y65dLPYl2bUBSRcw94pXQXYOn
+         sA2qCyWx8PM5LJPZ1t6Ueu04wXYKzHYIWTu6aDB3U3IAQp/yruPbu+NSY4fSE/lkkset
+         mcgA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744849383; x=1745454183;
-        h=in-reply-to:content-disposition:mime-version:references:reply-to
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=EpTfqX5Cd/jNRBttBS5DQbBPjkK8XAGkNy1DKLn6s0E=;
-        b=P65qScCzS6xmpRoO5Bmh9bJIM/N2y88o0HK0LcPB7JZBCB4Sbf3maXPn7bAIwURkkb
-         pin3Yuv2ePCjR8AZSvJ6OAoftN4Iqdjo3Vi56D6vglWUDHJYHnCLz4HkcGVpoNJ57p/w
-         SQ8NsIq0ZHBNd6GcBTzGHuEEuqer/d41M+qmAOgAikC4IB2C6mlDoa2CmrpF6J4Nt7jG
-         dgZJ/Z5jhA7gk7nfTUyRuHvRUlthCcluD8i3lQfqM/31VqulLXzlg/swRE56rbuwSWj6
-         8pq7Mw8bbn2a5rjyUKPpEj7GUQWfTNEka9JmC7B7NAXkL71wYofAvldT2PcTTzYTHjDf
-         se/g==
-X-Forwarded-Encrypted: i=1; AJvYcCUAZ9qhG05sMtxN1sdZQp4OZqs/Ps+GxmIbtbprVs1SXDgg+XKycy3R0JNAFzdj24MHxJkZYRN12mVrZolu@vger.kernel.org, AJvYcCULjKFPrjzGKB9fO/Sui4Egqj8rrrMDFOoiJCbjx5tDASz3p3AJpizqOvM1F4PrJW0O6U5IGLFMUisK@vger.kernel.org, AJvYcCVq6x4bAqQMU0KCOtf73lmpc+UnPi1vRZDlugSv4eOcnNhkdlKQFAWcZfHlqjqnEyT5H4UtQ8Mc+tUIiA==@vger.kernel.org, AJvYcCXzHUUbdmuWDonoN/kTZcpWVFhSxnJQBNsIqozkw2meBaZBNwP/j3WeqqphTvSLy9LyMPj4L12RjxVb@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz59TJtzR3x9DXa+yRr14vh9RNvMfZcav+aYDlqbnQUjkGmjFXy
-	Fktgzi9ifFowvihQbjYpQye+pe4qJWKeBILVxHAiEXr2dqjvGhew
-X-Gm-Gg: ASbGncvUZw7a/Bwtdeq9np60okRjGMXDvb1POI8l6wr5oODbFBE4mFayXW3M53mlD/G
-	Ol5svCembmkoXbM37XVISEzmm9HYxF3bF8D+vvYAeYs50eIOjPCsSDpF1B2x4ElyG32fq9TSEZh
-	T+N6k4AShLN1LJrpGKxrOaiNy5979fmHEqrcmjT4uIOOxjtKp523LS8NX6tC7aCA1Tv32otRpJy
-	LBFW8IzNnHA/+ARJSfkL9UE86WJbNkEdbHk8dFlQ/mVEWk9syWBlq/hEtcb5+4J6HAAHB5DKEIN
-	G/ElcxYGU0xd1F50Cxf4tDAOk47/M4DMj1AbshNQnpaOtXmjF6EO8CMQJVfrOQ==
-X-Google-Smtp-Source: AGHT+IFn2Lu3tiHACq6PjR3vsJPcKKTC+q34qH5F0gMiIblkAdM2ULMkUSEiDVKnxyDyW3dtPaHfLw==
-X-Received: by 2002:a05:620a:3184:b0:7c0:a1ca:93cb with SMTP id af79cd13be357-7c91da0bb8dmr88801785a.1.1744849383117;
-        Wed, 16 Apr 2025 17:23:03 -0700 (PDT)
-Received: from JSANTO12-L01.ad.analog.com ([189.121.203.94])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c7a89f99e9sm1114754585a.81.2025.04.16.17.22.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Apr 2025 17:23:02 -0700 (PDT)
-Date: Wed, 16 Apr 2025 21:22:57 -0300
-From: Jonathan Santos <jonath4nns@gmail.com>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Jonathan Santos <Jonathan.Santos@analog.com>, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-gpio@vger.kernel.org, lars@metafoo.de,
-	Michael.Hennerich@analog.com, marcelo.schmitt@analog.com,
-	jic23@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, marcelo.schmitt1@gmail.com,
-	linus.walleij@linaro.org, brgl@bgdev.pl, lgirdwood@gmail.com,
-	broonie@kernel.org
-Subject: Re: [PATCH v5 02/14] dt-bindings: iio: adc: ad7768-1: add
- trigger-sources property
-Message-ID: <aABJ4UuFWDsJX6vT@JSANTO12-L01.ad.analog.com>
-Reply-To: 3027a9b0-cf4a-4e55-80a7-7f0dd2a008e4@baylibre.com
-References: <cover.1744325346.git.Jonathan.Santos@analog.com>
- <35481552e9ce39a24a0257ab001c0bcfea1a23be.1744325346.git.Jonathan.Santos@analog.com>
- <3027a9b0-cf4a-4e55-80a7-7f0dd2a008e4@baylibre.com>
+        d=1e100.net; s=20230601; t=1744868605; x=1745473405;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=9g+SVkavFRSacmyVfOEHphPFAH3/AYZFW+0PJY+HSIA=;
+        b=IDOzg0BCIrsOurJAF7TesLHB41CEjv+w3YUj1BgFyestH6lgVhXOfcdaKXykONDYSB
+         umKB6fjZngXDSXV2mmOduSy8+jhv02NYUuRN4mUV1wKwLWwGBsR6U2CbHS+63V6L8tIx
+         awYMaYeMQrRPDxpdVft6MGVYBTsTk1FP/6MNYjRK0JGpzwgrN6MeKSbr8yo6z4T4HUWV
+         4M01LDVeFJs5enWXkNHBtwDHVzvNjZWh1bnU9sIviowewU4guGJXoCGzyVGgXn7RXq0G
+         gMSyarze0eTJ2Za9qimCX1KqGi1y0RiNMXlthgSSrb0Kq7s+jhwWAEiUjdAQlUiU76J2
+         fZqg==
+X-Forwarded-Encrypted: i=1; AJvYcCUioEPMq8KfIgtVA7mltYZcSa+48L5Y9wOCN1Q4TdzWZArUhoNq4p9tI7ubwc7TSj7TgQ13iSj5ahzSMVE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzWZlmlW9YhR3mxrfWwVc9tgbcGFjbhFP0BUpbDhFNWmfB4nBr4
+	rXnlRARi+yGwIsiryuB5vFiwYchTIrX7fsl1Lg9PtlPhLBtjhWp4
+X-Gm-Gg: ASbGncuagXxyEL3NPYHwuAHdgPgoPA56qLgtV98aUSpQGZfdsEh1bDFHuhNAVOzeAFR
+	Vr0pC7nld9y5X48x3xE1AjgrKPkylepKTEuR0uY92C0pZqdetrN9Kik8BKuNO12hx/D7d2swZqk
+	fExh82Rk+SJUoMHgURT0tmPG/3u57vqaRD8EiTf78FqNeUZDIWU78w9soOsk6xfO9b9Cbh9obEF
+	qUW+Ru45TVOFV8IWvLphBnZ3MmmEnIHRz1ugyxUwS5uUwYpgJfSC7nNlbacoWVKiyxI63dCvE3X
+	UML86HXLylFkTv2aP28nw54O9Mm7mm/4pT2oM9+1FZmuZtAv+g==
+X-Google-Smtp-Source: AGHT+IGDFwjAU8gK8vB7c4HiWkRT1h+o4JFppXo1da2T6aikyD9BsPygXAqD6QGn+Ck9y4Ccqmemnw==
+X-Received: by 2002:a17:90b:5683:b0:2f8:34df:5652 with SMTP id 98e67ed59e1d1-30863f303f7mr6544849a91.21.1744868604686;
+        Wed, 16 Apr 2025 22:43:24 -0700 (PDT)
+Received: from [192.168.0.161] ([14.139.108.62])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-30861212c3esm2698249a91.25.2025.04.16.22.43.20
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 16 Apr 2025 22:43:24 -0700 (PDT)
+Message-ID: <383030aa-2312-4f11-ba80-c8dd54fc9010@gmail.com>
+Date: Thu, 17 Apr 2025 11:13:19 +0530
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3027a9b0-cf4a-4e55-80a7-7f0dd2a008e4@baylibre.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] iio: addac: ad74115: Fix use of uninitialized variable
+ rate
+To: =?UTF-8?Q?Nuno_S=C3=A1?= <noname.nuno@gmail.com>,
+ David Lechner <dlechner@baylibre.com>, cosmin.tanislav@analog.com,
+ lars@metafoo.de, Michael.Hennerich@analog.com, jic23@kernel.org
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250409202945.205088-1-purvayeshi550@gmail.com>
+ <1254dfd7-e872-4c65-bd17-8015e1b2eba4@baylibre.com>
+ <10a9dd5cdf55b6a9845fb9543cdef5f2251ffa6a.camel@gmail.com>
+ <f5f40475-fae5-487f-b5ce-dc6c5dfe3600@gmail.com>
+ <5cb7ab70be67f8b97b5fd09eefab0f2c33d99d20.camel@gmail.com>
+Content-Language: en-US
+From: Purva Yeshi <purvayeshi550@gmail.com>
+In-Reply-To: <5cb7ab70be67f8b97b5fd09eefab0f2c33d99d20.camel@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On 04/11, David Lechner wrote:
-> On 4/11/25 10:56 AM, Jonathan Santos wrote:
-> > In addition to GPIO synchronization, The AD7768-1 also supports
-> > synchronization over SPI, which use is recommended when the GPIO
-> > cannot provide a pulse synchronous with the base MCLK signal. It
-> > consists of looping back the SYNC_OUT to the SYNC_IN pin and send
-> > a command via SPI to trigger the synchronization.
-> > 
-> > Introduce the 'trigger-sources' property to support SPI-based
-> > synchronization, along with additional optional entries for the SPI
-> > offload trigger and the START signal via GPIO3.
-> > 
-> > While at it, add description to the interrupts property.
-> > 
-> > Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
-> > ---
+On 11/04/25 17:47, Nuno Sá wrote:
+> On Fri, 2025-04-11 at 14:39 +0530, Purva Yeshi wrote:
+>> On 11/04/25 11:19, Nuno Sá wrote:
+>>> On Thu, 2025-04-10 at 09:51 -0500, David Lechner wrote:
+>>>> On 4/9/25 3:29 PM, Purva Yeshi wrote:
+>>>>> Fix Smatch-detected error:
+>>>>> drivers/iio/addac/ad74115.c:823 _ad74115_get_adc_code() error:
+>>>>> uninitialized symbol 'rate'.
+>>>>>
+>>>>> The variable rate was declared but not given any value before being used
+>>>>> in a division. If the code reached that point without setting rate, it
+>>>>> would cause unpredictable behavior.
+>>>>>
+>>>>> Declare and initialize 'rate' to zero inside the 'else' block where it
+>>>>> is
+>>>>> used. This ensures 'rate' is always initialized before being passed to
+>>>>> DIV_ROUND_CLOSEST.
+>>>>>
+>>>>> Signed-off-by: Purva Yeshi <purvayeshi550@gmail.com>
+>>>>> ---
+>>>>>    drivers/iio/addac/ad74115.c | 2 +-
+>>>>>    1 file changed, 1 insertion(+), 1 deletion(-)
+>>>>>
+>>>>> diff --git a/drivers/iio/addac/ad74115.c b/drivers/iio/addac/ad74115.c
+>>>>> index a7e480f2472d..26770c68e5fa 100644
+>>>>> --- a/drivers/iio/addac/ad74115.c
+>>>>> +++ b/drivers/iio/addac/ad74115.c
+>>>>> @@ -814,7 +814,7 @@ static int _ad74115_get_adc_code(struct
+>>>>> ad74115_state *st,
+>>>>>    			return -ETIMEDOUT;
+>>>>>    	} else {
+>>>>>    		unsigned int regval, wait_time;
+>>>>> -		int rate;
+>>>>> +		int rate = 0;
+>>>>>    
+>>>>>    		ret = ad74115_get_adc_rate(st, channel, &rate);
+>>>>>    		if (ret < 0)
+>>>>
+>>>> I don't see how rate could be used uninitialized since we are
+>>>> returning the error if ad74115_get_adc_rate() fails.
+>>>>
+>>>> Also, initializing to 0 would then cause a divide by 0 error
+>>>> if that value was actually used later in the code.
+>>>>
+>>>
+>>> Agreed... A better check could actually be (in ad74115_get_adc_rate()):
+>>>
+>>>
+>>> if (i >= ARRAY_SIZE(ad74115_get_adc_rate))
+>>>       return -EIO;
+>>>
+>>> Kind of a paranoid check but just making sure a faulty chip does not lead to
+>>> an out
+>>> of bounds access.
+>>>
+>>> - Nuno Sá
+>>
+>> Hi Nuno,
+>>
+>> Thank you for your suggestion regarding the paranoid check.
+>>
+>> However, ad74115_get_adc_rate is a function, not an array, pointer, or
+>> vector. Therefore, using ARRAY_SIZE on it results in a compilation error.
+>>
+>> I believe the intended check was:
+>>
+>> if (i >= ARRAY_SIZE(ad74115_adc_conv_rate_tbl))
+>>       return -EIO;
+>>
 > 
-> ...
+> Oh yes, bad copy-paste...
 > 
-> > @@ -57,6 +80,15 @@ properties:
-> >    "#io-channel-cells":
-> >      const: 1
-> >  
-> > +  "#trigger-source-cells":
-> > +    description: |
-> > +      Indicates the trigger source type for each entry:
-> > +      0 = Synchronization GPIO-based trigger
-> > +      1 = Synchronization device trigger (e.g., another ad7768-1)
-> > +      2 = GPIO3 pin acting as START signal
-> > +      3 = DRDY pin acting as SPI offload trigger
-> > +    const: 1
-> > +
+>>
+>> This ensures that the index i does not exceed the bounds of the
+>> ad74115_adc_conv_rate_tbl array, preventing potential out-of-bounds access.
+>>
+>> This check prevents potential out-of-bounds access, it does not address
+>> the Smatch warning about the uninitialized variable 'rate'. Smatch may
+>> still flag 'rate' as potentially uninitialized if it cannot determine
+>> that ad74115_get_adc_rate() always initializes it before use.
+>>
 > 
-> 0 and 1 don't sound like trigger outputs that this ADC is providing, so don't
-> seem appropriate here. But the SYNC_OUT pin is missing from this list.
+> Well, as said, this is a false positive...
 > 
-> Also, outputs could be used to trigger anything, not just SPI offload, so don't
-> need to mention that.
-
-You mean like this:
-
-...
-  "#trigger-source-cells":
-    description: |
-      Cell indicates the trigger output signal: 0 = SYNC_OUT, 1 = GPIO3,
-      2 = DRDY.
-
-    const: 1
-...
-
-It would be like interfacing those output pins for a generic trigger
-usage?
-
+> - Nuno Sá
 > 
+
+Hi Nuno,
+
+Thank you for the review. I'll drop the patch.
+
+Best regards,
+Purva
+
 

@@ -1,153 +1,101 @@
-Return-Path: <linux-iio+bounces-18184-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18185-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2ABAA9133E
-	for <lists+linux-iio@lfdr.de>; Thu, 17 Apr 2025 07:48:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AC51A913F0
+	for <lists+linux-iio@lfdr.de>; Thu, 17 Apr 2025 08:21:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 927641898411
-	for <lists+linux-iio@lfdr.de>; Thu, 17 Apr 2025 05:49:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 082FC444F8B
+	for <lists+linux-iio@lfdr.de>; Thu, 17 Apr 2025 06:21:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89B541DEFD9;
-	Thu, 17 Apr 2025 05:48:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 456F51F9A89;
+	Thu, 17 Apr 2025 06:20:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NmMUgnFq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FcMtRcyP"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E674B1DE2DB;
-	Thu, 17 Apr 2025 05:48:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F16121E5B75;
+	Thu, 17 Apr 2025 06:20:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744868930; cv=none; b=mHcoCt6Oek7zsBfJauDxfWnIqeZ9X1pjFXON66w2+X4pUXuZbE2Fu4+7axwBYupzGcqkhqpbiqHrD2WfMdv/+N+Rn13rX93WCeb3ItxYDTlTpy6tJgGCC5OEblrjDBzlCr7dd3nALStDlmwFttFMbfeVzB8f29Ihl2Gozei6kcU=
+	t=1744870853; cv=none; b=Q840N8J3kGq6V2LFlrsQYn6UcaewANZQUNktNNwmPKg4pdl6al1/47ULUS6LmU1dlziFjBSjGaQZo5EweXKK6BNS5Ld4Jw5zVdrAI0Y1o89vSsOcVj1G8MUXGbIyWYJCWccd8yYZKq/8okV8+2bTh6y74rLPWrNccwJVu7uTO98=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744868930; c=relaxed/simple;
-	bh=j1ZBYuVBrZJCmWxUwT77cthlWHAR/U5idBaQjE3I0oE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QHeVsiUPQJ5dpPjL8d6v+hram5NjNenDBmL1Rm8ubNVifyBDulkYxOsSzBHPEtcig3DOSTYXb5rjDbpwOa/gWDhrWFwA332PS9mSK3ptCx0FHYaLQGHXH9iyxaCLq1e9WjZFXZbAa5yjEqsP3TP87ZqKewRawTnrpe8ffUlvjLs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NmMUgnFq; arc=none smtp.client-ip=209.85.214.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-22c33e4fdb8so4274215ad.2;
-        Wed, 16 Apr 2025 22:48:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744868928; x=1745473728; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=cNsf6WXByV5kGLNoh4Utq0sYrI3KSxAvmYlZ4eczIl4=;
-        b=NmMUgnFqhXXRZh1NwEfzAtz2A/zfPZNQ1W2AWpOP8Pr56JW5EEM+PCK79W6JBeiWQK
-         SuQlZR6CcXa5Vvf+okA53/D/Wfu+rngAMfxeijtwsLyhn5m1OJwjQzIMHdgPVhkPYF93
-         m4vy09LKg6M54XbHJud+DKm5PK46atVAxof3CfplyafoTXfYFSSnzgK4Jd1V0VHAEUUZ
-         ZOazRTs6Zqd7Ruhjm3mZKqEQFcXid2JSrLjMBHfx2VvOaavqXl4Z3+dkeaejEB6i3ZYU
-         LCKTWTGAHDaIdpzwLB2HVkFd4fNEbEASl5uAGpwqC0Y50a1Vu//BH2MVGDXQA6zpltg4
-         nteA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744868928; x=1745473728;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=cNsf6WXByV5kGLNoh4Utq0sYrI3KSxAvmYlZ4eczIl4=;
-        b=kigWe2CuRum5XdwtFWI3lhIKOPylwAaaNX+QLoEdiIEY05jKsOceWbcizvvO4BtCLn
-         VedP5CJf1cUMPgtROrCY2Y2+cURd3qo7lWAGVNbxufltHByd7vsxjdld43YZd/IY/a11
-         +8JjcHCdxLLfmyzEo883Dxz8I3p//XARBaM+Ps82H2iwAMpYlayT0SJnf/x9/naIsdnS
-         TZjqx0mZ8pL0aCzNWDcdzBYbuKLDPySMUGDWbU1hXbLzLXA1rA5Y1+Ze/c2EFAIBT3qE
-         gxITvaEwuX8yusn2UWYHPq5vDDSUB6SxK9AA5pVRNTr9vgccjdjgpWUQNLuw7T9cxIJ/
-         H82g==
-X-Forwarded-Encrypted: i=1; AJvYcCVqsBiAy+dI9b1+PtVzxqYaeuzKULnvZ6WV7cvQX2f2Ho0O6utooMlA2eI+44W0d9LRPNWxZQFKZDg=@vger.kernel.org, AJvYcCVrFRvHus5H8sNMjLjbpWERRe4feElvaCKJeFidJqO1xHS0nmWYwfSnY72mBFgs1Fbt4E8eqL/HPIQbkV6F@vger.kernel.org
-X-Gm-Message-State: AOJu0YwZJ7aqYoW0u9xDGZ+pHML6qXAAcPex1mjANjPYt8bQWkMuNwtu
-	tOeTgJIkiw+Bxe/AV+taPPBpSMMw2TaStPSRZKbT5ejZX2VmdcimlXGBsxmQ
-X-Gm-Gg: ASbGnctU56sXzl+4Dx8D29VfRVFujHmqL1u0U6T6+QEiYOYYLWh4Q8QIj16wiugCxeh
-	0Cd7reSM4DNdqNeou+Ks+e68Zd6FeRyDrujoOMgWTVuDCttg5H8y1qqSMqf6y7Fi8SWPYQIEoTD
-	sb/SFWipWWAUFZITWgReqJvpJVLP76I+GzBP3YPYCCaCHwbWYeHDSCoR87PdDjCapC/c1LD45Ae
-	2er4ezJogxAi0vvDgbpG197Fj1acsRyqPkmZ7dNJ0DvmezZ5Y8V4eL/6lZ5W9iNBrvX5uOFArpR
-	RcNQhAhaICdQnqXXjyrnGXKC/BVLomcEjEOKZHQ2aYn1eIgJdP4Z7EOcJ3/f
-X-Google-Smtp-Source: AGHT+IHezBF0z9ROPg31/enyGAUOnxCTQmX38YqiUYlSWdkhSgmUwXaiD6iT9D/Ho+BmJm9yeUyJ/g==
-X-Received: by 2002:a17:903:2409:b0:21f:bd66:cafa with SMTP id d9443c01a7336-22c358db577mr64486325ad.17.1744868928047;
-        Wed, 16 Apr 2025 22:48:48 -0700 (PDT)
-Received: from [192.168.0.161] ([14.139.108.62])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73bd21c388fsm11881651b3a.54.2025.04.16.22.48.45
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 16 Apr 2025 22:48:47 -0700 (PDT)
-Message-ID: <471d32cb-89d2-4abe-bfbd-772466184d0d@gmail.com>
-Date: Thu, 17 Apr 2025 11:18:43 +0530
+	s=arc-20240116; t=1744870853; c=relaxed/simple;
+	bh=x/rr7Zz2xfD3RvRsd0FGGIq1TtjiOPDKWjaQ3aD9bIw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CXCVKjMm0tDG4SwmNS2YyLJ7ECWMeZVqUa36OZGYbP69qDJu2wXjWvHkbD2NxEFPSzL1tfhk/6wS9Ra4pGCALi6X5P23AbH0JOiUvYqQnfYslJ3oaxp4eAAzudtpHtL7DZ792RiQia6LzsKK84MGgiTXSXZGmUsV2SWGBYMlmxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FcMtRcyP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CFAFC4CEE4;
+	Thu, 17 Apr 2025 06:20:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744870852;
+	bh=x/rr7Zz2xfD3RvRsd0FGGIq1TtjiOPDKWjaQ3aD9bIw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=FcMtRcyPQiZlivoPspWmnOvXBu+ifzrM6kpIWEA+E0xeoWP77NRv8qnBezfBXsczx
+	 jm7bn94t8yf1L0qth7MVQEnWCpdiZi8w6AIz1q3a4ru5VrgORatKOPkxsKw0Inpqo8
+	 YYvEa8BgqkIZBF15ZYpcIvb7O1hXGyDW46iKLaUNgmRSaPm1FI+iXJZdyd/0pRfNy/
+	 bgF4zAaKagzx4LWom4M6//jJq5Iq0MvElxSw2iDHsoRaxRK3dFlh4tFdEZemyevCck
+	 Jew08Fh4WbZOfoLwyQiWDhWoCawXXTDDeZiKLq48xW8f98/TPs2Wi01JjDoLQGA532
+	 2W+EfYCf8k+2g==
+Date: Thu, 17 Apr 2025 08:20:48 +0200
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Eason Yang <j2anfernee@gmail.com>
+Cc: jic23@kernel.org, lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org, 
+	conor+dt@kernel.org, dlechner@baylibre.com, nuno.sa@analog.com, 
+	javier.carrasco.cruz@gmail.com, gstols@baylibre.com, alisadariana@gmail.com, 
+	tgamblin@baylibre.com, olivier.moysan@foss.st.com, antoniu.miclaus@analog.com, 
+	eblanc@baylibre.com, andriy.shevchenko@linux.intel.com, joao.goncalves@toradex.com, 
+	tobias.sperling@softing.com, marcelo.schmitt@analog.com, 
+	angelogioacchino.delregno@collabora.com, thomas.bonnefille@bootlin.com, herve.codina@bootlin.com, 
+	chanh@os.amperecomputing.com, KWLIU@nuvoton.com, yhyang2@nuvoton.com, 
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v6 1/2] dt-bindings: iio: adc: add NCT7201 ADCs
+Message-ID: <20250417-acoustic-ambrosial-mosquito-9d75f4@shite>
+References: <20250416081734.563111-1-j2anfernee@gmail.com>
+ <20250416081734.563111-2-j2anfernee@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] iio: adc: ad_sigma_delta: Fix use of uninitialized
- status_pos
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: lars@metafoo.de, Michael.Hennerich@analog.com, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20250410170408.8585-1-purvayeshi550@gmail.com>
- <20250412180046.62f9eab4@jic23-huawei>
-Content-Language: en-US
-From: Purva Yeshi <purvayeshi550@gmail.com>
-In-Reply-To: <20250412180046.62f9eab4@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250416081734.563111-2-j2anfernee@gmail.com>
 
-On 12/04/25 22:30, Jonathan Cameron wrote:
-> On Thu, 10 Apr 2025 22:34:08 +0530
-> Purva Yeshi <purvayeshi550@gmail.com> wrote:
+On Wed, Apr 16, 2025 at 04:17:33PM GMT, Eason Yang wrote:
+> Add a binding specification for the Nuvoton NCT7201/NCT7202 up to 12-bit
+> ADCs with I2C interface.
 > 
->> Fix Smatch-detected issue:
->> drivers/iio/adc/ad_sigma_delta.c:604 ad_sd_trigger_handler() error:
->> uninitialized symbol 'status_pos'.
->>
->> The variable `status_pos` was only initialized in specific switch cases
->> (1, 2, 3, 4), which could leave it uninitialized if `reg_size` had an
->> unexpected value.
->>
->> Fix by adding a default case to the switch block to catch unexpected
->> values of `reg_size`. Use `dev_err_ratelimited()` for error logging and
->> `goto irq_handled` instead of returning early.
->>
->> Signed-off-by: Purva Yeshi <purvayeshi550@gmail.com>
-> Seems like reasonable hardening of the code.
-> 
-> Applied.
-> 
-> Thanks,
+> Signed-off-by: Eason Yang <j2anfernee@gmail.com>
 
-Hi Jonathan,
+Did you read the message you got from me last time?
 
-Thank you for reviewing and applying the patch.
+<form letter>
+This is a friendly reminder during the review process.
 
-> 
->> ---
->> V1 - https://lore.kernel.org/all/20250409200151.201327-1-purvayeshi550@gmail.com/
->> V2 - Moved the reg_size validation inside the switch statement using a default case,
->> replaced dev_err() with dev_err_ratelimited(), and replaced return IRQ_HANDLED
->> with goto irq_handled;
->>
->>   drivers/iio/adc/ad_sigma_delta.c | 4 ++++
->>   1 file changed, 4 insertions(+)
->>
->> diff --git a/drivers/iio/adc/ad_sigma_delta.c b/drivers/iio/adc/ad_sigma_delta.c
->> index 6c37f8e21120..4c5f8d29a559 100644
->> --- a/drivers/iio/adc/ad_sigma_delta.c
->> +++ b/drivers/iio/adc/ad_sigma_delta.c
->> @@ -587,6 +587,10 @@ static irqreturn_t ad_sd_trigger_handler(int irq, void *p)
->>   		 * byte set to zero. */
->>   		ad_sd_read_reg_raw(sigma_delta, data_reg, transfer_size, &data[1]);
->>   		break;
->> +
->> +	default:
->> +		dev_err_ratelimited(&indio_dev->dev, "Unsupported reg_size: %u\n", reg_size);
->> +		goto irq_handled;
->>   	}
->>   
->>   	/*
-> 
+It looks like you received a tag and forgot to add it.
+
+If you do not know the process, here is a short explanation:
+Please add Acked-by/Reviewed-by/Tested-by tags when posting new
+versions of patchset, under or above your Signed-off-by tag, unless
+patch changed significantly (e.g. new properties added to the DT
+bindings). Tag is "received", when provided in a message replied to you
+on the mailing list. Tools like b4 can help here. However, there's no
+need to repost patches *only* to add the tags. The upstream maintainer
+will do that for tags received on the version they apply.
+
+Please read:
+https://elixir.bootlin.com/linux/v6.12-rc3/source/Documentation/process/submitting-patches.rst#L577
+
+If a tag was not added on purpose, please state why and what changed.
+</form letter>
 
 Best regards,
-Purva
+Krzysztof
+
 

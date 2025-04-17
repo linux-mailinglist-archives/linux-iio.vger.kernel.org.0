@@ -1,143 +1,117 @@
-Return-Path: <linux-iio+bounces-18211-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18212-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D408A92320
-	for <lists+linux-iio@lfdr.de>; Thu, 17 Apr 2025 18:55:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E064AA9233F
+	for <lists+linux-iio@lfdr.de>; Thu, 17 Apr 2025 19:00:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DAEF619E7B7E
-	for <lists+linux-iio@lfdr.de>; Thu, 17 Apr 2025 16:55:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C2543B5E0E
+	for <lists+linux-iio@lfdr.de>; Thu, 17 Apr 2025 16:59:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 225ED256C62;
-	Thu, 17 Apr 2025 16:53:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="dTs9TNN/"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C763A2550B6;
+	Thu, 17 Apr 2025 17:00:01 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oo1-f51.google.com (mail-oo1-f51.google.com [209.85.161.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B7982566D4
-	for <linux-iio@vger.kernel.org>; Thu, 17 Apr 2025 16:53:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E86641D5CF8;
+	Thu, 17 Apr 2025 16:59:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744908831; cv=none; b=XSe8f5weEKHy7JC0jIX+/yBvhOvtbzSTVtH8oOf40k2G0V7ZN5qvG2CZtU3n9HmgxC4Gn9Qz9r1rurRqdy6+JctoXjvGRIYDARTfei66kW/2D/d/GAyaeCJPzhkESscO4dBJmzyJvPiMJdBFUVuAJPkkUBu2BKxfWHQdUGpod9M=
+	t=1744909201; cv=none; b=ePpRW9XED0I+ngvqat1REd9+BJheHhYvPdRT58/QfA/ab7AKNXPOha16i6e9EA03ME7RTigfR1IfHihYLdYElSbIhqWnGP4RCafqMIzWV0rpQV9FW0Qgc39vOyT9FXZnw/0CG2B+7nWC7ys/D/cdLxh2XSxlL++RYPhr2OcZIW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744908831; c=relaxed/simple;
-	bh=dt+1gVnXlBpBf9G5BqjNbQcFysZQg2dzjajvzJ7EGVY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=R4qMK1sdCv2gs5burG/xc2KO4/FQVozmbO/9Rn1e9RhvI1rABJXpH+TQAPOlceubBs5pJ3Ia25aYdXslGQJmGFhuJJEgzm1eWynsYroB94CV376AOSYCx85H5rMJ0v6S4a0THYgOutOuu3oGn2JVQliFvw8Z90X/3a5VMTZAUYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=dTs9TNN/; arc=none smtp.client-ip=209.85.161.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oo1-f51.google.com with SMTP id 006d021491bc7-601ad30bc0cso1257725eaf.0
-        for <linux-iio@vger.kernel.org>; Thu, 17 Apr 2025 09:53:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1744908829; x=1745513629; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=+IMlCG6dKgbc70WZaRCp+xgycYGsZNZ1T+JeRrzHG38=;
-        b=dTs9TNN/wwrhsuPAHIeX+ejJVco8w5Ms4EGHhT4lkiqmal9O3mBR5ak9qYgbWIfTVO
-         w9wx12YFUF11d5tbkjuAiOFHOQzLBRLcUFkXGGHMnD5mhhYzUxkEDAtmZcVdBZqOwVsh
-         NzskD+kijJTk6dkRGN+KFjDCq1ACrlNzVhAUCT4hZtznaGEs5NYhTJgkGLo2RAsO2lAU
-         cyHka21kYLmJ15+Li8oWGW1FWB63BFiSoUB0D5j3a5trusP8apgb/JcsLI6+vqmB+RuE
-         U8r9d90mVTP90a5gIsxW17QW7DMU4YJXIP1/a8UD7Lh2xjy1zIrcisU/p6UNtl7bHH5I
-         Z/Tg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744908829; x=1745513629;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+IMlCG6dKgbc70WZaRCp+xgycYGsZNZ1T+JeRrzHG38=;
-        b=VqEfF5uAvAO+CfXuiaPvdWEaGOBYurdW1bguZ73QRZvRzx6gC7IU5ytEmNUbpv1J+9
-         fNMn7cS6sYD54QqXjkZHLOd/Aaqv/mDaQyTBzcXgAXKuWInA52nRx8BRYe9jsZAtU/Ss
-         4J0cAxLXFqYFlL+mfm4ihwWYL62cvk1GZrwNSV17cTDyR48InlKdGst1p40K1f/CqxCZ
-         ogQ0orFhhsLRgpsjij9rBMiJspK8U/kUZGNj8igOt1YC3J80aLmC8RA3krz2KIFdivh5
-         q4TpNJ5/QwXtsSsbBLTrRLLeLXO5a4sphlWsCMDSbr4uiLzqn6QI2kmtFq7uJpnqyfPo
-         vwzg==
-X-Gm-Message-State: AOJu0Yw0vDZsfBIxU8cDT+HtGZYrU+i2gAQBoap3C5qsAHaeJlTWsO0t
-	g4Iof7vzjL93tJ2V23SK8Jq5xwodYtwkrwC75Yy9QYJ6l6PNPe84mhFeaBcP4I94/3WIyF66Pu6
-	JKbA=
-X-Gm-Gg: ASbGncv69So1XNYBezJ7m7n5irUqqGZz6C1J+moOKVumS4M9cz2LORrPquMWQ7h/6SW
-	6p24LII79L1cDhgx5beMed5qE/7zMdI0BqKKRc2HLNcvXPkGQDfUQ6GJFN38ybAE/n8GTHSHIs2
-	mv4YjRgumc/ILJm9h/d5Lb6rr1fJFpOfjNso4Ef8HvAIi/vSTmpMcSTVo5A6Lb9gXLbeESjPJ9m
-	1tD0qmYFVh20nk84rKGvp2hIX/5z6UU/Izdes9QwDC+zx7wf5uKX78GdyP903qezM19tYu0DqYx
-	z7XfLgXcaPvNLMHr6QbBbqv9OK98fVZZoR8i5YleZgQEOtw=
-X-Google-Smtp-Source: AGHT+IHWDVE2JOtKPQU7CbidZGVyB/2fs79a+6FRXoQ5Jm7PUZX3WMp/oUPBswy6Dx17VQWL+Mf4bQ==
-X-Received: by 2002:a05:6870:af85:b0:2d4:f247:3675 with SMTP id 586e51a60fabf-2d51d858794mr378775fac.5.1744908829446;
-        Thu, 17 Apr 2025 09:53:49 -0700 (PDT)
-Received: from [127.0.1.1] ([2600:8803:e7e4:1d00:c91b:eea3:7afd:2dee])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2d5218248b7sm15812fac.47.2025.04.17.09.53.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Apr 2025 09:53:49 -0700 (PDT)
-From: David Lechner <dlechner@baylibre.com>
-Date: Thu, 17 Apr 2025 11:52:40 -0500
-Subject: [PATCH 8/8] iio: pressure: mprls0025pa: use aligned_s64 for
- timestamp
+	s=arc-20240116; t=1744909201; c=relaxed/simple;
+	bh=G3ce7TmoAzipkk+YWHvblWF+GzIYLtfn6pbvWy71+Hk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sKx42VJaikffNMVGvvYCbBbPsBy58Zw1WRsPDUK/jgfl4/6ONib4LAa9ojWcUgTA9TWORSmvfzmfNnqRHEkzgwGjduMEagJ8kQRUfKWLFyBLa0BJpl5jlA9Vrc7I9Jq4VVz/3BJGLNTGzew39sfs9IHszRPceniZEn2h1b3v0w8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=fail smtp.mailfrom=kernel.org; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=kernel.org
+X-CSE-ConnectionGUID: qDaNjaHmQo2c1bLp9h017g==
+X-CSE-MsgGUID: wPqEdL6XQQOnlmaUxtGLaQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11406"; a="50319332"
+X-IronPort-AV: E=Sophos;i="6.15,219,1739865600"; 
+   d="scan'208";a="50319332"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2025 09:59:49 -0700
+X-CSE-ConnectionGUID: 7jhBxJh8R6SNFsGSuYbh8A==
+X-CSE-MsgGUID: tfqBq1xGRnqHLb9ZbCHoBw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,219,1739865600"; 
+   d="scan'208";a="131848343"
+Received: from smile.fi.intel.com ([10.237.72.58])
+  by orviesa008.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2025 09:59:41 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
+	(envelope-from <andy@kernel.org>)
+	id 1u5SaP-0000000DGBC-21Cu;
+	Thu, 17 Apr 2025 19:59:37 +0300
+Date: Thu, 17 Apr 2025 19:59:37 +0300
+From: Andy Shevchenko <andy@kernel.org>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Jonathan Cameron <jic23@kernel.org>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Cosmin Tanislav <cosmin.tanislav@analog.com>,
+	Tomasz Duszynski <tduszyns@gmail.com>,
+	Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
+	Andreas Klinger <ak@it-klinger.de>,
+	Petre Rodan <petre.rodan@subdimension.ro>,
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org
+Subject: Re: [PATCH 6/8] iio: imu: adis16550: align buffers for timestamp
+Message-ID: <aAEzeY_p6a8Pr-zn@smile.fi.intel.com>
+References: <20250417-iio-more-timestamp-alignment-v1-0-eafac1e22318@baylibre.com>
+ <20250417-iio-more-timestamp-alignment-v1-6-eafac1e22318@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250417-iio-more-timestamp-alignment-v1-8-eafac1e22318@baylibre.com>
-References: <20250417-iio-more-timestamp-alignment-v1-0-eafac1e22318@baylibre.com>
-In-Reply-To: <20250417-iio-more-timestamp-alignment-v1-0-eafac1e22318@baylibre.com>
-To: Jonathan Cameron <jic23@kernel.org>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Andy Shevchenko <andy@kernel.org>, 
- Matthias Brugger <matthias.bgg@gmail.com>, 
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
- Lars-Peter Clausen <lars@metafoo.de>, 
- Michael Hennerich <Michael.Hennerich@analog.com>, 
- Cosmin Tanislav <cosmin.tanislav@analog.com>, 
- Tomasz Duszynski <tduszyns@gmail.com>, 
- Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>, 
- Andreas Klinger <ak@it-klinger.de>, 
- Petre Rodan <petre.rodan@subdimension.ro>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, 
- David Lechner <dlechner@baylibre.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=706; i=dlechner@baylibre.com;
- h=from:subject:message-id; bh=dt+1gVnXlBpBf9G5BqjNbQcFysZQg2dzjajvzJ7EGVY=;
- b=owEBbQGS/pANAwAKAcLMIAH/AY/AAcsmYgBoATIHV4NNNWvRCnxHGqKpmu/bY2WH0c2xw0wRI
- MBr9oYxE/SJATMEAAEKAB0WIQTsGNmeYg6D1pzYaJjCzCAB/wGPwAUCaAEyBwAKCRDCzCAB/wGP
- wJxmB/998v8PSB/5F3IVjQ/L03FccQbQvgcinddv5IhMAvKwG+4u3ZgXoVkpfQEc1Oi/TyFXTry
- D/3jb/fsR53axXk54ddIaElK0Oird/9HbVfsLw0KOvACbrty85JS48EvTq3UCyt9nHyQHCVsd5W
- 8TLc1kECCNVsf6x1LB7DxLrQNsd6VvA2FuLb1a5VribVYxR+okowWqAAmjEu3F4CnAGZWvZXljZ
- iQ1hjfWdxslpauWfw7HRAqmVqLoLhxznPLLpFpGysSKe4XAe3wlvC/jYIVlZRMVKlT2fn7r55tV
- o3psJa48e65bIp8T0K9RY7/W/+GEVn6tymZGuZlaKtYyIGFE
-X-Developer-Key: i=dlechner@baylibre.com; a=openpgp;
- fpr=8A73D82A6A1F509907F373881F8AF88C82F77C03
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250417-iio-more-timestamp-alignment-v1-6-eafac1e22318@baylibre.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-Follow the pattern of other drivers and use aligned_s64 for the
-timestamp. This will ensure the struct itself it also 8-byte aligned.
+On Thu, Apr 17, 2025 at 11:52:38AM -0500, David Lechner wrote:
+> Align the buffers used with iio_push_to_buffers_with_timestamp() to
+> ensure the s64 timestamp is aligned to 8 bytes.
+> 
+>  drivers/iio/accel/bmc150-accel.h | 2 +-
+>  drivers/iio/imu/adis16550.c      | 2 +-
 
-Signed-off-by: David Lechner <dlechner@baylibre.com>
----
- drivers/iio/pressure/mprls0025pa.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Looks like a stray squash of the two independent commits.
 
-diff --git a/drivers/iio/pressure/mprls0025pa.h b/drivers/iio/pressure/mprls0025pa.h
-index 9d5c30afa9d69a6a606662aa7906a76347329cef..9fe9eb35e79d992b2a576e5d0af71113c6c47400 100644
---- a/drivers/iio/pressure/mprls0025pa.h
-+++ b/drivers/iio/pressure/mprls0025pa.h
-@@ -41,7 +41,7 @@ struct mpr_ops;
-  */
- struct mpr_chan {
- 	s32 pres;
--	s64 ts;
-+	aligned_s64 ts;
- };
- 
- enum mpr_func_id {
+...
+
+>  	struct bmc150_accel_trigger triggers[BMC150_ACCEL_TRIGGERS];
+>  	struct mutex mutex;
+>  	u8 fifo_mode, watermark;
+> -	s16 buffer[8];
+> +	s16 buffer[8] __aligned(8);
+
+As for the code, would it be possible to convert to actually use a sturcture
+rather than an array?
+
+...
+
+>  	struct iio_poll_func *pf = p;
+> -	__be32 data[ADIS16550_MAX_SCAN_DATA];
+> +	__be32 data[ADIS16550_MAX_SCAN_DATA] __aligned(8);
+>  	struct iio_dev *indio_dev = pf->indio_dev;
+>  	struct adis16550 *st = iio_priv(indio_dev);
+
+Ditto.
 
 -- 
-2.43.0
+With Best Regards,
+Andy Shevchenko
+
 
 

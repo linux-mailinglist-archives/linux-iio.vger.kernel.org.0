@@ -1,172 +1,124 @@
-Return-Path: <linux-iio+bounces-18270-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18271-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2F5BA93A88
-	for <lists+linux-iio@lfdr.de>; Fri, 18 Apr 2025 18:17:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A7BFA93A80
+	for <lists+linux-iio@lfdr.de>; Fri, 18 Apr 2025 18:16:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B91A9210BA
-	for <lists+linux-iio@lfdr.de>; Fri, 18 Apr 2025 16:15:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AFCB11784C0
+	for <lists+linux-iio@lfdr.de>; Fri, 18 Apr 2025 16:16:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CD58215789;
-	Fri, 18 Apr 2025 16:13:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31B13218AA5;
+	Fri, 18 Apr 2025 16:15:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GlQqSyCA"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="E6hcIrrX"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f43.google.com (mail-oo1-f43.google.com [209.85.161.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03A2B2153FE;
-	Fri, 18 Apr 2025 16:13:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2163618641
+	for <linux-iio@vger.kernel.org>; Fri, 18 Apr 2025 16:15:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744992819; cv=none; b=Qyu+d8Ctn1hWurj56H1mRoez471tSXK5j25GOrRgZVU9iBMHOi2cS/6iIcut6yLVUv2vEc1bpDuFTQkh8YByVFZ9Kop3cpnMZPhD+Q4j1ybVmRtElhF5ocyikG0LBbhoBI9BVRiBpqKSFjcN7F79Sjn834fyH2bRzb4OXvpPQ/Y=
+	t=1744992943; cv=none; b=gjsrbnRrPvC1t0wlVYPf/XFr1t7Tyy/8b/Khl3d2ZgOXToFnS/qKcsflfKdkWt3nT0ja3xs0PscZrN9ljbz1pfiyWVh3VUkGy9WLxLhM7xZ1SHefVKTeY5oGL94l0VaTpnRvv685Gh2kU2U+g01p/dORUr8S912SDvEIlZ5GAiY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744992819; c=relaxed/simple;
-	bh=uQ/6b7sB1ONhc9820LzU2mrK9lP7Kt5df9XQ5yEtODU=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=k4ONJB44kmxkxDCovALs3+f6Jz5AApcitt+1P96/EoOMpyITFOlbzz2Sds2/gFToec/p11Yg+Vxhc1OWpnc67Xw4OfwHkYfDCe/0VNUSVihr9ccjfutGeK323kw8TmxY6O37/G0n/KCcGKjF2TWy2NxVzC6kHu0j+sOdumNUBck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GlQqSyCA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B43D1C4CEE2;
-	Fri, 18 Apr 2025 16:13:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744992818;
-	bh=uQ/6b7sB1ONhc9820LzU2mrK9lP7Kt5df9XQ5yEtODU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=GlQqSyCATnqMw0cNI9TJ0C2iLce8Tfu9P002qys+LGSJ4rdxtFcBPqMWgp5GDRd7z
-	 7MEcVadUpLronX7vYhnPM8Whd/l0dtHUkYDDabKvVYe6DeRL4GgMHX6juzeVvuWUFI
-	 WAplctHJ9NOtgxdfbt/L7u3xtKhFpdVfJaZabKJiN5MrBx4/n2aK0mCwo+9uzaQsjd
-	 +hK/shuaqcsKtOjFux1ndgQCiEy0S1MMvcf639FmuqIpH28pq+vrUe6wXfwVCMzR2n
-	 9NLhNLf7/+xbKyXlyAhqz0wamWDMivo7yZBUMIK7OchEHb+FxU42B65mud/wWKWeRF
-	 XkKrhtfVpvIXg==
-Date: Fri, 18 Apr 2025 17:13:26 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Eason Yang <j2anfernee@gmail.com>
-Cc: lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, dlechner@baylibre.com, nuno.sa@analog.com,
- javier.carrasco.cruz@gmail.com, gstols@baylibre.com,
- alisadariana@gmail.com, tgamblin@baylibre.com, olivier.moysan@foss.st.com,
- antoniu.miclaus@analog.com, eblanc@baylibre.com,
- andriy.shevchenko@linux.intel.com, joao.goncalves@toradex.com,
- tobias.sperling@softing.com, marcelo.schmitt@analog.com,
- angelogioacchino.delregno@collabora.com, thomas.bonnefille@bootlin.com,
- herve.codina@bootlin.com, chanh@os.amperecomputing.com, KWLIU@nuvoton.com,
- yhyang2@nuvoton.com, linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v6 2/2] iio: adc: add support for Nuvoton NCT7201
-Message-ID: <20250418171326.07634113@jic23-huawei>
-In-Reply-To: <20250416081734.563111-3-j2anfernee@gmail.com>
-References: <20250416081734.563111-1-j2anfernee@gmail.com>
-	<20250416081734.563111-3-j2anfernee@gmail.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1744992943; c=relaxed/simple;
+	bh=K+/CRwoooD32z1HfZkIvN1+3Y4G9naq0LdYY4gBYDyc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=QHvbSCtMJYtOrvNgQ83KSU9LSMEXXdcf7Q2Yp++pcA8Q1fEdsKw/IqzKgtWaDxK79XegCxgFl40fmqsxv+o8Sj0cNg9Om+87+AUEU/u1SQY6Jefh9407L0ECkmBTjQwC7nPRYZ/TBPQnNsKWYHNW0tKHj4BFu7LZ9XKozAx7UOA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=E6hcIrrX; arc=none smtp.client-ip=209.85.161.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oo1-f43.google.com with SMTP id 006d021491bc7-604ad6c4d3dso554906eaf.0
+        for <linux-iio@vger.kernel.org>; Fri, 18 Apr 2025 09:15:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1744992940; x=1745597740; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=WGewu/6Uc/A3LPxDq+bmb4Xyd0I+dI4OpVDZkGsXcDg=;
+        b=E6hcIrrXOWS6p9ogKJCNVjvVM/f/dW8U08Yjpo+AE3OXQJMHWgS1kikDM6/UyIfxO4
+         xKMWijZ5spxGGtmDvQ6D48AYKdNsnmLEMH22MujiauGSGfW1Au9A9BWYg7AcUedY/El9
+         OQpqfkJMIl9wjCSsEkp+2nL28I7jsw+Mt+JiXF7LOfXKNiFCdzBNYOwkAvLAfnJR4h0z
+         inwdmtrXW/gArd+KH+CFw1+q1oLJV3ZHkRQUAK6/XiqWFZEq2Vex8+pVm0EMfVevKnPw
+         s8kD3Yw17o9fUcpGL0MODFZ3yAjk8wbvi4H5K8SSG1SQkjXM/FmCxy33bI2Ca2jv8wgi
+         X8bw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744992940; x=1745597740;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=WGewu/6Uc/A3LPxDq+bmb4Xyd0I+dI4OpVDZkGsXcDg=;
+        b=GgAU0jckN4gTlS9Ftnw+Bz1sKM5onyLWi3sGbw5TV1oDsfT782jXvXXjKMZvRNikcv
+         YhJc9hg6rmQqx6iuDIoB/lphUAFoxctVVZ0anfjOiTUHtSq75QYzN6z8uprjPXCLENZx
+         K4Pl6zX5VPnWblueuAfPyb95ybTRZ+2XCVde4TFAPj5ee7QSgoHvl+DKr6uKfjd9OCwz
+         Ia2aG9TLfFHkHww7z39LSzb5sGrm4bonOn2vFWrM5rPnvZ3AYQroClAdrTwdZXxdA/su
+         6yiENd+S1K+S5wozkhzUsf2CN+jLxyLPHJj+1+I+U/X8V99SXruN7byPkf8R4347n27l
+         2erQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUe+W4GlsDdIqG/cNb8bT+Deqnzc6cabygxslrwLAuiGIyiUBk53cHMz94mdp8t8scJD5haf4VFb5k=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzgV5FctatgZxUR7VsnHfG66ppJraLuKjQXHGjic8JObUz25xDm
+	xGCDnAUt90oU/jEyIT8axoF9NUa9WlymDIDvBANLyzsMl+rbNU0lLvl7MVwSpos=
+X-Gm-Gg: ASbGncszp28pCfkLELTN9LZsAivzpYYVPY3tYVgUksGarw9pcKCUTZHCiebP6sQdGch
+	C1OHCmBZACrbupT351uTSEQgyg4NABeDB8+y2DoOx5xFkxveGnhzRu9mAGmsshNuutkVXk1Tlcs
+	nP9d5WAhTWb5WpDd5yE3M1pr11JJTahkG4Xln8nJ3SEdOcRxmKtemROuGfFHapl2LyIA/CcNPZw
+	Y51jgp040is+3Y6Ogt2RIWUqjaITgMkEb4JBjh9wM70MUIQ++rNhcSOR4NlTWa9cD0eEJLe9+1V
+	WQwQTdlW98Mw/zzm5QBEXIJAMth7fFL9xalQIbeYm0wxDDM52Zac1iFhzvVogxYPMvhbtJdaav0
+	vx4G0qUM1dH5SHhygyA==
+X-Google-Smtp-Source: AGHT+IGE1zwH/9pCVtJ65BBx41n2gg+r20RAvwIpV+gKuVenwX9jlxR/s4HYv+sV9yWK1DRiHVSJcg==
+X-Received: by 2002:a05:6871:5582:b0:2d5:336f:2d53 with SMTP id 586e51a60fabf-2d5336f74f3mr1143727fac.31.1744992939736;
+        Fri, 18 Apr 2025 09:15:39 -0700 (PDT)
+Received: from ?IPV6:2600:8803:e7e4:1d00:dcdf:46e0:18e5:c279? ([2600:8803:e7e4:1d00:dcdf:46e0:18e5:c279])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7300478e34asm390673a34.4.2025.04.18.09.15.38
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 18 Apr 2025 09:15:39 -0700 (PDT)
+Message-ID: <ebfd728a-7994-4fd4-9e58-1336fb5f9237@baylibre.com>
+Date: Fri, 18 Apr 2025 11:15:37 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] iio: adc: ad7606: fix serial register access
+To: Jonathan Cameron <jic23@kernel.org>,
+ Angelo Dureghello <adureghello@baylibre.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>,
+ Michael Hennerich <Michael.Hennerich@analog.com>,
+ =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
+ Andy Shevchenko <andy@kernel.org>, Beniamin Bia <beniamin.bia@analog.com>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20250417-wip-bl-ad7606-fix-reg-access-v1-1-0ce341f3cfc3@baylibre.com>
+ <20250418165649.64ebef8b@jic23-huawei>
+From: David Lechner <dlechner@baylibre.com>
+Content-Language: en-US
+In-Reply-To: <20250418165649.64ebef8b@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On Wed, 16 Apr 2025 16:17:34 +0800
-Eason Yang <j2anfernee@gmail.com> wrote:
-
-> Add Nuvoton NCT7201/NCT7202 system voltage monitor 12-bit ADC driver
+On 4/18/25 10:56 AM, Jonathan Cameron wrote:
+> On Thu, 17 Apr 2025 23:42:51 +0200
+> Angelo Dureghello <adureghello@baylibre.com> wrote:
 > 
-> NCT7201/NCT7202 supports up to 12 analog voltage monitor inputs and up
-> to 4 SMBus addresses by ADDR pin. Meanwhile, ALERT# hardware event pins
-> for independent alarm signals, and all the threshold values could be set
-> for system protection without any timing delay. It also supports reset
-> input RSTIN# to recover system from a fault condition.
+>> From: Angelo Dureghello <adureghello@baylibre.com>
+>>
+>> Fix register read/write routine as per datasheet.
+>>
+>> When reading multiple consecutive registers, only the first one is read
+>> properly. This is due to missing chip select between first and second
+>> 16bit transfer.
+> In what sense of missing? Given code you mean missing being unselected
+> briefly between transfers I think.
 > 
-> Currently, only single-edge mode conversion and threshold events are
-> supported.
-> 
-> Signed-off-by: Eason Yang <j2anfernee@gmail.com>
-Hi Eason,
+> chip select itself is always set in current code and hence the 'missing'
+> description had me confused!
 
-A few trivial things from another glance through.
+Agree it would be better to describe this as missing the momentary chip select
+deassert between the transfers.
 
-Thanks,
-
-Jonathan
-
-
-> +
-> +static const struct nct7201_adc_model_data nct7201_model_data = {
-> +	.model_name = "nct7201",
-> +	.channels = nct7201_channels,
-> +	.num_channels = ARRAY_SIZE(nct7201_channels),
-> +	.num_vin_channels = 8,
-> +};
-> +
-> +static const struct nct7201_adc_model_data nct7202_model_data = {
-> +	.model_name = "nct7202",
-> +	.channels = nct7202_channels,
-> +	.num_channels = ARRAY_SIZE(nct7202_channels),
-> +	.num_vin_channels = 12,
-> +};
-> +
-> +static int nct7201_init_chip(struct nct7201_chip_info *chip)
-> +{
-> +	struct device *dev = chip->dev;
-> +	__le16 data = cpu_to_le16(NCT7201_REG_CHANNEL_ENABLE_MASK);
-
-Assign this value down near where it is used. That will generally help
-readability.
-
-> +	unsigned int value;
-> +	int err;
-> +
-> +	err = regmap_write(chip->regmap, NCT7201_REG_CONFIGURATION,
-> +			   NCT7201_BIT_CONFIGURATION_RESET);
-> +	if (err)
-> +		return dev_err_probe(dev, err, "Failed to reset chip\n");
-> +
-> +	/*
-> +	 * After about 25 msecs, the device should be ready and then the Power
-> +	 * Up bit will be set to 1. If not, wait for it.
-I'd hyphenate power-up perhaps.
-
-> +	 */
-> +	fsleep(25000);
-> +	err = regmap_read(chip->regmap, NCT7201_REG_BUSY_STATUS, &value);
-> +	if (err)
-> +		return dev_err_probe(dev, err, "Failed to read busy status\n");
-> +	if (!(value & NCT7201_BIT_PWR_UP))
-> +		return dev_err_probe(dev, -EIO, "Failed to power up after reset\n");
-> +
-> +	/* Enable Channel */
-> +	if (chip->num_vin_channels <= 8)
-> +		err = regmap_write(chip->regmap, NCT7201_REG_CHANNEL_ENABLE_1,
-> +				   NCT7201_REG_CHANNEL_ENABLE_MASK);
-
-This is a little odd as I think you are writing an 8 bit register with a 12 bit mask.
-Sure it works, but confusing thing to see.  If some future 6 channel device comes
-along this <= 8 will seem odd too. Maybe generate the mask from teh number
-of channels?
-
-> +	else
-> +		err = regmap_bulk_write(chip->regmap, NCT7201_REG_CHANNEL_ENABLE_1,
-> +					&data, sizeof(data));
-> +	if (err)
-> +		return dev_err_probe(dev, err, "Failed to enable channel\n");
-> +
-> +	err = regmap_bulk_read(chip->regmap, NCT7201_REG_CHANNEL_ENABLE_1,
-> +			       &chip->vin_mask, sizeof(chip->vin_mask));
-> +	if (err)
-> +		return dev_err_probe(dev, err,
-> +				     "Failed to read channel enable register\n");
-> +
-> +	/* Start monitoring if needed */
-> +	err = regmap_set_bits(chip->regmap, NCT7201_REG_CONFIGURATION,
-> +			      NCT7201_BIT_CONFIGURATION_START);
-> +	if (err)
-> +		return dev_err_probe(dev, err, "Failed to start monitoring\n");
-> +
-> +	return 0;
-> +}
+Reviewed-by: David Lechner <dlechner@baylibre.com>
 
 

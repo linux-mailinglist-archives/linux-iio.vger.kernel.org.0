@@ -1,80 +1,81 @@
-Return-Path: <linux-iio+bounces-18239-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18240-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 760CBA935AF
-	for <lists+linux-iio@lfdr.de>; Fri, 18 Apr 2025 11:58:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 048D3A935B5
+	for <lists+linux-iio@lfdr.de>; Fri, 18 Apr 2025 11:58:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 68CF27B52DE
-	for <lists+linux-iio@lfdr.de>; Fri, 18 Apr 2025 09:56:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 06DE33B7E95
+	for <lists+linux-iio@lfdr.de>; Fri, 18 Apr 2025 09:58:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 022E426989D;
-	Fri, 18 Apr 2025 09:57:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0CE126FD86;
+	Fri, 18 Apr 2025 09:58:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kvNas3wH"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EWW9/nHk"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FE14269CF1;
-	Fri, 18 Apr 2025 09:57:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D973F26E152;
+	Fri, 18 Apr 2025 09:58:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744970266; cv=none; b=GgGoeJSuOA4wtmieg2vVH5Kf7kzIK5EcYaghxlYHWmbC3uzJNGgtD2EgnsbE0k7F3G6NOGACAIXJnHTsnpIOa/E+KyoyU5KKxsTh/UvDd0JuRYEyeRhdPiUMbZGh7CYaRpNJwSe8wROKTRamah9sbE6nXL5ralXy8odkdUrGZpY=
+	t=1744970288; cv=none; b=NKh/pHt8x26Gbalwmk4NjpjU++2xgKIbASGbQCv+pVns3Ig0w7jhoQfiKX72SbLVToqVZB/IIFm0ZYtdusYkxUuOZDzRCQz7HEVY/zFr2QHu8Bcv3OezzVYGuc2MUBJqj0/zFhhRSElDLmSRS/EKTXF073QbLu0PJbbHeJFDdpM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744970266; c=relaxed/simple;
-	bh=DPXCXDdzGRDaJBA7PVkaoaMrxHBF6CLQ3KTY//OOtRs=;
+	s=arc-20240116; t=1744970288; c=relaxed/simple;
+	bh=MZXj9qBlnIA2yzDtfDE8dcexJS9N7Zn+xwzVBqTmIwI=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=QDXncTZj6Ip0EPY1K5t9Qiddg1H8KeOPVUMFDLai2QmxyIQ8ZfiWbIT4stfgn89rZOKGoUSYVAviY2ZTz3Qs2IYiDAessxByPjhfxJjGjBebjO/7M6BstXz2EqglTaoTvj2ZpfTP2kIPERbMiYqzJNDeMeCpT/KSVcz9shnPBlA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kvNas3wH; arc=none smtp.client-ip=209.85.221.50
+	 Content-Type:MIME-Version; b=GiivvjpwuVpcT+LuOQ4eGZdOfBpGG5E1L+4O1hbx3yuo4C9lCE4hlZselrd0E3qkWgTBk77tZLMQ1Bes88JLRpF+N8gHzlKnpsJWjOOC2XbFg0w+H3uhcRJ2xfW7gHNoKy/uvqxnPH1WGi7lddWWgGFVfkEo5UdKIrLwpizeHQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EWW9/nHk; arc=none smtp.client-ip=209.85.128.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-39c31e4c3e5so1143696f8f.0;
-        Fri, 18 Apr 2025 02:57:44 -0700 (PDT)
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4394a0c65fcso17652785e9.1;
+        Fri, 18 Apr 2025 02:58:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744970263; x=1745575063; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1744970285; x=1745575085; darn=vger.kernel.org;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=vyt8vlbCUmrgxaje/SGVdwJgpors68AcKgtfPJppRuw=;
-        b=kvNas3wH9KjdkD6kYAI7jCIGb/zEsCLCwNATt993BLHD8qzpb0FmsYghQjWGDo3Av/
-         VWnSexhjZJLD49361Sl8LNQ3CjmWnz9Q5KHXGzcp1McwP6W9EDRcm7Il1P80XTgUFaI1
-         sovKG5mV8iG6DHzOfHuWK7B4q1fToUn3ObovixtZAacnaqhWkpa0JKgjT3CfKknzdt5V
-         87stbE36w96UBNY16hCa2ZzaAJoW1iMTpqbaUED8j/XksR9PLguvt1wz7D3iBQTfm4A7
-         sHPKJcou3DW77upJLINvqJmyaf1NMWoqsyi3MXgL4b+IqhAPGNhsoQxDmjsjfXSpUlpN
-         SiKA==
+        bh=wtxUdRpeKm+ANCEaoBOMbDJKRr89yLjZTB6s8COjTOE=;
+        b=EWW9/nHkTKI3PnXS5XtOKLJn9hfO15oeXZVKucIezUn6fK5CS7UPjODmIvfzH6Ysji
+         CONCKaZ2oqpnLPCi7lR/w/b7KKPNmR4qcvGtrr7AyFh+03EwbbfXiXcAI48R4TOcJQVr
+         zLPo5Of2r4jxLQrEPx4T5Z/7vB31+wRaa9aIht39Qwrq+oHr3d0RKXYK+LxuJzUOYFxP
+         M0FUJUhxf3ivlEyFN0eXm7i3cVAO+5IFjBm1M86qVIt2dyfwirnAgwr85XVdnM56wkYE
+         CmznHQdUGziyoLFOGpbZ4jd0F+LnLmWHjqpZ73YqVE7NxJlj0mEH+/O7ehfpJtu6I8Ia
+         w9nQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744970263; x=1745575063;
+        d=1e100.net; s=20230601; t=1744970285; x=1745575085;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=vyt8vlbCUmrgxaje/SGVdwJgpors68AcKgtfPJppRuw=;
-        b=IJBYVLb0eVJL9W90Iaim6zxa7ML9VIs/hdnaooV/MtA7XENseZqCymahgW/Z5p3P2V
-         Z6Kr9adg6SwPn3hgj9aTHvgpjFksFBwKiQU9VzQDfy9B2XCbTQmDW4CveCC2SoQaZ1PE
-         tIb9Hw/nmSWgeHMpFKTXiIngiWr2XNUYCWOPa7ors7m4mDpEtH3uSz55byIIOsD4iXcQ
-         QIlPrHrgmxmsJ+ON+4vpebmNCNbZWi48F55UFxRZyHIMAJcF38NUryo8Tfi3//U0b9ra
-         Ssxw+Ip7oro7iKM08BVSsntvzpOr1yd7suyYD8dgDwwCZG/st32OwEqnXJ9PHSB0X3ls
-         huJg==
-X-Forwarded-Encrypted: i=1; AJvYcCX/Fs7ldur5k0N2yruQ2sMouMW+bqsJg5wJEL5ozWn2/tEJ+WgUnJ+vfw63+s+oKX37C2xgJIQDQjxGtJk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw3rWOHgmCGYmPhRW48LFM9fquqMBSPKFRroP8qsMUocxoJirIg
-	idEGmZuQJ59eLg24E+4ceTIyZu48s/DwetG5EvOKXmCETfGDL4Ja
-X-Gm-Gg: ASbGncs1D9ze/7qIZeqCIM4sYk0fT0E9PbkKNjoEAaF2d65yMJhcRG6dUstdS9gfdh6
-	FfRDjMs5gdEbie849rMO8WEeSx6MiPW3cqVLYISSjsdSBsxF9UETSMlBbH73xICJbg5NDfZXfYE
-	LgXThA3gSHQcP8W7fo9QW6pr5IotwRTDQDNq3ON304JZULctIUyCnCpvStVE8lNzQpWUNu0W3G+
-	EqhdqbeWKXHhDNeznKFxEF/7ITJYIvkQT/6i0/9Xc/MKOGptEu8eQOTzYyb750cHdbbam44q8Kv
-	QCBbsgZNxhtPhuyrCd/rNO507Og0yjn9o7p1Z4MCTa32uzQE8RLhC8gg/4dMeZsB0wsRWo/ru5S
-	sV4TR1lXWn0q0los=
-X-Google-Smtp-Source: AGHT+IFJu/NfcqWAjNuPs+r5w0auetjnU6mwnE3w1maeyZRnlV35H6XNIlmASm/PfX9aMr3HbzbBqw==
-X-Received: by 2002:a5d:47c9:0:b0:39e:e588:6746 with SMTP id ffacd0b85a97d-39efbb240e7mr1584070f8f.57.1744970263248;
-        Fri, 18 Apr 2025 02:57:43 -0700 (PDT)
+        bh=wtxUdRpeKm+ANCEaoBOMbDJKRr89yLjZTB6s8COjTOE=;
+        b=PkFRxgmTOa0lTlbwbLUEiQMoT12Msj0MHr/pzj4STNDlC35tcpXcINUCg6d5Le/ck5
+         nDxE2gJAH+63y0Kv5oE7SzQwlEo5zXTz0OjY5GH0pdz931J4nbCdA2A9QU+GNYxK/OTR
+         0PKXuP4tH9rP6h1u7cFHldHqQtlcvOrap5t0/qapjaMgPl1GRYWfsvLYQPPt51TE0FfE
+         lxWnn6E1e+worDEkOzOot2KrUVPPxxKshKOk13ycJ/IZghFFKT0F+ThmuxFy4rZQK/IF
+         53OHcVmpa+Xr4XQSTGAsY+0DGtPRBYPNyvhJrXs4roTBE/xfOKK86LltXF1WjGjn6A2a
+         6n7Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVvfy75snGEV/OFK1XqZ9sT1mFvJdSe7h2MTQ6GFmQxTtq/y7xDamzt6DBZis9lGL8OIARNeCxAC3hgBr4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzc8BNTTeutiJXAhGO2BSXSSCcITsP/cpSHLZqyjHD6Wu7GUjql
+	L8q50hvqXKLaX/OLdkPbd/zvfyuRMRBDWLVZH05kmcR8Uu8tnKQL
+X-Gm-Gg: ASbGncsVUzSrTFvnZCaG4jp0ds6MeIx3T+0dS+yR7fjhugLsiyF0TLFGQ77pXFonCQH
+	3eYIhgJukYhbc0WWtVLptoOP+VKRe97IqKdYAHRG3B6RzOqiQoY2MOfYiIlAlfLWVd4d37uxKdM
+	U+Q0Z/10n5FhaHdPUXHd/I3nAc1BZX0AcPbcL640WElsu76TkfVqfs/cTNCwWA6eFdjniZvCDpm
+	p0qED6kFgwB8XhGvBpCT3p62gPJWnDbVuxCpP9hTEQ5eDcrKB3IsJUIA0VDQ/qYDbcD6YheUPZB
+	mqqyl6tQHF17ESS5/ou2AYNln8q5+aXibXaqSM0456T5kep8ZpALPV512rrRSM9gyRjg55dqtw8
+	6PjUiunNeJh61vhs=
+X-Google-Smtp-Source: AGHT+IE/FfCxx0tPuZ6qCUGNp5eZ3+6ZBuRbRtb7Q9/Aksg04+VnflJ6AYoHrsoEeblg0HGcmX6ZpQ==
+X-Received: by 2002:a05:600c:a088:b0:43c:ec28:d31b with SMTP id 5b1f17b1804b1-4406ab9767bmr23956205e9.10.1744970284863;
+        Fri, 18 Apr 2025 02:58:04 -0700 (PDT)
 Received: from ?IPv6:2001:818:ea56:d000:56e0:ceba:7da4:6673? ([2001:818:ea56:d000:56e0:ceba:7da4:6673])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39efa4a4b68sm2247940f8f.87.2025.04.18.02.57.42
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39efa43be53sm2249042f8f.41.2025.04.18.02.58.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Apr 2025 02:57:42 -0700 (PDT)
-Message-ID: <494ee0cc5be01cb6a4db29d7f1a11dcee22850d6.camel@gmail.com>
-Subject: Re: [PATCH 1/8] iio: adc: dln2-adc: use aligned_s64 for timestamp
+        Fri, 18 Apr 2025 02:58:04 -0700 (PDT)
+Message-ID: <a1ce36c3dee60d3fa2a8b864f55371b0298d83fd.camel@gmail.com>
+Subject: Re: [PATCH 4/8] iio: chemical: pms7003: use aligned_s64 for
+ timestamp
 From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
 To: David Lechner <dlechner@baylibre.com>, Jonathan Cameron
  <jic23@kernel.org>,  Nuno =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>, Andy
@@ -87,11 +88,11 @@ To: David Lechner <dlechner@baylibre.com>, Jonathan Cameron
  <ak@it-klinger.de>, Petre Rodan <petre.rodan@subdimension.ro>
 Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org
-Date: Fri, 18 Apr 2025 09:58:04 +0100
-In-Reply-To: <20250417-iio-more-timestamp-alignment-v1-1-eafac1e22318@baylibre.com>
+Date: Fri, 18 Apr 2025 09:58:25 +0100
+In-Reply-To: <20250417-iio-more-timestamp-alignment-v1-4-eafac1e22318@baylibre.com>
 References: 
 	<20250417-iio-more-timestamp-alignment-v1-0-eafac1e22318@baylibre.com>
-	 <20250417-iio-more-timestamp-alignment-v1-1-eafac1e22318@baylibre.com>
+	 <20250417-iio-more-timestamp-alignment-v1-4-eafac1e22318@baylibre.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
@@ -104,35 +105,56 @@ MIME-Version: 1.0
 
 On Thu, 2025-04-17 at 11:52 -0500, David Lechner wrote:
 > Follow the pattern of other drivers and use aligned_s64 for the
-> timestamp. This will ensure the struct itself it also 8-byte aligned.
+> timestamp. This will ensure that the timestamp is correctly aligned on
+> all architectures.
+>=20
+> Also move the unaligned.h header while touching this since it was the
+> only one not in alphabetical order.
 >=20
 > Signed-off-by: David Lechner <dlechner@baylibre.com>
 > ---
 
-With the fixes tag:
+With the tag:
 
 Reviewed-by: Nuno S=C3=A1 <nuno.sa@analog.com>
 
-> =C2=A0drivers/iio/adc/dln2-adc.c | 2 +-
-> =C2=A01 file changed, 1 insertion(+), 1 deletion(-)
+> =C2=A0drivers/iio/chemical/pms7003.c | 5 +++--
+> =C2=A01 file changed, 3 insertions(+), 2 deletions(-)
 >=20
-> diff --git a/drivers/iio/adc/dln2-adc.c b/drivers/iio/adc/dln2-adc.c
+> diff --git a/drivers/iio/chemical/pms7003.c b/drivers/iio/chemical/pms700=
+3.c
 > index
-> a1e48a756a7b519105393f77c4aebde1f2f85d50..359e26e3f5bcfe16d723f621bdfc01d=
-f2dfcf6a9
+> d0bd94912e0a3492641acd955adbc2184f4a11b3..e05ce1f12065c65d14b66ab86e291fa=
+b47805dec
 > 100644
-> --- a/drivers/iio/adc/dln2-adc.c
-> +++ b/drivers/iio/adc/dln2-adc.c
-> @@ -466,7 +466,7 @@ static irqreturn_t dln2_adc_trigger_h(int irq, void *=
-p)
-> =C2=A0	struct iio_dev *indio_dev =3D pf->indio_dev;
+> --- a/drivers/iio/chemical/pms7003.c
+> +++ b/drivers/iio/chemical/pms7003.c
+> @@ -5,7 +5,6 @@
+> =C2=A0 * Copyright (c) Tomasz Duszynski <tduszyns@gmail.com>
+> =C2=A0 */
+> =C2=A0
+> -#include <linux/unaligned.h>
+> =C2=A0#include <linux/completion.h>
+> =C2=A0#include <linux/device.h>
+> =C2=A0#include <linux/errno.h>
+> @@ -19,6 +18,8 @@
+> =C2=A0#include <linux/module.h>
+> =C2=A0#include <linux/mutex.h>
+> =C2=A0#include <linux/serdev.h>
+> +#include <linux/types.h>
+> +#include <linux/unaligned.h>
+> =C2=A0
+> =C2=A0#define PMS7003_DRIVER_NAME "pms7003"
+> =C2=A0
+> @@ -76,7 +77,7 @@ struct pms7003_state {
+> =C2=A0	/* Used to construct scan to push to the IIO buffer */
 > =C2=A0	struct {
-> =C2=A0		__le16 values[DLN2_ADC_MAX_CHANNELS];
-> -		int64_t timestamp_space;
-> +		aligned_s64 timestamp_space;
-> =C2=A0	} data;
-> =C2=A0	struct dln2_adc_get_all_vals dev_data;
-> =C2=A0	struct dln2_adc *dln2 =3D iio_priv(indio_dev);
+> =C2=A0		u16 data[3]; /* PM1, PM2P5, PM10 */
+> -		s64 ts;
+> +		aligned_s64 ts;
+> =C2=A0	} scan;
+> =C2=A0};
+> =C2=A0
 >=20
 
 

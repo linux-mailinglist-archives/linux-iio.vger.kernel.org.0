@@ -1,186 +1,197 @@
-Return-Path: <linux-iio+bounces-18283-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18284-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D78EA93C94
-	for <lists+linux-iio@lfdr.de>; Fri, 18 Apr 2025 20:10:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA507A93C97
+	for <lists+linux-iio@lfdr.de>; Fri, 18 Apr 2025 20:12:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 739C2462504
-	for <lists+linux-iio@lfdr.de>; Fri, 18 Apr 2025 18:10:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 212EB1B608EC
+	for <lists+linux-iio@lfdr.de>; Fri, 18 Apr 2025 18:12:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F819221727;
-	Fri, 18 Apr 2025 18:10:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1682221736;
+	Fri, 18 Apr 2025 18:12:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QjLaz+3s"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nD2atxeq"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
+Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F02F86328;
-	Fri, 18 Apr 2025 18:10:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01E2F86328;
+	Fri, 18 Apr 2025 18:12:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744999831; cv=none; b=n4YUJ+gMhxYJ1/cmVKVQoziDGeb9S9bboG/07xfsmWAn50maEGxWZkD8pxSIXn1KuuywVYriLUdCY2ZuLgG4Q/yaCe+v/bS0BY+sUJ2HRI/IPwyYp0ZTZAH3K8Xz42orkslNp9Ucs0FVspEOqm3n4QP/Pz/NJUpJUYkdITvip4Q=
+	t=1744999932; cv=none; b=TvAXbPKf/S7tHHjrNXQH4x7pIY2KpH/zMgule0kzK4FDvz+ERJQb5nlmmpvY1/Tq6MprNotS+/FN7u+jkMSJv68s/GSvS0+VJQ9gfDzcYf3t+cb+u20Ow9fuPcJuKYR0wKMSfE4/98xSgtdY6SJiv2urD1K4YJHMGktbgI9Jwwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744999831; c=relaxed/simple;
-	bh=9ZRRBmP35YDeEvdiRaqD0aVC5eFr/liuptTJInPwCXA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qxbgICurxZvT3x6t+T8s6qg3yL6xlP7aqgSGu2m6tm9Kpc6rpoR7noemsVI/ep275ky2VYEkxfEZjKlzjFhM1IZ2/hZxg3KTMZ8Wl0K1sJW/LrwqxMFemd0SleFWi4JtAc1o4qClt77F99aimWezV8ALJTyWVLIktBpPSRARHeg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QjLaz+3s; arc=none smtp.client-ip=209.85.222.177
+	s=arc-20240116; t=1744999932; c=relaxed/simple;
+	bh=tIYOX30m77XMmecvZ5oAv9VPJ8j37JJQn3MOhafQaZQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=qeRgqhv1W66HR2bihT0KEXvd5afCFpLk+Bu8oToNwplR6BQOun9Y8v4s1/+Em/eNTg5vYvxwfhqNt2K7x6a+C9AhzDdz2APSRoL3dJ47Lwv4kI+rmvW6PH216jnHB4MeSn3qzJABZDtpyA00tgnSPtsaHGi1FAoDhVpc1U4RF3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nD2atxeq; arc=none smtp.client-ip=209.85.160.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-7c5568355ffso164899585a.0;
-        Fri, 18 Apr 2025 11:10:29 -0700 (PDT)
+Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-4768f90bf36so19556681cf.0;
+        Fri, 18 Apr 2025 11:12:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744999828; x=1745604628; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=PK2Oi/ee+iINPgVMxjWp3y2/EKu796w7pqlWlNAZafc=;
-        b=QjLaz+3s3tEUMFi1WlHxE2wTY3vCJrVp34ZzYxYEdhtJ+Bc4EUHwDjPQlR4qGN0ABv
-         c8COBJcbX0q6LDwdHEkyToA7izvtxrBgk0ygvUBGVGGW+fzr7/cTWIpoDOeYznSX3eUn
-         /qtgsJ5TtTXrBS+Ss5Axs8ija9Pa/Ysh2NnTbafalYnUvBF57Or6JIf8jbu/dZhTFqHa
-         aDUPz9lZtm+TNGIlr8gcwLImhTEUPtdTsAvD9DD5S51m4fCmA6g42N6S/mhEk5B7kphL
-         aHa0cTogzcl3NZF2ylaaXa/wM11D/ba4dae5GcgsO45K/rBDgkUDtiarDhnJGUbQQnEy
-         QlLw==
+        d=gmail.com; s=20230601; t=1744999930; x=1745604730; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SJco10XPuPQKf/Tc++SD2/J8aFDKSxmBKlJ6mW6zQio=;
+        b=nD2atxeq9uGYRXEGxgOIwpI1BOHG6ow4wi8qJUj+ExoZCBDRhpuAG916K6+6heKO8t
+         6FmYVGUxp98s9agVFrnuvv2nuv0tSWtIeOiqYA3RE9ZB3Zx3bdNF3mEWDsCltAgNK9YI
+         AlMD8CFIxUBG/6XJbPCWa1HTBEyPSul6lzhEFM0UMNjh/vN/+DTNSWZJnQpn6vtpFkPz
+         zpNVID/TqPYQRnqX2yXqULzFx1pWQfvQkHg/fNi0eVyO5ngABgVdoiNOQP2Xy2aHx6ve
+         8x6AaQXBjIxYMEEyCDgTg1uC9SxCfnV/0IfrlZfxF4brf84SX45WAbB8beGnS81dr3Sk
+         +/3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744999828; x=1745604628;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=PK2Oi/ee+iINPgVMxjWp3y2/EKu796w7pqlWlNAZafc=;
-        b=Fd9Yi3FZtbCkocU3S+czfUFbMxNeVWCi3ECfYYuHw0COQk4ombZtQGb65tjhlVpCC7
-         DaR5acUgNdG1VFg7lXdCgghu55o+Jt2xM4mGSNcujYhYKY+5vXsx8PWlFfday6nihYRF
-         EiWuvM9Mbzw6FFXJ0x+rJw5i1r2OkXpzl8R23DcdALucX10idfq4KUnUnQ7/DrgKPIpI
-         BTPVwXeR/CXZUbKdmwhgF59TC8jNbvPBlugn0yWPYbAd4+7bwgUGOx7DLerTRD602Sfa
-         O/rpD2Hxqu5aAAwzi67vB9nC6epFhppN+SRPrtv/zTAbLSuQFG3N2cQtNfHVEFzSS4je
-         wsbw==
-X-Forwarded-Encrypted: i=1; AJvYcCUaTK7NFYNjdxb48XJ2WE4NrG3urKd8kH7YV5KX2Oa2PKvzeBgNml8XRF394XtKX+ctiWNC9jMC@vger.kernel.org, AJvYcCWNGxKLHd2i3mXjpqpm2UIBLO81vgPB5U4qmp1AxVX8GFyMP7zDu2LLhxbz+gICeDTrfBNDU2aHdY8=@vger.kernel.org, AJvYcCXHKGoxVbXVxQ12Dl22vVKeixo7ff2ugtvzaJmIVuo21bvS7cgz03bDTvVz5O17zgqJ1xDQbLDZWq9PSNYu@vger.kernel.org
-X-Gm-Message-State: AOJu0YzzwYrMPRhseAllRcMByuTkRn8NDrxG4wt4yigxr/2HbW1z7d7B
-	6aM2me5n8N3Xd9TCxKlGX06h8CgxwaHsSMxdpa98nxvpBkEb58tm
-X-Gm-Gg: ASbGncu7el2yKcsKjEdulWxYVH6yP8nDe5jUlDuKgZ8xrw/W6rspX6yaU0FiDJ+loVG
-	NrCjhtWbfXBFbw4sj4TsG7pUyxrhw8+KSanTzfWazwW3V4dPt1fzkb1V3ktevS3RVMU07dGLULM
-	Xu836fgIBxyix0bdQjoTE+PPEqr3lXPQaZfkK22TgHfpBLAjlZySg+W4TmwqZXHG7Bk3tRR7YO+
-	B1xIrCpvWA5rS4VeH1e/WEm59QCLEhTR3zVootiCBM+CRKva6Jwyd8AabLdbWibwapkei7GUjcH
-	31bfAnsO5+/LtwSEKYMRj8FZOxiedtFKjUbQyU9tBMPLttGDyYuETurMYilWR1komfswiNkI2zD
-	/S5afEVAlsyVOtSSmRnc=
-X-Google-Smtp-Source: AGHT+IE/sV4GWQYZQwrKke9IVMnhly37KO4yL4QVNUy4azKV9PCYCbwiFnSk8+IqQ1Wi+sNAZppQ5Q==
-X-Received: by 2002:a05:620a:1a8c:b0:7c5:5206:5823 with SMTP id af79cd13be357-7c927fb506dmr495158585a.29.1744999828081;
-        Fri, 18 Apr 2025 11:10:28 -0700 (PDT)
-Received: from theriatric.mshome.net (c-73-123-232-110.hsd1.ma.comcast.net. [73.123.232.110])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c925a8c9d9sm131832785a.27.2025.04.18.11.10.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Apr 2025 11:10:27 -0700 (PDT)
-From: Gabriel Shahrouzi <gshahrouzi@gmail.com>
-To: gregkh@linuxfoundation.org,
-	jic23@kernel.org,
-	lars@metafoo.de,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-staging@lists.linux.dev,
-	Michael.Hennerich@analog.com
-Cc: gshahrouzi@gmail.com,
-	skhan@linuxfoundation.org,
-	linux-kernel-mentees@lists.linux.dev,
-	stable@vger.kernel.org
-Subject: [PATCH v2] iio: ad5933: Correct settling cycles encoding per datasheet
-Date: Fri, 18 Apr 2025 14:10:25 -0400
-Message-ID: <20250418181025.637710-1-gshahrouzi@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        d=1e100.net; s=20230601; t=1744999930; x=1745604730;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=SJco10XPuPQKf/Tc++SD2/J8aFDKSxmBKlJ6mW6zQio=;
+        b=VUp/Aib7Dm8pOrfD6Zf+iErOHsFofdkGa0tz9tMHD11JK6R4RHvwHbRBkcK4P7v7+H
+         sCJSq9Bd4ekq95s5mpVjglF7Qr5u7xc75wm7HXpPjkf7Ez6JHZBWHrLVXT9Bc2GZgGcY
+         +ivvpEG6B9OgX4BmWghn7HocDUtuVO0nf8/8aXOYCbvAOinZ4l3jmEEIxz2r0EA2iOU8
+         JKxwSQvSDugYQc+1qyPYiM2fKZGxyJ2HboIDPcnqrQ0L2NEkTk2v25v/4JZFQs6U8Zoy
+         icHuoLkM0j8xq6YuTfsY8hAMTVTwbyoaIdgVsHeDJACx8kE/s2EJNroeERpSb6LDNWBU
+         bRCg==
+X-Forwarded-Encrypted: i=1; AJvYcCV6Vs8BJXHa+PD40A5H5J5lM7h8XQjPczfb9KtiRjpG/8v/dB4SLmjr+7JSk/Ev5DlOYc9jNkWr@vger.kernel.org, AJvYcCW8IhtapLJiROyeMHu0yZzS0TML6IHTDPoeKYN9GsHAo92XrD6dC2VqmQ7PqPyB7ZOsrIyz1Iov4h4=@vger.kernel.org, AJvYcCWAeulV5Swsjj6ODADli/Obo8y0eOBNgIA3dMIi75vpsIUOxUD7Scmfl7RLZMwDjRJPFRSPp7TKj7CDKH6B@vger.kernel.org
+X-Gm-Message-State: AOJu0YwkfpQspR7/HPl0bJ0mmJeU5Klplb8MmnZjrgpK8XQQiAUA5OTV
+	OLZlHxqLOvc3W9Z4dZuu2Aqul+GOEHxSdWPWx8YoDZkyxcnhpd0Qf22oG3+fQcDD1G0s++hApHV
+	ZKq50jTouccZA6lWJahZmmik9wes=
+X-Gm-Gg: ASbGncsyUtwk3m1FGERhLOKOiNxs2qzj/cLUL6kvAqJi4zXpYpHp3TgfupT1DUAFiFQ
+	qDuCll0Rp3Y4lwLco9im6oonMHXoIGboay5pnQrtXgYkB4DbPIh/nEc8czdEAXEjUiUZ6p3YAH6
+	rgeKUvztbEa7p1a9gDBJM7jC2rTzgcD0QNnyEzMBaswvbjoD3qsgXt
+X-Google-Smtp-Source: AGHT+IFqk9cOhSM8u+bAweWSLbOzuzyfLuP+5P6usMk2RodloGJ4pT00BcXmM1/5KNnD6AVF4cshEKYdnn2jsyiN7FQ=
+X-Received: by 2002:ac8:5fd6:0:b0:476:a823:50d5 with SMTP id
+ d75a77b69052e-47aec4c44c8mr55686311cf.39.1744999929874; Fri, 18 Apr 2025
+ 11:12:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250416142219.554938-1-gshahrouzi@gmail.com> <20250418163743.4f9379a1@jic23-huawei>
+In-Reply-To: <20250418163743.4f9379a1@jic23-huawei>
+From: Gabriel Shahrouzi <gshahrouzi@gmail.com>
+Date: Fri, 18 Apr 2025 14:11:59 -0400
+X-Gm-Features: ATxdqUGhX7PuegZ_GRikwyDvIOOHnLsdXAD3xeBIdSe-0ypsW9tHivdhqRyaLVc
+Message-ID: <CAKUZ0z+AsM_UUtSDAZyBRMOt2CiqghBfoV1-s4N-Q9zQHC1++w@mail.gmail.com>
+Subject: Re: [PATCH] iio: ad5933: Correct settling cycles encoding per datasheet
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: gregkh@linuxfoundation.org, lars@metafoo.de, linux-iio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-staging@lists.linux.dev, 
+	Michael.Hennerich@analog.com, skhan@linuxfoundation.org, 
+	kernelmentees@lists.linuxfoundation.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Implement the settling cycles encoding as specified in the AD5933
-datasheet, Table 13 ("Number of Settling Times Cycles Register"). The
-previous logic did not correctly translate the user-requested effective
-cycle count into the required 9-bit base + 2-bit multiplier format
-(D10..D0) for values exceeding 511.
-
-Clamp the user input for out_altvoltage0_settling_cycles to the
-maximum effective value of 2044 cycles (511 * 4x multiplier).
-
-Fixes: f94aa354d676 ("iio: impedance-analyzer: New driver for AD5933/4 Impedance Converter, Network Analyzer")
-Cc: stable@vger.kernel.org
-Signed-off-by: Gabriel Shahrouzi <gshahrouzi@gmail.com>
----
-Changes in v2:
-	- Fix spacing in comment around '+'.
-	- Define mask and values for settling cycle multipliers.
----
- .../staging/iio/impedance-analyzer/ad5933.c   | 23 +++++++++++++------
- 1 file changed, 16 insertions(+), 7 deletions(-)
-
-diff --git a/drivers/staging/iio/impedance-analyzer/ad5933.c b/drivers/staging/iio/impedance-analyzer/ad5933.c
-index d5544fc2fe989..3c301a8ebd2ab 100644
---- a/drivers/staging/iio/impedance-analyzer/ad5933.c
-+++ b/drivers/staging/iio/impedance-analyzer/ad5933.c
-@@ -28,7 +28,7 @@
- #define AD5933_REG_FREQ_START		0x82	/* R/W, 3 bytes */
- #define AD5933_REG_FREQ_INC		0x85	/* R/W, 3 bytes */
- #define AD5933_REG_INC_NUM		0x88	/* R/W, 2 bytes, 9 bit */
--#define AD5933_REG_SETTLING_CYCLES	0x8A	/* R/W, 2 bytes */
-+#define AD5933_REG_SETTLING_CYCLES	0x8A	/* R/W, 2 bytes, 11 + 2 bit */
- #define AD5933_REG_STATUS		0x8F	/* R, 1 byte */
- #define AD5933_REG_TEMP_DATA		0x92	/* R, 2 bytes*/
- #define AD5933_REG_REAL_DATA		0x94	/* R, 2 bytes*/
-@@ -71,6 +71,8 @@
- #define AD5933_INT_OSC_FREQ_Hz		16776000
- #define AD5933_MAX_OUTPUT_FREQ_Hz	100000
- #define AD5933_MAX_RETRIES		100
-+#define AD5933_MAX_FREQ_POINTS		511
-+#define AD5933_MAX_SETTLING_CYCLES	2044 /* 511 * 4 */
- 
- #define AD5933_OUT_RANGE		1
- #define AD5933_OUT_RANGE_AVAIL		2
-@@ -82,6 +84,12 @@
- #define AD5933_POLL_TIME_ms		10
- #define AD5933_INIT_EXCITATION_TIME_ms	100
- 
-+/* Settling cycles multiplier bits D10, D9 */
-+#define AD5933_SETTLE_MUL_MASK		(BIT(10) | BIT(9))
-+#define AD5933_SETTLE_MUL_1X		0
-+#define AD5933_SETTLE_MUL_2X		BIT(9)
-+#define AD5933_SETTLE_MUL_4X		(BIT(10) | BIT(9))
-+
- struct ad5933_state {
- 	struct i2c_client		*client;
- 	struct clk			*mclk;
-@@ -411,14 +419,15 @@ static ssize_t ad5933_store(struct device *dev,
- 		ret = ad5933_cmd(st, 0);
- 		break;
- 	case AD5933_OUT_SETTLING_CYCLES:
--		val = clamp(val, (u16)0, (u16)0x7FF);
-+		val = clamp(val, (u16)0, (u16)AD5933_MAX_SETTLING_CYCLES);
- 		st->settling_cycles = val;
- 
--		/* 2x, 4x handling, see datasheet */
-+		/* Encode value for register: D10..D0 */
-+		/* Datasheet Table 13: If cycles > 1022 -> val/4, set bits D10=1, D9=1 */
- 		if (val > 1022)
--			val = (val >> 2) | (3 << 9);
--		else if (val > 511)
--			val = (val >> 1) | BIT(9);
-+			val = (val >> 2) | AD5933_SETTLE_MUL_4X;
-+		else if (val > 511) /* Datasheet: If cycles > 511 -> val/2, set bit D9=1 */
-+			val = (val >> 1) | AD5933_SETTLE_MUL_2X;
- 
- 		dat = cpu_to_be16(val);
- 		ret = ad5933_i2c_write(st->client,
-@@ -426,7 +435,7 @@ static ssize_t ad5933_store(struct device *dev,
- 				       2, (u8 *)&dat);
- 		break;
- 	case AD5933_FREQ_POINTS:
--		val = clamp(val, (u16)0, (u16)511);
-+		val = clamp(val, (u16)0, (u16)AD5933_MAX_FREQ_POINTS);
- 		st->freq_points = val;
- 
- 		dat = cpu_to_be16(val);
--- 
-2.43.0
-
+On Fri, Apr 18, 2025 at 11:37=E2=80=AFAM Jonathan Cameron <jic23@kernel.org=
+> wrote:
+>
+> On Wed, 16 Apr 2025 10:22:19 -0400
+> Gabriel Shahrouzi <gshahrouzi@gmail.com> wrote:
+>
+> > Implement the settling cycles encoding as specified in the AD5933
+> > datasheet, Table 13 ("Number of Settling Times Cycles Register"). The
+> > previous logic did not correctly translate the user-requested effective
+> > cycle count into the required 9-bit base + 2-bit multiplier format
+> > (D10..D0) for values exceeding 511.
+> >
+> > Clamp the user input for out_altvoltage0_settling_cycles to the
+> > maximum effective value of 2044 cycles (511 * 4x multiplier).
+> >
+> > Fixes: f94aa354d676 ("iio: impedance-analyzer: New driver for AD5933/4 =
+Impedance Converter, Network Analyzer")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Gabriel Shahrouzi <gshahrouzi@gmail.com>
+> > ---
+> >  .../staging/iio/impedance-analyzer/ad5933.c   | 21 ++++++++++++-------
+> >  1 file changed, 14 insertions(+), 7 deletions(-)
+> >
+> > diff --git a/drivers/staging/iio/impedance-analyzer/ad5933.c b/drivers/=
+staging/iio/impedance-analyzer/ad5933.c
+> > index d5544fc2fe989..5a8c5039bb159 100644
+> > --- a/drivers/staging/iio/impedance-analyzer/ad5933.c
+> > +++ b/drivers/staging/iio/impedance-analyzer/ad5933.c
+> > @@ -28,7 +28,7 @@
+> >  #define AD5933_REG_FREQ_START                0x82    /* R/W, 3 bytes *=
+/
+> >  #define AD5933_REG_FREQ_INC          0x85    /* R/W, 3 bytes */
+> >  #define AD5933_REG_INC_NUM           0x88    /* R/W, 2 bytes, 9 bit */
+> > -#define AD5933_REG_SETTLING_CYCLES   0x8A    /* R/W, 2 bytes */
+> > +#define AD5933_REG_SETTLING_CYCLES   0x8A    /* R/W, 2 bytes, 11+2 bit=
+ */
+>
+> Probably spaces around the +  It's not code, but lets keep to consistent =
+code style.
+Got it.
+>
+> >  #define AD5933_REG_STATUS            0x8F    /* R, 1 byte */
+> >  #define AD5933_REG_TEMP_DATA         0x92    /* R, 2 bytes*/
+> >  #define AD5933_REG_REAL_DATA         0x94    /* R, 2 bytes*/
+> > @@ -71,6 +71,8 @@
+> >  #define AD5933_INT_OSC_FREQ_Hz               16776000
+> >  #define AD5933_MAX_OUTPUT_FREQ_Hz    100000
+> >  #define AD5933_MAX_RETRIES           100
+> > +#define AD5933_MAX_FREQ_POINTS               511
+> > +#define AD5933_MAX_SETTLING_CYCLES   2044 /* 511 * 4 */
+>
+> >
+> >  #define AD5933_OUT_RANGE             1
+> >  #define AD5933_OUT_RANGE_AVAIL               2
+> > @@ -82,6 +84,10 @@
+> >  #define AD5933_POLL_TIME_ms          10
+> >  #define AD5933_INIT_EXCITATION_TIME_ms       100
+> >
+> > +/* Settling cycles multiplier bits D10, D9 */
+> > +#define AD5933_SETTLE_MUL_2X         BIT(9)
+> > +#define AD5933_SETTLE_MUL_4X         (BIT(9) | BIT(10))
+>
+> That looks like  a number, not a pair of separate bits.
+> I would expect a mask for this field then some defines for teh
+> values it can take.
+Got it. Defined the mask and then the values. Change added to v2.
+>
+> > +
+> >  struct ad5933_state {
+> >       struct i2c_client               *client;
+> >       struct clk                      *mclk;
+> > @@ -411,14 +417,15 @@ static ssize_t ad5933_store(struct device *dev,
+> >               ret =3D ad5933_cmd(st, 0);
+> >               break;
+> >       case AD5933_OUT_SETTLING_CYCLES:
+> > -             val =3D clamp(val, (u16)0, (u16)0x7FF);
+> > +             val =3D clamp(val, (u16)0, (u16)AD5933_MAX_SETTLING_CYCLE=
+S);
+> >               st->settling_cycles =3D val;
+> >
+> > -             /* 2x, 4x handling, see datasheet */
+> > +             /* Encode value for register: D10..D0 */
+> > +             /* Datasheet Table 13: If cycles > 1022 -> val/4, set bit=
+s D10=3D1, D9=3D1 */
+> >               if (val > 1022)
+> > -                     val =3D (val >> 2) | (3 << 9);
+> > -             else if (val > 511)
+> > -                     val =3D (val >> 1) | BIT(9);
+> > +                     val =3D (val >> 2) | AD5933_SETTLE_MUL_4X;
+> > +             else if (val > 511) /* Datasheet: If cycles > 511 -> val/=
+2, set bit D9=3D1 */
+> > +                     val =3D (val >> 1) | AD5933_SETTLE_MUL_2X;
+> >
+> >               dat =3D cpu_to_be16(val);
+> >               ret =3D ad5933_i2c_write(st->client,
+> > @@ -426,7 +433,7 @@ static ssize_t ad5933_store(struct device *dev,
+> >                                      2, (u8 *)&dat);
+> >               break;
+> >       case AD5933_FREQ_POINTS:
+> > -             val =3D clamp(val, (u16)0, (u16)511);
+> > +             val =3D clamp(val, (u16)0, (u16)AD5933_MAX_FREQ_POINTS);
+> >               st->freq_points =3D val;
+> >
+> >               dat =3D cpu_to_be16(val);
+>
 

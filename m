@@ -1,219 +1,157 @@
-Return-Path: <linux-iio+bounces-18289-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18291-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0268BA93CE0
-	for <lists+linux-iio@lfdr.de>; Fri, 18 Apr 2025 20:35:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B3A2A93D21
+	for <lists+linux-iio@lfdr.de>; Fri, 18 Apr 2025 20:39:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3BB847B3594
-	for <lists+linux-iio@lfdr.de>; Fri, 18 Apr 2025 18:34:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 837A51B660B9
+	for <lists+linux-iio@lfdr.de>; Fri, 18 Apr 2025 18:39:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEE3622578A;
-	Fri, 18 Apr 2025 18:34:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D9B522422D;
+	Fri, 18 Apr 2025 18:39:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KvjHq0QD"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="px+AmD9r"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6900222541C;
-	Fri, 18 Apr 2025 18:34:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9894A21B9E7
+	for <linux-iio@vger.kernel.org>; Fri, 18 Apr 2025 18:39:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745001260; cv=none; b=ts1i9G/o1qgomJnw4gtQUJKAaV88ayj4xPxv7/O+6tK0s6R5oaLxyAF1AHUPMPK5vN0HuA3CN49dix6bGJMgBAeJL0AoamSNGeQ9wSOblyT54VyIPEvrtmn/YxEVGKYFwvfainkYwS628WnPzsUhq4zEBlULWQ5ms5ERRBdMGv8=
+	t=1745001549; cv=none; b=p17uJCHSxnI/8S+yj44QJ4MCcRafUffCqg1iOi/hpX20tRQ54pq/iAta0G2t8i0JeZfDDBGeF9TnfCHt9Btj0su93vjsNr/HbD3zeVvF904S91Es9vqNa6hhVpIMEBvQimzPRTYJr0IUA2aoKArzWKQN0MfTxaZOFqrJpdRe2QM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745001260; c=relaxed/simple;
-	bh=FIXqyEgN8djbMnz6M52LLP9Fcc8mMMOnGHMLKvGIrF0=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cTN8uZQEqxMdx3ied5aEloeWrVRGfifuLo1dSxfkmMtPb9tXJCOAn36uftidZ/5cSDPy4TaUHaP1XHFHJIqWMifP4HuXKVBxEQl48FNAvm0BXyRHhAUyjK7H43kMXglowVA+59Lh9dBA704X1ef6M4gLnmZTPQeQSvMlG7w4dvI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KvjHq0QD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36338C4CEE2;
-	Fri, 18 Apr 2025 18:34:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745001259;
-	bh=FIXqyEgN8djbMnz6M52LLP9Fcc8mMMOnGHMLKvGIrF0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=KvjHq0QDPF/hR500jhetMspxBZuSG7SCq1YxUsD+wXrBB7GQDq5jDVirp5RlAMChT
-	 Pztiuefxw9ChrQzuNpC8VgOIrQ952P4bMMOgdgm9t+43PydglthgoGdCMzY7vNumn5
-	 CKsZ88rEyPMDvN4z40R6sC9uMgZI9lHIZ4LzB4sAW8G3w1M9ePrxa0Djd/StLFPPfn
-	 uYbKQqCoOiEfWF2n+1wXdq+bawsmHmkcjVwMH7a7qU0YB2Jw1j7wWViqinT7oCRMHG
-	 +CK8iohchoN8giBh/X+bsZVPdVcX+s42k3XQB6wkqofWUdMC1z93m5GP673Vf6mF9Z
-	 M2/Zg/pttkcfw==
-Date: Fri, 18 Apr 2025 19:34:11 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Lothar Rubusch <l.rubusch@gmail.com>
-Cc: lars@metafoo.de, Michael.Hennerich@analog.com,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- eraretuya@gmail.com
-Subject: Re: [PATCH v6 09/11] iio: accel: adxl345: add inactivity feature
-Message-ID: <20250418193411.406bd974@jic23-huawei>
-In-Reply-To: <20250414184245.100280-10-l.rubusch@gmail.com>
-References: <20250414184245.100280-1-l.rubusch@gmail.com>
-	<20250414184245.100280-10-l.rubusch@gmail.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1745001549; c=relaxed/simple;
+	bh=Bv/8pmkVSLEHKs/mav/QyQx2gx+A9OyyTn67MfrVslE=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=puSAm76n5NXRJmN41uwkN5TNVM+crnL/sNPZ2RnD9Cp9z81YJRwexTCW1evlc5gQnd5UJvBa5och08i6mjGwmCVMyZgEB06T0SbyJb9KKzJ/zsGE/LowxlRf+fV7Ddvanes5ltBR0QQ2FwNsCecaij5G3U83Lw161kNrzajGduA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=px+AmD9r; arc=none smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-43cf034d4abso14451325e9.3
+        for <linux-iio@vger.kernel.org>; Fri, 18 Apr 2025 11:39:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1745001545; x=1745606345; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=fdOyOpClnf46r1G0w0n1z533KfjfW03By15fERgN3ao=;
+        b=px+AmD9rvf6F1yCAvzy0GdYQb5BJWDgK/eoaPubZs7HClc1OQ++HiHlsXg7RNKq25d
+         agjhT1dz/aR/rQeGtA/MHkGQdrJ6zRh5EkCN+QOJGbrHnMa6bIzGS8bgy83fwsmyDiDU
+         1UPwO4RxifOTEYFxoxKgyyYXvPObzIpZiGmsXhHyjEdD9kZkMXMNLMnphRNA2z0WKBih
+         dC8cEQqOQ+cnGWzdl1gyC9v/+jzfz+AjLAj50TLSb1XUj40fhHvI80K5zIowfi2cwS4L
+         oZv1oTQooaykylXvagdc8uBqlowLgAd2AGMJXRdBxuDna+CF7Z4cIws+pH53cC+7YJmj
+         GPqg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745001545; x=1745606345;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=fdOyOpClnf46r1G0w0n1z533KfjfW03By15fERgN3ao=;
+        b=LNFLwQhqFNiTY9RFoOCesOeAWhCeT9IqIWLPVoLDD1WVaZrlMjVdfHsylczHMJHE1N
+         OiBMdEkOv1PCzU7oIXyyotlrwNpMh1oFIMdXo10ztAv0DtDt+JHl3LcoEtxEO3HUYNsC
+         ldEhOGf24NvWCLA84R+8L51Ren0jByArbL2tJGt27dQheGuHTk9coR9KhZcHwzuxpYdG
+         8K25pV0Eu8ozlfrNtt1EPUyr0Nd1qeTnOKtrq46Hfw+mSEBitjnDS4M5vjKYSoGtQXcv
+         2y5ywoz6uwhi3vtalU1MyZZ4J7GpIgTeDS6Hp2UtNk7nvHv50faJQE4NeLPtrga8rT1h
+         sjEw==
+X-Forwarded-Encrypted: i=1; AJvYcCWlISoxKcLSPnbdwv3EycfemvpB4pMA1ettj5PW5A/lgk9LwULOM7sHJaFCRW/7S0KkGjtaDS/KKL4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwcfJd9JSHuL39+HHBzpxU5C7M88PwGe4Vrh1RxN9WzCdSmLfuq
+	UWNU6H3XWq8eT8i6wpxRxI7LSkM2EvyUWVbMe8EKX4W/WTtpJlIeg6UPk6FJHfI=
+X-Gm-Gg: ASbGncuiGJULSc7XQIVYh7vLlVAlIby028rnIHjZLqyGC9fAIYan1/nzaZCyOYqM9Sz
+	BpMVSpMlGEFajNJHIhSf1ez6LyGc+Pl7tQTWsFwqdYVf0h1n+dwlRLKVYIRdcxW02rW8gcgvcw6
+	fNjrKRSPPknDzRLnJpxuSCFO8Iw1uTwqBo6AgYnFgPgdPKGaDdANUV9svpvt0mtVp8xsSBe+qFc
+	1BaoboYtayWtHh5kSmUVDH7Cj9l1fl/fS3mG7wZdezw7JwZ95WliIntX8RX6hyA6bqCsjtPWq30
+	sDbPTEeQ816vY/BLFnh/r/n6wba+2jgIqovHb7uKNrQkyO/lu4ijpVEoYBko2baGvRAKw10XulA
+	izhfHNt53It2+OdsvTA==
+X-Google-Smtp-Source: AGHT+IG5u79osLOJyjW/HnZsIL0/4QcAMEJjPNjmGPE4qL92+wsrfxd5ANNR1y0fi/i1c5rfxy70Qw==
+X-Received: by 2002:a05:600c:524f:b0:43c:fb8e:aec0 with SMTP id 5b1f17b1804b1-4406ab7ff18mr30012915e9.1.1745001544822;
+        Fri, 18 Apr 2025 11:39:04 -0700 (PDT)
+Received: from [192.168.0.2] (host-87-15-70-119.retail.telecomitalia.it. [87.15.70.119])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4406d6db117sm31044565e9.26.2025.04.18.11.39.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 18 Apr 2025 11:39:04 -0700 (PDT)
+From: Angelo Dureghello <adureghello@baylibre.com>
+X-Google-Original-From: Angelo Dureghello <adureghello@baylibre.org>
+Date: Fri, 18 Apr 2025 20:37:53 +0200
+Subject: [PATCH v3] iio: adc: ad7606: fix serial register access
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20250418-wip-bl-ad7606-fix-reg-access-v3-1-d5eeb440c738@baylibre.com>
+X-B4-Tracking: v=1; b=H4sIAACcAmgC/43NTQ6CMBCG4auQrh3TKT+trryHcVGGAZogkNagh
+ HB3CyvjRpfvl8kziwjsHQdxThbheXLBDX2M9JAIam3fMLgqtlBS5TJDDU83QtmBrXQhC6jdCzw
+ 3YIk4BNDqRAozbSqsRSRGz/Fi56+32K0Lj8HP+7cJt/VPeEJAkMRphnVKNaWX0s6dKz0fabiLz
+ Z7Up2d+eCp6pkRbcaEZTf7lrev6BotFIgMbAQAA
+X-Change-ID: 20250417-wip-bl-ad7606-fix-reg-access-729c21478d1f
+To: Lars-Peter Clausen <lars@metafoo.de>, 
+ Michael Hennerich <Michael.Hennerich@analog.com>, 
+ Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Andy Shevchenko <andy@kernel.org>, Beniamin Bia <beniamin.bia@analog.com>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Angelo Dureghello <adureghello@baylibre.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1587;
+ i=adureghello@baylibre.com; h=from:subject:message-id;
+ bh=xDLDsBY+0buT4niZ2UTLenrevFoj/yl6I/WTIFIhTHE=;
+ b=owGbwMvMwCXGf3bn1e/btlsznlZLYshgmsP4u1lm3beujIUdU/Z2dtl4rzwYlR76I+fqBOXSx
+ Avx5i3/OkpZGMS4GGTFFFnqEiNMQm+HSikvYJwNM4eVCWQIAxenAExk32VGhmeTJv3Vsb5WJCfU
+ fOivUN+GuO1SP1m/rbnzaVG2lVfQw0OMDB0fd0aes757MIeb9cy8piOyx5gyTARP7p0SOk1D/F/
+ tR1YA
+X-Developer-Key: i=adureghello@baylibre.com; a=openpgp;
+ fpr=703CDFAD8B573EB00850E38366D1CB9419AF3953
 
-On Mon, 14 Apr 2025 18:42:43 +0000
-Lothar Rubusch <l.rubusch@gmail.com> wrote:
+From: Angelo Dureghello <adureghello@baylibre.com>
 
-> Add the inactivity feature of the sensor. When activity and inactivity
-> are enabled, a link bit will be set linking activity and inactivity
-> handling. Additionally, the auto-sleep mode will be enabled. Due to the
-> link bit the sensor is going to auto-sleep when inactivity was
-> detected.
-> 
-> Inactivity detection needs a threshold to be configured, and a time
-> after which it will go into inactivity state if measurements under
-> threshold.
-> 
-> When a ODR is configured this time for inactivity is adjusted with a
-> corresponding reasonable default value, in order to have higher
-> frequencies and lower inactivity times, and lower sample frequency but
-> give more time until inactivity. Both with reasonable upper and lower
-> boundaries, since many of the sensor's features (e.g. auto-sleep) will
-> need to operate beween 12.5 Hz and 400 Hz. This is a default setting
-> when actively changing sample frequency, explicitly setting the time
-> until inactivity will overwrite the default.
-> 
-> Similarly, setting the g-range will provide a default value for the
-> activity and inactivity thresholds. Both are implicit defaults, but
-> equally can be overwritten to be explicitly configured.
-> 
-> Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
-Hi Lothar,
+Fix register read/write routine as per datasheet.
 
-Patches 6-8 look good to me.
+When reading multiple consecutive registers, only the first one is read
+properly. This is due to missing chip select deassert and assert again
+between first and second 16bit transfer, as shown in the datasheet
+AD7606C-16, rev 0, figure 110.
 
-This runs into a similar issue to the freefall one. I haven't dug into
-the datasheet but does it report on one channel going inactive, or
-all being inactive at the same time?  I checked and it is the all
-case so we should be both on a pseudo channel to describe it right
-and reporting IIO_MOD_X_AND_Y_AND_Z not the OR form.
+Fixes: f2a22e1e172f ("iio: adc: ad7606: Add support for software mode for ad7616")
+Reviewed-by: David Lechner <dlechner@baylibre.com>
+Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
+---
+Changes in v3:
+- fix typo in commit descritpion.
+- Link to v2: https://lore.kernel.org/r/20250418-wip-bl-ad7606-fix-reg-access-v2-1-8b1ade67e185@baylibre.com
 
-Sorry again that I'm only realising this on v6 :(
+Changes in v2:
+- improve bug description.
+- Link to v1: https://lore.kernel.org/r/20250417-wip-bl-ad7606-fix-reg-access-v1-1-0ce341f3cfc3@baylibre.com
+---
+ drivers/iio/adc/ad7606_spi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Difference is for Activity the definition is:
-"The activity bit is set when acceleration greater than the value
-stored in the THRESH_ACT register (Address 0x24) is experienced
-on _any_ participating axis, set by the ACT_INACT_CTL register
-(Address 0x27)."
-vs Inactivity:
-"The inactivity bit is set when acceleration of less than the value
-stored in the THRESH_INACT register (Address 0x25) is experienced
-for more time than is specified in the TIME_INACT
-register (Address 0x26) on _all_ participating axes, as set by the
-ACT_INACT_CTL register (Address 0x27). "
+diff --git a/drivers/iio/adc/ad7606_spi.c b/drivers/iio/adc/ad7606_spi.c
+index 997be483ebb93293481b922e13ece4edb47e940a..bd05357a542cf7234d5bb6b718829d6b720262cd 100644
+--- a/drivers/iio/adc/ad7606_spi.c
++++ b/drivers/iio/adc/ad7606_spi.c
+@@ -103,7 +103,7 @@ static int ad7606_spi_reg_read(struct ad7606_state *st, unsigned int addr)
+ 		{
+ 			.tx_buf = &st->d16[0],
+ 			.len = 2,
+-			.cs_change = 0,
++			.cs_change = 1,
+ 		}, {
+ 			.rx_buf = &st->d16[1],
+ 			.len = 2,
 
-So all vs any.
+---
+base-commit: 8dc6b228d746b1a900bed28568defb2266fa4c43
+change-id: 20250417-wip-bl-ad7606-fix-reg-access-729c21478d1f
 
-> +
-> +/**
-> + * adxl345_set_inact_time_s - Configure inactivity time explicitly or by ODR.
-> + * @st: The sensor state instance.
-> + * @val_s: A desired time value, between 0 and 255.
-> + *
-> + * Inactivity time can be configured between 1 and 255 sec. If a val_s of 0
-> + * is configured by a user, then a default inactivity time will be computed.
-> + *
-> + * In such case, it should take power consumption into consideration. Thus it
-> + * shall be shorter for higher frequencies and longer for lower frequencies.
-> + * Hence, frequencies above 255 Hz shall default to 10 s and frequencies below
-> + * 10 Hz shall result in 255 s to detect inactivity.
-> + *
-> + * The approach simply subtracts the pre-decimal figure of the configured
-> + * sample frequency from 255 s to compute inactivity time [s]. Sub-Hz are thus
-> + * ignored in this estimation. The recommended ODRs for various features
-> + * (activity/inactivity, sleep modes, free fall, etc.) lie between 12.5 Hz and
-> + * 400 Hz, thus higher or lower frequencies will result in the boundary
-> + * defaults or need to be explicitly specified via val_s.
-> + *
-> + * Return: 0 or error value.
-> + */
-> +static int adxl345_set_inact_time_s(struct adxl345_state *st, u32 val_s)
-> +{
-> +	unsigned int max_boundary = 255;
-> +	unsigned int min_boundary = 10;
-> +	unsigned int val = min(val_s, max_boundary);
-> +	enum adxl345_odr odr;
-> +	unsigned int regval;
-> +	int ret;
-> +
-> +	if (val == 0) {
-> +		ret = regmap_read(st->regmap, ADXL345_REG_BW_RATE, &regval);
-> +		if (ret)
-> +			return ret;
-> +		odr = FIELD_GET(ADXL345_BW_RATE_MSK, regval);
-> +
-> +		val = (adxl345_odr_tbl[odr][0] > max_boundary)
-> +			? min_boundary : max_boundary -	adxl345_odr_tbl[odr][0];
-> +	}
-> +
-> +	return regmap_write(st->regmap, ADXL345_REG_TIME_INACT, val);
->  }
->  
->  /* tap */
-> @@ -837,6 +943,13 @@ static int adxl345_read_event_config(struct iio_dev *indio_dev,
->  			if (ret)
->  				return ret;
->  			return int_en;
-> +		case IIO_EV_DIR_FALLING:
-> +			ret = adxl345_is_act_inact_en(st, chan->channel2,
+Best regards,
+-- 
+Angelo Dureghello <adureghello@baylibre.com>
 
-Does it makes sense to allow inactivity detection on a subset of channels but then
-report it as XYZ?  I guess it didn't matter when it was and OR, but if we
-change to AND as suggested that is going to be misleading.
-
-we might have to allow separate enables but report an event as the combination
-of channels that are enabled X_AND_Y, X_AND_Z etc  I guess we can improve activity
-channel case as well by doing that with the X_OR_Y etc
-
-
-
-> +						      ADXL345_INACTIVITY,
-> +						      &int_en);
-> +			if (ret)
-> +				return ret;
-> +			return int_en;
->  		default:
->  			return -EINVAL;
->  		}
-> @@ -881,6 +994,9 @@ static int adxl345_write_event_config(struct iio_dev *indio_dev,
->  		case IIO_EV_DIR_RISING:
->  			return adxl345_set_act_inact_en(st, chan->channel2,
->  							ADXL345_ACTIVITY, state);
-> +		case IIO_EV_DIR_FALLING:
-> +			return adxl345_set_act_inact_en(st, chan->channel2,
-> +							ADXL345_INACTIVITY, state);
->  		default:
->  			return -EINVAL;
->  		}
-
-> @@ -1314,6 +1458,17 @@ static int adxl345_push_event(struct iio_dev *indio_dev, int int_stat,
->  			return ret;
->  	}
->  
-> +	if (FIELD_GET(ADXL345_INT_INACTIVITY, int_stat)) {
-> +		ret = iio_push_event(indio_dev,
-> +				     IIO_MOD_EVENT_CODE(IIO_ACCEL, 0,
-> +							IIO_MOD_X_OR_Y_OR_Z,
-
-So this is our open question. Similar to the free fall case. Do we have the boolean
-logic right way around?
-
-> +							IIO_EV_TYPE_THRESH,
-> +							IIO_EV_DIR_FALLING),
-> +				     ts);
-> +		if (ret)
-> +			return ret;
-> +	}
-> +
 

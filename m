@@ -1,234 +1,178 @@
-Return-Path: <linux-iio+bounces-18275-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18278-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7B83A93ACD
-	for <lists+linux-iio@lfdr.de>; Fri, 18 Apr 2025 18:26:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EF83A93B73
+	for <lists+linux-iio@lfdr.de>; Fri, 18 Apr 2025 18:56:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E59503BB88F
-	for <lists+linux-iio@lfdr.de>; Fri, 18 Apr 2025 16:23:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 87B0C188996E
+	for <lists+linux-iio@lfdr.de>; Fri, 18 Apr 2025 16:56:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74156214A7D;
-	Fri, 18 Apr 2025 16:19:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FE69217701;
+	Fri, 18 Apr 2025 16:56:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N8e7P7sf"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lr48npnZ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DEC81C5F2C;
-	Fri, 18 Apr 2025 16:19:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D0941DED51;
+	Fri, 18 Apr 2025 16:56:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744993152; cv=none; b=CMRzsAlz36vcs+j8p/M9eodzaDA4kjBOFXU/+z7VckfrAEZAzifFRhQFTEwBhQF6qNnb1/mpUdSTjbdFDsdDj6+4WWEy9Gf5vP7apysiNR363fMpig36DQH4fnCNh/IfUXX1F6Fu7I3pgc3s/lo0drUckLA9OQNeLJKcSFOs6tg=
+	t=1744995399; cv=none; b=XoRQQ/vSYjr5wl+Fxjx9ztcAPkL7+sEtBCsACS0ZRIulmKzf3xfAkddQKQ99JlcW3Zw40Ivb2OaEkWHNJH6NrSnQhkcx8hJdNbVdFxMmuJfhkvssofFvbyBmEpG/PIODoDM4YcewlP7dRgLnZYtd8iXr3tjONduOcKHr5pgK3ps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744993152; c=relaxed/simple;
-	bh=L2H2qwEikwOMKTi1crbWBetmTg4lpjWT87FK3LEBMHE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=p12ZaggJjUn5UVAZYX3OQdhUyWfjhEBMsaajlcevEJHqdbOlRJ5sVzJG6GhoTQ72EYNxUGOmSd1JkryV/WYvTd3Is3/kPKit44s/lEDZzXxYscer6HSf+u093astk9kpnBs/9sNM2hqpOqsDrKm2hSTCtfdHiLzIdAvBNKRQK90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N8e7P7sf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id B9F0DC4CEED;
-	Fri, 18 Apr 2025 16:19:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744993151;
-	bh=L2H2qwEikwOMKTi1crbWBetmTg4lpjWT87FK3LEBMHE=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=N8e7P7sfnJQT1A9qpyVmkNlOqpKVXwnBeq5viNTmihhLJ1aybr/vP0iz0Me8BV3oc
-	 eIGSiSjNPSF6TfvnkW2q0dOUxGmHE9WjMIaRFMci2FAiT4abKFGWQoqj8YihIiN6SX
-	 K8KDF2xaGHdvWRGx7HsMBKbN2wUnioMaH4uHM9Ws0UPUt4Ddal7T0gAvNIXV1s5bj9
-	 YxM7op73jKrOeYMmAVJ069jjzJMjXXqA+jP/5fN3IoKJcWytmS4n3akXzY6sqLJa+q
-	 DhGeNbGKCX2k73lG0YwMxZUeQKl4Cd+hPh4/BEUyn5jhEkjQA5sBmM8hE/cuglKA+C
-	 e60fhJOaV4ZIg==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A9E2CC369D0;
-	Fri, 18 Apr 2025 16:19:11 +0000 (UTC)
-From: Jean-Baptiste Maneyrol via B4 Relay <devnull+jean-baptiste.maneyrol.tdk.com@kernel.org>
-Date: Fri, 18 Apr 2025 18:19:03 +0200
-Subject: [PATCH v3 2/2] iio: imu: inv_icm42600: add wakeup functionality
- for Wake-on-Motion
+	s=arc-20240116; t=1744995399; c=relaxed/simple;
+	bh=O7T/++NqyVHJUCBmNizNFjjdmPvqntc/LpS5w6yPJoI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=FJuo6saOUwe2LemQJSHoEcG4uGmq0dvzB6d6fdocQXDMtCNxoeseoTCdA3Q049xgcCgSmNl/FEjT4fWbfYFMOKhTVrutYJGusGb/5trnd5HdwNC+P6GFgBoZPvEqrBJefEZ4xCCPaaJx0HQslRz01Bf3eNJxvI897NUxFRHzC/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lr48npnZ; arc=none smtp.client-ip=209.85.160.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-476b89782c3so22965181cf.1;
+        Fri, 18 Apr 2025 09:56:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1744995396; x=1745600196; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0jaGJsH+S8jpQO9hSU9jQZG5RILNp2wtg9XnJDjLa18=;
+        b=lr48npnZ04BdmEl7RpgGXU3hz7xENcrm8WFMB4EkG7151FTg3OUe6GRPijU9CLIoMK
+         WSTuSdHV4aAa7w7M4mdzzLTchn0VM9STRAxd+hYpMFtIufM45bq7fPtJw6AOOs/EWOFp
+         QlhYTOh2GZYi0dAP353OFGtEgtwg35bccl6B5UFXJT8FPodIqn9+3b8lIYBaSkYHQXQS
+         1jjiGdhmEpk4iOjvzLyEPDf0BPTKT5WEAd5yXnN+8QGyn39M6AcPh0c4BJIQKq4vcB2I
+         6Jk8CGZV20+F4OXOgTP41UmSzSlsn9FXN1tR66iDlmnx7JZNkeEcirS4zBLAO+a4NznN
+         ufGg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744995396; x=1745600196;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=0jaGJsH+S8jpQO9hSU9jQZG5RILNp2wtg9XnJDjLa18=;
+        b=dxjmivZQnuOAAq0ThfHbamorkbzMSyF6WLAcMIBxRvWqKG190y3ifTKDrB4npwGuSA
+         95UhpQHCZU2c+K/Ye428BQICTR969V1Z4UyX2pzRxERtU/jd4M3CJbKIV0Bdf0K2D9J4
+         GOEOmKXs9kkHb/GFRFFZMfGqFwaNcl7oW7nNE2zkpBlUyDk/Y6jU8k+1kiX2wOaTNQ4M
+         vH1CFrJ2SeaqUE8LC1pOwwpUQXfGsTM2A7W0FMS6EJlwBgZmWNSRCFTQm7CsCPJ21BNX
+         105adeZx5dxBkbU6H8jQSHiBY9UKqotskUrAGgC4V/tq/Yn+4WKBvY8mLnA18ro7bsEt
+         axaA==
+X-Forwarded-Encrypted: i=1; AJvYcCWHa8ZcuegS735uZCAm+tGxHtikpegmFu4MnnpbTzoVaNw0c9IELURaTWA/Owq3uWY1V8GmxzSJ/e0=@vger.kernel.org, AJvYcCWaD1ewTmQw4zL5hhMCzGbNj1XecnXvTD1d14fI7YiyA1bGR7sHqsMs5EnsG/Y2qr8SLp8wNp3I@vger.kernel.org, AJvYcCXeUoa49iCnq6JTSvvKVoIr08Q0oLeK/RbTxt1jD2cwS4qt0gSw+1GVlYRFrbqF4svF6+ANpcS/Isc6kM7U@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw2DmZlnBpyiifo8ll5hJR0iXoQyWBIeZhCAMW+cSzcu6r4xp8V
+	DOPP3Aj2RzKfY/gPa4qo6fL8Kliynom6vyouGW2DsX3LW5F49h46/FHGrSVFxIZ8E925nQKx6av
+	kSTVFcSUs48oxZJGoF02o7xzMArE=
+X-Gm-Gg: ASbGncte5XpAJPsPdJUUatsX8DI/vehyi2kg3P0hlvwmurvNKMWiLyLVU6fQqHYqT7G
+	ih3nZPVEtC7RmWvc2Fa8aWIR/yDk6aWjwjcHKq94/+kZjS54xTZQm/V92SpC4TwxWp/OJcrST+d
+	BXpSRye3c7UznrRS93WSbruNp/gR5xugsbBhPQVDeFQvelNOgs0nbn
+X-Google-Smtp-Source: AGHT+IG2QUATXIP2+rB45u1mzURWs/cHRUxQnEqv+a0uOxz+PDpzzpxSpuZBbAQBnMkO/jkpMnF7kVt3ZbL257up+2A=
+X-Received: by 2002:a05:622a:1a96:b0:477:6ee2:18ce with SMTP id
+ d75a77b69052e-47aec3543c7mr63069171cf.3.1744995396324; Fri, 18 Apr 2025
+ 09:56:36 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250418-losd-3-inv-icm42600-add-wom-support-v3-2-7a180af02bfe@tdk.com>
-References: <20250418-losd-3-inv-icm42600-add-wom-support-v3-0-7a180af02bfe@tdk.com>
-In-Reply-To: <20250418-losd-3-inv-icm42600-add-wom-support-v3-0-7a180af02bfe@tdk.com>
-To: Jonathan Cameron <jic23@kernel.org>, 
- Lars-Peter Clausen <lars@metafoo.de>, David Lechner <dlechner@baylibre.com>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Andy Shevchenko <andy@kernel.org>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1744993145; l=5298;
- i=jean-baptiste.maneyrol@tdk.com; s=20240923; h=from:subject:message-id;
- bh=l+/OriOlddQy/5l7bvQyqKy4EbXw047VAx/9mPsXfSc=;
- b=k5iydP5CdiiQGlCc4VZdZzv78qGOH+5y9JiLpAyCDBzxgV/BggVZEm2FQ2LaG63C2ujSIJUZG
- 5Vt51QKWSCJBSW9zbdwqy+3tHCxDoJlKukOvDfeNucRVdQrygRsiGYj
-X-Developer-Key: i=jean-baptiste.maneyrol@tdk.com; a=ed25519;
- pk=bRqF1WYk0hR3qrnAithOLXSD0LvSu8DUd+quKLxCicI=
-X-Endpoint-Received: by B4 Relay for
- jean-baptiste.maneyrol@tdk.com/20240923 with auth_id=218
-X-Original-From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-Reply-To: jean-baptiste.maneyrol@tdk.com
+References: <20250414154050.469482-1-gshahrouzi@gmail.com> <1fb5f1c5e61ce386cb431d48296e952bdd560a6c.camel@gmail.com>
+ <CAKUZ0zLiP_w-4xOXfBDdZbm+M8yVYvd+A=M73fnRT_kMyWwk7Q@mail.gmail.com> <20250418161841.4ba1d05e@jic23-huawei>
+In-Reply-To: <20250418161841.4ba1d05e@jic23-huawei>
+From: Gabriel Shahrouzi <gshahrouzi@gmail.com>
+Date: Fri, 18 Apr 2025 12:56:25 -0400
+X-Gm-Features: ATxdqUFg7My0cJl2r_WyXXpWhu1eFcrdLyqNpZBk2FWlOi3nyhGlEBznApakYhU
+Message-ID: <CAKUZ0zLW-X9oNxEhh++65y1cjX5c77v=kqqvGTaATaBXCs-Neg@mail.gmail.com>
+Subject: Re: [PATCH v3] iio: adc: Correct conditional logic for store mode
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: =?UTF-8?B?TnVubyBTw6E=?= <noname.nuno@gmail.com>, 
+	Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-iio@vger.kernel.org, 
+	linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	skhan@linuxfoundation.org, kernelmentees@lists.linuxfoundation.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-
-When Wake-on-Motion is on, enable system wakeup and keep the chip on
-for waking up the system with an interrupt.
-
-Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
----
- drivers/iio/imu/inv_icm42600/inv_icm42600.h       |  2 +
- drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c |  3 ++
- drivers/iio/imu/inv_icm42600/inv_icm42600_core.c  | 53 +++++++++++++++++------
- 3 files changed, 45 insertions(+), 13 deletions(-)
-
-diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600.h b/drivers/iio/imu/inv_icm42600/inv_icm42600.h
-index bcf588a048836f909c26908f0677833303a94ef9..dcdacc21f0a7f0bdc305f1fded4ec69bc68f5955 100644
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600.h
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600.h
-@@ -151,6 +151,7 @@ struct inv_icm42600_apex {
-  *  @map:		regmap pointer.
-  *  @vdd_supply:	VDD voltage regulator for the chip.
-  *  @vddio_supply:	I/O voltage regulator for the chip.
-+ *  @irq:		chip irq, required to enable/disable and set wakeup
-  *  @orientation:	sensor chip orientation relative to main hardware.
-  *  @conf:		chip sensors configurations.
-  *  @suspended:		suspended sensors configuration.
-@@ -168,6 +169,7 @@ struct inv_icm42600_state {
- 	struct regmap *map;
- 	struct regulator *vdd_supply;
- 	struct regulator *vddio_supply;
-+	int irq;
- 	struct iio_mount_matrix orientation;
- 	struct inv_icm42600_conf conf;
- 	struct inv_icm42600_suspended suspended;
-diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
-index 9c21d0855f95ec0c085d29bb67da934ca1a8d339..a4aeee972cd773e85129fd11568e382f613fd4db 100644
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
-@@ -1161,6 +1161,9 @@ struct iio_dev *inv_icm42600_accel_init(struct inv_icm42600_state *st)
- 	if (ret)
- 		return ERR_PTR(ret);
- 
-+	/* accel events are wakeup capable */
-+	device_set_wakeup_capable(&indio_dev->dev, true);
-+
- 	return indio_dev;
- }
- 
-diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-index 9a2150ab9e874f17d7fda731cb131c3f688a75a3..0809561b8119d1ff5cf4b36ff571f9c8dc4050a0 100644
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-@@ -765,6 +765,7 @@ int inv_icm42600_core_probe(struct regmap *regmap, int chip,
- 	mutex_init(&st->lock);
- 	st->chip = chip;
- 	st->map = regmap;
-+	st->irq = irq;
- 
- 	ret = iio_read_mount_matrix(dev, &st->orientation);
- 	if (ret) {
-@@ -843,6 +844,9 @@ EXPORT_SYMBOL_NS_GPL(inv_icm42600_core_probe, "IIO_ICM42600");
- static int inv_icm42600_suspend(struct device *dev)
- {
- 	struct inv_icm42600_state *st = dev_get_drvdata(dev);
-+	struct device *accel_dev;
-+	bool wakeup;
-+	int accel_conf;
- 	int ret;
- 
- 	mutex_lock(&st->lock);
-@@ -863,20 +867,32 @@ static int inv_icm42600_suspend(struct device *dev)
- 			goto out_unlock;
- 	}
- 
--	/* disable APEX features */
--	if (st->apex.wom.enable) {
--		ret = inv_icm42600_disable_wom(st);
--		if (ret)
--			goto out_unlock;
-+	/* keep chip on and wake-up capable if APEX and wakeup on */
-+	accel_dev = &st->indio_accel->dev;
-+	wakeup = st->apex.on && device_may_wakeup(accel_dev);
-+	if (wakeup) {
-+		/* keep accel on and setup irq for wakeup */
-+		accel_conf = st->conf.accel.mode;
-+		enable_irq_wake(st->irq);
-+		disable_irq(st->irq);
-+	} else {
-+		/* disable APEX features and accel if wakeup disabled */
-+		if (st->apex.wom.enable) {
-+			ret = inv_icm42600_disable_wom(st);
-+			if (ret)
-+				goto out_unlock;
-+		}
-+		accel_conf = INV_ICM42600_SENSOR_MODE_OFF;
- 	}
- 
- 	ret = inv_icm42600_set_pwr_mgmt0(st, INV_ICM42600_SENSOR_MODE_OFF,
--					 INV_ICM42600_SENSOR_MODE_OFF, false,
--					 NULL);
-+					 accel_conf, false, NULL);
- 	if (ret)
- 		goto out_unlock;
- 
--	regulator_disable(st->vddio_supply);
-+	/* disable vddio regulator if chip is sleeping */
-+	if (!wakeup)
-+		regulator_disable(st->vddio_supply);
- 
- out_unlock:
- 	mutex_unlock(&st->lock);
-@@ -892,13 +908,24 @@ static int inv_icm42600_resume(struct device *dev)
- 	struct inv_icm42600_state *st = dev_get_drvdata(dev);
- 	struct inv_icm42600_sensor_state *gyro_st = iio_priv(st->indio_gyro);
- 	struct inv_icm42600_sensor_state *accel_st = iio_priv(st->indio_accel);
-+	struct device *accel_dev;
-+	bool wakeup;
- 	int ret;
- 
- 	mutex_lock(&st->lock);
- 
--	ret = inv_icm42600_enable_regulator_vddio(st);
--	if (ret)
--		goto out_unlock;
-+	/* check wakeup capability */
-+	accel_dev = &st->indio_accel->dev;
-+	wakeup = st->apex.on && device_may_wakeup(accel_dev);
-+	/* restore irq state or vddio if cut off */
-+	if (wakeup) {
-+		enable_irq(st->irq);
-+		disable_irq_wake(st->irq);
-+	} else {
-+		ret = inv_icm42600_enable_regulator_vddio(st);
-+		if (ret)
-+			goto out_unlock;
-+	}
- 
- 	pm_runtime_disable(dev);
- 	pm_runtime_set_active(dev);
-@@ -911,8 +938,8 @@ static int inv_icm42600_resume(struct device *dev)
- 	if (ret)
- 		goto out_unlock;
- 
--	/* restore APEX features */
--	if (st->apex.wom.enable) {
-+	/* restore APEX features if disabled */
-+	if (!wakeup && st->apex.wom.enable) {
- 		ret = inv_icm42600_enable_wom(st);
- 		if (ret)
- 			goto out_unlock;
-
--- 
-2.49.0
-
-
+On Fri, Apr 18, 2025 at 11:18=E2=80=AFAM Jonathan Cameron <jic23@kernel.org=
+> wrote:
+>
+> On Tue, 15 Apr 2025 09:54:00 -0400
+> Gabriel Shahrouzi <gshahrouzi@gmail.com> wrote:
+>
+> > On Tue, Apr 15, 2025 at 5:13=E2=80=AFAM Nuno S=C3=A1 <noname.nuno@gmail=
+.com> wrote:
+> > >
+> > > On Mon, 2025-04-14 at 11:40 -0400, Gabriel Shahrouzi wrote:
+> > > > The mode setting logic in ad7816_store_mode was reversed due to
+> > > > incorrect handling of the strcmp return value. strcmp returns 0 on
+> > > > match, so the `if (strcmp(buf, "full"))` block executed when the
+> > > > input was not "full".
+> > > >
+> > > > This resulted in "full" setting the mode to AD7816_PD (power-down) =
+and
+> > > > other inputs setting it to AD7816_FULL.
+> > > >
+> > > > Fix this by checking it against 0 to correctly check for "full" and
+> > > > "power-down", mapping them to AD7816_FULL and AD7816_PD respectivel=
+y.
+> > > >
+> > > > Fixes: 7924425db04a ("staging: iio: adc: new driver for AD7816 devi=
+ces")
+> > > > Cc: stable@vger.kernel.org
+> > > > Signed-off-by: Gabriel Shahrouzi <gshahrouzi@gmail.com>
+> > > > ---
+> > >
+> > > LGTM, do you happen to have this device? It would more interesting to=
+ move this
+> > > driver out of staging :)
+> > Unfortunately, I do not have this device. However, I would still be
+> > interested in contributing if possible. I was looking over
+> > https://lore.kernel.org/all/20230716144024.30ded663@jic23-huawei/T/
+> > where the goal seemed to be to modernize it by replacing the sysfs
+> > interface with the iio channel. I also looked through the datasheet
+> > and it seemed to be missing some stuff like a channel that can be
+> > selected.
+> > >
+> > > Acked-by: Nuno S=C3=A1 <nuno.sa@analog.com>
+> Applied to the fixes-togreg branch of iio.git but amended the patch title
+> to start wit
+> staging: iio: adc: ad7816:
+>
+> so people looking at a short log can see what it is touching.
+That makes sense =E2=80=94 it's clearer for anyone skimming the short log t=
+o
+see what it's touching. Appreciate the correction.
+>
+> Thanks,
+>
+> Jonathan
+>
+> > >
+> > > > Changes since v3:
+> > > >       - Tag stable@vger.kernel.org instead of an email CC
+> > > >       - Use the correct version for patch
+> > > > Changes since v2:
+> > > >       - Add fixes tag that references commit that introduced the bu=
+g.
+> > > >         - Replace sysfs_streq with strcmp.
+> > > > ---
+> > > >  drivers/staging/iio/adc/ad7816.c | 2 +-
+> > > >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > > >
+> > > > diff --git a/drivers/staging/iio/adc/ad7816.c
+> > > > b/drivers/staging/iio/adc/ad7816.c
+> > > > index 6c14d7bcdd675..081b17f498638 100644
+> > > > --- a/drivers/staging/iio/adc/ad7816.c
+> > > > +++ b/drivers/staging/iio/adc/ad7816.c
+> > > > @@ -136,7 +136,7 @@ static ssize_t ad7816_store_mode(struct device =
+*dev,
+> > > >       struct iio_dev *indio_dev =3D dev_to_iio_dev(dev);
+> > > >       struct ad7816_chip_info *chip =3D iio_priv(indio_dev);
+> > > >
+> > > > -     if (strcmp(buf, "full")) {
+> > > > +     if (strcmp(buf, "full") =3D=3D 0) {
+> > > >               gpiod_set_value(chip->rdwr_pin, 1);
+> > > >               chip->mode =3D AD7816_FULL;
+> > > >       } else {
+> >
+>
 

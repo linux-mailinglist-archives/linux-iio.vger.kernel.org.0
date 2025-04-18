@@ -1,209 +1,147 @@
-Return-Path: <linux-iio+bounces-18305-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18306-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 514B7A93EFA
-	for <lists+linux-iio@lfdr.de>; Fri, 18 Apr 2025 22:38:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB67DA93F24
+	for <lists+linux-iio@lfdr.de>; Fri, 18 Apr 2025 22:50:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5F032445570
-	for <lists+linux-iio@lfdr.de>; Fri, 18 Apr 2025 20:38:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF30A463538
+	for <lists+linux-iio@lfdr.de>; Fri, 18 Apr 2025 20:50:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95BDA22A1E6;
-	Fri, 18 Apr 2025 20:38:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E14F723A562;
+	Fri, 18 Apr 2025 20:50:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="d+djrvSH"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KTh0ni4X"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oi1-f181.google.com (mail-oi1-f181.google.com [209.85.167.181])
+Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4027F2A1C9
-	for <linux-iio@vger.kernel.org>; Fri, 18 Apr 2025 20:38:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 292752356B1;
+	Fri, 18 Apr 2025 20:50:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745008693; cv=none; b=EI6pa7tWbX8ZyZb/DXJNEi3ILtJqza8CW6VTfA4TYqrYouyiR3xTrHQNPZl0yrfhwc1vAZvPbCho5KOLW8VDdElUwGm9/hBm7VH7NZpZQRvUMcxY5EFiCG4XWJJk8HCzIvW+JeY5BxMiu+YWeJ4whRb5nEB+auaGnVEup0rh8jA=
+	t=1745009426; cv=none; b=J0RZBiM0yjFSRA14syTyY+CAnxEc8RAW7FiHErERQqHvTxi23BrJqFy1K4turGNUPGbZjAgUdLQSvBfB8KU6j9655qwU1C2u/lZ2tqmzu0gHwtyC4tqnPFQ2uQz9V5jGocHiy7HavLr7FHePk0PLWqMVO6eOo5vUg3TxQP/WIJ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745008693; c=relaxed/simple;
-	bh=2Fe3ulMLFE47PgdiZW6fQW+jtVST6VMA1a7HPcbAPgY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=lkORpsN0KwRl1XJiurOFOq6xn+dtKc/8DbMAr+iM9quPvnjPTAlMSUkrgX2U5hZKOxXVEMbewnAwfpGnwU9nSBDO7GKGnGRhBWSgBg3JPrLhmF18NQnPEpWlDANOkIifoRqrr1RTWgu3p0OjzxGoW0dwGL6GHJsfxK94+0Xs+l4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=d+djrvSH; arc=none smtp.client-ip=209.85.167.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oi1-f181.google.com with SMTP id 5614622812f47-3f6eaa017d0so1495964b6e.0
-        for <linux-iio@vger.kernel.org>; Fri, 18 Apr 2025 13:38:10 -0700 (PDT)
+	s=arc-20240116; t=1745009426; c=relaxed/simple;
+	bh=W9segW3cJMe7VP3WKWL2Rpm9z+MOBA5Bz2bhSFPcUHc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hsbvRF+p6J5FkTIrKZPl/F6/jFDeMByu9/CvV6qnxGiA9SdMZpof/tFfE3W+jyOKMV9+dDiuvZ8cpe2LQfQawrt7tQyA48ZtkABC4xyOiY93K9DrfKsQsPQn3MOevfJVN3XeQWkCpvhEwHivfRlyhl74/rDo4uKH/bVOgojz+yw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KTh0ni4X; arc=none smtp.client-ip=209.85.222.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-7c55500d08cso218412485a.0;
+        Fri, 18 Apr 2025 13:50:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1745008690; x=1745613490; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=64tBS0jidfIHgVu7kwIxl5UwVXxXom1YsPf9oOkqC/8=;
-        b=d+djrvSHKPgdKHw3uce83CNJYtpXMr2rdpYZ3swG0Qs9sHNVD8SS+IQ/hSK58x5B19
-         hMaf35MN7ByDO7LbUpMSHMtmzCTEHU662R0nOnlQVz94Apa/DdsV1HLAqjkARqVcmTj0
-         BvPW44+jNB3azeUkhRquRgamUDYzbyyh15mOiHmjaIov5VwAK9ltiSxY3qXkZsL/zS0F
-         ta199FWIpT046PVOR3V0yz1J0HMnbwpaANSW1BMGm0Cn9OS8ldzcstAeZqKMkai2zZjK
-         k7EvPG/KsAa17sNDenIkYvydkG4frCNckvXbJFov9sJSepm7m9hwENfpu44NXkQG9YcU
-         N6Rw==
+        d=gmail.com; s=20230601; t=1745009423; x=1745614223; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=zBS+gMuCbxo0lQQXgb/9PCP46mLZ8s4XB03eoOWWGew=;
+        b=KTh0ni4XoZTckpz2941ZQBGdpxgBNKRnVM48cPUjcw3AXlXLLgqJVlpd/dEZjb/NTr
+         ovpMYt8i+NlRFzIISlGh35E9Ohb03muKpCUqVKD7reWY5BddLOC9n/uQMZYAiqsMOwue
+         H2Cxlbkmbb7GLd+qK3iA0YBbTqTNTZmDSHEzJ/pCoE7sra4moOEvwDP08w6hCaynTqHB
+         b7mimYoLhKRU7oqp6MKFClEY1gTnsqjtF1HQAuq1dqdNwoeIsU4gzYdvodJAXXghNOTH
+         o8SdmzFbyyAKLpW1XClyGpRZzBj1SlAm+VZZ2NCUgBwIicfq8ajm4vC/OM6TaEBhXdZg
+         xOcg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745008690; x=1745613490;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1745009423; x=1745614223;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=64tBS0jidfIHgVu7kwIxl5UwVXxXom1YsPf9oOkqC/8=;
-        b=SdCHVhDA8VA2M8xh+whXjp4mEkr4c0r7e6sL7ng/S4h/h6W1C619eXFkAbSUiVBR+m
-         X8ztIT9H1T/ZHxQNDPqJP8+Fzr/re5CNDEu1+ZwCtQEVNIMoyh6NLQL8Q4BBWw+eNMY8
-         KXycyzET5Wxtj1ZITsoglw/1NA9MloyUE7kBTU+kPXoTxXPkh+Mm1s96amOtCSq0IfO/
-         x1dbHwRndiTxtvfZiErIUk/ob7BhOzzLhrE0u4DNtOCwlTKVxfnbU3kYfUS/WZUgHOX/
-         ELaEZXJKdipuAGQ2mIT21cpE1Kt84YOt/0vbYFRafXHFkakNyXAcW/PFq8UE1dxbOSWr
-         6P5w==
-X-Gm-Message-State: AOJu0Yxy2iHNjJO/eVwEUJOAX2yccg7tRKjXpWiAZkh2sp++khBhe9OM
-	OkunwoKxkS/aT5TUc+mgjYj5p/v+OMxSfNjYs7Oi4kiYJWW9/FFOzBdA1NY4PFY=
-X-Gm-Gg: ASbGncuk7uCPRH+9B6CYcUm0FenpVQECIV2Zdkpl4r3vSWGRtdSsi2ytNcT462zPZQU
-	1oDWYSIE2EwINagnM9Lm9c4MI8/8Q/EwAqUFhbgQsF5fVjwX77TLUiHrJ/q9wostCRh5SQ6C1Ce
-	LRvrzq+0HvFEKPekBa0xTVpVhoWlHNcvhP885FU+lEHJ9E3FZwLD5c154Gzxii4xlc4jLWX/C5q
-	M8AubZac4VTK2NXC/p/uP7uIhlO/qdibcFxnDpjaAq6U44tJCzx2v6Yd0/CojoteMTeRV/H3VY8
-	USS8ar2t5JWuMJI72l971hKfp/ma1PsY2w0tzSshFJ4DFLU=
-X-Google-Smtp-Source: AGHT+IHJcrS3RxkIdEMS+yjvuEu2aYDzQTY6J2p6HbXI7uaCEkLoA+zUirfwPMd/5LNX3VA8w58fDA==
-X-Received: by 2002:a05:6808:318b:b0:3f8:e55c:16ea with SMTP id 5614622812f47-401c0c38fc1mr2081127b6e.24.1745008690111;
-        Fri, 18 Apr 2025 13:38:10 -0700 (PDT)
-Received: from [127.0.1.1] ([2600:8803:e7e4:1d00:dcdf:46e0:18e5:c279])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-401beeee032sm447946b6e.28.2025.04.18.13.38.08
+        bh=zBS+gMuCbxo0lQQXgb/9PCP46mLZ8s4XB03eoOWWGew=;
+        b=QMqcmw6DcGcMENrQg987/AW0SNEwpI6eGiC1GXBSifvXXNTmimBczf+MJyPKbyz3GK
+         rAzPuiDIOxeFpdw5dXpLaGt3EaFKtWiMmYALs3P/TFvrQn0LpvncxEa3IBQcOfVd+r0r
+         7o2sH6eMvWh4YrAMMxfkI9ANoKqpkGbCHbkYfhkRXM9WS4uoEqn84i5g5ME6smppNdDC
+         ok3bWeBXrEh2DSIbB5FnePIKvMtAXTYX5PsZFNcORsYNn7bvu0UXB7nDjL54LIPm8LUo
+         seQlprXzU+HLC5373JuchDxTede1RMusR7VhnMJUV1wHRR/gCQxLZIFPhkdp+2nZND8O
+         oC7Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUme1mQv02l/cNnLB451OVhRXbajOVHKj79+B0a1p+v12vMPm67YGvKqqmY+lsvK51UFYIwzj2rynADdyaX@vger.kernel.org, AJvYcCXjWt7GGMomBCVZSl8z6vkTuhVAyeP0pe+NKmuUIyDH3wyzZJDDCmQvp51qMGm0osYPdzAqaqcFUgs=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzoq5Ltc4l7hVs2eeLuJU4G6dgmSlfN9sK0XH/QwKmi4pn+K56A
+	aRFAKx3WMx4/fhPjjRkaGyD/6hTbv+aI/ehnqjjL8qcavpzTk8dO
+X-Gm-Gg: ASbGncvGRaJVqBK2c9RWT6SGtfilrsxf1742AwkDc1RJPe8ytTmsmYqSWLob0z944df
+	6d3/3/myHWwtm4HNSusZe2Am11UdDfXpU3Hjemkg9CxF9HzyGPBrhjQHxs3rpwH2X1Ym5AK/4PJ
+	bTeA9DzBnm922td5gR3IdrmRCkJ/c+ryTNZ5jF8MUAuT5jQXqHlzRB83pCqnvWG7z4SInvaZkWF
+	p2JobfOgWUa7P6Bq37yEi2otZ2GNGtRCNS7d7l/dmEESUawPijPVIhP/nLewtqzav8pxpXcs9kT
+	d9ZhEAO//a073tEoEyJCSIVfRfv8BfdF8rV1fv7OBQim/GJdFGv4VERcFwhPgrMgk9x3q9huL4X
+	AN6Yn9lnco6+8BRBBVNhOXypEVKP0gw==
+X-Google-Smtp-Source: AGHT+IGfxKsSAmrL28HNu5yl4e6s2vMKqHnmp5LNwavPA9VlB2hFWprDYSQDcjsuRTkffTYQCc6V5w==
+X-Received: by 2002:a05:6214:20a7:b0:6d8:99cf:d2db with SMTP id 6a1803df08f44-6f2c4687fc9mr82895486d6.38.1745009422700;
+        Fri, 18 Apr 2025 13:50:22 -0700 (PDT)
+Received: from theriatric.mshome.net (c-73-123-232-110.hsd1.ma.comcast.net. [73.123.232.110])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6f2c2af11d7sm14355906d6.6.2025.04.18.13.50.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Apr 2025 13:38:09 -0700 (PDT)
-From: David Lechner <dlechner@baylibre.com>
-Date: Fri, 18 Apr 2025 15:37:54 -0500
-Subject: [PATCH v2] iio: amplifiers: ada4250: clean up ada4250_init()
+        Fri, 18 Apr 2025 13:50:22 -0700 (PDT)
+From: Gabriel Shahrouzi <gshahrouzi@gmail.com>
+To: gregkh@linuxfoundation.org,
+	jic23@kernel.org,
+	lars@metafoo.de,
+	linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-staging@lists.linux.dev,
+	Michael.Hennerich@analog.com,
+	sonic.zhang@analog.com,
+	vapier@gentoo.org
+Cc: gshahrouzi@gmail.com,
+	skhan@linuxfoundation.org,
+	linux-kernel-mentees@lists.linux.dev
+Subject: [PATCH v3 0/5] staging: iio: adc: ad7816: Fix channel handling
+Date: Fri, 18 Apr 2025 16:47:34 -0400
+Message-ID: <cover.1745007964.git.gshahrouzi@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250418-iio-amplifiers-ada4250-simplify-data-buffer-in-init-v2-1-1bf9b033aaf5@baylibre.com>
-X-B4-Tracking: v=1; b=H4sIACG4AmgC/6WOQQqDMBREryJZ9xcTY62ueo/i4sf81A9qJLFSE
- e/e1CsUZvNmYGZ2ESkwRdFkuwi0cmQ/JVCXTHQ9Ti8CtomFylWZa3kHZg84zgM7phABLeqUQOT
- T28DigmDezlEAnpJ4gbogY2ShtapLkZrnQI4/5+qzTdxzXHzYzhOr/Ln/7a0SJFRUGXuzaLUqH
- ga3gU2ga+dH0R7H8QU70ZM8+QAAAA==
-X-Change-ID: 20250418-iio-amplifiers-ada4250-simplify-data-buffer-in-init-93ebb1344295
-To: Lars-Peter Clausen <lars@metafoo.de>, 
- Michael Hennerich <Michael.Hennerich@analog.com>, 
- Antoniu Miclaus <antoniu.miclaus@analog.com>, 
- Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Andy Shevchenko <andy@kernel.org>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3495; i=dlechner@baylibre.com;
- h=from:subject:message-id; bh=2Fe3ulMLFE47PgdiZW6fQW+jtVST6VMA1a7HPcbAPgY=;
- b=owEBbQGS/pANAwAKAcLMIAH/AY/AAcsmYgBoArgnxrxzTbtbPD1ltiOhzZ1Cc14HwXa5A2DYb
- hXJH9WaGOqJATMEAAEKAB0WIQTsGNmeYg6D1pzYaJjCzCAB/wGPwAUCaAK4JwAKCRDCzCAB/wGP
- wCHDB/94qfu1fsSRh9mNWIVPBWIE3H6+q0QT62WShTyUr78vOCJMiPGt2D1GPQb3544JM3+uemn
- mM4xkOtCmI472iItqEFIjn3u+P2fa7jJVis/V4WojucKf4NVCdHcWU3UrZ2yVoLHvt7h1Xs/kdu
- K9mqAR8MtTs6MHAw1DXq1IjlxGh76HdA2U/MBO3L94WKhUQWWGspDL4TMrw2vAKjNo52HQ5VXEP
- o/zlujNZiVpYPGETYNWEjXcz4IEK0+FJF2J1wdrKa1DmB3RqUId0A7IOpd6bBKA4R1oOJycmNSO
- yLYYIBsTW56uB59LAuWC28ALroG1L5IISG6Vw9whd6TZ6H/8
-X-Developer-Key: i=dlechner@baylibre.com; a=openpgp;
- fpr=8A73D82A6A1F509907F373881F8AF88C82F77C03
+Content-Transfer-Encoding: 8bit
 
-There are a few opportunities to simplify the code in ada4250_init():
-* Replace local spi variable with dev since spi is not used directly.
-* Drop the data variable and use chip_id directly with the regmap bulk
-  read (__aligned() and initialization of the data variable were
-  unnecessary).
-* Don't use get_unaligned_le16() when not needed.
-* Use dev_err_probe() instead of dev_err() and return.
+The original patch combined a functional fix (allowing channel 7) with
+several refactoring steps (introducing chip_info, renaming structs,
+improving validation). As requested, these have now been separated.
 
-Signed-off-by: David Lechner <dlechner@baylibre.com>
----
-In v1, I though we had a bug, but Andy set me straight. Still, since we
-were already looking at this, there is some room for improvement, so I
-changed this to a cleanup patch instead.
+The series proceeds as follows:
+1. Fix: Allow diagnostic channel 7 for all device variants.
+2. Refactor: Rename the main state structure for clarity before introducing
+   the new chip_info struct.
+3. Refactor: Introduce struct ad7816_chip_info to hold static per-variant
+   data, update ID tables to store pointers, and switch to using
+   device_get_match_data() for firmware-independent identification.
+   This removes the old enum/id mechanism.
+4. Refactor: Add has_busy_pin to chip_info and use this flag to
+   determine BUSY pin handling, replacing pointer comparisons.
+5. Refactor: Simplify channel validation logic using 
+   chip_info->max_channels, removing strcmp() checks.
 
+Regarding the 'fixes' tag: I've applied it only to the first commit
+containing the core fix, primarily to make backporting easier. Is this
+the standard practice, or should the tag typically be applied to
+subsequent commits that build upon or are related to the fix as well?
+
+Chainges in v3:
+	- Split the patch into smaller patches. Make the fix first
+	  followed by clean up.
+	- Include missing channel for channel selection.
+	- Address specific feedback regarding enums vs. chip_info data.
+	- Use device_get_match_data() for device identification.
+	- Move BUSY pin capability check into chip_info data.
+	- Simplify channel validation using chip_info data.
 Changes in v2:
-- Totally new patch.
-- Link to v1: https://lore.kernel.org/r/20250418-iio-amplifiers-ada4250-simplify-data-buffer-in-init-v1-1-7e7bd6dad423@baylibre.com
----
- drivers/iio/amplifiers/ada4250.c | 34 ++++++++++++++--------------------
- 1 file changed, 14 insertions(+), 20 deletions(-)
+        - Refactor by adding chip_info struct which simplifies
+          conditional logic.
 
-diff --git a/drivers/iio/amplifiers/ada4250.c b/drivers/iio/amplifiers/ada4250.c
-index 74f8429d652b17b4d1f38366e23ce6a2b3e9b218..13906e4b4842095717566781ad00cd58f3934510 100644
---- a/drivers/iio/amplifiers/ada4250.c
-+++ b/drivers/iio/amplifiers/ada4250.c
-@@ -13,8 +13,7 @@
- #include <linux/regmap.h>
- #include <linux/regulator/consumer.h>
- #include <linux/spi/spi.h>
--
--#include <linux/unaligned.h>
-+#include <linux/types.h>
- 
- /* ADA4250 Register Map */
- #define ADA4250_REG_GAIN_MUX        0x00
-@@ -299,25 +298,23 @@ static void ada4250_reg_disable(void *data)
- 
- static int ada4250_init(struct ada4250_state *st)
- {
-+	struct device *dev = &st->spi->dev;
- 	int ret;
--	u16 chip_id;
--	u8 data[2] __aligned(8) = {};
--	struct spi_device *spi = st->spi;
-+	__le16 chip_id;
- 
--	st->refbuf_en = device_property_read_bool(&spi->dev, "adi,refbuf-enable");
-+	st->refbuf_en = device_property_read_bool(dev, "adi,refbuf-enable");
- 
--	st->reg = devm_regulator_get(&spi->dev, "avdd");
-+	st->reg = devm_regulator_get(dev, "avdd");
- 	if (IS_ERR(st->reg))
--		return dev_err_probe(&spi->dev, PTR_ERR(st->reg),
-+		return dev_err_probe(dev, PTR_ERR(st->reg),
- 				     "failed to get the AVDD voltage\n");
- 
- 	ret = regulator_enable(st->reg);
--	if (ret) {
--		dev_err(&spi->dev, "Failed to enable specified AVDD supply\n");
--		return ret;
--	}
-+	if (ret)
-+		return dev_err_probe(dev, ret,
-+				     "Failed to enable specified AVDD supply\n");
- 
--	ret = devm_add_action_or_reset(&spi->dev, ada4250_reg_disable, st->reg);
-+	ret = devm_add_action_or_reset(dev, ada4250_reg_disable, st->reg);
- 	if (ret)
- 		return ret;
- 
-@@ -326,16 +323,13 @@ static int ada4250_init(struct ada4250_state *st)
- 	if (ret)
- 		return ret;
- 
--	ret = regmap_bulk_read(st->regmap, ADA4250_REG_CHIP_ID, data, 2);
-+	ret = regmap_bulk_read(st->regmap, ADA4250_REG_CHIP_ID, &chip_id,
-+			       sizeof(chip_id));
- 	if (ret)
- 		return ret;
- 
--	chip_id = get_unaligned_le16(data);
--
--	if (chip_id != ADA4250_CHIP_ID) {
--		dev_err(&spi->dev, "Invalid chip ID.\n");
--		return -EINVAL;
--	}
-+	if (le16_to_cpu(chip_id) != ADA4250_CHIP_ID)
-+		return dev_err_probe(dev, -EINVAL, "Invalid chip ID.\n");
- 
- 	return regmap_write(st->regmap, ADA4250_REG_REFBUF_EN,
- 			    FIELD_PREP(ADA4250_REFBUF_MSK, st->refbuf_en));
+Gabriel Shahrouzi (5):
+  staging: iio: adc: ad7816: Allow channel 7 for all devices
+  staging: iio: adc: ad7816: Rename state structure
+  staging: iio: adc: ad7816: Introduce chip_info and use pointer
+    matching
+  staging: iio: adc: ad7816: Use chip_info for device capabilities
+  staging: iio: adc: ad7816: Simplify channel validation using chip_info
 
----
-base-commit: aff301f37e220970c2f301b5c65a8bfedf52058e
-change-id: 20250418-iio-amplifiers-ada4250-simplify-data-buffer-in-init-93ebb1344295
+ drivers/staging/iio/adc/ad7816.c | 94 ++++++++++++++++++--------------
+ 1 file changed, 54 insertions(+), 40 deletions(-)
 
-Best regards,
 -- 
-David Lechner <dlechner@baylibre.com>
+2.43.0
 
 

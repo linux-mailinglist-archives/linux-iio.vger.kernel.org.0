@@ -1,80 +1,80 @@
-Return-Path: <linux-iio+bounces-18237-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18238-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 120CEA935AC
-	for <lists+linux-iio@lfdr.de>; Fri, 18 Apr 2025 11:57:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D66DBA935AB
+	for <lists+linux-iio@lfdr.de>; Fri, 18 Apr 2025 11:57:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 36D9D1B670D2
-	for <lists+linux-iio@lfdr.de>; Fri, 18 Apr 2025 09:57:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2682C8A6DF9
+	for <lists+linux-iio@lfdr.de>; Fri, 18 Apr 2025 09:57:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83AB326F44D;
-	Fri, 18 Apr 2025 09:56:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 549271F416D;
+	Fri, 18 Apr 2025 09:57:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gg5qu0tT"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HwQtpWjb"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99A08269CF1;
-	Fri, 18 Apr 2025 09:56:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67841269CF1;
+	Fri, 18 Apr 2025 09:57:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744970212; cv=none; b=ks8kXwfGbaMq/4kgBngGj3BfgS2dzjA9QH1vCpA55wBKT2E6GeUIfMp2w39kqb7zM/GQGdgmvlM269XDwRpM1wsP8daFcLFIzha/7vDXY/fPZ/FIe8DkMjvYJeEIF9pq0GKED8pPQdUuDMjBIot3dxo6W+EZWQPxgrF8cIBGM90=
+	t=1744970243; cv=none; b=L7yueyKa5cZYUhuVqn1hc93PZpwbYOdpWMaWQpMdl5f/ElcG2tPe7LY7+erBU2AF/3kaBweM2sWd5WVdluPXY6LJfAFibS9H5DiQF8jtldIcMZWbwloaHLQoaDYUe5LRZfDYsKIqXbNYuKOAvdTtbPVGtvT9J+bWdZ+l/kCcmsc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744970212; c=relaxed/simple;
-	bh=A/QQjRB4nQMCJn6/TufvAbEtoA9rAkgMzsLpUvfuF4s=;
+	s=arc-20240116; t=1744970243; c=relaxed/simple;
+	bh=WmaSvDoeqoFzaQP/Y7NFJdAouhFUwa+QoPNGy2guwBw=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=frDYTwqE2wdfEaaJm/aWSQWwVCQzRpvpy9H9fEPPGUXkBu9gK5+DsTXCSQhkAd9qJx+6v1rOkiOSArAAv2FEotETVCKOWfcr4wUveFvgc4HkDg3SPYDogKgaevAxXtHGtuUCLXeWM1GXFTLJld1KtCFxf1jr80+kENgMmUav2Xk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gg5qu0tT; arc=none smtp.client-ip=209.85.221.49
+	 Content-Type:MIME-Version; b=PLN5CAgn6gqEVaYMZGZLosLIsWcC0qU58U6gTRQW6Pbhlsir8b7n1jf3m9VlT9S3ifiSYox/8CcpQOnkWzw2wS6oGcFNtNj2x/sMjUSQ85chGh+A0S1twcwedOYeB7f+grIpBFFjVrzpG9HjVIYZIEBlx5cyEfqvo3bwJvU3a3Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HwQtpWjb; arc=none smtp.client-ip=209.85.221.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-39149bccb69so1723189f8f.2;
-        Fri, 18 Apr 2025 02:56:50 -0700 (PDT)
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-39ee57c0b8cso1641312f8f.0;
+        Fri, 18 Apr 2025 02:57:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744970209; x=1745575009; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1744970239; x=1745575039; darn=vger.kernel.org;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=6JnbYNgpq8QEYxht1353W0il/coYdog3puA39+m94LY=;
-        b=gg5qu0tTWvYdlliOIGIiiasXRA4gDmAm/jYjARotM+/z/ZRbPKaoaB/Ch/CiyiGy6y
-         Ij8vEzbZHespuh76GwqS83OWT47XRHZ0v/ZyB7Sis8fCMC/DOr0D1KMwEMhYpXJCeQCc
-         hXRM19/RwSJca7Yb6pXHJFm6nzBm3lrM3rslpjX2QKTfpkU0+2NmdFkphq8kBXTszCU0
-         92l56y1S+88aL+2GSP3kbafjCOdiXlqazVd+tK+5ki7GSpRAUYA2oj3ERARlaX5FuOYj
-         GKGfFZBRqgLPW9vabdnk2ii8pXML4e9gFvL5gFRM0S6TXNeYtpLAtj6SS8fVCzFhU694
-         pZHA==
+        bh=kJPUilpm25GT69DD5Yt1sEWK/7fI6b7BM1tjdZsDCdE=;
+        b=HwQtpWjbmR6ph3fshygqFYNno+mwlQ+tSO1rWvEbJmphZXi35K/Wj8oKfKooGxZoqR
+         D1Mh/S1qJKhtBIGAXzZzoBEBHrsyI9b6k3nL9tUzbrZZXoJP9tnjMYxs/jHUrX4D9Moh
+         qPaSrLLr8xzIsncMjqH1ZNjVeIMRGB0q7PoVV5cDDmTy/lIiqM/+5Z0mN6La0kThsG8a
+         AphpT8aB7IKrcL04rqSU2lVhW6XXkt3slk6vYY6mFYhHm2ygckqSuesolTH/WdKti5rL
+         3nMjeclOO9xvzhfFz+xYMCGqiNAPdFRL96QR1wRpLdiVFgVN08zmsOFUeQ5YaIa8KhdT
+         YbNQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744970209; x=1745575009;
+        d=1e100.net; s=20230601; t=1744970239; x=1745575039;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=6JnbYNgpq8QEYxht1353W0il/coYdog3puA39+m94LY=;
-        b=ldVbxmIARMES0w4E8mb86G6UZ3TP6b58VovTRJ6aZu45IMMdTHpIs11aLcmYxBGTyU
-         5XEQXUmj8A1hsaPQJF9LFHxb/wiY4eOxjM9NTlinfx3o/Wokt5Okjf4JYvyOom4CUCI2
-         3Nigdg6H5W+jn2pu8rg3dtDI7AX07NccgwRB2DEnfAKcbSvFZnFUDUQbgvDuiaAjusUx
-         9Y6fZDtpQ1y7yanXfWB/LN3DSr3+nD01QS+ZDCAJQxOKsHvcMFUqluRX3LJJlcQM9wNt
-         UzSFgjwJTF959mvkt9slx4UvSycnE29J4cnuE31X2/T3H6lTYQ1uY2POcsfmOtKNDvby
-         /X7g==
-X-Forwarded-Encrypted: i=1; AJvYcCXq+36egy4C7wBeuYGVb0wMKobVJ7erF2LS7zAwnWPg0BH2nweb0fbsruJCxdJxKsG7yCmSb1b2m1/V4LI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzUbM/51hYKDBN9rFGqiQsHL1qXtCEecBCnxZFnCUH+qC4a6Cop
-	BWZeIwuSos82ljV6UWO3nKboc7YqUSxe75xPNeZ3/CCzWrZTfa8S
-X-Gm-Gg: ASbGncvg6a+u6Iai5NnKuNCkwogua5IVkvPYwM4ZE6tOn2zELAhXfPRX97i2j8vW0cl
-	4SVwJ4QKsT0W4+xKSXJo/em7c0d47LySGcOfVE+vcOWnVhupCEtkRt95NytevpBd1ID5L5lSq8C
-	axizfVQ78utkw78caSl8KDuuSq2HaJKqLbL3y4jV4wwat/l2wbgip59vYkXbREE5a6oXZ23P5Ec
-	EWZH7DnlzI+Nlx3bdyhSP8SCLvf3tEOGzMbwYtEgWMsNuZxMHkrz6RuNSqI+DD9riAPI31kZJtA
-	uEXAUSat2PQoAbU1jGaMQy1Ujo5QiWG/NL1KXmAqDOWL3+IZja3C2xceEJOgJ7WG2+R7uhgvnSP
-	ThmNqYzXsq7BWooA=
-X-Google-Smtp-Source: AGHT+IG9XuTCmPLVk2umtFfxUnIxxKIA2Xaugc9G5OZzls8mvgzpV5pXnzR7Jt8N8XgwxqLl/robOg==
-X-Received: by 2002:a5d:648c:0:b0:390:e62e:f31f with SMTP id ffacd0b85a97d-39efba2638cmr1792786f8f.3.1744970208853;
-        Fri, 18 Apr 2025 02:56:48 -0700 (PDT)
+        bh=kJPUilpm25GT69DD5Yt1sEWK/7fI6b7BM1tjdZsDCdE=;
+        b=furco27ur4G0K9xyinIBcV5ktHfy+xO3064gjo7H+qhQaun99HGNV9n+E43i1M1cIk
+         yYQr0nnfrsQ5/4vYlUgNFpv1Qk3f4zEZrZKScW07S4aZI1P1p6JuEx7WDtEtmow91dQg
+         z9hk/L/0ZlhEaZ0bzbBAghic46Mrz4pQ/Fvgf89r6ShGRTOUwm3XFHq4Pv+Jf92seKHU
+         LXKIuwRrMcXDoDRekvkKQtHbJiXscRU6WubvHKOuL7xvpjjyoztup9tRHcYMiYyYHHhK
+         cWgRKQ8tDnjDmE0qQ6MV8phrGo0v6nEVmQSWBfDlWhjUKMHBuQnCBBZM/JMKs4Qs67bP
+         ba5Q==
+X-Forwarded-Encrypted: i=1; AJvYcCV7H63URhxit/8bARs500JA/UsPSlnhWC9YG1eXBIY0kdoC3shkzac0gWvbHZphXZjKXY2npHtB01Lr40g=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwUXuoYKS+fV2xwG3Wp4Olm+gaIaFY37SxPX1pUUmAbAAZyAyq/
+	Atr5i0EWjm1Mj6IS122TUCLend8C3TsRgtmBCIKhtFfOcyPfdmft
+X-Gm-Gg: ASbGncsUQ/dU+7xzMOXTUFuiGP5H0HwBbV6sO7lAb/c2yI7121B9i212dllJSZ0AIKC
+	FTw/i7apEnJcBOUAI1V/asamkE5/kgKIi14BtRzIqvJxKyCXCsNs5fYldN/JDNrUy5bidbhGey7
+	hN+grbo3oFofCEBVv8NSbwVnVdKyuQFDMABfums2+5spV7MV0/jRVWRpMlBT1PUWNnRkLm/zbNB
+	i1TDv6lQ3pY5FzCetaSYmLyB8MKzkgYvc3I+YvXf2I6ZVyuFr5fdiFiZKYfIf7xCiRPiJF8rzYv
+	GjotACeSh6VRr8+OhfzpqCaF+x9oG3eG2l8LCtEdXASINWwh2lvXXMU6HfMgnhC0ftqU6kFopiD
+	6gt02sEbuJo/uTIs=
+X-Google-Smtp-Source: AGHT+IHyu7Y9UocFj6NyupWQTlJdBONm83Bu6jCvrQKTBDg/mDOlNqwmUghvwlMKZE314LRRl+t+tg==
+X-Received: by 2002:a05:6000:4201:b0:391:456b:6ab7 with SMTP id ffacd0b85a97d-39efba5db9bmr1508046f8f.34.1744970239352;
+        Fri, 18 Apr 2025 02:57:19 -0700 (PDT)
 Received: from ?IPv6:2001:818:ea56:d000:56e0:ceba:7da4:6673? ([2001:818:ea56:d000:56e0:ceba:7da4:6673])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39efa43d07csm2323159f8f.58.2025.04.18.02.56.47
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39efa4207afsm2310967f8f.12.2025.04.18.02.57.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Apr 2025 02:56:48 -0700 (PDT)
-Message-ID: <d3800b1fc2430d897750541219e39fd43216b199.camel@gmail.com>
-Subject: Re: [PATCH 2/8] iio: adc: mt6360-adc: use aligned_s64 for timestamp
+        Fri, 18 Apr 2025 02:57:19 -0700 (PDT)
+Message-ID: <057bec6375819c3a4cd227c20a60ec1dbb7405c3.camel@gmail.com>
+Subject: Re: [PATCH 3/8] iio: addac: ad74413r: use aligned_s64 for timestamp
 From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
 To: David Lechner <dlechner@baylibre.com>, Jonathan Cameron
  <jic23@kernel.org>,  Nuno =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>, Andy
@@ -87,11 +87,11 @@ To: David Lechner <dlechner@baylibre.com>, Jonathan Cameron
  <ak@it-klinger.de>, Petre Rodan <petre.rodan@subdimension.ro>
 Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org
-Date: Fri, 18 Apr 2025 09:57:09 +0100
-In-Reply-To: <20250417-iio-more-timestamp-alignment-v1-2-eafac1e22318@baylibre.com>
+Date: Fri, 18 Apr 2025 09:57:38 +0100
+In-Reply-To: <20250417-iio-more-timestamp-alignment-v1-3-eafac1e22318@baylibre.com>
 References: 
 	<20250417-iio-more-timestamp-alignment-v1-0-eafac1e22318@baylibre.com>
-	 <20250417-iio-more-timestamp-alignment-v1-2-eafac1e22318@baylibre.com>
+	 <20250417-iio-more-timestamp-alignment-v1-3-eafac1e22318@baylibre.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
@@ -104,37 +104,55 @@ MIME-Version: 1.0
 
 On Thu, 2025-04-17 at 11:52 -0500, David Lechner wrote:
 > Follow the pattern of other drivers and use aligned_s64 for the
-> timestamp. This will ensure that the timestamp is correctly aligned on
-> all architectures. It also ensures that the struct itself it also 8-byte
-> aligned so we can drop the explicit __aligned(8) attribute.
+> timestamp. Technically there was no issue here since
+> AD74413R_FRAME_SIZE * AD74413R_CHANNEL_MAX =3D=3D 16 and IIO_DMA_MINALIGN
+> is always a multiple of 8. But best to conform in case someone copies
+> this to new code and then tweaks something.
+>=20
+> Also move the unaligned.h header while touching this since it was the
+> only one not in alphabetical order.
 >=20
 > Signed-off-by: David Lechner <dlechner@baylibre.com>
 > ---
 
 Reviewed-by: Nuno S=C3=A1 <nuno.sa@analog.com>
 
-> =C2=A0drivers/iio/adc/mt6360-adc.c | 4 ++--
-> =C2=A01 file changed, 2 insertions(+), 2 deletions(-)
+> =C2=A0drivers/iio/addac/ad74413r.c | 5 +++--
+> =C2=A01 file changed, 3 insertions(+), 2 deletions(-)
 >=20
-> diff --git a/drivers/iio/adc/mt6360-adc.c b/drivers/iio/adc/mt6360-adc.c
+> diff --git a/drivers/iio/addac/ad74413r.c b/drivers/iio/addac/ad74413r.c
 > index
-> 4eb2455d6ffacb8f09a404df4490b5a11e49660d..f8e98b6fa7e923c6b73bedf9ca1c466=
-e7a9c3c47
+> f0929616ab899cb374f00869787321eed4ccde16..a0bb1dbcb7ad9d02337d0990e5a3f90=
+be7eaa4ac
 > 100644
-> --- a/drivers/iio/adc/mt6360-adc.c
-> +++ b/drivers/iio/adc/mt6360-adc.c
-> @@ -263,8 +263,8 @@ static irqreturn_t mt6360_adc_trigger_handler(int irq=
-, void *p)
-> =C2=A0	struct mt6360_adc_data *mad =3D iio_priv(indio_dev);
-> =C2=A0	struct {
-> =C2=A0		u16 values[MT6360_CHAN_MAX];
-> -		int64_t timestamp;
-> -	} data __aligned(8);
-> +		aligned_s64 timestamp;
-> +	} data;
-> =C2=A0	int i =3D 0, bit, val, ret;
+> --- a/drivers/iio/addac/ad74413r.c
+> +++ b/drivers/iio/addac/ad74413r.c
+> @@ -4,7 +4,6 @@
+> =C2=A0 * Author: Cosmin Tanislav <cosmin.tanislav@analog.com>
+> =C2=A0 */
 > =C2=A0
-> =C2=A0	memset(&data, 0, sizeof(data));
+> -#include <linux/unaligned.h>
+> =C2=A0#include <linux/bitfield.h>
+> =C2=A0#include <linux/cleanup.h>
+> =C2=A0#include <linux/crc8.h>
+> @@ -24,6 +23,8 @@
+> =C2=A0#include <linux/regmap.h>
+> =C2=A0#include <linux/regulator/consumer.h>
+> =C2=A0#include <linux/spi/spi.h>
+> +#include <linux/types.h>
+> +#include <linux/unaligned.h>
+> =C2=A0
+> =C2=A0#include <dt-bindings/iio/addac/adi,ad74413r.h>
+> =C2=A0
+> @@ -84,7 +85,7 @@ struct ad74413r_state {
+> =C2=A0	 */
+> =C2=A0	struct {
+> =C2=A0		u8 rx_buf[AD74413R_FRAME_SIZE * AD74413R_CHANNEL_MAX];
+> -		s64 timestamp;
+> +		aligned_s64 timestamp;
+> =C2=A0	} adc_samples_buf __aligned(IIO_DMA_MINALIGN);
+> =C2=A0
+> =C2=A0	u8	adc_samples_tx_buf[AD74413R_FRAME_SIZE * AD74413R_CHANNEL_MAX];
 >=20
 
 

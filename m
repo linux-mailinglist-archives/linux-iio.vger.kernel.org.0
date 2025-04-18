@@ -1,58 +1,58 @@
-Return-Path: <linux-iio+bounces-18265-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18266-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16D30A939F7
-	for <lists+linux-iio@lfdr.de>; Fri, 18 Apr 2025 17:41:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D84A0A93A16
+	for <lists+linux-iio@lfdr.de>; Fri, 18 Apr 2025 17:50:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A6091B66E05
-	for <lists+linux-iio@lfdr.de>; Fri, 18 Apr 2025 15:41:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E6D71B6674A
+	for <lists+linux-iio@lfdr.de>; Fri, 18 Apr 2025 15:50:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27C05213E6B;
-	Fri, 18 Apr 2025 15:40:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 871B2214201;
+	Fri, 18 Apr 2025 15:50:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R66XEF5o"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ujkTY7sM"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB38521325D;
-	Fri, 18 Apr 2025 15:40:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DC62433C4;
+	Fri, 18 Apr 2025 15:50:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744990848; cv=none; b=uMEwdxn5rq3reeKMo+rgKZp5/5I2z3yRcRg/nh0wnHWVTMBcFLFQZy8fZd/t+PYW8hvGrg9/pHyn30zVP20XpZHljRFTica9uIOb0vEFatWak4tspfl2KrLbep4gu3eB+ivwzQ6+1rLlqykEGp1dL3nhe/tXa95uvKri0utdsPc=
+	t=1744991420; cv=none; b=kzh7Cmt+pkoxuVwHwCqAz2mBs4/fbTlE4U+sMWNPCcBFis2/dHPw1dMqxxKp1qVCZHILyMW7RYSgCpK6bievNp5YeT8/RSpOE77FqKEdBzMLnNQLB8jUzUzr4DBKvC8cY2vg7oRvTzunmHbJlGFcq08QDaw01AIItPNKNSbNhZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744990848; c=relaxed/simple;
-	bh=rPXKeb649bya67Hj2amG1rEuNmF4UK0HVq6E3shvdXs=;
+	s=arc-20240116; t=1744991420; c=relaxed/simple;
+	bh=lj4gGmxWHJ2C0K+iLE+xhlpcwP1XXgB3fNy5ud5B7Uk=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=m2Ss+0qdxBeqsrOUxYEYtspEd0e5ZpgI6Os4bpHOQwn6rk101KiBSK/GTBTNebhx8kCuNd4tMrFaPpIiIYUKkW8BmV4QQ2Ufj8D9vx5BQeXByHtr3hhgNBJsZoHaYl4T+qlHr4hKx2Ou++aiC50SsOFaAwC1FseDKWIRGPK1PLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R66XEF5o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC0C0C4CEE2;
-	Fri, 18 Apr 2025 15:40:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ubhEIFkTTcVKYrMmDBJkDLlYyAymXdtSeQoXBvLKkCNRrc9SlGo4yBViKNg8QhtG1fgbsraz1f2uNxCxkpO0LVfn71lQAc3uR9AAiXXwvshSGgA5fN8ZoZznaIvIog4xHBNUbxB7iMF7nhqSBD8zhjCSdUz30ljomPUCqlZzlnM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ujkTY7sM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB6D2C4CEE2;
+	Fri, 18 Apr 2025 15:50:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744990848;
-	bh=rPXKeb649bya67Hj2amG1rEuNmF4UK0HVq6E3shvdXs=;
+	s=k20201202; t=1744991419;
+	bh=lj4gGmxWHJ2C0K+iLE+xhlpcwP1XXgB3fNy5ud5B7Uk=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=R66XEF5owpz2ItMA+GVvWVvtlwaHBtrPL9CgOuefaYEsKVD+G9RhMV4lhFQNzzLz7
-	 6qlvMzRZS/JvDjxKUD/BSXbOIjQVjSvnaarD3sJ+LAu8HbIYbp+9sCeke0XNepPll/
-	 aST73jlpbkU+KtK4dFXEvUK52VPE/4w4cz6Zl3+/Uksk0D6A2Hy90+da3R0cPl0Jou
-	 ivb4cE+uyV95rYMf5bXPSwiHFshGG59l3YMF28rdaJrdgaLff8dzJ/w5dGFeBEMsP+
-	 9svFfgAZK2JjH+0roQjh2VqwlNPBKxFsCMm5JEpY2/IGk361x8Pr8+f/afepwca8pn
-	 jtNJ9S8zswQZQ==
-Date: Fri, 18 Apr 2025 16:40:40 +0100
+	b=ujkTY7sMbk7kGWCzRtCYZGOh96kao3RWiGAeVDhXwWp0DAQsi2iyZ8NvEVp/Pl3qd
+	 f4ynJWRXs8BbPqwVUkmmYopktuC40XlXsKXrMfRgoKJg8vHV1ir75uZ0fmPf0Am0Ag
+	 Pa6DpB/luZCNNoU9MO2yPdjM2QG9QajUCjLn0sKz+dBGUh7A/+kxQqEpZzYz8vjjp4
+	 iYeFkjROP1kjm9VWnPlI02A6zODd4MVIvQNdHMfYsAaK9zx+clHReOtaf1qyFGlOfI
+	 g564Fl2G1+qPpvU4lFYRIaUUBBO4UrV0eGVCDEurGY78dD1zTxHF0biaAGwxWGgLqM
+	 J41/L5aMWy5WA==
+Date: Fri, 18 Apr 2025 16:50:12 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: Gabriel Shahrouzi <gshahrouzi@gmail.com>
 Cc: gregkh@linuxfoundation.org, lars@metafoo.de, linux-iio@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-staging@lists.linux.dev,
  Michael.Hennerich@analog.com, skhan@linuxfoundation.org,
- linux-kernel-mentees@lists.linux.dev, stable@vger.kernel.org
-Subject: Re: [PATCH] iio: frequency: Use SLEEP bit instead of RESET to
- disable output
-Message-ID: <20250418164040.0f103380@jic23-huawei>
-In-Reply-To: <20250417135434.568007-1-gshahrouzi@gmail.com>
-References: <20250417135434.568007-1-gshahrouzi@gmail.com>
+ kernelmentees@lists.linuxfoundation.org
+Subject: Re: [PATCH] iio: accel: adis16203: Fix single-axis representation
+ and CALIBBIAS handling
+Message-ID: <20250418165012.53c9bb85@jic23-huawei>
+In-Reply-To: <20250415222652.545026-1-gshahrouzi@gmail.com>
+References: <20250415222652.545026-1-gshahrouzi@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,39 +63,154 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 17 Apr 2025 09:54:34 -0400
+On Tue, 15 Apr 2025 18:26:52 -0400
 Gabriel Shahrouzi <gshahrouzi@gmail.com> wrote:
 
-> According to the AD9832 datasheet (Table 10, D12 description), setting
-> the RESET bit forces the phase accumulator to zero, which corresponds to
-> a full-scale DC output, rather than disabling the output signal.
+> The ADIS16203 is a single-axis 360 degree inclinometer. The previous
+> driver code incorrectly represented this by defining separate X and Y
+> inclination channels based on the two different output format registers
+> (0x0C for 0-360 deg, 0x0E for +/-180 deg). This violated IIO conventions
+> and misrepresented the hardware's single angle output. The 'Fixme'
+> comment on the original Y channel definition indicated this known issue.
 > 
-> The correct way to disable the output and enter a low-power state is to
-> set the AD9832_SLEEP bit (Table 10, D13 description), which powers down
-> the internal DAC current sources and disables internal clocks.
-> 
-> Fixes: ea707584bac1 ("Staging: IIO: DDS: AD9832 / AD9835 driver")
-> Cc: stable@vger.kernel.org
 > Signed-off-by: Gabriel Shahrouzi <gshahrouzi@gmail.com>
 > ---
-Seems reasonable but I'd like some more review of this before picking it up.
-So feel free to poke me if nothing happens in say 2 weeks from now.
+> Not sure to put a fixes tag here or not because the driver used to be
+> spread out across multiple files until it was whittled down to one file
+> using a common interface for similar devices.
 
->  drivers/staging/iio/frequency/ad9832.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+No fixes tag for this one is the right choice. It is a complex bit of
+ABI abuse.
+
+> ---
+>  drivers/staging/iio/accel/adis16203.c | 52 ++++++++++++++++-----------
+>  1 file changed, 31 insertions(+), 21 deletions(-)
 > 
-> diff --git a/drivers/staging/iio/frequency/ad9832.c b/drivers/staging/iio/frequency/ad9832.c
-> index db42810c7664b..0872ff4ec4896 100644
-> --- a/drivers/staging/iio/frequency/ad9832.c
-> +++ b/drivers/staging/iio/frequency/ad9832.c
-> @@ -232,7 +232,7 @@ static ssize_t ad9832_write(struct device *dev, struct device_attribute *attr,
->  			st->ctrl_src &= ~(AD9832_RESET | AD9832_SLEEP |
->  					AD9832_CLR);
->  		else
-> -			st->ctrl_src |= AD9832_RESET;
-> +			st->ctrl_src |= AD9832_SLEEP;
+> diff --git a/drivers/staging/iio/accel/adis16203.c b/drivers/staging/iio/accel/adis16203.c
+> index c1c73308800c5..73288121bf0bd 100644
+> --- a/drivers/staging/iio/accel/adis16203.c
+> +++ b/drivers/staging/iio/accel/adis16203.c
+> @@ -28,11 +28,11 @@
+>  /* Output, temperature */
+>  #define ADIS16203_TEMP_OUT       0x0A
 >  
->  		st->data = cpu_to_be16((AD9832_CMD_SLEEPRESCLR << CMD_SHIFT) |
->  					st->ctrl_src);
+> -/* Output, x-axis inclination */
+> -#define ADIS16203_XINCL_OUT      0x0C
+> +/* Output, 360 deg format */
+> +#define ADIS16203_INCL_OUT       0x0C
+>  
+> -/* Output, y-axis inclination */
+> -#define ADIS16203_YINCL_OUT      0x0E
+> +/* Output, +/-180 deg format */
+> +#define ADIS16203_INCL_180_OUT   0x0E
+>  
+>  /* Incline null calibration */
+>  #define ADIS16203_INCL_NULL      0x18
+> @@ -128,8 +128,7 @@
+>  #define ADIS16203_ERROR_ACTIVE          BIT(14)
+>  
+>  enum adis16203_scan {
+> -	 ADIS16203_SCAN_INCLI_X,
+> -	 ADIS16203_SCAN_INCLI_Y,
+> +	 ADIS16203_SCAN_INCLI,
+>  	 ADIS16203_SCAN_SUPPLY,
+>  	 ADIS16203_SCAN_AUX_ADC,
+>  	 ADIS16203_SCAN_TEMP,
+> @@ -137,10 +136,6 @@ enum adis16203_scan {
+>  
+>  #define DRIVER_NAME		"adis16203"
+>  
+> -static const u8 adis16203_addresses[] = {
+> -	[ADIS16203_SCAN_INCLI_X] = ADIS16203_INCL_NULL,
+> -};
+> -
+>  static int adis16203_write_raw(struct iio_dev *indio_dev,
+>  			       struct iio_chan_spec const *chan,
+>  			       int val,
+> @@ -148,10 +143,15 @@ static int adis16203_write_raw(struct iio_dev *indio_dev,
+>  			       long mask)
+>  {
+>  	struct adis *st = iio_priv(indio_dev);
+> -	/* currently only one writable parameter which keeps this simple */
+> -	u8 addr = adis16203_addresses[chan->scan_index];
+>  
+> -	return adis_write_reg_16(st, addr, val & 0x3FFF);
+> +	switch (mask) {
+> +	case IIO_CHAN_INFO_CALIBBIAS:
+> +		if (chan->scan_index != ADIS16203_SCAN_INCLI)
+> +			return -EINVAL;
+> +		return adis_write_reg_16(st, ADIS16203_INCL_NULL, val & 0x3FFF);
+
+I would check for out of range before you get here rather than masking.
+Clearly the old code just masked, but we can do better given you are refactoring
+it.  If an invalid setting is requested best thing is normally to just return
+an error so userspace can see it was ignored.
+
+
+> +	default:
+> +		return -EINVAL;
+> +	}
+>  }
+>  
+>  static int adis16203_read_raw(struct iio_dev *indio_dev,
+> @@ -161,7 +161,6 @@ static int adis16203_read_raw(struct iio_dev *indio_dev,
+>  {
+>  	struct adis *st = iio_priv(indio_dev);
+>  	int ret;
+> -	u8 addr;
+>  	s16 val16;
+>  
+>  	switch (mask) {
+> @@ -194,8 +193,9 @@ static int adis16203_read_raw(struct iio_dev *indio_dev,
+>  		*val = 25000 / -470 - 1278; /* 25 C = 1278 */
+>  		return IIO_VAL_INT;
+>  	case IIO_CHAN_INFO_CALIBBIAS:
+> -		addr = adis16203_addresses[chan->scan_index];
+> -		ret = adis_read_reg_16(st, addr, &val16);
+> +		if (chan->scan_index != ADIS16203_SCAN_INCLI)
+> +			return -EINVAL;
+> +		ret = adis_read_reg_16(st, ADIS16203_INCL_NULL, &val16);
+>  		if (ret)
+>  			return ret;
+>  		*val = sign_extend32(val16, 13);
+> @@ -206,13 +206,23 @@ static int adis16203_read_raw(struct iio_dev *indio_dev,
+>  }
+>  
+>  static const struct iio_chan_spec adis16203_channels[] = {
+> +	{
+> +		.type = IIO_INCLI,
+> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
+> +					BIT(IIO_CHAN_INFO_SCALE) |
+> +					BIT(IIO_CHAN_INFO_CALIBBIAS),
+> +		.address = ADIS16203_INCL_180_OUT,
+> +		.scan_index = ADIS16203_SCAN_INCLI,
+> +		.scan_type = {
+> +			.sign = 's',
+> +			.realbits = 14,
+> +			.storagebits = 16,
+> +			.shift = 0,
+
+No need for setting shift to 0 explicitly.  It will happen anyway and
+a shift of 0 is a fairly natural default.
+
+> +			.endianness = IIO_CPU,
+> +		},
+> +	},
+>  	ADIS_SUPPLY_CHAN(ADIS16203_SUPPLY_OUT, ADIS16203_SCAN_SUPPLY, 0, 12),
+>  	ADIS_AUX_ADC_CHAN(ADIS16203_AUX_ADC, ADIS16203_SCAN_AUX_ADC, 0, 12),
+> -	ADIS_INCLI_CHAN(X, ADIS16203_XINCL_OUT, ADIS16203_SCAN_INCLI_X,
+> -			BIT(IIO_CHAN_INFO_CALIBBIAS), 0, 14),
+> -	/* Fixme: Not what it appears to be - see data sheet */
+> -	ADIS_INCLI_CHAN(Y, ADIS16203_YINCL_OUT, ADIS16203_SCAN_INCLI_Y,
+> -			0, 0, 14),
+Why the ordering change?  I don't think it matters in practice, but easier to
+review of we keep that ordering the same as then no need to think about it at
+all!
+
+Jonathan
+
+>  	ADIS_TEMP_CHAN(ADIS16203_TEMP_OUT, ADIS16203_SCAN_TEMP, 0, 12),
+>  	IIO_CHAN_SOFT_TIMESTAMP(5),
+>  };
 
 

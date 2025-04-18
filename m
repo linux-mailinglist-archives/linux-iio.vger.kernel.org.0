@@ -1,58 +1,66 @@
-Return-Path: <linux-iio+bounces-18249-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18250-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3F20A938C7
-	for <lists+linux-iio@lfdr.de>; Fri, 18 Apr 2025 16:39:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC217A938CC
+	for <lists+linux-iio@lfdr.de>; Fri, 18 Apr 2025 16:44:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 745251B62756
-	for <lists+linux-iio@lfdr.de>; Fri, 18 Apr 2025 14:39:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D10ED17CC45
+	for <lists+linux-iio@lfdr.de>; Fri, 18 Apr 2025 14:44:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E32D31BF33F;
-	Fri, 18 Apr 2025 14:39:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C5FA1C5D46;
+	Fri, 18 Apr 2025 14:44:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DLapG7+V"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IRBvSKcz"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3B2D1B5EB5
-	for <linux-iio@vger.kernel.org>; Fri, 18 Apr 2025 14:39:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 334C41C2324;
+	Fri, 18 Apr 2025 14:44:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744987145; cv=none; b=G1SViwtEs+2RR8JjV515gonm3uYUCi/HHCCSKYs5wr/tzPfFPH+1qGV3pHMJD5BLIt8nFi3L+gOC4FUGonp5tX190Xt75RqVRY8b+zBkDpcM0aguaaSo3TW7E5GXst900DU5xMmUr/ZoDKCzd0xPUCLnfu18wYL9D4O2RN2O4uE=
+	t=1744987456; cv=none; b=UsusnF9+NpVLmZyDK5Hw9qRS73vIWYQyi1xhXy3mwQs9OgSsjzG+Hp0Q4aR6+P2NmNWxQRRBXO5Af2ie6CmWv9mAZ0qD1fgiE7KUdNbvBrgSNfPlV9QVsFdZb0ICYt3iakdFAxRSYbKFYmYXXcKMLlsV7BG5wH8shOTuyItxkIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744987145; c=relaxed/simple;
-	bh=szYsQw1JQm9CTNhuy1Y9B7Zk5U+Bx+exlkUjChm0+oc=;
+	s=arc-20240116; t=1744987456; c=relaxed/simple;
+	bh=GNhKko1seFHw18Ma89S0NH7KnQgIl9H3ALOI3HIBnDA=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FUWI9PSLK53yRufSVVyqehUqYO9txwjOHZ8xxVMPr7FbW5iBX8vikOgJ5sqd7qaY1pzMlsf/o9QcM6b8kws+u9ARfMhMDvvu2eRqGP89ZiIP4vv/KKO2PWqaiMQEG7t61wd2jPlYTueMuk++3yg+nIiCEvYZmW33XwgoF5SQOsk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DLapG7+V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D86DBC4CEE2;
-	Fri, 18 Apr 2025 14:39:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qfOrJBuUnYLFxfZm0C0Gkr5fvWDiXFZfb6kEvhTBLy92MQtgly85KThZz7Y45v6RawCSwMWlQ5DFORig0o9AyRAucBqxRg1fHi+Bw6iMF1WMBQ1lnEiepaSzS2n6AYCAC2sWrVed9iY4cYKmyTwbfc9snxF8Px9isTlv8XtHfN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IRBvSKcz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7C04C4CEE2;
+	Fri, 18 Apr 2025 14:44:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744987145;
-	bh=szYsQw1JQm9CTNhuy1Y9B7Zk5U+Bx+exlkUjChm0+oc=;
+	s=k20201202; t=1744987455;
+	bh=GNhKko1seFHw18Ma89S0NH7KnQgIl9H3ALOI3HIBnDA=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=DLapG7+VSN2wBKkg9pnD/OzE9PchU5kV99K0Pu50zqpvOcs/ir/EUfe0KKl2dVV+V
-	 c+HLD5I+/HiHmxn6YUxp+ED7u6zjwWTARQjHTqK4EzB9pvQ2o86CavOywvv8/FHehj
-	 xKpVowb16l3SJeETDFWglTWzNo0RdfCGovCdfSd2mm0SVQA7W/svAm5Vu/Kr32v4kd
-	 yT+B2BZgeL7O4stW/boHFs2ga1lBNBI7AT8B/Y304KEYxsI3Tgx9kRDOvh3s9FP/QA
-	 FRsVW0OpSlTazgWFNfRhuBYdGwBFvJNPa3is0RUo/Gub4Cs2QCOjSOa8BOTmC5xivz
-	 ZGpMHlxKpXjSA==
-Date: Fri, 18 Apr 2025 15:38:58 +0100
+	b=IRBvSKczkNaeWa3oymabOo6nGXxglDbWbUFLfXy2Std4DBWNzRKIbXG/ciAKTygh8
+	 eiN7QKXLBKziiyvYWnHvYOuKFglauFwqaBzx12mt6yqKLHOFJe8rb1VUB8y2Kl74M3
+	 vBfaCgGHE8N7BqEJwlVcH+GN3EOZaogxv9aU18hLG3jgvCIvZ1+JOn7HZE9DaBgloU
+	 oRlAFoBnbwDoqVo/XzofwhLs+fMI0eP+eD4A1zpMiws/8CmdHGopykOEcuVCyzBG6M
+	 9ZYLR7iEB3IlZDuIS9gvpveNkyxaDkIRHxXIytxKhqFU3xHkz5C9du8AsDLJ9pUojM
+	 rXJTYcPEi0SoQ==
+Date: Fri, 18 Apr 2025 15:44:07 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: David Lechner <dlechner@baylibre.com>
-Cc: linux-iio@vger.kernel.org, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
- Andy Shevchenko <andy@kernel.org>, Jonathan Cameron
- <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH v3 00/20] IIO: Introduce iio_push_to_buffers_with_ts()
- taking an input buffer length argument.
-Message-ID: <20250418153858.1d9284c4@jic23-huawei>
-In-Reply-To: <c3058c51-a956-4f49-837b-4cc0ac7ffeb0@baylibre.com>
-References: <20250413103443.2420727-1-jic23@kernel.org>
-	<c3058c51-a956-4f49-837b-4cc0ac7ffeb0@baylibre.com>
+To: Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>
+Cc: David Lechner <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Matthias Brugger
+ <matthias.bgg@gmail.com>, AngeloGioacchino Del Regno
+ <angelogioacchino.delregno@collabora.com>, Lars-Peter Clausen
+ <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, Cosmin
+ Tanislav <cosmin.tanislav@analog.com>, Tomasz Duszynski
+ <tduszyns@gmail.com>, Jean-Baptiste Maneyrol
+ <jean-baptiste.maneyrol@tdk.com>, Andreas Klinger <ak@it-klinger.de>, Petre
+ Rodan <petre.rodan@subdimension.ro>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-mediatek@lists.infradead.org
+Subject: Re: [PATCH 1/8] iio: adc: dln2-adc: use aligned_s64 for timestamp
+Message-ID: <20250418154407.622af22e@jic23-huawei>
+In-Reply-To: <494ee0cc5be01cb6a4db29d7f1a11dcee22850d6.camel@gmail.com>
+References: <20250417-iio-more-timestamp-alignment-v1-0-eafac1e22318@baylibre.com>
+	<20250417-iio-more-timestamp-alignment-v1-1-eafac1e22318@baylibre.com>
+	<494ee0cc5be01cb6a4db29d7f1a11dcee22850d6.camel@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -60,29 +68,49 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, 16 Apr 2025 18:48:07 -0500
-David Lechner <dlechner@baylibre.com> wrote:
+On Fri, 18 Apr 2025 09:58:04 +0100
+Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
 
-> On 4/13/25 5:34 AM, Jonathan Cameron wrote:
-> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > 
-> > v3:
-> > - Take the dummy driver back to doing a kzalloc()
-> > - Various white space changes.
-> > - Tag collection
-> > v2:
-> > - Add some fixes via aligned_s64 (thanks David)
-> > - Improve naming of new parameter and mark the error check unlikely (thanks Nuno)
-> > 
-> > When using the IIO buffers, the length of each scan element is always known to
-> > the IIO core (used for sizing kfifo elements etc) and depends on which channels
-> > are enabled. Devices often use fixed size structures or arrays.
-> >   
-> Reviewed-by: David Lechner <dlechner@baylibre.com>
-> 
+> On Thu, 2025-04-17 at 11:52 -0500, David Lechner wrote:
+> > Follow the pattern of other drivers and use aligned_s64 for the
+> > timestamp. This will ensure the struct itself it also 8-byte aligned.
+> >=20
+> > Signed-off-by: David Lechner <dlechner@baylibre.com>
+> > --- =20
+>=20
+> With the fixes tag:
+>=20
+> Reviewed-by: Nuno S=C3=A1 <nuno.sa@analog.com>
+This one was in my series... Admittedly without a fixes tag.  :(
 
-Applied and pushed out as testing. Thanks,.
+I've added a tag to that patch given I'd not pushed it out yet.
+Fixes: 7c0299e879dd ("iio: adc: Add support for DLN2 ADC")
+
+>=20
+> > =C2=A0drivers/iio/adc/dln2-adc.c | 2 +-
+> > =C2=A01 file changed, 1 insertion(+), 1 deletion(-)
+> >=20
+> > diff --git a/drivers/iio/adc/dln2-adc.c b/drivers/iio/adc/dln2-adc.c
+> > index
+> > a1e48a756a7b519105393f77c4aebde1f2f85d50..359e26e3f5bcfe16d723f621bdfc0=
+1df2dfcf6a9
+> > 100644
+> > --- a/drivers/iio/adc/dln2-adc.c
+> > +++ b/drivers/iio/adc/dln2-adc.c
+> > @@ -466,7 +466,7 @@ static irqreturn_t dln2_adc_trigger_h(int irq, void=
+ *p)
+> > =C2=A0	struct iio_dev *indio_dev =3D pf->indio_dev;
+> > =C2=A0	struct {
+> > =C2=A0		__le16 values[DLN2_ADC_MAX_CHANNELS];
+> > -		int64_t timestamp_space;
+> > +		aligned_s64 timestamp_space;
+> > =C2=A0	} data;
+> > =C2=A0	struct dln2_adc_get_all_vals dev_data;
+> > =C2=A0	struct dln2_adc *dln2 =3D iio_priv(indio_dev);
+> >  =20
+>=20
+
 

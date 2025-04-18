@@ -1,179 +1,290 @@
-Return-Path: <linux-iio+bounces-18286-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18287-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BDC8A93CA6
-	for <lists+linux-iio@lfdr.de>; Fri, 18 Apr 2025 20:16:34 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF5D4A93CBB
+	for <lists+linux-iio@lfdr.de>; Fri, 18 Apr 2025 20:23:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A993E447A25
-	for <lists+linux-iio@lfdr.de>; Fri, 18 Apr 2025 18:16:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3B02D7A45BE
+	for <lists+linux-iio@lfdr.de>; Fri, 18 Apr 2025 18:22:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EA4221D3D1;
-	Fri, 18 Apr 2025 18:16:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E549622256D;
+	Fri, 18 Apr 2025 18:23:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="wqoPHnvg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VRtjQvdA"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oo1-f52.google.com (mail-oo1-f52.google.com [209.85.161.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F807215795
-	for <linux-iio@vger.kernel.org>; Fri, 18 Apr 2025 18:16:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A19D013B2A4;
+	Fri, 18 Apr 2025 18:23:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745000189; cv=none; b=Gm7YyDs+ThMpF7v0E5QjFxTE/UJw4Nx2WrQkH16XyU7TEcLNw9/bgB1WBG9T/PeUgtPiuFo9eSxl+QSGPCTPg3De928CwNnmbWVc7O+GTxJvigko63nN5dTQyvuQSJKYVDlXCAsypsiqKc41zmwQWIyQdPCMZ+6jz/RQGi3WK48=
+	t=1745000582; cv=none; b=gR8GtQ5n+YTYOpSkERfnUshGBAkyMEVW6fbz7S8rLWqe7wGI5OB52fZSpsD5Azs7DjuGUJDiGveVWLQxdnMGvBbPR2V3csEQvjvBS5wm69DzRYh8mdGPNZ9sjZNRkI2QbMjxxcorUVCA0i/ioqrIu0OPkPPohr0vBtBnwhhf96M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745000189; c=relaxed/simple;
-	bh=Hrwf1aoUO2fKyKpeHM/6WfWnH0OQTd0CdQrP2NqF3dA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=ngpCNBR9218MQkvUlWRy6Sx9Unc/ub958eYE5RPbzU5dOpw/6WLKgKFTrLqRKukCLIFWJJiB+rvf3ejw9L8PKESTp8CxB2xfhBtlM70bge6aHyPXj4+HB3yskMoH2zxAgJZDiqqp7g9BHqycd4CaIXn1WnaHhBzB08paiELCHaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=wqoPHnvg; arc=none smtp.client-ip=209.85.161.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oo1-f52.google.com with SMTP id 006d021491bc7-60406de9cbfso728616eaf.3
-        for <linux-iio@vger.kernel.org>; Fri, 18 Apr 2025 11:16:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1745000185; x=1745604985; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=AQglEEV086U9T/4BDha3drx4fl6TCsy6FTdFNCiQyhY=;
-        b=wqoPHnvgrgXKV8XiHE/XIY69OiEqMXeUDDDrPw+YYbleKXiiJrSXLYUSEZRB6SYLDo
-         xOeSRXp1WYMuGucppLYRwohdGLOtQ0l+S8CC7zARGq/SvVyMqRNThcIsGWUPgr9ykb4l
-         LL45uAp11CLzT7k+BVGH6JLQAE8Qg8MsyFbHgrTLGiyrqeV4cL5eqrrJt6M+SSrqeyKP
-         2KHJVIqwt4aFoKyUky3J1oBfdYuS/3NhcftTYiK/CHmqkD00FbMZtH4Mq48rkFXcLrK6
-         /2jRcQcpQh7D7fB/y7pb8Svaanx+Gj8t46Nn0J8izZBtNmISTLu1C6dH9H5AVa7w71bw
-         lXEA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745000185; x=1745604985;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=AQglEEV086U9T/4BDha3drx4fl6TCsy6FTdFNCiQyhY=;
-        b=vTXNvTi4CLEqGyLeiubkEiHX7MhRWYvsC/Cb2LeLvgE2wvCx0DRwcQOHREo3X61WjG
-         QdJD2Hj0PmMRMEjLs59PRzBWVUdCApNlzx1dO+Jla+CJA0YX/ywxHbAFb9d/j52RGOgp
-         Iyr5bSjK8JiDc9YB9AOcBCI2iGX7mimOuOx4f5XDa2zoTvah95r4Pmw7/acDstNHKjjn
-         sXsSa2xOgY8SDIJMwAQVkQdzFkz5HtJOqNf8LxUItvC9A2ou9gFIYGeip3+C5kzbP89L
-         IDcqtNY3RN91U5lvYwUnvMMKtQekEOlLWnrh5N/HwoilMzXNoSb1tGkbCRX/VBs1xBUq
-         4khw==
-X-Forwarded-Encrypted: i=1; AJvYcCU2kdSlGOfpyjR3Wv8yR7f48yI+tfgKKc0YECoF53wxS5WWwGdDiiAC+Wi8vhLdi+Vtci1py6TxbCo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzqwrBTGY7KJJGl9gbVu77TwyXXJQGyYZebI3O9cq3G/faBgKrb
-	Fz6w7DCb+dMhJGF1eo7M/UoxavYaLGJ8i4SNcPLKZcxz0uPxxgEn7oSeYj+hmm4=
-X-Gm-Gg: ASbGnctlxXu83oXpQjAO/Zk4mSrb6437uQbvDx4thc68bCwzxcjAHn5pibKZtwR6Bw2
-	Mr86e7Ff90V4inRLW9zEWO7uK9FNA0hg6dUaY4fFg6yI8nv65mmQsTu/M0s7M41aRRndQGdE7zX
-	axSfXKLUPhurq0kigTn8Tkw6jhIxkFA41ZdEYEzoKaDLY66uzLncBxwnypcw6EWOIjFMlc9kscQ
-	7nNdD6/ex5ODnfFAQH+X87/Z2UX/DnNp5wMEM52ggAPDAjuHrV/ONofK9S8PnsRDh3BC/43pLAw
-	GsQrwjARuSzw4VoLU6zxscuMOvVHJ3yp22kqNFNZntjBYdk=
-X-Google-Smtp-Source: AGHT+IGe/oEO2FDNEKJyCLo/N4egBJ8nsACv4TcQtDgohfoTf4RgTfAbniyGVr1QXaHxO1TEdosMtA==
-X-Received: by 2002:a05:6820:2288:b0:603:f973:1b1 with SMTP id 006d021491bc7-606003e8080mr2035983eaf.0.1745000185505;
-        Fri, 18 Apr 2025 11:16:25 -0700 (PDT)
-Received: from [127.0.1.1] ([2600:8803:e7e4:1d00:dcdf:46e0:18e5:c279])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-605ff5f7a1dsm436659eaf.20.2025.04.18.11.16.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Apr 2025 11:16:24 -0700 (PDT)
-From: David Lechner <dlechner@baylibre.com>
-Date: Fri, 18 Apr 2025 13:16:13 -0500
-Subject: [PATCH] iio: amplifiers: ada4250: use DMA-safe memory for
- regmap_bulk_read()
+	s=arc-20240116; t=1745000582; c=relaxed/simple;
+	bh=fp00QMplQNxd/bJnjPrrcq2TIqGFB8msq4zfzRnEjIo=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=A+qx4hir0NrG2vfWBzLtgSR6co25vXJURGzD1MJhMviq3cy4BxHo+zlLt2N5jWkYkDr+3EwIga4iN82CNMfcLMdRQlnFLpNCH5DNfnFRnfl7hRdaNUwuCv1xm/INAYt61fPGA+EXfOl62o4xh6IsnnQhMmPe2mhmekuy7rJZRbQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VRtjQvdA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 994DEC4CEEA;
+	Fri, 18 Apr 2025 18:22:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1745000582;
+	bh=fp00QMplQNxd/bJnjPrrcq2TIqGFB8msq4zfzRnEjIo=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=VRtjQvdACeVO8YZwfZMsjPsbFZKR5NDcjjVA0KOXsmZhgfEP2xmAvDWxli/PKRrYn
+	 gQn+wMAI7sTidsoL6xVq4RNTel2XPyabzS+hdFXAOin0d4Y2/mGgWMiHokw6JgSrlz
+	 rrQFNwb27Q0VyVZyf7PTNra5VdWZ6OSFFKotTSSZ5Fhlpu5yq9cEzybaxUgZXVCFHy
+	 CEVLLLYqAMJQXRCUg2reMJ0TlIWOWos+iLVLQdvjGQVGdwjeKQhYDTLLijVGZQF4x0
+	 zbg+ncFRh0U12Aj54Fwainp12j974SgQNzjb2e112tfN2fndST0kGxe7TiMar4UzDT
+	 v4HLlJiEFAcjQ==
+Date: Fri, 18 Apr 2025 19:22:54 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Lothar Rubusch <l.rubusch@gmail.com>
+Cc: lars@metafoo.de, Michael.Hennerich@analog.com,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ eraretuya@gmail.com
+Subject: Re: [PATCH v6 05/11] iio: accel: adxl345: add freefall feature
+Message-ID: <20250418192254.0becd27d@jic23-huawei>
+In-Reply-To: <20250414184245.100280-6-l.rubusch@gmail.com>
+References: <20250414184245.100280-1-l.rubusch@gmail.com>
+	<20250414184245.100280-6-l.rubusch@gmail.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250418-iio-amplifiers-ada4250-simplify-data-buffer-in-init-v1-1-7e7bd6dad423@baylibre.com>
-X-B4-Tracking: v=1; b=H4sIAOyWAmgC/x2NwQqDMBBEf0X23AUTI9T+SulhYzbtQBsl0VIR/
- 71BmMubBzM7Fc3QQrdmp6xfFEypgrk0NL4kPZURKpNtbd86c2VgYvnMb0RoLixBXDVccHYbB1m
- E/RqjZkaqwcJDp96bzjk79FSX56wRv/P1/jiOP0wZRluFAAAA
-X-Change-ID: 20250418-iio-amplifiers-ada4250-simplify-data-buffer-in-init-93ebb1344295
-To: Antoniu Miclaus <antoniu.miclaus@analog.com>, 
- Lars-Peter Clausen <lars@metafoo.de>, 
- Michael Hennerich <Michael.Hennerich@analog.com>, 
- Jonathan Cameron <jic23@kernel.org>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Andy Shevchenko <andy@kernel.org>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- David Lechner <dlechner@baylibre.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2247; i=dlechner@baylibre.com;
- h=from:subject:message-id; bh=Hrwf1aoUO2fKyKpeHM/6WfWnH0OQTd0CdQrP2NqF3dA=;
- b=owGbwMvMwMV46IwC43/G/gOMp9WSGDKYpr1PVGb7ZHrjghtDqMjJf+ne12wTNuhe/vtX762Iw
- RMpS3/mTkZjFgZGLgZZMUWWNxI35yXxNV+bcyNjBswgViaQKQxcnAIwkcBaDobW22+9P20tOHRp
- N2vLXJ290cvuZsZarfYqmtESv2haYrNolaSmvz9HMMc7YRPV4ltJ5+5rvercp37udSt3QrHOnIN
- qmn4ftIU4+K4sck8yueE8i3/fI8+CMO5rm+39Ivc5FBbbCyQ9EHBrsE35xxzJlFv2O+e98i+uqr
- 8bUtmsI/gss9iW+oqYRcwKlfE8Irbkh0as4zP7QwxyL+XdhfQ/xl+4IrXLvtyybetMqb4rKWU7F
- xjfe9DU1byybxlzjPeCyiKZ3NdMWRdiHm381SPvtc4750LdIf/IsOX8fC/M7gRot2z428ok4LTE
- S9D2c/ime2trazPyw6MWCsj0TXyedTs5WUrpzF+LAAsA
-X-Developer-Key: i=dlechner@baylibre.com; a=openpgp;
- fpr=8A73D82A6A1F509907F373881F8AF88C82F77C03
 
-Use DMA-safe memory instead of stack-allocated memory for the call to
-regmap_bulk_read() in the ada4250_init() function as this could be used
-directly by a SPI controller.
+On Mon, 14 Apr 2025 18:42:39 +0000
+Lothar Rubusch <l.rubusch@gmail.com> wrote:
 
-Also remove unnecessary use of get_unaligned_le16() and explicitly
-include linux/types.h e.g. for __le16 while we are fixing this up.
+> Add the freefall detection of the sensor together with a threshold and
+> time parameter. A freefall event is detected if the measuring signal
+> falls below the threshold.
+> 
+> Introduce a freefall threshold stored in regmap cache, and a freefall
+> time, having the scaled time value stored as a member variable in the
+> state instance.
+> 
+Reading this I wondered whether we had the event code consistent for
+freefall detectors... Or indeed inactivity ones (which are kind of similarish)
 
-Fixes: 28b4c30bfa5f ("iio: amplifiers: ada4250: add support for ADA4250")
-Signed-off-by: David Lechner <dlechner@baylibre.com>
----
- drivers/iio/amplifiers/ada4250.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+:( We don't it seems.  The issue is that
+freefall is actually that all channels are simultaneously under the the magnitude
+threshold, not one of them.  So it should I think be
+X_AND_Y_AND_Z not X_OR_Y_OR_Z
 
-diff --git a/drivers/iio/amplifiers/ada4250.c b/drivers/iio/amplifiers/ada4250.c
-index 74f8429d652b17b4d1f38366e23ce6a2b3e9b218..f81438460aa51ce30f8f605c60ee5be5c8c251d3 100644
---- a/drivers/iio/amplifiers/ada4250.c
-+++ b/drivers/iio/amplifiers/ada4250.c
-@@ -13,8 +13,7 @@
- #include <linux/regmap.h>
- #include <linux/regulator/consumer.h>
- #include <linux/spi/spi.h>
--
--#include <linux/unaligned.h>
-+#include <linux/types.h>
- 
- /* ADA4250 Register Map */
- #define ADA4250_REG_GAIN_MUX        0x00
-@@ -63,6 +62,7 @@ struct ada4250_state {
- 	u8			gain;
- 	int			offset_uv;
- 	bool			refbuf_en;
-+	__le16			reg_val_16 __aligned(IIO_DMA_MINALIGN);
- };
- 
- /* ADA4250 Current Bias Source Settings: Disabled, Bandgap Reference, AVDD */
-@@ -301,7 +301,6 @@ static int ada4250_init(struct ada4250_state *st)
- {
- 	int ret;
- 	u16 chip_id;
--	u8 data[2] __aligned(8) = {};
- 	struct spi_device *spi = st->spi;
- 
- 	st->refbuf_en = device_property_read_bool(&spi->dev, "adi,refbuf-enable");
-@@ -326,11 +325,12 @@ static int ada4250_init(struct ada4250_state *st)
- 	if (ret)
- 		return ret;
- 
--	ret = regmap_bulk_read(st->regmap, ADA4250_REG_CHIP_ID, data, 2);
-+	ret = regmap_bulk_read(st->regmap, ADA4250_REG_CHIP_ID, &st->reg_val_16,
-+			       sizeof(st->reg_val_16));
- 	if (ret)
- 		return ret;
- 
--	chip_id = get_unaligned_le16(data);
-+	chip_id = le16_to_cpu(st->reg_val_16);
- 
- 	if (chip_id != ADA4250_CHIP_ID) {
- 		dev_err(&spi->dev, "Invalid chip ID.\n");
+This is as opposed to activity detectors which tend to be any axis shows
+activity and X_OR_Y_OR_Z applies.
 
----
-base-commit: aff301f37e220970c2f301b5c65a8bfedf52058e
-change-id: 20250418-iio-amplifiers-ada4250-simplify-data-buffer-in-init-93ebb1344295
+Anyhow upshot is I think I lead you astray on this and we should make this
+one IIO_MOD_X_AND_Y_AND_Z 
 
-Best regards,
--- 
-David Lechner <dlechner@baylibre.com>
+A few other things inline.
+
+Unfortunately we don't deal with these events that often so I forget
+what we did before :(
+
+> Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
+> ---
+>  drivers/iio/accel/adxl345_core.c | 125 +++++++++++++++++++++++++++++++
+>  1 file changed, 125 insertions(+)
+> 
+> diff --git a/drivers/iio/accel/adxl345_core.c b/drivers/iio/accel/adxl345_core.c
+> index c464c87033fb..ae02826e552b 100644
+> --- a/drivers/iio/accel/adxl345_core.c
+> +++ b/drivers/iio/accel/adxl345_core.c
+> @@ -75,6 +75,7 @@ struct adxl345_state {
+>  	u32 tap_duration_us;
+>  	u32 tap_latent_us;
+>  	u32 tap_window_us;
+> +	u32 ff_time_ms;
+>  
+>  	__le16 fifo_buf[ADXL345_DIRS * ADXL345_FIFO_SIZE + 1] __aligned(IIO_DMA_MINALIGN);
+>  };
+> @@ -96,6 +97,14 @@ static struct iio_event_spec adxl345_events[] = {
+>  			BIT(IIO_EV_INFO_RESET_TIMEOUT) |
+>  			BIT(IIO_EV_INFO_TAP2_MIN_DELAY),
+>  	},
+> +	{
+> +		/* free fall */
+> +		.type = IIO_EV_TYPE_MAG,
+> +		.dir = IIO_EV_DIR_FALLING,
+> +		.mask_shared_by_type = BIT(IIO_EV_INFO_ENABLE) |
+> +			BIT(IIO_EV_INFO_VALUE) |
+> +			BIT(IIO_EV_INFO_PERIOD),
+> +	},
+This is creating separate per axis enables, values and period. Does that make
+sense?  If not you need to spin a kind of virtual channel (with mod X_AND_Y_AND_Z)
+and add the events to it.
+
+See how the sca3000 does it for example.
+>  };
+>  
+>  #define ADXL345_CHANNEL(index, reg, axis) {					\
+> @@ -383,6 +392,63 @@ static int adxl345_set_tap_latent(struct adxl345_state *st, u32 val_int,
+>  	return _adxl345_set_tap_time(st, ADXL345_TAP_TIME_LATENT, val_fract_us);
+>  }
+>  
+> +/* freefall */
+> +
+> +static int adxl345_is_ff_en(struct adxl345_state *st, bool *en)
+> +{
+> +	int ret;
+> +	unsigned int regval;
+> +
+> +	ret = regmap_read(st->regmap, ADXL345_REG_INT_ENABLE, &regval);
+> +	if (ret)
+> +		return ret;
+> +
+> +	*en = FIELD_GET(ADXL345_INT_FREE_FALL, regval) > 0;
+> +
+> +	return 0;
+> +}
+> +
+> +static int adxl345_set_ff_en(struct adxl345_state *st, bool cmd_en)
+> +{
+> +	unsigned int regval, ff_threshold;
+> +	bool en;
+> +	int ret;
+> +
+> +	ret = regmap_read(st->regmap, ADXL345_REG_THRESH_FF, &ff_threshold);
+> +	if (ret)
+> +		return ret;
+> +
+> +	en = cmd_en && ff_threshold > 0 && st->ff_time_ms > 0;
+> +
+> +	regval = en ? ADXL345_INT_FREE_FALL : 0x00;
+> +
+> +	return regmap_update_bits(st->regmap, ADXL345_REG_INT_ENABLE,
+> +				  ADXL345_INT_FREE_FALL, regval);
+> +}
+> +
+> +static int adxl345_set_ff_time(struct adxl345_state *st, u32 val_int,
+> +			       u32 val_fract_us)
+> +{
+> +	unsigned int regval;
+> +	int val_ms;
+> +
+> +	/*
+> +	 * max value is 255 * 5000 us = 1.275000 seconds
+> +	 *
+> +	 * Note: the scaling is similar to the scaling in the ADXL380
+> +	 */
+> +	if (1000000 * val_int + val_fract_us > 1275000)
+> +		return -EINVAL;
+> +
+> +	val_ms = val_int * 1000 + DIV_ROUND_UP(val_fract_us, 1000);
+> +	st->ff_time_ms = val_ms;
+> +
+> +	regval = DIV_ROUND_CLOSEST(val_ms, 5);
+> +
+> +	/* Values between 100ms and 350ms (0x14 to 0x46) are recommended. */
+> +	return regmap_write(st->regmap, ADXL345_REG_TIME_FF, min(regval, 0xff));
+> +}
+> +
+>  static int adxl345_read_raw(struct iio_dev *indio_dev,
+>  			    struct iio_chan_spec const *chan,
+>  			    int *val, int *val2, long mask)
+> @@ -495,6 +561,11 @@ static int adxl345_read_event_config(struct iio_dev *indio_dev,
+>  		default:
+>  			return -EINVAL;
+>  		}
+> +	case IIO_EV_TYPE_MAG:
+> +		ret = adxl345_is_ff_en(st, &int_en);
+> +		if (ret)
+> +			return ret;
+> +		return int_en;
+>  	default:
+>  		return -EINVAL;
+>  	}
+> @@ -518,6 +589,8 @@ static int adxl345_write_event_config(struct iio_dev *indio_dev,
+>  		default:
+>  			return -EINVAL;
+>  		}
+> +	case IIO_EV_TYPE_MAG:
+> +		return adxl345_set_ff_en(st, state);
+>  	default:
+>  		return -EINVAL;
+>  	}
+> @@ -532,6 +605,7 @@ static int adxl345_read_event_value(struct iio_dev *indio_dev,
+>  {
+>  	struct adxl345_state *st = iio_priv(indio_dev);
+>  	unsigned int tap_threshold;
+> +	unsigned int ff_threshold;
+>  	int ret;
+>  
+>  	switch (type) {
+> @@ -565,6 +639,22 @@ static int adxl345_read_event_value(struct iio_dev *indio_dev,
+>  		default:
+>  			return -EINVAL;
+>  		}
+> +	case IIO_EV_TYPE_MAG:
+> +		switch (info) {
+> +		case IIO_EV_INFO_VALUE:
+> +			ret = regmap_read(st->regmap, ADXL345_REG_THRESH_FF,
+> +					  &ff_threshold);
+> +			if (ret)
+> +				return ret;
+> +			*val = ff_threshold;
+> +			return IIO_VAL_INT;
+> +		case IIO_EV_INFO_PERIOD:
+> +			*val = st->ff_time_ms;
+> +			*val2 = 1000;
+> +			return IIO_VAL_FRACTIONAL;
+> +		default:
+> +			return -EINVAL;
+> +		}
+>  	default:
+>  		return -EINVAL;
+>  	}
+> @@ -612,6 +702,22 @@ static int adxl345_write_event_value(struct iio_dev *indio_dev,
+>  			return -EINVAL;
+>  		}
+>  		break;
+> +	case IIO_EV_TYPE_MAG:
+> +		switch (info) {
+> +		case IIO_EV_INFO_VALUE:
+> +			ret = regmap_write(st->regmap, ADXL345_REG_THRESH_FF, val);
+> +			if (ret)
+> +				return ret;
+> +			break;
+> +		case IIO_EV_INFO_PERIOD:
+> +			ret = adxl345_set_ff_time(st, val, val2);
+> +			if (ret)
+> +				return ret;
+> +			break;
+> +		default:
+> +			return -EINVAL;
+> +		}
+> +		break;
+>  	default:
+>  		return -EINVAL;
+>  	}
+> @@ -865,6 +971,17 @@ static int adxl345_push_event(struct iio_dev *indio_dev, int int_stat,
+>  			return ret;
+>  	}
+>  
+> +	if (FIELD_GET(ADXL345_INT_FREE_FALL, int_stat)) {
+> +		ret = iio_push_event(indio_dev,
+> +				     IIO_MOD_EVENT_CODE(IIO_ACCEL, 0,
+> +							IIO_MOD_X_OR_Y_OR_Z,
+
+This is the event that got me thinking about whether we were doing this right..
+
+> +							IIO_EV_TYPE_MAG,
+> +							IIO_EV_DIR_FALLING),
+> +				     ts);
+> +		if (ret)
+> +			return ret;
+> +	}
+> +
 
 

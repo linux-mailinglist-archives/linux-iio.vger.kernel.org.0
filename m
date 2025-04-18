@@ -1,79 +1,77 @@
-Return-Path: <linux-iio+bounces-18304-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18305-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F773A93EAD
-	for <lists+linux-iio@lfdr.de>; Fri, 18 Apr 2025 22:09:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 514B7A93EFA
+	for <lists+linux-iio@lfdr.de>; Fri, 18 Apr 2025 22:38:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1121A1B6709F
-	for <lists+linux-iio@lfdr.de>; Fri, 18 Apr 2025 20:09:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5F032445570
+	for <lists+linux-iio@lfdr.de>; Fri, 18 Apr 2025 20:38:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B990B22D787;
-	Fri, 18 Apr 2025 20:09:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95BDA22A1E6;
+	Fri, 18 Apr 2025 20:38:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="NephII/j"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="d+djrvSH"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oa1-f43.google.com (mail-oa1-f43.google.com [209.85.160.43])
+Received: from mail-oi1-f181.google.com (mail-oi1-f181.google.com [209.85.167.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C019A1B4243
-	for <linux-iio@vger.kernel.org>; Fri, 18 Apr 2025 20:09:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4027F2A1C9
+	for <linux-iio@vger.kernel.org>; Fri, 18 Apr 2025 20:38:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745006947; cv=none; b=FRULj8ROQzgSPjve3wKTBMNW2TK/il9R6oEQvSBSw5H6syPCF2gd2A/cVeIlFD1Nd1xR6ajo2DFhiNGly3a8bX/Lj0joHmGmU1ehrrVnq2dK02HUZEXAT+ecBnCMcX57XWkdHai6cKCrmpNQNwDLOgM0JreFtGTxmUYot3l5cKI=
+	t=1745008693; cv=none; b=EI6pa7tWbX8ZyZb/DXJNEi3ILtJqza8CW6VTfA4TYqrYouyiR3xTrHQNPZl0yrfhwc1vAZvPbCho5KOLW8VDdElUwGm9/hBm7VH7NZpZQRvUMcxY5EFiCG4XWJJk8HCzIvW+JeY5BxMiu+YWeJ4whRb5nEB+auaGnVEup0rh8jA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745006947; c=relaxed/simple;
-	bh=L4F5EwbRA26z/docfQ6qlY8GnMuFyTQLMa5cGJ2Xe9A=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=lRLF/jC2tEQthIzhwtoGoscCNkoxsDLHISq/NNlBXtPw+anX4ErIBtPJCDgMjnTBNDGG0X0XkXFd1OcZMmnsTr1Q/a22uADLmG++4T1BGw4VkfT2+GfBxoiJyTarqLtQnRwGV/4HuDCnBRN2vZ12tA2VVhecd5FQF2ojMqM1RlQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=NephII/j; arc=none smtp.client-ip=209.85.160.43
+	s=arc-20240116; t=1745008693; c=relaxed/simple;
+	bh=2Fe3ulMLFE47PgdiZW6fQW+jtVST6VMA1a7HPcbAPgY=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=lkORpsN0KwRl1XJiurOFOq6xn+dtKc/8DbMAr+iM9quPvnjPTAlMSUkrgX2U5hZKOxXVEMbewnAwfpGnwU9nSBDO7GKGnGRhBWSgBg3JPrLhmF18NQnPEpWlDANOkIifoRqrr1RTWgu3p0OjzxGoW0dwGL6GHJsfxK94+0Xs+l4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=d+djrvSH; arc=none smtp.client-ip=209.85.167.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oa1-f43.google.com with SMTP id 586e51a60fabf-2d4e7797d59so960446fac.0
-        for <linux-iio@vger.kernel.org>; Fri, 18 Apr 2025 13:09:05 -0700 (PDT)
+Received: by mail-oi1-f181.google.com with SMTP id 5614622812f47-3f6eaa017d0so1495964b6e.0
+        for <linux-iio@vger.kernel.org>; Fri, 18 Apr 2025 13:38:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1745006945; x=1745611745; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1745008690; x=1745613490; darn=vger.kernel.org;
         h=cc:to:message-id:content-transfer-encoding:mime-version:subject
          :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=TImxXgS9r7ImtMsTaUIikrjTho3myWjY6Bz/r5nCEMQ=;
-        b=NephII/jaH5mXpo7q3Wys0MGogWhOUr6QVeU48X7H8U3UlfCmIjCXKoiGiL/J51MJD
-         r25L8uQul1+AXFso7M5VM9751AOzAQyy743Lu171XGgr9BVZv2KRtHanOxHMb8trjUlO
-         0qNI9pGx6UmmVMOvcTjFx8A8mOWEjyVX7B7uyGU6pxIBjMpnjEcxk+WxRyzRXcmk79pL
-         tnCCtUP/0T9xcdCgD5ORj81/5C0qyb+HcA6B96ZBLo8OIe1oZw+gOhBSHythIRIj6hAK
-         2qVt71losFPQ9cXGEXFvsAW/4DhlPTcQx/lYY6kka1mQy5oNTZSC4817p+LnAAZj9/8G
-         c1dA==
+        bh=64tBS0jidfIHgVu7kwIxl5UwVXxXom1YsPf9oOkqC/8=;
+        b=d+djrvSHKPgdKHw3uce83CNJYtpXMr2rdpYZ3swG0Qs9sHNVD8SS+IQ/hSK58x5B19
+         hMaf35MN7ByDO7LbUpMSHMtmzCTEHU662R0nOnlQVz94Apa/DdsV1HLAqjkARqVcmTj0
+         BvPW44+jNB3azeUkhRquRgamUDYzbyyh15mOiHmjaIov5VwAK9ltiSxY3qXkZsL/zS0F
+         ta199FWIpT046PVOR3V0yz1J0HMnbwpaANSW1BMGm0Cn9OS8ldzcstAeZqKMkai2zZjK
+         k7EvPG/KsAa17sNDenIkYvydkG4frCNckvXbJFov9sJSepm7m9hwENfpu44NXkQG9YcU
+         N6Rw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745006945; x=1745611745;
+        d=1e100.net; s=20230601; t=1745008690; x=1745613490;
         h=cc:to:message-id:content-transfer-encoding:mime-version:subject
          :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=TImxXgS9r7ImtMsTaUIikrjTho3myWjY6Bz/r5nCEMQ=;
-        b=eyxFzj1wvrQC85GZ2qgZ1vr9M51z3HrcRhODMW5oU7Ktz6Dn9M1EAC57x4twtfnmdC
-         46gzVQNLQk6VQ/ttudE0rCBOVrBR4UT4zb01KSo1iOAk3r7tmvJv52jV6ewcCggsDp9O
-         RC9mIL3lLwrPKfh3tbU/xujpK27FemFHpa0poI0Z2W4vj8EQHq1wPJS7oR8kq60bF1II
-         qxd0CgvGFco8IjOQ16pQ9K3pfopQVdiz1JlW6NrqRZ85ZDnR/9i7n0mQCWuc7mCtBa+V
-         33wA2NhZyiPOo3gWlHrC6NtqmmRdVzOKOXLy+Sax8gVPWafD8LYcF8syE/mgA/mX70+r
-         Chow==
-X-Forwarded-Encrypted: i=1; AJvYcCXwPDm5trwRsndVm+bRMGhd8WR13v6YzvgQwPXVlWLK65BMm91Uxw5AndBdmSKrPUgqKGtPDeJHWxw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy/j8jZM9oQun59zABl6BxXBFB5qkiRkJboR6TpyS4WdLDgF1LD
-	qxFpxPhTklqce5reY4cIOk46N9qZ0/JOfgfEQ2Z0NX3CRSQBg4OAfSCmq8fopL0=
-X-Gm-Gg: ASbGncsdKlouiE1+RTxOyoPBTsKnVAgUyV63eLfVGbrKE3fzuoICup0hJ2QlCCUBlRl
-	XOtddqGNq8wXM7DOoq5MKWc8oqRuYDuckFwkVXSWwfCM42iZa8jKh7sC1Hw6pknb4+l4sSjEyO/
-	Ks2I1Yq8wEmnwzxsT9vaBjxw6yTMBcBak+5UB3tt6P79u6sHl2TVl7z36JkznLn1TubJvOHWwcP
-	umc2HnPaWWuktx+XAqza6xvEMfWWAEtca5EDfBbBlObcinfgXx79OYjnz0DIJQf9ZvT9XF8fz1K
-	llgqgMqHaZGp2iwJWE6IClj0QNu6BsLr69qBe2lPT7MUyr4=
-X-Google-Smtp-Source: AGHT+IGELMZ7J/ePbqESlA6PYkY4CF3MBrFtLR8CHAfpqUNFo4ZD01t+Cxfx8+4R6IR0IR50Pk5inQ==
-X-Received: by 2002:a05:6871:ba0a:b0:2d5:4899:90c with SMTP id 586e51a60fabf-2d5489a2887mr597975fac.7.1745006944745;
-        Fri, 18 Apr 2025 13:09:04 -0700 (PDT)
+        bh=64tBS0jidfIHgVu7kwIxl5UwVXxXom1YsPf9oOkqC/8=;
+        b=SdCHVhDA8VA2M8xh+whXjp4mEkr4c0r7e6sL7ng/S4h/h6W1C619eXFkAbSUiVBR+m
+         X8ztIT9H1T/ZHxQNDPqJP8+Fzr/re5CNDEu1+ZwCtQEVNIMoyh6NLQL8Q4BBWw+eNMY8
+         KXycyzET5Wxtj1ZITsoglw/1NA9MloyUE7kBTU+kPXoTxXPkh+Mm1s96amOtCSq0IfO/
+         x1dbHwRndiTxtvfZiErIUk/ob7BhOzzLhrE0u4DNtOCwlTKVxfnbU3kYfUS/WZUgHOX/
+         ELaEZXJKdipuAGQ2mIT21cpE1Kt84YOt/0vbYFRafXHFkakNyXAcW/PFq8UE1dxbOSWr
+         6P5w==
+X-Gm-Message-State: AOJu0Yxy2iHNjJO/eVwEUJOAX2yccg7tRKjXpWiAZkh2sp++khBhe9OM
+	OkunwoKxkS/aT5TUc+mgjYj5p/v+OMxSfNjYs7Oi4kiYJWW9/FFOzBdA1NY4PFY=
+X-Gm-Gg: ASbGncuk7uCPRH+9B6CYcUm0FenpVQECIV2Zdkpl4r3vSWGRtdSsi2ytNcT462zPZQU
+	1oDWYSIE2EwINagnM9Lm9c4MI8/8Q/EwAqUFhbgQsF5fVjwX77TLUiHrJ/q9wostCRh5SQ6C1Ce
+	LRvrzq+0HvFEKPekBa0xTVpVhoWlHNcvhP885FU+lEHJ9E3FZwLD5c154Gzxii4xlc4jLWX/C5q
+	M8AubZac4VTK2NXC/p/uP7uIhlO/qdibcFxnDpjaAq6U44tJCzx2v6Yd0/CojoteMTeRV/H3VY8
+	USS8ar2t5JWuMJI72l971hKfp/ma1PsY2w0tzSshFJ4DFLU=
+X-Google-Smtp-Source: AGHT+IHJcrS3RxkIdEMS+yjvuEu2aYDzQTY6J2p6HbXI7uaCEkLoA+zUirfwPMd/5LNX3VA8w58fDA==
+X-Received: by 2002:a05:6808:318b:b0:3f8:e55c:16ea with SMTP id 5614622812f47-401c0c38fc1mr2081127b6e.24.1745008690111;
+        Fri, 18 Apr 2025 13:38:10 -0700 (PDT)
 Received: from [127.0.1.1] ([2600:8803:e7e4:1d00:dcdf:46e0:18e5:c279])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2d521828250sm600235fac.42.2025.04.18.13.09.02
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-401beeee032sm447946b6e.28.2025.04.18.13.38.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Apr 2025 13:09:04 -0700 (PDT)
+        Fri, 18 Apr 2025 13:38:09 -0700 (PDT)
 From: David Lechner <dlechner@baylibre.com>
-Date: Fri, 18 Apr 2025 15:08:53 -0500
-Subject: [PATCH] iio: orientation: hid-sensor-rotation: remove unnecessary
- alignment
+Date: Fri, 18 Apr 2025 15:37:54 -0500
+Subject: [PATCH v2] iio: amplifiers: ada4250: clean up ada4250_init()
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -82,55 +80,127 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250418-iio-orientation-hid-sensor-rotation-remove-alignment-v1-1-6da68eae7ecf@baylibre.com>
-X-B4-Tracking: v=1; b=H4sIAFSxAmgC/y2NwQqDQAxEf0VybsBdLF36K6WHpRs1UJOSiAjiv
- zeUMqcZ3swc4GRMDvfuAKONnVXCpEsHr7nKRMgtPOQ+X/shFWRW1KjIWtdgceaGTuJqaPrPjBb
- dCOubJ1mCxNLKGEpDu2WI6Y/RyPvv9vE8zy9Ad4/ehgAAAA==
-X-Change-ID: 20250418-iio-orientation-hid-sensor-rotation-remove-alignment-8d8f8f814d72
-To: Jiri Kosina <jikos@kernel.org>, Jonathan Cameron <jic23@kernel.org>, 
- Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, 
+Message-Id: <20250418-iio-amplifiers-ada4250-simplify-data-buffer-in-init-v2-1-1bf9b033aaf5@baylibre.com>
+X-B4-Tracking: v=1; b=H4sIACG4AmgC/6WOQQqDMBREryJZ9xcTY62ueo/i4sf81A9qJLFSE
+ e/e1CsUZvNmYGZ2ESkwRdFkuwi0cmQ/JVCXTHQ9Ti8CtomFylWZa3kHZg84zgM7phABLeqUQOT
+ T28DigmDezlEAnpJ4gbogY2ShtapLkZrnQI4/5+qzTdxzXHzYzhOr/Ln/7a0SJFRUGXuzaLUqH
+ ga3gU2ga+dH0R7H8QU70ZM8+QAAAA==
+X-Change-ID: 20250418-iio-amplifiers-ada4250-simplify-data-buffer-in-init-93ebb1344295
+To: Lars-Peter Clausen <lars@metafoo.de>, 
+ Michael Hennerich <Michael.Hennerich@analog.com>, 
+ Antoniu Miclaus <antoniu.miclaus@analog.com>, 
+ Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
  =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
  Andy Shevchenko <andy@kernel.org>
-Cc: linux-input@vger.kernel.org, linux-iio@vger.kernel.org, 
- linux-kernel@vger.kernel.org, David Lechner <dlechner@baylibre.com>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1107; i=dlechner@baylibre.com;
- h=from:subject:message-id; bh=L4F5EwbRA26z/docfQ6qlY8GnMuFyTQLMa5cGJ2Xe9A=;
- b=owEBbQGS/pANAwAKAcLMIAH/AY/AAcsmYgBoArFXbMwDN9LdHChb/jSQJDCMVvugvhTCjL/E2
- DHMzPRP116JATMEAAEKAB0WIQTsGNmeYg6D1pzYaJjCzCAB/wGPwAUCaAKxVwAKCRDCzCAB/wGP
- wFCTCACd9IyrNS8mNqd4CSFpfnZY0A++prwhteHofu7ywGaGyv9gvklYUdqOwV3MF2MX3pgRTLd
- WCKuAhXbqoBx6MCWQGpPqvpyVWV/S1NOxG44YGoZwOIQhcwySt1JR51qNxwFcvNmIwSsaXbk45h
- jF5nBwLfBjZe69qsOLD7xfuOzcF6hdFfkVYpq/5JqnqVs/4OVBJgKUM20w3uLmmbP5Z6Tqq/dd2
- D/fUKBwjzBCRkcCbIFd4gqlISYjNXa525EYp+khY9mcALQ2IiuAYEzMpM8w1T921dyqWncU8r4N
- I00cWLkrRvlaAag/1ehiX9AMhTcb4P52ut9Bj1YJsR6xa+lk
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3495; i=dlechner@baylibre.com;
+ h=from:subject:message-id; bh=2Fe3ulMLFE47PgdiZW6fQW+jtVST6VMA1a7HPcbAPgY=;
+ b=owEBbQGS/pANAwAKAcLMIAH/AY/AAcsmYgBoArgnxrxzTbtbPD1ltiOhzZ1Cc14HwXa5A2DYb
+ hXJH9WaGOqJATMEAAEKAB0WIQTsGNmeYg6D1pzYaJjCzCAB/wGPwAUCaAK4JwAKCRDCzCAB/wGP
+ wCHDB/94qfu1fsSRh9mNWIVPBWIE3H6+q0QT62WShTyUr78vOCJMiPGt2D1GPQb3544JM3+uemn
+ mM4xkOtCmI472iItqEFIjn3u+P2fa7jJVis/V4WojucKf4NVCdHcWU3UrZ2yVoLHvt7h1Xs/kdu
+ K9mqAR8MtTs6MHAw1DXq1IjlxGh76HdA2U/MBO3L94WKhUQWWGspDL4TMrw2vAKjNo52HQ5VXEP
+ o/zlujNZiVpYPGETYNWEjXcz4IEK0+FJF2J1wdrKa1DmB3RqUId0A7IOpd6bBKA4R1oOJycmNSO
+ yLYYIBsTW56uB59LAuWC28ALroG1L5IISG6Vw9whd6TZ6H/8
 X-Developer-Key: i=dlechner@baylibre.com; a=openpgp;
  fpr=8A73D82A6A1F509907F373881F8AF88C82F77C03
 
-Remove __aligned(16) in the scan data struct in the hid-sensor-rotation
-driver. There is nothing in the code that requires this alignment.
+There are a few opportunities to simplify the code in ada4250_init():
+* Replace local spi variable with dev since spi is not used directly.
+* Drop the data variable and use chip_id directly with the regmap bulk
+  read (__aligned() and initialization of the data variable were
+  unnecessary).
+* Don't use get_unaligned_le16() when not needed.
+* Use dev_err_probe() instead of dev_err() and return.
 
 Signed-off-by: David Lechner <dlechner@baylibre.com>
 ---
- drivers/iio/orientation/hid-sensor-rotation.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+In v1, I though we had a bug, but Andy set me straight. Still, since we
+were already looking at this, there is some room for improvement, so I
+changed this to a cleanup patch instead.
 
-diff --git a/drivers/iio/orientation/hid-sensor-rotation.c b/drivers/iio/orientation/hid-sensor-rotation.c
-index c4b18fd0fa76c17318b262ea9f44ea5c40170298..e759f91a710a2cdec8b708faab49c557e3418146 100644
---- a/drivers/iio/orientation/hid-sensor-rotation.c
-+++ b/drivers/iio/orientation/hid-sensor-rotation.c
-@@ -19,7 +19,7 @@ struct dev_rot_state {
- 	struct hid_sensor_common common_attributes;
- 	struct hid_sensor_hub_attribute_info quaternion;
- 	struct {
--		s32 sampled_vals[4] __aligned(16);
-+		s32 sampled_vals[4];
- 		aligned_s64 timestamp;
- 	} scan;
- 	int scale_pre_decml;
+Changes in v2:
+- Totally new patch.
+- Link to v1: https://lore.kernel.org/r/20250418-iio-amplifiers-ada4250-simplify-data-buffer-in-init-v1-1-7e7bd6dad423@baylibre.com
+---
+ drivers/iio/amplifiers/ada4250.c | 34 ++++++++++++++--------------------
+ 1 file changed, 14 insertions(+), 20 deletions(-)
+
+diff --git a/drivers/iio/amplifiers/ada4250.c b/drivers/iio/amplifiers/ada4250.c
+index 74f8429d652b17b4d1f38366e23ce6a2b3e9b218..13906e4b4842095717566781ad00cd58f3934510 100644
+--- a/drivers/iio/amplifiers/ada4250.c
++++ b/drivers/iio/amplifiers/ada4250.c
+@@ -13,8 +13,7 @@
+ #include <linux/regmap.h>
+ #include <linux/regulator/consumer.h>
+ #include <linux/spi/spi.h>
+-
+-#include <linux/unaligned.h>
++#include <linux/types.h>
+ 
+ /* ADA4250 Register Map */
+ #define ADA4250_REG_GAIN_MUX        0x00
+@@ -299,25 +298,23 @@ static void ada4250_reg_disable(void *data)
+ 
+ static int ada4250_init(struct ada4250_state *st)
+ {
++	struct device *dev = &st->spi->dev;
+ 	int ret;
+-	u16 chip_id;
+-	u8 data[2] __aligned(8) = {};
+-	struct spi_device *spi = st->spi;
++	__le16 chip_id;
+ 
+-	st->refbuf_en = device_property_read_bool(&spi->dev, "adi,refbuf-enable");
++	st->refbuf_en = device_property_read_bool(dev, "adi,refbuf-enable");
+ 
+-	st->reg = devm_regulator_get(&spi->dev, "avdd");
++	st->reg = devm_regulator_get(dev, "avdd");
+ 	if (IS_ERR(st->reg))
+-		return dev_err_probe(&spi->dev, PTR_ERR(st->reg),
++		return dev_err_probe(dev, PTR_ERR(st->reg),
+ 				     "failed to get the AVDD voltage\n");
+ 
+ 	ret = regulator_enable(st->reg);
+-	if (ret) {
+-		dev_err(&spi->dev, "Failed to enable specified AVDD supply\n");
+-		return ret;
+-	}
++	if (ret)
++		return dev_err_probe(dev, ret,
++				     "Failed to enable specified AVDD supply\n");
+ 
+-	ret = devm_add_action_or_reset(&spi->dev, ada4250_reg_disable, st->reg);
++	ret = devm_add_action_or_reset(dev, ada4250_reg_disable, st->reg);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -326,16 +323,13 @@ static int ada4250_init(struct ada4250_state *st)
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = regmap_bulk_read(st->regmap, ADA4250_REG_CHIP_ID, data, 2);
++	ret = regmap_bulk_read(st->regmap, ADA4250_REG_CHIP_ID, &chip_id,
++			       sizeof(chip_id));
+ 	if (ret)
+ 		return ret;
+ 
+-	chip_id = get_unaligned_le16(data);
+-
+-	if (chip_id != ADA4250_CHIP_ID) {
+-		dev_err(&spi->dev, "Invalid chip ID.\n");
+-		return -EINVAL;
+-	}
++	if (le16_to_cpu(chip_id) != ADA4250_CHIP_ID)
++		return dev_err_probe(dev, -EINVAL, "Invalid chip ID.\n");
+ 
+ 	return regmap_write(st->regmap, ADA4250_REG_REFBUF_EN,
+ 			    FIELD_PREP(ADA4250_REFBUF_MSK, st->refbuf_en));
 
 ---
 base-commit: aff301f37e220970c2f301b5c65a8bfedf52058e
-change-id: 20250418-iio-orientation-hid-sensor-rotation-remove-alignment-8d8f8f814d72
+change-id: 20250418-iio-amplifiers-ada4250-simplify-data-buffer-in-init-93ebb1344295
 
 Best regards,
 -- 

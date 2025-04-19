@@ -1,53 +1,53 @@
-Return-Path: <linux-iio+bounces-18337-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18338-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B407EA944AD
-	for <lists+linux-iio@lfdr.de>; Sat, 19 Apr 2025 18:35:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17656A944B6
+	for <lists+linux-iio@lfdr.de>; Sat, 19 Apr 2025 18:38:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D360416D7D3
-	for <lists+linux-iio@lfdr.de>; Sat, 19 Apr 2025 16:35:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3E2043B34E5
+	for <lists+linux-iio@lfdr.de>; Sat, 19 Apr 2025 16:38:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 193301DE8AD;
-	Sat, 19 Apr 2025 16:35:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA6A61DE8AD;
+	Sat, 19 Apr 2025 16:38:12 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6607326AF3;
-	Sat, 19 Apr 2025 16:35:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 199445FDA7;
+	Sat, 19 Apr 2025 16:38:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745080545; cv=none; b=EL5XCnTbU0fJNmwRwi3lxkVtcQdhf047dWE8Xcf4aJvNNLNvVoxVy+r3FTi34x1kPaF4V55NnkjZ6ueNoQLiBknE/Dx7EXYArt0As1y71/O2Bx6eFXMLpquqmz7sKLr0NcdwAyz0Z2fnvn+LoWCieHX6RkHb2yW56jzuL71PUec=
+	t=1745080692; cv=none; b=jztMmksdY3zgvfebZ2dsyAhkA9NgAymsQHAiFCxS6CPNZFsw5E7Rk0oBSURp18BrAURQ5BL3CwV6MoTZGRSWeDwMquUXXpx9KjXZT0SGuZ7pZjduOSQIf3LEKcQR0LLci/9FKEBUD6uNZdZ/s+Cx8+GbyUgJRziMUKgunyChXcM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745080545; c=relaxed/simple;
-	bh=Ji9N54pQjsMdN4HZHYNj5wDSn8SF8Ls75uvLcHEA7wM=;
+	s=arc-20240116; t=1745080692; c=relaxed/simple;
+	bh=uZShTIWKtHszqF1qKUftQsBG29lyj8rR9vgQVCWlIYQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FayOhJr9ZN6pvmxWcyr8aACc3IG0HOQ4LMkURSHKg7jVtBjgcFFgcx1wz6QWheQMlq37GTy50z+OVxM4Ju27txm3p5Fsa+qinek8Y7O/5MAhwKFCTex/rfrHaqP6DqwjoPxav+i/IOEpf3lgXMpw1baH0MM8UmcYv8II9NgCHig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=fail smtp.mailfrom=kernel.org; arc=none smtp.client-ip=192.198.163.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=hDl+6M9NYLBWkfRtp/3yaaoevqTM2gfTc16xQlsONA2XNi4hrpLgveJQtgP5Eqk9usDmtumZLRGueAhDyUW2CxW9/oggY0le7M8ZBvwJ0Q85ahrDvMaml/dzLmwT7Cdrj4ITQGIpeTITCSPJS71C6ERs0Ow3vlYs3fOy6l6E/9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=fail smtp.mailfrom=kernel.org; arc=none smtp.client-ip=198.175.65.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=kernel.org
-X-CSE-ConnectionGUID: 7VFk9OR+Q72hDO8aH0Mwyg==
-X-CSE-MsgGUID: k9VDNzSsSGGKKKw0/xcePg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11408"; a="45914286"
+X-CSE-ConnectionGUID: P3PuIFteRb+z+e2DeHzfZw==
+X-CSE-MsgGUID: gpJd4fj9Qs2o02bMsvEb9w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11408"; a="56857061"
 X-IronPort-AV: E=Sophos;i="6.15,224,1739865600"; 
-   d="scan'208";a="45914286"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Apr 2025 09:35:43 -0700
-X-CSE-ConnectionGUID: LkCvwzblRz6uqFMUfRmyPA==
-X-CSE-MsgGUID: CrGG22WKQSKZ3BohCzdlBQ==
+   d="scan'208";a="56857061"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Apr 2025 09:38:11 -0700
+X-CSE-ConnectionGUID: LYyXFtNmTtakeuq6ykzJkg==
+X-CSE-MsgGUID: u+cJX4vySN2jG9XVodTAuw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.15,224,1739865600"; 
-   d="scan'208";a="136517067"
+   d="scan'208";a="132240983"
 Received: from smile.fi.intel.com ([10.237.72.58])
-  by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Apr 2025 09:35:41 -0700
+  by fmviesa009.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Apr 2025 09:38:09 -0700
 Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
 	(envelope-from <andy@kernel.org>)
-	id 1u6BAH-0000000DrnG-3yTJ;
-	Sat, 19 Apr 2025 19:35:37 +0300
-Date: Sat, 19 Apr 2025 19:35:37 +0300
+	id 1u6BCg-0000000DrpO-0BLZ;
+	Sat, 19 Apr 2025 19:38:06 +0300
+Date: Sat, 19 Apr 2025 19:38:05 +0300
 From: Andy Shevchenko <andy@kernel.org>
 To: David Lechner <dlechner@baylibre.com>
 Cc: Jonathan Cameron <jic23@kernel.org>,
@@ -55,10 +55,10 @@ Cc: Jonathan Cameron <jic23@kernel.org>,
 	Lars-Peter Clausen <lars@metafoo.de>,
 	Michael Hennerich <Michael.Hennerich@analog.com>,
 	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/4] iio: introduce IIO_DECLARE_BUFFER_WITH_TS
-Message-ID: <aAPQ2b5E9S1gMddP@smile.fi.intel.com>
+Subject: Re: [PATCH 2/4] iio: adc: ad4695: use IIO_DECLARE_BUFFER_WITH_TS
+Message-ID: <aAPRbb93lJrnEE5l@smile.fi.intel.com>
 References: <20250418-iio-introduce-iio_declare_buffer_with_ts-v1-0-ee0c62a33a0f@baylibre.com>
- <20250418-iio-introduce-iio_declare_buffer_with_ts-v1-1-ee0c62a33a0f@baylibre.com>
+ <20250418-iio-introduce-iio_declare_buffer_with_ts-v1-2-ee0c62a33a0f@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -67,24 +67,39 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250418-iio-introduce-iio_declare_buffer_with_ts-v1-1-ee0c62a33a0f@baylibre.com>
+In-Reply-To: <20250418-iio-introduce-iio_declare_buffer_with_ts-v1-2-ee0c62a33a0f@baylibre.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Fri, Apr 18, 2025 at 05:58:32PM -0500, David Lechner wrote:
-> Add a new macro to help with the common case of declaring a buffer that
-> is safe to use with iio_push_to_buffers_with_ts(). This is not trivial
-> to do correctly because of the alignment requirements of the timestamp.
-> This will make it easier for both authors and reviewers.
+On Fri, Apr 18, 2025 at 05:58:33PM -0500, David Lechner wrote:
+> Use IIO_DECLARE_BUFFER_WITH_TS to declare the buffer that gets used with
+> iio_push_to_buffers_with_ts(). This makes the code a bit easier to read
+> and understand.
+> 
+> AD4695_MAX_CHANNEL_SIZE macro is dropped since it was making the line
+> too long and didn't add that much value.
+> 
+> AD4695_MAX_CHANNELS + 2 is changed to AD4695_MAX_CHANNELS + 1 because
+> previously we were overallocating. AD4695_MAX_CHANNELS is the number of
+> of voltage channels and + 1 is for the temperature channel.
 
 ...
 
-> +#define IIO_DECLARE_BUFFER_WITH_TS(type, name, count) \
-> +	type name[ALIGN((count), sizeof(s64) / sizeof(type)) \
-> +		  + sizeof(s64)/ sizeof(type)] __aligned(sizeof(s64))
+> -/* Max size of 1 raw sample in bytes. */
+> -#define AD4695_MAX_CHANNEL_SIZE		2
 
-We have two alignments in a row in most of the cases, I would think that the
-proper one is for DMA and this should not be used at all, it actually might be
-a bug in bmp280.
+>  	/* Raw conversion data received. */
+> -	u8 buf[ALIGN((AD4695_MAX_CHANNELS + 2) * AD4695_MAX_CHANNEL_SIZE,
+> -		     sizeof(s64)) + sizeof(s64)] __aligned(IIO_DMA_MINALIGN);
+> +	IIO_DECLARE_BUFFER_WITH_TS(u8, buf, (AD4695_MAX_CHANNELS + 1) * 2)
+> +		__aligned(IIO_DMA_MINALIGN);
+
+I would rather expect this to be properly written as u16 / __le16 / __be16
+instead of playing tricks with u8.
+
+With all comments given so far I would expect here something like:
+
+	IIO_DECLARE_BUFFER_WITH_TS(u16, buf, AD4695_MAX_CHANNELS + 1);
+
 
 -- 
 With Best Regards,

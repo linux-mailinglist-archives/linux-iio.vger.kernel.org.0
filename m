@@ -1,105 +1,113 @@
-Return-Path: <linux-iio+bounces-18329-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18330-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1CE6A94417
-	for <lists+linux-iio@lfdr.de>; Sat, 19 Apr 2025 17:03:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3B52A94427
+	for <lists+linux-iio@lfdr.de>; Sat, 19 Apr 2025 17:23:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EFD1E17B16C
-	for <lists+linux-iio@lfdr.de>; Sat, 19 Apr 2025 15:03:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA3E13B8F18
+	for <lists+linux-iio@lfdr.de>; Sat, 19 Apr 2025 15:23:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 005A81D432D;
-	Sat, 19 Apr 2025 15:03:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B9A71DE2DC;
+	Sat, 19 Apr 2025 15:23:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hrEnSkui"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E3C1171A1;
-	Sat, 19 Apr 2025 15:03:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 655EF86338;
+	Sat, 19 Apr 2025 15:23:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745075000; cv=none; b=QnxsSPZiBK4n7vDnRTuCY5wAB0b7cpE4g9R/z6lrXyGUEh8F+zSpdcEPs2n9VvCjdI3fiEdakZSAvaogAtZiXtlJj6KWkl7mmezr2fStL8sQCcCAlCganRfwCcR0oJXmOzSvXyIUkrvLpRCoFT1NgXV8B6WZ/CTLP8zmL56qAzM=
+	t=1745076220; cv=none; b=ErXZu2mtgojqMjjNjbO4xWZY3Whx1g/4dPi28khgGCjWVngf1tZBXxvZWtXSIoVyqZXSEiXpeDGBnhk2mTqZmpPekcXIX6efPAM6UTS3hotWvGgFuQf4eQJY7/J2u8ljr69bn+mG/WbaOVwY8leefh0r8mtz1JZdXTOi6wgH6QY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745075000; c=relaxed/simple;
-	bh=vHpS0EOUKOHvUmrrsu3bCjDD09un1f06BTLzyFjP/HA=;
+	s=arc-20240116; t=1745076220; c=relaxed/simple;
+	bh=jKx3xVhsHVOtER/pLqrjsPM2BE1BLfp7Mcm2zgmDd1c=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mL8bSRorKGzm17rw0gBr3pup/NZNkpYW1l/gCqzg5SRncH68U+q6D/SkYI7d+2xEEJ9g1UjAHwVNIqI1AUILg0jDmpgF4PWjksdT1GTNJ3mwkHD29u7mXZI/ehw8XUKMXqjFigyYUzrn1DeYzTewggj4PKVXPKNizf3Gk0R+i0A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com; spf=fail smtp.mailfrom=gmail.com; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=gmail.com
-X-CSE-ConnectionGUID: hVmOVozcSWarKpdua547Bw==
-X-CSE-MsgGUID: or+H6hU5Riy0cHhGFiOU2w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11408"; a="57664685"
+	 Content-Type:Content-Disposition:In-Reply-To; b=g4SKKcES5xEvTeQBpgg5dBou8QeEvYEphfSkgrBYxPuiQEZtwqejfnCs3SevQ+VQyjODQdjF6Kgg/HevOzgphDcYpI9GzsFq+r0O9VFJhgsF6wm0XJ7QUq+8uNJxB11QAp1aVk3ra5DVavOXLHMjEMro98gTkAs3sClayC2wMg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hrEnSkui; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1745076220; x=1776612220;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=jKx3xVhsHVOtER/pLqrjsPM2BE1BLfp7Mcm2zgmDd1c=;
+  b=hrEnSkuilUw13tQHADD8YYj2AdaaW21M0/Gh8vUS6qQCrHbbaCFTMHiJ
+   VpNSOXF2VccDaeClmUwVDbG+fcOcBDrOXFIvnyMdeUE65OZroMfGRlG9Q
+   jAdfe0AZqkLmkT25Hdvc4tfAWswSy6v4cG7DjjtPmKNi4+TpwUeav/TKU
+   1IiDut6Gw47/ZHvz5ozIf4R+nQXaypwpbEXK8nCwvbhceg3q7s6VFR0CH
+   FNRubIzbck6lkUmdGNSYTywxuS3C6+IFDNK/HqqUi337mA71n1FisdDXv
+   GzXLIRGNQcFTMxZ7505y1L9mI9Olb0RnRk/KmZY6PjxMdWrEgcn4MXgrS
+   w==;
+X-CSE-ConnectionGUID: P2PVXL+yR16JkjO42O8NYw==
+X-CSE-MsgGUID: AlE8zcwwS8WT3ztoJNBdSg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11408"; a="46597031"
 X-IronPort-AV: E=Sophos;i="6.15,224,1739865600"; 
-   d="scan'208";a="57664685"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Apr 2025 08:03:17 -0700
-X-CSE-ConnectionGUID: 1zEt/x4wRNOyYkhI+wDheQ==
-X-CSE-MsgGUID: 1jXqXl0rTy+4WZWHFFyFZA==
+   d="scan'208";a="46597031"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Apr 2025 08:23:39 -0700
+X-CSE-ConnectionGUID: qoW8PW5/ShazG6pX3wtPpg==
+X-CSE-MsgGUID: qkcI1+AkQMCWDZtIWUrO0A==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.15,224,1739865600"; 
-   d="scan'208";a="132319883"
+   d="scan'208";a="136165710"
 Received: from smile.fi.intel.com ([10.237.72.58])
-  by orviesa008.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Apr 2025 08:03:14 -0700
+  by fmviesa005.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Apr 2025 08:23:33 -0700
 Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
-	(envelope-from <andy.shevchenko@gmail.com>)
-	id 1u69ip-0000000DqU2-2roN;
-	Sat, 19 Apr 2025 18:03:11 +0300
-Date: Sat, 19 Apr 2025 18:03:11 +0300
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Antoniu Miclaus <antoniu.miclaus@analog.com>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	"linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] iio: amplifiers: ada4250: use DMA-safe memory for
- regmap_bulk_read()
-Message-ID: <aAO7Lw13xrEGmZLL@smile.fi.intel.com>
-References: <20250418-iio-amplifiers-ada4250-simplify-data-buffer-in-init-v1-1-7e7bd6dad423@baylibre.com>
- <CAHp75Vdxdbqu6qkbuo5y4jADOH_h9Re6m8icSj3Je4hnVsha0g@mail.gmail.com>
- <ed5c4b46-0b3f-4278-ba8e-6f6977f18429@baylibre.com>
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1u6A2U-0000000Dqmi-077r;
+	Sat, 19 Apr 2025 18:23:30 +0300
+Date: Sat, 19 Apr 2025 18:23:29 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Eason Yang <j2anfernee@gmail.com>, lars@metafoo.de, robh@kernel.org,
+	krzk+dt@kernel.org, conor+dt@kernel.org, dlechner@baylibre.com,
+	nuno.sa@analog.com, javier.carrasco.cruz@gmail.com,
+	gstols@baylibre.com, alisadariana@gmail.com, tgamblin@baylibre.com,
+	olivier.moysan@foss.st.com, antoniu.miclaus@analog.com,
+	eblanc@baylibre.com, joao.goncalves@toradex.com,
+	tobias.sperling@softing.com, marcelo.schmitt@analog.com,
+	angelogioacchino.delregno@collabora.com,
+	thomas.bonnefille@bootlin.com, herve.codina@bootlin.com,
+	chanh@os.amperecomputing.com, KWLIU@nuvoton.com,
+	yhyang2@nuvoton.com, linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v6 2/2] iio: adc: add support for Nuvoton NCT7201
+Message-ID: <aAO_8d7j-KgxbmKU@smile.fi.intel.com>
+References: <20250416081734.563111-1-j2anfernee@gmail.com>
+ <20250416081734.563111-3-j2anfernee@gmail.com>
+ <20250418171326.07634113@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ed5c4b46-0b3f-4278-ba8e-6f6977f18429@baylibre.com>
+In-Reply-To: <20250418171326.07634113@jic23-huawei>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Fri, Apr 18, 2025 at 02:09:04PM -0500, David Lechner wrote:
-> On 4/18/25 1:58 PM, Andy Shevchenko wrote:
-> > пʼятниця, 18 квітня 2025 р. David Lechner <dlechner@baylibre.com <mailto:dlechner@baylibre.com>> пише:
-> > 
-> >     Use DMA-safe memory instead of stack-allocated memory for the call to
-> >     regmap_bulk_read() in the ada4250_init() function as this could be used
-> >     directly by a SPI controller.
-> > 
-> > Sorry, but can you elaborate more on this? If driver doesn’t override the
-> > callbacks the regmap SPI uses spi_write_then_read() which is supposed to be
-> > dma safe. 
+On Fri, Apr 18, 2025 at 05:13:26PM +0100, Jonathan Cameron wrote:
+> On Wed, 16 Apr 2025 16:17:34 +0800
+> Eason Yang <j2anfernee@gmail.com> wrote:
+
+...
+
+> > +	struct device *dev = chip->dev;
+> > +	__le16 data = cpu_to_le16(NCT7201_REG_CHANNEL_ENABLE_MASK);
 > 
-> Ah, I didn't dig that far down. Will send a new patch that just cleans up the
-> unnecessary alignment and unaligned call.
+> Assign this value down near where it is used. That will generally help
+> readability.
 
-But do you have a real life issue with that? Coincidentally we discussed
-similar case in another driver with colleague of mine, and he insists that it
-might be still broken (somewhere).
-
-> (Also can't believe you sent HTML mail!)
-
-Yeah, Gmail from the phone can't actually send a plain text :-(
-Very strange from Google, while I understand that the case most
-likely is for business, where HTML is a standard (sic!) for emails.
+Actually it is a good, but not a main reason, the problem with this style is
+long-term maintenance when some code may appear in between and become so long
+that one can screw up this assignment at some point.
 
 -- 
 With Best Regards,

@@ -1,100 +1,102 @@
-Return-Path: <linux-iio+bounces-18347-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18348-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B5A4A94509
-	for <lists+linux-iio@lfdr.de>; Sat, 19 Apr 2025 20:33:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82BD3A9452E
+	for <lists+linux-iio@lfdr.de>; Sat, 19 Apr 2025 21:01:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C53487AD223
-	for <lists+linux-iio@lfdr.de>; Sat, 19 Apr 2025 18:31:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9D0783BC843
+	for <lists+linux-iio@lfdr.de>; Sat, 19 Apr 2025 19:00:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B84A141987;
-	Sat, 19 Apr 2025 18:32:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AF081624FE;
+	Sat, 19 Apr 2025 19:01:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="nSh8NluO"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h998Wq3w"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ot1-f50.google.com (mail-ot1-f50.google.com [209.85.210.50])
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03EE213B2A4
-	for <linux-iio@vger.kernel.org>; Sat, 19 Apr 2025 18:32:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A8304685
+	for <linux-iio@vger.kernel.org>; Sat, 19 Apr 2025 19:01:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745087574; cv=none; b=Tayi12OJq2W6aPF5E99vItGRjagSYPoSmBMAnn/F54JYVxkP3GSQharpR9pNpFnCodGsv0ri/VhqfNbyeDdIyK5+5pW/TFSyetnLlj3ABw7UWBXgxXmuJvpslvqsLIR45CUgStafSl79U+7mIpxERDdmHUkmjibKQODWlYPbMNc=
+	t=1745089269; cv=none; b=MeiSaFnIx3icso79snuZvVUOmhVsKaD+KY1x/LPazOdgJHJeWQYsw6zuYn1N64YyYoUxNnyaPhMJ13z1LF0OGfMVyGrm7aEok4VcxtK74/V2xyut1hH8ccMjJDpQ0frm0bhysiOsea74CvlCwXgLPUVynIuKh1uBWOZJ0YqB3f4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745087574; c=relaxed/simple;
-	bh=ODwOycd1IUOEeekXAJWzOd5/MP7x/GmeK92D6umZdGE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BUhJByXWmEDY06KBfl1BxIr7igCoyY2780iKV/HX3amBG1YjK5edMWZsCLnhgFALqH5Q7YGpDlxI8plyax8WLWc2H4tjARnr9mYKut0OyOui8yR78Ejnqg6gChlJxTNegEFvttPaXSgNixPTkZPRSKhfiFaTrogWOxKhQF2wkus=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=nSh8NluO; arc=none smtp.client-ip=209.85.210.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ot1-f50.google.com with SMTP id 46e09a7af769-72bbead793dso2058537a34.1
-        for <linux-iio@vger.kernel.org>; Sat, 19 Apr 2025 11:32:51 -0700 (PDT)
+	s=arc-20240116; t=1745089269; c=relaxed/simple;
+	bh=l+LCgdTkjmtFYnLKc3GQEhb43MIKxIj8aE2yyidygKY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gJ/JT+pyoVTCTAG/ZwbuUxAZ348Qe9hHVQhhkxva7A6AlXnOZatNGI9lS7Xhuyxs3mJHp6Kj0kKgoRS8PRLureNM0lFgcIZ9K/atc0fR+Ax5g3E66QHUQLEu5++wzWieMZU03jy90PI4gC6Pi/EQaj9Yjdo9Z0DetRywdX3W9/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h998Wq3w; arc=none smtp.client-ip=209.85.210.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-7399a2dc13fso3707828b3a.2
+        for <linux-iio@vger.kernel.org>; Sat, 19 Apr 2025 12:01:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1745087571; x=1745692371; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=uDFwMaSriHab33Ca2k0ExvDTiZf+tnM2a2QMk4WMFFc=;
-        b=nSh8NluOafmayFQjoC09z5MVuLP51UOXr0N4GZzXEFJy2b39aZsqG9VaRprYbQxP2X
-         ciLVOYlz1CVdjwXC64kOxdPRUGmwhj/1kte1+p6Xj5b7lb8hJa/23udpd1RencfdBYET
-         W6cd2JEA+CCWiP+5gbzjmVD5XxYQHdyS4dQq+weJKJ1Gc01M8gH5ZYI/vca+ve2ymUsc
-         0jNv8UOa4pna7eKRvpZdU7G8hemifBaqHV7M9pCd4YwObAIZcyatMNiMhU8waWfX6vuo
-         PjcMoewmkZjTDw5qnv/ezIxN0LhnokJNbJITvXoqrCIa1TC2ClbcA6CNwECBTw5Kg5sD
-         7HHg==
+        d=gmail.com; s=20230601; t=1745089266; x=1745694066; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=7fc99PUSKcdXTICwdHhnoBAgLT+to3fm22HHeBKl48M=;
+        b=h998Wq3wX381q7KRHIGkhndsKS+X19Zc+wUVivMbXIam7fmes82IZ185iPkWylOetu
+         y4tKNYHwkOOffsa1ECIj22KjBcIlr246xMSLESVtuYY+YXaODP8FKOeqDtrqQy9/xgnC
+         MRmuURe+px5PZRwWvA7JHLCsUZlXbsxz/3UFVhYiXkWO4MAJTtrgjQTa/qaIE1ZPbOQY
+         ipx9TW2aoE9JeRkq+EuLRuyRJuminl1tdpwHgEFltOr45cvw0Xe5aG/P9So3Qnv206Z/
+         qRE3xADiMLJ/XnSkFN6qC8Vn270nCh2SEihODCGY9rJHBmLrEXz6j7+4Or5TumcOGcAp
+         S3Wg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745087571; x=1745692371;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=uDFwMaSriHab33Ca2k0ExvDTiZf+tnM2a2QMk4WMFFc=;
-        b=aWvAAlhBODZmn/YiRKJfpX4WWnoYx83TnPT4QbTjNCUCGDU0lwGCNHWbGkQVG6Yp8m
-         gQJbr/Gp0a2mrz683jaPfnPSKO+1yGZJ8ULpM92L+vJtOtFheD4gytQILoZ9dug1nqUW
-         Ri2AVd/m5EiVcElw4HwEQRvnb28bHKOJM9d/hScLaA84v2w0CIsjw4ufbMIXlFO6gDxw
-         gAq5oGJe7C7cZBhOPa3euo6dIHGpsVQHvXwNxNXGgwgS4dXgvGLHJuB82ij1rYN1xYVF
-         63R55aO8KU98O81Hlpb9zvIQuQERkPQgNdIY69AAMzxAD2NnXxKueEbCwrfjb+Wr8kvM
-         DwAQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXlt2hA+i85HZJ8LtlwB2rwR/Qaa5H/c3Im0e0gvczSN7JOe2rDEw/Hc5jIoCBzC9EXXrywc3T5Y6s=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyTKdkeoR5U3T16S1YurBUhLMf0H6Q5RrChl3PrAq+LOEeOK5wh
-	TQ8HZpaNIQM/uD5mg+mrwtV/rzyWC9gYyg7FLDIlFtn7aoGsXmYaR2chRSupNY0=
-X-Gm-Gg: ASbGnctL6KX78cxT8q6hjvD2JBbiSmyFiR3BBoCU+tH94ewjrZsqSujMfOu1Et1BI3L
-	/NSLqMV5eZk1dM1fUxHxNODp/frC+kqRIGmzvaICsYtZzGcWEoIasItevNJVQPqG1nj3UK847Ej
-	wAhXwVVw/WWVgehVQuclLqi6subHcWbmFtBCRGswTL1F+bifckijUI9N0BUc/rBbZ2WTELybA1W
-	FyIY5wjn8j2IJRZMC+QcMfuFiNxncQU6/dGGPp+uohmSBjGhXHkMUHvOdz2zgccNob+6TQ8iD91
-	wmDQwpKGZ5ymLoqZ7Z5qZrK+BlR2E+P9zWhvooFWh+dxcUM+enIlNMPkBB8spsePLGhbPMdVbm9
-	BoKNv4JmOndrz
-X-Google-Smtp-Source: AGHT+IHihtMMKLbaI6TqLC/OpBC6LWijtaUTg5w8rF7lkwxjK5VZDuBdOylX5NWJZWyygb8D2cwnEQ==
-X-Received: by 2002:a05:6830:4998:b0:72b:ad34:f0bb with SMTP id 46e09a7af769-7300634e703mr4462853a34.26.1745087570918;
-        Sat, 19 Apr 2025 11:32:50 -0700 (PDT)
-Received: from ?IPV6:2600:8803:e7e4:1d00:79a:b8ae:edee:ec5? ([2600:8803:e7e4:1d00:79a:b8ae:edee:ec5])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7300489b02bsm784211a34.61.2025.04.19.11.32.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 19 Apr 2025 11:32:50 -0700 (PDT)
-Message-ID: <906f8d69-d08d-4150-9f84-2ce714cccb3c@baylibre.com>
-Date: Sat, 19 Apr 2025 13:32:49 -0500
+        d=1e100.net; s=20230601; t=1745089266; x=1745694066;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7fc99PUSKcdXTICwdHhnoBAgLT+to3fm22HHeBKl48M=;
+        b=wj3o9i5rZGDfWHr402yatNj5o54U6HFmCck+Lt4JHkad1kJYLqPdJTdPl/BNcM2SGy
+         l1B/g0eEaJYVc9Ca1lRLOnk7zvbhiXJXKV6FiQ8ni08RokeRwvpvSkROsqr7F7aVQhsx
+         UTbUEDVZbPWjvHt4hGx/N04PnoEwX49/k6UKnJ04PDdCkHJUHlYB54GJXiQ0hkUV4oKZ
+         x0cU9XHI5IUklyO4ZwOnbISYmF5PNBNbHtwsvtjoe5sg6H0bEfHi4wFB2/+3/r6Le3dS
+         uuQ9yNPgTt4rRZozQr2cLfATgn/DFSPOWgZqpsCfDF67KeuNcdUUTDJnsHE/NwyCPtGA
+         eEpA==
+X-Forwarded-Encrypted: i=1; AJvYcCXqRvsdoXCnw8JaxMacbFtR78u2an6ryWXdsSemBipbUWBrQLwM4+BH10B3IodgNaO+tP28ddbci78=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzhsksrL73PQulIyX5SdclCooEl8aHH4lz+knir80wOtfKWUdEj
+	G9UxR7jZ5vaxWrGA1w5FJ2OYLzZBPMDjOjlH3AdcXU8/FqGnVdC6
+X-Gm-Gg: ASbGncsoy8h6i0pAwEo4cvC3eTf+dFK/AMb2GHsay+0ZR8LztlZblCDONfniiE40v/Y
+	y0gGWyPHm3ZcOeKmkn2GhG4TblKQeLIalA+iJZ57XENISB3zPD4momRA9HYKVX8EEN+V6LLCiQj
+	7sWiZIFcfLHOkuwiS3wil7o30khSBYw7n/AKgWZMgVOIfz/xC4ckb8Ti4UhQmyes8cLKYjsjwkL
+	nJCDCiX9zQUoMSEo16N4PFJMI2Kfupqqpivb7isop2il7rHs4SMZy/KWVTxoWQE3QQh4/oYxvbz
+	EIz4FIqY4KFme6QGarxoPHuc9X2jSet2K2hZyTLpSUJ/FpE=
+X-Google-Smtp-Source: AGHT+IHjW4d/BeJg24FIVEf6kzi8Ev3Iv3sdGCfDFK0RpSluUwl2aqlYKR7xMqy4af+rDxxdPkj1wQ==
+X-Received: by 2002:a05:6a00:2182:b0:736:53f2:87bc with SMTP id d2e1a72fcca58-73dc14cd36cmr7736572b3a.13.1745089266066;
+        Sat, 19 Apr 2025 12:01:06 -0700 (PDT)
+Received: from localhost ([2804:30c:90e:1e00:5265:5254:2e32:7e5])
+        by smtp.gmail.com with UTF8SMTPSA id d2e1a72fcca58-73dbf8e083esm3630991b3a.39.2025.04.19.12.01.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 19 Apr 2025 12:01:05 -0700 (PDT)
+Date: Sat, 19 Apr 2025 16:02:16 -0300
+From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+To: Arthur Pilone <art.pilone@gmail.com>
+Cc: jic23@kernel.org, marcelo.schmitt@analog.com, linux-iio@vger.kernel.org,
+	arthurpilone@usp.br, bruno.stephan@usp.br, aschwarz@usp.br
+Subject: Re: [PATCH v1] iio: adc: ad7091r-base: Move reg volatility check to
+ new macro
+Message-ID: <aAPzOEjGLc-7yMkH@debian-BULLSEYE-live-builder-AMD64>
+References: <20250419161347.28157-1-arthurpilone@usp.br>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] iio: adc: ad7091r-base: Move reg volatility check to
- new macro
-To: Arthur Pilone <art.pilone@gmail.com>, jic23@kernel.org
-Cc: marcelo.schmitt@analog.com, linux-iio@vger.kernel.org,
- arthurpilone@usp.br, bruno.stephan@usp.br, aschwarz@usp.br
-References: <20250419161347.28157-1-arthurpilone@usp.br>
-From: David Lechner <dlechner@baylibre.com>
-Content-Language: en-US
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 In-Reply-To: <20250419161347.28157-1-arthurpilone@usp.br>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
-On 4/19/25 11:13 AM, Arthur Pilone wrote:
+Hello Arthur, Bruno, Andre,
+
+Your patch looks good to me. Just one comment inline.
+With the macro updated according to suggestion
+Reviewed-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+
+On 04/19, Arthur Pilone wrote:
 > From: Arthur Pilone <art.pilone@gmail.com>
 > 
 > Both ad7091r_writeable_reg() and ad7091r_volatile_reg() perform the
@@ -119,42 +121,7 @@ On 4/19/25 11:13 AM, Arthur Pilone wrote:
 > Co-developed-by: Andre de Lima <aschwarz@usp.br>
 > Signed-off-by: Andre de Lima <aschwarz@usp.br>
 > ---
->  drivers/iio/adc/ad7091r-base.c | 16 ++--------------
->  drivers/iio/adc/ad7091r-base.h |  2 ++
->  2 files changed, 4 insertions(+), 14 deletions(-)
-> 
-> diff --git a/drivers/iio/adc/ad7091r-base.c b/drivers/iio/adc/ad7091r-base.c
-> index 931ff71b2888..8329552f0be8 100644
-> --- a/drivers/iio/adc/ad7091r-base.c
-> +++ b/drivers/iio/adc/ad7091r-base.c
-> @@ -375,25 +375,13 @@ EXPORT_SYMBOL_NS_GPL(ad7091r_probe, "IIO_AD7091R");
->  
->  bool ad7091r_writeable_reg(struct device *dev, unsigned int reg)
->  {
-> -	switch (reg) {
-> -	case AD7091R_REG_RESULT:
-> -	case AD7091R_REG_ALERT:
-> -		return false;
-> -	default:
-> -		return true;
-> -	}
-> +	return !AD7091R_IS_VOLATILE_REG(reg);
->  }
->  EXPORT_SYMBOL_NS_GPL(ad7091r_writeable_reg, "IIO_AD7091R");
->  
->  bool ad7091r_volatile_reg(struct device *dev, unsigned int reg)
->  {
-> -	switch (reg) {
-> -	case AD7091R_REG_RESULT:
-> -	case AD7091R_REG_ALERT:
-> -		return true;
-> -	default:
-> -		return false;
-> -	}
-> +	return AD7091R_IS_VOLATILE_REG(reg);
->  }
->  EXPORT_SYMBOL_NS_GPL(ad7091r_volatile_reg, "IIO_AD7091R");
->  
+...
 > diff --git a/drivers/iio/adc/ad7091r-base.h b/drivers/iio/adc/ad7091r-base.h
 > index 092ddea0f395..1b4e0ef43260 100644
 > --- a/drivers/iio/adc/ad7091r-base.h
@@ -165,18 +132,14 @@ On 4/19/25 11:13 AM, Arthur Pilone wrote:
 >  #define AD7091R_REG_CH_HYSTERESIS(ch) ((ch) * 3 + 6)
 > +#define AD7091R_IS_VOLATILE_REG(reg) (reg == AD7091R_REG_RESULT \
 > +	|| reg == AD7091R_REG_ALERT)
->  
->  /* AD7091R_REG_RESULT */
->  #define AD7091R5_REG_RESULT_CH_ID(x)	    (((x) >> 13) & 0x3)
+Can we have the macro implementation all in one line?
 
-TBH, I think the old code is more readable than hiding the values in a macro
-even if it is duplicating a few lines of code.
+#define AD7091R_IS_VOLATILE_REG(reg)					\
+	((reg) == AD7091R_REG_RESULT || (reg) == AD7091R_REG_ALERT)
 
-But if everyone else thinks this is better, I would at least suggest to make
-the macro AD7091R_IS_READ_ONLY_REG instead of volatile. Using not volatile
-as an indicator of writable seems really strange. But using readonly as an
-indication of volatile seems more logical. A comment to the effect of "the
-read-only registers also happen to be the only volatile registers" in the
-ad7091r_volatile_reg() function would help too.
+The extra () around reg is to make sure the expression is fully evaluated before
+comparing to the address.
 
+Thanks,
+Marcelo
 

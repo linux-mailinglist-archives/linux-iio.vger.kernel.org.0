@@ -1,126 +1,109 @@
-Return-Path: <linux-iio+bounces-18328-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18329-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54704A943CA
-	for <lists+linux-iio@lfdr.de>; Sat, 19 Apr 2025 16:45:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1CE6A94417
+	for <lists+linux-iio@lfdr.de>; Sat, 19 Apr 2025 17:03:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 757028E1FEE
-	for <lists+linux-iio@lfdr.de>; Sat, 19 Apr 2025 14:45:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EFD1E17B16C
+	for <lists+linux-iio@lfdr.de>; Sat, 19 Apr 2025 15:03:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 701AF1D5166;
-	Sat, 19 Apr 2025 14:45:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eILa/oh1"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 005A81D432D;
+	Sat, 19 Apr 2025 15:03:21 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE091CA4B;
-	Sat, 19 Apr 2025 14:45:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E3C1171A1;
+	Sat, 19 Apr 2025 15:03:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745073927; cv=none; b=rgr1E0qSgNRMqVyaqMOe/GfXYXMzGrkGzOF/yNYLaIJwa/MJnLfjG8d5SI768PIbSOnHAni5LiirRh644wD1yvZf471IGrM3Ft74o/tzjiy8WecunjoGlpmvqiNjPy233TPdlz5mFXqch4MpIbUw1j8rBmVsl4wKRaP1M4Bxk8w=
+	t=1745075000; cv=none; b=QnxsSPZiBK4n7vDnRTuCY5wAB0b7cpE4g9R/z6lrXyGUEh8F+zSpdcEPs2n9VvCjdI3fiEdakZSAvaogAtZiXtlJj6KWkl7mmezr2fStL8sQCcCAlCganRfwCcR0oJXmOzSvXyIUkrvLpRCoFT1NgXV8B6WZ/CTLP8zmL56qAzM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745073927; c=relaxed/simple;
-	bh=/iRpNdeJshI3L30q214V68a98a6RN866jsxqHPWRnZw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DofhnMq59AuLJg/DFP3HcUGLnTBPavxwa4Z76fp7PEidy+JwCn6Q+FsCqCXjvEtgfR6gTvKSD42maSVzhsL6x0XZXytPTQ8jdSbItR7DzQ+vQl8m4htb3nJr8NGQd1ggRDPJjOEXZfqdfA1wuxETD8v1Dc6iXeKUBaLu7AmMAeE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eILa/oh1; arc=none smtp.client-ip=209.85.160.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-477296dce76so22767771cf.3;
-        Sat, 19 Apr 2025 07:45:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745073924; x=1745678724; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=TZwskAex2BRKK/3gla3QPoANYGHWeVyAoradRHdAXwM=;
-        b=eILa/oh15CYd/dRrqtuceD8jJ1ZtpOIbI6yUFPwZ/xPLCYIDxEbaQpVtv8ZFq3o1xJ
-         U4JvdwtYRVneFgSAcF+yU52vDdrqFz1vEVyN8NbEaqI5HZGh1Shku6Vp2zAYrmuamNpw
-         vobyu2jN8u5vmkEmpm7T5a2oPIS++GGX9HrQ8oPO+Qer+EhVKnXUSDQe/CVYGJDYtlNj
-         oPtwdArXOCoyzReT65PDn785IVnuaiWTEWpfQPyQhpyX/iGilELogKrrkC2XZcmzNBOZ
-         EnhEfWFH9TVE6AfBZXWVABDR+RMlR71nNDazJKOhvQaN2uBDc9f/SVs3mRH9Fm4aXRQZ
-         STXw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745073924; x=1745678724;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=TZwskAex2BRKK/3gla3QPoANYGHWeVyAoradRHdAXwM=;
-        b=KOI57os+1vd4pigLPneREVayCcr5ScXT3KzMvW9uOIBvcpjhapfxpWHWE7H4tAhcTj
-         FgeC3XPWDr2ye5PrcF8kL6RbEBM/URtM4VGaUEohe9bg0y1twsWw3IPKrtaN83HnW/ds
-         UgTQ7Y31rh0hhdMXAqXWri+5OQpgJtiOR7yqHA56QTpS8CWZfetrklXquucMuCQXqMfq
-         jE9ungXTHA4Ka8FU4TI9vNsrlKpKydEiHjjY9YA4L1yUa0tvCZk01wLprRapU1BVCoE/
-         skxi/doonjayUZqbq2ysIjGcVdpIVVePRo3iL0FaGzmvVIgaWQ4FzOH48zi6lld3UiJv
-         IWIg==
-X-Forwarded-Encrypted: i=1; AJvYcCW+vdnffOnRLZ98WrFpG6OBrLGNbe2BhmKuUUGyRinzeRor5LB22TLPoBuzxCUfooG8J5QnUt647Ec=@vger.kernel.org, AJvYcCWPBQhtAqqviuz10kiPXb9S1fMsYxFfm5bxZ845Gv3EW+ePsjg9/3AW59px+bNlJNph6Sh55mZNT0+S45z+@vger.kernel.org
-X-Gm-Message-State: AOJu0YwKq7TGekRt0sYVhx72rP1Nm8BWg8H+pi2+fO0eLnJeR5NQS+UR
-	O3dXH6nPNG9fB7/cS9jRPKlFZFbMBN7IzEWJ7xQS5833l1TAulUV
-X-Gm-Gg: ASbGncudY1R+0XJrV/xUbUTeQre32AC5giFqhiXDp3aSpXW0vE0KN91J9c0Y0jv8SRC
-	4o5GhXfnzr+SQNIHd66/pQqn/lX7doUDN4ZLLgwRJ6v4sNhO7rDOegk13kapptGlY/IH9rKEs84
-	fdqpk7k7wnPPbzks2WO75E1McC3eBontSV77LK56iww1P51NA0e1mCu1wAfYYgh0yKqpxtQBtBb
-	Ovd+LYvW/A1QuDgz6s/YCKlZ9eKgFhqi6Gk33m/cuUBcpmZ4aRTqbUPaqXHi0RG9Spw1Qp2z3nT
-	CMHa3Aoj78jZf5B19Q5HBGj+zNQQ8vW1SNOpqkD9MCoHpT10G6zXj84=
-X-Google-Smtp-Source: AGHT+IFknOo8FgIOBC/pX7zqREnS6alYIVbQbHq3b3MI+c5P0yy/6AQL2yR1JeK4EVgs7lffsPJP6A==
-X-Received: by 2002:a05:622a:1349:b0:476:8917:5efe with SMTP id d75a77b69052e-47aec4a117emr101307731cf.42.1745073924534;
-        Sat, 19 Apr 2025 07:45:24 -0700 (PDT)
-Received: from theriatric.mshome.net ([73.123.232.110])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-47ae9cf9f29sm21856141cf.71.2025.04.19.07.45.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 19 Apr 2025 07:45:24 -0700 (PDT)
-From: Gabriel Shahrouzi <gshahrouzi@gmail.com>
-To: jic23@kernel.org,
-	lars@metafoo.de,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Michael.Hennerich@analog.com
-Cc: gshahrouzi@gmail.com,
-	skhan@linuxfoundation.org,
-	linux-kernel-mentees@lists.linux.dev
-Subject: [PATCH] iio: adis16201: Correct inclinometer channel resolution
-Date: Sat, 19 Apr 2025 10:45:20 -0400
-Message-ID: <20250419144520.815198-1-gshahrouzi@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1745075000; c=relaxed/simple;
+	bh=vHpS0EOUKOHvUmrrsu3bCjDD09un1f06BTLzyFjP/HA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mL8bSRorKGzm17rw0gBr3pup/NZNkpYW1l/gCqzg5SRncH68U+q6D/SkYI7d+2xEEJ9g1UjAHwVNIqI1AUILg0jDmpgF4PWjksdT1GTNJ3mwkHD29u7mXZI/ehw8XUKMXqjFigyYUzrn1DeYzTewggj4PKVXPKNizf3Gk0R+i0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com; spf=fail smtp.mailfrom=gmail.com; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=gmail.com
+X-CSE-ConnectionGUID: hVmOVozcSWarKpdua547Bw==
+X-CSE-MsgGUID: or+H6hU5Riy0cHhGFiOU2w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11408"; a="57664685"
+X-IronPort-AV: E=Sophos;i="6.15,224,1739865600"; 
+   d="scan'208";a="57664685"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Apr 2025 08:03:17 -0700
+X-CSE-ConnectionGUID: 1zEt/x4wRNOyYkhI+wDheQ==
+X-CSE-MsgGUID: 1jXqXl0rTy+4WZWHFFyFZA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,224,1739865600"; 
+   d="scan'208";a="132319883"
+Received: from smile.fi.intel.com ([10.237.72.58])
+  by orviesa008.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Apr 2025 08:03:14 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
+	(envelope-from <andy.shevchenko@gmail.com>)
+	id 1u69ip-0000000DqU2-2roN;
+	Sat, 19 Apr 2025 18:03:11 +0300
+Date: Sat, 19 Apr 2025 18:03:11 +0300
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Antoniu Miclaus <antoniu.miclaus@analog.com>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	"linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] iio: amplifiers: ada4250: use DMA-safe memory for
+ regmap_bulk_read()
+Message-ID: <aAO7Lw13xrEGmZLL@smile.fi.intel.com>
+References: <20250418-iio-amplifiers-ada4250-simplify-data-buffer-in-init-v1-1-7e7bd6dad423@baylibre.com>
+ <CAHp75Vdxdbqu6qkbuo5y4jADOH_h9Re6m8icSj3Je4hnVsha0g@mail.gmail.com>
+ <ed5c4b46-0b3f-4278-ba8e-6f6977f18429@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <ed5c4b46-0b3f-4278-ba8e-6f6977f18429@baylibre.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-The inclinometer channels were previously defined with 14 realbits.
-However, the ADIS16201 datasheet states the resolution for these output
-channels is 12 bits (Page 14, text description; Page 15, table 7).
+On Fri, Apr 18, 2025 at 02:09:04PM -0500, David Lechner wrote:
+> On 4/18/25 1:58 PM, Andy Shevchenko wrote:
+> > пʼятниця, 18 квітня 2025 р. David Lechner <dlechner@baylibre.com <mailto:dlechner@baylibre.com>> пише:
+> > 
+> >     Use DMA-safe memory instead of stack-allocated memory for the call to
+> >     regmap_bulk_read() in the ada4250_init() function as this could be used
+> >     directly by a SPI controller.
+> > 
+> > Sorry, but can you elaborate more on this? If driver doesn’t override the
+> > callbacks the regmap SPI uses spi_write_then_read() which is supposed to be
+> > dma safe. 
+> 
+> Ah, I didn't dig that far down. Will send a new patch that just cleans up the
+> unnecessary alignment and unaligned call.
 
-Correct the realbits value to 12 to accurately reflect the hardware.
+But do you have a real life issue with that? Coincidentally we discussed
+similar case in another driver with colleague of mine, and he insists that it
+might be still broken (somewhere).
 
-Signed-off-by: Gabriel Shahrouzi <gshahrouzi@gmail.com>
----
-Omit fixes tag because it targets driver before it moved out of staging.
----
- drivers/iio/accel/adis16201.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+> (Also can't believe you sent HTML mail!)
 
-diff --git a/drivers/iio/accel/adis16201.c b/drivers/iio/accel/adis16201.c
-index 982b33f6eccac..dcc8d9f2ee0f1 100644
---- a/drivers/iio/accel/adis16201.c
-+++ b/drivers/iio/accel/adis16201.c
-@@ -211,9 +211,9 @@ static const struct iio_chan_spec adis16201_channels[] = {
- 			BIT(IIO_CHAN_INFO_CALIBBIAS), 0, 14),
- 	ADIS_AUX_ADC_CHAN(ADIS16201_AUX_ADC_REG, ADIS16201_SCAN_AUX_ADC, 0, 12),
- 	ADIS_INCLI_CHAN(X, ADIS16201_XINCL_OUT_REG, ADIS16201_SCAN_INCLI_X,
--			BIT(IIO_CHAN_INFO_CALIBBIAS), 0, 14),
-+			BIT(IIO_CHAN_INFO_CALIBBIAS), 0, 12),
- 	ADIS_INCLI_CHAN(Y, ADIS16201_YINCL_OUT_REG, ADIS16201_SCAN_INCLI_Y,
--			BIT(IIO_CHAN_INFO_CALIBBIAS), 0, 14),
-+			BIT(IIO_CHAN_INFO_CALIBBIAS), 0, 12),
- 	IIO_CHAN_SOFT_TIMESTAMP(7)
- };
- 
+Yeah, Gmail from the phone can't actually send a plain text :-(
+Very strange from Google, while I understand that the case most
+likely is for business, where HTML is a standard (sic!) for emails.
+
 -- 
-2.43.0
+With Best Regards,
+Andy Shevchenko
+
 
 

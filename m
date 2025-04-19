@@ -1,249 +1,196 @@
-Return-Path: <linux-iio+bounces-18331-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18332-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70263A94435
-	for <lists+linux-iio@lfdr.de>; Sat, 19 Apr 2025 17:39:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49233A94437
+	for <lists+linux-iio@lfdr.de>; Sat, 19 Apr 2025 17:41:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9B88216E678
-	for <lists+linux-iio@lfdr.de>; Sat, 19 Apr 2025 15:39:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6BA2C3BFBF8
+	for <lists+linux-iio@lfdr.de>; Sat, 19 Apr 2025 15:40:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 607791C2DB2;
-	Sat, 19 Apr 2025 15:39:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C0231DE4D5;
+	Sat, 19 Apr 2025 15:41:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IHh4MFBD"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AE11BE4E;
-	Sat, 19 Apr 2025 15:39:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F204647;
+	Sat, 19 Apr 2025 15:40:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745077162; cv=none; b=eVQzleIg+p3qBY8t4x1MkLUxPLfK8/acnY+JbR66EdqpThZRR03S0NeVmbevTJPSaJesCbiFx9klvfKBs739c0W2NDfPc9QKQ8dNOqxJM4FZioHoZnRA7cg2oChRL5qbakhgfFUFWre39ejwMpbSJL1ivgW4YtSNVV/rMj9wGrk=
+	t=1745077261; cv=none; b=DE9atcbPaJDxdLfSC0Jt89RzDF6foTTMPQOtfwS26G0QEZTR5SAMLYIvsJ/nZZnNyGX4xNkDx961b79FhrGAe0Ig3g1LXqaASTyqRMAEVk1G9EivuqWW9kCMzyDtbwUy9pE6Erg51gTJmP5oiwqpeOGTCpyOqimYx+f20/XsNcY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745077162; c=relaxed/simple;
-	bh=KJwC/q34WQ1vVn3FqzfPmsnC1UiX1DRtv3w74U3sF38=;
+	s=arc-20240116; t=1745077261; c=relaxed/simple;
+	bh=ClRqyqgxMLLpFcx6qh/lm1yOPfxBYfbYfpqcbOlA2Oc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GBuWWI295sR7relKE/TAw9NW8XW64QpTUimSp+h59t/j3HhjGhwZb1spKuk+t2qbfEFAK6eU163s1viY3PRDIA+99mhLqz7ll46D94OFZF/kTTq1vOxzRorLvhljCX7ASaIPnv/E4qUQnqD9ljPiO8+THZQhN3sc5RSNuXUH6Z8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=fail smtp.mailfrom=kernel.org; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=kernel.org
-X-CSE-ConnectionGUID: ZtV6g4ZeSJK6Vx+kE+d8kw==
-X-CSE-MsgGUID: VXtycfjEQFOCIyuisC2jSw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11408"; a="46807087"
-X-IronPort-AV: E=Sophos;i="6.15,224,1739865600"; 
-   d="scan'208";a="46807087"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Apr 2025 08:39:20 -0700
-X-CSE-ConnectionGUID: mJinMyU7QSKkPKdJZu9csw==
-X-CSE-MsgGUID: s6yPo9JDRFyuV/ylYCA+UA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,224,1739865600"; 
-   d="scan'208";a="154518124"
-Received: from smile.fi.intel.com ([10.237.72.58])
-  by fmviesa002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Apr 2025 08:39:18 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
-	(envelope-from <andy@kernel.org>)
-	id 1u6AHj-0000000Dqz1-1I9a;
-	Sat, 19 Apr 2025 18:39:15 +0300
-Date: Sat, 19 Apr 2025 18:39:14 +0300
-From: Andy Shevchenko <andy@kernel.org>
-To: jean-baptiste.maneyrol@tdk.com
-Cc: Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 1/2] iio: imu: inv_icm42600: add WoM support
-Message-ID: <aAPDovuee7hoY1PS@smile.fi.intel.com>
-References: <20250418-losd-3-inv-icm42600-add-wom-support-v3-0-7a180af02bfe@tdk.com>
- <20250418-losd-3-inv-icm42600-add-wom-support-v3-1-7a180af02bfe@tdk.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=lylWG2m3Q9/wtWDWGJoKfpNNmETYWCg0xiHhm+yMEeHT8Eu0hAjwSe39l4YZ0kJuRybSxlZUwLkuQCCId5317hY/BdZd2T+3SVZ7un6qefhbhEaKMxRv5T53rgLRscIMq/RqM8alG2QhHjJ5eZV+521lq+I7Ix4njAbQKte7neo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IHh4MFBD; arc=none smtp.client-ip=209.85.214.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-227b828de00so28611235ad.1;
+        Sat, 19 Apr 2025 08:40:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1745077259; x=1745682059; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=dn9YmC5jj3loNIVPlHSXEKzB0SKqb9PRU18qmUPEZFQ=;
+        b=IHh4MFBD28AQyvkkIaZSkWTApf6Owxh9u5ji/HWUuzVoP3T+L8yI+QrtkBtThc52r6
+         fBx9b4tSojERqjwBR0g7G0nTHxrSTD898gZNTHxAM0ccDmt9k8OG+oGx2cZlKVAEW75O
+         Yr3xY0v53fbfWlAEjfQhCd4Nz1qKi9EzQkKkp+f228kOTbOxj6w3nBHAGIwHcywzw9vr
+         YlfVhR+mqkDn4sD0EyeFfAaJiTGGYNUV+9o86qTaEIQxE1sRi5TuX02iC4/O/rDFTkFV
+         iovqlnFLseAkoc5r3opgHgKgUtd+7hhuL1x+3lcJpLcNBJkwEk2wwmIDGVyNfYOIu6Ar
+         mQ9w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745077259; x=1745682059;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=dn9YmC5jj3loNIVPlHSXEKzB0SKqb9PRU18qmUPEZFQ=;
+        b=a37jHygfEen1Ms4zjXTg+qa6k1uimM8Vuxx59MS3cEbKMEgmrN8wO8JhuSDp9q3gDI
+         5C0wgffLsgCX3af+jyWACczweJYq1lUo0WOBs2ZYGqMHF6DU/eCimZ0LIHVWsyTFguNw
+         hy5lLrRBR5Sp8L2MZKj8mnYrFK9jx7VrEtli2eHZQjMiGj5spUFp6lBbXalizLqLLJHd
+         InAV1Fn+Vwf6m0JZ+ljAdCYrLx3YOI7eI25C3v7f6On/Q38CP7LssLxMOuVQiglWqaZh
+         docbdQkk9WPZVs1ajhfJYy+nwS9k+rk/t689vsK9arUAtyN0bXfAkT4SRn8D3cb+Pri0
+         HKVw==
+X-Forwarded-Encrypted: i=1; AJvYcCU1KyebNnyL8uJpUvvA9FxLuFtNwScHkxV4DkQFD9rT+ooAMZW19OK4t7zdRMi+YNO/Goh7hYOz@vger.kernel.org, AJvYcCUk6WNXVpwESKtv2w4nV8OYs1st/xW2gUJop5AReb+W3Qmadun2QLDCEiKI55wP3l8HCksxvJRSkOE=@vger.kernel.org, AJvYcCUzEGNqAp0A+M3utWhaK2wFH18u99wBfhwWxogFc/XrgWzOanbbAnla4rnQFli9T0CgmU3q/4rXey2YgoYo@vger.kernel.org
+X-Gm-Message-State: AOJu0YwGGJ35RAkcyqEWH0btqZLTzp1mhWsQduyNQjan6p3lcREuVwA9
+	plo1TukjAWd2A8pU/gZAasE6kSpVyllcxqP1wKKvYAC25YG68DkqUL43L+KE0SE=
+X-Gm-Gg: ASbGncv/mMLyT0CBOl8muWoSN55jTVucWctT5yJ77FAqm0g1b+zr0bb3pQTAkzsjm0L
+	2YmQW7SFammPbK1zv7M77STGjeAaH+gIblw5gH7HUlX6Yv79vBIGRIQlhr8OnwOhT2Osl0TXo+P
+	QAC4y0lWT7+KsRxkVng2HjMf4GYIy5H5KElytfOEU5NFMk6Ox1GRx7vyu7dK22TN3bYLAQgGtlo
+	WVCMA56ZP9hz1koOJ9q0kKnEqu6RmYcnDqWfVuxgSBV5OMadBVZKvzUXLy0WlJQnJKwJg2j3m7F
+	F5e67zxVd714QrrkyZWeJpg6ceDG0NHqRAQ6L1/D3Nintulm
+X-Google-Smtp-Source: AGHT+IEWxIwIoF5MmQuLAZOIj8CNlNUAGZybSbGFdV3b5ddUwG0nulVS/wk6vS0WXNJWoD84WcF+iw==
+X-Received: by 2002:a17:903:1a0d:b0:220:e156:63e0 with SMTP id d9443c01a7336-22c53566fe7mr76317705ad.8.1745077258807;
+        Sat, 19 Apr 2025 08:40:58 -0700 (PDT)
+Received: from localhost ([2804:30c:1646:2b00:fd36:404b:e47:81e9])
+        by smtp.gmail.com with UTF8SMTPSA id d2e1a72fcca58-73dbfaacf48sm3550125b3a.148.2025.04.19.08.40.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 19 Apr 2025 08:40:58 -0700 (PDT)
+Date: Sat, 19 Apr 2025 12:42:09 -0300
+From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+To: Gabriel Shahrouzi <gshahrouzi@gmail.com>
+Cc: gregkh@linuxfoundation.org, jic23@kernel.org, lars@metafoo.de,
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-staging@lists.linux.dev, Michael.Hennerich@analog.com,
+	skhan@linuxfoundation.org, kernelmentees@lists.linuxfoundation.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] iio: ad5933: Correct settling cycles encoding per
+ datasheet
+Message-ID: <aAPEUUAHsG2CvFbr@debian-BULLSEYE-live-builder-AMD64>
+References: <20250416142219.554938-1-gshahrouzi@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250418-losd-3-inv-icm42600-add-wom-support-v3-1-7a180af02bfe@tdk.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+In-Reply-To: <20250416142219.554938-1-gshahrouzi@gmail.com>
 
-On Fri, Apr 18, 2025 at 06:19:02PM +0200, Jean-Baptiste Maneyrol via B4 Relay wrote:
-> From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+Hi Gabriel,
+
+Probably a thing for a separate patch but, would it make code more readable if
+use masks and bitfield to set register data?
+See comments bellow.
+
+Regards,
+Marcelo
+
+On 04/16, Gabriel Shahrouzi wrote:
+> Implement the settling cycles encoding as specified in the AD5933
+> datasheet, Table 13 ("Number of Settling Times Cycles Register"). The
+> previous logic did not correctly translate the user-requested effective
+> cycle count into the required 9-bit base + 2-bit multiplier format
+> (D10..D0) for values exceeding 511.
 > 
-> Add WoM as accel roc rising x|y|z event.
+> Clamp the user input for out_altvoltage0_settling_cycles to the
+> maximum effective value of 2044 cycles (511 * 4x multiplier).
+> 
+> Fixes: f94aa354d676 ("iio: impedance-analyzer: New driver for AD5933/4 Impedance Converter, Network Analyzer")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Gabriel Shahrouzi <gshahrouzi@gmail.com>
+> ---
+>  .../staging/iio/impedance-analyzer/ad5933.c   | 21 ++++++++++++-------
+>  1 file changed, 14 insertions(+), 7 deletions(-)
+> 
+> diff --git a/drivers/staging/iio/impedance-analyzer/ad5933.c b/drivers/staging/iio/impedance-analyzer/ad5933.c
+> index d5544fc2fe989..5a8c5039bb159 100644
+> --- a/drivers/staging/iio/impedance-analyzer/ad5933.c
+> +++ b/drivers/staging/iio/impedance-analyzer/ad5933.c
+> @@ -28,7 +28,7 @@
+>  #define AD5933_REG_FREQ_START		0x82	/* R/W, 3 bytes */
+>  #define AD5933_REG_FREQ_INC		0x85	/* R/W, 3 bytes */
+>  #define AD5933_REG_INC_NUM		0x88	/* R/W, 2 bytes, 9 bit */
+> -#define AD5933_REG_SETTLING_CYCLES	0x8A	/* R/W, 2 bytes */
+> +#define AD5933_REG_SETTLING_CYCLES	0x8A	/* R/W, 2 bytes, 11+2 bit */
+>  #define AD5933_REG_STATUS		0x8F	/* R, 1 byte */
+>  #define AD5933_REG_TEMP_DATA		0x92	/* R, 2 bytes*/
+>  #define AD5933_REG_REAL_DATA		0x94	/* R, 2 bytes*/
+> @@ -71,6 +71,8 @@
+>  #define AD5933_INT_OSC_FREQ_Hz		16776000
+>  #define AD5933_MAX_OUTPUT_FREQ_Hz	100000
+>  #define AD5933_MAX_RETRIES		100
+> +#define AD5933_MAX_FREQ_POINTS		511
+> +#define AD5933_MAX_SETTLING_CYCLES	2044 /* 511 * 4 */
+>  
+>  #define AD5933_OUT_RANGE		1
+>  #define AD5933_OUT_RANGE_AVAIL		2
+> @@ -82,6 +84,10 @@
+>  #define AD5933_POLL_TIME_ms		10
+>  #define AD5933_INIT_EXCITATION_TIME_ms	100
+>  
+> +/* Settling cycles multiplier bits D10, D9 */
+> +#define AD5933_SETTLE_MUL_2X		BIT(9)
+> +#define AD5933_SETTLE_MUL_4X		(BIT(9) | BIT(10))
+In addition to making the above a mask as suggested by Jonathan, we could also
+have a mask for the number of settling time cycles. E.g.
+#define AD5933_SETTLING_TIME_CYCLES_MSK	GENMASK(8, 0)
 
+Would also need to update defines to something like
+#define AD5933_SETTLE_MUL_2X		0x1
+#define AD5933_SETTLE_MUL_4X		0x3
+
+masks and define names up to you.
+
+> +
+>  struct ad5933_state {
+>  	struct i2c_client		*client;
+>  	struct clk			*mclk;
+> @@ -411,14 +417,15 @@ static ssize_t ad5933_store(struct device *dev,
+>  		ret = ad5933_cmd(st, 0);
+>  		break;
+>  	case AD5933_OUT_SETTLING_CYCLES:
+> -		val = clamp(val, (u16)0, (u16)0x7FF);
+> +		val = clamp(val, (u16)0, (u16)AD5933_MAX_SETTLING_CYCLES);
+>  		st->settling_cycles = val;
+>  
+> -		/* 2x, 4x handling, see datasheet */
+> +		/* Encode value for register: D10..D0 */
+> +		/* Datasheet Table 13: If cycles > 1022 -> val/4, set bits D10=1, D9=1 */
+>  		if (val > 1022)
+> -			val = (val >> 2) | (3 << 9);
+> -		else if (val > 511)
+> -			val = (val >> 1) | BIT(9);
+> +			val = (val >> 2) | AD5933_SETTLE_MUL_4X;
+then this would become something like
+
+		reg_data &= ~AD5933_SETTLE_MUL_MSK;
+		reg_data |= FIELD_PREP(AD5933_SETTLE_MUL_MSK, AD5933_SETTLE_MUL_4X);
+		reg_data &= ~AD5933_SETTLING_TIME_CYCLES_MSK;
+		reg_data |= FIELD_PREP(AD5933_SETTLING_TIME_CYCLES_MSK, val >> 2);
 ...
 
-> +static unsigned int inv_icm42600_accel_convert_roc_to_wom(uint64_t roc,
-> +							  int accel_hz, int accel_uhz)
-> +{
-> +	/* 1000/256mg per LSB converted in µm/s² */
-> +	const unsigned int convert = (1000U * 9807U) / 256U;
+Though, I guess it would then be preferable to use masks and bitfield macros for
+all other places where we handle register data in ad5933 driver. Probably
+something for a different patch (if worth it).
 
-Wondering if KILO (or MILLI?) is a good suit here...
-
-> +	uint64_t value;
-> +	uint64_t freq_uhz;
-> +
-> +	/* return 0 only if roc is 0 */
-> +	if (roc == 0)
-> +		return 0;
-> +
-> +	freq_uhz = (uint64_t)accel_hz * MICRO + (uint64_t)accel_uhz;
-> +	value = div64_u64(roc * MICRO, freq_uhz * (uint64_t)convert);
-> +
-> +	/* limit value to 8 bits and prevent 0 */
-> +	return clamp(value, 1, 255);
-> +}
-> +
-> +static uint64_t inv_icm42600_accel_convert_wom_to_roc(unsigned int threshold,
-> +						      int accel_hz, int accel_uhz)
-> +{
-> +	/* 1000/256mg per LSB converted in µm/s² */
-> +	const unsigned int convert = (1000U * 9807U) / 256U;
-
-Ditto.
-
-> +	uint64_t value;
-> +	uint64_t freq_uhz;
-> +
-> +	value = threshold * convert;
-> +	freq_uhz = (uint64_t)accel_hz * MICRO + (uint64_t)accel_uhz;
-> +
-> +	/* compute the differential by multiplying by the frequency */
-> +	return div_u64(value * freq_uhz, MICRO);
-> +}
-
-...
-
-> +static int inv_icm42600_accel_disable_wom(struct iio_dev *indio_dev)
-> +{
-> +	struct inv_icm42600_state *st = iio_device_get_drvdata(indio_dev);
-> +	struct device *pdev = regmap_get_device(st->map);
-> +	struct inv_icm42600_sensor_conf conf = INV_ICM42600_SENSOR_CONF_INIT;
-> +	unsigned int sleep_ms = 0;
-> +	int ret;
-> +
-> +	scoped_guard(mutex, &st->lock) {
-
-> +		st->apex.wom.enable = false;
-> +		st->apex.on--;
-
-Hmm... Even if the below fails we consider it successful? Why?
-
-> +		ret = inv_icm42600_disable_wom(st);
-> +		if (ret)
-> +			break;
-> +		/* turn off accel sensor if not used */
-> +		if (!st->apex.on && !iio_buffer_enabled(indio_dev)) {
-> +			conf.mode = INV_ICM42600_SENSOR_MODE_OFF;
-> +			ret = inv_icm42600_set_accel_conf(st, &conf, &sleep_ms);
-> +			if (ret)
-> +				break;
-> +		}
-> +	}
-> +
-> +	if (sleep_ms)
-> +		msleep(sleep_ms);
-> +	pm_runtime_mark_last_busy(pdev);
-> +	pm_runtime_put_autosuspend(pdev);
-> +
-> +	return ret;
-> +}
-
-...
-
-> +static int inv_icm42600_accel_read_event_config(struct iio_dev *indio_dev,
-> +						const struct iio_chan_spec *chan,
-> +						enum iio_event_type type,
-> +						enum iio_event_direction dir)
-> +{
-> +	struct inv_icm42600_state *st = iio_device_get_drvdata(indio_dev);
-> +
-> +	guard(mutex)(&st->lock);
-> +
-> +	/* handle WoM (roc rising) event */
-> +	if (type == IIO_EV_TYPE_ROC && dir == IIO_EV_DIR_RISING)
-> +		return st->apex.wom.enable ? 1 : 0;
-
-Invert conditional as below?
-
-> +	return -EINVAL;
-> +}
-> +
-> +static int inv_icm42600_accel_write_event_config(struct iio_dev *indio_dev,
-> +						 const struct iio_chan_spec *chan,
-> +						 enum iio_event_type type,
-> +						 enum iio_event_direction dir,
-> +						 bool state)
-> +{
-> +	struct inv_icm42600_state *st = iio_device_get_drvdata(indio_dev);
-> +
-> +	/* handle only WoM (roc rising) event */
-> +	if (type != IIO_EV_TYPE_ROC || dir != IIO_EV_DIR_RISING)
-> +		return -EINVAL;
-> +
-> +	scoped_guard(mutex, &st->lock) {
-> +		if (st->apex.wom.enable == state)
-> +			return 0;
-> +	}
-> +
-> +	if (state)
-> +		return inv_icm42600_accel_enable_wom(indio_dev);
-> +	else
-> +		return inv_icm42600_accel_disable_wom(indio_dev);
-> +}
-
-...
-
-> +static int inv_icm42600_accel_write_event_value(struct iio_dev *indio_dev,
-> +						const struct iio_chan_spec *chan,
-> +						enum iio_event_type type,
-> +						enum iio_event_direction dir,
-> +						enum iio_event_info info,
-> +						int val, int val2)
-> +{
-> +	struct inv_icm42600_state *st = iio_device_get_drvdata(indio_dev);
-> +	struct device *dev = regmap_get_device(st->map);
-> +	uint64_t value;
-> +	unsigned int accel_hz, accel_uhz;
-> +	int ret;
-> +
-> +	/* handle only WoM (roc rising) event value */
-> +	if (type != IIO_EV_TYPE_ROC || dir != IIO_EV_DIR_RISING || val < 0 || val2 < 0)
-> +		return -EINVAL;
-
-Hmm... I think that splitting this will be logically better, as we see the
-type/dir conditionals in many functions, and values checks only
-exceptionally.
-
-	if (type != IIO_EV_TYPE_ROC || dir != IIO_EV_DIR_RISING)
-		return -EINVAL;
-
-	if (val < 0 || val2 < 0)
-		return -EINVAL;
-
-> +	value = (uint64_t)val * MICRO + (uint64_t)val2;
-> +	pm_runtime_get_sync(dev);
-> +	scoped_guard(mutex, &st->lock) {
-> +		ret = inv_icm42600_accel_read_odr(st, &accel_hz, &accel_uhz);
-> +		if (ret >= 0)
-> +			ret = inv_icm42600_accel_set_wom_threshold(st, value,
-> +								   accel_hz, accel_uhz);
-> +	}
-> +	pm_runtime_mark_last_busy(dev);
-> +	pm_runtime_put_autosuspend(dev);
-> +
-> +	return ret;
-> +}
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+> +		else if (val > 511) /* Datasheet: If cycles > 511 -> val/2, set bit D9=1 */
+> +			val = (val >> 1) | AD5933_SETTLE_MUL_2X;
+>  
 

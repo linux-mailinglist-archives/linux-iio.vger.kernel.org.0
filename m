@@ -1,196 +1,169 @@
-Return-Path: <linux-iio+bounces-18332-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18333-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49233A94437
-	for <lists+linux-iio@lfdr.de>; Sat, 19 Apr 2025 17:41:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A48BBA9446C
+	for <lists+linux-iio@lfdr.de>; Sat, 19 Apr 2025 18:14:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6BA2C3BFBF8
-	for <lists+linux-iio@lfdr.de>; Sat, 19 Apr 2025 15:40:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B0B6178E55
+	for <lists+linux-iio@lfdr.de>; Sat, 19 Apr 2025 16:14:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C0231DE4D5;
-	Sat, 19 Apr 2025 15:41:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 523941DF256;
+	Sat, 19 Apr 2025 16:14:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IHh4MFBD"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aJ2cEzGf"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F204647;
-	Sat, 19 Apr 2025 15:40:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6855B1DE4E5
+	for <linux-iio@vger.kernel.org>; Sat, 19 Apr 2025 16:14:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745077261; cv=none; b=DE9atcbPaJDxdLfSC0Jt89RzDF6foTTMPQOtfwS26G0QEZTR5SAMLYIvsJ/nZZnNyGX4xNkDx961b79FhrGAe0Ig3g1LXqaASTyqRMAEVk1G9EivuqWW9kCMzyDtbwUy9pE6Erg51gTJmP5oiwqpeOGTCpyOqimYx+f20/XsNcY=
+	t=1745079263; cv=none; b=naHPkBzDhuo6Pz0rnuuzpNUy2M+CgbugDO+9omyMnaovzjurdekil7QxUp/PykC2yMRAu7CauybRXAZMlAGGraVD+TTNDNFDMH4+gyIo8ZjvuRHeH9Mi/OAzA047UWIG48JCm2AltYjW0g/0Ef4A6QK0gAUGS50RlX28ohtlUT8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745077261; c=relaxed/simple;
-	bh=ClRqyqgxMLLpFcx6qh/lm1yOPfxBYfbYfpqcbOlA2Oc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lylWG2m3Q9/wtWDWGJoKfpNNmETYWCg0xiHhm+yMEeHT8Eu0hAjwSe39l4YZ0kJuRybSxlZUwLkuQCCId5317hY/BdZd2T+3SVZ7un6qefhbhEaKMxRv5T53rgLRscIMq/RqM8alG2QhHjJ5eZV+521lq+I7Ix4njAbQKte7neo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IHh4MFBD; arc=none smtp.client-ip=209.85.214.172
+	s=arc-20240116; t=1745079263; c=relaxed/simple;
+	bh=IqiMu7YC17Lgt4E6uUr0rp6mPPD9U/CjzIV1cwhY6uU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=r+4M1LyrgrRUsNlHSFqXXsiAuD1Fbk+cvB3yVNi42Vk0+Gb3LvJkREj7tWHClkJ32rvpicW2Gd4LfOx+ZfhytPY7uFiE9+EV0S5+tOmzUirWfKwjxQK+wVac4U4+IjrjIjd4knu/vJ4PZ/9GwgjwAW/4iX8BD036MWKPSg8LoYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aJ2cEzGf; arc=none smtp.client-ip=209.85.215.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-227b828de00so28611235ad.1;
-        Sat, 19 Apr 2025 08:40:59 -0700 (PDT)
+Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-b061a775ac3so2450951a12.0
+        for <linux-iio@vger.kernel.org>; Sat, 19 Apr 2025 09:14:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745077259; x=1745682059; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=dn9YmC5jj3loNIVPlHSXEKzB0SKqb9PRU18qmUPEZFQ=;
-        b=IHh4MFBD28AQyvkkIaZSkWTApf6Owxh9u5ji/HWUuzVoP3T+L8yI+QrtkBtThc52r6
-         fBx9b4tSojERqjwBR0g7G0nTHxrSTD898gZNTHxAM0ccDmt9k8OG+oGx2cZlKVAEW75O
-         Yr3xY0v53fbfWlAEjfQhCd4Nz1qKi9EzQkKkp+f228kOTbOxj6w3nBHAGIwHcywzw9vr
-         YlfVhR+mqkDn4sD0EyeFfAaJiTGGYNUV+9o86qTaEIQxE1sRi5TuX02iC4/O/rDFTkFV
-         iovqlnFLseAkoc5r3opgHgKgUtd+7hhuL1x+3lcJpLcNBJkwEk2wwmIDGVyNfYOIu6Ar
-         mQ9w==
+        d=gmail.com; s=20230601; t=1745079260; x=1745684060; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=GgLpy7x281g1iO75zYPekM3jASoc21AtZP2QINdIb7I=;
+        b=aJ2cEzGfmrjzLtTXq9pPJv3xgJBbIFJ4J9agZV5pNVzw7ZOcFzlXAHwZaTFVJIPtB8
+         4QojBO2kiaCL/h3A3JGnyOgmyx/LI8DZIyAYTBSu1mhb1l2/rvmmbZWFlndUPyQDyzcP
+         caiXdyAHyjD+GOTm3Cl2PyVYlD5C7jXvFhzKKF8SWxkq0f0CmfFiPdQiLbvS+YOwAHab
+         fWsW373NVj2BIAZVaPNTk0BU1aMKAjMCyLNjw4Aaw+VvanXhXpGo9kR2nBNe4nn3lXPD
+         9tipXrLzuUfGgjEXgtGBAa5iFUdbQnSn7kjAHytxd6qGGvXgRM24R8j3XWfOR2p7c7sG
+         aBiw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745077259; x=1745682059;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dn9YmC5jj3loNIVPlHSXEKzB0SKqb9PRU18qmUPEZFQ=;
-        b=a37jHygfEen1Ms4zjXTg+qa6k1uimM8Vuxx59MS3cEbKMEgmrN8wO8JhuSDp9q3gDI
-         5C0wgffLsgCX3af+jyWACczweJYq1lUo0WOBs2ZYGqMHF6DU/eCimZ0LIHVWsyTFguNw
-         hy5lLrRBR5Sp8L2MZKj8mnYrFK9jx7VrEtli2eHZQjMiGj5spUFp6lBbXalizLqLLJHd
-         InAV1Fn+Vwf6m0JZ+ljAdCYrLx3YOI7eI25C3v7f6On/Q38CP7LssLxMOuVQiglWqaZh
-         docbdQkk9WPZVs1ajhfJYy+nwS9k+rk/t689vsK9arUAtyN0bXfAkT4SRn8D3cb+Pri0
-         HKVw==
-X-Forwarded-Encrypted: i=1; AJvYcCU1KyebNnyL8uJpUvvA9FxLuFtNwScHkxV4DkQFD9rT+ooAMZW19OK4t7zdRMi+YNO/Goh7hYOz@vger.kernel.org, AJvYcCUk6WNXVpwESKtv2w4nV8OYs1st/xW2gUJop5AReb+W3Qmadun2QLDCEiKI55wP3l8HCksxvJRSkOE=@vger.kernel.org, AJvYcCUzEGNqAp0A+M3utWhaK2wFH18u99wBfhwWxogFc/XrgWzOanbbAnla4rnQFli9T0CgmU3q/4rXey2YgoYo@vger.kernel.org
-X-Gm-Message-State: AOJu0YwGGJ35RAkcyqEWH0btqZLTzp1mhWsQduyNQjan6p3lcREuVwA9
-	plo1TukjAWd2A8pU/gZAasE6kSpVyllcxqP1wKKvYAC25YG68DkqUL43L+KE0SE=
-X-Gm-Gg: ASbGncv/mMLyT0CBOl8muWoSN55jTVucWctT5yJ77FAqm0g1b+zr0bb3pQTAkzsjm0L
-	2YmQW7SFammPbK1zv7M77STGjeAaH+gIblw5gH7HUlX6Yv79vBIGRIQlhr8OnwOhT2Osl0TXo+P
-	QAC4y0lWT7+KsRxkVng2HjMf4GYIy5H5KElytfOEU5NFMk6Ox1GRx7vyu7dK22TN3bYLAQgGtlo
-	WVCMA56ZP9hz1koOJ9q0kKnEqu6RmYcnDqWfVuxgSBV5OMadBVZKvzUXLy0WlJQnJKwJg2j3m7F
-	F5e67zxVd714QrrkyZWeJpg6ceDG0NHqRAQ6L1/D3Nintulm
-X-Google-Smtp-Source: AGHT+IEWxIwIoF5MmQuLAZOIj8CNlNUAGZybSbGFdV3b5ddUwG0nulVS/wk6vS0WXNJWoD84WcF+iw==
-X-Received: by 2002:a17:903:1a0d:b0:220:e156:63e0 with SMTP id d9443c01a7336-22c53566fe7mr76317705ad.8.1745077258807;
-        Sat, 19 Apr 2025 08:40:58 -0700 (PDT)
-Received: from localhost ([2804:30c:1646:2b00:fd36:404b:e47:81e9])
-        by smtp.gmail.com with UTF8SMTPSA id d2e1a72fcca58-73dbfaacf48sm3550125b3a.148.2025.04.19.08.40.57
+        d=1e100.net; s=20230601; t=1745079260; x=1745684060;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=GgLpy7x281g1iO75zYPekM3jASoc21AtZP2QINdIb7I=;
+        b=rlWqmO7pgIOkcMcJ2asvYXMwv4jfDtHja+y4tBL27z9IG6eHQPydnF9sSyw7GEt8Rc
+         IoiI0Rak4HGi/STnJJDVpV0syoXF0ADk7aFBkpT2t+Gy6lMi8L+eVttXudqmnOHF+jvz
+         Hxhl3y/TTGMCjf/yScFgU5IV8hBWUi1xCwTrrOBHgTZPuHtwI9S4MdFI3R8wAOiUz+dq
+         nockFt9dsW1EBArNUYBq6YHSfeMPnOr5gBPwmVU5i0qtxeMTQBLcaaOKP6iE+JfXrui4
+         Vs4T5L5c6Qja8kbR498gWCLLxH/4g+lA4fB4HJdn2KpEbagekiTkeRLavLNm1IlZU9A0
+         6xOA==
+X-Forwarded-Encrypted: i=1; AJvYcCXdZMU5HPbPO499H1JL+nzIovkH+5wWh0xfB/an2IyiwLpkQTo4uxaKSJXaoTdYdBrbyQIEV+SrlH4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy/vFlbtPC6gkcKCnI+yYgmAhbjR0syy0IOnNGakKzTqHnqXC9l
+	aRqex0zb1aEjkcEhDOKb4aupZ9UQBPWnheFjrjQt6QsPFf3kx2O9
+X-Gm-Gg: ASbGncvrZiFfLtA4anE6aLisa8A720PYbfgIEKklUNwPs51W4jJU8M/t/jNeXs0bwZY
+	Mbn2ZJHli0xeXptX4diW8mN1gdn00rOdaNXgYt+6b9vxqJyqlR6L4epyN79DHle+pWO6aC6ltVA
+	F7HjeRmBWPoejFGCzT8fqBUYSBC0Bib70F+WVohwKVWlZcBtmHFZyjDMpQgfSZ5s9CUGJ1KNBvl
+	CbXCASWScXYghF1Kr//8c/DElUVRgXiTQqTnirm9M4zRA43AX/uOvYVX5WffLNSQIvC0WSQnUlf
+	/o/jDsGPFI8r1whzjo+66ARPhPgENZ25/pit8s2O3gTIIiYdIFyWR0IR
+X-Google-Smtp-Source: AGHT+IE7By1CGYzBCsI+T4oYOpOrtWImaDt5VSkF2cmNIwFHG4a2mAxuGewbYaAA7DEHMSAnyGj/Uw==
+X-Received: by 2002:a17:90b:3885:b0:2ff:6aa6:47a3 with SMTP id 98e67ed59e1d1-3087bbad709mr9120684a91.25.1745079260526;
+        Sat, 19 Apr 2025 09:14:20 -0700 (PDT)
+Received: from localhost.localdomain ([2804:14d:7840:8465:46a5:d3e1:8cc2:6823])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3087df097aasm3243195a91.11.2025.04.19.09.14.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 19 Apr 2025 08:40:58 -0700 (PDT)
-Date: Sat, 19 Apr 2025 12:42:09 -0300
-From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-To: Gabriel Shahrouzi <gshahrouzi@gmail.com>
-Cc: gregkh@linuxfoundation.org, jic23@kernel.org, lars@metafoo.de,
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-staging@lists.linux.dev, Michael.Hennerich@analog.com,
-	skhan@linuxfoundation.org, kernelmentees@lists.linuxfoundation.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] iio: ad5933: Correct settling cycles encoding per
- datasheet
-Message-ID: <aAPEUUAHsG2CvFbr@debian-BULLSEYE-live-builder-AMD64>
-References: <20250416142219.554938-1-gshahrouzi@gmail.com>
+        Sat, 19 Apr 2025 09:14:20 -0700 (PDT)
+From: Arthur Pilone <art.pilone@gmail.com>
+X-Google-Original-From: Arthur Pilone <arthurpilone@usp.br>
+To: jic23@kernel.org
+Cc: marcelo.schmitt@analog.com,
+	linux-iio@vger.kernel.org,
+	arthurpilone@usp.br,
+	bruno.stephan@usp.br,
+	aschwarz@usp.br
+Subject: [PATCH v1] iio: adc: ad7091r-base: Move reg volatility check to new macro
+Date: Sat, 19 Apr 2025 13:13:47 -0300
+Message-Id: <20250419161347.28157-1-arthurpilone@usp.br>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250416142219.554938-1-gshahrouzi@gmail.com>
+Content-Transfer-Encoding: 8bit
 
-Hi Gabriel,
+From: Arthur Pilone <art.pilone@gmail.com>
 
-Probably a thing for a separate patch but, would it make code more readable if
-use masks and bitfield to set register data?
-See comments bellow.
+Both ad7091r_writeable_reg() and ad7091r_volatile_reg() perform the
+same test, checking whether a given 'reg' code is
+AD7091R_REG_RESULT or AD7091R_REG_ALERT. While ad7091r_volatile_reg
+returned true, ad7091r_writeable_reg returned false for the same
+condition. As such, both functions introduced duplicate code.
 
-Regards,
-Marcelo
+We chose to implement the test as the AD7091R_IS_VOLATILE_REG
+macro to remove the duplicate code without introducing new
+function calls, which would be the case if we chose to fix the
+duplicate code with one of the two following alternatives:
 
-On 04/16, Gabriel Shahrouzi wrote:
-> Implement the settling cycles encoding as specified in the AD5933
-> datasheet, Table 13 ("Number of Settling Times Cycles Register"). The
-> previous logic did not correctly translate the user-requested effective
-> cycle count into the required 9-bit base + 2-bit multiplier format
-> (D10..D0) for values exceeding 511.
-> 
-> Clamp the user input for out_altvoltage0_settling_cycles to the
-> maximum effective value of 2044 cycles (511 * 4x multiplier).
-> 
-> Fixes: f94aa354d676 ("iio: impedance-analyzer: New driver for AD5933/4 Impedance Converter, Network Analyzer")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Gabriel Shahrouzi <gshahrouzi@gmail.com>
-> ---
->  .../staging/iio/impedance-analyzer/ad5933.c   | 21 ++++++++++++-------
->  1 file changed, 14 insertions(+), 7 deletions(-)
-> 
-> diff --git a/drivers/staging/iio/impedance-analyzer/ad5933.c b/drivers/staging/iio/impedance-analyzer/ad5933.c
-> index d5544fc2fe989..5a8c5039bb159 100644
-> --- a/drivers/staging/iio/impedance-analyzer/ad5933.c
-> +++ b/drivers/staging/iio/impedance-analyzer/ad5933.c
-> @@ -28,7 +28,7 @@
->  #define AD5933_REG_FREQ_START		0x82	/* R/W, 3 bytes */
->  #define AD5933_REG_FREQ_INC		0x85	/* R/W, 3 bytes */
->  #define AD5933_REG_INC_NUM		0x88	/* R/W, 2 bytes, 9 bit */
-> -#define AD5933_REG_SETTLING_CYCLES	0x8A	/* R/W, 2 bytes */
-> +#define AD5933_REG_SETTLING_CYCLES	0x8A	/* R/W, 2 bytes, 11+2 bit */
->  #define AD5933_REG_STATUS		0x8F	/* R, 1 byte */
->  #define AD5933_REG_TEMP_DATA		0x92	/* R, 2 bytes*/
->  #define AD5933_REG_REAL_DATA		0x94	/* R, 2 bytes*/
-> @@ -71,6 +71,8 @@
->  #define AD5933_INT_OSC_FREQ_Hz		16776000
->  #define AD5933_MAX_OUTPUT_FREQ_Hz	100000
->  #define AD5933_MAX_RETRIES		100
-> +#define AD5933_MAX_FREQ_POINTS		511
-> +#define AD5933_MAX_SETTLING_CYCLES	2044 /* 511 * 4 */
->  
->  #define AD5933_OUT_RANGE		1
->  #define AD5933_OUT_RANGE_AVAIL		2
-> @@ -82,6 +84,10 @@
->  #define AD5933_POLL_TIME_ms		10
->  #define AD5933_INIT_EXCITATION_TIME_ms	100
->  
-> +/* Settling cycles multiplier bits D10, D9 */
-> +#define AD5933_SETTLE_MUL_2X		BIT(9)
-> +#define AD5933_SETTLE_MUL_4X		(BIT(9) | BIT(10))
-In addition to making the above a mask as suggested by Jonathan, we could also
-have a mask for the number of settling time cycles. E.g.
-#define AD5933_SETTLING_TIME_CYCLES_MSK	GENMASK(8, 0)
+ A) Extracting a new function out of the test
 
-Would also need to update defines to something like
-#define AD5933_SETTLE_MUL_2X		0x1
-#define AD5933_SETTLE_MUL_4X		0x3
+ B) Rewriting ad7091r_writeable_reg to call
+    ad7091r_volatile_reg or vice-versa.
 
-masks and define names up to you.
+Signed-off-by: Arthur Pilone <art.pilone@gmail.com>
+Co-developed-by: Bruno Stephan <bruno.stephan@usp.br>
+Signed-off-by: Bruno Stephan <bruno.stephan@usp.br>
+Co-developed-by: Andre de Lima <aschwarz@usp.br>
+Signed-off-by: Andre de Lima <aschwarz@usp.br>
+---
+ drivers/iio/adc/ad7091r-base.c | 16 ++--------------
+ drivers/iio/adc/ad7091r-base.h |  2 ++
+ 2 files changed, 4 insertions(+), 14 deletions(-)
 
-> +
->  struct ad5933_state {
->  	struct i2c_client		*client;
->  	struct clk			*mclk;
-> @@ -411,14 +417,15 @@ static ssize_t ad5933_store(struct device *dev,
->  		ret = ad5933_cmd(st, 0);
->  		break;
->  	case AD5933_OUT_SETTLING_CYCLES:
-> -		val = clamp(val, (u16)0, (u16)0x7FF);
-> +		val = clamp(val, (u16)0, (u16)AD5933_MAX_SETTLING_CYCLES);
->  		st->settling_cycles = val;
->  
-> -		/* 2x, 4x handling, see datasheet */
-> +		/* Encode value for register: D10..D0 */
-> +		/* Datasheet Table 13: If cycles > 1022 -> val/4, set bits D10=1, D9=1 */
->  		if (val > 1022)
-> -			val = (val >> 2) | (3 << 9);
-> -		else if (val > 511)
-> -			val = (val >> 1) | BIT(9);
-> +			val = (val >> 2) | AD5933_SETTLE_MUL_4X;
-then this would become something like
+diff --git a/drivers/iio/adc/ad7091r-base.c b/drivers/iio/adc/ad7091r-base.c
+index 931ff71b2888..8329552f0be8 100644
+--- a/drivers/iio/adc/ad7091r-base.c
++++ b/drivers/iio/adc/ad7091r-base.c
+@@ -375,25 +375,13 @@ EXPORT_SYMBOL_NS_GPL(ad7091r_probe, "IIO_AD7091R");
+ 
+ bool ad7091r_writeable_reg(struct device *dev, unsigned int reg)
+ {
+-	switch (reg) {
+-	case AD7091R_REG_RESULT:
+-	case AD7091R_REG_ALERT:
+-		return false;
+-	default:
+-		return true;
+-	}
++	return !AD7091R_IS_VOLATILE_REG(reg);
+ }
+ EXPORT_SYMBOL_NS_GPL(ad7091r_writeable_reg, "IIO_AD7091R");
+ 
+ bool ad7091r_volatile_reg(struct device *dev, unsigned int reg)
+ {
+-	switch (reg) {
+-	case AD7091R_REG_RESULT:
+-	case AD7091R_REG_ALERT:
+-		return true;
+-	default:
+-		return false;
+-	}
++	return AD7091R_IS_VOLATILE_REG(reg);
+ }
+ EXPORT_SYMBOL_NS_GPL(ad7091r_volatile_reg, "IIO_AD7091R");
+ 
+diff --git a/drivers/iio/adc/ad7091r-base.h b/drivers/iio/adc/ad7091r-base.h
+index 092ddea0f395..1b4e0ef43260 100644
+--- a/drivers/iio/adc/ad7091r-base.h
++++ b/drivers/iio/adc/ad7091r-base.h
+@@ -17,6 +17,8 @@
+ #define AD7091R_REG_CH_LOW_LIMIT(ch) ((ch) * 3 + 4)
+ #define AD7091R_REG_CH_HIGH_LIMIT(ch) ((ch) * 3 + 5)
+ #define AD7091R_REG_CH_HYSTERESIS(ch) ((ch) * 3 + 6)
++#define AD7091R_IS_VOLATILE_REG(reg) (reg == AD7091R_REG_RESULT \
++	|| reg == AD7091R_REG_ALERT)
+ 
+ /* AD7091R_REG_RESULT */
+ #define AD7091R5_REG_RESULT_CH_ID(x)	    (((x) >> 13) & 0x3)
+-- 
+2.25.1
 
-		reg_data &= ~AD5933_SETTLE_MUL_MSK;
-		reg_data |= FIELD_PREP(AD5933_SETTLE_MUL_MSK, AD5933_SETTLE_MUL_4X);
-		reg_data &= ~AD5933_SETTLING_TIME_CYCLES_MSK;
-		reg_data |= FIELD_PREP(AD5933_SETTLING_TIME_CYCLES_MSK, val >> 2);
-...
-
-Though, I guess it would then be preferable to use masks and bitfield macros for
-all other places where we handle register data in ad5933 driver. Probably
-something for a different patch (if worth it).
-
-> +		else if (val > 511) /* Datasheet: If cycles > 511 -> val/2, set bit D9=1 */
-> +			val = (val >> 1) | AD5933_SETTLE_MUL_2X;
->  
 

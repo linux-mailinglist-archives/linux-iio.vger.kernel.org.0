@@ -1,75 +1,77 @@
-Return-Path: <linux-iio+bounces-18373-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18375-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33E91A94896
-	for <lists+linux-iio@lfdr.de>; Sun, 20 Apr 2025 19:47:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 59C9AA9489B
+	for <lists+linux-iio@lfdr.de>; Sun, 20 Apr 2025 19:47:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E38C3A424E
-	for <lists+linux-iio@lfdr.de>; Sun, 20 Apr 2025 17:47:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 843503A619A
+	for <lists+linux-iio@lfdr.de>; Sun, 20 Apr 2025 17:47:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB2AE20CCDC;
-	Sun, 20 Apr 2025 17:47:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABF3620D502;
+	Sun, 20 Apr 2025 17:47:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dd9fyc+d"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aqt8yxOX"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
+Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A29A017A302;
-	Sun, 20 Apr 2025 17:47:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A137A1DF98E;
+	Sun, 20 Apr 2025 17:47:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745171251; cv=none; b=QKl9lJ2QinwIIrqQvPKa+t19Jepul4xSzxTaOgI1/yCpYkeHEgfEGb3EDHxfGbIF0cKo1HRDpwDIjYwpL4aqVZ0rJIjK7B9iesFroXoMK+CYmDZ3ywvrpsCZ8Xz9vZWnalfb7U8qnCsg4OWG+AKrK5uDlm2/q8uOCaUFgDL5gIE=
+	t=1745171252; cv=none; b=TDzkqk8S1+iQwLpoTNAatv6rab2BFci6tqM97CKKlQmN2ZqWAH9yeQbhRzQxP511xaC8gH3UVXluUsfP6EEFVeBXLBlgCO34ZRXJURKVL4a2huwD5CgSw2in2FEQ0Tl34GPDkzBc3gePGcNZrE6zVyJl/1NdnJo8DYT40qtQcAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745171251; c=relaxed/simple;
-	bh=mwayp67UQUi3tBtf1siPMVZZvxax1y3PF6ay8Ji+lDI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UcIr3BRi5mw96F8OizspVfmkcAhBOnwIi5n0K0MbSmDDVM8BbXtDGssQV3tcw2SFd2XGLfH0kO7biwvETX6u9p5UKMWPwrLVC5A9h1dyZKTbBTR4JaRssjbrcg8KKuw8OlyFozjqfws7HoVSkaj/SWICDdslfolYtlVUbZExYJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dd9fyc+d; arc=none smtp.client-ip=209.85.219.47
+	s=arc-20240116; t=1745171252; c=relaxed/simple;
+	bh=G7cQA1vbU7ME82rND+ta8qnI8kBAvliO793si5bKvhw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=o1P4z9loPDJ0XPjCvo4qVbAZ5vwWkG/Hoi0wSAwq+gZLeCIhwVnwsqXvaSdJMayWaQTB9OYSxtwbE0mAHDAXt7mzbZhJSju6nK043vZ9TYGoNe07ArCymCqIu9kOtsXAzzLgAf68weTOBKTepPpyT80Bbc6lHuKw4uKCLWRTZ8A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aqt8yxOX; arc=none smtp.client-ip=209.85.160.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-6e8f06e13a4so44105106d6.0;
-        Sun, 20 Apr 2025 10:47:28 -0700 (PDT)
+Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-47662449055so16501301cf.1;
+        Sun, 20 Apr 2025 10:47:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745171247; x=1745776047; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=9tx05U+vRg2gsgwyrSqUs9+tOlnrgkTrKgqo5ZO2arI=;
-        b=dd9fyc+dWkZrj8PEXlRcY15mBjrzZUHOSTTYaf0CmFcYgwAe3bqDZd0sX9sI9XtH9S
-         9EeqkDRVosGlmWwD0/x7fE+VRCb7qygPjepm3wdw7Q4JWF84tAPbnF5tdpINgN3xSuoa
-         oLQ8QnQ0yKF/0CqrfAO5MlMKyFIB2uBUjIB8K0Pgmhypctd4xVIUlFsvnwsIgy62NmQw
-         /12urKjqSoE+KAKTOqAd2VrZm1lGzXFS1wbmrX3CYEmkC6E/NFqzerqtEehZrGPRlcEJ
-         j7FUIV4aT2KMNkQr/EH34tsixv+o3RD68oL6vJFk3hONSUXY5qw42ZAejDtoh7ICoTYy
-         OAvw==
+        d=gmail.com; s=20230601; t=1745171248; x=1745776048; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YwMHB2nUwzNcRVsw3OgexWqiEt8JRdlA5caQ8STPGxo=;
+        b=aqt8yxOXxjqsJsCIPZ7YZLHUz3jnpsLsolFxywuvgVMk+RadPyiEUvU1TlEr2WRyV8
+         EVa96jKYVWaUgAxgxQrSSOjKsFWWfYWFg1hL6VzZX6Su6kHQlo84t03dwci/CfohOlLR
+         wNzKipLgCCni7EUSZmSfD93L4YWzXdWt3ARVTCvFdKdXC5uJLaGXSWhg5wF2vTCzt+/s
+         Shsa4oJFo/dqnnHjKk56FC59vjF0S9UrT1C6nasBsq2Akgjm1PFOi3w6yZWE/r0dzPTd
+         7MMV6B0MJVjm6LpBOknerG4m4YCdu+LKvhefxPFAZDTeZ5pClDEz30a7Wscy5ATM9/jA
+         JiaQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745171247; x=1745776047;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=9tx05U+vRg2gsgwyrSqUs9+tOlnrgkTrKgqo5ZO2arI=;
-        b=erIIqHlZq8kCTMGraNVDR42f0gOE4UqykZtnrWBCXDqTnHYoVki1ERqduAwhlLWSTU
-         AfZ12C/LyxB8Tl1xrTHjOHdn5tjy41sx927e3P+Bb2bJ061xchd1fZ1uFI6QL2WB7q30
-         3v1WOxRfnZzJ2dKuE8un7kc5enEheGJ2Z0fe9CJM73pfGH94KHZ+U6/UymmRrPUOQqul
-         pnsnqKRGQkKLkdbA1pWY/evcDosoVL74xrXEhWI2Kl37JvDfD0F5cHyLD7gfyLFGc48O
-         YCwDSMnPXszWSPK3Ej75p30n3Vq/KZXy+1nUiM7SE1HOnsA8yO5uICAEb0g7jHwcaKt1
-         cypg==
-X-Forwarded-Encrypted: i=1; AJvYcCWOcXcbxB/qzpHMeBF6+7azldL16Qo8XQdERDN6MiB9WPv/HR475PR4IbmpaPklFLtQjDyyYqAnbnE=@vger.kernel.org, AJvYcCXmBFqp/BsiXwz/zNldRb/90GJoGS43AX6q4+CMl9OGqzHnFm2nCCHWcWOwrEX4oIcYiXIo7VD8uTBzAPUe@vger.kernel.org
-X-Gm-Message-State: AOJu0YzcKTSIk6quf73QDNeu4u1+X8Ru81zPBVG+ZDrfg3kyATscZhyu
-	vBhWq4anpSKwgrKeufcsK9OvTTQUlgCUn1DC+N/prhkZ1EL9uJGI
-X-Gm-Gg: ASbGncusY87a+LTiY9el5sfvN1lm0kxDgu9ntc6N5rxHC42VGrbcRwAfHJTuOO6s/sh
-	5xoxwLQbsJrWv78r1vSfSwK3efPpDgci9MUqam2hMnnRfoPhm3WcdPJxaezwzykic6fEiRCEFov
-	eCJtEbgPdR/psp+afDJLKkDB1AehS1vh1PKA+/3zW2Mjk1nOX62CxkwPZv2U2ysmIMNTZO5pwkS
-	QfLmZKTATKffnIgIYr2ymQoPSTm5+VEJRmwYJDGyBIPp/5U8xnKuTgY0R8ZZc/Z885+lswiZ43m
-	puaHu56lL8g/jcoSPsD60yksiC5XDgJAKFdlexoznguS+wc+CiTkfm4=
-X-Google-Smtp-Source: AGHT+IEnyJl//74fr/3CZDnEkerEttve36zVMQWD1LxhiTpbg+os+741RgNwWYFQDOk1ykb48TGRfw==
-X-Received: by 2002:a05:6214:3211:b0:6ea:ee53:5751 with SMTP id 6a1803df08f44-6f2c27d0d1cmr176445176d6.21.1745171247400;
-        Sun, 20 Apr 2025 10:47:27 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1745171248; x=1745776048;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=YwMHB2nUwzNcRVsw3OgexWqiEt8JRdlA5caQ8STPGxo=;
+        b=Cv7/peuZ4Ex9uZLCHRn/qKl0eXi77blDTZkqBobe/U+vjLfLDdv5bVf/352tdJSCh3
+         2D1aMRaoGDye1X8oIUm/o+tHJdqdMp1tFl8Csn+5hiL4CB98vf0U7vFec4oXCqUV33e3
+         d89UNHMHAs6kwo05R1RmwNJLbfXTcj44htdf3iQwosaYxg6dlHupT5lgFMhBT4RTjOXn
+         ty2ZsaHGWp+fyT7Fyg8nzzAiGuqTmz4VkGLUwGEy9qvNVD7oIDgrfI7JuneYB4Ars7PM
+         6jSObmEKD2Ox/tc4NqdtlY0hIHFxgQ382vx+J8m2Jc5Y7WuPD18uPmd1qRHodOphLRUj
+         op3g==
+X-Forwarded-Encrypted: i=1; AJvYcCU0jAQQ3Hn/csBO3E2Z8ZvXoA2SimS5xbOFkxP7Sn9aRu1oyevW3jyPzyMsQ7S3uhZss5uevyuhOvqC/va7@vger.kernel.org, AJvYcCWMLaMHQTEa/4871tFwXhTY6udewoowAUlK2fMbFRhOBQ+IRfr3MR2c+ynquUc/nKWpQ1pYWDwk@vger.kernel.org, AJvYcCWyU9LzQXZa95AOsZKyFnl5Tx/u7qs4HtvuzskvFQuFgEUOJ8Akl3riaCIDhTmxv0ZQR5SK45VlmgU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyuniohBhL3oOyf/COdl46qfAoATdXfBIZdr1K24c6XM1qfel+Q
+	Zmdy9bTrkl/Uv2Uvfqc9IWzGbGUCPDP50nPwpk+7xzCQ9qY2Bh2QruMhJsHc9ew=
+X-Gm-Gg: ASbGncsdagSaW61zK8e9Xg6eUP30UvIGT0guiaIVwkH0RCO6UOH6HIg7YRUtNP3TqCy
+	Ji/JwRif9R7gvVzZUX45Rsk5mA9dB7irXWhL3dPGsWRu4DRirmQp8HCKqEQoXbSuA6SRNHWLvPS
+	+2VmqbKc0KXfmd3t0AsnDBW1CM4yPR11gAK+B2VslPhKZNuO8cgWTvMfl4BDMAAoZMERx4wQYv3
+	ePMwiP2kRDSZ1lYbGlqbNq1kz/zs2c6zjnhDInr6ZZAB/4wSYgaTj/RmtciYhwW5mJXGJwimcFb
+	OaO6kzt84j2e7z+kwzlEpn0LeXotWtHpRrOUTEtrWISd7PNuxYgCE3k=
+X-Google-Smtp-Source: AGHT+IG0psL0GsQcZjIWDxL3CpYMMouucx4/293lu1Def4c/30lkEViKoNJRISzRxA+fpp0gxTi8KA==
+X-Received: by 2002:a05:6214:1c49:b0:6e8:f568:22e8 with SMTP id 6a1803df08f44-6f2c4556801mr156707866d6.15.1745171248371;
+        Sun, 20 Apr 2025 10:47:28 -0700 (PDT)
 Received: from theriatric.mshome.net ([73.123.232.110])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6f2c2bfd3e4sm34110156d6.85.2025.04.20.10.47.26
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6f2c2bfd3e4sm34110156d6.85.2025.04.20.10.47.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 20 Apr 2025 10:47:27 -0700 (PDT)
+        Sun, 20 Apr 2025 10:47:28 -0700 (PDT)
 From: Gabriel Shahrouzi <gshahrouzi@gmail.com>
 To: gregkh@linuxfoundation.org,
 	jic23@kernel.org,
@@ -80,11 +82,14 @@ To: gregkh@linuxfoundation.org,
 	Michael.Hennerich@analog.com
 Cc: gshahrouzi@gmail.com,
 	skhan@linuxfoundation.org,
-	linux-kernel-mentees@lists.linux.dev
-Subject: [PATCH v2 0/3] Fix and refactor output disable logic
-Date: Sun, 20 Apr 2025 13:47:22 -0400
-Message-ID: <20250420174725.887242-1-gshahrouzi@gmail.com>
+	linux-kernel-mentees@lists.linux.dev,
+	stable@vger.kernel.org
+Subject: [PATCH v2 1/3] iio: frequency: Use SLEEP bit instead of RESET to disable output
+Date: Sun, 20 Apr 2025 13:47:23 -0400
+Message-ID: <20250420174725.887242-2-gshahrouzi@gmail.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250420174725.887242-1-gshahrouzi@gmail.com>
+References: <20250420174725.887242-1-gshahrouzi@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -93,25 +98,34 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Patch 1 includes the initial fix.
+According to the AD9832 datasheet (Table 10, D12 description), setting
+the RESET bit forces the phase accumulator to zero, which corresponds to
+a full-scale DC output, rather than disabling the output signal.
 
-Patch 2 refactors the code to use the out_altvoltage_powerdown ABI.
+The correct way to disable the output and enter a low-power state is to
+set the AD9832_SLEEP bit (Table 10, D13 description), which powers down
+the internal DAC current sources and disables internal clocks.
 
-Patch 3 adds small improvements by minimizing the size of types and
-doing a redundancy check. 
+Fixes: ea707584bac1 ("Staging: IIO: DDS: AD9832 / AD9835 driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Gabriel Shahrouzi <gshahrouzi@gmail.com>
+---
+ drivers/staging/iio/frequency/ad9832.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Not sure whether to include a read function for powerdown as well since
-all the other attributes only had write permissions. I can also do this
-for the other attributes to help modernize the driver.
-
-Gabriel Shahrouzi (3):
-  iio: frequency: Use SLEEP bit instead of RESET to disable output
-  staging: iio: ad9832: Refactor powerdown control
-  staging: iio: ad9832: Add minor improvements to ad9832_write_powerdown
-
- drivers/staging/iio/frequency/ad9832.c | 50 ++++++++++++++++++--------
- 1 file changed, 36 insertions(+), 14 deletions(-)
-
+diff --git a/drivers/staging/iio/frequency/ad9832.c b/drivers/staging/iio/frequency/ad9832.c
+index db42810c7664b..0872ff4ec4896 100644
+--- a/drivers/staging/iio/frequency/ad9832.c
++++ b/drivers/staging/iio/frequency/ad9832.c
+@@ -232,7 +232,7 @@ static ssize_t ad9832_write(struct device *dev, struct device_attribute *attr,
+ 			st->ctrl_src &= ~(AD9832_RESET | AD9832_SLEEP |
+ 					AD9832_CLR);
+ 		else
+-			st->ctrl_src |= AD9832_RESET;
++			st->ctrl_src |= AD9832_SLEEP;
+ 
+ 		st->data = cpu_to_be16((AD9832_CMD_SLEEPRESCLR << CMD_SHIFT) |
+ 					st->ctrl_src);
 -- 
 2.43.0
 

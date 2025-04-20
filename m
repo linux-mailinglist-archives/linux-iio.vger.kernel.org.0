@@ -1,137 +1,141 @@
-Return-Path: <linux-iio+bounces-18354-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18355-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6C68A9460C
-	for <lists+linux-iio@lfdr.de>; Sun, 20 Apr 2025 02:30:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7130EA9461D
+	for <lists+linux-iio@lfdr.de>; Sun, 20 Apr 2025 02:47:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CBAB67AC0CD
-	for <lists+linux-iio@lfdr.de>; Sun, 20 Apr 2025 00:29:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7229D175EF9
+	for <lists+linux-iio@lfdr.de>; Sun, 20 Apr 2025 00:47:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C322F9E8;
-	Sun, 20 Apr 2025 00:30:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBC58C13B;
+	Sun, 20 Apr 2025 00:47:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nIsl5Fax"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ChRlgBO/"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E006EEB1;
-	Sun, 20 Apr 2025 00:30:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 377CF647;
+	Sun, 20 Apr 2025 00:47:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745109006; cv=none; b=jZmcntlC8ayDBqCck5g9xJk+6WYDrgRmsYX6QEnQFZLAy2kAmqY2/rKONB/3Qo+NbIpzS5VF6kGkz6pcUANNefUQbFWsOZ6MhzZEq9BN8/hQ6WPip5AfTnTp1+YKlQAoaxGHXowTdTAC+DfJp3e0TwqF/Rx8XNLgrVDgypbbRH8=
+	t=1745110046; cv=none; b=h0G0JsdkupjoQ0kR1qF3MK8etCy6fPdIkimZCgsH2LxGTsYsjn+RecXyJHKjVuQOmlZIeKlJX0S3nor/qX9XP3GN31hfd8rPPu5M6/weGCw7v/J1CdQqz97npoKrscNNeJSQaQzaxve2AvoEaoCTUUTeuXX0voo2xehOhLiwydc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745109006; c=relaxed/simple;
-	bh=CCntJaSb9MDvFLR+jrrfjZXjcZnQs2OPtQYxHIZU6Qk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=W03tkSqlvr2XdLgqfNzz/5YVvxae4tuDDsYUvsSSjDmWV6SiW1phXYd2Gf7Pi875RhJcjXhixz7yOD7M2pFPbHUkhiW3OBWJG2V9EpOpKJ8zMgPTpqhz/hb95FIRqrRgIcWX5N2L0ovpKy3OtJJBIq2y/9PXgcDneQZXywrJ+R0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nIsl5Fax; arc=none smtp.client-ip=209.85.219.46
+	s=arc-20240116; t=1745110046; c=relaxed/simple;
+	bh=oPEQvbu8JP50TDbHOHgqHxhAKnR79/d/8OgWww/ne2M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RypVQQGgZIykF3n1Ud5wspc5cx1k9mikfJfiAQb4E3vhHgjB0b+J2OTxN00W6xOtTrhA5EJqgJrJdLy25PQY/xhOMCVXhEPRIm1dA3K2nicndMBQKlz7oZFBiT/zfsWic3idJcpQGf/4vTIbTFFnqncuLuDke8eNjakhJs0MTY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ChRlgBO/; arc=none smtp.client-ip=209.85.214.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-6e8fce04655so27318746d6.3;
-        Sat, 19 Apr 2025 17:30:04 -0700 (PDT)
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-22423adf751so31533825ad.2;
+        Sat, 19 Apr 2025 17:47:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745109003; x=1745713803; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=7oq4HIkBj4+ruAu2dWOyVk4qHejVBDW3R7KsUBqTQJg=;
-        b=nIsl5FaxjnUQJ6NCYCImodMX4npRWROS4wV6HaNCRigFpYF5Jy680+AhpfDA9XioWU
-         Z3xtWdxmLxla5WiKEmbQWG/VoKXe1H2Ca32BiKuCkO+vez5hPGJSJT+g8T5UtBmlSNwF
-         oydvERqPxGUDt3iGoJS4sTP2M1/h10Drczg0B+McvE/CrC3Gw/O96ie/QjDZ5AmCLst9
-         2H/P85bfUlIlL/Jmh+Wy7+z6tBhJ5d/vMTbNwp8u9wzOmjFWeX5j9ekuao6UVj3F+RXO
-         DLGpfRuJan/FU3PtWXSVT9KIveAhrgiiPg2a3B5iJkHVlLTcNVw78KrLaz8TKkB3JC9M
-         Omkg==
+        d=gmail.com; s=20230601; t=1745110044; x=1745714844; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Z3UbJ6sVj0Q1eE44m7wvB7g9mVugpdeJOq3atIyJK1o=;
+        b=ChRlgBO/yxSB4aI7FJYPCMt0AGtdezHzAiDTOgGhUvwtIVTzSeZ70/3Vna6t/4m9uZ
+         Vbj1E9PxQ//K9bPFO45QYoVhBJ3/SQw1BDfh5JGWmFeVBaWna0pcNfp8FJgYkzrB00Jf
+         hG/4VMdE8rPuFwD/mAvbtk/q8Y5K3wjQ8ks0nBdr0dkQ2gTHDrTb1mMJ1dLEDPaHMYSY
+         uAEj+gWbJX9cAns/kdBMrid3Hj/zhciUFkYwY714fKw4CpdlsPaaacF41cKBltT2uwPI
+         IB6h3Di77rrUq0ZhI30qi1VMr9uVnwT5R1rprycKarKBiSxLBzYHFWXJFkZ7L1q1Lu5h
+         mu3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745109003; x=1745713803;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=7oq4HIkBj4+ruAu2dWOyVk4qHejVBDW3R7KsUBqTQJg=;
-        b=bDMF20dx7yp4v4Dg4zLHhtDIx5bDHlgIO9cVVEAAILInpH6xjeWfKa2xapBHD+i6ta
-         AtweSDaY8n9UHSBDRtVrmV6JM8xSMfae1MXFNqtmMRO/3ozOtYg+i/m5J1rGKqJBkhhW
-         LUOX9s5aEdSvRZRULZVc1GDCxezuwzZLkwwvhufRapjlR1UM/HKP6TUptQSG+8WKnqmC
-         l4anMMv54DrYQ+NSw48zHQfqy94SLup+xSZwTvr4T5wkY89JRZBUcvoiTpvzBRobV5Mu
-         fIDKkWQPkGQQLCQXWvRaVbc8YdQcZHaA/IWIU/fHJVOTTyKd4cZgb6npu28kMFrR2hHw
-         wFog==
-X-Forwarded-Encrypted: i=1; AJvYcCWDIG6yiQkuEbOLjhCFevLD4PLUUI/RpmAs8IzhNF1/y1JQVcoPAIi6xU9KtqTiHoco81W2FRMHaHM=@vger.kernel.org, AJvYcCWX/eEaYDENXTqLHgc/njVWLHFuF9qxj3usgRZjW5MTKVK16Ay+00/7HnPPWUvtI2uJO9xh2lCv82H9fo3C@vger.kernel.org, AJvYcCXVLdUOf5Rg8KvSkNQ/zycVC3ecuqreowExAkJD357fm1fsQ/NFCSt30PBJ9mYBMtW+LzDRuMof@vger.kernel.org
-X-Gm-Message-State: AOJu0YwU6MVyU99Dg9yitXQAtB3wofFFi7rCs0Iu1Pkia7uFUmuLZioX
-	5UJy6VoMB7yEfe5qCpVfi3SaWWrdPRy9CouwRzx+UxbRLSOwNUc6
-X-Gm-Gg: ASbGncuggdm1p7zrwYy3oglu2e6kf4P0Y9v+qrOKLgFs09H14AW4ub/n4Hbh3BgAmjG
-	BResZ8JluQhQ8XLpGOVg4pU9Vplcw4BKGBshlf2F4Zpt+19C/JB2C3GxqsWJa5V8v6WZ8gQlCfM
-	c5K307333Pz+/WOwD2kKIkz5q5fXsoR2+cBpXdF0jBpbfk77ngQhTi4D/jKofWEqOM0Nqkyr3Iv
-	U7bnv+oVcBDThDDF4iyiQAV+Rmt3Qpjc+u0sDmkBwdotzp8Dzvbe4vFr5NjAReiYnBeXSTYDtrH
-	+CqKZJDUERW8Te2a5/SEWveLM+PW7chr+b1eBrJovSg1/qCA7eKAex0ecrDwdfbc+lsDADo7PSI
-	u/g9euN0UNlr/8Lobqic=
-X-Google-Smtp-Source: AGHT+IEWsjtSj7e7lQR+vf9lcpERLYW7vibDfoa1VjlCCiRIm8Imf+936M+AgBjV1zysxDZRst2viQ==
-X-Received: by 2002:a05:6214:c29:b0:6e8:fcde:58d5 with SMTP id 6a1803df08f44-6f2c4687cd2mr126456826d6.42.1745109003355;
-        Sat, 19 Apr 2025 17:30:03 -0700 (PDT)
-Received: from theriatric.mshome.net (c-73-123-232-110.hsd1.ma.comcast.net. [73.123.232.110])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6f2c2af48c3sm26480846d6.8.2025.04.19.17.30.02
+        d=1e100.net; s=20230601; t=1745110044; x=1745714844;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Z3UbJ6sVj0Q1eE44m7wvB7g9mVugpdeJOq3atIyJK1o=;
+        b=KLeAyHfYgorwYBCKWi0d5FrxHmDn5YdvvXGJ6+Mj421UdykEQJlNETgZPBYhj7Klm1
+         7uzGgXz/3SstPIAP1ZCRueMUcwTLeP58gKeM8QjkWM3diIL+tmLG1TC7q/yMIu8wzIKT
+         VVhghe2YvTcR5hj00g/NjPylyZ7/gzUI6dfv90U0e3wZQzVpX3EMUi6zytI0ykbp0hyl
+         3PzLxBe/EXYt8a11c0UhT9tq4tL5FDqKqLhB2q3wPwGzR2+L2SGj4BpnmC6+TMZw5Tnr
+         uHYhQaRO4LDj2wEMIxVLwaD/tI6MLY53+Kil0ZFGk4PGeJDYQKShd1g1dPOVgowFIw0+
+         wWQw==
+X-Forwarded-Encrypted: i=1; AJvYcCVHDxKV0LYxlKaZDU8zTQof0mR4c+W0RMCWigUw/q+tditEO61FzgbIAVGCqOZmWMUHqBHgcTAX@vger.kernel.org, AJvYcCWFipdBupyH52+5J3czwzz0j0CTXPfKruaoWdBaj+3O8c9F6zVZ/zIYUd4XeCvdq9o2+lx8DVtyBkrgPh80@vger.kernel.org, AJvYcCXRnrP5lOVQ/ZkN6cf8pNtCyKGBaKztjkt8IkNU2kN3BINJNUYfkxx16tmMNUhd2DopNAg8kpHk2Ds=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw3wViQ05IjcNo2YDiPmK1NjF54T4/RlEV6Q3+6TvuV0MqqjelC
+	90NWl0eel0jDAIVLJ9Tz5cYVcO6WuDh1yp6bK1N8UlRoiBW7CMbV
+X-Gm-Gg: ASbGncvwp0kGILod2xuyY3g0rEIhvDsoZN2XmzHukS0XNsttkZaPSR5h+wsdi8T6X92
+	YVETaJxEhbHNpBWR1z2p5lnWPYlMhzNU90J6EPNF4bl4a8gKuqACxeNT9dQsxxiBso7h0dydS2G
+	Ai8WH4Af2tmKuMkwQt5780yo0f7ogCvq30Ru++QfEnncirYNQGzI4lOuwh/NicxIWGdkxCb0h83
+	/S4rh2pJG5Xr1THJ1dc0sscbVstWR3HrXgjuXYZ2izmSJZI0Ive7GZsCRo7k/7AGQs1Tzf+XjUB
+	nElEWO9UUcrTg0Lq+M8fOS2zrMBGGmXyZF9AHZr5P28XdvU=
+X-Google-Smtp-Source: AGHT+IHX4JfCAGLHU+bXJ/YVu1CcsjhWotihBQ6Qsp9Bb6qEvbmSQUbeTDYj5k85HbBPZGMXyXD7TA==
+X-Received: by 2002:a17:902:d549:b0:215:4a4e:9262 with SMTP id d9443c01a7336-22c5356deb7mr97366575ad.8.1745110044318;
+        Sat, 19 Apr 2025 17:47:24 -0700 (PDT)
+Received: from localhost ([2804:30c:90e:1e00:5265:5254:2e32:7e5])
+        by smtp.gmail.com with UTF8SMTPSA id d9443c01a7336-22c50bf543esm39858255ad.95.2025.04.19.17.47.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 19 Apr 2025 17:30:03 -0700 (PDT)
-From: Gabriel Shahrouzi <gshahrouzi@gmail.com>
-To: gregkh@linuxfoundation.org,
-	jic23@kernel.org,
-	lars@metafoo.de,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-staging@lists.linux.dev,
-	Michael.Hennerich@analog.com
-Cc: gshahrouzi@gmail.com,
-	skhan@linuxfoundation.org,
-	linux-kernel-mentees@lists.linux.dev,
+        Sat, 19 Apr 2025 17:47:23 -0700 (PDT)
+Date: Sat, 19 Apr 2025 21:48:34 -0300
+From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+To: Gabriel Shahrouzi <gshahrouzi@gmail.com>
+Cc: gregkh@linuxfoundation.org, jic23@kernel.org, lars@metafoo.de,
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-staging@lists.linux.dev, Michael.Hennerich@analog.com,
+	skhan@linuxfoundation.org, kernelmentees@lists.linuxfoundation.org,
 	stable@vger.kernel.org
-Subject: [PATCH v3] staging: iio: ad5933: Correct settling cycles encoding per datasheet
-Date: Sat, 19 Apr 2025 20:30:00 -0400
-Message-ID: <20250420003000.842747-1-gshahrouzi@gmail.com>
-X-Mailer: git-send-email 2.43.0
+Subject: Re: [PATCH] iio: ad5933: Correct settling cycles encoding per
+ datasheet
+Message-ID: <aAREYg1uAc8NSVKY@debian-BULLSEYE-live-builder-AMD64>
+References: <20250416142219.554938-1-gshahrouzi@gmail.com>
+ <aAPEUUAHsG2CvFbr@debian-BULLSEYE-live-builder-AMD64>
+ <CAKUZ0zJoV6pLEFh6mEjz5awousn4o8Mq2D9AL8CfvqqW620X4A@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAKUZ0zJoV6pLEFh6mEjz5awousn4o8Mq2D9AL8CfvqqW620X4A@mail.gmail.com>
 
-Implement the settling cycles encoding as specified in the AD5933
-datasheet, Table 13 ("Number of Settling Times Cycles Register"). The
-previous logic did not correctly translate the user-requested effective
-cycle count into the required 9-bit base + 2-bit multiplier format
-(D10..D0) for values exceeding 511.
+...
+> > > @@ -411,14 +417,15 @@ static ssize_t ad5933_store(struct device *dev,
+> > >               ret = ad5933_cmd(st, 0);
+> > >               break;
+> > >       case AD5933_OUT_SETTLING_CYCLES:
+> > > -             val = clamp(val, (u16)0, (u16)0x7FF);
+> > > +             val = clamp(val, (u16)0, (u16)AD5933_MAX_SETTLING_CYCLES);
+> > >               st->settling_cycles = val;
+> > >
+> > > -             /* 2x, 4x handling, see datasheet */
+> > > +             /* Encode value for register: D10..D0 */
+> > > +             /* Datasheet Table 13: If cycles > 1022 -> val/4, set bits D10=1, D9=1 */
+> > >               if (val > 1022)
+> > > -                     val = (val >> 2) | (3 << 9);
+> > > -             else if (val > 511)
+> > > -                     val = (val >> 1) | BIT(9);
+> > > +                     val = (val >> 2) | AD5933_SETTLE_MUL_4X;
+> > then this would become something like
+> >
+> >                 reg_data &= ~AD5933_SETTLE_MUL_MSK;
+> >                 reg_data |= FIELD_PREP(AD5933_SETTLE_MUL_MSK, AD5933_SETTLE_MUL_4X);
+> >                 reg_data &= ~AD5933_SETTLING_TIME_CYCLES_MSK;
+> >                 reg_data |= FIELD_PREP(AD5933_SETTLING_TIME_CYCLES_MSK, val >> 2);
+> I currently have:
+>                         val >>= 2;
+>                         val |= FIELD_PREP(AD5933_SETTLING_MULTIPLIER_MASK,
+>                                         AD5933_SETTLING_MULTIPLIER_VAL_X4);
+> which assumes val only has bits within a certain range which I believe
+> is the case here but not completely sure. Would it be better to clear
+> the bits regardless and then apply said operations?
+Nah, since val is being clamped to max settling time value, I think this is good.
 
-Clamp the user input for out_altvoltage0_settling_cycles to the
-maximum effective value of 2044 cycles (511 * 4x multiplier).
+> > ...
+> >
+> > Though, I guess it would then be preferable to use masks and bitfield macros for
+> > all other places where we handle register data in ad5933 driver. Probably
+> > something for a different patch (if worth it).
+> I separated the original fix from the refactoring so the patches stay
+> modular. I can apply the use of masks and bitfield macros for other
+> register data. Should the refactoring be all in one patch or spread
+> across multiple?
 
-Fixes: f94aa354d676 ("iio: impedance-analyzer: New driver for AD5933/4 Impedance Converter, Network Analyzer")
-Cc: stable@vger.kernel.org
-Signed-off-by: Gabriel Shahrouzi <gshahrouzi@gmail.com>
----
-Changes in v3:
-	- Only include fix (remove refactoring which will be its own
-	  separate patch).
-Changes in v2:
-        - Fix spacing in comment around '+'.
-        - Define mask and values for settling cycle multipliers.
----
- drivers/staging/iio/impedance-analyzer/ad5933.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/staging/iio/impedance-analyzer/ad5933.c b/drivers/staging/iio/impedance-analyzer/ad5933.c
-index d5544fc2fe989..f8fcc10ea8150 100644
---- a/drivers/staging/iio/impedance-analyzer/ad5933.c
-+++ b/drivers/staging/iio/impedance-analyzer/ad5933.c
-@@ -411,7 +411,7 @@ static ssize_t ad5933_store(struct device *dev,
- 		ret = ad5933_cmd(st, 0);
- 		break;
- 	case AD5933_OUT_SETTLING_CYCLES:
--		val = clamp(val, (u16)0, (u16)0x7FF);
-+		val = clamp(val, (u16)0, (u16)0x7FC);
- 		st->settling_cycles = val;
- 
- 		/* 2x, 4x handling, see datasheet */
--- 
-2.43.0
-
+I believe all mask/bitfield refactoring can be done in one patch.
 

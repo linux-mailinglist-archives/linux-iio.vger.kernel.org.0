@@ -1,121 +1,140 @@
-Return-Path: <linux-iio+bounces-18371-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18372-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 132A9A94833
-	for <lists+linux-iio@lfdr.de>; Sun, 20 Apr 2025 17:35:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1794FA94848
+	for <lists+linux-iio@lfdr.de>; Sun, 20 Apr 2025 18:07:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D49B3ADF48
-	for <lists+linux-iio@lfdr.de>; Sun, 20 Apr 2025 15:35:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 202F33ABD09
+	for <lists+linux-iio@lfdr.de>; Sun, 20 Apr 2025 16:07:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B220B1A9B2C;
-	Sun, 20 Apr 2025 15:35:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E76E1202C21;
+	Sun, 20 Apr 2025 16:07:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nj1sEaSW"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WwpDL9Nu"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB6E32D023
-	for <linux-iio@vger.kernel.org>; Sun, 20 Apr 2025 15:35:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5693C1BC073
+	for <linux-iio@vger.kernel.org>; Sun, 20 Apr 2025 16:07:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745163341; cv=none; b=ty6yByeqgynhuhhs/3KM59JY8O8QuKp1+ALJdi3Wm70kW9SmB95a+npirJprUUopnu6hwyRxUUECNnfTfhDpNnB8WwmnRE9b6D6ChE17izdQqka99Hw233h1B+v4sQJu7rBLnDqAHULutu+MiKJuFdlCYoBvPF0ZWl2R5k1wKR4=
+	t=1745165254; cv=none; b=DVzDaWegtmwtKvv2WVfC7tWgg2FJiaUJPMqmk6tfi6cZDXciDBE+E23/YfBmMVZM06HJaecdlmZ4apv2O9xZhPWJnVDwPdxAXlXx9degMECZ/58HMBHQnDj5XFY5GT/dNQ92Hj0JjUo99JGPswBRvCtxK8pcrUpmIiBkcMOijUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745163341; c=relaxed/simple;
-	bh=mLe/H7RjVNSBBQdN7lqG+bcyhjXE7XXU8C4xXEKfopg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BXtN3SEo0t5DGQcXbsmKCvxyuepioJ3217llyevnbCkWpELh25sVj4QaAus90J7EZ8uJvPIVYm+rcnX1fqAq515tndrR/ZVSjzAkkJrUWNV8c14G+Y4uXvxzrO/+y0GZQsLk0Qa+8gSzkgiFlJVJ4ZdgNDcUpWhkElgml5O5TDw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nj1sEaSW; arc=none smtp.client-ip=209.85.208.42
+	s=arc-20240116; t=1745165254; c=relaxed/simple;
+	bh=wHZkk16ri+5Mc2PvQSEWaY+Vh6jIGrmAUdH07LHeBCA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ts4jCvWNd2e5l45kDjyGnnpHQRUnc6p5zYvePiciyszFRFXJQHVFA+x95qGVRUUmN0JAoT1RsENbU5/AHxiLh9hP8xK7H4wTo1bknvqJrO6CKQJn2HJYHoiebqjnR6/Y94eM2YxPDWf4pHjShsZh00BOxLcEOjluXeagFYThWuA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WwpDL9Nu; arc=none smtp.client-ip=209.85.216.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-5edc07c777eso4305393a12.3
-        for <linux-iio@vger.kernel.org>; Sun, 20 Apr 2025 08:35:39 -0700 (PDT)
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-3081fe5987eso2743825a91.3
+        for <linux-iio@vger.kernel.org>; Sun, 20 Apr 2025 09:07:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745163338; x=1745768138; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=mLe/H7RjVNSBBQdN7lqG+bcyhjXE7XXU8C4xXEKfopg=;
-        b=nj1sEaSWhvIF5Qu5W04cdBz+GY7gY0ZKNw/DqxOUL7PJ8YXop/5WpFERu54klhUquJ
-         +EthIF+N9HEfcV1xcykqBqhmipnGrD+rrdiDDzKqtrVQ1jismYPb4H1lZBFjpWsAb2YH
-         nHKqyREtzvv/bwzazieFO6HZrVnaSI/RJpzZSeBz9rP5QJNImKdsEkAOcVvL3HtbLPYt
-         0/YlceCUz8LmQJHiogGQFEeESFgF1qNBp9boLxzPGf55NSx3HKxLdv+WD6hRBAEZ832Q
-         k/7IuCo0jwhdCidi35xGzNYs1AaN+KJsjniQAZNzFU3Mcolfv82N2zLJ4570SbTiCc4l
-         WgTA==
+        d=gmail.com; s=20230601; t=1745165252; x=1745770052; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=KaGSaGiq+LmL/AdTRqPUeub952XiGKYhYcVBNx9i3yU=;
+        b=WwpDL9Nurz0PITF8gPL3p5nv6xn5088NdAQXIcxwP4RTjwyC9HeYh6cxMkNMPiI5xC
+         /F+izi8MWOItyvIf9VjwrmMPQgqSlQc1JtkimN7hSQyBmtK4McBj/IVp684hEF3gv7Ws
+         I0ND1POZTLPaILXIlsPNA+gY09FvUzOXy0x7hB3Dycu/Zi2CtSeU1QSxJ2EIRX4yosQL
+         INwMK5GJLkgVR6oS8+1Nh+HRlDydFHCJwm5jK5uknyiEx7iPeSgv/F8jf5L7iULN2mS8
+         CWW7F61Yg3mtQK01rK6SJ5ewOj6J21MG9ZwbDMzKisfdiiv8lrslz1yBkvB5jUZndYjq
+         j0gg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745163338; x=1745768138;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=mLe/H7RjVNSBBQdN7lqG+bcyhjXE7XXU8C4xXEKfopg=;
-        b=WHu99xyyz23N+jXh206Vjl/mg+5OLeMI67gVm3T4W0kP4MX/cNlDQI5ZrY0xM5P2jW
-         u2DzXPVI9/iGDRiqb7vHGJENanzfCoVRShvJXfWQWuGRnftFb8TaZN5iJJXHmbM6RBZm
-         gm4t0NKs5LnyxDBKbDu5H+a85n0qFIj+EOIUfzGpRjNYfUO+ZwgQFlbjuO7VrTBZMjS2
-         yBo8yZYcUyTi1IbHyBzdgZf1Dyute4BrOpUl+UBBCiqry5hYKY5rIz5xpSoZRemLTzgG
-         CUgHWNpPSnCSI5WwksKvM0gK0JqjAi9u7TnfEE2E4WaCP0hG2SFnQmRox6m/nC8IwHNh
-         PPlQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV157Panftr0i+sEvtCeHHKsHKQGGU66CDmhUA4p8Uv9hSk4hdk9RY+yXv7WbbUZnN72XekiiInWaE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxs7O3FzlguVH20pEMaVT6lwcp8W+pTLwJ/QT1bjUHdYAg11YUr
-	nzCYIlOzww47wf3jdGLCoZVhPDZtecpZ1OkZ4RMDeNwoF/qOvE4uFaT0U4hDmExyQ57xkjcfvP/
-	j3UWMszV7gjSKtNCy/LrGVepBJQg=
-X-Gm-Gg: ASbGncvmEZRzudQwg9eZUOZzOGeicozfsHAkQhBvMgpNeXvigPf1pQAKwJ7NHBSF3Ys
-	Q+b7eaDeEF+8f2Uc0n6PE2KrIsUbEtTSvrtKJ2hd3hBW3lH1nHH7byqDhGXm6Kx5HQr54RCixR/
-	j1vP6KyMFzfa0bkUsXA5WihGfZkp21wi1KBO7OTcPfLugoxTDOh9pc5Kk=
-X-Google-Smtp-Source: AGHT+IEHmmzIvd01a9rkDMHzXiMROndcYxvYO0DIGLg2659HGX/Fe5xK9nUYKGPzEtZtanf6GyxNYgaBoyY2NTKNuik=
-X-Received: by 2002:a17:907:97d1:b0:ac3:4226:d40 with SMTP id
- a640c23a62f3a-acb74ad9670mr871892566b.12.1745163337774; Sun, 20 Apr 2025
- 08:35:37 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1745165252; x=1745770052;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=KaGSaGiq+LmL/AdTRqPUeub952XiGKYhYcVBNx9i3yU=;
+        b=kQ6q0yLfHNd8Jecphkl+smRtBXPA45hKIRxShRh1lrwi7sIRkkhizPTN32nX4V7dz+
+         4xkxpaKK7sIZgfSIfpzy957AxvcOlXMBYXIo8l0+S+jjN9iO/t/a+LfaMCYBjClWKLg7
+         jo4hDGlKu40deZ9e2y4lk3Uoq6lY2Sc1sUxi4gvS5M+yG2RpambxDOcUut9E3MSUqdV1
+         PJbDKI8To0nXtzqxg5+2diE+YugxfqlOm+bu3+8hOMG0Gz7Y+7lqZzr4Ur6KFIsxVEA+
+         Ba4IIora69Nf5PzgNBh5yFrGY4L1EIPMHbYasdD7IiTijZDkQkSN+G+tYfJGJyYMMl4N
+         oxdw==
+X-Forwarded-Encrypted: i=1; AJvYcCUOyu0i+rl6YXs4rFQvk++LjxZLEmqKklVTamLaitDuTYaTYCmtyWqRDSRCqha5gdh842CT9xFfYlM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzrxCWXHKRs6SihGkYSjxzJrYmp8njilM6vq9Wf184d5/eFk9OU
+	m33dhPiDkECav17pmd68mRSRTdsZjQPqHHSQaPK+8R0Kq08/37khfNTTtQDR
+X-Gm-Gg: ASbGncvu/UQ8FSLWX5SlZMnoHsdk98hovqRk9GJUQdqFHzGnvvTiyJc3v0TOPXprcw2
+	M9ftdSv8xdBZEAFm2yvonfq4DTpu+6BdYV7SCxNvUffQOTou9nXeb/ZvvsPR1a+d+Gxi1IDuqW9
+	NPSS4tEUnM92GwJPIoppiayAEIgv4miZa2xooRAAXoo7k3y2SQhN6FKeUQ2S/pNlFoYtwI7/7To
+	oNLGJLx/UL4el4rSuMciqBGQh0txVeasWoLDxSUZ4T3tptld4an0R5/DNTEu0z5pq7srWnUVW1/
+	KxN1Tz/NAirDvK0fZHZZsqpTw+yS1Wj6gpV0KpgEHEywk//uZYfaOA==
+X-Google-Smtp-Source: AGHT+IFfKObUCdAmzFxE5yV/Mnb8SaGt03Wclhs/DvALXo2W+sxPxH+aD02JwdBHUCq5gspDnA3I4w==
+X-Received: by 2002:a17:90b:574c:b0:2ff:58a4:9db3 with SMTP id 98e67ed59e1d1-3087bcc8b4dmr12090008a91.35.1745165252632;
+        Sun, 20 Apr 2025 09:07:32 -0700 (PDT)
+Received: from joaog-nb ([2804:14c:490:1191:f66d:1f0e:c11e:5e8b])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3087e0feb37sm4882688a91.31.2025.04.20.09.07.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 20 Apr 2025 09:07:32 -0700 (PDT)
+Date: Sun, 20 Apr 2025 13:07:28 -0300
+From: 
+	=?utf-8?Q?Jo=C3=A3o_Paulo_Gon=C3=A7alves?= <jpaulo.silvagoncalves@gmail.com>
+To: nattan <nattanferreira58@gmail.com>
+Cc: francesco@dolcini.it, jic23@kernel.org, lucasantonio.santos@usp.br, 
+	linux-iio@vger.kernel.org
+Subject: Re: [PATCH] iio: adc: ti-ads1119: Prevent concurrent access during
+Message-ID: <c2golk6627ybfpw3t7lnerritq2yysi5zhdlvahnvhxoevmojn@j3d2stvivkyk>
+References: <20250419232316.36002-1-nattanferreira58@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250419161347.28157-1-arthurpilone@usp.br> <906f8d69-d08d-4150-9f84-2ce714cccb3c@baylibre.com>
- <aAP3gbRT95b6Ip7g@debian-BULLSEYE-live-builder-AMD64>
-In-Reply-To: <aAP3gbRT95b6Ip7g@debian-BULLSEYE-live-builder-AMD64>
-From: Arthur Pilone <art.pilone@gmail.com>
-Date: Sun, 20 Apr 2025 12:35:13 -0300
-X-Gm-Features: ATxdqUFfACJVYgPy42q5aI5OzA3e1j8TwbVjhvsHY9vjhhGabwUpK5RiIXFpYlw
-Message-ID: <CA+m-LuVxd58dxjPRVfPRaYu4Dw=Cw99vLAMz3JdQUGi_XWbY4A@mail.gmail.com>
-Subject: Re: [PATCH v1] iio: adc: ad7091r-base: Move reg volatility check to
- new macro
-To: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-Cc: David Lechner <dlechner@baylibre.com>, jic23@kernel.org, marcelo.schmitt@analog.com, 
-	linux-iio@vger.kernel.org, bruno.stephan@usp.br, aschwarz@usp.br
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250419232316.36002-1-nattanferreira58@gmail.com>
 
-Thanks David and Marcelo for the feedback.
-...
-> > TBH, I think the old code is more readable than hiding the values in a macro
-> > even if it is duplicating a few lines of code.
-> >
-> > But if everyone else thinks this is better, I would at least suggest to make
-> > the macro AD7091R_IS_READ_ONLY_REG instead of volatile. Using not volatile
-> > as an indicator of writable seems really strange. But using readonly as an
-> > indication of volatile seems more logical. A comment to the effect of "the
-> > read-only registers also happen to be the only volatile registers" in the
-> > ad7091r_volatile_reg() function would help too.
-> >
-> From my side, no strong preference between having the expanded code or a macro.
-> About the name, I was thinking about it the other way around. All
-> ad7091r-2/-4/-5/-8 registers are writeable, except the ones that are updated by
-> the device itself and those are read only. Of course, that logic only applies
-> because ad7091r happens to not have any read only reg that is not volatile
-> (e.g. a device or vendor ID reg). Agree though that it would be nice to add
-> a comment clarifying why volatile regs are read only and vice-versa.
+Hi,
 
-I, too, agree with you and see that a comment would be adequate.
+> Use iio_device_claim_direct() to protect register access via debugfs
+> from conflicting with buffered capture modes. This prevents data
+> corruption and ensures correct device operation when users access
+> registers while streaming data.
+> 
 
-Regarding the name of the macro, I see David's suggestion as being
-slightly more
-intuitive. Otherwise, someone might eventually argue that the same comment on
-the read-only volatile registers should accompany the definition of the macro.
+I understood the problem, but I think keeping at least the possibility to
+read registers even when buffered mode is enabled is still useful for
+development (e.g. you can check that userspace configurations are correct
+by checking the hw registers). Of course, there's a chance of losing some
+samples, but debugfs is meant to be used during development/integration,
+where this probably is not an issue.
 
-I'm addressing your comments on a new patch.
+So, for me, a better solution would be to avoid writing to the device
+when buffered mode is enable:
 
-Thank you,
-Arthur
+diff --git a/drivers/iio/adc/ti-ads1119.c b/drivers/iio/adc/ti-ads1119.c
+index 9be7676f31bb..a22d7cb5c4a0 100644
+--- a/drivers/iio/adc/ti-ads1119.c
++++ b/drivers/iio/adc/ti-ads1119.c
+@@ -416,6 +416,9 @@ static int ads1119_debugfs_reg_access(struct iio_dev *indio_dev,
+                return 0;
+        }
+ 
++       if(iio_buffer_enabled(indio_dev))
++               return -EBUSY;
++
+        if (reg > ADS1119_REG_CONFIG)
+                return -EINVAL;
+
+Best Regards,
+João Paulo
+
+
+
+
+
+
+
+
+
+
+
 

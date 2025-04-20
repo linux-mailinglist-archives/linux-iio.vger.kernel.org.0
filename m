@@ -1,128 +1,341 @@
-Return-Path: <linux-iio+bounces-18369-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18370-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 076C8A94774
-	for <lists+linux-iio@lfdr.de>; Sun, 20 Apr 2025 12:44:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 415B1A947F3
+	for <lists+linux-iio@lfdr.de>; Sun, 20 Apr 2025 15:04:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2C2A5171D87
-	for <lists+linux-iio@lfdr.de>; Sun, 20 Apr 2025 10:44:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4941C3A8252
+	for <lists+linux-iio@lfdr.de>; Sun, 20 Apr 2025 13:04:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E879202F80;
-	Sun, 20 Apr 2025 10:44:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FE7B1E9B03;
+	Sun, 20 Apr 2025 13:04:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XIjk3613"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W6CxSEE9"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C724119307F;
-	Sun, 20 Apr 2025 10:44:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6470729D0E;
+	Sun, 20 Apr 2025 13:04:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745145888; cv=none; b=WCMVMBwxNxyxgapSrkONn6ZyF0pFurwvefjn6WRTAox8qCYfn34cVtLxkNJjy1/q8HoL8T7wlVhvI45QtsBUJDwMvFFBCD1oiKEKIVSu/IC/3DSvZAanX0yP7P1POP1Fvc3YHO3+1ZmhAObQ5vmP8NwMZBILarIjy2ALQkdwNgE=
+	t=1745154261; cv=none; b=j2jU5bCEhXRL1y7R3WfwPzungVlLD1MGC7Y6gcgvxWM5GORG1pDBn/1jxTyCyM80muHAv48eJohFG6gX69+Qh7ejTdnx9jfyx0NV+I6y4dTotI2kOf/Ay/8vULFvbBkrA8Iyw/9yuD84fHnU92LTbcXmDa58PX8zwXW7uPNi3SQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745145888; c=relaxed/simple;
-	bh=mLPezQLhmhvgO0exVl/AQmD5xWtH0OgY5GWGxgf6WS8=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=WkuGsGc3uWeQ/njMimd2NmKAKWUbzoCJ6mM2HEX4531XDb0QK5FsXOQD2ak6IWYkaD69gdqZFwSgaoaSCaxN15t89Ei9AttpIIEtVHYcxcxLcnoY5d8SUTRiHMh2eq6qrlpYtRXq/1ND7ElbBprZ0vazvfZ0Kx/tShFNswudWDc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XIjk3613; arc=none smtp.client-ip=209.85.210.182
+	s=arc-20240116; t=1745154261; c=relaxed/simple;
+	bh=fPE9aFBY6YCla2BwooRyzGrQgoOewSFyKnemyUBnK78=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=XAjYueky5nX+8wQ9mI/tqsYws6fq7aTnykVNNCjoScEfYpubl7mDJl3RlhnhD4ZO6hzB9BsqjKqM86t6x2hSTtx10gOMRFuXeib2dmvqPYMMY1sJF+nExDz3pMnjHM7GyhdrscNvpnorKazamXYE6r/Tj6clONjUJiGkNXeFeiY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=W6CxSEE9; arc=none smtp.client-ip=209.85.208.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-73972a54919so2592470b3a.3;
-        Sun, 20 Apr 2025 03:44:46 -0700 (PDT)
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-5e8be1bdb7bso4902632a12.0;
+        Sun, 20 Apr 2025 06:04:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745145886; x=1745750686; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1745154254; x=1745759054; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=cn3EZ9GSZ3fBYC366WkmVBMTpNq7V5H65j8ZNSi0Wso=;
-        b=XIjk3613kN0ljiMgAE3tFOhzph/Dn6E8YnQMUrkfY6xAgHjKzv4qod3vOAdnCbtI4V
-         LNRxXRu4CIKmrPJdikCZSagIfYoW3Dk663W9Q3XcRMUU3EdOTzvbu1qTs8vhDdkyIfO1
-         tWrTMgxBSxQz9lNOui0zjy2m7ezvGXFM7O30zfrvuquD+THhsI1JrmlZpDn24oedQ95w
-         3opw7utIuzbuo8shmr+ZkcHyg68L5xbZ4Xm33G0svtKQDzcxO1vCGgcOQPH5XJp3NcT0
-         PGpUelooqateuyJxf//v6ENfIF0r1DT1/sbj5bCPUrKJL2Z17orBDooivjEukJavNYkH
-         5sNA==
+        bh=VLC0Xb7rcYfUnW4E07RKJLrh3ftNRi2mYiFFHP/PP2w=;
+        b=W6CxSEE9Ri6wOQx9nnUPVYAKdIi6AsHJDJTuVLBPbK6GhmY8Vm8XpB7KtuxtXpYVUS
+         oG1t/0/7NVN4wbp8pIjMO8QgqJkhMeOVj8qNXLh+4Gd3a2YwJU5FncJExbyGLYLU+Cyg
+         hwRYndZTpnDQfSSv278BDVZjpunQ60DHLG4hVUYZ1YJB/4R0anu6sqy9upUFURuFfDBk
+         3DI9Myrg4AOwBi/gqho41ilu19zHrJ05lP2cxD8R2QU465H2zWSN9rKnm4I/h9jwqVJn
+         nTdDRmrUbBGMU9Fcl40PZN/GyAMpzYlCSEe15Dyw0GzEfwXnP9kEvSHJghCvXHjC9oeb
+         rgTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745145886; x=1745750686;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1745154254; x=1745759054;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=cn3EZ9GSZ3fBYC366WkmVBMTpNq7V5H65j8ZNSi0Wso=;
-        b=eRbw3iiMwuZuwE+xKTkpLKaSCi9AZr8eGFJmoM68RzgC9irjCvccOA2RfZ4/NgU+30
-         4qy/DyQxWljuRb19tpo/z6L7fN2Lnt4bMgNHd+iWaPSNYIv0UGa/ZE/aXFSSc4R9IW3Y
-         I60idZjH0tpftwgxs4yjfiirm6jOxEs9mziHH+qHqpRyFYdnYuFGNpizd7B9KprEwlkX
-         ND94HR9+xlQAQfNNrhVTOzrE8s/rXx68rwS6ua+/w995EZ6AhVOuYgXX9FJhpGfWlUG/
-         EChenDeS7M2rRNfqW3GuKPU7rRJvBtF6giNwcVQxTxddTRXx4LaYmt1gaRd9ShBwo5aI
-         5iFA==
-X-Forwarded-Encrypted: i=1; AJvYcCXipjHMDbiFxm8/jbj287n5WKOrc3b1yLTLd9ZDg8R+QGarAc0sawA4vcO9pgc5o3i0fMltIY+dZoL2@vger.kernel.org, AJvYcCXvBeaAALpnvplRTLReCZY+CP5oPULGexudtKFaNwT9tI/4fLzApq0BeKP6VcLYAwk3F5HwDNwXI47T@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy07g3PH9972Nqv1x3iD2fi/WlPGA3V9SGY00eXqd0fyO1SXihz
-	ymBhAFqOvdyE21e/iitshF7Q6Z0LEu/TZl2rrCA3OpGbrog3gPjx
-X-Gm-Gg: ASbGnctGPbdel+T7NJCwEhuxTCsx3xTqLNsX1OMCk8UDDLgTno7SqdCddQ7djJtQBrL
-	/p5Gtzs2lLwBF0ry8ypnlki115SaGEuCr6lKbYufuMgQQINU46aj1VQ/X5RAMexN3y/YeYN4PI2
-	Pa8kq+s+VoVz1U2b10mIJr4LFjpty2jZQYbqXHNcO50sDrU8EcE9uMvPxaVBQ6O5LrKIn+EvMtg
-	tiq2+8h3ytkY9/DUs7JpV34UkxtojS5X87+6/PzQOqZSY9em49Q/Ve23y6t0hRGmyrkwIXYcHdj
-	LVitig8pxS539BG67NblpTPd159S5Yc9Bn8PPLEN9lohj+M=
-X-Google-Smtp-Source: AGHT+IFW6yxD5Nwxh+PBhOo9fPqGTxsPuKivohBRY8OnF2aJbCHY8tLKNvpW03pcx0qVMDfrPLVlbQ==
-X-Received: by 2002:a05:6a21:3399:b0:1fd:f48b:f397 with SMTP id adf61e73a8af0-203cbc76991mr11222029637.23.1745145885911;
-        Sun, 20 Apr 2025 03:44:45 -0700 (PDT)
-Received: from gye-ThinkPad-T590.. ([39.120.225.141])
-        by smtp.googlemail.com with ESMTPSA id d2e1a72fcca58-73dbf8e13b5sm4504061b3a.48.2025.04.20.03.44.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 20 Apr 2025 03:44:45 -0700 (PDT)
-From: Gyeyoung Baek <gye976@gmail.com>
-To: andy@kernel.org
-Cc: Gyeyoung Baek <gye976@gmail.com>,
-	linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	dlechner@baylibre.com,
-	nuno.sa@analog.com,
-	jic23@kernel.org,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org
-Subject: Re: [PATCH v3 3/4] iio: chemical: add support for winsen MHZ19B CO2 sensor
-Date: Sun, 20 Apr 2025 19:43:59 +0900
-Message-Id: <20250420104359.376766-1-gye976@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <aAExr-YPkYAsSQTc@smile.fi.intel.com>
-References: <20250409024311.19466-1-gye976@gmail.com> <20250409024311.19466-5-gye976@gmail.com> <CAHp75VfMHdw-6vrELbjjD3T323uDz7U9wRP5YSk2jZ26wBuLTQ@mail.gmail.com> <CAKbEznsVxexdrXX72G-tCUHjznx6na1h8MrCFPKrHd27GXht8A@mail.gmail.com> <CAHp75VeU5sERbVz-4OxkJNC-pjT3B5AvfAMj09LXd6v4MdeDeg@mail.gmail.com> <CAKbEznvXdfszfiuXma_GWhYLwj7mR_WX_H4r6iHZWKp2=41tJw@mail.gmail.com> <aAExr-YPkYAsSQTc@smile.fi.intel.com>
+        bh=VLC0Xb7rcYfUnW4E07RKJLrh3ftNRi2mYiFFHP/PP2w=;
+        b=vCTL033podF1Z2TVAAimT7dLeBEb74vrXYQmPq8bA41Jw+db7HDFGT72XlboAU1jWa
+         aICBv/9F1B6LNN7a56lJIRjoc34YrfpM298zekGcC+by2NBL+4yO38Uoz12o6zvWGrKJ
+         wPrq4B2SE85IPXI0GWFYm7TmNTxf2OYMiqJTA865I3J6OeUwP9KLwOsOKFDnQy8HB6BS
+         9qUP0nQ83lrXQbDcmJ668Ns7FYyx+AjNHDbacWYM+q3wjo+mr7BqrEKk4DKfeYVvStmH
+         GKWewtmHPGmapV525EBmO9AokE31o6cfDMUl7y6qKJl3wDstIj/YnDb+XtIBjTuwgCcB
+         5M0Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUbt6NW0HoGqii1xD39ETEjJj0pGmcD+59Gi+Pp2EQg54ugfSNtvb3IDjEnK37VVwfgSMgbRBbGjUmUiz8X@vger.kernel.org, AJvYcCUeqEnYfmV6/H+83uFtQ9Emz5EnNfIonTEp5XxbFxeH/JRUHnycpnldqIHUqmirRnPTyQsIk2NthP2i@vger.kernel.org, AJvYcCWZPxse1x7MXQGwQXi4SH62tlTpZYlMP7Z6plH5GI/joKgHIZScLs62+Tc4kdna+yOXs6S5m/9TAaf/@vger.kernel.org
+X-Gm-Message-State: AOJu0YxiuTvZvQYF5BiyOfhtExlAJaxBl9mOgNgrHs0LCfxM9ZGOMCCi
+	tk0X4/bUIf8ldC7MkmLR5kHm3jBBYx8Wvk2cPn5PcieJ0waBhll0MHrKSn8oMymOrgvvoS/KVKg
+	Stp1HLAOo2TsQncimzU5n7v3kz3g=
+X-Gm-Gg: ASbGncv8HdM8g9TQL/jHQ/o16o6Meto4PfGRpuuw8dTVmPpCtSQms6HXBKCtuigtWkE
+	m+hbrv+sviBH8FlYNTRoac5MkHtE6mqvoRuzZAq96GzjGiE7tC2luIGFilHj2agZW1dYd42h3Ds
+	0GCynmh1T3MB4C/h2162U=
+X-Google-Smtp-Source: AGHT+IHyvZvJuDnKKWgBJ5MWwXbxCdMsNlym6R9z/WaA3ofJOIx1BSjevlczhACPp8AdkaBWlzgqsEsdRIkDgjzroJw=
+X-Received: by 2002:a17:907:868f:b0:acb:5adb:bd37 with SMTP id
+ a640c23a62f3a-acb74b3af74mr771611966b.23.1745154254297; Sun, 20 Apr 2025
+ 06:04:14 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250416081734.563111-1-j2anfernee@gmail.com> <20250416081734.563111-3-j2anfernee@gmail.com>
+ <Z_95naiV7zpLokPr@smile.fi.intel.com>
+In-Reply-To: <Z_95naiV7zpLokPr@smile.fi.intel.com>
+From: Yu-Hsian Yang <j2anfernee@gmail.com>
+Date: Sun, 20 Apr 2025 21:03:05 +0800
+X-Gm-Features: ATxdqUH_04TzQWMnyralP5DQz5ksTbOJ4YLihDEExFl-M6MThzam-CCE9bW2JXo
+Message-ID: <CA+4VgcKfDo2NSeBA6+z5AqCeEBds0-DwC0-e3H-bkJ7hEcHaWw@mail.gmail.com>
+Subject: Re: [PATCH v6 2/2] iio: adc: add support for Nuvoton NCT7201
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: jic23@kernel.org, lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org, 
+	conor+dt@kernel.org, dlechner@baylibre.com, nuno.sa@analog.com, 
+	javier.carrasco.cruz@gmail.com, gstols@baylibre.com, alisadariana@gmail.com, 
+	tgamblin@baylibre.com, olivier.moysan@foss.st.com, antoniu.miclaus@analog.com, 
+	eblanc@baylibre.com, joao.goncalves@toradex.com, tobias.sperling@softing.com, 
+	marcelo.schmitt@analog.com, angelogioacchino.delregno@collabora.com, 
+	thomas.bonnefille@bootlin.com, herve.codina@bootlin.com, 
+	chanh@os.amperecomputing.com, KWLIU@nuvoton.com, yhyang2@nuvoton.com, 
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> > It seems that the serdev buf doesn't need to be DMA-safe. I looked
-> > into the PL011 driver as an example,
-> > which uses DMA, and found that the data received via DMA is firstly
-> > stored in the buffer within the 'uart_amba_port' structure, and then
-> > copied into the 'tty_bufhead' within the tty_port. Later, in serdev's
-> > receive_buf(), it simply copies from the tty_bufhead to into serdev
-> > buf. So I think there's no need to consider DMA-safe in the serdev buf
-> > itself.
+Dear Andy,
 
-> But who will give those guarantees (note, the code is most likely may be run on
-> different UART controllers (PL011 is just one of many), have you checked all
-> supported drivers for DMA?
+Thanks for the review and the comments.
+Will fix all, have a few questions (below)
 
-No, I just checked one. 
-Sorry for generalizing even though I'm not sure.
+Andy Shevchenko <andriy.shevchenko@linux.intel.com> =E6=96=BC 2025=E5=B9=B4=
+4=E6=9C=8816=E6=97=A5 =E9=80=B1=E4=B8=89 =E4=B8=8B=E5=8D=885:34=E5=AF=AB=E9=
+=81=93=EF=BC=9A
+>
+> On Wed, Apr 16, 2025 at 04:17:34PM +0800, Eason Yang wrote:
+> > Add Nuvoton NCT7201/NCT7202 system voltage monitor 12-bit ADC driver
+> >
+> > NCT7201/NCT7202 supports up to 12 analog voltage monitor inputs and up
+> > to 4 SMBus addresses by ADDR pin. Meanwhile, ALERT# hardware event pins
+> > for independent alarm signals, and all the threshold values could be se=
+t
+> > for system protection without any timing delay. It also supports reset
+> > input RSTIN# to recover system from a fault condition.
+> >
+> > Currently, only single-edge mode conversion and threshold events are
+> > supported.
+>
+> ...
+>
+> > +#define NCT7201_REG_VIN(i)                           (i)
+>
+> This doesn't do anything useful. Why do you need this rather useless macr=
+o?
+>
 
-> > would this make sense? If so, I think there is no need to change the
-> > code related to the buffer.
+Actually here we should define NCT7201_REG_VIN(i) as (0x00 + i),
+We simply it as (i).
 
-> The bare minimum is to make sure this buffer occupies the cacheline.
-> Read about DMA safety for the cache coherency.
 
-It seems appropriate to use '__aligned(IIO_DMA_MINALIGN)' to ensure cache alignment.
-I'll use that, thanks.
+> ...
+>
+> > +struct nct7201_chip_info {
+> > +     struct device *dev;
+>
+> This can be derived from the respective regmap. No need to have it here.
+>
+> > +     struct regmap *regmap;
+> > +     struct regmap *regmap16;
+> > +     int num_vin_channels;
+> > +     u16 vin_mask;
+> > +};
+>
 
---
-Regards,
-Gyeyoung
+Use regmap->dev is okay if use regmap API.
+But if we need to print message not from regmap API,
+how suggestions to do in this case?
+
+The code is in nct7201_init_chip(struct nct7201_chip_info *chip)
+...
+> > +     err =3D regmap_read(chip->regmap, NCT7201_REG_BUSY_STATUS, &value=
+);
+> > +     if (err)
+> > +             return dev_err_probe(dev, err, "Failed to read busy statu=
+s\n");
+> > +     if (!(value & NCT7201_BIT_PWR_UP))
+> > +             return dev_err_probe(dev, -EIO, "Failed to power up after=
+ reset\n");
+
+
+> ...
+>
+> > +struct nct7201_adc_model_data {
+> > +     const char *model_name;
+> > +     const struct iio_chan_spec *channels;
+>
+> > +     const int num_channels;
+>
+> What is the meaning of const here?
+>
+
+We don't need const int , just int.
+
+> > +     int num_vin_channels;
+> > +};
+>
+> ...
+>
+> > +#define NCT7201_VOLTAGE_CHANNEL(num)                                 \
+> > +     {                                                               \
+> > +             .type =3D IIO_VOLTAGE,                                   =
+ \
+> > +             .indexed =3D 1,                                          =
+ \
+> > +             .channel =3D (num + 1),                                  =
+ \
+>
+> Parentheses are in a wrong place
+>
+We remove parentheses.
+
+> > +             .info_mask_separate =3D BIT(IIO_CHAN_INFO_RAW),          =
+ \
+> > +             .info_mask_shared_by_type =3D BIT(IIO_CHAN_INFO_SCALE),  =
+ \
+> > +             .address =3D num,                                        =
+ \
+> > +             .event_spec =3D nct7201_events,                          =
+ \
+> > +             .num_event_specs =3D ARRAY_SIZE(nct7201_events),         =
+ \
+> > +     }
+>
+> ...
+>
+> > +static int nct7201_write_event_config(struct iio_dev *indio_dev,
+> > +                                   const struct iio_chan_spec *chan,
+> > +                                   enum iio_event_type type,
+> > +                                   enum iio_event_direction dir,
+> > +                                   bool state)
+> > +{
+> > +     struct nct7201_chip_info *chip =3D iio_priv(indio_dev);
+> > +     unsigned int mask;
+> > +     int err;
+> > +
+> > +     if (chan->type !=3D IIO_VOLTAGE)
+> > +             return -EOPNOTSUPP;
+>
+> > +     mask =3D BIT(chan->address);
+>
+> Just join this with the definition above.
+>
+>
+
+okay
+
+> > +     if (state)
+> > +             chip->vin_mask |=3D mask;
+> > +     else
+> > +             chip->vin_mask &=3D ~mask;
+> > +
+> > +     if (chip->num_vin_channels <=3D 8)
+> > +             err =3D regmap_write(chip->regmap, NCT7201_REG_CHANNEL_EN=
+ABLE_1,
+>
+> Remove _1.
+>
+> > +                                chip->vin_mask);
+> > +     else
+> > +             err =3D regmap_bulk_write(chip->regmap, NCT7201_REG_CHANN=
+EL_ENABLE_1,
+> > +                                     &chip->vin_mask, sizeof(chip->vin=
+_mask));
+>
+> > +     if (err)
+> > +             return err;
+> > +
+> > +     return 0;
+>
+> As simple as
+>
+>         return err;
+>
+> > +}
+>
+> ...
+>
+> > +static int nct7201_init_chip(struct nct7201_chip_info *chip)
+> > +{
+> > +     struct device *dev =3D chip->dev;
+>
+> Derive this from chip->regmap.
+>
+> > +     __le16 data =3D cpu_to_le16(NCT7201_REG_CHANNEL_ENABLE_MASK);
+> > +     unsigned int value;
+> > +     int err;
+> > +
+> > +     err =3D regmap_write(chip->regmap, NCT7201_REG_CONFIGURATION,
+> > +                        NCT7201_BIT_CONFIGURATION_RESET);
+> > +     if (err)
+> > +             return dev_err_probe(dev, err, "Failed to reset chip\n");
+> > +
+> > +     /*
+> > +      * After about 25 msecs, the device should be ready and then the =
+Power
+> > +      * Up bit will be set to 1. If not, wait for it.
+>
+> "Up bit" is odd, please be more specific.
+>
+> > +      */
+> > +     fsleep(25000);
+>
+> + Blank line.
+>
+> > +     err =3D regmap_read(chip->regmap, NCT7201_REG_BUSY_STATUS, &value=
+);
+> > +     if (err)
+> > +             return dev_err_probe(dev, err, "Failed to read busy statu=
+s\n");
+> > +     if (!(value & NCT7201_BIT_PWR_UP))
+> > +             return dev_err_probe(dev, -EIO, "Failed to power up after=
+ reset\n");
+> > +
+> > +     /* Enable Channel */
+> > +     if (chip->num_vin_channels <=3D 8)
+> > +             err =3D regmap_write(chip->regmap, NCT7201_REG_CHANNEL_EN=
+ABLE_1,
+> > +                                NCT7201_REG_CHANNEL_ENABLE_MASK);
+> > +     else
+> > +             err =3D regmap_bulk_write(chip->regmap, NCT7201_REG_CHANN=
+EL_ENABLE_1,
+> > +                                     &data, sizeof(data));
+> > +     if (err)
+> > +             return dev_err_probe(dev, err, "Failed to enable channel\=
+n");
+> > +
+> > +     err =3D regmap_bulk_read(chip->regmap, NCT7201_REG_CHANNEL_ENABLE=
+_1,
+> > +                            &chip->vin_mask, sizeof(chip->vin_mask));
+> > +     if (err)
+> > +             return dev_err_probe(dev, err,
+> > +                                  "Failed to read channel enable regis=
+ter\n");
+> > +
+> > +     /* Start monitoring if needed */
+> > +     err =3D regmap_set_bits(chip->regmap, NCT7201_REG_CONFIGURATION,
+> > +                           NCT7201_BIT_CONFIGURATION_START);
+> > +     if (err)
+> > +             return dev_err_probe(dev, err, "Failed to start monitorin=
+g\n");
+> > +
+> > +     return 0;
+> > +}
+>
+> ...
+>
+> > +     ret =3D nct7201_init_chip(chip);
+> > +     if (ret < 0)
+>
+> Why ' < 0' ?
+>
+> > +             return ret;
+>
+> --
+> With Best Regards,
+> Andy Shevchenko
+>
+>
 

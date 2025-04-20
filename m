@@ -1,140 +1,118 @@
-Return-Path: <linux-iio+bounces-18372-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18373-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1794FA94848
-	for <lists+linux-iio@lfdr.de>; Sun, 20 Apr 2025 18:07:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33E91A94896
+	for <lists+linux-iio@lfdr.de>; Sun, 20 Apr 2025 19:47:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 202F33ABD09
-	for <lists+linux-iio@lfdr.de>; Sun, 20 Apr 2025 16:07:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E38C3A424E
+	for <lists+linux-iio@lfdr.de>; Sun, 20 Apr 2025 17:47:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E76E1202C21;
-	Sun, 20 Apr 2025 16:07:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB2AE20CCDC;
+	Sun, 20 Apr 2025 17:47:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WwpDL9Nu"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dd9fyc+d"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5693C1BC073
-	for <linux-iio@vger.kernel.org>; Sun, 20 Apr 2025 16:07:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A29A017A302;
+	Sun, 20 Apr 2025 17:47:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745165254; cv=none; b=DVzDaWegtmwtKvv2WVfC7tWgg2FJiaUJPMqmk6tfi6cZDXciDBE+E23/YfBmMVZM06HJaecdlmZ4apv2O9xZhPWJnVDwPdxAXlXx9degMECZ/58HMBHQnDj5XFY5GT/dNQ92Hj0JjUo99JGPswBRvCtxK8pcrUpmIiBkcMOijUc=
+	t=1745171251; cv=none; b=QKl9lJ2QinwIIrqQvPKa+t19Jepul4xSzxTaOgI1/yCpYkeHEgfEGb3EDHxfGbIF0cKo1HRDpwDIjYwpL4aqVZ0rJIjK7B9iesFroXoMK+CYmDZ3ywvrpsCZ8Xz9vZWnalfb7U8qnCsg4OWG+AKrK5uDlm2/q8uOCaUFgDL5gIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745165254; c=relaxed/simple;
-	bh=wHZkk16ri+5Mc2PvQSEWaY+Vh6jIGrmAUdH07LHeBCA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ts4jCvWNd2e5l45kDjyGnnpHQRUnc6p5zYvePiciyszFRFXJQHVFA+x95qGVRUUmN0JAoT1RsENbU5/AHxiLh9hP8xK7H4wTo1bknvqJrO6CKQJn2HJYHoiebqjnR6/Y94eM2YxPDWf4pHjShsZh00BOxLcEOjluXeagFYThWuA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WwpDL9Nu; arc=none smtp.client-ip=209.85.216.44
+	s=arc-20240116; t=1745171251; c=relaxed/simple;
+	bh=mwayp67UQUi3tBtf1siPMVZZvxax1y3PF6ay8Ji+lDI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UcIr3BRi5mw96F8OizspVfmkcAhBOnwIi5n0K0MbSmDDVM8BbXtDGssQV3tcw2SFd2XGLfH0kO7biwvETX6u9p5UKMWPwrLVC5A9h1dyZKTbBTR4JaRssjbrcg8KKuw8OlyFozjqfws7HoVSkaj/SWICDdslfolYtlVUbZExYJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dd9fyc+d; arc=none smtp.client-ip=209.85.219.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-3081fe5987eso2743825a91.3
-        for <linux-iio@vger.kernel.org>; Sun, 20 Apr 2025 09:07:33 -0700 (PDT)
+Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-6e8f06e13a4so44105106d6.0;
+        Sun, 20 Apr 2025 10:47:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745165252; x=1745770052; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=KaGSaGiq+LmL/AdTRqPUeub952XiGKYhYcVBNx9i3yU=;
-        b=WwpDL9Nurz0PITF8gPL3p5nv6xn5088NdAQXIcxwP4RTjwyC9HeYh6cxMkNMPiI5xC
-         /F+izi8MWOItyvIf9VjwrmMPQgqSlQc1JtkimN7hSQyBmtK4McBj/IVp684hEF3gv7Ws
-         I0ND1POZTLPaILXIlsPNA+gY09FvUzOXy0x7hB3Dycu/Zi2CtSeU1QSxJ2EIRX4yosQL
-         INwMK5GJLkgVR6oS8+1Nh+HRlDydFHCJwm5jK5uknyiEx7iPeSgv/F8jf5L7iULN2mS8
-         CWW7F61Yg3mtQK01rK6SJ5ewOj6J21MG9ZwbDMzKisfdiiv8lrslz1yBkvB5jUZndYjq
-         j0gg==
+        d=gmail.com; s=20230601; t=1745171247; x=1745776047; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=9tx05U+vRg2gsgwyrSqUs9+tOlnrgkTrKgqo5ZO2arI=;
+        b=dd9fyc+dWkZrj8PEXlRcY15mBjrzZUHOSTTYaf0CmFcYgwAe3bqDZd0sX9sI9XtH9S
+         9EeqkDRVosGlmWwD0/x7fE+VRCb7qygPjepm3wdw7Q4JWF84tAPbnF5tdpINgN3xSuoa
+         oLQ8QnQ0yKF/0CqrfAO5MlMKyFIB2uBUjIB8K0Pgmhypctd4xVIUlFsvnwsIgy62NmQw
+         /12urKjqSoE+KAKTOqAd2VrZm1lGzXFS1wbmrX3CYEmkC6E/NFqzerqtEehZrGPRlcEJ
+         j7FUIV4aT2KMNkQr/EH34tsixv+o3RD68oL6vJFk3hONSUXY5qw42ZAejDtoh7ICoTYy
+         OAvw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745165252; x=1745770052;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=KaGSaGiq+LmL/AdTRqPUeub952XiGKYhYcVBNx9i3yU=;
-        b=kQ6q0yLfHNd8Jecphkl+smRtBXPA45hKIRxShRh1lrwi7sIRkkhizPTN32nX4V7dz+
-         4xkxpaKK7sIZgfSIfpzy957AxvcOlXMBYXIo8l0+S+jjN9iO/t/a+LfaMCYBjClWKLg7
-         jo4hDGlKu40deZ9e2y4lk3Uoq6lY2Sc1sUxi4gvS5M+yG2RpambxDOcUut9E3MSUqdV1
-         PJbDKI8To0nXtzqxg5+2diE+YugxfqlOm+bu3+8hOMG0Gz7Y+7lqZzr4Ur6KFIsxVEA+
-         Ba4IIora69Nf5PzgNBh5yFrGY4L1EIPMHbYasdD7IiTijZDkQkSN+G+tYfJGJyYMMl4N
-         oxdw==
-X-Forwarded-Encrypted: i=1; AJvYcCUOyu0i+rl6YXs4rFQvk++LjxZLEmqKklVTamLaitDuTYaTYCmtyWqRDSRCqha5gdh842CT9xFfYlM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzrxCWXHKRs6SihGkYSjxzJrYmp8njilM6vq9Wf184d5/eFk9OU
-	m33dhPiDkECav17pmd68mRSRTdsZjQPqHHSQaPK+8R0Kq08/37khfNTTtQDR
-X-Gm-Gg: ASbGncvu/UQ8FSLWX5SlZMnoHsdk98hovqRk9GJUQdqFHzGnvvTiyJc3v0TOPXprcw2
-	M9ftdSv8xdBZEAFm2yvonfq4DTpu+6BdYV7SCxNvUffQOTou9nXeb/ZvvsPR1a+d+Gxi1IDuqW9
-	NPSS4tEUnM92GwJPIoppiayAEIgv4miZa2xooRAAXoo7k3y2SQhN6FKeUQ2S/pNlFoYtwI7/7To
-	oNLGJLx/UL4el4rSuMciqBGQh0txVeasWoLDxSUZ4T3tptld4an0R5/DNTEu0z5pq7srWnUVW1/
-	KxN1Tz/NAirDvK0fZHZZsqpTw+yS1Wj6gpV0KpgEHEywk//uZYfaOA==
-X-Google-Smtp-Source: AGHT+IFfKObUCdAmzFxE5yV/Mnb8SaGt03Wclhs/DvALXo2W+sxPxH+aD02JwdBHUCq5gspDnA3I4w==
-X-Received: by 2002:a17:90b:574c:b0:2ff:58a4:9db3 with SMTP id 98e67ed59e1d1-3087bcc8b4dmr12090008a91.35.1745165252632;
-        Sun, 20 Apr 2025 09:07:32 -0700 (PDT)
-Received: from joaog-nb ([2804:14c:490:1191:f66d:1f0e:c11e:5e8b])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3087e0feb37sm4882688a91.31.2025.04.20.09.07.30
+        d=1e100.net; s=20230601; t=1745171247; x=1745776047;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=9tx05U+vRg2gsgwyrSqUs9+tOlnrgkTrKgqo5ZO2arI=;
+        b=erIIqHlZq8kCTMGraNVDR42f0gOE4UqykZtnrWBCXDqTnHYoVki1ERqduAwhlLWSTU
+         AfZ12C/LyxB8Tl1xrTHjOHdn5tjy41sx927e3P+Bb2bJ061xchd1fZ1uFI6QL2WB7q30
+         3v1WOxRfnZzJ2dKuE8un7kc5enEheGJ2Z0fe9CJM73pfGH94KHZ+U6/UymmRrPUOQqul
+         pnsnqKRGQkKLkdbA1pWY/evcDosoVL74xrXEhWI2Kl37JvDfD0F5cHyLD7gfyLFGc48O
+         YCwDSMnPXszWSPK3Ej75p30n3Vq/KZXy+1nUiM7SE1HOnsA8yO5uICAEb0g7jHwcaKt1
+         cypg==
+X-Forwarded-Encrypted: i=1; AJvYcCWOcXcbxB/qzpHMeBF6+7azldL16Qo8XQdERDN6MiB9WPv/HR475PR4IbmpaPklFLtQjDyyYqAnbnE=@vger.kernel.org, AJvYcCXmBFqp/BsiXwz/zNldRb/90GJoGS43AX6q4+CMl9OGqzHnFm2nCCHWcWOwrEX4oIcYiXIo7VD8uTBzAPUe@vger.kernel.org
+X-Gm-Message-State: AOJu0YzcKTSIk6quf73QDNeu4u1+X8Ru81zPBVG+ZDrfg3kyATscZhyu
+	vBhWq4anpSKwgrKeufcsK9OvTTQUlgCUn1DC+N/prhkZ1EL9uJGI
+X-Gm-Gg: ASbGncusY87a+LTiY9el5sfvN1lm0kxDgu9ntc6N5rxHC42VGrbcRwAfHJTuOO6s/sh
+	5xoxwLQbsJrWv78r1vSfSwK3efPpDgci9MUqam2hMnnRfoPhm3WcdPJxaezwzykic6fEiRCEFov
+	eCJtEbgPdR/psp+afDJLKkDB1AehS1vh1PKA+/3zW2Mjk1nOX62CxkwPZv2U2ysmIMNTZO5pwkS
+	QfLmZKTATKffnIgIYr2ymQoPSTm5+VEJRmwYJDGyBIPp/5U8xnKuTgY0R8ZZc/Z885+lswiZ43m
+	puaHu56lL8g/jcoSPsD60yksiC5XDgJAKFdlexoznguS+wc+CiTkfm4=
+X-Google-Smtp-Source: AGHT+IEnyJl//74fr/3CZDnEkerEttve36zVMQWD1LxhiTpbg+os+741RgNwWYFQDOk1ykb48TGRfw==
+X-Received: by 2002:a05:6214:3211:b0:6ea:ee53:5751 with SMTP id 6a1803df08f44-6f2c27d0d1cmr176445176d6.21.1745171247400;
+        Sun, 20 Apr 2025 10:47:27 -0700 (PDT)
+Received: from theriatric.mshome.net ([73.123.232.110])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6f2c2bfd3e4sm34110156d6.85.2025.04.20.10.47.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 20 Apr 2025 09:07:32 -0700 (PDT)
-Date: Sun, 20 Apr 2025 13:07:28 -0300
-From: 
-	=?utf-8?Q?Jo=C3=A3o_Paulo_Gon=C3=A7alves?= <jpaulo.silvagoncalves@gmail.com>
-To: nattan <nattanferreira58@gmail.com>
-Cc: francesco@dolcini.it, jic23@kernel.org, lucasantonio.santos@usp.br, 
-	linux-iio@vger.kernel.org
-Subject: Re: [PATCH] iio: adc: ti-ads1119: Prevent concurrent access during
-Message-ID: <c2golk6627ybfpw3t7lnerritq2yysi5zhdlvahnvhxoevmojn@j3d2stvivkyk>
-References: <20250419232316.36002-1-nattanferreira58@gmail.com>
+        Sun, 20 Apr 2025 10:47:27 -0700 (PDT)
+From: Gabriel Shahrouzi <gshahrouzi@gmail.com>
+To: gregkh@linuxfoundation.org,
+	jic23@kernel.org,
+	lars@metafoo.de,
+	linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-staging@lists.linux.dev,
+	Michael.Hennerich@analog.com
+Cc: gshahrouzi@gmail.com,
+	skhan@linuxfoundation.org,
+	linux-kernel-mentees@lists.linux.dev
+Subject: [PATCH v2 0/3] Fix and refactor output disable logic
+Date: Sun, 20 Apr 2025 13:47:22 -0400
+Message-ID: <20250420174725.887242-1-gshahrouzi@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250419232316.36002-1-nattanferreira58@gmail.com>
 
-Hi,
+Patch 1 includes the initial fix.
 
-> Use iio_device_claim_direct() to protect register access via debugfs
-> from conflicting with buffered capture modes. This prevents data
-> corruption and ensures correct device operation when users access
-> registers while streaming data.
-> 
+Patch 2 refactors the code to use the out_altvoltage_powerdown ABI.
 
-I understood the problem, but I think keeping at least the possibility to
-read registers even when buffered mode is enabled is still useful for
-development (e.g. you can check that userspace configurations are correct
-by checking the hw registers). Of course, there's a chance of losing some
-samples, but debugfs is meant to be used during development/integration,
-where this probably is not an issue.
+Patch 3 adds small improvements by minimizing the size of types and
+doing a redundancy check. 
 
-So, for me, a better solution would be to avoid writing to the device
-when buffered mode is enable:
+Not sure whether to include a read function for powerdown as well since
+all the other attributes only had write permissions. I can also do this
+for the other attributes to help modernize the driver.
 
-diff --git a/drivers/iio/adc/ti-ads1119.c b/drivers/iio/adc/ti-ads1119.c
-index 9be7676f31bb..a22d7cb5c4a0 100644
---- a/drivers/iio/adc/ti-ads1119.c
-+++ b/drivers/iio/adc/ti-ads1119.c
-@@ -416,6 +416,9 @@ static int ads1119_debugfs_reg_access(struct iio_dev *indio_dev,
-                return 0;
-        }
- 
-+       if(iio_buffer_enabled(indio_dev))
-+               return -EBUSY;
-+
-        if (reg > ADS1119_REG_CONFIG)
-                return -EINVAL;
+Gabriel Shahrouzi (3):
+  iio: frequency: Use SLEEP bit instead of RESET to disable output
+  staging: iio: ad9832: Refactor powerdown control
+  staging: iio: ad9832: Add minor improvements to ad9832_write_powerdown
 
-Best Regards,
-João Paulo
+ drivers/staging/iio/frequency/ad9832.c | 50 ++++++++++++++++++--------
+ 1 file changed, 36 insertions(+), 14 deletions(-)
 
-
-
-
-
-
-
-
-
-
+-- 
+2.43.0
 
 

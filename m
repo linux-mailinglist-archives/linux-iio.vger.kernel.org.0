@@ -1,147 +1,143 @@
-Return-Path: <linux-iio+bounces-18461-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18462-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A508FA952A0
-	for <lists+linux-iio@lfdr.de>; Mon, 21 Apr 2025 16:20:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6679A952E9
+	for <lists+linux-iio@lfdr.de>; Mon, 21 Apr 2025 16:41:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CE4DE173560
-	for <lists+linux-iio@lfdr.de>; Mon, 21 Apr 2025 14:20:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 938093AF9E3
+	for <lists+linux-iio@lfdr.de>; Mon, 21 Apr 2025 14:41:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81768187325;
-	Mon, 21 Apr 2025 14:20:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F43019F116;
+	Mon, 21 Apr 2025 14:41:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kjSap1yS"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nX8BVjRX"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB78E13A418;
-	Mon, 21 Apr 2025 14:20:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73FB0D530
+	for <linux-iio@vger.kernel.org>; Mon, 21 Apr 2025 14:41:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745245227; cv=none; b=kscNXcEvoha8VGAFaDpAeCr4ZCMA6adwqIwNrWxnxbkX/OOrhbMRXoynaI8vJmg+LB+HvAdDG3mwyR6nkv2dQoTumNBTOAU0wFR5dRtg6pHaahbxb1Tgs+OS4/oEbBEY0xFmSgoUrcboBiOIwkSbwyN3BeRWyWzse73kzoBn+mo=
+	t=1745246485; cv=none; b=G7rZyaSByrdSf7qgUEA1K0oBfJwG5+PXoaIuH+xywR7RgGJZHLw2IpzmTIzNQJbPRL1vIJg3vPhIn0TMN0ApMbRilt0Ndz4LE+CWdXs7/cI0J0yYBZcEAPNGsF1kmz2SS+2GJYH9neCP+XxpLDz7UBu36FKMYzT1arZ+570fmdw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745245227; c=relaxed/simple;
-	bh=9BaS4/yvCP2VWZ4vW+sjMlK9au+mAQZhlwBJy+NiT+Q=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=h59/zR60gwu09RhAbkHfQewhl9lFND4+gDOMED7AZdECDCxwPQdPSAxiKXcs+aOyVOfReIzayP6h3/F+E0SRJjNzWS3WSMzUXW0EmW8tc18l9hV8H7ve8gHJvk8P2InlNMhBNU3RV+G4pSEPgF9bjCdvLBjeeubHqprC7/f1TWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kjSap1yS; arc=none smtp.client-ip=209.85.160.176
+	s=arc-20240116; t=1745246485; c=relaxed/simple;
+	bh=z4hsUjTmgn4x2Qlja9cEIXfaxux3zARdhF55pxlyzno=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bOtI7dISw3/17CgLmfX8R66WZU4iywpIbmp4SDctYH45V6SmsnBiGx+pHvJqCDkapzQJGByTBWuSpDgmvu+7M8sodhPv+U7r+rxNLTro5HNlCN03lYL4Gk8xMvz2wHB9Scy879YBqF3AwDOUc4i0rsIXBUypxame4rvgTec4TkE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nX8BVjRX; arc=none smtp.client-ip=209.85.214.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-47ae894e9b7so65728871cf.3;
-        Mon, 21 Apr 2025 07:20:24 -0700 (PDT)
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-22c3407a87aso60729175ad.3
+        for <linux-iio@vger.kernel.org>; Mon, 21 Apr 2025 07:41:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745245224; x=1745850024; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=CI2xNSbeewY7lsc4y3gCRJvOG3cBl5hA05Vzfe6wrpg=;
-        b=kjSap1ySjo4T37x47m4a2T8w6dCqzLLPXYoXXol6gGsCf5Avs4J/Tnyx1x9eISkmPU
-         j77AWTcz1+Z59mzn8ZMMbUf5N02tA86F0WC7hW3v4eIrZ3zLtSJcXYWfSUdVIB2KSMjD
-         ZztPYiDoNBEQPkoPoO//iL0n0mLZLX0AlQsctUsUhr2Y12MPdPGd28GL/Zzd9pITqg/N
-         KLa2BnTApl2ooym4a4GpnAyF0k9zVIbu6TW+eAQKHsOWKZy1N/21NXCdiR4dPbl2R5iP
-         Ojkb7QRCVndRzgnq0iYdR72xMCSf2u7tcZGZHUFsBU2T3mVyb7AuH+CYJ4I4bwvdsvgA
-         e9aQ==
+        d=gmail.com; s=20230601; t=1745246484; x=1745851284; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=AThKNvS+LEtPQcQ1zqzU3fyh8P9YMerouUnLdQ5AE24=;
+        b=nX8BVjRXfo/4a+6Ipn3Th14fGGQ5cpC78FCEuuHaPvVav6EWLtH4kSMKTW/I9dgzVN
+         F3i8T5SMn36U4mU4cioDX6n98p/TJkWgWa0gSY6pBMh0FYlOuFcs4A4lXr7VWMRH22p+
+         Ld7n4YTkSUFkBz/MH0mPRZlajW0HgsbpidIZNA8E89VXCK+IsdIklpu5M/vGWnk/BU8a
+         gTi5J2ugPoxDvmw9l7L1iUanFDkvlYoInpAg4yHXgjqqm4IOjD/rGmtBQN5L165+6L2i
+         Wbrn4qaoUxzlRK3dgBRtswFq6JpXiuBs8z1u7XHeQDwLCOeH8k3DVCXztyhdN7K0K4x0
+         369g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745245224; x=1745850024;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=CI2xNSbeewY7lsc4y3gCRJvOG3cBl5hA05Vzfe6wrpg=;
-        b=n86auOJq3vup5OuWjwT29y2QZOoGwj114WRWYE8pc29JtMopaEptvNtMeyH/Zyb8j1
-         UXLP3Bv671M0pJ89g7HFr9Ve5v2Dn+tGHgQGEHyH64G38mthntvc8U8huV2eeyRlRcNv
-         Iru+RYKa+DO42ZEUsjUZ0XCxZjoyW2MKtpLjQmNOnSwIekbXusSpqeVc62fkCNj8TUC5
-         crYocHq80TEjapFel/RdQKS7pSMvbxA6yhxj/4cO7LUhLfANyoc18Mf8t6mRpLEmsAAa
-         1ciUKvVMwKWFL+LC0hvBS7GVrSC1aBsttTZzfXbl6OpFqWlMkKeW4I22hkb3zB16YrE9
-         a1Ug==
-X-Forwarded-Encrypted: i=1; AJvYcCV5BmJoUvFi/IKqq6cHAplYmzGgmPu35HcjJbbW6j6kP70833CHA/VW058kwURVt9VbrOwgGCeWfU4=@vger.kernel.org, AJvYcCWXb8uxD4/5vpMkDs0G+J5Wl2tpJf1MZtWyFQS9GtMhxxxku+x8UaYrVIsxDA8NZbHy0+sUk6lPh432Ks+5@vger.kernel.org, AJvYcCX4rfMImGcqijqAgHwJX0IwxGKBegnxsLTtb5lfynu+G2Uk1XQzKynyWGN8HNIMSwKAIWxXMPxw@vger.kernel.org
-X-Gm-Message-State: AOJu0YzDrF6C9wCKarcuQBbgpJmIBuMtvCvGmzkEPXr1DSG/tb5RcleV
-	NTOvFB7uO1x3aZDujM4usxsJeaTrfiVbuLEGUGNrXMlRPHF27RIQ41EzCUXKAHXaDfpXNWB79Gh
-	Y5rDf9l9z7GFbd6BKMLkrKBwwI5M=
-X-Gm-Gg: ASbGncuqrrSRAd7WNQZCKcxAirJKhbBv5Nth3MuBfWFY/hozAQGSmsHVk1TgDwR04Cx
-	gpnXfG6vEY42G7K+UpIDDmYUrlva8mRQBXlcWHFbwz7jYGnvTPpwBC+do+PI0upAfQIJbf6n5ch
-	9ZvsqDXx2bRtAy8h6iEvhoosVz9djeT2fbjocImAaSke62JW2RjA0GwQ==
-X-Google-Smtp-Source: AGHT+IGiwVHdFSP3RyYjNXEtkPVmd51AlMlVK54vlvEAduXQRnI0NpLK+6bgJH5tuxlzzGRreEFkNYv6mIKVQO9CN70=
-X-Received: by 2002:a05:622a:251:b0:476:ad9d:d4f0 with SMTP id
- d75a77b69052e-47aec4c56c6mr169031841cf.48.1745245223831; Mon, 21 Apr 2025
- 07:20:23 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1745246484; x=1745851284;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=AThKNvS+LEtPQcQ1zqzU3fyh8P9YMerouUnLdQ5AE24=;
+        b=nQbbyDasYW1eHVqObMWnZinag+4/oiAK7kOz14j0jKp7M2l9Oa4xkjGmAnNe66jPZO
+         XE0osZittPs0lT++h++b7YdKWoGu4wbKbOR2xeaSj3Tp6JjhwIyTavu7HI0UlkJ4OBHo
+         fg5asxmESMT1il2GDxq25wOnWd87zpPKkAuIZdLE/8uzD9Q7TfnBlcKidS23J/pNYgGT
+         FOUVJ/QvU+Qb0VmgfLKGDCCXWgjOncoo9DmqIZnkg2crz3gYn4BQ0ZueevDtRKSaTx4T
+         h+ulPl4H43EDyCzzKd+NtccS8Cw9oWEyBvMS3DURx7bmCIoekHtFLsln6LZWyx/VVSBF
+         vKkg==
+X-Forwarded-Encrypted: i=1; AJvYcCVKDRuW5MJMPLeskpMyn3JcLkaq8uYkTtnjFPkSCEXmAba+3b/ZETeynA3TOyOZN0WVdtN97i2sUIw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw/dUPawH+FRM8wRGRDGVDbkXyxBMxDnmAFfRjICKKscCbmUa+9
+	QU5iNwXJsQtsFTl66/dFhbjOrNc4kMc0XrAjPjn1g1QQ2iu0xhfS
+X-Gm-Gg: ASbGnctjDtsELnfqNF6PxzOJ6MK82NitEtFY7o9eJarYfTS5R1/qjXh96RFoOZLyAC8
+	WbkPQs/uNQSrS3PeFOXViNCnOtdx0+nf79xK3Gz6YirqQ2Ek4nYTDwFfrpPeqBOo0EzNMuFlVGH
+	eAOISWKo20ntgPddt+c5kF5hDXl9ECQaJml/dpUwfB2cRg2wFbJ7dbayffvSaqC6aePueICozTQ
+	XAYB0uHoFF3Sl9+0hMcQ6mxE1ka2RR8Td4FF4Yr0P8BaJNAO/sNj94rzlsEdPFztvVrDay44Ecr
+	RR7DR4DNr4T1pRUZ6HI5sn488cRdycRQpVOLCfVz66SUj/0=
+X-Google-Smtp-Source: AGHT+IEse9mE/oxi9u55vUIQKS5t45jNi6gBD02ampcCDhtuvJtVzIPBeqx8Lq6xJFAQQQDr5oU7DA==
+X-Received: by 2002:a17:903:191:b0:21b:b3c9:38ff with SMTP id d9443c01a7336-22c53607e15mr163719635ad.37.1745246483624;
+        Mon, 21 Apr 2025 07:41:23 -0700 (PDT)
+Received: from localhost ([2804:30c:90e:1e00:5265:5254:2e32:7e5])
+        by smtp.gmail.com with UTF8SMTPSA id d9443c01a7336-22c50ed247esm66500145ad.208.2025.04.21.07.41.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 21 Apr 2025 07:41:22 -0700 (PDT)
+Date: Mon, 21 Apr 2025 11:42:36 -0300
+From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Francesco Dolcini <francesco@dolcini.it>,
+	=?iso-8859-1?Q?Jo=E3o_Paulo_Gon=E7alves?= <jpaulo.silvagoncalves@gmail.com>,
+	nattan <nattanferreira58@gmail.com>, lucasantonio.santos@usp.br,
+	linux-iio@vger.kernel.org
+Subject: Re: [PATCH] iio: adc: ti-ads1119: Prevent concurrent access during
+Message-ID: <aAZZXKkZxmuYXZl0@debian-BULLSEYE-live-builder-AMD64>
+References: <20250419232316.36002-1-nattanferreira58@gmail.com>
+ <c2golk6627ybfpw3t7lnerritq2yysi5zhdlvahnvhxoevmojn@j3d2stvivkyk>
+ <20250420211706.GB5621@francesco-nb>
+ <20250421142359.11fb483f@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250421124915.32a18d36@jic23-huawei> <20250421131539.912966-1-gshahrouzi@gmail.com>
- <20250421145931.605df588@jic23-huawei>
-In-Reply-To: <20250421145931.605df588@jic23-huawei>
-From: Gabriel Shahrouzi <gshahrouzi@gmail.com>
-Date: Mon, 21 Apr 2025 10:20:13 -0400
-X-Gm-Features: ATxdqUEcsfhAZuHj_DJDNyEENkD2VFIfgxR7tR6TCwWttn2zmwd8Sxn6BTIeyn0
-Message-ID: <CAKUZ0z+=Vo-QUW1ph5FKej-o6Vmv_TcX=WF=3gteDs1Lg9_w3w@mail.gmail.com>
-Subject: Re: [PATCH] iio: adis16201: Correct inclinometer channel resolution
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: lars@metafoo.de, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Michael.Hennerich@analog.com, skhan@linuxfoundation.org, 
-	linux-kernel-mentees@lists.linux.dev, marcelo.schmitt1@gmail.com, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250421142359.11fb483f@jic23-huawei>
 
-On Mon, Apr 21, 2025 at 9:59=E2=80=AFAM Jonathan Cameron <jic23@kernel.org>=
- wrote:
->
-> On Mon, 21 Apr 2025 09:15:39 -0400
-> Gabriel Shahrouzi <gshahrouzi@gmail.com> wrote:
->
-> > The inclinometer channels were previously defined with 14 realbits.
-> > However, the ADIS16201 datasheet states the resolution for these output
-> > channels is 12 bits (Page 14, text description; Page 15, table 7).
-> >
-> > Correct the realbits value to 12 to accurately reflect the hardware.
-> >
-> > Fixes: f7fe1d1dd5a5 ("staging: iio: new adis16201 driver")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Gabriel Shahrouzi <gshahrouzi@gmail.com>
-> If you post a new version, always add the version number.
->
-> Anyhow, I was just asking for the fixes tag, but this is fine.
-Ah, that makes sense - thanks for the clarification. I was debating
-whether to just send the Fixes tag or resend the full patch, and
-figured the full patch might make it easier to apply.
->
-> Applied to the fixes-togreg branch of iio.git
->
-> Thanks,
->
+...
+> For debug access it 'depends'....
+> 
+> Some cases are easy reasons to add this protection
+> 1) Accesses can't happen at all because to talk to the device and read
+>    registers etc requires some mode change (e.g. recent drivers that
+>    can only access config registers when the bus is operating in particular
+>    modes, or where we have to use a slower SPI bus rate).
+> 2) There are register banks involved. So a single write can leave the
+>    driver talking to the wrong registers...
+> 3) Driver uses multipart reads / writes (similar to register banks)
+>    In most cases this is a device specific thing and should use a local
+>    lock to serialize accesses.  On occasion that is too complex to make
+>    work with debug so we restrict debugfs access in general.
+> 
+> Other cases are less obvious.
+> 1) Bus traffic in general might slow down a transfer and break things
+>    because of timing. I.e. missed samples.  That can happen for all sorts
+>    of reasons anyway so should only be a momentary problem.
+> 2) They might changes settings.
+
+Does the case of configuration/setting change apply to IIO device properties?
+Let's say for example a device starts running a buffered capture with some
+certain input gain configuration and goes filling IIO buffer with the data
+from the device. At some point while the buffered capture is running, the
+user uses debugfs to change the gain configuration. The _scale attribute
+will not correctly convert all buffer data to mV units. Would cases like that
+be something to prevent? Or we consider those to be fine since a debug feature
+was used?
+
+Thanks,
+Marcelo
+
+> 
+> These less obvious things are a case of thinking it's a debug
+> access. We tend to not prevent actual deliberate state changes as that's
+> someone shooting them selves in the foot and they get what they deserve.
+> 
+> So what is the case we are protecting against here?  The description
+> definitely needs more information to justify this patch.
+> 
 > Jonathan
->
-> > ---
-> >  drivers/iio/accel/adis16201.c | 4 ++--
-> >  1 file changed, 2 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/drivers/iio/accel/adis16201.c b/drivers/iio/accel/adis1620=
-1.c
-> > index 982b33f6eccac..dcc8d9f2ee0f1 100644
-> > --- a/drivers/iio/accel/adis16201.c
-> > +++ b/drivers/iio/accel/adis16201.c
-> > @@ -211,9 +211,9 @@ static const struct iio_chan_spec adis16201_channel=
-s[] =3D {
-> >                       BIT(IIO_CHAN_INFO_CALIBBIAS), 0, 14),
-> >       ADIS_AUX_ADC_CHAN(ADIS16201_AUX_ADC_REG, ADIS16201_SCAN_AUX_ADC, =
-0, 12),
-> >       ADIS_INCLI_CHAN(X, ADIS16201_XINCL_OUT_REG, ADIS16201_SCAN_INCLI_=
-X,
-> > -                     BIT(IIO_CHAN_INFO_CALIBBIAS), 0, 14),
-> > +                     BIT(IIO_CHAN_INFO_CALIBBIAS), 0, 12),
-> >       ADIS_INCLI_CHAN(Y, ADIS16201_YINCL_OUT_REG, ADIS16201_SCAN_INCLI_=
-Y,
-> > -                     BIT(IIO_CHAN_INFO_CALIBBIAS), 0, 14),
-> > +                     BIT(IIO_CHAN_INFO_CALIBBIAS), 0, 12),
-> >       IIO_CHAN_SOFT_TIMESTAMP(7)
-> >  };
-> >
->
+> 
+> > 
+> 
+> 
 

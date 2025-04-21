@@ -1,61 +1,61 @@
-Return-Path: <linux-iio+bounces-18450-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18451-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD863A95201
-	for <lists+linux-iio@lfdr.de>; Mon, 21 Apr 2025 15:52:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78C90A95209
+	for <lists+linux-iio@lfdr.de>; Mon, 21 Apr 2025 15:54:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E9F161894D01
-	for <lists+linux-iio@lfdr.de>; Mon, 21 Apr 2025 13:52:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 605E53B2902
+	for <lists+linux-iio@lfdr.de>; Mon, 21 Apr 2025 13:54:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 434E4263F5D;
-	Mon, 21 Apr 2025 13:51:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 967DA26656F;
+	Mon, 21 Apr 2025 13:54:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bHBJZJxF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mbPi7tsl"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2A1E265CCF;
-	Mon, 21 Apr 2025 13:51:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5223E26560B;
+	Mon, 21 Apr 2025 13:54:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745243519; cv=none; b=q3qU0nB1rRO80XNyQcVHzNBtcIz4R6yMZvIeQT9NnqKgaLIhfvLdeZI6fWLCT03yJmLe/NrwPk7uOFqmfWis11QX2AMJoVDhs9+aN0hCkzMkCNsBIbiZTgs+ja5V/Mxyc9OTiIC94odveEbhhGSCr8iJ/Ph0/P/FGmFKaN4aHFk=
+	t=1745243664; cv=none; b=QjJwEOJ8HvRFI9y3BSwGqzrmk24HF73HXksto48bZGcc2KCXCvLdfLvqJ1VDLylLIA6gcfooAbyHsv0OD+Q3cSuq4kGdlwRWdwSv/G/v/Z42cyZlFrPbaEq4WAqqm8gZH6zy5Vp0VtY9T/7LSL0F+jdAq5YZ+DCKfvJFnFL5tkg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745243519; c=relaxed/simple;
-	bh=XHD5eA9xaklG7sjRpB1N5p1j7MCk5KvdlNPAy+eg8e4=;
+	s=arc-20240116; t=1745243664; c=relaxed/simple;
+	bh=rU7Ggx3GhiggYhFh1HE1Uv7111GkC/g9wfMSFuv1JSY=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jhyeKgt1T8CA03riGQVdp2SN+HnDqTnvj2vFGmRvG99aq+IE0rv7VT6z0Zy4vKjpwi60FgyimAA8V7CQdrOf5ZRlaRD1XEDmtTri0Pe+JfQzW4bNhwKV1nb6kluZjfdfcUoTYqV8nqb+u/bl4PAajDznl9euQYcLRdxr8eqKEOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bHBJZJxF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C600C4CEE4;
-	Mon, 21 Apr 2025 13:51:55 +0000 (UTC)
+	 MIME-Version:Content-Type; b=aDPKKKQFsSReFQP1JOzs6A2ymtB6uSAUBR59x7DGYMom5KkljR0H0oFVO+JVDOJg4PVKFlE76BKFsF7oUBeEY8ccy7ntIDalhjIYQhgA21nrDRFM1SJ9FID7ItRPNkcyD5uFzG4TU+O/zp06GrcskbXWZwcK4kNnNO/JklPU4g4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mbPi7tsl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A115C4CEE4;
+	Mon, 21 Apr 2025 13:54:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745243518;
-	bh=XHD5eA9xaklG7sjRpB1N5p1j7MCk5KvdlNPAy+eg8e4=;
+	s=k20201202; t=1745243664;
+	bh=rU7Ggx3GhiggYhFh1HE1Uv7111GkC/g9wfMSFuv1JSY=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=bHBJZJxFvfm5oAVFOwNv+gPLmP4UIY07SREhtXVSMIGbO+TqDhq4VNhPCv0K3Fyh3
-	 K7CcALNoQSznT5bQUHPLFx+i82o0NM5OylheNLpG7uGm1Ah9iY320aqnp420HO4m75
-	 cNu/iSNQPN+tY4q6t3UvR3sO+qpJVfCZo7SbBv+ILigc/exZ1SVFcr6zYfGiu3+5cz
-	 PrsG5KaA3E/m8PfN61vPwZUYnHfY0Xr+ckAuapzbBoQ41yr/+P68XszR+2bUc1Od2b
-	 Yd3+ZowIwLls/AYAfkOzQrW1iZoeljpPN9nC+pIT4pEv+eeF2Sd38LP4npXpaC/m42
-	 jaR2o1GWNjiLA==
-Date: Mon, 21 Apr 2025 14:51:52 +0100
+	b=mbPi7tsloXCZnRjTCL5o0yiF9pXM0BdgvJ0ARufgEdyUySammASRwoSBhV75vQo0E
+	 2w3YpLxxUz1MH/2Ik7uRmIdlUtzfFGBOHyQaUWj7t8bOQB1jy9L8uAgpt5lhBu/7SK
+	 2zsraq4VoTDpAAlFa8NJzRIWbw1THFNgORe056KW1lF0q+h3SjxI+fFBDgwakejFkQ
+	 1CWhqraZV6BLBFEeWBBrWMN1NLOgYacnmNzl6kJ1BF30AxcKsjtQ+b6DvZGM3Kpdt5
+	 Q8RtmU31aTjX2Tsx1q8NV7kz5lLxg9+DfgawbX/7U08ObJ1gMK3uk2ucx5KD3UBSnb
+	 LGRS3NXBDiUkw==
+Date: Mon, 21 Apr 2025 14:54:17 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: Lothar Rubusch <l.rubusch@gmail.com>
 Cc: lars@metafoo.de, Michael.Hennerich@analog.com,
  linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
  eraretuya@gmail.com
-Subject: Re: [PATCH v6 05/11] iio: accel: adxl345: add freefall feature
-Message-ID: <20250421145152.22f42bc6@jic23-huawei>
-In-Reply-To: <CAFXKEHaG2EBkoc5Zx=oCEePA3nwApRWAg1pGsQ-_68OY2esYVQ@mail.gmail.com>
+Subject: Re: [PATCH v6 09/11] iio: accel: adxl345: add inactivity feature
+Message-ID: <20250421145417.571b862a@jic23-huawei>
+In-Reply-To: <CAFXKEHYsMKHMYoBq7U5n02=0wnVmp0_CUrbvxxFFRLJDayS7Kg@mail.gmail.com>
 References: <20250414184245.100280-1-l.rubusch@gmail.com>
-	<20250414184245.100280-6-l.rubusch@gmail.com>
-	<20250418192254.0becd27d@jic23-huawei>
-	<CAFXKEHZNmUsUmheyDdh1bDDf97-7ZTpsm2xqqbwT+hq3K58F5A@mail.gmail.com>
-	<20250421111641.1cb83848@jic23-huawei>
-	<CAFXKEHaG2EBkoc5Zx=oCEePA3nwApRWAg1pGsQ-_68OY2esYVQ@mail.gmail.com>
+	<20250414184245.100280-10-l.rubusch@gmail.com>
+	<20250418193411.406bd974@jic23-huawei>
+	<CAFXKEHary=PcCh3GEEXznJQgcxj54ZmGR0jmzBdpx8ZVtk2_0g@mail.gmail.com>
+	<20250421112228.453dfa89@jic23-huawei>
+	<CAFXKEHYsMKHMYoBq7U5n02=0wnVmp0_CUrbvxxFFRLJDayS7Kg@mail.gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -66,216 +66,270 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, 21 Apr 2025 15:31:19 +0200
+On Mon, 21 Apr 2025 15:39:33 +0200
 Lothar Rubusch <l.rubusch@gmail.com> wrote:
 
-> On Mon, Apr 21, 2025 at 12:16=E2=80=AFPM Jonathan Cameron <jic23@kernel.o=
+> On Mon, Apr 21, 2025 at 12:22=E2=80=AFPM Jonathan Cameron <jic23@kernel.o=
 rg> wrote:
 > >
-> > On Sun, 20 Apr 2025 23:26:47 +0200
+> > On Mon, 21 Apr 2025 00:12:17 +0200
 > > Lothar Rubusch <l.rubusch@gmail.com> wrote:
 > > =20
-> > > Happy Easter!
+> > > Happy Easter (again)!
 > > >
-> > > On Fri, Apr 18, 2025 at 8:23=E2=80=AFPM Jonathan Cameron <jic23@kerne=
+> > > On Fri, Apr 18, 2025 at 8:34=E2=80=AFPM Jonathan Cameron <jic23@kerne=
 l.org> wrote: =20
 > > > >
-> > > > On Mon, 14 Apr 2025 18:42:39 +0000
+> > > > On Mon, 14 Apr 2025 18:42:43 +0000
 > > > > Lothar Rubusch <l.rubusch@gmail.com> wrote:
 > > > > =20
-> > > > > Add the freefall detection of the sensor together with a threshol=
-d and
-> > > > > time parameter. A freefall event is detected if the measuring sig=
-nal
-> > > > > falls below the threshold.
+> > > > > Add the inactivity feature of the sensor. When activity and inact=
+ivity
+> > > > > are enabled, a link bit will be set linking activity and inactivi=
+ty
+> > > > > handling. Additionally, the auto-sleep mode will be enabled. Due =
+to the
+> > > > > link bit the sensor is going to auto-sleep when inactivity was
+> > > > > detected.
 > > > > >
-> > > > > Introduce a freefall threshold stored in regmap cache, and a free=
-fall
-> > > > > time, having the scaled time value stored as a member variable in=
- the
-> > > > > state instance.
-> > > > > =20
-> > > > Reading this I wondered whether we had the event code consistent for
-> > > > freefall detectors... Or indeed inactivity ones (which are kind of =
-similarish)
+> > > > > Inactivity detection needs a threshold to be configured, and a ti=
+me
+> > > > > after which it will go into inactivity state if measurements under
+> > > > > threshold.
+> > > > >
+> > > > > When a ODR is configured this time for inactivity is adjusted wit=
+h a
+> > > > > corresponding reasonable default value, in order to have higher
+> > > > > frequencies and lower inactivity times, and lower sample frequenc=
+y but
+> > > > > give more time until inactivity. Both with reasonable upper and l=
+ower
+> > > > > boundaries, since many of the sensor's features (e.g. auto-sleep)=
+ will
+> > > > > need to operate beween 12.5 Hz and 400 Hz. This is a default sett=
+ing
+> > > > > when actively changing sample frequency, explicitly setting the t=
+ime
+> > > > > until inactivity will overwrite the default.
+> > > > >
+> > > > > Similarly, setting the g-range will provide a default value for t=
+he
+> > > > > activity and inactivity thresholds. Both are implicit defaults, b=
+ut
+> > > > > equally can be overwritten to be explicitly configured.
+> > > > >
+> > > > > Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com> =20
+> > > > Hi Lothar,
 > > > >
-> > > > :( We don't it seems.  The issue is that
-> > > > freefall is actually that all channels are simultaneously under the=
- the magnitude
-> > > > threshold, not one of them.  So it should I think be
-> > > > X_AND_Y_AND_Z not X_OR_Y_OR_Z
-> > > > =20
+> > > > Patches 6-8 look good to me.
+> > > >
+> > > > This runs into a similar issue to the freefall one. I haven't dug i=
+nto
+> > > > the datasheet but does it report on one channel going inactive, or
+> > > > all being inactive at the same time?  I checked and it is the all
+> > > > case so we should be both on a pseudo channel to describe it right
+> > > > and reporting IIO_MOD_X_AND_Y_AND_Z not the OR form.
+> > > >
+> > > > Sorry again that I'm only realising this on v6 :( =20
 > > >
-> > > I change to X_AND_Y_AND_Z.
+> > > No problem at all! Sure, I'm still in this phase where counting every
+> > > single commit upstream makes my ego greater. On the long run, though,
+> > > I guess it's better to build up knowledge and end up with a decent
+> > > implementation quality, than just increasing a commit counter. For me
+> > > it's fine. I also hope it's not too annoying for you.
 > > > =20
-> > > > This is as opposed to activity detectors which tend to be any axis =
-shows
-> > > > activity and X_OR_Y_OR_Z applies.
 > > > >
-> > > > Anyhow upshot is I think I lead you astray on this and we should ma=
-ke this
-> > > > one IIO_MOD_X_AND_Y_AND_Z
+> > > > Difference is for Activity the definition is:
+> > > > "The activity bit is set when acceleration greater than the value
+> > > > stored in the THRESH_ACT register (Address 0x24) is experienced
+> > > > on _any_ participating axis, set by the ACT_INACT_CTL register
+> > > > (Address 0x27)."
+> > > > vs Inactivity:
+> > > > "The inactivity bit is set when acceleration of less than the value
+> > > > stored in the THRESH_INACT register (Address 0x25) is experienced
+> > > > for more time than is specified in the TIME_INACT
+> > > > register (Address 0x26) on _all_ participating axes, as set by the
+> > > > ACT_INACT_CTL register (Address 0x27). "
 > > > >
-> > > > A few other things inline.
-> > > >
-> > > > Unfortunately we don't deal with these events that often so I forget
-> > > > what we did before :(
+> > > > So all vs any.
 > > > > =20
-> > > > > Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
-> > > > > ---
-> > > > >  drivers/iio/accel/adxl345_core.c | 125 +++++++++++++++++++++++++=
-++++++
-> > > > >  1 file changed, 125 insertions(+)
+> > >
+> > > I think I  see your point. At least I change here for inactivity, too,
+> > > to AND'ed axis.
+> > >
+> > > IMHO, if I set OR here, the first axis raising the inactivity will put
+> > > the sensor to sleep mode,
+> > > where AND needs all three axis in inactivity state. I'm not sure if
+> > > this works out, I need to verify
+> > > it still with the hardware, for now I'll change this to AND. =20
+> >
+> > I'd be surprised if it worked differently but indeed good to check!
+> > =20
+> > > =20
+> > > > > +
+> > > > > +/**
+> > > > > + * adxl345_set_inact_time_s - Configure inactivity time explicit=
+ly or by ODR.
+> > > > > + * @st: The sensor state instance.
+> > > > > + * @val_s: A desired time value, between 0 and 255.
+> > > > > + *
+> > > > > + * Inactivity time can be configured between 1 and 255 sec. If a=
+ val_s of 0
+> > > > > + * is configured by a user, then a default inactivity time will =
+be computed.
+> > > > > + *
+> > > > > + * In such case, it should take power consumption into considera=
+tion. Thus it
+> > > > > + * shall be shorter for higher frequencies and longer for lower =
+frequencies.
+> > > > > + * Hence, frequencies above 255 Hz shall default to 10 s and fre=
+quencies below
+> > > > > + * 10 Hz shall result in 255 s to detect inactivity.
+> > > > > + *
+> > > > > + * The approach simply subtracts the pre-decimal figure of the c=
+onfigured
+> > > > > + * sample frequency from 255 s to compute inactivity time [s]. S=
+ub-Hz are thus
+> > > > > + * ignored in this estimation. The recommended ODRs for various =
+features
+> > > > > + * (activity/inactivity, sleep modes, free fall, etc.) lie betwe=
+en 12.5 Hz and
+> > > > > + * 400 Hz, thus higher or lower frequencies will result in the b=
+oundary
+> > > > > + * defaults or need to be explicitly specified via val_s.
+> > > > > + *
+> > > > > + * Return: 0 or error value.
+> > > > > + */
+> > > > > +static int adxl345_set_inact_time_s(struct adxl345_state *st, u3=
+2 val_s)
+> > > > > +{
+> > > > > +     unsigned int max_boundary =3D 255;
+> > > > > +     unsigned int min_boundary =3D 10;
+> > > > > +     unsigned int val =3D min(val_s, max_boundary);
+> > > > > +     enum adxl345_odr odr;
+> > > > > +     unsigned int regval;
+> > > > > +     int ret;
+> > > > > +
+> > > > > +     if (val =3D=3D 0) {
+> > > > > +             ret =3D regmap_read(st->regmap, ADXL345_REG_BW_RATE=
+, &regval);
+> > > > > +             if (ret)
+> > > > > +                     return ret;
+> > > > > +             odr =3D FIELD_GET(ADXL345_BW_RATE_MSK, regval);
+> > > > > +
+> > > > > +             val =3D (adxl345_odr_tbl[odr][0] > max_boundary)
+> > > > > +                     ? min_boundary : max_boundary - adxl345_odr=
+_tbl[odr][0];
+> > > > > +     }
+> > > > > +
+> > > > > +     return regmap_write(st->regmap, ADXL345_REG_TIME_INACT, val=
+);
+> > > > >  }
 > > > > >
-> > > > > diff --git a/drivers/iio/accel/adxl345_core.c b/drivers/iio/accel=
-/adxl345_core.c
-> > > > > index c464c87033fb..ae02826e552b 100644
-> > > > > --- a/drivers/iio/accel/adxl345_core.c
-> > > > > +++ b/drivers/iio/accel/adxl345_core.c
-> > > > > @@ -75,6 +75,7 @@ struct adxl345_state {
-> > > > >       u32 tap_duration_us;
-> > > > >       u32 tap_latent_us;
-> > > > >       u32 tap_window_us;
-> > > > > +     u32 ff_time_ms;
-> > > > >
-> > > > >       __le16 fifo_buf[ADXL345_DIRS * ADXL345_FIFO_SIZE + 1] __ali=
-gned(IIO_DMA_MINALIGN);
-> > > > >  };
-> > > > > @@ -96,6 +97,14 @@ static struct iio_event_spec adxl345_events[] =
-=3D {
-> > > > >                       BIT(IIO_EV_INFO_RESET_TIMEOUT) |
-> > > > >                       BIT(IIO_EV_INFO_TAP2_MIN_DELAY),
-> > > > >       },
-> > > > > +     {
-> > > > > +             /* free fall */
-> > > > > +             .type =3D IIO_EV_TYPE_MAG,
-> > > > > +             .dir =3D IIO_EV_DIR_FALLING,
-> > > > > +             .mask_shared_by_type =3D BIT(IIO_EV_INFO_ENABLE) |
-> > > > > +                     BIT(IIO_EV_INFO_VALUE) |
-> > > > > +                     BIT(IIO_EV_INFO_PERIOD),
-> > > > > +     }, =20
-> > > > This is creating separate per axis enables, values and period. Does=
- that make
-> > > > sense?  If not you need to spin a kind of virtual channel (with mod=
- X_AND_Y_AND_Z)
-> > > > and add the events to it.
+> > > > >  /* tap */
+> > > > > @@ -837,6 +943,13 @@ static int adxl345_read_event_config(struct =
+iio_dev *indio_dev,
+> > > > >                       if (ret)
+> > > > >                               return ret;
+> > > > >                       return int_en;
+> > > > > +             case IIO_EV_DIR_FALLING:
+> > > > > +                     ret =3D adxl345_is_act_inact_en(st, chan->c=
+hannel2, =20
 > > > >
-> > > > See how the sca3000 does it for example. =20
+> > > > Does it makes sense to allow inactivity detection on a subset of ch=
+annels but then
+> > > > report it as XYZ?  I guess it didn't matter when it was and OR, but=
+ if we
+> > > > change to AND as suggested that is going to be misleading.
+> > > >
+> > > > we might have to allow separate enables but report an event as the =
+combination
+> > > > of channels that are enabled X_AND_Y, X_AND_Z etc  I guess we can i=
+mprove activity
+> > > > channel case as well by doing that with the X_OR_Y etc
+> > > > =20
 > > >
-> > > Hum, I'm not sure if I understand you correctly. In my driver, I'm
-> > > using .mask_shared_by_type, and I verified there appears only one
-> > > enable, one value and one period handle.
-> > > # ls -l /sys/bus/iio/devices/iio:device0/events/
-> > > total 0
-> > > ...
-> > > -rw-r--r-- 1 root root 4096 Apr 20 21:59 in_accel_mag_falling_en
-> > > -rw-r--r-- 1 root root 4096 Apr 20 21:59 in_accel_mag_falling_period
-> > > -rw-r--r-- 1 root root 4096 Apr 20 21:59 in_accel_mag_falling_value
-> > > ...
+> > > Well, initially I guess I only had one enable for inactivity.
 > > >
-> > > In the sources of sca3000.c I saw this setup with .mask_separate. So,
-> > > there I'd expect to see separate enables per axis, or am I wrong? In
-> > > the case of the ADXL345, there should only be one freefall enable (in
-> > > my driver) and not per axis. So, isn't this what is currently there?
+> > > This was kind of confusing to me. There is a register to enable
+> > > activity and inactivity on a per axis base [ACT_INACT_CTL, 0x27]. =20
+> >
+> > Agreed this is a slightly odd concept.
+> > =20
 > > >
-> > > So far I only adjust the or'ing to and'ing the axis for freefall. =20
+> > > The interrupt event will set a single bit for inactivity or activity
+> > > [INT_SOURCE, 0x30]. In the interrupt handler further one can read out
+> > > the [ACT_TAP_STATUS, 0x2B], which contains tap and activity
+> > > directions, but no information about inactivity axis.
+> > >
+> > > In summary, for the ADXL345 inactivity can be configured on a per axis
+> > > base, but the event won't tell about the axis that fell into
+> > > inactivity, i.e. the first inactivity is supposed to put the sensor
+> > > into power save (with link bit and power modes set - I think
+> > > inactivity should mainly be seen in the context of their/Analog's
+> > > power save concept). As said before, initially I only provided a
+> > > single "inactivity enable". Then I saw actually I could set and offer
+> > > this per axis. I don't know if there are use cases only to observe
+> > > particularly the x-axis for a general power save. Probably rather not.
+> > >
+> > > So, I agree. But if you don't tell me explicitely to replace per axis
+> > > enables by a single one, I'll probably leave it as is. It implements
+> > > most transparently what the sensor can offer for configuration. =20
 > >
-> > So this is a messy corner of the ABI (because these are tricky to descr=
-ibe).
-> > Shared by type usually means there is one attribute applying to all the
-> > axis, but that they are reported separately, or potentially multiple ev=
-ents
-> > / _OR_ form used if we can distinguish exactly what the event is.
+> > The snag is what I mentioned for freefall. It becomes very hard to indi=
+cate
+> > to userspace what it might expect for the x&y&z cases.  If inactivity r=
+equires
+> > them all to be inactive, I think separate enables is going to be really
+> > tricky to build a consistent ABI around :(
 > >
-> > In this case there is no way for userspace to anticipate that the event
-> > that might be generate is X_AND_Y_AND_Z.  So for this
-> > the ABI solution we came up with is that virtual channel and separate.
+> > Some devices we've had in the past have allowed specific configuration =
+of
+> > and / or for axis combinations. For those we've normally kept clear bec=
+ause
+> > the number of combinations gets sill quickly.
 > >
-> > So you get something along the lines of
-> > in_accel_x&y&z_mag_falling_en
-> > in_accel_x&y&z_mag_falling_period
-> > etc
-> >
-> > The tricky remaining corner is this only makes sense if we always enable
-> > all axis (which is typical for a freefall detector). If we get a device
-> > that oddly has per axis free fall enables, then it would be hard and I
-> > might argue nonsense to enable them separately anyway.  Not true
-> > here though I think.
-> >
-> > Note that we may well have drivers using the ABI slightly differently f=
-or
-> > freefall events which will be at least partly because I'd forgotten how
-> > we resolved all this complexity long ago (that sca3000 driver is ancien=
-t!)
-> > ABI like this is tricky to fix up, but we might want to consider some d=
-uplication
-> > in those drivers so we standardize on one form for freefall (even if we=
- have some
-> > stray ABI from other possible solutions).
-> >
-> > What we should definitely do is pull together some documentation on mul=
-ti channel
-> > event handling as the ABI docs are probably not enough.
+> > If we don't have a separate channel enable usecase today I think we sho=
+uld
+> > go ahead with general inactivity / activity (and/or as appropriate) and
+> > perhaps solve the per axis case if anyone ever cares about it.
 > > =20
 >=20
-> As I (begin to) understand now, in case of the sca3000, the virtual
-> channel is literally an extra channel. That means, we're talking
-> probably about this here down below, right?
-> ...
-yes. That is what I was referring to.
+> Well, I think here we need to distinguish:
+> Activity: would allow per axis enables and events indicate per axis activ=
+ity
+> Inactivity: allows per axis enables, but only a generic inactivity indica=
+tion
 
->  512 static const struct iio_chan_spec sca3000_channels[] =3D {
->  513         SCA3000_CHAN(0, IIO_MOD_X),
->  514         SCA3000_CHAN(1, IIO_MOD_Y),
->  515         SCA3000_CHAN(2, IIO_MOD_Z),
->  516         {
->  517                 .type =3D IIO_ACCEL,
->  518                 .modified =3D 1,
->  519                 .channel2 =3D IIO_MOD_X_AND_Y_AND_Z,
->  520                 .scan_index =3D -1, /* Fake channel */
->  521                 .event_spec =3D &sca3000_freefall_event_spec,
->  522                 .num_event_specs =3D 1,
->  523         },
->  524 };
-> ...
-> <taken from sca3000.c>
+Ah. I had it in my head it was only one set of per axis enables for the two
+types of event. It's not! So indeed your description is what it should be.
+
 >=20
-> What's now missing for freefall and the ADXL345 and v7 in particular?
-> - I need to provide a similar channel setup as in  the sca3000 snippet
-> above, the virtual channel
-> - I need to AND the axis for this channel
-> - Now, with the virtual channel usage will be "separate" instead of
+> So, also here, what's still missing? When doing it similarly  to my
+> understanding of freefall now, for a v7 of the patches...
+>=20
+> Activity:
+> - I would leave activity as is (is this ok?)
+
+I think so given the separate enables.
+
+>=20
+> Inactivity:
+> - I replace single three axis enables by a generic enable, setting and
+> unsetting all three axis for inactivity
+> - I need probably also to provide a similar virtual channel
+
+Is it the same one?  I think so but maybe I've lost track.
+
+> - The axis for this channel are AND'ed
+> - Now, with the virtual channel, usage will be "separate" instead of
 > "shared", which will result in a single enable handle in sysfs
 >=20
-> Is this correct?
-
-Yes.  I think that's all correct.
-
->=20
-> Sry, I needed to re-read your answer several times. What confuses me
-> is still a bit the "virtual extra-channel".=20
-
-I made up that term for it as there is no actual traditional channel
-there.  I should have given a pointer to the actual iio_chan_spec entry.
-Sorry about that!
-
->Probably, I need to build
-> up a bit more practical experience with the channels. Providing just a
-> single enable handle already looks good to me. I still don't grok
-> entirely where this can be / is problematic in such case, but no need
-> to explain it now in full detail. If the TODOs match at least with my
-> understanding I will try to implement the above points.
-
-These events are just a bit weird when aligned with the simpler ones
-we tend to get on ADCs etc.  Giving userspace the best visibility we
-can is always good.  Here it is possible to get that, but in some other
-cases we haven't yet come up with a good generic ABI :(
+> Is this a correct understanding of what is +/- missing? Can you agree
+> to the points I listed up, or is something's missing (documentation of
+> course later)?
+Looks good to me!
 
 Jonathan
-
-
->=20
-> > Jonathan
-> > =20
 
 

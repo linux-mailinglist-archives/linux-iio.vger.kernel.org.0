@@ -1,117 +1,81 @@
-Return-Path: <linux-iio+bounces-18466-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18467-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB936A954AA
-	for <lists+linux-iio@lfdr.de>; Mon, 21 Apr 2025 18:42:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C93DAA95814
+	for <lists+linux-iio@lfdr.de>; Mon, 21 Apr 2025 23:39:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A21BF7A30F8
-	for <lists+linux-iio@lfdr.de>; Mon, 21 Apr 2025 16:41:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F08C9169114
+	for <lists+linux-iio@lfdr.de>; Mon, 21 Apr 2025 21:38:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F1951E0DF5;
-	Mon, 21 Apr 2025 16:42:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48490219A91;
+	Mon, 21 Apr 2025 21:38:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RzLCtRo2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SqvlGE7A"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51F411A238A;
-	Mon, 21 Apr 2025 16:42:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB94D21931B;
+	Mon, 21 Apr 2025 21:38:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745253746; cv=none; b=erUNdJL6imQ1v0+1l6TxZ29sfhgxOmH64q0UZGhcfFflPeJSsYj5O0OAnGMS9Kki14BoU+R9icHz6pOWuHl1jCkRf84wddxHyRex1UEIOmeQ8pkesaUioH81tPwoJj1gTtldF/CSxdI+FBgajfPJW4211cmEQng+JFcHPRjtkw0=
+	t=1745271535; cv=none; b=pkVOItOgeqKtltgBB235gTgSKpZm3SQ+RWUBXT67YlT0osnl04xs9Zv+DSY7jPrD3+e5GgjZwQ+lJzakkiY/oF3CI8WwHT+9FavmP29kObhggT7LHpzCEehl/xnfjN+GVe85TWCc8rRkGReEYES+g1daAo2xFi2kjGgxmrFpDxY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745253746; c=relaxed/simple;
-	bh=0fsyOStHwhC1v88XvZ4Ac0nuPUuFtHM5xo1t68kAtVk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uFsit2Q5f/pF3ytvaJEqGGIiP3j3M+yVZ7l0T+4LbFyLS9X/vnWLSEEyfzuBwZpD08r1UED2KEKLjmzyssph8wOxopN7DNSzHL5YgXHj2pF/z4U5fpv1S0UPmNpTT2qefb/rZcdyqHIKdxyVnMeMlnjN98ogbsqaXcCBINgryhs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RzLCtRo2; arc=none smtp.client-ip=209.85.218.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-ac2963dc379so615488566b.2;
-        Mon, 21 Apr 2025 09:42:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745253743; x=1745858543; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=L1I3cbwltjOGElOuVsLVlgvPqjddyD9qAtM+fs2VWpA=;
-        b=RzLCtRo2dGtqt56ZLaZoVyWLpqxb1ZjzQBk3p2Amr9jUiFSzaBJF6ZET8P+XnmEzBw
-         RqxytAn/4V0qqExxsmIlMUZmCQHDtBU0gChsy9fAHY59x/QAxuK8NW8VWhrj7BX1hOWm
-         RYhcHrQa9vuAiJY5ragTG4+RLjQpWNhoKh6mfUlTkuSXg0deYdyyVW+SDVrTMWl83FYe
-         fGYIWe8O9qbECOpBiK1XR06WQ362VAKijwXtXIadEwJ+97mX1zTKnpzi5p9u5KkbnkzR
-         TuHOp3V1symBe5K5NtOExu4z2NhStAXD9dpVcuzAvQ8ExfagwAGW9tk4KIjoPpBZqbU3
-         N1NA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745253743; x=1745858543;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=L1I3cbwltjOGElOuVsLVlgvPqjddyD9qAtM+fs2VWpA=;
-        b=unyuSKpTQ24s1AlBvKDhkK2J9+rponRV9shllgaNjxJe8/enP1cqR4C72Tm+HudEZs
-         vdltRFTJWgC/H1YXV5UVAvGS6ryIIIe3zJvbz7BZOzwvZig4venwEybMo0JK5jlUivcp
-         WtRu+h0WyVcU5cbc0X+Wlk/TbooSG6hEkJN3yUFDYcBlbaoLC8xbURWHSa+NeXh82WoM
-         HQAOxMeQwsnMTNtZKlhmU/v6j9xpUGgHNYwsXyo74ZAPFJU3TWD9EbheS9PtM1+My3Fe
-         axM12myY1Sopy6DPbFreN9XoYh4VGt33J9RySILtZZ2foeLEaPgXAqeqZrQoiysp7+PJ
-         1u0A==
-X-Forwarded-Encrypted: i=1; AJvYcCU63D7vOJoG1m1rz5YPgre51OTe1i3m/YUJ7XtP4hAqLzShQUpqwDH6OhrDMWZyAOEIKk0ZfP2QkTY=@vger.kernel.org, AJvYcCViAkxYpmB0+NyvbGCPr3QvL4RBCoK/4uf6KXhC+cN84OdKPOyxZ6mhrUZw3vtTx2eEzCvOCpiqYmHJfiVq@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw3EU4R4Dw6gJ5vqB7ZstVbA+8wAt8NOMJe74fmWOPfErFDfXn1
-	TGha8MaqK/rCM36lrpZR2KHjM18v7QAome1GvdD2jntyAZQr/dY5W1BcU1CKi5rCaFG7YqPKsd+
-	bYFBS3m3zQKCO964vvlr/4/4aaKI=
-X-Gm-Gg: ASbGncuz5pF5tu6Zj8wJOt9oK9iMcAjZsTk/PQajnTFZr524RMC+bBNJ6QPEfSAoqrr
-	1XZfOsDl6TT+d4RofinT0xoDU5oEG50FS+JcpbKU6T9RhMNdE1w6iVlN/ibgc49kLjZzNbDAOds
-	JogEVBX4SAKdbnZhQiKtnZuQ==
-X-Google-Smtp-Source: AGHT+IGOkY/7PisAD2oLp8QqIo0O9LumO+tYusSVEov8PZqxdtzgsegmull0yalfq2NuFZ5JO7zCd3FO9FZrDniI0y8=
-X-Received: by 2002:a17:907:1b1f:b0:ac1:f19a:c0a0 with SMTP id
- a640c23a62f3a-acb74b1ca7cmr1191466066b.20.1745253743466; Mon, 21 Apr 2025
- 09:42:23 -0700 (PDT)
+	s=arc-20240116; t=1745271535; c=relaxed/simple;
+	bh=P6nmFQfl8tDNHNuZzm4b6tttJQZW4Sac0+eacXTdEPk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dETojj1SEAWubvZOKpQOsn94m2JNRZgvZW+ndT1uXg9s7yNtC41TwH+NQc3IGU7mrI6BAjNWON3kG+7CUXjT8XHkJrN+FLFXMVFF5m2kdEMQ1kmgVue/2mdEkUdYl4NzeJ9xd/8zxYeNM/bz+HKVvEniqQOjchvIGXOzhyoHt3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SqvlGE7A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20443C4CEE4;
+	Mon, 21 Apr 2025 21:38:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1745271533;
+	bh=P6nmFQfl8tDNHNuZzm4b6tttJQZW4Sac0+eacXTdEPk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=SqvlGE7AxRIVNM8q2NdMVuX1QDRm31fP5PW6Me/cYE8T24hhSJ+s9XcJ9Xj6NBehq
+	 Z4EJTSvJZWaFB9CLVrajvm++/uOVBw7FUS4OCI0pk1Aa1l3ZUV62B0Q4BGMID6IQYr
+	 APNMubOH9TEwCY2PS+7dINzSYC9XwzzzNF/6/95/HTWs1G6K9ArEMUOytYvKVSF5mf
+	 jcqT2RwfSVzOIMDUNK0LncWVGfPO40M8/ehb73KYh7ueiF2U5dMetgA4M4/KYRMu+Z
+	 xI5m0LhjqEc4bN0s2Kk0umYFpKpaHTShxw59p3hzfWT3Lc3vSzS2Llx8+z0q8SXYnK
+	 imSeilgUrOzCA==
+Date: Mon, 21 Apr 2025 16:38:51 -0500
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Cc: linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org, andy@kernel.org,
+	dlechner@baylibre.com, matthias.bgg@gmail.com,
+	linux-kernel@vger.kernel.org, jic23@kernel.org,
+	devicetree@vger.kernel.org, krzk+dt@kernel.org, nuno.sa@analog.com,
+	conor+dt@kernel.org, linux-iio@vger.kernel.org,
+	zhiyong.tao@mediatek.com, kernel@collabora.com
+Subject: Re: [PATCH] dt-bindings: iio: adc: Add compatible for Dimensity 1200
+ MT6893
+Message-ID: <174527153072.2973088.9157423165074778113.robh@kernel.org>
+References: <20250416120235.147889-1-angelogioacchino.delregno@collabora.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250418-iio-prefer-aligned_s64-timestamp-v1-0-4c6080710516@baylibre.com>
- <20250418-iio-prefer-aligned_s64-timestamp-v1-4-4c6080710516@baylibre.com> <20250421121341.49e28ddf@jic23-huawei>
-In-Reply-To: <20250421121341.49e28ddf@jic23-huawei>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Mon, 21 Apr 2025 19:41:46 +0300
-X-Gm-Features: ATxdqUH5lMC16PsOqzsa5gclyWSAtg59GNIHcNrRLuTnmqVLHUh5EH6DsroQl_c
-Message-ID: <CAHp75VcAHZV4zGMvR-xVuVhhBJMCmo7A0w0fnwASw3iAWU5wdw@mail.gmail.com>
-Subject: Re: [PATCH 04/10] iio: adc: mxs-lradc-adc: use struct with
- aligned_s64 timestamp
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: David Lechner <dlechner@baylibre.com>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Andy Shevchenko <andy@kernel.org>, Eugen Hristev <eugen.hristev@linaro.org>, 
-	Nicolas Ferre <nicolas.ferre@microchip.com>, 
-	Alexandre Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
-	Andreas Klinger <ak@it-klinger.de>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
-	Alexandre Torgue <alexandre.torgue@foss.st.com>, linux-iio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	imx@lists.linux.dev, linux-stm32@st-md-mailman.stormreply.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250416120235.147889-1-angelogioacchino.delregno@collabora.com>
 
-On Mon, Apr 21, 2025 at 2:13=E2=80=AFPM Jonathan Cameron <jic23@kernel.org>=
- wrote:
-> On Fri, 18 Apr 2025 14:58:23 -0500
-> David Lechner <dlechner@baylibre.com> wrote:
 
-...
+On Wed, 16 Apr 2025 14:02:35 +0200, AngeloGioacchino Del Regno wrote:
+> Add a compatible for the Dimensity 1200 (MT6893) SoC; The AUXADC
+> IP in this chip is fully compatible with the one found in MT8173.
+> 
+> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+> ---
+>  .../devicetree/bindings/iio/adc/mediatek,mt2701-auxadc.yaml      | 1 +
+>  1 file changed, 1 insertion(+)
+> 
 
-> > +             aligned_u64 ts;
-> aligned_s64
->
-> I've not idea why timestamps are signed, but they always have been!
+Acked-by: Rob Herring (Arm) <robh@kernel.org>
 
-Because 0 (center point) was chosen as 1970-01-01?
-
---=20
-With Best Regards,
-Andy Shevchenko
 

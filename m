@@ -1,167 +1,206 @@
-Return-Path: <linux-iio+bounces-18446-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18447-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A934A951DC
-	for <lists+linux-iio@lfdr.de>; Mon, 21 Apr 2025 15:45:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED5FCA951E6
+	for <lists+linux-iio@lfdr.de>; Mon, 21 Apr 2025 15:48:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9CD3B3B1956
-	for <lists+linux-iio@lfdr.de>; Mon, 21 Apr 2025 13:44:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 591F03AA10D
+	for <lists+linux-iio@lfdr.de>; Mon, 21 Apr 2025 13:47:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29AA126656E;
-	Mon, 21 Apr 2025 13:44:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59EC2265CC4;
+	Mon, 21 Apr 2025 13:48:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z741RD4G"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Oc8/fYzP"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57F69265CAB;
-	Mon, 21 Apr 2025 13:44:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E006258CEA;
+	Mon, 21 Apr 2025 13:48:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745243095; cv=none; b=sGsicNHf+goQzD+cJncv+dzQZOqfL13IT8y3Vq4eTs37kGQnI75RCXaKmGdhxXCDwcF3/pgxVBuCP3GuXg7ksSU9toLSdij7yyY4YMQi9fPNkLtqIh9gBIONlHBv/LoYxVXbJ96bp6CV0TsM0kj39MNypNCQkVIQNiyfnm3KQpU=
+	t=1745243289; cv=none; b=EfrCx6T2cVhPPfnM/Q5raBA7fl8A/Og8ZvTcqe5Zw/HDJu9hMCf7/3MQKkZ5Vh/NC4sTqpT8KG9DEW769q0BeEd9Azyc1TS8DOusr9tSxGplaJH9DItbyCC/urO9PVYjoQDPO9GcOWpvaRFi4NZPNZFGrFwEjiictGCMaTYLjGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745243095; c=relaxed/simple;
-	bh=E2F1I2DRDs4lcPmP+73ms3CRLlBK5QiJqEpvigoUffg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=XGoksbfbbisTU5aQWLCL34S9+rVzxPl0e+ZXrC4N4GE4Yv9J8Mq1TNqSEA705vEvf6uwDWTqvSTNTPS2guyGe1v8VNkiG7eFismuUDejJ+8qlv473hLa34ce1fEfmzZrMrJH21jZ0Zaivh+WWRHsbfXgRFTSh+/L7CkRQzozymE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z741RD4G; arc=none smtp.client-ip=209.85.160.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-47698757053so48074291cf.0;
-        Mon, 21 Apr 2025 06:44:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745243093; x=1745847893; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=I+rz5Axxady4tMqOuG//Mk9tsSexspjxF9mxBCn+v+E=;
-        b=Z741RD4Gd309vWnb7apjKKz3GY6vo4vBRzcmn07eGSG0ygKaj6hZOQCk7ZT5xC75av
-         5lKlm8dvN8wdzf79VHx85fnwzEq3riKzhqs7ucEKeAVi0CbBtVQ3phiMXgSSQSqSEn8b
-         EjNnLkO8Ryg7SuCEVNbQVPfRc48tQL+7x2XMWUMMkPrIAOd3fy+BD2W9R4NLaYM1QqvS
-         +ROQ9GaTOcqEXrzrajI6s1SHEEbcn8teTdw8Geq9eFp+9MbtEHih3E7vgYGXse+KbQ2H
-         BU64uzWfQ3usNVKmH6Ryn7ZU2TifvYGG1xboeKwVRXTKfrMRVuteqE3JNpukmoFGPe8E
-         iaFg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745243093; x=1745847893;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=I+rz5Axxady4tMqOuG//Mk9tsSexspjxF9mxBCn+v+E=;
-        b=HnwIC6aTDBK62rWuAMkHTfIxZlWnPzHEPrW70+pncjCjNnurOBrVz12VxuAkHv9fwp
-         KPnPP6WRfXA0BC7HWZ82lgG9g9Q3CLJZAlSmOzmbIrqttUjFgptEawdEgrCxKBdqZY9X
-         WlQF3pJqrHy3KfmgcsVGF9h8E8awaQlZ/HDdyp1QChH3LKSqr1TApNooKmnfGx1uLLo1
-         gKjiu5lRAIUvt2h/Pn2LeKhILkJRHibTwJCCThYWUcJlMQj4vKzP5ZFhmUyYOf5H2sZe
-         b16IEGwr9BBz0o4I4etIXWFJD8dBpKN22unvs7cv5SWQcYEN5GDX+8Oqpm9CsBJ2o8m0
-         GXvw==
-X-Forwarded-Encrypted: i=1; AJvYcCUAtqMRfFIthq5w1osyprGLOGeqOUh5zWYonbWiIveP+H9X1CcisQCxBTz3FlvD/68q0PRJKEo3VZclRDq9@vger.kernel.org, AJvYcCVHy5om2tem/uBV07IBWM8sASh4z3clBnE04MVfcFcqm6RzG4bkJtSXYvCKqg77hg6ZHUPHDroEOIE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxKAN0zRrbLHsuyRQxmS8S16rRiBRZ1niOJQuuH/cpeEfpENY2Y
-	r+s5NPZQYPF8crfpI3Ja6GfxGWUAfohzUzAnxdbKep0gJWFHB959bc4gKxSHhT6F3GaojaGCKp0
-	nuD6iWlsXCwL5pk6nhzDHgUcU6Xk=
-X-Gm-Gg: ASbGncs5aI9AoOjrLymt4wMKYJmYuPCnM48hTcyxhkJHFibb079VYBpyPZCqfa8vZvS
-	vVWe/pnOJeyX5WltAeoIQuLy3g+gOChX02TSrVy4Wn+ammkvNeZIBFfMvcfY6kGnLjM3ln7c6bI
-	MQTnsapHOx5qgYVZOiVekQlS5OS07wltlhEqhji/vPU2C943azxjDTbQ==
-X-Google-Smtp-Source: AGHT+IGIcQ/qkOH4f0efAIsakCdLqhNqY4LYe4mmqUwLFuwUa0Qipj0FoFEBLw2HZkwHnNe2Z94rqKHLyweAtiy2SkA=
-X-Received: by 2002:a05:6214:c47:b0:6ea:d6be:215b with SMTP id
- 6a1803df08f44-6f2c463fe82mr253512396d6.36.1745243093007; Mon, 21 Apr 2025
- 06:44:53 -0700 (PDT)
+	s=arc-20240116; t=1745243289; c=relaxed/simple;
+	bh=yLRrdLJmFkDMf9bgg6ZBLTFp0d4Ye3UdvGHqhA722R0=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=f+hE8bzY+Rw5HzB4KzlgIuw9FeTDf8YYij39TTnTtEAfggqNi42Qr69WZfQapWv6+ewruFKWg/uARic7Kyih7rAkafsXvcEJTfWERVUthKFYW1cXYgDQUzzGOmDxKX5GdBR6joCpMvf/rInnURyotA1wDdsr8PG7QHH6cJHvXBo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Oc8/fYzP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3C48C4CEEA;
+	Mon, 21 Apr 2025 13:48:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1745243288;
+	bh=yLRrdLJmFkDMf9bgg6ZBLTFp0d4Ye3UdvGHqhA722R0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Oc8/fYzPQYMmFl6u1wj716S7AB/dwDwPc4D9zPZyTLdUn6apDL9R3IdlBx+13Ez3l
+	 4aVD/RF9N+PySyj8Rsm5il07iGMCWxWeitoXNd+EznFdV1i371V5lw4cZsiiDo4CMR
+	 8NtwgfmxdkaF0vdbD34mnPF8Lcmw2z3h6b846SaoOrgwbQoiLu+PZTaZIBlbv05UTM
+	 h0z/JDCLhjkFPPCdZaiEiQo34+q6qI3fiDokxufrW/nPinrJAJvAlgLsBOjraf8TlQ
+	 lc9aPY65VEDUeHcAuDxVTxMqFzjG6YoxfROU/YKI0t9JJ3plvXsCfiJ7CtQWSs7cI1
+	 hfOMBqutQh/kQ==
+Date: Mon, 21 Apr 2025 14:48:00 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Kim Seer Paller <kimseer.paller@analog.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
+ <Michael.Hennerich@analog.com>, Rob Herring <robh@kernel.org>, Krzysztof
+ Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, David
+ Lechner <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?=
+ <noname.nuno@gmail.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy
+ Shevchenko <andy@kernel.org>, <linux-iio@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>
+Subject: Re: [PATCH v5 3/3] iio: dac: ad3530r: Add driver for AD3530R and
+ AD3531R
+Message-ID: <20250421144800.0db0a84e@jic23-huawei>
+In-Reply-To: <20250421-togreg-v5-3-94341574240f@analog.com>
+References: <20250421-togreg-v5-0-94341574240f@analog.com>
+	<20250421-togreg-v5-3-94341574240f@analog.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1745007964.git.gshahrouzi@gmail.com> <20250421122931.13202ca9@jic23-huawei>
-In-Reply-To: <20250421122931.13202ca9@jic23-huawei>
-From: Gabriel Shahrouzi <gshahrouzi@gmail.com>
-Date: Mon, 21 Apr 2025 09:44:41 -0400
-X-Gm-Features: ATxdqUFAbjpx3MFjc3K3f1DwNxW16cyZ7M2yUtmCrTFRFvvxdKKOIoewOoIYhyc
-Message-ID: <CAKUZ0zLpRRPDBF5qaUXCukSn=uZFbDUG8UhXrQbpkrZyePe1Ww@mail.gmail.com>
-Subject: Re: [PATCH v3 0/5] staging: iio: adc: ad7816: Fix channel handling
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: gregkh@linuxfoundation.org, lars@metafoo.de, linux-iio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-staging@lists.linux.dev, 
-	Michael.Hennerich@analog.com, sonic.zhang@analog.com, vapier@gentoo.org, 
-	skhan@linuxfoundation.org, linux-kernel-mentees@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Apr 21, 2025 at 7:29=E2=80=AFAM Jonathan Cameron <jic23@kernel.org>=
- wrote:
->
-> On Fri, 18 Apr 2025 16:47:34 -0400
-> Gabriel Shahrouzi <gshahrouzi@gmail.com> wrote:
->
-> > The original patch combined a functional fix (allowing channel 7) with
-> > several refactoring steps (introducing chip_info, renaming structs,
-> > improving validation). As requested, these have now been separated.
-> >
-> > The series proceeds as follows:
-> > 1. Fix: Allow diagnostic channel 7 for all device variants.
-> > 2. Refactor: Rename the main state structure for clarity before introdu=
-cing
-> >    the new chip_info struct.
-> > 3. Refactor: Introduce struct ad7816_chip_info to hold static per-varia=
-nt
-> >    data, update ID tables to store pointers, and switch to using
-> >    device_get_match_data() for firmware-independent identification.
-> >    This removes the old enum/id mechanism.
-> > 4. Refactor: Add has_busy_pin to chip_info and use this flag to
-> >    determine BUSY pin handling, replacing pointer comparisons.
-> > 5. Refactor: Simplify channel validation logic using
-> >    chip_info->max_channels, removing strcmp() checks.
-> >
-> > Regarding the 'fixes' tag: I've applied it only to the first commit
-> > containing the core fix, primarily to make backporting easier. Is this
-> > the standard practice, or should the tag typically be applied to
-> > subsequent commits that build upon or are related to the fix as well?
-> >
-> > Chainges in v3:
-> >       - Split the patch into smaller patches. Make the fix first
-> >         followed by clean up.
-> >       - Include missing channel for channel selection.
-> >       - Address specific feedback regarding enums vs. chip_info data.
-> >       - Use device_get_match_data() for device identification.
-> >       - Move BUSY pin capability check into chip_info data.
-> >       - Simplify channel validation using chip_info data.
-> > Changes in v2:
-> >         - Refactor by adding chip_info struct which simplifies
-> >           conditional logic.
->
-> Hi Gabriel,
->
-> Whilst I appreciate the enthusiasm. Generally slow down a little!
-> If there is a fundamental issue like an accidental sending of the wrong
-> version then please reply to the thread cover letter to say that.
-> Otherwise, even in the presence of build bot reports, it is good
-> for any non trivial series to wait a little for reviews to come in.
-> Ideally a week, but a few days can be fine if you already have a lot
-> of feedback from reviewers.
-Got it, makes more sense to respond to a fundamental error like that
-in the cover letter than send an entire new patch series out which
-bloats the mailing list.
->
-> IIO is moderately high traffic and whilst we are good at hitting
-> the button to mark a thread read, it still takes some time!
-Got it.
->
-> Jonathan
->
-> >
-> > Gabriel Shahrouzi (5):
-> >   staging: iio: adc: ad7816: Allow channel 7 for all devices
-> >   staging: iio: adc: ad7816: Rename state structure
-> >   staging: iio: adc: ad7816: Introduce chip_info and use pointer
-> >     matching
-> >   staging: iio: adc: ad7816: Use chip_info for device capabilities
-> >   staging: iio: adc: ad7816: Simplify channel validation using chip_inf=
-o
-> >
-> >  drivers/staging/iio/adc/ad7816.c | 94 ++++++++++++++++++--------------
-> >  1 file changed, 54 insertions(+), 40 deletions(-)
-> >
->
+On Mon, 21 Apr 2025 12:24:54 +0800
+Kim Seer Paller <kimseer.paller@analog.com> wrote:
+
+> The AD3530/AD3530R (8-channel) and AD3531/AD3531R (4-channel) are
+> low-power, 16-bit, buffered voltage output DACs with software-
+> programmable gain controls, providing full-scale output spans of 2.5V or
+> 5V for reference voltages of 2.5V. These devices operate from a single
+> 2.7V to 5.5V supply and are guaranteed monotonic by design. The "R"
+> variants include a 2.5V, 5ppm/=C2=B0C internal reference, which is disabl=
+ed
+> by default.
+>=20
+> Support for monitoring internal die temperature, output voltages, and
+> current of a selected channel via the MUXOUT pin using an external ADC
+> is currently not implemented.
+>=20
+> Reviewed-by: David Lechner <dlechner@baylibre.com>
+> Signed-off-by: Kim Seer Paller <kimseer.paller@analog.com>
+Hi.
+
+Just one thing from a final pre merge look through.
+
+The initialization of powerdown mode works but only because the NORMAL
+mode =3D=3D 0.  That should be setting it explicitly for each set of 4 chan=
+nels
+as needed.
+
+I don't really mind how you solve that.  There are lots of options
+to build up the 4 fields in each of those registers.
+
+Jonathan
+
+> diff --git a/drivers/iio/dac/ad3530r.c b/drivers/iio/dac/ad3530r.c
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..05bd191e5225bd267f42ba36b=
+bd42a18e6f22291
+> --- /dev/null
+> +++ b/drivers/iio/dac/ad3530r.c
+> @@ -0,0 +1,503 @@
+
+> +
+> +static ssize_t ad3530r_set_dac_powerdown(struct iio_dev *indio_dev,
+> +					 uintptr_t private,
+> +					 const struct iio_chan_spec *chan,
+> +					 const char *buf, size_t len)
+> +{
+> +	struct ad3530r_state *st =3D iio_priv(indio_dev);
+> +	int ret;
+> +	unsigned int mask, val, reg;
+> +	bool powerdown;
+> +
+> +	ret =3D kstrtobool(buf, &powerdown);
+> +	if (ret)
+> +		return ret;
+> +
+> +	guard(mutex)(&st->lock);
+> +	mask =3D GENMASK(chan->address + 1, chan->address);
+
+I think maybe we need a macro to get the mask from the channel number?
+Using address for this seems overkill given how simple that maths is.
+Ideally that macro could perhaps be used in the code below to avoid
+all the defines I suggested.
+
+
+> +	reg =3D chan->channel < AD3531R_MAX_CHANNELS ?
+> +	      AD3530R_OUTPUT_OPERATING_MODE_0 :
+> +	      AD3530R_OUTPUT_OPERATING_MODE_1;
+> +	val =3D (powerdown ? st->chan[chan->channel].powerdown_mode : 0)
+> +	       << chan->address;
+> +
+
+
+> +static int ad3530r_setup(struct ad3530r_state *st, int vref,
+> +			 bool has_external_vref)
+> +{
+
+> +
+> +	if (has_external_vref)
+> +		st->vref_mv =3D range_multiplier * vref / 1000;
+> +
+> +	/* Set operating mode to normal operation. */
+> +	ret =3D regmap_write(st->regmap, AD3530R_OUTPUT_OPERATING_MODE_0,
+> +			   AD3530R_NORMAL_OPERATION);
+Is this actually doing that?  I think the register is lots of 2 bit
+fields and this is only setting it for the first channel?
+
+This works because that value is 0.  Logically however we should set it
+to
+	(AD3530R_NORMAL_OPERATION << 6) |
+	(AD3530R_NORMAL_OPERATION << 4) |
+	(AD3530R_NORMAL_OPERATION << 2) |
+	(AD3530R_NORMAL_OPERATION << 0)
+
+Or possibly better as
+
+	FIELD_PREP(AD3530R_OP_MODE_0_CHAN0_MSK, AD3530R_NORMAL_OPERATION) |
+	FIELD_PREP(AD3530R_OP_MODE_0_CHAN1_MSK, AD3530R_NORMAL_OPERATION) |
+
+etc
+
+Names are a bit long, so maybe consider shortening some of the defines.
+
+> +	if (ret)
+> +		return ret;
+> +
+> +	if (st->chip_info->num_channels > AD3531R_MAX_CHANNELS) {
+
+If we have it explicit that we have multiple fields this will become more o=
+bvious.
+However I'd use the number 4 here rather than the number of channels the AD=
+3531R happens
+to have.
+
+
+> +		ret =3D regmap_write(st->regmap, AD3530R_OUTPUT_OPERATING_MODE_1,
+> +				   AD3530R_NORMAL_OPERATION);
+> +		if (ret)
+> +			return ret;
+> +	}
+> +
+> +	for (i =3D 0; i < st->chip_info->num_channels; i++)
+> +		st->chan[i].powerdown_mode =3D AD3530R_POWERDOWN_32K;
+> +
+> +	st->ldac_gpio =3D devm_gpiod_get_optional(dev, "ldac", GPIOD_OUT_LOW);
+> +	if (IS_ERR(st->ldac_gpio))
+> +		return dev_err_probe(dev, PTR_ERR(st->ldac_gpio),
+> +				     "Failed to get ldac GPIO\n");
+> +
+> +	return 0;
+> +}
+> +
+> +static const struct regmap_config ad3530r_regmap_config =3D {
+> +	.reg_bits =3D 16,
+> +	.val_bits =3D 8,
+> +	.max_register =3D AD3530R_MAX_REG_ADDR,
+> +};
 

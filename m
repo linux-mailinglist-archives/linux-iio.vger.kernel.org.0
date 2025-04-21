@@ -1,56 +1,57 @@
-Return-Path: <linux-iio+bounces-18435-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18436-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4083A9515E
-	for <lists+linux-iio@lfdr.de>; Mon, 21 Apr 2025 15:08:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA70CA95166
+	for <lists+linux-iio@lfdr.de>; Mon, 21 Apr 2025 15:12:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 26964167066
-	for <lists+linux-iio@lfdr.de>; Mon, 21 Apr 2025 13:08:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2D048169537
+	for <lists+linux-iio@lfdr.de>; Mon, 21 Apr 2025 13:12:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39EBE265614;
-	Mon, 21 Apr 2025 13:08:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B4EB265614;
+	Mon, 21 Apr 2025 13:12:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kjTaStAe"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O+CjTLsJ"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED68F264A9E
-	for <linux-iio@vger.kernel.org>; Mon, 21 Apr 2025 13:08:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BBF9264A86
+	for <linux-iio@vger.kernel.org>; Mon, 21 Apr 2025 13:12:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745240930; cv=none; b=jraTO3zu+PpMWBcBPeT7+Ey5u+DFVRLvsKthH1gbaPOuGS3kNFoB2I4iQUfbvKeZGuSTD2nXLZ5Nl/4YTX4as7nDTeA+F2rU7A7Ic3g1LhVp4V4aqmYhSYLZcZNbTNobPR87VaQXGEuoZu8o9nQrkWib6L4/yrX00O/9WcE42A4=
+	t=1745241137; cv=none; b=T4ASUkcUBDb9mNCeL0G2ZXncz0WBjxx/xxZZhOJclXxixqI6tIw2o0HfkfgwsDMjr410X90h2hTs1w004KlDtr4tCNeIk89fHOadfUKsr60/BHi4lJrfpwF6iOSVMkmJ75QNSnEpByBTzeGlSJ3Uq7l+L1VhPiSAo1p74LeJdXk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745240930; c=relaxed/simple;
-	bh=NNApjszw4RJiAnGWC1vZdO+OVrTvQOIdZdI8k6alXSE=;
+	s=arc-20240116; t=1745241137; c=relaxed/simple;
+	bh=piKrDlPqgj6AvtCN8xPcTY3wRQn60sXpDDVDy5YJ2/s=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=chCHReKpn+koo58TA/XgpBgL3h3kc36JUJGAYJBVAg8nGQXMuAsZ/2NuHDSPtriBS0zrtqP55bayOGnkl/4888dWWu+4gElB3FAObf0JHRq/QYXjEvEm9ofaMr5efGSV9RScTpYCDuEYUD38rOU7xpqOBE2/9xGrEyyGo0ZJIb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kjTaStAe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1437BC4CEE4;
-	Mon, 21 Apr 2025 13:08:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=dI3tge6FAQ3OStEC+KaFdZ0J0/zV2uMkKHzlo92jUwDLiDEdGTr52UeHuXE8uMQRcz8RlY8J7qI56o8bb6tK3iVzco6Kq+3Dh5CyMwj1hQis9rwSupA0x+hr5JszMuMSqqID6x8eBQOLlj7f7S15F/Yr6QMze6GppKtPBHMJAm4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O+CjTLsJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A5FBC4CEE4;
+	Mon, 21 Apr 2025 13:12:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745240929;
-	bh=NNApjszw4RJiAnGWC1vZdO+OVrTvQOIdZdI8k6alXSE=;
+	s=k20201202; t=1745241136;
+	bh=piKrDlPqgj6AvtCN8xPcTY3wRQn60sXpDDVDy5YJ2/s=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=kjTaStAeaRwrAVko1Ofbgd4IxUB5O/9N2F1HjE79EI9dvB0QQlrXqgCUQdgtJrPH3
-	 ERfAGaRbrRMDYPYKTr5t1t54BqjkEa786kI46v9UL6OOoxkSJz9SAB9oi88toQEIjV
-	 +v9kW/krvNCTEsfU6nHfqZ6zBz4XpFj9JdNBwmQeQx3JHoyifVAgyUVxgC9WIcP7zT
-	 DAigzh47DBZZAhPag5NSThN4pVhvBHa70lfM7yv2yLPRuY5A9LqAHuLQmAcfKUlaXt
-	 /w5Kbw7GZNuV9QeiI0vFrScWsbSQMJrFfk2J7pRYipBJ163BabYQRYePKRKhs0k63l
-	 tUWz03OjsCCMQ==
-Date: Mon, 21 Apr 2025 14:08:42 +0100
+	b=O+CjTLsJ3FoFnLsOgq+QLjSzXfPGfTU6wxQqL/1EeZb9Rmd2TbnrczaxKRG7XcBkz
+	 XNLW6VPxcY0NWnbMl1N3oCIlzsRU445j3OCe5ErY4xvItMbKb2R2Rz3JP9T2YFP7oh
+	 pLrNq8HxpbPShwFS9Nn0xZziV7DIr3PgrNClUKh5r7ZDSNSoflV34dRNZeBXo6dq1Z
+	 k0JMkERnVBVfO6RweBDSjhMtfq2FlBqJFnEvJkMAFKLmf7uzQOKS73HctYD+SgADUF
+	 CRKFOCEMv+wQ2mU5tazPQ89O9uJhDZPmeTRxjdKiMmQyKB66B6dP2tLb8MIOKQrs16
+	 STMW8oBBEzeRQ==
+Date: Mon, 21 Apr 2025 14:12:09 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Arthur Pilone <art.pilone@gmail.com>
-Cc: marcelo.schmitt@analog.com, linux-iio@vger.kernel.org,
- bruno.stephan@usp.br, aschwarz@usp.br
-Subject: Re: [PATCH v2] iio: adc: ad7091r-base: Move reg volatility check to
- new macro
-Message-ID: <20250421140842.08e4d26b@jic23-huawei>
-In-Reply-To: <20250420222512.173029-1-arthurpilone@usp.br>
-References: <20250420222512.173029-1-arthurpilone@usp.br>
+To: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+Cc: nattan <nattanferreira58@gmail.com>, subhajit.ghosh@tweaklogic.com,
+ lucasantonio.santos@usp.br, linux-iio@vger.kernel.org
+Subject: Re: [PATCH] iio: light: apds9306: Refactor threshold get/set
+ functions to
+Message-ID: <20250421141209.04f51a39@jic23-huawei>
+In-Reply-To: <aAU8ZczOnIIOcCOC@debian-BULLSEYE-live-builder-AMD64>
+References: <20250419232128.35759-1-nattanferreira58@gmail.com>
+	<aAU8ZczOnIIOcCOC@debian-BULLSEYE-live-builder-AMD64>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -61,99 +62,122 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sun, 20 Apr 2025 19:25:12 -0300
-Arthur Pilone <art.pilone@gmail.com> wrote:
+On Sun, 20 Apr 2025 15:26:45 -0300
+Marcelo Schmitt <marcelo.schmitt1@gmail.com> wrote:
 
-> From: Arthur Pilone <art.pilone@gmail.com>
+> Hello Nattan, Lucas,
 > 
-> Both ad7091r_writeable_reg() and ad7091r_volatile_reg() perform the
-> same test, checking whether a given 'reg' code is
-> AD7091R_REG_RESULT or AD7091R_REG_ALERT. While ad7091r_volatile_reg
-> returned true, ad7091r_writeable_reg returned false for the same
-> condition. As such, both functions introduced duplicate code.
+> Not sure it's worth extrancting the event direction comparison into that
+> separate function. Even though there is less code repetition, we now have an
+> extra comparison to handle get_thresh_reg() return. Despite of that, see
+> comments below.
 > 
-> We chose to implement the test as the AD7091R_IS_READ_ONLY_REG
-> macro to remove the duplicate code without introducing new
-> function calls, which would be the case if we chose to fix the
-> duplicate code with one of the two following alternatives:
+> On 04/19, nattan wrote:
+> > From: Nattan Ferreira <nattanferreira58@gmail.com>
+> > 
+> > Refactor the apds9306_event_thresh_get and apds9306_event_thresh_set functions
+> > to use a helper function (get_thresh_reg) for obtaining the correct register  
+> Wrap commit description to 75 columns.
 > 
->  A) Extracting a new function out of the test
+> > based on the direction of the event. This improves code readability,
+> > minimize the number of lines  and maintains consistency in accessing
+> > threshold registers.
+> > 
+> > Signed-off-by: Nattan Ferreira <nattanferreira58@gmail.com>
+> > Co-developed-by: Lucas Antonio <lucasantonio.santos@usp.br>
+> > Signed-off-by: Lucas Antonio <lucasantonio.santos@usp.br>
+> > ---
+> >  drivers/iio/light/apds9306.c | 38 ++++++++++++++++++++----------------
+> >  1 file changed, 21 insertions(+), 17 deletions(-)
+> > 
+> > diff --git a/drivers/iio/light/apds9306.c b/drivers/iio/light/apds9306.c
+> > index 69a0d609c..8e1cdaeb0 100644
+> > --- a/drivers/iio/light/apds9306.c
+> > +++ b/drivers/iio/light/apds9306.c
+> > @@ -6,7 +6,6 @@
+> >   *
+> >   * Copyright (C) 2024 Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
+> >   */
+> > -  
+> This doesn't seem to have any relation with the intent of the patch.
+> Drop this unrelated change.
 > 
->  B) Rewriting ad7091r_writeable_reg to call
->     ad7091r_volatile_reg or vice-versa.
+> >  #include <linux/bits.h>
+> >  #include <linux/cleanup.h>
+> >  #include <linux/delay.h>
+> > @@ -744,20 +743,28 @@ static int apds9306_event_period_set(struct apds9306_data *data, int val)
+> >  	return regmap_field_write(rf->int_persist_val, val);
+> >  }
+> >  
+> > -static int apds9306_event_thresh_get(struct apds9306_data *data, int dir,
+> > -				     int *val)
+> > +static int get_thresh_reg(int dir)  
+> Even though these functions are declared static, it's common patter in IIO
+> that driver functions start with the name of the driver. So, it would be more
+> conventional to call it apds9306_get_thresh_reg().
 > 
-> Co-developed-by: Bruno Stephan <bruno.stephan@usp.br>
-> Signed-off-by: Bruno Stephan <bruno.stephan@usp.br>
-> Co-developed-by: Andre de Lima <aschwarz@usp.br>
-> Signed-off-by: Andre de Lima <aschwarz@usp.br>
-> Signed-off-by: Arthur Pilone <art.pilone@gmail.com>
+> >  {
+> > -	int var, ret;
+> > -	u8 buff[3];
+> > -
+> >  	if (dir == IIO_EV_DIR_RISING)
+> > -		var = APDS9306_ALS_THRES_UP_0_REG;
+> > +		return  APDS9306_ALS_THRES_UP_0_REG;
 
-I'm late to the game but to me, simpler to not have a macro but avoid
-duplication by having one function call the other. Also a more
-minimal comment can convey the point you want to make.
+Just one space after return
 
-> ---
-> V1->V2: Renamed macro and added clarifying comment
+> >  	else if (dir == IIO_EV_DIR_FALLING)
+> > -		var = APDS9306_ALS_THRES_LOW_0_REG;
+> > +		return APDS9306_ALS_THRES_LOW_0_REG;
+> >  	else
+> >  		return -EINVAL;
+> > +}
+> > +
+> > +static int apds9306_event_thresh_get(struct apds9306_data *data, int dir,
+> > +				     int *val)
+> > +{
+> > +	int reg, ret;
+> > +	u8 buff[3];
+> > +
+> > +	reg = get_thresh_reg(dir);
+> >  
+> > -	ret = regmap_bulk_read(data->regmap, var, buff, sizeof(buff));  
+> There is now a blank line between function call (apds9306_get_thresh_reg()) and
+> the return check, which is unusual in IIO. Drop the blank line between those
+> 	reg = get_thresh_reg(dir);
+> 	if (reg == -EINVAL)
+> ...
 > 
->  drivers/iio/adc/ad7091r-base.c | 20 ++++++--------------
->  drivers/iio/adc/ad7091r-base.h |  2 ++
->  2 files changed, 8 insertions(+), 14 deletions(-)
+> > +	if (reg == -EINVAL)
+> > +		return reg;
+> > +
+> > +	ret = regmap_bulk_read(data->regmap, reg, buff, sizeof(buff));
+> >  	if (ret)
+> >  		return ret;
+> >  
+> > @@ -769,22 +776,19 @@ static int apds9306_event_thresh_get(struct apds9306_data *data, int dir,
+> >  static int apds9306_event_thresh_set(struct apds9306_data *data, int dir,
+> >  				     int val)
+> >  {
+> > -	int var;
+> > +	int reg;
+> >  	u8 buff[3];  
+> Add a blank line between local variable declarations and rest of function code.
+> > +	reg = get_thresh_reg(dir);
+> >    
+> Another blank line between function call and return check to be dropped here.
 > 
-> diff --git a/drivers/iio/adc/ad7091r-base.c b/drivers/iio/adc/ad7091r-base.c
-> index 931ff71b2888..e07614b70d12 100644
-> --- a/drivers/iio/adc/ad7091r-base.c
-> +++ b/drivers/iio/adc/ad7091r-base.c
-> @@ -375,25 +375,17 @@ EXPORT_SYMBOL_NS_GPL(ad7091r_probe, "IIO_AD7091R");
->  
->  bool ad7091r_writeable_reg(struct device *dev, unsigned int reg)
->  {
-> -	switch (reg) {
-> -	case AD7091R_REG_RESULT:
-> -	case AD7091R_REG_ALERT:
-> -		return false;
-> -	default:
-> -		return true;
-> -	}
-> +	return !AD7091R_IS_READ_ONLY_REG(reg);
->  }
-
-I'd keep this function as is...
-
->  EXPORT_SYMBOL_NS_GPL(ad7091r_writeable_reg, "IIO_AD7091R");
->  
->  bool ad7091r_volatile_reg(struct device *dev, unsigned int reg)
->  {
-> -	switch (reg) {
-> -	case AD7091R_REG_RESULT:
-> -	case AD7091R_REG_ALERT:
-> -		return true;
-> -	default:
-> -		return false;
-> -	}
-> +	/*
-> +	 * The volatile ad7091r registers happen to be precisely the
-> +	 * two read-only registers.
-> +	 */
-> +	return AD7091R_IS_READ_ONLY_REG(reg);
-
-	 /* The volatile ad7091r registers are also the only RO ones. */
-	return !ad7981r_writeable_reg(dev, reg);
-
->  }
->  EXPORT_SYMBOL_NS_GPL(ad7091r_volatile_reg, "IIO_AD7091R");
->  
-> diff --git a/drivers/iio/adc/ad7091r-base.h b/drivers/iio/adc/ad7091r-base.h
-> index 092ddea0f395..498923801ce1 100644
-> --- a/drivers/iio/adc/ad7091r-base.h
-> +++ b/drivers/iio/adc/ad7091r-base.h
-> @@ -17,6 +17,8 @@
->  #define AD7091R_REG_CH_LOW_LIMIT(ch) ((ch) * 3 + 4)
->  #define AD7091R_REG_CH_HIGH_LIMIT(ch) ((ch) * 3 + 5)
->  #define AD7091R_REG_CH_HYSTERESIS(ch) ((ch) * 3 + 6)
-> +#define AD7091R_IS_READ_ONLY_REG(reg)                              \
-> +		((reg) == AD7091R_REG_RESULT || (reg) == AD7091R_REG_ALERT)
->  
->  /* AD7091R_REG_RESULT */
->  #define AD7091R5_REG_RESULT_CH_ID(x)	    (((x) >> 13) & 0x3)
+> > -	if (dir == IIO_EV_DIR_RISING)
+> > -		var = APDS9306_ALS_THRES_UP_0_REG;
+> > -	else if (dir == IIO_EV_DIR_FALLING)
+> > -		var = APDS9306_ALS_THRES_LOW_0_REG;
+> > -	else
+> > -		return -EINVAL;
+> > +	if (reg == -EINVAL)
+> > +		return reg;
+> >    
+> 
+> Regards,
+> Marcelo
 
 

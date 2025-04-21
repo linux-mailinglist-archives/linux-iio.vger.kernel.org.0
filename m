@@ -1,47 +1,47 @@
-Return-Path: <linux-iio+bounces-18411-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18412-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F318BA9500B
-	for <lists+linux-iio@lfdr.de>; Mon, 21 Apr 2025 13:15:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5461EA95013
+	for <lists+linux-iio@lfdr.de>; Mon, 21 Apr 2025 13:18:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3314616B0E0
-	for <lists+linux-iio@lfdr.de>; Mon, 21 Apr 2025 11:15:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7DEB216B5F2
+	for <lists+linux-iio@lfdr.de>; Mon, 21 Apr 2025 11:18:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2ACD71DD873;
-	Mon, 21 Apr 2025 11:15:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF8D5261591;
+	Mon, 21 Apr 2025 11:18:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Myzm4XAF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u+mQihMe"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D581CCA5E;
-	Mon, 21 Apr 2025 11:15:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A92B22561DA;
+	Mon, 21 Apr 2025 11:18:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745234132; cv=none; b=nWzEZ8PhlxiNl2s2KmpQA8qkAIACxz8w2tdbtfOv8/NFBzCYP+jKxfD+eA3/b452dvrWHpENIL6PJUBnHDAsrbSb173uDogfOsZHt7GX6ejG0eoj7cMYe36QYTBLoO8z5MyzRSOe5GCLmadeU2pFS4tYjg+Jh+s8jyLHyB7b1aU=
+	t=1745234283; cv=none; b=ptTan9N17QYO5/Ak/T3Lwabzq7cR9ziis93UXH9iGhjoINV/hdEhg+AurcyWcdRon3WBd4nOY8F21Oub9oKK9W9jipYy3qHgK7+mVIBd9nauleBxfojceuvhvwLDXmJuAFmhwL0ghoR3geN+1JRsuTcM0UTBwMDW8O5BTappIKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745234132; c=relaxed/simple;
-	bh=TdFSkW6rqypU0+ImrYwDMTJM3iLFX0OMR7ZgNNK8YxA=;
+	s=arc-20240116; t=1745234283; c=relaxed/simple;
+	bh=USOlz+eqtQB3+FtKVUspdDKmHiwUiEaAqh+xoaci2Lo=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=g06Cece1gWp3RghdGQ7bDA5BubVBF65Uqb9ayOV5kVdhAV3XZIXWxWnJcmEcNMSlvUhpTFeTBcepClmRO44DSCsf6Ntil3Id1edFhpVwv1CLhis4vY101/Z18IJ+uF+Jo8Wg2Ci05J9L272jTOusnq/OgNjKFB8CI56wCMMxuL8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Myzm4XAF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D609C4CEE4;
-	Mon, 21 Apr 2025 11:15:24 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZuNmsbDrUgNL4aP4V4aXEp2X9joXdL7r/2BTAQGAHHVsbwG7uCCMoAb0b27L1FUV5na6Us55OIvvxUCk9/MezbV1ObYDTaLLHKiIaL1igfAS93QpRyE0sqYymfy0vOD6wB2aeU6M54MWLu5bIxHsNCWLs1IZs6//Famx2hDjv6E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u+mQihMe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45781C4CEE4;
+	Mon, 21 Apr 2025 11:17:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745234131;
-	bh=TdFSkW6rqypU0+ImrYwDMTJM3iLFX0OMR7ZgNNK8YxA=;
+	s=k20201202; t=1745234283;
+	bh=USOlz+eqtQB3+FtKVUspdDKmHiwUiEaAqh+xoaci2Lo=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Myzm4XAFqBLGoeUjlyfyQjhc7KPyaHZA16g4xxJMBb7l20uElkuxTHmsAWf8saup6
-	 adlybNGy/G7BUnaHEPf8718dBJGEgRFuQeQkCxtqX8Bn9p/2l2vvxhcpjI9hB0bsPM
-	 lJ2+qyke6mrPwKI8Hh8un4rovBOZX2OkCk4Q8X9nn227DZEF2okAnm8j/vbca6YH+g
-	 VaMbt/bih3JxM+cQak8hKBgGM5Hm7usTKDTOQkny7+xPYSR7/bJtZQyYZOZQ94UFRL
-	 zmDWSIkMfemzQLrVhOmcFqQVVSellMq3+ImJPvJP9nDSEsU1RBZZE8h7a7SANHZNZ4
-	 E3UN3wWgZ/wMQ==
-Date: Mon, 21 Apr 2025 12:15:19 +0100
+	b=u+mQihMeljmxRToq4vLWJkTWNB90Va0fKqkBYzu8vYC/MxjJU+CG72R4LBbJjLo91
+	 BoCMnbHxkzQ4LOxaYbDmIgJ3nuQN1MPCHL8NgOEvFlsGvdRUSoWFv0CfMKT3FZVeL0
+	 IRECzDhQsSUeucp1L8AUQhNisZ3q6aICkBfUhTkIGIaHjWJFvNa/AAHnTMmqgJn/jO
+	 psgr+Q6iCj5qDorPs38PyrAyftZMpqSug/e2BC/U96v26UwTTTbEqbWdyW//8Tp143
+	 bSrG78Fde/w6848U8BZXQom1OxXevS9DAtMMEs8A0QXlLOfFyH8P74CUfbmzAfuOWF
+	 TkMaau80HEy7Q==
+Date: Mon, 21 Apr 2025 12:17:52 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: David Lechner <dlechner@baylibre.com>
 Cc: Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko
@@ -55,12 +55,11 @@ Cc: Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko
  <alexandre.torgue@foss.st.com>, linux-iio@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
  imx@lists.linux.dev, linux-stm32@st-md-mailman.stormreply.com
-Subject: Re: [PATCH 06/10] iio: adc: ti-adc0832: use struct with aligned_s64
- timestamp
-Message-ID: <20250421121519.4189bd3d@jic23-huawei>
-In-Reply-To: <20250418-iio-prefer-aligned_s64-timestamp-v1-6-4c6080710516@baylibre.com>
+Subject: Re: [PATCH 00/10] iio: prefer aligned_s64 timestamp (round 1)
+Message-ID: <20250421121752.5a7a178e@jic23-huawei>
+In-Reply-To: <abe0db44-b27f-4cea-9edc-862e4096f80c@baylibre.com>
 References: <20250418-iio-prefer-aligned_s64-timestamp-v1-0-4c6080710516@baylibre.com>
-	<20250418-iio-prefer-aligned_s64-timestamp-v1-6-4c6080710516@baylibre.com>
+	<abe0db44-b27f-4cea-9edc-862e4096f80c@baylibre.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -71,68 +70,49 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 18 Apr 2025 14:58:25 -0500
+On Fri, 18 Apr 2025 18:05:42 -0500
 David Lechner <dlechner@baylibre.com> wrote:
 
-> Use a struct with aligned s64_timestamp instead of a padded array for
-> the buffer used for iio_push_to_buffers_with_ts(). This makes it easier
-> to see the correctness of the size and alignment of the buffer.
+> On 4/18/25 2:58 PM, David Lechner wrote:
+> > While reviewing the recent conversion to iio_push_to_buffers_with_ts(),
+> > I found it very time-consuming to check the correctness of the buffers
+> > passed to that function when they used an array with extra room at the
+> > end for a timestamp. And we still managed find a few that were wrongly
+> > sized or not properly aligned despite several efforts in the past to
+> > audit these for correctness already.
+> > 
+> > Even though these ones look to be correct, it will still be easier for
+> > future readers of the code if we follow the pattern of using a struct
+> > with the array and timestamp instead.
+> > 
+> > For example, it is much easier to see that:
+> > 
+> > struct {
+> > 	__be32 data[3];
+> > 	aligned_s64 timestamp;
+> > } buffer;
+> >   
+> After sending [1], I realized that some (perhaps many) of these would actually
+> be a better candidate for the proposed IIO_DECLARE_BUFFER_WITH_TS macro rather
+> that converting to the struct style as above.
 > 
-> Signed-off-by: David Lechner <dlechner@baylibre.com>
-> ---
->  drivers/iio/adc/ti-adc0832.c | 15 +++++++--------
->  1 file changed, 7 insertions(+), 8 deletions(-)
+> Case in point: if the driver using that struct allows reading only one channel,
+> then the offset of the timestamp when doing iio_push_to_buffers_with_ts() would
+> be 8 bytes, not 16, so the struct would not always be the correct layout.
 > 
-> diff --git a/drivers/iio/adc/ti-adc0832.c b/drivers/iio/adc/ti-adc0832.c
-> index cfcdafbe284b103a069857028886411bc72dea4f..f508f7113faa2610a2889f3c36c5a679fa72264d 100644
-> --- a/drivers/iio/adc/ti-adc0832.c
-> +++ b/drivers/iio/adc/ti-adc0832.c
-> @@ -10,6 +10,7 @@
->  #include <linux/module.h>
->  #include <linux/mod_devicetable.h>
->  #include <linux/spi/spi.h>
-> +#include <linux/types.h>
->  #include <linux/iio/iio.h>
->  #include <linux/regulator/consumer.h>
->  #include <linux/iio/buffer.h>
-> @@ -29,12 +30,10 @@ struct adc0832 {
->  	struct regulator *reg;
->  	struct mutex lock;
->  	u8 mux_bits;
-> -	/*
-> -	 * Max size needed: 16x 1 byte ADC data + 8 bytes timestamp
-> -	 * May be shorter if not all channels are enabled subject
-> -	 * to the timestamp remaining 8 byte aligned.
+> As long as the driver doesn't access the timestamp member of the struct, it
+> doesn't really matter, but this could be a bit misleading to anyone who might
+> unknowing try to use it in the future.
+Agreed.  
 
-If the comment is going, we need to capture that there are 16 channels
-via a define or a comment.
+These timestamp inserting functions have always been a bit weird. I kind
+of regret not just leaving it as a per driver thing to do, but that ship
+long sailed.  I definitely want to keep the layout apparent in the drivers
+though so this approach only applied to 1 of the ones in this series.
 
-This one probably wants to stay as a buffer but the same will apply to a new
-patch doing that.
+Jonathan
 
-
-> -	 */
-> -	u8 data[24] __aligned(8);
-> +	struct {
-> +		u8 data[16];
-> +		aligned_s64 timestamp;
-> +	} buffer;
->  
->  	u8 tx_buf[2] __aligned(IIO_DMA_MINALIGN);
->  	u8 rx_buf[2];
-> @@ -222,10 +221,10 @@ static irqreturn_t adc0832_trigger_handler(int irq, void *p)
->  			goto out;
->  		}
->  
-> -		adc->data[i] = ret;
-> +		adc->buffer.data[i] = ret;
->  		i++;
->  	}
-> -	iio_push_to_buffers_with_ts(indio_dev, adc->data, sizeof(adc->data),
-> +	iio_push_to_buffers_with_ts(indio_dev, &adc->buffer, sizeof(adc->buffer),
->  				    iio_get_time_ns(indio_dev));
->  out:
->  	mutex_unlock(&adc->lock);
 > 
+> [1]: https://lore.kernel.org/linux-iio/20250418-iio-introduce-iio_declare_buffer_with_ts-v1-0-ee0c62a33a0f@baylibre.com/
 
 

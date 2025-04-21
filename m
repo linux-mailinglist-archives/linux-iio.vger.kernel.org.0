@@ -1,58 +1,56 @@
-Return-Path: <linux-iio+bounces-18420-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18421-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71586A9505C
-	for <lists+linux-iio@lfdr.de>; Mon, 21 Apr 2025 13:44:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 908D9A95067
+	for <lists+linux-iio@lfdr.de>; Mon, 21 Apr 2025 13:49:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5EEDC7A528A
-	for <lists+linux-iio@lfdr.de>; Mon, 21 Apr 2025 11:43:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8C6D618937F4
+	for <lists+linux-iio@lfdr.de>; Mon, 21 Apr 2025 11:49:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BCF6264613;
-	Mon, 21 Apr 2025 11:44:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09204261575;
+	Mon, 21 Apr 2025 11:49:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bsc3jUwP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qzCnhf4N"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEAFE262D29;
-	Mon, 21 Apr 2025 11:44:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4CB04C85;
+	Mon, 21 Apr 2025 11:49:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745235850; cv=none; b=V/JlvTB5DXEe3RWY16/M9f98fEut9+fIq09CM5xezh0PVbaYi+txdrhiSDv2gfJ3vyu+pyxI4GwdbcQdLlzn6AAkxfj6jHsWYNOi/85ILInkzyj+3uWcF2GiotqDXXG1vpESLX5oDSdKaiecAty1nxfQZpQ5TfpYGP7LDNcdxKE=
+	t=1745236163; cv=none; b=iBBYdK158KsxYVaWC5+J/flMQIuMMg5s6DN6pSfMraCpM7Zrf5P2cwoHaRbQvN4BZw8UqS7ogUY82EWKT/CHqYTlNHZdVjqn9V/2eBFHvh3NNwZqDUdb38TvsMd7/e2c2FciYNTzievgTfxblBetgDk4FOHoaMHQdo+z64IVO+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745235850; c=relaxed/simple;
-	bh=KFt7KVz7z+ivKXjqeTBsn4Dyd+33+BcExIfbhTDS1iM=;
+	s=arc-20240116; t=1745236163; c=relaxed/simple;
+	bh=o5jpVjh6M95IwHo0cOnF2XWauP9xFFq5pREq0Q+F/3A=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fX8/5QLaroeS5oMLsMekoDI6uxuio3O84aWMvYIXhK+qkvhY3jWp8g5bmTEAe/1eS5JFvY6r4nPFp5qU9N8YJG5/Fu/SAlVbefKrvuKlMA6vmm1CapH3AOBUWlwaYRb3qF0tdo8+vVkoe+3X/dIXEOY4+r8ZMfrppkY2VJKs8go=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Bsc3jUwP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 358B9C4CEE4;
-	Mon, 21 Apr 2025 11:44:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=H5yzSjsVBxkcOe/JPlhK/SowrPJSiK/8dhmghVLn9iSV7ebJDC4godA1Hm6F4aEtMwef57MgMVPFpbki4HVkKKkg1FZG4DM4ZDOb5AaEoWv7EMtBKwODcqrt0BWrZKp14GTyBEMMSc/cB0ksKKlZd7ViPrwzvQLBpQQ4Y7tnEBM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qzCnhf4N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3596CC4CEE4;
+	Mon, 21 Apr 2025 11:49:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745235849;
-	bh=KFt7KVz7z+ivKXjqeTBsn4Dyd+33+BcExIfbhTDS1iM=;
+	s=k20201202; t=1745236163;
+	bh=o5jpVjh6M95IwHo0cOnF2XWauP9xFFq5pREq0Q+F/3A=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Bsc3jUwPwu0cl688/IsxDAm3p5IvXzLuH34bn5XkG3BqIVWMHJ8Orv0GhYh7UYRRp
-	 Fm1tuVJKv71Q2cOCrqERDUptmbc6eSTLlrbBrf8H4Br7ldYCivPhj3v2Ivyr3xpbRJ
-	 9uAVJkgUQPp29ftVxqVbgKwhrOHAyCn0RQU3yph8/qZNs0gvP9UX40Qek11VuWp3lt
-	 utoIZykp8yz36KaTmXPm9HJsIM4WsIE/qlqmpKtD9lEoY0AFp+hNZPEhbXhH2eytct
-	 yi8DP6MBGl83NWLD0IREMdVRoKfypDu56MdJT3pu/JA9Y//zsBqU6D/FSXk8euc82P
-	 IkP08kQExrTCA==
-Date: Mon, 21 Apr 2025 12:44:01 +0100
+	b=qzCnhf4N18HXKHEhnXVoW+xMCdKcTNPeSyNHMvpR30Cc7dwhkvm1qU8PNOpbrVPAR
+	 QG9yrLEIWKOHvFI1oLf9v0CDmaAO5MK6r+qv1B7Fp+7WIhldS4+NsBd4PGKIpCQbnB
+	 b1zkBpSC+NbjN28EnKsco8pGvj0tD/xWh9JK+yYA1iXwbxS0uuizj+u+oqy0Eiw65/
+	 uhVGDWUi+TqscR/FMGM6+qfcFaQtKSS/dYRutkjT8LqSDW+R79arEMcGWkNJ17Nd/W
+	 wfMW0xFl92ZX96Zt4qbBKNeRWW1IrPERydIOhgQiv69+fkt6cReI+orXE/Efx0ytAi
+	 dCDp9ODSSPLag==
+Date: Mon, 21 Apr 2025 12:49:15 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: Gabriel Shahrouzi <gshahrouzi@gmail.com>
-Cc: gregkh@linuxfoundation.org, lars@metafoo.de, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-staging@lists.linux.dev,
- Michael.Hennerich@analog.com, skhan@linuxfoundation.org,
- linux-kernel-mentees@lists.linux.dev, stable@vger.kernel.org
-Subject: Re: [PATCH v4] staging: iio: ad5933: Correct settling cycles
- encoding per datasheet
-Message-ID: <20250421124401.0daa6a2e@jic23-huawei>
-In-Reply-To: <20250420013009.847851-1-gshahrouzi@gmail.com>
-References: <20250420013009.847851-1-gshahrouzi@gmail.com>
+Cc: lars@metafoo.de, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Michael.Hennerich@analog.com,
+ skhan@linuxfoundation.org, linux-kernel-mentees@lists.linux.dev
+Subject: Re: [PATCH] iio: adis16201: Correct inclinometer channel resolution
+Message-ID: <20250421124915.32a18d36@jic23-huawei>
+In-Reply-To: <20250419144520.815198-1-gshahrouzi@gmail.com>
+References: <20250419144520.815198-1-gshahrouzi@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,50 +61,45 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sat, 19 Apr 2025 21:30:09 -0400
+On Sat, 19 Apr 2025 10:45:20 -0400
 Gabriel Shahrouzi <gshahrouzi@gmail.com> wrote:
 
-> The AD5933 datasheet (Table 13) lists the maximum cycles to be 0x7FC
-> (2044).
+> The inclinometer channels were previously defined with 14 realbits.
+> However, the ADIS16201 datasheet states the resolution for these output
+> channels is 12 bits (Page 14, text description; Page 15, table 7).
 > 
-> Clamp the user input to the maximum effective value of 0x7FC cycles.
+> Correct the realbits value to 12 to accurately reflect the hardware.
 > 
-> Fixes: f94aa354d676 ("iio: impedance-analyzer: New driver for AD5933/4 Impedance Converter, Network Analyzer")
-> Cc: stable@vger.kernel.org
 > Signed-off-by: Gabriel Shahrouzi <gshahrouzi@gmail.com>
-I'm taking this the slow path as it has been wrong a very long time
-and there is a lot of churn on IIO staging drivers right now so we may
-have other stuff that I don't want to delay building on top of this.
+> ---
+> Omit fixes tag because it targets driver before it moved out of staging.
 
-Applied to the togreg branch of iio.git and pushed out as testing.
+Why does that matter?  Should have a fixes tag.  Whether we chose
+to backport the fix is a different matter.
 
-Jonathan
+Otherwise looks fine to me. Reply to this thread with a fixes tag
+and I can pick it up without needing a v2.
+
 
 > ---
-> Changes in v4:
-> 	- Provide clear git body description.
-> Changes in v3:
-> 	- Only include fix (remove refactoring which will be its own
-> 	  separate patch).
-> Changes in v2:
->         - Fix spacing in comment around '+'.
->         - Define mask and values for settling cycle multipliers.
-> ---
->  drivers/staging/iio/impedance-analyzer/ad5933.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  drivers/iio/accel/adis16201.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> diff --git a/drivers/staging/iio/impedance-analyzer/ad5933.c b/drivers/staging/iio/impedance-analyzer/ad5933.c
-> index d5544fc2fe989..f8fcc10ea8150 100644
-> --- a/drivers/staging/iio/impedance-analyzer/ad5933.c
-> +++ b/drivers/staging/iio/impedance-analyzer/ad5933.c
-> @@ -411,7 +411,7 @@ static ssize_t ad5933_store(struct device *dev,
->  		ret = ad5933_cmd(st, 0);
->  		break;
->  	case AD5933_OUT_SETTLING_CYCLES:
-> -		val = clamp(val, (u16)0, (u16)0x7FF);
-> +		val = clamp(val, (u16)0, (u16)0x7FC);
->  		st->settling_cycles = val;
+> diff --git a/drivers/iio/accel/adis16201.c b/drivers/iio/accel/adis16201.c
+> index 982b33f6eccac..dcc8d9f2ee0f1 100644
+> --- a/drivers/iio/accel/adis16201.c
+> +++ b/drivers/iio/accel/adis16201.c
+> @@ -211,9 +211,9 @@ static const struct iio_chan_spec adis16201_channels[] = {
+>  			BIT(IIO_CHAN_INFO_CALIBBIAS), 0, 14),
+>  	ADIS_AUX_ADC_CHAN(ADIS16201_AUX_ADC_REG, ADIS16201_SCAN_AUX_ADC, 0, 12),
+>  	ADIS_INCLI_CHAN(X, ADIS16201_XINCL_OUT_REG, ADIS16201_SCAN_INCLI_X,
+> -			BIT(IIO_CHAN_INFO_CALIBBIAS), 0, 14),
+> +			BIT(IIO_CHAN_INFO_CALIBBIAS), 0, 12),
+>  	ADIS_INCLI_CHAN(Y, ADIS16201_YINCL_OUT_REG, ADIS16201_SCAN_INCLI_Y,
+> -			BIT(IIO_CHAN_INFO_CALIBBIAS), 0, 14),
+> +			BIT(IIO_CHAN_INFO_CALIBBIAS), 0, 12),
+>  	IIO_CHAN_SOFT_TIMESTAMP(7)
+>  };
 >  
->  		/* 2x, 4x handling, see datasheet */
 
 

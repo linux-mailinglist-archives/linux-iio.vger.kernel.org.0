@@ -1,151 +1,143 @@
-Return-Path: <linux-iio+bounces-18433-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18434-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE220A95154
-	for <lists+linux-iio@lfdr.de>; Mon, 21 Apr 2025 15:03:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3931A95159
+	for <lists+linux-iio@lfdr.de>; Mon, 21 Apr 2025 15:05:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E32B169605
-	for <lists+linux-iio@lfdr.de>; Mon, 21 Apr 2025 13:03:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C6AE6188E4C1
+	for <lists+linux-iio@lfdr.de>; Mon, 21 Apr 2025 13:05:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 190BD26560C;
-	Mon, 21 Apr 2025 13:03:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EC5F265623;
+	Mon, 21 Apr 2025 13:05:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N0JO6qpD"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fyLLAp0h"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB3EE13C918;
-	Mon, 21 Apr 2025 13:03:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60F84263F32;
+	Mon, 21 Apr 2025 13:05:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745240629; cv=none; b=kzhnV9rCVUERcpjuIxHbb9P1xovlWdDmMtOVemwO0pr1lx+plv2HFzPf+TajO63kPVqnaRtsTLcIY6ndKLiHNzojiyNSv+Nrl9MAaY56aWsuLMEuykfhBjALY/ZDQZ+06iyX4eDttWWLWq28XGRZLBIGbh9lABse+nSRhYZNLxM=
+	t=1745240739; cv=none; b=LhLtpwS7geWZlpYaMcU2Z0GrnsvalsZqApbJX7FFoSrlZdtexewj7rWLHdIXdhmoqA9EbzqPek8YvVH60UgYrzpPQOoaoTt+UBJjB4vTJNmfJFIrTSd40c1eMdPqUsGLOXazB/mmZB4lsYbnZmlkSISQhX231fafZAcTOMOX1H0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745240629; c=relaxed/simple;
-	bh=sP8/NKPFESl3jwqPE7MLSdYvKtkO2SIR8tLuFX5e2SA=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RrvcAsJxKcxExtoReKkh6jmUkBidSntf9r+2iyMBZ/bPYcxubOVv21v4pzsgyGI3ILeI7sIxdsJOjNnl6cdxE1Mkzbs9Pti2uZaTkt+yHKNWmcfG31QIfVZrM+Tu1eIgTMmj2XsSj6AOJpKuHBqX3DVlXbQFMM5ChQ7yecTc2D8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N0JO6qpD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BCF8C4CEE4;
-	Mon, 21 Apr 2025 13:03:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745240629;
-	bh=sP8/NKPFESl3jwqPE7MLSdYvKtkO2SIR8tLuFX5e2SA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=N0JO6qpDPxKWq68jvUxw8B5xKbKu3JSd/ruInsoQE179kBZggV0PgOj0z6kAAVgGz
-	 gYzhy1IgBXFuTqu0UsnKlsVYQXvmqKcHqkxLlzCVJ3XD8+vj6iHvjaHwOSPCLMT/u2
-	 Jhao2gSYTdw1k8PDt19p+pbSzhn4jICkF7Uq1A+pQs80tHzgK0wbC7b/CFNe9Je6s/
-	 ovrMeEyVxlycWhwQB/rxuOkQsM0wItaEQ8P93msCBh7ZvQKTHTpF9Ai+KtVvtI/z8T
-	 Lc7Vx25I32Ful5Jn2vq9vrihvQ8/D82xuboy/KTu4cUzrTE8ySnxrHQGKtPrq4fDzf
-	 2puXKkezucLdQ==
-Date: Mon, 21 Apr 2025 14:03:42 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: David Lechner <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?=
- <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Lars-Peter Clausen
- <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/4] iio: introduce IIO_DECLARE_BUFFER_WITH_TS
-Message-ID: <20250421140342.4097c0c4@jic23-huawei>
-In-Reply-To: <CAHp75VdcMoxoBU+fKQ5ex28N7YJNcEe96dOuq6hWFxpnn7UYyQ@mail.gmail.com>
-References: <20250418-iio-introduce-iio_declare_buffer_with_ts-v1-0-ee0c62a33a0f@baylibre.com>
-	<CAHp75VdcMoxoBU+fKQ5ex28N7YJNcEe96dOuq6hWFxpnn7UYyQ@mail.gmail.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1745240739; c=relaxed/simple;
+	bh=f+BKdAC4I6YUGknxlC3Xm4jFCVMEuPMlEQphh5ZvvvI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=nIYznoqJ3m2GXpRJoOD0U199vGAzwfKuaBzbJWQPtgspN3tQGoVXvUXOjST0MYyeoMkgtT8lZoURnlMSu2h6lmFtgxG4HfYn2chDIpX/rdnAdVPOmV2X1YBhvTbOiBukCY9iR1eYmPBuyI/Hvdj1maT8u2KyOvLy+h6lp3bXdLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fyLLAp0h; arc=none smtp.client-ip=209.85.160.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-47690a4ec97so42330361cf.2;
+        Mon, 21 Apr 2025 06:05:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1745240735; x=1745845535; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=mFtNIhESQPUgGQGLUOpZgw8PI1xqIhF3XCImtswCRMw=;
+        b=fyLLAp0hBV1cXX9gf/HZAMrb0BH7bdBrylF8ZlmKItnV2WUD/NBnOit3M3hbY69fDL
+         snLI5+vVF3wZAqDi2pn4O+nsIzBlReySopIsNaMgQylOd0jMrPHP3LZQUWJ4NC9fHFid
+         6TN4qJA2TBGtTD5ydceI7B8xWwXEkkWSzFtzNoNkHkzZiUvfkTUgjavBYRHOOWYRgGIC
+         dK25d6YbrPXXou7l8UX/D2ONx1hqwn23eVhRU835dFLIr6jEi+933msIlERsDFFzWWKv
+         QVpYzLxi1dHGk64bJREV1ixDpuPi5bZk2SWeggGcNWf+w8fpqx25iiUL4u2tC4CueCRV
+         BE6A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745240735; x=1745845535;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=mFtNIhESQPUgGQGLUOpZgw8PI1xqIhF3XCImtswCRMw=;
+        b=afl/oGgTB62BjIYj4GRJLH7FsX7Sp7VdCrjCwHkQxUBPTuzCA01BR/7WhDBJJHA6qy
+         iZMEKx2kGBBfDiKBPDqenF13Uk/R0blayk9uedMbjajiNAgRSXK0EPdBZSUHkOyBJDeW
+         kQHbkXZNSeWDUteNyuYQoz2N1vD2GktBJ0hHCq6aIaE2czil4IFwq0L4xpOxv2ElvJ4t
+         2UL65YFIeknUKFQB9p17KDO/bHb+KfT0FhqbvCv111nLH38BdlVDYU7OKKNgdjW5SUCS
+         bMXf2szMa06YWZsnx2LG5sBHBjhJ+y7uOKuAzt+8l981QFGXNx3UUZjT5U6xi0PVG9XG
+         k31w==
+X-Forwarded-Encrypted: i=1; AJvYcCUG5B35FRD8/dr7OMoSiv3ESRfE11/c8E2G7wHeu6lAxtkeM6A2QTJzJYIfOjFEHwv34qHQajIogeddRQde@vger.kernel.org, AJvYcCV/3djDq+Te7rSaAXkr2heUMcYAh6rzSbE51Gq5luwXhTLRLeEd5zNAILEu0ooVoxgaLIWUycdS9dQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx6qI2N6q58wYvSEjfez29kSuHPhpZFAST2CBTRiPc7c9Aouhy3
+	Wx242j2lOGBmhdZSRJT898AXTn1+PRQKyzmM66MtPMnWc6zgySaQgnCYe/8eyOg/EegWki8Xwbd
+	VUAgmCQRGz0vK9UbnyYs4bwtib20=
+X-Gm-Gg: ASbGnctPw2bpdZE284BHzydK6gtd2JQD4E97DBZhu+dxaF0Z58Mdxk/U1QxiXo1QKeE
+	RCc/g7ERXj1Z+OMPT1PsYDDYwqJPCnMq4A7nm6/0Yiaf6ShrmuIMh2l00rcMg9Bc4peG1/y5JTJ
+	ehBBW5pasmYf/NrHtyjZsor5WtcgbiquHSmx8QlxKknZozSu6Sl0LB/Q==
+X-Google-Smtp-Source: AGHT+IFzhhB+GWbWRt4VxGeCchwkPhazFoXhUCuwU/HnqxTikuays0RZ9Gjb8LQHrf9hUaObS2S/SGrxuiz6Va7SYmY=
+X-Received: by 2002:ac8:5748:0:b0:477:cb1:ab2a with SMTP id
+ d75a77b69052e-47aec39436bmr229380531cf.13.1745240735267; Mon, 21 Apr 2025
+ 06:05:35 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+References: <20250419144520.815198-1-gshahrouzi@gmail.com> <20250421124915.32a18d36@jic23-huawei>
+In-Reply-To: <20250421124915.32a18d36@jic23-huawei>
+From: Gabriel Shahrouzi <gshahrouzi@gmail.com>
+Date: Mon, 21 Apr 2025 09:05:24 -0400
+X-Gm-Features: ATxdqUGZBqiT-xkUtjMAQApZJcXMrreXjPpwyLrHEPICF2V0q6d2B3Psi9ZDg1k
+Message-ID: <CAKUZ0z+CSMqCNFAT9k6nUkiwYjq0QG=hH3QPLO-w47xWLkVUxg@mail.gmail.com>
+Subject: Re: [PATCH] iio: adis16201: Correct inclinometer channel resolution
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: lars@metafoo.de, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Michael.Hennerich@analog.com, skhan@linuxfoundation.org, 
+	linux-kernel-mentees@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, 20 Apr 2025 07:36:18 +0300
-Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
-
-> On Sat, Apr 19, 2025 at 1:59=E2=80=AFAM David Lechner <dlechner@baylibre.=
-com> wrote:
+On Mon, Apr 21, 2025 at 7:49=E2=80=AFAM Jonathan Cameron <jic23@kernel.org>=
+ wrote:
+>
+> On Sat, 19 Apr 2025 10:45:20 -0400
+> Gabriel Shahrouzi <gshahrouzi@gmail.com> wrote:
+>
+> > The inclinometer channels were previously defined with 14 realbits.
+> > However, the ADIS16201 datasheet states the resolution for these output
+> > channels is 12 bits (Page 14, text description; Page 15, table 7).
 > >
-> > Creating a buffer of the proper size and correct alignment for use with
-> > iio_push_to_buffers_with_ts() is commonly used and not easy to get
-> > right (as seen by a number of recent fixes on the mailing list).
+> > Correct the realbits value to 12 to accurately reflect the hardware.
 > >
-> > In general, we prefer to use this pattern for creating such buffers:
+> > Signed-off-by: Gabriel Shahrouzi <gshahrouzi@gmail.com>
+> > ---
+> > Omit fixes tag because it targets driver before it moved out of staging=
+.
+>
+> Why does that matter?  Should have a fixes tag.  Whether we chose
+> to backport the fix is a different matter.
+Ah ok, that makes sense.
+>
+> Otherwise looks fine to me. Reply to this thread with a fixes tag
+> and I can pick it up without needing a v2.
+Got it, will send shortly.
+>
+>
+> > ---
+> >  drivers/iio/accel/adis16201.c | 4 ++--
+> >  1 file changed, 2 insertions(+), 2 deletions(-)
 > >
-> > struct {
-> >     u16 data[2];
-> >     aligned_s64 timestamp;
-> > } buffer;
+> > diff --git a/drivers/iio/accel/adis16201.c b/drivers/iio/accel/adis1620=
+1.c
+> > index 982b33f6eccac..dcc8d9f2ee0f1 100644
+> > --- a/drivers/iio/accel/adis16201.c
+> > +++ b/drivers/iio/accel/adis16201.c
+> > @@ -211,9 +211,9 @@ static const struct iio_chan_spec adis16201_channel=
+s[] =3D {
+> >                       BIT(IIO_CHAN_INFO_CALIBBIAS), 0, 14),
+> >       ADIS_AUX_ADC_CHAN(ADIS16201_AUX_ADC_REG, ADIS16201_SCAN_AUX_ADC, =
+0, 12),
+> >       ADIS_INCLI_CHAN(X, ADIS16201_XINCL_OUT_REG, ADIS16201_SCAN_INCLI_=
+X,
+> > -                     BIT(IIO_CHAN_INFO_CALIBBIAS), 0, 14),
+> > +                     BIT(IIO_CHAN_INFO_CALIBBIAS), 0, 12),
+> >       ADIS_INCLI_CHAN(Y, ADIS16201_YINCL_OUT_REG, ADIS16201_SCAN_INCLI_=
+Y,
+> > -                     BIT(IIO_CHAN_INFO_CALIBBIAS), 0, 14),
+> > +                     BIT(IIO_CHAN_INFO_CALIBBIAS), 0, 12),
+> >       IIO_CHAN_SOFT_TIMESTAMP(7)
+> >  };
 > >
-> > However, there are many cases where a driver may have a large number of
-> > channels that can be optionally enabled or disabled in a scan or the
-> > driver might support a range of chips that have different numbers of
-> > channels or different storage sizes for the data.  In these cases, the
-> > timestamp may not always be at the same place relative to the data. We
-> > just allocate a buffer large enough for the largest possible case and
-> > don't care exactly where the timestamp ends up in the buffer.
-> >
-> > For these cases, we propose to introduce a new macro to make it easier
-> > it easier for both the authors to get it right and for readers of the
-> > code to not have to do all of the math to verify that it is correct.
-> >
-> > I have just included a few examples of drivers that can make use of this
-> > new macro, but there are dozens more. =20
->=20
-> I'm going to answer here as the summary of my view to this series and
-> macro after your replies.
->=20
-> So, first of all, the macro embeds alignment which is used only once
-> in practice and the alignment used in most of the cases is DMA one.
-
-It think that's because this is only converting a few examples.  There
-are more of these to come (9 of the ones that David first converted
-to structures then realized this was a better fit for starters!).
-
-A lot might still be aligned for DMA but I'd expect to see more of
-the cases that don't need that either because they are i2c only or
-because data shuffling means the DMA hits a different buffer and we
-unscramble it into this one.
-
-> Having two alignments in a row seems a bit weird to me. Second one, if
-> we drop alignment, it means each of the users will need it. That
-> significantly increases the line size and with high probability will
-> require two LoCs to occupy. And third, based on the examples, the
-> macro doesn't help much if we don't convert drivers to properly handle
-> what they are using instead of plain u8 in all of the cases. Yes, it
-> might require quite an invasive change to a driver, but this is how I
-> see it should go.
-
-Agreed for almost all cases that a conversion to the right type
-is good to have - preferably as a precursor.  There is that one case in
-here where it depends on the specific part though which will remain
-in a messier form.
-
->=20
-> That said, it feels like this series took a half road.
->=20
-> I leave it to Jonothan, but I don't like it to be merged in this form.
->=20
-
-Whilst there are no current platforms where IIO_DMA_MINALIGN is < 8
-in theory it might be in future.=20
-
-The other way around, IIO_DMA_MINALIGN is large on some architectures
-so could result in considerable additional padding and should only
-be used where it is needed.  Also that alignment is useless on the
-stack as it does nothing about data after the buffer. Hence there
-isn't really a general solution with one or the other :(
-
-So I like the idea in general as a way to make things a little better
-but agree it is still somewhat ugly.
-
-Maybe we could add...
-IIO_DECLARE_BUFFER_WITH_TS_FOR_DMA()
-Might be worth it?
-
-Jonathan=20
-
+>
 

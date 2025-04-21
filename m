@@ -1,132 +1,129 @@
-Return-Path: <linux-iio+bounces-18454-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18455-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AD6BA9521D
-	for <lists+linux-iio@lfdr.de>; Mon, 21 Apr 2025 15:56:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5C2FA9522F
+	for <lists+linux-iio@lfdr.de>; Mon, 21 Apr 2025 15:58:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 41334173113
-	for <lists+linux-iio@lfdr.de>; Mon, 21 Apr 2025 13:56:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE95818927C7
+	for <lists+linux-iio@lfdr.de>; Mon, 21 Apr 2025 13:58:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75124266591;
-	Mon, 21 Apr 2025 13:56:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8015226659A;
+	Mon, 21 Apr 2025 13:58:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZYmnm7tC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rn7KVkji"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6B39261372;
-	Mon, 21 Apr 2025 13:56:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3521926461D;
+	Mon, 21 Apr 2025 13:58:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745243814; cv=none; b=lqx4Qh8ew1L+Zmki//w6CiG1PzAc7uTxTBMaAAKjanrtWQUzebKdzCrrUS/K5BKoHSm9+uzaMKWhjp34cFRmRqEKQLu6rm5YFvW6njOjMjlp46C4JiLh5PZB7b4KAzUeH9vN+IxcRR32lKW+L3dpDqeR3L1lMy51xgMfuyLxKMk=
+	t=1745243891; cv=none; b=gxH1mfVnpBuhtD9Wa9D9LXwOh11afWzmFB5nQuhMizpsNQ7tXBWHiuURSdCjMF02a5LEYk23X/ezx6HiHCzDdR05JkLBn2EkIj0hORzf0+pH2PloR0gn+r4ahj/Ng6DXvCeCumXgjPKMRsMBs45CXiLX1i6tcQsXzPUQ19Ih3AU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745243814; c=relaxed/simple;
-	bh=7G952GCUAgQVq0vHrcyEXSe0jtpjyYe3cHfs5H9tRi8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=aCHcMweoohxK/RQVI6vg0jeHFmBPzec8Yra+z2f5KqkKFLapqs1IFxqTjPXd5HQeLSxPTKfSrGugusb1pb/zOW0XoeLXaO6kdEcvmlk1OWHQKo597UGl+tSu8iSSZiFVhyugKv3zVxN9NVOF3Mc9E+RcM1WEY5cPi+f9vw9jnXE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZYmnm7tC; arc=none smtp.client-ip=209.85.222.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-7c5e39d1db2so198400985a.3;
-        Mon, 21 Apr 2025 06:56:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745243811; x=1745848611; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=U50DhOW5tvqG4LqE1ZhO21eZnqHSraou5vt7RRanSeU=;
-        b=ZYmnm7tCWx/SinX5CEtwzSyxAZBhJpwuZ57D209lQB9+d2U+MPQ5abDEQ0fD5Ezyu3
-         j7uG0UC3zAZGNfdv4GY+KEA5WzxnThDh98maNXYek2eCpjOv/eu498dKhI47fFudAKmf
-         WjF83QkmjwBWvTWC6+eokIX7TVF+pctBq2ciwcz+QvnKa1ox6bDT9gsEOtlkrWSGf82p
-         C9GCksvVB2Mu6zhKvcXDlcbt+Zb343fRd95xPr+2luyNZ0ShSqxmPUuG32cO+J02gHwm
-         8jcDAmIIazKfelq9PVhxF1w2Bjc5Biov3OYGnnRuOPWrsC3Rswnj5i6V+afnMsRSPTUt
-         VPww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745243811; x=1745848611;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=U50DhOW5tvqG4LqE1ZhO21eZnqHSraou5vt7RRanSeU=;
-        b=iU1/3g495IyOTtnoEBtosrt70jGXQQvPmADRM6BHoZazHVsUwnrrUsAPQxBvqFekVd
-         3s2LV4RCzMNHBNFoL69HCKQ9h0+SP5X71ksXYqqI19WoAuVFnM/t9XTrZZDnigMkbCOT
-         ISLSUBIS4IONrCGeYEkANQNMqNWKw8NtQ4lhGWaPibTozjtYuhY4mNpLDHK+aPSN2YyH
-         hmKhv7IPf9AxR8pW3o5jL2rIFIyXa3R/PuzCPtBCPQGMjg5JuuEm5Z0IIf9cRwNB3XZ/
-         QCS0QfJq1hCZA0KdKWmOp+VhB0OVj5G6ztWihBPjOrvsbhtmGUQPEbn0q0SdRUBRd8Sp
-         oEAg==
-X-Forwarded-Encrypted: i=1; AJvYcCUywMiI8yOl2Vloq0ABXWNNnLZ5ndXAb/MdW1oq6Ypu61Kwpjycqejm02fqe8tSCTZUPCOA3qsO54k=@vger.kernel.org, AJvYcCV8SNfBZR8Zm0B6RdcpkCshssokovUsILs5gpcE3i/LNEURQgJr+KLT7fRIBVgJ+Cfr939z7C4hV9dTjoXr@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzzy+9/90ow2lfVtJprr5Jz1ku3hdtNzRVDC61EzhA3ABuV8Kzz
-	LB+7Vmy7rzpj9iNtfRt7Hf0TNE/BiwhX1AaBZteX8fusyvTKP4tk1A7FygNPGo8eaBmhk4rzbbK
-	w16ioe+8xu7dOjqlItINrVKtkR+M=
-X-Gm-Gg: ASbGncsRdIMkPWssr2zz1kc2CQKwXQeS1bhJUCViIaHfctXuRktdseFgSggwzVuV5I2
-	FlYoyQhk+h9mk0QuKMcWwGzCi1S7iAuy/5BRgLIeuF50Z3SywX3eGU8LAc03vMUyDBCbuPtjoHy
-	ccafdVE3EgFHgHm4XqGFmU8oplA814+bq2d8lPEuSZHDrCXpaZ/o5H9w==
-X-Google-Smtp-Source: AGHT+IFwPfdkoy6EEJ8mTuzbNgnOACCZf4/Uyv3+B3FbTRzHLK/2P/3awjMDcxErAWDSHIh3e4LjnEgs1WpxoLtiYfY=
-X-Received: by 2002:a05:620a:2409:b0:7c5:b909:fde1 with SMTP id
- af79cd13be357-7c927f9dd6fmr1930284085a.25.1745243811525; Mon, 21 Apr 2025
- 06:56:51 -0700 (PDT)
+	s=arc-20240116; t=1745243891; c=relaxed/simple;
+	bh=IkWq79A5SiWTnnRZu57suafo1hnLB4sQXuYq7WqYcis=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=XIxweywXPpZjcNlnx4wiaDlHvYIJOowyxt11FnMvtK8JoH/cb7wJ1OadJ1opU8VL88ZYxDq+xJzfn+03g1ScuXbm4ddtAleVNd86CkPauC+zB57Q4QZXvmv5wr1hOPawIDhBTC7cFxWq3OnTUw5vPJebt9T8kRmbUc0H/5IQRKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rn7KVkji; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6628BC4CEEA;
+	Mon, 21 Apr 2025 13:58:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1745243890;
+	bh=IkWq79A5SiWTnnRZu57suafo1hnLB4sQXuYq7WqYcis=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Rn7KVkjiGkF/uIf/Mdz4kmGKyTrcUEi5dEgLBN7KoSxWQ3c//dN2nmz5vfK0X8SLX
+	 xRsR8xki8EU99AkThBXm1A/MRI3bGI1EXWxGcwR2KvwLlE1tiFwKculA8Vyxyr6uKq
+	 xkoQdxmzKiY+SiZjpSqCDpGBH+1eAU6HuP9pghxidu8bpLZGFCaMvUDZToaDGkd3vE
+	 mi3WxysfZ7y3/h8EyYPlmXQ/gfWkfZcm+rbDH9sUml1brhc7WMqOrJ4cyAvwxA+nsk
+	 Mfk2lmcPV1c8YULtJ476xnhatVyR7WhinXK53QIV1PnTetGSEuqxfBRhExV0aeqWv6
+	 sccQa7W/bMfVA==
+Date: Mon, 21 Apr 2025 14:58:04 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Gabriel Shahrouzi <gshahrouzi@gmail.com>
+Cc: lars@metafoo.de, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Michael.Hennerich@analog.com,
+ skhan@linuxfoundation.org, linux-kernel-mentees@lists.linux.dev
+Subject: Re: [PATCH] iio: adis16201: Correct inclinometer channel resolution
+Message-ID: <20250421145804.6ee78b66@jic23-huawei>
+In-Reply-To: <CAKUZ0z+CSMqCNFAT9k6nUkiwYjq0QG=hH3QPLO-w47xWLkVUxg@mail.gmail.com>
+References: <20250419144520.815198-1-gshahrouzi@gmail.com>
+	<20250421124915.32a18d36@jic23-huawei>
+	<CAKUZ0z+CSMqCNFAT9k6nUkiwYjq0QG=hH3QPLO-w47xWLkVUxg@mail.gmail.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250420175419.889544-1-gshahrouzi@gmail.com> <20250421123331.634076d5@jic23-huawei>
-In-Reply-To: <20250421123331.634076d5@jic23-huawei>
-From: Gabriel Shahrouzi <gshahrouzi@gmail.com>
-Date: Mon, 21 Apr 2025 09:56:40 -0400
-X-Gm-Features: ATxdqUEiUsxoWmmaJ2xyXvjpRnVfAONnlaUDxmAq11sV0agws9ETpfjcyGC5AFA
-Message-ID: <CAKUZ0zJ9LkkeWsFQEvAdNw4qYOeX2p=J5PKEoc3Kh9LmCAa4Jg@mail.gmail.com>
-Subject: Re: [PATCH v3 0/3] Fix and refactor output disable logic
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: gregkh@linuxfoundation.org, lars@metafoo.de, linux-iio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-staging@lists.linux.dev, 
-	Michael.Hennerich@analog.com, skhan@linuxfoundation.org, 
-	linux-kernel-mentees@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Apr 21, 2025 at 7:33=E2=80=AFAM Jonathan Cameron <jic23@kernel.org>=
- wrote:
->
-> On Sun, 20 Apr 2025 13:54:16 -0400
-> Gabriel Shahrouzi <gshahrouzi@gmail.com> wrote:
->
-> > Patch 1 includes the initial fix.
+On Mon, 21 Apr 2025 09:05:24 -0400
+Gabriel Shahrouzi <gshahrouzi@gmail.com> wrote:
+
+> On Mon, Apr 21, 2025 at 7:49=E2=80=AFAM Jonathan Cameron <jic23@kernel.or=
+g> wrote:
 > >
-> > Patch 2 refactors the code to use the out_altvoltage_powerdown ABI.
+> > On Sat, 19 Apr 2025 10:45:20 -0400
+> > Gabriel Shahrouzi <gshahrouzi@gmail.com> wrote:
+> > =20
+> > > The inclinometer channels were previously defined with 14 realbits.
+> > > However, the ADIS16201 datasheet states the resolution for these outp=
+ut
+> > > channels is 12 bits (Page 14, text description; Page 15, table 7).
+> > >
+> > > Correct the realbits value to 12 to accurately reflect the hardware.
+> > >
+> > > Signed-off-by: Gabriel Shahrouzi <gshahrouzi@gmail.com>
+> > > ---
+> > > Omit fixes tag because it targets driver before it moved out of stagi=
+ng. =20
 > >
-> > Patch 3 adds small improvements by minimizing the size of types and
-> > doing a redundancy check.
+> > Why does that matter?  Should have a fixes tag.  Whether we chose
+> > to backport the fix is a different matter. =20
+> Ah ok, that makes sense.
 > >
-> > Not sure whether to include a read function for powerdown as well since
-> > all the other attributes only had write permissions. I can also do this
-> > for the other attributes to help modernize the driver.
+> > Otherwise looks fine to me. Reply to this thread with a fixes tag
+> > and I can pick it up without needing a v2. =20
+> Got it, will send shortly.
+Request was just the fixes tag, not the whole patch again.
+
+Ah well, never mind I can pick it up anyway.
+
+Jonathan
+
 > >
-> > Changes in v3:
-> >       - Include version log in cover letter.
-> Just post it in reply to that v2!
-Got it.
->
-> Note though that this needs a rebase as I mentioned in the thread wrt to
-> the original fix. I'll take a quick look though to see if I can spot
-> anything else for v4.
-Got it.
->
-> > Changes in v2:
-> >       - Refactor and make small improvements ontop of the initial fix.
-> >
-> > Gabriel Shahrouzi (3):
-> >   iio: frequency: Use SLEEP bit instead of RESET to disable output
-> >   staging: iio: ad9832: Refactor powerdown control
-> >   staging: iio: ad9832: Add minor improvements to ad9832_write_powerdow=
-n
-> >
-> >  drivers/staging/iio/frequency/ad9832.c | 50 ++++++++++++++++++--------
-> >  1 file changed, 36 insertions(+), 14 deletions(-)
-> >
->
+> > =20
+> > > ---
+> > >  drivers/iio/accel/adis16201.c | 4 ++--
+> > >  1 file changed, 2 insertions(+), 2 deletions(-)
+> > >
+> > > diff --git a/drivers/iio/accel/adis16201.c b/drivers/iio/accel/adis16=
+201.c
+> > > index 982b33f6eccac..dcc8d9f2ee0f1 100644
+> > > --- a/drivers/iio/accel/adis16201.c
+> > > +++ b/drivers/iio/accel/adis16201.c
+> > > @@ -211,9 +211,9 @@ static const struct iio_chan_spec adis16201_chann=
+els[] =3D {
+> > >                       BIT(IIO_CHAN_INFO_CALIBBIAS), 0, 14),
+> > >       ADIS_AUX_ADC_CHAN(ADIS16201_AUX_ADC_REG, ADIS16201_SCAN_AUX_ADC=
+, 0, 12),
+> > >       ADIS_INCLI_CHAN(X, ADIS16201_XINCL_OUT_REG, ADIS16201_SCAN_INCL=
+I_X,
+> > > -                     BIT(IIO_CHAN_INFO_CALIBBIAS), 0, 14),
+> > > +                     BIT(IIO_CHAN_INFO_CALIBBIAS), 0, 12),
+> > >       ADIS_INCLI_CHAN(Y, ADIS16201_YINCL_OUT_REG, ADIS16201_SCAN_INCL=
+I_Y,
+> > > -                     BIT(IIO_CHAN_INFO_CALIBBIAS), 0, 14),
+> > > +                     BIT(IIO_CHAN_INFO_CALIBBIAS), 0, 12),
+> > >       IIO_CHAN_SOFT_TIMESTAMP(7)
+> > >  };
+> > > =20
+> > =20
+
 

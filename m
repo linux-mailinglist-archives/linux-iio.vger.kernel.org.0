@@ -1,183 +1,132 @@
-Return-Path: <linux-iio+bounces-18436-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18437-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA70CA95166
-	for <lists+linux-iio@lfdr.de>; Mon, 21 Apr 2025 15:12:22 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 917E5A95171
+	for <lists+linux-iio@lfdr.de>; Mon, 21 Apr 2025 15:16:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2D048169537
-	for <lists+linux-iio@lfdr.de>; Mon, 21 Apr 2025 13:12:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 527617A79F5
+	for <lists+linux-iio@lfdr.de>; Mon, 21 Apr 2025 13:14:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B4EB265614;
-	Mon, 21 Apr 2025 13:12:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2DC126561A;
+	Mon, 21 Apr 2025 13:15:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O+CjTLsJ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YPp/hyWx"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f45.google.com (mail-qv1-f45.google.com [209.85.219.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BBF9264A86
-	for <linux-iio@vger.kernel.org>; Mon, 21 Apr 2025 13:12:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 034C81DED63;
+	Mon, 21 Apr 2025 13:15:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745241137; cv=none; b=T4ASUkcUBDb9mNCeL0G2ZXncz0WBjxx/xxZZhOJclXxixqI6tIw2o0HfkfgwsDMjr410X90h2hTs1w004KlDtr4tCNeIk89fHOadfUKsr60/BHi4lJrfpwF6iOSVMkmJ75QNSnEpByBTzeGlSJ3Uq7l+L1VhPiSAo1p74LeJdXk=
+	t=1745241358; cv=none; b=gs60abVRGx8w9hHgMFnCXScF6fo6FGPOrqaXT0yvYQoxt2NZFLbhN/8H6mhv0lVSaVdGmMvbFsbYJA/irBlFvakMHyNO1JptfdpuvMKO+heRuhuFp+axNGMCYdCS49UtCIJTlSOrsPESGBsmAs3tEHd7agvkYMWiX8pMmfnGJ+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745241137; c=relaxed/simple;
-	bh=piKrDlPqgj6AvtCN8xPcTY3wRQn60sXpDDVDy5YJ2/s=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dI3tge6FAQ3OStEC+KaFdZ0J0/zV2uMkKHzlo92jUwDLiDEdGTr52UeHuXE8uMQRcz8RlY8J7qI56o8bb6tK3iVzco6Kq+3Dh5CyMwj1hQis9rwSupA0x+hr5JszMuMSqqID6x8eBQOLlj7f7S15F/Yr6QMze6GppKtPBHMJAm4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O+CjTLsJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A5FBC4CEE4;
-	Mon, 21 Apr 2025 13:12:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745241136;
-	bh=piKrDlPqgj6AvtCN8xPcTY3wRQn60sXpDDVDy5YJ2/s=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=O+CjTLsJ3FoFnLsOgq+QLjSzXfPGfTU6wxQqL/1EeZb9Rmd2TbnrczaxKRG7XcBkz
-	 XNLW6VPxcY0NWnbMl1N3oCIlzsRU445j3OCe5ErY4xvItMbKb2R2Rz3JP9T2YFP7oh
-	 pLrNq8HxpbPShwFS9Nn0xZziV7DIr3PgrNClUKh5r7ZDSNSoflV34dRNZeBXo6dq1Z
-	 k0JMkERnVBVfO6RweBDSjhMtfq2FlBqJFnEvJkMAFKLmf7uzQOKS73HctYD+SgADUF
-	 CRKFOCEMv+wQ2mU5tazPQ89O9uJhDZPmeTRxjdKiMmQyKB66B6dP2tLb8MIOKQrs16
-	 STMW8oBBEzeRQ==
-Date: Mon, 21 Apr 2025 14:12:09 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-Cc: nattan <nattanferreira58@gmail.com>, subhajit.ghosh@tweaklogic.com,
- lucasantonio.santos@usp.br, linux-iio@vger.kernel.org
-Subject: Re: [PATCH] iio: light: apds9306: Refactor threshold get/set
- functions to
-Message-ID: <20250421141209.04f51a39@jic23-huawei>
-In-Reply-To: <aAU8ZczOnIIOcCOC@debian-BULLSEYE-live-builder-AMD64>
-References: <20250419232128.35759-1-nattanferreira58@gmail.com>
-	<aAU8ZczOnIIOcCOC@debian-BULLSEYE-live-builder-AMD64>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1745241358; c=relaxed/simple;
+	bh=vqIN4spBQeK7QHzc7uNdXC3miJFucfrtR29H2awIC94=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=h99Ok0TGmxxo7oOt+XFe4s9JajUtoBkzFXWAhep8SzU5dsC3DIB6nCeBKtDloATG84LS4EWzkLq/csLOS+HfFM2zMt/A+MyC2jQ5pHmW0177NPHHhChwDQDkpCQS2JYcbuIXV8y1PehAOgT17n16o20XQrTTHeMTUdst2htcZoo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YPp/hyWx; arc=none smtp.client-ip=209.85.219.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-6f2b05f87bcso40056776d6.3;
+        Mon, 21 Apr 2025 06:15:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1745241356; x=1745846156; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=o004w6PxOK9088i8LiB4BRrBgsNqHpUt0xgvZEh56tg=;
+        b=YPp/hyWxi4mWAwKi5e5zSQW+TmuYs5Sy/1YeYhYP2NdKb3CduVOIbuQS1ayueOE3cX
+         Po3Txje6GN861fovswnZo9G+vUNI8ciDqv8WNXQRU3YiyFoPCf59BNb3fjhI6Ys1F7oF
+         EaLcYnplVK30lgvrpoAinaM10yV0DLCRdOleR4KW+bACrzAfXPmHSI7UebHwCuoiR2ve
+         Cx63B1g6fp0mAHQzVYQEOVhx9Hp/amuIDEwQ8BhWJpZbTupQQAactMxl7TMxX/PPlRV8
+         Ev8NUC6c/sdmrL9D//Dm+HH/JUrWDC+IBsq9/WS4+ipcAdBDeKlUt2W//IAXd1jKVTwS
+         XS6w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745241356; x=1745846156;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=o004w6PxOK9088i8LiB4BRrBgsNqHpUt0xgvZEh56tg=;
+        b=gKdxLYzAXc8QQhzqVxpH2f1awgB8rsFCDS2+nHX9tbek9es+2hgnUbrIB6YRqft2Xv
+         IKCIUkrJ1nPjJbTdW1hDJtUFNRA/lvlZnEXxISogtYiYQZ3XSU66s+673s6kxgAokva3
+         BZAbAPdQsDK+ur1pDfTLQsae1XnchS0Jsv1Gis4YdehaEXCeChnYJMv/uwEq4HBmsl4T
+         QRx2oakksHrT+seI0xE/pvXm2zppcbKvzkzUu+/GHZRmseuy31Sv4y/kEFs5pL7UGgeg
+         6GjWc/VMXPdKyjOH/iB18YUNDL6acnN5vjaEVhj6ZFJuJLXmWGJhYtDuisvB2HM9tlX6
+         +SVQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUCqjw+6albbW6gIXQSt1WzA72DQ+REEQXud2/M0gv2tOS8aIV0aueNoiAn4bRBBhrekXyzXY2c@vger.kernel.org, AJvYcCVz2HCW7xDVVrqOsaut9Y2hizJaG7AqJZAKk0CFh/CuSpWU3aFzkxX2eSeY9qDQOqV48azba3VuClNJOrcB@vger.kernel.org, AJvYcCXPZp5uDHjEg9iSvABjtuVB8D3G0OvJgqbJY5lk/CbCbaHs4PQdRHzhqkkb79R3GqcmJoe1Bfo3nPs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzM5H10L8HpWygxP1r+uTXZHqa/QSYKTCbcEz71/yrBry/hit1Y
+	g6Y+f/PmTM9bxvifIjnkLcqKn3xaexnPBBmAg7qjM8a/9hqWhNJC
+X-Gm-Gg: ASbGncs53HgbirSPk87fOHjTxUomOX70mc2vILQbEluCxIEbXChLw+y3USs+iwFpk2I
+	brsvZVwIMPFuHfDw4GzckjkchrkFPJZynl4zPsHbcd3Fux8EiGvla0E7SV+EkUkmbANX67IZvMc
+	LHwkfn9Mu8hORg8s9tsIS5a0BONTXwUUfq2qOWXzAmvMv11HC7fYPZdQTgciF+QVxgxODMf7mZu
+	3xUTSOtxgAwkR1dORJ7GJkeMrglJDsVDTGfb9oN5qAtBsqPqmDWrbhrsiyDjv7dLriKLRaKUyVW
+	xUPwdi4rjKkhmNmoKSMkJPn9c/pIg6nTgGVUK17Zm/FV76B1tTWKe+G74CY1wL4rGg==
+X-Google-Smtp-Source: AGHT+IEWBfCVAOXcUeFF/010CnRUb7fPPxCRQbrwrjJ+7VllZ6Ahm19o/N9f/euG42Wg9GTMhpL5NQ==
+X-Received: by 2002:ad4:5d43:0:b0:6e6:602f:ef68 with SMTP id 6a1803df08f44-6f2c455698bmr277444346d6.10.1745241355667;
+        Mon, 21 Apr 2025 06:15:55 -0700 (PDT)
+Received: from theriatric.mshome.net ([73.123.232.110])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6f2c2c21d3asm43579276d6.100.2025.04.21.06.15.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 21 Apr 2025 06:15:55 -0700 (PDT)
+From: Gabriel Shahrouzi <gshahrouzi@gmail.com>
+To: jic23@kernel.org
+Cc: lars@metafoo.de,
+	linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Michael.Hennerich@analog.com,
+	skhan@linuxfoundation.org,
+	linux-kernel-mentees@lists.linux.dev,
+	marcelo.schmitt1@gmail.com,
+	Gabriel Shahrouzi <gshahrouzi@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] iio: adis16201: Correct inclinometer channel resolution
+Date: Mon, 21 Apr 2025 09:15:39 -0400
+Message-ID: <20250421131539.912966-1-gshahrouzi@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250421124915.32a18d36@jic23-huawei>
+References: <20250421124915.32a18d36@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Sun, 20 Apr 2025 15:26:45 -0300
-Marcelo Schmitt <marcelo.schmitt1@gmail.com> wrote:
+The inclinometer channels were previously defined with 14 realbits.
+However, the ADIS16201 datasheet states the resolution for these output
+channels is 12 bits (Page 14, text description; Page 15, table 7).
 
-> Hello Nattan, Lucas,
-> 
-> Not sure it's worth extrancting the event direction comparison into that
-> separate function. Even though there is less code repetition, we now have an
-> extra comparison to handle get_thresh_reg() return. Despite of that, see
-> comments below.
-> 
-> On 04/19, nattan wrote:
-> > From: Nattan Ferreira <nattanferreira58@gmail.com>
-> > 
-> > Refactor the apds9306_event_thresh_get and apds9306_event_thresh_set functions
-> > to use a helper function (get_thresh_reg) for obtaining the correct register  
-> Wrap commit description to 75 columns.
-> 
-> > based on the direction of the event. This improves code readability,
-> > minimize the number of lines  and maintains consistency in accessing
-> > threshold registers.
-> > 
-> > Signed-off-by: Nattan Ferreira <nattanferreira58@gmail.com>
-> > Co-developed-by: Lucas Antonio <lucasantonio.santos@usp.br>
-> > Signed-off-by: Lucas Antonio <lucasantonio.santos@usp.br>
-> > ---
-> >  drivers/iio/light/apds9306.c | 38 ++++++++++++++++++++----------------
-> >  1 file changed, 21 insertions(+), 17 deletions(-)
-> > 
-> > diff --git a/drivers/iio/light/apds9306.c b/drivers/iio/light/apds9306.c
-> > index 69a0d609c..8e1cdaeb0 100644
-> > --- a/drivers/iio/light/apds9306.c
-> > +++ b/drivers/iio/light/apds9306.c
-> > @@ -6,7 +6,6 @@
-> >   *
-> >   * Copyright (C) 2024 Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
-> >   */
-> > -  
-> This doesn't seem to have any relation with the intent of the patch.
-> Drop this unrelated change.
-> 
-> >  #include <linux/bits.h>
-> >  #include <linux/cleanup.h>
-> >  #include <linux/delay.h>
-> > @@ -744,20 +743,28 @@ static int apds9306_event_period_set(struct apds9306_data *data, int val)
-> >  	return regmap_field_write(rf->int_persist_val, val);
-> >  }
-> >  
-> > -static int apds9306_event_thresh_get(struct apds9306_data *data, int dir,
-> > -				     int *val)
-> > +static int get_thresh_reg(int dir)  
-> Even though these functions are declared static, it's common patter in IIO
-> that driver functions start with the name of the driver. So, it would be more
-> conventional to call it apds9306_get_thresh_reg().
-> 
-> >  {
-> > -	int var, ret;
-> > -	u8 buff[3];
-> > -
-> >  	if (dir == IIO_EV_DIR_RISING)
-> > -		var = APDS9306_ALS_THRES_UP_0_REG;
-> > +		return  APDS9306_ALS_THRES_UP_0_REG;
+Correct the realbits value to 12 to accurately reflect the hardware.
 
-Just one space after return
+Fixes: f7fe1d1dd5a5 ("staging: iio: new adis16201 driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Gabriel Shahrouzi <gshahrouzi@gmail.com>
+---
+ drivers/iio/accel/adis16201.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-> >  	else if (dir == IIO_EV_DIR_FALLING)
-> > -		var = APDS9306_ALS_THRES_LOW_0_REG;
-> > +		return APDS9306_ALS_THRES_LOW_0_REG;
-> >  	else
-> >  		return -EINVAL;
-> > +}
-> > +
-> > +static int apds9306_event_thresh_get(struct apds9306_data *data, int dir,
-> > +				     int *val)
-> > +{
-> > +	int reg, ret;
-> > +	u8 buff[3];
-> > +
-> > +	reg = get_thresh_reg(dir);
-> >  
-> > -	ret = regmap_bulk_read(data->regmap, var, buff, sizeof(buff));  
-> There is now a blank line between function call (apds9306_get_thresh_reg()) and
-> the return check, which is unusual in IIO. Drop the blank line between those
-> 	reg = get_thresh_reg(dir);
-> 	if (reg == -EINVAL)
-> ...
-> 
-> > +	if (reg == -EINVAL)
-> > +		return reg;
-> > +
-> > +	ret = regmap_bulk_read(data->regmap, reg, buff, sizeof(buff));
-> >  	if (ret)
-> >  		return ret;
-> >  
-> > @@ -769,22 +776,19 @@ static int apds9306_event_thresh_get(struct apds9306_data *data, int dir,
-> >  static int apds9306_event_thresh_set(struct apds9306_data *data, int dir,
-> >  				     int val)
-> >  {
-> > -	int var;
-> > +	int reg;
-> >  	u8 buff[3];  
-> Add a blank line between local variable declarations and rest of function code.
-> > +	reg = get_thresh_reg(dir);
-> >    
-> Another blank line between function call and return check to be dropped here.
-> 
-> > -	if (dir == IIO_EV_DIR_RISING)
-> > -		var = APDS9306_ALS_THRES_UP_0_REG;
-> > -	else if (dir == IIO_EV_DIR_FALLING)
-> > -		var = APDS9306_ALS_THRES_LOW_0_REG;
-> > -	else
-> > -		return -EINVAL;
-> > +	if (reg == -EINVAL)
-> > +		return reg;
-> >    
-> 
-> Regards,
-> Marcelo
+diff --git a/drivers/iio/accel/adis16201.c b/drivers/iio/accel/adis16201.c
+index 982b33f6eccac..dcc8d9f2ee0f1 100644
+--- a/drivers/iio/accel/adis16201.c
++++ b/drivers/iio/accel/adis16201.c
+@@ -211,9 +211,9 @@ static const struct iio_chan_spec adis16201_channels[] = {
+ 			BIT(IIO_CHAN_INFO_CALIBBIAS), 0, 14),
+ 	ADIS_AUX_ADC_CHAN(ADIS16201_AUX_ADC_REG, ADIS16201_SCAN_AUX_ADC, 0, 12),
+ 	ADIS_INCLI_CHAN(X, ADIS16201_XINCL_OUT_REG, ADIS16201_SCAN_INCLI_X,
+-			BIT(IIO_CHAN_INFO_CALIBBIAS), 0, 14),
++			BIT(IIO_CHAN_INFO_CALIBBIAS), 0, 12),
+ 	ADIS_INCLI_CHAN(Y, ADIS16201_YINCL_OUT_REG, ADIS16201_SCAN_INCLI_Y,
+-			BIT(IIO_CHAN_INFO_CALIBBIAS), 0, 14),
++			BIT(IIO_CHAN_INFO_CALIBBIAS), 0, 12),
+ 	IIO_CHAN_SOFT_TIMESTAMP(7)
+ };
+ 
+-- 
+2.43.0
 
 

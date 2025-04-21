@@ -1,57 +1,58 @@
-Return-Path: <linux-iio+bounces-18415-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18416-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B461A95032
-	for <lists+linux-iio@lfdr.de>; Mon, 21 Apr 2025 13:29:47 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCB73A95035
+	for <lists+linux-iio@lfdr.de>; Mon, 21 Apr 2025 13:31:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD20F18932B0
-	for <lists+linux-iio@lfdr.de>; Mon, 21 Apr 2025 11:29:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AE0B67A5B91
+	for <lists+linux-iio@lfdr.de>; Mon, 21 Apr 2025 11:30:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59085263F3E;
-	Mon, 21 Apr 2025 11:29:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 036712571D7;
+	Mon, 21 Apr 2025 11:31:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u0TKfOF+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VA6xH5/P"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 085DF1A304A;
-	Mon, 21 Apr 2025 11:29:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB0382638AD;
+	Mon, 21 Apr 2025 11:31:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745234980; cv=none; b=f27TDgragX4IIdwnxtkEb+eUO1/AVdjrdu4HQKDJJjzi+L+g3/NinRFIre35N7e4PcZCensJpLWF14W6PnlmXqy3xZWhGYT9vWDdvYcphoc+/Odhl/esXlXKyQxPY4MyxmkesI6MlPFbhdGJ0QMbC8iplRwjVnJm63+InO0zz5w=
+	t=1745235095; cv=none; b=H49cV9dgH1bdecewGY5jYUdfIW0PTXYHE683hVeRVvCGS9n8EXCn8f0lveKFw/z50EgWpIvC5WrpHIK7nO664OzbrotFMEKPlTiSg0HNNAcw6s1VhjyXFsDKKC73Ea4UW2HOfGJW/j388mBNhaQIOxcWBb6kwpCW40yl3ByejkI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745234980; c=relaxed/simple;
-	bh=g5IvzHyEJg5MHCLERVymxwn0g2pW11ccDaWhsGQE7kE=;
+	s=arc-20240116; t=1745235095; c=relaxed/simple;
+	bh=1O9KwH7WliC3LvEb+NaISfKBpCkiOxL3kwp37UrNbUU=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Yxrqm/244ZDdjOtCShzCjMah80m3mFVaROfdZKnt+Ob+uA0C29vIXAazABhQdH9AR07QvHq2iGT8Os5MWwUYMrlxBwOLN9q1d5aoM218Lpcs+JklDNpIClR5GXFwN4VJa05hOE6KKJ4/jjbZHuxU36HaAnVTPHq/tQV+/KRYE9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u0TKfOF+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDD13C4CEE4;
-	Mon, 21 Apr 2025 11:29:35 +0000 (UTC)
+	 MIME-Version:Content-Type; b=O9oN9lK/VvTCbd4k/GFEOVXDBmaJIj629axd8dcziff/fyErKK/4jWWxyebiMEbRkXNJmpY6hjCh/YsOm7BhPyRBiRBAWSrgFC0GHUWY78SNm3py25i20+wnY1blL1mzwuHujEsp1xTy4Sl7dt3vFioIK/Yt8JiTBiWp3TxxF+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VA6xH5/P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D335C4CEE4;
+	Mon, 21 Apr 2025 11:31:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745234979;
-	bh=g5IvzHyEJg5MHCLERVymxwn0g2pW11ccDaWhsGQE7kE=;
+	s=k20201202; t=1745235095;
+	bh=1O9KwH7WliC3LvEb+NaISfKBpCkiOxL3kwp37UrNbUU=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=u0TKfOF+fxMGqlQVJA2CLpPDaabn7VmWlNQrMUCMxBmfZ1cZE8RSso7EAyM29LgfU
-	 QUd4Tx5aV+r3I6watOS31IKNsx3mCcc/NFQsxuLyjYclgb1DLpXBoL6jybQwXKuXA9
-	 XG1v1574R5zrmGxpCiPIHGfPRhEnJGhb5YxMYh4LNpRuf5V7vXTYgd7jiImuFwNVoV
-	 YlLju64pSHY/1JVfD6dZErCoM8PT/154ONUd2W/oNjItqpvEnM5I02K4nATDP6L/sB
-	 zYQSYNrzaxFO6vajRMreGx4Yi/eqYmTanGyvDNgpgtkOiuRLPG409RjfqEApvDigqc
-	 mDfAOUcZIUDGw==
-Date: Mon, 21 Apr 2025 12:29:31 +0100
+	b=VA6xH5/Psm+YhbIqE+M1JHe/ftbZfFgv6tIknQRs8X4S8tkAr2J1oMkcpJANorb4z
+	 MqtEqG7g1YcXI4aIJJGsbxgzDqbc15Ax8eUygrMk1iJPJCoHyoc4rMpz1p4ORsQ/V4
+	 wr2i8Yh6l589y1ockSD/fCGyrLPj8FsCnTwzkzus0fTXr+O/aue9B3snST5vR3TKnV
+	 zV+TCNbNVjkj7E8W0o4kPzD6CP+0bHDGGkjhCPnABgewY9f1k6ctLE6y3gBzcUD4xa
+	 4cpLt+/sN83KaE8rh9S9O5byW/0g/m6JNDtgqpm7QaGb4pWptVHzwMc/LPsSSEgXa/
+	 ttyLcli0ea5gA==
+Date: Mon, 21 Apr 2025 12:31:27 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: Gabriel Shahrouzi <gshahrouzi@gmail.com>
 Cc: gregkh@linuxfoundation.org, lars@metafoo.de, linux-iio@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-staging@lists.linux.dev,
  Michael.Hennerich@analog.com, sonic.zhang@analog.com, vapier@gentoo.org,
  skhan@linuxfoundation.org, linux-kernel-mentees@lists.linux.dev
-Subject: Re: [PATCH v3 0/5] staging: iio: adc: ad7816: Fix channel handling
-Message-ID: <20250421122931.13202ca9@jic23-huawei>
-In-Reply-To: <cover.1745007964.git.gshahrouzi@gmail.com>
-References: <cover.1745007964.git.gshahrouzi@gmail.com>
+Subject: Re: [PATCH v5 0/5] staging: iio: adc: ad7816: Fix channel handling
+ and refactor
+Message-ID: <20250421123127.3a5a7d65@jic23-huawei>
+In-Reply-To: <20250420014910.849934-1-gshahrouzi@gmail.com>
+References: <20250420014910.849934-1-gshahrouzi@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -62,7 +63,7 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 18 Apr 2025 16:47:34 -0400
+On Sat, 19 Apr 2025 21:49:05 -0400
 Gabriel Shahrouzi <gshahrouzi@gmail.com> wrote:
 
 > The original patch combined a functional fix (allowing channel 7) with
@@ -87,6 +88,21 @@ Gabriel Shahrouzi <gshahrouzi@gmail.com> wrote:
 > the standard practice, or should the tag typically be applied to
 > subsequent commits that build upon or are related to the fix as well?
 > 
+> Changes in v5:
+> 	- Use correct patch version.
+Generally I wouldn't resend for this. Instead a single email in
+reply to the messed up version saying it is infact v4 would have
+done the job.
+
+Alternatively a quick reply to that thread to say it was messed
+up and please look for v5 would have worked to make a reader
+move on directly to the newer version
+
+
+Jonathan
+
+> Changes in v4:
+> 	- Include missing bracket for condtional statement.
 > Chainges in v3:
 > 	- Split the patch into smaller patches. Make the fix first
 > 	  followed by clean up.
@@ -98,22 +114,6 @@ Gabriel Shahrouzi <gshahrouzi@gmail.com> wrote:
 > Changes in v2:
 >         - Refactor by adding chip_info struct which simplifies
 >           conditional logic.
-
-Hi Gabriel,
-
-Whilst I appreciate the enthusiasm. Generally slow down a little!
-If there is a fundamental issue like an accidental sending of the wrong
-version then please reply to the thread cover letter to say that.
-Otherwise, even in the presence of build bot reports, it is good
-for any non trivial series to wait a little for reviews to come in.
-Ideally a week, but a few days can be fine if you already have a lot
-of feedback from reviewers.
-
-IIO is moderately high traffic and whilst we are good at hitting
-the button to mark a thread read, it still takes some time!
-
-Jonathan
-
 > 
 > Gabriel Shahrouzi (5):
 >   staging: iio: adc: ad7816: Allow channel 7 for all devices

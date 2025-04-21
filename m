@@ -1,60 +1,61 @@
-Return-Path: <linux-iio+bounces-18430-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18431-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B75FDA95139
-	for <lists+linux-iio@lfdr.de>; Mon, 21 Apr 2025 14:50:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47DCAA9513E
+	for <lists+linux-iio@lfdr.de>; Mon, 21 Apr 2025 14:55:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 992D23B224B
-	for <lists+linux-iio@lfdr.de>; Mon, 21 Apr 2025 12:50:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C60D3ACB06
+	for <lists+linux-iio@lfdr.de>; Mon, 21 Apr 2025 12:55:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE39A2641C0;
-	Mon, 21 Apr 2025 12:50:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AA2F264FA6;
+	Mon, 21 Apr 2025 12:55:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fgv+YWhT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D4ammwiN"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 787562905;
-	Mon, 21 Apr 2025 12:50:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9F4813C918;
+	Mon, 21 Apr 2025 12:55:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745239830; cv=none; b=cGrIyY7b63KiM73vgC+Wk5uYfzRxASwvJmYwbddvR+9CPreFRUDopTzNeOMeB8RVCkcU1XoYnD2E5o/V3DUD/OvgtgFdgFmmbk5Nohahqn+ttqJQdNHtjLDlxzuxkdFn0Vm9CV8c8H6q5Xr9p4WOL4u+aFc6niYaaQXre6rRzy4=
+	t=1745240148; cv=none; b=PJPSjdAMgtwbkiWpblxe9cQKpnf2sx2qSeNCJITdJkJ9Mjk3GXlxEkLG21UXTg9DZaH9JsGWLDwJ1FP2IdVRspeC3l4gh/dF/dml9KAwPk/9AJ+6NDqaCKKNZyTW5jICzySnd4HF37QEyZPGNYknfKOtCAcN33EDE+Hyjs4JILQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745239830; c=relaxed/simple;
-	bh=aQVZG5DEu8YE5FWBUQD4b4UZYTXfV9Xxq60orHtA5b4=;
+	s=arc-20240116; t=1745240148; c=relaxed/simple;
+	bh=k+pc9LVuTE8fyj/4cVMCmddanuSJQPnt8OKwJy/uQq4=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gPmBVSDlJJe8Ot1Afe5GHSFhqW6DJT0o3XAzwegnTlqaE0ZEU81cKSCF0vrSNalqdJEHo1Oxd3KSyLMgmJ+ZjQZdDydgGCfn1Qw8UdDgJby/NaYMG+xF5p838mSeQKq1Mu3ISQwqzyigrMV6Ih545ZBRBUkVV2YUx/iLQus8Gc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fgv+YWhT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DF85C4CEE4;
-	Mon, 21 Apr 2025 12:50:27 +0000 (UTC)
+	 MIME-Version:Content-Type; b=CVZiZ90ZFACdKYaJ83yboH2l9lhdC+7VRYt7u2ZzpgCZxDfY0SCYrDugB2QT8cgvSGz8fz4j/g9qH4A+IzNbmYWuzTsy8fdRH1KiMwHFrLVGH4/GHNUEjbEquIbxT9gR7wRg51FL1rjX6Q4WuHKNe32IPXK+yG0ni+O3xEX/LFY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D4ammwiN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9331C4CEE4;
+	Mon, 21 Apr 2025 12:55:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745239829;
-	bh=aQVZG5DEu8YE5FWBUQD4b4UZYTXfV9Xxq60orHtA5b4=;
+	s=k20201202; t=1745240147;
+	bh=k+pc9LVuTE8fyj/4cVMCmddanuSJQPnt8OKwJy/uQq4=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=fgv+YWhTU2HZODtmds8W4MVh0NOcX3pzh1JMJjm4ozbVVxXfAuwjFwWkU2wNHLcAg
-	 OQormlguLaQi6KPpvhIB1Xokig1AbU1uJZRmanxrJ/6gS8PlHMwpUhW58UBVURV1J6
-	 1pBu9cAJAXKy4jxd/xmxkKqp9t+nGonliE3Yyd3TJjDimpojTYoUu0xND/HKcpJZYB
-	 m17EpGWcFS3RshIWBHmaTRfRN2AjZJR3Jfj9JSdAEuJMtTtQqwxSo561wmZT/a9Arn
-	 zKzdXe7ukWAo1rSJWgWDrzEcJLZE6v5kWBLjVl8JPpJbhEYeXCYtgzR3ootD+VGP03
-	 IAS8oOpGFdHEA==
-Date: Mon, 21 Apr 2025 13:50:22 +0100
+	b=D4ammwiNL647ISAcyJI72OgAdza43beGebxGW+WQ7qCu6ppDlrEM7xD/ay1Pr+jak
+	 9oAZjmPSllW58bFoTO8eAFhrV8RXTR9fhP0FZB6pKIAj/ikCoNGX3ifoSLAvaN0r4c
+	 j/tnIIpkBnNeGHDi1cxACOn7aP49Bt1Vsgz8cUNZAUiEyHAjQ9Tdur/q1/ZCe+dR4r
+	 jq/TBI8YtcAsTK5SUVu84EYu81yM26IpH4vypERQ6O5ZhPdSfREUr1My4feD9kikIo
+	 vPC0LQcKhtyAP2g6WtPkLGIMzrUZCeja4fsOyJknOXnD7hWVzAf9Wu700Jy8LgC9iE
+	 svz3oPp8ZrVOw==
+Date: Mon, 21 Apr 2025 13:55:40 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: David Lechner <dlechner@baylibre.com>
 Cc: Andy Shevchenko <andy@kernel.org>, Nuno =?UTF-8?B?U8Oh?=
  <nuno.sa@analog.com>, Lars-Peter Clausen <lars@metafoo.de>, Michael
  Hennerich <Michael.Hennerich@analog.com>, linux-iio@vger.kernel.org,
  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/4] iio: adc: ad4695: use IIO_DECLARE_BUFFER_WITH_TS
-Message-ID: <20250421135022.2ab97685@jic23-huawei>
-In-Reply-To: <a834e345-6d44-4fe6-a3ed-cc856e9dc4d3@baylibre.com>
+Subject: Re: [PATCH 4/4] iio: pressure: bmp280: use
+ IIO_DECLARE_BUFFER_WITH_TS
+Message-ID: <20250421135540.1a667221@jic23-huawei>
+In-Reply-To: <9cdb05b5-299c-472f-a582-13a7d1368f3b@baylibre.com>
 References: <20250418-iio-introduce-iio_declare_buffer_with_ts-v1-0-ee0c62a33a0f@baylibre.com>
-	<20250418-iio-introduce-iio_declare_buffer_with_ts-v1-2-ee0c62a33a0f@baylibre.com>
-	<aAPRbb93lJrnEE5l@smile.fi.intel.com>
-	<a834e345-6d44-4fe6-a3ed-cc856e9dc4d3@baylibre.com>
+	<20250418-iio-introduce-iio_declare_buffer_with_ts-v1-4-ee0c62a33a0f@baylibre.com>
+	<aAPRuUZTWQZr9Y6H@smile.fi.intel.com>
+	<9cdb05b5-299c-472f-a582-13a7d1368f3b@baylibre.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -65,53 +66,33 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sat, 19 Apr 2025 12:57:11 -0500
+On Sat, 19 Apr 2025 13:04:08 -0500
 David Lechner <dlechner@baylibre.com> wrote:
 
-> On 4/19/25 11:38 AM, Andy Shevchenko wrote:
-> > On Fri, Apr 18, 2025 at 05:58:33PM -0500, David Lechner wrote:  
+> On 4/19/25 11:39 AM, Andy Shevchenko wrote:
+> > On Fri, Apr 18, 2025 at 05:58:35PM -0500, David Lechner wrote:  
 > >> Use IIO_DECLARE_BUFFER_WITH_TS to declare the buffer that gets used with
 > >> iio_push_to_buffers_with_ts(). This makes the code a bit easier to read
 > >> and understand.
 > >>
-> >> AD4695_MAX_CHANNEL_SIZE macro is dropped since it was making the line
-> >> too long and didn't add that much value.
-> >>
-> >> AD4695_MAX_CHANNELS + 2 is changed to AD4695_MAX_CHANNELS + 1 because
-> >> previously we were overallocating. AD4695_MAX_CHANNELS is the number of
-> >> of voltage channels and + 1 is for the temperature channel.  
+> >> The data type is changed so that we can drop the casts when the buffer
+> >> is used.  
 > > 
-> > ...
-> >   
-> >> -/* Max size of 1 raw sample in bytes. */
-> >> -#define AD4695_MAX_CHANNEL_SIZE		2  
-> >   
-> >>  	/* Raw conversion data received. */
-> >> -	u8 buf[ALIGN((AD4695_MAX_CHANNELS + 2) * AD4695_MAX_CHANNEL_SIZE,
-> >> -		     sizeof(s64)) + sizeof(s64)] __aligned(IIO_DMA_MINALIGN);
-> >> +	IIO_DECLARE_BUFFER_WITH_TS(u8, buf, (AD4695_MAX_CHANNELS + 1) * 2)
-> >> +		__aligned(IIO_DMA_MINALIGN);  
+> > This one is good, with the comment to have it DMA aligned.
 > > 
-> > I would rather expect this to be properly written as u16 / __le16 / __be16
-> > instead of playing tricks with u8.
-> > 
-> > With all comments given so far I would expect here something like:
-> > 
-> > 	IIO_DECLARE_BUFFER_WITH_TS(u16, buf, AD4695_MAX_CHANNELS + 1);
-> > 
+> > Reviewed-by: Andy Shevchenko <andy@kernel.org>
 > >   
 > 
-> We would have to make significant changes to the driver to allow u16 instead
-> of u8. I don't remember why I did it that way in the first place, but I consider
-> changing it out of scope for this patch.
+> Strictly speaking, this one doesn't need to be DMA-safe. This buffer isn't
+> passed to SPI or any other bus. It is just used for iio_push_to_buffers_with_ts()
+> and has data copied to it from elsewhere just before that.
 
-There are drivers where the size varies depending on the exact part.
-Maybe this is a cut and paste from one of those or you thought this might get
-bigger to support > 16bit channels in the future.  Either way, right now
-it is always 16 bits so an appropriately sized type would be good as you
-say.   I think such a change should be in a precursor patch probably
-rather than left for another day.  Looks trivial to me given st->buf
-is only accessed directly in 2 places.
+
+Silly question.  Why is it not just locally on the stack?  It's only 16 or 24 bytes...
+I think that other than the bme280 we can use structures. (That one has 3 32bit channels)
+
+So we can have the more readable form in all but one place in the driver.
 
 Jonathan
+
 

@@ -1,225 +1,204 @@
-Return-Path: <linux-iio+bounces-18399-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18400-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C423FA94CAD
-	for <lists+linux-iio@lfdr.de>; Mon, 21 Apr 2025 08:42:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD096A94F50
+	for <lists+linux-iio@lfdr.de>; Mon, 21 Apr 2025 12:16:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7DC971890DFE
-	for <lists+linux-iio@lfdr.de>; Mon, 21 Apr 2025 06:42:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D3F16167717
+	for <lists+linux-iio@lfdr.de>; Mon, 21 Apr 2025 10:16:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E45442586DA;
-	Mon, 21 Apr 2025 06:42:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6F5420CCE4;
+	Mon, 21 Apr 2025 10:16:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Nomho5gh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MWJP9rWH"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A0A3FC08;
-	Mon, 21 Apr 2025 06:42:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 844F714658C;
+	Mon, 21 Apr 2025 10:16:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745217731; cv=none; b=XTo9PONgkoy2cbDSEilbWyesGBz1e3mWxxflCq6NjpbkQaw5gx1SwC1W2CCq2pq0CErnEm5iX9Dr/M01IItoje9CiDD6ok8GPuwxkiBuBjiTQtmLhA/VvRn4nT85nO4WtA4uTvSnOPVknN0Zg6PoBOh4QymU2l6r0rBBiaYeyUc=
+	t=1745230608; cv=none; b=WKgV5x3KjjXXqx5xzHsGCz+qeLHuS/rDin9BgWXwJQhdxFlB9bvM1/8x82fSNn3hhzLLobT+zpEfkZgsszUeIrtqL1Sv5cRTZBDFr7vqU4VRu6FFlp6ZVrNFjbuzARgFI1ezfxRC6mOO+nZHJacoWNFiWVD7lkQl2S5XNqQaJ/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745217731; c=relaxed/simple;
-	bh=Y9HnLPvN25MNFm/b8/YAXkzfu/Lfubhj/l5eVhmJX2g=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kLGrjTFF2TdncoWGL35gWgrGlUgk1rlbY8rg7CHWJmqYUzTYVNEwR4jalch4BMGnFvAVmHwvdcjJN6RSh4xzwgdrwdQaDDlwS/b71Lw+k/xVnxJUk5cycrODEZO/Z6Je8IoZb9/cNQOuImJqX13q8LjbHxWTYCSYoFrpdixpmIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Nomho5gh; arc=none smtp.client-ip=209.85.210.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-7390d21bb1cso3206277b3a.2;
-        Sun, 20 Apr 2025 23:42:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745217729; x=1745822529; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Ugs8lJ14AIbApKr9W0oBVK0o4S2j2Z4DyYGZRqIdOAE=;
-        b=Nomho5ghgeghxTAn3fWJp2QJJQioxnFTCI9TcHacztgjKLphczHAfFqbegBABIcQaD
-         tw6d+sutYo2M9qh+06YWDrgF4EFTbkXgXlCtrXRckCAKRr9f01F/u0sZbObkN+o+jFId
-         7oRG0vnd91r7aFZ/DQRQTPSlVFTSky/7ft1lGeCnSRvYI8vfNOLpr/155UnjBkkiR7ou
-         /ocLjmIqgkwv1B6JCz6eGpfs6gxvwmeOOV8PixaqyG5q6hC8m1plCF/7mrByWLt+iqcZ
-         V5paWshZRFWYid5tMtYD1xDNX/YzeWMIqoE58H3BQ5wWbNCyORnr3OiOGWHO0VYZlNEF
-         qq9Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745217729; x=1745822529;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Ugs8lJ14AIbApKr9W0oBVK0o4S2j2Z4DyYGZRqIdOAE=;
-        b=oyKBDX1FHczvwAfyir+gp+CYJUuq2vBt8PAr3cihjH/lenN+U510HovTi+kd8xjUDX
-         VrrrWe5QSlIpnYZEyRtQdqF/knfoB9cXKY62zRAUhEbYCCEwBfK/WJPDw0ErX7Js/A2b
-         7nw/nI05zGt7+Lanp+NjFu6MqsJkyduJRyg0gTBoP/N29ry8l3wm0bsJEacIOQB+C419
-         KnxYOEf5DkzwCnDLgOu1bH9YKT04uEyiVubeWMSo/wyMCC+Mr8E2c3rBDFlBo8S+VRb+
-         D5cBTI2XAQqfVm3b+/8VYcOecgvH0F+y5lUcvsorVyK9KSrA38GFTuPW7A1Yy3O8vvLc
-         tJ0A==
-X-Forwarded-Encrypted: i=1; AJvYcCUet0sjOC2JNQ820S5q8KRx4d1xkL1Ls6kThWCxjMWtDzL8GoJ0Vp0WKkVrzSbhRPQdAhTVtGa0aOYN@vger.kernel.org, AJvYcCVAhTkXHzAzCK3CPIXjllKkngeuOnXKHDSGBfwgzkw35+4YVe4EtBdiSQQSR5V+/WlYKKQfFPM/AlFk@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzx5dDgRpa6yHas9mDtuS7bGzwlYEp9JaCJe/bbWiZcSlUJY1QX
-	BBveunCd1FfYmGAJcQCTTsJrMnDITPA2SdMR4B74PfT+FnLY++PHD/QrkPT9wiLz25yuzFEeoAC
-	NjzYnX9MwWa4mtRfrDmB2xLzxxeE=
-X-Gm-Gg: ASbGncvrV/sV2pqmmX6KKPaF+hywMgcRsihEWdRjEtq5QO5bgmQFmGyP2VVInzrUKNU
-	DIqKXy61zS+soYYsA3TkNWUg48l/BE7+wxbSfWrBEIYM5NMqz4oZFBQGwLwvQ+pLSCpq6YRtyps
-	FSkTnUAo58CibBTKHje/Y0khWqc+/Y1PDS7Q==
-X-Google-Smtp-Source: AGHT+IGlCV2xGhABt1QWMbT5r4sfGaYS75eVG4A6Rg1bj/CCsva+E6d7GDLX+Jv5TRXZj1Hz15MTDaCzOMpKJgTcI4s=
-X-Received: by 2002:a05:6a00:9281:b0:736:ab1d:83c4 with SMTP id
- d2e1a72fcca58-73dc11a04bemr14828592b3a.0.1745217729229; Sun, 20 Apr 2025
- 23:42:09 -0700 (PDT)
+	s=arc-20240116; t=1745230608; c=relaxed/simple;
+	bh=xhjnF2yWUOPLWpYB/sG9bvUoeOYj4o6fed/kiEyZNCQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=B6iaHo1FJhud+V4xRzTVeY22SbkvbYL8mRwRtpjxl+FMi0H5ZClhSxCEPBIChpw/uv7aO7CNVMDXGrtbNE8wDdEf1I0iLpUH8QUmhGLdY3EZ5KPF54XQnxyB3nrfAzqsi4YL9iHLovOSaM30lVWpTCvTLEkBpgoevIYlc0UaYp0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MWJP9rWH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1433DC4CEE4;
+	Mon, 21 Apr 2025 10:16:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1745230608;
+	bh=xhjnF2yWUOPLWpYB/sG9bvUoeOYj4o6fed/kiEyZNCQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=MWJP9rWH1s6igmdGH02bzkUY6qLI1SYiQW41EG8E4JgvCJx4AMv03UBoyDkhHTmKJ
+	 QOkrCN5Lu7wrIpc3WdOGktC/mTwoSUytQhL7rR/4CVtHgwGieCLNbziU/pL49gGvDl
+	 al0NJ+fVY5qwUEZbHM2YYJhP6Sl0kzREJ+Tur+PMTt9KtsYkF9Iz0n7jd9VdPO2d4H
+	 K3kbeXUiTa8Je7fQXZTqjjvjnuauWzFW87FmcEFA3qc19pkjrlto65TdFeZrzkdnWp
+	 vWYK9PYnrpoKko8dG4Y/AEWl75IHaveek5Al8GPNRggQyk1U1tguf6SW88UoMtQ00d
+	 KOyvb46aaxieA==
+Date: Mon, 21 Apr 2025 11:16:41 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Lothar Rubusch <l.rubusch@gmail.com>
+Cc: lars@metafoo.de, Michael.Hennerich@analog.com,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ eraretuya@gmail.com
+Subject: Re: [PATCH v6 05/11] iio: accel: adxl345: add freefall feature
+Message-ID: <20250421111641.1cb83848@jic23-huawei>
+In-Reply-To: <CAFXKEHZNmUsUmheyDdh1bDDf97-7ZTpsm2xqqbwT+hq3K58F5A@mail.gmail.com>
+References: <20250414184245.100280-1-l.rubusch@gmail.com>
+	<20250414184245.100280-6-l.rubusch@gmail.com>
+	<20250418192254.0becd27d@jic23-huawei>
+	<CAFXKEHZNmUsUmheyDdh1bDDf97-7ZTpsm2xqqbwT+hq3K58F5A@mail.gmail.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250420181015.492671-1-gye976@gmail.com> <20250420181015.492671-4-gye976@gmail.com>
- <CAHp75VdAeJ0HhExE=OAeFdYz2MYFKgMffbD_Gidf86w=zhKccg@mail.gmail.com>
-In-Reply-To: <CAHp75VdAeJ0HhExE=OAeFdYz2MYFKgMffbD_Gidf86w=zhKccg@mail.gmail.com>
-From: Gyeyoung Baek <gye976@gmail.com>
-Date: Mon, 21 Apr 2025 15:41:58 +0900
-X-Gm-Features: ATxdqUHj76YXzGSdsbQXjNO1cJU1Vaiqsh-s-tbZsvBZczsEIl9Z8PHB8QTX3Ms
-Message-ID: <CAKbEznvax5maXFH9V7ZLkME2=Ydt4DiJ9pwfyL_nbsJ5_G3B8A@mail.gmail.com>
-Subject: Re: [PATCH v4 3/4] iio: chemical: add support for winsen MHZ19B CO2 sensor
-To: Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: jic23@kernel.org, linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
-	dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org, robh@kernel.org, 
-	krzk+dt@kernel.org, conor+dt@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-Hello Andy, thanks for the review.
+On Sun, 20 Apr 2025 23:26:47 +0200
+Lothar Rubusch <l.rubusch@gmail.com> wrote:
 
-On Mon, Apr 21, 2025 at 4:22=E2=80=AFAM Andy Shevchenko
-<andy.shevchenko@gmail.com> wrote:
->
-> On Sun, Apr 20, 2025 at 9:10=E2=80=AFPM Gyeyoung Baek <gye976@gmail.com> =
-wrote:
+> Happy Easter!
+>=20
+> On Fri, Apr 18, 2025 at 8:23=E2=80=AFPM Jonathan Cameron <jic23@kernel.or=
+g> wrote:
 > >
-> > Add support for winsen MHZ19B CO2 sensor.
->
-> > The datasheet is available at
-> > Link: https://www.winsen-sensor.com/d/files/infrared-gas-sensor/mh-z19b=
--co2-ver1_0.pdf
->
-> Instead, just make it Datasheet: tag.
->
+> > On Mon, 14 Apr 2025 18:42:39 +0000
+> > Lothar Rubusch <l.rubusch@gmail.com> wrote:
+> > =20
+> > > Add the freefall detection of the sensor together with a threshold and
+> > > time parameter. A freefall event is detected if the measuring signal
+> > > falls below the threshold.
+> > >
+> > > Introduce a freefall threshold stored in regmap cache, and a freefall
+> > > time, having the scaled time value stored as a member variable in the
+> > > state instance.
+> > > =20
+> > Reading this I wondered whether we had the event code consistent for
+> > freefall detectors... Or indeed inactivity ones (which are kind of simi=
+larish)
 > >
->
-> Should not be this blank line here.
-> > Signed-off-by: Gyeyoung Baek <gye976@gmail.com>
->
+> > :( We don't it seems.  The issue is that
+> > freefall is actually that all channels are simultaneously under the the=
+ magnitude
+> > threshold, not one of them.  So it should I think be
+> > X_AND_Y_AND_Z not X_OR_Y_OR_Z
+> > =20
+>=20
+> I change to X_AND_Y_AND_Z.
+>=20
+> > This is as opposed to activity detectors which tend to be any axis shows
+> > activity and X_OR_Y_OR_Z applies.
+> >
+> > Anyhow upshot is I think I lead you astray on this and we should make t=
+his
+> > one IIO_MOD_X_AND_Y_AND_Z
+> >
+> > A few other things inline.
+> >
+> > Unfortunately we don't deal with these events that often so I forget
+> > what we did before :(
+> > =20
+> > > Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
+> > > ---
+> > >  drivers/iio/accel/adxl345_core.c | 125 +++++++++++++++++++++++++++++=
+++
+> > >  1 file changed, 125 insertions(+)
+> > >
+> > > diff --git a/drivers/iio/accel/adxl345_core.c b/drivers/iio/accel/adx=
+l345_core.c
+> > > index c464c87033fb..ae02826e552b 100644
+> > > --- a/drivers/iio/accel/adxl345_core.c
+> > > +++ b/drivers/iio/accel/adxl345_core.c
+> > > @@ -75,6 +75,7 @@ struct adxl345_state {
+> > >       u32 tap_duration_us;
+> > >       u32 tap_latent_us;
+> > >       u32 tap_window_us;
+> > > +     u32 ff_time_ms;
+> > >
+> > >       __le16 fifo_buf[ADXL345_DIRS * ADXL345_FIFO_SIZE + 1] __aligned=
+(IIO_DMA_MINALIGN);
+> > >  };
+> > > @@ -96,6 +97,14 @@ static struct iio_event_spec adxl345_events[] =3D {
+> > >                       BIT(IIO_EV_INFO_RESET_TIMEOUT) |
+> > >                       BIT(IIO_EV_INFO_TAP2_MIN_DELAY),
+> > >       },
+> > > +     {
+> > > +             /* free fall */
+> > > +             .type =3D IIO_EV_TYPE_MAG,
+> > > +             .dir =3D IIO_EV_DIR_FALLING,
+> > > +             .mask_shared_by_type =3D BIT(IIO_EV_INFO_ENABLE) |
+> > > +                     BIT(IIO_EV_INFO_VALUE) |
+> > > +                     BIT(IIO_EV_INFO_PERIOD),
+> > > +     }, =20
+> > This is creating separate per axis enables, values and period. Does tha=
+t make
+> > sense?  If not you need to spin a kind of virtual channel (with mod X_A=
+ND_Y_AND_Z)
+> > and add the events to it.
+> >
+> > See how the sca3000 does it for example. =20
+>=20
+> Hum, I'm not sure if I understand you correctly. In my driver, I'm
+> using .mask_shared_by_type, and I verified there appears only one
+> enable, one value and one period handle.
+> # ls -l /sys/bus/iio/devices/iio:device0/events/
+> total 0
+> ...
+> -rw-r--r-- 1 root root 4096 Apr 20 21:59 in_accel_mag_falling_en
+> -rw-r--r-- 1 root root 4096 Apr 20 21:59 in_accel_mag_falling_period
+> -rw-r--r-- 1 root root 4096 Apr 20 21:59 in_accel_mag_falling_value
+> ...
+>=20
+> In the sources of sca3000.c I saw this setup with .mask_separate. So,
+> there I'd expect to see separate enables per axis, or am I wrong? In
+> the case of the ADXL345, there should only be one freefall enable (in
+> my driver) and not per axis. So, isn't this what is currently there?
+>=20
+> So far I only adjust the or'ing to and'ing the axis for freefall.
 
-Sorry, I now understand what you mean.
-('Datasheet:' is a tag, not an explanation. So there should be no
-space between the tags.)
-However, when I use the 'Datasheet:' tag, I get the following warning
-by checkpatch.pl.
-Would it be OK? then I'll use 'Datasheet:' tag.
+So this is a messy corner of the ABI (because these are tricky to describe).
+Shared by type usually means there is one attribute applying to all the
+axis, but that they are reported separately, or potentially multiple events
+/ _OR_ form used if we can distinguish exactly what the event is.
 
-    "WARNING: Unknown link reference 'Datasheet:', use 'Link:' or
-'Closes:' instead
-     #8:
-     Datasheet:
-https://www.winsen-sensor.com/d/files/infrared-gas-sensor/mh-z19b-co2-ver1_=
-0.pdf"
+In this case there is no way for userspace to anticipate that the event
+that might be generate is X_AND_Y_AND_Z.  So for this
+the ABI solution we came up with is that virtual channel and separate.
 
----
+So you get something along the lines of
+in_accel_x&y&z_mag_falling_en
+in_accel_x&y&z_mag_falling_period
+etc
 
-> > +#include <linux/completion.h>
-> > +#include <linux/device.h>
-> > +#include <linux/iio/iio.h>
-> > +#include <linux/iio/sysfs.h>
-> > +#include <linux/mod_devicetable.h>
-> > +#include <linux/module.h>
-> > +#include <linux/regulator/consumer.h>
-> > +#include <linux/serdev.h>
-> > +#include <linux/unaligned.h>
->
-> Semi-baked list, see below what's missing (actually a lot). I believe
-> I already pointed that out.
+The tricky remaining corner is this only makes sense if we always enable
+all axis (which is typical for a freefall detector). If we get a device
+that oddly has per axis free fall enables, then it would be hard and I
+might argue nonsense to enable them separately anyway.  Not true
+here though I think.
 
-From the last review, I understood the two main points as:
-(1) Avoid using large headers and explicitly include only the necessary one=
-s.
-(2) Reduce including headers as much as possible to improve build times.
+Note that we may well have drivers using the ABI slightly differently for
+freefall events which will be at least partly because I'd forgotten how
+we resolved all this complexity long ago (that sca3000 driver is ancient!)
+ABI like this is tricky to fix up, but we might want to consider some dupli=
+cation
+in those drivers so we standardize on one form for freefall (even if we hav=
+e some
+stray ABI from other possible solutions).
 
-However, I found that removing headers like 'types.h' didn't cause any
-build failure,
-So I thought it would be better to remove headers that are unnecessary
-to improve build time.
-But in the next patch, I'll explicitly include the headers you've pointed o=
-ut.
+What we should definitely do is pull together some documentation on multi c=
+hannel
+event handling as the ABI docs are probably not enough.
 
----
+Jonathan
 
-> > +/*
-> > + * echo 0 > calibration_forced_value            : zero point calibrati=
-on
-> > + *     (make sure the sensor has been worked under 400ppm for over 20 =
-minutes.)
->
-> working
->
-> > + * echo [1000 1 5000] > calibration_forced_value : span point calibrat=
-ion
-> > + *     (make sure the sensor has been worked under a certain level co2=
- for over 20 minutes.)
->
-> working
->
-> It seems you ignored this comment from the previous review.
-
-Sorry, I only changed 'had -> has'.
-I missed changing 'worked -> working' ..
-
----
-
-> > +       if (ppm) {
-> > +               if (!in_range(ppm, 1000, 4001)) {
->
-> Missing minmax.h.
->
-> The second parameter is length of the range.
->
-> > +                       dev_dbg(&indio_dev->dev,
-> > +                               "span point ppm should be 1000~5000");
->
-> The above range check doesn't agree with this message.
-
-in_range() uses the range 'start <=3D val && val < (start + len)'.
-So, to allow 5000, the 'len' should be 4001, not 4000.
-I have tested this.
-But would it be correct that I understand your point?
-
----
-
-> > +                       return -EINVAL;
-> > +               }
-> > +
-> > +               cmd =3D MHZ19B_SPAN_POINT_CMD;
-> > +       } else
-> > +               cmd =3D MHZ19B_ZERO_POINT_CMD;
->
-> Have you run checkpatch? This needs {} per Coding Style.
-
-Yes, checkpatch.pl didn't raise any warnings.
-And after making the changes as you point out, there were no warnings eithe=
-r.
-It seems that checkpatch.pl allows both.
-But for consistency, I'll add the { }.
-
----
-
-> > +       dev_set_drvdata(dev, indio_dev);
->
-> Is it really used?
-
-Yes, this 'dev' is the same as '&serdev->dev'.
-But I found 'serdev_device_set_drvdata()', so I'll change it to that.
-
---
-Thanks,
-Gyeyoung
 

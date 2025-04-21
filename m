@@ -1,59 +1,59 @@
-Return-Path: <linux-iio+bounces-18427-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18428-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 620F6A9510B
-	for <lists+linux-iio@lfdr.de>; Mon, 21 Apr 2025 14:35:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D796A95116
+	for <lists+linux-iio@lfdr.de>; Mon, 21 Apr 2025 14:38:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4B678189431D
-	for <lists+linux-iio@lfdr.de>; Mon, 21 Apr 2025 12:35:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9DCA83A3CFA
+	for <lists+linux-iio@lfdr.de>; Mon, 21 Apr 2025 12:37:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E6A1264F88;
-	Mon, 21 Apr 2025 12:35:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2509A264F9A;
+	Mon, 21 Apr 2025 12:38:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hGOSlejL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KZaWPkhE"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3091CA5E;
-	Mon, 21 Apr 2025 12:35:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF85B20D51F;
+	Mon, 21 Apr 2025 12:37:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745238936; cv=none; b=WsoemzShmIOi7Y86xEclg3/dfAAa05h+AlapKEpoV0HMqSh1hkl2sTQziHa/1epuX144L6xs0niqo/xSCYT2afIE2rRjvdCtGsEtsvWb+P7YOq5lSEFv3aofm2fHxdm7lBb06Tw2dlACq7n9Dp7PnDl4fp4db/kgR29AKUtS2ws=
+	t=1745239079; cv=none; b=P+Oubn2UxsJ6DjRBARaABfxHCoB32+slsJBHHXILSi/ueFmP2xraTeyuKrbG965pOJ9HVdXwGdz5a+4lPiE5MHjwYaDG8DSdLl1WU9fI2FTwFu9kYol0QZ9PjB8D8+QdEDK4WXdoL/y/qvChQ87dG36ZNqHjUI2bWwaD9bOZmVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745238936; c=relaxed/simple;
-	bh=LKV5AF+UI7xJyCRmClBJn1fAs26XKw6odVEo5yG6Itw=;
+	s=arc-20240116; t=1745239079; c=relaxed/simple;
+	bh=b54HVeZaJH2l6sLxJ4aYOS+CC2PLI8L1VIFwgXcVqCg=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VX+QtxsIN3A7F2ErEaXxai2iGIKfJXJxKHQsAgISdtIER/2ISpYvmZL1YGvwHw0fBLUUIGNbmaxdVHMl05fSUjCOPsBGeXcNprmTMEiYDlemgCD1UOIF9Ef5B116RYw3XUaV7ZoOHvNeyLuxQPUBuFV0tZNv7UrHUYH4OULHPFs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hGOSlejL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2076CC4CEE4;
-	Mon, 21 Apr 2025 12:35:31 +0000 (UTC)
+	 MIME-Version:Content-Type; b=UoRwV/bu+/SrxBwEE8P5YA0XGWIfuPT/WjYWdZDkiEtIePNK40PS2/Uy0uW8MGK7FtmGdDpmDqTfdjDFe1m+YccDaTMd/DXU/Zo7Od1zKg2VSJCHQY+QWxX/OVfmGvAu6M+Vja6fVIXMiQMqfzXE8Xad37g4UIUa07FJXsSjm8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KZaWPkhE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2888CC4CEE4;
+	Mon, 21 Apr 2025 12:37:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745238935;
-	bh=LKV5AF+UI7xJyCRmClBJn1fAs26XKw6odVEo5yG6Itw=;
+	s=k20201202; t=1745239079;
+	bh=b54HVeZaJH2l6sLxJ4aYOS+CC2PLI8L1VIFwgXcVqCg=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=hGOSlejLY9j/kj+DCdjHBTSBlxfjlF6oBGJnK4zbT9Gf4iXcwg9xSdAhbbi5X6ph0
-	 Ue3pP6Cr3S3AgBiglPcmzlfIHtIBWs7f7Ik5bSkJrN7TxZqScRSaprkg2tSHJ//7aH
-	 wWCTy6GSunTuW/kZPJpZPjS7uQoNcQ3LshWb/kDQl7v6aHPzTCkyMpxSaA1TF2Q+04
-	 S800ivtSabXe6xnlsrhY65kBc7ZoStSCwtDyjfGlJOWa8yPuoBpNkQA8zee1wIgCxj
-	 WilqjS2r/Ya/+kXTCosvFtvbLWC9C6vkpPRWtnVH/HIWcaih74YKImiXhuxzBRPgyX
-	 D/ZBpH9exl0lA==
-Date: Mon, 21 Apr 2025 13:35:26 +0100
+	b=KZaWPkhETrk9Xpepa5SvxfET+eYR2n02GR0CSExHMaWquoCRQ6VGBlUqIHHzOYm6q
+	 uenrhUpq2b8RpLKt6Xr0N/yzIB1YCEVDZbLX1Wyfk3l+hEe2ZGaQmv7HidYerkYT/V
+	 4QlGtgfv1+HbI5pugx/WseMPfaAV0v2SvLRRbawIBfPOEMRf9Keh2eeDvO4Jc8AIAu
+	 wq17PyoFRAC1nPOMOcRXpa70rsGLLDocmw5Azm0Kz0gXBN4Cd/I9nhKb8SOApHGk3t
+	 LWjSco6gJuTkwO9hUrcXlOXBKe2+RhEgh8nYvBmpGkwRzdwc/Ga0Iy6wI/ojccp6fz
+	 9UePgPoWBA88Q==
+Date: Mon, 21 Apr 2025 13:37:51 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: Gabriel Shahrouzi <gshahrouzi@gmail.com>
 Cc: gregkh@linuxfoundation.org, lars@metafoo.de, linux-iio@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-staging@lists.linux.dev,
  Michael.Hennerich@analog.com, sonic.zhang@analog.com, vapier@gentoo.org,
  skhan@linuxfoundation.org, linux-kernel-mentees@lists.linux.dev
-Subject: Re: [PATCH v5 4/5] staging: iio: adc: ad7816: Use chip_info for
- device capabilities
-Message-ID: <20250421133526.29a562be@jic23-huawei>
-In-Reply-To: <20250420014910.849934-5-gshahrouzi@gmail.com>
+Subject: Re: [PATCH v5 5/5] staging: iio: adc: ad7816: Simplify channel
+ validation using chip_info
+Message-ID: <20250421133751.6fb5b4d4@jic23-huawei>
+In-Reply-To: <20250420014910.849934-6-gshahrouzi@gmail.com>
 References: <20250420014910.849934-1-gshahrouzi@gmail.com>
-	<20250420014910.849934-5-gshahrouzi@gmail.com>
+	<20250420014910.849934-6-gshahrouzi@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -64,59 +64,49 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sat, 19 Apr 2025 21:49:09 -0400
+On Sat, 19 Apr 2025 21:49:10 -0400
 Gabriel Shahrouzi <gshahrouzi@gmail.com> wrote:
 
-> Move device-specific capability information, like the presence of a
-> BUSY pin, into the ad7816_chip_info structure.
+> Refactor the channel validation logic within ad7816_store_channel() to
+> leverage the max_channels field previously introduced in the
+> ad7816_chip_info structure.
 > 
 > Signed-off-by: Gabriel Shahrouzi <gshahrouzi@gmail.com>
+Carries forward the odd mask usage from patch 1. So fix that up and then
+I think this is fine. Given you introduce max_channels just for this, ideal 
+would be to only introduce it in this patch (with a better name - see
+earlier comment)
+
+Jonathan
+
+
 > ---
->  drivers/staging/iio/adc/ad7816.c | 6 +++++-
->  1 file changed, 5 insertions(+), 1 deletion(-)
+>  drivers/staging/iio/adc/ad7816.c | 12 ++----------
+>  1 file changed, 2 insertions(+), 10 deletions(-)
 > 
 > diff --git a/drivers/staging/iio/adc/ad7816.c b/drivers/staging/iio/adc/ad7816.c
-> index 39310ade770d0..ab7520a8a3da9 100644
+> index ab7520a8a3da9..7a59cfbcc6e33 100644
 > --- a/drivers/staging/iio/adc/ad7816.c
 > +++ b/drivers/staging/iio/adc/ad7816.c
-> @@ -44,21 +44,25 @@
->  struct ad7816_chip_info {
->  	const char *name;
->  	u8 max_channels;
-> +	bool has_busy_pin;
->  };
+> @@ -204,17 +204,9 @@ static ssize_t ad7816_store_channel(struct device *dev,
+>  	if (ret)
+>  		return ret;
 >  
->  static const struct ad7816_chip_info ad7816_info_ad7816 = {
->  	.name = "ad7816",
->  	.max_channels = 0,
-> +	.has_busy_pin = true,
->  };
->  
->  static const struct ad7816_chip_info ad7817_info_ad7817 = {
->  	.name = "ad7817",
->  	.max_channels = 3,
-> +	.has_busy_pin = true,
->  };
->  
->  static const struct ad7816_chip_info ad7818_info_ad7818 = {
->  	.name = "ad7818",
->  	.max_channels = 1,
-> +	.has_busy_pin = false,
->  };
->  
->  struct ad7816_state {
-> @@ -98,7 +102,7 @@ static int ad7816_spi_read(struct ad7816_state *chip, u16 *data)
->  		gpiod_set_value(chip->convert_pin, 1);
+> -	if (data > AD7816_CS_MAX && data != AD7816_CS_MASK) {
+> +	if (data > chip->chip_info->max_channels && data != AD7816_CS_MASK) {
+>  		dev_err(&chip->spi_dev->dev, "Invalid channel id %lu for %s.\n",
+> -			data, indio_dev->name);
+> -		return -EINVAL;
+> -	} else if (strcmp(indio_dev->name, "ad7818") == 0 && data > 1 && data != AD7816_CS_MASK) {
+> -		dev_err(&chip->spi_dev->dev,
+> -			"Invalid channel id %lu for ad7818.\n", data);
+> -		return -EINVAL;
+> -	} else if (strcmp(indio_dev->name, "ad7816") == 0 && data > 0 && data != AD7816_CS_MASK) {
+> -		dev_err(&chip->spi_dev->dev,
+> -			"Invalid channel id %lu for ad7816.\n", data);
+> +			data, chip->chip_info->name);
+>  		return -EINVAL;
 >  	}
 >  
-> -	if (chip->chip_info == &ad7816_info_ad7816 || chip->chip_info == &ad7817_info_ad7817) {
-> +	if (chip->chip_info->has_busy_pin) {
-There are two places in the previous patch that have this pattern, but only one is
-being converted here.  Why not replace the one in probe() as well?
-
-
->  		while (gpiod_get_value(chip->busy_pin))
->  			cpu_relax();
->  	}
 
 

@@ -1,156 +1,137 @@
-Return-Path: <linux-iio+bounces-18495-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18496-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0AA6A96377
-	for <lists+linux-iio@lfdr.de>; Tue, 22 Apr 2025 11:05:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0F09A96552
+	for <lists+linux-iio@lfdr.de>; Tue, 22 Apr 2025 12:02:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0E62B164B5F
-	for <lists+linux-iio@lfdr.de>; Tue, 22 Apr 2025 08:57:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 71BF67A909B
+	for <lists+linux-iio@lfdr.de>; Tue, 22 Apr 2025 10:01:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5475253F3F;
-	Tue, 22 Apr 2025 08:56:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AE4D20C48C;
+	Tue, 22 Apr 2025 10:02:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="OAKwebQs"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="FPLeId+N"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9FBB25486B;
-	Tue, 22 Apr 2025 08:56:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D899B1EE010
+	for <linux-iio@vger.kernel.org>; Tue, 22 Apr 2025 10:02:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745312170; cv=none; b=LqOahOU4ew5RxQwfqbMd/NAYovtGERRPnJ87E3lpsCJE5EYik0BBzqviSzR8aTrPeDkplH14q4GQ4VsqLB9FTT3qeG8RcQYJNFYHDBDnWbBWuSbpD++RT0rm3Phzpx3sB/1bZhKruPPkb2RuLNlczEgHBRMJgy/t+EiQNmtyRcE=
+	t=1745316157; cv=none; b=mdUJGsuJsFHbMI/HHRVHHBkOe8U4tLM+qwg9ygP1lCfFgoD6/4/te65dgkP7jaVCuDojzVLVnHspPTz+ErL9q+kKtr/obMHmqFDkCMmMUCgm7MqRWwFncvBjMgPLKOalRX2ESQZmTsXx9RO88HhfeXFBCcQMWJjMAftG5Ho4DCQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745312170; c=relaxed/simple;
-	bh=47Fl3alaoy9MJ9oE1dW53liNawNp3fX4xzOoCfOY3nk=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IVAyjW6UE1+/UEnRddd3Zlf8k+iyEB983dFFjVkLC+J7C1KTeWHHktzacwbfay/2tffUFgO3JA0ECqHQ0bUqTw/WXlmAbLJIoTs+1jF/roXyLLLXSJjMEflxbsFktNpnQdPCyrdfrhtfNtTlowVF+t80DOQYZLQig3vxQHV4J1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=OAKwebQs; arc=none smtp.client-ip=148.163.135.77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-	by mx0a-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53M7ciGP026127;
-	Tue, 22 Apr 2025 04:56:05 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=DKIM; bh=yOySj
-	TPHGjn1zF8roB5u3h3nRAAWfkKlV1XNNw9xY9E=; b=OAKwebQsZbJ306GUrWQOj
-	z/+P5KxV3iJBlE82ZE05sZTLv+ymxwplB48VY/zLgT9a7xpPy71e++nQVLwN7JH0
-	DjycVaWRP9DDILYs3uTglRa5TiOVWsFVhR3z4wHOcSipH8RCOyn9HLTwxFBRG5HG
-	z7O4sKciu6vlYqGNyvBx/vYW5oZl6ieFk/9JpgbnBz8wAGlvipqsMTEVMqvbELYw
-	7zOSK7XB9esgvmWn+98oYw+t/ImX/emgrB71YRwBTVlXzrWr8mAH5meS9Mp147Rc
-	uGePfZ6u1rWyrDFSYRmHeK1zG1KeGW9zFf3DyznaD4Iw+guTiG4K56inFrbWCDBs
-	A==
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 4648r6du0u-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 22 Apr 2025 04:56:02 -0400 (EDT)
-Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
-	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 53M8tsba041701
-	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Tue, 22 Apr 2025 04:55:54 -0400
-Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by ASHBMBX8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Tue, 22 Apr
- 2025 04:55:54 -0400
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Tue, 22 Apr 2025 04:55:54 -0400
-Received: from amiclaus-VirtualBox.ad.analog.com (AMICLAUS-L02.ad.analog.com [10.48.65.211])
-	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 53M8tjRX016347;
-	Tue, 22 Apr 2025 04:55:51 -0400
-From: Antoniu Miclaus <antoniu.miclaus@analog.com>
-To: <jic23@kernel.org>, <robh@kernel.org>, <conor+dt@kernel.org>,
-        <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-CC: Antoniu Miclaus <antoniu.miclaus@analog.com>
-Subject: [PATCH 2/2] iio: dac: ad7293: add adc reference configuration
-Date: Tue, 22 Apr 2025 11:55:29 +0300
-Message-ID: <20250422085529.4407-2-antoniu.miclaus@analog.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250422085529.4407-1-antoniu.miclaus@analog.com>
-References: <20250422085529.4407-1-antoniu.miclaus@analog.com>
+	s=arc-20240116; t=1745316157; c=relaxed/simple;
+	bh=r6si7KxlGkOoATAg7ilVznuwbtqgYzdFtBjWKcTszJs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PNTKIebvctfLx67rMzd+ViGH4Mv3Yqf6wGdiuwqsMqsh2WW085cXs42mJHV8DFOoTKcmUiZeBcOqQvqM8bU1Xc5yxqbz+4EOmJjaCpG8Cgr9xSKTePTXDes4Aa7qsS0MgdCn6XYd4Nf4sMvvTpAnq9IfgGaWENSix1pH+8btM5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=FPLeId+N; arc=none smtp.client-ip=209.85.221.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-39ee5ac4321so5263332f8f.1
+        for <linux-iio@vger.kernel.org>; Tue, 22 Apr 2025 03:02:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1745316152; x=1745920952; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=2lwX66HK8eTxAxJezuea/KRjoMND3umFRpU7IdR4G0w=;
+        b=FPLeId+NVXCtZvebuQRmAzc9kWvDpITGAqw+N9z7hTXK49DrYxUgREe2UNtbenzvP6
+         XLxg2CROL8Iu2VpTy8POM2xXlfg+FcLTOd7MdleIfP3OVc8ROjbhx19xSMfmMtG15JX7
+         ngPqizDJxgLBbJOrF5udCnrsw/Y6L07+v0bcjasEQ0oS9ca1YWgAcYilZpMrGBfTYkBD
+         BlzplR/PXXXJdoQYjbZwc3qXJIL6jxXvyLoHpuuyPVRvjxm64BsuZ2g33qSABpTgTPrf
+         1CnKgsceMR6jPRBqgWt6DuNn5eYW1TzMO+p6JLXOd5A6pkZsV6icZ+ipkNDI45cK0bkd
+         G6YQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745316152; x=1745920952;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2lwX66HK8eTxAxJezuea/KRjoMND3umFRpU7IdR4G0w=;
+        b=Ry9BGNCl6qren9ogTw6tPjJ6nvThv+SiHe33GG0vxhyfC2BFMlhYL3q4xh3evepBX4
+         nERW3U9GXZnkFSyTtuiDY0H4+KaOGKxho84C/sU3ccPr958NoeKPWbcrdrQgD8huq/X5
+         sq3sWavlw38KPstWtuFt5Ou2azD8khAHYotTihIO/VrZVobBxOjzjFJQ0QkKqXtLAYvV
+         +Mz4EsGXJE6A/JnZIA/Cec6pHeBeMILG3nIL6zB/J3oboBLGp2koemWF8mOuqsxhfuaX
+         fc4NlGIE+DI6FE7GKsRb51YvIm9FL4+PGvMSE2aFxxte+4Ixl787HCyh/MbLpAN/wtmQ
+         3PJw==
+X-Forwarded-Encrypted: i=1; AJvYcCUhvwvrZrCI+cMLH6H7EnBprrFnfDYPoyZfbOIlIihMFhEbsLZFKNsQ/RHtOf9w6KdsqWZ82zcqz4s=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxxvzr9xfmGz2nwC+cDZ8pfWLVyOTx/6ww6CJF6rgSswvUG5fkQ
+	Vh8X8YAKEFEGxGm/D8XOp2SqN251AxegdHIODLjBaSo43qnzDp66Thmo7F4l4qo=
+X-Gm-Gg: ASbGncvrhqcCK4CjBNSx/hYMAqKwvBIMZvOfpADxHUZLoVzYW8eQhznIr7nzTjFB5CX
+	IOzNgU/Kj/DU/si6TH1g5Gp++U2ptCL1yeNlE7WCUwOR++IP9Czii/4g8AZu0eWyFI10ZMPMHur
+	zz/+HpJBTjkMWhoKAo6VW3nYrwNMMnG+TH2HUknU1/D4XcVBwu/xpqsb1VI06mWwhvsV4oZttOC
+	1kLJew6/MS1dR8W7DL8TvsZp5QmpMlA7bZWzQq94KzQRBFegfIgcBsCKkC1DsYdrXMdIXrQ5o4D
+	QpJmSXf43mjoUN9apmEHW3HYghyg+6fcrDnr9x58sLFkQg==
+X-Google-Smtp-Source: AGHT+IF1ZkfPi2gJ652NKkarwIY/ypcd5ApofOa/AQ+PxbuhRTF4pbWiSN2ZlQ7ALpKKQfQcvtNEOA==
+X-Received: by 2002:a5d:5f8a:0:b0:391:2bcc:11f2 with SMTP id ffacd0b85a97d-39efba2c924mr10978756f8f.1.1745316152148;
+        Tue, 22 Apr 2025 03:02:32 -0700 (PDT)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-4406d5acec8sm165056665e9.16.2025.04.22.03.02.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 22 Apr 2025 03:02:31 -0700 (PDT)
+Date: Tue, 22 Apr 2025 13:02:27 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: Gabriel Shahrouzi <gshahrouzi@gmail.com>
+Cc: gregkh@linuxfoundation.org, jic23@kernel.org, lars@metafoo.de,
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-staging@lists.linux.dev, Michael.Hennerich@analog.com,
+	skhan@linuxfoundation.org, linux-kernel-mentees@lists.linux.dev,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v3] staging: iio: ad5933: Correct settling cycles
+ encoding per datasheet
+Message-ID: <ce0c0684-2f5e-4e23-824e-8bcad56e6b0c@stanley.mountain>
+References: <20250420003000.842747-1-gshahrouzi@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-GUID: JarI4uqTEJxw_srIHaV9N1_Rxgb0aSwl
-X-Proofpoint-ORIG-GUID: JarI4uqTEJxw_srIHaV9N1_Rxgb0aSwl
-X-Authority-Analysis: v=2.4 cv=d6z1yQjE c=1 sm=1 tr=0 ts=680759a5 cx=c_pps a=3WNzaoukacrqR9RwcOSAdA==:117 a=3WNzaoukacrqR9RwcOSAdA==:17 a=XR8D0OoHHMoA:10 a=gAnH3GRIAAAA:8 a=kyzOxrww9Jkk1N5gqB0A:9
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-04-22_04,2025-04-21_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 mlxscore=0
- mlxlogscore=999 impostorscore=0 phishscore=0 bulkscore=0
- priorityscore=1501 adultscore=0 lowpriorityscore=0 spamscore=0
- suspectscore=0 malwarescore=0 classifier=spam authscore=0 authtc=n/a
- authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2502280000 definitions=main-2504220066
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250420003000.842747-1-gshahrouzi@gmail.com>
 
-Add support for configurating the ADC reference (internal/external).
+On Sat, Apr 19, 2025 at 08:30:00PM -0400, Gabriel Shahrouzi wrote:
+> Implement the settling cycles encoding as specified in the AD5933
+> datasheet, Table 13 ("Number of Settling Times Cycles Register"). The
+> previous logic did not correctly translate the user-requested effective
+> cycle count into the required 9-bit base + 2-bit multiplier format
+> (D10..D0) for values exceeding 511.
+> 
+> Clamp the user input for out_altvoltage0_settling_cycles to the
+> maximum effective value of 2044 cycles (511 * 4x multiplier).
+> 
+> Fixes: f94aa354d676 ("iio: impedance-analyzer: New driver for AD5933/4 Impedance Converter, Network Analyzer")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Gabriel Shahrouzi <gshahrouzi@gmail.com>
+> ---
+> Changes in v3:
+> 	- Only include fix (remove refactoring which will be its own
+> 	  separate patch).
+> Changes in v2:
+>         - Fix spacing in comment around '+'.
+>         - Define mask and values for settling cycle multipliers.
+> ---
+>  drivers/staging/iio/impedance-analyzer/ad5933.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/staging/iio/impedance-analyzer/ad5933.c b/drivers/staging/iio/impedance-analyzer/ad5933.c
+> index d5544fc2fe989..f8fcc10ea8150 100644
+> --- a/drivers/staging/iio/impedance-analyzer/ad5933.c
+> +++ b/drivers/staging/iio/impedance-analyzer/ad5933.c
+> @@ -411,7 +411,7 @@ static ssize_t ad5933_store(struct device *dev,
+>  		ret = ad5933_cmd(st, 0);
+>  		break;
+>  	case AD5933_OUT_SETTLING_CYCLES:
+> -		val = clamp(val, (u16)0, (u16)0x7FF);
+> +		val = clamp(val, (u16)0, (u16)0x7FC);
 
-According to the datasheet, the external reference is enabled by
-default.
+We have a fancy clamp() define now so the ugly casts are no longer
+required.
 
-Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
----
- drivers/iio/dac/ad7293.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
-
-diff --git a/drivers/iio/dac/ad7293.c b/drivers/iio/dac/ad7293.c
-index 99fa2d1f8299..c3797e40cdd9 100644
---- a/drivers/iio/dac/ad7293.c
-+++ b/drivers/iio/dac/ad7293.c
-@@ -114,6 +114,7 @@
- #define AD7293_REG_DATA_RAW_MSK			GENMASK(15, 4)
- #define AD7293_REG_VINX_RANGE_GET_CH_MSK(x, ch)	(((x) >> (ch)) & 0x1)
- #define AD7293_REG_VINX_RANGE_SET_CH_MSK(x, ch)	(((x) & 0x1) << (ch))
-+#define AD7293_GENERAL_ADC_REF_MSK			BIT(7)
- #define AD7293_CHIP_ID				0x18
- 
- enum ad7293_ch_type {
-@@ -141,6 +142,7 @@ struct ad7293_state {
- 	/* Protect against concurrent accesses to the device, page selection and data content */
- 	struct mutex lock;
- 	struct gpio_desc *gpio_reset;
-+	bool vrefin_en;
- 	u8 page_select;
- 	u8 data[3] __aligned(IIO_DMA_MINALIGN);
- };
-@@ -785,6 +787,12 @@ static int ad7293_properties_parse(struct ad7293_state *st)
- 	if (ret)
- 		return dev_err_probe(&spi->dev, ret, "failed to enable VDRIVE\n");
- 
-+	ret = devm_regulator_get_enable_optional(&spi->dev, "vrefin");
-+	if (ret < 0 && ret != -ENODEV)
-+		return dev_err_probe(&spi->dev, ret, "failed to enable VREFIN\n");
-+
-+	st->vrefin_en = ret != -ENODEV;
-+
- 	st->gpio_reset = devm_gpiod_get_optional(&st->spi->dev, "reset",
- 						 GPIOD_OUT_HIGH);
- 	if (IS_ERR(st->gpio_reset))
-@@ -818,6 +826,11 @@ static int ad7293_init(struct ad7293_state *st)
- 		return -EINVAL;
- 	}
- 
-+	if (!st->vrefin_en)
-+		return __ad7293_spi_update_bits(st, AD7293_REG_GENERAL,
-+						AD7293_GENERAL_ADC_REF_MSK,
-+						AD7293_GENERAL_ADC_REF_MSK);
-+
- 	return 0;
- }
- 
--- 
-2.49.0
+regards,
+dan carpenter
 
 

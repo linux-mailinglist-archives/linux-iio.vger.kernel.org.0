@@ -1,110 +1,121 @@
-Return-Path: <linux-iio+bounces-18546-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18547-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00A62A97A87
-	for <lists+linux-iio@lfdr.de>; Wed, 23 Apr 2025 00:35:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B5ECA97A91
+	for <lists+linux-iio@lfdr.de>; Wed, 23 Apr 2025 00:37:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D33ED189E373
-	for <lists+linux-iio@lfdr.de>; Tue, 22 Apr 2025 22:35:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 32A2A3A76B9
+	for <lists+linux-iio@lfdr.de>; Tue, 22 Apr 2025 22:37:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 433A8298CA1;
-	Tue, 22 Apr 2025 22:35:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4B9F2C3747;
+	Tue, 22 Apr 2025 22:37:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y9Noq11e"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="abEdhaKY"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+Received: from mail-ot1-f46.google.com (mail-ot1-f46.google.com [209.85.210.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7140C1EBFE3;
-	Tue, 22 Apr 2025 22:35:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FA262C1E06
+	for <linux-iio@vger.kernel.org>; Tue, 22 Apr 2025 22:37:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745361326; cv=none; b=UlB71fKta3d7SmgrlpMP9X0FEfco7TzAoRFiP3zQZ9b7rQgwDFReqJr4WH9uBn7gh+nQaVJe5EEZ9z8HoFNX7sdLf90YbEgSDRrbEFS/uw6BoNdIUo4Hr2Lv8W/tCrWFZRKdf3rmb74kg4vri2nfctbiS/YrUgj6havTWnPBxKk=
+	t=1745361425; cv=none; b=Jhdx8bdX4SV+oy9y6RRnFBVZR7DWcctt60x97iR32QTF1AQDp57ghjBRHkT4D5lSTiNde9DTVyn78syPJZaFt/0NDdHu2vpHdtYVadzkb+8oVpepxUIa1r1TL6ZfPCZsJ5+YIvfdqJCVqJKyKFPuHIPaieUrxh60g9O1Xpke/KM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745361326; c=relaxed/simple;
-	bh=exuwJXp1XHrfsCfmNkVrZR7xtGP/8Zf7C6Uz7JyF9Xk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mOXzmKdxpl9BfMhXZV8cQNbiKlVDGVicSexiql/3TPanGDxopoBJU7OKYTdvix6XT33UuxIdoChKZwcTNBdJjhXUTj5sBvS2YrGQfby+yqHysWMXpytbjBUyK9N9PV1z0oaHbaZ6LFXY2nI575ML1PARetot70Mwwm/d2Kp9/h4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Y9Noq11e; arc=none smtp.client-ip=209.85.208.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-5e5deb6482cso577828a12.1;
-        Tue, 22 Apr 2025 15:35:24 -0700 (PDT)
+	s=arc-20240116; t=1745361425; c=relaxed/simple;
+	bh=edrSoU/7ttYT1N9uHXGev19DEKDxe8wPMLxCuvyp7cI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=i3vvCoRgNLL8D8D0TiMs5RKJdvRJnnOdv1plzMqhHbaZ++povz54KkORZpphQcWkhLggwi24Be9YyyqKkocfHp0vV+FTktmV5hVc2bch5os3BZXMb0UIyi5ke/2zh+Zwkk0yohdAyOPAQVaN4Mjjj5hyDtf7ucVgGWfxgwGz1BA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=abEdhaKY; arc=none smtp.client-ip=209.85.210.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-ot1-f46.google.com with SMTP id 46e09a7af769-72c1425fbfcso2943591a34.3
+        for <linux-iio@vger.kernel.org>; Tue, 22 Apr 2025 15:37:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745361323; x=1745966123; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=exuwJXp1XHrfsCfmNkVrZR7xtGP/8Zf7C6Uz7JyF9Xk=;
-        b=Y9Noq11eGtxRw+dpLHrm9pEVz0+NZ9HRJvK9VtI8RMRHS3egkogrblw2BfgUcIVH0y
-         S84l8MrPQRdNQohJLW+vxmJcaWXsGEGITD7VdvTMkwEjS6nGG3opXEUgPfAa2GLX4CpE
-         tOYGdDmhkVCgvtqDWCONy2ULTP4097xZAIgKTVG+aSBIUGfbVJisbqsahwf5tCQmyONw
-         tCc04Cabg8zcDQWqHd7emtvD6OQbwOwid+6IkLqpuWvVj/jZeoRnnT/G6mjvSKJZFKnN
-         0o8iOwaURaEDgHVirveExCMaKOfh0kln1/wRdZ8WnjuwWObhhHTJMCqlpkGzLNpdkdu3
-         7w+A==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1745361422; x=1745966222; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=GFEryJTJrYlbNEPG6EOeE5cZYQCM6sOwjcE6fp5zhZc=;
+        b=abEdhaKYN1x8l05/su0heXu8/eMrKo1Q51fubhImCPcjYNYKVCFlalQdgjg+S4crHJ
+         N+EoOKIw2pTkhIb1TahbQKje0Z2VAO9c+iUE2UcvgFIx0sNOgVQfVyifnWFNxL4SCWcs
+         sSLNe389pAbedh5oG91N5ix8/tClR8gX+ITyeldn9g0FnwlqjdpA5dXSXx6mVJ9dyR9I
+         LtkwXnsq2BGiuoWVQ8X+LLnIMHM+AT8n+ieAK6UUEUCOPMlZxvQFBvlYXluhiY6eG7Nu
+         0oc7T6g9mNoRq6rz7r8yMynMpANuWG6sZPV2gtOWTVbqLiCe/wNhDdhR79Cjc/fBzm3r
+         I0RQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745361323; x=1745966123;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=exuwJXp1XHrfsCfmNkVrZR7xtGP/8Zf7C6Uz7JyF9Xk=;
-        b=HGATe4XHdyJRvt+iafU1qOyTfXqBW2fu8qG2NhqbzgkfoWTuOkKY9b3kFSOsaUWPrL
-         3YFoYKkfm54TOl+BDhIFrxYvUxss0z4X5iOhb1JWWvjrcuniYoW4faVExbWXQssC5GqM
-         L0PR0xKMQRrfYRVstK1LYrnbJVU/KvVXniV+2ADyMXQNiK2wY7l2vp6meZWJWB+0C5HB
-         CqtH7L+4k4lsuuevNT2RMMHVlq8NdxuLRZjct+UlSCcZ88J7+9ZK73jJonxEg2S/icHa
-         Gesszby3CVNw5JW9mCzGO5qgXw6Bmfc8idhAVpgn3/iV0oIaJ0y3J6ShWAGXmBeTLOBE
-         gWGA==
-X-Forwarded-Encrypted: i=1; AJvYcCU9ixGgzYk6z7VwgxTHPO4xYihT9Tv9ESpZXGNQShb2peyNYYHrUjIgQRunbD8mLatZlD6fr44P1kydfDUT@vger.kernel.org, AJvYcCW7d3yQ4eVCgWJO9q9KHENc6TuCwpYDx9YWlsogKiXfjrDCGF8yJI9/4dEfE1+ynB2zofzFOloR0+k=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzQi9NvllNjjtfHdGukhHqFQ3VLr4HwctQ+zuBvZoMeYAygU+2H
-	BFNmnsaQfJnubrNYAuDUm5WLv1AMCBl0WL0T5lEVa+aFlyRY+hrq9EUj0lE8pOVFSNy5D9NFiiy
-	HcOhZ8eE2GmyzQJZN1gup+K8C0ao=
-X-Gm-Gg: ASbGncv5xGQZE02IKKqTFbcbFRwlEgAvNnjFJKNRYiKLYTwAgsbh6NN46yUP8Vran2O
-	3gbyuUrhOppaOmKZeV6HEuo8u1p7XQpzngmWcWT96w/sgecpossoR3Bf9yTcPLPX4oqsNLRpnVp
-	lIvuGxOw+AeRDTY7pk1kbA2TD3bfVuOc2y
-X-Google-Smtp-Source: AGHT+IExyhwMK/xkdBJlNnfQyIQa2Se0td5YPkj+KT2p+5TchTOdRI0q/90ny8bjCRUvSLeT6NBK++pX+31tHxqRlEk=
-X-Received: by 2002:a17:907:3e10:b0:ac6:e29b:8503 with SMTP id
- a640c23a62f3a-ace3f255374mr55218866b.1.1745361322568; Tue, 22 Apr 2025
- 15:35:22 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1745361422; x=1745966222;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=GFEryJTJrYlbNEPG6EOeE5cZYQCM6sOwjcE6fp5zhZc=;
+        b=PDQV/pNsIn6myE+xlTpqDhCDWgumJT7isoLFYB9zUUMHgiAUABEpALUDvmNrjtpA+s
+         niaV0KJTNHg7FMKRLU7MwSTbD4D7y+eg770yzkgl0WPzCkvLt053N81GrjhdbLQShtg4
+         poob/ivf0WT77uu/TZ1WZnGHktEDA8vyXvIlK54gk8M103VJ74bNeydPrNpCT897oRB1
+         zQkiPDw3n5JYOG1bx8dSKElPdrkljIl1zzG29MPq3MloFSoxHAqfI6bexR71wVxCHL4T
+         4vG5MesBJ6oQaokrtMy5FY84BSzewIXe3AjKKv8/rsTYJweZluCyKNYiLXKgqfifTLIw
+         oa9g==
+X-Forwarded-Encrypted: i=1; AJvYcCWwMHZcSOM2bzar+gnIVHb0B2kgPhuAVhaoScEYjYjkvFXEYffRuQ9ySAkRA3cqbSEfx0pyEK2CESE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxaYxUc5sYFwosCrr70uT/TqMqf8YOUKPet1ZVNdQ+CeTGAJvgT
+	ZaDMA8L9ZKWXOHXrCOI8dnRQwB3UuyFXQdnLS3wbDzMOgJbt3O143bAeBaxsuIw=
+X-Gm-Gg: ASbGncu51JI2/D+LQGFQk1cPVx7ekigMLwWzFUi/YdF1AZo6M2/EgG2ouv+PBpAvxu0
+	VpSexUVuYgp8qwUhPxhPr+Op81Ujv+eqLjrXHXjmADuYh7nedk8gmqYpSPNuscm4vyIPX52PyAi
+	rmnsFA3be5Q58N1st5Y5rqYU8+xEB3LLJO/Iv3NsrMnQVaVx9UMpjhjg1M7Xj7mZyKkRGrf+7pK
+	sUXKiiQGudW671y3SJDcro5oe8Yyjstn8EvkLpd8v80+TRzwFGBQevIoF9ibkiHKYIZO/bk1+8p
+	4cRn2ZVI5ZNc5OdW2HPn7LjXU+5xjeBjSL3MlleX3O5RvUCpU5w/mlw8UcQeQHJOb4f9S9zOgx5
+	l9WoBZ1LMNzBNGGMEVw==
+X-Google-Smtp-Source: AGHT+IGgff0HbnynsiGyzAMNRyImRsk0W8jB40NIbqdBsgqXBc+HF8ytnQSIYbKf3QzD5ZMhIHryIQ==
+X-Received: by 2002:a05:6830:601a:b0:72b:9d8d:5881 with SMTP id 46e09a7af769-73006336191mr12246352a34.28.1745361422741;
+        Tue, 22 Apr 2025 15:37:02 -0700 (PDT)
+Received: from ?IPV6:2600:8803:e7e4:1d00:c8d1:e0ed:ce8b:96a3? ([2600:8803:e7e4:1d00:c8d1:e0ed:ce8b:96a3])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-730047afc11sm2208277a34.25.2025.04.22.15.37.01
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 22 Apr 2025 15:37:02 -0700 (PDT)
+Message-ID: <f0948adc-8130-4417-8c59-f0b52a7a0e01@baylibre.com>
+Date: Tue, 22 Apr 2025 17:37:01 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/6] iio: introduce IIO_DECLARE_BUFFER_WITH_TS macros
+To: Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: Jonathan Cameron <jic23@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
+ Lars-Peter Clausen <lars@metafoo.de>,
+ Michael Hennerich <Michael.Hennerich@analog.com>,
+ Eugen Hristev <eugen.hristev@linaro.org>,
+ Nicolas Ferre <nicolas.ferre@microchip.com>,
+ Alexandre Belloni <alexandre.belloni@bootlin.com>,
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
 References: <20250422-iio-introduce-iio_declare_buffer_with_ts-v2-0-3fd36475c706@baylibre.com>
- <20250422-iio-introduce-iio_declare_buffer_with_ts-v2-3-3fd36475c706@baylibre.com>
-In-Reply-To: <20250422-iio-introduce-iio_declare_buffer_with_ts-v2-3-3fd36475c706@baylibre.com>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Wed, 23 Apr 2025 01:34:46 +0300
-X-Gm-Features: ATxdqUESYrpnuCfs1f0bD-yTLn32Q3cQsMUye4m7pupxP-8uO4Y3zk6hss6f4Vw
-Message-ID: <CAHp75VdpaD5X+p0JSxHRoCAguZH53jfxe_WdASRuRXuS50kkNQ@mail.gmail.com>
-Subject: Re: [PATCH v2 3/6] iio: adc: ad4695: use IIO_DECLARE_BUFFER_WITH_TS
-To: David Lechner <dlechner@baylibre.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Andy Shevchenko <andy@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, 
-	Michael Hennerich <Michael.Hennerich@analog.com>, Eugen Hristev <eugen.hristev@linaro.org>, 
-	Nicolas Ferre <nicolas.ferre@microchip.com>, 
-	Alexandre Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+ <20250422-iio-introduce-iio_declare_buffer_with_ts-v2-1-3fd36475c706@baylibre.com>
+ <CAHp75VeuNhfJrNAZZwY2tEHte=UPHLOPNUz7y_J20xv2+_Zdeg@mail.gmail.com>
+From: David Lechner <dlechner@baylibre.com>
+Content-Language: en-US
+In-Reply-To: <CAHp75VeuNhfJrNAZZwY2tEHte=UPHLOPNUz7y_J20xv2+_Zdeg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Wed, Apr 23, 2025 at 1:08=E2=80=AFAM David Lechner <dlechner@baylibre.co=
-m> wrote:
->
-> Use IIO_DECLARE_BUFFER_WITH_TS to declare the buffer that gets used with
+On 4/22/25 5:30 PM, Andy Shevchenko wrote:
+> On Wed, Apr 23, 2025 at 1:08 AM David Lechner <dlechner@baylibre.com> wrote:
+>>
 
-I would use the IIO_DECLARE_BUFFER_WITH_TS() form since it's a macro
-with parameters.
+...
 
-> iio_push_to_buffers_with_ts(). This makes the code a bit easier to read
-> and understand.
+>> +_Static_assert(sizeof(IIO_DMA_MINALIGN) % sizeof(s64) == 0,
+> 
+> Why not static_assert() ? Because of the message? But static_assert()
+> supports messages AFAICS.
+> 
+>> +       "macros above assume that IIO_DMA_MINALIGN also ensures s64 timestamp alignment");
+> 
 
---=20
-With Best Regards,
-Andy Shevchenko
+I just knew that was standard C. But I support BUILD_BUG_ON_MSG or static_assert
+would work just as well here.
 

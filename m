@@ -1,143 +1,114 @@
-Return-Path: <linux-iio+bounces-18526-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18527-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89016A9742A
-	for <lists+linux-iio@lfdr.de>; Tue, 22 Apr 2025 20:04:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F660A97449
+	for <lists+linux-iio@lfdr.de>; Tue, 22 Apr 2025 20:11:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F27C07A9E4A
-	for <lists+linux-iio@lfdr.de>; Tue, 22 Apr 2025 18:03:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C1067189997D
+	for <lists+linux-iio@lfdr.de>; Tue, 22 Apr 2025 18:11:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23C1A202F8F;
-	Tue, 22 Apr 2025 18:04:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B86222980BE;
+	Tue, 22 Apr 2025 18:11:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MVZci9lv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qg+meklA"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4252013A26D
-	for <linux-iio@vger.kernel.org>; Tue, 22 Apr 2025 18:04:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DFA928F951;
+	Tue, 22 Apr 2025 18:11:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745345081; cv=none; b=C+bbspasKSeSjPPeX3XZdOJzuCmtyHAxlbUb+ycxooYCgU5hG2c9cPfJAczPnsVB3AMkfOLQ/cvjQVIOYa0MmMcXFP+BdsPBErPOSJy5lpyHYdxHPuFn1kCEVZBRomq3Q2uuNUMsoH6CvmtFWgXhbM3VcbByD5dcp14mUAJYTpA=
+	t=1745345493; cv=none; b=hJQhRuCsZKIXUAoW9qlR3S7t11hQvtFAj9PnSl/tyuXGbdcnXiwUetyM1uzrzkCCVkdnIwzrRGAn37noZwVuRBlaadlc1R7O8jO31veu9EM33eb9hgmL0avLjRj1sK6ZdWCmbPgR/3dDW7BTuCZh3VmHwcULGqvIS+jUzdQ5FF8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745345081; c=relaxed/simple;
-	bh=NTRFxksxespBRJMJewZpg3Fy87vhUzIx80XYdS1+Bnc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uPqkcmqFlj4vj9g0MvRn7klnmfSZnRq0OBxNX09yFSiF96I9u5Xdcj1rleETygDcAnO5t6A9kkMaSR5D/ZFEZcx1ADzMsVYpXvNDAi4m1EggSLzqn3DOIwnFCyD6m6nRmXfzoRR62OIt1goISqTR+gZrLiVf9+YBLYzy+ZWeALA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MVZci9lv; arc=none smtp.client-ip=209.85.218.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-ac6e8cf9132so941960766b.2
-        for <linux-iio@vger.kernel.org>; Tue, 22 Apr 2025 11:04:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745345078; x=1745949878; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NTRFxksxespBRJMJewZpg3Fy87vhUzIx80XYdS1+Bnc=;
-        b=MVZci9lvmL3m/Xw5okh9N78+DzSYpzRHnSLwQKiAjEgbyWpTJ4vIdpyFuKuqVPmDzt
-         y6vxCpI1q8w5sgRQ/V0V6JFYdoPIOSs3IJ22HK9/uejBH50qnSnZlhPv7G7x5PhRtxAs
-         BlMYIzuqpTWXHIWlvu6cEmtDg1hGwqqjugdd9NZlOEa1dGuwFs/f20/CllyWFAauVdy+
-         lXuFEt7EP4P/Dyp6mJe4ulPya/LVM/8yscQ9JJyXl3i958OBJuylHiEPkDUoWw8rZU3g
-         VLafvawDhfYPV2tAWoqSsV9JbR8g6Kcw1Xc0WQdbzs5MbS8YNjFpHPOYoSjXD0pkw2ZK
-         ovhA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745345078; x=1745949878;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=NTRFxksxespBRJMJewZpg3Fy87vhUzIx80XYdS1+Bnc=;
-        b=t8gQCPiEc6IT7rDiovbzZaYpzDVLnAZqftL9EZHLC2DO+T8gppVoHVQfsNy8zLzTj3
-         1jxnVpgT0SOuLJBq9llAcGYCBlcjRZubrhqhhRZyDT3TtaRRrp9+eO9dz7S4gcDRoLqy
-         0nIEL1T3FeM17iq1BLhWL+03ayDyWwqWUKiZ/XKALu+zKAQcl2pqOzX9XtjCKgFeOz6Y
-         qifjwYP/zc+YgqDGUdrZ9+CMm8DIcb3ZHug2npHkDYJtabqt9gff9yqu6XHVrY58ehva
-         gShjoI1f6IvJS0T30v39bFSdbpNSh+ey6lKFfuEzbYSoNEtOyJinoCvTeRgBzIU11x5d
-         AaZQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXUI7KVsnJFmfvE2Mqoq+MeF7Y+dvVxZMFRsxS/PFqTxqZkXPbixl3i1JQ1y7lUfNL6XsKXYTZGsv4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwgAqox7W+NVwAidLaCtv2viAmVzNGItIUQUMojyRFOLJb0Ykj4
-	Hba8qZlnRqljruo0is5RhkBVjm+k7pDf4H121mzqzy/I0CByNlUm8DOfg1hMT36ExsBAWUOSKKy
-	LY+Shsq7SyOr4zO+Eab0R1p110Ov0ROvD9Fsjww==
-X-Gm-Gg: ASbGncuS4qA30Wl3N6ntTPiXH2dt++1AGS+fsY/lvXDs4MedS78zqckeBpe5eSG/jrd
-	+9qZQ2xsR/b6qbUzzlXTr6lWYFFs9YhQn8p6ISm3FTaoi604Cq8lZm100Jv7yNx3qUVEs38A3qJ
-	/VCuOIZxBtRkOUUns2Q948
-X-Google-Smtp-Source: AGHT+IFbw8mR0Gs6uIKRwyHI5tUnQCUZGIxJMTpzhwSfoM+1ScFKOiZOczCk7/7b8GVcyPM/XfG3NQgQnJ3N72ySjrs=
-X-Received: by 2002:a17:906:c143:b0:ac3:afb1:dee7 with SMTP id
- a640c23a62f3a-acb74b83f10mr1360435766b.28.1745345078181; Tue, 22 Apr 2025
- 11:04:38 -0700 (PDT)
+	s=arc-20240116; t=1745345493; c=relaxed/simple;
+	bh=SvIx++S80MJoaUoA5eJ5m1Ia0u1LVuwEpWYTiDTazoQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=O5fGS9GcLTk07uMc3RsCH/rVMS9kiMiV3un+G8bE15E3+z88uPpL0bLWH0jvYvSwWU+fYay5M4neEPnTZo6rtslms7OWnT8tXWN1laJ3CKOIxQ5Kr6K/2zDyHvhgbHP0VDv0QTJ8bDe0d3cgrHHUpLWlPjGmZANnlkyHGcD2dLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qg+meklA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5AC0C4CEE9;
+	Tue, 22 Apr 2025 18:11:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1745345493;
+	bh=SvIx++S80MJoaUoA5eJ5m1Ia0u1LVuwEpWYTiDTazoQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=qg+meklA55nJle1d4hOos2AcPWg5lPvSi7s7fzxNRS4iy0iHG9UMDijMRHc7eq9Z2
+	 4uFUaZfbTdC8UuKFJC0Hx2uPRGdCwvZ59+U9Bzgi+1Dzo0dUkrHsNDnxFRT5PJjC9Z
+	 kQv7XW288krqJBCx0+YeB710x4vj3d8jgEaRaQSm9kkPim1ujpQlBq3mwuzQjWWU0D
+	 7LizaJwIZfiwpw6wL76S43FyRsly6ZnJ6wbjEc7XINpQdAEMu5Vva/P/P2J8uJJW6a
+	 VYpHCfeFmr3ynaVC4Zengu5OsByeMdd7FmmQhheTikCy2c7SPsPn3G6wyyXEeoTQq0
+	 idM6hE2hZGhLg==
+Date: Tue, 22 Apr 2025 19:11:26 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Kees Cook <kees@kernel.org>
+Cc: Linus Walleij <linus.walleij@linaro.org>, Lars-Peter Clausen
+ <lars@metafoo.de>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-hardening@vger.kernel.org
+Subject: Re: [PATCH] iio: magnetometer: ak8974: Add __nonstring annotations
+ for unterminated strings
+Message-ID: <20250422191126.53eb61ed@jic23-huawei>
+In-Reply-To: <202503151455.B8E9F6F1@keescook>
+References: <20250310222346.work.810-kees@kernel.org>
+	<CACRpkdbUk8bVWLPwVRq0qzaKRC80=bV1Wd01h+5xfH1O7-BVaQ@mail.gmail.com>
+	<20250315183125.40f9c566@jic23-huawei>
+	<202503151455.B8E9F6F1@keescook>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250419232316.36002-1-nattanferreira58@gmail.com>
- <c2golk6627ybfpw3t7lnerritq2yysi5zhdlvahnvhxoevmojn@j3d2stvivkyk> <20250420211706.GB5621@francesco-nb>
-In-Reply-To: <20250420211706.GB5621@francesco-nb>
-From: Nattan Ferreira <nattanferreira58@gmail.com>
-Date: Tue, 22 Apr 2025 15:04:25 -0300
-X-Gm-Features: ATxdqUEv_H3MfJfXx9DgFlGC8FqBlBpDANyU3Ns5o-hlRcjJm94WwoANkqvFBn8
-Message-ID: <CAKj1jXr3pacMg-9DkUijiJH0e_YSB=NoWcS+DcOu-vzwSrAWDA@mail.gmail.com>
-Subject: Re: [PATCH] iio: adc: ti-ads1119: Prevent concurrent access during
-To: Francesco Dolcini <francesco@dolcini.it>
-Cc: =?UTF-8?Q?Jo=C3=A3o_Paulo_Gon=C3=A7alves?= <jpaulo.silvagoncalves@gmail.com>, 
-	jic23@kernel.org, lucasantonio.santos@usp.br, linux-iio@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, Apr 20, 2025 at 6:17=E2=80=AFPM Francesco Dolcini <francesco@dolcin=
-i.it> wrote:
->
-> On Sun, Apr 20, 2025 at 01:07:28PM -0300, Jo=C3=A3o Paulo Gon=C3=A7alves =
+On Sat, 15 Mar 2025 14:56:02 -0700
+Kees Cook <kees@kernel.org> wrote:
+
+> On Sat, Mar 15, 2025 at 06:31:25PM +0000, Jonathan Cameron wrote:
+> > On Fri, 14 Mar 2025 11:31:09 +0100
+> > Linus Walleij <linus.walleij@linaro.org> wrote:
+> >  =20
+> > > On Mon, Mar 10, 2025 at 11:23=E2=80=AFPM Kees Cook <kees@kernel.org> =
 wrote:
-> > > Use iio_device_claim_direct() to protect register access via debugfs
-> > > from conflicting with buffered capture modes. This prevents data
-> > > corruption and ensures correct device operation when users access
-> > > registers while streaming data.
-> > >
-> >
-> > but debugfs is meant to be used during development/integration,
-> > where this probably is not an issue.
->
-> Is even worth doing any such a change? I assume Jonathan will have an
-> opinion on what's the expectation for an IIO driver.
->
-> Nattan, can you explain why you need such a change? What is the use
-> case?
->
-> Francesco
->
+> > >  =20
+> > > > When a character array without a terminating NUL character has a st=
+atic
+> > > > initializer, GCC 15's -Wunterminated-string-initialization will only
+> > > > warn if the array lacks the "nonstring" attribute[1]. Mark the arra=
+ys
+> > > > with __nonstring to and correctly identify the char array as "not a=
+ C
+> > > > string" and thereby eliminate the warning.
+> > > >
+> > > > Link: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=3D117178 [1]
+> > > > Cc: Linus Walleij <linus.walleij@linaro.org>
+> > > > Cc: Jonathan Cameron <jic23@kernel.org>
+> > > > Cc: Lars-Peter Clausen <lars@metafoo.de>
+> > > > Cc: linux-iio@vger.kernel.org
+> > > > Signed-off-by: Kees Cook <kees@kernel.org>   =20
+> > >=20
+> > > Fair enough,
+> > > Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+> > >  =20
+> > Kees,
+> >=20
+> > I've currently queued this for next cycle as it doesn't feel like a fix
+> > as such and I've already sent my pull request for the merge window.
+> >=20
+> > Is it worth rushing it in, or is a fully cycle delay an issue? (6.16)
+> >=20
+> > If slow is fine, applied to the testing branch of iio.git which gets
+> > 0-day bot exposure. =20
+>=20
+> No rush needed at all. This is just for cleaning up warnings for the
+> coming releases of GCC 15 in couple months. Thanks for picking it up!
+>=20
 
-Hi Francesco and Jo=C3=A3o,
+Dropped because it clashes with:
 
-Thanks for the feedback and your thoughts on this.
-
-To clarify the use case: The primary reason for preventing both read
-and write access when the buffer is active is to avoid potential data
-corruption and inconsistencies. When the buffer is streaming data,
-concurrent register access (either reading or writing) can lead to
-unexpected behaviors, such as incorrect register values or misaligned
-data. This can cause confusion and make it harder to debug or test the
-driver, as well as introduce risks in production if these issues
-persist unnoticed.
-
-I understand that development and integration are critical stages, and
-while it's tempting to allow register access for diagnostic purposes,
-my concern is that even during this phase, uncoordinated access to
-registers could result in misleading data, which could cascade into
-errors or incorrect assumptions.
-
-With that said, I do see the merit in Jo=C3=A3o=E2=80=99s suggestion to all=
-ow read
-access while blocking writes. If that aligns better with the IIO
-driver expectations, I=E2=80=99m happy to update the patch accordingly.
-
-Let me know your thoughts or if you think there=E2=80=99s a better approach=
- here.
-
-Best regards,
-Nattan Ferreira
+  05e8d261a34e ("gcc-15: add '__nonstring' markers to byte arrays")
 

@@ -1,75 +1,77 @@
-Return-Path: <linux-iio+bounces-18510-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18511-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63457A971B1
-	for <lists+linux-iio@lfdr.de>; Tue, 22 Apr 2025 17:53:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56515A971B4
+	for <lists+linux-iio@lfdr.de>; Tue, 22 Apr 2025 17:53:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 32B393B4F94
-	for <lists+linux-iio@lfdr.de>; Tue, 22 Apr 2025 15:53:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D0C82188DCE9
+	for <lists+linux-iio@lfdr.de>; Tue, 22 Apr 2025 15:53:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A369228FFCC;
-	Tue, 22 Apr 2025 15:53:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 943832900B8;
+	Tue, 22 Apr 2025 15:53:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IadmLRcU"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PNcQNhfK"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AC3F27BF7F;
-	Tue, 22 Apr 2025 15:53:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2F2728FFE4;
+	Tue, 22 Apr 2025 15:53:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745337206; cv=none; b=qOV0RQi59GPVFxgW1xYB6OixqEXF+YOV8E9Ql/2r/EUAPleZj4wIxs6ZJovjnlBf6gOKFgFmTfqA+a/pOl/okMLkwdwsZFFw0hPhBVc0a2vELPMcR+0Gl9OXy/qOsDH4vsfLZGu68A1T4MzJlN48AOWcmmTDaLFNLBgl5bvZopQ=
+	t=1745337209; cv=none; b=enUVaYlLQWvm7Z/JG6nWelRDqf9H5xI2ZmwIw/ZRhi38hBDvIX/yPLbkUjjyXqR1iU2Rz7skc5KMJOKk98sDw1kj6K83ljhN7EVSzO9M/j0KtOeQiw6ThH8dW4r7KTEYPf8cx5Dy+qVuVrsa+wMFrpp/gKPUQJGcnwTSRrRvMCI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745337206; c=relaxed/simple;
-	bh=B18Go172uRiSAhge6Hu8qA/DNclZ/mWZ5WFAWKpvNQs=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Bcsby1k271lEZyteNcvxcMDDsnEFSl0wxucbObJ4huB9lO/K8J3G6PKUQvxjBTwCO4h3wQYbGdkj7cnDge11/KUXZgQMGAid/8j98U6+ag9yVrVoKOXLXdt3sx8EuVFX9IrXqlExlp8nf4iB3sqEEtZJYGAPC7YqWL4/Y4lGG1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IadmLRcU; arc=none smtp.client-ip=209.85.214.178
+	s=arc-20240116; t=1745337209; c=relaxed/simple;
+	bh=7K5WdTr0Su7eehKUV+hGjfBgc29I7BKerhOxeBxIL0w=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=Na5zqXRDztEP1ae8rZtiLo7fe7JPuvou+4m/fV4jtFAVVyjMzMlqrO8BcZpQhsapKxRrOqYRXl/2OBqZR1/TqeKjwcuCvmMVpBef6qXdMveu39aIALUx31A2UH0Su1aziQ4PFS/RsOemD4nKm5bNddQVA38uJJtrw7gPHkIKNV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PNcQNhfK; arc=none smtp.client-ip=209.85.214.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2295d78b433so62441125ad.2;
-        Tue, 22 Apr 2025 08:53:24 -0700 (PDT)
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-22438c356c8so56488435ad.1;
+        Tue, 22 Apr 2025 08:53:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745337204; x=1745942004; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=qE/lukhdLOArAxxziVsGfhIsDmorURXr5J5282YinqU=;
-        b=IadmLRcUxGW/HppVnzDpCnWe22v46dNjyz08wSE7+Tmshl0Ym0IUa1FMjQWS6m8FPB
-         6/+ZzSwH8uegRL1Xx1lencUtTf4oPI52K3+ki6eCKKplFFsOcNRAV0GMOE2vLx5DMhby
-         rNASDgMcC8VOmN0C4oaF6g0gA0JUDYeoMnUp2VyUvwMMOOe6wyfm5oPxblgQMPSD3G5Z
-         JGfEGdnJFV9uNU9bGABX8YORTmkGuAQ7FiImd99tHsvxytGNpLARSLPMrkdNJwujZQu/
-         ESW8lxp7qTNCyKO+ZnR2Hn7EJoVa6ktSEv7P+Klw0LCO83BcZWNYRsZf0NGscU7gaJZh
-         5Lcw==
+        d=gmail.com; s=20230601; t=1745337207; x=1745942007; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Qj8kpmYrdiK9mCxsMqgrjwEIay8Sc6Z78TIqN3FAEJ0=;
+        b=PNcQNhfKuw6F4ppWNgvX2+EpE6gr2+MLgB5GzWw/Vohlsp2cVPS1OZsc5Lnt/fNyZ1
+         JoLy8j0pQyK39snkDm7AWz43a5l8L/H9potuL4JwXgPWLarVu56jynfnPSAWBDx6YHuG
+         3ZYAp98FZ4nOQs1rm9YJKdDiMGfsFsTMd818PlinZ2tCwKpHm+gK9P+hy0f4lKA1lI5r
+         k5u8gwtxj9Y/9gAjw7Gazxjvzk3kmT07B7+nvghVgsDoQzPLRcAT6XqYEqpvF0Goqipf
+         7Mvz4fdje2jVobWQLhR1A34iaSlUajIVuxsfIoeUPGR/ETKAkSvJW6KJwNm5iud6yMfa
+         a8sw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745337204; x=1745942004;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=qE/lukhdLOArAxxziVsGfhIsDmorURXr5J5282YinqU=;
-        b=P6I+BZkWD+brY/6r1ACNmfWg57Pw3iOwCBwo9ehG2rW4x98Jy4qC8mszA9SBb8vO/E
-         YPY7zzrrK/YqxkKsxY6lqLYLOB6dd3K25y3UAaYAf7dYRYK8EtElEVU9/2eSbk+2ajzB
-         eisuGUlpsMPmYXrSwkkt0AZiBoiVQ+eDEI9ZW77OWZ5kKhj192wpkJ/pB9HdpJ050hjh
-         NZ/S7bm1McQFzp7wwilw/tO9ihn8L2MN64FMccBp0L2M0xR1a/zSt/zac/QMnaFlMiri
-         yoBQhj8KyrtWg2p9TNJCuOIEDHfhqmubCgrMU+Lb9yQt8qiXBL9yMZOV9Hbqnx8nJeQp
-         5zkg==
-X-Forwarded-Encrypted: i=1; AJvYcCUDxG4yMMkuNVVyrX9DTRR1L+fei1RCTzlnbtZ7/BXT+se3fEOEkyqWsLV97RAnWG8JCWObRADDiDMi@vger.kernel.org, AJvYcCUs6MFMh88ZquPxnUEPkR+rqH3Jkqml6NtKXcHlIm716fG0wWGSV3rzbfxvOxbvDynWvMzIleBrzgYP@vger.kernel.org
-X-Gm-Message-State: AOJu0YzcDW9pwVqp7VYaiaM4Yt+DTpF22viA5R5C3WV0wghc2aLfZwE7
-	+MUwQdB4H82humLAHTL0vYZqTSUOUa7bhXm7GB1HbttUb6HZ4j48
-X-Gm-Gg: ASbGncsYh7nIN0xVBAKWLXEEhiCz5sTx0mSy0AsvWGiAgqt2sRNNQZ7RlewdSl0OhHn
-	oUU0LnReyYvFMoEa/an+G4cdE63kbD4XL6yA5bBwzbr5JU+09klThhX+gDe4Q7FGlk3AStvUBIp
-	tKx81aJMs93QwNE2AUk7ICCuQWN3ih+LxZ3dHb2pNfeuiSLCXV/w211MHmz3dyW17q+QXm3Xrz1
-	1TQZnqDM3OxIsd3yvEaUqeV1izF6xJ8WRkW8t20eMF18714WjBVORs2/etTzbzzSqblCkJaASiK
-	RT6nbFzASBf8xTA/4gPjZfDP0GREswnSs4MUgDGCHTGK4O0=
-X-Google-Smtp-Source: AGHT+IFi0k9jyJM+7w5X2GCk8OAEU+lHhEZ2qZMJgCzq5LQlVRPphwYUIG5jEoB4zRcREpe3aPPhTQ==
-X-Received: by 2002:a17:902:da88:b0:229:1717:882a with SMTP id d9443c01a7336-22c5337a225mr250257325ad.4.1745337204202;
-        Tue, 22 Apr 2025 08:53:24 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1745337207; x=1745942007;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Qj8kpmYrdiK9mCxsMqgrjwEIay8Sc6Z78TIqN3FAEJ0=;
+        b=YjdlRul2PIyejW2YQqdX0NhwuG/ENdDms3r1rqM2hKaOhzWsHbNn19rbpQHnWZ8wWP
+         T2cbP/HE1qwGcc68AxgxIpkZdW2tx9PtNPDQnLlbMwooGK63MuTBTLfjI32U57NsDWlx
+         1GYPlzVzc/Rn4mzn8njoIdz5h4wOfUCSwRFngdArCoSI34ZcCjlNt1NdOAytZJcaSA1N
+         M1VsLbicdbzEccwtxSWX//+U7iRZrmP++cBVhiHDdFqNLh2CsAE7FD7pA+0PdhRqS39P
+         YcdnZwZMkJZtSnOWG6+NDKLeTSmqpYRSFGCmqBedP0EZY7/qMoc9axiMepHl7U9EmIWx
+         iaaA==
+X-Forwarded-Encrypted: i=1; AJvYcCVBGCGhdV4WxTNFDY4SGBUn78Nk8EVvrpj+38u2tbitPdhcAqezjEAlJOfGcA9GX93o8lwH7/9Yx+lh@vger.kernel.org, AJvYcCVhM/q7SoXbEcx1hHHPuTK7gGww8MjYW0J3jTM/LDenHD+0V7bJhmyitj7OAbJZehNoHvxAhxTAr56U@vger.kernel.org
+X-Gm-Message-State: AOJu0YwAvAnVqR9yo6T/wIOg4eBf6/DbrP/B2GlmVTlTrop3yw5yNjtU
+	IEf+UHrIev5iqxjeeVklwVgGOLOvswQG+9uBNu+KIUMqItbBuF/3
+X-Gm-Gg: ASbGnctZ0KRzF40wFmVdSYXbBTnBnfrsYdD3ssISpQ1vg/kCK8agtcGO0Z5dxj9LXi7
+	qgqnyeLFE+dRBu4uOQL4ab6WtFzzPXEh2uGCVtNXPWa3lKem2Oep11v5iFqt1F9Qa+6Ekt8I1Fc
+	MkFARfDmoqyyGZc8JfMCXskPC6+yP8WQqAgvW1KjETUnFhvq6Kk1OVvFSfECHb8YiNcFujChunG
+	t/FEDrFeB6vHAB3grJYcYgcSnsE2UDAjhPg32mIuxUd5joqCmeKHsbsxg+/5z5BobtWw4EG9cVM
+	lKr9aQXBgYumRZZOBzG/QDsnMYvIDw9JH8dq7e7OoPW9OYU=
+X-Google-Smtp-Source: AGHT+IHmksWCwryals6+EhO8e1MlhITsJs7SvCTOY2hnhQmAna8pjxPWy6icosNpdbbr23vnJYCNkA==
+X-Received: by 2002:a17:902:da88:b0:227:ac2a:1dd6 with SMTP id d9443c01a7336-22c535bfd40mr262598935ad.24.1745337207091;
+        Tue, 22 Apr 2025 08:53:27 -0700 (PDT)
 Received: from gye-ThinkPad-T590.. ([39.120.225.141])
-        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-22c50bdda46sm87078705ad.3.2025.04.22.08.53.21
+        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-22c50bdda46sm87078705ad.3.2025.04.22.08.53.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Apr 2025 08:53:23 -0700 (PDT)
+        Tue, 22 Apr 2025 08:53:26 -0700 (PDT)
 From: Gyeyoung Baek <gye976@gmail.com>
 To: jic23@kernel.org
 Cc: Gyeyoung Baek <gye976@gmail.com>,
@@ -80,11 +82,14 @@ Cc: Gyeyoung Baek <gye976@gmail.com>,
 	andy@kernel.org,
 	robh@kernel.org,
 	krzk+dt@kernel.org,
-	conor+dt@kernel.org
-Subject: [PATCH v5 0/4] add support for winsen MHZ19B CO2 sensor
-Date: Wed, 23 Apr 2025 00:52:58 +0900
-Message-Id: <20250422155302.669960-1-gye976@gmail.com>
+	conor+dt@kernel.org,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH v5 1/4] dt-bindings: add winsen to the vendor prefixes
+Date: Wed, 23 Apr 2025 00:52:59 +0900
+Message-Id: <20250422155302.669960-2-gye976@gmail.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250422155302.669960-1-gye976@gmail.com>
+References: <20250422155302.669960-1-gye976@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -93,42 +98,27 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-v5:
- - Include the required headers explicitly.
- - Fix coding style overall.
+Add winsen to the vendor prefixes.
 
-v4:
- - Ensure buffer is aligned to the cacheline.
- - Fix coding style overall.
+Signed-off-by: Gyeyoung Baek <gye976@gmail.com>
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+---
+ Documentation/devicetree/bindings/vendor-prefixes.yaml | 2 ++
+ 1 file changed, 2 insertions(+)
 
-v3:
- - Add vin supply regulator.
- - Drop custom ABI.
- - Drop unnecessary mutex.
-
-v2:
- - Add ABI doc.
- - Add complete struct to receive UART transmission successfully.
- - Add undersigned as a maintainer for the WINSEN MHZ19B.
- - Modify to comply with the IIO subsystem ABI as much as possible.
- - Revise the coding style overall.
-
-Gyeyoung Baek (4):
-  dt-bindings: add winsen to the vendor prefixes
-  dt-bindings: add device tree support for winsen MHZ19B CO2 sensor
-  iio: chemical: add support for winsen MHZ19B CO2 sensor
-  MAINTAINERS: Add WINSEN MHZ19B
-
- .../bindings/iio/chemical/winsen,mhz19b.yaml  |  33 ++
- .../devicetree/bindings/vendor-prefixes.yaml  |   2 +
- MAINTAINERS                                   |   6 +
- drivers/iio/chemical/Kconfig                  |  10 +
- drivers/iio/chemical/Makefile                 |   1 +
- drivers/iio/chemical/mhz19b.c                 | 311 ++++++++++++++++++
- 6 files changed, 363 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/iio/chemical/winsen,mhz19b.yaml
- create mode 100644 drivers/iio/chemical/mhz19b.c
-
+diff --git a/Documentation/devicetree/bindings/vendor-prefixes.yaml b/Documentation/devicetree/bindings/vendor-prefixes.yaml
+index 86f6a19b28ae..6d35549d2e4b 100644
+--- a/Documentation/devicetree/bindings/vendor-prefixes.yaml
++++ b/Documentation/devicetree/bindings/vendor-prefixes.yaml
+@@ -1689,6 +1689,8 @@ patternProperties:
+     description: Wingtech Technology Co., Ltd.
+   "^winlink,.*":
+     description: WinLink Co., Ltd
++  "^winsen,.*":
++    description: Winsen Corp.
+   "^winstar,.*":
+     description: Winstar Display Corp.
+   "^wirelesstag,.*":
 -- 
 2.34.1
 

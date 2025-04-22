@@ -1,160 +1,140 @@
-Return-Path: <linux-iio+bounces-18515-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18516-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DB4BA9724D
-	for <lists+linux-iio@lfdr.de>; Tue, 22 Apr 2025 18:16:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 846CFA9724E
+	for <lists+linux-iio@lfdr.de>; Tue, 22 Apr 2025 18:16:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5A0741B641C0
-	for <lists+linux-iio@lfdr.de>; Tue, 22 Apr 2025 16:16:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0542A1B647CD
+	for <lists+linux-iio@lfdr.de>; Tue, 22 Apr 2025 16:16:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ADAE293B6B;
-	Tue, 22 Apr 2025 16:14:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D02122918CD;
+	Tue, 22 Apr 2025 16:15:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aSOKqJ8A"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="g4xDRlsK"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
+Received: from mail-ot1-f54.google.com (mail-ot1-f54.google.com [209.85.210.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A62D6293B55;
-	Tue, 22 Apr 2025 16:14:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 098A121764B
+	for <linux-iio@vger.kernel.org>; Tue, 22 Apr 2025 16:15:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745338493; cv=none; b=h97L0JAHhVYiWLb4wHhnblImMKXQATGqYMNWs2VF1Emtxfruqov30kELJ+I7njyisUaKK5JGxJT0vRf6YEEUvIRRNXXv+m28Hp2UdZ23tzFp256x3vo0Hvu7mZwVWBVoNpNPX6m+Qlf5tPuAJ/ioF+MdxGaLDe1AHvQzvF0+4T4=
+	t=1745338515; cv=none; b=iToZta+9SDu+g7us6VmqhqWHORaXAKAbPoYPoXbbDrRsG2CPE1DRFGsa4Z/gEymf3olsa53vkHQZMqr1bpwbrIPu3Go9l8he10ec0vNzHZ63V9TlrzhnVwEFNZeK0vBHcjuk7PCYQ0LgNoiOtkXouW7Yc5ESQ/dR3/gH9S62N5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745338493; c=relaxed/simple;
-	bh=7laejMG3Z8D6gx1OrpZO40uSH8I9rUZIXpN2yMxaO4k=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=stK8/RHAr5GRMHvTEnPBzjuo9iOagm9O1CkiCeL8P+XqoK6jKeBCm6gNFGPCzV+AkBGFN7qD9I/odvfd9MDCzYk0F+bHt0Pse3l8SUGZRk6atZJzSBS4OmYFnBNuohlwuq6i5fU2brjIRMFj2Dhf0D9Z2vaBQLebewJSQWVUUOs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aSOKqJ8A; arc=none smtp.client-ip=209.85.160.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-4769f3e19a9so36437481cf.0;
-        Tue, 22 Apr 2025 09:14:51 -0700 (PDT)
+	s=arc-20240116; t=1745338515; c=relaxed/simple;
+	bh=smPXZMMT16PcIo7LNQP2eEfghWATEVZLFAGhCTPVX0Q=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Mmr2pwDZ1X/eyWBgd3HZphYQM75wLBta6jBwU4YA8gJQXASsm6zKeuw8k3ZK6YuH6HXAqy9r2ZpUkVzn7FDT2DgZKZFOtPz9KIaI2GHVqqpOD54OqGRGAfl7tcvWYTwnai1MsUEDIK+PzCtUlwAl/6eZ8VLXdZhXN7P/ymyQNUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=g4xDRlsK; arc=none smtp.client-ip=209.85.210.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-ot1-f54.google.com with SMTP id 46e09a7af769-7302a769534so1242325a34.1
+        for <linux-iio@vger.kernel.org>; Tue, 22 Apr 2025 09:15:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745338490; x=1745943290; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5v+4lTQ3xb7CRwbB20c/aB6VOxfSp733arfrC9AeWZM=;
-        b=aSOKqJ8A0PT3vqCvjXV2GaTPAQ28uelSKbnf1UBt6bq8HVD28PPzV+fVttOPDatdI2
-         diazi2RDOKOm3Z81zPzEWLaP8zVXMEwm/tE24cYSQyQORP4FH/IclJvFtevtRjWfkMMS
-         4xuHGA5SubwnJY8nRbotqJS3HaE464t+j4V9oz6ciYYkLqfM1HLzpOiW15Vws/HLiPAY
-         J90OO/jwvqjIgrddE4MhG7DCuHczu0jLP6i30XYK3ok4YYfVev0jy67DHMs3erHZ60ML
-         Hp2S7JL4MFCcI4fRIhq+j3WVAnon+8l1nmbluum1+ssn+ng3SgIMmLFOvp5BxnH9Rfcp
-         zFuQ==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1745338513; x=1745943313; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=oS2bZp2eaQwTZFLdRadzwceZRRndXHL/edMYPujKPfc=;
+        b=g4xDRlsKzysemlLdLOmw9nIWLjUtgVgedxE7nNWKW15zCi3CGITWhyRWW3YkbkNBwT
+         iI6701gDXBkPCG2V0owqYIw4sbf4K07UGIxOoze51n0GUNp/Xr/YFlA5HGtxOpC8RhQM
+         AA1IjQRuwZTtejT2nDyexTKzyrBMQarncuMOg+rYUG6oUsDtwLY7Hqi3RcXvPh9acS8x
+         zsUI1iYhdoV0WjjcAiQiJVKo4ADVsy06HZ7hXU+ywvDU8PVgqbzti4+xCqdSNGrv3mGV
+         IetolbMtuOjs38FzOls0u7nukZpggqH4rhpPQ5w0yuPVhE80x/ax3w2yLgbyLIcbrgFh
+         ClrA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745338490; x=1745943290;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=5v+4lTQ3xb7CRwbB20c/aB6VOxfSp733arfrC9AeWZM=;
-        b=WMaDi8c6z8l/7ms2Z2Daje1ALzITeLHBwbUIyWuTrD/O5JUS6vcM76iOkRzftof1q7
-         sAURZTa+scPxlmzAFYw0iRORkBNeyuqMPJsxSHV27GrQ4hwrcPZesjadj9NUPh44n88f
-         ExTOPPY+OMNTZY7KYcG8S3eNnHo5nrl7i716mCJibeQgPNMXlaJ8FC5gVQ3+xdh0pYFg
-         Ks1j0DURBmNF5vlB/Qk4WShIuWTfL2djHHUVBG/D7IWnDGEPw5dgg/PtIPmLWTgLwlRS
-         lRoekvKVK6wr7a64RkWdAP8lpSig/xvcVBVzz1sEdkP7v3ohJ5Hb8LAdE5QHAf55MFOL
-         AEJg==
-X-Forwarded-Encrypted: i=1; AJvYcCU9aHfhxuv5cSMvHEA7w6uyDRpzQ6/VinvzVzrKsTLVvObsWJaJ41TtnYKWeQ2BrGzifLJqpbQjiR4=@vger.kernel.org, AJvYcCWT6Up3bOY5TB00n5D2oPOmR1l4HqxyigZKMNjBpy+9QWZ8FdkLwEdXCQSEAQ5CcUMeefiyCu8bDrfY55+a@vger.kernel.org
-X-Gm-Message-State: AOJu0YyZYoHNZutHMIWXcURoMyPZLSyVsmMADHsLd5M2ZyoS8R5RHws5
-	eyH1a0INWHAFMrDAGHzvuCR/02fnFgMpoRZvgCQo1ppNJXHOs5sP/5k7sH5ir5YXTRKgKvuDUKq
-	s78WReGp4VJlso3e02SPFB4UctUI=
-X-Gm-Gg: ASbGncugMnjxOO+GDuBU1pcabIpWqlZ5Mh8rgAcLb0GZ2LEvbxh4jyDheQ1J3zCUtIu
-	b8X0EMlcjVHMvhOOjWjAUGljK1LKE8xbGGjap28IkSeG5adwZqq13nL74VPKLB+YrfgxI2rGZcQ
-	eYhmGHg5kh9BMgwWNcUozDzntZvwFswEol7BoCAkgKrBpqVuvqTEhhKQ==
-X-Google-Smtp-Source: AGHT+IFSXJh2tdSxxK3VzXuealELuBy1Wg2zNkg+nGmd99bFkaPZuTvsadoWKMJ/nwV8ag8f+tXhA8TE7xfY82MkTU0=
-X-Received: by 2002:ac8:5711:0:b0:476:9b40:c2cd with SMTP id
- d75a77b69052e-47aec4dbc82mr280279011cf.47.1745338490265; Tue, 22 Apr 2025
- 09:14:50 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1745338513; x=1745943313;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=oS2bZp2eaQwTZFLdRadzwceZRRndXHL/edMYPujKPfc=;
+        b=wvqnRLqrofQ139/HzUpP6paPzRkTyRnZ7REHYeH9/KUaPc+16LLCVd5KZ367Hm0HRI
+         Zeo4aXpYva+aK14WT524+9kuPtPUsCPYf9RS4zJJ4QygcsyEOCdWM/WJaPmYA9pJFgAQ
+         m4aOPvV1padCquaJN8M/dqwmAVp977fmcvV83TNEr+JKvnLhFd3wvBfllpdNA5154onC
+         ZX75yeJZV+q90nygTp9nywSpXjAU0wK1vPw64kTuZ/P/DYSOb3eKVFmTmtR6cuYRYrqn
+         MPRsceiRMyZ623R2BdzR8+vqzy30PqBchdfsfvE6P1/BjaYZPJwGsq6eu3haHiUFg1uK
+         OgZA==
+X-Forwarded-Encrypted: i=1; AJvYcCVZw4K/cTKMZIKpYyti16j1Aqtxb2tAitDSGnPmzMAcH32dc54e6x0NJqZtZkrJUQgEqphFEwjZBio=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyxE136Ui2To9xTGHkgQg8nOTb24XBwQo5pjqyrbWNLtlTmZ5VY
+	s6MF1bm6S7uhY3CbwTKFWcpcdcXvPKtLbnU+EugQs6IrGc5iDfTk34+vYnHvqEE=
+X-Gm-Gg: ASbGnct7UM1QdAU1fHgcmAv2+YspkzXZjHdE5+1L1qvM84kubbJaAH/HTbvJd9F8oq6
+	RcV+tkdHG5Nu9hfdCfwrfXHp6kETAvzRaVRQvzdJ5KV20i/vt8IQcc4OvhjPwW24Tq1HZSh6kOj
+	HgSa+z1RfHOSb8JkRgYN/UhGCG57n8khowZGGe2RvfJKe0pOt/MJg4tMfVOBUHtp54RQP7c/i0w
+	GsGr6z1AeuSi6vs/8FO8ZAKUUuWSBfaKkV3VRQLkeZwswe50ZlGnf/+UE10EY3nrs/L7sWn4Dv4
+	pMMRrjxFSS38Oy1nWhiKLas9szIAvZ5r3OsrxqMB2I+ovYEqY8cnAhIb3U1+6jFRHzL0xyQdoAW
+	B3WIwT2HcFCCw5IqUWQ==
+X-Google-Smtp-Source: AGHT+IG4XPv6u71aYUS7zSEkuMCHBx/oad1eblhKOxlpoSde+1YJCcu+j6kGm/XNDy82BZ/hr+trtw==
+X-Received: by 2002:a05:6830:d8c:b0:72b:7cc8:435 with SMTP id 46e09a7af769-730063506ddmr10104798a34.24.1745338512900;
+        Tue, 22 Apr 2025 09:15:12 -0700 (PDT)
+Received: from ?IPV6:2600:8803:e7e4:1d00:c8d1:e0ed:ce8b:96a3? ([2600:8803:e7e4:1d00:c8d1:e0ed:ce8b:96a3])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-73004884780sm2011197a34.53.2025.04.22.09.15.12
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 22 Apr 2025 09:15:12 -0700 (PDT)
+Message-ID: <83fd807f-09fe-4732-be48-1b26e9f9401c@baylibre.com>
+Date: Tue, 22 Apr 2025 11:15:11 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250420174725.887242-1-gshahrouzi@gmail.com> <20250420174725.887242-4-gshahrouzi@gmail.com>
- <e712ec88-d925-4a73-8df4-ca3387a903fd@stanley.mountain>
-In-Reply-To: <e712ec88-d925-4a73-8df4-ca3387a903fd@stanley.mountain>
-From: Gabriel Shahrouzi <gshahrouzi@gmail.com>
-Date: Tue, 22 Apr 2025 12:14:39 -0400
-X-Gm-Features: ATxdqUEXOYk7EcH1kwDC_9Cf9kzdnkH9WSeioP2PttTUhJwEoQfKE1Vatacff8g
-Message-ID: <CAKUZ0zKJftqyiMDS1kPrqQYPMserCH7+UWt=v85UD4Jq7GdNKg@mail.gmail.com>
-Subject: Re: [PATCH v2 3/3] staging: iio: ad9832: Add minor improvements to ad9832_write_powerdown
-To: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: gregkh@linuxfoundation.org, jic23@kernel.org, lars@metafoo.de, 
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-staging@lists.linux.dev, Michael.Hennerich@analog.com, 
-	skhan@linuxfoundation.org, linux-kernel-mentees@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/4] iio: introduce IIO_DECLARE_BUFFER_WITH_TS
+To: Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: Andy Shevchenko <andy@kernel.org>, Jonathan Cameron <jic23@kernel.org>,
+ =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
+ Lars-Peter Clausen <lars@metafoo.de>,
+ Michael Hennerich <Michael.Hennerich@analog.com>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20250418-iio-introduce-iio_declare_buffer_with_ts-v1-0-ee0c62a33a0f@baylibre.com>
+ <20250418-iio-introduce-iio_declare_buffer_with_ts-v1-1-ee0c62a33a0f@baylibre.com>
+ <aAPQS9xY4603PJmU@smile.fi.intel.com>
+ <5df8aff0-2bb4-48e3-b1cf-9c09628ab467@baylibre.com>
+ <aAc47RW0yw97K5sZ@surfacebook.localdomain>
+From: David Lechner <dlechner@baylibre.com>
+Content-Language: en-US
+In-Reply-To: <aAc47RW0yw97K5sZ@surfacebook.localdomain>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Apr 22, 2025 at 6:08=E2=80=AFAM Dan Carpenter <dan.carpenter@linaro=
-.org> wrote:
->
-> On Sun, Apr 20, 2025 at 01:47:25PM -0400, Gabriel Shahrouzi wrote:
-> > Minimize size of type that needs to be used by replacing unsigned long
-> > with bool. Avoid redundancy by checking if cached power state is the
-> > same as the one requested.
-> >
-> > Signed-off-by: Gabriel Shahrouzi <gshahrouzi@gmail.com>
-> > ---
-> >  drivers/staging/iio/frequency/ad9832.c | 18 ++++++++++++------
-> >  1 file changed, 12 insertions(+), 6 deletions(-)
-> >
-> > diff --git a/drivers/staging/iio/frequency/ad9832.c b/drivers/staging/i=
-io/frequency/ad9832.c
-> > index a8fc20379efed..2ab6026d56b5c 100644
-> > --- a/drivers/staging/iio/frequency/ad9832.c
-> > +++ b/drivers/staging/iio/frequency/ad9832.c
-> > @@ -173,13 +173,19 @@ static ssize_t ad9832_write_powerdown(struct devi=
-ce *dev, struct device_attribut
-> >       struct iio_dev *indio_dev =3D dev_to_iio_dev(dev);
-> >       struct ad9832_state *st =3D iio_priv(indio_dev);
-> >       int ret;
-> > -     unsigned long val;
-> > +     bool val;
-> > +     bool cur;
-> >
-> > -     ret =3D kstrtoul(buf, 10, &val);
-> > +     ret =3D kstrtobool(buf, &val);
-> >       if (ret)
-> > -             goto error_ret;
-> > +             return ret;
->
-> Fold this whole thing into patch 2.  Don't write something and then fix
-> it in the next patch.
->
-> >
-> >       mutex_lock(&st->lock);
-> > +
-> > +     cur =3D !!(st->ctrl_src & AD9832_SLEEP);
-> > +     if (val =3D=3D cur)
-> > +             goto unlock;
-> > +
-> >       if (val)
-> >               st->ctrl_src |=3D AD9832_SLEEP;
-> >       else
-> > @@ -189,10 +195,10 @@ static ssize_t ad9832_write_powerdown(struct devi=
-ce *dev, struct device_attribut
-> >       st->data =3D cpu_to_be16((AD9832_CMD_SLEEPRESCLR << CMD_SHIFT) |
-> >                               st->ctrl_src);
-> >       ret =3D spi_sync(st->spi, &st->msg);
-> > -     mutex_unlock(&st->lock);
-> >
-> > -error_ret:
-> > -     return ret ? ret : len;
-> > +unlock:
-> > +     mutex_unlock(&st->lock);
-> > +     return len;
->
-> This should still be:
->
->         return ret ? ret : len;
-Ah right, the return from the spi_sync. Thanks.
->
-> regards,
-> dan carpenter
->
+On 4/22/25 1:36 AM, Andy Shevchenko wrote:
+> Mon, Apr 21, 2025 at 05:40:41PM -0500, David Lechner kirjoitti:
+>> On 4/19/25 11:33 AM, Andy Shevchenko wrote:
+>>> On Fri, Apr 18, 2025 at 05:58:32PM -0500, David Lechner wrote:
+> 
+> ...
+> 
+>>>> +/**
+>>>> + * IIO_DECLARE_BUFFER_WITH_TS() - Declare a buffer with timestamp
+>>>> + * @type: element type of the buffer
+>>>> + * @name: identifier name of the buffer
+>>>> + * @count: number of elements in the buffer
+>>>> + *
+>>>> + * Declares a buffer that is safe to use with iio_push_to_buffer_with_ts(). In
+>>>> + * addition to allocating enough space for @count elements of @type, it also
+>>>> + * allocates space for a s64 timestamp at the end of the buffer and ensures
+>>>> + * proper alignment of the timestamp.
+>>>> + */
+>>>> +#define IIO_DECLARE_BUFFER_WITH_TS(type, name, count) \
+>>>> +	type name[ALIGN((count), sizeof(s64) / sizeof(type)) \
+>>>> +		  + sizeof(s64)/ sizeof(type)] __aligned(sizeof(s64))
+>>>
+>>> Missing space
+>>
+>> Sorry, but my eyes can't find any missing space. Can you be more specific?
+> 
+> As far as I can see it's missed after sizeof(s64)
+> Also I don't like to see the leading operators (like +, -, *, &).
+
+:facepalm: yes, I see it now.
+
+> 
+>>> and I would rather to see [...] on the same line independently on> the size as it will give better impression on what's going on here.
+>>
+>> As long as Jonathan doesn't mind the long line. :-)
+> 
+
 

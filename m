@@ -1,131 +1,178 @@
-Return-Path: <linux-iio+bounces-18522-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18523-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41771A97301
-	for <lists+linux-iio@lfdr.de>; Tue, 22 Apr 2025 18:46:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14F82A97362
+	for <lists+linux-iio@lfdr.de>; Tue, 22 Apr 2025 19:15:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 686E77AA30D
-	for <lists+linux-iio@lfdr.de>; Tue, 22 Apr 2025 16:45:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E126B1B61A49
+	for <lists+linux-iio@lfdr.de>; Tue, 22 Apr 2025 17:15:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3504428EA6F;
-	Tue, 22 Apr 2025 16:46:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8CC0296152;
+	Tue, 22 Apr 2025 17:15:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="F4PzEYEy"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B7B5EC5;
-	Tue, 22 Apr 2025 16:46:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23CA012F5A5
+	for <linux-iio@vger.kernel.org>; Tue, 22 Apr 2025 17:15:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745340398; cv=none; b=QtND8avdLlA1P0nVoidDBJ59orjbTVBhR5JWMjZ+mpI9cO0vm5twuq5e67g/qi8oQxiNrGo9sYm34vWqy+8j4SDOx43s9zvs256aqf95qWqXrQ/O4lcmO2OFmoEakCr8qCGbyplaZGMZkYnAs+2ycdAFIMxr47J0y/ME0oTJwdg=
+	t=1745342112; cv=none; b=oGjT0kfbcXkivnQKq2Hjz+dFqj9OmFng0gVtwZ6uP9s+wFpP5XCyhqGyk0KPjt1vZMRb4zuQ8KPbeXNawOmq3n0QPZKZkW6NVuARnBJdNNRHZ1RsY8p0mCtkKybXKyVA/if9iGMG2Rqys/mP3iBJ97OyJpUNURc6flEhVZHFdOQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745340398; c=relaxed/simple;
-	bh=APY464O4qEktr3qLUXmra9T6Ngn9Z0W6MxO6bYmyA8g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rCOi6u6qqIC6XsKXoAfE+JKiLZlphhoSG8lSfTyguLozAbyO76ZvIE2O0jFHRmEAYfN9iH0xQQtxriU1gh92qH24mK45bFZBabrkOMTIUYfd1b286kACmte71Yf01KwIEvsTD8CZf/uYbo51ASxYMqJi9Km2RatDhnbm3gJyCP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=fail smtp.mailfrom=kernel.org; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=kernel.org
-X-CSE-ConnectionGUID: lAR9fY7oTOewj91sitGvyg==
-X-CSE-MsgGUID: XqLKaA8dRNO0z+L7zLPLfA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11411"; a="57569423"
-X-IronPort-AV: E=Sophos;i="6.15,231,1739865600"; 
-   d="scan'208";a="57569423"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2025 09:46:34 -0700
-X-CSE-ConnectionGUID: iR7O+dteTAO3FgIgZ51IbQ==
-X-CSE-MsgGUID: 9/cf9DuxSlit+M+ugccYJg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,231,1739865600"; 
-   d="scan'208";a="155266018"
-Received: from smile.fi.intel.com ([10.237.72.58])
-  by fmviesa002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2025 09:46:31 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
-	(envelope-from <andy@kernel.org>)
-	id 1u7GlQ-0000000EmZO-3qDQ;
-	Tue, 22 Apr 2025 19:46:28 +0300
-Date: Tue, 22 Apr 2025 19:46:28 +0300
-From: Andy Shevchenko <andy@kernel.org>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Kim Seer Paller <kimseer.paller@analog.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Nuno =?iso-8859-1?Q?S=E1?= <noname.nuno@gmail.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org
-Subject: Re: [PATCH v5 3/3] iio: dac: ad3530r: Add driver for AD3530R and
- AD3531R
-Message-ID: <aAfH5IiVBLLE95ct@smile.fi.intel.com>
-References: <20250421-togreg-v5-0-94341574240f@analog.com>
- <20250421-togreg-v5-3-94341574240f@analog.com>
- <aAexmOU1e-7hXq6Y@smile.fi.intel.com>
- <efec7563-9591-4539-a154-bf486d35df0e@baylibre.com>
+	s=arc-20240116; t=1745342112; c=relaxed/simple;
+	bh=+PzIQoUfmHf/VM2DzR+1OAT7+pyTn71H4wIj1RleTX8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=VN65G/RPtgvxZ3M5BwSga1V/9T0hcRGSGrKwTtpM2yivgaWN4r4b0aGXveRDgjMrSCgNN76cqWoa/RwDM7sd0CQhscfz6MfKbKcARxJ+g+DWh9seGLmcobnhg/W1CGh/8vkt/icLcB85Uu5lS0xM9sLLZB2NALqjvL+/oCocqZs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=F4PzEYEy; arc=none smtp.client-ip=209.85.210.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-736b0c68092so4657303b3a.0
+        for <linux-iio@vger.kernel.org>; Tue, 22 Apr 2025 10:15:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1745342110; x=1745946910; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ynHq5ACIt0IyyhkPGdVhmsxm/Q9+wr56TRm/kxE8bIw=;
+        b=F4PzEYEyzVeMGNj8l1Aw8PF1ODKELpV7bqbkC+1A2GjWB8tsRld8ETuhwkUzMQ2v8E
+         wV+ilsuDNk3WXzK47tYdMnzSH12hWrKumig9Ysxw2ALP4MavquVnT6CceP8dfWGQzcIa
+         loMhRFpCK93SS+E4XbC58yXvQRh9bDbKOVwW2jpim1bh1sXAHme9YidXKjjdrTc16awY
+         PsA0qosS0ClYUNyPxjxV0JRwk0yw0DU00LOPGKe2huUk+S7QiiJyFO6nekakUWgbxCIf
+         H1COUtwIal2oBH1LRU0xX0IYRb9ptlF+WTg3knbaxKy0I1FYTU8xdoM1C0k32tAeUyyr
+         No7Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745342110; x=1745946910;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ynHq5ACIt0IyyhkPGdVhmsxm/Q9+wr56TRm/kxE8bIw=;
+        b=sGQqekiUFpn5vNEUQUhV8j1mQBmHSgP5DqwKx7J+DKJxdLWvqtzGxxjpchdtMjtHr8
+         v6aiAVIbFxQrg6ZqLyWvmsnnX0NfvTOHhKCc/01yHhtHDmXInL8gl4ZouwcDbMbLRRIj
+         xQNrH2QHCcxZCd0n0xT9IoQVkZH1G5XHTuBOUhTR7a5S/qiT7Je3I+SzCSyaiwmsHAKm
+         m4/61+AtTrRhDIx13tiGskZI7XiQitdtVCoSVeYxYUuLqt0eY4CcVWDBX0Wa55jMaMtc
+         iBhZ1IbVjv2m/M8GAjx2/AQIXuOZRON7hBN/OyBCVdnp9QKT76Ql4YFPQdvDAwk4EQxj
+         f5Cg==
+X-Forwarded-Encrypted: i=1; AJvYcCWw2nK9xLmMpdp+BBG5WPr616LQjmsZlEkvdSPhKkPisZeEgZ4SWx6KVuSLuB0iyfBF4GnL/a6i4T4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxLF+FORJLat2U0ajN7Yh1/dqyoHkVDuXD63UsdaBL9abQEVqd4
+	QOocRWB8uj1+aR1JqSDDffAJWqOQAZWyZEh6WpIUyXgr+aV/ilHr
+X-Gm-Gg: ASbGncu1wWKBR0Oz6U/K6iXnBzGsDWfzd0tJ95M9GW7vRMP+n5CAAEdDF7nAhJtNGkR
+	DDzWC4sSSV0Q1Af2HkUH/4kw1tSJ8Kt0Mo1Ghow/9UEkE9tzqi4RbKK7pzC3qxXWrmZ+OE048ZY
+	tVy5OZfOGNbk5y56OA2dekjhobYu4NmbUE8vZ6FIKsLts5M4WiquI2KeID9GtQXJs1sX7+YNr9h
+	SO95tp+AOp+IUxfhoiZnxW5ZXtvuc9cYR1lgrXMlnHeDoh5ooF8dJg73PJ97cNgfHPq0MjuZNAd
+	JzXppy7vKBnFUGtp9Dz8pdz6KhycWO06ztZlJ6VyTA4sVY9xkOlR5NtdTcezTqJln+LraY8LBnk
+	=
+X-Google-Smtp-Source: AGHT+IECO7+LsRubs2OAJJ2jN90FTlrm315/DM/ujDpDpB8cQItMtL0PXBAyd69I/iV59H3xXrEZqA==
+X-Received: by 2002:a05:6a20:c68e:b0:1f8:e0f5:846d with SMTP id adf61e73a8af0-203cbd21239mr29420259637.34.1745342110332;
+        Tue, 22 Apr 2025 10:15:10 -0700 (PDT)
+Received: from mintNaitss.semfio.usp.br ([143.107.45.1])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b0db13c8b1fsm7682728a12.37.2025.04.22.10.15.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 22 Apr 2025 10:15:09 -0700 (PDT)
+From: nattan <nattanferreira58@gmail.com>
+To: subhajit.ghosh@tweaklogic.com,
+	jic23@kernel.org
+Cc: lucasantonio.santos@usp.br,
+	Nattan Ferreira <nattanferreira58@gmail.com>,
+	linux-iio@vger.kernel.org
+Subject: [PATCH v2] iio: light: apds9306: Refactor threshold get/set functions to use helper
+Date: Tue, 22 Apr 2025 14:15:02 -0300
+Message-Id: <20250422171503.26532-1-nattanferreira58@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <efec7563-9591-4539-a154-bf486d35df0e@baylibre.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Transfer-Encoding: 8bit
 
-On Tue, Apr 22, 2025 at 11:37:06AM -0500, David Lechner wrote:
-> On 4/22/25 10:11 AM, Andy Shevchenko wrote:
-> > On Mon, Apr 21, 2025 at 12:24:54PM +0800, Kim Seer Paller wrote:
+From: Nattan Ferreira <nattanferreira58@gmail.com>
 
-...
+Refactor the apds9306_event_thresh_get and apds9306_event_thresh_set
+functions to use a helper function (apds9306_get_thresh_reg) for obtaining the
+correct register based on the direction of the event. This improves code
+readability,minimize the number of lines  and maintains consistency
+in accessing threshold registers.
 
-> >> +#define AD3530R_INTERNAL_VREF_MV		2500
-> > 
-> > _mV (yes, with Volts and Amperes we use proper spelling).
-> 
-> When did we start doing that? No one asked me to do this in any of the new
-> drivers I did in the last year, so I didn't know this was a thing we should
-> be doing.
+Signed-off-by: Nattan Ferreira <nattanferreira58@gmail.com>
+Co-developed-by: Lucas Antonio <lucasantonio.santos@usp.br>
+Signed-off-by: Lucas Antonio <lucasantonio.santos@usp.br>
+---
+ drivers/iio/light/apds9306.c | 36 ++++++++++++++++++++----------------
+ 1 file changed, 20 insertions(+), 16 deletions(-)
 
-I remember a discussion for one driver a year or so ago. But I can't find
-quickly a reference. The rationale is to be as closer as possible to real
-world (physics). And, for instance, regulator framework does that already.
-It's a pity not many people aware...
-
-...
-
-> >> +static const char * const ad3530r_powerdown_modes[] = {
-> >> +	"1kohm_to_gnd",
-> > 
-> > kOhm
-> > 
-> >> +	"7.7kohm_to_gnd",
-> > 
-> > Ditto.
-> > 
-> >> +	"32kohm_to_gnd",
-> > 
-> > Ditto.
-> 
-> These are defined by sysfs ABI, so can't be changed otherwise it would break
-> userspace.
-
-Ah, okay then.
-
-> Comes from...
-> What:		/sys/bus/iio/devices/iio:deviceX/out_voltageY_powerdown_mode
-
-> >> +};
-
+diff --git a/drivers/iio/light/apds9306.c b/drivers/iio/light/apds9306.c
+index 69a0d609c..d46fb45ae 100644
+--- a/drivers/iio/light/apds9306.c
++++ b/drivers/iio/light/apds9306.c
+@@ -744,20 +744,27 @@ static int apds9306_event_period_set(struct apds9306_data *data, int val)
+ 	return regmap_field_write(rf->int_persist_val, val);
+ }
+ 
+-static int apds9306_event_thresh_get(struct apds9306_data *data, int dir,
+-				     int *val)
++static int apds9306_get_thresh_reg(int dir)
+ {
+-	int var, ret;
+-	u8 buff[3];
+-
+ 	if (dir == IIO_EV_DIR_RISING)
+-		var = APDS9306_ALS_THRES_UP_0_REG;
++		return  APDS9306_ALS_THRES_UP_0_REG;
+ 	else if (dir == IIO_EV_DIR_FALLING)
+-		var = APDS9306_ALS_THRES_LOW_0_REG;
++		return APDS9306_ALS_THRES_LOW_0_REG;
+ 	else
+ 		return -EINVAL;
++}
++
++static int apds9306_event_thresh_get(struct apds9306_data *data, int dir,
++				     int *val)
++{
++	int reg, ret;
++	u8 buff[3];
+ 
+-	ret = regmap_bulk_read(data->regmap, var, buff, sizeof(buff));
++	reg = apds9306_get_thresh_reg(dir);
++	if (reg == -EINVAL)
++		return reg;
++
++	ret = regmap_bulk_read(data->regmap, reg, buff, sizeof(buff));
+ 	if (ret)
+ 		return ret;
+ 
+@@ -769,22 +776,19 @@ static int apds9306_event_thresh_get(struct apds9306_data *data, int dir,
+ static int apds9306_event_thresh_set(struct apds9306_data *data, int dir,
+ 				     int val)
+ {
+-	int var;
++	int reg;
+ 	u8 buff[3];
+ 
+-	if (dir == IIO_EV_DIR_RISING)
+-		var = APDS9306_ALS_THRES_UP_0_REG;
+-	else if (dir == IIO_EV_DIR_FALLING)
+-		var = APDS9306_ALS_THRES_LOW_0_REG;
+-	else
+-		return -EINVAL;
++	reg = apds9306_get_thresh_reg(dir);
++	if (reg == -EINVAL)
++		return reg;
+ 
+ 	if (!in_range(val, 0, APDS9306_ALS_THRES_VAL_MAX))
+ 		return -EINVAL;
+ 
+ 	put_unaligned_le24(val, buff);
+ 
+-	return regmap_bulk_write(data->regmap, var, buff, sizeof(buff));
++	return regmap_bulk_write(data->regmap, reg, buff, sizeof(buff));
+ }
+ 
+ static int apds9306_event_thresh_adaptive_get(struct apds9306_data *data, int *val)
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.34.1
 
 

@@ -1,189 +1,179 @@
-Return-Path: <linux-iio+bounces-18488-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18489-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C1DBA95F78
-	for <lists+linux-iio@lfdr.de>; Tue, 22 Apr 2025 09:31:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9482AA95FE9
+	for <lists+linux-iio@lfdr.de>; Tue, 22 Apr 2025 09:50:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 516EF3BA1EA
-	for <lists+linux-iio@lfdr.de>; Tue, 22 Apr 2025 07:30:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF800170174
+	for <lists+linux-iio@lfdr.de>; Tue, 22 Apr 2025 07:50:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3F401DF751;
-	Tue, 22 Apr 2025 07:30:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kL8p8AEO"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1D5F1EE014;
+	Tue, 22 Apr 2025 07:50:48 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5C781E5716;
-	Tue, 22 Apr 2025 07:30:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 372431EDA14;
+	Tue, 22 Apr 2025 07:50:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745307040; cv=none; b=cA9rqyt0qOxfjQ7HrbiAT03ubpsOILP0QBjasogSxZnB6r16GJSwWbXZ3jI5QVXHnbht9FbAgddMKSZfeCsNEDTaBDCqwnpiRahz/aqYB6p6XWoHVvj1RLuxbeKMMUqetAUKmcKRoknwV/ixfajV8ChJZUI5ESov0MHskys93bk=
+	t=1745308248; cv=none; b=Lx9J51silI4lPMxW5edRLIa5sWeC7UMibcBhNulafiVGiD4rNbcj+InoBq5inujgP+6si39/vZpXE4L9IdD7yxujBapnAjmdxz4s8kgCBDEDl7gb3LkLsTol5+LpWWBQOTvwbXqQ8pA2XXnXmZH4/S2CkwaqhZe3gfa0IL1XjYg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745307040; c=relaxed/simple;
-	bh=pPkJ2UTy3GDrAFVJl5Jk/KG0cAq5qNEz0JxEE9mXplM=;
+	s=arc-20240116; t=1745308248; c=relaxed/simple;
+	bh=8lwaDB/KulP2VZEetKa/RIGu68AevEeRgVjMbYY+9YY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ixstUwKBJmwxB1iv4joRYwjDBoKeaa/nwe5jCcrv8I97Q5U7zMC5VSLeIOFkpxzyp2cKyqlGwKLtvJOZKoPqCc8cUzDEUfvWlWRC/9f/oUpiRNhDqjj6QKppxCMMEt8p/1yMf5anNBJSGr3kBkF45tIP76nr2QYZW7v3s8JtbN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kL8p8AEO; arc=none smtp.client-ip=209.85.218.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-ac2bb7ca40bso801806366b.3;
-        Tue, 22 Apr 2025 00:30:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745307037; x=1745911837; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=RAy9pBhdgknyNhYYMd1xC1L3axBJqlU74RKhr7quB0A=;
-        b=kL8p8AEOEv0+qgaBow6XRJz0YXM0m6+eJyVkuaRY2e356M00yAeVuvaMsFdPM1b4/q
-         dxQjlCQpHTVviIKwsYu6s5JtmZUqAUAvUWyMNNuy1o63F1iwPBvEFfain5712kHa1GIZ
-         FR5K8OxUzKoZ/Oi2e16uC3gK+CJeQQfFS4qrHQ+iBwMFAQHlqE9XOUdnOd0i5XC4Jd8j
-         XMFYRO+tSA0nVQf6zpMjBydexu2ERCgTAj8AuqJCNqrAYimXjHl2oVgeaQB15yu5aMoP
-         +j9lNr7ji6oePhQ4IHbULTlbaO3igwHyFYPZbvAn/DNDFxN+xnAS14JlDUs4OnH4vrH7
-         zWiA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745307037; x=1745911837;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RAy9pBhdgknyNhYYMd1xC1L3axBJqlU74RKhr7quB0A=;
-        b=cjDLqPKMAWkYaYvso70fz5hjPyitURaNrBrylW/SdyMVuX1bverWr11KAnvsD/yJe0
-         t++xUFT1f+pqj5uRVI5UU1iwLw7rHTygoXYm2MUQWRfAJHq5Ez8B4ND6qCdCFGpyUzn2
-         oF5Iez+1XdEDhxd9rSCPkzDmTFavpZ/eMxtA2OGF1byicaP7O40zw+a+77DdW5ab6NDr
-         q6IxRYwfcAoTxHsQpd+5Qr/naXOqZYd0Fem4mSdhcimoNz3USN4BH5hkIo+0NZKpO/ha
-         JQbYIWbrVdhStrH4LtDxtBY6ZXuzCqd2IS0XTNUu0VGbUma6t6ynbmpjgzYvtaH8kbkr
-         Vmjw==
-X-Forwarded-Encrypted: i=1; AJvYcCW8ovtebouRbW+t6XJ+oPjNTsaWwFlDO1DHtZcFs2/a4V77+lHc1HzbT1YA4czMAguRpW/1h5ZwlVk=@vger.kernel.org, AJvYcCXdSfMe94IvN71/lruN8pzwPTJv6//Pu65QieQ/QJdKYF0lepJczhm+trxJ6mvUzfybDzkgZ00QQ9v69fqj@vger.kernel.org
-X-Gm-Message-State: AOJu0YxfjQZnbLKYV5Vj+Crj1KogQqTMAM4jhEz9G8Tcxz7+tA1XqBM4
-	y0aRc+CHQh8Oh4C+e3TOEXi4gkXw+A4+cc+TRvnRj4xGGDEXwTli
-X-Gm-Gg: ASbGncsro5Lz5vyrRXETa9stkCzNuN41Id+bnSHOdmDMMRElOLCyXudGxnFrB8OerI7
-	0EyPqJsPUI9iK5f3vY1IyKxWr3lcBGFrTvwvRk88OhFyLpwgbM4thPTeJyzbEVDGzKhyZqYhliR
-	Cbp2ILsO1P6kYi/fnHPw+XJEUE81S8uRpYTZ5CRJnzM7TBYbV6u3DtwkiSS0dsGzmTjCy/1XD8u
-	euk/MpfAgFbOFzLu8sh3n5eeJhAn6iJz3O0LSy5fd2Lpimn9JI4sO1EiwHvlvq6fs60s6CHmYWd
-	w/W2lUNd4T2s5n4VE8WslZgo9PM4fHxBstP3OF7nJpsOn7etgPih8ChEt3/ojQ==
-X-Google-Smtp-Source: AGHT+IHrXC1x/a4uRViWvguC886vRxzfCqbfHOZEp6PE84oxoaS8TGNIpPYM0AFyGjDYGudTYJ0Y2w==
-X-Received: by 2002:a17:906:d554:b0:aca:d831:8fb1 with SMTP id a640c23a62f3a-acb74e09fe0mr1347246666b.51.1745307036759;
-        Tue, 22 Apr 2025 00:30:36 -0700 (PDT)
-Received: from HYB-DlYm71t3hSl.ad.analog.com ([137.71.226.91])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-acb6ec90950sm618245766b.75.2025.04.22.00.30.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Apr 2025 00:30:36 -0700 (PDT)
-Date: Tue, 22 Apr 2025 09:30:33 +0200
-From: Jorge Marques <gastmaier@gmail.com>
-To: Jonathan Cameron <jic23@kernel.org>, dlechner@baylibre.com
-Cc: Jorge Marques <jorge.marques@analog.com>, 
-	Lars-Peter Clausen <lars@metafoo.de>, Michael.Hennerich@analog.com, linux-iio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] Documentation: ABI: add oversampling frequency in
- sysfs-bus-iio
-Message-ID: <6rgtuq2mtk3a63d3tlzbgjhauslkztgemn7566qyi3mzwywprq@lxhsvwofnvg2>
-References: <20250408-abi-oversampling-events-frequency-v2-1-4059272b7364@analog.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=Y/9i3vn1XulD1hzk3IvNBS0OsrQ6zfl0tc7oqfqqdrDIybtnvxkXvY6IgdN0ESeHSwM7DZVelZLvyiXvEhmtQoS70nOZFI45oLKYmBkQjgjHPyiCEzbhh+WDYy/QLWERL2ufcCUPFJ9GkX5JmuH00QSGkrN95jhCpiYftfapWik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com; spf=fail smtp.mailfrom=gmail.com; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=gmail.com
+X-CSE-ConnectionGUID: aYwdP5SHSW2RSKea8+8xjQ==
+X-CSE-MsgGUID: z3fN7/dHS0i24Kt6ze6orw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11410"; a="46742918"
+X-IronPort-AV: E=Sophos;i="6.15,230,1739865600"; 
+   d="scan'208";a="46742918"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2025 00:50:45 -0700
+X-CSE-ConnectionGUID: GvMVVanmRjO52PEP5CiUWg==
+X-CSE-MsgGUID: divgt7mWQBapDrOqeLOnow==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,230,1739865600"; 
+   d="scan'208";a="131852466"
+Received: from smile.fi.intel.com ([10.237.72.58])
+  by orviesa010.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2025 00:50:42 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
+	(envelope-from <andy.shevchenko@gmail.com>)
+	id 1u78Ot-0000000EfH8-29f0;
+	Tue, 22 Apr 2025 10:50:39 +0300
+Date: Tue, 22 Apr 2025 10:50:39 +0300
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+To: Gyeyoung Baek <gye976@gmail.com>
+Cc: jic23@kernel.org, linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	dlechner@baylibre.com, nuno.sa@analog.com, robh@kernel.org,
+	krzk+dt@kernel.org, conor+dt@kernel.org
+Subject: Re: [PATCH v4 3/4] iio: chemical: add support for winsen MHZ19B CO2
+ sensor
+Message-ID: <aAdKT41RRPOU4eZG@smile.fi.intel.com>
+References: <20250420181015.492671-1-gye976@gmail.com>
+ <20250420181015.492671-4-gye976@gmail.com>
+ <CAHp75VdAeJ0HhExE=OAeFdYz2MYFKgMffbD_Gidf86w=zhKccg@mail.gmail.com>
+ <CAKbEznvax5maXFH9V7ZLkME2=Ydt4DiJ9pwfyL_nbsJ5_G3B8A@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250408-abi-oversampling-events-frequency-v2-1-4059272b7364@analog.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAKbEznvax5maXFH9V7ZLkME2=Ydt4DiJ9pwfyL_nbsJ5_G3B8A@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-Hi Jonathan, David
+On Mon, Apr 21, 2025 at 03:41:58PM +0900, Gyeyoung Baek wrote:
+> On Mon, Apr 21, 2025 at 4:22 AM Andy Shevchenko
+> <andy.shevchenko@gmail.com> wrote:
+> > On Sun, Apr 20, 2025 at 9:10 PM Gyeyoung Baek <gye976@gmail.com> wrote:
 
-Should this patch be submitted differently, such as under the AD4052 V2
-series? Or are further modifications needed?
+...
 
-Regards,
-Jorge
+> > > The datasheet is available at
+> > > Link: https://www.winsen-sensor.com/d/files/infrared-gas-sensor/mh-z19b-co2-ver1_0.pdf
+> >
+> > Instead, just make it Datasheet: tag.
 
-On Tue, Apr 08, 2025 at 10:20:29AM +0200, Jorge Marques wrote:
-> Some devices have an internal clock used to space out the conversion
-> trigger for the oversampling filter,
-> Consider an ADC with conversion and data ready pins topology:
+> > >
+
+> > Should not be this blank line here.
+> > > Signed-off-by: Gyeyoung Baek <gye976@gmail.com>
 > 
->   Sampling trigger |       |       |       |       |
->   ADC conversion   ++++    ++++    ++++    ++++    ++++
->   ADC data ready      *       *       *       *       *
+> Sorry, I now understand what you mean.
+> ('Datasheet:' is a tag, not an explanation. So there should be no
+> space between the tags.)
+> However, when I use the 'Datasheet:' tag, I get the following warning
+> by checkpatch.pl.
+> Would it be OK? then I'll use 'Datasheet:' tag.
 > 
-> With the oversampling frequency, conversions are spaced:
+>     "WARNING: Unknown link reference 'Datasheet:', use 'Link:' or
+> 'Closes:' instead
+>      #8:
+>      Datasheet:
+> https://www.winsen-sensor.com/d/files/infrared-gas-sensor/mh-z19b-co2-ver1_0.pdf"
+
+checkpatch is recommendation and sometimes has not fully suitable warnings. You
+may ignore this one.
+
+...
+
+> > > +#include <linux/completion.h>
+> > > +#include <linux/device.h>
+> > > +#include <linux/iio/iio.h>
+> > > +#include <linux/iio/sysfs.h>
+> > > +#include <linux/mod_devicetable.h>
+> > > +#include <linux/module.h>
+> > > +#include <linux/regulator/consumer.h>
+> > > +#include <linux/serdev.h>
+> > > +#include <linux/unaligned.h>
+> >
+> > Semi-baked list, see below what's missing (actually a lot). I believe
+> > I already pointed that out.
 > 
->   Sampling trigger |       |       |       |       |
->   ADC conversion   + + + + + + + + + + + + + + + + + + + +
->   ADC data ready         *       *       *       *       *
+> From the last review, I understood the two main points as:
+> (1) Avoid using large headers and explicitly include only the necessary ones.
+> (2) Reduce including headers as much as possible to improve build times.
 > 
-> In some devices and ranges, this internal clock can be used to evenly
-> space the conversions between the sampling edge.
-> In other devices the oversampling frequency is fixed or is computed
-> based on the sampling frequency parameter, and the parameter is
-> read only.
+> However, I found that removing headers like 'types.h' didn't cause any
+> build failure,
+
+Because we have other headers that may use it, but you shouldn't do that.
+
+> So I thought it would be better to remove headers that are unnecessary
+> to improve build time.
+> But in the next patch, I'll explicitly include the headers you've pointed out.
+
+You should follow IWYU principle, i.e. Include What You Use, e.g., types.h.
+
+...
+
+> > > +       if (ppm) {
+> > > +               if (!in_range(ppm, 1000, 4001)) {
+> >
+> > Missing minmax.h.
+> >
+> > The second parameter is length of the range.
+> >
+> > > +                       dev_dbg(&indio_dev->dev,
+> > > +                               "span point ppm should be 1000~5000");
+> >
+> > The above range check doesn't agree with this message.
 > 
-> Signed-off-by: Jorge Marques <jorge.marques@analog.com>
-> ---
-> Some device families such as Analog Device's max1363, ad7606, ad799x, and
-> ad4052 contain internal clocks used by monitor modes and oversampling.
-> Devices' monitor modes are exposed as IIO events.
-> The max1363 driver included the events/sampling_frequency in
-> commit 168c9d95a940 ("iio:adc:max1363 move from staging.")
-> and ad799x in
-> commit ba1d79613df3 ("staging:iio:ad799x: Use event spec for threshold
-> hysteresis")
-> but went undocumented so far.
-> 
-> The oversampling sampling frequency is a planned feature to be patched
-> onto the ad7606 driver.
-> In this particular device, it is called oversampling padding.
-> The upcoming ad4052 linux driver will utilize both entries,
-> it is worth noting, however, there is a single register for both
-> options. Since the device is never concurrently in both modes, the
-> values will be safely cached on the device state.
-> ---
-> Changes in v2:
-> - Updated oversampling frequency description according to discussion 
-> - Don't include already applied
->   commit 3a8fee68faf2 ("Documentation: ABI: add events sampling frequency in sysfs-bus-iio")
-> - Link to v1: https://lore.kernel.org/r/20250321-abi-oversampling-events-frequency-v1-0-794c1ab2f079@analog.com
-> ---
->  Documentation/ABI/testing/sysfs-bus-iio | 17 +++++++++++++++++
->  1 file changed, 17 insertions(+)
-> 
-> diff --git a/Documentation/ABI/testing/sysfs-bus-iio b/Documentation/ABI/testing/sysfs-bus-iio
-> index 722aa989baac43f694076074b307d134867b4533..6f5c4060704742ae5f5672a861271b88084ac8f8 100644
-> --- a/Documentation/ABI/testing/sysfs-bus-iio
-> +++ b/Documentation/ABI/testing/sysfs-bus-iio
-> @@ -138,6 +138,23 @@ Contact:	linux-iio@vger.kernel.org
->  Description:
->  		Hardware dependent values supported by the oversampling filter.
->  
-> +What:		/sys/bus/iio/devices/iio:deviceX/oversampling_frequency
-> +KernelVersion:	6.15
-> +Contact:	linux-iio@vger.kernel.org
-> +Description:
-> +		Some devices have internal clocks for oversampling.
-> +		Sets the resulting frequency in Hz to trigger a conversion used by
-> +		the oversampling filter.
-> +		If the device has a fixed internal clock or is computed based on
-> +		the sampling frequency parameter, the parameter is read only.
-> +
-> +What:		/sys/bus/iio/devices/iio:deviceX/oversampling_frequency_available
-> +KernelVersion:	6.15
-> +Contact:	linux-iio@vger.kernel.org
-> +Description:
-> +		Hardware dependent values supported by the oversampling
-> +		frequency.
-> +
->  What:		/sys/bus/iio/devices/iio:deviceX/in_voltageY_raw
->  What:		/sys/bus/iio/devices/iio:deviceX/in_voltageY_supply_raw
->  What:		/sys/bus/iio/devices/iio:deviceX/in_voltageY_i_raw
-> 
-> ---
-> base-commit: 9f36acefb2621d980734a5bb7d74e0e24e0af166
-> change-id: 20250321-abi-oversampling-events-frequency-436c64fcece0
-> 
-> Best regards,
-> -- 
-> Jorge Marques <jorge.marques@analog.com>
-> 
+> in_range() uses the range 'start <= val && val < (start + len)'.
+> So, to allow 5000, the 'len' should be 4001, not 4000.
+> I have tested this.
+> But would it be correct that I understand your point?
+
+I see now, I recommend then to define those two:
+
+#define ..._PPM_MIN	1000
+#define ..._PPM_MAX	5000
+
+And use here as
+
+               if (!in_range(ppm, ..._MIN, ..._MAX - ..._MIN + 1)) {
+                       dev_dbg(&indio_dev->dev,
+                               "span point PPM should be in a range [%d-%d]\n",
+			       _MIN, _MAX);
+
+Note, you missed \n as well.
+
+> > > +                       return -EINVAL;
+> > > +               }
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
 

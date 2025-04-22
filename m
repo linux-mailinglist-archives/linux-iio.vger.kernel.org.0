@@ -1,152 +1,128 @@
-Return-Path: <linux-iio+bounces-18542-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18543-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 025F0A97A51
-	for <lists+linux-iio@lfdr.de>; Wed, 23 Apr 2025 00:20:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D567DA97A80
+	for <lists+linux-iio@lfdr.de>; Wed, 23 Apr 2025 00:31:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 510317A61FF
-	for <lists+linux-iio@lfdr.de>; Tue, 22 Apr 2025 22:18:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 982EA3B4FF0
+	for <lists+linux-iio@lfdr.de>; Tue, 22 Apr 2025 22:30:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAC34298CBD;
-	Tue, 22 Apr 2025 22:19:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8169820CCDF;
+	Tue, 22 Apr 2025 22:30:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MEJFGOlY"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jY2jFXu8"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA25D1E2606;
-	Tue, 22 Apr 2025 22:19:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8A9E41C69;
+	Tue, 22 Apr 2025 22:30:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745360395; cv=none; b=LMapKxnZVXg2DWMoRrFVI54uLj2UHEjhmnXwMLpRIrwZcKyywP5pPQIXNBZeRLTGU/6w9nUNduqr1sil3Q8Dp29BzW6a5niMWXUd13jJepBN/PRDTCU0Ht9yZ8f4Kw/0lkKTHlYTV7S1vyxFzGfOupuMN0mkTMTtfrLnxjim8Lc=
+	t=1745361057; cv=none; b=fh4P7V2yNBXV62lqGGRvcn+uASAYYs6t506McAchYYcLTbztfOevpUvpPG11ZHvIJkYBio4VaZAg/qTAESgdOSi1p/rwm4TuzUxOEijwuYjfgVLRCT+nnXLeBuPZC8Mh5ZU0q8bkUz1ur2BQTLAC/nOPSiSSJu/LtM71UY7TM/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745360395; c=relaxed/simple;
-	bh=sZmHoSGS7tw9nFCBTn4dw+aonqxZqbj8Sfuh4/8H5HY=;
+	s=arc-20240116; t=1745361057; c=relaxed/simple;
+	bh=yqqf7SXgxooT45kd9Pexv9Aea9WDtDR0VWw7cmnYKUM=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=WCadQnscrWPTsgKKMQ7B22CM8sxS1e2eCFmXx61P03M9SVOjEVUIdkRhfyvMcBrOv2G632E4zd7FG+Wk9c9ZLzUPyaosLCSLcPpAHCys/VF6EtF7g28ukSue+Ek5eSw/snU+i+RZMQca+W/O1LjC/iUV1Tnk2fDoRLlChhlWc9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MEJFGOlY; arc=none smtp.client-ip=209.85.208.49
+	 To:Cc:Content-Type; b=lbtV0M34Qt18wrvwyHcg1Sm6z+I4Fj2nRXEj6ZilCvZVgPbToRUqoiuGf1e7Hsi0352Taa1RX8E6cgAdxeZhXjpb95oQozdAisdanSwn8U/Ta2zYoeAjp5krV7KcE5hKsHtVEf6+Pwnxd1NIIGOLpqs6PxUm8Mpkj4+Sa+1EeAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jY2jFXu8; arc=none smtp.client-ip=209.85.218.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-5e8be1c6ff8so10278498a12.1;
-        Tue, 22 Apr 2025 15:19:53 -0700 (PDT)
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-ac2a81e41e3so954603366b.1;
+        Tue, 22 Apr 2025 15:30:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745360392; x=1745965192; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1745361054; x=1745965854; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=evpYIJU/iATwAu2nEHd9+zj4m40Dzzq89xrgyo+J/9c=;
-        b=MEJFGOlYzb04OR/aSA09u6egmYkw62QZXWC6lx1s4jZ0/m9thpw6GUsPL/7hsOSOyf
-         ylydfNrfTwp9csJEHqYFEKlYVxIbbDNCGW23qKIc5svJ0e7ASoRLqt7caoQtOo7VKHwV
-         XrAoWkGdTqQztqBrzb1jDf6SN8ImaWE7K4zfOhY7R1HeMRG3EjFE+IzwQk4j7MlShx+q
-         mkWp485MAPPyKn/XVmbgp1gkH1fQExtvk938XmFCCcvMMNd5nYymg5xbFVAu50G8AQs3
-         AGEMB2zaLkOBT3XK5vyddOptfFzQAFFXguNkj1icNNft9aw9c+ozjEmpHUBHpkN4BCsk
-         be0g==
+        bh=TzNCI1euiML81T+O/Mxg+dH4/vZAirx+HsgT3Ub2AsQ=;
+        b=jY2jFXu82PAEBm4lpftNIEfSRehO9IJsvhN18a3UkIoWW0sE/QgzTUaPdRrZyBl6+h
+         UxLmzt9OV7KaSRHKrevxLuRthzbJMvKK5POUxCtClCPuLBg6qsi8J5L0PndutLdWFmRW
+         32F9YEqdRzeyWWv2yMHbuSpRLkDnAPxyNPfhIFTl6D/mmOzKsDarirWAn62+LjxPdAmV
+         0UVKeCUNYSfczcWIXTEbsc/ai+Yy2XOz6WLhkk3lCzmW4JHyIqqEGvhByuEEm5d7Dzlq
+         nHeslsP4UlI1tzSQl+ta74rWQtHoZM/YSB99zOEpd35CQLpQ+BBXCwB3evnkvHAPRI5k
+         Mcyw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745360392; x=1745965192;
+        d=1e100.net; s=20230601; t=1745361054; x=1745965854;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=evpYIJU/iATwAu2nEHd9+zj4m40Dzzq89xrgyo+J/9c=;
-        b=tvlfe7nlkrmvI8EVQ7fR18W50NmHwXYn0eBxoN1bLDcoURoFQ+cWesjaVaNWVd9+bf
-         uQFsmDVT/qNGCupxJkAdub5UpS/XbUbh1psMKaSosDhsIttmKeGGg0tXF6/ho06/IJeg
-         ExUEmoKujtgUXx7ryudJmABk1BTcAVM7BWa9fr7PFAbECmBalcRcfIo2oUUPls2ymELk
-         GPxK1iX3C+bb8UqtyGs3Q9dWdIO3YIoPr7r491Qu07EqlXHfnu1N5YPVkJao3GUIsqoD
-         hTXIkqcc/9ym0tzKUAs2d59WlIwChlS9OsNqWpEykl658BYOdXGlMap9FkMtivdqNEdw
-         Ku6w==
-X-Forwarded-Encrypted: i=1; AJvYcCVqqM3aMXr0EzOQv3GFkkEym3WLH1FB+hexdErvpx9gOEfcDtUs5nacwTaWq6dyM/yc2Dz3yqvshWU=@vger.kernel.org, AJvYcCX3sXEzuVqzg5AA41KQuBF663+k0cg6FRHkhtCNQbe5r38bSghHuWL3l369Lbu+g72nV1UNUb+AJzsLGPul@vger.kernel.org
-X-Gm-Message-State: AOJu0YxUD9FjgYgB+679E14uAX5BHFXYlEvAddIKzGNQcqTaewrrNMGH
-	HsMmzZQhnqVOfiQr3brtXyqO4A/U4DWDxs0sC4NUIKCg/iBg8t7RAzy4/PLVSf0YmoI86KeIO3g
-	oNqvxIIzNurD51lrcG4fEIAK7K9k=
-X-Gm-Gg: ASbGncvTbrBuY2KKNnqKmMxsJSpq8ED/3a8lbsd93pbhmTUTgZlATdSWxCYswFbMMrt
-	cGmVcYCP5hsarTkSefupdVZC9ALgTwzW2z3j2ttBP5o/LwXxEQCyBAaiRE9D5iHQq/O7NlZ2R9g
-	uHcd2TNGAOtr0jOV+YRyVesw==
-X-Google-Smtp-Source: AGHT+IFg1heiLQM8LW9/alQbD5xYL7FAgOuJUEBvGh+slf1RWtYCKXsiBug2uMJWAwpXbjVuHqB9rrwRK7TulalmoDQ=
-X-Received: by 2002:a17:907:6e90:b0:ac7:e80a:7fc9 with SMTP id
- a640c23a62f3a-acb74bd59ffmr1599993166b.31.1745360392012; Tue, 22 Apr 2025
- 15:19:52 -0700 (PDT)
+        bh=TzNCI1euiML81T+O/Mxg+dH4/vZAirx+HsgT3Ub2AsQ=;
+        b=lZy5E/hQb+4HE9+hp705ATfs/LRqwZhKcAZY1kQAscyk5/f0BHlxKVKtlSXRnA4moh
+         OA9h24YNEFJdKgsQGAaYcu1e0Ttj++s7QxvuO1C81T9qQA+eKtezFlfHqJ9A0oO/FwIy
+         2sIhU+u+U6l8z71JLvE0xYMSAUHkpPSGgNeDEQiS4lKhSiw/4vNaZjDR5LhjLzT4cEAM
+         gRnXnHlsjZ/Esx8BhvF0t6Kc+l+5RFLzIjoEIIHpRHX5WAd1o75GN7kAeK9f0DsFhwrx
+         7j0s13JJJWkXrbUoD0LF/0DHxycb0nD9t8GEshifPtisu84VSbMW5OvxWW3WvyfsLTnP
+         HxYw==
+X-Forwarded-Encrypted: i=1; AJvYcCVntsgSfjFWBhsJzbeXUgsVsuHk2br2PhzU3b4EADVIUW9mjysg2TVlxLLPtLJ78VX5QaqJ4ZLphk0O5l0k@vger.kernel.org, AJvYcCXE2pNc7+Z/DwJbVfaEUDVxYNg/waZQJLEsi4Z+QnPd8GKTbcV6iFkBpm/ZCpneyBCLjZXf4Bc/3vc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzZA29b20O7aBQEw88/IcxiVzrgCuJ3f9JKO5ve7iTAdfxsndtT
+	gLa/hIm2fNwK4BdLM3DMlBO0u/BElh/z4coy5S3lfyHhRszvDIUwds0c03XnKA+lxgz29vnFSLF
+	EfLVECANoG2bEkHbUDdkDDpChhtU=
+X-Gm-Gg: ASbGncvzMg6OeX08QIEPjYsYCrtW6EhYVamcmObdcTSZwVrRS+6kijl3XhUWEiTenVz
+	qTlU7LmKhWWusnytQBX2ZC5MW6PvgyGW5BZyLE9XGQx1p7XxvQLq7myk8K6cflhq6hfvme8n424
+	pMcDwi8k4fmTqU6AFw/mvOZQ==
+X-Google-Smtp-Source: AGHT+IE3998SOoM5TQwHkEiv9/r4ac5IEpqWhP34QWkVmaptlSFgMZv97T7hlOYNeYrjUabrHKcmyKVktjZdI8yC4gE=
+X-Received: by 2002:a17:907:3fa1:b0:ac2:c1e:dff0 with SMTP id
+ a640c23a62f3a-acb74b4ccd4mr1141325966b.19.1745361053675; Tue, 22 Apr 2025
+ 15:30:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250422-iio-pressure-bmp280-rework-push-to-buffers-v1-1-ee722f29aeca@baylibre.com>
- <CAHp75Ve_C6BXo75xy4+xZ5b1O9-TT5TGGQDgTR_F1s3TFK3p6Q@mail.gmail.com> <12dac98d-3e6b-4c2b-8ac0-d526bdb5efd4@baylibre.com>
-In-Reply-To: <12dac98d-3e6b-4c2b-8ac0-d526bdb5efd4@baylibre.com>
+References: <20250422-iio-introduce-iio_declare_buffer_with_ts-v2-0-3fd36475c706@baylibre.com>
+ <20250422-iio-introduce-iio_declare_buffer_with_ts-v2-1-3fd36475c706@baylibre.com>
+In-Reply-To: <20250422-iio-introduce-iio_declare_buffer_with_ts-v2-1-3fd36475c706@baylibre.com>
 From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Wed, 23 Apr 2025 01:19:15 +0300
-X-Gm-Features: ATxdqUEgkLF7optyAlJ9EfmLvinWXROrw_I7D2C317zvmD2gmc_K2N2tY0FnEdE
-Message-ID: <CAHp75VcHMTSGRrodixsLDS-xCi8KQJ0MtMSMi7tfATUgd3E5uA@mail.gmail.com>
-Subject: Re: [PATCH] iio: pressure: bmp280: drop sensor_data array
+Date: Wed, 23 Apr 2025 01:30:17 +0300
+X-Gm-Features: ATxdqUF9L-QdkcRUaS4VEbEYroG2Kvz6r19047Y4gFd893gEmo8RVU6ynKAGZL8
+Message-ID: <CAHp75VeuNhfJrNAZZwY2tEHte=UPHLOPNUz7y_J20xv2+_Zdeg@mail.gmail.com>
+Subject: Re: [PATCH v2 1/6] iio: introduce IIO_DECLARE_BUFFER_WITH_TS macros
 To: David Lechner <dlechner@baylibre.com>
 Cc: Jonathan Cameron <jic23@kernel.org>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+	Andy Shevchenko <andy@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, 
+	Michael Hennerich <Michael.Hennerich@analog.com>, Eugen Hristev <eugen.hristev@linaro.org>, 
+	Nicolas Ferre <nicolas.ferre@microchip.com>, 
+	Alexandre Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Apr 23, 2025 at 12:22=E2=80=AFAM David Lechner <dlechner@baylibre.c=
-om> wrote:
+On Wed, Apr 23, 2025 at 1:08=E2=80=AFAM David Lechner <dlechner@baylibre.co=
+m> wrote:
 >
-> On 4/22/25 3:57 PM, Andy Shevchenko wrote:
-> > On Tue, Apr 22, 2025 at 10:28=E2=80=AFPM David Lechner <dlechner@baylib=
-re.com> wrote:
-> >>
-> >> Drop the sensor_data array from struct bmp280_data and replace it usin=
-g
-> >> local structs in each interrupt handler.
-> >>
-> >> The sensor_data array in struct bmp280_data is not used to share data
-> >> between functions and isn't used for DMA, so there isn't really a need
-> >> to have it in the struct. Instead, we can use the struct pattern for
-> >> scan data in each interrupt handler. This has the advantage of allowin=
-g
-> >> us to see the actual layout of each scan buffer for each different typ=
-e
-> >> of supported sensor. It also avoid juggling values between local
-> >
-> > of the supported
+> Add new macros to help with the common case of declaring a buffer that
+> is safe to use with iio_push_to_buffers_with_ts(). This is not trivial
+> to do correctly because of the alignment requirements of the timestamp.
+> This will make it easier for both authors and reviewers.
 >
-> I think what I wrote is correct grammar. Same as if I would have written
-> "each type of sensor". I would not write "each type of the sensor".
-
-Ah, I meant the plural: of the supported sensors. Otherwise are you
-talking only about one sensor?
-
-> >> variables and the array which makes the code a bit simpler by avoiding
-> >> some extra assignments.
-> >>
-> >> We can also drop the BME280_NUM_MAX_CHANNELS macro as it is no longer
-> >> used.
-> >
-> > I like this change so much, thanks!
-> > But one comment below.
-> >
-> > Reviewed-by: Andy Shevchenko <andy@kernel.org>
+> To avoid double __align() attributes in cases where we also need DMA
+> alignment, add a 2nd variant IIO_DECLARE_DMA_BUFFER_WITH_TS.
 
 ...
 
-> >>         /* Pressure calculations */
-> >> -       memcpy(&data->sensor_data[offset], &data->buf[3], 3);
-> >> -
-> >> -       offset +=3D sizeof(s32);
-> >> +       memcpy(&buffer.comp_press, &data->buf[3], 3);
-> >>
-> >>         /* Temperature calculations */
-> >> -       memcpy(&data->sensor_data[offset], &data->buf[0], 3);
-> >> +       memcpy(&buffer.comp_temp, &data->buf[0], 3);
-> >
-> > Shouldn't these memcpy():s be get_unaligned_be24()/get_unaligned_le24()=
-?
->
-> The scan_type.endianness is already defined as IIO_LE, so we must preserv=
-e the
-> the little-endian order, even on big-endian systems.
+> +#define _IIO_DECLARE_BUFFER_WITH_TS(type, name, count) \
+> +       type name[ALIGN((count), sizeof(s64) / sizeof(type)) + sizeof(s64=
+) / sizeof(type)]
 
-Okay. so this should be native, thanks for elaborating this.
+Single leading underscore seems to me not so usual, I saw people use
+double underscores to make sure that it will be visible that it's an
+internal one (kinda).
+
+...
+
+> +_Static_assert(sizeof(IIO_DMA_MINALIGN) % sizeof(s64) =3D=3D 0,
+
+Why not static_assert() ? Because of the message? But static_assert()
+supports messages AFAICS.
+
+> +       "macros above assume that IIO_DMA_MINALIGN also ensures s64 times=
+tamp alignment");
 
 --=20
 With Best Regards,

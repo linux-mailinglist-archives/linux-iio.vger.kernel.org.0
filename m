@@ -1,412 +1,139 @@
-Return-Path: <linux-iio+bounces-18507-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18508-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A2F5A97014
-	for <lists+linux-iio@lfdr.de>; Tue, 22 Apr 2025 17:11:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D021A9719A
+	for <lists+linux-iio@lfdr.de>; Tue, 22 Apr 2025 17:50:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E8FB18877BB
-	for <lists+linux-iio@lfdr.de>; Tue, 22 Apr 2025 15:11:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B8D7189BEEE
+	for <lists+linux-iio@lfdr.de>; Tue, 22 Apr 2025 15:51:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0724628541C;
-	Tue, 22 Apr 2025 15:11:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE2FB2900AD;
+	Tue, 22 Apr 2025 15:50:32 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B3BB1096F;
-	Tue, 22 Apr 2025 15:11:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0FF4290086;
+	Tue, 22 Apr 2025 15:50:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745334688; cv=none; b=eWNZmncvXLXuJ7u8wh/Cb2fR9yUsQ2Mts9+USPbZr3ehodfTo0IMMXx+gQkvuOntQAJo4w9rKuId4ugQ5/Lo6qJwys3AqAs1YuTJ5YJFwZdZivVNzJDMViGpuEjp7H/wAJB1bFyJScTV2axMW7sp9RlvtiquHIaYyi2KpJ4aFds=
+	t=1745337032; cv=none; b=b/hoQma2r28pJfbxBdYBtFv5nJx7GR24AYtl5dap5kROvt7G3WNlh5Q5eIrAKAQh10N0BQlPprfZoVCaDn0DyrEHJuPD8b3t7Ma6Y8ogdlL0hbXF0TlsZhjYVhATLnGWx5fiPruElwvu/MJEufRdZXpYaHZ++I38GioNx9PxhVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745334688; c=relaxed/simple;
-	bh=xNXDzUTuTrUu2Dls8bhjT9zRT+jFoMj7N/0BCd4+A0o=;
+	s=arc-20240116; t=1745337032; c=relaxed/simple;
+	bh=X/Jm8EpGyPPW/TPBD8j9CgUl3gKs8re5bMeAjVZN3NQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JYk9Za/LSOw0Qw3cn//XtYC+/OW48awMbCRHJsNWzHvuS7JK3BzSrFvv0OPKA+MvHuzlkkhpe/DLRLt1smdiiOtCrxNX4JkIuIY+XU7zHdACtG8X9XjCtyvGSDkA/TUYbT9vInRFClwh3q7C3oLbCHHJLw0S14JA6Y8s+718LIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=fail smtp.mailfrom=kernel.org; arc=none smtp.client-ip=198.175.65.21
+	 Content-Type:Content-Disposition:In-Reply-To; b=R7MjQjZg5ICV9FMPU9S3vADcZF7WQCnOCpHe9ijDIpVqwziksG9jXyhYcUMioxfFuMQjI4fQJMWjzFryObDAtnOrlj/3Qa63x6cIPCXU3+btISR35jzDq7tBT+Ynsb4h3G2FhskgjUg/KCHNRtlxHlG99YygvFRZG7Vjb4viMfQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=fail smtp.mailfrom=kernel.org; arc=none smtp.client-ip=198.175.65.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=kernel.org
-X-CSE-ConnectionGUID: aAtQHXbnSpK8/3wPQ9MHbQ==
-X-CSE-MsgGUID: l1zEvIScSAegCZY3NC68mg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11411"; a="46814642"
+X-CSE-ConnectionGUID: nS2QrUHeQR6B1ayodn4d1Q==
+X-CSE-MsgGUID: 2AyZxiO7SkquyZ5YFhZK1w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11411"; a="58267022"
 X-IronPort-AV: E=Sophos;i="6.15,231,1739865600"; 
-   d="scan'208";a="46814642"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2025 08:11:27 -0700
-X-CSE-ConnectionGUID: uv3Az2R8TJezN6uZhN//HQ==
-X-CSE-MsgGUID: tcI+jmuUSIG13bJr+yuHMA==
+   d="scan'208";a="58267022"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2025 08:50:31 -0700
+X-CSE-ConnectionGUID: jNzoMomCR2iiPXpLQhUytw==
+X-CSE-MsgGUID: qt0fV3ONStmkyAJZsMGD8A==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.15,231,1739865600"; 
-   d="scan'208";a="163001766"
+   d="scan'208";a="132594964"
 Received: from smile.fi.intel.com ([10.237.72.58])
-  by orviesa002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2025 08:11:24 -0700
+  by fmviesa010.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2025 08:50:22 -0700
 Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
 	(envelope-from <andy@kernel.org>)
-	id 1u7FHM-0000000ElFV-2XCL;
-	Tue, 22 Apr 2025 18:11:20 +0300
-Date: Tue, 22 Apr 2025 18:11:20 +0300
+	id 1u7Ft6-0000000EloN-0apC;
+	Tue, 22 Apr 2025 18:50:20 +0300
+Date: Tue, 22 Apr 2025 18:50:19 +0300
 From: Andy Shevchenko <andy@kernel.org>
-To: Kim Seer Paller <kimseer.paller@analog.com>
+To: Jorge Marques <jorge.marques@analog.com>
 Cc: Jonathan Cameron <jic23@kernel.org>,
 	Lars-Peter Clausen <lars@metafoo.de>,
 	Michael Hennerich <Michael.Hennerich@analog.com>,
 	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
 	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <noname.nuno@gmail.com>,
 	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>,
 	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org
-Subject: Re: [PATCH v5 3/3] iio: dac: ad3530r: Add driver for AD3530R and
- AD3531R
-Message-ID: <aAexmOU1e-7hXq6Y@smile.fi.intel.com>
-References: <20250421-togreg-v5-0-94341574240f@analog.com>
- <20250421-togreg-v5-3-94341574240f@analog.com>
+	devicetree@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-pwm@vger.kernel.org
+Subject: Re: [PATCH v2 1/5] Documentation: ABI: add oversampling frequency in
+ sysfs-bus-iio
+Message-ID: <aAe6u6NhAsgjaL5_@smile.fi.intel.com>
+References: <20250422-iio-driver-ad4052-v2-0-638af47e9eb3@analog.com>
+ <20250422-iio-driver-ad4052-v2-1-638af47e9eb3@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250421-togreg-v5-3-94341574240f@analog.com>
+In-Reply-To: <20250422-iio-driver-ad4052-v2-1-638af47e9eb3@analog.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Mon, Apr 21, 2025 at 12:24:54PM +0800, Kim Seer Paller wrote:
-> The AD3530/AD3530R (8-channel) and AD3531/AD3531R (4-channel) are
-> low-power, 16-bit, buffered voltage output DACs with software-
-> programmable gain controls, providing full-scale output spans of 2.5V or
-> 5V for reference voltages of 2.5V. These devices operate from a single
-> 2.7V to 5.5V supply and are guaranteed monotonic by design. The "R"
-> variants include a 2.5V, 5ppm/°C internal reference, which is disabled
-> by default.
+On Tue, Apr 22, 2025 at 01:34:46PM +0200, Jorge Marques wrote:
+> Some devices have an internal clock used to space out the conversion
+> trigger for the oversampling filter,
+> Consider an ADC with conversion and data ready pins topology:
 > 
-> Support for monitoring internal die temperature, output voltages, and
-> current of a selected channel via the MUXOUT pin using an external ADC
-> is currently not implemented.
+>   Sampling trigger |       |       |       |       |
+>   ADC conversion   ++++    ++++    ++++    ++++    ++++
+>   ADC data ready      *       *       *       *       *
+> 
+> With the oversampling frequency, conversions are spaced:
+> 
+>   Sampling trigger |       |       |       |       |
+>   ADC conversion   + + + + + + + + + + + + + + + + + + + +
+>   ADC data ready         *       *       *       *       *
+> 
+> In some devices and ranges, this internal clock can be used to evenly
+> space the conversions between the sampling edge.
+> In other devices the oversampling frequency is fixed or is computed
+> based on the sampling frequency parameter, and the parameter is
+> read only.
+> 
+> Devices with this feature are max1363, ad7606, ad799x, and ad4052.
+> The max1363 driver included the events/sampling_frequency in
+> commit 168c9d95a940 ("iio:adc:max1363 move from staging.")
+> and ad799x in
+> commit ba1d79613df3 ("staging:iio:ad799x: Use event spec for threshold
+> hysteresis")
+> but went undocumented so far.
+
+So, it was no documentation for the nodes this change describes, right?
 
 ...
 
-> +#include <linux/bitfield.h>
-> +#include <linux/bits.h>
-> +#include <linux/cleanup.h>
-> +#include <linux/delay.h>
+> +What:		/sys/bus/iio/devices/iio:deviceX/oversampling_frequency
+> +KernelVersion:	6.15
 
-> +#include <linux/device.h>
+Then why don't you put the real version of the first release that has it?
 
-I don't see how you use this. But
-
-+ dev_printk.h
-
-> +#include <linux/gpio/consumer.h>
-> +#include <linux/iio/iio.h>
-> +#include <linux/module.h>
-> +#include <linux/mod_devicetable.h>
-> +#include <linux/mutex.h>
-> +#include <linux/property.h>
-> +#include <linux/regmap.h>
-> +#include <linux/regulator/consumer.h>
-> +#include <linux/spi/spi.h>
-
-...
-
-> +#define AD3530R_SW_RESET			(BIT(7) | BIT(0))
-
-> +#define AD3530R_MAX_CHANNELS			8
-> +#define AD3531R_MAX_CHANNELS			4
-
-Sounds to me that these two shouldn't be grouped with the rest here. Perhaps
-move them out to after the LDAC_PULSE?
-
-> +#define AD3530R_INTERNAL_VREF_MV		2500
-
-_mV (yes, with Volts and Amperes we use proper spelling).
-
-> +#define AD3530R_LDAC_PULSE_US			100
-
-...
-
-> +	int (*input_ch_reg)(unsigned int c);
-
-c? channel?
-
-...
-
-> +	int vref_mv;
-
-_mV
-
-...
-
-> +static int ad3530r_input_ch_reg(unsigned int c)
-> +{
-> +	return 2 * c + AD3530R_INPUT_CH;
-> +}
+> +Contact:	linux-iio@vger.kernel.org
+> +Description:
+> +		Some devices have internal clocks for oversampling.
+> +		Sets the resulting frequency in Hz to trigger a conversion used by
+> +		the oversampling filter.
+> +		If the device has a fixed internal clock or is computed based on
+> +		the sampling frequency parameter, the parameter is read only.
 > +
-> +static int ad3531r_input_ch_reg(unsigned int c)
-> +{
-> +	return 2 * c + AD3531R_INPUT_CH;
-> +}
-
-c --> channel
-
-...
-
-> +static const char * const ad3530r_powerdown_modes[] = {
-> +	"1kohm_to_gnd",
-
-kOhm
-
-> +	"7.7kohm_to_gnd",
+> +What:		/sys/bus/iio/devices/iio:deviceX/oversampling_frequency_available
+> +KernelVersion:	6.15
 
 Ditto.
 
-> +	"32kohm_to_gnd",
-
-Ditto.
-
-> +};
-
-...
-
-> +static const struct iio_enum ad3530r_powerdown_mode_enum = {
-> +	.items = ad3530r_powerdown_modes,
-> +	.num_items = ARRAY_SIZE(ad3530r_powerdown_modes),
-
-+ array_size.h
-
-> +	.get = ad3530r_get_powerdown_mode,
-> +	.set = ad3530r_set_powerdown_mode,
-> +};
-
-...
-
-> +static ssize_t ad3530r_get_dac_powerdown(struct iio_dev *indio_dev,
-> +					 uintptr_t private,
-> +					 const struct iio_chan_spec *chan,
-> +					 char *buf)
-> +{
-> +	struct ad3530r_state *st = iio_priv(indio_dev);
-> +
-> +	guard(mutex)(&st->lock);
-> +	return sysfs_emit(buf, "%d\n", st->chan[chan->channel].powerdown);
-
-+ sysfs.h
-
-> +}
-
-...
-
-> +static ssize_t ad3530r_set_dac_powerdown(struct iio_dev *indio_dev,
-> +					 uintptr_t private,
-> +					 const struct iio_chan_spec *chan,
-> +					 const char *buf, size_t len)
-> +{
-> +	struct ad3530r_state *st = iio_priv(indio_dev);
-> +	int ret;
-> +	unsigned int mask, val, reg;
-> +	bool powerdown;
-> +
-> +	ret = kstrtobool(buf, &powerdown);
-
-+ kstrtox.h
-
-> +	if (ret)
-> +		return ret;
-> +
-> +	guard(mutex)(&st->lock);
-> +	mask = GENMASK(chan->address + 1, chan->address);
-> +	reg = chan->channel < AD3531R_MAX_CHANNELS ?
-> +	      AD3530R_OUTPUT_OPERATING_MODE_0 :
-> +	      AD3530R_OUTPUT_OPERATING_MODE_1;
-> +	val = (powerdown ? st->chan[chan->channel].powerdown_mode : 0)
-> +	       << chan->address;
-
-Please, move the operator to the previous line, Or even
-
-	... pdmode;
-
-	pdmode = powerdown ? st->chan[chan->channel].powerdown_mode : 0;
-	val = pdmode << ...;
-
-> +	ret = regmap_update_bits(st->regmap, reg, mask, val);
-> +	if (ret)
-> +		return ret;
-> +
-> +	st->chan[chan->channel].powerdown = powerdown;
-> +
-> +	return len;
-> +}
-
-...
-
-> +	struct ad3530r_state *st = iio_priv(indio_dev);
-> +
-> +	switch (info) {
-> +	case IIO_CHAN_INFO_RAW:
-> +		if (val < 0 || val > U16_MAX)
-
-U16_MAX is an abstract type with this limit, do you have any predefined HW
-limit instead? Probably better to use that one as defined via BIT() / GENMASK().
-
-> +			return -EINVAL;
-> +
-> +		return ad3530r_dac_write(st, chan->channel, val);
-> +	default:
-> +		return -EINVAL;
-> +	}
-
-...
-
-> +static const struct iio_chan_spec_ext_info ad3530r_ext_info[] = {
-> +	{
-> +		.name = "powerdown",
-> +		.shared = IIO_SEPARATE,
-> +		.read = ad3530r_get_dac_powerdown,
-> +		.write = ad3530r_set_dac_powerdown,
-> +	},
-> +	IIO_ENUM("powerdown_mode", IIO_SEPARATE, &ad3530r_powerdown_mode_enum),
-> +	IIO_ENUM_AVAILABLE("powerdown_mode", IIO_SHARED_BY_TYPE,
-> +			   &ad3530r_powerdown_mode_enum),
-> +	{ }
-> +};
-> +
-> +#define AD3530R_CHAN(_chan, _pos) {					\
-
-Slightly better to have the curly braces on the same column as it's easier to
-read.
-
-#define AD3530R_CHAN(_chan, _pos)				\
-{								\
-
-(and make it one TAB less for the backslash).
-
-> +	.type = IIO_VOLTAGE,						\
-> +	.indexed = 1,							\
-> +	.channel = _chan,						\
-> +	.address = _pos,						\
-> +	.output = 1,							\
-> +	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |			\
-> +			      BIT(IIO_CHAN_INFO_SCALE),			\
-> +	.ext_info = ad3530r_ext_info,					\
-> +}
-
-...
-
-> +static int ad3530r_setup(struct ad3530r_state *st, int vref,
-> +			 bool has_external_vref)
-> +{
-> +	struct device *dev = regmap_get_device(st->regmap);
-> +	struct gpio_desc *reset_gpio;
-> +	int i, ret;
-> +	u8 range_multiplier;
-
-+ types.h (and especially for boolean type along with true/false definitions.
-
-> +
-> +	reset_gpio = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_HIGH);
-> +	if (IS_ERR(reset_gpio))
-> +		return dev_err_probe(dev, PTR_ERR(reset_gpio),
-> +				     "Failed to get reset GPIO\n");
-
-+ err.h
-
-> +	if (reset_gpio) {
-> +		/* Perform hardware reset */
-> +		fsleep(1000);
-
-(1 * USEC_PER_MSEC) ?
-
-> +		gpiod_set_value_cansleep(reset_gpio, 0);
-> +	} else {
-> +		/* Perform software reset */
-> +		ret = regmap_update_bits(st->regmap, AD3530R_INTERFACE_CONFIG_A,
-> +					 AD3530R_SW_RESET, AD3530R_SW_RESET);
-> +		if (ret)
-> +			return ret;
-> +	}
-
-> +	fsleep(10000);
-
-10 * USEC_PER_MSEC
-
-With these constants it's less error prone (when 3 or more zeroes) and easier
-to get the units without looking into fsleep() implementation / documentation.
-
-> +	range_multiplier = 1;
-> +	if (device_property_read_bool(dev, "adi,range-double")) {
-> +		ret = regmap_set_bits(st->regmap, AD3530R_OUTPUT_CONTROL_0,
-> +				      AD3530R_OUTPUT_CONTROL_RANGE);
-> +		if (ret)
-> +			return ret;
-> +
-> +		range_multiplier = 2;
-> +	}
-> +
-> +	if (!has_external_vref && st->chip_info->internal_ref_support) {
-> +		ret = regmap_set_bits(st->regmap, AD3530R_REFERENCE_CONTROL_0,
-> +				      AD3530R_REFERENCE_CONTROL_SEL);
-> +		if (ret)
-> +			return ret;
-> +
-> +		st->vref_mv = range_multiplier * AD3530R_INTERNAL_VREF_MV;
-> +	}
-> +
-> +	if (has_external_vref)
-> +		st->vref_mv = range_multiplier * vref / 1000;
-
-MILLI?
-
-
-> +	/* Set operating mode to normal operation. */
-> +	ret = regmap_write(st->regmap, AD3530R_OUTPUT_OPERATING_MODE_0,
-> +			   AD3530R_NORMAL_OPERATION);
-> +	if (ret)
-> +		return ret;
-> +
-> +	if (st->chip_info->num_channels > AD3531R_MAX_CHANNELS) {
-> +		ret = regmap_write(st->regmap, AD3530R_OUTPUT_OPERATING_MODE_1,
-> +				   AD3530R_NORMAL_OPERATION);
-> +		if (ret)
-> +			return ret;
-> +	}
-> +
-> +	for (i = 0; i < st->chip_info->num_channels; i++)
-> +		st->chan[i].powerdown_mode = AD3530R_POWERDOWN_32K;
-> +
-> +	st->ldac_gpio = devm_gpiod_get_optional(dev, "ldac", GPIOD_OUT_LOW);
-> +	if (IS_ERR(st->ldac_gpio))
-> +		return dev_err_probe(dev, PTR_ERR(st->ldac_gpio),
-> +				     "Failed to get ldac GPIO\n");
-> +
-> +	return 0;
-> +}
-
-...
-
-> +	vref = devm_regulator_get_enable_read_voltage(dev, "ref");
-> +	if (vref < 0 && vref != -ENODEV)
-> +		return vref;
-> +
-> +	has_external_vref = vref != -ENODEV;
-
-Wouldn't be better just make this 0 when it's == -ENODEV and check just the
-value without having this additional boolean variable (note, I haven't checked
-the meaning of Vref == 0 in case it's possible in real life and hardware
-behaves adequately)?
-
-> +	if (!st->chip_info->internal_ref_support && !has_external_vref)
-> +		return -ENODEV;
-
-> +	ret = ad3530r_setup(st, vref, has_external_vref);
-> +	if (ret)
-> +		return ret;
+> +Contact:	linux-iio@vger.kernel.org
+> +Description:
+> +		Hardware dependent values supported by the oversampling
+> +		frequency.
 
 -- 
 With Best Regards,

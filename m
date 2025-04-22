@@ -1,88 +1,88 @@
-Return-Path: <linux-iio+bounces-18496-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18497-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0F09A96552
-	for <lists+linux-iio@lfdr.de>; Tue, 22 Apr 2025 12:02:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28E36A96576
+	for <lists+linux-iio@lfdr.de>; Tue, 22 Apr 2025 12:09:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 71BF67A909B
-	for <lists+linux-iio@lfdr.de>; Tue, 22 Apr 2025 10:01:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 637D316AF4A
+	for <lists+linux-iio@lfdr.de>; Tue, 22 Apr 2025 10:09:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AE4D20C48C;
-	Tue, 22 Apr 2025 10:02:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DAB420CCF5;
+	Tue, 22 Apr 2025 10:08:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="FPLeId+N"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="B0mVFHb+"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D899B1EE010
-	for <linux-iio@vger.kernel.org>; Tue, 22 Apr 2025 10:02:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB28C20B801
+	for <linux-iio@vger.kernel.org>; Tue, 22 Apr 2025 10:08:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745316157; cv=none; b=mdUJGsuJsFHbMI/HHRVHHBkOe8U4tLM+qwg9ygP1lCfFgoD6/4/te65dgkP7jaVCuDojzVLVnHspPTz+ErL9q+kKtr/obMHmqFDkCMmMUCgm7MqRWwFncvBjMgPLKOalRX2ESQZmTsXx9RO88HhfeXFBCcQMWJjMAftG5Ho4DCQ=
+	t=1745316513; cv=none; b=Plo7LUXWQVffxz2Lqxgc0EzrMdORyE+6bXZuN5SB+ocP4xGvzpk+BnuhQsaFaazrI+Xh7oSAfN6Z2Hfo7oJVupYR1wmejWCSDrcYC+0sbW3Or/Z7KOUUNAiYDBFzEIBb91fjRL1f5pQTkWjgAARFr9fvlRNPuplwP0MeFf9p5S8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745316157; c=relaxed/simple;
-	bh=r6si7KxlGkOoATAg7ilVznuwbtqgYzdFtBjWKcTszJs=;
+	s=arc-20240116; t=1745316513; c=relaxed/simple;
+	bh=anLjr1tReamUydhT8BOyd5WAfBLORHEW1TH2GPX2hgU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PNTKIebvctfLx67rMzd+ViGH4Mv3Yqf6wGdiuwqsMqsh2WW085cXs42mJHV8DFOoTKcmUiZeBcOqQvqM8bU1Xc5yxqbz+4EOmJjaCpG8Cgr9xSKTePTXDes4Aa7qsS0MgdCn6XYd4Nf4sMvvTpAnq9IfgGaWENSix1pH+8btM5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=FPLeId+N; arc=none smtp.client-ip=209.85.221.51
+	 Content-Type:Content-Disposition:In-Reply-To; b=LJ4jtXD4ScuUt32DT8Pax1TaV1tv0LStTNiLdulVluDjhccVEuVToRewFCF+5wOYsGU+6OI/+6BjQ3GAUhJUgbFDmk6RFI7OohSKkTV7Q72oiulyA0+Yk0mqpAJYcya8+mRF3q1ASn4AT7Y7f8g7ZF36PsqNsYSbwVdd4UiWZFo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=B0mVFHb+; arc=none smtp.client-ip=209.85.128.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-39ee5ac4321so5263332f8f.1
-        for <linux-iio@vger.kernel.org>; Tue, 22 Apr 2025 03:02:33 -0700 (PDT)
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-43d04dc73b7so45554275e9.3
+        for <linux-iio@vger.kernel.org>; Tue, 22 Apr 2025 03:08:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1745316152; x=1745920952; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1745316509; x=1745921309; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=2lwX66HK8eTxAxJezuea/KRjoMND3umFRpU7IdR4G0w=;
-        b=FPLeId+NVXCtZvebuQRmAzc9kWvDpITGAqw+N9z7hTXK49DrYxUgREe2UNtbenzvP6
-         XLxg2CROL8Iu2VpTy8POM2xXlfg+FcLTOd7MdleIfP3OVc8ROjbhx19xSMfmMtG15JX7
-         ngPqizDJxgLBbJOrF5udCnrsw/Y6L07+v0bcjasEQ0oS9ca1YWgAcYilZpMrGBfTYkBD
-         BlzplR/PXXXJdoQYjbZwc3qXJIL6jxXvyLoHpuuyPVRvjxm64BsuZ2g33qSABpTgTPrf
-         1CnKgsceMR6jPRBqgWt6DuNn5eYW1TzMO+p6JLXOd5A6pkZsV6icZ+ipkNDI45cK0bkd
-         G6YQ==
+        bh=E6B0Yh7dOpmfhINAPeCPvt7WU205S796TEUCdlISV0U=;
+        b=B0mVFHb+/5jqS94/znqPq3C2MAjiHd4kCjrdRDFYQ+hzcQ/jLVJ7R3NeBIxywW11sh
+         AFg02oOW8w1IKuxQAzVcyb/heCpjaIfwukJhsXnCPuiMqYYwYSrmvQUHDyX18FZNDRUc
+         kkt99djSCAfQXwJwitodsg8ssGUo3uT33qLCWqwGmpEdwjOtPnBUUuGxDGFX3ya+xhVe
+         vTPORT6FIRj2hyI3C4NOcXfgXsPLGPPYlzUoaipSShBBj3s90X9Q2OkIRXzN3MBdsLGN
+         qFYOxtt53VmimipWlDhthAaOibzp+qm8ESw6p5cbAsbXyvin4iO/uAD2jDKpqWgrKqxt
+         1NuA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745316152; x=1745920952;
+        d=1e100.net; s=20230601; t=1745316509; x=1745921309;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=2lwX66HK8eTxAxJezuea/KRjoMND3umFRpU7IdR4G0w=;
-        b=Ry9BGNCl6qren9ogTw6tPjJ6nvThv+SiHe33GG0vxhyfC2BFMlhYL3q4xh3evepBX4
-         nERW3U9GXZnkFSyTtuiDY0H4+KaOGKxho84C/sU3ccPr958NoeKPWbcrdrQgD8huq/X5
-         sq3sWavlw38KPstWtuFt5Ou2azD8khAHYotTihIO/VrZVobBxOjzjFJQ0QkKqXtLAYvV
-         +Mz4EsGXJE6A/JnZIA/Cec6pHeBeMILG3nIL6zB/J3oboBLGp2koemWF8mOuqsxhfuaX
-         fc4NlGIE+DI6FE7GKsRb51YvIm9FL4+PGvMSE2aFxxte+4Ixl787HCyh/MbLpAN/wtmQ
-         3PJw==
-X-Forwarded-Encrypted: i=1; AJvYcCUhvwvrZrCI+cMLH6H7EnBprrFnfDYPoyZfbOIlIihMFhEbsLZFKNsQ/RHtOf9w6KdsqWZ82zcqz4s=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxxvzr9xfmGz2nwC+cDZ8pfWLVyOTx/6ww6CJF6rgSswvUG5fkQ
-	Vh8X8YAKEFEGxGm/D8XOp2SqN251AxegdHIODLjBaSo43qnzDp66Thmo7F4l4qo=
-X-Gm-Gg: ASbGncvrhqcCK4CjBNSx/hYMAqKwvBIMZvOfpADxHUZLoVzYW8eQhznIr7nzTjFB5CX
-	IOzNgU/Kj/DU/si6TH1g5Gp++U2ptCL1yeNlE7WCUwOR++IP9Czii/4g8AZu0eWyFI10ZMPMHur
-	zz/+HpJBTjkMWhoKAo6VW3nYrwNMMnG+TH2HUknU1/D4XcVBwu/xpqsb1VI06mWwhvsV4oZttOC
-	1kLJew6/MS1dR8W7DL8TvsZp5QmpMlA7bZWzQq94KzQRBFegfIgcBsCKkC1DsYdrXMdIXrQ5o4D
-	QpJmSXf43mjoUN9apmEHW3HYghyg+6fcrDnr9x58sLFkQg==
-X-Google-Smtp-Source: AGHT+IF1ZkfPi2gJ652NKkarwIY/ypcd5ApofOa/AQ+PxbuhRTF4pbWiSN2ZlQ7ALpKKQfQcvtNEOA==
-X-Received: by 2002:a5d:5f8a:0:b0:391:2bcc:11f2 with SMTP id ffacd0b85a97d-39efba2c924mr10978756f8f.1.1745316152148;
-        Tue, 22 Apr 2025 03:02:32 -0700 (PDT)
+        bh=E6B0Yh7dOpmfhINAPeCPvt7WU205S796TEUCdlISV0U=;
+        b=eBJwEbpQRI1pLPORNX0I7DCdUSFS0ZKLttacRJjl2AQeuYrymD5UK3wkYoZabbWkvZ
+         DUtIFwTgTophGvWM8PnBV6MiO/BhTY0WO9z8Oj5Lv8YEVZKZgtUVG55thV17IR1soWtD
+         iwsktFRL1EGqYLmoVdGUaTgElQghoDPMIMkKaSYcRlCemjIAXCyqEEuh8UEAYz2+jghg
+         AOXckmHvroLFKoC0znlSfo131sqAR/D1KffesiW+bOoesm7AAXflUs05EaABmGKG6zyP
+         M2XGDmnJObjidFveaYDTTAlbTvnBuoUE8aeoByW9B+UTVKPKWE5DjpylLIGqzlyBee2m
+         MjEw==
+X-Forwarded-Encrypted: i=1; AJvYcCW/xxxhwmnlCIuKVpBYEsblnt0kj/908UC7BwDF+PFBu1mjnF4ITfIsyL5fJV+KNtuRPkSNa/uSkco=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzU3B/OerlugA9uI3FXZ8MlLW3ZXIs8rEC0PdH0NRzzLSzf+g3T
+	/8PPwwNXn9VB0hS4LOcwB6hv4HbR29h1xwLwaf+IH63XkQ0MblepTGqNU/SePsc=
+X-Gm-Gg: ASbGncsXGoJVKQy1igYgYVJWstbs9U0xoPs7JB1CaWXBaexXHpBu1n6f4QnJgJGUH8z
+	oeVClaLgZEhVHPoO7PUSP6xyLOHszKXf0TRDVmvqDzJu1gO/rzIeQB4qc5u1SbLhi2R0FufRiVm
+	U02qt1gIF2AoaBDABTguMNJXREA+hVwhy5p4/wqlktC0A3SI6ZEWrs0FQ40K100X6k0NbpgqMTQ
+	HuKpzkRczGXXt0ApOGoenkpNreNV3+rovpxEtZTL2v5b/4UnQSf5n2lMj9Dk9zObfEbTok0Jw2O
+	IMofgZ5/EywbChIG9hFYD6mAocaKMGEZDGmdWkhVbGIQpWWFbriD2OeQ
+X-Google-Smtp-Source: AGHT+IHzVpPPPr7Q08HSTDXKukGfeX85sPIQ5U7vWA+NG5QegCS1HXNyMGxJ3cf6h3kIB4C5AubgEw==
+X-Received: by 2002:a05:600c:c0f:b0:43d:7588:6688 with SMTP id 5b1f17b1804b1-4406ab93badmr129900855e9.12.1745316509263;
+        Tue, 22 Apr 2025 03:08:29 -0700 (PDT)
 Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-4406d5acec8sm165056665e9.16.2025.04.22.03.02.31
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-4406d5a9e50sm169732175e9.6.2025.04.22.03.08.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Apr 2025 03:02:31 -0700 (PDT)
-Date: Tue, 22 Apr 2025 13:02:27 +0300
+        Tue, 22 Apr 2025 03:08:28 -0700 (PDT)
+Date: Tue, 22 Apr 2025 13:08:25 +0300
 From: Dan Carpenter <dan.carpenter@linaro.org>
 To: Gabriel Shahrouzi <gshahrouzi@gmail.com>
 Cc: gregkh@linuxfoundation.org, jic23@kernel.org, lars@metafoo.de,
 	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
 	linux-staging@lists.linux.dev, Michael.Hennerich@analog.com,
-	skhan@linuxfoundation.org, linux-kernel-mentees@lists.linux.dev,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v3] staging: iio: ad5933: Correct settling cycles
- encoding per datasheet
-Message-ID: <ce0c0684-2f5e-4e23-824e-8bcad56e6b0c@stanley.mountain>
-References: <20250420003000.842747-1-gshahrouzi@gmail.com>
+	skhan@linuxfoundation.org, linux-kernel-mentees@lists.linux.dev
+Subject: Re: [PATCH v2 3/3] staging: iio: ad9832: Add minor improvements to
+ ad9832_write_powerdown
+Message-ID: <e712ec88-d925-4a73-8df4-ca3387a903fd@stanley.mountain>
+References: <20250420174725.887242-1-gshahrouzi@gmail.com>
+ <20250420174725.887242-4-gshahrouzi@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -91,45 +91,64 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250420003000.842747-1-gshahrouzi@gmail.com>
+In-Reply-To: <20250420174725.887242-4-gshahrouzi@gmail.com>
 
-On Sat, Apr 19, 2025 at 08:30:00PM -0400, Gabriel Shahrouzi wrote:
-> Implement the settling cycles encoding as specified in the AD5933
-> datasheet, Table 13 ("Number of Settling Times Cycles Register"). The
-> previous logic did not correctly translate the user-requested effective
-> cycle count into the required 9-bit base + 2-bit multiplier format
-> (D10..D0) for values exceeding 511.
+On Sun, Apr 20, 2025 at 01:47:25PM -0400, Gabriel Shahrouzi wrote:
+> Minimize size of type that needs to be used by replacing unsigned long
+> with bool. Avoid redundancy by checking if cached power state is the
+> same as the one requested.
 > 
-> Clamp the user input for out_altvoltage0_settling_cycles to the
-> maximum effective value of 2044 cycles (511 * 4x multiplier).
-> 
-> Fixes: f94aa354d676 ("iio: impedance-analyzer: New driver for AD5933/4 Impedance Converter, Network Analyzer")
-> Cc: stable@vger.kernel.org
 > Signed-off-by: Gabriel Shahrouzi <gshahrouzi@gmail.com>
 > ---
-> Changes in v3:
-> 	- Only include fix (remove refactoring which will be its own
-> 	  separate patch).
-> Changes in v2:
->         - Fix spacing in comment around '+'.
->         - Define mask and values for settling cycle multipliers.
-> ---
->  drivers/staging/iio/impedance-analyzer/ad5933.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  drivers/staging/iio/frequency/ad9832.c | 18 ++++++++++++------
+>  1 file changed, 12 insertions(+), 6 deletions(-)
 > 
-> diff --git a/drivers/staging/iio/impedance-analyzer/ad5933.c b/drivers/staging/iio/impedance-analyzer/ad5933.c
-> index d5544fc2fe989..f8fcc10ea8150 100644
-> --- a/drivers/staging/iio/impedance-analyzer/ad5933.c
-> +++ b/drivers/staging/iio/impedance-analyzer/ad5933.c
-> @@ -411,7 +411,7 @@ static ssize_t ad5933_store(struct device *dev,
->  		ret = ad5933_cmd(st, 0);
->  		break;
->  	case AD5933_OUT_SETTLING_CYCLES:
-> -		val = clamp(val, (u16)0, (u16)0x7FF);
-> +		val = clamp(val, (u16)0, (u16)0x7FC);
+> diff --git a/drivers/staging/iio/frequency/ad9832.c b/drivers/staging/iio/frequency/ad9832.c
+> index a8fc20379efed..2ab6026d56b5c 100644
+> --- a/drivers/staging/iio/frequency/ad9832.c
+> +++ b/drivers/staging/iio/frequency/ad9832.c
+> @@ -173,13 +173,19 @@ static ssize_t ad9832_write_powerdown(struct device *dev, struct device_attribut
+>  	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+>  	struct ad9832_state *st = iio_priv(indio_dev);
+>  	int ret;
+> -	unsigned long val;
+> +	bool val;
+> +	bool cur;
+>  
+> -	ret = kstrtoul(buf, 10, &val);
+> +	ret = kstrtobool(buf, &val);
+>  	if (ret)
+> -		goto error_ret;
+> +		return ret;
 
-We have a fancy clamp() define now so the ugly casts are no longer
-required.
+Fold this whole thing into patch 2.  Don't write something and then fix
+it in the next patch.
+
+>  
+>  	mutex_lock(&st->lock);
+> +
+> +	cur = !!(st->ctrl_src & AD9832_SLEEP);
+> +	if (val == cur)
+> +		goto unlock;
+> +
+>  	if (val)
+>  		st->ctrl_src |= AD9832_SLEEP;
+>  	else
+> @@ -189,10 +195,10 @@ static ssize_t ad9832_write_powerdown(struct device *dev, struct device_attribut
+>  	st->data = cpu_to_be16((AD9832_CMD_SLEEPRESCLR << CMD_SHIFT) |
+>  				st->ctrl_src);
+>  	ret = spi_sync(st->spi, &st->msg);
+> -	mutex_unlock(&st->lock);
+>  
+> -error_ret:
+> -	return ret ? ret : len;
+> +unlock:
+> +	mutex_unlock(&st->lock);
+> +	return len;
+
+This should still be:
+
+	return ret ? ret : len;
 
 regards,
 dan carpenter

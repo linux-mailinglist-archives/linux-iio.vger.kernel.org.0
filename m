@@ -1,60 +1,56 @@
-Return-Path: <linux-iio+bounces-18527-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18528-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F660A97449
-	for <lists+linux-iio@lfdr.de>; Tue, 22 Apr 2025 20:11:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD54FA97469
+	for <lists+linux-iio@lfdr.de>; Tue, 22 Apr 2025 20:20:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C1067189997D
-	for <lists+linux-iio@lfdr.de>; Tue, 22 Apr 2025 18:11:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 30B973AC457
+	for <lists+linux-iio@lfdr.de>; Tue, 22 Apr 2025 18:20:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B86222980BE;
-	Tue, 22 Apr 2025 18:11:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BB262973B9;
+	Tue, 22 Apr 2025 18:20:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qg+meklA"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BpL+AeL0"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DFA928F951;
-	Tue, 22 Apr 2025 18:11:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEE4D28541C
+	for <linux-iio@vger.kernel.org>; Tue, 22 Apr 2025 18:20:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745345493; cv=none; b=hJQhRuCsZKIXUAoW9qlR3S7t11hQvtFAj9PnSl/tyuXGbdcnXiwUetyM1uzrzkCCVkdnIwzrRGAn37noZwVuRBlaadlc1R7O8jO31veu9EM33eb9hgmL0avLjRj1sK6ZdWCmbPgR/3dDW7BTuCZh3VmHwcULGqvIS+jUzdQ5FF8=
+	t=1745346020; cv=none; b=WYSUNIihDVZa88SZotLF5CVGuCxvGKvOQZhVYnvFx0GFAGpvSBDEdE7+CdBp33ZVd5Nwu2FoDd7B1jdPRN2E5Ep4DLJF2oqCJonNv/oFuOROSa36djlqqcsDIAKzzCn5W+8AIJr4tZLVYh7jMjSP/iBVySQ/fTHg0RaQTKxF+BY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745345493; c=relaxed/simple;
-	bh=SvIx++S80MJoaUoA5eJ5m1Ia0u1LVuwEpWYTiDTazoQ=;
+	s=arc-20240116; t=1745346020; c=relaxed/simple;
+	bh=zBY4D0hEh96fJI3ML12LPp085No6fCADnwSwdHDSlCg=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=O5fGS9GcLTk07uMc3RsCH/rVMS9kiMiV3un+G8bE15E3+z88uPpL0bLWH0jvYvSwWU+fYay5M4neEPnTZo6rtslms7OWnT8tXWN1laJ3CKOIxQ5Kr6K/2zDyHvhgbHP0VDv0QTJ8bDe0d3cgrHHUpLWlPjGmZANnlkyHGcD2dLc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qg+meklA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5AC0C4CEE9;
-	Tue, 22 Apr 2025 18:11:30 +0000 (UTC)
+	 MIME-Version:Content-Type; b=W6cu22xycXWGpiJBjKMQlEL0TcLK+ecsAOlIGZib+HV74hoODO/wdnYZ4dq2gOtAAmN9tjlpq+EtPt7q0Fv4c98x/JX5hYQxzIVIgaV/xz35J2wJ3H1aGtqu6bZnj02hejAxH48mtm4Y6rLjD3BSGhKn2QcDVX0t1U6YzhyquW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BpL+AeL0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F0CFC4CEE9;
+	Tue, 22 Apr 2025 18:20:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745345493;
-	bh=SvIx++S80MJoaUoA5eJ5m1Ia0u1LVuwEpWYTiDTazoQ=;
+	s=k20201202; t=1745346019;
+	bh=zBY4D0hEh96fJI3ML12LPp085No6fCADnwSwdHDSlCg=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=qg+meklA55nJle1d4hOos2AcPWg5lPvSi7s7fzxNRS4iy0iHG9UMDijMRHc7eq9Z2
-	 4uFUaZfbTdC8UuKFJC0Hx2uPRGdCwvZ59+U9Bzgi+1Dzo0dUkrHsNDnxFRT5PJjC9Z
-	 kQv7XW288krqJBCx0+YeB710x4vj3d8jgEaRaQSm9kkPim1ujpQlBq3mwuzQjWWU0D
-	 7LizaJwIZfiwpw6wL76S43FyRsly6ZnJ6wbjEc7XINpQdAEMu5Vva/P/P2J8uJJW6a
-	 VYpHCfeFmr3ynaVC4Zengu5OsByeMdd7FmmQhheTikCy2c7SPsPn3G6wyyXEeoTQq0
-	 idM6hE2hZGhLg==
-Date: Tue, 22 Apr 2025 19:11:26 +0100
+	b=BpL+AeL00ETShIy6ZvDDSlSD44jY8JWejylRS+kY9VpEEx0WGoVxXEhLa1aiyNod8
+	 yaym3AnHssP7dMhGCQ1KAA6Sk6A7CgtoLESCzKPSMKw3FXB5c6Cc00nH9iifK8P8lC
+	 UO30yY3WQ09isgt4bI4qBVWxx8kHwPCAEa7USaDME6s8awl7Qdtuqfs4UTTQzSavXn
+	 52RnQuJgCA3hOFf3cPALjg3JHiicsCKJMxsvm6xlRiZu9OEpKw5UnbwTV2BQkhO/Nx
+	 r0JqCR7VUGZuHSzlp+CLe2Ch2DAVgphDDgagHsMsz925+Bj0jhuDGa8I/AYoCvN4NQ
+	 QLXz3AMNMA16w==
+Date: Tue, 22 Apr 2025 19:20:13 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Kees Cook <kees@kernel.org>
-Cc: Linus Walleij <linus.walleij@linaro.org>, Lars-Peter Clausen
- <lars@metafoo.de>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-hardening@vger.kernel.org
-Subject: Re: [PATCH] iio: magnetometer: ak8974: Add __nonstring annotations
- for unterminated strings
-Message-ID: <20250422191126.53eb61ed@jic23-huawei>
-In-Reply-To: <202503151455.B8E9F6F1@keescook>
-References: <20250310222346.work.810-kees@kernel.org>
-	<CACRpkdbUk8bVWLPwVRq0qzaKRC80=bV1Wd01h+5xfH1O7-BVaQ@mail.gmail.com>
-	<20250315183125.40f9c566@jic23-huawei>
-	<202503151455.B8E9F6F1@keescook>
+To: nattan <nattanferreira58@gmail.com>
+Cc: subhajit.ghosh@tweaklogic.com, lucasantonio.santos@usp.br,
+ linux-iio@vger.kernel.org
+Subject: Re: [PATCH v2] iio: light: apds9306: Refactor threshold get/set
+ functions to use helper
+Message-ID: <20250422192013.0f98ea64@jic23-huawei>
+In-Reply-To: <20250422171503.26532-1-nattanferreira58@gmail.com>
+References: <20250422171503.26532-1-nattanferreira58@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -62,53 +58,103 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Sat, 15 Mar 2025 14:56:02 -0700
-Kees Cook <kees@kernel.org> wrote:
+On Tue, 22 Apr 2025 14:15:02 -0300
+nattan <nattanferreira58@gmail.com> wrote:
 
-> On Sat, Mar 15, 2025 at 06:31:25PM +0000, Jonathan Cameron wrote:
-> > On Fri, 14 Mar 2025 11:31:09 +0100
-> > Linus Walleij <linus.walleij@linaro.org> wrote:
-> >  =20
-> > > On Mon, Mar 10, 2025 at 11:23=E2=80=AFPM Kees Cook <kees@kernel.org> =
-wrote:
-> > >  =20
-> > > > When a character array without a terminating NUL character has a st=
-atic
-> > > > initializer, GCC 15's -Wunterminated-string-initialization will only
-> > > > warn if the array lacks the "nonstring" attribute[1]. Mark the arra=
-ys
-> > > > with __nonstring to and correctly identify the char array as "not a=
- C
-> > > > string" and thereby eliminate the warning.
-> > > >
-> > > > Link: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=3D117178 [1]
-> > > > Cc: Linus Walleij <linus.walleij@linaro.org>
-> > > > Cc: Jonathan Cameron <jic23@kernel.org>
-> > > > Cc: Lars-Peter Clausen <lars@metafoo.de>
-> > > > Cc: linux-iio@vger.kernel.org
-> > > > Signed-off-by: Kees Cook <kees@kernel.org>   =20
-> > >=20
-> > > Fair enough,
-> > > Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-> > >  =20
-> > Kees,
-> >=20
-> > I've currently queued this for next cycle as it doesn't feel like a fix
-> > as such and I've already sent my pull request for the merge window.
-> >=20
-> > Is it worth rushing it in, or is a fully cycle delay an issue? (6.16)
-> >=20
-> > If slow is fine, applied to the testing branch of iio.git which gets
-> > 0-day bot exposure. =20
->=20
-> No rush needed at all. This is just for cleaning up warnings for the
-> coming releases of GCC 15 in couple months. Thanks for picking it up!
->=20
+> From: Nattan Ferreira <nattanferreira58@gmail.com>
+> 
+> Refactor the apds9306_event_thresh_get and apds9306_event_thresh_set
+> functions to use a helper function (apds9306_get_thresh_reg) for obtaining the
+> correct register based on the direction of the event. This improves code
+> readability,minimize the number of lines  and maintains consistency
+> in accessing threshold registers.
+> 
+> Signed-off-by: Nattan Ferreira <nattanferreira58@gmail.com>
+> Co-developed-by: Lucas Antonio <lucasantonio.santos@usp.br>
+> Signed-off-by: Lucas Antonio <lucasantonio.santos@usp.br>
+> ---
+>  drivers/iio/light/apds9306.c | 36 ++++++++++++++++++++----------------
+>  1 file changed, 20 insertions(+), 16 deletions(-)
+> 
+> diff --git a/drivers/iio/light/apds9306.c b/drivers/iio/light/apds9306.c
+> index 69a0d609c..d46fb45ae 100644
+> --- a/drivers/iio/light/apds9306.c
+> +++ b/drivers/iio/light/apds9306.c
+> @@ -744,20 +744,27 @@ static int apds9306_event_period_set(struct apds9306_data *data, int val)
+>  	return regmap_field_write(rf->int_persist_val, val);
+>  }
+>  
+> -static int apds9306_event_thresh_get(struct apds9306_data *data, int dir,
+> -				     int *val)
+> +static int apds9306_get_thresh_reg(int dir)
+>  {
+> -	int var, ret;
+> -	u8 buff[3];
+> -
+>  	if (dir == IIO_EV_DIR_RISING)
+> -		var = APDS9306_ALS_THRES_UP_0_REG;
+> +		return  APDS9306_ALS_THRES_UP_0_REG;
 
-Dropped because it clashes with:
+As per v1 review.  There are 2 spaces after that return. Should only be one.
 
-  05e8d261a34e ("gcc-15: add '__nonstring' markers to byte arrays")
+>  	else if (dir == IIO_EV_DIR_FALLING)
+> -		var = APDS9306_ALS_THRES_LOW_0_REG;
+> +		return APDS9306_ALS_THRES_LOW_0_REG;
+>  	else
+>  		return -EINVAL;
+> +}
+> +
+> +static int apds9306_event_thresh_get(struct apds9306_data *data, int dir,
+> +				     int *val)
+> +{
+> +	int reg, ret;
+> +	u8 buff[3];
+>  
+> -	ret = regmap_bulk_read(data->regmap, var, buff, sizeof(buff));
+> +	reg = apds9306_get_thresh_reg(dir);
+> +	if (reg == -EINVAL)
+
+Just check if < 0
+
+
+> +		return reg;
+> +
+> +	ret = regmap_bulk_read(data->regmap, reg, buff, sizeof(buff));
+>  	if (ret)
+>  		return ret;
+>  
+> @@ -769,22 +776,19 @@ static int apds9306_event_thresh_get(struct apds9306_data *data, int dir,
+>  static int apds9306_event_thresh_set(struct apds9306_data *data, int dir,
+>  				     int val)
+>  {
+> -	int var;
+> +	int reg;
+>  	u8 buff[3];
+>  
+> -	if (dir == IIO_EV_DIR_RISING)
+> -		var = APDS9306_ALS_THRES_UP_0_REG;
+> -	else if (dir == IIO_EV_DIR_FALLING)
+> -		var = APDS9306_ALS_THRES_LOW_0_REG;
+> -	else
+> -		return -EINVAL;
+> +	reg = apds9306_get_thresh_reg(dir);
+> +	if (reg == -EINVAL)
+As above.
+
+> +		return reg;
+>  
+>  	if (!in_range(val, 0, APDS9306_ALS_THRES_VAL_MAX))
+>  		return -EINVAL;
+>  
+>  	put_unaligned_le24(val, buff);
+>  
+> -	return regmap_bulk_write(data->regmap, var, buff, sizeof(buff));
+> +	return regmap_bulk_write(data->regmap, reg, buff, sizeof(buff));
+>  }
+>  
+>  static int apds9306_event_thresh_adaptive_get(struct apds9306_data *data, int *val)
+
 

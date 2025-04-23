@@ -1,221 +1,145 @@
-Return-Path: <linux-iio+bounces-18558-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18559-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79DE2A98546
-	for <lists+linux-iio@lfdr.de>; Wed, 23 Apr 2025 11:20:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 53A56A98DA0
+	for <lists+linux-iio@lfdr.de>; Wed, 23 Apr 2025 16:48:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4226A5A1ADD
-	for <lists+linux-iio@lfdr.de>; Wed, 23 Apr 2025 09:19:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 08EBA5A27D7
+	for <lists+linux-iio@lfdr.de>; Wed, 23 Apr 2025 14:47:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52AA022F767;
-	Wed, 23 Apr 2025 09:18:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E328280CE0;
+	Wed, 23 Apr 2025 14:47:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Dm5q6czB"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ltTbdJoa"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 403FF20CCDF;
-	Wed, 23 Apr 2025 09:18:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DCAF27D76E;
+	Wed, 23 Apr 2025 14:47:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745399937; cv=none; b=g0BstyBQtuGrNYXsdMh9Tq7k+//Nx+HA93xowArkBCX/N/goY0uF7z0AhhZbBcxNY2icQLOsOEWWYo++GvCIy86TIxXq1P35Iw1B0onDbcEC4kkexBCntlvI5JKMRUJxzJRdCO7tizeZJhwt0V/AXYhCSc+cvLdwk0ngYPDhxEc=
+	t=1745419636; cv=none; b=Xt43Czqjj8AA0Qvy7yKRlY/+yrzGra8Zx868HhjNnKNJykGHP2BfTF/jsA14jLkF/WUR1Vg7d5cpN5MDmvrV7PIu7tcX9W/NhRyFUaIIBDb8wE8AGg3pXaBtBMkd/c9XyA9Tb/IOfTpzyLpCdpIjyfE4kSFAe6oHeko/o163DMU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745399937; c=relaxed/simple;
-	bh=E+HRHrDCaWbEY15xFZ9y7fcANkgo1uK8mrgkg76ViiQ=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=JBt3i9SLA+BNTeg5+OJyTr+9/jOJJS1V0jEa75V+dk7YE+MYO3BzK6XuJwoHqpjTJK3yLN4g5H1oACQz6zn3NciYudpQNI4ReMVJj5XbLs4MAicNb+fhEYMxj7JoyksUL03QBlzZCT7YxlB14/hreZMuyoQiA2vpNIyxb6O5orc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Dm5q6czB; arc=none smtp.client-ip=209.85.128.53
+	s=arc-20240116; t=1745419636; c=relaxed/simple;
+	bh=LrSrr1PAcyOZjm1Ot5sYyk1pBF7ppOE5uJZ/qHaQpTo=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=llQYjvEVrK29NAWeTTduQTj3RIRHElsXAthn1zpgfZ5Hgm3qlva2rPGzpLU0qfnZ5FThgimD4adQsHaBtsaEAi97/NB8SoH6wJRX0CyHIA0l8VJL2u7Xza62bP8e1mOE5RbykYJIFW90Xjm5nHcATv1+vGI/k5QPnX9+erMOPnE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ltTbdJoa; arc=none smtp.client-ip=209.85.167.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-43d0359b1fcso4898615e9.0;
-        Wed, 23 Apr 2025 02:18:54 -0700 (PDT)
+Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-54996d30bfbso5825962e87.2;
+        Wed, 23 Apr 2025 07:47:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745399933; x=1746004733; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=VrGROsqZIwKCgrOnIO0opoKDeXx0qHVFUxais3JjiPU=;
-        b=Dm5q6czBUdLTICAcM1tK0fbsY44sGRbML/ldSA+q8dbp0afKwOB++Tk69+hL2zhD3h
-         /nOa9bV1+LeSQw9RPlz2aiLNPOFzAQX2yTUwhDcn/93DmxdgEo/tKzJQ7JbQto3su9Aa
-         6yaN9UvXjXUb6zWu4GhvMgtsLwcTso+GA1yDW+83WJM13//87Zz3ru9Xcey1j7eDOSqS
-         tsHOGQ5yH8rhOfCewfXRvunJhPtvLlshmGeAdyNBKetETm4kEIc5LEj0OnZKJ7lPVxgl
-         LJvT6Gbw1lj2DahrE5Y3Jl6weoKDWvGrGDMHZDKyK/7YyWXoqRFapPHMySWqu9Ym61Al
-         pvow==
+        d=gmail.com; s=20230601; t=1745419632; x=1746024432; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=gxF+9NE84HJoOS1xDmv56fy0JE1OiLRcN6ZLUxKFtbU=;
+        b=ltTbdJoaB6+ZVtm0meHPYCzCw7QBNkJdB9d2sllAENZjalWWVJAjid81x74w6xl5J/
+         SVMCwvwePYB8GDtPzD/Xr7WQ4opghveXVVmYrcOH/OVXjWmMsEdu5cdAJq+ZZ/KOLNoS
+         e09WXspWD1xRrCSqD+qrnOx8m4z2o/UUVxnf8nB0uRSmV0mziLU8V19srV1rZkjS4R1I
+         P3LiBjsGNA7oYk3bLMVl2aV/v94Tpy/MhCAjw+uM5SxYZCQahOPG5AWt7TkrzdS5U50X
+         m1Kbq/ey4+ql1GaYtkmzXbBLCkhwBrFZply1tN7lNs6P6t/2vkjm45stwHJxnkrxUEQy
+         9+uA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745399933; x=1746004733;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=VrGROsqZIwKCgrOnIO0opoKDeXx0qHVFUxais3JjiPU=;
-        b=EM+mDAkExZ9rVw6vCdF51RCD2jVZrYamTIzY1f49i2u7bGpjRD6/iXmsJQQHYAJVLR
-         +r0kQISdeJ0BGNxs72KbV3o8JmMITYOl017ydBrbwkFem8T2yn/U8TkqMtp9O52VkHZ/
-         uBi/oxeTNVR6ZzjomkGN+Nh/NPyhTAeZcez709y3u8FHUvdszQZNsuvvlhWvlBIeXN7K
-         Mf9NxU2EzIRl9J8pi6vro3Yemj+7ppAawSJiCUVs3/U8Lez5egioO5OFjwchL8FKItjH
-         V/uevLEwRysTmKwerl/998ValCGuuV5pMSNDrygwswwoOCAi3W+7yAq5Ju5UcmSanQMd
-         BxZg==
-X-Forwarded-Encrypted: i=1; AJvYcCVCv9MTvtX32jCY2+E8XdZ2qSibicZfhjL5x/wFA9MRH6crXvaP/2yWl/rl5oCU2QlUKsSUM40COIqcRRA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx5iBjaS9rP7MGK2M3CUdJtMIXtXAtDVf2Y7puxN80r9jawhlaR
-	SFhEL5hMIN6MT6feZVbGReCxGWq2RVJPrqOo7k4q6k9KB3nJ1ruE
-X-Gm-Gg: ASbGncv97lHy/dAkNAKy4Lm81seq0QrsOz806JkonAB1y1kKtOHWVmLAM4rFE5A4qAv
-	skcVsAogiGbTdtwp37Kd6r08djZKnH/hh3hCcRpQ5SheLYkV35Zt+MaVP8+hv/jMJWZ9Xxo6dTZ
-	+oVGke7Bop0SAfHXRPAwJOs6Z4HvyY0u4BQGEQSIDquSQniFZD8TzSALe0xoKjtnN8QJ6fPnUGn
-	VHTOV3s++u2xr41tiAJA9f203/hem0tLdugHdHmI7iECo2ObapICV5r5GzpwQbYKsyExOSj4Dsr
-	aiIPrH9yRKUK35+nCHt5kYfhB+XV92N6IXJB0K806NBy1dhsaIO5gV5dkwgHOYMFeL/KwD3Y/ih
-	igwKXksIcZruK
-X-Google-Smtp-Source: AGHT+IG4usbOo5npOeZN1xbvBwncAj7wxo11cJLpW32A6dZWurXCH49f3H3MAKTcb59zIVTdCG5IiQ==
-X-Received: by 2002:a05:600c:2d46:b0:43b:bb72:1dce with SMTP id 5b1f17b1804b1-44091ee7a72mr12670515e9.5.1745399933033;
-        Wed, 23 Apr 2025 02:18:53 -0700 (PDT)
-Received: from ?IPv6:2001:818:ea8e:7f00:2575:914:eedd:620e? ([2001:818:ea8e:7f00:2575:914:eedd:620e])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-44092d16dc0sm18664225e9.6.2025.04.23.02.18.51
+        d=1e100.net; s=20230601; t=1745419632; x=1746024432;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=gxF+9NE84HJoOS1xDmv56fy0JE1OiLRcN6ZLUxKFtbU=;
+        b=OtJhGLRsjC6pH/1EpbHrkCbNOd/XzAJaQn07pMQbxn7Q0RbZ974H1Bx17I6Oao8V8Z
+         LP+zrVBNy4X7iT5mRaeSjcvd+uFnPT4R0CIN3gZnZ+4PMxuQHtuuVXFBBNCBe1bxu36p
+         c01zp1pV6lis7KA0ve2Jr791bASkHF+PaKWES87Z+/eCTUd0vat+vEcZ+QewtmnxR3AE
+         rOzKRbEx1QAyMfKwhB5vGEgzqGpj3bQAh+NmWqEGhfY7IOd2srduN+NHBd8L0vM/g497
+         lrRCYEz63SmWUyTGRIgYTKmzhu88dZHgvTDR56RIcRRcnUhG3PGCHAbB3vaNRUp6ELBl
+         RuEg==
+X-Forwarded-Encrypted: i=1; AJvYcCU0BMbDWLMs4g+Q4Cfwxq+zXU5xl3Yj1sMFZEDodyulvIODCxoRat+MOtVNkv1dkKma2Mj7RkOMVFX1@vger.kernel.org, AJvYcCUGYDAFPghBHhJVt0NuEFuZWWzIlaL7lggMGaKZdt6m5uUsFaEjIMYaylAzZ5uwJo5MAsYQkW5abTB/dMM5@vger.kernel.org, AJvYcCVUGFd2E5WDqn1sjSSzVxHcfUU0jeMCKnxJV1M/5Us44uRcUYzh/R3490iue36RSXP0VGw2k6axhMUV@vger.kernel.org
+X-Gm-Message-State: AOJu0YwGor4C6pyRmfJofJBYUm5rEGKH4oIUXZ/qOeaYBXNLsDrPnEx3
+	4pN4khRBQp8yXOKP65XhW11IIKvD2nmAMOYiPr6QUZqas7VT8m0heE6jhXGdCu8=
+X-Gm-Gg: ASbGncslfJLIY6n9wThBjc8XgshAtBZRdSaXMtDflUVr4lT0r60ORroTofIapZ1hFdE
+	hC18FZ9GqyyBSEdbUpEn3kEFapH/RaKQtYejF12foIyUBk4DdYrfjaFNRpS3fwNNNGB8Dh2s4uK
+	Rb+63xiyUx9d/y4c2FNoh7/vQ2hha8FaHh7PCJuGs68tgKjLnjtrkBGtJObDsUh+lC72YRGiSuc
+	QK+ZsMqRw5PE+2m1JoQDF+Ia8z8saNFUc3zLbAulk/VAlZgX0/ywF3+D5U+AsOT+J/XYyvUFEUu
+	JK3SsUJfwklN5UswG4/l4XQFTNtcF1vzKtFhIKOp7le9t9JPlFPjCBqVQzzBT83ApIy8s6h/hd8
+	pQf7bywF/
+X-Google-Smtp-Source: AGHT+IF6oy4OVrmTWdxJiYcpDKTSfFLRcZS0UpsZPb7uyvvQY5z7/A72duQfn43dN+RVZ2u+KWhnPw==
+X-Received: by 2002:a05:6512:131b:b0:549:4bf7:6463 with SMTP id 2adb3069b0e04-54d6e65e03cmr4970735e87.44.1745419631873;
+        Wed, 23 Apr 2025 07:47:11 -0700 (PDT)
+Received: from [192.168.1.11] (83-233-6-197.cust.bredband2.com. [83.233.6.197])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-54d6e5f61afsm1598498e87.246.2025.04.23.07.47.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Apr 2025 02:18:52 -0700 (PDT)
-Message-ID: <701bfc6a715046044dbc789f1c11c7f85395c7a8.camel@gmail.com>
-Subject: Re: [PATCH v2 1/6] iio: introduce IIO_DECLARE_BUFFER_WITH_TS macros
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: David Lechner <dlechner@baylibre.com>, Jonathan Cameron
- <jic23@kernel.org>,  Nuno =?ISO-8859-1?Q?S=E1?=	 <nuno.sa@analog.com>, Andy
- Shevchenko <andy@kernel.org>, Lars-Peter Clausen	 <lars@metafoo.de>,
- Michael Hennerich <Michael.Hennerich@analog.com>, Eugen Hristev
- <eugen.hristev@linaro.org>, Nicolas Ferre <nicolas.ferre@microchip.com>,
- Alexandre Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea
- <claudiu.beznea@tuxon.dev>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org
-Date: Wed, 23 Apr 2025 10:18:55 +0100
-In-Reply-To: <20250422-iio-introduce-iio_declare_buffer_with_ts-v2-1-3fd36475c706@baylibre.com>
-References: 
-	<20250422-iio-introduce-iio_declare_buffer_with_ts-v2-0-3fd36475c706@baylibre.com>
-	 <20250422-iio-introduce-iio_declare_buffer_with_ts-v2-1-3fd36475c706@baylibre.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.0 
+        Wed, 23 Apr 2025 07:47:11 -0700 (PDT)
+From: Marcus Folkesson <marcus.folkesson@gmail.com>
+Subject: [PATCH 0/3] MCP3911 fixes
+Date: Wed, 23 Apr 2025 16:46:48 +0200
+Message-Id: <20250423-mcp3911-fixes-v1-0-5bd0b68ec481@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAFn9CGgC/x3LTQqAIBBA4avIrBP8Reoq0aJ0rFlkohCBdPek5
+ cfjNahYCCtMrEHBmypdqUMODPyxph05hW5QQllhlOanz3qUkkd6sHKMelPSWOtcgP7kgn/oy7y
+ 87wdfAzquXwAAAA==
+X-Change-ID: 20250423-mcp3911-fixes-ef3b2145577d
+To: Kent Gustavsson <kent@minoris.se>, Jonathan Cameron <jic23@kernel.org>, 
+ Lars-Peter Clausen <lars@metafoo.de>, 
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Kent Gustavsson <nedo80@gmail.com>, devicetree@vger.kernel.org, 
+ Marcus Folkesson <marcus.folkesson@gmail.com>, 
+ Lukas Rauber <lukas.rauber@janitza.de>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1003;
+ i=marcus.folkesson@gmail.com; h=from:subject:message-id;
+ bh=LrSrr1PAcyOZjm1Ot5sYyk1pBF7ppOE5uJZ/qHaQpTo=;
+ b=owEBbQKS/ZANAwAIAYiATm9ZXVIyAcsmYgBoCP1aMnQ7FxOaoU3mjBJmjbR+hFZ7wbVHNZzd1
+ /C8yOQwoeKJAjMEAAEIAB0WIQQFUaLotmy1TWTBLGWIgE5vWV1SMgUCaAj9WgAKCRCIgE5vWV1S
+ MsLDD/sGOWcPbBhDi58mozJ+GjfoTdU2UPpjnT/ZeQmD2xY0hSxM7lClgFGyj17j7KlkJVMe0Il
+ 19pyMedUUuK4sgrmTIzgBYKkG69iMQFLDzqfwbnY1H9XW8HN9IFU6k6KNGd0OlZfxjM6Y0xWCl5
+ Efk9VN/qD7dg/BPuuKCQiXsbGQesui1XhTyfBH7Kmr4+yTMtxYQpkSwNFpo/mR2ffBvKt2zLzdI
+ VdpFdSMxs8HYlihvYOMjNIcvs4Dmyp2BYgkI32WZqDIe0xmFn89gFnBug8P4fuGu1Bwds9p2bpI
+ t9NDmGsHO6EyNlS5ZJIIaJCl538HvbRl2zwNR7AUnEY5TPZVGsniOxItvhGCGcsSQQUKUFRppPo
+ XJzTO+0sXgw59NFX0Y+ucfU5EBmzIa3I0Jygt5NEMiEWqOf8oTI6K3R47u0h8Rw2A5CnhzuzUke
+ EnIaQHfl1sLx9abhkHKe0F8ZzLl7d1Jn4/UViIRyLDV7uaqFDDhydDLZDJJNqJ1nrjXeuepflTD
+ NGXtJWOHGIHe7bwjAojYrPqAL3b5rH1+ezM8e8Mmqq3yBmuA2vQT/B836FukvdPAbinL1wY+Df0
+ bR1d/E3rT4IqK0Cy+v3b4flLhUjaPMMR+VygrpKP2Q8mLYHt1LHqsBmMv48J6ED/12zY/optJbD
+ V8Sx8bAV8RZhNDA==
+X-Developer-Key: i=marcus.folkesson@gmail.com; a=openpgp;
+ fpr=AB91D46C7E0F6E6FB2AB640EC0FE25D598F6C127
 
-Hi David,
+This series contain two fixes for the MCP3911 driver:
+- Add support for reset signal
+- Fix wrong mapping for the coversion result registers
 
-Nice patch, I really think these will be very helpful... Just one comment b=
-ellow
+The register map for the conversion result registers of the MCP3911
+differs from the other variants so make sure we read from the right
+register by introducing device-dependent .read_raw() callbacks.
 
-On Tue, 2025-04-22 at 17:07 -0500, David Lechner wrote:
-> Add new macros to help with the common case of declaring a buffer that
-> is safe to use with iio_push_to_buffers_with_ts(). This is not trivial
-> to do correctly because of the alignment requirements of the timestamp.
-> This will make it easier for both authors and reviewers.
->=20
-> To avoid double __align() attributes in cases where we also need DMA
-> alignment, add a 2nd variant IIO_DECLARE_DMA_BUFFER_WITH_TS.
->=20
-> Signed-off-by: David Lechner <dlechner@baylibre.com>
-> ---
-> =C2=A0include/linux/iio/iio.h | 36 ++++++++++++++++++++++++++++++++++++
-> =C2=A01 file changed, 36 insertions(+)
->=20
-> diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
-> index
-> 638cf2420fbd85cf2924d09d061df601d1d4bb2a..4dd811e3530e228a6fadbd80cfb2f50=
-68c3d
-> 6a9a 100644
-> --- a/include/linux/iio/iio.h
-> +++ b/include/linux/iio/iio.h
-> @@ -7,6 +7,7 @@
-> =C2=A0#ifndef _INDUSTRIAL_IO_H_
-> =C2=A0#define _INDUSTRIAL_IO_H_
-> =C2=A0
-> +#include <linux/align.h>
-> =C2=A0#include <linux/device.h>
-> =C2=A0#include <linux/cdev.h>
-> =C2=A0#include <linux/compiler_types.h>
-> @@ -777,6 +778,41 @@ static inline void *iio_device_get_drvdata(const str=
-uct
-> iio_dev *indio_dev)
-> =C2=A0 * them safe for use with non-coherent DMA.
-> =C2=A0 */
-> =C2=A0#define IIO_DMA_MINALIGN ARCH_DMA_MINALIGN
-> +
-> +#define _IIO_DECLARE_BUFFER_WITH_TS(type, name, count) \
-> +	type name[ALIGN((count), sizeof(s64) / sizeof(type)) + sizeof(s64) /
-> sizeof(type)]
-> +
-> +/**
-> + * IIO_DECLARE_BUFFER_WITH_TS() - Declare a buffer with timestamp
-> + * @type: element type of the buffer
-> + * @name: identifier name of the buffer
-> + * @count: number of elements in the buffer
-> + *
-> + * Declares a buffer that is safe to use with iio_push_to_buffer_with_ts=
-().
-> In
-> + * addition to allocating enough space for @count elements of @type, it =
-also
-> + * allocates space for a s64 timestamp at the end of the buffer and ensu=
-res
-> + * proper alignment of the timestamp.
-> + */
-> +#define IIO_DECLARE_BUFFER_WITH_TS(type, name, count) \
-> +	_IIO_DECLARE_BUFFER_WITH_TS(type, name, count) __aligned(sizeof(s64))
-> +
-> +/**
-> + * IIO_DECLARE_DMA_BUFFER_WITH_TS() - Declare a DMA-aligned buffer with
-> timestamp
-> + * @type: element type of the buffer
-> + * @name: identifier name of the buffer
-> + * @count: number of elements in the buffer
-> + *
-> + * Same as IIO_DECLARE_BUFFER_WITH_TS(), but is uses
-> __aligned(IIO_DMA_MINALIGN)
-> + * to ensure that the buffer doesn't share cachelines with anything that
-> comes
-> + * before it in a struct. This should not be used for stack-allocated bu=
-ffers
-> + * as stack memory cannot generally be used for DMA.
-> + */
-> +#define IIO_DECLARE_DMA_BUFFER_WITH_TS(type, name, count) \
-> +	_IIO_DECLARE_BUFFER_WITH_TS(type, name, count)
-> __aligned(IIO_DMA_MINALIGN)
-> +
-> +_Static_assert(sizeof(IIO_DMA_MINALIGN) % sizeof(s64) =3D=3D 0,
-> +	"macros above assume that IIO_DMA_MINALIGN also ensures s64 timestamp
-> alignment");
->=20
+Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
+---
+Marcus Folkesson (3):
+      iio: adc: mcp3911: fix device dependent mappings for conversion result registers
+      dt-bindings: iio: adc: mcp3911: add reset-gpios
+      iio: adc: mcp3911: add reset management
 
-I wonder about the usefulness of the above assert... AFAICT, the default
-alignment is 8 bytes and I could not find any arch defining ARCH_DMA_MINALI=
-GN
-smaller than that (would be very odd to have a cacheline smaller than that =
-these
-days). For bigger values, nowadays they are all power of 2 and I would be
-surprised otherwise. But the more important question to me is what if the a=
-bove
-assert fails? Will we not allow IIO or some drivers to be used in that
-architecture? It can become a very "painful" situation (assuming these macr=
-os
-get widely used). So, IMHO, either we assume the above can happen and rewor=
-k the
-macros to make it work for that hypotetical case or we assume the above is
-always true and drop the assert. TBH, I think it would be a fair assumption=
-...
+ .../bindings/iio/adc/microchip,mcp3911.yaml        |  5 ++
+ drivers/iio/adc/mcp3911.c                          | 54 ++++++++++++++++++++--
+ 2 files changed, 55 insertions(+), 4 deletions(-)
+---
+base-commit: 1e26c5e28ca5821a824e90dd359556f5e9e7b89f
+change-id: 20250423-mcp3911-fixes-ef3b2145577d
 
-On top of that the assertion is wrong:
+Best regards,
+-- 
+Marcus Folkesson <marcus.folkesson@gmail.com>
 
-sizeof(IIO_DMA_MINALIGN) !=3D IIO_DMA_MINALIGN :)
-
-On the other hand, as I mentioned in V1, I think that an assertion or
-BUILD_BUG_ON_MSG for making sure 'count' is a compile time constant express=
-ion
-would be helpful. Sure, we'll get -Wvla but some developers might still ign=
-ore
-the warning and send patches with these arrays. So, it would be neater if w=
-e
-fail to build and force them to fix their code.
-
-- Nuno S=C3=A1
 

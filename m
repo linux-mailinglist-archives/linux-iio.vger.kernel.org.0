@@ -1,127 +1,214 @@
-Return-Path: <linux-iio+bounces-18551-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18552-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D48FA97AB7
-	for <lists+linux-iio@lfdr.de>; Wed, 23 Apr 2025 00:54:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6E58A97CCE
+	for <lists+linux-iio@lfdr.de>; Wed, 23 Apr 2025 04:30:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A9F85460736
-	for <lists+linux-iio@lfdr.de>; Tue, 22 Apr 2025 22:54:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ACE891B612A9
+	for <lists+linux-iio@lfdr.de>; Wed, 23 Apr 2025 02:30:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AD582BCF52;
-	Tue, 22 Apr 2025 22:53:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B484256C6C;
+	Wed, 23 Apr 2025 02:30:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="COF+EbeI"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="j3ux//mR"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AB452C3759;
-	Tue, 22 Apr 2025 22:53:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1CD318BC2F;
+	Wed, 23 Apr 2025 02:30:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745362432; cv=none; b=RZLP3QTvkXT5SUgMcG4E4tjdyVCDx2QC63rIqdL8b2sZZVwtgTpNsWVH/NYmtu6e85n0n0kJvVRHZUTTFUacn2gw/BDyaFj7PmqE58t6f0C5ZWfggyN2hcFHMMhO5H3MFxO60Sno5aMGIMGy4KANg7ZfcoDGMYk0wHVs3i4kDiI=
+	t=1745375408; cv=none; b=oiCl6KoLLLogm2q0l9K5csn/31QkJcYBggku1dbcJPdLX9RMjiwIBgF4a8zq1bhHpIS+wpo4GPfxMU0qrHQIysohLdnCaGm1MnCw4iYdnDfK95KmVJDeaBHmkPITZxxW5f7RbnDxJRFX/2a0uv8/GbLzE9NvwAbeGR/GSo7s47M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745362432; c=relaxed/simple;
-	bh=R41URHuvizW8HQzTFTrec2A6inn8BZR/ujGfQSBTJq0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=MYQCybkID6La8lMXw8lSp5poTXBlVPosUL3M0WX3J+pzJUnj1c06bPza7szIypIOHEsuF5LnANYCAMmQqWHoZM1sbCT2A+KFSoulZrIJkiTynQT0AR2V3FNeK0JdB8iajN1vJ+mgbe0tX3oMbSHzMscFbhhUTeuUSmXFVF1dni8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=COF+EbeI; arc=none smtp.client-ip=209.85.208.49
+	s=arc-20240116; t=1745375408; c=relaxed/simple;
+	bh=XDxkUr+ssHQNn3jIF48lOngZODLhyYp3DPRvtwKKpcE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ukbTYL/eFvwMlXGVua9lJ9zJ9+Aucmb6ylNIHvw8XbiJkToxUy8ulBcSN4C6ZuGGttSI2oiwj0Igq50Kw2Me/9cRu1kMVyiLCI4vADW2pfAEUcHU02QX49HusVQOA74S56oxAszvKKYGy4P0l1rsr5m17E5ta7pEn9k7H8XcJZ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=j3ux//mR; arc=none smtp.client-ip=209.85.210.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-5f4ca707e31so8554480a12.2;
-        Tue, 22 Apr 2025 15:53:50 -0700 (PDT)
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-736dd9c4b40so453807b3a.0;
+        Tue, 22 Apr 2025 19:30:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745362429; x=1745967229; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=f+1Ngscj1sLQkaXbBjPeNhRnXqru6dzUdV9MGLQmLQU=;
-        b=COF+EbeIoFPip2u6Yk+2WgY/Lzd+5F3RLvCPgYg5u+Ac3APMn5CL84P3xbqFzG0eOp
-         y7VqOY1MDuaD3DD0fCs/H7+pSqyhEdCUtEwSnEdlqNpAVxSenNjo0Z2W9aHV1U7DGnv8
-         Vwr013EFIsgmASdIplEHkBRzQYkZnQn1iZCJzq24nPbNoZGt0dPybQp9UScYMXb7Msmf
-         CoqIwkgYIKeaz764PdZFMUai49w+Vml6ukl22oYSgV7CRJuATclJW2BiuNc5ckKvBwGT
-         yPKbS7fjIu+VLy+MXIZihKvmD7g24DtB5hxayhpPkxYkermHeoCoIuoniN1Xu0QuMej3
-         FT0A==
+        d=gmail.com; s=20230601; t=1745375406; x=1745980206; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=KnGRwos1kNXoXjIQZlQQXvyLKcIMntw2floMjKdISNI=;
+        b=j3ux//mRtjT+pkEL8mp9Ll8f2dsPpw9bdINvqEBwNOQWMRSWH88RFKJOx9mz6aabXE
+         BaIkwFH5dZz3nFnPQV3lyCB8mtdSUo5OzJ1hkk2adOw4KDXa6agwKr+RY0ZZcQHlpi6Q
+         /MaHzQw1hcM6iC/lPbeRpVCowuAuNeS4iQaY7LdgGKnsQRHGKnqGVLZx3Ql7oVB09l3r
+         84DQVxbkf5PoqYybvdhhbzhy/rD/9bdrtuR4JS62aRtLhtfwtzCPnlW+nstYifW3tE5T
+         7NHRygf098lNyZnsk9kQ5jzEVv/zvkfRmbTOcjk6h0KaOx3YXirFKOUsow6MU0zlqfmx
+         /UGA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745362429; x=1745967229;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=f+1Ngscj1sLQkaXbBjPeNhRnXqru6dzUdV9MGLQmLQU=;
-        b=D8viNnr0D1Nib6gw8+pnkWOqGnR4UOKMaqUt3vcsNz2qA9FC4ZtR2UvJH45JvlgvIy
-         Qk7iOVhe418253pFkjGLrjVVA3Ada/GbHjziuoKklNYRuTHYkwiIZQR2eZl1JZyzQzqG
-         nhyOtGKi0HYCliMPJvEZsGhhr4vK6Ay+xbS7uvRjmPCTTeMRMgOuuNxx9+Klz8ECxdbP
-         omwLKEoEKLlo0YcLH95dz2/XhJ8CjF5gnWC4Nt76+eRfRezhAQIBGKDrHK5uXdn2ushc
-         xR2bwFkz52lyYLmhOVRpVTO6DF+gx9fr0lZheERIbf9kOYfUZf2Rqmh32h2g21kx2US3
-         yQZQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUmIf0BRr66jImRfIfm0GhhhnxArOCA4sQx45+/lLAok5VFk926ySjvx3cXs0GLnT48HhtjGQSWYLbi2Z81@vger.kernel.org, AJvYcCWiZSdeNEQMRdeA+xWw/zrydAJWDGL3+z+Bjv5seVwB/S1pablCy5wXWavgmRIKWCrgWmCuMVkK82E=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyvhk0EwsbZ+bq2Wt30ujxBtPceknXRP09Jtlo8UuH154RWpVTi
-	2XHc2xH6QFq3ro9fXtV0puHIEFYUEUO3Qkt7wBb9icyeBenv9TGSJBIGTR8wez1aTX08XxTd5l5
-	7un99Riwg1nZYY9Z+/OAR2IfsA2A=
-X-Gm-Gg: ASbGncs87BAUwipf+muIBmSaTdaruo30F42EPe8Nt48xgdgkvDqf5vObNBR6TisvRH6
-	hG6aLtekKRk3Z3SwwkzBXeUsdQott4M4ZyVu+Kn1GWsLYEWChWCVUkuxR55JIFzs4jBziVZr+o4
-	eO9dD0A/TCvvxvBIxJbMd3TA==
-X-Google-Smtp-Source: AGHT+IHMPrXJqYYAB6pAgjxvZ17pVvfJXLHs9OfoWIoo18nkISokZoisDnXlemOEpRBjn1DUA8AriHhqSMFKfX2dk+I=
-X-Received: by 2002:a17:906:da81:b0:acb:ba0f:4b0f with SMTP id
- a640c23a62f3a-acbba0f4c70mr579009566b.31.1745362428662; Tue, 22 Apr 2025
- 15:53:48 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1745375406; x=1745980206;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=KnGRwos1kNXoXjIQZlQQXvyLKcIMntw2floMjKdISNI=;
+        b=mOzeZR/ZjAnyhvstugeC8fbrK7W8e1C2pYckGOZHrdow4LwKnLgGh4b8FhQCfHYJGp
+         GIWjT+KxrP2yjHodS7f0xCyMlveUXqyoYVJVSWirN/REJUtB3f+k2k90ZYANLZg9R6QW
+         YEzZIUQlEl1qz9Xb/HehdvTra/p9u+15Q86EbPIxdaJFDKO0Eu7/g0ZgES1xSddo2u3Q
+         ORQAl9Q5vj/ztIa0d7EIY0DfKjPO74MHUAXz1d5GdTT4TTxaAifDh2npU1IZD0U8KU2K
+         23EdmHUcFHJsMjqJ2k2uxIBNmVE/r1jAcpF8oIRxb77Qd3p41rO8IkKWmM/qJ8XE+3EG
+         4W8g==
+X-Forwarded-Encrypted: i=1; AJvYcCVwVNXZ5zScU1m4P43vXJZvn930+luupQP8jGTwIEeaIrcaaJCzDjsPEAP4GEA63TVJmilsxnNJ+Uqa@vger.kernel.org, AJvYcCX2Q5PpdJVqMcbZdSgxdCiTiL7Fp7i7jFqITo5Ov6L6g6a8hDGJjUJIXUayzds64TwhWNd3BrzdQEhF@vger.kernel.org, AJvYcCXu1/SvJQ0U98b2DlXhkhwiFqLntpazytM3mGUcQ/1HCAsj8PlstXkjyZKo0FqWw0IEFV0VVnP7bxrpMw6C@vger.kernel.org
+X-Gm-Message-State: AOJu0YxBOklldG8gxtb+DLy+/TuTjLBFxl85jJp8URtaavYn/VEWzF6t
+	LS3F7OJL0WNiNW/87p6jQs+DFAnvvh0ZyyrAnRa4/tyr4dX+nVRlC1GzjJc1
+X-Gm-Gg: ASbGnctEW3jKxXc8Hm7A8jY3zfKMausFq21Ydzn1Sv3DhVIktP86J85ZOozJXNjxZta
+	mj/P7yzTbNSKXuxVAJpUBpeBN+OTJHvkYC3PzF1DioSvK/GEVmoeqvBazCBJHzARmd4I8kACkdW
+	DVlbXqlDP5A8xfj0Zjq72YFD4Nac/65xbTDH5pJ0MNUPddCUCQyNXDLf2PxJVvzLVnAgYiE1+DZ
+	7balX8WgK4e0NsPng37JeFq2S2nYb84ShcQsZC86uVvJZEcxOF8uBUiDeRkh4dYFT/xAMqU0RO7
+	UCMCgE2AtaTRAIC8WeSKbjRWg9rwpPWsFtY7qfQzp07jlpFnKaBYHSAP5pzYxbAhDCb4CZQs5g=
+	=
+X-Google-Smtp-Source: AGHT+IEBOclr1RnspJuoV6fs8E6iL8iXbeaGfwsO/n0jWA28CCk5Q8K9Jv3yosU0KwN4aTwn7YlEiQ==
+X-Received: by 2002:a05:6a20:3d90:b0:1db:822f:36d8 with SMTP id adf61e73a8af0-2042e55c528mr1917476637.3.1745375405782;
+        Tue, 22 Apr 2025 19:30:05 -0700 (PDT)
+Received: from localhost.localdomain ([2804:14d:4c64:81ec:4ff:1626:32b1:712a])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b0db157eca9sm8007658a12.71.2025.04.22.19.30.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 22 Apr 2025 19:30:05 -0700 (PDT)
+From: Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>
+To: jic23@kernel.org,
+	robh@kernel.org
+Cc: ~lkcamp/patches@lists.sr.ht,
+	linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] dt-bindings:iio:adc:st,spear600-adc: txt to yaml format conversion.
+Date: Tue, 22 Apr 2025 23:14:23 -0300
+Message-ID: <20250423022956.31218-1-rodrigo.gobbi.7@gmail.com>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250422-iio-introduce-iio_declare_buffer_with_ts-v2-0-3fd36475c706@baylibre.com>
- <20250422-iio-introduce-iio_declare_buffer_with_ts-v2-4-3fd36475c706@baylibre.com>
- <CAHp75VdqanGpwB5raE8AmH-Tmb82N9yYmhB+k_rQtc2_Zb8HQw@mail.gmail.com> <55f8a997-77e7-4d07-aec2-8d20f56314d0@baylibre.com>
-In-Reply-To: <55f8a997-77e7-4d07-aec2-8d20f56314d0@baylibre.com>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Wed, 23 Apr 2025 01:53:11 +0300
-X-Gm-Features: ATxdqUH1YUeTsEMT0CwtykvmoOSl52HrGojQPmTu1v6wjba29-5vfKptJFLiT2I
-Message-ID: <CAHp75VcoXwBNYmpNNCWbp1mOtJ6UJoKfxymRBRok91_NS8RcTA@mail.gmail.com>
-Subject: Re: [PATCH v2 4/6] iio: adc: ad7380: use IIO_DECLARE_BUFFER_WITH_TS
-To: David Lechner <dlechner@baylibre.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Andy Shevchenko <andy@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, 
-	Michael Hennerich <Michael.Hennerich@analog.com>, Eugen Hristev <eugen.hristev@linaro.org>, 
-	Nicolas Ferre <nicolas.ferre@microchip.com>, 
-	Alexandre Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Wed, Apr 23, 2025 at 1:41=E2=80=AFAM David Lechner <dlechner@baylibre.co=
-m> wrote:
-> On 4/22/25 5:33 PM, Andy Shevchenko wrote:
-> > On Wed, Apr 23, 2025 at 1:08=E2=80=AFAM David Lechner <dlechner@baylibr=
-e.com> wrote:
+Straight forward conversion from spear-adc.txt into yaml format.
 
-...
+Signed-off-by: Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>
+---
+After the conversion to yaml file, I was not sure about the
+maintainers yaml field. It looks like the original driver author,
+Stefan Roese, is not active contributing.
+@Jonathan, I was not sure about it and I've added you on that field
+as I've noticed at other yaml`s, but feel free to give any suggestions on that
+or how to proceed in this case.
 
-> >> +       IIO_DECLARE_BUFFER_WITH_TS(u8, scan_data, MAX_NUM_CHANNELS * s=
-izeof(u32))
-> >
-> > Btw, why not DECLARE_IIO_...() as other DECLARE_*() look like?
->
-> IMHO, namespace should always go first and people who write DECLARE_NS_..=
-. are
-> doing it wrong. :-)
+Also noticed that the driver was moved out of staging, but the .txt was not
+in that time. Added the yaml in the proper path (out of staging as the driver).
+Tks and best regards.
+---
+ .../bindings/iio/adc/st,spear600-adc.yaml     | 61 +++++++++++++++++++
+ .../bindings/staging/iio/adc/spear-adc.txt    | 24 --------
+ 2 files changed, 61 insertions(+), 24 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/st,spear600-adc.yaml
+ delete mode 100644 Documentation/devicetree/bindings/staging/iio/adc/spear-adc.txt
 
-Not really. AFAICT it depends on the globality of the macro. Those,
-which are defined in types.h are all DECLARE_something(). Which makes
-sense. So the Q here is if the IIO macros like these ever go out for a
-wider audience. But in any case this can be amended later (with maybe
-a bit of additional churn).
+diff --git a/Documentation/devicetree/bindings/iio/adc/st,spear600-adc.yaml b/Documentation/devicetree/bindings/iio/adc/st,spear600-adc.yaml
+new file mode 100644
+index 000000000000..a858b3f3c494
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/adc/st,spear600-adc.yaml
+@@ -0,0 +1,61 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/adc/st,spear600-adc.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: ST SPEAr ADC device driver
++
++maintainers:
++  - Jonathan Cameron <jic23@kernel.org>
++
++description: |
++  Integrated ADC inside the ST SPEAr SoC, SPEAr600, supporting
++  10-bit resolution. Datasheet can be found here:
++  https://www.st.com/resource/en/datasheet/spear600.pdf
++
++properties:
++  compatible:
++    enum:
++      - st,spear600-adc
++  reg:
++    maxItems: 1
++
++  interrupts:
++    maxItems: 1
++
++  sampling-frequency:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description:
++      Default sampling frequency of the ADC
++
++  vref-external:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description:
++      External voltage reference in milli-volts. If omitted
++      the internal voltage reference will be used.
++
++  average-samples:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description:
++      Number of samples to generate an average value. If
++      omitted, single data conversion will be used.
++
++required:
++  - compatible
++  - reg
++  - interrupts
++  - sampling-frequency
++
++additionalProperties: false
++
++examples:
++  - |
++    adc: adc@d8200000 {
++        compatible = "st,spear600-adc";
++        reg = <0xd8200000 0x1000>;
++        interrupt-parent = <&vic1>;
++        interrupts = <6>;
++        sampling-frequency = <5000000>;
++        vref-external = <2500>;	/* 2.5V VRef */
++    };
+diff --git a/Documentation/devicetree/bindings/staging/iio/adc/spear-adc.txt b/Documentation/devicetree/bindings/staging/iio/adc/spear-adc.txt
+deleted file mode 100644
+index 88bc94fe1f6d..000000000000
+--- a/Documentation/devicetree/bindings/staging/iio/adc/spear-adc.txt
++++ /dev/null
+@@ -1,24 +0,0 @@
+-* ST SPEAr ADC device driver
+-
+-Required properties:
+-- compatible: Should be "st,spear600-adc"
+-- reg: Address and length of the register set for the device
+-- interrupts: Should contain the ADC interrupt
+-- sampling-frequency: Default sampling frequency
+-
+-Optional properties:
+-- vref-external: External voltage reference in milli-volts. If omitted
+-  the internal voltage reference will be used.
+-- average-samples: Number of samples to generate an average value. If
+-  omitted, single data conversion will be used.
+-
+-Examples:
+-
+-	adc: adc@d8200000 {
+-		compatible = "st,spear600-adc";
+-		reg = <0xd8200000 0x1000>;
+-		interrupt-parent = <&vic1>;
+-		interrupts = <6>;
+-		sampling-frequency = <5000000>;
+-		vref-external = <2500>;	/* 2.5V VRef */
+-	};
+-- 
+2.47.0
 
-> There is not existing DECLARE_IIO_ to match anyway.
-
-True.
-
---=20
-With Best Regards,
-Andy Shevchenko
 

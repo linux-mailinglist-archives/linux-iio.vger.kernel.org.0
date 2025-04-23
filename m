@@ -1,82 +1,68 @@
-Return-Path: <linux-iio+bounces-18567-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18568-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4EBAA99580
-	for <lists+linux-iio@lfdr.de>; Wed, 23 Apr 2025 18:39:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AFBEAA995A1
+	for <lists+linux-iio@lfdr.de>; Wed, 23 Apr 2025 18:43:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D01A3463A27
-	for <lists+linux-iio@lfdr.de>; Wed, 23 Apr 2025 16:39:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB150464A1D
+	for <lists+linux-iio@lfdr.de>; Wed, 23 Apr 2025 16:43:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 340F42853F2;
-	Wed, 23 Apr 2025 16:39:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Zsf17bVd"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0691A283C82;
+	Wed, 23 Apr 2025 16:43:49 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AADF280CF8;
-	Wed, 23 Apr 2025 16:39:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EA5D2820AC;
+	Wed, 23 Apr 2025 16:43:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745426377; cv=none; b=JxIaIo3MIWJMX4WTP+GQwj/OjeEjtHUeAes94ZWOR1PoVGwSYnHwoT36WOJiuWem8WH4ku16Kh80d/rxe12ynazkOS1oJL0xm6SiEZH9c4N3ZA3H5JVxmgHihOkk2cGm/pma+n2I6mCkUTs7SUvxDmgKC7Vfpk04f0sxtYO3RTs=
+	t=1745426628; cv=none; b=KD0izm7ElFq+P4hjQhmu61bzhlkwKNuxpr0efENCFgl1hKfDJSQr5MxKd4TpLUv3xy66W7wVqThCMSGZ63sFxfCqxGDdcP5nRAJJAftlGEG4GCaEyrj/bBDsohCrO5J24UhGajyNDmR4IVr/WJEm0jMUtDfGxQvr1hqJr0fAYsY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745426377; c=relaxed/simple;
-	bh=lAxjSVyMJzqkueCmSww3ABBh9mUZYx7qAEOzxC88JdQ=;
+	s=arc-20240116; t=1745426628; c=relaxed/simple;
+	bh=2zTwYcMG8ogoTuHfXKsMTzT7WR40ubEfn19/fvEvN6U=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fGmKyUIs/vHeM4NutMv1VqZJaNidlMAq7vK+dtuB3OeWSLS34x6aUUPGgjoGRtEngUxnj63Txsv+LnG49Q8GzCR1kW/ZjprqLOIVS5x9DURM8vcO0UxFEa1PRxOfW4HaJ+W7c8E0geMkpPef270I0nMI04tDC1SkIrmXadgTI1s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Zsf17bVd; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1745426376; x=1776962376;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=lAxjSVyMJzqkueCmSww3ABBh9mUZYx7qAEOzxC88JdQ=;
-  b=Zsf17bVdzNf3ixruNhPFqj7v2ZL9fOIXRWYgf3FgkkDwN7HAO/SUXJjv
-   BXJuqH4/b5rrFx8FNhXU+F2kKFMhleWDDYobWUzNyaYQs0A0KpRr5yfiU
-   N+foQyo25r46oLte+IMRdEyUDRtK+jQNq7okHlePxyIPjBmo/oi6K2Olb
-   I5ADmJtGJdlRIR97BxibXsnPfQ4I0ll0vAGVbAqfjYvqX7lfh7pCs4yhw
-   4DMdHdz5BePZ19gYIClpOWZF5BEzufGeqYY7ryYhLT2e39UU0SMVJf+Qm
-   lGl8tZwgWVHNlFUzGYo9UQV0WlWDdAWZZFz2lMv8c0hwcLo5LiHmU758z
-   w==;
-X-CSE-ConnectionGUID: 7u/M0pEnQ3yaEfvUYFSlQw==
-X-CSE-MsgGUID: /nwysUugRgKsPFuTSAReEw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11412"; a="50694024"
+	 Content-Type:Content-Disposition:In-Reply-To; b=MvRwR0TI2g/uzVqpQdC8jzIXLxM07hVBSxj+zRm2fgz2iTROviX4XiNzWYmaEn2opjpB+eYtAcD6MAWsMx0j3KQ0oeETdHMhg6bf8sH7Eo40GRnX5ms3vrdUO8O4AjRZLPowWdL0quUgLDELYSXUUZWp+CsLhXxeC1AhYFKMzw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=fail smtp.mailfrom=kernel.org; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=kernel.org
+X-CSE-ConnectionGUID: R9QLMutORNKbTNz6IvWsAA==
+X-CSE-MsgGUID: 1oDmtaNlSC2pcYgHLxfXUQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11412"; a="47160718"
 X-IronPort-AV: E=Sophos;i="6.15,233,1739865600"; 
-   d="scan'208";a="50694024"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Apr 2025 09:39:35 -0700
-X-CSE-ConnectionGUID: UFZXG+LDTOGAoQ0FlW8QgA==
-X-CSE-MsgGUID: p5WpkxnJTNGEECytXNPK/w==
+   d="scan'208";a="47160718"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Apr 2025 09:43:46 -0700
+X-CSE-ConnectionGUID: s5cnf4AERSaFpT/2Uwc5/Q==
+X-CSE-MsgGUID: oay+8vSfQAa4aiFXkXdhCw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.15,233,1739865600"; 
-   d="scan'208";a="132255613"
+   d="scan'208";a="155580835"
 Received: from smile.fi.intel.com ([10.237.72.58])
-  by orviesa010.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Apr 2025 09:39:31 -0700
+  by fmviesa002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Apr 2025 09:43:43 -0700
 Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1u7d8C-0000000F7Ow-1FyN;
-	Wed, 23 Apr 2025 19:39:28 +0300
-Date: Wed, 23 Apr 2025 19:39:28 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Marcus Folkesson <marcus.folkesson@gmail.com>
-Cc: Kent Gustavsson <kent@minoris.se>, Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Kent Gustavsson <nedo80@gmail.com>, devicetree@vger.kernel.org,
-	Lukas Rauber <lukas.rauber@janitza.de>
-Subject: Re: [PATCH 3/3] iio: adc: mcp3911: add reset management
-Message-ID: <aAkXwHNWPvb_wayc@smile.fi.intel.com>
-References: <20250423-mcp3911-fixes-v1-0-5bd0b68ec481@gmail.com>
- <20250423-mcp3911-fixes-v1-3-5bd0b68ec481@gmail.com>
+	(envelope-from <andy@kernel.org>)
+	id 1u7dCG-0000000F7Si-3R6f;
+	Wed, 23 Apr 2025 19:43:40 +0300
+Date: Wed, 23 Apr 2025 19:43:40 +0300
+From: Andy Shevchenko <andy@kernel.org>
+To: Haibo Chen <haibo.chen@nxp.com>
+Cc: Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, linux-iio@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: adc: imx93_adc: load calibrated values even
+ calibration failed
+Message-ID: <aAkYvE6VtoQItM5o@smile.fi.intel.com>
+References: <20250423-adcpatch-v1-1-b0e84c27ae98@nxp.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -85,42 +71,46 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250423-mcp3911-fixes-v1-3-5bd0b68ec481@gmail.com>
+In-Reply-To: <20250423-adcpatch-v1-1-b0e84c27ae98@nxp.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Wed, Apr 23, 2025 at 04:46:51PM +0200, Marcus Folkesson wrote:
-> Add support for optional HW reset.
-> If specified, a reset will be asserted during driver probe.
+On Wed, Apr 23, 2025 at 04:02:48PM +0800, Haibo Chen wrote:
+> ADC calibration might fail because of the noise on reference voltage.
+> To avoid calibration fail, need to meet the following requirement:
+> ADC reference voltage Noise < 1.8V * 1/2^ENOB
+> 
+> For the case which the ADC reference voltage on board do not meet
+> the requirement, still load the calibrated values, so ADC can also
+> work but maybe not that accurate.
 
 ...
 
-> +		return dev_err_probe(dev, PTR_ERR(gpio_reset),
-> +				     "Cannot get reset GPIO\n");
+>  #define IMX93_ADC_PCDR6		0x118
+>  #define IMX93_ADC_PCDR7		0x11c
+>  #define IMX93_ADC_CALSTAT	0x39C
+> +#define IMX93_ADC_CALCFG0	0X3A0
 
-+ dev_printk.h
-
-...
-
-> +		dev_dbg(dev, "gpio reset de-asserted.\n");
-
-How useful is this?
+Please, keep one style of the hex values.
+If the small letters are less used, prepare a patch to convert them, otherwise
+do that for capital letters.
 
 ...
 
-> +		/* Settling time after Hard Reset Mode (determined experimentally):
-> +		 *  330 micro-seconds are too few; 470 micro-seconds are sufficient.
-> +		 * Just in case, we add some safety factor... */
+> +	if (msr & IMX93_ADC_MSR_CALFAIL_MASK)
 
-/*
- * Please, fix the nulti-line comment
- * style. This one can serve you as an
- * example.
- */
+Please keep {} as the body is quite long and it's easy to make a mistake in a
+long term.
 
-> +		fsleep(680);
-
-Why not simply 500? or 600?
-
+> +		/*
+> +		 * Only give warning here, this means the noise of the
+> +		 * reference voltage do not meet the requirement:
+> +		 *     ADC reference voltage Noise < 1.8V * 1/2^ENOB
+> +		 * And the reault of ADC is not that accurate.
+> +		 */
+>  		dev_warn(adc->dev, "ADC calibration failed!\n");
+> -		imx93_adc_power_down(adc);
+> -		return -EAGAIN;
+> -	}
 
 -- 
 With Best Regards,

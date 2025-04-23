@@ -1,273 +1,221 @@
-Return-Path: <linux-iio+bounces-18557-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18558-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65F56A98243
-	for <lists+linux-iio@lfdr.de>; Wed, 23 Apr 2025 10:07:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79DE2A98546
+	for <lists+linux-iio@lfdr.de>; Wed, 23 Apr 2025 11:20:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 53FBF44148C
-	for <lists+linux-iio@lfdr.de>; Wed, 23 Apr 2025 08:07:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4226A5A1ADD
+	for <lists+linux-iio@lfdr.de>; Wed, 23 Apr 2025 09:19:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56CB626F465;
-	Wed, 23 Apr 2025 08:01:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52AA022F767;
+	Wed, 23 Apr 2025 09:18:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="ge7ECr7C"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Dm5q6czB"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2065.outbound.protection.outlook.com [40.107.21.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA5E826F44D;
-	Wed, 23 Apr 2025 08:01:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.65
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745395276; cv=fail; b=EGx4jxHPS22I+viCaWlOb1qjfcGMPyRKdzt5mGa6JF3QvP0tbMGzoN2eqrW/FBl90a/rAWYrc5OPbxY0+1ZsJXbGAXzNWmkiBb2rAh1v73HULpfuCSD354kldAtggo3op0mhFr7XRk2+nIz5BsNxfROF7D88Ki6hESd9TsM1py4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745395276; c=relaxed/simple;
-	bh=t2jDuLe1YchmBoaRAfzrk5/9vvzpLLnbzsItn7WNz9I=;
-	h=From:Date:Subject:Content-Type:Message-Id:To:Cc:MIME-Version; b=kXD7NmqHeCirxputSjkw1tPU4/oHQpGkH3yHKKZQntWMFt2Jr4ny47eQxMCAP0eCi0O3bxD9KJGXSupBCvfVYxYoZBcLdpeWzbEGQ4fm3xkBc+LqXfGEwfaaYCZBvfqMe7MFJmhxow/7cWiwkNHss/X6DWss5E7uUyWKV46lu1M=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=ge7ECr7C; arc=fail smtp.client-ip=40.107.21.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=zFET0IVen1/HlHjN732Q5EQPdiKST1WntxMk5sz4NkMIUy/2VwtfFGuCkj1qbg5DEp3s1zEITmrBaTTzn5r2Zb4URiwQG7flqcaMxmUseM16tozU22u3eaCPY8B8z6nMRV3qoOcq0a7zGFc+8dsIOuleySAI92U1/+by+bu9Wr2HTvyFnaBhGcCZR+VQ3T067M2Tz4E9XaE9mcNIEK8SHKh57nY0BLRcvJvq2kJzcrm0+yz7J9g04xs9pIpUA3LmUyLDGKdLpUWYLreKsFRWptt9/j2zCT7CFNs9Axb9Lcah1ruwL/hlv0JDCX/Pne9pbso6w7MP1WtCu8gdShJggw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=bYu49f0xzQqyVsdq/NvR/H8/kyPJ89r2Xvl6WXmAZRg=;
- b=qIgYXUCqwA8ip/8FBIqXu3MbTt/rI9IW3KfLBI5J1xMfZMRfArL+ABY+TdBbYirq4+WzzLWCC8UnzDA2J10UFc1d/r2tO/YKpCr8/UFdT9/wpIK/4eLR1wJzmvqh8KTCpb4HXOtetbSwaeWjMTfOB7E1r+GlgXnSH8Rfns6kF+KmjwZZe0jYs7S/+gAI1CoUidcP5LhaH8XRj6kRL9IGbrQ6s5dq5o+HeoaHE5EgRlDPxLaAYZliCxc8ZvL87xJQcnflA9VYVvjVPHxNvIIbumvzV9N19krk693wY1wCK5ekuzoqoGBdnBe5Eqq703xRkGWeFTMoUJTCUtPcz9Bfzw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=bYu49f0xzQqyVsdq/NvR/H8/kyPJ89r2Xvl6WXmAZRg=;
- b=ge7ECr7CfQVbY7b4JckPMs5gf6QYocwycMBVt2KOcbrnwY83MxuXaQKvbZQ+0Zam4AcJtRrx6HzMAyoGAXzicurCRQulxo5a6RRcz9hmNEo3GlutD48GNNp9A0s2BBfGa2QJ+Lue61RkXE1G3QRKcNYGQExi4JBRqVZg1Wqq1ZlMXTJyjAKyQE6+/DbCeDv/cwb42tIw3c0c3vr/TsMcPQnphSbqCxOTswag1b2q7s5OmL6KAakUPPMISxE5Ag4nIJxKE40FY25ynVkYXRryVkJusl3It0KxthhbaEEWqjwuqDb2visrZ4gh8vAVDzFMeabF1g4XjZzE540jnLcobg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from DU0PR04MB9496.eurprd04.prod.outlook.com (2603:10a6:10:32d::19)
- by AM9PR04MB8604.eurprd04.prod.outlook.com (2603:10a6:20b:43b::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8655.36; Wed, 23 Apr
- 2025 08:01:10 +0000
-Received: from DU0PR04MB9496.eurprd04.prod.outlook.com
- ([fe80::4fa3:7420:14ed:5334]) by DU0PR04MB9496.eurprd04.prod.outlook.com
- ([fe80::4fa3:7420:14ed:5334%5]) with mapi id 15.20.8655.033; Wed, 23 Apr 2025
- 08:01:10 +0000
-From: Haibo Chen <haibo.chen@nxp.com>
-Date: Wed, 23 Apr 2025 16:02:48 +0800
-Subject: [PATCH] iio: adc: imx93_adc: load calibrated values even
- calibration failed
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250423-adcpatch-v1-1-b0e84c27ae98@nxp.com>
-X-B4-Tracking: v=1; b=H4sIAKeeCGgC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDI1MDEyNj3cSU5ILEkuQM3eQkU8tkUyNTU0szQyWg8oKi1LTMCrBR0bG1tQC
- 8Uw7hWgAAAA==
-X-Change-ID: 20250423-adcpatch-cb59c5255961
-To: Jonathan Cameron <jic23@kernel.org>, 
- David Lechner <dlechner@baylibre.com>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Andy Shevchenko <andy@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>
-Cc: linux-iio@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- Haibo Chen <haibo.chen@nxp.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1745395391; l=2740;
- i=haibo.chen@nxp.com; s=20250421; h=from:subject:message-id;
- bh=t2jDuLe1YchmBoaRAfzrk5/9vvzpLLnbzsItn7WNz9I=;
- b=1CoOrnu+mMs+Ia1tG+AyFrNTstzNkGpHtf8Z7CZD2r56BZOESsSNC/J14HVGoEq9Adpku91og
- /q3UY6edMq0CfuE5t+gSv0DkayAEoRHHK107eMQjdaBi9G4OamyncKZ
-X-Developer-Key: i=haibo.chen@nxp.com; a=ed25519;
- pk=HR9LLTuVOg3BUNeAf4/FNOIkMaZvuwVJdNrGpvKDKaI=
-X-ClientProxiedBy: MA0P287CA0010.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a01:d9::15) To DU0PR04MB9496.eurprd04.prod.outlook.com
- (2603:10a6:10:32d::19)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 403FF20CCDF;
+	Wed, 23 Apr 2025 09:18:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1745399937; cv=none; b=g0BstyBQtuGrNYXsdMh9Tq7k+//Nx+HA93xowArkBCX/N/goY0uF7z0AhhZbBcxNY2icQLOsOEWWYo++GvCIy86TIxXq1P35Iw1B0onDbcEC4kkexBCntlvI5JKMRUJxzJRdCO7tizeZJhwt0V/AXYhCSc+cvLdwk0ngYPDhxEc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1745399937; c=relaxed/simple;
+	bh=E+HRHrDCaWbEY15xFZ9y7fcANkgo1uK8mrgkg76ViiQ=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=JBt3i9SLA+BNTeg5+OJyTr+9/jOJJS1V0jEa75V+dk7YE+MYO3BzK6XuJwoHqpjTJK3yLN4g5H1oACQz6zn3NciYudpQNI4ReMVJj5XbLs4MAicNb+fhEYMxj7JoyksUL03QBlzZCT7YxlB14/hreZMuyoQiA2vpNIyxb6O5orc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Dm5q6czB; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-43d0359b1fcso4898615e9.0;
+        Wed, 23 Apr 2025 02:18:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1745399933; x=1746004733; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=VrGROsqZIwKCgrOnIO0opoKDeXx0qHVFUxais3JjiPU=;
+        b=Dm5q6czBUdLTICAcM1tK0fbsY44sGRbML/ldSA+q8dbp0afKwOB++Tk69+hL2zhD3h
+         /nOa9bV1+LeSQw9RPlz2aiLNPOFzAQX2yTUwhDcn/93DmxdgEo/tKzJQ7JbQto3su9Aa
+         6yaN9UvXjXUb6zWu4GhvMgtsLwcTso+GA1yDW+83WJM13//87Zz3ru9Xcey1j7eDOSqS
+         tsHOGQ5yH8rhOfCewfXRvunJhPtvLlshmGeAdyNBKetETm4kEIc5LEj0OnZKJ7lPVxgl
+         LJvT6Gbw1lj2DahrE5Y3Jl6weoKDWvGrGDMHZDKyK/7YyWXoqRFapPHMySWqu9Ym61Al
+         pvow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745399933; x=1746004733;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=VrGROsqZIwKCgrOnIO0opoKDeXx0qHVFUxais3JjiPU=;
+        b=EM+mDAkExZ9rVw6vCdF51RCD2jVZrYamTIzY1f49i2u7bGpjRD6/iXmsJQQHYAJVLR
+         +r0kQISdeJ0BGNxs72KbV3o8JmMITYOl017ydBrbwkFem8T2yn/U8TkqMtp9O52VkHZ/
+         uBi/oxeTNVR6ZzjomkGN+Nh/NPyhTAeZcez709y3u8FHUvdszQZNsuvvlhWvlBIeXN7K
+         Mf9NxU2EzIRl9J8pi6vro3Yemj+7ppAawSJiCUVs3/U8Lez5egioO5OFjwchL8FKItjH
+         V/uevLEwRysTmKwerl/998ValCGuuV5pMSNDrygwswwoOCAi3W+7yAq5Ju5UcmSanQMd
+         BxZg==
+X-Forwarded-Encrypted: i=1; AJvYcCVCv9MTvtX32jCY2+E8XdZ2qSibicZfhjL5x/wFA9MRH6crXvaP/2yWl/rl5oCU2QlUKsSUM40COIqcRRA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx5iBjaS9rP7MGK2M3CUdJtMIXtXAtDVf2Y7puxN80r9jawhlaR
+	SFhEL5hMIN6MT6feZVbGReCxGWq2RVJPrqOo7k4q6k9KB3nJ1ruE
+X-Gm-Gg: ASbGncv97lHy/dAkNAKy4Lm81seq0QrsOz806JkonAB1y1kKtOHWVmLAM4rFE5A4qAv
+	skcVsAogiGbTdtwp37Kd6r08djZKnH/hh3hCcRpQ5SheLYkV35Zt+MaVP8+hv/jMJWZ9Xxo6dTZ
+	+oVGke7Bop0SAfHXRPAwJOs6Z4HvyY0u4BQGEQSIDquSQniFZD8TzSALe0xoKjtnN8QJ6fPnUGn
+	VHTOV3s++u2xr41tiAJA9f203/hem0tLdugHdHmI7iECo2ObapICV5r5GzpwQbYKsyExOSj4Dsr
+	aiIPrH9yRKUK35+nCHt5kYfhB+XV92N6IXJB0K806NBy1dhsaIO5gV5dkwgHOYMFeL/KwD3Y/ih
+	igwKXksIcZruK
+X-Google-Smtp-Source: AGHT+IG4usbOo5npOeZN1xbvBwncAj7wxo11cJLpW32A6dZWurXCH49f3H3MAKTcb59zIVTdCG5IiQ==
+X-Received: by 2002:a05:600c:2d46:b0:43b:bb72:1dce with SMTP id 5b1f17b1804b1-44091ee7a72mr12670515e9.5.1745399933033;
+        Wed, 23 Apr 2025 02:18:53 -0700 (PDT)
+Received: from ?IPv6:2001:818:ea8e:7f00:2575:914:eedd:620e? ([2001:818:ea8e:7f00:2575:914:eedd:620e])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-44092d16dc0sm18664225e9.6.2025.04.23.02.18.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 23 Apr 2025 02:18:52 -0700 (PDT)
+Message-ID: <701bfc6a715046044dbc789f1c11c7f85395c7a8.camel@gmail.com>
+Subject: Re: [PATCH v2 1/6] iio: introduce IIO_DECLARE_BUFFER_WITH_TS macros
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: David Lechner <dlechner@baylibre.com>, Jonathan Cameron
+ <jic23@kernel.org>,  Nuno =?ISO-8859-1?Q?S=E1?=	 <nuno.sa@analog.com>, Andy
+ Shevchenko <andy@kernel.org>, Lars-Peter Clausen	 <lars@metafoo.de>,
+ Michael Hennerich <Michael.Hennerich@analog.com>, Eugen Hristev
+ <eugen.hristev@linaro.org>, Nicolas Ferre <nicolas.ferre@microchip.com>,
+ Alexandre Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea
+ <claudiu.beznea@tuxon.dev>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org
+Date: Wed, 23 Apr 2025 10:18:55 +0100
+In-Reply-To: <20250422-iio-introduce-iio_declare_buffer_with_ts-v2-1-3fd36475c706@baylibre.com>
+References: 
+	<20250422-iio-introduce-iio_declare_buffer_with_ts-v2-0-3fd36475c706@baylibre.com>
+	 <20250422-iio-introduce-iio_declare_buffer_with_ts-v2-1-3fd36475c706@baylibre.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.0 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU0PR04MB9496:EE_|AM9PR04MB8604:EE_
-X-MS-Office365-Filtering-Correlation-Id: 09b9a433-4062-4cba-437d-08dd823d0274
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|52116014|7416014|1800799024|366016|376014|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?d1RlK1RjaUZSV0JucDJJckU5N3Jod2h2bk5QNDAyUG1sNlp5elpZTW9hVTE0?=
- =?utf-8?B?RzRBa0NIRFFNNnpDeEJvdWNoQURaNURzZTJpYmFvYXJiMEQzb3lNOWdmTnVZ?=
- =?utf-8?B?VFdrcW1pbVl3TVZ3MU9vdzlqakNCQzF0eXVLaVlEcHE2VUxxa0ZQbzRockpO?=
- =?utf-8?B?S1ZYVU1CNXRwaUNJWFBqdXgzWmxIWHNLYXZuVFppTC9Wbml5VjJVZWRSdzQ4?=
- =?utf-8?B?eFpjL1oyUjBIZDlUQk4vcjF2TkJNdlNVbmF0eFg1V1krelVxM2tuMVJscmo1?=
- =?utf-8?B?SU81UUs0eHV2cFpRSnNETmFIcjAwdGRoejU1eklCdEg1dncvRC9KOXMwNXpI?=
- =?utf-8?B?UE1JV2VwdmtQdWQzWjRSdzZ4RThyOCtsQ0wxWCtwRUpreU9LSG05QmhLTFpE?=
- =?utf-8?B?UHVPZE5pcW9DM25zMERIbEoveTVGRFpueFdzRWJhNlRWOUZpZlFqcWlOMSts?=
- =?utf-8?B?dk1nYU1VYUxrMmRTUFhsVGxJdXZSWEg3RDRSa3ZDTmdHOHpjNEoyc1YzZnJE?=
- =?utf-8?B?VTZnemFtZnFBZm1UOElWNzNheEYwcC9iZEFTbzBKekJOcTd2a1lLYjdVNzdp?=
- =?utf-8?B?bmk5bisvQTBZOHBiNkFEQXJXcnJqc0h2WFluTjl2ZXExT05kRE9CNm1qS21B?=
- =?utf-8?B?eFo2MCsxYTlOTkROUWhFa2dBWGN6T3pVTDIrR0o3RnhvTHR1eTJRSmQvN2tS?=
- =?utf-8?B?ZEZnRFBsS3BSb1FvT2FxckZaNFA2OWZHRzQya3VrWTRPQ1lFaVM4bXBCQjlm?=
- =?utf-8?B?ZXpDaEZDaXJtcXRzYlUvbUE2bGNDUzRwdGhnRWV1bld0SzVWMG1Cd0lhWnll?=
- =?utf-8?B?bVZERnN4NWRDV3FMY0x0OENwMDhGWitpOEthYXY3aDF3YzVaRjNmTU9IWDQ1?=
- =?utf-8?B?ZjZSQ2ZZa05ZSDU2SGxGbnhNZC80K3BlYTJrWk9LdDV5V3ZQN2FmeXJXZWMx?=
- =?utf-8?B?aUZCSlpxMzNIbDBWbGhBSGF0Uk9ZaktBV1FMZy9UazBiZ3RURHhDRGMyRmtk?=
- =?utf-8?B?SlRtZEduZTdlNXNMME13OUg5NGExdFRuOG9LeVg4aUhUWm91SG43cGhMRmV1?=
- =?utf-8?B?TzJPRzRsWEd3NnMzQ3Q0QmZxQjlLMTFLOWdUVUVuTUx2bzlSNGdUcUdackFo?=
- =?utf-8?B?bmpodHZDaUl5TXpHUzZxRzAyQzI0NC9qbzdkSUY5MldnajQ3Wlh3L2djNzdh?=
- =?utf-8?B?L1pXRVlVTWUvWkdvTnJGVTIxMWlaNWUycVZGL1VYNWttYklrUjdYTG13T1do?=
- =?utf-8?B?VHhEWll0cS9vQnZGWmROSjgzSnZkeDBaMzRtZlNJS0hBZlFaSGgzN0JLVFI1?=
- =?utf-8?B?UHhxY252VjlkTHNsWU1XY3hsRDIwaGZJZTFadGFOUHk1OE1WUTVRZHBQZU53?=
- =?utf-8?B?MS82UEZ5cFp3aFdIRndoWjZCTER4WDFJNTl6K1VMemJpVDhVbFBkUkdUT0VE?=
- =?utf-8?B?OXc3ZTFYWnRudno0aXVRMll5MU5paW9GZDhPZ3VzTE4xcndxeDFDMFgxYzhJ?=
- =?utf-8?B?Ynk1MzYyamxlaGtrNExFUEYrVGU2SndBL0YwM2xRVE9LTm5FckhJQjE2bjdU?=
- =?utf-8?B?M1R0ZmdwZHVQWVdpNWRKaWU4MFVSaDZ5TENIUXZsNjBweStaYUMvZ08xd3Mz?=
- =?utf-8?B?dmlvdWU2Y2F0NER0ZkFsTXlJak9vcDZsVlJ5MUVjYjlsa2xqa1gyd3k5TERx?=
- =?utf-8?B?Z3ZjYXNwcWVhVlBLQjNPeHRLci8rdXFVa1htbTF3aUFseXAzakdvQXU3RHM3?=
- =?utf-8?B?MlJBVXYrQjR2SUk0Vkxpcy9taEtLWW9TL1BUaTRzYUxuamNJZStBMmhxREFB?=
- =?utf-8?B?dk9ZQ3BwV3puWUpBbGVFdVliRTdTbkZhaHFHQ2pzeXJhSXBjRE1CSUZ6QVJO?=
- =?utf-8?B?WTZzZ1hNWTJSczFyR3NjVi92UnIrbGx2U2cvVER3NCtjU041aEpPMURUV1dW?=
- =?utf-8?B?NkNvTUR6enRKdTVQMEV1L1pYRmRSMEo2M05TV2R6eStKY2FPSVZkWnZpKy9U?=
- =?utf-8?Q?xdG5R0aqixjuBrXrfPfuHaMn0g7A6A=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR04MB9496.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(7416014)(1800799024)(366016)(376014)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?R2REZU9hb0RDallzaEIxb3M2SkdZc3VtWEVlWWVPdHcwV1RvMnp5d2NmUmtW?=
- =?utf-8?B?L0VyUWowcGx3OU1ROGJYTWpITjZWTXJseWROUi9tU0lEaVc3M3NTVlM4eUVl?=
- =?utf-8?B?bFBYQlRjeUV1RlkrZnVHMmlRMVRJcXlxQWtiZFlwZFlxaVdqbjd6dy9LMGZP?=
- =?utf-8?B?Szc5T0U5S1c0WUFPd3FvOSt5NjhBWmxldjJkbklvTHpaOUtEaVh0NFdEdjJN?=
- =?utf-8?B?WC9wNjVWaC83VVFnejhpVzZwRkhtbGJaME9pK2RGQmZjcmtISVV5NW9rUkhr?=
- =?utf-8?B?RGVqcFdvaWt6ZW43a0kvSWlZQWRDc2JXRVVuajlVQWVOQzFzblRxRU9aYTdF?=
- =?utf-8?B?NnQrcVFrZzBZVXdkcnVabHdtdklBVnlBT0xld0lZcXh4bG9ZY0I1OXN0N1JD?=
- =?utf-8?B?NWRqT1NIQU1yUXZWdHJ3OXlPbGN1RWNVS1B1UmVPRUhsbFo4VFBQTmszcGxx?=
- =?utf-8?B?c2JKZDNGd0pjTm9HUzBjRUpvVi9BV21VeGlUZERMUXdTMEZJREhOdHNWMFcr?=
- =?utf-8?B?ODN1anRyRmxXZzNIcWcvQUVXTUhhWllac0dPV0Z0Vjk2WjhZQjl4YlNSY2Ny?=
- =?utf-8?B?NWJIa0txTzQ2M0o0cTZDcXZXT0VPM0dJS09CQjdkcUlWUmxpQjVjK01ZNlpW?=
- =?utf-8?B?VlNaWE1ZUkI2ek1Nelpnak9uYkJJa21jU0xSMkNFeFUySjVUajlhNkpDUjBl?=
- =?utf-8?B?OXEwcFJMb3F3SHRNYW5MWmh1Mm5aQVJzVW1FalZiZTdYUEtxNjhGR1VKMXRW?=
- =?utf-8?B?aTFxQi9FbEtLM0pSM05OeDc0d1FxL1JiSGptWGluM1dsOFVBdnpKWWRhRW9h?=
- =?utf-8?B?eHVQK0pyVTZYNm1BSDk3WW83cFREVElWVkpXYzQ1NU1UMjhjS2Q1OCszQjkr?=
- =?utf-8?B?aEEzcGJoZVhiV3FOcHZQbThMRnhpeVJkTVcwa3c1RURtaHZIV0ZxYVpaTHlL?=
- =?utf-8?B?YWFkQ1haVS9xTzZKT2c4MzEwb1ZIaFRuSCtVZ3huVFkrZUZpckhjc0RzNUFX?=
- =?utf-8?B?TzV0VzAreW5JZWZHSmRXbmJNalVQa0tKT1dnV0ZuUUFLZ2Mvd3Q0eHlSdjBB?=
- =?utf-8?B?TGNZZzVpcGh5SExrL2toUXcxaEZjcmRPN1Q5ejE4MlhlbzFFcDRNdnFmMUQ2?=
- =?utf-8?B?WUZSYVN2RzFJU0RGY1NFbXd0aHQ0ZGpNdmNORVo0ZG5uRldlUjNlZG1MWjZa?=
- =?utf-8?B?NjVSV1VieCtzTnBUVHVDanhVR2VTOXNOaTFkVmdRb2FOT0NqQ0xYUGorOHhj?=
- =?utf-8?B?L1NDSjNvTVZkdURrL1pXTHhwMUVNcmxRNjMxVTlvRWVpNFY3elczUHRrVk9m?=
- =?utf-8?B?SEk0SG1XMktyOEM4V1NWUm9XcUJ4UVQvaFp2UDVxVGRiRC9wUk45cTVSOWZM?=
- =?utf-8?B?VktXemEySlo0eWRzUWpiNnVUYmZQQ3RqN2paWGlKdjdlay93aE5kWExuZi96?=
- =?utf-8?B?NW9PbnFST2U5bTE1T1dCUDZaMWc4TTRzSFVPWHpuaGppQVpzMXprVVRLK2tT?=
- =?utf-8?B?Q2c0SU15M3Y2c0kwQ3NESXM4ek0vb1lMTVoyWG51MTNuVnhrQ1lISGZOZ25j?=
- =?utf-8?B?bm1FU3AzZEMxUHhxKzNLNjFyREdOTkpGb3h4YlNnSDZ0cFRnYTZUMlRBbXR0?=
- =?utf-8?B?SnlrZnFWUTJhYlY0d0p3MGpGb0hoeXowQnkrcERaUmtsbEZ0K2pZMldYbUc5?=
- =?utf-8?B?eTRES3lVQmpyUmhOR01jaWlwSzBxSjcwZm1CYkZXVEtZVFNqMStlNjZLYVYx?=
- =?utf-8?B?OURnVStSa25Ca044VVp5eVJTT0NMZ2hHTzdGMTZBU0x2WDVXMUdLcTZ1VDFw?=
- =?utf-8?B?a2RjNjdwbkYyNUlRbUxJV09wQTFvMHhTbGlQbHJ3b1ZMZU9wcmM5SHVFUE9n?=
- =?utf-8?B?RzdFWHdYZFkwdE9GNmNTYisrNDZGUzh3SlZBTHJSeFdDS3hhOFpFeVI4ejIy?=
- =?utf-8?B?VjUwOHpoTmdnWjFlWmpUMFdxVXloa0diN2FMeEc3MlhwZzc3Z1ZOSlp2amFL?=
- =?utf-8?B?dE5vMUErR3ZYL2VFMXNZSDdhVVdrOXRBNkNMVEVOR01qamJYd00wMlZXa3NG?=
- =?utf-8?B?RGQrL2VBZ3ZvR1ZDMlZtREZTUUFkL1h5ditoZHZtQjlENGFHYy8vVnova2xH?=
- =?utf-8?Q?781xjpU41AnTX1FlvyPHTC2fb?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 09b9a433-4062-4cba-437d-08dd823d0274
-X-MS-Exchange-CrossTenant-AuthSource: DU0PR04MB9496.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Apr 2025 08:01:10.4286
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 5W216Op5fWDkHE3TJnqiyx2IbA+NNa5tSqMgYqXGU2cTYWYUk4Ubq0S7InzyRVmPFtlFCuCNRaqNWiqS3p9BBA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8604
 
-ADC calibration might fail because of the noise on reference voltage.
-To avoid calibration fail, need to meet the following requirement:
-ADC reference voltage Noise < 1.8V * 1/2^ENOB
+Hi David,
 
-For the case which the ADC reference voltage on board do not meet
-the requirement, still load the calibrated values, so ADC can also
-work but maybe not that accurate.
+Nice patch, I really think these will be very helpful... Just one comment b=
+ellow
 
-Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
----
- drivers/iio/adc/imx93_adc.c | 21 ++++++++++++++++-----
- 1 file changed, 16 insertions(+), 5 deletions(-)
+On Tue, 2025-04-22 at 17:07 -0500, David Lechner wrote:
+> Add new macros to help with the common case of declaring a buffer that
+> is safe to use with iio_push_to_buffers_with_ts(). This is not trivial
+> to do correctly because of the alignment requirements of the timestamp.
+> This will make it easier for both authors and reviewers.
+>=20
+> To avoid double __align() attributes in cases where we also need DMA
+> alignment, add a 2nd variant IIO_DECLARE_DMA_BUFFER_WITH_TS.
+>=20
+> Signed-off-by: David Lechner <dlechner@baylibre.com>
+> ---
+> =C2=A0include/linux/iio/iio.h | 36 ++++++++++++++++++++++++++++++++++++
+> =C2=A01 file changed, 36 insertions(+)
+>=20
+> diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
+> index
+> 638cf2420fbd85cf2924d09d061df601d1d4bb2a..4dd811e3530e228a6fadbd80cfb2f50=
+68c3d
+> 6a9a 100644
+> --- a/include/linux/iio/iio.h
+> +++ b/include/linux/iio/iio.h
+> @@ -7,6 +7,7 @@
+> =C2=A0#ifndef _INDUSTRIAL_IO_H_
+> =C2=A0#define _INDUSTRIAL_IO_H_
+> =C2=A0
+> +#include <linux/align.h>
+> =C2=A0#include <linux/device.h>
+> =C2=A0#include <linux/cdev.h>
+> =C2=A0#include <linux/compiler_types.h>
+> @@ -777,6 +778,41 @@ static inline void *iio_device_get_drvdata(const str=
+uct
+> iio_dev *indio_dev)
+> =C2=A0 * them safe for use with non-coherent DMA.
+> =C2=A0 */
+> =C2=A0#define IIO_DMA_MINALIGN ARCH_DMA_MINALIGN
+> +
+> +#define _IIO_DECLARE_BUFFER_WITH_TS(type, name, count) \
+> +	type name[ALIGN((count), sizeof(s64) / sizeof(type)) + sizeof(s64) /
+> sizeof(type)]
+> +
+> +/**
+> + * IIO_DECLARE_BUFFER_WITH_TS() - Declare a buffer with timestamp
+> + * @type: element type of the buffer
+> + * @name: identifier name of the buffer
+> + * @count: number of elements in the buffer
+> + *
+> + * Declares a buffer that is safe to use with iio_push_to_buffer_with_ts=
+().
+> In
+> + * addition to allocating enough space for @count elements of @type, it =
+also
+> + * allocates space for a s64 timestamp at the end of the buffer and ensu=
+res
+> + * proper alignment of the timestamp.
+> + */
+> +#define IIO_DECLARE_BUFFER_WITH_TS(type, name, count) \
+> +	_IIO_DECLARE_BUFFER_WITH_TS(type, name, count) __aligned(sizeof(s64))
+> +
+> +/**
+> + * IIO_DECLARE_DMA_BUFFER_WITH_TS() - Declare a DMA-aligned buffer with
+> timestamp
+> + * @type: element type of the buffer
+> + * @name: identifier name of the buffer
+> + * @count: number of elements in the buffer
+> + *
+> + * Same as IIO_DECLARE_BUFFER_WITH_TS(), but is uses
+> __aligned(IIO_DMA_MINALIGN)
+> + * to ensure that the buffer doesn't share cachelines with anything that
+> comes
+> + * before it in a struct. This should not be used for stack-allocated bu=
+ffers
+> + * as stack memory cannot generally be used for DMA.
+> + */
+> +#define IIO_DECLARE_DMA_BUFFER_WITH_TS(type, name, count) \
+> +	_IIO_DECLARE_BUFFER_WITH_TS(type, name, count)
+> __aligned(IIO_DMA_MINALIGN)
+> +
+> +_Static_assert(sizeof(IIO_DMA_MINALIGN) % sizeof(s64) =3D=3D 0,
+> +	"macros above assume that IIO_DMA_MINALIGN also ensures s64 timestamp
+> alignment");
+>=20
 
-diff --git a/drivers/iio/adc/imx93_adc.c b/drivers/iio/adc/imx93_adc.c
-index 7feaafd2316f246bd0c32fea99309900b5c65099..ebf976db746f02431a315b1faa86f151bb67132e 100644
---- a/drivers/iio/adc/imx93_adc.c
-+++ b/drivers/iio/adc/imx93_adc.c
-@@ -38,6 +38,7 @@
- #define IMX93_ADC_PCDR6		0x118
- #define IMX93_ADC_PCDR7		0x11c
- #define IMX93_ADC_CALSTAT	0x39C
-+#define IMX93_ADC_CALCFG0	0X3A0
- 
- /* ADC bit shift */
- #define IMX93_ADC_MCR_MODE_MASK			BIT(29)
-@@ -58,6 +59,8 @@
- #define IMX93_ADC_IMR_ECH_MASK			BIT(0)
- #define IMX93_ADC_PCDR_CDATA_MASK		GENMASK(11, 0)
- 
-+#define IMX93_ADC_CALCFG0_LDFAIL_MASK		BIT(4)
-+
- /* ADC status */
- #define IMX93_ADC_MSR_ADCSTATUS_IDLE			0
- #define IMX93_ADC_MSR_ADCSTATUS_POWER_DOWN		1
-@@ -145,7 +148,7 @@ static void imx93_adc_config_ad_clk(struct imx93_adc *adc)
- 
- static int imx93_adc_calibration(struct imx93_adc *adc)
- {
--	u32 mcr, msr;
-+	u32 mcr, msr, calcfg;
- 	int ret;
- 
- 	/* make sure ADC in power down mode */
-@@ -158,6 +161,11 @@ static int imx93_adc_calibration(struct imx93_adc *adc)
- 
- 	imx93_adc_power_up(adc);
- 
-+	/* Enable loading of calibrated values even in fail condition */
-+	calcfg = readl(adc->regs + IMX93_ADC_CALCFG0);
-+	calcfg |= IMX93_ADC_CALCFG0_LDFAIL_MASK;
-+	writel(calcfg, adc->regs + IMX93_ADC_CALCFG0);
-+
- 	/*
- 	 * TODO: we use the default TSAMP/NRSMPL/AVGEN in MCR,
- 	 * can add the setting of these bit if need in future.
-@@ -179,11 +187,14 @@ static int imx93_adc_calibration(struct imx93_adc *adc)
- 
- 	/* check whether calbration is success or not */
- 	msr = readl(adc->regs + IMX93_ADC_MSR);
--	if (msr & IMX93_ADC_MSR_CALFAIL_MASK) {
-+	if (msr & IMX93_ADC_MSR_CALFAIL_MASK)
-+		/*
-+		 * Only give warning here, this means the noise of the
-+		 * reference voltage do not meet the requirement:
-+		 *     ADC reference voltage Noise < 1.8V * 1/2^ENOB
-+		 * And the reault of ADC is not that accurate.
-+		 */
- 		dev_warn(adc->dev, "ADC calibration failed!\n");
--		imx93_adc_power_down(adc);
--		return -EAGAIN;
--	}
- 
- 	return 0;
- }
+I wonder about the usefulness of the above assert... AFAICT, the default
+alignment is 8 bytes and I could not find any arch defining ARCH_DMA_MINALI=
+GN
+smaller than that (would be very odd to have a cacheline smaller than that =
+these
+days). For bigger values, nowadays they are all power of 2 and I would be
+surprised otherwise. But the more important question to me is what if the a=
+bove
+assert fails? Will we not allow IIO or some drivers to be used in that
+architecture? It can become a very "painful" situation (assuming these macr=
+os
+get widely used). So, IMHO, either we assume the above can happen and rewor=
+k the
+macros to make it work for that hypotetical case or we assume the above is
+always true and drop the assert. TBH, I think it would be a fair assumption=
+...
 
----
-base-commit: bc8aa6cdadcc00862f2b5720e5de2e17f696a081
-change-id: 20250423-adcpatch-cb59c5255961
+On top of that the assertion is wrong:
 
-Best regards,
--- 
-Haibo Chen <haibo.chen@nxp.com>
+sizeof(IIO_DMA_MINALIGN) !=3D IIO_DMA_MINALIGN :)
 
+On the other hand, as I mentioned in V1, I think that an assertion or
+BUILD_BUG_ON_MSG for making sure 'count' is a compile time constant express=
+ion
+would be helpful. Sure, we'll get -Wvla but some developers might still ign=
+ore
+the warning and send patches with these arrays. So, it would be neater if w=
+e
+fail to build and force them to fix their code.
+
+- Nuno S=C3=A1
 

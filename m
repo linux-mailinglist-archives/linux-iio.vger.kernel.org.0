@@ -1,81 +1,81 @@
-Return-Path: <linux-iio+bounces-18561-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18562-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD842A98DAC
-	for <lists+linux-iio@lfdr.de>; Wed, 23 Apr 2025 16:48:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30E53A98DB1
+	for <lists+linux-iio@lfdr.de>; Wed, 23 Apr 2025 16:48:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DBA60445B20
-	for <lists+linux-iio@lfdr.de>; Wed, 23 Apr 2025 14:48:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 73A28445959
+	for <lists+linux-iio@lfdr.de>; Wed, 23 Apr 2025 14:48:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAC9D2820CD;
-	Wed, 23 Apr 2025 14:47:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3026E28466E;
+	Wed, 23 Apr 2025 14:47:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mbS6h6Gu"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dr2Y/Dpn"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
+Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F066B28152D;
-	Wed, 23 Apr 2025 14:47:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2709C2820DD;
+	Wed, 23 Apr 2025 14:47:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745419640; cv=none; b=aX6Ur4ycx82SKmwgVvqk5KByYVT+iR5ZjE0C35Y4jj/1f9rN3L9tCL6gEjjhARkY6/J5WiOyb8kAKs/rSDQVICxRUWlxUWcLEyofJF2A8vFg2aGNuXuo9OKkOKf8uAw/5yZlvmY9Ged3O4aSAfzjSuQL78msohETLIg9d6sroRQ=
+	t=1745419642; cv=none; b=HMWrijEO8bliZ5x5RPu9K4zhsttRfLddXVfRsiyVC2oIej5ho9V5URRC801Oj2RyeBYgNhLH98eYMuxOtlJcyXhXR8C7cbXHOttH6kiedh9mj4gXUzyxShG6+8CcrQPps493fDeILNub6oB/rE4Sm4f3psUQZDbJpulOEweFUJg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745419640; c=relaxed/simple;
-	bh=o9rko7Mal2eB/MUZ2Oa01bIuz8dWUsyCQuiKuHvbZLk=;
+	s=arc-20240116; t=1745419642; c=relaxed/simple;
+	bh=UpDIKY3pJjsg0tL/o3e50SZvQnX44SMqdMbYkaQ+iwM=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Xbmhb8+wffPFQxMP4iuAF9j6iE0gbY++fHm+qS5WczcC6HH0ySee9Qm8qn8JeGNtjT0T2SH24VKz1AhNXgAvuzd78hUQlvIR1tnKI/LWCTCoVbH6aiKCiyIeFG2oA8fXb4vrxzz+kQFCOhaLeCOu/Q8zVzmZ6jxsFkofYTZFbOg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mbS6h6Gu; arc=none smtp.client-ip=209.85.167.44
+	 In-Reply-To:To:Cc; b=CoGLJ5F7BR4OHoJNTXarVQjvDPSYKQYAGc53q7PiMUgTpnRNe0JbVLPaBQgVfWra9r2Q6qUThqXNC9/snsbqvpW3KYJwU37RJwQpI/jVLXnK9k2xwhcaN6kvmXBTVwxu7Vj5/7ZWu5EamW/czz8FZ12Nlp3Vz7ebRC15qDaVyYw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dr2Y/Dpn; arc=none smtp.client-ip=209.85.167.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-54c090fc7adso6986498e87.2;
-        Wed, 23 Apr 2025 07:47:17 -0700 (PDT)
+Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-54e6788d07eso1155647e87.1;
+        Wed, 23 Apr 2025 07:47:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745419635; x=1746024435; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1745419637; x=1746024437; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=7FTG6YAFpavOo57Q/QlOcqWA0covw0d5GqnQeh6CN/o=;
-        b=mbS6h6GuNAp9XYXZxUAZtrnq+YEifywmPuhuLfMUuGI5JRhR7h2W58V9DyzOCU9ycz
-         3TSYn6L6CX2f3gSF7AnRZ0BSK8gqh5MWsZo26wrFRhwOUypknHzBZVV/t5HUx++z6EzT
-         cVw5+e9QwIfM/IsMp5UP9m8aSU75V0qYznBjo4dVWGMpXxAG5cXNcBz3YGWaJ7s83LNl
-         7MZUGVt9BfNc/QBVZT1lhh7kZoRCm13uMMhZ1TZehuPyUK2PHaTREVBzE6lJc4oWDNX5
-         46ZrLWLIdBxhqxifdbkmV24aL+0J2nJOGkDnwnzqpli3CQjPbmkYK93l/9UVQjaUBKit
-         qHCg==
+        bh=v/4KyKt81RB7ipxIrYqCX2EK4rEQVNxxzLPICBaL9Jc=;
+        b=dr2Y/DpnqJXKvghs8DfqasBsMChgRyo+nKj3bS5qSI+SFf0grhwNVuJX5z3/5jKSnc
+         NLCyvUOtQtaaO4j3jXmykXHfaGUdVWQSMmizbkJnghqM8XO4DvK6hpyJ+7cuVgbr9E7J
+         UsuPaA5teNAckHLgYeSL7loW5HK8B2aqmBjs+r/3K4joJNVxGwk09Ec1luok9dbp5nzb
+         C8kHtf63oy5zlr4v6NL8Rg/l6BFkN4P6OGyz5ZGLnSKZxaDI31pSHUF/SaWMhB2TXD0Y
+         pEu7kteKLPxZHiunOFPoNY84GYo9TdUatdZNIwhmSgMP5dsW3nFIpJ9pxSIxVa59eNMc
+         OFdg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745419635; x=1746024435;
+        d=1e100.net; s=20230601; t=1745419637; x=1746024437;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=7FTG6YAFpavOo57Q/QlOcqWA0covw0d5GqnQeh6CN/o=;
-        b=tuwmmynO/Bd6//5xNGHuBB5K4Z5ymizuqDhN/ziez97blmNRlDVJhdEVaAYvS43g6Z
-         L4DT96ZazYSM4PPkooTzgKh4nbzQJfrI/S9dLST7NwHPBQ0XSMa0ELwbjCS4hcbg42ua
-         uHcblWdeI43RX8zVhx3A17TOd8R0zKU2ruAdAhDj52xt9YeWVcTr3EvDC2QWx/AHGw4v
-         XbNNdyLIi4U5oQofhwbcd0B0/KHmS3FOU422NAf8l1KC2pyKJ/Att16xtOORIfT1HX5+
-         R6TxIOEtJPlClKDbhQB97Qgdg3K4OdHE2MgHqAWNIZB9F38pVVHixOJqlPpDXUaMCU8r
-         VZ2A==
-X-Forwarded-Encrypted: i=1; AJvYcCV7S/aF1iIHQKfz8OmaPWmj9iy/CmzGY9McTHqNGA1FFaNHhgnPiuqnqVL/mGIISV/qonFlh2z2AVHpi936@vger.kernel.org, AJvYcCWPzj8SeXyEoek8rF0qBFMlq/ojvYoEPuGXuxABtulfBvK9HoapcjeO+lfd4fV25OstNBVG7dk8ysxm@vger.kernel.org, AJvYcCXc672/1uq/xHhof2G1amWe3AerRhGU09LkdWt8b2RQBmSH4ye7yesOaF8HJZOKWpvbwqMmDZFBOY0F@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy5u78q4cHtXcd9hF7q5rbanOXPPulod05SQHrC8Xoh7NSn5GZq
-	XqdbR/CIgc/sQMQ0/aPo7yYWh8Dx206n4RSIgUivqSTe/A0reQH29XkpWBUAqDI=
-X-Gm-Gg: ASbGncumgrU0ju9WixL7k0K/CxZnipbLhcSVUuDavky/SI0PXJi720hlbKJdt879/Zb
-	tbMFG2dsalFGWDdxO5QYJfyfcObyn5TDasPY7o3PLmGOOkFc7m3kx2TsaNiSewk38cSBq4t+Xry
-	xPUnHL7GQjiCDmM0+L+hn2g7/yiqfQYITwIU43R9sajg9rq0rvHx3qO3iZH+mxEjRARqJyO/KGP
-	L4zjV/H9FR1S8h+EswHsYolh9uT0aWQObQlbXpy7DcQYWw4oFeSqFWuDD/9sP7JMRekAFkZad2c
-	3uTdQEfuyGiPt67o/1bIICqfm6zyBvZmyeIUYTiVzaSbJX2p2jIvJv/yUB2yDJtayCIwgb6vVcD
-	l0JZJmpkZ
-X-Google-Smtp-Source: AGHT+IE2NCMhEfdxOrjrUQAK2PsxdjD4mqbJKZnA9JUQXHmxAM8QeFCCnSVnA2orwNV43NAcTBXVnQ==
-X-Received: by 2002:a05:6512:39c5:b0:54a:cbfb:b647 with SMTP id 2adb3069b0e04-54d6e6589fdmr5586411e87.37.1745419635280;
-        Wed, 23 Apr 2025 07:47:15 -0700 (PDT)
+        bh=v/4KyKt81RB7ipxIrYqCX2EK4rEQVNxxzLPICBaL9Jc=;
+        b=CoOGyDAXERNA1+KaFToIOQGjATEct8YNaKlS/SyUELsiLNB9pAevhW8gFzYvo0G21W
+         u04g3DV6gC8U2nzWGnia+uNf7O2wYwk+UbXXPEfW5V/7vIxgn/scTnY7XYdMdnDXBu+J
+         Wvm64tjmMJuyVuCjJAEJyLbdVSR9F5wyWwAvS9S+0iLG5QtbV59hDKonaah6bmtTKtmB
+         7NNCcjYfjXgI6KSBTksvrRtZJTjM+SdtUZWsgZQIt31eqhzxhxa75fE71uq3wPtmioKg
+         +yPj68c5wj8oKSztQiZOS/S/HmS49LGuQfYFeLvubfhTpAD98KZBYD+Pu4aFvJ7LXPHU
+         9KAw==
+X-Forwarded-Encrypted: i=1; AJvYcCUheimo8ZVJYJR/5hRkmyr3Bm5sudILwwsdewcLB17zrzpo47TAkbO3Sn+y1RG76wEDePMGlBmpqQDISz+R@vger.kernel.org, AJvYcCVnEdCW5JnEKnL52kiHk5UMuokfpoKSquwZS3ClE3MCxVmAzK6oenKaZS/cIDsfScgxqREF7luW4rmJ@vger.kernel.org, AJvYcCXMdKdreQ++6Axqp0RrJBnMS3ECuTCKZZrdgKdQfWl3K7EUEHMzdRqJdIiUiVw6LE+bTXAQHyioL0jf@vger.kernel.org
+X-Gm-Message-State: AOJu0YwEsi2q/A64bCWU7Gd5Sil4DF9a8s5HGf5F2lN8YrZMZFP/V8r1
+	CtrREt3qkuwkFr/2UKcQNyfgU/qnX8BuRh+9mV58rY4Qk23pzcDydalJWUGcPGA=
+X-Gm-Gg: ASbGnctI8fbbpmtnHamDjpo9TXaM1e7eGHNsqRTavbYnENGJMgZ+p79ehn8vOBjINeE
+	Na6L2T231svgHb87EXVOzH8o6t8a08Y6dW8cPZgkJycdeGcsLfpqFv+bbRgjvB8BRohVZ6v62mA
+	AVsup9AOgVE92CuSTA5HWoR9B1iRXzOzxFHB7TqV1VaSdvAk3thCCMkVJDAKGd4yTCyz3ElY6d8
+	JCEje0GJQT71cDkhTpsl+d9UZyOhEMTFt+ed3RJDC2ta1AiJjAcrzIr/7pHdW1xpwMNsxN/1W+4
+	Q02QW6KLFoAg8D8WT1YbREpOR08c5lWfAw8mqRjIrWiFlN616+Tuk0dQ11Qjtb8WiaOknWpLhe2
+	as+LUkSRq
+X-Google-Smtp-Source: AGHT+IHnDzj73iLzEb58SlUWFmg6xf1a/E/lQ+kOp35/ROokHGBXj6Iy7ifS1ZLJcyWBdltcQwOuag==
+X-Received: by 2002:a05:6512:b88:b0:549:7c5f:d961 with SMTP id 2adb3069b0e04-54e76ae206cmr910207e87.17.1745419636769;
+        Wed, 23 Apr 2025 07:47:16 -0700 (PDT)
 Received: from [192.168.1.11] (83-233-6-197.cust.bredband2.com. [83.233.6.197])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-54d6e5f61afsm1598498e87.246.2025.04.23.07.47.14
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-54d6e5f61afsm1598498e87.246.2025.04.23.07.47.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Apr 2025 07:47:14 -0700 (PDT)
+        Wed, 23 Apr 2025 07:47:15 -0700 (PDT)
 From: Marcus Folkesson <marcus.folkesson@gmail.com>
-Date: Wed, 23 Apr 2025 16:46:50 +0200
-Subject: [PATCH 2/3] dt-bindings: iio: adc: mcp3911: add reset-gpios
+Date: Wed, 23 Apr 2025 16:46:51 +0200
+Subject: [PATCH 3/3] iio: adc: mcp3911: add reset management
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -84,7 +84,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250423-mcp3911-fixes-v1-2-5bd0b68ec481@gmail.com>
+Message-Id: <20250423-mcp3911-fixes-v1-3-5bd0b68ec481@gmail.com>
 References: <20250423-mcp3911-fixes-v1-0-5bd0b68ec481@gmail.com>
 In-Reply-To: <20250423-mcp3911-fixes-v1-0-5bd0b68ec481@gmail.com>
 To: Kent Gustavsson <kent@minoris.se>, Jonathan Cameron <jic23@kernel.org>, 
@@ -98,66 +98,76 @@ Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
  Marcus Folkesson <marcus.folkesson@gmail.com>, 
  Lukas Rauber <lukas.rauber@janitza.de>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1540;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1869;
  i=marcus.folkesson@gmail.com; h=from:subject:message-id;
- bh=o9rko7Mal2eB/MUZ2Oa01bIuz8dWUsyCQuiKuHvbZLk=;
- b=owEBbQKS/ZANAwAIAYiATm9ZXVIyAcsmYgBoCP1kmxG8US86m/wfiOJ3qltfdRuJQ7UZElVgt
- ClakrfeORmJAjMEAAEIAB0WIQQFUaLotmy1TWTBLGWIgE5vWV1SMgUCaAj9ZAAKCRCIgE5vWV1S
- Mr4HEADe8ii7BsXgwiIETI93I7o/gmfkAlpGw1/94KnFe5JcE2k/Ss9dgjub69jqP/3o/WAzFwf
- s8IhXNKOGc7VekzaZNMPfAGdIfn/2WMEiRZp3qe8yD2KLDuSzpiMxAghDVlIZ4KYFnWR5rdY+0Z
- wgi+G3O1sTCr3en7/RbpFKl8uWZWVgSTsTJA98u0T/ENpvjjBFtHBg931ZtZ+8gnl5oSPPk9OXi
- mfmJeosghexPIu0nXS7XGO9h6RALfM3kfXp8IGUMyWgBlglNtzIdu0kD6Aiq1UyrPOOjOLLbpyk
- Ws8jNtCGmIoDCidID1DC+CkFlVIR/AaOlY7N81JPiONMH3clDJjDZDHrPOEZ7JKneX0RTLGhjHN
- o7RJXzs9KFaohVdwTASfwkjfJFCAfuHIFwGHqh7a/ddIplTRIWbskJ7/1Blp5K033UiTNA2j8VZ
- P/TENLKxUuoYrNuFGfQBJgNkaUblN84EOlzELfAPJzJE55BZTZTIBHRDTHdcuxI9JZqZWrbI3P1
- xD3rt6Ymi11uUi3EX/4kI5sJWLhkRR3XH8O2THCA115c0sfE6Y1xDj8TwdTCEPXv3yNJn4RqwGT
- Al5AKVZLViA3TI+RIQdNwQl5LKPR/yQ+PP2n9hgagvYbjjYEEwWDAx/gmHpANqay0hmvdxYHAfJ
- wUwyYXJUu4+yDhA==
+ bh=UpDIKY3pJjsg0tL/o3e50SZvQnX44SMqdMbYkaQ+iwM=;
+ b=owEBbQKS/ZANAwAIAYiATm9ZXVIyAcsmYgBoCP1pLQMzyHv0fQVeyz2yQ8hdUUwCDYdyMnaFh
+ aaInEzSlpyJAjMEAAEIAB0WIQQFUaLotmy1TWTBLGWIgE5vWV1SMgUCaAj9aQAKCRCIgE5vWV1S
+ MkhnD/9hyCNEiqQYXS+q6i3QjhSGxp/gQmtES0AwjvABp16rlTWw3jA8r8Ma9EpvWQM+MH5WdEu
+ w4fZOcuiGSo650MoleCgESLJ9BUm6ukFBJiKM25+EmeMLpApJc+ZzKj9bgVUJQU2bISblVLi+3I
+ Aw9nPGtUsrN0VCLgG/GvjXu++Bffkd7qU+lnetnHOOrDwlSGz31CGAmyCBkLrfGdDCLTmcBXPkb
+ /QchArToogdXt/QmMUnZTGbrvemF9B6d8ivsoA11S69902lWFq830XrLCdMMwAQC2CXbhfJcBvh
+ LeSAJmpx2SnfMALK7sfC/Ozpyz+5Amg0xvd0piEz2d6vOy+9FzD5PniNMC/783Ygq6XABHrAbSx
+ obImB54pdCMDfAjC2sq30HjZmHjjCTaz0kHNK1ifjETjpML/NlGBmBN5uMN+ng/8ncrwBldX0WS
+ B9iR1vzUFyYV33LCoQasYWiR9wZrl1friyugjNDCgRRv9zBcTxUUVeo7OX90ufBH34CSZNF8vjg
+ 9+jSeuKhKMfxC1BkzxDXP0HpqNV7UplyAJ24UAG2+NNW33F06aPtCyEmhkLMYOKST/niso3DtAY
+ gs7Mq1ddPqnHqQUxXjpRu7pD+/gvZ96/Y5ZHtzaAus571zkIa8MUVsS8cxKnWygqVCK7C++8V3Q
+ tT0yx/nz3W5XoVw==
 X-Developer-Key: i=marcus.folkesson@gmail.com; a=openpgp;
  fpr=AB91D46C7E0F6E6FB2AB640EC0FE25D598F6C127
 
-The MCP391X family provides an active low reset signal that is still not
-described in the bindings.
-
-Add reset-gpios to the bindings and the example.
+Add support for optional HW reset.
+If specified, a reset will be asserted during driver probe.
 
 Co-developed-by: Lukas Rauber <lukas.rauber@janitza.de>
 Signed-off-by: Lukas Rauber <lukas.rauber@janitza.de>
 Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
 ---
- Documentation/devicetree/bindings/iio/adc/microchip,mcp3911.yaml | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/iio/adc/mcp3911.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/iio/adc/microchip,mcp3911.yaml b/Documentation/devicetree/bindings/iio/adc/microchip,mcp3911.yaml
-index 06951ec5f5da381a9bb942d0ac7416128eebd3bc..3a69ec60edb915ae16312b94fddd32f5c87f37a7 100644
---- a/Documentation/devicetree/bindings/iio/adc/microchip,mcp3911.yaml
-+++ b/Documentation/devicetree/bindings/iio/adc/microchip,mcp3911.yaml
-@@ -32,6 +32,9 @@ properties:
-   spi-max-frequency:
-     maximum: 20000000
+diff --git a/drivers/iio/adc/mcp3911.c b/drivers/iio/adc/mcp3911.c
+index b72ed4928da88664a00dc143ebf218cb4a7be421..4c04ce1b3982d84286355ee427a92aa55ff2fc51 100644
+--- a/drivers/iio/adc/mcp3911.c
++++ b/drivers/iio/adc/mcp3911.c
+@@ -11,6 +11,7 @@
+ #include <linux/clk.h>
+ #include <linux/delay.h>
+ #include <linux/err.h>
++#include <linux/gpio/consumer.h>
+ #include <linux/module.h>
+ #include <linux/mod_devicetable.h>
+ #include <linux/property.h>
+@@ -706,6 +707,7 @@ static const struct iio_trigger_ops mcp3911_trigger_ops = {
+ static int mcp3911_probe(struct spi_device *spi)
+ {
+ 	struct device *dev = &spi->dev;
++	struct gpio_desc *gpio_reset;
+ 	struct iio_dev *indio_dev;
+ 	struct mcp3911 *adc;
+ 	bool external_vref;
+@@ -750,6 +752,21 @@ static int mcp3911_probe(struct spi_device *spi)
+ 	}
+ 	dev_dbg(dev, "use device address %i\n", adc->dev_addr);
  
-+  reset-gpios:
-+    maxItems: 1
++	gpio_reset = devm_gpiod_get_optional(&spi->dev, "reset", GPIOD_OUT_HIGH);
++	if (IS_ERR(gpio_reset))
++		return dev_err_probe(dev, PTR_ERR(gpio_reset),
++				     "Cannot get reset GPIO\n");
 +
-   clocks:
-     description: |
-       Phandle and clock identifier for external sampling clock.
-@@ -71,6 +74,7 @@ unevaluatedProperties: false
- 
- examples:
-   - |
-+    #include <dt-bindings/gpio/gpio.h>
-     spi {
-       #address-cells = <1>;
-       #size-cells = <0>;
-@@ -80,6 +84,7 @@ examples:
-         reg = <0>;
-         interrupt-parent = <&gpio5>;
-         interrupts = <15 2>;
-+        reset-gpios = <&gpio1 10 GPIO_ACTIVE_LOW>;
-         spi-max-frequency = <20000000>;
-         microchip,device-addr = <0>;
-         vref-supply = <&vref_reg>;
++	if (gpio_reset) {
++		gpiod_set_value_cansleep(gpio_reset, 0);
++		dev_dbg(dev, "gpio reset de-asserted.\n");
++
++		/* Settling time after Hard Reset Mode (determined experimentally):
++		 *  330 micro-seconds are too few; 470 micro-seconds are sufficient.
++		 * Just in case, we add some safety factor... */
++		fsleep(680);
++	}
++
+ 	ret = adc->chip->config(adc, external_vref);
+ 	if (ret)
+ 		return ret;
 
 -- 
 2.49.0

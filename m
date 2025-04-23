@@ -1,80 +1,82 @@
-Return-Path: <linux-iio+bounces-18559-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18560-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53A56A98DA0
-	for <lists+linux-iio@lfdr.de>; Wed, 23 Apr 2025 16:48:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E08E3A98DA5
+	for <lists+linux-iio@lfdr.de>; Wed, 23 Apr 2025 16:48:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 08EBA5A27D7
-	for <lists+linux-iio@lfdr.de>; Wed, 23 Apr 2025 14:47:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 29CB344697E
+	for <lists+linux-iio@lfdr.de>; Wed, 23 Apr 2025 14:48:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E328280CE0;
-	Wed, 23 Apr 2025 14:47:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9021128137E;
+	Wed, 23 Apr 2025 14:47:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ltTbdJoa"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZRsK6etV"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
+Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DCAF27D76E;
-	Wed, 23 Apr 2025 14:47:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B3DD280CE6;
+	Wed, 23 Apr 2025 14:47:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745419636; cv=none; b=Xt43Czqjj8AA0Qvy7yKRlY/+yrzGra8Zx868HhjNnKNJykGHP2BfTF/jsA14jLkF/WUR1Vg7d5cpN5MDmvrV7PIu7tcX9W/NhRyFUaIIBDb8wE8AGg3pXaBtBMkd/c9XyA9Tb/IOfTpzyLpCdpIjyfE4kSFAe6oHeko/o163DMU=
+	t=1745419638; cv=none; b=UhCdEANp0hL1bTGkXQMWk7hIIpH9W8Ga8XNUuaZ1KYoe7hlrqsaQcKsUxKnEHh6nXLUdhi4yTlW6NyjaNe+H0BQVVywrR2+RLqAMTl84HyquOURGsVf6mvfRyt2heLjufD7u1ffJP+Km1sFL9ou0Sa07mN3L9tSstN3dA5sHApw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745419636; c=relaxed/simple;
-	bh=LrSrr1PAcyOZjm1Ot5sYyk1pBF7ppOE5uJZ/qHaQpTo=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=llQYjvEVrK29NAWeTTduQTj3RIRHElsXAthn1zpgfZ5Hgm3qlva2rPGzpLU0qfnZ5FThgimD4adQsHaBtsaEAi97/NB8SoH6wJRX0CyHIA0l8VJL2u7Xza62bP8e1mOE5RbykYJIFW90Xjm5nHcATv1+vGI/k5QPnX9+erMOPnE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ltTbdJoa; arc=none smtp.client-ip=209.85.167.43
+	s=arc-20240116; t=1745419638; c=relaxed/simple;
+	bh=m2DiDOnxwo7P6r/Y2g3QKf2ugQ/iTUOqEpyk4isYXD4=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=HeE6ZiLoeDrXf1LwmdQ9hM3tBCDTrmcnU/Nwl4pr2gipOM2TeWtUu8msF9NPfvfYoB2Hz2zs4au95IUKHAWufW1LX4b8W1bmv4jOl3GWR/9z+p9gWn+4rji1hjXu4BlyUcP1GJuLP1GDM0e1bxzpOuOeOxuUs7YbXK1JTU3qYrE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZRsK6etV; arc=none smtp.client-ip=209.85.167.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-54996d30bfbso5825962e87.2;
-        Wed, 23 Apr 2025 07:47:14 -0700 (PDT)
+Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-549967c72bcso6848368e87.3;
+        Wed, 23 Apr 2025 07:47:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745419632; x=1746024432; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=gxF+9NE84HJoOS1xDmv56fy0JE1OiLRcN6ZLUxKFtbU=;
-        b=ltTbdJoaB6+ZVtm0meHPYCzCw7QBNkJdB9d2sllAENZjalWWVJAjid81x74w6xl5J/
-         SVMCwvwePYB8GDtPzD/Xr7WQ4opghveXVVmYrcOH/OVXjWmMsEdu5cdAJq+ZZ/KOLNoS
-         e09WXspWD1xRrCSqD+qrnOx8m4z2o/UUVxnf8nB0uRSmV0mziLU8V19srV1rZkjS4R1I
-         P3LiBjsGNA7oYk3bLMVl2aV/v94Tpy/MhCAjw+uM5SxYZCQahOPG5AWt7TkrzdS5U50X
-         m1Kbq/ey4+ql1GaYtkmzXbBLCkhwBrFZply1tN7lNs6P6t/2vkjm45stwHJxnkrxUEQy
-         9+uA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745419632; x=1746024432;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=gmail.com; s=20230601; t=1745419634; x=1746024434; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=gxF+9NE84HJoOS1xDmv56fy0JE1OiLRcN6ZLUxKFtbU=;
-        b=OtJhGLRsjC6pH/1EpbHrkCbNOd/XzAJaQn07pMQbxn7Q0RbZ974H1Bx17I6Oao8V8Z
-         LP+zrVBNy4X7iT5mRaeSjcvd+uFnPT4R0CIN3gZnZ+4PMxuQHtuuVXFBBNCBe1bxu36p
-         c01zp1pV6lis7KA0ve2Jr791bASkHF+PaKWES87Z+/eCTUd0vat+vEcZ+QewtmnxR3AE
-         rOzKRbEx1QAyMfKwhB5vGEgzqGpj3bQAh+NmWqEGhfY7IOd2srduN+NHBd8L0vM/g497
-         lrRCYEz63SmWUyTGRIgYTKmzhu88dZHgvTDR56RIcRRcnUhG3PGCHAbB3vaNRUp6ELBl
-         RuEg==
-X-Forwarded-Encrypted: i=1; AJvYcCU0BMbDWLMs4g+Q4Cfwxq+zXU5xl3Yj1sMFZEDodyulvIODCxoRat+MOtVNkv1dkKma2Mj7RkOMVFX1@vger.kernel.org, AJvYcCUGYDAFPghBHhJVt0NuEFuZWWzIlaL7lggMGaKZdt6m5uUsFaEjIMYaylAzZ5uwJo5MAsYQkW5abTB/dMM5@vger.kernel.org, AJvYcCVUGFd2E5WDqn1sjSSzVxHcfUU0jeMCKnxJV1M/5Us44uRcUYzh/R3490iue36RSXP0VGw2k6axhMUV@vger.kernel.org
-X-Gm-Message-State: AOJu0YwGor4C6pyRmfJofJBYUm5rEGKH4oIUXZ/qOeaYBXNLsDrPnEx3
-	4pN4khRBQp8yXOKP65XhW11IIKvD2nmAMOYiPr6QUZqas7VT8m0heE6jhXGdCu8=
-X-Gm-Gg: ASbGncslfJLIY6n9wThBjc8XgshAtBZRdSaXMtDflUVr4lT0r60ORroTofIapZ1hFdE
-	hC18FZ9GqyyBSEdbUpEn3kEFapH/RaKQtYejF12foIyUBk4DdYrfjaFNRpS3fwNNNGB8Dh2s4uK
-	Rb+63xiyUx9d/y4c2FNoh7/vQ2hha8FaHh7PCJuGs68tgKjLnjtrkBGtJObDsUh+lC72YRGiSuc
-	QK+ZsMqRw5PE+2m1JoQDF+Ia8z8saNFUc3zLbAulk/VAlZgX0/ywF3+D5U+AsOT+J/XYyvUFEUu
-	JK3SsUJfwklN5UswG4/l4XQFTNtcF1vzKtFhIKOp7le9t9JPlFPjCBqVQzzBT83ApIy8s6h/hd8
-	pQf7bywF/
-X-Google-Smtp-Source: AGHT+IF6oy4OVrmTWdxJiYcpDKTSfFLRcZS0UpsZPb7uyvvQY5z7/A72duQfn43dN+RVZ2u+KWhnPw==
-X-Received: by 2002:a05:6512:131b:b0:549:4bf7:6463 with SMTP id 2adb3069b0e04-54d6e65e03cmr4970735e87.44.1745419631873;
-        Wed, 23 Apr 2025 07:47:11 -0700 (PDT)
+        bh=Bzzj3T3cP+6gwpi0+nfotNm30mzZZCWntfumX+NdTyY=;
+        b=ZRsK6etVnQ8/1TuyOVMC2acHVTnMbp1QVtDBHWBpZKt8ITkERNxZLzFYBnyBTWuZxz
+         N1qLnbsWDQ1uEF347QR1WQiHp3QbHCv+T+K55Lxyj3EhuCv40mGNZdZho39jTXVtYtju
+         9o0yYnPvg2gwbOHPwiTZCymPbYFC3BTn+XzM+VygUtdYhypi4E5o2ABQndIz2ydxqghJ
+         qu1NOCxQSonAsFWBtRKQ2f1XWFGclh0WY6ibmp6yzhbG8Qabq8rYHJleHTPuWtaPuoW9
+         nduqdoiVBmg7HRi3R3XOYFc/U7OwBhdhcK+si9ZJf8zZX2i+lSqrP4iRkNBOHLz2VdET
+         Oizg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745419634; x=1746024434;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Bzzj3T3cP+6gwpi0+nfotNm30mzZZCWntfumX+NdTyY=;
+        b=PHpFV0BFDTYjVfmtaqZnfBudWhmep8CQ2UGozyG4t1atNdZuia7CfRVJS9Nn4v40yw
+         p26R0qr+jtlLT+v7rQ/Mhd9aFfTBLk3GwWOf/Yh931jDdpz1durdR3b91xcL2ACuEWNa
+         q3bZAfsiaH//hmuzRZvPQCSFtsA45wBmQNDP6yZsbVtUiT4p1JVopjRIhoiSOGe1ZgeN
+         GINOy2sCzqb18PjNX5MAyvAaFNwDbs8O5d6CLPOG8oBG1VqEhD2sU/Ud26NYcVLQneWh
+         dU36gcpFUjeVc4z9Blobb+G7iYCC5TSigM/v3NzUZFvLyPzGhe666TGHZ4swBHVBbf8L
+         5YEg==
+X-Forwarded-Encrypted: i=1; AJvYcCV2ZowZtBxO6SokPtCcRSTq6fjzAWYcfFSwZZnG+t24hFD+2n2sFzLF/LIeCJnrQImnSHHGZGWUetZAVQEI@vger.kernel.org, AJvYcCWEyNISg+Q7m+tzq1FZSIfcjo7AjpbHfhl/kJCwoaTbi6HAhY4ccRISGcsTYjtb6rTo2c2URjRdDQrY@vger.kernel.org, AJvYcCWyePspmFe2HO+gZfrcpYPzGuOcJFAF4hzupDsXNJpLB3fQ8lSXHREqIAV+YIL4sbs3iDRx6wHAn+6Q@vger.kernel.org
+X-Gm-Message-State: AOJu0Yye5RV86/kvt71Aag6XRgxWQf+SAcD4hy4pRlTUv5zQBKg4h/Dm
+	vCkP69prCQCWse8sT0UWOlpOulMAcq48ChQbHrADhtRSg6I44bgaiq+4mpX90Xs=
+X-Gm-Gg: ASbGncvAj0bV0xKiv03Y+NmA8ZhsSdeuefmOinn9+cM7rlzLZw3zUpiolwQnruz5+pj
+	bfy3L6k1UpqoMQiV9W47I25bHZM79GUghZbISIQ8+9LiKKxyDVu3VyVzCy/LWMaS3U93uW45ikE
+	12Z3gJTrg/7WIiFJV/3imgo02xQeqMVVKnAl/WeFFqL5ixbO8o+wkMT51bbBWvUTdBF2+Gc3my6
+	wRcJJmtEiGEXHsEctSDO1Jc8TAFuh8JVR7iZvt+oYnwusbiUmqQPmBqnM54dng2s1YWtAp9HmMF
+	jwCdomnqhle0hsGKW20UWkS1qv7KRWCgy23QIjjuraZaqoztHHNDdrZIS+pxupbWBUw2WOJfqhl
+	PnuChTn2R
+X-Google-Smtp-Source: AGHT+IGcXCDXeLXJPEW1koiq4CtmxFU6hVAFkjl67TZ+C9VF7n0TCGjERyPLqMgN7iba2Hs6LYkIMQ==
+X-Received: by 2002:a05:6512:4020:b0:54c:a49:d3de with SMTP id 2adb3069b0e04-54d6e61ba8amr6160594e87.10.1745419634058;
+        Wed, 23 Apr 2025 07:47:14 -0700 (PDT)
 Received: from [192.168.1.11] (83-233-6-197.cust.bredband2.com. [83.233.6.197])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-54d6e5f61afsm1598498e87.246.2025.04.23.07.47.10
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-54d6e5f61afsm1598498e87.246.2025.04.23.07.47.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Apr 2025 07:47:11 -0700 (PDT)
+        Wed, 23 Apr 2025 07:47:12 -0700 (PDT)
 From: Marcus Folkesson <marcus.folkesson@gmail.com>
-Subject: [PATCH 0/3] MCP3911 fixes
-Date: Wed, 23 Apr 2025 16:46:48 +0200
-Message-Id: <20250423-mcp3911-fixes-v1-0-5bd0b68ec481@gmail.com>
+Date: Wed, 23 Apr 2025 16:46:49 +0200
+Subject: [PATCH 1/3] iio: adc: mcp3911: fix device dependent mappings for
+ conversion result registers
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -83,10 +85,9 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAFn9CGgC/x3LTQqAIBBA4avIrBP8Reoq0aJ0rFlkohCBdPek5
- cfjNahYCCtMrEHBmypdqUMODPyxph05hW5QQllhlOanz3qUkkd6sHKMelPSWOtcgP7kgn/oy7y
- 87wdfAzquXwAAAA==
-X-Change-ID: 20250423-mcp3911-fixes-ef3b2145577d
+Message-Id: <20250423-mcp3911-fixes-v1-1-5bd0b68ec481@gmail.com>
+References: <20250423-mcp3911-fixes-v1-0-5bd0b68ec481@gmail.com>
+In-Reply-To: <20250423-mcp3911-fixes-v1-0-5bd0b68ec481@gmail.com>
 To: Kent Gustavsson <kent@minoris.se>, Jonathan Cameron <jic23@kernel.org>, 
  Lars-Peter Clausen <lars@metafoo.de>, 
  Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
@@ -98,48 +99,172 @@ Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
  Marcus Folkesson <marcus.folkesson@gmail.com>, 
  Lukas Rauber <lukas.rauber@janitza.de>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1003;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5186;
  i=marcus.folkesson@gmail.com; h=from:subject:message-id;
- bh=LrSrr1PAcyOZjm1Ot5sYyk1pBF7ppOE5uJZ/qHaQpTo=;
- b=owEBbQKS/ZANAwAIAYiATm9ZXVIyAcsmYgBoCP1aMnQ7FxOaoU3mjBJmjbR+hFZ7wbVHNZzd1
- /C8yOQwoeKJAjMEAAEIAB0WIQQFUaLotmy1TWTBLGWIgE5vWV1SMgUCaAj9WgAKCRCIgE5vWV1S
- MsLDD/sGOWcPbBhDi58mozJ+GjfoTdU2UPpjnT/ZeQmD2xY0hSxM7lClgFGyj17j7KlkJVMe0Il
- 19pyMedUUuK4sgrmTIzgBYKkG69iMQFLDzqfwbnY1H9XW8HN9IFU6k6KNGd0OlZfxjM6Y0xWCl5
- Efk9VN/qD7dg/BPuuKCQiXsbGQesui1XhTyfBH7Kmr4+yTMtxYQpkSwNFpo/mR2ffBvKt2zLzdI
- VdpFdSMxs8HYlihvYOMjNIcvs4Dmyp2BYgkI32WZqDIe0xmFn89gFnBug8P4fuGu1Bwds9p2bpI
- t9NDmGsHO6EyNlS5ZJIIaJCl538HvbRl2zwNR7AUnEY5TPZVGsniOxItvhGCGcsSQQUKUFRppPo
- XJzTO+0sXgw59NFX0Y+ucfU5EBmzIa3I0Jygt5NEMiEWqOf8oTI6K3R47u0h8Rw2A5CnhzuzUke
- EnIaQHfl1sLx9abhkHKe0F8ZzLl7d1Jn4/UViIRyLDV7uaqFDDhydDLZDJJNqJ1nrjXeuepflTD
- NGXtJWOHGIHe7bwjAojYrPqAL3b5rH1+ezM8e8Mmqq3yBmuA2vQT/B836FukvdPAbinL1wY+Df0
- bR1d/E3rT4IqK0Cy+v3b4flLhUjaPMMR+VygrpKP2Q8mLYHt1LHqsBmMv48J6ED/12zY/optJbD
- V8Sx8bAV8RZhNDA==
+ bh=m2DiDOnxwo7P6r/Y2g3QKf2ugQ/iTUOqEpyk4isYXD4=;
+ b=kA0DAAgBiIBOb1ldUjIByyZiAGgI/V+hDU8d/oMRPjuYOPlaFQqGaK8ltId7Qp3Fpcf23fuDL
+ okCMwQAAQgAHRYhBAVRoui2bLVNZMEsZYiATm9ZXVIyBQJoCP1fAAoJEIiATm9ZXVIyAmkQAN2s
+ vgoReL7rIBZs0xcpWv/PLKMlJSod6vKxlq8Zw3vuPsvziO0awuxT6sySNZvGg6hU9fvjfWg+9wS
+ RfNRMy9K/EsSV36PzKK5w4c/7y4hQoqaT2PpmL8ivtzbjKwPdRaJtJZ8lFzg4k+PjyeD9qJA+a/
+ 7G2ipevP0I/PNGxy1V3mk8/J5Llyt3n14L7olPymkmB7DAKm5t6h5VcGP8vTFY7/hWSsBPoQGMC
+ NT8fzxFAV/m1L1cj90UacFMkCDEVG8gU4LWdfc5x/TwelPGztWNtDrgjPwJQ/LpXSaErr1ReaDl
+ /YJL01ChcejuKrYjR+5px5p6wzXv3EaxTZWmUebrtsMD66yGoCgYCXpNhW5/LTW/RtiLT/8fdV2
+ Q7BCCKCkrd/HZfH9WOggfqUFs6UsmiMnfh5gbYaXTT5VBuB4gm51sW9hDktFyAHPn8RJKJM+Dul
+ nsuh3bu5kKf+i7cuyRJacEv1/0+QrkfjS/6Hbgqnx3YVTZqU8M+0zjyngf9w4TFdNc9EGlTgKDG
+ bSCPLZnuJwEcpcXs00ZY1G0Z9Xft0kPRlkfbU8G7pFBjgb/aslacu6VPKq2+vKpmZU77wlig4kq
+ oH0LJy/cqGsoGkdJXKmJU+Vn8q4583jgSp6x8g+8jJtJTf53pkn3BhBiA35Ridu2t1s9/aZ59j/
+ lLCS0
 X-Developer-Key: i=marcus.folkesson@gmail.com; a=openpgp;
  fpr=AB91D46C7E0F6E6FB2AB640EC0FE25D598F6C127
 
-This series contain two fixes for the MCP3911 driver:
-- Add support for reset signal
-- Fix wrong mapping for the coversion result registers
+The conversion result registers differs between devices. Make sure the
+mapping is correct by using a device dependent .get_raw() callback function.
 
-The register map for the conversion result registers of the MCP3911
-differs from the other variants so make sure we read from the right
-register by introducing device-dependent .read_raw() callbacks.
+Fixes: 732ad34260d3 ("iio: adc: mcp3911: add support for the whole MCP39xx family")
 
+Co-developed-by: Lukas Rauber <lukas.rauber@janitza.de>
+Signed-off-by: Lukas Rauber <lukas.rauber@janitza.de>
 Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
 ---
-Marcus Folkesson (3):
-      iio: adc: mcp3911: fix device dependent mappings for conversion result registers
-      dt-bindings: iio: adc: mcp3911: add reset-gpios
-      iio: adc: mcp3911: add reset management
+ drivers/iio/adc/mcp3911.c | 37 +++++++++++++++++++++++++++++++++----
+ 1 file changed, 33 insertions(+), 4 deletions(-)
 
- .../bindings/iio/adc/microchip,mcp3911.yaml        |  5 ++
- drivers/iio/adc/mcp3911.c                          | 54 ++++++++++++++++++++--
- 2 files changed, 55 insertions(+), 4 deletions(-)
----
-base-commit: 1e26c5e28ca5821a824e90dd359556f5e9e7b89f
-change-id: 20250423-mcp3911-fixes-ef3b2145577d
+diff --git a/drivers/iio/adc/mcp3911.c b/drivers/iio/adc/mcp3911.c
+index 6748b44d568db68120172a950bbfffb6adc7cfa3..b72ed4928da88664a00dc143ebf218cb4a7be421 100644
+--- a/drivers/iio/adc/mcp3911.c
++++ b/drivers/iio/adc/mcp3911.c
+@@ -79,6 +79,8 @@
+ #define MCP3910_CONFIG1_CLKEXT		BIT(6)
+ #define MCP3910_CONFIG1_VREFEXT		BIT(7)
+ 
++#define MCP3910_CHANNEL(ch)		(MCP3911_REG_CHANNEL0 + (ch))
++
+ #define MCP3910_REG_OFFCAL_CH0		0x0f
+ #define MCP3910_OFFCAL(ch)		(MCP3910_REG_OFFCAL_CH0 + (ch) * 6)
+ 
+@@ -110,6 +112,7 @@ struct mcp3911_chip_info {
+ 	int (*get_offset)(struct mcp3911 *adc, int channel, int *val);
+ 	int (*set_offset)(struct mcp3911 *adc, int channel, int val);
+ 	int (*set_scale)(struct mcp3911 *adc, int channel, u32 val);
++	int (*get_raw)(struct mcp3911 *adc, int channel, int *val);
+ };
+ 
+ struct mcp3911 {
+@@ -170,6 +173,18 @@ static int mcp3911_update(struct mcp3911 *adc, u8 reg, u32 mask, u32 val, u8 len
+ 	return mcp3911_write(adc, reg, val, len);
+ }
+ 
++static int mcp3911_read_s24(struct mcp3911 *const adc, u8 const reg, s32 *const val)
++{
++	u32 uval;
++	int const ret = mcp3911_read(adc, reg, &uval, 3);
++
++	if (ret)
++		return ret;
++
++	*val = sign_extend32(uval, 23);
++	return ret;
++}
++
+ static int mcp3910_enable_offset(struct mcp3911 *adc, bool enable)
+ {
+ 	unsigned int mask = MCP3910_CONFIG0_EN_OFFCAL;
+@@ -194,6 +209,11 @@ static int mcp3910_set_offset(struct mcp3911 *adc, int channel, int val)
+ 	return adc->chip->enable_offset(adc, 1);
+ }
+ 
++static int mcp3910_get_raw(struct mcp3911 *adc, int channel, s32 *val)
++{
++	return mcp3911_read_s24(adc, MCP3910_CHANNEL(channel), val);
++}
++
+ static int mcp3911_enable_offset(struct mcp3911 *adc, bool enable)
+ {
+ 	unsigned int mask = MCP3911_STATUSCOM_EN_OFFCAL;
+@@ -218,6 +238,11 @@ static int mcp3911_set_offset(struct mcp3911 *adc, int channel, int val)
+ 	return adc->chip->enable_offset(adc, 1);
+ }
+ 
++static int mcp3911_get_raw(struct mcp3911 *adc, int channel, s32 *val)
++{
++	return mcp3911_read_s24(adc, MCP3911_CHANNEL(channel), val);
++}
++
+ static int mcp3910_get_osr(struct mcp3911 *adc, u32 *val)
+ {
+ 	int ret;
+@@ -321,12 +346,9 @@ static int mcp3911_read_raw(struct iio_dev *indio_dev,
+ 	guard(mutex)(&adc->lock);
+ 	switch (mask) {
+ 	case IIO_CHAN_INFO_RAW:
+-		ret = mcp3911_read(adc,
+-				   MCP3911_CHANNEL(channel->channel), val, 3);
++		ret = adc->chip->get_raw(adc, channel->channel, val);
+ 		if (ret)
+ 			return ret;
+-
+-		*val = sign_extend32(*val, 23);
+ 		return IIO_VAL_INT;
+ 	case IIO_CHAN_INFO_OFFSET:
+ 		ret = adc->chip->get_offset(adc, channel->channel, val);
+@@ -799,6 +821,7 @@ static const struct mcp3911_chip_info mcp3911_chip_info[] = {
+ 		.get_offset = mcp3910_get_offset,
+ 		.set_offset = mcp3910_set_offset,
+ 		.set_scale = mcp3910_set_scale,
++		.get_raw = mcp3910_get_raw,
+ 	},
+ 	[MCP3911] = {
+ 		.channels = mcp3911_channels,
+@@ -810,6 +833,7 @@ static const struct mcp3911_chip_info mcp3911_chip_info[] = {
+ 		.get_offset = mcp3911_get_offset,
+ 		.set_offset = mcp3911_set_offset,
+ 		.set_scale = mcp3911_set_scale,
++		.get_raw = mcp3911_get_raw,
+ 	},
+ 	[MCP3912] = {
+ 		.channels = mcp3912_channels,
+@@ -821,6 +845,7 @@ static const struct mcp3911_chip_info mcp3911_chip_info[] = {
+ 		.get_offset = mcp3910_get_offset,
+ 		.set_offset = mcp3910_set_offset,
+ 		.set_scale = mcp3910_set_scale,
++		.get_raw = mcp3910_get_raw,
+ 	},
+ 	[MCP3913] = {
+ 		.channels = mcp3913_channels,
+@@ -832,6 +857,7 @@ static const struct mcp3911_chip_info mcp3911_chip_info[] = {
+ 		.get_offset = mcp3910_get_offset,
+ 		.set_offset = mcp3910_set_offset,
+ 		.set_scale = mcp3910_set_scale,
++		.get_raw = mcp3910_get_raw,
+ 	},
+ 	[MCP3914] = {
+ 		.channels = mcp3914_channels,
+@@ -843,6 +869,7 @@ static const struct mcp3911_chip_info mcp3911_chip_info[] = {
+ 		.get_offset = mcp3910_get_offset,
+ 		.set_offset = mcp3910_set_offset,
+ 		.set_scale = mcp3910_set_scale,
++		.get_raw = mcp3910_get_raw,
+ 	},
+ 	[MCP3918] = {
+ 		.channels = mcp3918_channels,
+@@ -854,6 +881,7 @@ static const struct mcp3911_chip_info mcp3911_chip_info[] = {
+ 		.get_offset = mcp3910_get_offset,
+ 		.set_offset = mcp3910_set_offset,
+ 		.set_scale = mcp3910_set_scale,
++		.get_raw = mcp3910_get_raw,
+ 	},
+ 	[MCP3919] = {
+ 		.channels = mcp3919_channels,
+@@ -865,6 +893,7 @@ static const struct mcp3911_chip_info mcp3911_chip_info[] = {
+ 		.get_offset = mcp3910_get_offset,
+ 		.set_offset = mcp3910_set_offset,
+ 		.set_scale = mcp3910_set_scale,
++		.get_raw = mcp3910_get_raw,
+ 	},
+ };
+ static const struct of_device_id mcp3911_dt_ids[] = {
 
-Best regards,
 -- 
-Marcus Folkesson <marcus.folkesson@gmail.com>
+2.49.0
 
 

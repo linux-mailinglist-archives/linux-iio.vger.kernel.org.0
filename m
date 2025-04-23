@@ -1,159 +1,235 @@
-Return-Path: <linux-iio+bounces-18584-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18585-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B789FA99967
-	for <lists+linux-iio@lfdr.de>; Wed, 23 Apr 2025 22:23:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E2CFA9999C
+	for <lists+linux-iio@lfdr.de>; Wed, 23 Apr 2025 22:46:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 615013ACC71
-	for <lists+linux-iio@lfdr.de>; Wed, 23 Apr 2025 20:23:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA6415A76BE
+	for <lists+linux-iio@lfdr.de>; Wed, 23 Apr 2025 20:46:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CD7E269CEB;
-	Wed, 23 Apr 2025 20:23:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67B16262FF1;
+	Wed, 23 Apr 2025 20:46:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DO6EAobH"
+	dkim=pass (2048-bit key) header.d=usp.br header.i=@usp.br header.b="W1SVrax/"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07F3D191F6D
-	for <linux-iio@vger.kernel.org>; Wed, 23 Apr 2025 20:23:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DE011A2389
+	for <linux-iio@vger.kernel.org>; Wed, 23 Apr 2025 20:46:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745439823; cv=none; b=WcePEdWGY9iWFKHztS8xYskFmenbS83PiUfg247KcUQPCc1WfAP6HgEWfUK1zROTK9SEA8ff9EwW5AtQ2KMdgaswkczaRoU+7IMcF1TJZ5S1xn/7xUXOUoowWlVaMwn8n5XYh20wlxZ6LrCUc+YU7KNihZUiFrW5LcSwl24XSsY=
+	t=1745441209; cv=none; b=TChZcuY/ByfZe6jDSGUh3ovpJcLVA6m3r7y7u5ceqx0c+kEd1ykRx3cXpm3VVR0jxQIkQVFJxO2VzrJWaMEeKflubB/xJkZf4GgI6WgTof+K+tRRHCpP8RCLXwcNfd9UTnzZeRmO2nePK/NXR0gajCTuQUgMYOFqqnnz/ynCtN4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745439823; c=relaxed/simple;
-	bh=Dzj8405t0yaieU8jvpNkE2I/pWmh3cVvlLy8YA72ovI=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=FHGN0RvZMUYSliBm1YTjOWPiSfpgkUUCIrqcNl/GM0gUkQFKDC5FY47iQVNMbKJD3l3+ymDX8r+tzs8VChoBQQcT+qrQiZfvOb1HudBNcRmF7fh21n4RxfL3waySIdMMlwf5x5tIgIsqsPXoPYdWsBIgvtQbDk3vJrJ52gp06WE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DO6EAobH; arc=none smtp.client-ip=209.85.167.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-54d65eb26b2so190913e87.2
-        for <linux-iio@vger.kernel.org>; Wed, 23 Apr 2025 13:23:41 -0700 (PDT)
+	s=arc-20240116; t=1745441209; c=relaxed/simple;
+	bh=08K67GTjJJIyjoZCO+i8L+poLCnfjeATkMYeADJx9Zc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ReXGg80npJed2rcSIZKAD9lqZom1UINNC84ksHqgzm7VkoAgvZ812XFTnzsKNnMSt6dylSxivfKOz4T3i6ikfcHwhiZNyUDDfnTFNbQ0XPPM8myrz7s9sAqag4nWKs/4xEZ8/yn/nuw3o+J/TR7XTFwLYoXdstiqTw3P51j++Yg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=usp.br; spf=pass smtp.mailfrom=usp.br; dkim=pass (2048-bit key) header.d=usp.br header.i=@usp.br header.b=W1SVrax/; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=usp.br
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=usp.br
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-227b828de00so3122015ad.1
+        for <linux-iio@vger.kernel.org>; Wed, 23 Apr 2025 13:46:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745439820; x=1746044620; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=Awu6RQTROdXNX2XQJGE/EdFOmpjpxGdHJVGDRI5IzsA=;
-        b=DO6EAobHQSm+A2asP8m4xJG5WYWsvvY3QYJHMpDwCGDqunbisLui0NeQBqQfHKFkjQ
-         hffBLAlwL7z1LloDiHOExiYexIRHbRxOcfbtJ1iQz/kqMp2YgK7rR/HTaMvNWRxpQmI5
-         RkZI64bcWklZ6sjTk2h3HCALqlLhwNkrtWYoS+vK9w6cE6CGz67XUsIzxQEd02rrOj1c
-         se30fj2u8WN4NN6/Wrl+m9pmCfXZQl3X5z4EbU/VEfs07AZK82KBMnlIqFFHCQHgVzdJ
-         Apd1c0UApVDp+uG1GgqG6/s8XRYU0W22B/nzbIiqQWbYD0QNNbe0+1MWFx4Uy1m/Ko2W
-         YgUg==
+        d=usp.br; s=usp-google; t=1745441205; x=1746046005; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZQk5AFNYwc1uOZhSgxpRZBIFVIR3xEEQu2RmYI0k8l4=;
+        b=W1SVrax/6nAkNqnzqzAuIPKpJlusOYffKMK/wboygz69CZMmmCZ8+yXq8TW0zw7D2Y
+         T6qmc8crrM/4jgNmZJqAWhbOPCVVNM/nZ/nKAlsUzvAmn3riBFWL+ry760wFjZEcaoKg
+         Ql8rykT5YIpO2lwhH3RYRWAgqFYLRzcQDU6hqbSrrfCyBhKO0q7SVIMjSTVopFyxxar3
+         inPoctwBQ114lnPC8nniqhNSpxGX6Ur36uWPM6dyQ9r4vMswtbJ1yx5zIu3B3LIb7JT3
+         nMrR5ycatlLJRFQIbGjvumnSRZEFOUS6K1jHL5IdHlPAgkUE7L+zxpv9ailQQ+84ifj5
+         DlHw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745439820; x=1746044620;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Awu6RQTROdXNX2XQJGE/EdFOmpjpxGdHJVGDRI5IzsA=;
-        b=L0mQNOw6gXICzjU+Q2RyFaQqzMZDs3kNS3EYXTckONeT8Xo9tVkdAbJmeUsCN8YE5J
-         R13Ka2pkOZ51UVzwF1GQeNcui6rsck9j+yi0/EM5vYltcgHiFRnHlR7cG8qN/I/dsGV6
-         YZe3Z6PcK5tUNZxHc6UNHkSe9Mlv1SfyKVJwYxgWC53lGzYEaLncoXGdE1dds4LIKioL
-         tydKZpTtKSuyi+kP+WIeuRhTqGqY+qzpmgWFbBb/UyfTFFROWyrKWJAqe1CpTIl9HkeN
-         ZPydKpUOBaQMLyidT3DOGZlqVOxnwJccrABr0vbrUEcdoRXJGOY0QfH8fJl7nA+A3Map
-         Q/3g==
-X-Forwarded-Encrypted: i=1; AJvYcCWKLx2FBhIVi+91MKVAHj+cRBB6eA8E0wA2Rb/zChnuZ7EZ6BltXq7GB61bhnLa8ljZxXSVlqRk/RA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyWfpIqevbWvEBrj8Hoe7ocB4JxhzOd0x0QxyqPqj74jaU11yJX
-	o0lnaqCnUjB8d2wcEkwqKbtnLbja44UlR13KrymJZ+7KPjeFZst2RPNvoTe5EAeBusuq3Ylp509
-	pjdLM3o/LY/0yX5dtzP4lQTRBh/Y=
-X-Gm-Gg: ASbGncvJJA+EIUOCUFJs7/OaKeJDu+MVU3ps5wipugst0KUF0rXLvkq7ACdvmaNS/rx
-	V1iDWBW9wgX98ohmcDP6ombkZNrjCINoZ2opNUvX4IEnSKicc8xU48UEjHFLDx1T9lkuOYcssKH
-	o+iW1WKIxDFc9GEt0yM19U2HkYX4jWI5/rXi2PWhhjx9HZfnsdNmYZ8g==
-X-Google-Smtp-Source: AGHT+IEOlGuri6Bun/neKTDIAX7EnJBwC11RLi0ZXZ1LHw7AYs3vNf3bXdVrk6m1RT2+2CX+1IEWaTYf7/YIPNHxRl4=
-X-Received: by 2002:a05:6512:3b82:b0:549:8c86:9bf6 with SMTP id
- 2adb3069b0e04-54e7c420de2mr68647e87.39.1745439819743; Wed, 23 Apr 2025
- 13:23:39 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1745441205; x=1746046005;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ZQk5AFNYwc1uOZhSgxpRZBIFVIR3xEEQu2RmYI0k8l4=;
+        b=ATuwchDiJh1uIZuC6qG5JtUlzC9Yt0CbrMDi/kUyhMwrU1JkliALIJ+t/po48x+cDt
+         CPb3qEtmRpfoZjZ5X8vRicypvUC1pd+NnMDjcdVN6V0h3cGF0d6y00HTpP1TOUsie0Ys
+         k4t7/hOuU2IZkHKwoTBB1IAtd1ezgtVqD/VlH8Y3sax6cSsL3hKaYCpT/H1myp+aRZ47
+         /MeRe0t4W0Ebrczf+RzIx/QOiVcXToE4SxlS5neCy5C/e8lGIncBsgXDwltE7oUJA4hD
+         MOgNOzHc6WVXiEjLf53jGAmAtNtayQJlfcS0snPaUICaEUwo2UkVu2ORGthYqltp+y+Q
+         4BrQ==
+X-Gm-Message-State: AOJu0YwyCf6yBXPSNNQ2+BGDX/s6mUUN4ajzQSB0PC1yLA+Ki1d6rqe4
+	a+5p0SXr7XCcVnvbas9UhoKWxnoAQBYGI8Viiqxqu5ia7LljOUoWb66IXaj45Hc=
+X-Gm-Gg: ASbGnctTBKD2wXZBkMlTD82SZZgZ0Gnz7sdmRsUVZpLBzR0Nr0ZzATe6GpKpPFd52Ca
+	55gNmXx1qLHP3B60hCrfpE14PYa+1hAwRutoBqRS6S3xtCuCE3cogEdhaY2QXFRt/n8dmz9kwE8
+	rdpLZiDpdvkAayN5tIOOd3chXjk8AiPH+tZgZM2DHjaQ9JeZYUzjj2wuC6ypYoebfKKSLI8vsLg
+	EEpFJ0BplJVcYBufpRrfggt58eVAIdbQtGU0ZBfhQVakxt0f+7rj0QL0y/cMzKHkk0t0TiCM2Ta
+	PFMUnfr194hikvYUSPGGRNg/qYCqcBFMI+fFvf7EM0jQbRY697Y=
+X-Google-Smtp-Source: AGHT+IHIV7MQTJsAy3RQmKpSwqgZuFqta/zOBFtK6+z+wDFjeAXEtL9w3LcRsR4PfBPE3ly/7I19xw==
+X-Received: by 2002:a17:902:cec9:b0:21f:4c8b:c4de with SMTP id d9443c01a7336-22db1b38ff5mr10662865ad.42.1745441205582;
+        Wed, 23 Apr 2025 13:46:45 -0700 (PDT)
+Received: from gustavaz.semfio.usp.br ([143.107.45.1])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22c50eb48ebsm108690975ad.122.2025.04.23.13.46.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 23 Apr 2025 13:46:45 -0700 (PDT)
+From: Gustavo Vaz <gustavo.vaz@usp.br>
+To: jic23@kernel.org
+Cc: linux-iio@vger.kernel.org,
+	gustavo.vaz@usp.br,
+	franciscolealhenriques@usp.br
+Subject: [PATCH v1] iio: accel: kxcjk-1013: Deduplicate setup interrupt functions
+Date: Wed, 23 Apr 2025 17:46:31 -0300
+Message-ID: <20250423204631.16460-1-gustavo.vaz@usp.br>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Fabio Estevam <festevam@gmail.com>
-Date: Wed, 23 Apr 2025 17:23:28 -0300
-X-Gm-Features: ATxdqUHJ-L2uxpLHRSlvKB1sjr52TckvGZh2SDwE8KrqSy0nylsYmwwxqRJ6fIY
-Message-ID: <CAOMZO5BXp38RMt5vQQWnZBQDzpN+SYB6NVU3c-Krk3po+2Zv7A@mail.gmail.com>
-Subject: max1363 : Warnings from iio_sanity_check_avail_scan_masks()
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: mazziesaccount@gmail.com, linux-iio@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-Hi,
+The contents of kxcjk1013_setup_any_motion_interrupt and
+kxcj1013_setup_new_data_interrupt are very similar. Deduplicate these
+functions by introducing a generic function named
+kxcjk1013_setup_interrupt that has an additional flag indicating if
+it's a new data interrupt.
 
-After upgrading the kernel from 6.1 to 6.12 (also tested with
-linux-next), I started seeing the following warnings on a board
-populated with a Maxim MAX11601 ADC:
+Signed-off-by: Gustavo Vaz <gustavo.vaz@usp.br>
+Co-developed-by: Francisco Henriques <franciscolealhenriques@usp.br>
+Signed-off-by: Francisco Henriques <franciscolealhenriques@usp.br>
+---
+ drivers/iio/accel/kxcjk-1013.c | 87 +++++++---------------------------
+ 1 file changed, 17 insertions(+), 70 deletions(-)
 
-[    1.554029] max1363 1-0064: available_scan_mask 8 subset of 0. Never used
-[    1.563627] max1363 1-0064: available_scan_mask 9 subset of 0. Never used
-[    1.570439] max1363 1-0064: available_scan_mask 10 subset of 0. Never used
-[    1.577328] max1363 1-0064: available_scan_mask 11 subset of 0. Never used
-[    1.584226] max1363 1-0064: available_scan_mask 12 subset of 0. Never used
-[    1.591119] max1363 1-0064: available_scan_mask 13 subset of 0. Never used
-[    1.598013] max1363 1-0064: available_scan_mask 8 subset of 1. Never used
-[    1.604817] max1363 1-0064: available_scan_mask 9 subset of 1. Never used
-[    1.611623] max1363 1-0064: available_scan_mask 10 subset of 1. Never used
-[    1.618516] max1363 1-0064: available_scan_mask 11 subset of 1. Never used
-[    1.625403] max1363 1-0064: available_scan_mask 12 subset of 1. Never used
-[    1.632293] max1363 1-0064: available_scan_mask 13 subset of 1. Never used
-[    1.639201] max1363 1-0064: available_scan_mask 8 subset of 2. Never used
-[    1.646002] max1363 1-0064: available_scan_mask 9 subset of 2. Never used
-[    1.652802] max1363 1-0064: available_scan_mask 10 subset of 2. Never used
-[    1.659691] max1363 1-0064: available_scan_mask 11 subset of 2. Never used
-[    1.666582] max1363 1-0064: available_scan_mask 12 subset of 2. Never used
-[    1.673478] max1363 1-0064: available_scan_mask 13 subset of 2. Never used
-[    1.680382] max1363 1-0064: available_scan_mask 8 subset of 3. Never used
-[    1.687183] max1363 1-0064: available_scan_mask 9 subset of 3. Never used
-[    1.693984] max1363 1-0064: available_scan_mask 10 subset of 3. Never used
-[    1.700871] max1363 1-0064: available_scan_mask 11 subset of 3. Never used
-[    1.707758] max1363 1-0064: available_scan_mask 12 subset of 3. Never used
-[    1.714645] max1363 1-0064: available_scan_mask 13 subset of 3. Never used
-[    1.721532] max1363 1-0064: available_scan_mask 8 subset of 4. Never used
-[    1.728332] max1363 1-0064: available_scan_mask 9 subset of 4. Never used
-[    1.735134] max1363 1-0064: available_scan_mask 10 subset of 4. Never used
-[    1.742022] max1363 1-0064: available_scan_mask 11 subset of 4. Never used
-[    1.748908] max1363 1-0064: available_scan_mask 12 subset of 4. Never used
-[    1.755796] max1363 1-0064: available_scan_mask 13 subset of 4. Never used
-[    1.762683] max1363 1-0064: available_scan_mask 8 subset of 5. Never used
-[    1.769484] max1363 1-0064: available_scan_mask 9 subset of 5. Never used
-[    1.776283] max1363 1-0064: available_scan_mask 10 subset of 5. Never used
-[    1.783171] max1363 1-0064: available_scan_mask 11 subset of 5. Never used
-[    1.790065] max1363 1-0064: available_scan_mask 12 subset of 5. Never used
-[    1.796955] max1363 1-0064: available_scan_mask 13 subset of 5. Never used
-[    1.803846] max1363 1-0064: available_scan_mask 7 subset of 6. Never used
-[    1.810646] max1363 1-0064: available_scan_mask 8 subset of 6. Never used
-[    1.817446] max1363 1-0064: available_scan_mask 9 subset of 6. Never used
-[    1.824246] max1363 1-0064: available_scan_mask 10 subset of 6. Never used
-[    1.831164] max1363 1-0064: available_scan_mask 11 subset of 6. Never used
-[    1.838053] max1363 1-0064: available_scan_mask 12 subset of 6. Never used
-[    1.844941] max1363 1-0064: available_scan_mask 13 subset of 6. Never used
-[    1.851828] max1363 1-0064: available_scan_mask 8 subset of 7. Never used
-[    1.858627] max1363 1-0064: available_scan_mask 9 subset of 7. Never used
-[    1.865424] max1363 1-0064: available_scan_mask 10 subset of 7. Never used
-[    1.872311] max1363 1-0064: available_scan_mask 11 subset of 7. Never used
-[    1.879197] max1363 1-0064: available_scan_mask 12 subset of 7. Never used
-[    1.886084] max1363 1-0064: available_scan_mask 13 subset of 7. Never used
-[    1.892971] max1363 1-0064: available_scan_mask 9 subset of 8. Never used
-[    1.899771] max1363 1-0064: available_scan_mask 10 subset of 8. Never used
-[    1.906657] max1363 1-0064: available_scan_mask 11 subset of 8. Never used
-[    1.913544] max1363 1-0064: available_scan_mask 12 subset of 8. Never used
-[    1.920430] max1363 1-0064: available_scan_mask 13 subset of 8. Never used
-[    1.927322] max1363 1-0064: available_scan_mask 10 subset of 9. Never used
-[    1.934210] max1363 1-0064: available_scan_mask 11 subset of 9. Never used
-[    1.941096] max1363 1-0064: available_scan_mask 12 subset of 9. Never used
-[    1.947980] max1363 1-0064: available_scan_mask 13 subset of 9. Never used
-[    1.954867] max1363 1-0064: available_scan_mask 11 subset of 10. Never used
-[    1.961841] max1363 1-0064: available_scan_mask 12 subset of 10. Never used
-[    1.968815] max1363 1-0064: available_scan_mask 13 subset of 10. Never used
-[    1.975789] max1363 1-0064: available_scan_mask 12 subset of 11. Never used
-[    1.982762] max1363 1-0064: available_scan_mask 13 subset of 11. Never used
-[    1.989735] max1363 1-0064: available_scan_mask 13 subset of 12. Never used
+diff --git a/drivers/iio/accel/kxcjk-1013.c b/drivers/iio/accel/kxcjk-1013.c
+index 971b76c98606..910d7b5716e1 100644
+--- a/drivers/iio/accel/kxcjk-1013.c
++++ b/drivers/iio/accel/kxcjk-1013.c
+@@ -674,8 +674,8 @@ static int kxcjk1013_chip_update_thresholds(struct kxcjk1013_data *data)
+ 	return 0;
+ }
+ 
+-static int kxcjk1013_setup_any_motion_interrupt(struct kxcjk1013_data *data,
+-						bool status)
++static int kxcjk1013_setup_interrupt(struct kxcjk1013_data *data,
++						bool status, bool is_new_data)
+ {
+ 	const struct kx_chipset_regs *regs = data->info->regs;
+ 	int ret;
+@@ -690,69 +690,12 @@ static int kxcjk1013_setup_any_motion_interrupt(struct kxcjk1013_data *data,
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	ret = kxcjk1013_chip_update_thresholds(data);
+-	if (ret < 0)
+-		return ret;
+-
+-	ret = i2c_smbus_read_byte_data(data->client, regs->int_ctrl1);
+-	if (ret < 0) {
+-		dev_err(&data->client->dev, "Error reading reg_int_ctrl1\n");
+-		return ret;
+-	}
+-
+-	if (status)
+-		ret |= KXCJK1013_REG_INT_CTRL1_BIT_IEN;
+-	else
+-		ret &= ~KXCJK1013_REG_INT_CTRL1_BIT_IEN;
+-
+-	ret = i2c_smbus_write_byte_data(data->client, regs->int_ctrl1, ret);
+-	if (ret < 0) {
+-		dev_err(&data->client->dev, "Error writing reg_int_ctrl1\n");
+-		return ret;
+-	}
+-
+-	ret = i2c_smbus_read_byte_data(data->client, regs->ctrl1);
+-	if (ret < 0) {
+-		dev_err(&data->client->dev, "Error reading reg_ctrl1\n");
+-		return ret;
+-	}
+-
+-	if (status)
+-		ret |= KXCJK1013_REG_CTRL1_BIT_WUFE;
+-	else
+-		ret &= ~KXCJK1013_REG_CTRL1_BIT_WUFE;
+-
+-	ret = i2c_smbus_write_byte_data(data->client, regs->ctrl1, ret);
+-	if (ret < 0) {
+-		dev_err(&data->client->dev, "Error writing reg_ctrl1\n");
+-		return ret;
+-	}
+-
+-	if (store_mode == OPERATION) {
+-		ret = kxcjk1013_set_mode(data, OPERATION);
++	if (is_new_data == true) {
++		ret = kxcjk1013_chip_update_thresholds(data);
+ 		if (ret < 0)
+ 			return ret;
+ 	}
+ 
+-	return 0;
+-}
+-
+-static int kxcjk1013_setup_new_data_interrupt(struct kxcjk1013_data *data,
+-					      bool status)
+-{
+-	const struct kx_chipset_regs *regs = data->info->regs;
+-	int ret;
+-	enum kxcjk1013_mode store_mode;
+-
+-	ret = kxcjk1013_get_mode(data, &store_mode);
+-	if (ret < 0)
+-		return ret;
+-
+-	/* This is requirement by spec to change state to STANDBY */
+-	ret = kxcjk1013_set_mode(data, STANDBY);
+-	if (ret < 0)
+-		return ret;
+-
+ 	ret = i2c_smbus_read_byte_data(data->client, regs->int_ctrl1);
+ 	if (ret < 0) {
+ 		dev_err(&data->client->dev, "Error reading reg_int_ctrl1\n");
+@@ -776,10 +719,17 @@ static int kxcjk1013_setup_new_data_interrupt(struct kxcjk1013_data *data,
+ 		return ret;
+ 	}
+ 
+-	if (status)
+-		ret |= KXCJK1013_REG_CTRL1_BIT_DRDY;
+-	else
+-		ret &= ~KXCJK1013_REG_CTRL1_BIT_DRDY;
++	if (is_new_data) {
++		if (status)
++			ret |= KXCJK1013_REG_CTRL1_BIT_DRDY;
++		else
++			ret &= ~KXCJK1013_REG_CTRL1_BIT_DRDY;
++	} else {
++		if (status)
++			ret |= KXCJK1013_REG_CTRL1_BIT_WUFE;
++		else
++			ret &= ~KXCJK1013_REG_CTRL1_BIT_WUFE;
++	}
+ 
+ 	ret = i2c_smbus_write_byte_data(data->client, regs->ctrl1, ret);
+ 	if (ret < 0) {
+@@ -1112,7 +1062,7 @@ static int kxcjk1013_write_event_config(struct iio_dev *indio_dev,
+ 		return ret;
+ 	}
+ 
+-	ret =  kxcjk1013_setup_any_motion_interrupt(data, state);
++	ret =  kxcjk1013_setup_interrupt(data, state, false);
+ 	if (ret < 0) {
+ 		kxcjk1013_set_power_state(data, false);
+ 		data->ev_enable_state = 0;
+@@ -1293,10 +1243,7 @@ static int kxcjk1013_data_rdy_trigger_set_state(struct iio_trigger *trig,
+ 		mutex_unlock(&data->mutex);
+ 		return ret;
+ 	}
+-	if (data->motion_trig == trig)
+-		ret = kxcjk1013_setup_any_motion_interrupt(data, state);
+-	else
+-		ret = kxcjk1013_setup_new_data_interrupt(data, state);
++	ret = kxcjk1013_setup_interrupt(data, state, data->motion_trig != trig);
+ 	if (ret < 0) {
+ 		kxcjk1013_set_power_state(data, false);
+ 		mutex_unlock(&data->mutex);
+-- 
+2.43.0
 
-What is the correct way to fix these warnings?
-
-Thanks,
-
-Fabio Estevam
 

@@ -1,122 +1,207 @@
-Return-Path: <linux-iio+bounces-18603-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18604-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 825B5A9B4E8
-	for <lists+linux-iio@lfdr.de>; Thu, 24 Apr 2025 19:02:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F88CA9BAC1
+	for <lists+linux-iio@lfdr.de>; Fri, 25 Apr 2025 00:26:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D4703B7D80
-	for <lists+linux-iio@lfdr.de>; Thu, 24 Apr 2025 17:02:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A39931BA4FE9
+	for <lists+linux-iio@lfdr.de>; Thu, 24 Apr 2025 22:26:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 128CC284681;
-	Thu, 24 Apr 2025 17:02:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99E962820A7;
+	Thu, 24 Apr 2025 22:26:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LEN0bp72"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZT76fwMM"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C22B1B4141;
-	Thu, 24 Apr 2025 17:02:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C02CF21FF5D;
+	Thu, 24 Apr 2025 22:26:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745514139; cv=none; b=i4jeoAcQ34PvmR3kP9/Wgx6s4Q392tjYxkqynL04BLqFGzOqSECfyOXkROVjXLywv3WbgorViXK+KVplGwNgSCDy34hu5zAY0PjrbDwwNNdcBrUWvcM6lT6R3krQV7G0TC4pyYZny4h5I+b8oRq+zX5esgX0AgHP5p3ZnkuFnhE=
+	t=1745533565; cv=none; b=mUAMcD5Vtj2uThXYc7jiVHbFTUJznMA3FWdQGoILexjVytDtzDpaBwfIvD2+g4NZNQGGjKU/eV2iWCjlBF1E5EAyZc3MGGa4kMUhSLlekX64ingTU6OHM4bieSsfPHTbyr3X7l8PKw2Panhpc3wDVFbuTN0Poml8FU9JwXHMr8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745514139; c=relaxed/simple;
-	bh=WkcCSbDN/ZU2oZjime5zidqS1XL1m5hB3C//OeBt6zc=;
+	s=arc-20240116; t=1745533565; c=relaxed/simple;
+	bh=x1JeXYDycyPhhRDzf9nOC3JYpKenBeAbMMf4ArIJVw8=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kWKTje8AIdpWErs9R8kO5+nGagKbCt9LMDe3FgK8f31W5wVLnjj3HYZ2y4W7jcCcPhzx7VQdSiJ455aLhOX6Qiui3X/T+IUb7nI6nzqWZ8utlVfPA3wjtgCOMN9VOe0cIuk0ZwiAqSixUmApeAQJ1k+bGHyWvRT/TNIP5J3k9kM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LEN0bp72; arc=none smtp.client-ip=209.85.218.47
+	 To:Cc:Content-Type; b=ssPKGEdFT4wdwWF+T6I4gfnZBGODv54wMc0bDGqv3Y96IB9lPONkSIRvi3wZY2w5yUuJQIJZOJwiXMny/gQM1ZIjs5u8xVgJ8TZMBQUSS11lBsqZ5kN+0MY1iWfwFswbSrRJ25OEZqGwtB4shLFQpmQYrNYAhgt4wx0DNkke/bw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZT76fwMM; arc=none smtp.client-ip=209.85.160.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-ac3b12e8518so233923366b.0;
-        Thu, 24 Apr 2025 10:02:17 -0700 (PDT)
+Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-476a304a8edso19118091cf.3;
+        Thu, 24 Apr 2025 15:26:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745514136; x=1746118936; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1745533563; x=1746138363; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=WkcCSbDN/ZU2oZjime5zidqS1XL1m5hB3C//OeBt6zc=;
-        b=LEN0bp720PNd4KmSfFguStYu1ndsNW20FBzFUgKLLvKRhzrFQkiK45VN6eLsck1Utw
-         TDUIS6mL8Rhb/V0zksLL5O9aJM0no7ZrBBjNuUM+bVRu8IXC3ZhJ37dm54c8NAJ9R0tw
-         1DPG2Cv45hm0PEjI64qGAX1pPgQmz5EhxwxcxxOxisGplMXaAYg/Kz940ROJq0s4Zave
-         rZ+36shbUZ6bIV3Oo+sZ3R+u9C88F7sE4VaIesMilcKu7EE7PzhaMhgMSwhkAbYI9uPG
-         aZ+fPr968iw5KXFQNqm4+gPYsALLxWPh7mL56AGXWMhJ/YpBZr+MTLQTwnPJNXlQP+ck
-         nFCA==
+        bh=hskQ1ynJFkhkNXvLvezLv/sYveihSvby6bDVtKjx3Vg=;
+        b=ZT76fwMMLoHBte6fGCzZesYooFPEvvd7YC7b00UpG4ifrAhitKQpkWkgsbCLl4SCtz
+         lMjUuhgXUu8RzzOnvuAObgHhYi9YkNjrdNF/5Bi7uAwF+8lu2K/DQM2mIBxTdefFoBdk
+         gD6wbMNQchxMCxNEYnVP8EzM4fjF7Z1BKyVoj/EiawkcDkeEKnH7A4hTjEaAW1grJFRV
+         /my3/1ajbKpYTbO7Pdfasl+iPhlRA2Xk1R3bmPuM/MLAkr2fAxGttz+11DW17Xpk3Rtw
+         ejQ8S1DpOsQIhDg5GC9X3gm5bXQfaSL5GNn3hNXY/wQNESdn/9rMs160WaIrWmU+L6BF
+         eflw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745514136; x=1746118936;
+        d=1e100.net; s=20230601; t=1745533563; x=1746138363;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=WkcCSbDN/ZU2oZjime5zidqS1XL1m5hB3C//OeBt6zc=;
-        b=pyPK9ysxAjOZxp6gZtA/TWq+d+Z5RkBKC/8QSYQhgTkJxOjFbMq9eXtOiyhFQ/Sn5q
-         8VUMdYHylPDVxaBP6WsZiHm0iFdYnp76qIPyo9vT4SmFn9QvGL32P2L4APOTDyJeq2oi
-         hTp8xvvuiFOKp9Iz8DBhbgI6pMLNl4851LUMzqAmzRuVFYxAXL1pzx0dhOxsRQ75cnz2
-         2a7fq6r1PjwmbJ0+EMR3ybX6B54xikpYGzEoxkgVlIbkC6wO+q5fR7vGqElW0IbKVNjH
-         6/n4L2cw/VdnEYy/tgn3s82KVHNXkqMZ5YbqxYZnpTkUPFs1jl0/3vHFGgu74L1Qh9+l
-         5Fqw==
-X-Forwarded-Encrypted: i=1; AJvYcCWPHTgBhPsk6Pb0nEWQPfSE2hCw6gQLbw75tN2OSXRzaPoFE33eVMuZDVLy0o3AJkwCZy8rrYta2ow=@vger.kernel.org, AJvYcCWt85dv1E7tlmiVnWrudFDIj0r3jTK4cQC5BQSAWyLbjHJltwW45Eq8q/ztMBiniB7pmAGVa08I67JDNced@vger.kernel.org
-X-Gm-Message-State: AOJu0YxN5ooECD4DFZ7HCbF2XQZU8D1WOe3N1MObULa5wi+pwqrOuF1T
-	wqnnNABVChiyzKN3xQ+khOxSv2bEaJ0KYHZQIodrIw2s4obVKateRxnzuPM8ltTT6NYkHbhkAuH
-	KwPP0G1qndXm0CWB2rd34CJeNIyA=
-X-Gm-Gg: ASbGncsfO2B89/2ggKK7fI9t367MD6zrxIumI1bmUEDl2VSXMw7GbNAwDp3CMAeNGmH
-	9AgMm0MXqXJ5bD6YnoEpj0k3T/fuV6yxyi4gh6X/GIlltyMPuD+F+a0IgFomb+H3DmmdKRZxKub
-	5XEztxIw2ZbWCNscwz4uK5uHm4
-X-Google-Smtp-Source: AGHT+IEHxo13L0sXvAke4ty9b+v4Z7Y0lEATPj2aXj/69ooRG7KecObOYygckKmL5PhgxgGc7inKBrIS/BRos9kUdGc=
-X-Received: by 2002:a17:906:6a1f:b0:ac4:76d:6d2c with SMTP id
- a640c23a62f3a-ace6b54761amr31197866b.40.1745514136147; Thu, 24 Apr 2025
- 10:02:16 -0700 (PDT)
+        bh=hskQ1ynJFkhkNXvLvezLv/sYveihSvby6bDVtKjx3Vg=;
+        b=WJmgxN3nUbKbIJO/+TfjWAP7dr5gKd0DnzS4tmInwMXYbpucQpyMYHHMOmhqK3rNYx
+         SK3n4ZFnQ9K7L71XyLf5pf0p3S3R1bdG1hX55iZm5XcghJ/sOKMrK6ZYELSCcZEU2q/9
+         cuKzXSV/rUqwID2425HWInuuJcOiD4pZUpK33Cm12meUqOIhFcw8mbMAxz5D/D/b2B/Q
+         n+PGJBglNvOcpDayZhN6ulGeSfVnr0UOZunALZIAFyYlf2GtHF9OVI73sZFuzCN6ERQn
+         tu8mFbVS+ccFuHvuhz94/lbsxnJOGImHl6yH8NwM9sF7NXwgC4Wp1A3Vt6lpFZQIefin
+         XLCg==
+X-Forwarded-Encrypted: i=1; AJvYcCXQ/3Scxv7xqoes2n19bMVzzBOpPCmi/ZLZfJPQ1pClWKBXk5Q6BgkwFJC1/qqGK0nSgsdNtiWlR6fUYEor@vger.kernel.org, AJvYcCXjUQIB9eAMGlY2dmVJlo+367Xt4sF08V1vZ8oBsHhPV9b+VJcvsMYYsj1yYbvAL6AltNWuqtYnOn4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzGbXxc5K+vVbJ7jpb/6+cS9Qni8du+5PUyJOJv8x27xAoXj0va
+	ABvHa9B6/ogXUcSDYmNQdjgAvq7fyj/4n8Vc3kFA6gfx3b+tUZMqvOnTUHX33X4kNyKh6Uj2Jnc
+	ggP82d0okv1x3tSbxflZWS4veLe8=
+X-Gm-Gg: ASbGncu6dgV60qSAx2O5K9yyRQjKP1zA2iFJpCvaFOB2VtpjXDMkd/fVY7TJm/ZFXjE
+	NJmb8c8DwM7yr30dBnO8QL30dCYTsOppAAtY5aqbRgNi52lHjkJsFt8yhchufRgOUliSFHpXZcP
+	qkoyzt0+8UWsS3pd7369yrwGXHqhP+MbITAMQCbGr7bEXQP0Nm61jXcQ==
+X-Google-Smtp-Source: AGHT+IFjSFl/xi4ItiZrw0T45ArRRtekfyoiPWNkdF1dxtevOLykqT+7muP77ZbSHM73ktdY/vnuknex42pfIFNB9Lg=
+X-Received: by 2002:a05:622a:203:b0:477:64dd:575b with SMTP id
+ d75a77b69052e-4801eada7b1mr1841381cf.45.1745533562732; Thu, 24 Apr 2025
+ 15:26:02 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250424151604.626758-1-olivier.moysan@foss.st.com>
-In-Reply-To: <20250424151604.626758-1-olivier.moysan@foss.st.com>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Thu, 24 Apr 2025 20:01:40 +0300
-X-Gm-Features: ATxdqUEBDL7z20qNs0yG_M2X9nqYMo67214nlsnEXBB5e6fuFVOwBd_KZJdSur0
-Message-ID: <CAHp75VfwiMAa+y+_sHpJ27D34=PtMG=nskXbV+GuNgWpH-85KQ@mail.gmail.com>
-Subject: Re: [PATCH v5] iio: adc: stm32: add oversampling support
-To: Olivier Moysan <olivier.moysan@foss.st.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
-	=?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Andy Shevchenko <andy@kernel.org>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
-	Alexandre Torgue <alexandre.torgue@foss.st.com>, 
-	Fabrice Gasnier <fabrice.gasnier@foss.st.com>, linux-iio@vger.kernel.org, 
-	linux-stm32@st-md-mailman.stormreply.com, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20250420175419.889544-1-gshahrouzi@gmail.com> <20250420175419.889544-3-gshahrouzi@gmail.com>
+ <20250421123728.1564039d@jic23-huawei>
+In-Reply-To: <20250421123728.1564039d@jic23-huawei>
+From: Gabriel Shahrouzi <gshahrouzi@gmail.com>
+Date: Thu, 24 Apr 2025 18:25:51 -0400
+X-Gm-Features: ATxdqUFwcTzPdHn9XuiewQEmXMXyqrRqiIsLo1lnCsCOfLX_uZgjCo5No3ZV5uc
+Message-ID: <CAKUZ0zKXg4KLpHPLtpkywPLp8+xxwAMSpNAgUmP34pfVZDv7Aw@mail.gmail.com>
+Subject: Re: [PATCH v3 2/3] staging: iio: ad9832: Refactor powerdown control
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: gregkh@linuxfoundation.org, lars@metafoo.de, linux-iio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-staging@lists.linux.dev, 
+	Michael.Hennerich@analog.com, skhan@linuxfoundation.org, 
+	linux-kernel-mentees@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Apr 24, 2025 at 6:22=E2=80=AFPM Olivier Moysan
-<olivier.moysan@foss.st.com> wrote:
+On Mon, Apr 21, 2025 at 7:37=E2=80=AFAM Jonathan Cameron <jic23@kernel.org>=
+ wrote:
 >
-> Add oversampling support for STM32H7, STM32MP15 & STM32MP13.
-> STM32F4 ADC has no oversampling feature.
+> On Sun, 20 Apr 2025 13:54:18 -0400
+> Gabriel Shahrouzi <gshahrouzi@gmail.com> wrote:
 >
-> The current support of the oversampling feature aims at increasing the
-> data SNR, without changing the data resolution.
-> As the oversampling by itself increases data resolution, a right shift
-> is applied to keep the initial resolution.
-> Only the oversampling ratio corresponding to a power of two are
-> supported here, to get a direct link between right shift and
-> oversampling ratio. (2^n ratio <=3D> n right shift)
+> > Replace custom implementation with out_altvoltage_powerdown ABI. The
+> > attribute's logic is inverted (1 now enables powerdown) to match the
+> > standard. Modernize driver by using the standard IIO interface.
+> >
+> > Signed-off-by: Gabriel Shahrouzi <gshahrouzi@gmail.com>
+> > ---
+> >  drivers/staging/iio/frequency/ad9832.c | 44 ++++++++++++++++++--------
+> >  1 file changed, 30 insertions(+), 14 deletions(-)
+> >
+> > diff --git a/drivers/staging/iio/frequency/ad9832.c b/drivers/staging/i=
+io/frequency/ad9832.c
+> > index 0872ff4ec4896..a8fc20379efed 100644
+> > --- a/drivers/staging/iio/frequency/ad9832.c
+> > +++ b/drivers/staging/iio/frequency/ad9832.c
+> > @@ -167,6 +167,34 @@ static int ad9832_write_phase(struct ad9832_state =
+*st,
+> >       return spi_sync(st->spi, &st->phase_msg);
+> >  }
+> >
+> > +static ssize_t ad9832_write_powerdown(struct device *dev, struct devic=
+e_attribute *attr,
+> > +                                   const char *buf, size_t len)
+> > +{
+> > +     struct iio_dev *indio_dev =3D dev_to_iio_dev(dev);
+> > +     struct ad9832_state *st =3D iio_priv(indio_dev);
+> > +     int ret;
+> > +     unsigned long val;
+> > +
+> > +     ret =3D kstrtoul(buf, 10, &val);
+> > +     if (ret)
+> > +             goto error_ret;
+> > +
+> > +     mutex_lock(&st->lock);
 >
-> The oversampling ratio is shared by all channels, whatever channel type.
-> (e.g. single ended or differential).
+> Look at how guard(mutex)(&st->lock);
+> can be used in this driver to simplify things considerably.
+Noted, added into new version.
+> May make sense to do that before introducing this new code.
+Not sure whether to have made it its own patch or not. I grouped it
+together with the new code since it also uses locking.
 >
-> Oversampling can be configured using IIO ABI:
-> - oversampling_ratio_available
-> - oversampling_ratio
-
-This version LGTM,
-Reviewed-by: Andy Shevchenko <andy@kernel.org>
-
---=20
-With Best Regards,
-Andy Shevchenko
+> > +     if (val)
+> > +             st->ctrl_src |=3D AD9832_SLEEP;
+> > +     else
+> > +             st->ctrl_src &=3D ~(AD9832_RESET | AD9832_SLEEP |
+> > +                              AD9832_CLR);
+> > +
+> > +     st->data =3D cpu_to_be16((AD9832_CMD_SLEEPRESCLR << CMD_SHIFT) |
+> > +                             st->ctrl_src);
+> > +     ret =3D spi_sync(st->spi, &st->msg);
+> > +     mutex_unlock(&st->lock);
+> > +
+> > +error_ret:
+> > +     return ret ? ret : len;
+> > +}
+> > +
+> >  static ssize_t ad9832_write(struct device *dev, struct device_attribut=
+e *attr,
+> >                           const char *buf, size_t len)
+> >  {
+> > @@ -227,17 +255,6 @@ static ssize_t ad9832_write(struct device *dev, st=
+ruct device_attribute *attr,
+> >                                       st->ctrl_fp);
+> >               ret =3D spi_sync(st->spi, &st->msg);
+> >               break;
+> > -     case AD9832_OUTPUT_EN:
+> > -             if (val)
+> > -                     st->ctrl_src &=3D ~(AD9832_RESET | AD9832_SLEEP |
+> > -                                     AD9832_CLR);
+> > -             else
+> > -                     st->ctrl_src |=3D AD9832_SLEEP;
+> > -
+> > -             st->data =3D cpu_to_be16((AD9832_CMD_SLEEPRESCLR << CMD_S=
+HIFT) |
+> > -                                     st->ctrl_src);
+> > -             ret =3D spi_sync(st->spi, &st->msg);
+> > -             break;
+> >       default:
+> >               ret =3D -ENODEV;
+> >       }
+> > @@ -266,8 +283,7 @@ static IIO_CONST_ATTR_PHASE_SCALE(0, "0.0015339808"=
+); /* 2PI/2^12 rad*/
+> >
+> >  static IIO_DEV_ATTR_PINCONTROL_EN(0, 0200, NULL,
+> >                               ad9832_write, AD9832_PINCTRL_EN);
+> > -static IIO_DEV_ATTR_OUT_ENABLE(0, 0200, NULL,
+> > -                             ad9832_write, AD9832_OUTPUT_EN);
+> > +static IIO_DEVICE_ATTR(out_altvoltage_powerdown, 0200, NULL, ad9832_wr=
+ite_powerdown, 0);
+>
+> Take a look at the use of extended attributes used for this like we see
+> in ad5064.c
+> That will need an actual channel though so is a more significant rework.
+Got it.
+>
+> >
+> >  static struct attribute *ad9832_attributes[] =3D {
+> >       &iio_dev_attr_out_altvoltage0_frequency0.dev_attr.attr,
+> > @@ -281,7 +297,7 @@ static struct attribute *ad9832_attributes[] =3D {
+> >       &iio_dev_attr_out_altvoltage0_pincontrol_en.dev_attr.attr,
+> >       &iio_dev_attr_out_altvoltage0_frequencysymbol.dev_attr.attr,
+> >       &iio_dev_attr_out_altvoltage0_phasesymbol.dev_attr.attr,
+> > -     &iio_dev_attr_out_altvoltage0_out_enable.dev_attr.attr,
+> > +     &iio_dev_attr_out_altvoltage_powerdown.dev_attr.attr,
+> >       NULL,
+> >  };
+> >
+>
 

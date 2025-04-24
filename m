@@ -1,109 +1,128 @@
-Return-Path: <linux-iio+bounces-18598-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18599-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8721CA9AE2E
-	for <lists+linux-iio@lfdr.de>; Thu, 24 Apr 2025 15:01:26 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 533F2A9AE4D
+	for <lists+linux-iio@lfdr.de>; Thu, 24 Apr 2025 15:04:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A86D01B65E33
-	for <lists+linux-iio@lfdr.de>; Thu, 24 Apr 2025 13:01:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8F2F87AAA2B
+	for <lists+linux-iio@lfdr.de>; Thu, 24 Apr 2025 13:03:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 670581CFBC;
-	Thu, 24 Apr 2025 13:01:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 968A128137E;
+	Thu, 24 Apr 2025 13:03:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pxm6+iDH"
+	dkim=pass (2048-bit key) header.d=tweaklogic.com header.i=@tweaklogic.com header.b="KV3OK7IT"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D97A7F9;
-	Thu, 24 Apr 2025 13:01:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04949280A5A
+	for <linux-iio@vger.kernel.org>; Thu, 24 Apr 2025 13:03:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745499680; cv=none; b=ivUdjKA1d3rfGTrgg4wZv4TrvuOZPzQTq5VOLghq2rEhpujLwpZ8e/fp4gBfSxGY1ZR3rQR0CZPCf2501cElbwdvki9nYHFtCkGkOOKM97ofHFwUGRt5CZxnm3nhSSmlt0GChhLQeBylBatXUfetYMdBdQU9/vVrheNbXvrxDhI=
+	t=1745499790; cv=none; b=WE8YNkMBsZkDwRwRIAffOyxYNFU4QJbCYSIGLPihBpqWfGnA7rKQGE89h9qJMyKU+IzlQDiNqPZFgglasHZs7lIRILhBY9di3r3GFmUH6rxCuqS5dBdEaJ3fsNReF90HZfx4OuiGHEhJd1gusqH5IWauFP3dLJ0uMQadlmjZmc0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745499680; c=relaxed/simple;
-	bh=w4ERmlgT37R8fqbbx4uVzFLB0bFMUP+qmxc5xgde/7k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EXtFgVrlsoRjST+hhnbzGHxcG1sfGhkI5uBskoCC+FPnTW0SwrYbvOYgICwUC6idfrMMA8kbWyLWqudv5GZNBV7ruo0CxKjGnZHAneYSrpkm8ZQyvjz3238S6S+B9KvuMBb6zH3pyeLiUT2yAhqAL2McW8mdrBJ9JiIk13nDrpQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pxm6+iDH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE734C4CEE8;
-	Thu, 24 Apr 2025 13:01:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745499679;
-	bh=w4ERmlgT37R8fqbbx4uVzFLB0bFMUP+qmxc5xgde/7k=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=pxm6+iDHVTleShgiF8bFeJvckCUPbkg57ANzPMtBwns7jfQzzmQz0EFJ05T112lwB
-	 WMYmpudJjzcHgAOUsrdINVZwv2/j3JmqCXznxVSHQq2h8faiVnOKb2RPegnUC/8c7p
-	 CHaM/QMNsb9S3xfYYv2Uod/Thx792cyS2aY6xTHFYMs9lM9RC3snvzyGXMCbGnsq0q
-	 S9nGIj8WSYURRlSOIHYy78OF6pj5n9fb8Tqqt9Sn/E9qC4HqxLGOVqzFxJrudWvFAS
-	 cqzpZUf5gYP+kfQp7RKfjlVq62KmV3pjTBFhnjHgok0FqDpTUNUI3do98G9jOCTAvJ
-	 KbiBb+ril+iaQ==
-Date: Thu, 24 Apr 2025 14:01:12 +0100
-From: Lee Jones <lee@kernel.org>
-To: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-Cc: ukleinek@kernel.org, alexandre.torgue@foss.st.com, krzk+dt@kernel.org,
-	conor+dt@kernel.org, jic23@kernel.org, daniel.lezcano@linaro.org,
-	tglx@linutronix.de, robh@kernel.org, catalin.marinas@arm.com,
-	will@kernel.org, devicetree@vger.kernel.org, wbg@kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-iio@vger.kernel.org, linux-pwm@vger.kernel.org,
-	olivier.moysan@foss.st.com
-Subject: Re: [PATCH v4 2/8] mfd: stm32-lptimer: add support for stm32mp25
-Message-ID: <20250424130112.GD8734@google.com>
-References: <20250314171451.3497789-1-fabrice.gasnier@foss.st.com>
- <20250314171451.3497789-3-fabrice.gasnier@foss.st.com>
- <20250404144006.GB372032@google.com>
+	s=arc-20240116; t=1745499790; c=relaxed/simple;
+	bh=q1jrGK1quJncxuHJY3WK9oZdbDjpEBibDUyhRabnBmA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=oDHY1bK3Der60FeL+la8dlupZIS5HZydA6kN3Q9/0Ap0B88F+frlKRjv1SLE7OgXrdwDOD9EaG7ymcA7TqMW6rQbT4wVFxXdKvo00+Nz0xac/HMkmnJK4jmFuqUEBmOiI8BNHN0GRDzXOJzvF/KCayA9lcbpCYk7BygJjqO2doQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tweaklogic.com; spf=pass smtp.mailfrom=tweaklogic.com; dkim=pass (2048-bit key) header.d=tweaklogic.com header.i=@tweaklogic.com header.b=KV3OK7IT; arc=none smtp.client-ip=209.85.214.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tweaklogic.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tweaklogic.com
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-225df540edcso21814395ad.0
+        for <linux-iio@vger.kernel.org>; Thu, 24 Apr 2025 06:03:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=tweaklogic.com; s=google; t=1745499787; x=1746104587; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Guf2pnnP/6jZRn0lKABiQpuBXBGyiAUeFNJtjlfmmyA=;
+        b=KV3OK7ITbYiktbqPU/7W2KSufEWcF87FiApWjSSc3Biyxyy0fC25F+JsHkigIiBSIs
+         fMSeQMd0gAgPoc+Z8KJJ7p6/Jngk/ZtMbrWA2B1ioy8Gh+efho1DZAjEAj2YFSgexcHD
+         MQgvN3UYvNDU+Nsj9S7EHwnvn+F7j7NGNos0tSeBDcjoGekraXRv74XFo3YKJoKQ/dRY
+         57Pa6GdW5HpKu2bppbIfz0BhWtgu7oFTjLoWQNhtbC8q9u2Diq9XNpt3kvDrU6TRKL9R
+         7Hs5r8lFkzR3FJYYJoyaaGopr9tCbSI1wQX+PoqMk8H3xNSIbZjEHPivhwubwuX0w8jE
+         MtnQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745499787; x=1746104587;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Guf2pnnP/6jZRn0lKABiQpuBXBGyiAUeFNJtjlfmmyA=;
+        b=s1cGQNeAE1aZWUz4yNaQ8LYdWLPPKFDmzgSkTXf3rbtd88Tm2vgS3ZTzHWt0clFI60
+         88r96ptZedrpzufDaaH/zXyAquIqAvYaZTEHMd20aLr+AMjUmoz+GFivMSQuKAqabOpm
+         8ymvrHsjFiHaBQTR0vNJraNSfPKE4TfZPoq3RmLkX+GfsbFSPtpmuYqFAfpVeSXQ8Nno
+         wKYhvKw7+xQ3He4Qs9hUUEo+FoWzhg1q8dqLk8SBAAgDH6SHwD/3NFA1XXL8R3AmShWi
+         2dtG6cb1bc1RRTtBrOMQTqpyIF1x0zl83mRLyAuGiD1WjrRH+p+MBjt7dNmuPRt0MFZl
+         v9DQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXaaT3nU006pp8IzTVrubio/q42gU124og82kWlfRzpcvzcCrXw0AtmWrfH6FEbNZtIiLD367ew7dQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxQ0ekP+FgEOuEZeBTrTLXvRaI+mIjMF69Lg0Se0pxx6Z+oNHFu
+	oKeXCOSybmTre1RFqhSgJmkoQjohX4YouJAj0z46oH8fGsk6OGj0SEsI9gPGuV9y79XTHzFOGvc
+	L
+X-Gm-Gg: ASbGnct652Y3eZzi7o7Y6Pf7CWYPHK2NS8Uh9eGSRXdSxLSjMT5hwdE1ziwc46FU129
+	/rQJSUC6NvpB287fFZbaTx+NSYv0mfpfXTHx97nKOq2RH9yD+7GmSdvFEo2xLxLWvc8obR/14B1
+	NjA/rm47HsBeW8VyiA6eL4gHYuE0ZBjRHVG4Au3ZjhxeDapeKTCJG3JXvZrIaeJWS19P1YkWUPg
+	GTPOvv6cMOCu5rQGiIFSSYd+xHSeY/BOysPzItkJTiVIvhD+MF+u1mCRf7j6+BlP5G0jQjN1181
+	XhPKIGb77krAFTVIwMxJP7tEiD0qljb6T0N3Z9wsiKVrXiDFr68jfzNqq3CXn7d/wE4qYJ91q45
+	wIcM73nKgh8sbd35HjpqYnYIE+2Q2K4k9
+X-Google-Smtp-Source: AGHT+IFyEGmY7zhTDN+jZo6spWH3dZqUsHPAADDl/IjwrtMxbUcWfTa1v6k060qCpeb+fafOZ9v2pw==
+X-Received: by 2002:a17:902:cf01:b0:216:271d:e06c with SMTP id d9443c01a7336-22db47ae98amr32176465ad.4.1745499786974;
+        Thu, 24 Apr 2025 06:03:06 -0700 (PDT)
+Received: from [192.168.50.161] (61-245-156-102.3df59c.adl.nbn.aussiebb.net. [61.245.156.102])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22db5216ba5sm12363655ad.222.2025.04.24.06.03.04
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 24 Apr 2025 06:03:06 -0700 (PDT)
+Message-ID: <222efff5-38d6-483f-8e5b-b0f07cb98130@tweaklogic.com>
+Date: Thu, 24 Apr 2025 22:34:26 +0930
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250404144006.GB372032@google.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] iio: light: apds9306: Refactor threshold get/set
+ functions to use helper
+To: nattan <nattanferreira58@gmail.com>, jic23@kernel.org
+Cc: lucasantonio.santos@usp.br, linux-iio@vger.kernel.org
+References: <20250422191114.32832-1-nattanferreira58@gmail.com>
+Content-Language: en-US
+From: Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
+In-Reply-To: <20250422191114.32832-1-nattanferreira58@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Fri, 04 Apr 2025, Lee Jones wrote:
+Hi Nattan, Lucas,
 
-> On Fri, 14 Mar 2025, Fabrice Gasnier wrote:
-> 
-> > Add support for STM32MP25 SoC.
-> > A new hardware configuration register (HWCFGR2) has been added, to gather
-> > number of capture/compare channels, autonomous mode and input capture
-> > capability. The full feature set is implemented in LPTIM1/2/3/4. LPTIM5
-> > supports a smaller set of features. This can now be read from HWCFGR
-> > registers.
-> > 
-> > Add new registers to the stm32-lptimer.h: CCMR1, CCR2, HWCFGR1/2 and VERR.
-> > Update the stm32_lptimer data struct so signal the number of
-> > capture/compare channels to the child devices.
-> > Also Remove some unused bit masks (CMPOK_ARROK / CMPOKCF_ARROKCF).
-> > 
-> > Signed-off-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-> > ---
-> > Changes in V4:
-> > - Add DIEROK, ARROK status flags, and their clear flags.
-> > Changes in V2:
-> > - rely on fallback compatible as no specific .data is associated to the
-> >   driver. Compatibility is added by reading hardware configuration
-> >   registers.
-> > - read version register, to be used by clockevent child driver
-> > - rename register/bits definitions
-> > ---
-> >  drivers/mfd/stm32-lptimer.c       | 33 ++++++++++++++++++++++++++-
-> >  include/linux/mfd/stm32-lptimer.h | 37 ++++++++++++++++++++++++++++---
-> 
-> At least the Clocksource driver depends on this.
-> 
-> I need Acks from the other Maintainers before I can merge this.
+> Refactor the apds9306_event_thresh_get and apds9306_event_thresh_set
+> functions to use a helper function (apds9306_get_thresh_reg) for obtaining the
+> correct register based on the direction of the event. This improves code
+> readability,minimize the number of lines  and maintains consistency
+It actually adds four more lines to the driver file. Rephrase maybe.
 
-Suggest you resubmit the set as a [RESEND] to re-gain traction.
+>   drivers/iio/light/apds9306.c | 36 ++++++++++++++++++++----------------
+>   1 file changed, 20 insertions(+), 16 deletions(-)
+20 additions and 16 deletions.
+   
+> @@ -769,22 +776,19 @@ static int apds9306_event_thresh_get(struct apds9306_data *data, int dir,
+>   static int apds9306_event_thresh_set(struct apds9306_data *data, int dir,
+>   				     int val)
+>   {
+> -	int var;
+> +	int reg;
+I like the name changed from 'var' to reg', makes much more sense.
+>   	u8 buff[3];
+>
+There is always a balance/trade-off between modularity and execution speed.
+I agree with Marcelo's reply in the first patch and I also think that separate function for this does not add much value.
 
--- 
-Lee Jones [李琼斯]
+Overall the patch looks good to me.
+
+With the above:
+Acked-by: Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
+
+Regards,
+Subhajit Ghosh
 

@@ -1,142 +1,129 @@
-Return-Path: <linux-iio+bounces-18591-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18592-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54AE2A9A4A0
-	for <lists+linux-iio@lfdr.de>; Thu, 24 Apr 2025 09:47:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8757A9A55D
+	for <lists+linux-iio@lfdr.de>; Thu, 24 Apr 2025 10:10:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D1B937A8FE8
-	for <lists+linux-iio@lfdr.de>; Thu, 24 Apr 2025 07:45:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 227421B82E3E
+	for <lists+linux-iio@lfdr.de>; Thu, 24 Apr 2025 08:10:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D202420E328;
-	Thu, 24 Apr 2025 07:44:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADFD321ADBA;
+	Thu, 24 Apr 2025 08:09:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="C+nsmLfl"
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="e7qrCW0+"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF6BB1FCFF3;
-	Thu, 24 Apr 2025 07:44:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAD2C218AC7;
+	Thu, 24 Apr 2025 08:09:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745480676; cv=none; b=hr3iVh+aBACyzx5ogqKaL+I0Bx4cI3IGPCJ4ZllNWQajOQSRlzjfvgt02XP+Pn2QM4MTtFfQ8y+bLkBrSHbIisBOkBdz4ih1Jhx93oVe9W6CgLXiYFqhS3daElRm6oiHVMboOP1zwZmUfraPclx8swxpgXmjdhz0zSWlxUGLsqk=
+	t=1745482159; cv=none; b=AX0OVxywWeVLCrE83r2tmxahHur5hBvKEh7mBz58fBKv7+2lasy+XnjArUpRWJPRcoMJ30434k4ST3M+6Y6CsQlkUCRnulTo2mNBX29LPdlZZx3Rft3R296xwbpVXp2h5mYsBbRqHyaJXuN1DmZO0C89WbMqOCsoWNgL1/Z/emE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745480676; c=relaxed/simple;
-	bh=FFC4CWwJ3J/6ue2pTv1yj5qQxvmBEsYXmSdGmslQgWU=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=KmYP96kfpl9pOOwfL5y7lO1dyThGyiPC7Hy6YMpFXkmq435VU+CmR4H/0dq2sN5OF76U61wzILhpAQI7cjUo7zjH0bqAzq1eRRQPQV4Nc4gXQc/FLheD4o8w+7mmEpjv1WjBwZ/20pH8qLU4uNgPNRXXaf89oM9TpKiL8qNcY/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=C+nsmLfl; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-43d2d952eb1so4069365e9.1;
-        Thu, 24 Apr 2025 00:44:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745480673; x=1746085473; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=FFC4CWwJ3J/6ue2pTv1yj5qQxvmBEsYXmSdGmslQgWU=;
-        b=C+nsmLflct4OPBhAo1ZvuRwsIcGw168Ti0BXxdX8Idm4WPGPYGdk3ioY18hMmqgi9K
-         Bp5pYdZZkBF/Gnl+1F9GoD6mrWq3BjjCgvwMbF3cnHfnrftPN4Cs2AQ+T3pKtATkJVzM
-         1+B9dsjdNVZgSGu5/79sII4mUudWDAV7kxPpMSFJR6+tew2wzQ+bgLLoTOq5uDZJLYJQ
-         z5z8w8znWa52zYc/OihNu+BU/Xw5xtacO2y8p2TtbfYa2tZ0uTI57i0Q21S7vmPb/80r
-         Uyun5DZTnLWurB/9cRQu1wzeHLxVUjKPfLXMvdE/eE9TyQtXLmQTcPjfXUUdFaHIk7Ii
-         GMIg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745480673; x=1746085473;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=FFC4CWwJ3J/6ue2pTv1yj5qQxvmBEsYXmSdGmslQgWU=;
-        b=PsfWQSF2aqTdwZYppNy+eMQgM4+L2VRF4c+ciOH+bUeEN7bIZ0AyhrzAxPJI9LZTvP
-         3vong+WWM+beeyupzeAfOXDtTtHY3jaCbooo8zW9JBNSRIdYoomBVo38eEGSB5VLW6gG
-         3boCdAJXORo7rPsjsHVa8vTaGrU6nWb1+idsMP3OtsAhDFQsomOHo+Y26dWFa30BuJ9H
-         XzZ9RwNcqkDYedsgKLo7s+Gm5XLtGb0h93nxBpFXGWjTAnb9pkk93FBx9Ta8QWJhFKKn
-         XOo1M8WngjFObuXlIhMqCvtz1X7f+SXHf40x87AKxVOBMfLChzsVKeQYmC428AO0NZ2q
-         gp+Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXFR8GuW24N9QOIQorHd19cDF3SE6EkOE6rgYhzPD4HYp6IBgv/89TmGgExODOT9Tm8aarZCPWkoxU=@vger.kernel.org, AJvYcCXNCLfH58wzrl+ut5AcAE5ZB5+to7sTnS753u5tcLFhY98ek+/lepO5vd1j2sWOHmrQ73qhnVx/0PHlnI1v@vger.kernel.org
-X-Gm-Message-State: AOJu0YwDDxmjXvCWomMKh2l+JkQmAn/bHf00gOYBWFbQ7XPLraKsvgct
-	o0alGxmiwOecZpmOrezn74O8vPgD7OO7ZvReTcfKPyey/qF8hYzA
-X-Gm-Gg: ASbGncsgpCUFVP5JbcF9iOi+9S/I2ldGHcStGw3/Nx7os6crVdFI1FTsoRjHpKGMemJ
-	/WQ8QQDpGQ/4FI0VvjfybtQlrtFRUbGJgZVA5SzbB3p68Ky6vL4horqLijttbY3Ky9WmW+m4Bvw
-	njxDA1R3+RczkgS/Yc2opK9fi8SRSAw9O46sW9T6+vLprVho6RfVxfT6EmsTFH+ayjp/nj8/Fgb
-	esFA1M7HDkXvzgF3EJi08vwZqd3Wqt8VuSP0t5V8rJ/GU/ZEPBVclgFeI6XKqf/jE2BsmkUYJtB
-	BuuMdcFoM4H29DlqFrQot33EYaGjn+w3pr5oMGtOrnD6Ps6ni3SfU9MuEB53bzaLiiQP5oZS+uG
-	V2nq0Qbl64ine
-X-Google-Smtp-Source: AGHT+IFQ1Uepev3bF6DqMnMwT/ZztF4YDs7mV/bmiMaJ/9BB2oeeGflOhD/8srCT4ufJnyMLRmDzeA==
-X-Received: by 2002:adf:e30c:0:b0:39c:1258:2dc8 with SMTP id ffacd0b85a97d-3a06cfb208emr940912f8f.57.1745480672986;
-        Thu, 24 Apr 2025 00:44:32 -0700 (PDT)
-Received: from ?IPv6:2001:818:ea8e:7f00:2575:914:eedd:620e? ([2001:818:ea8e:7f00:2575:914:eedd:620e])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a06d54c246sm1124123f8f.86.2025.04.24.00.44.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Apr 2025 00:44:32 -0700 (PDT)
-Message-ID: <3f3906e76ef6d87a12552b99d8f5bf9e34724677.camel@gmail.com>
-Subject: Re: [PATCH v2 1/6] iio: introduce IIO_DECLARE_BUFFER_WITH_TS macros
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Andy Shevchenko <andy.shevchenko@gmail.com>, David Lechner
-	 <dlechner@baylibre.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, Nuno =?ISO-8859-1?Q?S=E1?=	
- <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Lars-Peter Clausen
-	 <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, Eugen
- Hristev <eugen.hristev@linaro.org>, Nicolas Ferre
- <nicolas.ferre@microchip.com>, Alexandre Belloni
- <alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>,
- 	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org
-Date: Thu, 24 Apr 2025 08:44:36 +0100
-In-Reply-To: <CAHp75Vfa0spzCW8WmR32N7u55N89kxywK5uuYMZDJUNHwSZoDQ@mail.gmail.com>
-References: 
-	<20250422-iio-introduce-iio_declare_buffer_with_ts-v2-0-3fd36475c706@baylibre.com>
-	 <20250422-iio-introduce-iio_declare_buffer_with_ts-v2-1-3fd36475c706@baylibre.com>
-	 <701bfc6a715046044dbc789f1c11c7f85395c7a8.camel@gmail.com>
-	 <b4218efe-3785-4065-a3f7-57824e882f09@baylibre.com>
-	 <CAHp75Vfa0spzCW8WmR32N7u55N89kxywK5uuYMZDJUNHwSZoDQ@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.1 
+	s=arc-20240116; t=1745482159; c=relaxed/simple;
+	bh=yYFzfcjodjsPyIwDbrK08y/kZInkd8p6kN31M6oYBs0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:To:CC; b=E98Ekw2Q7KWEQ9mFncuSvv9pu3yyL9kPc/7mEIrd4cOnooDtlbVeKb9QXBzFv5Kp+EzyPGmgb+yjyVQPfNsMhgfjTABmmGnnlVOkdUH7YpYH0zx3ve9qyRFb8vvXeZ+xlN88C/UUVRdW7rQsvZU4Kfq0wlAZcsW2Gjp4+l4cC7c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=e7qrCW0+; arc=none smtp.client-ip=68.232.153.233
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1745482157; x=1777018157;
+  h=from:date:subject:mime-version:content-transfer-encoding:
+   message-id:to:cc;
+  bh=yYFzfcjodjsPyIwDbrK08y/kZInkd8p6kN31M6oYBs0=;
+  b=e7qrCW0+OzIbcujHt48tSq5NHeEeVH9HS3zi70XQA5n7wWMbOJCCvnaf
+   FgwxMDr0NQBF2b4dMHDeTpiLIklAbHA5/WB5ZScZpACDTOUZKMYOAoQ0W
+   6eL+0PyE8WNOVjCGzpA6rxubAZ5ZgFdwDI8/6yyUNmunGC2jNF4zQS+Er
+   k/6s5/ysTQE8W/mVesp10KdPTq0C/JUgkhiQ/PskoAmno74d58xUcH/8W
+   q6eQVxLo1YSSM3rlHByxiCQwjciLqwtwVJUQdhr8b26CA8L6g5cGFRwKV
+   GNJdomSUAhj9SMw8wyxo/tkA26hbNCzhOqEP06eehiCaIFgBK6PZrQ8VP
+   w==;
+X-CSE-ConnectionGUID: YoMONp9cSnibtW5FCExXWQ==
+X-CSE-MsgGUID: qc/OFvpzTSSGALLCmEblvQ==
+X-IronPort-AV: E=Sophos;i="6.15,235,1739862000"; 
+   d="scan'208";a="45417227"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa1.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 24 Apr 2025 01:09:10 -0700
+Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
+ chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.44; Thu, 24 Apr 2025 01:08:49 -0700
+Received: from marius-VM.mshome.net (10.10.85.11) by chn-vm-ex04.mchp-main.com
+ (10.10.85.152) with Microsoft SMTP Server id 15.1.2507.44 via Frontend
+ Transport; Thu, 24 Apr 2025 01:08:47 -0700
+From: Marius Cristea <marius.cristea@microchip.com>
+Date: Thu, 24 Apr 2025 11:06:33 +0300
+Subject: [PATCH] iio: adc: PAC1934: fix typo in documentation link
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-ID: <20250424-pac1934-doc_link-v1-1-9832445cb270@microchip.com>
+X-B4-Tracking: v=1; b=H4sIAAjxCWgC/x3MTQqAIBBA4avErBN0NPq5SkSYTjUUFgoRRHdPW
+ n6L9x5IFJkSdMUDkS5OfIQMVRbgVhsWEuyzASVW0iCK0zrVaiP84cadwya0q301ecIGCXJ2Rpr
+ 5/pf98L4fHyuhZWIAAAA=
+X-Change-ID: 20250422-pac1934-doc_link-3c7d5bde282e
+To: Jonathan Cameron <jic23@kernel.org>, David Lechner
+	<dlechner@baylibre.com>, =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, "Andy
+ Shevchenko" <andy@kernel.org>
+CC: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	<linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Matteo Martelli
+	<matteomartelli3@gmail.com>, Marius Cristea <marius.cristea@microchip.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1682;
+ i=marius.cristea@microchip.com; h=from:subject:message-id;
+ bh=yYFzfcjodjsPyIwDbrK08y/kZInkd8p6kN31M6oYBs0=;
+ b=owGbwMvMwCW2tbSTZa7u0x2Mp9WSGDI4PzYbb73v2eBwcoJ2cu5PV9frcw/btct1uDElKf4sb
+ bN/vrO+o5SFQYyLQVZMkWXFWz+1qrUfLiuJZerAzGFlAhnCwMUpABNZ/Jrhn9VahiOFrdbJf6ZN
+ WKovsber9+52t71+YrekIp88b/8W8YKRoclRKKwqakpB4/M+h/wnn8+IfErW8GNenXB+cZq27WY
+ fHgA=
+X-Developer-Key: i=marius.cristea@microchip.com; a=openpgp;
+ fpr=E32F8D4396E72E463E8CCD91446DE0ABD9140C3E
 
-On Wed, 2025-04-23 at 18:43 +0300, Andy Shevchenko wrote:
-> On Wed, Apr 23, 2025 at 5:51=E2=80=AFPM David Lechner <dlechner@baylibre.=
-com> wrote:
-> > On 4/23/25 4:18 AM, Nuno S=C3=A1 wrote:
-> > > On Tue, 2025-04-22 at 17:07 -0500, David Lechner wrote:
->=20
-> ...
->=20
-> > > On the other hand, as I mentioned in V1, I think that an assertion or
-> > > BUILD_BUG_ON_MSG for making sure 'count' is a compile time constant
-> > > expression
-> > > would be helpful. Sure, we'll get -Wvla but some developers might sti=
-ll
-> > > ignore
-> > > the warning and send patches with these arrays. So, it would be neate=
-r if
-> > > we
-> > > fail to build and force them to fix their code.
->=20
-> > BUILD_BUG_ON_MSG() won't work because it expands to a do/while loop whi=
-ch
-> > won't
-> > work in static struct declarations. But I can try to see if we can come=
- up
-> > with
-> > something that works.
->=20
-> I guess Nuno is okay with static_assert() and TBH nowadays the
-> BUILD_BUG() as is most likely historical.
+Fix a typo,(PAC1934 -> PAC193X), into the link from an application note
+related to the ACPI device definition.
 
-Yes...
+Fixes: 0fb528c8255b ("iio: adc: adding support for PAC193x")
+Reported-by: Matteo Martelli <matteomartelli3@gmail.com>
+Closes: https://patch.msgid.link/172794015844.2520.11909797050797595912@njaxe.localdomain
+Signed-off-by: Marius Cristea <marius.cristea@microchip.com>
+---
+Fix a typo,(PAC1934 -> PAC193X), into the link from an application note
+related to the ACPI device definition.
+---
+ drivers/iio/adc/pac1934.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-"...I think that an __assertion__ or BUILD_BUG_ON_MSG..."
+diff --git a/drivers/iio/adc/pac1934.c b/drivers/iio/adc/pac1934.c
+index 20802b7f49ea84c00dd6e8c717d956cb20448f4a..09fe88eb3fb04578137403a020d9befaa75610a6 100644
+--- a/drivers/iio/adc/pac1934.c
++++ b/drivers/iio/adc/pac1934.c
+@@ -1081,7 +1081,7 @@ static int pac1934_chip_identify(struct pac1934_chip_info *info)
+ 
+ /*
+  * documentation related to the ACPI device definition
+- * https://ww1.microchip.com/downloads/aemDocuments/documents/OTH/ApplicationNotes/ApplicationNotes/PAC1934-Integration-Notes-for-Microsoft-Windows-10-and-Windows-11-Driver-Support-DS00002534.pdf
++ * https://ww1.microchip.com/downloads/aemDocuments/documents/OTH/ApplicationNotes/ApplicationNotes/PAC193X-Integration-Notes-for-Microsoft-Windows-10-and-Windows-11-Driver-Support-DS00002534.pdf
+  */
+ static int pac1934_acpi_parse_channel_config(struct i2c_client *client,
+ 					     struct pac1934_chip_info *info)
 
-- Nuno S=C3=A1
+---
+base-commit: 3159d40a2ca0ae14e69e1cae8b12f04c933d0445
+change-id: 20250422-pac1934-doc_link-3c7d5bde282e
+
+Best regards,
+-- 
+Marius Cristea <marius.cristea@microchip.com>
+
 

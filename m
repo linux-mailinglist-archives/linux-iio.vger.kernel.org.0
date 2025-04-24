@@ -1,110 +1,142 @@
-Return-Path: <linux-iio+bounces-18590-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18591-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7BF0A9A065
-	for <lists+linux-iio@lfdr.de>; Thu, 24 Apr 2025 07:19:30 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54AE2A9A4A0
+	for <lists+linux-iio@lfdr.de>; Thu, 24 Apr 2025 09:47:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CCE261946760
-	for <lists+linux-iio@lfdr.de>; Thu, 24 Apr 2025 05:19:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D1B937A8FE8
+	for <lists+linux-iio@lfdr.de>; Thu, 24 Apr 2025 07:45:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4D781A2872;
-	Thu, 24 Apr 2025 05:19:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D202420E328;
+	Thu, 24 Apr 2025 07:44:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="goR9jLCL"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="C+nsmLfl"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 249D435963;
-	Thu, 24 Apr 2025 05:19:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF6BB1FCFF3;
+	Thu, 24 Apr 2025 07:44:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745471964; cv=none; b=aCCWvtMhghW4sFJ9OHFqRbeg3aOgxzG/7hM+H2CT/72KC0pAbTmw9ChlYCPv0BvSUXEx80g7a3fyn0M4hagjQSD0cO1i5QOKsMsar+hXECp/ersGlmxfNZOTgaEbHN+NtKtSP2qREO8Qa6ZfAjDAj6SYxwryIirAhLGKwGqSWUw=
+	t=1745480676; cv=none; b=hr3iVh+aBACyzx5ogqKaL+I0Bx4cI3IGPCJ4ZllNWQajOQSRlzjfvgt02XP+Pn2QM4MTtFfQ8y+bLkBrSHbIisBOkBdz4ih1Jhx93oVe9W6CgLXiYFqhS3daElRm6oiHVMboOP1zwZmUfraPclx8swxpgXmjdhz0zSWlxUGLsqk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745471964; c=relaxed/simple;
-	bh=cxOAffGmSNXCmuuYRqwydrK/LyPOZoinO1fKOprSYqo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=QyOVmHltnS8mzF77NSVA6MRBSn13s8wVkQO2FTw0D7JbSQ3npGt5LxzBkHiCKFXoYEflmJc1c2VqgwU54bKCP6zlvF3R+Lh1ailClBWWAcNq1qpUoeLNu9LuTyet8twMFJ+w4NWVVeaXkIVW5n/yPYySTnWyrU6pI2ASMtYvs5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=goR9jLCL; arc=none smtp.client-ip=209.85.215.182
+	s=arc-20240116; t=1745480676; c=relaxed/simple;
+	bh=FFC4CWwJ3J/6ue2pTv1yj5qQxvmBEsYXmSdGmslQgWU=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=KmYP96kfpl9pOOwfL5y7lO1dyThGyiPC7Hy6YMpFXkmq435VU+CmR4H/0dq2sN5OF76U61wzILhpAQI7cjUo7zjH0bqAzq1eRRQPQV4Nc4gXQc/FLheD4o8w+7mmEpjv1WjBwZ/20pH8qLU4uNgPNRXXaf89oM9TpKiL8qNcY/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=C+nsmLfl; arc=none smtp.client-ip=209.85.128.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-b0b2d0b2843so431452a12.2;
-        Wed, 23 Apr 2025 22:19:22 -0700 (PDT)
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-43d2d952eb1so4069365e9.1;
+        Thu, 24 Apr 2025 00:44:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745471962; x=1746076762; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cxOAffGmSNXCmuuYRqwydrK/LyPOZoinO1fKOprSYqo=;
-        b=goR9jLCL9LjTmqhnJ2mWH9cDFI9LJX9uDM9uiguI9S52MnAr7IG/Xp/MBfmQ+NZtxc
-         WDCGLYYonO55IrB4Bma7Mn6xDp3/RNGvOfXQdqjtQ5arOmEvZIAzFL20fJc4BjMMZJNM
-         0i8b+31n+fm9Jixs5JVaOwk0x+KkqnjAdt69TMFzA0xeUlRqQM5dpAprvG9vGH1/OSMq
-         8lR36HEWVt1wIa7QwIExIge5HAY8TaWusn7me2AwlpP19kLDN7/E/Q7MbaGYlevtQCJm
-         VcHS1srtWEST9aCcL07bbDvVrstn1oBtxx34OSNxx2VgCNvrF6/SfQV2sSo08bXazsqC
-         XFvQ==
+        d=gmail.com; s=20230601; t=1745480673; x=1746085473; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=FFC4CWwJ3J/6ue2pTv1yj5qQxvmBEsYXmSdGmslQgWU=;
+        b=C+nsmLflct4OPBhAo1ZvuRwsIcGw168Ti0BXxdX8Idm4WPGPYGdk3ioY18hMmqgi9K
+         Bp5pYdZZkBF/Gnl+1F9GoD6mrWq3BjjCgvwMbF3cnHfnrftPN4Cs2AQ+T3pKtATkJVzM
+         1+B9dsjdNVZgSGu5/79sII4mUudWDAV7kxPpMSFJR6+tew2wzQ+bgLLoTOq5uDZJLYJQ
+         z5z8w8znWa52zYc/OihNu+BU/Xw5xtacO2y8p2TtbfYa2tZ0uTI57i0Q21S7vmPb/80r
+         Uyun5DZTnLWurB/9cRQu1wzeHLxVUjKPfLXMvdE/eE9TyQtXLmQTcPjfXUUdFaHIk7Ii
+         GMIg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745471962; x=1746076762;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=cxOAffGmSNXCmuuYRqwydrK/LyPOZoinO1fKOprSYqo=;
-        b=d4hs05qCL448bOv8Og/eD7Aj0VpSjMhJ+Cwp0HYAqRN5vqJ0Rn6F4sG4FISGES6bPD
-         pdFz5vGww20zAvX9XurGjTN8l5a9Dkw+NRyWwIhzAvIfAPelqegkI2L1jDwqUw6ZQqiO
-         wLndGDvbowuq7VnLSrIBdmeVeIXA7J9vzizbPAcQjDbyJ2qQ+9mgz8/Ohj14czXDBZ5j
-         +EEMXReTx8hipBXW3Ipdcg8e77QOr9sb3a92NCb5o0yZlDR+8iQZuAVb6Q2A7NljnJiR
-         frOkRJU6GNni5yTogBuRsoYo7ApG7A3vb/OfgGM2AifHLRXiMHWmledolTiFIVXDPFmN
-         zW1g==
-X-Forwarded-Encrypted: i=1; AJvYcCU5uRKLh3YhQmxnXwmKDNMvBLINfi7ZtbXYrIFwUKFkP7EkINFOwenbw+DflaoK3tRkZL74xXs9XiIC@vger.kernel.org, AJvYcCXiRJZeld6reAbrXwSacpctCOYUwwsEXmZeznlZ6QaAkDQ5Zn96nU+pHwoxdzIfEqNxF42sFQoWiUR5@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz0lOGJXSMvqc716+0f79I8gW8TmarB571Nkf2m6RUHoVHs7zhf
-	LxQNlQM/Fw1wKWRnjmPD/iSjDHSXpvT1N3cggOI2shxqqTUvJuN5gVGRINJJ7CyL7FWtgJ+aQkn
-	sqEN6wDpo6GeSituo8N0n/vf5emEP1aZNIgY=
-X-Gm-Gg: ASbGnctWjhNuxyLTGBr0u2g9oSJdmk2WMVs9dPAXPacPBsqKVslV0s454qNsXT0NUUI
-	XIO84QwilusoXdMB0Bcn+UNeVk562yqEYuI4vdldH5Mu0cTwozJkas3Q0z9U0h1MlbXPtnkRhtI
-	MYPWo/nQLJ3kJOHneV/66iLSs=
-X-Google-Smtp-Source: AGHT+IFd3+DWbwqYLjBty7mlBg19qgtdH7s2lZfCr4eSF0v/i7R7uQX8ILDr8QxbI/+tN2syISiew3zunyK/T14w53o=
-X-Received: by 2002:a17:90b:544c:b0:305:2d27:7ba5 with SMTP id
- 98e67ed59e1d1-309ed26d23emr1873972a91.6.1745471962392; Wed, 23 Apr 2025
- 22:19:22 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1745480673; x=1746085473;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=FFC4CWwJ3J/6ue2pTv1yj5qQxvmBEsYXmSdGmslQgWU=;
+        b=PsfWQSF2aqTdwZYppNy+eMQgM4+L2VRF4c+ciOH+bUeEN7bIZ0AyhrzAxPJI9LZTvP
+         3vong+WWM+beeyupzeAfOXDtTtHY3jaCbooo8zW9JBNSRIdYoomBVo38eEGSB5VLW6gG
+         3boCdAJXORo7rPsjsHVa8vTaGrU6nWb1+idsMP3OtsAhDFQsomOHo+Y26dWFa30BuJ9H
+         XzZ9RwNcqkDYedsgKLo7s+Gm5XLtGb0h93nxBpFXGWjTAnb9pkk93FBx9Ta8QWJhFKKn
+         XOo1M8WngjFObuXlIhMqCvtz1X7f+SXHf40x87AKxVOBMfLChzsVKeQYmC428AO0NZ2q
+         gp+Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXFR8GuW24N9QOIQorHd19cDF3SE6EkOE6rgYhzPD4HYp6IBgv/89TmGgExODOT9Tm8aarZCPWkoxU=@vger.kernel.org, AJvYcCXNCLfH58wzrl+ut5AcAE5ZB5+to7sTnS753u5tcLFhY98ek+/lepO5vd1j2sWOHmrQ73qhnVx/0PHlnI1v@vger.kernel.org
+X-Gm-Message-State: AOJu0YwDDxmjXvCWomMKh2l+JkQmAn/bHf00gOYBWFbQ7XPLraKsvgct
+	o0alGxmiwOecZpmOrezn74O8vPgD7OO7ZvReTcfKPyey/qF8hYzA
+X-Gm-Gg: ASbGncsgpCUFVP5JbcF9iOi+9S/I2ldGHcStGw3/Nx7os6crVdFI1FTsoRjHpKGMemJ
+	/WQ8QQDpGQ/4FI0VvjfybtQlrtFRUbGJgZVA5SzbB3p68Ky6vL4horqLijttbY3Ky9WmW+m4Bvw
+	njxDA1R3+RczkgS/Yc2opK9fi8SRSAw9O46sW9T6+vLprVho6RfVxfT6EmsTFH+ayjp/nj8/Fgb
+	esFA1M7HDkXvzgF3EJi08vwZqd3Wqt8VuSP0t5V8rJ/GU/ZEPBVclgFeI6XKqf/jE2BsmkUYJtB
+	BuuMdcFoM4H29DlqFrQot33EYaGjn+w3pr5oMGtOrnD6Ps6ni3SfU9MuEB53bzaLiiQP5oZS+uG
+	V2nq0Qbl64ine
+X-Google-Smtp-Source: AGHT+IFQ1Uepev3bF6DqMnMwT/ZztF4YDs7mV/bmiMaJ/9BB2oeeGflOhD/8srCT4ufJnyMLRmDzeA==
+X-Received: by 2002:adf:e30c:0:b0:39c:1258:2dc8 with SMTP id ffacd0b85a97d-3a06cfb208emr940912f8f.57.1745480672986;
+        Thu, 24 Apr 2025 00:44:32 -0700 (PDT)
+Received: from ?IPv6:2001:818:ea8e:7f00:2575:914:eedd:620e? ([2001:818:ea8e:7f00:2575:914:eedd:620e])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a06d54c246sm1124123f8f.86.2025.04.24.00.44.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 24 Apr 2025 00:44:32 -0700 (PDT)
+Message-ID: <3f3906e76ef6d87a12552b99d8f5bf9e34724677.camel@gmail.com>
+Subject: Re: [PATCH v2 1/6] iio: introduce IIO_DECLARE_BUFFER_WITH_TS macros
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: Andy Shevchenko <andy.shevchenko@gmail.com>, David Lechner
+	 <dlechner@baylibre.com>
+Cc: Jonathan Cameron <jic23@kernel.org>, Nuno =?ISO-8859-1?Q?S=E1?=	
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Lars-Peter Clausen
+	 <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, Eugen
+ Hristev <eugen.hristev@linaro.org>, Nicolas Ferre
+ <nicolas.ferre@microchip.com>, Alexandre Belloni
+ <alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+ 	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org
+Date: Thu, 24 Apr 2025 08:44:36 +0100
+In-Reply-To: <CAHp75Vfa0spzCW8WmR32N7u55N89kxywK5uuYMZDJUNHwSZoDQ@mail.gmail.com>
+References: 
+	<20250422-iio-introduce-iio_declare_buffer_with_ts-v2-0-3fd36475c706@baylibre.com>
+	 <20250422-iio-introduce-iio_declare_buffer_with_ts-v2-1-3fd36475c706@baylibre.com>
+	 <701bfc6a715046044dbc789f1c11c7f85395c7a8.camel@gmail.com>
+	 <b4218efe-3785-4065-a3f7-57824e882f09@baylibre.com>
+	 <CAHp75Vfa0spzCW8WmR32N7u55N89kxywK5uuYMZDJUNHwSZoDQ@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.1 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250423194100.53934-1-gye976@gmail.com> <20250423194100.53934-4-gye976@gmail.com>
- <CAHp75VdHnBQyGFPLwpiZZdGcuwhyMM0Yfnv=2+nwr1Ma+1T9JQ@mail.gmail.com>
-In-Reply-To: <CAHp75VdHnBQyGFPLwpiZZdGcuwhyMM0Yfnv=2+nwr1Ma+1T9JQ@mail.gmail.com>
-From: Gyeyoung Baek <gye976@gmail.com>
-Date: Thu, 24 Apr 2025 14:19:10 +0900
-X-Gm-Features: ATxdqUFdx1OZVDfnOTpSqDMFw3x3r87O8m31VPZwanjM9VomnCMIZtFlyN4o7d8
-Message-ID: <CAKbEznvaiF3+TdTwRsh0C9WLtZAu4UObNa5aMAOjYt5KW6hLEQ@mail.gmail.com>
-Subject: Re: [PATCH v6 3/4] iio: chemical: Add support for Winsen MHZ19B CO2 sensor
-To: Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: jic23@kernel.org, linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
-	dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org, robh@kernel.org, 
-	krzk+dt@kernel.org, conor+dt@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Hello Andy,
+On Wed, 2025-04-23 at 18:43 +0300, Andy Shevchenko wrote:
+> On Wed, Apr 23, 2025 at 5:51=E2=80=AFPM David Lechner <dlechner@baylibre.=
+com> wrote:
+> > On 4/23/25 4:18 AM, Nuno S=C3=A1 wrote:
+> > > On Tue, 2025-04-22 at 17:07 -0500, David Lechner wrote:
+>=20
+> ...
+>=20
+> > > On the other hand, as I mentioned in V1, I think that an assertion or
+> > > BUILD_BUG_ON_MSG for making sure 'count' is a compile time constant
+> > > expression
+> > > would be helpful. Sure, we'll get -Wvla but some developers might sti=
+ll
+> > > ignore
+> > > the warning and send patches with these arrays. So, it would be neate=
+r if
+> > > we
+> > > fail to build and force them to fix their code.
+>=20
+> > BUILD_BUG_ON_MSG() won't work because it expands to a do/while loop whi=
+ch
+> > won't
+> > work in static struct declarations. But I can try to see if we can come=
+ up
+> > with
+> > something that works.
+>=20
+> I guess Nuno is okay with static_assert() and TBH nowadays the
+> BUILD_BUG() as is most likely historical.
 
-On Thu, Apr 24, 2025 at 6:39=E2=80=AFAM Andy Shevchenko
-<andy.shevchenko@gmail.com> wrote:
->
-> On Wed, Apr 23, 2025 at 10:41=E2=80=AFPM Gyeyoung Baek <gye976@gmail.com>=
- wrote:
-> >
-> > Add support for Winsen MHZ19B CO2 sensor.
->
-> LGTM,
-> Reviewed-by: Andy Shevchenko <andy@kernel.org>
+Yes...
 
-Thank you for your reviews so far.
+"...I think that an __assertion__ or BUILD_BUG_ON_MSG..."
 
---
-Regards,
-Gyeyoung
+- Nuno S=C3=A1
 

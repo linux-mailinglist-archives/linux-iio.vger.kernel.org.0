@@ -1,62 +1,58 @@
-Return-Path: <linux-iio+bounces-18625-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18626-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59CDEA9C0D9
-	for <lists+linux-iio@lfdr.de>; Fri, 25 Apr 2025 10:22:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E37F8A9C0DE
+	for <lists+linux-iio@lfdr.de>; Fri, 25 Apr 2025 10:24:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A6C11464992
-	for <lists+linux-iio@lfdr.de>; Fri, 25 Apr 2025 08:22:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3CAD2468565
+	for <lists+linux-iio@lfdr.de>; Fri, 25 Apr 2025 08:24:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22488230BDC;
-	Fri, 25 Apr 2025 08:22:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B00A1F4180;
+	Fri, 25 Apr 2025 08:24:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TXV9W0y0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bbpnqXiJ"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D021417A2EE;
-	Fri, 25 Apr 2025 08:22:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B64A17A2EE
+	for <linux-iio@vger.kernel.org>; Fri, 25 Apr 2025 08:24:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745569346; cv=none; b=qo8vDzbZZXxZRD2hp6MXw7N3CR5/y4QXty9Lp35gtbowzam8bu0HzPUMAeeNNkltQ+//ASQdUwTgjg+T50agoFaS7ZZoSpIUTznrODYzMxv0VXLRN4MoKWRSpNfnJZdCIEl4jPBiij6CsJnq7UvJhNESaj5GovVjstkMVkQH5uw=
+	t=1745569477; cv=none; b=pT+mZ4VhTc8dxxOT4Aq4eubYmFUDgOzFlXFAr2ZrEI7pifa0ZsKD8r/L5ACWWPsLtaqVclt/3IdnlnHTmduqME83DvOEsilp099q3GId+VXcQwvEaZnq7ocwEoS+w2ZPmjugbhPajfIfXN1o17avod0vAExjct7WUSuaIBntQ2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745569346; c=relaxed/simple;
-	bh=+CE+X15AAaCeDTUxmGCqYcAhzi2wknEruYG/dvqSPRs=;
+	s=arc-20240116; t=1745569477; c=relaxed/simple;
+	bh=yaX3w4DfcX3TMo4x0MUdyXmOAsmyKJ9+vwqLSlAWwoA=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iH/vI+YomZ3hpysnjieAIWuMzf9Q7teEOmGFSf5qSAbviOzLSvbVAdHdnZfnYvWUQ/YQLgB96Uu6p28POR7QwmLbm582nwA4Av2sMzAR2qpP1PkSayht7lZJYQmw5I3vpbalr02YJCHAiLMv4rxv221E4Xeh9Ls40nCsw9UdbyY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TXV9W0y0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DA9AC4CEE4;
-	Fri, 25 Apr 2025 08:22:22 +0000 (UTC)
+	 MIME-Version:Content-Type; b=RF7ZdYb6SNScap7CACzSi0dTbZC9b69m+jiZBL2EGogG98ElT0KiJthP/qUj7nj8woZL98G0Fd4cV3j29iFi5hGJ5OxtiLSDlooIkuAtvg9sFhCIpbUJ6YlRFxA0PvZRz0qtxdT/5/S+J2A4pYONlhkb3VEI1xUQlM9CgWZx7qk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bbpnqXiJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68219C4CEE4;
+	Fri, 25 Apr 2025 08:24:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745569346;
-	bh=+CE+X15AAaCeDTUxmGCqYcAhzi2wknEruYG/dvqSPRs=;
+	s=k20201202; t=1745569476;
+	bh=yaX3w4DfcX3TMo4x0MUdyXmOAsmyKJ9+vwqLSlAWwoA=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=TXV9W0y0dpOfYs7DR7HZkh78YkG6Mzg7Zd+saejig0kqo/BVPBN2wG9WkS3n5ZQOl
-	 4Nfdwj2uwdYJ+RCDcdwk9/56DUuo3V60taysMbXiOCyYi5nEpi+dKCzG7ktY6kQ+Ld
-	 1ut18lt7b7QG46eOzOdWVdDw5bPy4oSIHgE1pb8qae5OVFBt72cr/8dL2ON+PBp3fJ
-	 QijKayN6PGXxf7eK6HAGqyk/8fGXwo6PwI5VnxVO1Awi5rX1Bo7CwIa9VPpWtt03Ti
-	 rPoCCRQHmlqEoLWb7mhIKITpV/E73kcQU+IsKIda6fnXOiZkolHSo6gy+RFgZaRN9z
-	 A4WodpL7my0wg==
-Date: Fri, 25 Apr 2025 09:22:17 +0100
+	b=bbpnqXiJBwtdsPVTFBFxc5de7F2/pwqYOvlF29RMk2Az6ELHq79MSfBZNxvEicmuK
+	 zUYEDWj37k4HY1qHG5NOwfW32E1b6HteyqxPVHK2wc01OVICMlWj24VsoRRGRrj/Y6
+	 kn78/450ekBQTHMi1PpvAGP3HEYz9yjqtA28uotBXUL7gm1RWMHeki9ykHC3klULj+
+	 Uw61dKYTMMvXfbQ5m8Z5bSptsn+pVxK5c4j3DYs79UR2lkw+1Td0zf6P/WyxZ1VruU
+	 IvVsMcMOz+QqpCTXCW7PgK8tO0HhhjymGii/vuZSdvP09+iNmpr1XsQaznwVixmcWj
+	 ed9yF92eLhyVA==
+Date: Fri, 25 Apr 2025 09:24:31 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: Gyeyoung Baek <gye976@gmail.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, dlechner@baylibre.com, nuno.sa@analog.com,
- robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org
-Subject: Re: [PATCH v4 3/4] iio: chemical: add support for winsen MHZ19B CO2
- sensor
-Message-ID: <20250425092217.1ed00827@jic23-huawei>
-In-Reply-To: <aAfSUjFh_eB8Dtl2@smile.fi.intel.com>
-References: <20250420181015.492671-1-gye976@gmail.com>
-	<20250420181015.492671-4-gye976@gmail.com>
-	<CAHp75VdAeJ0HhExE=OAeFdYz2MYFKgMffbD_Gidf86w=zhKccg@mail.gmail.com>
-	<CAHp75VcaGqR-c23GCOKo3RLO-omtt9YgPuHmCUteAqYt6yon7Q@mail.gmail.com>
-	<CAKbEzns_cve+=8wQu2poVx5ZFr8zfUyMajmEz_YpSCDxffQXyg@mail.gmail.com>
-	<aAfSUjFh_eB8Dtl2@smile.fi.intel.com>
+To: Arthur Pilone <art.pilone@gmail.com>
+Cc: marcelo.schmitt@analog.com, linux-iio@vger.kernel.org,
+ bruno.stephan@usp.br, aschwarz@usp.br
+Subject: Re: [PATCH v2] iio: adc: ad7091r-base: Move reg volatility check to
+ new macro
+Message-ID: <20250425092431.3c128be2@jic23-huawei>
+In-Reply-To: <CA+m-LuUn0awgWBK6TfKo0z_BYf9+5ZJdyNVF3vN+ywquPYsE0A@mail.gmail.com>
+References: <20250420222512.173029-1-arthurpilone@usp.br>
+	<20250421140842.08e4d26b@jic23-huawei>
+	<CA+m-LuUn0awgWBK6TfKo0z_BYf9+5ZJdyNVF3vN+ywquPYsE0A@mail.gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -64,54 +60,57 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Tue, 22 Apr 2025 20:30:58 +0300
-Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+On Mon, 21 Apr 2025 12:05:49 -0300
+Arthur Pilone <art.pilone@gmail.com> wrote:
 
-> On Tue, Apr 22, 2025 at 05:38:56PM +0900, Gyeyoung Baek wrote:
-> > On Mon, Apr 21, 2025 at 4:24=E2=80=AFAM Andy Shevchenko
-> > <andy.shevchenko@gmail.com> wrote: =20
-> > > On Sun, Apr 20, 2025 at 10:21=E2=80=AFPM Andy Shevchenko
-> > > <andy.shevchenko@gmail.com> wrote: =20
-> > > > On Sun, Apr 20, 2025 at 9:10=E2=80=AFPM Gyeyoung Baek <gye976@gmail=
-.com> wrote: =20
->=20
+> Thanks for the comment, Jonathan.
+> 
+> Jonathan Cameron <jic23@kernel.org> wrote:
+> > I'm late to the game but to me, simpler to not have a macro but avoid
+> > duplication by having one function call the other. Also a more
+> > minimal comment can convey the point you want to make.
+> >  
 > ...
->=20
-> > > > > --- a/drivers/iio/chemical/Makefile
-> > > > > +++ b/drivers/iio/chemical/Makefile =20
-> > > =20
-> > > > >  obj-$(CONFIG_SPS30_I2C) +=3D sps30_i2c.o
-> > > > >  obj-$(CONFIG_SPS30_SERIAL) +=3D sps30_serial.o
-> > > > >  obj-$(CONFIG_VZ89X)            +=3D vz89x.o
-> > > > > +obj-$(CONFIG_WINSEN_MHZ19B) +=3D mhz19b.o =20
-> > > >
-> > > > Preserve order. =20
+> >
+> > On Sun, 20 Apr 2025 19:25:12 -0300
+> > Arthur Pilone <art.pilone@gmail.com> wrote:  
+> > >  EXPORT_SYMBOL_NS_GPL(ad7091r_writeable_reg, "IIO_AD7091R");
 > > >
-> > > Ah, I see it's ordered but by Kconfig, Why do you have WINSEN in the
-> > > option and no such thing in the filename? I would drop that from the
-> > > config option. =20
-> >=20
-> > I followed the 'vendor_device' naming pattern seen in examples like
-> > 'CONFIG_SENSEAIR_SUNRISE_CO2' =20
->=20
-> Interesting... Now I understand why the above was pulled without any comm=
-ent,
-> because the vendor and device names start with the same letter 'S'!
+> > >  bool ad7091r_volatile_reg(struct device *dev, unsigned int reg)
+> > >  {
+> > > -     switch (reg) {
+> > > -     case AD7091R_REG_RESULT:
+> > > -     case AD7091R_REG_ALERT:
+> > > -             return true;
+> > > -     default:
+> > > -             return false;
+> > > -     }
+> > > +     /*
+> > > +      * The volatile ad7091r registers happen to be precisely the
+> > > +      * two read-only registers.
+> > > +      */
+> > > +     return AD7091R_IS_READ_ONLY_REG(reg);  
+> >
+> >          /* The volatile ad7091r registers are also the only RO ones. */
+> >         return !ad7981r_writeable_reg(dev, reg);  
+> 
+> Perfect. Addressed your suggestion on v3:
+> https://lore.kernel.org/linux-iio/20250421145534.91146-1-arthurpilone@usp.br/T/#u
 
-These vendor + driver things originally (IIRC) snuck in with driver
-moves from misc etc a long time ago and I've never really enforced having
-them or not properly since then :(
+I'm replying to a few people about this today.
 
-I prefer not having the company in these but it is a fairly random
-choice with little real justification either way.
+Don't bother replying to say you are taking a suggestion on board and
+sending a new version.  That information is implicit in the new version
+existing.
+
+It is noise on the list and slows things down a little.
+
+Thanks,
 
 Jonathan
 
->=20
-> > But I'll drop the vendor prefix in the next patch, thanks. =20
->=20
 
 

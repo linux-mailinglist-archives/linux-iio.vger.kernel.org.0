@@ -1,79 +1,79 @@
-Return-Path: <linux-iio+bounces-18670-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18671-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05617A9D405
-	for <lists+linux-iio@lfdr.de>; Fri, 25 Apr 2025 23:16:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEA06A9D463
+	for <lists+linux-iio@lfdr.de>; Fri, 25 Apr 2025 23:44:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1CF7E1BC0DB6
-	for <lists+linux-iio@lfdr.de>; Fri, 25 Apr 2025 21:16:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 04FA03BA1A6
+	for <lists+linux-iio@lfdr.de>; Fri, 25 Apr 2025 21:44:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8D802248AB;
-	Fri, 25 Apr 2025 21:16:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 427D3225760;
+	Fri, 25 Apr 2025 21:44:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="AwwVQTCP"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="ecdIgtzW"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oa1-f46.google.com (mail-oa1-f46.google.com [209.85.160.46])
+Received: from mail-oi1-f170.google.com (mail-oi1-f170.google.com [209.85.167.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C66F4192D6B
-	for <linux-iio@vger.kernel.org>; Fri, 25 Apr 2025 21:16:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B76672253E8
+	for <linux-iio@vger.kernel.org>; Fri, 25 Apr 2025 21:44:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745615784; cv=none; b=hdNTkiqT8OGNdef9p5TUxDvpG6AxCcNsyK556liYxmx54wAzdU6TMhT7YXa4M9WdeGdZo80vakuhUp9VBr2a7GXSUnDjN/Z9np7xC4Xlsh6isAxfjltkEksSG93xVTKIZUR5OYZ9xMOV8WQnJ6h2RNsBRp6EYWPhZ05w7UlUk4A=
+	t=1745617466; cv=none; b=o4SmIPUPRsTkdLkidARX96FYf8Yj+Nr8ZwOFb4397aA3ndUOcPqd6k8+5RSoFHS8i6pg2wSVW/abvb6A31XhPFNT3sNkcIl6qOnF33fiKzLqXFj6LDRcNrroOA34K0943avUUrva1wOLV93e75WVM62L5krJ+UdnxyndvS5wP6Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745615784; c=relaxed/simple;
-	bh=gfFhdTGxHbl/LD37YDzvdKH+lTSppcTv0j9nC41MXw8=;
+	s=arc-20240116; t=1745617466; c=relaxed/simple;
+	bh=0PGOU404WR3ZZT5UO5ZutPGEui+7NlIYTJrsKba4mAI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=T3AMaQruyhA6BjSegoBHmI6l+aH8yfnFVCtlnN/z5U1DtduqY0z0UEdog0QWTBtwBeH/BHPfqGzVphADb08Dv8D0Rc5E2QvWroE/T7Y42i/qMRxwsF5fbo3wxjpXmICcDjL97juMwQv4SdgOrRdHJNwHLBN6tKaHaWb8v5ODr6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=AwwVQTCP; arc=none smtp.client-ip=209.85.160.46
+	 In-Reply-To:Content-Type; b=kTVB574/J4irsTBLGrFER12N1fK9ZhH0DDYNGcciPAxvvHr/3B830QdX3L6yw9dChNCfD3etcdU8JBRnEXU39AzcsM4iO5N0RlfJDNPUSmwRsUHtQd1cU6ntSUSng+WafgGgeDMswM3kf7OJIsS+lT+TS2D7c+M8Gl490h6yj5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=ecdIgtzW; arc=none smtp.client-ip=209.85.167.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-2cc89c59cc0so2514195fac.0
-        for <linux-iio@vger.kernel.org>; Fri, 25 Apr 2025 14:16:22 -0700 (PDT)
+Received: by mail-oi1-f170.google.com with SMTP id 5614622812f47-3fea0363284so1854866b6e.1
+        for <linux-iio@vger.kernel.org>; Fri, 25 Apr 2025 14:44:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1745615782; x=1746220582; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1745617463; x=1746222263; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:content-language:from
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=dTz9I5enTaJxLVBqLDZUEqU3il7OBimu59UQoHiVNMA=;
-        b=AwwVQTCP2K9CKA4fyIHrFrdBnoSQuw+MGhcGYT6karBo24u81I/NgHboYE4KWjBdQZ
-         2jQ355Uf85ipswqalfYQOcnB16PMRY6/0n7RE6yggkwGwkWUYKylHYzst8PqwPW7gYLa
-         LuCp1pVUCBENWqDqqZli/UnyZCr9rgILrG8I70DDHpcgV6uawgL5yOTmD9eOvdN6+LUC
-         x6v7v/W1/OTZ5h5Op2bhbChw+s938Q4jp6xsXc4xotwC0QZ0FETfq/4faR2AkUYg8GrO
-         iIraHhbsryGCdQU9NCNKo635EYhf7DzZ4ruUihysiBC2+a/89G2X+9D7yPNc2E3UkAFo
-         e/Vg==
+        bh=Vetl9XpldH8JvL8GlwOYXmdLs3vxDNII55h0sSj3lYc=;
+        b=ecdIgtzWNSzsQn2U0k23mm0eBPvHL1C1TcUx5drufKdFJWPjIQ7GsvtCZNtt5PLkrQ
+         WnTYAnIngoJxMKPjvGQiafQHc11uLmi+6WacfOsAoF51wtpj5OD1KLHbuqOxW9MJ+gqu
+         5dnK7M15p2Ba7STyIzHw8yQ2C07rw8o15cRsmQMj8XCNaYuV4Xz4PUCW26zxhpCC1VG5
+         46kunNXqj5N6793pab6hLib2fv9d4od8dWNR/iV2yFkzw4n8YTPKs+UFmFcwE9gaYloe
+         CVGYnFNqsC2iAGruFEhIv3ZuPkZEJxVIArXn+geM9L4Mb+yzI1VWxaB1nUXsqcfJTKI3
+         kjVA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745615782; x=1746220582;
+        d=1e100.net; s=20230601; t=1745617463; x=1746222263;
         h=content-transfer-encoding:in-reply-to:content-language:from
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=dTz9I5enTaJxLVBqLDZUEqU3il7OBimu59UQoHiVNMA=;
-        b=VsCvCVdy2v+dUYHsFcBmj0SC2GAfEI4kEUHcVKxKd1Jc1/3Ez5tKZVeLxuLHR7DY5u
-         OQL5R0zt9Uqe0tf5ufOqnQLixLsQXXuD//BGn8sVCnIwvORuXUI8lt910QhRw1hyJS4k
-         kTbrTCRAfAhAs64eh36sosll3VcHtBtZk1KqhkBx9LZJbgjnXuqwCLFuwhWI/u9814TV
-         mBS7SJ3Vkk4PodFQrx2RYTfqTsehZR4uiaZomPvj8hywq/BnYt2pkfqNLKRsAFp2YnfP
-         GW6tZNG15c953YTbvx2VXnCu3UVBgVdqn3bcN8hKbhCqxVhiotgS+sKlvgUHaZr0wKZC
-         OXYg==
-X-Gm-Message-State: AOJu0YyAf1X/kYYCvkzzIas69HEZTvyTR6JnYEVpZ6cGuQfZfTwpoWml
-	G0JFN6U+UKzI7ZxJlTmNpzTKL6lc3t0cFZNxQ6ByFYahe1q7x90fzosxOryoSXA=
-X-Gm-Gg: ASbGncskMRUI/qp4+kz0HsL15ZZeftsSHCtlA/Yhgkh7LQvDEnhCKKHoTa33thRLT5Z
-	z+41knl54sCa4Scr8HLtKkMPOzziLbgnsxpzFHWH6Rot3RmfUTjvgIvNlxYz6ZSE17qYmCJ+eSx
-	1cZO67Bho8mccXU/y/nu748o9/v6bFDNhJvQog/rdzgDZl09uZRTsxz5lAgQQqJqtsXJA/yljOq
-	X5JzwiRpBhbCx1HRxQkxYNgS2G8FHq0UaObibnbUQtSDlQ5HALfIMlFVta71tqhmA8t/INfLnc9
-	Df5AuX+zLPvsOap1ow2OL0xjHGcQTKFmvtTdDjJWoKrO1c1mZQktLX8GIWb2+kypHuuZbSUx7sp
-	C8EjpoYQMNTMD
-X-Google-Smtp-Source: AGHT+IFP6Q8OseGcSbnqWqVTrZCG0R7+HN99jIze+0SssGMO+saUY5k74kZJ24hu1RttCmiKMZvjBQ==
-X-Received: by 2002:a05:6870:611e:b0:2d4:e8ce:7bcc with SMTP id 586e51a60fabf-2d97317915cmr4604390fac.8.1745615781776;
-        Fri, 25 Apr 2025 14:16:21 -0700 (PDT)
+        bh=Vetl9XpldH8JvL8GlwOYXmdLs3vxDNII55h0sSj3lYc=;
+        b=oWXUlNYG6ehMS9QoNK+UApLHt13ki81sDAksfTQllNW9+8OgYxsDOr7+NOx0vLeBRd
+         e7se3mB8NKsmPIap688l/6KBw4Rgm9/UWKT3liHZWO62KNtkdcoX5+iTJQMVDPtkT17M
+         9IB2ciud900u5LSWYYnyesgKOT5b/5lboxeALOnWxKUw0a29F26rNTGmT0P+jc1cYeXc
+         l9T8bDSvZNCKBqFaFx5AWBupBVb2A3Ua6rJbIhxArT/Se/3e2B9pRKApHp9JZJP6Jpk1
+         0DcY/boXGPw5p9bi+hAG//+zoj49dznNEWanKKj7IWOVOItOBzGC6ytK+3pDOEcL4CIS
+         E/PQ==
+X-Gm-Message-State: AOJu0YwDFM5EgXc7i4CzmzFANsqtpAtOod8RKS+hXvJTy9oJHlH4yg7u
+	zIx1t7sX2owWd5DrRA8+BZORQE79KS1EA7bvbU81sDVt3nr0azkYAez0MFuROYI=
+X-Gm-Gg: ASbGncsi1HJlE6q0od+GOSCgHHzNKdUYQlkALXQhUu85MISDkwGk8ntZ790zUZ2BRW1
+	a9nvt3d1x4sfHJtiiJukKiJXoIwb5dFqKtUDQMek1uXIEFIKPQhL72HJ32It+a/AC3s0GDwamdy
+	e7ZubcqFEoRX21fQ9n9k5/xFmW2KTHFL2C++VBeCZLCDUdsMrdWqVIh9BrSBNuw/G1xjxsh0SX5
+	jJW1TgwKTcI3s8WUUSHaL7D80qg6ZFpNl+OiWNNEZjUACsx0VD7gMK+YDAmgywqdkCbzjB2Ebab
+	hmkyA4Wwq085DUf3Ke5bGHLNiN7mSZB6GTRIipoglsa06qkb8lUvq3JybLEMuj59D/KY2Onks/T
+	r+qHIuR66p92+
+X-Google-Smtp-Source: AGHT+IGYSYK/NgbfRtntiLX0fyD882sY0Y9kI7JKZ0e9QJqEQnnrOLa7rFd/SxmE01a29TeJbZfoUg==
+X-Received: by 2002:a05:6808:178e:b0:400:fa6b:94bf with SMTP id 5614622812f47-401ec44c715mr4767354b6e.4.1745617462686;
+        Fri, 25 Apr 2025 14:44:22 -0700 (PDT)
 Received: from ?IPV6:2600:8803:e7e4:1d00:96a3:e28:3f6:dbac? ([2600:8803:e7e4:1d00:96a3:e28:3f6:dbac])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7304f37b12fsm848940a34.43.2025.04.25.14.16.20
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-401ec8afb1esm939069b6e.10.2025.04.25.14.44.20
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 25 Apr 2025 14:16:21 -0700 (PDT)
-Message-ID: <143ffe9b-b32e-41ea-b5c7-855c680b48d4@baylibre.com>
-Date: Fri, 25 Apr 2025 16:16:20 -0500
+        Fri, 25 Apr 2025 14:44:21 -0700 (PDT)
+Message-ID: <9f5b0709-f795-44c5-aa64-aaed81a459bf@baylibre.com>
+Date: Fri, 25 Apr 2025 16:44:20 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -81,8 +81,7 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/5] Documentation: ABI: add oversampling frequency in
- sysfs-bus-iio
+Subject: Re: [PATCH v2 4/5] docs: iio: new docs for ad4052 driver
 To: Jorge Marques <jorge.marques@analog.com>,
  Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
  Michael Hennerich <Michael.Hennerich@analog.com>,
@@ -95,68 +94,169 @@ Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
  devicetree@vger.kernel.org, linux-doc@vger.kernel.org,
  linux-pwm@vger.kernel.org
 References: <20250422-iio-driver-ad4052-v2-0-638af47e9eb3@analog.com>
- <20250422-iio-driver-ad4052-v2-1-638af47e9eb3@analog.com>
+ <20250422-iio-driver-ad4052-v2-4-638af47e9eb3@analog.com>
 From: David Lechner <dlechner@baylibre.com>
 Content-Language: en-US
-In-Reply-To: <20250422-iio-driver-ad4052-v2-1-638af47e9eb3@analog.com>
+In-Reply-To: <20250422-iio-driver-ad4052-v2-4-638af47e9eb3@analog.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 4/22/25 6:34 AM, Jorge Marques wrote:
-
-...
-
-> Devices with this feature are max1363, ad7606, ad799x, and ad4052.
-> The max1363 driver included the events/sampling_frequency in
-> commit 168c9d95a940 ("iio:adc:max1363 move from staging.")
-> and ad799x in
-> commit ba1d79613df3 ("staging:iio:ad799x: Use event spec for threshold
-> hysteresis")
-> but went undocumented so far.
-
-It looks like this part was copied from a different commit and isn't related
-to this one.
-
+> This adds a new page to document how to use the ad4052 ADC driver.
 > 
 > Signed-off-by: Jorge Marques <jorge.marques@analog.com>
 > ---
->  Documentation/ABI/testing/sysfs-bus-iio | 17 +++++++++++++++++
->  1 file changed, 17 insertions(+)
+>  Documentation/iio/ad4052.rst | 95 ++++++++++++++++++++++++++++++++++++++++++++
+
+Also need to update the table of contents in Documentation/iio/index.rst,
+otherwise this page won't be build (and will cause a build error).
+
+You can run `make htmldocs SPHINXDIRS=iio` to speed things up and only build
+the iio directory to make sure you have it right.
+
+More info: https://www.kernel.org/doc/html/latest/doc-guide/sphinx.html
+
+>  MAINTAINERS                  |  1 +
+>  2 files changed, 96 insertions(+)
 > 
-> diff --git a/Documentation/ABI/testing/sysfs-bus-iio b/Documentation/ABI/testing/sysfs-bus-iio
-> index 33c09c4ac60a4feec82308461643134f5ba84b66..129061befb21b82a51142a01a94d96fcf1b60072 100644
-> --- a/Documentation/ABI/testing/sysfs-bus-iio
-> +++ b/Documentation/ABI/testing/sysfs-bus-iio
-> @@ -139,6 +139,23 @@ Contact:	linux-iio@vger.kernel.org
->  Description:
->  		Hardware dependent values supported by the oversampling filter.
+> diff --git a/Documentation/iio/ad4052.rst b/Documentation/iio/ad4052.rst
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..410aaa437ed5fea6a2924d374fa5f816f5754e22
+> --- /dev/null
+> +++ b/Documentation/iio/ad4052.rst
+> @@ -0,0 +1,95 @@
+> +.. SPDX-License-Identifier: GPL-2.0-only
+> +
+> +=============
+> +AD4052 driver
+> +=============
+> +
+> +ADC driver for Analog Devices Inc. AD4052 and similar devices.
+
+Please don't put newline after every period. Here and throughout the document.
+It makes it harder to read.
+
+> +The module name is ``ad4052``.
+> +
+> +Supported devices
+> +=================
+> +
+> +The following chips are supported by this driver:
+> +
+> +* `AD4050 <https://www.analog.com/AD4050>`_
+> +* `AD4052 <https://www.analog.com/AD4052>`_
+> +* `AD4056 <https://www.analog.com/AD4056>`_
+> +* `AD4058 <https://www.analog.com/AD4058>`_
+> +
+> +Wiring modes
+> +============
+> +
+> +The ADC uses SPI 4-wire mode, and contain two programmable GPIOs and
+> +a CNV pin.
+> +
+> +The CNV pin is exposed as the ``cnv-gpios`` and triggers a ADC conversion.
+> +GP1 is ADC conversion ready signal and GP0 Threshold event interrupt, both
+> +exposed as interrupts.
+> +
+> +Omit ``cnv-gpios`` and tie CNV and CS together to use the rising edge
+> +of the CS as the CNV signal.
+> +
+> +Device attributes
+> +=================
+> +
+> +The ADC contain only one channels, and the following attributes:
+> +
+> +.. list-table:: Driver attributes
+> +   :header-rows: 1
+> +
+> +   * - Attribute
+> +     - Description
+> +   * - ``in_voltage0_raw``
+> +     - Raw ADC voltage value
+
+No scale attribute? How do we convert raw to millivolts?
+
+> +   * - ``in_voltage0_oversampling_ratio``
+> +     - Enable the device's burst averaging mode to over sample using
+> +       the internal sample rate.
+> +   * - ``in_voltage0_oversampling_ratio_available``
+> +     - List of available oversampling values. Value 0 disable the burst
+> +       averaging mode.
+
+Typically 1 means no oversampling, not zero. (It is a ratio, divide by 1 is the
+same as doing nothing, but divide by 0 is undefined.)
+
+> +   * - ``conversion_frequency``
+
+Needs to be updated to ``oversampling_frequency``.
+
+> +     - Device internal sample rate used in the burst averaging mode.
+> +   * - ``conversion_frequency_available``
+> +     - List of available sample rates.
+> +
+> +Threshold events
+> +================
+> +
+> +The ADC supports a monitoring mode to raise threshold events.
+> +The driver supports a single interrupt for both rising and falling
+> +readings.
+> +
+> +The feature is enabled/disabled by setting ``thresh_either_en``.
+> +During monitor mode, the device continuously operates in autonomous mode until
+> +put back in configuration mode, due to this, the device returns busy until the
+> +feature is disabled.
+
+Probably worth mentioning the ``events/sampling_frequency`` and
+``sampling_frequency_available`` attributes since we've mentioned all of the
+other attributes.
+
+> +
+> +Low-power mode
+> +==============
+> +
+> +The device enters low-power mode on idle to save power.
+> +Enabling an event puts the device out of the low-power since the ADC
+> +autonomously samples to assert the event condition.
+> +
+> +SPI offload support
+> +===================
+> +
+> +To be able to achieve the maximum sample rate, the driver can be used with the
+> +`AXI SPI Engine`_ to provide SPI offload support.
+> +
+> +.. _AXI SPI Engine: http://analogdevicesinc.github.io/hdl/projects/ad4052_ardz/index.html
+> +
+> +When SPI offload is being used, additional attributes are present:
+> +
+> +.. list-table:: Additional attributes
+> +   :header-rows: 1
+> +
+> +   * - Attribute
+> +     - Description
+> +   * - ``in_voltage0_sampling_frequency``
+> +     - Set the sampling frequency.
+> +   * - ``in_voltage0_sampling_frequency_available``
+> +     - Get the sampling frequency range.
+
+In the driver, this is currently info_mask_shared_by_type, so would be
+``in_voltage_sampling_frequency``. And there currently isn't 
+``in_voltage_sampling_frequency_available`` in the driver, so it needs to be
+added in the driver (or removed here).
+
+> +
+> +The scan type is different when the buffer with offload support is enabled.
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 81fbe7176475c48eae03ab04115d4ef5b6299fac..04aa8db44bee418382a2e74cb6b1d03a810bd781 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -1334,6 +1334,7 @@ M:	Jorge Marques <jorge.marques@analog.com>
+>  S:	Supported
+>  W:	https://ez.analog.com/linux-software-drivers
+>  F:	Documentation/devicetree/bindings/iio/adc/adi,ad4052.yaml
+> +F:	Documentation/iio/ad4052.rst
 >  
-> +What:		/sys/bus/iio/devices/iio:deviceX/oversampling_frequency
-> +KernelVersion:	6.15
-> +Contact:	linux-iio@vger.kernel.org
-> +Description:
-> +		Some devices have internal clocks for oversampling.
-> +		Sets the resulting frequency in Hz to trigger a conversion used by
-> +		the oversampling filter.
-> +		If the device has a fixed internal clock or is computed based on
-> +		the sampling frequency parameter, the parameter is read only.
-
-Don't need a newline after every period.
-
-> +
-> +What:		/sys/bus/iio/devices/iio:deviceX/oversampling_frequency_available
-> +KernelVersion:	6.15
-> +Contact:	linux-iio@vger.kernel.org
-> +Description:
-> +		Hardware dependent values supported by the oversampling
-> +		frequency.
-
-		oversampling_frequency attribute.
-
-> +
->  What:		/sys/bus/iio/devices/iio:deviceX/in_voltageY_raw
->  What:		/sys/bus/iio/devices/iio:deviceX/in_voltageY_supply_raw
->  What:		/sys/bus/iio/devices/iio:deviceX/in_voltageY_i_raw
+>  ANALOG DEVICES INC AD4130 DRIVER
+>  M:	Cosmin Tanislav <cosmin.tanislav@analog.com>
 > 
 
 

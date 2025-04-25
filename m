@@ -1,78 +1,80 @@
-Return-Path: <linux-iio+bounces-18663-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18664-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94CC1A9D3E3
-	for <lists+linux-iio@lfdr.de>; Fri, 25 Apr 2025 23:09:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D936A9D3E5
+	for <lists+linux-iio@lfdr.de>; Fri, 25 Apr 2025 23:09:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 02C3E3B5BBB
-	for <lists+linux-iio@lfdr.de>; Fri, 25 Apr 2025 21:09:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CFAFB17D33D
+	for <lists+linux-iio@lfdr.de>; Fri, 25 Apr 2025 21:09:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF4EC22425B;
-	Fri, 25 Apr 2025 21:09:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE795224AF2;
+	Fri, 25 Apr 2025 21:09:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="RZD7uDaE"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="GAnSa7F5"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oa1-f50.google.com (mail-oa1-f50.google.com [209.85.160.50])
+Received: from mail-oa1-f45.google.com (mail-oa1-f45.google.com [209.85.160.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CEEA21CC59
-	for <linux-iio@vger.kernel.org>; Fri, 25 Apr 2025 21:09:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ECF9223DC9
+	for <linux-iio@vger.kernel.org>; Fri, 25 Apr 2025 21:09:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745615380; cv=none; b=rL+ByZbn8X37qQhhdoYVRMjWmYCKg1u6Yt3afpvySm5jcVugMCkNMIoj6z1cBLKtZXieZdnPNfiBY9jiTkpSQXUgxP0Y2giMGK0522p7HBYNpBZMmjtXtVYbbFMbkBaZ/Do27qB6QJRaUlM3VlOWTpJr8DCIzTW9TQNn9LJ+VkU=
+	t=1745615382; cv=none; b=dmM3oN1thNPsWDbrstsndMj0rXCWFJUnGJ45e+GUr9Trb9QGwYQ1MqENPbNBRm+Hpyjeane5eTgDSBkd7cRK5Ys6I+VGtiYdRzKMyJhxDguYUOAHNhkD3NbqSr6xYQXzP+Gv/qdvbTvOAcfyLkqcw8pGc2NFXZUSYpVzqZoBfqQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745615380; c=relaxed/simple;
-	bh=o7BcIIIYtQBUHMADOGXaeTJA+HEbSY/NkKPNVQoDqrs=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Z+uXzEV2QBeQk77CBDFI80w+CNfp7YX0lgMHtrZ78dFDpURMr4roZIUAptmtfqSTQpQ3OjVad9ZcBJ7qryMqDXcpaxuzOtlpZHIuJfo9C0cCulMKJYkvfNph912T9wNrQ7EzhgXXxoHxqSLRhOPhzIglFufvPq/UvfGfUKa8GIY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=RZD7uDaE; arc=none smtp.client-ip=209.85.160.50
+	s=arc-20240116; t=1745615382; c=relaxed/simple;
+	bh=S9yyrbbGceERU79hEYcii6LVQfguSKjlkyu5n+UlTsA=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=sLRPXTtDHuRlvrJwX0NgDVhZi3Oj/K7v+vpFeqhN7acimPkTi7LGnRqrFluq7NU3wa9WPOPc/uFeEo7MHla7g3RJnjLdrXNUccbmgbjuiAFVQC4SEFt0E9lNn8RNgmrOoaub+hKvHOxhc/rK1/2ePBYHEDBRmvSg37pUqjnl8CY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=GAnSa7F5; arc=none smtp.client-ip=209.85.160.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oa1-f50.google.com with SMTP id 586e51a60fabf-2c7f876b321so807857fac.1
-        for <linux-iio@vger.kernel.org>; Fri, 25 Apr 2025 14:09:38 -0700 (PDT)
+Received: by mail-oa1-f45.google.com with SMTP id 586e51a60fabf-2c7f876b320so1802972fac.1
+        for <linux-iio@vger.kernel.org>; Fri, 25 Apr 2025 14:09:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1745615377; x=1746220177; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=VpoMnDgu+7UC7RtrUCDJGErjf4myIlSL18Se8Lkjx+0=;
-        b=RZD7uDaEEDsgUPOKcaEh8DhITSnuNMG786mPtCcrg0bmzefcJYMSAm/uDxIAVonIHV
-         XpgVfGI9bIUpEVEfMsCplM1f0b5aNeybzmo+Vm1WfG0r/NpoF6VWNntdUd0KDrXmSaDj
-         hDS/t/f4kskzX026XaC9QFD5D1m7NSTE+CyzvWV/39LmlFG5n3l05ZT2cRkEkxfbhpvS
-         kf/8xVtYi1GyZGZe7QHfxGqR8gMuIf9FPPtsUR3Sh5tZldNq0tsYBhmugSwqrC6AU+rE
-         MId8nOIYLFxWCN541NdnMWRqmDmogIZClNhoiLmVoM6GSX7qBgU+gMnEu/ikowIPVJZs
-         ZDDQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745615377; x=1746220177;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1745615379; x=1746220179; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=VpoMnDgu+7UC7RtrUCDJGErjf4myIlSL18Se8Lkjx+0=;
-        b=qJpMQ7S3pyGQsJnFGDPakD4qRxnPh/dwKtRjhckDswL3+gUJfeF1zybQU4NGuCyIJD
-         aMi1dQeXHEakAmIPoZNjUdyDT6aFM14ZEF5K+3yWQo1unR8VD9gYPz+6Yh62voYDRNzj
-         SMY/MEJYvWVyG0CV0sdiqIDs9H96jvU8J//RwHCG2RDmZW14Wc7pZr9OqRssrTqiNOVG
-         R9cGGmlKO+dR7wWRIvBUN4OeSMcibBIvQ2oDr+hRYEFazNzEZRJ/Z1ZY/PQ3W7R8xCfM
-         qS/NAAsKwk1JYLD2gaq51v36OLlrQt3NxzjyE/GhftG/OcvYz08CY5c1ZJshK762A0He
-         fPxg==
-X-Gm-Message-State: AOJu0Yz/qfGd65fBG3ic4oIpFYugfC5+8zSq0RRt4G4+xknq+ReKXgP2
-	PuhEOZmTuKgdX063C2WzOXRaaq2EZwzeDS28X6q9STVk8Sp6CfvBEsn0EXwBeO0=
-X-Gm-Gg: ASbGncuj1/FzcVHWQ6v6LDiWN1T4aqmacIFuwX3bO+LvT9NV4lXnmVzTc4N0am2B4ok
-	XubZtryjH1Ege4WpV3yMCGlNzrozCe5Z8Amcv8ayUbEDZTUUNqK3dronqEtbAsfWPQfurp5fTsX
-	497ptCUb48ZWHk0tFF+I9k0bB5nraiCwWNyom/I6zJEDhgeUgBUYjo3bwZqZz7YxkEk3n0qteom
-	YvjWZWsKQbiulw2FbEUrU4aU04WNXNXV3mqOXwh0c1wGDoZj5tKw/0l+W9Caw0/SsHWaMyy2Yhj
-	CBI9f9GOXqSjAvtSmMYd0XuTugB3Hpj8oniyNfiEw0TZ
-X-Google-Smtp-Source: AGHT+IHyxrjoVl0KXbSfTLDYg+CfefqZM8U73y5ZfAGM3b42y6FXuX1DXtEWNsTF1iIIW4wUhTqhCA==
-X-Received: by 2002:a05:6870:4595:b0:2c1:62ba:cd7c with SMTP id 586e51a60fabf-2d9be58e9a7mr562692fac.15.1745615377396;
-        Fri, 25 Apr 2025 14:09:37 -0700 (PDT)
+        bh=BY1aWIkNQr9/WlVdM/imYDbUDJ4FCN12j5sBaq8Ups4=;
+        b=GAnSa7F5xF9OG+cfKIBYF6rZ8E0vWFuGHxyOO9QzT6D8FFe/l8KR9MvD6EdVYViFIZ
+         9GzjKYcDugPK9IPo7VIz1IO3AnAkOSjUfGfm+h/YpaIFcjHsGzp518RxAEXCzpT055eh
+         2q8aTe1Sl8vbCBh8kE6KsjE/AgGcA8NcAdm9HgLHT/8pCHEiudD5BInzkfZmbM2y+U76
+         vi2mSKf21N00vg5SFOn5u2VBtoLLzYLtuz99y5w/ZXIsy+QGu9UDCQ2GNoXVxJ9fWeyi
+         nFVkcFX+XL6EARhp22GczlH+1y48lvjItRGZmlbhEQPGkA9D69Af5BHX8CbNmFYGMUr2
+         rCzg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745615379; x=1746220179;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=BY1aWIkNQr9/WlVdM/imYDbUDJ4FCN12j5sBaq8Ups4=;
+        b=HIUyqdTLznKiwsKOTxOK8SzCSGBJgnKtx5R3E+/enRZ9sYuAbtglCn73s2gBx7tuUf
+         0EtswonKL+7feZPVAC9c2d5nXimBv9wjsCk14bCooFEiP+nlZlzEBbMFXX0KIJSL5QDj
+         IiJ+Zz6TM6lCQcJUamzuMsEHIVPhu2i7bA7tEszPBmhrPCTs+ny4XAOq456tIpFbW+pL
+         F/2cBHw63kacypcM5LJ0ZJQTWhdWWJTUAut5T+dt5FBTW7KY1GIwUM9fQkF1tHVWiuKR
+         LUpQQ4VpwYrK0msc6LnRBqxzEdYdOfSrItnkaf8cQnD9ZmDUneklqLf7nG/kJnm+e1zg
+         qAZQ==
+X-Gm-Message-State: AOJu0Yx9T4Cm8xBg0otgW/z2Uum1fWpKnXPH7Dnh56zVRW2wtzyXrfaT
+	Z1Wq2wwFhaxgxsq/0buTjo4JzNRiCGdRIgM5oNQrdvkIe4r7a4FTIdxm8cK2GH31araxse0eMNV
+	X
+X-Gm-Gg: ASbGncuU0SX7cb1ZDkmL+Nxp0QO0FMkPoOWn0stqxzSNscv2/Y4FZ+h17U33J9TX8S2
+	WIvWhauFFqUqP8w1hNpnacWFryy4lvP483eAfm1G1nfcXUmG/f7PH65JmRi/0vOisYI9o+YjP/F
+	Ll7W2iUySd5Wdnsbirc8HDXpbl8IE5bYLEynLWFt+3hwJ7LHqeqCQtGPHvuM5t7l9+vRAsunpUV
+	R3r/QdyX4fPamcWkgegVRE5Z99hrmJCWZdA9ZUL9+xr+GynT2Jc0ZEBRy4d/qoNNlQYkbVty5Uw
+	H3dLS6JaBCGQgMOOxZcIRnS0uKv48O8eT5HQ7r0rQefAJI9owTvkluQ=
+X-Google-Smtp-Source: AGHT+IHgoMZkBfZXhz5aqoIzlRTV+NaG/N/wVFvnLQMLS1D8aZCmMXkvEWmf1mqpeRfkisZn7+z95Q==
+X-Received: by 2002:a05:6871:792:b0:29e:4ba5:4ddc with SMTP id 586e51a60fabf-2d99db25561mr2208324fac.24.1745615379304;
+        Fri, 25 Apr 2025 14:09:39 -0700 (PDT)
 Received: from [127.0.1.1] ([2600:8803:e7e4:1d00:96a3:e28:3f6:dbac])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7304f188052sm847673a34.8.2025.04.25.14.09.36
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7304f188052sm847673a34.8.2025.04.25.14.09.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Apr 2025 14:09:37 -0700 (PDT)
+        Fri, 25 Apr 2025 14:09:38 -0700 (PDT)
 From: David Lechner <dlechner@baylibre.com>
-Subject: [PATCH v3 0/6] iio: introduce IIO_DECLARE_BUFFER_WITH_TS
-Date: Fri, 25 Apr 2025 16:08:42 -0500
-Message-Id: <20250425-iio-introduce-iio_declare_buffer_with_ts-v3-0-f12df1bff248@baylibre.com>
+Date: Fri, 25 Apr 2025 16:08:43 -0500
+Subject: [PATCH v3 1/6] iio: introduce IIO_DECLARE_BUFFER_WITH_TS macros
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -81,11 +83,9 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIANr5C2gC/52NsQ6CMBQAf4V0tqa0QImT/2EMKe2rvASpaQtKC
- P9uYTJuOt4NdwsJ4BECOWUL8TBhQDckEIeM6E4NN6BoEhPOeMmKvKaIjuIQvTOjho0aA7pXHpp
- 2tBZ888TYNTFQbmsphZVGmYqk3MODxde+ulwTdxii8/N+nvLN/jGZcsooANMVV0IoZs+tmntsP
- Ry1u5PtM/GPNuc/tHlqC2tEVchSS1Z9tdd1fQNOGb/UPwEAAA==
-X-Change-ID: 20250418-iio-introduce-iio_declare_buffer_with_ts-2f8773f7dad6
+Message-Id: <20250425-iio-introduce-iio_declare_buffer_with_ts-v3-1-f12df1bff248@baylibre.com>
+References: <20250425-iio-introduce-iio_declare_buffer_with_ts-v3-0-f12df1bff248@baylibre.com>
+In-Reply-To: <20250425-iio-introduce-iio_declare_buffer_with_ts-v3-0-f12df1bff248@baylibre.com>
 To: Jonathan Cameron <jic23@kernel.org>, 
  David Lechner <dlechner@baylibre.com>, 
  =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
@@ -98,81 +98,106 @@ To: Jonathan Cameron <jic23@kernel.org>,
 Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
  linux-arm-kernel@lists.infradead.org
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2871; i=dlechner@baylibre.com;
- h=from:subject:message-id; bh=o7BcIIIYtQBUHMADOGXaeTJA+HEbSY/NkKPNVQoDqrs=;
- b=owEBbQGS/pANAwAKAcLMIAH/AY/AAcsmYgBoC/nfUdqmW0DVoD+FZo9SUw5csNWXEkaFoqBui
- bDyBU03m8OJATMEAAEKAB0WIQTsGNmeYg6D1pzYaJjCzCAB/wGPwAUCaAv53wAKCRDCzCAB/wGP
- wLHkB/4wQyGYDFJQjZBiYUgnhQdUEp7hWNlwqnEMYH7bFvPguWYt69E7pqXyv/o8AcRNpyFNwz7
- u+Nipjjojviqe1z+4YYo2BZksKHhnD+lVzRMc3bXv6KePvl+P2mYERNI+/Tf11auIDjhSuL7rH8
- KPBmB3NxXecOJdOBdP5QUUYXQPHCraoXxDz59qmN2nxo3WrGKrc24+lYx5Dl2AjX+2h1lS0vLOU
- bW1wWQVh+tNBUPdS0Gw6eM8I6mvVSSIGSyJkPBJdJfx/5YXub2e9puPgxGWGWugNQjiRkDsCNQx
- v8dZdYryvHvoLQcKJ4YsKxnSMdkJxVZpvCJGqoyCyfNk+jSC
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3719; i=dlechner@baylibre.com;
+ h=from:subject:message-id; bh=S9yyrbbGceERU79hEYcii6LVQfguSKjlkyu5n+UlTsA=;
+ b=owEBbQGS/pANAwAKAcLMIAH/AY/AAcsmYgBoC/nm4JmFy6kPkiyqKsDPXMzKl5mRSVcD8MkmU
+ knBSH8PgtKJATMEAAEKAB0WIQTsGNmeYg6D1pzYaJjCzCAB/wGPwAUCaAv55gAKCRDCzCAB/wGP
+ wJSvB/9gSprhYoKqm17uZXVZ6jJRFmsaX8jyoqQBaLCQeqXZdb0j74O/nlC316k+qfISf3o34yh
+ /ZAovdK45qS71p3Y20kH3CqNKHpCUgnttFXhEdWcgNjsFcFr/UMUQw/M5T7sQTpYgxl/8sD88KJ
+ f4tZd53Vyn5wkQq2ELL4SUF4oVvta5WyOAK5S7/tCmuGLWyJqC1j9ihqeiifuzZRZf+ypJPu4oD
+ GxQdYZxyVLx+fmM0y832hdBwp/gcd4J4TH6K3ll5OlYcCJvk7n8SPI0Hjl3egeYyk196dIcMKzf
+ B6ZjyRXK7+EJ+iq2t/OBgh4tZOCC5h/5hli4azVUGDAMwFoA
 X-Developer-Key: i=dlechner@baylibre.com; a=openpgp;
  fpr=8A73D82A6A1F509907F373881F8AF88C82F77C03
 
-Creating a buffer of the proper size and correct alignment for use with
-iio_push_to_buffers_with_ts() is commonly used and not easy to get
-right (as seen by a number of recent fixes on the mailing list).
+Add new macros to help with the common case of declaring a buffer that
+is safe to use with iio_push_to_buffers_with_ts(). This is not trivial
+to do correctly because of the alignment requirements of the timestamp.
+This will make it easier for both authors and reviewers.
 
-In general, we prefer to use this pattern for creating such buffers:
+To avoid double __align() attributes in cases where we also need DMA
+alignment, add a 2nd variant IIO_DECLARE_DMA_BUFFER_WITH_TS().
 
-struct {
-    u16 data[2];
-    aligned_s64 timestamp;
-} buffer;
-
-However, there are many cases where a driver may have a large number of
-channels that can be optionally enabled or disabled in a scan or the
-driver might support a range of chips that have different numbers of
-channels or different storage sizes for the data. In these cases, the
-timestamp may not always be at the same place relative to the data. To
-handle these, we allocate a buffer large enough for the largest possible
-case and don't care exactly where the timestamp ends up in the buffer.
-
-For these cases, we propose to introduce new macros to make it easier
-it easier for both the authors to get it right and for readers of the
-code to not have to do all of the math to verify that it is correct.
-
-I have just included a few examples of drivers that can make use of this
-new macro, but there are dozens more.
-
+Signed-off-by: David Lechner <dlechner@baylibre.com>
 ---
-Changes in v3:
-- Fixed a few mistakes, style issues and incorporate other feedback (see
-  individual commit message changelogs for details).
-- Link to v2: https://lore.kernel.org/r/20250422-iio-introduce-iio_declare_buffer_with_ts-v2-0-3fd36475c706@baylibre.com
 
-Changes in v2:
-- Add 2nd macro for case where we need DMA alignment.
-- Add new patch for ad4695 to convert buffer from u8 to u16 before
-  making use of the new macro.
-- Drop the bmp280 patch since it was determined to have a better
-  alternative not using these macros.
-- Add a few more examples to show the non-DMA case, both in a struct and
-  stack allocated.
-- Link to v1: https://lore.kernel.org/r/20250418-iio-introduce-iio_declare_buffer_with_ts-v1-0-ee0c62a33a0f@baylibre.com
+v3 changes:
+* Use leading double-underscore for "private" macro to match "private"
+  functions that do the same.
+* Use static_assert() from linux/build_bug.h instead of _Static_assert()
+* Fix incorrectly using sizeof(IIO_DMA_MINALIGN).
+* Add check that count argument is constant. (Note, I didn't include a
+  message in this static assert because it already gives a reasonable
+  message.)
 
+/home/david/work/bl/linux/drivers/iio/accel/sca3300.c:482:51: error: expression in static assertion is not constant
+  482 |         IIO_DECLARE_BUFFER_WITH_TS(s16, channels, val);
+      |                                                   ^~~
+
+v2 changes:
+* Add 2nd macro for DMA alignment
 ---
-David Lechner (6):
-      iio: introduce IIO_DECLARE_BUFFER_WITH_TS macros
-      iio: adc: ad4695: use u16 for buffer elements
-      iio: adc: ad4695: use IIO_DECLARE_DMA_BUFFER_WITH_TS
-      iio: adc: ad7380: use IIO_DECLARE_DMA_BUFFER_WITH_TS
-      iio: accel: sca3300: use IIO_DECLARE_BUFFER_WITH_TS
-      iio: adc: at91-sama5d2: use IIO_DECLARE_BUFFER_WITH_TS
+ include/linux/iio/iio.h | 38 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 38 insertions(+)
 
- drivers/iio/accel/sca3300.c        | 18 ++----------------
- drivers/iio/adc/ad4695.c           |  8 ++------
- drivers/iio/adc/ad7380.c           |  3 +--
- drivers/iio/adc/at91-sama5d2_adc.c | 13 ++-----------
- include/linux/iio/iio.h            | 38 ++++++++++++++++++++++++++++++++++++++
- 5 files changed, 45 insertions(+), 35 deletions(-)
----
-base-commit: aff301f37e220970c2f301b5c65a8bfedf52058e
-change-id: 20250418-iio-introduce-iio_declare_buffer_with_ts-2f8773f7dad6
+diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
+index 638cf2420fbd85cf2924d09d061df601d1d4bb2a..1115b219271b76792539931edc404a67549bd8b1 100644
+--- a/include/linux/iio/iio.h
++++ b/include/linux/iio/iio.h
+@@ -7,6 +7,8 @@
+ #ifndef _INDUSTRIAL_IO_H_
+ #define _INDUSTRIAL_IO_H_
+ 
++#include <linux/align.h>
++#include <linux/build_bug.h>
+ #include <linux/device.h>
+ #include <linux/cdev.h>
+ #include <linux/compiler_types.h>
+@@ -777,6 +779,42 @@ static inline void *iio_device_get_drvdata(const struct iio_dev *indio_dev)
+  * them safe for use with non-coherent DMA.
+  */
+ #define IIO_DMA_MINALIGN ARCH_DMA_MINALIGN
++
++#define __IIO_DECLARE_BUFFER_WITH_TS(type, name, count) \
++	static_assert(count); \
++	type name[ALIGN((count), sizeof(s64) / sizeof(type)) + sizeof(s64) / sizeof(type)]
++
++/**
++ * IIO_DECLARE_BUFFER_WITH_TS() - Declare a buffer with timestamp
++ * @type: element type of the buffer
++ * @name: identifier name of the buffer
++ * @count: number of elements in the buffer
++ *
++ * Declares a buffer that is safe to use with iio_push_to_buffer_with_ts(). In
++ * addition to allocating enough space for @count elements of @type, it also
++ * allocates space for a s64 timestamp at the end of the buffer and ensures
++ * proper alignment of the timestamp.
++ */
++#define IIO_DECLARE_BUFFER_WITH_TS(type, name, count) \
++	__IIO_DECLARE_BUFFER_WITH_TS(type, name, count) __aligned(sizeof(s64))
++
++/**
++ * IIO_DECLARE_DMA_BUFFER_WITH_TS() - Declare a DMA-aligned buffer with timestamp
++ * @type: element type of the buffer
++ * @name: identifier name of the buffer
++ * @count: number of elements in the buffer
++ *
++ * Same as IIO_DECLARE_BUFFER_WITH_TS(), but is uses __aligned(IIO_DMA_MINALIGN)
++ * to ensure that the buffer doesn't share cachelines with anything that comes
++ * before it in a struct. This should not be used for stack-allocated buffers
++ * as stack memory cannot generally be used for DMA.
++ */
++#define IIO_DECLARE_DMA_BUFFER_WITH_TS(type, name, count) \
++	__IIO_DECLARE_BUFFER_WITH_TS(type, name, count) __aligned(IIO_DMA_MINALIGN)
++
++static_assert(IIO_DMA_MINALIGN % sizeof(s64) == 0,
++	"macros above assume that IIO_DMA_MINALIGN also ensures s64 timestamp alignment");
++
+ struct iio_dev *iio_device_alloc(struct device *parent, int sizeof_priv);
+ 
+ /* The information at the returned address is guaranteed to be cacheline aligned */
 
-Best regards,
 -- 
-David Lechner <dlechner@baylibre.com>
+2.43.0
 
 

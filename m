@@ -1,262 +1,191 @@
-Return-Path: <linux-iio+bounces-18671-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18672-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEA06A9D463
-	for <lists+linux-iio@lfdr.de>; Fri, 25 Apr 2025 23:44:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2027A9D496
+	for <lists+linux-iio@lfdr.de>; Fri, 25 Apr 2025 23:54:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 04FA03BA1A6
-	for <lists+linux-iio@lfdr.de>; Fri, 25 Apr 2025 21:44:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E14DA1BC3648
+	for <lists+linux-iio@lfdr.de>; Fri, 25 Apr 2025 21:54:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 427D3225760;
-	Fri, 25 Apr 2025 21:44:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47D14225775;
+	Fri, 25 Apr 2025 21:54:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="ecdIgtzW"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d2g/Q1T7"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oi1-f170.google.com (mail-oi1-f170.google.com [209.85.167.170])
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B76672253E8
-	for <linux-iio@vger.kernel.org>; Fri, 25 Apr 2025 21:44:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A6CD208997;
+	Fri, 25 Apr 2025 21:54:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745617466; cv=none; b=o4SmIPUPRsTkdLkidARX96FYf8Yj+Nr8ZwOFb4397aA3ndUOcPqd6k8+5RSoFHS8i6pg2wSVW/abvb6A31XhPFNT3sNkcIl6qOnF33fiKzLqXFj6LDRcNrroOA34K0943avUUrva1wOLV93e75WVM62L5krJ+UdnxyndvS5wP6Y=
+	t=1745618062; cv=none; b=MRVRpjLNl+TNdEvHX12CxxEuAvuBwYOK28yhWIL6wyup8wKIKBaOS6km15kWt4gSeg9oAqxiTSUShmCdxgOMlCWeDzxfyH2TrXySSTgX3euVx3d3Go2LWdMG8aXVGcyN1vwZTvLTYSjQP0e1uoeqO6dV0ZoI5dcZCszmcykCZok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745617466; c=relaxed/simple;
-	bh=0PGOU404WR3ZZT5UO5ZutPGEui+7NlIYTJrsKba4mAI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kTVB574/J4irsTBLGrFER12N1fK9ZhH0DDYNGcciPAxvvHr/3B830QdX3L6yw9dChNCfD3etcdU8JBRnEXU39AzcsM4iO5N0RlfJDNPUSmwRsUHtQd1cU6ntSUSng+WafgGgeDMswM3kf7OJIsS+lT+TS2D7c+M8Gl490h6yj5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=ecdIgtzW; arc=none smtp.client-ip=209.85.167.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oi1-f170.google.com with SMTP id 5614622812f47-3fea0363284so1854866b6e.1
-        for <linux-iio@vger.kernel.org>; Fri, 25 Apr 2025 14:44:23 -0700 (PDT)
+	s=arc-20240116; t=1745618062; c=relaxed/simple;
+	bh=/Qg+jrzz7ohQYOyGyC0DRfDJYxTT87vaFSUzkC7isnY=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=udeblBQq04/R2OUo3MaSiBKqGc2Df/ik0eLBHocGPdpZDPUJ2oXgkscXpUDcPCZcGdJSXPeUkqXYWvzwWg2mu4ikX222G11UXltwJ/l5CXnjwHOZ5ARqLlQpDqGxytVFiznDpAyX0/p5f52yVJ0lu7Etbjip9RIocIPPsircJEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=d2g/Q1T7; arc=none smtp.client-ip=209.85.214.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-22423adf751so31535825ad.2;
+        Fri, 25 Apr 2025 14:54:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1745617463; x=1746222263; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Vetl9XpldH8JvL8GlwOYXmdLs3vxDNII55h0sSj3lYc=;
-        b=ecdIgtzWNSzsQn2U0k23mm0eBPvHL1C1TcUx5drufKdFJWPjIQ7GsvtCZNtt5PLkrQ
-         WnTYAnIngoJxMKPjvGQiafQHc11uLmi+6WacfOsAoF51wtpj5OD1KLHbuqOxW9MJ+gqu
-         5dnK7M15p2Ba7STyIzHw8yQ2C07rw8o15cRsmQMj8XCNaYuV4Xz4PUCW26zxhpCC1VG5
-         46kunNXqj5N6793pab6hLib2fv9d4od8dWNR/iV2yFkzw4n8YTPKs+UFmFcwE9gaYloe
-         CVGYnFNqsC2iAGruFEhIv3ZuPkZEJxVIArXn+geM9L4Mb+yzI1VWxaB1nUXsqcfJTKI3
-         kjVA==
+        d=gmail.com; s=20230601; t=1745618059; x=1746222859; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=XCobKniwenRsZRQXHN93hhOkNZYsytudx8yyvFZoPso=;
+        b=d2g/Q1T79dgYBiYRTA04dDbvWn9pCspC9OGzX06qmOjCDFRXb5xBodSBXbt3SOH1eC
+         paro7FkDpSs/oWMRN/VsMtxiEaiXAx5fVhlefpnpSNf6szA2HM18rpHXgsGuclFEJVnP
+         ivSvc84YrHz4/Qv0NNVehRmSDcDGZSs6++/wpRTjx+31JGq5DU6qvmMNdVHhIu1N25ai
+         VYAWCChKFTWJBifB5DxNWJcz3sTfhh/O4ynrhSiU547inNwVN9AtzJEa8x53SWZfkRCQ
+         OVrZXaXCWFhziYa3pA/GWvNMXoz5WdqWtONNK/2QJO+LIUG9vQP6QRuE+4+tRKtwIdie
+         FC+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745617463; x=1746222263;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Vetl9XpldH8JvL8GlwOYXmdLs3vxDNII55h0sSj3lYc=;
-        b=oWXUlNYG6ehMS9QoNK+UApLHt13ki81sDAksfTQllNW9+8OgYxsDOr7+NOx0vLeBRd
-         e7se3mB8NKsmPIap688l/6KBw4Rgm9/UWKT3liHZWO62KNtkdcoX5+iTJQMVDPtkT17M
-         9IB2ciud900u5LSWYYnyesgKOT5b/5lboxeALOnWxKUw0a29F26rNTGmT0P+jc1cYeXc
-         l9T8bDSvZNCKBqFaFx5AWBupBVb2A3Ua6rJbIhxArT/Se/3e2B9pRKApHp9JZJP6Jpk1
-         0DcY/boXGPw5p9bi+hAG//+zoj49dznNEWanKKj7IWOVOItOBzGC6ytK+3pDOEcL4CIS
-         E/PQ==
-X-Gm-Message-State: AOJu0YwDFM5EgXc7i4CzmzFANsqtpAtOod8RKS+hXvJTy9oJHlH4yg7u
-	zIx1t7sX2owWd5DrRA8+BZORQE79KS1EA7bvbU81sDVt3nr0azkYAez0MFuROYI=
-X-Gm-Gg: ASbGncsi1HJlE6q0od+GOSCgHHzNKdUYQlkALXQhUu85MISDkwGk8ntZ790zUZ2BRW1
-	a9nvt3d1x4sfHJtiiJukKiJXoIwb5dFqKtUDQMek1uXIEFIKPQhL72HJ32It+a/AC3s0GDwamdy
-	e7ZubcqFEoRX21fQ9n9k5/xFmW2KTHFL2C++VBeCZLCDUdsMrdWqVIh9BrSBNuw/G1xjxsh0SX5
-	jJW1TgwKTcI3s8WUUSHaL7D80qg6ZFpNl+OiWNNEZjUACsx0VD7gMK+YDAmgywqdkCbzjB2Ebab
-	hmkyA4Wwq085DUf3Ke5bGHLNiN7mSZB6GTRIipoglsa06qkb8lUvq3JybLEMuj59D/KY2Onks/T
-	r+qHIuR66p92+
-X-Google-Smtp-Source: AGHT+IGYSYK/NgbfRtntiLX0fyD882sY0Y9kI7JKZ0e9QJqEQnnrOLa7rFd/SxmE01a29TeJbZfoUg==
-X-Received: by 2002:a05:6808:178e:b0:400:fa6b:94bf with SMTP id 5614622812f47-401ec44c715mr4767354b6e.4.1745617462686;
-        Fri, 25 Apr 2025 14:44:22 -0700 (PDT)
-Received: from ?IPV6:2600:8803:e7e4:1d00:96a3:e28:3f6:dbac? ([2600:8803:e7e4:1d00:96a3:e28:3f6:dbac])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-401ec8afb1esm939069b6e.10.2025.04.25.14.44.20
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 25 Apr 2025 14:44:21 -0700 (PDT)
-Message-ID: <9f5b0709-f795-44c5-aa64-aaed81a459bf@baylibre.com>
-Date: Fri, 25 Apr 2025 16:44:20 -0500
+        d=1e100.net; s=20230601; t=1745618059; x=1746222859;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=XCobKniwenRsZRQXHN93hhOkNZYsytudx8yyvFZoPso=;
+        b=p46CZIvrDFTnxWY/F8sc6JaNSz4ysPtIKaeB298eQF5mUIlMyBDdL4d4qi3Xzh/Jqr
+         lQ6HKMMuemlVnmFSfECHPNlLMy2lnw7czPPISRgOr9MkGevXS59dBaF1YyQgIkSLR+Sv
+         HxqUAur27moHMEzPhshiRWI9j1RGN/alr1CPYXJyFAZ4cV1tpedfjFbxDZhIrAJNUgCu
+         4Uuz6ciy14I+tu/P7C3f2qCfzpvZ7MWLRoFi6lskYFeyDZj7Zh3U6ZJR3zYf40PcvibA
+         3Tzy92Or4ZPsxoDMmCerb2m40R+QqvUwO7yoiSBilhxQKE/aJ36EOgDmqIh3M/OHg/mk
+         gFyg==
+X-Forwarded-Encrypted: i=1; AJvYcCU2PS6xK9akhyUEjTUUGTkPvMPrc0qe7CG1QVXTotbVqpcs5elYW5nsdVLbs2bkg9T4n+s4w/B6vL+N@vger.kernel.org, AJvYcCUklnHfbY3V5tIg1CyOb67e8rxXegKbbvplf0c1E27kdfW6LE/z21P78rp+CcDeZgqj3A/9wY5UUbnWcvr9@vger.kernel.org, AJvYcCWwKVgYs1RzZJNBSloqM3JBkg66pLyLULiSzX8y0yNFA24JiG8a69aW5KfGm/kKD9AblnrXZI32zahl@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywmz6ZNM1CxQGUXhVi1BKPxBnsf1Dc83scWoYn6bXYlddvpEKp0
+	P8uzabcs3cYUe3okcR66W8pbDK/gCkXOGN80QIK2v1KhfKXHPUE9EQIXESiQnck=
+X-Gm-Gg: ASbGnctS+KK48BsuT8SQfWS32jbAToOzFnce04gdgLP0+WcwyaF116x2seWH0NUgWkT
+	+F4XCm/LkB4PFKQj2K7EXNkjOw/ZBPO5IShu7TDxtOv4W0K/1UZqtgTJ4+DqPibuYjsgnASF0d9
+	Wk+bF6ruu20sAqLAJWXFLkLfcrNPZQIkPg2QyZCQmVflDKGxRv5dRdJdpAFv4jDBW0mTKV1D8uf
+	oQQMnd18dlj+me5nmHHslsOWM+I5vkDot+ZfoyobZiv3+i0uySPiyUVuBlhTVSCT+IEtc8fNTwF
+	FB6plhUPQtgc4xKxVj8fzOogxZ2acFVbK/nHroTqBXw/scG6cf4sP9EPKKYBWfQ=
+X-Google-Smtp-Source: AGHT+IEhyiPUvx6/TQLgHrek4gH35yub8pGeGVD8zCIOvwyadYampCv51ThIk0Qc/PvSpWTxrFLFWA==
+X-Received: by 2002:a17:902:d4ca:b0:220:fce7:d3a6 with SMTP id d9443c01a7336-22dbf5fb486mr54033065ad.23.1745618058561;
+        Fri, 25 Apr 2025 14:54:18 -0700 (PDT)
+Received: from localhost ([2409:40c0:2025:2c31:c6a3:5653:2e03:8d7a])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-309f7749938sm2211580a91.11.2025.04.25.14.54.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 25 Apr 2025 14:54:18 -0700 (PDT)
+From: surajsonawane0215@gmail.com
+To: jic23@kernel.org
+Cc: surajsonawane0215@gmail.com,
+	lars@metafoo.de,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 1/2] dt-bindings: iio: chemical: Add sharp,gp2y1010au0f
+Date: Sat, 26 Apr 2025 03:21:49 +0530
+Message-Id: <20250425215149.49068-1-surajsonawane0215@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 4/5] docs: iio: new docs for ad4052 driver
-To: Jorge Marques <jorge.marques@analog.com>,
- Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
- Michael Hennerich <Michael.Hennerich@analog.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
- =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
- Andy Shevchenko <andy@kernel.org>, =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?=
- <ukleinek@kernel.org>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- devicetree@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-pwm@vger.kernel.org
-References: <20250422-iio-driver-ad4052-v2-0-638af47e9eb3@analog.com>
- <20250422-iio-driver-ad4052-v2-4-638af47e9eb3@analog.com>
-From: David Lechner <dlechner@baylibre.com>
-Content-Language: en-US
-In-Reply-To: <20250422-iio-driver-ad4052-v2-4-638af47e9eb3@analog.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=y
+Content-Transfer-Encoding: 8bit
 
-On 4/22/25 6:34 AM, Jorge Marques wrote:
-> This adds a new page to document how to use the ad4052 ADC driver.
-> 
-> Signed-off-by: Jorge Marques <jorge.marques@analog.com>
-> ---
->  Documentation/iio/ad4052.rst | 95 ++++++++++++++++++++++++++++++++++++++++++++
+From: Suraj Sonawane <surajsonawane0215@gmail.com>
 
-Also need to update the table of contents in Documentation/iio/index.rst,
-otherwise this page won't be build (and will cause a build error).
+Add Device Tree bindings for Sharp GP2Y1010AU0F optical dust sensor.
+The sensor measures particulate matter concentration via infrared
+scattering and requires:
 
-You can run `make htmldocs SPHINXDIRS=iio` to speed things up and only build
-the iio directory to make sure you have it right.
+1. GPIO for LED pulse control (280μs pulses with 40μs delay)
+2. ADC channel for analog output measurement
+3. Power regulator (vdd-supply)
 
-More info: https://www.kernel.org/doc/html/latest/doc-guide/sphinx.html
+Datasheet:
+https://global.sharp/products/device/lineup/data/pdf/datasheet/gp2y1010au_appl_e.pdf
 
->  MAINTAINERS                  |  1 +
->  2 files changed, 96 insertions(+)
-> 
-> diff --git a/Documentation/iio/ad4052.rst b/Documentation/iio/ad4052.rst
-> new file mode 100644
-> index 0000000000000000000000000000000000000000..410aaa437ed5fea6a2924d374fa5f816f5754e22
-> --- /dev/null
-> +++ b/Documentation/iio/ad4052.rst
-> @@ -0,0 +1,95 @@
-> +.. SPDX-License-Identifier: GPL-2.0-only
-> +
-> +=============
-> +AD4052 driver
-> +=============
-> +
-> +ADC driver for Analog Devices Inc. AD4052 and similar devices.
+Signed-off-by: Suraj Sonawane <surajsonawane0215@gmail.com>
+---
+ .../iio/chemical/sharp,gp2y1010au0f.yaml      | 67 +++++++++++++++++++
+ 1 file changed, 67 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/chemical/sharp,gp2y1010au0f.yaml
 
-Please don't put newline after every period. Here and throughout the document.
-It makes it harder to read.
-
-> +The module name is ``ad4052``.
-> +
-> +Supported devices
-> +=================
-> +
-> +The following chips are supported by this driver:
-> +
-> +* `AD4050 <https://www.analog.com/AD4050>`_
-> +* `AD4052 <https://www.analog.com/AD4052>`_
-> +* `AD4056 <https://www.analog.com/AD4056>`_
-> +* `AD4058 <https://www.analog.com/AD4058>`_
-> +
-> +Wiring modes
-> +============
-> +
-> +The ADC uses SPI 4-wire mode, and contain two programmable GPIOs and
-> +a CNV pin.
-> +
-> +The CNV pin is exposed as the ``cnv-gpios`` and triggers a ADC conversion.
-> +GP1 is ADC conversion ready signal and GP0 Threshold event interrupt, both
-> +exposed as interrupts.
-> +
-> +Omit ``cnv-gpios`` and tie CNV and CS together to use the rising edge
-> +of the CS as the CNV signal.
-> +
-> +Device attributes
-> +=================
-> +
-> +The ADC contain only one channels, and the following attributes:
-> +
-> +.. list-table:: Driver attributes
-> +   :header-rows: 1
-> +
-> +   * - Attribute
-> +     - Description
-> +   * - ``in_voltage0_raw``
-> +     - Raw ADC voltage value
-
-No scale attribute? How do we convert raw to millivolts?
-
-> +   * - ``in_voltage0_oversampling_ratio``
-> +     - Enable the device's burst averaging mode to over sample using
-> +       the internal sample rate.
-> +   * - ``in_voltage0_oversampling_ratio_available``
-> +     - List of available oversampling values. Value 0 disable the burst
-> +       averaging mode.
-
-Typically 1 means no oversampling, not zero. (It is a ratio, divide by 1 is the
-same as doing nothing, but divide by 0 is undefined.)
-
-> +   * - ``conversion_frequency``
-
-Needs to be updated to ``oversampling_frequency``.
-
-> +     - Device internal sample rate used in the burst averaging mode.
-> +   * - ``conversion_frequency_available``
-> +     - List of available sample rates.
-> +
-> +Threshold events
-> +================
-> +
-> +The ADC supports a monitoring mode to raise threshold events.
-> +The driver supports a single interrupt for both rising and falling
-> +readings.
-> +
-> +The feature is enabled/disabled by setting ``thresh_either_en``.
-> +During monitor mode, the device continuously operates in autonomous mode until
-> +put back in configuration mode, due to this, the device returns busy until the
-> +feature is disabled.
-
-Probably worth mentioning the ``events/sampling_frequency`` and
-``sampling_frequency_available`` attributes since we've mentioned all of the
-other attributes.
-
-> +
-> +Low-power mode
-> +==============
-> +
-> +The device enters low-power mode on idle to save power.
-> +Enabling an event puts the device out of the low-power since the ADC
-> +autonomously samples to assert the event condition.
-> +
-> +SPI offload support
-> +===================
-> +
-> +To be able to achieve the maximum sample rate, the driver can be used with the
-> +`AXI SPI Engine`_ to provide SPI offload support.
-> +
-> +.. _AXI SPI Engine: http://analogdevicesinc.github.io/hdl/projects/ad4052_ardz/index.html
-> +
-> +When SPI offload is being used, additional attributes are present:
-> +
-> +.. list-table:: Additional attributes
-> +   :header-rows: 1
-> +
-> +   * - Attribute
-> +     - Description
-> +   * - ``in_voltage0_sampling_frequency``
-> +     - Set the sampling frequency.
-> +   * - ``in_voltage0_sampling_frequency_available``
-> +     - Get the sampling frequency range.
-
-In the driver, this is currently info_mask_shared_by_type, so would be
-``in_voltage_sampling_frequency``. And there currently isn't 
-``in_voltage_sampling_frequency_available`` in the driver, so it needs to be
-added in the driver (or removed here).
-
-> +
-> +The scan type is different when the buffer with offload support is enabled.
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 81fbe7176475c48eae03ab04115d4ef5b6299fac..04aa8db44bee418382a2e74cb6b1d03a810bd781 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -1334,6 +1334,7 @@ M:	Jorge Marques <jorge.marques@analog.com>
->  S:	Supported
->  W:	https://ez.analog.com/linux-software-drivers
->  F:	Documentation/devicetree/bindings/iio/adc/adi,ad4052.yaml
-> +F:	Documentation/iio/ad4052.rst
->  
->  ANALOG DEVICES INC AD4130 DRIVER
->  M:	Cosmin Tanislav <cosmin.tanislav@analog.com>
-> 
+diff --git a/Documentation/devicetree/bindings/iio/chemical/sharp,gp2y1010au0f.yaml b/Documentation/devicetree/bindings/iio/chemical/sharp,gp2y1010au0f.yaml
+new file mode 100644
+index 000000000..358c2b2f7
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/chemical/sharp,gp2y1010au0f.yaml
+@@ -0,0 +1,67 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/chemical/sharp,gp2y1010au0f.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Sharp GP2Y1010AU0F Optical Dust Sensor
++
++maintainers:
++  - Suraj Sonawane <surajsonawane0215@gmail.com>
++
++description: |
++  Optical dust sensor measuring particulate matter concentration via infrared scattering.
++  Requires ADC for analog output and GPIO for pulsed LED control with strict timing.
++  Datasheet: https://global.sharp/products/device/lineup/data/pdf/datasheet/gp2y1010au_appl_e.pdf
++
++properties:
++  compatible:
++    const: sharp,gp2y1010au0f
++
++  vdd-supply:
++    description: Phandle to the regulator that provides power to the sensor
++
++  led-gpios:
++    description: GPIO connected to the sensor's LED control pin (V-LED)
++    maxItems: 1
++
++  io-channels:
++    description: ADC channel connected to the sensor's analog output (Vo)
++    maxItems: 1
++
++  io-channel-names:
++    const: dust
++
++  sharp,led-on-delay-us:
++    description: Time in microseconds to wait after turning LED on before ADC read
++    default: 40
++    minimum: 0
++    maximum: 100
++
++  sharp,measurement-window-us:
++    description: Measurement window in microseconds after LED turn-on
++    default: 200
++    minimum: 0
++    maximum: 280
++
++required:
++  - compatible
++  - led-gpios
++  - io-channels
++  - io-channel-names
++
++additionalProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/gpio/gpio.h>
++
++    dust_sensor {
++        compatible = "sharp,gp2y1010au0f";
++        vdd-supply = <&vcc>;
++        led-gpios = <&gpio 44 GPIO_ACTIVE_HIGH>;
++        io-channels = <&adc 0>;
++        io-channel-names = "dust";
++        sharp,led-on-delay-us = <40>;
++        sharp,measurement-window-us = <200>;
++    };
+-- 
+2.34.1
 
 

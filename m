@@ -1,58 +1,66 @@
-Return-Path: <linux-iio+bounces-18626-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18627-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E37F8A9C0DE
-	for <lists+linux-iio@lfdr.de>; Fri, 25 Apr 2025 10:24:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4473AA9C0E9
+	for <lists+linux-iio@lfdr.de>; Fri, 25 Apr 2025 10:27:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3CAD2468565
-	for <lists+linux-iio@lfdr.de>; Fri, 25 Apr 2025 08:24:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5E1F9468691
+	for <lists+linux-iio@lfdr.de>; Fri, 25 Apr 2025 08:27:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B00A1F4180;
-	Fri, 25 Apr 2025 08:24:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77A1B2356BC;
+	Fri, 25 Apr 2025 08:26:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bbpnqXiJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bKjbqAU9"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B64A17A2EE
-	for <linux-iio@vger.kernel.org>; Fri, 25 Apr 2025 08:24:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CA8122615;
+	Fri, 25 Apr 2025 08:26:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745569477; cv=none; b=pT+mZ4VhTc8dxxOT4Aq4eubYmFUDgOzFlXFAr2ZrEI7pifa0ZsKD8r/L5ACWWPsLtaqVclt/3IdnlnHTmduqME83DvOEsilp099q3GId+VXcQwvEaZnq7ocwEoS+w2ZPmjugbhPajfIfXN1o17avod0vAExjct7WUSuaIBntQ2Q=
+	t=1745569607; cv=none; b=dRn7X/BdFiqeMaEwrMUKxy+AlBZN72NFzXmIeBse03W9APWpOZKMT2vAmjj8+95WDKPI+tZqVIUKRDHjGbpJ9CiY3E7ekF8GkwLW2urMcPSleF9SHXkojuxEOZchOLBQb/+Mp6L9xn4YP5hyrefvJsjDFaHTrD2yEAtuA/chUFI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745569477; c=relaxed/simple;
-	bh=yaX3w4DfcX3TMo4x0MUdyXmOAsmyKJ9+vwqLSlAWwoA=;
+	s=arc-20240116; t=1745569607; c=relaxed/simple;
+	bh=3hyYZAdzYUDm/qiRZiyh2oVm8XKUZX7B2vVFFia68xg=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RF7ZdYb6SNScap7CACzSi0dTbZC9b69m+jiZBL2EGogG98ElT0KiJthP/qUj7nj8woZL98G0Fd4cV3j29iFi5hGJ5OxtiLSDlooIkuAtvg9sFhCIpbUJ6YlRFxA0PvZRz0qtxdT/5/S+J2A4pYONlhkb3VEI1xUQlM9CgWZx7qk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bbpnqXiJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68219C4CEE4;
-	Fri, 25 Apr 2025 08:24:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZHqTJKxmMCs93Hic/O13B81S5XoXG46mAzT1ahS2sc+dZhEeTwRSkm9pGPsYlsYb2Jt3tAtfmon8UyXDUcgo8Y0yV6bHd0JK3nWF5JKmlMkvF6ZnNCwFZg74IjqDePxGaKRrjUs/65C2WvGrhXgseOb7erImYsNAoXoRTR2mJ7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bKjbqAU9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00E95C4CEE4;
+	Fri, 25 Apr 2025 08:26:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745569476;
-	bh=yaX3w4DfcX3TMo4x0MUdyXmOAsmyKJ9+vwqLSlAWwoA=;
+	s=k20201202; t=1745569606;
+	bh=3hyYZAdzYUDm/qiRZiyh2oVm8XKUZX7B2vVFFia68xg=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=bbpnqXiJBwtdsPVTFBFxc5de7F2/pwqYOvlF29RMk2Az6ELHq79MSfBZNxvEicmuK
-	 zUYEDWj37k4HY1qHG5NOwfW32E1b6HteyqxPVHK2wc01OVICMlWj24VsoRRGRrj/Y6
-	 kn78/450ekBQTHMi1PpvAGP3HEYz9yjqtA28uotBXUL7gm1RWMHeki9ykHC3klULj+
-	 Uw61dKYTMMvXfbQ5m8Z5bSptsn+pVxK5c4j3DYs79UR2lkw+1Td0zf6P/WyxZ1VruU
-	 IvVsMcMOz+QqpCTXCW7PgK8tO0HhhjymGii/vuZSdvP09+iNmpr1XsQaznwVixmcWj
-	 ed9yF92eLhyVA==
-Date: Fri, 25 Apr 2025 09:24:31 +0100
+	b=bKjbqAU9VzJTI6ooBoSzm4opSTonEAXPBzv+uSe5rGiZ6alQsb3d6JkidnXEXkyog
+	 VIoCnCoEfWgGEgHsX7NT4T+Kk+Kl41q8AzGHQxeofx1J0+nV7kkmU5OcM552Dou5T8
+	 bNRGtDWxJRSO9g8CWJUPzjXTpv5DHvSBPJclJ+RXzncU4Ew6gi0pB2wNNCako7uoVf
+	 RUYk6ElTrwR0kWaxEShcwokyI8AWsU/nfJwA0fVWv3M4PhucHUz7L7TcRsB0yq7vEh
+	 W1ofP0vRDSooOEiMMhfCFMupSMkjXhMHZGNMQXUBklusM43N7iZnT5W4GyGiHbdOyO
+	 82dZSEZOeMIRg==
+Date: Fri, 25 Apr 2025 09:26:37 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Arthur Pilone <art.pilone@gmail.com>
-Cc: marcelo.schmitt@analog.com, linux-iio@vger.kernel.org,
- bruno.stephan@usp.br, aschwarz@usp.br
-Subject: Re: [PATCH v2] iio: adc: ad7091r-base: Move reg volatility check to
- new macro
-Message-ID: <20250425092431.3c128be2@jic23-huawei>
-In-Reply-To: <CA+m-LuUn0awgWBK6TfKo0z_BYf9+5ZJdyNVF3vN+ywquPYsE0A@mail.gmail.com>
-References: <20250420222512.173029-1-arthurpilone@usp.br>
-	<20250421140842.08e4d26b@jic23-huawei>
-	<CA+m-LuUn0awgWBK6TfKo0z_BYf9+5ZJdyNVF3vN+ywquPYsE0A@mail.gmail.com>
+To: Andy Shevchenko <andy@kernel.org>
+Cc: "Paller, Kim Seer" <KimSeer.Paller@analog.com>, Lars-Peter Clausen
+ <lars@metafoo.de>, "Hennerich, Michael" <Michael.Hennerich@analog.com>, Rob
+ Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor
+ Dooley <conor+dt@kernel.org>, David Lechner <dlechner@baylibre.com>, Nuno
+ =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>, "Sa, Nuno" <Nuno.Sa@analog.com>,
+ "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+Subject: Re: [PATCH v5 3/3] iio: dac: ad3530r: Add driver for AD3530R and
+ AD3531R
+Message-ID: <20250425092637.0c019531@jic23-huawei>
+In-Reply-To: <aAkavQVd7Px3qPU0@smile.fi.intel.com>
+References: <20250421-togreg-v5-0-94341574240f@analog.com>
+	<20250421-togreg-v5-3-94341574240f@analog.com>
+	<20250421144800.0db0a84e@jic23-huawei>
+	<PH0PR03MB7141E6D1A077B0E02368CBDDF9BA2@PH0PR03MB7141.namprd03.prod.outlook.com>
+	<aAkavQVd7Px3qPU0@smile.fi.intel.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,54 +71,40 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 21 Apr 2025 12:05:49 -0300
-Arthur Pilone <art.pilone@gmail.com> wrote:
+On Wed, 23 Apr 2025 19:52:13 +0300
+Andy Shevchenko <andy@kernel.org> wrote:
 
-> Thanks for the comment, Jonathan.
+> On Wed, Apr 23, 2025 at 07:50:51AM +0000, Paller, Kim Seer wrote:
+> > > From: Jonathan Cameron <jic23@kernel.org>
+> > > Sent: Monday, April 21, 2025 9:48 PM
+> > > To: Paller, Kim Seer <KimSeer.Paller@analog.com>
+> > > On Mon, 21 Apr 2025 12:24:54 +0800
+> > > Kim Seer Paller <kimseer.paller@analog.com> wrote:  
 > 
-> Jonathan Cameron <jic23@kernel.org> wrote:
-> > I'm late to the game but to me, simpler to not have a macro but avoid
-> > duplication by having one function call the other. Also a more
-> > minimal comment can convey the point you want to make.
-> >  
 > ...
-> >
-> > On Sun, 20 Apr 2025 19:25:12 -0300
-> > Arthur Pilone <art.pilone@gmail.com> wrote:  
-> > >  EXPORT_SYMBOL_NS_GPL(ad7091r_writeable_reg, "IIO_AD7091R");
-> > >
-> > >  bool ad7091r_volatile_reg(struct device *dev, unsigned int reg)
-> > >  {
-> > > -     switch (reg) {
-> > > -     case AD7091R_REG_RESULT:
-> > > -     case AD7091R_REG_ALERT:
-> > > -             return true;
-> > > -     default:
-> > > -             return false;
-> > > -     }
-> > > +     /*
-> > > +      * The volatile ad7091r registers happen to be precisely the
-> > > +      * two read-only registers.
-> > > +      */
-> > > +     return AD7091R_IS_READ_ONLY_REG(reg);  
-> >
-> >          /* The volatile ad7091r registers are also the only RO ones. */
-> >         return !ad7981r_writeable_reg(dev, reg);  
 > 
-> Perfect. Addressed your suggestion on v3:
-> https://lore.kernel.org/linux-iio/20250421145534.91146-1-arthurpilone@usp.br/T/#u
+> > > > +	mask = GENMASK(chan->address + 1, chan->address);  
+> > > 
+> > > I think maybe we need a macro to get the mask from the channel number?
+> > > Using address for this seems overkill given how simple that maths is.
+> > > Ideally that macro could perhaps be used in the code below to avoid
+> > > all the defines I suggested.  
+> > 
+> > The motivation for using the chan->address field was to hide the calculation a bit.
+> > However, would using a macro like 
+> > #define AD3530R_OP_MODE_CHAN_MSK(chan)	GENMASK(2 * chan + 1, 2 * chan) 
+> > be a good approach in this case? This drops the need for the address field and
+> > can also be used to explicitly set the operating mode for the 4 fields of the register.
+> > What do you think?  
+> 
+> Please, note that doing GENMASK(foo + X, foo) is highly discouraged as it may
+> give a very bad generated code (although I haven't checked recently if it's
+> still the case). The preferred way is GENMASK(X, 0) << foo. Where X is a
+> compile time constant.
+> 
 
-I'm replying to a few people about this today.
-
-Don't bother replying to say you are taking a suggestion on board and
-sending a new version.  That information is implicit in the new version
-existing.
-
-It is noise on the list and slows things down a little.
-
-Thanks,
+With what Andy suggested as the implementation, this sort of macro
+looks like a good solution to me.
 
 Jonathan
-
-
 

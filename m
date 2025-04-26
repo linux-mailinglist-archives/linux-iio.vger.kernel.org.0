@@ -1,141 +1,184 @@
-Return-Path: <linux-iio+bounces-18717-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18718-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B2DBA9DD98
-	for <lists+linux-iio@lfdr.de>; Sun, 27 Apr 2025 00:45:12 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3796AA9DDB8
+	for <lists+linux-iio@lfdr.de>; Sun, 27 Apr 2025 01:01:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B605217E079
-	for <lists+linux-iio@lfdr.de>; Sat, 26 Apr 2025 22:45:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CB0E67B30A9
+	for <lists+linux-iio@lfdr.de>; Sat, 26 Apr 2025 23:00:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAA5F1BEF7E;
-	Sat, 26 Apr 2025 22:45:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 518FE1FCFEC;
+	Sat, 26 Apr 2025 23:01:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="wcEQW+X0"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XLCJL0P6"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oo1-f49.google.com (mail-oo1-f49.google.com [209.85.161.49])
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D5A6200127
-	for <linux-iio@vger.kernel.org>; Sat, 26 Apr 2025 22:45:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A41407494;
+	Sat, 26 Apr 2025 23:01:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745707508; cv=none; b=eSMedYo45M+WVD5uUABrptjfRlF5c6vfwX3ZZhAFae7fAjSz8h9VOEorWllnShQU5D7ims9RRENLJSXL7BuVzFY9wFx+rn/YV8LfTVhLR27OGxfHKF0dSQV14XE5UBSCZb52QKvVJvpELrZvV6pX5BO6IE1nLg7xN5A/viJw3Tc=
+	t=1745708486; cv=none; b=RbaVolO46GcG/JxUtRJ2EoDF5gK6nnOc8z6IrY4jJTNq5aX6M8nK7A4HAW4+5lyBEarDL1mvmpPLUG4/kScAWymF5VJohCUps/DE4ipBOnIn0HmPejpiBPmEgyZNuP1NZSO0vdmo0/LpeM0Nw2Irf/ybqkXqNeq74f4f/Y+5VvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745707508; c=relaxed/simple;
-	bh=HclsCHX3HZsdp7zwi/DFMXgxd59RhS+xuS2yD/7/K7I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qqc3L6n9NAc89epjObo1X2VH8dpDte4zhBQQKXJdHqL0R/reRUogKPgIyms/HN7mLaqwbhyAXNivwVIN1sYahX7AlS4Kt6s75cBd/40dIC79i4nMO42PNIvun2d5dhQCfEgwz2deFvftCGm87GGFOPqlngZiJtVbni1Sj9dsa6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=wcEQW+X0; arc=none smtp.client-ip=209.85.161.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oo1-f49.google.com with SMTP id 006d021491bc7-6066c02cd92so1439eaf.2
-        for <linux-iio@vger.kernel.org>; Sat, 26 Apr 2025 15:45:06 -0700 (PDT)
+	s=arc-20240116; t=1745708486; c=relaxed/simple;
+	bh=3KjCpYh+eHD0Q2Q4JHtcq4uyZZmov/9v378xW+9l0OE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=avCHTLMOAm0CMxp5vorTfErFfv4hX2lHM461JN2ZpOfvcb7stJJ2nQz54XrWTT0kVzUN75Q9aadMoOhMYHmu/yc5/4xbTRPeGkuhpbcL+ZzO2BuTIpsQxt/vQmzxWFE62y64y9SAeTHsiPksc7INdlQI51IP1gQZncPFOzlLogA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XLCJL0P6; arc=none smtp.client-ip=209.85.210.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-736ad42dfd6so3037643b3a.3;
+        Sat, 26 Apr 2025 16:01:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1745707505; x=1746312305; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=qwcUemuBqfTlPEEr1NWNN3RuE7oJcYf6SWcx828cxO8=;
-        b=wcEQW+X09pwfiDxaDCnktFvGz6sHyWMKEVDhWhbmIi6P071t+gNgKWLM1HfyHdGvbR
-         AxQZexwcwZu74emSx2be+DLH+fLnvnIfo2Rg0Eb8FqPnSAkdjo4/9RSpyfNgyjIV+7rJ
-         guzO0MYQR3F5viEhISkrT15hOAq3rZ3ZLGi7tI4k0n6ObYYPL+63EUpBcivtOmXRHv3Y
-         EHje7aiL4UbC1pz19/Oqxi4BMtYrkV01EEhMN52HJXIdWTELnKoseyy8BNDBLcud3LnW
-         nYuLBAgNJvhr9XuDUxithQ5qXihvt2QW9sn1B8oqsRiKTEskGTy9S54L4fkVfuyyZttY
-         liiQ==
+        d=gmail.com; s=20230601; t=1745708484; x=1746313284; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=DqD618T9wecbdh5UjMD8+tf3VJeXQ46pSVKEiwd4GOM=;
+        b=XLCJL0P6CBNSbOcQYiP6TU4V/mb9X5qJyadYi7UyYCUy45/kKCqCI8WSx+ZrlYCxWq
+         Y9xIpTsLFS6IUoA1mirYV90pYmVaEHV/gFFM2uAkdlCBu4c0Qcb/tBUy77U6Uun3yulL
+         yILUm8J+thkKTXHBR8QtC66yUHB6lizPHmvvIAwFNXqqGaf4cPcNYCpFK1XGiY2Y03HA
+         AThh2Q1CiQDU3geqsAR/LvQLKLoeUfO1BPaa4cRafTRRZw9DeEUakL9bHa5Ff4CWMRG+
+         hIbeEYSZwfWVUHOmYhPu0TmqGxqB/HVohdvA9ynJyrBb/V8JhzptWdWPvbwB4+qLg+Sv
+         fj/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745707505; x=1746312305;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1745708484; x=1746313284;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=qwcUemuBqfTlPEEr1NWNN3RuE7oJcYf6SWcx828cxO8=;
-        b=G9NS6XgeKLn6y5n39TB2VkVzwiLWM/vUKleyZoA7pMWkWQpq2yO0VY/14zX2tksCi4
-         xOv3fbimoKiE4st+lNLVM2QqOSdO8q8pSd2wZ3OCanma/ncTuxG6OMpHaTubqU2cRGiT
-         FO0Vc5KLCPI6LTp4/f5AzXFyMlZgY8I9si6m4Tdu6Id0X13e90dbm1F3bGJrM+oBJroy
-         w3iK6h/CPFJkq392v92StJwcDBZouzL2UKVTD4iK0ces56xuwy85cQRrce+wXU6Rc39K
-         ZHzsaNM5vcNi+VDyAWloujeGbqd7nRkyFDpCfXivFIzEQ1h2GvMIvAwSEEhFzh9ad401
-         p2Yw==
-X-Forwarded-Encrypted: i=1; AJvYcCXmSEaEl4QNwMaFM/Hrz+bBpYwLY2WMw7kGQVRQBQlGo8i+l0tyV07JD8QXRhtThLPzz4/A2dewFS0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw6aq8L76+10iGVpdhRQ7Cdjgyt7pUBeA9APAdDLM5EvNGVZJCM
-	EzATSqLb9vKJeUs5DN3TQw0TDmkSZIydHXWQBWrdzmkNPHO1WV+vn5y0UMmaExOhWJp22rXfuX/
-	W
-X-Gm-Gg: ASbGncuvn5a3QMXM66EIdjXGZXMZNdMm0lxBLNH/6G6z3tS25tWKqCJwE91MAnqGiog
-	zOlAdqCJJHlXAQxC1PgAb6nUN3JTiXj41yqnsAFDmjZi7NUgmZ2UlwA2qKY8T6ZCRED7eqBM7Xo
-	BFAEfKdVG9xZLWkBLKdE+Z4jdxzMExSe8xMM20TEdKuEhHrFWXtw2hy5Kr6UAzoOqCSes84R7Dq
-	OpnuiY2z1YMC9XVFPJiCr0R/DRU8mGOfTMwwYPOxJE88dYAYDndzr427J4ogr9reYmI3QupCR2o
-	Umbpoo4EuiX7eRZOeGhWHqlQZHNxH+OpWviK/eIomXWsx10ZuInsxF50snd9eS1TvQOEcvNKKF8
-	Y4qLErsycF4XMHmF4Qg==
-X-Google-Smtp-Source: AGHT+IFMpqMDcXejTTk+tlxMwyA7VG93Vje/R8vi0xdzIwwdgKGdmtlFvNJLYgocXCOKMvE6S+lSSQ==
-X-Received: by 2002:a4a:e84c:0:b0:604:5e57:80ab with SMTP id 006d021491bc7-606527b299cmr3850433eaf.0.1745707505264;
-        Sat, 26 Apr 2025 15:45:05 -0700 (PDT)
-Received: from ?IPV6:2600:8803:e7e4:1d00:96ff:7f79:37f3:5c67? ([2600:8803:e7e4:1d00:96ff:7f79:37f3:5c67])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-606468a16a7sm1303347eaf.22.2025.04.26.15.45.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 26 Apr 2025 15:45:03 -0700 (PDT)
-Message-ID: <f5de85b7-489c-4a81-a111-fbe7a893694c@baylibre.com>
-Date: Sat, 26 Apr 2025 17:45:02 -0500
+        bh=DqD618T9wecbdh5UjMD8+tf3VJeXQ46pSVKEiwd4GOM=;
+        b=IRtQFgugR30gfj+hWiQMXsUDB6XDtFK60XdqR6OiFfTUJsjgkMKEIyY2TFscep1/KY
+         MDxleE1iseH84MPagkUYf89pm49/AWCxHft+lG6aWbRupWUfi4sWO17luzEw6Y3/4ocO
+         eVWerZkbWXmdisoQP4GEb0VkQb7ot/geKX7FDkMLUH9nA58UVcFp8bdza4znc/mrr4Ut
+         9gOUo5+92D10QD+4Ab25KrPBQ/alaWxjBkkoPVqoSCr8Z8lTp56GtD7/BT/WOFVcqwoO
+         pCg5VcoQhju8MdzwhceG6cLBNDKdgjn54RR6/8T48B110SV7ohu88HBTJnnHPS5K/p7V
+         SQTA==
+X-Forwarded-Encrypted: i=1; AJvYcCW8jmbiMjbXhmVyzXoSE5pJo092F57GsRmP140E5qiJHdhSIkLrmHJFH4+F44cWj0xtxiyVws+r0R4=@vger.kernel.org, AJvYcCWtj7Qr5UOHljnI900dDESjDi6iNtuKrivQFebCYz84GE5zf/mNNT1b0AW8etahAHG3QFe7pVTlnh5bItVw@vger.kernel.org
+X-Gm-Message-State: AOJu0YxDO1doIM5xYkFPX2qFqhETGLlXmnDH8e0F3eXuanpSU3z/2HGc
+	bGyFRZXrXKzdezUp9D6ge6T69Clfs3ijFwFtJPqgZ1NDQTvqo5hi2d34eadQ
+X-Gm-Gg: ASbGncsRE4dEkwOFzJahfM94YLlgrKiBr/6JIp6pWjQL6PRosEsMyvRVBqZ28UQJbHy
+	slMU0TJ9WwMyTYXK+lF5Xg3hqHH+5EXLS8scZGQnEX5q6hbsYsuHjNzBvlLxgTGbMscRVM67YMC
+	FtZ61nrIhgIw+EWJoA8eTQ7hzklWif2hhQLM1XM3d3zWSvbJV+YWZ9balUkUcFtAmIjZRexrKyt
+	KLgMC45celrb/w66jO/LkUKsh9rfU3kLuXKvRjTI8io88gdugdtyYnDrbq+fg1bNu65EIkWiw/N
+	8e7EBPaYeoiAHYPbSCJdBOn7ZB/TDbexZQV0fsnT57gSiFRqemrV4w==
+X-Google-Smtp-Source: AGHT+IGo5uzGM708NgvnzG93kwpG+t0xhfzsjT+rgcw6F5rEP/F7Bklv9vt67hsmjtL4m4pJWvOiWQ==
+X-Received: by 2002:a05:6a00:b4c:b0:736:34ff:be7 with SMTP id d2e1a72fcca58-73fd8b6bd7dmr8457343b3a.15.1745708483803;
+        Sat, 26 Apr 2025 16:01:23 -0700 (PDT)
+Received: from archlinux ([189.101.161.220])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73e2593f557sm5314226b3a.42.2025.04.26.16.01.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 26 Apr 2025 16:01:23 -0700 (PDT)
+Date: Sat, 26 Apr 2025 20:01:16 -0300
+From: Gustavo Silva <gustavograzs@gmail.com>
+To: Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: Alex Lanzano <lanzano.alex@gmail.com>, 
+	Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
+	Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/3] iio: imu: bmi270: add step counter watermark event
+Message-ID: <mqt2iosg3j7ubrncq4figeqfuia4uwxad36gntr27houcvlqbn@srmed7zt4man>
+References: <20250424-bmi270-events-v1-0-a6c722673e5f@gmail.com>
+ <20250424-bmi270-events-v1-2-a6c722673e5f@gmail.com>
+ <CAHp75Vc30u=1jx3qNft-uOVCk49e4gTgyLf3+kgmUADQB56wEA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] iio: adc: ad7173: fix compiling without gpiolib
-To: Jonathan Cameron <jic23@kernel.org>,
- Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
- Andy Shevchenko <andy@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
- Michael Hennerich <Michael.Hennerich@analog.com>,
- Guillaume Ranquet <granquet@baylibre.com>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, kernel test robot <lkp@intel.com>
-References: <20250422-iio-adc-ad7173-fix-compile-without-gpiolib-v1-1-295f2c990754@baylibre.com>
- <CAHp75VfHkKC81EinO+oN1b0=NRkwmNBLPky=HkrvPJCmt4njDQ@mail.gmail.com>
- <20250426161814.1bbf7f82@jic23-huawei>
-From: David Lechner <dlechner@baylibre.com>
-Content-Language: en-US
-In-Reply-To: <20250426161814.1bbf7f82@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAHp75Vc30u=1jx3qNft-uOVCk49e4gTgyLf3+kgmUADQB56wEA@mail.gmail.com>
 
-On 4/26/25 10:18 AM, Jonathan Cameron wrote:
-> On Wed, 23 Apr 2025 00:03:38 +0300
-> Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+On Fri, Apr 25, 2025 at 07:33:20AM +0300, Andy Shevchenko wrote:
+> On Fri, Apr 25, 2025 at 3:15 AM Gustavo Silva <gustavograzs@gmail.com> wrote:
+> >
+> > Add support for generating events when the step counter reaches the
+> > configurable watermark.
 > 
->> On Tue, Apr 22, 2025 at 11:12 PM David Lechner <dlechner@baylibre.com> wrote:
->>>
+> With the below being addressed,
+> Reviewed-by: Andy Shevchenko <andy@kernel.org>
+>
 
-...
+Hi Andy,
 
->>> Not related to the fix, but I also question the use of the regmap here.
->>> This is one of the ad_sigma_delta drivers that does funny things with
->>> the SPI bus, like keeping it locked during the entire time a buffer is
->>> enabled. So, if someone tried to use a GPIO during a buffered read, the
->>> GPIO call could block (waiting for the SPI bus mutex) until the buffer
->>> is disabled, which could be an indefinitely long time. And to make it
->>> even worse, this is not an interruptible wait, so the GPIO consumer
->>> would effectively be deadlocked.  
->>
->> I would say either the entire buffer mode is broken (in software), or
->> hardware is broken and GPIO shouldn't be supported at all if the
->> buffer mode is enabled. I think the best solution here is to remove
->> the GPIO chip before enabling buffered mode. If GPIO is in use, fail
->> the buffer mode.
-> I'd kind of assume that anyone using these GPIOs is doing it in a fashion
-> related closely to the ADC itself.
+Thanks for the review.
+
+> ...
 > 
-> Can we make any other use fail more cleanly? 
+> > +static int bmi270_write_event_config(struct iio_dev *indio_dev,
+> > +                                    const struct iio_chan_spec *chan,
+> > +                                    enum iio_event_type type,
+> > +                                    enum iio_event_direction dir, bool state)
+> > +{
+> > +       struct bmi270_data *data = iio_priv(indio_dev);
+> > +
+> > +       switch (type) {
+> > +       case IIO_EV_TYPE_CHANGE:
+> > +               return bmi270_step_wtrmrk_en(data, state);
+> > +       default:
+> > +               return -EINVAL;
+> > +       }
 > 
-> J
->>
+> > +
+> > +       return 0;
 > 
+> Dead code.
+> 
+Ack.
 
-My inclination would be to implement it like [1] where we use iio_claim_direct()
-to return -EBUSY during buffered reads to avoid the deadlock-like possibility
-instead of using the gpio regmap.
+> > +}
+> 
+> ...
+> 
+> > +       switch (type) {
+> > +       case IIO_EV_TYPE_CHANGE:
+> 
+> > +               if (!in_range(val, 0, 20461))
+> 
+> I prefer that + 1 to be separated and the value defined.
+> 
+> (0, _FOO + 1)
+> 
+Ack.
 
-[1]: https://lore.kernel.org/linux-iio/2a789531fda5031c135fc207a547f2c3f00a13ea.1744325346.git.Jonathan.Santos@analog.com/
+> > +                       return -EINVAL;
+> 
+> > +               raw = val / 20;
+> 
+> Needs a comment.  Is this in the Datasheet? Then reference to the
+> section / table / formula would be nice to have.
+> 
+According to the datasheet, there's a factor of 20 to the step counter
+watermark level.
+I'll add a comment referencing that section of the datasheet in v2.
+
+> > +               return bmi270_update_feature_reg(data, BMI270_SC_26_REG,
+> > +                                                BMI270_STEP_SC26_WTRMRK_MSK,
+> > +                                                FIELD_PREP(BMI270_STEP_SC26_WTRMRK_MSK,
+> > +                                                           raw));
+> > +       default:
+> > +               return -EINVAL;
+> > +       }
+> 
+> ...
+> 
+> > +               raw = FIELD_GET(BMI270_STEP_SC26_WTRMRK_MSK, reg_val);
+> > +               *val = raw * 20;
+> 
+> Same.
+> 
+Ack.
+
+> > +               return IIO_VAL_INT;
+> 
+> 
+> -- 
+> With Best Regards,
+> Andy Shevchenko
 

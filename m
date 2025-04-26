@@ -1,109 +1,123 @@
-Return-Path: <linux-iio+bounces-18711-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18712-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63E03A9DC1D
-	for <lists+linux-iio@lfdr.de>; Sat, 26 Apr 2025 18:08:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A96C0A9DC4E
+	for <lists+linux-iio@lfdr.de>; Sat, 26 Apr 2025 18:49:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B51A25A613F
-	for <lists+linux-iio@lfdr.de>; Sat, 26 Apr 2025 16:08:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EF5A917C20D
+	for <lists+linux-iio@lfdr.de>; Sat, 26 Apr 2025 16:49:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1EE225D21A;
-	Sat, 26 Apr 2025 16:08:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBA8625D8F8;
+	Sat, 26 Apr 2025 16:49:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TIk36MMw"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FEuP5p44"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40D342CCC1;
-	Sat, 26 Apr 2025 16:08:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06FDE25D218;
+	Sat, 26 Apr 2025 16:49:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745683724; cv=none; b=WWzvTczXbaW2J1ghyEL9Uc41kS8OJwU7MtlNgYciG60ozuNfxvaD44vhgDL0sjci/1jZLJxS6TWSZdfD/Ckp/4eWtaaLmDhPKJwGoepxYeHXdWSghfmgdJ4b9V/YxaaUia242yqPb3W1n39tZS7ns3I7QraZyx2BO6IMo9tB8nc=
+	t=1745686165; cv=none; b=W+jhjnHHhJXrsWEJUjj0lKjmM/4GZWz0Z2yKFyeIv0EXXaD8e5am8Kb956M2r5LIx+iTsAmMRw7vIwJDi0Wb+OZ2zvYp0Ajdj3R9APJq1FnCER/S337Ifi6pRKR/iWWK3Rp0dXHAIdSDZVszw6Zdn28Dr/JqkTByqFkuW2JybBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745683724; c=relaxed/simple;
-	bh=lYxdZJ9bsThFJ0RFg6NtDhY6AxAZhD7vZLMppxV1/nw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uXj4LTMDypRVhuJ3h9nEgJMigLPi75cZptiAZ2AzkjKIJ2MKJMsryRwD5p16ZXBXW8GtqdIKFG3aW7hfdEyLAmQOXYJj5wAC1Ix9qC4SbDq9Cg/RC/c6yp7Brf6nqjhDw4WukGJqUPtSkBUU10PK4mir6bJ33jBf03lHmmPwh50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TIk36MMw; arc=none smtp.client-ip=209.85.210.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-736c3e7b390so3543066b3a.2;
-        Sat, 26 Apr 2025 09:08:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745683721; x=1746288521; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=O4mAH/lsHMEz1SG+T1gwKnZFAThj7zt6RFf30IeeqKo=;
-        b=TIk36MMwmz+v2E6UFQAzxFq7cX9hMBh70UdRPRz+C/17QsBbadLZPsKhMeoOU7iltd
-         G7ILSl0ZsDp2zMV8MgTXivy5xUSTTvPlZ+vpO368T3x3V0ur4YYr7U8n6HPObzEDXgmm
-         v8rpS0xqRNHj/2fO2QPClGU2LRsTiTMqx52u8zSJkfd8GZOJxOSkWZPr8+SvGPTEbM8a
-         33G+lPNMwjt0QldROwQ0sIrw/iAUqLu27lHn6cqX0w6YLSOGs+i3D0losSOcmkIM+IY9
-         OfL5FYeUcaCFDl1wDwQ839B6/sYy5VDLeQOl5NigdFtbuLBdgLyLFTzMDhglc7si/Y6o
-         RISw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745683721; x=1746288521;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=O4mAH/lsHMEz1SG+T1gwKnZFAThj7zt6RFf30IeeqKo=;
-        b=IS6uvuSzVYv/pgpA5+LKZyXkJJQxMnNqdf5VplDuMb1A6tKq1qebqFmtu9IwoNd7+s
-         sPXvju7zLpwHZ4T6NEKjE0lEV18l3c28R/0eSoCFf85onjlNZ59s0DrwrVTZHEhzSrc4
-         O2F2z30AxixNZ34I8VFqYf4ZgAl0+nzvBqylK+0WCR0xuCB16+2DMl5WT3kmy5QpOVsF
-         tOpuew2CcEp1B/bGFcwQmpBHMXPXEqSGnsCQ1UCDahpf3qppiCyezJGZhYfPynV4psHy
-         syyf34dkTG/KPysX9oiEpp2f+GLbVqFDCVFBg+bC1KABQyx8nWbFuXgM6EKVVUlZs0Mh
-         9qyA==
-X-Forwarded-Encrypted: i=1; AJvYcCVeAAj2qTtuH1jhid44FcC0XyQJtPjRK+rjf617vEd5m+yOgVkj+krgtFOtjQPaMV62VfyUTmeZGrHt@vger.kernel.org
-X-Gm-Message-State: AOJu0YyxqvQPpuUHWbZwlTxIrkGQRArnF00f1vlRAKocJ/OyrmQe9tck
-	LEtfGritPBGpB6Dtun9kx0cIZvheDWSWnhekT8xaE2AV4+oyz/k8RYpqE7b4CIoCNaAZ/4jJ4Lw
-	vHv7u22O3ttf8s3/G0vMhEjChQO/0CrmubDI=
-X-Gm-Gg: ASbGnctmS0onbTdVq8Eq7nxm21fYDOnQejQi8vp6qkOYCy89MQ6xD7+eSt+wyBgxBC6
-	dxpen92W5UpdkL0nFHJapcEVl5VhbrV/7fZPA4c9TKMTrKHr2KlTR12oBsvgRq1xPTjzD8ytl15
-	SRnDT8QvDI5cYFrZnalQnptz8=
-X-Google-Smtp-Source: AGHT+IH7TOuxcOIb/z5KitzljdLHRideNoCVIMHCUFUT+9/jdjpi5pNY+2Cb0F4t2pofI0XIXHBG5d3x7H5a9fndRo0=
-X-Received: by 2002:a17:90b:3c43:b0:2ff:71ad:e84e with SMTP id
- 98e67ed59e1d1-309f7da6c4dmr9665068a91.10.1745683721337; Sat, 26 Apr 2025
- 09:08:41 -0700 (PDT)
+	s=arc-20240116; t=1745686165; c=relaxed/simple;
+	bh=iS+9leWgXXOZ1k/iOhF8RACB9451MBev3uHFiptRUpE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qTcygh9SNGOEZhVjEkb2t+GccEEG3YS99PGlDeRzOI97k9U0me2z4qwJ8B12hyZ50GY+Kh7jE7zKfAmSGnKQQTBcmrUfg4kWVrFAAsd0827Np56UeQbjGXzQGLG/uHx2H7Gxu26qbNSYSY+lvTv5xMXcnV4lSkuUz1roC98qxWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FEuP5p44; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1745686164; x=1777222164;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=iS+9leWgXXOZ1k/iOhF8RACB9451MBev3uHFiptRUpE=;
+  b=FEuP5p44B/VPMgLr02oGMKTiK0lq4RcsshI+EHBKzRYByg3m6OyFD8KF
+   +mFAiEs7iUAKW68egxc0lhqDj37TbHKk77AzB+Xg3I7U8RgahW+698Hdk
+   4wb+NmvPoIfv7M+O6sF9xRgCIwlva/+q0vnSlKG9HpkuIPwz7/YeNB/u4
+   MboIcSfn+gZWt6MYd+FYUcHxpdVQ5nT2wGg5w6ZgV8rVt/4iDEB6zbgTh
+   2NlwtzpFnR0ICcqIDg2x3qVKCJ17XBlVrG4v+ejOmaqwBNVcPCNHvUoRR
+   jHFlhYrJbk/qZdbSKcOQxQaKMgKfhPQuVBBUQOfOo+nBrGv5kt6MuctR2
+   Q==;
+X-CSE-ConnectionGUID: Vwl4EoFXQAGw6x+UQwQTaQ==
+X-CSE-MsgGUID: qKk4dhPORdWrmjq2UBGIdA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11415"; a="64854293"
+X-IronPort-AV: E=Sophos;i="6.15,241,1739865600"; 
+   d="scan'208";a="64854293"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Apr 2025 09:49:22 -0700
+X-CSE-ConnectionGUID: Vhk6u4BwTMOfmzbihRx3sw==
+X-CSE-MsgGUID: rL7HaxZAT3aThZa2zsdIUg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,241,1739865600"; 
+   d="scan'208";a="164212011"
+Received: from lkp-server01.sh.intel.com (HELO 050dd05385d1) ([10.239.97.150])
+  by fmviesa001.fm.intel.com with ESMTP; 26 Apr 2025 09:49:20 -0700
+Received: from kbuild by 050dd05385d1 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1u8iiL-0005vN-36;
+	Sat, 26 Apr 2025 16:49:17 +0000
+Date: Sun, 27 Apr 2025 00:48:51 +0800
+From: kernel test robot <lkp@intel.com>
+To: Antoniu Miclaus <antoniu.miclaus@analog.com>, jic23@kernel.org,
+	robh@kernel.org, conor+dt@kernel.org, linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev,
+	Antoniu Miclaus <antoniu.miclaus@analog.com>
+Subject: Re: [PATCH v3 11/11] iio: adc: ad4080: add driver support
+Message-ID: <202504270010.w3ZsLDZR-lkp@intel.com>
+References: <20250425112538.59792-12-antoniu.miclaus@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250423194100.53934-1-gye976@gmail.com> <20250426160308.6dbe1cdc@jic23-huawei>
-In-Reply-To: <20250426160308.6dbe1cdc@jic23-huawei>
-From: Gyeyoung Baek <gye976@gmail.com>
-Date: Sun, 27 Apr 2025 01:08:29 +0900
-X-Gm-Features: ATxdqUFoPZsx5jx8c-1apG61PF8LuPuJtJVvUotnvnYk-FpxqJiZhSo-PBsaRfI
-Message-ID: <CAKbEzntEF72o1LdHCmdV+P2NC6nQ_34nQ5Jqje3Ava+dqTtwXA@mail.gmail.com>
-Subject: Re: [PATCH v6 0/4] Add support for Winsen MHZ19B CO2 sensor
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
-	dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org, robh@kernel.org, 
-	krzk+dt@kernel.org, conor+dt@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250425112538.59792-12-antoniu.miclaus@analog.com>
 
-Hello Jonathan,
+Hi Antoniu,
 
-On Sun, Apr 27, 2025 at 12:03=E2=80=AFAM Jonathan Cameron <jic23@kernel.org=
-> wrote:
->
-> On Thu, 24 Apr 2025 04:40:56 +0900
-> Gyeyoung Baek <gye976@gmail.com> wrote:
->
-> Applied to the togreg branch of iio.git.
-> I'll initially push that out for a few days as testing  to let the 0-day
-> build bot see if it can find anything we missed.
+kernel test robot noticed the following build warnings:
 
-Thank you for approving it.
-I'll do my best to fix issues quickly if any arise.
+[auto build test WARNING on robh/for-next]
+[also build test WARNING on linus/master v6.15-rc3 next-20250424]
+[cannot apply to jic23-iio/togreg]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
---
-Regards,
-Gyeyoung
+url:    https://github.com/intel-lab-lkp/linux/commits/Antoniu-Miclaus/iio-backend-add-support-for-filter-config/20250425-192951
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/robh/linux.git for-next
+patch link:    https://lore.kernel.org/r/20250425112538.59792-12-antoniu.miclaus%40analog.com
+patch subject: [PATCH v3 11/11] iio: adc: ad4080: add driver support
+config: m68k-allmodconfig (https://download.01.org/0day-ci/archive/20250427/202504270010.w3ZsLDZR-lkp@intel.com/config)
+compiler: m68k-linux-gcc (GCC) 14.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250427/202504270010.w3ZsLDZR-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202504270010.w3ZsLDZR-lkp@intel.com/
+
+All warnings (new ones prefixed by >>, old ones prefixed by <<):
+
+WARNING: modpost: missing MODULE_DESCRIPTION() in lib/tests/slub_kunit.o
+>> WARNING: modpost: module ad4080 uses symbol iio_backend_filter_type_set from namespace IIO_BACKEND, but does not import it.
+>> WARNING: modpost: module ad4080 uses symbol iio_backend_data_alignment_enable from namespace IIO_BACKEND, but does not import it.
+>> WARNING: modpost: module ad4080 uses symbol iio_backend_sync_status_get from namespace IIO_BACKEND, but does not import it.
+>> WARNING: modpost: module ad4080 uses symbol iio_backend_num_lanes_set from namespace IIO_BACKEND, but does not import it.
+>> WARNING: modpost: module ad4080 uses symbol devm_iio_backend_get from namespace IIO_BACKEND, but does not import it.
+>> WARNING: modpost: module ad4080 uses symbol devm_iio_backend_request_buffer from namespace IIO_BACKEND, but does not import it.
+>> WARNING: modpost: module ad4080 uses symbol devm_iio_backend_enable from namespace IIO_BACKEND, but does not import it.
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 

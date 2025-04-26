@@ -1,56 +1,55 @@
-Return-Path: <linux-iio+bounces-18696-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18697-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C360A9DB77
-	for <lists+linux-iio@lfdr.de>; Sat, 26 Apr 2025 16:28:55 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CADEA9DB79
+	for <lists+linux-iio@lfdr.de>; Sat, 26 Apr 2025 16:33:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B3C21BA5365
-	for <lists+linux-iio@lfdr.de>; Sat, 26 Apr 2025 14:29:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0E3FD7B4D20
+	for <lists+linux-iio@lfdr.de>; Sat, 26 Apr 2025 14:32:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C64B725C6E3;
-	Sat, 26 Apr 2025 14:28:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A44C1F181F;
+	Sat, 26 Apr 2025 14:33:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oL4W5DTt"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nvqm9uPY"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E5F82AD0F;
-	Sat, 26 Apr 2025 14:28:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 295731519B4
+	for <linux-iio@vger.kernel.org>; Sat, 26 Apr 2025 14:33:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745677729; cv=none; b=RK9rGS9TzCkJ25IuIvaO8c6i1h6K5yXFeQtQvlDPHLRHgJrQaCwUzKigemOhWNEXTzxemUbUfhd/VXNCmjbCYLxWhZebDhNz4qz68MlIy7RPyq55jBqPdS8BzDN7BJi5FkeSukFoiHrD/t8313B6HitiKrAHchxFmQ6wvoe4m/I=
+	t=1745677994; cv=none; b=PXqzLpUxWkDDRLYIi8S5VPG3M+TxODePaaLoaYDZDNsgce355G3bspPGFC8YDzmGxE+j9pRVoPinUgiTImD5XY8ZEzlrStZrNfxQ1+l0BoekYsLO5ljH3EtYocy+wUSB0vQvRANQwzG8sNmCnELfxSOuOZ4FQ2BMhkq4HGcblaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745677729; c=relaxed/simple;
-	bh=UoQOZFMYyvSlSxpL/oqMDkYMGe0Otfbzicnh0yYcnKc=;
+	s=arc-20240116; t=1745677994; c=relaxed/simple;
+	bh=h+UQTG+RhJJoJXac2b/HjpOln7qVcIdWhLQCfgOlih8=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=D/+4wHkMVQy0WFzEyimkGHE3ZbQws9UHrhdRdPko7OlCDHoFRJHaTLPotMecv7a5YWH8b4HYFh4o8CvcWjeVAG3snJ6OrT2KUla/+wx9kDLGIXS7hfQ28OW83v/9llBTDxyJ2d/a+26AF5KdeekEKqM7Y3JuKqtUGS/JrU79yRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oL4W5DTt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6E14C4CEE2;
-	Sat, 26 Apr 2025 14:28:47 +0000 (UTC)
+	 MIME-Version:Content-Type; b=L7/LUZi0jgtk/s2Y2Rt5aDlZw/l47mhA9XOGFjPHjpFhz+QuYcPj/FjrkXnWEdqSZ2G4qeCDEbiZ+PM42yRk2Nv9PbDbeVPQcbzRzTxgqG7l/zbVTADVJntTOLfe7seLq6ZxpfGv+wIyPtGO9GdKMFgIEr8ysp+XwIa6JbDOhYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nvqm9uPY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABF21C4CEE2;
+	Sat, 26 Apr 2025 14:33:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745677728;
-	bh=UoQOZFMYyvSlSxpL/oqMDkYMGe0Otfbzicnh0yYcnKc=;
+	s=k20201202; t=1745677993;
+	bh=h+UQTG+RhJJoJXac2b/HjpOln7qVcIdWhLQCfgOlih8=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=oL4W5DTtgN1ZVOwm5+DQ4iO5SgamULGDCpt9vHxKgZMmsfdCd9jkMkgcBp01DWYnI
-	 BTdWd/Hcj5l2AXK5PrRkTJPA4ZMQWEryve67zpPhwspL9N9TxCXh/xmlEoD8siBOUQ
-	 76cWN2VmgqxqYytYHogs+HlQ+Fg/FQi2EG5cEe1h8CJ1NvxwarGFMPq/CnyJ3n3/b1
-	 b5y/sY8zRV1SE0bBsUh90lYMbXZm4RXAn2TWKiB7KnYDdOaiIaLC7Y6sJNCKcciXDp
-	 RF/ZifRL76RmwT3CeRImytWXAorjY+z4bT+uOk9C2G0nprZdbhZJJwQXXCVrcfZa1G
-	 gbUOi+UFLWNHQ==
-Date: Sat, 26 Apr 2025 15:28:43 +0100
+	b=nvqm9uPY67A7xUzNVYGyZoHZ3nqtd5MxjedODDox18gmNKhkw7H9KRFbYOLlH3ZOp
+	 8vehmSIqE6zhM1J43pvrx/7hQNJisnM+ipsLT0xa62oPYXQP6EvAd9hU4H96vokMmf
+	 7FYMieqG0AcEEAaCx6eb9LgB91Yx/PCnurq7vxhwD6uscwONS+CVKNl3itruuXJ1BX
+	 IIXj58QuG+exf4ZgIV1KaVdpwNehH+zWgxsuM44eMfy7QeNnjFS8sptNxAk+B//g7v
+	 p41EL7XqMzZ1YucYtlHOx+m/w8H/WbDPacGAij7nEGQVoOTV3fYadiWMmksZNXKILK
+	 R3a3rR1+CZs4A==
+Date: Sat, 26 Apr 2025 15:33:07 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Gwendal Grignou <gwendal@chromium.org>
-Cc: tzungbi@kernel.org, chrome-platform@lists.linux.dev,
- linux-iio@vger.kernel.org
-Subject: Re: [PATCH v4] iio: cros_ec_sensors: Flush when changing the FIFO
- timeout
-Message-ID: <20250426152843.3c79473b@jic23-huawei>
-In-Reply-To: <20250423220506.2061021-1-gwendal@chromium.org>
-References: <20250423220506.2061021-1-gwendal@chromium.org>
+To: Gustavo Vaz <gustavo.vaz@usp.br>
+Cc: linux-iio@vger.kernel.org, franciscolealhenriques@usp.br
+Subject: Re: [PATCH v1] iio: accel: kxcjk-1013: Deduplicate setup interrupt
+ functions
+Message-ID: <20250426153307.59689da0@jic23-huawei>
+In-Reply-To: <20250423204631.16460-1-gustavo.vaz@usp.br>
+References: <20250423204631.16460-1-gustavo.vaz@usp.br>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -61,21 +60,21 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 23 Apr 2025 15:05:06 -0700
-Gwendal Grignou <gwendal@chromium.org> wrote:
+On Wed, 23 Apr 2025 17:46:31 -0300
+Gustavo Vaz <gustavo.vaz@usp.br> wrote:
 
-> |hwfifo_timeout| is used by the EC firmware only when new samples are
-> available.
-> When the timeout changes, espcially when the new timeout is shorter than
-> the current one, send the samples waiting in the FIFO to the host.
-> Inline the call to transmit |hwfifo_timeout| value to the firmware.
+> The contents of kxcjk1013_setup_any_motion_interrupt and
+> kxcj1013_setup_new_data_interrupt are very similar. Deduplicate these
+> functions by introducing a generic function named
+> kxcjk1013_setup_interrupt that has an additional flag indicating if
+> it's a new data interrupt.
 > 
-> Now flush when a sensor is suspended (ODR set to 0) as well.
-> 
-> Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
-LGTM
-Applied to the togreg branch of iio.git and pushed out as testing
-for 0-day to take a first swing at it.
+> Signed-off-by: Gustavo Vaz <gustavo.vaz@usp.br>
+> Co-developed-by: Francisco Henriques <franciscolealhenriques@usp.br>
+> Signed-off-by: Francisco Henriques <franciscolealhenriques@usp.br>
+Seems fine to me.
+
+Applied to the togreg branch of iio.git.
 
 Thanks,
 

@@ -1,61 +1,62 @@
-Return-Path: <linux-iio+bounces-18685-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18686-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96E65A9DAB9
-	for <lists+linux-iio@lfdr.de>; Sat, 26 Apr 2025 14:33:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7E55A9DACB
+	for <lists+linux-iio@lfdr.de>; Sat, 26 Apr 2025 14:49:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 823337A1691
-	for <lists+linux-iio@lfdr.de>; Sat, 26 Apr 2025 12:32:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3236F1BC0C65
+	for <lists+linux-iio@lfdr.de>; Sat, 26 Apr 2025 12:49:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A1EE2F24;
-	Sat, 26 Apr 2025 12:32:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEC2DCA5A;
+	Sat, 26 Apr 2025 12:49:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JSZu9biw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D/yjAY/M"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBF44322E;
-	Sat, 26 Apr 2025 12:32:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91FB78F5A;
+	Sat, 26 Apr 2025 12:49:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745670771; cv=none; b=PFUBfC1NbPyynmXxhpremjS+BOB1k79QMggVYRD4v6fQ9zyR9tNJX3AQLfoMt4TNqJ2j/9d3H913w+QHbffdYXMgeOeWfprzRrTQzj7ti9pamEhb7UKEznZWa9YVl5wW5NvQs/78ISwkG31EsmOz9ulxI6+O1arM4GCPo9Jcd9g=
+	t=1745671753; cv=none; b=C42bmvITL0tdUl3TrObMIh0UYAl3633Uu4oBwNlGCrA88/8GVB3a6IJR4Bgb1E5MAcJwXwB4491x3FkRSSkJfCgDpQr9bY0OHSZxe5TaaqsVya9Uj+kKgKXvL48qOyeeeOq6pXhB8pN01laAwKELmNBJkafxx6ZYZkQvXTo6tdc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745670771; c=relaxed/simple;
-	bh=kYRWP9F1X54xHhWxMgVlZK6lr+cRk3emxfKCNO5t184=;
+	s=arc-20240116; t=1745671753; c=relaxed/simple;
+	bh=3IwxfYhPqqfQZ+MA07TU0Kmr5RuA9Hk6yvABNGkXtjs=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PTrvFW0dvtTYPin0mSChFeSXWEkD+EcReM6AFEu3UjBX/CgY8Fzg01DenhxzcK9xLZrrJBPCPGGOKKRshbjugV/muuJLsFIh6VhReIoUSrL6fx5teQf5FM+6cG2/eX+KGL6NH4GwOwOh15vXurWL4J27glU9kt1jr5na8EWnXyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JSZu9biw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92D9FC4CEEA;
-	Sat, 26 Apr 2025 12:32:47 +0000 (UTC)
+	 MIME-Version:Content-Type; b=J0HaupFQeqI4Tk1kI213tlSaRTb6xku3PZ3BESTMKOagZ9gKjLhJjRDLWLPHz2jdfnSb7B7VjH8MMbz96SFk5lCKMcCBbaUhyZK7L+U/yzdXUcIjZzuIdvAORFoP7H8XU+lw5pRMFUVI5MNVvO6DPPqysCLnqTbMcRBw1pe4yAA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D/yjAY/M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94450C4CEE2;
+	Sat, 26 Apr 2025 12:49:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745670771;
-	bh=kYRWP9F1X54xHhWxMgVlZK6lr+cRk3emxfKCNO5t184=;
+	s=k20201202; t=1745671753;
+	bh=3IwxfYhPqqfQZ+MA07TU0Kmr5RuA9Hk6yvABNGkXtjs=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=JSZu9biwIXUTO0YKWYhmWh8FcY/aLhiAemo7n8gJ3NnuBQ4xsrheAnsBGZIeNfJZN
-	 QO3QDSBqrG752oCEncefVUVExFUFwNXm87wecJcxB/AL/ZFEFOw9dlkI0z2trEHapT
-	 gF7miHsprC2N770X/JG/HxWjkHMlOvKTL/5z7OyiyNO2vYUcwiwZCAckTacC+ixiPn
-	 YtIQTrGm5M46del/FJ+tnt3ETVhAIsxCO6ZJXgdxzmJdjXKVFrwnjxtL2c8/fw1O07
-	 1XI1RJcctbBoxN1OtTjo6NaKd8JHiWlpHauRZ3dGQtCyzUJe4v1PEyGlLXhIH3btMJ
-	 tKqEACnzFTiAQ==
-Date: Sat, 26 Apr 2025 13:32:41 +0100
+	b=D/yjAY/MZMs9TxBw/aSqz84hDOQUOAOta8EZFGCoQ3G+6pieJxBJCI722JXFER7Yv
+	 YoUmmLfHjPUUU2X68q1Pr6bCVXBqZxApZjuSNTfDEPrQP3IYgmw4/3JG4imluj/YmQ
+	 Rbcs5K1fJXFvW/xSGhKS7iic1qh3U2vFbUiTVsOBOv4KtlIOMDc775ymh/CcK+nTqn
+	 AF6PcTy8GXoa8IbbQHwlcHeG158haRsNpQzFwHHB8ZWfZtjw+ygXk6bLqh0250Na76
+	 BLJssAUXy3C3d5pZcdtAhGYr7MBLCNgG5FviQpMfX3/Zoyiy0sTgdyOd1+4PaRMewE
+	 GWAThNV40jsRQ==
+Date: Sat, 26 Apr 2025 13:49:07 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: David Lechner <dlechner@baylibre.com>
-Cc: Alisa-Dariana Roman <alisadariana@gmail.com>, Jonathan Cameron
- <Jonathan.Cameron@huawei.com>, Alisa-Dariana Roman
- <alisa.roman@analog.com>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>, Michael
- Hennerich <Michael.Hennerich@analog.com>, Nuno =?UTF-8?B?U8Oh?=
- <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>
-Subject: Re: [PATCH v1 1/1] iio: adc: ad7192: Refactor filter config
-Message-ID: <20250426133241.7d14c776@jic23-huawei>
-In-Reply-To: <6d0ff620-ec1a-4b17-9b5d-b9c48078271a@baylibre.com>
-References: <20250425132051.6154-1-alisa.roman@analog.com>
-	<20250425132051.6154-2-alisa.roman@analog.com>
-	<6d0ff620-ec1a-4b17-9b5d-b9c48078271a@baylibre.com>
+Cc: Kim Seer Paller <kimseer.paller@analog.com>, Lars-Peter Clausen
+ <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, Rob
+ Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor
+ Dooley <conor+dt@kernel.org>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
+ Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH v6 3/3] iio: dac: ad3530r: Add driver for AD3530R and
+ AD3531R
+Message-ID: <20250426134907.764491cb@jic23-huawei>
+In-Reply-To: <8ea9b3b7-1896-470e-9c7e-023d4ea248bc@baylibre.com>
+References: <20250425-togreg-v6-0-47b6f9878ae5@analog.com>
+	<20250425-togreg-v6-3-47b6f9878ae5@analog.com>
+	<8ea9b3b7-1896-470e-9c7e-023d4ea248bc@baylibre.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,99 +64,39 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, 25 Apr 2025 10:43:29 -0500
+On Fri, 25 Apr 2025 11:48:50 -0500
 David Lechner <dlechner@baylibre.com> wrote:
 
-> On 4/25/25 8:20 AM, Alisa-Dariana Roman wrote:
-> > It is not useful for users to set the 3db filter frequency or the
-> > oversampling value. Remove the option for these to be set by the user.
+> On 4/25/25 7:54 AM, Kim Seer Paller wrote:
+> > The AD3530/AD3530R (8-channel) and AD3531/AD3531R (4-channel) are
+> > low-power, 16-bit, buffered voltage output DACs with software-
+> > programmable gain controls, providing full-scale output spans of 2.5V or
+> > 5V for reference voltages of 2.5V. These devices operate from a single
+> > 2.7V to 5.5V supply and are guaranteed monotonic by design. The "R"
+> > variants include a 2.5V, 5ppm/=C2=B0C internal reference, which is disa=
+bled
+> > by default.
+> >=20
+> > Support for monitoring internal die temperature, output voltages, and
+> > current of a selected channel via the MUXOUT pin using an external ADC
+> > is currently not implemented.
+> >=20
+> > Signed-off-by: Kim Seer Paller <kimseer.paller@analog.com>
+> > --- =20
+>=20
+> Reviewed-by: David Lechner <dlechner@baylibre.com>
+>=20
+> Just a few small things in the latest changes that could be improved...
 
-I'm curious.  Why isn't it useful?
+FWIW I took another look and have nothing to add to David's review comments.
 
-> > 
-> > The available arrays for 3db filter frequency and oversampling value are
-> > not removed for backward compatibility.
-> > 
-> > The available array for 3db filter frequency is dynamic now, since some
-> > chips have 4 filter modes and others have 16.  
-> 
-> The available array only makes sense if the matching attribute is writeable.
-> As mentioned in my reply to the cover letter, I think we should keep it
-> writeable for backwards compatibility. But we don't need to extend it to allow
-> writing new options, so keeping the previous available array seems fine to me.
-> 
-> > 
-> > Expose the filter mode to user, providing an intuitive way to select
-> > filter behaviour.
-> > 
-> > Signed-off-by: Alisa-Dariana Roman <alisa.roman@analog.com>
+Hopefully with those tweaks v7 should be good to go.
 
-> > +static const char *const ad7192_filter_modes_str[] = {
-> > +	[AD7192_FILTER_SINC4] =			"sinc4",
-> > +	[AD7192_FILTER_SINC3] =			"sinc3",
-> > +	[AD7192_FILTER_SINC4_CHOP] =		"sinc4+chop",
+Thanks,
 
-Is chop really a filter? I had to look it up and to me at least it
-seems like it isn't even though one thing it does is remove
-some types of noise.  It also removes linear offsets (some types
-of filter kind of do that, but the affect of chop smells more like
-a calibration tweak than a filter)  
-
-Maybe we need a separate control for chop, rather than trying to
-force it through our already complex filter type attributes?
-
-
-> > +	[AD7192_FILTER_SINC3_CHOP] =		"sinc3+chop",
-> > +	[AD7192_FILTER_SINC4_AVG2] =		"sinc4+avg2",
-> > +	[AD7192_FILTER_SINC3_AVG2] =		"sinc3+avg2",
-> > +	[AD7192_FILTER_SINC4_CHOP_AVG2] =	"sinc4+chop+avg2",
-> > +	[AD7192_FILTER_SINC3_CHOP_AVG2] =	"sinc3+chop+avg2",
-> > +	[AD7192_FILTER_SINC4_AVG8] =		"sinc4+avg8",
-> > +	[AD7192_FILTER_SINC3_AVG8] =		"sinc3+avg8",
-> > +	[AD7192_FILTER_SINC4_CHOP_AVG8] =	"sinc4+chop+avg8",
-> > +	[AD7192_FILTER_SINC3_CHOP_AVG8] =	"sinc3+chop+avg8",
-> > +	[AD7192_FILTER_SINC4_AVG16] =		"sinc4+avg16",
-> > +	[AD7192_FILTER_SINC3_AVG16] =		"sinc3+avg16",
-> > +	[AD7192_FILTER_SINC4_CHOP_AVG16] =	"sinc4+chop+avg16",
-> > +	[AD7192_FILTER_SINC3_CHOP_AVG16] =	"sinc3+chop+avg16",
-> > +};  
-> 
-> We need to make these match the values already defined in the ABI docs as much
-> as we can.
-> 
-> I see in the datasheets that there is a REJ60 bit in the MODE register, so I
-> would expect to see "sinc3+rej60" in this list as well.
-> 
-> We already have "sinc3+sinc1" that is defined as 'Sinc3 + averaging by 8' so
-
-hmm. That definition is odd.
-
-> "sinc3+avg8" would be redunant. And given that this driver already uses
-> the oversampling_ratio attribute to control the avg2/8/16, I'm wondering if we
-> can keep that instead of introducing more filter types.
-
-Tricky bit is whether the device changes the output rate (as needed for oversampling)
-or whether it is applying the filter but retaining full output data rate.
-
-Not sure which is happening here.  Given we previously had oversampling I guess
-the datarate was affected?
-
-
-> 
-> I also wonder if "sinc3+pf1" could be used for "sinc3+chop" since it is defined
-> as a device-specific post filter. Or make the case that "chop" is common enough
-> that it deseres it's own name.
-> 
-> I'm not the best expert on filters though, so I'm sure Jonathan will have some
-> better wisdom to share here.
-
-Not a lot.  Too long since I last went anywhere near filters, so beyond agreeing
-that we should stick to existing ABI where possible I don't really have any
-useful guidance here.
-
-
+Jonathan
 
 

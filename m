@@ -1,57 +1,58 @@
-Return-Path: <linux-iio+bounces-18688-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18689-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56656A9DAFC
-	for <lists+linux-iio@lfdr.de>; Sat, 26 Apr 2025 15:15:07 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D4D0A9DB39
+	for <lists+linux-iio@lfdr.de>; Sat, 26 Apr 2025 15:40:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A2FF41BA72D4
-	for <lists+linux-iio@lfdr.de>; Sat, 26 Apr 2025 13:15:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 41C717AE1B8
+	for <lists+linux-iio@lfdr.de>; Sat, 26 Apr 2025 13:39:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2413D1494CF;
-	Sat, 26 Apr 2025 13:15:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F27451DDC16;
+	Sat, 26 Apr 2025 13:40:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k1FRYKoK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BcQjy28L"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE8EF13777E;
-	Sat, 26 Apr 2025 13:15:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFBF91DDA36;
+	Sat, 26 Apr 2025 13:40:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745673302; cv=none; b=qF7Hwg/uh1SMfJiX/uth3GJuzsjcDeqP8MtQ109SAv8YD3kLr7W8Iis1J+iM0ijd4ti/S/UecXyE9N2HSZ9ToAvdKZsAXmKRqehT+i1qveOJUbsMpwXs1zMxHbggvrPeeyKzj9zJtu4pPHjIIGeFYYlEvvFzag1uSTxXJNcCd9g=
+	t=1745674825; cv=none; b=i7960ljtu+0na8Lz2L1TKrgV0P3x17U44RNpQRR55/wHp3iSn6UaL0M5qmxHXoF4lxh/bjUNC4831aMAQpAPJi/7TRtzrqZzd+yFSfLqCxr6M3x3KhxA2FzLfYOvzmb+yaOpnEejcADpEbyb7ny7ezMq8dr/D/gdR4BHpGIZtWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745673302; c=relaxed/simple;
-	bh=AFi3KdsvjqYyfX8dyI4Wdz5V6ie382V5cdvIOs3lmFg=;
+	s=arc-20240116; t=1745674825; c=relaxed/simple;
+	bh=a9YheHxg1bV1k91w8fVr/bZrKoFwcOIpG9RZjVvkrz0=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QsDCeU2jtZ5LtITqPSvQ8/DSFlUM3smGbflEGCbB5M285UJWWxTtVyB8q/6l/waQxVmTTRHAzvDgIj04j3SWZaYRkqRZzSrcZp5r7ZDDPuj+p+g+sekSu8g4peEQdP1NnyxyRzdYbla6bE8NfbGMjW2Sm3bwbt5sPAQlp2TlS+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k1FRYKoK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F7C9C4CEE2;
-	Sat, 26 Apr 2025 13:14:59 +0000 (UTC)
+	 MIME-Version:Content-Type; b=EY3dKXbPsOehQQupswXK0DoxqDrMphjthIfRjaR/2LoNQta5yLJusICTLkvv7yK6tFfp6pw/aPbHsT88/a5q/fIqe2AtmdRqMwbeMgzyzdzI1v/H3n4iYqk97VRYd6BVzDWMAV8rBGjjjTbYs/ZkfuuT94VQ3b1rI+0rR/+aSJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BcQjy28L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6C27C4CEE2;
+	Sat, 26 Apr 2025 13:40:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745673302;
-	bh=AFi3KdsvjqYyfX8dyI4Wdz5V6ie382V5cdvIOs3lmFg=;
+	s=k20201202; t=1745674825;
+	bh=a9YheHxg1bV1k91w8fVr/bZrKoFwcOIpG9RZjVvkrz0=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=k1FRYKoK0R6a8PVWK5/nJj6fiIoiBoqU71CbVYibHEoVPGXUHk5PE/65cWjYPs7+N
-	 KlksrkNIm/mm+hvV3Ygp+UsI4rwk2EAA32rV1dE3mDPybIIUxvBb+GD3/oVwLgj47m
-	 Gqgfd2V/jA2QWkv4ydPUsFqMjGsbQukVryak1qLtMYEnbPhENw+/WRqikuPBVOaY/Y
-	 tMAv8LeRDF4Pqda0LiFFkneo6omJxNs1Y2/JOyj5FSdligksQaGCZtwWxIF798kRQ8
-	 XIkMQu+kvS+zq16mNZl3v9GtUfSMkwOl4puPZeULSSAVV7qBiKHkuKAQwNCivHqG39
-	 hiSz/SRLFFfag==
-Date: Sat, 26 Apr 2025 14:14:55 +0100
+	b=BcQjy28LSXcL4Q7Bmqje5GO1AGtsKqSv2gl4lumrPJNhK6Mv6Z9Wj8Eo6/KHjjLfr
+	 ky7vQJmVAdT3yC0RBIm7fL1+MM6GmTVzpn9imZtGMn3YZE6UNMpQbJ3RDxCqeTdlhG
+	 kSpyf317MAUowNgjb4/xX4y9mGUD+pb2RROh01/QgkgAeGFivUB0dDeaDS2SaJgCLN
+	 WfWPTshnGHUxHvHgGLb1zeJZ6FLVl3ReuFSlhl4866CNEFqhuphfe/Pas2rBMzSiYw
+	 feaYelGO4AgVrCw4tI8YZTL51UZc5aeJAfvqevlB33JCp8yq5JlWR3MiwG6ia3Vdak
+	 Gq7o5DnsSb7VQ==
+Date: Sat, 26 Apr 2025 14:40:20 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Antoniu Miclaus <antoniu.miclaus@analog.com>
-Cc: <robh@kernel.org>, <conor+dt@kernel.org>, <linux-iio@vger.kernel.org>,
- <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Nuno Sa 
- <nuno.sa@analog.com>
-Subject: Re: [PATCH v3 01/11] iio: backend: add support for filter config
-Message-ID: <20250426141455.05487816@jic23-huawei>
-In-Reply-To: <20250425112538.59792-2-antoniu.miclaus@analog.com>
-References: <20250425112538.59792-1-antoniu.miclaus@analog.com>
-	<20250425112538.59792-2-antoniu.miclaus@analog.com>
+To: Gustavo Silva <gustavograzs@gmail.com>
+Cc: Alex Lanzano <lanzano.alex@gmail.com>, David Lechner
+ <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy
+ Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/3] iio: imu: bmi270: add channel for step counter
+Message-ID: <20250426144020.2633f9cb@jic23-huawei>
+In-Reply-To: <20250424-bmi270-events-v1-1-a6c722673e5f@gmail.com>
+References: <20250424-bmi270-events-v1-0-a6c722673e5f@gmail.com>
+	<20250424-bmi270-events-v1-1-a6c722673e5f@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -62,99 +63,170 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 25 Apr 2025 14:25:28 +0300
-Antoniu Miclaus <antoniu.miclaus@analog.com> wrote:
+On Thu, 24 Apr 2025 21:14:50 -0300
+Gustavo Silva <gustavograzs@gmail.com> wrote:
 
-> Add backend support for digital filter type selection.
+> Add a channel for enabling/disabling the step counter, reading the
+> number of steps and resetting the counter.
 > 
-> This setting can be adjusted within the IP cores interfacing devices.
-> 
-> The IP core can be configured based on the state of the actual
-> digital filter configuration of the part.
-> 
-> Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
-All these backend things look fine to me. However, as for all backend
-stuff I'm not the expert so will be looking for other reviews on these.
+> Signed-off-by: Gustavo Silva <gustavograzs@gmail.com>
+Hi Gustavo,
 
-+CC Nuno
+This is tripping over the somewhat theoretical requirement for
+regmap to be provided with DMA safe buffers for bulk accesses.
+
+Jonathan
 
 > ---
-> changes in v3:
->  - update function to set the actual filter type instead of just enable/disable.
->  drivers/iio/industrialio-backend.c | 15 +++++++++++++++
->  include/linux/iio/backend.h        | 13 +++++++++++++
->  2 files changed, 28 insertions(+)
+>  drivers/iio/imu/bmi270/bmi270_core.c | 127 +++++++++++++++++++++++++++++++++++
+>  1 file changed, 127 insertions(+)
 > 
-> diff --git a/drivers/iio/industrialio-backend.c b/drivers/iio/industrialio-backend.c
-> index d4ad36f54090..2d28eabb1607 100644
-> --- a/drivers/iio/industrialio-backend.c
-> +++ b/drivers/iio/industrialio-backend.c
-> @@ -778,6 +778,21 @@ static int __devm_iio_backend_get(struct device *dev, struct iio_backend *back)
->  	return 0;
->  }
+> diff --git a/drivers/iio/imu/bmi270/bmi270_core.c b/drivers/iio/imu/bmi270/bmi270_core.c
+> index a86be5af5ccb1f010f2282ee31c47f284c1bcc86..f09d8dead9df63df5ae8550cf473b5573374955b 100644
+> --- a/drivers/iio/imu/bmi270/bmi270_core.c
+> +++ b/drivers/iio/imu/bmi270/bmi270_core.c
+> @@ -31,6 +31,8 @@
+
+>  /* See datasheet section 4.6.14, Temperature Sensor */
+>  #define BMI270_TEMP_OFFSET				11776
+>  #define BMI270_TEMP_SCALE				1953125
+> @@ -111,6 +118,7 @@ struct bmi270_data {
+>  	struct iio_trigger *trig;
+>  	 /* Protect device's private data from concurrent access */
+>  	struct mutex mutex;
+> +	int steps_enabled;
+
+Seems a little odd to have a thing called _enabled as an integer.
+Probably better as a bool even though that will require slightly more
+code to handle read / write.
+
+
 >  
-> +/**
-> + * iio_backend_filter_type_set - Set filter type
-> + * @back: Backend device
-> + * @type: Filter type.
-> + *
-> + * RETURNS:
-> + * 0 on success, negative error number on failure.
-> + */
-> +int iio_backend_filter_type_set(struct iio_backend *back,
-> +				enum iio_backend_filter_type type)
-> +{
-> +	return iio_backend_op_call(back, filter_type_set, type);
-> +}
-> +EXPORT_SYMBOL_NS_GPL(iio_backend_filter_type_set, "IIO_BACKEND");
-> +
->  /**
->   * iio_backend_ddr_enable - Enable interface DDR (Double Data Rate) mode
->   * @back: Backend device
-> diff --git a/include/linux/iio/backend.h b/include/linux/iio/backend.h
-> index e45b7dfbec35..5526800f5d4a 100644
-> --- a/include/linux/iio/backend.h
-> +++ b/include/linux/iio/backend.h
-> @@ -76,6 +76,14 @@ enum iio_backend_interface_type {
->  	IIO_BACKEND_INTERFACE_MAX
+>  	/*
+>  	 * Where IIO_DMA_MINALIGN may be larger than 8 bytes, align to
+> @@ -282,6 +290,99 @@ static const struct  bmi270_odr_item bmi270_odr_table[] = {
+>  	},
 >  };
 >  
-> +enum iio_backend_filter_type {
-> +	IIO_BACKEND_FILTER_TYPE_DISABLED,
-> +	IIO_BACKEND_FILTER_TYPE_SINC1,
-> +	IIO_BACKEND_FILTER_TYPE_SINC5,
-> +	IIO_BACKEND_FILTER_TYPE_SINC5_PLUS_COMP,
-> +	IIO_BACKEND_FILTER_TYPE_MAX
+> +enum bmi270_feature_reg_id {
+> +	BMI270_SC_26_REG,
 > +};
 > +
->  /**
->   * struct iio_backend_ops - operations structure for an iio_backend
->   * @enable: Enable backend.
-> @@ -100,6 +108,7 @@ enum iio_backend_interface_type {
->   * @read_raw: Read a channel attribute from a backend device
->   * @debugfs_print_chan_status: Print channel status into a buffer.
->   * @debugfs_reg_access: Read or write register value of backend.
-> + * @filter_type_set: Set filter type.
->   * @ddr_enable: Enable interface DDR (Double Data Rate) mode.
->   * @ddr_disable: Disable interface DDR (Double Data Rate) mode.
->   * @data_stream_enable: Enable data stream.
-> @@ -150,6 +159,8 @@ struct iio_backend_ops {
->  					 size_t len);
->  	int (*debugfs_reg_access)(struct iio_backend *back, unsigned int reg,
->  				  unsigned int writeval, unsigned int *readval);
-> +	int (*filter_type_set)(struct iio_backend *back,
-> +			       enum iio_backend_filter_type type);
->  	int (*ddr_enable)(struct iio_backend *back);
->  	int (*ddr_disable)(struct iio_backend *back);
->  	int (*data_stream_enable)(struct iio_backend *back);
-> @@ -190,6 +201,8 @@ int iio_backend_data_sample_trigger(struct iio_backend *back,
->  int devm_iio_backend_request_buffer(struct device *dev,
->  				    struct iio_backend *back,
->  				    struct iio_dev *indio_dev);
-> +int iio_backend_filter_type_set(struct iio_backend *back,
-> +				enum iio_backend_filter_type type);
->  int iio_backend_ddr_enable(struct iio_backend *back);
->  int iio_backend_ddr_disable(struct iio_backend *back);
->  int iio_backend_data_stream_enable(struct iio_backend *back);
+> +struct bmi270_feature_reg {
+> +	u8 page;
+> +	u8 addr;
+> +};
+> +
+> +static const struct bmi270_feature_reg bmi270_feature_regs[] = {
+> +	[BMI270_SC_26_REG] = {
+> +		.page = 6,
+> +		.addr = 0x32,
+> +	},
+> +};
+> +
+> +static int bmi270_write_feature_reg(struct bmi270_data *data,
+> +				    enum bmi270_feature_reg_id id,
+> +				    u16 val)
+> +{
+> +	const struct bmi270_feature_reg *reg = &bmi270_feature_regs[id];
+> +	int ret;
+> +
+> +	ret = regmap_write(data->regmap, BMI270_FEAT_PAGE_REG, reg->page);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return regmap_bulk_write(data->regmap, reg->addr, &val, sizeof(val));
+
+For a regmap on top of an SPI bus. I think we are still requiring DMA safe
+buffers until we can get confirmation that the API guarantees that isn't
+needed.  (there is another thread going on where we are trying to get that
+confirmation).
+
+That is a pain here because this can run concurrently with buffered
+capture and as such I think we can't just put a additional element after
+data->data but instead need to mark that new element __aligned(IIO_DMA_MINALIGN)
+as well (and add a comment that it can be used concurrently with data->data).
+
+This hole thing is a mess because in reality I think the regmap core is always
+bouncing data today. In theory it could sometimes be avoiding copies
+and the underlying regmap_spi does require DMA safe buffers. This all relies
+on an old discussion where Mark Brown said that we should not assume any
+different requirements from the the underlying bus.
+
+> +}
+> +
+> +static int bmi270_read_feature_reg(struct bmi270_data *data,
+> +				   enum bmi270_feature_reg_id id,
+> +				   u16 *val)
+> +{
+> +	const struct bmi270_feature_reg *reg = &bmi270_feature_regs[id];
+> +	int ret;
+> +
+> +	ret = regmap_write(data->regmap, BMI270_FEAT_PAGE_REG, reg->page);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return regmap_bulk_read(data->regmap, reg->addr, val, sizeof(*val));
+> +}
+> +
+> +static int bmi270_update_feature_reg(struct bmi270_data *data,
+> +				     enum bmi270_feature_reg_id id,
+> +				     u16 mask, u16 val)
+> +{
+> +	u16 reg_val;
+> +	int ret;
+> +
+> +	ret = bmi270_read_feature_reg(data, id, &reg_val);
+> +	if (ret)
+> +		return ret;
+> +
+> +	set_mask_bits(&reg_val, mask, val);
+> +
+> +	return bmi270_write_feature_reg(data, id, reg_val);
+> +}
+
+> +
+> +static int bmi270_read_steps(struct bmi270_data *data, int *val)
+> +{
+> +	__le16 steps_count;
+> +	int ret;
+> +
+> +	ret = regmap_bulk_read(data->regmap, BMI270_SC_OUT_0_REG, &steps_count,
+> +			       sizeof(steps_count));
+> +	if (ret)
+> +		return ret;
+> +
+> +	*val = sign_extend32(le16_to_cpu(steps_count), 15);
+> +	return IIO_VAL_INT;
+> +}
+> +
+>  static int bmi270_set_scale(struct bmi270_data *data, int chan_type, int uscale)
+>  {
+>  	int i;
+> @@ -551,6 +652,8 @@ static int bmi270_read_raw(struct iio_dev *indio_dev,
+>  	struct bmi270_data *data = iio_priv(indio_dev);
+>  
+>  	switch (mask) {
+> +	case IIO_CHAN_INFO_PROCESSED:
+> +		return bmi270_read_steps(data, val);
+>  	case IIO_CHAN_INFO_RAW:
+>  		if (!iio_device_claim_direct(indio_dev))
+>  			return -EBUSY;
+> @@ -571,6 +674,10 @@ static int bmi270_read_raw(struct iio_dev *indio_dev,
+>  	case IIO_CHAN_INFO_SAMP_FREQ:
+>  		ret = bmi270_get_odr(data, chan->type, val, val2);
+>  		return ret ? ret : IIO_VAL_INT_PLUS_MICRO;
+> +	case IIO_CHAN_INFO_ENABLE:
+> +		scoped_guard(mutex, &data->mutex)
+> +			*val = data->steps_enabled;
+
+What race is this protecting against?  Protecting the write is fine because it
+is about ensuring we don't race an enable against a clear of the counter.
+A race here would I think just give the same as either the race to take the lock
+being won by this or not (so not a race as such, just ordering of calls)
+So I don't think you need the lock here.
+
+> +		return IIO_VAL_INT;
+
 
 

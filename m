@@ -1,156 +1,151 @@
-Return-Path: <linux-iio+bounces-18713-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18714-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C236FA9DCE2
-	for <lists+linux-iio@lfdr.de>; Sat, 26 Apr 2025 21:15:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3075FA9DCF2
+	for <lists+linux-iio@lfdr.de>; Sat, 26 Apr 2025 21:41:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 08FDD465FAF
-	for <lists+linux-iio@lfdr.de>; Sat, 26 Apr 2025 19:15:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 821491B673BE
+	for <lists+linux-iio@lfdr.de>; Sat, 26 Apr 2025 19:42:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F8981B4140;
-	Sat, 26 Apr 2025 19:15:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 580AB1E1A3D;
+	Sat, 26 Apr 2025 19:41:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="frwqe0Gj"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kaJzwHG5"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 306B92701C4;
-	Sat, 26 Apr 2025 19:15:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7582814D2A0
+	for <linux-iio@vger.kernel.org>; Sat, 26 Apr 2025 19:41:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745694935; cv=none; b=e0pvM8+J+lyJ+Ank5WpwvmG/lNOwmX7peNBidpF89KlS8hlmv2g+zCZco/N10tYjG0PF4bXvaULxQ3LWxQtHHt7WUDaooyadEw9pt0J6mgtRQBxcIjvUMmMp5PRv8Nnza2oU57MlbcgR98kNR8u6Q3C+neTcy5OrTd3GXF/2Zx8=
+	t=1745696512; cv=none; b=gGp6YmT62RswMdLtZQeBQSYqhLCAzgYpVH+y1iNimdyL8o9s74DLTYQAsub7a0QQQFMSRnkLhQpk6UCBbyIvDHEuu6s13hCzrqlaQAC+QQMOhqjaWGzlTuYHx1q6qwDlvDLZSvoGegnMNFJyEnQ2i8oTyL+il+vxSAyRZMFP/Wc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745694935; c=relaxed/simple;
-	bh=brOk3A6MPbfofZsQC9PM6kvZwS6E7KFFlMtFDrx1zJQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iIBgOFXzPXt3Wr1QqPmW/ZUe8S2oYoq42ossg6mMdv+TmOfinAm+0P0ltF3w2UIgwWJ3w/Fv+/tGfuWAe8FPF7OOpoTBkup+oiy7cgfN/s75FGebGQVf7PJFuigPuZGDW1bDDlPz7VB9rj9F+mstyFcncaz78k4h2Mncq4hIdWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=frwqe0Gj; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1745694933; x=1777230933;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=brOk3A6MPbfofZsQC9PM6kvZwS6E7KFFlMtFDrx1zJQ=;
-  b=frwqe0GjJbZhaoJrpsquC6+9hmJlNgQ66mH0i8huhOG4ZshdyERfd12L
-   esQ9OtMb+3e63riTg6872nxjHaYc3DzuAl/d9iI8J5VG5yPbwFJXF4LQx
-   A0i3vMx12lOx+ZkfKc0O0m/wVCGTBnTjrtR6e6L8YZ5B0HK9KEnH3Jpwy
-   ATrVh5kV2vdRA5QMnSW+fpdrwuE8x5V6dnQb+hY0xp9LZu05RPKZH3p9a
-   osL/F9y0MBzBpp8C3Z5g+KbR0ulLt8UDQuY1BTyTT8G0WaygbN9GnxLpH
-   JdWWoVDnF+cdVn6U0Xa9f1HsgO4VISGozgwUlWMdX0qcPsiVKTTsnUO5s
-   A==;
-X-CSE-ConnectionGUID: BJl1FCuPQEmf1SnLZmiebQ==
-X-CSE-MsgGUID: fpalePb0Q3Wa0wR5uYWIaw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11415"; a="46445891"
-X-IronPort-AV: E=Sophos;i="6.15,242,1739865600"; 
-   d="scan'208";a="46445891"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Apr 2025 12:15:33 -0700
-X-CSE-ConnectionGUID: gokFKn95S0S6quEt4GqBow==
-X-CSE-MsgGUID: tawfhFxxRKmiVUC6cgQZOg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,242,1739865600"; 
-   d="scan'208";a="133477669"
-Received: from lkp-server01.sh.intel.com (HELO 050dd05385d1) ([10.239.97.150])
-  by fmviesa008.fm.intel.com with ESMTP; 26 Apr 2025 12:15:29 -0700
-Received: from kbuild by 050dd05385d1 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1u8kzn-0005xV-1e;
-	Sat, 26 Apr 2025 19:15:27 +0000
-Date: Sun, 27 Apr 2025 03:15:26 +0800
-From: kernel test robot <lkp@intel.com>
-To: David Lechner <dlechner@baylibre.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Eugen Hristev <eugen.hristev@linaro.org>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>
-Cc: oe-kbuild-all@lists.linux.dev, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v3 1/6] iio: introduce IIO_DECLARE_BUFFER_WITH_TS macros
-Message-ID: <202504270311.4lppXI1u-lkp@intel.com>
-References: <20250425-iio-introduce-iio_declare_buffer_with_ts-v3-1-f12df1bff248@baylibre.com>
+	s=arc-20240116; t=1745696512; c=relaxed/simple;
+	bh=nGiTzkgyWV3UJ6h50X/MleghppYjjyzOOb7IapZ0VYk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=KhMlOAtX2tuMXdLBVDk/clAaMvVDnH/jhIdQ84++/yGWvXe7PUKGLrfDQlfj4wNA1qmnt1ZH1ml6HFPcfbtDCtTbHkLP3Cjb7voRY7KA/CU6ZVqcbJP2MIXVkURnQ+bbtYMH335APsqJvPKOAJ9DGlth1cJwucRB1EAyGsKlu9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kaJzwHG5; arc=none smtp.client-ip=209.85.210.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-7396f13b750so3836703b3a.1
+        for <linux-iio@vger.kernel.org>; Sat, 26 Apr 2025 12:41:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1745696510; x=1746301310; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=y4Byw1vIhkwK+9EDJmuXnFTb5afdvZ/3chefa4MUKhA=;
+        b=kaJzwHG51V0I5uNHcMNt2zHPsL/frqlJeLGyFcJnYxRg3PAHfy72bvKz38pw4WhDDp
+         wEvxbJBZe28dxyg6fBVbig2B0qztc+Imi6fH7AEDn9klPBbkFcEFsGxMVUX6AMC6Ltmm
+         JW4rw3vvK8WWPbvISk/vmO0PE215WMAdEuHMvTNxcVq0Q/yBa5cgSDGkejoXFtigslxO
+         1/eM/tlSLVn++BCx1xaWt6lGA0wW5c56OuSa/eFHLxEngp+7ZwDr1LRuhGtMxYqNzIUw
+         fllYZUIf0/swv6d2RGbRyHp9hX81gyEFZr2BI2OrTK6ProY77Mq4PK4PvYaia69zCgJD
+         n2kA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745696510; x=1746301310;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=y4Byw1vIhkwK+9EDJmuXnFTb5afdvZ/3chefa4MUKhA=;
+        b=bd96z0U0Biv0xWJfgYD8EizAD8b98+i5vY39F7i5LQX3GfNVEJRQ0jQAgVjLI7fq2j
+         hMDyU2qMNX7gEAOprbfggsnGa+IRNYMGCZa6uxs4bsOYDeumPR1gRRbBXi3b0WxnFBI8
+         EActEKXR0/rZvAFmfIizgMMKI+bAC6pQkEeSyU4PHX47nL5IE4Sz1IMkpoXeVmVOinUI
+         lbJRXGaargxDz3QmP5NpJLpbhD0KswF5ehcX8KFr7fSvZm18u5OmGb3us8gUgKxFUzoV
+         zJMT+4+p4dza7fdmwXgIUhA/sZtlcx5zrlp5g369FWfrx9K91GvDbis2mmt3Z2zf4eEU
+         lZFQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWjWysSrsl/YJPmD1L4Y+keODcWmkadwWYRqNWBW3/KJZXxCWTb9sOPp2VpG43SM8Ie40P/gFrImtA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwrosD7Z6u5DQ5F8FKlAkRZt/qwmxbhlkRMUvaoMTktUoO32jo7
+	A0/87hEclsOlLXHgpbudFPkeqX0LmPlrFdz7V37vjcHKY9u9te0D
+X-Gm-Gg: ASbGncujdk3la8pKNMeJyNg5Ayzik5Cku09JSK1umlmeSYrhy8VpafSwDYCE/VLE5VL
+	Ze9Sbf1DKhIQ+e987x2kE0NpPn4tKzVitwA9+7e1hEYGHkp3fQk6E3WkcxfzY9vKsukYnp6CJJ0
+	hVRrIfthtMRa35P7Ww4S+9RoLKEswDOWM/34mZw5rk3vynCja/XX70qEhuSnYbRuoJr4zatZZFy
+	49qxtzsf300U8d/S6wL67GjhxGqE9uKNriT2BPQe4N+1lc3FM+/FDZhtKIwk0bc4Zq1BgWRqANc
+	3I/2JTCc+uSPf90MJC1oyTcVD5OK2veIn/g=
+X-Google-Smtp-Source: AGHT+IEHYJyyGNLWMh5yLkVp8kBRFRP+co2gPyAPMINw8cejbXR2a95ExOqwPJmWybPIMmpd8Hc75w==
+X-Received: by 2002:a05:6a00:99f:b0:73b:71a9:a5ad with SMTP id d2e1a72fcca58-73fd897ac9amr8771183b3a.16.1745696509592;
+        Sat, 26 Apr 2025 12:41:49 -0700 (PDT)
+Received: from BMO.. ([2804:1b3:a782:2d0e:d658:de4:4ebe:f6c4])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73e25a6a17csm5168372b3a.111.2025.04.26.12.41.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 26 Apr 2025 12:41:49 -0700 (PDT)
+From: =?UTF-8?q?Bianca=20Costa=20Galv=C3=A3o?= <biancalvao@gmail.com>
+To: jic23@kernel.org
+Cc: =?UTF-8?q?Bianca=20Costa=20Galv=C3=A3o?= <biancagalvao@usp.br>,
+	=?UTF-8?q?J=C3=BAlia=20Calixto=20Rosa?= <juliacalixtorosa@usp.br>,
+	linux-iio@vger.kernel.org
+Subject: [PATCH] iio: magnetometer: mmc35240: refactor volatile and writeable reg functions
+Date: Sat, 26 Apr 2025 16:41:32 -0300
+Message-ID: <20250426194135.244774-1-biancalvao@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250425-iio-introduce-iio_declare_buffer_with_ts-v3-1-f12df1bff248@baylibre.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Hi David,
+From: Bianca Costa Galvão <biancagalvao@usp.br>
 
-kernel test robot noticed the following build errors:
+Refactor 'mmc35240_is_volatile_reg' and 'mmc35240_is_writeable_reg' as they
+share similar logic, returning the inverse of each other.
 
-[auto build test ERROR on aff301f37e220970c2f301b5c65a8bfedf52058e]
+Introduce a new helper function 'mmc35240_reg_check' to generalize this
+behavior, which is then used by both 'mmc35240_is_volatile_reg' and
+'mmc35240_is_writeable_reg'.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/David-Lechner/iio-introduce-IIO_DECLARE_BUFFER_WITH_TS-macros/20250426-051240
-base:   aff301f37e220970c2f301b5c65a8bfedf52058e
-patch link:    https://lore.kernel.org/r/20250425-iio-introduce-iio_declare_buffer_with_ts-v3-1-f12df1bff248%40baylibre.com
-patch subject: [PATCH v3 1/6] iio: introduce IIO_DECLARE_BUFFER_WITH_TS macros
-config: openrisc-randconfig-r053-20250427 (https://download.01.org/0day-ci/archive/20250427/202504270311.4lppXI1u-lkp@intel.com/config)
-compiler: or1k-linux-gcc (GCC) 10.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250427/202504270311.4lppXI1u-lkp@intel.com/reproduce)
+Signed-off-by: Bianca Costa Galvão <biancagalvao@usp.br>
+Co-developed-by: Júlia Calixto Rosa <juliacalixtorosa@usp.br>
+Signed-off-by: Júlia Calixto Rosa <juliacalixtorosa@usp.br>
+---
+ drivers/iio/magnetometer/mmc35240.c | 21 +++++++--------------
+ 1 file changed, 7 insertions(+), 14 deletions(-)
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202504270311.4lppXI1u-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   In file included from include/linux/container_of.h:5,
-                    from include/linux/list.h:5,
-                    from include/linux/kobject.h:19,
-                    from include/linux/cdev.h:5,
-                    from drivers/iio/industrialio-core.c:13:
->> include/linux/build_bug.h:78:41: error: static assertion failed: "macros above assume that IIO_DMA_MINALIGN also ensures s64 timestamp alignment"
-      78 | #define __static_assert(expr, msg, ...) _Static_assert(expr, msg)
-         |                                         ^~~~~~~~~~~~~~
-   include/linux/build_bug.h:77:34: note: in expansion of macro '__static_assert'
-      77 | #define static_assert(expr, ...) __static_assert(expr, ##__VA_ARGS__, #expr)
-         |                                  ^~~~~~~~~~~~~~~
-   include/linux/iio/iio.h:815:1: note: in expansion of macro 'static_assert'
-     815 | static_assert(IIO_DMA_MINALIGN % sizeof(s64) == 0,
-         | ^~~~~~~~~~~~~
-
-
-vim +78 include/linux/build_bug.h
-
-bc6245e5efd70c Ian Abbott       2017-07-10  60  
-6bab69c65013be Rasmus Villemoes 2019-03-07  61  /**
-6bab69c65013be Rasmus Villemoes 2019-03-07  62   * static_assert - check integer constant expression at build time
-6bab69c65013be Rasmus Villemoes 2019-03-07  63   *
-6bab69c65013be Rasmus Villemoes 2019-03-07  64   * static_assert() is a wrapper for the C11 _Static_assert, with a
-6bab69c65013be Rasmus Villemoes 2019-03-07  65   * little macro magic to make the message optional (defaulting to the
-6bab69c65013be Rasmus Villemoes 2019-03-07  66   * stringification of the tested expression).
-6bab69c65013be Rasmus Villemoes 2019-03-07  67   *
-6bab69c65013be Rasmus Villemoes 2019-03-07  68   * Contrary to BUILD_BUG_ON(), static_assert() can be used at global
-6bab69c65013be Rasmus Villemoes 2019-03-07  69   * scope, but requires the expression to be an integer constant
-6bab69c65013be Rasmus Villemoes 2019-03-07  70   * expression (i.e., it is not enough that __builtin_constant_p() is
-6bab69c65013be Rasmus Villemoes 2019-03-07  71   * true for expr).
-6bab69c65013be Rasmus Villemoes 2019-03-07  72   *
-6bab69c65013be Rasmus Villemoes 2019-03-07  73   * Also note that BUILD_BUG_ON() fails the build if the condition is
-6bab69c65013be Rasmus Villemoes 2019-03-07  74   * true, while static_assert() fails the build if the expression is
-6bab69c65013be Rasmus Villemoes 2019-03-07  75   * false.
-6bab69c65013be Rasmus Villemoes 2019-03-07  76   */
-6bab69c65013be Rasmus Villemoes 2019-03-07  77  #define static_assert(expr, ...) __static_assert(expr, ##__VA_ARGS__, #expr)
-6bab69c65013be Rasmus Villemoes 2019-03-07 @78  #define __static_assert(expr, msg, ...) _Static_assert(expr, msg)
-6bab69c65013be Rasmus Villemoes 2019-03-07  79  
-07a368b3f55a79 Maxim Levitsky   2022-10-25  80  
-
+diff --git a/drivers/iio/magnetometer/mmc35240.c b/drivers/iio/magnetometer/mmc35240.c
+index e08a57cd6de2..07f58567e521 100644
+--- a/drivers/iio/magnetometer/mmc35240.c
++++ b/drivers/iio/magnetometer/mmc35240.c
+@@ -418,15 +418,14 @@ static const struct iio_info mmc35240_info = {
+ 	.attrs		= &mmc35240_attribute_group,
+ };
+ 
++static bool mmc35240_reg_check(unsigned int reg)
++{
++	return reg == MMC35240_REG_CTRL0 || reg == MMC35240_REG_CTRL1;
++}
++
+ static bool mmc35240_is_writeable_reg(struct device *dev, unsigned int reg)
+ {
+-	switch (reg) {
+-	case MMC35240_REG_CTRL0:
+-	case MMC35240_REG_CTRL1:
+-		return true;
+-	default:
+-		return false;
+-	}
++	return mmc35240_reg_check(reg);
+ }
+ 
+ static bool mmc35240_is_readable_reg(struct device *dev, unsigned int reg)
+@@ -448,13 +447,7 @@ static bool mmc35240_is_readable_reg(struct device *dev, unsigned int reg)
+ 
+ static bool mmc35240_is_volatile_reg(struct device *dev, unsigned int reg)
+ {
+-	switch (reg) {
+-	case MMC35240_REG_CTRL0:
+-	case MMC35240_REG_CTRL1:
+-		return false;
+-	default:
+-		return true;
+-	}
++	return !mmc35240_reg_check(reg);
+ }
+ 
+ static const struct reg_default mmc35240_reg_defaults[] = {
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.43.0
+
 

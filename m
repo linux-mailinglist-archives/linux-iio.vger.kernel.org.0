@@ -1,56 +1,58 @@
-Return-Path: <linux-iio+bounces-18725-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18726-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A25EA9E275
-	for <lists+linux-iio@lfdr.de>; Sun, 27 Apr 2025 12:23:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 274ADA9E2F2
+	for <lists+linux-iio@lfdr.de>; Sun, 27 Apr 2025 14:21:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B4F105A4768
-	for <lists+linux-iio@lfdr.de>; Sun, 27 Apr 2025 10:23:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 50D893B6818
+	for <lists+linux-iio@lfdr.de>; Sun, 27 Apr 2025 12:20:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2479A1FE44A;
-	Sun, 27 Apr 2025 10:23:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68D58246335;
+	Sun, 27 Apr 2025 12:21:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h660gqwC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PuiaU9v2"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D974719066B
-	for <linux-iio@vger.kernel.org>; Sun, 27 Apr 2025 10:23:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24CFEF9D9;
+	Sun, 27 Apr 2025 12:21:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745749427; cv=none; b=qt78mkFYG4PeKBJsy8qXfqYGTfHjjuqx4L36S9YoXOv7AX37cxQiZrlIr5kl+jvFwzsx01QEumB/nIDYJZ9LYNrHp5FfB4A5/5YLdUhMlch8jM/95dHenFgQ401AVWxPu+upNOOZGW+QFzf4OQdKpIMLdEI872da+hHxMLd7i7o=
+	t=1745756468; cv=none; b=ZO9DFnKp3ZlNEtqbNHG0Tv38iaXPVModblUvZ7IhnC235EBK/9FWQn48h1KbQ/cQg1EC3UKUxl0eCNj60WMPb5KXKiy8R5uNMBwTnguC87fj5WjVnw2JQei5l3nMjiPmhiwj7tieWwrPbZyCvbqLpgn6eV+HjSBr5PIgOF3/c3g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745749427; c=relaxed/simple;
-	bh=Lc1m5d0EG1nNCpi/JWFeM/g9CTv5gayEqXiqKd4vW54=;
+	s=arc-20240116; t=1745756468; c=relaxed/simple;
+	bh=QBt+H1BEzbmzHl3EKfPRU+aY4iREr7uYd8M3J3wCodo=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=r8GHEZr6FUxmSCOV2S/P5hQhvJog+B/kNWkvpbOXsOs/a/9q3IEU9c5sxb/KkIpkoay1I0AiIVsqc/2yE7kLPAYiW3Yr3w/Zzm7B7E8ci3IrXsQ9r9+yaSvdHtKCia57yeovQtY46L47o7Er7zHq3wbrjrW0xIjxoa0AKYNDsA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h660gqwC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D241CC4CEE3;
-	Sun, 27 Apr 2025 10:23:45 +0000 (UTC)
+	 MIME-Version:Content-Type; b=QUIccVISxrb1sw2jlfy8gdVmq6rTJs5for4xrPYTIHxOWi6c/mLZUjVWhRYs+c8J4P/Akl1zeD8bmnPHeVuCejwGs9Gtuc0LUUXWh7acA/zklX57AoeoSOx/+T7lsBm0Aqcdpo9q7fSyG2XIcjlxAjmoGopM+h3PLAiZDDcFgMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PuiaU9v2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 810B3C4CEE3;
+	Sun, 27 Apr 2025 12:21:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745749427;
-	bh=Lc1m5d0EG1nNCpi/JWFeM/g9CTv5gayEqXiqKd4vW54=;
+	s=k20201202; t=1745756467;
+	bh=QBt+H1BEzbmzHl3EKfPRU+aY4iREr7uYd8M3J3wCodo=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=h660gqwC0C9uQxjVbxGAKQKhSx2bhAwAYmAZEZA+X0bVVKYSe1wGdSLomQIBeAe8E
-	 8F6tLIfkQcnbMTjmUDBhWZEIKwvc65MRegeo5d6Q0oCLgZRCqCoqNGMefiP5epm2S6
-	 Fqt13xUWSNO09lAQ2dILoHdILNAsK8VzybDyO/03Kd+/ORa2w5d5NDPn/t5EI89dpP
-	 ee0yi66uixKL0/eaE0j+MZhVhGo0EosZ/bvmCCMiROcdFeh4vTYZw91Wq6HQcw28Cg
-	 1cCQxnnexhHCNoa7ewhj5LnMJ+MiURtNpwZWJRZIyIVg9XkqpTX9z5hSCL5vaPNTIo
-	 7hf3A89Sr2IfQ==
-Date: Sun, 27 Apr 2025 11:23:43 +0100
+	b=PuiaU9v2wFu+CpbCojPykOTsBuzclHhCoK1dk9CHOk7BLvxRcffMHW6BZJspc1DoL
+	 xB8zbX2xYlPrQlt2iaH6v9XkE3zGLjwCni8VRE1+tfn4JucfYb7SWhzJbRXoL9Dsj8
+	 zSzuIb6kqVFFEBuzMD2+Y/DvFAJA89gjC3+398UWEmluh0TxlPWVxIKE3DfuiyXIfr
+	 Y40J4dhqfru9s79EjCfmRqNlQC0V0mIg6TnxWhTbEcB/sphE1Vkp1U07s4Oq/lwyne
+	 ZSuKhTZYQceAdKW/bQcr5YXgb/YVV/ThFe+WYjf42uKkox0ZfJS8phozJWfCaI1pb4
+	 2zxV+rsng5pAA==
+Date: Sun, 27 Apr 2025 13:21:02 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Fabio Estevam <festevam@gmail.com>
-Cc: mazziesaccount@gmail.com, linux-iio@vger.kernel.org
-Subject: Re: max1363 : Warnings from iio_sanity_check_avail_scan_masks()
-Message-ID: <20250427112343.207918cd@jic23-huawei>
-In-Reply-To: <CAOMZO5CepxxXo9u+mSB1P8t-tKvayz8b39emo3jHzR+6hr1HSg@mail.gmail.com>
-References: <CAOMZO5BXp38RMt5vQQWnZBQDzpN+SYB6NVU3c-Krk3po+2Zv7A@mail.gmail.com>
-	<20250426160009.161b9f08@jic23-huawei>
-	<CAOMZO5CepxxXo9u+mSB1P8t-tKvayz8b39emo3jHzR+6hr1HSg@mail.gmail.com>
+To: Lothar Rubusch <l.rubusch@gmail.com>
+Cc: lars@metafoo.de, Michael.Hennerich@analog.com,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ eraretuya@gmail.com
+Subject: Re: [PATCH v7 04/11] iio: accel: adxl345: set the tap suppress bit
+ permanently
+Message-ID: <20250427132102.58a3a65b@jic23-huawei>
+In-Reply-To: <20250421220641.105567-5-l.rubusch@gmail.com>
+References: <20250421220641.105567-1-l.rubusch@gmail.com>
+	<20250421220641.105567-5-l.rubusch@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -58,54 +60,39 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Sat, 26 Apr 2025 18:00:07 -0300
-Fabio Estevam <festevam@gmail.com> wrote:
+On Mon, 21 Apr 2025 22:06:34 +0000
+Lothar Rubusch <l.rubusch@gmail.com> wrote:
 
-> Hi Jonathan,
->=20
-> On Sat, Apr 26, 2025 at 12:00=E2=80=AFPM Jonathan Cameron <jic23@kernel.o=
-rg> wrote:
->=20
-> > As a trivial test, just reorder max11607_mode_list[] it might fix your =
-warning. =20
->=20
-> I appreciate your suggestion.
->=20
-> If I rearrange it like this (only added single channel entries), I
-> don't see any warnings:
->=20
-> static const enum max1363_modes max11607_mode_list[] =3D {
-> _s0, _s1, _s2, _s3,
-> s0to1, s2to3,
-> s0to2,
-> s0to3,
-> };
->=20
-> However, whenever the differential channels' definitions are inserted,
-> the warnings reappear.
->=20
-> > If you can dump the available_modes table that is generated that might =
-let
-> > us see what is causing there to be so many warnings. =20
->=20
-> What is an appropriate place to dump the available_modes table?
+> Set the suppress bit feature to the double tap detection, whenever
+> double tap is enabled. This impedes the suppress bit dangling in any
+> state, and thus varying in sensitivity for double tap detection.
+> 
+> Any tap event is defined by a rising signal edge above threshold, i.e.
+> duration time starts counting; and the falling edge under threshold
+> within duration time, i.e. then the tap event is issued. This means
+> duration is used individually for each tap event.
+> 
+> For double tap detection after a single tap, a latency time needs to be
+> specified. Usually tap events, i.e. spikes above and returning below
+> threshold will be ignored within latency. After latency, the window
+> time starts counting for a second tap detection which has to happen
+> within a duration time.
+> 
+> If the suppress bit is not set, spikes within latency time are ignored.
+> Setting the suppress bit will invalidate the double tap function. The
+> sensor will thus be able to save the window time for double tap
+> detection, and follow a more strict definition of what signal qualifies
+> for a double tap.
+> 
+> In a summary having the suppress bit set, fewer signal spikes will be
+> considered as double taps. This is an optional add on to double tap,
+> thus a separate patch.
+> 
+> Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
+I'm already carrying to this point in the series on my togreg branch.
 
-https://elixir.bootlin.com/linux/v6.14.4/source/drivers/iio/adc/max1363.c#L=
-1460
-There is where they are set.  Should show us if something weird is going on=
- with
-what the checks are seeing vs something going wrong at the debug check.
-
-J
-
->=20
-> I am happy to test any debug patches if you could share them.
->=20
-> Thanks,
->=20
-> Fabio Estevam
-
+Jonathan
 

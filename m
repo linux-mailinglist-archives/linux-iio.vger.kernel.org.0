@@ -1,87 +1,87 @@
-Return-Path: <linux-iio+bounces-18720-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18721-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C33EAA9DE02
-	for <lists+linux-iio@lfdr.de>; Sun, 27 Apr 2025 02:19:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AA86A9DE17
+	for <lists+linux-iio@lfdr.de>; Sun, 27 Apr 2025 02:57:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1C3DF7A7908
-	for <lists+linux-iio@lfdr.de>; Sun, 27 Apr 2025 00:18:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 98A12461C42
+	for <lists+linux-iio@lfdr.de>; Sun, 27 Apr 2025 00:57:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0EFA227E98;
-	Sun, 27 Apr 2025 00:19:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFA9A202F9C;
+	Sun, 27 Apr 2025 00:57:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M8TPcr0G"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S4ksTpCo"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
+Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8F7E1E7C34;
-	Sun, 27 Apr 2025 00:19:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 372C418C91F;
+	Sun, 27 Apr 2025 00:57:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745713163; cv=none; b=Kr6VGZJpfXAzni8yZEH94WfEjb/JuBcEKYNlV73qqMJCPWxJxFwEjtL+CzPfg+qk9CothBhy3CMsErr5MuFgi17CrOy4y7h+8OxvLKhOpfBkVtydq0yIh2CUeAq9CCRuuD6TTu5j282YtDzc+ctp5eCOEOT8N1qXqP4WcVuQERI=
+	t=1745715451; cv=none; b=CMeNfrHRdy486A6jbHI8w36or80HNOTknqPzuYHEb6jpqwehxVMHxyzpezDxv3mEOoGoTCinvkds8/zEcF44IpcFvKwoQd3zxuggq9KTdrVknXyvbgziSGUGsJgGG9+o3UH7OZ50H1EZ/JkYG3Z9zrLRSShlqJw2UGDEEwKauR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745713163; c=relaxed/simple;
-	bh=a7V465Pnb0f2w4dhkEaaWoTgBkHgSut2RRbb3EpwUAo=;
+	s=arc-20240116; t=1745715451; c=relaxed/simple;
+	bh=TLdbKcVANIvORdb92beANb5wwAMnvuZ2YMbFhmmtkJQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=t/lpeY7TBW95HYjfNUEKP55xWA7rhFNSQZMfDCJ9dZFFoF5Vhr8EpxLWiXuGUPYZOteT6twP+2mX6BcicKt9kt0uSZVdJxo9kmGSUV3dfWluSso4+rZEXccvMciR+jXk6Rh4W1Ws1ISLDu2TjiOhFuUflq7T3TCSbyyaN8YhP44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=M8TPcr0G; arc=none smtp.client-ip=209.85.215.172
+	 Content-Type:Content-Disposition:In-Reply-To; b=mDy5Kbe+NeZzk6ra5Bks9mSBJHyLyosF02csZeQoXLQ3H9Icpv95ug5XHpJmz25/pBq7htyKyKZlJmujPeerpuBKEvp497pXE+9pVxCQZc29eI+XIU+4O43hduA97GoGxH3Hp2iKC4RQl6vjy3MPLSXhLl3feiYUhLQJje65nPI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S4ksTpCo; arc=none smtp.client-ip=209.85.215.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-af50f56b862so2438505a12.1;
-        Sat, 26 Apr 2025 17:19:21 -0700 (PDT)
+Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-af51596da56so2956702a12.0;
+        Sat, 26 Apr 2025 17:57:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745713161; x=1746317961; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1745715449; x=1746320249; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=JnKXQVQP1G5EmBVoHbI7bOC2UWFlET3osHcdLyJY8/g=;
-        b=M8TPcr0GOCZwtCmPROgpeASdDYJQZNWZnnyypkT9qXPNly4oFeYRQLZ3/VrMpjMrZV
-         Ny55Ss3GynhsuPPIfaTO8P2YYvoZLWPKF4iT9Ur32YXDbJNTFVbfxAxf5UIJPwQrKQAN
-         opQNXkPvUBXe55LnhyHn9rVAMqKmHjNXG4TIBV1wlTqd71gXXFHMaZPchENEn7C+n7El
-         Y6zaBSQLt1QB7W/lXtyG3UtK4yIlYrV/En9xCZ/yrnJVJmtjry5SJF2tcFvbH3pLg2Gs
-         O6BGUODA5dOL72OV7P6eZJQkLdCgnQtR3Tx9yafyoyFmIskpAEyaxUUxwyn2//iy7vR2
-         KRqA==
+        bh=m17Zwf83H94H2bOxPIG7Ac4FBEqLgx3MSxKhyxakfLY=;
+        b=S4ksTpCoa6FPXOepucv3VtPIZumzTQiNyDwGh8EKy9IXTARogreWyZRgUNLe3reiFZ
+         KbzRlNmL7tYP7HBA3ndvZpTZdapwguf8Tbxulb8UkUvN8qz9Y/6sl5BXJiN2Ss2SrPCw
+         uqpz72IZTtPVrYkK/7RsfJRQgDX0rFbSUq3m9TKcL8dzKwrTeU1gxQCsGLj8cXzH9fwO
+         nxLX7U4pvcTKQME0LT9zyU1os9hIJ+l5tzVoLj7RLGEey7x2aAbcUGoiq5YWv3YoDrwo
+         /+tUcYuBUEDD7Br3xFGfK8EHpYjGImjMBMUdmf5rZ7/B26WIkwmAMRfy+rnyr+UQ+k7h
+         EtRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745713161; x=1746317961;
+        d=1e100.net; s=20230601; t=1745715449; x=1746320249;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=JnKXQVQP1G5EmBVoHbI7bOC2UWFlET3osHcdLyJY8/g=;
-        b=FK8p0FjZ7oPW5IQr+n/nxWCxSzta258djJrUF3ha6wwd/AS61VlrhAm9lraF14LsIq
-         VRE+W3PnM9zbZv9Fjwrze70kW/FwI2GfWnEoUjsCY2p8y12QRqGkxSgooageNsJE9QUS
-         JxvJb5S1bB1oOg9icH7DNc4IxfE7oiuwTKr4Wy2WNVK/he0ONHd8srrNUMl6mL6B4Cat
-         cQHHBzLU8fFRvTcVy0Y9akLx/y3eg/NegdLGiO/F1tucBPjYD/VVxS25VyULOamCnszb
-         4ILtHy39/xuOUYZUzFmee7FT6WI2Nec0bXG95nFQhdsHbCectwlSsJbSg0DAK219JdZk
-         AibQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU4oInbyJk7zrl49HAddlGBrrDxRNwcjIrtphKZQLm7TP1ea+FJdePBLcxQWzsX2H3KNPVvz7f3PB4=@vger.kernel.org, AJvYcCVcyLc8evyXhyUa/TDNzMo3TFFoVBCAI+0TToMQKioexx2gQmq9+ApaGb9dzBN2gtAger0EPLwBGNl3G7nr@vger.kernel.org
-X-Gm-Message-State: AOJu0YwFBpivbkiFod+MVF6VtfG+X//GG17gB3aqRJ4/hqLIfuo439xD
-	N22tiT4M5TQN14Pw+iZqahLfUw3nAdnt13uIwQwV1NmRDpoH0hIN
-X-Gm-Gg: ASbGnctPAII+xfH/j7yv8cKHQ4urdCL7QO3ardIbMr9OPTUvh+uBHEeu0lt8hQKMvv9
-	mAO4oZkJ/GmH9ARWHAUm3g0zYCTufcIF7Kzv3oMlalG3oZN1vISuPaabfR8eGwRXpeQzxMjM80U
-	No95gIYDK0ctE4mERlJ4SkyEs9bxa9WZqdj+o8BvUI3W5MiwoIEGz7Z8uShM26NJKDrVwQmfaQp
-	c/pMbXpODEx5osRBG+stEYLXANukAD7s6dKWoD1x3/yar/BiF0XeIdhwZ1mcAfFlLDFAu75d6bX
-	S+XyKeqpM4c5XaaR4L80JnEyGA==
-X-Google-Smtp-Source: AGHT+IEYd8G9M8x1pe1vUFr5IKvTA5J6eKVxfAdZtMNz+ArYub3Viv8ApF9NP/skxqnOWjl2Szzz2A==
-X-Received: by 2002:a17:903:2384:b0:21f:7880:8472 with SMTP id d9443c01a7336-22dc6a54586mr69760965ad.35.1745713160902;
-        Sat, 26 Apr 2025 17:19:20 -0700 (PDT)
+        bh=m17Zwf83H94H2bOxPIG7Ac4FBEqLgx3MSxKhyxakfLY=;
+        b=XckWx5EX/6Uc2eeUcMh10oh/GY5b5buFArHpjXc8Mudv/7WYUuL/MQ055kvbccCi+9
+         jwOYabkqgoofitKvKsJZFMASJ6WZvURqoBEQOvMSfNJbQTJjg94xylRI9A6pd6U3wTjy
+         22/+Gb5Cx6Cozvum+ePdAbwccQAPqNvgTAg4v0xr+wKiz6LePvLIrwJ1Tl5qX/rfH2Mz
+         b3sEsu6ZEjlhd1dhzlqnMxIF9ropUV3bYFV0hCiXzd9Sd4u7tHIaLnIFtYsevEBwhSLF
+         S/9D/zW1IZRRc1g6OVQnT3TAG4K/JpMgvIT4T0kLA0xYraSh0M3wyGp+D9TEgudpKyfQ
+         72BA==
+X-Forwarded-Encrypted: i=1; AJvYcCUeCL4qcUG7REF8s6iLJV/umJZhJkW7ZxljAinHzqrC+6sizMLq/V37EIo1VnPG1Y5mKmk0F80B1qEO9YfH@vger.kernel.org, AJvYcCW5Hrd5XHRjQ/GTaoPhRryjB89QXd53bUVw2ATBvaua4idneYUFkOhFAN733O0OAJgym6Y3fCXZ0WA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy5dJbtX4t2Tcd7a/h6KPq/thmqY0Uig3p+G/bhIHcwnWuchWUH
+	YB7trAaRm0K43axRR42vEGQLc+m5twMlX3Z1pUrkxtSw+WIP4SEt
+X-Gm-Gg: ASbGncs8UbVUPkMjw2sDXlMDMRIXWDtpJWaf9kOn/Yg7azg5DT696ILmKYJRgdC4Xim
+	4DkyemGfBwr+xtoCMfHozpTv5VuA9cGo+c2QhVA5GlnyI7DqI966RXER4UCFQ8kqX+5jr/6B7PG
+	0gCJ7V5+cYy3k/V1azbpcxe/TXuw7zRlf0acFPEFxyPeFmcJ5B4sM52UmsYC2oRh4fHnjK9pVDY
+	67xT6YzPmj/aMmsl2tKwYc8HAnksp2StuVrJaIyPy41i34NJR0ZS03UDhPcEOZYgDdXhm9NphMI
+	e2VfzROdm+Dqis1K+UXDMSmjyQ==
+X-Google-Smtp-Source: AGHT+IFaHvUcEnqFi4Lr0hCCB5O6qB3QQ0++BclRzCTeW4p+KMMla0oQd7fun1jrfkmdumF49GKpGw==
+X-Received: by 2002:a05:6a21:32a9:b0:1f5:77ed:40b9 with SMTP id adf61e73a8af0-2045b9f4009mr11881966637.40.1745715449262;
+        Sat, 26 Apr 2025 17:57:29 -0700 (PDT)
 Received: from archlinux ([2804:14d:90a8:854f::10dc])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22db4d76f8asm55650305ad.35.2025.04.26.17.19.17
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73e25acc600sm5575820b3a.173.2025.04.26.17.57.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 26 Apr 2025 17:19:20 -0700 (PDT)
-Date: Sat, 26 Apr 2025 21:19:13 -0300
+        Sat, 26 Apr 2025 17:57:28 -0700 (PDT)
+Date: Sat, 26 Apr 2025 21:57:21 -0300
 From: Gustavo Silva <gustavograzs@gmail.com>
 To: Jonathan Cameron <jic23@kernel.org>
 Cc: Alex Lanzano <lanzano.alex@gmail.com>, 
 	David Lechner <dlechner@baylibre.com>, Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>, 
 	Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/3] iio: imu: bmi270: add channel for step counter
-Message-ID: <swswxbwejqyrekr2bvjf4p5lglodg3hlgl5ckiluxpazzl3chn@ga3uriqvmv7b>
+Subject: Re: [PATCH 2/3] iio: imu: bmi270: add step counter watermark event
+Message-ID: <yudy5vbwblqzkx34pgekqi3noyctaxo77n2lb6mqidb4veqadm@534j4towopou>
 References: <20250424-bmi270-events-v1-0-a6c722673e5f@gmail.com>
- <20250424-bmi270-events-v1-1-a6c722673e5f@gmail.com>
- <20250426144020.2633f9cb@jic23-huawei>
+ <20250424-bmi270-events-v1-2-a6c722673e5f@gmail.com>
+ <20250426144739.31b8bd36@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -90,156 +90,140 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250426144020.2633f9cb@jic23-huawei>
+In-Reply-To: <20250426144739.31b8bd36@jic23-huawei>
 
-On Sat, Apr 26, 2025 at 02:40:20PM +0100, Jonathan Cameron wrote:
-> On Thu, 24 Apr 2025 21:14:50 -0300
+On Sat, Apr 26, 2025 at 02:47:39PM +0100, Jonathan Cameron wrote:
+> On Thu, 24 Apr 2025 21:14:51 -0300
 > Gustavo Silva <gustavograzs@gmail.com> wrote:
 > 
-> > Add a channel for enabling/disabling the step counter, reading the
-> > number of steps and resetting the counter.
+> > Add support for generating events when the step counter reaches the
+> > configurable watermark.
 > > 
 > > Signed-off-by: Gustavo Silva <gustavograzs@gmail.com>
-> Hi Gustavo,
 > 
-> This is tripping over the somewhat theoretical requirement for
-> regmap to be provided with DMA safe buffers for bulk accesses.
-> 
-> Jonathan
-> 
+> Main thing in here is I think the event type isn't the right one.
+>
 
 Hi Jonathan,
 
-Thanks for the review. I've got a few questions inline.
+Thanks for the review.
+I think the answers to your questions in this patch come down to me
+trying to keep this driver consistency with the bmi323 driver, since
+the two devices are very similar.
+However I have no objections to change the event type if you think it
+is appropriate.
 
-> > ---
-> >  drivers/iio/imu/bmi270/bmi270_core.c | 127 +++++++++++++++++++++++++++++++++++
-> >  1 file changed, 127 insertions(+)
-> > 
-> > diff --git a/drivers/iio/imu/bmi270/bmi270_core.c b/drivers/iio/imu/bmi270/bmi270_core.c
-> > index a86be5af5ccb1f010f2282ee31c47f284c1bcc86..f09d8dead9df63df5ae8550cf473b5573374955b 100644
-> > --- a/drivers/iio/imu/bmi270/bmi270_core.c
-> > +++ b/drivers/iio/imu/bmi270/bmi270_core.c
-> > @@ -31,6 +31,8 @@
-> 
-> >  /* See datasheet section 4.6.14, Temperature Sensor */
-> >  #define BMI270_TEMP_OFFSET				11776
-> >  #define BMI270_TEMP_SCALE				1953125
-> > @@ -111,6 +118,7 @@ struct bmi270_data {
-> >  	struct iio_trigger *trig;
+> > @@ -119,6 +128,7 @@ struct bmi270_data {
 > >  	 /* Protect device's private data from concurrent access */
 > >  	struct mutex mutex;
-> > +	int steps_enabled;
+> >  	int steps_enabled;
+> > +	unsigned int feature_events;
 > 
-> Seems a little odd to have a thing called _enabled as an integer.
-> Probably better as a bool even though that will require slightly more
-> code to handle read / write.
+> Why do we need this rather than just checking the register?
 > 
-I agree that a bool might be more appropriate in this case. I decided to
-use an int to keep consistency with other drivers, specifically bma400
-and the iio dummy driver.
-If you prefer, I'll use a bool here and after this series submit a patch
-updating those drivers as well.
+Not really needed, I just tried to keep it similar to the bmi323 driver.
 
 > 
-> >  
-> >  	/*
-> >  	 * Where IIO_DMA_MINALIGN may be larger than 8 bytes, align to
-> > @@ -282,6 +290,99 @@ static const struct  bmi270_odr_item bmi270_odr_table[] = {
-> >  	},
-> >  };
-> >  
-> > +enum bmi270_feature_reg_id {
-> > +	BMI270_SC_26_REG,
-> > +};
 > > +
-> > +struct bmi270_feature_reg {
-> > +	u8 page;
-> > +	u8 addr;
-> > +};
-> > +
-> > +static const struct bmi270_feature_reg bmi270_feature_regs[] = {
-> > +	[BMI270_SC_26_REG] = {
-> > +		.page = 6,
-> > +		.addr = 0x32,
-> > +	},
-> > +};
-> > +
-> > +static int bmi270_write_feature_reg(struct bmi270_data *data,
-> > +				    enum bmi270_feature_reg_id id,
-> > +				    u16 val)
+> > +static int bmi270_step_wtrmrk_en(struct bmi270_data *data, bool state)
 > > +{
-> > +	const struct bmi270_feature_reg *reg = &bmi270_feature_regs[id];
-> > +	int ret;
+> > +	int ret, reg, field_value;
 > > +
-> > +	ret = regmap_write(data->regmap, BMI270_FEAT_PAGE_REG, reg->page);
+> > +	guard(mutex)(&data->mutex);
+> > +	if (!data->steps_enabled)
+> > +		return -EINVAL;
+> > +
+> > +	reg = bmi270_int_map_reg(data->irq_pin);
+> > +	if (reg < 0)
+> > +		return -EINVAL;
+> > +
+> > +	field_value = FIELD_PREP(BMI270_INT_MAP_FEAT_STEP_CNT_WTRMRK_MSK, state);
+> > +	ret = regmap_update_bits(data->regmap, reg,
+> > +				 BMI270_INT_MAP_FEAT_STEP_CNT_WTRMRK_MSK,
+> > +				 field_value);
 > > +	if (ret)
 > > +		return ret;
 > > +
-> > +	return regmap_bulk_write(data->regmap, reg->addr, &val, sizeof(val));
+> > +	set_mask_bits(&data->feature_events,
+> > +		      BMI270_INT_MAP_FEAT_STEP_CNT_WTRMRK_MSK, field_value);
 > 
-> For a regmap on top of an SPI bus. I think we are still requiring DMA safe
-> buffers until we can get confirmation that the API guarantees that isn't
-> needed.  (there is another thread going on where we are trying to get that
-> confirmation).
-> 
-> That is a pain here because this can run concurrently with buffered
-> capture and as such I think we can't just put a additional element after
-> data->data but instead need to mark that new element __aligned(IIO_DMA_MINALIGN)
-> as well (and add a comment that it can be used concurrently with data->data).
+> Given we wrote the register, why do we need a cached value?  Can't we just read
+> it back again (or rely on a regmap cache for it if enabled in this driver)
 >
-Just to clarify, when you say data->data, are you referring to the
-bmi270_data::buffer variable? That used to be called 'data' but it was
-changed to 'buffer' in commit 16c94de2a.
+Ditto.
 
-> This hole thing is a mess because in reality I think the regmap core is always
-> bouncing data today. In theory it could sometimes be avoiding copies
-> and the underlying regmap_spi does require DMA safe buffers. This all relies
-> on an old discussion where Mark Brown said that we should not assume any
-> different requirements from the the underlying bus.
-> 
+> > +	return 0;
 > > +}
 > > +
-> > +static int bmi270_read_feature_reg(struct bmi270_data *data,
-> > +				   enum bmi270_feature_reg_id id,
-> > +				   u16 *val)
-> > +{
-> > +	const struct bmi270_feature_reg *reg = &bmi270_feature_regs[id];
-> > +	int ret;
-> > +
-> > +	ret = regmap_write(data->regmap, BMI270_FEAT_PAGE_REG, reg->page);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	return regmap_bulk_read(data->regmap, reg->addr, val, sizeof(*val));
-> > +}
-> > +
-> > @@ -551,6 +652,8 @@ static int bmi270_read_raw(struct iio_dev *indio_dev,
+> >  static int bmi270_set_scale(struct bmi270_data *data, int chan_type, int uscale)
+> >  {
+> >  	int i;
+> > @@ -539,19 +585,32 @@ static irqreturn_t bmi270_irq_thread_handler(int irq, void *private)
+> >  {
+> >  	struct iio_dev *indio_dev = private;
 > >  	struct bmi270_data *data = iio_priv(indio_dev);
+> > -	unsigned int status;
+> > +	unsigned int status0, status1;
+> > +	s64 timestamp = iio_get_time_ns(indio_dev);
+> >  	int ret;
 > >  
-> >  	switch (mask) {
-> > +	case IIO_CHAN_INFO_PROCESSED:
-> > +		return bmi270_read_steps(data, val);
-> >  	case IIO_CHAN_INFO_RAW:
-> >  		if (!iio_device_claim_direct(indio_dev))
-> >  			return -EBUSY;
-> > @@ -571,6 +674,10 @@ static int bmi270_read_raw(struct iio_dev *indio_dev,
-> >  	case IIO_CHAN_INFO_SAMP_FREQ:
-> >  		ret = bmi270_get_odr(data, chan->type, val, val2);
-> >  		return ret ? ret : IIO_VAL_INT_PLUS_MICRO;
-> > +	case IIO_CHAN_INFO_ENABLE:
-> > +		scoped_guard(mutex, &data->mutex)
-> > +			*val = data->steps_enabled;
+> >  	scoped_guard(mutex, &data->mutex) {
+> > +		ret = regmap_read(data->regmap, BMI270_INT_STATUS_0_REG,
+> > +				  &status0);
+> > +		if (ret)
+> > +			return IRQ_NONE;
+> > +
+> >  		ret = regmap_read(data->regmap, BMI270_INT_STATUS_1_REG,
+> > -				  &status);
+> > +				  &status1);
+> >  		if (ret)
+> >  			return IRQ_NONE;
+> >  	}
+> >  
+> > -	if (FIELD_GET(BMI270_INT_STATUS_1_ACC_GYR_DRDY_MSK, status))
+> > +	if (FIELD_GET(BMI270_INT_STATUS_1_ACC_GYR_DRDY_MSK, status1))
+> >  		iio_trigger_poll_nested(data->trig);
+> >  
+> > +	if (FIELD_GET(BMI270_INT_STATUS_0_STEP_CNT_MSK, status0))
+> > +		iio_push_event(indio_dev, IIO_MOD_EVENT_CODE(IIO_STEPS, 0,
+> > +							     IIO_NO_MOD,
+> why use IIO_MOD_EVENT_CODE() if not modified?
 > 
-> What race is this protecting against?  Protecting the write is fine because it
-> is about ensuring we don't race an enable against a clear of the counter.
-> A race here would I think just give the same as either the race to take the lock
-> being won by this or not (so not a race as such, just ordering of calls)
-> So I don't think you need the lock here.
->
-Understood. I'll fix it in v2.
+My bad, I blindly followed what is implemented in the bmi323 driver.
+I'll fix it in v2.
 
-> > +		return IIO_VAL_INT;
+> > +							     IIO_EV_TYPE_CHANGE,
+> > +							     IIO_EV_DIR_NONE),
+> As below. This looks like a rising threshold event.
+> 
+> Change tends to be for things like activity detection (walking/standing etc)
+>  
+Using rising threshold event is fine by me, but then shouldn't we
+update the bmi323 driver as well?
+
+> > +			       timestamp);
+> > +
+> >  	return IRQ_HANDLED;
+> >  }
+> >  
+> > @@ -761,10 +820,111 @@ static int bmi270_read_avail(struct iio_dev *indio_dev,
+> >  	}
+> >  }
+> >
+> > +
+> > +static const struct iio_event_spec bmi270_step_wtrmrk_event = {
+> > +	.type = IIO_EV_TYPE_CHANGE,
+> 
+> Change would be a per step event.
+> IIUC this is a rising threshold.
+>
+Yeah, if the watermark level is configured to N steps, an event is
+generated every time the step counter counts N steps.
+
+> > +	.dir = IIO_EV_DIR_NONE,
+> > +	.mask_shared_by_type = BIT(IIO_EV_INFO_ENABLE) |
+> > +			       BIT(IIO_EV_INFO_VALUE),
+> > +};
 > 
 > 
 

@@ -1,71 +1,67 @@
-Return-Path: <linux-iio+bounces-18738-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18739-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E49EA9E546
-	for <lists+linux-iio@lfdr.de>; Mon, 28 Apr 2025 02:13:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AB80A9E549
+	for <lists+linux-iio@lfdr.de>; Mon, 28 Apr 2025 02:13:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC084189A544
-	for <lists+linux-iio@lfdr.de>; Mon, 28 Apr 2025 00:13:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A0885189A579
+	for <lists+linux-iio@lfdr.de>; Mon, 28 Apr 2025 00:13:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC9E279EA;
-	Mon, 28 Apr 2025 00:12:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 956F11F5F6;
+	Mon, 28 Apr 2025 00:12:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="K62rzun0"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="oN62osVQ"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from mx0b-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D044E35979;
-	Mon, 28 Apr 2025 00:12:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D470F487BE;
+	Mon, 28 Apr 2025 00:12:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745799161; cv=none; b=JbTeBeIGscD2j+3qeHZh40/3oHECohsEwI0Q6PGZ5fI5h/OznAu1hT8OmM8CKPBmuSGb4mmMRUtreE6HAA5c5I6ZlbSgRjYhoikY75NSU26fdosDUkzUlHod1leIHHm1Is9qjn3DBPDXcUm9uhiM5W/a1nKVMtcvNyBP+oCbSj0=
+	t=1745799179; cv=none; b=uRk7CvhgbuZ4iqE8xqpbyqOBzcn0Thkub4/iWL7VP2S7GeImKf5oCPxBFn8kAEf/nr8Z7j65pUHo+Z0eu9AaYVVmzZ2tsu0cNH7WoVrEjiSFq6S4aY8y8GmbVf54AYcfzSzOX84Es28n78FdwxB1GMmdcaNjThACJlD68ovSK/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745799161; c=relaxed/simple;
-	bh=ekJbCGWI10LbRKSRpmtQuGWnmUIqJ/QUtjvGvAttyqM=;
+	s=arc-20240116; t=1745799179; c=relaxed/simple;
+	bh=eIS3GZPwbLQeINkMZ0VV3NlxARLpXwsPrDUvC1qauaQ=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sB4AmqFqrazLrVHNOsEnAdR6evof+WQ0SOEAek40BKnqNjgpTB5LPWGMUnGqSVbl8o2PcDnhFsJrwRmjZxZjVY8nARP6QnjVmwLjZSE/ayF7O8gsMVVEuOYA8OpCtjwFf2umMkgfKCME1csNpVlHLHKOzlmR0K9a2nHN/OpW56g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=K62rzun0; arc=none smtp.client-ip=148.163.135.77
+	 MIME-Version:Content-Type; b=kx/y1LLrFFodJfPwBN1eHriAPfiHtK9aZit51COiuBgIGDppNj6BEynDPNYUI7ckk8sfwusUIZMA+P32PJVzgp9YrMFC1t28c8yTgLLE6pzmtcKX1c0U4TtBTwDPtIkTwhC1VH/0H8+McuBITQ9MTIkRXuh2ZqN60tkLtaGGPWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=oN62osVQ; arc=none smtp.client-ip=148.163.135.77
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
 Received: from pps.filterd (m0375855.ppops.net [127.0.0.1])
-	by mx0b-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53RLTG9W027668;
-	Sun, 27 Apr 2025 20:12:34 -0400
+	by mx0b-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53RKDrpJ027673;
+	Sun, 27 Apr 2025 20:12:52 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=DKIM; bh=rbF0T
-	toDjPBDiTJIKrRCPVLf4L7DQiV1/TUu/RXPAZE=; b=K62rzun0yK6YowuH5JZeh
-	WoSGk3YTnd8UcV+2FVJFdzgxVGVcqor1if6JXViaUjmsakmAUYq3l8kHZa4nuJtv
-	yBbhw1rPLqmYRgVNOxax1uba1hO5AdeTLoMjgvV5SCa5d+tSu6yiE+mvwuXrF8AT
-	EFRxOOuB2LxakclanrMIzKqi4QIrszNRs8iITAVbuWuymjW7AUfEhoCJEH5EUqbh
-	OQI7Py9CKM3b6ZjAsbOIOPzLsWuwuFqgf3AgEilnfmeJ6IBGrTHfIrrogpjf1HHY
-	RN4VGQVMpwhSdCi7XTuvgXTB8UnMGKZvtTaLXI/BYViJCxkZBgCtJ45+Qwca1bXV
-	w==
+	:message-id:mime-version:references:subject:to; s=DKIM; bh=5vFsq
+	bQZ43ewqNP7/ZVFRx5w3U9mYMjfcygfBoGfWRY=; b=oN62osVQKhZ9awuGEZ+pK
+	I0fWL7oQaVDW6wx86tH4AArrXOOe/FhO30pQ1I32MMuLXrKBJR9ZNllWdjWlkiaE
+	lW93OJUh1CYZMRcmHPZIQ+yQJYqN+6hLNeTXhy8zsN0wEuWg5bCNqg0E/JNLrX3z
+	WsyrKk3fsQOPqxCc00UI0X4tlxrIxlBCeIsG3SZ2+ZCkBbx9457KhewtTGs/3Xnt
+	UWKDtPdjV+3+16gmYtyOu9rTOV2vdNkW0NYKM4yhiqfaVOM5kF/cmRMvQlyeMC3F
+	+UGa5FNcDBLdkBdwX49F3A8pfORuXoGKxpBFImmFIKW4xOQb9lFRYlbzF6vBiYWv
+	A==
 Received: from nwd2mta3.analog.com ([137.71.173.56])
-	by mx0b-00128a01.pphosted.com (PPS) with ESMTPS id 469dtgcma9-1
+	by mx0b-00128a01.pphosted.com (PPS) with ESMTPS id 469dtgcmc1-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 27 Apr 2025 20:12:33 -0400 (EDT)
+	Sun, 27 Apr 2025 20:12:51 -0400 (EDT)
 Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
-	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 53S0CW3X028808
+	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 53S0Co1b028856
 	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Sun, 27 Apr 2025 20:12:32 -0400
-Received: from ASHBCASHYB4.ad.analog.com (10.64.17.132) by
- ASHBMBX9.ad.analog.com (10.64.17.10) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.14; Sun, 27 Apr 2025 20:12:32 -0400
-Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by
- ASHBCASHYB4.ad.analog.com (10.64.17.132) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.14; Sun, 27 Apr 2025 20:12:32 -0400
+	Sun, 27 Apr 2025 20:12:50 -0400
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by ASHBMBX9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Sun, 27 Apr
+ 2025 20:12:50 -0400
 Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
  (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Sun, 27 Apr 2025 20:12:32 -0400
+ Transport; Sun, 27 Apr 2025 20:12:50 -0400
 Received: from JSANTO12-L01.ad.analog.com ([10.65.60.206])
-	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 53S0CHJQ014439;
-	Sun, 27 Apr 2025 20:12:19 -0400
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 53S0CWZt014585;
+	Sun, 27 Apr 2025 20:12:35 -0400
 From: Jonathan Santos <Jonathan.Santos@analog.com>
 To: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
         <linux-kernel@vger.kernel.org>, <linux-gpio@vger.kernel.org>
@@ -75,10 +71,11 @@ CC: Jonathan Santos <Jonathan.Santos@analog.com>, <andy@kernel.org>,
         <krzk+dt@kernel.org>, <conor+dt@kernel.org>,
         <marcelo.schmitt1@gmail.com>, <linus.walleij@linaro.org>,
         <brgl@bgdev.pl>, <lgirdwood@gmail.com>, <broonie@kernel.org>,
-        <jonath4nns@gmail.com>, <dlechner@baylibre.com>
-Subject: [PATCH v6 02/11] dt-bindings: iio: adc: ad7768-1: add trigger-sources property
-Date: Sun, 27 Apr 2025 21:12:16 -0300
-Message-ID: <128de2793d6d5424ad152c394faf1d51f0d56e0b.1745605382.git.Jonathan.Santos@analog.com>
+        <jonath4nns@gmail.com>, <dlechner@baylibre.com>,
+        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: [PATCH v6 03/11] dt-bindings: iio: adc: ad7768-1: Document GPIO controller
+Date: Sun, 27 Apr 2025 21:12:30 -0300
+Message-ID: <a3960f6d59d2659ae32450cca2f493b01f2b9add.1745605382.git.Jonathan.Santos@analog.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <cover.1745605382.git.Jonathan.Santos@analog.com>
 References: <cover.1745605382.git.Jonathan.Santos@analog.com>
@@ -91,143 +88,79 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNDI3MDIwMiBTYWx0ZWRfXy0hVxil0bB2w zpk5+70/lJC99Ge/gwFQghafu8q3xxpBP3jYlBreVhkq8hjHpYUEWtXJ3ly4gdikES5nhz7ib/9 wrYXkwtVDLIET63a1+wGCgU71aJwZkNYAzzJJRHL5xCQYiUV9k/TGU9DF7vJQ/fJOwwDbcKlejZ
- /t7WUOX2Yk0dGTFOYyaixjbj3N9uzUxX6NGTxVO8Hv346tDc+pfCFbOVLwZnivQYgvT/0xwa++E YH/u7rvE9090+vg7czS+0nKq/lfYGHyKPr1sM8rvhyYmmppmgkK3rxrOyHWudnFQPQb7y24TWch yTuIgdmQp7TsECtEBYdZcOpyGmZu5yNn/TCsH6AN/BbCFkfxymcPC9at7pH6MnRJOR828VG8unY
- 0qE0ugnWJbEY4HKTF+VV8ORD8U3hHxt8H1N9zmxMNzuzlKZk87e1AOX/rr4cRvfmSXdKo5t1
-X-Proofpoint-ORIG-GUID: yM0ILI6ewh8-TKa18JkkLv5fu0G9_rhZ
-X-Proofpoint-GUID: yM0ILI6ewh8-TKa18JkkLv5fu0G9_rhZ
-X-Authority-Analysis: v=2.4 cv=crybk04i c=1 sm=1 tr=0 ts=680ec7f1 cx=c_pps a=PpDZqlmH/M8setHirZLBMw==:117 a=PpDZqlmH/M8setHirZLBMw==:17 a=XR8D0OoHHMoA:10 a=gAnH3GRIAAAA:8 a=o4psIgTgk-Asirc5avcA:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNDI3MDIwMiBTYWx0ZWRfX1Azlr99NHSs7 +MIKWCrm3IRRKyR1tPn1gSEGzs9ynteX4NZcXHeu+ZnKT61jHab9f/BVmzLmNc7xpfY4UULvLVj y/MzwZoFd/df+K+lK70M8WEbNRfyx8IM21yVgkGxN4fZ93Etw7ZVLY12b1O5MrEYsHy9SMpRmUv
+ 4gKwDjGbYYcxOkbQc205fW3Ulf34XpM5MrfPSFsSeGbWVMObQgPG+bBK1+CB2hVILYbniLnWGbm Ww0b3ENwYqwIJ8jv6+clNyNFA66IllIzKMsFjhpT/MZ3yp1L5QNC+67bQOcbzgoVAbjAGloVgqV O7L8DAjXQNU0u1u9GUQ0dQJMAqN55mCRr2ujwSbmRAyKYIZDWnnxrYMJGrZ/hLzYGeSpFickTnC
+ 6soB1VjtSSBV7z9bSkqqNfxiUEn4nAhhCuOQ5G0Wxi0pFmjzuBIwV7sszMfVMu8ydXdv0tRL
+X-Proofpoint-ORIG-GUID: 8rv4ingJgcYSuasGUsQvWQpbUD-AQfmy
+X-Proofpoint-GUID: 8rv4ingJgcYSuasGUsQvWQpbUD-AQfmy
+X-Authority-Analysis: v=2.4 cv=crybk04i c=1 sm=1 tr=0 ts=680ec803 cx=c_pps a=PpDZqlmH/M8setHirZLBMw==:117 a=PpDZqlmH/M8setHirZLBMw==:17 a=XR8D0OoHHMoA:10 a=KKAkSRfTAAAA:8 a=VwQbUJbxAAAA:8 a=gAnH3GRIAAAA:8 a=FDCdkw0c5cjSjuxHnEwA:9 a=cvBusfyB2V15izCimMoJ:22
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
  definitions=2025-04-27_08,2025-04-24_02,2025-02-21_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=950
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999
  malwarescore=0 clxscore=1015 impostorscore=0 bulkscore=0
  priorityscore=1501 mlxscore=0 spamscore=0 phishscore=0 adultscore=0
  lowpriorityscore=0 suspectscore=0 classifier=spam authscore=0 authtc=n/a
  authcc= route=outbound adjust=0 reason=mlx scancount=1
  engine=8.19.0-2504070000 definitions=main-2504270202
 
-In addition to GPIO synchronization, The AD7768-1 also supports
-synchronization over SPI, which use is recommended when the GPIO
-cannot provide a pulse synchronous with the base MCLK signal. It
-consists of looping back the SYNC_OUT to the SYNC_IN pin and send
-a command via SPI to trigger the synchronization.
+The AD7768-1 ADC exports four bidirectional GPIOs accessible
+via register map.
 
-Introduce the 'trigger-sources' property to enable SPI-based
-synchronization via SYNC_OUT pin, along with additional optional
-entries for GPIO3 and DRDY pins.
+Document GPIO properties necessary to enable GPIO controller for this
+device.
 
-Also create #trigger-source-cells property to differentiate the trigger
-sources provided by the ADC. To improve readability, create a
-adi,ad7768-1.h header with the macros for the cell values.
-
-While at it, add description to the interrupts property.
-
+Acked-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
 Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
 ---
 v6 Changes:
-* Removed references to offload.
-* Changed trigger-sources-cells description. Each cell value indicates
-  a gpio line from the ADC.
-* Added adi,ad7768-1.h header with macros for the trigger source cells.
-* Removed offload trigger entry from trigger-sources.
+* none.
 
 v5 Changes:
-* Include START pin and DRDY in the trigger-sources description.
-* Fixed "#trigger-source-cells" value and description.
-* sync-in-gpios is represented in the trigger-sources property.
+* none.
 
 v4 Changes:
-* none
+* none.
 
 v3 Changes:
-* Fixed dt-bindings errors.
-* Trigger-source is set as an alternative to sync-in-gpios, so we
-  don't break the previous ABI.
-* increased maxItems from trigger-sources to 2.
+* none.
 
 v2 Changes:
-* Patch added as replacement for adi,sync-in-spi patch.
-* addressed the request for a description to interrupts property.
+* New patch in v2.
 ---
- .../bindings/iio/adc/adi,ad7768-1.yaml        | 31 ++++++++++++++++++-
- include/dt-bindings/iio/adc/adi,ad7768-1.h    | 10 ++++++
- 2 files changed, 40 insertions(+), 1 deletion(-)
- create mode 100644 include/dt-bindings/iio/adc/adi,ad7768-1.h
+ .../devicetree/bindings/iio/adc/adi,ad7768-1.yaml      | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
 diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.yaml
-index 3ce59d4d065f..1f476aa15305 100644
+index 1f476aa15305..25d4995c63a5 100644
 --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.yaml
 +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.yaml
-@@ -26,7 +26,28 @@ properties:
-   clock-names:
-     const: mclk
- 
-+  trigger-sources:
-+    $ref: /schemas/types.yaml#/definitions/phandle-array
-+    minItems: 1
-+    maxItems: 2
-+    description: |
-+      A list of phandles referencing trigger source providers. Each entry
-+      represents a trigger source for the ADC:
-+
-+        - First entry specifies the device responsible for driving the
-+          synchronization (SYNC_IN) pin, as an alternative to adi,sync-in-gpios.
-+          This can be a `gpio-trigger` or another `ad7768-1` device. If the
-+          device's own SYNC_OUT pin is internally connected to its SYNC_IN pin,
-+          reference the device itself or omit this property.
-+        - Second entry optionally defines a GPIO3 pin used as a START signal trigger.
-+
-+      Use the accompanying trigger source cell to identify the type of each entry.
-+
-   interrupts:
-+    description:
-+      Specifies the interrupt line associated with the ADC. This refers
-+      to the DRDY (Data Ready) pin, which signals when conversion results are
-+      available.
-     maxItems: 1
- 
-   '#address-cells':
-@@ -57,6 +78,15 @@ properties:
-   "#io-channel-cells":
+@@ -87,6 +87,14 @@ properties:
+       dt-bindings/iio/adc/adi,ad7768-1.h.
      const: 1
  
-+  "#trigger-source-cells":
-+    description: |
-+      Cell indicates the trigger output signal: 0 = SYNC_OUT, 1 = GPIO3,
-+      2 = DRDY.
++  gpio-controller: true
 +
-+      For better readability, macros for these values are available in
-+      dt-bindings/iio/adc/adi,ad7768-1.h.
-+    const: 1
++  "#gpio-cells":
++    const: 2
++    description: |
++      The first cell is for the GPIO number: 0 to 3.
++      The second cell takes standard GPIO flags.
 +
  required:
    - compatible
    - reg
-@@ -65,7 +95,6 @@ required:
-   - vref-supply
-   - spi-cpol
-   - spi-cpha
--  - adi,sync-in-gpios
- 
- patternProperties:
-   "^channel@([0-9]|1[0-5])$":
-diff --git a/include/dt-bindings/iio/adc/adi,ad7768-1.h b/include/dt-bindings/iio/adc/adi,ad7768-1.h
-new file mode 100644
-index 000000000000..34d92856a50b
---- /dev/null
-+++ b/include/dt-bindings/iio/adc/adi,ad7768-1.h
-@@ -0,0 +1,10 @@
-+/* SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause) */
-+
-+#ifndef _DT_BINDINGS_ADI_AD7768_1_H
-+#define _DT_BINDINGS_ADI_AD7768_1_H
-+
-+#define AD7768_TRIGGER_SOURCE_SYNC_OUT  0
-+#define AD7768_TRIGGER_SOURCE_GPIO3     1
-+#define AD7768_TRIGGER_SOURCE_DRDY      2
-+
-+#endif /* _DT_BINDINGS_ADI_AD7768_1_H */
+@@ -134,6 +142,8 @@ examples:
+             spi-max-frequency = <2000000>;
+             spi-cpol;
+             spi-cpha;
++            gpio-controller;
++            #gpio-cells = <2>;
+             vref-supply = <&adc_vref>;
+             interrupts = <25 IRQ_TYPE_EDGE_RISING>;
+             interrupt-parent = <&gpio>;
 -- 
 2.34.1
 

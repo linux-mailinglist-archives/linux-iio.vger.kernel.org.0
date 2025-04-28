@@ -1,134 +1,105 @@
-Return-Path: <linux-iio+bounces-18765-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18768-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C037AA9ED37
-	for <lists+linux-iio@lfdr.de>; Mon, 28 Apr 2025 11:51:07 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 597CFA9EE59
+	for <lists+linux-iio@lfdr.de>; Mon, 28 Apr 2025 12:50:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4E4D01884B4D
-	for <lists+linux-iio@lfdr.de>; Mon, 28 Apr 2025 09:50:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C19BC7A9242
+	for <lists+linux-iio@lfdr.de>; Mon, 28 Apr 2025 10:49:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C18DC21CFEC;
-	Mon, 28 Apr 2025 09:50:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9981262FC2;
+	Mon, 28 Apr 2025 10:50:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Aa+v02s8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RvwPhd8h"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E026D200138;
-	Mon, 28 Apr 2025 09:50:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ED2E25F780;
+	Mon, 28 Apr 2025 10:50:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745833819; cv=none; b=tL0QxZONKUhfIB/L3LgnirnbzNv6uc9iW+1EK9fNHP5LmIzxwzS6SyuslfzKBgzGq3rVrPn3YJyO9Tw1ldyPdcA1l00pBFv6RG8HxOfVJn2UVtDgD6KP4Z9rcJbQLn4GlB7idK+ogBwXR+ej/HxOVaCe4YbouKDAqGFri3wmn6Y=
+	t=1745837434; cv=none; b=RKq+9qBTbTLh1x/bkho5Y5XZapBxQhrdNDhEFXwkZcHq4eMwhnSYCoQ58FgCvqOHwq+C9SHiro589D3YMPPhbnE0OBE0ZD8S8Ta0Tv8Rj4HIQqF6Z0LAtUXFCUTp/kf+xVN/3872vMN0NGnZwhmij4mgBdi1fbaBwUOLwzetifU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745833819; c=relaxed/simple;
-	bh=yiI0t3KzyC8xZVvbZpTX7rWg2qi61wN9oJC5TUMtQ4Q=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UpVw8iUSaXrBUbNt3nBDsix8K92hacr10TrOksZMQh66TDTgyctYN9ZYtptHLD6RHzApxYI4t0y89gYp0cr2Lum5lNDQyghMFY3TO7ioH4QKh7YZrEob952JwBoIk9jlDXarjzTO1NYv8Z+amdsJth2R6A/6Q24/rJbYG+DAcCA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Aa+v02s8; arc=none smtp.client-ip=209.85.208.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-5edc07c777eso5696524a12.3;
-        Mon, 28 Apr 2025 02:50:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745833816; x=1746438616; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PzNOPJFHfsN0QAsxHoXogR9GK+LlwG788CqeZ5YVfJg=;
-        b=Aa+v02s8k47BunStIr5siI/d/jNFtK3P6aazjZ2elzXO0cU3TmQLaNbYKh872GHjvJ
-         sUMrysQ/T7SlD1TmO57aj3on4Ds1VbAS6/1ZRc/BxYLzLEYYGNJRDmdsrXK60LJLAyUG
-         9mmwsKPuIroRl5FCRVSrnS9jYDGOtAxwy4DWisnAyhd9vd5cnNf+KVssmGLo1/U8Jn/t
-         VEHSNrwSKWV/Fpf6ZuR84aEvKJuXwyuUMPkN5LlRDE8ZmPnlBasJGFMElT89P/ROF77V
-         4gDiP555OqjVVmHYKmciBFMsiENkFnApWnt04psR0i/IcLvyU1wJDrlpgvdUB/QOUnWK
-         dZHA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745833816; x=1746438616;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=PzNOPJFHfsN0QAsxHoXogR9GK+LlwG788CqeZ5YVfJg=;
-        b=b1jt5Xh/pIBVdeFCs2WnhrwaZxaTnlZaoCekXlZk6nz8gY5fnULxPGbC56Y1w2qp/L
-         reaZrEqU9Tt/AeOwWqi+MsG1si/mQWadD4rI3iXCRq6pNfppfXh3TUdz2Q6kzhj9yUL6
-         CMW+dKcfPR60i0zR8rozLKCLuWtcYzzCMJKpsJTU/ZsIPZiVtkC3Sn4QscyIS8yb041Z
-         yWT4Bsq7qOVA7RY7TkJ8356ZVDj0uo1DSsE026nU6e6xuir5r0+fTrJA6xfXIXgZbZXk
-         Jup5/NeWvvYVyaoIbFS0+ChzwSu7gT5npLuPGuE++3Szk0WWzy/zTQdcAk5qbUziPZEs
-         RhbA==
-X-Forwarded-Encrypted: i=1; AJvYcCWmo0BBvcA4PLVGkH/05vJoPQRlSiTkkdkjm+s1bTyQvxeFumRZwxy3qab814z8CUWC1eKCLZr2Q8749+xC@vger.kernel.org, AJvYcCWnwLqa9FnItC0vKraABoMgw7NZJ+NaxMj059jpAyALg1OhyXNfKuR0UKrTp2qmFGw2QwR3M5pqt9E=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxcVFvZn3xV2gWao7jfBhpuB4XV+nZh+LCqE16UxLAJYJciED/e
-	dXWY42KgKKWw8y0P49fSCGoeHj87tycMT7PsaEftzsypmkm1vEX83VFadlKBl7rRBlysh7Y863J
-	1LSPKlbl7/O7xdmnUhhHFUYir8KU=
-X-Gm-Gg: ASbGncs03MYu7WGhLzLnOwon+L+Rcszq0awSIpr8+KpZS7E109sDbdVH0cG2rinexnA
-	nY6e9mfJGwPW7UCN9NyIUWVNJrlcJ5+aWcS80vptRUU+VybcA1Pvalqn/ia4GxJRhWWkNaG/+mp
-	YWMt5Mo+aCHrAM/JiLStuFNhcc
-X-Google-Smtp-Source: AGHT+IG11ycFE2PkB61nFfebKSoqYyj5h8DU2gxlG9BQR8BD84DpNf0Wwl+tL1HVqWS1Vod5bJXy2iyXDrvW3yz3bw8=
-X-Received: by 2002:a17:906:6a21:b0:ac6:d142:2c64 with SMTP id
- a640c23a62f3a-ace710c6b96mr990313266b.18.1745833816006; Mon, 28 Apr 2025
- 02:50:16 -0700 (PDT)
+	s=arc-20240116; t=1745837434; c=relaxed/simple;
+	bh=bYzWEyx7wF1a4iH6jkzQs6rTKgOzlRhswyhO+IHRbag=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=nD/Qisxhjs1kJvCdBR9l6ot5sFov8VQhIJ53qedvmUdjl2q2WULZ+Zgvym8h/551vc5GZl0Ut69K79hoDzk7CHpuARCKv1jw7kvgY0GG7fi4BAeCxTmFDKHcMYRJYmE8Ujiz9YeHS/4gjTXgPJeISY9/efPibXKaQ/KSAElw5PU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RvwPhd8h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 1F4BAC4CEE4;
+	Mon, 28 Apr 2025 10:50:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1745837434;
+	bh=bYzWEyx7wF1a4iH6jkzQs6rTKgOzlRhswyhO+IHRbag=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=RvwPhd8hJjp1sWfflu6gENQP4CYuMhK4ip59pK1MC03JIZyMVOUxL5nC2kkhzlOOZ
+	 DkZzYNsaChWD9CsnElKoFuPLDjZEiTZ2JsyC8r3pMZAh69kLys3UPyT2u0ZVMVIhJ/
+	 SMH5l/1Gt7eeckpAM6GnELrdc/8UCn64Rj8jvlUzT1lldUxjcAlMr0wzbdTqVTSFj7
+	 JAlPx3rjHGgKVL3/rvql+Roq+hNSZDVxr5cXyCmyoCmc4c+oKRxdDLNScKNCDfhHu6
+	 Q73ABg5SJmloa3cQa+gtlEwWngYcoyfADZYhlThSRDRJir/n9Gd/rMiRf6Tnbgce39
+	 EtIyz4rQMtKiQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 15212C369D9;
+	Mon, 28 Apr 2025 10:50:34 +0000 (UTC)
+From: =?utf-8?q?T=C3=B3th_J=C3=A1nos_via_B4_Relay?= <devnull+gomba007.gmail.com@kernel.org>
+Subject: [PATCH 0/2] Add support for the DFRobot SEN0322 oxygen sensor
+Date: Mon, 28 Apr 2025 12:50:12 +0200
+Message-Id: <20250428-iio-chemical-sen0322-v1-0-9b18363ffe42@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <59106e24332743a7f9eb0b13ad6a2f5595ab485a.1745823530.git.mazziesaccount@gmail.com>
- <CAHp75VcUcrj-BLp9QDsYMDY_SeQS76LDGge5vVqrx-MVwukP0w@mail.gmail.com> <4085fd58-c92c-406b-842b-ecda2fb3c895@gmail.com>
-In-Reply-To: <4085fd58-c92c-406b-842b-ecda2fb3c895@gmail.com>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Mon, 28 Apr 2025 12:49:39 +0300
-X-Gm-Features: ATxdqUG23fvKHI445lKjGfN9VwwQ5k8wrBoZmew1lv4mNnMDTqG5MCm1Cojhs54
-Message-ID: <CAHp75VdAEefH5Vgk5BZz8vGDXyu0EmEy3hwoeRDJsKmkjaQW9w@mail.gmail.com>
-Subject: Re: [PATCH] iio: ti-adc128s052: Drop variable vref
-To: Matti Vaittinen <mazziesaccount@gmail.com>
-Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>, Jonathan Cameron <jic23@kernel.org>, 
-	David Lechner <dlechner@baylibre.com>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAGRdD2gC/x3MQQqAIBBA0avErBuwSSu6SrRIG2ugLBQiiO6et
+ HyL/x9IHIUT9MUDkS9JcoSMqizArVNYGGXOBlJklKYORQ50K+/ipg0TB1UTofOdt9Zya3QDOT0
+ je7n/7TC+7wfFS4LRZgAAAA==
+To: Jonathan Cameron <jic23@kernel.org>, 
+ Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ =?utf-8?q?T=C3=B3th_J=C3=A1nos?= <gomba007@gmail.com>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1745837432; l=803;
+ i=gomba007@gmail.com; s=20230706; h=from:subject:message-id;
+ bh=bYzWEyx7wF1a4iH6jkzQs6rTKgOzlRhswyhO+IHRbag=;
+ b=FX53BKRvsPXfLu9zX6oIbWxnJrO3cEa7YLggqBsOhEtfUwHaoMjdIw5SrfKzq3Iyj6hfpsfeF
+ KpvfqlNujtWAihX3N9vNXNLBKI8rxrhFNNIPCIfJTOxZIw3LZ1C9F4N
+X-Developer-Key: i=gomba007@gmail.com; a=ed25519;
+ pk=iY9MjPCbud82ULS2PQJIq3QwjKyP/Sg730I6T2M8Y5U=
+X-Endpoint-Received: by B4 Relay for gomba007@gmail.com/20230706 with
+ auth_id=60
+X-Original-From: =?utf-8?q?T=C3=B3th_J=C3=A1nos?= <gomba007@gmail.com>
+Reply-To: gomba007@gmail.com
 
-On Mon, Apr 28, 2025 at 12:45=E2=80=AFPM Matti Vaittinen
-<mazziesaccount@gmail.com> wrote:
-> On 28/04/2025 10:08, Andy Shevchenko wrote:
-> > On Mon, Apr 28, 2025 at 10:02=E2=80=AFAM Matti Vaittinen
-> > <mazziesaccount@gmail.com> wrote:
+This patchset adds a driver and the documentation for the
+DFRobot SEN0322 oxygen sensor.
 
-...
+Signed-off-by: Tóth János <gomba007@gmail.com>
+---
+Tóth János (2):
+      dt-bindings: iio: chemical: Document SEN0322
+      iio: chemical: Add driver for SEN0322
 
-> >> +       int vref_mv;
-> >
-> > vref_mV please. And yes, I know historical and other reasons for them
-> > all being small, but let's try to be more scientific in these crazy
-> > days.
->
-> Sorry Andy but I see zero reason to use capital letters here. In my
-> opinion, this is perfectly clear as it is. Capital letters in variables
-> are ugly (to me) and absolutely not needed to explain the meaning.
+ .../bindings/iio/chemical/dfrobot,sen0322.yaml     |  41 ++++
+ MAINTAINERS                                        |   6 +
+ drivers/iio/chemical/Kconfig                       |  10 +
+ drivers/iio/chemical/Makefile                      |   1 +
+ drivers/iio/chemical/sen0322.c                     | 238 +++++++++++++++++++++
+ 5 files changed, 296 insertions(+)
+---
+base-commit: b4432656b36e5cc1d50a1f2dc15357543add530e
+change-id: 20250428-iio-chemical-sen0322-cf8fbbbe7546
 
-And I see zero reason to not use the correct scientific unitis there.
-Note, that regulator framework and some other drivers are using that
-and I consider this is the correct way to go.
+Best regards,
+-- 
+Tóth János <gomba007@gmail.com>
 
-...
 
-> > Or actually a time to introduce MILLIVOLT_PER_VOLT in units.h ?
->
-> I really fail to see the benefit. Do you think we should add
-> MILLIx_PER_x for each unit we can imagine/use?
->
-> That doesn't really scale or make sense to me. We have MILLI. It does
-> not really matter if it is volts, amps, ohms or horse heads - it's still
-> 1000. It just gets cumbersome to search the headers to see if we have
-> some fancy define for unit we have at our hands.
-
-In some contexts this gives the understanding of the units and how big
-the value is. Even with some defined constants it's not possible to
-describe in their names everything that this definition adds. I do see
-a benefit of it.
-
---=20
-With Best Regards,
-Andy Shevchenko
 

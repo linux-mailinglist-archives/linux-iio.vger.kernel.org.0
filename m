@@ -1,132 +1,153 @@
-Return-Path: <linux-iio+bounces-18749-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18750-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85A57A9E7D0
-	for <lists+linux-iio@lfdr.de>; Mon, 28 Apr 2025 07:38:42 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D39ACA9E86E
+	for <lists+linux-iio@lfdr.de>; Mon, 28 Apr 2025 08:43:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9F3503A9F7C
-	for <lists+linux-iio@lfdr.de>; Mon, 28 Apr 2025 05:38:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6485C7A98DA
+	for <lists+linux-iio@lfdr.de>; Mon, 28 Apr 2025 06:41:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EEAE19882B;
-	Mon, 28 Apr 2025 05:38:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B94B1C862E;
+	Mon, 28 Apr 2025 06:42:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JAW7GPuj"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NbRNNlTP"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 744D318BBBB
-	for <linux-iio@vger.kernel.org>; Mon, 28 Apr 2025 05:38:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 435F318EAB;
+	Mon, 28 Apr 2025 06:42:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745818718; cv=none; b=FgyooPDoxSN/kyujirK4xp77l2KRlOXKASnkgBSGwmS6NA2TlUnnotsnigOGMarP1j93cBeLLtcHX21frIdJq2pbyFvKaDyfyIvk5l9YT4XOOqEztRkUheedBKgqxQNAnMMr8fZx+I1WDZXlIjy0pxo0U7oChWGhGGUuagTD7UI=
+	t=1745822577; cv=none; b=t/j2Kb/ABVubOeNRVWKLaK/cZZg9UTvSk+YdsLliHbj3V074YCc2GA3a/XlCXRL+tgQyM8jezD3vwWPe+YbyOZQKbyxCDZwt8k6jpKQsxY73Dv26ZpV/Qt+tXxwuPL6ye88YevjD/RlcDfJROrvKmQk8AHQoioW3FcM7tc5dDIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745818718; c=relaxed/simple;
-	bh=PROFAG54vtPUCa2biqnhdOCrXOiyrBWDUnCdPsRbRL0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LQlQwATHUswOvBUlaSENJYDix8D4ECvLApnWbyhQUON/SFuSDP/U3ma6eYwusoYl7Hy4IHj7bHEAaG5hrUzKqD/fV3xDLuM8y5xzwC/qc4ZW3uaSYwWUfDTGTRZ6fNAUrWqHkfq37xSM+3Jbmyjzpp1Xk73C1M2LBXlUpXXejls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JAW7GPuj; arc=none smtp.client-ip=209.85.208.180
+	s=arc-20240116; t=1745822577; c=relaxed/simple;
+	bh=ZqZzcK4ZiQKN3TxBucAS5gbR0geGoW9MhIU8xDyaGYU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=A+eD05mksRik9NuEwJ+/nJz9lAFGunxSG1BrtZ2c4Y5vw7/m6wCWzHag4821gscpy0bQxwAXUylz+kB9GDdzEForiIdXrzZHTIlQUWzh4dTixHSuTNzBIo/vUhhtHUTVuLKdl+nKmHyZukQygNMswAuUaCi+izuvZ88s3dP5BV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NbRNNlTP; arc=none smtp.client-ip=209.85.218.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-3105ef2a06cso43573981fa.2
-        for <linux-iio@vger.kernel.org>; Sun, 27 Apr 2025 22:38:34 -0700 (PDT)
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-aca99fc253bso647992566b.0;
+        Sun, 27 Apr 2025 23:42:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745818712; x=1746423512; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=xpkreBkWmEH1bGwQun7KblFPtCeI9D02gNYAg3Rbfqc=;
-        b=JAW7GPujdt+lePlLE2FUWifesbvl0xAUkWKDuMTzzXeXSh4k+1d3x/ayZQgpF+SlFx
-         H2Lpw2wuQBlnvezp9jsXEZ98uvX74iRPD72rnfxajwk2gInjpSx4fO4nHx91rtbDCq4P
-         +oQ/FF/O0D8ElzVkZ4wigvISi9tTyuDk+0yH/QjnK3YGQ0uFqvOnP6I+3uT/ILAtKGV3
-         imdpNe3qHhNjbVYmx9SIyjnOlwMT+iCsDx/nhac30nrb5NAh8Kje1LxEG+OJbO+b9+DI
-         gaRar7ZJpQFXkz8QieNIJACz0tHi9Tu/LIfJCmgZ8EQIRVHk/0fJvq210ZlBUNvb7MAr
-         UOpA==
+        d=gmail.com; s=20230601; t=1745822574; x=1746427374; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=mVeoxsrZ4tC2juWsFPI6k6Xd61VJ0s6yaeeo0JTTl0c=;
+        b=NbRNNlTPUEUf8X7pNnRpxd+Rpz0wDeak9vrIOnUWglbl5XtN+zVKA1iYES0vTiZqMi
+         9JD6J1tCWkPXLaJqMigcyxjNK3OOBSglfNJmSdA4w+IYWSNbnJDcvsH7KiBRMsZNM0ge
+         +SWdd2+pX/Vr8ykci9VN53YVn8XyWuF1Z5OlrWNAdrBWnatzCTHLGCCkkfVu7OAKBlKn
+         A4BdoWdJVD0z+uGhdI63ZfPyhArEMj7tFK8fr1TNp04S6LqMLFz9B+efbBuG/nqN1O8Q
+         Ny+63CMg1cElrVrR4cmRIWCS7ekOgrkCx1ylNYIlkTssclf8+YnpZrHRdaQjO/uWXVHb
+         OSQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745818712; x=1746423512;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=xpkreBkWmEH1bGwQun7KblFPtCeI9D02gNYAg3Rbfqc=;
-        b=wtbzRnVDA7Ycp78gyIqmGtOaVsMzFspmomQTPoL6H+GCfb2WiizazD/OW6lDK2FbxG
-         NdMHKkoNKc2qEX1oUY+6+EwCZZN0r+c7j1B9FvVI25husQg+k3saKKdLcPDcrXaJ+W5l
-         agh9KPHyCeKaVGAk0bNVD+Tr+xH0oAed+Soezr7rU9EtSrDLueoQaCmORnt4/5mrmFjV
-         dBHrb9krp7YyGrmNwAFbeUm8/gMDPpnFkOVBIwpku6OoACMElN0n9lJ5jDws9XKiOO4f
-         OJDa8nvlyNC2RVsNygSmxztRncGjNzN5HhgMhJgnloNP0UB9JD+Latw0962bihNwUkc+
-         gK1w==
-X-Gm-Message-State: AOJu0YzAnmWD5nTA02HaVhA0Cu+j53TDN2ufekSw0XAm/OFhfvr20QpX
-	C7l4dXwRAXYo3LvKy3QFn+CgmlRyzEvjHNXL6osMJOfPDy0+rjNm
-X-Gm-Gg: ASbGncvX+4Yk2HfNQTZ0MKmXcP48k6VOPItwt3wKrpDKD7Dn8e9Imn5mpSp3wTjs1XY
-	8C/Ub5tIL3NSa0WklARyu/vjJUpV2bkTME9MUU2dUy1bl2SqaKWyib/NQvvotZUKPZoGFj8uB4b
-	GlOXZs3rAQte823vvrGOI+QPyIOsf2Swn5JaFFWChUk3XrWctmAcqGiptKxycWwYyUdJwO/KqBo
-	nkMgfWonqxRjH/3UwWe6V3dkytjA6bt34B0vnLntGPY4MzxiC0sHLAxMdNgc9a2snOuLfT3tsM1
-	AsGT454kudRmInpfcT2I4Rdv3oQDXfEJu+CLrjML1xeKpVLqiJ8OnW3LuUqixI20O7b+GEgGJmT
-	eIagdeb1Q145sYQiKQIoG9g==
-X-Google-Smtp-Source: AGHT+IEkhAAdXIXe7+qjTGu+Us8aEMl7h24cW98TIk1xeuKIyCHceOQziGD8V36pEGLORmxNoCRpog==
-X-Received: by 2002:a05:651c:1542:b0:30c:2efb:6608 with SMTP id 38308e7fff4ca-319085be535mr30273641fa.34.1745818712145;
-        Sun, 27 Apr 2025 22:38:32 -0700 (PDT)
-Received: from ?IPV6:2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703? ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-317cf659e59sm20176301fa.3.2025.04.27.22.38.31
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 27 Apr 2025 22:38:31 -0700 (PDT)
-Message-ID: <de99d175-a571-43a0-b254-606ba03948aa@gmail.com>
-Date: Mon, 28 Apr 2025 08:38:30 +0300
+        d=1e100.net; s=20230601; t=1745822574; x=1746427374;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=mVeoxsrZ4tC2juWsFPI6k6Xd61VJ0s6yaeeo0JTTl0c=;
+        b=Wb7DrTQL4m9Bv7g84403GlsFI2GABtM20USUg3GjU4G/nZ7+RBhLWs3xJI9RJM4zDO
+         +VJeSBfYulEp8BKtV/TQVqC/1kD6EGk0KutA7k0MfptK1P8JbZP46xW1ZpOSTCV604PR
+         OGaMWks3aTT5u/CjoNrXlwFCV/b1rP2ZqR2mVwPnKEaQDdEs9GaiWCrgsx9QHY3uWdx5
+         MOSAmq84GbtRtQCqTbPHixWLwnez63fLW+Pbz3TWUUufoXTWvxxk9rTdjAyC10Q6BNSP
+         JZ+1E0O+kKDhQ+/gUFxIn6HZbCY/Tg3v97MxKJdKd1KTMdtkxTd6sKx/QOUiAx8xxyxp
+         0jAg==
+X-Forwarded-Encrypted: i=1; AJvYcCUa3Si3SuR43P5Km4BmJtfZZndMJ3nxel0t4pdYbd8GMkTcRgwyGRs9Nykiqe3+IepvzKufZZ3fWakOFA==@vger.kernel.org, AJvYcCUlhFOy5Tgf8ppDGXUycnSeG8h6iAgyjykh2CciBKHSP/5BroS51sMLAjbNjsLziLSVmZle0GMxv8Vnr29i@vger.kernel.org, AJvYcCVNH3LODluiUjo1Rm5FV8vX3431wOxHrVNMo0tPwFoNyp1l0xTX0/DN+wDu/9D+XBdY8VrbErYjQBca@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz+ovHp6FOgIdros1tS8U2CkJtEkzOiBWYVDM7r38Tm59Bnj7Sj
+	ZFnd1orD4DYqmlbGya3l9bzUUaa1Q0D9nTYMyw2lXEIwaab728627IDKmKKqNHQTyalAjn4SXbe
+	qI2GBvKItPykcTRKQpGlBlgdghHfRo7dU
+X-Gm-Gg: ASbGncvL0PYP90EcrYe6JGoSb8zrvJa+X/vLLap0gT7jaAsvT2tnE/E5G4yHiv2sPhQ
+	RrB7qzg6dRzgjdpHXNxU7YXFksw8Ct9vmOIc84n4Xzyjh1KvJIhhCFuJXKfolf4Lr6pKfgPxYhD
+	xV9BZx4Rlt0bIEbklUuwvdIk92
+X-Google-Smtp-Source: AGHT+IGCayb7OFCeBVQAaEXALm4GeBcZZQcEMMx+8n4frmJFVPip/NVbyIlTD/nMPAAub1h0ZHmAsGYZeDJgjRk/2bg=
+X-Received: by 2002:a17:907:9803:b0:acb:7104:353a with SMTP id
+ a640c23a62f3a-ace8493c612mr593840566b.34.1745822574299; Sun, 27 Apr 2025
+ 23:42:54 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: max1363 : Warnings from iio_sanity_check_avail_scan_masks()
-To: Jonathan Cameron <jic23@kernel.org>, Fabio Estevam <festevam@gmail.com>
-Cc: linux-iio@vger.kernel.org
-References: <CAOMZO5BXp38RMt5vQQWnZBQDzpN+SYB6NVU3c-Krk3po+2Zv7A@mail.gmail.com>
- <20250426160009.161b9f08@jic23-huawei>
-Content-Language: en-US, en-AU, en-GB, en-BW
-From: Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <20250426160009.161b9f08@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <cover.1745605382.git.Jonathan.Santos@analog.com> <8a04f8f1e9c14d57b1db2f38a8433a0367c0c9dd.1745605382.git.Jonathan.Santos@analog.com>
+In-Reply-To: <8a04f8f1e9c14d57b1db2f38a8433a0367c0c9dd.1745605382.git.Jonathan.Santos@analog.com>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Mon, 28 Apr 2025 09:42:18 +0300
+X-Gm-Features: ATxdqUH27S-RbreDqWEJoxLFvP3nZaXCbK2hRvS8GpnytOwtgktp0cPwv3XnNq8
+Message-ID: <CAHp75Vciw_ivdKFsqo=FML64zUL_cDCzjuhmdVC3V_Whnatqwg@mail.gmail.com>
+Subject: Re: [PATCH v6 05/11] iio: adc: ad7768-1: add regulator to control VCM output
+To: Jonathan Santos <Jonathan.Santos@analog.com>
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org, andy@kernel.org, 
+	nuno.sa@analog.com, Michael.Hennerich@analog.com, marcelo.schmitt@analog.com, 
+	jic23@kernel.org, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
+	marcelo.schmitt1@gmail.com, linus.walleij@linaro.org, brgl@bgdev.pl, 
+	lgirdwood@gmail.com, broonie@kernel.org, jonath4nns@gmail.com, 
+	dlechner@baylibre.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi deee Ho peeps!
+On Mon, Apr 28, 2025 at 3:13=E2=80=AFAM Jonathan Santos
+<Jonathan.Santos@analog.com> wrote:
+>
+> The VCM output voltage can be used as a common-mode voltage within the
+> amplifier preconditioning circuits external to the AD7768-1.
+>
+> This change allows the user to configure VCM output using the regulator
+> framework.
 
-On 26/04/2025 18:00, Jonathan Cameron wrote:
-> On Wed, 23 Apr 2025 17:23:28 -0300
-> Fabio Estevam <festevam@gmail.com> wrote:
->> After upgrading the kernel from 6.1 to 6.12 (also tested with
->> linux-next), I started seeing the following warnings on a board
->> populated with a Maxim MAX11601 ADC:
->>
->> [    1.554029] max1363 1-0064: available_scan_mask 8 subset of 0. Never used
->> [    1.563627] max1363 1-0064: available_scan_mask 9 subset of 0. Never used
->>
->> What is the correct way to fix these warnings?
-> 
-> Ah.  I think we have an order of modes bug.. Later entries should never be a subset
-> of earlier ones and we only recently added a sanity check on that.
+...
 
-This indeed rings a bell :) I have nothing really to add to the answers 
-by Jonathan, but I just noticed the warning print isn't as clear as it 
-could. As far as I understand, the printed values aren't the actual 
-masks, but indexes in the mask arrays. Now that I had this stuff 
-forgotten, I was puzzled by the print until I read the code.
+>  #include <linux/gpio/consumer.h>
+>  #include <linux/kernel.h>
+>  #include <linux/module.h>
+> +#include <linux/of.h>
 
-I believe it'd be more informative if we printed the actual bit masks - 
-but I am not sure if we know the size of the mask. If we keep printing 
-the indexes, then we might want to add brackets [] to indicate the value 
-is an index? How about:
+Why?
 
-"available_scan_masks: mask[8] subset of mask[0]. Never used"
+>  #include <linux/regmap.h>
+>  #include <linux/regulator/consumer.h>
+> +#include <linux/regulator/driver.h>
 
-instead of:
-available_scan_mask 8 subset of 0. Never used
+...
 
-Would that be more obvious?
+> +static int ad7768_vcm_enable(struct regulator_dev *rdev)
+> +{
+> +       struct iio_dev *indio_dev =3D rdev_get_drvdata(rdev);
+> +       struct ad7768_state *st =3D iio_priv(indio_dev);
+> +       int ret, regval;
 
-Yours,
-	-- Matti
+> +       if (!indio_dev)
+> +               return -EINVAL;
+
+Isn't it a dead code? Or i.o.w. under which circumstances can this be true?
+Ditto for other functions with the same check.
+
+> +       if (!iio_device_claim_direct(indio_dev))
+> +               return -EBUSY;
+> +
+> +       /* To enable, set the last selected output */
+> +       regval =3D AD7768_REG_ANALOG2_VCM(st->vcm_output_sel + 1);
+> +       ret =3D regmap_update_bits(st->regmap, AD7768_REG_ANALOG2,
+> +                                AD7768_REG_ANALOG2_VCM_MSK, regval);
+> +       iio_device_release_direct(indio_dev);
+> +
+> +       return ret;
+> +}
+
+...
+
+> +       return clamp(val, 1, (int)rdev->desc->n_voltages) - 1;
+
+No explicit castings in min/max/clamp, please. This may lead to subtle
+mistakes. Also, don't forget to include minmax.h.
+
+--=20
+With Best Regards,
+Andy Shevchenko
 

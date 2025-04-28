@@ -1,226 +1,132 @@
-Return-Path: <linux-iio+bounces-18748-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18749-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2CB1A9E6C8
-	for <lists+linux-iio@lfdr.de>; Mon, 28 Apr 2025 05:43:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 85A57A9E7D0
+	for <lists+linux-iio@lfdr.de>; Mon, 28 Apr 2025 07:38:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CC19F3B8ACE
-	for <lists+linux-iio@lfdr.de>; Mon, 28 Apr 2025 03:43:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9F3503A9F7C
+	for <lists+linux-iio@lfdr.de>; Mon, 28 Apr 2025 05:38:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8CBB155725;
-	Mon, 28 Apr 2025 03:43:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EEAE19882B;
+	Mon, 28 Apr 2025 05:38:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="B0312Omj"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JAW7GPuj"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A0424431
-	for <linux-iio@vger.kernel.org>; Mon, 28 Apr 2025 03:43:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 744D318BBBB
+	for <linux-iio@vger.kernel.org>; Mon, 28 Apr 2025 05:38:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745811830; cv=none; b=QjYTd4lWlfXKGqEhXEcUb9hGqhO8l/ooDSJ9kNfXSxWJsD1iMWYOiNBW8ohbwcJ7Wp5fuEhzGoAIXCjwzyvf9tEHzmoT3ul8+yeoa/WThfOpN0DIsFExbFDiCPuLLapXDjDWilP7MeIpU15Nth6Go2uhZZXMz7R6XF1ulXhtW3I=
+	t=1745818718; cv=none; b=FgyooPDoxSN/kyujirK4xp77l2KRlOXKASnkgBSGwmS6NA2TlUnnotsnigOGMarP1j93cBeLLtcHX21frIdJq2pbyFvKaDyfyIvk5l9YT4XOOqEztRkUheedBKgqxQNAnMMr8fZx+I1WDZXlIjy0pxo0U7oChWGhGGUuagTD7UI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745811830; c=relaxed/simple;
-	bh=WbBTqAmPd1TCqo0a0QLtNiDiKduoudoC0GBaUr2IHH0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=J6RdN5oN/L3dJtkoVZv584PzlHl9f4R4Y9f8wK72Au8lehYeL3W7UFx9e9tkKuBpfUZxsF5bkL/q4z4eNAEoTxgRHaALxdx14UD+kI09WNodoNSXlg67IJ69vvwBDhWVE0ctdCYADTF2yEAjfob9TKhv9Tmc1PBXQp9i4eapRBI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=B0312Omj; arc=none smtp.client-ip=209.85.208.48
+	s=arc-20240116; t=1745818718; c=relaxed/simple;
+	bh=PROFAG54vtPUCa2biqnhdOCrXOiyrBWDUnCdPsRbRL0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LQlQwATHUswOvBUlaSENJYDix8D4ECvLApnWbyhQUON/SFuSDP/U3ma6eYwusoYl7Hy4IHj7bHEAaG5hrUzKqD/fV3xDLuM8y5xzwC/qc4ZW3uaSYwWUfDTGTRZ6fNAUrWqHkfq37xSM+3Jbmyjzpp1Xk73C1M2LBXlUpXXejls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JAW7GPuj; arc=none smtp.client-ip=209.85.208.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-5f6f3f2af91so544536a12.2
-        for <linux-iio@vger.kernel.org>; Sun, 27 Apr 2025 20:43:47 -0700 (PDT)
+Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-3105ef2a06cso43573981fa.2
+        for <linux-iio@vger.kernel.org>; Sun, 27 Apr 2025 22:38:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745811826; x=1746416626; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=qGzp6ZU2kGqrljcpQVrXsb8tqkvs1zg1VeY4ORptDi0=;
-        b=B0312Omjc35NTwVxKUM9rs6ioToHOAQGDpy6Z1J2h6nFLEn2PUtInBb3G92/ceYB9G
-         Y9W5ddcXn09DzL0P7FfUlzE2qgRb6qs0l1kh3wbldKHFgpZtHw65Odcj4r5Wy6ZVVtkq
-         jCElIODD1peEV+nfG3jBIto9kqWsZ9e7CufIhmFm6/zy2r0xR9TvVrdstEadPnBeX4UX
-         e9xdanzyHNoMz5E+aF4ySPswRysy2Xr/PwG80kK3wIxy5IMyB+mKW1rhuL1JS/fyQjRG
-         yCfAB1V9M0LoKAPr9pdM/GzeDFgLkV9PCHFZRlD45qGY9/JbCJ0GFwQs7DZlRIepednZ
-         KnZQ==
+        d=gmail.com; s=20230601; t=1745818712; x=1746423512; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=xpkreBkWmEH1bGwQun7KblFPtCeI9D02gNYAg3Rbfqc=;
+        b=JAW7GPujdt+lePlLE2FUWifesbvl0xAUkWKDuMTzzXeXSh4k+1d3x/ayZQgpF+SlFx
+         H2Lpw2wuQBlnvezp9jsXEZ98uvX74iRPD72rnfxajwk2gInjpSx4fO4nHx91rtbDCq4P
+         +oQ/FF/O0D8ElzVkZ4wigvISi9tTyuDk+0yH/QjnK3YGQ0uFqvOnP6I+3uT/ILAtKGV3
+         imdpNe3qHhNjbVYmx9SIyjnOlwMT+iCsDx/nhac30nrb5NAh8Kje1LxEG+OJbO+b9+DI
+         gaRar7ZJpQFXkz8QieNIJACz0tHi9Tu/LIfJCmgZ8EQIRVHk/0fJvq210ZlBUNvb7MAr
+         UOpA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745811826; x=1746416626;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=qGzp6ZU2kGqrljcpQVrXsb8tqkvs1zg1VeY4ORptDi0=;
-        b=NG2SOGpDydVYUoD/e8L2+JErNOHS0L4HUNjP0hNZBLP9oL69y1gDVhfTwgv7klXENo
-         UgjTZaogJVdlJFEBAM+AL8p6IAGasTD7/q6iLiWifd1i4AYxlHNiR5Vnd6lrVe2oF8Sk
-         Vyh1xr8+HoY+bojrxu6Xwtlu2oFY1zXNQwTwzAMDZ2Hk4HQ5rfYT1li3etXDiWc+mHlb
-         svzQzRsqw+VB7hfkcAk6al/I+dOiFe/SIayt7G64jCnW0n6CCXdftLVZWeCz/QzC8Pru
-         N0TAWIw31ndPelf6sf+Js0ZZc/E3TxFSAHfysVoX5Te/VVB+C3PQ+WR4ED35cCUBEuJR
-         DTWg==
-X-Forwarded-Encrypted: i=1; AJvYcCUV8mBJOPqb2Fz798dySnAdxsMZoViis59TuthrcUERZgU87WRSyTC0sHwyhTARpTvvNauqONkZrJk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzKn14qotJ7YiO8HepGFLJbkwvDhyrNGs6oRpfGAWGthcimCcXw
-	CMy+UaFBvdOtiK3IKQ69gHDt/1iTiqa2YvnkpNExETk/CVXB2F1c
-X-Gm-Gg: ASbGncsiQWF8RKUJKReHxVcdPPX9CC6HuFnGA4PfR7Hl94QdNCzRrSLgE48sSZLusBG
-	DzgSFWDNaNaewy4Nx1Fu/JhkqqOj07CoH4nxxBTL49fmrAnJC4NqMkWqwzwThNHqgY9dDm6H5pQ
-	j3+1xgc/xM3SlFntxYdH1xXHNhzmxtSHlyYjX0Ua3ZfPgLUiocNkOwWEtA9knHcWfvJAQKgDd/5
-	shRwysdO0pydcBU9nhZev3eb9p0jJcoPGrd3/NbNI8Y0ULafAcrBoMl0bh8qf2Q5Ogh2rhEDSSW
-	OUOgv5sDLdfMISf+UwqKT+vWVb9IzKyXSMLGEkoo6Pg/7XWPqDY3BUPPNrT9JYuyMpA3SqVInnh
-	SPDFyxeg8GXoGstu+OvKvsCBN+9UXz8PFR3qK61NElg==
-X-Google-Smtp-Source: AGHT+IGtHSuQwlNqRsXEmZH9nSJVBY9V1WPcp2WQt9ZbgeE5zW4BeX2v9KRwfV3LN5UyI5UgNhnelA==
-X-Received: by 2002:a05:6402:2755:b0:5f4:35c7:ff65 with SMTP id 4fb4d7f45d1cf-5f7226908bfmr2989389a12.4.1745811826184;
-        Sun, 27 Apr 2025 20:43:46 -0700 (PDT)
-Received: from vmi2506601.contaboserver.net (vmi2506601.contaboserver.net. [161.97.103.39])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5f7016f666fsm5212015a12.45.2025.04.27.20.43.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 27 Apr 2025 20:43:45 -0700 (PDT)
-From: Gabriel Geraldino <gabrielgeraldinosouza@gmail.com>
-To: jic23@kernel.org,
-	orsonzhai@gmail.com,
-	Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: gabrielgeraldinosouza@gmail.com,
-	Nicolas Borsari <nicborsari@usp.br>,
-	linux-iio@vger.kernel.org
-Subject: [PATCH] iio: adc: sc27xx: Refactor sc27xx_adc_scale_init to reduce duplication
-Date: Mon, 28 Apr 2025 05:42:22 +0200
-Message-Id: <20250428034222.318898-1-gabrielgeraldinosouza@gmail.com>
-X-Mailer: git-send-email 2.39.5
+        d=1e100.net; s=20230601; t=1745818712; x=1746423512;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=xpkreBkWmEH1bGwQun7KblFPtCeI9D02gNYAg3Rbfqc=;
+        b=wtbzRnVDA7Ycp78gyIqmGtOaVsMzFspmomQTPoL6H+GCfb2WiizazD/OW6lDK2FbxG
+         NdMHKkoNKc2qEX1oUY+6+EwCZZN0r+c7j1B9FvVI25husQg+k3saKKdLcPDcrXaJ+W5l
+         agh9KPHyCeKaVGAk0bNVD+Tr+xH0oAed+Soezr7rU9EtSrDLueoQaCmORnt4/5mrmFjV
+         dBHrb9krp7YyGrmNwAFbeUm8/gMDPpnFkOVBIwpku6OoACMElN0n9lJ5jDws9XKiOO4f
+         OJDa8nvlyNC2RVsNygSmxztRncGjNzN5HhgMhJgnloNP0UB9JD+Latw0962bihNwUkc+
+         gK1w==
+X-Gm-Message-State: AOJu0YzAnmWD5nTA02HaVhA0Cu+j53TDN2ufekSw0XAm/OFhfvr20QpX
+	C7l4dXwRAXYo3LvKy3QFn+CgmlRyzEvjHNXL6osMJOfPDy0+rjNm
+X-Gm-Gg: ASbGncvX+4Yk2HfNQTZ0MKmXcP48k6VOPItwt3wKrpDKD7Dn8e9Imn5mpSp3wTjs1XY
+	8C/Ub5tIL3NSa0WklARyu/vjJUpV2bkTME9MUU2dUy1bl2SqaKWyib/NQvvotZUKPZoGFj8uB4b
+	GlOXZs3rAQte823vvrGOI+QPyIOsf2Swn5JaFFWChUk3XrWctmAcqGiptKxycWwYyUdJwO/KqBo
+	nkMgfWonqxRjH/3UwWe6V3dkytjA6bt34B0vnLntGPY4MzxiC0sHLAxMdNgc9a2snOuLfT3tsM1
+	AsGT454kudRmInpfcT2I4Rdv3oQDXfEJu+CLrjML1xeKpVLqiJ8OnW3LuUqixI20O7b+GEgGJmT
+	eIagdeb1Q145sYQiKQIoG9g==
+X-Google-Smtp-Source: AGHT+IEkhAAdXIXe7+qjTGu+Us8aEMl7h24cW98TIk1xeuKIyCHceOQziGD8V36pEGLORmxNoCRpog==
+X-Received: by 2002:a05:651c:1542:b0:30c:2efb:6608 with SMTP id 38308e7fff4ca-319085be535mr30273641fa.34.1745818712145;
+        Sun, 27 Apr 2025 22:38:32 -0700 (PDT)
+Received: from ?IPV6:2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703? ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-317cf659e59sm20176301fa.3.2025.04.27.22.38.31
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 27 Apr 2025 22:38:31 -0700 (PDT)
+Message-ID: <de99d175-a571-43a0-b254-606ba03948aa@gmail.com>
+Date: Mon, 28 Apr 2025 08:38:30 +0300
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: max1363 : Warnings from iio_sanity_check_avail_scan_masks()
+To: Jonathan Cameron <jic23@kernel.org>, Fabio Estevam <festevam@gmail.com>
+Cc: linux-iio@vger.kernel.org
+References: <CAOMZO5BXp38RMt5vQQWnZBQDzpN+SYB6NVU3c-Krk3po+2Zv7A@mail.gmail.com>
+ <20250426160009.161b9f08@jic23-huawei>
+Content-Language: en-US, en-AU, en-GB, en-BW
+From: Matti Vaittinen <mazziesaccount@gmail.com>
+In-Reply-To: <20250426160009.161b9f08@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Simplify the sc27xx_adc_scale_init() function by refactoring scale ratio
-initialization logic for SC2720, SC2730, and SC2731 PMICs. This removes
-code duplication by using a data structure to represent channel/scale
-mapping.
+Hi deee Ho peeps!
 
-This change improves readability and maintainability without changing
-functional behavior.
+On 26/04/2025 18:00, Jonathan Cameron wrote:
+> On Wed, 23 Apr 2025 17:23:28 -0300
+> Fabio Estevam <festevam@gmail.com> wrote:
+>> After upgrading the kernel from 6.1 to 6.12 (also tested with
+>> linux-next), I started seeing the following warnings on a board
+>> populated with a Maxim MAX11601 ADC:
+>>
+>> [    1.554029] max1363 1-0064: available_scan_mask 8 subset of 0. Never used
+>> [    1.563627] max1363 1-0064: available_scan_mask 9 subset of 0. Never used
+>>
+>> What is the correct way to fix these warnings?
+> 
+> Ah.  I think we have an order of modes bug.. Later entries should never be a subset
+> of earlier ones and we only recently added a sanity check on that.
 
-Signed-off-by: Gabriel Geraldino <gabrielgeraldinosouza@gmail.com>
-Co-developed-by: Nicolas Borsari <nicborsari@usp.br>
-Signed-off-by: Nicolas Borsari <nicborsari@usp.br>
----
- drivers/iio/adc/sc27xx_adc.c | 90 +++++++++++++-----------------------
- 1 file changed, 32 insertions(+), 58 deletions(-)
+This indeed rings a bell :) I have nothing really to add to the answers 
+by Jonathan, but I just noticed the warning print isn't as clear as it 
+could. As far as I understand, the printed values aren't the actual 
+masks, but indexes in the mask arrays. Now that I had this stuff 
+forgotten, I was puzzled by the print until I read the code.
 
-diff --git a/drivers/iio/adc/sc27xx_adc.c b/drivers/iio/adc/sc27xx_adc.c
-index 2535c2c3e..a8312859d 100644
---- a/drivers/iio/adc/sc27xx_adc.c
-+++ b/drivers/iio/adc/sc27xx_adc.c
-@@ -407,78 +407,52 @@ static int sc2731_adc_get_ratio(int channel, int scale)
- /*
-  * According to the datasheet set specific value on some channel.
-  */
-+struct adc_channel_scale {
-+	int channel;
-+	int scale;
-+};
-+
-+static void sc27xx_adc_scale_init(struct sc27xx_adc_data *data,
-+	const struct adc_channel_scale *table,
-+	int table_len,
-+	int default_scale)
-+{
-+	int j;
-+
-+	for (j = 0; j < sizeof(data->channel_scale); j++)
-+		data->channel_scale[j] = default_scale;
-+
-+	for (j = 0; j < table_len; j++)
-+		data->channel_scale[table[j].channel] = table[j].scale;
-+}
-+
- static void sc2720_adc_scale_init(struct sc27xx_adc_data *data)
- {
--	int i;
--
--	for (i = 0; i < SC27XX_ADC_CHANNEL_MAX; i++) {
--		switch (i) {
--		case 5:
--			data->channel_scale[i] = 3;
--			break;
--		case 7:
--		case 9:
--			data->channel_scale[i] = 2;
--			break;
--		case 13:
--			data->channel_scale[i] = 1;
--			break;
--		case 19:
--		case 30:
--		case 31:
--			data->channel_scale[i] = 3;
--			break;
--		default:
--			data->channel_scale[i] = 0;
--			break;
--		}
--	}
-+	static const struct adc_channel_scale sc2720_table[] = {
-+		{5, 3}, {7, 2}, {9, 2}, {13, 1}, {19, 3}, {30, 3}, {31, 3}
-+	};
-+	sc27xx_adc_scale_init(data, sc2720_table, ARRAY_SIZE(sc2720_table), 0);
- }
- 
- static void sc2730_adc_scale_init(struct sc27xx_adc_data *data)
- {
--	int i;
--
--	for (i = 0; i < SC27XX_ADC_CHANNEL_MAX; i++) {
--		switch (i) {
--		case 5:
--		case 10:
--		case 19:
--		case 30:
--		case 31:
--			data->channel_scale[i] = 3;
--			break;
--		case 7:
--		case 9:
--			data->channel_scale[i] = 2;
--			break;
--		case 13:
--			data->channel_scale[i] = 1;
--			break;
--		default:
--			data->channel_scale[i] = 0;
--			break;
--		}
--	}
-+	static const struct adc_channel_scale sc2730_table[] = {
-+		{5, 3}, {10, 3}, {19, 3}, {30, 3}, {31, 3},
-+		{7, 2}, {9, 2}, {13, 1}
-+	};
-+	sc27xx_adc_scale_init(data, sc2730_table, ARRAY_SIZE(sc2730_table), 0);
- }
- 
- static void sc2731_adc_scale_init(struct sc27xx_adc_data *data)
- {
--	int i;
- 	/*
- 	 * In the current software design, SC2731 support 2 scales,
- 	 * channels 5 uses big scale, others use smale.
- 	 */
--	for (i = 0; i < SC27XX_ADC_CHANNEL_MAX; i++) {
--		switch (i) {
--		case 5:
--			data->channel_scale[i] = 1;
--			break;
--		default:
--			data->channel_scale[i] = 0;
--			break;
--		}
--	}
-+	static const struct adc_channel_scale sc2731_table[] = {
-+		{5, 1}
-+	};
-+	sc27xx_adc_scale_init(data, sc2731_table, ARRAY_SIZE(sc2731_table), 0);
- }
- 
- static int sc27xx_adc_read(struct sc27xx_adc_data *data, int channel,
--- 
-2.39.5
+I believe it'd be more informative if we printed the actual bit masks - 
+but I am not sure if we know the size of the mask. If we keep printing 
+the indexes, then we might want to add brackets [] to indicate the value 
+is an index? How about:
 
+"available_scan_masks: mask[8] subset of mask[0]. Never used"
+
+instead of:
+available_scan_mask 8 subset of 0. Never used
+
+Would that be more obvious?
+
+Yours,
+	-- Matti
 

@@ -1,111 +1,270 @@
-Return-Path: <linux-iio+bounces-18797-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18798-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B6EBA9FAAD
-	for <lists+linux-iio@lfdr.de>; Mon, 28 Apr 2025 22:37:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B1D5CA9FC11
+	for <lists+linux-iio@lfdr.de>; Mon, 28 Apr 2025 23:17:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2490A170847
-	for <lists+linux-iio@lfdr.de>; Mon, 28 Apr 2025 20:37:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0C548466F94
+	for <lists+linux-iio@lfdr.de>; Mon, 28 Apr 2025 21:17:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32B8D1DF988;
-	Mon, 28 Apr 2025 20:37:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E7F41C5D4E;
+	Mon, 28 Apr 2025 21:17:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="jHZ5XZ9I"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iV/dGnHG"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
+Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE28D1CAA85
-	for <linux-iio@vger.kernel.org>; Mon, 28 Apr 2025 20:37:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E1B084D02
+	for <linux-iio@vger.kernel.org>; Mon, 28 Apr 2025 21:17:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745872646; cv=none; b=QSPW07a7y8pfOS6fbp3jcjCE5SgsHi6KPgYoaQiYvy0RicSshB8HU+QXH5KKaCC/T9oFTX60fSXLnTTc/ErKNb+dCZZhXC41yfZKZ/Jry6Bx5wRjYT8XPk5DHJykbbzcdGEQoRICPF1BFohFuO8wUsKSNE7jkuytTavHdsmsBu0=
+	t=1745875035; cv=none; b=GKoKcuIOwGR4TwgxtXN3hDYDyvUZbv8OTScB8PwDFm5iOZiPKEfTeIuLRCGPdwRQxQCEIe8cPIEXxe/Cu6qoN/TzXtywW2sXUOsFJ71lf36+F3xiDg4FbBVoYxX1hfNpKa3TpkkBiHOOijgzpNQuCHgLKvHBlJxLVXrKWXyQsUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745872646; c=relaxed/simple;
-	bh=RG16IxyNFQzdJ+l8YiIgV31gwxuUGCnbYmlOxmYE8vM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NnyXUydt8SpssSK/2UH+SKC7rSCRhOwUPtevq8e0kbVOYGRiorm0y4bgR1X7P87SNkwVjeR92BX4dhC65e/NNQ6s80sUkIJbTTqJ3y352bG4hJ8DWF49woCil8HPNaeZYfxXjOClsOY4MCYWC4pn/u1fKogR6txaWeKDgiKmvko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=jHZ5XZ9I; arc=none smtp.client-ip=209.85.219.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-6f2b05f87fdso52574686d6.2
-        for <linux-iio@vger.kernel.org>; Mon, 28 Apr 2025 13:37:22 -0700 (PDT)
+	s=arc-20240116; t=1745875035; c=relaxed/simple;
+	bh=eRcTvXEXGqY/JdD9laGsKanBt5srq97X65aLLJBb+vc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=PzK2AyJlRfW+YteL6uDXAJ+94t/R8WsLXjITSok+mKokp5oOU3nF191sAP2jAwHfiDjajrpOGSl0XsrBf6y3V880u2Gbwg9rYRgSOBxm+HvS6X+7pQ5p1YZ2VN49ME+smv7F/XOV1+UM7Qzwds3wOpkoFrVKLxjJvBNtMydxvu4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iV/dGnHG; arc=none smtp.client-ip=209.85.208.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-30effbfaf61so60719001fa.0
+        for <linux-iio@vger.kernel.org>; Mon, 28 Apr 2025 14:17:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1745872642; x=1746477442; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=RG16IxyNFQzdJ+l8YiIgV31gwxuUGCnbYmlOxmYE8vM=;
-        b=jHZ5XZ9IrhxvxoclFe3KfaWjgSd6YqvksZpBCtNMbWHmNzFhW3fWiEjzsBIzr4IYId
-         kgZJpSSkkZX8pjLfzTp4tOsRFb6Z9Yn8UPS3iOemVqAFNsTVrnrxmcWALynzXgog1LSS
-         lBXJZd50l0bMdWbphuWUWbWqDEUZdYas8hqqky0iHpLcIg6q95jClAv/NqsgGOLTOSOJ
-         R43MyCGAVZbU7buO83ZzM1kAwe6elj0dB0YHqBzxGEgbDQWgl4faxxOyp91ESt883KAz
-         WTEWcPuBV5TwbnM+hyzreLyZk3lnuT6syQHIrvXyylZjhWNbzhuuxFatdXWfPIWhNlxH
-         Bxxg==
+        d=gmail.com; s=20230601; t=1745875031; x=1746479831; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=b4HBy9rq9qZ6bOHJ3V0wOjCl5xRQv1bRSyVNlpN89hI=;
+        b=iV/dGnHG+v2FQEgjKKGXfMmNDXpTUmpqOebenpIdODgBZUHvZRyB7Iq0PnKpsKu1DP
+         Hla5n88jSUyw8q4+3BUcNIZmgyfXQ4KkL5rpw1mdrS/6VHpKb6VegvBJaK7IPSc501cx
+         vceC+05Q8J5b59MKJJi3Wdm52GctsLJGiP55dx6e+agSqAWtOMRt0wpUUJfphejTL+uo
+         p9UGNiEuvFKH3hX7i/x8HqEDtWDYmjZNWZ6oNGVeXyV2PRoJ7SSX4f7CJq7UdsS7bBRt
+         JlXoVP+YbkUxPP1Z+mGoAYtKdnEBGvF5j2vcs9TPUBaEp7dZh1472qmSsbY5fHOlhYbK
+         mR/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745872642; x=1746477442;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=RG16IxyNFQzdJ+l8YiIgV31gwxuUGCnbYmlOxmYE8vM=;
-        b=CQPouJEn8wkWexTGx3dRlEyhq8StBuDY5PE6XbWgt6t0acv5Daat2muZUezb0t1NRe
-         oTASFGQ8vJAMSi34uPj0BxoBGu/6ffvvkSXXkIoOtI94SMh5l2zDjgsiHH/FrILzQxJJ
-         rkNkFhfdFrZKZpAK1tEpYlHdcX/bJ8vFUMRDiN0p+JKP7K6GXYquDmeycFehkz+aiNss
-         ooY9VMU851HXhZCn/bk+txHCrJ5UYUXjxv5NEgCs32sU1leXBSOv4Kyi5LDWqEAqY7fw
-         iZZXJzXTpET9oYqTGNd8SDRsJC9qHiT0yqJh8dciK5hF3UtFOQ5smd1M1Au9if26Fy3s
-         thXA==
-X-Gm-Message-State: AOJu0Yz389VUTdSHeOZEL4emhit3VdXyqEoo5It6YzSvyeBt77TIlS8R
-	B7pZMMm/ZMCg7ZdiFO8GKbvJrurAaK1YsGJiZNqZn9gnUaNpLnjaIyCKDqP6MDM=
-X-Gm-Gg: ASbGncs2oDPBMlke2pL5tZrJ0iWGcpEvBlQsG3iX3Awo3GR7LZvpyWY61wjJIPIRHe3
-	SlD5eSoj/pa+e6vjc52hRuLPCAb7c2VvpP+H1DOYzTmpgWLQXT9OKikThy1is0JZMFy/z7CRCPp
-	A/KUhhohHukXI+zOyYnr6vMWoHSAQTig85L+qmolflr34nJMEPgIui2Y+oh45Emh5S7naAPLGWy
-	nbWeMsfG5AG54vgQfHlp49bxPh3CZ4DPUvQ1viKUAnRWAiMCOICo+UQQTS97HTARBCk9TxXL8Mx
-	SU6kUNh7WjzlPwFzP8CmqHtWh0akQ5L1XBNKHb05WnagJsYbbEKIdJEL5aMib0xToSwkcaodsGg
-	Gfx7y7qrm
-X-Google-Smtp-Source: AGHT+IE8cclfNjGpRErtSU+IQYlC80KA/mvktmZUSPUgteaPfn+oZPkriEMGFnPqNoJ53MfrrkiFuA==
-X-Received: by 2002:a05:6214:19ed:b0:6f2:c88a:50b2 with SMTP id 6a1803df08f44-6f4f1b9bf0bmr10177236d6.3.1745872641862;
-        Mon, 28 Apr 2025 13:37:21 -0700 (PDT)
-Received: from [192.168.40.12] (d24-150-219-207.home.cgocable.net. [24.150.219.207])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6f4c0ad4382sm65108736d6.125.2025.04.28.13.37.20
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 28 Apr 2025 13:37:21 -0700 (PDT)
-Message-ID: <0082078a-32ef-48cb-a181-c2d598ae29e6@baylibre.com>
-Date: Mon, 28 Apr 2025 16:37:19 -0400
+        d=1e100.net; s=20230601; t=1745875031; x=1746479831;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=b4HBy9rq9qZ6bOHJ3V0wOjCl5xRQv1bRSyVNlpN89hI=;
+        b=jHUN5YjpOzLNwjDPOWXyHEDwwaGbLXjWICJWMJnFnCjvmfMJzMd+PRiJTxBpV++eyV
+         P+GUGJ2bGbzV7AJKfZHiZBkxD5LRWzkWgyNa59PZcdZpv6hF77MH+HLlfLStRLCgIRUb
+         pHdl4kvfT/YtqWZ+6L6aMytd3qBAVjLjTIzwpd6RTYXqJ7rjjAnzVDnFDb8lUbfdUw9E
+         66NmYGGKMAvYdXJFIYkPATLRuByjahnCgUHZI4PbsqHyUd/b9pfrL99NcvQFf1Ov/3+Z
+         Mirxr66jGwcCelLOqQwjhjv8MM+lQrj9hxALTI0lQq4hqTStlDBSS7usPTq7zYhbp+5a
+         vmAg==
+X-Forwarded-Encrypted: i=1; AJvYcCU04d4R33yJvApwKprfJUO8CpM5hSflpZgIwi9hQqT7lf1WVmA24SfjMgpmzIhEuMeVDKJJO87Khrg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy+Dwsj+Q5r7Kg6fdvYwktTWGwMb+kcX2TlSkd0By48f7f5t76B
+	9RTj2j/m1bVHDh7qOjgz1KfzF9SEjPp/M85a0CdP+aLCGiNXkKQPnI7DnM1lvqB0Ie4y4R+gka0
+	AS46HNrkGhOZlYIDSIADJFS7cbQQ=
+X-Gm-Gg: ASbGncu7ZFKIclkClVPCagwpIYUkdLQDVWn8W0ROi00FltdJXeILPFOB/wrDl4yS3gA
+	DYw8Q0UJmnF63g6rC3fessJZMPaMQR66icXpgWeb9vwxGf0CtCxMFsWV+WMeCcKbYx3B5wAq4te
+	T5aBP0jZIXIsnREToqsVtecBRRoRyv7QxQ7Npe1X5wkLSSAzrz0Zpc0A==
+X-Google-Smtp-Source: AGHT+IG7aWFGwtJAEcczK+9C6YtnUP2FpA/MBuoQR25ebQ12IumGve8QwuBVBOmoj8J8S+Pi09AGI+ldj0wB1mDWHlI=
+X-Received: by 2002:a05:651c:3132:b0:30b:f92c:16f3 with SMTP id
+ 38308e7fff4ca-31d45f26363mr1703601fa.11.1745875030900; Mon, 28 Apr 2025
+ 14:17:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 4/7] iio: adc: ad4695: rename AD4695_MAX_VIN_CHANNELS
-To: David Lechner <dlechner@baylibre.com>, Jonathan Cameron
- <jic23@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
- Andy Shevchenko <andy@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
- Michael Hennerich <Michael.Hennerich@analog.com>,
- Eugen Hristev <eugen.hristev@linaro.org>,
- Nicolas Ferre <nicolas.ferre@microchip.com>,
- Alexandre Belloni <alexandre.belloni@bootlin.com>,
- Claudiu Beznea <claudiu.beznea@tuxon.dev>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org
-References: <20250428-iio-introduce-iio_declare_buffer_with_ts-v4-0-6f7f6126f1cb@baylibre.com>
- <20250428-iio-introduce-iio_declare_buffer_with_ts-v4-4-6f7f6126f1cb@baylibre.com>
-Content-Language: en-US
-From: Trevor Gamblin <tgamblin@baylibre.com>
-In-Reply-To: <20250428-iio-introduce-iio_declare_buffer_with_ts-v4-4-6f7f6126f1cb@baylibre.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <CAOMZO5BXp38RMt5vQQWnZBQDzpN+SYB6NVU3c-Krk3po+2Zv7A@mail.gmail.com>
+ <20250426160009.161b9f08@jic23-huawei> <CAOMZO5CepxxXo9u+mSB1P8t-tKvayz8b39emo3jHzR+6hr1HSg@mail.gmail.com>
+ <20250427112343.207918cd@jic23-huawei> <CAOMZO5BOXGcuuf7cyf-c6QLXVoKber2oWP+sgWA_RMHQtW5-cw@mail.gmail.com>
+In-Reply-To: <CAOMZO5BOXGcuuf7cyf-c6QLXVoKber2oWP+sgWA_RMHQtW5-cw@mail.gmail.com>
+From: Fabio Estevam <festevam@gmail.com>
+Date: Mon, 28 Apr 2025 18:16:59 -0300
+X-Gm-Features: ATxdqUFKKS06II_3aDaghYo_-_Bzu-M6ELk9iEdlGTI87ZZkpEVyVin0-CxT9hM
+Message-ID: <CAOMZO5Bzrfu14-mzaF+EbAq=xGKMc-FGwJsx-aZd_RraH2Gscw@mail.gmail.com>
+Subject: Re: max1363 : Warnings from iio_sanity_check_avail_scan_masks()
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: mazziesaccount@gmail.com, linux-iio@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-
-On 2025-04-28 16:23, David Lechner wrote:
-> Rename AD4695_MAX_CHANNELS to AD4695_MAX_VIN_CHANNELS. It has been a
-> point of confusion that this macro is only the voltage input channels
-> and not all channels.
+On Mon, Apr 28, 2025 at 4:03=E2=80=AFPM Fabio Estevam <festevam@gmail.com> =
+wrote:
 >
-> Signed-off-by: David Lechner <dlechner@baylibre.com>
-Reviewed-by: Trevor Gamblin <tgamblin@baylibre.com>
+> Hi Jonathan,
+>
+> On Sun, Apr 27, 2025 at 7:23=E2=80=AFAM Jonathan Cameron <jic23@kernel.or=
+g> wrote:
+>
+> > https://elixir.bootlin.com/linux/v6.14.4/source/drivers/iio/adc/max1363=
+.c#L1460
+> > There is where they are set.  Should show us if something weird is goin=
+g on with
+> > what the checks are seeing vs something going wrong at the debug check.
+>
+> I am not sure if this is what you want me to print:
+
+Sorry, I should do it like this instead:
+
+--- a/drivers/iio/adc/max1363.c
++++ b/drivers/iio/adc/max1363.c
+@@ -1453,6 +1453,9 @@ static int max1363_alloc_scan_masks(struct
+iio_dev *indio_dev)
+
+        indio_dev->available_scan_masks =3D masks;
+
++       for (i =3D 0; i < st->chip_info->num_modes; i++)
++               pr_err("************ available_scan_masks is %lu\n", masks[=
+i]);
++
+        return 0;
+ }
+
+which prints:
+
+[    1.567841] ************ available_scan_masks is 1
+[    1.577203] ************ available_scan_masks is 2
+[    1.582032] ************ available_scan_masks is 4
+[    1.586837] ************ available_scan_masks is 8
+[    1.591644] ************ available_scan_masks is 3
+[    1.596452] ************ available_scan_masks is 7
+[    1.601258] ************ available_scan_masks is 15
+[    1.606149] ************ available_scan_masks is 12
+[    1.611041] ************ available_scan_masks is 4096
+[    1.616101] ************ available_scan_masks is 8192
+[    1.616105] ************ available_scan_masks is 262144
+[    1.616108] ************ available_scan_masks is 524288
+[    1.640493] ************ available_scan_masks is 12288
+[    1.645640] ************ available_scan_masks is 786432
+[    1.652223] max1363 1-0064: available_scan_mask 8 subset of 0. Never use=
+d
+[    1.659028] max1363 1-0064: available_scan_mask 9 subset of 0. Never use=
+d
+[    1.665829] max1363 1-0064: available_scan_mask 10 subset of 0. Never us=
+ed
+[    1.672722] max1363 1-0064: available_scan_mask 11 subset of 0. Never us=
+ed
+[    1.677071] fec 30be0000.ethernet eth0: registered PHC device 0
+[    1.679623] max1363 1-0064: available_scan_mask 12 subset of 0. Never us=
+ed
+[    1.679630] max1363 1-0064: available_scan_mask 13 subset of 0. Never us=
+ed
+[    1.699327] max1363 1-0064: available_scan_mask 8 subset of 1. Never use=
+d
+[    1.706131] max1363 1-0064: available_scan_mask 9 subset of 1. Never use=
+d
+[    1.712932] max1363 1-0064: available_scan_mask 10 subset of 1. Never us=
+ed
+[    1.719819] max1363 1-0064: available_scan_mask 11 subset of 1. Never us=
+ed
+[    1.726706] max1363 1-0064: available_scan_mask 12 subset of 1. Never us=
+ed
+[    1.733593] max1363 1-0064: available_scan_mask 13 subset of 1. Never us=
+ed
+[    1.740490] max1363 1-0064: available_scan_mask 8 subset of 2. Never use=
+d
+[    1.747296] max1363 1-0064: available_scan_mask 9 subset of 2. Never use=
+d
+[    1.754106] max1363 1-0064: available_scan_mask 10 subset of 2. Never us=
+ed
+[    1.760995] max1363 1-0064: available_scan_mask 11 subset of 2. Never us=
+ed
+[    1.767882] max1363 1-0064: available_scan_mask 12 subset of 2. Never us=
+ed
+[    1.774769] max1363 1-0064: available_scan_mask 13 subset of 2. Never us=
+ed
+[    1.781660] max1363 1-0064: available_scan_mask 8 subset of 3. Never use=
+d
+[    1.788470] max1363 1-0064: available_scan_mask 9 subset of 3. Never use=
+d
+[    1.795280] max1363 1-0064: available_scan_mask 10 subset of 3. Never us=
+ed
+[    1.802170] max1363 1-0064: available_scan_mask 11 subset of 3. Never us=
+ed
+[    1.809058] max1363 1-0064: available_scan_mask 12 subset of 3. Never us=
+ed
+[    1.815947] max1363 1-0064: available_scan_mask 13 subset of 3. Never us=
+ed
+[    1.822836] max1363 1-0064: available_scan_mask 8 subset of 4. Never use=
+d
+[    1.829658] max1363 1-0064: available_scan_mask 9 subset of 4. Never use=
+d
+[    1.836465] max1363 1-0064: available_scan_mask 10 subset of 4. Never us=
+ed
+[    1.843356] max1363 1-0064: available_scan_mask 11 subset of 4. Never us=
+ed
+[    1.850273] max1363 1-0064: available_scan_mask 12 subset of 4. Never us=
+ed
+[    1.857191] max1363 1-0064: available_scan_mask 13 subset of 4. Never us=
+ed
+[    1.864101] max1363 1-0064: available_scan_mask 8 subset of 5. Never use=
+d
+[    1.870913] max1363 1-0064: available_scan_mask 9 subset of 5. Never use=
+d
+[    1.874462] mv88e6085 30be0000.ethernet-1:00: switch 0x1150
+detected: Marvell 88E6320, revision 2
+[    1.877716] max1363 1-0064: available_scan_mask 10 subset of 5. Never us=
+ed
+[    1.893466] max1363 1-0064: available_scan_mask 11 subset of 5. Never us=
+ed
+[    1.900355] max1363 1-0064: available_scan_mask 12 subset of 5. Never us=
+ed
+[    1.907250] max1363 1-0064: available_scan_mask 13 subset of 5. Never us=
+ed
+[    1.914139] max1363 1-0064: available_scan_mask 7 subset of 6. Never use=
+d
+[    1.920938] max1363 1-0064: available_scan_mask 8 subset of 6. Never use=
+d
+[    1.927747] max1363 1-0064: available_scan_mask 9 subset of 6. Never use=
+d
+[    1.934560] max1363 1-0064: available_scan_mask 10 subset of 6. Never us=
+ed
+[    1.941453] max1363 1-0064: available_scan_mask 11 subset of 6. Never us=
+ed
+[    1.948340] max1363 1-0064: available_scan_mask 12 subset of 6. Never us=
+ed
+[    1.955225] max1363 1-0064: available_scan_mask 13 subset of 6. Never us=
+ed
+[    1.962111] max1363 1-0064: available_scan_mask 8 subset of 7. Never use=
+d
+[    1.968912] max1363 1-0064: available_scan_mask 9 subset of 7. Never use=
+d
+[    1.975718] max1363 1-0064: available_scan_mask 10 subset of 7. Never us=
+ed
+[    1.982613] max1363 1-0064: available_scan_mask 11 subset of 7. Never us=
+ed
+[    1.989502] max1363 1-0064: available_scan_mask 12 subset of 7. Never us=
+ed
+[    1.996389] max1363 1-0064: available_scan_mask 13 subset of 7. Never us=
+ed
+[    2.003282] max1363 1-0064: available_scan_mask 9 subset of 8. Never use=
+d
+[    2.010084] max1363 1-0064: available_scan_mask 10 subset of 8. Never us=
+ed
+[    2.016970] max1363 1-0064: available_scan_mask 11 subset of 8. Never us=
+ed
+[    2.023855] max1363 1-0064: available_scan_mask 12 subset of 8. Never us=
+ed
+[    2.030742] max1363 1-0064: available_scan_mask 13 subset of 8. Never us=
+ed
+[    2.037626] max1363 1-0064: available_scan_mask 10 subset of 9. Never us=
+ed
+[    2.044514] max1363 1-0064: available_scan_mask 11 subset of 9. Never us=
+ed
+[    2.051400] max1363 1-0064: available_scan_mask 12 subset of 9. Never us=
+ed
+[    2.058287] max1363 1-0064: available_scan_mask 13 subset of 9. Never us=
+ed
+[    2.065175] max1363 1-0064: available_scan_mask 11 subset of 10. Never u=
+sed
+[    2.072149] max1363 1-0064: available_scan_mask 12 subset of 10. Never u=
+sed
+[    2.079122] max1363 1-0064: available_scan_mask 13 subset of 10. Never u=
+sed
+[    2.086101] max1363 1-0064: available_scan_mask 12 subset of 11. Never u=
+sed
+[    2.093077] max1363 1-0064: available_scan_mask 13 subset of 11. Never u=
+sed
+[    2.100055] max1363 1-0064: available_scan_mask 13 subset of 12. Never u=
+sed
 

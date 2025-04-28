@@ -1,226 +1,150 @@
-Return-Path: <linux-iio+bounces-18751-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18752-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD350A9E88D
-	for <lists+linux-iio@lfdr.de>; Mon, 28 Apr 2025 08:51:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAED2A9E893
+	for <lists+linux-iio@lfdr.de>; Mon, 28 Apr 2025 08:54:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 01D97188C2D3
-	for <lists+linux-iio@lfdr.de>; Mon, 28 Apr 2025 06:51:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 11BF0174FEE
+	for <lists+linux-iio@lfdr.de>; Mon, 28 Apr 2025 06:54:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81C4B1D5CC2;
-	Mon, 28 Apr 2025 06:51:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C84E11D5143;
+	Mon, 28 Apr 2025 06:54:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nkz8lfxH"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JpFdPQgS"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87C7E1CAA7B;
-	Mon, 28 Apr 2025 06:51:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E16CA610C;
+	Mon, 28 Apr 2025 06:54:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745823084; cv=none; b=sagyGtXYR3hSRgJoILoqo7BhuCo1AE9ldI9oAiTJcrc9NCGjCPj8ZvH4VciYeKyvKhtHtn5mKi8T7JlifLoduxcjtkZjetCNMyida+CGAJndwQk6SdUTHqlrWss2fC0Nc12aaszLa595iTB3S7/o3WZflcTawQk55coTtxKyouA=
+	t=1745823280; cv=none; b=nViga8FTCpeN7bW8lvaKvbWSgqkIkcKyQmcwRGs4eqRzVrl4KmFGPFuCQi86QrJX+NkslSEaOdVquylgHAuyiR+7tbuEuBrcKByAkBdwDSl8mEmTz6t3nrKwm9Af0AOsbnsk3EGG8bWv3Rt2gEmUnNuZ5XyPaMtbokDfmu/akBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745823084; c=relaxed/simple;
-	bh=0Pld1a2MzJofAsOTCHr+Q+IIwwPYL7BMWNwta9Ubkk0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=W5dpHuZ5t2jg6frhYfipthbDuOKRfAAvVtR5EtXnptAwRP8Ttpa+DuPQOKpQq1SoYNA+u5KMbUQfydAoyofimfDDB7KyAYvgJHgKuewTgaz3ELZLj4NpWSRZFfl+PTzX9rC6TznCjcoiZ2J0qOi2XSC+XHOpKzWiNQ9RTBYlx54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nkz8lfxH; arc=none smtp.client-ip=209.85.208.53
+	s=arc-20240116; t=1745823280; c=relaxed/simple;
+	bh=48cNU57hP+b9UkBTib/Cvujad4ba1JubYtk40ZfdEz4=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=P7dAOxGqbPLymP5Pps9M5WlcZvyFURlJuyXtS7FDIUWIvu3yGiwhDnMmNm/anrQkSwe1bDE9XHuR4l6zx+w9sO3EE+n+ijOSAtfxRworv0ALxtiKWX6xkIvPUr/lTFz3YfG9ee5JvBg11ey8sdf1IPQwYPIcIVTLVFDL8Py/mcM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JpFdPQgS; arc=none smtp.client-ip=209.85.167.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-5e6c18e2c7dso8358760a12.3;
-        Sun, 27 Apr 2025 23:51:22 -0700 (PDT)
+Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-54addb5a139so4779800e87.0;
+        Sun, 27 Apr 2025 23:54:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745823081; x=1746427881; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hi43n4IcBdhVLvOaOx+3iA/0eX/Szd+TDDCfcl8t5Wg=;
-        b=nkz8lfxHJ6Ye+bWRMx87WwCsglQh0muZzSXnTQ6fS+ID5tiK+b/anRxurYkzLwr43d
-         YoV291U/brDQQ4rZZTJb26t+JCL8is1nVo6AxKyGoq74CddxyCaP4SPh/138j///Ax19
-         44ybWR6FIQmLqLbRj3b55H2ipOW8oB1ESvifjgVyRsqyiwz6qUxPVwZYa7FhkKiGEvFL
-         iWkbJpN8yqWDplga+K5xHaMgMSRV2ctmD6vso03OI0OG1HFInM/GMlpA/g5RfRKB5/xx
-         tKW1It7/OZdsvRra02f4cw6XvZUQilm8Jsi7WIrd0/Itsb7YruVaaLBN8FvqVkJQGbd7
-         c07w==
+        d=gmail.com; s=20230601; t=1745823277; x=1746428077; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=zSekJLgCgUpPHCoaul8BTpjij5Bz3zhv9bJ5xoXvV60=;
+        b=JpFdPQgSKsNmcrytl1gyrhVY2cPKvfpAxfmdxmdIj1lndD0WghUOuxqJElf+LVSBw9
+         /uskrUgnL7ctcUwKbzexZSO0NNsBf94E5OMWI9hocMJBa5w539ifnehBYDtpbRy9kM2i
+         On+lvqLap7oQ7QyU2jaAv1N2LFbQBu7HlHDwKMj5kv/aqgIse+hp0UN6Nu7s3FVZqIVr
+         LKux2swJ+fV7qLeEbXRmMf+K0cfWZUxB6BL9Yg+DuwxWZDU3/p+sFpCtNaS+366y13Ay
+         suVkB74MwAMNCbqsZXK8Lei/NqnDB0HEiN3CTr3ZlZ2vrlMwZrQQmkUwr+7O1JOHrDmV
+         CqQw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745823081; x=1746427881;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=hi43n4IcBdhVLvOaOx+3iA/0eX/Szd+TDDCfcl8t5Wg=;
-        b=S8foysDNOdegJXUEmDOtllQHfcYGbtyK2HKrvtf9aDA2vcG3MsItL/k/Kj81joDEUM
-         idBKmodalGMT2954vLMQDssC7Mx//9h2JhXoVCOb0kjBCnNGuuPwxJptL2D6HLqrMfSS
-         WBiRY1mvdrCr5nO6q3imYMf3pBdplupbXVtr4CTyHOYBuFkX1OIn7w2O+pvlrsGfk+0f
-         pYMQKGF6PtaEFpyK2mbaB7JJDbuj7V6UTVzN6FDnybXeiFBXfmqeZ3t7/D48qczKk4Cy
-         Wt3k5uMR8/dc0TSHzjD/y+jNv7Eb+xFJRtqzL/ca9RVPJ5Ll42r1euqjGzWDFAiC2Pks
-         7/zw==
-X-Forwarded-Encrypted: i=1; AJvYcCUhJWwJg4qqDSmKC462cK2jTW/5Tm9m4z8uk0mUMLNJBQ0afcbstFG115WqVd15RvGPOOLLIqGG8Ctd@vger.kernel.org, AJvYcCV2soyz6M5BJbZ9u6I9P4R8763S8kO0nD87QQ/1zT9cwGMHBbTk6iLS+5B8FdNrGkk06V9H8fPBSeOIuQ==@vger.kernel.org, AJvYcCXEXZQNNl1L+hbW4n/NX1Pkcr+jijliYU7QCKB8JQ5CwSdtBIEuw/ZdSIoHka6ze9m4tuW/LxcFUF4tLrF7@vger.kernel.org
-X-Gm-Message-State: AOJu0YyQoLMJCJCBtRBfMkglT0tvyZiSkvdtcGx3SLmnmnnUogx3L7MU
-	APP+wxWuEywQacJmIlq/NyJHY/Px43yFvrJBCAG781ZvnrqW7yC08CJdz/47I+IkuBJP8LH/1Qx
-	lYyiKPEOA5eMxxqBPj3goqV82U7A=
-X-Gm-Gg: ASbGncvh8J6RXSRiqJKQduqcgHfdY0jKrGivPbhGAvmroxv34WdGDSdsDEnDbTJsKjG
-	jdb77vrUtam44QGra8eMtJz1IYvanef4+c2jLPo6KjaqyunOIKcAjBLWvJcfhEtuSuqNKT1u3J0
-	PYXsEaTsC5yoPoAxEc1aJztujy
-X-Google-Smtp-Source: AGHT+IEkASV0hxNvYb5ls5XU6N8PiOuOxkodobZeYhl/S2nbHHdlz3AJ68sH/k9QmanKndXp09dW/wEfCx6omY9vxHE=
-X-Received: by 2002:a17:907:f509:b0:aca:c532:cf07 with SMTP id
- a640c23a62f3a-ace711655e5mr928400766b.35.1745823080557; Sun, 27 Apr 2025
- 23:51:20 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1745823277; x=1746428077;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=zSekJLgCgUpPHCoaul8BTpjij5Bz3zhv9bJ5xoXvV60=;
+        b=i1sQVPZ9SlHbUIyaXTB4t+/veC0VdrlHN9Q4Ll8wqkxzJ/o/tEWjQ0pH+vNDN9lJzu
+         4gbFTvQAAGmjLbhEM1rM3/gpusQB1jMy6CTKLJtBIJx2vfS2WZrsFFce+DdF0gEdY41K
+         Vr0ynmANgF1xk601v7QfUafzNVMdf4utUU1eTz1fa7Tz6caKhyn2OxzZbEPWxwXf7qPE
+         nMrubD4g+JpOqvmZR2L153+GimYy8Jz66zEvT2vZR4BiWM9/f9QGa5E/fOLr1vXsMo8k
+         3sO72gTeNN5ovV0wlAFNzeZbJC4LxcwO3eJus+QpjZQ+zgt/NO/kFfhk6seXIUBqaN5y
+         A8qA==
+X-Forwarded-Encrypted: i=1; AJvYcCU+3Q/B4dvorQXrRpHh7C4lo5xXdDMqsrlP6gQ9whJTymZ9XpdGRxDqxDg/Jm+vLZRDIxup3I0Dnaxt@vger.kernel.org, AJvYcCU1oxFwGepUnjPCoeCpVJKlFS5nHoRui5a9FvAP39ZLPeTQibK4xtaO7falTFjDg6ykaJnu3y4sQoe5@vger.kernel.org, AJvYcCUG+WjwHbqqLWvuLXpbBCL6utKHsU8/kMs9jTnA8sFE7mSfUR3uPFyoI0Gmm4bZO8yGYQXqlCX5YvQhrnJv@vger.kernel.org
+X-Gm-Message-State: AOJu0YxMJwei8dNqTeOj/JOfG1cSweTMUZ1t94NUv0Aw0ItVm1VrsVhm
+	u1e9syko7u6pQ5WkLZM8FLUqYxY73VAxSipqUpJHp0P4G7aU5zFj
+X-Gm-Gg: ASbGnctzu+LjskK8H39LEg3qF8va/WCEXc5GIx6C2kli1XuJB4D76TvJRL1PdmCL5jL
+	ihtsUQ5ZQ2ddwh7kIO0MQOEQavWte7MF6L4C4awKzJOU8G2DIvXYGIsfhaHqKGJewl6+UjkXbri
+	ze02mPk7F7HA6VRbTkqnohUkDdJ8je4YRGh4vznPxo911ip8oDuRni6z0J9J5hUI2qiXEi/1tbH
+	ZqNLaDbBZgADlsW05NrmxxhkvNR/DW86KRATOezAa/1F+Nz/8dNMuAW58dikQI1MvYNG1yvgqxh
+	0DuzGL5tBkv/2E3NWN/rsW5LnpHHkIGBT+e1BM6JwBqUxdDoMEDY0OC3kmhKoULU3y1qVMpGPjs
+	GLDym8JrP
+X-Google-Smtp-Source: AGHT+IEc7trnuoOf+WcMfa6zN9tP2pMADhRPX/raBXFSY9J8IDEUOb3IODRKljuVqg38ONQCP/AaQw==
+X-Received: by 2002:a05:651c:3127:b0:30b:a187:7a77 with SMTP id 38308e7fff4ca-319db959b6amr21917121fa.4.1745823276705;
+        Sun, 27 Apr 2025 23:54:36 -0700 (PDT)
+Received: from [192.168.1.11] (83-233-6-197.cust.bredband2.com. [83.233.6.197])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-317cf659c4fsm20017871fa.21.2025.04.27.23.54.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 27 Apr 2025 23:54:36 -0700 (PDT)
+From: Marcus Folkesson <marcus.folkesson@gmail.com>
+Subject: [PATCH v2 0/3] MCP3911 fixes
+Date: Mon, 28 Apr 2025 08:54:10 +0200
+Message-Id: <20250428-mcp3911-fixes-v2-0-406e39330c3d@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1745605382.git.Jonathan.Santos@analog.com> <2a8a327e589703ee53dbfb5190d20680ac3b350f.1745605382.git.Jonathan.Santos@analog.com>
-In-Reply-To: <2a8a327e589703ee53dbfb5190d20680ac3b350f.1745605382.git.Jonathan.Santos@analog.com>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Mon, 28 Apr 2025 09:50:43 +0300
-X-Gm-Features: ATxdqUEBba2M8zExxClBxVqYkvVQ1NpU-dNtSsRR8YiWUveJwNaf_wH1l9SpSQA
-Message-ID: <CAHp75VdbD4HTonEZT8O-3bsqQ70_XRnZd7vS7gdyrG2gKYBHPA@mail.gmail.com>
-Subject: Re: [PATCH v6 06/11] iio: adc: ad7768-1: Add GPIO controller support
-To: Jonathan Santos <Jonathan.Santos@analog.com>
-Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org, 
-	Sergiu Cuciurean <sergiu.cuciurean@analog.com>, andy@kernel.org, nuno.sa@analog.com, 
-	Michael.Hennerich@analog.com, marcelo.schmitt@analog.com, jic23@kernel.org, 
-	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
-	marcelo.schmitt1@gmail.com, linus.walleij@linaro.org, brgl@bgdev.pl, 
-	lgirdwood@gmail.com, broonie@kernel.org, jonath4nns@gmail.com, 
-	dlechner@baylibre.com, Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIABImD2gC/3WMyw6CMBBFf4XM2po+BV35H4YFbQeYRChpTaMh/
+ Xcre5fn3pyzQ8JImODW7BAxU6KwVpCnBtw8rBMy8pVBcmm4lootblNXIdhIb0wMR2Wl0Ma0rYf
+ qbBGPoyqPvvJM6RXi58hn8Vv/lbJgnBnrub106HQn7tMy0PPswgJ9KeULdaJFUKoAAAA=
+X-Change-ID: 20250423-mcp3911-fixes-ef3b2145577d
+To: Kent Gustavsson <kent@minoris.se>, Jonathan Cameron <jic23@kernel.org>, 
+ Lars-Peter Clausen <lars@metafoo.de>, 
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Kent Gustavsson <nedo80@gmail.com>, devicetree@vger.kernel.org, 
+ Marcus Folkesson <marcus.folkesson@gmail.com>, 
+ Lukas Rauber <lukas.rauber@janitza.de>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1177;
+ i=marcus.folkesson@gmail.com; h=from:subject:message-id;
+ bh=48cNU57hP+b9UkBTib/Cvujad4ba1JubYtk40ZfdEz4=;
+ b=owEBbQKS/ZANAwAIAYiATm9ZXVIyAcsmYgBoDyYXzDADfwYyTazTzjCGvtghTHyJe6Vm4hiTm
+ rMrhuRbgbWJAjMEAAEIAB0WIQQFUaLotmy1TWTBLGWIgE5vWV1SMgUCaA8mFwAKCRCIgE5vWV1S
+ Msj8D/9JplE+wRUeMCYYV5AqNwZ3WjJF+ZiJg2MUzg4q1EeHvFD0C379j73sX6v3TRJyNiitlmN
+ zq0oFffuoAxuh9oOiVvobJwpH+WdySWfV18XyJIBIghJCjq0zyFUDAu4bWr/lUxbSnay5R97LVQ
+ O6Ym9Q0ACnxDa+o/IxdT9EhCwOWfQCa12nWEaTixZJAW3p+0ckFh9EpqMlVq++Mva8oYvs4cWzq
+ mEhT12llGGVQJebOYHdGEwTlJ89lBLkYBEP1MOrU7w3AeMHscwyU7YR4yuLhwQDjudFSjfcavRd
+ vhXxwXpNcTDpsS8sSQB12Jn+j471DGIUcSggW0von7uUquizi68kSjq7hconDeOOn4j/xl0FDfK
+ cHtYpy7z3vG5hSg7r3PvrK3wpNnpMxQCNSEF1aq9hzI0A1mKPNMgXHMvVU/0UK/pO5FtmXYqCfc
+ 8ga9OBDe1k4lCrBn0wMNPwlhYAYVSsl21uX77TJbFeUCnPZ3LsDjFezQUZgSzustiLshjqq/kXW
+ KxnbQ3rxZ3X7Njub3yvotrvAnwfNY9B6TflnjWSQX5INEiw0C+a1Uh27nmimfOxXWO4+Eo/6X9+
+ XDpXTA6KlA0ODypfFlSHjKapgn+th9MEcW4huQ4arVZReaHuldYytW8c9khhVmdwXKXwo9fXo5J
+ 9izchAbBIy+7tDg==
+X-Developer-Key: i=marcus.folkesson@gmail.com; a=openpgp;
+ fpr=AB91D46C7E0F6E6FB2AB640EC0FE25D598F6C127
 
-On Mon, Apr 28, 2025 at 3:13=E2=80=AFAM Jonathan Santos
-<Jonathan.Santos@analog.com> wrote:
->
-> The AD7768-1 has the ability to control other local hardware (such as gai=
-n
-> stages),to power down other blocks in the signal chain, or read local
-> status signals over the SPI interface.
->
-> Add direct mode conditional locks in the gpio callbacks to prevent regist=
-er
-> access when the device is in buffered mode.
->
-> This change exports the AD7768-1's four gpios and makes them accessible
-> at an upper layer.
+This series contain two fixes for the MCP3911 driver:
+- Add support for reset signal
+- Fix wrong mapping for the coversion result registers
 
-...
+The register map for the conversion result registers of the MCP3911
+differs from the other variants so make sure we read from the right
+register by introducing device-dependent .read_raw() callbacks.
 
-> +#include <linux/gpio.h>
+Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
+---
+Changes in v2:
+- Fix review comments from Andy Shevchenko (Thanks Andy!)
+- Link to v1: https://lore.kernel.org/r/20250423-mcp3911-fixes-v1-0-5bd0b68ec481@gmail.com
 
-No way. This header must not be in any of the code. (Yes, there are
-leftovers in the kernel, but work is ongoing to clean that up)
+---
+Marcus Folkesson (3):
+      iio: adc: mcp3911: fix device dependent mappings for conversion result registers
+      dt-bindings: iio: adc: mcp3911: add reset-gpios
+      iio: adc: mcp3911: add reset management
 
-> +#include <linux/gpio/driver.h>
->  #include <linux/gpio/consumer.h>
+ .../bindings/iio/adc/microchip,mcp3911.yaml        |  5 ++
+ drivers/iio/adc/mcp3911.c                          | 58 ++++++++++++++++++++--
+ 2 files changed, 58 insertions(+), 5 deletions(-)
+---
+base-commit: 1e26c5e28ca5821a824e90dd359556f5e9e7b89f
+change-id: 20250423-mcp3911-fixes-ef3b2145577d
 
->  #include <linux/kernel.h>
+Best regards,
+-- 
+Marcus Folkesson <marcus.folkesson@gmail.com>
 
-And since you are doing the big series for the driver, please drop
-this header and replace it (if required) with what is used. No driver
-code should use kernel.h.
-
->  #include <linux/module.h>
-
-...
-
-> struct ad7768_state {
-
->         struct regulator_dev *vcm_rdev;
->         unsigned int vcm_output_sel;
->         struct clk *mclk;
-> +       struct gpio_chip gpiochip;
->         unsigned int mclk_freq;
->         unsigned int samp_freq;
->         struct completion completion;
-
-Btw, have you run `pahole`? Is this the best place for a new field in
-accordance with its output?
-
-...
-
-> +static int ad7768_gpio_set(struct gpio_chip *chip, unsigned int offset, =
-int value)
-> +{
-> +       struct iio_dev *indio_dev =3D gpiochip_get_data(chip);
-> +       struct ad7768_state *st =3D iio_priv(indio_dev);
-> +       unsigned int val;
-> +       int ret;
-> +
-> +       if (!iio_device_claim_direct(indio_dev))
-> +               return -EBUSY;
-> +
-> +       ret =3D regmap_read(st->regmap, AD7768_REG_GPIO_CONTROL, &val);
-> +       if (ret)
-> +               goto err_release;
-> +
-> +       if (val & BIT(offset))
-> +               ret =3D regmap_update_bits(st->regmap, AD7768_REG_GPIO_WR=
-ITE,
-> +                                        BIT(offset), value << offset);
-
-And if value happens to be > 1?
-Also consider the use of regmap_assign_bits().
-
-> +err_release:
-> +       iio_device_release_direct(indio_dev);
-> +
-> +       return ret;
-> +}
-
-...
-
-> +static int ad7768_gpio_init(struct iio_dev *indio_dev)
-> +{
-> +       struct ad7768_state *st =3D iio_priv(indio_dev);
-> +       int ret;
-> +
-> +       ret =3D regmap_write(st->regmap, AD7768_REG_GPIO_CONTROL,
-> +                          AD7768_GPIO_UNIVERSAL_EN);
-> +       if (ret)
-> +               return ret;
-> +
-> +       st->gpiochip =3D (struct gpio_chip) {
-
-> +               .label =3D "ad7768_1_gpios",
-
-What is '_1' for?
-Also, what will happen if the device has two or more such ADCs
-installed? Will they all provide _the same_ label?!
-
-> +               .base =3D -1,
-> +               .ngpio =3D 4,
-> +               .parent =3D &st->spi->dev,
-> +               .can_sleep =3D true,
-> +               .direction_input =3D ad7768_gpio_direction_input,
-> +               .direction_output =3D ad7768_gpio_direction_output,
-> +               .get =3D ad7768_gpio_get,
-> +               .set_rv =3D ad7768_gpio_set,
-> +               .owner =3D THIS_MODULE,
-> +       };
-> +
-> +       return devm_gpiochip_add_data(&st->spi->dev, &st->gpiochip, indio=
-_dev);
-> +}
-
-...
-
-> +       /* Only create a Chip GPIO if flagged for it */
-> +       if (device_property_read_bool(&st->spi->dev, "gpio-controller")) =
-{
-> +               ret =3D ad7768_gpio_init(indio_dev);
-> +               if (ret < 0)
-
-Why ' < 0'?
-
-> +                       return ret;
-> +       }
-
---=20
-With Best Regards,
-Andy Shevchenko
 

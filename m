@@ -1,180 +1,209 @@
-Return-Path: <linux-iio+bounces-18778-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18779-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B310AA9F1EB
-	for <lists+linux-iio@lfdr.de>; Mon, 28 Apr 2025 15:15:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA7BEA9F248
+	for <lists+linux-iio@lfdr.de>; Mon, 28 Apr 2025 15:26:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A14653BDDEB
-	for <lists+linux-iio@lfdr.de>; Mon, 28 Apr 2025 13:11:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F2D6E189ED23
+	for <lists+linux-iio@lfdr.de>; Mon, 28 Apr 2025 13:26:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDBA626E172;
-	Mon, 28 Apr 2025 13:10:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0495B26A091;
+	Mon, 28 Apr 2025 13:26:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mIP7XYq3"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dqllou+U"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E754726D4DA;
-	Mon, 28 Apr 2025 13:10:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F04F266B4E
+	for <linux-iio@vger.kernel.org>; Mon, 28 Apr 2025 13:26:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745845852; cv=none; b=NljnD9gXXIgaJghAHNn+NRaIE2LgQFXxb67YeUYdI3AkA9qHKEt+DDmQt1YBw8dYYMLoJpvjXRaNuK/NzTSIj8Co9XrOiOrv5tf+79c5T6n6jIegI2YaqeZPYdgODhCjLm5sNss3CUbL+3FsptzoEwWrh26wRV9DP+SqGKkAByQ=
+	t=1745846767; cv=none; b=cdHf7+3e23Y560e7eFRuXeA+JLBpJ++sbhqrafacOkSbLgInP4JiP4P6mmix5bbwDSc1hQdPpgKIYQcyX5NtDmT4adeDhlRd/O1i6dCLtJFBCnJNu67+u/zR5PoO8vt4eAzTAQHVyF10hH+U3JUz2e+8MsaQMctvnb0deVqHIKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745845852; c=relaxed/simple;
-	bh=j9Uzm1w8Fd75eezPJkkUVqfV0l0UWce0x32TsE1Prd8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cElU3ldoI5lUIeXrQR1sV4wWotnlNG4JtLYTyD8w8LuxO4nuo+2x2PQ2jhC8JsbAg4SZDqYzhSkXNdSyV/EaIr5usyF0d4mHJS9GEgH83bupBCl1H/CtlPusFD/Pg46BhFXgBC/EpSQrYEPO0OCA0nSU7RpQboPouF5UmP2iYfM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mIP7XYq3; arc=none smtp.client-ip=209.85.208.180
+	s=arc-20240116; t=1745846767; c=relaxed/simple;
+	bh=lAYTyIPR/GD6fdqRLKDuZq42HPEa89XlAjdHAZsGOms=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UjA76kQQ1oLfN424cIDfJMdHUU749wRMNwwhm9ZZZ9YW4d3QzcA00Q9CdTo583azTOvhOKvmGlMgA8u767oZZIscsgHaX7yxjL6t26fjjk4ErBbLUvp2x9zsZlolTn/pun1TN0QEC3FxwDhNEkC7NZVPJstEcnxpTy9yZM9qjzk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dqllou+U; arc=none smtp.client-ip=209.85.210.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-30c091b54aaso41735051fa.3;
-        Mon, 28 Apr 2025 06:10:50 -0700 (PDT)
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-7376dd56f8fso6469861b3a.2
+        for <linux-iio@vger.kernel.org>; Mon, 28 Apr 2025 06:26:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745845849; x=1746450649; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Tu4QfTgg80SyZ/aPn5oHJnGIimNmX+43hWgOIQN+JZc=;
-        b=mIP7XYq3MkvPrURsORCFNOtPS3JuTwy0Fq3VfBKaqzZWYVx6vRIE1tkWU6QkY5b52f
-         tWlCd8kn+4BTkNA2cFO+/aobmEKNnSNcWRr3R+CqpX0m3NxE6iO00iR5POlY9jQFz7Zh
-         zoovsFgaN1oCxVt4CPVOfFQNdPD2vmjfGQDizmMEP0AopRIVn94IcjW4+/ECBXz52Dna
-         scibnvywMBWQxOq35hkAxI5M4qd2eelYzkme16myKbbVS9uBJarCynPAI7NtzfnMgA4q
-         4WS/0vFO4BJXGW+g9Suxbes9V3rDK2phmqFUqpFA5GFET86VSDk9wKR0xPhrOi9KDVRC
-         hxcg==
+        d=gmail.com; s=20230601; t=1745846765; x=1746451565; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=deQvuJtSgm2zMpBEd1F1GpqFNCCMBMLOXG10FnTDnXU=;
+        b=dqllou+U1i1bdFD2bfCInNgmZtyzVpKuqnO6DNvMFZNGjnEET0xnlWwm8sz0wzyLge
+         W5XB6n7+LRC8RHn5g1QuUJR2lxCPWLBiWAk00g8Is8KfvP0Xbf7feRRWFofoErETwyPi
+         c/0TyXbeHNJ6W3kQ8Po8rHGSR5dOoR4/BW0m89dE2Ubu0ugZJ9Waiq95ZKdSHRkyZrTL
+         aL/oiDmR7NcTne/hpNbHmn6uLMf0G9cDRGu3BccAY0MvESWDaIka1cA0udb9HQ85QahX
+         GaqbZKPpFmC+6B+3JBBOFOzDPFf+rzK0qW9RidOcmrbi5eNS7T6OqwNhC/f6CjyZzoSY
+         wlJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745845849; x=1746450649;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Tu4QfTgg80SyZ/aPn5oHJnGIimNmX+43hWgOIQN+JZc=;
-        b=KIlWI62t8oH7zrOhZIH8X0YP3VEu+S5DPzNSG/jR9QtNdBfX8FcoVRu6IDmYMrHpWf
-         XFbv1LOP07KqkpvYOaiLyyDi+5DLXAgRu/POyIRB+zXO62p/BGuQGbh9Ev5FKxr4rmxM
-         Nx7FuxfD7Yni198cvy8wVhGvBWSvHs7KKVnCJEBFnLsnyftMwoBWdb/CjtM0rVcTLAf5
-         5GtYkQl42RLe4uxNSembRaJMJpX0QeTz+ATLaYD6SpnDmJ3435f6RZhvZqBXRY5Eqeqn
-         /Ved00jUiPHMT4niurGXV59BQndxp3KaS/gQFgyrws/L6fEYRxv8etg3mAJhYvQD7jO7
-         tp3A==
-X-Forwarded-Encrypted: i=1; AJvYcCVTtWKmjB6sWfQMHVlWGV69IP0WJIyizjctjC3zXm1zUvn2ZbCfzMJlsTMNO2ApyYja1hwbpDVHoy38Nt+G@vger.kernel.org, AJvYcCXtTbxTi+4wzeE0hb2k/y2MXea1MJky0QG7/3TKIA5VPZNPjm994lGlSS3uD/w2CeScGvus8cWJHNc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywtco6wPn7ps6EOO3TRYytr8s3cI1pvmdZworvr48+ayKdaTb3c
-	J1vYy9GF48Ia2o2EVSIH6VY2Cvxo5OacttzZVRnEqGMjoZeRPiSp
-X-Gm-Gg: ASbGncthrOWYI4RL50qeX7OmV1c+u6UqZ/RD213mKga6fMtief0znMB1CnHBA36dmb2
-	yvwgkvQjgS0lhVJMC6KcfWZfhA5og073beXO99dItAbwJ2Hz9zF2UmV6smykuNClyHnUTOaFw+a
-	B/uSIvoytxLz3pPhBj+917gvL+OkwEECVbnjGanH/223sqlHC4+AUUhC4Brl92iNOl0FdbIlFB4
-	e7Xr9b8qarbTCVV04IMwhnaJ2aM/f892Pr0gT0BGWS08iSs9+vLuOtnbMLNpPH6nKLCCbhPUP+n
-	+KLz1Z13j4ckq0v+xOmqTUaLSJGUFHx9Wy4hDMU2fVdAvxMOhba9mQ==
-X-Google-Smtp-Source: AGHT+IHqfoIC67IeYJTwogL9O/vl3stgQv17WOClfj/CoQYz6df1Fr8+mevirsbjZBqxPpkJc7r+ug==
-X-Received: by 2002:a05:651c:1468:b0:30d:b31e:262d with SMTP id 38308e7fff4ca-31905b6a911mr43951891fa.8.1745845848534;
-        Mon, 28 Apr 2025 06:10:48 -0700 (PDT)
-Received: from [172.16.183.207] ([213.255.186.46])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-317cf659b79sm21359461fa.14.2025.04.28.06.10.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 28 Apr 2025 06:10:47 -0700 (PDT)
-Message-ID: <e0f8a39e-195d-4b72-8787-36769c1e62c8@gmail.com>
-Date: Mon, 28 Apr 2025 16:10:47 +0300
+        d=1e100.net; s=20230601; t=1745846765; x=1746451565;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=deQvuJtSgm2zMpBEd1F1GpqFNCCMBMLOXG10FnTDnXU=;
+        b=dnWVkPJykBqZMEtfESHsNkyTCmvr3BEyRZiIUBU0t7Ddi+5s/yjM+L0rH+eWtabBX3
+         U5Na2fy2FOvvG6J6idCPU3ABF1AQwfa8Rtt2hYYmfwgx/e0mo6xKvvt/xrz9GrxPchWi
+         /8mUSTEXYJlcQY/UFlAXq+IWkIMus4YHQ9grX1+zQhYf0UJsTeb6DTF2PQqWES1HiZq5
+         1bhVrh2Z7Ym3AHNVruQ5oOrXpKdYdw0tFqXDIO+UWpMeaYUwLH5r2/AmOkL1nIKCHTFI
+         qbYhJpHEjqDP5bQ+4lPsNnt9dLAXpgWXrPTNTaEURg7T2/XKdqv7NdflfV0JpkdWDz2t
+         C6Eg==
+X-Forwarded-Encrypted: i=1; AJvYcCVM1oV99/JKYbSPZ4d4EzidoCVq2qkLNUxUL58tWZPQBTQa9b9iaKM/cRjJGVa+PhbKYVbF9Cldk5E=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzOLNFHACvMAxOvR8Y0LcveYos9zda9YHG2SP9l0jmhWqmMh19P
+	aSq3/WJsCdP5paNZnq0vaYecqr1OyiHzBkFJOXxHx8QYLVHqS593
+X-Gm-Gg: ASbGnctXLdYgixVzh3eRTEQuG2FUQ41/4UAiISLyDEOTcDjT7AEXFkJUqGbImURsZVe
+	u0+aSF1Ic8hpjvKGcViGbH/vpvfyjX7yNlxKAg9rQHE1LdGEWXrTGlYnToDH4TPwxHxKCdXJ0HL
+	TsdE4ANc3IIthhea94EqsJ7RqMG2DdBN4rmobij9RAn9+h6CtuUTTxlOs/3N2bxCykRJEaB/KyG
+	aOlQdj9g3H9AyiDl1dMMU73wgdYESHZTuwYB6sPdF5EEMslTuIdTuFjez5q24V8U4dC9NRDKILN
+	Ikd+q9I5jAaA9Vqd+UN83EMR4acW9GFsZIj/WtbOzmGWax97j/9uptTB04WJb3iXox0me60Y7B8
+	L+w==
+X-Google-Smtp-Source: AGHT+IGE3Y0a7SvssvOTQMI7aA19mo2S30llJgG9FiPcIjQWZf6V97w3CKnPjEFkWDUv16foJVfHUg==
+X-Received: by 2002:a05:6a00:2e22:b0:736:6d4d:ffa6 with SMTP id d2e1a72fcca58-73fd89798f5mr14314843b3a.15.1745846765489;
+        Mon, 28 Apr 2025 06:26:05 -0700 (PDT)
+Received: from isabella-caselli-linux.semfio.usp.br ([143.107.45.1])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73e25a6a8ebsm8160970b3a.92.2025.04.28.06.26.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 28 Apr 2025 06:26:05 -0700 (PDT)
+From: Isabella Caselli <bellacaselli20@gmail.com>
+To: jean-baptiste.maneyrol@tdk.com,
+	jic23@kernel.org,
+	lars@metafoo.de,
+	linux-iio@vger.kernel.org
+Cc: rodrigo.michelassi@usp.br,
+	marcelo.schmitt1@gmail.com,
+	Isabella Caselli <bellacaselli20@gmail.com>
+Subject: [PATCH] iio: imu: inv_mpu6050: refactor aux read/write to use shared xfer logic
+Date: Mon, 28 Apr 2025 10:25:43 -0300
+Message-ID: <20250428132551.176788-1-bellacaselli20@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] iio: ti-adc128s052: Drop variable vref
-To: Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
- Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>,
- =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
- Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <59106e24332743a7f9eb0b13ad6a2f5595ab485a.1745823530.git.mazziesaccount@gmail.com>
- <CAHp75VcUcrj-BLp9QDsYMDY_SeQS76LDGge5vVqrx-MVwukP0w@mail.gmail.com>
- <4085fd58-c92c-406b-842b-ecda2fb3c895@gmail.com>
- <CAHp75VdAEefH5Vgk5BZz8vGDXyu0EmEy3hwoeRDJsKmkjaQW9w@mail.gmail.com>
-Content-Language: en-US, en-AU, en-GB, en-BW
-From: Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <CAHp75VdAEefH5Vgk5BZz8vGDXyu0EmEy3hwoeRDJsKmkjaQW9w@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 28/04/2025 12:49, Andy Shevchenko wrote:
-> On Mon, Apr 28, 2025 at 12:45 PM Matti Vaittinen
-> <mazziesaccount@gmail.com> wrote:
->> On 28/04/2025 10:08, Andy Shevchenko wrote:
->>> On Mon, Apr 28, 2025 at 10:02 AM Matti Vaittinen
->>> <mazziesaccount@gmail.com> wrote:
-> 
-> ...
-> 
->>>> +       int vref_mv;
->>>
->>> vref_mV please. And yes, I know historical and other reasons for them
->>> all being small, but let's try to be more scientific in these crazy
->>> days.
->>
->> Sorry Andy but I see zero reason to use capital letters here. In my
->> opinion, this is perfectly clear as it is. Capital letters in variables
->> are ugly (to me) and absolutely not needed to explain the meaning.
-> 
-> And I see zero reason to not use the correct scientific unitis there.
+Extract common transfer logic from inv_mpu_aux_read() and
+inv_mpu_aux_write() into a new helper function,
+inv_mpu_aux_exec_xfer(), which performs the I2C transfer.
 
-I find this ridiculous reason. There is zero confusion what the vref_mv 
-stands for, and I prefer variables in lower case.
+This refactoring removes code duplication and improves maintainability.
+No functional changes are intended.
 
-> Note, that regulator framework
+Signed-off-by: Isabella Caselli <bellacaselli20@gmail.com>
+Co-developed-by: Rodrigo Michelassi <rodrigo.michelassi@usp.br>
+Signed-off-by: Rodrigo Michelassi <rodrigo.michelassi@usp.br>
+---
+ drivers/iio/imu/inv_mpu6050/inv_mpu_aux.c | 41 +++++++++++------------
+ drivers/iio/imu/inv_mpu6050/inv_mpu_aux.h |  2 ++
+ 2 files changed, 21 insertions(+), 22 deletions(-)
 
-Actually, the regulator framework uses _both_ lower and upper case in 
-some places, and I believe the reason is that bikeshedding over the 
-capitalization isn't Mark's cup of tea.
-
-> and some other drivers are using that
-> and I consider this is the correct way to go.
-> 
-> ...
-> 
->>> Or actually a time to introduce MILLIVOLT_PER_VOLT in units.h ?
->>
->> I really fail to see the benefit. Do you think we should add
->> MILLIx_PER_x for each unit we can imagine/use?
->>
->> That doesn't really scale or make sense to me. We have MILLI. It does
->> not really matter if it is volts, amps, ohms or horse heads - it's still
->> 1000. It just gets cumbersome to search the headers to see if we have
->> some fancy define for unit we have at our hands.
-> 
-> In some contexts this gives the understanding of the units and how big
-> the value is. Even with some defined constants it's not possible to
-> describe in their names everything that this definition adds. I do see
-> a benefit of it.
-
-You can suggest adding it if you wish. I still find it silly as I don't 
-see why one wouldn't then end up adding base SI units too.
-
-MILLIVOLT_PER_VOLT
-MILLIKILOGRAM_PER_KILOGRAM
-MILLIMETER_PER_METER
-MILLISECOND_PER_SECON
-MILLIAMPERE_PER_AMPERE
-MILLIKELVIN_PER_KELVIN
-MILLIMOLE_PER_MOLE
-MILLICANDELA_PER_CANDELA
-
-Oh, and because Volt is added, then also:
-
-Newton, Heryz, Coulomb, Henry, Farad, Ohm, Siemens, Weber, Tesla, Joule, 
-Watt, Radian, Bequerel and Lumen.
-
-And, sure adding Kelvin warrants adding Celsius and Fahrenheit. Oh, 
-probably also imperial units, right?
-
-All being the same MILLI.
-
-No thanks. I am opposing this as it will only make life of a code writer 
-(and maybe also reader) harder. I'm not suggesting a patch adding 
-something I feel is rather silly.
-
-Yours,
-	-- Matti
+diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_aux.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_aux.c
+index 8a7f29119..de013e034 100644
+--- a/drivers/iio/imu/inv_mpu6050/inv_mpu_aux.c
++++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_aux.c
+@@ -117,7 +117,6 @@ int inv_mpu_aux_init(const struct inv_mpu6050_state *st)
+ int inv_mpu_aux_read(const struct inv_mpu6050_state *st, uint8_t addr,
+ 		     uint8_t reg, uint8_t *val, size_t size)
+ {
+-	unsigned int status;
+ 	int ret;
+ 
+ 	if (size > 0x0F)
+@@ -136,30 +135,13 @@ int inv_mpu_aux_read(const struct inv_mpu6050_state *st, uint8_t addr,
+ 	if (ret)
+ 		return ret;
+ 
+-	/* do i2c xfer */
+-	ret = inv_mpu_i2c_master_xfer(st);
+-	if (ret)
+-		goto error_disable_i2c;
+-
+-	/* disable i2c slave */
+-	ret = regmap_write(st->map, INV_MPU6050_REG_I2C_SLV_CTRL(0), 0);
+-	if (ret)
+-		goto error_disable_i2c;
+-
+-	/* check i2c status */
+-	ret = regmap_read(st->map, INV_MPU6050_REG_I2C_MST_STATUS, &status);
++	ret = inv_mpu_aux_exec_xfer(st);
+ 	if (ret)
+ 		return ret;
+-	if (status & INV_MPU6050_BIT_I2C_SLV0_NACK)
+-		return -EIO;
+ 
+ 	/* read data in registers */
+ 	return regmap_bulk_read(st->map, INV_MPU6050_REG_EXT_SENS_DATA,
+ 				val, size);
+-
+-error_disable_i2c:
+-	regmap_write(st->map, INV_MPU6050_REG_I2C_SLV_CTRL(0), 0);
+-	return ret;
+ }
+ 
+ /**
+@@ -174,7 +156,6 @@ int inv_mpu_aux_read(const struct inv_mpu6050_state *st, uint8_t addr,
+ int inv_mpu_aux_write(const struct inv_mpu6050_state *st, uint8_t addr,
+ 		      uint8_t reg, uint8_t val)
+ {
+-	unsigned int status;
+ 	int ret;
+ 
+ 	/* setup i2c SLV0 control: i2c addr, register, value, enable + size */
+@@ -192,6 +173,24 @@ int inv_mpu_aux_write(const struct inv_mpu6050_state *st, uint8_t addr,
+ 	if (ret)
+ 		return ret;
+ 
++	ret = inv_mpu_aux_exec_xfer(st);
++	if (ret)
++	return ret;
++
++	return 0;
++}
++
++/**
++ * inv_mpu_aux_exec_xfer() - executes i2c auxiliary transfer and checks status
++ * @st: driver internal state.
++ *
++ *  Returns 0 on success, a negative error code otherwise.
++ */
++int inv_mpu_aux_exec_xfer(const struct inv_mpu6050_state *st)
++{
++	int ret;
++	unsigned int status;
++
+ 	/* do i2c xfer */
+ 	ret = inv_mpu_i2c_master_xfer(st);
+ 	if (ret)
+@@ -209,8 +208,6 @@ int inv_mpu_aux_write(const struct inv_mpu6050_state *st, uint8_t addr,
+ 	if (status & INV_MPU6050_BIT_I2C_SLV0_NACK)
+ 		return -EIO;
+ 
+-	return 0;
+-
+ error_disable_i2c:
+ 	regmap_write(st->map, INV_MPU6050_REG_I2C_SLV_CTRL(0), 0);
+ 	return ret;
+diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_aux.h b/drivers/iio/imu/inv_mpu6050/inv_mpu_aux.h
+index b66997545..0353103aa 100644
+--- a/drivers/iio/imu/inv_mpu6050/inv_mpu_aux.h
++++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_aux.h
+@@ -16,4 +16,6 @@ int inv_mpu_aux_read(const struct inv_mpu6050_state *st, uint8_t addr,
+ int inv_mpu_aux_write(const struct inv_mpu6050_state *st, uint8_t addr,
+ 		      uint8_t reg, uint8_t val);
+ 
++int inv_mpu_aux_exec_xfer(const struct inv_mpu6050_state *st);
++
+ #endif		/* INV_MPU_AUX_H_ */
+-- 
+2.43.0
 
 

@@ -1,209 +1,153 @@
-Return-Path: <linux-iio+bounces-18779-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18780-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA7BEA9F248
-	for <lists+linux-iio@lfdr.de>; Mon, 28 Apr 2025 15:26:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 81952A9F371
+	for <lists+linux-iio@lfdr.de>; Mon, 28 Apr 2025 16:30:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F2D6E189ED23
-	for <lists+linux-iio@lfdr.de>; Mon, 28 Apr 2025 13:26:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 10E221A833AE
+	for <lists+linux-iio@lfdr.de>; Mon, 28 Apr 2025 14:30:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0495B26A091;
-	Mon, 28 Apr 2025 13:26:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C20FB26FA7D;
+	Mon, 28 Apr 2025 14:30:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dqllou+U"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DPVDyV26"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F04F266B4E
-	for <linux-iio@vger.kernel.org>; Mon, 28 Apr 2025 13:26:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7542A26FA62;
+	Mon, 28 Apr 2025 14:30:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745846767; cv=none; b=cdHf7+3e23Y560e7eFRuXeA+JLBpJ++sbhqrafacOkSbLgInP4JiP4P6mmix5bbwDSc1hQdPpgKIYQcyX5NtDmT4adeDhlRd/O1i6dCLtJFBCnJNu67+u/zR5PoO8vt4eAzTAQHVyF10hH+U3JUz2e+8MsaQMctvnb0deVqHIKg=
+	t=1745850621; cv=none; b=S9D/JkLqgP7i0Uyj3IFJmwZ50uFx1Vc5u/+lTkAx5UT5xJZZs3ods+90g7/hEcYFPc5VHPk0tsr9eBc7t5woT9+FM8kT0bSPpClO5eqKOikMzvQccCo9vnhSba4pKq9Wqq9xg8cR2I9vFr9QPl30SJcSLea/CFtF0FKb3CRJXrM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745846767; c=relaxed/simple;
-	bh=lAYTyIPR/GD6fdqRLKDuZq42HPEa89XlAjdHAZsGOms=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UjA76kQQ1oLfN424cIDfJMdHUU749wRMNwwhm9ZZZ9YW4d3QzcA00Q9CdTo583azTOvhOKvmGlMgA8u767oZZIscsgHaX7yxjL6t26fjjk4ErBbLUvp2x9zsZlolTn/pun1TN0QEC3FxwDhNEkC7NZVPJstEcnxpTy9yZM9qjzk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dqllou+U; arc=none smtp.client-ip=209.85.210.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-7376dd56f8fso6469861b3a.2
-        for <linux-iio@vger.kernel.org>; Mon, 28 Apr 2025 06:26:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745846765; x=1746451565; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=deQvuJtSgm2zMpBEd1F1GpqFNCCMBMLOXG10FnTDnXU=;
-        b=dqllou+U1i1bdFD2bfCInNgmZtyzVpKuqnO6DNvMFZNGjnEET0xnlWwm8sz0wzyLge
-         W5XB6n7+LRC8RHn5g1QuUJR2lxCPWLBiWAk00g8Is8KfvP0Xbf7feRRWFofoErETwyPi
-         c/0TyXbeHNJ6W3kQ8Po8rHGSR5dOoR4/BW0m89dE2Ubu0ugZJ9Waiq95ZKdSHRkyZrTL
-         aL/oiDmR7NcTne/hpNbHmn6uLMf0G9cDRGu3BccAY0MvESWDaIka1cA0udb9HQ85QahX
-         GaqbZKPpFmC+6B+3JBBOFOzDPFf+rzK0qW9RidOcmrbi5eNS7T6OqwNhC/f6CjyZzoSY
-         wlJg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745846765; x=1746451565;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=deQvuJtSgm2zMpBEd1F1GpqFNCCMBMLOXG10FnTDnXU=;
-        b=dnWVkPJykBqZMEtfESHsNkyTCmvr3BEyRZiIUBU0t7Ddi+5s/yjM+L0rH+eWtabBX3
-         U5Na2fy2FOvvG6J6idCPU3ABF1AQwfa8Rtt2hYYmfwgx/e0mo6xKvvt/xrz9GrxPchWi
-         /8mUSTEXYJlcQY/UFlAXq+IWkIMus4YHQ9grX1+zQhYf0UJsTeb6DTF2PQqWES1HiZq5
-         1bhVrh2Z7Ym3AHNVruQ5oOrXpKdYdw0tFqXDIO+UWpMeaYUwLH5r2/AmOkL1nIKCHTFI
-         qbYhJpHEjqDP5bQ+4lPsNnt9dLAXpgWXrPTNTaEURg7T2/XKdqv7NdflfV0JpkdWDz2t
-         C6Eg==
-X-Forwarded-Encrypted: i=1; AJvYcCVM1oV99/JKYbSPZ4d4EzidoCVq2qkLNUxUL58tWZPQBTQa9b9iaKM/cRjJGVa+PhbKYVbF9Cldk5E=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzOLNFHACvMAxOvR8Y0LcveYos9zda9YHG2SP9l0jmhWqmMh19P
-	aSq3/WJsCdP5paNZnq0vaYecqr1OyiHzBkFJOXxHx8QYLVHqS593
-X-Gm-Gg: ASbGnctXLdYgixVzh3eRTEQuG2FUQ41/4UAiISLyDEOTcDjT7AEXFkJUqGbImURsZVe
-	u0+aSF1Ic8hpjvKGcViGbH/vpvfyjX7yNlxKAg9rQHE1LdGEWXrTGlYnToDH4TPwxHxKCdXJ0HL
-	TsdE4ANc3IIthhea94EqsJ7RqMG2DdBN4rmobij9RAn9+h6CtuUTTxlOs/3N2bxCykRJEaB/KyG
-	aOlQdj9g3H9AyiDl1dMMU73wgdYESHZTuwYB6sPdF5EEMslTuIdTuFjez5q24V8U4dC9NRDKILN
-	Ikd+q9I5jAaA9Vqd+UN83EMR4acW9GFsZIj/WtbOzmGWax97j/9uptTB04WJb3iXox0me60Y7B8
-	L+w==
-X-Google-Smtp-Source: AGHT+IGE3Y0a7SvssvOTQMI7aA19mo2S30llJgG9FiPcIjQWZf6V97w3CKnPjEFkWDUv16foJVfHUg==
-X-Received: by 2002:a05:6a00:2e22:b0:736:6d4d:ffa6 with SMTP id d2e1a72fcca58-73fd89798f5mr14314843b3a.15.1745846765489;
-        Mon, 28 Apr 2025 06:26:05 -0700 (PDT)
-Received: from isabella-caselli-linux.semfio.usp.br ([143.107.45.1])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73e25a6a8ebsm8160970b3a.92.2025.04.28.06.26.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Apr 2025 06:26:05 -0700 (PDT)
-From: Isabella Caselli <bellacaselli20@gmail.com>
-To: jean-baptiste.maneyrol@tdk.com,
-	jic23@kernel.org,
-	lars@metafoo.de,
-	linux-iio@vger.kernel.org
-Cc: rodrigo.michelassi@usp.br,
-	marcelo.schmitt1@gmail.com,
-	Isabella Caselli <bellacaselli20@gmail.com>
-Subject: [PATCH] iio: imu: inv_mpu6050: refactor aux read/write to use shared xfer logic
-Date: Mon, 28 Apr 2025 10:25:43 -0300
-Message-ID: <20250428132551.176788-1-bellacaselli20@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1745850621; c=relaxed/simple;
+	bh=pdkiB/5QfzJxhVIzvoJiil+KsQVT8r4iWGwRltuAm70=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hZR++yEtnrDPxXPVfpgel2RgF2OMbmgSsNfcSxxPQ9WudiyhyCQmZzmtgjSrPB6QqV4lAXJOYt7yvZgu+tYrgmqIKX2jLPjxm5NBZ4UIW/dLtrzbl0nA2oPys5Sma6k2deUkAJNVANoAGI8MybZdYA5P+rsohbmQnF9GZXJYAQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DPVDyV26; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9E66C4CEE4;
+	Mon, 28 Apr 2025 14:30:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1745850619;
+	bh=pdkiB/5QfzJxhVIzvoJiil+KsQVT8r4iWGwRltuAm70=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=DPVDyV26yf6fwVOiARF+887TxNkdYLQe8qdG3Vbb3Pu+PColLPaeKRRs9GlSvsy/a
+	 C1olcKKWRfsY+H6Hxr0ivzODgW+TFeSS0HHpwQzAQ3JiplFCIGMn24BLSbYKCv0GrD
+	 dUgeNAjHwnNuLdneNpKLssXaPbxSG7bcZxmkTAjR9PnTeBkjf94h+I+gdWOE5O3jMi
+	 yZZmdn++ZqjIj/s2lu6i8Luocd4QcXH9ZYPjQ+iypJ3sFnxr9iYK/bqOLRvAvm0/FC
+	 ifNsBQcEV0dmCfYuHO3jCfhZfiENbaoC9daqrsxoHud6CV6p/14UZ9kr9zMKRLwcDr
+	 J4mZKeAjynZsQ==
+Message-ID: <9463c3b0-ce67-4c67-a8e9-91b4ffd09a58@kernel.org>
+Date: Mon, 28 Apr 2025 16:30:15 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] dt-bindings: iio: chemical: Document SEN0322
+To: gomba007@gmail.com, Jonathan Cameron <jic23@kernel.org>,
+ Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20250428-iio-chemical-sen0322-v1-0-9b18363ffe42@gmail.com>
+ <20250428-iio-chemical-sen0322-v1-1-9b18363ffe42@gmail.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <20250428-iio-chemical-sen0322-v1-1-9b18363ffe42@gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Extract common transfer logic from inv_mpu_aux_read() and
-inv_mpu_aux_write() into a new helper function,
-inv_mpu_aux_exec_xfer(), which performs the I2C transfer.
+On 28/04/2025 12:50, Tóth János via B4 Relay wrote:
+> +
+> +description: >
+> +  DFRobot SEN0322 is an oxygen sensor. It supports I2C for communication.
+> +
+> +  Datasheet:
+> +    https://wiki.dfrobot.com/Gravity_I2C_Oxygen_Sensor_SKU_SEN0322
+> +
+> +properties:
+> +  compatible:
+> +    const: dfrobot,sen0322
+> +
+> +  reg:
+> +    maxItems: 1
 
-This refactoring removes code duplication and improves maintainability.
-No functional changes are intended.
+No other properties like supplies or configuration? If so, this could go
+to trivial-devices.
 
-Signed-off-by: Isabella Caselli <bellacaselli20@gmail.com>
-Co-developed-by: Rodrigo Michelassi <rodrigo.michelassi@usp.br>
-Signed-off-by: Rodrigo Michelassi <rodrigo.michelassi@usp.br>
----
- drivers/iio/imu/inv_mpu6050/inv_mpu_aux.c | 41 +++++++++++------------
- drivers/iio/imu/inv_mpu6050/inv_mpu_aux.h |  2 ++
- 2 files changed, 21 insertions(+), 22 deletions(-)
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    i2c {
+> +      #address-cells = <1>;
+> +      #size-cells = <0>;
+> +
+> +      sen0322@73 {
 
-diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_aux.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_aux.c
-index 8a7f29119..de013e034 100644
---- a/drivers/iio/imu/inv_mpu6050/inv_mpu_aux.c
-+++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_aux.c
-@@ -117,7 +117,6 @@ int inv_mpu_aux_init(const struct inv_mpu6050_state *st)
- int inv_mpu_aux_read(const struct inv_mpu6050_state *st, uint8_t addr,
- 		     uint8_t reg, uint8_t *val, size_t size)
- {
--	unsigned int status;
- 	int ret;
- 
- 	if (size > 0x0F)
-@@ -136,30 +135,13 @@ int inv_mpu_aux_read(const struct inv_mpu6050_state *st, uint8_t addr,
- 	if (ret)
- 		return ret;
- 
--	/* do i2c xfer */
--	ret = inv_mpu_i2c_master_xfer(st);
--	if (ret)
--		goto error_disable_i2c;
--
--	/* disable i2c slave */
--	ret = regmap_write(st->map, INV_MPU6050_REG_I2C_SLV_CTRL(0), 0);
--	if (ret)
--		goto error_disable_i2c;
--
--	/* check i2c status */
--	ret = regmap_read(st->map, INV_MPU6050_REG_I2C_MST_STATUS, &status);
-+	ret = inv_mpu_aux_exec_xfer(st);
- 	if (ret)
- 		return ret;
--	if (status & INV_MPU6050_BIT_I2C_SLV0_NACK)
--		return -EIO;
- 
- 	/* read data in registers */
- 	return regmap_bulk_read(st->map, INV_MPU6050_REG_EXT_SENS_DATA,
- 				val, size);
--
--error_disable_i2c:
--	regmap_write(st->map, INV_MPU6050_REG_I2C_SLV_CTRL(0), 0);
--	return ret;
- }
- 
- /**
-@@ -174,7 +156,6 @@ int inv_mpu_aux_read(const struct inv_mpu6050_state *st, uint8_t addr,
- int inv_mpu_aux_write(const struct inv_mpu6050_state *st, uint8_t addr,
- 		      uint8_t reg, uint8_t val)
- {
--	unsigned int status;
- 	int ret;
- 
- 	/* setup i2c SLV0 control: i2c addr, register, value, enable + size */
-@@ -192,6 +173,24 @@ int inv_mpu_aux_write(const struct inv_mpu6050_state *st, uint8_t addr,
- 	if (ret)
- 		return ret;
- 
-+	ret = inv_mpu_aux_exec_xfer(st);
-+	if (ret)
-+	return ret;
-+
-+	return 0;
-+}
-+
-+/**
-+ * inv_mpu_aux_exec_xfer() - executes i2c auxiliary transfer and checks status
-+ * @st: driver internal state.
-+ *
-+ *  Returns 0 on success, a negative error code otherwise.
-+ */
-+int inv_mpu_aux_exec_xfer(const struct inv_mpu6050_state *st)
-+{
-+	int ret;
-+	unsigned int status;
-+
- 	/* do i2c xfer */
- 	ret = inv_mpu_i2c_master_xfer(st);
- 	if (ret)
-@@ -209,8 +208,6 @@ int inv_mpu_aux_write(const struct inv_mpu6050_state *st, uint8_t addr,
- 	if (status & INV_MPU6050_BIT_I2C_SLV0_NACK)
- 		return -EIO;
- 
--	return 0;
--
- error_disable_i2c:
- 	regmap_write(st->map, INV_MPU6050_REG_I2C_SLV_CTRL(0), 0);
- 	return ret;
-diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_aux.h b/drivers/iio/imu/inv_mpu6050/inv_mpu_aux.h
-index b66997545..0353103aa 100644
---- a/drivers/iio/imu/inv_mpu6050/inv_mpu_aux.h
-+++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_aux.h
-@@ -16,4 +16,6 @@ int inv_mpu_aux_read(const struct inv_mpu6050_state *st, uint8_t addr,
- int inv_mpu_aux_write(const struct inv_mpu6050_state *st, uint8_t addr,
- 		      uint8_t reg, uint8_t val);
- 
-+int inv_mpu_aux_exec_xfer(const struct inv_mpu6050_state *st);
-+
- #endif		/* INV_MPU_AUX_H_ */
--- 
-2.43.0
+Node names should be generic. See also an explanation and list of
+examples (not exhaustive) in DT specification:
+https://devicetree-specification.readthedocs.io/en/latest/chapter2-devicetree-basics.html#generic-names-recommendation
 
+Choose something from above or similar devices.
+
+
+
+Best regards,
+Krzysztof
 

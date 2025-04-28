@@ -1,144 +1,245 @@
-Return-Path: <linux-iio+bounces-18784-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18785-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73912A9F600
-	for <lists+linux-iio@lfdr.de>; Mon, 28 Apr 2025 18:40:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 778D8A9F925
+	for <lists+linux-iio@lfdr.de>; Mon, 28 Apr 2025 21:03:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E4C68189DAC0
-	for <lists+linux-iio@lfdr.de>; Mon, 28 Apr 2025 16:41:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EACEE189FBD1
+	for <lists+linux-iio@lfdr.de>; Mon, 28 Apr 2025 19:03:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02F8F27A92C;
-	Mon, 28 Apr 2025 16:40:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55399296D30;
+	Mon, 28 Apr 2025 19:03:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JGrqc2lG"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CcpKg/Pk"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AADF184A3E;
-	Mon, 28 Apr 2025 16:40:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 318B9296159
+	for <linux-iio@vger.kernel.org>; Mon, 28 Apr 2025 19:03:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745858444; cv=none; b=LXhYQvUzUJh20nwasEhua6VibBY0+0a25ln1cd5uQm6DN5yplMJPM8x2CmRSmKKbjRWnwfh4UQcPP7DpzNpBeuMGKkpK0txp7n+eLlXbk90kqBEjLGba3iwPxSn5+ZbTcq7fPH/joNsgjh0PUuldl2Uwnxqagq6CNZqXyEg6WTE=
+	t=1745867003; cv=none; b=k89v2sDX3lAAkvePr7+gAlaW9WlDAxPKU+htjXztHpTHyFp/8nVJYT3mNJFEAWGkldTGo5rtsC3Iy9GOCUMvAd9uL/01wshKMWrCsxKcqmqxd2AqVWdI+Dwr3JkAuy7P8/ksinWGHbDWXSLZnazYwmKFQRj0xc7BoFzibK+OXTg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745858444; c=relaxed/simple;
-	bh=IZiT22bu67/WDnQhbAi5nobg5mEMnbDK1ZfXPFMOlss=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dEmLgTF8Dti2dhBSwzzbGDMYBiUn67pDdSpm0y3oplwegOe9OSWM/rhur40cx+HkjR5/V+TPpEc5k8CTeHWiq8QTuotv05ZWdGbOFUEskEVeFL+8CZVBy5tI7SWc3fQ+nH0VRB616OD3xBuOdfWV55jQso8Zb2P5i2OobB7K0OI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JGrqc2lG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8593DC4CEE4;
-	Mon, 28 Apr 2025 16:40:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745858443;
-	bh=IZiT22bu67/WDnQhbAi5nobg5mEMnbDK1ZfXPFMOlss=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=JGrqc2lGErJA3V6Zd1CIaUlBDCi39+Mge9FbnINp+UvoRn8zCUhbg0BMqXzL5u7A0
-	 QSFiARL6jUFizdi2psQxokxFifS2EGKi2j6aWa04xUodixQx6C8Gi5jCbEZf4O/rOT
-	 per0yQDruEMBPCyyoIwPMx8JQhQeEg/QkIAt3dPeDfB7o1WrW1lpdpXNq5JRGL6tYh
-	 okBAp1pbDHtqWxQvpWwLJKtzc7ny8p8SRoEM6k6I/mYAwhxOQQoWmshE/iJI2iIcrn
-	 8fPjTGDjTGZJvsBYgZMQTEeOGqv0pE9g+01hNJpYh8NCE6Z7n6eUeP8erMJtaY3PKf
-	 kS4DCNNg64PSg==
-Date: Mon, 28 Apr 2025 17:40:38 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Marcus Folkesson <marcus.folkesson@gmail.com>
-Cc: Kent Gustavsson <kent@minoris.se>, Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Kent Gustavsson <nedo80@gmail.com>, devicetree@vger.kernel.org,
-	Lukas Rauber <lukas.rauber@janitza.de>
-Subject: Re: [PATCH v2 2/3] dt-bindings: iio: adc: mcp3911: add reset-gpios
-Message-ID: <20250428-alfalfa-caring-ee2eb658b8da@spud>
-References: <20250428-mcp3911-fixes-v2-0-406e39330c3d@gmail.com>
- <20250428-mcp3911-fixes-v2-2-406e39330c3d@gmail.com>
+	s=arc-20240116; t=1745867003; c=relaxed/simple;
+	bh=+HftrGyglZWYg2f7rgEOOxcIzoFYrPPglu4sLBVKgM8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=f/qwOxzMLw53xLCzWiJlNkS2EtRLSmHr6dYRnEfUVY0GWxEkJ2XV+I9zFOx0J4txWJz+LumKOb1ti4MhIyVgJQZWt95mr6DmgAU5VaqX2qV3gofk2Ung8XsEPFiVoS69xByRFTOYDyZD9VszTuyMQy9FfXr416rVHGuUASBvJTQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CcpKg/Pk; arc=none smtp.client-ip=209.85.167.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-549963b5551so5282076e87.2
+        for <linux-iio@vger.kernel.org>; Mon, 28 Apr 2025 12:03:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1745866999; x=1746471799; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nUgCFWyUIuKepl0WXekZM8Djouei2xLoByomeZyuuWs=;
+        b=CcpKg/PkO56lQ1F142EvzwJajqEfZX5XvTdP0JiHR/RSXTMU7UgrdVv1g4gK4RMPXq
+         el2JjH8XG6WtkAm/NZLtr7x9UI045ZOoCbNmomB4+CDowtq4X4/WgckcnrpUZVK7I9UT
+         NRSeBABLxq7Y7ec8EoddBj2Wd1OOuV5xwnrjLAAgYq3sG204fcmMUu0eyph3Oe88Gsev
+         layhB0vXd7skDu2/YA9IX9dcHI8IKqldrXYICtR/MIJsNJtsi+tTYe6bCLKwPEmMRrfd
+         a8wfOrE8aeivVFBANFkHTokE8rMj3RrA+IOT6oKzaFyhjwvZr84xxIIrqJHQ+/yFPhJK
+         9DPQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745866999; x=1746471799;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=nUgCFWyUIuKepl0WXekZM8Djouei2xLoByomeZyuuWs=;
+        b=A607yZRYJmgEK15oSl9N1mmMDjiRIF8idQbkLDrS5kcALsiQ7AihOve32F5s9zv/pz
+         HXYaWEa/2R4S4fEMqw1/KvqrkcyF8E60e9lZEEwDRU0athpTyXF661j0gh1rTt8mq9Z6
+         EO+lTynjIVKGrJd+LGhAPRKyRaYFXPenp84/Jb0zKNMWe439DGYBpQSEP5i+jFy1BBnn
+         ghgUduwoi/7oKoMvVCw+vE92GSGp8ci4czWCFGHwW4hvhFa0SFujnmRHd9Rk8jPqmdmN
+         ti55UV/MI+zK+WAfl+zIx/qRj3mxSEgxkkyaAS4QhYc9RXpbfMWV9gAMxKajZt9UtBal
+         jBzQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXEyq6CAmofsxgASsJ2QRuF1NqUnvXPJyhvOKb8eSAWzuVWkWPfJ38RcYs+76H+7ozwhjFUlGnTaBQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzL0zMvmKbj6yCEqbbFTwYXKoMxAxpfPNwYlXUHM2vgDe/M3M6B
+	7EAUsD97gmVcW0zPilZ/3kuLb66dL7PevQ6P7D23UJXpuGx87lCr0UwXE4XCIlvK29PcVn7oQYQ
+	s93LK2RzDUTdK3YEfPN5scNZgbdM=
+X-Gm-Gg: ASbGncv2ypP01gFRx3n+geOP+yLOqkI57IqdiJrWtkIx2fO4+DlC1g4VuOrbGM6pLtt
+	I61WFDp5bUeF13Rpeu5Sg8xGz08KbClZa1qjsRkmYCm2nXN6mGA3kgnHIAJ+MlOr8vAXJ8j/8rP
+	U/Bmm46zGy0aBqmLTwVVg6jY04TMarTjopFV/STJ4IXqFfoO2ONveDWA==
+X-Google-Smtp-Source: AGHT+IGrgpem7rk7nZC9WljzWx4SPDYHmPaMPZdJXHAyzmOYxhDLrjNxTBmOSWJiGyWh4Nwqpyx457oioR1B6zPqbzo=
+X-Received: by 2002:a05:6512:3088:b0:549:8d60:ca76 with SMTP id
+ 2adb3069b0e04-54e8cc0bcd1mr3716066e87.38.1745866998812; Mon, 28 Apr 2025
+ 12:03:18 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="9ZB/lk+tppHCUr2R"
-Content-Disposition: inline
-In-Reply-To: <20250428-mcp3911-fixes-v2-2-406e39330c3d@gmail.com>
-
-
---9ZB/lk+tppHCUr2R
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+References: <CAOMZO5BXp38RMt5vQQWnZBQDzpN+SYB6NVU3c-Krk3po+2Zv7A@mail.gmail.com>
+ <20250426160009.161b9f08@jic23-huawei> <CAOMZO5CepxxXo9u+mSB1P8t-tKvayz8b39emo3jHzR+6hr1HSg@mail.gmail.com>
+ <20250427112343.207918cd@jic23-huawei>
+In-Reply-To: <20250427112343.207918cd@jic23-huawei>
+From: Fabio Estevam <festevam@gmail.com>
+Date: Mon, 28 Apr 2025 16:03:07 -0300
+X-Gm-Features: ATxdqUHsz27PN6uTVmFAlIGG2XhtW7cr8SmCz_OpTKinO7ldw3cPstg_-G2leMg
+Message-ID: <CAOMZO5BOXGcuuf7cyf-c6QLXVoKber2oWP+sgWA_RMHQtW5-cw@mail.gmail.com>
+Subject: Re: max1363 : Warnings from iio_sanity_check_avail_scan_masks()
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: mazziesaccount@gmail.com, linux-iio@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Apr 28, 2025 at 08:54:12AM +0200, Marcus Folkesson wrote:
-> The MCP391X family provides an active low reset signal that is still not
-> described in the bindings.
->=20
-> Add reset-gpios to the bindings and the example.
->=20
-> Co-developed-by: Lukas Rauber <lukas.rauber@janitza.de>
-> Signed-off-by: Lukas Rauber <lukas.rauber@janitza.de>
-> Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
+Hi Jonathan,
 
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
+On Sun, Apr 27, 2025 at 7:23=E2=80=AFAM Jonathan Cameron <jic23@kernel.org>=
+ wrote:
 
-> ---
->  Documentation/devicetree/bindings/iio/adc/microchip,mcp3911.yaml | 5 +++=
-++
->  1 file changed, 5 insertions(+)
->=20
-> diff --git a/Documentation/devicetree/bindings/iio/adc/microchip,mcp3911.=
-yaml b/Documentation/devicetree/bindings/iio/adc/microchip,mcp3911.yaml
-> index 06951ec5f5da381a9bb942d0ac7416128eebd3bc..3a69ec60edb915ae16312b94f=
-ddd32f5c87f37a7 100644
-> --- a/Documentation/devicetree/bindings/iio/adc/microchip,mcp3911.yaml
-> +++ b/Documentation/devicetree/bindings/iio/adc/microchip,mcp3911.yaml
-> @@ -32,6 +32,9 @@ properties:
->    spi-max-frequency:
->      maximum: 20000000
-> =20
-> +  reset-gpios:
-> +    maxItems: 1
-> +
->    clocks:
->      description: |
->        Phandle and clock identifier for external sampling clock.
-> @@ -71,6 +74,7 @@ unevaluatedProperties: false
-> =20
->  examples:
->    - |
-> +    #include <dt-bindings/gpio/gpio.h>
->      spi {
->        #address-cells =3D <1>;
->        #size-cells =3D <0>;
-> @@ -80,6 +84,7 @@ examples:
->          reg =3D <0>;
->          interrupt-parent =3D <&gpio5>;
->          interrupts =3D <15 2>;
-> +        reset-gpios =3D <&gpio1 10 GPIO_ACTIVE_LOW>;
->          spi-max-frequency =3D <20000000>;
->          microchip,device-addr =3D <0>;
->          vref-supply =3D <&vref_reg>;
->=20
-> --=20
-> 2.49.0
->=20
+> https://elixir.bootlin.com/linux/v6.14.4/source/drivers/iio/adc/max1363.c=
+#L1460
+> There is where they are set.  Should show us if something weird is going =
+on with
+> what the checks are seeing vs something going wrong at the debug check.
 
---9ZB/lk+tppHCUr2R
-Content-Type: application/pgp-signature; name="signature.asc"
+I am not sure if this is what you want me to print:
 
------BEGIN PGP SIGNATURE-----
+--- a/drivers/iio/adc/max1363.c
++++ b/drivers/iio/adc/max1363.c
+@@ -1453,6 +1453,8 @@ static int max1363_alloc_scan_masks(struct
+iio_dev *indio_dev)
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaA+vhgAKCRB4tDGHoIJi
-0kKjAP0SGoVbLKEoRIXDEoNsKzwTwRP6mi2cOiNg2ZTliu+/WQEAz3qlZTGXYpew
-2L9C5uyNseNr9Dh05ZgsLkjQVSP9bw4=
-=HZts
------END PGP SIGNATURE-----
+        indio_dev->available_scan_masks =3D masks;
 
---9ZB/lk+tppHCUr2R--
++       pr_err("************ available_scan_masks is %lu\n", *masks);
++
+        return 0;
+ }
+
+[    1.559919] ************ available_scan_masks is 1
+[    1.565265] max1363 1-0064: available_scan_mask 8 subset of 0. Never use=
+d
+[    1.572104] max1363 1-0064: available_scan_mask 9 subset of 0. Never use=
+d
+[    1.578912] max1363 1-0064: available_scan_mask 10 subset of 0. Never us=
+ed
+[    1.585805] max1363 1-0064: available_scan_mask 11 subset of 0. Never us=
+ed
+[    1.592699] max1363 1-0064: available_scan_mask 12 subset of 0. Never us=
+ed
+[    1.599586] max1363 1-0064: available_scan_mask 13 subset of 0. Never us=
+ed
+[    1.606488] max1363 1-0064: available_scan_mask 8 subset of 1. Never use=
+d
+[    1.613287] max1363 1-0064: available_scan_mask 9 subset of 1. Never use=
+d
+[    1.620092] max1363 1-0064: available_scan_mask 10 subset of 1. Never us=
+ed
+[    1.626989] max1363 1-0064: available_scan_mask 11 subset of 1. Never us=
+ed
+[    1.633882] max1363 1-0064: available_scan_mask 12 subset of 1. Never us=
+ed
+[    1.640772] max1363 1-0064: available_scan_mask 13 subset of 1. Never us=
+ed
+[    1.647664] max1363 1-0064: available_scan_mask 8 subset of 2. Never use=
+d
+[    1.654473] max1363 1-0064: available_scan_mask 9 subset of 2. Never use=
+d
+[    1.661274] max1363 1-0064: available_scan_mask 10 subset of 2. Never us=
+ed
+[    1.668171] max1363 1-0064: available_scan_mask 11 subset of 2. Never us=
+ed
+[    1.675063] max1363 1-0064: available_scan_mask 12 subset of 2. Never us=
+ed
+[    1.681957] max1363 1-0064: available_scan_mask 13 subset of 2. Never us=
+ed
+[    1.688851] max1363 1-0064: available_scan_mask 8 subset of 3. Never use=
+d
+[    1.695665] max1363 1-0064: available_scan_mask 9 subset of 3. Never use=
+d
+[    1.702466] max1363 1-0064: available_scan_mask 10 subset of 3. Never us=
+ed
+[    1.709364] max1363 1-0064: available_scan_mask 11 subset of 3. Never us=
+ed
+[    1.716248] max1363 1-0064: available_scan_mask 12 subset of 3. Never us=
+ed
+[    1.723134] max1363 1-0064: available_scan_mask 13 subset of 3. Never us=
+ed
+[    1.730020] max1363 1-0064: available_scan_mask 8 subset of 4. Never use=
+d
+[    1.736821] max1363 1-0064: available_scan_mask 9 subset of 4. Never use=
+d
+[    1.743622] max1363 1-0064: available_scan_mask 10 subset of 4. Never us=
+ed
+[    1.750508] max1363 1-0064: available_scan_mask 11 subset of 4. Never us=
+ed
+[    1.757396] max1363 1-0064: available_scan_mask 12 subset of 4. Never us=
+ed
+[    1.764283] max1363 1-0064: available_scan_mask 13 subset of 4. Never us=
+ed
+[    1.771170] max1363 1-0064: available_scan_mask 8 subset of 5. Never use=
+d
+[    1.777975] max1363 1-0064: available_scan_mask 9 subset of 5. Never use=
+d
+[    1.784775] max1363 1-0064: available_scan_mask 10 subset of 5. Never us=
+ed
+[    1.791662] max1363 1-0064: available_scan_mask 11 subset of 5. Never us=
+ed
+[    1.798547] max1363 1-0064: available_scan_mask 12 subset of 5. Never us=
+ed
+[    1.805434] max1363 1-0064: available_scan_mask 13 subset of 5. Never us=
+ed
+[    1.812323] max1363 1-0064: available_scan_mask 7 subset of 6. Never use=
+d
+[    1.819122] max1363 1-0064: available_scan_mask 8 subset of 6. Never use=
+d
+[    1.825949] max1363 1-0064: available_scan_mask 9 subset of 6. Never use=
+d
+[    1.832750] max1363 1-0064: available_scan_mask 10 subset of 6. Never us=
+ed
+[    1.839656] max1363 1-0064: available_scan_mask 11 subset of 6. Never us=
+ed
+[    1.846545] max1363 1-0064: available_scan_mask 12 subset of 6. Never us=
+ed
+[    1.853430] max1363 1-0064: available_scan_mask 13 subset of 6. Never us=
+ed
+[    1.860317] max1363 1-0064: available_scan_mask 8 subset of 7. Never use=
+d
+[    1.867116] max1363 1-0064: available_scan_mask 9 subset of 7. Never use=
+d
+[    1.873915] max1363 1-0064: available_scan_mask 10 subset of 7. Never us=
+ed
+[    1.880801] max1363 1-0064: available_scan_mask 11 subset of 7. Never us=
+ed
+[    1.887686] max1363 1-0064: available_scan_mask 12 subset of 7. Never us=
+ed
+[    1.894573] max1363 1-0064: available_scan_mask 13 subset of 7. Never us=
+ed
+[    1.901466] max1363 1-0064: available_scan_mask 9 subset of 8. Never use=
+d
+[    1.908267] max1363 1-0064: available_scan_mask 10 subset of 8. Never us=
+ed
+[    1.915153] max1363 1-0064: available_scan_mask 11 subset of 8. Never us=
+ed
+[    1.922037] max1363 1-0064: available_scan_mask 12 subset of 8. Never us=
+ed
+[    1.928923] max1363 1-0064: available_scan_mask 13 subset of 8. Never us=
+ed
+[    1.935810] max1363 1-0064: available_scan_mask 10 subset of 9. Never us=
+ed
+[    1.942696] max1363 1-0064: available_scan_mask 11 subset of 9. Never us=
+ed
+[    1.949582] max1363 1-0064: available_scan_mask 12 subset of 9. Never us=
+ed
+[    1.956469] max1363 1-0064: available_scan_mask 13 subset of 9. Never us=
+ed
+[    1.963356] max1363 1-0064: available_scan_mask 11 subset of 10. Never u=
+sed
+[    1.970330] max1363 1-0064: available_scan_mask 12 subset of 10. Never u=
+sed
+[    1.977303] max1363 1-0064: available_scan_mask 13 subset of 10. Never u=
+sed
+[    1.984276] max1363 1-0064: available_scan_mask 12 subset of 11. Never u=
+sed
+[    1.991249] max1363 1-0064: available_scan_mask 13 subset of 11. Never u=
+sed
+[    1.998222] max1363 1-0064: available_scan_mask 13 subset of 12. Never u=
+sed
 

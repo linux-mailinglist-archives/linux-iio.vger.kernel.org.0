@@ -1,88 +1,88 @@
-Return-Path: <linux-iio+bounces-18815-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18816-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92C67AA055B
-	for <lists+linux-iio@lfdr.de>; Tue, 29 Apr 2025 10:18:11 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EECAAA0562
+	for <lists+linux-iio@lfdr.de>; Tue, 29 Apr 2025 10:19:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 90266843499
-	for <lists+linux-iio@lfdr.de>; Tue, 29 Apr 2025 08:17:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 238847AFEE2
+	for <lists+linux-iio@lfdr.de>; Tue, 29 Apr 2025 08:18:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91F1F27A934;
-	Tue, 29 Apr 2025 08:18:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 823DC27CB06;
+	Tue, 29 Apr 2025 08:19:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mlq1sZt2"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="X/2odkZ8"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D38C27604B;
-	Tue, 29 Apr 2025 08:18:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96ED7279780;
+	Tue, 29 Apr 2025 08:19:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745914686; cv=none; b=jS/qVr8TNP/oWa/aZ0I+gEnqDHa8aKzDHC651phSLklJFnu2sa5PBnACx7V6ud0jJw3bp9+aaLW853kYk3uXC9h0jmbvyGsSrml6JDrt1z3rBr+md+EELu09BwDznHpS6E3yk+vLeYzTGuesbEEFHI2DCPYZmoXmDcCBxq5szqk=
+	t=1745914744; cv=none; b=W/KgpcXmmY+fySySZzcW3rC0042kFGYL3YQl31n2Ws7FPrjWDj/NSKA87nNDdsn72oXLnjYP0Z7wiIxuq3rhu8vq9VLgtCl2K/AewvL8Tys3essdWp9x+DCGSK59ksLCEIh1sU8FKr7jSL3H5hhsT1Yy7O4iI/DUY5uRFhCaHzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745914686; c=relaxed/simple;
-	bh=eESuEXwS0Xg83Oys04QHXmRAwjGpD1UZ9CXsC2XpAXs=;
+	s=arc-20240116; t=1745914744; c=relaxed/simple;
+	bh=zdQtr5BpDPtn4WyFu7EVp2u6hZD6bKnsxFgAh2z2mkY=;
 	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=MCu71+Dux5KAusrm+FiFNNKTRPJqdktYLkXO0XLB6HoCtwTdQCV5jBN5eqZNFDGMlWVDzL9geZpVDQGPuLCiHZTYU9weAqZ8ZkGj7ycdK2aV8MVvmWDE8KiPLB0H9jQz7TdYMyA8XuRu88RCJ3I5NS1zl0ccw0OI8aCgER/0LbE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mlq1sZt2; arc=none smtp.client-ip=209.85.221.49
+	 Content-Type:MIME-Version; b=DxKz531ZIGzL2r4cwuneyU1h0PPZIjt83CHEAfI2Zr+2VX5dODn3ybDUnNSypAiI8gvLxZLhjsQer3MLIABMEXKMf9T/M9ADNGiLRlS3zOOuYx5lxVWbdx+uxmu0QoLqs26zYz+1fofBU2QURGtURa83gRfDeCbwr6NcBpS7Fxo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=X/2odkZ8; arc=none smtp.client-ip=209.85.128.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-3913d129c1aso3726568f8f.0;
-        Tue, 29 Apr 2025 01:18:04 -0700 (PDT)
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-43cf628cb14so47630365e9.1;
+        Tue, 29 Apr 2025 01:19:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745914683; x=1746519483; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1745914741; x=1746519541; darn=vger.kernel.org;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:to:from:subject:message-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=O2+3W2a7AkVYwexjr1GzqEPTtciWTnY4dLIb8fkHrQ8=;
-        b=mlq1sZt2jiPE8NqgC7BiIFFrFrwRxzCyTPN6zSR++Hwy1Mo5W9BKGDVKJ4Nr0kKZKH
-         +phZZiX3Al0OZlOvlZq3n4nZD5iJ8YpWI94e4iUKve+cuWMqjewsn87FnlSnr2ue3eKO
-         Vx5bNuln7wvhoQ4MvVyYmnyWLhJW+4QUxybcRtYHaVFaurgRaeSx/l3ylWavZ+CXcVmF
-         ic483W0+ItL0QfwI7Tdd0CpAGV0aaFzAMhstjSauf3Ii9i2VbrfrhfdPyOGYIWXmKrzI
-         T1vtk67sQ8NAR3k+77r4/OJIx0FGSSi19dq66yl7qQlsFqK4XBRm/kyg01daZ/nYYFUE
-         jcgg==
+        bh=thr7s8KgPtJ22/lvJstaJ+JSkl/4Ybu6j+EVbeRWoxo=;
+        b=X/2odkZ8fQ/xa+dGHfc8L4pCEkTpiktXzP6LCPI3B4ystUvP9Vc/5GsIwNKHlLgbAS
+         D58myk4ND7G3D5c8DnUOBzXqzUJWyQCFjoxOlvL3/x9NDvZncdKoTy9WiZ3TE4OCyEvE
+         u7kib0/tsVg10W2P9eWC0y4YtQ1rDRpEeP2iimEirF0foiLBVL3EEx4HoHQho3RomSaT
+         qA04yLVEbs9RClep384NkuAlWew6QF7bvf6ir8+W/UuqT62U/q6S1reqGJX9bWBKl5kn
+         o5nCwfPApUdGpiuU/mth016flcNOfRemFApcvF9XAXb1KrbeTIb5v8oV4rwqm0I9vhgr
+         9rJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745914683; x=1746519483;
+        d=1e100.net; s=20230601; t=1745914741; x=1746519541;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:to:from:subject:message-id:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=O2+3W2a7AkVYwexjr1GzqEPTtciWTnY4dLIb8fkHrQ8=;
-        b=mbuYWnrPIvHouP0jacEukGUf6qXHx8cpBV6KtdUx0gIewrJAkXgzJe3pE/+SHjxaRE
-         4/D6nqmUgZ3PkoaWjHWXxictlVk5u4FNTKrNhjGrMpFdxKZRek/BGHWCsKG/LvZCY721
-         LdviW4OO+KgWbjB9r/ulMnFM3z14N1IVEB3gGiuwur3C7xvy4BTopnzYEz0maASMcM56
-         dYfr24AUdMkYsIG3e4Eg9uoY98cTSq7Lrn1qhAhkIhglA7qY0B7pMP5yhQBSY7AZdQq2
-         fUOAcdvCd6FJs/m/a5Md2tWdw0Bzr1EO7Nuld1IWJIRY82XnclyYRVATvz8cklTxh99C
-         fWLg==
-X-Forwarded-Encrypted: i=1; AJvYcCUfc5M8VPzA6YcArrb9KxmxSn2syWjsj1BvQGNtSYdfI8XldzqLf05qUiYNLrNT+iYNBf55h7zY4kTi@vger.kernel.org, AJvYcCUvJpKpRp8K3kofbydu2gMxMdb0JnlYpig6Ah9EUoVH7OosNP5YWrbJoJ5wSjSHedBmbH31HT2L3+VsiEil@vger.kernel.org, AJvYcCWlK5Vj3VaKSRtvE60jkVysQEuSIoRBj6L7ew16ucjicd8AToXx3+7iLa/CARkLuGSqtL2sqhfBpjXd@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy9DHOlOibjz2F46amavY1CfyHHEKpiYNPIQVr9cMBEpb4qkBMC
-	E969bkU/+B6liTj27+rmCaRJjNq6CrVPBKFz9tJ2NMwyCbOVh2l+hWJyEhkPn+I=
-X-Gm-Gg: ASbGncta+QpytvY3dE62UeOgLarosT/i+nZ8p00zew4Ag2BMQB52PKR88PdiDb/s1Zr
-	zckw2u2Z8zfJ3TZfEYbs5qSWoVnsg69sxzt72z7eaDhSLd9VEQFeEflmgmiUZqba3e1dgvXi3rk
-	m3vKAsvUYon2NQziGVZ6cIxrK7HGuntAneYRXZ5Xh8oQM69LHTESKriDosVcqNtNGW0BJ7b5LfZ
-	kTkrnQ7ySnoE3KQtSjle/QjG+l/VtlaCqj3oTZLodHyOOMwfJOX7gI831HcXdgRwyPqSCpVOdNV
-	eqOBzpfSOCbTEGOq9j2JrcOJt7kppp9Rh6XeJv+Xm11Mm4z2yztmj9lw6Nf1W5Gu0g6qRb7H7UJ
-	dGqolmTtzkOUd
-X-Google-Smtp-Source: AGHT+IHyZz6Q7YY08XsLx4KNTlg9jPQnLF3lrgacy9YxzyoYLl6L2lHAno3dx2HVerE21VFlmwAHhQ==
-X-Received: by 2002:a05:6000:4024:b0:3a0:830e:68fd with SMTP id ffacd0b85a97d-3a08a501c07mr1430036f8f.5.1745914682686;
-        Tue, 29 Apr 2025 01:18:02 -0700 (PDT)
+        bh=thr7s8KgPtJ22/lvJstaJ+JSkl/4Ybu6j+EVbeRWoxo=;
+        b=OqtedupjDq/qLSJLY7P+KhKT9+hIwjBVpMJek9uRF9guQ0grJ2h4wZ7YBnf7ynNmHV
+         DJVigfrQf2raynay5HTJ4GxVkP5nbo3p+1bxT649gt5DJojhMZR5jwC0wvtzYu9ZTOpk
+         df88VzMS01pcFkBOiaiCt0Yt3WbtOZvDn8FfGnBN3AwvGltbjMJQD55UUzQzJvHPna+k
+         KeTCCOOtNk385iWuHYBpjgNRXE+LTPPWiAyKqG/oUa6nbz17f/bwzv5ec3r52fyvkZQs
+         w1OBw5tJDepzkp2kp5NPbYEHE7rm4/otXcmcGWPMVfgAIAvjABcVdkWMnWJV9ibm/a1s
+         IdwQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU4Nt+g6HxekqPbxJhqI6GmDYJ3vGsMhujT0dozXULd8ezkBCbfg9ZGTy/rPGTRU8FIu92ZzZc5ItTK@vger.kernel.org, AJvYcCW3iSP4TobDL2kAZTLuwIWemZe3kx0gLtAXyEJNDP7lZIJK6BPP6AnP89MIZ1Thi+/fJBzfQscJM70H@vger.kernel.org, AJvYcCWgQt7Cl11SyawvRSYWnyZC4qMfVgyUPHIsuAdjWFnDk4ZOubUUwFY1GC8mv2bNF4lBulzGueE6bsL39Odf@vger.kernel.org
+X-Gm-Message-State: AOJu0YxQiUUbZiMu3Iliy8/DKnwKRddEMqSGNgxZEPe6KFzghS/6bs69
+	yJF6Lp/SKH1VoXT+PAVfwA97rxPKapb+pxshKO0euMI8+gj/+5sh
+X-Gm-Gg: ASbGncsg5WC9DUmYU341imDtNTTWKaOYgrYaPyfVmngFZDN6ujstgLS7KCPyIAX5sz7
+	ORoEtbPM0gAIm3Eve4G3w+7VbBrPW0y62OrWgqeq65rZSb5zVBmIj4WP/QLE6K5JXTLhaH+tF2x
+	U/7PWDBU1SwyO8ng+3UNrdhUQAvHE9Xh6EcZaEmb05jIVYnhgu13CuZahhXCiLWrdLmSH34NKaz
+	jiK9O24PwqlFnkOcRUU4xHPhJUylFV2plp2rLfEAvl3d4vYCmLAINtzM9t7dRB81Be2d1yPAx2a
+	LVL6JvW/0q0xvqI21bENKqub7v2orrqVuLJR3DOhv14ioMagpv3OuYDepELgy7ktkz2VcJw/x5D
+	PA9n9j6cMiGxB
+X-Google-Smtp-Source: AGHT+IG9xrL2a3oUvPs5IPfumvNNsNytaMGFbF33fTsC07NjkBLJzwQI4qV/tm6k4I2C3MF3ub89aA==
+X-Received: by 2002:a7b:cb88:0:b0:43b:baf7:76e4 with SMTP id 5b1f17b1804b1-441acaa8d6amr14442345e9.1.1745914740585;
+        Tue, 29 Apr 2025 01:19:00 -0700 (PDT)
 Received: from ?IPv6:2001:818:ea8e:7f00:2575:914:eedd:620e? ([2001:818:ea8e:7f00:2575:914:eedd:620e])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-440a536a021sm147604465e9.29.2025.04.29.01.18.01
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4409d2e00e3sm183004705e9.34.2025.04.29.01.18.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Apr 2025 01:18:02 -0700 (PDT)
-Message-ID: <bdf28693eeeebf93cfc6305679e154bdc515206c.camel@gmail.com>
-Subject: Re: [PATCH v3 06/11] iio: adc: adi-axi-adc: add filter type config
+        Tue, 29 Apr 2025 01:19:00 -0700 (PDT)
+Message-ID: <dc2a7cd3bff229dc70255ed1d2def98739754a4c.camel@gmail.com>
+Subject: Re: [PATCH v3 04/11] iio: backend: add support for number of lanes
 From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
 To: Antoniu Miclaus <antoniu.miclaus@analog.com>, jic23@kernel.org, 
 	robh@kernel.org, conor+dt@kernel.org, linux-iio@vger.kernel.org, 
 	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Tue, 29 Apr 2025 09:18:06 +0100
-In-Reply-To: <20250425112538.59792-7-antoniu.miclaus@analog.com>
+Date: Tue, 29 Apr 2025 09:19:04 +0100
+In-Reply-To: <20250425112538.59792-5-antoniu.miclaus@analog.com>
 References: <20250425112538.59792-1-antoniu.miclaus@analog.com>
-	 <20250425112538.59792-7-antoniu.miclaus@analog.com>
+	 <20250425112538.59792-5-antoniu.miclaus@analog.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.56.1 
@@ -94,109 +94,84 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
 On Fri, 2025-04-25 at 14:25 +0300, Antoniu Miclaus wrote:
-> Add support for enabling/disabling filter based on the filter type
-> provided.
+> Add iio backend support for number of lanes to be enabled.
 >=20
 > Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
 > ---
 
-You should either mention in the commit message that a new compatible (and =
-thus
-iio_backend_ops) is being added or split this into two patches. This is sim=
-ple
-enough that I don't really mind being in the same patch but still...
-
-With the above (and a nit below):
-
 Reviewed-by: Nuno S=C3=A1 <nuno.sa@analog.com>
 
-> changes in v3:
-> =C2=A0- update the function to adapt to the backend interface.
-> =C2=A0drivers/iio/adc/adi-axi-adc.c | 38 ++++++++++++++++++++++++++++++++=
-+++
-> =C2=A01 file changed, 38 insertions(+)
+> no changes in v3.
+> =C2=A0drivers/iio/industrialio-backend.c | 17 +++++++++++++++++
+> =C2=A0include/linux/iio/backend.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0 |=C2=A0 3 +++
+> =C2=A02 files changed, 20 insertions(+)
 >=20
-> diff --git a/drivers/iio/adc/adi-axi-adc.c b/drivers/iio/adc/adi-axi-adc.=
-c
-> index 61ab7dce43be..2a3a6c3f5e59 100644
-> --- a/drivers/iio/adc/adi-axi-adc.c
-> +++ b/drivers/iio/adc/adi-axi-adc.c
-> @@ -52,6 +52,7 @@
-> =C2=A0#define=C2=A0=C2=A0 AXI_AD485X_PACKET_FORMAT_20BIT	0x0
-> =C2=A0#define=C2=A0=C2=A0 AXI_AD485X_PACKET_FORMAT_24BIT	0x1
-> =C2=A0#define=C2=A0=C2=A0 AXI_AD485X_PACKET_FORMAT_32BIT	0x2
-> +#define=C2=A0=C2=A0 AXI_AD408X_CNTRL_3_FILTER_EN_MSK	BIT(0)
-> =C2=A0
-> =C2=A0#define ADI_AXI_ADC_REG_DRP_STATUS		0x0074
-> =C2=A0#define=C2=A0=C2=A0 ADI_AXI_ADC_DRP_LOCKED		BIT(17)
-> @@ -402,6 +403,19 @@ static int axi_adc_ad485x_oversampling_ratio_set(str=
-uct
-> iio_backend *back,
-> =C2=A0	}
+> diff --git a/drivers/iio/industrialio-backend.c b/drivers/iio/industriali=
+o-
+> backend.c
+> index f7c8167a248d..1063935cd808 100644
+> --- a/drivers/iio/industrialio-backend.c
+> +++ b/drivers/iio/industrialio-backend.c
+> @@ -833,6 +833,23 @@ int iio_backend_sync_status_get(struct iio_backend *=
+back,
+> bool *sync_en)
 > =C2=A0}
+> =C2=A0EXPORT_SYMBOL_NS_GPL(iio_backend_sync_status_get, "IIO_BACKEND");
 > =C2=A0
-> +static int axi_adc_ad408x_filter_type_set(struct iio_backend *back,
-> +					=C2=A0 enum iio_backend_filter_type type)
+> +/**
+> + * iio_backend_num_lanes_set - Number of lanes enabled.
+> + * @back: Backend device
+> + * @num_lanes: Number of lanes.
+> + *
+> + * RETURNS:
+> + * 0 on success, negative error number on failure.
+> + */
+> +int iio_backend_num_lanes_set(struct iio_backend *back, unsigned int
+> num_lanes)
 > +{
-> +	struct adi_axi_adc_state *st =3D iio_backend_get_priv(back);
+> +	if (!num_lanes)
+> +		return -EINVAL;
 > +
-> +	if (type)
-
-We could check for a max value and return -EINVAL...
-
-> +		return regmap_set_bits(st->regmap, ADI_AXI_ADC_REG_CNTRL_3,
-> +				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 AXI_AD408X_CNTRL_3_FILTER_EN_MS=
-K);
-> +
-> +	return regmap_clear_bits(st->regmap, ADI_AXI_ADC_REG_CNTRL_3,
-> +				 AXI_AD408X_CNTRL_3_FILTER_EN_MSK);
+> +	return iio_backend_op_call(back, num_lanes_set, num_lanes);
 > +}
+> +EXPORT_SYMBOL_NS_GPL(iio_backend_num_lanes_set, "IIO_BACKEND");
 > +
-> =C2=A0static struct iio_buffer *axi_adc_request_buffer(struct iio_backend=
- *back,
-> =C2=A0						 struct iio_dev *indio_dev)
-> =C2=A0{
-> @@ -582,6 +596,24 @@ static const struct iio_backend_info axi_ad485x =3D =
-{
-> =C2=A0	.ops =3D &adi_ad485x_ops,
-> =C2=A0};
-> =C2=A0
-> +static const struct iio_backend_ops adi_ad408x_ops =3D {
-> +	.enable =3D axi_adc_enable,
-> +	.disable =3D axi_adc_disable,
-> +	.chan_enable =3D axi_adc_chan_enable,
-> +	.chan_disable =3D axi_adc_chan_disable,
-> +	.request_buffer =3D axi_adc_request_buffer,
-> +	.free_buffer =3D axi_adc_free_buffer,
-> +	.data_sample_trigger =3D axi_adc_data_sample_trigger,
-> +	.filter_type_set =3D axi_adc_ad408x_filter_type_set,
-> +	.debugfs_reg_access =3D iio_backend_debugfs_ptr(axi_adc_reg_access),
-> +	.debugfs_print_chan_status =3D
-> iio_backend_debugfs_ptr(axi_adc_debugfs_print_chan_status),
-> +};
-> +
-> +static const struct iio_backend_info axi_ad408x =3D {
-> +	.name =3D "axi-ad408x",
-> +	.ops =3D &adi_ad408x_ops,
-> +};
-> +
-> =C2=A0static int adi_axi_adc_probe(struct platform_device *pdev)
-> =C2=A0{
-> =C2=A0	struct adi_axi_adc_state *st;
-> @@ -697,9 +729,15 @@ static const struct axi_adc_info adc_ad7606 =3D {
-> =C2=A0	.has_child_nodes =3D true,
-> =C2=A0};
-> =C2=A0
-> +static const struct axi_adc_info adi_axi_ad408x =3D {
-> +	.version =3D ADI_AXI_PCORE_VER(10, 0, 'a'),
-> +	.backend_info =3D &axi_ad408x,
-> +};
-> +
-> =C2=A0/* Match table for of_platform binding */
-> =C2=A0static const struct of_device_id adi_axi_adc_of_match[] =3D {
-> =C2=A0	{ .compatible =3D "adi,axi-adc-10.0.a", .data =3D &adc_generic },
-> +	{ .compatible =3D "adi,axi-ad408x", .data =3D &adi_axi_ad408x },
-> =C2=A0	{ .compatible =3D "adi,axi-ad485x", .data =3D &adi_axi_ad485x },
-> =C2=A0	{ .compatible =3D "adi,axi-ad7606x", .data =3D &adc_ad7606 },
-> =C2=A0	{ /* end of list */ }
+> =C2=A0/**
+> =C2=A0 * iio_backend_ddr_enable - Enable interface DDR (Double Data Rate)=
+ mode
+> =C2=A0 * @back: Backend device
+> diff --git a/include/linux/iio/backend.h b/include/linux/iio/backend.h
+> index e93d1a98e066..c8bcfe96c542 100644
+> --- a/include/linux/iio/backend.h
+> +++ b/include/linux/iio/backend.h
+> @@ -112,6 +112,7 @@ enum iio_backend_filter_type {
+> =C2=A0 * @data_alignment_enable: Enable sync process.
+> =C2=A0 * @data_alignment_disable: Disable sync process.
+> =C2=A0 * @sync_status_get: Get the syncronization status (enabled/disable=
+d).
+> + * @num_lanes_set: Set the number of lanes enabled.
+> =C2=A0 * @ddr_enable: Enable interface DDR (Double Data Rate) mode.
+> =C2=A0 * @ddr_disable: Disable interface DDR (Double Data Rate) mode.
+> =C2=A0 * @data_stream_enable: Enable data stream.
+> @@ -167,6 +168,7 @@ struct iio_backend_ops {
+> =C2=A0	int (*data_alignment_enable)(struct iio_backend *back);
+> =C2=A0	int (*data_alignment_disable)(struct iio_backend *back);
+> =C2=A0	int (*sync_status_get)(struct iio_backend *back, bool *sync_en);
+> +	int (*num_lanes_set)(struct iio_backend *back, unsigned int
+> num_lanes);
+> =C2=A0	int (*ddr_enable)(struct iio_backend *back);
+> =C2=A0	int (*ddr_disable)(struct iio_backend *back);
+> =C2=A0	int (*data_stream_enable)(struct iio_backend *back);
+> @@ -212,6 +214,7 @@ int iio_backend_filter_type_set(struct iio_backend *b=
+ack,
+> =C2=A0int iio_backend_data_alignment_enable(struct iio_backend *back);
+> =C2=A0int iio_backend_data_alignment_disable(struct iio_backend *back);
+> =C2=A0int iio_backend_sync_status_get(struct iio_backend *back, bool *syn=
+c_en);
+> +int iio_backend_num_lanes_set(struct iio_backend *back, unsigned int
+> num_lanes);
+> =C2=A0int iio_backend_ddr_enable(struct iio_backend *back);
+> =C2=A0int iio_backend_ddr_disable(struct iio_backend *back);
+> =C2=A0int iio_backend_data_stream_enable(struct iio_backend *back);
 

@@ -1,103 +1,150 @@
-Return-Path: <linux-iio+bounces-18844-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18845-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B321DAA0EC3
-	for <lists+linux-iio@lfdr.de>; Tue, 29 Apr 2025 16:30:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8B66AA0EE5
+	for <lists+linux-iio@lfdr.de>; Tue, 29 Apr 2025 16:34:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A9DCD3A4A07
-	for <lists+linux-iio@lfdr.de>; Tue, 29 Apr 2025 14:29:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 84CB03B2095
+	for <lists+linux-iio@lfdr.de>; Tue, 29 Apr 2025 14:34:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ECD31DF73C;
-	Tue, 29 Apr 2025 14:30:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26178212D8A;
+	Tue, 29 Apr 2025 14:34:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Cypq4HsK"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="ymv23thJ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEA122746A
-	for <linux-iio@vger.kernel.org>; Tue, 29 Apr 2025 14:30:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF7671DE4F3
+	for <linux-iio@vger.kernel.org>; Tue, 29 Apr 2025 14:34:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745937005; cv=none; b=PUgdoCwPKxGETUXilHunqtMbg9elfBDTSrbYBIBC0wnq28jkmqX3rgKilteFcLbCGlDsiwsJF1R441aAzleZ192n0UmbvUCYqW6u+pqtcb5SVvLNLmZlVP2A0Cx0hjcyFrkluKQrqHTDuujDTbAHo8eN/GXYO2LIZJ/aZQFJ06Q=
+	t=1745937253; cv=none; b=Nkbs1ExSK4CJisr+wEQjR+qzavVKzVEMGwORxRsftj0bkFC9DzXI4E21+Qkners8+M2Zc0x8ANhlmC6TqkdeVQ78ZZYW8xlSmTyjC0jv31L/vk4/jn2MgSNnqDNYTkBXpuxeAcokFsC41zbaCrqLj4miRdOzTe5/B23MZSkmkxY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745937005; c=relaxed/simple;
-	bh=6fIgkeL9eHJItFu2CfZHDJdaT52WI/SYcPf3kHbFbtI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RDsHFWiG58OgXJ288HkkKjOOJGSUsZ0zpcCWii9go2Q26bngsgXD8PDOX5zp1hDQ++vliLwh6ug/nagIA3UTEzPGKokLvuemhF58HoBuRMa2XP4AFZ5c/Pfbuw6LzHjFu86PYeH/kXMd5e18vEDwLD7PamcrMG/MA4X2KxWRQag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Cypq4HsK; arc=none smtp.client-ip=209.85.167.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-5499659e669so7224351e87.3
-        for <linux-iio@vger.kernel.org>; Tue, 29 Apr 2025 07:30:03 -0700 (PDT)
+	s=arc-20240116; t=1745937253; c=relaxed/simple;
+	bh=lmnxHLF68riBzOKcdJcpU+85GKfF7cyH/K4951Aw5B4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DmNx67P+3YYx1zU9QUSQCZpEFY8wRV/7iRtdcRgMT4S1Sfm+6Qut4/78Qk+FiCjYd8Zz7ubP1nAr0xQ3QotcJNQroxOLLQW99JvViVZzoH5uF6zwSRyk9e0A7wxq48QYqQGllKiubI++3Glk6jxjWmkkhnxg/tv83nAS0x4Qocc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=ymv23thJ; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-43cef035a3bso43548135e9.1
+        for <linux-iio@vger.kernel.org>; Tue, 29 Apr 2025 07:34:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745937002; x=1746541802; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6fIgkeL9eHJItFu2CfZHDJdaT52WI/SYcPf3kHbFbtI=;
-        b=Cypq4HsKRcAP5euDrzdA7nsflECY175qjKTvzA9vZV4lXvkcBSGxnXzd6r2VRLeaNS
-         uyHv1nz0113/uXr+cM4otwKcbfaWUTx4Ad2FJc7oL8GyDBedtrV3m539BS49TZ7AfN6v
-         qu+IdHmdfFJfMdQY1+GmcUKaCvU+fdgG+CNAVRSTcvNWQ0rlMFO9/2nFMePDZDhVVeUD
-         7Ng13cHBTk6nyHBB0544Rdcckbs8kV8xpNSLTITW73tcvJZc8PpvAPqbTnNIEtE+hdDj
-         FzlQfqnUbeZKT9KNrqexEvAg+uF5YyDTm+0T+guTmedsno4ylc9PpVQO+RRKtstqBzjw
-         e2Kg==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1745937250; x=1746542050; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=bgm1hI8+hceaGAXwVfwpPvCd/kO4SsvuWHjINi5EhqY=;
+        b=ymv23thJSwg9o/lVvcIIUrqYxumM702nerPYUBJ9GdKaxEEiF2s/bBYtk+cKRYfuOC
+         dLgcbK1FOdIrEya7oa/Kd1ojQwO0CPa7Ah8QjKneXd/8ejbCZOqv1VGCXS9EEMJERrJ1
+         HaY6o1tGP+qnoWRemzTCe1DD5EVpAQjPcRn2+vQegsxRCLxOnFWWHJvspak7Cryl4D9P
+         NZzxJW2tT1v/nex9hqU0OeMMGGJjsHR2ldAGhs6hdq8sdAWi/rIdIFanqaD+x32x3vPM
+         ycdPRQ6INaM4G8D3awSfrf61D6ibd9jtTSyUk57/g0bpLELLRghk3tWQtbUME9jfyxva
+         16BQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745937002; x=1746541802;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=6fIgkeL9eHJItFu2CfZHDJdaT52WI/SYcPf3kHbFbtI=;
-        b=JU73XOJ8yMA3BGeEP7qfOr/qOV5qpzDC8qimAjmqbtNQL8c8rzrykukD3MaYJcEYjr
-         IRQip3Nq/8EG+VFITeSL2tIEali//BnMj0r+gXmhT3CDvaX5r2krBvlV8BC4OuakAh7u
-         E3seRVnCs6QwXLj7eBL93DX+IY/VYHfMfrNnMHjQenBwsWFFZb27ZFWpyKDvnE/fXVmk
-         6jpv7ECxupuOK4fHeJenyhlCG0AdNPhIY/y3r7Oj0DcmaInLzvMqn3/u8WZmE1t2jQ1V
-         dngEUuWCQvSzKLCF1u9pr1dFovcq5wVbXuoa2XUUpNtWD9gEVMhFfaZ2Fu2pTNPlPSRw
-         +0bA==
-X-Forwarded-Encrypted: i=1; AJvYcCVCMlnT0Y9q0gCfQCdpg7j5xVdU1Or8dR5YmNpImu3kq4Jp27cMZrGej2Ooubz9a5wXKBbiX8ziW8U=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz7rG31EQuD2+9zDRnvcMIRtR8BX7sm1gsnbl1BQbFbl+mo3NN8
-	8poq0bJCMNQagJVuAgMWoNQz/bTlhT5gMAlvwXcBB8S3Pr2vAmz3LQ5MRaHd/F9/2fHQgngt6xG
-	RFF63y/lxoDxOXH3JlpRfgs+fYfI=
-X-Gm-Gg: ASbGncuxAPkvKVoX1SwPetZ0oyiup+isiH8MzZ9ZUC1lXS6o/RDIm8Ig+K2c/88Z9o1
-	JGIONILZkdvqw/m+NKsCRgAIM3HkOwo9F8Tk8xzWlqFRQHzjIe50YnUOpflkt0IDnlCS+lpPQUC
-	kFJwRtTlakPVSY5KkQoVxICxWb0Q+cRVlQq6sEuOk5s5N1LnMUaiCXVA==
-X-Google-Smtp-Source: AGHT+IFaMEau/3tMlm3/erOISqZudRhA91RTwzJg5kYJA9U7b+dx9moVAOq0c6MV+Ssy4eeriLTGi4DowTGYGF4vrig=
-X-Received: by 2002:a05:6512:3b0d:b0:54d:6a89:8448 with SMTP id
- 2adb3069b0e04-54e9e53acb3mr956546e87.10.1745937001582; Tue, 29 Apr 2025
- 07:30:01 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1745937250; x=1746542050;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bgm1hI8+hceaGAXwVfwpPvCd/kO4SsvuWHjINi5EhqY=;
+        b=UqKick3FCKpdDvQzLF3Lx350CvcFNXehbbHF0PIJsGcQpkt5agCzraoFcKm//Acj7L
+         dc/uBcDNQE/fzCcfKUkwz8npDJ4FNl6RhpadMYUDVvBUopmW4zY4yM9INUTeUETuzdTj
+         7OglAGVE2pubqprbjqgB8/Yo1NTIsb/pva6RK8cWltLYjye4MY93UGfHotyf18xu1Gkq
+         Li8Op26gye60rkg5aNN/w/gl8s4tg9YgQfDbYEvwiwNqmDe/7BhmkUk3BEn1rnnZJnYt
+         OQPuh+JfMPmLpgMPc8xJx8TP1rrW+f6WGmz3DwPugzhCGydWayI2WccHUYYTfkXUzVCC
+         E87w==
+X-Forwarded-Encrypted: i=1; AJvYcCWl7UgVKbu2qImnaVQ0M/+EwDbfm83z1XZZsCeV1Hom9lnw09EZfQVJVcEfSn1J7It5157F43tXDl8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzDxJ4uhn/2a05NBcJULW5oaP57VuBWQQmpdB78P/tbh8HayJ2b
+	iqn4JI0G7vKvbhLj0L7jqhU5NRC6smyK4jGVS27TuDvybMx1frWiLX8bieUfMVc=
+X-Gm-Gg: ASbGncuoOPG0tHq+y82ojVd1ljxL88NTN16RCaJHK54KOgf+/TwK0PCMmXtS2xnTtmV
+	Q+GquLI7Wm14uyASHNK0ZmwlOaCtGAy3r0TfvVQePqXGo5wzTf5q8nkJBE1ug037zNsBmKE0Cml
+	K0MpCJJAreGNPUYfoWyuno/7MpLjQ25z8fPUi66PrdRHmqCfHZFtjIEBw+USJLypsfFHJqJytLb
+	UuR1m1yYN9XqSD2m66OyxkEcxtx2KUnECNgKW1W/j3V+t4PkuubYBmnI1RwjD0Uyv7XEgpRpf31
+	GwJ6R80jBZw7/cPnz2/lU/CHSZJt9oofi8k55QP6YR70kAki9Ck4KSn4JeRaWT3a5qitMsMpBId
+	PrmPFcfY=
+X-Google-Smtp-Source: AGHT+IE1rlODd7Ymc+mVPNqfJSWt71txKxyIzWpUA/SAeTWDWH9SzzrOEc7XraHSBNM+FxFeWIKGvA==
+X-Received: by 2002:a05:600c:4708:b0:43c:fe15:41dd with SMTP id 5b1f17b1804b1-440ab77d015mr101725595e9.6.1745937250205;
+        Tue, 29 Apr 2025 07:34:10 -0700 (PDT)
+Received: from archlinux (host-87-8-31-78.retail.telecomitalia.it. [87.8.31.78])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4409d29b990sm196420085e9.4.2025.04.29.07.34.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 29 Apr 2025 07:34:09 -0700 (PDT)
+Date: Tue, 29 Apr 2025 16:32:57 +0200
+From: Angelo Dureghello <adureghello@baylibre.com>
+To: Andy Shevchenko <andy@kernel.org>
+Cc: Nuno Sa <nuno.sa@analog.com>, Lars-Peter Clausen <lars@metafoo.de>, 
+	Michael Hennerich <Michael.Hennerich@analog.com>, Jonathan Cameron <jic23@kernel.org>, 
+	David Lechner <dlechner@baylibre.com>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH v2 2/2] iio: dac: adi-axi-dac: use unique bus free check
+Message-ID: <udqm2qkw3yrewmovua54twfzbsfduojc5f5uoj4nptxldpbbr5@75bb2pldwq7f>
+References: <20250409-ad3552r-fix-bus-read-v2-0-34d3b21e8ca0@baylibre.com>
+ <20250409-ad3552r-fix-bus-read-v2-2-34d3b21e8ca0@baylibre.com>
+ <Z_alpFoaQQUlWdfo@smile.fi.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAOMZO5BXp38RMt5vQQWnZBQDzpN+SYB6NVU3c-Krk3po+2Zv7A@mail.gmail.com>
- <20250426160009.161b9f08@jic23-huawei> <CAOMZO5CepxxXo9u+mSB1P8t-tKvayz8b39emo3jHzR+6hr1HSg@mail.gmail.com>
- <20250427112343.207918cd@jic23-huawei> <CAOMZO5BOXGcuuf7cyf-c6QLXVoKber2oWP+sgWA_RMHQtW5-cw@mail.gmail.com>
- <CAOMZO5Bzrfu14-mzaF+EbAq=xGKMc-FGwJsx-aZd_RraH2Gscw@mail.gmail.com> <ef215ea2-e283-4c89-9b54-61b84684bfe7@gmail.com>
-In-Reply-To: <ef215ea2-e283-4c89-9b54-61b84684bfe7@gmail.com>
-From: Fabio Estevam <festevam@gmail.com>
-Date: Tue, 29 Apr 2025 11:29:50 -0300
-X-Gm-Features: ATxdqUEyxmZ6OrMTADW8Lv2i532gZLYh2XPc89pdS9MZnXgoo0ABQCEw3QdPb6g
-Message-ID: <CAOMZO5C2VKbu3pd-8jGLez=ofhjDHZn1onB1vr=XL=5xW5jtHw@mail.gmail.com>
-Subject: Re: max1363 : Warnings from iio_sanity_check_avail_scan_masks()
-To: Matti Vaittinen <mazziesaccount@gmail.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Z_alpFoaQQUlWdfo@smile.fi.intel.com>
 
-Hi Matti,
+Hi Andy,
 
-On Tue, Apr 29, 2025 at 12:59=E2=80=AFAM Matti Vaittinen
-<mazziesaccount@gmail.com> wrote:
+sorry, seen this message now only, for some reason sometimes your emails
+goes to the spam. Now i marked all as "not spam", let's see.
 
-> Do you think you could send a patch to fix this, or should I take a look
-> at it?
+On 09.04.2025 19:51, Andy Shevchenko wrote:
+> On Wed, Apr 09, 2025 at 11:16:55AM +0200, Angelo Dureghello wrote:
+> > From: Angelo Dureghello <adureghello@baylibre.com>
+> > 
+> > Use a unique function for the bus free check by polling, to reduce
+> > duplicated code. An error is always thrown in case of timeout.
+> 
+> ...
+> 
+> > +static int axi_dac_wait_bus_free(struct axi_dac_state *st)
+> > +{
+> > +	u32 val;
+> > +	int ret;
+> > +
+> > +	ret = regmap_read_poll_timeout(st->regmap, AXI_DAC_UI_STATUS_REG, val,
+> > +		FIELD_GET(AXI_DAC_UI_STATUS_IF_BUSY, val) == -1, 10,
+> > +		100 * KILO);
+> 
+> Same comment as in the previous patch. Okay, it seems more than in the single
+> case. Perhaps to change that as well here?
+> 
 
-Yes, I think I understand the problem better now and will send the patches.
+for my personal taste would not use more specific named defines here,
+would not change this, in case we can send a separate patch to fix
+them all. 
 
-Thanks for your help.
+> > +	if (ret == -ETIMEDOUT)
+> > +		dev_err(st->dev, "AXI bus timeout\n");
+> 
+> Why do you need this? The error code will go to the user space at the end? If
+> yes, it will be enough to have it printed there, no?
+> 
+
+This warning means something very bad happen at AXI level. I never seen
+this warning issued, but it may help to debug AXI/HDL issues, would not 
+remove it. 
+
+> > +	return ret;
+> > +}
+> 
+> 
+> -- 
+> With Best Regards,
+> Andy Shevchenko
+> 
+> 
+Regards,
+angelo
 

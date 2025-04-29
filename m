@@ -1,139 +1,164 @@
-Return-Path: <linux-iio+bounces-18848-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18849-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC22AAA0FF9
-	for <lists+linux-iio@lfdr.de>; Tue, 29 Apr 2025 17:04:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F001AA1003
+	for <lists+linux-iio@lfdr.de>; Tue, 29 Apr 2025 17:07:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BF93D1BA1F7D
-	for <lists+linux-iio@lfdr.de>; Tue, 29 Apr 2025 15:02:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C05F3A6467
+	for <lists+linux-iio@lfdr.de>; Tue, 29 Apr 2025 15:07:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C958A21D3D0;
-	Tue, 29 Apr 2025 15:02:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="L09teQps"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 657CD21CA1F;
+	Tue, 29 Apr 2025 15:07:21 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B6B5218ABA;
-	Tue, 29 Apr 2025 15:02:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D74121ABD3
+	for <linux-iio@vger.kernel.org>; Tue, 29 Apr 2025 15:07:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745938952; cv=none; b=NGIZT2VUj3Y6+JTLoZ5Joy++A3D99UtgZ1T1em+X+V8g/5P7QJYsGw7xR4CL3/CM1Chx4kpAQ7qJ97m6af1pMrBLWDigqoOMWnOdkdAS/pKlixZgoWuU6Kls7m4Vw4/KczpkH4hJfMDmCHzpY4ddcQbebGbgg0aa1aDeMiUrGg8=
+	t=1745939241; cv=none; b=n8XJPbMCSxk30UlnU8O3m/U98WlZSpheHzg738zeCr4PK5bJnvyDOiLDAhdS+eCwdFVRsU+Ru6UNfYqyGJlvPvlkNt9Mls2/03q5xHk7z66DiHGbJf4Qc9LW0y8W0rv1d7qcKQTudTkQ3b5uTO4up3LEeYv+PLJAM+QpuUiqeQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745938952; c=relaxed/simple;
-	bh=OqRybh9v2ukDv2tsYveLuJ5MKSvcUXUu6YuVqzSprWE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bivT9xxyaEVfzdpXxlHgPuvRVIWwhzaYNcOOmVuABTiXmTfDnUS4ji7i7SE3rAXngEQesMqkwWhyE85lUlHcwyZlXkTT50Il6HmuFVjj7nnVgL3F1646TE9jM42H9CmXotO5Rps6f8JNcq61WeEEz3obVtPVwQ963eZaVJw+4nk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=L09teQps; arc=none smtp.client-ip=209.85.210.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-736b350a22cso5356552b3a.1;
-        Tue, 29 Apr 2025 08:02:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745938950; x=1746543750; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=EZeOBi3zdLXK8sBDqMksfWSquXLKhAXvZPkKxFBGUXc=;
-        b=L09teQpsUWInldgoeqMj4ICAMQdCxCPezuizpIedfCKIwzARP2PaiTs0iWQjigpTix
-         hZA3177Rq+i5qz4Uvgtq4R2bPNsp9f+B4U4buonlNKJefu58PvDLBiEQL3vn55fl8jmc
-         BFtUZQ+vAZ80/nHgCgBNvUQJXgifMUrabPDBAAFJF/BeNXhppnH60PbclJ9+0zQIV7S6
-         kjx8wFc55tcZ67ADfpCWQht+wJLFwZAVoQyRJYSlCWp6ClnTZnB1BrfNj50/TZKHzYNx
-         Rpx1A/548CEjJLTjeqPRtQe2GXepv4QvAvXhks8UGYurVRiIMMxxSPHfU2ixrCBYpCBJ
-         KAHg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745938950; x=1746543750;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=EZeOBi3zdLXK8sBDqMksfWSquXLKhAXvZPkKxFBGUXc=;
-        b=as6hGRtarQnC+emshoP/M8PaNuNF/lgQ9d/9RLOcuei+dmxQ1PyGO/vk9TQLIB4KxQ
-         nInzjgtPsIQCKJ9tAA2vJHayQ5N/CscTDG9mC9DR+Vrd3y9/J+i/KDWkQvhgsfSRDHEV
-         vCyQAIaTn/j7At4c7mfg6FP5nHHIWBk9Ty0Oo10MBy+uXJX6P7o+KpIkGpeheSNt/tS1
-         Elm3lDq8kqFue7LUD9EYcuV6EPsOLjHR6R5K0YkTn0WMhCxzWg+IiWam0nGb0urVyyR1
-         1zRJad8kksk7VmIhJeYBPV9doTYE39FkXcybVaZmC28ZY4K+kIZMsxCVvhbbYlx77XB3
-         oSww==
-X-Forwarded-Encrypted: i=1; AJvYcCU7qYJ0CQcuBwdCBULtyG4OalMEMPq28rq3cyPRdFnYeH9m8r0GPX1S757HffO+hvKXWYKg7ITK2k0=@vger.kernel.org, AJvYcCWaxMrUNxK8+79d3tTrddKVC4h2Yx27RLv5sffMgth3mHUjRg5OD8QT8OkVHwMphphF0+iyeaLA@vger.kernel.org
-X-Gm-Message-State: AOJu0YwTPTWgfyPctUtZVYmWBPSZ4V7PuF4dbha+jI4DzUoOtn/319K7
-	6t1v+XvVQsOcIMWgvIC++XTfYxQWUrXKMgC9xLPOmjHx/CwIdlGY
-X-Gm-Gg: ASbGncvkjzz9ogFTY5/MmTV5eH1PvJomlBsySgICMn77dOy2CzHocen7DfSWQGs+YHl
-	yJUGf5oUE41V8yBFi1mALq5USofUbiXC9Je7syac9etkOtxmHVIz9fF0kzwBTFwNLpCNx2vuXEF
-	eUJgzD+FoAI4n2BjWGuKhiVSF/agpV3m/d4YN/towb/OIEBaoGQSBnOONom24b2fPV8QHV7rhBj
-	EJrgeE4Tf5KQ60Ba8O6fZPozafNaPT/6ePs2b0GOJ6SUNByL3nztmkg/84+bA5qTJLU7sETFM0f
-	U2MMEV2lFhpyBaPPS2KjBrFtt/g7V41ZbMQDBRsHLA8Z50eknf0v5P8=
-X-Google-Smtp-Source: AGHT+IFCo972++VWovC4e4n3GZ7wrhqJx+v5A+dCeDcmFNkDun633clvRk09oymZmgSjtn+ZNtzKlQ==
-X-Received: by 2002:a05:6a00:4b06:b0:736:6ecd:8e32 with SMTP id d2e1a72fcca58-7402913afbbmr4801087b3a.21.1745938943869;
-        Tue, 29 Apr 2025 08:02:23 -0700 (PDT)
-Received: from fabio-Precision-3551.. ([2804:14c:485:4b61:f8bb:f2b1:5469:86ce])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73e2593f557sm9955758b3a.42.2025.04.29.08.02.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Apr 2025 08:02:23 -0700 (PDT)
-From: Fabio Estevam <festevam@gmail.com>
-To: jic23@kernel.org
-Cc: mazziesaccount@gmail.com,
-	linux-iio@vger.kernel.org,
-	Fabio Estevam <festevam@denx.de>,
-	stable@vger.kernel.org
-Subject: [PATCH 2/2] iio: adc: max1363: Reorder max11607_mode_list[]
-Date: Tue, 29 Apr 2025 12:02:13 -0300
-Message-Id: <20250429150213.2953747-2-festevam@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250429150213.2953747-1-festevam@gmail.com>
-References: <20250429150213.2953747-1-festevam@gmail.com>
+	s=arc-20240116; t=1745939241; c=relaxed/simple;
+	bh=xqyya+f/kX/1H9jaWUVWJJ3ZcX3s+CpXXP5uGAruSnc=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=R+FrRPip/wizxhB91HNzvy29LDbjPOzDQZev+t5lo0A2yFTrjLuJTMkqp4yCyEG6x9hlp2V6raOh0m8jyukWv2hgbSQm3yUdHucgcGe8L5lyIU7dKzHAsUFV+b1dI4D7s0RJ7svoZdJYePeV1pPnwfBuv2tgWI8n0x+CiTGgRkQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Zn3TT2vNKz6M4Y1;
+	Tue, 29 Apr 2025 23:02:53 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+	by mail.maildlp.com (Postfix) with ESMTPS id 1B6FD140447;
+	Tue, 29 Apr 2025 23:07:12 +0800 (CST)
+Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Tue, 29 Apr
+ 2025 17:07:11 +0200
+Date: Tue, 29 Apr 2025 16:07:10 +0100
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+To: Mikhael Abdallah de Oliveira Pinto <mikhael_abdallah@usp.br>
+CC: <jic23@kernel.org>, Augusto Bernarde <augustomb@usp.br>,
+	<linux-iio@vger.kernel.org>
+Subject: Re: [PATCH] iio: proximity: sx9500: Deduplicate buffer managing
+ functions
+Message-ID: <20250429160710.00004a1b@huawei.com>
+In-Reply-To: <20250429093923.347370-1-mikhael_abdallah@usp.br>
+References: <20250429093923.347370-1-mikhael_abdallah@usp.br>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml500011.china.huawei.com (7.191.174.215) To
+ frapeml500008.china.huawei.com (7.182.85.71)
 
-From: Fabio Estevam <festevam@denx.de>
+On Tue, 29 Apr 2025 06:39:23 -0300
+Mikhael Abdallah de Oliveira Pinto <mikhael_abdallah@usp.br> wrote:
 
-The IIO core emits warnings when a scan mask is a subset of a previous one
-in the available_scan_masks array. 
+> Refactor to share logic between buffer enable/disable handlers.
+> 
+> Signed-off-by: Mikhael Abdallah de Oliveira Pinto <mikhael_abdallah@usp.br>
+> Co-developed-by: Augusto Bernarde <augustomb@usp.br>
+> Signed-off-by: Augusto Bernarde <augustomb@usp.br>
+> ---
+>  drivers/iio/proximity/sx9500.c | 50 ++++++++++++++++------------------
 
-In the current max11607_mode_list[], the s0to3 mode (channels 0–3,
-mask 0xF) precedes the s2to3 mode (channels 2–3, mask 0xC). Since 0xC is a
-subset of 0xF, the following warning is triggered:
+In my view this isn't a significant enough reduction to justify the more complex code.
+Particularly in the error paths.
 
-max1363 1-0064: Mask 7 (0xc) is a subset of mask 6 (0xf) and will be ignored
+Jonathan
 
-Reordering the max11607_mode_list[] to place s0to3 after s2to3 ensures that
-more specific scan modes are listed before broader ones, preventing such
-warnings.​
 
-This change improves clarity and avoids unnecessary warnings during device
-initialization.
-
-Cc: stable@vger.kernel.org
-Fixes: 2718f15403fb ("iio: sanity check available_scan_masks array")
-Signed-off-by: Fabio Estevam <festevam@denx.de>
----
- drivers/iio/adc/max1363.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/iio/adc/max1363.c b/drivers/iio/adc/max1363.c
-index d0c6e94f7204..e8eeb00bef7b 100644
---- a/drivers/iio/adc/max1363.c
-+++ b/drivers/iio/adc/max1363.c
-@@ -577,8 +577,8 @@ static const struct iio_chan_spec max1238_channels[] = MAX1363_12X_CHANS(12);
- 
- static const enum max1363_modes max11607_mode_list[] = {
- 	_s0, _s1, _s2, _s3,
--	s0to1, s0to2, s0to3,
--	s2to3,
-+	s0to1, s0to2, s2to3,
-+	s0to3,
- 	d0m1, d2m3, d1m0, d3m2,
- 	d0m1to2m3, d1m0to3m2,
- };
--- 
-2.34.1
+>  1 file changed, 23 insertions(+), 27 deletions(-)
+> 
+> diff --git a/drivers/iio/proximity/sx9500.c b/drivers/iio/proximity/sx9500.c
+> index c4e94d0fb163..75459c85116b 100644
+> --- a/drivers/iio/proximity/sx9500.c
+> +++ b/drivers/iio/proximity/sx9500.c
+> @@ -674,52 +674,48 @@ static irqreturn_t sx9500_trigger_handler(int irq, void *private)
+>  	return IRQ_HANDLED;
+>  }
+>  
+> -static int sx9500_buffer_postenable(struct iio_dev *indio_dev)
+> +static int sx9500_buffer_manage_chan_users(struct iio_dev *indio_dev, bool enable_channels)
+>  {
+>  	struct sx9500_data *data = iio_priv(indio_dev);
+>  	int ret = 0, i;
+>  
+>  	mutex_lock(&data->mutex);
+>  
+> -	for (i = 0; i < SX9500_NUM_CHANNELS; i++)
+> +	for (i = 0; i < SX9500_NUM_CHANNELS; i++) {
+>  		if (test_bit(i, indio_dev->active_scan_mask)) {
+> -			ret = sx9500_inc_chan_users(data, i);
+> +			if (enable_channels)
+> +				ret = sx9500_inc_chan_users(data, i);
+> +			else
+> +				ret = sx9500_dec_chan_users(data, i);
+>  			if (ret)
+>  				break;
+>  		}
+> +	}
+>  
+> -	if (ret)
+> -		for (i = i - 1; i >= 0; i--)
+> -			if (test_bit(i, indio_dev->active_scan_mask))
+> -				sx9500_dec_chan_users(data, i);
+> +	if (ret) {
+> +		for (i = i - 1; i >= 0; i--) {
+> +			if (test_bit(i, indio_dev->active_scan_mask)) {
+> +				if (enable_channels)
+> +					sx9500_dec_chan_users(data, i);
+> +				else
+> +					sx9500_inc_chan_users(data, i);
+> +			}
+> +		}
+> +	}
+>  
+>  	mutex_unlock(&data->mutex);
+>  
+>  	return ret;
+>  }
+>  
+> -static int sx9500_buffer_predisable(struct iio_dev *indio_dev)
+> +static int sx9500_buffer_postenable(struct iio_dev *indio_dev)
+>  {
+> -	struct sx9500_data *data = iio_priv(indio_dev);
+> -	int ret = 0, i;
+> -
+> -	mutex_lock(&data->mutex);
+> -
+> -	for (i = 0; i < SX9500_NUM_CHANNELS; i++)
+> -		if (test_bit(i, indio_dev->active_scan_mask)) {
+> -			ret = sx9500_dec_chan_users(data, i);
+> -			if (ret)
+> -				break;
+> -		}
+> -
+> -	if (ret)
+> -		for (i = i - 1; i >= 0; i--)
+> -			if (test_bit(i, indio_dev->active_scan_mask))
+> -				sx9500_inc_chan_users(data, i);
+> -
+> -	mutex_unlock(&data->mutex);
+> +	return sx9500_buffer_manage_chan_users(indio_dev, true);
+> +}
+>  
+> -	return ret;
+> +static int sx9500_buffer_predisable(struct iio_dev *indio_dev)
+> +{
+> +	return sx9500_buffer_manage_chan_users(indio_dev, false);
+>  }
+>  
+>  static const struct iio_buffer_setup_ops sx9500_buffer_setup_ops = {
 
 

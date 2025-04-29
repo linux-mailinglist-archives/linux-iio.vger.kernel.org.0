@@ -1,162 +1,141 @@
-Return-Path: <linux-iio+bounces-18858-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18859-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7F93AA1191
-	for <lists+linux-iio@lfdr.de>; Tue, 29 Apr 2025 18:32:30 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 732E0AA12E1
+	for <lists+linux-iio@lfdr.de>; Tue, 29 Apr 2025 18:59:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 514961B64D47
-	for <lists+linux-iio@lfdr.de>; Tue, 29 Apr 2025 16:32:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8F2797A6960
+	for <lists+linux-iio@lfdr.de>; Tue, 29 Apr 2025 16:58:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3089024467F;
-	Tue, 29 Apr 2025 16:32:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CF76215060;
+	Tue, 29 Apr 2025 16:59:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="ELlwHHls"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mbMoqRys"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oi1-f170.google.com (mail-oi1-f170.google.com [209.85.167.170])
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22FC522A7EB
-	for <linux-iio@vger.kernel.org>; Tue, 29 Apr 2025 16:32:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8586421772B
+	for <linux-iio@vger.kernel.org>; Tue, 29 Apr 2025 16:59:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745944345; cv=none; b=KQKBLRrEhNWsPOAcDPDHCASl/sDIYVaFt6xeQc+sOufxnbBzMO6sL5cbiqpB40zQ7yilLGppvUs2xaP7o5QAhFnV6ctq7kE6YGTnUBjPM2S29d6jQ+vQY8TEg079lEotwzaHilIzfHV0Ux1tPmNzdOhHY59SY6N3Ikp5vH/KBs4=
+	t=1745945947; cv=none; b=Wun+MbO31pf7HPcs8C0X0DGhjmirMMuceXjyR02XWTwwSzuc9SBICiXGPqVkCfaYB7BAt3Hqw10IagQEDvlZVtY0he2Pf5HK2AmzLMCCqic/FfXj6zIwC7eJJTGy4F5uCxUULAxufIeSYHADTeOwrXYWykwbW7Db4nv/qslQL0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745944345; c=relaxed/simple;
-	bh=kxJijwJOOpyMIXcfCls3QqWyToNqydz2DXvZT0qcO1I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=E6Tv1TlCTgD/iRoWuaYkKgdhAes5pI4EvNQVew5owkq7fI5it5TNs3SRaCvuSQ6gKNxv9lePr/6u8i0yYFY41yeiSc29+d+ca2VEe1nvB635dpYTidbdBVvZQYFUrIfuINdUNoq62T3VfQVcfr+T6MqM5bMsxc4YK8mwbAbTQnc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=ELlwHHls; arc=none smtp.client-ip=209.85.167.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oi1-f170.google.com with SMTP id 5614622812f47-401f6513cb2so16421b6e.0
-        for <linux-iio@vger.kernel.org>; Tue, 29 Apr 2025 09:32:22 -0700 (PDT)
+	s=arc-20240116; t=1745945947; c=relaxed/simple;
+	bh=trmPc8uygPxAoD4x8A9V6O2tSephr48QIN45QePdx8o=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=N/+ATFDJH0TtYxH26takp353/a7jBpRp6sxq+oPyp4vd0hIG8xW6wpiIgjECh15puFS4OGbMRE1inPns5wjCaL9qNRkdwbCtKHHw+ND1c88cZyAGeUIMwnbXUcrJxCmpFJOSWy+ev0gFvJ2sBviNPqabRKf6jO1HPrnNPR3KLAI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mbMoqRys; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-22c3407a87aso92681755ad.3
+        for <linux-iio@vger.kernel.org>; Tue, 29 Apr 2025 09:59:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1745944342; x=1746549142; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=VlzV3aC3Ajcd4WwT0NS/l9ibLgDyq3ihO7Tsirhk0II=;
-        b=ELlwHHlsrW4x6siALslx2SQSxA7l8//pnnn/r1cacg4Kp8Q0AQNXaXrbSf3ZBBtZ/3
-         3L4dHQ5n40xTkPUBXHg1/eBR9k9ZvcPm6rkqk8xY/utc/aUw/JA/7wEQ3k0QgT5MGeTI
-         6V2d9iZNAnfZLOWkumB35RahyHKZHYWfuws+Ml/rsrrtVSduWe4YjUn2kiCo4GnqEIEu
-         QzbtP8TJkDFUa7cU1kCZevOyOFBB++REcnfhAaTVIjn/FoVVuYflKgBCUMY1hDrkH9Ek
-         V+zpPoBAr43pC9qnJa9xkuXyJja30QtwgDo6c27ACc4ToMl5dGZv69nFXgdE5FH7zC1R
-         AAiw==
+        d=gmail.com; s=20230601; t=1745945945; x=1746550745; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=JluZzK0/mjZ9PU3uH2tcKKO4a75cfjz+q6G6KFVklKw=;
+        b=mbMoqRysGJsjIDHtB2Jd45g7pGgNVQY3AhxIuOj6vYGYV+N7NGMo2oqV/2ZnkTcqyb
+         8wra8HWlH53t8XPCvB2EK6ToWGhZWwjWiVY3fupOG3d5BgwbmPzPI8xyKGP4JG01FvkU
+         PKNIK2gO3V6sH5oQCrEhIyt/M6NZ7TaZ6pyR3eWQNffcPy/QMLBfkrHb4Rd2ZvIXxVLG
+         3YuB08PmsbMwv6imiHUCiG9faT5aBZlX+lkqkeI/8vkDLrHcI9BS/JEV8kppqQgjH5W0
+         jfG+TH3WR4kT9RbSzj9PwQL4CMPCaga1MT3JoSJJx9+ZfCHlnle+AVDb3rcOU6VpkEBI
+         CF6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745944342; x=1746549142;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=VlzV3aC3Ajcd4WwT0NS/l9ibLgDyq3ihO7Tsirhk0II=;
-        b=hvaX3BJDn9Ky0Yb3EuYORRWoF3hfPz/6iStsTwhinmTjDZbD3vPutATnXQYdWHra0i
-         V4GJhBhErKBJxbjWWv0MFghGMr34zPtNK8mIkyjb0GK6NXkJX10dpQXoOnOvWsYTgp6n
-         SXPMRAWaXBGr8dn7qGB7usUfxCSsUjBRQ3dHNBP//DO3f5fYPT5q1cuvwFmBPcrfZJHP
-         rKeHLWNexjIuG5FT3Yg+sc+zfjPsOJc6KL5o69NwmhDkzPpVAyhUS3h/2TxfrnUhttIj
-         V4Q1JqKCTJ6Ejh3+T/dTT/R5yauVqEdH6PACq4/YtYNWLrbr56rmE+FyHgwhralt4s99
-         enig==
-X-Gm-Message-State: AOJu0Yypmn2qkkCcktbZsJbWuQHBUFH562eFuVQR1+Ndc9+IIbfPBRyv
-	Xdyf98XAL0ucuraVd0deXkbJ22HHL4tKpSto2DRceGcsjpMOt4uF5ZVbfsEFLQc=
-X-Gm-Gg: ASbGncucSPXO01Et9jltCRZqIh2T2aO+L5FsyK1qmEuT+iqc+1cGxxH9PjoKceuvNRn
-	T0LXBKIGvSi7J7l4y1yNqYu8+sN1WsltLlQsDi+zNqE71VFgdVJSumKIaiyhOgcBoIATreQphjf
-	7eDyTlBKd4VnTFR+Lm5MHHNTeZX+OLspUMeus+ZAmxJwDoGF/8fugiCSsWRdAC8xY8ORAQFzxJ9
-	WENg22+hOK9gHw+AiJhQEMu2snXOI9I60KrKGyWmsCFB6XnLWR59C8JunyUEPWXjk+dJp50aTzt
-	ZPOtIjUjZomz26xKzTDmQoL2Sp2oyGvvtlGfmJQDYNjSrN/syKNQGB57ZDgAnI/pQcQIRgLUwMi
-	s1khsplkaSQBtC3cyPA==
-X-Google-Smtp-Source: AGHT+IECXLQfMw4IHoT8sY1k3B5PGYoLM8POTBaiM9WXU5IhYjgdUCA4tjARzeoztfzPvG3hb3MlHw==
-X-Received: by 2002:a05:6808:22a9:b0:3f4:11b3:206b with SMTP id 5614622812f47-4021103ccb9mr2215175b6e.17.1745944342109;
-        Tue, 29 Apr 2025 09:32:22 -0700 (PDT)
-Received: from ?IPV6:2600:8803:e7e4:1d00:dc17:157d:e8b2:3ad6? ([2600:8803:e7e4:1d00:dc17:157d:e8b2:3ad6])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-40212c4dbe6sm315201b6e.49.2025.04.29.09.32.20
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 29 Apr 2025 09:32:20 -0700 (PDT)
-Message-ID: <ad489cc7-8c89-44fa-bcec-5c4b9cbcab74@baylibre.com>
-Date: Tue, 29 Apr 2025 11:32:19 -0500
+        d=1e100.net; s=20230601; t=1745945945; x=1746550745;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=JluZzK0/mjZ9PU3uH2tcKKO4a75cfjz+q6G6KFVklKw=;
+        b=AIbVYig9ipCJgPr74MxuHvtiUIkA8cCTgb2D7tm6DE9bTs3wbav34EBVc1EvFAWFlP
+         TQ5WClJ5rEz4IcZGasyQ/MVCO/UZsVLqq+HQVSdRdC3EtlggnsR0jxCo2nhGU36wbgzL
+         0Vc4qtPeU5WvcuVyRVIQ9EbMit3/ekKJDg5OXBqHj6tfFLDJ5mdEiSFWLHEJwsof0y4o
+         k2++QJPRlPpTLgzdIGpjD72PnnjB7xxepTYmJY2Z/4fzRDGMPZOUF6rX78O3qkJu9btO
+         odEsiAim0LhT1pNnjXI9s4Dx6dq1hWfONzTETOZuSYWg17FGAsuCJzgTgnKQUvYLrLdL
+         PWKw==
+X-Forwarded-Encrypted: i=1; AJvYcCVXovvjiBm1kLxigaPgscMUSi+t5XUlX+tUIT/gqkPsiM5E4g+9lneg01VjxcXvTeQLusJXnICNsoY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwDTMQaA69tK/y0m4kYwckeJEjLCI08Omtc1kUOE2d8+KZSnZkQ
+	7zhl4SeXuJQwtQ0hZ0X1MxLhCLM7IAkJ1yD0FMJhqfpr/MpQSGpOukxExQ==
+X-Gm-Gg: ASbGncungcbak7Cqv8xns4/pNej3bvBDeiK4nXCXYExrP6Bt8NFED9tgMDXAYnbZt0o
+	tLQVPOSje2k65kK9Dsupx17yfup8HfzNIYa3wLn+An+YkVAtmerRGTwYBqKVAJQORMpuz1gp+1x
+	oD6f0/tNwaG3uPId3u1H4CcsNSmQtt2jD4YirOnnoVIAI1MbvgLCH4fKcEUYXoaxtainhySfzTo
+	GIEWLkY0ntptMowQH1HAbUID/45iZ+jM1JZgIzUF46zTVhlS6gTWyKFBAyY1k4UqRZO8vjts2kv
+	de8o65VZAxRmlzlyx01t2dspkBWy8osfDlmZBQuw2lGOcyr3PU4H3j3rcnwmhY/KCDUd
+X-Google-Smtp-Source: AGHT+IGDZoTkWzLhpWU9Fwne0npxJEHuRefTwVAolEF6oJsiNmZ9B3+MPR8nIzzf2EsvzzfkiZM2cw==
+X-Received: by 2002:a17:903:2283:b0:225:ac99:ae0f with SMTP id d9443c01a7336-22df34a9f70mr1844515ad.1.1745945944754;
+        Tue, 29 Apr 2025 09:59:04 -0700 (PDT)
+Received: from saguileran-ideapad.semfio.usp.br ([143.107.45.1])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22db4c132b7sm105096285ad.0.2025.04.29.09.59.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 29 Apr 2025 09:59:04 -0700 (PDT)
+From: Sebastian Aguilera Novoa <saguileranbr@gmail.com>
+X-Google-Original-From: Sebastian Aguilera Novoa <saguileran@ime.usp.br>
+To: jic23@kernel.org
+Cc: saguileran@ime.usp.br,
+	linux-iio@vger.kernel.org
+Subject: [PATCH] iio: pressure: hp03: Drop explicit hp03_is_writeable_reg and hp03_is_volatile_reg functions
+Date: Tue, 29 Apr 2025 13:56:03 -0300
+Message-ID: <20250429165604.67984-1-saguileran@ime.usp.br>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 2/2] iio: adc: add support for Nuvoton NCT7201
-To: Eason Yang <j2anfernee@gmail.com>, jic23@kernel.org, lars@metafoo.de,
- robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- nuno.sa@analog.com, javier.carrasco.cruz@gmail.com, tgamblin@baylibre.com,
- olivier.moysan@foss.st.com, alisadariana@gmail.com, gstols@baylibre.com,
- antoniu.miclaus@analog.com, eblanc@baylibre.com,
- andriy.shevchenko@linux.intel.com, matteomartelli3@gmail.com,
- marcelo.schmitt@analog.com, chanh@os.amperecomputing.com, KWLIU@nuvoton.com,
- yhyang2@nuvoton.com
-Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20250429025505.3278016-1-j2anfernee@gmail.com>
- <20250429025505.3278016-3-j2anfernee@gmail.com>
-From: David Lechner <dlechner@baylibre.com>
-Content-Language: en-US
-In-Reply-To: <20250429025505.3278016-3-j2anfernee@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 4/28/25 9:55 PM, Eason Yang wrote:
-> Add Nuvoton NCT7201/NCT7202 system voltage monitor 12-bit ADC driver
-> 
+Drop functions hp03_is_writeable_reg and hp03_is_volatile_reg. Both
+functions always return false, regardless of the register number or
+device. They are used in a single place within the hp03_regmap_config
+and can be replaced directly.
 
-...
+The HP03 Series of calibrated sensor module datasheet (1) document
+does not contain any information about the register values to define
+states for the functions.
 
-> +static int nct7201_init_chip(struct nct7201_chip_info *chip)
-> +{
-> +	struct device *dev = regmap_get_device(chip->regmap);
-> +	__le16 data = cpu_to_le16(GENMASK(chip->num_vin_channels - 1, 0));
-> +	unsigned int value;
-> +	int err;
-> +
-> +	err = regmap_write(chip->regmap, NCT7201_REG_CONFIGURATION,
-> +			   NCT7201_BIT_CONFIGURATION_RESET);
-> +	if (err)
-> +		return dev_err_probe(dev, err, "Failed to reset chip\n");
-> +
-> +	/*
-> +	 * After about 25 msecs, the device should be ready and then the power-up
-> +	 * bit will be set to 1. If not, wait for it.
-> +	 */
-> +	fsleep(25 * USEC_PER_MSEC);
-> +
-> +	err = regmap_read(chip->regmap, NCT7201_REG_BUSY_STATUS, &value);
-> +	if (err)
-> +		return dev_err_probe(dev, err, "Failed to read busy status\n");
-> +	if (!(value & NCT7201_BIT_PWR_UP))
-> +		return dev_err_probe(dev, -EIO, "Failed to power up after reset\n");
-> +
-> +	/* Enable Channel */
-> +	if (chip->num_vin_channels <= 8)
-> +		err = regmap_write(chip->regmap, NCT7201_REG_CHANNEL_ENABLE,
-> +				   GENMASK(chip->num_vin_channels - 1, 0));
-> +	else
-> +		err = regmap_bulk_write(chip->regmap, NCT7201_REG_CHANNEL_ENABLE,
-> +					&data, sizeof(data));
+(1): https://www.sensorica.ru/pdf/HP03.pdf
 
-Why does this use little-endian format for data but the later bulk_read of the
-same register uses CPU-endian?
+Signed-off-by: Sebastian Aguilera Novoa <saguileran@ime.usp.br>
+---
+ drivers/iio/pressure/hp03.c | 14 ++------------
+ 1 file changed, 2 insertions(+), 12 deletions(-)
 
-> +	if (err)
-> +		return dev_err_probe(dev, err, "Failed to enable channel\n");
-> +
-> +	err = regmap_bulk_read(chip->regmap, NCT7201_REG_CHANNEL_ENABLE,
-> +			       &chip->vin_mask, sizeof(chip->vin_mask));
-> +	if (err)
-> +		return dev_err_probe(dev, err,
-> +				     "Failed to read channel enable register\n");
-> +
-> +	/* Start monitoring if needed */
-> +	err = regmap_set_bits(chip->regmap, NCT7201_REG_CONFIGURATION,
-> +			      NCT7201_BIT_CONFIGURATION_START);
-> +	if (err)
-> +		return dev_err_probe(dev, err, "Failed to start monitoring\n");
-> +
-> +	return 0;
-> +}
-> +
+diff --git a/drivers/iio/pressure/hp03.c b/drivers/iio/pressure/hp03.c
+index 6f7a16787143..a69f6f5ce248 100644
+--- a/drivers/iio/pressure/hp03.c
++++ b/drivers/iio/pressure/hp03.c
+@@ -57,16 +57,6 @@ static const struct iio_chan_spec hp03_channels[] = {
+ 	},
+ };
+ 
+-static bool hp03_is_writeable_reg(struct device *dev, unsigned int reg)
+-{
+-	return false;
+-}
+-
+-static bool hp03_is_volatile_reg(struct device *dev, unsigned int reg)
+-{
+-	return false;
+-}
+-
+ static const struct regmap_config hp03_regmap_config = {
+ 	.reg_bits	= 8,
+ 	.val_bits	= 8,
+@@ -74,8 +64,8 @@ static const struct regmap_config hp03_regmap_config = {
+ 	.max_register	= HP03_EEPROM_CD_OFFSET + 1,
+ 	.cache_type	= REGCACHE_RBTREE,
+ 
+-	.writeable_reg	= hp03_is_writeable_reg,
+-	.volatile_reg	= hp03_is_volatile_reg,
++	.writeable_reg	= false,
++	.volatile_reg	= false,
+ };
+ 
+ static int hp03_get_temp_pressure(struct hp03_priv *priv, const u8 reg)
+-- 
+2.43.0
+
 

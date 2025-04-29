@@ -1,120 +1,146 @@
-Return-Path: <linux-iio+bounces-18866-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18867-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8B0BAA16EE
-	for <lists+linux-iio@lfdr.de>; Tue, 29 Apr 2025 19:41:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 015F9AA172E
+	for <lists+linux-iio@lfdr.de>; Tue, 29 Apr 2025 19:44:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AD8AA7B4B79
-	for <lists+linux-iio@lfdr.de>; Tue, 29 Apr 2025 17:40:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6BB9B16C4FC
+	for <lists+linux-iio@lfdr.de>; Tue, 29 Apr 2025 17:44:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90D13251793;
-	Tue, 29 Apr 2025 17:41:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBC7B252287;
+	Tue, 29 Apr 2025 17:44:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HMjQVfoo"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Md9hyH9E"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FF30227E95
-	for <linux-iio@vger.kernel.org>; Tue, 29 Apr 2025 17:41:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DB7A242D68;
+	Tue, 29 Apr 2025 17:44:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948495; cv=none; b=ewle0YNl1SE6WUWNJwLwT039Ngu34OKB4RcVaU1VgAoJDXU2iSfwnqkAPK/V7s/eotJ458c+6xtDxjiQ0n//urC2mnjSeXzCOTpfKeJO2/Cu5gu3oX8D2zKMMBbOkpnh0TDDbOXxGsmKg7RP79KJrDUoMm8zDwpZ0eFY/Ci1jb4=
+	t=1745948645; cv=none; b=cGgJKHY4Xz7jaR+h7/DHSsDKEMEajHzTAzri9PaTnUbyyN9+VU5xtMqlKiUGA+C/sX/j2/7lXtY+qxXn722ju03gGwP9GwPTSVZ6aRoOQ3w+obxA5z+sZvUfclWWXHc5TCBlZ2dT3GxfIxCuMp/JjgtVgHjVFKsB/WGhZ7DWRCI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948495; c=relaxed/simple;
-	bh=IMXgnezBquMbmTkFAw3mHmT53mB/DczAb5Z7CYkdfaM=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uINXZ0rwkwbniBKK45hP0wjsdiedSrd58GmGUrUY4+RmCYIrGMJ/tk/TGBUK2YFRepukzqBJ3hNDHYX5L3EVGc9w4QnOx5dFuZswFEZ5ayVns21QA8CT6THdOVWRmImsQL0jddSqLTYsSitw8tSOgSaPQDybPaupmWbNpPUBXOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HMjQVfoo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 676E5C4CEE3;
-	Tue, 29 Apr 2025 17:41:33 +0000 (UTC)
+	s=arc-20240116; t=1745948645; c=relaxed/simple;
+	bh=F4rC992XN2TU5FtjdY4KUMHyWZV0UGUS8TF2YpquYNk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=K6ycwJ8M+/VGMBdxQHU9HQ94b3/WFQ2d7F0BcYWyez+edXQ88Sf/3m+yzoXGsDygD1PdS7PpbSl65jf+9mz6m4zZP92olPO0YqpelWgDXRBypYGAV8KpKFXxjSOwgwr7LroBCCUttlP/Vy0jhzAFCsQSVkwiMs8F1y9Yys/EtVM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Md9hyH9E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A69E4C4CEE3;
+	Tue, 29 Apr 2025 17:43:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745948495;
-	bh=IMXgnezBquMbmTkFAw3mHmT53mB/DczAb5Z7CYkdfaM=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=HMjQVfooPy7za2aeJ0sdZeKrVOoJn3yit6obEDRW9xczY6B3xrTkdFoM4KpGlG4z0
-	 qpkSCdB+BuP2b4FB+5uECuJz3GxhmNAzwAyH7l2G5p8E+YERoDd6Lg/k5obldgzY1g
-	 IRkx7H2SvHJsoB3SeFZ5geP4TqldMCQUxLDkDgFtZp7L5IMhvA/+f/ebHrPPMXo8j9
-	 R4kFCGrsWvo7dNyXNQKId/hgaiQ1Bc+jfIedzkuOaSBVGpILfgr6O/3G4k+1xJ6YAP
-	 pZvwn9RjJZrWx6AW22o2gnE2MNWEBSY5D1iTTti0xzal0G7OoF7Y5CIacPUIJdHjjT
-	 7EbpL0FLdQT/g==
-Date: Tue, 29 Apr 2025 18:41:29 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Sebastian Aguilera Novoa <saguileranbr@gmail.com>
-Cc: saguileran@ime.usp.br, linux-iio@vger.kernel.org
-Subject: Re: [PATCH] iio: pressure: hp03: Drop explicit
- hp03_is_writeable_reg and hp03_is_volatile_reg functions
-Message-ID: <20250429184129.7aff4461@jic23-huawei>
-In-Reply-To: <20250429165604.67984-1-saguileran@ime.usp.br>
-References: <20250429165604.67984-1-saguileran@ime.usp.br>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
+	s=k20201202; t=1745948645;
+	bh=F4rC992XN2TU5FtjdY4KUMHyWZV0UGUS8TF2YpquYNk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Md9hyH9E5zshZ27kev1oBe0YX+0nTaVhgaGIlJfe7OI52WCeN14Y+3goj3EkBPLF2
+	 HFTOr3lhxYXQ1gzGDteA5AvGGSHcpZdqGvK2GxIk/SG7oRFmi2GqlcCuFbbqEm9k1I
+	 QndAk/0PX87poQNq2Oyp0G32UZmitVSKvlOOqmMCNw5e/ofUHZxEogSiGf/Qfxb6ES
+	 XrCFdTHrR5mo2CDC+klVQt+WiS7tMXwOHlZ2xz/+bVfIjbTGCRkn1xFpm1Qe3XMDo8
+	 AsYshyMieJq5MYUGlg3DtFgp7fCN8cCSvEAARFy8w9n1dwQldqb2AtFlk+i7Erdsqd
+	 9ikkRjfEtcs0A==
+Message-ID: <64e5c5bb-f1f9-4bac-b1a1-f628816ee1b2@kernel.org>
+Date: Tue, 29 Apr 2025 19:43:57 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 1/2] dt-bindings: iio: adc: add NCT7201 ADCs
+To: David Lechner <dlechner@baylibre.com>, Eason Yang <j2anfernee@gmail.com>
+Cc: jic23@kernel.org, lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, nuno.sa@analog.com, javier.carrasco.cruz@gmail.com,
+ tgamblin@baylibre.com, olivier.moysan@foss.st.com, alisadariana@gmail.com,
+ gstols@baylibre.com, antoniu.miclaus@analog.com, eblanc@baylibre.com,
+ andriy.shevchenko@linux.intel.com, matteomartelli3@gmail.com,
+ marcelo.schmitt@analog.com, chanh@os.amperecomputing.com, KWLIU@nuvoton.com,
+ yhyang2@nuvoton.com, linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20250429025505.3278016-1-j2anfernee@gmail.com>
+ <20250429025505.3278016-2-j2anfernee@gmail.com>
+ <20250429-sensible-subtle-cobra-badedb@kuoka>
+ <00fdf173-ac7f-48bd-be81-5d41351e99bd@baylibre.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <00fdf173-ac7f-48bd-be81-5d41351e99bd@baylibre.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On Tue, 29 Apr 2025 13:56:03 -0300
-Sebastian Aguilera Novoa <saguileranbr@gmail.com> wrote:
-
-> Drop functions hp03_is_writeable_reg and hp03_is_volatile_reg. Both
-> functions always return false, regardless of the register number or
-> device. They are used in a single place within the hp03_regmap_config
-> and can be replaced directly.
+On 29/04/2025 18:09, David Lechner wrote:
+> On 4/29/25 2:36 AM, Krzysztof Kozlowski wrote:
+>> On Tue, Apr 29, 2025 at 10:55:04AM GMT, Eason Yang wrote:
+>>> Add a binding specification for the Nuvoton NCT7201/NCT7202 up to 12-bit
+>>> ADCs with I2C interface.
+>>>
+>>> Signed-off-by: Eason Yang <j2anfernee@gmail.com>
+>>> Reviewed-by: Krzysztof Kozlowski <krzk+dt@kernel.org>
+>>
+>> NAK
+>>
+>> This never happened. Don't add fake tags.
+>>
+>> Best regards,
+>> Krzysztof
+>>
 > 
-> The HP03 Series of calibrated sensor module datasheet (1) document
-> does not contain any information about the register values to define
-> states for the functions.
+> Then who send these messages? :-p
 > 
-> (1): https://www.sensorica.ru/pdf/HP03.pdf
-> 
-> Signed-off-by: Sebastian Aguilera Novoa <saguileran@ime.usp.br>
+> https://lore.kernel.org/all/7f2d4894-788e-4ba7-bbfc-67ac0903b6fb@kernel.org/
 
-Take another look at what you are doing here.
+Do you see entirely different email? I NEVER give tags with email as
+written here. Such tag could not happen.
 
-+ the warnings it gives...
+> https://lore.kernel.org/all/20250417-acoustic-ambrosial-mosquito-9d75f4@shite/
 
-> ---
->  drivers/iio/pressure/hp03.c | 14 ++------------
->  1 file changed, 2 insertions(+), 12 deletions(-)
-> 
-> diff --git a/drivers/iio/pressure/hp03.c b/drivers/iio/pressure/hp03.c
-> index 6f7a16787143..a69f6f5ce248 100644
-> --- a/drivers/iio/pressure/hp03.c
-> +++ b/drivers/iio/pressure/hp03.c
-> @@ -57,16 +57,6 @@ static const struct iio_chan_spec hp03_channels[] = {
->  	},
->  };
->  
-> -static bool hp03_is_writeable_reg(struct device *dev, unsigned int reg)
-> -{
-> -	return false;
-> -}
-> -
-> -static bool hp03_is_volatile_reg(struct device *dev, unsigned int reg)
-> -{
-> -	return false;
-> -}
-> -
->  static const struct regmap_config hp03_regmap_config = {
->  	.reg_bits	= 8,
->  	.val_bits	= 8,
-> @@ -74,8 +64,8 @@ static const struct regmap_config hp03_regmap_config = {
->  	.max_register	= HP03_EEPROM_CD_OFFSET + 1,
->  	.cache_type	= REGCACHE_RBTREE,
->  
-> -	.writeable_reg	= hp03_is_writeable_reg,
-> -	.volatile_reg	= hp03_is_volatile_reg,
-> +	.writeable_reg	= false,
-> +	.volatile_reg	= false,
->  };
->  
->  static int hp03_get_temp_pressure(struct hp03_priv *priv, const u8 reg)
+Where is such tag here?
 
+Best regards,
+Krzysztof
 

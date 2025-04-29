@@ -1,141 +1,172 @@
-Return-Path: <linux-iio+bounces-18859-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18860-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 732E0AA12E1
-	for <lists+linux-iio@lfdr.de>; Tue, 29 Apr 2025 18:59:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93059AA1566
+	for <lists+linux-iio@lfdr.de>; Tue, 29 Apr 2025 19:26:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8F2797A6960
-	for <lists+linux-iio@lfdr.de>; Tue, 29 Apr 2025 16:58:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EEFEE16ACFE
+	for <lists+linux-iio@lfdr.de>; Tue, 29 Apr 2025 17:23:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CF76215060;
-	Tue, 29 Apr 2025 16:59:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8910253951;
+	Tue, 29 Apr 2025 17:22:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mbMoqRys"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="28KTo4U+"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+Received: from mail-oo1-f47.google.com (mail-oo1-f47.google.com [209.85.161.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8586421772B
-	for <linux-iio@vger.kernel.org>; Tue, 29 Apr 2025 16:59:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAFD025334D
+	for <linux-iio@vger.kernel.org>; Tue, 29 Apr 2025 17:22:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945947; cv=none; b=Wun+MbO31pf7HPcs8C0X0DGhjmirMMuceXjyR02XWTwwSzuc9SBICiXGPqVkCfaYB7BAt3Hqw10IagQEDvlZVtY0he2Pf5HK2AmzLMCCqic/FfXj6zIwC7eJJTGy4F5uCxUULAxufIeSYHADTeOwrXYWykwbW7Db4nv/qslQL0Q=
+	t=1745947361; cv=none; b=eja+jVCWjxfcwmN0bkpNVrDU9V+XSSvENKmzrw/O5WWRbIZxBCsReTll0UHypKQqQVurjhWsLpkT5uFYL77NE56oVwnITpUxGBXT43fBwxE7lNQgIxBJdF42MbzXZUUf1OIczLnbvPugBpC2VcTyqx+6cvaZ9aD46roeGkCH3eQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945947; c=relaxed/simple;
-	bh=trmPc8uygPxAoD4x8A9V6O2tSephr48QIN45QePdx8o=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=N/+ATFDJH0TtYxH26takp353/a7jBpRp6sxq+oPyp4vd0hIG8xW6wpiIgjECh15puFS4OGbMRE1inPns5wjCaL9qNRkdwbCtKHHw+ND1c88cZyAGeUIMwnbXUcrJxCmpFJOSWy+ev0gFvJ2sBviNPqabRKf6jO1HPrnNPR3KLAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mbMoqRys; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-22c3407a87aso92681755ad.3
-        for <linux-iio@vger.kernel.org>; Tue, 29 Apr 2025 09:59:05 -0700 (PDT)
+	s=arc-20240116; t=1745947361; c=relaxed/simple;
+	bh=hd3+lVmsRDVjj+Z5GVr6xUAaSWueaTm/lJYeNOXKlcU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=MYciBwWmpGkeoiTA76jdmlTEj+9X3KbYqbmSaWPmO82p5fExmcHa8ZrWH5FsiBazS4Dwl7tgE/Bxb5huGR/GvIB0H121+a2lTKwm0l/gn2TUVSUShy4VZ3hExSgA7CLbX9bk5ILqsgG3oFybmL0521x7On9HfpWvmAN0ly5fSIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=28KTo4U+; arc=none smtp.client-ip=209.85.161.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oo1-f47.google.com with SMTP id 006d021491bc7-60638c07cabso3594597eaf.3
+        for <linux-iio@vger.kernel.org>; Tue, 29 Apr 2025 10:22:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745945945; x=1746550745; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=JluZzK0/mjZ9PU3uH2tcKKO4a75cfjz+q6G6KFVklKw=;
-        b=mbMoqRysGJsjIDHtB2Jd45g7pGgNVQY3AhxIuOj6vYGYV+N7NGMo2oqV/2ZnkTcqyb
-         8wra8HWlH53t8XPCvB2EK6ToWGhZWwjWiVY3fupOG3d5BgwbmPzPI8xyKGP4JG01FvkU
-         PKNIK2gO3V6sH5oQCrEhIyt/M6NZ7TaZ6pyR3eWQNffcPy/QMLBfkrHb4Rd2ZvIXxVLG
-         3YuB08PmsbMwv6imiHUCiG9faT5aBZlX+lkqkeI/8vkDLrHcI9BS/JEV8kppqQgjH5W0
-         jfG+TH3WR4kT9RbSzj9PwQL4CMPCaga1MT3JoSJJx9+ZfCHlnle+AVDb3rcOU6VpkEBI
-         CF6A==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1745947358; x=1746552158; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:to:subject:user-agent:mime-version:date:message-id:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=rGhyF+xl7A86AqVMpy/9SlmHfbiCKP2Ou9wI7yu1X7Y=;
+        b=28KTo4U+XNglsNOeg2Q0pntAd8AzxDZEiGpSh41iKHyWx4czyEGTiYG52uDnD1Ep1E
+         No7OspR56hG/qYC1NHLy07wyBSong44oj1TagDZ0klKWXEaR5hfiohZS1KYUsN475dbY
+         9T6utgXb4wMSf0AqcsIgtrWO82q5TrizuIma0UUq83rMDvNl++SeM4E0x6Y1Uog6sN1Z
+         mg4urckmEUh/60dkewdHZwbAGdb25AINc0/DimOmUafjPJl2iD61bL20JKGiMgA7W+hc
+         Ph2uzQ6iv0NrYn8s/hbUW/AH8b5T1V/T8LC9kIkB95JyfA81u2mq7J0CGP4XtbQeZPlV
+         FNRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745945945; x=1746550745;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=JluZzK0/mjZ9PU3uH2tcKKO4a75cfjz+q6G6KFVklKw=;
-        b=AIbVYig9ipCJgPr74MxuHvtiUIkA8cCTgb2D7tm6DE9bTs3wbav34EBVc1EvFAWFlP
-         TQ5WClJ5rEz4IcZGasyQ/MVCO/UZsVLqq+HQVSdRdC3EtlggnsR0jxCo2nhGU36wbgzL
-         0Vc4qtPeU5WvcuVyRVIQ9EbMit3/ekKJDg5OXBqHj6tfFLDJ5mdEiSFWLHEJwsof0y4o
-         k2++QJPRlPpTLgzdIGpjD72PnnjB7xxepTYmJY2Z/4fzRDGMPZOUF6rX78O3qkJu9btO
-         odEsiAim0LhT1pNnjXI9s4Dx6dq1hWfONzTETOZuSYWg17FGAsuCJzgTgnKQUvYLrLdL
-         PWKw==
-X-Forwarded-Encrypted: i=1; AJvYcCVXovvjiBm1kLxigaPgscMUSi+t5XUlX+tUIT/gqkPsiM5E4g+9lneg01VjxcXvTeQLusJXnICNsoY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwDTMQaA69tK/y0m4kYwckeJEjLCI08Omtc1kUOE2d8+KZSnZkQ
-	7zhl4SeXuJQwtQ0hZ0X1MxLhCLM7IAkJ1yD0FMJhqfpr/MpQSGpOukxExQ==
-X-Gm-Gg: ASbGncungcbak7Cqv8xns4/pNej3bvBDeiK4nXCXYExrP6Bt8NFED9tgMDXAYnbZt0o
-	tLQVPOSje2k65kK9Dsupx17yfup8HfzNIYa3wLn+An+YkVAtmerRGTwYBqKVAJQORMpuz1gp+1x
-	oD6f0/tNwaG3uPId3u1H4CcsNSmQtt2jD4YirOnnoVIAI1MbvgLCH4fKcEUYXoaxtainhySfzTo
-	GIEWLkY0ntptMowQH1HAbUID/45iZ+jM1JZgIzUF46zTVhlS6gTWyKFBAyY1k4UqRZO8vjts2kv
-	de8o65VZAxRmlzlyx01t2dspkBWy8osfDlmZBQuw2lGOcyr3PU4H3j3rcnwmhY/KCDUd
-X-Google-Smtp-Source: AGHT+IGDZoTkWzLhpWU9Fwne0npxJEHuRefTwVAolEF6oJsiNmZ9B3+MPR8nIzzf2EsvzzfkiZM2cw==
-X-Received: by 2002:a17:903:2283:b0:225:ac99:ae0f with SMTP id d9443c01a7336-22df34a9f70mr1844515ad.1.1745945944754;
-        Tue, 29 Apr 2025 09:59:04 -0700 (PDT)
-Received: from saguileran-ideapad.semfio.usp.br ([143.107.45.1])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22db4c132b7sm105096285ad.0.2025.04.29.09.59.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Apr 2025 09:59:04 -0700 (PDT)
-From: Sebastian Aguilera Novoa <saguileranbr@gmail.com>
-X-Google-Original-From: Sebastian Aguilera Novoa <saguileran@ime.usp.br>
-To: jic23@kernel.org
-Cc: saguileran@ime.usp.br,
-	linux-iio@vger.kernel.org
-Subject: [PATCH] iio: pressure: hp03: Drop explicit hp03_is_writeable_reg and hp03_is_volatile_reg functions
-Date: Tue, 29 Apr 2025 13:56:03 -0300
-Message-ID: <20250429165604.67984-1-saguileran@ime.usp.br>
-X-Mailer: git-send-email 2.43.0
+        d=1e100.net; s=20230601; t=1745947358; x=1746552158;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=rGhyF+xl7A86AqVMpy/9SlmHfbiCKP2Ou9wI7yu1X7Y=;
+        b=aousGUHWx0J3eZnb2UGwv8oV4JBT2xAcWvmO7KCjqXCqaJqyIaWb4hpUxemtrEONSY
+         ai+4n5Z7iU8NUJAW9PoNDK+kYZIjGgNzu9cIbQ4pPVS0gyqKW7BSt9izpQ7lsG3bdR3F
+         D6LzxK8Mt6lNKxZBN0WL8XYy4XWDSKtMwrSy3dqjvXB/uthvYUT8lIRvDidMFPhCf8i7
+         7/SCTC5wuUh7oLogdPS6KzYEBxfUouuuixOZajJXSBN0Td5p4Ua6FJzI5s+t8PdIQNkr
+         Zk4oK/l2AAxPqG7m8jcsl1aWRnivBFhYiXoWzlZRf8HuH4ppD1UfcLgHx4uxxPz7CDtT
+         S0Jw==
+X-Forwarded-Encrypted: i=1; AJvYcCXn+Uytk6ORpFvSALtdYZdWAfjJA8SIHO5DDKDtebxv1AgTOty8aD/qvbE9pQ/DX9X7g5pQbe9/dFU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxhGI9ggEQA0mtK2mAoLpqnMaAV9VL02u/4KapATkv8yTYrwZYI
+	dwo+5WYDOL03DYDBm9PsYI1pINSyA9yDKgiYoDNu4RhYxFv1/669mzZjNmur+DQ=
+X-Gm-Gg: ASbGncu+ZjgcqjEWTz95yL2Ai3nf1+rgo6xoLtTvVAryJLQJh7vsYANmWHvMhLA0vEd
+	8LoHdOdSbKx2+jWnNOZUe6FsZ8TGqpDbFWbPDkrhGZVnXyKmSNEE955Mvlnf2OIRrbraGUgCD3K
+	TAbAMsSshcnBJfmt5WV4icylikA1ux2fYJhTyeKhA8PA/+pN6tUcp4Wwoxiki3bDh8jw/e5x72V
+	v5i2qwsbZLWqqVZPIAQVd4/+bZpbVL9TxfSYriszryD0zVzduQ4OFv0B8zChoedZHC2rc1BWrSu
+	cv20AxqjIDWWXKa6/pe4BDsHxau7wHR0D0J7dy0K4ZFqaxWv8CDQgV8g+yTXLNm3PFWWHkvBaRr
+	dbDC2Dfi8bOJakbE2oRS5lp4S8HnE
+X-Google-Smtp-Source: AGHT+IGQmNgXh/vTAF4JQdFuX1/hGnU+mdkA5sH8NZCqQ59Hy4noA5TyHnFaxhEo4kCvtuKCNuMi8g==
+X-Received: by 2002:a05:6871:3405:b0:29e:2da3:3f7b with SMTP id 586e51a60fabf-2da4841e18bmr1988174fac.7.1745947357870;
+        Tue, 29 Apr 2025 10:22:37 -0700 (PDT)
+Received: from ?IPV6:2600:8803:e7e4:1d00:dc17:157d:e8b2:3ad6? ([2600:8803:e7e4:1d00:dc17:157d:e8b2:3ad6])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7308b314b5dsm377480a34.64.2025.04.29.10.22.37
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 29 Apr 2025 10:22:37 -0700 (PDT)
+Message-ID: <d21e4f98-0b9f-4a89-84ab-2460ead95d40@baylibre.com>
+Date: Tue, 29 Apr 2025 12:22:36 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 07/11] iio: adc: adi-axi-adc: add sync enable/disable
+To: Antoniu Miclaus <antoniu.miclaus@analog.com>, jic23@kernel.org,
+ robh@kernel.org, conor+dt@kernel.org, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250425112538.59792-1-antoniu.miclaus@analog.com>
+ <20250425112538.59792-8-antoniu.miclaus@analog.com>
+From: David Lechner <dlechner@baylibre.com>
+Content-Language: en-US
+In-Reply-To: <20250425112538.59792-8-antoniu.miclaus@analog.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Drop functions hp03_is_writeable_reg and hp03_is_volatile_reg. Both
-functions always return false, regardless of the register number or
-device. They are used in a single place within the hp03_regmap_config
-and can be replaced directly.
+On 4/25/25 6:25 AM, Antoniu Miclaus wrote:
+> Add support for enabling/disabling the sync process used for data
+> capture alignment.
+> 
+> Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+> ---
+> changes in v3:
+>  - update the function to match the new backend interface.
+>  drivers/iio/adc/adi-axi-adc.c | 21 +++++++++++++++++++++
+>  1 file changed, 21 insertions(+)
+> 
+> diff --git a/drivers/iio/adc/adi-axi-adc.c b/drivers/iio/adc/adi-axi-adc.c
+> index 2a3a6c3f5e59..9947be059f98 100644
+> --- a/drivers/iio/adc/adi-axi-adc.c
+> +++ b/drivers/iio/adc/adi-axi-adc.c
+> @@ -44,6 +44,7 @@
+>  #define   ADI_AXI_ADC_REG_CONFIG_CMOS_OR_LVDS_N	BIT(7)
+>  
+>  #define ADI_AXI_ADC_REG_CTRL			0x0044
+> +#define    AXI_AD408X_CTRL_SYNC_MSK		BIT(3)
 
-The HP03 Series of calibrated sensor module datasheet (1) document
-does not contain any information about the register values to define
-states for the functions.
+If this bit applies to AXI ADC in general, then it shouldn't have AD408X in the
+name. Or, if this is really specific to AD408X, then...
 
-(1): https://www.sensorica.ru/pdf/HP03.pdf
+>  #define    ADI_AXI_ADC_CTRL_DDR_EDGESEL_MASK	BIT(1)
+>  
+>  #define ADI_AXI_ADC_REG_CNTRL_3			0x004c
+> @@ -416,6 +417,22 @@ static int axi_adc_ad408x_filter_type_set(struct iio_backend *back,
+>  				 AXI_AD408X_CNTRL_3_FILTER_EN_MSK);
+>  }
+>  
+> +static int axi_adc_sync_enable(struct iio_backend *back)
+> +{
+> +	struct adi_axi_adc_state *st = iio_backend_get_priv(back);
+> +
+> +	return regmap_set_bits(st->regmap, ADI_AXI_ADC_REG_CTRL,
+> +			       AXI_AD408X_CTRL_SYNC_MSK);
+> +}
+> +
+> +static int axi_adc_sync_disable(struct iio_backend *back)
+> +{
+> +	struct adi_axi_adc_state *st = iio_backend_get_priv(back);
+> +
+> +	return regmap_clear_bits(st->regmap, ADI_AXI_ADC_REG_CTRL,
+> +				 AXI_AD408X_CTRL_SYNC_MSK);
+> +}
 
-Signed-off-by: Sebastian Aguilera Novoa <saguileran@ime.usp.br>
----
- drivers/iio/pressure/hp03.c | 14 ++------------
- 1 file changed, 2 insertions(+), 12 deletions(-)
+... these functions should have ad408x in the name to make that clear and ...
 
-diff --git a/drivers/iio/pressure/hp03.c b/drivers/iio/pressure/hp03.c
-index 6f7a16787143..a69f6f5ce248 100644
---- a/drivers/iio/pressure/hp03.c
-+++ b/drivers/iio/pressure/hp03.c
-@@ -57,16 +57,6 @@ static const struct iio_chan_spec hp03_channels[] = {
- 	},
- };
- 
--static bool hp03_is_writeable_reg(struct device *dev, unsigned int reg)
--{
--	return false;
--}
--
--static bool hp03_is_volatile_reg(struct device *dev, unsigned int reg)
--{
--	return false;
--}
--
- static const struct regmap_config hp03_regmap_config = {
- 	.reg_bits	= 8,
- 	.val_bits	= 8,
-@@ -74,8 +64,8 @@ static const struct regmap_config hp03_regmap_config = {
- 	.max_register	= HP03_EEPROM_CD_OFFSET + 1,
- 	.cache_type	= REGCACHE_RBTREE,
- 
--	.writeable_reg	= hp03_is_writeable_reg,
--	.volatile_reg	= hp03_is_volatile_reg,
-+	.writeable_reg	= false,
-+	.volatile_reg	= false,
- };
- 
- static int hp03_get_temp_pressure(struct hp03_priv *priv, const u8 reg)
--- 
-2.43.0
+> +
+>  static struct iio_buffer *axi_adc_request_buffer(struct iio_backend *back,
+>  						 struct iio_dev *indio_dev)
+>  {
+> @@ -559,6 +576,8 @@ static const struct iio_backend_ops adi_axi_adc_ops = {
+>  	.request_buffer = axi_adc_request_buffer,
+>  	.free_buffer = axi_adc_free_buffer,
+>  	.data_sample_trigger = axi_adc_data_sample_trigger,
+> +	.data_alignment_enable = axi_adc_sync_enable,
+> +	.data_alignment_disable = axi_adc_sync_disable,
+
+... we shouldn't be adding them to the generic core ops.
+
+>  	.iodelay_set = axi_adc_iodelays_set,
+>  	.test_pattern_set = axi_adc_test_pattern_set,
+>  	.chan_status = axi_adc_chan_status,
+> @@ -605,6 +624,8 @@ static const struct iio_backend_ops adi_ad408x_ops = {
+>  	.free_buffer = axi_adc_free_buffer,
+>  	.data_sample_trigger = axi_adc_data_sample_trigger,
+>  	.filter_type_set = axi_adc_ad408x_filter_type_set,
+> +	.data_alignment_enable = axi_adc_sync_enable,
+> +	.data_alignment_disable = axi_adc_sync_disable,
+>  	.debugfs_reg_access = iio_backend_debugfs_ptr(axi_adc_reg_access),
+>  	.debugfs_print_chan_status = iio_backend_debugfs_ptr(axi_adc_debugfs_print_chan_status),
+>  };
 
 

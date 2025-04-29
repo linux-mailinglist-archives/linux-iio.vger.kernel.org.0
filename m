@@ -1,79 +1,80 @@
-Return-Path: <linux-iio+bounces-18811-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18812-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D9F6AA00FD
-	for <lists+linux-iio@lfdr.de>; Tue, 29 Apr 2025 05:59:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26396AA0148
+	for <lists+linux-iio@lfdr.de>; Tue, 29 Apr 2025 06:11:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2CF007A520F
-	for <lists+linux-iio@lfdr.de>; Tue, 29 Apr 2025 03:58:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 913FD188A6A6
+	for <lists+linux-iio@lfdr.de>; Tue, 29 Apr 2025 04:11:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 957A326B2C4;
-	Tue, 29 Apr 2025 03:59:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C378F270566;
+	Tue, 29 Apr 2025 04:10:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fCB6O4mZ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QcsFksX9"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
+Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9065E1F19A
-	for <linux-iio@vger.kernel.org>; Tue, 29 Apr 2025 03:59:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCE421E32D3;
+	Tue, 29 Apr 2025 04:10:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745899188; cv=none; b=jAjuFaZRmyMJ/E5hETZE4NxPVcUkFSW7Qt9GS46FYOc4C7VcJ0Csc/zF3KLSXrrIVGLkItYntiqYN5EwL2FUnV1jFnQr7P3RiwWNqRiMhbjdOHMM5pddZEd2w2KpoMbPLFuEzwV1ZcmPu74qOv/e6v1CImwDg5/GCCfV1Lv6Zog=
+	t=1745899858; cv=none; b=KY3ULNNqGMNPDeM51An/TT6dqFUEA+RcL16DK8aSAL+GlU8n9KnXtSUtG4S4BAFaHhuYGHStx1jVQTT7s4P6m6U58qlCgxk7y7MISaPX2SsE0kWVcmEEGgW/8lhPMMQ0zRMOtDgPy8YQRKOUuEhflweMen40gyZImfLT+q2MfGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745899188; c=relaxed/simple;
-	bh=To8fwUckT19z93FWDCf2Xny7W5ZO/K6ASCD98EMdCaI=;
+	s=arc-20240116; t=1745899858; c=relaxed/simple;
+	bh=Ju/08vqrnEpiUQAgsbv81EOPkj0sLd/dqkoY8i6sesk=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MbYbtpHWHauU5U8+swxMT48niCaV1DCANluopRjmb9SCW7nCBUQP7pZ0vKVXX8xx5HOqNDy1cFfnTRJYGTnSkneVX4LNrouqcc2Qm3XnEP5HHYLcFuNMZv3IsRX03cdoZMi35B9NBlaiIEnlXTJEfIlKEACdAy0/jv6B/xgOmGQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fCB6O4mZ; arc=none smtp.client-ip=209.85.167.46
+	 In-Reply-To:Content-Type; b=BykKlsAE8jkhf9clEJ9M4foijW/eJ08vMtM2QtsttsxceBdFeY7hB79Q9d2XTfjAgY8HuyUNm0ruYgOeklaX1p9I85GWbaU23Je870VTU/KrpWAxYYW8UDhXYz3GVdto1sgR3UYBovKQDYIi+yeYpjB4z+OzxRyJ/9gP8qMG3eM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QcsFksX9; arc=none smtp.client-ip=209.85.167.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-54e816aeca6so5821200e87.2
-        for <linux-iio@vger.kernel.org>; Mon, 28 Apr 2025 20:59:46 -0700 (PDT)
+Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-54b10956398so6288023e87.0;
+        Mon, 28 Apr 2025 21:10:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745899185; x=1746503985; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1745899855; x=1746504655; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=X8iXcPdxyx2hk2mP+mFAKHjH3LdwWTMIOPwnPl4SbBw=;
-        b=fCB6O4mZ2/LUC1dD8K681zzLfCQ/9pKBopt3+9Bxswa3t6OrrKfsLIAyYHf1G8yXK1
-         1rdwFrFjcPxnX8xqNGsCfCDevU+8kb9/r/O0gb2/rhTuWnzAqpr9WgNZTu3i64D2lKiy
-         oM35+6Zf7Hh9h1djlRbkO7Wt0jSzHj7PsIuL7EfOJUuwXRyftdjRAMwtZDbgBP2XHR83
-         MXBlTVRUDBOEkb2KngSu4VUit92L4k7ww+XTahPTRq07p2YzXwbcnAZnvLE6IL5bE1R/
-         k422YKaxRuR2xc5bfYjDOcb3cB/MJbmChfNF3XBmFMyzh0f9ZxoGii7B/wYjM04V8Cce
-         mGqA==
+        bh=WB+cqeimwenCq7L7/QLBCXA8KCwu4mu1U+H42Trf610=;
+        b=QcsFksX9rAxRGTkX0KrWBD4hNplcvXjmOrZ4VoNGC1az3tvVsuNBePyyXGjcpfYUMA
+         SiSCp2hd42l1RBX+hO1zF0c7v2tphcZgj5BzaDP6YZpG5aZlYd0Bcw0BNbQG2WmmgFqK
+         M8FjUqSp8Y5jmSwybe+xGK1/J0YoqDxkd67CYN+qzBGx7wLk/bpXMzcf5+qWH2rlVNs0
+         hgGAYqJBYy+EUKArvn0AQ27lFFuRt72hgfPqugSM9RCSMqOC7cR0UHSghDzNaslFR6GP
+         zCuxlHUL43486sSeqta+NN/vEUHJsBAW+9twM5axIexrkPczddvMtje3sEVOUpm/Q4VT
+         Hytw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745899185; x=1746503985;
+        d=1e100.net; s=20230601; t=1745899855; x=1746504655;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=X8iXcPdxyx2hk2mP+mFAKHjH3LdwWTMIOPwnPl4SbBw=;
-        b=oHDCaW4tholG4CE1Ix5dnT7wEWtlBd09SToWxKgxCcF7UXNR0/8DmoC47HU3JFplr1
-         oewWnWxXT7cZV9t4Ibv5RKCWBaPa6tDX5gpM5mnF8Gpxgl9KNRc+HuicTzTu/Jj0G+Sb
-         Ma+QiqkvRznYraK8kuXLAMEWsoBbJHLTuzwVtn6VamdR+AWOLDGur9XvAm0ymlYuMBIc
-         P+8DBc7AA+3RuCHSQ1SsCjuyjOgWq1c2reJF0GVaUruZ0fD0ZYPQVzNGIyW3kk/AAlNi
-         cG/RpuScZ0HiAfJWHjrRbS8LAjinJ0XMzLVjLqSvP9GH6tVKRUSe1OoNef/PcyetWrpj
-         ih6g==
-X-Gm-Message-State: AOJu0YyT6d4J2qeL83Hu9i+rlssa8JjB1sBgUzcDv9YvLre9EtSEow9B
-	dq/5r7+VB5LBvzQQQga1mwjEKruU04Hps4gBsH77k+4bqn+51V76
-X-Gm-Gg: ASbGnctuxnfpOtqVRf2+LDmyHw6pYKVXXIzztheyRHSkBC1LjfgH+3h8uyB4dF9fus9
-	uGEWw1lluinZUIXjFQZZkhMX5DEknLuPoyb6BWMruZG25fslwRtbi7fX0v2YVaqGFryL0wvXFQw
-	JyK2pb6SHk+QWzJsefBr53FdCFR/0Nd1ffobYLIPhf02/9lTACDT6NfgKifkoe/v+EUk4imvP+r
-	PDYgM5rnBd61kncUZ1iueMZ0JhofsLKYFyG5/1uvYx4p+5MB1onTTNvxJdGWjr/gU8Ix5EZNtqN
-	MvNQhyn317VTdTncCNAxaEr12EWlUAqs+Oc6nlX0Q0oKAuopJvUYp0DGANvw6Ave54uz9nbKK6R
-	qLIjJYY8j6DaTFuUZNmGNpQ==
-X-Google-Smtp-Source: AGHT+IFpb7u1jh30Hbe6ytb6b8dwwNocijdfR279HEcrz4rPgqQ+E1drUeNAjg0Ha+AcJiPzFljNfg==
-X-Received: by 2002:a05:6512:398d:b0:549:8e5e:9d8e with SMTP id 2adb3069b0e04-54e9e4f9f96mr320757e87.0.1745899184326;
-        Mon, 28 Apr 2025 20:59:44 -0700 (PDT)
+        bh=WB+cqeimwenCq7L7/QLBCXA8KCwu4mu1U+H42Trf610=;
+        b=LI0p1/FeL/oxstYBYEQ7RCtO7Yja1cGdpPytl56pxoxfOikbBW0OxJ0Ky+H04Z/4Bo
+         VlefIWkMnuAFAZNZSYrsfQYD5YbQheE0rWMCjL1lS/H4woO3P4Lsffd+Op4C25Khn1kr
+         WQZiKOE42UBa13Tengz/r9PHjCSWLkCRtcSi7yL1pZhaJUW0yQc5o21PVqe4pZpwk5Tv
+         1QxNgzal9s036ReUB50K/9jRBa0hr022M19dfmTd7UR1kOERs/dkWbeVEgZg0KXQ7lBK
+         G/+EHE/63gg7CpffDRjP0FINuCBaf7f0k/kv/KmAKTY0mCClW6oB82ZaReb70hrn3pNz
+         2xtA==
+X-Forwarded-Encrypted: i=1; AJvYcCWqtJidmJUO9z07wTyvx52kmV6rH99SGyMZzv1VBxmdBokBxchvKlfCwWZrl8mueUG57/jxwAUWe68=@vger.kernel.org, AJvYcCXOYC7PbeAZA5rfqOqMQs4y8Xyi3QxMYc9N4HOVd2KqBEJFpVUkNczzbuPLJwCBjwLgG9xejLcHhgkgcAvk@vger.kernel.org
+X-Gm-Message-State: AOJu0YyAC7C4ow8jliUrLDyiPMtc7F128U2QsBKvlpGMYtxgiULZ5lrb
+	dp+mGIYduqdx+pDegFKViOZ2tpo5zu8tH7OCl6g1ToRj9Xfram01
+X-Gm-Gg: ASbGncvjeTOE33vwvLC7J2KWQfPM9hf75zgraygAWAds1dMSWohYPeSIAXAUNfjLfUj
+	7ym/camMvu+ZSY2KWsC1AXf5A/FPmsbpoT40aV/paJcomLJXbI4+n9aImvw88okZ7yYkjxr+ks1
+	xwYqccE/Vf9pMnYHi0vGEmrqNd39VSO1YuxbpkhhazANBmgLlFKgtehFyZSvuvZ3CQbfbxUDzQi
+	tvCAx7GtsHn5IUyh5E0SogMMObJFfHKItk6D3OJ3STATyfu/mz+esFlQ5ctud2/PN3CoA/Eq8/M
+	BB5npuLwrsGm49Fx6GAgHZ1bpHqJtr9VIBtNYq8ZzPBRSEx+Pf6cDitY+lgzoUdI9iz38k5Hdr5
+	NkMEgPKQizD0EThr2k2q2DQ==
+X-Google-Smtp-Source: AGHT+IEPFRl30BuyC77X8oD2m4RqzMlO7bZdHdra+WGqHTZCNfn9O0MiguPoJvpXWPticCD77ibFSA==
+X-Received: by 2002:a05:6512:3dab:b0:54b:117f:686f with SMTP id 2adb3069b0e04-54e9e1955f9mr403491e87.28.1745899854637;
+        Mon, 28 Apr 2025 21:10:54 -0700 (PDT)
 Received: from ?IPV6:2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703? ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-54e7cb3bdbcsm1759687e87.96.2025.04.28.20.59.41
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-54e7cb3983fsm1789040e87.60.2025.04.28.21.10.52
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 28 Apr 2025 20:59:42 -0700 (PDT)
-Message-ID: <ef215ea2-e283-4c89-9b54-61b84684bfe7@gmail.com>
-Date: Tue, 29 Apr 2025 06:59:40 +0300
+        Mon, 28 Apr 2025 21:10:54 -0700 (PDT)
+Message-ID: <24baabd6-384d-472a-8e8e-96b59ad8840a@gmail.com>
+Date: Tue, 29 Apr 2025 07:10:52 +0300
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -81,85 +82,52 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: max1363 : Warnings from iio_sanity_check_avail_scan_masks()
-To: Fabio Estevam <festevam@gmail.com>, Jonathan Cameron <jic23@kernel.org>
-Cc: linux-iio@vger.kernel.org
-References: <CAOMZO5BXp38RMt5vQQWnZBQDzpN+SYB6NVU3c-Krk3po+2Zv7A@mail.gmail.com>
- <20250426160009.161b9f08@jic23-huawei>
- <CAOMZO5CepxxXo9u+mSB1P8t-tKvayz8b39emo3jHzR+6hr1HSg@mail.gmail.com>
- <20250427112343.207918cd@jic23-huawei>
- <CAOMZO5BOXGcuuf7cyf-c6QLXVoKber2oWP+sgWA_RMHQtW5-cw@mail.gmail.com>
- <CAOMZO5Bzrfu14-mzaF+EbAq=xGKMc-FGwJsx-aZd_RraH2Gscw@mail.gmail.com>
+Subject: Re: [PATCH] iio: ti-adc128s052: Drop variable vref
+To: David Lechner <dlechner@baylibre.com>,
+ Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
+Cc: Jonathan Cameron <jic23@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <59106e24332743a7f9eb0b13ad6a2f5595ab485a.1745823530.git.mazziesaccount@gmail.com>
+ <b7adef4b-68ae-4a49-937b-307e116976f4@baylibre.com>
 Content-Language: en-US, en-AU, en-GB, en-BW
 From: Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <CAOMZO5Bzrfu14-mzaF+EbAq=xGKMc-FGwJsx-aZd_RraH2Gscw@mail.gmail.com>
+In-Reply-To: <b7adef4b-68ae-4a49-937b-307e116976f4@baylibre.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-On 29/04/2025 00:16, Fabio Estevam wrote:
-> On Mon, Apr 28, 2025 at 4:03 PM Fabio Estevam <festevam@gmail.com> wrote:
+On 28/04/2025 18:16, David Lechner wrote:
+> On 4/28/25 2:02 AM, Matti Vaittinen wrote:
+>> According to Jonathan, variable reference voltages are very rare. It is
+>> unlikely it is needed, and supporting it makes the code a bit more
+>> complex.
 >>
->> Hi Jonathan,
+>> Simplify the driver and drop the variable vref support.
 >>
->> On Sun, Apr 27, 2025 at 7:23 AM Jonathan Cameron <jic23@kernel.org> wrote:
+>> Suggested-by: Jonathan Cameron <jic23@kernel.org>
+>> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
 >>
->>> https://elixir.bootlin.com/linux/v6.14.4/source/drivers/iio/adc/max1363.c#L1460
->>> There is where they are set.  Should show us if something weird is going on with
->>> what the checks are seeing vs something going wrong at the debug check.
->>
->> I am not sure if this is what you want me to print:
+>> ---
 > 
-> Sorry, I should do it like this instead:
+> Reviewed-by: David Lechner <dlechner@baylibre.com>
 > 
-> --- a/drivers/iio/adc/max1363.c
-> +++ b/drivers/iio/adc/max1363.c
-> @@ -1453,6 +1453,9 @@ static int max1363_alloc_scan_masks(struct
-> iio_dev *indio_dev)
+>> @@ -183,17 +173,14 @@ static int adc128_probe(struct spi_device *spi)
+>>   	indio_dev->channels = config->channels;
+>>   	indio_dev->num_channels = config->num_channels;
+>>   
+>> -	adc->reg = devm_regulator_get(&spi->dev, config->refname);
+>> -	if (IS_ERR(adc->reg))
+>> -		return PTR_ERR(adc->reg);
+>> -
+>> -	ret = regulator_enable(adc->reg);
+>> +	ret = devm_regulator_get_enable_read_voltage(&spi->dev,
+>> +							   config->refname);
 > 
->          indio_dev->available_scan_masks = masks;
-> 
-> +       for (i = 0; i < st->chip_info->num_modes; i++)
-> +               pr_err("************ available_scan_masks is %lu\n", masks[i]);
-> +
->          return 0;
->   }
-> 
-> which prints:
-> 
-> [    1.567841] ************ available_scan_masks is 1
-> [    1.577203] ************ available_scan_masks is 2
-> [    1.582032] ************ available_scan_masks is 4
-> [    1.586837] ************ available_scan_masks is 8
-> [    1.591644] ************ available_scan_masks is 3
-> [    1.596452] ************ available_scan_masks is 7
-> [    1.601258] ************ available_scan_masks is 15
-> [    1.606149] ************ available_scan_masks is 12
+> Is this properly aligned to the opening "("?
 
-Here, 12 is subset of 15.
-
-> [    1.611041] ************ available_scan_masks is 4096
-> [    1.616101] ************ available_scan_masks is 8192
-> [    1.616105] ************ available_scan_masks is 262144
-> [    1.616108] ************ available_scan_masks is 524288
-> [    1.640493] ************ available_scan_masks is 12288
-> [    1.645640] ************ available_scan_masks is 786432
-> [    1.652223] max1363 1-0064: available_scan_mask 8 subset of 0. Never used
-> [    1.659028] max1363 1-0064: available_scan_mask 9 subset of 0. Never used
-> [    1.665829] max1363 1-0064: available_scan_mask 10 subset of 0. Never used
-> [    1.672722] max1363 1-0064: available_scan_mask 11 subset of 0. Never used
-
-// snip
-
-So, majority of these prints seem to be garbage. AFAICS, we should only see:
- > [    1.652223] max1363 1-0064: available_scan_mask 8 subset of 7. 
-Never used
-
-Or maybe:
-available_scan_mask: mask[8] subset of mask[7]. Never used
-
-Do you think you could send a patch to fix this, or should I take a look 
-at it?
+Thanks David. No, it's off by one tab. Nicely spotted :)
 
 Yours,
 	-- Matti
+
 

@@ -1,80 +1,79 @@
-Return-Path: <linux-iio+bounces-18810-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18811-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B73F5AA00E5
-	for <lists+linux-iio@lfdr.de>; Tue, 29 Apr 2025 05:50:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D9F6AA00FD
+	for <lists+linux-iio@lfdr.de>; Tue, 29 Apr 2025 05:59:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 48A881B62FD9
-	for <lists+linux-iio@lfdr.de>; Tue, 29 Apr 2025 03:50:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2CF007A520F
+	for <lists+linux-iio@lfdr.de>; Tue, 29 Apr 2025 03:58:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17B95205E25;
-	Tue, 29 Apr 2025 03:50:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 957A326B2C4;
+	Tue, 29 Apr 2025 03:59:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="g0ah69S/"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fCB6O4mZ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
+Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 341CF1876
-	for <linux-iio@vger.kernel.org>; Tue, 29 Apr 2025 03:50:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9065E1F19A
+	for <linux-iio@vger.kernel.org>; Tue, 29 Apr 2025 03:59:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745898631; cv=none; b=DsanjgOyjLImj3Pk+MRO1FuSss1E8idiTMVYAQHSeo8Y/sjEhcpygBoC6YxehunZV157kIqySyc4SlRbULL5Humw2CGwIXHfDWg1JL5TzwDOrtF8V7/XBFK++fBoShNWoeM5sY8pQipWoKnZEniHXjFgFf4wtSU7lYV1GLQlgSs=
+	t=1745899188; cv=none; b=jAjuFaZRmyMJ/E5hETZE4NxPVcUkFSW7Qt9GS46FYOc4C7VcJ0Csc/zF3KLSXrrIVGLkItYntiqYN5EwL2FUnV1jFnQr7P3RiwWNqRiMhbjdOHMM5pddZEd2w2KpoMbPLFuEzwV1ZcmPu74qOv/e6v1CImwDg5/GCCfV1Lv6Zog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745898631; c=relaxed/simple;
-	bh=k+XsAlcoijiCQ5MjqhpLbKI2RmlnWSNUTsejv4Dnir4=;
+	s=arc-20240116; t=1745899188; c=relaxed/simple;
+	bh=To8fwUckT19z93FWDCf2Xny7W5ZO/K6ASCD98EMdCaI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bYgOQB5n5i1DUgSkdMPBcCEq/y/ZIrYo+RUHPuzig/RokMMb9DukElAbyByHtwoZshMuE1ABzMRTAkwGA1tNtlIBooiX+m/IBT+zM8i2XEEgjjWUWuiko5A49qNDQlqMzfgESRnRWMSy16kfoLA+OGua/oGHP9enSI9vtEI/TXw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=g0ah69S/; arc=none smtp.client-ip=209.85.167.45
+	 In-Reply-To:Content-Type; b=MbYbtpHWHauU5U8+swxMT48niCaV1DCANluopRjmb9SCW7nCBUQP7pZ0vKVXX8xx5HOqNDy1cFfnTRJYGTnSkneVX4LNrouqcc2Qm3XnEP5HHYLcFuNMZv3IsRX03cdoZMi35B9NBlaiIEnlXTJEfIlKEACdAy0/jv6B/xgOmGQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fCB6O4mZ; arc=none smtp.client-ip=209.85.167.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-5499614d3d2so5863390e87.3
-        for <linux-iio@vger.kernel.org>; Mon, 28 Apr 2025 20:50:29 -0700 (PDT)
+Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-54e816aeca6so5821200e87.2
+        for <linux-iio@vger.kernel.org>; Mon, 28 Apr 2025 20:59:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745898628; x=1746503428; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1745899185; x=1746503985; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=m8YQz3EMOHiIGxLm1u/LQRPsitLmo7P294OrqAxT1bU=;
-        b=g0ah69S/xk1LB/YH5lgAzhh7tsEWPJVhujve7Rsqnk4gCb3Nxv3snagTVDqVKz0XvV
-         SQmpxryCVSUGp1Wf5Y6AZKXd1hbpEttg1fk2q1OhpxVDKAEKkJ9bUYZzAxi838n7c1ef
-         iNLjvgHWe/DCcmViWpKf/HIBtLw9gaKwjkRyaauqKGKgj2Tl0AV6xdScrpX0S6/n0ueZ
-         ZjcJOxvgbabDUHmOI/zPPuqPzGjG6cZX2M5ZBKdxp7tP/BgJTrVj6qK8Zm2hKbitckyI
-         Y2Vu35vPbwZhIz+Tqg8TJ+vJvCD8rk9TS3jWVdPDrAKDDgluvs8BVgGtWGjmOFkCLTF3
-         XKLA==
+        bh=X8iXcPdxyx2hk2mP+mFAKHjH3LdwWTMIOPwnPl4SbBw=;
+        b=fCB6O4mZ2/LUC1dD8K681zzLfCQ/9pKBopt3+9Bxswa3t6OrrKfsLIAyYHf1G8yXK1
+         1rdwFrFjcPxnX8xqNGsCfCDevU+8kb9/r/O0gb2/rhTuWnzAqpr9WgNZTu3i64D2lKiy
+         oM35+6Zf7Hh9h1djlRbkO7Wt0jSzHj7PsIuL7EfOJUuwXRyftdjRAMwtZDbgBP2XHR83
+         MXBlTVRUDBOEkb2KngSu4VUit92L4k7ww+XTahPTRq07p2YzXwbcnAZnvLE6IL5bE1R/
+         k422YKaxRuR2xc5bfYjDOcb3cB/MJbmChfNF3XBmFMyzh0f9ZxoGii7B/wYjM04V8Cce
+         mGqA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745898628; x=1746503428;
+        d=1e100.net; s=20230601; t=1745899185; x=1746503985;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=m8YQz3EMOHiIGxLm1u/LQRPsitLmo7P294OrqAxT1bU=;
-        b=OMw4JNHil+W0NUk5UlGMDkRM+84zuMSU1+BqQg0UTLHtN0gXPsNa2yS83LwKNX1jWP
-         w0OCEKaoa/pl9HgvDzEqRkZIXkx9PFQCzTgFxPNLnv8CU6h5N/BEPD2IR4fBNe6AXhy5
-         kv7kAksMDKTdNTO0pM31T2L45KlIDpcxRszlfklAmy31NHrtRbpv+nwAULuKgatCqUTk
-         RmTUmJjyphJU1h8wyQWdmvYdrKtw1v7bis0jszQXTdbB13hSrMtMFFB0pYjnypFjzw3h
-         qse1bGO36uo4NtqARPwHynZd8uJaGpkHKEtI3p3ufS8QWCOtEC/WiPRMWWA38BuReeMu
-         vXzA==
-X-Forwarded-Encrypted: i=1; AJvYcCXEJFOOEG3E4EGDFP4d328Gu5K28GeNJZfsLh3yQIbjXaZFMO29d4CZJ6srC+nSArk2dqYwgphFvIs=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy3mCosw8MLl/0+bR1zo5sXjwDXoBRAwawrag4nGM7YTrvOx1cc
-	d5tmtmGibyY4dOG4swUV/Msec2HpnApf3/9wo/2JDoHtiZoiKXCDQTB+jQ==
-X-Gm-Gg: ASbGncsGu+KXVZpBywIysXx5l5tZKpIssOuotoeRxWHXph6L0qhtQvMsNQm4E7tRfzN
-	C47jYajqtFkwpDAYog8lQPxHGSnl1DuYdK7e2qbJUazVp8mmhzpakPAcRV7hfvXctZMp3Tz4CYU
-	9juPIhGuyUgMh0xscjqWM67vazzCF8NPmWHgHQRc79PNv12IDqCXQ/pHjiDt1OMHs+PokP5FDXW
-	ibgCgtLgC8aWFMyeau4fazdGcfmww7hQMm4fPRZnmfcqsE5e8gwx3mCx8YSBEpx/smd50zUgNhX
-	/Nm+GGVstWwwNZWQEj66+VbVAasTrfMynbsxeDaeAiyavGay6pXNdWGbuCuX35Dba1AObgzn+O5
-	lF/50pntzoXFC7RhfT39RiA==
-X-Google-Smtp-Source: AGHT+IFMxNxNG0vOTTzGqNgwtundXfES5ovvJXQiTeE93Ue53/SMPNCLvOUsPpSgvQY1BUe5qQfmmA==
-X-Received: by 2002:a05:6512:3407:b0:54d:69a3:6109 with SMTP id 2adb3069b0e04-54e9daeaae1mr538710e87.8.1745898627916;
-        Mon, 28 Apr 2025 20:50:27 -0700 (PDT)
+        bh=X8iXcPdxyx2hk2mP+mFAKHjH3LdwWTMIOPwnPl4SbBw=;
+        b=oHDCaW4tholG4CE1Ix5dnT7wEWtlBd09SToWxKgxCcF7UXNR0/8DmoC47HU3JFplr1
+         oewWnWxXT7cZV9t4Ibv5RKCWBaPa6tDX5gpM5mnF8Gpxgl9KNRc+HuicTzTu/Jj0G+Sb
+         Ma+QiqkvRznYraK8kuXLAMEWsoBbJHLTuzwVtn6VamdR+AWOLDGur9XvAm0ymlYuMBIc
+         P+8DBc7AA+3RuCHSQ1SsCjuyjOgWq1c2reJF0GVaUruZ0fD0ZYPQVzNGIyW3kk/AAlNi
+         cG/RpuScZ0HiAfJWHjrRbS8LAjinJ0XMzLVjLqSvP9GH6tVKRUSe1OoNef/PcyetWrpj
+         ih6g==
+X-Gm-Message-State: AOJu0YyT6d4J2qeL83Hu9i+rlssa8JjB1sBgUzcDv9YvLre9EtSEow9B
+	dq/5r7+VB5LBvzQQQga1mwjEKruU04Hps4gBsH77k+4bqn+51V76
+X-Gm-Gg: ASbGnctuxnfpOtqVRf2+LDmyHw6pYKVXXIzztheyRHSkBC1LjfgH+3h8uyB4dF9fus9
+	uGEWw1lluinZUIXjFQZZkhMX5DEknLuPoyb6BWMruZG25fslwRtbi7fX0v2YVaqGFryL0wvXFQw
+	JyK2pb6SHk+QWzJsefBr53FdCFR/0Nd1ffobYLIPhf02/9lTACDT6NfgKifkoe/v+EUk4imvP+r
+	PDYgM5rnBd61kncUZ1iueMZ0JhofsLKYFyG5/1uvYx4p+5MB1onTTNvxJdGWjr/gU8Ix5EZNtqN
+	MvNQhyn317VTdTncCNAxaEr12EWlUAqs+Oc6nlX0Q0oKAuopJvUYp0DGANvw6Ave54uz9nbKK6R
+	qLIjJYY8j6DaTFuUZNmGNpQ==
+X-Google-Smtp-Source: AGHT+IFpb7u1jh30Hbe6ytb6b8dwwNocijdfR279HEcrz4rPgqQ+E1drUeNAjg0Ha+AcJiPzFljNfg==
+X-Received: by 2002:a05:6512:398d:b0:549:8e5e:9d8e with SMTP id 2adb3069b0e04-54e9e4f9f96mr320757e87.0.1745899184326;
+        Mon, 28 Apr 2025 20:59:44 -0700 (PDT)
 Received: from ?IPV6:2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703? ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-54e7cb26eccsm1773181e87.2.2025.04.28.20.50.24
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-54e7cb3bdbcsm1759687e87.96.2025.04.28.20.59.41
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 28 Apr 2025 20:50:26 -0700 (PDT)
-Message-ID: <d76b01c2-a08e-419c-93bf-92395ea75251@gmail.com>
-Date: Tue, 29 Apr 2025 06:50:24 +0300
+        Mon, 28 Apr 2025 20:59:42 -0700 (PDT)
+Message-ID: <ef215ea2-e283-4c89-9b54-61b84684bfe7@gmail.com>
+Date: Tue, 29 Apr 2025 06:59:40 +0300
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -83,63 +82,83 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: max1363 : Warnings from iio_sanity_check_avail_scan_masks()
-To: Fabio Estevam <festevam@gmail.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org
+To: Fabio Estevam <festevam@gmail.com>, Jonathan Cameron <jic23@kernel.org>
+Cc: linux-iio@vger.kernel.org
 References: <CAOMZO5BXp38RMt5vQQWnZBQDzpN+SYB6NVU3c-Krk3po+2Zv7A@mail.gmail.com>
  <20250426160009.161b9f08@jic23-huawei>
- <de99d175-a571-43a0-b254-606ba03948aa@gmail.com>
- <CAOMZO5CtU8_4gp4gM_DYj-6PCTROT5N1jRqb9-6PMq9PxOy1bw@mail.gmail.com>
+ <CAOMZO5CepxxXo9u+mSB1P8t-tKvayz8b39emo3jHzR+6hr1HSg@mail.gmail.com>
+ <20250427112343.207918cd@jic23-huawei>
+ <CAOMZO5BOXGcuuf7cyf-c6QLXVoKber2oWP+sgWA_RMHQtW5-cw@mail.gmail.com>
+ <CAOMZO5Bzrfu14-mzaF+EbAq=xGKMc-FGwJsx-aZd_RraH2Gscw@mail.gmail.com>
 Content-Language: en-US, en-AU, en-GB, en-BW
 From: Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <CAOMZO5CtU8_4gp4gM_DYj-6PCTROT5N1jRqb9-6PMq9PxOy1bw@mail.gmail.com>
+In-Reply-To: <CAOMZO5Bzrfu14-mzaF+EbAq=xGKMc-FGwJsx-aZd_RraH2Gscw@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 28/04/2025 22:04, Fabio Estevam wrote:
-> Hi Matti,
-> 
-> On Mon, Apr 28, 2025 at 2:38 AM Matti Vaittinen
-> <mazziesaccount@gmail.com> wrote:
-> 
->> I believe it'd be more informative if we printed the actual bit masks -
->> but I am not sure if we know the size of the mask. If we keep printing
->> the indexes, then we might want to add brackets [] to indicate the value
->> is an index? How about:
+On 29/04/2025 00:16, Fabio Estevam wrote:
+> On Mon, Apr 28, 2025 at 4:03 PM Fabio Estevam <festevam@gmail.com> wrote:
 >>
->> "available_scan_masks: mask[8] subset of mask[0]. Never used"
+>> Hi Jonathan,
 >>
->> instead of:
->> available_scan_mask 8 subset of 0. Never used
+>> On Sun, Apr 27, 2025 at 7:23 AM Jonathan Cameron <jic23@kernel.org> wrote:
 >>
->> Would that be more obvious?
+>>> https://elixir.bootlin.com/linux/v6.14.4/source/drivers/iio/adc/max1363.c#L1460
+>>> There is where they are set.  Should show us if something weird is going on with
+>>> what the checks are seeing vs something going wrong at the debug check.
+>>
+>> I am not sure if this is what you want me to print:
 > 
-> I still find the "Never used" part a bit cryptic. What exactly is never used?
+> Sorry, I should do it like this instead:
+> 
+> --- a/drivers/iio/adc/max1363.c
+> +++ b/drivers/iio/adc/max1363.c
+> @@ -1453,6 +1453,9 @@ static int max1363_alloc_scan_masks(struct
+> iio_dev *indio_dev)
+> 
+>          indio_dev->available_scan_masks = masks;
+> 
+> +       for (i = 0; i < st->chip_info->num_modes; i++)
+> +               pr_err("************ available_scan_masks is %lu\n", masks[i]);
+> +
+>          return 0;
+>   }
+> 
+> which prints:
+> 
+> [    1.567841] ************ available_scan_masks is 1
+> [    1.577203] ************ available_scan_masks is 2
+> [    1.582032] ************ available_scan_masks is 4
+> [    1.586837] ************ available_scan_masks is 8
+> [    1.591644] ************ available_scan_masks is 3
+> [    1.596452] ************ available_scan_masks is 7
+> [    1.601258] ************ available_scan_masks is 15
+> [    1.606149] ************ available_scan_masks is 12
 
-When user wants to enable some channels, the IIO core scans the 
-available_scan_masks -array in order to find a supported configuration 
-which meets the requirements. IIO core does this scanning in the order, 
-and stops when first suitable mask is found from the available_scan_masks.
+Here, 12 is subset of 15.
 
-This means that if we have a mask which is a subset of a mask which is 
-earlier in the array, this latter mask will never be used because the 
-earlier one (the superset) will always be found first and picked by the 
-IIO core.
+> [    1.611041] ************ available_scan_masks is 4096
+> [    1.616101] ************ available_scan_masks is 8192
+> [    1.616105] ************ available_scan_masks is 262144
+> [    1.616108] ************ available_scan_masks is 524288
+> [    1.640493] ************ available_scan_masks is 12288
+> [    1.645640] ************ available_scan_masks is 786432
+> [    1.652223] max1363 1-0064: available_scan_mask 8 subset of 0. Never used
+> [    1.659028] max1363 1-0064: available_scan_mask 9 subset of 0. Never used
+> [    1.665829] max1363 1-0064: available_scan_mask 10 subset of 0. Never used
+> [    1.672722] max1363 1-0064: available_scan_mask 11 subset of 0. Never used
 
-Eg, if mask[0] consists of bits
-0,3,5,7
+// snip
 
-and mask[1] consists of bits
-0,5
+So, majority of these prints seem to be garbage. AFAICS, we should only see:
+ > [    1.652223] max1363 1-0064: available_scan_mask 8 subset of 7. 
+Never used
 
-- then if user wants to enable channels 0 or 5 (or 0 and 5) - the 
-mask[0] will always be picked by the IIO core because it fulfills the 
-needs. This means IIO will always enable channels 0,3,5 and 7 - and 
-never use the smaller configuration of only channels 0 and 5.
+Or maybe:
+available_scan_mask: mask[8] subset of mask[7]. Never used
 
-Hence, the ordering of the masks matters, and this check (and print) was 
-added.
-
-I hope this clarifies.
+Do you think you could send a patch to fix this, or should I take a look 
+at it?
 
 Yours,
 	-- Matti

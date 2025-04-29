@@ -1,55 +1,56 @@
-Return-Path: <linux-iio+bounces-18862-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18863-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AF6BAA16A4
-	for <lists+linux-iio@lfdr.de>; Tue, 29 Apr 2025 19:39:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C1D0AA169F
+	for <lists+linux-iio@lfdr.de>; Tue, 29 Apr 2025 19:39:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 400245A05FF
-	for <lists+linux-iio@lfdr.de>; Tue, 29 Apr 2025 17:32:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 93CB117480D
+	for <lists+linux-iio@lfdr.de>; Tue, 29 Apr 2025 17:36:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B81EC24E000;
-	Tue, 29 Apr 2025 17:33:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A2F52528FC;
+	Tue, 29 Apr 2025 17:36:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pYFandJn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OrJznZZb"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72E407E110;
-	Tue, 29 Apr 2025 17:33:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 163351C6B4;
+	Tue, 29 Apr 2025 17:35:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947988; cv=none; b=C7wOHtQ8VZyAvMobg56jImM0dHe26FKR8mmo1mXMS809eNSulIepvc7JIWXyTfvGVw/jCIYowoHPPbVRT6CThibtugIeUT9l2v3rObAQeIKBrB8WDVDPxWaqVP20kK+Nya5XwzPIxioOQ3fz0GgfETlNOBfAWxINaQhSWGruT4M=
+	t=1745948160; cv=none; b=QA/NoDzSTcM87ORXUqAcPiHrBga2sbdWfmplM7WqmYKe/4xswSiTedRZLWU0nYVaj2LJwqszNicMd1GJYJje8DcCclVCCTILMYtwFC5xb0Yn9CTkZRtZJrLMyy2oO1u0/pjniRw09BmyzwX9NjfETFlzbKfRT6VP0pd9y2eH44A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947988; c=relaxed/simple;
-	bh=jls8EKZP3x3ZeV9bGVIVbYrhlCx9XIdJZvD4fEcWk+E=;
+	s=arc-20240116; t=1745948160; c=relaxed/simple;
+	bh=EuiTY7wVzUPlxKWHnvDSpAAOtakCrEzIVRnNO3fVHLI=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OaLfeWLyrz8Ojxc3etVw7o4F7LcSpajwB9zWzSoQ2pT+pKK9hFFUmH+OuZAyGzhXPsXWDDYLpjbO0KyKRcxqRzv2hNMgzcI4ufjOO6pOMilcui3oCftxRPn3TohRFAY2wQKeCLiDpWOcTvQA9Ql0z1964YYXQGw1xDJm2lUBYRk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pYFandJn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2E3CC4CEEE;
-	Tue, 29 Apr 2025 17:33:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=W/hfxr5pHC02oI/cMNTs00tu4CMcoLfaArGT0OnmhLyllyF5mRK+wzcgQNWFLcmrtPHoSSmDh/prOaHIfcXTzwpEhuE2u/B/PmRhvtYoD0ZV7o/aj2smJV3v8oAlzNRH7L8zaIcOWwvxXFlsjX5qyj5yuZo7W1HB7jQwfF0ZHMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OrJznZZb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71892C4CEEE;
+	Tue, 29 Apr 2025 17:35:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745947988;
-	bh=jls8EKZP3x3ZeV9bGVIVbYrhlCx9XIdJZvD4fEcWk+E=;
+	s=k20201202; t=1745948159;
+	bh=EuiTY7wVzUPlxKWHnvDSpAAOtakCrEzIVRnNO3fVHLI=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=pYFandJnS6iEp4jB7DcYg5LCip0gzke/SigpAK5O0GXDQyvLCXnrTpLsnXsABIXoU
-	 5s1MzARBN2XEGef6YPP2vQAJbkqFAVtODzKbjhlLKAm4MXyFNB0pFIriKAV7IQ3cp+
-	 mvUaNoiRHt2Koz9nltR8cwsdouOfcaa+m7Xn/16UiVrgs3SJI9HmwuBF2ubvz3l2Lp
-	 zpX8jj9NzNNdUaT58k/FkGori+u1Fh+3d/HTxHH4Mr7ZtcKlAyyI1jPiFr+XHkXGja
-	 Z+OYBQ/UE/kpkDKdghC5zNT7jyPa30r2tWOCyfRFnftIUv+LTtlWyJkW4wWOVrEXKq
-	 /5FBORMIlFZPA==
-Date: Tue, 29 Apr 2025 18:33:01 +0100
+	b=OrJznZZbFIABkFjxemjdAK499Saz+ZH1WNC/vqvomSD9v1/pFX8fu3Sc7+BxG2leq
+	 lHqAMUwbKLtPbhCMvpyAVa3CL1nIrnhCdUuSDvd2h8eyTy0d09E6cECM9a2cFRBuNC
+	 /y4It7pqho4gspsaoityyYTaogDDkGNc3gGcqzgnOokO2poBWl/wHz+Rd9C1tC6czl
+	 vt1V0MnijZoh20PybxilY/AhrKS9+vDE3BVp5iqv6/rTXAqhDZgMnajAGF1KjA0rIX
+	 7QuljdUdvFZ7Fz/D35wRSIkEAiBck/w7kmInRAnAIBNGpVTJAObhf6cgrz/ZnAgmmk
+	 Co7PdLszzW1pA==
+Date: Tue, 29 Apr 2025 18:35:52 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: Fabio Estevam <festevam@gmail.com>
 Cc: mazziesaccount@gmail.com, linux-iio@vger.kernel.org, Fabio Estevam
  <festevam@denx.de>, stable@vger.kernel.org
-Subject: Re: [PATCH 1/2] iio: Fix scan mask subset check logic
-Message-ID: <20250429183301.326eaacf@jic23-huawei>
-In-Reply-To: <20250429150213.2953747-1-festevam@gmail.com>
+Subject: Re: [PATCH 2/2] iio: adc: max1363: Reorder max11607_mode_list[]
+Message-ID: <20250429183552.6a87e4cb@jic23-huawei>
+In-Reply-To: <20250429150213.2953747-2-festevam@gmail.com>
 References: <20250429150213.2953747-1-festevam@gmail.com>
+	<20250429150213.2953747-2-festevam@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -57,106 +58,69 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, 29 Apr 2025 12:02:12 -0300
+On Tue, 29 Apr 2025 12:02:13 -0300
 Fabio Estevam <festevam@gmail.com> wrote:
 
 > From: Fabio Estevam <festevam@denx.de>
-> 
-> Since commit 2718f15403fb ("iio: sanity check available_scan_masks array"),
-> verbose and misleading warnings are printed for devices like the MAX11601:
-> 
-> max1363 1-0064: available_scan_mask 8 subset of 0. Never used
-> max1363 1-0064: available_scan_mask 9 subset of 0. Never used
-> max1363 1-0064: available_scan_mask 10 subset of 0. Never used
-> max1363 1-0064: available_scan_mask 11 subset of 0. Never used
-> max1363 1-0064: available_scan_mask 12 subset of 0. Never used
-> max1363 1-0064: available_scan_mask 13 subset of 0. Never used
-> ...
-> [warnings continue] 
-> 
-> Fix the available_scan_masks sanity check logic so that it
-> only prints the warning when an element of available_scan_mask
-> is in fact a subset of a previous one.
-> 
-> These warnings incorrectly report that later scan masks are subsets of
-> the first one, even when they are not. The issue lies in the logic that
-> checks for subset relationships between scan masks.
-
-Add a little on why the logic is wrong would be good.
-
-I stared at this for a while when you first reported it and
-couldn't spot it..
-
-
-> 
-> Fix the subset detection to correctly compare each mask only
-> against previous masks, and only warn when a true subset is found.
-> 
-> With this fix, the warning output becomes both correct and more
-> informative:
-> 
-> max1363 1-0064: Mask 7 (0xc) is a subset of mask 6 (0xf) and will be ignored
-> 
+>=20
+> The IIO core emits warnings when a scan mask is a subset of a previous one
+> in the available_scan_masks array.=20
+>=20
+> In the current max11607_mode_list[], the s0to3 mode (channels 0=E2=80=933,
+> mask 0xF) precedes the s2to3 mode (channels 2=E2=80=933, mask 0xC). Since=
+ 0xC is a
+> subset of 0xF, the following warning is triggered:
+>=20
+> max1363 1-0064: Mask 7 (0xc) is a subset of mask 6 (0xf) and will be igno=
+red
+>=20
+> Reordering the max11607_mode_list[] to place s0to3 after s2to3 ensures th=
+at
+> more specific scan modes are listed before broader ones, preventing such
+> warnings.=E2=80=8B
+>=20
+> This change improves clarity and avoids unnecessary warnings during device
+> initialization.
+>=20
 > Cc: stable@vger.kernel.org
 > Fixes: 2718f15403fb ("iio: sanity check available_scan_masks array")
 > Signed-off-by: Fabio Estevam <festevam@denx.de>
+
+There are others in there that are out of order...
+max1238_mode_list[] for example looks to be as s6to7 should be before s0to7
+(there are more issues with that one).
+
+Would you mind taking a quick look at all those others as I'd like
+one fix for all of them if possible?
+
+Thanks,
+
+Jonathan
+
+
+
 > ---
->  drivers/iio/industrialio-core.c | 23 ++++++++++-------------
->  1 file changed, 10 insertions(+), 13 deletions(-)
-> 
-> diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
-> index 6a6568d4a2cb..855d5fd3e6b2 100644
-> --- a/drivers/iio/industrialio-core.c
-> +++ b/drivers/iio/industrialio-core.c
-> @@ -1904,6 +1904,11 @@ static int iio_check_extended_name(const struct iio_dev *indio_dev)
->  
->  static const struct iio_buffer_setup_ops noop_ring_setup_ops;
->  
-> +static int is_subset(unsigned long a, unsigned long b)
-> +{
-> +	return (a & ~b) == 0;
-> +}
-> +
->  static void iio_sanity_check_avail_scan_masks(struct iio_dev *indio_dev)
->  {
->  	unsigned int num_masks, masklength, longs_per_mask;
-> @@ -1947,21 +1952,13 @@ static void iio_sanity_check_avail_scan_masks(struct iio_dev *indio_dev)
->  	 * available masks in the order of preference (presumably the least
->  	 * costy to access masks first).
->  	 */
-> -	for (i = 0; i < num_masks - 1; i++) {
-> -		const unsigned long *mask1;
-> -		int j;
->  
-> -		mask1 = av_masks + i * longs_per_mask;
-> -		for (j = i + 1; j < num_masks; j++) {
-> -			const unsigned long *mask2;
-> -
-> -			mask2 = av_masks + j * longs_per_mask;
-> -			if (bitmap_subset(mask2, mask1, masklength))
-> +	for (i = 1; i < num_masks; ++i)
-> +		for (int j = 0; j < i; ++j)
-> +			if (is_subset(av_masks[i], av_masks[j]))
-
-Why move away from the bitmap_subset() call?
-
-There are some broken corners for large bitmaps but I'd
-rather not make it worse if we can avoid it as the intent is
-that we can make these larger bitmaps if needed.
-
-
->  				dev_warn(indio_dev->dev.parent,
-> -					 "available_scan_mask %d subset of %d. Never used\n",
-> -					 j, i);
-> -		}
-> -	}
-> +					 "Mask %d (0x%lx) is a subset of mask %d (0x%lx) and will be ignored\n",
-> +					 i, av_masks[i], j, av_masks[j]);
->  }
->  
->  /**
+>  drivers/iio/adc/max1363.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/drivers/iio/adc/max1363.c b/drivers/iio/adc/max1363.c
+> index d0c6e94f7204..e8eeb00bef7b 100644
+> --- a/drivers/iio/adc/max1363.c
+> +++ b/drivers/iio/adc/max1363.c
+> @@ -577,8 +577,8 @@ static const struct iio_chan_spec max1238_channels[] =
+=3D MAX1363_12X_CHANS(12);
+> =20
+>  static const enum max1363_modes max11607_mode_list[] =3D {
+>  	_s0, _s1, _s2, _s3,
+> -	s0to1, s0to2, s0to3,
+> -	s2to3,
+> +	s0to1, s0to2, s2to3,
+> +	s0to3,
+>  	d0m1, d2m3, d1m0, d3m2,
+>  	d0m1to2m3, d1m0to3m2,
+>  };
 
 

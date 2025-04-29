@@ -1,100 +1,174 @@
-Return-Path: <linux-iio+bounces-18846-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18847-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E317AA0FC2
-	for <lists+linux-iio@lfdr.de>; Tue, 29 Apr 2025 16:57:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B3BCAA0FF3
+	for <lists+linux-iio@lfdr.de>; Tue, 29 Apr 2025 17:03:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB3CE189C978
-	for <lists+linux-iio@lfdr.de>; Tue, 29 Apr 2025 14:57:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 095CB5A09D7
+	for <lists+linux-iio@lfdr.de>; Tue, 29 Apr 2025 15:02:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3807021A94D;
-	Tue, 29 Apr 2025 14:56:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABC6F21B9E4;
+	Tue, 29 Apr 2025 15:02:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PK41a2TV"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hbD3+7D2"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0A0A1DE4F3;
-	Tue, 29 Apr 2025 14:56:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F038421ADC2;
+	Tue, 29 Apr 2025 15:02:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745938616; cv=none; b=rCQ3gDltrl8c5T9xtuRWG+RwFA9d9Q9pXmV7qh/0Ho1nBt8ocQTNGgu8Wmu3q9mO9OO6tRlR562Z6e5r+W/Mmxswha6mPYpdfuwGZ1EmWNlM/qsD18VJJXHOYsNA1DbuFcid/uE5G7tNkF6dDkis9kN177S4bHPsQpM3RTurDDA=
+	t=1745938943; cv=none; b=QkMkuIhIL1aaM1vYGtVATCsw59sBC+I1xJQzNI08CCLSmJvvKV4zsZHkGpFopgOLCfxMzw4/8X/IWdP5o6blFEIWjfCOljNExZ82ErmT457VlkHdv1+vc2tdrI7HpRjIXAfxF4I8Bdctf9rzpoCwELUB6TTgmAUiXcjG1WRRmgc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745938616; c=relaxed/simple;
-	bh=TrUU+M1F4SQVXD7iadCxRa4FaQ+mnKlBzxagUQ1A3Yo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TPd+6kETB5wKwksf1UCF6ZfGy19b7RC5aGiDTC2HyBEFqTxUIiod9zlChVYNarx7uGeFW811gv+ZmancHCx1Z56nnILNLX3HHdt6vYbkBV0sdTb+FHQCbdccr6MTK555+XZUBJttxP7BDowAwTKCz1zNjLoAWEAwAR5LbQ7rSaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PK41a2TV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E605CC4CEE3;
-	Tue, 29 Apr 2025 14:56:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745938614;
-	bh=TrUU+M1F4SQVXD7iadCxRa4FaQ+mnKlBzxagUQ1A3Yo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=PK41a2TVkkURAhJcJlYrBHdcjcLNua9tmjhOd9oe0wEb7v3lCEWM3PwhQQFcfZTt2
-	 lbpIEIiaDTP9zUTOOXJGhJxjWYxar0k8WJfr2re/cH53Bu8pK9cC0dIOkgu+d14liD
-	 XPIkkjbKRPdYICmyZRjsV8XrHCrmhbzmJpXYH/BlhNYACHMHWP5JB9gEOoJiaI/C+f
-	 58fjYrI6FWSLU+pe8d93wnEsWRuwBov+DPYcNR7Z+TfI8SEABTrdNhGzxd7BIcOrVI
-	 HGhsAsgNdnDu7/98LUEOMmrE7E3H/4J3Fnpxqq/lIkOA/paoSv67P4aUJ7V3xmL/VE
-	 sNgBcYgSSnPRQ==
-Date: Tue, 29 Apr 2025 15:56:49 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Angelo Dureghello <adureghello@baylibre.com>
-Cc: Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH 4/5] dt-bindings: iio: adc: adi,ad7606: add gain
- calibration support
-Message-ID: <20250429-irritably-cacti-b7287dbdc3d8@spud>
-References: <20250429-wip-bl-ad7606-calibration-v1-0-eb4d4821b172@baylibre.com>
- <20250429-wip-bl-ad7606-calibration-v1-4-eb4d4821b172@baylibre.com>
+	s=arc-20240116; t=1745938943; c=relaxed/simple;
+	bh=tAuGyI1OCFBQWPeNVDRkn9CwPlpQwUXg/+69JbVSDP4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Z17Tdv4ofPqle3qZcFChMpW5JcZkL+LixczbnTHPpidhucSAKBSqAdLl4kDt3m3H6bjAyUbzSdP6J6PrQEjnvlWypuHEr7ry6P9IvBFOjWpG8TbyL/nINVN2bsnHjFDb0P4v4ywej/iHJVGZMs91aUl8UNo+j6x6JmNHedV3hDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hbD3+7D2; arc=none smtp.client-ip=209.85.210.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-7394945d37eso5309126b3a.3;
+        Tue, 29 Apr 2025 08:02:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1745938941; x=1746543741; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=eY7XME2pWvlEXcL6Sdf1befWtNH2qmsQQOtaLI/8Q9I=;
+        b=hbD3+7D2dx78v71I2po0maKM8PluSL9qPIJNViESXXmTfS1Yy7OCM/8RHsQIyxkMmw
+         XTbqbJpG1pPUQhUk3/84pqTzfg8EbvUwNdZiQyGlDKoWYbDzvmKjEccKTMVuuqZuVDCK
+         sgbs0SLIito07BMVMjGCPl5NzRvTLzb9XVDnWqOvpUDJ7yZUSzkuLbF+M7Vni0zpfNoM
+         FW30osb8u0tIrDJ7bAKvws7/76zE7EY+2kAq2WzRnAqaIzptqpCAGW8TrnvQqOzQMWgC
+         L4Jy+hVCLgqrjkmsqUDp60PYqJhU8eQ3izXvBNoZCGBQ1eLYTy5KDrH+kBzVoI5/PDrw
+         Fapg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745938941; x=1746543741;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=eY7XME2pWvlEXcL6Sdf1befWtNH2qmsQQOtaLI/8Q9I=;
+        b=QK+i70EceKWU1c/qa09nWSQfHdkG57nj5f15nxZATP8zX0pWKsz36agtLgisKuWIEx
+         s/dPURHGHP2ff0XD6a6oZRZpFa0GwuNRu0yJTtp2az0YIHfKFy/d5w1STX5j6WlzPD5f
+         w66aKAy1vYrSph1bxUKosYKwt+B0XJ5gYrC2Qd7NAeIu8f9rey3k9ax/sxCq3CwUe9qP
+         NR+WRdwI/OZJ4XbrfhUs2heCL64nfx4KVJKa6ScgeB7pHKf/LQIDZXxBFw7r7LevpCoe
+         uBgltbin/hsvqugjS2FzopYsDldvTrIkE7wJXfav32fQ70nA2JgcE3OA45gCHYd+DU3s
+         4FPg==
+X-Forwarded-Encrypted: i=1; AJvYcCUq2EwevDWfq1uwmsbOCPmzJE7wsypOwKKUqsCWzlVLUUkd+NdErlfz9oEjZT2gIazf/pYsbXof@vger.kernel.org, AJvYcCWvanGd1wbeYysoNhR8XqXKW4IZAJJUEAV4prjXNFF2uzRVi8DSx+GG+deHI0Fvr85RghydhvVqyHM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YySqONLQfm14VkbyDouUugX9ttlcP+9y19Zw4q2I4SWFNG9SSYz
+	Hg8JyVYuMFi1J3T+YI1mWjXZVaJt7/eWMeN8fHaCWPBuPAm7x15vp2Bsxw==
+X-Gm-Gg: ASbGncv4p+ASfklkHPY1hDBJr7f3j0+OjxKqffTc+x7jIk7jZYYHzpNf3SdC9ReiFr6
+	Gd6K1PylH/8DbfMHz9inuDDlF92VCueoYPuZDkc1+hY6ZnJPcxdF8Bkq5lJDaceFtI2jcaFpfkI
+	5EA1UeqBOh9+apq0NQfe2+aYLGuv21g0fj3c/qzhhgKIzBxJ9uwnNNVEwGITdzCXEGrMdsboVHx
+	odJQIJV7sbI7MF41J3T8dSTKf5XGkJvhLDZzINzDdsro3tJ2gjIoBVRjChVI/MzIEiSKqAWUTjh
+	cXWMQDBhKgg6EI+JO1frqLG1ZttLa6/0CKUkYD/IaxpMxWcH/nwAzAs=
+X-Google-Smtp-Source: AGHT+IGJWPKuqb++uzAeMhvjuy1HD1u5/s4UVbIXxEwOZncnIYhQGbhFWL8X31NPUA0T+fGmAZrZlQ==
+X-Received: by 2002:a05:6a20:c886:b0:201:8a13:f224 with SMTP id adf61e73a8af0-2046a47380dmr18619658637.22.1745938940845;
+        Tue, 29 Apr 2025 08:02:20 -0700 (PDT)
+Received: from fabio-Precision-3551.. ([2804:14c:485:4b61:f8bb:f2b1:5469:86ce])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73e2593f557sm9955758b3a.42.2025.04.29.08.02.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 29 Apr 2025 08:02:19 -0700 (PDT)
+From: Fabio Estevam <festevam@gmail.com>
+To: jic23@kernel.org
+Cc: mazziesaccount@gmail.com,
+	linux-iio@vger.kernel.org,
+	Fabio Estevam <festevam@denx.de>,
+	stable@vger.kernel.org
+Subject: [PATCH 1/2] iio: Fix scan mask subset check logic
+Date: Tue, 29 Apr 2025 12:02:12 -0300
+Message-Id: <20250429150213.2953747-1-festevam@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="u3SN/e233iO0AJsN"
-Content-Disposition: inline
-In-Reply-To: <20250429-wip-bl-ad7606-calibration-v1-4-eb4d4821b172@baylibre.com>
+Content-Transfer-Encoding: 8bit
 
+From: Fabio Estevam <festevam@denx.de>
 
---u3SN/e233iO0AJsN
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Since commit 2718f15403fb ("iio: sanity check available_scan_masks array"),
+verbose and misleading warnings are printed for devices like the MAX11601:
 
-On Tue, Apr 29, 2025 at 03:06:48PM +0200, Angelo Dureghello wrote:
-> From: Angelo Dureghello <adureghello@baylibre.com>
->=20
-> Add gain calibration support by a per-channel resistor value.
->=20
-> Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
+max1363 1-0064: available_scan_mask 8 subset of 0. Never used
+max1363 1-0064: available_scan_mask 9 subset of 0. Never used
+max1363 1-0064: available_scan_mask 10 subset of 0. Never used
+max1363 1-0064: available_scan_mask 11 subset of 0. Never used
+max1363 1-0064: available_scan_mask 12 subset of 0. Never used
+max1363 1-0064: available_scan_mask 13 subset of 0. Never used
+...
+[warnings continue] 
 
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Fix the available_scan_masks sanity check logic so that it
+only prints the warning when an element of available_scan_mask
+is in fact a subset of a previous one.
 
---u3SN/e233iO0AJsN
-Content-Type: application/pgp-signature; name="signature.asc"
+These warnings incorrectly report that later scan masks are subsets of
+the first one, even when they are not. The issue lies in the logic that
+checks for subset relationships between scan masks.
 
------BEGIN PGP SIGNATURE-----
+Fix the subset detection to correctly compare each mask only
+against previous masks, and only warn when a true subset is found.
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaBDosQAKCRB4tDGHoIJi
-0n7VAP9zBmDK1EdgInc5dNcBH+0CC1vKZpP5v6NG2zoBXcWc/wD/RCJONyK9ylp2
-dH/IUzZo0vEQoP1ZpeYMXVOf8XU16Qs=
-=V640
------END PGP SIGNATURE-----
+With this fix, the warning output becomes both correct and more
+informative:
 
---u3SN/e233iO0AJsN--
+max1363 1-0064: Mask 7 (0xc) is a subset of mask 6 (0xf) and will be ignored
+
+Cc: stable@vger.kernel.org
+Fixes: 2718f15403fb ("iio: sanity check available_scan_masks array")
+Signed-off-by: Fabio Estevam <festevam@denx.de>
+---
+ drivers/iio/industrialio-core.c | 23 ++++++++++-------------
+ 1 file changed, 10 insertions(+), 13 deletions(-)
+
+diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
+index 6a6568d4a2cb..855d5fd3e6b2 100644
+--- a/drivers/iio/industrialio-core.c
++++ b/drivers/iio/industrialio-core.c
+@@ -1904,6 +1904,11 @@ static int iio_check_extended_name(const struct iio_dev *indio_dev)
+ 
+ static const struct iio_buffer_setup_ops noop_ring_setup_ops;
+ 
++static int is_subset(unsigned long a, unsigned long b)
++{
++	return (a & ~b) == 0;
++}
++
+ static void iio_sanity_check_avail_scan_masks(struct iio_dev *indio_dev)
+ {
+ 	unsigned int num_masks, masklength, longs_per_mask;
+@@ -1947,21 +1952,13 @@ static void iio_sanity_check_avail_scan_masks(struct iio_dev *indio_dev)
+ 	 * available masks in the order of preference (presumably the least
+ 	 * costy to access masks first).
+ 	 */
+-	for (i = 0; i < num_masks - 1; i++) {
+-		const unsigned long *mask1;
+-		int j;
+ 
+-		mask1 = av_masks + i * longs_per_mask;
+-		for (j = i + 1; j < num_masks; j++) {
+-			const unsigned long *mask2;
+-
+-			mask2 = av_masks + j * longs_per_mask;
+-			if (bitmap_subset(mask2, mask1, masklength))
++	for (i = 1; i < num_masks; ++i)
++		for (int j = 0; j < i; ++j)
++			if (is_subset(av_masks[i], av_masks[j]))
+ 				dev_warn(indio_dev->dev.parent,
+-					 "available_scan_mask %d subset of %d. Never used\n",
+-					 j, i);
+-		}
+-	}
++					 "Mask %d (0x%lx) is a subset of mask %d (0x%lx) and will be ignored\n",
++					 i, av_masks[i], j, av_masks[j]);
+ }
+ 
+ /**
+-- 
+2.34.1
+
 

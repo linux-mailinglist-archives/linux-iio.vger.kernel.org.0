@@ -1,88 +1,88 @@
-Return-Path: <linux-iio+bounces-18814-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18815-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BE5BAA054D
-	for <lists+linux-iio@lfdr.de>; Tue, 29 Apr 2025 10:15:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92C67AA055B
+	for <lists+linux-iio@lfdr.de>; Tue, 29 Apr 2025 10:18:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0862917D049
-	for <lists+linux-iio@lfdr.de>; Tue, 29 Apr 2025 08:15:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 90266843499
+	for <lists+linux-iio@lfdr.de>; Tue, 29 Apr 2025 08:17:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B604527A931;
-	Tue, 29 Apr 2025 08:14:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91F1F27A934;
+	Tue, 29 Apr 2025 08:18:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M0bPOM4x"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mlq1sZt2"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B257F25F7AB;
-	Tue, 29 Apr 2025 08:14:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D38C27604B;
+	Tue, 29 Apr 2025 08:18:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745914496; cv=none; b=AimPqsvPAk/jbSBj+pu7Ut9ooAZQmWEsITrgG1s5vVYczRolFXF4QG7Z93w0qAN6Snr7oFrI/WQS7LF/5q5jGCDe8UiZPZu7mvP4/6EFzfkA3sZQpEGPrO09TP1votvXEICirj0eUIpW5guajWJtd9nBL77w/BFoiPHtkzLq2/4=
+	t=1745914686; cv=none; b=jS/qVr8TNP/oWa/aZ0I+gEnqDHa8aKzDHC651phSLklJFnu2sa5PBnACx7V6ud0jJw3bp9+aaLW853kYk3uXC9h0jmbvyGsSrml6JDrt1z3rBr+md+EELu09BwDznHpS6E3yk+vLeYzTGuesbEEFHI2DCPYZmoXmDcCBxq5szqk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745914496; c=relaxed/simple;
-	bh=DfuiS9ywp+ZU4Ck3Hk6awbmMjHIGnG3GQm/4fFm6Gw0=;
+	s=arc-20240116; t=1745914686; c=relaxed/simple;
+	bh=eESuEXwS0Xg83Oys04QHXmRAwjGpD1UZ9CXsC2XpAXs=;
 	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=iBm56zW3HSjzQ4h2idRegspqSlVHjDZx9ycBKY96GrDU22kM347zaZzfwMTQtbSXyUIyfyCYcaVRHjttkS0cH831+9N75ZooLacqQ67Ou+M2IMK5ozeqwFu+pQWXfmqtiKID4HYN+Rx4POIlRWtv3PKqRYvWRI2A6/A9pvoilXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=M0bPOM4x; arc=none smtp.client-ip=209.85.128.43
+	 Content-Type:MIME-Version; b=MCu71+Dux5KAusrm+FiFNNKTRPJqdktYLkXO0XLB6HoCtwTdQCV5jBN5eqZNFDGMlWVDzL9geZpVDQGPuLCiHZTYU9weAqZ8ZkGj7ycdK2aV8MVvmWDE8KiPLB0H9jQz7TdYMyA8XuRu88RCJ3I5NS1zl0ccw0OI8aCgER/0LbE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mlq1sZt2; arc=none smtp.client-ip=209.85.221.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-43cfa7e7f54so37741855e9.1;
-        Tue, 29 Apr 2025 01:14:54 -0700 (PDT)
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-3913d129c1aso3726568f8f.0;
+        Tue, 29 Apr 2025 01:18:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745914493; x=1746519293; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1745914683; x=1746519483; darn=vger.kernel.org;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:to:from:subject:message-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=sndv3w7Q8kDv9+q7MF+dib355lQod7g3DGJrt36mzys=;
-        b=M0bPOM4xRGb6h6sOYUeCGMOlJksRbau3zfn7NVCbod0VOtr13lfXyR+vUcfBC9Vw92
-         cS3ThgHB2gdaTle3beGm7nKP703a6wzgdly0iN4MJWJQtqqXQ9PopTogQ0OD37V9qfax
-         f6No0jA1/wdnGgVlUm7OIaev7yfnh/B2TkSud9ZCKSVznjJaMqMCXGhyjxZveUAW87Xa
-         m9YevJV7UqUUbD+JPEbXdr1mdIytAPRodQUQFhAziPoABaQhT+Q4QSCmHl+1Hy5j5J9Y
-         ffRM9zlx9bWBatMFKk4Uvzpo5Lta+21Xzq+jonvedgnjaDuQ7VZkME44AJ4UHgQEZPjf
-         jh3A==
+        bh=O2+3W2a7AkVYwexjr1GzqEPTtciWTnY4dLIb8fkHrQ8=;
+        b=mlq1sZt2jiPE8NqgC7BiIFFrFrwRxzCyTPN6zSR++Hwy1Mo5W9BKGDVKJ4Nr0kKZKH
+         +phZZiX3Al0OZlOvlZq3n4nZD5iJ8YpWI94e4iUKve+cuWMqjewsn87FnlSnr2ue3eKO
+         Vx5bNuln7wvhoQ4MvVyYmnyWLhJW+4QUxybcRtYHaVFaurgRaeSx/l3ylWavZ+CXcVmF
+         ic483W0+ItL0QfwI7Tdd0CpAGV0aaFzAMhstjSauf3Ii9i2VbrfrhfdPyOGYIWXmKrzI
+         T1vtk67sQ8NAR3k+77r4/OJIx0FGSSi19dq66yl7qQlsFqK4XBRm/kyg01daZ/nYYFUE
+         jcgg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745914493; x=1746519293;
+        d=1e100.net; s=20230601; t=1745914683; x=1746519483;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:to:from:subject:message-id:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=sndv3w7Q8kDv9+q7MF+dib355lQod7g3DGJrt36mzys=;
-        b=d8iGaB8VPbFPJe0/E68dEZX8Er7h+R1NEJagi+KiLnvQk4Vz6NrZoNxlg6n2kSXkdM
-         kYZOlvMAKaW8dtnnv5SI6tot2i6btwaWVXH3xOzq7SdQQ6WJKv5q2VEBBr7wypGSTNzI
-         VPFxOv9F5uPCt5FyPMJ/x00KotTZji8tOZhRwln8BUWZakx+KVmHie+tZeCEDxE7O33I
-         3VIjodCsbqywv5QossY1fOCH7GZQHgKFhxinLCd00sd9giEu7acwTYftsUQTSOLOPUqZ
-         +qYAdDwGzC4mczrjLlYDOkWvHL2CQryoxFYdXFpzqzB458pcvaSTgIGutn7ncFaSDrTj
-         w+Qw==
-X-Forwarded-Encrypted: i=1; AJvYcCUa5/as7e2/gRvMEwDlzs36aVEVpU+u4iO6bqPLVIwQbXZXpo1AZo9vbAb7pJ0DwCz4EpwgXI8/bqv2@vger.kernel.org, AJvYcCUhgTK2GwGDHoKhSmUpdWTeOocMz37lCp3tlFpqJV07Uj+l7TqYcW6Q6VNVyaHi3axM8T7A4opTFMVF@vger.kernel.org, AJvYcCVX2G+zOZqAX2ZZzCDq6xVE5QCcQXZ7bw2EbpTqfx9L4oRwDqOAPVClHAepNfyVQcQXtwnSfGsV6yf2thC3@vger.kernel.org
-X-Gm-Message-State: AOJu0YyUJUd8QK6SM3n7jMgBlr+3KgslByvlBK/tghGcqDkhlzi0llDo
-	ywKTFWxNjGyGgD+T01zPP0h6ctM2EQrA2KSHv2w+qZw+uOC+VjChEOeG9dOCPJ0=
-X-Gm-Gg: ASbGncuOyEuuO1K3lX8SleNrFU8UFZDcJzqVTfLwxviQyTqPkUaqBUONUC821I8Qgr9
-	6FBHwyvqWd9u6ZdPkL7InwRWr6dBZDZni4n1dA06SD9d9lql/BnfIu6Y85xLVee0eMICqSY17aa
-	dyTQbCH6bDCirWd/cv29/SwDme1bb+UCByxb5DZKS5cHXth1XohGFFZSDtsYD7DANY6PLEGUKHa
-	z2YWAQUHcT6lgFo2oF5OeeY6lw0nY7dEUaXmWuf/Ah9bI1bLs2242YkYk2tiVIfvbl1Ze/AKnVW
-	hEtjWD3gComE+aK6zYdpV7XWIyOEA8A3/Gck7GqpFTfMeOpUjWP+9TWZ/s9yM17+Xoje1KqFgSg
-	L4Jwsc3rP62sT
-X-Google-Smtp-Source: AGHT+IGe/csrIqoHzRat1Mk0BnJwsWnqRjwYWgeJGxhqh7K08fEn/RPFJAlQAfOMl1xpWM90SO2eGQ==
-X-Received: by 2002:a05:600c:19c7:b0:43b:bfa7:c7d with SMTP id 5b1f17b1804b1-441acaa8d45mr16042955e9.2.1745914492757;
-        Tue, 29 Apr 2025 01:14:52 -0700 (PDT)
+        bh=O2+3W2a7AkVYwexjr1GzqEPTtciWTnY4dLIb8fkHrQ8=;
+        b=mbuYWnrPIvHouP0jacEukGUf6qXHx8cpBV6KtdUx0gIewrJAkXgzJe3pE/+SHjxaRE
+         4/D6nqmUgZ3PkoaWjHWXxictlVk5u4FNTKrNhjGrMpFdxKZRek/BGHWCsKG/LvZCY721
+         LdviW4OO+KgWbjB9r/ulMnFM3z14N1IVEB3gGiuwur3C7xvy4BTopnzYEz0maASMcM56
+         dYfr24AUdMkYsIG3e4Eg9uoY98cTSq7Lrn1qhAhkIhglA7qY0B7pMP5yhQBSY7AZdQq2
+         fUOAcdvCd6FJs/m/a5Md2tWdw0Bzr1EO7Nuld1IWJIRY82XnclyYRVATvz8cklTxh99C
+         fWLg==
+X-Forwarded-Encrypted: i=1; AJvYcCUfc5M8VPzA6YcArrb9KxmxSn2syWjsj1BvQGNtSYdfI8XldzqLf05qUiYNLrNT+iYNBf55h7zY4kTi@vger.kernel.org, AJvYcCUvJpKpRp8K3kofbydu2gMxMdb0JnlYpig6Ah9EUoVH7OosNP5YWrbJoJ5wSjSHedBmbH31HT2L3+VsiEil@vger.kernel.org, AJvYcCWlK5Vj3VaKSRtvE60jkVysQEuSIoRBj6L7ew16ucjicd8AToXx3+7iLa/CARkLuGSqtL2sqhfBpjXd@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy9DHOlOibjz2F46amavY1CfyHHEKpiYNPIQVr9cMBEpb4qkBMC
+	E969bkU/+B6liTj27+rmCaRJjNq6CrVPBKFz9tJ2NMwyCbOVh2l+hWJyEhkPn+I=
+X-Gm-Gg: ASbGncta+QpytvY3dE62UeOgLarosT/i+nZ8p00zew4Ag2BMQB52PKR88PdiDb/s1Zr
+	zckw2u2Z8zfJ3TZfEYbs5qSWoVnsg69sxzt72z7eaDhSLd9VEQFeEflmgmiUZqba3e1dgvXi3rk
+	m3vKAsvUYon2NQziGVZ6cIxrK7HGuntAneYRXZ5Xh8oQM69LHTESKriDosVcqNtNGW0BJ7b5LfZ
+	kTkrnQ7ySnoE3KQtSjle/QjG+l/VtlaCqj3oTZLodHyOOMwfJOX7gI831HcXdgRwyPqSCpVOdNV
+	eqOBzpfSOCbTEGOq9j2JrcOJt7kppp9Rh6XeJv+Xm11Mm4z2yztmj9lw6Nf1W5Gu0g6qRb7H7UJ
+	dGqolmTtzkOUd
+X-Google-Smtp-Source: AGHT+IHyZz6Q7YY08XsLx4KNTlg9jPQnLF3lrgacy9YxzyoYLl6L2lHAno3dx2HVerE21VFlmwAHhQ==
+X-Received: by 2002:a05:6000:4024:b0:3a0:830e:68fd with SMTP id ffacd0b85a97d-3a08a501c07mr1430036f8f.5.1745914682686;
+        Tue, 29 Apr 2025 01:18:02 -0700 (PDT)
 Received: from ?IPv6:2001:818:ea8e:7f00:2575:914:eedd:620e? ([2001:818:ea8e:7f00:2575:914:eedd:620e])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-440a53874a9sm148102335e9.34.2025.04.29.01.14.51
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-440a536a021sm147604465e9.29.2025.04.29.01.18.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Apr 2025 01:14:52 -0700 (PDT)
-Message-ID: <23fbfcd79d2d8c924c84ea8a16ed28697bfd326b.camel@gmail.com>
-Subject: Re: [PATCH v3 01/11] iio: backend: add support for filter config
+        Tue, 29 Apr 2025 01:18:02 -0700 (PDT)
+Message-ID: <bdf28693eeeebf93cfc6305679e154bdc515206c.camel@gmail.com>
+Subject: Re: [PATCH v3 06/11] iio: adc: adi-axi-adc: add filter type config
 From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
 To: Antoniu Miclaus <antoniu.miclaus@analog.com>, jic23@kernel.org, 
 	robh@kernel.org, conor+dt@kernel.org, linux-iio@vger.kernel.org, 
 	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Tue, 29 Apr 2025 09:14:56 +0100
-In-Reply-To: <20250425112538.59792-2-antoniu.miclaus@analog.com>
+Date: Tue, 29 Apr 2025 09:18:06 +0100
+In-Reply-To: <20250425112538.59792-7-antoniu.miclaus@analog.com>
 References: <20250425112538.59792-1-antoniu.miclaus@analog.com>
-	 <20250425112538.59792-2-antoniu.miclaus@analog.com>
+	 <20250425112538.59792-7-antoniu.miclaus@analog.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.56.1 
@@ -94,107 +94,109 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
 On Fri, 2025-04-25 at 14:25 +0300, Antoniu Miclaus wrote:
-> Add backend support for digital filter type selection.
->=20
-> This setting can be adjusted within the IP cores interfacing devices.
->=20
-> The IP core can be configured based on the state of the actual
-> digital filter configuration of the part.
+> Add support for enabling/disabling filter based on the filter type
+> provided.
 >=20
 > Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
 > ---
 
-This one LGTM:
+You should either mention in the commit message that a new compatible (and =
+thus
+iio_backend_ops) is being added or split this into two patches. This is sim=
+ple
+enough that I don't really mind being in the same patch but still...
+
+With the above (and a nit below):
 
 Reviewed-by: Nuno S=C3=A1 <nuno.sa@analog.com>
 
 > changes in v3:
-> =C2=A0- update function to set the actual filter type instead of just
-> enable/disable.
-> =C2=A0drivers/iio/industrialio-backend.c | 15 +++++++++++++++
-> =C2=A0include/linux/iio/backend.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 | 13 +++++++++++++
-> =C2=A02 files changed, 28 insertions(+)
+> =C2=A0- update the function to adapt to the backend interface.
+> =C2=A0drivers/iio/adc/adi-axi-adc.c | 38 ++++++++++++++++++++++++++++++++=
++++
+> =C2=A01 file changed, 38 insertions(+)
 >=20
-> diff --git a/drivers/iio/industrialio-backend.c b/drivers/iio/industriali=
-o-
-> backend.c
-> index d4ad36f54090..2d28eabb1607 100644
-> --- a/drivers/iio/industrialio-backend.c
-> +++ b/drivers/iio/industrialio-backend.c
-> @@ -778,6 +778,21 @@ static int __devm_iio_backend_get(struct device *dev=
-,
-> struct iio_backend *back)
-> =C2=A0	return 0;
+> diff --git a/drivers/iio/adc/adi-axi-adc.c b/drivers/iio/adc/adi-axi-adc.=
+c
+> index 61ab7dce43be..2a3a6c3f5e59 100644
+> --- a/drivers/iio/adc/adi-axi-adc.c
+> +++ b/drivers/iio/adc/adi-axi-adc.c
+> @@ -52,6 +52,7 @@
+> =C2=A0#define=C2=A0=C2=A0 AXI_AD485X_PACKET_FORMAT_20BIT	0x0
+> =C2=A0#define=C2=A0=C2=A0 AXI_AD485X_PACKET_FORMAT_24BIT	0x1
+> =C2=A0#define=C2=A0=C2=A0 AXI_AD485X_PACKET_FORMAT_32BIT	0x2
+> +#define=C2=A0=C2=A0 AXI_AD408X_CNTRL_3_FILTER_EN_MSK	BIT(0)
+> =C2=A0
+> =C2=A0#define ADI_AXI_ADC_REG_DRP_STATUS		0x0074
+> =C2=A0#define=C2=A0=C2=A0 ADI_AXI_ADC_DRP_LOCKED		BIT(17)
+> @@ -402,6 +403,19 @@ static int axi_adc_ad485x_oversampling_ratio_set(str=
+uct
+> iio_backend *back,
+> =C2=A0	}
 > =C2=A0}
 > =C2=A0
-> +/**
-> + * iio_backend_filter_type_set - Set filter type
-> + * @back: Backend device
-> + * @type: Filter type.
-> + *
-> + * RETURNS:
-> + * 0 on success, negative error number on failure.
-> + */
-> +int iio_backend_filter_type_set(struct iio_backend *back,
-> +				enum iio_backend_filter_type type)
+> +static int axi_adc_ad408x_filter_type_set(struct iio_backend *back,
+> +					=C2=A0 enum iio_backend_filter_type type)
 > +{
-> +	return iio_backend_op_call(back, filter_type_set, type);
-> +}
-> +EXPORT_SYMBOL_NS_GPL(iio_backend_filter_type_set, "IIO_BACKEND");
+> +	struct adi_axi_adc_state *st =3D iio_backend_get_priv(back);
 > +
-> =C2=A0/**
-> =C2=A0 * iio_backend_ddr_enable - Enable interface DDR (Double Data Rate)=
- mode
-> =C2=A0 * @back: Backend device
-> diff --git a/include/linux/iio/backend.h b/include/linux/iio/backend.h
-> index e45b7dfbec35..5526800f5d4a 100644
-> --- a/include/linux/iio/backend.h
-> +++ b/include/linux/iio/backend.h
-> @@ -76,6 +76,14 @@ enum iio_backend_interface_type {
-> =C2=A0	IIO_BACKEND_INTERFACE_MAX
+> +	if (type)
+
+We could check for a max value and return -EINVAL...
+
+> +		return regmap_set_bits(st->regmap, ADI_AXI_ADC_REG_CNTRL_3,
+> +				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 AXI_AD408X_CNTRL_3_FILTER_EN_MS=
+K);
+> +
+> +	return regmap_clear_bits(st->regmap, ADI_AXI_ADC_REG_CNTRL_3,
+> +				 AXI_AD408X_CNTRL_3_FILTER_EN_MSK);
+> +}
+> +
+> =C2=A0static struct iio_buffer *axi_adc_request_buffer(struct iio_backend=
+ *back,
+> =C2=A0						 struct iio_dev *indio_dev)
+> =C2=A0{
+> @@ -582,6 +596,24 @@ static const struct iio_backend_info axi_ad485x =3D =
+{
+> =C2=A0	.ops =3D &adi_ad485x_ops,
 > =C2=A0};
 > =C2=A0
-> +enum iio_backend_filter_type {
-> +	IIO_BACKEND_FILTER_TYPE_DISABLED,
-> +	IIO_BACKEND_FILTER_TYPE_SINC1,
-> +	IIO_BACKEND_FILTER_TYPE_SINC5,
-> +	IIO_BACKEND_FILTER_TYPE_SINC5_PLUS_COMP,
-> +	IIO_BACKEND_FILTER_TYPE_MAX
+> +static const struct iio_backend_ops adi_ad408x_ops =3D {
+> +	.enable =3D axi_adc_enable,
+> +	.disable =3D axi_adc_disable,
+> +	.chan_enable =3D axi_adc_chan_enable,
+> +	.chan_disable =3D axi_adc_chan_disable,
+> +	.request_buffer =3D axi_adc_request_buffer,
+> +	.free_buffer =3D axi_adc_free_buffer,
+> +	.data_sample_trigger =3D axi_adc_data_sample_trigger,
+> +	.filter_type_set =3D axi_adc_ad408x_filter_type_set,
+> +	.debugfs_reg_access =3D iio_backend_debugfs_ptr(axi_adc_reg_access),
+> +	.debugfs_print_chan_status =3D
+> iio_backend_debugfs_ptr(axi_adc_debugfs_print_chan_status),
 > +};
 > +
-> =C2=A0/**
-> =C2=A0 * struct iio_backend_ops - operations structure for an iio_backend
-> =C2=A0 * @enable: Enable backend.
-> @@ -100,6 +108,7 @@ enum iio_backend_interface_type {
-> =C2=A0 * @read_raw: Read a channel attribute from a backend device
-> =C2=A0 * @debugfs_print_chan_status: Print channel status into a buffer.
-> =C2=A0 * @debugfs_reg_access: Read or write register value of backend.
-> + * @filter_type_set: Set filter type.
-> =C2=A0 * @ddr_enable: Enable interface DDR (Double Data Rate) mode.
-> =C2=A0 * @ddr_disable: Disable interface DDR (Double Data Rate) mode.
-> =C2=A0 * @data_stream_enable: Enable data stream.
-> @@ -150,6 +159,8 @@ struct iio_backend_ops {
-> =C2=A0					 size_t len);
-> =C2=A0	int (*debugfs_reg_access)(struct iio_backend *back, unsigned int r=
-eg,
-> =C2=A0				=C2=A0 unsigned int writeval, unsigned int
-> *readval);
-> +	int (*filter_type_set)(struct iio_backend *back,
-> +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 enum iio_backend_filter_type typ=
-e);
-> =C2=A0	int (*ddr_enable)(struct iio_backend *back);
-> =C2=A0	int (*ddr_disable)(struct iio_backend *back);
-> =C2=A0	int (*data_stream_enable)(struct iio_backend *back);
-> @@ -190,6 +201,8 @@ int iio_backend_data_sample_trigger(struct iio_backen=
-d
-> *back,
-> =C2=A0int devm_iio_backend_request_buffer(struct device *dev,
-> =C2=A0				=C2=A0=C2=A0=C2=A0 struct iio_backend *back,
-> =C2=A0				=C2=A0=C2=A0=C2=A0 struct iio_dev *indio_dev);
-> +int iio_backend_filter_type_set(struct iio_backend *back,
-> +				enum iio_backend_filter_type type);
-> =C2=A0int iio_backend_ddr_enable(struct iio_backend *back);
-> =C2=A0int iio_backend_ddr_disable(struct iio_backend *back);
-> =C2=A0int iio_backend_data_stream_enable(struct iio_backend *back);
+> +static const struct iio_backend_info axi_ad408x =3D {
+> +	.name =3D "axi-ad408x",
+> +	.ops =3D &adi_ad408x_ops,
+> +};
+> +
+> =C2=A0static int adi_axi_adc_probe(struct platform_device *pdev)
+> =C2=A0{
+> =C2=A0	struct adi_axi_adc_state *st;
+> @@ -697,9 +729,15 @@ static const struct axi_adc_info adc_ad7606 =3D {
+> =C2=A0	.has_child_nodes =3D true,
+> =C2=A0};
+> =C2=A0
+> +static const struct axi_adc_info adi_axi_ad408x =3D {
+> +	.version =3D ADI_AXI_PCORE_VER(10, 0, 'a'),
+> +	.backend_info =3D &axi_ad408x,
+> +};
+> +
+> =C2=A0/* Match table for of_platform binding */
+> =C2=A0static const struct of_device_id adi_axi_adc_of_match[] =3D {
+> =C2=A0	{ .compatible =3D "adi,axi-adc-10.0.a", .data =3D &adc_generic },
+> +	{ .compatible =3D "adi,axi-ad408x", .data =3D &adi_axi_ad408x },
+> =C2=A0	{ .compatible =3D "adi,axi-ad485x", .data =3D &adi_axi_ad485x },
+> =C2=A0	{ .compatible =3D "adi,axi-ad7606x", .data =3D &adc_ad7606 },
+> =C2=A0	{ /* end of list */ }
 

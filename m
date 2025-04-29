@@ -1,122 +1,109 @@
-Return-Path: <linux-iio+bounces-18853-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18854-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76646AA10F1
-	for <lists+linux-iio@lfdr.de>; Tue, 29 Apr 2025 17:51:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D53BEAA112C
+	for <lists+linux-iio@lfdr.de>; Tue, 29 Apr 2025 18:05:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CDD0B463FFA
-	for <lists+linux-iio@lfdr.de>; Tue, 29 Apr 2025 15:51:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0CC0C7A3712
+	for <lists+linux-iio@lfdr.de>; Tue, 29 Apr 2025 16:04:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B83B23E35E;
-	Tue, 29 Apr 2025 15:50:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A0CB24290D;
+	Tue, 29 Apr 2025 16:05:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="KJhNUmxZ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hbgkBcMB"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oi1-f181.google.com (mail-oi1-f181.google.com [209.85.167.181])
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 337F124113C
-	for <linux-iio@vger.kernel.org>; Tue, 29 Apr 2025 15:50:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 185CD217F27
+	for <linux-iio@vger.kernel.org>; Tue, 29 Apr 2025 16:05:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745941854; cv=none; b=kSePwvsZRoTVpCBFHdI61ELiw+JLgKeAb4BysVUsVzmDXJYkb8KCI6QfTGeLBEkIcE+s4wzsWgzLge8CEnrMq/wuxIorZh/elWxYwWOTvhD6hQRQrVQj2/BbZIDP4bcnM1dbAweu2+1I8KuM6Z/6mmXnIYYK75TTfeGPo+5SI/I=
+	t=1745942747; cv=none; b=SaLinVdwCTDtxvsooAZgOqP95/+OEeKkNlRFHg9gSulA6M+RnOdZz4O0A50QAHFT/8nEdW6zCuxCfW+umo9/KmjGrFKqqnqQZJ0Ye1Pug9IVJ6bGJSGkCuSvH2HGK8wl8BeCV1sQWycQIqg9y2uyg6yi5iJY2CnaDWhRTszrWcw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745941854; c=relaxed/simple;
-	bh=27sUWC+HFFtmMxGijGj3WlvDdGSGLfoqsxoR+r6qkAs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iXxMVRUiK3pLVvdzJjxvwPzx5nLEXjHD7r7YSqxDZhnr+Wj4MyqqZCPL6QPnaAuyiCtku3spRFs68R8WLw9/mRrPyKfe1HlmYh2HDl7kSr+sf+s7eB45dUe3xfxlN6oXXJNG7L4WYCtlVLg8YRAmo4w22sb8wZF0LECyLPnkxOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=KJhNUmxZ; arc=none smtp.client-ip=209.85.167.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oi1-f181.google.com with SMTP id 5614622812f47-3fb3f4bf97aso1932169b6e.2
-        for <linux-iio@vger.kernel.org>; Tue, 29 Apr 2025 08:50:52 -0700 (PDT)
+	s=arc-20240116; t=1745942747; c=relaxed/simple;
+	bh=hSpt2pZDJn6oNd7SHfcOaQlmvA1WoDmBnW9c6oHnevU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VhjpBsW30ifSl5X1pprG5WbQTjRQg1hBdlvsMRSWoVRWY6+wHXNX+37ETUVStyMOGKkiG72/9a7ddGRceN3Yi4pTRu+ZMtDIJhs+vaFUP9n9GMkL0tRHaeHTJ0Qf7sCjmjMmZnQ/QqNMLsnx+o4HCLMYUyZxC32T7ku1VEu+3ew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hbgkBcMB; arc=none smtp.client-ip=209.85.210.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-7399a2dc13fso8841722b3a.2
+        for <linux-iio@vger.kernel.org>; Tue, 29 Apr 2025 09:05:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1745941852; x=1746546652; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=5IWwy2Q6p9XeoTqr1hNsCWFixc22wa18HwPhsdqWpx4=;
-        b=KJhNUmxZUViGc4hxEpxnvJ+bCIMbraYPDqT5ZdyFX8Ivo5xaVBwDhkd3VIikEdwYFC
-         SOyuD2HLr3EFb5SHTf5MNSN6PRC02vVvxrL4jVm8qbXUAXNFYpOif7euAHdXm6RtVcl0
-         B4O6Q+S1ZkyaWB2NSdzmovVgPRI/mmjDGwb4VW2rgZPLnII0mhEm9O8JDPNY5ShZq+UT
-         7b+Z3lkFcmoKLBe5C0IUN9nF9Z7wNA2tyxnyBC5nr1WuQ3h80cW8iNVMEomtAze5n4m7
-         1cCq2UGEIi7nzYMYaKv1Ko/R32qArCPDEPgm6og26jUxR+FT/jXucH9OWbn97T91sM2J
-         m8Rw==
+        d=gmail.com; s=20230601; t=1745942745; x=1746547545; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=CfH2++QQa8ojQrejaSWuTzHR4MNckGtQYrMy+WpL6hg=;
+        b=hbgkBcMBwhT+MumlV3YtnHvKRdOeJ5LOBt6Dxdnu7Ku+51JU5QmVkzzfjJM8mxJu80
+         44Fd060h4xTTlCxAf9Gr/hjBBiK6HGj8caiAf+VfDf3R0ZNDPUw7YZFceXKnvc5AiSMK
+         3s8DNY+qCNsQwmmeE716Lh8sj9Z/zXrNu5O4LTj6QPvTnWGyrkcBUeuJFD6Elh5XpU1j
+         FRIhmeRfjSe88GLnghPN5YwkMDlJbJaA87rd0Io0m/cetF5GHGCRe5HzpoDvHhQcTCfS
+         ugPpyz3wTDHQIdJNr1szsRYGR7odbqAIlVai/Rt8YS8XiOV/bYqR2l1m+kb9fHgNcLWn
+         lbZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745941852; x=1746546652;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=5IWwy2Q6p9XeoTqr1hNsCWFixc22wa18HwPhsdqWpx4=;
-        b=UZZehoQFpA12KscB1oFvn9Yef7RalF36RXMHA6MiRZZT4OUkaNJJ2pOeUZIUU4PbAG
-         +a+6HVrGYoU8A5BfuyXSv8QSCULy9zdQn3tAskyRnP87TVMGcUEvPfbeO/5Gd5kdxef/
-         bY1v1FQ0b2y8ujypKz3lIteiCLAs24B4qtjQ3hB6jKFnwLff0bompX3W0tA2xWQu+0N3
-         /bzeQ5KxvO1ZkFeNI2pJybk1Jm+ioWC9zKN/CmFVakRS+/CnoApeVGFkhS7w0y7XMBUa
-         yUE3LAgLcaGpBnH/tUHqfyigoY3agjBHTUGJvwPDpfcThjztHPLFbo5im568ywqWaBvL
-         CLsA==
-X-Forwarded-Encrypted: i=1; AJvYcCWJa47iHXkaQSIUeT9nJD4URwVEiBF3kVC5VWwr2NVSRHFbYYuMbYzGUe71Lz4SCkplmGOQ91J5OmY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwAVssm95lTMwzbwom1RGDY0tiqbB5C9+4KnQ2fOnNDzUep9MCA
-	7/xZKf9tGIfSHhW72XPtPLLaMvGohpNtOGEJU6eBoiBHs7B5ebfzLvgpmD72euQ=
-X-Gm-Gg: ASbGncuq41ZlmPSo1t/+1LgNsAemDXy3WKgUV9Z0P7Y4Q1nWjwBs9pPHHRo8aG0PKdM
-	iRChP+bWk8UECYhyzqoiHlsBXLnC0Ls+T6eM48eURNZDrL/hyF4QAbxkGxe+/sWsIswnn6vtrkr
-	bBCrNMrE/1OOVDmDPKDqBHWEl9saIVozCiNuzwN87xojOGvr7Ibaaru6KxXyz9zGfBpFi2ve1t6
-	h9LKWCRhCs2B/svotLbWpVdAUWGL80cZX/1BYJqD3OOMB/uyDb1pYyqdFAfCdTFk4EygqgukgO+
-	/7svzL4cebWSSLmQj6Iq5xSvyRRGhx7ZvgZczqZPbz3uY/J8Dg/fgDjBB3w7p971y5KJs9NHak7
-	htMU3M5Y8wpXZaH79wA==
-X-Google-Smtp-Source: AGHT+IF3YniFZktmx+wzc5Vvip+TGKj/p4EKeDpAQZouq1NsM4HgUhhkCMBt+xncFToPImadwaDMIA==
-X-Received: by 2002:a05:6808:22a1:b0:401:e933:5dd9 with SMTP id 5614622812f47-40211578670mr1858013b6e.20.1745941852264;
-        Tue, 29 Apr 2025 08:50:52 -0700 (PDT)
-Received: from ?IPV6:2600:8803:e7e4:1d00:dc17:157d:e8b2:3ad6? ([2600:8803:e7e4:1d00:dc17:157d:e8b2:3ad6])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-4021292d759sm302218b6e.27.2025.04.29.08.50.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 29 Apr 2025 08:50:51 -0700 (PDT)
-Message-ID: <65cabf04-a1ef-482b-9192-d280897f2afb@baylibre.com>
-Date: Tue, 29 Apr 2025 10:50:50 -0500
+        d=1e100.net; s=20230601; t=1745942745; x=1746547545;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=CfH2++QQa8ojQrejaSWuTzHR4MNckGtQYrMy+WpL6hg=;
+        b=sctbnPBPBfaiatQU3Yl2Eqg1pLLt+uAtlcqjEciRIGwCh4Q3gIhscjKGKnLKmo3//I
+         Tp7zDN6lTI7GrX1jC8iTtydHoW/kufTVlVnZaqlHvs2HzjjtJF083R4jlOuwxCcb0KIm
+         pvy49aws0NxOEZTdKpcYV5iAGf8ddJPsc2yTP49stfK71N2Sq17KYfUAi5jcKA/oOIWW
+         4BNZP1BJYfllVHDvvTFszba32FURkBJs2f0WNqhhjRuendA9eR4Vhp9U9Tbi0scfrvQ1
+         hluoR7VnRfXcCq5xBNhW2Z2G8d9Adqny7I8OBK9j2rFBm7D5ccDrCmBVABi6w1n/CvVc
+         DLgw==
+X-Gm-Message-State: AOJu0YwQuo0c34fFPxGEkeAFUsCXim6NVmU+BS+JOVxbkG+ZV0GJY/MC
+	wHFBneX3uK9rH+EcYidDWn3PbKalHOrUfoFAGsiEb1f2tnEyQJpg/puDkk/AynY=
+X-Gm-Gg: ASbGncuZOqfF85Me2nOlPV1WrJfaYtRtl/SRQLNB2Z2AubFq9QHGUyhaQciiovt1aef
+	QD5Wv1XinHmd3OjzR5KzI99C5eSx6NE7Jw6fJZzU1yN49+AAXAue1rvSJh28qMhbjmE8TFDjdoG
+	1aNSzC/1uFaK/TWVBEGYYHkfrf8HGJ8yJcuWNKU0Dttkay0r87f7mZ4Oo4x7SCLYhN4MK9ZuWPa
+	gz5ZNmqCOH7s0s3fEWCpJZWB+kqByLPrV3/AVDkjgREo4lwlx8QS1GTB6S8yT3q3dt4ty8Na1KB
+	e2LkwOf/T3bM2cO2krxDeQwRcdRmjd8fb9xcqoo4hWdzt6KM7atulFYAsSHnCN3b
+X-Google-Smtp-Source: AGHT+IHzSaX7BlSfsWY7hp1rf/FqQJg4wJtbpRAoyGdMm1dOpDb+JcVM695B2R+ERxw9hgqCZaPSjQ==
+X-Received: by 2002:a05:6a00:986:b0:736:46b4:bef2 with SMTP id d2e1a72fcca58-73ff729d47fmr17669872b3a.6.1745942745125;
+        Tue, 29 Apr 2025 09:05:45 -0700 (PDT)
+Received: from c-sar-augusto-LOQ-15IRH8.. ([2804:14c:73:90b8:20f6:60ab:5d7f:2c50])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73e25a6b18dsm10400888b3a.95.2025.04.29.09.05.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 29 Apr 2025 09:05:44 -0700 (PDT)
+From: Cesar Bispo <dm.cesaraugusto@gmail.com>
+X-Google-Original-From: Cesar Bispo <cesar.bispo@ime.usp.br>
+To: jic23@kernel.org
+Cc: linux-iio@vger.kernel.org,
+	Cesar Bispo <cesar.bispo@ime.usp.br>,
+	GabrIel Ferreira <gabrielfsouza.araujo@usp.br>
+Subject: [PATCH 0/2] iio: adc: Modernize legacy regulator calls in drivers
+Date: Tue, 29 Apr 2025 13:05:17 -0300
+Message-ID: <20250429160526.5934-1-cesar.bispo@ime.usp.br>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 4/5] docs: iio: new docs for ad4052 driver
-To: Jorge Marques <gastmaier@gmail.com>
-Cc: Jorge Marques <jorge.marques@analog.com>,
- Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
- Michael Hennerich <Michael.Hennerich@analog.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
- =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
- Andy Shevchenko <andy@kernel.org>, =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?=
- <ukleinek@kernel.org>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-pwm@vger.kernel.org
-References: <20250422-iio-driver-ad4052-v2-0-638af47e9eb3@analog.com>
- <20250422-iio-driver-ad4052-v2-4-638af47e9eb3@analog.com>
- <9f5b0709-f795-44c5-aa64-aaed81a459bf@baylibre.com>
- <nrffdb34ldh24kjphvebdnc2p466xbmay4pm6pe3nen2wftycv@uyxqjovmm726>
-From: David Lechner <dlechner@baylibre.com>
-Content-Language: en-US
-In-Reply-To: <nrffdb34ldh24kjphvebdnc2p466xbmay4pm6pe3nen2wftycv@uyxqjovmm726>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 4/29/25 8:49 AM, Jorge Marques wrote:
-> On Fri, Apr 25, 2025 at 04:44:20PM -0500, David Lechner wrote:
->> On 4/22/25 6:34 AM, Jorge Marques wrote:
->>> This adds a new page to document how to use the ad4052 ADC driver.
->>>
+Replace a single instance of legacy regulator handling in each driver
+with devm_regulator_get_enable() or devm_regulator_get_enable_optional().
+This change improves code clarity and aligns with modern kernel APIs.
 
-...
+Signed-off-by: Cesar Bispo <cesar.bispo@ime.usp.br>
+Co-developed-by: GabrIel Ferreira <gabrielfsouza.araujo@usp.br>
+Signed-off-by: GabrIel Ferreira <gabrielfsouza.araujo@usp.br>
 
->>
-> 
-> Sorry about this submission, this file was indeed not updated between
-> version.
+Cesar Bispo (2):
+  iio: adc: ad7476: modernize single regulator call
+  iio: adc: qcom-pm8xxx-xoadc: modernize single regulator call
 
-No worries. We all make mistakes from time to time. :-)
+ drivers/iio/adc/ad7476.c            | 6 +++---
+ drivers/iio/adc/qcom-pm8xxx-xoadc.c | 2 +-
+ 2 files changed, 4 insertions(+), 4 deletions(-)
+
+-- 
+2.43.0
 
 

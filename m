@@ -1,143 +1,114 @@
-Return-Path: <linux-iio+bounces-18900-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18901-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BABF4AA4E5D
-	for <lists+linux-iio@lfdr.de>; Wed, 30 Apr 2025 16:21:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32979AA4EF2
+	for <lists+linux-iio@lfdr.de>; Wed, 30 Apr 2025 16:45:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9614D5A5103
-	for <lists+linux-iio@lfdr.de>; Wed, 30 Apr 2025 14:21:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C6A021BC13C3
+	for <lists+linux-iio@lfdr.de>; Wed, 30 Apr 2025 14:45:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 465F87DA93;
-	Wed, 30 Apr 2025 14:21:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="Mcdb7T1c"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D78267B3E1;
+	Wed, 30 Apr 2025 14:45:23 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oo1-f49.google.com (mail-oo1-f49.google.com [209.85.161.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AAA4145A03
-	for <linux-iio@vger.kernel.org>; Wed, 30 Apr 2025 14:21:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A54B2DC770;
+	Wed, 30 Apr 2025 14:45:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746022893; cv=none; b=UYRYrb9uvGrCxeltk1sCyoinWmjhiQZDOakvfQeEZc0NPZJNDK+0ZmUK0ZsY/sbgnhabmp8SrPTKUqcvNmIAobyDBVGnC3+Z2Js2Efi6a9cxEaYXSHrqrUewi+fTQiJEPCFKxkkVtjQSDfMS/mhjXpcPx6BWr7pTh2HNOIHvK5g=
+	t=1746024323; cv=none; b=pDKy9TouIrMny0nuiG0Wassz4I5AvxIThLsZZZ+5SX8IWMTYZxBCI+qNU1X146wrw0BFjzp/XNXDVpCQn6WRhwE1kZ/cJJ9ufZo+xvjXWnKztYeybhXAYL9e7HcKbl5k4ykgkDLOciqjrBF50AI96eruKD3HnbMr/U9wZSNjx3c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746022893; c=relaxed/simple;
-	bh=sQ3uGnHXH5pOVC81pZdY1hVXCJqW8kE2I+Llf8pVa9Y=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=h5fjpCwtm/CH+y9IHPnN/DVgt0UTcpnXikWb7jkgliAuNgmuzk0TU2dKAb40kEvWAeJUxW01J1OHmyORElQNQ02toZvwnxmhjDjx8kPHdFLDpYiUMMRZtvS6mL0Ohos7YFENLN1d2fVNPsmyptJy7aRfV8X0YN7X0xGvJH4Cf5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=Mcdb7T1c; arc=none smtp.client-ip=209.85.161.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oo1-f49.google.com with SMTP id 006d021491bc7-60638c07cabso4122751eaf.3
-        for <linux-iio@vger.kernel.org>; Wed, 30 Apr 2025 07:21:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1746022890; x=1746627690; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Z1J21N20NQgiRAPGKjWxJGQE1CtsIaoc0bg+24VnTew=;
-        b=Mcdb7T1cWn1syaEhX00J6XyY1jUP/9i2FcK2VsRDyh/LmWHlBEh66jQuRTcCIWbL9D
-         eR0ZUgrweVHwnXPDrXOCGpnQfrufRqhx4N8fdOWHKFoz80qQkj22m7+YNVlYKG2nlf5p
-         WyRAszw6eBhW7iHaNLbwbunl2fRBs+hB+lEV0ytBZB95ZUEV3ukAyHgGL5rKWwAuVqrj
-         2zC+YHC9HSJwKqvjkKUN/izO+F9x8q0SUe3f8Mflhfrk/igMlVilOG7mo9vOy/fEHnGA
-         t9FXYKDM2x8UNdCpD0iHglhn1v05Q1ea3C9KxSEUHBfXsFcyuRW2vZdbsopGqzHeIqCP
-         fSxQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746022890; x=1746627690;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Z1J21N20NQgiRAPGKjWxJGQE1CtsIaoc0bg+24VnTew=;
-        b=W2zeZv2Amet09pAxIMF9fV4ylqeCXFJOSjD5Dwmx6ArjMX+lk5GyJg3NF5A45P5eRy
-         hhXjyH1GgG644NBBvQtgx2UthjJ4W7pzRTyhyQoPZMSmkmiIQ/ZgUTaj7UBxgTNZGTA1
-         vFG2jgXDy4A8BUWbGSPtRhTOnrGMtH0Exe3icIK+21RfBIisGkm8pEvq9/iF76x54Qx9
-         Pht/ZDoRMuyilZ3lrhiHTlhg+RXdY9msII4x5CHk3BOv0y2sdz0EGSndFfokKF/snFuH
-         eViGpstqScHnM934zZ1ErK4QivUjR85SrrRsttN7G7j1sM93Ww2k+1ut8XYeA8tpE/Ja
-         2/GA==
-X-Gm-Message-State: AOJu0YzUDiV9wgoloMu0+jpiymATFmlw5/8y9NheaYVel/HxAPdiWcIE
-	3Tl2oZ2yL1e9dLNgZm4Qq4WzvD+HCUwTyiSagxJxPLgzloWoR7uRxL+3in9NxY6i4AehG09q+Ob
-	W
-X-Gm-Gg: ASbGncuJz0lURRy5cadDHRFqAkz0Vzg+VagIgQEq177YoiCQB8et++Dxjn7e8zo/y9I
-	5GFYnYwgLaQwQLa0Z6eMhwiyGaB09EzHh8Re2z5C+/AKVnRENdGZHzlq3UJaBN/jq82PcaKkQOI
-	lXjaqG5/Qv017HeY8e9MgrZQoJvt6ayyfo/qyi+RcEJJ99c16Jeq4OWS4YNfQ7zXwiRE0ujDTAI
-	uwgWJXf0pfx+PAZVr4jhQNg8f4hnaS0JDbqDft9lrJ3jQcu0QIWWpH6kOjmssGJqsrIpCDYuEI9
-	d6l2ubABRJWsbeOZX7APCZo73Fp4xxTigyQkq1Qr6Ge0cLs5Hldb+GTRVSCuTsU1bvPVwL2djrU
-	yurxZYeWFN0rnSGlhgb3QQb0AwA==
-X-Google-Smtp-Source: AGHT+IHWCsLcDIxL6ytR5QTqeptmdFdVVO+xqRDcmlgk7+/1KWk02aStJmqcNR/mTszyOY6C7kGxXw==
-X-Received: by 2002:a05:6820:8c9:b0:606:85ad:881 with SMTP id 006d021491bc7-607d40e2902mr1899866eaf.0.1746022890085;
-        Wed, 30 Apr 2025 07:21:30 -0700 (PDT)
-Received: from ?IPV6:2600:8803:e7e4:1d00:359a:f1e:f988:206a? ([2600:8803:e7e4:1d00:359a:f1e:f988:206a])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-607d8dbd96fsm232384eaf.35.2025.04.30.07.21.29
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 30 Apr 2025 07:21:29 -0700 (PDT)
-Message-ID: <070b269c-c536-49c5-a11d-7e23653613f9@baylibre.com>
-Date: Wed, 30 Apr 2025 09:21:28 -0500
+	s=arc-20240116; t=1746024323; c=relaxed/simple;
+	bh=36OT3QoklzR6oVTmVWYqH45+dqveA3D0pcoW6+LcquY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BlMJhuMrM0RwXifpBbk69UXrpGS56CXiAEvd/YJ0isI7/tHhJTO19mK20Uum+jH4A2drv4En1pVJxdfpiQjPbqx8VFbHom18rQykQGwbEjOyv4DzIGPI/4ar1kanZI1OIRQvI2poYF9XGO6AhOXnh0E8M37BthuxrYkpgRqrYOU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=fail smtp.mailfrom=kernel.org; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=kernel.org
+X-CSE-ConnectionGUID: 3db42KlmTuGbl75TJ1ZtDw==
+X-CSE-MsgGUID: t81fCUIOTfafqxIW8b1e+Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11419"; a="47406996"
+X-IronPort-AV: E=Sophos;i="6.15,251,1739865600"; 
+   d="scan'208";a="47406996"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2025 07:45:20 -0700
+X-CSE-ConnectionGUID: 5ySyaq5XRCy2yXSGoGfJYw==
+X-CSE-MsgGUID: oUv2qTAQT86AbRhnb/POFw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,251,1739865600"; 
+   d="scan'208";a="139267865"
+Received: from smile.fi.intel.com ([10.237.72.55])
+  by fmviesa004.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2025 07:45:16 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
+	(envelope-from <andy@kernel.org>)
+	id 1uA8gT-00000001eVI-2qVG;
+	Wed, 30 Apr 2025 17:45:13 +0300
+Date: Wed, 30 Apr 2025 17:45:13 +0300
+From: Andy Shevchenko <andy@kernel.org>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Nuno =?iso-8859-1?Q?S=E1?= <noname.nuno@gmail.com>,
+	Angelo Dureghello <adureghello@baylibre.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH 1/5] Documentation: ABI: IIO: add calibphase_delay
+ documentation
+Message-ID: <aBI3eUPirZEXpZgG@smile.fi.intel.com>
+References: <20250429-wip-bl-ad7606-calibration-v1-0-eb4d4821b172@baylibre.com>
+ <20250429-wip-bl-ad7606-calibration-v1-1-eb4d4821b172@baylibre.com>
+ <4645ae3e0c3bb1ada9d4cadce77b64fe5e651596.camel@gmail.com>
+ <070b269c-c536-49c5-a11d-7e23653613f9@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/5] Documentation: ABI: IIO: add calibphase_delay
- documentation
-To: =?UTF-8?Q?Nuno_S=C3=A1?= <noname.nuno@gmail.com>,
- Angelo Dureghello <adureghello@baylibre.com>,
- Jonathan Cameron <jic23@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?=
- <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
- Lars-Peter Clausen <lars@metafoo.de>,
- Michael Hennerich <Michael.Hennerich@analog.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- devicetree@vger.kernel.org
-References: <20250429-wip-bl-ad7606-calibration-v1-0-eb4d4821b172@baylibre.com>
- <20250429-wip-bl-ad7606-calibration-v1-1-eb4d4821b172@baylibre.com>
- <4645ae3e0c3bb1ada9d4cadce77b64fe5e651596.camel@gmail.com>
-From: David Lechner <dlechner@baylibre.com>
-Content-Language: en-US
-In-Reply-To: <4645ae3e0c3bb1ada9d4cadce77b64fe5e651596.camel@gmail.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <070b269c-c536-49c5-a11d-7e23653613f9@baylibre.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On 4/30/25 12:40 AM, Nuno Sá wrote:
-> On Tue, 2025-04-29 at 15:06 +0200, Angelo Dureghello wrote:
->> From: Angelo Dureghello <adureghello@baylibre.com>
->>
->> Add new IIO calibphase_delay documentation.
->>
->> The delay suffix is added to specify that the phase, generally in
->> radiants, is for this case (needed from ad7606) in nanoseconds.
->>
->> Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
->> ---
->>  Documentation/ABI/testing/sysfs-bus-iio | 20 ++++++++++++++++++++
->>  1 file changed, 20 insertions(+)
->>
->> diff --git a/Documentation/ABI/testing/sysfs-bus-iio
->> b/Documentation/ABI/testing/sysfs-bus-iio
->> index
->> 33c09c4ac60a4feec82308461643134f5ba84b66..f233190d48a34882b7fed2d961141cc6bec3ddb2
->> 100644
->> --- a/Documentation/ABI/testing/sysfs-bus-iio
->> +++ b/Documentation/ABI/testing/sysfs-bus-iio
->> @@ -559,6 +559,26 @@ Description:
->>  		- a small discrete set of values like "0 2 4 6 8"
->>  		- a range specified as "[min step max]"
->>  
->> +What:		/sys/bus/iio/devices/iio:deviceX/in_voltageY_calibphase_delay
+On Wed, Apr 30, 2025 at 09:21:28AM -0500, David Lechner wrote:
+> On 4/30/25 12:40 AM, Nuno S� wrote:
+> > On Tue, 2025-04-29 at 15:06 +0200, Angelo Dureghello wrote:
+> >> From: Angelo Dureghello <adureghello@baylibre.com>
+> >>
+> >> Add new IIO calibphase_delay documentation.
+> >>
+> >> The delay suffix is added to specify that the phase, generally in
+> >> radiants, is for this case (needed from ad7606) in nanoseconds.
+
+...
+
+> >> +What:		/sys/bus/iio/devices/iio:deviceX/in_voltageY_calibphase_delay
+> > 
+> > Not sure if I'm too convinced on the _delay suffix
+> > 
+> Phase is measured in radians, not seconds, so it seems wrong to use it here.
 > 
-> Not sure if I'm too convinced on the _delay suffix
+> https://en.wikipedia.org/wiki/Phase_(waves)
 > 
-Phase is measured in radians, not seconds, so it seems wrong to use it here.
+> And the delay here is with respect to individual samples in a simultaneous
+> conversion without regard for a sampling frequency, so I don't see how we could
+> convert the time to radians in any meaningful way.
 
-https://en.wikipedia.org/wiki/Phase_(waves)
+And how this delay is aplicable to the phase in the hardware? Sounds to me that
+HW has some meaningful way of such a conversion?
 
-And the delay here is with respect to individual samples in a simultaneous
-conversion without regard for a sampling frequency, so I don't see how we could
-convert the time to radians in any meaningful way.
+-- 
+With Best Regards,
+Andy Shevchenko
+
 
 

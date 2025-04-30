@@ -1,165 +1,233 @@
-Return-Path: <linux-iio+bounces-18889-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18890-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CADBAA3BB5
-	for <lists+linux-iio@lfdr.de>; Wed, 30 Apr 2025 00:46:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 568C3AA40C5
+	for <lists+linux-iio@lfdr.de>; Wed, 30 Apr 2025 04:03:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 925094E0BE6
-	for <lists+linux-iio@lfdr.de>; Tue, 29 Apr 2025 22:46:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F0E83B8C3F
+	for <lists+linux-iio@lfdr.de>; Wed, 30 Apr 2025 02:02:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49D10211C;
-	Tue, 29 Apr 2025 22:46:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99EF07F7FC;
+	Wed, 30 Apr 2025 02:03:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="AuQ9wj33"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FGk/AOSr"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oa1-f46.google.com (mail-oa1-f46.google.com [209.85.160.46])
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE4C0212B2F
-	for <linux-iio@vger.kernel.org>; Tue, 29 Apr 2025 22:46:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9DBC2DC77E;
+	Wed, 30 Apr 2025 02:03:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745966803; cv=none; b=QYrxwPpTAB39qC9ssJKOOqQiTYhKUKAzuPkvdwCGflLX61Fqoe8tpWH1TkpTPQzQhcOaAtIxE4UuZw9HKfCh6UlbJSFx7C0Ig1X9dNVN+xF5b0HfuPPCHvaluNv7FWSN37waOITSO85LnVr6Af3UvZ+eLvLc7/0Cd2foAzm5q0M=
+	t=1745978582; cv=none; b=sFs//f7AtFWRiVA6RTOppdu3BSL5kk93YXUkQfnp0oZstTV1e5OrmmkMVy1Y644S7lPyffpqh7NYIt/cLjBKPIDKiUGjBu5Fs+hHjq0oCFxp72C+tGBKLJtWlGJ3808o9ZvqIJkUDX7lexo0hgfNzj0LYRzUSu5NsmrtTyb7k1E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745966803; c=relaxed/simple;
-	bh=EMiJ/dxywsGmUp0dA3BYacymFWhlXTOhMsOz3prXtgg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pL1HhhoSm/x0wtBXGH8yj1ArxfYBzBKX4EkmpDGVB+ofMITxpdm5PklS1OtQZsdOt+THYGXn9DhyMrxAfB3AyjQHMaMHVUqRdz0V6Wwn70SiPipLIFoVsOYRQCZ6v00U+BPks4izem22kx6DEI8wMzZJ5lAojkqXXtxm0HVqu40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=AuQ9wj33; arc=none smtp.client-ip=209.85.160.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-2d0d25cebfeso4464154fac.2
-        for <linux-iio@vger.kernel.org>; Tue, 29 Apr 2025 15:46:40 -0700 (PDT)
+	s=arc-20240116; t=1745978582; c=relaxed/simple;
+	bh=e25vsFQvM7K9a+NWv9Hv7JhvUfauCVFzCE5OgLo8MPE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tCVi/7oYzJS2B1JcWMhQhKLz53AI6ecQy0w0aXwcHJsOWJNbm8vlRtd/FrFe98/0IEZ2rxA+Gcg/pr1Gm24xvXnj0Wi7KXp270TDPL0MWlBq2mNZ0HZjJChfnZc0hirDgtXaxPY04HvxnYCg2YgudOsR5wfBEHGfvRa8n9tY4cY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FGk/AOSr; arc=none smtp.client-ip=209.85.210.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-736aaeed234so5607646b3a.0;
+        Tue, 29 Apr 2025 19:03:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1745966800; x=1746571600; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=jxON1Bozl2aLfPwU6gx/eCpiRYdqSVgYx9l/nuultOg=;
-        b=AuQ9wj33uSjqv4M4NUuMU2lNLo4gB7+jmR45JJ3q9dvQHotvW65bXv0A7dUurIwmVe
-         5DVi/ZE7cyeuvC9sLHRma+6Q1dP3mSekSHFbfJXyEeR5nPbuVZc59yOOXPygqIvAQd2u
-         db597FD1uyN7GwPJKhxSsvB/TIs/Bzw6lv3ybrezl71VDc34YBBUS9V7RtjxW2tA3hmc
-         2j3xUCkvI4g2DtXQtjh0CyZ5n+NxNFyfZWk90jE+aUR3tiTLvGshp2bswhiYAZ57i/+j
-         4+BKlodSLdVgxwCMHduwbLnwFaSzejt0OGx3/7uItJeSRwpZ/ATCorrsI+xXRYv7EC3z
-         EcZQ==
+        d=gmail.com; s=20230601; t=1745978580; x=1746583380; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=PU2BMFTnVtPjOHXZX3MwYrwKdLPtw4QrVftiOXMGqpw=;
+        b=FGk/AOSrTnV9qyh1ke1eNcAqxlCzMG+exCZjea13GF80FjCYWqdTT26VXc0PhorEUV
+         u1hatA8IJJpZdXhvJC5g2JvCQRFPwMZEG8bixXNRNNw7xnq0XKXcJ5ckQ9nf8TJpvGXS
+         MeXBLzRh0KfXajHM5G6xt+QnELIYXgJDMSzJQt2F4UPiGBw6KDTJ/gSSTWoloQuzM0mg
+         M+JVssavY+4Ry6VDetJkYUW5/P8a3gVv0SHP+tkEBEIR3QMLmx6ArF05Wo5otUJ07X/5
+         +hAzGWEC6gTdubd22alnfxtXFxFLFxMpnfAfVdfa9M0lYtmxsuOnRX1NPr/ff0P59qtq
+         FJ6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745966800; x=1746571600;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=jxON1Bozl2aLfPwU6gx/eCpiRYdqSVgYx9l/nuultOg=;
-        b=K+j7LH+upUjLcnH/0L4FjfT7MJFWcGHL3QMHsHcezDhfZAt6qoiuqq/ox2Jbg6cYe4
-         fFb938kGhJVPG69YBbhwBU3qTyk0SsfGif+uz1etEyAlgTj6oPfeMDjiFCCejcAGupob
-         +tL2jijrye5Sncnl3NlV78MO81/t+7j5Om4HncLyuq6ztKDVhEcLI7IXAeiT/TOD14/d
-         YIeqDdXOrz0URArUV4l5EmPurbROy/YFzIHbTrPgriB+RpvK4LwxgFeUGRyIxmRrzVQW
-         Eet4qwUoHH5DaXR4RydJknq5GgZQYaBevGOez/+69YOa2JlY78RTGAVQ2gOjz+zP7ref
-         VAXQ==
-X-Gm-Message-State: AOJu0YziIan3keJkRMNdYZKEa0l70xdV3+3emXXZsrYnAdommP6AVKKB
-	7R1UYZ7zh5ZuRcA/NDwyZOFPsDiM55Ybg1HLnvMrSmnkS9kIu/ySc0pPKzjkcuE=
-X-Gm-Gg: ASbGncuoD+znae0JJH64r5I8FN4ZQBwUgR3s9HpA04S9kWS70FW51TeFSfPrwXekCvW
-	4ynj9n6QMWqG7prYLUot4oS9qIhTMNCkAIYu5hWOn2eCDbwJoWmZVze3gEXwkGkT9GTvRlezt5e
-	eUzo4yC5YHTRcSYBBEJDCbIwEf7Rm74vEOTpzBvruB9xqSMyzkIS83rkqCktWzg7dqpPGP2P83z
-	4FobNrK91KEzpGAwWXJP5hfeP/srje35vgqN+6DsSezk5qyUP2z8tsNE2xzQsDFCda+4GnVV8v/
-	4czsHfpt9HLuTlBJjVlUtPnu8ndlm3MuR1ZsMdrNbkdIaal6OsdinpxmEe5dFZKI9BPiMxYDRFj
-	+DYCe3p1LBlh8+v0CEg==
-X-Google-Smtp-Source: AGHT+IFuVVoGKVmn1rmBPbb+UXnQybHQ7N3kb98326v2W/tSAiNfoTR5IXLxMEWxRISYzAB0Cl37eQ==
-X-Received: by 2002:a05:6870:1c9:b0:29e:4ba5:4ddc with SMTP id 586e51a60fabf-2da6a345f37mr457236fac.24.1745966799750;
-        Tue, 29 Apr 2025 15:46:39 -0700 (PDT)
-Received: from ?IPV6:2600:8803:e7e4:1d00:dc17:157d:e8b2:3ad6? ([2600:8803:e7e4:1d00:dc17:157d:e8b2:3ad6])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2da6e5934dfsm54103fac.45.2025.04.29.15.46.37
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 29 Apr 2025 15:46:39 -0700 (PDT)
-Message-ID: <0677db3c-9c36-4f34-93c0-5c53d702c4bd@baylibre.com>
-Date: Tue, 29 Apr 2025 17:46:37 -0500
+        d=1e100.net; s=20230601; t=1745978580; x=1746583380;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=PU2BMFTnVtPjOHXZX3MwYrwKdLPtw4QrVftiOXMGqpw=;
+        b=GXeqBftWTXOAxEcyvTD+zTgRhXdmzF9GVc1rbbemIXDiDiHBp8U4SsPu9TnEsYB2IU
+         ZlW8HFIQUk9L1SjRauigT/0GhSJrZtqvcqwNpX6R/P5sM17/oOKGQWVx+AtV0U7zZ8yP
+         PXyiMAImUsh7yYApicNr8ui6HQa4pfdKzYxohRH4C4Jt1+ip0IeXTimMPe15yOw5AI55
+         vIslJlNszaq1EphkHVI57dz0vqrTybVOZLtEMN5iRTgZwKF8MeMIufgMCVcy7g9epGRl
+         fxkpLEzQpU4j2Vp6rS0x0EL5cuyYIDwH6Lh+JEcW0MrW0zzFNNTNynIO+grmnWxv0amg
+         gxxg==
+X-Forwarded-Encrypted: i=1; AJvYcCXjkMMo6oPoVbrDzzKJPu97p2EO0UFCwlTFNi5JQkR/B+3bEtv0rm20zQ2NzdgqGDk80/0O3/JKlSmy2fY9@vger.kernel.org, AJvYcCXrzs8I0aymw36DOfL7Z2rlTcuQcplqZ85GpUzQj5LMyiKFEFbfAXxFO6JSts3L+K2MHyHxGlp8J2Nc@vger.kernel.org, AJvYcCXz5MtiZ4thstY2dSa+2q1kxFAizxU0FOmyM1Jvwxn2auxihga/3cHVcxoBMbR2aBhLsTa1abz/HgvD@vger.kernel.org
+X-Gm-Message-State: AOJu0YyOXw21ulULlNWa3rh0xY4l1Do77C7fH7B9DdrPcGj71Psdcl7e
+	NpUNTojP1wc93AnVxqylNsuqcAmZhLplkAMOXOBqWXC6juvksV4tKpo+4adp
+X-Gm-Gg: ASbGncsD2Tjew197u5eBXi48RfJ49aZtl3XR3og2tRvaaFb9S1woU3YULrXnqcfxsWA
+	qjhrHKOZJVJIR1w2DI/TzAoH+XDNdXBdp1lXEIXur8D/obC1xICHrk74ewaFkPDgxRlvFn06awZ
+	XZrtze9tbUREJwW2AC4fbJd6BGgws1oeI0tpqF8WIZMOEHKvkx1DdiBxOrSvNGLAcy/fYHOE5Yt
+	k+ierOKRNWuAKyTeHT90Ja0vNFnRe5pAz2GCD2kuLEhKVyQQCMXj8lxaG7OXzn1NwJZBxLZPpJP
+	rbrtIzIXYg4c9W+RB9A0l2HbkhilTgFWbzd+mtyf3lZ6avgYuI7NlqeIslAxfW8=
+X-Google-Smtp-Source: AGHT+IHOaZdyKtUuNnxCkWkAIUmlGJeGdXdT+lkJ9XoblFjEg6+XQGjW6oJ2RUEHE2nQP+fbQuVjXA==
+X-Received: by 2002:a05:6a20:c90c:b0:1f5:60fb:8d9 with SMTP id adf61e73a8af0-20a88f11293mr1875081637.33.1745978579802;
+        Tue, 29 Apr 2025 19:02:59 -0700 (PDT)
+Received: from localhost.localdomain ([2804:14d:4c64:81ec:4ff:1626:32b1:712a])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b15faee61e1sm9689735a12.78.2025.04.29.19.02.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 29 Apr 2025 19:02:59 -0700 (PDT)
+From: Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>
+To: jic23@kernel.org,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org
+Cc: ~lkcamp/patches@lists.sr.ht,
+	linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2] dt-bindings:iio:adc:st,spear600-adc: txt to yaml format conversion.
+Date: Tue, 29 Apr 2025 22:50:01 -0300
+Message-ID: <20250430020248.26639-1-rodrigo.gobbi.7@gmail.com>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5/5] iio: adc: ad7606: add gain calibration support
-To: Angelo Dureghello <adureghello@baylibre.com>,
- Jonathan Cameron <jic23@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?=
- <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
- Lars-Peter Clausen <lars@metafoo.de>,
- Michael Hennerich <Michael.Hennerich@analog.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- devicetree@vger.kernel.org
-References: <20250429-wip-bl-ad7606-calibration-v1-0-eb4d4821b172@baylibre.com>
- <20250429-wip-bl-ad7606-calibration-v1-5-eb4d4821b172@baylibre.com>
-From: David Lechner <dlechner@baylibre.com>
-Content-Language: en-US
-In-Reply-To: <20250429-wip-bl-ad7606-calibration-v1-5-eb4d4821b172@baylibre.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 4/29/25 8:06 AM, Angelo Dureghello wrote:
-> From: Angelo Dureghello <adureghello@baylibre.com>
-> 
+Straight forward conversion from spear-adc.txt into yaml format.
 
-...
+Signed-off-by: Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>
+---
+Some constraints were extracted from the driver (spear_adc.c) and the public datasheet
+referenced at the yaml.
 
-> +static int ad7606_chan_calib_gain_setup(struct iio_dev *indio_dev,
-> +					struct iio_chan_spec *chan)
-> +{
-> +	struct ad7606_state *st = iio_priv(indio_dev);
-> +	unsigned int num_channels = st->chip_info->num_adc_channels;
-> +	struct device *dev = st->dev;
-> +	int ret;
-> +
-> +	device_for_each_child_node_scoped(dev, child) {
-> +		int reg, r_gain;
-> +
-> +		ret = fwnode_property_read_u32(child, "reg", &reg);
-> +		if (ret)
-> +			return ret;
-> +
-> +		/* channel number (here) is from 1 to num_channels */
-> +		if (reg < 1 || reg > num_channels) {
-> +			dev_warn(dev, "invalid ch number (ignoring): %d\n", reg);
-> +			continue;
-> +		}
-> +
-> +		ret = fwnode_property_read_u32(child, "adi,rfilter-ohms",
-> +					       &r_gain);
+Changelog:
+v2: add constraints over properties and remove a ref at MAINTAINERS file.
+v1: https://lore.kernel.org/linux-devicetree/20250423022956.31218-1-rodrigo.gobbi.7@gmail.com/
+---
+ .../bindings/iio/adc/st,spear600-adc.yaml     | 69 +++++++++++++++++++
+ .../bindings/staging/iio/adc/spear-adc.txt    | 24 -------
+ MAINTAINERS                                   |  2 +-
+ 3 files changed, 70 insertions(+), 25 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/st,spear600-adc.yaml
+ delete mode 100644 Documentation/devicetree/bindings/staging/iio/adc/spear-adc.txt
 
-Instead of...
+diff --git a/Documentation/devicetree/bindings/iio/adc/st,spear600-adc.yaml b/Documentation/devicetree/bindings/iio/adc/st,spear600-adc.yaml
+new file mode 100644
+index 000000000000..afce10eab1c1
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/adc/st,spear600-adc.yaml
+@@ -0,0 +1,69 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/adc/st,spear600-adc.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: ST SPEAr ADC device driver
++
++maintainers:
++  - Jonathan Cameron <jic23@kernel.org>
++
++description: |
++  Integrated ADC inside the ST SPEAr SoC, SPEAr600, supporting
++  10-bit resolution. Datasheet can be found here:
++  https://www.st.com/resource/en/datasheet/spear600.pdf
++
++properties:
++  compatible:
++    enum:
++      - st,spear600-adc
++
++  reg:
++    maxItems: 1
++
++  interrupts:
++    maxItems: 1
++
++  sampling-frequency:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    minimum: 2500000
++    maximum: 20000000
++    description:
++      Default sampling frequency of the ADC
++
++  vref-external:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    minimum: 1000
++    maximum: 2800
++    description:
++      External voltage reference in milli-volts. If omitted
++      the internal voltage reference will be used.
++
++  average-samples:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    minimum: 1
++    maximum: 128
++    default: 0
++    description:
++      Number of samples to generate an average value. If
++      omitted, single data conversion will be used.
++
++required:
++  - compatible
++  - reg
++  - interrupts
++  - sampling-frequency
++
++additionalProperties: false
++
++examples:
++  - |
++    adc: adc@d8200000 {
++        compatible = "st,spear600-adc";
++        reg = <0xd8200000 0x1000>;
++        interrupt-parent = <&vic1>;
++        interrupts = <6>;
++        sampling-frequency = <5000000>;
++        vref-external = <2500>;	/* 2.5V VRef */
++    };
+diff --git a/Documentation/devicetree/bindings/staging/iio/adc/spear-adc.txt b/Documentation/devicetree/bindings/staging/iio/adc/spear-adc.txt
+deleted file mode 100644
+index 88bc94fe1f6d..000000000000
+--- a/Documentation/devicetree/bindings/staging/iio/adc/spear-adc.txt
++++ /dev/null
+@@ -1,24 +0,0 @@
+-* ST SPEAr ADC device driver
+-
+-Required properties:
+-- compatible: Should be "st,spear600-adc"
+-- reg: Address and length of the register set for the device
+-- interrupts: Should contain the ADC interrupt
+-- sampling-frequency: Default sampling frequency
+-
+-Optional properties:
+-- vref-external: External voltage reference in milli-volts. If omitted
+-  the internal voltage reference will be used.
+-- average-samples: Number of samples to generate an average value. If
+-  omitted, single data conversion will be used.
+-
+-Examples:
+-
+-	adc: adc@d8200000 {
+-		compatible = "st,spear600-adc";
+-		reg = <0xd8200000 0x1000>;
+-		interrupt-parent = <&vic1>;
+-		interrupts = <6>;
+-		sampling-frequency = <5000000>;
+-		vref-external = <2500>;	/* 2.5V VRef */
+-	};
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 906881b6c5cb..e923becb0633 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -23213,7 +23213,7 @@ STAGING - INDUSTRIAL IO
+ M:	Jonathan Cameron <jic23@kernel.org>
+ L:	linux-iio@vger.kernel.org
+ S:	Odd Fixes
+-F:	Documentation/devicetree/bindings/staging/iio/
++F:	Documentation/devicetree/bindings/iio/
+ F:	drivers/staging/iio/
+ 
+ STAGING - NVIDIA COMPLIANT EMBEDDED CONTROLLER INTERFACE (nvec)
+-- 
+2.47.0
 
-> +		if (ret)
-> +			return ret;
-
-... we need:
-
-		if (ret == -EINVAL)
-			r_gain = 0;
-		else if (ret)
-			return ret;
-
-Otherwise driver fails to probe if adi,rfilter-ohms is missing.
-
-> +
-> +		if (r_gain < AD7606_CALIB_GAIN_MIN ||
-> +		    r_gain > AD7606_CALIB_GAIN_MAX)
-> +			return -EINVAL;
-> +
-
-Also, return dev_err_probe() on the returns above would have made debugging
-easier.
-
-> +		/* Chan reg is 1-based index. */
-> +		ret = st->bops->reg_write(st, AD7606_CALIB_GAIN(reg - 1),
-> +					  r_gain / AD7606_CALIB_GAIN_STEP);
-> +		if (ret)
-> +			return ret;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
 

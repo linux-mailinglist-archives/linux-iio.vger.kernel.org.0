@@ -1,154 +1,286 @@
-Return-Path: <linux-iio+bounces-18903-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18904-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00BBCAA4FBA
-	for <lists+linux-iio@lfdr.de>; Wed, 30 Apr 2025 17:09:12 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A5E3AA5068
+	for <lists+linux-iio@lfdr.de>; Wed, 30 Apr 2025 17:36:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 05E8F1C22C7C
-	for <lists+linux-iio@lfdr.de>; Wed, 30 Apr 2025 15:05:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E43997B1167
+	for <lists+linux-iio@lfdr.de>; Wed, 30 Apr 2025 15:35:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AD9525DCE9;
-	Wed, 30 Apr 2025 15:04:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50E0C25D1F8;
+	Wed, 30 Apr 2025 15:36:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="VezMumEH"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="a+XvV3mO"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oi1-f171.google.com (mail-oi1-f171.google.com [209.85.167.171])
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9519725C708
-	for <linux-iio@vger.kernel.org>; Wed, 30 Apr 2025 15:04:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45A8015DBC1;
+	Wed, 30 Apr 2025 15:36:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746025494; cv=none; b=FypqnWuvK+OgbbLDaYifjOFh1FXzWIQHSDLvHP9rUTjD3sirZ3AOf/GDwytjQgt1yLQIUEolRb2oixeWWZj2Qqe0SHOWmRW2mhtbiZL421lybQNBenKFQpjE1agQCjE1tGSw9C6Q7YlpX+jQeh9FYPf17pKE0jhkOFbcXfzMeLU=
+	t=1746027375; cv=none; b=bFZEDf5qSQz0hqa6fo2j62dwZ5IiGXzOEYFicNEQpCICvZ75cP6iSxsoJleNklUB9XQENcrJrPUBZgtBi5gWDyL+l0pQ5+n5frgUYfUeb562FLu21/tWOQE5B13yx2Vq3qD+XzE7akJMh02gYh/bs2ru7rW/aF541YCm1eQ0n3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746025494; c=relaxed/simple;
-	bh=iAUBF84BT6XPeN8Y/n4Oehp+UL7zE/zH+6aZ+LiCsHc=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=EqVPWliWbqifoLgG2iadrNP4l9GLMv1Bb2MoMzuP09zPVjlDS3DjMIyeifFpDhxkYfGmt4zxC1tutqa4yJazujU+zks73zJp6Od8rK09w/RpON00plhE9W8M5pOyl7D26TVpCgEqIE/dsOO+lIhNSpGxXCK0uzbIPqQLP9qrvtU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=VezMumEH; arc=none smtp.client-ip=209.85.167.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oi1-f171.google.com with SMTP id 5614622812f47-3f8d2f8d890so8841b6e.0
-        for <linux-iio@vger.kernel.org>; Wed, 30 Apr 2025 08:04:52 -0700 (PDT)
+	s=arc-20240116; t=1746027375; c=relaxed/simple;
+	bh=LkriFigpaBQ2TCKZy0fvHVXMLA0Cwu9c5uTygANFRaY=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=qX94ssdc7JknCtRZ8rnkgNuaI2Xg1NyH/dEETnLGULFosuuiplmJLqZFmGDN+hLy6mDNnxhJadDmJMsKvl1qj+4kqTtozbPE7aXjo5HwbvhaataJrc50OfIlACPT+74sPiEqk8EKxZEmivykuPZGp41pkPbDTa5cgRdl3YPTem8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=a+XvV3mO; arc=none smtp.client-ip=209.85.221.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-39c31e4c3e5so4809746f8f.0;
+        Wed, 30 Apr 2025 08:36:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1746025491; x=1746630291; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=n3T9+6PFQU7ODBU+5+B8t+gjHfIuLl3Jh/pj8rJ6DXA=;
-        b=VezMumEH4PnXDpfdIiVOA8FcSVMdKGiH03QLdp2m5CaGxxYPtYQrjtwt3t0cAmix5x
-         2q2rDP9CUs+5m/PybmjnrVslLmWPVZetohfDthCZhqh6DJsLgrJM2juuyGqWEyx6b9QK
-         jiVmvYiNp6VqcNayES9DJnYGeRwk4GKzulrPL4l3KYL8DfTfirsMi1lbfmUHVxozphzw
-         8W9uV6SpqVgGkW7pSbRWLIG3bJEYPLkKkY1rmfmFxG99w1UqboVvqBZP+TfmLt5uuDW5
-         KOcSpJddBNA1BwJ7jV8FXkeE2kPrBUM9lXgf7HOrk+3ihxFCqKpKVnKBdlIXRixdZIBj
-         5QXA==
+        d=gmail.com; s=20230601; t=1746027371; x=1746632171; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=+MKDHPwR2l8XAq/X6LzjtjCqC8aFyohmJHmIahoU0Yg=;
+        b=a+XvV3mOpXD0/plQIml84PV5buNt+5nNQQ5qQIE8jrjyi+vyN9SKXZsB7k/Z0t+sSe
+         OidPwFxidPcFc32wmls5aLeR6OErf/xDkZe/uBtd12URMlB1ZpVv/7Ks06/mzUlnJrO/
+         zaXUkGytnkmHBq+e88qX9MqwHj+Q9EodqlnxjDBuF5CFpQoxfROp9LaEoG39cG3IVXV9
+         hHgIKsa5n4TdGwf7OObUmS37U9Iu+OvQtb9VJHjLVR7I74PEFFnVOxDTnIWfGEKSDirf
+         IUra0Jl0UKXPwd8T2PaWHpcuor8Kq6MeHL4cgnq/qsRIoBcXUfhwFMnFqf4DQhFkPVYv
+         C6lQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746025491; x=1746630291;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=n3T9+6PFQU7ODBU+5+B8t+gjHfIuLl3Jh/pj8rJ6DXA=;
-        b=tmQAuK1iQz6Of7VSdH5etBvMDduLNDHgSO3EtwT/jY1u4YTiqLea9jerpKo7g8qCbV
-         tvuIabsLSJAvUNU4zcyjHpEsT8tuM5Q8j/FJZHTHqxLYC/w7mNGHsHfE/cqYz+1uW42J
-         N63q9IQN2EFA/n1OVeSzqdXUvpeXG3mJTNbKwRKaCjj3d8mXljmnfOXL+i+Hh91qzffA
-         K1K7YyClACKNV8IWwDvSyW1LW00ZReKBVOeYGd8VEjIr//ZvY5Nfu5Cbf3cpkzCG2Y+Z
-         7QRKOATVf0+ck5mLJUf5x5dL3Yc1lwBhtDAtPlheUcYhRMZswB5Jk2Syo8CjD5LQEo09
-         UN5A==
-X-Forwarded-Encrypted: i=1; AJvYcCVzpqC2Opkf27l92VsPyGJwLIc1Ke5XlHXshAsIJ+jG7rS9HJ7jowSHvZB7/NtSvytkLtgMTjUnYRg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzhUFkmxY2Y2xsf8ZfYDTBHm6thjRmjxZMh2nZR51gNfx5bs2Ot
-	HF9QtaACsOelRN+rceMMpgNRCXlNRS5QmfgSgmIy87B1h7eQ7zS8xdyvURynj+A=
-X-Gm-Gg: ASbGncvBWGrk9Q9pmey3gObbMRWDsWVl1DbS+htNZeAQ/cFdMTqmKYF5npdU8WMIp7j
-	obU9ZqJQtNK6aIJ6FA6+ZGRm0J3pdVaOAmFS/ZOQrs7cv3UK0B9VBcuuz+a76tr3hsNEKa+LCXJ
-	VVrKtr4cApCvk0aqzFjHTxxfnhWoC/RGL/iRkAd9Q8w25u+6ldegpKyCGmkjgELPE0KmlgAhKZh
-	2xma0nOY1NanDzBnl5vDfnSMT/ZtXgAkN3FnSJFsPUWP5fw/eLL8+9t8EaV3oqoDC6JzUK4rsz3
-	I9wAv/lA+PF4azxO2+afUse/ki0I/Q381aP5CPIE41VcaEmQlREUjtr1I2Y+0duq4NtuNrkTLPe
-	yo5QRDxn2EOPpUA4=
-X-Google-Smtp-Source: AGHT+IGzbbqKeOG5/Z3RMXw05bmJvQ6JAZJPq3w+KmxakZsKev1SHX78l6FcGWqPiLMhX3MPVZr9Uw==
-X-Received: by 2002:a05:6820:3094:b0:606:107a:ebd8 with SMTP id 006d021491bc7-607d5675e89mr1620447eaf.5.1746025491559;
-        Wed, 30 Apr 2025 08:04:51 -0700 (PDT)
-Received: from ?IPV6:2600:8803:e7e4:1d00:359a:f1e:f988:206a? ([2600:8803:e7e4:1d00:359a:f1e:f988:206a])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-60686ec905dsm811235eaf.15.2025.04.30.08.04.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 30 Apr 2025 08:04:49 -0700 (PDT)
-Message-ID: <7fe18625-3a25-40c8-bfb7-a7a22a3eccff@baylibre.com>
-Date: Wed, 30 Apr 2025 10:04:47 -0500
+        d=1e100.net; s=20230601; t=1746027371; x=1746632171;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=+MKDHPwR2l8XAq/X6LzjtjCqC8aFyohmJHmIahoU0Yg=;
+        b=doa/z01THcMeq3EJb6HetXFeC7NXcSm0OFVXclw/BaMZdY9bTMslV7wog8e2lmdije
+         2rJxmrOC/XjTGEbp7Dml/jat5J+o6B66BiiHHce/nQTuM48E4bFjEwC7nRO5DRnbI2cf
+         22yWojeeJfSIvKmybwVJ8BhPRWmuYyX+jry0tzVEUOOJVmdGexPbORML/wJ8KAuyKxpW
+         AVT5TIo0/IOnbn6zQyCROS8ASaqAwoxcwUQiQ4wN61cP5MXv5IpLOjdMU4bd9vKlbt48
+         foJrcuXknPuI6LCaO1P+N2vB0VHdUgvOqd6Xnak+af5Q8qJyFsZdq8YDl2Y+XvtyFlRs
+         W4sQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV8j1zce665eChF4G3BBRc8+qBG27Vlt6dujA4MBe3Mbvd/NuNKEHO233QYkx4Pno9iV//krFHsjmDe@vger.kernel.org, AJvYcCVjUTsg+bJHVmuKoIqWVQgmeYWJiCmKOxw9hsbPjIxqz9QGI/PYfEiEhVmuooe7nmkPgXXs1dps2ww/xLhK@vger.kernel.org
+X-Gm-Message-State: AOJu0YyJpMrN+sCdLyTVjo3knGA+SK3lAl0CdcyvLGkI2byVayfgXAUY
+	eWS2XDpBlZihvw1pyRnlSmS/rC9P6BkuvO2JOPihtZJ0hY1uQhNJ
+X-Gm-Gg: ASbGncutKaPVEHzM3zdB1Sk64D4G6VdrmPotokgJ2Kti9lyjdL8zxz9DjPGOsCLi5ei
+	bRzefss4RvZ6Eofz48LWA7VMrKrCVF4ap2izi+ovWAIvs1Vdo0S9nIyaeQHeaYJjMmiFlux8m0c
+	97E87z/wn+KJ4vEQhykjHcOep08kOxmm5VhUGl5a0W2EikzuQHA2QSZDCXHgGpCD/ebTjAEeAXR
+	z+IiPg0sRIV/PIByUGIdMl78ap7+tsOqSOWbAjfA6Zi2J8B5W/12n5X9Mi1RM9RFkoiWBk/c89Y
+	oB+gAwtR7056+71WwsI5F/84kLaZl+QRVSjll9MhbLAnnnnUNQ7/qd/+SivFNFK8pO0TwF3Y5xH
+	zXGZG7de5vKpK
+X-Google-Smtp-Source: AGHT+IE1yfaVRABKM5EZNt0RO3VcMqmdM1CQatWeQBmjRfHbtU6NeGFvzMlRUL0XOcxFd8pk2yQs7Q==
+X-Received: by 2002:a05:6000:3102:b0:390:f394:6271 with SMTP id ffacd0b85a97d-3a08ff466dfmr3099777f8f.43.1746027371214;
+        Wed, 30 Apr 2025 08:36:11 -0700 (PDT)
+Received: from ?IPv6:2001:818:ea8e:7f00:2575:914:eedd:620e? ([2001:818:ea8e:7f00:2575:914:eedd:620e])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a073ca435dsm17262428f8f.21.2025.04.30.08.36.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 30 Apr 2025 08:36:09 -0700 (PDT)
+Message-ID: <d273fa78cb3986da5249bd800dd25c4c0bcfde7e.camel@gmail.com>
+Subject: Re: [PATCH 3/5] iio: adc: ad7606: add offset and phase calibration
+ support
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: Angelo Dureghello <adureghello@baylibre.com>, Jonathan Cameron	
+ <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, Nuno
+ =?ISO-8859-1?Q?S=E1?=	 <nuno.sa@analog.com>, Andy Shevchenko
+ <andy@kernel.org>, Lars-Peter Clausen	 <lars@metafoo.de>, Michael Hennerich
+ <Michael.Hennerich@analog.com>, Rob Herring <robh@kernel.org>, Krzysztof
+ Kozlowski <krzk+dt@kernel.org>, Conor Dooley	 <conor+dt@kernel.org>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	devicetree@vger.kernel.org
+Date: Wed, 30 Apr 2025 16:36:13 +0100
+In-Reply-To: <20250429-wip-bl-ad7606-calibration-v1-3-eb4d4821b172@baylibre.com>
+References: 
+	<20250429-wip-bl-ad7606-calibration-v1-0-eb4d4821b172@baylibre.com>
+	 <20250429-wip-bl-ad7606-calibration-v1-3-eb4d4821b172@baylibre.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.1 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/5] Documentation: ABI: IIO: add calibphase_delay
- documentation
-From: David Lechner <dlechner@baylibre.com>
-To: Andy Shevchenko <andy@kernel.org>
-Cc: =?UTF-8?Q?Nuno_S=C3=A1?= <noname.nuno@gmail.com>,
- Angelo Dureghello <adureghello@baylibre.com>,
- Jonathan Cameron <jic23@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?=
- <nuno.sa@analog.com>, Lars-Peter Clausen <lars@metafoo.de>,
- Michael Hennerich <Michael.Hennerich@analog.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-References: <20250429-wip-bl-ad7606-calibration-v1-0-eb4d4821b172@baylibre.com>
- <20250429-wip-bl-ad7606-calibration-v1-1-eb4d4821b172@baylibre.com>
- <4645ae3e0c3bb1ada9d4cadce77b64fe5e651596.camel@gmail.com>
- <070b269c-c536-49c5-a11d-7e23653613f9@baylibre.com>
- <aBI3eUPirZEXpZgG@smile.fi.intel.com>
- <896023ae-c279-4201-a7a8-dfd9b33fe0e5@baylibre.com>
-Content-Language: en-US
-In-Reply-To: <896023ae-c279-4201-a7a8-dfd9b33fe0e5@baylibre.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
 
-On 4/30/25 9:56 AM, David Lechner wrote:
-> On 4/30/25 9:45 AM, Andy Shevchenko wrote:
->> On Wed, Apr 30, 2025 at 09:21:28AM -0500, David Lechner wrote:
->>> On 4/30/25 12:40 AM, Nuno Sá wrote:
->>>> On Tue, 2025-04-29 at 15:06 +0200, Angelo Dureghello wrote:
->>>>> From: Angelo Dureghello <adureghello@baylibre.com>
->>>>>
->>>>> Add new IIO calibphase_delay documentation.
->>>>>
->>>>> The delay suffix is added to specify that the phase, generally in
->>>>> radiants, is for this case (needed from ad7606) in nanoseconds.
->>
->> ...
->>
->>>>> +What:		/sys/bus/iio/devices/iio:deviceX/in_voltageY_calibphase_delay
->>>>
->>>> Not sure if I'm too convinced on the _delay suffix
->>>>
->>> Phase is measured in radians, not seconds, so it seems wrong to use it here.
->>>
->>> https://en.wikipedia.org/wiki/Phase_(waves)
->>>
->>> And the delay here is with respect to individual samples in a simultaneous
->>> conversion without regard for a sampling frequency, so I don't see how we could
->>> convert the time to radians in any meaningful way.
->>
->> And how this delay is aplicable to the phase in the hardware? Sounds to me that
->> HW has some meaningful way of such a conversion?
->>
-> 
-> It is a calibration to account for a phase difference between two input signals.
-> This is a simultaneous sampling ADC, so all channels normally sample at exactly
-> the same time. This phase delay calibration factor can introduce a small delay
-> on an individual channel so that it starts it's conversion some microseconds
-> after the others.
-> 
-> There is a nice diagram here:
-> 
-> https://www.analog.com/media/en/technical-documentation/data-sheets/ad7606c-18.pdf#%5B%7B%22num%22%3A113%2C%22gen%22%3A0%7D%2C%7B%22name%22%3A%22XYZ%22%7D%2C34%2C594%2C0%5D
-> 
-> To convert the phase delay to a phase angle and back would require also knowing
-> the frequency of the input voltage signals.
+On Tue, 2025-04-29 at 15:06 +0200, Angelo Dureghello wrote:
+> From: Angelo Dureghello <adureghello@baylibre.com>
+>=20
+> Add support for offset and phase calibration, only for
+> devices that support software mode, that are:
+>=20
+> ad7606b
+> ad7606c-16
+> ad7606c-18
+>=20
+> Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
+> ---
+> =C2=A0drivers/iio/adc/ad7606.c | 160
+> +++++++++++++++++++++++++++++++++++++++++++++++
+> =C2=A0drivers/iio/adc/ad7606.h |=C2=A0=C2=A0 9 +++
+> =C2=A02 files changed, 169 insertions(+)
+>=20
+> diff --git a/drivers/iio/adc/ad7606.c b/drivers/iio/adc/ad7606.c
+> index
+> ad5e6b5e1d5d2edc7f8ac7ed9a8a4e6e43827b85..ec063dd4a67eb94610c41c473e2d804=
+0c919
+> 74cf 100644
+> --- a/drivers/iio/adc/ad7606.c
+> +++ b/drivers/iio/adc/ad7606.c
+> @@ -95,6 +95,22 @@ static const unsigned int ad7616_oversampling_avail[8]=
+ =3D {
+> =C2=A0	1, 2, 4, 8, 16, 32, 64, 128,
+> =C2=A0};
+> =C2=A0
+> +static const int ad7606_calib_offset_avail[3] =3D {
+> +	-128, 1, 127,
+> +};
+> +
+> +static const int ad7606c_18bit_calib_offset_avail[3] =3D {
+> +	-512, 4, 511,
+> +};
 
-Maybe calling it "conversion delay" would make more sense? Since the phase part
-of it is really referring to the application rather than to what we are actually
-adjusting.
+From the DS, it seems this is 508?
+
+> +
+> +static const int ad7606b_calib_phase_avail[][2] =3D {
+> +	{ 0, 0 }, { 0, 1250 }, { 0, 318750 },
+> +};
+> +
+> +static const int ad7606c_calib_phase_avail[][2] =3D {
+> +	{ 0, 0 }, { 0, 1000 }, { 0, 255000 },
+> +};
+> +
+> =C2=A0static int ad7606c_18bit_chan_scale_setup(struct iio_dev *indio_dev=
+,
+> =C2=A0					=C2=A0 struct iio_chan_spec *chan);
+> =C2=A0static int ad7606c_16bit_chan_scale_setup(struct iio_dev *indio_dev=
+,
+> @@ -164,6 +180,8 @@ const struct ad7606_chip_info ad7606b_info =3D {
+> =C2=A0	.scale_setup_cb =3D ad7606_16bit_chan_scale_setup,
+> =C2=A0	.sw_setup_cb =3D ad7606b_sw_mode_setup,
+> =C2=A0	.offload_storagebits =3D 32,
+> +	.calib_offset_avail =3D ad7606_calib_offset_avail,
+> +	.calib_phase_avail =3D ad7606b_calib_phase_avail,
+> =C2=A0};
+> =C2=A0EXPORT_SYMBOL_NS_GPL(ad7606b_info, "IIO_AD7606");
+> =C2=A0
+> @@ -177,6 +195,8 @@ const struct ad7606_chip_info ad7606c_16_info =3D {
+> =C2=A0	.scale_setup_cb =3D ad7606c_16bit_chan_scale_setup,
+> =C2=A0	.sw_setup_cb =3D ad7606b_sw_mode_setup,
+> =C2=A0	.offload_storagebits =3D 32,
+> +	.calib_offset_avail =3D ad7606_calib_offset_avail,
+> +	.calib_phase_avail =3D ad7606c_calib_phase_avail,
+> =C2=A0};
+> =C2=A0EXPORT_SYMBOL_NS_GPL(ad7606c_16_info, "IIO_AD7606");
+> =C2=A0
+> @@ -226,6 +246,8 @@ const struct ad7606_chip_info ad7606c_18_info =3D {
+> =C2=A0	.scale_setup_cb =3D ad7606c_18bit_chan_scale_setup,
+> =C2=A0	.sw_setup_cb =3D ad7606b_sw_mode_setup,
+> =C2=A0	.offload_storagebits =3D 32,
+> +	.calib_offset_avail =3D ad7606c_18bit_calib_offset_avail,
+> +	.calib_phase_avail =3D ad7606c_calib_phase_avail,
+> =C2=A0};
+> =C2=A0EXPORT_SYMBOL_NS_GPL(ad7606c_18_info, "IIO_AD7606");
+> =C2=A0
+> @@ -683,6 +705,40 @@ static int ad7606_scan_direct(struct iio_dev *indio_=
+dev,
+> unsigned int ch,
+> =C2=A0	return ret;
+> =C2=A0}
+> =C2=A0
+> +static int ad7606_get_calib_offset(struct ad7606_state *st, int ch, int =
+*val)
+> +{
+> +	int ret;
+> +
+> +	ret =3D st->bops->reg_read(st, AD7606_CALIB_OFFSET(ch));
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	*val =3D st->chip_info->calib_offset_avail[0] +
+> +		ret * st->chip_info->calib_offset_avail[1];
+> +
+> +	return 0;
+> +}
+> +
+> +static int ad7606_get_calib_phase(struct ad7606_state *st, int ch, int *=
+val,
+> +				=C2=A0 int *val2)
+> +{
+> +	int ret;
+> +
+> +	ret =3D st->bops->reg_read(st, AD7606_CALIB_PHASE(ch));
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	*val =3D 0;
+> +
+> +	/*
+> +	 * ad7606b: phase delay from 0 to 318.75 =CE=BCs in steps of 1.25 =CE=
+=BCs.
+> +	 * ad7606c-16/18: phase delay from 0 =C2=B5s to 255 =C2=B5s in steps of=
+ 1 =C2=B5s.
+> +	 */
+> +	*val2 =3D ret * st->chip_info->calib_phase_avail[1][1];
+> +
+> +	return 0;
+> +}
+> +
+> =C2=A0static int ad7606_read_raw(struct iio_dev *indio_dev,
+> =C2=A0			=C2=A0=C2=A0 struct iio_chan_spec const *chan,
+> =C2=A0			=C2=A0=C2=A0 int *val,
+> @@ -717,6 +773,22 @@ static int ad7606_read_raw(struct iio_dev *indio_dev=
+,
+> =C2=A0		pwm_get_state(st->cnvst_pwm, &cnvst_pwm_state);
+> =C2=A0		*val =3D DIV_ROUND_CLOSEST_ULL(NSEC_PER_SEC,
+> cnvst_pwm_state.period);
+> =C2=A0		return IIO_VAL_INT;
+> +	case IIO_CHAN_INFO_CALIBBIAS:
+> +		if (!iio_device_claim_direct(indio_dev))
+> +			return -EBUSY;
+> +		ret =3D ad7606_get_calib_offset(st, chan->scan_index, val);
+> +		iio_device_release_direct(indio_dev);
+> +		if (ret)
+> +			return ret;
+> +		return IIO_VAL_INT;
+> +	case IIO_CHAN_INFO_CALIBPHASE_DELAY:
+> +		if (!iio_device_claim_direct(indio_dev))
+> +			return -EBUSY;
+> +		ret =3D ad7606_get_calib_phase(st, chan->scan_index, val,
+> val2);
+> +		iio_device_release_direct(indio_dev);
+> +		if (ret)
+> +			return ret;
+> +		return IIO_VAL_INT_PLUS_NANO;
+> =C2=A0	}
+> =C2=A0	return -EINVAL;
+> =C2=A0}
+> @@ -767,6 +839,64 @@ static int ad7606_write_os_hw(struct iio_dev *indio_=
+dev,
+> int val)
+> =C2=A0	return 0;
+> =C2=A0}
+> =C2=A0
+> +static int ad7606_set_calib_offset(struct ad7606_state *st, int ch, int =
+val)
+> +{
+> +	int start_val, step_val, stop_val;
+> +
+> +	start_val =3D st->chip_info->calib_offset_avail[0];
+> +	step_val =3D st->chip_info->calib_offset_avail[1];
+> +	stop_val =3D st->chip_info->calib_offset_avail[2];
+> +
+> +	if (val < start_val || val > stop_val)
+> +		return -EINVAL;
+> +
+> +	val +=3D start_val;
+
+Shouldn't this be val -=3D start_val?
+
+I also don't think we have any strict rules in the ABI for units for these =
+kind
+of interfaces so using "raw" values is easier. But FWIW, I think we could h=
+ave
+this in mv (would naturally depend on scale)=20
+
+- Nuno S=C3=A1
+
 

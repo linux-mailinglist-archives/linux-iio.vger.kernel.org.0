@@ -1,133 +1,258 @@
-Return-Path: <linux-iio+bounces-18897-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18898-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01DA5AA4DAA
-	for <lists+linux-iio@lfdr.de>; Wed, 30 Apr 2025 15:39:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78AC7AA4E26
+	for <lists+linux-iio@lfdr.de>; Wed, 30 Apr 2025 16:12:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 933CC1BC4532
-	for <lists+linux-iio@lfdr.de>; Wed, 30 Apr 2025 13:39:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 456CA5A647F
+	for <lists+linux-iio@lfdr.de>; Wed, 30 Apr 2025 14:11:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6DCF25B1F9;
-	Wed, 30 Apr 2025 13:39:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B84525DD0D;
+	Wed, 30 Apr 2025 14:12:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bZL+C8uQ"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="vapXLKqj"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
+Received: from mail-oi1-f174.google.com (mail-oi1-f174.google.com [209.85.167.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 277CC1DA5F;
-	Wed, 30 Apr 2025 13:39:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BAA3101E6
+	for <linux-iio@vger.kernel.org>; Wed, 30 Apr 2025 14:11:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746020347; cv=none; b=B5S2bupGcZqP9aIV9IX83pomHKvYKC7JFsSPXyCvldhRtlDRD1S5KzvRnA6xBP34eoqDauo+dKP//uhgyl3coM23myVHK2kyL3LhHwNj7y7VmjH1dWjMbTECi1p9DaY0u1pp0C/iBVf/Yw5ZNeRW1Zo3IGm/CqAg9Ju4jfL98vI=
+	t=1746022321; cv=none; b=D3ldeVRiGIyUpECtMEw6DxO6CMfF6LkRdoirIS/Y5f23cNRbGhEPDIETwyVB4Z7uKqzq59p96mfHGRb/SH8yx56fs2AA/MSDIO9ZBTVK+8CR6zz3DrHyzKLqufab+SZpTmtUoo6PHpS8fetcm7XbxRBTDo6Y7TKxuUah0lAPV5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746020347; c=relaxed/simple;
-	bh=9RgnAnK8k2kVAv95vWDTRw1vc8lDj3UdGl2dLXyGCak=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=l+W8qZdlDQYWXwj9CzhtuWA1soaJRIMsFndq7PKkcGb9KBvQvFMyreWSa6rfYHopqpntmCpdV2w9kcFItYZCMEFmVh1vUfKu/750iD7GftqoKruOeMgmeUwXpjbZokitY1nsPx3NGcxjabnIDlgxCzHTRoVv9VelLn98yVgyOTE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bZL+C8uQ; arc=none smtp.client-ip=209.85.215.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-af548cb1f83so7326212a12.3;
-        Wed, 30 Apr 2025 06:39:05 -0700 (PDT)
+	s=arc-20240116; t=1746022321; c=relaxed/simple;
+	bh=VTVoggf6JS6pnIcZ+XS3UM8XE+/4dsDQS0s1ZJJWmTg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fshsaObnxEQSQTC+NMLxwN/L7gDKLfUdAG5ECjgVWYzlRSn367O4s29FmIBYPTkjWBQ90P47Jogf18d1TCvfURgiXewIPtzLG6xEJbcq4D004co4xGuyGMqyapXSdBY2XQtkaaSUfyILLE7zIvSG2Lm+dbTV/axvVPnCasHIGHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=vapXLKqj; arc=none smtp.client-ip=209.85.167.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oi1-f174.google.com with SMTP id 5614622812f47-3f6a92f234dso5174037b6e.3
+        for <linux-iio@vger.kernel.org>; Wed, 30 Apr 2025 07:11:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746020345; x=1746625145; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=1DjowUV8AVrGZAK+3LQN55Odye2sBsRajCLVx/6jPqw=;
-        b=bZL+C8uQP7UKIWBLK5/e6y8aOsIY0hf28gM7cKYlIpMeaz4LDf+WuA+c6cwl2ndkjd
-         9iWjvgZDsLRgpjzUNj7xAIrvIQ0LUrXOcseDP377YrjN/EkjKRpzTQk9Ha4S/vjmXSBg
-         Yd8Qa53d64xIukT0httakJWdCL8mAOvup18o3rGXeVEAZy1unjTekkfi6uy3FuYC8fV8
-         5eHBE4wVnzuC97vg6cvMF94jVMdHSJxOTmvltqV1B951bMvUXdJ3n1ppH2S2FtpVMG/k
-         HQlMn2SmHdGoZwout5dsQYoxYPnd5c7u3JO19XwtcbkKnlZv6hjTenNOgK6iWxL9ysII
-         9mlQ==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1746022318; x=1746627118; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=FXr5IaAciIjxJwMtezTJjCywVevxWSVV4iijAA9ygRc=;
+        b=vapXLKqjFPve7zCgvVBiqr3aJN3yYSIriPELDGQYzdnd33A6h/ThVUb5wuaFdUfCe8
+         VMhJO1UaZNhp7ssB2kiHAxRe76Q+ULaORzyBhK8QBN7Yfuc6WmrIgYyNecyc97ysE7r7
+         niqGl5qym5mvTpUD5kZZwrabL2E02F0kjDVehXbh9TMfaEHUKW0XHoHNwIZmBG6xZxwW
+         e6GAxdGhx56Zp6zZMz0G6OPW5f3v8dYym87F1Ihs+FMe9wTs/mOBKrRMS8syBbYoWyTM
+         uelQIySMxzUjGVtATCieJNDiWwo8SR2fcAiMO5Cwb85/dPc/5SmXGdiordti0QtS0wBu
+         Qn8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746020345; x=1746625145;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1DjowUV8AVrGZAK+3LQN55Odye2sBsRajCLVx/6jPqw=;
-        b=XD05C/iJfjrjc5q/gN6QK9oBRxbCPDz25DbRre284Gb5gOdr9p3ErHyySg820nnJQq
-         iLxgocdvGhDwluxemDw3DGlBJU6RLC92MCgN5te3U2lAIFCM8izaWPlrdGpbkCB7mo66
-         ZmertdEaYN2NuadHm5Exp9y6cDO1d3g0qIzw9M2WuoT2K75kKOniDePORWuUYOrvnwE2
-         VJ7/fefA4Eyn931AQmYJ1/jBzkli86NOtEOQ3m+RxxSsDMDw0lr+Haf+3QQRIGU5pIxz
-         CAkojwnnGzm9e7LGRBbCkCFYACIR+KfrSGslxJgBJBNuNVtkIQA0WFIrQ6d+zayIeCqy
-         1kwA==
-X-Forwarded-Encrypted: i=1; AJvYcCUgnvDtzcXWq0Jg/CAStfeBh2sOVZHNWbNzPoWQdvwoP38MbvN9qAI0TnvZz1kMWJawgZTwClr/SEv/@vger.kernel.org, AJvYcCVh2CI9zErtQem2ls7PlurM+ornSV3snFcKv5S1NmYKBqqoQ1R+905PWCzyRIEfalxQPZTQgJocfqpD@vger.kernel.org, AJvYcCWtW+qcs+HP9BxpFbcFsLQGXWR3iVrXoz+j+54Qr6NFRWYSkuqct/IvEpD9QeMgZeiSGQECOzt5wnLzMu99@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywhmjfd/uEUnBGKhWBUeI7rB/t/2P/sd9N1q4BZNzRgJMn0RmQd
-	L2RMsXwNslfAiE1SrXOcnWVJ0R3K7JNll7bODtbEOqY4Ov+CIHAG
-X-Gm-Gg: ASbGncsTF+OPRGkIpP8t1WxDMZLArmU1NzDUQTnaRdC6UH9iaNw/PBctkf+SI7wEEpF
-	7nzpV/cqkoLd93i094ujVwN1/GnLEwx3uUp0BOLQ8tzmtaCIraihrUXl3qwQCeaYR6JEZL4X9pf
-	V5WpCFQpc126Qk82cCxlYqJBQd/dCiShaF5GpiR3uyVYnaH0Z8ZBVQTyYIVZczYx9VUpqHiMOOA
-	L3EcWutVTEWbwtrq2oHgNMMsc1Bo8pEVuNltIdNdnro6ssP2vM/e3v/PNiEsMM+oomBdxJjajv4
-	YKaXy3WE6iBgTKQ5/IijgzVpHO+R/qzSwl0gaJwQRdsSJgs=
-X-Google-Smtp-Source: AGHT+IHTFhP3XUBYbZB6MG275w13jDUH3z0KeXJNhgwyzETDucH3U2skL7WeKaDOmozDjElhzS8maQ==
-X-Received: by 2002:a05:6a21:4006:b0:1f5:7df9:f13c with SMTP id adf61e73a8af0-20aa46861femr4081691637.41.1746020345274;
-        Wed, 30 Apr 2025 06:39:05 -0700 (PDT)
-Received: from localhost ([2804:30c:90e:1e00:5265:5254:2e32:7e5])
-        by smtp.gmail.com with UTF8SMTPSA id 41be03b00d2f7-b1b82c7adedsm7095052a12.75.2025.04.30.06.39.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Apr 2025 06:39:04 -0700 (PDT)
-Date: Wed, 30 Apr 2025 10:40:21 -0300
-From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-To: Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: Marcelo Schmitt <marcelo.schmitt@analog.com>, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	jic23@kernel.org, lars@metafoo.de, Michael.Hennerich@analog.com,
-	dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org,
-	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org
-Subject: Re: [PATCH v2 3/7] iio: adc: ad4170: Add support for buffered data
- capture
-Message-ID: <aBIoRc-gpBswohe-@debian-BULLSEYE-live-builder-AMD64>
-References: <cover.1745841276.git.marcelo.schmitt@analog.com>
- <db98c6cc188b501d914293268b67b0bdf26a4a46.1745841276.git.marcelo.schmitt@analog.com>
- <CAHp75Vc9CMqkkrEjgGEYPnmkb1R=u+RUvD3FAZ+7bFqi5aDzdw@mail.gmail.com>
+        d=1e100.net; s=20230601; t=1746022318; x=1746627118;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=FXr5IaAciIjxJwMtezTJjCywVevxWSVV4iijAA9ygRc=;
+        b=ha6os6vRM1aJRYyYAX5epiN0AhQvHtMK/2hi9yIP4OheRuQ9zto/BB8P9UrbTljd4B
+         iklEoFmLX+YYsnUCHf5AT6p5NdxV9uhL10JB1sRGeuWEORwgS9pPEgsgckNWWQL2yFax
+         Cz6ugNWOJbXaFofYFpH/Fuo2aGf3azqXNPw+57tMUqjnt42Ym3HF83tqjnNk5lbM6qQ7
+         nLYBUKTe701M8oa1KSHBS0H5uM0Vynh/+WBYly0J26QfpCftHLFjEZw/mE2xBDHJQ8yM
+         Ibxo5durz538Y+a48e+Q9wrIviKqJAk5R6QFtO1UyZDYOfa9DQ574C0zlm/yKXQHPq3h
+         4Ssg==
+X-Forwarded-Encrypted: i=1; AJvYcCXAHeEgTyGY0YwfwWKRs9el0itdfEezYDz7dXkQRwOLv8QlOu+tu5l/uj8odlnZ+LLwG/6VC9n60lg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyU9mOKaZtPsEfhhL9fiKiiTkHPI+17ciTr62oeFxmr8Ezjb2wN
+	nzrPWxoTg3zD4U8HAM+YDng8vvY1zNCuNgpRzSY9vF6zRjF+5rN2ON28bVPudUo=
+X-Gm-Gg: ASbGncuIMcSc/B7gDpn3+NVpKcCINakaYlbDYtqwheHYsOdi1lxCeO2B2SvKVyrGjDG
+	e1WzWnAMBpt5jC1SFbsGMu+ZdSycYocBo2Fk1bX2hL2nItO5kZwairtVWKJ+yKMWXm0sTHHguF3
+	gEUOXS4FEBLNUKgA7xHMa/PiApEWM0iorHzPNzZdHr0Kxh0Lfmwf57xW4CY+b5iUVlCzLlmJqBZ
+	wqTjxSRz3OGEBBcN0tD3f5NYRMRyMte1HN2Ah8733DbuDpACHutXDxLSdZgRb9nK3N8AD75n/CL
+	eizbT8Ch3Pkt/RfBnwUtnFNn0tR5yabNm+Pbbckb99WdUpBNRvWZ1/iBDNkd87qNKXsfrYuwKIS
+	27uWf9+jAOX2AVHc=
+X-Google-Smtp-Source: AGHT+IGm+YRDzAV25Fg59YboolWAEWJM5fvIS8POZ8P+KjKU4rTAu+9CAE/+oSyEAf7EUAu7s7UD8w==
+X-Received: by 2002:a05:6808:8518:b0:3f7:ccac:287f with SMTP id 5614622812f47-402d24e8ef8mr1326804b6e.27.1746022317997;
+        Wed, 30 Apr 2025 07:11:57 -0700 (PDT)
+Received: from ?IPV6:2600:8803:e7e4:1d00:359a:f1e:f988:206a? ([2600:8803:e7e4:1d00:359a:f1e:f988:206a])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-40212a598f5sm819181b6e.36.2025.04.30.07.11.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 30 Apr 2025 07:11:57 -0700 (PDT)
+Message-ID: <c6e1c555-37c0-484c-a955-39163cd148bb@baylibre.com>
+Date: Wed, 30 Apr 2025 09:11:56 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAHp75Vc9CMqkkrEjgGEYPnmkb1R=u+RUvD3FAZ+7bFqi5aDzdw@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 11/11] iio: adc: ad4080: add driver support
+To: "Miclaus, Antoniu" <Antoniu.Miclaus@analog.com>
+Cc: "jic23@kernel.org" <jic23@kernel.org>, "robh@kernel.org"
+ <robh@kernel.org>, "conor+dt@kernel.org" <conor+dt@kernel.org>,
+ "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+ "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <20250425112538.59792-1-antoniu.miclaus@analog.com>
+ <20250425112538.59792-12-antoniu.miclaus@analog.com>
+ <27e40c72-7c3a-4595-8647-5fd1f428ea9f@baylibre.com>
+ <CY4PR03MB3399A9584A631E5C30CF72EC9B832@CY4PR03MB3399.namprd03.prod.outlook.com>
+From: David Lechner <dlechner@baylibre.com>
+Content-Language: en-US
+In-Reply-To: <CY4PR03MB3399A9584A631E5C30CF72EC9B832@CY4PR03MB3399.namprd03.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi Andy, thank you for your review.
+On 4/30/25 7:31 AM, Miclaus, Antoniu wrote:
+> ...
+>>> +	unsigned int num_channels;
+>>> +};
+>>
+>> I guess this is preparing the driver to support more than one chip?
+>>
+> Yes. It is stated also in the cover letter.
+>>> +
+>>> +struct ad4080_state {
+>>> +	struct spi_device		*spi;
+>>
+>> It looks like this is only ever used to get &spi->dev. We could drop this and
+>> get dev from regmap instead.
+> How can I get the dev from regmap?
+
+struct device *dev = regmap_get_device(regmap);
+
+>>> +	struct regmap			*regmap;
+>>> +	struct clk			*clk;
+>>> +	struct iio_backend		*back;
+>>> +	const struct ad4080_chip_info	*info;
+>>> +	/*
+>>> +	 * Synchronize access to members the of driver state, and ensure
+>>> +	 * atomicity of consecutive regmap operations.
+>>> +	 */
+>>> +	struct mutex			lock;
+>>> +	unsigned int			num_lanes;
+>>> +	unsigned int			dec_rate;
+>>> +	enum ad4080_filter_type		filter_type;
+>>> +	bool				lvds_cnv_en;
+>>> +};
+>>> +
+>>> +static const struct regmap_config ad4080_regmap_config = {
+>>> +	.reg_bits = 16,
+>>> +	.val_bits = 8,
+>>> +	.read_flag_mask = BIT(7),
+>>> +	.max_register = 0x29,
+>>> +};
+>>> +
+>>> +static int ad4080_reg_access(struct iio_dev *indio_dev, unsigned int reg,
+>>> +			     unsigned int writeval, unsigned int *readval)
+>>> +{
+>>> +	struct ad4080_state *st = iio_priv(indio_dev);
+>>> +
+>>
+>> Missing guard(mutex)(&st->lock); ?
+> Aren't regmap operations thread safe? (own internal locking).
+
+For single operations, yes. But I assumed that you added the lock so that when
+functions that do multiple regmap read/writes don't have another thread doing
+a different regmap operation in the middle.
+
+However, it looks like ad4080_lvds_sync_write() is currently the only function
+like this and it is only called during probe. So it seems like the extra mutex
+lock isn't currently needed and could be removed from the driver entirely.
+
+>>> +	if (readval)
+>>> +		return regmap_read(st->regmap, reg, readval);
+>>> +
+>>> +	return regmap_write(st->regmap, reg, writeval);
+>>> +}
+
 
 ...
-> > +static int ad4170_prepare_spi_message(struct ad4170_state *st)
-> > +{
-> > +       /*
-> > +        * Continuous data register read is enabled on buffer postenable so
-> > +        * no instruction phase is needed meaning we don't need to send the
-> > +        * register address to read data. Transfer only needs the read buffer.
-> > +        */
-> > +       st->xfer.rx_buf = &st->rx_buf;
-> > +       st->xfer.len = BITS_TO_BYTES(ad4170_channel_template.scan_type.realbits);
-> 
-> This will give, e.g., 3 for the realbits == 24. Is this expected?
 
-Yes, in continuous read mode the ADC outputs just the conversion result bits
-(24-bits) so a 3-byte length transfer is enough to get the conversion data for a
-channel.
+>>> +
+>>> +static int ad4080_set_dec_rate(struct iio_dev *dev,
+>>> +			       const struct iio_chan_spec *chan,
+>>> +			       unsigned int mode)
+>>> +{
+>>> +	struct ad4080_state *st = iio_priv(dev);
+>>> +	int ret;
+>>> +
+>>
+>> Don't we need to check for < 2 as well?
+>>
+>>> +	if (st->filter_type >= SINC_5 && mode >= 512)
+>>> +		return -EINVAL;
+>>> +
+>>> +	guard(mutex)(&st->lock);
+>>> +	ret = regmap_update_bits(st->regmap, AD4080_REG_FILTER_CONFIG,
+>>> +
+>> AD4080_FILTER_CONFIG_SINC_DEC_RATE_MSK,
+>>> +
+>> FIELD_PREP(AD4080_FILTER_CONFIG_SINC_DEC_RATE_MSK,
+>>> +					    (ilog2(mode) - 1)));
+>>
+>> Otherwise ilog2(mode) - 1 could be < 0.
+>>
+>>> +	if (ret)
+>>> +		return ret;
+>>> +
+>>> +	st->dec_rate = mode;
+>>
+>> This saves the value the user entered, not what the hardware is actually doing.
+>> It should be saving the power of 2 value instead.
+>>
+>>> +
+>>> +	return 0;
+>>> +}
+>>> +
+>>> +static int ad4080_read_raw(struct iio_dev *indio_dev,
+>>> +			   struct iio_chan_spec const *chan,
+>>> +			   int *val, int *val2, long m)
+>>> +{
+>>> +	struct ad4080_state *st = iio_priv(indio_dev);
+>>> +	int dec_rate;
+>>> +
+>>> +	switch (m) {
+>>> +	case IIO_CHAN_INFO_SCALE:
+>>> +		return ad4080_get_scale(st, val, val2);
+>>> +	case IIO_CHAN_INFO_SAMP_FREQ:
+>>> +		if (st->filter_type == SINC_5_COMP)
+>>> +			dec_rate = st->dec_rate * 2;
+>>> +		else
+>>> +			dec_rate = st->dec_rate;
+>>
+>> As a concequence of the above, this will return incorrect information if the
+>> user didn't enter an exact value.
+> Isn't the user constrained by the ad4080_read_avail for entering the dec_rate values?
+> The user both writes and reads the actual decimation rate value. The conversions are done inside the functions.
 
-> 
+Yes, the oversampling_ratio attribute is calling ad4080_get_dec_rate(), so
+that one is OK, but this is the sampling_frequency attribute. Currently
+st->dec_rate holds the user-requested value and isn't necessarily the same as
+the value that would be returned by ad4080_get_dec_rate(indio_dev, chan).
+
+If we dropped st->dec_rate and used ad4080_get_dec_rate(indio_dev, chan) here
+too, that would be an acceptable solution too.
+
+>>
+>>> +		if (st->filter_type)
+>>> +			*val = DIV_ROUND_CLOSEST(clk_get_rate(st->clk),
+>> dec_rate);
+>>> +		else
+>>> +			*val = clk_get_rate(st->clk);
+>>> +		return IIO_VAL_INT;
+>>> +	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
+>>> +		*val = ad4080_get_dec_rate(indio_dev, chan);
+>>> +		return IIO_VAL_INT;
+>>> +	default:
+>>> +		return -EINVAL;
+>>> +	}
+>>> +}
+
 ...
-> 
-> > +               return dev_err_probe(&st->spi->dev, ret,
-> > +                                    "Failed to register trigger\n");
-> 
-> One line?
 
-It goes up to 89 columns if make in one line. I know there are other places in
-this driver where 80 columns are exceeded, but in this case it's easier to
-avoid going beyond 80 columns without drying up the error message.
-Anyway, I'll make it one line if it's confirmed to be the preferable way to have
-it.
+>>> +static const struct iio_chan_spec ad4080_channels[] = {
+>>
+>> Array with one element doesn't make sense. It can just be a single struct.
+> Isn't indio_dev->channels expecting an array?
 
-Thanks,
-Marcelo
+No, it expects a pointer. So &ad4080_channel; can be used to get a pointer to
+a single struct instance.
+
 

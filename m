@@ -1,181 +1,286 @@
-Return-Path: <linux-iio+bounces-18906-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18907-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA790AA5122
-	for <lists+linux-iio@lfdr.de>; Wed, 30 Apr 2025 18:05:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31B61AA5149
+	for <lists+linux-iio@lfdr.de>; Wed, 30 Apr 2025 18:14:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0FB684646A5
-	for <lists+linux-iio@lfdr.de>; Wed, 30 Apr 2025 16:05:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9DC0A1C04F3C
+	for <lists+linux-iio@lfdr.de>; Wed, 30 Apr 2025 16:14:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB9712609ED;
-	Wed, 30 Apr 2025 16:05:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28A79262802;
+	Wed, 30 Apr 2025 16:14:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fMpaN32Y"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="jRzGVYJV"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+Received: from mail-ot1-f51.google.com (mail-ot1-f51.google.com [209.85.210.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFDD61494CC;
-	Wed, 30 Apr 2025 16:05:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CE4925A2CB
+	for <linux-iio@vger.kernel.org>; Wed, 30 Apr 2025 16:14:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746029140; cv=none; b=AOfolUoh3F+tAABUgk8k52Tzz/Ts3mNxLNRimVjZvAVx9dTVyj7uN9t+pwG0hRqXj5J9nksQy0J++N4EKHw4SHN9HqELkG+8vG9eshkG6sLBWKpB3BmMEcUTxrv5rTAAOfGtSf1lWF1HD0IS/DKDAoF+4ZXY2W/4CfbhJPuvtho=
+	t=1746029674; cv=none; b=BxL2k/j/xWWlULVNk+GucyTrzJ1MeStgQCfAl7jWW5xPPDmPievrozbaH7jdi+pQ5/nrCLV8oBAGyKG7afcEzQgW3IIgCqICs9iYZy+cLTYqsbMNbr2jeFapS3Qlnj9qjoDQKsISy0bf7qRan2Czd32hRYG53qlBLWQRDVFb16Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746029140; c=relaxed/simple;
-	bh=m3FlkjS9BTXU/FOc6nzXxhXFJ/EstJsMNRV3Dz89nBg=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Vm0Mo9KmBPnuVF7avo95VtwgCY1iEq7zOL3Vji0lgQB5dpeuJX7pYjzGAnS8arfCimoYL5/XOt8FVbFDYMyVWkpyEkW1IymeK8Yl+NitlX+PdQ7dgU5lioq2fC0YdbjQ68Ool7QqYM8cus878GhS6NKaG9i1d3D0MDR1Muvd1vI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fMpaN32Y; arc=none smtp.client-ip=209.85.128.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-43ce71582e9so55737675e9.1;
-        Wed, 30 Apr 2025 09:05:38 -0700 (PDT)
+	s=arc-20240116; t=1746029674; c=relaxed/simple;
+	bh=Kxa5TrbMk8cQnyYSEkEDzIOulNCQdwC3lUTarSwq244=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Thsgo6yD+jWNnl4lae38cHAVME8+YL8q/QBp0K5D9gtF1YvK6ipmoD13aypa5daR4dhWglGG3L8X7zC+90DHXSYpp5M+i34AfRQkwrSpb26xW8LOUh0qnIZnyxfEFPyBr5bUmwMvXnivWUgQP4Cj0h2eSuc8Zec/jC7Ve0AxtSg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=jRzGVYJV; arc=none smtp.client-ip=209.85.210.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-ot1-f51.google.com with SMTP id 46e09a7af769-72c172f1de1so4615786a34.3
+        for <linux-iio@vger.kernel.org>; Wed, 30 Apr 2025 09:14:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746029137; x=1746633937; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=D5S9e1DWGqEFvpNpYn3bjcrfQGdDQ4Z+tozseIJJX8Y=;
-        b=fMpaN32Yg6C15q4b+rneOGFp5NccmOsJMT7l02p6NHgkYpye0buLX5SQKhFjnekoMh
-         x2c4ksG7VFWTGwPIgqmCEeuMhhVUGQJNLUtpEUQCXt3M12fWKZlj42xG+fXWO/NeL3Sg
-         8IJIbsfSPeaPzpJfNPFd7UfxTatzlOslwWl4fDJrDdzyxE5BnxrHLugu9TURK2xZNuog
-         CeNqygNi/59mRzqgdk4Ttn2C9CIkXzUGAF7PhZ1s4uvGfEqXhn+oJgtGQDVe7zATxaeO
-         XV+zxeL4ygX+/g6uYhW4O69kMVlgVVkdu7ldwe1doRrbC6x0VNpnZ+rNFKhHWhQt0/j2
-         dW1g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746029137; x=1746633937;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1746029671; x=1746634471; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=D5S9e1DWGqEFvpNpYn3bjcrfQGdDQ4Z+tozseIJJX8Y=;
-        b=X9gkFH9N9+51PX8D98/dOGZ1Yv5L+WzJxVuDsG/hZaWSJuU6CkybiDtVGkKBWaRUWk
-         qiRanEbx4dvpereX9bOmIBsf5NOSVXqOsMJNf0af58Uwo3EkrR1geu69oaEhH2uYTfMS
-         5g8b58rAEL9mf0QCnvHD2UdIanqJOHs9W4bPaB7ogj/M1QLxS8Dd6/3zGyE8b341hxWH
-         dRLFOEGppsuQ1UEHMd1/85evOzAnV4oGHHD1lY2wwP6gzD4NqqCw3rUNJc6P6EDWAi7l
-         Fq2xaqegfkIrRw/PYPUZOcfd16y/o+BiI/Ktpm1iDz5opZkxJpeHtSXjXhytbX1P7axp
-         CT+g==
-X-Forwarded-Encrypted: i=1; AJvYcCUlgHM1f14MhPjjUTINIgq9k+RQ46/9m4wJbFWPRaZ2VqNwAuCctnra8Wap6EHDm0tlWqe2KMzB8Hgk1DY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwS0Lcn7BJB98msLl5eAOXZ3SRUAG8BIYfsfUS5JkEHnE6Qrb7u
-	3n+Qck2jqzNzwkK03En7RmISI7udD+1WoXtjzLMFMHCgGTNfDBJX
-X-Gm-Gg: ASbGncutxbQmaMT5dtsmmZYUMmIEvvDqsX16qsI8p1l5HQyf9CIuoNDpT7MRwJT6RsY
-	bzX/ClbYVByBgnj3QJ8sSM/cHDHnjrOz0hyxdKGDBQ3dQgEG7sBChKbHgYpPcorfLBpI3SH39BL
-	V37bFewAHnCcDQde7aCA8pf10hA4VwCQ5X+qy+wR07iUkxtVWZD7UmHpJApFz4aHB95TkWCoHjc
-	07S8adFFIOOISyzx/vkJdW6B/4OibC2/bLTBmAjkvtiMpLJ45UdrQ8DChS34Yy3fN63eLBt8UIu
-	6mKuEVN3A2iAjLUhZrQw/kk+To2ueuKQaXxub8Yy5y1v9oefcvVVhB8XA7mSs03cNIzA73qb7/w
-	pB6wKj5Et8R4n
-X-Google-Smtp-Source: AGHT+IF+0FsUtiZZIFNQGFEeJHnqBv2psnote9Irpa5eEjYMg2hfFzoB8Ru87RV07vlOJ5l+POqEug==
-X-Received: by 2002:a05:600c:1e20:b0:43d:ed:acd5 with SMTP id 5b1f17b1804b1-441b1f35c86mr45681905e9.10.1746029136799;
-        Wed, 30 Apr 2025 09:05:36 -0700 (PDT)
-Received: from ?IPv6:2001:818:ea8e:7f00:2575:914:eedd:620e? ([2001:818:ea8e:7f00:2575:914:eedd:620e])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-441b2b209a4sm29411885e9.30.2025.04.30.09.05.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Apr 2025 09:05:36 -0700 (PDT)
-Message-ID: <633ae10805f20a7c4c56d0197c200411f480c374.camel@gmail.com>
-Subject: Re: [PATCH v4 1/7] iio: introduce IIO_DECLARE_BUFFER_WITH_TS macros
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: David Lechner <dlechner@baylibre.com>, Jonathan Cameron
- <jic23@kernel.org>,  Nuno =?ISO-8859-1?Q?S=E1?=	 <nuno.sa@analog.com>, Andy
- Shevchenko <andy@kernel.org>, Lars-Peter Clausen	 <lars@metafoo.de>,
- Michael Hennerich <Michael.Hennerich@analog.com>, Eugen Hristev
- <eugen.hristev@linaro.org>, Nicolas Ferre <nicolas.ferre@microchip.com>,
- Alexandre Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea
- <claudiu.beznea@tuxon.dev>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org
-Date: Wed, 30 Apr 2025 17:05:41 +0100
-In-Reply-To: <5c762653-b636-45bd-8800-e804ad8dfda5@baylibre.com>
-References: 
-	<20250428-iio-introduce-iio_declare_buffer_with_ts-v4-0-6f7f6126f1cb@baylibre.com>
-	 <20250428-iio-introduce-iio_declare_buffer_with_ts-v4-1-6f7f6126f1cb@baylibre.com>
-	 <1d90fae5-9c58-4a77-b81c-2946e7cc74d4@baylibre.com>
-	 <5c762653-b636-45bd-8800-e804ad8dfda5@baylibre.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.1 
+        bh=0FyGIaGBEw+UPtig6v2xIFrKQgtBaHFHeiU2fAQceqg=;
+        b=jRzGVYJVZw9Y4KfWDfVhw9jwHtJ3UPTruCUoxnHcqeLO/9siJCLvz0BP6cLDuAuioL
+         TaFDGrGnep0Cb5xljGpcsNNHs2G7R70ab1qpQzTZCVNi6L+rkt6M30eb1mrOQNK2TP6f
+         Sx+kjYB9IpUHZMaaQxfJ7hoFXgqGNhrail9/k1I4icG8lcGW+Nx2UEzgLpU4EPGpgLwb
+         bhDl/cgYtJF7KtpdaQ0JOsspX1CMQJ3eJZ7ojD4hT6YgJHXy/enkPJPCvsRMQcGkvXHl
+         ksUGpms3y9N6u0TS8g6mTckiPr0QwOZVe64Pmh76grZm53hpKBM/IRamJ6mPyDb4+TIJ
+         jwwQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746029671; x=1746634471;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=0FyGIaGBEw+UPtig6v2xIFrKQgtBaHFHeiU2fAQceqg=;
+        b=WNEDjLdbfYxseFmkGEa7J5jJhQKpHfLazekL8+Jk8+0f1s6ouKDYCGV/FX5vBmTeas
+         OZOSErqtg1hlFzK9Dbw8EpyKAqj80cOcoOMxGXW1vNS9OMFZUKE62aav8maRLKVYy3oF
+         /x9P2ahKGs6GbeylBFGaOS2M3Vakc/1yBeYvSwGYm5sfHVAHs7ob/1NaBuMo6Nu3JVjH
+         RY6PnpAhqHZfhOe7tV+Eqg1ve64C8sUSOkelyWi/bJOvx8s3xC2CPEVuJPIPwaHaFu7D
+         5iLyf7Q9lnw2eIGTnlWV9oNGJHW1lyMawq6RXBHzmmBu7STMkWfIfWCzAODwKTrV9iO+
+         +bSg==
+X-Gm-Message-State: AOJu0Yxd/nFj/5LhdOcpwAGtZsfxlu1Kr6hv+IMLjmvCeaHZLXWBNvfo
+	oU/0W/Er3rIDXXsxfVCCTir8XoGIArZAl4e+7AMBuGVcGhWenP47y/hkvXkW99g=
+X-Gm-Gg: ASbGncv5QFHj6+wZiidxed4NR7FbdxBvp+zx+zI2Xt5hmGPuIyDkRObij5znLnD1Sgv
+	G2Ap7cQL22jW5TTvAeX8QAr2VeE2XhKwkGXihziO7UVGb31b/Ko3M931TozTcIvOAAfZ6KH5MeQ
+	Jg+fX/Zub8zooLuRoPy8CpCHTUzfhKE6oyp24DqWM/bcPb/OVXvwm+jbDX6PFUoiVdrT+H2tuB4
+	7TNXBju1mbYHbd/mG6ZRlNA+0zF/5yBRUrmG7kkk+eZ9IPB0WFemcHFGMvv56m7Qfe3aBHZAEnw
+	PmUSxQdvSU7XK2iWeyKqkBpdRU4DiWfTWyaFPeUYWbn3erjTy2yocSpxwIK3q4wzgIMdsetjuII
+	OT/oCp6UhAJfb0V0=
+X-Google-Smtp-Source: AGHT+IHp04MZ7CRXwXM9dWLEKyOrxJqAlVfMAqGQuVTd6bwNrFBUZvRBm/0NddDjTQACxj8asi04FQ==
+X-Received: by 2002:a05:6830:6688:b0:72b:87bd:ad49 with SMTP id 46e09a7af769-731c09e5867mr2243162a34.6.1746029671146;
+        Wed, 30 Apr 2025 09:14:31 -0700 (PDT)
+Received: from ?IPV6:2600:8803:e7e4:1d00:359a:f1e:f988:206a? ([2600:8803:e7e4:1d00:359a:f1e:f988:206a])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7308b131071sm936548a34.32.2025.04.30.09.14.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 30 Apr 2025 09:14:30 -0700 (PDT)
+Message-ID: <9c02b2bd-dabf-4818-8adf-83c9127946d1@baylibre.com>
+Date: Wed, 30 Apr 2025 11:14:28 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/5] iio: adc: ad7606: add offset and phase calibration
+ support
+To: =?UTF-8?Q?Nuno_S=C3=A1?= <noname.nuno@gmail.com>,
+ Angelo Dureghello <adureghello@baylibre.com>,
+ Jonathan Cameron <jic23@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
+ Lars-Peter Clausen <lars@metafoo.de>,
+ Michael Hennerich <Michael.Hennerich@analog.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org
+References: <20250429-wip-bl-ad7606-calibration-v1-0-eb4d4821b172@baylibre.com>
+ <20250429-wip-bl-ad7606-calibration-v1-3-eb4d4821b172@baylibre.com>
+ <d273fa78cb3986da5249bd800dd25c4c0bcfde7e.camel@gmail.com>
+From: David Lechner <dlechner@baylibre.com>
+Content-Language: en-US
+In-Reply-To: <d273fa78cb3986da5249bd800dd25c4c0bcfde7e.camel@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Tue, 2025-04-29 at 14:31 -0500, David Lechner wrote:
-> On 4/28/25 9:12 PM, David Lechner wrote:
-> > On 4/28/25 3:23 PM, David Lechner wrote:
-> > > Add new macros to help with the common case of declaring a buffer tha=
-t
-> > > is safe to use with iio_push_to_buffers_with_ts(). This is not trivia=
-l
-> > > to do correctly because of the alignment requirements of the timestam=
-p.
-> > > This will make it easier for both authors and reviewers.
-> > >=20
-> > > To avoid double __align() attributes in cases where we also need DMA
-> > > alignment, add a 2nd variant IIO_DECLARE_DMA_BUFFER_WITH_TS().
-> > >=20
-> > > Signed-off-by: David Lechner <dlechner@baylibre.com>
-> > > ---
-> >=20
-> > ...
-> >=20
-> > > +/**
-> > > + * IIO_DECLARE_DMA_BUFFER_WITH_TS() - Declare a DMA-aligned buffer w=
-ith
-> > > timestamp
-> > > + * @type: element type of the buffer
-> > > + * @name: identifier name of the buffer
-> > > + * @count: number of elements in the buffer
-> > > + *
-> > > + * Same as IIO_DECLARE_BUFFER_WITH_TS(), but is uses
-> > > __aligned(IIO_DMA_MINALIGN)
-> > > + * to ensure that the buffer doesn't share cachelines with anything =
-that
-> > > comes
-> > > + * before it in a struct. This should not be used for stack-allocate=
-d
-> > > buffers
-> > > + * as stack memory cannot generally be used for DMA.
-> > > + */
-> > > +#define IIO_DECLARE_DMA_BUFFER_WITH_TS(type, name, count)	\
-> > > +	__IIO_DECLARE_BUFFER_WITH_TS(type, name, count)		\
-> > > +	/* IIO_DMA_MINALIGN may be 4 on some 32-bit arches. */	\
-> > > +	__aligned(MAX(IIO_DMA_MINALIGN, sizeof(s64)))
-> >=20
-> > I just realized my logic behind this is faulty. It assumes sizeof(s64) =
-=3D=3D
-> > __alignof__(s64), but that isn't always true and that is what caused th=
-e
-> > builds
-> > to hit the static_assert() on v3.
-> >=20
-> > We should be able to leave this as __aligned(IIO_DMA_MINALIGN)
-> >=20
-> > And have this (with better error message):
-> >=20
-> > static assert(IIO_DMA_MINALIGN % __alignof__(s64) =3D=3D 0);
->=20
-> I was working late yesterday and should have saved that reply until morni=
-ng
-> to think about it more!
->=20
-> We do want to align to to sizeof(s64) instead of __alignof__(s64) to avoi=
-d
-> issues with, e.g. 32-bit kernel and 64-bit userspace (same reason that
-> aligned_s64 exists and always uses 8-byte alignment).
+On 4/30/25 10:36 AM, Nuno Sá wrote:
+> On Tue, 2025-04-29 at 15:06 +0200, Angelo Dureghello wrote:
+>> From: Angelo Dureghello <adureghello@baylibre.com>
+>>
+>> Add support for offset and phase calibration, only for
+>> devices that support software mode, that are:
+>>
+>> ad7606b
+>> ad7606c-16
+>> ad7606c-18
+>>
+>> Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
+>> ---
+>>  drivers/iio/adc/ad7606.c | 160
+>> +++++++++++++++++++++++++++++++++++++++++++++++
+>>  drivers/iio/adc/ad7606.h |   9 +++
+>>  2 files changed, 169 insertions(+)
+>>
+>> diff --git a/drivers/iio/adc/ad7606.c b/drivers/iio/adc/ad7606.c
+>> index
+>> ad5e6b5e1d5d2edc7f8ac7ed9a8a4e6e43827b85..ec063dd4a67eb94610c41c473e2d8040c919
+>> 74cf 100644
+>> --- a/drivers/iio/adc/ad7606.c
+>> +++ b/drivers/iio/adc/ad7606.c
+>> @@ -95,6 +95,22 @@ static const unsigned int ad7616_oversampling_avail[8] = {
+>>  	1, 2, 4, 8, 16, 32, 64, 128,
+>>  };
+>>  
+>> +static const int ad7606_calib_offset_avail[3] = {
+>> +	-128, 1, 127,
+>> +};
+>> +
+>> +static const int ad7606c_18bit_calib_offset_avail[3] = {
+>> +	-512, 4, 511,
+>> +};
+> 
+> From the DS, it seems this is 508?
+> 
+>> +
+>> +static const int ad7606b_calib_phase_avail[][2] = {
+>> +	{ 0, 0 }, { 0, 1250 }, { 0, 318750 },
+>> +};
+>> +
+>> +static const int ad7606c_calib_phase_avail[][2] = {
+>> +	{ 0, 0 }, { 0, 1000 }, { 0, 255000 },
+>> +};
+>> +
+>>  static int ad7606c_18bit_chan_scale_setup(struct iio_dev *indio_dev,
+>>  					  struct iio_chan_spec *chan);
+>>  static int ad7606c_16bit_chan_scale_setup(struct iio_dev *indio_dev,
+>> @@ -164,6 +180,8 @@ const struct ad7606_chip_info ad7606b_info = {
+>>  	.scale_setup_cb = ad7606_16bit_chan_scale_setup,
+>>  	.sw_setup_cb = ad7606b_sw_mode_setup,
+>>  	.offload_storagebits = 32,
+>> +	.calib_offset_avail = ad7606_calib_offset_avail,
+>> +	.calib_phase_avail = ad7606b_calib_phase_avail,
+>>  };
+>>  EXPORT_SYMBOL_NS_GPL(ad7606b_info, "IIO_AD7606");
+>>  
+>> @@ -177,6 +195,8 @@ const struct ad7606_chip_info ad7606c_16_info = {
+>>  	.scale_setup_cb = ad7606c_16bit_chan_scale_setup,
+>>  	.sw_setup_cb = ad7606b_sw_mode_setup,
+>>  	.offload_storagebits = 32,
+>> +	.calib_offset_avail = ad7606_calib_offset_avail,
+>> +	.calib_phase_avail = ad7606c_calib_phase_avail,
+>>  };
+>>  EXPORT_SYMBOL_NS_GPL(ad7606c_16_info, "IIO_AD7606");
+>>  
+>> @@ -226,6 +246,8 @@ const struct ad7606_chip_info ad7606c_18_info = {
+>>  	.scale_setup_cb = ad7606c_18bit_chan_scale_setup,
+>>  	.sw_setup_cb = ad7606b_sw_mode_setup,
+>>  	.offload_storagebits = 32,
+>> +	.calib_offset_avail = ad7606c_18bit_calib_offset_avail,
+>> +	.calib_phase_avail = ad7606c_calib_phase_avail,
+>>  };
+>>  EXPORT_SYMBOL_NS_GPL(ad7606c_18_info, "IIO_AD7606");
+>>  
+>> @@ -683,6 +705,40 @@ static int ad7606_scan_direct(struct iio_dev *indio_dev,
+>> unsigned int ch,
+>>  	return ret;
+>>  }
+>>  
+>> +static int ad7606_get_calib_offset(struct ad7606_state *st, int ch, int *val)
+>> +{
+>> +	int ret;
+>> +
+>> +	ret = st->bops->reg_read(st, AD7606_CALIB_OFFSET(ch));
+>> +	if (ret < 0)
+>> +		return ret;
+>> +
+>> +	*val = st->chip_info->calib_offset_avail[0] +
+>> +		ret * st->chip_info->calib_offset_avail[1];
+>> +
+>> +	return 0;
+>> +}
+>> +
+>> +static int ad7606_get_calib_phase(struct ad7606_state *st, int ch, int *val,
+>> +				  int *val2)
+>> +{
+>> +	int ret;
+>> +
+>> +	ret = st->bops->reg_read(st, AD7606_CALIB_PHASE(ch));
+>> +	if (ret < 0)
+>> +		return ret;
+>> +
+>> +	*val = 0;
+>> +
+>> +	/*
+>> +	 * ad7606b: phase delay from 0 to 318.75 μs in steps of 1.25 μs.
+>> +	 * ad7606c-16/18: phase delay from 0 µs to 255 µs in steps of 1 µs.
+>> +	 */
+>> +	*val2 = ret * st->chip_info->calib_phase_avail[1][1];
+>> +
+>> +	return 0;
+>> +}
+>> +
+>>  static int ad7606_read_raw(struct iio_dev *indio_dev,
+>>  			   struct iio_chan_spec const *chan,
+>>  			   int *val,
+>> @@ -717,6 +773,22 @@ static int ad7606_read_raw(struct iio_dev *indio_dev,
+>>  		pwm_get_state(st->cnvst_pwm, &cnvst_pwm_state);
+>>  		*val = DIV_ROUND_CLOSEST_ULL(NSEC_PER_SEC,
+>> cnvst_pwm_state.period);
+>>  		return IIO_VAL_INT;
+>> +	case IIO_CHAN_INFO_CALIBBIAS:
+>> +		if (!iio_device_claim_direct(indio_dev))
+>> +			return -EBUSY;
+>> +		ret = ad7606_get_calib_offset(st, chan->scan_index, val);
+>> +		iio_device_release_direct(indio_dev);
+>> +		if (ret)
+>> +			return ret;
+>> +		return IIO_VAL_INT;
+>> +	case IIO_CHAN_INFO_CALIBPHASE_DELAY:
+>> +		if (!iio_device_claim_direct(indio_dev))
+>> +			return -EBUSY;
+>> +		ret = ad7606_get_calib_phase(st, chan->scan_index, val,
+>> val2);
+>> +		iio_device_release_direct(indio_dev);
+>> +		if (ret)
+>> +			return ret;
+>> +		return IIO_VAL_INT_PLUS_NANO;
+>>  	}
+>>  	return -EINVAL;
+>>  }
+>> @@ -767,6 +839,64 @@ static int ad7606_write_os_hw(struct iio_dev *indio_dev,
+>> int val)
+>>  	return 0;
+>>  }
+>>  
+>> +static int ad7606_set_calib_offset(struct ad7606_state *st, int ch, int val)
+>> +{
+>> +	int start_val, step_val, stop_val;
+>> +
+>> +	start_val = st->chip_info->calib_offset_avail[0];
+>> +	step_val = st->chip_info->calib_offset_avail[1];
+>> +	stop_val = st->chip_info->calib_offset_avail[2];
+>> +
+>> +	if (val < start_val || val > stop_val)
+>> +		return -EINVAL;
+>> +
+>> +	val += start_val;
+> 
+> Shouldn't this be val -= start_val?
+> 
+> I also don't think we have any strict rules in the ABI for units for these kind
+> of interfaces so using "raw" values is easier. But FWIW, I think we could have
+> this in mv (would naturally depend on scale) 
+> 
+> - Nuno Sá
+> 
 
-What issues could we have? In your inner macros I think you still make sure=
- we
-pad everything up to sizeof(s64) right? Am I missing any subtle issue?
+From testing, it seems to be working as expected for me, so I think this is
+correct. The register value is not signed. 0x80 is no offset.
 
-but...
-
->=20
-> So I think this patch is correct as-is after all.
-
-FWIW, I do prefer this approach or what Andy suggest (min as sizeof(s64)).
-
-- Nuno S=C3=A1
+Also, I like having the scaling so that the units are the same LSB as the raw
+value like it is now. It makes calibration easy since I can generate a constant
+voltage and do a buffered read. Then I can take the average of all samples and
+see how it compares to the expected value. Then take the difference and that is
+the exact value to enter into the attribute. Millivolts would work to but that
+requires applying the scale to the average of the raw values to get the number
+that you would need to enter into the calibration attribute.
 

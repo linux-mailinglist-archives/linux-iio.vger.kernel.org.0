@@ -1,258 +1,140 @@
-Return-Path: <linux-iio+bounces-18898-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18899-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78AC7AA4E26
-	for <lists+linux-iio@lfdr.de>; Wed, 30 Apr 2025 16:12:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4733AA4E3D
+	for <lists+linux-iio@lfdr.de>; Wed, 30 Apr 2025 16:16:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 456CA5A647F
-	for <lists+linux-iio@lfdr.de>; Wed, 30 Apr 2025 14:11:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 198274E7E12
+	for <lists+linux-iio@lfdr.de>; Wed, 30 Apr 2025 14:16:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B84525DD0D;
-	Wed, 30 Apr 2025 14:12:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BC1A25D1F7;
+	Wed, 30 Apr 2025 14:16:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="vapXLKqj"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="ngKm6RbQ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oi1-f174.google.com (mail-oi1-f174.google.com [209.85.167.174])
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BAA3101E6
-	for <linux-iio@vger.kernel.org>; Wed, 30 Apr 2025 14:11:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2571B4685
+	for <linux-iio@vger.kernel.org>; Wed, 30 Apr 2025 14:16:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746022321; cv=none; b=D3ldeVRiGIyUpECtMEw6DxO6CMfF6LkRdoirIS/Y5f23cNRbGhEPDIETwyVB4Z7uKqzq59p96mfHGRb/SH8yx56fs2AA/MSDIO9ZBTVK+8CR6zz3DrHyzKLqufab+SZpTmtUoo6PHpS8fetcm7XbxRBTDo6Y7TKxuUah0lAPV5o=
+	t=1746022594; cv=none; b=npSwij8t2NP3JaYz5zHSFpuLSw/uq+mHSkJChQH1t5EkwXr8HCwLMxHlFol5jZdxHNoOcSIJFQSwQylIanxPSrEPp91oAIZNpimygrZ2H/ODqWlPP1fPOVRGuJllNBsM/3895deAcs43gnst9QzQqtIk+8ICzCISkpSmAbRCu5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746022321; c=relaxed/simple;
-	bh=VTVoggf6JS6pnIcZ+XS3UM8XE+/4dsDQS0s1ZJJWmTg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fshsaObnxEQSQTC+NMLxwN/L7gDKLfUdAG5ECjgVWYzlRSn367O4s29FmIBYPTkjWBQ90P47Jogf18d1TCvfURgiXewIPtzLG6xEJbcq4D004co4xGuyGMqyapXSdBY2XQtkaaSUfyILLE7zIvSG2Lm+dbTV/axvVPnCasHIGHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=vapXLKqj; arc=none smtp.client-ip=209.85.167.174
+	s=arc-20240116; t=1746022594; c=relaxed/simple;
+	bh=AVLzC4whPM4VWTPc+bxpJ0J6VswlHdbhpVLvOK4rnO0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Sj8QOWWuuHQWzDGwph7EC8CDVaFGVtYbnykc/lO3XviIDa8LEGpei16BaHRM2am8GKGAmAXlKwxb3BJdmjIBoo2P7mm/1datC///gDniAXCoUMBn5o2+g9RunUZYf+QA0EvsDVAHyvFmpJjJJACekeS7bAwn+GfmKJaVQjC3LCE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=ngKm6RbQ; arc=none smtp.client-ip=209.85.128.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oi1-f174.google.com with SMTP id 5614622812f47-3f6a92f234dso5174037b6e.3
-        for <linux-iio@vger.kernel.org>; Wed, 30 Apr 2025 07:11:58 -0700 (PDT)
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-43cf3192f3bso69957955e9.1
+        for <linux-iio@vger.kernel.org>; Wed, 30 Apr 2025 07:16:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1746022318; x=1746627118; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=FXr5IaAciIjxJwMtezTJjCywVevxWSVV4iijAA9ygRc=;
-        b=vapXLKqjFPve7zCgvVBiqr3aJN3yYSIriPELDGQYzdnd33A6h/ThVUb5wuaFdUfCe8
-         VMhJO1UaZNhp7ssB2kiHAxRe76Q+ULaORzyBhK8QBN7Yfuc6WmrIgYyNecyc97ysE7r7
-         niqGl5qym5mvTpUD5kZZwrabL2E02F0kjDVehXbh9TMfaEHUKW0XHoHNwIZmBG6xZxwW
-         e6GAxdGhx56Zp6zZMz0G6OPW5f3v8dYym87F1Ihs+FMe9wTs/mOBKrRMS8syBbYoWyTM
-         uelQIySMxzUjGVtATCieJNDiWwo8SR2fcAiMO5Cwb85/dPc/5SmXGdiordti0QtS0wBu
-         Qn8g==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1746022590; x=1746627390; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=4YpL2lxVH2obCDZhbOHkOyzZwrFHmrVV/PKeHOtCQPg=;
+        b=ngKm6RbQPAgNtAOA7skACgSoOq/rF8hQgtmZwzGCajDUtH9Uo5kAE1EAh/oBLaP74A
+         9SHfC/nt3EoDeS/u6Hlcl87k0n4Wscc3YMWRcpJUlZXwy2MWX3DWPKn9WJ2c61LY7cFF
+         b3JBG9z1+YVvb2kAj2kLVlCLdvFtqYNWev+3iPFN3QZJJYQ7LbNAM4Ll31YY8uewUnB0
+         wD+hvd30JCeT/otWBRXiR572NxBDljRlc+z3l1ubZHq5ThKkFKYALSrrIdCRoPAbGHl+
+         HELI8HhWbA1tK32jIMgg8dWSf196k1kOlvOIb7nZEl66ii9gaMKbCBKS1HTqX/FC6+Ik
+         e5gA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746022318; x=1746627118;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1746022590; x=1746627390;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=FXr5IaAciIjxJwMtezTJjCywVevxWSVV4iijAA9ygRc=;
-        b=ha6os6vRM1aJRYyYAX5epiN0AhQvHtMK/2hi9yIP4OheRuQ9zto/BB8P9UrbTljd4B
-         iklEoFmLX+YYsnUCHf5AT6p5NdxV9uhL10JB1sRGeuWEORwgS9pPEgsgckNWWQL2yFax
-         Cz6ugNWOJbXaFofYFpH/Fuo2aGf3azqXNPw+57tMUqjnt42Ym3HF83tqjnNk5lbM6qQ7
-         nLYBUKTe701M8oa1KSHBS0H5uM0Vynh/+WBYly0J26QfpCftHLFjEZw/mE2xBDHJQ8yM
-         Ibxo5durz538Y+a48e+Q9wrIviKqJAk5R6QFtO1UyZDYOfa9DQ574C0zlm/yKXQHPq3h
-         4Ssg==
-X-Forwarded-Encrypted: i=1; AJvYcCXAHeEgTyGY0YwfwWKRs9el0itdfEezYDz7dXkQRwOLv8QlOu+tu5l/uj8odlnZ+LLwG/6VC9n60lg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyU9mOKaZtPsEfhhL9fiKiiTkHPI+17ciTr62oeFxmr8Ezjb2wN
-	nzrPWxoTg3zD4U8HAM+YDng8vvY1zNCuNgpRzSY9vF6zRjF+5rN2ON28bVPudUo=
-X-Gm-Gg: ASbGncuIMcSc/B7gDpn3+NVpKcCINakaYlbDYtqwheHYsOdi1lxCeO2B2SvKVyrGjDG
-	e1WzWnAMBpt5jC1SFbsGMu+ZdSycYocBo2Fk1bX2hL2nItO5kZwairtVWKJ+yKMWXm0sTHHguF3
-	gEUOXS4FEBLNUKgA7xHMa/PiApEWM0iorHzPNzZdHr0Kxh0Lfmwf57xW4CY+b5iUVlCzLlmJqBZ
-	wqTjxSRz3OGEBBcN0tD3f5NYRMRyMte1HN2Ah8733DbuDpACHutXDxLSdZgRb9nK3N8AD75n/CL
-	eizbT8Ch3Pkt/RfBnwUtnFNn0tR5yabNm+Pbbckb99WdUpBNRvWZ1/iBDNkd87qNKXsfrYuwKIS
-	27uWf9+jAOX2AVHc=
-X-Google-Smtp-Source: AGHT+IGm+YRDzAV25Fg59YboolWAEWJM5fvIS8POZ8P+KjKU4rTAu+9CAE/+oSyEAf7EUAu7s7UD8w==
-X-Received: by 2002:a05:6808:8518:b0:3f7:ccac:287f with SMTP id 5614622812f47-402d24e8ef8mr1326804b6e.27.1746022317997;
-        Wed, 30 Apr 2025 07:11:57 -0700 (PDT)
-Received: from ?IPV6:2600:8803:e7e4:1d00:359a:f1e:f988:206a? ([2600:8803:e7e4:1d00:359a:f1e:f988:206a])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-40212a598f5sm819181b6e.36.2025.04.30.07.11.57
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 30 Apr 2025 07:11:57 -0700 (PDT)
-Message-ID: <c6e1c555-37c0-484c-a955-39163cd148bb@baylibre.com>
-Date: Wed, 30 Apr 2025 09:11:56 -0500
+        bh=4YpL2lxVH2obCDZhbOHkOyzZwrFHmrVV/PKeHOtCQPg=;
+        b=bSb4+RTECzYq9CmhTHwsAPIYlr8fX20UGxb+fczPdg70P+P7pMj3UrHPj/vxK38xrG
+         qEVbzrI1GYzom1rBK7CBLg98d8zY/QVMDgXv7gdv/jalm5CiaFcd9X0Qskj5b69P9Eaf
+         ZXDDYGkrs9hWcIwazUo3a6SYS2Z+3Y5cLSxKJ0mQvdQ9lxjk2/+cDj9DO+yQaHNygpar
+         LUmjL9dvM09/JErPgx5CKQyjftaZuRFBIlPn9FFnqbVMjg4GV8jnLogSF7DrKqRsURwU
+         q/BEC9mNx+BKXTAot8jRlYNq9n3D71kLPLSwwUFlbB/15CbTtvshJ3zwYRoNnEWmP8rC
+         PQ3w==
+X-Forwarded-Encrypted: i=1; AJvYcCX5Uy78m9XbiuoW0jVs+N2lfPQSgyCix5ZKiAiyjsPQF3STJInuyZrq8JSFXR0i2kATbf2n/MuxsKg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyBzo/SVahueQG5GbL5SUu3BPe98iT9H1PkPZ9TnTqwdqTOULX5
+	rtnbiUKfogmAxFQj1WAxUhgx5l6fQBj3Ys+SHtnTsw641tFdI5Y41keba51lGZSO9hOXQoc040t
+	5
+X-Gm-Gg: ASbGncvdcUNH+FvaOrqB5iDYOzXDWNabNCzmWqnXCFuLOyXQddVrReRd1t0IHYYHXcY
+	Y+v+VAEncduUi7N11ip86P6/j5rUF8onP/mVNan8rnCh7YskIb4+0rEsinNefIthdX8zjsSOROs
+	XCtQg/NAlaqed7suWzFQMf1w+qbNt5EhP5qS6StX3MJ6xHSY96LhRpW/FyZm3wH5DrUxsnMbu9d
+	XofO2YANT6Sp+ch7EXiRHIeRY/MAOs9tiDnm1mmABzYBzXySKCwLO+n/jkukktFrvA4og8TBjXI
+	2DziXNM9mwef8wihThJVKq3L1y92BbEAzbN2rkOPFdVD9th/dYm0S/xYNIAjN9Up9A2oVITZXb4
+	5gOqGnTo=
+X-Google-Smtp-Source: AGHT+IEbrCNFMu0SFw520s5aIW7UoiCgn38+jJzqIxcI9w0ze0IO171/JSl/nJcS9fmtEe2edXcq1Q==
+X-Received: by 2002:a05:600c:458a:b0:43d:aed:f7de with SMTP id 5b1f17b1804b1-441b1f5c846mr26732225e9.21.1746022590215;
+        Wed, 30 Apr 2025 07:16:30 -0700 (PDT)
+Received: from archlinux (host-87-8-31-78.retail.telecomitalia.it. [87.8.31.78])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-441ad81c19fsm41853825e9.0.2025.04.30.07.16.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 30 Apr 2025 07:16:29 -0700 (PDT)
+Date: Wed, 30 Apr 2025 16:15:19 +0200
+From: Angelo Dureghello <adureghello@baylibre.com>
+To: Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: Andy Shevchenko <andy@kernel.org>, Nuno Sa <nuno.sa@analog.com>, 
+	Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, 
+	Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, linux-iio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH v2 2/2] iio: dac: adi-axi-dac: use unique bus free check
+Message-ID: <l6vu54ltxd7pydkzl6xbbq55gedumzbsllfxnljyngwcg4c6zd@w6qxgn2vby75>
+References: <20250409-ad3552r-fix-bus-read-v2-0-34d3b21e8ca0@baylibre.com>
+ <20250409-ad3552r-fix-bus-read-v2-2-34d3b21e8ca0@baylibre.com>
+ <Z_alpFoaQQUlWdfo@smile.fi.intel.com>
+ <udqm2qkw3yrewmovua54twfzbsfduojc5f5uoj4nptxldpbbr5@75bb2pldwq7f>
+ <CAHp75VfpgqNnLOn4n+Tf03mmLFMj36SsV7j06TvhEhyqmmGgVw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 11/11] iio: adc: ad4080: add driver support
-To: "Miclaus, Antoniu" <Antoniu.Miclaus@analog.com>
-Cc: "jic23@kernel.org" <jic23@kernel.org>, "robh@kernel.org"
- <robh@kernel.org>, "conor+dt@kernel.org" <conor+dt@kernel.org>,
- "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <20250425112538.59792-1-antoniu.miclaus@analog.com>
- <20250425112538.59792-12-antoniu.miclaus@analog.com>
- <27e40c72-7c3a-4595-8647-5fd1f428ea9f@baylibre.com>
- <CY4PR03MB3399A9584A631E5C30CF72EC9B832@CY4PR03MB3399.namprd03.prod.outlook.com>
-From: David Lechner <dlechner@baylibre.com>
-Content-Language: en-US
-In-Reply-To: <CY4PR03MB3399A9584A631E5C30CF72EC9B832@CY4PR03MB3399.namprd03.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAHp75VfpgqNnLOn4n+Tf03mmLFMj36SsV7j06TvhEhyqmmGgVw@mail.gmail.com>
 
-On 4/30/25 7:31 AM, Miclaus, Antoniu wrote:
+Hi Andy,
+
+On 30.04.2025 01:05, Andy Shevchenko wrote:
+> On Tue, Apr 29, 2025 at 5:34 PM Angelo Dureghello
+> <adureghello@baylibre.com> wrote:
+> > On 09.04.2025 19:51, Andy Shevchenko wrote:
+> > > On Wed, Apr 09, 2025 at 11:16:55AM +0200, Angelo Dureghello wrote:
+> 
 > ...
->>> +	unsigned int num_channels;
->>> +};
->>
->> I guess this is preparing the driver to support more than one chip?
->>
-> Yes. It is stated also in the cover letter.
->>> +
->>> +struct ad4080_state {
->>> +	struct spi_device		*spi;
->>
->> It looks like this is only ever used to get &spi->dev. We could drop this and
->> get dev from regmap instead.
-> How can I get the dev from regmap?
+> 
+> > > > +   if (ret == -ETIMEDOUT)
+> > > > +           dev_err(st->dev, "AXI bus timeout\n");
+> > >
+> > > Why do you need this? The error code will go to the user space at the end? If
+> > > yes, it will be enough to have it printed there, no?
+> > >
+> >
+> > This warning means something very bad happen at AXI level. I never seen
+> > this warning issued, but it may help to debug AXI/HDL issues, would not
+> > remove it.
+> 
+> But wouldn't user space get the error code and translate to a message if needed?
+> 
 
-struct device *dev = regmap_get_device(regmap);
-
->>> +	struct regmap			*regmap;
->>> +	struct clk			*clk;
->>> +	struct iio_backend		*back;
->>> +	const struct ad4080_chip_info	*info;
->>> +	/*
->>> +	 * Synchronize access to members the of driver state, and ensure
->>> +	 * atomicity of consecutive regmap operations.
->>> +	 */
->>> +	struct mutex			lock;
->>> +	unsigned int			num_lanes;
->>> +	unsigned int			dec_rate;
->>> +	enum ad4080_filter_type		filter_type;
->>> +	bool				lvds_cnv_en;
->>> +};
->>> +
->>> +static const struct regmap_config ad4080_regmap_config = {
->>> +	.reg_bits = 16,
->>> +	.val_bits = 8,
->>> +	.read_flag_mask = BIT(7),
->>> +	.max_register = 0x29,
->>> +};
->>> +
->>> +static int ad4080_reg_access(struct iio_dev *indio_dev, unsigned int reg,
->>> +			     unsigned int writeval, unsigned int *readval)
->>> +{
->>> +	struct ad4080_state *st = iio_priv(indio_dev);
->>> +
->>
->> Missing guard(mutex)(&st->lock); ?
-> Aren't regmap operations thread safe? (own internal locking).
-
-For single operations, yes. But I assumed that you added the lock so that when
-functions that do multiple regmap read/writes don't have another thread doing
-a different regmap operation in the middle.
-
-However, it looks like ad4080_lvds_sync_write() is currently the only function
-like this and it is only called during probe. So it seems like the extra mutex
-lock isn't currently needed and could be removed from the driver entirely.
-
->>> +	if (readval)
->>> +		return regmap_read(st->regmap, reg, readval);
->>> +
->>> +	return regmap_write(st->regmap, reg, writeval);
->>> +}
+depends, bus access is done also at probe level, you would get a generic
+-ETIMEOUT, then you need to put traces to understand who is causing it.
+I think the message may be useful to check issues, like a buggy HDL.
+Anyway, would not re-issue another patch just for this.
 
 
-...
+Regards,
+angelo
 
->>> +
->>> +static int ad4080_set_dec_rate(struct iio_dev *dev,
->>> +			       const struct iio_chan_spec *chan,
->>> +			       unsigned int mode)
->>> +{
->>> +	struct ad4080_state *st = iio_priv(dev);
->>> +	int ret;
->>> +
->>
->> Don't we need to check for < 2 as well?
->>
->>> +	if (st->filter_type >= SINC_5 && mode >= 512)
->>> +		return -EINVAL;
->>> +
->>> +	guard(mutex)(&st->lock);
->>> +	ret = regmap_update_bits(st->regmap, AD4080_REG_FILTER_CONFIG,
->>> +
->> AD4080_FILTER_CONFIG_SINC_DEC_RATE_MSK,
->>> +
->> FIELD_PREP(AD4080_FILTER_CONFIG_SINC_DEC_RATE_MSK,
->>> +					    (ilog2(mode) - 1)));
->>
->> Otherwise ilog2(mode) - 1 could be < 0.
->>
->>> +	if (ret)
->>> +		return ret;
->>> +
->>> +	st->dec_rate = mode;
->>
->> This saves the value the user entered, not what the hardware is actually doing.
->> It should be saving the power of 2 value instead.
->>
->>> +
->>> +	return 0;
->>> +}
->>> +
->>> +static int ad4080_read_raw(struct iio_dev *indio_dev,
->>> +			   struct iio_chan_spec const *chan,
->>> +			   int *val, int *val2, long m)
->>> +{
->>> +	struct ad4080_state *st = iio_priv(indio_dev);
->>> +	int dec_rate;
->>> +
->>> +	switch (m) {
->>> +	case IIO_CHAN_INFO_SCALE:
->>> +		return ad4080_get_scale(st, val, val2);
->>> +	case IIO_CHAN_INFO_SAMP_FREQ:
->>> +		if (st->filter_type == SINC_5_COMP)
->>> +			dec_rate = st->dec_rate * 2;
->>> +		else
->>> +			dec_rate = st->dec_rate;
->>
->> As a concequence of the above, this will return incorrect information if the
->> user didn't enter an exact value.
-> Isn't the user constrained by the ad4080_read_avail for entering the dec_rate values?
-> The user both writes and reads the actual decimation rate value. The conversions are done inside the functions.
-
-Yes, the oversampling_ratio attribute is calling ad4080_get_dec_rate(), so
-that one is OK, but this is the sampling_frequency attribute. Currently
-st->dec_rate holds the user-requested value and isn't necessarily the same as
-the value that would be returned by ad4080_get_dec_rate(indio_dev, chan).
-
-If we dropped st->dec_rate and used ad4080_get_dec_rate(indio_dev, chan) here
-too, that would be an acceptable solution too.
-
->>
->>> +		if (st->filter_type)
->>> +			*val = DIV_ROUND_CLOSEST(clk_get_rate(st->clk),
->> dec_rate);
->>> +		else
->>> +			*val = clk_get_rate(st->clk);
->>> +		return IIO_VAL_INT;
->>> +	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
->>> +		*val = ad4080_get_dec_rate(indio_dev, chan);
->>> +		return IIO_VAL_INT;
->>> +	default:
->>> +		return -EINVAL;
->>> +	}
->>> +}
-
-...
-
->>> +static const struct iio_chan_spec ad4080_channels[] = {
->>
->> Array with one element doesn't make sense. It can just be a single struct.
-> Isn't indio_dev->channels expecting an array?
-
-No, it expects a pointer. So &ad4080_channel; can be used to get a pointer to
-a single struct instance.
-
+> > > > +   return ret;
+> 
+> -- 
+> With Best Regards,
+> Andy Shevchenko
 

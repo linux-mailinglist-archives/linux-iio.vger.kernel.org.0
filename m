@@ -1,146 +1,194 @@
-Return-Path: <linux-iio+bounces-18937-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18938-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C734AA5F7F
-	for <lists+linux-iio@lfdr.de>; Thu,  1 May 2025 15:51:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A354DAA5FF0
+	for <lists+linux-iio@lfdr.de>; Thu,  1 May 2025 16:26:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 040883A8826
-	for <lists+linux-iio@lfdr.de>; Thu,  1 May 2025 13:50:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0ADE71739D2
+	for <lists+linux-iio@lfdr.de>; Thu,  1 May 2025 14:26:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D2101B4240;
-	Thu,  1 May 2025 13:51:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28E471F1512;
+	Thu,  1 May 2025 14:26:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="vgnU+EcW"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="nHy1WXgv"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+Received: from mail-ot1-f46.google.com (mail-ot1-f46.google.com [209.85.210.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F121199934
-	for <linux-iio@vger.kernel.org>; Thu,  1 May 2025 13:50:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DCA529CE6
+	for <linux-iio@vger.kernel.org>; Thu,  1 May 2025 14:26:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746107460; cv=none; b=aI6RbERW+Sqy88f8n1GgqwZo+qVLc6H/94hMH/UeoDZGGMbdtKuHvhzuos2Tsd937ji4uE1IMI08PvwfOQhuuuHnbrubfcv5mq0RLVt378szRffYzzV9fbpKhDBOTVRZenqmkyIio6J43cOaMQu30IapNcjNl/CZqgt9M6x69l8=
+	t=1746109575; cv=none; b=X4Cpzz6DAp/6Fx/PtwrdlL/xw9a2qsMA0C/r/17MO0O5zpzwlyb/q8wVMH2CEfvvJxCfLjDCvNPKyoyqGRcqruWwRX7LdXJZ1wxwV23sJ/fgyv73mcllH9L0YUNgEwXy4l8Z/vq6evptd3McAxo6UzwXtxM1DC5bi0xTZivpAeM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746107460; c=relaxed/simple;
-	bh=3S2ZpOURBmPgdkON47FakSSexpUR54q6fL0CBQ8Af3I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LQgDaDJm1tMFIMDuL1KB2yMbwg0y79TlL6zX1pdGR2MzHkqCesKrddEQV4VFRU1LQ3U/HMuXiyMSsryumRPJbAA5gihcKIK9S07yo0YAh2zSMS8Tf/iUyvf3t7KFMewkMSZcFfxbaR4ldxA+rN7zKAnrXr5R9NimbjigF8rqXf0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=vgnU+EcW; arc=none smtp.client-ip=209.85.128.41
+	s=arc-20240116; t=1746109575; c=relaxed/simple;
+	bh=cMiSL+srh90WM/27nWsSVcw0BuDExmla9t7TYq0svc4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=V89dRvYLNLAMrSY4yZVQqVux23zOYzdic2/59KO4GdrTEf2dujKsjpMi3uS9VimTnBDbDCKEZwRlHIsxjmDViuRNxEjiznJX52wyhoC1kyv24WPBgQV4a3EbXVSa3WR7GBumiBmTCFWXIAemkywVvHI/aCfpHYCl4aeGXvwRutk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=nHy1WXgv; arc=none smtp.client-ip=209.85.210.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-43edb40f357so4314425e9.0
-        for <linux-iio@vger.kernel.org>; Thu, 01 May 2025 06:50:57 -0700 (PDT)
+Received: by mail-ot1-f46.google.com with SMTP id 46e09a7af769-7306482f958so646788a34.0
+        for <linux-iio@vger.kernel.org>; Thu, 01 May 2025 07:26:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1746107456; x=1746712256; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=zruKVRDRscyVarFUye9F0wOJCzPUiyyhJYtA+dpYCeQ=;
-        b=vgnU+EcW5tJK8ImxTmCLn3xRp9ZKyW1CpdkXojWMYnrCILvRhitmJYOOTW5iPw1Cw1
-         qkW8BUwAwQpOPK0wdlTiCefJd2ntpe4ilWDXDD9HTKbcZavyJqEPazltzpqdzp68xH2I
-         Fqd9SnFS8EOCSeR+/1VUKz+QTFBje2aAJfu6601D3lZSDYfS0nw6vligl87G+bs6cAIO
-         Q2mpBf4sAdivzTHn8lFBCafLzH+vJWOlxBcrGpw86sNc/1w6AaI8+ieS1y5btPKBWd/O
-         0Lw/FUZCqLkmDwXmj4T3aXN+Rn9O7QvTYBa8WWOdBOKfANAKPqRbAa2AjgNeZQUrgin7
-         TFOw==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1746109573; x=1746714373; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=B7i2ULSj+LVkwecy8lD/K2BewHP33IPiW3Jt5i3dqKI=;
+        b=nHy1WXgvFNPHuVpfF9MEWBnP7k9atD5aPE7/Oh8vjX7ziNiEsbci/BaW3P9NWzzu1y
+         ANtvU6g4Rrj8wnlR7X/zfDaVPCA8KIhW7DNkwTBF1ZqLR2KQr8RYyBr789OI7nvc+UXX
+         I9VzfaR3IQXxAT5gHVEE0t//gEKVLOGuDP0gUZpOjArWhbxkv7vdo0DX30o50EYdM3oE
+         dT1BTLGsG72fVEyMp4LszztRpOx7bOKt9NUI//Hi3A8mB19nHRnuY2HHMVXu9ZH31FXe
+         xCVZz8fvZd9dlucpL/94y99M6IlJ9lX3Vsk3qlJwimej/LjHE2auiC08QeKI9a2dShNH
+         MqZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746107456; x=1746712256;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
+        d=1e100.net; s=20230601; t=1746109573; x=1746714373;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=zruKVRDRscyVarFUye9F0wOJCzPUiyyhJYtA+dpYCeQ=;
-        b=KaiDZrsVXtCYirtQuF0YMjfHLBjpLfLbMhkwz470/Kl9K71tEOo0CdyRPGMWSvWLw/
-         dJpVJNVrYaClSCMAf7WouJGxEX3GGFnzNcZaNvgDOs/Fy/65BvfKbUaGFpvI8Mnh8vSf
-         Q6LanL6l1g32lJ6rNACoSgKZSDHdX42u9I/AcsXqquWvEj5o0WSC0WGYSwroCB1eJomW
-         rIW4vFlpz12cUJ15gkwFGuEbxgV2aAx+x5rSQkB733ir1tVfyzFZLQKrEmHfSuuf9UB+
-         qqBqeNFL88hygNFy/lEDGMJon2ar15ZvrBfG58h0MbE+sPUUqFpRF2G2Bh7WzYXbd0mB
-         qaAA==
-X-Forwarded-Encrypted: i=1; AJvYcCUztUbTmtBpgsZp1jaxJ+aFpIX5jI+DiTG7OPRbsAm8KrOUBxtajnSvtlzbZfEaFarFSnMuXXD3zX0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwxK9LbM58hgIezWOatTAvvN03aM67jP9hDTPnESatZKxGJoIEo
-	MpLfxDJGdsB1XUsHXXc3gH6RJPIz5PGX1asx0gNcd48TTPbqdb+DzcnSrID1UQQ=
-X-Gm-Gg: ASbGncvQRi7MVNaE5X++k35aXlJZv8DtYHDYIoxPC4mAj5bzxyrwplWHs6YproBe9ND
-	AZwnKWoI7gJiWMO4q/B5E+UegvO1ARuXSbaZ7ERz0wj4tBSmVKmLpnwpMSFHfr8h6k8Nk4nGp15
-	bIv041R2CWoXUAZt04XuCyQuxtje1fZJXH9eg48sLzJIu6mFz8WVegJTxAiV5/bsOHgNfCB2+4l
-	bMwTI4sLUHovHyLrOqRzrO7lmdcxwraYKevgLq7OpDaW56VCPy7hE5xH2Kd/SQvVsN1QG43bhwh
-	Kd08PSwkRfGAtE6vqDTem65WkHNJnV6hyC8pEZ8p4R0pKS8GiczmFMqcgfrjmtmcaGo6prmQ9yJ
-	4x1jfKG0=
-X-Google-Smtp-Source: AGHT+IHupedOPMOM0/qcAF0IPZeZXqgUOFSKpReFgbOJMXAFwMjiMXlEwXf+hlUk6b7Aa4h8TEFLmQ==
-X-Received: by 2002:a05:600c:502a:b0:43d:609:b305 with SMTP id 5b1f17b1804b1-441b6500698mr29167515e9.17.1746107456371;
-        Thu, 01 May 2025 06:50:56 -0700 (PDT)
-Received: from archlinux (host-87-8-31-78.retail.telecomitalia.it. [87.8.31.78])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-441ad8149afsm48670895e9.0.2025.05.01.06.50.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 01 May 2025 06:50:54 -0700 (PDT)
-Date: Thu, 1 May 2025 15:49:44 +0200
-From: Angelo Dureghello <adureghello@baylibre.com>
-To: Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, 
-	David Lechner <dlechner@baylibre.com>, Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>, 
-	Andy Shevchenko <andy@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, 
-	Michael Hennerich <Michael.Hennerich@analog.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH 5/5] iio: adc: ad7606: add gain calibration support
-Message-ID: <okavvmsyg6jpdleye5e5oxg2cwwgkr42f6wlq2dlsswrzxkpnq@66apz7uva5eg>
-References: <20250429-wip-bl-ad7606-calibration-v1-0-eb4d4821b172@baylibre.com>
- <20250429-wip-bl-ad7606-calibration-v1-5-eb4d4821b172@baylibre.com>
- <CAHp75VfBrodRH0gW8teULNSt3f_uJA0Ze+P+YOTKLhtec84-3Q@mail.gmail.com>
+        bh=B7i2ULSj+LVkwecy8lD/K2BewHP33IPiW3Jt5i3dqKI=;
+        b=KQqrXpB7O3HvUs4gAdNrrqTt4SG5g+6DpuUl7JWsbZCiuznHQkWBIcEYzqFjySsiNM
+         qAclFnUnCiihtsETRoNpd2QyGlSjmoGZxLuyV0mX4wE+HAPEoqexImKy1C3hDPVgTE8w
+         LzOQvMBPedLdySKG7Etxd7ACcvCGx61yP4I4yWNyrKjbXgrbEtB9ZIbvsup6vOWlbLMt
+         PnCid1kIGdptMizu4ys4R4CnUxhZjnMCd3eoGUzG+xRjQSJ8vHlvb7fEblLj8+EK85MO
+         1CPHk+eMMLTR+VXyphEeuMl1bTqqhQ7IN2hqtW90BAEHuZQeFh1UC28MEhEfJuxxMVrW
+         ON/Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUOylDk6ASSdyGWu8b66NPbdxni2bFwR+PY0KoEdWmO3s+nBgYLbRi0qyOS7lsgxZ7R8tK0Vy2HTZY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzHnr9ltHcz3w2d00VZU9/SH+6qbQQT7WbmNtsELZiQ/ZskxfL6
+	2+MlLYk2PuSGSEprLkiP1Y0RhX1NqUQdxECnvyN0DLPyQZBrLAfozylW9/exhp0=
+X-Gm-Gg: ASbGncuJCm+yYGLSHrqrRgCrka5pyYHREqzYmO1BwafsHdOjqQZ0u0wOvIIvR82CndU
+	iw3cxxBUwbwtsEf4vuoEvAEkJaqXkisMZG9ATYEyc7t6UCsn8YymKaJpY/YZcUKXRHecwfCBi3P
+	NRHF/cwUpekC+k59uQdrzsMaJFwLq21Jrh36RxeiRhK+OVdlI2bH+oB8rz0YOAj04Na203O4wLd
+	mmiXBlWP38ZG84wxZ/8sbuv+5kMOeRdGEcefObpdcR/LNDIb48/chk07W6zKRNgNjMMtkySf95A
+	zvUMecBXjlsL04FzOoCtFoGaX0/xyk35roi9Zcj5kSDD7mJXjSnfptA2EmdaZZOY3/oiomId9Uv
+	Erap4tmtMdDL9xmMZWw==
+X-Google-Smtp-Source: AGHT+IFd//jznhdxbWQ/ASqwqpXHLpIa55fPVl9ukRjj9Frcfs8XBwPmLkE5fNhS4f+jgFRHBFtmuQ==
+X-Received: by 2002:a05:6830:4990:b0:72b:7e3c:7284 with SMTP id 46e09a7af769-731c257c6b7mr3717143a34.18.1746109573152;
+        Thu, 01 May 2025 07:26:13 -0700 (PDT)
+Received: from ?IPV6:2600:8803:e7e4:1d00:b1ed:e5d7:8ea6:40e0? ([2600:8803:e7e4:1d00:b1ed:e5d7:8ea6:40e0])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-731d350a41fsm116684a34.65.2025.05.01.07.26.12
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 01 May 2025 07:26:12 -0700 (PDT)
+Message-ID: <60986dd1-e03c-47f7-980c-879a5ecf7c44@baylibre.com>
+Date: Thu, 1 May 2025 09:26:11 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAHp75VfBrodRH0gW8teULNSt3f_uJA0Ze+P+YOTKLhtec84-3Q@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5/5] iio: adc: ad7606: add gain calibration support
+To: Angelo Dureghello <adureghello@baylibre.com>
+Cc: Jonathan Cameron <jic23@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
+ Lars-Peter Clausen <lars@metafoo.de>,
+ Michael Hennerich <Michael.Hennerich@analog.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+References: <20250429-wip-bl-ad7606-calibration-v1-0-eb4d4821b172@baylibre.com>
+ <20250429-wip-bl-ad7606-calibration-v1-5-eb4d4821b172@baylibre.com>
+ <0677db3c-9c36-4f34-93c0-5c53d702c4bd@baylibre.com>
+ <y6hss7bo25hiwzzplbbhmdodpmqbgpkarqvemn3tn3fig26tb2@753sxtygndaz>
+From: David Lechner <dlechner@baylibre.com>
+Content-Language: en-US
+In-Reply-To: <y6hss7bo25hiwzzplbbhmdodpmqbgpkarqvemn3tn3fig26tb2@753sxtygndaz>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On 30.04.2025 01:34, Andy Shevchenko wrote:
-> On Tue, Apr 29, 2025 at 4:08 PM Angelo Dureghello
-> <adureghello@baylibre.com> wrote:
-> >
-> > From: Angelo Dureghello <adureghello@baylibre.com>
-> >
-> > Add gain calibration support, using resistor values set on devicetree,
-> > values to be set accordingly with ADC external RFilter, as explained in
-> > the ad7606c-16 datasheet, rev0, page 37.
-> >
-> > Usage example in the fdt yaml documentation.
+On 5/1/25 8:35 AM, Angelo Dureghello wrote:
+> On 29.04.2025 17:46, David Lechner wrote:
+>> On 4/29/25 8:06 AM, Angelo Dureghello wrote:
+>>> From: Angelo Dureghello <adureghello@baylibre.com>
+>>>
+>>
+>> ...
+>>
+>>> +static int ad7606_chan_calib_gain_setup(struct iio_dev *indio_dev,
+>>> +					struct iio_chan_spec *chan)
+>>> +{
+>>> +	struct ad7606_state *st = iio_priv(indio_dev);
+>>> +	unsigned int num_channels = st->chip_info->num_adc_channels;
+>>> +	struct device *dev = st->dev;
+>>> +	int ret;
+>>> +
+>>> +	device_for_each_child_node_scoped(dev, child) {
+>>> +		int reg, r_gain;
+>>> +
+>>> +		ret = fwnode_property_read_u32(child, "reg", &reg);
+>>> +		if (ret)
+>>> +			return ret;
+>>> +
+>>> +		/* channel number (here) is from 1 to num_channels */
+>>> +		if (reg < 1 || reg > num_channels) {
+>>> +			dev_warn(dev, "invalid ch number (ignoring): %d\n", reg);
+>>> +			continue;
+>>> +		}
+>>> +
+>>> +		ret = fwnode_property_read_u32(child, "adi,rfilter-ohms",
+>>> +					       &r_gain);
+>>
+>> Instead of...
+>>
+>>> +		if (ret)
+>>> +			return ret;
+>>
+>> ... we need:
+>>
+>> 		if (ret == -EINVAL)
+>> 			r_gain = 0;
+>> 		else if (ret)
+>> 			return ret;
+>>
+>> Otherwise driver fails to probe if adi,rfilter-ohms is missing.
+>>
 > 
-> ...
+> Correct, i changed this before sending and could not catch it.
+> But not totally sure of applying a 0.
+> We are here after chip reset. So conceptually, would not apply any default,
+> ince it is already set after reset. What about:
 > 
-> > +#define AD7606_CALIB_GAIN_MIN  0
-> > +#define AD7606_CALIB_GAIN_STEP 1024
-> > +#define AD7606_CALIB_GAIN_MAX  65536
->
-Hi Andy,
- 
-> Are those values in decimal in the datasheet?
-> It looks to me something like
+> 		if (ret == -EINVAL)
+> 			contnue;
+> 		else if (ret)
+> 			return ret;
+
+Sure. A comment could help here and the continue makes else not needed.
+
+
+
+ 		if (ret == -EINVAL)
+			/* Keep the default register value. */
+ 			contnue;
+ 		if (ret)
+ 			return ret;
+
+>  
+>>> +
+>>> +		if (r_gain < AD7606_CALIB_GAIN_MIN ||
+>>> +		    r_gain > AD7606_CALIB_GAIN_MAX)
+>>> +			return -EINVAL;
+>>> +
+>>
+>> Also, return dev_err_probe() on the returns above would have made debugging
+>> easier.
+>>
+> ack
 > 
-> _MAX = (64 * _STEP)
-> 
-> but is it for real? Usually values are limited by the amount of bits
-> in the HW, here it spans over 65 steps, i.e. 7 bits would be needed...
-> Confusing.
->
+>>> +		/* Chan reg is 1-based index. */
+>>> +		ret = st->bops->reg_write(st, AD7606_CALIB_GAIN(reg - 1),
+>>> +					  r_gain / AD7606_CALIB_GAIN_STEP);
+>>> +		if (ret)
+>>> +			return ret;
+>>> +	}
+>>> +
+>>> +	return 0;
+>>> +}
+>>> +
 
-true, thanks,
-there must be a typo in the datasheet that says 0 to 65536 with a
-step of 1024 with 6 bits. Only 0 to 63 are possbile here.
-
-step 0 = 0
-step 63 = 64512
- 
-Will fix that.
-
-Regards,
-angelo
-
-> -- 
-> With Best Regards,
-> Andy Shevchenko
 

@@ -1,80 +1,80 @@
-Return-Path: <linux-iio+bounces-18952-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18953-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A87E2AA6775
-	for <lists+linux-iio@lfdr.de>; Fri,  2 May 2025 01:31:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 347E9AA678C
+	for <lists+linux-iio@lfdr.de>; Fri,  2 May 2025 01:52:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0317A4C4D49
-	for <lists+linux-iio@lfdr.de>; Thu,  1 May 2025 23:30:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C5CB461C6F
+	for <lists+linux-iio@lfdr.de>; Thu,  1 May 2025 23:52:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4818C26B2B1;
-	Thu,  1 May 2025 23:30:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F3612609D3;
+	Thu,  1 May 2025 23:52:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="R9XONA6C"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="REeP7MMl"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ot1-f54.google.com (mail-ot1-f54.google.com [209.85.210.54])
+Received: from mail-oo1-f53.google.com (mail-oo1-f53.google.com [209.85.161.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D40A5269806
-	for <linux-iio@vger.kernel.org>; Thu,  1 May 2025 23:30:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 383B921324E
+	for <linux-iio@vger.kernel.org>; Thu,  1 May 2025 23:52:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746142245; cv=none; b=qMjI7KSJ5SzD1ZiiH22eXMqRDsnpf3rPlhhWVEIqvqTfysoukYpbI3XkcJ/2JpDcPE1ZXtQKQ42ngw9CgYPmlHKkEMoOn6BjjXUksY/srYpn4iTfQcYiZpX0oVHhHJkRmQbxtN8P9mgjGtNn/mYv4Qlgl1mOoaCnORGo+/QU5IU=
+	t=1746143535; cv=none; b=rvS7Fz49MBycllz9QVTxIAP2Dx/Qwlb85N4qWQpkZoz8UEPsG53u64fomfZWb+Oyos4lat+VbJBoACUIAZky1FMhmWH0BzXXvE4k3EnBeTZ/pVH3gg59OlpMzMy4EuD4QgegWQqVx9s3or84kDlZZHE0mdPlU9u/0TkOJHJ2mnk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746142245; c=relaxed/simple;
-	bh=jTns9oIgif3VO77ABK+VfD8XlPhogUFLl51PFlle0ZM=;
+	s=arc-20240116; t=1746143535; c=relaxed/simple;
+	bh=OQUWGEVgZ+PDwRlv2+NEZXwr26U7U2Avy7r6dUmpfsM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=oiEhIsr6pWa3Y3he6p6k2ge/3CO6uWDAiYYlt33+2KYVPpkkClewdubovqUdov32pNGXNV9bz0ePex4legfzOv7DpWiaLk31CEXa/xASpwnpOSBuVnUf0BaNB30j5UzC6FpgOsAEeKBaP16a6Uy3FSweiNIPXMFkG9pEklcOe9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=R9XONA6C; arc=none smtp.client-ip=209.85.210.54
+	 In-Reply-To:Content-Type; b=m27la/xaJEbG8Zu1vdkoRSvO6VazmTmvlSrXG1+3Dd7bUTUsLREaVnMJio2lmuHCMdt/yNd4CXyyVIHvwp8Q/CUSomTWa1/eRezrCwlpleHQiMzQeh+zZgM+M7dvbrWftA1RsvH8nPQ9wyaR0fn8WtC/mkkuCCqSRS4dGKOG9xc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=REeP7MMl; arc=none smtp.client-ip=209.85.161.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ot1-f54.google.com with SMTP id 46e09a7af769-72c09f8369cso460792a34.3
-        for <linux-iio@vger.kernel.org>; Thu, 01 May 2025 16:30:42 -0700 (PDT)
+Received: by mail-oo1-f53.google.com with SMTP id 006d021491bc7-601ad30bc0cso1707926eaf.0
+        for <linux-iio@vger.kernel.org>; Thu, 01 May 2025 16:52:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1746142242; x=1746747042; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1746143532; x=1746748332; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:content-language:from
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=KoA2UkN8oISoIkKyQZHvDSAzDe460fqLh62H4z/B99c=;
-        b=R9XONA6CrGiyjO7ObhkDw67P6qD5PNtu+7Pr4pLQodewg7N72z0tr03KNLgqy2cEaF
-         w+WsCEl3ghFpV+dLOhEIU1bNjwHUUuTehuBEC+XkbGyZ72x4itvMBy+WHz2tAEruFHdp
-         nrK/7EyNKzNXbr/Y7XN3+VC6yl5CEW/MTn9czBe8ZboJlUcFnfGMWw0hN3c1OSBsN1cn
-         2KpFsXSpNmIQyHdsFyJfjGrT1duIta1sPZRSdubwMyw9egcOqA2sxl2dmxpcX15YMk2c
-         qJzT9Cc0qCiwSFd4edzCfzSAcPP/Fv+D7wDaBmWUVdlTfTruhZ/6Om4tVhyz1DYgoVc0
-         CiCQ==
+        bh=OyKraObEURHCA1O3iED2hm26WFNl7Mw0i9SjHNz0w2M=;
+        b=REeP7MMlFo7US1ZJSgBq7bHwmHkgBvv4kJWSJEEGdjsPFn1Cl/PMzgSONIoZFzcyui
+         XuclwF7FWsPFrE/u9HJpD/o2rBv2tdnN9M09RYJB6f/MkOWAKvBht4fmAnNo/HbXyRcs
+         BN0i5u4ppYom9ENaokt90KouYOHNKjFedy3/Pwo0oevVJTyWGswvwud/d221GRmi5eYF
+         UFiWt09anE6iX5YT1aeFCM4WhAT1rKmGQrcAgtDetKp1lJyN09/jp3+aktQWNUnexjy+
+         7+TmKSkmlRpd/HarVtF57kMnKiNRB/427S3QCoEAo6Q/Qsy2kptUkw4iVSLSScPw9qnT
+         HyOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746142242; x=1746747042;
+        d=1e100.net; s=20230601; t=1746143532; x=1746748332;
         h=content-transfer-encoding:in-reply-to:content-language:from
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=KoA2UkN8oISoIkKyQZHvDSAzDe460fqLh62H4z/B99c=;
-        b=iWrBI4rhUIdOatNmN4taGJOMpxIzXcnhAn1pBcxS0iGh8D9BfUoRZOgkVgNWB7i0CY
-         3OK1LYQQ6Cs694Ou7qgnVjqY0NsAMii5LTyq7dS+KQwtOsYMWLXXO7qO46tDH+qupthi
-         GUZ046PqorPRkMFNyFmsjiZc+cDR782s7a6Rhim+8WxP0Ll8V+SYRIPoVPTTjnzc/tgu
-         IpJ8b0xA4XMJqnMJg0B/+pwIpY/bssaqs0BuUj+wKRHDvrQO+g8ISEkNACGZXgkPCCn2
-         Mg4JdwTIIC4ke4EbDUb+7daS70ONwzMf7Mnm+wCIhV8oMdeHvkZEfTh3q2H22FrsjmJ9
-         RH9Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWFy/tmT84gi5DQFTIXauDs12htIX2QvRYX4KY2ruqJrSu5tGmdrJcqxvZXsybpqU+nT5TnB5vE65A=@vger.kernel.org
-X-Gm-Message-State: AOJu0YznuOUmJuyIADAgQg8VE0yA3EgZgmtcx8mGdV8P6x1YjKUU5299
-	+Cz6xpLoKalKgG7TBFnzWj8Kd8D2IhWrgHsjSj/uYoUwvsY6l7jVmjuaqcQEhCs=
-X-Gm-Gg: ASbGnctdNexc1r1RKpTMPFDs4CO96mpZqXww2YC9uSbPO0wQnoKOnl70Ujh5e3nzFkO
-	ZdDrQPh6ED6aLxdhU9fbJ9MSd2n2l59Ffi/BaMSVCYVKd1mcYF4Z55nswaWBxL130F20G43hvWQ
-	WxXOe30+WtS7J9zwiYe5zxQkiGsfLP9YY0e2+H9+rZSw1tkRFX4fxLpNrxhoVX9aoT4ocD5kZEh
-	awz9jeQjxGvaqh1qmdbkg0Nc/2440+YY71PCu/8fzR58EX3hliYZLMmkejap0SZCS047ap2dovp
-	sRlUTmtuwjGOp8NybdpQYiqOg+QfVWGc7IaIqGiZI3veFPMiFIV249+Ey+g6066Cv5xPnSTZX/i
-	K46xuTLSCa9W++U3UZg==
-X-Google-Smtp-Source: AGHT+IHQutzKltF40eIlfzs0UsiBrITbt6d9rQunGgbvkTDcSJntFVMQ2ABf1f0PkqpxkIpQy9UQIg==
-X-Received: by 2002:a05:6830:64c9:b0:727:4576:36f9 with SMTP id 46e09a7af769-731da0dad83mr582244a34.3.1746142241804;
-        Thu, 01 May 2025 16:30:41 -0700 (PDT)
+        bh=OyKraObEURHCA1O3iED2hm26WFNl7Mw0i9SjHNz0w2M=;
+        b=PT5k2ezZ8pSwlMKzNrPsbcP7czU33d0+UDa+8Q/hG0GAVY34o421JeDODJjV6l6JVK
+         jucmFWyJh9fX5ZrBu/KwcOy6llp/QDgTp9DqWkC1wUGaBrAxFaDum0bO2vroYFbvV8ly
+         eGg1k8qJK5BmB3Yf+3lQDEAHbGi4IwLamgoLCUgHNXk2/QgDo4swBznzAWbc95gUrx9C
+         kDcQxGEUNlcGm6frUwIcZH5DNQ8rESlnCtcO/w3SyPMklORsXjjpSt5gRNIVnitZUTOb
+         4Rc/7ogoZwX7MxfiXTRyhBzLWbnjf7cdPDA9kKYH2oby7d4iHUz6B+bBYRe5l29JznxC
+         7EtQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXYgcchLyBuLS25mZMwyqULp9eFabZc6iILoR5tSCHStIC0u/qcO2tF4Fa9/LQCLfi525UZOEWhZek=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwoG2yH9z2mda0AkG02hIv12VICGAUMAjtjzMd6aYKMYcXQ3WIK
+	7XqswZE4r+GFprnRec8zKqtEqBmoHjMk38YdkP7GLnRT8KAa9UcBGrt5VjbLxWw=
+X-Gm-Gg: ASbGncvuc+LlU7sYEtz+qY5EegfXCdDsY9RXoo4SzomeewGxKPkrF3+gz7O7kuEGbey
+	FeV6ZsLPHjENr7Mr7D2I121LhHHBCnI8v+4NjnD2Ilm65XtBRXIblTXevN/79XaChxNiZ5tfEzo
+	/ku/2N60bELl7EYb+Z0dqhLIEkqsu2eQOpmHoPO5kUtcbJMXge9dAJ4m/l94CMNaQ9gP/U4cb8g
+	hVo7jx6q+AhXIPeZ9M0/UW2a2jqTBmNsSD1HambL0OrAYPwkye5A/Ys9fpZxKkiqMi9fTHz9tEE
+	Q7HByWHpL9fa1oTLYjW0LdEvsywI5ji0y1aQpuFTAAYRdWqsK0s6ayUa6N5es8BLg27XShnMDnc
+	8jk0ouosAVLVJ1QfUSQ==
+X-Google-Smtp-Source: AGHT+IG9i0SjqJNmrxwyVXWssfn4FV7bVAFVBFFYBmbJlnOnDNrSJ9/S9igAW+PRB5scHigMaDiLuA==
+X-Received: by 2002:a05:6820:17c:b0:604:ac85:abe2 with SMTP id 006d021491bc7-607e1fde107mr2462578eaf.3.1746143532034;
+        Thu, 01 May 2025 16:52:12 -0700 (PDT)
 Received: from ?IPV6:2600:8803:e7e4:1d00:b1ed:e5d7:8ea6:40e0? ([2600:8803:e7e4:1d00:b1ed:e5d7:8ea6:40e0])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-731d350a04csm300686a34.68.2025.05.01.16.30.41
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-607e7d11e1bsm324509eaf.10.2025.05.01.16.52.09
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 01 May 2025 16:30:41 -0700 (PDT)
-Message-ID: <a355a23e-03d4-4f1e-977f-adab632c7c5c@baylibre.com>
-Date: Thu, 1 May 2025 18:30:40 -0500
+        Thu, 01 May 2025 16:52:10 -0700 (PDT)
+Message-ID: <741acf06-72b8-41e6-88ef-048273c3da26@baylibre.com>
+Date: Thu, 1 May 2025 18:52:08 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -82,37 +82,60 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] HID: sensor-hub: Fix typo and improve documentation
- for sensor_hub_remove_callback()
-To: Chelsy Ratnawat <chelsyratnawat2001@gmail.com>, jic23@kernel.org,
- srinivas.pandruvada@linux.intel.com, bentiss@kernel.org
-Cc: linux-input@vger.kernel.org, linux-iio@vger.kernel.org,
+Subject: Re: [PATCH] HID: sensor-hub: Fix typo and improve documentation for
+ sensor_hub_remove_callback()
+To: chelsy ratnawat <chelsyratnawat2001@gmail.com>
+Cc: jikos@kernel.org, jic23@kernel.org, srinivas.pandruvada@linux.intel.com,
+ bentiss@kernel.org, linux-input@vger.kernel.org, linux-iio@vger.kernel.org,
  linux-kernel@vger.kernel.org
 References: <20250430182300.122896-1-chelsyratnawat2001@gmail.com>
- <20250501231931.1865276-1-chelsyratnawat2001@gmail.com>
+ <1f8de7bd-7049-4933-82e3-8ce71685998e@baylibre.com>
+ <CAOeBcHOw6CHbY6W+wAWvYsm_CGRMCgt_BLSV65X=rnhuU1r1hw@mail.gmail.com>
 From: David Lechner <dlechner@baylibre.com>
 Content-Language: en-US
-In-Reply-To: <20250501231931.1865276-1-chelsyratnawat2001@gmail.com>
+In-Reply-To: <CAOeBcHOw6CHbY6W+wAWvYsm_CGRMCgt_BLSV65X=rnhuU1r1hw@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 5/1/25 6:19 PM, Chelsy Ratnawat wrote:
-> Changes in v2:
->  - Improved the kernel-doc comment for sensor_hub_remove_callback().
->  - Changed "Gyro" to "gyro".
->  - Changed "usage ID" to "usage_id" for consistency with kernel-doc
->    style.
->  - Updated the comment to state that only one callback can be removed
->    per (usage_id, hsdev) pair.
+On 5/1/25 6:33 PM, chelsy ratnawat wrote:
+> Hi, 
+
+Watch out for HTML mail! The mailing list and other automated tools will reject
+it, so some people won't see the whole conversation.
+
+> Thanks for the feedback. Regarding your comments:
 > 
-> Signed-off-by: Chelsy Ratnawat <chelsyratnawat2001@gmail.com>
-> ---
+> On Thu, May 1, 2025 at 12:47 AM David Lechner <dlechner@baylibre.com <mailto:dlechner@baylibre.com>> wrote:
+> 
+>     On 4/30/25 1:23 PM, Chelsy Ratnawat wrote:
+>     > Fixed a typo in "registered" and improved grammar for better readability
+>     > and consistency with kernel-doc standards. No functional changes.
+>     >
+>     > Signed-off-by: Chelsy Ratnawat <chelsyratnawat2001@gmail.com <mailto:chelsyratnawat2001@gmail.com>>
+>     > ---
+>     >  include/linux/hid-sensor-hub.h | 7 ++++---
+>     >  1 file changed, 4 insertions(+), 3 deletions(-)
+>     >
+>     > diff --git a/include/linux/hid-sensor-hub.h b/include/linux/hid-sensor-hub.h
+>     > index c27329e2a5ad..5d2ac79429d4 100644
+>     > --- a/include/linux/hid-sensor-hub.h
+>     > +++ b/include/linux/hid-sensor-hub.h
+>     > @@ -130,10 +130,11 @@ int sensor_hub_register_callback(struct hid_sensor_hub_device *hsdev,
+>     >  /**
+>     >  * sensor_hub_remove_callback() - Remove client callbacks
+> 
+>     This says "callbacks", so is it possible to have more than one registered at a
+>     time?
+> 
+>    
+>    Regarding the use of "callback" instead of "callbacks", what I understand is- 
+>    - The function `sensor_hub_register_callback()` ensures that only one callback is registered for each `(hsdev, usage_id)` pair. If another callback is registered for the same `(hsdev, usage_id)`, it returns `-EINVAL`.
+>    - Therefore, `sensor_hub_remove_callback()` is designed to remove that single registered callback for a given `(hsdev, usage_id)` pair. The function does not need to handle multiple callbacks for the same pair, as only one
+>      callback is registered at a time. 
+>     
+>    Please let me know if my understanding is correct, or if you have any additional feedback or suggestions.
 
-Normally people put the changes here below the --- rather than putting it in
-the commit message.
+Based on the reply from Srinivas, it sounds like you understand correctly.
 
-Patch part looks good though.
-
-Reviewed-by: David Lechner <dlechner@baylibre.com>
 
 

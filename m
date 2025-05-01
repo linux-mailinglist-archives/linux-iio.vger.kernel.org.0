@@ -1,319 +1,162 @@
-Return-Path: <linux-iio+bounces-18931-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18932-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B765AA5CFC
-	for <lists+linux-iio@lfdr.de>; Thu,  1 May 2025 12:02:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C88EAA5E71
+	for <lists+linux-iio@lfdr.de>; Thu,  1 May 2025 14:35:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D8CC31BC5D6B
-	for <lists+linux-iio@lfdr.de>; Thu,  1 May 2025 10:03:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 88EB71B67CCE
+	for <lists+linux-iio@lfdr.de>; Thu,  1 May 2025 12:35:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 534F226F45D;
-	Thu,  1 May 2025 10:02:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF6022248AE;
+	Thu,  1 May 2025 12:34:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kHgYJjgN"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="ihA8sECS"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8449624E4BF;
-	Thu,  1 May 2025 10:02:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F407520E026
+	for <linux-iio@vger.kernel.org>; Thu,  1 May 2025 12:34:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746093733; cv=none; b=QSN5VbPDjs0i9jVpg05Dd/bhFEL5b/2kGlTDXHXtP2mbYUPFjLr+CU7XxUkK4XHPrxnTSMbUBPKNiZFn7XX9l775DqXwrYr78V7hqiHXfbX4JKy8dHn0rLc4cQKXUHJGul8iY+r5bxPI57xKyn5S4GR3yRbfZuMjBU91A3qWkhA=
+	t=1746102898; cv=none; b=Pt3MEuw0DqerN7FPWmb12SZB6r5EggIJAHMJTWIyYR8uRt6s/V6VLrZx6siujtza1df2juLLGVPBEnlOMuIDNkFGwY6hXPUzq1hqiBE1EBgvX4Cx0wY0cRD4qJHugGHVY6te8/OxOTfpYWnQ38jUBIz7AXTFzmTHavz3Rr2T7E8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746093733; c=relaxed/simple;
-	bh=Se5ban1HaotZFiAJL4wpB/iOS9aHv+cFYzyyHNfd/+0=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Ig32tDzKyIcclfZcCIfKytcm9IZoddh3+w8CS4GM6x2GYuVxVfDx9AxG7S04jU2EV28UCm/1/1yz9NX56o7Vq149itPl8bkSsRJtsmr6LT4q/dHmwVOuWkHf9reewpUqzXLSBQ4f/RQQw2BoozTwFQY48SHMGvJhwxXyAmjTsQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kHgYJjgN; arc=none smtp.client-ip=209.85.215.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-af908bb32fdso696378a12.1;
-        Thu, 01 May 2025 03:02:11 -0700 (PDT)
+	s=arc-20240116; t=1746102898; c=relaxed/simple;
+	bh=G/RoUkwRiQOXSxv59xARYxUagM8QnADLC3A1IwKkiow=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=S5AjDaJ4NAXX5dbi/p0YVPLda0iu7ioHQaVH7Mh7Mmu6ZGmkKGxuWoqsiUQxLIphztoBW4Rkb2Pnb3N+QbUJe2uzc1MMmHWhC1IX8yDdCGLd7goqtDMlG4PeMmg6x7Hdea3WZ/QboomGGmb44SHG6Kcx0K1Oll9Se8szinpXcMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=ihA8sECS; arc=none smtp.client-ip=209.85.221.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-3912d2c89ecso568020f8f.2
+        for <linux-iio@vger.kernel.org>; Thu, 01 May 2025 05:34:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746093730; x=1746698530; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bIrQBi534yWG846WKR3hztDYNRifTQdAuywGpEqDRS0=;
-        b=kHgYJjgN/8LzehZvdIUiinvaFh47WytlgOBNVMzOILUg+TCLj7X1VYWHrgmtex+vYt
-         dM0x3Pf/j2TfmWxedRzuVK5tTKS7WI5Ot6RZuNiIt+g01SaTmaXuuubu8nGZCyr+wze0
-         Xtt5HJ1nbCXfC+kL7Q/UQMNqxigfmXxRARSbYkVcn5WRCtqMY2sWLsNXFUD/Y9xCvIj+
-         oEs4YwkwcmPeJqQf04J52IhJwnu05+8FwgmII4l9/okMp5TVSTNZg76PFBb8qnTo4Xkw
-         dLtwmqEQ7aUkKXIz9WbTlqxYaWJsnZMbwSD4VqFB5UQt0O4hy35pjuD9m3MVGKnb9oAZ
-         QC8A==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1746102894; x=1746707694; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=YPiLjAi9V3LXrkyU6HTBrDXuzWqvSmJyUjh3f1X0IeI=;
+        b=ihA8sECSaXXezSez7u0E8+0uPxU4bItflTyv6QgSsrgJpN3mkLtAQHnL+jBRsSXjfD
+         sjCuQpAIdU7Tw+pI3jkNwrfEK0W5KiUit10FIKdIbAqpudCg8tsl1RxxAH3kemupXR7u
+         BKGaN8a/yvyWBrio22dYuUmhEOkwDEGMjgfVkxZmiFkdnc1A6UmodzLNRBErAzbGZXAF
+         bStJ6lKgo0/5zFH+o2CxCy/OqgQbCLnx44a7kI21jOUTB1UfJBJR863O97xa7R1xG8MI
+         Akkiuu3Nw+UQkaAku9GpN4a4+IohP4pVKHTV8H/Cd995YTkzX9RXcmYpPmVY4FCcReUj
+         soNQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746093730; x=1746698530;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=bIrQBi534yWG846WKR3hztDYNRifTQdAuywGpEqDRS0=;
-        b=bJL8YYjaPKApRLVjQaM1Zs8Cn7BW9Gg1CPDex2ZBtGntLn037CTg6vBWRutsZZUl0+
-         40eKv2JjEfP3/D8pwi+R5b0tkX9jVaq0ceB+nYz8cxMdpVAn8lXIPhqN6XXzecXjHc32
-         D/5mSDNMWrSyfvtmzAMNKfQMLsfiKufnO/f35aW8XjWlc6UcHo57kN7jq0AAZM7dT0vj
-         Kc7xLZ1ls892Fb9amB0DsODW30wvYj0O31fiPLWyp7UhtLhDB8k/m4jDQaxNMOhw+mtx
-         DfbqpieQ369gs26uENOoPjhPO+33ODAbrNngLjX3rp/jVxgqhs6L9iD5MZFtoxbIRZZI
-         CZ3g==
-X-Forwarded-Encrypted: i=1; AJvYcCUCdEZArLeMAjrWWp1RyIyhP+omyOEsRY9r3C1IuQQDT//8O01gkCalLIh6oXeeXAmOY17dDnwYKFZG@vger.kernel.org, AJvYcCXkeAFJ1kApiytuXtWdlPvcwYSaGx/uaeIzODOFEFYxJYlBeAZOLIzSlrUHFgk+eRVnIySi/Nt4dh+kHRP3@vger.kernel.org
-X-Gm-Message-State: AOJu0YySaz3zEveF45KcsxdYaWDSHjBBPL2oSStXaM9iTotSlv3Fdyxm
-	jHkg6HLjgYmVFlx4BUmJR3RlfgkX6l5ONzLaJKZffEXrfijM25qgUvgUBckJ6N8=
-X-Gm-Gg: ASbGnct0doejDFD+5wp8KNeVs/HWxXrYJ98N8WKg88moZwnd076luoU9awMgBwZcV+v
-	adXCaNR8PnmIKg1HqTDSK58fSLh2sN/MxEmmW22iBOEkEZYm6+0RbouI8sPUXIswNOVePmZa5tJ
-	fYN4f6GKp64PExORqUZ+wh+xv9oKFXFdQJJyjN+tGh+Pks8bQJ/oVzt/FJPXS9CiVOCSIUNhDGh
-	EYkBjLoeBfT7CnyF014dTjqoLFMAiRjQXGwT+w5pvmt1HedDWO2ItMon1c17vjpj3KRynpR4Z/5
-	ELW8aq/VZ77wWFm+DseGy4Heuh0cxOglDVxuWjtYwU4bI2ffCEND5+P9XQ==
-X-Google-Smtp-Source: AGHT+IFykikG05A6FIfUfj6dC5zqXw1kDM+wSIizc/FZisl7WKKVtJFV/fgamnXt7DR6w1KSHIAoxA==
-X-Received: by 2002:a17:90b:57d0:b0:2fa:17e4:b1cf with SMTP id 98e67ed59e1d1-30a4312b904mr3036583a91.2.1746093730247;
-        Thu, 01 May 2025 03:02:10 -0700 (PDT)
-Received: from debian.domain.name ([2401:4900:1c45:13dc:af05:2012:1f6c:ed34])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-30a47476120sm472477a91.13.2025.05.01.03.02.02
+        d=1e100.net; s=20230601; t=1746102894; x=1746707694;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=YPiLjAi9V3LXrkyU6HTBrDXuzWqvSmJyUjh3f1X0IeI=;
+        b=RoJPFX5wzVtqYEjSB6VJ8lYM/I4s1rd4/WZibXXIzb9c1ewWAL4qzaRDCSzS+YR5kk
+         y+a9OQdJ054S8pjk1uvrcDrXhqf8cA2WMoUHW7aEjf6TwhEcINXi5GeLlWyrEUxPxjqb
+         DRjdbUQw/PY32Ae7nygbogd71RoRow5Cnls/igw84IBjKmK5gNmZ0rAln+gzVONz1ZHp
+         lgOTYFYq6v+srO2bo2GBsKDPf9DYeA4DQwlOhzWN+fJeTUb6/YjCdSpRY61pC/XnPv5m
+         Nmur0K50itFYgs+kaNQyVy8rZSeslqCLzyR6j70RLGmtX9mSyQY3+LpiD/Ss2LHiNR1K
+         WZfQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXvB+PlJKll6opbNqXxPueU+B9f69/XDZT8HZLUycbePAJD1NAVtAYbnZuoqK8Uh+e+O7e+nDKgqzY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz/LOPUjsDA1aL+6myiemtE91gHRpUVMdg5gTWqFzBlZhHCa7dV
+	jB0YdoEYdJUKwOcIyCZc6xuuiosQ+smEkzYkK5e4TBlW9c0cVvNvoR+OL9M0gyk=
+X-Gm-Gg: ASbGncvoa5UVRSNv0giPpuVqSlouLHaAkZ+Faw+ImVrp7dvYIXwx29jUY3i8s6++myM
+	x97vSzHmHoddeF15F6pPwWs3NvEu4IteX2zLbLWnzbFLw5ZNRfheEOX0AqmS8ibYF3iXrsNf87Q
+	Dve0ag2REScmIOGXVeK3Rsf+McqZSRLuvyCksCG4dfupu6ohWxpVbZq2FQMJKJsfYhHooRPZ1Lt
+	H6z8HKBkmUGzU142nSIIcSNoqdkoLiTVaBXCdkNjv6m5w+ZZ7SXfgmGViKRmslXLchWMkX00Y1y
+	FxqNqAKQ8AlrTsuW8YQNh/AZo6CFgJDzlJKNlsz3bTkvrGUeVS/faX8dZuPQ2TE1x0A8ZCOqcLG
+	AQow4MJU=
+X-Google-Smtp-Source: AGHT+IEIbbf/OZuD+Zj46a1YVLMU7rprN2/0xvSeZWv1bKsLNfcqHiG2P4WlaJMEjA6SHfzilU5zzQ==
+X-Received: by 2002:a5d:598c:0:b0:39c:dfa:d33e with SMTP id ffacd0b85a97d-3a09404c7e8mr1529963f8f.23.1746102894180;
+        Thu, 01 May 2025 05:34:54 -0700 (PDT)
+Received: from archlinux (host-87-8-31-78.retail.telecomitalia.it. [87.8.31.78])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a095a3df91sm745593f8f.9.2025.05.01.05.34.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 01 May 2025 03:02:10 -0700 (PDT)
-From: Sayyad Abid <sayyad.abid16@gmail.com>
-To: linux-iio@vger.kernel.org
-Cc: sayyad.abid16@gmail.com,
-	jic23@kernel.org,
-	lars@metafoo.de,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	dlechner@baylibre.com,
-	nuno.sa@analog.com,
-	javier.carrasco.cruz@gmail.com,
-	olivier.moysan@foss.st.com,
-	gstols@baylibre.com,
-	tgamblin@baylibre.com,
-	alisadariana@gmail.com,
-	eblanc@baylibre.com,
-	antoniu.miclaus@analog.com,
-	andriy.shevchenko@linux.intel.com,
-	stefan.popa@analog.com,
-	ramona.gradinariu@analog.com,
-	herve.codina@bootlin.com,
-	tobias.sperling@softing.com,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [RFC PATCH 5/5] dt-bindings: iio: adc: add bindings for TI ADS1262
-Date: Thu,  1 May 2025 15:30:43 +0530
-Message-Id: <20250501100043.325423-6-sayyad.abid16@gmail.com>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250501100043.325423-1-sayyad.abid16@gmail.com>
-References: <20250501100043.325423-1-sayyad.abid16@gmail.com>
+        Thu, 01 May 2025 05:34:53 -0700 (PDT)
+Date: Thu, 1 May 2025 14:33:42 +0200
+From: Angelo Dureghello <adureghello@baylibre.com>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Andy Shevchenko <andy@kernel.org>, 
+	Nuno =?utf-8?B?U8Oh?= <noname.nuno@gmail.com>, Jonathan Cameron <jic23@kernel.org>, 
+	Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>, Lars-Peter Clausen <lars@metafoo.de>, 
+	Michael Hennerich <Michael.Hennerich@analog.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH 1/5] Documentation: ABI: IIO: add calibphase_delay
+ documentation
+Message-ID: <jvhwdzmruov3je7qvsncn4naxg2cbbset27vr6tfjl3fumw7es@v3ho7m6iwaqp>
+References: <20250429-wip-bl-ad7606-calibration-v1-0-eb4d4821b172@baylibre.com>
+ <20250429-wip-bl-ad7606-calibration-v1-1-eb4d4821b172@baylibre.com>
+ <4645ae3e0c3bb1ada9d4cadce77b64fe5e651596.camel@gmail.com>
+ <070b269c-c536-49c5-a11d-7e23653613f9@baylibre.com>
+ <aBI3eUPirZEXpZgG@smile.fi.intel.com>
+ <896023ae-c279-4201-a7a8-dfd9b33fe0e5@baylibre.com>
+ <7fe18625-3a25-40c8-bfb7-a7a22a3eccff@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <7fe18625-3a25-40c8-bfb7-a7a22a3eccff@baylibre.com>
 
-Add the Device Tree binding documentation for the Texas Instruments ADS1262 ADC.
+On 30.04.2025 10:04, David Lechner wrote:
+> On 4/30/25 9:56 AM, David Lechner wrote:
+> > On 4/30/25 9:45 AM, Andy Shevchenko wrote:
+> >> On Wed, Apr 30, 2025 at 09:21:28AM -0500, David Lechner wrote:
+> >>> On 4/30/25 12:40 AM, Nuno Sá wrote:
+> >>>> On Tue, 2025-04-29 at 15:06 +0200, Angelo Dureghello wrote:
+> >>>>> From: Angelo Dureghello <adureghello@baylibre.com>
+> >>>>>
+> >>>>> Add new IIO calibphase_delay documentation.
+> >>>>>
+> >>>>> The delay suffix is added to specify that the phase, generally in
+> >>>>> radiants, is for this case (needed from ad7606) in nanoseconds.
+> >>
+> >> ...
+> >>
+> >>>>> +What:		/sys/bus/iio/devices/iio:deviceX/in_voltageY_calibphase_delay
+> >>>>
+> >>>> Not sure if I'm too convinced on the _delay suffix
+> >>>>
+> >>> Phase is measured in radians, not seconds, so it seems wrong to use it here.
+> >>>
+> >>> https://en.wikipedia.org/wiki/Phase_(waves)
+> >>>
+> >>> And the delay here is with respect to individual samples in a simultaneous
+> >>> conversion without regard for a sampling frequency, so I don't see how we could
+> >>> convert the time to radians in any meaningful way.
+> >>
+> >> And how this delay is aplicable to the phase in the hardware? Sounds to me that
+> >> HW has some meaningful way of such a conversion?
+> >>
+> > 
+> > It is a calibration to account for a phase difference between two input signals.
+> > This is a simultaneous sampling ADC, so all channels normally sample at exactly
+> > the same time. This phase delay calibration factor can introduce a small delay
+> > on an individual channel so that it starts it's conversion some microseconds
+> > after the others.
+> > 
+> > There is a nice diagram here:
+> > 
+> > https://www.analog.com/media/en/technical-documentation/data-sheets/ad7606c-18.pdf#%5B%7B%22num%22%3A113%2C%22gen%22%3A0%7D%2C%7B%22name%22%3A%22XYZ%22%7D%2C34%2C594%2C0%5D
+> > 
+> > To convert the phase delay to a phase angle and back would require also knowing
+> > the frequency of the input voltage signals.
+> 
+> Maybe calling it "conversion delay" would make more sense? Since the phase part
+> of it is really referring to the application rather than to what we are actually
+> adjusting.
 
-Signed-off-by: Sayyad Abid <sayyad.abid16@gmail.com>
----
- .../bindings/iio/adc/ti,ads1262.yaml          | 189 ++++++++++++++++++
- 1 file changed, 189 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/iio/adc/ti,ads1262.yaml
+Are there examples of a phase calibration in iio ? Becouse apply a radians 
+calibration seems complicated and maybe non approrpiate for non-periodic 
+signals as often used in real world applications.
 
-diff --git a/Documentation/devicetree/bindings/iio/adc/ti,ads1262.yaml b/Documentation/devicetree/bindings/iio/adc/ti,ads1262.yaml
-new file mode 100644
-index 000000000000..8c4cc2cf6467
---- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/adc/ti,ads1262.yaml
-@@ -0,0 +1,189 @@
-+# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/iio/adc/ti,ads1262.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Texas Instruments' ADS1262 32-Bit Analog to Digital Converter
-+
-+maintainers:
-+  - Sayyad Abid <sayyad.abid16@gmail.com>
-+
-+description: |
-+  Texas Instruments ADS1262 32-Bit Analog to Digital Converter with,
-+  internal temperature sensor, GPIOs and PGAs
-+
-+  The ADS1262 is a 32-bit, 38-kSPS, precision ADC with a programmable gain
-+  amplifier (PGA) and internal voltage reference. It features:
-+  - 11 single-ended or 5 differential input channels
-+  - Internal temperature sensor
-+  - Programmable gain amplifier (PGA) with gains from 1 to 32
-+  - Internal voltage reference
-+  - GPIO pins for control and monitoring
-+  - SPI interface
-+
-+  Specifications about the part can be found at:
-+  https://www.ti.com/product/ADS1262
-+
-+properties:
-+  compatible:
-+    enum:
-+      - ti,ads1262
-+
-+  reg:
-+    maxItems: 1
-+    description: SPI chip select number
-+
-+  spi-max-frequency:
-+    maximum: 7372800
-+    description: Maximum SPI clock frequency in Hz (7.3728 MHz)
-+
-+  spi-cpha:
-+    type: boolean
-+    description: Required for SPI mode 1 operation
-+
-+  reset-gpios:
-+    maxItems: 1
-+    description: GPIO specifier for the reset pin (active low)
-+
-+  vref-supply:
-+    description: |
-+      The regulator supply for ADC reference voltage. If not specified,
-+      the internal 2.5V reference will be used.
-+
-+  '#address-cells':
-+    const: 1
-+
-+  '#size-cells':
-+    const: 0
-+
-+  '#io-channel-cells':
-+    const: 1
-+
-+  ti,pga-bypass:
-+    type: boolean
-+    description: |
-+      If true, bypass the PGA. If false or not specified, PGA is enabled.
-+
-+  ti,data-rate:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    minimum: 0
-+    maximum: 15
-+    description: |
-+      Data acquisition rate in samples per second
-+      0: 2.5
-+      1: 5
-+      2: 10
-+      3: 16.6
-+      4: 20
-+      5: 50
-+      6: 60
-+      7: 100
-+      8: 400
-+      9: 1200
-+      10: 2400
-+      11: 4800
-+      12: 7200
-+      13: 14400
-+      14: 19200
-+      15: 38400
-+
-+required:
-+  - compatible
-+  - reg
-+  - spi-cpha
-+  - '#address-cells'
-+  - '#size-cells'
-+  - '#io-channel-cells'
-+
-+additionalProperties: false
-+
-+patternProperties:
-+  "^channel@([0-9]|1[0-1])$":
-+    type: object
-+    additionalProperties: false
-+    description: |
-+      Represents the external channels which are connected to the ADC.
-+      Channels 0-9 are available for external signals, channel 10 is AINCOM,
-+      and channel 11 is the internal temperature sensor.
-+
-+    properties:
-+      reg:
-+        description: |
-+          Channel number. It can have up to 10 channels numbered from 0 to 9,
-+          channel 10 is AINCOM, and channel 11 is the internal temperature sensor.
-+        items:
-+          - minimum: 0
-+            maximum: 11
-+
-+      diff-channels:
-+        description: |
-+          List of two channel numbers for differential measurement.
-+          First number is positive input, second is negative input.
-+          Not applicable for temperature sensor (channel 11).
-+        items:
-+          - minimum: 0
-+            maximum: 9
-+          - minimum: 0
-+            maximum: 9
-+
-+      ti,gain:
-+        $ref: /schemas/types.yaml#/definitions/uint32
-+        minimum: 0
-+        maximum: 5
-+        description: |
-+          PGA gain setting. Not applicable for temperature sensor (channel 11).
-+          0: 1 (default)
-+          1: 2
-+          2: 4
-+          3: 8
-+          4: 16
-+          5: 32
-+
-+    required:
-+      - reg
-+
-+allOf:
-+  - $ref: /schemas/spi/spi-peripheral-props.yaml#
-+
-+examples:
-+  - |
-+    #include <dt-bindings/gpio/gpio.h>
-+
-+    spi {
-+      #address-cells = <1>;
-+      #size-cells = <0>;
-+
-+      ads1262: adc@0 {
-+        compatible = "ti,ads1262";
-+        reg = <0>;
-+        spi-max-frequency = <7372800>;
-+        vref-supply = <&adc_vref>;
-+        spi-cpha;
-+        reset-gpios = <&gpio1 16 GPIO_ACTIVE_LOW>;
-+        ti,pga-bypass;
-+        ti,data-rate = <15>; /* 38400 SPS */
-+
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+        #io-channel-cells = <1>;
-+
-+        /* Single-ended channel */
-+        channel@0 {
-+          reg = <0>;
-+        };
-+
-+        /* Differential channel */
-+        channel@1 {
-+          reg = <1>;
-+          diff-channels = <1 2>;
-+          ti,gain = <2>; /* Gain of 4 */
-+        };
-+
-+        /* Temperature sensor */
-+        channel@11 {
-+          reg = <11>;
-+        };
-+      };
-+    };
-+...
--- 
-2.39.5
+So another viable idea could be to use a IIO_CHAN_INFO_CALIBDELAY instead.
 
+Regards,
+angelo
 

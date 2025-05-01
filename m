@@ -1,204 +1,142 @@
-Return-Path: <linux-iio+bounces-18947-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18948-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09985AA62C2
-	for <lists+linux-iio@lfdr.de>; Thu,  1 May 2025 20:24:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53D90AA639B
+	for <lists+linux-iio@lfdr.de>; Thu,  1 May 2025 21:12:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8EB3B1BC6B75
-	for <lists+linux-iio@lfdr.de>; Thu,  1 May 2025 18:24:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 09D70983E09
+	for <lists+linux-iio@lfdr.de>; Thu,  1 May 2025 19:12:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8862721FF46;
-	Thu,  1 May 2025 18:24:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 720F72253EC;
+	Thu,  1 May 2025 19:12:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=usp.br header.i=@usp.br header.b="K01x2VF6"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Mx5Zwyu+"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ua1-f42.google.com (mail-ua1-f42.google.com [209.85.222.42])
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 933B7215182
-	for <linux-iio@vger.kernel.org>; Thu,  1 May 2025 18:24:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C66F91DF751;
+	Thu,  1 May 2025 19:12:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746123846; cv=none; b=ayndlFeCYIICcqJaJUUyt4KH3dfqvIxivw/rwHPP/bYOMllKH0oUc3s7/hR5AYatikSACkxUy+oheG7Wi4M+lRWrfldcyvqMkpDRup7CyxvC8KtfM84fnDTnfxj27IFpfvohLmBgQ/0jFvCCV/q4jOjDMQyQdhsKIpHMvj4aQqQ=
+	t=1746126734; cv=none; b=cJOGuh/f6WMqx1Pg+BEXWNfWtIx2hK++HPl/dZ4dO7Ab/C55VmT1FrIr78W18nic3RKAlXgwm6+r/5DUxf10le2WGZoqUcvrUEM5X82+lSfj8iNfzyfFJACvitrEtosxywv1zW2GKxAlqH/ii2ymeIoCBPHBHaRFdqFhUYp/0vY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746123846; c=relaxed/simple;
-	bh=R25djgZhP1AIR7IMN71wwXztnvNcsRACLj5saWj2Ga0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=tuDsT70Ew/ozoVPit6sNhMWskFuT/70NUpRgeIGE20ongW+5923Bn8PO9XBgCJJIzs0lXICi0lM+kY7ohSXDLwIZTn/o1CNhs7TtTW31dSqy/XgV+l36u9joVUoJCG/jFe2WoAjSA9TOs1arQ2SDP2ynjhRKJYUo6TxjLljtduk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=usp.br; spf=pass smtp.mailfrom=usp.br; dkim=pass (2048-bit key) header.d=usp.br header.i=@usp.br header.b=K01x2VF6; arc=none smtp.client-ip=209.85.222.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=usp.br
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=usp.br
-Received: by mail-ua1-f42.google.com with SMTP id a1e0cc1a2514c-871a7ebd638so32905241.3
-        for <linux-iio@vger.kernel.org>; Thu, 01 May 2025 11:24:02 -0700 (PDT)
+	s=arc-20240116; t=1746126734; c=relaxed/simple;
+	bh=ss0uztebcyaEd4cGVpwkyscRaDhNmYF1y+2lvIAANtM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lGbSwIFd0j3G9gOUHyxyP56xdrIgCn7LzyEPiQh8L/kS6q4DBrWPelhJPftOAMNPI6IMhiJN2hEj8a021i6pqxUGsmx8sNlEKLSROB3rCYzWDFn3AMwCKTUwCSEniYukOGSgI/0TwJ6ZT/x1Ehy8843BPasE9yrj3gWErgrekEE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Mx5Zwyu+; arc=none smtp.client-ip=209.85.210.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-72d3b48d2ffso1566968b3a.2;
+        Thu, 01 May 2025 12:12:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=usp.br; s=usp-google; t=1746123841; x=1746728641; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xKieE7pe/erhC9SldEx7kcMtdvNqRZUyQreMOM3HnYA=;
-        b=K01x2VF6UWt1yizCpCYX0DKBr23RIlbmgzc77uruYyxD3LBhaIrEtMesNyrgB4fHmY
-         e8hx3gogGRQVXrp+hbzbjtld5NQDo2+QwED9hhHoqvXxfwKadVMzjxp4jcnkplAssrVT
-         /esmLZ0IEU9XuhAUaPeM0i5ZXwFrJ6n+pkjfbz8mX8TaYfU+5a0q3Ad3yKDEjhJ47lgq
-         3gekdFfjQmckrwD3f5tp3BJAU9uQVA+PXOH5SJaUpTgO92rDWxaETps5obkxX7i7o67s
-         7wLY6EQyH8V2+ZM1iaGtzTOyRh3owZCd8lKgNdjSwBxecKgVzTG1A1M++EopccDYUFtK
-         C/+A==
+        d=gmail.com; s=20230601; t=1746126732; x=1746731532; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=i8XwQlbRUOq02VFOg0a4bdaqdHVLvNav1JyIBl9/KBw=;
+        b=Mx5Zwyu+3xFHBC/wLW6bDeQO8Petgnp54R7GhhtXkhFUBlRj6pw89y0VIJCfZ/rRRd
+         R5Lxgs1ZS4Oo8G1jPaWwuNXTqeeGDvelZyrW0JGmxAXfeO/Np224RqlTokV7ylPE3JlU
+         i7zlYlZSkjsH0tWD/5gg1XqfnOuIuq8WBJIC83fR0QONsiZjQZ/61/YcHHl/u9Shr7+l
+         UHj9vCbJvmaClLKkMQBuNostTxtct/JpJect08WDARuv70qtaWCPW0gAzAQoYJJUG/y+
+         eCWo2J4TRd9KC/SDOOC4HGKWjmz499lzSybUEW0/TLRFgkXDIsTkV+O58euXwGJQEKGK
+         c2pg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746123841; x=1746728641;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=xKieE7pe/erhC9SldEx7kcMtdvNqRZUyQreMOM3HnYA=;
-        b=cjZM+cihoTm6sle+TIp+14ZKMYLnqk7WfGDjGiqpMn0VzjvUvXR60FbLcYEFyGbPKY
-         grI2+GhlZiTmcJdIjTkWAhoWjEkH99gVZZgg9oID9guyjUGefE9BBgUH+smlojP6GY3/
-         hsDMJfNJY0Nph1xSY2doaBpkmKZElj8Pl8eB63xVseeoPuTQuTQZYQY22EN9gQ3WHjWy
-         yTL5YqzH2dbbnZEbYGEJlK7hY/f6vZF5+oL5kSKFC04Twvt3iGEj1H92RHDsTATfqLMT
-         LpcKdZy5tbGPComN8rjBmnYbfB/zHG3R5OW6lTaOCJHuw7CRwPfJtTLuvalMo89KoA+4
-         Hhkg==
-X-Forwarded-Encrypted: i=1; AJvYcCVo5cDVasJNRM9tEGM3R2rqVh6Gx/Ho/jA6sMbJOVf2BAFhm0xvwiaHJy291EyYYL8MUvsVqtRDJ2o=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz4qWRQv0uoMD++5+ITESW9J6cM1R3bT6m3+gmgjEw2Dv2lS/R8
-	92ImZvxQP4sjG96Wc1ndAHukcNjakQ9Sl7vHjO+roClUvnlyMKbfcTHGKrATmkU0/ZRFun8tS8F
-	YwDtaFMWRmCkSw1jTlbgsYGRtWsOAOzSAWxe78Q==
-X-Gm-Gg: ASbGncvGIbZGbpeBeF3TQqJ6NeD0aZKeB+JXTxqSLpo7IKOy57NvGR5cOKX3ZR/FwMm
-	z4ZYaJmQkTXDD8Z+M1uPXPr+jN6d9NuW9DB1TPFKpQfvYQmo6EJHBUU6Po5cmxSxR9k/9NuOBn5
-	I43+JNEDRBnSh1HhenUse3lyx7fNqmVYzQVnUCGYwpODA3e6tapI4ez3s=
-X-Google-Smtp-Source: AGHT+IGWWNRhxG2HEUzqmGCU2xI7QkYEcjzP8FMaDAQmDwZBTjenK0gjCCdbSoJRqFfDBEAAXhJgO04NM715mXiJenE=
-X-Received: by 2002:a05:6102:3b13:b0:4c1:966a:3c4e with SMTP id
- ada2fe7eead31-4dafb7cf171mr4760137.9.1746123841240; Thu, 01 May 2025 11:24:01
- -0700 (PDT)
+        d=1e100.net; s=20230601; t=1746126732; x=1746731532;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=i8XwQlbRUOq02VFOg0a4bdaqdHVLvNav1JyIBl9/KBw=;
+        b=Qoj8+kPMf0Rt/Yh2cbrKdd9duiNskh2AIfFQUk5XhhHpLLlGvqwVug2OFebiddk/n+
+         j0B13P5IJsIXQ+U3HsT1OD+SJSzj98GSZM9o8cZt5ALWWV8+ObITl/TOvOUXglvYaHB3
+         4mXJozS73bsSIHmccmwPQaFVko0pivRA7uE+QQwda5abPxZHX51I7jfdEu3uZKtzS3qc
+         pjBr77ZLEXHObGQzPIRW190+i/KkaE5AtSyVN5+AXcUyXtL+NH3lkowEZHQO4NDSXohP
+         uPI3dV7AVmnstvAfr8Ufoz/pqQDAjOchO39xBOHc/qdUWFdFw3iIEKCLn33spaGf1tb6
+         TwUA==
+X-Forwarded-Encrypted: i=1; AJvYcCWSXJORavkG+gWANmDDmPPeYXaan2dJjh5kA0E7QqiCuSEuSM7mbya+85XBnQgULzsSq9wfyn5NwLab4jW/@vger.kernel.org, AJvYcCWXncLRXi+MQQQFYF8xnHtgdBabh9jY5AC02c+IpXucRyPSTvMRqfKGjizddka4HkRNYjwBDDNM@vger.kernel.org, AJvYcCWb1+GPfxKVdc8zFhuS4kfCW+uS/6JCUJnCHaD5uUFecREU9H8aVie2jSqWTH31RYdPKFiFHGiup04=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxtgJAMjpqPKiUDzOwlOfNfwqCDbv0VfW1QfrlJzmzuK1LdEl+5
+	udpGW5ECRo01kagLZd/OR+XkHvx3eQrr5unbU+eQ2zliTKk/Zj8F
+X-Gm-Gg: ASbGncvm3AC3adGsp7DHgSpXsDgyLTe5PUEKNcP5u2FAjW/f5zTz6ekWC3jarhXtNDL
+	OaElq+SwHjisa3Yx9vDAvNm6Jjsz6/vUaaVUMEBiMgkCONWIrR1kWrxO6QZyvh5C7L5tFUVp5pg
+	vcaJNBbLzIkkzLtiuQxszNLFHXkOcty/VFurwQPOA44sZ/Mv0+NWN4cJBbCIDHvZZIv7FQ4mSbU
+	OPJ2JnDIOCaTOE+JuKPDHfdtYEzjMgEi0uHOBlls47tmC79RUoD+rqUoTrpoRvbhGv653tRwQJF
+	dGe0ABzsQJlBc6nvBJlS5XiOMibg79M26g2nLV4D7Ixferjjcw==
+X-Google-Smtp-Source: AGHT+IGn1l3iFf96vF6BOVg4Mjq8PFdDHCipAacwlN62HyZL35PDp0hJAG9Ny11kN7uS1RSXAEbCcQ==
+X-Received: by 2002:a05:6a00:8d86:b0:73c:b86:b47f with SMTP id d2e1a72fcca58-740589026cemr181908b3a.4.1746126731847;
+        Thu, 01 May 2025 12:12:11 -0700 (PDT)
+Received: from localhost ([2804:30c:4024:1700:8e03:72a4:b895:b221])
+        by smtp.gmail.com with UTF8SMTPSA id d2e1a72fcca58-74058d7adb1sm20155b3a.36.2025.05.01.12.12.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 01 May 2025 12:12:10 -0700 (PDT)
+Date: Thu, 1 May 2025 16:13:29 -0300
+From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+To: Sean Nyekjaer <sean@geanix.com>
+Cc: Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Andy Shevchenko <andy.shevchenko@gmail.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] iio: accel: fxls8962af: Fix temperature calculation
+Message-ID: <aBPH2dHgwI_4lHvj@debian-BULLSEYE-live-builder-AMD64>
+References: <20250501-fxls-v1-1-f54061a07099@geanix.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250429093923.347370-1-mikhael_abdallah@usp.br> <20250429160710.00004a1b@huawei.com>
-In-Reply-To: <20250429160710.00004a1b@huawei.com>
-From: Mikhael Abdallah de Oliveira Pinto <mikhael_abdallah@usp.br>
-Date: Thu, 1 May 2025 15:23:50 -0300
-X-Gm-Features: ATxdqUFPupo7rEqN_5lY9luIheAEuwxJcBVCqfvEFEAY-6cf5DLc6HZmBh544OY
-Message-ID: <CAC46vBch9QooNOA6hgLd9NN_954DR+V-r06ZW0EdW4MfDudCbw@mail.gmail.com>
-Subject: Re: [PATCH] iio: proximity: sx9500: Deduplicate buffer managing functions
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: jic23@kernel.org, Augusto Bernarde <augustomb@usp.br>, linux-iio@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250501-fxls-v1-1-f54061a07099@geanix.com>
 
-Hi Jonathan,
+Hello Sean,
 
-Thanks for the feedback. I've decided not to continue with this change
-and will abandon it.
+Overall, this looks good to me.
+Only thing I think need to (not) change is the offset (see comment below).
 
-Best, Mikhael
+Regards,
+Marcelo
 
-Em ter., 29 de abr. de 2025 =C3=A0s 12:07, Jonathan Cameron
-<Jonathan.Cameron@huawei.com> escreveu:
->
-> On Tue, 29 Apr 2025 06:39:23 -0300
-> Mikhael Abdallah de Oliveira Pinto <mikhael_abdallah@usp.br> wrote:
->
-> > Refactor to share logic between buffer enable/disable handlers.
-> >
-> > Signed-off-by: Mikhael Abdallah de Oliveira Pinto <mikhael_abdallah@usp=
-.br>
-> > Co-developed-by: Augusto Bernarde <augustomb@usp.br>
-> > Signed-off-by: Augusto Bernarde <augustomb@usp.br>
-> > ---
-> >  drivers/iio/proximity/sx9500.c | 50 ++++++++++++++++------------------
->
-> In my view this isn't a significant enough reduction to justify the more =
-complex code.
-> Particularly in the error paths.
->
-> Jonathan
->
->
-> >  1 file changed, 23 insertions(+), 27 deletions(-)
-> >
-> > diff --git a/drivers/iio/proximity/sx9500.c b/drivers/iio/proximity/sx9=
-500.c
-> > index c4e94d0fb163..75459c85116b 100644
-> > --- a/drivers/iio/proximity/sx9500.c
-> > +++ b/drivers/iio/proximity/sx9500.c
-> > @@ -674,52 +674,48 @@ static irqreturn_t sx9500_trigger_handler(int irq=
-, void *private)
-> >       return IRQ_HANDLED;
-> >  }
-> >
-> > -static int sx9500_buffer_postenable(struct iio_dev *indio_dev)
-> > +static int sx9500_buffer_manage_chan_users(struct iio_dev *indio_dev, =
-bool enable_channels)
-> >  {
-> >       struct sx9500_data *data =3D iio_priv(indio_dev);
-> >       int ret =3D 0, i;
-> >
-> >       mutex_lock(&data->mutex);
-> >
-> > -     for (i =3D 0; i < SX9500_NUM_CHANNELS; i++)
-> > +     for (i =3D 0; i < SX9500_NUM_CHANNELS; i++) {
-> >               if (test_bit(i, indio_dev->active_scan_mask)) {
-> > -                     ret =3D sx9500_inc_chan_users(data, i);
-> > +                     if (enable_channels)
-> > +                             ret =3D sx9500_inc_chan_users(data, i);
-> > +                     else
-> > +                             ret =3D sx9500_dec_chan_users(data, i);
-> >                       if (ret)
-> >                               break;
-> >               }
-> > +     }
-> >
-> > -     if (ret)
-> > -             for (i =3D i - 1; i >=3D 0; i--)
-> > -                     if (test_bit(i, indio_dev->active_scan_mask))
-> > -                             sx9500_dec_chan_users(data, i);
-> > +     if (ret) {
-> > +             for (i =3D i - 1; i >=3D 0; i--) {
-> > +                     if (test_bit(i, indio_dev->active_scan_mask)) {
-> > +                             if (enable_channels)
-> > +                                     sx9500_dec_chan_users(data, i);
-> > +                             else
-> > +                                     sx9500_inc_chan_users(data, i);
-> > +                     }
-> > +             }
-> > +     }
-> >
-> >       mutex_unlock(&data->mutex);
-> >
-> >       return ret;
-> >  }
-> >
-> > -static int sx9500_buffer_predisable(struct iio_dev *indio_dev)
-> > +static int sx9500_buffer_postenable(struct iio_dev *indio_dev)
-> >  {
-> > -     struct sx9500_data *data =3D iio_priv(indio_dev);
-> > -     int ret =3D 0, i;
-> > -
-> > -     mutex_lock(&data->mutex);
-> > -
-> > -     for (i =3D 0; i < SX9500_NUM_CHANNELS; i++)
-> > -             if (test_bit(i, indio_dev->active_scan_mask)) {
-> > -                     ret =3D sx9500_dec_chan_users(data, i);
-> > -                     if (ret)
-> > -                             break;
-> > -             }
-> > -
-> > -     if (ret)
-> > -             for (i =3D i - 1; i >=3D 0; i--)
-> > -                     if (test_bit(i, indio_dev->active_scan_mask))
-> > -                             sx9500_inc_chan_users(data, i);
-> > -
-> > -     mutex_unlock(&data->mutex);
-> > +     return sx9500_buffer_manage_chan_users(indio_dev, true);
-> > +}
-> >
-> > -     return ret;
-> > +static int sx9500_buffer_predisable(struct iio_dev *indio_dev)
-> > +{
-> > +     return sx9500_buffer_manage_chan_users(indio_dev, false);
-> >  }
-> >
-> >  static const struct iio_buffer_setup_ops sx9500_buffer_setup_ops =3D {
->
+On 05/01, Sean Nyekjaer wrote:
+> According to spec temperature should be returned in milli degrees Celsius.
+> Add in_temp_scale to calculate from Celsius to milli Celsius.
+> 
+> Fixes: a3e0b51884ee ("iio: accel: add support for FXLS8962AF/FXLS8964AF accelerometers")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Sean Nyekjaer <sean@geanix.com>
+> ---
+>  drivers/iio/accel/fxls8962af-core.c | 17 ++++++++++++++---
+...
+>  
+>  /* Raw temp channel offset */
+> -#define FXLS8962AF_TEMP_CENTER_VAL		25
+> +#define FXLS8962AF_TEMP_CENTER_VAL		25000
+I think the offset was correct the way it was before.
+For example, if the sensor at 37°C, the output code will be 0b00001100, 12 (decimal).
+Then (_raw + _offset) * _scale = (12 + 25) * 1000 = 37000 milli °C
+
+> +/* Raw temp channel scale */
+> +#define FXLS8962AF_TEMP_SCALE			1000
+>  
+...
+> @@ -736,6 +746,7 @@ static const struct iio_event_spec fxls8962af_event[] = {
+>  	.type = IIO_TEMP, \
+>  	.address = FXLS8962AF_TEMP_OUT, \
+>  	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) | \
+> +			      BIT(IIO_CHAN_INFO_SCALE) | \
+>  			      BIT(IIO_CHAN_INFO_OFFSET),\
+>  	.scan_index = -1, \
+>  	.scan_type = { \
+Datasheet page 39 says 'the TEMP_OUT register contains the 8-bit, 2's complement
+temperature value.'
+So I think we can make the temperature scan element signed.
+		.sign = 's',	\
+
+Though, I guess that would be a thing for a separate patch.
 

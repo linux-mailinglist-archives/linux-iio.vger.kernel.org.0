@@ -1,136 +1,162 @@
-Return-Path: <linux-iio+bounces-18950-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18951-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A52BAAA674D
-	for <lists+linux-iio@lfdr.de>; Fri,  2 May 2025 01:20:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08374AA6752
+	for <lists+linux-iio@lfdr.de>; Fri,  2 May 2025 01:21:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A7DF981BFC
-	for <lists+linux-iio@lfdr.de>; Thu,  1 May 2025 23:19:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F3C4B1897CA9
+	for <lists+linux-iio@lfdr.de>; Thu,  1 May 2025 23:21:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6249F2367AD;
-	Thu,  1 May 2025 23:20:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE927263C73;
+	Thu,  1 May 2025 23:21:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="k0/6SEDk"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TV+xpoZi"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7B65221295;
-	Thu,  1 May 2025 23:19:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0911B2367AD;
+	Thu,  1 May 2025 23:21:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746141601; cv=none; b=nj4YK2TJZjX8dPG7S8LZX0RgwPvvtdT2LyAHERxnVFKmB3nZ9Oh1ADPE2ZYsHfPoi+qBDpORxzNQT4wTYEzG4LYc86awFxou8qAY9L75X98R7OxKp7yGsS4pzuqRAfRYm33aNnl9bGWMUtIZ4XyLPuXs3AWTStBFw4+ZkYCZB+k=
+	t=1746141699; cv=none; b=DGXG5w07ZmyVBOii91vdBw6mWyRyHBVKKD0V2Gbza7uMAQQXgEZnvK00cGbazoarGk6runnuvSoeCxMprVzcdoof6lV4QpSi1u3us12exUBQ/imKw+0sYyqvXKvQfJHQp3Gux/RFNEl46bUlCsFg97nNwk9XQ2MBA1TvuEtloQw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746141601; c=relaxed/simple;
-	bh=upXGYedG9dObgZEt7Awma7NEoyqq6iE9y7L58AQfvA4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RehHT8xcjBjqj2Kl1pps0fbcjNApUcCBwlC4Aew+Mf54wwJRCfGXDrurAw4CIo4xrK7Rsp6g/pMazqkLu9q62Q4CZ1D8daa3cNiLmrUVGOqz7wCQtAmFVCxP7JeTb7o+8k2fXYPIBWtgjNUra2CFE/qQTTLTfWypfQLz9bf+TCI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=k0/6SEDk; arc=none smtp.client-ip=209.85.222.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-7c56a3def84so146186385a.0;
-        Thu, 01 May 2025 16:19:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746141598; x=1746746398; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uaNPQeUwNVCkcCz4v/kLToCggdZ9DJpb46F67TpGc4M=;
-        b=k0/6SEDktLBzvMFRa4OmNEbDv0gixLUJUdcXNKQrhU/jzSYeC1fzo3a9pLspZW1sZR
-         GACuWHaTD1+bYRxXoeHC4/HwCSUrQfgOLQBLnvPdgoCFh2kpKl+pVntFbcRgPxizsDIl
-         VFNKFgnolez0MefgFRT/ucQQXjik+/n6fDXKKdE1X0NaKLdmuFj6TZzuoux2gdACopEJ
-         QcOHpNgiUh300twnpkYXz9aJ2b+LOsJAhbdMcHeTIsCnuCzZMY6Kk3J5ujXV4+xHpUMe
-         ULcrasLwHIfleHJe6QrdT3gjJVnJgG820ozbY63GxhyLV5T+bo96mWavax1e1lyKwvgW
-         03jA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746141598; x=1746746398;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=uaNPQeUwNVCkcCz4v/kLToCggdZ9DJpb46F67TpGc4M=;
-        b=KsZbxf/uphBtu47fF+SgSKIY0xJbx1tQsI1cZsqAVs3QG592cDwGVayWq1ZPDDuQeS
-         foMbMHMRvfQ2vHnQ+6f8y8loRTSwbBJ6E8pDbm+0ygi1a19mlfruQLbi6/UiPrmTwwES
-         htZ1KG/z6L8OOz5877+jRMC1znq0Pywh86Fzk4DO+05426mpVmA9qGmYRV3mv38gMH/G
-         aV8ZWjTgLzd9ebNJksXEGoDxT8HIxD9KQs4FBkVU3gQzzyPZRQ+4zp/+zO0C4T51ZxQf
-         sfhF9U9DOAO6e0cE7743KSw7uTkhdYYgFxypvFJv11KTJTnV+VxnmBB9NZWjLrLOcGz4
-         jCBQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWv/FmfPJPwtaTRlZt4WX186m3xVA1XhTI9vBkTFzmFVcbXzgovizThLAn8mfggwGRkjcKmuwiOo4Jp8lKt@vger.kernel.org, AJvYcCX0v0iPI8kysbIGfuV5VKS45dxIp1D3FrIJa5uQQaTAC2vI7RyWES83wEPwpnrWx9m+g5Gt6+pyy0E=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwQ8jv98tX6ugA3gwE38BBwVSi2IhxIc/aXZJTUrmqRhjWgqHPs
-	cPHgI9kLgQxaJbmLCuizJtK67W8dt9OGpXKzlJ6HepS+B+Kjn6DOKlZzrS/w1eY=
-X-Gm-Gg: ASbGnctc+x21bXqMktqKz/u61vHGjEkNSiw2hxeS8TpJVj+ClpYtZNy8Cb2fNwTZIjY
-	MuHQfDaE5zGq/VihQ4WskQdUpCsAQenbiY908ob2g2OAPF/c48tNoJXf+Z/Zz0SFAetL88DKGlI
-	Wm6jPNrtCHILRqTfYPLymXR60KPjoao/iuzpg+40tJ69goiOTN3jQm88kI7sYqWFhv0xEOerE0D
-	z76lU85mzmisMzm0y+bSnwtl5dqqbVAMRNu8RkHEfG53f8i5QFT479tKJgyIgxpsqhs2XyGFU4i
-	nTGBS6HkHMIE5wZbo7HzKO254cM0IIMS2qj8v0f2ukb8ThapctpHqxewzijv1Q5FVg/2knqE
-X-Google-Smtp-Source: AGHT+IFVkWiSnTlfxvfyosBhEypJ2fEQVO4pxxUsq+Ip/wRWRQj+aTx2n+st+gPaPFlYqmjayLwaMQ==
-X-Received: by 2002:a05:620a:4056:b0:7c5:f6be:bdae with SMTP id af79cd13be357-7cad5b4371amr115417785a.20.1746141598324;
-        Thu, 01 May 2025 16:19:58 -0700 (PDT)
-Received: from c65201v1.fyre.ibm.com ([129.41.87.7])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7cad23d1ca4sm104600285a.59.2025.05.01.16.19.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 01 May 2025 16:19:56 -0700 (PDT)
-From: Chelsy Ratnawat <chelsyratnawat2001@gmail.com>
-To: jic23@kernel.org,
-	srinivas.pandruvada@linux.intel.com,
-	bentiss@kernel.org,
-	dlechner@baylibre.com
-Cc: linux-input@vger.kernel.org,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Chelsy Ratnawat <chelsyratnawat2001@gmail.com>
-Subject: [PATCH v2] HID: sensor-hub: Fix typo and improve documentation for sensor_hub_remove_callback()
-Date: Thu,  1 May 2025 16:19:31 -0700
-Message-ID: <20250501231931.1865276-1-chelsyratnawat2001@gmail.com>
-X-Mailer: git-send-email 2.43.5
-In-Reply-To: <20250430182300.122896-1-chelsyratnawat2001@gmail.com>
+	s=arc-20240116; t=1746141699; c=relaxed/simple;
+	bh=MOV+78+NdAm1UlS9xfW1wnoYdX4nXR76p3LYpax7HYs=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=RmektIwhsNtx9C3I9PhlS0yh68nLg5oepP/PZBQiRU4QALG1DojWGlz7AzNQHcPqKlp4SNN84u4Y1v6TkavQ+oFChtPHAfT63YiTIPeEVenUp5NyYmIOvtKHETqG8Z2p9sD4n1voR1DbjN73+Uom9hcsrx/cBGedlI085gDhLzM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TV+xpoZi; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1746141698; x=1777677698;
+  h=message-id:subject:from:to:cc:date:in-reply-to:
+   references:content-transfer-encoding:mime-version;
+  bh=MOV+78+NdAm1UlS9xfW1wnoYdX4nXR76p3LYpax7HYs=;
+  b=TV+xpoZiuf5N6smFUx9nxmZi01gTgr5jk7ayj3vB+OXmawlRQ0pnG9eJ
+   zedn6DLLT62xk6yetPwUb6qgyBPq5ReKRKwdmrP8DG1U30S7M+RztXsNk
+   76F0LX7zJl0pNvqlmwP1n6oRAeGarIP9uSwE4VjCjAg81pBBlxer9ZLEP
+   TglSPJxyhBG13RuJcp4UdhmVM+PtfHZF5QdV5/1lZrm4WAI+KWWIDY5Wu
+   FWl71fgB1E/a6TKj92XN44CaQr8noFAZwRKovW1e67i0rNz/l8VjLfo5z
+   xbiVUskY/TEKWg4NwNIGLfuHnSsIJ0qTSYpRL4i0qtJALP4HSCGyy/WyK
+   Q==;
+X-CSE-ConnectionGUID: 5OHNYxebQg2qRdW98VNiLA==
+X-CSE-MsgGUID: gAS5a5ksR4uSzwdexXorvQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11420"; a="47965745"
+X-IronPort-AV: E=Sophos;i="6.15,254,1739865600"; 
+   d="scan'208";a="47965745"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 May 2025 16:21:37 -0700
+X-CSE-ConnectionGUID: 1T+DrkojSQiT3QOiAyBrHQ==
+X-CSE-MsgGUID: qp2gfHl/TKyLmiDn08+raw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,254,1739865600"; 
+   d="scan'208";a="139647025"
+Received: from spandruv-desk1.amr.corp.intel.com ([10.125.110.85])
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 May 2025 16:21:37 -0700
+Message-ID: <3717e8d0bfc058739b3333931ba6c39d55d2d383.camel@linux.intel.com>
+Subject: Re: [PATCH] HID: sensor-hub: Fix typo and improve documentation for
+ sensor_hub_remove_callback()
+From: srinivas pandruvada <srinivas.pandruvada@linux.intel.com>
+To: David Lechner <dlechner@baylibre.com>, Chelsy Ratnawat
+	 <chelsyratnawat2001@gmail.com>, jikos@kernel.org, jic23@kernel.org, 
+	bentiss@kernel.org
+Cc: linux-input@vger.kernel.org, linux-iio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Date: Thu, 01 May 2025 16:21:36 -0700
+In-Reply-To: <1f8de7bd-7049-4933-82e3-8ce71685998e@baylibre.com>
 References: <20250430182300.122896-1-chelsyratnawat2001@gmail.com>
+	 <1f8de7bd-7049-4933-82e3-8ce71685998e@baylibre.com>
+Autocrypt: addr=srinivas.pandruvada@linux.intel.com; prefer-encrypt=mutual;
+ keydata=mQGNBGYHNAsBDAC7tv5u9cIsSDvdgBBEDG0/a/nTaC1GXOx5MFNEDL0LWia2p8Asl7igx
+ YrB68fyfPNLSIgtCmps0EbRUkPtoN5/HTbAEZeJUTL8Xdoe6sTywf8/6/DMheEUzprE4Qyjt0HheW
+ y1JGvdOA0f1lkxCnPXeiiDY4FUqQHr3U6X4FPqfrfGlrMmGvntpKzOTutlQl8eSAprtgZ+zm0Jiwq
+ NSiSBOt2SlbkGu9bBYx7mTsrGv+x7x4Ca6/BO9o5dIvwJOcfK/cXC/yxEkr1ajbIUYZFEzQyZQXrT
+ GUGn8j3/cXQgVvMYxrh3pGCq9Q0Q6PAwQYhm97ipXa86GcTpP5B2ip9xclPtDW99sihiL8euTWRfS
+ TUsEI+1YzCyz5DU32w3WiXr3ITicaMV090tMg9phIZsjfFbnR8hY03n0kRNWWFXi/ch2MsZCCqXIB
+ oY/SruNH9Y6mnFKW8HSH762C7On8GXBYJzH6giLGeSsbvis2ZmV/r+LmswwZ6ACcOKLlvvIukAEQE
+ AAbQ5U3Jpbml2YXMgUGFuZHJ1dmFkYSA8c3Jpbml2YXMucGFuZHJ1dmFkYUBsaW51eC5pbnRlbC5j
+ b20+iQHRBBMBCAA7FiEEdki2SeUi0wlk2xcjOqtdDMJyisMFAmYHNAsCGwMFCwkIBwICIgIGFQoJC
+ AsCBBYCAwECHgcCF4AACgkQOqtdDMJyisMobAv+LLYUSKNuWhRN3wS7WocRPCi3tWeBml+qivCwyv
+ oZbmE2LcxYFnkcj6YNoS4N1CHJCr7vwefWTzoKTTDYqz3Ma0D0SbR1p/dH0nDgN34y41HpIHf0tx0
+ UxGMgOWJAInq3A7/mNkoLQQ3D5siG39X3bh9Ecg0LhMpYwP/AYsd8X1ypCWgo8SE0J/6XX/HXop2a
+ ivimve15VklMhyuu2dNWDIyF2cWz6urHV4jmxT/wUGBdq5j87vrJhLXeosueRjGJb8/xzl34iYv08
+ wOB0fP+Ox5m0t9N5yZCbcaQug3hSlgp9hittYRgIK4GwZtNO11bOzeCEMk+xFYUoa5V8JWK9/vxrx
+ NZEn58vMJ/nxoJzkb++iV7KBtsqErbs5iDwFln/TRJAQDYrtHJKLLFB9BGUDuaBOmFummR70Rbo55
+ J9fvUHc2O70qteKOt5A0zv7G8uUdIaaUHrT+VOS7o+MrbPQcSk+bl81L2R7TfWViCmKQ60sD3M90Y
+ oOfCQxricddC
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-Changes in v2:
- - Improved the kernel-doc comment for sensor_hub_remove_callback().
- - Changed "Gyro" to "gyro".
- - Changed "usage ID" to "usage_id" for consistency with kernel-doc
-   style.
- - Updated the comment to state that only one callback can be removed
-   per (usage_id, hsdev) pair.
+On Wed, 2025-04-30 at 14:17 -0500, David Lechner wrote:
+> On 4/30/25 1:23 PM, Chelsy Ratnawat wrote:
+> > Fixed a typo in "registered" and improved grammar for better
+> > readability
+> > and consistency with kernel-doc standards. No functional changes.
+> >=20
+> > Signed-off-by: Chelsy Ratnawat <chelsyratnawat2001@gmail.com>
+> > ---
+> > =C2=A0include/linux/hid-sensor-hub.h | 7 ++++---
+> > =C2=A01 file changed, 4 insertions(+), 3 deletions(-)
+> >=20
+> > diff --git a/include/linux/hid-sensor-hub.h b/include/linux/hid-
+> > sensor-hub.h
+> > index c27329e2a5ad..5d2ac79429d4 100644
+> > --- a/include/linux/hid-sensor-hub.h
+> > +++ b/include/linux/hid-sensor-hub.h
+> > @@ -130,10 +130,11 @@ int sensor_hub_register_callback(struct
+> > hid_sensor_hub_device *hsdev,
+> > =C2=A0/**
+> > =C2=A0* sensor_hub_remove_callback() - Remove client callbacks
+>=20
+> This says "callbacks", so is it possible to have more than one
+> registered at a
+> time?
 
-Signed-off-by: Chelsy Ratnawat <chelsyratnawat2001@gmail.com>
----
- include/linux/hid-sensor-hub.h | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+This removes only one. So "callback" will be correct.
 
-diff --git a/include/linux/hid-sensor-hub.h b/include/linux/hid-sensor-hub.h
-index c27329e2a5ad..0f9f7df865db 100644
---- a/include/linux/hid-sensor-hub.h
-+++ b/include/linux/hid-sensor-hub.h
-@@ -128,12 +128,13 @@ int sensor_hub_register_callback(struct hid_sensor_hub_device *hsdev,
- 			struct hid_sensor_hub_callbacks *usage_callback);
- 
- /**
--* sensor_hub_remove_callback() - Remove client callbacks
-+* sensor_hub_remove_callback() - Remove client callback
- * @hsdev:	Hub device instance.
--* @usage_id:	Usage id of the client (E.g. 0x200076 for Gyro).
-+* @usage_id:	Usage id of the client (e.g. 0x200076 for gyro).
- *
--* If there is a callback registred, this call will remove that
--* callbacks, so that it will stop data and event notifications.
-+* Removes a previously registered callback for the given usage_id
-+* and hsdev. Once removed, the client will no longer receive data or
-+* event notifications.
- */
- int sensor_hub_remove_callback(struct hid_sensor_hub_device *hsdev,
- 			u32 usage_id);
--- 
-2.43.5
+Thanks,
+Srinivas
+
+
+>=20
+> > =C2=A0* @hsdev:	Hub device instance.
+> > -* @usage_id:	Usage id of the client (E.g. 0x200076 for Gyro).
+> > +* @usage_id:	Usage id of the client (e.g. 0x200076 for Gyro).
+>=20
+> should we also make gyro lower-case?
+>=20
+> > =C2=A0*
+> > -* If there is a callback registred, this call will remove that
+> > -* callbacks, so that it will stop data and event notifications.
+> > +* Removes a previously registered callback for the given usage ID.
+> > +* Once removed, the client will no longer receive data or event
+> > +* notifications.
+>=20
+> I like the revised wording, but possibly looses some clarity that
+> could be
+> fixed with:
+>=20
+> Removes a previously registered callback(s), if any, for the given
+> usage ID.
+>=20
+> As above, not sure if singular or plural callbacks is correct.
+>=20
+> > =C2=A0*/
+> > =C2=A0int sensor_hub_remove_callback(struct hid_sensor_hub_device
+> > *hsdev,
+> > =C2=A0			u32 usage_id);
+>=20
 
 

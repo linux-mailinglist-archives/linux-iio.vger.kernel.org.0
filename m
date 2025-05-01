@@ -1,189 +1,443 @@
-Return-Path: <linux-iio+bounces-18924-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18925-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E99C3AA5B0D
-	for <lists+linux-iio@lfdr.de>; Thu,  1 May 2025 08:33:25 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D5ECAA5B72
+	for <lists+linux-iio@lfdr.de>; Thu,  1 May 2025 09:36:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A0F0C9C3E43
-	for <lists+linux-iio@lfdr.de>; Thu,  1 May 2025 06:33:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B19CF7AD3AD
+	for <lists+linux-iio@lfdr.de>; Thu,  1 May 2025 07:35:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8F9925EFBC;
-	Thu,  1 May 2025 06:33:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84DA3265CCF;
+	Thu,  1 May 2025 07:36:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mt.com header.i=@mt.com header.b="wIP6HMAw"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jEC4kl9T"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011059.outbound.protection.outlook.com [52.101.70.59])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B30B0746E;
-	Thu,  1 May 2025 06:33:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.59
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746081198; cv=fail; b=XF6dKuupRQLieDibJclxZtKrJmtH2QNj6qnRXhE5ZzLYaORcMnHg+QJxQ8iyZYjJcnQ5xtZr+YvlsPE9ah4P+tdncjXMypIwsE5OsM21cSx3WxCknFofZr7k7INtDtGUQTJen4Nj7J6HDGDJJq9wib7vfpXV5QTs9XNNRAf10QA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746081198; c=relaxed/simple;
-	bh=N9hs/MD+N9ZH9j27WQfuyZpZziipm7SYY2r8a62QrpQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=rM5UYYfQcx+Mzj0yJLj0erKnACjJ9Y8CAg2YPQ0c0McSd50QFYgNimV+yZdKlEjsvTeIzlP0lnhcrNOgH6iAzC5nOCf5eio+Lg35RZay0dNxrjJ9UdRHHGK+r5fNxrcepOl2TlCipZVVBuBD5ggikmpX3wlnVUhsIhadL40Wio8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mt.com; spf=fail smtp.mailfrom=mt.com; dkim=pass (2048-bit key) header.d=mt.com header.i=@mt.com header.b=wIP6HMAw; arc=fail smtp.client-ip=52.101.70.59
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mt.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=mt.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ph5U4dDc19LXsWgkENgDyiGT4HgRpLUqaZDvlUmSmyxH3Flk5NBOESBiVNhjv8Nb69nYjNWEoYxVZAFH/87oF4M9x7z/J8w8YeEG29VQMSjcKdLgF77y9a3yrmiBHpQOWKaD1pXFstXICSb8ekPGcW5hKWjSEXP862u52I9KRUy4F/ihhDr1TRBuMJg/h8iKM2MA2N5CETcuH0p3wY9kg1M6kJL9eh/60IA/ge9S8z6xokSopRipVJ+/0kKrvJQm7X2PyEnpMuoUYeuRDy/l/lHYbl6IUKTHah56eOgi184OVSfDfHKHpO4TpiuMPktzFno6FkQ21NnWcdNO8Sq6sA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=EHU8HZnqAgFAYqATd9B+8zt82ZGVUbrmbRPgOgJugAU=;
- b=xIO10t7qftR5PoCaqnN2RREetwJxSzKQ1phqoxmkoH16LAgLuJTMdnMewXWmEFqpjA5u3DAt9kMOKSR8Fw62AF5RCUy5UiK7Ukit0yIAP9TPCxY0bYXb6zxip2DlJf+Fhx88AASN8SaSmuz4Gv8eimQo2sDVBG8Llag5Te9NeNDMe9o7d0wUwT44aDIBDQls7MWJJmc3Clcl+D01Lagb5wQIA31gT8OUh60x07AKho7d4ZLWD/c7QAjaOiUnzXdtw/sB18c+IS7iG8bZQA4E4/Yhe73G7D+Qu6wHIQMfS36nfRV3hK20Oc8vu1yqJ0wMhAJZTRAVNWxmY3kZfunSzw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=mt.com; dmarc=pass action=none header.from=mt.com; dkim=pass
- header.d=mt.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mt.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=EHU8HZnqAgFAYqATd9B+8zt82ZGVUbrmbRPgOgJugAU=;
- b=wIP6HMAwq9gVY1qs5EPoif62+b4Bf52Q3oYPYHPyyf/bBbr4g8MLayU0r8hyaXUWoLf5HfSTIcAhTTs84lADK33CDbyKGzW80DfFu81lU0Q8IjgJM4OoPDFd7ReQnYmdcv5gaxccGvZNHi4koztbEB5tp42JasUy63PkFFjUvK2m7X0ZXuVuCPqr59o8thzcU2zQfpnqz2j9MxNd9xIbtqhFMJsY8tYQAblLO2Vt7WsSQIGaoyOrsOCqjb7HT2mot+wqgpleFr5Ycevs5uIQmr+g0IUJ9lKhsYc1GNJ8MHg+IRrw1pnlQR8xAjj1WHj6qMYx6kDa3I69uIbGQe8IDA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=mt.com;
-Received: from VI1PR03MB6285.eurprd03.prod.outlook.com (2603:10a6:800:137::14)
- by DU0PR03MB9590.eurprd03.prod.outlook.com (2603:10a6:10:421::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8678.31; Thu, 1 May
- 2025 06:33:12 +0000
-Received: from VI1PR03MB6285.eurprd03.prod.outlook.com
- ([fe80::e290:ebac:cbe4:198a]) by VI1PR03MB6285.eurprd03.prod.outlook.com
- ([fe80::e290:ebac:cbe4:198a%6]) with mapi id 15.20.8699.021; Thu, 1 May 2025
- 06:33:11 +0000
-From: Markus Burri <markus.burri@mt.com>
-To: linux-kernel@vger.kernel.org
-Cc: Markus Burri <markus.burri@mt.com>,
-	Nuno Sa <nuno.sa@analog.com>,
-	Olivier Moysan <olivier.moysan@foss.st.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	linux-iio@vger.kernel.org,
-	Markus Burri <markus.burri@bbv.ch>
-Subject: [PATCH v1] iio: backend: fix out-of-bound write
-Date: Thu,  1 May 2025 08:32:40 +0200
-Message-Id: <20250501063240.25295-1-markus.burri@mt.com>
-X-Mailer: git-send-email 2.39.5
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: MI1P293CA0009.ITAP293.PROD.OUTLOOK.COM (2603:10a6:290:2::6)
- To VI1PR03MB6285.eurprd03.prod.outlook.com (2603:10a6:800:137::14)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CCF72AEE9;
+	Thu,  1 May 2025 07:36:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1746084969; cv=none; b=sJjgf3pBvyfBbZyNwPaXijn2P4XUhGF2LgbDdsimZthz60zuzALgDJmmosCEcmGwalxkVZ5C/vHekKJeQMEgr7v91P7ga7xn/Ov9zmNcdzMq2i8BWmsKAywCiWss8wfpPs57o+S34LyxepZbpiWGQJDRMWf0iaqEh6IY45MZOBY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1746084969; c=relaxed/simple;
+	bh=25/37cUMVVXu84cpKe5hjhMfPKL8k229o9wf+HT7AEM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=mXqFBXpSyHBXcTjmC9HIpBvyc/a1bJVQ9FBEWxawdOMYDResOqgxisH2J91JTYOII3rFoMGMapYEjt+cGcfgHGNeVU3eunW83dlIZ0BbruTByu9xPdgpweRelhv1o4je0PNhO0B0XQi5/R6BS26IgLQLPMc0XHuFzQ0gLvS/5JA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jEC4kl9T; arc=none smtp.client-ip=209.85.128.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-7086bc9eabfso226187b3.0;
+        Thu, 01 May 2025 00:36:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1746084966; x=1746689766; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6R33smmm7Plxhn+ZOVLOBVrXisntvRS5S1y6+uLYR5E=;
+        b=jEC4kl9T6nRNgSfKLdfnqDsIO/FBUnLQzbbqY2mqbwqQ557p5T57SnaJHeng8t+LXg
+         F0s9XKO25QC9Q2+U0fQUop4nvjZKQLITO8ospFrtS8UgO5Jj9fqaVy/fvr4zrwhh1M2O
+         FT2WgaDATd0y0coDhxQzJCjZrnL/cOA04niJSj88KIaKNlNc3II50zPdMSwv/vNsFt5X
+         jjayKQZx+pl/X/nvH9c7/bd04H+2gGkaqDp1Uu+WOaxbHNtZ8tHuDHeizHxifN1JwKHD
+         Rz8oLqud+fk1I5Cg7IKP9JKms/RH6UDowLNfej4fMyluyAcs0U5tOBJdq1Cw1uXfDIRn
+         ioPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746084966; x=1746689766;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=6R33smmm7Plxhn+ZOVLOBVrXisntvRS5S1y6+uLYR5E=;
+        b=raLl4HRD7yM8GBrgUvDo9hZuB8WCRxEiwlqTZgwfJR8zkO1nnO/vcZRDy8LO06yI39
+         xnAVSFkVug3heFPvDLRYze0sOLGuWx8P2kl02pTqzRZD7JNSyGIxgKM0sj8t6eFnuutq
+         rH3mh+aYJxMnqAlfdiJWn0Z23zmIsFovVKNDMNylMkYJEHb/+TlUpFVy34oSRvYu8YYU
+         /J2F3NOv9YNCuzqGT5WLhs6qaxPFwDRS9t7NO3P/gdKatHdh8moOXsgjdQTXnfnbc0xI
+         ogfdhQn0oEyo33OHYVXmeVoB7diu97mEbSmAysz1qEo2r39oPfdnmEjm0MeBoF0Nmnpt
+         aSFw==
+X-Forwarded-Encrypted: i=1; AJvYcCUMM4SjRRSANaURTmYGQyUebT8gUK2HAwaW6P4uc/rf1L09/BiNZfI8mbfiUQhANwXuSbMYdnLGPvM=@vger.kernel.org, AJvYcCVYlbS4vBzR87AsDJ6SKUSNnB/PVQ4TfuBJWRcXrA7QAVjnUcow4P7ceg9hsRmwfzu+LOM2I+lhFXyowVWf@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy+J10Ry3be8FYQnoLRLHmTvygLUChy8pIHjtyrjsikkz9ySGtd
+	Au3FZ9mxTJw0UDfP99STFQ+vgGzc6ZU1BDryDqqJfVTO7UgR77utXvMXliZAGBVWaXVtr9aWLwZ
+	r5he2WEbRy6cEuK+b4z+xNu2e/xT+10DL
+X-Gm-Gg: ASbGnctRL4neDBURkS15VvCQYRhsTBv6UxKQn04/hBVhHudKJIELbk99C9WYR1zKW0z
+	bHAJZc7CE7KiZ/L7+Dilk34fQwTlTIsvdbFqcawsOEPUsBcDnfAw7Wy/2wBHRJNThGStiy9jmnX
+	ZGexPbBj8xuNRm0lEuWSYhig==
+X-Google-Smtp-Source: AGHT+IG3Kk+Gf08jmpYy1fAwdKSYnl0NOMb9effMKmmhuUmJ2bY0meQ1Zb4nuLc1a+LC+uUfKFoUVkW15E138wVFVao=
+X-Received: by 2002:a05:690c:4:b0:6fd:a226:fb48 with SMTP id
+ 00721157ae682-708aefdff00mr32416527b3.5.1746084966190; Thu, 01 May 2025
+ 00:36:06 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: VI1PR03MB6285:EE_|DU0PR03MB9590:EE_
-X-MS-Office365-Filtering-Correlation-Id: cb004e7a-2b37-4b80-8e9a-08dd887a0b50
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|52116014|1800799024|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?c5T3SZx2W9R98iFLhC5M6m0A4fMuqt+jY98Ns2l1zJurr3ixzhka89cMkM4V?=
- =?us-ascii?Q?1KKaay4FlMbOdLnWx1EHFc7CToyFGvzhOPIturpvNtV5YtaLBQ8gTn/gG2/3?=
- =?us-ascii?Q?rpOZzcS90wMTBXO4l01XP7CxDN57SmDvT+4X9cGGxiuQo2jKKTR8o6pB100y?=
- =?us-ascii?Q?1Mi0y4b0ylKd4C4r0nDAxur//lfcLXomhCTfuch6EeNUPHz6Gq1L477r0XRz?=
- =?us-ascii?Q?Xya95f2geYRGHVyn0V7hUINMUxz1y+2BPtlxM8PZTexbZkmYzW6JSnSS719+?=
- =?us-ascii?Q?vN9mJYgns0TMc+o89y9g1hXUMuEQxhX5pNFzWbWPv3naHI3UMBbPSxSbgKVB?=
- =?us-ascii?Q?+LqmgpR0aZBct1hd5CdSiVtx3zeMU1i6hSdELoYrFacoMco51RV7Lc9F7H5S?=
- =?us-ascii?Q?39KCSh6ruByP2Th+VlnwvnGC9pcOsCdkxd/deIAYhohEwZgwOHlQhV5yMytq?=
- =?us-ascii?Q?svV+0SmIxdfahy+w/03M6qKOWndG0GussOCYUNBOMD7/Nt+esEf1iNwVW6Md?=
- =?us-ascii?Q?XBTnD19rvZQ7koVn67dC7teI8Bd/2sz8RFC+ph3N4wYRigmq3haKSuJhJds+?=
- =?us-ascii?Q?Em+tj6kDOIUYDZszMhnfwCTd++iTNYw33X7XjQnQ5WqJU8zyFOcK3uPSafu3?=
- =?us-ascii?Q?fPL2ZVo52Sv2duDMyjLQZAd2AQfJ0ubGua/QfhiSa8RkVhvf1GgldiLwLqcu?=
- =?us-ascii?Q?5A+7F1ri9DhZA8MTdlhv/WP2EfvShSjNxCNVkTEqU2X9/1r2+jSsHywRGlT+?=
- =?us-ascii?Q?QNUyzRUdhfOGR8bSc4YOg2IdZ3F/3xiOr+uoPNI84sYjezESeCl8+Z8XaHMD?=
- =?us-ascii?Q?m3YFi9AAbdc8dxBanTxfrc+EEA3klG4FVv3emN1ETa1qB0IGnKjXVHKEv8Sh?=
- =?us-ascii?Q?2CyHyFJkjGqJcJflHfKrV5UZILzeJ1uz3b4K5+G/w81h+gXCbxO+sxvVCjQP?=
- =?us-ascii?Q?FA0ipq2Uh5UmnSSPQ5Dc7xeYeADndrHkAnPwmzvqiYJWCtS8NVZNnmcq808D?=
- =?us-ascii?Q?Hh1TS9btOEoWvSXjG3QVudkY+dHv0MVv3orcQ6CYR0AIdEvgQttXexI672zP?=
- =?us-ascii?Q?EeurlxyiybpYc6AZU4qHgK8RKGZB72QCNRMBB5sGuX/q/RQu0n00CoLTtz1k?=
- =?us-ascii?Q?2Fiuf+eGP1p7d6gu/TLPPJpS1yQoAIZ6E6z3psOC3S0oHqZHea1uHW54rYHP?=
- =?us-ascii?Q?cD929MyE4qdaQPvbrfRrBWcRGPfx56yYvXauFbXR0N8whPP3rKyHlGHfiZ3R?=
- =?us-ascii?Q?5KOdD5/yT5YgpQuNeeRi9Cm+hiwGGvB7UXnBH8rs23pR9KqgpFo0C4O63tpi?=
- =?us-ascii?Q?bPBOa8Q2jhdmpT3vF0+D0BYYnUTM4x89mVNl0+buYP1tjZtJYhKPjs5Q3WUH?=
- =?us-ascii?Q?xZBm+5Q5Cd6HzwCfpWU21iJ03fHOxIBtto8iWe3xVIwIG5cHfSO89xr2LazC?=
- =?us-ascii?Q?BO0XnZ0BLXyuA8R/omZBKN8k6IMiH6djjHDWGKHp8Mn1kRCI2imESw=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR03MB6285.eurprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(52116014)(1800799024)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?ZF68gbK/63trOfK3fbj6AHw+n8QDtKESPi7FJhf2MvW4JdibAHrU4YnyiLXp?=
- =?us-ascii?Q?vNAoY/ou+Mbf2vznck+v/z+M9qDk5dCvVriNRwZFU2YuzeXKP03FCvj1CXQD?=
- =?us-ascii?Q?0JmTDAz0+6e1lAFL2205FNcXJCSH201NW8uZMxv+aUxQXaDWCNkhKtANtLD/?=
- =?us-ascii?Q?TG7JwqaRIjDIfTrlI4LD/LVk1dHN/gJ26A7AfRaJRwOcUpGZpU01+1KJ9iIN?=
- =?us-ascii?Q?ZY+m27QZhEn8wmu975Ios6s5MoS0TimudI9uphr95FZhd57y200w1jL+XsMK?=
- =?us-ascii?Q?ZRzmkFvjs9InP2fHDpH+pHyS7/s62x7rcHx0GbIdPK/ilk/vDndVd/cvG2IT?=
- =?us-ascii?Q?JPH4zJnytJMPwHdx3kr0mTtBwRfKPM82ujoTh3ZVKFXnskuJlBpeMoCuka72?=
- =?us-ascii?Q?xrhx1+yDcdCPzMSkXw3QWkjf8aGchxu1Gj9HoGXVl1ZWg0cKRC3AQsCYBzAl?=
- =?us-ascii?Q?3uwz+O6flmK/9ibmdeccssx0FUyTNXh+wok32vr21ZZrelFIWrsfvHp6/ao1?=
- =?us-ascii?Q?3cMCaEY+AGLSrQ9HLz8C/zFeDSYV5pMaICZ27grh8ZnBu6FYsQVOrnH6cUh9?=
- =?us-ascii?Q?3eg59PtRY3Mujn0soYYhWuBr56zWVrlp8lIfMWzjHWruBVWBz8US2IGZFfGE?=
- =?us-ascii?Q?xnic3765qqIqcdF+8rORdALIMCi0JBzdmthgbpGT+n40XHJvL//nssl2csZ5?=
- =?us-ascii?Q?BXr5SaQYTzUWekLP82lTRON1lmXPuwrrih7QFmFoa7ys92ZCHu7vAEWGbdZ1?=
- =?us-ascii?Q?L2YzwvA6CG1pZ16BYVOy3Qn6FtWFIo8MTmKBbZW0L4/NJTexu+b1C5sdgBM3?=
- =?us-ascii?Q?bHhobTJD7UVzMp+37H68Y4QDpENPZAPTqQgNZnvEsl7b+0c6RnW2Ete9L8df?=
- =?us-ascii?Q?3OZdGv97FWrWMJsQ3s80kZG/3jNxCqXpitgUncbWjid22oLWDmn7JAU3LdHt?=
- =?us-ascii?Q?0Fd6E33xo8zyVGmS5cnzWHGt0QnMT9d4DY3KLCAb3KcjxIMAp8PRKKOqhGhz?=
- =?us-ascii?Q?fI2/dY0g3VH/lIs84SErzoaJ14X9mcuKQC1ZnhuIe6vniAUsyvdHyruyvmrD?=
- =?us-ascii?Q?JHCJiPy5q8QthxONSQUOBzc1Kl+okuzLLfVB4zpMiLg92g56YDxD/pl+k95P?=
- =?us-ascii?Q?zV8D/fPk5cPGP7s1rZzqetrpkBdWXMyRkrS1apqoCOgbg5W60ufyeqQ5pKo/?=
- =?us-ascii?Q?f7mZLujLfF+Ts3X8x1kYlJXLxysQ+imqzoRCK02YWvSXWdJeKvWQc8mPpGLQ?=
- =?us-ascii?Q?+1n0kM8RIUW5mQKzH1OXWDiwMHxbQEGMdH5QJiIk4LeSE3xCDcTA7+Ye1bCS?=
- =?us-ascii?Q?0qaOomupEejZWjxQxWT3rIL87B8MaAzOqWPJFozEish/UmJAGQ+NdQwZY+hb?=
- =?us-ascii?Q?CN45CvXeMXXk7K44m6kJn68K4rkSRF8wXd+Kce7Zo5KJn25nZsNR95krMfYX?=
- =?us-ascii?Q?oOIK0+x4oK/Z5xMNrmNapHPn8wDJZFCW5zmmA7oPvmE5JNLMp5QV0ap8oyej?=
- =?us-ascii?Q?8NJFmSLU4/RmNHNoisvirnQHh8RhMX9+DwFKF0zsK38t5L/rfU18kgOiBFjI?=
- =?us-ascii?Q?TBCSrLPFuXCNpiK0a2ZfRX72UqluyoJJM2Mn4UwR?=
-X-OriginatorOrg: mt.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cb004e7a-2b37-4b80-8e9a-08dd887a0b50
-X-MS-Exchange-CrossTenant-AuthSource: VI1PR03MB6285.eurprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 May 2025 06:33:11.5097
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: fb4c0aee-6cd2-482f-a1a5-717e7c02496b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: jDyUIC/B4tFOg/1Sn2bSmD+y30PtVt6aOaIGQG/DoEEV0oBgK0D58RJtjAyo/Ks66AwCySZwt41jZATRZDHgZQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR03MB9590
+References: <20250421220641.105567-1-l.rubusch@gmail.com> <20250421220641.105567-11-l.rubusch@gmail.com>
+ <20250427140032.3112f51b@jic23-huawei>
+In-Reply-To: <20250427140032.3112f51b@jic23-huawei>
+From: Lothar Rubusch <l.rubusch@gmail.com>
+Date: Thu, 1 May 2025 09:35:29 +0200
+X-Gm-Features: ATxdqUFtk85pPDPe84VudTc9sg7nZgezROhz7M7eXepHhipu7wDZGxo06xL9OrY
+Message-ID: <CAFXKEHZ60bREfFmi33XSyrUNigyuQv+by4vh+uoUErni_UEcnw@mail.gmail.com>
+Subject: Re: [PATCH v7 10/11] iio: accel: adxl345: add coupling detection for activity/inactivity
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: lars@metafoo.de, Michael.Hennerich@analog.com, linux-iio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, eraretuya@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The buffer is set to 80 character. If a caller write more characters,
-count is truncated to the max available space in "simple_write_to_buffer".
-But afterwards a string terminator is written to the buffer at offset count
-without boundary check. The zero termination is written OUT-OF-BOUND.
+On Sun, Apr 27, 2025 at 3:00=E2=80=AFPM Jonathan Cameron <jic23@kernel.org>=
+ wrote:
+>
+> On Mon, 21 Apr 2025 22:06:40 +0000
+> Lothar Rubusch <l.rubusch@gmail.com> wrote:
+>
+> > Add coupling activity/inactivity detection by the AC/DC bit. This is an
+> > addititional enhancement for the detection of activity states and
+> > completes the activity / inactivity feature of the ADXL345.
+> >
+> > Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
+>
+> I've dragged the table from the earlier patch into this one that actually=
+ uses it.
+> However I'm a little unsure on exactly how we present this feature.
+>
+> So until those questions are resolved I've dropped the patch (you'll need
+> to rebase on my testing branch and fix up missing table for v8).
+>
+> The bit that made me not apply this series (with some tweaks) was that
+> I'd expect enabling AC events to be visible as disabling of DC ones.
+>
 
-Add a check that the given buffer is smaller then the buffer to prevent.
+There are no AC events, nor DC ones.
 
-Fixes: 035b4989211d ("iio: backend: make sure to NULL terminate stack buffer")
-Signed-off-by: Markus Burri <markus.burri@mt.com>
----
- drivers/iio/industrialio-backend.c | 3 +++
- 1 file changed, 3 insertions(+)
+Think of AC- or DC-coupled detection as modes of operating the
+ACTIVITY/INACTIVITY
+detection. The events are ACTIVITY or INACTIVITY. It has effect on how
+the sensor detects
+if it needs to trigger an (IN)/ACTIVITY event. DC is just going by the
+configured thresholds,
+where AC is supposed to apply some more elaborate way of declaring ACTIVITY=
+ or
+INACTIVITY.
 
-diff --git a/drivers/iio/industrialio-backend.c b/drivers/iio/industrialio-backend.c
-index a43c8d1bb3d0..3878bd698c98 100644
---- a/drivers/iio/industrialio-backend.c
-+++ b/drivers/iio/industrialio-backend.c
-@@ -155,6 +155,9 @@ static ssize_t iio_backend_debugfs_write_reg(struct file *file,
- 	ssize_t rc;
- 	int ret;
- 
-+	if (count >= sizeof(buf))
-+		return -ENOSPC;
-+
- 	rc = simple_write_to_buffer(buf, sizeof(buf) - 1, ppos, userbuf, count);
- 	if (rc < 0)
- 		return rc;
+The fact that you imply on this means to me, at least I explained it
+wrong, or need to clarify
+better.
 
-base-commit: b4432656b36e5cc1d50a1f2dc15357543add530e
--- 
-2.39.5
+> Also, I just noticed you aren't pushing the new event types.
+>
+> These controls need to look like a separate event detector hardware block
+> with it's own controls + its own event codes.  The fact only this or
+> the DC version can be enabled at any time should only be exposed in the
+> reported state, not apparent via what files we expose etc.  On some
+> other device they may be independent hardware blocks.
+>
+> Note I'd also expect to see value controls for these new events. You may
+> need to cache the values and update on event change if the meaning is
+> very different.   That's because the expectation would be an event
+> setup sequence from userspace is:
+>
+> 1) Set value of threshold
+> 2) Enable event
+>
+> On a change of event (due to shared hardware) The value set may scramble
+> the event already enabled.
+>
+> So write the values into a cache and update to the right one when changin=
+g
+> event.
+>
 
+Might be that I got you wrong here, but I assume the above does
+actually not apply.
+
+Best,
+L
+
+> > ---
+> >  drivers/iio/accel/adxl345_core.c | 162 ++++++++++++++++++++++++++++++-
+> >  1 file changed, 159 insertions(+), 3 deletions(-)
+> >
+> > diff --git a/drivers/iio/accel/adxl345_core.c b/drivers/iio/accel/adxl3=
+45_core.c
+> > index b25efcad069b..c07ad5774c8a 100644
+> > --- a/drivers/iio/accel/adxl345_core.c
+> > +++ b/drivers/iio/accel/adxl345_core.c
+> > @@ -37,7 +37,9 @@
+> >  #define ADXL345_REG_TAP_SUPPRESS_MSK BIT(3)
+> >  #define ADXL345_REG_TAP_SUPPRESS     BIT(3)
+> >  #define ADXL345_REG_ACT_AXIS_MSK     GENMASK(6, 4)
+> > +#define ADXL345_REG_ACT_ACDC_MSK     BIT(7)
+> >  #define ADXL345_REG_INACT_AXIS_MSK   GENMASK(2, 0)
+> > +#define ADXL345_REG_INACT_ACDC_MSK   BIT(3)
+> >  #define ADXL345_POWER_CTL_INACT_MSK  (ADXL345_POWER_CTL_AUTO_SLEEP | A=
+DXL345_POWER_CTL_LINK)
+> >
+> >  #define ADXL345_TAP_Z_EN             BIT(0)
+> > @@ -91,6 +93,11 @@ static const unsigned int adxl345_act_thresh_reg[] =
+=3D {
+> >       [ADXL345_INACTIVITY] =3D ADXL345_REG_THRESH_INACT,
+> >  };
+> >
+> > +static const unsigned int adxl345_act_acdc_msk[] =3D {
+> > +     [ADXL345_ACTIVITY] =3D ADXL345_REG_ACT_ACDC_MSK,
+> > +     [ADXL345_INACTIVITY] =3D ADXL345_REG_INACT_ACDC_MSK,
+> > +};
+> > +
+> >  enum adxl345_odr {
+> >       ADXL345_ODR_0P10HZ =3D 0,
+> >       ADXL345_ODR_0P20HZ,
+> > @@ -204,6 +211,18 @@ static struct iio_event_spec adxl345_events[] =3D =
+{
+> >                       BIT(IIO_EV_INFO_RESET_TIMEOUT) |
+> >                       BIT(IIO_EV_INFO_TAP2_MIN_DELAY),
+> >       },
+> > +     {
+> > +             /* activity, activity - ac bit */
+> Comment says activity and inactivity but channel type wise this
+> is just activity (as rising)
+>
+> > +             .type =3D IIO_EV_TYPE_MAG_REFERENCED,
+> > +             .dir =3D IIO_EV_DIR_RISING,
+> > +             .mask_shared_by_type =3D BIT(IIO_EV_INFO_ENABLE),
+> > +     },
+> > +     {
+> > +             /* activity, inactivity - ac bit */
+>
+> Likewise this seems to be inactivity.  Should this be in the x&y&z
+> channel, not this one?
+>
+> > +             .type =3D IIO_EV_TYPE_MAG_REFERENCED,
+> > +             .dir =3D IIO_EV_DIR_FALLING,
+> > +             .mask_shared_by_type =3D BIT(IIO_EV_INFO_ENABLE),
+> > +     },
+> >  };
+> >
+> >  #define ADXL345_CHANNEL(index, reg, axis) {                           =
+       \
+> > @@ -320,6 +339,69 @@ static int adxl345_set_measure_en(struct adxl345_s=
+tate *st, bool en)
+> >
+> >  /* act/inact */
+> >
+> > +static int adxl345_is_act_inact_ac(struct adxl345_state *st,
+> > +                                enum adxl345_activity_type type, bool =
+*ac)
+> > +{
+> > +     unsigned int regval;
+> > +     int ret;
+> > +
+> > +     ret =3D regmap_read(st->regmap, ADXL345_REG_ACT_INACT_CTRL, &regv=
+al);
+> > +     if (ret)
+> > +             return ret;
+> > +
+> > +     if (type =3D=3D ADXL345_ACTIVITY)
+> > +             *ac =3D FIELD_GET(ADXL345_REG_ACT_ACDC_MSK, regval);
+> > +     else
+> > +             *ac =3D FIELD_GET(ADXL345_REG_INACT_ACDC_MSK, regval);
+> > +
+> > +     return 0;
+> > +}
+> > +
+> > +static int adxl345_set_act_inact_ac(struct adxl345_state *st,
+> > +                                 enum adxl345_activity_type type, bool=
+ ac)
+> > +{
+> > +     unsigned int act_inact_ac =3D ac ? 0xff : 0x00;
+> > +
+> > +     /*
+> > +      * A setting of false selects dc-coupled operation, and a setting=
+ of
+> > +      * true enables ac-coupled operation. In dc-coupled operation, th=
+e
+> > +      * current acceleration magnitude is compared directly with
+> > +      * ADXL345_REG_THRESH_ACT and ADXL345_REG_THRESH_INACT to determi=
+ne
+> > +      * whether activity or inactivity is detected.
+> > +      *
+> > +      * In ac-coupled operation for activity detection, the accelerati=
+on
+> > +      * value at the start of activity detection is taken as a referen=
+ce
+> > +      * value. New samples of acceleration are then compared to this
+> > +      * reference value, and if the magnitude of the difference exceed=
+s the
+> > +      * ADXL345_REG_THRESH_ACT value, the device triggers an activity
+> > +      * interrupt.
+> > +      *
+> > +      * Similarly, in ac-coupled operation for inactivity detection, a
+> > +      * reference value is used for comparison and is updated whenever=
+ the
+> > +      * device exceeds the inactivity threshold. After the reference v=
+alue
+> > +      * is selected, the device compares the magnitude of the differen=
+ce
+> > +      * between the reference value and the current acceleration with
+> > +      * ADXL345_REG_THRESH_INACT. If the difference is less than the v=
+alue in
+> > +      * ADXL345_REG_THRESH_INACT for the time in ADXL345_REG_TIME_INAC=
+T, the
+> > +      * device is considered inactive and the inactivity interrupt is
+> > +      * triggered. [quoted from p. 24, ADXL345 datasheet Rev. G]
+> > +      *
+> > +      * In a conclusion, the first acceleration snapshot sample which =
+hit the
+> > +      * threshold in a particular direction is always taken as acceler=
+ation
+> > +      * reference value to that direction. Since for the hardware acti=
+vity
+> > +      * and inactivity depend on the x/y/z axis, so do ac and dc coupl=
+ing.
+> > +      * Note, this sw driver always enables or disables all three x/y/=
+z axis
+> > +      * for detection via act_axis_ctrl and inact_axis_ctrl, respectiv=
+ely.
+> > +      * Where in dc-coupling samples are compared against the threshol=
+ds, in
+> > +      * ac-coupling measurement difference to the first acceleration
+> > +      * reference value are compared against the threshold. So, ac-cou=
+pling
+> > +      * allows for a bit more dynamic compensation depending on the in=
+itial
+> > +      * sample.
+> > +      */
+> > +     return regmap_update_bits(st->regmap, ADXL345_REG_ACT_INACT_CTRL,
+> > +                              adxl345_act_acdc_msk[type], act_inact_ac=
+);
+> > +}
+>
+> >  static int adxl345_find_range(struct adxl345_state *st, int val, int v=
+al2,
+> > @@ -797,9 +886,51 @@ static int adxl345_find_range(struct adxl345_state=
+ *st, int val, int val2,
+> >
+> >  static int adxl345_set_range(struct adxl345_state *st, enum adxl345_ra=
+nge range)
+> >  {
+> > -     return regmap_update_bits(st->regmap, ADXL345_REG_DATA_FORMAT,
+> > +     unsigned int act_threshold, inact_threshold;
+> > +     unsigned int range_old;
+> > +     unsigned int regval;
+> > +     int ret;
+> > +
+> > +     ret =3D regmap_read(st->regmap, ADXL345_REG_DATA_FORMAT, &regval)=
+;
+> > +     if (ret)
+> > +             return ret;
+> > +     range_old =3D FIELD_GET(ADXL345_DATA_FORMAT_RANGE, regval);
+> > +
+> > +     ret =3D regmap_read(st->regmap,
+> > +                       adxl345_act_thresh_reg[ADXL345_ACTIVITY],
+> > +                       &act_threshold);
+> > +     if (ret)
+> > +             return ret;
+> > +
+> > +     ret =3D regmap_read(st->regmap,
+> > +                       adxl345_act_thresh_reg[ADXL345_INACTIVITY],
+> > +                       &inact_threshold);
+> > +     if (ret)
+> > +             return ret;
+> > +
+> > +     ret =3D regmap_update_bits(st->regmap, ADXL345_REG_DATA_FORMAT,
+> >                                ADXL345_DATA_FORMAT_RANGE,
+> >                                FIELD_PREP(ADXL345_DATA_FORMAT_RANGE, ra=
+nge));
+> > +     if (ret)
+> > +             return ret;
+> > +
+> > +     act_threshold =3D act_threshold
+> > +             * adxl345_range_factor_tbl[range_old]
+> > +             / adxl345_range_factor_tbl[range];
+> > +     act_threshold =3D min(255, max(1, inact_threshold));
+> > +
+> This is first use of the range table. So introduce that in this patch.
+>
+> > +     inact_threshold =3D inact_threshold
+> > +             * adxl345_range_factor_tbl[range_old]
+> > +             / adxl345_range_factor_tbl[range];
+> > +     inact_threshold =3D min(255, max(1, inact_threshold));
+> > +
+> > +     ret =3D regmap_write(st->regmap, adxl345_act_thresh_reg[ADXL345_A=
+CTIVITY],
+> > +                        act_threshold);
+> > +     if (ret)
+> > +             return ret;
+> > +
+> > +     return regmap_write(st->regmap, adxl345_act_thresh_reg[ADXL345_IN=
+ACTIVITY],
+> > +                        inact_threshold);
+> >  }
+> >
+> >  static int adxl345_read_avail(struct iio_dev *indio_dev,
+> > @@ -938,7 +1069,7 @@ static int adxl345_read_event_config(struct iio_de=
+v *indio_dev,
+> >                                    enum iio_event_direction dir)
+> >  {
+> >       struct adxl345_state *st =3D iio_priv(indio_dev);
+> > -     bool int_en;
+> > +     bool int_en, act_ac, inact_ac;
+> >       int ret;
+> >
+> >       switch (type) {
+> > @@ -983,6 +1114,21 @@ static int adxl345_read_event_config(struct iio_d=
+ev *indio_dev,
+> >               if (ret)
+> >                       return ret;
+> >               return int_en;
+> > +     case IIO_EV_TYPE_MAG_REFERENCED:
+> > +             switch (dir) {
+> > +             case IIO_EV_DIR_RISING:
+> > +                     ret =3D adxl345_is_act_inact_ac(st, ADXL345_ACTIV=
+ITY, &act_ac);
+>
+> Do we not need a check in the enabling of the DC events as well?  If we h=
+ave enabled
+> AC the DC one should report disabled (and if we enable that again then we=
+ should
+> update this.
+>
+> > +                     if (ret)
+> > +                             return ret;
+> > +                     return act_ac;
+> > +             case IIO_EV_DIR_FALLING:
+> > +                     ret =3D adxl345_is_act_inact_ac(st, ADXL345_INACT=
+IVITY, &inact_ac);
+> > +                     if (ret)
+> > +                             return ret;
+> > +                     return inact_ac;
+> > +             default:
+> > +                     return -EINVAL;
+> > +             }
+> >       default:
+> >               return -EINVAL;
+> >       }
+> > @@ -1019,6 +1165,16 @@ static int adxl345_write_event_config(struct iio=
+_dev *indio_dev,
+> >               }
+> >       case IIO_EV_TYPE_MAG:
+> >               return adxl345_set_ff_en(st, state);
+> > +     case IIO_EV_TYPE_MAG_REFERENCED:
+> > +             switch (dir) {
+> > +             case IIO_EV_DIR_RISING:
+> > +                     return adxl345_set_act_inact_ac(st, ADXL345_ACTIV=
+ITY, state);
+>
+> Similar to read path.  The DC events should be affected by this as well a=
+s the AC ones.
+>
+> > +             case IIO_EV_DIR_FALLING:
+> > +                     return adxl345_set_act_inact_ac(st, ADXL345_INACT=
+IVITY, state);
+> > +             default:
+> > +                     return -EINVAL;
+> > +             }
+> > +
+> >       default:
+> >               return -EINVAL;
+> >       }
+>
 

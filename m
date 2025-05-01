@@ -1,80 +1,80 @@
-Return-Path: <linux-iio+bounces-18943-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18944-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEDFDAA6264
-	for <lists+linux-iio@lfdr.de>; Thu,  1 May 2025 19:37:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FDD6AA6267
+	for <lists+linux-iio@lfdr.de>; Thu,  1 May 2025 19:37:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 526FD4C1D4B
-	for <lists+linux-iio@lfdr.de>; Thu,  1 May 2025 17:37:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A58DF1BC2481
+	for <lists+linux-iio@lfdr.de>; Thu,  1 May 2025 17:37:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0987217F5C;
-	Thu,  1 May 2025 17:37:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FCB2218E97;
+	Thu,  1 May 2025 17:37:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="Pg4KBypU"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="mZuNoCPP"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oo1-f50.google.com (mail-oo1-f50.google.com [209.85.161.50])
+Received: from mail-oi1-f182.google.com (mail-oi1-f182.google.com [209.85.167.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ACCF204863
-	for <linux-iio@vger.kernel.org>; Thu,  1 May 2025 17:37:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F27AF2153FB
+	for <linux-iio@vger.kernel.org>; Thu,  1 May 2025 17:37:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746121046; cv=none; b=mZwqdgv82cX7X3KoCATzab6RyHwstmJVNOQH86F8WMuHXjKcJzfARMciOTcpPa4MHBSq3SwwUImfogXZd7nKs42oRB0qC6t8xdeKu5OB72NqIKZWUkcj6s7ZFig0/NqCrk5tzs9DdQDEXduR6mrXESR4HFyyhDaB8+B+CqkVFbk=
+	t=1746121055; cv=none; b=TrUzD9A6bFvZ05KrQdWmvHqdZhimcOZgH8TFTLaGm8kx5d/B+yzRrhYMAfXNu3TLyKJmX6O2dT7lo2WaEmPJ/EC+Ec/z7E1i5llmIfRHJIzLyFnIXKOhmM9asO8Zp6DAiFhN6U1I9brfeDlwYbBjOsmUwfUg1ZlbmHoQHGIDuWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746121046; c=relaxed/simple;
-	bh=1L3/NCL7TJkaCN+4lAJabZU6CsrzDXijUii+nvBNIKs=;
+	s=arc-20240116; t=1746121055; c=relaxed/simple;
+	bh=MM+UrEEjqz+NrsstsJtdsAGd6ziIcPN05fJJ2PWqHJU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TS2WzjbxB6qAnrXBgmmB1NLp+VN86nkOgKJxCSHtmAnHvCatce05MPK5Of0etLoVzl1tYPCqCu0ZxJSntDvOKTqUOrIVTL+WkrO9HtJliLgcxBi3DNCesDnmDy8wXTaIRfjVsHMF+SF05k4MWMfzsr4qiB3u96DMHxtOUK1gAVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=Pg4KBypU; arc=none smtp.client-ip=209.85.161.50
+	 In-Reply-To:Content-Type; b=OJFhWDO5MkGx+jR9TsAxnCRINQByN91NLk4l09qlnne5foz7kfn/pqKdsB6duuTBl+hjr3CrUViqz0tBuQSzjC3abUdTKb3MmeupzklcT/I3uat++YeEfedfYYOSJ1gJjvSSDbExNIXGRCS5VJc5yjsD3FMpHlLeEX7CJbhF+ww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=mZuNoCPP; arc=none smtp.client-ip=209.85.167.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oo1-f50.google.com with SMTP id 006d021491bc7-605f7d3215cso614575eaf.0
-        for <linux-iio@vger.kernel.org>; Thu, 01 May 2025 10:37:24 -0700 (PDT)
+Received: by mail-oi1-f182.google.com with SMTP id 5614622812f47-3fbc00143d6so970580b6e.3
+        for <linux-iio@vger.kernel.org>; Thu, 01 May 2025 10:37:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1746121043; x=1746725843; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1746121052; x=1746725852; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:content-language:from
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=5gCGeZx+LjxydnEdalUtnjSKhCJu8pLazJohhfHgkO0=;
-        b=Pg4KBypU5trILjnhGpXxlytaGToyqyRVguJk1iWRskYgGGZfVzIlU3HUvz2naFMuOp
-         85k8U3kaewtL63yo30DHWRt2jY3rrwj+MbtKzDY/wjqPAKWD90Rw41k3oLvaYYsxoLWH
-         Gl3TCHcgy4lMmhpVzzZguVYxC/zvs+By0Qlx6MB3wJL+s+uIjtb2qG+zPdv5fvio17cP
-         D/QQGkP/zbVDKVSg/Jw3uIVUwTZmmc5Hf4c7b0xkiCPGwuPQJrfBE+ISAfvtwKMrv0dh
-         a0E/NS03KfrI6Dd5zUekMTcxFl1FO/EI0v8O4KuCUve0XwDvFK8Jz52UUqwnsjL2pqP+
-         IlsA==
+        bh=irUKWtP2D61Kl8u554d0UJW47H6YlvzGEZcZ4664eOs=;
+        b=mZuNoCPP0sbn3micT0KpI7+g3oyeDjlPNS5Fg1hI3n6L2t3VQwWaZM+4YWte3XVp8U
+         aWW2dklttTRRbG8uj1Mo9Lbd049BQc1F2FgJ/v+ZVHcwgI5yfpWwIBo2hljfrm6Nrnoh
+         RpLpzgudJK8tVsweIioGs6nJmq4xsj3TBuwjxHH78gYYJ2pSKwX5Nr2fQfJbxAq7FAUi
+         YXLJ0r9ItKbeKgveiJD0CnQkB7POVq/DOeuRaH4AB8de+GLrMcABu5iz1QOnqjTkEMSl
+         /CQYUVk6FR5q2/C+oXabf5m6F0BMLFMaDdrmMNMwFsmR0L07cB+ZUFt0JLKj1SEHzQ7Q
+         Dqhg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746121043; x=1746725843;
+        d=1e100.net; s=20230601; t=1746121052; x=1746725852;
         h=content-transfer-encoding:in-reply-to:content-language:from
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=5gCGeZx+LjxydnEdalUtnjSKhCJu8pLazJohhfHgkO0=;
-        b=Gupx7lnZ4+CBbIlsq54mSAPqJvLF0+Tw49pVFCvGjWPHGJz13cAb0utFC4v1VMhGb5
-         r2DVdzAoOEYArl1copTACzi20oU5fux6wz7exujKlyszyRHoz/vXfKiWmfKdPVHuU9K0
-         yaVq5kVFBRsq3CO9zkFjlcWTULTfRmAequIvhfxtNfKCkwOO+eIe0xYz4ZxqGIYQNpuf
-         jMxGhkiA/p0lZPrNR7Vz04Z/jOfbnpuAQ3OWtm4nZtJmsG5BfU63mcNP92nJmy+hiI+I
-         W5Txzxhw57+TLo40MkmIzNxkuhBDw/FDCDCmBv8lET2ui4oLlhvrzqdGwUWDqCH649yY
-         CrhQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW5hiBpWTR3lrCSKsq3LhI3QgA9OH9NdHR3f3Kd4HO0I37rqrxWjlnboc8VMnuvHi3kNFfVcte4LBQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxXVGherbOYMLyseaOLdaQOOHUZQNfpOzJVLdoXCBTNgN0CRDKd
-	wjwGkeoOaqfPPnHumIfEHCV8RKQzg0zNqK/uTp455Hm2oZcrixlEk/EvPnU3fok=
-X-Gm-Gg: ASbGncvqiz3dJDvYfd9PZ2zkfTcZfFjLtE3ifIsJzMA/06x7nofI3lWT3JfEZgB5Yu3
-	pgGXyLwf9LR2nwsdUmHmiIZXBs6yumJIHi/DnrPWMqKjsobLSb+Rc+3W1SWGGsGRe87wK32VYOo
-	3zDwlYavirBhUm8nGfmyKAAsoyERXs73wywLP7J6FRufDT++ILvPC6xiyRXz6O7Kon8RPmdP0/Y
-	xjHFjBQf8OaMyhmdonu1JD4ACh2bhX6zhyFhPi8RFNxyc62ykDCu4Vkn4qE0FpbHPMBCKilVOxI
-	k+B4K///gSfbMtUxSxmpGbyy6UCOBwiaGlPrlGGKvct74ZKhs7ktUcGEy5qm9iGj6HFXH/Gby0C
-	uGf2OEIbY6XZb2vO6Qscp5oP9fRUZ
-X-Google-Smtp-Source: AGHT+IFFiJ5CMMoNBA8sEnTpfASSw3P278n1k6MkkRfBVIRwZUkXTSjxm+N/VMpA5ByWEyamwY3svA==
-X-Received: by 2002:a4a:ee06:0:b0:606:361b:52a6 with SMTP id 006d021491bc7-607e0d41e9amr2410872eaf.4.1746121043328;
-        Thu, 01 May 2025 10:37:23 -0700 (PDT)
+        bh=irUKWtP2D61Kl8u554d0UJW47H6YlvzGEZcZ4664eOs=;
+        b=OgMhxvvCK6egs5aN6IbjvAS5jyfGJ0qwiUjW7J7PrXTlGrS/yYzJttRLqccLDMfqmw
+         5bTstOrmlCtF0LsgPz+jgd3hYCHpgTREgBt3hMSr7lMS/77sUN7GPr6CB2qfSXQGBKhJ
+         BI4xDh+Nmzk8LOYW6lGpQ9W/g2LijhW84JSxnX+TEN7MCdtJAiU9jg5P/Vwr6SonCBKH
+         3+FQW7G7ANoyYnn7HEvuud2fzcFrhf0BkEdN//pALUE8QAfmy2MCh2Kd2YcD23v7+Cy1
+         22wjmaDyZdrjKaW9wHuAAhy+kHHwNDVJUwvtOBb0DaP548J4gTA0G+m6ICycxMpr+nZT
+         5Giw==
+X-Forwarded-Encrypted: i=1; AJvYcCXAGP7DyNPc7/MEnZCn5Q6tXCNS4aMNAYtgx8jyOXh2TOrSG/Epn1H41fGSOBQgkYcC5vcdYNN9m7g=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw5zaDPiMElcFQcZZB8xd1kciDrukG7KJHAobJnIUsTHGExbDwU
+	P653YtnCadLUw3uYWyJLNSNbIiOEF6BciK29o74lDGAiFC9v2w0BsfNWVlEbM7M=
+X-Gm-Gg: ASbGncspDXJ47e1oGh2uW/mu9u+BkFuEOlpKK/diZYDeDFCVjaiNsdCDKnYLJTV2lzC
+	1Q4o7JRflvf4ML5zBepDZSafoctr8wvBjCg+h9K0gSV4Er9RgWYi1WiVmP+1G29TizKNrmPzn3x
+	wUOaRCUw4rbxnXAvLAO3pZCKkfB4Do0wvbDhD5NoQljei8pUof4Fpx5xopwYei+Pqul2eSsY243
+	2MgZHaQ7AuMZ0PnztXldRwxPDX5poiSrz3ZdlaScv15dlXReLEMhjG4tPxSEiEQaxlrA26jYdoZ
+	auJVThdGJlBEQ6nAaOOBXKtnV72nb73EuYCFP9NFoEiup8I2rc+PvYz5xzvd009TMNupnSTfj9a
+	2OwmOyhpcVKQy+hBJWg==
+X-Google-Smtp-Source: AGHT+IGR+dGuObVDak2t27VZBQEAE0+huLD7gktjN1shtRcOgGkAj1/A0/eNlW781GEshuaebVEQ4A==
+X-Received: by 2002:a05:6808:2287:b0:3fa:3922:5fbe with SMTP id 5614622812f47-40341161d02mr103775b6e.5.1746121051911;
+        Thu, 01 May 2025 10:37:31 -0700 (PDT)
 Received: from ?IPV6:2600:8803:e7e4:1d00:b1ed:e5d7:8ea6:40e0? ([2600:8803:e7e4:1d00:b1ed:e5d7:8ea6:40e0])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-607e7d8b817sm196079eaf.13.2025.05.01.10.37.21
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-607e7cab6cdsm194276eaf.6.2025.05.01.10.37.30
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 01 May 2025 10:37:21 -0700 (PDT)
-Message-ID: <c262ecaf-598f-46a4-976d-bbc4ae0167b6@baylibre.com>
-Date: Thu, 1 May 2025 12:37:20 -0500
+        Thu, 01 May 2025 10:37:31 -0700 (PDT)
+Message-ID: <01cb0333-1ca7-46b3-9f32-5e81b8a53537@baylibre.com>
+Date: Thu, 1 May 2025 12:37:30 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -82,8 +82,8 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 5/5] dt-bindings: iio: adc: add bindings for TI
- ADS1262
+Subject: Re: [RFC PATCH 1/5] iio: adc: ti-ads1262.c: add initial driver for TI
+ ADS1262 ADC
 To: Sayyad Abid <sayyad.abid16@gmail.com>, linux-iio@vger.kernel.org
 Cc: jic23@kernel.org, lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org,
  conor+dt@kernel.org, nuno.sa@analog.com, javier.carrasco.cruz@gmail.com,
@@ -94,265 +94,577 @@ Cc: jic23@kernel.org, lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org,
  tobias.sperling@softing.com, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org
 References: <20250501100043.325423-1-sayyad.abid16@gmail.com>
- <20250501100043.325423-6-sayyad.abid16@gmail.com>
+ <20250501100043.325423-2-sayyad.abid16@gmail.com>
 From: David Lechner <dlechner@baylibre.com>
 Content-Language: en-US
-In-Reply-To: <20250501100043.325423-6-sayyad.abid16@gmail.com>
+In-Reply-To: <20250501100043.325423-2-sayyad.abid16@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 5/1/25 5:00 AM, Sayyad Abid wrote:
-> Add the Device Tree binding documentation for the Texas Instruments ADS1262 ADC.
+> Add the core driver file `ti-ads1262.c` for the TI ADS1262 ADC.
+> This initial version implements basic IIO functionality for device
+> probe via SPI and reading raw voltage samples from input channels.
 > 
 > Signed-off-by: Sayyad Abid <sayyad.abid16@gmail.com>
 > ---
-
-For readers, it logically makes more sense to have this be the first patch in
-the series.
-
->  .../bindings/iio/adc/ti,ads1262.yaml          | 189 ++++++++++++++++++
->  1 file changed, 189 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/adc/ti,ads1262.yaml
+>  drivers/iio/adc/ti-ads1262.c | 438 +++++++++++++++++++++++++++++++++++
+>  1 file changed, 438 insertions(+)
+>  create mode 100644 drivers/iio/adc/ti-ads1262.c
 > 
-> diff --git a/Documentation/devicetree/bindings/iio/adc/ti,ads1262.yaml b/Documentation/devicetree/bindings/iio/adc/ti,ads1262.yaml
+> diff --git a/drivers/iio/adc/ti-ads1262.c b/drivers/iio/adc/ti-ads1262.c
 > new file mode 100644
-> index 000000000000..8c4cc2cf6467
+> index 000000000000..ef34c528ffeb
 > --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/adc/ti,ads1262.yaml
-> @@ -0,0 +1,189 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/adc/ti,ads1262.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +++ b/drivers/iio/adc/ti-ads1262.c
+> @@ -0,0 +1,438 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * IIO driver for Texas Instruments ADS1662 32-bit ADC
+> + *
+> + * Datasheet: https://www.ti.com/product/ADS1262
+> + */
 > +
-> +title: Texas Instruments' ADS1262 32-Bit Analog to Digital Converter
-> +
-> +maintainers:
-> +  - Sayyad Abid <sayyad.abid16@gmail.com>
-> +
-> +description: |
-> +  Texas Instruments ADS1262 32-Bit Analog to Digital Converter with,
-> +  internal temperature sensor, GPIOs and PGAs
-> +
-> +  The ADS1262 is a 32-bit, 38-kSPS, precision ADC with a programmable gain
-> +  amplifier (PGA) and internal voltage reference. It features:
-> +  - 11 single-ended or 5 differential input channels
-> +  - Internal temperature sensor
-> +  - Programmable gain amplifier (PGA) with gains from 1 to 32
-> +  - Internal voltage reference
-> +  - GPIO pins for control and monitoring
-> +  - SPI interface
+> +#include <linux/kernel.h>
 
-Normally, I would say that we want to have the devicetree as complete as
-possible, but this chip has so many ways to wire it up, it would take days
-to do a through review, so not sure where to draw the line. But I think there
-are a few obvious ones we could still add, even if the driver doesn't use them
-yet.
+This header includes too much, please use more specific headers.
 
-interrupts: for the /DRDY output
+> +#include <linux/device.h>
+> +#include <linux/module.h>
+> +#include <linux/mod_devicetable.h>
+> +#include <linux/delay.h>
 
-clks: for the clock input (see adi,ad7173 and adi,ad7192 for inspiration)
+Alphabetical order is preferred.
 
-gpio-controller and #gpio-cells: for AIN pins used as GPIO
+> +#include <linux/spi/spi.h>
+> +#include <linux/unaligned.h>
+> +
+> +#include <linux/iio/iio.h>
+> +#include <linux/iio/buffer.h>
+> +#include <linux/iio/triggered_buffer.h>
+> +
+> +/* Commands */
+> +#define ADS1262_CMD_RESET		0x06
+> +#define ADS1262_CMD_START1		0x08
+> +#define ADS1262_CMD_STOP1		0x0A
+> +#define ADS1262_CMD_RDATA1		0x12
+> +#define ADS1262_CMD_RREG		0x20
+> +#define ADS1262_CMD_WREG		0x40
+> +
+> +/* Registers */
+> +#define ADS1262_REG_ID			0x00
+> +#define ADS1262_REG_POWER		0x01
+> +#define ADS1262_REG_INTERFACE		0x02
+> +#define ADS1262_REG_MODE0		0x03
+> +#define ADS1262_REG_MODE1		0x04
+> +#define ADS1262_REG_MODE2		0x05
+> +#define ADS1262_REG_INPMUX		0x06
+> +
+> +/* Configurations */
+> +#define ADS1262_INTREF_ENABLE		0x01
+> +#define ADS1262_MODE0_ONE_SHOT		0x40
+> +#define ADS1262_MODE2_PGA_EN		0x00
+> +#define ADS1262_MODE2_PGA_BYPASS	BIT(7)
+> +
+> +/* Masks */
+> +#define ADS1262_MASK_MODE2_DR		GENMASK(4, 0)
+> +
+> +/* ADS1262_SPECS */
+> +#define ADS1262_MAX_CHANNELS		11
+> +#define ADS1262_BITS_PER_SAMPLE		32
+> +#define ADS1262_CLK_RATE_HZ		7372800
+> +#define ADS1262_CLOCKS_TO_USECS(x)	\
+> +	(DIV_ROUND_UP((x) * MICROHZ_PER_HZ, ADS1262_CLK_RATE_HZ))
 
-And for later...
-* voltage supply outputs
-* DAC outputs
-* common mode voltage inputs
-* REF{P.N}{1,2,3} supplies
-* per-channel reference selection
+This is only for the internal clock, but external clock is also possible so
+better to just do this inline rather than a macro.
 
+> +#define ADS1262_VOLTAGE_INT_REF_uV	2500000
+> +#define ADS1262_TEMP_SENSITIVITY_uV_per_C 420
+> +
+> +#define ADS1262_SETTLE_TIME_USECS	10000
+> +
+> +/* The Read/Write commands require 4 tCLK to encode and decode, for speeds
+> + * 2x the clock rate, these commands would require extra time between the
+> + * command byte and the data. A simple way to tacke this issue is by
+> + * limiting the SPI bus transfer speed while accessing registers.
+> + */
+> +#define ADS1262_SPI_BUS_SPEED_SLOW	ADS1262_CLK_RATE_HZ
+> +
+> +/* For reading and writing we need a buffer of size 3bytes*/
+> +#define ADS1262_SPI_CMD_BUFFER_SIZE	3
+> +
+> +/* Read data buffer size for
+> + * 1 status byte - 4 byte data (32 bit) - 1 byte checksum / CRC
+> + */
+> +#define ADS1262_SPI_RDATA_BUFFER_SIZE	6
+> +
+> +#define MILLI				1000
 
-> +
-> +  Specifications about the part can be found at:
-> +  https://www.ti.com/product/ADS1262
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - ti,ads1262
-> +
-> +  reg:
-> +    maxItems: 1
-> +    description: SPI chip select number
-> +
-> +  spi-max-frequency:
-> +    maximum: 7372800
-> +    description: Maximum SPI clock frequency in Hz (7.3728 MHz)
-
-Datasheet says minimum period is 125 ns, so that would make the max 8 MHz.
-
-> +
-> +  spi-cpha:
-> +    type: boolean
-> +    description: Required for SPI mode 1 operation
-> +
-> +  reset-gpios:
-> +    maxItems: 1
-> +    description: GPIO specifier for the reset pin (active low)
-> +
-> +  vref-supply:
-> +    description: |
-> +      The regulator supply for ADC reference voltage. If not specified,
-> +      the internal 2.5V reference will be used.
-> +
-> +  '#address-cells':
-> +    const: 1
-> +
-> +  '#size-cells':
-> +    const: 0
-> +
-> +  '#io-channel-cells':
-> +    const: 1
-> +
-> +  ti,pga-bypass:
-> +    type: boolean
-> +    description: |
-> +      If true, bypass the PGA. If false or not specified, PGA is enabled.
-
-Why is this one global but the actual gain per-channel?
+There is already linux/units.h for this.
 
 > +
-> +  ti,data-rate:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    minimum: 0
-> +    maximum: 15
-> +    description: |
-> +      Data acquisition rate in samples per second
-> +      0: 2.5
-> +      1: 5
-> +      2: 10
-> +      3: 16.6
-> +      4: 20
-> +      5: 50
-> +      6: 60
-> +      7: 100
-> +      8: 400
-> +      9: 1200
-> +      10: 2400
-> +      11: 4800
-> +      12: 7200
-> +      13: 14400
-> +      14: 19200
-> +      15: 38400
+> +/**
+> + * struct ads1262_private - ADS1262 ADC private data structure
+> + * @spi: SPI device structure
+> + * @reset_gpio: GPIO descriptor for reset pin
+> + * @prev_channel: Previously selected channel for MUX configuration
+> + * @cmd_buffer: Buffer for SPI command transfers
+> + * @rx_buffer: Buffer for SPI data reception
+> + */
+> +struct ads1262_private {
+> +	struct spi_device *spi;
+> +	struct gpio_desc *reset_gpio;
+> +	u8 prev_channel;
+> +	u8 cmd_buffer[ADS1262_SPI_CMD_BUFFER_SIZE];
+> +	u8 rx_buffer[ADS1262_SPI_RDATA_BUFFER_SIZE] __aligned(IIO_DMA_MINALIGN);
 
-This is something that should be implemented with a sampling_frequency attribute
-so that it can be changed at runtime rather than be hard-coded in the devicetree.
+cmd_buffer is also used with SPI, so __aligned(IIO_DMA_MINALIGN); needs to go
+there instead.
+
+> +};
+> +
+> +#define ADS1262_CHAN(index)						\
+> +{									\
+> +	.type = IIO_VOLTAGE,						\
+> +	.indexed = 1,							\
+> +	.channel = index,						\
+> +	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),			\
+> +	.scan_index = index,						\
+> +	.scan_type = {							\
+> +		.sign = 's',						\
+> +		.realbits = ADS1262_BITS_PER_SAMPLE,			\
+> +		.storagebits = 32,					\
+> +		.endianness = IIO_CPU					\
+> +	},								\
+> +}
+> +
+> +#define ADS1262_DIFF_CHAN(index, pos_channel, neg_channel)		\
+> +{									\
+> +	.type = IIO_VOLTAGE,						\
+> +	.indexed = 1,							\
+> +	.channel = pos_channel,						\
+> +	.channel2 = neg_channel,					\
+> +	.differential = 1,						\
+> +	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),			\
+> +	.scan_index = index,						\
+> +	.scan_type = {							\
+> +		.sign = 's',						\
+> +		.realbits = ADS1262_BITS_PER_SAMPLE,			\
+> +		.storagebits = 32,					\
+> +		.endianness = IIO_CPU					\
+> +	},								\
+> +}
+> +
+> +#define ADS1262_TEMP_CHAN(index)					\
+> +{									\
+> +	.type = IIO_TEMP,						\
+> +	.indexed = 1,							\
+> +	.channel = index,						\
+> +	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |			\
+> +			     BIT(IIO_CHAN_INFO_SCALE) |			\
+> +			     BIT(IIO_CHAN_INFO_SAMP_FREQ),		\
+> +	.scan_index = index,						\
+> +	.scan_type = {							\
+> +		.sign = 's',						\
+> +		.realbits = ADS1262_BITS_PER_SAMPLE,			\
+> +		.storagebits = 32,					\
+> +		.endianness = IIO_BE,					\
+> +	},								\
+> +}
+> +
+> +static const struct iio_chan_spec ads1262_channels[] = {
+> +	/* Single ended channels*/
+> +	ADS1262_CHAN(0),
+> +	ADS1262_CHAN(1),
+> +	ADS1262_CHAN(2),
+> +	ADS1262_CHAN(3),
+> +	ADS1262_CHAN(4),
+> +	ADS1262_CHAN(5),
+> +	ADS1262_CHAN(6),
+> +	ADS1262_CHAN(7),
+> +	ADS1262_CHAN(8),
+> +	ADS1262_CHAN(9),
+
+Hard-coding the channels here means there would be no point in allowing the
+devicetree to specify the channels. However, since the same pins can be used
+for many other purposes, I don't think hard-coding channels here makes sense
+and we should always dynamically create the channel specs for channels connected
+to AIN pins based on the devicetree.
+
+> +	/* The channel at index 10 is AINCOM, which is the common ground
+> +	 * of the ADC. It is not a valid channel for the user.
+> +	 */
+
+If this bit about AINCOM is true, then the DT bindings need to reflect that.
+The datasheet makes it looks like any other input though.
+
+
 
 > +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - spi-cpha
-> +  - '#address-cells'
-> +  - '#size-cells'
-> +  - '#io-channel-cells'
-> +
-> +additionalProperties: false
-> +
-> +patternProperties:
-> +  "^channel@([0-9]|1[0-1])$":
-> +    type: object
-> +    additionalProperties: false
-> +    description: |
-> +      Represents the external channels which are connected to the ADC.
-> +      Channels 0-9 are available for external signals, channel 10 is AINCOM,
-> +      and channel 11 is the internal temperature sensor.
-> +
-> +    properties:
-> +      reg:
-> +        description: |
-> +          Channel number. It can have up to 10 channels numbered from 0 to 9,
-> +          channel 10 is AINCOM, and channel 11 is the internal temperature sensor.
-> +        items:
-> +          - minimum: 0
-> +            maximum: 11
+> +	/* Temperature and Monitor channels */
+> +	ADS1262_TEMP_CHAN(11),	/* TEMP SENSOR */
+> +	ADS1262_CHAN(12),	/* AVDD MON */
+> +	ADS1262_CHAN(13),	/* DVDD MON */
+> +	ADS1262_CHAN(14),	/* TDAC TEST */
 
-Why allow the temperature input here but not other diagnostic input? Would make
-more sense to me to omit temperature from the devicetree since it doesn't have
-different wiring possibilities like the AIN pins.
+It will be fine to always add these diagnotic channels though without having to
+specify them in the devicetree.
+
+> +	/* Differential channels */
+> +	ADS1262_DIFF_CHAN(15, 0, 1),	/* AIN0 - AIN1 */
+> +	ADS1262_DIFF_CHAN(16, 2, 3),	/* AIN2 - AIN3 */
+> +	ADS1262_DIFF_CHAN(17, 4, 5),	/* AIN4 - AIN5 */
+> +	ADS1262_DIFF_CHAN(18, 6, 7),	/* AIN6 - AIN7 */
+> +	ADS1262_DIFF_CHAN(19, 8, 9),	/* AIN8 - AIN9 */
+> +};
+> +
+> +static int ads1262_write_cmd(struct ads1262_private *priv, u8 command)
+> +{
+> +	struct spi_transfer xfer = {
+> +		.tx_buf = priv->cmd_buffer,
+> +		.rx_buf = priv->rx_buffer,
+> +		.len = ADS1262_SPI_RDATA_BUFFER_SIZE,
+> +		.speed_hz = ADS1262_CLK_RATE_HZ,
+> +	};
+> +
+> +	priv->cmd_buffer[0] = command;
+> +
+> +	return spi_sync_transfer(priv->spi, &xfer, 1);
+> +}
+> +
+> +static int ads1262_reg_write(void *context, unsigned int reg, unsigned int val)
+> +{
+> +	struct ads1262_private *priv = context;
+> +
+> +	priv->cmd_buffer[0] = ADS1262_CMD_WREG | reg;
+> +	priv->cmd_buffer[1] = 0;
+> +	priv->cmd_buffer[2] = val;
+> +
+> +	return spi_write(priv->spi, &priv->cmd_buffer[0], 3);
+> +}
+> +
+> +static int ads1262_reg_read(void *context, unsigned int reg)
+> +{
+> +	struct ads1262_private *priv = context;
+> +	struct spi_transfer reg_read_xfer = {
+> +		.tx_buf = priv->cmd_buffer,
+> +		.rx_buf = priv->cmd_buffer,
+> +		.len = 3,
+> +		.speed_hz = ADS1262_CLK_RATE_HZ,
+> +	};
+> +	int ret;
+> +
+> +	priv->cmd_buffer[0] = ADS1262_CMD_RREG | reg;
+> +	priv->cmd_buffer[1] = 0;
+> +	priv->cmd_buffer[2] = 0;
+> +
+> +	ret = spi_sync_transfer(priv->spi, &reg_read_xfer, 1);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return 0;
+> +}
+
+Why not use regmap? You will still custom read/write functions similar to these
+because of needing the lower SCLK rate, but it will give you a bunch of other
+nice features for free.
 
 > +
-> +      diff-channels:
-> +        description: |
-> +          List of two channel numbers for differential measurement.
-> +          First number is positive input, second is negative input.
-> +          Not applicable for temperature sensor (channel 11).
-> +        items:
-> +          - minimum: 0
-> +            maximum: 9
-> +          - minimum: 0
-> +            maximum: 9
+> +static int ads1262_reset(struct iio_dev *indio_dev)
+> +{
+> +	struct ads1262_private *priv = iio_priv(indio_dev);
+> +
+> +	if (priv->reset_gpio) {
+> +		gpiod_set_value(priv->reset_gpio, 0);
+> +		usleep_range(200, 300);
 
-Shouldn't this have max of 10 to include AINCOM?
+Use fsleep(). Also, could make this clear that it is 4 tCLK cycles (the hard-
+coded value would have to be changed if external clock support was added).
+
+> +		gpiod_set_value(priv->reset_gpio, 1);
+
+The DT bindings will take care of active low, so this looks backwards. Also
+st->reset_gpio is never assigned, so this is dead code.
+
+> +	} else {
+> +		return ads1262_write_cmd(priv, ADS1262_CMD_RESET);
+> +	}
+> +	return 0;
+> +}
+> +
+> +static int ads1262_init(struct iio_dev *indio_dev)
+> +{
+> +	struct ads1262_private *priv = iio_priv(indio_dev);
+> +	int ret = 0;
+> +
+> +	ret = ads1262_reset(indio_dev);
+> +	if (ret)
+> +		return ret;
+> +
+> +	/* 10 milliseconds settling time for the ADC to stabilize */
+> +	fsleep(ADS1262_SETTLE_TIME_USECS);
+
+Woud make more sense to have this inside the reset function.
 
 > +
-> +      ti,gain:
-> +        $ref: /schemas/types.yaml#/definitions/uint32
-> +        minimum: 0
-> +        maximum: 5
-> +        description: |
-> +          PGA gain setting. Not applicable for temperature sensor (channel 11).
-> +          0: 1 (default)
-> +          1: 2
-> +          2: 4
-> +          3: 8
-> +          4: 16
-> +          5: 32
-> +
-> +    required:
-> +      - reg
-> +
-> +allOf:
-> +  - $ref: /schemas/spi/spi-peripheral-props.yaml#
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/gpio/gpio.h>
-> +
-> +    spi {
-> +      #address-cells = <1>;
-> +      #size-cells = <0>;
-> +
-> +      ads1262: adc@0 {
-> +        compatible = "ti,ads1262";
-> +        reg = <0>;
-> +        spi-max-frequency = <7372800>;
-> +        vref-supply = <&adc_vref>;
-> +        spi-cpha;
-> +        reset-gpios = <&gpio1 16 GPIO_ACTIVE_LOW>;
-> +        ti,pga-bypass;
+> +	/* Clearing the RESET bit in the power register to detect ADC reset */
+> +	ret = ads1262_reg_write(priv, ADS1262_REG_POWER, ADS1262_INTREF_ENABLE);
 
-If PGA is bypassed...
+This is where regmap_clear_bits() would come in handy. Then you don't have to
+care about other defaults like INTREF being 1.
 
-> +        ti,data-rate = <15>; /* 38400 SPS */
+> +	if (ret)
+> +		return ret;
 > +
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +        #io-channel-cells = <1>;
+> +	/* Setting the ADC to one-shot conversion mode */
+> +	ret = ads1262_reg_write(priv, ADS1262_REG_MODE0, ADS1262_MODE0_ONE_SHOT);
+> +	if (ret)
+> +		return ret;
 > +
-> +        /* Single-ended channel */
-> +        channel@0 {
-> +          reg = <0>;
-> +        };
+> +	ret = ads1262_reg_read(priv, ADS1262_REG_INPMUX);
+> +	if (ret)
+> +		return ret;
 > +
-> +        /* Differential channel */
-> +        channel@1 {
-> +          reg = <1>;
-> +          diff-channels = <1 2>;
-> +          ti,gain = <2>; /* Gain of 4 */
+> +	priv->prev_channel = priv->cmd_buffer[2];
 
-...then gain doesn't make sense here.
+Regmap has features to give all of the default values of registers and mark
+which registers are volatile. Then you don't have to manage stuff like this
+yourself.
 
-> +        };
 > +
-> +        /* Temperature sensor */
-> +        channel@11 {
-> +          reg = <11>;
-> +        };
-> +      };
-> +    };
-> +...
+> +	return ret;
+> +}
+> +
+> +static int ads1262_get_samp_freq(struct ads1262_private *priv, int *val)
+> +{
+> +	unsigned long samp_freq;
+> +	int ret;
+> +
+> +	ret = ads1262_reg_read(priv, ADS1262_REG_MODE2);
+> +	if (ret)
+> +		return ret;
+> +
+> +	samp_freq = priv->cmd_buffer[2];
+> +
+> +	*val = (samp_freq & ADS1262_MASK_MODE2_DR);
+
+Use FIELD_GET().
+
+> +
+> +	return IIO_VAL_INT;
+> +}
+> +
+> +/**
+> + * ads1262_read - Read a single sample from the ADC
+> + * @priv: Pointer to the ADS1262 private data structure
+> + * @chan: Pointer to the IIO channel specification
+> + * @val: Pointer to store the read value
+> + *
+> + * Reads a single sample from the specified ADC channel. For differential
+> + * channels, it sets up the MUX with both channels. For single-ended channels,
+> + * it uses the channel number and AINCOM (0x0A).
+> + *
+> + * Return: 0 on success, negative error code on failure
+> + */
+> +static int ads1262_read(struct ads1262_private *priv,
+> +			struct iio_chan_spec const *chan, int *val)
+> +{
+> +	u8 mux_value;
+> +	int ret;
+> +
+> +	if (chan->differential) {
+> +		mux_value = (chan->channel << 4) | chan->channel2;
+> +	} else {
+> +		/* For single-ended channels, use the channel number on one end
+> +		 * and AINCOM (0x0A) on the other end
+> +		 */
+> +		mux_value = (chan->channel << 4) | 0x0A;
+> +	}
+> +
+> +	if (mux_value != priv->prev_channel) {
+> +		ret = ads1262_write_cmd(priv, ADS1262_CMD_STOP1);
+> +		if (ret)
+> +			return ret;
+> +
+> +		ret = ads1262_reg_write(priv, ADS1262_REG_INPMUX, mux_value);
+> +		if (ret)
+> +			return ret;
+> +
+> +		priv->prev_channel = mux_value;
+> +	}
+> +
+> +	ret = ads1262_write_cmd(priv, ADS1262_CMD_START1);
+> +	if (ret)
+> +		return ret;
+> +
+> +	usleep_range(1000, 2000);
+
+fsleep().
+
+Also, doesn't this depend on the sample rate (and filter type, but that isn't
+implemented yet).
+
+Another alternative would be to use the /DRDY interrupt instead so that we
+don't have to try to guess the right amout of time to wait for the conversion
+to complete.
+
+> +
+> +	*val = sign_extend64(get_unaligned_be32(priv->rx_buffer + 1),
+
+val is not 64 bit. Since ADS1262_BITS_PER_SAMPLE == 32, we don't need to sign-
+extend.
+
+> +			     ADS1262_BITS_PER_SAMPLE - 1);
+> +
+> +	return 0;
+> +}
+> +
+> +static int ads1262_read_raw(struct iio_dev *indio_dev,
+> +			    struct iio_chan_spec const *chan,
+> +			    int *val, int *val2, long mask)
+> +{
+> +	struct ads1262_private *spi = iio_priv(indio_dev);
+> +	s64 temp;
+> +
+> +	switch (mask) {
+> +	case IIO_CHAN_INFO_RAW:
+> +		ads1262_read(spi, chan, val);
+
+Need to check return value.
+
+> +		return IIO_VAL_INT;
+> +	case IIO_CHAN_INFO_SCALE:
+> +		switch (chan->type) {
+> +		case IIO_VOLTAGE:
+> +			*val = ADS1262_VOLTAGE_INT_REF_uV;
+> +			*val2 = chan->scan_type.realbits;
+
+Do we need realbits - 1 since this is signed?
+
+> +			return IIO_VAL_FRACTIONAL_LOG2;
+> +		case IIO_TEMP:
+> +			temp = (s64)ADS1262_VOLTAGE_INT_REF_uV * MILLI;
+> +			temp /= ADS1262_TEMP_SENSITIVITY_uV_per_C;
+> +			*val = temp;
+> +			*val2 = chan->scan_type.realbits;
+> +			return IIO_VAL_FRACTIONAL_LOG2;
+> +		default:
+> +			return -EINVAL;
+> +		}
+> +	case IIO_CHAN_INFO_SAMP_FREQ:
+> +		return ads1262_get_samp_freq(spi, val);
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +}
+> +
+> +static const struct iio_info ads1262_info = {
+> +	.read_raw = ads1262_read_raw,
+> +};
+> +
+> +static void ads1262_stop(void *ptr)
+> +{
+> +	struct ads1262_private *adc = ptr;
+> +
+> +	ads1262_write_cmd(adc, ADS1262_CMD_STOP1);
+> +}
+> +
+> +static int ads1262_probe(struct spi_device *spi)
+> +{
+> +	struct ads1262_private *adc;
+> +	struct iio_dev *indio_dev;
+> +	int ret;
+> +
+> +	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*adc));
+> +	if (!indio_dev)
+> +		return -ENOMEM;
+> +
+> +	adc = iio_priv(indio_dev);
+> +	adc->spi = spi;
+> +
+> +	spi->mode = SPI_MODE_1;
+
+We can leave this out and just rely on the devicetree to set it correctly.
+
+> +	spi->max_speed_hz = ADS1262_SPI_BUS_SPEED_SLOW;
+
+I found out the hard way, this isn't a good idea. You did it right by having
+the register read/write functions specify the speed per xfer. Don't set the
+speed here so that reading sample data can use the actual max rate from the
+devicetree.
+
+> +	spi_set_drvdata(spi, indio_dev);
+
+There isn't spi_get_drvdata() so this isn't needed.
+
+> +
+> +	indio_dev->dev.parent = &spi->dev;
+> +	indio_dev->name = spi_get_device_id(spi)->name;
+> +	indio_dev->modes = INDIO_DIRECT_MODE;
+> +	indio_dev->channels = ads1262_channels;
+> +	indio_dev->num_channels = ARRAY_SIZE(ads1262_channels);
+> +	indio_dev->info = &ads1262_info;
+> +
+> +	ret = ads1262_reg_read(adc, ADS1262_REG_ID);
+> +	if (ret)
+> +		return ret;
+> +
+> +	if (adc->rx_buffer[2] != ADS1262_REG_ID)
+> +		dev_err_probe(&spi->dev, -EINVAL, "Wrong device ID 0x%x\n",
+> +			      adc->rx_buffer[2]);
+
+Proably don't want to error here. It tends to cause problems if there is ever
+a new compatibile chip with different ID.
+
+> +
+> +	ret = devm_add_action_or_reset(&spi->dev, ads1262_stop, adc);
+
+We are using single pulse mode, so it doesn't seem like we would need to do
+this at driver exit.
+
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = ads1262_init(indio_dev);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return devm_iio_device_register(&spi->dev, indio_dev);
+> +}
+> +
+> +static struct spi_device_id ads1262_id_table[] = {
+> +	{ "ads1262" },
+> +	{}
+
+	{ }
+
+> +};
+> +MODULE_DEVICE_TABLE(spi, ads1262_id_table);
+> +
+> +static const struct of_device_id ads1262_of_match[] = {
+> +	{ .compatible = "ti,ads1262" },
+> +	{},
+
+	{ }
+
+(It's the style we use in the IIO subsystem)
+
+> +};
+> +MODULE_DEVICE_TABLE(of, ads1262_of_match);
+> +
+> +static struct spi_driver ads1262_driver = {
+> +	.driver = {
+> +		.name = "ads1262",
+> +		.of_match_table = ads1262_of_match,
+> +	},
+> +	.probe = ads1262_probe,
+> +	.id_table = ads1262_id_table,
+> +};
+> +module_spi_driver(ads1262_driver);
+> +
+> +MODULE_LICENSE("GPL");
+> +MODULE_AUTHOR("Sayyad Abid <sayyad.abid16@gmail.com>");
+> +MODULE_DESCRIPTION("TI ADS1262 ADC");
 
 

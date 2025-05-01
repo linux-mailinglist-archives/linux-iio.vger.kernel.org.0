@@ -1,139 +1,176 @@
-Return-Path: <linux-iio+bounces-18935-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18936-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91348AA5F15
-	for <lists+linux-iio@lfdr.de>; Thu,  1 May 2025 15:15:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98D0CAA5F46
+	for <lists+linux-iio@lfdr.de>; Thu,  1 May 2025 15:37:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0203F16D8C1
-	for <lists+linux-iio@lfdr.de>; Thu,  1 May 2025 13:15:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 55C699C0923
+	for <lists+linux-iio@lfdr.de>; Thu,  1 May 2025 13:36:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CCFE18BC1D;
-	Thu,  1 May 2025 13:15:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0528A1AB6F1;
+	Thu,  1 May 2025 13:37:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J58UFm9g"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="k9WLwoj8"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00B7D2DC76A;
-	Thu,  1 May 2025 13:15:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D596A2EAE5
+	for <linux-iio@vger.kernel.org>; Thu,  1 May 2025 13:37:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746105301; cv=none; b=txOLz9P6NnEq6SGwbQaFNqKNUXo0y03Nli2l4Vxna+s44KUI3HBaDRJ0/zt8cxtM/L3cBmnSGUoLGeaxWf0bDoTZvDjLBVxoMr9SOQXxZhcv6hO5+GfBUlzoKBt6B6LytC0K0Lernh6ytNNCfl++wwdI7NeOcuMFeF4g5q5+iZU=
+	t=1746106627; cv=none; b=gv034YzC4IQIXHxWv4htjgXbM5HCmzhrS6s+QUeYv9GJM8S4lUMyy7PxJTvxVWQfg0DRHcZjQXhYlmCsYeasbpimEa2a8itJoLexqV86+QojJIROYQoOb9yY5Leb7Bu0ywMVG5hTOvvum3NDMwxYYAIwSfXUYafmfrzA0dKTYms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746105301; c=relaxed/simple;
-	bh=6ptm9e4+N5Xyo1RCMVV1pfCM3SsY2ZQgu3Uh/K4ek1U=;
+	s=arc-20240116; t=1746106627; c=relaxed/simple;
+	bh=9MNpS1gJG0qyHRf2FJfHx17kDP9N8N1hNQWavkpaHFU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nrOZDWWMHcpoz3rhi6Xs2p4y+jhwZ/1qRIjuu0e1Ggycwz2bCZB84MaNeUikfaKdeIV9HKY4c5dOzW0qnq9cn84nuf9vvflsQHdVfg0gATZu01FTIFsKT4OMfClt6n60LiOE9DieEBkpQDKUd6wPmaE2GTvWOsFwFSzugaXU498=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J58UFm9g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EA3CC4CEE4;
-	Thu,  1 May 2025 13:14:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746105300;
-	bh=6ptm9e4+N5Xyo1RCMVV1pfCM3SsY2ZQgu3Uh/K4ek1U=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=J58UFm9gNYOlLCrcSO6OxX6RPkPjwASSoVPejxOPQtMgK6DVbO37HkxQPsLZz+kRv
-	 PAinzrv821hFUBbMok1HnTGoVqSxpm069Q2Pi2ZzbL4rtMQedEhK25DslHGQZtgGin
-	 Y/mhgOiRlU82tjDVUpLtpGYrufX6e1BP+38x2QYbY8P8rolHG4wcoVaToZxhb8iLSN
-	 mTm1I0OLFr4lrPW3fIz/8zYoGlqO5vAnzcqWkzgM/jmRZKCSPzxYs3JpX0fa7mEsPI
-	 ztfSGRgj3gDV7zwepeaIbQh78A2YmIr+AAS65Xo4LQ/btBt5PkjYrhB5GQLLzAOifi
-	 XOJ+FUPGOvwmg==
-Date: Thu, 1 May 2025 14:14:54 +0100
-From: Lee Jones <lee@kernel.org>
-To: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-Cc: daniel.lezcano@linaro.org, alexandre.torgue@foss.st.com,
-	tglx@linutronix.de, ukleinek@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, jic23@kernel.org, robh@kernel.org,
-	catalin.marinas@arm.com, will@kernel.org,
-	devicetree@vger.kernel.org, wbg@kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-iio@vger.kernel.org, linux-pwm@vger.kernel.org,
-	olivier.moysan@foss.st.com
-Subject: Re: [PATCH v6 0/7] Add STM32MP25 LPTIM support: MFD, PWM, IIO,
- counter, clocksource
-Message-ID: <20250501131454.GO1567507@google.com>
-References: <20250429125133.1574167-1-fabrice.gasnier@foss.st.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=k6LAdhxDgQTdovz5JpvYff+0f/HHXEvI/we1K2DxqADn7ud/731Y3bLWLS+Z8SfVZxug/vsXbacpKhSUTmt837MbNuJKCOZZNP8tEvT918yr4piEbl1+dhlQu8duPbaAplNTFAYGqBsiPUNRVmPl8QxS8s7RVgUOxgBwNcXrBnI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=k9WLwoj8; arc=none smtp.client-ip=209.85.221.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-39bf44be22fso664514f8f.0
+        for <linux-iio@vger.kernel.org>; Thu, 01 May 2025 06:37:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1746106624; x=1746711424; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=IVJu0wRzEXe69H/pIntKvn73bqLsL3OYyEuqMHp/wd0=;
+        b=k9WLwoj8R6Lwcqz8gF+6ASnsAu/MSALdgx9WrG7GAztAPHAXuifA36BrtNaEqwNeVx
+         jOq98QYeOogpKM+RxgPfn6qEvZj1ONay/gPPMjP2Pd4oSoF1RH2zXRObgZ+zxxlIWphv
+         p52Zi/mNOV8CU6hsCN/AA745wOP9JhcFPWv275wbTTtim9xK/Bi2RN6wnDEDxDGUZ877
+         n30rzLFy3iik00p05fObBKweioObXk51GzGOc0yM5bYb20wVUVilW289iEorJhrK+YWa
+         gKOe9rxYja73bfLTAtoPU84KWztj33O+8pUtdRxz4XXDtWu829kwto1QwN3Eyhy3Naex
+         9U6g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746106624; x=1746711424;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=IVJu0wRzEXe69H/pIntKvn73bqLsL3OYyEuqMHp/wd0=;
+        b=lad6fkaM4/gsdhdQHQzO2KKrBMeDFLkeEhT8MOh7lenPcg/XK/4YrogE+jMfE5MYHc
+         QLvDOshIUQmubyVm82cKyvo3ZLkv/k+YvM4ysyoLFT79jtW2BR4R581CGHIrrx8cSWsf
+         KSrujV0vlXfSTwDkWAoyzLk4IwFwwwIiSmxNkI6KOdExjQYjmWmUU6BTpJxokbTduwpq
+         rFWGD5NPHLaHQ5Q3+RIkQ3BZMA4lc+PaXOYjm8p3wmu+56KiiRBzcmDA3659m0JYIIGe
+         IU0PZLWp4tTUxrp31Ro4bW21d3l8O8MC7QGv2qmwszQCxorHiDVh9pk8cVliJc3Ze/Db
+         Kmzw==
+X-Forwarded-Encrypted: i=1; AJvYcCWaGB02SlJUeayBCIz8fG63SShd2BQV5L7h2HBezXDqteSuAHVMA3cMYHGBIjjaXwYqiaS+bF9C8tg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzYt/4RPXN0ucTLYHR7/c0IoeEXkZq28VUw+DuIhaYYhs5mCS5P
+	/4XIy8BTyClE4UkECHr5XVNRrPFCy1lkrxM0PZcB4uB03Dg3W2+0GX1qm39UPss=
+X-Gm-Gg: ASbGncupYAeZhs8BdKghq9ccfUkN20kTsp7QPD9MeEOhQepNb/ciAMeYUNtLZbwfOZ8
+	S9+fa7owVd2gaIUXbVpMqo5ss/dV+ZeeekmcPNzaE8J5wisZTJHR2NhfdJm+Lf9ZOOLo/BvQpCJ
+	2gbSqHGt7DVtGLrwFu7HAjA8tvRMEB68LLOhGqqtYkopJnZyx11pLPD1TkIc2oP+umlXjrH0CUe
+	Wj6/CI6K67P+jgScR9aIvi+Xa82mzpR306R3VKtRAygMwn1fEQE3U782aVMp+1F2BfLy7ejCfIG
+	Q/1XmopkLq/jwcRn9KyZXdVIiuHwC3m0cUaeTrpQqy0PuT8pxdDF+37roQRLxyh1QlhSErJGhbV
+	klnkYoJE=
+X-Google-Smtp-Source: AGHT+IGdPBuoaPeINXPNqsaOhchsX0XkfzRa1+uOWIy0i9ZUyGPNCW3n5dd65l40+aOPl7d3QgDt+g==
+X-Received: by 2002:a5d:5f44:0:b0:3a0:8465:43 with SMTP id ffacd0b85a97d-3a093073423mr2527425f8f.43.1746106624153;
+        Thu, 01 May 2025 06:37:04 -0700 (PDT)
+Received: from archlinux (host-87-8-31-78.retail.telecomitalia.it. [87.8.31.78])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a095a88250sm843781f8f.80.2025.05.01.06.37.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 01 May 2025 06:37:03 -0700 (PDT)
+Date: Thu, 1 May 2025 15:35:52 +0200
+From: Angelo Dureghello <adureghello@baylibre.com>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Jonathan Cameron <jic23@kernel.org>, 
+	Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, 
+	Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	devicetree@vger.kernel.org
+Subject: Re: [PATCH 5/5] iio: adc: ad7606: add gain calibration support
+Message-ID: <y6hss7bo25hiwzzplbbhmdodpmqbgpkarqvemn3tn3fig26tb2@753sxtygndaz>
+References: <20250429-wip-bl-ad7606-calibration-v1-0-eb4d4821b172@baylibre.com>
+ <20250429-wip-bl-ad7606-calibration-v1-5-eb4d4821b172@baylibre.com>
+ <0677db3c-9c36-4f34-93c0-5c53d702c4bd@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250429125133.1574167-1-fabrice.gasnier@foss.st.com>
+In-Reply-To: <0677db3c-9c36-4f34-93c0-5c53d702c4bd@baylibre.com>
 
-On Tue, 29 Apr 2025, Fabrice Gasnier wrote:
+On 29.04.2025 17:46, David Lechner wrote:
+> On 4/29/25 8:06 AM, Angelo Dureghello wrote:
+> > From: Angelo Dureghello <adureghello@baylibre.com>
+> > 
+> 
+> ...
+> 
+> > +static int ad7606_chan_calib_gain_setup(struct iio_dev *indio_dev,
+> > +					struct iio_chan_spec *chan)
+> > +{
+> > +	struct ad7606_state *st = iio_priv(indio_dev);
+> > +	unsigned int num_channels = st->chip_info->num_adc_channels;
+> > +	struct device *dev = st->dev;
+> > +	int ret;
+> > +
+> > +	device_for_each_child_node_scoped(dev, child) {
+> > +		int reg, r_gain;
+> > +
+> > +		ret = fwnode_property_read_u32(child, "reg", &reg);
+> > +		if (ret)
+> > +			return ret;
+> > +
+> > +		/* channel number (here) is from 1 to num_channels */
+> > +		if (reg < 1 || reg > num_channels) {
+> > +			dev_warn(dev, "invalid ch number (ignoring): %d\n", reg);
+> > +			continue;
+> > +		}
+> > +
+> > +		ret = fwnode_property_read_u32(child, "adi,rfilter-ohms",
+> > +					       &r_gain);
+> 
+> Instead of...
+> 
+> > +		if (ret)
+> > +			return ret;
+> 
+> ... we need:
+> 
+> 		if (ret == -EINVAL)
+> 			r_gain = 0;
+> 		else if (ret)
+> 			return ret;
+> 
+> Otherwise driver fails to probe if adi,rfilter-ohms is missing.
+>
 
-> This series adds support for STM32MP25 to MFD PWM, IIO, counter and
-> clocksource low-power timer (LPTIM) drivers.
-> This new variant is managed by using a new DT compatible string, hardware
-> configuration and version registers.
-> It comes with a slightly updated register set, some new features and new
-> interconnect signals inside the SoC.
-> Same feature list as on STM32MP1x is supported currently.
-> The device tree files add all instances in stm32mp251 dtsi file.
-> 
-> Changes in V6
-> ---
-> - Fixed kernel test robot warning
->   https://lore.kernel.org/oe-kbuild-all/202504261456.aCATBoYN-lkp@intel.com/
-> 
-> Changes in V5
-> ---
-> - Add a necessary delay in clocksource driver, when enabling the timer.
-> - Add collected Acks
-> - Dropped IIO trigger patch as applied by Jonathan [1] (no dependency)
->   [1] https://lore.kernel.org/all/20250331110435.26157ebe@jic23-huawei/
-> 
-> Changes in V4
-> ---
-> - Simplify IIO trigger driver as per Jonathan's comments.
-> - Rework clocksource driver: encapsulate mp25 changes in separate function
->   after Daniel's suggestion.
-> - Add some definitions to MFD header.
-> 
-> Changes in V3
-> ---
-> - Yaml indentation issue fixed, reported by Rob's bot
-> 
-> Changes in V2
-> ---
-> - Review comments from Krzysztof
->   - Adopt compatible fallback in dt-bindings and driver
->   - drivers: drop "st,stm32mp25-..." compatibles when unused (e.g. no .data)
->   - counter driver: no update (patch dropped)
->   - defconfig: only enable the necessary config for upstream board
->   - add lptimer DT node in stm32mp257f-ev1 board
-> - Add missing management of IER access for stm32mp25
-> 
-> Fabrice Gasnier (7):
->   dt-bindings: mfd: stm32-lptimer: add support for stm32mp25
->   mfd: stm32-lptimer: add support for stm32mp25
->   clocksource: stm32-lptimer: add support for stm32mp25
->   pwm: stm32-lp: add support for stm32mp25
->   arm64: defconfig: enable STM32 LP timer clockevent driver
->   arm64: dts: st: add low-power timer nodes on stm32mp251
->   arm64: dts: st: use lptimer3 as tick broadcast source on
->     stm32mp257f-ev1
-> 
->  .../bindings/mfd/st,stm32-lptimer.yaml        |  40 +++-
->  arch/arm64/boot/dts/st/stm32mp251.dtsi        | 177 ++++++++++++++
->  arch/arm64/boot/dts/st/stm32mp257f-ev1.dts    |   8 +
->  arch/arm64/configs/defconfig                  |   2 +
->  drivers/clocksource/timer-stm32-lp.c          |  61 ++++-
->  drivers/mfd/stm32-lptimer.c                   |  33 ++-
->  drivers/pwm/pwm-stm32-lp.c                    | 219 +++++++++++++++---
->  include/linux/mfd/stm32-lptimer.h             |  37 ++-
->  8 files changed, 537 insertions(+), 40 deletions(-)
+Correct, i changed this before sending and could not catch it.
+But not totally sure of applying a 0.
+We are here after chip reset. So conceptually, would not apply any default,
+ince it is already set after reset. What about:
 
-Is it just the Clocksource Ack that we're waiting on now?
+		if (ret == -EINVAL)
+			contnue;
+		else if (ret)
+			return ret;
+ 
+> > +
+> > +		if (r_gain < AD7606_CALIB_GAIN_MIN ||
+> > +		    r_gain > AD7606_CALIB_GAIN_MAX)
+> > +			return -EINVAL;
+> > +
+> 
+> Also, return dev_err_probe() on the returns above would have made debugging
+> easier.
+> 
+ack
 
--- 
-Lee Jones [李琼斯]
+> > +		/* Chan reg is 1-based index. */
+> > +		ret = st->bops->reg_write(st, AD7606_CALIB_GAIN(reg - 1),
+> > +					  r_gain / AD7606_CALIB_GAIN_STEP);
+> > +		if (ret)
+> > +			return ret;
+> > +	}
+> > +
+> > +	return 0;
+> > +}
+> > +
 

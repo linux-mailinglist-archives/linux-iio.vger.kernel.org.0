@@ -1,114 +1,110 @@
-Return-Path: <linux-iio+bounces-18977-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18978-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A626AA6E47
-	for <lists+linux-iio@lfdr.de>; Fri,  2 May 2025 11:37:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE9F2AA6E7B
+	for <lists+linux-iio@lfdr.de>; Fri,  2 May 2025 11:52:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F1A2A4A7A68
-	for <lists+linux-iio@lfdr.de>; Fri,  2 May 2025 09:37:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 736AB9C0564
+	for <lists+linux-iio@lfdr.de>; Fri,  2 May 2025 09:52:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE3E62222A7;
-	Fri,  2 May 2025 09:37:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E52B823184A;
+	Fri,  2 May 2025 09:52:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b="mvFXd2PU"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XV/vFuwm"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-106113.protonmail.ch (mail-106113.protonmail.ch [79.135.106.113])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73E8522FF33
-	for <linux-iio@vger.kernel.org>; Fri,  2 May 2025 09:37:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.113
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 315D823182E;
+	Fri,  2 May 2025 09:52:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746178659; cv=none; b=RvkYytnzCjBs17jimq42EIGVJNwKft4whEe8jm9IiKMTjliAZ7EXBH0ZKBumo7RYx6UhB70gGCKGrFW+PBGok2+MbUEyPhmEtuGDn9XeSJ7GRlGfKAmp+d3xUrVCFcYaJqBlPWM9TlEEyujT1xlkneLU0n8VT5cLSrncprlKxM8=
+	t=1746179570; cv=none; b=gXL5gnd19AypM6YGmLdlgNQtBIei1hIjaOEX7jKK41Qq6Ujp58NzeXevDYFsj4RVxjF9/vzeF2bZix78L/92cTntbQ/LY7dHjYRb6aAMtRzXbP4ugFvueg+xsT/a9s7mZO7BMJaKyiGrGfPLIhgmvPm7GTaPerC4MomdU1muiug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746178659; c=relaxed/simple;
-	bh=RnvUeWPOArLWpl9zw08AIZIflPF7IKAVOL/3HWjfMSA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=b3fWGS9UbmLW6CgKT9BNkkdNFDaaJIjBRJZficJLvdvdXVDbH07XutvNs8K71dhVGmIQAqoZFhVC94bSEhQio1ia3jqALf2528XySqvuoQL/saNDiyaVZ1UzTFwrMfvYafpuNYe+UglFW7i8o0UTj1hbN8DUzqH0eQ+PsP5yk7Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=geanix.com; spf=pass smtp.mailfrom=geanix.com; dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b=mvFXd2PU; arc=none smtp.client-ip=79.135.106.113
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=geanix.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=geanix.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=geanix.com;
-	s=protonmail; t=1746178652; x=1746437852;
-	bh=YbsmpdpA4diK8KKbR9g2hcNSmpPY3qM16EXc9X+UR0s=;
-	h=From:Date:Subject:Message-Id:To:Cc:From:To:Cc:Date:Subject:
-	 Reply-To:Feedback-ID:Message-ID:BIMI-Selector:List-Unsubscribe:
-	 List-Unsubscribe-Post;
-	b=mvFXd2PU34bOMv6y9+I0qpxVVFj8mx6XMfM3g0m9A1d+mfCfEqsjLaaN+UqE5fLdp
-	 KHaHvHPu1yATA9ifmy27c8sTlTupdfjVZAFWOorBqPcpWx8yPyrJSI1dG0g2UFCQ6i
-	 yhscKDcXLZXKE/3+mSPp557kDDu+Zi1Vj5s0bM1DyIL0ra/njgL0e68AFTq4aXuWWP
-	 f+TJ2fkZ9KqLn3C5XvkYaqx3SIUOrFPLCTSXp1hGef44QxrJLX4X6ZF86xmAv8av5L
-	 mScogeV/mPyed6H2qn9d2m53rWfaBWnZUkUBaAAgzQpXDtLVuBXEldX+JitfSEwDHk
-	 zz4FbPnQg3Y8w==
-From: Sean Nyekjaer <sean@geanix.com>
-Date: Fri, 02 May 2025 11:37:26 +0200
-Subject: [PATCH] iio: imu: inv_icm42600: Fix temperature calculation
+	s=arc-20240116; t=1746179570; c=relaxed/simple;
+	bh=QHN2zaWuAM7RHV7iyUCY1FWmMmQkekv0CaUHa28bOnA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=S7DrYEi/gJ5YfBWTakcCKJdH5M4KaF+JxuaYUT9PG95xzUcW6DspujvJdAB8rXcwZJRMt0Fkq9lUYw4xn24+Q1Fyz+Lhbv2nd7jE5zwBVXnOCvXnvdBYkpP1SVB0c4yzRCsYRihsL4UKPABupMPsCmPu0ZjURj7s3aTRS86DO38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XV/vFuwm; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1746179569; x=1777715569;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=QHN2zaWuAM7RHV7iyUCY1FWmMmQkekv0CaUHa28bOnA=;
+  b=XV/vFuwmA+3Oyep0fPXK5tZfnJw8oQESV8qV5vCijiCkedAN88YcqBab
+   eUcDUQtOOd3WN1JY1TELkZXF2n0rU1zAsGjMzMJy56aqPh4psxeYv5I96
+   z22Otqe97M4kZAeL9w5ipGq57ZUyFecPLUDDBXjrzER9Uoe8xO3IaOUCe
+   kxF5jA6BqrAqmvP2ZpZsU6Z0iLWjwKkCNk6bXjKuWAcD1Re0CSbIkyKPt
+   C3tLwBynUoMlBFOHwkmYf1+4j851dVYZzSTdzJDfLcoV5CekFhbdNRz5D
+   bMQo+yNK7beUnRM+LKzr1RtVgzaHRyXJxp29TkgZjfpCOso0POUP1KZtQ
+   g==;
+X-CSE-ConnectionGUID: aaYaRlGwTiK+/NZ/yCUCyw==
+X-CSE-MsgGUID: Sb5RMzdcSVqhOBZ0cXmNtQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11420"; a="58527793"
+X-IronPort-AV: E=Sophos;i="6.15,256,1739865600"; 
+   d="scan'208";a="58527793"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 May 2025 02:52:48 -0700
+X-CSE-ConnectionGUID: UFMmxyHVTPiblVRZZnPABQ==
+X-CSE-MsgGUID: ma2+lM9ZSnicgX88wMt2ng==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,256,1739865600"; 
+   d="scan'208";a="171851347"
+Received: from smile.fi.intel.com ([10.237.72.55])
+  by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 May 2025 02:52:43 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1uAn4R-000000029T6-2oV8;
+	Fri, 02 May 2025 12:52:39 +0300
+Date: Fri, 2 May 2025 12:52:39 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Sayyad Abid <sayyad.abid16@gmail.com>, linux-iio@vger.kernel.org,
+	jic23@kernel.org, lars@metafoo.de, robh@kernel.org,
+	krzk+dt@kernel.org, conor+dt@kernel.org, nuno.sa@analog.com,
+	javier.carrasco.cruz@gmail.com, olivier.moysan@foss.st.com,
+	gstols@baylibre.com, tgamblin@baylibre.com, alisadariana@gmail.com,
+	eblanc@baylibre.com, antoniu.miclaus@analog.com,
+	stefan.popa@analog.com, ramona.gradinariu@analog.com,
+	herve.codina@bootlin.com, tobias.sperling@softing.com,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH 0/5] iio: adc: Add initial support for TI ADS1262
+Message-ID: <aBSV56I5pYg5kgTd@smile.fi.intel.com>
+References: <20250501100043.325423-1-sayyad.abid16@gmail.com>
+ <46659705-0384-4497-9f5d-cae4a8290093@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20250502-imu-v1-1-129b8391a4e3@geanix.com>
-X-B4-Tracking: v=1; b=H4sIAFWSFGgC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDI1MDUwMj3czcUt3UlGSDtMREs5TEVEsloMqCotS0zAqwKdGxtbUAPygjg1U
- AAAA=
-X-Change-ID: 20250502-imu-edc0faa6dae9
-To: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>, 
- Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>
-Cc: Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>, 
- Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Sean Nyekjaer <sean@geanix.com>
-X-Mailer: b4 0.14.2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <46659705-0384-4497-9f5d-cae4a8290093@baylibre.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-From the documentation:
-"offset to be added to <type>[Y]_raw prior toscaling by <type>[Y]_scale"
-Offset should be applied before multiplying scale, so divide offset by
-scale to make this correct.
+On Thu, May 01, 2025 at 01:20:51PM -0500, David Lechner wrote:
+> On 5/1/25 5:00 AM, Sayyad Abid wrote:
 
-Fixes: bc3eb0207fb5 ("iio: imu: inv_icm42600: add temperature sensor support")
-Signed-off-by: Sean Nyekjaer <sean@geanix.com>
----
- drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+> It looks like you managed to CC everyone who ever touched the IIO ADC makefile.
+> On v2, you don't need to include quite so many. :-) Just the people listed in
+> MAINTAINERS.
 
-diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c
-index 213cce1c31110e669e7191c8b42c9524c0d3e5db..91f0f381082bda3dbb95dfe1a38adcdc4eaf5419 100644
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c
-@@ -67,16 +67,18 @@ int inv_icm42600_temp_read_raw(struct iio_dev *indio_dev,
- 		return IIO_VAL_INT;
- 	/*
- 	 * T°C = (temp / 132.48) + 25
--	 * Tm°C = 1000 * ((temp * 100 / 13248) + 25)
-+	 * Tm°C = 1000 * ((temp / 132.48) + 25)
-+	 * Tm°C = 7.548309 * temp + 25000
-+	 * Tm°C = (temp + 3312) * 7.548309
- 	 * scale: 100000 / 13248 ~= 7.548309
--	 * offset: 25000
-+	 * offset: 3312
- 	 */
- 	case IIO_CHAN_INFO_SCALE:
- 		*val = 7;
- 		*val2 = 548309;
- 		return IIO_VAL_INT_PLUS_MICRO;
- 	case IIO_CHAN_INFO_OFFSET:
--		*val = 25000;
-+		*val = 3312;
- 		return IIO_VAL_INT;
- 	default:
- 		return -EINVAL;
+FWIW, one may use my "smart" script [1] that has some heuristics which appears to
+be quite robust (rarely gives false positives).
 
----
-base-commit: 609bc31eca06c7408e6860d8b46311ebe45c1fef
-change-id: 20250502-imu-edc0faa6dae9
+[1]: https://github.com/andy-shev/home-bin-tools/blob/master/ge2maintainer.sh
 
-Best regards,
+
 -- 
-Sean Nyekjaer <sean@geanix.com>
+With Best Regards,
+Andy Shevchenko
+
 
 

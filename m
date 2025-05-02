@@ -1,170 +1,157 @@
-Return-Path: <linux-iio+bounces-18972-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18973-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35E41AA6DE2
-	for <lists+linux-iio@lfdr.de>; Fri,  2 May 2025 11:19:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 41619AA6DFD
+	for <lists+linux-iio@lfdr.de>; Fri,  2 May 2025 11:23:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9DC1817E0E8
-	for <lists+linux-iio@lfdr.de>; Fri,  2 May 2025 09:19:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9996F4A633F
+	for <lists+linux-iio@lfdr.de>; Fri,  2 May 2025 09:23:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3698A2144C9;
-	Fri,  2 May 2025 09:19:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A4B122F176;
+	Fri,  2 May 2025 09:23:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TrDZoCOm"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="a5QT+9Jy"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE4952581;
-	Fri,  2 May 2025 09:19:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61E7822E3F0;
+	Fri,  2 May 2025 09:23:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746177554; cv=none; b=Rl6GXmSm+m6qlqzOh6+rbmxXcBDqwAbiKgEoyGzeVbdBv9G5MT1TIE95s2VPSZBxjUXtFoCKGZcAClVTUdYaHTYyXhRs9qkcIQKdgX8VL/lQ8erL3iBchLP0yRbHlucCWRvePD6a9OhumxFh+9xJ8G63U/sgOJ3pDZjrElAiEks=
+	t=1746177796; cv=none; b=oaka13bPlpaWFXY9Jn44oShprG+N8tQrDDOGQFToFc8oGa4AKA9TGORuXZzMWqcQ/O0W/TkWs09VPxZPbMUrh89BkL+BkaZD77fg8Jx8DBsFIdE3o8DiaTRpFolneEiv7IrMBRsncCVenJr/LgnP5MJNEfQQ9yueFM1AzxZ0M30=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746177554; c=relaxed/simple;
-	bh=MFpxA82+s0xDYFhqNWYy4401pZNByCJq1VYxaSbaCDY=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hAwBraBz8xmKWGgLLaw3bav2vKvbgoh0HaSnYtAkzHkSykx/GloyGj7ISJvpHxOEAr2zSGXaO9dYbIpwBj51yqBxYgHWBP2kXKP20r3n8lDiVBJ5mmoqxthbL9DPELJLksBg6r8wl6GGmruisFdZSiOn9cH73uRCV6LVAWovV8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TrDZoCOm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8141DC4CEE4;
-	Fri,  2 May 2025 09:19:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746177553;
-	bh=MFpxA82+s0xDYFhqNWYy4401pZNByCJq1VYxaSbaCDY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=TrDZoCOmRCpk7nxiyJBMG1RLedCB3iaScef4VBEnLYC49Ysz6ZwvYJ+XHaS7YKSBu
-	 ulgM3sW4Kc6cOUxCP6O2Ht3pFbN0FbOHbcAqGiWe6M2O5Cq7C9U0kzC/bHuSBR6HcV
-	 PdwkKLjQtkMhyH3l23IahYw9RAnjIYf6Um0rVFIk1xE8MXumNMdltLAE+UXiGVdSJR
-	 lHA09fl5nnOK0YVAxrpFFjX4gLJQZCQmIrXW44txTQdXrYZB+nfp4oAD2WZO9lVhWj
-	 Qgcpb500DJzlC/L2LuUrMN0lTr3/guxuk2hpBaTIyA4ZabQOymwrKMg3Qo1YQ6VkKp
-	 v5oAPF3k/p6jQ==
-Date: Fri, 2 May 2025 10:19:07 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Svyatoslav Ryhel <clamor95@gmail.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Daniel Lezcano
- <daniel.lezcano@linaro.org>, Zhang Rui <rui.zhang@intel.com>, Lukasz Luba
- <lukasz.luba@arm.com>, linux-pm@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-iio@vger.kernel.org
-Subject: Re: [PATCH v5 1/1] thermal: thermal-generic-adc: add temperature
- sensor channel
-Message-ID: <20250502101907.6350fa25@jic23-huawei>
-In-Reply-To: <20250430055807.11805-2-clamor95@gmail.com>
-References: <20250430055807.11805-1-clamor95@gmail.com>
-	<20250430055807.11805-2-clamor95@gmail.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1746177796; c=relaxed/simple;
+	bh=U++3sNlCPeeANu+nz6fN0S33H3Je9z9LoqgHkKhQ0fo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZmZe5PPYBFACz9dpZ2v2Day/o+XHBb0Pd3r8hqe0fNuJUOu9i5ybYyiBhKahN1xvCH3BD5Z9/WimYNItdT6YlADdZtS8708nKSMcdWmgYZjQ78JwagPkq4zmqVlcasf7A2OzVkj33SqS6GZnhLvkJwIvQwcfAXp9tjDszzsXsk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=a5QT+9Jy; arc=none smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1746177795; x=1777713795;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=U++3sNlCPeeANu+nz6fN0S33H3Je9z9LoqgHkKhQ0fo=;
+  b=a5QT+9JyayPJIWIyZ4QHQOG3Oq4QqpMSNncnaPKExBFP3q3+9oPyNwd9
+   p8WBSX9ZaXfrhJRIEqSQOaDW9V2Tfb2hPs4o106dUY4iO0sBIALSI2n6I
+   ndBwrzrZ8toNXCeUb2G01IQrkoobv3a899gwa6auZcKTvT0I4d77wXNbj
+   DJI9cQtxp041Wyv6N1Dc+ytSSb2YHYz+1b8ShgzxKMkyBDAVcSQol0MVO
+   CL4QGURQtzPamlVB69cREzrM+oN5me9cRIuGFS20FffGeo7YOL95ymASH
+   hG2t9dMm34m9ZJNpGyAOAJN0CYY2Gx6lrxMDXtUPS84gZPsf5Xrap+pmm
+   w==;
+X-CSE-ConnectionGUID: bjQcJeg0TyOOGe+RE1dNjw==
+X-CSE-MsgGUID: xRMmoHR8TDSUtOktgOgVDA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11420"; a="47945288"
+X-IronPort-AV: E=Sophos;i="6.15,256,1739865600"; 
+   d="scan'208";a="47945288"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 May 2025 02:23:14 -0700
+X-CSE-ConnectionGUID: iiQ1d/qGSoeCjpfWWLMd/Q==
+X-CSE-MsgGUID: vFfdScTFQX6wwFxCDBTG2g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,256,1739865600"; 
+   d="scan'208";a="165662214"
+Received: from smile.fi.intel.com ([10.237.72.55])
+  by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 May 2025 02:23:09 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1uAmbq-00000002958-17hD;
+	Fri, 02 May 2025 12:23:06 +0300
+Date: Fri, 2 May 2025 12:23:06 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Eason Yang <j2anfernee@gmail.com>
+Cc: jic23@kernel.org, lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, dlechner@baylibre.com, nuno.sa@analog.com,
+	javier.carrasco.cruz@gmail.com, tgamblin@baylibre.com,
+	olivier.moysan@foss.st.com, alisadariana@gmail.com,
+	gstols@baylibre.com, antoniu.miclaus@analog.com,
+	eblanc@baylibre.com, matteomartelli3@gmail.com,
+	marcelo.schmitt@analog.com, chanh@os.amperecomputing.com,
+	KWLIU@nuvoton.com, yhyang2@nuvoton.com, linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v8 2/2] iio: adc: add support for Nuvoton NCT7201
+Message-ID: <aBSO-o4OFrXKJ82C@smile.fi.intel.com>
+References: <20250429025505.3278016-1-j2anfernee@gmail.com>
+ <20250429025505.3278016-3-j2anfernee@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250429025505.3278016-3-j2anfernee@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Wed, 30 Apr 2025 08:58:07 +0300
-Svyatoslav Ryhel <clamor95@gmail.com> wrote:
-
-> To avoid duplicating sensor functionality and conversion tables, this
-> design allows converting an ADC IIO channel's output directly into a
-> temperature IIO channel. This is particularly useful for devices where
-> hwmon isn't suitable or where temperature data must be accessible through
-> IIO.
+On Tue, Apr 29, 2025 at 10:55:05AM +0800, Eason Yang wrote:
+> Add Nuvoton NCT7201/NCT7202 system voltage monitor 12-bit ADC driver
 > 
-> One such device is, for example, the MAX17040 fuel gauge.
+> NCT7201/NCT7202 supports up to 12 analog voltage monitor inputs and up
+> to 4 SMBus addresses by ADDR pin. Meanwhile, ALERT# hardware event pins
+> for independent alarm signals, and all the threshold values could be set
+> for system protection without any timing delay. It also supports reset
+> input RSTIN# to recover system from a fault condition.
 > 
-> Signed-off-by: Svyatoslav Ryhel <clamor95@gmail.com>
-Looks good to me.
+> Currently, only single-edge mode conversion and threshold events are
+> supported.
 
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-+CC linux-iio for info and maybe some more eyes.
+...
 
-> ---
->  drivers/thermal/thermal-generic-adc.c | 55 ++++++++++++++++++++++++++-
->  1 file changed, 54 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/thermal/thermal-generic-adc.c b/drivers/thermal/thermal-generic-adc.c
-> index ee3d0aa31406..7c844589b153 100644
-> --- a/drivers/thermal/thermal-generic-adc.c
-> +++ b/drivers/thermal/thermal-generic-adc.c
-> @@ -7,6 +7,7 @@
->   * Author: Laxman Dewangan <ldewangan@nvidia.com>
->   */
->  #include <linux/iio/consumer.h>
-> +#include <linux/iio/iio.h>
->  #include <linux/kernel.h>
->  #include <linux/module.h>
->  #include <linux/platform_device.h>
-> @@ -73,6 +74,58 @@ static const struct thermal_zone_device_ops gadc_thermal_ops = {
->  	.get_temp = gadc_thermal_get_temp,
->  };
->  
-> +static const struct iio_chan_spec gadc_thermal_iio_channels[] = {
-> +	{
-> +		.type = IIO_TEMP,
-> +		.info_mask_separate = BIT(IIO_CHAN_INFO_PROCESSED),
-> +	}
-> +};
-> +
-> +static int gadc_thermal_read_raw(struct iio_dev *indio_dev,
-> +				 struct iio_chan_spec const *chan,
-> +				 int *val, int *val2, long mask)
+> +static int nct7201_write_event_value(struct iio_dev *indio_dev,
+> +				     const struct iio_chan_spec *chan,
+> +				     enum iio_event_type type,
+> +				     enum iio_event_direction dir,
+> +				     enum iio_event_info info,
+> +				     int val, int val2)
 > +{
-> +	struct gadc_thermal_info *gtinfo = iio_priv(indio_dev);
-> +	int ret;
+> +	struct nct7201_chip_info *chip = iio_priv(indio_dev);
+> +	int  err;
+
+One space too many.
+
+> +	if (chan->type != IIO_VOLTAGE)
+> +		return -EOPNOTSUPP;
 > +
-> +	switch (mask) {
-> +	case IIO_CHAN_INFO_PROCESSED:
-> +		ret = gadc_thermal_get_temp(gtinfo->tz_dev, val);
-> +		if (ret)
-> +			return ret;
+> +	if (info != IIO_EV_INFO_VALUE)
+> +		return -EOPNOTSUPP;
 > +
-> +		return IIO_VAL_INT;
+> +	if (dir == IIO_EV_DIR_FALLING)
+> +		err = regmap_write(chip->regmap16, NCT7201_REG_VIN_LOW_LIMIT(chan->address),
+> +				   FIELD_PREP(NCT7201_REG_VIN_MASK, val));
+> +	else
+> +		err = regmap_write(chip->regmap16, NCT7201_REG_VIN_HIGH_LIMIT(chan->address),
+> +				   FIELD_PREP(NCT7201_REG_VIN_MASK, val));
 > +
-> +	default:
-> +		return -EINVAL;
-> +	}
+> +	return err;
 > +}
-> +
-> +static const struct iio_info gadc_thermal_iio_info = {
-> +	.read_raw = gadc_thermal_read_raw,
-> +};
-> +
-> +static int gadc_iio_register(struct device *dev, struct gadc_thermal_info *gti)
-> +{
-> +	struct gadc_thermal_info *gtinfo;
-> +	struct iio_dev *indio_dev;
-> +
-> +	indio_dev = devm_iio_device_alloc(dev, sizeof(*gtinfo));
-> +	if (!indio_dev)
-> +		return -ENOMEM;
-> +
-> +	gtinfo = iio_priv(indio_dev);
-> +	memcpy(gtinfo, gti, sizeof(*gtinfo));
-> +
-> +	indio_dev->name = dev_name(dev);
-> +	indio_dev->info = &gadc_thermal_iio_info;
-> +	indio_dev->modes = INDIO_DIRECT_MODE;
-> +	indio_dev->channels = gadc_thermal_iio_channels;
-> +	indio_dev->num_channels = ARRAY_SIZE(gadc_thermal_iio_channels);
-> +
-> +	return devm_iio_device_register(dev, indio_dev);
-> +}
-> +
->  static int gadc_thermal_read_linear_lookup_table(struct device *dev,
->  						 struct gadc_thermal_info *gti)
->  {
-> @@ -153,7 +206,7 @@ static int gadc_thermal_probe(struct platform_device *pdev)
->  
->  	devm_thermal_add_hwmon_sysfs(dev, gti->tz_dev);
->  
-> -	return 0;
-> +	return gadc_iio_register(&pdev->dev, gti);
->  }
->  
->  static const struct of_device_id of_adc_thermal_match[] = {
+
+...
+
+> +	/* Enable Channel */
+
+Channels
+
+> +	if (chip->num_vin_channels <= 8)
+> +		err = regmap_write(chip->regmap, NCT7201_REG_CHANNEL_ENABLE,
+> +				   GENMASK(chip->num_vin_channels - 1, 0));
+
+Why can't you use the value kept in data variable?
+
+> +	else
+> +		err = regmap_bulk_write(chip->regmap, NCT7201_REG_CHANNEL_ENABLE,
+> +					&data, sizeof(data));
+> +	if (err)
+> +		return dev_err_probe(dev, err, "Failed to enable channel\n");
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
 
 

@@ -1,97 +1,154 @@
-Return-Path: <linux-iio+bounces-18958-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18959-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 084DBAA6AA8
-	for <lists+linux-iio@lfdr.de>; Fri,  2 May 2025 08:16:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33674AA6BD2
+	for <lists+linux-iio@lfdr.de>; Fri,  2 May 2025 09:44:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DBE9D9A7E6F
-	for <lists+linux-iio@lfdr.de>; Fri,  2 May 2025 06:15:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C070D1B66694
+	for <lists+linux-iio@lfdr.de>; Fri,  2 May 2025 07:44:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CECD1E0E13;
-	Fri,  2 May 2025 06:15:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFA72267709;
+	Fri,  2 May 2025 07:43:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b="Pmt7L0uh"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BuzIrCyx"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-0301.mail-europe.com (mail-0301.mail-europe.com [188.165.51.139])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FE071EB187;
-	Fri,  2 May 2025 06:15:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.165.51.139
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 093EC2AF14;
+	Fri,  2 May 2025 07:43:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746166528; cv=none; b=WCGvKcedbjs7g4UHmminKLhBO3too2mte0kb6nzLpyjXZneQ42thpx7dMvqepMb1+7Pdilyw0IEc28UmHmggtQYYgOnk48GcHk6rZBuf+YPwl2MS0eGmNCmWbxgSEE4I7J/+o0STNdxJEJdxbCfZR3kyhDM7Cfxf3L+S/+rhR4c=
+	t=1746171833; cv=none; b=B2pyKGP8KskKriMR4CjiYsOmAeBho4U1T12mPmyGg7ebCBmzM9rVM1DByKUtsEz6fYjpnBasGH/8XE+sr0gpIm9HPnFUjXPe7cOYGaHI8Q4jRSefzMvyOu3Zy0PePmzS4peRl/R0xk3VyosT72eNowW+jDpG/6p0EGz1KA2T70Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746166528; c=relaxed/simple;
-	bh=9RqD1rtDZ3nx/5xl4S8rNG4umy0IwWzfFpWHE+myW3E=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=eZpQacDF8TtI8pZM2NGjTUVHkpxSY1gPUw/KhLKySK+MhXG+UajAqC1RSMZ9TeeJYuCU8TIzxAWrfQNKUmHNvnKDfSWuPrWP5uHjTROQWLsTZ3kIyZbOM2skFBkEuN8ERxD9tXq8LdBg4hTmc/xDAfmKPCa5d+UmdbGXURGAKG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=geanix.com; spf=pass smtp.mailfrom=geanix.com; dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b=Pmt7L0uh; arc=none smtp.client-ip=188.165.51.139
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=geanix.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=geanix.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=geanix.com;
-	s=protonmail; t=1746166517; x=1746425717;
-	bh=avL9fBB6weC8oCLy3XgV5GE6YeyH90JKq36fRo/ChEo=;
-	h=From:Date:Subject:Message-Id:References:In-Reply-To:To:Cc:From:To:
-	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector:
-	 List-Unsubscribe:List-Unsubscribe-Post;
-	b=Pmt7L0uh10dXvyxFAI/Haz410R6/M2PTAG2jrlPvB5tHIP3Y0oVg4P7NU6/3ZXk2E
-	 0Qq4xSyLmWmnc6fB2W528bU2u8zJ4nSTTBkUzkTNw5i2+8eyQF7XI4ERgWPwoc5TBZ
-	 MFochqFYA3UOvDLqE0NnlnFCjt7BKSYlflHvEIgVDESfuuwXR1vuWifzLxQtgVwQ80
-	 oyVIagjc81Pi0RNbTBqIiPuJt+JAZLAwOdufgf8R6gNReX2ZRSr4t2Jci4m2MdkCwL
-	 CTrCvgDO9zbfEHXoMOQ6bBpnRXvGi0WU4SQCtaVky6gT8c48ngQVtTx+6nU/61Ku5l
-	 pdoq8h6ocMqXw==
-From: Sean Nyekjaer <sean@geanix.com>
-Date: Fri, 02 May 2025 08:15:07 +0200
-Subject: [PATCH v2 2/2] iio: accel: fxls8962af: Fix sign temperature scan
- element
+	s=arc-20240116; t=1746171833; c=relaxed/simple;
+	bh=AurAdpqZJOgAuhQNXdhBCA1aC+raKZNxPlCuKktdOCU=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=mWNTYRmJgu0iTaL0kszmfA/2epp7wm9prfPs1xS+eh9PSUaOlKkPZj4+2rZnRNPusX+2Ex8notW0LP4m2JonNzCyyW8LKIjN6ycXIOUwJixk8ySW/d0SoTW6CE5Ad7Vd0BAXvaqEGGxQmhFUv+8Xp9KKxh6Z+45BGKfZ52Lx5DM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BuzIrCyx; arc=none smtp.client-ip=209.85.221.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-39c13fa05ebso935753f8f.0;
+        Fri, 02 May 2025 00:43:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1746171830; x=1746776630; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=VgEF1dupp2sZXnl1NWHmmeZuFKwcbBSuM3goZum9iOI=;
+        b=BuzIrCyxZumupwElboR0BiQIQDPZu5vsYg/mJN1KtJFZj3gVhqmidFonXUjl6Tq2Ac
+         P2+6DhnNQeZ1Ec8CotFqJceJzpC+3OV3+pXm4o0Vypsu+QWAVKZHFTYSq9oEB41yXuna
+         5Og+jIYx6tRkINaHUsZZ3WNNwqLarInuF2UrSEuOqrTY9XU92xqUOMMavfzynOq2YqqB
+         EDtUHBeRZiZIWQF9mPskC4mVeJcxjHlYCCBVCuKBGewt2sEXoBfW3Yxa+4mt9J6ZxIiG
+         URuvLnAvuyGAOvVIsBfFOeHKnPWdBy+kG89ACPTO0vhmT63lqYuXygd1k7s2gtkRerCq
+         oguw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746171830; x=1746776630;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=VgEF1dupp2sZXnl1NWHmmeZuFKwcbBSuM3goZum9iOI=;
+        b=D4hPhvtLNE783eNU/Y4jF9nFBfuKhQRsxLUWg620wkaI+fX0mm5EZWvYX0IBdSeTmo
+         oiHcXvs7JNnyag08sI5wl1ZHbsp5BTx69DskiCZFQN75aJ21jpDSXDCDQ+/E3r5wnJ9J
+         8Ke0pxfBHP+2NNuQpvbSgNGQT9/WdioUQM7vU8HqNqfx4Cb12hWZ7TLVFerzxkrqrCrm
+         H6FtRV6ks6j2xsVSPzrHQ4PidAWm0mCqRYBdRT2uEVcVIQx3Vdy7Ja3Q0ZNBRZC4cGMx
+         qJkleV8UoT+T8/OaP4OC/LcrWl1eITA+LEtI2+CJ08YQFz25uY2x6IJ9H6gnmOaO4jCj
+         GAtA==
+X-Forwarded-Encrypted: i=1; AJvYcCWFCALOJ+o2S00O9V6UldJIkX1nOnWamsUhnDUwi4BSrwhNhtX7vVqmMgP+gumn/J/bvjeIeFBOa/pp@vger.kernel.org, AJvYcCXOuObCwPHwJUp4kqcxnFzXlO7AyVsenN/w92tkV++AqLDxk8pkqjA1UTWqspbuGKrvM0MmqpSMUwTU9doD@vger.kernel.org
+X-Gm-Message-State: AOJu0YyCVsRYpx3Oi/aMLNeuGxOoyqu99uQu67wCS/hRRNd7NnvO1b5N
+	t6rROagBbtmDKDF6uKg0yxj+o7cHTa6kQl3fB3JSGatt4EVcU14P
+X-Gm-Gg: ASbGnctyBxDD/O/dJIQa2h3jiBjMNFkRXxOXkk3qgNzhMO2HEdDGn2ds2J8INZ5XhEl
+	r9ogkoQc2s9UMq3kt0/uAaX+MaLZczNAY/gJs271wth9u65Vy0GAdMtgIA29X1FakoY////KPJ8
+	NNBdXUdd+A1CfAQRLLp7JvMADu0WayP3t9vcB/OiGWqwmEBG5X56OXQDGgo6eWo4uRpxxtFqo+0
+	XkoQ3bRZGyY2D1HMUzf4JesQrrZ8ng6GatAficzE493dGRcP5mY0pfL7gzrtzJTW5YqNN5So9xO
+	WExV5Mdd1AdynLeqd9gb+ipHVl8yq8zwZX5IGpAjiA4XKwc3sRx39qz2+zLPm8pf2JlNNAgKvIF
+	1J0/AawFgCK7t
+X-Google-Smtp-Source: AGHT+IEVlGWe5bnkllgQDbFGzP/LMlSyYggyuiL66DNILjRtZZNWHfrgLksBUfB2j72HpkmuXCKJxQ==
+X-Received: by 2002:a5d:64a6:0:b0:39c:1257:c96e with SMTP id ffacd0b85a97d-3a099af11f5mr1052986f8f.58.1746171830150;
+        Fri, 02 May 2025 00:43:50 -0700 (PDT)
+Received: from ?IPv6:2001:818:ea8e:7f00:2575:914:eedd:620e? ([2001:818:ea8e:7f00:2575:914:eedd:620e])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a099ae3cfbsm1349079f8f.40.2025.05.02.00.43.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 02 May 2025 00:43:49 -0700 (PDT)
+Message-ID: <29d79f863bd0352fa0e3fca36ba5cc007f467eff.camel@gmail.com>
+Subject: Re: [PATCH 3/5] iio: adc: ad7606: add offset and phase calibration
+ support
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: David Lechner <dlechner@baylibre.com>, Angelo Dureghello	
+ <adureghello@baylibre.com>, Jonathan Cameron <jic23@kernel.org>, Nuno
+ =?ISO-8859-1?Q?S=E1?=	 <nuno.sa@analog.com>, Andy Shevchenko
+ <andy@kernel.org>, Lars-Peter Clausen	 <lars@metafoo.de>, Michael Hennerich
+ <Michael.Hennerich@analog.com>, Rob Herring <robh@kernel.org>, Krzysztof
+ Kozlowski <krzk+dt@kernel.org>, Conor Dooley	 <conor+dt@kernel.org>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	devicetree@vger.kernel.org
+Date: Fri, 02 May 2025 08:43:55 +0100
+In-Reply-To: <b4598086-e188-4dca-b060-0dd82fc79c02@baylibre.com>
+References: 
+	<20250429-wip-bl-ad7606-calibration-v1-0-eb4d4821b172@baylibre.com>
+	 <20250429-wip-bl-ad7606-calibration-v1-3-eb4d4821b172@baylibre.com>
+	 <d273fa78cb3986da5249bd800dd25c4c0bcfde7e.camel@gmail.com>
+	 <9c02b2bd-dabf-4818-8adf-83c9127946d1@baylibre.com>
+	 <b4598086-e188-4dca-b060-0dd82fc79c02@baylibre.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.1 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250502-fxls-v2-2-e1af65f1aa6c@geanix.com>
-References: <20250502-fxls-v2-0-e1af65f1aa6c@geanix.com>
-In-Reply-To: <20250502-fxls-v2-0-e1af65f1aa6c@geanix.com>
-To: Jonathan Cameron <jic23@kernel.org>, 
- Marcelo Schmitt <marcelo.schmitt1@gmail.com>, 
- Lars-Peter Clausen <lars@metafoo.de>, 
- Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Sean Nyekjaer <sean@geanix.com>, stable@vger.kernel.org
-X-Mailer: b4 0.14.2
 
-TEMP_OUT register contains the 8-bit, 2's complement temperature value.
-Let's mark the temperature scan element signed.
+On Wed, 2025-04-30 at 13:33 -0500, David Lechner wrote:
+> On 4/30/25 11:14 AM, David Lechner wrote:
+> > On 4/30/25 10:36 AM, Nuno S=C3=A1 wrote:
+> > > On Tue, 2025-04-29 at 15:06 +0200, Angelo Dureghello wrote:
+> > > > From: Angelo Dureghello <adureghello@baylibre.com>
+> > > >=20
+> > > >=20
+>=20
+> ...
+>=20
+> > > > +
+> > > > +	val +=3D start_val;
+> > >=20
+> > > Shouldn't this be val -=3D start_val?
+> > >=20
+> > > I also don't think we have any strict rules in the ABI for units for =
+these
+> > > kind
+> > > of interfaces so using "raw" values is easier. But FWIW, I think we c=
+ould
+> > > have
+> > > this in mv (would naturally depend on scale)=20
+> > >=20
+> > > - Nuno S=C3=A1
+> > >=20
+> >=20
+> > From testing, it seems to be working as expected for me, so I think thi=
+s is
+> > correct. The register value is not signed. 0x80 is no offset.
+> >=20
+>=20
+> Heh, you are actually quite right. Even though it working correctly, it i=
+s
+> because the value that gets written to the register is val & 0xFF, so add=
+ing
+> or subtracting here basically has the same effect. But subtracting is the=
+ more
+> logical way to do it. (I tested it that way too just to be 100% sure.)
 
-Fixes: a3e0b51884ee ("iio: accel: add support for FXLS8962AF/FXLS8964AF accelerometers")
-Suggested-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Sean Nyekjaer <sean@geanix.com>
----
- drivers/iio/accel/fxls8962af-core.c | 1 +
- 1 file changed, 1 insertion(+)
+Yeps, when testing it i realized that the current form just gives the corre=
+ct
+value in the 2 LSB so I assumed we were doing something to cast way the inv=
+alid
+bits.
 
-diff --git a/drivers/iio/accel/fxls8962af-core.c b/drivers/iio/accel/fxls8962af-core.c
-index f515222e008493687921879a0b0ef44fd4ae5d10..e1b752e202b877db606a55a978d63ef52894c60d 100644
---- a/drivers/iio/accel/fxls8962af-core.c
-+++ b/drivers/iio/accel/fxls8962af-core.c
-@@ -750,6 +750,7 @@ static const struct iio_event_spec fxls8962af_event[] = {
- 			      BIT(IIO_CHAN_INFO_OFFSET),\
- 	.scan_index = -1, \
- 	.scan_type = { \
-+		.sign = 's', \
- 		.realbits = 8, \
- 		.storagebits = 8, \
- 	}, \
+To be more pedantic, I think subtracting is the *correct* way :)
 
--- 
-2.47.1
-
+- Nuno S=C3=A1
 

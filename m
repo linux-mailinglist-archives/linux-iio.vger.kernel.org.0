@@ -1,104 +1,89 @@
-Return-Path: <linux-iio+bounces-19013-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19014-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 915AFAA7D6E
-	for <lists+linux-iio@lfdr.de>; Sat,  3 May 2025 01:47:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 416FFAA7D72
+	for <lists+linux-iio@lfdr.de>; Sat,  3 May 2025 01:49:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1EDA39871D5
-	for <lists+linux-iio@lfdr.de>; Fri,  2 May 2025 23:47:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D64C1BC65A2
+	for <lists+linux-iio@lfdr.de>; Fri,  2 May 2025 23:50:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8EB3202F7B;
-	Fri,  2 May 2025 23:47:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06CA021FF54;
+	Fri,  2 May 2025 23:49:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="heQgKWDF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jev2ig8J"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 746EE347C7;
-	Fri,  2 May 2025 23:47:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3EFC347C7;
+	Fri,  2 May 2025 23:49:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746229640; cv=none; b=DdWVZZtcV3REagL5E5BorUFgSrY/46lr3MoXFZg9IGW3dAqiVVkDLPwlP6pwMiSHp8dOIrPvQjWaCt/ValFAzbaFk5rczg08MdQKF0MPBWRfmtzxw2IgtfBB4Xq7BwFw6Dx4SCTKe+mELqdvdeq5hQ3aR8hN0ILPwpuhHIaIHE4=
+	t=1746229787; cv=none; b=NjPpbIrnD9Fes0vToKb3G0UMG4yyrncFpM3NR9Ss96G4sjZNJWeOHx+kf5m1Znata4QqzC8V9ewcKIHHE+ecM0G8GKY7k7lw8bGr2F7nohUy7ZUfi9tIlRa0kSkXiDIc8jZfOC0rK/d5q4ImINl1QkSayCFSnE0gahJb3ObisUM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746229640; c=relaxed/simple;
-	bh=chQbFHWLyDPIYT5CGAaXyflprQGIG9eqxJXMs3mUwYo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=exnnIaHQZSAT2vN6egEPMS6xkeQSRMOeUJa1YQKsZp3NQfkidhusrPRfw+BNnC9HYSAK3O6+rmh9jLRVW4cGWf5dfzvTrdZJCwgnWotbr3jik18xLfhm++rLUMTUuiDmmteAN3wllYCAEUvUsnoqlHxtkISgQs87H66NT603Gxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=heQgKWDF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5E4CC4CEE4;
-	Fri,  2 May 2025 23:47:17 +0000 (UTC)
+	s=arc-20240116; t=1746229787; c=relaxed/simple;
+	bh=ruYG2phbOQ1SE0LrGTNorKIuauI6sGzHZZKXVw4/Vj8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ryeikvoC/rTuP2kXduOy3N3qEPOMLBZ3VcM5VY5+cNw1SrI1rTe57NvEBXQfJJ5rwByJ7qzsSH58eqHD9Po1v3SUE7xamQA/ouRY3AwVmM8CeNDpT9FxgAFavKUx/BCtP2E+GiiZTYhC48CG32hmthZq6paAQR4mVt4JtIVk+2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jev2ig8J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1891AC4CEE4;
+	Fri,  2 May 2025 23:49:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746229638;
-	bh=chQbFHWLyDPIYT5CGAaXyflprQGIG9eqxJXMs3mUwYo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=heQgKWDFtK+tL0BzKJ7maJJycUDb6+L8nowi/RjOjn4YunXTNCWqi1X+EepnEEbh8
-	 zbY6R3FIKIkCdNHdSHFVIUxZSBsoYFgEV5KIEJRPvv41WVzPk3ibid2HEohOT+MwqE
-	 e9X72kfFt1cSh7rO9Xt9u179RmHqEEPPKOK9Rpmg0pLn/ST83g0fq0oQ/2F1ATDGaR
-	 3EudB3g826HSMn3dS8BDXpKkl+02xy7q8ngXVyXRlKrcJpscO9Ch92K7Jn8EM/QMKa
-	 pPd4+VF2hGhnNYZ8rP5Gom/uqeFhzs54t1Q7osTO/s6loMgPnO17D41q6huw5yNxEE
-	 5OLv7u4V+8BMA==
-Date: Sat, 3 May 2025 08:47:15 +0900
+	s=k20201202; t=1746229787;
+	bh=ruYG2phbOQ1SE0LrGTNorKIuauI6sGzHZZKXVw4/Vj8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=jev2ig8JghpCuI9xMRPWcJV9uqx24peg457z2Irh/iLOI+ixY8rW4L3/puC+wyfze
+	 FhRvhvDH//2zekltH7ytTX5gb/yjgDw6b6Rvjr8nEoAV/CdkieP+qUlA5o37V/9rHy
+	 agLiiJyGSCDWpoe99cJLfh2PJ6tdBDuJnh5j1biZ9j37JbE64PHlYevWov3Qr7zVOw
+	 t940ID3Az/3dFNIDjsWe3AX43ESS/uT/AyKuN721/QL93CCeyVP9nFZGEWoYWYwLlS
+	 cbyT1vl4Ie21wT9C6XaquCojk1rFrbh8UD370efr2Y04B0BAbIZYh/E28EPnSbH2aG
+	 8PmPTIMv4pCpw==
 From: William Breathitt Gray <wbg@kernel.org>
-To: "Sverdlin, Alexander" <alexander.sverdlin@siemens.com>
-Cc: "o.rempel@pengutronix.de" <o.rempel@pengutronix.de>,
-	"kernel@pengutronix.de" <kernel@pengutronix.de>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH] counter: interrupt-cnt: Protect enable/disable OPs with
- mutex
-Message-ID: <aBVZg9ex8hBeRHLu@ishi>
+To: linux-iio@vger.kernel.org,
+	Alexander Sverdlin <alexander.sverdlin@gmail.com>
+Cc: William Breathitt Gray <wbg@kernel.org>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] counter: interrupt-cnt: Protect enable/disable OPs with mutex
+Date: Sat,  3 May 2025 08:49:40 +0900
+Message-ID: <174622974059.536802.1308149045945940669.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250331163642.2382651-1-alexander.sverdlin@siemens.com>
 References: <20250331163642.2382651-1-alexander.sverdlin@siemens.com>
- <jir0aD7w3brmbPDdhC4xAhaEKCp-g08TBmtdn785u_Z5M77ZHMhsK7UoamaROSznl2WmcUmPSnocgVnCSYmUYg==@protonmail.internalid>
- <8394ef31a75fdf9122331ecb97dd6f986d5026f1.camel@siemens.com>
- <aBSv1pJ1mulT78gn@ishi>
- <ay4R_4q_htTRo8OdeJU2BdGIrWTv9VWlVN45cxdf77cb3ctchWcCdgaGynnmtKiKUwvEChh3y95zwPV7vrgfxw==@protonmail.internalid>
- <f1e4a1db585e58aca766d0f48ebce3a28986944f.camel@siemens.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="mzpr6YeyzpzfWdpH"
-Content-Disposition: inline
-In-Reply-To: <f1e4a1db585e58aca766d0f48ebce3a28986944f.camel@siemens.com>
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=469; i=wbg@kernel.org; h=from:subject:message-id; bh=uM3SOY4L0Hb0thQ+0fSQE1nq9FWiZyawXGfrE0msknk=; b=owGbwMvMwCW21SPs1D4hZW3G02pJDBmikX8vPtz97IBoEYtucLuczPT1j24y5cbMmTrn+Yx/E xTOdJ7921HKwiDGxSArpsjSa3727oNLqho/XszfBjOHlQlkCAMXpwBMhM+TkeGRsKfEmn371i+/ /TSsd/Pq/lVZWhd8717S38MTbqhyxTuT4a+4eTWvEt/EwgWu8g+YqqLL8meVP97z6vqP+G2fr9U uV+UFAA==
+X-Developer-Key: i=wbg@kernel.org; a=openpgp; fpr=8D37CDDDE0D22528F8E89FB6B54856CABE12232B
+Content-Transfer-Encoding: 8bit
 
 
---mzpr6YeyzpzfWdpH
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Mon, 31 Mar 2025 18:36:40 +0200, A. Sverdlin wrote:
+> Enable/disable seems to be racy on SMP, consider the following scenario:
+> 
+> CPU0					CPU1
+> 
+> interrupt_cnt_enable_write(true)
+> {
+> 	if (priv->enabled == enable)
+> 		return 0;
+> 
+> [...]
 
-On Fri, May 02, 2025 at 04:32:02PM +0000, Sverdlin, Alexander wrote:
-> On Fri, 2025-05-02 at 20:43 +0900, William Breathitt Gray wrote:
-> > Would you provide a Fixes line so the stable trees can pick this up for
-> > the necessary kernel versions?
->=20
-> shall I re-spin or would this separate tag suffice?
->=20
-> Fixes: a55ebd47f21f ("counter: add IRQ or GPIO based counter")
+Applied, thanks!
 
-No need to resend, I'll add in this Fixes line as I pick it up.
+[1/1] counter: interrupt-cnt: Protect enable/disable OPs with mutex
+      commit: 7351312632e831e51383f48957d47712fae791ef
 
-Thanks!
-
-William Breathitt Gray
-
---mzpr6YeyzpzfWdpH
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCaBVZgwAKCRC1SFbKvhIj
-K3zKAQD/MP8Df8zftdF1fkr08FMi0V+IQcVFHH4SmvRBjvEtSwD5AYrTHZClNBdN
-NOz2gc651mKBGvkrHmzrRB4UM5nocwQ=
-=I64P
------END PGP SIGNATURE-----
-
---mzpr6YeyzpzfWdpH--
+Best regards,
+-- 
+William Breathitt Gray <wbg@kernel.org>
 

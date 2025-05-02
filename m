@@ -1,161 +1,126 @@
-Return-Path: <linux-iio+bounces-18996-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18997-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AF7FAA74FC
-	for <lists+linux-iio@lfdr.de>; Fri,  2 May 2025 16:29:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66AAEAA756E
+	for <lists+linux-iio@lfdr.de>; Fri,  2 May 2025 17:00:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6239217D1D1
-	for <lists+linux-iio@lfdr.de>; Fri,  2 May 2025 14:29:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D2C72466E96
+	for <lists+linux-iio@lfdr.de>; Fri,  2 May 2025 15:00:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 113F12566E6;
-	Fri,  2 May 2025 14:29:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8A4F18DB22;
+	Fri,  2 May 2025 15:00:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Zk/y2DpQ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HmWG5CLd"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BED8254AFB;
-	Fri,  2 May 2025 14:29:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDDF62DC77E;
+	Fri,  2 May 2025 15:00:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746196161; cv=none; b=eIbDg52+47qlPy7SYDSHGO07echS8CLBGnwfgxHfn/Htbfj2c9Kmgt4x7Am5jvz9AIET/49RgaTqhfBlr+7e2mJwzaIjv6T3+2qnttWqEual1EtTtknlZC8ChMlXQ7VhG6xXkdGogOvcTPkkwDt3c/WiRZ5hCLane3DsnbgZ2is=
+	t=1746198028; cv=none; b=Isc3Bvv1FFl6aKESZhrKpr5AyBDYC9M94NPSBDMARATlXIb/fjmbxTKkoYaZ7DsVfQfD0h8NzwdTEdB3NvbfCoVB/6hyGDt3xwyaKXy09yM7XnZEs/DSJJf3UL7E5WexBUs12KTCdvvKGA0zTIVj6ehIexsU/mgrOIojhR83I+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746196161; c=relaxed/simple;
-	bh=glgP2H8iltkXz/0itYKcwN3X2MmC22mzZto+Unw1AGw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ly9s3utAtXa8gd6A1UBxC2avSlhjXQMSTVHCmZ+u6ua62zLBgJCmUud77HbnlTsBnIkATo6PJFEuLPMWi8jg4a0Hh+wx4Z5mTzMF41XhSSmufUcsq8yizpoUmCiYL6AjTxX+vndWL76gXhrZTVWVECXjeG7H5KRMNBEdunlsXqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Zk/y2DpQ; arc=none smtp.client-ip=209.85.216.43
+	s=arc-20240116; t=1746198028; c=relaxed/simple;
+	bh=fTcihm8F3AR9dLNLHu3BBcP7PrSwWeJrBnxCABPKK0g=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=ajlxpIs90D10FG2vD5fbr9g8MbrRmh8tMQ1LuzekZgm2hFqvqVHVPa4A/7EyPp7I6IpwPGSNcCyhnuYJOb9vrNKduv7VMpdc+Aau6twM9ZX40x9fz8+ogWMoaufKdvZJxMVpIss4Mv/1pdO/Y0J8nEWjd19OrzInhyHzkokrs/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HmWG5CLd; arc=none smtp.client-ip=209.85.128.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-309d2e8c20cso2837113a91.0;
-        Fri, 02 May 2025 07:29:18 -0700 (PDT)
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-43ed8d32a95so18494835e9.3;
+        Fri, 02 May 2025 08:00:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746196157; x=1746800957; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=uv62vQqp6Wg2reIArK9ykz+gkyvcDoUeNoaYwXskcxk=;
-        b=Zk/y2DpQ3084WO1fnma3F35iHrHxRUA4l8H+6zd1SGzujCppfg4xAL7jOOx3GcCVLh
-         dfGfTbFi9KkM83m5+8YKG3tbBCb49ryfhlepuAvLnVfK0343cjPVek6VajLcb2VmSYi8
-         yvQa4b0YCst1mjFwzr5j+3Nd1nTfo14MFg2JlJ+lCkXJ6DrNP08LXzqhbNURTQ1QNsqr
-         qLtADPFlR2rJ6+NhFbTmbFVRJsw312oJeDr4r+X55C9Qdc8m+mQoDRKZUiPMHEGKm8Bv
-         MM9PaEb5YSza6UbLqoHT7Dvdwq8Y3nhId+KENFhz0ZNUAQhXVTw337vovrfJ9rN9aCDZ
-         eCbQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746196157; x=1746800957;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1746198025; x=1746802825; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:to:from:subject:message-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=uv62vQqp6Wg2reIArK9ykz+gkyvcDoUeNoaYwXskcxk=;
-        b=obkj4Ig7C8V1TMeVv2pUHeKK4RZqbDdQ6MdyhzvlgaHg6VuJhgrkhtbP6sd3YyFyGh
-         yJ3owsp4zL4emzqI2/5g3Fj5kS2oR3mZFCtm1fQv9/g2Om0bCKOijSzhkuDzq99+ZjGk
-         5NlpFiktl+3evY0IgMS3wj4z8dNgBDJzlG3LVAx0fFRXrzu6KEfGIPHNs4YYkC0NXgyw
-         xnlqtXyn7qMekCfWczuTpuJ4JkbE8O11ng3RRZ/x9f9raqzNZqw4IgQW9aMS76ljIoW7
-         eX6lYD+hlKB/150mlXLT9VZzjdFtfsCDp5A6u5WFYKtynqp58w70SUKNZTTve7yrO/Ff
-         PBKg==
-X-Forwarded-Encrypted: i=1; AJvYcCUYnAKUODEfmAxPwyRs4KfErhebiky5dqPIxiGrUwnhT81vrTxd4DN5oSc/TodRx52bee3fDLhZV6vmXw==@vger.kernel.org, AJvYcCUut1lmQsUVK+fyiG7LNkl0E///WkEhvh9e5VsevGd/OyR09TY/xS1HVd3/dEc8vGUT50psIoaaqeYA@vger.kernel.org, AJvYcCX20ldXsh86z/Y58jTC+fXhYydEuqGhB80ACUxx21KI2tv2jqqGE5ykENgoHuCxecS57IZ/h7y4TxIbkz5j@vger.kernel.org
-X-Gm-Message-State: AOJu0YwrOG2tFPSnxKTioYLjABPqQFdwsCesGTMfrypoqt68xj9UPWYE
-	OqO4eCBMpbKgk24jBfZshy/mlnSl3bNoPXNWoS5jIjsDiprhgZ9R
-X-Gm-Gg: ASbGncsA/SrvWqIkjabaSS6pBEI2kOO3N/w092k6S8GmDd+cPy6tWUypRaYbnZgE3Aa
-	ysTewtmXS7M3T9csaXg5YWlt3VRu0ibQDJW59LMTsE3tXNPauqmkwCRvtWtcLusECrxAFmIldh8
-	/QCNtCzvQ1v0xmEKWBeXJSnGT7KrV90lIMhnKrmfeDFCyA1AErQzL3L6FMphEshjk2qBbkaOT2I
-	PlutP+brzPfo4UFthmMfKsBnN9089HnUftwAKofE/ddGzEWwcMGGi+bSlDZsOXTKNcvTRcRTqUn
-	jng3iq4/b4fCO12smArGpIvjat4dHSuAVTf3XHj5gdsF7queSxMSMD1gTHSF
-X-Google-Smtp-Source: AGHT+IGcxrpY5FwVcx8yrFraaIa7JOCgeuZA4gWlDNgGNkVeXC5Z1ByWUsBuDYSZ9H3EEoZMid1q1w==
-X-Received: by 2002:a17:90b:55d0:b0:2fe:b907:562f with SMTP id 98e67ed59e1d1-30a4e5ab679mr5576244a91.14.1746196157465;
-        Fri, 02 May 2025 07:29:17 -0700 (PDT)
-Received: from localhost ([2804:30c:4024:1700:8e03:72a4:b895:b221])
-        by smtp.gmail.com with UTF8SMTPSA id d9443c01a7336-22e1659f8b8sm4747735ad.14.2025.05.02.07.29.16
+        bh=wirILAuxHEuuts1x0hrZv7b//qjDz030JZ7th3dBWqw=;
+        b=HmWG5CLdAGSbzz1VX9NPnB84kik0JIy5RGDuc3Wq/qi0QPOo/wwoPvJIQxGnZMsGLY
+         IqRchXn7NpPOQO0QBmquCxdTQ5X5fmmEEMe9SnUItarSqc8b3ZmI9gCcjiwmrFEzcEAG
+         mP6XGToJQ3UT1R6WHvBVUSmIPovCa8BBAfAtBaUQi8AHSDbEFAphpClkyEoMyGxkzUjo
+         XDtGdDzTJdkP6YJPooYV3BYqqOmGSmNESSIOHqbb2+UCUrx0EXIygNa/Xq1OEmPclJBJ
+         qHXGG5bb0OfuDnaR2LFMfLSQTFYElLJsWk6/EhIg4IjAXOK0a9Ads8VF2WJFZZwcXnG9
+         iNcA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746198025; x=1746802825;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:to:from:subject:message-id:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=wirILAuxHEuuts1x0hrZv7b//qjDz030JZ7th3dBWqw=;
+        b=s4b2ailgSgGAr+lZv6ZKNwVqzBYKvxnuQP/cEeGNHvAVSzaU4v9PImGJ8jjQo8U46m
+         dveTZ+dmvNHCPZ6KoJcZrVZ4847+c9ZEDZgoB9A7nVSoLzusB8doY8hSTgKRShufg3kH
+         6kxyUvAxL5UR+ze/MLnbz9nRl9eK8QfFxWk580tuXczaaFDWc7fSFYlSwGwYsEhPywKE
+         ejopuOaqwbekwYNlPQy3qX12QW4tk1eIns1VS4YmBQSvKJYDoRKkwzevmGNdQmjrvjCi
+         sbzcaM1cbQIDBEeq5Ok9PET9UZEt7pjrNaC3p4rvBrRxMwCzRDaOpEawqFRWp15Q07jd
+         z8cw==
+X-Forwarded-Encrypted: i=1; AJvYcCXaSK5cjpXFkOMVnNKBUBoDr42Nm91HoFN3MPJbBR8eTo/0nbU9Ygwet8C15cD+9fWAZ6LJ9NjC7J0=@vger.kernel.org, AJvYcCXaZ/h3do35nsIEq0zGv8NNYE4tHswprg8lAugwMVVO1iz1L7qRd9if49eKld0oIUDRSxlz4ZKma8dCS/7p@vger.kernel.org
+X-Gm-Message-State: AOJu0YzuxrnxIMhKWI/plrMWr5i6tITSF8GuaKmO2MGgBB2CPiFv1aCN
+	AiynCL1RXr+z58krhViusAwsassG7+48kTd/Tsu5fs+Sjo5NWWF5
+X-Gm-Gg: ASbGncvMYBdU1Lq3W/UToY8XZRZtr2MSFUDNYxXhSzMlkACyFPXRWP+6iRsy7eGhDC0
+	vLg7IdSOS+h80fNXOeQXPaoIhtN9Zrmse8Bej6CyzgeOtFNW/85759itciccnXFtGq+ekiczkeb
+	TfeeV3RIOVwqMSRYfvT8AxUaRIPaR4Rvc8me/piUSrFa9hlBwsthfo9xKCyeghCVHFSevOCjKsr
+	tHG/IGeLWNWtj8aeB+jJ6K+5PNbeZZgO5LJXt4KR22U8gaWoSHrk9+Siu+NFHfu1r5+ggp/2Y23
+	TTgRcSSPnDE8sDWdJ4KZhO4A+w+OCXKh703jpgDzLLwYuEXfjRRErtTWlYa/0obk749+TKVmd29
+	72+yV+/U09meW
+X-Google-Smtp-Source: AGHT+IFFWpEh7slZXKySMUTy1NRvBOFAP63y8zNRrlI6Z2VKIitUe0DjpU0kM0b82krGnYabfsODsg==
+X-Received: by 2002:a05:600c:4fc9:b0:43b:cc3c:60bc with SMTP id 5b1f17b1804b1-441bbed9ec1mr35278645e9.15.1746198025097;
+        Fri, 02 May 2025 08:00:25 -0700 (PDT)
+Received: from ?IPv6:2001:818:ea8e:7f00:2575:914:eedd:620e? ([2001:818:ea8e:7f00:2575:914:eedd:620e])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-441b2ad78f6sm93817095e9.2.2025.05.02.08.00.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 02 May 2025 07:29:16 -0700 (PDT)
-Date: Fri, 2 May 2025 11:30:34 -0300
-From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-To: Jonathan Santos <Jonathan.Santos@analog.com>
-Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
-	andy@kernel.org, nuno.sa@analog.com, Michael.Hennerich@analog.com,
-	marcelo.schmitt@analog.com, jic23@kernel.org, robh@kernel.org,
-	krzk+dt@kernel.org, conor+dt@kernel.org, linus.walleij@linaro.org,
-	brgl@bgdev.pl, lgirdwood@gmail.com, broonie@kernel.org,
-	jonath4nns@gmail.com, dlechner@baylibre.com,
-	David Lechner <dlechner@baylire.com>
-Subject: Re: [PATCH v6 07/11] iio: adc: ad7768-1: add multiple scan types to
- support 16-bits mode
-Message-ID: <aBTXCi0HINcrvXay@debian-BULLSEYE-live-builder-AMD64>
-References: <cover.1745605382.git.Jonathan.Santos@analog.com>
- <0a214d5dfacc3976db71af8a80f9dcf2887fe6cc.1745605382.git.Jonathan.Santos@analog.com>
+        Fri, 02 May 2025 08:00:24 -0700 (PDT)
+Message-ID: <00988dab7a90671d637466e4261d7b2248f172b6.camel@gmail.com>
+Subject: Re: [PATCH] MAINTAINERS: add maintainers for ad4851 driver
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: Antoniu Miclaus <antoniu.miclaus@analog.com>, jic23@kernel.org, 
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Fri, 02 May 2025 16:00:28 +0100
+In-Reply-To: <20250502100016.26279-1-antoniu.miclaus@analog.com>
+References: <20250502100016.26279-1-antoniu.miclaus@analog.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.1 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0a214d5dfacc3976db71af8a80f9dcf2887fe6cc.1745605382.git.Jonathan.Santos@analog.com>
 
-Hi Jonathan,
-
-The new adjustable sample rate / precision patch looks good to me.
-My only concern is about one error handling path in the trigger handler function.
-With that sorted out
-Reviewed-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
-
-On 04/27, Jonathan Santos wrote:
-> When the device is configured to decimation x8, only possible in the
-> sinc5 filter, output data is reduced to 16-bits in order to support
-> 1 MHz of sampling frequency due to clock limitation.
-> 
-> Use multiple scan types feature to enable the driver to switch
-> scan type in runtime, making possible to support both 24-bit and
-> 16-bit resolution.
-> 
-> Reviewed-by: David Lechner <dlechner@baylire.com>
-> Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
+On Fri, 2025-05-02 at 13:00 +0300, Antoniu Miclaus wrote:
+> Add the ad4851 entry in the MAINTAINERS file.
+>=20
+> Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
 > ---
-...
-> +enum ad7768_scan_type {
-> +	AD7768_SCAN_TYPE_NORMAL,
-> +	AD7768_SCAN_TYPE_HIGH_SPEED,
-> +};
+
+Reviewed-by: Nuno S=C3=A1 <nuno.sa@analog.com>
+
+> =C2=A0MAINTAINERS | 10 ++++++++++
+> =C2=A01 file changed, 10 insertions(+)
+>=20
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 4a0089db6670..d5a985ae62bb 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -1350,6 +1350,16 @@ F:	Documentation/iio/ad4695.rst
+> =C2=A0F:	drivers/iio/adc/ad4695.c
+> =C2=A0F:	include/dt-bindings/iio/adc/adi,ad4695.h
+> =C2=A0
+> +ANALOG DEVICES INC AD4851 DRIVER
+> +M:	Sergiu Cuciurean <sergiu.cuciurean@analog.com>
+> +M:	Dragos Bogdan <dragos.bogdan@analog.com>
+> +R:	Antoniu Miclaus <antoniu.miclaus@analog.com>
+> +L:	linux-iio@vger.kernel.org
+> +S:	Supported
+> +W:	https://ez.analog.com/linux-software-drivers
+> +F:	Documentation/devicetree/bindings/iio/adc/adi,ad4851.yaml
+> +F:	drivers/iio/adc/ad4851.c
 > +
-> +static const int ad7768_mclk_div_rates[4] = {
-I think we can omit the 4 constant here
-static const int ad7768_mclk_div_rates[] = {
-
-Probably not a reason for a v7 if the other parts of the series are good.
-> +	16, 8, 4, 2,
-> +};
-> +
-...
->  
-> @@ -674,9 +722,15 @@ static irqreturn_t ad7768_trigger_handler(int irq, void *p)
->  	struct iio_poll_func *pf = p;
->  	struct iio_dev *indio_dev = pf->indio_dev;
->  	struct ad7768_state *st = iio_priv(indio_dev);
-> +	const struct iio_scan_type *scan_type;
->  	int ret;
->  
-> -	ret = spi_read(st->spi, &st->data.scan.chan, 3);
-> +	scan_type = iio_get_current_scan_type(indio_dev, &indio_dev->channels[0]);
-> +	if (IS_ERR(scan_type))
-> +		return PTR_ERR(scan_type);
-
-The IRQ never gets handled if we get an error from iio_get_current_scan_type()?
-Maybe make it jump to out?
-	if (IS_ERR(scan_type))
-		goto out;
-
-> +
-> +	ret = spi_read(st->spi, &st->data.scan.chan,
-> +		       BITS_TO_BYTES(scan_type->realbits));
->  	if (ret < 0)
->  		goto out;
->  
-
-Best regards,
-Marcelo
+> =C2=A0ANALOG DEVICES INC AD7091R DRIVER
+> =C2=A0M:	Marcelo Schmitt <marcelo.schmitt@analog.com>
+> =C2=A0L:	linux-iio@vger.kernel.org
 

@@ -1,79 +1,79 @@
-Return-Path: <linux-iio+bounces-19009-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19010-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE5C7AA7990
-	for <lists+linux-iio@lfdr.de>; Fri,  2 May 2025 20:54:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D467EAA79F7
+	for <lists+linux-iio@lfdr.de>; Fri,  2 May 2025 21:04:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 17FFE7A689B
-	for <lists+linux-iio@lfdr.de>; Fri,  2 May 2025 18:53:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9EA0F1C0227F
+	for <lists+linux-iio@lfdr.de>; Fri,  2 May 2025 19:04:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2412A1E32D5;
-	Fri,  2 May 2025 18:54:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B67D11EB5EB;
+	Fri,  2 May 2025 19:04:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="YzMBEKTq"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="xmCuGVTN"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oi1-f171.google.com (mail-oi1-f171.google.com [209.85.167.171])
+Received: from mail-oi1-f170.google.com (mail-oi1-f170.google.com [209.85.167.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D94551E04AC
-	for <linux-iio@vger.kernel.org>; Fri,  2 May 2025 18:54:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF7611EBA14
+	for <linux-iio@vger.kernel.org>; Fri,  2 May 2025 19:04:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746212082; cv=none; b=iqHeiak4Usu9PEGel/dfWOLzq6dAT0K4UVZJZeM3BUk614w8PxDapyH3ZZ6/bRAK245X46l042OyZyj0FXJT9Kh5+C8EZsdl9ayGRRoWOIhLMuYIIo6hqJFfU4zbAPelUIs1dQaqIIeZFuh3CgT6wcgIewRBjr/5hNU9nERAI/0=
+	t=1746212668; cv=none; b=AFx6JJWz35G12YgjoNq2FQr1f4qIPn87NFElWvwOVwG8PrUYHouZkcQ/svo7f1GbuLZ3kv8t7GqCYR5cAJcukjX6pAV3YCk9VdT4AMMN2L8FlZ089PiOBYjmokkSpUWyJhh+OYq6+J+A4HIFb11rVSiXpNmy0sRglb4LquEp4D4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746212082; c=relaxed/simple;
-	bh=etET4InrPZFfLVNbBfsGBvrQq/2AsRr7XUB0q5olziI=;
+	s=arc-20240116; t=1746212668; c=relaxed/simple;
+	bh=t066xCSdjFWkkNePOxD5BiV1LRz0rsf0Gzi1MYlr/s0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=baNTYRC7fPysuboCtNA59p2frUjebt5J4DEPPF5VKsGMPrWGc1IuoG/XhhxMInyeThwjSzwpp/IsZxdPSmfn8YDyJUP6N52YqZUep4hhh4Jpa6mcgZyKPSAsixWio1vaTVqVvKB0Miep75XVFHz5wM9z08Sz2ZMHEewgU3YDRUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=YzMBEKTq; arc=none smtp.client-ip=209.85.167.171
+	 In-Reply-To:Content-Type; b=nN+QqFTLDNEaHF9j0nemBPE2yZaWfnAxfGnP0bArO0Ij9yWWEyRCdMs3za9iR+WYnXQ7vgH8+QgN1vf2Sr+Sz8w8TUbiE24Az9l2giBff0QQgdNsjL6zB9yk9aCLFXKHLhLQ0RdGP6zBCeaTz5kRtsKSdbLSDdvb+56sAR7Q9W0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=xmCuGVTN; arc=none smtp.client-ip=209.85.167.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oi1-f171.google.com with SMTP id 5614622812f47-3f6a92f234dso1790116b6e.3
-        for <linux-iio@vger.kernel.org>; Fri, 02 May 2025 11:54:40 -0700 (PDT)
+Received: by mail-oi1-f170.google.com with SMTP id 5614622812f47-400fa6eafa9so1695525b6e.1
+        for <linux-iio@vger.kernel.org>; Fri, 02 May 2025 12:04:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1746212080; x=1746816880; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1746212665; x=1746817465; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:content-language:from
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=o0v5QJaDLKj7eiDa88mbshkSyU/5sC59jCX11a9PYWo=;
-        b=YzMBEKTqsD+BZdkWxkpGJMWWMKyilOR4Zmp3PXghZcy3XnI1GKivB83PUGRJ7JJfcP
-         WBizkXiGkNBXB7WekDSMLfDGYiIqramxd+gveNRfYU8lIt+9wfqHtri86ltsaH3h2bRt
-         32xNhvkfGaGekAGuvbxA6mQFwa95xYDKoUv6FxiwcLRMmqlLq4crT3diNsOQ8gfZ2NEa
-         Ha2y12XNj1bnuinvNCLjEIvR/CEpA1GVlLjXPvk4qFzk1ugTo6Z23C3eaEfsMXxFig7u
-         Sv7ADOTvUbSSOiMMIwQpRGRuCBVOX55zVE0RFuZLwVaZ6BbvU0sgECkOMYkcjGMlHt2z
-         ZyNA==
+        bh=BjRpOGGgbAWQbSA5NOkI3u2WsID4GcRH8J4ZAsY71WI=;
+        b=xmCuGVTNBNKiQR9J3Ssdz/f2p6SPxKfn8YcsbT9c2Z3LZLHJLQLMa6SYPSPcp3NR/W
+         fvlLxkFIlUzb3zTmSFj057EhNuCkfYUpgyBbFxeYw+ErKOm6dGqtO2Pgt00Ny8oXWc4F
+         lkG9b6C34VdWRvKME/CMqEtviGLuNH35ZvRt1ycBLeEgkWqU9a56fbUfbMP+68yEyyMP
+         bU8KQuH1WbockXHxG4cZA/vA6ZUmCX03R5i/Jao61OmkIXeHGioQ95mLIkthwy/bSS60
+         a5dWlhs4mOzWvWzNvIranGtIiqt0CYY6SZ+Fi8Tv5WOWPWshSi9SrP28u5o5Qh3LKiZ4
+         qBwA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746212080; x=1746816880;
+        d=1e100.net; s=20230601; t=1746212665; x=1746817465;
         h=content-transfer-encoding:in-reply-to:content-language:from
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=o0v5QJaDLKj7eiDa88mbshkSyU/5sC59jCX11a9PYWo=;
-        b=NTgupXrQzA+Vo9N7VfDUv5qiz7LVEfO/H+j4mJQoss9Iod52qfDoPd1aZW+9kGhtag
-         8FSRAMYI4zU2CkRrAbuwHn5XihHJgtuA3FLXZBOlUNHcDxpzzyUi2Iu61+coT4M029Jv
-         CcYIVEikfXRYTJQRJEtG0QiYtZIijo08S/sO1tJ40AJjJzrbiRWWjan79TtlIsDgkVgB
-         kxW5abng1t5+yVWe0MHEQcodWomOtJrSQTILKRIHwbDPSwYLv/1H/dGkpMZd3ptvl1LS
-         iDgXM3tQFvictfjgrsQDZAhcsWOxiegJo9mI3mSyKlkqg0DNppJJlZfXrs/pLLNqhYQc
-         JVqQ==
-X-Gm-Message-State: AOJu0YzGamY6HZD/9Wd1YVMBlTR9/RF7ToSFaIoOpK01vUh4uE1ATN+t
-	JLpXiCkMioF+7D2zHdAeGKsRSw0NB1TgWLjknAVdvGI6khJpjY8nz2Rexup4D9I=
-X-Gm-Gg: ASbGnctBu9VNDff0qRdyWoMuM2Gez/9d2CLAhytKvnMDrhuKlONXut7eiMWOzbH6wzR
-	LGzsjC46c/m6+tpeOyv0ILV737VcSuDwlkvP8NeQNWSwi7AEqabehaeaLcu5Lha0ylpJWRRuG30
-	HKZJC8hqs9I1ZkGWGswv/WdGfvB/akTYiyQ+D1ykNi6hHPlXbjVQPR1eCXYF0juqzRD8l27Qlnc
-	SnVBUkDzEGkJPDSM2fGEoeyCocXpUFZjX2k9RZhj3IFrHV/3A2zX4UGBGmyYnEABwnX290w7m6e
-	alb0MrO2aYyXEyKR0Nnmc3SM0Fv9//OdJkGGVZIQBtX5H09+96lWWGR3zIPXN5aX7tbpkYu5zze
-	QmtxrDeLExH9+ETOwTQVAHe6PChVo
-X-Google-Smtp-Source: AGHT+IGg3NfrHCT9rWDG9WuCsQU3jADp64M+/PiypBGRCbX4Dd8LSeFbkh4aztyl1pAXJ+UtiOQbLg==
-X-Received: by 2002:a05:6808:2e4c:b0:3fc:1f7b:c3b3 with SMTP id 5614622812f47-4034148814dmr2250631b6e.33.1746212079887;
-        Fri, 02 May 2025 11:54:39 -0700 (PDT)
+        bh=BjRpOGGgbAWQbSA5NOkI3u2WsID4GcRH8J4ZAsY71WI=;
+        b=O0/SOwzKyVtkBSsYSLh04O5XHEH1mHwHqXsn9lUsaFuMbjG29iMMW0SO05ngKX0U7y
+         svCiqlfM3nwAvHiOv8yvD9vpxeHvLFUskjz9id9yuTY3mPOT3km4jq4Zn2sQz5R7rwJr
+         wGNVZ0JZVu90zFXH34iw52pkfMn9G2+nM4Giep3FIC2NvWtacTXB2GVP7UveMs/e9SWV
+         qajJoTPwdNL6+zEKeZ2RnJIciiRxS7vZ6M2s8jXsYmFO6zm9uFds+mJhQ3kBmTSbxpvL
+         7UpzDn7HHLwtGII7W+6NY6AeDLe7EiSz0Sp+ZlALArWjRvx42NCHFIi9K9Dvgx9t+KLq
+         P1Jw==
+X-Gm-Message-State: AOJu0YziffmDStblr0PIG3ArNGCXxtL6YHiuCwx1UxXkdRlGZ5GZDKMl
+	8aI3m2YGkkNM0ocwFq558E/mSbxOyLP9kq6lc+JQ1bNincxT172HSaKJjRtLXbo=
+X-Gm-Gg: ASbGncvrrkXhQ7OIBoA17jZtOs9ugrQIEdb2vupYxHriJJhtl7SP5CSz6B32Tz/S3Dm
+	AGJ81BiRs73Nwt6T5MNa2b2C72TSKljlMnMn0pScHicmTKJBoZWB+EDfh46XK6zov+q4GB89laV
+	TMQL+Sqpoj3SKeGRz9rvPiVG5BrRLy4ALQNpNZe+XIul7GWi+5drNNUNywcDJwe5jjYE05fYq+s
+	8s/30ephO7i60AIwi2uz5EviiYdPUCR15lLga4l7ISfBMy1FuOeQUzr7GHlzZbY8n7t1MdTOK0Y
+	uFZckSx1lufn+XqD23vMJX73GlfbqELEE8PC7opPMkeqr75nAMIRZtmcmKCBwgfBI6S4l56G+zm
+	xqH2O6+8qzdkkp5jBMg==
+X-Google-Smtp-Source: AGHT+IEfYJCLCxyAOFGQT4FLH2tIQ4AoMpU7TsaalCGnIgP55NFMW7fYVOitfdDNvza3Q28GZSzsgg==
+X-Received: by 2002:a05:6808:1a0d:b0:3f8:acb4:8d8e with SMTP id 5614622812f47-40341c7bc0bmr2418662b6e.39.1746212664840;
+        Fri, 02 May 2025 12:04:24 -0700 (PDT)
 Received: from ?IPV6:2600:8803:e7e4:1d00:4489:d382:ca90:f531? ([2600:8803:e7e4:1d00:4489:d382:ca90:f531])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-4033dae382fsm685964b6e.21.2025.05.02.11.54.38
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-607e7fb645bsm638237eaf.28.2025.05.02.12.04.22
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 02 May 2025 11:54:38 -0700 (PDT)
-Message-ID: <8ff3f1da-f868-4c7e-9123-00a3c54904d5@baylibre.com>
-Date: Fri, 2 May 2025 13:54:37 -0500
+        Fri, 02 May 2025 12:04:23 -0700 (PDT)
+Message-ID: <66eaff22-a3cb-4975-811c-5e85bd5b125b@baylibre.com>
+Date: Fri, 2 May 2025 14:04:21 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -81,8 +81,8 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 4/5] dt-bindings: iio: adc: adi,ad7606: add gain
- calibration support
+Subject: Re: [PATCH v2 3/5] iio: adc: ad7606: add offset and phase calibration
+ support
 To: Angelo Dureghello <adureghello@baylibre.com>,
  Jonathan Cameron <jic23@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?=
  <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
@@ -93,39 +93,24 @@ To: Angelo Dureghello <adureghello@baylibre.com>,
 Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
  devicetree@vger.kernel.org
 References: <20250502-wip-bl-ad7606-calibration-v2-0-174bd0af081b@baylibre.com>
- <20250502-wip-bl-ad7606-calibration-v2-4-174bd0af081b@baylibre.com>
+ <20250502-wip-bl-ad7606-calibration-v2-3-174bd0af081b@baylibre.com>
 From: David Lechner <dlechner@baylibre.com>
 Content-Language: en-US
-In-Reply-To: <20250502-wip-bl-ad7606-calibration-v2-4-174bd0af081b@baylibre.com>
+In-Reply-To: <20250502-wip-bl-ad7606-calibration-v2-3-174bd0af081b@baylibre.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 5/2/25 8:27 AM, Angelo Dureghello wrote:
 > From: Angelo Dureghello <adureghello@baylibre.com>
 > 
-> Add gain calibration support by a per-channel resistor value.
+> Add support for offset and phase calibration, only for
+> devices that support software mode, that are:
+> 
+> ad7606b
+> ad7606c-16
+> ad7606c-18
 > 
 > Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
 > ---
->  .../devicetree/bindings/iio/adc/adi,ad7606.yaml    | 29 ++++++++++++++++++++++
->  1 file changed, 29 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml
-> index 29f12d650442b8ff2eb455306ce59a0e87867ddd..d4b8ea51f60be367e79a4db18d932cbca9c7dc91 100644
-> --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml
-> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml
-> @@ -204,6 +204,15 @@ patternProperties:
->            considered a bipolar differential channel. Otherwise it is bipolar
->            single-ended.
->  
-> +      adi,rfilter-ohms:
-> +        description:
-> +          For ADCs that supports gain calibration, this property must be set to
-> +          the value of the external RFilter resistor. Proper gain error
-> +          correction is applied based on this value.
-> +        default: 0
-> +        minimum: 0
-> +        maximum: 65536
-> +
-Max should be 64512.
+Tested-by: David Lechner <dlechner@baylibre.com>
 

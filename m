@@ -1,75 +1,79 @@
-Return-Path: <linux-iio+bounces-18965-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-18971-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07C4AAA6D4C
-	for <lists+linux-iio@lfdr.de>; Fri,  2 May 2025 11:00:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2C62AA6D65
+	for <lists+linux-iio@lfdr.de>; Fri,  2 May 2025 11:02:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5B5CC7A651B
-	for <lists+linux-iio@lfdr.de>; Fri,  2 May 2025 08:59:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0787A466F34
+	for <lists+linux-iio@lfdr.de>; Fri,  2 May 2025 09:02:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B53E230BE0;
-	Fri,  2 May 2025 08:59:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17ECD242D72;
+	Fri,  2 May 2025 08:59:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="XvELZt0O"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="EscIQM/+"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C4FD22DFAA;
-	Fri,  2 May 2025 08:59:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B925123E355;
+	Fri,  2 May 2025 08:59:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746176384; cv=none; b=IXwc3ah5xaqiPd3GM3NgHKsv9C/MWPfm0+4DysCTQaz/xq0TGlyZw+GrtwYH4+BmPmg3AVOLADmRaWSc/Nc1C7SoiNpcw7t6hFb81QlJydNA9fmNMuT6pmjTgoRAH7He1j3PFOY7BO61lxNQ/y7dmii7UNYlgQv+xEz2p80Fib8=
+	t=1746176389; cv=none; b=AbqJZh96xFWQAX6HKxtIwPpxxOd0JTwaaWKZP5kCxs/NFM9MGjS4QNdwh5JbShgrywcpBX9acooWuCNn2a3AgMut7ute7temTCLhgq/Qtl8kp/B9J8Ky0o8AAq2F9c8oy7bk7dmHlMMWf7AFte0exIhHmL8KX7L235mUzvLZ1ok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746176384; c=relaxed/simple;
-	bh=+L9TdB69Fenku1dq/7kJ8upSIBITWqDJqSf7ikOY2oI=;
+	s=arc-20240116; t=1746176389; c=relaxed/simple;
+	bh=wKrYqIMpG9qFN9QLm7Wkkrg7C4pDtBCfxty8DTL5EOw=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Z8r6CXoQR+HrfhWwfW0792Y2JlnC6aO2uwDkImAYzjQbNgA5/go89Oy83eo4sMSLmwCz14ynnJnxtdIm5V/FHtIj0Q1s4gRINPPIzifNOnGKgPzJSFUrlkB1PLVyFiWbUkEs+mWv5TVQwWOqTYBvLQXuap2+TPOzJMyDaKYO1/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=XvELZt0O; arc=none smtp.client-ip=148.163.135.77
+	 MIME-Version:Content-Type; b=PlA/Yjo6F9WlCrLTOCgz+pPv1+QhLgive+pDF2DMy2LAT4Kz4Eh3w5MipfGrp6Q8X7KMqAzCvcsXYkTVekls8h9odhW9iCY7KBznlokFMN8EBQNk9DbPWJ6reL5BR6RG7evaSJMx1GJLA2R3aTDzgQyjqs3pcja83crBBtkFeEI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=EscIQM/+; arc=none smtp.client-ip=148.163.135.77
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
 Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-	by mx0a-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5426mqti008008;
-	Fri, 2 May 2025 04:59:40 -0400
+	by mx0a-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5428LRXM007984;
+	Fri, 2 May 2025 04:59:43 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=DKIM; bh=sB6E7
-	pZJ0yf4niDXJ7YeapOtQBSYppJHAjgfKPErpWI=; b=XvELZt0OAwpEIyL70duuT
-	egZBGFmy83fUqy5/oxvpqBbMORqDqbMoI4908n1zgUTGyMSDjXafwrWlAYOA9P+Y
-	H2MqpxAQJGjNNo+DdvVyk8Xef2xYA6IMockfgyB8tsP8SIKuAQZzCvjZMZ9uiIyL
-	5l/oT4A1i2OXxASl1FUeA9FTzbFE+jvxQBdyBVYq/bNJGCoKLt4ZTu5EwWJPw+sG
-	zdHAhaPF6nDZWfg8Q3V+XlSIzk5jW9pwSYFDPXUO9APWrn6rgPykedVTqTgQzWoC
-	fsdISFQr9Kc7/Ou9or6LkNnppuZfZscgsMfVaa70uPriIoe4bzmgoLbGTQm4AYgM
-	A==
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 46b6u1kwwp-1
+	:message-id:mime-version:references:subject:to; s=DKIM; bh=Fe8pH
+	4/kS0jr84xB8LMTahqV6lY3QxfCulibsKKDoQc=; b=EscIQM/+Vw31Sa2u4O0NM
+	1AoOIXbeheKVT42vVlrqmbGFzkruebfrhzSwFqovnhwhY34+LUm4NXrcAny+JiYe
+	SgUdYHCEW9UmO93IOAtOb9Q9zUwGg55iU/mkFpakJxUQj/kSlypzF/2NG/2qYHe9
+	q7RmDpyAa7yUGXgYUH4j53FjMno8xg15qQ6GKFOJi2AVN7+frCubI08qjsIBkSBI
+	hSQ3EFyN4D66mvku7QH4uRBiXA8XRlEFeNlAXHteN19LQUKSXie/ZydPkTDn9XzU
+	m3TjAcNaYdI00Xr5UvVupHtuSH6euHYCGUy6uSTSMQDkUQgkdB0CcTqMDdkt7NfA
+	w==
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 46b6u1kwwu-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 02 May 2025 04:59:39 -0400 (EDT)
+	Fri, 02 May 2025 04:59:43 -0400 (EDT)
 Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
-	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 5428xcV0029965
+	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 5428xg5j058989
 	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Fri, 2 May 2025 04:59:38 -0400
-Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Fri, 2 May 2025
- 04:59:38 -0400
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Fri, 2 May 2025 04:59:38 -0400
+	Fri, 2 May 2025 04:59:42 -0400
+Received: from ASHBCASHYB5.ad.analog.com (10.64.17.133) by
+ ASHBMBX9.ad.analog.com (10.64.17.10) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Fri, 2 May 2025 04:59:42 -0400
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by
+ ASHBCASHYB5.ad.analog.com (10.64.17.133) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Fri, 2 May 2025 04:59:42 -0400
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Fri, 2 May 2025 04:59:42 -0400
 Received: from amiclaus-VirtualBox.ad.analog.com (AMICLAUS-L02.ad.analog.com [10.48.65.211])
-	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 5428xL7R015723;
-	Fri, 2 May 2025 04:59:35 -0400
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 5428xL7S015723;
+	Fri, 2 May 2025 04:59:36 -0400
 From: Antoniu Miclaus <antoniu.miclaus@analog.com>
 To: <jic23@kernel.org>, <robh@kernel.org>, <conor+dt@kernel.org>,
         <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
         <linux-kernel@vger.kernel.org>
 CC: Antoniu Miclaus <antoniu.miclaus@analog.com>
-Subject: [PATCH v4 08/10] dt-bindings: iio: adc: add ad4080
-Date: Fri, 2 May 2025 11:59:03 +0300
-Message-ID: <20250502085905.24926-9-antoniu.miclaus@analog.com>
+Subject: [PATCH v4 09/10] iio: adc: ad4080: add driver support
+Date: Fri, 2 May 2025 11:59:04 +0300
+Message-ID: <20250502085905.24926-10-antoniu.miclaus@analog.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250502085905.24926-1-antoniu.miclaus@analog.com>
 References: <20250502085905.24926-1-antoniu.miclaus@analog.com>
@@ -82,12 +86,12 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-ADIRuleOP-NewSCL: Rule Triggered
-X-Authority-Analysis: v=2.4 cv=RuDFLDmK c=1 sm=1 tr=0 ts=6814897b cx=c_pps a=3WNzaoukacrqR9RwcOSAdA==:117 a=3WNzaoukacrqR9RwcOSAdA==:17 a=dt9VzEwgFbYA:10 a=gEfo2CItAAAA:8 a=gAnH3GRIAAAA:8 a=VwQbUJbxAAAA:8 a=tzrCRXNhpX36lL6KDSgA:9 a=sptkURWiP4Gy88Gu7hUp:22
-X-Proofpoint-GUID: IGXk4EEUCEd1doQ67Sqs5AyELOmDxPRa
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTAyMDA2OSBTYWx0ZWRfX4Owx/H5yAmLy PzAdBN0jZWExE7PEtmtJ14p6Me6vMdM1MDCrmhJfqG3gWfHIyM5iGDf713mv7JA4XBgmeiN9Xgo MHX6ZNY9RvLYcV0GofMP3giQuFUJvmO1VhSGbO1vb1G6dw2zNJaksi5SbxylrZG8Wk3RLfUEDyt
- QAwh+//pwX246/jrDCqJD9ICFzIfazwnKEyi/zSORWgtEke4nylNBW5Z3RPleLyegcv4xWZVstS 1Fw8gC/hxgmpAjzo75o7x3sTEcG/581ihI5mlbKa+qOK9k/RM0pA68p96CAb2CUiA83Jw8VsIUH GuqMZEQxYDmF3IYmxKvqqRq5seD0ccgQkikqrvCdj0nvxLmX3PuqlARMS2dxFl5rrqWsaDsyOU8
- kbHj0+Bf43teLA5bqW4f3gM88PEqRIubDjyVriicxjoDgdRKOwSUogPqCb0m0zkbJOKt6BI6
-X-Proofpoint-ORIG-GUID: IGXk4EEUCEd1doQ67Sqs5AyELOmDxPRa
+X-Authority-Analysis: v=2.4 cv=RuDFLDmK c=1 sm=1 tr=0 ts=6814897f cx=c_pps a=PpDZqlmH/M8setHirZLBMw==:117 a=PpDZqlmH/M8setHirZLBMw==:17 a=dt9VzEwgFbYA:10 a=gAnH3GRIAAAA:8 a=VwQbUJbxAAAA:8 a=1JhV2NT8v1zTVgKiQkIA:9
+X-Proofpoint-GUID: U5EI3aK0BKJ4xYarRC_U3QN_eXkiG_P3
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTAyMDA2OSBTYWx0ZWRfX65s39BCtApGn VOh1x826dNnWoewyj+Ug7TNuhta5ICLswO1ViTLGEP3jAuhcGQoAbrq9Vqj16utHrzY16Pj+oyu 53jglik+V07rNpMrJ+keuQoYZfv2c3zOhkqDPwIEP+OdhVi9RJCI1hz8i4xJlz2zAFRafYuxb7I
+ kXc+fLp2vROpKgww0Th1+40D6LkvWdMpRoC0x5WpUhUNQkUwpsV6bH8iuxU48LdYt3Afiph9zI4 VOO6GI8E5hnop41W5awEyU/tVDYJKLJtb+mi2FYMeqs1dE+7ZiBDWxQnbLHClHC7PWlyDatWcDH Z116BqmjSjWrCQyfewpzW90mRNaxlQB3CTIqGQRkeEOGz/dsLK8hHdO0yIDCMnCmN5NqPMsoMJe
+ JZdKjyzUgf7g43JvGJKM3q/WCkhRPn1YGMH3kjUTEGUGKOrbnD3hZaAxevilN3mgl5uygkij
+X-Proofpoint-ORIG-GUID: U5EI3aK0BKJ4xYarRC_U3QN_eXkiG_P3
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
  definitions=2025-05-01_06,2025-04-30_01,2025-02-21_01
@@ -98,118 +102,677 @@ X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscor
  route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2504070000
  definitions=main-2505020069
 
-Add devicetree bindings for ad4080 family.
+Add support for AD4080 high-speed, low noise, low distortion,
+20-bit, Easy Drive, successive approximation register (SAR)
+analog-to-digital converter (ADC).
 
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
 Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
 ---
-no changes in v4.
- .../bindings/iio/adc/adi,ad4080.yaml          | 96 +++++++++++++++++++
- 1 file changed, 96 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad4080.yaml
+changes in v4:
+ - drop _MSK postfix for bit definitions
+ - add space before }
+ - drop writing reserved bit.
+ - use regmap_set_bits/regmap_clear_bits instead of regmap_write
+ - use dev_dbg() where applies
+ - use dev_err() where applies
+ - use FIELD_PREP when _MSK defines are implied.
+ - drop explicit statement `.shift = 0`
+ - get clk_rate during probe.
+ - handle IIO_CHAN_INFO_SCALE and IIO_CHAN_INFO_SAMP_FREQ in default.
+ - use the new iio_backend_interface_data_align function
+ - drop redundant else.
+ - drop redundat mutex guards.
+ - rearrange includes.
+ - rename sinc5+pf1
+ - use regmap_get_device
+ - drop outermost ()
+ - check mode for < 2
+ - drop st->dec_rate and use functions inline.
+ - drop ad4080_channels[] and use ad4080_channel instead
+ - drop redundat if statement for num_lanes.
+ - use - instead of _ for device properties.
+ - drop reduandant assignement
+ - drop indio_dev->modes = INDIO_DIRECT_MODE;
+ - rename filter_disabled to filter_none.
+ MAINTAINERS              |   8 +
+ drivers/iio/adc/Kconfig  |  14 +
+ drivers/iio/adc/Makefile |   1 +
+ drivers/iio/adc/ad4080.c | 570 +++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 593 insertions(+)
+ create mode 100644 drivers/iio/adc/ad4080.c
 
-diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad4080.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad4080.yaml
+diff --git a/MAINTAINERS b/MAINTAINERS
+index bd04375ab4a2..0038f7a078ae 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -1317,6 +1317,14 @@ F:	Documentation/devicetree/bindings/iio/adc/adi,ad4030.yaml
+ F:	Documentation/iio/ad4030.rst
+ F:	drivers/iio/adc/ad4030.c
+ 
++ANALOG DEVICES INC AD4080 DRIVER
++M:	Antoniu Miclaus <antoniu.miclaus@analog.com>
++L:	linux-iio@vger.kernel.org
++S:	Supported
++W:	https://ez.analog.com/linux-software-drivers
++F:	Documentation/devicetree/bindings/iio/adc/adi,ad4080.yaml
++F:	drivers/iio/adc/ad4080.c
++
+ ANALOG DEVICES INC AD4130 DRIVER
+ M:	Cosmin Tanislav <cosmin.tanislav@analog.com>
+ L:	linux-iio@vger.kernel.org
+diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
+index 27413516216c..17df328f5322 100644
+--- a/drivers/iio/adc/Kconfig
++++ b/drivers/iio/adc/Kconfig
+@@ -47,6 +47,20 @@ config AD4030
+ 	  To compile this driver as a module, choose M here: the module will be
+ 	  called ad4030.
+ 
++config AD4080
++	tristate "Analog Devices AD4080 high speed ADC"
++	depends on SPI
++	select REGMAP_SPI
++	select IIO_BACKEND
++	help
++	  Say yes here to build support for Analog Devices AD4080
++	  high speed, low noise, low distortion, 20-bit, Easy Drive,
++	  successive approximation register (SAR) analog-to-digital
++	  converter (ADC). Supports iio_backended devices for AD4080.
++
++	  To compile this driver as a module, choose M here: the module will be
++	  called ad4080.
++
+ config AD4130
+ 	tristate "Analog Device AD4130 ADC Driver"
+ 	depends on SPI
+diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
+index 9f26d5eca822..e6efed5b4e7a 100644
+--- a/drivers/iio/adc/Makefile
++++ b/drivers/iio/adc/Makefile
+@@ -8,6 +8,7 @@ obj-$(CONFIG_AB8500_GPADC) += ab8500-gpadc.o
+ obj-$(CONFIG_AD_SIGMA_DELTA) += ad_sigma_delta.o
+ obj-$(CONFIG_AD4000) += ad4000.o
+ obj-$(CONFIG_AD4030) += ad4030.o
++obj-$(CONFIG_AD4080) += ad4080.o
+ obj-$(CONFIG_AD4130) += ad4130.o
+ obj-$(CONFIG_AD4695) += ad4695.o
+ obj-$(CONFIG_AD4851) += ad4851.o
+diff --git a/drivers/iio/adc/ad4080.c b/drivers/iio/adc/ad4080.c
 new file mode 100644
-index 000000000000..ed849ba1b77b
+index 000000000000..9168dee9323e
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/adc/adi,ad4080.yaml
-@@ -0,0 +1,96 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+# Copyright 2025 Analog Devices Inc.
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/iio/adc/adi,ad4080.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
++++ b/drivers/iio/adc/ad4080.c
+@@ -0,0 +1,570 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Analog Devices AD4080 SPI ADC driver
++ *
++ * Copyright 2025 Analog Devices Inc.
++ */
 +
-+title: Analog Devices AD4080 20-Bit, 40 MSPS, Differential SAR ADC
++#include <linux/array_size.h>
++#include <linux/bitfield.h>
++#include <linux/bits.h>
++#include <linux/clk.h>
++#include <linux/device.h>
++#include <linux/err.h>
++#include <linux/iio/backend.h>
++#include <linux/iio/iio.h>
++#include <linux/mod_devicetable.h>
++#include <linux/module.h>
++#include <linux/mutex.h>
++#include <linux/regmap.h>
++#include <linux/regulator/consumer.h>
++#include <linux/spi/spi.h>
++#include <linux/types.h>
++#include <linux/unaligned.h>
++#include <linux/units.h>
 +
-+maintainers:
-+  - Antoniu Miclaus <antoniu.miclaus@analog.com>
++/* Register Definition */
++#define AD4080_REG_INTERFACE_CONFIG_A				0x00
++#define AD4080_REG_INTERFACE_CONFIG_B				0x01
++#define AD4080_REG_DEVICE_CONFIG				0x02
++#define AD4080_REG_CHIP_TYPE					0x03
++#define AD4080_REG_PRODUCT_ID_L					0x04
++#define AD4080_REG_PRODUCT_ID_H					0x05
++#define AD4080_REG_CHIP_GRADE					0x06
++#define AD4080_REG_SCRATCH_PAD					0x0A
++#define AD4080_REG_SPI_REVISION					0x0B
++#define AD4080_REG_VENDOR_L					0x0C
++#define AD4080_REG_VENDOR_H					0x0D
++#define AD4080_REG_STREAM_MODE					0x0E
++#define AD4080_REG_TRANSFER_CONFIG				0x0F
++#define AD4080_REG_INTERFACE_CONFIG_C				0x10
++#define AD4080_REG_INTERFACE_STATUS_A				0x11
++#define AD4080_REG_DEVICE_STATUS				0x14
++#define AD4080_REG_ADC_DATA_INTF_CONFIG_A			0x15
++#define AD4080_REG_ADC_DATA_INTF_CONFIG_B			0x16
++#define AD4080_REG_ADC_DATA_INTF_CONFIG_C			0x17
++#define AD4080_REG_PWR_CTRL					0x18
++#define AD4080_REG_GPIO_CONFIG_A				0x19
++#define AD4080_REG_GPIO_CONFIG_B				0x1A
++#define AD4080_REG_GPIO_CONFIG_C				0x1B
++#define AD4080_REG_GENERAL_CONFIG				0x1C
++#define AD4080_REG_FIFO_WATERMARK_LSB				0x1D
++#define AD4080_REG_FIFO_WATERMARK_MSB				0x1E
++#define AD4080_REG_EVENT_HYSTERESIS_LSB				0x1F
++#define AD4080_REG_EVENT_HYSTERESIS_MSB				0x20
++#define AD4080_REG_EVENT_DETECTION_HI_LSB			0x21
++#define AD4080_REG_EVENT_DETECTION_HI_MSB			0x22
++#define AD4080_REG_EVENT_DETECTION_LO_LSB			0x23
++#define AD4080_REG_EVENT_DETECTION_LO_MSB			0x24
++#define AD4080_REG_OFFSET_LSB					0x25
++#define AD4080_REG_OFFSET_MSB					0x26
++#define AD4080_REG_GAIN_LSB					0x27
++#define AD4080_REG_GAIN_MSB					0x28
++#define AD4080_REG_FILTER_CONFIG				0x29
 +
-+description: |
-+  The AD4080 is a high speed, low noise, low distortion, 20-bit, Easy Drive,
-+  successive approximation register (SAR) analog-to-digital converter (ADC).
-+  Maintaining high performance (signal-to-noise and distortion (SINAD) ratio
-+  > 90 dBFS) at signal frequencies in excess of 1 MHz enables the AD4080 to
-+  service a wide variety of precision, wide bandwidth data acquisition
-+  applications.
++/* AD4080_REG_INTERFACE_CONFIG_A Bit Definition */
++#define AD4080_INTERFACE_CONFIG_A_SW_RESET			(BIT(7) | BIT(0))
++#define AD4080_INTERFACE_CONFIG_A_ADDR_ASC			BIT(5)
++#define AD4080_INTERFACE_CONFIG_A_SDO_ENABLE			BIT(4)
 +
-+  https://www.analog.com/media/en/technical-documentation/data-sheets/ad4080.pdf
++/* AD4080_REG_INTERFACE_CONFIG_B Bit Definition */
++#define AD4080_INTERFACE_CONFIG_B_SINGLE_INST			BIT(7)
++#define AD4080_INTERFACE_CONFIG_B_SHORT_INST			BIT(3)
 +
-+$ref: /schemas/spi/spi-peripheral-props.yaml#
++/* AD4080_REG_DEVICE_CONFIG Bit Definition */
++#define AD4080_DEVICE_CONFIG_OPERATING_MODES_MSK		GENMASK(1, 0)
 +
-+properties:
-+  compatible:
-+    enum:
-+      - adi,ad4080
++/* AD4080_REG_TRANSFER_CONFIG Bit Definition */
++#define AD4080_TRANSFER_CONFIG_KEEP_STREAM_LENGTH_VAL		BIT(2)
 +
-+  reg:
-+    maxItems: 1
++/* AD4080_REG_INTERFACE_CONFIG_C Bit Definition */
++#define AD4080_INTERFACE_CONFIG_C_STRICT_REG_ACCESS		BIT(5)
 +
-+  spi-max-frequency:
-+    description: Configuration of the SPI bus.
-+    maximum: 50000000
++/* AD4080_REG_ADC_DATA_INTF_CONFIG_A Bit Definition */
++#define AD4080_ADC_DATA_INTF_CONFIG_A_RESERVED_CONFIG_A		BIT(6)
++#define AD4080_ADC_DATA_INTF_CONFIG_A_INTF_CHK_EN		BIT(4)
++#define AD4080_ADC_DATA_INTF_CONFIG_A_SPI_LVDS_LANES		BIT(2)
++#define AD4080_ADC_DATA_INTF_CONFIG_A_DATA_INTF_MODE		BIT(0)
 +
-+  clocks:
-+    maxItems: 1
++/* AD4080_REG_ADC_DATA_INTF_CONFIG_B Bit Definition */
++#define AD4080_ADC_DATA_INTF_CONFIG_B_LVDS_CNV_CLK_CNT_MSK	GENMASK(7, 4)
++#define AD4080_ADC_DATA_INTF_CONFIG_B_LVDS_SELF_CLK_MODE	BIT(3)
++#define AD4080_ADC_DATA_INTF_CONFIG_B_LVDS_CNV_EN		BIT(0)
 +
-+  clock-names:
-+    items:
-+      - const: cnv
++/* AD4080_REG_ADC_DATA_INTF_CONFIG_C Bit Definition */
++#define AD4080_ADC_DATA_INTF_CONFIG_C_LVDS_VOD_MSK		GENMASK(6, 4)
 +
-+  vdd33-supply: true
++/* AD4080_REG_PWR_CTRL Bit Definition */
++#define AD4080_PWR_CTRL_ANA_DIG_LDO_PD				BIT(1)
++#define AD4080_PWR_CTRL_INTF_LDO_PD				BIT(0)
 +
-+  vdd11-supply: true
++/* AD4080_REG_GPIO_CONFIG_A Bit Definition */
++#define AD4080_GPIO_CONFIG_A_GPO_1_EN				BIT(1)
++#define AD4080_GPIO_CONFIG_A_GPO_0_EN				BIT(0)
 +
-+  vddldo-supply: true
++/* AD4080_REG_GPIO_CONFIG_B Bit Definition */
++#define AD4080_GPIO_CONFIG_B_GPIO_1_SEL_MSK			GENMASK(7, 4)
++#define AD4080_GPIO_CONFIG_B_GPIO_0_SEL_MSK			GENMASK(3, 0)
 +
-+  iovdd-supply: true
++/* AD4080_REG_FIFO_CONFIG Bit Definition */
++#define AD4080_FIFO_CONFIG_FIFO_MODE_MSK			GENMASK(1, 0)
 +
-+  vrefin-supply: true
++/* AD4080_REG_FILTER_CONFIG Bit Definition */
++#define AD4080_FILTER_CONFIG_SINC_DEC_RATE_MSK			GENMASK(6, 3)
++#define AD4080_FILTER_CONFIG_FILTER_SEL_MSK			GENMASK(1, 0)
 +
-+  io-backends:
-+    maxItems: 1
++/* Miscellaneous Definitions */
++#define AD4080_SPI_READ						BIT(7)
++#define AD4080_CHIP_ID						GENMASK(2, 0)
 +
-+  adi,lvds-cnv-enable:
-+    description: Enable the LVDS signal type on the CNV pin. Default is CMOS.
-+    type: boolean
++#define AD4080_MAX_SAMP_FREQ					40000000
++#define AD4080_MIN_SAMP_FREQ					1250000
 +
-+  adi,num-lanes:
-+    description:
-+      Number of lanes on which the data is sent on the output (DA, DB pins).
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    enum: [1, 2]
-+    default: 1
++enum ad4080_filter_type {
++	FILTER_NONE,
++	SINC_1,
++	SINC_5,
++	SINC_5_COMP
++};
 +
-+required:
-+  - compatible
-+  - reg
-+  - clocks
-+  - clock-names
-+  - vdd33-supply
-+  - vrefin-supply
++static const unsigned int ad4080_scale_table[][2] = {
++	{ 6000, 0 },
++};
 +
-+additionalProperties: false
++static const char *const ad4080_filter_type_iio_enum[] = {
++	[FILTER_NONE]      = "none",
++	[SINC_1]           = "sinc1",
++	[SINC_5]           = "sinc5",
++	[SINC_5_COMP]      = "sinc5+pf1",
++};
 +
-+examples:
-+  - |
-+    spi {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
++static const int ad4080_dec_rate_iio_enum[] = {
++	2, 4, 8, 16, 32, 64, 128, 256, 512, 1024,
++};
 +
-+        adc@0 {
-+          compatible = "adi,ad4080";
-+          reg = <0>;
-+          spi-max-frequency = <10000000>;
-+          vdd33-supply = <&vdd33>;
-+          vddldo-supply = <&vddldo>;
-+          vrefin-supply = <&vrefin>;
-+          clocks = <&cnv>;
-+          clock-names = "cnv";
-+          io-backends = <&iio_backend>;
-+        };
-+    };
-+...
++static const char * const ad4080_power_supplies[] = {
++	"vdd33", "vdd11", "vddldo", "iovdd", "vrefin",
++};
++
++struct ad4080_chip_info {
++	const char *name;
++	unsigned int product_id;
++	int num_scales;
++	const unsigned int (*scale_table)[2];
++	const struct iio_chan_spec *channels;
++	unsigned int num_channels;
++};
++
++struct ad4080_state {
++	struct regmap			*regmap;
++	struct clk			*clk;
++	struct iio_backend		*back;
++	const struct ad4080_chip_info	*info;
++	/*
++	 * Synchronize access to members the of driver state, and ensure
++	 * atomicity of consecutive regmap operations.
++	 */
++	struct mutex			lock;
++	unsigned int			num_lanes;
++	unsigned int			dec_rate;
++	unsigned long			clk_rate;
++	enum ad4080_filter_type		filter_type;
++	bool				lvds_cnv_en;
++};
++
++static const struct regmap_config ad4080_regmap_config = {
++	.reg_bits = 16,
++	.val_bits = 8,
++	.read_flag_mask = BIT(7),
++	.max_register = 0x29,
++};
++
++static int ad4080_reg_access(struct iio_dev *indio_dev, unsigned int reg,
++			     unsigned int writeval, unsigned int *readval)
++{
++	struct ad4080_state *st = iio_priv(indio_dev);
++
++	if (readval)
++		return regmap_read(st->regmap, reg, readval);
++
++	return regmap_write(st->regmap, reg, writeval);
++}
++
++static int ad4080_get_scale(struct ad4080_state *st, int *val, int *val2)
++{
++	unsigned int tmp;
++
++	tmp = (st->info->scale_table[0][0] * 1000000ULL) >>
++		    st->info->channels[0].scan_type.realbits;
++	*val = tmp / 1000000;
++	*val2 = tmp % 1000000;
++
++	return IIO_VAL_INT_PLUS_NANO;
++}
++
++static unsigned int ad4080_get_dec_rate(struct iio_dev *dev,
++					const struct iio_chan_spec *chan)
++{
++	struct ad4080_state *st = iio_priv(dev);
++	int ret;
++	unsigned int data;
++
++	ret = regmap_read(st->regmap, AD4080_REG_FILTER_CONFIG, &data);
++	if (ret)
++		return ret;
++
++	return 1 << (FIELD_GET(AD4080_FILTER_CONFIG_SINC_DEC_RATE_MSK, data) + 1);
++}
++
++static int ad4080_set_dec_rate(struct iio_dev *dev,
++			       const struct iio_chan_spec *chan,
++			       unsigned int mode)
++{
++	struct ad4080_state *st = iio_priv(dev);
++	int ret;
++
++	if ((st->filter_type >= SINC_5 && mode >= 512) || mode < 2)
++		return -EINVAL;
++
++	ret = regmap_update_bits(st->regmap, AD4080_REG_FILTER_CONFIG,
++				 AD4080_FILTER_CONFIG_SINC_DEC_RATE_MSK,
++				 FIELD_PREP(AD4080_FILTER_CONFIG_SINC_DEC_RATE_MSK,
++					    (ilog2(mode) - 1)));
++	if (ret)
++		return ret;
++
++	return 0;
++}
++
++static int ad4080_read_raw(struct iio_dev *indio_dev,
++			   struct iio_chan_spec const *chan,
++			   int *val, int *val2, long m)
++{
++	struct ad4080_state *st = iio_priv(indio_dev);
++	unsigned int dec_rate;
++
++	switch (m) {
++	case IIO_CHAN_INFO_SCALE:
++		return ad4080_get_scale(st, val, val2);
++	case IIO_CHAN_INFO_SAMP_FREQ:
++		dec_rate = ad4080_get_dec_rate(indio_dev, chan);
++		if (st->filter_type == SINC_5_COMP)
++			dec_rate *= 2;
++		if (st->filter_type)
++			*val = DIV_ROUND_CLOSEST(st->clk_rate, dec_rate);
++		else
++			*val = st->clk_rate;
++		return IIO_VAL_INT;
++	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
++		*val = ad4080_get_dec_rate(indio_dev, chan);
++		return IIO_VAL_INT;
++	default:
++		return -EINVAL;
++	}
++}
++
++static int ad4080_write_raw(struct iio_dev *indio_dev,
++			    struct iio_chan_spec const *chan,
++			    int val, int val2, long mask)
++{
++	switch (mask) {
++	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
++		return ad4080_set_dec_rate(indio_dev, chan, val);
++	default:
++		return -EINVAL;
++	}
++}
++
++static int ad4080_lvds_sync_write(struct ad4080_state *st)
++{
++	struct device *dev = regmap_get_device(st->regmap);
++	int ret;
++
++	ret = regmap_set_bits(st->regmap, AD4080_REG_ADC_DATA_INTF_CONFIG_A,
++			      AD4080_ADC_DATA_INTF_CONFIG_A_INTF_CHK_EN);
++	if (ret)
++		return ret;
++
++	ret = iio_backend_interface_data_align(st->back, 100);
++	if (ret == -ETIMEDOUT)
++		dev_err(dev, "LVDS Sync Timeout.\n");
++	if (ret)
++		return ret;
++
++	dev_dbg(dev, "Success: Pattern correct and Locked!\n");
++	return regmap_clear_bits(st->regmap, AD4080_REG_ADC_DATA_INTF_CONFIG_A,
++				 AD4080_ADC_DATA_INTF_CONFIG_A_INTF_CHK_EN);
++}
++
++static ssize_t ad4080_get_filter_type(struct iio_dev *dev,
++				      const struct iio_chan_spec *chan)
++{
++	struct ad4080_state *st = iio_priv(dev);
++	unsigned int data;
++	int ret;
++
++	ret = regmap_read(st->regmap, AD4080_REG_FILTER_CONFIG, &data);
++	if (ret)
++		return ret;
++
++	return FIELD_GET(AD4080_FILTER_CONFIG_FILTER_SEL_MSK, data);
++}
++
++static int ad4080_set_filter_type(struct iio_dev *dev,
++				  const struct iio_chan_spec *chan,
++				  unsigned int mode)
++{
++	struct ad4080_state *st = iio_priv(dev);
++	unsigned int dec_rate;
++	int ret;
++
++	dec_rate = ad4080_get_dec_rate(dev, chan);
++
++	if (mode >= SINC_5 && dec_rate >= 512)
++		return -EINVAL;
++
++	guard(mutex)(&st->lock);
++	ret = iio_backend_filter_type_set(st->back, mode);
++	if (ret)
++		return ret;
++
++	ret = regmap_update_bits(st->regmap, AD4080_REG_FILTER_CONFIG,
++				 AD4080_FILTER_CONFIG_FILTER_SEL_MSK,
++				 FIELD_PREP(AD4080_FILTER_CONFIG_FILTER_SEL_MSK,
++					    mode));
++	if (ret)
++		return ret;
++
++	st->filter_type = mode;
++
++	return 0;
++}
++
++static int ad4080_read_avail(struct iio_dev *indio_dev,
++			     struct iio_chan_spec const *chan,
++			     const int **vals, int *type, int *length,
++			     long mask)
++{
++	switch (mask) {
++	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
++		*vals = ad4080_dec_rate_iio_enum;
++		*length = ARRAY_SIZE(ad4080_dec_rate_iio_enum);
++		*type = IIO_VAL_INT;
++		return IIO_AVAIL_LIST;
++	default:
++		return -EINVAL;
++	}
++}
++
++static const struct iio_info ad4080_iio_info = {
++	.debugfs_reg_access = ad4080_reg_access,
++	.read_raw = ad4080_read_raw,
++	.write_raw = ad4080_write_raw,
++	.read_avail = ad4080_read_avail,
++};
++
++static const struct iio_enum ad4080_filter_type_enum = {
++	.items = ad4080_filter_type_iio_enum,
++	.num_items = ARRAY_SIZE(ad4080_filter_type_iio_enum),
++	.set = ad4080_set_filter_type,
++	.get = ad4080_get_filter_type,
++};
++
++static struct iio_chan_spec_ext_info ad4080_ext_info[] = {
++	IIO_ENUM("filter_type", IIO_SHARED_BY_ALL, &ad4080_filter_type_enum),
++	IIO_ENUM_AVAILABLE("filter_type", IIO_SHARED_BY_ALL,
++			   &ad4080_filter_type_enum),
++	{ }
++};
++
++static const struct iio_chan_spec ad4080_channel = {
++	.type = IIO_VOLTAGE,
++	.indexed = 1,
++	.channel = 0,
++	.info_mask_separate = BIT(IIO_CHAN_INFO_SCALE),
++	.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SAMP_FREQ) |
++			BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),
++	.info_mask_shared_by_all_available =
++			BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),
++	.ext_info = ad4080_ext_info,
++	.scan_index = 0,
++	.scan_type = {
++		.sign = 's',
++		.realbits = 20,
++		.storagebits = 32,
++	},
++};
++
++static const struct ad4080_chip_info ad4080_chip_info = {
++	.name = "AD4080",
++	.product_id = AD4080_CHIP_ID,
++	.scale_table = ad4080_scale_table,
++	.num_scales = ARRAY_SIZE(ad4080_scale_table),
++	.num_channels = 1,
++	.channels = &ad4080_channel,
++};
++
++static int ad4080_setup(struct iio_dev *indio_dev)
++{
++	struct ad4080_state *st = iio_priv(indio_dev);
++	struct device *dev = regmap_get_device(st->regmap);
++	unsigned int id;
++	int ret;
++
++	ret = regmap_write(st->regmap, AD4080_REG_INTERFACE_CONFIG_A,
++			   AD4080_INTERFACE_CONFIG_A_SW_RESET);
++	if (ret)
++		return ret;
++
++	ret = regmap_write(st->regmap, AD4080_REG_INTERFACE_CONFIG_A,
++			   AD4080_INTERFACE_CONFIG_A_SDO_ENABLE);
++	if (ret)
++		return ret;
++
++	ret = regmap_read(st->regmap, AD4080_REG_CHIP_TYPE, &id);
++	if (ret)
++		return ret;
++
++	if (id != AD4080_CHIP_ID)
++		dev_info(dev, "Unrecognized CHIP_ID 0x%X\n", id);
++
++	ret = regmap_set_bits(st->regmap, AD4080_REG_GPIO_CONFIG_A,
++			      AD4080_GPIO_CONFIG_A_GPO_1_EN);
++	if (ret)
++		return ret;
++
++	ret = regmap_write(st->regmap, AD4080_REG_GPIO_CONFIG_B,
++			   FIELD_PREP(AD4080_GPIO_CONFIG_B_GPIO_1_SEL_MSK, 3));
++	if (ret)
++		return ret;
++
++	ret = iio_backend_num_lanes_set(st->back, st->num_lanes);
++	if (ret)
++		return ret;
++
++	if (!st->lvds_cnv_en)
++		return 0;
++
++	ret = regmap_update_bits(st->regmap,
++				 AD4080_REG_ADC_DATA_INTF_CONFIG_B,
++				 AD4080_ADC_DATA_INTF_CONFIG_B_LVDS_CNV_CLK_CNT_MSK,
++				 FIELD_PREP(AD4080_ADC_DATA_INTF_CONFIG_B_LVDS_CNV_CLK_CNT_MSK, 7));
++	if (ret)
++		return ret;
++
++	if (st->num_lanes != 1) {
++		ret = regmap_set_bits(st->regmap, AD4080_REG_ADC_DATA_INTF_CONFIG_A,
++				      AD4080_ADC_DATA_INTF_CONFIG_A_SPI_LVDS_LANES);
++		if (ret)
++			return ret;
++	}
++
++	ret = regmap_set_bits(st->regmap,
++			      AD4080_REG_ADC_DATA_INTF_CONFIG_B,
++			      AD4080_ADC_DATA_INTF_CONFIG_B_LVDS_CNV_EN);
++	if (ret)
++		return ret;
++
++	return ad4080_lvds_sync_write(st);
++}
++
++static void ad4080_properties_parse(struct ad4080_state *st)
++{
++	struct device *dev = regmap_get_device(st->regmap);
++
++	st->lvds_cnv_en = device_property_read_bool(dev, "adi,lvds-cnv-enable");
++
++	st->num_lanes = 1;
++	device_property_read_u32(dev, "adi,num-lanes", &st->num_lanes);
++}
++
++static int ad4080_probe(struct spi_device *spi)
++{
++	struct iio_dev *indio_dev;
++	struct device *dev = &spi->dev;
++	struct ad4080_state *st;
++	int ret;
++
++	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*st));
++	if (!indio_dev)
++		return -ENOMEM;
++
++	st = iio_priv(indio_dev);
++
++	ret = devm_regulator_bulk_get_enable(dev,
++					     ARRAY_SIZE(ad4080_power_supplies),
++					     ad4080_power_supplies);
++	if (ret)
++		return dev_err_probe(dev, ret,
++				     "failed to get and enable supplies\n");
++
++	st->regmap = devm_regmap_init_spi(spi, &ad4080_regmap_config);
++	if (IS_ERR(st->regmap))
++		return PTR_ERR(st->regmap);
++
++	st->info = spi_get_device_match_data(spi);
++	if (!st->info)
++		return -ENODEV;
++
++	ret = devm_mutex_init(dev, &st->lock);
++	if (ret)
++		return ret;
++
++	indio_dev->name = st->info->name;
++	indio_dev->channels = st->info->channels;
++	indio_dev->num_channels = st->info->num_channels;
++	indio_dev->info = &ad4080_iio_info;
++
++	ad4080_properties_parse(st);
++
++	st->clk = devm_clk_get_enabled(&spi->dev, "cnv");
++	if (IS_ERR(st->clk))
++		return PTR_ERR(st->clk);
++
++	st->clk_rate = clk_get_rate(st->clk);
++
++	st->back = devm_iio_backend_get(dev, NULL);
++	if (IS_ERR(st->back))
++		return PTR_ERR(st->back);
++
++	ret = devm_iio_backend_request_buffer(dev, st->back, indio_dev);
++	if (ret)
++		return ret;
++
++	ret = devm_iio_backend_enable(dev, st->back);
++	if (ret)
++		return ret;
++
++	ret = ad4080_setup(indio_dev);
++	if (ret)
++		return ret;
++
++	return devm_iio_device_register(&spi->dev, indio_dev);
++}
++
++static const struct spi_device_id ad4080_id[] = {
++	{ "ad4080", (kernel_ulong_t)&ad4080_chip_info },
++	{ }
++};
++MODULE_DEVICE_TABLE(spi, ad4080_id);
++
++static const struct of_device_id ad4080_of_match[] = {
++	{ .compatible = "adi,ad4080", &ad4080_chip_info },
++	{ }
++};
++MODULE_DEVICE_TABLE(of, ad4080_of_match);
++
++static struct spi_driver ad4080_driver = {
++	.driver = {
++		.name = "ad4080",
++		.of_match_table = ad4080_of_match,
++	},
++	.probe = ad4080_probe,
++	.id_table = ad4080_id,
++};
++module_spi_driver(ad4080_driver);
++
++MODULE_AUTHOR("Antoniu Miclaus <antoniu.miclaus@analog.com");
++MODULE_DESCRIPTION("Analog Devices AD4080");
++MODULE_LICENSE("GPL");
++MODULE_IMPORT_NS("IIO_BACKEND");
 -- 
 2.49.0
 

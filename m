@@ -1,245 +1,143 @@
-Return-Path: <linux-iio+bounces-19015-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19016-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2B5BAA7FD1
-	for <lists+linux-iio@lfdr.de>; Sat,  3 May 2025 11:55:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D624AA8090
+	for <lists+linux-iio@lfdr.de>; Sat,  3 May 2025 14:03:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6C4451BA1E79
-	for <lists+linux-iio@lfdr.de>; Sat,  3 May 2025 09:56:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E27D21B6315E
+	for <lists+linux-iio@lfdr.de>; Sat,  3 May 2025 12:03:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB3821DB92C;
-	Sat,  3 May 2025 09:55:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCBEA1EBA07;
+	Sat,  3 May 2025 12:03:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VhloYE4A"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T6i7Id9v"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E52D54315F;
-	Sat,  3 May 2025 09:55:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6D6A17D2;
+	Sat,  3 May 2025 12:03:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746266142; cv=none; b=OOCpc1vDvhzFDq1oMnKKrnj31jr0iea7NPThDGyiMXccbkXUkRqvRLMoBQJDbpv+SFCjEKLeI+/0Bt1y/UD8K00okpFz4eBcCRhGIhUyFMCTJZqzo2KAc8iPGtMyYESTn2HpgtbQSR/H6DLxRLr0Ryqnn98wdkQSYSX8aJ5VkAI=
+	t=1746273793; cv=none; b=YaN3c4i+B5YaVqM8HrQJ+Fadl2lzIIUlQofXCSXdKvqDtdYVHHMPakG+XGyKXhKNQ4ZwtgDp1aN9fa0CofqF4/qTRZEQWAalRiZbKggxsb965GO7Agy9Xp5ye9l2N7O4B3JzfgaaF1yJ/EM8q3ugT7kAO5CQuib+ntXeKTijK5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746266142; c=relaxed/simple;
-	bh=QsjQOqs9rNCb6wlXwkkUKTzyWATUgzGPtz62hjqj04U=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GqQyPg0MtJXRDu9DD+xW/Czcwt0YcNm4Bi8JN07abGki1ASgDHxygcawSuOpzve0JPkha9hMf1BJx2s8n5ggXDxfxJkugl+LLc5OZoYSGc7mN7+AVObYIoQbDkMZ2DPWgtpqr3JdZ2UNtK2iXAG/BT14fTBzUvRcpxy5g5I3IUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VhloYE4A; arc=none smtp.client-ip=209.85.214.179
+	s=arc-20240116; t=1746273793; c=relaxed/simple;
+	bh=OEt8G+Ag3SLaqjCFusuKOebFyl29ZIf860tFYCUH7CA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=OAmTixjhNYpAUTJl8xEhmzbtyHRETgjUZNkxPB2ifB+qyZ2Bg1ijrVka4dAnMVG0QjQQs4Kg+ruh2TsSL8HaHIwGkPJ54rMR/tB8bl859TP/d60vk2EdL/3uU1MqPdBGagFz7vS73S2fZ/9gt7Zt9x9NoRxg/Qnm0g7REPl69GY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T6i7Id9v; arc=none smtp.client-ip=209.85.167.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-223fb0f619dso35483265ad.1;
-        Sat, 03 May 2025 02:55:40 -0700 (PDT)
+Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-54298ec925bso3619928e87.3;
+        Sat, 03 May 2025 05:03:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746266140; x=1746870940; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=r2FFqPQS0cGePNUSaEag1bMy/aHVdoE23x6HNRbtcvE=;
-        b=VhloYE4AigwI2KLyD9tQKWesvuj6kG+sZJUrABWgVFBfBt7mZOW1yfyIM/9IxrgEjS
-         Q9bo1Ji+tqjGo0q46MvBX/bOpo+xyURWjwdj/dw+tAKZV2V+Qz58nRDM7TEn0RcKAOmL
-         olotzhQeNRdC3NWRDlmQGYgQWsLYJpqnnLZ11t5kd1DMkOjmpmfhPTLSiy0MlKsgrZN9
-         PhNm/ckG13aX4IW+LxUUPFwvXKHFOhFRpHn7Pyf5iZ2H7WwlQLMGvIDDShYCBF993ic0
-         GTG7RxLN3078F+JYAQKMaIzCqzkdHoYTjPtFzAJWVLrCQ6Yh0V8FrCgGQtaTSiHSo8HL
-         3Atg==
+        d=gmail.com; s=20230601; t=1746273790; x=1746878590; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=uKuY6otB9fw2NIqkejaF9kXyx1KrQ9K1xBRP/yPEK6w=;
+        b=T6i7Id9vjoVdE5iDWBJFJ8i5SMWu/LHkSB6JrefeR4XTG1KmARdLK5qIkHcrc99bAC
+         z13cc9APwqJUaz5rq07gEkgsgs3DVH72JB5mKn5caHiakRPdO/xjr5eF5DLf9LjGOjg+
+         nXGUKcOVGXJ4iJEAYeD7p6+h3AltgoN1LiuN7scRrNAdu3B8pNPnuZWV3SmYpSXsk6KI
+         x6EKMhmadkKzvmTyI3UCgwnAPACdFvRBAA6XCuxx7foHWtqsYib+NpNWHmBydCfiVpCk
+         RmkXGKvAPzMcMoqISg3S0L8GV1PU8VJkBd5wk4i7aKDugcf5GjhYwYgZ3F7ao20Pv0s4
+         LIgw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746266140; x=1746870940;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=r2FFqPQS0cGePNUSaEag1bMy/aHVdoE23x6HNRbtcvE=;
-        b=KgUa1o5DCX4xvJaXuyQ5v9TcEvwFB8D+HFWaS58m/VJZOly3PUDuFwQQdLIERjJsdQ
-         1mxsAToTKUWfpPUZJrpE+IVI5G4U04tl8mv+vP/Eh3GtNTLjGqaoUS3lwPC+wJ8DRZOK
-         BvR3my7TeNn+Ww12AGldsTak8bNXDEM0Q/NLQJlE8WOPyO8ILrl3NyuIIiTVi9LWiY/z
-         cCt00BdLKxZF5Xe1hcjbWkoAGWzkVjLG7rqwTjzc27g8kKeqB8Jm4prcPOkNAm9/UHT8
-         KgMIik/X2wlvWtWU0IXGXaGxR0MOmADwwiUSkhq5eFAIoKHMRwpEra0Rubx/B0cVZTTf
-         FB1Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUP5W5JnEkgF2TUltocG8e5dTb3LqvSitrKsKbanvABsqghQ4Ys5UdGUSnE9S4O5DRqDec57QmR1BcqjoZ8@vger.kernel.org, AJvYcCUZTgcLDi5x96fTTg3Du1pRyolp0PG6LAbtU6KBH5hgckxs6R0K4SEkn9Z0UIW01g/MyLFwETUDTCvw@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw0pvdBIgBVgpgW4J0ndFCBkzSYVm1va3caEAwRmKPdhmJKFRC2
-	2IeWJAHsliXWK9eGyXNRT61yd5ixTmJlhJMzgVa2ZpcGzC6F8xA+
-X-Gm-Gg: ASbGncvgCBRq2fo66ToCrcb7q8VlchWo9L8Nbhpe5DcBhACb55ObPFIBD7W4XWlS7VN
-	ryajGjVaMN/A1PF49687usbLRYXAxGTQRFxErsNJnpWzM5XfC6ZZ0XjM1TgS2uH5kquRUI8dVvA
-	TwLg0EC18e5auwsi1vsG+zbMjkkQBceYtec9j3sDSxLI1K0uct/Cq95x7QyI6lDTNQZ5gV65Exc
-	anqIdq9MJWQLwrzY26AaMktwf/tBJz9zRTh1KPbM2R81WVwFApdjGX/51NJzs/u4lUG1jQZg6PW
-	9hYdLhf7d8YmJWwq/BQKhUvPDKS+1B8TKj4CmrSCsSxT5oKl0rV5goqNuw/2
-X-Google-Smtp-Source: AGHT+IHdkFFj/To09DWxc81m7ALbu06mLkZUP8cKiy8xtrdnioKoWhr5mFDpUzvkl43XFEATvCd9tg==
-X-Received: by 2002:a17:902:e750:b0:223:fb3a:8631 with SMTP id d9443c01a7336-22e1030a3afmr120736405ad.24.1746266140170;
-        Sat, 03 May 2025 02:55:40 -0700 (PDT)
-Received: from localhost.localdomain ([36.50.162.227])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22e1522948csm20883585ad.159.2025.05.03.02.55.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 03 May 2025 02:55:39 -0700 (PDT)
-From: akshay bansod <akshaybansod997@gmail.com>
-To: Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-gpio@vger.kernel.org
-Subject: [PATCH] iio: dac: ad559*: fixed coding style issue (shorthand unsigned)
-Date: Sat,  3 May 2025 15:25:29 +0530
-Message-ID: <20250503095532.132041-1-akshaybansod997@gmail.com>
-X-Mailer: git-send-email 2.49.0
+        d=1e100.net; s=20230601; t=1746273790; x=1746878590;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=uKuY6otB9fw2NIqkejaF9kXyx1KrQ9K1xBRP/yPEK6w=;
+        b=jCPGblzB5dZDOc8Yv+QbeJYQpIK2yax0tXuU1p5vkakDTB/NMuLWufvPN1dTVce5n+
+         pqb2im86MoCRDhuvs7x7k7TOL96ZR4erqceouYb7A5LOH/DYmo9Hs1zkZyOAXibDJRke
+         XmT3Vhyo7lLp4VSvPW5nNaMHMktEsCzONk97LSXSUyPhQx9O0Bx5Z0KezBrj2Bqwwqcq
+         m4JYKqPqdYcpJLBM/MOp6UtWTEQXbNd6JzegUipM67X+r++mMiPyxFhYohzjrFmCGqjj
+         4XVyo9w8GgNYcA33TETPTcWeqm/JkXtAI4QQPnvw+zMcacJvOj6sr2eZFNtz2n9GASiw
+         41Pw==
+X-Forwarded-Encrypted: i=1; AJvYcCVWx6kjgDSz664mGaeQjflir8fRFydDhHvmsSz6+oSvagnD/T1t2IWXWzJus61nTwKJEdlrtDwrM8o=@vger.kernel.org, AJvYcCX7JSmH19HQXg77P/4j8udZJvVS3KOcDxl8XXPznJqZDot70hnIXXN4+OKnIUR6a0KTxmhpwkLS@vger.kernel.org
+X-Gm-Message-State: AOJu0YwXgl1CBSQjTMzQSbREGFrUV0jX0AbpnOZu5Rdp/wKgLPIg46d7
+	ivf07Xwqba4sJ/vi41ji084tlykkCVQm/EckamdVp+Jt0d2Nu2ds8Pf1wCyEmrijTyAABO0X9on
+	wWp+GVUi2vQYNPMvSi6EB0R6i8Bg=
+X-Gm-Gg: ASbGncv4qfMvR7fmnRQRLMakhtJZAr4yDAwLzrIoBWK/7nx3is9z+JIK/heJLeuquyL
+	r/cEwH1FivmRJEJiF0E4p3oLs01MZrSjdZCNGMJrvLvw7r/489cgCmkAxW1+qQHoY9VY/kbifFm
+	5RxxEj52RR6vjuFchqmO4iBnF0dXAGxzI4OqgZN7ab2E4xLP6w1bo3HA==
+X-Google-Smtp-Source: AGHT+IEb47l323lf49IZoHkMOCIJAgeVO/ifoErruMM5XsHk24ZQ2pxuf1m99cyIv2H4/PInQGdanfm9XZt2KTyGu4I=
+X-Received: by 2002:a05:6512:3e27:b0:545:285f:cd7f with SMTP id
+ 2adb3069b0e04-54f9efd1cebmr279646e87.14.1746273789468; Sat, 03 May 2025
+ 05:03:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250429150213.2953747-1-festevam@gmail.com> <20250429183301.326eaacf@jic23-huawei>
+ <CAOMZO5DBpF+iO4NY4-tn3ar+Ld+c=SA6W-UKN0haWmAK=4g-+g@mail.gmail.com>
+ <CAOMZO5B0nxVEW1Q-a05j8f+=waAYijvBq573Ha8DNbOgF0287w@mail.gmail.com>
+ <20250430141112.00004bb8@huawei.com> <CAOMZO5CYuv94N_8ZepH04y8ez1CAmOJOq4eim=dLGmMFoStQ3g@mail.gmail.com>
+ <20250430182537.00007eab@huawei.com> <CAOMZO5BCLWFJ=83r0saT=NxVP0f9G-P-2QosDNGArYAtX6v5Lw@mail.gmail.com>
+In-Reply-To: <CAOMZO5BCLWFJ=83r0saT=NxVP0f9G-P-2QosDNGArYAtX6v5Lw@mail.gmail.com>
+From: Fabio Estevam <festevam@gmail.com>
+Date: Sat, 3 May 2025 09:02:58 -0300
+X-Gm-Features: ATxdqUFoY8FU2cVEAlI1UsdVnI0UeP_hxCXSFfZk3p4g0C57rd4pxtCho2dRPxQ
+Message-ID: <CAOMZO5Bbpiz=xMKxEe93dNOkO2CLT-nhVd1SR_rvjOYNzn4wHw@mail.gmail.com>
+Subject: Re: [PATCH 1/2] iio: Fix scan mask subset check logic
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Jonathan Cameron <jic23@kernel.org>, mazziesaccount@gmail.com, linux-iio@vger.kernel.org, 
+	Fabio Estevam <festevam@denx.de>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-checkpatch.pl flagged use of shorthand 'unsigned' as warning
-trivial fix: replaced use of shorthand 'unsigned' with 'unsigned int'
+On Wed, Apr 30, 2025 at 4:37=E2=80=AFPM Fabio Estevam <festevam@gmail.com> =
+wrote:
 
-Signed-off-by: akshay bansod <akshaybansod997@gmail.com>
----
- drivers/iio/dac/ad5592r-base.c | 14 +++++++-------
- drivers/iio/dac/ad5592r-base.h |  4 ++--
- drivers/iio/dac/ad5592r.c      |  4 ++--
- drivers/iio/dac/ad5593r.c      |  5 +++--
- 4 files changed, 14 insertions(+), 13 deletions(-)
+> I have applied your suggestion.
+>
+> Please take a look and let me know your thoughts.
+>
+> --- a/drivers/iio/adc/max1363.c
+> +++ b/drivers/iio/adc/max1363.c
+> @@ -504,10 +504,10 @@ static const struct iio_event_spec max1363_events[]=
+ =3D {
+>         MAX1363_CHAN_U(1, _s1, 1, bits, ev_spec, num_ev_spec),          \
+>         MAX1363_CHAN_U(2, _s2, 2, bits, ev_spec, num_ev_spec),          \
+>         MAX1363_CHAN_U(3, _s3, 3, bits, ev_spec, num_ev_spec),          \
+> -       MAX1363_CHAN_B(0, 1, d0m1, 4, bits, ev_spec, num_ev_spec),      \
+> -       MAX1363_CHAN_B(2, 3, d2m3, 5, bits, ev_spec, num_ev_spec),      \
+> -       MAX1363_CHAN_B(1, 0, d1m0, 6, bits, ev_spec, num_ev_spec),      \
+> -       MAX1363_CHAN_B(3, 2, d3m2, 7, bits, ev_spec, num_ev_spec),      \
+> +       MAX1363_CHAN_B(0, 1, d0m1, 12, bits, ev_spec, num_ev_spec),     \
+> +       MAX1363_CHAN_B(2, 3, d2m3, 13, bits, ev_spec, num_ev_spec),     \
+> +       MAX1363_CHAN_B(1, 0, d1m0, 14, bits, ev_spec, num_ev_spec),     \
+> +       MAX1363_CHAN_B(3, 2, d3m2, 15, bits, ev_spec, num_ev_spec),     \
+>         IIO_CHAN_SOFT_TIMESTAMP(8)                                      \
 
-diff --git a/drivers/iio/dac/ad5592r-base.c b/drivers/iio/dac/ad5592r-base.c
-index 5f2cd5172..9aa051a74 100644
---- a/drivers/iio/dac/ad5592r-base.c
-+++ b/drivers/iio/dac/ad5592r-base.c
-@@ -21,7 +21,7 @@
- 
- #include "ad5592r-base.h"
- 
--static int ad5592r_gpio_get(struct gpio_chip *chip, unsigned offset)
-+static int ad5592r_gpio_get(struct gpio_chip *chip, unsigned int offset)
- {
- 	struct ad5592r_state *st = gpiochip_get_data(chip);
- 	int ret = 0;
-@@ -55,7 +55,7 @@ static int ad5592r_gpio_set(struct gpio_chip *chip, unsigned int offset,
- 	return st->ops->reg_write(st, AD5592R_REG_GPIO_SET, st->gpio_val);
- }
- 
--static int ad5592r_gpio_direction_input(struct gpio_chip *chip, unsigned offset)
-+static int ad5592r_gpio_direction_input(struct gpio_chip *chip, unsigned int offset)
- {
- 	struct ad5592r_state *st = gpiochip_get_data(chip);
- 	int ret;
-@@ -73,7 +73,7 @@ static int ad5592r_gpio_direction_input(struct gpio_chip *chip, unsigned offset)
- }
- 
- static int ad5592r_gpio_direction_output(struct gpio_chip *chip,
--					 unsigned offset, int value)
-+					 unsigned int offset, int value)
- {
- 	struct ad5592r_state *st = gpiochip_get_data(chip);
- 	int ret;
-@@ -99,7 +99,7 @@ static int ad5592r_gpio_direction_output(struct gpio_chip *chip,
- 	return st->ops->reg_write(st, AD5592R_REG_GPIO_IN_EN, st->gpio_in);
- }
- 
--static int ad5592r_gpio_request(struct gpio_chip *chip, unsigned offset)
-+static int ad5592r_gpio_request(struct gpio_chip *chip, unsigned int offset)
- {
- 	struct ad5592r_state *st = gpiochip_get_data(chip);
- 
-@@ -188,7 +188,7 @@ static int ad5592r_set_channel_modes(struct ad5592r_state *st)
- {
- 	const struct ad5592r_rw_ops *ops = st->ops;
- 	int ret;
--	unsigned i;
-+	unsigned int i;
- 	u8 pulldown = 0, tristate = 0, dac = 0, adc = 0;
- 	u16 read_back;
- 
-@@ -472,7 +472,7 @@ static const struct iio_chan_spec_ext_info ad5592r_ext_info[] = {
- };
- 
- static void ad5592r_setup_channel(struct iio_dev *iio_dev,
--		struct iio_chan_spec *chan, bool output, unsigned id)
-+		struct iio_chan_spec *chan, bool output, unsigned int id)
- {
- 	chan->type = IIO_VOLTAGE;
- 	chan->indexed = 1;
-@@ -489,7 +489,7 @@ static void ad5592r_setup_channel(struct iio_dev *iio_dev,
- static int ad5592r_alloc_channels(struct iio_dev *iio_dev)
- {
- 	struct ad5592r_state *st = iio_priv(iio_dev);
--	unsigned i, curr_channel = 0,
-+	unsigned int i, curr_channel = 0,
- 		 num_channels = st->num_channels;
- 	struct iio_chan_spec *channels;
- 	struct fwnode_handle *child;
-diff --git a/drivers/iio/dac/ad5592r-base.h b/drivers/iio/dac/ad5592r-base.h
-index cc7be426c..d78f5bb72 100644
---- a/drivers/iio/dac/ad5592r-base.h
-+++ b/drivers/iio/dac/ad5592r-base.h
-@@ -42,8 +42,8 @@ enum ad5592r_registers {
- #define AD5592R_REG_CTRL_DAC_RANGE	BIT(4)
- 
- struct ad5592r_rw_ops {
--	int (*write_dac)(struct ad5592r_state *st, unsigned chan, u16 value);
--	int (*read_adc)(struct ad5592r_state *st, unsigned chan, u16 *value);
-+	int (*write_dac)(struct ad5592r_state *st, unsigned int chan, u16 value);
-+	int (*read_adc)(struct ad5592r_state *st, unsigned int chan, u16 *value);
- 	int (*reg_write)(struct ad5592r_state *st, u8 reg, u16 value);
- 	int (*reg_read)(struct ad5592r_state *st, u8 reg, u16 *value);
- 	int (*gpio_read)(struct ad5592r_state *st, u8 *value);
-diff --git a/drivers/iio/dac/ad5592r.c b/drivers/iio/dac/ad5592r.c
-index 92d1b629b..a40f590e6 100644
---- a/drivers/iio/dac/ad5592r.c
-+++ b/drivers/iio/dac/ad5592r.c
-@@ -30,7 +30,7 @@ static int ad5592r_spi_wnop_r16(struct ad5592r_state *st, __be16 *buf)
- 	return spi_sync_transfer(spi, &t, 1);
- }
- 
--static int ad5592r_write_dac(struct ad5592r_state *st, unsigned chan, u16 value)
-+static int ad5592r_write_dac(struct ad5592r_state *st, unsigned int chan, u16 value)
- {
- 	struct spi_device *spi = container_of(st->dev, struct spi_device, dev);
- 
-@@ -39,7 +39,7 @@ static int ad5592r_write_dac(struct ad5592r_state *st, unsigned chan, u16 value)
- 	return spi_write(spi, &st->spi_msg, sizeof(st->spi_msg));
- }
- 
--static int ad5592r_read_adc(struct ad5592r_state *st, unsigned chan, u16 *value)
-+static int ad5592r_read_adc(struct ad5592r_state *st, unsigned int chan, u16 *value)
- {
- 	struct spi_device *spi = container_of(st->dev, struct spi_device, dev);
- 	int ret;
-diff --git a/drivers/iio/dac/ad5593r.c b/drivers/iio/dac/ad5593r.c
-index 9a8525c61..3bdb54820 100644
---- a/drivers/iio/dac/ad5593r.c
-+++ b/drivers/iio/dac/ad5593r.c
-@@ -40,7 +40,7 @@ static int ad5593r_read_word(struct i2c_client *i2c, u8 reg, u16 *value)
- 	return 0;
- }
- 
--static int ad5593r_write_dac(struct ad5592r_state *st, unsigned chan, u16 value)
-+static int ad5593r_write_dac(struct ad5592r_state *st, unsigned int chan, u16 value)
- {
- 	struct i2c_client *i2c = to_i2c_client(st->dev);
- 
-@@ -48,7 +48,7 @@ static int ad5593r_write_dac(struct ad5592r_state *st, unsigned chan, u16 value)
- 			AD5593R_MODE_DAC_WRITE | chan, value);
- }
- 
--static int ad5593r_read_adc(struct ad5592r_state *st, unsigned chan, u16 *value)
-+static int ad5593r_read_adc(struct ad5592r_state *st, unsigned int chan, u16 *value)
- {
- 	struct i2c_client *i2c = to_i2c_client(st->dev);
- 	s32 val;
-@@ -102,6 +102,7 @@ static const struct ad5592r_rw_ops ad5593r_rw_ops = {
- static int ad5593r_i2c_probe(struct i2c_client *i2c)
- {
- 	const struct i2c_device_id *id = i2c_client_get_device_id(i2c);
-+
- 	if (!i2c_check_functionality(i2c->adapter,
- 				     I2C_FUNC_SMBUS_BYTE | I2C_FUNC_I2C))
- 		return -EOPNOTSUPP;
--- 
-2.49.0
+I have also tried changing it like this:
 
+--- a/drivers/iio/adc/max1363.c
++++ b/drivers/iio/adc/max1363.c
+@@ -504,10 +504,10 @@ static const struct iio_event_spec max1363_events[] =
+=3D {
+        MAX1363_CHAN_U(1, _s1, 1, bits, ev_spec, num_ev_spec),          \
+        MAX1363_CHAN_U(2, _s2, 2, bits, ev_spec, num_ev_spec),          \
+        MAX1363_CHAN_U(3, _s3, 3, bits, ev_spec, num_ev_spec),          \
+-       MAX1363_CHAN_B(0, 1, d0m1, 4, bits, ev_spec, num_ev_spec),      \
+-       MAX1363_CHAN_B(2, 3, d2m3, 5, bits, ev_spec, num_ev_spec),      \
+-       MAX1363_CHAN_B(1, 0, d1m0, 6, bits, ev_spec, num_ev_spec),      \
+-       MAX1363_CHAN_B(3, 2, d3m2, 7, bits, ev_spec, num_ev_spec),      \
++       MAX1363_CHAN_B(0, 1, d0m1, 28, bits, ev_spec, num_ev_spec),     \
++       MAX1363_CHAN_B(2, 3, d2m3, 29, bits, ev_spec, num_ev_spec),     \
++       MAX1363_CHAN_B(1, 0, d1m0, 30, bits, ev_spec, num_ev_spec),     \
++       MAX1363_CHAN_B(3, 2, d3m2, 31, bits, ev_spec, num_ev_spec),     \
+        IIO_CHAN_SOFT_TIMESTAMP(8)                                      \
+        }
+
+In this case, the warnings are gone.
+
+Should the masks be 32-bit?
+
+Thanks
 

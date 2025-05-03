@@ -1,170 +1,99 @@
-Return-Path: <linux-iio+bounces-19019-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19020-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25CD7AA8161
-	for <lists+linux-iio@lfdr.de>; Sat,  3 May 2025 17:21:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F260EAA81EA
+	for <lists+linux-iio@lfdr.de>; Sat,  3 May 2025 20:21:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C477F189E918
-	for <lists+linux-iio@lfdr.de>; Sat,  3 May 2025 15:21:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E1C73AD089
+	for <lists+linux-iio@lfdr.de>; Sat,  3 May 2025 18:21:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1A45269811;
-	Sat,  3 May 2025 15:21:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1994827E1C6;
+	Sat,  3 May 2025 18:21:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Qg71ppPp"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="INTlC1a5"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+Received: from mail-oi1-f175.google.com (mail-oi1-f175.google.com [209.85.167.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C62A1D516F;
-	Sat,  3 May 2025 15:21:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 730727081C;
+	Sat,  3 May 2025 18:21:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746285684; cv=none; b=pTRh8ZItUE9loQf+uA/a9IewKIE/bQOICwY8yuiWpSq0u3E8hmK+p02nkkO8glmaDEx/AFTxz7CRgrrCtT80ta+fsB++SONUEMhjByXlW5DpaueVZMScR33YTDjp6FXP/LrUB4kccWEZ6V6c97N2eLISRbskv5gsEaS0StmBSSw=
+	t=1746296479; cv=none; b=KCvd1lCuWX4JK7zQ/yMxlFSmDZ2RA1YWEDeY1bMoKwGYQ7wSEumrvWvK+iuhMpbfKUx+VxIoYcC8klZ1LaMrLdpUqOSXKZHobuYjjSlO5fAEBzRfBVl3MUs8pjfd3zTIzXjYEWBPSOLaSp/MPNsV0EqLKtc5ODOujHo9YnQiB/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746285684; c=relaxed/simple;
-	bh=SpJDUPr0U8TkbmUTQyNs659xyulgzQJ4MpAQ8Dg7G9k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CSfH+gFDuRsAHTovlurPaUisSo3PWXtpwgAsVBmgvTpJaqBU1ibFsp4Ote+QEsh4jMmLTzcgNrH+vIThGYm1s6GiWpt4ILSAfU8Kcu6jsVLQpoISr7TfsDD+yifGz1hYuv0kgutefM4aGRVyWIprHbDkrebQSHFqR4XsG93XIXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Qg71ppPp; arc=none smtp.client-ip=209.85.210.181
+	s=arc-20240116; t=1746296479; c=relaxed/simple;
+	bh=CYwIFeC0sURXEvXP777r3Z0BskxeSWFp8rznqWY4Dzs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=q34nCm6Fyld2HvKFKma1+uV1k0YvMTh4lbkPwvAoPEZFXqsdg1kllJN4w6EjTdRv/k9/GhqJrS3qyzc5t9ug9fa2KJbr+cfVaa4zz+V5Pv0C9sU9uAb3lHzMBduiuxLgsj5/GNvIHOaMrIvQNpLh1qlqgBXmsc3a7LQd+AnRXIQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=INTlC1a5; arc=none smtp.client-ip=209.85.167.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-736c277331eso3914468b3a.1;
-        Sat, 03 May 2025 08:21:22 -0700 (PDT)
+Received: by mail-oi1-f175.google.com with SMTP id 5614622812f47-3f94b7bd964so2478834b6e.1;
+        Sat, 03 May 2025 11:21:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746285682; x=1746890482; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=9ceE3GFXp3363IGmCZMbOrujPi+bJut1p/8h1YkV0Ew=;
-        b=Qg71ppPpgCQEmZVO98XOg9fHSZ0WG092PPp/JFxOWj38Y+Z3ZXnhFcghe22gwR1VpN
-         3xBQSUJ/bAKzYX/sEl+0iErcmsX00OeJEFR4odXQmdqrGraesv6Bn3sWrYUVU/bQsixB
-         JxRg1DulxLkJwYMO1DQFNfADgP7c71PfgoUDNaERzpEVHL/aMNuUvflVXgNmWDkbirqC
-         czN7ghZgg5QrjWWxkGs1WDVs+FJHYtaOjOvZaD/56LbMHiamsBdJNu57QLzZi7uz1lzR
-         tV0XdMikW7YqSona/PYxyNlECwwMY3GdE+oiMFYU0h7LH4PI/QnfcU8BVlsY0x1WavoF
-         bFuA==
+        d=gmail.com; s=20230601; t=1746296477; x=1746901277; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=CYwIFeC0sURXEvXP777r3Z0BskxeSWFp8rznqWY4Dzs=;
+        b=INTlC1a5uf+IxMRDPv253XWT1OkI4TuDFp+VHI0QAXkXKn8QaUdZZD//tC9BNgD/gX
+         F0aSs5yvsVTxKuM2lsdw9Lq9J2aRnf1ixNkkT+p80z1Bf1J6H6BwYQfTnO3cT9b9TvPH
+         9iOD8767YyDbqbUAOEVlGyhdXSPaKK068PqW1eZnQMY+FeyK+qnI+xDbh3iln9Je4J1i
+         8vN6pTrG9S0XCaOh3rM4l6j4MvfemoDcMP3ClwcC2p1bN1YGRTrqLz+hquRdsOXrdlNF
+         UCPulDwyuHjEaETOvrYCwMjIBZZEqPbcZSOZtLqlof9yKvTC3xT3j12qR9e3oTIloKOO
+         EJrQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746285682; x=1746890482;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9ceE3GFXp3363IGmCZMbOrujPi+bJut1p/8h1YkV0Ew=;
-        b=wPePN62U+uPPRGtLNSXStirvYzkUSoc9zbj/0xPRKQkHrveOlC3SWHJQ6kEgWN1pR3
-         dwR/O02D9fpDC+x28jlgX3U5p9xEGw1C8ytRszDrXhvWVbsg3ePQSE+qDc/LbL0r7HAb
-         93DGE+ih6yOLTdo88z6YImwZrOBGjw7nuju8Zy5AyhYEHgbBghHVT5id4v6c/G3dVs0h
-         ZRSQpJsBzuhDsmYhxjvTTreF/YsyV2r4kk8WL0QhX4ez8rNqoYc4Lg0DGmAn/swZAHKK
-         hYzdjtCIfKricMwDroQjaSF2xSi3TF1VkODnLyXRYb0i2Egld6UvyfJDrEepstjx+mS0
-         5Tig==
-X-Forwarded-Encrypted: i=1; AJvYcCU5fTxDF9sq3nOC0Qzy76Ri2W6wQoSIi1PZBo9ZiyF30N3QlieqmJ1lvjNSU+FxGVC9LtVDBsuaDo+w@vger.kernel.org, AJvYcCVn0cyraPxx8cm/X5vz4/f/xxvCuFqB9H7KKW+NwaB2UYcsAC4LubttoqK7OQwalUrQUoILSdfRpyMm@vger.kernel.org, AJvYcCXhEX6n02VW3hfWMONVW5g7kKL+OdqKrFoikfeWCBiiBhTpxf7hOi/q81RKfZWsY3a/YdsSCXhGrpWBIooR@vger.kernel.org
-X-Gm-Message-State: AOJu0YxpTDAiP+ZJBewg3PZ++AtuBGNh7VAuQw33cG1cVxemszeQsPEc
-	2PuqPgrcGmy1Gyiwm1W21lB92BSK6F0G892e3sYNnXwYttC6I/ymaufHs+9nQJM=
-X-Gm-Gg: ASbGncv0i2aoiZSxXbkmDalMPW44kgHlqiPpxoF0dMY9rnFAZMOVwOh7U/uWVPdgZgi
-	J/tttY8kV4t/i68W99O5eSoPQVEt+6X9xT1PVD4v5IUnb5Dn+/ddP4kHq2h+I2/MjO5/9JEfBpx
-	UzvhJTS04RT0gepnvNtaGf4wEm02HuunKv5hvr+JT9l+crYbW9qwYPqCiGXO+0b6ORKMPI6OIw1
-	C19ra3U/bMVYQEXGQvdj1LdhrWjI12FWw0wjIcDvhV2cSrmBCIBpK4fU99a4l8xwhuF54Wb1ste
-	KJYZRjpkk+OLbXgjmiit+0XVMt+YS3kiUhQt1e2RNiLil3qbqA==
-X-Google-Smtp-Source: AGHT+IGB1eVC7bpXKehsOgrTdh5zfEiwEb4D0LPEyTWErLbbJuBw7p9mdKcuvmqdRMbF5D1Ru8iF9w==
-X-Received: by 2002:a05:6a21:3416:b0:1ee:450a:8259 with SMTP id adf61e73a8af0-20bd8d4b1cdmr15194234637.18.1746285682276;
-        Sat, 03 May 2025 08:21:22 -0700 (PDT)
-Received: from localhost ([2804:30c:4024:1700:8e03:72a4:b895:b221])
-        by smtp.gmail.com with UTF8SMTPSA id d2e1a72fcca58-74058d7a3a6sm3450199b3a.2.2025.05.03.08.21.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 03 May 2025 08:21:21 -0700 (PDT)
-Date: Sat, 3 May 2025 12:22:40 -0300
-From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-To: akshay bansod <akshaybansod997@gmail.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org
-Subject: Re: [PATCH] iio: dac: ad559*: fixed coding style issue (shorthand
- unsigned)
-Message-ID: <aBY0wHEzjbBex-Hn@debian-BULLSEYE-live-builder-AMD64>
-References: <20250503095532.132041-1-akshaybansod997@gmail.com>
+        d=1e100.net; s=20230601; t=1746296477; x=1746901277;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=CYwIFeC0sURXEvXP777r3Z0BskxeSWFp8rznqWY4Dzs=;
+        b=diJp+QdBZuQNVYEVC3jnZKJo95eVi6+pJ/OecK8IKV5wkHl7glbzz2d6ylTQqGsUPi
+         F/WvxknRHqqPNrg9j7CCQqWVnRLfzOuy8yjn+WOgnLiazRulzm6bLMM6XJWKskZAu18S
+         knGP3VlDTtXNlyga77t3wDKLhv6jukabAj09g4un7NTkXvMmy6rWTCDI5qx2PaEOZhJn
+         EQiXmMnT28HDA0+N7eKxDjw3KXK020WgLPBUF+lw4jpARjFJ1NA4dJ4snzbmtirRI1A9
+         JrpIqzcStej46JbYIm+Wzl2hK8cVKOMLHWi80+uRsnGfNMq0mljp0Nlbs2wLNmfCckAR
+         4p3w==
+X-Forwarded-Encrypted: i=1; AJvYcCUfNhW7BJJWj62HbSW1jFshZjdW1KtQc7R/6W+xurWPEsyJNHWtf6Gr5EKqbmoxPTY1FDn0JfcsA5Gu@vger.kernel.org, AJvYcCWXG/MHVknJXe8OUEzDWZpIv94bVD1eUHFleh/YEzVQUZLWBHbJlCTzVDzNQT7vg/FguIso2ZNn0KvVBA4F@vger.kernel.org, AJvYcCXWhkS84RDpGeba/Lh8wUBZTQAvejbQ9DCOsnSVlPlOgGJLhF2b+BtbdlSj7ARUJGtNRwUr5eIik9Rt@vger.kernel.org
+X-Gm-Message-State: AOJu0YxUwaTEKhgsRQC6jrlC4A+qEayuuR+UjdWo5oO0+/yJny9CK2mp
+	X9xpNX/QnAifkOq2zqn/fG3d4uE5ME7vnC+AQr65rE5v/MppgIOUzGCmHt/IUX1nx2K7M+SW14d
+	A3x7JlGA6313KvzjppeQO2PEeF0M=
+X-Gm-Gg: ASbGncukF+ltki758kIKkx8fyZ6GiLcEWG71Sp8UqG5F37bmZKTC9vFsOlKjDdOSfXA
+	aG9ibZTZ3taz/lxmQcdLYLvkXjEdgZoUnte7c20VFNhPWopbCOPgcoqI6TU/vwh1DnWdwmH8iIV
+	iGAmQkMWh7YdtgvkAubfxMsg==
+X-Google-Smtp-Source: AGHT+IE3tEb9+y0QpyQV5D1Q707PzF6MCKD6WZN6PTD4zOMRfmafShUdh7xzFvarhazzyRUKyF3kv/W+chlBUuyPP/k=
+X-Received: by 2002:a05:6808:13cd:b0:403:51ac:23ea with SMTP id
+ 5614622812f47-4035a55f64fmr944995b6e.9.1746296477382; Sat, 03 May 2025
+ 11:21:17 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250503095532.132041-1-akshaybansod997@gmail.com>
+References: <20250503095532.132041-1-akshaybansod997@gmail.com> <aBY0wHEzjbBex-Hn@debian-BULLSEYE-live-builder-AMD64>
+In-Reply-To: <aBY0wHEzjbBex-Hn@debian-BULLSEYE-live-builder-AMD64>
+From: Akshay Bansod <akshaybansod997@gmail.com>
+Date: Sat, 3 May 2025 23:51:06 +0530
+X-Gm-Features: ATxdqUEYo5SC1cZKvrEP_lX5gKSFaQoSdgKGIoAOyuhlfm3y7fKdoLzeq30RpbM
+Message-ID: <CANm0iNgg-yxFMeRGdr6DC3T-x2HEznCiCc9pqpErLu-NPriqjw@mail.gmail.com>
+Subject: Re: [PATCH] iio: dac: ad559*: fixed coding style issue (shorthand unsigned)
+To: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, 
+	Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
+	=?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
+	Andy Shevchenko <andy@kernel.org>, Linus Walleij <linus.walleij@linaro.org>, 
+	Bartosz Golaszewski <brgl@bgdev.pl>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-gpio@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Hello akshay,
+Hello Marcelo,
 
-Overall, your patch looks good to me.
-Though, I think it may get slightly better if you consider my suggestions below.
+Thanks for the review.
+I'll split this into two separate patches and make the necessary changes.
 
-Regards,
-Marcelo
-
-On 05/03, akshay bansod wrote:
-> checkpatch.pl flagged use of shorthand 'unsigned' as warning
-> trivial fix: replaced use of shorthand 'unsigned' with 'unsigned int'
-> 
-> Signed-off-by: akshay bansod <akshaybansod997@gmail.com>
-> ---
-...
-> @@ -55,7 +55,7 @@ static int ad5592r_gpio_set(struct gpio_chip *chip, unsigned int offset,
->  	return st->ops->reg_write(st, AD5592R_REG_GPIO_SET, st->gpio_val);
->  }
->  
-> -static int ad5592r_gpio_direction_input(struct gpio_chip *chip, unsigned offset)
-> +static int ad5592r_gpio_direction_input(struct gpio_chip *chip, unsigned int offset)
-
-Hmm, the driver code was mostly contained within 80 columns before.
-While it doesn't break any code style rule having it like that, I'd break the
-line to keep the code under 80 columns.
-
-static int ad5592r_gpio_direction_input(struct gpio_chip *chip,
-					unsigned int offset)
-
-Though, since that's just my personal preference, I think it should be fine if
-you decide to keep the function declaration in one line.
-
->  {
->  	struct ad5592r_state *st = gpiochip_get_data(chip);
->  	int ret;
-...
-> @@ -30,7 +30,7 @@ static int ad5592r_spi_wnop_r16(struct ad5592r_state *st, __be16 *buf)
->  	return spi_sync_transfer(spi, &t, 1);
->  }
->  
-> -static int ad5592r_write_dac(struct ad5592r_state *st, unsigned chan, u16 value)
-> +static int ad5592r_write_dac(struct ad5592r_state *st, unsigned int chan, u16 value)
-
-I'd also break this one, but you may chose not to if you think it's better to
-keep it in one line.
-
->  {
->  	struct spi_device *spi = container_of(st->dev, struct spi_device, dev);
->  
-> @@ -39,7 +39,7 @@ static int ad5592r_write_dac(struct ad5592r_state *st, unsigned chan, u16 value)
->  	return spi_write(spi, &st->spi_msg, sizeof(st->spi_msg));
->  }
->  
-> -static int ad5592r_read_adc(struct ad5592r_state *st, unsigned chan, u16 *value)
-> +static int ad5592r_read_adc(struct ad5592r_state *st, unsigned int chan, u16 *value)
-
-Same here.
-
->  {
->  	struct spi_device *spi = container_of(st->dev, struct spi_device, dev);
->  	int ret;
-...
-> @@ -102,6 +102,7 @@ static const struct ad5592r_rw_ops ad5593r_rw_ops = {
->  static int ad5593r_i2c_probe(struct i2c_client *i2c)
->  {
->  	const struct i2c_device_id *id = i2c_client_get_device_id(i2c);
-> +
-The addition of a blank line here is desirable, but it doesn't fit this patch's
-scope. Drop that from this patch. You may propose another patch adding that if
-you want.
+Regards
+akshay
 

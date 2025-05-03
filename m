@@ -1,143 +1,107 @@
-Return-Path: <linux-iio+bounces-19016-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19017-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D624AA8090
-	for <lists+linux-iio@lfdr.de>; Sat,  3 May 2025 14:03:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3769AA80DC
+	for <lists+linux-iio@lfdr.de>; Sat,  3 May 2025 15:40:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E27D21B6315E
-	for <lists+linux-iio@lfdr.de>; Sat,  3 May 2025 12:03:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9BAC6189C22E
+	for <lists+linux-iio@lfdr.de>; Sat,  3 May 2025 13:40:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCBEA1EBA07;
-	Sat,  3 May 2025 12:03:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6526F279798;
+	Sat,  3 May 2025 13:40:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T6i7Id9v"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gwe7R1xm"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6D6A17D2;
-	Sat,  3 May 2025 12:03:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6B7213FEE;
+	Sat,  3 May 2025 13:40:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746273793; cv=none; b=YaN3c4i+B5YaVqM8HrQJ+Fadl2lzIIUlQofXCSXdKvqDtdYVHHMPakG+XGyKXhKNQ4ZwtgDp1aN9fa0CofqF4/qTRZEQWAalRiZbKggxsb965GO7Agy9Xp5ye9l2N7O4B3JzfgaaF1yJ/EM8q3ugT7kAO5CQuib+ntXeKTijK5Q=
+	t=1746279618; cv=none; b=hSdo3moU920lqrJI2w3ZpjPDRsFixvVBKwoLiQnJ/6iJ4xPWTSyyARRQdcEuKheu0pMGWkRkgUG1JhprxGnF1cDMe8dVrT+uzuT72Q61du/WS2/Vdffxk1Ki86wKH4LXNUxax1RScssrRJIG+CXIO6yOl2DSW9nGlj0QFp/MUTM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746273793; c=relaxed/simple;
-	bh=OEt8G+Ag3SLaqjCFusuKOebFyl29ZIf860tFYCUH7CA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=OAmTixjhNYpAUTJl8xEhmzbtyHRETgjUZNkxPB2ifB+qyZ2Bg1ijrVka4dAnMVG0QjQQs4Kg+ruh2TsSL8HaHIwGkPJ54rMR/tB8bl859TP/d60vk2EdL/3uU1MqPdBGagFz7vS73S2fZ/9gt7Zt9x9NoRxg/Qnm0g7REPl69GY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T6i7Id9v; arc=none smtp.client-ip=209.85.167.41
+	s=arc-20240116; t=1746279618; c=relaxed/simple;
+	bh=ncF4KvhuxeHE7ggXSI3uznrikpy8lB4Nyu6AvOT3fm4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MTvR29npreDW20PrCHEpaFDe5geI2bgSbNesY1HQowDXqhjT1hyvwiqGGfJRcTPApuflw/+CKuuIydfkV1b5Dt3Lnul4vO0tIFjw9/3G0YU+6vmSBoz8EGto8slPaWt93ODSlhQUm5Epd6bbnvLycrS1+9yP13l9k397TjEes/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gwe7R1xm; arc=none smtp.client-ip=209.85.216.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-54298ec925bso3619928e87.3;
-        Sat, 03 May 2025 05:03:11 -0700 (PDT)
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-30572effb26so2903917a91.0;
+        Sat, 03 May 2025 06:40:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746273790; x=1746878590; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uKuY6otB9fw2NIqkejaF9kXyx1KrQ9K1xBRP/yPEK6w=;
-        b=T6i7Id9vjoVdE5iDWBJFJ8i5SMWu/LHkSB6JrefeR4XTG1KmARdLK5qIkHcrc99bAC
-         z13cc9APwqJUaz5rq07gEkgsgs3DVH72JB5mKn5caHiakRPdO/xjr5eF5DLf9LjGOjg+
-         nXGUKcOVGXJ4iJEAYeD7p6+h3AltgoN1LiuN7scRrNAdu3B8pNPnuZWV3SmYpSXsk6KI
-         x6EKMhmadkKzvmTyI3UCgwnAPACdFvRBAA6XCuxx7foHWtqsYib+NpNWHmBydCfiVpCk
-         RmkXGKvAPzMcMoqISg3S0L8GV1PU8VJkBd5wk4i7aKDugcf5GjhYwYgZ3F7ao20Pv0s4
-         LIgw==
+        d=gmail.com; s=20230601; t=1746279616; x=1746884416; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=2U0Gh95jLT4YIXSOtY/Axi783QDt6YjjlaILb3YAGJc=;
+        b=gwe7R1xmEURXS4707ftqXQ5qQZ/1SCv9LnZ445sLskuSp8HWuV365nLX5zQmF+dwx3
+         Y2YrqjL6x6R8Aq/rUjdSmpu1VSfFTF2RYCkCIDWXHYhIe+jRjABHkU33r+ZDRk+zjQRh
+         5N3i+tjlVOgxJkN2GH+T6IEwkhzZ/A+35xnV3sClgY4Eu/UkSkWE625hXRCdXBwZ8Vzj
+         TQMM5PqgYeWjXkKIG2XFeitOZbh+F0nH6hgwIjz6FL0CKTEKodmLBdIxTcyebG0DpXIs
+         MNbnS6HVF8Q3645100kPmptYMk08LvYnz/5fft29z71JCHd/AokN12fUqCn7AJEE4/hE
+         3fRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746273790; x=1746878590;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=uKuY6otB9fw2NIqkejaF9kXyx1KrQ9K1xBRP/yPEK6w=;
-        b=jCPGblzB5dZDOc8Yv+QbeJYQpIK2yax0tXuU1p5vkakDTB/NMuLWufvPN1dTVce5n+
-         pqb2im86MoCRDhuvs7x7k7TOL96ZR4erqceouYb7A5LOH/DYmo9Hs1zkZyOAXibDJRke
-         XmT3Vhyo7lLp4VSvPW5nNaMHMktEsCzONk97LSXSUyPhQx9O0Bx5Z0KezBrj2Bqwwqcq
-         m4JYKqPqdYcpJLBM/MOp6UtWTEQXbNd6JzegUipM67X+r++mMiPyxFhYohzjrFmCGqjj
-         4XVyo9w8GgNYcA33TETPTcWeqm/JkXtAI4QQPnvw+zMcacJvOj6sr2eZFNtz2n9GASiw
-         41Pw==
-X-Forwarded-Encrypted: i=1; AJvYcCVWx6kjgDSz664mGaeQjflir8fRFydDhHvmsSz6+oSvagnD/T1t2IWXWzJus61nTwKJEdlrtDwrM8o=@vger.kernel.org, AJvYcCX7JSmH19HQXg77P/4j8udZJvVS3KOcDxl8XXPznJqZDot70hnIXXN4+OKnIUR6a0KTxmhpwkLS@vger.kernel.org
-X-Gm-Message-State: AOJu0YwXgl1CBSQjTMzQSbREGFrUV0jX0AbpnOZu5Rdp/wKgLPIg46d7
-	ivf07Xwqba4sJ/vi41ji084tlykkCVQm/EckamdVp+Jt0d2Nu2ds8Pf1wCyEmrijTyAABO0X9on
-	wWp+GVUi2vQYNPMvSi6EB0R6i8Bg=
-X-Gm-Gg: ASbGncv4qfMvR7fmnRQRLMakhtJZAr4yDAwLzrIoBWK/7nx3is9z+JIK/heJLeuquyL
-	r/cEwH1FivmRJEJiF0E4p3oLs01MZrSjdZCNGMJrvLvw7r/489cgCmkAxW1+qQHoY9VY/kbifFm
-	5RxxEj52RR6vjuFchqmO4iBnF0dXAGxzI4OqgZN7ab2E4xLP6w1bo3HA==
-X-Google-Smtp-Source: AGHT+IEb47l323lf49IZoHkMOCIJAgeVO/ifoErruMM5XsHk24ZQ2pxuf1m99cyIv2H4/PInQGdanfm9XZt2KTyGu4I=
-X-Received: by 2002:a05:6512:3e27:b0:545:285f:cd7f with SMTP id
- 2adb3069b0e04-54f9efd1cebmr279646e87.14.1746273789468; Sat, 03 May 2025
- 05:03:09 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1746279616; x=1746884416;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2U0Gh95jLT4YIXSOtY/Axi783QDt6YjjlaILb3YAGJc=;
+        b=Py1Hz7AGvW8RpVjPXCl/Lk2VrcHt83qBgzHLdJnADmAZrwUOSdN/zAWCW+bhgXDGJg
+         L1jZ/5+FCR+wd0F48dDkKQwGfYb7c+yG+I2GieHqBI/ZdeFTPRx2P73qeJq9u+0EdW6L
+         B342GZaFZsE3W1YWBmCOPWBzD58SvuQGaUoWkZx1qLuK6bwYtoZdgA1l6WO5YdLlkvC9
+         /ODpOw+ABKjFfmXlHUYp78foPCslP7wmthVjvw23FJb8r2z+n5Ruvzvy8l0IsQUwc15m
+         UapG+ZhN9IGopCOISKtTYKXN6rAw1y/pGkI/PJ7dqt4F9KW1rYCytU03BlvwI2tholM1
+         MYVw==
+X-Forwarded-Encrypted: i=1; AJvYcCUvIE+kisOzICinr9fd/ergbnxEWjH4JZhzAbanZqSpFBNHThpBJvQxx4TaDq4MNt3FZVmQOfDt@vger.kernel.org, AJvYcCWvKMPjKYc8XWClynMV9GR2sRyWaegFDhNPPql85FFqhquq7I0vpVvrv2+Mj2v0EEQE/eNcS+eicpk=@vger.kernel.org, AJvYcCXtDj3F2FvkTW/LsTte37IztKOytwxlJ8817xF1txT5fE99ImO0gil1faE+bb6U0GYCTOUKKNhGlAPIuY4W@vger.kernel.org
+X-Gm-Message-State: AOJu0YysJNkjW2RkE8WpCwe+431reMjbY9cns5QmPVj1gv0Fv7bMbw1H
+	zSztbYMsEXkpQ/La6Uo/xLtjfEqaIeknKblFL0UtbO5LBeatEbZg27Z8Iw0SQSI=
+X-Gm-Gg: ASbGncvYJj2CSYTd3VGb/TM6R4Q3DCbNEFSV33tPqGrLyPsQ2yN2nuBXdncFcq/zTMd
+	Er194xiBs3rP2xQo5yw/mmi2pcgNTlNqV9v9essLvm4p0sNgbC6eFR8M+12bW1yWYE4ywCLcr+t
+	tDW1G0HsvFmUg9PGVTk6JckAOFZyBZKCWKetI6ZbAOeb9Ngnk30xcLfuB50v+WFD1jnfadOyO13
+	tnuE/MKOosy8T1RzYJ7VJwekJSYiHz/Ksal2+V1KQpTEaHkVWGV4ftlwFMu1VT48amZkVLNtQlC
+	MV/hDswpEtYJSlqE9R5fNR17/6iM04ifYkEajgTL7dq75Ls/AeMO8Q91Dnke
+X-Google-Smtp-Source: AGHT+IHFQniELYcTgmi3Z5ImYoPmg9txKfljjgWfX32mK6252ape3L0moqGlglAwVabyiRaRmSMDfA==
+X-Received: by 2002:a17:90b:1dc7:b0:308:5273:4df8 with SMTP id 98e67ed59e1d1-30a4e5a57e5mr12438772a91.10.1746279615799;
+        Sat, 03 May 2025 06:40:15 -0700 (PDT)
+Received: from localhost ([2804:30c:4024:1700:8e03:72a4:b895:b221])
+        by smtp.gmail.com with UTF8SMTPSA id 98e67ed59e1d1-30a34829e51sm7767076a91.49.2025.05.03.06.40.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 03 May 2025 06:40:14 -0700 (PDT)
+Date: Sat, 3 May 2025 10:41:33 -0300
+From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+To: Sean Nyekjaer <sean@geanix.com>
+Cc: Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Andy Shevchenko <andy.shevchenko@gmail.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] iio: accel: fxls8962af: Fix temperature
+ calculation
+Message-ID: <aBYdDQYcOlDgvn9W@debian-BULLSEYE-live-builder-AMD64>
+References: <20250502-fxls-v2-0-e1af65f1aa6c@geanix.com>
+ <20250502-fxls-v2-1-e1af65f1aa6c@geanix.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250429150213.2953747-1-festevam@gmail.com> <20250429183301.326eaacf@jic23-huawei>
- <CAOMZO5DBpF+iO4NY4-tn3ar+Ld+c=SA6W-UKN0haWmAK=4g-+g@mail.gmail.com>
- <CAOMZO5B0nxVEW1Q-a05j8f+=waAYijvBq573Ha8DNbOgF0287w@mail.gmail.com>
- <20250430141112.00004bb8@huawei.com> <CAOMZO5CYuv94N_8ZepH04y8ez1CAmOJOq4eim=dLGmMFoStQ3g@mail.gmail.com>
- <20250430182537.00007eab@huawei.com> <CAOMZO5BCLWFJ=83r0saT=NxVP0f9G-P-2QosDNGArYAtX6v5Lw@mail.gmail.com>
-In-Reply-To: <CAOMZO5BCLWFJ=83r0saT=NxVP0f9G-P-2QosDNGArYAtX6v5Lw@mail.gmail.com>
-From: Fabio Estevam <festevam@gmail.com>
-Date: Sat, 3 May 2025 09:02:58 -0300
-X-Gm-Features: ATxdqUFoY8FU2cVEAlI1UsdVnI0UeP_hxCXSFfZk3p4g0C57rd4pxtCho2dRPxQ
-Message-ID: <CAOMZO5Bbpiz=xMKxEe93dNOkO2CLT-nhVd1SR_rvjOYNzn4wHw@mail.gmail.com>
-Subject: Re: [PATCH 1/2] iio: Fix scan mask subset check logic
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, mazziesaccount@gmail.com, linux-iio@vger.kernel.org, 
-	Fabio Estevam <festevam@denx.de>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250502-fxls-v2-1-e1af65f1aa6c@geanix.com>
 
-On Wed, Apr 30, 2025 at 4:37=E2=80=AFPM Fabio Estevam <festevam@gmail.com> =
-wrote:
+On 05/02, Sean Nyekjaer wrote:
+> According to spec temperature should be returned in milli degrees Celsius.
+> Add in_temp_scale to calculate from Celsius to milli Celsius.
+> 
+> Fixes: a3e0b51884ee ("iio: accel: add support for FXLS8962AF/FXLS8964AF accelerometers")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Sean Nyekjaer <sean@geanix.com>
 
-> I have applied your suggestion.
->
-> Please take a look and let me know your thoughts.
->
-> --- a/drivers/iio/adc/max1363.c
-> +++ b/drivers/iio/adc/max1363.c
-> @@ -504,10 +504,10 @@ static const struct iio_event_spec max1363_events[]=
- =3D {
->         MAX1363_CHAN_U(1, _s1, 1, bits, ev_spec, num_ev_spec),          \
->         MAX1363_CHAN_U(2, _s2, 2, bits, ev_spec, num_ev_spec),          \
->         MAX1363_CHAN_U(3, _s3, 3, bits, ev_spec, num_ev_spec),          \
-> -       MAX1363_CHAN_B(0, 1, d0m1, 4, bits, ev_spec, num_ev_spec),      \
-> -       MAX1363_CHAN_B(2, 3, d2m3, 5, bits, ev_spec, num_ev_spec),      \
-> -       MAX1363_CHAN_B(1, 0, d1m0, 6, bits, ev_spec, num_ev_spec),      \
-> -       MAX1363_CHAN_B(3, 2, d3m2, 7, bits, ev_spec, num_ev_spec),      \
-> +       MAX1363_CHAN_B(0, 1, d0m1, 12, bits, ev_spec, num_ev_spec),     \
-> +       MAX1363_CHAN_B(2, 3, d2m3, 13, bits, ev_spec, num_ev_spec),     \
-> +       MAX1363_CHAN_B(1, 0, d1m0, 14, bits, ev_spec, num_ev_spec),     \
-> +       MAX1363_CHAN_B(3, 2, d3m2, 15, bits, ev_spec, num_ev_spec),     \
->         IIO_CHAN_SOFT_TIMESTAMP(8)                                      \
-
-I have also tried changing it like this:
-
---- a/drivers/iio/adc/max1363.c
-+++ b/drivers/iio/adc/max1363.c
-@@ -504,10 +504,10 @@ static const struct iio_event_spec max1363_events[] =
-=3D {
-        MAX1363_CHAN_U(1, _s1, 1, bits, ev_spec, num_ev_spec),          \
-        MAX1363_CHAN_U(2, _s2, 2, bits, ev_spec, num_ev_spec),          \
-        MAX1363_CHAN_U(3, _s3, 3, bits, ev_spec, num_ev_spec),          \
--       MAX1363_CHAN_B(0, 1, d0m1, 4, bits, ev_spec, num_ev_spec),      \
--       MAX1363_CHAN_B(2, 3, d2m3, 5, bits, ev_spec, num_ev_spec),      \
--       MAX1363_CHAN_B(1, 0, d1m0, 6, bits, ev_spec, num_ev_spec),      \
--       MAX1363_CHAN_B(3, 2, d3m2, 7, bits, ev_spec, num_ev_spec),      \
-+       MAX1363_CHAN_B(0, 1, d0m1, 28, bits, ev_spec, num_ev_spec),     \
-+       MAX1363_CHAN_B(2, 3, d2m3, 29, bits, ev_spec, num_ev_spec),     \
-+       MAX1363_CHAN_B(1, 0, d1m0, 30, bits, ev_spec, num_ev_spec),     \
-+       MAX1363_CHAN_B(3, 2, d3m2, 31, bits, ev_spec, num_ev_spec),     \
-        IIO_CHAN_SOFT_TIMESTAMP(8)                                      \
-        }
-
-In this case, the warnings are gone.
-
-Should the masks be 32-bit?
-
-Thanks
+Reviewed-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
 

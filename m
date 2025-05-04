@@ -1,60 +1,65 @@
-Return-Path: <linux-iio+bounces-19045-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19046-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FD93AA876A
-	for <lists+linux-iio@lfdr.de>; Sun,  4 May 2025 17:49:17 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF268AA8774
+	for <lists+linux-iio@lfdr.de>; Sun,  4 May 2025 17:55:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6F80B18962AF
-	for <lists+linux-iio@lfdr.de>; Sun,  4 May 2025 15:49:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D24F57A5CE7
+	for <lists+linux-iio@lfdr.de>; Sun,  4 May 2025 15:54:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98D551D79A5;
-	Sun,  4 May 2025 15:49:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D1B01D9A50;
+	Sun,  4 May 2025 15:55:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CAtNS0yb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sU0XZNwp"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B41B14A82;
-	Sun,  4 May 2025 15:49:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C583D1EEE6;
+	Sun,  4 May 2025 15:55:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746373751; cv=none; b=R/OPFEFX0S+UC5B6Y1fgS1Lc5fsQCGZ2MD7SKRvGwQLhpDDwQZ0BngltZnC0ZysH3iemaTQH23ksyB7VO0cI3DmiZ6oL7ky0AEDJnh/mFEAH3MrM1LjPYBNWjtM6J/7QnZESA26cxWkRDVGHO18Bx7w2dIS693PTjNxR7COibNY=
+	t=1746374133; cv=none; b=kDSuQlQaWj2h6awzUsbkF3XjYZ7DTXFE5MME5DZIIEjYuFTGIBjXHZoEXF7auJcGZSx2yGNUKGZHi+YeLtEbqDc6pI3IzZTxJ2NOQwZ6rDFTFyBDIHi9sg2QbIIzrJLbOdwRKvWf2H4exNsn2S88jUbcw772lYYNXdX5gVjAixg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746373751; c=relaxed/simple;
-	bh=k/No9hzdA98pPC4TTn/gupUgQ9kiIcx6rpf26CHoipc=;
+	s=arc-20240116; t=1746374133; c=relaxed/simple;
+	bh=X/5ydm+/iZVBatwWrHh8Wcm4pJOdYrKTLklVpa11xIM=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UcEnYUy/uIara1V6R/HT5w5DqJTkfFos0MXYUikgOqiV7tMu8WE7dDIpDhY4Zzk7r0vcWzLgwnGZx8QM4crD95Hjq/Tr78c9+TsnaLIxbgqJL/nheN4eQlUYRteVC+UZXfjt3XWBPEKq6qt3tBCq42zN6GZtH6S6I0uylVQOJO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CAtNS0yb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C518C4CEE7;
-	Sun,  4 May 2025 15:49:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Y5/Dj8rOMESq+ngeoFL2CY2BT/m2jbH/cq2qpD/unvSNpZRZygOEkm2NnVo288X8VAEV+6kdRldVpsDydDhqADOch4mtWpZOFGbWeuo2c49fUyJx80kedSSIkQk+eE/oQjaXHG/czLa4SYlG7ImB9YmtyKECs4BX00FY0McGkyI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sU0XZNwp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9C10C4CEE7;
+	Sun,  4 May 2025 15:55:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746373749;
-	bh=k/No9hzdA98pPC4TTn/gupUgQ9kiIcx6rpf26CHoipc=;
+	s=k20201202; t=1746374133;
+	bh=X/5ydm+/iZVBatwWrHh8Wcm4pJOdYrKTLklVpa11xIM=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=CAtNS0ybXrn/1EsY6+k9DeGLA3XiueD9n6R2BASQdMgLfD4/zlInQTeBEEg0mc4Xm
-	 RsJXrJz7jUj27Rxm1n0NlRAzkJAJbnKNOxBc+cANYs6ck79ERlh+PNp6rAinMQX7AU
-	 ei5gKbrBc2o++JyX5wA6pX4FppsLJzSAatYu/z7NQqw1LP//gtQwdRhHAFXk43FuJT
-	 YM2zucPVoB7MLsvphpE9PNyEB3owLlvMSmxGoWCwptwlXLpm8z8b+3TORAVuby5j5G
-	 GcdGC87mCjQ+FQedz8M0BA3QQ2NDHoOs5othqY6AztNCZYvqXuGjZRg/5wOQNrnXLs
-	 yRgsVsyoBnVUw==
-Date: Sun, 4 May 2025 16:49:02 +0100
+	b=sU0XZNwpwR/5YOpq3qAeJJD6xWo1XHLfFZbrOkvlZ8MJ7RiG5DAYFyvxg353S5sDU
+	 bocqvThjw3MzEjAizxj4b9DKe8BbibANK+vmAc1S1g9M9Q63HR90KgQO7HsXJbbf5O
+	 S2bydE+PL3MDDz/B04PheJ41+PNwfpE7AyUqVQOzMB2ZbkrO+ZIgheccBCRIm7aty3
+	 ivQo55n6HmQNT13CQge7l2ZLFvPDCHZGZcURhu9iTUc1h1qViR22aRnCwvRXHyOqoM
+	 yMRK/jz3e1+8362fEe+YLDd6vPxs02pGsXJ3Td8XTV+WG27Del3SIjmOtCAaMdst4r
+	 cx+7gdRCVhEdA==
+Date: Sun, 4 May 2025 16:55:20 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-Cc: Sean Nyekjaer <sean@geanix.com>, Lars-Peter Clausen <lars@metafoo.de>,
- Andy Shevchenko <andy.shevchenko@gmail.com>, Jonathan Cameron
- <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] iio: accel: fxls8962af: Fix sign temperature
- scan element
-Message-ID: <20250504164902.69901e8a@jic23-huawei>
-In-Reply-To: <aBYgtRyJQXGWDgHl@debian-BULLSEYE-live-builder-AMD64>
-References: <20250502-fxls-v2-0-e1af65f1aa6c@geanix.com>
-	<20250502-fxls-v2-2-e1af65f1aa6c@geanix.com>
-	<aBYgtRyJQXGWDgHl@debian-BULLSEYE-live-builder-AMD64>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Sayyad Abid <sayyad.abid16@gmail.com>, linux-iio@vger.kernel.org,
+ lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ nuno.sa@analog.com, javier.carrasco.cruz@gmail.com,
+ olivier.moysan@foss.st.com, gstols@baylibre.com, tgamblin@baylibre.com,
+ alisadariana@gmail.com, eblanc@baylibre.com, antoniu.miclaus@analog.com,
+ andriy.shevchenko@linux.intel.com, stefan.popa@analog.com,
+ ramona.gradinariu@analog.com, herve.codina@bootlin.com,
+ tobias.sperling@softing.com, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH 2/5] iio: adc: Kconfig: add Kconfig entry for TI
+ ADS1262 driver
+Message-ID: <20250504165520.4fc0920d@jic23-huawei>
+In-Reply-To: <213ae3d3-b6d1-4808-9af3-36a8cc1f1335@baylibre.com>
+References: <20250501100043.325423-1-sayyad.abid16@gmail.com>
+	<20250501100043.325423-3-sayyad.abid16@gmail.com>
+	<213ae3d3-b6d1-4808-9af3-36a8cc1f1335@baylibre.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -65,35 +70,28 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sat, 3 May 2025 10:57:09 -0300
-Marcelo Schmitt <marcelo.schmitt1@gmail.com> wrote:
+On Thu, 1 May 2025 12:37:35 -0500
+David Lechner <dlechner@baylibre.com> wrote:
 
-> On 05/02, Sean Nyekjaer wrote:
-> > TEMP_OUT register contains the 8-bit, 2's complement temperature value.
-> > Let's mark the temperature scan element signed.
+> On 5/1/25 5:00 AM, Sayyad Abid wrote:
+> > Adds the Kconfig option `CONFIG_TI_ADS1262` under the IIO ADC menu.
+> > This allows users to select the TI ADS1262 driver for compilation
+> > during kernel configuration.
 > > 
-> > Fixes: a3e0b51884ee ("iio: accel: add support for FXLS8962AF/FXLS8964AF accelerometers")
-> > Suggested-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Sean Nyekjaer <sean@geanix.com>  
-> 
-> Sort of nitpinking but I think the commit description could be more assertive.
+> > Signed-off-by: Sayyad Abid <sayyad.abid16@gmail.com>
+> > ---  
+> This can be in the same patch as the driver. Same with the makefile - it doesn't
+> need to be a separate patch.
 
-Agreed.  I might have just tweaked it to
-"Mark the temperature element signed."  + some of what Marcelo has below.
-but given Andy's request on patch 1 means you are probably doing a v3, please
-tidy this up as well.
+Change that from can to should / must.  There are some bits of the kernel
+that run a different approach for complex multi patch drivers but for
+IIO we want everything to be building at each step of the series.
+Personally I see that as good practice and I don't know of any part of the
+kernel where the maintainers reject that approach, just some where they
+don't mind as much if a complex driver is built up and only compiled in
+the final patch
 
-Thanks and good catches on both of them!
+Thanks,
 
 Jonathan
-
-> The main idea is that we want to make the scan element signed because the
-> data read from the TEMP_OUT register is in two's complement format and not
-> having the scan element marked as a signed number may cause it to be mishandled
-> and miss displayed. Nevertheless, I do think the patch is good so
-> 
-> Reviewed-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-> 
-
 

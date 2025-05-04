@@ -1,56 +1,60 @@
-Return-Path: <linux-iio+bounces-19036-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19037-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80D2BAA86C4
-	for <lists+linux-iio@lfdr.de>; Sun,  4 May 2025 16:43:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C01F0AA86FE
+	for <lists+linux-iio@lfdr.de>; Sun,  4 May 2025 16:54:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E8A7517328B
-	for <lists+linux-iio@lfdr.de>; Sun,  4 May 2025 14:43:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF55D1897B64
+	for <lists+linux-iio@lfdr.de>; Sun,  4 May 2025 14:54:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEDF71A3174;
-	Sun,  4 May 2025 14:43:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94EDF1B0F19;
+	Sun,  4 May 2025 14:54:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gI4Y9Ekt"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="r8tPR5+c"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7040155342;
-	Sun,  4 May 2025 14:43:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 511301FAA;
+	Sun,  4 May 2025 14:54:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746369810; cv=none; b=SevXJSUvqA+DbP85QrTM6a01YcvJkwI7lhHOLCfV8kE3cFsfBhIojtuRSzhJPFjRAsmM8xP/K2lfa2Z7oIMRcja+NJ3uOZCy3t+y2dsyyAuadP5oP3VMNm2UqodexgeqwglO620xKf5Mgw/PKn1I2ftBW4fUaakQEja2JzZLHQg=
+	t=1746370477; cv=none; b=N33cfCPpCAMeJ0+oOKSyesUVz8XAGJ57wFIPHY4lNRk0++PJLLaW2XWWluJDXnqW5KYpgyMCfQJc1kL2pYXxNosr2x4HDls4P+WTCOMm/JgWBGVSiqgyuAy6UkxI/vBSUlFwKNM1r2a2E8jYHaerc1VzkEbbLOHQ7n83Uq5JHhY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746369810; c=relaxed/simple;
-	bh=RN/N7QLqE7nIoEfmTma30SBBBgXE2a4+uj/QwSw9gAA=;
+	s=arc-20240116; t=1746370477; c=relaxed/simple;
+	bh=03VttfEWeGe35chk5/HC5sBSqIIG9xRh8q2rdbX8LjU=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Y7H5IHesxT+91EhaWb6dKUk2n8VMbfts4h6TtdGN6X4HQVnLN/PSngZF8u2x1ADV8xbVLjA3dSZW38qT6RbDY2jmI1sg0lmSUvhS8CebEnZqlO8LE7y8PsIui2cWx2BS2eaKLYpVPTmwjfWkjbugTAeWlZOsW7VbxGP7UxRaK9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gI4Y9Ekt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B6F9C4CEE7;
-	Sun,  4 May 2025 14:43:27 +0000 (UTC)
+	 MIME-Version:Content-Type; b=lQsmfPfe5U4ZIUuYxH4ajX40s5g1FIMzpHCnhckK8U84SiYyqgJ/5f9D80UfRfkeex+50h2b35mjIBae3bqSGHjpCkjQov4UNPr1B6l+3IXoCXDl8pVlHGbunXFZfJP0zC7XC9OY9oey89LyOJRk6thyHO4OD6W1oR8KtO4EzT0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=r8tPR5+c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 048B2C4CEE7;
+	Sun,  4 May 2025 14:54:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746369810;
-	bh=RN/N7QLqE7nIoEfmTma30SBBBgXE2a4+uj/QwSw9gAA=;
+	s=k20201202; t=1746370476;
+	bh=03VttfEWeGe35chk5/HC5sBSqIIG9xRh8q2rdbX8LjU=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=gI4Y9EktEviQTw1alwt71Wbk4xUkqAmlLpNI83hd2+MJmw2GJ/d32R6XZsuK2CNYE
-	 gmfs9sBZjXI2ODA/nWSVdVK/dbuGAu16dRvDyhMDI9QrWII8ElWslh4ASMCDuAXUS6
-	 ZH0bAMnuvvG0weOc4d31Zhz1lBfgGVbphIiWBbC/p9dUL47AtCjJVkO311VfQ4G5fr
-	 ohodgysPN6HRP8ABrRzTZshKXZB0Wt5sSmd5IxUNshpGyc9iGv3WjprfCNbFRJqURe
-	 V3X4RQ4NyNEK8wdt/Gmexa4AuJnPw14g4qTJNpMiXH9Tq4gXNwhqqDpJBvD9oFh9Og
-	 9pApsn1LsP9NA==
-Date: Sun, 4 May 2025 15:43:23 +0100
+	b=r8tPR5+cXdHQ8IeoBRQXLo+7RB6KbdCuEHzr66CG9B8L6PaeknL9DSrJrUrAcEHvt
+	 8gVaGBIfDzaWzbxCU5KGgqGApCqmqKmG4qKM0xjVrVMg79dRy7Q0H2KjKDHpgoDJVP
+	 VkF5anpe4X/ksNGXnwR3E2PTiit7lfq6rdE+mE0c7eI0/o8UQrkG02+MqzK9mT08Kn
+	 lfkf33JV/JpO7f4WlQKIakvHlGzuSBfHJjj7aWHz9MO9TgeO4ZDD8xrpJLncYFTEuc
+	 XCF4ymw29GP8O89wafkOrmYdO+bSExBZojuceULnl99wCGUihvb31HSDjmyEfzzAVK
+	 cHE6Dv7NW7nIA==
+Date: Sun, 4 May 2025 15:54:28 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>
-Cc: Antoniu Miclaus <antoniu.miclaus@analog.com>, linux-iio@vger.kernel.org,
+To: Angelo Dureghello <adureghello@baylibre.com>
+Cc: David Lechner <dlechner@baylibre.com>, Lars-Peter Clausen
+ <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, Nuno
+ =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
+ Beniamin Bia <beniamin.bia@analog.com>, Jonathan Cameron
+ <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org,
  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] MAINTAINERS: add maintainers for ad4851 driver
-Message-ID: <20250504154323.4794bffa@jic23-huawei>
-In-Reply-To: <00988dab7a90671d637466e4261d7b2248f172b6.camel@gmail.com>
-References: <20250502100016.26279-1-antoniu.miclaus@analog.com>
-	<00988dab7a90671d637466e4261d7b2248f172b6.camel@gmail.com>
+Subject: Re: [PATCH] iio: adc: ad7606_spi: fix reg write value mask
+Message-ID: <20250504155428.5056519d@jic23-huawei>
+In-Reply-To: <upz2umlx6qjnfiw5wvheukvfvolvea4anq7hky2vz5yi2w5wea@ormxyycioexv>
+References: <20250428-iio-adc-ad7606_spi-fix-write-value-mask-v1-1-a2d5e85a809f@baylibre.com>
+	<upz2umlx6qjnfiw5wvheukvfvolvea4anq7hky2vz5yi2w5wea@ormxyycioexv>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -58,49 +62,49 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Fri, 02 May 2025 16:00:28 +0100
-Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
+On Tue, 29 Apr 2025 10:34:14 +0200
+Angelo Dureghello <adureghello@baylibre.com> wrote:
 
-> On Fri, 2025-05-02 at 13:00 +0300, Antoniu Miclaus wrote:
-> > Add the ad4851 entry in the MAINTAINERS file.
-> >=20
-> > Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
-> > --- =20
->=20
-> Reviewed-by: Nuno S=C3=A1 <nuno.sa@analog.com>
-Applied.
-
-Thanks!
-
-Jonathan
-
->=20
-> > =C2=A0MAINTAINERS | 10 ++++++++++
-> > =C2=A01 file changed, 10 insertions(+)
-> >=20
-> > diff --git a/MAINTAINERS b/MAINTAINERS
-> > index 4a0089db6670..d5a985ae62bb 100644
-> > --- a/MAINTAINERS
-> > +++ b/MAINTAINERS
-> > @@ -1350,6 +1350,16 @@ F:	Documentation/iio/ad4695.rst
-> > =C2=A0F:	drivers/iio/adc/ad4695.c
-> > =C2=A0F:	include/dt-bindings/iio/adc/adi,ad4695.h
-> > =C2=A0
-> > +ANALOG DEVICES INC AD4851 DRIVER
-> > +M:	Sergiu Cuciurean <sergiu.cuciurean@analog.com>
-> > +M:	Dragos Bogdan <dragos.bogdan@analog.com>
-> > +R:	Antoniu Miclaus <antoniu.miclaus@analog.com>
-> > +L:	linux-iio@vger.kernel.org
-> > +S:	Supported
-> > +W:	https://ez.analog.com/linux-software-drivers
-> > +F:	Documentation/devicetree/bindings/iio/adc/adi,ad4851.yaml
-> > +F:	drivers/iio/adc/ad4851.c
-> > +
-> > =C2=A0ANALOG DEVICES INC AD7091R DRIVER
-> > =C2=A0M:	Marcelo Schmitt <marcelo.schmitt@analog.com>
-> > =C2=A0L:	linux-iio@vger.kernel.org =20
+> On 28.04.2025 20:55, David Lechner wrote:
+> > Fix incorrect value mask for register write. Register values are 8-bit,
+> > not 9. If this function was called with a value > 0xFF and an even addr,
+> > it would cause writing to the next register.
+> > 
+> > Fixes: f2a22e1e172f ("iio: adc: ad7606: Add support for software mode for ad7616")
+> > Signed-off-by: David Lechner <dlechner@baylibre.com>
+Applied and marked for stable.
+> > ---
+> >  drivers/iio/adc/ad7606_spi.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/iio/adc/ad7606_spi.c b/drivers/iio/adc/ad7606_spi.c
+> > index bd05357a542cf7234d5bb6b718829d6b720262cd..6c1228c7b1b11058cb5186513f032f7c8c8aa8f4 100644
+> > --- a/drivers/iio/adc/ad7606_spi.c
+> > +++ b/drivers/iio/adc/ad7606_spi.c
+> > @@ -127,7 +127,7 @@ static int ad7606_spi_reg_write(struct ad7606_state *st,
+> >  	struct spi_device *spi = to_spi_device(st->dev);
+> >  
+> >  	st->d16[0] = cpu_to_be16((st->bops->rd_wr_cmd(addr, 1) << 8) |
+> > -				  (val & 0x1FF));
+> > +				  (val & 0xFF));
+> >  
+> >  	return spi_write(spi, &st->d16[0], sizeof(st->d16[0]));
+> >  }
+> > 
+> > ---
+> > base-commit: aa1bd0b0ad048855d9efbee4ee8b9a6eee536256
+> > change-id: 20250428-iio-adc-ad7606_spi-fix-write-value-mask-7acdcca46227  
+> 
+> Reviewed-by: Angelo Dureghello <adureghello@baylibre.com>
+> 
+> > 
+> > Best regards,
+> > -- 
+> > David Lechner <dlechner@baylibre.com>
+> >   
+> 
 
 

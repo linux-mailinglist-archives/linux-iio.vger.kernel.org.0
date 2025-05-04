@@ -1,56 +1,60 @@
-Return-Path: <linux-iio+bounces-19043-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19044-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA8F1AA8756
-	for <lists+linux-iio@lfdr.de>; Sun,  4 May 2025 17:40:32 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 388D2AA875F
+	for <lists+linux-iio@lfdr.de>; Sun,  4 May 2025 17:47:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E6CD07A54E5
-	for <lists+linux-iio@lfdr.de>; Sun,  4 May 2025 15:39:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 598AF7A3A10
+	for <lists+linux-iio@lfdr.de>; Sun,  4 May 2025 15:45:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD1421D5ADC;
-	Sun,  4 May 2025 15:40:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4275F1C84AF;
+	Sun,  4 May 2025 15:47:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L9auhm/a"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gFbsmnFX"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FDAB6D17;
-	Sun,  4 May 2025 15:40:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA5551FAA;
+	Sun,  4 May 2025 15:47:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746373223; cv=none; b=WIzkdQhPaaRPRrWjPqF9jUd43u1DEQL6iRzltd9rMLr7XxD/JLUFAssDCHkW431bZK1yrU3mrDvGTVuT6GwiDoLJNbwsyj6nIyxvtXzzWwIHMHZj5qcT7k4koZt9ZXdJtJ5wO/i3JdQYAAOowDNgv42wtxMux1yIOadoH/vHQVU=
+	t=1746373621; cv=none; b=rH2yY0fhI/LG1C9HfuVQgQQ21LxJEQSmvucc1u5TTizus1GP7igAogatZKO/vJyxxmApYn6M7mvbJEhhcXZO669Tjo1NXDBXjB+7dIWVBTA98YQlPh525Y/d7IDBNLt+O0RQR9Z/HTqgVNa382/Lo9zjWUf2s6AbSUNsn7OS4bA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746373223; c=relaxed/simple;
-	bh=H/DmNOmqCWO0GtACrgiG85dQ3OLs0Q+7EoCQAS+gDRE=;
+	s=arc-20240116; t=1746373621; c=relaxed/simple;
+	bh=eg438LQYInqo9y9/Eti33rySAFBXRXmJbYUQgtWCs0Y=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GX28T6Cbp9ZiKtHtqs2mv3EFkXsb3plwN9iZb6KiwkSU26YCQ/lt6wvMzb+kHZch+nL5ILNcNpz91FBsoCqZl0hItVF7jY9iSFrUPgdsMFFYVXue8k+g8L8IRaTQEE4f2EVkCWrev42iPxUqluo2PxXDKZkG1d/MuET2DfOFy7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L9auhm/a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BF65C4CEE7;
-	Sun,  4 May 2025 15:40:19 +0000 (UTC)
+	 MIME-Version:Content-Type; b=jgR/wd+caqG2QE/cfJtngg4sPK4UlF3ld8oYfJU++JNOEJC03xZQy6dEE60WoI5BHxGuwf12wJGv1MhZWXL0iREOl3YQmFxYPCb64F/qCf0IJbNtIUDcLmpSavbv/H8vE233ZeLXIqSCmNgPVDa+95xHJ5d11EMmanlLMTw1Hgc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gFbsmnFX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5908C4CEE7;
+	Sun,  4 May 2025 15:46:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746373223;
-	bh=H/DmNOmqCWO0GtACrgiG85dQ3OLs0Q+7EoCQAS+gDRE=;
+	s=k20201202; t=1746373620;
+	bh=eg438LQYInqo9y9/Eti33rySAFBXRXmJbYUQgtWCs0Y=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=L9auhm/anpX+Fe0ymPnU4NWkSLAGPfgNL0i4XXldD/HN+9HXCM7pAe/yPNXLqH1VY
-	 2OuQcPoBxAMj9sDQraPJSGdVk6QmilaHqZc3koDR8UiGcQP8opluboMO8lZbzlNUjA
-	 Ald0ayhXc6dr2fmieqjYYOe+fITbONhGvf3c9scvx8XqaFN79djGGCKaVJViI96yQr
-	 mOnKN3RJ9zF0BZhQ0986SW3AjokWIz+IvGukEvicdc1DPPAAlAtiCdNslpgenvAMMs
-	 X7uVm4OMwbvz30scsnuUg6v3NsAT0I6nfwKqEraD7CMTMqfSDAghheUn8sWT7o81Wr
-	 J3pJmXgCywq1g==
-Date: Sun, 4 May 2025 16:40:15 +0100
+	b=gFbsmnFXqB/zNRPAC4/USD3No37/d31n3jIhyUrZl1uaZL4rPhRiMhau+tkJ0ryx9
+	 5PJKG3UvnIjUZ7Zq3HgjU/QPaUwrjfPOHp23zcqKso6amW2OkkAKqhL6vAqfGqO4Z6
+	 qxLMgkUdg/nW/U46nUuC7IIWpSu32lf8t3KnGXjNtCGjmsvWlUD5nHwnMfX8dRbUPx
+	 gQf15QdnlsPQbD/elmUgyvoESRY6tcWYPXjNHVp2EqQQnmb+E0cReCgfnr5RRIDMQ2
+	 yiHTm9ns3fg+kGyClV6O0GjHmkD0+1ZiusGmg2FzgjOXwIRluHA7+xQZPgPPRL4nHY
+	 H1J69SuM773jQ==
+Date: Sun, 4 May 2025 16:46:54 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Antoniu Miclaus <antoniu.miclaus@analog.com>
-Cc: <robh@kernel.org>, <conor+dt@kernel.org>, <linux-iio@vger.kernel.org>,
- <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v4 09/10] iio: adc: ad4080: add driver support
-Message-ID: <20250504164015.4b6f8dd1@jic23-huawei>
-In-Reply-To: <20250502085905.24926-10-antoniu.miclaus@analog.com>
-References: <20250502085905.24926-1-antoniu.miclaus@analog.com>
-	<20250502085905.24926-10-antoniu.miclaus@analog.com>
+To: Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: Sean Nyekjaer <sean@geanix.com>, Marcelo Schmitt
+ <marcelo.schmitt1@gmail.com>, Lars-Peter Clausen <lars@metafoo.de>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] iio: accel: fxls8962af: Fix temperature
+ calculation
+Message-ID: <20250504164654.1ecf7215@jic23-huawei>
+In-Reply-To: <CAHp75VehpQdxFDXE8L0TeaOxHBTHNorOZ95rL48kQAiViAJ_zg@mail.gmail.com>
+References: <20250502-fxls-v2-0-e1af65f1aa6c@geanix.com>
+	<20250502-fxls-v2-1-e1af65f1aa6c@geanix.com>
+	<CAHp75VehpQdxFDXE8L0TeaOxHBTHNorOZ95rL48kQAiViAJ_zg@mail.gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -58,49 +62,47 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, 2 May 2025 11:59:04 +0300
-Antoniu Miclaus <antoniu.miclaus@analog.com> wrote:
+On Fri, 2 May 2025 17:19:44 +0300
+Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
 
-> Add support for AD4080 high-speed, low noise, low distortion,
-> 20-bit, Easy Drive, successive approximation register (SAR)
-> analog-to-digital converter (ADC).
-> 
-> Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+> On Fri, May 2, 2025 at 9:15=E2=80=AFAM Sean Nyekjaer <sean@geanix.com> wr=
+ote:
+> >
+> > According to spec temperature should be returned in milli degrees Celsi=
+us.
+> > Add in_temp_scale to calculate from Celsius to milli Celsius. =20
+>=20
+> ...
+>=20
+> > +/* Raw temp channel scale */
+> > +#define FXLS8962AF_TEMP_SCALE                  1000 =20
+>=20
+> Wouldn't constants from units.h be helpful here?
 
-One trivial thing I noticed to add to Nuno's much more detailed review!
+Whilst you are just continuing local style, I'm not sure
+these defines really bring much at all given the TEMP_SCALE
+one for instance is only used in one place which is
+explicitly getting the temperature scale.  It's not a magic
+number that needs a define. It's a number that means it's own
+value :)
 
+Using MILLI there would be a nice bit of self documentation
+though.
+>=20
+> >  #define FXLS8962AF_AUTO_SUSPEND_DELAY_MS       2000 =20
+>=20
+> (2 * MSEC_PER_SEC)
+>=20
+> This gives immediately that we want 2 seconds of delay.
+>=20
+True but not part of this patch so that would be a nice
+little follow up.  Possibly dropping this define in favour
+of using that inline.
 
-> diff --git a/drivers/iio/adc/ad4080.c b/drivers/iio/adc/ad4080.c
-> new file mode 100644
-> index 000000000000..9168dee9323e
-> --- /dev/null
-> +++ b/drivers/iio/adc/ad4080.c
+Jonathan
 
-> +static int ad4080_set_dec_rate(struct iio_dev *dev,
-> +			       const struct iio_chan_spec *chan,
-> +			       unsigned int mode)
-> +{
-> +	struct ad4080_state *st = iio_priv(dev);
-> +	int ret;
-> +
-> +	if ((st->filter_type >= SINC_5 && mode >= 512) || mode < 2)
-> +		return -EINVAL;
-> +
-> +	ret = regmap_update_bits(st->regmap, AD4080_REG_FILTER_CONFIG,
-> +				 AD4080_FILTER_CONFIG_SINC_DEC_RATE_MSK,
-> +				 FIELD_PREP(AD4080_FILTER_CONFIG_SINC_DEC_RATE_MSK,
-> +					    (ilog2(mode) - 1)));
-> +	if (ret)
-> +		return ret;
-> +
-> +	return 0;
-
-return regmap_update_bits();
-
-
-> +}
 
 

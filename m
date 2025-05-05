@@ -1,174 +1,514 @@
-Return-Path: <linux-iio+bounces-19092-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19093-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91249AA92EF
-	for <lists+linux-iio@lfdr.de>; Mon,  5 May 2025 14:21:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C4CAAA9356
+	for <lists+linux-iio@lfdr.de>; Mon,  5 May 2025 14:37:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 663673B2367
-	for <lists+linux-iio@lfdr.de>; Mon,  5 May 2025 12:20:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DCA8A177F20
+	for <lists+linux-iio@lfdr.de>; Mon,  5 May 2025 12:37:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 508B7248864;
-	Mon,  5 May 2025 12:20:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BED831F5434;
+	Mon,  5 May 2025 12:37:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="VcIPzoF7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jbsJYeqg"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx07-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61FEC1F866B;
-	Mon,  5 May 2025 12:20:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.207.212.93
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 769286FC3;
+	Mon,  5 May 2025 12:37:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746447646; cv=none; b=Zgqo+32P1aq8u+OmU5baL7jAooHDRNJ6JsiUBtPwlVAL9GrSsMpInyV6kHfvklUVT+HwbipakhlPzZvQZTj/rCS/NPEoud6Gbjd7RUIB9Df4apocflYBjCis7ed557d0NxAKM/pm8gpk2WqEEfgLx3wbf9v8rKgQMOsSefpnEck=
+	t=1746448671; cv=none; b=kwD4PMFYgAXFEzrepzYhaooMJnjrp4cXvYRzGuyMTkQgDTIDuCtX11EX3vwh+smrHG8wOFMP8pEoTM+HH49nr+dtgDsI0Jy4i4lYP1yutIBEbRYO2q/aNSVlD9SvZmSu4SCqh/t/Psf1o8IGqae9HTBTGkiD7pnXjpIPNOLk+8Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746447646; c=relaxed/simple;
-	bh=s89VJ/1EaCKaePelhYq4jo2czu3Rjni85JG5mwztG/w=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=rueAuGXZGCLsw2d3hCfBs/NOQg5k0Mg3Lt4ytqJadWckK6TJGi3MeEl1i6RDzW1PCrocXWa5BfgtPLgN92gUPBQRur1JcPTQ25u73S/KtcO38anLtQYgeHUjqct4/rsKouGfoQY2cSsroHh8OVx911RB1utbZUelG9yTkBd9D74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=VcIPzoF7; arc=none smtp.client-ip=91.207.212.93
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
-Received: from pps.filterd (m0046661.ppops.net [127.0.0.1])
-	by mx07-00178001.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5459iofq026377;
-	Mon, 5 May 2025 14:20:21 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=selector1; bh=
-	vNv4YiLlgQtzs0T1f6YhVskbVHM2VZaXMMv7y7lFYks=; b=VcIPzoF7GvsOd/WZ
-	rsEAtn10/CuuGxpRtZPvKcVSO7L+0Hjoxqjze9wOkJ9oZpbrrxZaHOXoUWI0qxhl
-	5TqA8vbrHSzY4TszLkb9rxuxEC5JqBHyfzuTGQj46DDsopVDxMROJmXHMApay6iY
-	ndorEak3fidDnUd5uf+bp9VwMhDKVc1IJp5KZAg5Vi9bc8h89XpZg4rNnLd6oZqP
-	fLMl5nQp6KMHLwLMGOf8rLK5VrF4OskEJgbJb4IIJszd8dpt3DEUNIXifeP4dBoj
-	/K7j8uKefrb9yibR31mFUYlRxanDfE7YmEBAyxqWzpvo03+OSgsyRkAqgMZ5HDzi
-	u7+SPQ==
-Received: from beta.dmz-ap.st.com (beta.dmz-ap.st.com [138.198.100.35])
-	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 46dbekp93d-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 05 May 2025 14:20:20 +0200 (MEST)
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-	by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id 7B78140048;
-	Mon,  5 May 2025 14:19:11 +0200 (CEST)
-Received: from Webmail-eu.st.com (eqndag1node5.st.com [10.75.129.134])
-	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 7A9A5AF1E53;
-	Mon,  5 May 2025 14:17:39 +0200 (CEST)
-Received: from SAFDAG1NODE1.st.com (10.75.90.17) by EQNDAG1NODE5.st.com
- (10.75.129.134) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 5 May
- 2025 14:17:39 +0200
-Received: from [10.48.86.222] (10.48.86.222) by SAFDAG1NODE1.st.com
- (10.75.90.17) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 5 May
- 2025 14:17:38 +0200
-Message-ID: <c7a1b615-9171-4675-b5d6-fe5741f1ac0b@foss.st.com>
-Date: Mon, 5 May 2025 14:17:37 +0200
+	s=arc-20240116; t=1746448671; c=relaxed/simple;
+	bh=LsrhmZLFCFXMb5vO1xXMNkkGGuMs57Bc3mmDiktfTrg=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=hdNSPjR9jP7cTFtDslNH9sHgYpxB9pADBgzv5crywq/tXP1xMSDwHdgtCJlh01UrTzkowc56GdqzIGCuXHNRSc58Ji5pEK+LUPVHN8b4uJwMrIvNvjZKuo+Gt6ELhpuTWCjAB3L6PIjVJKFa+7TwqQRcXFIdAjSMqDKmUiRCjPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jbsJYeqg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAFF1C4CEE4;
+	Mon,  5 May 2025 12:37:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1746448670;
+	bh=LsrhmZLFCFXMb5vO1xXMNkkGGuMs57Bc3mmDiktfTrg=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=jbsJYeqghGCKWa6OB0O5QNarDS812xaFJLwCJg4AS/+ZNaIezxTgORsEmHl6E8N4R
+	 kmjyvApLbzuT+U4YjWi5HpVK0LMD6ZPAmJKyNxoDhsgMeren2xHAfFXFoAeBxAXoq9
+	 xaV7TgHaZs6auBYmwHyZn/eGpmFcO0C4SK9tec8FDtZ31ANGyzYpXdqPIT+tZKlDAm
+	 t+3Zz5Amm8yA3ZO2oQhl0KmL36+QWHkK2L/jJ5fueGSymtQMDoirAxS3kkC/npqmRA
+	 hkYEHQYwGfdie7Z54EGsAYh4IkcemlCzpiZivSTQRyHWklYPb5MczcEqaJNrMwotuS
+	 W0p3T5+EGXOjw==
+Date: Mon, 5 May 2025 13:37:43 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Lothar Rubusch <l.rubusch@gmail.com>
+Cc: lars@metafoo.de, Michael.Hennerich@analog.com,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ eraretuya@gmail.com
+Subject: Re: [PATCH v7 08/11] iio: accel: adxl345: add activity event
+ feature
+Message-ID: <20250505133743.686d957d@jic23-huawei>
+In-Reply-To: <CAFXKEHb8+76WiiTCQbRa9v6gAicT0wnua6vCn-NxCfgNiuud2g@mail.gmail.com>
+References: <20250421220641.105567-1-l.rubusch@gmail.com>
+	<20250421220641.105567-9-l.rubusch@gmail.com>
+	<20250427134759.3cc3a2a4@jic23-huawei>
+	<CAFXKEHZ3KQ_Z4QB==Bb_CTauV7Wowd0Lgxaick=6mfiLJU654Q@mail.gmail.com>
+	<20250504112904.64c1b5ee@jic23-huawei>
+	<CAFXKEHb8+76WiiTCQbRa9v6gAicT0wnua6vCn-NxCfgNiuud2g@mail.gmail.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 0/7] Add STM32MP25 LPTIM support: MFD, PWM, IIO,
- counter, clocksource
-To: Lee Jones <lee@kernel.org>
-CC: <daniel.lezcano@linaro.org>, <alexandre.torgue@foss.st.com>,
-        <tglx@linutronix.de>, <ukleinek@kernel.org>, <krzk+dt@kernel.org>,
-        <conor+dt@kernel.org>, <jic23@kernel.org>, <robh@kernel.org>,
-        <catalin.marinas@arm.com>, <will@kernel.org>,
-        <devicetree@vger.kernel.org>, <wbg@kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-        <linux-iio@vger.kernel.org>, <linux-pwm@vger.kernel.org>,
-        <olivier.moysan@foss.st.com>
-References: <20250429125133.1574167-1-fabrice.gasnier@foss.st.com>
- <20250501131454.GO1567507@google.com>
-Content-Language: en-US
-From: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-In-Reply-To: <20250501131454.GO1567507@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: EQNCAS1NODE3.st.com (10.75.129.80) To SAFDAG1NODE1.st.com
- (10.75.90.17)
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-05-05_05,2025-05-05_01,2025-02-21_01
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
+On Sun, 4 May 2025 19:47:55 +0200
+Lothar Rubusch <l.rubusch@gmail.com> wrote:
 
+> On Sun, May 4, 2025 at 12:29=E2=80=AFPM Jonathan Cameron <jic23@kernel.or=
+g> wrote:
+> >
+> > On Thu, 1 May 2025 00:53:32 +0200
+> > Lothar Rubusch <l.rubusch@gmail.com> wrote:
+> > =20
+> > > Hi Jonathan - Hi IIO list,
+> > >
+> > > Please, find some (many) questions inlined down below. Appologies for
+> > > the separate
+> > > channels last time and not right away fixing them up as array. I did
+> > > not want to make extra work.
+> > >
+> > > On Sun, Apr 27, 2025 at 2:48=E2=80=AFPM Jonathan Cameron <jic23@kerne=
+l.org> wrote: =20
+> > > >
+> > > > On Mon, 21 Apr 2025 22:06:38 +0000
+> > > > Lothar Rubusch <l.rubusch@gmail.com> wrote:
+> > > > =20
+> > > > > Make the sensor detect and issue interrupts at activity. Activity
+> > > > > events are configured by a threshold stored in regmap cache. Init=
+ialize
+> > > > > the activity threshold register to a reasonable default value in =
+probe.
+> > > > > The value is taken from the older ADXL345 input driver, to provid=
+e a
+> > > > > similar behavior. Reset the activity/inactivity direction enabling
+> > > > > register in probe. Reset and initialization shall bring the senso=
+r in a
+> > > > > defined initial state to prevent dangling settings when warm rest=
+arting
+> > > > > the sensor.
+> > > > >
+> > > > > Activity, ODR configuration together with the range setting prepa=
+re the
+> > > > > activity/inactivity hystersesis setup, implemented in a follow up=
+ patch.
+> > > > >
+> > > > > Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
+> > > > > ---
+> > > > >  drivers/iio/accel/adxl345_core.c | 217 +++++++++++++++++++++++++=
++++++-
+> > > > >  1 file changed, 214 insertions(+), 3 deletions(-)
+> > > > >
+> > > > > diff --git a/drivers/iio/accel/adxl345_core.c b/drivers/iio/accel=
+/adxl345_core.c
+> > > > > index 80b5b8402ced..680981609d83 100644
+> > > > > --- a/drivers/iio/accel/adxl345_core.c
+> > > > > +++ b/drivers/iio/accel/adxl345_core.c
+> > > > > @@ -36,11 +36,16 @@
+> > > > >  #define ADXL345_REG_TAP_AXIS_MSK     GENMASK(2, 0)
+> > > > >  #define ADXL345_REG_TAP_SUPPRESS_MSK BIT(3)
+> > > > >  #define ADXL345_REG_TAP_SUPPRESS     BIT(3)
+> > > > > +#define ADXL345_REG_ACT_AXIS_MSK     GENMASK(6, 4)
+> > > > >
+> > > > >  #define ADXL345_TAP_Z_EN             BIT(0)
+> > > > >  #define ADXL345_TAP_Y_EN             BIT(1)
+> > > > >  #define ADXL345_TAP_X_EN             BIT(2)
+> > > > >
+> > > > > +#define ADXL345_ACT_Z_EN             BIT(4)
+> > > > > +#define ADXL345_ACT_Y_EN             BIT(5)
+> > > > > +#define ADXL345_ACT_X_EN             BIT(6)
+> > > > > +
+> > > > >  /* single/double tap */
+> > > > >  enum adxl345_tap_type {
+> > > > >       ADXL345_SINGLE_TAP,
+> > > > > @@ -64,6 +69,19 @@ static const unsigned int adxl345_tap_time_reg=
+[] =3D {
+> > > > >       [ADXL345_TAP_TIME_DUR] =3D ADXL345_REG_DUR,
+> > > > >  };
+> > > > >
+> > > > > +/* activity/inactivity */
+> > > > > +enum adxl345_activity_type {
+> > > > > +     ADXL345_ACTIVITY,
+> > > > > +};
+> > > > > +
+> > > > > +static const unsigned int adxl345_act_int_reg[] =3D {
+> > > > > +     [ADXL345_ACTIVITY] =3D ADXL345_INT_ACTIVITY,
+> > > > > +};
+> > > > > +
+> > > > > +static const unsigned int adxl345_act_thresh_reg[] =3D {
+> > > > > +     [ADXL345_ACTIVITY] =3D ADXL345_REG_THRESH_ACT,
+> > > > > +};
+> > > > > +
+> > > > >  enum adxl345_odr {
+> > > > >       ADXL345_ODR_0P10HZ =3D 0,
+> > > > >       ADXL345_ODR_0P20HZ,
+> > > > > @@ -154,6 +172,13 @@ struct adxl345_state {
+> > > > >  };
+> > > > >
+> > > > >  static struct iio_event_spec adxl345_events[] =3D {
+> > > > > +     {
+> > > > > +             /* activity */
+> > > > > +             .type =3D IIO_EV_TYPE_THRESH, =20
+> > > >
+> > > > Is this a threshold, or a magnitude? I'd expect an activity detector
+> > > > to be magnitude as it doesn't care which way up the sensor is.
+> > > > =20
+> > >
+> > > This is touching the main points still unclear to me. I tried to put
+> > > this into the
+> > > following questions. Could you please clarify? =20
+> >
+> > There are some corners where it gets messy. When I have time
+> > (not for a month or so) I'll try and write some proper docs for this.
+> > =20
+> > >
+> > > 1. Given a measurement "val", and a configured threshold "thr".
+> > > A "rising" for IIO_EV_TYPE_THRESH means: val > thr
+> > > where a "rising" for IIO_EV_TYPE_MAG means something like: val > |thr|
+> > >
+> > > Q: Do I understand this correctly now? =20
+> >
+> > Yes that is the intended difference.
+> > =20
+> > >
+> > > Q: Is this documented somewhere (especially for reviewing further
+> > > EV_TYPE fields)? =20
+> >
+> > Only in the ABI documentation in
+> > Documentation/ABI/testing/sysfs-bus-iio
+> > This is definitely something we should look to improve with some
+> > docs beyond simply what the ABI is.  That ABI is focused on
+> > how the interrupt is triggered, not so much on what that means
+> > wrt to freefall etc.
+> >
+> > =20
+> > >
+> > > Q: I wonder if I missed this for the Tap events. Going by this
+> > > definition, then actually the
+> > > tap events should be rather MAG events, too. Right? =20
+> >
+> > The tap events have their own type (gesture) because they are way
+> > more complex than a simple threshold whether on magnitude or
+> > the signed value.  So those should be fine as type GESTURE.
+> > =20
+>=20
+> I was aware of that. Actually, the case of GESTURE is a bit
+> particular. On the one side, I
+> understand having a distinction between THRESH events and MAG events.
+> Hence, a classification of the type of event in terms of a measurement
+> value triggering event condition.
+> This concept seems actually to be clear.
+>=20
+> GESTURE to me then seems a bit like a "wildcard type covering all kind
+> of tap events". I mean,
+> saying tap detection, single tap, double tap, tripple tap, and so on
+> tap go into category GESTURE - naively could also mean, then do a
+> freefall  type as well (?).
 
-On 5/1/25 15:14, Lee Jones wrote:
-> On Tue, 29 Apr 2025, Fabrice Gasnier wrote:
-> 
->> This series adds support for STM32MP25 to MFD PWM, IIO, counter and
->> clocksource low-power timer (LPTIM) drivers.
->> This new variant is managed by using a new DT compatible string, hardware
->> configuration and version registers.
->> It comes with a slightly updated register set, some new features and new
->> interconnect signals inside the SoC.
->> Same feature list as on STM32MP1x is supported currently.
->> The device tree files add all instances in stm32mp251 dtsi file.
->>
->> Changes in V6
->> ---
->> - Fixed kernel test robot warning
->>   https://lore.kernel.org/oe-kbuild-all/202504261456.aCATBoYN-lkp@intel.com/
->>
->> Changes in V5
->> ---
->> - Add a necessary delay in clocksource driver, when enabling the timer.
->> - Add collected Acks
->> - Dropped IIO trigger patch as applied by Jonathan [1] (no dependency)
->>   [1] https://lore.kernel.org/all/20250331110435.26157ebe@jic23-huawei/
->>
->> Changes in V4
->> ---
->> - Simplify IIO trigger driver as per Jonathan's comments.
->> - Rework clocksource driver: encapsulate mp25 changes in separate function
->>   after Daniel's suggestion.
->> - Add some definitions to MFD header.
->>
->> Changes in V3
->> ---
->> - Yaml indentation issue fixed, reported by Rob's bot
->>
->> Changes in V2
->> ---
->> - Review comments from Krzysztof
->>   - Adopt compatible fallback in dt-bindings and driver
->>   - drivers: drop "st,stm32mp25-..." compatibles when unused (e.g. no .data)
->>   - counter driver: no update (patch dropped)
->>   - defconfig: only enable the necessary config for upstream board
->>   - add lptimer DT node in stm32mp257f-ev1 board
->> - Add missing management of IER access for stm32mp25
->>
->> Fabrice Gasnier (7):
->>   dt-bindings: mfd: stm32-lptimer: add support for stm32mp25
->>   mfd: stm32-lptimer: add support for stm32mp25
->>   clocksource: stm32-lptimer: add support for stm32mp25
->>   pwm: stm32-lp: add support for stm32mp25
->>   arm64: defconfig: enable STM32 LP timer clockevent driver
->>   arm64: dts: st: add low-power timer nodes on stm32mp251
->>   arm64: dts: st: use lptimer3 as tick broadcast source on
->>     stm32mp257f-ev1
->>
->>  .../bindings/mfd/st,stm32-lptimer.yaml        |  40 +++-
->>  arch/arm64/boot/dts/st/stm32mp251.dtsi        | 177 ++++++++++++++
->>  arch/arm64/boot/dts/st/stm32mp257f-ev1.dts    |   8 +
->>  arch/arm64/configs/defconfig                  |   2 +
->>  drivers/clocksource/timer-stm32-lp.c          |  61 ++++-
->>  drivers/mfd/stm32-lptimer.c                   |  33 ++-
->>  drivers/pwm/pwm-stm32-lp.c                    | 219 +++++++++++++++---
->>  include/linux/mfd/stm32-lptimer.h             |  37 ++-
->>  8 files changed, 537 insertions(+), 40 deletions(-)
-> 
-> Is it just the Clocksource Ack that we're waiting on now?
-> 
-Hi Lee,
+Nope. Because freefall has a clear definition that aligns with
+the events that we have for other types of sensor.
 
-Yes,
+You are right that gesture is a wild card. I resisted it for a long
+time but there is just no sane way to handle tap events alongside
+the sort of things we get on any other sensor type.  Having looked
+at a bunch of them they can be anything from straight magnitude thresholds
+with time windows to things based on a mixture of jerk (rate of change
+of acceleration) and other stuff.  The only thing that kind of close
+to this is pedometer step events, but we handle those as a counting
+channel rather than an event as time of each is less interesting than
+how many have happened.  However as noted below we do have the CHANGE
+type of event specifically to account for those (which is ugly).
 
-Best Regards,
-Fabrice
+>=20
+> [this is rather meant as a bit of a provocative rhetoric question than
+> a proposal]
+>=20
+> > >
+> > >
+> > > 2. I oriented myself mostly by reading other drivers, for instance the
+> > > ADXL367, the ADXL372, or also the more recent ADXL380. I am aware that
+> > > there might be differences among different
+> > > (Analog) sensors. But all those sensors specify Inactivity (and Activ=
+ity) as a
+> > > IIO_EV_TYPE_THRESH with directions IIO_MOD_X_OR_Y_OR_Z.
+> > > Given the above, I implemented Activity and Inactivity events as
+> > > IIO_EV_TYPE_THRESH,
+> > > now I'm a bit confused. =20
+> >
+> > Hmm. This is one reason I think we need more documentation as those
+> > seem to be wrong.  Clearly the event is a threshold on a magnitude of
+> > the acceleration, not the signed value as it applies in both directions.
+> > =20
+> > >
+> > > Q: Why is this different for the ADXL345? =20
+> >
+> > Because we got it wrong for these others it seems unless they genuinely
+> > have directional events - which typically means separate positive and
+> > negative thresholds.  Right now those events are strictly speaking
+> > only apply to positive accelerations.
+> > =20
+> > >
+> > > Q: If I implement Activity / Inactivity analogous to the e.g. a
+> > > ADXL380, then shouldn't it be IIO_EV_TYPE_THRESH with
+> > > IIO_MOD_X_OR_Y_OR_Z? Why not?
+> > > =20
+> >
+> > I think we got it wrong for that part.  Going forwards we should work
+> > on getting it (more) correct.
+> > =20
+>=20
+> I understand the point better now.
+>=20
+> > >
+> > > 3. For the ADXL345, a Freefall signal is on all axis lower than
+> > > threshold (magnitude). Thus I push a IIO_MOD_X_AND_Y_AND_Z to a
+> > > separate
+> > > fake channel. Inactivity will be like Freefall independent of the axi=
+s.
+> > > The ADXL345 Activity can be configured by axis, as also the event will
+> > > respect the axis information.
+> > >
+> > > Q: Setting up the "fake channel" to particuarly push to
+> > > IIO_MOD_X_AND_Y_AND_Z, I probably better should also evaluate
+> > > IIO_MOD_X_AND_Y_AND_Z in write_event_config(), write_event_value(),
+> > > etc. rather than evaluating IIO_MOD_-types as I'm currently
+> > > doing? =20
+> >
+> > Yes. That sounds correct for events on these 'fake' channels.
+> > The enable and the thresholds should all be on these fake channels
+> > assuming they don't have different thresholds on a per axis basis
+> > (if they do things get tricky to represent).
+> > =20
+> > >
+> > > Q: Activity probably remains in the regular channels for the correspo=
+nding axis? =20
+> >
+> > Yes.  That is easier to handle as OR of channels is very similar
+> > to separate interrupts etc.
+> > =20
+>=20
+> I think I should definitely evaluate the IIO_MOD_X_AND_Y_AND_Z here,
+> to take advantage
+> of the fake channel.
+>=20
+> > >
+> > >
+> > > 4. I implemented functions like adxl345_write_event_config(),
+> > > adxl345_write_event_value() or corresponding
+> > > readers, as follows
+> > > - THRESH/rising: Activity
+> > > - THRESH/falling: Inactivity
+> > > - MAG/falling: Freefall
+> > >
+> > > If I change Activity and Inactivity to be both of type MAG, I will end
+> > > up with MAG/falling to indicate Freefall or equally Inactivity.
+> > > Both on the IIO_MOD_X_AND_Y_AND_Z channel. I admit (ab)using the
+> > > IIO_EV_TYPEs to solve my combinatorial issues for event configuration
+> > > is probably not as supposed to be. =20
+> >
+> > Ah..  This I'd missed.  I'm fairly sure we didn't hit this for (some) p=
+revious
+> > inactivity sensors because they were always rate of change based, (AC)
+> > rather than DC. DC is relatively unlikely to be used in practice because
+> > we can't set the threshold as less than 1G because of gravity.  It is a
+> > bit odd that the device supports both DC and AC on this detector.
+> >
+> > I wonder why.... Might be to enable partial axis monitoring.  e.g.
+> > If a device is flat on a table we only look for inactivity on the non
+> > vertical axis when doing DC coupling. (as we have 1g always in the other
+> > axis).
+> > =20
+>=20
+> Thank you for clarifying your position in the other mail focussed on
+> the AC- / DC-coupling
+> topic. It helped me in better understanding what you actually expect
+> here. Although I'll
+> probably need to re-read it some times, before implementing something.
+
+I definitely need to find time to write some docs on this.  Mad few
+weeks coming up but maybe I'll get some time on a plane or at an airport
+to try a first draft.
+
+>=20
+> > > Given you still ask me to do Inactivity and Freefall as MAG/falling
+> > > with IIO_MOD_X_AND_Y_AND_Z. The difference between both IMHO,
+> > > is that Activity and Inactivity for the ADXL345 indicate sensor state
+> > > changes, where Freefall indicates the particular event. The
+> > > sensor is either in "active" or "standby/inactive", where Freefall
+> > > just triggers and then retriggers and retriggers... =20
+> >
+> > Maybe. The datasheet is annoyingly vague on these but indeed there
+> > is no event for no longer falling.
+> > =20
+> > >
+> > > Q: What is the method to distinguish several similar IIO events, e.g.
+> > > to tag them somehow one as Freefall, the other one as Inactivity? =20
+> >
+> > In general we should not be able to do that.  Long ago we made the deci=
+sion
+> > to have compact event codes so they don't allow for an index on a parti=
+cular
+> > combination of channel number and modifier.  This is mainly because
+> > there is limited purpose.   If one event is triggered, then we have
+> > to process anyway so we can just look at the value for 'how far' it was
+> > triggered.  I.e. if we thought DC inactivity was triggered, we can just
+> > check free fall as well. (It gets a little more fiddly because of _peri=
+od
+> > etc which is why they may actually make sense here).
+> >
+> > The virtual (combination OR/AND) was added on top of that later and has
+> > made the connection looser.
+> >
+> > In theory we could use labels + index for the virtual channels to achie=
+ve
+> > separate control attributes and be able to tell which was which but
+> > that would be new ABI.  I'm not sure how much use this stuff is already
+> > getting from userspace applications and hence whether this would be
+> > a big problem to get supported.
+> >
+> > That would give us something like
+> >
+> > iio\:device0/in_accel0_x&y&z_label   freefall
+> > iio\:device0/in_accel1_x&y&z_label   inactivity
+> > iio\:device0/events/in_accel0_x&y&z_en etc
+> > iio\:device0/events/in_accel1_x&y&z_en etc
+> >
+> > I don't like it much because it then doesn't generalize to the case
+> > of multiple sensors on each axis (there are multi range parts that do t=
+hat).
+> > That case is pretty rare though (I think we only have such sensor suppo=
+rted!)
+> > However, it's currently the only option we have to fully represent this.
+> >
+> > An alternative here might be to assess if anyone is really going to use
+> > DC coupled inactivity detection (because of the 1g problem) and hence w=
+hether
+> > we want to support that at all?
+> >
+> > Yet another alternative might be to configure it purely based on the pe=
+riod
+> > provided. If short use freefall, if long use inactivity. (I don't like =
+this
+> > one though as it doesn't really fit with usecase!)
+> >
+> > Sorry for lack of clarity on this. These events are tricky and
+> > it takes me a while to get the whole situation back into my head (and I=
+ missing
+> > things like inactivity and freefall being very similar here!)
+> >
+> > If you have time to take a look at what userspace is currently doing wi=
+th
+> > these events (iio_sensor_proxy etc) that might help us decide what work=
+s.
+> > =20
+>=20
+> Just as a quick response here (or perhaps just to rule it out)..
+>=20
+> Actually, I can spot as MAG-similar event types:
+> - IIO_EV_TYPE_MAG
+> - IIO_EV_TYPE_MAG_ADAPTIVE
+> - IIO_EV_TYPE_CHANGE
+> - IIO_EV_TYPE_MAG_REFERENCED
+>=20
+> For instance the last one is only used in a single sensor. Is there a
+> chance to put, say, freefall into one of the other "MAG-like" sensor
+> types. Alternatively, what about putting Activity/Inactivity under
+> say, "MAG_REFERENCED"? This might seem to be a stupid question, since
+> I can imagine you have a clear definition of those in mind. But if
+> this was possible. It would solve this problem easily.
+
+The ABI docs do provide some definitions of these.
+
+Free fall is definitely straight forward TYPE MAG.  It precisely aligns
+with that definition as a threshold on the per axis magnitudes.
+
+MAG_ADAPTIVE is meant for a case where the event is on the magnitude
+relative to a slow moving adaptive baseline (usually a low pass filtered
+version of the signal but can include corrective jumps - IIRC these turn
+up for magnetic sensors).  This differs from a rate of change threshold
+because it's not simply a difference between current and earlier signals
+but rather current and some heavily filtered earlier signal.
+These matter in cases where we have a slow changing baseline such as
+coming into proximity with metal in the environment when using a magnetomet=
+er
+for orientation detection.
+
+MAG_REFERENCED is a weird one.  This was done for a nice IMU that had
+the ability to estimate orientation and so remove the acceleration due
+to gravity and then apply thresholds to the magnitude of the remaining
+accelerations.  The AC filtering on your part is is a 'cheap' way
+to achieve roughly the equivalent of that for the activity detection at lea=
+st
+where we are removing the 'nothing happening value'.
+(it is less clear for the inactivity case though that will still include
+ g, so maybe it is still somewhat valid).
+
+CHANGE is IIRC only for counting channels (so far anyway).=20
+
+So none of the more esoteric forms of them fit for this DC coupled
+inactivity monitor or freefall. Both of them are the same type of event
+just differing in filters applied.
+
+>=20
+> If not, then I'll need to think of it and come up with a more
+> elaborate approach. The label + index approach seems to be a bit
+> complex. Going somehow by the time constraints  in the event.. I need
+> to play with that in the code to build up an oppinion, I guess.
+
+The time constraints thing falls down on the basis that it would
+be logical to have freefall enabled (for parking any moving parts - those
+used to exist mainly to stop hard disks but maybe there are other use cases=
+?)
+and inactivity for power saving with a much longer timescale.
+
+Freefall used to be fun because the aim was to get moving parts into
+a safe state before the device hit the ground.  So that meant if you dropped
+a device with a harddisk from higher up, it sometimes had a better chance
+of surviving.  I'm not sure if anyone cares any more! Will be interesting
+to see if that feature goes away on new devices.
+
+Jonathan
+
+>=20
+> Best,
+> L
+>=20
+> > Jonathan
+> > =20
+> > >
+> > > Best,
+> > > L
+> > > =20
+> > > > > +             .dir =3D IIO_EV_DIR_RISING,
+> > > > > +             .mask_separate =3D BIT(IIO_EV_INFO_ENABLE),
+> > > > > +             .mask_shared_by_type =3D BIT(IIO_EV_INFO_VALUE),
+> > > > > +     },
+> > > > >       {
+> > > > >               /* single tap */
+> > > > >               .type =3D IIO_EV_TYPE_GESTURE,
+> > > > > @@ -265,6 +290,99 @@ static int adxl345_set_measure_en(struct adx=
+l345_state *st, bool en)
+> > > > >       return regmap_write(st->regmap, ADXL345_REG_POWER_CTL, val);
+> > > > >  }
+> > > > > =20
+> > > > Jonathan
+> > > >
+> > > > =20
+> > =20
+
 

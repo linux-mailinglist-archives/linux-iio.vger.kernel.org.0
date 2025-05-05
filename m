@@ -1,100 +1,107 @@
-Return-Path: <linux-iio+bounces-19075-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19076-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC16AAA8C35
-	for <lists+linux-iio@lfdr.de>; Mon,  5 May 2025 08:20:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B686AAA8C39
+	for <lists+linux-iio@lfdr.de>; Mon,  5 May 2025 08:22:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 221C918938EE
-	for <lists+linux-iio@lfdr.de>; Mon,  5 May 2025 06:21:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 912661892B01
+	for <lists+linux-iio@lfdr.de>; Mon,  5 May 2025 06:22:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8560D1C3BF7;
-	Mon,  5 May 2025 06:20:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C347B1B6D06;
+	Mon,  5 May 2025 06:22:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b="ekB07B4u"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="B+Qluh3t"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-106112.protonmail.ch (mail-106112.protonmail.ch [79.135.106.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F92B1B043E
-	for <linux-iio@vger.kernel.org>; Mon,  5 May 2025 06:20:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.112
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 002FD1459F7;
+	Mon,  5 May 2025 06:22:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746426036; cv=none; b=HDtin/nQ3civ95hPBFBsO+6MoHpvCp6BHQl5NLqDrFHbp1GzfLhwlt3th8y7ze3/TaPd2UAcLgYHltAVH6SSMhYGvmoCg75CObWEWJPXXWzGj53ur5s0ZNqwbyxjz7+5RKKfzIdJeGG9usB6WB6bitcCOK8tk9a80C6x7gGf8QU=
+	t=1746426145; cv=none; b=lsG9pXCKdGv6nedCiDGcM0FNQyyCtY2Ykil7M0KINiFTxWjAURofJt9zXsMfXjE8N0j4dCvQsii8No+0G4ATu+lcLduw6wfQX5pkDPLM9hz3/FXSK+Pj0+qjtgkfdAlyz3nz11JLanStwWIhKBrSp94/P67QPDGdaHncEqf0B0Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746426036; c=relaxed/simple;
-	bh=L8JRM8fgT0pnaZxPiz2MjGtKudbMN+kOblVkTPanaQw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=eLI9EAgIhlCf9LOiQnvEj+tPH/tQh2R30+v3ba0TXlJjTgEZsz92FRldVL4rDrg2lxoGYHi4caqEXkzHax5nFjhAOwbKIxgbO47tAddTdTX187wKUoGCOl5njcGERQBPTOHFlNl/dDCNFOcqgwLGL4cos6joyVTHESJq1v/4Go0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=geanix.com; spf=pass smtp.mailfrom=geanix.com; dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b=ekB07B4u; arc=none smtp.client-ip=79.135.106.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=geanix.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=geanix.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=geanix.com;
-	s=protonmail; t=1746426026; x=1746685226;
-	bh=58dvsD4z/gzLr45OPknIfhl+rpdDoktiL6xkabr5Tt8=;
-	h=From:Date:Subject:Message-Id:References:In-Reply-To:To:Cc:From:To:
-	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector:
-	 List-Unsubscribe:List-Unsubscribe-Post;
-	b=ekB07B4u7Nd+0EtRE6m5hfbHzKNohVHmU8t04ByxP7h24x/hM7XzjM5aWcLAAROUa
-	 snTSmLYlMUNFP/iHsLOK97+46tNVAZDW0eGqCPWO4ktsNMUjAO5v6psZklOHb46dMQ
-	 7bAfInzBm0KP1pK9AfCImGkKw75OJhxIlcN8oa4m9CHRYD2KA866Im+vrOSgz/fAI1
-	 GLL0SdslpKdC1Tl/UsE1yELAdByBS9wW0NNgBNu8fkLRAixrwdFoyW0zp4wWWvXcoL
-	 soVjh5sn0LnZTKhdEw9HqiDVEzNbBH5KcPiq0OFuKhUc21r9ZHwjq4Rsp9J85UomTt
-	 eNqbKyHWEdcwQ==
-X-Pm-Submission-Id: 4ZrWbr3S3czLT
-From: Sean Nyekjaer <sean@geanix.com>
-Date: Mon, 05 May 2025 08:20:20 +0200
-Subject: [PATCH v3 2/2] iio: accel: fxls8962af: Fix temperature scan
- element sign
+	s=arc-20240116; t=1746426145; c=relaxed/simple;
+	bh=Duo5WKqyQks5iE5n04QHhkTiv6EU6Slj9UKbtgro9+A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QxyoaBsOZ0uPFEK8qK5elcy5RKMJxJyfpLHWfkoMuSrxooVCGE5WtnAAHwWw3r6KpxlTZ8hoBRGlEWio/NDAfsbdb91k6/AYM8m6LEcerJoRqxDwhB9t9aWrNzyleXzjuI9KmPCfT90V5HPTVrK9UaFj6AxGGIfgIHvvaeZV6PU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=B+Qluh3t; arc=none smtp.client-ip=209.85.221.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-39c1ef4acf2so2992406f8f.0;
+        Sun, 04 May 2025 23:22:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1746426142; x=1747030942; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=Duo5WKqyQks5iE5n04QHhkTiv6EU6Slj9UKbtgro9+A=;
+        b=B+Qluh3tTJJ+sB63bpof+UPfirutUQ4usDaoOQhE3g8oSbGCA3rPJbHRSozZx00b3J
+         4N4rOq850n59A4ljFQrYOfZG9EJX99MvGgnMv0wdilq4wHroBf8GHxhh79vBMmQif1+F
+         LEHN0qILqpwEXrleK75AdxdjtC6gCXHaEqDweJFTGvTIxtgEyxStLhPzU8PeCJzTbDUn
+         UyuC10WwWgghwSPZWbSNGgd+VfdTdM/pj0Ziqdt/MEPvxkdZQVbmvm33Zmwly9A5busu
+         CbZGPaUrFszQQif6zDnGar+6ast1LpDaTiCn5fYNUQyhK1SkPgde4QTaFoUrELMNeVxu
+         7gBg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746426142; x=1747030942;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Duo5WKqyQks5iE5n04QHhkTiv6EU6Slj9UKbtgro9+A=;
+        b=L+638DGrU9yzJtnU7dPuGQaWFu6C5xNKdWzO1tD14LS4HtKJq4gRnXvmEngYuDrp6V
+         nIucDgIcfCrIOAH2hmvb/TTs/JpPb4KQHaQk+fBzGlwXDZbFd2XDEGg1fXKnYCehHomp
+         uMH/J5kDET2lVTP7pQaMaadwef2K+MHpgJUhViEh5AEqYcIZOQRcMp9cnrkeDDSVXuAI
+         jYqyN7nXJ/mHunfkO8/5JMmTvJzHE7rUgXcaGSH5MCJzT3hfRlYHGYlfaEy+3GD9voxq
+         suHKpapW/pf8GPAhu0UeGze2kyKl5itb3D83TCpqJHfF/va87eYxIcn1uhuwJennaSau
+         jW/g==
+X-Forwarded-Encrypted: i=1; AJvYcCUfvsn/jkPE1nuEnMxcOVAjOGkrPtxJNuF9N4IGXmXAGAv2jF/IoMCaGYX+B1vIUTMEZZbQW6UkzRh7@vger.kernel.org, AJvYcCVd8dev/gaNoBwBzISWeLAEfCN/turXdgTOWZoWQjFUhaZvHczcabRY9uEVvXS6aJmIXASfXhanu+4Wqg0T@vger.kernel.org, AJvYcCWdpsyW5f+Cb9dwqE/nFD6zoFO6z3ZJsmBQolFjC936aaX5gTS93m+ooR4Y9K+59eGJMa1Nuda/bLy3@vger.kernel.org
+X-Gm-Message-State: AOJu0YwYmWCZH/x3lfUyeZtxcD7EqfNVSL/MBmUE0sIEGMSdIOaOWsiS
+	9Sb372SSwycdejtMrUCdkvtSWoKEw7tE14yj0AO+H+7UBseBulBZ
+X-Gm-Gg: ASbGncub5SBzBtmo05gwnsVxBBeBIlKeANle5DLnLKT6id+WXy7t/WC+NxXhiGEfAuy
+	QVW90HD3UXm651TXfC3+fK1YqgxN5sivud6pnZXSdLTV0poAj2WVsgYmDABQFECAskjqGGddx4h
+	gYxsN5d2YOWFw8NHbc4bzASuBYvGUdH5swymNfb8EbeT4h3yiF17LMVrLv3aCO7DN2/xrAWWLok
+	X7xgpgNmFw1j0mrMWEWrBNWshNl1f+cQbnnV7mfrLzShREWls05qW5LdAddob8SDNszFphPvtmG
+	sjitDQRouG1RhjS9VDUJ5DyX+x9MxL805fhJpOpR4hKsK2c4eMHuSl/Xzpxs8I3b4/S/++DzNVw
+	=
+X-Google-Smtp-Source: AGHT+IFa6PSKJ495c8AhszxaLJ2l4O8rCrcCUKyRo4T5ew1TOyxNOcHky6aWXz5UiUGTc2UnquVKQg==
+X-Received: by 2002:a05:6000:4285:b0:391:3aab:a7d0 with SMTP id ffacd0b85a97d-3a09fd73958mr3875093f8f.19.1746426141924;
+        Sun, 04 May 2025 23:22:21 -0700 (PDT)
+Received: from ubuntu2204 (207-pool1.nat.godollo.uni-mate.hu. [192.188.242.207])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a099b17017sm9455691f8f.92.2025.05.04.23.22.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 04 May 2025 23:22:21 -0700 (PDT)
+Date: Mon, 5 May 2025 08:22:25 +0200
+From: =?utf-8?B?VMOzdGggSsOhbm9z?= <gomba007@gmail.com>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: 
+	=?utf-8?B?VMOzdGggSsOhbm9z?= via B4 Relay <devnull+gomba007.gmail.com@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/2] iio: chemical: Add driver for SEN0322
+Message-ID: <usgphnspj2y56quulrjcxtib4wv3lpnadg4pyozmkxoc3ayhah@bpyzcn5walmm>
+References: <20250428-iio-chemical-sen0322-v1-0-9b18363ffe42@gmail.com>
+ <20250428-iio-chemical-sen0322-v1-2-9b18363ffe42@gmail.com>
+ <20250504194030.4efe60db@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250505-fxls-v3-2-8c541bf0205c@geanix.com>
-References: <20250505-fxls-v3-0-8c541bf0205c@geanix.com>
-In-Reply-To: <20250505-fxls-v3-0-8c541bf0205c@geanix.com>
-To: Jonathan Cameron <jic23@kernel.org>, 
- Marcelo Schmitt <marcelo.schmitt1@gmail.com>, 
- Lars-Peter Clausen <lars@metafoo.de>, 
- Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Sean Nyekjaer <sean@geanix.com>, stable@vger.kernel.org
-X-Mailer: b4 0.14.2
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250504194030.4efe60db@jic23-huawei>
 
-Mark the temperature element signed, data read from the TEMP_OUT register
-is in two's complement format.
-This will avoid the temperature being mishandled and miss displayed.
+Hi Jonathan!
 
-Fixes: a3e0b51884ee ("iio: accel: add support for FXLS8962AF/FXLS8964AF accelerometers")
-Suggested-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-Signed-off-by: Sean Nyekjaer <sean@geanix.com>
----
- drivers/iio/accel/fxls8962af-core.c | 1 +
- 1 file changed, 1 insertion(+)
+Thank you for the review and the explanation! I've misunderstood the purpose of
+_SCALE. I'll rewrite the driver to use only _RAW and _SCALE.
 
-diff --git a/drivers/iio/accel/fxls8962af-core.c b/drivers/iio/accel/fxls8962af-core.c
-index 27165a14a4802bdecd9a89c38c6cda294088c5c8..00dfe962f4913f876fc461f3fa03dfce4e443218 100644
---- a/drivers/iio/accel/fxls8962af-core.c
-+++ b/drivers/iio/accel/fxls8962af-core.c
-@@ -749,6 +749,7 @@ static const struct iio_event_spec fxls8962af_event[] = {
- 			      BIT(IIO_CHAN_INFO_OFFSET),\
- 	.scan_index = -1, \
- 	.scan_type = { \
-+		.sign = 's', \
- 		.realbits = 8, \
- 		.storagebits = 8, \
- 	}, \
-
--- 
-2.47.1
-
+Regards,
+János
 

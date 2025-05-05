@@ -1,60 +1,59 @@
-Return-Path: <linux-iio+bounces-19176-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19177-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5BB3AAA6BF
-	for <lists+linux-iio@lfdr.de>; Tue,  6 May 2025 02:19:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EBBAAAA72F
+	for <lists+linux-iio@lfdr.de>; Tue,  6 May 2025 02:27:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F3A11B63442
-	for <lists+linux-iio@lfdr.de>; Tue,  6 May 2025 00:18:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0AF0E3A8644
+	for <lists+linux-iio@lfdr.de>; Tue,  6 May 2025 00:21:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C05B932DA83;
-	Mon,  5 May 2025 22:35:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27A0C3316DC;
+	Mon,  5 May 2025 22:35:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kneLZSRk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EWK1KCaT"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72D96292912;
-	Mon,  5 May 2025 22:35:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D22E23316CF;
+	Mon,  5 May 2025 22:35:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484524; cv=none; b=q6SNLTIsfY7hCUBTMbVDf+oaDXvXKh4QajzVSlFKb1pxjqyHWRBQ+lPjC3THTquvksSfgLHf1GP5beyHsjcTKbIpXNTqyFUJx7V5oa7uDpqKa92Xeqcg0PFIPe6rA9uTzh8/PtUfQmSVTD1zQBxJ6DzGeVWAy5Q0KiigK4U/PlI=
+	t=1746484548; cv=none; b=YuWYjNJuysXPTf3LqbvxLF4lGNvso10FSccbGEDhoYHxybWlTlHSqX8/OXE/YavYBTDlkx0wSeFLo8hRRSYFccnyKZINTqU+E6Amw/Iby/xsJJRCqZ80iW5bM8WQIfZ09CWKYtGTB7cLw+y9+9N1aPpmilUIcF3mHjH2fPiCM+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484524; c=relaxed/simple;
-	bh=KKeVLA+bLzCi3cNZBqiGJv5VKoSBgNyf6RITQsVfzOg=;
+	s=arc-20240116; t=1746484548; c=relaxed/simple;
+	bh=EMHKccNZGM7s2RxOonGhG6i2hxJavbEK+Tj7c9dgsrI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=SAWo1RKukRBlGn+5oRhWjyO5nn98imP+KlX81nVaihYLsB4KpWjsSf1d6EwEvolJvYPle/RA3yfF6Tya+SSCm5tIx48uughXtQvZCb4bf+//915NlrW1/i5hSzjGQt9U+sql6DVkWHwF4WUkjzvoc64fURb+eJohh0dXsXo+zio=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kneLZSRk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB858C4CEED;
-	Mon,  5 May 2025 22:35:22 +0000 (UTC)
+	 MIME-Version; b=fdZ7p0jveE+YPJ8z7LrXMdg8hOQ9Tg+oKyxc0XBX5k1VdJ5EmahxmhojTGtEgYZb5DjKSoayGuIGyRDUCTSjzN9Pzxd/y4NfL6B1Nw4Ev7vIG4LM7h8YVveoNLMaZEytpYqTgEt6jtW62AzeXuKQUATNBO5OYOZMGdWyPM9neno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EWK1KCaT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D043C4CEED;
+	Mon,  5 May 2025 22:35:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484523;
-	bh=KKeVLA+bLzCi3cNZBqiGJv5VKoSBgNyf6RITQsVfzOg=;
+	s=k20201202; t=1746484548;
+	bh=EMHKccNZGM7s2RxOonGhG6i2hxJavbEK+Tj7c9dgsrI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kneLZSRk4a9kSzlT8/6otKsfGLxSJo5CaVyE8OVevlSPWf2m6Bdi5wJggM8f8l/NI
-	 tXkSB0OrxGPdl6pl8vIGYdqKaI+N59i5i3lI1VgDv/+aTs3+5lvHeKcrBVD7/7HCV3
-	 gAfncbbp6vaQtkq1dHdp21AVM61xs2MdilwU6C+SthRu4KukEztYX1qI9JO0eCYNZe
-	 din0458SjhtN0/NGBztW9Xssr1e8usKP/n5TDnc/tjDf8gNCSkyXxzL0E5+erAqdqi
-	 JqJzJm8l7CMoeqggPycZfM/Ar1mEMyi08IE+YK8zv8ozwNpaAnYwzKYdzOok78y8Zt
-	 OaqnEjsOOohrg==
+	b=EWK1KCaTZrAbcaNkhHJuAlCVxrI5xl4UxK8xAql4Gdzuas2eo5kGRYJdghyxC+mq5
+	 bp8ye/Jhoc3AMeMqxhT6Kq8Ni6gagV75T8iRAOWBAgyCgQCbZTQczNFcP226ZluDWl
+	 qQpzRjuRnZo7IKbmyP598eHfWW4L2tSFZ41/lOeCbRPxsnq7BiJW5c1Zl9PLCv51Y3
+	 oSkW5LNqw/WITTUDCLyVls73vMpFFT4RPh0l3A5DnXypzoanvUYyV3zwcznCWwQACY
+	 2wOMtEcknhw/mqTduy84C2ex86t6tfEuSHNX5T2vbPtmCwJSac77opJzgIVhbjA99X
+	 ejCYBsiGdOVDg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: David Lechner <dlechner@baylibre.com>,
+Cc: Angelo Dureghello <adureghello@baylibre.com>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>,
-	michael.hennerich@analog.com,
-	nuno.sa@analog.com,
 	lars@metafoo.de,
+	Michael.Hennerich@analog.com,
 	jic23@kernel.org,
 	linux-iio@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 514/642] iio: adc: ad7944: don't use storagebits for sizing
-Date: Mon,  5 May 2025 18:12:10 -0400
-Message-Id: <20250505221419.2672473-514-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.14 530/642] iio: dac: ad3552r-hs: use instruction mode for configuration
+Date: Mon,  5 May 2025 18:12:26 -0400
+Message-Id: <20250505221419.2672473-530-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -69,96 +68,98 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: David Lechner <dlechner@baylibre.com>
+From: Angelo Dureghello <adureghello@baylibre.com>
 
-[ Upstream commit 503d20ed8cf7c7b40ec0bd94f53c490c1d91c31b ]
+[ Upstream commit 21889245fb538123ac9968eea0018f878b44c8c8 ]
 
-Replace use of storagebits with realbits for determining the number of
-bytes needed for SPI transfers.
+Use "instruction" mode over initial configuration and all other
+non-streaming operations.
 
-When adding SPI offload support, storagebits will always be 32 rather
-than 16 for 16-bit 16-bit chips so we can no longer rely on storagebits
-being the correct size expected by the SPI framework (it always uses
-4 bytes for > 16-bit xfers and 2 bytes for > 8-bit xfers). Instead,
-derive the correct size from realbits since it will always be correct
-even when SPI offloading is used.
+DAC boots in streaming mode as default, and the driver is not
+changing this mode.
 
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Reviewed-vy: Nuno Sa <nuno.sa@analog.com>
-Signed-off-by: David Lechner <dlechner@baylibre.com>
-Link: https://patch.msgid.link/20250207-dlech-mainline-spi-engine-offload-2-v8-10-e48a489be48c@baylibre.com
+Instruction r/w is still working because instruction is processed
+from the DAC after chip select is deasserted, this works until
+loop mode is 0 or greater than the instruction size.
+
+All initial operations should be more safely done in instruction
+mode, a mode provided for this.
+
+Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
+Link: https://patch.msgid.link/20250114-wip-bl-ad3552r-axi-v0-iio-testing-carlos-v4-6-979402e33545@baylibre.com
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/ad7944.c | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ drivers/iio/dac/ad3552r-hs.c | 29 ++++++++++++++++++++++++++++-
+ 1 file changed, 28 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/iio/adc/ad7944.c b/drivers/iio/adc/ad7944.c
-index 0ec9cda10f5f8..abfababcea101 100644
---- a/drivers/iio/adc/ad7944.c
-+++ b/drivers/iio/adc/ad7944.c
-@@ -98,6 +98,9 @@ struct ad7944_chip_info {
- 	const struct iio_chan_spec channels[2];
- };
- 
-+/* get number of bytes for SPI xfer */
-+#define AD7944_SPI_BYTES(scan_type) ((scan_type).realbits > 16 ? 4 : 2)
-+
- /*
-  * AD7944_DEFINE_CHIP_INFO - Define a chip info structure for a specific chip
-  * @_name: The name of the chip
-@@ -164,7 +167,7 @@ static int ad7944_3wire_cs_mode_init_msg(struct device *dev, struct ad7944_adc *
- 
- 	/* Then we can read the data during the acquisition phase */
- 	xfers[2].rx_buf = &adc->sample.raw;
--	xfers[2].len = BITS_TO_BYTES(chan->scan_type.storagebits);
-+	xfers[2].len = AD7944_SPI_BYTES(chan->scan_type);
- 	xfers[2].bits_per_word = chan->scan_type.realbits;
- 
- 	spi_message_init_with_transfers(&adc->msg, xfers, 3);
-@@ -193,7 +196,7 @@ static int ad7944_4wire_mode_init_msg(struct device *dev, struct ad7944_adc *adc
- 	xfers[0].delay.unit = SPI_DELAY_UNIT_NSECS;
- 
- 	xfers[1].rx_buf = &adc->sample.raw;
--	xfers[1].len = BITS_TO_BYTES(chan->scan_type.storagebits);
-+	xfers[1].len = AD7944_SPI_BYTES(chan->scan_type);
- 	xfers[1].bits_per_word = chan->scan_type.realbits;
- 
- 	spi_message_init_with_transfers(&adc->msg, xfers, 2);
-@@ -228,7 +231,7 @@ static int ad7944_chain_mode_init_msg(struct device *dev, struct ad7944_adc *adc
- 	xfers[0].delay.unit = SPI_DELAY_UNIT_NSECS;
- 
- 	xfers[1].rx_buf = adc->chain_mode_buf;
--	xfers[1].len = BITS_TO_BYTES(chan->scan_type.storagebits) * n_chain_dev;
-+	xfers[1].len = AD7944_SPI_BYTES(chan->scan_type) * n_chain_dev;
- 	xfers[1].bits_per_word = chan->scan_type.realbits;
- 
- 	spi_message_init_with_transfers(&adc->msg, xfers, 2);
-@@ -274,12 +277,12 @@ static int ad7944_single_conversion(struct ad7944_adc *adc,
+diff --git a/drivers/iio/dac/ad3552r-hs.c b/drivers/iio/dac/ad3552r-hs.c
+index 8974df6256708..67957fc21696a 100644
+--- a/drivers/iio/dac/ad3552r-hs.c
++++ b/drivers/iio/dac/ad3552r-hs.c
+@@ -137,13 +137,20 @@ static int ad3552r_hs_buffer_postenable(struct iio_dev *indio_dev)
+ 	if (ret)
  		return ret;
  
- 	if (adc->spi_mode == AD7944_SPI_MODE_CHAIN) {
--		if (chan->scan_type.storagebits > 16)
-+		if (chan->scan_type.realbits > 16)
- 			*val = ((u32 *)adc->chain_mode_buf)[chan->scan_index];
- 		else
- 			*val = ((u16 *)adc->chain_mode_buf)[chan->scan_index];
- 	} else {
--		if (chan->scan_type.storagebits > 16)
-+		if (chan->scan_type.realbits > 16)
- 			*val = adc->sample.raw.u32;
- 		else
- 			*val = adc->sample.raw.u16;
-@@ -409,8 +412,7 @@ static int ad7944_chain_mode_alloc(struct device *dev,
- 	/* 1 word for each voltage channel + aligned u64 for timestamp */
++	/* Primary region access, set streaming mode (now in SPI + SDR). */
++	ret = ad3552r_qspi_update_reg_bits(st,
++					   AD3552R_REG_ADDR_INTERFACE_CONFIG_B,
++					   AD3552R_MASK_SINGLE_INST, 0, 1);
++	if (ret)
++		return ret;
++
+ 	/* Inform DAC chip to switch into DDR mode */
+ 	ret = ad3552r_qspi_update_reg_bits(st,
+ 					   AD3552R_REG_ADDR_INTERFACE_CONFIG_D,
+ 					   AD3552R_MASK_SPI_CONFIG_DDR,
+ 					   AD3552R_MASK_SPI_CONFIG_DDR, 1);
+ 	if (ret)
+-		return ret;
++		goto exit_err_ddr;
  
- 	chain_mode_buf_size = ALIGN(n_chain_dev *
--		BITS_TO_BYTES(chan[0].scan_type.storagebits), sizeof(u64))
--		+ sizeof(u64);
-+		AD7944_SPI_BYTES(chan[0].scan_type), sizeof(u64)) + sizeof(u64);
- 	buf = devm_kzalloc(dev, chain_mode_buf_size, GFP_KERNEL);
- 	if (!buf)
- 		return -ENOMEM;
+ 	/* Inform DAC IP to go for DDR mode from now on */
+ 	ret = iio_backend_ddr_enable(st->back);
+@@ -174,6 +181,11 @@ static int ad3552r_hs_buffer_postenable(struct iio_dev *indio_dev)
+ 
+ 	iio_backend_ddr_disable(st->back);
+ 
++exit_err_ddr:
++	ad3552r_qspi_update_reg_bits(st, AD3552R_REG_ADDR_INTERFACE_CONFIG_B,
++				     AD3552R_MASK_SINGLE_INST,
++				     AD3552R_MASK_SINGLE_INST, 1);
++
+ 	return ret;
+ }
+ 
+@@ -198,6 +210,14 @@ static int ad3552r_hs_buffer_predisable(struct iio_dev *indio_dev)
+ 	if (ret)
+ 		return ret;
+ 
++	/* Back to single instruction mode, disabling loop. */
++	ret = ad3552r_qspi_update_reg_bits(st,
++					   AD3552R_REG_ADDR_INTERFACE_CONFIG_B,
++					   AD3552R_MASK_SINGLE_INST,
++					   AD3552R_MASK_SINGLE_INST, 1);
++	if (ret)
++		return ret;
++
+ 	return 0;
+ }
+ 
+@@ -308,6 +328,13 @@ static int ad3552r_hs_setup(struct ad3552r_hs_state *st)
+ 	if (ret)
+ 		return ret;
+ 
++	ret = st->data->bus_reg_write(st->back,
++				      AD3552R_REG_ADDR_INTERFACE_CONFIG_B,
++				      AD3552R_MASK_SINGLE_INST |
++				      AD3552R_MASK_SHORT_INSTRUCTION, 1);
++	if (ret)
++		return ret;
++
+ 	ret = ad3552r_hs_scratch_pad_test(st);
+ 	if (ret)
+ 		return ret;
 -- 
 2.39.5
 

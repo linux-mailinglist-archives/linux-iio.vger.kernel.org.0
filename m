@@ -1,323 +1,110 @@
-Return-Path: <linux-iio+bounces-19136-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19139-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CB55AA9979
-	for <lists+linux-iio@lfdr.de>; Mon,  5 May 2025 18:42:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8270CAA9997
+	for <lists+linux-iio@lfdr.de>; Mon,  5 May 2025 18:44:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9CDFA17D406
-	for <lists+linux-iio@lfdr.de>; Mon,  5 May 2025 16:42:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F21841882DD2
+	for <lists+linux-iio@lfdr.de>; Mon,  5 May 2025 16:43:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E758E2561C2;
-	Mon,  5 May 2025 16:41:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFAD62561C2;
+	Mon,  5 May 2025 16:43:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UqqbFkHe"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cSutAaVK"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 436AA268684;
-	Mon,  5 May 2025 16:41:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD628189916;
+	Mon,  5 May 2025 16:43:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746463298; cv=none; b=TX3G0VXTe/Yv6byxWCP65mnoSAKoUvxydgTN/JogVwQX/QOtGG4xHEPBG3baOU6VTSO8oIbLwhW1JoOCuXQDg8+g4uowaMsmKowQwfZ1KYQbvjOZ93y0MyRHG6OsPNicNbi+HavjZ5iSxATgFlhgNXjBKNjTdC/z5FdTyHlTHUI=
+	t=1746463413; cv=none; b=UyxL7eefVXWCDdxbOe2gr1aRZSBFaWEdhfEm/z1+Qs3KznJfjq0CajhD9lgBktzneQqHU3ejwIvF3LY848Ih25jZ/zWZcvrT05bvktWAk2nIha51hzfLXEiiWKFqonhoHl9L60RAxBhc772/lSHIgbdWANlM34C9gRFvqvRZ3K4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746463298; c=relaxed/simple;
-	bh=9uM8dpxGlChSJ74ypQFrdjILT+zUllXlHjTpBdyPDJg=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=BuyXjAh0OFQzcFEYrz5VXMmDXRgo+kdP+/F+wHXLDSGlRe+tx25YGiQm+GEF/T9SG4UjN/Tihh9n8HO37Edb54QB4rYlHRzihGBZJpZhLcvU0vFMnmzxXn7G59wyuOAejQfRtJmgVfSe+jJXaNTQlViCSncVA+eG1wDW1vdvCRc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UqqbFkHe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id C99F9C4CEFD;
-	Mon,  5 May 2025 16:41:37 +0000 (UTC)
+	s=arc-20240116; t=1746463413; c=relaxed/simple;
+	bh=qhYcS/yhGjmJKAoC6feXiZykrZ04BhDEoZDWz3NoqhM=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=m1EeYWgBdZVdLGcksDLJyyyzhpY+mvfmSwLX0nrFLPHBmbMf+bjFShQ8YLq4U96Svio0mEaSN1qjfkEq4fNVSNTA/LFzs/akKBcC9VyZgJr8eeXfsaBC7p0mbPkSeGhsgsy5HJzbz4SrfAjLzPa5xF6Ok8HGvLRkf1fNRSq43mA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cSutAaVK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAB44C4CEE4;
+	Mon,  5 May 2025 16:43:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746463297;
-	bh=9uM8dpxGlChSJ74ypQFrdjILT+zUllXlHjTpBdyPDJg=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=UqqbFkHeVvJ4JCftWPyxtWV4dui14WG387Tjmt/E/sRXZaVQK9JnPECdnMW2XXx0j
-	 X4cvzZPnBrXdXxdNbvA23qoacqGMmIKqI5fg8q1CmXBetxsNKCbdebT73AsguNebFp
-	 4xvYjieYUtivdfBT3e2ZRkoGxPZ05nrZf7kLN6xRHt318t7VYhDPBvDB3Lgbb2e09X
-	 kNcdAMsIy/w1smQUH0yx5c++TOCsCsFIeBWLKT7AhWktRTJXp/y22M3cMuXpXIvPRX
-	 tgTLrbDfPgTn3nGjcMPY3QN7fzpXPdgLUxlxv/gtOgLR6nH4eTP23OflEl4l/jGyGb
-	 8ZWDO89ZBkcxg==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C0BEBC3ABBC;
-	Mon,  5 May 2025 16:41:37 +0000 (UTC)
-From: =?utf-8?q?Nuno_S=C3=A1_via_B4_Relay?= <devnull+nuno.sa.analog.com@kernel.org>
-Date: Mon, 05 May 2025 17:41:38 +0100
-Subject: [PATCH v4 7/7] clk: clk-axi-clkgen: fix coding style issues
+	s=k20201202; t=1746463413;
+	bh=qhYcS/yhGjmJKAoC6feXiZykrZ04BhDEoZDWz3NoqhM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=cSutAaVKh6wf+HOBwQKA7jGYgo0i9BgtwBFPBbW3tosClh5FWZ2U5e5jMgFb03AA2
+	 Xr2u7/tHqWIwfYGFZwMhRY9fRnf7krhyXmmdFK63ulGMiPo+d0+yI1qNEgOSI/Irx8
+	 05DasfPB1odHClvFHLRsQPDXe1Z8p2vUGC8K71JGELjHZXxIfLDMgZH+Y5irHkPWCq
+	 l/tjTcsIPJdiHeVJRZFoFS5h/RoCPjwV0e56PdBsklJrsM8Lhka6YFdDGXyJCffjKg
+	 w4oW/imAi8VMNJD67ocP+WPGeOEZbBVntdi/IVHRz7A3FQEGrrQKV1Bnwa5hsom6c7
+	 FOI0MuTnw3CWQ==
+Date: Mon, 5 May 2025 17:43:25 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Markus Burri <markus.burri@mt.com>
+Cc: linux-kernel@vger.kernel.org, Nuno Sa <nuno.sa@analog.com>, Olivier
+ Moysan <olivier.moysan@foss.st.com>, Lars-Peter Clausen <lars@metafoo.de>,
+ linux-iio@vger.kernel.org, Markus Burri <markus.burri@bbv.ch>
+Subject: Re: [PATCH v2] iio: backend: fix out-of-bound write
+Message-ID: <20250505174325.0216b11e@jic23-huawei>
+In-Reply-To: <20250505045346.29647-1-markus.burri@mt.com>
+References: <20250505045346.29647-1-markus.burri@mt.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20250505-dev-axi-clkgen-limits-v4-7-3ad5124e19e1@analog.com>
-References: <20250505-dev-axi-clkgen-limits-v4-0-3ad5124e19e1@analog.com>
-In-Reply-To: <20250505-dev-axi-clkgen-limits-v4-0-3ad5124e19e1@analog.com>
-To: linux-clk@vger.kernel.org, linux-fpga@vger.kernel.org, 
- dmaengine@vger.kernel.org, linux-hwmon@vger.kernel.org, 
- linux-iio@vger.kernel.org, linux-pwm@vger.kernel.org, 
- linux-spi@vger.kernel.org
-Cc: Stephen Boyd <sboyd@kernel.org>, 
- Michael Turquette <mturquette@baylibre.com>, 
- Moritz Fischer <mdf@kernel.org>, Wu Hao <hao.wu@intel.com>, 
- Xu Yilun <yilun.xu@intel.com>, Tom Rix <trix@redhat.com>, 
- Vinod Koul <vkoul@kernel.org>, Jean Delvare <jdelvare@suse.com>, 
- Guenter Roeck <linux@roeck-us.net>, 
- Michael Hennerich <Michael.Hennerich@analog.com>, 
- Jonathan Cameron <jic23@kernel.org>, Trevor Gamblin <tgamblin@baylibre.com>, 
- =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>, 
- David Lechner <dlechner@baylibre.com>, Mark Brown <broonie@kernel.org>, 
- Mike Turquette <mturquette@linaro.org>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1746463295; l=8456;
- i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
- bh=dnerJyepwYInnzXbTmbBsXVBut1hyo5nNbIt4RTr9jc=;
- b=oSWKfiOVoKrd668d3oSUQGpJ5vSs1ki7dSs/BhbkqCLu7SdDeaz7QuTYqZCKa2ZukxjSxsu7e
- fiqp1bVPhC0DFnl2n1vxXnNMMaq9P8C6dLMTZCXy/IIK44aEQ7qvucQ
-X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
- pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
-X-Endpoint-Received: by B4 Relay for nuno.sa@analog.com/20231116 with
- auth_id=100
-X-Original-From: =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>
-Reply-To: nuno.sa@analog.com
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-From: Nuno Sá <nuno.sa@analog.com>
+On Mon,  5 May 2025 06:53:46 +0200
+Markus Burri <markus.burri@mt.com> wrote:
 
-This is just cosmetics and so no functional changes intended.
+> The buffer is set to 80 character. If a caller write more characters,
+> count is truncated to the max available space in "simple_write_to_buffer".
+> But afterwards a string terminator is written to the buffer at offset count
+> without boundary check. The zero termination is written OUT-OF-BOUND.
+> 
+> Add a check that the given buffer is smaller then the buffer to prevent.
+> 
+> Fixes: 035b4989211d ("iio: backend: make sure to NULL terminate stack buffer")
+> Signed-off-by: Markus Burri <markus.burri@mt.com>
+> ---
+>  drivers/iio/industrialio-backend.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/iio/industrialio-backend.c b/drivers/iio/industrialio-backend.c
+> index a43c8d1bb3d0..31fe793e345e 100644
+> --- a/drivers/iio/industrialio-backend.c
+> +++ b/drivers/iio/industrialio-backend.c
+> @@ -155,11 +155,14 @@ static ssize_t iio_backend_debugfs_write_reg(struct file *file,
+>  	ssize_t rc;
+>  	int ret;
+>  
+> +	if (count >= sizeof(buf))
+> +		return -ENOSPC;
 
-Signed-off-by: Nuno Sá <nuno.sa@analog.com>
----
- drivers/clk/clk-axi-clkgen.c | 74 +++++++++++++++++++++++---------------------
- 1 file changed, 38 insertions(+), 36 deletions(-)
+if count is buf - 1 this passes but...
 
-diff --git a/drivers/clk/clk-axi-clkgen.c b/drivers/clk/clk-axi-clkgen.c
-index d8634d1cb401fff2186702354ecda7b4fcda006f..63b7b7e48f8fa00842ce4cf2112ce7a89fa25dae 100644
---- a/drivers/clk/clk-axi-clkgen.c
-+++ b/drivers/clk/clk-axi-clkgen.c
-@@ -15,6 +15,7 @@
- #include <linux/module.h>
- #include <linux/mod_devicetable.h>
- #include <linux/err.h>
-+#include <linux/types.h>
- 
- #include <linux/adi-axi-common.h>
- 
-@@ -93,7 +94,7 @@ static uint32_t axi_clkgen_lookup_filter(unsigned int m)
- 	}
- }
- 
--static const uint32_t axi_clkgen_lock_table[] = {
-+static const u32 axi_clkgen_lock_table[] = {
- 	0x060603e8, 0x060603e8, 0x080803e8, 0x0b0b03e8,
- 	0x0e0e03e8, 0x111103e8, 0x131303e8, 0x161603e8,
- 	0x191903e8, 0x1c1c03e8, 0x1f1f0384, 0x1f1f0339,
-@@ -105,7 +106,7 @@ static const uint32_t axi_clkgen_lock_table[] = {
- 	0x1f1f012c, 0x1f1f0113, 0x1f1f0113, 0x1f1f0113,
- };
- 
--static uint32_t axi_clkgen_lookup_lock(unsigned int m)
-+static u32 axi_clkgen_lookup_lock(unsigned int m)
- {
- 	if (m < ARRAY_SIZE(axi_clkgen_lock_table))
- 		return axi_clkgen_lock_table[m];
-@@ -127,8 +128,9 @@ static const struct axi_clkgen_limits axi_clkgen_zynq_default_limits = {
- };
- 
- static void axi_clkgen_calc_params(const struct axi_clkgen_limits *limits,
--	unsigned long fin, unsigned long fout,
--	unsigned int *best_d, unsigned int *best_m, unsigned int *best_dout)
-+				   unsigned long fin, unsigned long fout,
-+				   unsigned int *best_d, unsigned int *best_m,
-+				   unsigned int *best_dout)
- {
- 	unsigned long d, d_min, d_max, _d_min, _d_max;
- 	unsigned long m, m_min, m_max;
-@@ -195,9 +197,9 @@ struct axi_clkgen_div_params {
- };
- 
- static void axi_clkgen_calc_clk_params(unsigned int divider,
--	unsigned int frac_divider, struct axi_clkgen_div_params *params)
-+				       unsigned int frac_divider,
-+				       struct axi_clkgen_div_params *params)
- {
--
- 	memset(params, 0x0, sizeof(*params));
- 
- 	if (divider == 1) {
-@@ -225,7 +227,7 @@ static void axi_clkgen_calc_clk_params(unsigned int divider,
- 		if (params->edge == 0 || frac_divider == 1)
- 			params->low--;
- 		if (((params->edge == 0) ^ (frac_divider == 1)) ||
--			(divider == 2 && frac_divider == 1))
-+		    (divider == 2 && frac_divider == 1))
- 			params->frac_wf_f = 1;
- 
- 		params->frac_phase = params->edge * 4 + frac_divider / 2;
-@@ -233,13 +235,13 @@ static void axi_clkgen_calc_clk_params(unsigned int divider,
- }
- 
- static void axi_clkgen_write(struct axi_clkgen *axi_clkgen,
--	unsigned int reg, unsigned int val)
-+			     unsigned int reg, unsigned int val)
- {
- 	writel(val, axi_clkgen->base + reg);
- }
- 
- static void axi_clkgen_read(struct axi_clkgen *axi_clkgen,
--	unsigned int reg, unsigned int *val)
-+			    unsigned int reg, unsigned int *val)
- {
- 	*val = readl(axi_clkgen->base + reg);
- }
-@@ -260,7 +262,7 @@ static int axi_clkgen_wait_non_busy(struct axi_clkgen *axi_clkgen)
- }
- 
- static int axi_clkgen_mmcm_read(struct axi_clkgen *axi_clkgen,
--	unsigned int reg, unsigned int *val)
-+				unsigned int reg, unsigned int *val)
- {
- 	unsigned int reg_val;
- 	int ret;
-@@ -284,7 +286,8 @@ static int axi_clkgen_mmcm_read(struct axi_clkgen *axi_clkgen,
- }
- 
- static int axi_clkgen_mmcm_write(struct axi_clkgen *axi_clkgen,
--	unsigned int reg, unsigned int val, unsigned int mask)
-+				 unsigned int reg, unsigned int val,
-+				 unsigned int mask)
- {
- 	unsigned int reg_val = 0;
- 	int ret;
-@@ -305,8 +308,7 @@ static int axi_clkgen_mmcm_write(struct axi_clkgen *axi_clkgen,
- 	return 0;
- }
- 
--static void axi_clkgen_mmcm_enable(struct axi_clkgen *axi_clkgen,
--	bool enable)
-+static void axi_clkgen_mmcm_enable(struct axi_clkgen *axi_clkgen, bool enable)
- {
- 	unsigned int val = AXI_CLKGEN_V2_RESET_ENABLE;
- 
-@@ -322,31 +324,31 @@ static struct axi_clkgen *clk_hw_to_axi_clkgen(struct clk_hw *clk_hw)
- }
- 
- static void axi_clkgen_set_div(struct axi_clkgen *axi_clkgen,
--	unsigned int reg1, unsigned int reg2, unsigned int reg3,
--	struct axi_clkgen_div_params *params)
-+			       unsigned int reg1, unsigned int reg2,
-+			       unsigned int reg3,
-+			       struct axi_clkgen_div_params *params)
- {
- 	axi_clkgen_mmcm_write(axi_clkgen, reg1,
--		(params->high << 6) | params->low, 0xefff);
-+			      (params->high << 6) | params->low, 0xefff);
- 	axi_clkgen_mmcm_write(axi_clkgen, reg2,
--		(params->frac << 12) | (params->frac_en << 11) |
--		(params->frac_wf_r << 10) | (params->edge << 7) |
--		(params->nocount << 6), 0x7fff);
-+			      (params->frac << 12) | (params->frac_en << 11) |
-+			      (params->frac_wf_r << 10) | (params->edge << 7) |
-+			      (params->nocount << 6), 0x7fff);
- 	if (reg3 != 0) {
- 		axi_clkgen_mmcm_write(axi_clkgen, reg3,
--			(params->frac_phase << 11) | (params->frac_wf_f << 10), 0x3c00);
-+				      (params->frac_phase << 11) | (params->frac_wf_f << 10),
-+				      0x3c00);
- 	}
- }
- 
--static int axi_clkgen_set_rate(struct clk_hw *clk_hw,
--	unsigned long rate, unsigned long parent_rate)
-+static int axi_clkgen_set_rate(struct clk_hw *clk_hw, unsigned long rate,
-+			       unsigned long parent_rate)
- {
- 	struct axi_clkgen *axi_clkgen = clk_hw_to_axi_clkgen(clk_hw);
- 	const struct axi_clkgen_limits *limits = &axi_clkgen->limits;
- 	unsigned int d, m, dout;
- 	struct axi_clkgen_div_params params;
--	uint32_t power = 0;
--	uint32_t filter;
--	uint32_t lock;
-+	u32 power = 0, filter, lock;
- 
- 	if (parent_rate == 0 || rate == 0)
- 		return -EINVAL;
-@@ -366,22 +368,22 @@ static int axi_clkgen_set_rate(struct clk_hw *clk_hw,
- 
- 	axi_clkgen_calc_clk_params(dout >> 3, dout & 0x7, &params);
- 	axi_clkgen_set_div(axi_clkgen,  MMCM_REG_CLKOUT0_1, MMCM_REG_CLKOUT0_2,
--		MMCM_REG_CLKOUT5_2, &params);
-+			   MMCM_REG_CLKOUT5_2, &params);
- 
- 	axi_clkgen_calc_clk_params(d, 0, &params);
- 	axi_clkgen_mmcm_write(axi_clkgen, MMCM_REG_CLK_DIV,
--		(params.edge << 13) | (params.nocount << 12) |
--		(params.high << 6) | params.low, 0x3fff);
-+			      (params.edge << 13) | (params.nocount << 12) |
-+			      (params.high << 6) | params.low, 0x3fff);
- 
- 	axi_clkgen_calc_clk_params(m >> 3, m & 0x7, &params);
- 	axi_clkgen_set_div(axi_clkgen,  MMCM_REG_CLK_FB1, MMCM_REG_CLK_FB2,
--		MMCM_REG_CLKOUT6_2, &params);
-+			   MMCM_REG_CLKOUT6_2, &params);
- 
- 	axi_clkgen_mmcm_write(axi_clkgen, MMCM_REG_LOCK1, lock & 0x3ff, 0x3ff);
- 	axi_clkgen_mmcm_write(axi_clkgen, MMCM_REG_LOCK2,
--		(((lock >> 16) & 0x1f) << 10) | 0x1, 0x7fff);
-+			      (((lock >> 16) & 0x1f) << 10) | 0x1, 0x7fff);
- 	axi_clkgen_mmcm_write(axi_clkgen, MMCM_REG_LOCK3,
--		(((lock >> 24) & 0x1f) << 10) | 0x3e9, 0x7fff);
-+			      (((lock >> 24) & 0x1f) << 10) | 0x3e9, 0x7fff);
- 	axi_clkgen_mmcm_write(axi_clkgen, MMCM_REG_FILTER1, filter >> 16, 0x9900);
- 	axi_clkgen_mmcm_write(axi_clkgen, MMCM_REG_FILTER2, filter, 0x9900);
- 
-@@ -410,7 +412,7 @@ static int axi_clkgen_determine_rate(struct clk_hw *hw,
- }
- 
- static unsigned int axi_clkgen_get_div(struct axi_clkgen *axi_clkgen,
--	unsigned int reg1, unsigned int reg2)
-+				       unsigned int reg1, unsigned int reg2)
- {
- 	unsigned int val1, val2;
- 	unsigned int div;
-@@ -437,7 +439,7 @@ static unsigned int axi_clkgen_get_div(struct axi_clkgen *axi_clkgen,
- }
- 
- static unsigned long axi_clkgen_recalc_rate(struct clk_hw *clk_hw,
--	unsigned long parent_rate)
-+					    unsigned long parent_rate)
- {
- 	struct axi_clkgen *axi_clkgen = clk_hw_to_axi_clkgen(clk_hw);
- 	unsigned int d, m, dout;
-@@ -445,9 +447,9 @@ static unsigned long axi_clkgen_recalc_rate(struct clk_hw *clk_hw,
- 	unsigned int val;
- 
- 	dout = axi_clkgen_get_div(axi_clkgen, MMCM_REG_CLKOUT0_1,
--		MMCM_REG_CLKOUT0_2);
-+				  MMCM_REG_CLKOUT0_2);
- 	m = axi_clkgen_get_div(axi_clkgen, MMCM_REG_CLK_FB1,
--		MMCM_REG_CLK_FB2);
-+			       MMCM_REG_CLK_FB2);
- 
- 	axi_clkgen_mmcm_read(axi_clkgen, MMCM_REG_CLK_DIV, &val);
- 	if (val & MMCM_CLK_DIV_NOCOUNT)
-@@ -620,7 +622,7 @@ static int axi_clkgen_probe(struct platform_device *pdev)
- 
- 	clk_name = pdev->dev.of_node->name;
- 	of_property_read_string(pdev->dev.of_node, "clock-output-names",
--		&clk_name);
-+				&clk_name);
- 
- 	init.name = clk_name;
- 	init.ops = &axi_clkgen_ops;
+> +
+>  	rc = simple_write_to_buffer(buf, sizeof(buf) - 1, ppos, userbuf, count);
 
--- 
-2.49.0
+This effectively copied in one less than we expect so we drop a character.
+So I think we want to add the -1 to the check as Nuno suggested.
 
+>  	if (rc < 0)
+>  		return rc;
+>  
+> -	buf[count] = '\0';
+> +	buf[rc] = '\0';
+>  
+>  	ret = sscanf(buf, "%i %i", &back->cached_reg_addr, &val);
+>  
+> 
+> base-commit: b4432656b36e5cc1d50a1f2dc15357543add530e
 
 

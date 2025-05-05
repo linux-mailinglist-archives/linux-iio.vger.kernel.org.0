@@ -1,60 +1,60 @@
-Return-Path: <linux-iio+bounces-19098-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19099-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0973CAA9425
-	for <lists+linux-iio@lfdr.de>; Mon,  5 May 2025 15:14:10 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C09EFAA943D
+	for <lists+linux-iio@lfdr.de>; Mon,  5 May 2025 15:21:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3FB233AC2B7
-	for <lists+linux-iio@lfdr.de>; Mon,  5 May 2025 13:13:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A05D67A2893
+	for <lists+linux-iio@lfdr.de>; Mon,  5 May 2025 13:20:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5772324EA9D;
-	Mon,  5 May 2025 13:14:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45A3624E4AA;
+	Mon,  5 May 2025 13:21:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ErlmEeoQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A7XN04HQ"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A52A2441A7;
-	Mon,  5 May 2025 13:14:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0BFD846C;
+	Mon,  5 May 2025 13:21:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746450845; cv=none; b=nEeof6QjRGnUX34sIKegM3j1vXryQ6KrjC7slEF9K6oFUdiW9Ytx6mbmlPhFOyjU9QVqLEuZISM7InO4uC7U7ywnF8/5bHnflrHgc7XX8dd+51bx1J1XmK+KdTor46k+uPtemTLzsr5PM6rETvDcV9NTTg9vMOUSmSeW7sdZZqk=
+	t=1746451268; cv=none; b=TONPYBTCaijRHofoedVHsRKxBAm+9PRLChdfufayAR/lzn7tyhLlOQUC+kk4zbr0E5Pw+zOh3wAIpEUkdU8YWa0xud8zPcTfTDWsvStYGvWUd9ypoQ6c3HONHJCbJSnSr+uKL6EHRdH2Mylg3Y5moHD1K7IxnXuP2R5ujbNdb/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746450845; c=relaxed/simple;
-	bh=rh5r3++/cA66sANgpELESWc1a6Bz3LRTgNCDDH+oo78=;
+	s=arc-20240116; t=1746451268; c=relaxed/simple;
+	bh=ZGaIAChcWBsrNYMQPa6bkuXH0JoWvSBNPtU0khdL8D8=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WSnxrwofwbqvTU+KTsOJXX8QMWgBXXLOjqDZsVj2vbwLdiFdHZZ6J8smjcTT2x+ci5TrkvaZ4qq9sZvMmWI3Suj1EQU0iny+pB3TwTZru/Q6K2c+uXOPluA6hH1zqna1fBdmF4yzZTUxqCTVzBXeH4aNVEAVzPz5T8idBeKDmx0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ErlmEeoQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B9E9C4CEEF;
-	Mon,  5 May 2025 13:14:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=FIQfEitECpkYYGv9MYJL4u+wzcqzlheRX0wCLpnx53CnWqyr1E/sj4xSU46NRff60vHMapc8d0mVN5bxfczbtr5TNUHRtKXEb/bww/zByEHYI0YOxUca8YtAhgD6ROY/UvN8eMsiYsE2pvRmmBEfJeb3c/Hu10gBqttemE9dmdg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A7XN04HQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BC47C4CEF1;
+	Mon,  5 May 2025 13:21:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746450844;
-	bh=rh5r3++/cA66sANgpELESWc1a6Bz3LRTgNCDDH+oo78=;
+	s=k20201202; t=1746451267;
+	bh=ZGaIAChcWBsrNYMQPa6bkuXH0JoWvSBNPtU0khdL8D8=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ErlmEeoQS4jRoMaKLfhNgYD6aSH4PLxk8/OSxa3ZfiRiwh7JSoen7nlZoJF64Co5F
-	 zCKICpaqCMziHVxoxTmVXm/04lZ2KQEf2P8J6JvjgOtwYZqrEeAQsXHc5cRBrxu2j0
-	 z2v+ZAy/v1Gh9AkEm9GnV1wroOqSU984Er3P7ZtJtFVT7QQupvJJ7L8QMefDydEdzK
-	 xKdt80+RfT0/GJio1SJy5ubXyasdcaW3ZWxX/y0KfQburHe13LHfNwC/bpkkWN07X9
-	 aBB7ICWkumiVsJzm/yt5cGaWL4OxfLD6L0i2fFATmKDse1cnKLN8CBJDWO1PkZld5a
-	 mivzKzIzwYXjw==
-Date: Mon, 5 May 2025 14:13:57 +0100
+	b=A7XN04HQ3rANmKTX7oQFW2nVpdHn/4KqIZ0NQy+FpQqoLhh9wjk9HtPN2e5Ila1x9
+	 YqHnB+94XCl+QnyPnJmRYLSlNB0P+xVy5PgHj3SOEghusbheyW5zctZ2E8mWJVwXPw
+	 +Weq+C/tRAiOI3pE5k/N6W25tC5XFzB3VuPDX6hHmSgWSF/J5g2ZueX1UFYFhvgiXq
+	 ATdwFthnSYjkoPOhSmoNEc6cMb05691ihg1hCPKmERkXERXZg9HNytAKkB25IMixR4
+	 VHMGkkq6vhi1+JwsryNmJTFlGk+jTUvAtNTP8GlVnlre2yZzk8dJgaB1pcm43EW02P
+	 deGG5IaTOFJ4Q==
+Date: Mon, 5 May 2025 14:21:00 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: Gustavo Silva <gustavograzs@gmail.com>
 Cc: Alex Lanzano <lanzano.alex@gmail.com>, David Lechner
  <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy
  Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org,
  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/3] iio: imu: bmi270: add channel for step counter
-Message-ID: <20250505141357.4d1760bf@jic23-huawei>
-In-Reply-To: <swswxbwejqyrekr2bvjf4p5lglodg3hlgl5ckiluxpazzl3chn@ga3uriqvmv7b>
+Subject: Re: [PATCH 2/3] iio: imu: bmi270: add step counter watermark event
+Message-ID: <20250505142100.2a182402@jic23-huawei>
+In-Reply-To: <yudy5vbwblqzkx34pgekqi3noyctaxo77n2lb6mqidb4veqadm@534j4towopou>
 References: <20250424-bmi270-events-v1-0-a6c722673e5f@gmail.com>
-	<20250424-bmi270-events-v1-1-a6c722673e5f@gmail.com>
-	<20250426144020.2633f9cb@jic23-huawei>
-	<swswxbwejqyrekr2bvjf4p5lglodg3hlgl5ckiluxpazzl3chn@ga3uriqvmv7b>
+	<20250424-bmi270-events-v1-2-a6c722673e5f@gmail.com>
+	<20250426144739.31b8bd36@jic23-huawei>
+	<yudy5vbwblqzkx34pgekqi3noyctaxo77n2lb6mqidb4veqadm@534j4towopou>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -65,115 +65,141 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sat, 26 Apr 2025 21:19:13 -0300
+On Sat, 26 Apr 2025 21:57:21 -0300
 Gustavo Silva <gustavograzs@gmail.com> wrote:
 
-> On Sat, Apr 26, 2025 at 02:40:20PM +0100, Jonathan Cameron wrote:
-> > On Thu, 24 Apr 2025 21:14:50 -0300
+> On Sat, Apr 26, 2025 at 02:47:39PM +0100, Jonathan Cameron wrote:
+> > On Thu, 24 Apr 2025 21:14:51 -0300
 > > Gustavo Silva <gustavograzs@gmail.com> wrote:
 > >   
-> > > Add a channel for enabling/disabling the step counter, reading the
-> > > number of steps and resetting the counter.
+> > > Add support for generating events when the step counter reaches the
+> > > configurable watermark.
 > > > 
 > > > Signed-off-by: Gustavo Silva <gustavograzs@gmail.com>  
-> > Hi Gustavo,
 > > 
-> > This is tripping over the somewhat theoretical requirement for
-> > regmap to be provided with DMA safe buffers for bulk accesses.
-> > 
-> > Jonathan
-> >   
+> > Main thing in here is I think the event type isn't the right one.
+> >  
 > 
 > Hi Jonathan,
 > 
-> Thanks for the review. I've got a few questions inline.
+> Thanks for the review.
+> I think the answers to your questions in this patch come down to me
+> trying to keep this driver consistency with the bmi323 driver, since
+> the two devices are very similar.
+> However I have no objections to change the event type if you think it
+> is appropriate.
+
+Yeah. From the discussion with Lothar, it's clear we have some inconsistency
+on these event types :(  Anyhow, I may well be wrong - see below.
+
 > 
-> > > ---
-> > >  drivers/iio/imu/bmi270/bmi270_core.c | 127 +++++++++++++++++++++++++++++++++++
-> > >  1 file changed, 127 insertions(+)
-> > > 
-> > > diff --git a/drivers/iio/imu/bmi270/bmi270_core.c b/drivers/iio/imu/bmi270/bmi270_core.c
-> > > index a86be5af5ccb1f010f2282ee31c47f284c1bcc86..f09d8dead9df63df5ae8550cf473b5573374955b 100644
-> > > --- a/drivers/iio/imu/bmi270/bmi270_core.c
-> > > +++ b/drivers/iio/imu/bmi270/bmi270_core.c
-> > > @@ -31,6 +31,8 @@  
-> >   
-> > >  /* See datasheet section 4.6.14, Temperature Sensor */
-> > >  #define BMI270_TEMP_OFFSET				11776
-> > >  #define BMI270_TEMP_SCALE				1953125
-> > > @@ -111,6 +118,7 @@ struct bmi270_data {
-> > >  	struct iio_trigger *trig;
+> > > @@ -119,6 +128,7 @@ struct bmi270_data {
 > > >  	 /* Protect device's private data from concurrent access */
 > > >  	struct mutex mutex;
-> > > +	int steps_enabled;  
+> > >  	int steps_enabled;
+> > > +	unsigned int feature_events;  
 > > 
-> > Seems a little odd to have a thing called _enabled as an integer.
-> > Probably better as a bool even though that will require slightly more
-> > code to handle read / write.
+> > Why do we need this rather than just checking the register?
 > >   
-> I agree that a bool might be more appropriate in this case. I decided to
-> use an int to keep consistency with other drivers, specifically bma400
-> and the iio dummy driver.
-> If you prefer, I'll use a bool here and after this series submit a patch
-> updating those drivers as well.
+> Not really needed, I just tried to keep it similar to the bmi323 driver.
 
-Yes. I think that would be a nice little logical improvement here and in those
-drivers.  Not particularly critical though!
+Generally I'd prefer drives to use regmap caching to get benefits of caching everything
+appropriate rather than use their own local caches.
+
+
+> > > +	return 0;
+> > > +}
+> > > +
+> > >  static int bmi270_set_scale(struct bmi270_data *data, int chan_type, int uscale)
+> > >  {
+> > >  	int i;
+> > > @@ -539,19 +585,32 @@ static irqreturn_t bmi270_irq_thread_handler(int irq, void *private)
+> > >  {
+> > >  	struct iio_dev *indio_dev = private;
+> > >  	struct bmi270_data *data = iio_priv(indio_dev);
+> > > -	unsigned int status;
+> > > +	unsigned int status0, status1;
+> > > +	s64 timestamp = iio_get_time_ns(indio_dev);
+> > >  	int ret;
+> > >  
+> > >  	scoped_guard(mutex, &data->mutex) {
+> > > +		ret = regmap_read(data->regmap, BMI270_INT_STATUS_0_REG,
+> > > +				  &status0);
+> > > +		if (ret)
+> > > +			return IRQ_NONE;
+> > > +
+> > >  		ret = regmap_read(data->regmap, BMI270_INT_STATUS_1_REG,
+> > > -				  &status);
+> > > +				  &status1);
+> > >  		if (ret)
+> > >  			return IRQ_NONE;
+> > >  	}
+> > >  
+> > > -	if (FIELD_GET(BMI270_INT_STATUS_1_ACC_GYR_DRDY_MSK, status))
+> > > +	if (FIELD_GET(BMI270_INT_STATUS_1_ACC_GYR_DRDY_MSK, status1))
+> > >  		iio_trigger_poll_nested(data->trig);
+> > >  
+> > > +	if (FIELD_GET(BMI270_INT_STATUS_0_STEP_CNT_MSK, status0))
+> > > +		iio_push_event(indio_dev, IIO_MOD_EVENT_CODE(IIO_STEPS, 0,
+> > > +							     IIO_NO_MOD,  
+> > why use IIO_MOD_EVENT_CODE() if not modified?
+> >   
+> My bad, I blindly followed what is implemented in the bmi323 driver.
+> I'll fix it in v2.
+
+It's not wrong as such, just that we have a more specific macro for this case.
+> 
+> > > +							     IIO_EV_TYPE_CHANGE,
+> > > +							     IIO_EV_DIR_NONE),  
+> > As below. This looks like a rising threshold event.
+> > 
+> > Change tends to be for things like activity detection (walking/standing etc)
+
+I got this wrong.  Forgot about how this ABI was defined until reading it earlier
+today for the discussion with Lothar!
+
+> >    
+> Using rising threshold event is fine by me, but then shouldn't we
+> update the bmi323 driver as well?
+
+If it is an event that occurs every step?  In that case CHANGE is correct.
+If it is an event on a particular threshold of steps being passed.  I.e.
+1000 steps, then a threshold is appropriate.   Vs every 1000 steps
+in which case change is appropriate.  Seems from below comment it is
+every N so this is fine as is. 
 
 > 
-> >   
+> > > +			       timestamp);
+> > > +
+> > >  	return IRQ_HANDLED;
+> > >  }
 > > >  
-> > >  	/*
-> > >  	 * Where IIO_DMA_MINALIGN may be larger than 8 bytes, align to
-> > > @@ -282,6 +290,99 @@ static const struct  bmi270_odr_item bmi270_odr_table[] = {
-> > >  	},
-> > >  };
-> > >  
-> > > +enum bmi270_feature_reg_id {
-> > > +	BMI270_SC_26_REG,
-> > > +};
+> > > @@ -761,10 +820,111 @@ static int bmi270_read_avail(struct iio_dev *indio_dev,
+> > >  	}
+> > >  }
+> > >
 > > > +
-> > > +struct bmi270_feature_reg {
-> > > +	u8 page;
-> > > +	u8 addr;
-> > > +};
-> > > +
-> > > +static const struct bmi270_feature_reg bmi270_feature_regs[] = {
-> > > +	[BMI270_SC_26_REG] = {
-> > > +		.page = 6,
-> > > +		.addr = 0x32,
-> > > +	},
-> > > +};
-> > > +
-> > > +static int bmi270_write_feature_reg(struct bmi270_data *data,
-> > > +				    enum bmi270_feature_reg_id id,
-> > > +				    u16 val)
-> > > +{
-> > > +	const struct bmi270_feature_reg *reg = &bmi270_feature_regs[id];
-> > > +	int ret;
-> > > +
-> > > +	ret = regmap_write(data->regmap, BMI270_FEAT_PAGE_REG, reg->page);
-> > > +	if (ret)
-> > > +		return ret;
-> > > +
-> > > +	return regmap_bulk_write(data->regmap, reg->addr, &val, sizeof(val));  
+> > > +static const struct iio_event_spec bmi270_step_wtrmrk_event = {
+> > > +	.type = IIO_EV_TYPE_CHANGE,  
 > > 
-> > For a regmap on top of an SPI bus. I think we are still requiring DMA safe
-> > buffers until we can get confirmation that the API guarantees that isn't
-> > needed.  (there is another thread going on where we are trying to get that
-> > confirmation).
-> > 
-> > That is a pain here because this can run concurrently with buffered
-> > capture and as such I think we can't just put a additional element after
-> > data->data but instead need to mark that new element __aligned(IIO_DMA_MINALIGN)
-> > as well (and add a comment that it can be used concurrently with data->data).
+> > Change would be a per step event.
+> > IIUC this is a rising threshold.
 > >  
-> Just to clarify, when you say data->data, are you referring to the
-> bmi270_data::buffer variable? That used to be called 'data' but it was
-> changed to 'buffer' in commit 16c94de2a.
+> Yeah, if the watermark level is configured to N steps, an event is
+> generated every time the step counter counts N steps.
 
-Yes.  The one marked __aligned(IIO_DMA_MINALIGN)
-I was looking at old code I guess!
+This is fine then as change.  My mistake!
 
 Jonathan
+
+
+
+> 
+> > > +	.dir = IIO_EV_DIR_NONE,
+> > > +	.mask_shared_by_type = BIT(IIO_EV_INFO_ENABLE) |
+> > > +			       BIT(IIO_EV_INFO_VALUE),
+> > > +};  
+> > 
+> >   
+
 

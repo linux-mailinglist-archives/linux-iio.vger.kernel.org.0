@@ -1,52 +1,52 @@
-Return-Path: <linux-iio+bounces-19151-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19152-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DCECAA9C5E
-	for <lists+linux-iio@lfdr.de>; Mon,  5 May 2025 21:20:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B154AAA9C62
+	for <lists+linux-iio@lfdr.de>; Mon,  5 May 2025 21:20:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A53E189AEED
-	for <lists+linux-iio@lfdr.de>; Mon,  5 May 2025 19:20:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 25C4B17E300
+	for <lists+linux-iio@lfdr.de>; Mon,  5 May 2025 19:20:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFA0D26FA40;
-	Mon,  5 May 2025 19:20:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D8552701BD;
+	Mon,  5 May 2025 19:20:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b="bxj4lsxj"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b="HnYCQsZ5"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-106112.protonmail.ch (mail-106112.protonmail.ch [79.135.106.112])
+Received: from mail-106113.protonmail.ch (mail-106113.protonmail.ch [79.135.106.113])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCC3F1624C5;
-	Mon,  5 May 2025 19:20:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.112
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60F992701A0;
+	Mon,  5 May 2025 19:20:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.113
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746472820; cv=none; b=aL63pfTNbV5CDXx/1+yF2mZkO+gVHfeytnp8/npdEt4N9m3hk/tfrzvgNOfQtaIMTEjBEip9tCFCyQ2Vpky1nsV1VWBBgMqMaklahHzgdrz8X5lT3lmcu0XHAImXEgF9Th73f7e1kwki1qLI4XAPhAdsNBNrvQvvhh6GrW7yHp0=
+	t=1746472824; cv=none; b=hiOce+L5RkQVA9An5B50uNsyWGX2Z+8OcBq/upjitWlvgdHzFcrfkaytPXmeDZ2d7YmEpF8VvOMVO8hRaZRURW94X2PrbT6um6gEbZwsEBvBOwFowZS3HAmtd/4mPxY3NHKIUGSJ3jXzokRApFNUpPlhCOCNk4qca+HVQ1rkcvw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746472820; c=relaxed/simple;
-	bh=hC6crYyF77cykBd4JSHA1fPVMSH0fhlHiDFeSZQbXec=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=ImbltbNg2YibKlYqBbU5TETAFYXjQMVM7SxqJ8fPN5KwRUc8zkjC5kcdoBp24L0+UjkhsfrYiVM96BxNkA7r5kfBNIF9UzSzmRmwRMfTEz3WLI8SgKr5DufChVRFo+pGleBRYTVMIccTcSF08cWHmQt6jlQeF/kwxjFFotew/VE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=geanix.com; spf=pass smtp.mailfrom=geanix.com; dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b=bxj4lsxj; arc=none smtp.client-ip=79.135.106.112
+	s=arc-20240116; t=1746472824; c=relaxed/simple;
+	bh=+d8tniBcw4iQZBqdUy3M4jejJxgWy7tKaRDD9lEZtHs=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=foM62WdljiPaNonruVBJTWqy5/zb3thAsJeXxdRMyarbduW2XGEVV0pkcSIrr6IR5/OTcSYW+4GYbZ6Yea5jrC+zNfNgN4Av8IJ9TntvVb966+7jSiHzZ3HnVJCpZNPYBR9AIdgEf5p4S3i3DjV3+92IN8tRFunQEe6RqR7VHgw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=geanix.com; spf=pass smtp.mailfrom=geanix.com; dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b=HnYCQsZ5; arc=none smtp.client-ip=79.135.106.113
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=geanix.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=geanix.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=geanix.com;
-	s=protonmail; t=1746472814; x=1746732014;
-	bh=6EsJW6Qm/StXGBZEGhNHvMHoG3NUrgaJ0lB7XuysflA=;
-	h=From:Subject:Date:Message-Id:To:Cc:From:To:Cc:Date:Subject:
-	 Reply-To:Feedback-ID:Message-ID:BIMI-Selector:List-Unsubscribe:
-	 List-Unsubscribe-Post;
-	b=bxj4lsxjrMBixPMqX+JIAjgpEVQIsxQ4PSk0pDTSXE+45GguO9z5zWPfr2nB6l6eR
-	 9GrcAyrDBW+J/8EMhOJqo4JeBnoUd5vP8Ym+BJK8FsbMI+atQKOp8uQQ/MOaD6PYl9
-	 Oa9FrQpl+LcC6WlUta+oGNTLzGJUatvb8hx9t+4arrNahMW496fR6IfoPI72DgpBWX
-	 UlF9g6HYIVeKZVHdZgVsr/IfCKdSqvi2Gisv2lLtuOe2Gk/148Po4bZwBOelxcDwzL
-	 MauFfTD8m6THLnSHjxBa61HVfNcT7RwJ3pjfh7xbofdaQzPo45GJ1WBAMJ2/vPYKgf
-	 V+udwypJEDhpg==
-X-Pm-Submission-Id: 4ZrrvX1kWvz44y
+	s=protonmail; t=1746472818; x=1746732018;
+	bh=1O24BfelhZ9DVYbWzph2yMsqMQ0dqOUQjVvsT2MqzQU=;
+	h=From:Date:Subject:Message-Id:References:In-Reply-To:To:Cc:From:To:
+	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector:
+	 List-Unsubscribe:List-Unsubscribe-Post;
+	b=HnYCQsZ5mKO2VNBA67w7vV/vd+EAf6+Ye7IyIYC5t9Us7m7bcAGgXkUNXldKO7H4Q
+	 xCecxKro3SZrHiYlGPaSdo9JluE9F6iWyYhcxmq+d9W2gZOgyjTwcCJdV794LhdbCc
+	 JBE27erBHHm3kPnBfPXDaEAdYjUeSGEqIogm0mfL8TvFfBJr0iYolgDYMnBK0qmoM4
+	 S80haGZWs23cycO5oal1SzQdM1/EFmecbMcyh85iNwXcIUvonZgnj7/tVPf0Z8lMFK
+	 z1Y2CgiWMKMBm8yEhjZ2tT05F+jtrwqV/sDeV1op7bG6nDyJ8MWqhXxt56UaywK40b
+	 IQuPMJR0tjneA==
+X-Pm-Submission-Id: 4Zrrvd5bmTz452
 From: Sean Nyekjaer <sean@geanix.com>
-Subject: [PATCH v4 0/2] iio: accel: fxls8962af: Fix temperature readings
-Date: Mon, 05 May 2025 21:20:06 +0200
-Message-Id: <20250505-fxls-v4-0-a38652e21738@geanix.com>
+Date: Mon, 05 May 2025 21:20:07 +0200
+Subject: [PATCH v4 1/2] iio: accel: fxls8962af: Fix temperature calculation
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -55,11 +55,9 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAGYPGWgC/2XMQQ7CIBCF4as0rMUM0KHqynsYF0iHlkRbA4bUN
- L27tOmi6o5H5vtHFil4iuxUjCxQ8tH3XR7lrmC2NV1D3Nd5MwkSAUFwN9wjV1CRU7WuQSPLp89
- Azg9L5nLNu/Xx1Yf3Uk1i/v0JJMHzC0vQwkAFx+O5IdP5YW/7B5sLSW6VXJXkwEkYp9EJY7T9U
- 2qrcFUqq4PFUtwcSMBvNU3TB8NILXYFAQAA
-X-Change-ID: 20250501-fxls-307ef3d6d065
+Message-Id: <20250505-fxls-v4-1-a38652e21738@geanix.com>
+References: <20250505-fxls-v4-0-a38652e21738@geanix.com>
+In-Reply-To: <20250505-fxls-v4-0-a38652e21738@geanix.com>
 To: Jonathan Cameron <jic23@kernel.org>, 
  Marcelo Schmitt <marcelo.schmitt1@gmail.com>, 
  Lars-Peter Clausen <lars@metafoo.de>, 
@@ -69,39 +67,58 @@ Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
  Sean Nyekjaer <sean@geanix.com>, stable@vger.kernel.org
 X-Mailer: b4 0.14.2
 
-Add the correct scale to get temperature in mili degree Celcius.
-Add sign component to temperature scan element.
+According to spec temperature should be returned in milli degrees Celsius.
+Add in_temp_scale to calculate from Celsius to milli Celsius.
 
+Fixes: a3e0b51884ee ("iio: accel: add support for FXLS8962AF/FXLS8964AF accelerometers")
+Cc: stable@vger.kernel.org
+Reviewed-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
 Signed-off-by: Sean Nyekjaer <sean@geanix.com>
 ---
-Changes in v4:
-- Blindly Copy/Pasted  Andy's comment. Use the correct MILLIDEGREE_PER_DEGREE
-- Link to v3: https://lore.kernel.org/r/20250505-fxls-v3-0-8c541bf0205c@geanix.com
+ drivers/iio/accel/fxls8962af-core.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-Changes in v3:
-- Dropping define infavor of inline scale value
-- Added using constants from units.h
-- Tweaked commit msg to make it more assertive
-- Link to v2: https://lore.kernel.org/r/20250502-fxls-v2-0-e1af65f1aa6c@geanix.com
+diff --git a/drivers/iio/accel/fxls8962af-core.c b/drivers/iio/accel/fxls8962af-core.c
+index bf1d3923a181798a1c884ee08b62d86ab5aed26f..5f5e917f7aa53912448ba078027183c63bc0cd7d 100644
+--- a/drivers/iio/accel/fxls8962af-core.c
++++ b/drivers/iio/accel/fxls8962af-core.c
+@@ -23,6 +23,7 @@
+ #include <linux/regulator/consumer.h>
+ #include <linux/regmap.h>
+ #include <linux/types.h>
++#include <linux/units.h>
+ 
+ #include <linux/iio/buffer.h>
+ #include <linux/iio/events.h>
+@@ -439,8 +440,16 @@ static int fxls8962af_read_raw(struct iio_dev *indio_dev,
+ 		*val = FXLS8962AF_TEMP_CENTER_VAL;
+ 		return IIO_VAL_INT;
+ 	case IIO_CHAN_INFO_SCALE:
+-		*val = 0;
+-		return fxls8962af_read_full_scale(data, val2);
++		switch (chan->type) {
++		case IIO_TEMP:
++			*val = MILLIDEGREE_PER_DEGREE;
++			return IIO_VAL_INT;
++		case IIO_ACCEL:
++			*val = 0;
++			return fxls8962af_read_full_scale(data, val2);
++		default:
++			return -EINVAL;
++		}
+ 	case IIO_CHAN_INFO_SAMP_FREQ:
+ 		return fxls8962af_read_samp_freq(data, val, val2);
+ 	default:
+@@ -736,6 +745,7 @@ static const struct iio_event_spec fxls8962af_event[] = {
+ 	.type = IIO_TEMP, \
+ 	.address = FXLS8962AF_TEMP_OUT, \
+ 	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) | \
++			      BIT(IIO_CHAN_INFO_SCALE) | \
+ 			      BIT(IIO_CHAN_INFO_OFFSET),\
+ 	.scan_index = -1, \
+ 	.scan_type = { \
 
-Changes in v2:
-- Correct offset is applied before scaling component 
-- Added sign component to temperature scan element
-- Link to v1: https://lore.kernel.org/r/20250501-fxls-v1-1-f54061a07099@geanix.com
-
----
-Sean Nyekjaer (2):
-      iio: accel: fxls8962af: Fix temperature calculation
-      iio: accel: fxls8962af: Fix temperature scan element sign
-
- drivers/iio/accel/fxls8962af-core.c | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
----
-base-commit: 609bc31eca06c7408e6860d8b46311ebe45c1fef
-change-id: 20250501-fxls-307ef3d6d065
-
-Best regards,
 -- 
-Sean Nyekjaer <sean@geanix.com>
+2.47.1
 
 

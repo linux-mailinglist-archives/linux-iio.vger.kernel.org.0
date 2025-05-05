@@ -1,92 +1,159 @@
-Return-Path: <linux-iio+bounces-19142-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19143-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA74DAA99BF
-	for <lists+linux-iio@lfdr.de>; Mon,  5 May 2025 18:53:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D535AA9A4C
+	for <lists+linux-iio@lfdr.de>; Mon,  5 May 2025 19:21:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 047F71887C9B
-	for <lists+linux-iio@lfdr.de>; Mon,  5 May 2025 16:54:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D52F23A6AE5
+	for <lists+linux-iio@lfdr.de>; Mon,  5 May 2025 17:21:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 200A02690FB;
-	Mon,  5 May 2025 16:53:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B137926A0FC;
+	Mon,  5 May 2025 17:21:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O+nrjSCD"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="Xt3gdcLq"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f53.google.com (mail-oa1-f53.google.com [209.85.160.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C77A518C322;
-	Mon,  5 May 2025 16:53:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34C3326989A
+	for <linux-iio@vger.kernel.org>; Mon,  5 May 2025 17:21:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746464028; cv=none; b=e2eqjUrID2ZynWSYHnnGn+WXp/tl8324/dA/XLTF1P0rwKwQinBRBmm9iWb5gVM0/01f/M5C5y9fBIrZGFdqSJ3EXMolk+MgjKdEqBCf6mxxP9KK0mGBBGPH3Fe+HPmxzXw19WhGyTnWS5UnG3kMm/uJcvRluYxk3KoxXYfR3zg=
+	t=1746465677; cv=none; b=NJllBYyU6HH5dK9Ra1gAwMudAuoE2XaAwTJ4GcwbRJyo+8Y8MCbQV2SVoIivCrsEYwGgAx2On971XTyAM5K1vptZ0dxDXQTA9QM4I3ZVvUjw1nRZBQTldElk8UhA5MQj9e2Ng/cFBpbrHTshfLvv62H178NOnoQ3XEZHc8Ve6Aw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746464028; c=relaxed/simple;
-	bh=Nt9TcqO3UcWxGX1SmSKh3T9F59jPsuN5c6SX2ZcbeOQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fLlG0xz7c1SX0hGOVI3pE8aIqSFraI42b0b/rgOGH5Puv5mN0zwD9n3H5qU+CVq2V6U1VM2jZxbQ/qeVpTNsJEYFUAjaVuLRm3g8aF7UJ5wM+bT25Yc9vkyEFbRRPe4JbKqC30ot9yKRo4ohD7yjtNosFyuE12i/Yh8WFqCYotk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O+nrjSCD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88F4DC4CEE4;
-	Mon,  5 May 2025 16:53:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746464028;
-	bh=Nt9TcqO3UcWxGX1SmSKh3T9F59jPsuN5c6SX2ZcbeOQ=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=O+nrjSCDS7LvZr7nbKa5xKwL7YW9HZec0XBroINpabVtDhcuYDtAeTw0TGAUsRRdt
-	 NkChCiTJviMHlFRbXtZGRcNIKEz8lxgG9c11I/F97BOOW/rBF4/7Xxp2gQOnmy7YNd
-	 o8MF1/wPv47ufRTyz8SCC66lVYbW/rv4MB8gy+B7qfwdU7P715/MtD+uxKtqRrL94p
-	 wiAntoLCorGkY7ROr61JHvQiyX+dPysGNqq0dOZTVHhAZJ3o/tJO29A2ME9tUaH5Mr
-	 HNI/QpbZqEdwIj5SMn0mDFhiTjmZCEGf27r/nT0O9TxHKKOFdGBUybkwK6EJm66K7O
-	 bQN9UwhYWGrYg==
-Date: Mon, 5 May 2025 17:53:40 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: gomba007@gmail.com, Lars-Peter Clausen <lars@metafoo.de>, Rob Herring
- <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] dt-bindings: trivial-devices: Document SEN0322
-Message-ID: <20250505175340.00b6861b@jic23-huawei>
-In-Reply-To: <3d42e605-2526-4eb1-b222-6552629333ef@kernel.org>
-References: <20250505-iio-chemical-sen0322-v2-0-217473983b42@gmail.com>
-	<20250505-iio-chemical-sen0322-v2-1-217473983b42@gmail.com>
-	<3d42e605-2526-4eb1-b222-6552629333ef@kernel.org>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1746465677; c=relaxed/simple;
+	bh=ED0YEr0axl5zx/4gKF6UrVnXHUt5MRwQZrtasEJIvN4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fs9SRyGotop5jzj8B5hXMGLeB5N7V4XChczq8zNsx+PfT8CC3HNFyc8FAd6vFk8uQHy17qKtJZLWTdfcvXOnFsKylUMVyf9Aoj+qrCWocPrVR5raWVANCAD1qvqeJ7NEiX9RWezN5V5iFbGbbnftAj878hXXWvuYuMi2qAbWrn4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=Xt3gdcLq; arc=none smtp.client-ip=209.85.160.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oa1-f53.google.com with SMTP id 586e51a60fabf-2c2504fa876so1610821fac.0
+        for <linux-iio@vger.kernel.org>; Mon, 05 May 2025 10:21:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1746465674; x=1747070474; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=2/G+nBnNesW1TDGe9R775N3Td+u+vfQ6F72XRRWzOa0=;
+        b=Xt3gdcLqIK0AP5dFYU2TLbBxeDa/TAnxULksakBJHQNQFLs3qzLgDwi8F+1XGo3NxX
+         R0PV/p6yYWyZLddHxP5m/SA0kHOK4njge0WD981pdkho2Lx1jKGOpoL73cm+lbtj82Gm
+         3Rusl09vLPBvdnkb6WzchcQoBtbMspHPINYFjoKxuP8WXqC7bPrJnT510vTYUXtrqXNv
+         upgoncQerKPOWiMuZoGcpBEoEOImYdL5SVR3kLLl8hOv2VBQPhzazRnzSA6YvNo6EK88
+         1ouyu0UxgmMH3ghd27VsZ+qMZJVqHgM/FnL4zhBEIpQRQmkm4tg39aouYyGNNpAdNE9q
+         2KFw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746465674; x=1747070474;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=2/G+nBnNesW1TDGe9R775N3Td+u+vfQ6F72XRRWzOa0=;
+        b=MOI7YCLvcHe/6ZJOUAaV0AdIM6vku96XRl1Ib7XAC5hfqU7zxoEYps+IlAQjARqttT
+         bZjrhQacdUqSdXaxGuhPMS1ycQhbIHfC/lW8jqxyuYsLLNITCCRgY3w9EvcYITXBFpvk
+         09enA7woiJAVBvP/hf7yHnv/01T9V9bRN0+Rf0aEogvWrzAK0pT9bgcRJkvnCzFSIx6h
+         r6mn9QKR9j2x64/MCVt8wcAPvxBHiTY/dvjWaAI3P+0dXCJn4RdY8T8RWNWF+d4p37GY
+         JF5B9kx8sPh2trLESDxcN/1D1XOiR12drnGtyVgCQ1nf6Wu36Qz54u49BSJL+4XYeFWG
+         sdKA==
+X-Forwarded-Encrypted: i=1; AJvYcCU2SLp8FHgHSfDv9gwsGZPslc+EjgkkEWMU+jOGPRba4MkA7So8iGHFC7t/V7B8mGxK15y05B5pS1g=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwlrkgoaFGZVEFoIZrNHPVY+HtCZwnQ8EQqoxX4jlx+hg1AjbdX
+	08TeEIzpKw3zQjwRYQgcJYLxlW2UzVMWy/+xun3XJkdBybJz4GjnqgnbL37Ps6g=
+X-Gm-Gg: ASbGncubska5l4WkHsnzJAIc9IYnm+FQGgS9C0rs00b1EcG/LlvyvOgglLQ5LgHrdJJ
+	LxYgDSyhxKhWM9TlDS0J681wp4rwDLxaycLJvsIDUbH6AOgCdaalhW76GfAFMSKJ7kIUPLyp6dw
+	6v0zRhwHTIkbCESNem4kyRTW2sDIKyYp9i5xYJXPjhM0JrAzjeUsXfmUN+w/RkQdZctMS9lscyI
+	Fk8BgSK/+Jp+Sg0ioG1z8qyFfG5cpHCpJtGUJKbMsBb7GXlEAbZufe7YP2I8q6/8HvvoRk2lkBZ
+	1p9ZxBGYhJ7UBpImB5ny5xEv3hnSCndlXtfqRn2ZJirpnQJ3H4A09CP0ncx8mrr6jl3cBjWy2Wz
+	Qopai4xEh5qIYaro=
+X-Google-Smtp-Source: AGHT+IE/IoVpJPAJ8LqGJDHQZ7X4gmy2K04E7oj2S0s4rKeDTv7fvaB2eoCocspZ2xh2Gh0s5XTIOQ==
+X-Received: by 2002:a05:6870:91d3:b0:2d5:cb5:2193 with SMTP id 586e51a60fabf-2db391b23b2mr162206fac.35.1746465674086;
+        Mon, 05 May 2025 10:21:14 -0700 (PDT)
+Received: from ?IPV6:2600:8803:e7e4:1d00:2151:6806:9b7:545d? ([2600:8803:e7e4:1d00:2151:6806:9b7:545d])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-731d31a23c5sm1590259a34.8.2025.05.05.10.21.12
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 05 May 2025 10:21:13 -0700 (PDT)
+Message-ID: <79c256ab-3d21-481c-ab9d-eca643d3d998@baylibre.com>
+Date: Mon, 5 May 2025 12:21:12 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 4/7] include: fpga: adi-axi-common: add new helper
+ macros
+To: nuno.sa@analog.com, linux-clk@vger.kernel.org,
+ linux-fpga@vger.kernel.org, dmaengine@vger.kernel.org,
+ linux-hwmon@vger.kernel.org, linux-iio@vger.kernel.org,
+ linux-pwm@vger.kernel.org, linux-spi@vger.kernel.org
+Cc: Stephen Boyd <sboyd@kernel.org>,
+ Michael Turquette <mturquette@baylibre.com>, Moritz Fischer
+ <mdf@kernel.org>, Wu Hao <hao.wu@intel.com>, Xu Yilun <yilun.xu@intel.com>,
+ Tom Rix <trix@redhat.com>, Vinod Koul <vkoul@kernel.org>,
+ Jean Delvare <jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>,
+ Michael Hennerich <Michael.Hennerich@analog.com>,
+ Jonathan Cameron <jic23@kernel.org>, Trevor Gamblin <tgamblin@baylibre.com>,
+ =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
+ Mark Brown <broonie@kernel.org>, Mike Turquette <mturquette@linaro.org>
+References: <20250505-dev-axi-clkgen-limits-v4-0-3ad5124e19e1@analog.com>
+ <20250505-dev-axi-clkgen-limits-v4-4-3ad5124e19e1@analog.com>
+From: David Lechner <dlechner@baylibre.com>
+Content-Language: en-US
+In-Reply-To: <20250505-dev-axi-clkgen-limits-v4-4-3ad5124e19e1@analog.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Mon, 5 May 2025 10:16:06 +0200
-Krzysztof Kozlowski <krzk@kernel.org> wrote:
+On 5/5/25 11:41 AM, Nuno Sá via B4 Relay wrote:
+> From: Nuno Sá <nuno.sa@analog.com>
+> 
+> Add new helper macros and enums to help identifying the platform and some
+> characteristics of it at runtime.
+> 
+> Signed-off-by: Nuno Sá <nuno.sa@analog.com>
+> ---
+>  include/linux/adi-axi-common.h | 35 +++++++++++++++++++++++++++++++++++
 
-> On 05/05/2025 09:52, T=C3=B3th J=C3=A1nos via B4 Relay wrote:
-> > From: T=C3=B3th J=C3=A1nos <gomba007@gmail.com>
-> >=20
-> > Add documentation for the DFRobot SEN0322 oxygen sensor.
-> >=20
-> > Signed-off-by: T=C3=B3th J=C3=A1nos <gomba007@gmail.com> =20
->=20
-> Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
->=20
-> Best regards,
-> Krzysztof
->=20
-Hmm. This is fine I guess, but I'm never sure how pretty much anything
-justifies being in trivial-devices.yaml given they should all be full bindi=
-ngs
-and almost anything requires a power supply :)
+Since this file was moved in the previous patch, should we drop "fpga:" from the
+subject of this patch?
 
-Maybe we should let there be a few standard supplies for the devices
-in there in the same way a single interrupt is allowed?
+>  1 file changed, 35 insertions(+)
+> 
+> diff --git a/include/linux/adi-axi-common.h b/include/linux/adi-axi-common.h
+> index 141ac3f251e6f256526812b9d55cd440a2a46e76..a832ef9b37473ca339a2a2ff8a4a5716d428fd29 100644
+> --- a/include/linux/adi-axi-common.h
+> +++ b/include/linux/adi-axi-common.h
+> @@ -12,6 +12,8 @@
+>  #define ADI_AXI_COMMON_H_
+>  
+>  #define ADI_AXI_REG_VERSION			0x0000
+> +#define ADI_AXI_REG_FPGA_INFO			0x001C
+> +#define ADI_AXI_REG_FPGA_VOLTAGE		0x0140
 
-J
+Doesn't the voltage register only apply to AXI CLKGEN and therefore would
+belong in the clock driver rather than here? 0x1C seems to be the last of the
+defined "common to all IP cores" address before we possibly get into
+core-specific register definitions starting at 0x40.
+
+I guess there are 1 or 2 other cores that define it at the same place, but it
+still seems not-global.
+
+>  
+>  #define ADI_AXI_PCORE_VER(major, minor, patch)	\
+>  	(((major) << 16) | ((minor) << 8) | (patch))
+> @@ -20,4 +22,37 @@
+>  #define ADI_AXI_PCORE_VER_MINOR(version)	(((version) >> 8) & 0xff)
+>  #define ADI_AXI_PCORE_VER_PATCH(version)	((version) & 0xff)
+>  
+> +#define ADI_AXI_INFO_FPGA_TECH(info)            (((info) >> 24) & 0xff)
+> +#define ADI_AXI_INFO_FPGA_FAMILY(info)          (((info) >> 16) & 0xff)
+> +#define ADI_AXI_INFO_FPGA_SPEED_GRADE(info)     (((info) >> 8) & 0xff)
+
+I guess we don't care about the DEV_PACKAGE field?
+
+> +#define ADI_AXI_INFO_FPGA_VOLTAGE(val)          ((val) & 0xffff)
+
+This VOLTAGE also goes applies to the first comment.
 
 

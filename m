@@ -1,65 +1,57 @@
-Return-Path: <linux-iio+bounces-19105-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19110-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD20DAA9744
-	for <lists+linux-iio@lfdr.de>; Mon,  5 May 2025 17:20:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBBE7AA975E
+	for <lists+linux-iio@lfdr.de>; Mon,  5 May 2025 17:23:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5EFFC7A6A1B
-	for <lists+linux-iio@lfdr.de>; Mon,  5 May 2025 15:18:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 313D4189EDC4
+	for <lists+linux-iio@lfdr.de>; Mon,  5 May 2025 15:22:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B70B925DCF0;
-	Mon,  5 May 2025 15:16:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56020266F1D;
+	Mon,  5 May 2025 15:19:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D/4y6Wt6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X98v0qVg"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 722D725DD01;
-	Mon,  5 May 2025 15:16:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14D7325DAF3
+	for <linux-iio@vger.kernel.org>; Mon,  5 May 2025 15:19:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746458212; cv=none; b=l5uH7cAewGZnIBEP3dZoEqDAnDvwhqdIYMtr1KYR7Dfly+xNde5aklV5DFUzvNGuhYWyjvAiOiQdHNMmPFT0eb9BFnQmEIkJg1B0IOLEm3tUak9rO9Wl+uji7ihVNs5hTWVVLD6J1qCQv3/KuL4IFLEh5eQ7MecZ0BAGZRvQhIk=
+	t=1746458388; cv=none; b=HPnasCiJnA3tnAoCRLVq2EQilbuXkcWuF1m+7cjQtF4GlkT5bSIhMhFEawKbxv2g3CBqQRD8DxIT7Kjb+NUwjPWyZWipLJ6uRzix4G9jT5IeuKq2neUoZut1Er6ND8vGsc/TvzjDxXep7yzcgGzbYHulmOFLlaRuigZCwk3obcA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746458212; c=relaxed/simple;
-	bh=6x3lekKTFSPzx8ESHrUQ2eoOKoI6fl0LkpCkCYPxYoI=;
+	s=arc-20240116; t=1746458388; c=relaxed/simple;
+	bh=PIJAMIlzuVEx8Oy/GVQ/PFolgX40DZqYqCEV38Xiktc=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Vm7uMK3X8ojDXAXFIMxay0Lzkh2mOYcVygvy3QdhZ8Q5uOor6G3RnBr6LERLwsz/+64VEm0BYONHDQZ68lW3TvlSK2Pbx9PshGWsxYaL+TbV01a/BCnPzH5MHJBLP2cZinEe8wea9ZOIkfIohV5pf+fg6NUTEJNXoXaltSSAfBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D/4y6Wt6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DE02C4CEE4;
-	Mon,  5 May 2025 15:16:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=NPdaJc+Q3lOWg7cPeF9cUdbNivMHQrF7a1eTWMDOLVZeBYEvjzWjEVf3/+QZfvexu0NnSKxpxJ8RAT48OeTAiZJei3JjxMp8GKraH9FB7+z1M0V5kPPHOwzcyriX7Fq7yst4/bicJqK2RX2noJcWfeXTI9n/UvKDVIFYV7nLoGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X98v0qVg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACD1FC4CEE4;
+	Mon,  5 May 2025 15:19:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746458211;
-	bh=6x3lekKTFSPzx8ESHrUQ2eoOKoI6fl0LkpCkCYPxYoI=;
+	s=k20201202; t=1746458386;
+	bh=PIJAMIlzuVEx8Oy/GVQ/PFolgX40DZqYqCEV38Xiktc=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=D/4y6Wt6d5qDhvjgoQLNKP+g2gJDnZW7tMVOOE3cgWnYpDn/jT9Lm6ZreZtaFs6sM
-	 WQxTfYESl2L4Gygdn25AtPQ9ou4cTgVvAZ1BcDhbnvsnmpSB1D1FV5GBj26F5o91pS
-	 UC1YD45VdPMhNghFb7Y3ZvpHR8q4+lJ8a0ztZkkUayBY9Zj/JjQoWRfNGCa8/HGaKQ
-	 DH5qgZ2uvvn0araso6xTI6acj3KTRlV2JVIpDVCRnEXm8FpfVYjS1fIGpzmhAaE8sp
-	 YHFGFsk2qrilxsqSfhoOBzGgeq1u5Ewoap/K7QmzGtrGzGkLAqAuoC6dkW+9DY8344
-	 klXCALCoYS7Mg==
-Date: Mon, 5 May 2025 16:16:45 +0100
+	b=X98v0qVgkLm1h+JFgjZFREsZ2qsn5C15tp1i3I0AP14bzdarexkYBA3if5wom4ZA4
+	 SzygcJZJ5o5XDklrdzfftGl72PbYATfiKm5J9LxxNwblCLbmdbjJowbv+AHZKUe6ff
+	 8FKcOZ+D80HPb/LMFiMu6NoxibW+yktvgZFBTVtq4vTEd5yrHQCeMAxMgpa6UMdmTX
+	 Wk11/HPWwiWDuK2durETqyqxCb31Yu+aHnNNZtXZ65LVUkRv7DQk9khZFXZj8DjtVV
+	 Se5THeHUMYkD7xbV7KuFVuKz21xt6NftGC/nB1NZheVaaw9FQTDMG72CMLPY22QqeJ
+	 cRXnvr1Jb18vg==
+Date: Mon, 5 May 2025 16:19:39 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Fabio Estevam <festevam@gmail.com>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- mazziesaccount@gmail.com, linux-iio@vger.kernel.org, Fabio Estevam
- <festevam@denx.de>, stable@vger.kernel.org
-Subject: Re: [PATCH 1/2] iio: Fix scan mask subset check logic
-Message-ID: <20250505161645.5bca37c5@jic23-huawei>
-In-Reply-To: <CAOMZO5DeMNGqpF4T7tuvBBN=i95uReSTXkj-sNW2jZTUO++5ZA@mail.gmail.com>
-References: <20250429150213.2953747-1-festevam@gmail.com>
-	<20250429183301.326eaacf@jic23-huawei>
-	<CAOMZO5DBpF+iO4NY4-tn3ar+Ld+c=SA6W-UKN0haWmAK=4g-+g@mail.gmail.com>
-	<CAOMZO5B0nxVEW1Q-a05j8f+=waAYijvBq573Ha8DNbOgF0287w@mail.gmail.com>
-	<20250430141112.00004bb8@huawei.com>
-	<CAOMZO5CYuv94N_8ZepH04y8ez1CAmOJOq4eim=dLGmMFoStQ3g@mail.gmail.com>
-	<20250430182537.00007eab@huawei.com>
-	<CAOMZO5BCLWFJ=83r0saT=NxVP0f9G-P-2QosDNGArYAtX6v5Lw@mail.gmail.com>
-	<20250504180420.73b96437@jic23-huawei>
-	<CAOMZO5DeMNGqpF4T7tuvBBN=i95uReSTXkj-sNW2jZTUO++5ZA@mail.gmail.com>
+To: Bianca Costa =?UTF-8?B?R2FsdsOjbw==?= <biancalvao@gmail.com>
+Cc: Bianca Costa =?UTF-8?B?R2FsdsOjbw==?= <biancagalvao@usp.br>,
+ =?UTF-8?B?SsO6bGlh?= Calixto Rosa <juliacalixtorosa@usp.br>,
+ linux-iio@vger.kernel.org
+Subject: Re: [PATCH] iio: magnetometer: mmc35240: refactor volatile and
+ writeable reg functions
+Message-ID: <20250505161939.0c1b7662@jic23-huawei>
+In-Reply-To: <20250426194135.244774-1-biancalvao@gmail.com>
+References: <20250426194135.244774-1-biancalvao@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -70,112 +62,86 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, 5 May 2025 11:24:36 -0300
-Fabio Estevam <festevam@gmail.com> wrote:
+On Sat, 26 Apr 2025 16:41:32 -0300
+Bianca Costa Galv=C3=A3o <biancalvao@gmail.com> wrote:
 
-> Hi Jonathan,
+> From: Bianca Costa Galv=C3=A3o <biancagalvao@usp.br>
 >=20
-> On Sun, May 4, 2025 at 2:04=E2=80=AFPM Jonathan Cameron <jic23@kernel.org=
-> wrote:
+> Refactor 'mmc35240_is_volatile_reg' and 'mmc35240_is_writeable_reg' as th=
+ey
+> share similar logic, returning the inverse of each other.
 >=20
-> > Ah. I was wrong for last two channels above. The scan masks for single =
-channel for
-> > differential channels also index a bunch we aren't using in this device.
-> > =20
-> > > +       MAX1363_CHAN_B(0, 1, d0m1, 12, bits, ev_spec, num_ev_spec),  =
-   \
-> > > +       MAX1363_CHAN_B(2, 3, d2m3, 13, bits, ev_spec, num_ev_spec),  =
-   \ =20
-> > //gap here as we aren't using 4,5  6,7 8,9, 10,11
-> > =20
-> > > +       MAX1363_CHAN_B(1, 0, d1m0, 14, bits, ev_spec, num_ev_spec),  =
-   \ =20
-> > Should be 18
-> > https://elixir.bootlin.com/linux/v6.14.5/source/drivers/iio/adc/max1363=
-.c#L262 =20
-> > > +       MAX1363_CHAN_B(3, 2, d3m2, 15, bits, ev_spec, num_ev_spec),  =
-   \ =20
-> > and 19 I believe. =20
+> Introduce a new helper function 'mmc35240_reg_check' to generalize this
+> behavior, which is then used by both 'mmc35240_is_volatile_reg' and
+> 'mmc35240_is_writeable_reg'.
 >=20
-> This works fine for me, thanks:
->=20
-> --- a/drivers/iio/adc/max1363.c
-> +++ b/drivers/iio/adc/max1363.c
-> @@ -504,10 +504,10 @@ static const struct iio_event_spec max1363_events[]=
- =3D {
->         MAX1363_CHAN_U(1, _s1, 1, bits, ev_spec, num_ev_spec),          \
->         MAX1363_CHAN_U(2, _s2, 2, bits, ev_spec, num_ev_spec),          \
->         MAX1363_CHAN_U(3, _s3, 3, bits, ev_spec, num_ev_spec),          \
-> -       MAX1363_CHAN_B(0, 1, d0m1, 4, bits, ev_spec, num_ev_spec),      \
-> -       MAX1363_CHAN_B(2, 3, d2m3, 5, bits, ev_spec, num_ev_spec),      \
-> -       MAX1363_CHAN_B(1, 0, d1m0, 6, bits, ev_spec, num_ev_spec),      \
-> -       MAX1363_CHAN_B(3, 2, d3m2, 7, bits, ev_spec, num_ev_spec),      \
-> +       MAX1363_CHAN_B(0, 1, d0m1, 12, bits, ev_spec, num_ev_spec),     \
-> +       MAX1363_CHAN_B(2, 3, d2m3, 13, bits, ev_spec, num_ev_spec),     \
-> +       MAX1363_CHAN_B(1, 0, d1m0, 18, bits, ev_spec, num_ev_spec),     \
-> +       MAX1363_CHAN_B(3, 2, d3m2, 19, bits, ev_spec, num_ev_spec),     \
->         IIO_CHAN_SOFT_TIMESTAMP(8)                                      \
->         }
->=20
-> > Maybe we can simplify this and make it less error prone. These scan ind=
-ices
-> > are always the same as the enum max1363_mode entries in the 2nd or 3rd =
-parameter.
-> > We can just reuse those I think.  Only the single channel ones apply he=
-re
-> > but those are the first set of entries in that enum.
-> >
-> > Bonus points for just dropping the parameter and using the existing addr
-> > parameter for the macro as si as well.
-> >
-> > That is:
-> > #define MAX1363_CHAN_U(num, addr, bits, ev_spec, num_ev_spec)   \
-> >         {                                                              =
- \
-> >                 .type =3D IIO_VOLTAGE,                                 =
-   \
-> >                 .indexed =3D 1,                                        =
-   \
-> >                 .channel =3D num,                                      =
-   \
-> >                 .address =3D addr,                                     =
-   \
-> >                 .info_mask_separate =3D BIT(IIO_CHAN_INFO_RAW),        =
-   \
-> >                 .info_mask_shared_by_type =3D BIT(IIO_CHAN_INFO_SCALE),=
-   \
-> >                 .datasheet_name =3D "AIN"#num,                         =
-   \
-> >                 .scan_type =3D {                                       =
-   \
-> >                         .sign =3D 'u',                                 =
-   \
-> >                         .realbits =3D bits,                            =
-   \
-> >                         .storagebits =3D (bits > 8) ? 16 : 8,          =
-   \
-> >                         .endianness =3D IIO_BE,                        =
-   \
-> >                 },                                                     =
- \
-> >                 .scan_index =3D (addr),                                =
-   \
-> > The above changed from si to addr =20
->=20
-> I tried this change on top of the previous one, and it still works.
->=20
-> How do you think we should proceed? Can you please submit formal patches?
-That would be perfect! If you can do it by modifying the macro as that is
-going to be the simplest path to ensure there are no others even better.
+> Signed-off-by: Bianca Costa Galv=C3=A3o <biancagalvao@usp.br>
+> Co-developed-by: J=C3=BAlia Calixto Rosa <juliacalixtorosa@usp.br>
+> Signed-off-by: J=C3=BAlia Calixto Rosa <juliacalixtorosa@usp.br>
+Hi Bianca, J=C3=BAlia
+
+The patch is mostly fine but I think the naming as
+_reg_check() is not helpful as it doesn't indicate anything specific
+is being checked.  I think ti would be cleaner to leave _is_writeable_reg()=
+ alone
+and them make the implementation of _is_volatile_reg()
+
+	return !mmc35240_is_writeable_reg(dev, reg);
+
+Which will effectively document that all non writeable registers are volati=
+le.
 
 Jonathan
 
+> ---
+>  drivers/iio/magnetometer/mmc35240.c | 21 +++++++--------------
+>  1 file changed, 7 insertions(+), 14 deletions(-)
 >=20
-> You can add:
->=20
-> Reported-by: Fabio Estevam <festevam@denx.de>
-> Tested-by: Fabio Estevam <festevam@denx.de>
->=20
-> Thanks
+> diff --git a/drivers/iio/magnetometer/mmc35240.c b/drivers/iio/magnetomet=
+er/mmc35240.c
+> index e08a57cd6de2..07f58567e521 100644
+> --- a/drivers/iio/magnetometer/mmc35240.c
+> +++ b/drivers/iio/magnetometer/mmc35240.c
+> @@ -418,15 +418,14 @@ static const struct iio_info mmc35240_info =3D {
+>  	.attrs		=3D &mmc35240_attribute_group,
+>  };
+> =20
+> +static bool mmc35240_reg_check(unsigned int reg)
+> +{
+> +	return reg =3D=3D MMC35240_REG_CTRL0 || reg =3D=3D MMC35240_REG_CTRL1;
+> +}
+> +
+>  static bool mmc35240_is_writeable_reg(struct device *dev, unsigned int r=
+eg)
+>  {
+> -	switch (reg) {
+> -	case MMC35240_REG_CTRL0:
+> -	case MMC35240_REG_CTRL1:
+> -		return true;
+> -	default:
+> -		return false;
+> -	}
+> +	return mmc35240_reg_check(reg);
+>  }
+> =20
+>  static bool mmc35240_is_readable_reg(struct device *dev, unsigned int re=
+g)
+> @@ -448,13 +447,7 @@ static bool mmc35240_is_readable_reg(struct device *=
+dev, unsigned int reg)
+> =20
+>  static bool mmc35240_is_volatile_reg(struct device *dev, unsigned int re=
+g)
+>  {
+> -	switch (reg) {
+> -	case MMC35240_REG_CTRL0:
+> -	case MMC35240_REG_CTRL1:
+> -		return false;
+> -	default:
+> -		return true;
+> -	}
+> +	return !mmc35240_reg_check(reg);
+>  }
+> =20
+>  static const struct reg_default mmc35240_reg_defaults[] =3D {
 
 

@@ -1,145 +1,239 @@
-Return-Path: <linux-iio+bounces-19146-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19147-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46F0AAA9B86
-	for <lists+linux-iio@lfdr.de>; Mon,  5 May 2025 20:28:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 407DAAA9B90
+	for <lists+linux-iio@lfdr.de>; Mon,  5 May 2025 20:30:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 766FE3ADA60
-	for <lists+linux-iio@lfdr.de>; Mon,  5 May 2025 18:28:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7747F3AEEE8
+	for <lists+linux-iio@lfdr.de>; Mon,  5 May 2025 18:30:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3418826AAB2;
-	Mon,  5 May 2025 18:28:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9563026C381;
+	Mon,  5 May 2025 18:30:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="noM2h7P0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N8cBZH+2"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oi1-f180.google.com (mail-oi1-f180.google.com [209.85.167.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDD0734CF5
-	for <linux-iio@vger.kernel.org>; Mon,  5 May 2025 18:28:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3834522087;
+	Mon,  5 May 2025 18:30:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746469731; cv=none; b=D3CfQdBbX8Fh/hltdf6UbClrAdYR+lRBylAbYA7x8YCwl3QgrWK+wqd7sBfFWy5JDpSbb2QmujP48+y71X52raAdOmEfosuESYm7dMQq6/xJlIqFao/0AU/E+E1Pa7CMDK8ZzwWZddeqfDcyPgStaoPxedGuec2W8GqvRl2H27w=
+	t=1746469814; cv=none; b=Uly7CJCAhSxEH1vILS4IaYwrOvKhndnXdIELOaGTq2Wu0BnXTPIa2R+iAWCZ+yUH8+bTIPGSpAQmcu0Lmw6n/Qpnv33/Kga3/smnfwL6LWrjbq2NkYpFumza5X+oCpVk0UTFXSUjaV2xJbivQsWhUBCeanigI8d7YV7LYn/AkpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746469731; c=relaxed/simple;
-	bh=QDVwmpo9ktX2KMymt0KJritJpgsaBmg5HTydROKeb/E=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=gbfcu/JG3OPYvCL8AB+UqDoROqIt9atQGdyR0z5uBbcRR0ZdaSMf/A0RicwAPotqYGfclFwp0RKgNxL61nclXVMOyELyOMJyHsU34a8SpBxoHyKOrFjGBMSNlxDNcN7TNiLDsCLtW3PIDC5HlyFnAE5SadiOqWocs29ZmR9dWhk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=noM2h7P0; arc=none smtp.client-ip=209.85.167.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oi1-f180.google.com with SMTP id 5614622812f47-400fa6eafa9so3563639b6e.1
-        for <linux-iio@vger.kernel.org>; Mon, 05 May 2025 11:28:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1746469729; x=1747074529; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=jvnUSg83TE3jOG9sJI46HHnpfCdZ+Y8pGrpMisK7bfM=;
-        b=noM2h7P0LQthhhvlDbqWYgJsWiHvksN6I2GDMC0bxCgfEd5EeR88iilVLsYn+/F9pn
-         9q0Bq2CwaMS0pb2UiLRyuiCSyjRtqYT8EZW6roPN3UV5kY32cjqf08P7PzC5ZYdGFOvd
-         g2Y9FBVtKBZA6gHKq9Llu/1NF9RMHZCqhGI3xXEhrSzl3QsGKDEAkemcwhx/zMkLmKCC
-         8/lWOoUwoNVgjRoaTkd+E6H6+QpQSHjj5KB/hRRclk1c0pqoWW3XZ02ogdtFl9z445sU
-         VETzSFSzEv5YqRmZHcJvFT9gBv8FMuj4rvrI8x3gqvrlvbME3sHDd/Jp2OpKU9L0ZwEO
-         UEAw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746469729; x=1747074529;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=jvnUSg83TE3jOG9sJI46HHnpfCdZ+Y8pGrpMisK7bfM=;
-        b=QQDfwj2aImFG3k5ne06TYedbpeq7d0tn1HfqX4coxsAEZutp0nneUyFFqBqQR8IyYB
-         qombHhPi4lZ1AJu1YZRStkQvwDlOuJttSnKv+lOAEcGOj8ufAZNok82o25sLw2LAh1eR
-         Q+bqv25Rb6kQe3RU5A3TLMrpnlmrlHmorTUTywOMp1F1ywLECkQk71JST9laWsCGs4hh
-         9/STOHgaeO/ozBsSWq2T8w98LNIL5ELvBJNC5z11LX7O8u1CKFgyRQtzU4VGkfn2dAzh
-         MXgjif91n/9mYNdHhJREvpFb3Ly8tPOvyeMW4yNejRHe5Djtfkgm0G5XZ0z+XDThbkUF
-         Av0w==
-X-Forwarded-Encrypted: i=1; AJvYcCUkGjXqHx8f25pWLXb01ExxgCM9/qg5ULHTkx0B7OalVxlZYdUrqq2ZAyPR7UsWmeBdoq/5Q7OxQzI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywm0wZXNr4ozEeWJhb3e/48mgQOmr71vJ+iDCAyf4lrpfJX6xTd
-	UGNLinLh1oiDdoQ9qZyg2oxtogT6u6gR9fOR7Kl2gggX+wuCbFjlj9Vq3eVutOI=
-X-Gm-Gg: ASbGncuOfTfJuINHjaVOrT4GBAwg8vanW9vE2yDXdR5aIs3K7GLihOoAhCU6b+ygGZY
-	Wv2+tYO1t24mcGbz2WNs5/nBTU89aR8OmtcRYzUIYcH9urfL+iua/vYeroEGVi6P7t/J2RsLyVZ
-	2V0ubhnMgLgePou4KPPiV+bTaYe1oombbzqYRuDiNdoZrKN+2AfPiDD0wtxCGaW2uQnTrDB+yeM
-	oz891j/1Aw8hMMPKvoX/a1IcFpyqmPV7KZMa+O5OeDGvfasl4h0seefX9VxlvSeUEFzW+Jm0jRJ
-	nIC4aIfqjuOXvGaG2etXtDx+T2OESXPw8M3rJNYlASv3Vw==
-X-Google-Smtp-Source: AGHT+IEX21eYhQjrrdyKu2y/FFUXmYeQXwqbJB/KdSUZRflFNpvmVDNc6veX6nZcdvi0YJLdfLxgPg==
-X-Received: by 2002:a05:6808:2007:b0:403:5277:9424 with SMTP id 5614622812f47-403527794b8mr6511893b6e.32.1746469728780;
-        Mon, 05 May 2025 11:28:48 -0700 (PDT)
-Received: from [127.0.1.1] ([2600:8803:e7e4:1d00:2151:6806:9b7:545d])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-4033dc828a3sm2050781b6e.41.2025.05.05.11.28.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 May 2025 11:28:48 -0700 (PDT)
-From: David Lechner <dlechner@baylibre.com>
-Date: Mon, 05 May 2025 13:28:40 -0500
-Subject: [PATCH] iio: adc: ad7944: max high bits on direct read
+	s=arc-20240116; t=1746469814; c=relaxed/simple;
+	bh=OiLVPZCoeejwWN1jL9K41mNLLGiUljL3GcilhESEOU0=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=J06nCWURo1MN6MeMvd0NbCOuXj1TYXhVjlttsCBuPT9dkmJ+jx+TtdffIQ6hy5qpdn+STi7chiwDjvsMpLdUPhcgAL050rBVdmJmxMhE1grlnFnivfPy7ClpJePswZikkwRBKSsvPnawyfvNqmUjGBTNwmZwcZ7suYpYi3ygzNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N8cBZH+2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED726C4CEE4;
+	Mon,  5 May 2025 18:30:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1746469813;
+	bh=OiLVPZCoeejwWN1jL9K41mNLLGiUljL3GcilhESEOU0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=N8cBZH+27ciqDvOHNblhwoCAWao1ZtIMNm0D8rWXJkodPwlOYpF66dJztLWqctY9m
+	 HjJRoBjLOJ+GbJOruJm+JdPwapHfm/6yBhH/F3wwxa1WJ5PuA1qKZDuh5iiXkPy48u
+	 14N+ZCQywaERZvxzvGFpEOuB63MsswOWj5dt7Lf50xuoMmXRR3z6dlbi6yZmQLHLMK
+	 xEnhOj2/IBeOy/+5YIvhX3eHlHw0rpXAum0o+jEmiNN9ESgyox2GcDSAAvfT/zxMXF
+	 wsA1lGxTIlVeQ8p8hCofM2ciAGCF6oVohad9JKCLQ6nJPGYWxkwBPKEbQeVicerTut
+	 WbAaZQ33NoxIg==
+Date: Mon, 5 May 2025 19:30:01 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Nuno =?UTF-8?B?U8Oh?= via B4 Relay
+ <devnull+nuno.sa.analog.com@kernel.org>
+Cc: nuno.sa@analog.com, linux-clk@vger.kernel.org,
+ linux-fpga@vger.kernel.org, dmaengine@vger.kernel.org,
+ linux-hwmon@vger.kernel.org, linux-iio@vger.kernel.org,
+ linux-pwm@vger.kernel.org, linux-spi@vger.kernel.org, Stephen Boyd
+ <sboyd@kernel.org>, Michael Turquette <mturquette@baylibre.com>, Moritz
+ Fischer <mdf@kernel.org>, Wu Hao <hao.wu@intel.com>, Xu Yilun
+ <yilun.xu@intel.com>, Tom Rix <trix@redhat.com>, Vinod Koul
+ <vkoul@kernel.org>, Jean Delvare <jdelvare@suse.com>, Guenter Roeck
+ <linux@roeck-us.net>, Michael Hennerich <Michael.Hennerich@analog.com>,
+ Trevor Gamblin <tgamblin@baylibre.com>, Uwe =?UTF-8?B?S2xlaW5lLUvDtm5p?=
+ =?UTF-8?B?Zw==?= <ukleinek@kernel.org>, David Lechner
+ <dlechner@baylibre.com>, Mark Brown <broonie@kernel.org>, Mike Turquette
+ <mturquette@linaro.org>, Xu Yilun <yilun.xu@linux.intel.com>
+Subject: Re: [PATCH v4 3/7] include: linux: move adi-axi-common.h out of
+ fpga
+Message-ID: <20250505193001.1183e7cc@jic23-huawei>
+In-Reply-To: <20250505-dev-axi-clkgen-limits-v4-3-3ad5124e19e1@analog.com>
+References: <20250505-dev-axi-clkgen-limits-v4-0-3ad5124e19e1@analog.com>
+	<20250505-dev-axi-clkgen-limits-v4-3-3ad5124e19e1@analog.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250505-iio-adc-ad7944-max-high-bits-on-direct-read-v1-1-b173facceefe@baylibre.com>
-X-B4-Tracking: v=1; b=H4sIAFcDGWgC/x2NQQqDMBBFryKz7kCaKGqvUrqImamZRZMyERHEu
- 3coj794m/9OaKzCDR7dCcq7NKnF5H7rIOVYVkYhc/DOD85AkYqRkm2c+x4/8cAsa8ZFtoa1IIl
- y2lA5Ei5hmPw0kwthBHv8Kr/l+Neer+v6AeJlOe19AAAA
-X-Change-ID: 20250505-iio-adc-ad7944-max-high-bits-on-direct-read-b358289d0337
-To: Michael Hennerich <Michael.Hennerich@analog.com>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Jonathan Cameron <jic23@kernel.org>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- David Lechner <dlechner@baylibre.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1404; i=dlechner@baylibre.com;
- h=from:subject:message-id; bh=QDVwmpo9ktX2KMymt0KJritJpgsaBmg5HTydROKeb/E=;
- b=owEBbQGS/pANAwAKAcLMIAH/AY/AAcsmYgBoGQNZzpqaeOKzms9+hlqWPEByob1PPVfP1g5Z/
- 38U5o3mCtCJATMEAAEKAB0WIQTsGNmeYg6D1pzYaJjCzCAB/wGPwAUCaBkDWQAKCRDCzCAB/wGP
- wLuAB/9ES6esxBezGlbH1E1DLvl2QMYuAeLjVWGuA4g74MV6UXoxgjk3mO56r/I0xXQj6ohC0EW
- rCFEsMKkBNR16ocPAUQgK+PuMxG7tpTOjiHag3TT+X6fKdob5tQiTmOrYcr06LOeaZgqYZOJmAV
- 0UvxIGv7iiteMIw9Rps6ve5/O4/qbV8siUVd1Sxx+789BVqVUZoZWUY+ijTRYkzCc5VwI6ytBCK
- G8VRK+W+R4o+RfaEFdCAYKphVvHV7d1if2ZEzQGbF+zsUIY+Ybzxbb8vIb5lBkNOo2ZhnBrsJNp
- pxgNmbxGb5CohCGXQOr1yLwgBun9EtaAeurniWiAV0IvXBwD
-X-Developer-Key: i=dlechner@baylibre.com; a=openpgp;
- fpr=8A73D82A6A1F509907F373881F8AF88C82F77C03
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-Apply a mask to the raw value received over the SPI bus for unsigned
-direct reads. As we found recently, SPI controllers may not set unused
-bits to 0 when reading with bits_per_word != {8,16,32}. The ad7944 uses
-bits_per_word of 14 and 18, so we need to mask the value to be sure we
-returning the correct value to userspace during a direct read.
+On Mon, 05 May 2025 17:41:34 +0100
+Nuno S=C3=A1 via B4 Relay <devnull+nuno.sa.analog.com@kernel.org> wrote:
 
-Fixes: d1efcf8871db ("iio: adc: ad7944: add driver for AD7944/AD7985/AD7986")
-Signed-off-by: David Lechner <dlechner@baylibre.com>
----
-The sign_extend32() already takes care of signed reads in case that
-isn't obvious - it overwrites the unknown bits with the sign bit.
----
- drivers/iio/adc/ad7944.c | 2 ++
- 1 file changed, 2 insertions(+)
+> From: Nuno S=C3=A1 <nuno.sa@analog.com>
+>=20
+> The adi-axi-common.h header has some common defines used in various ADI
+> IPs. However they are not specific for any fpga manager so it's
+> questionable for the header to live under include/linux/fpga. Hence
+> let's just move one directory up and update all users.
+>=20
+> Suggested-by: Xu Yilun <yilun.xu@linux.intel.com>
+> Signed-off-by: Nuno S=C3=A1 <nuno.sa@analog.com>
 
-diff --git a/drivers/iio/adc/ad7944.c b/drivers/iio/adc/ad7944.c
-index 2f949fe5587318957f2e423029294ced0a6f803d..37a137bd83571b055e970a8cd483d8726972d637 100644
---- a/drivers/iio/adc/ad7944.c
-+++ b/drivers/iio/adc/ad7944.c
-@@ -377,6 +377,8 @@ static int ad7944_single_conversion(struct ad7944_adc *adc,
- 
- 	if (chan->scan_type.sign == 's')
- 		*val = sign_extend32(*val, chan->scan_type.realbits - 1);
-+	else
-+		*val &= GENMASK(chan->scan_type.realbits - 1, 0);
- 
- 	return IIO_VAL_INT;
- }
+Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com> # for IIO
 
----
-base-commit: b72f1157bfb9b92b0439e11469f7f94e47363460
-change-id: 20250505-iio-adc-ad7944-max-high-bits-on-direct-read-b358289d0337
-
-Best regards,
--- 
-David Lechner <dlechner@baylibre.com>
+> ---
+>  drivers/clk/clk-axi-clkgen.c              | 2 ++
+>  drivers/dma/dma-axi-dmac.c                | 2 +-
+>  drivers/hwmon/axi-fan-control.c           | 2 +-
+>  drivers/iio/adc/adi-axi-adc.c             | 3 +--
+>  drivers/iio/dac/adi-axi-dac.c             | 2 +-
+>  drivers/pwm/pwm-axi-pwmgen.c              | 2 +-
+>  drivers/spi/spi-axi-spi-engine.c          | 2 +-
+>  include/linux/{fpga =3D> }/adi-axi-common.h | 0
+>  8 files changed, 8 insertions(+), 7 deletions(-)
+>=20
+> diff --git a/drivers/clk/clk-axi-clkgen.c b/drivers/clk/clk-axi-clkgen.c
+> index 2a95f9b220234a1245024a821c50e1eb9c104ac9..31915f8f5565f2ef5d17c0b4a=
+0c91a648005b3e6 100644
+> --- a/drivers/clk/clk-axi-clkgen.c
+> +++ b/drivers/clk/clk-axi-clkgen.c
+> @@ -16,6 +16,8 @@
+>  #include <linux/mod_devicetable.h>
+>  #include <linux/err.h>
+> =20
+> +#include <linux/adi-axi-common.h>
+> +
+>  #define AXI_CLKGEN_V2_REG_RESET		0x40
+>  #define AXI_CLKGEN_V2_REG_CLKSEL	0x44
+>  #define AXI_CLKGEN_V2_REG_DRP_CNTRL	0x70
+> diff --git a/drivers/dma/dma-axi-dmac.c b/drivers/dma/dma-axi-dmac.c
+> index 36943b0c6d603cbe38606b0d7bde02535f529a9a..5b06b0dc67ee12017c165bf81=
+5fb7c0e1bf5abd8 100644
+> --- a/drivers/dma/dma-axi-dmac.c
+> +++ b/drivers/dma/dma-axi-dmac.c
+> @@ -6,6 +6,7 @@
+>   *  Author: Lars-Peter Clausen <lars@metafoo.de>
+>   */
+> =20
+> +#include <linux/adi-axi-common.h>
+>  #include <linux/bitfield.h>
+>  #include <linux/clk.h>
+>  #include <linux/device.h>
+> @@ -22,7 +23,6 @@
+>  #include <linux/platform_device.h>
+>  #include <linux/regmap.h>
+>  #include <linux/slab.h>
+> -#include <linux/fpga/adi-axi-common.h>
+> =20
+>  #include <dt-bindings/dma/axi-dmac.h>
+> =20
+> diff --git a/drivers/hwmon/axi-fan-control.c b/drivers/hwmon/axi-fan-cont=
+rol.c
+> index 35c862eb158b0909dac64c2e9f51f0f9f0e8bf72..b7bb325c3ad966ed2a93be4df=
+bf4e20661568509 100644
+> --- a/drivers/hwmon/axi-fan-control.c
+> +++ b/drivers/hwmon/axi-fan-control.c
+> @@ -4,9 +4,9 @@
+>   *
+>   * Copyright 2019 Analog Devices Inc.
+>   */
+> +#include <linux/adi-axi-common.h>
+>  #include <linux/bits.h>
+>  #include <linux/clk.h>
+> -#include <linux/fpga/adi-axi-common.h>
+>  #include <linux/hwmon.h>
+>  #include <linux/hwmon-sysfs.h>
+>  #include <linux/interrupt.h>
+> diff --git a/drivers/iio/adc/adi-axi-adc.c b/drivers/iio/adc/adi-axi-adc.c
+> index c7357601f0f869e57636f00bb1e26c059c3ab15c..87fa18f1ec96782556bdfad08=
+bedb5e7549fb93d 100644
+> --- a/drivers/iio/adc/adi-axi-adc.c
+> +++ b/drivers/iio/adc/adi-axi-adc.c
+> @@ -6,6 +6,7 @@
+>   * Copyright 2012-2020 Analog Devices Inc.
+>   */
+> =20
+> +#include <linux/adi-axi-common.h>
+>  #include <linux/bitfield.h>
+>  #include <linux/cleanup.h>
+>  #include <linux/clk.h>
+> @@ -20,8 +21,6 @@
+>  #include <linux/regmap.h>
+>  #include <linux/slab.h>
+> =20
+> -#include <linux/fpga/adi-axi-common.h>
+> -
+>  #include <linux/iio/backend.h>
+>  #include <linux/iio/buffer-dmaengine.h>
+>  #include <linux/iio/buffer.h>
+> diff --git a/drivers/iio/dac/adi-axi-dac.c b/drivers/iio/dac/adi-axi-dac.c
+> index b143f7ed6847277aeb49094627d90e5d95eed71c..581a2fe55a7fb35f1a03f96f3=
+a0e95421d1583e7 100644
+> --- a/drivers/iio/dac/adi-axi-dac.c
+> +++ b/drivers/iio/dac/adi-axi-dac.c
+> @@ -5,6 +5,7 @@
+>   *
+>   * Copyright 2016-2024 Analog Devices Inc.
+>   */
+> +#include <linux/adi-axi-common.h>
+>  #include <linux/bitfield.h>
+>  #include <linux/bits.h>
+>  #include <linux/cleanup.h>
+> @@ -23,7 +24,6 @@
+>  #include <linux/regmap.h>
+>  #include <linux/units.h>
+> =20
+> -#include <linux/fpga/adi-axi-common.h>
+>  #include <linux/iio/backend.h>
+>  #include <linux/iio/buffer-dmaengine.h>
+>  #include <linux/iio/buffer.h>
+> diff --git a/drivers/pwm/pwm-axi-pwmgen.c b/drivers/pwm/pwm-axi-pwmgen.c
+> index 4259a0db9ff45808eecae28680473292d165d1f6..e720191e74558d15f1b04fa18=
+cf2984299f88809 100644
+> --- a/drivers/pwm/pwm-axi-pwmgen.c
+> +++ b/drivers/pwm/pwm-axi-pwmgen.c
+> @@ -18,10 +18,10 @@
+>   * - Supports normal polarity. Does not support changing polarity.
+>   * - On disable, the PWM output becomes low (inactive).
+>   */
+> +#include <linux/adi-axi-common.h>
+>  #include <linux/bits.h>
+>  #include <linux/clk.h>
+>  #include <linux/err.h>
+> -#include <linux/fpga/adi-axi-common.h>
+>  #include <linux/io.h>
+>  #include <linux/minmax.h>
+>  #include <linux/module.h>
+> diff --git a/drivers/spi/spi-axi-spi-engine.c b/drivers/spi/spi-axi-spi-e=
+ngine.c
+> index 7c252126b33ea83fe6a6e80c6cb87499243069f5..d498132f1ff6adf20639bf4a2=
+1f1687903934bec 100644
+> --- a/drivers/spi/spi-axi-spi-engine.c
+> +++ b/drivers/spi/spi-axi-spi-engine.c
+> @@ -5,9 +5,9 @@
+>   *  Author: Lars-Peter Clausen <lars@metafoo.de>
+>   */
+> =20
+> +#include <linux/adi-axi-common.h>
+>  #include <linux/clk.h>
+>  #include <linux/completion.h>
+> -#include <linux/fpga/adi-axi-common.h>
+>  #include <linux/interrupt.h>
+>  #include <linux/io.h>
+>  #include <linux/of.h>
+> diff --git a/include/linux/fpga/adi-axi-common.h b/include/linux/adi-axi-=
+common.h
+> similarity index 100%
+> rename from include/linux/fpga/adi-axi-common.h
+> rename to include/linux/adi-axi-common.h
+>=20
 
 

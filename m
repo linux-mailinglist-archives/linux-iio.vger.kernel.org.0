@@ -1,108 +1,131 @@
-Return-Path: <linux-iio+bounces-19114-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19115-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1D5DAA97FE
-	for <lists+linux-iio@lfdr.de>; Mon,  5 May 2025 17:53:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23BA6AA9817
+	for <lists+linux-iio@lfdr.de>; Mon,  5 May 2025 17:56:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F6B0189F534
-	for <lists+linux-iio@lfdr.de>; Mon,  5 May 2025 15:52:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3AC2C7AC464
+	for <lists+linux-iio@lfdr.de>; Mon,  5 May 2025 15:55:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E2522627E5;
-	Mon,  5 May 2025 15:52:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A32B0253F2D;
+	Mon,  5 May 2025 15:56:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I3Hnfip5"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="NEWP6uQd"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f174.google.com (mail-oi1-f174.google.com [209.85.167.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C229425DD11;
-	Mon,  5 May 2025 15:52:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F99A26562A
+	for <linux-iio@vger.kernel.org>; Mon,  5 May 2025 15:56:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746460346; cv=none; b=fjtpuMOo7bp2sKJ+7NiJm31Eb3r0XkTds8cTfTzBw62lwCAWFf+aBrIwDUh/vlNVL6Tno/IR8zo4VH7RqdrOFb7R/u2aC+f6c/LhQi9TaAFmSWZ0LSNuZNWvgLE/nJmXC65go4Z7mQdyWJErXWoaBnYzAol67Vf/kawP9cz+rzg=
+	t=1746460598; cv=none; b=hx9CfTLCHPQPVFj189VqMMZ9od7gS2pEh7QNImkaElGIETPleJPGPBBjXWg7zjodI2GW4mfByqEI6APZ7CqAWTXIb6eJ40zQg6JJ+Ya60OR30E0KP+sZF8l+xzR0mOKPwZz9NqOMX+3NT/zKCEcCSdtRiT8ZaChbam8WkCt2HEY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746460346; c=relaxed/simple;
-	bh=5IswUIf2LBjErYpwD2yUDrq5eOi5NpPLhaW5rPTk5JU=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RolnHFa3YXH/r2ZY/067VVKqIj5EzW0n3lag0NAEqaDXQKh5WcRDeHZu14k2snOixcuGEioKe4FjNPolxmWqIjC7Fbg3zE1iSSRGYSEDqRWS1M98Rf8fBtL4ZqhmlpR7OJxKsgoK2VhSeLQ0DsnJS4KgS8qqaSChGlXr6kLxxgI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I3Hnfip5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65DF7C4CEE4;
-	Mon,  5 May 2025 15:52:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746460346;
-	bh=5IswUIf2LBjErYpwD2yUDrq5eOi5NpPLhaW5rPTk5JU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=I3Hnfip5QXedMCdVb1k0iQ+REupHKsuTBuBL2EXKLo1lVarIVcP9vIFwmcbg4aurn
-	 IXHmN65gVh215nLZNlt5F6CsQjZpxWzyrOQpmE/l/AIlI+ezwlxtqIChdHmoAPYXsk
-	 oX3jUUFwnc5CoKLYXdyb8IlVu2QAuhz4WuUeLfiEzw3IbxJ0LWPEclP567v/O37edL
-	 0jd6l1bWWb/nvHFNMbEPDuUUuEB6K3G09GGMXbXfjTyl5OAxf/OSKqDh0/0Esl3kBB
-	 jtiuCLnrk5q9JIePmIU57De6tAczj2uKtqIj4O8AxMSmSBa2BYId3kqG6lbT8RI2B9
-	 34jhLgD0WGTbw==
-Date: Mon, 5 May 2025 16:52:15 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: Jonathan Santos <Jonathan.Santos@analog.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-gpio@vger.kernel.org, andy@kernel.org, nuno.sa@analog.com,
- Michael.Hennerich@analog.com, marcelo.schmitt@analog.com, robh@kernel.org,
- krzk+dt@kernel.org, conor+dt@kernel.org, marcelo.schmitt1@gmail.com,
- linus.walleij@linaro.org, brgl@bgdev.pl, lgirdwood@gmail.com,
- broonie@kernel.org, jonath4nns@gmail.com, dlechner@baylibre.com, David
- Lechner <dlechner@baylire.com>
-Subject: Re: [PATCH v6 07/11] iio: adc: ad7768-1: add multiple scan types to
- support 16-bits mode
-Message-ID: <20250505165215.4dc4073b@jic23-huawei>
-In-Reply-To: <CAHp75VcUgwZWgaAX8XNrVLc8Rnn-xMAqFSKvh=+bQWNM50pyPA@mail.gmail.com>
-References: <cover.1745605382.git.Jonathan.Santos@analog.com>
-	<0a214d5dfacc3976db71af8a80f9dcf2887fe6cc.1745605382.git.Jonathan.Santos@analog.com>
-	<CAHp75VcUgwZWgaAX8XNrVLc8Rnn-xMAqFSKvh=+bQWNM50pyPA@mail.gmail.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1746460598; c=relaxed/simple;
+	bh=o1w5GqbH2vUw1oosyRDQiFpEV2fgDlpribNcMFycmt4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DgdVQzRvLLkfOAvCCc4eXE3K+KmqvC4oecQJE2y8zUxTu8Mt57zshW2SzhvjqFtAj9f8nDaZUIRUsBSohkMXyREronrjvYyMEkMbMPUY+BuDlnok/2CZOz5vRGm6reI/gYssS7hal2cb7kJcRMqFMfO/IZRiMj2ZkOwVLxJMboU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=NEWP6uQd; arc=none smtp.client-ip=209.85.167.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oi1-f174.google.com with SMTP id 5614622812f47-3feaedb4085so2707658b6e.0
+        for <linux-iio@vger.kernel.org>; Mon, 05 May 2025 08:56:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1746460595; x=1747065395; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=f52zqB4jhmTlTbA72onUhAeBKdChUe4/R3e2o3i5vGI=;
+        b=NEWP6uQdikvVO37V9gm0yT99POE0NzCqLpmDQzHkuTQY67McdBVIcbInRbTKdqHXP4
+         QX5/RM3//r5CtUMuUiNmzHOa7M9oMtC2NHhgCYRxe73FQFmlYTl93/EG6ssjZLMiSIsj
+         jnZII0zbU63uAycfHfjnODTohypZcOEBGWwBsJubXcV+IlDLrUKcAIFwSEMnKq91RudC
+         NGJdMLTuGUzjmWhR9o0bM7tMKJJr79dP8/ayyg7MMGOgwjwdoERCwqojp9Zx8vdXGH4c
+         EpluXHilsf3zzIdPjLsyoDliwghUPv4SJoxCM3/x6/U344wHkz1mSMKbOPU/g4hbw7hb
+         yaiA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746460595; x=1747065395;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=f52zqB4jhmTlTbA72onUhAeBKdChUe4/R3e2o3i5vGI=;
+        b=AcOl25p8MGTzVZd8shIZjen8IlhTGFYKO70CjflRYiigRVkpyMedbXTPQ+LYF2VGlv
+         RYzvJnyPJPJW5iECQNw0oZNP0fbY4rOGTvf/dpR+tR6y3iyQn8xz5QEprmSa1j8XidrU
+         LqJ3lbOhXlRcABWaaBU0jx06x2xZqOcRkZPjJlvoG0FFLvcPo5Gh43bvq3smWiXdG8lS
+         vx72feOdKrDBmmsBmmpApPrrbbmv2w9UHTUhRYJnhYFQkn0ohi9XRwIuggJqNf0FZDkr
+         xM4HGzhv+fK2eDxWg6ts2o2HvMTM214WDGKzlOnMiVoETDrH8NOTm0YEjEF0klJn8vzS
+         +3JQ==
+X-Gm-Message-State: AOJu0YzjPZ11774E6Z/ui9KDIsZhzzdvm6ANvINUVtEA2ryC+wyVZqI7
+	8AXpFKw+5WdkWUUT4FOSQHIqj8V20jItzarewprjIVfhX5K6YNFQmOYAbkUX3Lk=
+X-Gm-Gg: ASbGncv026WiaQr1/eP0Jgx4WTDj8eCYuHdsl4bqpnSVcK+PWlc/o2fHqHOQUqDYbqj
+	qMShWhl6WoUPMNg6CKMvleOKabTj1ZNdG/8KzTErJHp0HC401Nbhu8ioknsmZtgi0xzNiSSV3gc
+	vXXiUsUhH7CvThEJOKK+1Luqo2Xi/X1miW50+H2X/up/YBZ6QpzmNGraPGr1yjI8TpbObuPptin
+	0jWE0kkMAPgjOjlOrMnFbqZL1SNoD076XzbCLDQEaNMfLPBmnp/s7gOYNBKtDn0MssdB/v8BIS0
+	cN2FmCGn6a+i/6xsy40I+nfxHjR+ZmVZfYhe+asNxhfJl2QxKLh8ftiEnjESB+4Nm58o5svguxJ
+	k4aC+tXFXLme6RCrorQob4LHefA==
+X-Google-Smtp-Source: AGHT+IGalsB3+CjZqhUhKgX6fw5tFIDx90f4nB2VtXLZP1pPReoMIcFtM+ZlMr65WGrRjz1q0ovnQQ==
+X-Received: by 2002:a05:6808:1829:b0:3f6:a1f8:ce3 with SMTP id 5614622812f47-40353659c80mr4690857b6e.14.1746460595375;
+        Mon, 05 May 2025 08:56:35 -0700 (PDT)
+Received: from ?IPV6:2600:8803:e7e4:1d00:2151:6806:9b7:545d? ([2600:8803:e7e4:1d00:2151:6806:9b7:545d])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-4033dae726dsm1903338b6e.30.2025.05.05.08.56.32
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 05 May 2025 08:56:33 -0700 (PDT)
+Message-ID: <fce085a6-32df-41c2-b230-83c62ac6133d@baylibre.com>
+Date: Mon, 5 May 2025 10:56:32 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 01/11] dt-bindings: trigger-source: add generic GPIO
+ trigger source
+To: Jonathan Cameron <jic23@kernel.org>,
+ Jonathan Santos <Jonathan.Santos@analog.com>
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org, andy@kernel.org,
+ nuno.sa@analog.com, Michael.Hennerich@analog.com,
+ marcelo.schmitt@analog.com, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, marcelo.schmitt1@gmail.com, linus.walleij@linaro.org,
+ brgl@bgdev.pl, lgirdwood@gmail.com, broonie@kernel.org, jonath4nns@gmail.com
+References: <cover.1745605382.git.Jonathan.Santos@analog.com>
+ <f76579f8aa040125568c044c86761211a2e2f5ae.1745605382.git.Jonathan.Santos@analog.com>
+ <20250505164401.64cd3da7@jic23-huawei>
+From: David Lechner <dlechner@baylibre.com>
+Content-Language: en-US
+In-Reply-To: <20250505164401.64cd3da7@jic23-huawei>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
 
-On Mon, 28 Apr 2025 09:55:44 +0300
-Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+On 5/5/25 10:44 AM, Jonathan Cameron wrote:
+> On Sun, 27 Apr 2025 21:12:02 -0300
+> Jonathan Santos <Jonathan.Santos@analog.com> wrote:
+> 
+>> Inspired by pwm-trigger, create a new binding for using a GPIO
+>> line as a trigger source.
+>>
+>> Link: https://lore.kernel.org/linux-iio/20250207-dlech-mainline-spi-engine-offload-2-v8-3-e48a489be48c@baylibre.com/
+> 
+> David, given you did the pwm one, maybe give this a quick look.
 
-> On Mon, Apr 28, 2025 at 3:13=E2=80=AFAM Jonathan Santos
-> <Jonathan.Santos@analog.com> wrote:
-> >
-> > When the device is configured to decimation x8, only possible in the
-> > sinc5 filter, output data is reduced to 16-bits in order to support
-> > 1 MHz of sampling frequency due to clock limitation.
-> >
-> > Use multiple scan types feature to enable the driver to switch
-> > scan type in runtime, making possible to support both 24-bit and =20
->=20
-> at runtime
-> making it possible
->=20
-> > 16-bit resolution. =20
->=20
-> ...
->=20
-> > +       ret =3D spi_read(st->spi, &st->data.scan.chan,
-> > +                      BITS_TO_BYTES(scan_type->realbits));
-> >         if (ret < 0)
-> >                 goto out; =20
->=20
-> Add a TODO to convert this to use a new helper from 163ddf1fea59.
+LGTM.
 
-Mostly because I couldn't immediately track this down in any tree
-I had locally..=20
+Reviewed-by: David Lechner <dlechner@baylibre.com>
 
-https://web.git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/com=
-mit/?id=3D163ddf1fea59
+> 
+> Maybe it's worth generalising to cover all trigger sources in MAINTAINERS?
 
+Sure, I would be OK with that.
 
->=20
+> 
+> Thanks. Otherwise I obviously need a DT review before taking this and maybe the GPIO
+> element suggests Linus W or Bartosz might be other good reviewers?
+
+Linus W already replied in v5:
+
+https://lore.kernel.org/linux-iio/cover.1744325346.git.Jonathan.Santos@analog.com/T/#mb263ff61984dae4a479632dbe33c94a66659fd42
 
 

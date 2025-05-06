@@ -1,141 +1,119 @@
-Return-Path: <linux-iio+bounces-19208-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19210-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6992AACDB6
-	for <lists+linux-iio@lfdr.de>; Tue,  6 May 2025 21:04:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81C73AACDCD
+	for <lists+linux-iio@lfdr.de>; Tue,  6 May 2025 21:12:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BCC1798466D
-	for <lists+linux-iio@lfdr.de>; Tue,  6 May 2025 19:03:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9BC621C2055A
+	for <lists+linux-iio@lfdr.de>; Tue,  6 May 2025 19:12:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 390BC1C6FE7;
-	Tue,  6 May 2025 19:03:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 242A21F78F2;
+	Tue,  6 May 2025 19:12:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AUz1XBpc"
+	dkim=pass (2048-bit key) header.d=nabijaczleweli.xyz header.i=@nabijaczleweli.xyz header.b="IEEm+hjl"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from tarta.nabijaczleweli.xyz (tarta.nabijaczleweli.xyz [139.28.40.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 744CF19CC0A;
-	Tue,  6 May 2025 19:03:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F7AD4414;
+	Tue,  6 May 2025 19:12:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=139.28.40.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746558229; cv=none; b=apJ3rspSKpLotfTasQpFgS4qhG7GeR964yo7Zqe97fskxOZ2YO5Uq/YqK2sq/hBvUWdB+UI0mxWTH6nQT0lkyrmE1q9X00B3NeUqCbU5XW6N+WnYP6jXWaiZom7SkoKLL9I8Cn6yQqVfoQ6I5lbRycW8DKnWkS4l3Dfgr3R+G3E=
+	t=1746558756; cv=none; b=d4Jnvpqba6YKYIemLNMJ865G9mDlJGbhWBDEjP4oV91BwMdnH7LUWdFaqO7YBcvoQPGULzPKyIat9LT9wiK9RKKAN2j+cEuNOAbehhziuTINfsPln+t6jNvS6sI7Hrqkhv5RHgeaYUJbI2JJeVE4LHSuknnvSh1QdHm2+r2hb5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746558229; c=relaxed/simple;
-	bh=Q1Byj7KAeeQlPXBdhhBqPGFqmoaplXzgBJJcsOaiPdA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nOb/rH/LY7884+b49kK6Q2zfudpJqqO6Op1Uth8iYAZFZKLDG979iUba1BAtvCW5YASXdPFLlvCXKZtY8/SFIrBvZDQk8idK4t4pVouyl18EhmYfEvG+YjXuhTRX6lV7eSBlvotvdR6KcQWluZXJS5TY39qadGkcmGfNze1kaz8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AUz1XBpc; arc=none smtp.client-ip=209.85.222.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-7c549d9ecc6so87040385a.1;
-        Tue, 06 May 2025 12:03:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746558226; x=1747163026; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lbcd1rG8tob/mMuK+N9J6HXytcG7wJ/d0j7rgdtfF04=;
-        b=AUz1XBpchuVbR/jD3hUb73vGfeOLGiVFgruPQaoI+e576PRxEjy2bfz8gj0NJ7thVM
-         A8M7hlIrQFk2MTjySHY9lOEuxlyQIok+I+QvTbksforNP5g7Ev9Ho78Sya0BYUaqWiNj
-         ozDXTrUMbACKYEF7i2sGlIhgoR8IKUixQTy5NFRLkS8wN5xyP+nGLZ/fta1grUA6POs1
-         wCyXZDGdAmNnzgfWW1UcajFUTNvJ/maEX7QIDjUD6vVCY8o1JHrWd4f+N8Gyp1v/SE3N
-         yD5z4G5aHP1He1SiZK/ywe4OYpBUUlFA7zvDY3NiCeJ+K3QVBa9l7gZnEwQR6uNDr3Mg
-         35WQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746558226; x=1747163026;
-        h=in-reply-to:content-disposition:mime-version:references:reply-to
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=lbcd1rG8tob/mMuK+N9J6HXytcG7wJ/d0j7rgdtfF04=;
-        b=GgNUdGtLyBMdTQK8Mp0FW1wr+9a8yq56V3Ps1WxntxQPXY33uNyZYwIiX6Fs3Pf6Fi
-         DzoX5DtVei5Sx4bTnE0y/1m8xNEAiPheNSef9+iUvlm1YS1PpZQ2cOxAFvrCyxqnMfW7
-         Lf9Mv/vunzsdiseZsS03nCRa8uYjPBs+Um3A5lQXnfX1JGbmZ2+XZC+G1zQFOkoNi0Pv
-         L0vjQ0P3dkJN3gffNWLA/n+UR5OuHrJBlUxwCI0TQ1Gkev4UsAWKJcuEqCY80VfK0H/+
-         W9HC3hCS8e/bWRn9ny4h9aFXU1LF4C7GGUNKTI7dyU5MSpAVsRxHE+vSQ8WvTem7UKlW
-         hdzA==
-X-Forwarded-Encrypted: i=1; AJvYcCUHkn3KmSyDMKCOIa7glJHsQ1mXCwpKQqQA9rIzXGQqjPOnNQYxsIO3CfDdizd9OuU3lsl+qC3HxBno@vger.kernel.org, AJvYcCWb11AYjUIhQLWLjbGmRIfBJ6cAYWdK1+C6CGnZ08Xtm2rHBn1gU75Lj+LHos8IrOEJmoMDlLRj5JjB@vger.kernel.org, AJvYcCX8BBrVIt8IMzLEKaOmu3JNRroQjnBc9CJ2jkq8AaWg1/+aetEWUsi5xX7Qo1NW8m/f3VYHJb/IW7vzBw==@vger.kernel.org, AJvYcCXQk3lAH+KPwBpPDUtv8em66N1NgRkQyoEJI7989c8CL1k9LEBiguMmMBw5qTXjQEP+F4YVOBFr07ugU6L0@vger.kernel.org
-X-Gm-Message-State: AOJu0YxdNPLyapIXLiMsWWRVi7YfnFtWpBtFl/MtWTm7GCLVE7itMqr6
-	6Juu2EduHtloIAAeFyZwcbg0vEmPmUwit2MpHG8RZHypUpBwcTVd
-X-Gm-Gg: ASbGnct1mQf2EBq4hYj15XPEDYnJWSUjwNeLnGK8ExfZhFKka6DiVyZZpEBcZ3Eh6CG
-	LUck1XMjsNfWI+1Mfs02xOKm3X1h2NiyREXqWB+Foma1bR8gUgZMlB9Mh6O3K8ErYmvYaOCGBMc
-	rzqy73TJNpcqu6fEJKcBKoo0WiJ+WmAZ3kT/7sa3KY/xL+MYl++1rWDGkCnDRL9rVq8rUysyhLe
-	k1ygWvH+Ei/VEbfgpFaAqmQaE11SVZ498q+ZRrXfRjawC9dgx+BzpJLLjpezrPzhJRvpWMcJVv8
-	ostG6nRQz0yCkuMqVp5GnDRNvDDNATYOKTT+o9ZibENzNQW6LdYcoC7X18jTN/t6OlZlvmvE
-X-Google-Smtp-Source: AGHT+IHEIlJe8V/bfK8noaG+e9HbHfHlNzlivvhyYKQXTYuglrsYkBwOAV506BAus+ExuPoTrXBAXw==
-X-Received: by 2002:a05:620a:3194:b0:7c5:6fee:1634 with SMTP id af79cd13be357-7caf736d415mr31893785a.3.1746558226157;
-        Tue, 06 May 2025 12:03:46 -0700 (PDT)
-Received: from JSANTO12-L01.ad.analog.com ([191.255.131.70])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7caf75b87b7sm13533985a.71.2025.05.06.12.03.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 May 2025 12:03:45 -0700 (PDT)
-Date: Tue, 6 May 2025 16:03:40 -0300
-From: Jonathan Santos <jonath4nns@gmail.com>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Jonathan Santos <Jonathan.Santos@analog.com>, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-gpio@vger.kernel.org, andy@kernel.org, nuno.sa@analog.com,
-	Michael.Hennerich@analog.com, marcelo.schmitt@analog.com,
-	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	marcelo.schmitt1@gmail.com, linus.walleij@linaro.org, brgl@bgdev.pl,
-	lgirdwood@gmail.com, broonie@kernel.org, dlechner@baylibre.com,
-	Pop Paul <paul.pop@analog.com>
-Subject: Re: [PATCH v6 10/11] iio: adc: ad7768-1: add filter type and
- oversampling ratio attributes
-Message-ID: <aBpdDN12wdV/gOBB@JSANTO12-L01.ad.analog.com>
-Reply-To: 20250505170950.1d7941d0@jic23-huawei.smtp.subspace.kernel.org
-References: <cover.1745605382.git.Jonathan.Santos@analog.com>
- <4493dc2e3e0fb61ba3e8a0e54571998aaaaf46c8.1745605382.git.Jonathan.Santos@analog.com>
- <20250505170950.1d7941d0@jic23-huawei>
+	s=arc-20240116; t=1746558756; c=relaxed/simple;
+	bh=qxoVSBxApwQxjJlos0MEto/+Ak7aIzkLjzRqyzvgXEo=;
+	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=C2qofwUFbHKqHXZXc8fVm3Sy6X5s+DBHKVHqyEAksGKDJrnNe0B3+v0xpnWtG0fHlpyNzZjeN6+aqy3JFJuIsiaqv2Rh5PQbdqLTmT4Dao4w6OV5wu5y1vX6JNMQV+2hpNMICY4HjxeZvdKS9shhxQPnr/hlvNKXWH/x4RJo5bU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nabijaczleweli.xyz; spf=pass smtp.mailfrom=nabijaczleweli.xyz; dkim=pass (2048-bit key) header.d=nabijaczleweli.xyz header.i=@nabijaczleweli.xyz header.b=IEEm+hjl; arc=none smtp.client-ip=139.28.40.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nabijaczleweli.xyz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabijaczleweli.xyz
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nabijaczleweli.xyz;
+	s=202505; t=1746558602;
+	bh=qxoVSBxApwQxjJlos0MEto/+Ak7aIzkLjzRqyzvgXEo=;
+	h=Date:From:To:Subject:References:In-Reply-To:From;
+	b=IEEm+hjlK8eeP1ze36FEn5/gPKYfBReu24zkiVvLgrXcSuKhb5eqEgpsi6JTlOXF/
+	 tNYVIjtnr/3zhKpM5c2mAXJpDMZyzOyqnuev57lcpbUxnT6OIXRF+YdubuMT2Uu+Ae
+	 bPF3aFyJua8kijAdcdDrqU2WYyiVXUE0QW5Nb/GWWLUneRRJByK3nVpjDTZrdrA9MM
+	 UtMT3vI07hia9JWW8FZNbuCkAhpqeJdY12xwHX0/cPRXBlHaO8ZHD+rj0qCQ2wMmef
+	 ObHQAK2c/wEwbGyI2SzGDPzzomNG452Dlkwf6irHGSBV0RUxQjHRN6hhAYx3J2MvWQ
+	 g5i96NYCWtyHg==
+Received: from tarta.nabijaczleweli.xyz (unknown [192.168.1.250])
+	by tarta.nabijaczleweli.xyz (Postfix) with ESMTPSA id 8D97010736;
+	Tue,  6 May 2025 21:10:02 +0200 (CEST)
+Date: Tue, 6 May 2025 21:10:02 +0200
+From: 
+	Ahelenia =?utf-8?Q?Ziemia=C5=84ska?= <nabijaczleweli@nabijaczleweli.xyz>
+To: Jonathan Cameron <jic23@kernel.org>, 
+	Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH 2/2] iio: ssp_sensors: optimalize -> optimize
+Message-ID: <5a64aa3034c6127d7587de9b7045a12892c01ee5.1746558529.git.nabijaczleweli@nabijaczleweli.xyz>
+References: <f6e465fee5a824a67be1ae7c3bc1b72adcf9471f.1746558529.git.nabijaczleweli@nabijaczleweli.xyz>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="mn5jzsztpgpqf7g5"
 Content-Disposition: inline
-In-Reply-To: <20250505170950.1d7941d0@jic23-huawei>
+In-Reply-To: <f6e465fee5a824a67be1ae7c3bc1b72adcf9471f.1746558529.git.nabijaczleweli@nabijaczleweli.xyz>
+User-Agent: NeoMutt/20231221-2-4202cf-dirty
 
-On 05/05, Jonathan Cameron wrote:
-> On Sun, 27 Apr 2025 21:14:17 -0300
-> Jonathan Santos <Jonathan.Santos@analog.com> wrote:
-> 
-...
->  drivers/iio/adc/ad7768-1.c | 363 ++++++++++++++++++++++++++++++-------
-> >  1 file changed, 293 insertions(+), 70 deletions(-)
-> > 
-> > diff --git a/drivers/iio/adc/ad7768-1.c b/drivers/iio/adc/ad7768-1.c
-> > index 10791a85d2c5..e2b8f12260a5 100644
-> > --- a/drivers/iio/adc/ad7768-1.c
-> > +++ b/drivers/iio/adc/ad7768-1.c
-> > @@ -20,6 +20,8 @@
-> >  #include <linux/regulator/driver.h>
-> >  #include <linux/sysfs.h>
-> >  #include <linux/spi/spi.h>
-> > +#include <linux/unaligned.h>
-> > +#include <linux/util_macros.h>
-> >  
-> >  #include <linux/iio/buffer.h>
-> >  #include <linux/iio/iio.h>
-> > @@ -77,7 +79,7 @@
-> >  #define AD7768_PWR_PWRMODE(x)		FIELD_PREP(AD7768_PWR_PWRMODE_MSK, x)
-> >  
-> >  /* AD7768_REG_DIGITAL_FILTER */
-> > -#define AD7768_DIG_FIL_FIL_MSK		GENMASK(6, 4)
-> > +#define AD7768_DIG_FIL_FIL_MSK		GENMASK(7, 4)
-> 
-> Bug?  If so does this belong in a precursor patch?
-> 
 
-Actually not, this extra bit is to include the 60Hz rejection enable
-for sinc3 filter
+--mn5jzsztpgpqf7g5
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> >  #define AD7768_DIG_FIL_FIL(x)		FIELD_PREP(AD7768_DIG_FIL_FIL_MSK, x)
-> 
-...
- 
+Signed-off-by: Ahelenia Ziemia=C5=84ska <nabijaczleweli@nabijaczleweli.xyz>
+---
+ drivers/iio/common/ssp_sensors/ssp_spi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/iio/common/ssp_sensors/ssp_spi.c b/drivers/iio/common/=
+ssp_sensors/ssp_spi.c
+index f32b04b63ea1..b7f093d7345b 100644
+--- a/drivers/iio/common/ssp_sensors/ssp_spi.c
++++ b/drivers/iio/common/ssp_sensors/ssp_spi.c
+@@ -104,7 +104,7 @@ static struct ssp_msg *ssp_create_msg(u8 cmd, u16 len, =
+u16 opt, u32 data)
+ /*
+  * It is a bit heavy to do it this way but often the function is used to c=
+ompose
+  * the message from smaller chunks which are placed on the stack.  Often t=
+he
+- * chunks are small so memcpy should be optimalized.
++ * chunks are small so memcpy should be optimized.
+  */
+ static inline void ssp_fill_buffer(struct ssp_msg *m, unsigned int offset,
+ 				   const void *src, unsigned int len)
+--=20
+2.39.5
+
+--mn5jzsztpgpqf7g5
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEfWlHToQCjFzAxEFjvP0LAY0mWPEFAmgaXooACgkQvP0LAY0m
+WPGdww//TGdBAuGF4H5rxorbkBrhYyXIAsA3YL+Vc6GN2vWpE83drPbbyk2mkSwj
+8s4mHryP1Q73NfiJUPtbrtzTYKznMOFVx4hZ651erxtBpQIA160IRvz47e2+d9sH
+5XEJM+OlnqdCrAy/GuSm8XTSZa76CCRd2aZ/vn+LcXTqSDflx5lAmgjXvq+j+seS
+ZvdYSe4V+46Q/D4hgsTCdyKVfSyvWckxEJqU16xbWWlNfRTGF8S7c0KfJ41iXZuh
+QkZ2PI/083xhgExPVxbodX0X6cu/TQzA2xg23u9Mw/0+92pu+vJz0xnBoSw0a12C
+770zTbPfv04G9N+Owt+YlaHOJfSUUOr9448QY9JSbi6SmIRT9GAGhM18PGPC/4af
+7iihZazHfU5sBUDRN3TXIN6/DTpLCW0sESgtnqsR4FmD/H3525y4LpBGmijbVkst
+xC3ThwE8SNYIlKatutqPZSgUXR+e7btC6H2BOWx8wGBX2HlcrqrDsq8x1FYqeULd
+oXTM3FVu9ZEUb4wEZF9FpPFXLAqyRGgfyXsLfZcLgCro/VabGBGb196fDJ2WeDLr
+xyYvIoGod+XUNKGsVM/yCko55NclyNIckKoPgEzHi1o/HS9WoIpl2gMZyeZf22V7
+Eb/HwysYBXP063l4xO3dgFk4gQLjRHnwwPldoQJcp8HnoeZXt44=
+=6AuU
+-----END PGP SIGNATURE-----
+
+--mn5jzsztpgpqf7g5--
 

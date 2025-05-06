@@ -1,250 +1,117 @@
-Return-Path: <linux-iio+bounces-19185-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19187-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE6B9AABD44
-	for <lists+linux-iio@lfdr.de>; Tue,  6 May 2025 10:32:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BCE9AABDDE
+	for <lists+linux-iio@lfdr.de>; Tue,  6 May 2025 10:54:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2320B520346
-	for <lists+linux-iio@lfdr.de>; Tue,  6 May 2025 08:32:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 074E216297F
+	for <lists+linux-iio@lfdr.de>; Tue,  6 May 2025 08:54:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 595B024BCE8;
-	Tue,  6 May 2025 08:28:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD7192641CA;
+	Tue,  6 May 2025 08:53:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=it-klinger.de header.i=@it-klinger.de header.b="r4DpE1ap"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JtRIponA"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from www571.your-server.de (www571.your-server.de [78.46.3.230])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5AF52512FB;
-	Tue,  6 May 2025 08:28:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.46.3.230
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81ACC25E822;
+	Tue,  6 May 2025 08:53:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746520128; cv=none; b=UxJzrs03MOeq+JxkM2QFLjqGEys0yiGM2tG85yyTdYeGPpWYhGo5UoFARyblRsAtJDt8V5jU4DXnYoPNOMH2gc/tDpg7zGCrJOmvAy4oYYmlp309iTNqFwoktU4X/FexhSmz5qgm46R2P+dRCKljtCAEObkeTrdhXbshRD9ldck=
+	t=1746521635; cv=none; b=kftPzTBuKYdCkf9dV0HQivdCSZq3GIBTlaF/AcynaKKeWe3PaVUz4tRdfpz5N1MNhTp5HDEogwWjoeNOcKEH8fAERv+5NuxHRMCab4p/wzdnCr/t80jf/VUmiZLpwwxZStPBCyDn68j4iNJWhVv/Q4JwnMILykJ/74e/PEhO9Sc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746520128; c=relaxed/simple;
-	bh=vFGKbj51Qajls3VjRgTkmeH70g44w/oqfB16ecKLVVk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RUCV6CEY9/POGoOF67De9XkkbmuOe9tVM9oen1bPqXwsczp70yuyenponOSZ+txNpNzni1+tAheEdjP99eeST67OB52s+x4iiJSTDypVO9iTVL3Uqxsc0ThqzMIAaXfLS/zaXfQAN8VKHEVevQyOg18jRFKl2Cfs12jC4lrO7lc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=it-klinger.de; spf=pass smtp.mailfrom=it-klinger.de; dkim=pass (2048-bit key) header.d=it-klinger.de header.i=@it-klinger.de header.b=r4DpE1ap; arc=none smtp.client-ip=78.46.3.230
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=it-klinger.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=it-klinger.de
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=it-klinger.de; s=default2502; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=mYBx0CJRklxHg5jmra3Bhh9KqI+k6/L/yb4VoX0n7yE=; b=r4DpE1ap/lyvy7MjCmpoK/oXt0
-	QWba6qFu+LQUU9ZpcogTmCO0Bk11ebGH9cpctHSxVaBbu0kOZ61bXtH4XUkM+NDassUWmnuQ5+lI4
-	m2zLHzwjp7Jr3kLIqyCwV2B6DAFASf6Zq5u1SL+UCC4B02eqXJwBbbNhBY6Le5YXjO7w2S+c2S9XM
-	FaYFcX1zfVmT/PYRFWWNwZI+UcIbL5J1yyZNJeGY5nrsMqhofO1peWyzNFj3xtMb+Dn/cw7U9n3bE
-	tgZyTmBRpWLlBZ1X1+sgQQjIoTS1nDXlBqzr0IwsyFfB77NU2EQlVrTQ4T2IdEYiYdMlaTPjb7olq
-	qn3cNbMg==;
-Received: from sslproxy05.your-server.de ([78.46.172.2])
-	by www571.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <ak@it-klinger.de>)
-	id 1uCDfL-0009sJ-39;
-	Tue, 06 May 2025 10:28:39 +0200
-Received: from [31.220.118.240] (helo=mail.your-server.de)
-	by sslproxy05.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ak@it-klinger.de>)
-	id 1uCDfL-000Eoj-0X;
-	Tue, 06 May 2025 10:28:39 +0200
-Date: Tue, 6 May 2025 10:28:38 +0200
-From: Andreas Klinger <ak@it-klinger.de>
-To: Matti Vaittinen <mazziesaccount@gmail.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, robh@kernel.org,
-	krzk+dt@kernel.org, conor+dt@kernel.org, lars@metafoo.de,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, javier.carrasco.cruz@gmail.com,
-	subhajit.ghosh@tweaklogic.com, muditsharma.info@gmail.com,
-	arthur.becker@sentec.com, ivan.orlov0322@gmail.com
-Subject: Re: [PATCH 2/3] iio: light: add support for veml6046x00 RGBIR color
- sensor
-Message-ID: <aBnINvJ0aS69kUI8@mail.your-server.de>
-References: <20250316113131.62884-1-ak@it-klinger.de>
- <20250316113131.62884-3-ak@it-klinger.de>
- <20250317115005.72a539a0@jic23-huawei>
- <Z_I-qwzUrTNz1DZp@mail.your-server.de>
- <20250406120825.41b2575c@jic23-huawei>
- <ecb2844c-feb5-47d4-b4db-12171380a9cb@gmail.com>
- <aBkNHSxU4T8j4oMT@mail.your-server.de>
- <181472f0-5c00-4e1d-8f00-1d84b5c54685@gmail.com>
+	s=arc-20240116; t=1746521635; c=relaxed/simple;
+	bh=jn9lLGkSG4V3RG7ST7Gwm3kBhuCTAbYEo25iK3E0KCM=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=p37z2u9rdAYTaHGIkHWdkjsWN+EXNkVqd9r79xnjrXTi/QUwxM7P5hRcbikS3CDHQfNe+KOW/+AOUk8LyDl4Batx1PW6ijIQTNso8SImdk7UlfQETCT3FJlJIlv+y69ntzbjhTJ9uTaJqfH6hPz3/KGCai68jFHSVEWTY/+Ri6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JtRIponA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id E5EE9C4CEF4;
+	Tue,  6 May 2025 08:53:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1746521635;
+	bh=jn9lLGkSG4V3RG7ST7Gwm3kBhuCTAbYEo25iK3E0KCM=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=JtRIponAkT8pY5/4dDK4M7B8K+8C0XF8DI/3VDDpRoKu00Msz2XlIy3nhUMX4AAnN
+	 hAqHjRUOf+s+CXgy5sAsPy15glLwpIyf6cJNU1AAE42KAvmUAckhwofbcj6bbGPem2
+	 qTNSb1EeqzKnmnAYjz/JaFojdaFPzwJT2dgBuayv+S8zID/EP749mP9ZBPPFU/6kSf
+	 hGNHxq+ORWQaQbGEgS8Kmrxld8BgOpOW6LuS9NdNNcNFBQreiq+ilDt9jhUcor+JLk
+	 InC1j8yd2u/ObBYnFodqozjFDz7oma/2C5r+mLUZESP3UAacUOKBRAYkVub/ReYrzw
+	 HT8ZTFjDzbI1g==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D3642C3ABAC;
+	Tue,  6 May 2025 08:53:54 +0000 (UTC)
+From: =?utf-8?q?T=C3=B3th_J=C3=A1nos_via_B4_Relay?= <devnull+gomba007.gmail.com@kernel.org>
+Subject: [PATCH v3 0/2] Add support for the DFRobot SEN0322 oxygen sensor
+Date: Tue, 06 May 2025 10:53:43 +0200
+Message-Id: <20250506-iio-chemical-sen0322-v3-0-d6aa4acd00e0@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="jOV+RP1UMYlBuzOh"
-Content-Disposition: inline
-In-Reply-To: <181472f0-5c00-4e1d-8f00-1d84b5c54685@gmail.com>
-X-Authenticated-Sender: ak@it-klinger.de
-X-Virus-Scanned: Clear (ClamAV 1.0.7/27629/Mon May  5 10:35:28 2025)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIABfOGWgC/4XNwQ6CMAyA4VchOzszugHDk+9hPLDZQRNgZjOLh
+ vDuDi7GgzE9/U36dWERA2Fkp2JhARNF8nMOeSiYHbq5R0633AwEVEKB5kSe2wEnst3II85CAnD
+ rtDPGYFOpmuXTe0BHz529XHMPFB8+vPYvqdy2f8BUcsFbU2pZS+dQwbmfOhqP1k9sAxN8kDw/E
+ MgIlI1qZKul+UbWdX0Dd78Xtf0AAAA=
+To: Jonathan Cameron <jic23@kernel.org>, 
+ Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ =?utf-8?q?T=C3=B3th_J=C3=A1nos?= <gomba007@gmail.com>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1746521633; l=1219;
+ i=gomba007@gmail.com; s=20230706; h=from:subject:message-id;
+ bh=jn9lLGkSG4V3RG7ST7Gwm3kBhuCTAbYEo25iK3E0KCM=;
+ b=zzKWNLKdpwAFUG0SCqPlYIR+2sJPsAXk73dOfjot8Z+i8Z6zUF4Gnmj7zrEZ/VdWRqxc+ki5n
+ wfvW5DQqeRNCXqxK/oIKVvR34nwvfX4FS0GRZUbv23zPman353F562M
+X-Developer-Key: i=gomba007@gmail.com; a=ed25519;
+ pk=iY9MjPCbud82ULS2PQJIq3QwjKyP/Sg730I6T2M8Y5U=
+X-Endpoint-Received: by B4 Relay for gomba007@gmail.com/20230706 with
+ auth_id=60
+X-Original-From: =?utf-8?q?T=C3=B3th_J=C3=A1nos?= <gomba007@gmail.com>
+Reply-To: gomba007@gmail.com
 
+This patchset adds a driver and the documentation for the
+DFRobot SEN0322 oxygen sensor.
 
---jOV+RP1UMYlBuzOh
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Tóth János <gomba007@gmail.com>
+---
+Changes in v3:
+- Refactor based on reviewer's suggestions.
+- Link to v2: https://lore.kernel.org/r/20250505-iio-chemical-sen0322-v2-0-217473983b42@gmail.com
 
-Hi Matti,
+Changes in v2:
+- Add SEN0322 to trivial-devices.
+- Use _RAW and _SCALE instead of fixed-point math.
+- Refactor based on reviewer's suggestions.
+- Link to v1: https://lore.kernel.org/r/20250428-iio-chemical-sen0322-v1-0-9b18363ffe42@gmail.com
 
-Matti Vaittinen <mazziesaccount@gmail.com> schrieb am Di, 06. Mai 09:03:
-> On 05/05/2025 22:10, Andreas Klinger wrote:
-> > >=20
-> > > I was CC'd due to the GTS (gain-time-scale)-helpers. The above is the=
- beef
-> > > of those helpers - which, attempt to aid drivers to convert the impac=
-t of
-> > > the hardware gain + integration time into a single scale value. This
-> > > approach has some caveats, but the goal is to fulfill the expectation=
-s of
-> > > those user-space apps which expect only scale to change the gain, whi=
-le also
-> > > need to have the integration time controllable (for example to reduce=
- the
-> > > measurement time for one reason or another).
-> > >=20
-> > > Problem is that, especially when there are multiple channels with sep=
-arate
-> > > gain control but common integration time, there will be some situatio=
-ns
-> > > where the integration time change _will_ cause changes to "total gain=
- (E.g.
-> > > scale)" too. There may also be cases where some scale values can be m=
-et only
-> > > with certain integration times, or where a scale for a channel can't =
-be met
-> > > maintaining the scale for other channels etc.
-> > >=20
-> > > All in all, I am not sure if the 'unchangeable hardware gain' approac=
-h makes
-> > > things as simple as possible - but as long as we want to have it, the=
- GTS
-> > > helpers may be of use :) There are couple of drivers using them - fee=
-l free
-> > > to take a look. "git grep gts_ drivers/iio/light/" should point you t=
-he
-> > > current users.
-> > >=20
-> >=20
-> > Thanks a lot for illustrating and explaining the GTS. I implemented the=
- driver
-> > with GTS and by this learned a lot about it. But at the end i found it =
-in my
-> > case to be simpler to implement it without GTS for some reasons:
->=20
-> Firstly, it's perfectly Ok to choose to not to use the GTS helpers. Yet, I
-> would like to understand couple of things.
->=20
-> > - User wants to be able to set up the integration time as well as scale=
- and the
-> >    driver should not optimize it somehow.
->=20
-> How does using GTS to do the conversion from
-> HWGAIN + time =3D> scale
-> cause optimization? Or, do you just mean that part of the functionality
-> provided by these helpers wouldn't be applicable, while the conversion co=
-uld
-> still be done?
+---
+Tóth János (2):
+      dt-bindings: trivial-devices: Document SEN0322
+      iio: chemical: Add driver for SEN0322
 
-This functionality is not applicable. The user wants to set up the time and=
- gain
-manually. There are applications in which the driver should be fast with a =
-lower
-integration time and others in which the best accurate result is required. =
-As
-i'm developing it for the sensor vendor they want to be able to demonstrate
-all the different settings to their customers.
-
-> > - There is not only a relation from the scale to the gain of the sensor=
- but also
-> >    to the photodiode size. Because of this i need another helper table =
-asize of
-> >    GTS for translating the scale into sensor gain and photodiode size.
->=20
-> I suppose that using the GTS with gains and times without PD, and then
-> computing the impact of the PD size after the GTS conversions would have
-> caused the available scales to be wrong, right?
-
-Exactly this caused me most of the headache. With GTS i need to use a "virt=
-ual"
-scale for the calculation. When user asks for available scales or set up the
-desired scale i need to convert it to the real scale and then further trans=
-late
-it to the register values of gain and PD.
-
-> Couldn't you still have used two different set of gain tables (one for ea=
-ch
-> PD size) if you chose to use the GTS?
-
-Of course there are solutions for it and i was about to finish one with GTS=
- as i
-saw that the driver will get simpler without. As i cannot use the nice feat=
-ures
-of GTS it turns out to use only the data structures and functions on it. Bu=
-t the
-data structures don't fit exactly to this sensor as we have gain and PD in =
-two
-different regfields. So another table to translate the scale to the regfiel=
-ds is
-needed anyway.
-
-> > I'll come up with a version 3 shortly.
->=20
-> I took a very quick look at the v3 - not one worth a reviewed-by :) And, =
-as
-> I wrote, I have nothing against skipping the GTS. I'm not sure the values=
- in
-> the multi-dimensional array were clear to me at a glance - but I assume i=
-t's
-> lean and efficient when one wraps his head around it.=20
-
-The large table contains exactly the values from the datasheet for the
-conversion of raw measured counts to lux. I only combined the two tables fo=
-r PD
-1/2 and 2/2 as hwgain x0.5 and x1 are existing twice.
-
-> So, I'm not trying to argue you should've used GTS - I just want to under=
-stand
-> what was the exact issue with it :)
-
-There is not an issue with GTS. In my opinion it's not the simplest solutio=
-n for
-this sensor in this case. I'm quite sure there are other cases in which it =
-makes
-a lot of sense to use it and as i'm now a little bit familiar with it i'll =
-be
-using it if appropriate.
+ .../devicetree/bindings/trivial-devices.yaml       |   2 +
+ MAINTAINERS                                        |   6 +
+ drivers/iio/chemical/Kconfig                       |  10 ++
+ drivers/iio/chemical/Makefile                      |   1 +
+ drivers/iio/chemical/sen0322.c                     | 163 +++++++++++++++++++++
+ 5 files changed, 182 insertions(+)
+---
+base-commit: b4432656b36e5cc1d50a1f2dc15357543add530e
+change-id: 20250428-iio-chemical-sen0322-cf8fbbbe7546
 
 Best regards,
+-- 
+Tóth János <gomba007@gmail.com>
 
-Andreas
 
-
---jOV+RP1UMYlBuzOh
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQGzBAABCgAdFiEE7/NrAFtB/Pj7rTUyyHDM+xwPAVEFAmgZyDUACgkQyHDM+xwP
-AVHjPQwAkI4wNjatWb1gPWhQS8HazIDmrx61CLlpOpcoRaRX0gmI3y6hUwsQOLKY
-GW5ieajnTYRQeiSUkDPRR2M0G07OHudhcnQ9gN+RGsBburujLxFwnjFXcSf4q/l5
-4RjLjUoMsL6izBZS6QMbcapCG/FrUAQUkuNvX9sG63+pQR6B9iZv291R7MvMKQ8o
-RaYB66HgFmOVI6z0+9XJdRWUOTjPzJ2lZI3SXKWUPMbMSr15WnBL8R66hPJoERyS
-F0HhWH56T3sCYL34G/T0vEJCE5vK9teenupPn1hH2kZI8CqTJiCIhg7g/46jjfyZ
-fFEpWTkA+y5XXqdfl+59wWWxB85UCiAqqr4oAxYNp8efD0UzKRTU6lElDv9kfjjr
-1ph8GwZgMdP9uy+ugVQFPXzYOKcaqf/Cf929nOKBbj0Kn+wupa0gYARKkZyT/rJa
-DvVp94d7erQDFbE+Nh0wY2LZNB7h0RTxvRyvwaHed7arqHkbfkyu8nws2jiu8mWS
-NquhvVId
-=xSeQ
------END PGP SIGNATURE-----
-
---jOV+RP1UMYlBuzOh--
 

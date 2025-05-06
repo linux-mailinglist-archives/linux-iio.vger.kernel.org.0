@@ -1,127 +1,170 @@
-Return-Path: <linux-iio+bounces-19194-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19195-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3901EAABF00
-	for <lists+linux-iio@lfdr.de>; Tue,  6 May 2025 11:19:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E98CAAC448
+	for <lists+linux-iio@lfdr.de>; Tue,  6 May 2025 14:34:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 304034A4966
-	for <lists+linux-iio@lfdr.de>; Tue,  6 May 2025 09:19:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3AEC43B2E0A
+	for <lists+linux-iio@lfdr.de>; Tue,  6 May 2025 12:33:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6588126FDAA;
-	Tue,  6 May 2025 09:17:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32ECB27FB28;
+	Tue,  6 May 2025 12:32:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MTILdd0J"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="fmyBDuK2"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 599AC191F8F;
-	Tue,  6 May 2025 09:17:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 187A427BF8D
+	for <linux-iio@vger.kernel.org>; Tue,  6 May 2025 12:32:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746523036; cv=none; b=rHMaMsqIFjT2d8ARbi6wZfGxzNx8On+yXMAuCiQhjbUvS5cjQ0EdOZKb79+/UzaVDbZ+5lW4Wpvj3Jgj9tgDvznyiyaKwLHQZgYEHatx9fRXk5QQYBVZB0DDRMnNQwcpyjmKXLfTksfbFEq66rpA2SQnguwhvLz2TIJ4a8aEImU=
+	t=1746534735; cv=none; b=Y2RZYDFDFMWcbOflc2yvlnCebeYHWOggY+iTNKAQKAQRucxLN5QuuszYQRWIaM2vWODSq6uhOfVhUi+1n44T8UzP0I09/7fHXLzNMe4BdXpc9XfJf7lVM2Chesc5nl3CZWk5JIzZqeCl9dTdmB6/KIbHLO/N6kBE306imu4TFPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746523036; c=relaxed/simple;
-	bh=ukJB50c9mMYqzCAtA+XXO+NPEMa+n2JUO6FB0u6yFpQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=C69aJvMhhtqrK4h8QzL3IsUWScL3xBw8C+zsIz+c4CKVKHuYIovYVzi95BbCY6yoPnaM+n27hHO1PxHyTwHWbNnSgHisrS/siSRxsfbzZzHbBV5z2fJ3gvtlMX+EF0TnbJRKnOy93pQ1a3CWl7vFL3Nc3gfrB2Rv//CS8mNxPM8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MTILdd0J; arc=none smtp.client-ip=209.85.167.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-549b116321aso6646379e87.3;
-        Tue, 06 May 2025 02:17:14 -0700 (PDT)
+	s=arc-20240116; t=1746534735; c=relaxed/simple;
+	bh=vnuot9w5lgI993RhLU7d8m6iM1bAjQd7o6WFESoCCM0=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=dmNJBkhmx+dP4YO/odBJQQ+R0beE2GuatznACf/JNY+N/onQOF2C3Sn5uMzW5J1CuC6RCiq3spbDM87ICs6HqNDb44ydW2QfWVr0nwoKKNQQPmIsa/cYwn9x5tfY49HO1SByD+Jgozidlkns09+D1qaosqj2VU6vWJy0AB9B5CI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=fmyBDuK2; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-43cef035a3bso35270255e9.1
+        for <linux-iio@vger.kernel.org>; Tue, 06 May 2025 05:32:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746523032; x=1747127832; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=linaro.org; s=google; t=1746534731; x=1747139531; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=brki9Lw3Xd52LJhWPJClU7ze3qNpBlrJZZan0H+h80M=;
-        b=MTILdd0JCYE1FzEF7PRDSoKlutvYCCV6eFk+xnt2zh1kcaCSbxStpU7qMk+ridTOTG
-         9ytc525aoY8GMBv6owxJ+mhbtBsm354H91iAZMj/Dt4fXuyr4BcdMza+fBragYxrsuh/
-         sVa+scjkpYeYMxolW7F3eNgS2KwE4ncO0ar2Ndx6lxnM/2XzkJn4aRs8Fx0rqB6zxifY
-         6Nt33BP9o9WhM62DZ2+NElgf2OoOi/2VytYlZtHXRNNImvahBZebEVrlniRqlmDBrkNZ
-         Pee+NeeyX/bsL+SsUDDRkoGsOpew3mdUB0kbjXoDVPag6H7jDKthr60HGatlJtKgDeSm
-         enHw==
+        bh=/voYsvcTN868kMgVPoAbI/LBTXtaMEmPVsFI1hVgpYE=;
+        b=fmyBDuK24Bray+xUpSWLGAwZQhWPi1/eIH7SkXKuYreUqGChlsY9i5AdMaOQlJYO6i
+         MeUwO7q7GPOSlgtb0vA+rS0g6STfb6CHCEyXWH+soUKGj7kiIWxS1SUcs+QsrpSTBYID
+         616vos/XWmNwhMjH1xvcOyd5mL1oFzxr5GlJrAjsH9q+s6UzS3dvUb0U11eX8yFIoRnK
+         8MfMOTh5WvoDG+1/rY21PeUvO9xS+MxwGHTd+jjTdGQP/0L1cUDmcXjy+kaWPeOi/Bgm
+         d9cjT7HgrtrSldAEoHoM0R1MNL6J51f0F4Jcc6MX6HUUaOvRIhGOQRg2Kco6VA8Rgl/j
+         ZgFg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746523032; x=1747127832;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1746534731; x=1747139531;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=brki9Lw3Xd52LJhWPJClU7ze3qNpBlrJZZan0H+h80M=;
-        b=pZz9bFgSIqt6P/k0BDjY6L4UC70DHrdEYLEfF+Os79R8WZ1Z5XV7QFTW4RlT9hrgkg
-         keQFEkOkecwTXo+nnZTMXt0ZZWtqqDEXUWbKLjHMJM0zJpcqCMZxfhSrv7vkpt1g305r
-         0vWJcSMNs+kN3VsqENtDAaOR2HMsm8KGa4EnGW6RW2U8Xrg12S3gdl++lmz1CUkqA8b5
-         tvjgO2ObU+/LqHknUKltOAGI5hY2YF5LYX+WXn2P4b/JJxEBG8zkJk6onJ23V5YpIUMG
-         6d1JUUoExNDqJNCKkyoGPpR1GAgCuKkjLTCXM488pRNqL2B0MQ41DrcXqw7yCkwljRZg
-         W9NQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUYdrGS2DeS+jEQZahGxU4+2iVachNZsdyG3Tb6Mt0zzrDfqQjxtmgXa3/YODxlTjmQZMQ0oshIU3880fOr@vger.kernel.org, AJvYcCWKjpnu4C2EJVu8Fr0o3ZprK2y5JLjds9Ey3dXbuteX19qTVrpk6dowNr5ugGO0crqfNDmiJ29BrwsZ@vger.kernel.org, AJvYcCXonytdjF1Ie+y9NPwFpRRf4U9knd2yhTybqwWhAKWRKWiB57GaKTRnxca+vAnAFDuG9AkstawVAnW2@vger.kernel.org
-X-Gm-Message-State: AOJu0YziTAV45x3eiT+eAIXHruzoXRCpTyFP70k4/UFdkkDBM35fGNWl
-	qGb+uXACJJs6KE+R246APffxWw/xCeARxdxTuXKrEVjBsRS3t4fP
-X-Gm-Gg: ASbGnct3J/YP5nI0c7uS/R2iHjIH+3Wms/seiRD82xQMhUcSeSHxSlaY5j9p1vpAMO9
-	5takw9ueQn0nrQgKtEANmCCwkRU3jnu/vkrCAQNJlh/cFgCR13Ia1YdtlNmTnzaQ75Do3Kej/qU
-	IFO82QcnqcEDes43CDEzr9yQeaPmOxN79fo1KKccmVLbMNJ5lo1PF9mwgal//FRDAgdsxcSgF3p
-	/U6/EcFZeVL5jDlC9XyngfQFaJzkZaNWZHq1MGuRbWOoFCo6rB2CoVyMGRc1WStOXN287qVbjuV
-	MuJ8M5Tth2z07YOU8IDVknlmKXvTrDeg6dSwUxwOBFVvl5xB75I4LQ==
-X-Google-Smtp-Source: AGHT+IFjiK3Xjle40kxRVFcwAY/YmTxjadceqPBaXXNCvckC71+6i2aXaHoevB+uXRpjTwevpD+Lyg==
-X-Received: by 2002:a05:6512:31cb:b0:54e:819a:8345 with SMTP id 2adb3069b0e04-54fb4a62918mr823669e87.42.1746523032107;
-        Tue, 06 May 2025 02:17:12 -0700 (PDT)
-Received: from [172.16.183.207] ([213.255.186.46])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-54ea94c55ddsm1978017e87.91.2025.05.06.02.17.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 06 May 2025 02:17:11 -0700 (PDT)
-Message-ID: <f3abfc37-50cc-4bdd-bb19-0f0ece4466eb@gmail.com>
-Date: Tue, 6 May 2025 12:17:10 +0300
+        bh=/voYsvcTN868kMgVPoAbI/LBTXtaMEmPVsFI1hVgpYE=;
+        b=l2j9aarjgtWTZDKax0H7EfzWmcmyMz1V6lKAiqKsY1LuRJQasakuZM52apg8jk5W5j
+         2fFVxJCxZjJFiqnikmElKELMjG0DBuFjbx005P+ttjqGEh4RuQCTWT8gNlYAf/mxAopo
+         MMskP7zBjFHxLypqPpeF3m89Y8m2aa9zltrmyFfXZBD44Y0woL5al4EGnjDEMfGPoEQ3
+         Gi7OaeKeaBrAt28r6ondc8fDW/uCQGMGx+dCaqIG3I6fbIsvfT7EGfPUyAKthPXRp80v
+         BqVaYyRqmI55DyBPwRZvN03jyjkJ7IxTx2NelyEohFqsP4fvs2+2HhEPZ6i/bM6RJ9Gj
+         LPVQ==
+X-Gm-Message-State: AOJu0Yza6e4elX7UMTI9ooPEXVHWZyIAG8nixpxXPHgyU1mPUqsUmDiO
+	Z4+SBxosmvjovH3TdpqhATp1L/hvjeNqZ4iHslbtawh6TSft5hYxotLy9C2mnfK+3HSOKrvGI9U
+	d
+X-Gm-Gg: ASbGncuTFrrFVFPVabsVKv9+yQqPYb9dZCBaHf9te4KW/m2To0ckCm3IgqWcd29GdNt
+	FYkQDR4QCNu3sb8JjxjrhsDNVt1VV7Mbrcu6G7ZCq+mABDu3OoMu4PsMZD/pT6hBF5rtzN/NnGW
+	yjMm6MP6tbE8almcmAiKkYWgue7ze6tB0dX4ZG1ox00Jq8cjb+vBvW+raKmD99Dkyspy7TQ5ESi
+	xV5xvmXjTF+I5Mg6ydUZ4JrBCKM1EY9Vwq53bhgcM4nqLDQ78Namgjkijy8gXoVV9SL4SPCEv/Z
+	CsmM88cLqB8mwGtT9OVTY1q/gn4WtpfSeNoZT+vix/Dh5A==
+X-Google-Smtp-Source: AGHT+IFa0FCaI0r4XVGzIQhsUUKsBmbqdhGyHhDMbzEcXT6lA9IJmCIizH7VA4tPVTuhZR+w7ACIZw==
+X-Received: by 2002:a05:600c:5010:b0:441:bf4e:89c8 with SMTP id 5b1f17b1804b1-441c48b02e1mr108303855e9.3.1746534731333;
+        Tue, 06 May 2025 05:32:11 -0700 (PDT)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-441b2af2a9dsm215556595e9.19.2025.05.06.05.32.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 06 May 2025 05:32:10 -0700 (PDT)
+Date: Tue, 6 May 2025 15:32:07 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: David Lechner <dlechner@baylibre.com>
+Cc: linux-iio@vger.kernel.org
+Subject: [bug report] iio: pressure: bmp280: drop sensor_data array
+Message-ID: <aBoBR5D1UMjsSUfZ@stanley.mountain>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/3] iio: light: add support for veml6046x00 RGBIR color
- sensor
-To: Andreas Klinger <ak@it-klinger.de>
-Cc: Jonathan Cameron <jic23@kernel.org>, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, lars@metafoo.de, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- javier.carrasco.cruz@gmail.com, subhajit.ghosh@tweaklogic.com,
- muditsharma.info@gmail.com, arthur.becker@sentec.com,
- ivan.orlov0322@gmail.com
-References: <20250316113131.62884-1-ak@it-klinger.de>
- <20250316113131.62884-3-ak@it-klinger.de>
- <20250317115005.72a539a0@jic23-huawei> <Z_I-qwzUrTNz1DZp@mail.your-server.de>
- <20250406120825.41b2575c@jic23-huawei>
- <ecb2844c-feb5-47d4-b4db-12171380a9cb@gmail.com>
- <aBkNHSxU4T8j4oMT@mail.your-server.de>
- <181472f0-5c00-4e1d-8f00-1d84b5c54685@gmail.com>
- <aBnINvJ0aS69kUI8@mail.your-server.de>
-Content-Language: en-US, en-AU, en-GB, en-BW
-From: Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <aBnINvJ0aS69kUI8@mail.your-server.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-On 06/05/2025 11:28, Andreas Klinger wrote:
-> Hi Matti,
-> 
-> Matti Vaittinen <mazziesaccount@gmail.com> schrieb am Di, 06. Mai 09:03:
->> On 05/05/2025 22:10, Andreas Klinger wrote:
+Hello David Lechner,
 
->> Couldn't you still have used two different set of gain tables (one for each
->> PD size) if you chose to use the GTS?
-> 
-> Of course there are solutions for it and i was about to finish one with GTS as i
-> saw that the driver will get simpler without. As i cannot use the nice features
-> of GTS it turns out to use only the data structures and functions on it. But the
-> data structures don't fit exactly to this sensor as we have gain and PD in two
-> different regfields. So another table to translate the scale to the regfields is
-> needed anyway.
+Commit 4e6c3c4801a6 ("iio: pressure: bmp280: drop sensor_data array")
+from Apr 22, 2025 (linux-next), leads to the following Smatch static
+checker warning:
 
-Ah. Understood. Thanks for taking the time to explain :)
+	drivers/iio/pressure/bmp280-core.c:1280 bme280_trigger_handler()
+	warn: check that 'buffer' doesn't leak information (struct has a hole after 'comp_humidity')
 
-Yours,
-	-- Matti
+drivers/iio/pressure/bmp280-core.c
+    1225 static irqreturn_t bme280_trigger_handler(int irq, void *p)
+    1226 {
+    1227         struct iio_poll_func *pf = p;
+    1228         struct iio_dev *indio_dev = pf->indio_dev;
+    1229         struct bmp280_data *data = iio_priv(indio_dev);
+    1230         u32 adc_temp, adc_press, adc_humidity;
+    1231         s32 t_fine;
+    1232         struct {
+    1233                 u32 comp_press;
+    1234                 s32 comp_temp;
+    1235                 u32 comp_humidity;
+    1236                 aligned_s64 timestamp;
+
+There is a 4 byte hole between comp_humidity and timestamp.
+
+    1237         } buffer;
+    1238         int ret;
+    1239 
+    1240         guard(mutex)(&data->lock);
+    1241 
+    1242         /* Burst read data registers */
+    1243         ret = regmap_bulk_read(data->regmap, BMP280_REG_PRESS_MSB,
+    1244                                data->buf, BME280_BURST_READ_BYTES);
+    1245         if (ret) {
+    1246                 dev_err(data->dev, "failed to burst read sensor data\n");
+    1247                 goto out;
+    1248         }
+    1249 
+    1250         /* Temperature calculations */
+    1251         adc_temp = FIELD_GET(BMP280_MEAS_TRIM_MASK, get_unaligned_be24(&data->buf[3]));
+    1252         if (adc_temp == BMP280_TEMP_SKIPPED) {
+    1253                 dev_err(data->dev, "reading temperature skipped\n");
+    1254                 goto out;
+    1255         }
+    1256 
+    1257         buffer.comp_temp = bmp280_compensate_temp(data, adc_temp);
+    1258 
+    1259         /* Pressure calculations */
+    1260         adc_press = FIELD_GET(BMP280_MEAS_TRIM_MASK, get_unaligned_be24(&data->buf[0]));
+    1261         if (adc_press == BMP280_PRESS_SKIPPED) {
+    1262                 dev_err(data->dev, "reading pressure skipped\n");
+    1263                 goto out;
+    1264         }
+    1265 
+    1266         t_fine = bmp280_calc_t_fine(data, adc_temp);
+    1267         buffer.comp_press = bmp280_compensate_press(data, adc_press, t_fine);
+    1268 
+    1269         /* Humidity calculations */
+    1270         adc_humidity = get_unaligned_be16(&data->buf[6]);
+    1271 
+    1272         if (adc_humidity == BMP280_HUMIDITY_SKIPPED) {
+    1273                 dev_err(data->dev, "reading humidity skipped\n");
+    1274                 goto out;
+    1275         }
+    1276 
+    1277         buffer.comp_humidity = bme280_compensate_humidity(data, adc_humidity,
+    1278                                                           t_fine);
+    1279 
+--> 1280         iio_push_to_buffers_with_ts(indio_dev, &buffer, sizeof(buffer),
+                                                        ^^^^^^^^^^^^^^^^^^^^^^^
+So I believe it leads to an information leaks here.
+
+    1281                                     iio_get_time_ns(indio_dev));
+    1282 
+    1283 out:
+    1284         iio_trigger_notify_done(indio_dev->trig);
+    1285 
+    1286         return IRQ_HANDLED;
+    1287 }
+
+regards,
+dan carpenter
 

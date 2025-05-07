@@ -1,79 +1,79 @@
-Return-Path: <linux-iio+bounces-19266-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19267-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49A67AAED3E
-	for <lists+linux-iio@lfdr.de>; Wed,  7 May 2025 22:45:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7758EAAED37
+	for <lists+linux-iio@lfdr.de>; Wed,  7 May 2025 22:44:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E6328169FB6
-	for <lists+linux-iio@lfdr.de>; Wed,  7 May 2025 20:44:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 727C01B6562B
+	for <lists+linux-iio@lfdr.de>; Wed,  7 May 2025 20:44:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17A9628FAA5;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C28628FAA7;
 	Wed,  7 May 2025 20:43:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="AztOIbFo"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="mH4Kug5w"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ot1-f51.google.com (mail-ot1-f51.google.com [209.85.210.51])
+Received: from mail-oa1-f52.google.com (mail-oa1-f52.google.com [209.85.160.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44A8B28F948
-	for <linux-iio@vger.kernel.org>; Wed,  7 May 2025 20:43:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0483428D8F5
+	for <linux-iio@vger.kernel.org>; Wed,  7 May 2025 20:43:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746650625; cv=none; b=sacqkKpEk+Fs3v6wulkgoW1sB6EQLq7nK1vvbM6NXIlF6xd8LiVE6Xkq/Y90O38e6ZgO7ewX7AmAQLsMVK6i8VNmLS4uVyYo/5p1F81th58OgrBai4ximDnuHycIjflUg2SIrTA2G0u+Mm9vfZsJgi0QR8kkNMjSRPUkX+Uo1D0=
+	t=1746650625; cv=none; b=jVndbe4UhLzTZ9TIj4w26gxfvqJKvmzQ376kiU9nHDyazwDijnXXSpdr+e6DIhoRJGzoHHFjdIDRImGCfRnqf52E27PLm55dHbdLxdXexqPptGxUUxkJFismhDbkYlVPhssm9eVvgFA+cJ3hTw4UbgPOh/WtLUZWkPOgOQs9ETQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1746650625; c=relaxed/simple;
-	bh=KXhEzNu9vMA0LlJD+DPGW7NGscBEnrm7VeMGbRK9U/g=;
+	bh=Qkz6TboWaI7MFHoD3asvbEdknvmftSA+W8rgLRn7UjM=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=W7fcKJsQf+i3zo9oLLWrU1lUBgu89j5hdsQmjJYR32noe0lr7CppYIxesLny9+ogMB70MCluADvO4P8KIuR3mONiG5U6vqAYMA8oTc5Y/6gHQi3F3d5V8bLUMelFDZqAPwWqbu9HWETdPzHuB7WmkiKNrNS9icc3WGqAJ5+XIUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=AztOIbFo; arc=none smtp.client-ip=209.85.210.51
+	 In-Reply-To:To:Cc; b=D1cJpbYhmUbCynfU/1X1m09Y+wHPeyHE0rYvEhRa0vl2jBNNgi6Xm64Dpb6EhPA1d8puQtFymPIKXyv5cANvTmYvA1b8wWzugf8gGZ0shAHMPXh3TI4JFyvjkjTq8MLbOoZxPTvmvgIZE48sBpw2sDylzciiNcpJMz+W6FbbrH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=mH4Kug5w; arc=none smtp.client-ip=209.85.160.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ot1-f51.google.com with SMTP id 46e09a7af769-7302a769534so154857a34.1
-        for <linux-iio@vger.kernel.org>; Wed, 07 May 2025 13:43:41 -0700 (PDT)
+Received: by mail-oa1-f52.google.com with SMTP id 586e51a60fabf-2cca475546fso219837fac.1
+        for <linux-iio@vger.kernel.org>; Wed, 07 May 2025 13:43:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1746650621; x=1747255421; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1746650623; x=1747255423; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=nsDoH9wedifhugPM5JBN/pxKp+uLG0gE7R6WQkp6CbY=;
-        b=AztOIbFo/40+dbLiN+K9vEq8Q27BO5256hxM2PWEh+9azhPiRF2OWGyNl3cmAv3PYL
-         G1HfNh/LgS/UM14FNTG6HwYRhakNKv3ku/jymdVqI2KTeF60u7bXU5UDgN9dP7c4VBxw
-         l2R0pcMv4MxYPL17ly1AjRVs4d2IYb8BDTZd3my4BrPo8pLV6y2Fr7OO1puFTbV0KPDq
-         3wvjf77z5F1qnrDmVSIbRU0Vr4kz9lRD2Dvc0OZY+l4C9JAdO8XsSlMk4AgOnOU7Wq10
-         FMlqpN70WyLGVmlavxiUa5H41QyqXQF+exFmwXgChS9s66OAxkgA1luNYWMPdfZQgg0N
-         ai4A==
+        bh=Z9C6eh6cD17EJef3d5HM9D4tHLrLT86syKoOQcjPQwA=;
+        b=mH4Kug5w1lChHbBYu8jIZXmirJ3eh4oQEEjeZYC1lceGHh41VgeJPkyyWIT5PtpFUO
+         r+DSemSuVOg/QEjymfh4G99CanvuRTtISTZsshyYKwBfDEOw48Y4YgP3AQ9s2U5t4sja
+         TfJQsHDMP6tm3C31bMeiK3EVqm2vKhALfENMAW2X/7ZcmhNAvqqib0pjlLhJnSvphcZy
+         HrbW0gpzaMnTd21/4YUAx6E2qwJ79Re+uLNcR2GaVAAT2GBlp0KgNtuP2tjyHRe8ewse
+         X4P0GZ43Xzs0i4l0KzwL8XI98DFOg+3mMBVLe2NvKhx/WIvPOm3ERj/FQS7hi/Ancppo
+         y5Cw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746650621; x=1747255421;
+        d=1e100.net; s=20230601; t=1746650623; x=1747255423;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=nsDoH9wedifhugPM5JBN/pxKp+uLG0gE7R6WQkp6CbY=;
-        b=wTrXfCbvIBABiH75eAN1TCBXr3sIoYVNBlXDY9KkX+5/w0s3ZAdFDVdAN5FBLKn8NM
-         jON9j3p3m9FA/u+IDvwqTVlaLpBYaL4+rbZJFzN6D788N55UrXtx90in+4lvxwFM6uab
-         v7NLxXSYpXNHCF5BOT93Wuhj6FyFOwJ2BwUeG/e77igvE/PK64/tYAXZgGP9SasTR3zc
-         XPA2bEwoK/h658/ehePCry8bwg2zq1IHHrRWMr6e7iVdQivTozmS119joq9vYYISulF3
-         901ZG+4GsDH8bvYk5ZjNUcFD6NWaOxh9gGntshDR23vHNfAzZOnyPH/RdHLPaEgd+SD2
-         8NmQ==
-X-Gm-Message-State: AOJu0YyZc6xIfXPgXQeN6SZeElPabhZWWWcfqQAxLtgQdJGmx4x5pkCq
-	MOpxr/jrjB3gJKDX0V+JTdERnUdCQu8VGQQVXxoIECLXyfTASiaS0yDWvUULgm0=
-X-Gm-Gg: ASbGncu4C0rLjl4dbLcBW3UWp2Ik4B05aKAc3ufwUZUd2I6VCPPm/Jjbxjmy5kngrGz
-	c9rnitgZ5MgidM4qe9JYwkCzYkuKROITphW0s4VpC4Hmba54/BYWCWLKcTu3awu6gmnSOM6miO+
-	Z9RqxpVPtPYmERbybcTzZeHuAskI1GvE64WbGJZ4q8yd5GLp3GZGfMRpDOR9QZw5bBZPAC96xLM
-	VSyjW7zTvkpuS20LqrlO0v65N4o+K8LKHTpw4MrLy5TOvS1TSw7YVzWtqala67uBBghvxoLlac6
-	Wv+A5kAf0spEret7HFf1xN8ZyLQZRDuXR9i8o3Hs+QFl5g==
-X-Google-Smtp-Source: AGHT+IGuMbSopsw0kPB3BOKdZwGLMyA4fTqZkg1sp+VqbZBKSh74y17YUdx5+VNzA+Dlkjgu5EqA2g==
-X-Received: by 2002:a05:6871:692:b0:2d5:d5c:a851 with SMTP id 586e51a60fabf-2db5bd81d15mr3352825fac.6.1746650621211;
-        Wed, 07 May 2025 13:43:41 -0700 (PDT)
+        bh=Z9C6eh6cD17EJef3d5HM9D4tHLrLT86syKoOQcjPQwA=;
+        b=rIDM6VoL2u0DlHApQPkam58X6z8+9K9HN6iwNKGLhH3ZSUdg7txHOUmMvWNhvzj7Yo
+         PGTnKTGQEa8GU75R1LxSLcHRtYD/Yhrga6Ql3o0DtMHF3BOt9VgiYQzXv4No3J/zrgH6
+         xW3By6Y7tOZe8gjPDCpv82jXGCyHQOwLFAYG3SgbDJ1r1+Jq8eXsgirw4PWMp0DAjyrS
+         8+dp3pqOLr4LUCmlh2CnBZlbbUtjEadOMaJVJQITneXrKw9R8hhVxtzPYnzcHbdNYBV4
+         iygyiJCwd4LyNHJ+x+r275Lxi0T2OiiYorUQStZNUDPHVj5Y+2IpM6KwW5PC/vY7O9DS
+         PIsg==
+X-Gm-Message-State: AOJu0Yz9tHVZYbMsGopySHRjTg3gUWjIpsIUAp2AZpBbhex7crkgCphp
+	PJpdqZLWu0TX8z9kETTSztmHzvMbxT6Aj6s9JZ6ewbMXfpkgDpF0hayMKgq9Aa4=
+X-Gm-Gg: ASbGncviKp/LHMXoATuVRehDgqL0t25fWolmvn10SOdnMJDUrJ89IYGg0Ehtp2olYAs
+	+iSVecoM2TrmlCatuSy4TdAPa+TaXee3AslkvPcPKHrqn1cBAcLCAWeP0G8GvgRLg7VzMm+jOFL
+	bR/XaNKzGj9hGRTXPe0PkXPrlyCJbq+9j/vJb6LoCmLBxiccZq2XkJOWkrEIKFhH06mp48dsKxK
+	Exo2ielgVfW++bmHOC/bza2fAFiLjzjzmPuE8wtB9iBNA+RWByHQSwVwpcuCoceaa3adx3wZ1uR
+	7l6wFp0Z2ZhgWtu3eiMR/c8CTjEo87K7Oq2XymCcZPKdgNXJHhRo/5wc
+X-Google-Smtp-Source: AGHT+IENPH7fJFVZWI+5hLQbltsb6uPLojsgCu0d4mLuhreNgObStagGp6+xSfl6IozpO/zVgnEYcQ==
+X-Received: by 2002:a05:6870:a7a0:b0:2c2:3eb4:e53 with SMTP id 586e51a60fabf-2db5c126f05mr2877972fac.37.1746650622970;
+        Wed, 07 May 2025 13:43:42 -0700 (PDT)
 Received: from [127.0.1.1] ([2600:8803:e7e4:1d00:3356:f6f6:bf76:a32])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2db5cd716d3sm898642fac.21.2025.05.07.13.43.39
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2db5cd716d3sm898642fac.21.2025.05.07.13.43.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 May 2025 13:43:39 -0700 (PDT)
+        Wed, 07 May 2025 13:43:41 -0700 (PDT)
 From: David Lechner <dlechner@baylibre.com>
-Date: Wed, 07 May 2025 15:42:40 -0500
-Subject: [PATCH v6 1/7] iio: make IIO_DMA_MINALIGN minimum of 8 bytes
+Date: Wed, 07 May 2025 15:42:41 -0500
+Subject: [PATCH v6 2/7] iio: introduce IIO_DECLARE_BUFFER_WITH_TS macros
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -82,7 +82,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20250507-iio-introduce-iio_declare_buffer_with_ts-v6-1-4aee1b9f1b89@baylibre.com>
+Message-Id: <20250507-iio-introduce-iio_declare_buffer_with_ts-v6-2-4aee1b9f1b89@baylibre.com>
 References: <20250507-iio-introduce-iio_declare_buffer_with_ts-v6-0-4aee1b9f1b89@baylibre.com>
 In-Reply-To: <20250507-iio-introduce-iio_declare_buffer_with_ts-v6-0-4aee1b9f1b89@baylibre.com>
 To: Jonathan Cameron <jic23@kernel.org>, 
@@ -97,60 +97,110 @@ To: Jonathan Cameron <jic23@kernel.org>,
 Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
  linux-arm-kernel@lists.infradead.org
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2051; i=dlechner@baylibre.com;
- h=from:subject:message-id; bh=KXhEzNu9vMA0LlJD+DPGW7NGscBEnrm7VeMGbRK9U/g=;
- b=owEBbQGS/pANAwAKAcLMIAH/AY/AAcsmYgBoG8XMenAMAnq7gPRRFS22x5xeEEEtJEsUd6xym
- y6ke1GkKsKJATMEAAEKAB0WIQTsGNmeYg6D1pzYaJjCzCAB/wGPwAUCaBvFzAAKCRDCzCAB/wGP
- wLngCACRoGSeRFy1n5EjP/iotCrHZcEvDzkEXMr6F/ZItm2ApnS+GHg2GEuOB5DOqzcUTIIXHCL
- 9KQ+3veOSVxITb+z1+PHlVLj6hf79gLTAyV7h9dW3x8s3rY3fCT58TNwyK7/Se70eOlNThdaIu2
- pkXyZHdfmNZPSjbfvTMxxLG4PsvkaX1byJZXk40WocOq0pqQXFzD/5+jvGeNRfsUHhrhPN0HCJL
- Eg2YmfnUHvbYbWafrR8i25s9cd+kPm+MKU9xU3mEjale2EtU96Ej0fX4fvekuvWL8X0rClfwM3S
- cdjsFjvGtSkBlUpbBSnj3SZSLZBce9MRNi27B3UPREc1YOcX
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4238; i=dlechner@baylibre.com;
+ h=from:subject:message-id; bh=Qkz6TboWaI7MFHoD3asvbEdknvmftSA+W8rgLRn7UjM=;
+ b=owEBbQGS/pANAwAKAcLMIAH/AY/AAcsmYgBoG8XSBGqWPSVzxaO0ZMnShg5EsgNFTw6d5cS5L
+ syZI6ewvIOJATMEAAEKAB0WIQTsGNmeYg6D1pzYaJjCzCAB/wGPwAUCaBvF0gAKCRDCzCAB/wGP
+ wB0AB/9zqie1eENWSL0OQQqBATpe+2eVgIQGMFWAEa7WJHYw07K73zYwEpmZbJvfjFhPZzv57ot
+ hxvzp7Y94iu/G1vwtc/vQ88etn1VI36o5jAMreTZHcLTQEhizFV1b217USh5XdaWNhEYc+3aHu5
+ y+sIQtY93SDTnbG0utUX24FNFXmUwc1+s0KjcsA3Ccdyp/nlLLsL2ufTNdYMu0uVT5IrcGrLKiG
+ KOX1enYu/mmX0alZqmCPeQulRunaS+JiZe6EeUveJb6Wqj+9exstphlnAZk+J1y77ZE2e1AuOhh
+ Fa5k0E3X+cmHL3E+zO/B5ZHV3CpOoDUzaQRcCKPJSOUO2vMG
 X-Developer-Key: i=dlechner@baylibre.com; a=openpgp;
  fpr=8A73D82A6A1F509907F373881F8AF88C82F77C03
 
-Add a condition to ensure that IIO_DMA_MINALIGN is at least 8 bytes.
-On some 32-bit architectures, IIO_DMA_MINALIGN is 4. In many cases,
-drivers are using this alignment for buffers that include a 64-bit
-timestamp that is used with iio_push_to_buffers_with_ts(), which expects
-the timestamp to be aligned to 8 bytes. To handle this, we can just make
-IIO_DMA_MINALIGN at least 8 bytes.
+Add new macros to help with the common case of declaring a buffer that
+is safe to use with iio_push_to_buffers_with_ts(). This is not trivial
+to do correctly because of the alignment requirements of the timestamp.
+This will make it easier for both authors and reviewers.
+
+To avoid double __align() attributes in cases where we also need DMA
+alignment, add a 2nd variant IIO_DECLARE_DMA_BUFFER_WITH_TS().
 
 Reviewed-by: Nuno Sá <nuno.sa@analog.com>
 Signed-off-by: David Lechner <dlechner@baylibre.com>
 ---
 
-v6 changes:
-- Removed the #if and use MAX instead since apparently clang raises an
-  error that __alignof__ isn't defined when used in a #if condition.
+v5 changes:
+* Revert back to __align(IIO_DMA_MINALIGN) as IIO_DMA_MINALIGN now has
+  a minimum of 8 bytes.
+
+v4 changes:
+* Drop the static_asserts(). Some 32-bit arches were triggering one, so
+  we had to address the problem instead of hoping that it didn't exist.
+  The other made a multi-statement macro, which isn't the best practice
+  and didn't have a way to make a really helpful error message. The
+  condition we were trying to catch is still caught by -Wvla.
+* Changed __align(IIO_DMA_MINALIGN) to __align(MAX(IIO_DMA_MINALIGN,
+  sizeof(s64))). As the build-bots found, there are some 32-bit arches
+  where IIO_DMA_MINALIGN is 4, but we still need 8-byte alignment for
+  the timestamp.
+
+v3 changes:
+* Use leading double-underscore for "private" macro to match "private"
+  functions that do the same.
+* Use static_assert() from linux/build_bug.h instead of _Static_assert()
+* Fix incorrectly using sizeof(IIO_DMA_MINALIGN).
+* Add check that count argument is constant. (Note, I didn't include a
+  message in this static assert because it already gives a reasonable
+  message.)
+
+/home/david/work/bl/linux/drivers/iio/accel/sca3300.c:482:51: error: expression in static assertion is not constant
+  482 |         IIO_DECLARE_BUFFER_WITH_TS(s16, channels, val);
+      |                                                   ^~~
+
+v2 changes:
+* Add 2nd macro for DMA alignment
 ---
- include/linux/iio/iio.h | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ include/linux/iio/iio.h | 32 ++++++++++++++++++++++++++++++++
+ 1 file changed, 32 insertions(+)
 
 diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
-index 638cf2420fbd85cf2924d09d061df601d1d4bb2a..a574f22398e45cad1ea741d20d302f88756a1b13 100644
+index a574f22398e45cad1ea741d20d302f88756a1b13..d11668f14a3e17654fcf17a4e853d4b493205019 100644
 --- a/include/linux/iio/iio.h
 +++ b/include/linux/iio/iio.h
-@@ -10,6 +10,7 @@
+@@ -7,6 +7,7 @@
+ #ifndef _INDUSTRIAL_IO_H_
+ #define _INDUSTRIAL_IO_H_
+ 
++#include <linux/align.h>
  #include <linux/device.h>
  #include <linux/cdev.h>
  #include <linux/compiler_types.h>
-+#include <linux/minmax.h>
- #include <linux/slab.h>
- #include <linux/iio/types.h>
- /* IIO TODO LIST */
-@@ -775,8 +776,14 @@ static inline void *iio_device_get_drvdata(const struct iio_dev *indio_dev)
-  * to in turn include IIO_DMA_MINALIGN'd elements such as buffers which
-  * must not share  cachelines with the rest of the structure, thus making
-  * them safe for use with non-coherent DMA.
-+ *
-+ * A number of drivers also use this on buffers that include a 64-bit timestamp
-+ * that is used with iio_push_to_buffer_with_ts(). Therefore, in the case where
-+ * DMA alignment is not sufficient for proper timestamp alignment, we align to
-+ * 8 bytes instead.
+@@ -784,6 +785,37 @@ static inline void *iio_device_get_drvdata(const struct iio_dev *indio_dev)
   */
--#define IIO_DMA_MINALIGN ARCH_DMA_MINALIGN
-+#define IIO_DMA_MINALIGN MAX(ARCH_DMA_MINALIGN, sizeof(s64))
+ #define IIO_DMA_MINALIGN MAX(ARCH_DMA_MINALIGN, sizeof(s64))
+ 
++#define __IIO_DECLARE_BUFFER_WITH_TS(type, name, count) \
++	type name[ALIGN((count), sizeof(s64) / sizeof(type)) + sizeof(s64) / sizeof(type)]
++
++/**
++ * IIO_DECLARE_BUFFER_WITH_TS() - Declare a buffer with timestamp
++ * @type: element type of the buffer
++ * @name: identifier name of the buffer
++ * @count: number of elements in the buffer
++ *
++ * Declares a buffer that is safe to use with iio_push_to_buffer_with_ts(). In
++ * addition to allocating enough space for @count elements of @type, it also
++ * allocates space for a s64 timestamp at the end of the buffer and ensures
++ * proper alignment of the timestamp.
++ */
++#define IIO_DECLARE_BUFFER_WITH_TS(type, name, count) \
++	__IIO_DECLARE_BUFFER_WITH_TS(type, name, count) __aligned(sizeof(s64))
++
++/**
++ * IIO_DECLARE_DMA_BUFFER_WITH_TS() - Declare a DMA-aligned buffer with timestamp
++ * @type: element type of the buffer
++ * @name: identifier name of the buffer
++ * @count: number of elements in the buffer
++ *
++ * Same as IIO_DECLARE_BUFFER_WITH_TS(), but is uses __aligned(IIO_DMA_MINALIGN)
++ * to ensure that the buffer doesn't share cachelines with anything that comes
++ * before it in a struct. This should not be used for stack-allocated buffers
++ * as stack memory cannot generally be used for DMA.
++ */
++#define IIO_DECLARE_DMA_BUFFER_WITH_TS(type, name, count) \
++	__IIO_DECLARE_BUFFER_WITH_TS(type, name, count) __aligned(IIO_DMA_MINALIGN)
 +
  struct iio_dev *iio_device_alloc(struct device *parent, int sizeof_priv);
  

@@ -1,113 +1,126 @@
-Return-Path: <linux-iio+bounces-19243-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19244-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCC02AAE197
-	for <lists+linux-iio@lfdr.de>; Wed,  7 May 2025 15:55:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09B6CAAE196
+	for <lists+linux-iio@lfdr.de>; Wed,  7 May 2025 15:55:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E5369C17FA
-	for <lists+linux-iio@lfdr.de>; Wed,  7 May 2025 13:53:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 084B11C252F1
+	for <lists+linux-iio@lfdr.de>; Wed,  7 May 2025 13:55:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13C1F28A700;
-	Wed,  7 May 2025 13:49:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F040B289E35;
+	Wed,  7 May 2025 13:52:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="xMOwG7NA"
+	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="lFAhvrr/"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oi1-f171.google.com (mail-oi1-f171.google.com [209.85.167.171])
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D589289346
-	for <linux-iio@vger.kernel.org>; Wed,  7 May 2025 13:49:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7552289E34
+	for <linux-iio@vger.kernel.org>; Wed,  7 May 2025 13:52:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746625791; cv=none; b=CdU/bHgSYMMsAciCx57AobklpLSqcN3X3KClMOhv6SdmI1ekJ788cdQfbNio4ki08GL5CDpfZ8iIMuRCnNVwaRJ9bfThEoeabtHv1RrtDOCcx3AUdE+621qH5rWkDbZUSAyfdba3zn8vMUXfgz6dboFqfpqbTxkzWWrDE5it2uA=
+	t=1746625925; cv=none; b=iCkKzvopZWUXkGIMUCL8yjrC7ekNlmIXTHGsZLEQ0CHbW4YX4ct65JaNyzt0GrEGvJDJ+La3GRQhLGK1tipIqmC8j5PuSWpP5tD7QUFbZPi49a4Pcof8dZOCV3o8tUf3LieZDCknUhIUnl0zSyBkRn6dQTtBRnQZYO6Jaq8w0+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746625791; c=relaxed/simple;
-	bh=w9dJJZAfLFUz4sepGZ4yAHD92WyyzbYRQNOBLcVmWcs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=k8IkEQDpBgU83Lkzuq+4+/aPjvSNSpUqWkG5qYvq/vWpAN+TJHkF1jSoZHFrEfL88DE94h3HJdmICkgN7yuALVHv/Ssg3bmPqGrYNp7W3bzh+EVxrWBWmqF3JXBo5FNIBYWEdF3YVzf01sMNCxTgJm0Jg3oInMrViHkYCAg81xY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=xMOwG7NA; arc=none smtp.client-ip=209.85.167.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oi1-f171.google.com with SMTP id 5614622812f47-401c43671ecso528302b6e.0
-        for <linux-iio@vger.kernel.org>; Wed, 07 May 2025 06:49:47 -0700 (PDT)
+	s=arc-20240116; t=1746625925; c=relaxed/simple;
+	bh=5LLKe8a++xD2c3tJVJ8drGjnk/736Tl6kXc3j0/ObLg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ncExgUTNhZ6QEE+Xosyss9xYNhxRgBvdj2U4gkUWy4yNf0kRi2eXLyjE4waczbo4nP0wThibOR8KiNslhADBfDoqoTp77e4qoy7x7eYTQJkoIeTuF7DXEDHfL3eWX7QRA4mJZFRGJjW8Sax/63RDxgJ8si64TRB+3KDJH3SFpBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=lFAhvrr/; arc=none smtp.client-ip=209.85.208.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amarulasolutions.com
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-5e5e22e6ed2so10969607a12.3
+        for <linux-iio@vger.kernel.org>; Wed, 07 May 2025 06:52:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1746625787; x=1747230587; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=N2E3azbVaCRVDrY4UnTVOScgZIlfU9ExUYdpv0XY9P0=;
-        b=xMOwG7NAiSA4M9iwSSzzquNz/WWG7vxM4jBE+hXIPioIrtEFMqxV7FD9O57Pdc6SZO
-         gOLxTBFvr/Ficn3HfyB+izDOblNKOtc64bzwzSjlqlXSXMZwe4+UsjZP8THsXj6x5gOs
-         vwsyrdnV9IrD/S84OtsH49vuaUeBaEPb5TWiAE7IVVahjO99L/oqd1DYYiamucXtfKal
-         enjJyHLZJ9OvnnWkpJE5bD0eg3Po120jv14zqsWw9zlkZfQsm6QCEcqPVxmFQJqY+AL6
-         VHXrTkqCpGfsxiKXlHnWMrGUhRw8vv9tIhIuhzn8qO8s99MRV4V1179SvO0llEH1Wx18
-         B/kA==
+        d=amarulasolutions.com; s=google; t=1746625922; x=1747230722; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=7GeKwUyzeFoIF4XHNI7B0gCteSiC3k5ZfaiHzje0KNY=;
+        b=lFAhvrr/x2lCs9AaM/SYfyToFSb5i2OyrG4DEJm4NkxKfoRAsd3erSklk/W8AJ1JMM
+         mUJqPvjfLN0DXTjKTDqhuenAUbGp6bEPixhKMk/TCst8b0MCfBrTVhElgkJAVv4WEkQ3
+         ACgZmU6p5+YtfDKuJpo0xQg/imF8f8l7hezmk=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746625787; x=1747230587;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=N2E3azbVaCRVDrY4UnTVOScgZIlfU9ExUYdpv0XY9P0=;
-        b=l0SlHkh0x/CLny2JmJ781aOhNBvKjorcGBOnH14vFhFQJcSzAV8dLbKnz+Y3iELlMg
-         AJwKpFH6JmkKdjrS8IN8LoWJdpm9/HFUPjXJRKGQpMqsCtGtYViPS+vjTEGauzIknZ/3
-         Rrr01IPH81NvdIgNGKhO/tCvQFUX+VdL8nQtZBIxLVJgW2beswEXZBiNb7HcfFNNKzO2
-         6n5ehiQoqGcrN9XzTHY1aggiTXeC07crDuzE8kNSawB4eudmj0KgkVD6n9T4shCDpVDz
-         iPUryP0kMHvOjfn+QCWXHtB/j7UNcsAliTAP34V3AYs5j9T/RX83XO1tpNPM3A6EYj2g
-         zKxA==
-X-Forwarded-Encrypted: i=1; AJvYcCUcRygVojTkRSmqx7CbZGbWmpBkDY+s1w2J19lu/XZRw749/x1BV0PppdXJF2fATLhanVi5SH1ldGs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxJlJq7KO3auZkgzkrpjp8L9YX9d8yJhOWHO0z4BKOrGvOrBRZE
-	zv477/6WgAuh7s3HldE3CUVWudeTF4ObjdeJ0+6siVgU7PjguBBx0inbYFXFH5M=
-X-Gm-Gg: ASbGncvXELDS67dQa6w4YHiNHL/HXrGfm5QMYsBauXQ06vT0S64OjK3yhSRRr6Gurd+
-	lBTMpNii4Fu/22f4iE7K7Te5HzVjFxDdOufAf2hsRBSKMCMBd9O95It+W2fZKEtVFobFW/CpL7h
-	BZsNUjRI7MYByAAHUVESvFjEtMN7Fw1XNNc/jzUY1WAjcmAo8GWp+npXJPju3qzQD2Da9XGyijq
-	sjp43c2851VajjZmkPxK9OwqosZe3XDR7STDdnLeqZT/dnKDySZjT+4JkROIOcLCpCDQ0vuoASk
-	cqZUMORBaUkgy5RFmiIoa7fecqg4pGbfH57W4InK2ga3ZzF4hefk9izo0rrbgDlnPIjw82gCRRA
-	YhBuh6LUL8+BDmNw=
-X-Google-Smtp-Source: AGHT+IEkqfDH15pjFTL4cZA58InYNRqoavGNSUddgSHwMO1Pw7iWYqyvF5hpJ5MLza2jpw+neoIdHg==
-X-Received: by 2002:a05:6808:178c:b0:3f6:ab0d:8db1 with SMTP id 5614622812f47-4036ea41ecamr2103982b6e.3.1746625787217;
-        Wed, 07 May 2025 06:49:47 -0700 (PDT)
-Received: from ?IPV6:2600:8803:e7e4:1d00:3356:f6f6:bf76:a32? ([2600:8803:e7e4:1d00:3356:f6f6:bf76:a32])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-607e7fe84a8sm2683429eaf.36.2025.05.07.06.49.46
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 07 May 2025 06:49:46 -0700 (PDT)
-Message-ID: <fbf6c7ef-3680-40ec-8c90-121e6a635b8d@baylibre.com>
-Date: Wed, 7 May 2025 08:49:46 -0500
+        d=1e100.net; s=20230601; t=1746625922; x=1747230722;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=7GeKwUyzeFoIF4XHNI7B0gCteSiC3k5ZfaiHzje0KNY=;
+        b=w8WZlhtght0WOanTAHWuCzf+/a3cfeI806f1sZQlUj2HUszdVvbRdCHXaiRPn0OBbB
+         l8HjaNNyxRxX17wPht/KzBzfa+R3qp9pTVmkSsTHdQuRp1C0awe3L1h4OVxH+UJjQx+f
+         XmzuSFfA9Y6fFepIXl36I7upaEJ4/TroU7pDcKeo2/qDw9vf+hzrCEta2IFRCJ61++xW
+         IXQ9EdQgwrMRJmOi3mOxh8ywoYp+OQHWGF7T5sDpwgDm52Irpb5mXHJgJ9NPPQ6Q69ap
+         m5No5ESq8bcCTFVbEudiHgbadcWJN79A8oeo5qnczAxhbyWPE+gIMbLFXN8ddiyyy/QM
+         XoSg==
+X-Forwarded-Encrypted: i=1; AJvYcCVHuQ9uCS9lTiwA1Wbq5xQJSYOW5i9lfpO2/4c99t6SLVhKfANVZvEJZFe6lbRG30J67XHCvkem8jA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzzeze3Yb6vPsgXNvKbUdeEIQD1n1414xvx/S8QWzLujuurxieR
+	lV5rK5Oy0SVc1TPMRIPyQqMtDSfmQ+zj0gz5KpG2oUySWsMr9jA/Eu7vD8+WBBQ=
+X-Gm-Gg: ASbGncsjcAXfCyaShrPuv8g/gbVD0nNc1zxtycEGVCbEsTExTh6Uag2AFcUh8T7M1hc
+	NlitXN6GaLfhLgooIJs7vip24J1tF0wmCk/1P0/lGjHVCxKFkibhNsGvSBtcDvQ8ZCkWV8eZB8u
+	CrXphma0iQfnFYgry96Fmh9xipBAUsZ7S4MQC0PhGawVDF/7TVwLqSrqyxcZ75r5sWI8ygyHId5
+	7hqyCCvMiv6rZ+0s3wK1sk6EMYGgF3EUoWYbV+FTF18kWA6AtVWm4Y+Di6oToZ3qnJ1BoCgDzs1
+	xQbmFkfD80D507a+A87bNoIV9SG+ZUwYB8/ZblU7BWNG3haEhIEqJF3Yfty7JLeI4FY7xWT773n
+	D/rXpwDbF6XHtCjBDE+GSW3hmH+qUJw==
+X-Google-Smtp-Source: AGHT+IF8nFh7Jj3E3ztZAdeC2ct0kjtnQ1x6LvMRae+EEiYHTrZbN6TQQ4YbOvTXqTUEGvOdOJzFVA==
+X-Received: by 2002:a17:906:bf47:b0:ace:6a18:595c with SMTP id a640c23a62f3a-ad1e8ce4c1emr334611466b.16.1746625922122;
+        Wed, 07 May 2025 06:52:02 -0700 (PDT)
+Received: from dario-ThinkPad-T14s-Gen-2i.amarulasolutions.com ([2.196.43.82])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ad1891a6873sm920845266b.61.2025.05.07.06.52.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 07 May 2025 06:52:01 -0700 (PDT)
+From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+To: linux-kernel@vger.kernel.org
+Cc: Dario Binacchi <dario.binacchi@amarulasolutions.com>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Mikael Gonella-Bolduc <m.gonella.bolduc@gmail.com>,
+	Rob Herring <robh@kernel.org>,
+	devicetree@vger.kernel.org,
+	linux-iio@vger.kernel.org
+Subject: [PATCH] dt-bindings: iio: light: apds9160: add missing type definition
+Date: Wed,  7 May 2025 15:51:38 +0200
+Message-ID: <20250507135147.1328639-1-dario.binacchi@amarulasolutions.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH][next] iio: admv1013: replace redundant ternary operator
- with just len
-To: Colin Ian King <colin.i.king@gmail.com>,
- Lars-Peter Clausen <lars@metafoo.de>,
- Michael Hennerich <Michael.Hennerich@analog.com>,
- Antoniu Miclaus <antoniu.miclaus@analog.com>,
- Jonathan Cameron <jic23@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?=
- <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
- linux-iio@vger.kernel.org
-Cc: kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20250507134502.254736-1-colin.i.king@gmail.com>
-From: David Lechner <dlechner@baylibre.com>
-Content-Language: en-US
-In-Reply-To: <20250507134502.254736-1-colin.i.king@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 5/7/25 8:45 AM, Colin Ian King wrote:
-> The variable ret is being assigned a return value and non-zero error
-> return paths are taken at all stages. At the end of the function ret
-> is always zero, so the ternary operator checking for zero ret is
-> redundant and can be replaced with just len instead.
-> 
-> Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
-> ---
+Fix the following warning:
 
-Reviewed-by: David Lechner <dlechner@baylibre.com>
+ Documentation/devicetree/bindings/iio/light/brcm,apds9160.yaml: ps-cancellation-current-picoamp: missing type definition
 
+raised by command:
+
+ make dt_binding_check  DT_SCHEMA_FILES=fsl.yaml
+
+Fixes: be464661e7532 ("dt-bindings: iio: light: Add APDS9160 binding")
+Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+---
+
+ Documentation/devicetree/bindings/iio/light/brcm,apds9160.yaml | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/Documentation/devicetree/bindings/iio/light/brcm,apds9160.yaml b/Documentation/devicetree/bindings/iio/light/brcm,apds9160.yaml
+index bb1cc4404a55..f9c35c29fe04 100644
+--- a/Documentation/devicetree/bindings/iio/light/brcm,apds9160.yaml
++++ b/Documentation/devicetree/bindings/iio/light/brcm,apds9160.yaml
+@@ -37,6 +37,7 @@ properties:
+     maximum: 63
+ 
+   ps-cancellation-current-picoamp:
++    $ref: /schemas/types.yaml#/definitions/uint32
+     description:
+       Proximity sensor crosstalk cancellation current in picoampere.
+       This parameter adjusts the current in steps of 2400 pA up to 276000 pA.
+-- 
+2.43.0
+
+base-commit: 0d8d44db295ccad20052d6301ef49ff01fb8ae2d
+branch: fix-brcm,apds9160.yaml
 

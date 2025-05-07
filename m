@@ -1,126 +1,144 @@
-Return-Path: <linux-iio+bounces-19244-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19245-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09B6CAAE196
-	for <lists+linux-iio@lfdr.de>; Wed,  7 May 2025 15:55:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89F85AAE375
+	for <lists+linux-iio@lfdr.de>; Wed,  7 May 2025 16:46:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 084B11C252F1
-	for <lists+linux-iio@lfdr.de>; Wed,  7 May 2025 13:55:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 80BAE3AAE42
+	for <lists+linux-iio@lfdr.de>; Wed,  7 May 2025 14:44:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F040B289E35;
-	Wed,  7 May 2025 13:52:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="lFAhvrr/"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0989289811;
+	Wed,  7 May 2025 14:45:12 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7552289E34
-	for <linux-iio@vger.kernel.org>; Wed,  7 May 2025 13:52:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2231328031D;
+	Wed,  7 May 2025 14:45:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746625925; cv=none; b=iCkKzvopZWUXkGIMUCL8yjrC7ekNlmIXTHGsZLEQ0CHbW4YX4ct65JaNyzt0GrEGvJDJ+La3GRQhLGK1tipIqmC8j5PuSWpP5tD7QUFbZPi49a4Pcof8dZOCV3o8tUf3LieZDCknUhIUnl0zSyBkRn6dQTtBRnQZYO6Jaq8w0+k=
+	t=1746629112; cv=none; b=uKOAfKV0aDB63v6dVI7KCra2QZhdUdzvKKOhsN5vLbx5ovN7GmbwwH/rzrHvLZoILOIrC797XQisEVWFXJapMT3FaIj2+0RCRUN71piY/oVcu19npAGxiWZrEHMXBJy9u6q04Y9GeNOcZsHu8mGiDfpMPLk6AaNE4A4e7xc22Mo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746625925; c=relaxed/simple;
-	bh=5LLKe8a++xD2c3tJVJ8drGjnk/736Tl6kXc3j0/ObLg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ncExgUTNhZ6QEE+Xosyss9xYNhxRgBvdj2U4gkUWy4yNf0kRi2eXLyjE4waczbo4nP0wThibOR8KiNslhADBfDoqoTp77e4qoy7x7eYTQJkoIeTuF7DXEDHfL3eWX7QRA4mJZFRGJjW8Sax/63RDxgJ8si64TRB+3KDJH3SFpBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=lFAhvrr/; arc=none smtp.client-ip=209.85.208.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amarulasolutions.com
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-5e5e22e6ed2so10969607a12.3
-        for <linux-iio@vger.kernel.org>; Wed, 07 May 2025 06:52:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amarulasolutions.com; s=google; t=1746625922; x=1747230722; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=7GeKwUyzeFoIF4XHNI7B0gCteSiC3k5ZfaiHzje0KNY=;
-        b=lFAhvrr/x2lCs9AaM/SYfyToFSb5i2OyrG4DEJm4NkxKfoRAsd3erSklk/W8AJ1JMM
-         mUJqPvjfLN0DXTjKTDqhuenAUbGp6bEPixhKMk/TCst8b0MCfBrTVhElgkJAVv4WEkQ3
-         ACgZmU6p5+YtfDKuJpo0xQg/imF8f8l7hezmk=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746625922; x=1747230722;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=7GeKwUyzeFoIF4XHNI7B0gCteSiC3k5ZfaiHzje0KNY=;
-        b=w8WZlhtght0WOanTAHWuCzf+/a3cfeI806f1sZQlUj2HUszdVvbRdCHXaiRPn0OBbB
-         l8HjaNNyxRxX17wPht/KzBzfa+R3qp9pTVmkSsTHdQuRp1C0awe3L1h4OVxH+UJjQx+f
-         XmzuSFfA9Y6fFepIXl36I7upaEJ4/TroU7pDcKeo2/qDw9vf+hzrCEta2IFRCJ61++xW
-         IXQ9EdQgwrMRJmOi3mOxh8ywoYp+OQHWGF7T5sDpwgDm52Irpb5mXHJgJ9NPPQ6Q69ap
-         m5No5ESq8bcCTFVbEudiHgbadcWJN79A8oeo5qnczAxhbyWPE+gIMbLFXN8ddiyyy/QM
-         XoSg==
-X-Forwarded-Encrypted: i=1; AJvYcCVHuQ9uCS9lTiwA1Wbq5xQJSYOW5i9lfpO2/4c99t6SLVhKfANVZvEJZFe6lbRG30J67XHCvkem8jA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzzeze3Yb6vPsgXNvKbUdeEIQD1n1414xvx/S8QWzLujuurxieR
-	lV5rK5Oy0SVc1TPMRIPyQqMtDSfmQ+zj0gz5KpG2oUySWsMr9jA/Eu7vD8+WBBQ=
-X-Gm-Gg: ASbGncsjcAXfCyaShrPuv8g/gbVD0nNc1zxtycEGVCbEsTExTh6Uag2AFcUh8T7M1hc
-	NlitXN6GaLfhLgooIJs7vip24J1tF0wmCk/1P0/lGjHVCxKFkibhNsGvSBtcDvQ8ZCkWV8eZB8u
-	CrXphma0iQfnFYgry96Fmh9xipBAUsZ7S4MQC0PhGawVDF/7TVwLqSrqyxcZ75r5sWI8ygyHId5
-	7hqyCCvMiv6rZ+0s3wK1sk6EMYGgF3EUoWYbV+FTF18kWA6AtVWm4Y+Di6oToZ3qnJ1BoCgDzs1
-	xQbmFkfD80D507a+A87bNoIV9SG+ZUwYB8/ZblU7BWNG3haEhIEqJF3Yfty7JLeI4FY7xWT773n
-	D/rXpwDbF6XHtCjBDE+GSW3hmH+qUJw==
-X-Google-Smtp-Source: AGHT+IF8nFh7Jj3E3ztZAdeC2ct0kjtnQ1x6LvMRae+EEiYHTrZbN6TQQ4YbOvTXqTUEGvOdOJzFVA==
-X-Received: by 2002:a17:906:bf47:b0:ace:6a18:595c with SMTP id a640c23a62f3a-ad1e8ce4c1emr334611466b.16.1746625922122;
-        Wed, 07 May 2025 06:52:02 -0700 (PDT)
-Received: from dario-ThinkPad-T14s-Gen-2i.amarulasolutions.com ([2.196.43.82])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ad1891a6873sm920845266b.61.2025.05.07.06.52.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 May 2025 06:52:01 -0700 (PDT)
-From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-To: linux-kernel@vger.kernel.org
-Cc: Dario Binacchi <dario.binacchi@amarulasolutions.com>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	s=arc-20240116; t=1746629112; c=relaxed/simple;
+	bh=Zpmdie7FozxakGeKgHKI8fEBnBpA41Ht5ZOwoa/WN4g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=eWc5D77cXaSzdieYu3KvIcdW4K6Dq4b2uub//fh6v1oo5CNTKInPhBXGx1uaDyk827ZhFAYsH6RMcghyo0XaI8KgFv1jgq6aIKbkTvJ98jX3ve2kkCUvoMxN90L5i2AdNUXi/ThsP1i2BQycpzDZKISRUe9Tm3uQX48J1ybJX38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=fail smtp.mailfrom=kernel.org; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=kernel.org
+X-CSE-ConnectionGUID: OzNrNAnkSnSkOp4Drjj/vA==
+X-CSE-MsgGUID: /LWSEVMbRNGgnJ/3rKczhA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11426"; a="48072387"
+X-IronPort-AV: E=Sophos;i="6.15,269,1739865600"; 
+   d="scan'208";a="48072387"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2025 07:45:11 -0700
+X-CSE-ConnectionGUID: zjSFZbuyTfWgfvpJzhyVNQ==
+X-CSE-MsgGUID: WTBPqSc1RyOyINhhQpPy3A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,269,1739865600"; 
+   d="scan'208";a="136989800"
+Received: from smile.fi.intel.com ([10.237.72.55])
+  by fmviesa009.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2025 07:45:06 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
+	(envelope-from <andy@kernel.org>)
+	id 1uCg1A-00000003l8n-3Cbw;
+	Wed, 07 May 2025 17:45:04 +0300
+Date: Wed, 7 May 2025 17:45:04 +0300
+From: Andy Shevchenko <andy@kernel.org>
+To: Angelo Dureghello <adureghello@baylibre.com>
+Cc: Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
 	Lars-Peter Clausen <lars@metafoo.de>,
-	Mikael Gonella-Bolduc <m.gonella.bolduc@gmail.com>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
 	Rob Herring <robh@kernel.org>,
-	devicetree@vger.kernel.org,
-	linux-iio@vger.kernel.org
-Subject: [PATCH] dt-bindings: iio: light: apds9160: add missing type definition
-Date: Wed,  7 May 2025 15:51:38 +0200
-Message-ID: <20250507135147.1328639-1-dario.binacchi@amarulasolutions.com>
-X-Mailer: git-send-email 2.43.0
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH v2 3/5] iio: adc: ad7606: add offset and phase
+ calibration support
+Message-ID: <aBtx8OwUXnx4d90M@smile.fi.intel.com>
+References: <20250502-wip-bl-ad7606-calibration-v2-0-174bd0af081b@baylibre.com>
+ <20250502-wip-bl-ad7606-calibration-v2-3-174bd0af081b@baylibre.com>
+ <aBTLBvw_88hQBbns@smile.fi.intel.com>
+ <k235e2mj4od3cll5wstpl4oethlkd6d6xytow4d4wzfcsxkx7y@wj7dh3zhn2sh>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <k235e2mj4od3cll5wstpl4oethlkd6d6xytow4d4wzfcsxkx7y@wj7dh3zhn2sh>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-Fix the following warning:
+On Tue, May 06, 2025 at 02:59:50PM +0200, Angelo Dureghello wrote:
+> On 02.05.2025 16:39, Andy Shevchenko wrote:
+> > On Fri, May 02, 2025 at 03:27:00PM +0200, Angelo Dureghello wrote:
 
- Documentation/devicetree/bindings/iio/light/brcm,apds9160.yaml: ps-cancellation-current-picoamp: missing type definition
+...
 
-raised by command:
+> > > +static int ad7606_get_calib_offset(struct ad7606_state *st, int ch, int *val)
+> > > +{
+> > > +	int ret;
+> > > +
+> > > +	ret = st->bops->reg_read(st, AD7606_CALIB_OFFSET(ch));
+> > > +	if (ret < 0)
+> > > +		return ret;
+> > > +
+> > > +	*val = st->chip_info->calib_offset_avail[0] +
+> > > +		ret * st->chip_info->calib_offset_avail[1];
+> > 
+> > Something wrong with the indentation.
+> > 
+> > > +	return 0;
+> > > +}
 
- make dt_binding_check  DT_SCHEMA_FILES=fsl.yaml
+...
 
-Fixes: be464661e7532 ("dt-bindings: iio: light: Add APDS9160 binding")
-Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
----
+> > > +static int ad7606_set_calib_phase(struct ad7606_state *st, int ch, int val,
+> > > +				  int val2)
+> > > +{
+> > > +	int wreg, start_ns, step_ns, stop_ns;
+> > 
+> > > +	if (val != 0)
+> > > +		return -EINVAL;
+> > > +
+> > > +	start_ns = st->chip_info->calib_phase_avail[0][1];
+> > > +	step_ns = st->chip_info->calib_phase_avail[1][1];
+> > > +	stop_ns = st->chip_info->calib_phase_avail[2][1];
+> > > +
+> > > +	/*
+> > > +	 * ad7606b: phase dielay from 0 to 318.75 μs in steps of 1.25 μs.
+> > > +	 * ad7606c-16/18: phase delay from 0 µs to 255 µs in steps of 1 µs.
+> > > +	 */
+> > > +	if (val2 < start_ns || val2 > stop_ns)
+> > > +			return -EINVAL;
+> > 
+> > Wrong indentation. Please fix in all places where it happens.
+> 
+> as already said, my code is correct,
 
- Documentation/devicetree/bindings/iio/light/brcm,apds9160.yaml | 1 +
- 1 file changed, 1 insertion(+)
+Evidently no.
 
-diff --git a/Documentation/devicetree/bindings/iio/light/brcm,apds9160.yaml b/Documentation/devicetree/bindings/iio/light/brcm,apds9160.yaml
-index bb1cc4404a55..f9c35c29fe04 100644
---- a/Documentation/devicetree/bindings/iio/light/brcm,apds9160.yaml
-+++ b/Documentation/devicetree/bindings/iio/light/brcm,apds9160.yaml
-@@ -37,6 +37,7 @@ properties:
-     maximum: 63
- 
-   ps-cancellation-current-picoamp:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-     description:
-       Proximity sensor crosstalk cancellation current in picoampere.
-       This parameter adjusts the current in steps of 2400 pA up to 276000 pA.
+> 1 tab after the if, anywone knows why git formats the patch this way ?  
+
+It's you, who should answer this and fix it.
+
+> > > +	wreg = val2 / step_ns;
+> > > +
+> > > +	return st->bops->reg_write(st, AD7606_CALIB_PHASE(ch), wreg);
+> > > +}
+
 -- 
-2.43.0
+With Best Regards,
+Andy Shevchenko
 
-base-commit: 0d8d44db295ccad20052d6301ef49ff01fb8ae2d
-branch: fix-brcm,apds9160.yaml
+
 

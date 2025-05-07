@@ -1,85 +1,85 @@
-Return-Path: <linux-iio+bounces-19256-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19257-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B535AAEC34
-	for <lists+linux-iio@lfdr.de>; Wed,  7 May 2025 21:32:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 286F2AAEC35
+	for <lists+linux-iio@lfdr.de>; Wed,  7 May 2025 21:32:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5EB9598359F
-	for <lists+linux-iio@lfdr.de>; Wed,  7 May 2025 19:32:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2388C98418C
+	for <lists+linux-iio@lfdr.de>; Wed,  7 May 2025 19:32:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 384B328BAAE;
-	Wed,  7 May 2025 19:32:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B739328DF58;
+	Wed,  7 May 2025 19:32:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="euS0UZLR"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UoSM3Him"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F85428983F
-	for <linux-iio@vger.kernel.org>; Wed,  7 May 2025 19:32:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD77B28983F
+	for <linux-iio@vger.kernel.org>; Wed,  7 May 2025 19:32:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746646357; cv=none; b=kUYutn8xMNUUaUKztoY4bx4vzhDpHJcHIwjnDSE9C9xk0YFeGKam8GBswn8gVbEb3lMYF60KOAaNRz0QWJkjldfRs5QGW8hktbpmy1G2izLeR+s/LgJ02f34K1vNbG4GwnS9f65LffPJQrlyz6yxPWQcjvQw4ys6qCxlwqYrDAQ=
+	t=1746646359; cv=none; b=KChI0g4foRYJ9qZz0QQP3pPM6xI+exC+Z1s7Qme5FwXJK0sMEEnWlDUT6GK6BwdniYH304OHizyFj4lUNtOYY92G1Rc8+y22yo39VNq61IzoULtuFS3TKAfdkqJfIib+zOgBN+mZp1FYwym+lFbz/uQEmohWJDZ5KJNDARi/j+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746646357; c=relaxed/simple;
-	bh=NBLKEWz/wBwrhF43UTvL2O4g10+i5QFaSLvdKGK4WBo=;
+	s=arc-20240116; t=1746646359; c=relaxed/simple;
+	bh=lie8MvR2wRdBg+uuO+/ezbhXi4JlWdcsCAIFgDVH1+g=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=f7De4aslRnftjItTX8xTJpasEPe+1XFUpjAhijV6UIv02NR0qp560PWWWVkdo9clrVKlN5NLONGp85OUP9H/fhGC0n8atVPau1Seh0wt0pXx1hxDVKcUom8d96tDh8qeS6A3fAgdTLuLQrZSmlhTCinutzBrC5WZWo6DtEdJVH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=euS0UZLR; arc=none smtp.client-ip=209.85.214.172
+	 MIME-Version; b=JMmDvSm2xbdQcftJ7LCJOmRWsIPgrUo26ocuVtfnUjXkxIkvUcx4cOlvtxiAS7npfQYpk/bWYsZ09qrXub1oso34n2Z+8u0xJFGayqG1V04JpT6fmyxmukHZ/0bGDqod7MokR95EzKb/vnEwWJec8MuyvbC5frZHcym3avg8GBQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UoSM3Him; arc=none smtp.client-ip=209.85.214.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-22e76850b80so2056755ad.1
-        for <linux-iio@vger.kernel.org>; Wed, 07 May 2025 12:32:33 -0700 (PDT)
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-22e3b069f23so2768185ad.2
+        for <linux-iio@vger.kernel.org>; Wed, 07 May 2025 12:32:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746646353; x=1747251153; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1746646357; x=1747251157; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=cNvlrQTfkUE4VjZeS+CNUr0U0EyaT9djQU9Ki8xeVdY=;
-        b=euS0UZLR3t0KJg6WwRvXhju3VxDwl3O/RobU4Br9HLZkWHEwBN93fGHuuP3X4fzclq
-         ddnTl9jcxv6bgz+G8+gdyZCvjcz6zBGNmri2gfWcQ++kSNN4JrSVBLgojuNb9eNPAt+k
-         LyC+1+y5fO4r+fKwtoUaahdYtJOkF6kM53o1cCmwG1UPk72bAmSNVzX9jA+UWCeY1ewC
-         QJk3ZySxl6l/+nfQMvEKpOAhJ5eUZqA+1ENX5Pt7NrY9QpQvteR5cFPPeO4QBNCb62Ej
-         xyVVH9jECfPgvJzkMl2bu8EgVXLio2xgTy03FSMQ47l8QEt+ed+26yiLavlVNjGIlwaq
-         PpIw==
+        bh=jfe78zTD0fNGcvxk2IjmCdu42FaEJGXOaBJ2FOCXuN0=;
+        b=UoSM3Him1IyCkTH0g+BPbKFD28QCG8LiXCrXmBHSq/IuI0DmZ0xydpI6yL70Jdtkks
+         4RjIibq1St1YdaGgS6TjKTywLsvEA9lcebM5yoxqYsX5sv0wm2iqGk0wfKPJyFZy2z3e
+         v+0bWyAhK0jmGc3SZYdre1ixm38jSB9m68GE0m2zwbuK66NsLu92OfDCOcQ9bBWcwmCk
+         aE1XwkaVqM3TNwQ/mevsMhLScC0TN7Gmi7uQSz0XwYhKXFm9W75zV1CZ49EShsW7LpH1
+         A8nZ7ZAfgS3M/ycPaFvKgxmKpEYf5X5ccM4fNF+yz5GRBXlLQrnNPX6crNFIcAZkC+gP
+         v51g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746646353; x=1747251153;
+        d=1e100.net; s=20230601; t=1746646357; x=1747251157;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=cNvlrQTfkUE4VjZeS+CNUr0U0EyaT9djQU9Ki8xeVdY=;
-        b=VKyONMKv+ZCriS0I/H1ia9ODV1VC3+XQynmYjrrGxJzkbg5G/dNdX2rbRBG2Z/RtW6
-         LjRQij1BbfJPolbHxxPpiErq+xXH8ZvZ8nq059JstjhJeYlt6VIiu9RYdA/mU4vbeJwH
-         4FeJHujnrnK2IC2FDwOmoVCwN/lPjS5Ne/7CErih70Kq1y9buhFu9LWmz1/uI2NYqwca
-         q3dIVNZJQ0RaOrYa6ZFz1TC4ECWUBFnrQnBn7XkR3q4TB/FX24NH1hADP4hFfu8k/92O
-         4ErDbNCfWfviB1wH+FSGZbFz1QTqBt6gLkHPCrB0qxx51/KNS87QHfKSUbMlHiuSo9Eu
-         rI4A==
-X-Gm-Message-State: AOJu0YzbyP3feQgvJ5zwgPT40AVxM52Db0k0BoVAD377O9d8mVmpxB4Q
-	LUBO18wp/cBzfUrZiIv5ho24JOKSNOFGe8jldKzCb2fKDvm50W/8mXetXs7dz3A=
-X-Gm-Gg: ASbGnctyoRyieRYb2j0riyVbsF3s1g++UO1RuM+WBwwpdT+noLZC37mH9OhxAZDU9v7
-	XDF4YYHwshxMN+hrezAbgmiL1KjjZySY8lt2l/qA5U0gOOTn8aitOLHmH+axTaxtsbJBRbmvRkL
-	WQ19TfOfAL2EaGuDbnm7tmPuJCpSsMkiYngqZHmoiifurJk9QEjaBq7nAIgt7Ca0924sZXnjFPZ
-	Jtub+RF/6XhjOn88qQ8FrurjnBQmGJHY5x7+sM9jQ4oJbpgqEvlSBRO5ij5UbSLGNlQEyL45ioV
-	Aem8vtjAgNd5EaTq35o1VG8nzV6qzUSsi23UTcRjSMqM+YzmyoJj+78G29hK
-X-Google-Smtp-Source: AGHT+IEsepi9bX5ur6UOWNVFv2aWixAkHEB+SxPo0S6SENhgsSW8uxy0SU0DFzCwiQ61kcp0ZSuTBg==
-X-Received: by 2002:a17:902:da84:b0:224:11fc:40c0 with SMTP id d9443c01a7336-22e85613e2amr9161915ad.11.1746646352731;
-        Wed, 07 May 2025 12:32:32 -0700 (PDT)
+        bh=jfe78zTD0fNGcvxk2IjmCdu42FaEJGXOaBJ2FOCXuN0=;
+        b=GBvJO0e3gyTAkRKANFQXsZ1RTJeiJh98wRNMOPBynVpRX0h5BvhGPCo/TY7XWoQMRa
+         cCqhvP+kxnVmKkSsaIHXGFFwa1A8oBOwpd+ZZGV2SZMW8szwRCA6RtYOsCmKPijrGtKK
+         Zgm4ZVWBlBcuM0a2sXeoi6PJwj/uykzNJbmSeqrvepRDFkqoH0kmFma/HLCZAAO59ImF
+         6W+btp/jUJBdGKuIy9Gf+8tMYtTM73zLTzwGmLbWB5wPnR7Rc6AiTwkMe2ivAAOI6nVt
+         M9Q7/xNgkLfsXH3uRe8mKqgWVg6eCfp8yyfXiRioLQQC04sCTUpoLs36+o+cRvg0kbac
+         DK7Q==
+X-Gm-Message-State: AOJu0YziKcotU3lcNy7ewEcNkdN2uIcFBnrU3sxVBSBh+t2HegU0Y5QY
+	IWBV++k2U44F5+VBw858IDSptIVscrDevnp0M6jfVIdUYBtJat1WMB8N59nfjyU=
+X-Gm-Gg: ASbGncujgH277rGkydeSja+Qo6N8bGRoThtXW4mFph55UhTdEJFt5BYFKs7gbHQvRK4
+	E2uAxaCmIHLX0ACJVmCxUCe6XpkvN/pXYHGZOOHgcQc7D2wXBGReLyMU6V7SDzMrdXSlMacWBJA
+	E73lLUYQjCM3oMNQMmPELDLEX40GmntBwNLptB++iroj/8Suh9NUyXdhz6S88SgPsQXs4op2LI4
+	5lcaTV+x+hPXQT8AZRZvOiG9mJruUxnLp6Yq0MakT3u2BuKzjTp7eM4ydN2bx58OC/C2GIU4hiD
+	EXDfWd7Oj/PRN92TpU05CMTnwZph88DWpuGSdm14OKYX8z0P5WME6H3vf8EP
+X-Google-Smtp-Source: AGHT+IHsU6KsrvkbZWYooI83xBQFSzczL/nFJTpk36mWfOv+20wX0F9WbgVbKYyIGLldqTJgCMN/QA==
+X-Received: by 2002:a17:902:daca:b0:223:5379:5e4e with SMTP id d9443c01a7336-22e5ea70aedmr84574675ad.10.1746646356595;
+        Wed, 07 May 2025 12:32:36 -0700 (PDT)
 Received: from localhost.localdomain ([103.205.130.14])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22e15228f62sm97769815ad.168.2025.05.07.12.32.30
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22e15228f62sm97769815ad.168.2025.05.07.12.32.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 May 2025 12:32:32 -0700 (PDT)
+        Wed, 07 May 2025 12:32:36 -0700 (PDT)
 From: Brajesh Patil <brajeshpatil11@gmail.com>
 To: linux-iio@vger.kernel.org
 Cc: jic23@kernel.org,
 	marcelo.schmitt1@gmail.com,
 	dlechner@baylibre.com,
 	Brajesh Patil <brajeshpatil11@gmail.com>
-Subject: [PATCH v1 1/3] iio: magnetometer: qmc5883l: add support for QMC5883L sensor
-Date: Wed,  7 May 2025 20:32:17 +0100
-Message-Id: <20250507193219.52965-2-brajeshpatil11@gmail.com>
+Subject: [PATCH v1 2/3] iio: magnetometer: qmc5883l: add extended sysfs attributes and configuration options
+Date: Wed,  7 May 2025 20:32:18 +0100
+Message-Id: <20250507193219.52965-3-brajeshpatil11@gmail.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250507193219.52965-1-brajeshpatil11@gmail.com>
 References: <20250507193219.52965-1-brajeshpatil11@gmail.com>
@@ -89,605 +89,372 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 Signed-off-by: Brajesh Patil <brajeshpatil11@gmail.com>
 ---
- .../iio/magnetometer/qst,qmc5883l.yaml        |  52 ++
- .../devicetree/bindings/vendor-prefixes.yaml  |   2 +
- drivers/iio/magnetometer/Kconfig              |  13 +
- drivers/iio/magnetometer/Makefile             |   2 +
- drivers/iio/magnetometer/qmc5883l.c           | 471 ++++++++++++++++++
- 5 files changed, 540 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/iio/magnetometer/qst,qmc5883l.yaml
- create mode 100644 drivers/iio/magnetometer/qmc5883l.c
+ drivers/iio/magnetometer/qmc5883l.c | 276 +++++++++++++++++++++++++++-
+ 1 file changed, 273 insertions(+), 3 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/iio/magnetometer/qst,qmc5883l.yaml b/Documentation/devicetree/bindings/iio/magnetometer/qst,qmc5883l.yaml
-new file mode 100644
-index 000000000000..a2e6982a177d
---- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/magnetometer/qst,qmc5883l.yaml
-@@ -0,0 +1,52 @@
-+# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/iio/magnetometer/qst,qmc5883l.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: QST QMC5883L 3-Axis Magnetometer
-+
-+maintainers:
-+  - Brajesh Patil <brajeshpatil11@gmail.com>
-+
-+description: |
-+  The QMC5883L is a 3-axis magnetic sensor with I2C interface. It provides
-+  measurements of magnetic field strength along X, Y and Z axes, as well as
-+  temperature readings.
-+
-+properties:
-+  compatible:
-+    const: qst,qmc5883l
-+
-+  reg:
-+    maxItems: 1
-+    description: I2C slave address (0x0d)
-+
-+  mount-matrix:
-+    description: |
-+      A 3x3 rotation matrix describing how the magnetometer is mounted
-+      on the device. This is used to orient the sensor measurements
-+      to match the device's coordinate system.
-+
-+additionalProperties: false
-+
-+required:
-+  - compatible
-+  - reg
-+
-+examples:
-+  - |
-+    i2c {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        magnetometer@0d {
-+            compatible = "qst,qmc5883l";
-+            reg = <0x0d>;
-+            mount-matrix = "1", "0", "0",
-+                           "0", "1", "0",
-+                           "0", "0", "1";
-+        };
-+    };
-+...
-+
-diff --git a/Documentation/devicetree/bindings/vendor-prefixes.yaml b/Documentation/devicetree/bindings/vendor-prefixes.yaml
-index 86f6a19b28ae..b306950ebea8 100644
---- a/Documentation/devicetree/bindings/vendor-prefixes.yaml
-+++ b/Documentation/devicetree/bindings/vendor-prefixes.yaml
-@@ -1236,6 +1236,8 @@ patternProperties:
-     description: Shenzhen QiShenglong Industrialist Co., Ltd.
-   "^qnap,.*":
-     description: QNAP Systems, Inc.
-+  "^qst,.*":
-+    description: QST Corporation Ltd.
-   "^quanta,.*":
-     description: Quanta Computer Inc.
-   "^radxa,.*":
-diff --git a/drivers/iio/magnetometer/Kconfig b/drivers/iio/magnetometer/Kconfig
-index 3debf1320ad1..68a6ba9b9b68 100644
---- a/drivers/iio/magnetometer/Kconfig
-+++ b/drivers/iio/magnetometer/Kconfig
-@@ -206,6 +206,19 @@ config SENSORS_HMC5843_SPI
- 	  - hmc5843_core (core functions)
- 	  - hmc5843_spi (support for HMC5983)
- 
-+config SENSORS_QMC5883L
-+	tristate "QST QMC5883L 3-Axis Magnetometer"
-+	depends on I2C
-+	select REGMAP_I2C
-+	select IIO_BUFFER
-+	select IIO_TRIGGERED_BUFFER
-+	help
-+	  Say Y here to build support for the QST QMC5883L 3-axis magnetometer
-+          through its I2C interface.
-+
-+          To compile this driver as a module, choose M here: the module will be
-+          called qmc5883l.
-+
- config SENSORS_RM3100
- 	tristate
- 	select IIO_BUFFER
-diff --git a/drivers/iio/magnetometer/Makefile b/drivers/iio/magnetometer/Makefile
-index 9297723a97d8..90a45f17020a 100644
---- a/drivers/iio/magnetometer/Makefile
-+++ b/drivers/iio/magnetometer/Makefile
-@@ -27,6 +27,8 @@ obj-$(CONFIG_SENSORS_HMC5843)		+= hmc5843_core.o
- obj-$(CONFIG_SENSORS_HMC5843_I2C)	+= hmc5843_i2c.o
- obj-$(CONFIG_SENSORS_HMC5843_SPI)	+= hmc5843_spi.o
- 
-+obj-$(CONFIG_SENSORS_QMC5883L) += qmc5883l.o
-+
- obj-$(CONFIG_SENSORS_RM3100)		+= rm3100-core.o
- obj-$(CONFIG_SENSORS_RM3100_I2C)	+= rm3100-i2c.o
- obj-$(CONFIG_SENSORS_RM3100_SPI)	+= rm3100-spi.o
 diff --git a/drivers/iio/magnetometer/qmc5883l.c b/drivers/iio/magnetometer/qmc5883l.c
-new file mode 100644
-index 000000000000..9462794a51ef
---- /dev/null
+index 9462794a51ef..53a225fab798 100644
+--- a/drivers/iio/magnetometer/qmc5883l.c
 +++ b/drivers/iio/magnetometer/qmc5883l.c
-@@ -0,0 +1,471 @@
-+// SPDX-License-Identifier: GPL-2.0
-+#include <linux/delay.h>
-+#include <linux/i2c.h>
-+#include <linux/iio/buffer.h>
-+#include <linux/iio/iio.h>
-+#include <linux/iio/sysfs.h>
-+#include <linux/iio/trigger.h>
-+#include <linux/iio/trigger_consumer.h>
-+#include <linux/iio/triggered_buffer.h>
-+#include <linux/regmap.h>
-+#include <linux/types.h>
-+
-+/* Register Addresses */
-+#define QMC5883L_DATA_OUT_LSB_REG   0x00
-+#define QMC5883L_STATUS_REG         0x06
-+#define QMC5883L_TEMP_OUT_LSB_REG   0x07
-+#define QMC5883L_CONTROL_REG_1      0x09
-+#define QMC5883L_CONTROL_REG_2      0x0A
-+#define QMC5883L_FBR_REG            0x0B
-+#define QMC5883L_CHIP_ID_REG        0x0D
-+#define QMC5883L_CHIP_ID            0xFF
-+
-+/* Status Register Bits */
-+#define QMC5883L_DRDY               0x01
-+#define QMC5883L_OVL                0x02
-+#define QMC5883L_DOR                0x04
-+
-+/* Control Register 1 Configuration Bits */
-+/* Mode (bits [1:0]) */
-+#define QMC5883L_MODE_STANDBY       0x00
-+#define QMC5883L_MODE_CONT          0x01
-+#define QMC5883L_MODE_MASK          0x03
-+#define QMC5883L_MODE_SHIFT         0
-+
-+/* Output Data Rate - ODR (bits [3:2]) */
-+#define QMC5883L_ODR_10HZ           0x00
-+#define QMC5883L_ODR_50HZ           0x01
-+#define QMC5883L_ODR_100HZ          0x02
-+#define QMC5883L_ODR_200HZ          0x03
-+#define QMC5883L_ODR_MASK           0x0C
-+#define QMC5883L_ODR_SHIFT          2
-+
-+/* Full Scale Range - RNG (bits [5:4]) */
-+#define QMC5883L_RNG_2G             0x00
-+#define QMC5883L_RNG_8G             0x01
-+#define QMC5883L_RNG_MASK           0x30
-+#define QMC5883L_RNG_SHIFT          4
-+
-+/* Oversampling Ratio - OSR (bits [7:6]) */
-+#define QMC5883L_OSR_512            0x00
-+#define QMC5883L_OSR_256            0x01
-+#define QMC5883L_OSR_128            0x02
-+#define QMC5883L_OSR_64             0x03
-+#define QMC5883L_OSR_MASK           0xC0
-+#define QMC5883L_OSR_SHIFT          6
-+
-+static const int qmc5883l_odr_map[] = {
-+	[QMC5883L_ODR_10HZ]  = 10,
-+	[QMC5883L_ODR_50HZ]  = 50,
-+	[QMC5883L_ODR_100HZ] = 100,
-+	[QMC5883L_ODR_200HZ] = 200,
+@@ -53,6 +53,19 @@
+ #define QMC5883L_OSR_64             0x03
+ #define QMC5883L_OSR_MASK           0xC0
+ #define QMC5883L_OSR_SHIFT          6
++static const char *const qmc5883l_modes[] = {
++	"standby", "continuous"
 +};
 +
-+/**
-+ * struct qmc5883l_data - device instance specific data
-+ * @client: I2C client structure
-+ * @lock: mutex to protect register access
-+ * @regmap: register map of the device
-+ * @scan: buffer for triggered data reading
-+ */
-+struct qmc5883l_data {
-+	struct i2c_client *client;
-+	struct mutex lock;
-+	struct regmap *regmap;
-+
-+	struct {
-+		__le16 chans[3];
-+
-+		s64 timestamp __aligned(8);
-+	} scan;
++static const int qmc5883l_odr_avail[][2] = {
++	{10, 0}, {50, 0}, {100, 0}, {200, 0}
 +};
 +
-+static int qmc5883l_init(struct qmc5883l_data *data);
-+static int qmc5883l_set_mode(struct qmc5883l_data *data, unsigned int mode);
-+
-+static int qmc5883l_buffer_preenable(struct iio_dev *indio_dev)
-+{
-+	struct qmc5883l_data *data = iio_priv(indio_dev);
-+
-+	return qmc5883l_set_mode(data, QMC5883L_MODE_CONT);
-+}
-+
-+static int qmc5883l_buffer_postdisable(struct iio_dev *indio_dev)
-+{
-+	struct qmc5883l_data *data = iio_priv(indio_dev);
-+
-+	return qmc5883l_set_mode(data, QMC5883L_MODE_STANDBY);
-+}
-+
-+static const struct iio_buffer_setup_ops qmc5883l_buffer_setup_ops = {
-+	.preenable	= qmc5883l_buffer_preenable,
-+	.postdisable	= qmc5883l_buffer_postdisable,
++static const char *const qmc5883l_osr_avail[] = {
++	"512", "256", "128", "64"
 +};
 +
-+/* Register map access tables */
-+static const struct regmap_range qmc5883l_readable_ranges[] = {
-+	regmap_reg_range(QMC5883L_DATA_OUT_LSB_REG, QMC5883L_CHIP_ID_REG),
-+};
-+
-+static const struct regmap_access_table qmc5883l_readable_table = {
-+	.yes_ranges = qmc5883l_readable_ranges,
-+	.n_yes_ranges = ARRAY_SIZE(qmc5883l_readable_ranges),
-+};
-+
-+static const struct regmap_range qmc5883l_writable_ranges[] = {
-+	regmap_reg_range(QMC5883L_CONTROL_REG_1, QMC5883L_FBR_REG),
-+};
-+
-+static const struct regmap_access_table qmc5883l_writable_table = {
-+	.yes_ranges = qmc5883l_writable_ranges,
-+	.n_yes_ranges = ARRAY_SIZE(qmc5883l_writable_ranges),
-+};
-+
-+static const struct regmap_range qmc5883l_volatile_ranges[] = {
-+	regmap_reg_range(QMC5883L_DATA_OUT_LSB_REG, QMC5883L_TEMP_OUT_LSB_REG + 1),
-+};
-+
-+static const struct regmap_access_table qmc5883l_volatile_table = {
-+	.yes_ranges = qmc5883l_volatile_ranges,
-+	.n_yes_ranges = ARRAY_SIZE(qmc5883l_volatile_ranges),
-+};
-+
-+static const struct regmap_config qmc5883l_regmap_config = {
-+	.reg_bits = 8,
-+	.val_bits = 8,
-+	.max_register = QMC5883L_CHIP_ID_REG,
-+
-+	.rd_table = &qmc5883l_readable_table,
-+	.wr_table = &qmc5883l_writable_table,
-+	.volatile_table = &qmc5883l_volatile_table,
-+
-+	.cache_type = REGCACHE_RBTREE,
-+};
-+
-+static int qmc5883l_set_mode(struct qmc5883l_data *data, unsigned int mode)
++static const int qmc5883l_scale_avail[] = {2, 8};
+ 
+ static const int qmc5883l_odr_map[] = {
+ 	[QMC5883L_ODR_10HZ]  = 10,
+@@ -82,6 +95,12 @@ struct qmc5883l_data {
+ 
+ static int qmc5883l_init(struct qmc5883l_data *data);
+ static int qmc5883l_set_mode(struct qmc5883l_data *data, unsigned int mode);
++static ssize_t qmc5883l_show_odr_avail(struct device *dev,
++				       struct device_attribute *attr, char *buf);
++static ssize_t qmc5883l_show_scale_avail(struct device *dev,
++					 struct device_attribute *attr, char *buf);
++static ssize_t qmc5883l_show_status(struct device *dev,
++				    struct device_attribute *attr, char *buf);
+ 
+ static int qmc5883l_buffer_preenable(struct iio_dev *indio_dev)
+ {
+@@ -142,6 +161,102 @@ static const struct regmap_config qmc5883l_regmap_config = {
+ 	.cache_type = REGCACHE_RBTREE,
+ };
+ 
++static int qmc5883l_set_osr(struct qmc5883l_data *data, unsigned int osr)
 +{
 +	int ret;
 +
 +	mutex_lock(&data->lock);
 +	ret = regmap_update_bits(data->regmap, QMC5883L_CONTROL_REG_1,
-+				 QMC5883L_MODE_MASK, mode << QMC5883L_MODE_SHIFT);
++				 QMC5883L_OSR_MASK, osr << QMC5883L_OSR_SHIFT);
 +	mutex_unlock(&data->lock);
 +
 +	return ret;
 +}
 +
-+static int qmc5883l_wait_measurement(struct qmc5883l_data *data)
++static int qmc5883l_get_osr(struct qmc5883l_data *data)
 +{
-+	int tries = 150;
 +	unsigned int val;
 +	int ret;
 +
-+	while (tries-- > 0) {
-+		ret = regmap_read(data->regmap, QMC5883L_STATUS_REG, &val);
-+		if (ret < 0)
-+			return ret;
-+
-+		if (val & QMC5883L_OVL) {
-+			dev_err(&data->client->dev, "data overflow\n");
-+			return -EOVERFLOW;
-+		}
-+
-+		if (val & QMC5883L_DRDY)
-+			return 0;
-+		usleep_range(5000, 6000);
-+	}
-+
-+	dev_err(&data->client->dev, "data not ready\n");
-+	return -EIO;
-+}
-+
-+static int qmc5883l_read_measurement(struct qmc5883l_data *data,
-+				     int idx, int *val)
-+{
-+	__le16 values[3];
-+	int ret;
-+
-+	ret = qmc5883l_set_mode(data, QMC5883L_MODE_CONT);
++	ret = regmap_read(data->regmap, QMC5883L_CONTROL_REG_1, &val);
 +	if (ret < 0)
 +		return ret;
 +
-+	ret = qmc5883l_wait_measurement(data);
-+	if (ret < 0) {
-+		qmc5883l_set_mode(data, QMC5883L_MODE_STANDBY);
-+		return ret;
-+	}
-+
-+	mutex_lock(&data->lock);
-+	ret = regmap_bulk_read(data->regmap, QMC5883L_DATA_OUT_LSB_REG,
-+			       values, sizeof(values));
-+	mutex_unlock(&data->lock);
-+
-+	qmc5883l_set_mode(data, QMC5883L_MODE_STANDBY);
-+	if (ret < 0)
-+		return ret;
-+
-+	*val = sign_extend32(le16_to_cpu(values[idx]), 15);
-+	return IIO_VAL_INT;
++	return (val & QMC5883L_OSR_MASK) >> QMC5883L_OSR_SHIFT;
 +}
 +
-+static int qmc5883l_read_raw(struct iio_dev *indio_dev,
-+			     struct iio_chan_spec const *chan, int *val, int *val2, long mask)
++static int qmc5883l_get_osr_iio(struct iio_dev *indio_dev,
++				const struct iio_chan_spec *chan)
 +{
 +	struct qmc5883l_data *data = iio_priv(indio_dev);
-+	unsigned int rval;
-+	__le16 temp_val;
-+	int ret;
 +
-+	switch (mask) {
-+	case IIO_CHAN_INFO_RAW:
-+		if (chan->type == IIO_TEMP) {
-+			ret = qmc5883l_set_mode(data, QMC5883L_MODE_CONT);
-+			if (ret < 0)
-+				return ret;
-+
-+			mutex_lock(&data->lock);
-+			ret = regmap_bulk_read(data->regmap, QMC5883L_TEMP_OUT_LSB_REG,
-+					       &temp_val, sizeof(temp_val));
-+			mutex_unlock(&data->lock);
-+
-+			qmc5883l_set_mode(data, QMC5883L_MODE_STANDBY);
-+
-+			if (!ret)
-+				*val = sign_extend32(le16_to_cpu(temp_val), 15);
-+
-+			return ret ? ret : IIO_VAL_INT;
-+		}
-+		return qmc5883l_read_measurement(data, chan->scan_index, val);
-+	case IIO_CHAN_INFO_SCALE:
-+		if (chan->type == IIO_TEMP) {
-+			/* scale = 124 / 10000 = 0.0124 °C/LSB */
-+			*val = 124;
-+			*val2 = 10000;
-+			return IIO_VAL_FRACTIONAL;
-+		}
-+		ret = regmap_read(data->regmap, QMC5883L_CONTROL_REG_1, &rval);
-+		if (ret < 0)
-+			return ret;
-+		rval = (rval & QMC5883L_RNG_MASK) >> QMC5883L_RNG_SHIFT;
-+		*val = (rval == 0) ? 12000 : 3000;  /* ±2G:12000, ±8G:3000 LSB/G */
-+		*val2 = 0;
-+		return IIO_VAL_INT;
-+	case IIO_CHAN_INFO_OFFSET:
-+		if (chan->type == IIO_TEMP) {
-+			/* offset = 287661 / 100 = 2876.61 °C */
-+			*val = 287661;
-+			*val2 = 100;
-+			return IIO_VAL_FRACTIONAL;
-+		}
-+		return -EINVAL;
-+	case IIO_CHAN_INFO_SAMP_FREQ:
-+		ret = regmap_read(data->regmap, QMC5883L_CONTROL_REG_1, &rval);
-+		if (ret < 0)
-+			return ret;
-+
-+		rval = (rval & QMC5883L_ODR_MASK) >> QMC5883L_ODR_SHIFT;
-+
-+		if (rval >= ARRAY_SIZE(qmc5883l_odr_map) || !qmc5883l_odr_map[rval])
-+			return -EINVAL;
-+
-+		*val = qmc5883l_odr_map[rval];
-+		*val2 = 0;
-+		return IIO_VAL_INT;
-+	}
-+	return -EINVAL;
++	return qmc5883l_get_osr(data);
 +}
 +
-+static irqreturn_t qmc5883l_trigger_handler(int irq, void *p)
++static int qmc5883l_set_osr_iio(struct iio_dev *indio_dev,
++				const struct iio_chan_spec *chan,
++				unsigned int osr)
 +{
-+	struct iio_poll_func *pf = p;
-+	struct iio_dev *indio_dev = pf->indio_dev;
 +	struct qmc5883l_data *data = iio_priv(indio_dev);
-+	int ret;
 +
-+	mutex_lock(&data->lock);
-+	ret = qmc5883l_wait_measurement(data);
-+	if (ret < 0) {
-+		mutex_unlock(&data->lock);
-+		goto done;
-+	}
-+
-+	ret = regmap_bulk_read(data->regmap, QMC5883L_DATA_OUT_LSB_REG,
-+			       data->scan.chans, sizeof(data->scan.chans));
-+	mutex_unlock(&data->lock);
-+
-+	if (ret < 0)
-+		goto done;
-+
-+	iio_push_to_buffers_with_timestamp(indio_dev, &data->scan,
-+					   iio_get_time_ns(indio_dev));
-+
-+done:
-+	iio_trigger_notify_done(indio_dev->trig);
-+	return IRQ_HANDLED;
++	return qmc5883l_set_osr(data, osr);
 +}
 +
-+/* Channel definitions */
-+#define QMC5883L_CHANNEL(axis, idx)             \
-+{                           \
-+	.type = IIO_MAGN,               \
-+	.modified = 1,                  \
-+	.channel2 = IIO_MOD_##axis,         \
-+	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),   \
-+	.info_mask_shared_by_type =         \
-+		BIT(IIO_CHAN_INFO_SCALE) |      \
-+		BIT(IIO_CHAN_INFO_SAMP_FREQ),       \
-+	.scan_index = idx,              \
-+	.scan_type = {                  \
-+		.sign = 's',                \
-+		.realbits = 16,             \
-+		.storagebits = 16,          \
-+		.endianness = IIO_LE,           \
-+	},                      \
-+}
-+
-+static const struct iio_chan_spec qmc5883l_channels[] = {
-+	QMC5883L_CHANNEL(X, 0),
-+	QMC5883L_CHANNEL(Y, 1),
-+	QMC5883L_CHANNEL(Z, 2),
-+	{
-+		.type = IIO_TEMP,
-+		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
-+				      BIT(IIO_CHAN_INFO_SCALE) |
-+				      BIT(IIO_CHAN_INFO_OFFSET),
-+		.scan_index = -1,
-+	},
-+	IIO_CHAN_SOFT_TIMESTAMP(3),
-+};
-+
-+static int qmc5883l_init(struct qmc5883l_data *data)
++static s32 qmc5883l_set_rng(struct qmc5883l_data *data, u8 rng)
 +{
 +	int ret;
-+	u8 chip_id;
-+	unsigned int chip_id_tmp;
-+	unsigned int ctrl1;
-+
-+	ret = regmap_read(data->regmap, QMC5883L_CHIP_ID_REG, &chip_id_tmp);
-+	if (ret < 0) {
-+		dev_err(&data->client->dev, "Failed to read chip ID\n");
-+		return ret;
-+	}
-+
-+	chip_id = (u8)chip_id_tmp;
-+	if (chip_id != QMC5883L_CHIP_ID) {
-+		dev_err(&data->client->dev, "Invalid chip ID: 0x%02X (expected 0x%02X)\n",
-+			chip_id, QMC5883L_CHIP_ID);
-+		return -ENODEV;
-+	}
 +
 +	mutex_lock(&data->lock);
-+	ret = regmap_write(data->regmap, QMC5883L_FBR_REG, 0x01);
-+	if (ret < 0)
-+		goto unlock;
-+
-+	ctrl1 = (QMC5883L_OSR_64 << QMC5883L_OSR_SHIFT) |
-+		(QMC5883L_RNG_2G << QMC5883L_RNG_SHIFT) |
-+		(QMC5883L_ODR_50HZ << QMC5883L_ODR_SHIFT) |
-+		(QMC5883L_MODE_STANDBY << QMC5883L_MODE_SHIFT);
-+
-+	ret = regmap_write(data->regmap, QMC5883L_CONTROL_REG_1, ctrl1);
-+	if (ret < 0)
-+		goto unlock;
-+
-+	mutex_unlock(&data->lock);
-+	dev_dbg(&data->client->dev,
-+		"Initialized with OSR=64, RNG=2G, ODR=50Hz, Mode=Standby\n");
-+	return 0;
-+
-+unlock:
++	ret = regmap_update_bits(data->regmap, QMC5883L_CONTROL_REG_1,
++				 QMC5883L_RNG_MASK, rng << QMC5883L_RNG_SHIFT);
 +	mutex_unlock(&data->lock);
 +	return ret;
 +}
 +
-+static const struct iio_info qmc5883l_info = {
-+	.read_raw = &qmc5883l_read_raw,
-+};
-+
-+static const unsigned long qmc5883l_scan_masks[] = {0x7, 0};
-+
-+static int qmc5883l_probe(struct i2c_client *client)
++static s32 qmc5883l_set_odr(struct qmc5883l_data *data, u8 odr)
 +{
-+	struct regmap *regmap;
-+	struct qmc5883l_data *data;
-+	struct iio_dev *indio_dev;
 +	int ret;
 +
-+	regmap = devm_regmap_init_i2c(client, &qmc5883l_regmap_config);
-+	if (IS_ERR(regmap)) {
-+		dev_err(&client->dev, "Failed to initialize regmap\n");
-+		return PTR_ERR(regmap);
-+	}
++	mutex_lock(&data->lock);
++	ret = regmap_update_bits(data->regmap, QMC5883L_CONTROL_REG_1,
++				 QMC5883L_ODR_MASK, odr << QMC5883L_ODR_SHIFT);
++	mutex_unlock(&data->lock);
++	return ret;
++}
 +
-+	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
-+	if (!indio_dev) {
-+		dev_err(&client->dev, "Failed to allocate iio device\n");
-+		return -ENOMEM;
-+	}
++static int qmc5883l_get_odr(struct qmc5883l_data *data, unsigned int *odr)
++{
++	int ret;
++	unsigned int val;
 +
-+	data = iio_priv(indio_dev);
-+	data->client = client;
-+	data->regmap = regmap;
-+	mutex_init(&data->lock);
-+
-+	indio_dev->name = "qmc5883l";
-+	indio_dev->info = &qmc5883l_info;
-+	indio_dev->modes = INDIO_DIRECT_MODE;
-+	indio_dev->channels = qmc5883l_channels;
-+	indio_dev->num_channels = ARRAY_SIZE(qmc5883l_channels);
-+	indio_dev->available_scan_masks = qmc5883l_scan_masks;
-+
-+	ret = devm_iio_triggered_buffer_setup(&client->dev, indio_dev,
-+					      NULL, &qmc5883l_trigger_handler,
-+					      &qmc5883l_buffer_setup_ops);
-+	if (ret < 0) {
-+		dev_err(&client->dev, "Failed to setup triggered buffer: %d\n", ret);
++	ret = regmap_read(data->regmap, QMC5883L_CONTROL_REG_1, &val);
++	if (ret < 0)
 +		return ret;
-+	}
 +
-+	ret = qmc5883l_init(data);
-+	if (ret < 0) {
-+		dev_err(&client->dev, "Failed to initialize device: %d\n", ret);
-+		return ret;
-+	}
-+
-+	ret = devm_iio_device_register(&client->dev, indio_dev);
-+	if (ret < 0) {
-+		dev_err(&client->dev, "Failed to register IIO device: %d\n", ret);
-+		return ret;
-+	}
-+
-+	i2c_set_clientdata(client, indio_dev);
++	*odr = (val & QMC5883L_ODR_MASK) >> QMC5883L_ODR_SHIFT;
 +	return 0;
 +}
 +
-+static const struct i2c_device_id qmc5883l_id[] = {
-+	{ "qmc5883l", 0 },
++static int qmc5883l_get_delay_based_on_odr(struct qmc5883l_data *data)
++{
++	unsigned int odr;
++	int ret;
++
++	ret = qmc5883l_get_odr(data, &odr);
++	if (ret < 0)
++		return ret;
++
++	switch (odr) {
++	case QMC5883L_ODR_10HZ: return 100000;
++	case QMC5883L_ODR_50HZ: return 20000;
++	case QMC5883L_ODR_100HZ: return 10000;
++	case QMC5883L_ODR_200HZ: return 5000;
++	default:
++		dev_err(&data->client->dev, "Invalid ODR value: %u\n", odr);
++		return -EINVAL;
++	}
++}
++
+ static int qmc5883l_set_mode(struct qmc5883l_data *data, unsigned int mode)
+ {
+ 	int ret;
+@@ -154,11 +269,44 @@ static int qmc5883l_set_mode(struct qmc5883l_data *data, unsigned int mode)
+ 	return ret;
+ }
+ 
++static int qmc5883l_get_mode(struct qmc5883l_data *data)
++{
++	unsigned int val;
++	int ret;
++
++	ret = regmap_read(data->regmap, QMC5883L_CONTROL_REG_1, &val);
++	if (ret < 0)
++		return ret;
++
++	return (val & QMC5883L_MODE_MASK) >> QMC5883L_MODE_SHIFT;
++}
++
++static int qmc5883l_get_mode_iio(struct iio_dev *indio_dev,
++				 const struct iio_chan_spec *chan)
++{
++	struct qmc5883l_data *data = iio_priv(indio_dev);
++
++	return qmc5883l_get_mode(data);
++}
++
++static int qmc5883l_set_mode_iio(struct iio_dev *indio_dev,
++				 const struct iio_chan_spec *chan,
++				 unsigned int mode)
++{
++	struct qmc5883l_data *data = iio_priv(indio_dev);
++
++	return qmc5883l_set_mode(data, mode);
++}
++
+ static int qmc5883l_wait_measurement(struct qmc5883l_data *data)
+ {
+ 	int tries = 150;
+ 	unsigned int val;
+-	int ret;
++	int ret, delay;
++
++	delay = qmc5883l_get_delay_based_on_odr(data);
++	if (delay < 0)
++		return delay;
+ 
+ 	while (tries-- > 0) {
+ 		ret = regmap_read(data->regmap, QMC5883L_STATUS_REG, &val);
+@@ -172,7 +320,7 @@ static int qmc5883l_wait_measurement(struct qmc5883l_data *data)
+ 
+ 		if (val & QMC5883L_DRDY)
+ 			return 0;
+-		usleep_range(5000, 6000);
++		usleep_range(delay, delay + 1000);
+ 	}
+ 
+ 	dev_err(&data->client->dev, "data not ready\n");
+@@ -208,6 +356,65 @@ static int qmc5883l_read_measurement(struct qmc5883l_data *data,
+ 	return IIO_VAL_INT;
+ }
+ 
++static const struct iio_enum qmc5883l_mode_enum = {
++	.items = qmc5883l_modes,
++	.num_items = ARRAY_SIZE(qmc5883l_modes),
++	.get = qmc5883l_get_mode_iio,
++	.set = qmc5883l_set_mode_iio,
++};
++
++static const struct iio_enum qmc5883l_osr_enum = {
++	.items = qmc5883l_osr_avail,
++	.num_items = ARRAY_SIZE(qmc5883l_osr_avail),
++	.get = qmc5883l_get_osr_iio,
++	.set = qmc5883l_set_osr_iio,
++};
++
++static const struct iio_chan_spec_ext_info qmc5883l_ext_info[] = {
++	IIO_ENUM("mode", IIO_SHARED_BY_TYPE, &qmc5883l_mode_enum),
++	IIO_ENUM_AVAILABLE("mode", IIO_SHARED_BY_TYPE, &qmc5883l_mode_enum),
++	IIO_ENUM("oversampling_ratio", IIO_SHARED_BY_TYPE, &qmc5883l_osr_enum),
++	IIO_ENUM_AVAILABLE("oversampling_ratio", IIO_SHARED_BY_TYPE, &qmc5883l_osr_enum),
 +	{ }
 +};
-+MODULE_DEVICE_TABLE(i2c, qmc5883l_id);
 +
-+static const struct of_device_id qmc5883l_of_match[] = {
-+	{ .compatible = "qst,qmc5883l" },
-+	{ }
++static IIO_DEV_ATTR_SAMP_FREQ_AVAIL(qmc5883l_show_odr_avail);
++static IIO_DEVICE_ATTR(scale_available, 0444, qmc5883l_show_scale_avail, NULL, 0);
++static IIO_DEVICE_ATTR(data_ready, 0444, qmc5883l_show_status, NULL, 0);
++static IIO_DEVICE_ATTR(overflow, 0444, qmc5883l_show_status, NULL, 0);
++
++static ssize_t qmc5883l_show_odr_avail(struct device *dev,
++				       struct device_attribute *attr, char *buf)
++{
++	return sprintf(buf, "10 50 100 200\n");
++}
++
++static ssize_t qmc5883l_show_scale_avail(struct device *dev,
++					 struct device_attribute *attr, char *buf)
++{
++	return sprintf(buf, "2 8\n");
++}
++
++static ssize_t qmc5883l_show_status(struct device *dev,
++				    struct device_attribute *attr, char *buf)
++{
++	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
++	struct qmc5883l_data *data = iio_priv(indio_dev);
++	unsigned int val;
++	int ret;
++
++	ret = regmap_read(data->regmap, QMC5883L_STATUS_REG, &val);
++	if (ret < 0)
++		return ret;
++
++	if (attr == (struct device_attribute *)&iio_dev_attr_data_ready.dev_attr.attr)
++		return sprintf(buf, "%d\n", !!(val & QMC5883L_DRDY));
++	else if (attr == (struct device_attribute *)&iio_dev_attr_overflow.dev_attr.attr)
++		return sprintf(buf, "%d\n", !!(val & QMC5883L_OVL));
++
++	return -EINVAL;
++}
++
+ static int qmc5883l_read_raw(struct iio_dev *indio_dev,
+ 			     struct iio_chan_spec const *chan, int *val, int *val2, long mask)
+ {
+@@ -275,6 +482,54 @@ static int qmc5883l_read_raw(struct iio_dev *indio_dev,
+ 	return -EINVAL;
+ }
+ 
++static int qmc5883l_write_raw(struct iio_dev *indio_dev,
++			      struct iio_chan_spec const *chan,
++			      int val, int val2, long mask)
++{
++	struct qmc5883l_data *data = iio_priv(indio_dev);
++	int odr, range;
++
++	switch (mask) {
++	case IIO_CHAN_INFO_SAMP_FREQ:
++		if (val == 10 && val2 == 0)
++			odr = QMC5883L_ODR_10HZ;
++		else if (val == 50 && val2 == 0)
++			odr = QMC5883L_ODR_50HZ;
++		else if (val == 100 && val2 == 0)
++			odr = QMC5883L_ODR_100HZ;
++		else if (val == 200 && val2 == 0)
++			odr = QMC5883L_ODR_200HZ;
++		else
++			return -EINVAL;
++
++		return qmc5883l_set_odr(data, odr);
++	case IIO_CHAN_INFO_SCALE:
++		if (val == 2 && val2 == 0)
++			range = QMC5883L_RNG_2G;
++		else if (val == 8 && val2 == 0)
++			range = QMC5883L_RNG_8G;
++		else
++			return -EINVAL;
++
++		return qmc5883l_set_rng(data, range << QMC5883L_RNG_SHIFT);
++	default:
++		return -EINVAL;
++	}
++}
++
++static int qmc5883l_write_raw_get_fmt(struct iio_dev *indio_dev,
++				      struct iio_chan_spec const *chan, long mask)
++{
++	switch (mask) {
++	case IIO_CHAN_INFO_SAMP_FREQ:
++		return IIO_VAL_INT;
++	case IIO_CHAN_INFO_SCALE:
++		return IIO_VAL_INT_PLUS_NANO;
++	default:
++		return -EINVAL;
++	}
++}
++
+ static irqreturn_t qmc5883l_trigger_handler(int irq, void *p)
+ {
+ 	struct iio_poll_func *pf = p;
+@@ -321,6 +576,7 @@ static irqreturn_t qmc5883l_trigger_handler(int irq, void *p)
+ 		.storagebits = 16,          \
+ 		.endianness = IIO_LE,           \
+ 	},                      \
++	.ext_info = qmc5883l_ext_info,      \
+ }
+ 
+ static const struct iio_chan_spec qmc5883l_channels[] = {
+@@ -337,6 +593,18 @@ static const struct iio_chan_spec qmc5883l_channels[] = {
+ 	IIO_CHAN_SOFT_TIMESTAMP(3),
+ };
+ 
++static struct attribute *qmc5883l_attributes[] = {
++	&iio_dev_attr_sampling_frequency_available.dev_attr.attr,
++	&iio_dev_attr_scale_available.dev_attr.attr,
++	&iio_dev_attr_data_ready.dev_attr.attr,
++	&iio_dev_attr_overflow.dev_attr.attr,
++	NULL
 +};
-+MODULE_DEVICE_TABLE(of, qmc5883l_of_match);
 +
-+static struct i2c_driver qmc5883l_driver = {
-+	.driver = {
-+		.name = "qmc5883l",
-+		.of_match_table = qmc5883l_of_match,
-+	},
-+	.id_table = qmc5883l_id,
-+	.probe = qmc5883l_probe,
++static const struct attribute_group qmc5883l_attribute_group = {
++	.attrs = qmc5883l_attributes,
 +};
 +
-+module_i2c_driver(qmc5883l_driver);
-+
-+MODULE_AUTHOR("Brajesh Patil <brajeshpatil11@gmail.com>");
-+MODULE_DESCRIPTION("QMC5883L Driver");
-+MODULE_LICENSE("GPL");
-+
+ static int qmc5883l_init(struct qmc5883l_data *data)
+ {
+ 	int ret;
+@@ -382,7 +650,10 @@ static int qmc5883l_init(struct qmc5883l_data *data)
+ }
+ 
+ static const struct iio_info qmc5883l_info = {
++	.attrs = &qmc5883l_attribute_group,
+ 	.read_raw = &qmc5883l_read_raw,
++	.write_raw = &qmc5883l_write_raw,
++	.write_raw_get_fmt = &qmc5883l_write_raw_get_fmt,
+ };
+ 
+ static const unsigned long qmc5883l_scan_masks[] = {0x7, 0};
+@@ -468,4 +739,3 @@ module_i2c_driver(qmc5883l_driver);
+ MODULE_AUTHOR("Brajesh Patil <brajeshpatil11@gmail.com>");
+ MODULE_DESCRIPTION("QMC5883L Driver");
+ MODULE_LICENSE("GPL");
+-
 -- 
 2.39.5
 

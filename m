@@ -1,148 +1,141 @@
-Return-Path: <linux-iio+bounces-19220-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19222-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E0FBAAD593
-	for <lists+linux-iio@lfdr.de>; Wed,  7 May 2025 07:58:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5760EAAD6DC
+	for <lists+linux-iio@lfdr.de>; Wed,  7 May 2025 09:08:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A8CE83B886A
-	for <lists+linux-iio@lfdr.de>; Wed,  7 May 2025 05:57:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 997031C0520A
+	for <lists+linux-iio@lfdr.de>; Wed,  7 May 2025 07:08:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E6FB1C84BF;
-	Wed,  7 May 2025 05:58:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C888215055;
+	Wed,  7 May 2025 07:08:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Alf+rWYA"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hR2EZXUC"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ED781F4629;
-	Wed,  7 May 2025 05:58:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CE8B20C02E;
+	Wed,  7 May 2025 07:08:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746597493; cv=none; b=jc1anOIIi055mu0GKTywCf1MOYfA6lWAXh09uBqf4G5FVvjXy72jhdlJnt41mziM9bpbnD0zDJ98/h5t5qr8IrtwISi59GX+8tdenNmSAiZlO4Nr6w2aWiyYmknOYepdQVk1rOYgXalmRM2NUyPJAA9s1T5VVlrUdWv/RxIywaY=
+	t=1746601683; cv=none; b=mXYhi+O6ndoouLG5s2x1lGBs8zRoaPnhfQ42AIX2gBHmxjQeCPl3ra+uBLNP3hTSg22Ji848YLDkommzx61rfqPVPDzNFJ4GqL1HuT4TIWplyZs3merX0NU3Fm4rK1ysR2qcdaswCJ2czEKs4uPVrP74oiP9GmvRxTUJ+ToXYw0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746597493; c=relaxed/simple;
-	bh=noM0OddCe3nMPsrUfDxNQxDN+cqV178/y6VH8nlyRw8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rzhHzt0kVP1uahI9zVtABokHYIM4myGwYcShuxbmpDlrKb6MUHCIHz+MIV1OkpDBe/yf1MHaZx5+oVkZ+NWB4zJd5PTxbo0yjjVwlziDN2TwE70KRmF8JNmmaPsL775wwdjWPYZKUPFiSb35c29ejpkq3f/JhQZ/z+ITX2W2Zqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Alf+rWYA; arc=none smtp.client-ip=209.85.222.170
+	s=arc-20240116; t=1746601683; c=relaxed/simple;
+	bh=yOFbH434Zg5rDi8e1kT9YhyjSm0ENvujCs9yLE99ktA=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Uj4sOuPpsAaY8xSrd+Z6WFgP0t4iP/jIgZrhQrF13N19pgwHYHulaoFjSgn43CQFNcQC5DCgvlLcnIqJwjErWrBjwL5mqRA8NrC8MuSJ8mIFpT46RJuF3bpCqbh3bEePHydr3YwPZ28Ju1Hngq7l4r1MP0lxEiNhlDQHs7MLuMs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hR2EZXUC; arc=none smtp.client-ip=209.85.128.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-7c54b651310so1013433185a.0;
-        Tue, 06 May 2025 22:58:11 -0700 (PDT)
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-43cfe63c592so60439425e9.2;
+        Wed, 07 May 2025 00:08:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746597490; x=1747202290; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=62xNdgK3PUfEz8Xz7n17PoKO70VX0ZqDvch6tNNuGFk=;
-        b=Alf+rWYA8F0MIy7/vQOt5N4UMZXvHS2PNOScTJ0aRyIpM2MqUNaxMlZ+q91jzwSi/L
-         0VmIs8L+2JTnL3k5gQaDZZBszqSX098BDOwzqMqr/NBcCHgoF5xsa75NwM0RhT9v63A9
-         oO9cvR5p/8Fm18y0IR4ViYbhLHRuvXTrD7LAW/mM03eizFwc7Ca5k3unYWexwpwn9k4D
-         3wKA/29a/qCqgEf1D/u0IN+ThtmAeyrX8UVDD4BJzRHum9sg7Ld2s2uAH2sLrzLyGMqv
-         SWNIW0rdXkvOLGmEoW5lqRrRBQ1lT646Goo9rfZahNPN/H4APhjlW3oKJEdQnqH4IhIJ
-         WH5Q==
+        d=gmail.com; s=20230601; t=1746601680; x=1747206480; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=yOFbH434Zg5rDi8e1kT9YhyjSm0ENvujCs9yLE99ktA=;
+        b=hR2EZXUCI2jZcG3Skqx1VLOYTBnGlwfTWXzOxsAj4BLCL8CNEu4Xm9fPVNxT19dSOL
+         9dBSeLAsKEEc2VsTU6kqAvU5i95M2kQadFDuGcW+DLWsaHGHHd9RMNpicy8x+2/Ehfp5
+         RZjCc9D80MHtO13PPY7qH0FOpz+Nj73IgLEptsyokEGphijD9Fp+Wr9jpOXPZQwK7VNM
+         YAhnmjpSGXAgEo5uxfQQsHvOn5eF8E8R1c6kb5NGWo7RpXMqGL9aXFg14EagFT8X4TiT
+         wVpRkfi5jW3ZvwGR4ZptO/NoV62Y5UD39Mf5J5DzbIgjwwA6hpHDxade+ZdU9aZm49sk
+         G/3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746597490; x=1747202290;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=62xNdgK3PUfEz8Xz7n17PoKO70VX0ZqDvch6tNNuGFk=;
-        b=QlktX2beIGjAwZJf+pydUuN3lJNh74v44ET0Z9K2rT3teyxVUwshGIyqxRVtXf9TZK
-         prcErEr46FCh84JzgHgYCZd1hc6WNu6EnZKkf0rdRQPji7GYXjVgIzICK5mlZl0omYCD
-         T9MlbmpWnHrhpMFT3attywEZJWgr0m3i+MHbsfUIz70ol/C3dNiI2VyWXngTbtftxqaP
-         6IA9mUAsPkehhP/Y4d+9uP/ncEtNZbTzoffnkEKmkCZiV5R4as7ndn1NimI1wy5Gvgkm
-         +5Dsc5qPtT0g848QaDhD4bdNcvlNU407PEn28tBjZwr6+8iGG6EIrcrWUHvLgKxIT0IQ
-         +KUg==
-X-Forwarded-Encrypted: i=1; AJvYcCXsvgW3g/Y+NzufTt+pnOck8SBB2bMf47NmvIQ1MD7v6e7eR/dntGAE4yJFsSGrooLoRNjXn9ZxuX3J1n6v@vger.kernel.org, AJvYcCXzLqB0pZqh6RlO1VLOSw1EvQbv2GIJH/nkVH2MRLv7U0SpoJCx3QNH9sUxd1imB/JZVINuVXdQab0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzJ1JHpuOuwHh+TRxK2JrGJn91F4rEpBCG6R5aYYdik/KF6pmfo
-	9oDHxdYrz0FfuAgPv2vVStDCVwVStDdjJfOK5ufWQfxiKjfbvI5OpJykzaucXR4=
-X-Gm-Gg: ASbGncsa+VuEwZa1Om+GbuiCtOmCl7NOu6wdjduv3zXhaZJICaUFJz7ng4nDIddH7iC
-	QYkKztOcW842MuMccuXIQ/pcpzmdDwDX4PC2h2SRal0B01/KCD662MRkROSnYwXEH2uc3D1bcjb
-	U1JmBBDJoHvZfUI0kpXW7CnyGRMVRmaXEHKkD1ZKYrlNFd4cAZbupK9Wg/RQsKmBrwHzqe1Rkd0
-	ym1vXnxmMHB8YqKFTsrL3MHNn72ShjSrSL9Id0aLXuLmBexPG/HkWEYyNTVXioMZyjM2g67nLa0
-	/bnNd2dXNn+xFFbQKDBhSffeNBD6cLy5r7FYbKuRV6/D7tadtAoJwyVmQMEJPg==
-X-Google-Smtp-Source: AGHT+IE+Zs0zPxJ7NZCpPs3fbxcykASWphbwWyDcObU10VQPB9Wk3EyEc/S3iCZ3HP+raP3xoSY8qw==
-X-Received: by 2002:a05:622a:1356:b0:48c:4c6c:bd8d with SMTP id d75a77b69052e-49225560462mr30989061cf.2.1746597479722;
-        Tue, 06 May 2025 22:57:59 -0700 (PDT)
-Received: from c65201v1.fyre.ibm.com ([129.41.87.7])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-49223457b48sm9365871cf.68.2025.05.06.22.57.57
+        d=1e100.net; s=20230601; t=1746601680; x=1747206480;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=yOFbH434Zg5rDi8e1kT9YhyjSm0ENvujCs9yLE99ktA=;
+        b=sUXuYp2s+rvis+8Pmhc9fUP7IblXYIe26DwPlTaCk9k8xehoDD/ZLaI8xrf/KBAkP7
+         RQewgwBI0D1BjRK5q5UhOVRNV077QARhEoc15vRQegk2JS52MkF4y5W45upuve72853T
+         TAsOoBcDrakR2WmjUgvHh01n6/tyjwLhMeq6HZg2j8nE0+Iu/Gvv8q7875sDmvBbaYBm
+         +SbC7PJ+Utl7p9Cm25ju66fIxBTC5ohnNctbJq3zJTpxnjK8nOh1lKn7TXZ7TIvjODk8
+         cyEp5w/SIILLsmRRsyxHggi2baAXtjklDmIvB9LPO4Nt74YNCs72OFk3BRJl7l/m2nhn
+         EQDg==
+X-Forwarded-Encrypted: i=1; AJvYcCU+VUFKpp5D32Dv9zn8DTXZRW/4SXAqJlv/Y53o5kU/zLaFPrmULhgzQpadZIt+b/7UTYP7ZFwFaF7yeHU=@vger.kernel.org, AJvYcCUDnuTD/kvxpuhE0dEhRg32Zawu1w4kaGh8KguB2lAavivye8IygdgQDUca/vwpmyanroLqfWnnQzbl@vger.kernel.org, AJvYcCVFIZNDptWVnui5QsqOsSMMpof60ZI3vVwLB8GJjTAD7qNvs5GoscIrb3RIpwzt80iQ+AOxKzjQIiF/@vger.kernel.org, AJvYcCVNiARqhBe/pjr7+yeBsZ5KMXsYp0hK+DLxlBc701ggQwfaFkaWhNqYUQs0gsnizw9KN9PBv4P90Xbv@vger.kernel.org, AJvYcCVr7qqAm78KJE/6tHDJzFPwdovuxHo7crg42DNNOD7+RNhC61vvgzQv9N+Ax62jJJm5bIh6VhNHOLzxWg==@vger.kernel.org, AJvYcCVtmBLG+0r2DWFzdK8un0svH3Ux/ksZPIq2hBaIFodRxU0Hia35uiKUvD637wE7OhVApgTJFYqMr+M=@vger.kernel.org, AJvYcCXjcDZdxTVZPfv6cgQ5z1fxMfOVagM7+siGKfxEXf2sAxA/hMmgVWmg/yyEbhfNgOE4i5qmMuaMqx/d@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxs1ytfyUYkX51S5T0sgSt4mOlzzH88cGzju6T0sB3RP6qw/C9M
+	QsxRyEwpic+pNG/X6zQXuMJ/le5l5gXgswZvDOEf4cvpdhh9/Va8
+X-Gm-Gg: ASbGncsne0uqz2oJmPzSsiyrKCy4TzBFgtgaH0aZu4u2Wi5Ruk229K0leXUtjTqkO1D
+	2SeOhmgZU4LwLX7uP8EO7UCvzRzIVhVYv+pFlSpgB2aUmJgaqOsA8li6VAD3tBvRZsgLR5eRZ2U
+	VR30s5SPLtltHyVqXBH0vE2mwvi7soPDshHmmFRry6Jiy1HmlOT3SpNmDizoQ2kZQSirCIDpGlO
+	8NRGDaTj8QEA8pcmM1yJ6lt4DXfYiItq1GOzLdFRsCO1qRnqJgjgW1JzseEfgB4oCODDorvg0fb
+	Ew6R55OVNnlG5p3JW4Kzftd7whAWqysGii79aYEG/y96TKgQXBF1o+cjPbmH/9L9OagHIIpiU/N
+	p/aExdMCIADtTCTOGfKrhWZgsfw==
+X-Google-Smtp-Source: AGHT+IEVv9agzvTVDs5bbJ+MnVYrw4KNEaYxq9uzAgvReyxVwN3XJILLyTgLOKv4Mx4+2K0lZOywtA==
+X-Received: by 2002:a05:6000:188c:b0:38b:d7d2:12f6 with SMTP id ffacd0b85a97d-3a0b499c154mr1514674f8f.2.1746601679606;
+        Wed, 07 May 2025 00:07:59 -0700 (PDT)
+Received: from ?IPv6:2001:818:ea56:d000:56e0:ceba:7da4:6673? ([2001:818:ea56:d000:56e0:ceba:7da4:6673])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a099ae8377sm16222335f8f.59.2025.05.07.00.07.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 May 2025 22:57:58 -0700 (PDT)
-From: Chelsy Ratnawat <chelsyratnawat2001@gmail.com>
-To: jikos@kernel.org,
-	bentiss@kernel.org,
-	jic23@kernel.org,
-	srinivas.pandruvada@linux.intel.com,
-	dlechner@baylibre.com
-Cc: linux-input@vger.kernel.org,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Chelsy Ratnawat <chelsyratnawat2001@gmail.com>
-Subject: [PATCH v2] HID: sensor-hub: Fix typo and improve documentation
-Date: Tue,  6 May 2025 22:57:45 -0700
-Message-ID: <20250507055745.4069933-1-chelsyratnawat2001@gmail.com>
-X-Mailer: git-send-email 2.43.5
+        Wed, 07 May 2025 00:07:59 -0700 (PDT)
+Message-ID: <ea70735157f47ea096e09f8a03d8151095a04c03.camel@gmail.com>
+Subject: Re: [PATCH v4 7/7] clk: clk-axi-clkgen: fix coding style issues
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: David Lechner <dlechner@baylibre.com>, nuno.sa@analog.com, 
+ linux-clk@vger.kernel.org, linux-fpga@vger.kernel.org,
+ dmaengine@vger.kernel.org,  linux-hwmon@vger.kernel.org,
+ linux-iio@vger.kernel.org,  linux-pwm@vger.kernel.org,
+ linux-spi@vger.kernel.org
+Cc: Stephen Boyd <sboyd@kernel.org>, Michael Turquette
+ <mturquette@baylibre.com>,  Moritz Fischer <mdf@kernel.org>, Wu Hao
+ <hao.wu@intel.com>, Xu Yilun <yilun.xu@intel.com>,  Tom Rix
+ <trix@redhat.com>, Vinod Koul <vkoul@kernel.org>, Jean Delvare
+ <jdelvare@suse.com>,  Guenter Roeck <linux@roeck-us.net>, Michael Hennerich
+ <Michael.Hennerich@analog.com>, Jonathan Cameron <jic23@kernel.org>, Trevor
+ Gamblin <tgamblin@baylibre.com>, Uwe =?ISO-8859-1?Q?Kleine-K=F6nig?=
+ <ukleinek@kernel.org>, Mark Brown <broonie@kernel.org>, Mike Turquette
+ <mturquette@linaro.org>
+Date: Wed, 07 May 2025 07:08:23 +0100
+In-Reply-To: <b5a5a8a6-bb8a-44f0-ba94-7657aba83311@baylibre.com>
+References: <20250505-dev-axi-clkgen-limits-v4-0-3ad5124e19e1@analog.com>
+	 <20250505-dev-axi-clkgen-limits-v4-7-3ad5124e19e1@analog.com>
+	 <b5a5a8a6-bb8a-44f0-ba94-7657aba83311@baylibre.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-Includes the following corrections -
- - Changed Measurment -> Measurement
- - Changed clode -> close
- - Gyro -> gyro
+On Mon, 2025-05-05 at 12:21 -0500, David Lechner wrote:
+> On 5/5/25 11:41 AM, Nuno S=C3=A1 via B4 Relay wrote:
+> > From: Nuno S=C3=A1 <nuno.sa@analog.com>
+> >=20
+> > This is just cosmetics and so no functional changes intended.
+> >=20
+> > Signed-off-by: Nuno S=C3=A1 <nuno.sa@analog.com>
+> > ---
+> > =C2=A0drivers/clk/clk-axi-clkgen.c | 74 +++++++++++++++++++++++--------=
+-------------
+> > =C2=A01 file changed, 38 insertions(+), 36 deletions(-)
+> >=20
+> > diff --git a/drivers/clk/clk-axi-clkgen.c b/drivers/clk/clk-axi-clkgen.=
+c
+> > index
+> > d8634d1cb401fff2186702354ecda7b4fcda006f..63b7b7e48f8fa00842ce4cf2112ce=
+7a89fa25da
+> > e 100644
+> > --- a/drivers/clk/clk-axi-clkgen.c
+> > +++ b/drivers/clk/clk-axi-clkgen.c
+> > @@ -15,6 +15,7 @@
+> > =C2=A0#include <linux/module.h>
+> > =C2=A0#include <linux/mod_devicetable.h>
+> > =C2=A0#include <linux/err.h>
+> > +#include <linux/types.h>
+> > =C2=A0
+> Might as well sort the rest alphabetically while we are cleaning things u=
+p.
+>=20
 
-Signed-off-by: Chelsy Ratnawat <chelsyratnawat2001@gmail.com>
----
-Changes in v2 -
- - Changed  X-AXIS -> X-axis
+Alright, it looks like a v5 might be needed. I can do that
 
- include/linux/hid-sensor-hub.h | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
-
-diff --git a/include/linux/hid-sensor-hub.h b/include/linux/hid-sensor-hub.h
-index 0f9f7df865db..e71056553108 100644
---- a/include/linux/hid-sensor-hub.h
-+++ b/include/linux/hid-sensor-hub.h
-@@ -17,7 +17,7 @@
-  * @attrib_id:		Attribute id for this attribute.
-  * @report_id:		Report id in which this information resides.
-  * @index:		Field index in the report.
-- * @units:		Measurment unit for this attribute.
-+ * @units:		Measurement unit for this attribute.
-  * @unit_expo:		Exponent used in the data.
-  * @size:		Size in bytes for data size.
-  * @logical_minimum:	Logical minimum value for this attribute.
-@@ -39,8 +39,8 @@ struct hid_sensor_hub_attribute_info {
-  * struct sensor_hub_pending - Synchronous read pending information
-  * @status:		Pending status true/false.
-  * @ready:		Completion synchronization data.
-- * @usage_id:		Usage id for physical device, E.g. Gyro usage id.
-- * @attr_usage_id:	Usage Id of a field, E.g. X-AXIS for a gyro.
-+ * @usage_id:		Usage id for physical device, e.g. gyro usage id.
-+ * @attr_usage_id:	Usage Id of a field, e.g. X-axis for a gyro.
-  * @raw_size:		Response size for a read request.
-  * @raw_data:		Place holder for received response.
-  */
-@@ -104,10 +104,10 @@ struct hid_sensor_hub_callbacks {
- int sensor_hub_device_open(struct hid_sensor_hub_device *hsdev);
- 
- /**
--* sensor_hub_device_clode() - Close hub device
-+* sensor_hub_device_close() - Close hub device
- * @hsdev:	Hub device instance.
- *
--* Used to clode hid device for sensor hub.
-+* Used to close hid device for sensor hub.
- */
- void sensor_hub_device_close(struct hid_sensor_hub_device *hsdev);
- 
--- 
-2.43.5
-
+- Nuno S=C3=A1
 

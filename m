@@ -1,86 +1,84 @@
-Return-Path: <linux-iio+bounces-19250-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19251-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED5B3AAE8E2
-	for <lists+linux-iio@lfdr.de>; Wed,  7 May 2025 20:20:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1861BAAE907
+	for <lists+linux-iio@lfdr.de>; Wed,  7 May 2025 20:24:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D1AF63B35A1
-	for <lists+linux-iio@lfdr.de>; Wed,  7 May 2025 18:19:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 12E033B449D
+	for <lists+linux-iio@lfdr.de>; Wed,  7 May 2025 18:24:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D83FE28D832;
-	Wed,  7 May 2025 18:19:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2225C28DF1F;
+	Wed,  7 May 2025 18:24:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RYS6dwEw"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PUckmC0z"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 308291A0730
-	for <linux-iio@vger.kernel.org>; Wed,  7 May 2025 18:19:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78D5D2571D7
+	for <linux-iio@vger.kernel.org>; Wed,  7 May 2025 18:24:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746641991; cv=none; b=ruPSRncygyyKCA5dRzdOr/h7/yssW3/FNWsAghDgM8NPhOks8f9Kg/vlTlTXyo0LWAztq99gPm0dSrnH6EwqBJmWHlcuIKJ7VWgT6Nh/bAQHgRBzz/hagMPUa3GpHP2P1diJshupzhZLKZUUXzlmXhqUiMDWDr7RAtpPTTTiFuY=
+	t=1746642290; cv=none; b=cTuO/bfLfvn0by2DcC12vUF0gDvmfGoR2ANPIb9tbqaPsRSWf3V5mSjloEX5sGw8qa8lSXuUVf7YdlljhzvYk35vl1lWM0OUFb0oJ3pjwYIgnPRlPZ56daYq+TmQpyWUBLTRCCTptAZjfIhvwAs4Ase7AOdBXj9KcBrJGa/6dkg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746641991; c=relaxed/simple;
-	bh=J6cTFA9cmYIrN/6mBT75FJGdpBqDd1zWTMsAheZhIqQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=eXid5a+4I88wcdNHGkkZJEbVIwKLLAcuCH4TugGeJWYtC/PNVPQw7S4dt30WZTpD5ZqRj6M+fKEhDRz/LA4ig0xmlWcr9nl+yWGh9vS3snCVS7lJ4CTtHVqOMM3GMgjMgRG+QQqg6hFJoE2aRlUuks/lhLLH2us2sSUAbaHvjk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RYS6dwEw; arc=none smtp.client-ip=209.85.214.174
+	s=arc-20240116; t=1746642290; c=relaxed/simple;
+	bh=1T0ENfORJYSknqSuDcDSi+byqb5zegXymlCwnhvc5QI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=lx0c2F1MRJGfd018MbJlSFCWFrkOonPAvZZ+dExJ7VemO71O/VKTBMzbGnO/H6MpUl4qZ50yml2D/p25A19BFId+qveKPuueHBp8OxYzs5YgqA8EagRTJOpkqOv+rZceV5xkq2u5XowQif24rzv/jXrfdHIHHvPFqsRuRCMLH2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PUckmC0z; arc=none smtp.client-ip=209.85.210.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-22e16234307so3040625ad.0
-        for <linux-iio@vger.kernel.org>; Wed, 07 May 2025 11:19:49 -0700 (PDT)
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-736a72220edso228528b3a.3
+        for <linux-iio@vger.kernel.org>; Wed, 07 May 2025 11:24:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746641989; x=1747246789; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1746642289; x=1747247089; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=7iocSPif0goC/A8fzQARUe9UWXyrH9PG1jd7CkVVzGE=;
-        b=RYS6dwEw7kFUl5M36oho7XR1SRdYpv3g/It5osJDARxK/owGZ3ihjCRomjppN3Rrd1
-         welz1vMH8vo12KyxbFospnpXe9LB6pDb1+woPz8sARHRFK1q0cLBPSl1oflmPHi/tm8i
-         UXyieDadMWh22jdcSLg5s6FpIUEmce4cHbjFJwOmx+/C3neKrTVJJZ+WP6lYHuWo7yA7
-         lpVVMuZ7cgkVJ9EIs5qcrpYEYXv2sWOfn+hxQZG+v89E4C79c2ngk8Ze0MsP4Wl4d9n+
-         65RggrrgPznv4KfwPrgZccDtD5QwIC3q1IZfNVhtzbI8plxxz3jx6WqdmFizWLpnisCW
-         kFTA==
+        bh=KtdcqjlBF5kwU0pyBvBCZDYVEvieJivWW4pVejblka8=;
+        b=PUckmC0zc9JXHjVhjPQamIJBrFczMNaiLif4OlxASKTWLVi+8fBdYQqd59uHtSGKtD
+         YqFo3fdV8vCer7KpGdULHte4MdX2l+rIkmLwdU2K70sjKo0GkFbDt5x4+h1HJaW9eXX1
+         IZVPN97gN66Q+b3OYqi+BYPMBwSBhIF0Gk0R1mdVShN1XNHo2jDxL91FU0xkZbmqUOCb
+         1UQgFWUk6O6lSc7bSBLJnuw1tIMYzOUqLM4hHFG8NvswErQpysfv7FyQ1fm+f8Aqmb/R
+         XKotEPrFDE5TbbkSUXUH63ckIb7gZOwi5AwrxVxLQTB4a+mbqzvXbH0BIo8c5KhSm+r9
+         aK2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746641989; x=1747246789;
+        d=1e100.net; s=20230601; t=1746642289; x=1747247089;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=7iocSPif0goC/A8fzQARUe9UWXyrH9PG1jd7CkVVzGE=;
-        b=dlI7aREFyQsRUez7VixBVMDjx+52GmZUYRGjGGbRQUaN9h5WLe3r4yKc5svmog8sKW
-         tvk3tG+ZgkRP5Cx314N1qIIwBq1Zc6OODLp9B/W1SQ5PIF46sAuSRFsdB2JShBHzsitE
-         +JZohzmdUxwnGvmh1nksJb42bUcWwM51OEMtj8cF/Cfai+CPArZOdgwRbproTQMINEBU
-         QDbxGKCbwYBdHYZSbj2B464HUh3NYaiYPnrvzInh4e3hoxCzQ2KhYENnKkvKTkiLjL2+
-         bYdeMAPesb8XjY5UiKNi0b4M9BuwW6eeiCy9qiqsaHGK7LbWiTr4Ao/3A/iXifFMdFAg
-         QjVA==
-X-Forwarded-Encrypted: i=1; AJvYcCVa6FR3KlpLs287su+i06kV0CajwvJJihGibjcL2Eq3uNMo+xNd6grpp0El3o5V73KYNPn7tVDi4Ec=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw6ONHB3FSRtM5JrL3cYtqrod/mfDWsaMzrnHWtLyOzFHzEmyqg
-	C0vltzDL42Vqhtq8iP3+4PoGQ/Cqy6oVkrV0y+XWaRyq41k9Fv0Hx0aaAOO/d3taIw==
-X-Gm-Gg: ASbGncszXpKgmuB9CEH4k282KK+/00KkFrun4N7JkI7oKBpXOsU3CTvU3Ar2MrF4W3n
-	QCx4xuFTtaGHTi1Q9ttFB4EcZeNhKreI0x0kFSMF3C0x0u4EIQDBG7VHzzV/Ylrb4HYMTfej8er
-	6ngwgYGNxA/KHF1dXjwo9VKcpiAxP1Jah9OYcAnrEIxrDe+IAMrkK1ZxDKKiHzDCmTH6ux7ZJA4
-	Fus3/kPZ+JF1s+tpaTRYEQWSzJ0B1kHHPemBnU3tY9iwKraA+o5gfMLdR82XfPxrrbczOx57x4e
-	Lupr5Bh5jHXCk9RvgnCSCrzi3ZvV2KiA18nS/pNhHnVbdek6z/0wdmP2tvhbFNVswbB4EPU8OEY
-	11YAtYi0qc2Jt
-X-Google-Smtp-Source: AGHT+IHHXOEDPZ+GV0rG2ojIhrTyVzPP/gHnzYFLNqVRnCRbplYM83pUSQMZgfLguUdRUYYv8Q/YNw==
-X-Received: by 2002:a17:902:ea0e:b0:22e:491b:20d5 with SMTP id d9443c01a7336-22e847990b8mr6535305ad.26.1746641989255;
-        Wed, 07 May 2025 11:19:49 -0700 (PDT)
-Received: from isabella-caselli-linux.semfio.usp.br ([143.107.45.1])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22e188285f8sm88082485ad.46.2025.05.07.11.19.47
+        bh=KtdcqjlBF5kwU0pyBvBCZDYVEvieJivWW4pVejblka8=;
+        b=hMxub+B7MXt6Qh0Hx9IO5llzKnLvqpnUXPbszWOefXWUJnzPpvKQceJkUEg7R+oEWJ
+         AjQtmPksI1Q+0fO3PboDMywNYIhz7njDg/ljH2DTVv1dOCtTybp9DY3ZkrHGfKklpTBE
+         Jv2O5KtFS1b0zwsqMmgf9d7HpBrfBcZiJiKzxJMXzwHG++0K5tzgCpo+Eflmz1+u/Ys2
+         jRuHJvSt/cvw3wZ5IszwD+wXAtdblfo5xbNLzv0mYYA5tytqInitmUyy6Mxl2/XUzPAd
+         Taib0QOEfX4Q56ytWXQooEimcPsOWe6lz5y9CGkTk2JU7I9c1ZlnYCyTj2TQv8qK4PB3
+         u5wQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWIEZOOoiTiU4R7iYczlyRUD/RFYo4RBOyeaHojf0vfhecP9VthyozQOPEb5uIxy+263jatPMEA3nw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxIYvclnvDWIgGoShm7ImurcDIki+7VApcCRKlAfTtipqOqP1Vk
+	sK8y5eVbqmU267gv3g+CGKInv/AM/9aw58iEZvuNQrFe1O00TSsBgHObt95Q
+X-Gm-Gg: ASbGncs1cs+vXXgPwgurJ315++02O0PL1/pqRYDDocy66cMaorrI4QRNEtJhPnxS0OG
+	i+ga3Ri4FuL2CLU4XiLyEg314/tox4mFklI6DGqp8WU7Yuv7WBjOSQf7epacKkrXHp/oHfbc0MC
+	kN3npz4pPn0TbCJi8PMdn0QBtYlnHt5PH2NjxflTG0NwukQ4F7NGgsJtZf1HvNwnIcMO0POYLxM
+	8aKwlNQlm8cPmwbsGdlz/YmFJWvDKExNCumJdiOvdI3NXHbtK9hXNouCy9zLvdFX7fHogM1p05o
+	L0Tij5wrqD4I8Cs3xWaCHKvNkucuvJ15ZwXn5/q8JfTLBYJMzQnIJ9WsDQ==
+X-Google-Smtp-Source: AGHT+IFetaHThfP4mdBkml0csE8oWm4klD94uiICnnQHuDubGelmKhjSCVDE3AggLMl9MI456vXxWA==
+X-Received: by 2002:a05:6a00:ad8f:b0:73c:a55c:6cdf with SMTP id d2e1a72fcca58-7409cedc761mr5131419b3a.1.1746642288536;
+        Wed, 07 May 2025 11:24:48 -0700 (PDT)
+Received: from BMO.semfio.usp.br ([143.107.45.1])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7405905cff4sm11487668b3a.125.2025.05.07.11.24.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 May 2025 11:19:48 -0700 (PDT)
-From: Isabella Caselli <bellacaselli20@gmail.com>
-To: jean-baptiste.maneyrol@tdk.com,
-	jic23@kernel.org,
-	lars@metafoo.de,
+        Wed, 07 May 2025 11:24:48 -0700 (PDT)
+From: =?UTF-8?q?Bianca=20Costa=20Galv=C3=A3o?= <biancalvao@gmail.com>
+To: jic23@kernel.org
+Cc: juliacalixtorosa@usp.br,
+	=?UTF-8?q?Bianca=20Costa=20Galv=C3=A3o?= <biancalvao@gmail.com>,
+	=?UTF-8?q?Bianca=20Costa=20Galv=C3=A3o?= <biancagalvao@usp.br>,
 	linux-iio@vger.kernel.org
-Cc: rodrigo.michelassi@usp.br,
-	Isabella Caselli <bellacaselli20@gmail.com>
-Subject: [PATCH v2] iio: imu: inv_mpu6050: refactor aux read/write to use shared transfer logic
-Date: Wed,  7 May 2025 15:15:14 -0300
-Message-ID: <20250507181854.49025-1-bellacaselli20@gmail.com>
+Subject: [PATCH v2] iio: magnetometer: mmc35240: refactor volatile and writeable reg functions
+Date: Wed,  7 May 2025 15:23:26 -0300
+Message-ID: <20250507182327.49068-1-biancalvao@gmail.com>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -91,130 +89,51 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Refactors inv_mpu_aux_read() and inv_mpu_aux_write() to extract the common
-I2C transfer sequence into inv_mpu_i2c_master_xfer(), which now handles
-starting and stopping the I2C master, waiting for completion, disabling
-SLV0, and checking for NACK errors.
+The two functions `mmc35240_is_volatile_reg()` and `mmc35240_is_writeable_reg()` implement exactly complementary logic.
+Refactor by having `mmc35240_is_volatile_reg()` simply return the logical negation of `mmc35240_is_writeable_reg()`.
 
-This refactoring removes code duplication and improves maintainability.
-No functional changes are intended.
-
-Signed-off-by: Isabella Caselli <bellacaselli20@gmail.com>
-Co-developed-by: Rodrigo Michelassi <rodrigo.michelassi@usp.br>
-Signed-off-by: Rodrigo Michelassi <rodrigo.michelassi@usp.br>
+Signed-off-by: Bianca Costa Galvão <biancagalvao@usp.br>
+Co-developed-by: Júlia Calixto Rosa <juliacalixtorosa@usp.br>
+Signed-off-by: Júlia Calixto Rosa <juliacalixtorosa@usp.br>
 ---
-As requested after sending v1, we removed the newly created refactoring function — which
-would have only been used inside inv_mpu_aux.c — and moved the duplicated code directly 
-into inv_mpu_i2c_master_xfer(), since the status check was always performed immediately 
-after its execution in both inv_mpu_aux_read() and inv_mpu_aux_write().
----
- drivers/iio/imu/inv_mpu6050/inv_mpu_aux.c | 57 +++++++++--------------
- 1 file changed, 22 insertions(+), 35 deletions(-)
+ drivers/iio/magnetometer/mmc35240.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_aux.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_aux.c
-index de013e034..970cf5c47 100644
---- a/drivers/iio/imu/inv_mpu6050/inv_mpu_aux.c
-+++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_aux.c
-@@ -14,6 +14,8 @@
- /*
-  * i2c master auxiliary bus transfer function.
-  * Requires the i2c operations to be correctly setup before.
-+ * Disables SLV0 and checks for NACK status internally.
-+ * Assumes that only SLV0 is used for transfers.
-  */
- static int inv_mpu_i2c_master_xfer(const struct inv_mpu6050_state *st)
- {
-@@ -23,6 +25,7 @@ static int inv_mpu_i2c_master_xfer(const struct inv_mpu6050_state *st)
- 	uint8_t d;
- 	unsigned int user_ctrl;
- 	int ret;
-+	unsigned int status;
+diff --git a/drivers/iio/magnetometer/mmc35240.c b/drivers/iio/magnetometer/mmc35240.c
+index 07f58567e521..80f023eaba9f 100644
+--- a/drivers/iio/magnetometer/mmc35240.c
++++ b/drivers/iio/magnetometer/mmc35240.c
+@@ -418,14 +418,16 @@ static const struct iio_info mmc35240_info = {
+ 	.attrs		= &mmc35240_attribute_group,
+ };
  
- 	/* set sample rate */
- 	d = INV_MPU6050_FIFO_RATE_TO_DIVIDER(freq);
-@@ -51,12 +54,27 @@ static int inv_mpu_i2c_master_xfer(const struct inv_mpu6050_state *st)
- 	if (ret)
- 		goto error_restore_rate;
- 
-+	/* disable i2c slave */
-+	ret = regmap_write(st->map, INV_MPU6050_REG_I2C_SLV_CTRL(0), 0);
-+	if (ret)
-+		goto error_disable_i2c;
-+
-+	/* check i2c status */
-+	ret = regmap_read(st->map, INV_MPU6050_REG_I2C_MST_STATUS, &status);
-+	if (ret)
-+		return ret;
-+
-+	if (status & INV_MPU6050_BIT_I2C_SLV0_NACK)
-+		return -EIO;
-+
- 	return 0;
- 
- error_stop_i2c:
- 	regmap_write(st->map, st->reg->user_ctrl, st->chip_config.user_ctrl);
- error_restore_rate:
- 	regmap_write(st->map, st->reg->sample_rate_div, st->chip_config.divider);
-+error_disable_i2c:
-+	regmap_write(st->map, INV_MPU6050_REG_I2C_SLV_CTRL(0), 0);
- 	return ret;
- }
- 
-@@ -135,7 +153,8 @@ int inv_mpu_aux_read(const struct inv_mpu6050_state *st, uint8_t addr,
- 	if (ret)
- 		return ret;
- 
--	ret = inv_mpu_aux_exec_xfer(st);
-+	/* do i2c xfer, disable i2c slave and check status*/
-+	ret = inv_mpu_i2c_master_xfer(st);
- 	if (ret)
- 		return ret;
- 
-@@ -173,42 +192,10 @@ int inv_mpu_aux_write(const struct inv_mpu6050_state *st, uint8_t addr,
- 	if (ret)
- 		return ret;
- 
--	ret = inv_mpu_aux_exec_xfer(st);
--	if (ret)
--	return ret;
--
--	return 0;
--}
--
--/**
-- * inv_mpu_aux_exec_xfer() - executes i2c auxiliary transfer and checks status
-- * @st: driver internal state.
-- *
-- *  Returns 0 on success, a negative error code otherwise.
-- */
--int inv_mpu_aux_exec_xfer(const struct inv_mpu6050_state *st)
+-static bool mmc35240_reg_check(unsigned int reg)
 -{
--	int ret;
--	unsigned int status;
--
--	/* do i2c xfer */
-+	/* do i2c xfer, disable i2c slave and check status*/
- 	ret = inv_mpu_i2c_master_xfer(st);
--	if (ret)
--		goto error_disable_i2c;
--
--	/* disable i2c slave */
--	ret = regmap_write(st->map, INV_MPU6050_REG_I2C_SLV_CTRL(0), 0);
--	if (ret)
--		goto error_disable_i2c;
--
--	/* check i2c status */
--	ret = regmap_read(st->map, INV_MPU6050_REG_I2C_MST_STATUS, &status);
- 	if (ret)
- 		return ret;
--	if (status & INV_MPU6050_BIT_I2C_SLV0_NACK)
--		return -EIO;
+-	return reg == MMC35240_REG_CTRL0 || reg == MMC35240_REG_CTRL1;
+-}
  
--error_disable_i2c:
--	regmap_write(st->map, INV_MPU6050_REG_I2C_SLV_CTRL(0), 0);
--	return ret;
-+	return 0;
+ static bool mmc35240_is_writeable_reg(struct device *dev, unsigned int reg)
+ {
+-	return mmc35240_reg_check(reg);
++	switch (reg) {
++		case MMC35240_REG_CTRL0:
++		case MMC35240_REG_CTRL1:
++			return true;
++		default:
++    		return false;
++	}
  }
+ 
+ static bool mmc35240_is_readable_reg(struct device *dev, unsigned int reg)
+@@ -447,7 +449,7 @@ static bool mmc35240_is_readable_reg(struct device *dev, unsigned int reg)
+ 
+ static bool mmc35240_is_volatile_reg(struct device *dev, unsigned int reg)
+ {
+-	return !mmc35240_reg_check(reg);
++	return !mmc35240_is_writeable_reg(dev, reg);
+ }
+ 
+ static const struct reg_default mmc35240_reg_defaults[] = {
 -- 
 2.43.0
 

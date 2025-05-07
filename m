@@ -1,61 +1,61 @@
-Return-Path: <linux-iio+bounces-19263-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19264-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34E59AAEC92
-	for <lists+linux-iio@lfdr.de>; Wed,  7 May 2025 21:58:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6321AAAECA2
+	for <lists+linux-iio@lfdr.de>; Wed,  7 May 2025 22:02:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C28B79C1657
-	for <lists+linux-iio@lfdr.de>; Wed,  7 May 2025 19:57:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4A2197BE019
+	for <lists+linux-iio@lfdr.de>; Wed,  7 May 2025 20:01:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6BBB28E5FD;
-	Wed,  7 May 2025 19:58:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52EE01C84B8;
+	Wed,  7 May 2025 20:02:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="akq5jul8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OcX6uh3H"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7331F28E59F;
-	Wed,  7 May 2025 19:58:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FF952F43;
+	Wed,  7 May 2025 20:02:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746647886; cv=none; b=nN+kHgzcTIUGD31syg/PyJbEZi68A8lBORHF3h8n6uRVuoDyYq0OVNzi1lYdiFG1KEMXfpY4PK99NI5KstSY3HVdz4GhyxR7u6HGHXcD39Z/54STqYdPtHqXgI0As8k5hn94uK3+BrggAuVIv0XRAXKt2QyeUCrJhTsE+HxztZY=
+	t=1746648169; cv=none; b=k811OijwnrEmOgVkpBhxrlmPm/OPcnodUVYesy+p/3yckVRn208ZnIRZBFdYM1nUTPFhJb1dPZJWqiKFDHX09zbA5pt3y6AtNt9DvV4s/iahXDcWeX/c0wsDupLs2ONpWv0f9mMi6F8H4PDe6D5qqWMJqEX6dY35yYQfpjm12T8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746647886; c=relaxed/simple;
-	bh=Sl/O9tbxuYSTHBAOLUnGaBf3c6bYP4TWR8+4mnFAWSI=;
+	s=arc-20240116; t=1746648169; c=relaxed/simple;
+	bh=q+4Vm1PYBH6CIdNM0Gw2b0w1O7TXzA+u8T153cPkbyY=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XJIH0jp4mL/UK1kBjVFwFNInwf7ADaL+U5rYCx+b505NyMHSnF8tAJn42XZMGDwLt7uJZ3PakN0yYRhsXN8+ZqossoqsN7ftLlR0grV9NhI/UPkfJWwVHdtDxx9Y89ilzZZF9PVn/KSJUGjzRUtjI44CHHsVFhY1E0vCValXwr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=akq5jul8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8976EC4CEE2;
-	Wed,  7 May 2025 19:58:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=IRV9ZJ7Wk30ccXIwPa84zCXKubvXEp2zyNG0ux30iPI/WpUuljAn/qplJKSKhfaxWaYIHO0mwiPJMliRn+UtDf0goTiTPzJcc2jdOqxZGujxAxwZjIsHWWtNgj1kK3bx9lKGAaPcHIBRQb0uCxW0heUPEuaek93rQT74WEs6miI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OcX6uh3H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 473DFC4CEE2;
+	Wed,  7 May 2025 20:02:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746647886;
-	bh=Sl/O9tbxuYSTHBAOLUnGaBf3c6bYP4TWR8+4mnFAWSI=;
+	s=k20201202; t=1746648168;
+	bh=q+4Vm1PYBH6CIdNM0Gw2b0w1O7TXzA+u8T153cPkbyY=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=akq5jul8DPExk0S2renmYeNJpQyVm5B/wv2Ynutsl7z/8Ku0paDjnKFTlbTaHpeGi
-	 wkz8IkmjfIIu8IiIPF4LYX1Hxm/1ZZu9W7FG1tnvsFRot3FO+LO7H2g0BHyNaeBaZR
-	 ur/sBektWqBlouwGHLK8cEO6Ev+WskM9hlGNWmDJtJU5zLUb5eJ0eJEECpUiXyO/6G
-	 u4RFRyNzOTQY/TTnoKIhUyqR6M1da/c15+uKdrEuFv+sJDxPcpTEZTPKEBdOhYkAt7
-	 AWpRI8ibpVgs6ASXmhKG6G/Ur/2rPJ/i3Urmuarao0WUhRqD4OLS2Ug4ra/9SkG+Ts
-	 PuTenpfOX0CFQ==
-Date: Wed, 7 May 2025 20:57:55 +0100
+	b=OcX6uh3HhrZUHz+qYg8oXuS0Ko0agKZkUuL1RFxiOAO3blr43KaqIGb2+eI/jY+tl
+	 h+bcuT4qABfWls3iQ4+lYNE7mJrE6WTb+oIo3VI40QbjUc7ZxHe7841+jZUYERDbp7
+	 ZJ/xiCMwKUKPC8lIuH7YI71oNj/akff4FMmQzfT8tWY1ktMCV0M/aqAutxqn3rv0jB
+	 41qMsriP5NiAXQcScDxm90Pb8PIpx51gWQbGpKupwa0mdDHKP8/glTmCjte/ST1byj
+	 muPicNCBuvzJ+xpzeXocCuFQJrAUH29Qv5TL7C1l1raxOhovKwqHLXY8HUzeUOcOvT
+	 TVGw+GqphxaPQ==
+Date: Wed, 7 May 2025 21:02:39 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>
-Cc: David Lechner <dlechner@baylibre.com>, Lars-Peter Clausen
- <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, Nuno
- =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Esteban Blanc <eblanc@baylibre.com>,
- Andy Shevchenko <andy@kernel.org>, Oleksij Rempel
- <o.rempel@pengutronix.de>, kernel@pengutronix.de, Song Qiang
- <songqiang1304521@gmail.com>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 00/14] iio: remove bits_per_word = 8 assignments
-Message-ID: <20250507205755.69428eb5@jic23-huawei>
-In-Reply-To: <4678d4f0c5634f8709f84745054ae16484617b8d.camel@gmail.com>
-References: <20250505-iio-remove-bits_per_word-8-v1-0-341f85fcfe11@baylibre.com>
-	<4678d4f0c5634f8709f84745054ae16484617b8d.camel@gmail.com>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko
+ <andy@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
+ <Michael.Hennerich@analog.com>, Eugen Hristev <eugen.hristev@linaro.org>,
+ Nicolas Ferre <nicolas.ferre@microchip.com>, Alexandre Belloni
+ <alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v5 1/7] iio: make IIO_DMA_MINALIGN minimum of 8 bytes
+Message-ID: <20250507210239.138b3e0a@jic23-huawei>
+In-Reply-To: <20250505-iio-introduce-iio_declare_buffer_with_ts-v5-1-814b72b1cae3@baylibre.com>
+References: <20250505-iio-introduce-iio_declare_buffer_with_ts-v5-0-814b72b1cae3@baylibre.com>
+	<20250505-iio-introduce-iio_declare_buffer_with_ts-v5-1-814b72b1cae3@baylibre.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,94 +63,65 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Wed, 07 May 2025 07:28:12 +0100
-Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
+On Mon, 05 May 2025 11:31:42 -0500
+David Lechner <dlechner@baylibre.com> wrote:
 
-> On Mon, 2025-05-05 at 14:20 -0500, David Lechner wrote:
-> > While grepping the IIO subsystem for drivers that set bits_per_word to
-> > unusual values to check for potential bugs, I found it to be a bit of a
-> > nuisance that 2/3s of the matches were setting it to the default value
-> > of 8. So here is a series removing the unnecessary assignments.
-> >=20
-> > --- =20
->=20
-> LGTM,
->=20
-> Reviewed-by: Nuno S=C3=A1 <nuno.sa@analog.com>
-Applied.  Still time to comment if we missed anything though as for
-now just pushed out for 0-day to poke at.
+> Add a condition to ensure that IIO_DMA_MINALIGN is at least 8 bytes.
+> On some 32-bit architectures, IIO_DMA_MINALIGN is 4. In many cases,
+> drivers are using this alignment for buffers that include a 64-bit
+> timestamp that is used with iio_push_to_buffers_with_ts(), which expects
+> the timestamp to be aligned to 8 bytes. To handle this, we can just make
+> IIO_DMA_MINALIGN at least 8 bytes.
+> 
+> Signed-off-by: David Lechner <dlechner@baylibre.com>
+Dropped again...
 
-Thanks,
+In file included from drivers/input/touchscreen/tsc2007_iio.c:8:
+./include/linux/iio/iio.h:784:5: warning: '__alignof__' is not defined, evaluates to 0 [-Wundef]
+  784 | #if ARCH_DMA_MINALIGN < sizeof(s64)
+      |     ^
+./include/linux/cache.h:181:27: note: expanded from macro 'ARCH_DMA_MINALIGN'
+  181 | #define ARCH_DMAmake[3]: *** [scripts/Makefile.build:461: drivers/hid] Error 2
+_MINALIGN __alignof__(unsigned long long)
+      |                           ^
+In file included from drivers/input/touchscreen/tsc2007_iio.c:8:
+./include/linux/iio/iio.h:784:5: error: function-like macro '__alignof__' is not defined
+./include/linux/cache.h:181:27: note: expanded from macro 'ARCH_DMA_MINALIGN'
+  181 | #define ARCH_DMA_MINALIGN __alignof__(unsigned long long)
+      |   
 
-Jonathan
+With an LLVM build on x86.
 
->=20
-> > David Lechner (14):
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 iio: adc: ad4030: remove bits_per_word =
-=3D 8
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 iio: adc: ti-tsc2046: remove bits_per_wo=
-rd =3D 8
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 iio: chemical: bme680_spi: remove bits_p=
-er_word =3D 8
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 iio: dac: ad5761: remove bits_per_word =
-=3D 8
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 iio: dac: ad5766: remove bits_per_word =
-=3D 8
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 iio: dac: ad5791: remove bits_per_word =
-=3D 8
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 iio: dac: ltc2688: remove bits_per_word =
-=3D 8
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 iio: gyro: adxrs450: remove bits_per_wor=
-d =3D 8
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 iio: imu: adis: remove bits_per_word =3D=
- 8
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 iio: magnetometer: hmc5843_spi: remove b=
-its_per_word =3D 8
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 iio: magnetometer: rm3100-spi: remove bi=
-ts_per_word =3D 8
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 iio: pressure: bmp280-spi: remove bits_p=
-er_word =3D 8
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 iio: pressure: ms5611_spi: remove bits_p=
-er_word =3D 8
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 iio: pressure: zpa2326_spi: remove bits_=
-per_word =3D 8
-> >=20
-> > =C2=A0drivers/iio/adc/ad4030.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 4 ----
-> > =C2=A0drivers/iio/adc/ti-tsc2046.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0 | 1 -
-> > =C2=A0drivers/iio/chemical/bme680_spi.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=
- 8 --------
-> > =C2=A0drivers/iio/dac/ad5761.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 2 --
-> > =C2=A0drivers/iio/dac/ad5766.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 2 --
-> > =C2=A0drivers/iio/dac/ad5791.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 2 --
-> > =C2=A0drivers/iio/dac/ltc2688.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 2 --
-> > =C2=A0drivers/iio/gyro/adxrs450.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 5 -----
-> > =C2=A0drivers/iio/imu/adis.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 9 ---------
-> > =C2=A0drivers/iio/imu/adis_buffer.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0 | 3 ---
-> > =C2=A0drivers/iio/magnetometer/hmc5843_spi.c | 1 -
-> > =C2=A0drivers/iio/magnetometer/rm3100-spi.c=C2=A0 | 1 -
-> > =C2=A0drivers/iio/pressure/bmp280-spi.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=
- 8 --------
-> > =C2=A0drivers/iio/pressure/ms5611_spi.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=
- 1 -
-> > =C2=A0drivers/iio/pressure/zpa2326_spi.c=C2=A0=C2=A0=C2=A0=C2=A0 | 1 -
-> > =C2=A015 files changed, 50 deletions(-)
-> > ---
-> > base-commit: 7e9a82ab5b861d3c33c99a22c1245a5b262ee502
-> > change-id: 20250505-iio-remove-bits_per_word-8-db80654b1c17
-> >=20
-> > Best regards, =20
->=20
+> ---
+>  include/linux/iio/iio.h | 10 ++++++++++
+>  1 file changed, 10 insertions(+)
+> 
+> diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
+> index 638cf2420fbd85cf2924d09d061df601d1d4bb2a..7e1e3739328d103262071bd34ba5f6631163c122 100644
+> --- a/include/linux/iio/iio.h
+> +++ b/include/linux/iio/iio.h
+> @@ -775,8 +775,18 @@ static inline void *iio_device_get_drvdata(const struct iio_dev *indio_dev)
+>   * to in turn include IIO_DMA_MINALIGN'd elements such as buffers which
+>   * must not share  cachelines with the rest of the structure, thus making
+>   * them safe for use with non-coherent DMA.
+> + *
+> + * A number of drivers also use this on buffers that include a 64-bit timestamp
+> + * that is used with iio_push_to_buffer_with_ts(). Therefore, in the case where
+> + * DMA alignment is not sufficient for proper timestamp alignment, we align to
+> + * 8 bytes instead.
+>   */
+> +#if ARCH_DMA_MINALIGN < sizeof(s64)
+> +#define IIO_DMA_MINALIGN sizeof(s64)
+> +#else
+>  #define IIO_DMA_MINALIGN ARCH_DMA_MINALIGN
+> +#endif
+> +
+>  struct iio_dev *iio_device_alloc(struct device *parent, int sizeof_priv);
+>  
+>  /* The information at the returned address is guaranteed to be cacheline aligned */
+> 
 
 

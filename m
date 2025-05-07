@@ -1,66 +1,63 @@
-Return-Path: <linux-iio+bounces-19261-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19262-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8056AAEC76
-	for <lists+linux-iio@lfdr.de>; Wed,  7 May 2025 21:51:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44CF5AAEC87
+	for <lists+linux-iio@lfdr.de>; Wed,  7 May 2025 21:55:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 36A617B1178
-	for <lists+linux-iio@lfdr.de>; Wed,  7 May 2025 19:49:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4F1BF500A0A
+	for <lists+linux-iio@lfdr.de>; Wed,  7 May 2025 19:55:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C1E628E5E0;
-	Wed,  7 May 2025 19:50:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F5F628E59F;
+	Wed,  7 May 2025 19:55:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZJPP6b6J"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tldOHEht"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C2D828B7CD;
-	Wed,  7 May 2025 19:50:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEA5C28E59C;
+	Wed,  7 May 2025 19:55:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746647451; cv=none; b=gD2wdcUO2Ju7bghOnAquFuWhpQ5SPBTc+S9gNNT8nZ7MMBgj1QBVfdHi6nlIdqT3LnADMaNhjN4YDI+T1YZi+LhPCTm2FqSiYw94Q1EnakqzDd9mi+kJwP7dAaOdj4O3JWyEXJHaNQWPtMim7wRUrrGPV5o4DJN5GZ5b8NHeqeg=
+	t=1746647705; cv=none; b=kDIP3jtzdiO7kyskiSfIBqk6VDgVu3B+U+WeMNprOWzIva+LRGByg6W2XBv4nIav1EQCAiQyI05pGREuFLHpqwh5WrwsTaDPz2BZpTqGIhNx7NkZPQFj/a1+JcIAWFhht5j3tzQ+JVs6hnvUq4FSXpdEU4LKUIGPw2a2L9dT55M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746647451; c=relaxed/simple;
-	bh=3K/lkvfFCs/82QJBISbca7YT7L6y0PkB4hRjS4NLTPI=;
+	s=arc-20240116; t=1746647705; c=relaxed/simple;
+	bh=rPyZzqsMRMqtnqdmdnjavXkrIbpF8/qLDdeqsOJ9Ios=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=D8NuvKJORrd5F/gwRlP2u43M3lSPms6O7bpiFT24/IImvd+5icDIkFTqGzrvqFh5qnA9y5e6AA1rcvqbY0yGMRCWrb+WkBEIdN1NEW6s/bak4bFE+WVkm7wWWPLYl/iyeRxAcOVTCmZJYRk15fGX2esGTh1j25VV44fmYKwGv5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZJPP6b6J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 971BBC4CEE2;
-	Wed,  7 May 2025 19:50:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=HRrzKFlGvw6vH6nZKQRt7Kam1e2Qv0iphu71kweoBEtKcEFwSjxGTnbc8VeeHNrE89CIU5i7T6Ckc17eEd8pgAaa5W3ZzFsZ6wDTukU82WLl8vExvqpZ9hwLEyaHfYG48/2GLcTYWVhk4togI6r/zgEHrdBe4GC/u/vgu5xLBMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tldOHEht; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C45D0C4CEE2;
+	Wed,  7 May 2025 19:54:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746647450;
-	bh=3K/lkvfFCs/82QJBISbca7YT7L6y0PkB4hRjS4NLTPI=;
+	s=k20201202; t=1746647705;
+	bh=rPyZzqsMRMqtnqdmdnjavXkrIbpF8/qLDdeqsOJ9Ios=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ZJPP6b6JhvABdbIrF7lmXfQt6Tu3HuuqG9VFadfM25ZFeJ6NDzqcRd2p9FUpXPUb9
-	 7GRSVsG1qmDbuARLCppknxhRlqXccrhQ56Wx1h1DJvlUM5HqX+WEzAax2SrBpv5GpN
-	 YpCJEqrjlER1QWjNpm+o7pgtg8uFOFCTMbIznLITd112w5ANrF0o79VxW3Jx0WbYJl
-	 h9qY3JvfwUvCF9OnBk6WfabJ7uW/9/hY3silNDszSP0NBnzfds4ShjltISileRlCcQ
-	 BNJAV6RsEKICoX2UABWmze2KA3wVHC/jEEIMc0n1Q5JD0vCOBQVupSnVYr3vU1N4iw
-	 lEERR8qoRN9Pg==
-Date: Wed, 7 May 2025 20:50:40 +0100
+	b=tldOHEhthjMki3eUjuhheaxEcBuzlj5cDaf9AK4eVn2lFYyiSMZEzt9CSx6VxqWUW
+	 +zwyNEUGEyawvkXVqh3rRK7PDfn9prDKTfGS5UcoWk425i0gTuGlnRIBlylI74S3k8
+	 uh98tdssW9lpqNZZ50oiLbh3UzXb/lLYxklSMxF80KdufATy2oytA3HrrKTgOBsn7D
+	 ztjVlTv5/bDRaOV8F4Ni36RkKXJ8FxBhNWxW1akNTK8YatcXJcHB/OKmB/v5WaPtQy
+	 176O2ZTvlsbr4HFRj6e3BvQVt6sdeJzMIPowkLI9pKtfz6RBC72mNHjqhEIBMw1WCM
+	 9oEUleD95ckaA==
+Date: Wed, 7 May 2025 20:54:54 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Jonathan Santos <jonath4nns@gmail.com>
-Cc: 20250505163919.6d805db2@jic23-huawei.smtp.subspace.kernel.org,
-	Jonathan Santos <Jonathan.Santos@analog.com>,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
-	andy@kernel.org, nuno.sa@analog.com, Michael.Hennerich@analog.com,
-	marcelo.schmitt@analog.com, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, marcelo.schmitt1@gmail.com,
-	linus.walleij@linaro.org, brgl@bgdev.pl, lgirdwood@gmail.com,
-	broonie@kernel.org, dlechner@baylibre.com
-Subject: Re: [PATCH v6 02/11] dt-bindings: iio: adc: ad7768-1: add
- trigger-sources property
-Message-ID: <20250507205040.3a1eec14@jic23-huawei>
-In-Reply-To: <aBpgFQ+/KBXdvyWx@JSANTO12-L01.ad.analog.com>
-References: <cover.1745605382.git.Jonathan.Santos@analog.com>
-	<128de2793d6d5424ad152c394faf1d51f0d56e0b.1745605382.git.Jonathan.Santos@analog.com>
-	<20250505163919.6d805db2@jic23-huawei>
-	<aBpgFQ+/KBXdvyWx@JSANTO12-L01.ad.analog.com>
+To: Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>
+Cc: David Lechner <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Lars-Peter Clausen
+ <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, Eugen
+ Hristev <eugen.hristev@linaro.org>, Nicolas Ferre
+ <nicolas.ferre@microchip.com>, Alexandre Belloni
+ <alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, Trevor Gamblin
+ <tgamblin@baylibre.com>
+Subject: Re: [PATCH v5 0/7] iio: introduce IIO_DECLARE_BUFFER_WITH_TS
+Message-ID: <20250507205454.56cbf6e2@jic23-huawei>
+In-Reply-To: <ec7c00c640b0b359bfd98d460d067aee64ca069f.camel@gmail.com>
+References: <20250505-iio-introduce-iio_declare_buffer_with_ts-v5-0-814b72b1cae3@baylibre.com>
+	<ec7c00c640b0b359bfd98d460d067aee64ca069f.camel@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -68,55 +65,126 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, 6 May 2025 16:16:37 -0300
-Jonathan Santos <jonath4nns@gmail.com> wrote:
+On Wed, 07 May 2025 07:39:07 +0100
+Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
 
-> On 05/05, Jonathan Cameron wrote:
-> > On Sun, 27 Apr 2025 21:12:16 -0300
-> > Jonathan Santos <Jonathan.Santos@analog.com> wrote:
-> >   
-> ...
-> > >  required:
-> > >    - compatible
-> > >    - reg
-> > > @@ -65,7 +95,6 @@ required:
-> > >    - vref-supply
-> > >    - spi-cpol
-> > >    - spi-cpha
-> > > -  - adi,sync-in-gpios  
-> > 
-> > Maybe worth requiring oneOf adi,sync-in-gpios or trigger-sources? 
-> >   
-> 
-> We cannot do that because we defined that self triggering is enabled
-> when trigger-sources is omitted (is this case adi,sync-in-gpios is not
-> present as well).
-Ah. Fair enough.  More complex but we can constrain to never having
-both adi,sync-in-gpios and trigger-sources at the same time.
+> On Mon, 2025-05-05 at 11:31 -0500, David Lechner wrote:
+> > Creating a buffer of the proper size and correct alignment for use with
+> > iio_push_to_buffers_with_ts() is commonly used and not easy to get
+> > right (as seen by a number of recent fixes on the mailing list).
+> >=20
+> > In general, we prefer to use this pattern for creating such buffers:
+> >=20
+> > struct {
+> > =C2=A0=C2=A0=C2=A0 u16 data[2];
+> > =C2=A0=C2=A0=C2=A0 aligned_s64 timestamp;
+> > } buffer;
+> >=20
+> > However, there are many cases where a driver may have a large number of
+> > channels that can be optionally enabled or disabled in a scan or the
+> > driver might support a range of chips that have different numbers of
+> > channels or different storage sizes for the data. In these cases, the
+> > timestamp may not always be at the same place relative to the data. To
+> > handle these, we allocate a buffer large enough for the largest possible
+> > case and don't care exactly where the timestamp ends up in the buffer.
+> >=20
+> > For these cases, we propose to introduce new macros to make it easier
+> > it easier for both the authors to get it right and for readers of the
+> > code to not have to do all of the math to verify that it is correct.
+> >=20
+> > I have just included a few examples of drivers that can make use of this
+> > new macro, but there are dozens more.
+> >=20
+> > --- =20
+>=20
+> LGTM
+>=20
+> Reviewed-by: Nuno S=C3=A1 <nuno.sa@analog.com>
 
-> 
-> > >  
-> > >  patternProperties:
-> > >    "^channel@([0-9]|1[0-5])$":
-> > > diff --git a/include/dt-bindings/iio/adc/adi,ad7768-1.h b/include/dt-bindings/iio/adc/adi,ad7768-1.h
-> > > new file mode 100644
-> > > index 000000000000..34d92856a50b
-> > > --- /dev/null
-> > > +++ b/include/dt-bindings/iio/adc/adi,ad7768-1.h
-> > > @@ -0,0 +1,10 @@
-> > > +/* SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause) */
-> > > +
-> > > +#ifndef _DT_BINDINGS_ADI_AD7768_1_H
-> > > +#define _DT_BINDINGS_ADI_AD7768_1_H
-> > > +
-> > > +#define AD7768_TRIGGER_SOURCE_SYNC_OUT  0
-> > > +#define AD7768_TRIGGER_SOURCE_GPIO3     1
-> > > +#define AD7768_TRIGGER_SOURCE_DRDY      2
-> > > +
-> > > +#endif /* _DT_BINDINGS_ADI_AD7768_1_H */  
-> >   
+Thanks,
+
+Still time for additional comments, but given where we are in the
+cycle I'm keen to get this at least undergoing build tests.
+
+Applied to the togreg branch of iio.git and pushed out as testing for
+those build tests.
+
+Thanks,
+
+Jonathan
+
+>=20
+> > Changes in v5:
+> > - Add new patch to set minimum alignment to 8 for IIO_DMA_MINALIGN.
+> > - Adjust IIO_DECLARE_DMA_BUFFER_WITH_TS() macro for above change.
+> > - Drop one ad4695 patch that was already applied.
+> > - Link to v4:
+> > https://lore.kernel.org/r/20250428-iio-introduce-iio_declare_buffer_wit=
+h_ts-v4-0-6f7f6126f1cb@baylibre.com
+> >=20
+> > Changes in v4:
+> > - Dropped static_assert()s from the first patch.
+> > - Handle case when IIO_DMA_MINALIGN < sizeof(timestamp).
+> > - Added one more patch for ad4695 to rename a confusing macro.
+> > - Link to v3:
+> > https://lore.kernel.org/r/20250425-iio-introduce-iio_declare_buffer_wit=
+h_ts-v3-0-f12df1bff248@baylibre.com
+> >=20
+> > Changes in v3:
+> > - Fixed a few mistakes, style issues and incorporate other feedback (see
+> > =C2=A0 individual commit message changelogs for details).
+> > - Link to v2:
+> > https://lore.kernel.org/r/20250422-iio-introduce-iio_declare_buffer_wit=
+h_ts-v2-0-3fd36475c706@baylibre.com
+> >=20
+> > Changes in v2:
+> > - Add 2nd macro for case where we need DMA alignment.
+> > - Add new patch for ad4695 to convert buffer from u8 to u16 before
+> > =C2=A0 making use of the new macro.
+> > - Drop the bmp280 patch since it was determined to have a better
+> > =C2=A0 alternative not using these macros.
+> > - Add a few more examples to show the non-DMA case, both in a struct and
+> > =C2=A0 stack allocated.
+> > - Link to v1:
+> > https://lore.kernel.org/r/20250418-iio-introduce-iio_declare_buffer_wit=
+h_ts-v1-0-ee0c62a33a0f@baylibre.com
+> >=20
+> > ---
+> > David Lechner (7):
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 iio: make IIO_DMA_MINALIGN minimum of 8 =
+bytes
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 iio: introduce IIO_DECLARE_BUFFER_WITH_T=
+S macros
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 iio: adc: ad4695: use IIO_DECLARE_DMA_BU=
+FFER_WITH_TS
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 iio: adc: ad4695: rename AD4695_MAX_VIN_=
+CHANNELS
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 iio: adc: ad7380: use IIO_DECLARE_DMA_BU=
+FFER_WITH_TS
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 iio: accel: sca3300: use IIO_DECLARE_BUF=
+FER_WITH_TS
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 iio: adc: at91-sama5d2: use IIO_DECLARE_=
+BUFFER_WITH_TS
+> >=20
+> > =C2=A0drivers/iio/accel/sca3300.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0 | 18 ++--------------
+> > =C2=A0drivers/iio/adc/ad4695.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 | 11 +++++-----
+> > =C2=A0drivers/iio/adc/ad7380.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 3 +--
+> > =C2=A0drivers/iio/adc/at91-sama5d2_adc.c | 13 ++----------
+> > =C2=A0include/linux/iio/iio.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0 | 42 ++++++++++++++++++++++++++++++++++++++
+> > =C2=A05 files changed, 52 insertions(+), 35 deletions(-)
+> > ---
+> > base-commit: 7e9a82ab5b861d3c33c99a22c1245a5b262ee502
+> > change-id: 20250418-iio-introduce-iio_declare_buffer_with_ts-2f8773f7da=
+d6
+> >=20
+> > Best regards, =20
+>=20
 
 

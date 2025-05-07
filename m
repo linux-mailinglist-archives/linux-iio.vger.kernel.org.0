@@ -1,91 +1,91 @@
-Return-Path: <linux-iio+bounces-19226-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19227-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37202AAD7D0
-	for <lists+linux-iio@lfdr.de>; Wed,  7 May 2025 09:24:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B5ADAAD7E1
+	for <lists+linux-iio@lfdr.de>; Wed,  7 May 2025 09:26:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2D599B206EE
-	for <lists+linux-iio@lfdr.de>; Wed,  7 May 2025 07:23:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2233F7B426B
+	for <lists+linux-iio@lfdr.de>; Wed,  7 May 2025 07:25:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E0AD214A6F;
-	Wed,  7 May 2025 07:23:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A18DA214A6F;
+	Wed,  7 May 2025 07:24:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PsRuZzMY"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CK45uTdw"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A64BA214A7D;
-	Wed,  7 May 2025 07:23:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA17620C48D;
+	Wed,  7 May 2025 07:24:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746602593; cv=none; b=bmjpB7qV1SuES4uyqrM8jQaN2+iOsC/gLv/jvhemFakWBzALlTJT+4GXgnCy0PKJcVWmHdqZgOLgB3ZRd/a4ZYpQwxNOKt26GwbGty1xLYr13ZcO72ZcNwix4pItgsPDKUc8H4NkHp4dro61ppWGOrKRqkHXXuKW7waOb6S7yEg=
+	t=1746602672; cv=none; b=GwaEyPXnI11tu++7SdLAQimoiWxh1YIjkzBWgI0M9uqBJmT7haxgewYWnD92CmfICVStk98NzKym2mGtUbplC7J36qTN2+eSW0GLrupKQZRUe76FCpzXP+BhonbzdXRcz1moAWQYrUnODgAk3PQ3wobqhg3jpkvRMtQ7qVB1FIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746602593; c=relaxed/simple;
-	bh=zzQDM7rFrnKw2zBb55C8h0nwowW7iIGVTdSRpuyGpog=;
+	s=arc-20240116; t=1746602672; c=relaxed/simple;
+	bh=eL+3ZL1xhHCfwrllCnsVU7U/Mj3B44v54kzTtHbql9g=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=YZGUJxhQ+SizUvvWMPgAXByPnqDdJQZl7witJh/WmkcraGRvNOWaLpuG0nlkrVz6/+U8ciHID6r7VJyN2gzzOBMHf+5/DZ6SrZhHtcTiEZ8pAMc93qLjhpYC5kbA8cQRlRbLHHbIli+F5sGNMm5M9LaaFiH2XxjDk+amCWi3XAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PsRuZzMY; arc=none smtp.client-ip=209.85.221.41
+	 Content-Type:MIME-Version; b=fR13Uw+N4T7HnGMyDArxtr+v8U21MLTyzBe6IBIUyQzwrk8mhrat6atobPeFhiU398vn2ZIKKAXz8SOUYW1LjzfDfWH0hll2xDOrMu36JqPOYvxu66TZXDMIoetxQvVfIAirZd6eP1bayYyOuVaZZuV7dgBkFQTC+/kATmroSa8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CK45uTdw; arc=none smtp.client-ip=209.85.128.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-39efc1365e4so3132601f8f.1;
-        Wed, 07 May 2025 00:23:11 -0700 (PDT)
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-43cf628cb14so4332945e9.1;
+        Wed, 07 May 2025 00:24:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746602590; x=1747207390; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1746602669; x=1747207469; darn=vger.kernel.org;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=HHUK2W+R5/NcKaec57McPVIU/CaLWo7Hp3y8UpO3pnc=;
-        b=PsRuZzMYPexAPCDbvWjhKShpG/e8o/5hkiu/Rhx2a1H4pqburz+uIGPN5jlYpC3SdV
-         bOfVnEyp3JX88DsTny+WQrXVh62B3l8Vyq5L5q3incsg1LYTXLMyroRV61MlFxMqu/pM
-         +QK8d+xOMniyMVIFEOiAlrTD4xUfZP61lfQFqUN6IyQ2Qr5y4+UiVTLugRJruqLrSp7J
-         CqayPOtlXMj3Z1dWOT0ZKGmrWfgN23N/MxNl5ELjiozPbLj6No+leAnLsTVSfMAzUjJH
-         JaW05YldXrQoib32hSuXPVo4b0l91L/94oPld3TjCyHDQF4Hrk1jydq32zavgiQsU1RN
-         HKJQ==
+        bh=XbGOM+5j9DljoawcsNITwWaLqQVpAIHR+pSXDo1606Q=;
+        b=CK45uTdwl6NLOqo3SV8MYlwdDIz6fuEoUK++MPBTj4G5aQNbzfO+4pJF6A2MnIAD81
+         DILIdxPEB3TuwGONWpSIrlIUuV1nIcjYu1eIQKgGcEZJ5Qa9ewigc/Y+pFA0z9kb6DYI
+         wk0Y45vMtRJjyRD8WkuJKF5G9dUCZ2QoB0Lqi2TAQPZyNTopOyp7RaKtHipZeCtLPLR5
+         zN2X23pokiQvgCkq1a/8mPQcAfRnqunFXQvkL+iXY2QD9BPAiZyDxTmM0UWKsrvuRl95
+         VICLhbga6yQhzqy2s15gPXNqeote+xNqsT68d6O/LIYiFPj0T9BOB+LmULtD66oAo23S
+         TuLA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746602590; x=1747207390;
+        d=1e100.net; s=20230601; t=1746602669; x=1747207469;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=HHUK2W+R5/NcKaec57McPVIU/CaLWo7Hp3y8UpO3pnc=;
-        b=lm+I573NJ17kGGhQLX0aseqSqilaL/+861Wp2ZNU1Tz7RQBNqkIuxZNepRlqiUaTWA
-         Y/whTNpYA9GKMi5laqhJ/M+LFmJmcWh0sr9LNtzFkUkflPuih9cUf/9P0pENJ0LbP7wq
-         6UBDdmxKYKP4KMd1oKKh3HNmDXrzVU+6s6YOVnyYe6bEeLpmIu++Hz+B7aLqRuTURJk1
-         esA4w2w3dbSJGERhjQbOXU5rmPquh4xt3+uykD704ie6eund8gaun5JDTn08yesWeqP6
-         E07JPbzUTLzI/fGp1A1jIESLj4CyAqoohiibG4nyDU3QfSUr+vkJoyUEh4+rCsRp+UTB
-         eDsQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXBo1xytPD37LygWsudPVBvxkbMcCjXkg76WZbijCQ4Mbnzur6qlnU7u1gHJzTOfYjHMxD9GFerIRI=@vger.kernel.org, AJvYcCXIfp1XKpMzQLG7IbtoQm7FS2YRT8yrLtNl41CPO2CD+hbT/9phFp66Ugk00QkIHF3/6ApK5v7KSJHlVVn/@vger.kernel.org
-X-Gm-Message-State: AOJu0YyYq8Cqf7i9grAua8svEvzAYS7+nHAd0ZTOY7tRewXreuVBbZ+f
-	bYbcyd3vKGi9qnnX6ZQ/wJDawfEHfZDAwHzQIcNWD+eDLJ/+c1j/
-X-Gm-Gg: ASbGnctMclPzPc6Gxwkky/wURcDM8eU0u0Z5goHZ9N09XdLRt50RvzAXG3hDZwimTF1
-	iO9jecBFQMcvzfy3U8GK2LoyCy0ULI25JKj8+7BW3zDyzHrwpS6ke50LBNNh8u+KJwI7Pd7KIGW
-	sywBBAqT32NmjU2dSHJlLSUcAGGmvKLge0L1674pB2SIb7knAENkOmtFePVY9TzCi+QUTWMjY0J
-	Eb4SnfKViFnY+R8nPhMuu1EEtWAeo4Zzfin/RJj2mvgG0ay/B3bMzqgF2KtyIrLBl7HM4wmZQwz
-	kSUma6tz98RkZAr7rRCZrhFccAY/V+4Pbya06arcxrNPSWf1li4NF6FGdH+YJAn9S5FVBMZVpIk
-	zgZnVe97YMIhdoAA=
-X-Google-Smtp-Source: AGHT+IFRdajxXPOtGFfc+26fgcNwEI65OiT7+TUbL4sOGVeukE0gKNqN8yhGh8x2z0m9v8+ZDqP5/g==
-X-Received: by 2002:a5d:64e7:0:b0:38d:b325:471f with SMTP id ffacd0b85a97d-3a0b4a16497mr1984298f8f.15.1746602589898;
-        Wed, 07 May 2025 00:23:09 -0700 (PDT)
+        bh=XbGOM+5j9DljoawcsNITwWaLqQVpAIHR+pSXDo1606Q=;
+        b=gpea6y5MErMyKpjSyyVRF9j5m9IkES/dPmfXXnAXZ3BFgHFOn9JFKg48Gc5LiBfEoX
+         UqLiFsGdkFRLHU5R4/ZR/7CufDFeyzmSiQ+BmW+nPxKPWSN3lCbNuUkkLsSAtuhD8SXI
+         4KqRn2b+n5mshmYENFM+PRZHJs0XUPPJjWjTbYHp9WlsuZMht3/WC3GrIb3pfeGYOfgu
+         hIGMB1f0qgU6Qct4HrMIrIZcCHuu6GmPo+PrXx59zKwmBn9yymIndjQiG6zePmfI23hx
+         3msCJZXEEk4NEE8ga1Ci5PTPKoAnAqVx5kHBfVI+D5j2g8qWOYcEj947u6rByHy38cvJ
+         DpvQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX0CYBRJoPtJ/gYmvMT9V5uPbYoyH49FeRtFc0B2ipc7QyIEyQGeLv8SIDys39j99wY7UVBxC/B9I8=@vger.kernel.org, AJvYcCXrQvEGhGMJ8dzZjC5l4B18B6t6gscePIWgXqdRuc5cZl7TMfc5W43v2QwIzdxAku088X6TnQzXpSzJyI6G@vger.kernel.org
+X-Gm-Message-State: AOJu0YxXrOLyeUu4jJz9eEfyBPBE9ma2Z91zJFZkaTsDetHMMHB/tPRn
+	UBtPzeh3S+CgZsHNR5NMbkg/IOFOkmBh1R+6MOkwHs1IgWPH80ox
+X-Gm-Gg: ASbGnctnsVjale82Tl0it8ZcMvNSLiJHz/fkTE/8qO2jnowlfl3jPg2EzkcwUdRgRSH
+	U/rwTmOXfDqy+XjbfeFACkfl9GgJM19IcGI0bU9Auuvu7RiDyx8dMWoNICLOOMB6o7uOjOD0Fsq
+	c7FKl/N3uOif16v8/hUAer9un218qi/dniRG3pSxoroknx7M4Yew4xumrRa6tSuLfDjx8QWQDpM
+	W+XRfq86bpCdQnmdwebEQg5GA4mWg1bbgehIooo8LznwNt1hFfnCDfyORTUrEbZmq+fawpuv2jM
+	+NzmFfYu6VWffdn7bo1vT5r6qm3N0QeWk1YyI1lriCtKuMBGrUqTVmHW+ccO5hzsy18VnAsrxSu
+	zmHMS68926WI0sys=
+X-Google-Smtp-Source: AGHT+IHmtJRYo7J1NRPVLlws65MS91lxXsFbUL0vBq7K20lHdwXV2pWj4OoYN2xYkz2zzIKMVRp2/Q==
+X-Received: by 2002:a05:600c:2e52:b0:43c:ec72:3daf with SMTP id 5b1f17b1804b1-441d3a78febmr17516365e9.14.1746602668754;
+        Wed, 07 May 2025 00:24:28 -0700 (PDT)
 Received: from ?IPv6:2001:818:ea56:d000:56e0:ceba:7da4:6673? ([2001:818:ea56:d000:56e0:ceba:7da4:6673])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a099b0ffb1sm15923314f8f.73.2025.05.07.00.23.09
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-441d433e9efsm21630205e9.3.2025.05.07.00.24.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 May 2025 00:23:09 -0700 (PDT)
-Message-ID: <66e8ea9630d69b16fbffdc55d2cf77e0820ebcc3.camel@gmail.com>
-Subject: Re: [PATCH v3] iio: backend: fix out-of-bound write
+        Wed, 07 May 2025 00:24:28 -0700 (PDT)
+Message-ID: <4dad5856ae822e2f6dc5786846e4347668434863.camel@gmail.com>
+Subject: Re: [PATCH] iio: bmp280: zero-init buffer
 From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: David Lechner <dlechner@baylibre.com>, Markus Burri
- <markus.burri@mt.com>,  linux-kernel@vger.kernel.org
-Cc: Nuno Sa <nuno.sa@analog.com>, Olivier Moysan
- <olivier.moysan@foss.st.com>,  Jonathan Cameron <jic23@kernel.org>,
- Lars-Peter Clausen <lars@metafoo.de>,  linux-iio@vger.kernel.org, Markus
- Burri <markus.burri@bbv.ch>
-Date: Wed, 07 May 2025 07:23:34 +0100
-In-Reply-To: <aa7f18ce-9330-4a30-93e5-85489f507a42@baylibre.com>
-References: <20250505203830.5117-1-markus.burri@mt.com>
-	 <aa7f18ce-9330-4a30-93e5-85489f507a42@baylibre.com>
+To: David Lechner <dlechner@baylibre.com>, Jonathan Cameron
+ <jic23@kernel.org>,  Nuno =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>, Andy
+ Shevchenko <andy@kernel.org>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ linux-iio@vger.kernel.org,  linux-kernel@vger.kernel.org, Dan Carpenter
+ <dan.carpenter@linaro.org>
+Date: Wed, 07 May 2025 07:24:52 +0100
+In-Reply-To: <20250506-iio-pressure-bmp280-zero-init-buffer-v1-1-0935c31558ac@baylibre.com>
+References: 
+	<20250506-iio-pressure-bmp280-zero-init-buffer-v1-1-0935c31558ac@baylibre.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
@@ -96,78 +96,52 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-On Tue, 2025-05-06 at 12:00 -0500, David Lechner wrote:
-> On 5/5/25 3:38 PM, Markus Burri wrote:
-> > The buffer is set to 80 character. If a caller write more characters,
-> > count is truncated to the max available space in "simple_write_to_buffe=
-r".
-> > But afterwards a string terminator is written to the buffer at offset c=
-ount
-> > without boundary check. The zero termination is written OUT-OF-BOUND.
-> >=20
-> > Add a check that the given buffer is smaller then the buffer to prevent=
-.
-> >=20
-> > Fixes: 035b4989211d ("iio: backend: make sure to NULL terminate stack b=
-uffer")
-> > Signed-off-by: Markus Burri <markus.burri@mt.com>
-> > ---
-> > =C2=A0drivers/iio/industrialio-backend.c | 5 ++++-
-> > =C2=A01 file changed, 4 insertions(+), 1 deletion(-)
-> >=20
-> > diff --git a/drivers/iio/industrialio-backend.c b/drivers/iio/industria=
-lio-
-> > backend.c
-> > index a43c8d1bb3d0..4a364e038449 100644
-> > --- a/drivers/iio/industrialio-backend.c
-> > +++ b/drivers/iio/industrialio-backend.c
-> > @@ -155,11 +155,14 @@ static ssize_t iio_backend_debugfs_write_reg(stru=
-ct file
-> > *file,
-> > =C2=A0	ssize_t rc;
-> > =C2=A0	int ret;
-> > =C2=A0
-> > +	if (count >=3D sizeof(buf) - 1)
+On Tue, 2025-05-06 at 13:49 -0500, David Lechner wrote:
+> Zero-initialize the buffer used with iio_push_to_buffers_with_ts(). The
+> struct used for the buffer has holes in it, so we need to make sure that
+> the holes are zeroed out rather than containing uninitialized data from
+> the stack.
 >=20
-> Isn't it OK if count =3D=3D sizeof(buf) - 1? In other words, should be:
->=20
-> 	if (count >=3D sizeof(buf))
+> Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+> Closes: https://lore.kernel.org/linux-iio/aBoBR5D1UMjsSUfZ@stanley.mounta=
+in/
+> Fixes: 4e6c3c4801a6 ("iio: pressure: bmp280: drop sensor_data array")
+> Signed-off-by: David Lechner <dlechner@baylibre.com>
+> ---
+> The patch this fixes is currently in iio/togreg, so no need for stable
+> backport, etc.
+> ---
 
-Oh, indeed you're right. Sorry Mark! I was the one asking for it but I did =
-not
-realized the comparison was '>=3D'. So I was thinking if (count > sizeof(bu=
-f) - 1)
-which is pretty much if (count >=3D sizeof(buf))
+Reviewed-by: Nuno S=C3=A1 <nuno.sa@analog.com>
 
-Arghh... Maybe Jonathan can tweak this while applying so you do not have to=
- spin
-another version because of this.
-
-- Nuno S=C3=A1
-
+> =C2=A0drivers/iio/pressure/bmp280-core.c | 3 +++
+> =C2=A01 file changed, 3 insertions(+)
 >=20
-> > +		return -ENOSPC;
-> > +
-> > =C2=A0	rc =3D simple_write_to_buffer(buf, sizeof(buf) - 1, ppos, userbu=
-f, count);
-> > =C2=A0	if (rc < 0)
-> > =C2=A0		return rc;
-> > =C2=A0
-> > -	buf[count] =3D '\0';
-> > +	buf[rc] =3D '\0';
-> > =C2=A0
-> > =C2=A0	ret =3D sscanf(buf, "%i %i", &back->cached_reg_addr, &val);
-> > =C2=A0
-> >=20
-> > base-commit: b4432656b36e5cc1d50a1f2dc15357543add530e
+> diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bm=
+p280-
+> core.c
+> index
+> 5728cc18cced223284a2c41dc6dec6f47169c797..f37f20776c89173b0b2a8e28be0ef9a=
+a30ceea53
+> 100644
+> --- a/drivers/iio/pressure/bmp280-core.c
+> +++ b/drivers/iio/pressure/bmp280-core.c
+> @@ -1237,6 +1237,9 @@ static irqreturn_t bme280_trigger_handler(int irq, =
+void *p)
+> =C2=A0	} buffer;
+> =C2=A0	int ret;
+> =C2=A0
+> +	/* Don't leak uninitialized stack to userspace. */
+> +	memset(&buffer, 0, sizeof(buffer));
+> +
+> =C2=A0	guard(mutex)(&data->lock);
+> =C2=A0
+> =C2=A0	/* Burst read data registers */
 >=20
-> It looks like we have the same or similar bugs in:
+> ---
+> base-commit: 7a175d9667b21b2495913ec7496a6c20aa7a4a89
+> change-id: 20250506-iio-pressure-bmp280-zero-init-buffer-942dd4f48719
 >=20
-> drivers/accel/ivpu/ivpu_debugfs.c
-> drivers/gpio/gpio-virtuser.c
-> drivers/iio/industrialio-core.c
-> drivers/iio/dac/ad3552r-hs.c
->=20
-> Do you plan to fix these as well?=20
+> Best regards,
 
 

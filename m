@@ -1,61 +1,58 @@
-Return-Path: <linux-iio+bounces-19342-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19343-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4373AB036C
-	for <lists+linux-iio@lfdr.de>; Thu,  8 May 2025 21:14:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71118AB0370
+	for <lists+linux-iio@lfdr.de>; Thu,  8 May 2025 21:15:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8BDC93BFCF4
-	for <lists+linux-iio@lfdr.de>; Thu,  8 May 2025 19:13:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 97BF87A578A
+	for <lists+linux-iio@lfdr.de>; Thu,  8 May 2025 19:13:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76C33289367;
-	Thu,  8 May 2025 19:13:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFF5628935D;
+	Thu,  8 May 2025 19:14:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P9kCDflV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VZoIiOHA"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BE60288C96;
-	Thu,  8 May 2025 19:13:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 786E1221731;
+	Thu,  8 May 2025 19:14:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746731636; cv=none; b=mkJNLDeWBzLmjA7Zxcg9DkgUUgf//YqXT7ZMtfVNx3m/u2jjiCAlfHRNyOpl3/PahegqvoczZwdmXjIoXoJmwLk7Tp8VFLvyzYao2/IiCwUg1RT27q5rChCJaqZgzoKmw2I+V/rFGVAvDhc8mNZYgBt/J4pKxR/RCsxqe16ZN18=
+	t=1746731698; cv=none; b=k2KyM41X/ajsqrKrQyq9ugjZyfRiYP+bOcu3OUvU/xgpN726MafV1uKcJIPws4JA0hEoGbKLtpoDsTt+R9zDBpHBhy8kCRsZca4mess+6sRwA1ikGwhlBagZbYpncNtmJqwjn6s1Qye+nj+t6D51uK/ZDRNzpXnjgEiZ+3d+mSo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746731636; c=relaxed/simple;
-	bh=CK2BuyprwmfYzBmZ7vsS8E/+vFXujjJBxJWgtxSk30Q=;
+	s=arc-20240116; t=1746731698; c=relaxed/simple;
+	bh=yxvPHV91Cpn4gps6nfSbv9hq41K67es1sWS8vQvF5uA=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tiDadypM5okZov3JqyWDNg4Yuz6Ih9TvjG6cksGSz7uXpucwmK0vD/KtL+7j/KMVmuQ9gvbn3yjSo7kVdCf4FTd0PmvE1igo5UgFKYGtAb/iSskwfmipzTQq3c44i0Jhnbvf1KuPz46DgNBJ1ssJpKjJ3m1wPmW0hFMy0Fb0OJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P9kCDflV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A95FDC4CEEE;
-	Thu,  8 May 2025 19:13:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=s3LAdj8ExBCbrQ+LpOTHJbYEUPqYxk2kMbmJ9zhP+TfONw0DZjlaPe67DhWkxEiygPQKQczuOOGnOcPQ0d3V7W5bGRtZJG2MDy7oIdVhRNdjmwM+q8KFNzs7heGUdpGzwmrjDsXX6fEsXDOb0VrVOcAKo5xxmrNy6zOIW32Rp8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VZoIiOHA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7651CC4CEE7;
+	Thu,  8 May 2025 19:14:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746731635;
-	bh=CK2BuyprwmfYzBmZ7vsS8E/+vFXujjJBxJWgtxSk30Q=;
+	s=k20201202; t=1746731697;
+	bh=yxvPHV91Cpn4gps6nfSbv9hq41K67es1sWS8vQvF5uA=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=P9kCDflVdlkh6tRc85LKPm3elfqCf2SnO6Ca1TDpX2Wu3VnmtU2cvVCrg/fQ34gIX
-	 5KLbHs0z++JWxIPuHWDZT4ATEO/+p3LeCiEzQh6cqELWw3BQUD0nwVyuVK2NG7zbXD
-	 5IKC2kxLOseh5AWOXRdmRuT6wQK3+WuonpDlIAwYdSd0kDXPZdNErPNNBfP37lGSIY
-	 eJIOolHz+V2k4ZkVhKZFNHhUPyS+p4fqPwDS/ydHovfi2qY+kF85jEiV4+NY/0eEKl
-	 KNvtw9Yc7mMuGGTMymyZ+77fg6MdEKUHzVypZQ4tmT0+exUkpqVE8krxByCHZz3yFM
-	 ALHWXCY6V/Vow==
-Date: Thu, 8 May 2025 20:13:48 +0100
+	b=VZoIiOHAoqHPZScP30YgYaaU7zPlHCyWh/8hSKiPKFfn70hCncpK00PbRsjcTitck
+	 +gc5Rudp/vacMVKUahQ/T9K5fDcgMMyDEC11Q7rDohJpp39A0xhkBZJeJq6ufLQ/kp
+	 zUNokIzMEdppeOF0VeHBI2ORH7r/RfhEwP0qXVIvmN3gk9tK0E2vJV+zgwq0ydMYyK
+	 U5n8np+n2GLb/rf45+l3z3tnol+7u5IKIIj7an8VceE8yBQb+OAw1+75/ToJdpvgYN
+	 gnv6Qo0tCtwSkafmq4Q97eiUtp2IQmQFBR6cFUa5wCFwZ6EjI8lipRo7B0W2cjComK
+	 620UMzIvkr7Qw==
+Date: Thu, 8 May 2025 20:14:49 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: David Lechner <dlechner@baylibre.com>
-Cc: Colin Ian King <colin.i.king@gmail.com>, Lars-Peter Clausen
- <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>,
- Antoniu Miclaus <antoniu.miclaus@analog.com>, Nuno =?UTF-8?B?U8Oh?=
- <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
- linux-iio@vger.kernel.org, kernel-janitors@vger.kernel.org,
+Cc: Chelsy Ratnawat <chelsyratnawat2001@gmail.com>, jikos@kernel.org,
+ bentiss@kernel.org, srinivas.pandruvada@linux.intel.com,
+ linux-input@vger.kernel.org, linux-iio@vger.kernel.org,
  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] iio: admv1013: replace redundant ternary operator
- with just len
-Message-ID: <20250508201348.61494209@jic23-huawei>
-In-Reply-To: <fbf6c7ef-3680-40ec-8c90-121e6a635b8d@baylibre.com>
-References: <20250507134502.254736-1-colin.i.king@gmail.com>
-	<fbf6c7ef-3680-40ec-8c90-121e6a635b8d@baylibre.com>
+Subject: Re: [PATCH v2] HID: sensor-hub: Fix typo and improve documentation
+Message-ID: <20250508201449.7fecd58e@jic23-huawei>
+In-Reply-To: <9457b419-6aca-412a-b0f7-4b3c7274789a@baylibre.com>
+References: <20250507055745.4069933-1-chelsyratnawat2001@gmail.com>
+	<9457b419-6aca-412a-b0f7-4b3c7274789a@baylibre.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -66,20 +63,19 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 7 May 2025 08:49:46 -0500
+On Wed, 7 May 2025 08:24:48 -0500
 David Lechner <dlechner@baylibre.com> wrote:
 
-> On 5/7/25 8:45 AM, Colin Ian King wrote:
-> > The variable ret is being assigned a return value and non-zero error
-> > return paths are taken at all stages. At the end of the function ret
-> > is always zero, so the ternary operator checking for zero ret is
-> > redundant and can be replaced with just len instead.
+> On 5/7/25 12:57 AM, Chelsy Ratnawat wrote:
+> > Includes the following corrections -
+> >  - Changed Measurment -> Measurement
+> >  - Changed clode -> close
+> >  - Gyro -> gyro
 > > 
-> > Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+> > Signed-off-by: Chelsy Ratnawat <chelsyratnawat2001@gmail.com>
 > > ---  
-> 
 > Reviewed-by: David Lechner <dlechner@baylibre.com>
 > 
 
-Applied.
+Applied
 

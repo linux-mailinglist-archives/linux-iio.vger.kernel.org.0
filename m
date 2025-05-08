@@ -1,141 +1,165 @@
-Return-Path: <linux-iio+bounces-19314-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19315-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B960CAB0088
-	for <lists+linux-iio@lfdr.de>; Thu,  8 May 2025 18:35:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9822AB008D
+	for <lists+linux-iio@lfdr.de>; Thu,  8 May 2025 18:37:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D44E4E4256
-	for <lists+linux-iio@lfdr.de>; Thu,  8 May 2025 16:35:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C356189EC05
+	for <lists+linux-iio@lfdr.de>; Thu,  8 May 2025 16:37:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82EDD28314E;
-	Thu,  8 May 2025 16:35:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99A5A27D784;
+	Thu,  8 May 2025 16:37:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="fKvAWwIO"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="j/z9hWXI"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oa1-f49.google.com (mail-oa1-f49.google.com [209.85.160.49])
+Received: from mail-oi1-f179.google.com (mail-oi1-f179.google.com [209.85.167.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DDF9283151
-	for <linux-iio@vger.kernel.org>; Thu,  8 May 2025 16:35:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3E231F462F
+	for <linux-iio@vger.kernel.org>; Thu,  8 May 2025 16:37:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746722128; cv=none; b=aRVPB+/ji5OkGj9lymtpV19gkuY104IyU24SSyMdT9c3iSg2KGFPblm8VyDCuaj/VR95y65KR5Ztx/2X4o+poJbHz+mRFzbkl27zRBi2MlSe87rosEDzoRg6l6Tcw0KAAOUZ35vLcHFsTVhM5eUuzqgcTxpvLkPuYYMfgpFJAJk=
+	t=1746722227; cv=none; b=RYd7LyNraQeC0EuoKgVWxLDNN0d9Re1a21xUUn8tW/BG8z1gf2/WvIaiBK4qExbAyokcA0cPGhdJ/TFaSlT6mFYqWnal7xMDQ/eGswyuCgFPhc5gy4U+nSXv+jYKBpkOgx4Zh/3jiloB0lnw6G56+F/sHcOLW14KmupH7YgvGww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746722128; c=relaxed/simple;
-	bh=98vXnldu3BmiisoGoWmdX4HwE8ZPCtGTXfUCtn6cp48=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=hMPUoG9Ph9MYZnep7z+Z2tWnLblSSz+F7g9jsOqFFrWSjB2wY6qRUeHk8Lo+pWArl0YxwcBOyBNHfthembn0gFJnxSKUUWLtWfjx+VWfpFCdc9GaLRAv8lnrQ9Kf/iQ7b4RDS+g/4B5JT/l5eLnPJXQxO0CXCdLGtGOxeU6+EMU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=fKvAWwIO; arc=none smtp.client-ip=209.85.160.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oa1-f49.google.com with SMTP id 586e51a60fabf-2d54b936ad9so600536fac.1
-        for <linux-iio@vger.kernel.org>; Thu, 08 May 2025 09:35:26 -0700 (PDT)
+	s=arc-20240116; t=1746722227; c=relaxed/simple;
+	bh=Jh19Urx49SN1eBkNLxQSIgzaQGEu7st4LVSyuPgV6/Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=R6XsllkwbGxW8ORDPQg9rvymr4mfO4EcruweyJRgQLcijqs6xqgosooxqkN8oQK+Ss2qn/35tO3gKd/GfKVXIEhsdzp65nHvJRLEruMe01q4j6GizHHlzoE8kSrDaFYbMKnM8dfV9SIS8Xx2GVqKgUJqT6M0US3PPE1Go2CX+K4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=j/z9hWXI; arc=none smtp.client-ip=209.85.167.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oi1-f179.google.com with SMTP id 5614622812f47-3fa6c54cc1aso747840b6e.1
+        for <linux-iio@vger.kernel.org>; Thu, 08 May 2025 09:37:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1746722125; x=1747326925; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
+        d=gmail.com; s=20230601; t=1746722225; x=1747327025; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=EJL2JF8HNdUlPHdXe0fsgW/lJ8QcVwXtjShT1s+tRu0=;
-        b=fKvAWwIOZZXRVUYNSStzOi3BJw7A8E4OtUrMjA1D2/a6J+AvWACIt6t3gjQ+IxoPzA
-         D82zXoyT6RpMz6hdqiA6YYMep2sbswh6ZfzVpGK6ZFBs4jdd1DCKEplDP0JhUevPdhEK
-         nRVRlG10kCbnIZDAOjCYUynrO0D6RqbmOoiHXyVcApWzv+zUtzP15kC5zQOiFG9/ng/Z
-         IMtmr18jvmI8WyuT3J+BYeDcn95ZIt11vKPoikVOrujIz3w4+BJDsNDRTO6E2+Ho39jg
-         /1adCX+Z6CAklpNdGowy0crFodCpBtTh4FWz5AjgMuo7/NaDMnf4DXc3zlKc0Tnjerqf
-         0Hvg==
+        bh=Ud3f+6cWmU2LT/ykE3+yDGGOzWMAhXBY4OtcE04qM8A=;
+        b=j/z9hWXIj4bUA2RMIuQoOyZ1ZS3RXQ0hHQh6f8AxCrxdOzxZuQGbqLC86g5bsrJtrM
+         tQX8tRbI000Y7c3x8eUBn+6c4BPcQfpMD6AEkLMrklmOBk8K3MtitGGjrHsaOkH6/enF
+         zdofgEpUdeU7Y43m2RM7P4ILIMQv8VbcdMBHroEfvYDcj37FhGS6HJ4H27xR22R5keht
+         NLePVumPIk3VFy7wpeEQHU6rxTdgNKYc6gyQFFh7J8q1ADTlyaPqiFjR1xrnbFNkzbnT
+         G66qZ0G2eCZqENG9VYLiQBcC1BMaNTf6DuwgP06hwG2tI2uW8YpPom7SS+2ZqtKD+bVF
+         P06g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746722125; x=1747326925;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1746722225; x=1747327025;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=EJL2JF8HNdUlPHdXe0fsgW/lJ8QcVwXtjShT1s+tRu0=;
-        b=VHt/ma6m0pT2vi4JdVw10hKldsw2RboEn+V/myLdyVvkAgkyzfBlqGiRAFHr6HMQzr
-         sffvCdgruDaiF8JmiAVp/BK6R1w5/AAkuq/Vj1rvltGEi7sBWWL+OcJFF/mByIboKbuB
-         7uWjlwH3vSFT8QYq52B3oNOm7htwHn7TFyiyGH9xCABghLTJBWtiBtffOJoWH1MGPPX9
-         3nAg9fal2HvZZUoWXFnkYuLNdJMggFd7MN6Ygh9lc4+pOLjUDjn7J1xqP7jsE0XqS5zd
-         k1FeA80YC8uOCAu4QLNzg+Ltb47ufBsJoGzwdJGc7MeIvxnYhpwfU7m6IVE15YS4yAd7
-         JDCQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWWvGDP8A2Sx0hXjuAKtdG5PVG6BSxvNPjjPJ5ExA8PXgkouJcdWXXMvBktINToFWvjmTehjYskFlc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzCnZxSUTZHscFTTBKDPqLkwgYFP6N6GDr/MpyFEsRTZ5aY5ioX
-	wYIkcoYsdZEqzVgmZ/SBqYUI4qE11q1YiwY5Xf6Opz43GjVyoD+6YSgwTvd+8kjaJXCeYeIPQ2q
-	4
-X-Gm-Gg: ASbGncvQQxQ9/IZiB08FQJZsoa9LuF6etZtD67q6n/vgSaT4ZZlURnteXUHNZfUkq7o
-	DW09k8zuL5GUJ4LPdTnKj8OnC9mmGQwirGnnEbmg9Vb9r9Pas9dhRtBy36a0yLpb/tfgKBQU+Db
-	KUQtSPYMWh1fgci6/muGaHSD2Ch6TnumGr/UJHH+SW2PL1B+1l9CCkTKqp1IlH4646ZfPTeqpSX
-	N9lzf0c13fKpA9+JdGWP/cXQOAdvIpnUp3Y9hlmLsk4QBM9btsDyyjLExqAFFPS+MVZfXZO+pfs
-	s1bwSzB/S3/Jtw8F0J0eOqGHtmbqQ8IDNVTEH6FM2XA7SSFuIhvZ4f9tI35ZpYck6i3KJJiaNMt
-	LvbmdgR7shtVZ6A5wTA==
-X-Google-Smtp-Source: AGHT+IHIJ0BuysYAybBvMTuPTyGsG2tzFb1OdQsBPE+ejZhEIUsRr/4qjoRxA88gOpIuEzDtbtwoxA==
-X-Received: by 2002:a05:6871:648:b0:2c1:ae41:6b5e with SMTP id 586e51a60fabf-2dba42aff39mr110953fac.16.1746722125260;
-        Thu, 08 May 2025 09:35:25 -0700 (PDT)
-Received: from ?IPV6:2600:8803:e7e4:1d00:1120:d1cf:c64a:ac7e? ([2600:8803:e7e4:1d00:1120:d1cf:c64a:ac7e])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2dba07912fbsm129204fac.25.2025.05.08.09.35.23
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 08 May 2025 09:35:23 -0700 (PDT)
-Message-ID: <d2cdf491-d6d2-49d6-8ab1-34118023f279@baylibre.com>
-Date: Thu, 8 May 2025 11:35:23 -0500
+        bh=Ud3f+6cWmU2LT/ykE3+yDGGOzWMAhXBY4OtcE04qM8A=;
+        b=HTqhDrXZjCAb3gMlI5asnc/wXNaLQbIZEwUEsVafzdHLWopsK25Zw65eNLRvOYnVYm
+         sFD4HDR5K2PrAq4ncBm8ckWqLVtaNQTpzCUX3eq5DMOUzqFN+0a3JQ1VixQ82KVaai27
+         6lDexmINpzRhGBeblf6gsaSAg5IeEqdiLvtxFA7he2GPHrq7x0Aih7IyIwRFq4Q+fCIw
+         EkXpSYRPhWQ9FCX0hcWU7aNuv/tJJJ8Og7ScHprfHnbuMb45hU7ebcmhwsrMIWNzpgdR
+         6uYGGqHAWiLwzlex5/Hy1Yqi6+WSvEigUX+MBHJBudx8PXdrcLAjaBcPjF2eWA55LJ3V
+         UjSg==
+X-Forwarded-Encrypted: i=1; AJvYcCUsu7JdiAxHkLkBrhIjSinjzgcwET7QYi/e8GyXAnVpgJRnp/wT1rGIEFFKupJRPx31hmr0NoFBs7s=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyEbri+/fC4LEQfI5qMzss98v35u+KZ9gqs6WWySJx19xN/l3+V
+	YxMoPFdjk143SBlTj+FJfJP2InjMW0U7/HnoCs4oIk7qSAG1aJKq
+X-Gm-Gg: ASbGncvEgKxRo63z4pTWvx6klTJKZdDafW74JXll20pOmhBb5RRR65VGwjXFc0dJW7L
+	NHm6xaN3L7RClxNdxdDzuaG1TUPxKGxcfrIVgyfIMXtxigrO76PPUgfzKBMqxwRZoSb1YHpTmFQ
+	GrVYw/sq8g904fr/zE79jxI7ad7IKbijFgdYhHE9pbA/sDd3TAoCdDb99fLe//LInWmEMAVthi4
+	qXmKX+BVzZPRYMVQIsr8xDaFMeotXG4lct9SL7/y+wt7yp4JKBBOeVc3llaHqZ1nf2rxe/Gv4g4
+	1jXgMLwxFAIKJ1jYz5KIuaiVZXlfOPVqbsApQUq3xhDFlD+QuFv9D4z6WMss
+X-Google-Smtp-Source: AGHT+IFgKCdBwL2DjtUQFegQG+tyQtJRE6pJkWx3JhZrhOU8kiqntMc4RbULYuWVMVWMlCZo4XAiBw==
+X-Received: by 2002:a05:6808:2017:b0:3fb:a7d0:3b1f with SMTP id 5614622812f47-4037fea3102mr241363b6e.39.1746722224645;
+        Thu, 08 May 2025 09:37:04 -0700 (PDT)
+Received: from localhost ([2804:30c:404b:a800:55e1:4221:1a82:c6cf])
+        by smtp.gmail.com with UTF8SMTPSA id 5614622812f47-403802d1fd1sm16479b6e.12.2025.05.08.09.37.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 08 May 2025 09:37:02 -0700 (PDT)
+Date: Thu, 8 May 2025 13:38:24 -0300
+From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+To: Bianca Costa =?iso-8859-1?Q?Galv=E3o?= <biancalvao@gmail.com>
+Cc: jic23@kernel.org, juliacalixtorosa@usp.br,
+	Bianca Costa =?iso-8859-1?Q?Galv=E3o?= <biancagalvao@usp.br>,
+	linux-iio@vger.kernel.org
+Subject: Re: [PATCH v2] iio: magnetometer: mmc35240: refactor volatile and
+ writeable reg functions
+Message-ID: <aBzeAMqvfG5rakaR@debian-BULLSEYE-live-builder-AMD64>
+References: <20250507182327.49068-1-biancalvao@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 5/5] iio: adc: ad7606: add gain calibration support
-From: David Lechner <dlechner@baylibre.com>
-To: Angelo Dureghello <adureghello@baylibre.com>,
- =?UTF-8?Q?Nuno_S=C3=A1?= <noname.nuno@gmail.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?=
- <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
- Lars-Peter Clausen <lars@metafoo.de>,
- Michael Hennerich <Michael.Hennerich@analog.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-References: <20250506-wip-bl-ad7606-calibration-v3-0-6eb7b6e72307@baylibre.com>
- <20250506-wip-bl-ad7606-calibration-v3-5-6eb7b6e72307@baylibre.com>
- <c999800bb5f6c1f2687ff9b257079dcf719dd084.camel@gmail.com>
- <qaiqdak4pieewavl2ff4mpr2ywhw2bvnoob55buiinkisacar5@q6jhlb5klcf6>
- <7f5f75c1-7750-4966-9362-2a46c5e5ba3e@baylibre.com>
- <720e300f-f6e0-4c47-8e72-b3ab0a50fbed@baylibre.com>
-Content-Language: en-US
-In-Reply-To: <720e300f-f6e0-4c47-8e72-b3ab0a50fbed@baylibre.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250507182327.49068-1-biancalvao@gmail.com>
 
-On 5/8/25 11:27 AM, David Lechner wrote:
-> On 5/8/25 8:50 AM, David Lechner wrote:
->> On 5/8/25 4:16 AM, Angelo Dureghello wrote:
->>> Hi all,
->>> On 07.05.2025 07:14, Nuno SÃ¡ wrote:
->>>> On Tue, 2025-05-06 at 23:03 +0200, Angelo Dureghello wrote:
->>>>> From: Angelo Dureghello <adureghello@baylibre.com>
->>>>>
+Hi Bianca, Júlia,
+
+On 05/07, Bianca Costa Galvão wrote:
+> The two functions `mmc35240_is_volatile_reg()` and `mmc35240_is_writeable_reg()` implement exactly complementary logic.
+> Refactor by having `mmc35240_is_volatile_reg()` simply return the logical negation of `mmc35240_is_writeable_reg()`.
+
+Wrap commit title and description to 75 columns.
+
 > 
-> ...
+> Signed-off-by: Bianca Costa Galvão <biancagalvao@usp.br>
+> Co-developed-by: Júlia Calixto Rosa <juliacalixtorosa@usp.br>
+> Signed-off-by: Júlia Calixto Rosa <juliacalixtorosa@usp.br>
+> ---
+What were the changes since v1?
+It helps reviewers if a change log is provided in the covers letter and/or after
+the `---` of individual patches.
+
+>  drivers/iio/magnetometer/mmc35240.c | 14 ++++++++------
+>  1 file changed, 8 insertions(+), 6 deletions(-)
 > 
->>>>> +		ret = fwnode_property_read_u32(child, "reg", &reg);
->>>>> +		if (ret)
->>>>> +			return ret;
->>>>> +
->>>>> +		/* channel number (here) is from 1 to num_channels */
->>>>> +		if (reg < 1 || reg > num_channels) {
->>>>> +			dev_warn(dev, "wrong ch number (ignoring): %d\n", reg);
->>>>> +			continue;
->>>>> +		}
->>>>> +
->>>>
->>>> Sorry Angelo, just realized this now. Any reason for not treating the above as a real
->>>> invalid argument? It's minor and not a big deal but odd enough...
->>>>
-> Ah, I see what you fixed now in v4. All is OK.
-> 
+> diff --git a/drivers/iio/magnetometer/mmc35240.c b/drivers/iio/magnetometer/mmc35240.c
+> index 07f58567e521..80f023eaba9f 100644
+> --- a/drivers/iio/magnetometer/mmc35240.c
+> +++ b/drivers/iio/magnetometer/mmc35240.c
+> @@ -418,14 +418,16 @@ static const struct iio_info mmc35240_info = {
+>  	.attrs		= &mmc35240_attribute_group,
+>  };
+>  
+> -static bool mmc35240_reg_check(unsigned int reg)
+> -{
+> -	return reg == MMC35240_REG_CTRL0 || reg == MMC35240_REG_CTRL1;
+> -}
+Hmm, I can't find mmc35240_reg_check() in drivers/iio/magnetometer/mmc35240.c.
+Was that part of an initial patch idea?
 
+>  
+>  static bool mmc35240_is_writeable_reg(struct device *dev, unsigned int reg)
+>  {
+> -	return mmc35240_reg_check(reg);
+> +	switch (reg) {
+> +		case MMC35240_REG_CTRL0:
+> +		case MMC35240_REG_CTRL1:
+> +			return true;
+> +		default:
+> +    		return false;
+The line right above has spaces at the beginning. Use only 8 size tabs for
+indentation in the above case.
+By the way, the current mmc35240_is_writeable_reg() implementation in IIO testing
+branch seems to be doing what is proposed above.
 
-Oops, trimmed too much, that was in reply to my own comment not Nuno's.
+> +	}
+>  }
+>  
+>  static bool mmc35240_is_readable_reg(struct device *dev, unsigned int reg)
+> @@ -447,7 +449,7 @@ static bool mmc35240_is_readable_reg(struct device *dev, unsigned int reg)
+>  
+>  static bool mmc35240_is_volatile_reg(struct device *dev, unsigned int reg)
+>  {
+> -	return !mmc35240_reg_check(reg);
+> +	return !mmc35240_is_writeable_reg(dev, reg);
+I guess what you wanted to do is to just make the volatile function return
+writeable_reg negated. Not the most wanted update but, if you do so, add a
+comment explaining why the volatile registers are the ones that are not
+writeable.
 
->> Why is this not correct? Each input could have an amplifier with different
->> series resistor value so this seems correct to me.
+>  }
+
+Regards,
+Marcelo
 

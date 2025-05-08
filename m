@@ -1,94 +1,90 @@
-Return-Path: <linux-iio+bounces-19344-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19345-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1004BAB038F
-	for <lists+linux-iio@lfdr.de>; Thu,  8 May 2025 21:22:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2D10AB0393
+	for <lists+linux-iio@lfdr.de>; Thu,  8 May 2025 21:23:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 62BEC7B884D
-	for <lists+linux-iio@lfdr.de>; Thu,  8 May 2025 19:21:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 198101BA71C2
+	for <lists+linux-iio@lfdr.de>; Thu,  8 May 2025 19:23:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22CD628A1C6;
-	Thu,  8 May 2025 19:22:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vju7ThVE"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92FA528A1D7;
+	Thu,  8 May 2025 19:23:00 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDE771F582E;
-	Thu,  8 May 2025 19:22:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B40D31F582E;
+	Thu,  8 May 2025 19:22:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746732131; cv=none; b=jO2O304zTNgZPw2IVmJFk4t/hVo05uPda08UTrsxXtrQzAksVMAZR2OwQ8oEpAh6GkVZ4ym8utrGPlBvowKw6Ll4BeAN0P0jk4pgBtoi5wjXZr1p1vGRcdegRtBE5s9/OnZfdHOixCpxL9vOUw+6LajPLGepz1LHInAV1xsrp8Q=
+	t=1746732180; cv=none; b=Jp3N8gdOk/5LT4tFKRIP92I/XJCtqw1xco/TcH3bA30sh55n5Cwl6NQBmaJHnnbSXlmGMo1qg7X6okiZorxGwcNtCKP7ZVtdLh4FX14ocnZ6XiBUfiiMAC+c996YZgwoycprailrJgYINcgUPdO5AecDe+H/y2tRGbWyaJ6Hqek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746732131; c=relaxed/simple;
-	bh=N1PvpPKKjiE9dsDeMLAuNXlfejJHhvaBiTWzwJovZ6g=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mnv74FReiS3cD/KRc5UOA2hhxKJ1NF2Ye83KtK7txH+bc5T2zI5TMhy17eKoFVl8xC18HFKOXDw/AtQROCmtzFTFZckWlS7e5yfNrtvwhUkurZ0QmlZH4F3Qh2QwZ+/Z+W433/hKDWbC2BIsrJwJEtPK2gKvmfyzerfWAq43ybk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vju7ThVE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FBD7C4CEE7;
-	Thu,  8 May 2025 19:22:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746732129;
-	bh=N1PvpPKKjiE9dsDeMLAuNXlfejJHhvaBiTWzwJovZ6g=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Vju7ThVE6AlkYIkaDiYZddKroyNomDCe62CpzqPCBtCUcCcOHzjqB3mtElD/p/fQv
-	 l7TWXKEku+yoqSaO39nWt7h7cnNxRGd2nQPWQU1RWlHhnuTBAKWA8vsa9L6KPZ31Ud
-	 ZqYQVbpZou+N1ShCCVaegm4nun0sRJEHih6NaueSa0jNWzq0va4hrXcjKSagauljd8
-	 A0YRNWhjaclosxwhIUgkXt6X0lUWne0AUH2AzY7O9I6nkcvK/aC4sx3G3MECDofsk0
-	 qRzgaUfM7Kzr1E2f4mg9Dz/zU/PaSI57unMYXPFOBA9naUbWbQw7iZ0R2hm/EPThw1
-	 ohtC+yu/HPFvg==
-Date: Thu, 8 May 2025 20:22:02 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Ahelenia =?UTF-8?B?WmllbWlhxYRza2E=?=
- <nabijaczleweli@nabijaczleweli.xyz>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] iio: ssp_sensors: optimalize -> optimize
-Message-ID: <20250508202202.38c19704@jic23-huawei>
-In-Reply-To: <5a64aa3034c6127d7587de9b7045a12892c01ee5.1746558529.git.nabijaczleweli@nabijaczleweli.xyz>
-References: <f6e465fee5a824a67be1ae7c3bc1b72adcf9471f.1746558529.git.nabijaczleweli@nabijaczleweli.xyz>
-	<5a64aa3034c6127d7587de9b7045a12892c01ee5.1746558529.git.nabijaczleweli@nabijaczleweli.xyz>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1746732180; c=relaxed/simple;
+	bh=3Cs92MWEtl8t/znHMEFBtrB1VsZUoHQ/AVInriHWiow=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AhSuImFhGX+2CzwZhXEv+W79ZbRl/2fGhcPo/WexuwZPhJhIxJXSuOVleZLfxyd/I6VTjpptXBDDUjn0THu46oS66p9CVEcTdXPN195q8i8jkKAZaWgisAG+37+77yTl8PFWvqYK2+nZki80bmP9mYUfRMGrD8xrFa1ufbpkRKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=fail smtp.mailfrom=kernel.org; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=kernel.org
+X-CSE-ConnectionGUID: xcmifW+bSeeJtlIZXHO9vg==
+X-CSE-MsgGUID: VZMFSwzcThqRDKQspzz+Xg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11427"; a="48650052"
+X-IronPort-AV: E=Sophos;i="6.15,273,1739865600"; 
+   d="scan'208";a="48650052"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2025 12:22:56 -0700
+X-CSE-ConnectionGUID: GBX/tAdkTO278QtrggWbOw==
+X-CSE-MsgGUID: jFcTJWwOQLy2JUXsT4R9vg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,273,1739865600"; 
+   d="scan'208";a="141590824"
+Received: from smile.fi.intel.com ([10.237.72.55])
+  by fmviesa004.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2025 12:22:49 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
+	(envelope-from <andy@kernel.org>)
+	id 1uD6pS-00000004D9m-293I;
+	Thu, 08 May 2025 22:22:46 +0300
+Date: Thu, 8 May 2025 22:22:46 +0300
+From: Andy Shevchenko <andy@kernel.org>
+To: Jonathan Santos <Jonathan.Santos@analog.com>
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
+	nuno.sa@analog.com, Michael.Hennerich@analog.com,
+	marcelo.schmitt@analog.com, jic23@kernel.org, robh@kernel.org,
+	krzk+dt@kernel.org, conor+dt@kernel.org, marcelo.schmitt1@gmail.com,
+	linus.walleij@linaro.org, brgl@bgdev.pl, lgirdwood@gmail.com,
+	broonie@kernel.org, jonath4nns@gmail.com, dlechner@baylibre.com
+Subject: Re: [PATCH v7 01/12] iio: adc: ad7768-1: reorganize driver headers
+Message-ID: <aB0EhqbHd4QXmvxq@smile.fi.intel.com>
+References: <cover.1746662899.git.Jonathan.Santos@analog.com>
+ <1f7677d31a0165cb30d7eb3b4d613e1337937f9a.1746662899.git.Jonathan.Santos@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1f7677d31a0165cb30d7eb3b4d613e1337937f9a.1746662899.git.Jonathan.Santos@analog.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Tue, 6 May 2025 21:10:02 +0200
-Ahelenia Ziemia=C5=84ska <nabijaczleweli@nabijaczleweli.xyz> wrote:
+On Thu, May 08, 2025 at 02:03:04PM -0300, Jonathan Santos wrote:
+> Remove kernel.h since it adds a lot of unnecessary dependencies.
+> Add specific headers to ensure all functions and macros used in the driver
+> are directly declared.
 
-> Signed-off-by: Ahelenia Ziemia=C5=84ska <nabijaczleweli@nabijaczleweli.xy=
-z>
-> ---
->  drivers/iio/common/ssp_sensors/ssp_spi.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/drivers/iio/common/ssp_sensors/ssp_spi.c b/drivers/iio/commo=
-n/ssp_sensors/ssp_spi.c
-> index f32b04b63ea1..b7f093d7345b 100644
-> --- a/drivers/iio/common/ssp_sensors/ssp_spi.c
-> +++ b/drivers/iio/common/ssp_sensors/ssp_spi.c
-> @@ -104,7 +104,7 @@ static struct ssp_msg *ssp_create_msg(u8 cmd, u16 len=
-, u16 opt, u32 data)
->  /*
->   * It is a bit heavy to do it this way but often the function is used to=
- compose
->   * the message from smaller chunks which are placed on the stack.  Often=
- the
-> - * chunks are small so memcpy should be optimalized.
-> + * chunks are small so memcpy should be optimized.
->   */
->  static inline void ssp_fill_buffer(struct ssp_msg *m, unsigned int offse=
-t,
->  				   const void *src, unsigned int len)
+Suggested-by: ?
 
-Applied.
+Nevertheless,
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
 

@@ -1,482 +1,222 @@
-Return-Path: <linux-iio+bounces-19297-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19298-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B295AAFA11
-	for <lists+linux-iio@lfdr.de>; Thu,  8 May 2025 14:33:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 39C44AAFAD3
+	for <lists+linux-iio@lfdr.de>; Thu,  8 May 2025 15:06:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0FCBD50047B
-	for <lists+linux-iio@lfdr.de>; Thu,  8 May 2025 12:33:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A403C17DA8B
+	for <lists+linux-iio@lfdr.de>; Thu,  8 May 2025 13:06:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEEFC22577D;
-	Thu,  8 May 2025 12:32:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A089F22A4C2;
+	Thu,  8 May 2025 13:06:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="qWLNNLQL"
+	dkim=pass (2048-bit key) header.d=mt.com header.i=@mt.com header.b="oecok5gB"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx0b-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011012.outbound.protection.outlook.com [52.101.70.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2B1422577C;
-	Thu,  8 May 2025 12:32:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746707564; cv=none; b=o3LrtnyaZfzDMethSLJqq/teLsekH6SmONoe+ClI/mR1aeGX+PRJKfZxj1kY6bynGmr0QzPbFtEz7f3kEadKB1G/Z1D8Fj0J8OJMY/gJ06jjAd/PTNtyvvNqvytFYhzsNZvgaEvxm6wFm8tCZIvZiY9eQ9whETg21/ZTYHuVByI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746707564; c=relaxed/simple;
-	bh=Jwpu6YdHH3kNDY9JO80FOOQiXWmBMRZum5SYHEwWhVY=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DA5tVrUTES/uH4kPfUzqKMbQVtXlrnRt00mwlDwLtMYpnTX3QU0wSD4Cw+QhL8VCb04m4d2tZRee7nmdNSEVhcss/mC355lKs+9/jXUrLZZykUg0Px81DKYb42J640hVrc/3U21zEV3uy9Ml7pyWk4f43DFizU72x1itoCocS88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=qWLNNLQL; arc=none smtp.client-ip=148.163.135.77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
-Received: from pps.filterd (m0375855.ppops.net [127.0.0.1])
-	by mx0b-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 548BDZAP010473;
-	Thu, 8 May 2025 08:32:20 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=
-	content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=DKIM; bh=7dkvz
-	t5EByozw81MJjeobuPYPumFgB5VvJsZNm22UaE=; b=qWLNNLQL+FLIpqSn1VBtX
-	tbGLl+3U/4wbHwuuRtZTDjlU0s4dKCSMRk+f/bBxHwgHTiFXJ08MJ5nG1/2+U68P
-	ATXur7DEnjTkriSPRdGNo5Tgv4NHBU11+/EJAkcDv4GqGafGe9rfX3HGAVc2Ys0d
-	GIRszSpTVwAYkS5ea6BWfZFXnTFGHLDKlgFx1uwXD1tOvJR/1/86O84mMI/5ku0c
-	ldfQsGS+yX1TcDayM7D9TUQ1CN5naUPgZfA0XFqNWBUuNQ7oQJHnnGFxB94lfgGT
-	wk9Rlns5//CoD14/wy2E3h4Kdp2gx42ri12Myk6166bg8WHzj26Hr0S8iOJ8nO/c
-	Q==
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-	by mx0b-00128a01.pphosted.com (PPS) with ESMTPS id 46gr04scxq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 08 May 2025 08:32:19 -0400 (EDT)
-Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
-	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 548CWIEi006307
-	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Thu, 8 May 2025 08:32:18 -0400
-Received: from ASHBCASHYB5.ad.analog.com (10.64.17.133) by
- ASHBMBX8.ad.analog.com (10.64.17.5) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.14; Thu, 8 May 2025 08:32:18 -0400
-Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by
- ASHBCASHYB5.ad.analog.com (10.64.17.133) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.14; Thu, 8 May 2025 08:32:18 -0400
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Thu, 8 May 2025 08:32:18 -0400
-Received: from romlx5.adlk.analog.com ([10.48.65.73])
-	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 548CVFtg002317;
-	Thu, 8 May 2025 08:32:09 -0400
-From: Pop Ioan Daniel <pop.ioan-daniel@analog.com>
-To: Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich
-	<Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        "David
- Lechner" <dlechner@baylibre.com>,
-        =?UTF-8?q?Nuno=20S=C3=A1?=
-	<nuno.sa@analog.com>,
-        Andy Shevchenko <andy@kernel.org>, Rob Herring
-	<robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley
-	<conor+dt@kernel.org>,
-        Sergiu Cuciurean <sergiu.cuciurean@analog.com>,
-        "Dragos Bogdan" <dragos.bogdan@analog.com>,
-        Antoniu Miclaus
-	<antoniu.miclaus@analog.com>,
-        Olivier Moysan <olivier.moysan@foss.st.com>,
-        Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-        Matti Vaittinen
-	<mazziesaccount@gmail.com>,
-        Tobias Sperling <tobias.sperling@softing.com>,
-        Alisa-Dariana Roman <alisadariana@gmail.com>,
-        Marcelo Schmitt
-	<marcelo.schmitt@analog.com>,
-        Matteo Martelli <matteomartelli3@gmail.com>,
-        Ioan Daniel <pop.ioan-daniel@analog.com>, <linux-iio@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH v2 4/4] iio: adc: ad7405: add ad7405 driver
-Date: Thu, 8 May 2025 15:30:57 +0300
-Message-ID: <20250508123107.3797042-5-pop.ioan-daniel@analog.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250508123107.3797042-1-pop.ioan-daniel@analog.com>
-References: <20250508123107.3797042-1-pop.ioan-daniel@analog.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DB7684A35;
+	Thu,  8 May 2025 13:06:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1746709598; cv=fail; b=ByV4wTuBiiAF/WGUOemexmM4ePDFGjmkpdJkljvQobh9p/QgSACXDXna6Rdcw0+oGKr7ZR7WW+dd4XFP7ThvdsEj2klVUb1Oxi4C8FI9csfPeF/g6nK8SK1Qlq7CFFA9J4fe0x/HIDUsYTsoLZKxwxVa0BiUaTJpKKJcC9nqvoo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1746709598; c=relaxed/simple;
+	bh=iEPkSJyL6+BpXatFtQo6G0vbGl6tp1ULx8Wbb3YQM1U=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=lPmJKvAJTJsLrXFalqsB+pstRA264fS+fYXlbWrOqtthsjxJ+aHGUYaPRSkRvPM5Yx4YLodDMh16nAhaHhiOxXply70KX/YTWn45Qz1qxEbeizA3O+x6CjiWlCKuXfDHsLi20WzOL5ci1t+0oMMVkWaIvz43cXB6aHgSSSJ2k/U=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mt.com; spf=fail smtp.mailfrom=mt.com; dkim=pass (2048-bit key) header.d=mt.com header.i=@mt.com header.b=oecok5gB; arc=fail smtp.client-ip=52.101.70.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mt.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=mt.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ffCo3YAdAM5hCzW+0pYqx03XK0Ae28jUQAYVvYd0zC4wMIdd8XXrFkx2kj1ghHfn/sDJCAZrIBcUrzzJLt7EVydvj6jsLw8ROa9RTjF/LNh6PFY43HwebFHNwH936kGQFKv4VgKpc0BGsk7NKIHuEKnYf9DPlti0FobVflBK4OHI07mbs8q8SsxI7nUL2uth+NM/7cEnJWdKfTQUAP6IJQe7kTC7ixEQnJ7K0fKFta+VC3o+t3qerbHLQnYxAUHlu7PRvqzEFzAW2BKXkCuCgEcyoSh7/vBGxoYssSUDewwWPjdh0A+J7eJJ7Db6PACKlgHYojrZOoGampOmALrFPg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=D6hEccL6HiR7eyGIqBcyl2E98fOhlcxvHaAuAy2FE4o=;
+ b=VdzXat2tx0YJv7irjN5KnjBxoD/Iv187Uu8fLj18S6nhWBlnxq1T/og9VhrYPhqhKlPu8dR0JwNIeKwU8mY7WLyzKWi/8jYyT31IHa9gV9ji1i/lMN1tfNSQudMslBvkWgNIPAlfVmG41u8YV3661EXyT5tYxa9487aNaAfPptsLgaJH7Dik30p4L5ALnVf6OA1x+TblIOTX3UJcfAqmLKyNj0vSu/x7Mj4dNNGKqO5tgqGr/ANOf814Thk8F7n2i4mHSPZMo2I6wSkEualLKEyAybyMmdGSANW3yRzUHkv5pQM6W7yf2Tvi5jDikyyHh4+DhKSK+7It3cPQZ4llkw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=mt.com; dmarc=pass action=none header.from=mt.com; dkim=pass
+ header.d=mt.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mt.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=D6hEccL6HiR7eyGIqBcyl2E98fOhlcxvHaAuAy2FE4o=;
+ b=oecok5gBWy8H+urELq8Sfe0lP6JizyQCQa8aKCZ/lDwzWUCWk7XRAupT2OJnyBmr6Zy+JKhsAIfycqqQzAquBmavwyNRyoWPNb+o3zTiWbrm2uV4MECjJiVo+PmYVkYwvFG0ZxiptKa5DS9v4H6C1cq8njMQxAdZoAXHMy27cV6RXjl7y8BMy1MIFAi++dhW9G9Mh+pcyXK1J1ZJMg0feasMqYwzRDHXGSmYnD+xlSsuSj4DS0/JfpRNdPiAXjgFNwJ/vaKtUzE8K2VRx3+DymyAxopxB8hnzO/NO8A9CxXGwVazwjjro619Fv3TxHmTcKjMhDcl/aNnsg6xLETPyw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=mt.com;
+Received: from DB6PR03MB3062.eurprd03.prod.outlook.com (2603:10a6:6:36::19) by
+ DBAPR03MB6439.eurprd03.prod.outlook.com (2603:10a6:10:199::7) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8699.21; Thu, 8 May 2025 13:06:32 +0000
+Received: from DB6PR03MB3062.eurprd03.prod.outlook.com
+ ([fe80::b201:e423:f29:53b]) by DB6PR03MB3062.eurprd03.prod.outlook.com
+ ([fe80::b201:e423:f29:53b%4]) with mapi id 15.20.8678.033; Thu, 8 May 2025
+ 13:06:32 +0000
+From: Markus Burri <markus.burri@mt.com>
+To: linux-kernel@vger.kernel.org
+Cc: Markus Burri <markus.burri@mt.com>,
+	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+	"Oliver O'Halloran" <oohall@gmail.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Naveen N Rao <naveen@kernel.org>,
+	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
+	Maciej Falkowski <maciej.falkowski@linux.intel.com>,
+	Oded Gabbay <ogabbay@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
+	Nuno Sa <nuno.sa@analog.com>,
+	Olivier Moysan <olivier.moysan@foss.st.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	linuxppc-dev@lists.ozlabs.org,
+	dri-devel@lists.freedesktop.org,
+	linux-gpio@vger.kernel.org,
+	linux-iio@vger.kernel.org,
+	Markus Burri <markus.burri@bbv.ch>
+Subject: [PATCH v4 0/6] Fix potential out-of-bounds error in some drivers
+Date: Thu,  8 May 2025 15:06:06 +0200
+Message-Id: <20250508130612.82270-1-markus.burri@mt.com>
+X-Mailer: git-send-email 2.39.5
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: MI1P293CA0020.ITAP293.PROD.OUTLOOK.COM
+ (2603:10a6:290:3::18) To DB6PR03MB3062.eurprd03.prod.outlook.com
+ (2603:10a6:6:36::19)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTA4MDEwMiBTYWx0ZWRfX+KzPkRwzC7e9
- Eb2pGr5YsoZ3yT2pxbOMdkcx+qY2aTz2DGh9YHrjHn/eT/+K0JWfFWPAC3P6QBSlFHoN7ssbqLP
- W2G2U9luF+5YaliiVqrtZxGeQKAwL67EsQ7diEXN9vvK8j4MA7CMFORjytG8bk7P3e1ZQP9+ESo
- ucA3XNCy7A6WbMY1uvstY7hri9ZhLc04iy8jtRnL7K919+3g3QLLDzjU/Ihl+Y2MMsu3tAwD9Vl
- r5XoR/pPcRnR0u3EiGzHttAbr4r5+Z2q0LPRdB5MLdjXFqDH2F2J41NhiCE87DpDXaidIIAzHWk
- B4ws+JrMUKGmh1hm4qTXYcWRL3E/YZqxHX1DvbQlD9VTAO4y9BHaDxolDM+NtmyVsPDMWvdTsGC
- jiNNwC2hcg6m7yHChyCmPmgUYJSz/NTtUfKC5O2WBGE4gSBvyEIXC9O4rJ29nS3Wrmoy6U+O
-X-Authority-Analysis: v=2.4 cv=cfnSrmDM c=1 sm=1 tr=0 ts=681ca453 cx=c_pps
- a=3WNzaoukacrqR9RwcOSAdA==:117 a=3WNzaoukacrqR9RwcOSAdA==:17
- a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=gAnH3GRIAAAA:8 a=iGn3AVPVnOFhGmbdwOgA:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: W-AngUH9k6PGkA-w2rdmeVWsuLwtmvVP
-X-Proofpoint-ORIG-GUID: W-AngUH9k6PGkA-w2rdmeVWsuLwtmvVP
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-05-08_04,2025-05-07_02,2025-02-21_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 bulkscore=0 suspectscore=0 phishscore=0 adultscore=0
- mlxlogscore=999 lowpriorityscore=0 clxscore=1011 malwarescore=0 mlxscore=0
- impostorscore=0 spamscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2504070000
- definitions=main-2505080102
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DB6PR03MB3062:EE_|DBAPR03MB6439:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3467c20e-bc98-47c1-7f94-08dd8e31272d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|7416014|376014|52116014|1800799024|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?r1nQFFE4MGlxjrpUOEUIk9D58BhMaVfcP7iZwYKP2xxfrqnYNBmWeYvIIZ1u?=
+ =?us-ascii?Q?PO6045/2Rimboh2q8fBNLJHTEwGQrzIQmSytq6ugSBhr0uW2fV88itVr9Nit?=
+ =?us-ascii?Q?CvbsvUxWWE8/MF5I0zhldJrM9LzLEE50/cPdPsjWNbw+pLY6wKyJksjhRx09?=
+ =?us-ascii?Q?r3PLA6Kr02FsWOKqaUJOGQkjzDLP/+8E75P4zGA4cd49hpMw7r9wKSOnbV46?=
+ =?us-ascii?Q?gyEHHd17hWXV3q0Y2y1lYrbXWv9LrtsVYXn7JeJYolsqXpKOZLZ8PdOywgb1?=
+ =?us-ascii?Q?kw/OUXwWAFIetWWFWOLOJflTUH02Gf4/zz47+ChSAIjuwxByIyeq6kywscsX?=
+ =?us-ascii?Q?/1BaP13TXRjoH+N9tnmRINIxoHKHCg38LdLwywu7aJ8qjVTjaOsYXS8p1NOp?=
+ =?us-ascii?Q?GIAijrBg+2VZvvHCrf1qRvFAVbwa6be+Czu1734mopqKH+XImDok4P/Hf9qb?=
+ =?us-ascii?Q?AvTyYntkXYzpoPvSmr21NhW3II5JfOr2NHSe41ts1x0B8GYcdkemq6CTgxy+?=
+ =?us-ascii?Q?MFrV4uvlvnh8Ka0AAZYbRoQnyDj5ZblB0rkqTP4SdXyE3C3tL6M+rViWZJyc?=
+ =?us-ascii?Q?fdgMpzzdkPqSaXPk4U6Y/dLjCxITglw38lvP1zKBhGWbIht4+lAusKcsT1y7?=
+ =?us-ascii?Q?1qS927BR5J8KDvUuJy/yrEkAsaPmelJLN92Y/iZlaX/mjK6ilxXjZq6figSY?=
+ =?us-ascii?Q?GnOLmVP4uoDFuevuIeQ3AcikFIc+0cuZ6UCyIcfEYkmIupkm01tl4OhIJfHP?=
+ =?us-ascii?Q?28fLjjXjxfEhty7lcpoYDoS+fytrwLQAa/wPnFwArp79zuxUkxtUEBTGAHwO?=
+ =?us-ascii?Q?Fnfa7QBLAgv6z7iheFwTGtk+1TOCp44rzoX+c3v+dgQqER28TRk7axfka4pS?=
+ =?us-ascii?Q?heF7ZtF60n0HzurkLeOuB9JS2+1Oti8hp6TonrKqYFX602eqGg3t8vMO5d9i?=
+ =?us-ascii?Q?aNejh5SLOXkLIqLXXt/EebUcn93qAPzJgBh359sLcoCDeEg2G5EUqbnPuIPW?=
+ =?us-ascii?Q?v6i/5z91iVjOGLbxwA9fJThaXl+NiXIaLPN47NUpe/HURA48IP4VblUidJEH?=
+ =?us-ascii?Q?o9Bys8w87hVAC5FGqeb1MdBbyqGGkKjT/v1yY16Uiq5C39c6q4XsVBjy/oCb?=
+ =?us-ascii?Q?rHB3bHeql7T/zCEgPZsCK4IVKxE8sTll+Ajop1Jq5yeF8Cyg9AKePssuda0J?=
+ =?us-ascii?Q?kQ8T0PI5bcL3nwDKjKhRXkh5p4xvCU1n3sMqCrUlSD0nEsigKT7/LuqWwKF4?=
+ =?us-ascii?Q?mb1TCvTafu1CRaM97YV2OjH7bRRvKfYWV1MMxLD2eiIBfQ59OWDCDyVujr8j?=
+ =?us-ascii?Q?8QHD1Of9QSJBoj3HuezI73Q/rsUbqI+en0/wcu2K0DItdIA2DMLKhZwSrlGI?=
+ =?us-ascii?Q?AuxgaUbWBMqQMBU7xq8eD8GQ4zEb8X8TNrJEKywEvJnN3k117Vv5EnT5Ixwc?=
+ =?us-ascii?Q?ok0guqH0Kkl1cwlhb733dcm++MFQgWHD15QSJttOY1fDgnL+jxQaLg=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB6PR03MB3062.eurprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(52116014)(1800799024)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?j7eTDj7baio8H7fE3UviJotx3bFAFgoQvCJy+eqq6Jb4PiLG2XHjPwqc217a?=
+ =?us-ascii?Q?A3YhbdWRpY5EpA0UnDFrE56fMLG4rlYp5eL/eNvjft2camzhAKJFYxrNZj1J?=
+ =?us-ascii?Q?wE9FT1k5sMyYscUJ7GFZgJkDgPaCEMTmr2eIss6qwJf9TBtvxQyFJx5ks+hc?=
+ =?us-ascii?Q?J95ZsZmK1aq5fAvk2ivke4MDFgzE0EN3tqkpcOLhNz2SmT5ToG8cKq/nTxvz?=
+ =?us-ascii?Q?igaB8yaheUt0cNcYjb72bekVUtt6NLFXTqzQIDV4gZgL0UEDPsMlLu960XGo?=
+ =?us-ascii?Q?XvVNfjZ+trOd/D0CbYC96KI/DR5q0jRlJ+DlgYrCtueSNYgGNtaqe6AC9O73?=
+ =?us-ascii?Q?bolCtAe8f6han+Nl0bhj0Iq5Pb0YLLOWIsv2lKAe/rpfmgPs0HS3xdYfdBTd?=
+ =?us-ascii?Q?1/jgtpSDpQItyoruAkX0aOk/BMIa+IwHVSDRx7mZ9ESw4HDP5P2tyG0iBZu6?=
+ =?us-ascii?Q?RO+2MzmAjMycFZY9Q1upbXKtjlbkslKk8KeqkiHgz5UMDDqk+6dhhWmbL5jv?=
+ =?us-ascii?Q?DpDuUuhq+buR6Wvohex0xaj14bcgS5JmPqbdtgEXsoDzZAXnE9Imt70Op94J?=
+ =?us-ascii?Q?yVrzNQQdsCiDn5Ir9ZzisJ2/MK8MwIwOgovKPCl7/+2vBIUhvjN/rjwkJRgk?=
+ =?us-ascii?Q?KjZ/fbsm+vfoW9fp9WT94U/RCzJwR83/TVRy51ea/QFj7oTygKvWQ2Jt8vNa?=
+ =?us-ascii?Q?Su9yq8jUbQ9liAT5lOQB5kO+/IDmW+o2RZpGZw/x7mfU4PsWK3bjQTJD3uY7?=
+ =?us-ascii?Q?TbTrDl/2qsI8XoB9Dc5xQCX+l2FTjWG4ynkVZ7CKlfM2pIFpdcWfoxgKKhW/?=
+ =?us-ascii?Q?lVWCC0FmNzx17NvNdMk/IebLZiKPrqjY5plaEFAIjyQrPMI/jYXziIN5Nxro?=
+ =?us-ascii?Q?wtzIG/ohfy4H+X9pdsO2LycL/xeW8Yg0+aPnx1LY+NiG7RV84vPZpxND8KnH?=
+ =?us-ascii?Q?rR8HQlNFMmRo09iO/2TolU+we8aLogqE5xrNZqxZ+KW0MBuiKDxZy+tonatM?=
+ =?us-ascii?Q?Rba9zqR3vnjx1N0gMDOXAzf/8FBTAKdOHaz1Ofr8O0+6szPpFGnjwvK2OWQu?=
+ =?us-ascii?Q?MeaizXWykRLYvuaNrIEdVEE4Sjtjdqx+ZkQhnztZ/mn5A95FN+XE7+rX9hlz?=
+ =?us-ascii?Q?hW6S+kUCawz4blLjwu7ZjEzA8nNMnBB7nJQdjKQtPTGOyb58MKKljD7Zo7bf?=
+ =?us-ascii?Q?zVLF1vhWzvTXhHXsUFi9FbmbbbV4lqZwxO+6N8HXZUNwfLq5KjP9IFQSlwrI?=
+ =?us-ascii?Q?2sP9SJ1CCwcZshblZyPoL/rTiYLDti+zsYCOSvzIfyhdhgBfk4fQhvLxiPBz?=
+ =?us-ascii?Q?IMdfsRfL7IKJipKx3Qvkd+9k8DsjNTlrKV9L50Am5zpgvERO+A+X86vyZSbC?=
+ =?us-ascii?Q?EBDQKScA7fd8aERD/FT1FWacbPJjLdmHFsfZ+WfuKJm6h4+q2QX3j1eB9nzC?=
+ =?us-ascii?Q?Mvuv7JIi4lZY+rbVZzp7Rv6ItFmFEAv8viCFVdEDvpGSw3x3PH5CmJpgqQlv?=
+ =?us-ascii?Q?eXQC49EWHQqE3DRZdeOcu9Irm5aeMWj39O5q8wzSVcyzpAq2VD8a2uVI2hLu?=
+ =?us-ascii?Q?JTHIAM0FBAReljxiyHnpkIxWaSmEHv3ElD01pgu6?=
+X-OriginatorOrg: mt.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3467c20e-bc98-47c1-7f94-08dd8e31272d
+X-MS-Exchange-CrossTenant-AuthSource: DB6PR03MB3062.eurprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 May 2025 13:06:32.0742
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: fb4c0aee-6cd2-482f-a1a5-717e7c02496b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: zbyPbVaA+1pN2BWb2HGQnGUFF1At4GBFzn6ms7m9v7OUfBoHtNcPbhdsDva7scS1F6pmDkB7qfKPdmVt6KrUEA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBAPR03MB6439
 
-Add support for the AD7405/ADUM770x, a high performance isolated ADC,
-1-channel, 16-bit with a second-order Σ-Δ modulator that converts an
-analog input signal into a high speed, single-bit data stream.
+Several drivers are using debugfs and follow the same pattern.
 
-Signed-off-by: Pop Ioan Daniel <pop.ioan-daniel@analog.com>
+A buffer is created on the stack with a limited size to copy the given data
+from user space. The copy is performed using simple_write_to_buffer.
+This function limits the input according to the specified buffer size, but
+it does not write a string terminator if the buffer is truncated.
+Therefore, the driver adds this zero terminator afterward.
+Unfortunately, the original buffer size is used as an index, which can lead
+to an out-of-bounds error.
+
+This patch set fixes this issue in all the drivers I have detected so far.
+The fix is to return an error in case of an unexpectedly long buffer being
+received and to use the effective written size for the zero terminator for 
+consistency.
+
+Changes in V4:
+* Revert the decrement of accepted size by one character
+* Added patches for drivers with the same pattern
+
+Changes in V3:
+* Decrement accepted size by one character according to feedback
+
+Changes in V2:
+* Use effective written size as index instead of original size
+
 ---
-changes in v2:
+[V3] https://lore.kernel.org/lkml/20250505203830.5117-1-markus.burri@mt.com/
+[V2] https://lore.kernel.org/lkml/20250505045346.29647-1-markus.burri@mt.com/
+[V1] https://lore.kernel.org/lkml/20250501063240.25295-1-markus.burri@mt.com/
 
- - sort the includes in alphabetical order
- - delete headers that aren't used
- - remove min_rate member
- - remove ad7405_update_scan_mode because there is only one channel
- - rename axi_clk_gen to clk
- - remove unuseful members from ad7405 state struct
- - return -EINVAL on ad7405_write_raw
- - fix indentation
- - remove blank lines
- - remove chan, bits, sign parameters from AD7405_IIO_CHANNEL
- - remove shift = 0
- - add info_mask_shared_by_type with IIO_CHAN_INFO_SCALE and
-   IIO_CHAN_INFO_OFFSET flags
- - add scan_index, differential, channel2 in AD7405_IIO_CHANNEL
- - remove ad7405_channel_masks[]
- - remove unuseful members from ad7405_chip_info struct
- - remove platform_get_drvdata() from probe
- - use device_get_match_data to be able to use different chip info
- - use devm_clk_get_enabled() for efficiency
- - add devm_add_action_or_reset to disable_unprepare the clock when the driver
-   is removed
- - replace the devm_regulator_bulk_get_enable before applying any other signals
- - check for return value of 0 for st->ref_frequency
- - remove indio_dev->modes = INDIO_DIRECT_MODE
- - remove iio_backend_disable/enable that is done implicitly
-   by devm_iio_backend_enable()
- drivers/iio/adc/Kconfig  |  10 ++
- drivers/iio/adc/Makefile |   1 +
- drivers/iio/adc/ad7405.c | 264 +++++++++++++++++++++++++++++++++++++++
- 3 files changed, 275 insertions(+)
- create mode 100644 drivers/iio/adc/ad7405.c
+Markus Burri (6):
+  iio: backend: fix out-of-bound write
+  accel/ivpu: Use effective buffer size for zero terminator
+  iio: fix potential out-of-bound write
+  gpio: fix potential out-of-bound write
+  powerpc/eeh: fix potential OoB
+  powerpc/eeh-powernv: fix potential OoB
 
-diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-index ad06cf556785..6ed1042636d9 100644
---- a/drivers/iio/adc/Kconfig
-+++ b/drivers/iio/adc/Kconfig
-@@ -251,6 +251,16 @@ config AD7380
- 	  To compile this driver as a module, choose M here: the module will be
- 	  called ad7380.
- 
-+config AD7405
-+	tristate "Analog Device AD7405 ADC Driver"
-+	select IIO_BACKEND
-+	help
-+	  Say yes here to build support for Analog Devices AD7405, ADUM7701,
-+	  ADUM7702, ADUM7703 analog to digital converters (ADC).
-+
-+	  To compile this driver as a module, choose M here: the module will be
-+	  called ad7405.
-+
- config AD7476
- 	tristate "Analog Devices AD7476 1-channel ADCs driver and other similar devices from AD and TI"
- 	depends on SPI
-diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
-index 07d4b832c42e..8115f30b7862 100644
---- a/drivers/iio/adc/Makefile
-+++ b/drivers/iio/adc/Makefile
-@@ -26,6 +26,7 @@ obj-$(CONFIG_AD7291) += ad7291.o
- obj-$(CONFIG_AD7292) += ad7292.o
- obj-$(CONFIG_AD7298) += ad7298.o
- obj-$(CONFIG_AD7380) += ad7380.o
-+obj-$(CONFIG_AD7405) += ad7405.o
- obj-$(CONFIG_AD7476) += ad7476.o
- obj-$(CONFIG_AD7606_IFACE_PARALLEL) += ad7606_par.o
- obj-$(CONFIG_AD7606_IFACE_SPI) += ad7606_spi.o
-diff --git a/drivers/iio/adc/ad7405.c b/drivers/iio/adc/ad7405.c
-new file mode 100644
-index 000000000000..5fe36ce61819
---- /dev/null
-+++ b/drivers/iio/adc/ad7405.c
-@@ -0,0 +1,264 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Analog Devices AD7405 driver
-+ *
-+ * Copyright 2025 Analog Devices Inc.
-+ */
-+
-+#include <linux/clk.h>
-+#include <linux/module.h>
-+#include <linux/mod_devicetable.h>
-+#include <linux/platform_device.h>
-+#include <linux/property.h>
-+#include <linux/regulator/consumer.h>
-+#include <linux/util_macros.h>
-+
-+#include <linux/iio/backend.h>
-+#include <linux/iio/iio.h>
-+
-+const unsigned int ad7405_dec_rates[] = {
-+	4096, 2048, 1024, 512, 256, 128, 64, 32,
-+};
-+
-+struct ad7405_chip_info {
-+	const char *name;
-+	unsigned int max_rate;
-+	struct iio_chan_spec channel[];
-+};
-+
-+struct ad7405_state {
-+	struct iio_backend *back;
-+	/* lock to protect multiple accesses to the device registers */
-+	struct mutex lock;
-+	const struct ad7405_chip_info *info;
-+	unsigned int sample_frequency_tbl[ARRAY_SIZE(ad7405_dec_rates)];
-+	unsigned int sample_frequency;
-+	unsigned int ref_frequency;
-+};
-+
-+static void ad7405_fill_samp_freq_table(struct ad7405_state *st)
-+{
-+	unsigned int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(ad7405_dec_rates); i++)
-+		st->sample_frequency_tbl[i] =
-+			DIV_ROUND_CLOSEST_ULL(st->ref_frequency, ad7405_dec_rates[i]);
-+}
-+
-+static int ad7405_set_sampling_rate(struct iio_dev *indio_dev,
-+				    const struct iio_chan_spec *chan,
-+				    unsigned int samp_rate)
-+{
-+	struct ad7405_state *st = iio_priv(indio_dev);
-+	unsigned int dec_rate, idx;
-+	int ret;
-+
-+	dec_rate = DIV_ROUND_CLOSEST_ULL(st->ref_frequency, samp_rate);
-+
-+	idx = find_closest_descending(dec_rate, ad7405_dec_rates,
-+				      ARRAY_SIZE(ad7405_dec_rates));
-+
-+	dec_rate = ad7405_dec_rates[idx];
-+
-+	ret = iio_backend_oversampling_ratio_set(st->back, 0, dec_rate);
-+	if (ret)
-+		return ret;
-+
-+	st->sample_frequency = DIV_ROUND_CLOSEST_ULL(st->ref_frequency, dec_rate);
-+
-+	return 0;
-+}
-+
-+static int ad7405_read_raw(struct iio_dev *indio_dev,
-+			   const struct iio_chan_spec *chan, int *val,
-+			   int *val2, long info)
-+{
-+	struct ad7405_state *st = iio_priv(indio_dev);
-+
-+	switch (info) {
-+	case IIO_CHAN_INFO_SAMP_FREQ:
-+		*val = st->sample_frequency;
-+		return IIO_VAL_INT;
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static int ad7405_write_raw(struct iio_dev *indio_dev,
-+			    struct iio_chan_spec const *chan, int val,
-+			    int val2, long info)
-+{
-+	switch (info) {
-+	case IIO_CHAN_INFO_SAMP_FREQ:
-+		if (val < 1)
-+			return -EINVAL;
-+		return ad7405_set_sampling_rate(indio_dev, chan, val);
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static int ad7405_read_avail(struct iio_dev *indio_dev,
-+			     struct iio_chan_spec const *chan,
-+			     const int **vals, int *type, int *length,
-+			     long info)
-+{
-+	struct ad7405_state *st = iio_priv(indio_dev);
-+
-+	switch (info) {
-+	case IIO_CHAN_INFO_SAMP_FREQ:
-+			*vals = st->sample_frequency_tbl;
-+			*length = ARRAY_SIZE(st->sample_frequency_tbl);
-+			*type = IIO_VAL_INT;
-+			return IIO_AVAIL_LIST;
-+	default:
-+			return -EINVAL;
-+	}
-+}
-+
-+static void ad7405_clk_disable_unprepare(void *clk)
-+{
-+	clk_disable_unprepare(clk);
-+}
-+
-+static const struct iio_info ad7405_iio_info = {
-+	.read_raw = &ad7405_read_raw,
-+	.write_raw = &ad7405_write_raw,
-+	.read_avail = &ad7405_read_avail,
-+};
-+
-+#define AD7405_IIO_CHANNEL {							\
-+	.type = IIO_VOLTAGE,							\
-+	.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SAMP_FREQ),		\
-+	.info_mask_shared_by_all_available = BIT(IIO_CHAN_INFO_SAMP_FREQ),	\
-+	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE) |			\
-+		BIT(IIO_CHAN_INFO_OFFSET),					\
-+	.indexed = 1,								\
-+	.channel = 0,								\
-+	.channel2 = 1,								\
-+	.differential = 1,							\
-+	.scan_index = 0,							\
-+	.scan_type = {								\
-+		.sign = 'u',							\
-+		.realbits = 16,							\
-+		.storagebits = 16,						\
-+	},									\
-+}
-+
-+static const struct ad7405_chip_info ad7405_chip_info = {
-+		.name = "AD7405",
-+		.channel = {
-+			AD7405_IIO_CHANNEL,
-+		},
-+};
-+
-+static const struct ad7405_chip_info adum7701_chip_info = {
-+		.name = "ADUM7701",
-+		.channel = {
-+			AD7405_IIO_CHANNEL,
-+		},
-+};
-+
-+static const char * const ad7405_power_supplies[] = {
-+	"vdd1",	"vdd2",
-+};
-+
-+static int ad7405_probe(struct platform_device *pdev)
-+{
-+	const struct ad7405_chip_info *chip_info;
-+	struct device *dev = &pdev->dev;
-+	struct iio_dev *indio_dev;
-+	struct ad7405_state *st;
-+	struct clk *clk;
-+	int ret;
-+
-+	indio_dev = devm_iio_device_alloc(dev, sizeof(*st));
-+	if (!indio_dev)
-+		return -ENOMEM;
-+
-+	st = iio_priv(indio_dev);
-+
-+	ret = devm_mutex_init(dev, &st->lock);
-+	if (ret)
-+		return ret;
-+
-+	chip_info = device_get_match_data(dev);
-+	if (!chip_info)
-+		return dev_err_probe(dev, -EINVAL, "no chip info\n");
-+
-+	ret = devm_regulator_bulk_get_enable(dev, ARRAY_SIZE(ad7405_power_supplies),
-+					     ad7405_power_supplies);
-+
-+	if (ret)
-+		return dev_err_probe(dev, ret, "failed to get and enable supplies");
-+
-+	clk = devm_clk_get_enabled(dev, NULL);
-+	if (IS_ERR(clk))
-+		return PTR_ERR(clk);
-+
-+	ret = devm_add_action_or_reset(dev, ad7405_clk_disable_unprepare, clk);
-+	if (ret)
-+		return ret;
-+
-+	st->ref_frequency = clk_get_rate(clk);
-+	if (!(st->ref_frequency))
-+		return -EINVAL;
-+
-+	ad7405_fill_samp_freq_table(st);
-+
-+	indio_dev->dev.parent = dev;
-+	indio_dev->name = chip_info->name;
-+	indio_dev->channels = chip_info->channel;
-+	indio_dev->num_channels = 1;
-+	indio_dev->info = &ad7405_iio_info;
-+
-+	st->back = devm_iio_backend_get(dev, NULL);
-+	if (IS_ERR(st->back))
-+		return dev_err_probe(dev, PTR_ERR(st->back),
-+				     "failed to get IIO backend");
-+
-+	ret = iio_backend_chan_enable(st->back, 0);
-+	if (ret)
-+		return ret;
-+
-+	ret = devm_iio_backend_request_buffer(dev, st->back, indio_dev);
-+	if (ret)
-+		return ret;
-+
-+	ret = devm_iio_backend_enable(dev, st->back);
-+	if (ret)
-+		return ret;
-+
-+	ret = ad7405_set_sampling_rate(indio_dev, &indio_dev->channels[0],
-+				       chip_info->max_rate);
-+	if (ret)
-+		return ret;
-+
-+	return devm_iio_device_register(dev, indio_dev);
-+}
-+
-+/* Match table for of_platform binding */
-+static const struct of_device_id ad7405_of_match[] = {
-+	{ .compatible = "adi,ad7405", .data = &ad7405_chip_info, },
-+	{ .compatible = "adi,adum7701", .data = &adum7701_chip_info, },
-+	{ .compatible = "adi,adum7702", .data = &adum7701_chip_info, },
-+	{ .compatible = "adi,adum7703", .data = &adum7701_chip_info, },
-+	{ /* end of list */ },
-+};
-+MODULE_DEVICE_TABLE(of, ad7405_of_match);
-+
-+static struct platform_driver ad7405_driver = {
-+	.driver = {
-+		.name = "ad7405",
-+		.owner = THIS_MODULE,
-+		.of_match_table = ad7405_of_match,
-+	},
-+	.probe = ad7405_probe,
-+};
-+module_platform_driver(ad7405_driver);
-+
-+MODULE_AUTHOR("Dragos Bogdan <dragos.bogdan@analog.com>");
-+MODULE_AUTHOR("Pop Ioan Daniel <pop.ioan-daniel@analog.com>");
-+MODULE_DESCRIPTION("Analog Devices AD7405 driver");
-+MODULE_LICENSE("GPL");
-+MODULE_IMPORT_NS("IIO_BACKEND");
+ arch/powerpc/kernel/eeh.c                    |  7 ++++++-
+ arch/powerpc/platforms/powernv/eeh-powernv.c |  7 ++++++-
+ drivers/accel/ivpu/ivpu_debugfs.c            |  2 +-
+ drivers/gpio/gpio-virtuser.c                 | 12 ++++++++++--
+ drivers/iio/industrialio-backend.c           |  5 ++++-
+ drivers/iio/industrialio-core.c              |  5 ++++-
+ 6 files changed, 31 insertions(+), 7 deletions(-)
+
+
+base-commit: b4432656b36e5cc1d50a1f2dc15357543add530e
 -- 
-2.34.1
-
+2.39.5
 

@@ -1,175 +1,227 @@
-Return-Path: <linux-iio+bounces-19317-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19318-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE135AB00B1
-	for <lists+linux-iio@lfdr.de>; Thu,  8 May 2025 18:46:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A923AB00DA
+	for <lists+linux-iio@lfdr.de>; Thu,  8 May 2025 19:03:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4188B17A661
-	for <lists+linux-iio@lfdr.de>; Thu,  8 May 2025 16:46:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E54D33BEC04
+	for <lists+linux-iio@lfdr.de>; Thu,  8 May 2025 17:03:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B961A2253BB;
-	Thu,  8 May 2025 16:45:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C29E428312E;
+	Thu,  8 May 2025 17:03:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="mICO/toI"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="EbNx2WUd"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ot1-f49.google.com (mail-ot1-f49.google.com [209.85.210.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B2F71E3DE8
-	for <linux-iio@vger.kernel.org>; Thu,  8 May 2025 16:45:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0897221294;
+	Thu,  8 May 2025 17:03:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746722756; cv=none; b=SRWsZkLd1OQ6+mUeg039HGzTUhoqMyZOqNt4qK09QgkofD32Hhzs7odlt83pW8GAVbOYo/MmqeT4Ju5hebySwcT98TU7GX0USFn+qljFbN/TQjoh1C+VPjQRy7z7OcfcG8G7zVVdqApZXBw8hIikJwZlxD+e3escurxlBdmd7tI=
+	t=1746723805; cv=none; b=NSC4GcKmdcxUr7QonWq9Ge6BQbm/w6tkh7fLwkultZEmE5piNaGXhDqqMdEd9wkQe+j2FeBo40bN9N0UwsGfMiNCx27suwOzqAPYTW9RWPMXAxtTwkNVTenXcNb2fok/KskdsDCoIe8dhtHlDkoB/+kGLWLJP8sFU7Eydqe6BOc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746722756; c=relaxed/simple;
-	bh=sYeZLtpHPeuyHV/41fg3SXOFV2Tg9CfQcSP+Mkt6FAw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=AlqW9zGXu3Rej2YfcbHRknr47cTJVMQ+4d+oIfRCUvD+jhUQ2VQU7o7A5FDN4KrgoCyLErMG+MDp1xRLXSOffyajlXtlb4ZC5Fjc/6uFrd3M1wOzEDk/M52G5yfNm8zix0ClXODCkKfldNA4JuLyCBmeeM2hyCS0Fm58FoSphJw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=mICO/toI; arc=none smtp.client-ip=209.85.210.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ot1-f49.google.com with SMTP id 46e09a7af769-73044329768so912357a34.3
-        for <linux-iio@vger.kernel.org>; Thu, 08 May 2025 09:45:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1746722752; x=1747327552; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:to:subject:user-agent:mime-version:date:message-id:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=ZS1DAu/OGipdaeYyDVfVQy+AhcyRGZVYwm5fK44jnLQ=;
-        b=mICO/toIb/HlwX+vg9U5ispi7FBErVNzk5S+GKrVfiMt8Y2sUWYVUeEWT5Wi8nCr6v
-         02++H8yzwEV94bOjpiHlmNrmIkO6VgiFtwGM41DxDhAI5RvKBGFjuMAaYm9v8XJNE9J4
-         Cy8eM65qmTdTqF3zci1lPbGYttDTMqQ1LnAnWTD124bQc5HqUbtuHfgffbi136fLyfa8
-         /O6TdBwVDV83oL5z3ml/Z4RYP8CbJ6CBSv0ybsnE5WvfAy/uSZiRKYvBhb6WzDEAFT1+
-         F+UMXMva8AbhPui8DGHBcDu3M3kMIEc9NB2MlYOXan5WQUjOCf5bSnQSCJo/QJwkuEIs
-         NcVQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746722752; x=1747327552;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZS1DAu/OGipdaeYyDVfVQy+AhcyRGZVYwm5fK44jnLQ=;
-        b=k4OuabwfsgoCP+MR+yyXZBXK9W0H4VnDa103wUR5jihhW3ZShPgytKEnCDlHXwPm7F
-         /W+jUTvTz+sxrBjsWXDsOv/qHW8/7MCUGginR/BgNgPUTftjSiKysFj1XpnVPYFIXEEu
-         Be03+Sr20qQod+Tesiu9TdG71NUyhInGpiuPoMQC3AUO1y6q0RcmKsNHyYUGL+SRGWEl
-         iLrgH3vjSkusGB6FYSamN95S5wfj0uzCsn8ba1qTWJoKB46r7++opXZnMeyuL3lG+MZb
-         zmBVVLhd9uAk1b0L/OwNE1QoW4Lvqe6MZE5Iuk2UPRmMeM0SYVExbF1M+YMSFlUqtHfS
-         Peog==
-X-Forwarded-Encrypted: i=1; AJvYcCUA4aiv4A0NgrLmWZbeMS7mKKJ94+VSYO0Z07lywC2jMTFhPDa7IiAeCDjo1F8rKwzQK6ddvstErBA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx0C8osAGgkQo3F1+l7HPfKHWRwDlxMsvCibZGmWqFq7xo3Wslt
-	ZXd6XWNiukZJpYsUCWNGxsr8kdi0Q6QNLYLPTTxZkMZb/24oH8i74c9mEDaTnPU=
-X-Gm-Gg: ASbGncs5BjAbNcfNCrA+ETvX9P/7m/JsnS2o82VuuejIXHl4FfHEbEUb+GmrZW3u/zI
-	tpDjiJ9Y8blNOmSOFrubjmHQK1mbIDh+VbtwEVl/YW4aVWcVWyFhNNKYNujS5PgORIt7hhUKdGX
-	IM2sTvxPEBwbIIDh2mVmzYhSJ9roHHtqnaA5gCbZhHJuFv10NEDoaavejaMhBdJvI84wLD1DQtJ
-	8ZWCEh36Y0phikGmEdh3FxOrWO1Z8XFHqGFLBpJYlwkrVW28bfBU0wjBUXBn76Riy4R9vxx82vo
-	6bKtxEFwHVwgIS7wpx2LDnUEupUsH8qm6Px6AXeMkXhM6Hi4ft6LnzFgRVeou32NA8g0+4h/xCs
-	k9QnmuT4mFDs1RFpjyA==
-X-Google-Smtp-Source: AGHT+IEZDZLOMxJDt8kLUDFqLwM51K2NVQLT54ITBkIlx9L3ppO4Dyj06GSMVCaofCpDgYIIbqiFjw==
-X-Received: by 2002:a05:6830:3788:b0:72c:10db:f210 with SMTP id 46e09a7af769-732269faf05mr352368a34.13.1746722752395;
-        Thu, 08 May 2025 09:45:52 -0700 (PDT)
-Received: from ?IPV6:2600:8803:e7e4:1d00:1120:d1cf:c64a:ac7e? ([2600:8803:e7e4:1d00:1120:d1cf:c64a:ac7e])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-732264d59e1sm102555a34.34.2025.05.08.09.45.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 08 May 2025 09:45:51 -0700 (PDT)
-Message-ID: <37ae4941-da7e-4298-8269-b5faf29fffdd@baylibre.com>
-Date: Thu, 8 May 2025 11:45:50 -0500
+	s=arc-20240116; t=1746723805; c=relaxed/simple;
+	bh=gZCDkiJ4Rg95tBrcRO8NL7Eap/QE9Mn0zTYRwRZ5lAc=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=USiXZRHykBMIVfayg9eA7IEIIfbNe4s4XEeak9CFu6g/uu5wLTcoZjVrfO0R8r0W4tfPY6VR3OOQv7752YUaxTqQi2R5JAhEo4J8cyo/CgrofjWLoHBcvtFGhEjjGJPI/8NHIWbqCr01j5Pshm3UqcgfKASZzSjfSB6tkQeO7m0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=EbNx2WUd; arc=none smtp.client-ip=148.163.135.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
+Received: from pps.filterd (m0375855.ppops.net [127.0.0.1])
+	by mx0b-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 548FSX9V000696;
+	Thu, 8 May 2025 13:03:11 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=DKIM; bh=YeJkxcgCvWKrgpLFRX7pF+F2eqK
+	1Bsb7YEXmv/cAX0E=; b=EbNx2WUdleF+aoqLuR2i3YtjceMs/4q7k7O09PHRUfn
+	hJ8+6wdYhsykYKeHT+NEAPgQWEkFFarPx2cX2CCxZsPF16jsvOkOhg3RhQsB0vYb
+	845L/557vc7eQKIJTibeZSn2QRKutzZF4EBhoWJgeWp4TON9Aa1RyOP6EE5YMJNk
+	ixjZgZiHB1kUKucTA6opBfH4J7pQsI5dC2O93x3SLZ1Xf/GOzZS4vo5oMipkuPAm
+	17EiWc1WX2qfxQVZYRBrZQpX0N9aj673O57Vo1utljJYyv9EDf1Zvo9q7incd2oc
+	8PFfYKOCSR3p045YxyHRX02KK67uQ0m5TyURj0gRjfA==
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+	by mx0b-00128a01.pphosted.com (PPS) with ESMTPS id 46gy9q8cye-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 08 May 2025 13:03:10 -0400 (EDT)
+Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
+	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 548H39t9052577
+	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Thu, 8 May 2025 13:03:09 -0400
+Received: from ASHBCASHYB4.ad.analog.com (10.64.17.132) by
+ ASHBMBX9.ad.analog.com (10.64.17.10) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Thu, 8 May 2025 13:03:09 -0400
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by
+ ASHBCASHYB4.ad.analog.com (10.64.17.132) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Thu, 8 May 2025 13:03:09 -0400
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Thu, 8 May 2025 13:03:09 -0400
+Received: from JSANTO12-L01.ad.analog.com ([10.65.60.206])
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 548H2qSF015857;
+	Thu, 8 May 2025 13:02:55 -0400
+From: Jonathan Santos <Jonathan.Santos@analog.com>
+To: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-gpio@vger.kernel.org>
+CC: Jonathan Santos <Jonathan.Santos@analog.com>, <andy@kernel.org>,
+        <nuno.sa@analog.com>, <Michael.Hennerich@analog.com>,
+        <marcelo.schmitt@analog.com>, <jic23@kernel.org>, <robh@kernel.org>,
+        <krzk+dt@kernel.org>, <conor+dt@kernel.org>,
+        <marcelo.schmitt1@gmail.com>, <linus.walleij@linaro.org>,
+        <brgl@bgdev.pl>, <lgirdwood@gmail.com>, <broonie@kernel.org>,
+        <jonath4nns@gmail.com>, <dlechner@baylibre.com>
+Subject: [PATCH v7 00/12] iio: adc: ad7768-1: Add features, improvements, and fixes
+Date: Thu, 8 May 2025 14:02:50 -0300
+Message-ID: <cover.1746662899.git.Jonathan.Santos@analog.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/4] iio: adc: adi-axi-adc: add set decimation rate
-To: Pop Ioan Daniel <pop.ioan-daniel@analog.com>,
- Lars-Peter Clausen <lars@metafoo.de>,
- Michael Hennerich <Michael.Hennerich@analog.com>,
- Jonathan Cameron <jic23@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?=
- <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>,
- Sergiu Cuciurean <sergiu.cuciurean@analog.com>,
- Dragos Bogdan <dragos.bogdan@analog.com>,
- Antoniu Miclaus <antoniu.miclaus@analog.com>,
- Olivier Moysan <olivier.moysan@foss.st.com>,
- Javier Carrasco <javier.carrasco.cruz@gmail.com>,
- Matti Vaittinen <mazziesaccount@gmail.com>,
- Tobias Sperling <tobias.sperling@softing.com>,
- Marcelo Schmitt <marcelo.schmitt@analog.com>,
- Alisa-Dariana Roman <alisadariana@gmail.com>,
- Esteban Blanc <eblanc@baylibre.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20250508123107.3797042-1-pop.ioan-daniel@analog.com>
- <20250508123107.3797042-3-pop.ioan-daniel@analog.com>
-From: David Lechner <dlechner@baylibre.com>
-Content-Language: en-US
-In-Reply-To: <20250508123107.3797042-3-pop.ioan-daniel@analog.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-GUID: ulU4eOWoH9C5wOf0IJWx49L8JfibmLvd
+X-Authority-Analysis: v=2.4 cv=f/ZIBPyM c=1 sm=1 tr=0 ts=681ce3ce cx=c_pps
+ a=PpDZqlmH/M8setHirZLBMw==:117 a=PpDZqlmH/M8setHirZLBMw==:17
+ a=dt9VzEwgFbYA:10 a=VwQbUJbxAAAA:8 a=gAnH3GRIAAAA:8 a=wUxFP8jSl_fENa0tmKEA:9
+X-Proofpoint-ORIG-GUID: ulU4eOWoH9C5wOf0IJWx49L8JfibmLvd
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTA4MDE0OSBTYWx0ZWRfXyag8l0tyIo+p
+ yEOjBkQII7fqsZC0FcPMDqd7qUZjYSfDpiMDXvqYe5TWTM7eiVlfEaFLmBRuBtPLWvw4yVi/zkr
+ QIAfWMZXUD2D3RZxkoKmDnUx1+wxfgi+MlJ1dtuHJGD1hyuCh1YmSLI4KqvgsAT5mJuG4Yk8+V7
+ okeVZofxSdBo4Kk6X7SDS44Hmpo62mDmmitq4WYPdkeAAbTFmcNMcjUcT93al2DGypBmJP2Qeg1
+ 8bOlwrQjwxOOZ+ufWjV0M1RxIcd3ouRUCTmed0rvfjX+RzdOMwi3O9Cxg4MRKT2N81UzgnFSowx
+ u+jp4dkqfsNY4dkKpzp69uk59Ko0/1GByQgTM8XJ/WzGUd8m0/pEWv63KY+z4avdwi96rlKbkKu
+ B0JIEQamovwEXCEwbcBue4De/MKl1/+uvmWKjktExy/m1zfjqCjXGnux/b1it2O+Z2xLBuz5
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-05-08_05,2025-05-08_02,2025-02-21_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 malwarescore=0 adultscore=0 mlxscore=0 impostorscore=0
+ suspectscore=0 priorityscore=1501 phishscore=0 bulkscore=0 lowpriorityscore=0
+ spamscore=0 mlxlogscore=999 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2504070000
+ definitions=main-2505080149
 
-On 5/8/25 7:30 AM, Pop Ioan Daniel wrote:
-> Add support for setting decimation rate.
-> 
-> Signed-off-by: Pop Ioan Daniel <pop.ioan-daniel@analog.com>
-> ---
-> changes in v2:
->  - update ADI_AXI_ADC_REG_CHAN_USR_CTRL_2 register in a per-channel register
->  - rename ADI_AXI_ADC_DEC_RATE_MASK in
->    ADI_AXI_ADC_CHAN_USR_CTRL_2_DEC_RATE_N_MASK
->  - add channel index parameter to keep axi_adc_set_dec_rate generic
->  - remove ad7405 chip-specific struct
->  drivers/iio/adc/adi-axi-adc.c | 15 +++++++++++++++
->  1 file changed, 15 insertions(+)
-> 
-> diff --git a/drivers/iio/adc/adi-axi-adc.c b/drivers/iio/adc/adi-axi-adc.c
-> index 9e8c30230791..33eb8f337e0b 100644
-> --- a/drivers/iio/adc/adi-axi-adc.c
-> +++ b/drivers/iio/adc/adi-axi-adc.c
-> @@ -80,6 +80,9 @@
->  #define ADI_AXI_ADC_REG_CHAN_CTRL_3(c)		(0x0418 + (c) * 0x40)
->  #define   ADI_AXI_ADC_CHAN_PN_SEL_MASK		GENMASK(19, 16)
->  
-> +#define ADI_AXI_ADC_REG_CHAN_USR_CTRL_2(c)	(0x0424 + (c) * 0x40)
-> +#define   ADI_AXI_ADC_CHAN_USR_CTRL_2_DEC_RATE_N_MASK		GENMASK(15, 0)
-> +
->  /* IO Delays */
->  #define ADI_AXI_ADC_REG_DELAY(l)		(0x0800 + (l) * 0x4)
->  #define   AXI_ADC_DELAY_CTRL_MASK		GENMASK(4, 0)
-> @@ -242,6 +245,17 @@ static int axi_adc_test_pattern_set(struct iio_backend *back,
->  	}
->  }
->  
-> +static int axi_adc_set_dec_rate(struct iio_backend *back, unsigned int chan,
-> +				unsigned int rate)
-> +{
-> +	struct adi_axi_adc_state *st = iio_backend_get_priv(back);
-> +
-> +	return regmap_update_bits(st->regmap,
-> +				  ADI_AXI_ADC_REG_CHAN_USR_CTRL_2(chan),
-> +				  ADI_AXI_ADC_CHAN_USR_CTRL_2_DEC_RATE_N_MASK,
-> +				  FIELD_PREP(ADI_AXI_ADC_CHAN_USR_CTRL_2_DEC_RATE_N_MASK, rate));
+This patch series introduces some new features, improvements,
+and fixes for the AD7768-1 ADC driver. 
 
-Rate is getting a bit far past 80 chars, so would be nice to wrap that line.
+The goal is to support all key functionalities listed in the device
+datasheet, including filter mode selection, common mode voltage output
+configuration and GPIO support. Additionally, this includes fixes 
+for SPI communication and for IIO interface, and also code improvements
+to enhance maintainability and readability.
 
-> +}
-> +
->  static int axi_adc_read_chan_status(struct adi_axi_adc_state *st, unsigned int chan,
->  				    unsigned int *status)
->  {
-> @@ -550,6 +564,7 @@ static const struct iio_backend_ops adi_axi_adc_ops = {
->  	.test_pattern_set = axi_adc_test_pattern_set,
->  	.chan_status = axi_adc_chan_status,
->  	.interface_type_get = axi_adc_interface_type_get,
-> +	.oversampling_ratio_set = axi_adc_set_dec_rate,
+---
+Changes in v7:
+* Added a new patch to reorganize driver headers.
+* Added the new files to MAINTAINERS.
+* Added dependencies to constrain the use of trigger-sources and
+  adi,sync-in-gpios properties at the same time.
+* Self triggering is enabled only when the trigger-sources property is
+  not defined. Added TODO to support other trigger sources when the subsystem
+  is available.
+* Refactor code to avoid forward declarations.
+* Mentioned that sampling frequency changes is not allowed in
+  buffered mode.
+* Addressed review comments, see individual pacthes.
+* Link to v6: https://lore.kernel.org/linux-iio/cover.1745605382.git.Jonathan.Santos@analog.com/T/#t
 
-Would make more sense if function was named axi_adc_oversampling_ratio_set.
-(Making the names match exactly (with namespace prefix added) make less info
-you have to hold in your head when reading the driver.)
+Changes in v6:
+* Changed description and addressed other nits in the gpio-trigger patch.
+* Rewrote the #trigger-sources-cells description and removed mentions 
+  to offload engine.
+* Added adi,ad7768-1.h header with macros for the trigger source cells.
+* removed of_match_ptr() from regulator_desc.
+* Replaced deprecated .set callback with .set_rv in the gpio controller
+  patch.
+* Use `trigger-sources` as an alternative to `adi,sync-in-gpios`
+  (now optional), instead of replacing it.
+* Check trigger source by the compatible string (and the dev node for the
+  self triggering).
+* Addressed review comments, see individual pacthes.
+* Link to v5: https://lore.kernel.org/linux-iio/cover.1744325346.git.Jonathan.Santos@analog.com/T/#t
 
->  	.debugfs_reg_access = iio_backend_debugfs_ptr(axi_adc_reg_access),
->  	.debugfs_print_chan_status = iio_backend_debugfs_ptr(axi_adc_debugfs_print_chan_status),
->  };
+Changes in v5:
+* Added gpio-trigger binding patch.
+* Include START pin and DRDY in the trigger-sources description.
+* increased trigger-source-cells to 1: this cell will define the trigger
+  source type.
+* Fixed the holes in the regmap ranges.
+* replace old iio_device_claim_direct_mode() for the new 
+  iio_device_claim/release_direct() functions.
+* Changed some commit messages.
+* Link to v4: https://lore.kernel.org/linux-iio/cover.1741268122.git.Jonathan.Santos@analog.com/T/#t
+
+Changes in v4:
+* Added missing `select REGMAP_SPI` and `select REGULATOR` to the device's Kconfig.
+* VCM output regulator property renamed.
+* Added direct mode conditional locks to regulator controller callbacks.
+* Renamed regulator controller.
+* Created helper function to precalculate the sampling frequency table and avoid
+  race conditions.
+* Link to v3: https://lore.kernel.org/linux-iio/cover.1739368121.git.Jonathan.Santos@analog.com/T/#t
+
+Changes in v3:
+* Fixed irregular or missing SoBs.
+* Moved MOSI idle state patch to the start of the patch, as the other fix.
+* fixed dt-binding errors.
+* Trigger-sources is handled in a different way, as an alternative to sync-in-gpio.
+  (this way we avoid breaking old applications).
+* VCM output is controlled by the regulator framework.
+* Added a second regmap for 24-bit register values.
+* Add new preparatory patch replacing the manual attribute declarations for
+  the read_avail from struct iio_info.
+* included sinc3+rej60 filter type.
+* Addressed review comments, see individual pacthes.
+* Link to v2: https://lore.kernel.org/linux-iio/cover.1737985435.git.Jonathan.Santos@analog.com/T/#u
+
+Changes in v2:
+* Removed synchronization over SPI property and replaced it for trigger-sources.
+* Added GPIO controller documentation.
+* VCM output control changed from an IIO attribute to a devicetree property (static value).
+* Converted driver to use regmap and dropped spi_read_reg and spi_write_reg pacthes.
+* replaced decimation_rate attribute for oversampling_ratio and dropped device specific documentation patch.
+* Added low pass -3dB cutoff attribute.
+* Addressed review comments, see individual pacthes.
+* Link to v1: https://lore.kernel.org/linux-iio/cover.1736201898.git.Jonathan.Santos@analog.com/T/#t
+
+Jonathan Santos (11):
+  iio: adc: ad7768-1: reorganize driver headers
+  dt-bindings: trigger-source: add generic GPIO trigger source
+  dt-bindings: iio: adc: ad7768-1: add trigger-sources property
+  dt-bindings: iio: adc: ad7768-1: Document GPIO controller
+  dt-bindings: iio: adc: ad7768-1: document regulator provider property
+  iio: adc: ad7768-1: add regulator to control VCM output
+  iio: adc: ad7768-1: add multiple scan types to support 16-bits mode
+  iio: adc: ad7768-1: add support for Synchronization over SPI
+  iio: adc: ad7768-1: replace manual attribute declaration
+  iio: adc: ad7768-1: add filter type and oversampling ratio attributes
+  iio: adc: ad7768-1: add low pass -3dB cutoff attribute
+
+Sergiu Cuciurean (1):
+  iio: adc: ad7768-1: Add GPIO controller support
+
+ .../bindings/iio/adc/adi,ad7768-1.yaml        |  68 +-
+ .../bindings/trigger-source/gpio-trigger.yaml |  40 +
+ MAINTAINERS                                   |   4 +-
+ drivers/iio/adc/Kconfig                       |   1 +
+ drivers/iio/adc/ad7768-1.c                    | 905 +++++++++++++++---
+ include/dt-bindings/iio/adc/adi,ad7768-1.h    |  10 +
+ 6 files changed, 918 insertions(+), 110 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/trigger-source/gpio-trigger.yaml
+ create mode 100644 include/dt-bindings/iio/adc/adi,ad7768-1.h
+
+
+base-commit: 9415c8b5b9b7ba927d98f80022a2890e8639e9e4
+prerequisite-patch-id: fbb33747cd0293bacd5b6d801d6cfc087449a28e
+-- 
+2.34.1
 
 

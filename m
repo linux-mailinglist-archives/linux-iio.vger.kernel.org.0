@@ -1,53 +1,53 @@
-Return-Path: <linux-iio+bounces-19335-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19336-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A3B1AB02EB
-	for <lists+linux-iio@lfdr.de>; Thu,  8 May 2025 20:35:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D67D6AB0309
+	for <lists+linux-iio@lfdr.de>; Thu,  8 May 2025 20:40:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C30FD188EE2C
-	for <lists+linux-iio@lfdr.de>; Thu,  8 May 2025 18:35:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CCF769E8129
+	for <lists+linux-iio@lfdr.de>; Thu,  8 May 2025 18:39:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D396286D50;
-	Thu,  8 May 2025 18:35:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBCB12874FE;
+	Thu,  8 May 2025 18:39:47 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89E7F4B1E7D;
-	Thu,  8 May 2025 18:35:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 063CB286D61;
+	Thu,  8 May 2025 18:39:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746729325; cv=none; b=MQB7AUD9LTHl0ixcYs/YGVyDfdG3T2IOWR0yuZS3o11nMmBY8CrKZOlvqVj1k5+rfWkO1rppSaEqN0EizUzyN+jt1ejLHg1u1Oy7pE0S8EV9P8rOtc8YNxSM+NWvAYf6ruVEwgQ5/VsCvI1NyzrCQMcbCwlAui9OzYlhNcsMkks=
+	t=1746729587; cv=none; b=UPEQl7bfOUv2cYUPyR/wgD1ZR0Ap3rB7BtsjX54VKweaThxfHqSlU56dFH1M3cHp8c/YnzYkpsIsTk8LaPxOg5ApE8vFQVTWKcsndTKcLoizHb/mVD+t9qaxl3Hz0AOq70rwPVsVuIU3J1VfOttCBrrihw72i1+b8GV0JFxwSfY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746729325; c=relaxed/simple;
-	bh=pQVCCI8EqkRoXe6jlfp88q7Ckl5MiVkBR4sc8JWAFWs=;
+	s=arc-20240116; t=1746729587; c=relaxed/simple;
+	bh=XijhJI+zS6x49k5yeDbJQm7J5mBLadnfpbOoE7T0cAc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Bg/cb2qt2pf97qADAoSg269ND+GTgZMNfuYMNhD2GrGHe5jxHsKgWG6lUtCpIDo6LdHypRt6rLq+uvoPlV/D1iQqy4EGiHPc1ThVsd+M9/sEd+KR/Z3wLTj3BYemMieAubPJ8OO8YjQr15zy9phP1yGgGs1FMX6t6ktzdq2LOKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=fail smtp.mailfrom=kernel.org; arc=none smtp.client-ip=198.175.65.14
+	 Content-Type:Content-Disposition:In-Reply-To; b=L9rHOEsgP+yRb5wKsULjCSIp9qMPq7uRWUKQIxNNcv4p4VS0KNnGZfvaNeXgWeNk9RBycpX6GpRdmDRlaLwtREE8G8CGCATHt/JIpNwRo296/6m63/FDgsogvYh1FvtOmvBEoiDl4yV11E9Ro1ioKBibQj1jAqJJ0C+b2KdnAus=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=fail smtp.mailfrom=kernel.org; arc=none smtp.client-ip=198.175.65.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=kernel.org
-X-CSE-ConnectionGUID: 1VGZZ0+HTdSsOqSy8EL+SA==
-X-CSE-MsgGUID: mIW0WpyQQBOVUBKta4jmGA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11427"; a="52344853"
+X-CSE-ConnectionGUID: vJRmdyLwS1qP5DKFV9naaA==
+X-CSE-MsgGUID: PUd5gPIuQQ2R3697Jx6qVA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11427"; a="58748091"
 X-IronPort-AV: E=Sophos;i="6.15,272,1739865600"; 
-   d="scan'208";a="52344853"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2025 11:35:17 -0700
-X-CSE-ConnectionGUID: bvrRQzUPTXqm6DaZU2h9sg==
-X-CSE-MsgGUID: ut+I5uXbQZmzVtZD2uR6PA==
+   d="scan'208";a="58748091"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2025 11:39:45 -0700
+X-CSE-ConnectionGUID: FXSPScreQhqUZAukaZ7+HQ==
+X-CSE-MsgGUID: JAmpC+y1QTqKYbV4vkHXXQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.15,272,1739865600"; 
-   d="scan'208";a="136090820"
+   d="scan'208";a="167321959"
 Received: from smile.fi.intel.com ([10.237.72.55])
-  by orviesa009.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2025 11:35:13 -0700
+  by orviesa002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2025 11:39:41 -0700
 Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
 	(envelope-from <andy@kernel.org>)
-	id 1uD65P-00000004CCz-1H8r;
-	Thu, 08 May 2025 21:35:11 +0300
-Date: Thu, 8 May 2025 21:35:11 +0300
+	id 1uD69i-00000004CG8-44NK;
+	Thu, 08 May 2025 21:39:38 +0300
+Date: Thu, 8 May 2025 21:39:38 +0300
 From: Andy Shevchenko <andy@kernel.org>
 To: Angelo Dureghello <adureghello@baylibre.com>
 Cc: Jonathan Cameron <jic23@kernel.org>,
@@ -59,11 +59,11 @@ Cc: Jonathan Cameron <jic23@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
 	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v4 1/5] Documentation: ABI: IIO: add calibconv_delay
- documentation
-Message-ID: <aBz5X3AQRi1ONsly@smile.fi.intel.com>
+Subject: Re: [PATCH v4 3/5] iio: adc: ad7606: add offset and phase
+ calibration support
+Message-ID: <aBz6am83scKywvkn@smile.fi.intel.com>
 References: <20250508-wip-bl-ad7606-calibration-v4-0-91a3f2837e6b@baylibre.com>
- <20250508-wip-bl-ad7606-calibration-v4-1-91a3f2837e6b@baylibre.com>
+ <20250508-wip-bl-ad7606-calibration-v4-3-91a3f2837e6b@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -72,49 +72,57 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250508-wip-bl-ad7606-calibration-v4-1-91a3f2837e6b@baylibre.com>
+In-Reply-To: <20250508-wip-bl-ad7606-calibration-v4-3-91a3f2837e6b@baylibre.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Thu, May 08, 2025 at 12:06:05PM +0200, Angelo Dureghello wrote:
+On Thu, May 08, 2025 at 12:06:07PM +0200, Angelo Dureghello wrote:
 > From: Angelo Dureghello <adureghello@baylibre.com>
 > 
-> Add new IIO calibconv_delay documentation.
+> Add support for offset and phase calibration, only for
+> devices that support software mode, that are:
 > 
-> The ad7606 implements a phase calibation feature, in nanoseconds.
-> Being this a time delay, using the conv_delay suffix.
+> ad7606b
+> ad7606c-16
+> ad7606c-18
 
 ...
 
-> +What:		/sys/bus/iio/devices/iio:deviceX/in_voltageY_convdelay
-> +KernelVersion:  6.16
-
-Here is the space being used...
-
-> +Contact:        linux-iio@vger.kernel.org
-> +Description:
-> +		Delay of start of conversion in seconds from common reference
-> +		point shared by all channels. Can be writable when used to
-> +		compensate for delay variation introduced by external filters
-> +		feeding a simultaneous sampling ADC.
+> +static int ad7606_get_calib_offset(struct ad7606_state *st, int ch, int *val)
+> +{
+> +	int ret;
 > +
-> +		I.e., for the ad7606 ADC series, this value is intended as a
-> +		configurable time delay in seconds, to correct delay introduced
-> +		by an optional external filtering circuit.
-> +
-> +What:		/sys/bus/iio/devices/iio:deviceX/in_voltageY_convdelay_available
-> +KernelVersion:	6.16
+> +	ret = st->bops->reg_read(st, AD7606_CALIB_OFFSET(ch));
+> +	if (ret < 0)
+> +		return ret;
 
-...and here is TAB. Please, make the text consistent. If the original one is
-inconsistent, fix it first.
+> +	*val = st->chip_info->calib_offset_avail[0] + ret *
+> +		st->chip_info->calib_offset_avail[1];
 
-> +Contact:	linux-iio@vger.kernel.org
-> +Description:
-> +		Available values of convdelay. Maybe expressed as:
-> +
-> +		- a range specified as "[min step max]"
-> +
-> +		If shared across all channels, <type>_calibconv_delay_available
-> +		is used.
+You are too fast with new versions... As I pointed out, this is not a logical
+split. My only concern was the column, i.e. to be as
+
+	*val = st->chip_info->calib_offset_avail[0] +
+	       ret * st->chip_info->calib_offset_avail[1];
+
+> +	return 0;
+> +}
+
+...
+
+> +	val -= start_val;
+> +	val /= step_val;
+
+Hmm...
+
+To me the
+
+	val = (val - start_val) / step_val;
+
+looks better as it immediately gives an idea of the initial content of the val.
+Ideally I would even add a new temporary variable for this, so the operand and
+the assignee won't be the same variable.
+
+> +	return st->bops->reg_write(st, AD7606_CALIB_OFFSET(ch), val);
 
 -- 
 With Best Regards,

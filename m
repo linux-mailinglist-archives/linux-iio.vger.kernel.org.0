@@ -1,143 +1,99 @@
-Return-Path: <linux-iio+bounces-19338-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19339-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2091AB034A
-	for <lists+linux-iio@lfdr.de>; Thu,  8 May 2025 21:00:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CACFAAB0353
+	for <lists+linux-iio@lfdr.de>; Thu,  8 May 2025 21:05:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1B1C71C21C20
-	for <lists+linux-iio@lfdr.de>; Thu,  8 May 2025 19:00:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 238331C262A2
+	for <lists+linux-iio@lfdr.de>; Thu,  8 May 2025 19:05:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73695288C97;
-	Thu,  8 May 2025 19:00:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75D26284B25;
+	Thu,  8 May 2025 19:05:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="seKaoui1"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20BCA286D66;
-	Thu,  8 May 2025 19:00:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 301A01E1E1D;
+	Thu,  8 May 2025 19:05:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746730816; cv=none; b=EVslYzh81wvJQdu/cxMRSm9fi/NnBt6CSXqQK6kNAZgx7lCTsrPCOYuKb1MXUSjM3YApuHaSb/8u5TFaUBGeC3KLQTXJ5Pd0GavOXmuv06n9g/c5IjUy2Z5ZARYWy17yzJNi6S+WSyu/fwLoK3zZuJCzhkKfyp6tHKmkz9LKcGY=
+	t=1746731108; cv=none; b=YaBHVeBM3PBvy48fMppOSsPvkM9PY3DpTMkqb50IX2W33iG9hEOQPyiRi/OcJ6dzM1KCCOY2P5jCSaDNXUUMfhV8QYoTZZ1Isp0N2WzYOXQnTqQPfxx0qy5dUOYDAhBRZe61axn9od5QUBpIqY6D9V2LaSToOrAn4RLD0YwgGZ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746730816; c=relaxed/simple;
-	bh=LCEbPff3OoPgMZ1212eZM05B+dddMMp2LVFvzweKsBY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cGQOk/iGNWbnCvFPZFCLc9QNgICvcynf1lPmxMla4CVg9fj0lvXZ7pwF9ah3JR/RlVT5slS0GASm24gjTXxI/nvmIRh4XOjzvtwIs+ylsO0UXHC1yA54bAFWBJQzYux5Fukd5HeXuYtQN3U7di/QOIEeBO91Q4L38dztRJSKazo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=fail smtp.mailfrom=kernel.org; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=kernel.org
-X-CSE-ConnectionGUID: 1P76WaSZSzakuq+yn2QCHg==
-X-CSE-MsgGUID: pF0LCqTRQuC4ihGE+yKZQw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11427"; a="48616475"
-X-IronPort-AV: E=Sophos;i="6.15,273,1739865600"; 
-   d="scan'208";a="48616475"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2025 12:00:13 -0700
-X-CSE-ConnectionGUID: topa9xxbS4aY5lLo6/vMEA==
-X-CSE-MsgGUID: 2bfKK5PUQJm8MK/FvnZZhg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,273,1739865600"; 
-   d="scan'208";a="141139512"
-Received: from smile.fi.intel.com ([10.237.72.55])
-  by orviesa003.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2025 12:00:10 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
-	(envelope-from <andy@kernel.org>)
-	id 1uD6TX-00000004Coa-02NT;
-	Thu, 08 May 2025 22:00:07 +0300
-Date: Thu, 8 May 2025 22:00:06 +0300
-From: Andy Shevchenko <andy@kernel.org>
-To: Angelo Dureghello <adureghello@baylibre.com>
-Cc: Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v4 5/5] iio: adc: ad7606: add gain calibration support
-Message-ID: <aBz_Nlgx18UK2GIc@smile.fi.intel.com>
-References: <20250508-wip-bl-ad7606-calibration-v4-0-91a3f2837e6b@baylibre.com>
- <20250508-wip-bl-ad7606-calibration-v4-5-91a3f2837e6b@baylibre.com>
+	s=arc-20240116; t=1746731108; c=relaxed/simple;
+	bh=+JAxNAl5UUAJGF52hw5wf/fhIzgv71raNX+SUGyckaQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=YS0/p2QUqn6X3HTuUzHIid0P3cvWn23WGJ2TmCaFMcd3X7DSdNXMgxdc1kQV6gojkdDGrQpKveJVEqv54W2Mu+t67/4gE5Y1ITc7zqaN+qbbpBkWxqrM9WERo/J2BKSQlBkZ4aDIWq9cHczxaPecXQfQbnFZFoudJSwPhi+u6xY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=seKaoui1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58C01C4CEE7;
+	Thu,  8 May 2025 19:05:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1746731107;
+	bh=+JAxNAl5UUAJGF52hw5wf/fhIzgv71raNX+SUGyckaQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=seKaoui1zE3H/QN3++7DkkxSHsDSoTq3I2C1dQCSYcTc/5wUute5Twg3x3S1L39Gr
+	 kPmL9QyVLHlUEu3OJvnEShAORsE/LnSASqPN0/4TnCBqU1DAwhqooHOkr9sP6hkUKO
+	 G4h1bbRzr2cj+oGbLbX9IuR2rN1O1+c2OeNsim57GFsB5SsL0PKrw1bK3h3x1wHwVF
+	 ZfseoUV0i/5E4JltfbhZaauIXJCYs0qrjxTin7CFiznT0cLuszbRvOPbpeyLvfZX5H
+	 Oh1TiByaYzOhMv5auTdCkWEqW2DGyX+5KvKxP8N3MRFH38HKkC9MZng8CEdmRcakJo
+	 +Bv7TeT2fs04w==
+Date: Thu, 8 May 2025 20:05:00 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Fabio Estevam <festevam@gmail.com>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ mazziesaccount@gmail.com, linux-iio@vger.kernel.org, Fabio Estevam
+ <festevam@denx.de>, stable@vger.kernel.org
+Subject: Re: [PATCH 1/2] iio: Fix scan mask subset check logic
+Message-ID: <20250508200500.15a1ef28@jic23-huawei>
+In-Reply-To: <CAOMZO5BPBV5CyTE1-TyutJctLHeKE0s24JxyiZF1T_xmeKuZfA@mail.gmail.com>
+References: <20250429150213.2953747-1-festevam@gmail.com>
+	<20250429183301.326eaacf@jic23-huawei>
+	<CAOMZO5DBpF+iO4NY4-tn3ar+Ld+c=SA6W-UKN0haWmAK=4g-+g@mail.gmail.com>
+	<CAOMZO5B0nxVEW1Q-a05j8f+=waAYijvBq573Ha8DNbOgF0287w@mail.gmail.com>
+	<20250430141112.00004bb8@huawei.com>
+	<CAOMZO5CYuv94N_8ZepH04y8ez1CAmOJOq4eim=dLGmMFoStQ3g@mail.gmail.com>
+	<20250430182537.00007eab@huawei.com>
+	<CAOMZO5BCLWFJ=83r0saT=NxVP0f9G-P-2QosDNGArYAtX6v5Lw@mail.gmail.com>
+	<20250504180420.73b96437@jic23-huawei>
+	<CAOMZO5DeMNGqpF4T7tuvBBN=i95uReSTXkj-sNW2jZTUO++5ZA@mail.gmail.com>
+	<20250505161645.5bca37c5@jic23-huawei>
+	<CAOMZO5BPBV5CyTE1-TyutJctLHeKE0s24JxyiZF1T_xmeKuZfA@mail.gmail.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250508-wip-bl-ad7606-calibration-v4-5-91a3f2837e6b@baylibre.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, May 08, 2025 at 12:06:09PM +0200, Angelo Dureghello wrote:
-> From: Angelo Dureghello <adureghello@baylibre.com>
-> 
-> Add gain calibration support, using resistor values set on devicetree,
-> values to be set accordingly with ADC external RFilter, as explained in
-> the ad7606c-16 datasheet, rev0, page 37.
-> 
-> Usage example in the fdt yaml documentation.
+On Thu, 8 May 2025 10:29:47 -0300
+Fabio Estevam <festevam@gmail.com> wrote:
 
-...
+> Hi Jonathan,
+>=20
+> On Mon, May 5, 2025 at 12:16=E2=80=AFPM Jonathan Cameron <jic23@kernel.or=
+g> wrote:
+>=20
+> > That would be perfect! If you can do it by modifying the macro as that =
+is
+> > going to be the simplest path to ensure there are no others even better=
+. =20
+>=20
+> I'm sorry, but I am unsure I understood your proposal correctly.
+>=20
+> Do you plan to submit a formal patch?
+>=20
+> Thanks
+>=20
 
-> +static int ad7606_chan_calib_gain_setup(struct iio_dev *indio_dev)
-> +{
-> +	struct ad7606_state *st = iio_priv(indio_dev);
-> +	unsigned int num_channels = st->chip_info->num_adc_channels;
-> +	struct device *dev = st->dev;
-> +	int ret;
-> +
-> +	/*
-> +	 * This function is called once, and parses all the channel nodes,
-> +	 * so continuing on next channel node on errors, informing of them.
-> +	 */
-> +	device_for_each_child_node_scoped(dev, child) {
-> +		u32 reg, r_gain;
-> +
-> +		ret = fwnode_property_read_u32(child, "reg", &reg);
-> +		if (ret)
-> +			continue;
+I'm snowed under.  If you have the time to write one that would be great.
+If not I'll get to it but not until maybe 2 weeks time.
 
-> +		/* Chan reg is a 1-based index. */
-> +		if (reg < 1 || reg > num_channels) {
-> +			dev_warn(dev, "wrong ch number (ignoring): %d\n", reg);
-> +			continue;
-> +		}
-
-But this will allow to have a broken DT. This check basically diminishes the
-effort of the DT schema validation. If there are limits one still would be able
-to create a DT that passes the driver but doesn't pass the validation.
-
-> +		ret = fwnode_property_read_u32(child, "adi,rfilter-ohms",
-> +					       &r_gain);
-> +		if (ret)
-> +			/* Keep the default register value. */
-> +			continue;
-> +
-> +		if (r_gain > AD7606_CALIB_GAIN_MAX) {
-> +			dev_warn(dev, "wrong gain calibration value");
-> +			continue;
-> +		}
-> +
-> +		ret = st->bops->reg_write(st, AD7606_CALIB_GAIN(reg - 1),
-> +			DIV_ROUND_CLOSEST(r_gain, AD7606_CALIB_GAIN_STEP));
-> +		if (ret) {
-> +			dev_warn(dev, "error writing r_gain");
-> +			continue;
-> +		}
-> +	}
-> +
-> +	return 0;
-> +}
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+Jonathan
 

@@ -1,48 +1,41 @@
-Return-Path: <linux-iio+bounces-19276-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19278-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 377B1AAF328
-	for <lists+linux-iio@lfdr.de>; Thu,  8 May 2025 07:50:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5941AAF6DD
+	for <lists+linux-iio@lfdr.de>; Thu,  8 May 2025 11:36:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6DBE71C05675
-	for <lists+linux-iio@lfdr.de>; Thu,  8 May 2025 05:50:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 011A84A1B79
+	for <lists+linux-iio@lfdr.de>; Thu,  8 May 2025 09:35:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD5391EF080;
-	Thu,  8 May 2025 05:50:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F36BE2641F9;
+	Thu,  8 May 2025 09:35:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gDtr291Z"
+	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="YMzoFk1Q"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-m3282.qiye.163.com (mail-m3282.qiye.163.com [220.197.32.82])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B9A820F081
-	for <linux-iio@vger.kernel.org>; Thu,  8 May 2025 05:50:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFC7B221294;
+	Thu,  8 May 2025 09:35:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.82
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746683435; cv=none; b=uBBYQWvQueceUNMxCFZgQ36xaDdehWQEg46iwsG9QYH9xpd8YLZ7b+3FRdRlYf9W72Nwqp29t8AvUb9nIVwVKouAL3VE3v7ZPp4Cw8h5/KQSLU4ot8thEbHwY9a9BtuFC+43kfBczQZSkJX6eEwJWxsnrK2iPbyB+qedre8437g=
+	t=1746696941; cv=none; b=CxgGp30SyBGA/jMBMCZJWDS9QJFzAScXRlTdkTO+PmpqesbUOGG6VXCCdgySmraIVa4TrLOCGoPweNujrsCFBo8dWYYhf5VEH5t3C4ybyMbhQZ0wcYkWpue4I+BNBplaNbUzgJRfmr3JKCWCuGPhIehTtRB58bnXpxzF0WoTcJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746683435; c=relaxed/simple;
-	bh=lksp41EocTXCT3qq6qmHiay3kyvg0NHcPJ/HT+CBbJw=;
+	s=arc-20240116; t=1746696941; c=relaxed/simple;
+	bh=4eEACbyRyrL3GIa+V+Q42J3HTovhVzHNTNkS737EI5c=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jwLaFetOunoEEXCyUwk777IhrFdlB0O/jyGCW3iXNP9lmUBUNQvoR2uUccEaha9M3Etog2mBwXQ+iDiKI3+NJmC2vFPMNsKPYrIl+Ypwr0Fma5HsqwQWCCVYYC48hRnl4EoHaQtu/RDLa35Ovb8+41PZvp8thNag/m+4skI3pSI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gDtr291Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D612C4CEED;
-	Thu,  8 May 2025 05:50:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746683435;
-	bh=lksp41EocTXCT3qq6qmHiay3kyvg0NHcPJ/HT+CBbJw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=gDtr291ZbIWhm8XDpKNXH1LuLLBM4W68fMwe/9JIuwwNdge/4kSVlclzTo7rLQimn
-	 TODWEdA1xDTxc1zxrvjB36UkT8eL7RsN/RJ7zC9Ttz6Tm/rCFLeleVevG/U9JPyRzl
-	 VshU3da4Ni43PdzkQ4LKL7zPlv3TVmmbqzMlrMCjqQsylxTgr56eIWO5nS1hxvucT1
-	 pD4K6cbeJzPpod3IqMUFL3yfelDXRUnbvhJWtfzHnPsW4Jx3wdMyiw4Wmy0I0X2U7V
-	 Xa9GmVaS8ZRBgWG2T0lNllSbk5j8MoQs+REosxqcLUZ4tozw2x1l6vmot6ILmAtWN7
-	 TK9Ul2+q8Lr+A==
-Message-ID: <eaecd561-50f5-4336-9691-aa20d3b4c20b@kernel.org>
-Date: Thu, 8 May 2025 07:50:31 +0200
+	 In-Reply-To:Content-Type; b=EIXt/oWk2iBxPenwaGrGcLCh+5emPTaeScwP0viKa9DqwrqqynS7KGBMY34+siEQL6MZZOtZNjXpflt9Lf5fW+CspVSLj4LoyxIBfM5AxBYIl0shw1AhLG85pyoyzPwsCV3cGEcRoXuYzQ/0UvREf/GLMWbN5N0Rtq/KCsZ1Re4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=YMzoFk1Q; arc=none smtp.client-ip=220.197.32.82
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
+Received: from [172.16.12.26] (unknown [58.22.7.114])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 145a410e0;
+	Thu, 8 May 2025 15:13:01 +0800 (GMT+08:00)
+Message-ID: <c4296af2-e7f1-4f5c-9f33-a6b5b2ddb244@rock-chips.com>
+Date: Thu, 8 May 2025 15:13:01 +0800
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -50,105 +43,370 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 1/3] iio: magnetometer: qmc5883l: add support for
- QMC5883L sensor
-To: Brajesh Patil <brajeshpatil11@gmail.com>, linux-iio@vger.kernel.org
-Cc: jic23@kernel.org, marcelo.schmitt1@gmail.com, dlechner@baylibre.com
-References: <20250507193219.52965-1-brajeshpatil11@gmail.com>
- <20250507193219.52965-2-brajeshpatil11@gmail.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
+Subject: Re: [PATCH 4/7] soc: rockchip: add mfpwm driver
+To: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>,
+ Linus Walleij <linus.walleij@linaro.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?=
+ <ukleinek@kernel.org>, William Breathitt Gray <wbg@kernel.org>,
+ Sebastian Reichel <sebastian.reichel@collabora.com>,
+ Kever Yang <kever.yang@rock-chips.com>, =?UTF-8?Q?Heiko_St=C3=BCbner?=
+ <heiko@sntech.de>
+Cc: linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org,
+ linux-iio@vger.kernel.org, kernel@collabora.com,
+ Jonas Karlman <jonas@kwiboo.se>,
+ Detlev Casanova <detlev.casanova@collabora.com>
+References: <20250408-rk3576-pwm-v1-0-a49286c2ca8e@collabora.com>
+ <20250408-rk3576-pwm-v1-4-a49286c2ca8e@collabora.com>
+ <5559308.Sb9uPGUboI@diego> <3362145.mvXUDI8C0e@workhorse>
 Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <20250507193219.52965-2-brajeshpatil11@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+From: Damon Ding <damon.ding@rock-chips.com>
+In-Reply-To: <3362145.mvXUDI8C0e@workhorse>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZGhlJQ1ZDGkgZT0tMS0hDHxpWFRQJFh
+	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSU9PT0
+	hVSktLVUpCS0tZBg++
+X-HM-Tid: 0a96aebd927d03a3kunm145a410e0
+X-HM-MType: 1
+X-HM-Sender-Digest: e1kMHhlZQR0aFwgeV1kSHx4VD1lBWUc6MSo6Ljo5CDJDSg8*N0kzTSk9
+	OFEwCxRVSlVKTE9NTUNDSENISENJVTMWGhIXVR8aFhQVVR8SFRw7CRQYEFYYExILCFUYFBZFWVdZ
+	EgtZQVlOQ1VJSVVMVUpKT1lXWQgBWUFKSEhDTzcG
+DKIM-Signature:a=rsa-sha256;
+	b=YMzoFk1Qp1pR1/JUCHh5psK6u8ofTJw+CyC3fAnpP1pldZKl7dePcu9En22Oddc2WFqgguFF3qHj9O32KbNKBUP6apGGDMECgBy1ZYSuhtwDhfAZ8FhY+EYfVU9jKdm5r0cvYe82BjbqHXFdn/4y4WzXzJVTTXzIPvQ4dhX0X58=; s=default; c=relaxed/relaxed; d=rock-chips.com; v=1;
+	bh=q1j4CdOQSMAZG/JE09mATkCWC/+UCfMM4ry4j1wAOeo=;
+	h=date:mime-version:subject:message-id:from;
 
-On 07/05/2025 21:32, Brajesh Patil wrote:
-> Signed-off-by: Brajesh Patil <brajeshpatil11@gmail.com>
+Hi Nicolas:
 
-Please run scripts/checkpatch.pl on the patches and fix reported
-warnings. After that, run also 'scripts/checkpatch.pl --strict' on the
-patches and (probably) fix more warnings. Some warnings can be ignored,
-especially from --strict run, but the code here looks like it needs a
-fix. Feel free to get in touch if the warning is not clear.
+On 2025/4/9 21:01, Nicolas Frattaroli wrote:
+> On Tuesday, 8 April 2025 22:03:01 Central European Summer Time Heiko Stübner wrote:
+>> Hi,
+>>
+>> not a full review, just me making a first pass.
+>>
+>>> +unsigned long mfpwm_clk_get_rate(struct rockchip_mfpwm *mfpwm)
+>>> +{
+>>> +	if (!mfpwm || !mfpwm->chosen_clk)
+>>> +		return 0;
+>>> +
+>>> +	return clk_get_rate(mfpwm->chosen_clk);
+>>> +}
+>>> +EXPORT_SYMBOL_NS_GPL(mfpwm_clk_get_rate, "ROCKCHIP_MFPWM");
+>>
+>> aren't you just re-implemeting a clk-mux with the whole chosen-clk
+>> mechanism? See drivers/clk/clk-mux.c, so in theory you should be
+>> able to just do a clk_register_mux(...) similar to for example
+>> sound/soc/samsung/i2s.c .
+> 
+> Probably yes. I didn't know clk-mux was a thing. If I do decide to keep the
+> clock switching at all (more on that below), then I'll rewrite it around
+> clk-mux.
+> 
+>>> +
+>>> +__attribute__((nonnull))
+>>> +static int mfpwm_do_acquire(struct rockchip_mfpwm_func *pwmf)
+>>> +{
+>>> +	struct rockchip_mfpwm *mfpwm = pwmf->parent;
+>>> +	unsigned int cnt;
+>>> +
+>>> +	if (mfpwm->active_func && pwmf->id != mfpwm->active_func->id)
+>>> +		return -EBUSY;
+>>> +
+>>> +	if (!mfpwm->active_func)
+>>> +		mfpwm->active_func = pwmf;
+>>> +
+>>> +	if (!check_add_overflow(mfpwm->acquire_cnt, 1, &cnt)) {
+>>> +		mfpwm->acquire_cnt = cnt;
+>>> +	} else {
+>>> +		WARN(1, "prevented acquire counter overflow in %s\n", __func__);
+>>
+>> dev_warn, as you have the mfpwm pointing to a pdev?
+> 
+> Will do.
+> 
+>>> +		return -EOVERFLOW;
+>>> +	}
+>>> +
+>>> +	dev_dbg(&mfpwm->pdev->dev, "%d acquired mfpwm, acquires now at %u\n",
+>>> +		pwmf->id, mfpwm->acquire_cnt);
+>>> +
+>>> +	return clk_enable(mfpwm->pclk);
+>>> +}
+>>
+>>> +/**
+>>> + * mfpwm_get_clk_src - read the currently selected clock source
+>>> + * @mfpwm: pointer to the driver's private &struct rockchip_mfpwm instance
+>>> + *
+>>> + * Read the device register to extract the currently selected clock source,
+>>> + * and return it.
+>>> + *
+>>> + * Returns:
+>>> + * * the numeric clock source ID on success, 0 <= id <= 2
+>>> + * * negative errno on error
+>>> + */
+>>> +static int mfpwm_get_clk_src(struct rockchip_mfpwm *mfpwm)
+>>> +{
+>>> +	u32 val;
+>>> +
+>>> +	clk_enable(mfpwm->pclk);
+>>> +	val = mfpwm_reg_read(mfpwm->base, PWMV4_REG_CLK_CTRL);
+>>> +	clk_disable(mfpwm->pclk);
+>>> +
+>>> +	return (val & PWMV4_CLK_SRC_MASK) >> PWMV4_CLK_SRC_SHIFT;
+>>> +}
+>>> +
+>>> +static int mfpwm_choose_clk(struct rockchip_mfpwm *mfpwm)
+>>> +{
+>>> +	int ret;
+>>> +
+>>> +	ret = mfpwm_get_clk_src(mfpwm);
+>>> +	if (ret < 0) {
+>>> +		dev_err(&mfpwm->pdev->dev, "couldn't get current clock source: %pe\n",
+>>> +			ERR_PTR(ret));
+>>> +		return ret;
+>>> +	}
+>>> +	if (ret == PWMV4_CLK_SRC_CRYSTAL) {
+>>> +		if (mfpwm->osc_clk) {
+>>> +			mfpwm->chosen_clk = mfpwm->osc_clk;
+>>> +		} else {
+>>> +			dev_warn(&mfpwm->pdev->dev, "initial state wanted 'osc' as clock source, but it's unavailable. Defaulting to 'pwm'.\n");
+>>> +			mfpwm->chosen_clk = mfpwm->pwm_clk;
+>>> +		}
+>>> +	} else {
+>>> +		mfpwm->chosen_clk = mfpwm->pwm_clk;
+>>> +	}
+>>> +
+>>> +	return clk_rate_exclusive_get(mfpwm->chosen_clk);
+>>> +}
+>>>
+>>> +/**
+>>> + * mfpwm_switch_clk_src - switch between PWM clock sources
+>>> + * @mfpwm: pointer to &struct rockchip_mfpwm driver data
+>>> + * @clk_src: one of either %PWMV4_CLK_SRC_CRYSTAL or %PWMV4_CLK_SRC_PLL
+>>> + *
+>>> + * Switch between clock sources, ``_exclusive_put``ing the old rate,
+>>> + * ``clk_rate_exclusive_get``ing the new one, writing the registers and
+>>> + * swapping out the &struct_rockchip_mfpwm->chosen_clk.
+>>> + *
+>>> + * Returns:
+>>> + * * %0        - Success
+>>> + * * %-EINVAL  - A wrong @clk_src was given or it is unavailable
+>>> + * * %-EBUSY   - Device is currently in use, try again later
+>>> + */
+>>> +__attribute__((nonnull))
+>>> +static int mfpwm_switch_clk_src(struct rockchip_mfpwm *mfpwm,
+>>> +					  unsigned int clk_src)
+>>> +{
+>>> +	struct clk *prev;
+>>> +	int ret = 0;
+>>> +
+>>> +	scoped_cond_guard(spinlock_try, return -EBUSY, &mfpwm->state_lock) {
+>>> +		/* Don't fiddle with any of this stuff if the PWM is on */
+>>> +		if (mfpwm->active_func)
+>>> +			return -EBUSY;
+>>> +
+>>> +		prev = mfpwm->chosen_clk;
+>>> +		ret = mfpwm_get_clk_src(mfpwm);
+>>> +		if (ret < 0)
+>>> +			return ret;
+>>> +		if (ret == clk_src)
+>>> +			return 0;
+>>> +
+>>> +		switch (clk_src) {
+>>> +		case PWMV4_CLK_SRC_PLL:
+>>> +			mfpwm->chosen_clk = mfpwm->pwm_clk;
+>>> +			break;
+>>> +		case PWMV4_CLK_SRC_CRYSTAL:
+>>> +			if (!mfpwm->osc_clk)
+>>> +				return -EINVAL;
+>>> +			mfpwm->chosen_clk = mfpwm->osc_clk;
+>>> +			break;
+>>> +		default:
+>>> +			return -EINVAL;
+>>> +		}
+>>> +
+>>> +		clk_enable(mfpwm->pclk);
+>>> +
+>>> +		mfpwm_reg_write(mfpwm->base, PWMV4_REG_CLK_CTRL,
+>>> +				PWMV4_CLK_SRC(clk_src));
+>>> +		clk_rate_exclusive_get(mfpwm->chosen_clk);
+>>> +		if (prev)
+>>> +			clk_rate_exclusive_put(prev);
+>>> +
+>>> +		clk_disable(mfpwm->pclk);
+>>> +	}
+>>> +
+>>> +	return ret;
+>>> +}
+>>
 
+First of all, I'm truly delighted to see your nice PWM v4 driver codes. 
+I was once intensely struggling with porting the v4 PWM implementation 
+into the Linux 6.1 ​​PWM framework. ;-)
 
-> ---
->  .../iio/magnetometer/qst,qmc5883l.yaml        |  52 ++
->  .../devicetree/bindings/vendor-prefixes.yaml  |   2 +
+>> ok, the relevant part might be the
+>> 	/* Don't fiddle with any of this stuff if the PWM is on */
+>> thing, which will require special set_rate operation, but in general I
+>> think, if it ticks like a clock, it probably should be a real clock ;-) .
+> 
+> I agree; we can guarantee it doesn't get changed after all by just marking it
+> as exclusive instead of marking either pwm_clk or osc_clk as exclusive.
+> 
+>>> +static ssize_t chosen_clock_show(struct device *dev,
+>>> +				 struct device_attribute *attr, char *buf)
+>>> +{
+>>> +	struct rockchip_mfpwm *mfpwm = dev_get_drvdata(dev);
+>>> +	unsigned long clk_src = 0;
+>>> +
+>>> +	/*
+>>> +	 * Why the weird indirection here? I have the suspicion that if we
+>>> +	 * emitted to sysfs with the lock still held, then a nefarious program
+>>> +	 * could hog the lock by somehow forcing a full buffer condition and
+>>> +	 * then refusing to read from it. Don't know whether that's feasible
+>>> +	 * to achieve in reality, but I don't want to find out the hard way
+>>> +	 * either.
+>>> +	 */
+>>> +	scoped_guard(spinlock, &mfpwm->state_lock) {
+>>> +		if (mfpwm->chosen_clk == mfpwm->pwm_clk)
+>>> +			clk_src = PWMV4_CLK_SRC_PLL;
+>>> +		else if (mfpwm->osc_clk && mfpwm->chosen_clk == mfpwm->osc_clk)
+>>> +			clk_src = PWMV4_CLK_SRC_CRYSTAL;
+>>> +		else
+>>> +			return -ENODEV;
+>>> +	}
+>>> +
+>>> +	if (clk_src == PWMV4_CLK_SRC_PLL)
+>>> +		return sysfs_emit(buf, "pll\n");
+>>> +	else if (clk_src == PWMV4_CLK_SRC_CRYSTAL)
+>>> +		return sysfs_emit(buf, "crystal\n");
+>>> +
+>>> +	return -ENODEV;
+>>> +}
+>>
+>> which brings me to my main point of contention. Why does userspace
+>> need to select a clock source for the driver via sysfs.
+> 
+> It doesn't need to. Basically, this is a weird hardware feature. Downstream did
+> not bother implementing it at all, and I found out through the TRM's register
+> listing and thought "that's weird, I wonder if it even works", and lo and behold
+> it does. At that point, like two rewrites ago, I was committed to ensuring that
+> the driver can handle this edge case of the PWM clock being changed. As I lacked
+> the imagination as to why someone would change it and the knowledge as to which
+> kernel interfaces exist to change it, sysfs offered itself as a natural dumping
+> ground for switches that probably shouldn't exist.
+> 
+>> Neither the commit message nor the code does seem to explain that,
+>> or I'm just blind - which is also a real possibility.
+>>
+>> In general I really think, userspace should not need to care about if
+>> a PLL or directly the oscillator is used a clock input.
+>> I assume which is needed results from some runtime factor, so the
+>> driver should be able to select the correct one?
+>>
+>> A mux-clock could ust use clk_mux_determine_rate_flags() to select
+>> the best parent depending on a requested rate instead.
+> 
+> Yeah, the only use-case I can come up with is that we really want to use an
+> either 100 MHz or 50 MHz clock on one chip, but have a channel hit a precise
+> timing with the 24 MHz clock on the same chip. If the fixed crystal oscillator
+> were 25 MHz instead of 24 MHz, this would be entirely pointless, as they're all
+> multiples of it.
+> 
 
-Also checkpatch.
+The 24MHz OSC clock source is mainly for the use of the IR input, which 
+is also called the power key capture mode. When the system enters 
+suspend state, it relies on the OSC to ensure the PWM remains 
+operational and can serve as a system wake-up source.
 
->  drivers/iio/magnetometer/Kconfig              |  13 +
->  drivers/iio/magnetometer/Makefile             |   2 +
->  drivers/iio/magnetometer/qmc5883l.c           | 471 ++++++++++++++++++
->  5 files changed, 540 insertions(+)
+In addition, the PWM v4 also supports the 400KHz RC clock source for the 
+wave generator mode, and it can be used for the deeper sleep state.
 
-Not tested, not cc-ed maintainers, I will skip this patch.
+> Thanks for the hint about clk_mux_determine_rate_flags, it doesn't appear to be
+> documented (classic) but it looks to do at least half of what a proper solution
+> would need to do. The other half is figuring out what ideal target rate we
+> actually want to optimise for for a given e.g. waveform consisting of period
+> and duty cycle in nanoseconds. There's some logic to think about regarding where
+> rounding errors are acceptable, e.g. a long period with a low duty cycle is
+> probably better off using the 100-50-24 mux with 100 MHz as the rate. I'm not
+> sure if 50 MHz is ever a sensible option since it is a dividend of 100 MHz, and
+> I'm not about to reason about imagined power draw of the PWM hardware without
+> laboratory grade test equipment.
+> 
+> For what it's worth, this is a niche enough hardware feature that if it causes
+> too much friction getting it supported in a driver, I'll just drop it entirely
+> instead. I tried to preemptively combat technical debt by supporting this in
+> some way, but instead managed to introduce scope creep.
+> 
+> One option is to always just choose the PLL muxed clock and then always set it
+> to 100 MHz, because it's probably the best option unless there are specific
+> PWM-based applications that make heavy use of 24-derived timings (maybe the IR
+> stuff?)
+> 
+>>
+>>> +static ssize_t chosen_clock_store(struct device *dev,
+>>> +				  struct device_attribute *attr,
+>>> +				  const char *buf, size_t count)
+>>> +{
+>>> +	struct rockchip_mfpwm *mfpwm = dev_get_drvdata(dev);
+>>> +	int ret;
+>>> +
+>>> +	if (sysfs_streq(buf, "pll")) {
+>>> +		ret = mfpwm_switch_clk_src(mfpwm, PWMV4_CLK_SRC_PLL);
+>>> +		if (ret)
+>>> +			return ret;
+>>> +		return count;
+>>> +	} else if (sysfs_streq(buf, "crystal")) {
+>>> +		ret = mfpwm_switch_clk_src(mfpwm, PWMV4_CLK_SRC_CRYSTAL);
+>>> +		if (ret)
+>>> +			return ret;
+>>> +		return count;
+>>> +	} else {
+>>> +		return -EINVAL;
+>>> +	}
+>>> +}
+>>> +
+>>> +static DEVICE_ATTR_RW(chosen_clock);
+>>> +
+>>> +static ssize_t available_clocks_show(struct device *dev,
+>>> +				     struct device_attribute *attr, char *buf)
+>>> +{
+>>> +	struct rockchip_mfpwm *mfpwm = dev_get_drvdata(dev);
+>>> +	ssize_t size = 0;
+>>> +
+>>> +	size += sysfs_emit_at(buf, size, "pll\n");
+>>> +	if (mfpwm->osc_clk)
+>>> +		size += sysfs_emit_at(buf, size, "crystal\n");
+>>> +
+>>> +	return size;
+>>> +}
+>>> +
+>>> +static DEVICE_ATTR_RO(available_clocks);
+>>> +
+>>> +static struct attribute *mfpwm_attrs[] = {
+>>> +	&dev_attr_available_clocks.attr,
+>>> +	&dev_attr_chosen_clock.attr,
+>>> +	NULL,
+>>> +};
+>>
+>> Not understanding the need for the sysfs stuff was my main point this
+>> evening :-)
+>>
+>> Heiko
+>>
+> 
+> Thank you for your quick preliminary review! This already gives me some good
+> points to look into for a v2.
+> 
 
-<form letter>
-Please use scripts/get_maintainers.pl to get a list of necessary people
-and lists to CC. It might happen, that command when run on an older
-kernel, gives you outdated entries. Therefore please be sure you base
-your patches on recent Linux kernel.
-
-Tools like b4 or scripts/get_maintainer.pl provide you proper list of
-people, so fix your workflow. Tools might also fail if you work on some
-ancient tree (don't, instead use mainline) or work on fork of kernel
-(don't, instead use mainline). Just use b4 and everything should be
-fine, although remember about `b4 prep --auto-to-cc` if you added new
-patches to the patchset.
-
-You missed at least devicetree list (maybe more), so this won't be
-tested by automated tooling. Performing review on untested code might be
-a waste of time.
-
-Please kindly resend and include all necessary To/Cc entries.
-</form letter>
-
+I'm eagerly looking forward to your v2 patch submission, and I will 
+thoroughly validate the proper functioning of the PWM 
+backlight/regulator based on your code changes.
 
 Best regards,
-Krzysztof
+Damon
+
 

@@ -1,120 +1,124 @@
-Return-Path: <linux-iio+bounces-19334-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19335-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5335AAB021C
-	for <lists+linux-iio@lfdr.de>; Thu,  8 May 2025 20:04:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A3B1AB02EB
+	for <lists+linux-iio@lfdr.de>; Thu,  8 May 2025 20:35:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3CB4D4C10BB
-	for <lists+linux-iio@lfdr.de>; Thu,  8 May 2025 18:04:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C30FD188EE2C
+	for <lists+linux-iio@lfdr.de>; Thu,  8 May 2025 18:35:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A68AE2882BA;
-	Thu,  8 May 2025 18:03:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="h/NKT0MV"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D396286D50;
+	Thu,  8 May 2025 18:35:25 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oo1-f46.google.com (mail-oo1-f46.google.com [209.85.161.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0176207DEE
-	for <linux-iio@vger.kernel.org>; Thu,  8 May 2025 18:03:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89E7F4B1E7D;
+	Thu,  8 May 2025 18:35:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746727430; cv=none; b=KzlXEXi7dJgfXxyeR2dB8dmQqjcEXu0C4wBtoCVNo11po/5FL2xtBFENyXPrhMkoMg6ly1BK5zr6Oobuzspj3FTanY/YH1Nbdc4ze2EI7zzoAV80yFFPsK7RNvE30twPknI6lIb+rP6eaNeFfCc01H0U5IsBdTuNa5QI+rAxswE=
+	t=1746729325; cv=none; b=MQB7AUD9LTHl0ixcYs/YGVyDfdG3T2IOWR0yuZS3o11nMmBY8CrKZOlvqVj1k5+rfWkO1rppSaEqN0EizUzyN+jt1ejLHg1u1Oy7pE0S8EV9P8rOtc8YNxSM+NWvAYf6ruVEwgQ5/VsCvI1NyzrCQMcbCwlAui9OzYlhNcsMkks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746727430; c=relaxed/simple;
-	bh=BPaM3uBsQYkug/7fouL8TiZUFIRkQwryGGOrlftw3rI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=No4bf1XvMtgo7R/c5DMWa+93kpACTdWkrULTNay2BDGVUfCRAV+JrdPBQfpQAx5yxzb9Od4sojzRNJI4nN7D88dkWcJcTaFAbHDVkzeyhgXZtQEWVmKyfG0d3MlnczkHNe6n+CAVT8LngGJ8pDJ2aYRQ753N+1L3GfC76P/HyPM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=h/NKT0MV; arc=none smtp.client-ip=209.85.161.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oo1-f46.google.com with SMTP id 006d021491bc7-607dceb1afdso844287eaf.3
-        for <linux-iio@vger.kernel.org>; Thu, 08 May 2025 11:03:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1746727428; x=1747332228; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=eDIMXcUh+1t2oaHEL05AcYmEhaIiuHzLG4RdkwQs3gQ=;
-        b=h/NKT0MV3szo5YA+cTcEaMfm/g+f0KzQJ91PosONwMUNS0wToMj+tFls38jgaX1uPk
-         oOzMwrNE4VZBd+m2MuNC8R8iNS/DIQpoczEJb6rPaaX1jcu8CwuvfdP4yttusT6yyTfM
-         qPl21SWeECE2vCHispLqKCQZhaVar87SqRnOQtj1ZOcW9+2NRXWqhPPUJTBl5/2zFYfM
-         ay6NY5O9EN1S/u5TU8pkcohEr11mqVa1mTZXSizJxPXrnr8HD6/wQFoLXnvvAw3onxsU
-         7Mq+4mTzDcR8lB2ZQu3Fcy7MlIH3WZxucn6FVPqI/dKX4HZCGo0Oj30UwsFsBfG3HTXN
-         VfzA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746727428; x=1747332228;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=eDIMXcUh+1t2oaHEL05AcYmEhaIiuHzLG4RdkwQs3gQ=;
-        b=rKT+8wu75Lx14vjjuNRgmRpnoimL4+wqAZ3QfoQFaqNqB479EQ1nm1XUFNf8NCO91w
-         EP9CmDD56Iyl83nhyVIE0YZdG1uKPr/9OYI6BQjkotFZ6Yp7USDuWflVztEWU9K5thNu
-         oUuYhgnYmS/CI1WZZs+U+7cpd1YXZg0wV2FblM/hXkgyfkpVXLmZPUBVx9EsCU9pDup+
-         buqIP0m+fONawKnF/mJ9yriZpSZWeIyTYDW9OOyr026J+6jSDj+6wwOjIv5wWyqzXH1p
-         dwz4asVxufcpagg5O3ORg3gttXLUrsPbVGuENzEw3s6tC5+tK3adljMkBybsq2O9txqE
-         HkpA==
-X-Forwarded-Encrypted: i=1; AJvYcCVswHGP53Mb7AxpT01z4+wSHNtjqn/1z3OSQmB3cmfXKUQTX20B+WOBdPVunfDLTWrvjt5R3dy4GAQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyBpsK0kHX3HGejOCawLs3pErsnWN6GvY3f0jYsw4aro5VWMlXl
-	ELRkBuFXvKouQ20uMZWzTaRisKtTs79iYcOGuBwfI6PGicvLhWgJ6esnWKao8og=
-X-Gm-Gg: ASbGncv4yO3WLhtTXo5UIMmHwCbydX77TvhhgBZFE/NwLyX51EiUe8eO9oAaQQPZ55b
-	eoCqfs4H6xq19JJW88rqUzmRsOXc5IbLNhQKpHGiBinDE35HigzV7naV8e+VhmAhUElKD9vJRjP
-	qI5qTfH+V2xW5hxlAbAZrEv35unqQiVX3ctZSMQ8fqPv1gMozbqf4vSZHuiDVkCehaVgkbY6DdL
-	mUZRasD2iOryFsOHGUX3YX3wQrG70yLyePKNtJAvk5YORg7Oe+cSn8N3dSWHmzQo16N72F/YjFM
-	VCnPWBR5ltq2iODJqi5WDsDzaOJfao6WIswhS/CbNrASTHikCo8HMp3qHISwtqb5IwJcTAob4LK
-	LfoeWsqM3seWvyb3+5g==
-X-Google-Smtp-Source: AGHT+IEf3U6aBnbW0K6M59yOkNClYiW3gx4S2YQp31BRyUSuIa+tQqcacAiU4K9X6FdN1TJqPPe90A==
-X-Received: by 2002:a05:6820:818d:b0:606:9ed9:c38 with SMTP id 006d021491bc7-6083fdc3f6cmr408574eaf.0.1746727427735;
-        Thu, 08 May 2025 11:03:47 -0700 (PDT)
-Received: from ?IPV6:2600:8803:e7e4:1d00:1120:d1cf:c64a:ac7e? ([2600:8803:e7e4:1d00:1120:d1cf:c64a:ac7e])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-403803995e7sm60463b6e.46.2025.05.08.11.03.46
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 08 May 2025 11:03:47 -0700 (PDT)
-Message-ID: <1f8e1576-a850-4ddc-9be1-16e59756c65a@baylibre.com>
-Date: Thu, 8 May 2025 13:03:46 -0500
+	s=arc-20240116; t=1746729325; c=relaxed/simple;
+	bh=pQVCCI8EqkRoXe6jlfp88q7Ckl5MiVkBR4sc8JWAFWs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Bg/cb2qt2pf97qADAoSg269ND+GTgZMNfuYMNhD2GrGHe5jxHsKgWG6lUtCpIDo6LdHypRt6rLq+uvoPlV/D1iQqy4EGiHPc1ThVsd+M9/sEd+KR/Z3wLTj3BYemMieAubPJ8OO8YjQr15zy9phP1yGgGs1FMX6t6ktzdq2LOKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=fail smtp.mailfrom=kernel.org; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=kernel.org
+X-CSE-ConnectionGUID: 1VGZZ0+HTdSsOqSy8EL+SA==
+X-CSE-MsgGUID: mIW0WpyQQBOVUBKta4jmGA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11427"; a="52344853"
+X-IronPort-AV: E=Sophos;i="6.15,272,1739865600"; 
+   d="scan'208";a="52344853"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2025 11:35:17 -0700
+X-CSE-ConnectionGUID: bvrRQzUPTXqm6DaZU2h9sg==
+X-CSE-MsgGUID: ut+I5uXbQZmzVtZD2uR6PA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,272,1739865600"; 
+   d="scan'208";a="136090820"
+Received: from smile.fi.intel.com ([10.237.72.55])
+  by orviesa009.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2025 11:35:13 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
+	(envelope-from <andy@kernel.org>)
+	id 1uD65P-00000004CCz-1H8r;
+	Thu, 08 May 2025 21:35:11 +0300
+Date: Thu, 8 May 2025 21:35:11 +0300
+From: Andy Shevchenko <andy@kernel.org>
+To: Angelo Dureghello <adureghello@baylibre.com>
+Cc: Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH v4 1/5] Documentation: ABI: IIO: add calibconv_delay
+ documentation
+Message-ID: <aBz5X3AQRi1ONsly@smile.fi.intel.com>
+References: <20250508-wip-bl-ad7606-calibration-v4-0-91a3f2837e6b@baylibre.com>
+ <20250508-wip-bl-ad7606-calibration-v4-1-91a3f2837e6b@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 08/12] iio: adc: ad7768-1: add multiple scan types to
- support 16-bits mode
-To: Jonathan Santos <Jonathan.Santos@analog.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-gpio@vger.kernel.org
-Cc: andy@kernel.org, nuno.sa@analog.com, Michael.Hennerich@analog.com,
- marcelo.schmitt@analog.com, jic23@kernel.org, robh@kernel.org,
- krzk+dt@kernel.org, conor+dt@kernel.org, marcelo.schmitt1@gmail.com,
- linus.walleij@linaro.org, brgl@bgdev.pl, lgirdwood@gmail.com,
- broonie@kernel.org, jonath4nns@gmail.com,
- David Lechner <dlechner@baylire.com>
-References: <cover.1746662899.git.Jonathan.Santos@analog.com>
- <8b8f861422b15b1316a1513cd66abc544ab8c5bd.1746662899.git.Jonathan.Santos@analog.com>
-From: David Lechner <dlechner@baylibre.com>
-Content-Language: en-US
-In-Reply-To: <8b8f861422b15b1316a1513cd66abc544ab8c5bd.1746662899.git.Jonathan.Santos@analog.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250508-wip-bl-ad7606-calibration-v4-1-91a3f2837e6b@baylibre.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On 5/8/25 12:04 PM, Jonathan Santos wrote:
-> When the device is configured to decimation x8, only possible in the
-> sinc5 filter, output data is reduced to 16-bits in order to support
-> 1 MHz of sampling frequency due to clock limitation.
+On Thu, May 08, 2025 at 12:06:05PM +0200, Angelo Dureghello wrote:
+> From: Angelo Dureghello <adureghello@baylibre.com>
 > 
-> Use multiple scan types feature to enable the driver to switch
-> scan type at runtime, making it possible to support both 24-bit and
-> 16-bit resolution.
+> Add new IIO calibconv_delay documentation.
 > 
-> Reviewed-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
-> Reviewed-by: David Lechner <dlechner@baylire.com>
+> The ad7606 implements a phase calibation feature, in nanoseconds.
+> Being this a time delay, using the conv_delay suffix.
 
-Typo in my email: baylibre.com
+...
 
-> Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
-> ---
+> +What:		/sys/bus/iio/devices/iio:deviceX/in_voltageY_convdelay
+> +KernelVersion:  6.16
+
+Here is the space being used...
+
+> +Contact:        linux-iio@vger.kernel.org
+> +Description:
+> +		Delay of start of conversion in seconds from common reference
+> +		point shared by all channels. Can be writable when used to
+> +		compensate for delay variation introduced by external filters
+> +		feeding a simultaneous sampling ADC.
+> +
+> +		I.e., for the ad7606 ADC series, this value is intended as a
+> +		configurable time delay in seconds, to correct delay introduced
+> +		by an optional external filtering circuit.
+> +
+> +What:		/sys/bus/iio/devices/iio:deviceX/in_voltageY_convdelay_available
+> +KernelVersion:	6.16
+
+...and here is TAB. Please, make the text consistent. If the original one is
+inconsistent, fix it first.
+
+> +Contact:	linux-iio@vger.kernel.org
+> +Description:
+> +		Available values of convdelay. Maybe expressed as:
+> +
+> +		- a range specified as "[min step max]"
+> +
+> +		If shared across all channels, <type>_calibconv_delay_available
+> +		is used.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
 

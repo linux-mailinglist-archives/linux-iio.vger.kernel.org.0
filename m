@@ -1,220 +1,181 @@
-Return-Path: <linux-iio+bounces-19355-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19356-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D09AFAB0E3B
-	for <lists+linux-iio@lfdr.de>; Fri,  9 May 2025 11:07:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F3ABAB0F20
+	for <lists+linux-iio@lfdr.de>; Fri,  9 May 2025 11:38:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 62CC07AB55F
-	for <lists+linux-iio@lfdr.de>; Fri,  9 May 2025 09:05:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B62EF1B67E23
+	for <lists+linux-iio@lfdr.de>; Fri,  9 May 2025 09:38:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6255A207A08;
-	Fri,  9 May 2025 09:06:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44F6627A93F;
+	Fri,  9 May 2025 09:38:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IoEVEnfR"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ik3mPqeL"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DDEB14F98;
-	Fri,  9 May 2025 09:06:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69FB735976;
+	Fri,  9 May 2025 09:38:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746781615; cv=none; b=o1EWANTJymePq3OsAQaNgRQEVLDcTdgKIMWsIvEumriAN2ZDtYavDhwPShgyZ4KpwgDs32LoEGVtoHuww8hEUkgkmyrKoNs+/IvSEr7+IlbgvAd8yV80uKWKfXTDQPH3jOR39rHJd4xAKXSemkB+ow4QlqRZtGJW33tS/4ugyq4=
+	t=1746783489; cv=none; b=ZDhJ8o0Z4ewu3FCXx8FUD7WqplNRZ7FUduGrQKZNhQyHPzSXL7FeJTDiZNhBd22Q06Db285aehF/VbbS3WBVsFz5SJtDsFCq2/p5OegWlpqEjU3Vmeo2UqO9kmvIXWj75UTbO67BPn/XD7V/71B3WU2R1LwPjn2mo/1uMK8IpI0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746781615; c=relaxed/simple;
-	bh=sAFkRHh9bzGYnsvmn6RJcgV4uo5APsdL0DD3ImIhGSo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=IUuCtrebEko8lTgRtxj+SJQgfdfg5TXpRpswOLvideecHv1oksYowuvGjLg1eljXKBoktKezhGMXrXGFsBwGDdqv/86b7szjvxEsjD40JScN1yHRLS1D9NuVu33324dknyhh6xJ3ce9UcZhBCpJhoYl7qlg1oeSVMBvf6xCVAdk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IoEVEnfR; arc=none smtp.client-ip=209.85.218.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-ace3b03c043so300645266b.2;
-        Fri, 09 May 2025 02:06:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746781612; x=1747386412; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Ww1C5cskFkFK3cmuMB2ZAcdmwSeUk/Y0atV0njjxmYo=;
-        b=IoEVEnfRrOjx3hvG/XAzT9ujZIzlFlXmFtQTbWCmDzZsGZ4EZsh6kR987yJJWURnKW
-         kWGKSiaVbs9GaVPcDI5YzNZLTJjvZfv9kLwy1y7RoaoRJDU7IThvd5PNRi4WjiitMKwp
-         86ThWhQ3UM/efwHwB2B+JuaZLYcsM0YRqrhRanENsVU5RUzgyEv33bZgaVdMyLsRWBdU
-         /7KUofUa4HIptl94yxzHA3WunSRma0vx/W2I85lEGhwzMNQHp3pEspxJsjIzRxy52PHE
-         Ocaan9XSi8droq8Eq9VC2jo/kfzi9nQNRlA5J3N6puVxDLGGtOHrUOi2iRj1uJjW0fGI
-         3C4g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746781612; x=1747386412;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Ww1C5cskFkFK3cmuMB2ZAcdmwSeUk/Y0atV0njjxmYo=;
-        b=gDsPTezMLKA5oHhgwZUV0nW15ukbBI8xYZ6yTwyCzZbZT6f0q65opL5Ze6Nq9v72z4
-         gA4ZxdZgBSglAHgaPJGxYFyJNh+DYiBz0PLtFFlCSD+r9LWIaSGKTuCLI7yz6zKJ8g6R
-         vFlOtsga2dqdSgeQStSZI0VlXc5Gu7k/MimJCEKMbc7d58ASILSH4AYnIALKptz/KpZX
-         WcpNJlHe3EnBn2KS7ahR1P/FZv1AgI9vV200MBsVqthm+tXEun2F2YJ8d3sEklw0tWFl
-         RosDQVhd7JnZWHFi8d+D6TWqtkLjHefR6Vj2fBJKe/goo6VylouxAAoAzkOZqloEZUpR
-         suqA==
-X-Forwarded-Encrypted: i=1; AJvYcCUZR26DfErl4cdLqMGi/Thfbw0yW6BQIF/xjDVehy/5Ts7WKmcflPTBsRqV6R+xDblCmFJlsZ89JFU9ze3z@vger.kernel.org, AJvYcCWvIsr0jtmeW8w/00NV+nBDHcLo35pWI5hxJAZ9qCJoiugJwTuyY7SPzFfBWpzkWOS+KJ8ketEozJY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwKEENpsFfYFeDEqsp+9yWshRcJNz9rCEaaj7lPQ87aXtdul3rW
-	t1/ypiH0yElo1eiNhSk1XyXdEkNaccKw3/H+GlnTZlFE/fRKCu4fVBQImGcOtSIJrM1BhPMJnsN
-	91G5R/P1EgrWvdr9T+oVIlm3BTK4=
-X-Gm-Gg: ASbGncsTY9x6yvNpdFi9k41j7tBbSDFiZvcG3KNG/GtzMR9AQiTL+BN6zXg0tZv4kAY
-	xyf+w6b38BwvhZhC9Goce4DsiCiaiWybuTgz+DOomI1ybG7cpeN504iqOgRuC4QAg+a5dToc4bT
-	iMG2BEa3qpxAtKz35dz7XxKa8y
-X-Google-Smtp-Source: AGHT+IHIy0jD4deps83mC+BJmknL3Cgj5RJsKo2gQsuaVts0eTtH76HrlAlx5F1MimQi1yke5qB3yYDyvNVQ5fq28rQ=
-X-Received: by 2002:a17:907:940c:b0:ad2:2417:12db with SMTP id
- a640c23a62f3a-ad2241716dfmr90159966b.40.1746781611479; Fri, 09 May 2025
- 02:06:51 -0700 (PDT)
+	s=arc-20240116; t=1746783489; c=relaxed/simple;
+	bh=GKyHnY3Ghu2yiVf36Y/TrJp84COCpEcwGhvyMsI/YG8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TICtB1Oe+fopwb7yo8Bz7JnbuWRPgMIVjzIIP3+cUkYp4Osj64XggrPhiJUlU7WALgV5ZpBFwN5LJGnb25GB55Hq2VUUR+uONYwtANUNTC52mrLJ2JV7hHXCljYBia86bH390xSdmPYlAQhKQh0KL+eMM/GVS9x1qyk/ScevoHI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ik3mPqeL; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1746783487; x=1778319487;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=GKyHnY3Ghu2yiVf36Y/TrJp84COCpEcwGhvyMsI/YG8=;
+  b=ik3mPqeLNpQHns/JSK/lLniI2htObWmhm/T8j+897Tu46JV4mDSgDECI
+   2c/3FBnE4RC/ZJ9P8qk72+dVUQCLdsfM2szj0A6VqH9FzAkKSDRk8wsUJ
+   aFfg3BXJKCPFxim+0+Mxq68rxlMgtQjEM4Xua6inDkiS4ksVIXbXQH1lx
+   0jN8DVTD5GxKI9RUIJVQft5TRxKpKsBz+gEn5CNZ/fSz3b+hk/nK3u9VP
+   GLLteY4q7mzy2hee3+4FPs5X+29STxsfqRF6BPw60+mMcOaSkaKVwU/p3
+   R4jsDJyfhuAb86vnGf7EMnzVQNytMhFUzDimgiNnaHy7cGSeyfnhykLsb
+   g==;
+X-CSE-ConnectionGUID: CFWpUTrKQOCFmGkGcC4/Mg==
+X-CSE-MsgGUID: rS/akeDIQ2SWxW7Gs44DCw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11427"; a="59268838"
+X-IronPort-AV: E=Sophos;i="6.15,274,1739865600"; 
+   d="scan'208";a="59268838"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 May 2025 02:38:06 -0700
+X-CSE-ConnectionGUID: 0/Te/Uk2TmuNkEJfgpnkUA==
+X-CSE-MsgGUID: qb8DGivuQBW3TKbXJfOpfw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,274,1739865600"; 
+   d="scan'208";a="136959750"
+Received: from lkp-server01.sh.intel.com (HELO 1992f890471c) ([10.239.97.150])
+  by fmviesa008.fm.intel.com with ESMTP; 09 May 2025 02:37:51 -0700
+Received: from kbuild by 1992f890471c with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uDKAv-000BsO-1B;
+	Fri, 09 May 2025 09:37:49 +0000
+Date: Fri, 9 May 2025 17:37:40 +0800
+From: kernel test robot <lkp@intel.com>
+To: Markus Burri <markus.burri@mt.com>, linux-kernel@vger.kernel.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Markus Burri <markus.burri@mt.com>,
+	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+	Oliver O'Halloran <oohall@gmail.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Naveen N Rao <naveen@kernel.org>,
+	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
+	Maciej Falkowski <maciej.falkowski@linux.intel.com>,
+	Oded Gabbay <ogabbay@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>, Nuno Sa <nuno.sa@analog.com>,
+	Olivier Moysan <olivier.moysan@foss.st.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>, linuxppc-dev@lists.ozlabs.org,
+	dri-devel@lists.freedesktop.org, linux-gpio@vger.kernel.org,
+	linux-iio@vger.kernel.org
+Subject: Re: [PATCH v4 4/6] gpio: fix potential out-of-bound write
+Message-ID: <202505091754.285hHbr2-lkp@intel.com>
+References: <20250508130612.82270-5-markus.burri@mt.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250509013931.47524-1-andrew.lopes@alumni.usp.br>
-In-Reply-To: <20250509013931.47524-1-andrew.lopes@alumni.usp.br>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Fri, 9 May 2025 12:06:15 +0300
-X-Gm-Features: AX0GCFuAk1M85duu0X3oWCXjgf2w9d_WEv2IGSuBGytINUPqhfHKLGeCIGOw80w
-Message-ID: <CAHp75Ve7-hMUxrmXQnkMjynhPUbD6R+K=-j+h0zELvcxZdy5nw@mail.gmail.com>
-Subject: Re: [PATCH v3] iio: accel: sca3000: replace usages of internal read
- data helpers by spi helpers
-To: Andrew Ijano <andrew.ijano@gmail.com>
-Cc: jic23@kernel.org, andrew.lopes@alumni.usp.br, gustavobastos@usp.br, 
-	dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org, 
-	jstephan@baylibre.com, linux-iio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250508130612.82270-5-markus.burri@mt.com>
 
-On Fri, May 9, 2025 at 4:39=E2=80=AFAM Andrew Ijano <andrew.ijano@gmail.com=
-> wrote:
->
-> Remove usages of sca3000_read_data() and sca3000_read_data_short()
-> functions, replacing it by spi_w8r8() and spi_w8r16() helpers. Just
-> one case that reads large buffers is left using an internal helper.
->
-> This is an old driver that was not making full use of the newer
-> infrastructure.
+Hi Markus,
 
-Suggested-by: ? (IIRC Jonathan suggested this, but ignore if I am mistaken)
+kernel test robot noticed the following build errors:
 
-...
+[auto build test ERROR on b4432656b36e5cc1d50a1f2dc15357543add530e]
 
->         ret =3D sca3000_write_reg(st, SCA3000_REG_CTRL_SEL_ADDR, ctrl_reg=
-);
->         if (ret)
->                 goto error_ret;
-> -       ret =3D sca3000_read_data_short(st, SCA3000_REG_CTRL_DATA_ADDR, 1=
-);
-> +
-> +       ret =3D spi_w8r8(st->us, SCA3000_READ_REG(SCA3000_REG_CTRL_DATA_A=
-DDR));
->         if (ret)
->                 goto error_ret;
-> -       return st->rx[0];
+url:    https://github.com/intel-lab-lkp/linux/commits/Markus-Burri/iio-backend-fix-out-of-bound-write/20250508-211644
+base:   b4432656b36e5cc1d50a1f2dc15357543add530e
+patch link:    https://lore.kernel.org/r/20250508130612.82270-5-markus.burri%40mt.com
+patch subject: [PATCH v4 4/6] gpio: fix potential out-of-bound write
+config: x86_64-buildonly-randconfig-003-20250509 (https://download.01.org/0day-ci/archive/20250509/202505091754.285hHbr2-lkp@intel.com/config)
+compiler: clang version 20.1.2 (https://github.com/llvm/llvm-project 58df0ef89dd64126512e4ee27b4ac3fd8ddf6247)
+rustc: rustc 1.78.0 (9b00956e5 2024-04-29)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250509/202505091754.285hHbr2-lkp@intel.com/reproduce)
 
-> +       return ret;
->  error_ret:
->         return ret;
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202505091754.285hHbr2-lkp@intel.com/
 
-Doesn't feel like a good cleanup. Please, drop this error handling
-completely, just return instead of goto above.
+All errors (new ones prefixed by >>):
 
-...
+>> drivers/gpio/gpio-virtuser.c:404:6: error: use of undeclared identifier 'size'; did you mean 'ksize'?
+     404 |         if (size >= sizeof(buf))
+         |             ^~~~
+         |             ksize
+   include/linux/slab.h:491:8: note: 'ksize' declared here
+     491 | size_t ksize(const void *objp);
+         |        ^
+   1 error generated.
 
-> -                       *val =3D sign_extend32(be16_to_cpup((__be16 *)st-=
->rx) >>
-> +                       *val =3D sign_extend32(be16_to_cpu((__be16) ret) =
->>
 
-This doesn't look good, can you define a proper __be16 variable on
-stack and use it instead of ret?
+vim +404 drivers/gpio/gpio-virtuser.c
 
->                                              chan->scan_type.shift,
+   393	
+   394	static ssize_t gpio_virtuser_direction_do_write(struct file *file,
+   395							const char __user *user_buf,
+   396							size_t count, loff_t *ppos,
+   397							bool atomic)
+   398	{
+   399		struct gpio_virtuser_line_data *data = file->private_data;
+   400		struct gpio_desc *desc = data->ad.desc;
+   401		char buf[32], *trimmed;
+   402		int ret, dir, val = 0;
+   403	
+ > 404		if (size >= sizeof(buf))
+   405			return -EINVAL;
+   406	
+   407		ret = simple_write_to_buffer(buf, sizeof(buf) - 1, ppos, user_buf, count);
+   408		if (ret < 0)
+   409			return ret;
+   410	
+   411		buf[ret] = '\0';
+   412	
+   413		trimmed = strim(buf);
+   414	
+   415		if (strcmp(trimmed, "input") == 0) {
+   416			dir = 1;
+   417		} else if (strcmp(trimmed, "output-high") == 0) {
+   418			dir = 0;
+   419			val = 1;
+   420		} else if (strcmp(trimmed, "output-low") == 0) {
+   421			dir = val = 0;
+   422		} else {
+   423			return -EINVAL;
+   424		}
+   425	
+   426		if (!atomic)
+   427			ret = gpio_virtuser_set_direction(desc, dir, val);
+   428		else
+   429			ret = gpio_virtuser_set_direction_atomic(desc, dir, val);
+   430		if (ret)
+   431			return ret;
+   432	
+   433		return count;
+   434	}
+   435	
 
-With the above done, move this parameter to the previous line.
-
->                                              chan->scan_type.realbits - 1=
-);
->                 } else {
-
-...
-
-> -                       *val =3D (be16_to_cpup((__be16 *)st->rx) >>
-> +                       *val =3D (be16_to_cpu((__be16) ret) >>
->                                 chan->scan_type.shift) &
->                                 GENMASK(chan->scan_type.realbits - 1, 0);
-
-Ditto.
-
-...
-
->         /* if off and should be on */
-> -       if (state && !(st->rx[0] & SCA3000_REG_MODE_FREE_FALL_DETECT))
-> +       if (state && !(ret & SCA3000_REG_MODE_FREE_FALL_DETECT))
->                 return sca3000_write_reg(st, SCA3000_REG_MODE_ADDR,
-> -                                        st->rx[0] | SCA3000_REG_MODE_FRE=
-E_FALL_DETECT);
-> +                                        ret | SCA3000_REG_MODE_FREE_FALL=
-_DETECT);
->         /* if on and should be off */
-> -       else if (!state && (st->rx[0] & SCA3000_REG_MODE_FREE_FALL_DETECT=
-))
-> +       else if (!state && (ret & SCA3000_REG_MODE_FREE_FALL_DETECT))
-
-Remove redundant 'else'
-
->                 return sca3000_write_reg(st, SCA3000_REG_MODE_ADDR,
-> -                                        st->rx[0] & ~SCA3000_REG_MODE_FR=
-EE_FALL_DETECT);
-> +                                        ret & ~SCA3000_REG_MODE_FREE_FAL=
-L_DETECT);
->         else
-
-Ditto.
-
->                 return 0;
-
-...
-
->         ret =3D sca3000_write_reg(st, SCA3000_REG_MODE_ADDR,
-> -                               (st->rx[0] & SCA3000_MODE_PROT_MASK));
-> +                               (ret & SCA3000_MODE_PROT_MASK));
-
-Remove unneeded parentheses.
-
-...
-
-> -       ret =3D sca3000_read_data_short(st, SCA3000_REG_INT_MASK_ADDR, 1)=
-;
-> +       ret =3D spi_w8r8(st->us, SCA3000_READ_REG(SCA3000_REG_INT_MASK_AD=
-DR));
-
-> +
-
-Stray blank line.
-
->         if (ret)
->                 goto error_ret;
-
-Perhaps you wanted it to be here?
-
->         ret =3D sca3000_write_reg(st, SCA3000_REG_INT_MASK_ADDR,
-
-> -                               (st->rx[0] &
-> +                               (ret &
->                                  ~(SCA3000_REG_INT_MASK_RING_THREE_QUARTE=
-R |
->                                    SCA3000_REG_INT_MASK_RING_HALF |
->                                    SCA3000_REG_INT_MASK_ALL_INTS)));
-
-Remove unneeded parentheses (outer for the last parameter).
-
---=20
-With Best Regards,
-Andy Shevchenko
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 

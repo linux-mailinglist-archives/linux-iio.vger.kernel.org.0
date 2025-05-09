@@ -1,47 +1,47 @@
-Return-Path: <linux-iio+bounces-19395-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19396-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EFD9AB1A1A
-	for <lists+linux-iio@lfdr.de>; Fri,  9 May 2025 18:16:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51B36AB1A2A
+	for <lists+linux-iio@lfdr.de>; Fri,  9 May 2025 18:17:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D09834A488A
-	for <lists+linux-iio@lfdr.de>; Fri,  9 May 2025 16:12:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC6D3A01562
+	for <lists+linux-iio@lfdr.de>; Fri,  9 May 2025 16:12:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F216D2356CB;
-	Fri,  9 May 2025 16:11:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC07B2367B6;
+	Fri,  9 May 2025 16:12:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ir1PEOE6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qmoxnkmu"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4A0023504C;
-	Fri,  9 May 2025 16:11:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F78E1EEF9;
+	Fri,  9 May 2025 16:12:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746807117; cv=none; b=uQkpkOoM7V3cKF7NY5N00WUfLFMPrCY+2NsPnfnEuDbU4i4hIWGAI1XF7cb/bpdEBNedp0r2IpFdkc0xqrseCvvG0ngYwA4uoBIDxq31INmThpJAIwG3Btg/A7fStRkxBt3XoFGoU6lEEDvBisLyx0WkDo+41h9Oa9dekIla5bg=
+	t=1746807148; cv=none; b=MOblTfyaNqrj96GZkLZz3SwSh3Io5z64TCBbxBuYZJAmH7a2Xx6WoiVa/JgJ96UCmuVw+ngLYa8U6Ut8d1p1DLLSTQhE8QAIjNc74A+HPEFXw3//T7F0nmGon5/k5SQU2b2STfVWF/ubf1Cv7xdeGwgCx7yu4a/cfaIWrkYcaO4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746807117; c=relaxed/simple;
-	bh=bpNVUwzX/KLB/HdjbVioDgiKXANaTn52rgYDeJ5osuI=;
+	s=arc-20240116; t=1746807148; c=relaxed/simple;
+	bh=Dq5D69yoWswbvYRIjmfWPM2poV9CNK84eRZfBB1U4vU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TvQqQORKoFHaxs+Q/fPBHQ39ZGXWVQXfsV7V89BVCNBohq/neQV4sKiBs8+ock1BWqFGPc3cPOvGnzzsW1jAHWHyANSjuDZbWZDgrpZQagAyAJ8pEBNVQbUGFU3w2fzOc81361LVP/EBpWmInICkSFuuY7WK+hv90IBr78zfkSo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ir1PEOE6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82D78C4CEE4;
-	Fri,  9 May 2025 16:11:52 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=rbvoYvQFqmoK/OAZ4KL4GKMAw+wLmVSTP5BECX1He0lHy5MYqqei4vkrVHXKcbqMbqX+PZSx38JNF3cYnU4J1UGUKmNlQV3EJrHl1VwN3p6itW9MmJ1iWFwd6xbfjec61ptHV5Az7h9fn9K4A/dZymHHUa6APUk6fztomG+xdSA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qmoxnkmu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24923C4CEE4;
+	Fri,  9 May 2025 16:12:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746807116;
-	bh=bpNVUwzX/KLB/HdjbVioDgiKXANaTn52rgYDeJ5osuI=;
+	s=k20201202; t=1746807147;
+	bh=Dq5D69yoWswbvYRIjmfWPM2poV9CNK84eRZfBB1U4vU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ir1PEOE6NRXx99Cv95+SKi9Zmr3GL4q+cUUQ6ACo61GxcHuclOom1BQ/sPtrFIU8p
-	 5LMXHOnsSIAe+nvPrFDd0yCSxiBprXis4n79sI2pdHhEysHwI35W2USx55uU2MxvvA
-	 AxAr/MDNALUSpPe1qIEzDG/pkYoWyt+DOxJGozKT+IvqFhS2c727Ov5LJL9rrxMsZu
-	 uVqJ3G6caDo9wOpv3nc+LMBiFFPsY6kHhWFImwZLYTwlQaGHFuWuByjEE1CZ9kNeTf
-	 mZK/oB4LV7bTxIrwCQL5qLsl3WmZZ5kV8Mm0L5LSmCkkIIVjOiPk8uefgZJsjpss0v
-	 25OivlVSWx2hQ==
-Date: Fri, 9 May 2025 17:11:50 +0100
+	b=QmoxnkmuQ6WEChssh/bpWoWzZjyCkDBCUQAA9nRccmin1od2A+VeV2P6l/dxmF7cO
+	 FQ8qlSv2aMmpQ4OeIN0jh6TN5+o0ALBy23EL3GxFC3dK93TwFw29vG2K6Trcxcq1G8
+	 V6REOtqNkyvTbfiRuJw034xrqLyLtQehzQISrRiU568Wf2pxfSbYE0k4hTd33vtWAq
+	 ofLCQnoFJRUBghfwcIYuteuvXx44KclbZJJtzeooriI7tSdYmzILr7pWkzJMfwqNSV
+	 2gVowfEcZIWWMWRByMUE+FO12Qn4+8SweFxmZLTgXw7nMQDuw2dqQMh7UzYAiyXWtx
+	 wLAASq4jIxAVA==
+Date: Fri, 9 May 2025 17:12:21 +0100
 From: Conor Dooley <conor@kernel.org>
 To: Jonathan Santos <Jonathan.Santos@analog.com>
 Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
@@ -50,12 +50,13 @@ Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
 	marcelo.schmitt@analog.com, jic23@kernel.org, robh@kernel.org,
 	krzk+dt@kernel.org, conor+dt@kernel.org, marcelo.schmitt1@gmail.com,
 	linus.walleij@linaro.org, brgl@bgdev.pl, lgirdwood@gmail.com,
-	broonie@kernel.org, jonath4nns@gmail.com, dlechner@baylibre.com
-Subject: Re: [PATCH v7 02/12] dt-bindings: trigger-source: add generic GPIO
- trigger source
-Message-ID: <20250509-quickly-culprit-3334c8ec27aa@spud>
+	broonie@kernel.org, jonath4nns@gmail.com, dlechner@baylibre.com,
+	David Lechner <dlechner@baylirbe.com>
+Subject: Re: [PATCH v7 03/12] dt-bindings: iio: adc: ad7768-1: add
+ trigger-sources property
+Message-ID: <20250509-unthawed-opossum-ae1888537954@spud>
 References: <cover.1746662899.git.Jonathan.Santos@analog.com>
- <f62bcaabde172e0b2880f7d05dce97d684cc04ca.1746662899.git.Jonathan.Santos@analog.com>
+ <731196750f27eee0bad5493647edb2f67a05a6e2.1746662899.git.Jonathan.Santos@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -63,37 +64,48 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="nyVvxJAmvCbunl+H"
+	protocol="application/pgp-signature"; boundary="jN6WHZCkGBJH0ccQ"
 Content-Disposition: inline
-In-Reply-To: <f62bcaabde172e0b2880f7d05dce97d684cc04ca.1746662899.git.Jonathan.Santos@analog.com>
+In-Reply-To: <731196750f27eee0bad5493647edb2f67a05a6e2.1746662899.git.Jonathan.Santos@analog.com>
 
 
---nyVvxJAmvCbunl+H
+--jN6WHZCkGBJH0ccQ
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, May 08, 2025 at 02:03:17PM -0300, Jonathan Santos wrote:
-> Inspired by pwm-trigger, create a new binding for using a GPIO
-> line as a trigger source.
+On Thu, May 08, 2025 at 02:03:30PM -0300, Jonathan Santos wrote:
+> In addition to GPIO synchronization, The AD7768-1 also supports
+> synchronization over SPI, which use is recommended when the GPIO
+> cannot provide a pulse synchronous with the base MCLK signal. It
+> consists of looping back the SYNC_OUT to the SYNC_IN pin and send
+> a command via SPI to trigger the synchronization.
 >=20
-> Link: https://lore.kernel.org/linux-iio/20250207-dlech-mainline-spi-engin=
-e-offload-2-v8-3-e48a489be48c@baylibre.com/
-> Reviewed-by: David Lechner <dlechner@baylibre.com>
+> Introduce the 'trigger-sources' property to enable SPI-based
+> synchronization via SYNC_OUT pin, along with additional optional
+> entries for GPIO3 and DRDY pins.
+>=20
+> Also create #trigger-source-cells property to differentiate the trigger
+> sources provided by the ADC. To improve readability, create a
+> adi,ad7768-1.h header with the macros for the cell values.
+>=20
+> While at it, add description to the interrupts property.
+>=20
+> Reviewed-by: David Lechner <dlechner@baylirbe.com>
 > Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
 
 Acked-by: Conor Dooley <conor.dooley@microchip.com>
 
---nyVvxJAmvCbunl+H
+--jN6WHZCkGBJH0ccQ
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaB4pRgAKCRB4tDGHoIJi
-0gqtAP9nbXRFuq8u75ysr6luGBqA1gRayOtqphoqvo+HTpRQxQEAzDkebqEPZycd
-XtiM1brQPnJdDp3w5Ef0u3qWs5OfKgM=
-=Ei/f
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaB4pZQAKCRB4tDGHoIJi
+0mNaAQDdL1y/TThdxI7fc/v/G9631xi3DvNyDsHo2KeSIYpxXwEA7CJZC9ZTcIAn
+D3uw/yJWhVle7cB0wkP88O+9Jf1/CQk=
+=rMZV
 -----END PGP SIGNATURE-----
 
---nyVvxJAmvCbunl+H--
+--jN6WHZCkGBJH0ccQ--
 

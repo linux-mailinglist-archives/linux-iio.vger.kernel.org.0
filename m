@@ -1,48 +1,48 @@
-Return-Path: <linux-iio+bounces-19390-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19391-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E22FAB1800
-	for <lists+linux-iio@lfdr.de>; Fri,  9 May 2025 17:08:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5DA2AB181D
+	for <lists+linux-iio@lfdr.de>; Fri,  9 May 2025 17:13:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 05C809E6DAF
-	for <lists+linux-iio@lfdr.de>; Fri,  9 May 2025 15:06:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D3DD541905
+	for <lists+linux-iio@lfdr.de>; Fri,  9 May 2025 15:10:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 290A6234994;
-	Fri,  9 May 2025 15:07:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CA24234964;
+	Fri,  9 May 2025 15:09:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YmkRTON0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="erbcXESn"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEC1A21A453;
-	Fri,  9 May 2025 15:07:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46B2D231A24;
+	Fri,  9 May 2025 15:09:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746803220; cv=none; b=WnoQJR3md6MdJjZoly/eCcG4QhFlIX/3lIkRg/63IvD9R6Ri1J821Jhm95KIlofBiVv8QwldPXoFcTi5m7CHH7lKDhOoGYqL3n7m1Gr2B5Hoi5ner0py2DGxOUvohCBGw73B+yLAnBTPRh/JbOeZl+QjTcPF5/TvLwGxnNvoU7U=
+	t=1746803362; cv=none; b=WEUKXcAvPCLqxHqzYmdepyHb/w37l7idRTHjMOumwyLBmst4WpzFaQ25Kkz6Ulqk9Zf7WYCGLE4OPImMyNZDZ4tlTAjBP9KP7YTUTvfQEDhhQEgtPj9HAhq/3VQkfhKJZpTbvWGBPG+agWuX3u+QZYnc5c8qhEIpc0LZJ9Snfus=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746803220; c=relaxed/simple;
-	bh=uuhnm0aRvVty+XrpMWSfjG9qUj5MeSFeFcHByOFvx8M=;
+	s=arc-20240116; t=1746803362; c=relaxed/simple;
+	bh=I9V/dhjsNxfWC46Xl6Mbu18eDiGWVHBlGkQ7AoGmqJk=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZyYWWpp/1uCTZdsXN7yB5NE+O60d2XFiHIb5EMj1n/gNgzYx1fSRRrSOYMqzaaru5EvgJ8AaUYibkbmyAcKtQxPqL5PPupXH31F2N/hRWto6Y1duriQfWqmtIkx0l8efVygADe4iV4dBgU/Any0u8Ux1g0jOaE6xBPcjNfBZZj0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YmkRTON0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2283C4CEEE;
-	Fri,  9 May 2025 15:06:57 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=ecXM4pP65DJU42cG/jiVQskQl6b6cr6fbPORqDDoTkNZ2PgXxZOdL/HM+hlyV+Ojg1xDLcA1CiRbtb1yw7iFgLrMMFnU8rh/Ft3qJu8iLdkTYHpeyJYRDnHXhxSzzhHMhN4t4XFIXLx/WQFiu7XAFU7mCghQiMdPp0fF6Y7inUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=erbcXESn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70797C4CEE4;
+	Fri,  9 May 2025 15:09:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746803220;
-	bh=uuhnm0aRvVty+XrpMWSfjG9qUj5MeSFeFcHByOFvx8M=;
+	s=k20201202; t=1746803361;
+	bh=I9V/dhjsNxfWC46Xl6Mbu18eDiGWVHBlGkQ7AoGmqJk=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=YmkRTON0H7yevm0MRtgeMCYmm3T1PikFSLyzDGL09VCPhWr41kaq6npdKJ896Pufy
-	 la4Vp7EoUvSzBDIOkW8Q/oiV3OjP3Kkt82uTbg1xkH1YsoYO6sLArtREExIITvu/ao
-	 MAoWazhCHkSZGPUz6n0tAD4jxmKp2ESuZY8M5QWGlpqMOKenTNv6zvJh7vZnV8YYrw
-	 6BN+GT/49QoLfQHzz3+mtwVv1sz7ReyrZVZSf1JtbI1RgHa1L1QcC3jmTZeI1jlLkA
-	 ECX4TrZIk2deB3d3V2YlUcmH2hae8IUsld6blxABXIPpQChMl015HbwLr6I3iPbyJn
-	 m7THNEXnGhB1w==
-Message-ID: <02b0dbc2-e8fd-419a-b546-5910b3fd0e0c@kernel.org>
-Date: Fri, 9 May 2025 17:06:56 +0200
+	b=erbcXESnJQ4KYhWJZEW0TclCNDB0atvxUxn3nm+isz/e5jXDtYK658N8XAWB3uanK
+	 rqXXC9L1QzZVV7Th6bYPYVjnyEVDX1dDQ+7wxtVoXUTI6BhOlSMc15wJKh4iVI5NUS
+	 y/7oRq8sU5DlpPUnklXtIvtHlUSkgZ5sGWPTFNpuCy7vaUjm1Vbc98MU8sI+rV+Iv0
+	 oCb/Fs2pt9e7ATjFJ0vcAW4W82wJ1mpcX0rT9YKeqX7frJB41d4b8F0BfSvPmGF9pZ
+	 Am2Chj4MQhy1p99rMZ0xgqsxq4sapP3I/jHU3+3x4sfCEindpBklERPuQHvbTutwKd
+	 aNfi1Pfdb+0+g==
+Message-ID: <d746c1b4-4794-498d-9a6c-a1ac1c58357c@kernel.org>
+Date: Fri, 9 May 2025 17:09:17 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -50,15 +50,13 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/3] dt-bindings: iio: proximity: Add Nicera D3-323-AA PIR
- sensor
+Subject: Re: [PATCH 0/3] Add driver for Nicera D3-323-AA PIR sensor
 To: Waqar Hameed <waqar.hameed@axis.com>, Jonathan Cameron
  <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>
-Cc: kernel@axis.com, linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <c57675d505e93549bfca5f9909d67822ab304a44.1746802541.git.waqar.hameed@axis.com>
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>
+Cc: kernel@axis.com, linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org
+References: <cover.1746802541.git.waqar.hameed@axis.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -104,7 +102,7 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <c57675d505e93549bfca5f9909d67822ab304a44.1746802541.git.waqar.hameed@axis.com>
+In-Reply-To: <cover.1746802541.git.waqar.hameed@axis.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
@@ -113,86 +111,26 @@ On 09/05/2025 17:03, Waqar Hameed wrote:
 > raw data measurements and detection notification. The communication
 > protocol is custom made and therefore needs to be GPIO bit banged.
 > 
-> Add devicetree bindings requiring the compatible string and the various
-> GPIOs needed for operation. Some of the GPIOs have multiple use-cases
-> depending on device state. Describe these thoroughly.
+> Previously, there has been an attempt to add a driver for this device
+> [1]. However, that driver was written for the wrong sub-system. `hwmon`
 
+So that's a v2. Mark your patches correctly.
 
-Drop redundant parts of description. Describe the hardware. Entire last
-paragraph is pretty pointless.
+> is clearly not a suitable framework for a proximity device.
+> 
+> In this series, we add a driver for support for event notification for
+> detections through IIO (the more appropriate sub-system!). The various
+> settings have been mapped to existing `sysfs` ABIs in the IIO framework.
+> 
+> The public datasheet [2] is quite sparse. A more detailed version can be
+> obtained through the company.
+> 
+> [1] https://lore.kernel.org/lkml/20241212042412.702044-2-Hermes.Zhang@axis.com/
+Read the comments given in that review:
+https://lore.kernel.org/lkml/wy7nyg3cztixe5y5rg4kbsbbly32h547hwumwwvrfme4fdgsj5@znfpypleebrb/
 
-> +
-> +properties:
-> +  compatible:
-> +    const: nicera,d3323aa
-> +
-> +  vdd-gpio:
-> +    maxItems: 1
-> +    description:
-> +      GPIO for supply voltage (1.8 to 5.5 V).
-
-This is not how pins are represented in the kernel. Either you have here
-regulator (supply) or reset gpios. Plus 'gpio' suffix is not valid, btw.
-
-Datasheet says this is a supply.
-
-> +      This GPIO will be driven low by the driver in order to cut the supply and
-> +      reset the device (driving it then back to high to power it on).
-> +
-> +  clk-vout-gpio:
-
-No, for the similar reasons. Which pin is this?
-
-> +    maxItems: 1
-> +    description:
-> +      GPIO for clock and detection.
-> +      After reset, the device signals with two falling edges on this pin that it
-> +      is ready for configuration (within 1.2 s), which the driver listens for as
-> +      interrupts.
-> +      During configuration, it is used as clock for data reading and writing (on
-> +      data-gpio). The driver drives this pin with the frequency of 1 kHz (bit
-> +      banging).
-> +      After all this, the device is now in operational mode and signals on this
-> +      pin for any detections. The driver listens for this as interrupts.
-> +
-> +  data-gpio:
-
-There is no such pin.
-
-> +    maxItems: 1
-> +    description:
-> +      GPIO for data reading and writing.
-> +      During configuration, configuration data will be written and read back
-> +      with bit banging (together with clk-vout-gpio as clock).
-> +      After this, during operational mode, the device will output serial data on
-> +      this GPIO. However, the driver currently doesn't read this.
-> +
-> +required:
-> +  - compatible
-> +  - vdd-gpio
-> +  - clk-vout-gpio
-> +  - data-gpio
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/gpio/gpio.h>
-
-So you included that header
-
-> +
-> +    proximity {
-> +        compatible = "nicera,d3323aa";
-> +        vdd-gpio = <&gpio 73 0>;
-> +        clk-vout-gpio = <&gpio 78 0>;
-> +        data-gpio = <&gpio 76 0>;
-
-But where are you using it?
-
-> +    };
-> +...
-
+You repeated same mistakes, which means I did same review second time
+which is waste of my time.
 
 Best regards,
 Krzysztof

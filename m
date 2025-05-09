@@ -1,179 +1,223 @@
-Return-Path: <linux-iio+bounces-19401-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19402-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 521B6AB1B78
-	for <lists+linux-iio@lfdr.de>; Fri,  9 May 2025 19:15:48 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE0B6AB1BE6
+	for <lists+linux-iio@lfdr.de>; Fri,  9 May 2025 20:04:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B8D561BA70B7
-	for <lists+linux-iio@lfdr.de>; Fri,  9 May 2025 17:16:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1E2567B21FF
+	for <lists+linux-iio@lfdr.de>; Fri,  9 May 2025 18:02:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17196239E7A;
-	Fri,  9 May 2025 17:15:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CD5023BD0E;
+	Fri,  9 May 2025 18:03:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="H9UvBTY7"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CRwRilSD"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2500E23958D
-	for <linux-iio@vger.kernel.org>; Fri,  9 May 2025 17:15:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F3DC23A994;
+	Fri,  9 May 2025 18:03:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746810943; cv=none; b=TFWU9+solCHauZ8DHeBOvhiads2e59M6Q3odweKQpGKs6iSLduwN2ifJDAUymVT+NWZqkVcWuxHHamZS0T10mmz/nhgHBKIhg5hWCCwNsXdxZGCd+Es2y7XO5WIkOeTRM8kacdi3w/BFRXrSCBF2eVHiTUxdxBWaQ1piyVGixdc=
+	t=1746813831; cv=none; b=HThs9BeVNRxafeAUXomGCTFU4CD7XROVXp+6nUaKsunApBpT0h22hJN1zxsv8/+il+7CAFVD/lULRsjx4ij+IKp2rNjda+QIUWju4s28EPy7lL6v0JMKs+iZ9U0LFGJ1S2T9PJeX57m0hWap0Pkn9g7WgMXBK3DhSnUIVw2CWkc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746810943; c=relaxed/simple;
-	bh=7MesCFuuCDIugA/QvkpY6/eommREk9sCCve39WoOmB4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tDiPgVxgxx0fc5EcsaeLatxfZzL5C4q3kw7vXU6/nhTEzjricsGTvHP8LT98Tfyaa8qoWbU7vwhp+hmmDjt26ytSEoKjzUIg8xI90HkJ8y8QMHCJ6NeTWPglf9gBsw/YLqweknUXt8uw25MtsPIwBSvdubryeXOo6oWcoSD4xuY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=H9UvBTY7; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-43cec5cd73bso15561375e9.3
-        for <linux-iio@vger.kernel.org>; Fri, 09 May 2025 10:15:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746810940; x=1747415740; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VE6naNkeBC4XbEQJsqMlL3UOV5cvMmOJpBltLHRjfRc=;
-        b=H9UvBTY79wcEiWoBYsCpxfa3WkU199aGgyJZPWKBUn97wGLQh6/DpQPe63q574y67R
-         F/+akG+5maYpb0PNQuyRUVyg7iDQ9LimVj/Z8W6wNrPYMcgN7N+YnAuicLGBbIrQhqMM
-         VM/DCcj92FOjMavE/2HtoRNURvpZmmC8rmam8U3XP4SLVxmrl9FyrvId02gp8ZnMcHC1
-         vicgdRx0Tr331M0CJOucTU/i9WUoR6D6l2QqL2LfOzfReLxsXAmOTYWK9n6CJVchoebj
-         uZFcCJJ8nftBUuCbQRuM3oL8C9Uvpj93AfTS+Gp6OWg/aIQebkL1zpszDaeiXRJWeYFG
-         EAhA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746810940; x=1747415740;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=VE6naNkeBC4XbEQJsqMlL3UOV5cvMmOJpBltLHRjfRc=;
-        b=uS5PwiHrCKQvqbh4OoR/iw6Atbww3ox9QzvT5uOy76LebTg6rnKCg1dSApM1gYYiz6
-         FVnD1wOT4Y7QKCq0bC0IJDBewPAO/CdFVNeRVn+I1yyVK6gdogYAERDGhaT07mQBI33B
-         rKiY6ioSzUOkxzaBmWZhiB1o4gbamTWYjuncBJWGKN2WqKoJ+XUOFvuB2k120waR7eHV
-         CYWbIRZn0T+k9C6UQSE9on2ohs1mQpmioSIZS8n7QYlcdZ4sGz3K+/RefCT8ksV2x9V9
-         CDjnGsrclopzXybH3YBIYoWwhc6+CxeBVbVHuO5VtJbW+V+g3vFlevYZshdSng33Jr+2
-         1Cyg==
-X-Forwarded-Encrypted: i=1; AJvYcCWKUip8F6Ic4eHJQ8QXImYQH3F7CIn5LkYfUalZqLXrpyyY9fiL9FV9JaSvSocSvs/twavGf+Mt/wI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzvtVJfv/IkAtbZG1VUd/wAC/dOLsBiKr1oStQe0xNPAwXwvUjN
-	BQeLSkcDYzvrIOdPVwnyAJk1YeGzX3NEAuPIVmQcn3vVOJ4nAwaG
-X-Gm-Gg: ASbGncsjxolI/FNth1bEYU/huTMAOkNF1uCLlR9p1MQb0qUWfjaZR/NPkC4Ijv1UsKs
-	wVDS5MgjsU5HIsG0LQfBdPKKCpxZpFa3RQX21uTNlmOSfhpWppwUXlwRA+ZrY5FXUS3zCd4LNyP
-	H8BQdUp5WxZUm0R6oAJydFjlai6KRfECju055NMrwbk7I0QcMa0EkVyhyxd4hcInH3YRltsgcxk
-	UlWXpHFPH787YgOnsGo9mCSBKxHQnk9DndlWyhcdBYXbuh14CccR0E2WzLsOekFWaRhd+CIqt1U
-	YSdOpwyGMaIYmZl+YNnGnj0AG3pjX3OA0TfwrylJ9k1t3wxq0BGB1fn7D3YM
-X-Google-Smtp-Source: AGHT+IHMeNWUjkqZsVEnJmQ62DVw/kyH7XooK7AYQ0UdS4XELihqc3wLuJMzQpzwL0142INNrnVWNQ==
-X-Received: by 2002:a05:600c:154b:b0:441:ac58:ead5 with SMTP id 5b1f17b1804b1-442d6ddd0afmr45041095e9.31.1746810940128;
-        Fri, 09 May 2025 10:15:40 -0700 (PDT)
-Received: from localhost.localdomain ([176.206.99.211])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-442d77e4ec3sm21509835e9.1.2025.05.09.10.15.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 May 2025 10:15:39 -0700 (PDT)
-From: Denis Benato <benato.denis96@gmail.com>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Alex Lanzano <lanzano.alex@gmail.com>,
+	s=arc-20240116; t=1746813831; c=relaxed/simple;
+	bh=TMIiQS5YfSgbaasKX3QzBCK1/RYA4e4rftcFiPeXxS8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ffT8uoRMZgUaG4W0KB43saNiVnIaydhysrH5EWbBrb9XIQhj5bj53iyXaVcf6RbDPvyqPx+i1synpd2Uksnxs/g08Cu4MRChvlFiuw/8kx/4Gk8f9DR4WxkTrtG/7SOqPTtbKMWLo3lQeaNOk3NkkzQhaRt206KNypKmMyVXdyQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CRwRilSD; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1746813830; x=1778349830;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=TMIiQS5YfSgbaasKX3QzBCK1/RYA4e4rftcFiPeXxS8=;
+  b=CRwRilSDwM6EvLv3d66YeXGcQaJbsuD4dGaLDYwkPDIKE22pPqA+SVGF
+   mIdhEMc6DINlZABECe4tD8jamLlc8S2RfdOJ4YRioduIXqW918LSCbUZX
+   /wchVlxjKNA/yOdxWN3ooSV6tOpSmHdOlWDQXXPuRYaQG3NVyseKuA9NC
+   dFx6wEi0PKqcz16t5nULoMSYF7FVNNaAkIkCnkKdfRiO71EaHvFsaGOUq
+   sRCGEnaxTX5LIJzgFK8B7r7RecVkVS9ZHrLQLsFmRyGbusQ3XTOx9MIo3
+   IHLNGGZRCHKvtU0L5TOoIXmp7DwkKxBvwz1Jlhyr1NpReSlTVxze0n9cS
+   g==;
+X-CSE-ConnectionGUID: uieYRu5RTXS8vnXEqeTe/Q==
+X-CSE-MsgGUID: Qwn9x3ZXRp+LXtjjSuSGpw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11427"; a="48349969"
+X-IronPort-AV: E=Sophos;i="6.15,275,1739865600"; 
+   d="scan'208";a="48349969"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 May 2025 11:03:49 -0700
+X-CSE-ConnectionGUID: Wdk17spXQvK54qmPmDD3Cw==
+X-CSE-MsgGUID: 97+KdvmWSkqS2ddY1D4QhA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,275,1739865600"; 
+   d="scan'208";a="141802458"
+Received: from lkp-server01.sh.intel.com (HELO 1992f890471c) ([10.239.97.150])
+  by orviesa005.jf.intel.com with ESMTP; 09 May 2025 11:03:40 -0700
+Received: from kbuild by 1992f890471c with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uDS4Q-000CL5-0U;
+	Fri, 09 May 2025 18:03:38 +0000
+Date: Sat, 10 May 2025 02:03:05 +0800
+From: kernel test robot <lkp@intel.com>
+To: Pop Ioan Daniel <pop.ioan-daniel@analog.com>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Jonathan Cameron <jic23@kernel.org>,
 	David Lechner <dlechner@baylibre.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	linux-iio@vger.kernel.org,
-	"Derek J. Clark" <derekjohn.clark@gmail.com>,
-	=?UTF-8?q?Philip=20M=C3=BCller?= <philm@manjaro.org>,
-	Denis Benato <benato.denis96@gmail.com>
-Subject: [PATCH 2/2] iio: bmi160: suspend and resume triggering on relevant pm operations
-Date: Fri,  9 May 2025 19:15:26 +0200
-Message-ID: <20250509171526.7842-3-benato.denis96@gmail.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250509171526.7842-1-benato.denis96@gmail.com>
-References: <20250509171526.7842-1-benato.denis96@gmail.com>
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Sergiu Cuciurean <sergiu.cuciurean@analog.com>,
+	Dragos Bogdan <dragos.bogdan@analog.com>,
+	Antoniu Miclaus <antoniu.miclaus@analog.com>,
+	Olivier Moysan <olivier.moysan@foss.st.com>,
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+	Matti Vaittinen <mazziesaccount@gmail.com>,
+	Tobias Sperling <tobias.sperling@softing.com>,
+	Marcelo Schmitt <marcelo.schmitt@analog.com>,
+	Alisa-Dariana Roman <alisadariana@gmail.com>,
+	Ramona Alexandra Nechita <ramona.nechita@analog.com>,
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH v2 1/4] iio: backend: update
+ iio_backend_oversampling_ratio_set
+Message-ID: <202505100131.FZe7C8ot-lkp@intel.com>
+References: <20250508123107.3797042-2-pop.ioan-daniel@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250508123107.3797042-2-pop.ioan-daniel@analog.com>
 
-Prevent triggers from stop working after the device has entered sleep:
-use iio_device_suspend_triggering and iio_device_resume_triggering helpers.
+Hi Pop,
 
-Signed-off-by: Denis Benato <benato.denis96@gmail.com>
----
- drivers/iio/imu/bmi160/bmi160.h      |  2 ++
- drivers/iio/imu/bmi160/bmi160_core.c | 20 ++++++++++++++++++++
- drivers/iio/imu/bmi160/bmi160_i2c.c  |  1 +
- drivers/iio/imu/bmi160/bmi160_spi.c  |  1 +
- 4 files changed, 24 insertions(+)
+kernel test robot noticed the following build warnings:
 
-diff --git a/drivers/iio/imu/bmi160/bmi160.h b/drivers/iio/imu/bmi160/bmi160.h
-index 32c2ea2d7112..ffbe8205e703 100644
---- a/drivers/iio/imu/bmi160/bmi160.h
-+++ b/drivers/iio/imu/bmi160/bmi160.h
-@@ -28,4 +28,6 @@ int bmi160_enable_irq(struct regmap *regmap, bool enable);
- 
- int bmi160_probe_trigger(struct iio_dev *indio_dev, int irq, u32 irq_type);
- 
-+extern const struct dev_pm_ops bmi160_core_pm_ops;
-+
- #endif  /* BMI160_H_ */
-diff --git a/drivers/iio/imu/bmi160/bmi160_core.c b/drivers/iio/imu/bmi160/bmi160_core.c
-index 0423ef6f9571..6233155f1112 100644
---- a/drivers/iio/imu/bmi160/bmi160_core.c
-+++ b/drivers/iio/imu/bmi160/bmi160_core.c
-@@ -890,6 +890,26 @@ int bmi160_core_probe(struct device *dev, struct regmap *regmap,
- }
- EXPORT_SYMBOL_NS_GPL(bmi160_core_probe, "IIO_BMI160");
- 
-+static int bmi160_core_runtime_suspend(struct device *dev)
-+{
-+	struct iio_dev *indio_dev = dev_get_drvdata(dev);
-+
-+	return iio_device_suspend_triggering(indio_dev);
-+}
-+
-+static int bmi160_core_runtime_resume(struct device *dev)
-+{
-+	struct iio_dev *indio_dev = dev_get_drvdata(dev);
-+
-+	return iio_device_resume_triggering(indio_dev);
-+}
-+
-+const struct dev_pm_ops bmi160_core_pm_ops = {
-+	RUNTIME_PM_OPS(bmi160_core_runtime_suspend,
-+		       bmi160_core_runtime_resume, NULL)
-+};
-+EXPORT_SYMBOL_NS_GPL(bmi160_core_pm_ops, "IIO_BMI160");
-+
- MODULE_AUTHOR("Daniel Baluta <daniel.baluta@intel.com>");
- MODULE_DESCRIPTION("Bosch BMI160 driver");
- MODULE_LICENSE("GPL v2");
-diff --git a/drivers/iio/imu/bmi160/bmi160_i2c.c b/drivers/iio/imu/bmi160/bmi160_i2c.c
-index 9fa3a19a8977..732191c799dd 100644
---- a/drivers/iio/imu/bmi160/bmi160_i2c.c
-+++ b/drivers/iio/imu/bmi160/bmi160_i2c.c
-@@ -69,6 +69,7 @@ MODULE_DEVICE_TABLE(of, bmi160_of_match);
- static struct i2c_driver bmi160_i2c_driver = {
- 	.driver = {
- 		.name			= "bmi160_i2c",
-+		.pm			= pm_ptr(&bmi160_core_pm_ops),
- 		.acpi_match_table	= bmi160_acpi_match,
- 		.of_match_table		= bmi160_of_match,
- 	},
-diff --git a/drivers/iio/imu/bmi160/bmi160_spi.c b/drivers/iio/imu/bmi160/bmi160_spi.c
-index ebb586904215..8addcf5891ae 100644
---- a/drivers/iio/imu/bmi160/bmi160_spi.c
-+++ b/drivers/iio/imu/bmi160/bmi160_spi.c
-@@ -61,6 +61,7 @@ static struct spi_driver bmi160_spi_driver = {
- 		.acpi_match_table	= bmi160_acpi_match,
- 		.of_match_table		= bmi160_of_match,
- 		.name			= "bmi160_spi",
-+		.pm			= pm_ptr(&bmi160_core_pm_ops),
- 	},
- };
- module_spi_driver(bmi160_spi_driver);
+[auto build test WARNING on jic23-iio/togreg]
+[also build test WARNING on linus/master v6.15-rc5 next-20250509]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Pop-Ioan-Daniel/iio-backend-update-iio_backend_oversampling_ratio_set/20250508-203339
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
+patch link:    https://lore.kernel.org/r/20250508123107.3797042-2-pop.ioan-daniel%40analog.com
+patch subject: [PATCH v2 1/4] iio: backend: update iio_backend_oversampling_ratio_set
+config: i386-randconfig-061-20250509 (https://download.01.org/0day-ci/archive/20250510/202505100131.FZe7C8ot-lkp@intel.com/config)
+compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250510/202505100131.FZe7C8ot-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202505100131.FZe7C8ot-lkp@intel.com/
+
+sparse warnings: (new ones prefixed by >>)
+>> drivers/iio/adc/ad4851.c:324:60: sparse: sparse: incorrect type in argument 2 (different base types) @@     expected unsigned int chan @@     got struct iio_chan_spec const *chan @@
+   drivers/iio/adc/ad4851.c:324:60: sparse:     expected unsigned int chan
+   drivers/iio/adc/ad4851.c:324:60: sparse:     got struct iio_chan_spec const *chan
+
+vim +324 drivers/iio/adc/ad4851.c
+
+   295	
+   296	static int ad4851_set_oversampling_ratio(struct iio_dev *indio_dev,
+   297						 const struct iio_chan_spec *chan,
+   298						 unsigned int osr)
+   299	{
+   300		struct ad4851_state *st = iio_priv(indio_dev);
+   301		int val, ret;
+   302	
+   303		guard(mutex)(&st->lock);
+   304	
+   305		if (osr == 1) {
+   306			ret = regmap_clear_bits(st->regmap, AD4851_REG_OVERSAMPLE,
+   307						AD4851_OS_EN_MSK);
+   308			if (ret)
+   309				return ret;
+   310		} else {
+   311			val = ad4851_osr_to_regval(osr);
+   312			if (val < 0)
+   313				return -EINVAL;
+   314	
+   315			ret = regmap_update_bits(st->regmap, AD4851_REG_OVERSAMPLE,
+   316						 AD4851_OS_EN_MSK |
+   317						 AD4851_OS_RATIO_MSK,
+   318						 FIELD_PREP(AD4851_OS_EN_MSK, 1) |
+   319						 FIELD_PREP(AD4851_OS_RATIO_MSK, val));
+   320			if (ret)
+   321				return ret;
+   322		}
+   323	
+ > 324		ret = iio_backend_oversampling_ratio_set(st->back, chan, osr);
+   325		if (ret)
+   326			return ret;
+   327	
+   328		switch (st->info->resolution) {
+   329		case 20:
+   330			switch (osr) {
+   331			case 0:
+   332				return -EINVAL;
+   333			case 1:
+   334				val = 20;
+   335				break;
+   336			default:
+   337				val = 24;
+   338				break;
+   339			}
+   340			break;
+   341		case 16:
+   342			val = 16;
+   343			break;
+   344		default:
+   345			return -EINVAL;
+   346		}
+   347	
+   348		ret = iio_backend_data_size_set(st->back, val);
+   349		if (ret)
+   350			return ret;
+   351	
+   352		if (osr == 1 || st->info->resolution == 16) {
+   353			ret = regmap_clear_bits(st->regmap, AD4851_REG_PACKET,
+   354						AD4851_PACKET_FORMAT_MASK);
+   355			if (ret)
+   356				return ret;
+   357	
+   358			st->resolution_boost_enabled = false;
+   359		} else {
+   360			ret = regmap_update_bits(st->regmap, AD4851_REG_PACKET,
+   361						 AD4851_PACKET_FORMAT_MASK,
+   362						 FIELD_PREP(AD4851_PACKET_FORMAT_MASK, 1));
+   363			if (ret)
+   364				return ret;
+   365	
+   366			st->resolution_boost_enabled = true;
+   367		}
+   368	
+   369		if (st->osr != osr) {
+   370			ret = ad4851_scale_fill(indio_dev);
+   371			if (ret)
+   372				return ret;
+   373	
+   374			st->osr = osr;
+   375		}
+   376	
+   377		return 0;
+   378	}
+   379	
+
 -- 
-2.49.0
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 

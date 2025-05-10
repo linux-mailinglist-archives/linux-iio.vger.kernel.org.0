@@ -1,78 +1,85 @@
-Return-Path: <linux-iio+bounces-19404-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19405-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94BA9AB2023
-	for <lists+linux-iio@lfdr.de>; Sat, 10 May 2025 00:59:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B167AB24F9
+	for <lists+linux-iio@lfdr.de>; Sat, 10 May 2025 20:38:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4290E7B7F11
-	for <lists+linux-iio@lfdr.de>; Fri,  9 May 2025 22:58:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1B82F4A50F6
+	for <lists+linux-iio@lfdr.de>; Sat, 10 May 2025 18:38:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AC882638BF;
-	Fri,  9 May 2025 22:59:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD79923505D;
+	Sat, 10 May 2025 18:38:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BCG8HuXP"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NkRTXQLJ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vs1-f50.google.com (mail-vs1-f50.google.com [209.85.217.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E5AE22AE7E;
-	Fri,  9 May 2025 22:59:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03B571DAC81
+	for <linux-iio@vger.kernel.org>; Sat, 10 May 2025 18:38:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746831554; cv=none; b=TWi79BZHahVJAaG6jkTEY7vk7vWiQJimVM5or3PQ+inIf833ijgb1h50kb+K91ah4qHIfinRD7WzjUeN6x42lA5VHJtSAPvnLKm9WRLuzogrHvhKOl8iRLg4/6l1Fly3ifnrbgs3TUm+PNvt0ILJ/Q0gFrz4lWLMwg9JKtngTm8=
+	t=1746902294; cv=none; b=RgabLusvPIAXszlMPhTeiYt8vPLmEe5Npkt0hLLZrbMHQmn45bHL2Fwm0SA9GDfBNlzyHFDThPjQGOkO1sF+XHdM6GPF1fMDuA9fOvFxRUSdvYmS44uO7aqwRZnJnbMM6JEyJmi2ZJWfFzuPYgGV63VIHDtK7K3OdfV4aILz+AM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746831554; c=relaxed/simple;
-	bh=6bTn5T9aJ1dG/QcSe0PfmEmuTX2zmPTsXHFZ/Ckvu4s=;
+	s=arc-20240116; t=1746902294; c=relaxed/simple;
+	bh=67T8NxaQfwURFlMkEOUL1t253v77PhEorguM82Vq72A=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=j4/HOq7SzZxbhwOd+rhKro7hhl/IeCJE9tu/ZiYHlK8K1PYpURJYyhZBY17AKtltYZ1KSr9ssSXsAOkYdvr0BlT23yx5YJYSMrXgAMC4F/t9FnOPBB7aXFAQkfx8rEYhz7EiWJfhLUfjkAsUN1IyQ+YY+sUWTqS910HeqVUJPbA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BCG8HuXP; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1746831550; x=1778367550;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=6bTn5T9aJ1dG/QcSe0PfmEmuTX2zmPTsXHFZ/Ckvu4s=;
-  b=BCG8HuXPXOeqx7pfOSOLJuwHs2CnMEHGjUB53Gu2soToC8HAOL/2ZGfu
-   LN3A51m0Mhk1LSZqbBHmMZFTSE8hEIKdQFREU4t+wk9HfSYIPgTLbH70a
-   GNGH4j64FagedBSCW44wygQe8XjKAG149B0PK6/V4NMgLmqlAZen72oKM
-   rcbQ57Rzb2wtFQX1ZVi66kMwpPqwudUC2qtaT7BYME906Ey10qdbC/5WB
-   pktI5S500SyhJjgsdpKZwO/FrzSV5XQMDmhMYNpZN7yVg+2PvNP7PsNoc
-   aeC/S7SzrMOSG0pJ+2YeOJw/4oWejRIrcohp4Jg+auAzhBLO83MWJmgLo
-   g==;
-X-CSE-ConnectionGUID: X46/+JxYQIycECRufFgfqA==
-X-CSE-MsgGUID: Fn2Kzkz+QmSXGaYt91ibjg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11427"; a="60078282"
-X-IronPort-AV: E=Sophos;i="6.15,276,1739865600"; 
-   d="scan'208";a="60078282"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 May 2025 15:59:10 -0700
-X-CSE-ConnectionGUID: r6YHvPDuShS0AB1W6ENsDw==
-X-CSE-MsgGUID: 2JJVb3O3TP6jueuAMyjwGQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,276,1739865600"; 
-   d="scan'208";a="137693712"
-Received: from lkp-server01.sh.intel.com (HELO 1992f890471c) ([10.239.97.150])
-  by orviesa008.jf.intel.com with ESMTP; 09 May 2025 15:59:07 -0700
-Received: from kbuild by 1992f890471c with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uDWgK-000CYR-3B;
-	Fri, 09 May 2025 22:59:04 +0000
-Date: Sat, 10 May 2025 06:58:21 +0800
-From: kernel test robot <lkp@intel.com>
-To: Andrew Ijano <andrew.ijano@gmail.com>, jic23@kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, andrew.lopes@alumni.usp.br,
-	gustavobastos@usp.br, dlechner@baylibre.com, nuno.sa@analog.com,
-	andy@kernel.org, jstephan@baylibre.com, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] iio: accel: sca3000: replace usages of internal read
- data helpers by spi helpers
-Message-ID: <202505100631.nlBOlbYm-lkp@intel.com>
-References: <20250509013931.47524-1-andrew.lopes@alumni.usp.br>
+	 Content-Type:Content-Disposition:In-Reply-To; b=fDIaY+iPu2RJYN3XTiB7iJ435KEj6DFPKepG7yLhpDau/1utaDYFBeL2A86DzpnGVqdlQJqkg+FHry4j7d0uJKwn22xef93925ycfErk+Xz3xWN/+4m3m+DBkzcmM8aH9DMPrhaZhz+D/QgQ4c+SsY3qsZ7lCF+FzukvZKHlxw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NkRTXQLJ; arc=none smtp.client-ip=209.85.217.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vs1-f50.google.com with SMTP id ada2fe7eead31-4c4e1f16833so1044232137.0
+        for <linux-iio@vger.kernel.org>; Sat, 10 May 2025 11:38:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1746902292; x=1747507092; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=wv07qY3/JCsm61xkaVg3QtsQpY18pZXiicSgccO4xig=;
+        b=NkRTXQLJhWiKBmFN1XUNVuhnl/f+pAlkqHqVdCDwVVbSuaEHGWlqgZ+qgNtSRAjOGW
+         7dczYrXQCe98SZt/Ra4tOft4mBNiJNRGvCSgqiXVRN1kYx3NoqW2RnpMovXDAplgsLMi
+         8pV2A1BDUXSv90pRH1rwlCBLPvLw8wr+e9e3gqJiQP5TlXzUgllr6jIbWg7JisTAQJwJ
+         4yWnYz3y+TI0gKPBy3uLyeEgu3+0AMPghrqp2SHSbR1Ab/qCAqTG0yv8kqg7ouPVX5Kt
+         zWn0S9agRp3oU+WKEl4bn0JcaLx3r61hD3FKBW1r5a5xL+mplfP8yfOHNEM+94o7/k/i
+         g9bw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746902292; x=1747507092;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wv07qY3/JCsm61xkaVg3QtsQpY18pZXiicSgccO4xig=;
+        b=g9szbxvNYSeAgTkgcu3ykO3c+YtvVCLgE5Beg5Ctwpn6YwL4eop6VoceQngLXv+enB
+         S0CxR/i8Sg0ohCrCV/scHTIQqY1XOIurbQM/J+IZE7IL2tIYtVeX1K8i86lFNERKglwb
+         YuXfXiCdsfhdTAS6LpQZJ98QX6Qc4+wZ0Am6xLpU7OZ1WOPxyyZ4ssHwVmb2nMofzZqW
+         rt7jR5B0kQwG1lcHcKW0YMoU85CvF0U/oD76DXsIakuAqacZKnZ0PKn/pzudN0NDGoKM
+         pfsXt7NlBenjUzhsAUSXV7Owt7sNp0vJJxq+i8oK/yqQT4nA0uejOLbNHRZl1OybOg3Y
+         sk3w==
+X-Forwarded-Encrypted: i=1; AJvYcCV2o03CVbvSUTzN7lMl+E8cWSyq88Fd7SLGoIgI6hPNdCNV4yEO/B3YYesIAG5dcDJdd51rqlS9Ucs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyrRywVsDDavjDNsJ3Xvxn7hZa/3pBz7AD5zkMOhGDDgs2jKXn0
+	DeVrlEfyoVtY9cpbneM75HzjLA4QEroQ/UT/Qa1HLpjeehHRPEXQ
+X-Gm-Gg: ASbGncvSb7zYGr5BxevL40TalDz/dKSmzGzvcgqpUWEvoOxVrMN8QPZyEL2nHBO65kL
+	5W5Ar+VEGbIJzhaM3jzDt3PGU5BRns8d67hRj2JuDX9CHCgWpVZ4Uua4UBDUyqiC8xRDe6kiUUB
+	HFIvF/GWY5Mkl51LtsiRE3QovJbpKMNEVsEEbCMhWN/k/yWSxUVLEGBXH7kaXvRQxwne3DNLz6F
+	uuJJy2+HQLpgOEZuuMEYSkw+hBVvhuwSUBQfRL77kLIoeFlnKPeh7lndCRmLw6WMDGplrNTMbrA
+	CdR6E8ZKVqMzrZPZWTuFjYc1eKHSs2qP3jbION1u61gqzWB5jx21pmjit09D
+X-Google-Smtp-Source: AGHT+IHR3FolTbHhofRA78qMSlUhMhQoCPCQdG0SkN44AhyMzzdUayBonBrQeYOeAd92eDFszzBVQQ==
+X-Received: by 2002:a05:6102:fa8:b0:4ba:974c:891e with SMTP id ada2fe7eead31-4deed3cf7a4mr6097232137.17.1746902291800;
+        Sat, 10 May 2025 11:38:11 -0700 (PDT)
+Received: from localhost ([2804:30c:404b:a800:55e1:4221:1a82:c6cf])
+        by smtp.gmail.com with UTF8SMTPSA id a1e0cc1a2514c-879f6297d64sm2837230241.30.2025.05.10.11.38.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 10 May 2025 11:38:10 -0700 (PDT)
+Date: Sat, 10 May 2025 15:39:33 -0300
+From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+To: Isabella Caselli <bellacaselli20@gmail.com>
+Cc: jean-baptiste.maneyrol@tdk.com, jic23@kernel.org, lars@metafoo.de,
+	linux-iio@vger.kernel.org, rodrigo.michelassi@usp.br
+Subject: Re: [PATCH v3] iio: imu: inv_mpu6050: refactor aux read/write to use
+ shared xfer logic
+Message-ID: <aB-dZecEekMsAEWj@debian-BULLSEYE-live-builder-AMD64>
+References: <20250507184539.54658-1-bellacaselli20@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -81,107 +88,42 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250509013931.47524-1-andrew.lopes@alumni.usp.br>
+In-Reply-To: <20250507184539.54658-1-bellacaselli20@gmail.com>
 
-Hi Andrew,
+Hi Isabella, Rodrigo,
 
-kernel test robot noticed the following build warnings:
+This patch looks okay to me. Though, I think Jean-Baptiste made a valid point in
+v1 about inv_mpu_i2c_master_xfer() not implying any specific slave slot
+previously. I'd suggest to add a slv parameter to inv_mpu_i2c_master_xfer(), but
+that wouldn't make much difference since inv_mpu_aux_read/write() are still
+hardcoded for SLV 0.
+Besides that, I have one minor comment that's probably not a reason for a v4 if
+this is deemed to be good.
 
-[auto build test WARNING on jic23-iio/togreg]
-[also build test WARNING on linus/master v6.15-rc5 next-20250509]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Regards,
+Marcelo
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Andrew-Ijano/iio-accel-sca3000-replace-usages-of-internal-read-data-helpers-by-spi-helpers/20250509-094127
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
-patch link:    https://lore.kernel.org/r/20250509013931.47524-1-andrew.lopes%40alumni.usp.br
-patch subject: [PATCH v3] iio: accel: sca3000: replace usages of internal read data helpers by spi helpers
-config: i386-randconfig-r123-20250510 (https://download.01.org/0day-ci/archive/20250510/202505100631.nlBOlbYm-lkp@intel.com/config)
-compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250510/202505100631.nlBOlbYm-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202505100631.nlBOlbYm-lkp@intel.com/
-
-sparse warnings: (new ones prefixed by >>)
->> drivers/iio/accel/sca3000.c:745:46: sparse: sparse: cast to restricted __be16
-   drivers/iio/accel/sca3000.c:756:33: sparse: sparse: cast to restricted __be16
-
-vim +745 drivers/iio/accel/sca3000.c
-
-   720	
-   721	static int sca3000_read_raw(struct iio_dev *indio_dev,
-   722				    struct iio_chan_spec const *chan,
-   723				    int *val,
-   724				    int *val2,
-   725				    long mask)
-   726	{
-   727		struct sca3000_state *st = iio_priv(indio_dev);
-   728		int ret;
-   729		u8 address;
-   730	
-   731		switch (mask) {
-   732		case IIO_CHAN_INFO_RAW:
-   733			mutex_lock(&st->lock);
-   734			if (chan->type == IIO_ACCEL) {
-   735				if (st->mo_det_use_count) {
-   736					mutex_unlock(&st->lock);
-   737					return -EBUSY;
-   738				}
-   739				address = sca3000_addresses[chan->address][0];
-   740				ret = spi_w8r16(st->us, SCA3000_READ_REG(address));
-   741				if (ret < 0) {
-   742					mutex_unlock(&st->lock);
-   743					return ret;
-   744				}
- > 745				*val = sign_extend32(be16_to_cpu((__be16) ret) >>
-   746						     chan->scan_type.shift,
-   747						     chan->scan_type.realbits - 1);
-   748			} else {
-   749				/* get the temperature when available */
-   750				ret = spi_w8r16(st->us,
-   751							SCA3000_READ_REG(SCA3000_REG_TEMP_MSB_ADDR));
-   752				if (ret < 0) {
-   753					mutex_unlock(&st->lock);
-   754					return ret;
-   755				}
-   756				*val = (be16_to_cpu((__be16) ret) >>
-   757					chan->scan_type.shift) &
-   758					GENMASK(chan->scan_type.realbits - 1, 0);
-   759			}
-   760			mutex_unlock(&st->lock);
-   761			return IIO_VAL_INT;
-   762		case IIO_CHAN_INFO_SCALE:
-   763			*val = 0;
-   764			if (chan->type == IIO_ACCEL)
-   765				*val2 = st->info->scale;
-   766			else /* temperature */
-   767				*val2 = 555556;
-   768			return IIO_VAL_INT_PLUS_MICRO;
-   769		case IIO_CHAN_INFO_OFFSET:
-   770			*val = -214;
-   771			*val2 = 600000;
-   772			return IIO_VAL_INT_PLUS_MICRO;
-   773		case IIO_CHAN_INFO_SAMP_FREQ:
-   774			mutex_lock(&st->lock);
-   775			ret = sca3000_read_raw_samp_freq(st, val);
-   776			mutex_unlock(&st->lock);
-   777			return ret ? ret : IIO_VAL_INT;
-   778		case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
-   779			mutex_lock(&st->lock);
-   780			ret = sca3000_read_3db_freq(st, val);
-   781			mutex_unlock(&st->lock);
-   782			return ret;
-   783		default:
-   784			return -EINVAL;
-   785		}
-   786	}
-   787	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+On 05/07, Isabella Caselli wrote:
+> Refactors inv_mpu_aux_read() and inv_mpu_aux_write() to extract the common
+> I2C transfer sequence into inv_mpu_i2c_master_xfer(), which now handles
+> starting and stopping the I2C master, waiting for completion, disabling
+> SLV0, and checking for NACK errors.
+> 
+> This refactoring removes code duplication and improves maintainability.
+> No functional changes are intended.
+> 
+> Signed-off-by: Isabella Caselli <bellacaselli20@gmail.com>
+> Co-developed-by: Rodrigo Michelassi <rodrigo.michelassi@usp.br>
+> Signed-off-by: Rodrigo Michelassi <rodrigo.michelassi@usp.br>
+> ---
+...
+>  static int inv_mpu_i2c_master_xfer(const struct inv_mpu6050_state *st)
+>  {
+> @@ -23,6 +25,7 @@ static int inv_mpu_i2c_master_xfer(const struct inv_mpu6050_state *st)
+>  	uint8_t d;
+>  	unsigned int user_ctrl;
+>  	int ret;
+> +	unsigned int status;
+I'd declare status above ret, or together with user_ctrl.
+Just minor code style thing.
 

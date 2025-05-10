@@ -1,96 +1,126 @@
-Return-Path: <linux-iio+bounces-19407-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19408-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E2E4AB251E
-	for <lists+linux-iio@lfdr.de>; Sat, 10 May 2025 21:27:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EA86AB255B
+	for <lists+linux-iio@lfdr.de>; Sat, 10 May 2025 23:38:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 84D741B649AF
-	for <lists+linux-iio@lfdr.de>; Sat, 10 May 2025 19:27:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 828731B62EB7
+	for <lists+linux-iio@lfdr.de>; Sat, 10 May 2025 21:38:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E02002686AA;
-	Sat, 10 May 2025 19:26:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A70D71EA7C9;
+	Sat, 10 May 2025 21:38:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PHoSzX5X"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bO0lrHtG"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D12A1428E7;
-	Sat, 10 May 2025 19:26:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA13E4685
+	for <linux-iio@vger.kernel.org>; Sat, 10 May 2025 21:38:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746905218; cv=none; b=OQGAuylfLRnyi6TGKFebrksrmWiEbwtulu4GNozGFm3QXs7V49ky/W1OKLXqy+RG6CE1SrynCahsE+PcHTgn+39PS15ylsqtjslmMPbMX22UNjJZ1Y4K0XN9/YnXUgiXba8sDTWtspxcPt+9Blt1QTctoZ+0iyCC+FMPncmM8nw=
+	t=1746913085; cv=none; b=eW38nwPdmu8EP/cT2kznU/0zAGAQ0fNz7m7oiCRZpgabmRD2coTdYJxe7Zjuy5J4uzB8f+CLpSawKRIvP9vcUBCVDibZHpPhkNn8qgvJrO5eTJyP5VPS0rIjjD+FJjF+bDaGGg0WdOmpMdf/6jUXEDHoL/Oz3joOhIwGXbFY/Vw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746905218; c=relaxed/simple;
-	bh=bcj/X3NQQKiRCWNQgau3gp0LJcKkKCCKGjvzRGukiKQ=;
+	s=arc-20240116; t=1746913085; c=relaxed/simple;
+	bh=k6my+cKPlyc/sgoY2kudnndueRhhx0QguQs/I2p9bHM=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Qc60NOqHD4c7jDqDxrOr9S7HToHi7icA8bVX+xaxkgq0QTM92al9MrwOlg1hwZSRsE+OxabYQkFhtlbv2ncUlpsgH2YKHfZFHdF2b7R7EpnGe3UQltb0wNtj4qZ2kGDkRbqQFAoiRrtMxQfTIlbArpUQqIAWbgh1iA165x3W+Fw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PHoSzX5X; arc=none smtp.client-ip=209.85.216.45
+	 To:Cc:Content-Type; b=OLnJY/67fwBvIRlupEPrz98j7dtUKNgQXF3XFesktR7AXWlRphC04Bnw6Yv9J426T6jF0pO5c0cyKuyh/zdEE7NRDJ/9JD6BYvsY+jy83MFq3+5pP1ZA0QTZ5xjsj/OoQNMKJ2+e8powxbN4VMLx6azbZ9cbRuE8pAgNcOTX5og=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bO0lrHtG; arc=none smtp.client-ip=209.85.218.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-30c3a038acfso2799132a91.3;
-        Sat, 10 May 2025 12:26:57 -0700 (PDT)
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-ace94273f0dso629390366b.3
+        for <linux-iio@vger.kernel.org>; Sat, 10 May 2025 14:38:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746905216; x=1747510016; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=bcj/X3NQQKiRCWNQgau3gp0LJcKkKCCKGjvzRGukiKQ=;
-        b=PHoSzX5XZe8Yd/rcDkqNfzDxAPew/IckhBhgYFV+nG/jlN73riUkTwoW/E4pY7bVty
-         VmMOofBBjIHyPNKf6II1bO+3XuVc2RNEwmfx/dWKGinjJV3Tt1fsIpg/18Z8Qw1pgjv6
-         z0raK1XtJ0NryuVZYnp9PZLlLP5/e8rr+9gxrdEU3JfWn6kgfRHk2IOZYIeOOJ/HwWir
-         btq48qOXb8M3YhXdS7KdOKJpCKboCWamv90yKu6ydW2fvOloI1yMMP+W0w816cnH0VFC
-         HN4B78SUZAMYXVRyvRHq+kfsBpkUcOHKmD2KPgBlj0P0meCdF3fdBTtg+XiLLMjnJLrw
-         NoLQ==
+        d=gmail.com; s=20230601; t=1746913082; x=1747517882; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SphYRkBChBiUqv8D5jExwQIWpEWmz41RFxXJvlPnzz8=;
+        b=bO0lrHtGOBKJg/eQ2/0hQS/oLN1Js+0g3DvCnpehCVWPgy9CY2HkEpTHofI50pl9Th
+         y/ogoWib0eb7wyPKGsvQmDoQZsRzmlNoItJ/zH9FTYfLMFIMyXr/JRIsbImkqgsFhOIp
+         zfM1kRkYQEPftNuYwD5fK4PNRmxNtMum5sLr+vUkZyqdVnTWeJ8IQRtIsLLOIg0uwzkB
+         fpBTyg8JVlnRlq0TBOKzJIOQOYHrKLDRbsmYC6KLoIl4qb91BzYhj66R6SfEURf3kSSL
+         OhGdWKoK0fx4t9Zzosak0SmBYmZQ/jOo2YpgmIj267TXNt1v8kj8TOHJDFHHuUrj+Inf
+         +dow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746905216; x=1747510016;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=bcj/X3NQQKiRCWNQgau3gp0LJcKkKCCKGjvzRGukiKQ=;
-        b=nQNyvCYYYaLzLiofOd6LI/ADtfShA+iL74Zpg1G4XM6LckF2XZiuuf2pwIgZFESBmD
-         JcF8copzOXmz/ZFFxdJMwQRSXobM1J6ZBHieIV/PQRXRKgSyrWuipwETE0VgZjHVLp2N
-         SCF70iud8nuiKIHfZJlJ7evYUVw37y5V0buGEW10LLMlOZoKKWoQfnIcwz0C/YCz1k3/
-         4qEIAJoHYeEAg8tTY73t47Zyair8SIx9qK1lN7fK/YXATWaxHVRzjfMafzm27ElqsG/n
-         gbDVNmPrQ16rh5gLhnloaBJ4vlv2JxRkrQ/ze9jg5lQ1rtb7MC0oYl1qdMfqGbnCqiv3
-         RqWg==
-X-Forwarded-Encrypted: i=1; AJvYcCVFMerwPIr8yhpaTPLvWad56TqCuR0uq0J9KBQWxsoyzF29Pw/EiDR80Rnh+deyePTKs7ttRF+ujC4=@vger.kernel.org, AJvYcCVjzo+2Uwz9slM49Rzzei/D70RbZ9JmsXfJ/GpUdht1o8hGC11fzKOaUMMv8Q/e1TvrRF85WziMt5cAs7G/@vger.kernel.org
-X-Gm-Message-State: AOJu0YyLrI/OB5VNabitZIgET1pF8zqv/vv3PYlQaMvGZxbLaWVfvRW4
-	Zisb1vLoqTMf/wJW4FPO5Y98PIPr4s1k974AE6JMgT/gzXO0mrNIgSmuTRTuVQuWl76FUruw3Av
-	FpyfWPcwxTzDVEIjguSdDGbDo6hpaY6dK
-X-Gm-Gg: ASbGncuJ/UXHJkUui7nw8eIjhfq7NxAVNNDg9X62w1ph6yetZ++VaEVaO45z5UrpgND
-	dJtzvGOyFoaWe35tZmIJSZ/CMUH2Qt/UCKBRgvPSHd/5IqWe7YvxHvRe3owMVbqPsJ4k2SzAm3X
-	10EgElwusAuqFy45NBI2gwJnPjDTDKNu5RDQ==
-X-Google-Smtp-Source: AGHT+IGrhXtlVVEciHcPFTbAk+wBjbumVRggzoQWtgXyfCyyfzQMnfec/ZV6Ao0h3Mb5X/WRbAgcuFYXrBfZBWU8rPQ=
-X-Received: by 2002:a17:90b:1807:b0:309:d115:b5f7 with SMTP id
- 98e67ed59e1d1-30c3d628b4bmr12976444a91.24.1746905216501; Sat, 10 May 2025
- 12:26:56 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1746913082; x=1747517882;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=SphYRkBChBiUqv8D5jExwQIWpEWmz41RFxXJvlPnzz8=;
+        b=ChVJ6qLx4pdYx66ZnczZ4V8XTaoVmmVjSR2cPxRY5pp3ArGGWE6p+LzV/BJFJuUUZs
+         FMuPNoizNwKJcvnqu8FUY3WXZcHYVS9xBRu8gAlpLZTrt+qq0n4cBO/yrOxFvyfh01YT
+         v44bhwq0yPs0Px0f+6fuSFfOYZWz0XckEB0RSFfMTHLwLPUtKOmZs9u3h1g/Ri432YF/
+         m4QC9vzs5E2/LrkKqtiO5E+mn5KdXj26kzV91ux4oYLznnmNIYy4Cpb7lqVznZ6ZBJgR
+         /9HobnpbF/gOOJ7UntB1C5nxOuMPVzI7ZNEbnA9xhC0VR64CJCf3bPfQ/Mj8iJG4nTd0
+         LuMQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUSLBB9KhoqKrB6DapkItXKPluWCXFhUwgBTdPfVzXTsr/+sGmZFZnBYcoeTiz+u0qyXxQTwRKXVKI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwVs7sdS56ZB10/oZToNbM8TsRh3bYxFTQLusk0J0o+PLcn6cbH
+	r8x0i8atoHIdhAzlJL13P73jE8VSK9BVD9cqwI0ul0QrOStbKaokVoB24Z4XjeNJmGEEv/sde/S
+	FT9lfED1cJ3HTFCm0cjAx6vtSkK2PhWDUMPs=
+X-Gm-Gg: ASbGnctERsGLFkylk9FjFBWC+UP4wwtv8VH2D2rib6mpH19tDXbNJQTSnNjrDO66XbG
+	+In75TRZIpX3kiOy46GQYhFoFwG2/vDHEH+BEA78bMTAy8I71ICjqZpa0BGdrs35dsNrr8C8QFU
+	mqA3Aw30jrZveUzov7VLxsC4e62JIlVyQL
+X-Google-Smtp-Source: AGHT+IFOvMcGK2vhxkEsLmkfo/oCF2QO+pxlEmKeECtO7YnjWJJ1Jo+K8t9YL7T1Vi7Q1NYSR/yL5DN+WDg44GoF4os=
+X-Received: by 2002:a17:906:9c8a:b0:ad1:fa48:da0a with SMTP id
+ a640c23a62f3a-ad2190552b5mr723578866b.35.1746913081658; Sat, 10 May 2025
+ 14:38:01 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250503190044.32511-1-gye976@gmail.com> <20250504152441.13772899@jic23-huawei>
- <CAKbEznvZ3BHJK8TjGg7MR2dDMtWk+gZ5SewF_u_J0=Nw6c082Q@mail.gmail.com> <20250507204026.11a260ef@jic23-huawei>
-In-Reply-To: <20250507204026.11a260ef@jic23-huawei>
-From: Gyeyoung Baek <gye976@gmail.com>
-Date: Sun, 11 May 2025 04:26:45 +0900
-X-Gm-Features: AX0GCFsG6PgGtzB3_8O8JLluNnvzL4cLhAL3S7w4CHtOkkGICcNnEpCPQ1Bhv20
-Message-ID: <CAKbEznvL3QbmfNDJsa6T2m=t+_JS=fx89WC7LJ04s1ecg2kH7A@mail.gmail.com>
-Subject: Re: [PATCH] iio: trigger: Add validation to reject devices requiring
- top half
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: David Lechner <dlechner@baylibre.com>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250509013931.47524-1-andrew.lopes@alumni.usp.br>
+ <CAHp75Ve7-hMUxrmXQnkMjynhPUbD6R+K=-j+h0zELvcxZdy5nw@mail.gmail.com> <CANZih_SYwX2vLO79iiLbH7QXNkMgsc6+4byPC4bV849=whkYMw@mail.gmail.com>
+In-Reply-To: <CANZih_SYwX2vLO79iiLbH7QXNkMgsc6+4byPC4bV849=whkYMw@mail.gmail.com>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Sun, 11 May 2025 00:37:25 +0300
+X-Gm-Features: AX0GCFtklTkS4pFaKQYTatzB3C_Yd6UDyWl4jJc9CmBnR8yP6Md-4a_oh331t5Q
+Message-ID: <CAHp75VcVM0fJ0XO2G71czFK_R3G0Vz+vm9pHxrftQ0tTPtHgvQ@mail.gmail.com>
+Subject: Re: [PATCH v3] iio: accel: sca3000: replace usages of internal read
+ data helpers by spi helpers
+To: Andrew Ijano <andrew.ijano@gmail.com>, David Lechner <dlechner@baylibre.com>, 
+	Jonathan Cameron <jic23@kernel.org>
+Cc: gustavobastos@usp.br, linux-iio <linux-iio@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hello Jonathan, the example drivers you pointed out have been good references.
-I appreciate your detailed comments.
++Cc: mailing list and other stakeholders back. You mistakenly sent
+this privately.
 
---
-Regards,
-Gyeyoung
+On Sat, May 10, 2025 at 9:56=E2=80=AFPM Andrew Ijano <andrew.ijano@gmail.co=
+m> wrote:
+> On Fri, May 9, 2025 at 6:06=E2=80=AFAM Andy Shevchenko
+> <andy.shevchenko@gmail.com> wrote:
+
+Also, this has some questions, so the new version of the patch will be
+ignored as we haven't settled this review down. Also it appears that
+some of my comments were ignored. Please, go via my initial reply and
+check all comments.
+
+...
+
+> > > -                       *val =3D sign_extend32(be16_to_cpup((__be16 *=
+)st->rx) >>
+> > > +                       *val =3D sign_extend32(be16_to_cpu((__be16) r=
+et) >>
+> >
+> > This doesn't look good, can you define a proper __be16 variable on
+> > stack and use it instead of ret?
+>
+> Yes! Also, sparse showed a warning about this casting between restricted =
+types.
+> Do you have a suggestion for how to handle this? Or is it safe to ignore =
+it?
+
+As I said above, define a properly typed local variable for this and
+do endianess conversions using it.
+
+--=20
+With Best Regards,
+Andy Shevchenko
 

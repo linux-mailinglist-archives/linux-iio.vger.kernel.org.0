@@ -1,78 +1,78 @@
-Return-Path: <linux-iio+bounces-19412-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19413-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03CC5AB25A1
-	for <lists+linux-iio@lfdr.de>; Sun, 11 May 2025 00:45:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C755FAB25A3
+	for <lists+linux-iio@lfdr.de>; Sun, 11 May 2025 00:45:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F9FC17A80A
-	for <lists+linux-iio@lfdr.de>; Sat, 10 May 2025 22:45:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 380C99E1BD8
+	for <lists+linux-iio@lfdr.de>; Sat, 10 May 2025 22:44:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF43D2192F4;
-	Sat, 10 May 2025 22:44:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AC8421ADC3;
+	Sat, 10 May 2025 22:44:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FK8p8nZU"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T0Ji0dII"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D104C2144C7;
-	Sat, 10 May 2025 22:44:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E846D217719;
+	Sat, 10 May 2025 22:44:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746917083; cv=none; b=miaHmxwvd1CStIamuJ2GqAOE8e3Pp0+HnYT73hNFkjHzHvGat3C/AuV7PL+6p1hXR5AHiqe0hTGSh+L9Zwh0igNag0V/qciJcDuEXerBKpqxRDDtDZ2HlU/Cl71RjlWBwBKfe3nKwne52QNMms4f75nsJ37tmsbwf1KlRCV2klk=
+	t=1746917085; cv=none; b=Ui5Kq2E35VsEWwaaYtY13+uHU8x+p9RgU5jrJ9/QNMqlhVByrzLs6zIk4Vayd/7hbZg2gIGhmrvu1ow/5BhH0d38jAIeZJXH0crBmCPilp0e6PYrDAYAL+7msbgDL7ZU/agODE8xWpkZGcG43UtzMRo/cBqhOSQ37FQX/+h0QBg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746917083; c=relaxed/simple;
-	bh=nD3kMmYbQmRIukyhs5O2pJl0UAXAPycvgRVQ22eP+sk=;
+	s=arc-20240116; t=1746917085; c=relaxed/simple;
+	bh=8KQC0TWXqIvCCF6ajMwFgZWvFYTt/EXi+/lxbNKX7Y4=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=k1cfAla0nMcdSmysbX6FDec3E00CiNotc6dOp1aEUrYqT+ZaQrWLLwDPgrtRVz/NBpj9syBNH4ZBwWfWeRqrw9yHl3T+K4KRNhhb3fWL5Iw3yuXHoJDLR1TlcPKKUAvqQ0M17uAnJk+lKPJTYO8LwKnOnDbLbFJr7cpNlMf1O1A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FK8p8nZU; arc=none smtp.client-ip=209.85.221.45
+	 MIME-Version; b=Nm4lVlK+csiSywKTZAgZcUkC53dUZtWC/G6DOEhpmwXjqFtib5eZwRogx5qHEXTtAUpr/nLGdmm0tVuXxibwGAwTGzo9FmOW/0NCzDPPFmRkJ4bM8ptOCo82K55nNzfeIDC8qz3OBDHt/7ZZTx92U+fRSGAqpGmPFGKb1Ii5cRs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T0Ji0dII; arc=none smtp.client-ip=209.85.128.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-3a0bcb1f1afso410742f8f.0;
-        Sat, 10 May 2025 15:44:41 -0700 (PDT)
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-43cfe99f2a7so4013355e9.2;
+        Sat, 10 May 2025 15:44:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746917080; x=1747521880; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1746917081; x=1747521881; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=0ZLhZirtRkSbpqjTR8RiHx2rLb1iz9QcvFtV8hE/w7A=;
-        b=FK8p8nZUZIVduWeirPSPn+xxATtPZnILHBL7uMWgNTQdgVBitgZDtMq7J7WyvqV/F6
-         GXQ2GeIOS5bkixxLgCdPl57zHCeY7PbiDteENx+v8TavORkMv4BtVJAR4TXN7W1arzg+
-         /dMIaDQxDemDrE83u9oKHRMsYzAlmvHd0oGQs31lJpjMn7HGUyM5ci2dlOi67G7k64Ub
-         g5sHdKyDBSVqXPvs2Q2bd5c658UoBnpg+giccqUETM0QtelOal9j8L9KlmbfzazUr3We
-         EdkuBIIGABuYgDpJbVZnRMSo4miyJMcGo4g9WINjZLLuIo+Pch/7Sj5rcw2gnV3BU5BC
-         TEmQ==
+        bh=t9lGv3RpTEO+CVygRuJVfKXfD/b84o8z4MvMG3CkyMU=;
+        b=T0Ji0dIIQSa8P4YYtX/dRoe0TITnS1ytH+e75WImyxCZ2cM/ot8SFXmgycNEnoAh3v
+         /3wrai4rQLGxKgJ1bwyJ9EOhQVFo1sm7nmOZ4pRJWxx0jDNIYLrwVckZXserFKK5Od9X
+         nmUNAlw8b6C1aoKEjAVESP0mVRFVW7Ot9ONsQQir/nOjP7y9ngtlca1sy3I+p6rmqUj8
+         T6WX8ompy5WJVBJjkysiUgCiEsHYn6zuNYs5BG1prYuVSQXLrZ3uG0BZ+4bHhqViQU2J
+         t3dvQ+0z8TbW3QDLKkiMtJmwawpNRluw27AFX2a+dwLKOybJ2t+mLgWiyHaL+5PvKv5z
+         3tFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746917080; x=1747521880;
+        d=1e100.net; s=20230601; t=1746917081; x=1747521881;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=0ZLhZirtRkSbpqjTR8RiHx2rLb1iz9QcvFtV8hE/w7A=;
-        b=hIU0veTSJ6WZCH25/7To3M/dfIyU9DcFGkbcjbMNtuUkPj+Jwuo+qT9AC7dxVX0Zkw
-         lI3JRwIMO+/X1JFKq5ZeqnCjd4FEX+nDDcalVvTsXDs6yQUsvdb4qFIB/49Ygz/tpV+/
-         YcFGzeG+gqTFb3wfjdSS3wygwZot151ChFwr6oqk+cpTjdIqqDduBLvjwOZzfj95wqgQ
-         FyCmotR+lTovSj1BU5E4Ux/FzoIP8woqa2r/H0SeVC00/FwYe5aaO+1xI8QyNFl5MwhN
-         qjoM/k99Ec005qTbIzNJkCM5oZHRFW2HKKD58Ac4A66xjlq06iDdlgbwAJAR3uhsj1zo
-         uNmQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWph+upH8ku3tcSiqZxnNilrR7aa4CMaDlfn7uZsXmVlc0XYv6Zgz5JGkr4XYYu0KD3/6YtdDQv7Yzzmj4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YygmAdbir15tusPtP1gshbHSnMq+3xGYCpaUPEVnfPEX+V9hhsk
-	K4c13aDA20dIvBmfuNWHOAY8IYtJyePQ9znv7rOoFiqrEFImoDiJ
-X-Gm-Gg: ASbGnctjPALlHr3Ix3AlgH/QEEdHomHmGNmRVV2yMv8Zis9uE6Xe2dvp64ggGC6A0NK
-	H+9lngcFFwQNE7V3J4wO7ZrczDC/7est8snBTZdlw6KFbUomrC9f1F89nSYBssqRIPxPEJIMt5U
-	UTyIP6thQDLNH78Y+xXIIp833uKjFL9KwMaZEpu8fPnAS8no/xQF96UYzDFo4Rnlw/KTrRe8Ake
-	jOGzaepl4pxODtvzAYPMGkWTazLOx9BGaxL6uQ0HAIgEjZyWCHLXV+X5o+bUXgPBlUheJVPdpjt
-	uwfda/EC12toEmpg94LBm9gSdfJv4D8LxXqz3QSYYMVQWtfJVQjRJz+1DZElaWZK9OsIr0hFyq8
-	VM/LyG6YsF2/NpoMhRGFmuw==
-X-Google-Smtp-Source: AGHT+IF34pL4GhZChggXGyxnA/TdYhJ9WaZyL0Tts5Hz/cE+MR3XtQEN5CqxBjHFuLjB93hbF62hPQ==
-X-Received: by 2002:a5d:5f91:0:b0:39c:30d9:48 with SMTP id ffacd0b85a97d-3a1f643c674mr2408202f8f.6.1746917079472;
-        Sat, 10 May 2025 15:44:39 -0700 (PDT)
+        bh=t9lGv3RpTEO+CVygRuJVfKXfD/b84o8z4MvMG3CkyMU=;
+        b=PNnqytKtYZGCMHvzeXlCDjApbNnoSHqigBEoDuWtrVP4spu8GlJDTgW3pi46CM+/Tr
+         AlrT+uCHTXyS76N2HanUVJvojohbjCZdChw9jk5mpy3DB6L+DHjgZPPD9dt5vcey6dP8
+         lDDJBYg3L86GHsY80V31/y8tP7RDjMMIaoYHF180WRVtUji01iUlQiaAJShzNkxm0S0d
+         MRxt/4jBGRV4rAqrC/h+WTedxVLZcvjtGrvDCi/jhs1oT/AuTGgoilkOGjmMjXTc4Ieh
+         p3hQiIb4HCsMq49toFm9m2dfe3r9/ftnru6TMKzw1Sb2RI+gHnaCavOlqTOoynHjB6VS
+         /Pyw==
+X-Forwarded-Encrypted: i=1; AJvYcCX6ykwyt7HYFGN9MLR0Yt0cuhi6b3yWp5wcmE/eKFQyszaTTe01efw9Iz4Vrdv1s9hHDWBRiNoGIEivd6Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx+ddQ36D2gn5/rHBRAdTs+z7KojDHCYm4l0lTfpjpDYgdh+LiA
+	pFnBKckpjjSHzT+HNc/eTJ7l8ACH6xkkVFu9kJ9g8RHDGUt8H/DtXnLtU8Rb
+X-Gm-Gg: ASbGncuI0YbeY+nUQOH5jvbz+HjFmIpPnhUY+hg4iuScyZ8EYSRZJ5Es82VexUDxqix
+	65QlrNjuSo5YDFn18T+A2SZoC1Fz3hs4vV/wmwB0+pnA24ybftzIyic/MoIp1YWTJnFJ3BUFI9E
+	OMSryzCiaPX2LbZ1ajAdMIpbPMIhK2IvzKJvQsWhFQwW7Wv1dstqeGowGUFY5dLjjPRyl5W/YfS
+	BsuOmOXMdPfpzGFskyLouKsIaYbBTIuh9zMp8qVP4t8ZYc7awM25o2FUdWudnrB3o4nFO6o4Ha2
+	KuqI6COMrTwyFbwkLOZMUFpioKoBYfY25U9OwShZeUwOUoNS9tuWSWAovM+U3lHPugLA8I/VOVm
+	O8mhUY97hWeuM/bHtWB8Zog==
+X-Google-Smtp-Source: AGHT+IF+o+cVHi/fvzp7TCXsNMKu4h6YRUWz7yM6FJ0YxJisWLRe1iKzVpvPsJYDY+1Uv1EIDmky4g==
+X-Received: by 2002:a5d:5f8f:0:b0:3a0:75ff:261f with SMTP id ffacd0b85a97d-3a1f6487679mr2088787f8f.11.1746917081204;
+        Sat, 10 May 2025 15:44:41 -0700 (PDT)
 Received: from localhost.localdomain (84-72-156-211.dclient.hispeed.ch. [84.72.156.211])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a1f58f2f65sm7701015f8f.55.2025.05.10.15.44.37
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a1f58f2f65sm7701015f8f.55.2025.05.10.15.44.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 10 May 2025 15:44:38 -0700 (PDT)
+        Sat, 10 May 2025 15:44:40 -0700 (PDT)
 From: Lothar Rubusch <l.rubusch@gmail.com>
 To: lars@metafoo.de,
 	Michael.Hennerich@analog.com,
@@ -81,9 +81,9 @@ Cc: linux-iio@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	eraretuya@gmail.com,
 	l.rubusch@gmail.com
-Subject: [PATCH v8 2/7] iio: accel: adxl345: add g-range configuration
-Date: Sat, 10 May 2025 22:44:00 +0000
-Message-Id: <20250510224405.17910-3-l.rubusch@gmail.com>
+Subject: [PATCH v8 3/7] iio: accel: adxl345: add activity event feature
+Date: Sat, 10 May 2025 22:44:01 +0000
+Message-Id: <20250510224405.17910-4-l.rubusch@gmail.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250510224405.17910-1-l.rubusch@gmail.com>
 References: <20250510224405.17910-1-l.rubusch@gmail.com>
@@ -95,176 +95,357 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Introduce a mechanism to be able to configure and work with the available
-g-ranges keeping the precision of 13 digits.
+Make the sensor detect and issue interrupts at activity. Activity
+events are configured by a threshold stored in regmap cache. Initialize
+the activity threshold register to a reasonable default value in probe.
+The value is taken from the older ADXL345 input driver, to provide a
+similar behavior. Reset the activity/inactivity direction enabling
+register in probe. Reset and initialization shall bring the sensor in a
+defined initial state to prevent dangling settings when warm restarting
+the sensor.
+
+Activity, ODR configuration together with the range setting prepare the
+activity/inactivity hystersesis setup, implemented in a follow up patch.
 
 Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
 ---
- drivers/iio/accel/adxl345_core.c | 82 ++++++++++++++++++++++++++++++--
- 1 file changed, 79 insertions(+), 3 deletions(-)
+ drivers/iio/accel/adxl345_core.c | 218 ++++++++++++++++++++++++++++++-
+ 1 file changed, 215 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/iio/accel/adxl345_core.c b/drivers/iio/accel/adxl345_core.c
-index bbdc9d10d962..7c093c0241de 100644
+index 7c093c0241de..32d014bd1e52 100644
 --- a/drivers/iio/accel/adxl345_core.c
 +++ b/drivers/iio/accel/adxl345_core.c
-@@ -83,6 +83,13 @@ enum adxl345_odr {
- 	ADXL345_ODR_3200HZ,
+@@ -36,11 +36,16 @@
+ #define ADXL345_REG_TAP_AXIS_MSK	GENMASK(2, 0)
+ #define ADXL345_REG_TAP_SUPPRESS_MSK	BIT(3)
+ #define ADXL345_REG_TAP_SUPPRESS	BIT(3)
++#define ADXL345_REG_ACT_AXIS_MSK	GENMASK(6, 4)
+ 
+ #define ADXL345_TAP_Z_EN		BIT(0)
+ #define ADXL345_TAP_Y_EN		BIT(1)
+ #define ADXL345_TAP_X_EN		BIT(2)
+ 
++#define ADXL345_ACT_Z_EN		BIT(4)
++#define ADXL345_ACT_Y_EN		BIT(5)
++#define ADXL345_ACT_X_EN		BIT(6)
++
+ /* single/double tap */
+ enum adxl345_tap_type {
+ 	ADXL345_SINGLE_TAP,
+@@ -64,6 +69,19 @@ static const unsigned int adxl345_tap_time_reg[] = {
+ 	[ADXL345_TAP_TIME_DUR] = ADXL345_REG_DUR,
  };
  
-+enum adxl345_range {
-+	ADXL345_2G_RANGE = 0,
-+	ADXL345_4G_RANGE,
-+	ADXL345_8G_RANGE,
-+	ADXL345_16G_RANGE,
++/* activity/inactivity */
++enum adxl345_activity_type {
++	ADXL345_ACTIVITY,
 +};
 +
- /* Certain features recommend 12.5 Hz - 400 Hz ODR */
- static const int adxl345_odr_tbl[][2] = {
- 	[ADXL345_ODR_0P10HZ]	= {    0,  97000 },
-@@ -103,6 +110,25 @@ static const int adxl345_odr_tbl[][2] = {
- 	[ADXL345_ODR_3200HZ]	= { 3200, 0 },
++static const unsigned int adxl345_act_int_reg[] = {
++	[ADXL345_ACTIVITY] = ADXL345_INT_ACTIVITY,
++};
++
++static const unsigned int adxl345_act_thresh_reg[] = {
++	[ADXL345_ACTIVITY] = ADXL345_REG_THRESH_ACT,
++};
++
+ enum adxl345_odr {
+ 	ADXL345_ODR_0P10HZ = 0,
+ 	ADXL345_ODR_0P20HZ,
+@@ -145,6 +163,13 @@ struct adxl345_state {
  };
  
-+/*
-+ * Full resolution frequency table:
-+ * (g * 2 * 9.80665) / (2^(resolution) - 1)
-+ *
-+ * resolution := 13 (full)
-+ * g := 2|4|8|16
-+ *
-+ *  2g at 13bit: 0.004789
-+ *  4g at 13bit: 0.009578
-+ *  8g at 13bit: 0.019156
-+ * 16g at 16bit: 0.038312
-+ */
-+static const int adxl345_fullres_range_tbl[][2] = {
-+	[ADXL345_2G_RANGE]  = { 0, 4789 },
-+	[ADXL345_4G_RANGE]  = { 0, 9578 },
-+	[ADXL345_8G_RANGE]  = { 0, 19156 },
-+	[ADXL345_16G_RANGE] = { 0, 38312 },
-+};
-+
- struct adxl345_state {
- 	const struct adxl345_chip_info *info;
- 	struct regmap *regmap;
-@@ -146,7 +172,8 @@ static struct iio_event_spec adxl345_events[] = {
- 		BIT(IIO_CHAN_INFO_CALIBBIAS),				\
- 	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE) |		\
- 		BIT(IIO_CHAN_INFO_SAMP_FREQ),				\
--	.info_mask_shared_by_type_available = BIT(IIO_CHAN_INFO_SAMP_FREQ),		\
-+	.info_mask_shared_by_type_available = BIT(IIO_CHAN_INFO_SCALE) | \
-+		BIT(IIO_CHAN_INFO_SAMP_FREQ),		\
- 	.scan_index = (index),				\
- 	.scan_type = {					\
- 		.sign = 's',				\
-@@ -446,12 +473,40 @@ static int adxl345_set_odr(struct adxl345_state *st, enum adxl345_odr odr)
- 				 FIELD_PREP(ADXL345_BW_RATE_MSK, odr));
+ static struct iio_event_spec adxl345_events[] = {
++	{
++		/* activity */
++		.type = IIO_EV_TYPE_MAG,
++		.dir = IIO_EV_DIR_RISING,
++		.mask_separate = BIT(IIO_EV_INFO_ENABLE),
++		.mask_shared_by_type = BIT(IIO_EV_INFO_VALUE),
++	},
+ 	{
+ 		/* single tap */
+ 		.type = IIO_EV_TYPE_GESTURE,
+@@ -239,6 +264,99 @@ static int adxl345_set_measure_en(struct adxl345_state *st, bool en)
+ 	return regmap_write(st->regmap, ADXL345_REG_POWER_CTL, val);
  }
  
-+static int adxl345_find_range(struct adxl345_state *st, int val, int val2,
-+			      enum adxl345_range *range)
++/* act/inact */
++
++static int adxl345_is_act_inact_en(struct adxl345_state *st,
++				   enum iio_modifier axis,
++				   enum adxl345_activity_type type, bool *en)
 +{
-+	int i;
++	unsigned int regval;
++	u32 axis_ctrl;
++	int ret;
 +
-+	for (i = 0; i < ARRAY_SIZE(adxl345_fullres_range_tbl); i++) {
-+		if (val == adxl345_fullres_range_tbl[i][0] &&
-+		    val2 == adxl345_fullres_range_tbl[i][1]) {
-+			*range = i;
-+			return 0;
-+		}
-+	}
-+
-+	return -EINVAL;
-+}
-+
-+static int adxl345_set_range(struct adxl345_state *st, enum adxl345_range range)
-+{
-+	return regmap_update_bits(st->regmap, ADXL345_REG_DATA_FORMAT,
-+				 ADXL345_DATA_FORMAT_RANGE,
-+				 FIELD_PREP(ADXL345_DATA_FORMAT_RANGE, range));
-+}
-+
- static int adxl345_read_avail(struct iio_dev *indio_dev,
- 			      struct iio_chan_spec const *chan,
- 			      const int **vals, int *type,
- 			      int *length, long mask)
- {
- 	switch (mask) {
-+	case IIO_CHAN_INFO_SCALE:
-+		*vals = (int *)adxl345_fullres_range_tbl;
-+		*type = IIO_VAL_INT_PLUS_MICRO;
-+		*length = ARRAY_SIZE(adxl345_fullres_range_tbl) * 2;
-+		return IIO_AVAIL_LIST;
- 	case IIO_CHAN_INFO_SAMP_FREQ:
- 		*vals = (int *)adxl345_odr_tbl;
- 		*type = IIO_VAL_INT_PLUS_MICRO;
-@@ -470,6 +525,7 @@ static int adxl345_read_raw(struct iio_dev *indio_dev,
- 	__le16 accel;
- 	unsigned int regval;
- 	enum adxl345_odr odr;
-+	enum adxl345_range range;
- 	int ret;
- 
- 	switch (mask) {
-@@ -488,8 +544,12 @@ static int adxl345_read_raw(struct iio_dev *indio_dev,
- 		*val = sign_extend32(le16_to_cpu(accel), 12);
- 		return IIO_VAL_INT;
- 	case IIO_CHAN_INFO_SCALE:
--		*val = 0;
--		*val2 = st->info->uscale;
-+		ret = regmap_read(st->regmap, ADXL345_REG_DATA_FORMAT, &regval);
-+		if (ret)
-+			return ret;
-+		range = FIELD_GET(ADXL345_DATA_FORMAT_RANGE, regval);
-+		*val = adxl345_fullres_range_tbl[range][0];
-+		*val2 = adxl345_fullres_range_tbl[range][1];
- 		return IIO_VAL_INT_PLUS_MICRO;
- 	case IIO_CHAN_INFO_CALIBBIAS:
- 		ret = regmap_read(st->regmap,
-@@ -521,6 +581,7 @@ static int adxl345_write_raw(struct iio_dev *indio_dev,
- 			     int val, int val2, long mask)
- {
- 	struct adxl345_state *st = iio_priv(indio_dev);
-+	enum adxl345_range range;
- 	enum adxl345_odr odr;
- 	int ret;
- 
-@@ -549,6 +610,15 @@ static int adxl345_write_raw(struct iio_dev *indio_dev,
- 		if (ret)
- 			return ret;
- 		break;
-+	case IIO_CHAN_INFO_SCALE:
-+		ret = adxl345_find_range(st, val, val2,	&range);
-+		if (ret)
-+			return ret;
-+
-+		ret = adxl345_set_range(st, range);
-+		if (ret)
-+			return ret;
-+		break;
- 	default:
- 		return -EINVAL;
- 	}
-@@ -741,6 +811,8 @@ static int adxl345_write_raw_get_fmt(struct iio_dev *indio_dev,
- 	switch (mask) {
- 	case IIO_CHAN_INFO_CALIBBIAS:
- 		return IIO_VAL_INT;
-+	case IIO_CHAN_INFO_SCALE:
-+		return IIO_VAL_INT_PLUS_MICRO;
- 	case IIO_CHAN_INFO_SAMP_FREQ:
- 		return IIO_VAL_INT_PLUS_MICRO;
- 	default:
-@@ -1083,6 +1155,10 @@ int adxl345_core_probe(struct device *dev, struct regmap *regmap,
- 	if (ret)
- 		return ret;
- 
-+	ret = adxl345_set_range(st, ADXL345_16G_RANGE);
++	ret = regmap_read(st->regmap, ADXL345_REG_ACT_INACT_CTRL, &axis_ctrl);
 +	if (ret)
 +		return ret;
 +
- 	/* Reset interrupts at start up */
- 	ret = regmap_write(st->regmap, ADXL345_REG_INT_ENABLE, 0x00);
++	if (type == ADXL345_ACTIVITY) {
++		switch (axis) {
++		case IIO_MOD_X:
++			*en = FIELD_GET(ADXL345_ACT_X_EN, axis_ctrl);
++			break;
++		case IIO_MOD_Y:
++			*en = FIELD_GET(ADXL345_ACT_Y_EN, axis_ctrl);
++			break;
++		case IIO_MOD_Z:
++			*en = FIELD_GET(ADXL345_ACT_Z_EN, axis_ctrl);
++			break;
++		default:
++			*en = false;
++			return -EINVAL;
++		}
++	}
++
++	if (*en) {
++		ret = regmap_read(st->regmap, ADXL345_REG_INT_ENABLE, &regval);
++		if (ret)
++			return ret;
++
++		*en = adxl345_act_int_reg[type] & regval;
++	}
++
++	return 0;
++}
++
++static int adxl345_set_act_inact_en(struct adxl345_state *st,
++				    enum iio_modifier axis,
++				    enum adxl345_activity_type type,
++				    bool cmd_en)
++{
++	bool en;
++	unsigned int threshold;
++	u32 axis_ctrl = 0;
++	int ret;
++
++	if (type == ADXL345_ACTIVITY) {
++		switch (axis) {
++		case IIO_MOD_X:
++			axis_ctrl = ADXL345_ACT_X_EN;
++			break;
++		case IIO_MOD_Y:
++			axis_ctrl = ADXL345_ACT_Y_EN;
++			break;
++		case IIO_MOD_Z:
++			axis_ctrl = ADXL345_ACT_Z_EN;
++			break;
++		default:
++			return -EINVAL;
++		}
++	}
++
++	if (cmd_en)
++		ret = regmap_set_bits(st->regmap,
++				      ADXL345_REG_ACT_INACT_CTRL, axis_ctrl);
++	else
++		ret = regmap_clear_bits(st->regmap,
++					ADXL345_REG_ACT_INACT_CTRL, axis_ctrl);
++	if (ret)
++		return ret;
++
++	ret = regmap_read(st->regmap, adxl345_act_thresh_reg[type], &threshold);
++	if (ret)
++		return ret;
++
++	en = false;
++
++	if (type == ADXL345_ACTIVITY) {
++		en = FIELD_GET(ADXL345_REG_ACT_AXIS_MSK, axis_ctrl) &&
++			threshold;
++	}
++
++	return regmap_update_bits(st->regmap, ADXL345_REG_INT_ENABLE,
++				  adxl345_act_int_reg[type],
++				  en ? adxl345_act_int_reg[type] : 0);
++}
++
+ /* tap */
+ 
+ static int _adxl345_set_tap_int(struct adxl345_state *st,
+@@ -636,6 +754,18 @@ static int adxl345_read_event_config(struct iio_dev *indio_dev,
+ 	int ret;
+ 
+ 	switch (type) {
++	case IIO_EV_TYPE_MAG:
++		switch (dir) {
++		case IIO_EV_DIR_RISING:
++			ret = adxl345_is_act_inact_en(st, chan->channel2,
++						      ADXL345_ACTIVITY,
++						      &int_en);
++			if (ret)
++				return ret;
++			return int_en;
++		default:
++			return -EINVAL;
++		}
+ 	case IIO_EV_TYPE_GESTURE:
+ 		switch (dir) {
+ 		case IIO_EV_DIR_SINGLETAP:
+@@ -667,6 +797,15 @@ static int adxl345_write_event_config(struct iio_dev *indio_dev,
+ 	struct adxl345_state *st = iio_priv(indio_dev);
+ 
+ 	switch (type) {
++	case IIO_EV_TYPE_MAG:
++		switch (dir) {
++		case IIO_EV_DIR_RISING:
++			return adxl345_set_act_inact_en(st, chan->channel2,
++							ADXL345_ACTIVITY,
++							state);
++		default:
++			return -EINVAL;
++		}
+ 	case IIO_EV_TYPE_GESTURE:
+ 		switch (dir) {
+ 		case IIO_EV_DIR_SINGLETAP:
+@@ -689,10 +828,30 @@ static int adxl345_read_event_value(struct iio_dev *indio_dev,
+ 				    int *val, int *val2)
+ {
+ 	struct adxl345_state *st = iio_priv(indio_dev);
++	unsigned int act_threshold;
+ 	unsigned int tap_threshold;
+ 	int ret;
+ 
+ 	switch (type) {
++	case IIO_EV_TYPE_MAG:
++		switch (info) {
++		case IIO_EV_INFO_VALUE:
++			switch (dir) {
++			case IIO_EV_DIR_RISING:
++				ret = regmap_read(st->regmap,
++						  adxl345_act_thresh_reg[ADXL345_ACTIVITY],
++						  &act_threshold);
++				if (ret)
++					return ret;
++
++				*val = act_threshold;
++				return IIO_VAL_INT;
++			default:
++				return -EINVAL;
++			}
++		default:
++			return -EINVAL;
++		}
+ 	case IIO_EV_TYPE_GESTURE:
+ 		switch (info) {
+ 		case IIO_EV_INFO_VALUE:
+@@ -743,6 +902,25 @@ static int adxl345_write_event_value(struct iio_dev *indio_dev,
+ 		return ret;
+ 
+ 	switch (type) {
++	case IIO_EV_TYPE_MAG:
++		switch (info) {
++		case IIO_EV_INFO_VALUE:
++			switch (dir) {
++			case IIO_EV_DIR_RISING:
++				ret = regmap_write(st->regmap,
++						   adxl345_act_thresh_reg[ADXL345_ACTIVITY],
++						   val);
++				if (ret)
++					return ret;
++				break;
++			default:
++				return -EINVAL;
++			}
++			break;
++		default:
++			return -EINVAL;
++		}
++		break;
+ 	case IIO_EV_TYPE_GESTURE:
+ 		switch (info) {
+ 		case IIO_EV_INFO_VALUE:
+@@ -985,7 +1163,8 @@ static int adxl345_fifo_push(struct iio_dev *indio_dev,
+ }
+ 
+ static int adxl345_push_event(struct iio_dev *indio_dev, int int_stat,
+-			      enum iio_modifier tap_dir)
++			      enum iio_modifier tap_dir,
++			      enum iio_modifier act_dir)
+ {
+ 	s64 ts = iio_get_time_ns(indio_dev);
+ 	struct adxl345_state *st = iio_priv(indio_dev);
+@@ -1012,6 +1191,16 @@ static int adxl345_push_event(struct iio_dev *indio_dev, int int_stat,
+ 			return ret;
+ 	}
+ 
++	if (FIELD_GET(ADXL345_INT_ACTIVITY, int_stat)) {
++		ret = iio_push_event(indio_dev,
++				     IIO_MOD_EVENT_CODE(IIO_ACCEL, 0, act_dir,
++							IIO_EV_TYPE_MAG,
++							IIO_EV_DIR_RISING),
++				     ts);
++		if (ret)
++			return ret;
++	}
++
+ 	if (FIELD_GET(ADXL345_INT_WATERMARK, int_stat)) {
+ 		samples = adxl345_get_samples(st);
+ 		if (samples < 0)
+@@ -1039,6 +1228,7 @@ static irqreturn_t adxl345_irq_handler(int irq, void *p)
+ 	struct adxl345_state *st = iio_priv(indio_dev);
+ 	unsigned int regval;
+ 	enum iio_modifier tap_dir = IIO_NO_MOD;
++	enum iio_modifier act_dir = IIO_NO_MOD;
+ 	u32 axis_ctrl;
+ 	int int_stat;
+ 	int ret;
+@@ -1047,7 +1237,8 @@ static irqreturn_t adxl345_irq_handler(int irq, void *p)
  	if (ret)
+ 		return IRQ_NONE;
+ 
+-	if (FIELD_GET(ADXL345_REG_TAP_AXIS_MSK, axis_ctrl)) {
++	if (FIELD_GET(ADXL345_REG_TAP_AXIS_MSK, axis_ctrl) ||
++	    FIELD_GET(ADXL345_REG_ACT_AXIS_MSK, axis_ctrl)) {
+ 		ret = regmap_read(st->regmap, ADXL345_REG_ACT_TAP_STATUS, &regval);
+ 		if (ret)
+ 			return IRQ_NONE;
+@@ -1058,12 +1249,19 @@ static irqreturn_t adxl345_irq_handler(int irq, void *p)
+ 			tap_dir = IIO_MOD_Y;
+ 		else if (FIELD_GET(ADXL345_TAP_X_EN, regval))
+ 			tap_dir = IIO_MOD_X;
++
++		if (FIELD_GET(ADXL345_ACT_Z_EN, regval))
++			act_dir = IIO_MOD_Z;
++		else if (FIELD_GET(ADXL345_ACT_Y_EN, regval))
++			act_dir = IIO_MOD_Y;
++		else if (FIELD_GET(ADXL345_ACT_X_EN, regval))
++			act_dir = IIO_MOD_X;
+ 	}
+ 
+ 	if (regmap_read(st->regmap, ADXL345_REG_INT_SOURCE, &int_stat))
+ 		return IRQ_NONE;
+ 
+-	if (adxl345_push_event(indio_dev, int_stat, tap_dir))
++	if (adxl345_push_event(indio_dev, int_stat, tap_dir, act_dir))
+ 		goto err;
+ 
+ 	if (FIELD_GET(ADXL345_INT_OVERRUN, int_stat))
+@@ -1224,6 +1422,20 @@ int adxl345_core_probe(struct device *dev, struct regmap *regmap,
+ 		if (ret)
+ 			return ret;
+ 
++		/*
++		 * Initialization with reasonable values to simplify operation
++		 * of the sensor. The default values are partly taken from the
++		 * older input driver for the ADXL345, and partly based on
++		 * recommendations in the datasheet.
++		 */
++		ret = regmap_write(st->regmap, ADXL345_REG_ACT_INACT_CTRL, 0);
++		if (ret)
++			return ret;
++
++		ret = regmap_write(st->regmap, ADXL345_REG_THRESH_ACT, 6);
++		if (ret)
++			return ret;
++
+ 		ret = regmap_write(st->regmap, ADXL345_REG_THRESH_TAP, tap_threshold);
+ 		if (ret)
+ 			return ret;
 -- 
 2.39.5
 

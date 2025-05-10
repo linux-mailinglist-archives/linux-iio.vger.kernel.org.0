@@ -1,78 +1,78 @@
-Return-Path: <linux-iio+bounces-19415-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19416-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4AE7AB25A7
-	for <lists+linux-iio@lfdr.de>; Sun, 11 May 2025 00:45:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCF9CAB25A9
+	for <lists+linux-iio@lfdr.de>; Sun, 11 May 2025 00:45:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0320A9E1452
-	for <lists+linux-iio@lfdr.de>; Sat, 10 May 2025 22:45:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1EB9D1B60DC2
+	for <lists+linux-iio@lfdr.de>; Sat, 10 May 2025 22:45:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97B942222B9;
-	Sat, 10 May 2025 22:44:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F7BF223335;
+	Sat, 10 May 2025 22:44:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cC1EVwbC"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CbGBJNeb"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08151220F24;
-	Sat, 10 May 2025 22:44:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEC1E213E8E;
+	Sat, 10 May 2025 22:44:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746917089; cv=none; b=tWHjAgdljaBW8dnkhxiT0MiGY0xC8ghh0MJIo1cpAXZMJXO3YFvIMmHxQZ1d+H9ySQ36ozPxTPCb/n8QXGHjEvaXgvXXzfPRRTCThw+t1FBPJYuxapAzJMeqf7rYEcZZtMROOKtrS3rF7FE+eswxUjgYQ49tHAxi3cLX24lgo5o=
+	t=1746917090; cv=none; b=C5+uGwW0RlYH6sLDltIOyx35uZkALy5oHPSkp1qZhLJ75H7zjoUj1hpCZ9g0Bh1BSaXYTNRgMhw3dT4c8SmIpYUahLuR4eQYU7tOaAOKcdzqNiV0LXPGuPvyR2ArobxWrjadhnkW+OTNAVNyjHOLxnz9/WUcOlPhpc5G7JLC4PM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746917089; c=relaxed/simple;
-	bh=804Ek70/ZGmvi349/t64PO/HGS2Wt9z08xXqQ/rSBD4=;
+	s=arc-20240116; t=1746917090; c=relaxed/simple;
+	bh=4cCrXv7PqnLYXsDYHVGS4wgMfsUAbmAFmbPpeLAblRg=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=IYWYIjhnfh0vBceIr/Zbq5jJke6s98D+yXmS7SKoXZGBVJQd6h6VCd1LCQ4Giodfr4hSUUUMawW0qiINddFA3u846YJTYQIsc2P2NCCYU+MozbzSkbgTeGNs3L8uJd6UdJn3LkY//nBvpBi+0qMiQx4bEl6QNF78r0mmVZPz4tw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cC1EVwbC; arc=none smtp.client-ip=209.85.221.49
+	 MIME-Version; b=DY1dokuITTj8S8j3us3f+w0CfyAQX9THR7DpThVEMbbEI1zo3fb03ZN8YfGbti3mmjOoT8A6I/mXYkR+C7Ab0yDQwH/zE1Xp/hPTXItEEi/F526oUrn7fwKSmEoebHeGRAMIXcY0NGKwVTfN54vRibGL3mMdEIVCg82yxIvUsCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CbGBJNeb; arc=none smtp.client-ip=209.85.221.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-3a0b77ea855so470544f8f.3;
-        Sat, 10 May 2025 15:44:46 -0700 (PDT)
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-3a0b201faedso317717f8f.0;
+        Sat, 10 May 2025 15:44:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746917085; x=1747521885; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1746917087; x=1747521887; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=lABvRLlLyNPJg5J8U59g526kzNEubv4RkuPVEwpVoN8=;
-        b=cC1EVwbC/vJRpiInm1QpP3G/dHBhKWG4D0syIbLUXoMzwM33K9WBIymSR35VYCZKtN
-         5oIGadwU4tzClPn0CAXo5vzkLEP3tF4NDUfgKPxwXfrNPb5RoMARBFx4aCuxAYhr18oW
-         7qHG1+6o9K3CT6NN3uYUkV0hguFXeGMEXQ+94lvuJ6EwuAnMBwAC/8VM60/woYzy4zob
-         m1z/hPREn5uqyEPlbSn4SUWXGWG+iPXEFsRGbmhBtE4PvKhcF1OU030eGIVxtm0JiJh0
-         AhdVBinISrODCSkbBUNeYQD8weuIlxi3slpYrkhyQz13ls+U0elIoNE6WTU8wMWLXqr7
-         szLQ==
+        bh=Lqzm7oJMiOVQKzBfgE1ECHlMCNzrhjvmVtbI/5TygPE=;
+        b=CbGBJNeb2ujoo2BDqS0xwe2ONWqnEn4onS/+SbCloAjy36BlyCxRR2jbteF2vLVofD
+         JRT7CWPdepXncvbW7ybtMr/kuRTnRvWOqk7rARNs7TSaXJuHGEn0AU84hq2TnM4v7v/Y
+         Fc40EOJjd/umy4kIlITjtgvloStjPHwTpE6rM2l46hl6JPBbjctaDAsZrOuSjQ53XuSQ
+         X/HjWT1YGDjPdNA155lb4NsyGAtERjxnv9y2NzdmEFQVoVGu0Fw2aYN888wdY9dNJeEK
+         rwpOUfwtyaPcMI3gghRlg6+dQfKyu3FnWqHTeWAXKSQzxaFY1hdNj5sLPjm6+udyTCtv
+         jgmg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746917085; x=1747521885;
+        d=1e100.net; s=20230601; t=1746917087; x=1747521887;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=lABvRLlLyNPJg5J8U59g526kzNEubv4RkuPVEwpVoN8=;
-        b=KGn3ffEkgWcqjTxpS0wjxsIrLQsyj1rTZQ3mmJnhjjrnyc6IlpGCTs3wpQDq745xEZ
-         Mn1NOkJBAKAvlWcQj1y/cl8V710V1X4ClbBCwksWKm0FDqWUUACt5ITUVIx6IT241r5C
-         uhYDOjsZnLv+6xHZSbprIIFnFquXtimqFpQXSHD1r+iPFUAk5sfCp978LXmdQSLmSyvx
-         lqFmhUhwr0XIzwesfWDOcYv+rx7vTo5xVPbUjO07qAIpG8Kr/p3iLIw/2Hz+B0MM+Maw
-         jitXJWlpc5Xrb7GarCxjvR+qGs3BziZPGVkKXHQ2WKLK+MvDfY6led+OVKOqfoJRii/D
-         POnw==
-X-Forwarded-Encrypted: i=1; AJvYcCVOuSDgl0zARktBFxpMjEd6Owk/D5XA8EondM/FNi6yeajRpumqPGsLXzEXsx2quW5oRx3vxFr3vFe9wI0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx808GSOL/3WQWttVpBc6/RMuz3vFtMJg7843jo82CbJS1HAeSu
-	EMyfld7WLLl4TTiq7H4ipvRqq/Tnd1QrTa3OmAbMPMeWm3GFRAGw
-X-Gm-Gg: ASbGncsNeYryHrqrzn8sBR1klU3kexGFQWLNS1FoQXvlgFierob2RtUeAi0osEeBNLZ
-	c4mJKlSpa9bAomdZYYpQFFo0YhbKSyIr9J5iycr+0s6vvEmFDl0aQjD+sAar3t1RFenm43P5ojE
-	L/SSf0lv+Cq6fNT1blz7G2a3i0Cp7ZURHb1LzmF43KUIv70l0J/vxq9GsLiExCtEblC/MGO5jYp
-	AkLPCzvAK2KX58dur6x66j+mZPGt85kYKMe59D6Rc1PAE9NuoxraSy1kWmbWbem/3M7EHCCmSiu
-	4RFewxOoUCV4T+AGQbbg3F4uazK/eQDVWdaL6gCyMe0bttNQIVbWAqDLe/3P+63AjqOxZ3y654d
-	rnNir3ogyxPCAzPVOU1hxoQ==
-X-Google-Smtp-Source: AGHT+IE5WLd8Dn3t4A7/BKyLeGoMptgfZMxj/wKFGUWtLm7RwZIIkM9zJxSm1XAF/zMcmtNuIeBtzQ==
-X-Received: by 2002:a5d:59a8:0:b0:3a0:9dd1:bb59 with SMTP id ffacd0b85a97d-3a1f64a1f8dmr2425868f8f.15.1746917085205;
-        Sat, 10 May 2025 15:44:45 -0700 (PDT)
+        bh=Lqzm7oJMiOVQKzBfgE1ECHlMCNzrhjvmVtbI/5TygPE=;
+        b=Bx38xS/EyhJBW7qMFaCsWJYQ8nW9OFRMcMlDopzCv5Fp9wQP3S4hAQAsOlHA1YObH+
+         EIib/mB4fw5KhwCzPaQRYlkMmXdmnDwaVitDHQYj597OnsXA9bZt8DW2F60GXBdFXwQA
+         ST260AAA3hCic8VG5lk0d1clC2ggtQv+ee2s7gOI2VVQLXx+LrGvW5RtWDVOyxAdZL/n
+         fOgqFaAWmb1uzMRyxqCplYfoW/zYUnqPL1/qLwizd22OGifjRSt79CKFX+/1y88JIVm5
+         gtgD+bh3ipJKDzV/Pyes2OIgozCu0jnVJpOnHd1H7F0gRP/HWm7JU9E59lC0oTPStqOB
+         nLXA==
+X-Forwarded-Encrypted: i=1; AJvYcCVgrnSQ27TTR1alJ2feU37HJCLRn4HzcXrHvedQb6h/MKKa67Ut4JZQhGBMI8YXnmrEMvWiY2kxlaXb3c4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwR4d9uDcGl26+Aq+0GzuEFqqUc3G981YNXKbtpxH8cgdv5JpBw
+	joE49an3Gurpcp92vnEYNSzqKzFDFDbCkg2m6NMD2zeusgZqEFYpON9jVg/f
+X-Gm-Gg: ASbGnctFKp1n62mDHuufktea6ZumDhDZYOiOQRsajpgDMXyFayuM5yEYB+zkn9lVp1+
+	H+NTkFkvty4FuYThnPTvsAqjmrq+UE0yjX2nqkWwKhhx9ksXj3wpMpUZrCbpPn9GU/KvjgR9e3W
+	Hu2LIvDXY0AsRh+QaxzGbzWE/LvFt+XWBu6IemoxFGLlDar6tkIib527zWhEN8+O1N2moLMhGz6
+	F4sVtQQ93q/bR1u4p8OwCPy/mLzuaXkSfhTbx8GNr1e8MMqdd5OFkZSHw0kdkd3za53dKacj020
+	LtwYyV35/QB/u5rHZok7hgRskVXRUWkP0YdDdYvzDXYQ1XznDdd18LqRgb3WBf5LtpAtD6tYpnE
+	TIDD8EtTNO05oujNrH7Ag9Q==
+X-Google-Smtp-Source: AGHT+IGOoGKVI9My26N4X2o7qC0/7+Tn1hXKo7wzVGhHRzdNRMkwTzgd2WCEhkLC/4nVJSemV/lVvw==
+X-Received: by 2002:a05:6000:2011:b0:39c:1efb:ee87 with SMTP id ffacd0b85a97d-3a1f648123fmr2195792f8f.12.1746917086865;
+        Sat, 10 May 2025 15:44:46 -0700 (PDT)
 Received: from localhost.localdomain (84-72-156-211.dclient.hispeed.ch. [84.72.156.211])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a1f58f2f65sm7701015f8f.55.2025.05.10.15.44.42
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a1f58f2f65sm7701015f8f.55.2025.05.10.15.44.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 10 May 2025 15:44:44 -0700 (PDT)
+        Sat, 10 May 2025 15:44:45 -0700 (PDT)
 From: Lothar Rubusch <l.rubusch@gmail.com>
 To: lars@metafoo.de,
 	Michael.Hennerich@analog.com,
@@ -81,9 +81,9 @@ Cc: linux-iio@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	eraretuya@gmail.com,
 	l.rubusch@gmail.com
-Subject: [PATCH v8 5/7] iio: accel: adxl345: add coupling detection for activity/inactivity
-Date: Sat, 10 May 2025 22:44:03 +0000
-Message-Id: <20250510224405.17910-6-l.rubusch@gmail.com>
+Subject: [PATCH v8 6/7] iio: accel: adxl345: add freefall feature
+Date: Sat, 10 May 2025 22:44:04 +0000
+Message-Id: <20250510224405.17910-7-l.rubusch@gmail.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250510224405.17910-1-l.rubusch@gmail.com>
 References: <20250510224405.17910-1-l.rubusch@gmail.com>
@@ -95,557 +95,304 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add coupling activity/inactivity detection by setting the AC/DC bit. This
-is an additional configuration to the activity and inactivity magnitude
-events, respectively. DC-coupled event generation takes the configured
-threshold values directly, where AC-coupled event generation references to
-the acceleration value at the start of the activity detection. New samples
-of acceleration are then compared to this reference.
+Add the freefall detection of the sensor together with a threshold and
+time parameter. A freefall magnitude event is detected if the measuring
+signal falls below the threshold.
 
-Both types are implemented using MAG for DC-coupled activity/inactivity,
-but MAG_REFERENCED for AC-coupled activity inactivity events. Threshold and
-periods are offerend by different sysfs handles, but share the same
-registers at the sensor. Thus activity and inactivity, respectively, cannot
-be configured with AC- and DC-coupling at the same time, e.g. configuring
-DC-coupled and AC-coupled activity will result in AC-coupled activity, or
-generally the most recent one being configured.
+Introduce a freefall threshold stored in regmap cache, and a freefall
+time, having the scaled time value stored as a member variable in the
+state instance.
+
+The generated IIO event is a magnitude event on x&y&z and thus identical
+to what inactivity (with DC-coupling default) would generate. Thus a
+separate set of sysfs handles are setup to configure and enable freefall
+events.
 
 Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
 ---
- drivers/iio/accel/adxl345_core.c | 362 +++++++++++++++++++++++++++++--
- 1 file changed, 346 insertions(+), 16 deletions(-)
+ drivers/iio/accel/adxl345_core.c | 226 +++++++++++++++++++++++++++++++
+ 1 file changed, 226 insertions(+)
 
 diff --git a/drivers/iio/accel/adxl345_core.c b/drivers/iio/accel/adxl345_core.c
-index ba68f304035a..c6f75d6b0db9 100644
+index c6f75d6b0db9..c35a5727852c 100644
 --- a/drivers/iio/accel/adxl345_core.c
 +++ b/drivers/iio/accel/adxl345_core.c
-@@ -37,7 +37,9 @@
- #define ADXL345_REG_TAP_SUPPRESS_MSK	BIT(3)
- #define ADXL345_REG_TAP_SUPPRESS	BIT(3)
- #define ADXL345_REG_ACT_AXIS_MSK	GENMASK(6, 4)
-+#define ADXL345_REG_ACT_ACDC_MSK	BIT(7)
- #define ADXL345_REG_INACT_AXIS_MSK	GENMASK(2, 0)
-+#define ADXL345_REG_INACT_ACDC_MSK	BIT(3)
- #define ADXL345_POWER_CTL_INACT_MSK	(ADXL345_POWER_CTL_AUTO_SLEEP | ADXL345_POWER_CTL_LINK)
+@@ -193,6 +193,7 @@ struct adxl345_state {
+ 	u32 tap_duration_us;
+ 	u32 tap_latent_us;
+ 	u32 tap_window_us;
++	u32 ff_time_ms;
  
- #define ADXL345_TAP_Z_EN		BIT(0)
-@@ -52,6 +54,9 @@
- #define ADXL345_ACT_Y_EN		BIT(5)
- #define ADXL345_ACT_X_EN		BIT(6)
+ 	__le16 fifo_buf[ADXL345_DIRS * ADXL345_FIFO_SIZE + 1] __aligned(IIO_DMA_MINALIGN);
+ };
+@@ -825,6 +826,63 @@ static int adxl345_set_tap_latent(struct adxl345_state *st, u32 val_int,
+ 	return _adxl345_set_tap_time(st, ADXL345_TAP_TIME_LATENT, val_fract_us);
+ }
  
-+#define ADXL345_ACT_INACT_DC		0
-+#define ADXL345_ACT_INACT_AC		1
++/* free-fall */
 +
- /* single/double tap */
- enum adxl345_tap_type {
- 	ADXL345_SINGLE_TAP,
-@@ -79,16 +84,29 @@ static const unsigned int adxl345_tap_time_reg[] = {
- enum adxl345_activity_type {
- 	ADXL345_ACTIVITY,
- 	ADXL345_INACTIVITY,
-+	ADXL345_ACTIVITY_AC,
-+	ADXL345_INACTIVITY_AC,
- };
- 
- static const unsigned int adxl345_act_int_reg[] = {
- 	[ADXL345_ACTIVITY] = ADXL345_INT_ACTIVITY,
- 	[ADXL345_INACTIVITY] = ADXL345_INT_INACTIVITY,
-+	[ADXL345_ACTIVITY_AC] = ADXL345_INT_ACTIVITY,
-+	[ADXL345_INACTIVITY_AC] = ADXL345_INT_INACTIVITY,
- };
- 
- static const unsigned int adxl345_act_thresh_reg[] = {
- 	[ADXL345_ACTIVITY] = ADXL345_REG_THRESH_ACT,
- 	[ADXL345_INACTIVITY] = ADXL345_REG_THRESH_INACT,
-+	[ADXL345_ACTIVITY_AC] = ADXL345_REG_THRESH_ACT,
-+	[ADXL345_INACTIVITY_AC] = ADXL345_REG_THRESH_INACT,
-+};
-+
-+static const unsigned int adxl345_act_acdc_msk[] = {
-+	[ADXL345_ACTIVITY] = ADXL345_REG_ACT_ACDC_MSK,
-+	[ADXL345_INACTIVITY] = ADXL345_REG_INACT_ACDC_MSK,
-+	[ADXL345_ACTIVITY_AC] = ADXL345_REG_ACT_ACDC_MSK,
-+	[ADXL345_INACTIVITY_AC] = ADXL345_REG_INACT_ACDC_MSK,
- };
- 
- enum adxl345_odr {
-@@ -156,6 +174,14 @@ static const int adxl345_fullres_range_tbl[][2] = {
- 	[ADXL345_16G_RANGE] = { 0, 38312 },
- };
- 
-+/* scaling */
-+static const int adxl345_range_factor_tbl[] = {
-+	[ADXL345_2G_RANGE]  = 1,
-+	[ADXL345_4G_RANGE]  = 2,
-+	[ADXL345_8G_RANGE]  = 4,
-+	[ADXL345_16G_RANGE] = 8,
-+};
-+
- struct adxl345_state {
- 	const struct adxl345_chip_info *info;
- 	struct regmap *regmap;
-@@ -179,6 +205,13 @@ static struct iio_event_spec adxl345_events[] = {
- 		.mask_separate = BIT(IIO_EV_INFO_ENABLE),
- 		.mask_shared_by_type = BIT(IIO_EV_INFO_VALUE),
- 	},
-+	{
-+		/* activity, ac bit set */
-+		.type = IIO_EV_TYPE_MAG_REFERENCED,
-+		.dir = IIO_EV_DIR_RISING,
-+		.mask_separate = BIT(IIO_EV_INFO_ENABLE),
-+		.mask_shared_by_type = BIT(IIO_EV_INFO_VALUE),
-+	},
- 	{
- 		/* single tap */
- 		.type = IIO_EV_TYPE_GESTURE,
-@@ -232,6 +265,14 @@ static const struct iio_event_spec adxl345_fake_chan_events[] = {
- 		.mask_shared_by_type = BIT(IIO_EV_INFO_VALUE) |
- 			BIT(IIO_EV_INFO_PERIOD),
- 	},
-+	{
-+		/* inactivity, AC bit set */
-+		.type = IIO_EV_TYPE_MAG_REFERENCED,
-+		.dir = IIO_EV_DIR_FALLING,
-+		.mask_separate = BIT(IIO_EV_INFO_ENABLE),
-+		.mask_shared_by_type = BIT(IIO_EV_INFO_VALUE) |
-+			BIT(IIO_EV_INFO_PERIOD),
-+	},
- };
- 
- static const struct iio_chan_spec adxl345_channels[] = {
-@@ -295,19 +336,119 @@ static int adxl345_set_measure_en(struct adxl345_state *st, bool en)
- 
- /* act/inact */
- 
-+/**
-+ * adxl345_is_act_inact_ac() - Verify if AC or DC coupling is currently enabled.
-+ *
-+ * @st: The device data.
-+ * @type: The activity or inactivity type.
-+ * @en: Carries the result if this activity type is enabled.
-+ *
-+ * Given a type of activity / inactivity combined with either AC coupling set or
-+ * default to DC, this function verifies if the combination is currently
-+ * configured, hence enabled or not.
-+ *
-+ * Return: 0 if successful, else error value.
-+ */
-+static int adxl345_is_act_inact_ac(struct adxl345_state *st,
-+				   enum adxl345_activity_type type, bool *en)
++static int adxl345_is_ff_en(struct adxl345_state *st, bool *en)
 +{
-+	unsigned int regval;
-+	bool ac;
 +	int ret;
++	unsigned int regval;
 +
-+	ret = regmap_read(st->regmap, ADXL345_REG_ACT_INACT_CTRL, &regval);
++	ret = regmap_read(st->regmap, ADXL345_REG_INT_ENABLE, &regval);
 +	if (ret)
 +		return ret;
 +
-+	if (type == ADXL345_ACTIVITY || type == ADXL345_ACTIVITY_AC)
-+		ac = FIELD_GET(ADXL345_REG_ACT_ACDC_MSK, regval);
-+	else
-+		ac = FIELD_GET(ADXL345_REG_INACT_ACDC_MSK, regval);
-+
-+	if (type == ADXL345_ACTIVITY || type == ADXL345_INACTIVITY)
-+		*en = (ac == ADXL345_ACT_INACT_DC);
-+	else
-+		*en = (ac == ADXL345_ACT_INACT_AC);
++	*en = FIELD_GET(ADXL345_INT_FREE_FALL, regval) > 0;
 +
 +	return 0;
 +}
 +
-+/**
-+ * adxl345_set_act_inact_ac() - Configure AC coupling or DC coupling.
-+ *
-+ * @st: The device data.
-+ * @type: Provide a type of activity or inactivity.
-+ *
-+ * Enables AC coupling or DC coupling depending on the provided type argument.
-+ * Note: Activity and inactivity can be either AC coupled or DC coupled not
-+ * both at the same time.
-+ *
-+ * Return: 0 if successful, else error value.
-+ */
-+static int adxl345_set_act_inact_ac(struct adxl345_state *st,
-+				    enum adxl345_activity_type type)
++static int adxl345_set_ff_en(struct adxl345_state *st, bool cmd_en)
 +{
-+	unsigned int act_inact_ac;
++	unsigned int regval, ff_threshold;
++	bool en;
++	int ret;
 +
-+	if (type == ADXL345_ACTIVITY_AC || type == ADXL345_INACTIVITY_AC)
-+		act_inact_ac = 0xff;
-+	else
-+		act_inact_ac = 0x00;
++	ret = regmap_read(st->regmap, ADXL345_REG_THRESH_FF, &ff_threshold);
++	if (ret)
++		return ret;
 +
-+	/*
-+	 * A setting of false selects dc-coupled operation, and a setting of
-+	 * true enables ac-coupled operation. In dc-coupled operation, the
-+	 * current acceleration magnitude is compared directly with
-+	 * ADXL345_REG_THRESH_ACT and ADXL345_REG_THRESH_INACT to determine
-+	 * whether activity or inactivity is detected.
-+	 *
-+	 * In ac-coupled operation for activity detection, the acceleration
-+	 * value at the start of activity detection is taken as a reference
-+	 * value. New samples of acceleration are then compared to this
-+	 * reference value, and if the magnitude of the difference exceeds the
-+	 * ADXL345_REG_THRESH_ACT value, the device triggers an activity
-+	 * interrupt.
-+	 *
-+	 * Similarly, in ac-coupled operation for inactivity detection, a
-+	 * reference value is used for comparison and is updated whenever the
-+	 * device exceeds the inactivity threshold. After the reference value
-+	 * is selected, the device compares the magnitude of the difference
-+	 * between the reference value and the current acceleration with
-+	 * ADXL345_REG_THRESH_INACT. If the difference is less than the value in
-+	 * ADXL345_REG_THRESH_INACT for the time in ADXL345_REG_TIME_INACT, the
-+	 * device is considered inactive and the inactivity interrupt is
-+	 * triggered. [quoted from p. 24, ADXL345 datasheet Rev. G]
-+	 *
-+	 * In a conclusion, the first acceleration snapshot sample which hit the
-+	 * threshold in a particular direction is always taken as acceleration
-+	 * reference value to that direction. Since for the hardware activity
-+	 * and inactivity depend on the x/y/z axis, so do ac and dc coupling.
-+	 * Note, this sw driver always enables or disables all three x/y/z axis
-+	 * for detection via act_axis_ctrl and inact_axis_ctrl, respectively.
-+	 * Where in dc-coupling samples are compared against the thresholds, in
-+	 * ac-coupling measurement difference to the first acceleration
-+	 * reference value are compared against the threshold. So, ac-coupling
-+	 * allows for a bit more dynamic compensation depending on the initial
-+	 * sample.
-+	 */
-+	return regmap_update_bits(st->regmap, ADXL345_REG_ACT_INACT_CTRL,
-+				 adxl345_act_acdc_msk[type], act_inact_ac);
++	en = cmd_en && ff_threshold > 0 && st->ff_time_ms > 0;
++
++	regval = en ? ADXL345_INT_FREE_FALL : 0x00;
++
++	return regmap_update_bits(st->regmap, ADXL345_REG_INT_ENABLE,
++				  ADXL345_INT_FREE_FALL, regval);
 +}
 +
- static int adxl345_is_act_inact_en(struct adxl345_state *st,
- 				   enum iio_modifier axis,
- 				   enum adxl345_activity_type type, bool *en)
++static int adxl345_set_ff_time(struct adxl345_state *st, u32 val_int,
++			       u32 val_fract_us)
++{
++	unsigned int regval;
++	int val_ms;
++
++	/*
++	 * max value is 255 * 5000 us = 1.275000 seconds
++	 *
++	 * Note: the scaling is similar to the scaling in the ADXL380
++	 */
++	if (1000000 * val_int + val_fract_us > 1275000)
++		return -EINVAL;
++
++	val_ms = val_int * 1000 + DIV_ROUND_UP(val_fract_us, 1000);
++	st->ff_time_ms = val_ms;
++
++	regval = DIV_ROUND_CLOSEST(val_ms, 5);
++
++	/* Values between 100ms and 350ms (0x14 to 0x46) are recommended. */
++	return regmap_write(st->regmap, ADXL345_REG_TIME_FF, min(regval, 0xff));
++}
++
+ static int adxl345_find_odr(struct adxl345_state *st, int val,
+ 			    int val2, enum adxl345_odr *odr)
  {
- 	unsigned int regval;
- 	u32 axis_ctrl;
-+	bool coupling_en;
- 	int ret;
- 
- 	ret = regmap_read(st->regmap, ADXL345_REG_ACT_INACT_CTRL, &axis_ctrl);
- 	if (ret)
- 		return ret;
- 
--	if (type == ADXL345_ACTIVITY) {
-+	if (type == ADXL345_ACTIVITY || type == ADXL345_ACTIVITY_AC) {
- 		switch (axis) {
- 		case IIO_MOD_X:
- 			*en = FIELD_GET(ADXL345_ACT_X_EN, axis_ctrl);
-@@ -345,6 +486,12 @@ static int adxl345_is_act_inact_en(struct adxl345_state *st,
+@@ -1689,6 +1747,17 @@ static int adxl345_push_event(struct iio_dev *indio_dev, int int_stat,
  			return ret;
- 
- 		*en = adxl345_act_int_reg[type] & regval;
-+
-+		ret = adxl345_is_act_inact_ac(st, type, &coupling_en);
-+		if (ret)
-+			return ret;
-+
-+		*en = adxl345_act_int_reg[type] && coupling_en;
  	}
  
- 	return 0;
-@@ -361,7 +508,7 @@ static int adxl345_set_act_inact_en(struct adxl345_state *st,
- 	u32 axis_ctrl = 0;
- 	int ret;
- 
--	if (type == ADXL345_ACTIVITY) {
-+	if (type == ADXL345_ACTIVITY || type == ADXL345_ACTIVITY_AC) {
- 		switch (axis) {
- 		case IIO_MOD_X:
- 			axis_ctrl = ADXL345_ACT_X_EN;
-@@ -395,7 +542,7 @@ static int adxl345_set_act_inact_en(struct adxl345_state *st,
- 
- 	en = false;
- 
--	if (type == ADXL345_ACTIVITY) {
-+	if (type == ADXL345_ACTIVITY || type == ADXL345_ACTIVITY_AC) {
- 		en = FIELD_GET(ADXL345_REG_ACT_AXIS_MSK, axis_ctrl) &&
- 			threshold;
- 	} else {
-@@ -413,6 +560,10 @@ static int adxl345_set_act_inact_en(struct adxl345_state *st,
- 	if (ret)
- 		return ret;
- 
-+	ret = adxl345_set_act_inact_ac(st, type);
-+	if (ret)
-+		return ret;
++	if (FIELD_GET(ADXL345_INT_FREE_FALL, int_stat)) {
++		ret = iio_push_event(indio_dev,
++				     IIO_MOD_EVENT_CODE(IIO_ACCEL, 0,
++							IIO_MOD_X_AND_Y_AND_Z,
++							IIO_EV_TYPE_MAG,
++							IIO_EV_DIR_FALLING),
++				     ts);
++		if (ret)
++			return ret;
++	}
 +
- 	return regmap_update_bits(st->regmap, ADXL345_REG_POWER_CTL,
- 				  ADXL345_POWER_CTL_INACT_MSK,
- 				  en ? (ADXL345_POWER_CTL_AUTO_SLEEP | ADXL345_POWER_CTL_LINK)
-@@ -692,9 +843,16 @@ static int adxl345_find_odr(struct adxl345_state *st, int val,
- 
- static int adxl345_set_odr(struct adxl345_state *st, enum adxl345_odr odr)
- {
--	return regmap_update_bits(st->regmap, ADXL345_REG_BW_RATE,
-+	int ret;
-+
-+	ret = regmap_update_bits(st->regmap, ADXL345_REG_BW_RATE,
- 				 ADXL345_BW_RATE_MSK,
- 				 FIELD_PREP(ADXL345_BW_RATE_MSK, odr));
-+	if (ret)
-+		return ret;
-+
-+	/* update inactivity time by ODR */
-+	return adxl345_set_inact_time_s(st, 0);
+ 	if (FIELD_GET(ADXL345_INT_WATERMARK, int_stat)) {
+ 		samples = adxl345_get_samples(st);
+ 		if (samples < 0)
+@@ -1763,7 +1832,156 @@ static irqreturn_t adxl345_irq_handler(int irq, void *p)
+ 	return IRQ_HANDLED;
  }
  
- static int adxl345_find_range(struct adxl345_state *st, int val, int val2,
-@@ -715,9 +873,51 @@ static int adxl345_find_range(struct adxl345_state *st, int val, int val2,
- 
- static int adxl345_set_range(struct adxl345_state *st, enum adxl345_range range)
- {
--	return regmap_update_bits(st->regmap, ADXL345_REG_DATA_FORMAT,
-+	unsigned int act_threshold, inact_threshold;
-+	unsigned int range_old;
-+	unsigned int regval;
++/* free-fall sysfs */
++
++static ssize_t in_accel_mag_freefall_en_show(struct device *dev,
++					     struct device_attribute *attr,
++					     char *buf)
++{
++	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
++	struct adxl345_state *st = iio_priv(indio_dev);
++	bool en;
++	int val, ret;
++
++	ret = adxl345_is_ff_en(st, &en);
++	if (ret)
++		return ret;
++
++	val = en ? 1 : 0;
++
++	return iio_format_value(buf, IIO_VAL_INT, 1, &val);
++}
++
++static ssize_t in_accel_mag_freefall_en_store(struct device *dev,
++					      struct device_attribute *attr,
++					      const char *buf, size_t len)
++{
++	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
++	struct adxl345_state *st = iio_priv(indio_dev);
++	int val, ret;
++
++	ret = kstrtoint(buf, 0, &val);
++	if (ret)
++		return ret;
++
++	ret = adxl345_set_measure_en(st, false);
++	if (ret)
++		return ret;
++
++	ret = adxl345_set_ff_en(st, val > 0);
++	if (ret)
++		return ret;
++
++	ret = adxl345_set_measure_en(st, true);
++	if (ret)
++		return ret;
++
++	return len;
++}
++static IIO_DEVICE_ATTR_RW(in_accel_mag_freefall_en, 0);
++
++static ssize_t in_accel_mag_freefall_value_show(struct device *dev,
++						struct device_attribute *attr,
++						char *buf)
++{
++	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
++	struct adxl345_state *st = iio_priv(indio_dev);
++	unsigned int val;
 +	int ret;
 +
-+	ret = regmap_read(st->regmap, ADXL345_REG_DATA_FORMAT, &regval);
-+	if (ret)
-+		return ret;
-+	range_old = FIELD_GET(ADXL345_DATA_FORMAT_RANGE, regval);
-+
-+	ret = regmap_read(st->regmap,
-+			  adxl345_act_thresh_reg[ADXL345_ACTIVITY],
-+			  &act_threshold);
++	ret = regmap_read(st->regmap, ADXL345_REG_THRESH_FF, &val);
 +	if (ret)
 +		return ret;
 +
-+	ret = regmap_read(st->regmap,
-+			  adxl345_act_thresh_reg[ADXL345_INACTIVITY],
-+			  &inact_threshold);
++	return iio_format_value(buf, IIO_VAL_INT, 1, &val);
++}
++
++static ssize_t in_accel_mag_freefall_value_store(struct device *dev,
++						 struct device_attribute *attr,
++						 const char *buf, size_t len)
++{
++	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
++	struct adxl345_state *st = iio_priv(indio_dev);
++	int val, ret;
++
++	ret = kstrtoint(buf, 0, &val);
 +	if (ret)
 +		return ret;
 +
-+	ret = regmap_update_bits(st->regmap, ADXL345_REG_DATA_FORMAT,
- 				 ADXL345_DATA_FORMAT_RANGE,
- 				 FIELD_PREP(ADXL345_DATA_FORMAT_RANGE, range));
++	if (val < 0 || val > 255)
++		return -EINVAL;
++
++	ret = adxl345_set_measure_en(st, false);
 +	if (ret)
 +		return ret;
 +
-+	act_threshold = act_threshold
-+		* adxl345_range_factor_tbl[range_old]
-+		/ adxl345_range_factor_tbl[range];
-+	act_threshold = min(255, max(1, inact_threshold));
-+
-+	inact_threshold = inact_threshold
-+		* adxl345_range_factor_tbl[range_old]
-+		/ adxl345_range_factor_tbl[range];
-+	inact_threshold = min(255, max(1, inact_threshold));
-+
-+	ret = regmap_write(st->regmap, adxl345_act_thresh_reg[ADXL345_ACTIVITY],
-+			   act_threshold);
++	ret = regmap_write(st->regmap, ADXL345_REG_THRESH_FF, val);
 +	if (ret)
 +		return ret;
 +
-+	return regmap_write(st->regmap, adxl345_act_thresh_reg[ADXL345_INACTIVITY],
-+			   inact_threshold);
- }
++	ret = adxl345_set_measure_en(st, true);
++	if (ret)
++		return ret;
++
++	return len;
++}
++static IIO_DEVICE_ATTR_RW(in_accel_mag_freefall_value, 0);
++
++static ssize_t in_accel_mag_freefall_period_show(struct device *dev,
++						 struct device_attribute *attr,
++						 char *buf)
++{
++	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
++	struct adxl345_state *st = iio_priv(indio_dev);
++	int vals[2];
++
++	vals[0] = st->ff_time_ms;
++	vals[1] = 1000;
++
++	return iio_format_value(buf, IIO_VAL_FRACTIONAL, 2, vals);
++}
++
++static ssize_t in_accel_mag_freefall_period_store(struct device *dev,
++						  struct device_attribute *attr,
++						  const char *buf, size_t len)
++{
++	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
++	struct adxl345_state *st = iio_priv(indio_dev);
++	int val_int, val_fract_us, ret;
++
++	ret = iio_str_to_fixpoint(buf, 100000, &val_int, &val_fract_us);
++	if (ret)
++		return ret;
++
++	ret = adxl345_set_measure_en(st, false);
++	if (ret)
++		return ret;
++
++	ret = adxl345_set_ff_time(st, val_int, val_fract_us);
++	if (ret)
++		return ret;
++
++	ret = adxl345_set_measure_en(st, true);
++	if (ret)
++		return ret;
++
++	return len;
++}
++static IIO_DEVICE_ATTR_RW(in_accel_mag_freefall_period, 0);
++
++static struct attribute *adxl345_event_attrs[] = {
++	&iio_dev_attr_in_accel_mag_freefall_en.dev_attr.attr,
++	&iio_dev_attr_in_accel_mag_freefall_value.dev_attr.attr,
++	&iio_dev_attr_in_accel_mag_freefall_period.dev_attr.attr,
++	NULL
++};
++
++static const struct attribute_group adxl345_event_attrs_group = {
++	.attrs = adxl345_event_attrs,
++};
++
+ static const struct iio_info adxl345_info = {
++	.event_attrs    = &adxl345_event_attrs_group,
+ 	.read_raw	= adxl345_read_raw,
+ 	.write_raw	= adxl345_write_raw,
+ 	.read_avail	= adxl345_read_avail,
+@@ -1806,6 +2024,7 @@ int adxl345_core_probe(struct device *dev, struct regmap *regmap,
+ 					 ADXL345_DATA_FORMAT_FULL_RES |
+ 					 ADXL345_DATA_FORMAT_SELF_TEST);
+ 	unsigned int tap_threshold;
++	unsigned int ff_threshold;
+ 	int ret;
  
- static int adxl345_read_avail(struct iio_dev *indio_dev,
-@@ -879,6 +1079,25 @@ static int adxl345_read_event_config(struct iio_dev *indio_dev,
- 		default:
- 			return -EINVAL;
- 		}
-+	case IIO_EV_TYPE_MAG_REFERENCED:
-+		switch (dir) {
-+		case IIO_EV_DIR_RISING:
-+			ret = adxl345_is_act_inact_en(st, chan->channel2,
-+						      ADXL345_ACTIVITY_AC,
-+						      &int_en);
-+			if (ret)
-+				return ret;
-+			return int_en;
-+		case IIO_EV_DIR_FALLING:
-+			ret = adxl345_is_act_inact_en(st, chan->channel2,
-+						      ADXL345_INACTIVITY_AC,
-+						      &int_en);
-+			if (ret)
-+				return ret;
-+			return int_en;
-+		default:
-+			return -EINVAL;
-+		}
- 	case IIO_EV_TYPE_GESTURE:
- 		switch (dir) {
- 		case IIO_EV_DIR_SINGLETAP:
-@@ -923,6 +1142,19 @@ static int adxl345_write_event_config(struct iio_dev *indio_dev,
- 		default:
- 			return -EINVAL;
- 		}
-+	case IIO_EV_TYPE_MAG_REFERENCED:
-+		switch (dir) {
-+		case IIO_EV_DIR_RISING:
-+			return adxl345_set_act_inact_en(st, chan->channel2,
-+							ADXL345_ACTIVITY_AC,
-+							state);
-+		case IIO_EV_DIR_FALLING:
-+			return adxl345_set_act_inact_en(st, chan->channel2,
-+							ADXL345_INACTIVITY_AC,
-+							state);
-+		default:
-+			return -EINVAL;
-+		}
- 	case IIO_EV_TYPE_GESTURE:
- 		switch (dir) {
- 		case IIO_EV_DIR_SINGLETAP:
-@@ -987,6 +1219,42 @@ static int adxl345_read_event_value(struct iio_dev *indio_dev,
- 		default:
- 			return -EINVAL;
- 		}
-+	case IIO_EV_TYPE_MAG_REFERENCED:
-+		switch (info) {
-+		case IIO_EV_INFO_VALUE:
-+			switch (dir) {
-+			case IIO_EV_DIR_RISING:
-+				ret = regmap_read(st->regmap,
-+						  adxl345_act_thresh_reg[ADXL345_ACTIVITY_AC],
-+						  &act_threshold);
-+				if (ret)
-+					return ret;
-+
-+				*val = act_threshold;
-+				return IIO_VAL_INT;
-+			case IIO_EV_DIR_FALLING:
-+				ret = regmap_read(st->regmap,
-+						  adxl345_act_thresh_reg[ADXL345_INACTIVITY_AC],
-+						  &inact_threshold);
-+				if (ret)
-+					return ret;
-+
-+				*val = inact_threshold;
-+				return IIO_VAL_INT;
-+			default:
-+				return -EINVAL;
-+			}
-+		case IIO_EV_INFO_PERIOD:
-+			ret = regmap_read(st->regmap,
-+					  ADXL345_REG_TIME_INACT,
-+					  &inact_time_s);
-+			if (ret)
-+				return ret;
-+			*val = inact_time_s;
-+			return IIO_VAL_INT;
-+		default:
-+			return -EINVAL;
-+		}
- 	case IIO_EV_TYPE_GESTURE:
- 		switch (info) {
- 		case IIO_EV_INFO_VALUE:
-@@ -1068,6 +1336,37 @@ static int adxl345_write_event_value(struct iio_dev *indio_dev,
- 			return -EINVAL;
- 		}
- 		break;
-+	case IIO_EV_TYPE_MAG_REFERENCED:
-+		switch (info) {
-+		case IIO_EV_INFO_VALUE:
-+			switch (dir) {
-+			case IIO_EV_DIR_RISING:
-+				ret = regmap_write(st->regmap,
-+						   adxl345_act_thresh_reg[ADXL345_ACTIVITY_AC],
-+						   val);
-+				if (ret)
-+					return ret;
-+				break;
-+			case IIO_EV_DIR_FALLING:
-+				ret = regmap_write(st->regmap,
-+						   adxl345_act_thresh_reg[ADXL345_INACTIVITY_AC],
-+						   val);
-+				if (ret)
-+					return ret;
-+				break;
-+			default:
-+				return -EINVAL;
-+			}
-+			break;
-+		case IIO_EV_INFO_PERIOD:
-+			ret = adxl345_set_inact_time_s(st, val);
-+			if (ret)
-+				return ret;
-+			break;
-+		default:
-+			return -EINVAL;
-+		}
-+		break;
- 	case IIO_EV_TYPE_GESTURE:
- 		switch (info) {
- 		case IIO_EV_INFO_VALUE:
-@@ -1315,6 +1614,7 @@ static int adxl345_push_event(struct iio_dev *indio_dev, int int_stat,
- {
- 	s64 ts = iio_get_time_ns(indio_dev);
- 	struct adxl345_state *st = iio_priv(indio_dev);
-+	unsigned int regval;
- 	int samples;
- 	int ret = -ENOENT;
+ 	indio_dev = devm_iio_device_alloc(dev, sizeof(*st));
+@@ -1825,6 +2044,9 @@ int adxl345_core_probe(struct device *dev, struct regmap *regmap,
+ 	st->tap_window_us = 64;			/*   64 [0x40] -> .080    */
+ 	st->tap_latent_us = 16;			/*   16 [0x10] -> .020    */
  
-@@ -1339,22 +1639,52 @@ static int adxl345_push_event(struct iio_dev *indio_dev, int int_stat,
- 	}
++	ff_threshold = 8;			/*    8 [0x08]            */
++	st->ff_time_ms = 32;			/*   32 [0x20] -> 0.16    */
++
+ 	indio_dev->name = st->info->name;
+ 	indio_dev->info = &adxl345_info;
+ 	indio_dev->modes = INDIO_DIRECT_MODE;
+@@ -1936,6 +2158,10 @@ int adxl345_core_probe(struct device *dev, struct regmap *regmap,
+ 		if (ret)
+ 			return ret;
  
- 	if (FIELD_GET(ADXL345_INT_ACTIVITY, int_stat)) {
--		ret = iio_push_event(indio_dev,
--				     IIO_MOD_EVENT_CODE(IIO_ACCEL, 0, act_dir,
--							IIO_EV_TYPE_MAG,
--							IIO_EV_DIR_RISING),
--				     ts);
-+		ret = regmap_read(st->regmap, ADXL345_REG_ACT_INACT_CTRL, &regval);
++		ret = regmap_write(st->regmap, ADXL345_REG_THRESH_FF, ff_threshold);
 +		if (ret)
 +			return ret;
 +
-+		if (FIELD_GET(ADXL345_REG_ACT_ACDC_MSK, regval)) {
-+			/* AC coupled */
-+			ret = iio_push_event(indio_dev,
-+					     IIO_MOD_EVENT_CODE(IIO_ACCEL, 0, act_dir,
-+								IIO_EV_TYPE_MAG_REFERENCED,
-+								IIO_EV_DIR_RISING),
-+					     ts);
-+
-+		} else {
-+			/* DC coupled, relying on THRESH */
-+			ret = iio_push_event(indio_dev,
-+					     IIO_MOD_EVENT_CODE(IIO_ACCEL, 0, act_dir,
-+								IIO_EV_TYPE_MAG,
-+								IIO_EV_DIR_RISING),
-+					     ts);
-+		}
+ 		/* FIFO_STREAM mode is going to be activated later */
+ 		ret = devm_iio_kfifo_buffer_setup(dev, indio_dev, &adxl345_buffer_ops);
  		if (ret)
- 			return ret;
- 	}
- 
- 	if (FIELD_GET(ADXL345_INT_INACTIVITY, int_stat)) {
--		ret = iio_push_event(indio_dev,
--				     IIO_MOD_EVENT_CODE(IIO_ACCEL, 0,
--							IIO_MOD_X_AND_Y_AND_Z,
--							IIO_EV_TYPE_MAG,
--							IIO_EV_DIR_FALLING),
--				     ts);
-+		ret = regmap_read(st->regmap, ADXL345_REG_ACT_INACT_CTRL, &regval);
-+		if (ret)
-+			return ret;
-+
-+		if (FIELD_GET(ADXL345_REG_INACT_ACDC_MSK, regval)) {
-+			/* AC coupled */
-+			ret = iio_push_event(indio_dev,
-+					     IIO_MOD_EVENT_CODE(IIO_ACCEL, 0,
-+								IIO_MOD_X_AND_Y_AND_Z,
-+								IIO_EV_TYPE_MAG_REFERENCED,
-+								IIO_EV_DIR_FALLING),
-+					     ts);
-+		} else {
-+			/* DC coupled, relying on THRESH */
-+			ret = iio_push_event(indio_dev,
-+					     IIO_MOD_EVENT_CODE(IIO_ACCEL, 0,
-+								IIO_MOD_X_AND_Y_AND_Z,
-+								IIO_EV_TYPE_MAG,
-+								IIO_EV_DIR_FALLING),
-+					     ts);
-+		}
- 		if (ret)
- 			return ret;
- 	}
 -- 
 2.39.5
 

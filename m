@@ -1,47 +1,47 @@
-Return-Path: <linux-iio+bounces-19426-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19427-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45D58AB282F
-	for <lists+linux-iio@lfdr.de>; Sun, 11 May 2025 14:25:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60E33AB2834
+	for <lists+linux-iio@lfdr.de>; Sun, 11 May 2025 14:31:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B83D53AA0F3
-	for <lists+linux-iio@lfdr.de>; Sun, 11 May 2025 12:24:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D42D61755AD
+	for <lists+linux-iio@lfdr.de>; Sun, 11 May 2025 12:31:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03F8C256C84;
-	Sun, 11 May 2025 12:24:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC6D3256C82;
+	Sun, 11 May 2025 12:31:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rFX5nVSL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZSCaQuJ0"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F79A17A2E8;
-	Sun, 11 May 2025 12:24:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64F824A32;
+	Sun, 11 May 2025 12:31:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746966296; cv=none; b=QmI78yhhKyPMu1CkNAaF51mfrkKrGRD75nOUqphu43+EUpN6aO2FgLtqZ/Y8lcLm7RE9pL2RbKGlZyUW8jVFDiEXX1AhE6AjvvvisOngXGSReQGGvEQjDYf5XKa6N0wg6hkLdyglT+ZUuKqJ6DEC/H4rYNUzx5RAsLrpLS4zCec=
+	t=1746966670; cv=none; b=FkSJKujrc28+5ST9Udp+XjV9gvU+m1SOaz16knyOIzSIs/AlHg2gP35be61H/g7g1UB4KHcOSPng27Hc6gcOqFbzdA9BQOpBcvO222FHY47gbUXHiP1K3zyf6mWSFawyA7KC4AYxloVG1JuA39/5kMqqzY7aNkMP9qvtNqfjKL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746966296; c=relaxed/simple;
-	bh=nEyf68zI/CpFMNEs3vgorP16c3dGRsG+bMJzrlvIVC4=;
+	s=arc-20240116; t=1746966670; c=relaxed/simple;
+	bh=VSz21wUvN2aP6s/5btPI9FEniypUewFNORjJoSRIo7A=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Q2dLkTKOCMWBNTf1cm2fRt4O2XSZTHo2tg37DQyHghSqr4a29VTYIheFxIqZic2okxjtf0wgDx5Uk7yc7PMulfEpf2GKXPePeN+yaXX7agDRcv7Eb1/VADe1A0dEca/9V6slfzuo1wzKsdiPivK+Qn166Yc0eg0L48UKhv//BkQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rFX5nVSL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4BABC4CEE4;
-	Sun, 11 May 2025 12:24:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=sXfMBckOwSzHZUjyUp+yQ7pHBhHKByA/aa2O8XY9ZenwE8w9cxrAWQXMreAFNiPeb+1JuL+QX7GnQpZiQFpIW/qVkySwuYCO0TP5nFTNnDg6A4kBgXRL2JZmvkkl3hHO/d+jPvwzr4E8yhNuduFpZD2LCcbY22QNDjJrrYmpUCk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZSCaQuJ0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4C1EC4CEE4;
+	Sun, 11 May 2025 12:30:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746966296;
-	bh=nEyf68zI/CpFMNEs3vgorP16c3dGRsG+bMJzrlvIVC4=;
+	s=k20201202; t=1746966669;
+	bh=VSz21wUvN2aP6s/5btPI9FEniypUewFNORjJoSRIo7A=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=rFX5nVSLWjrHj/N5WJsuI/cbAf9xNxaWjFNTKqXLd1qDN3xHcmsC7+0fWHZOMMy8f
-	 5Cy8gT4nOKUNCEgrO0AevhaCF3gEMXu6gMgYtOJpH4blc3h0RULGrkH71OtK7SW99O
-	 iFV6RyF5LIW9PepuADYGbcGLEaO3UkW+eKrggJmVGykC6liaGdynwKuSOjvW/rY6PB
-	 5Vn8GS36lkTUyLwNfbOZ5ilzC2XD4v5uXyZmU93rFG8fLhn/pVMAQM7mgo93IyRP+j
-	 T81rEIO1IiJZNwaW2XhgFI/bobT0L+GBS4h9XhKgrsv55R78wTPNEreoPNE12RKB8T
-	 Q3kM9zB/zvN1Q==
-Date: Sun, 11 May 2025 13:24:43 +0100
+	b=ZSCaQuJ0/MUpfUzd7QxOEEn0mGYPMDciCACql8otHm7xQ7GbDhBJ0XhwaWy9D81rQ
+	 QG85NN1RwGEaqByCq9d8jsZ5LlSxaqzd6JaZMSxtpuRQeAv9vdSmgZtgjf/Y6pUnjJ
+	 +72nLbg0GR6lGgun3Qpz7lrBbVC36dX7P6nduwP2hKxRo+HlR01K1dhVboKVAkQV6X
+	 iQnJqSbCRcQq9WtjAYOjaTtplSuVnpNr6Vq87AvVaE8/kptzV/ZlerfVIp3dVa73Jd
+	 gGB4doQCdEHQoVwyfFTR4121tz45MQY8PNV21Ka4CzJLmxE8R7lYuNFV0No+lVYW8O
+	 YJucwlWuSyfZA==
+Date: Sun, 11 May 2025 13:30:55 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: Jishnu Prakash <jishnu.prakash@oss.qualcomm.com>
 Cc: robh@kernel.org, krzysztof.kozlowski@linaro.org, krzk+dt@kernel.org,
@@ -57,12 +57,12 @@ Cc: robh@kernel.org, krzysztof.kozlowski@linaro.org, krzk+dt@kernel.org,
  linux-pm@vger.kernel.org, cros-qcom-dts-watchers@chromium.org,
  quic_skakitap@quicinc.com, neil.armstrong@linaro.org,
  stephan.gerhold@linaro.org
-Subject: Re: [PATCH V6 2/5] dt-bindings: iio: adc: Split out QCOM VADC
- channel properties
-Message-ID: <20250511132443.74fd17fd@jic23-huawei>
-In-Reply-To: <20250509110959.3384306-3-jishnu.prakash@oss.qualcomm.com>
+Subject: Re: [PATCH V6 3/5] dt-bindings: iio: adc: Add support for QCOM
+ PMIC5 Gen3 ADC
+Message-ID: <20250511133055.54869b61@jic23-huawei>
+In-Reply-To: <20250509110959.3384306-4-jishnu.prakash@oss.qualcomm.com>
 References: <20250509110959.3384306-1-jishnu.prakash@oss.qualcomm.com>
-	<20250509110959.3384306-3-jishnu.prakash@oss.qualcomm.com>
+	<20250509110959.3384306-4-jishnu.prakash@oss.qualcomm.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -73,19 +73,44 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri,  9 May 2025 16:39:56 +0530
+On Fri,  9 May 2025 16:39:57 +0530
 Jishnu Prakash <jishnu.prakash@oss.qualcomm.com> wrote:
 
-> Split out the common channel properties for QCOM VADC devices into a
-> separate file so that it can be included as a reference for devices
-> using them. This will be needed for the upcoming ADC5 Gen3 binding
-> support patch, as ADC5 Gen3 also uses all of these common properties.
+> For the PMIC5-Gen3 type PMICs, ADC peripheral is present in HW for the
+> following PMICs: PMK8550, PM8550, PM8550B and PM8550VX PMICs.
 > 
-> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> It is similar to PMIC5-Gen2, with SW communication to ADCs on all PMICs
+> going through PBS(Programmable Boot Sequence) firmware through a single
+> register interface. This interface is implemented on SDAM (Shared
+> Direct Access Memory) peripherals on the master PMIC PMK8550 rather
+> than a dedicated ADC peripheral.
+> 
+> Add documentation for PMIC5 Gen3 ADC and macro definitions for ADC
+> channels and virtual channels (combination of ADC channel number and
+> PMIC SID number) per PMIC, to be used by clients of this device.
+> 
 > Signed-off-by: Jishnu Prakash <jishnu.prakash@oss.qualcomm.com>
-I think I could take this through IIO separate from the previous patch but
-is that useful?  I'm going to guess not and suggest that for this one
-a qcom tree probably makes sense as well.
+
+This looks fine to me.  The dependencies on previous two patches
+make this a little tricky to handle though. I don't like splitting the
+path the binding and the driver take to upstream but in this case
+we probably either have to merge them in different cycles or this
+needs to go with those code movement patches.  It looked like an
+immutable branch would be very messy given additions that the 1st patch
+touches probably mean an immutable would have to include a lot of
+stuff that is queued up in the Qualcomm SoC tree.
+
+If the rest of the necessary reviews turn up this cycle to get everything
+in this cycle merge (seems unlikely) then I don't thing routing this
+via the SoC tree will be a problem.
+
+To enable that
 
 Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+
+I suspect given timing best we can hope for is patches 1 and 2 go
+via the SoC tree asap and we deal with the rest at start of next cycle
+but I like to be optimistic :)
+
+Jonathan
 

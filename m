@@ -1,66 +1,55 @@
-Return-Path: <linux-iio+bounces-19431-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19432-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE93DAB291F
-	for <lists+linux-iio@lfdr.de>; Sun, 11 May 2025 16:30:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90A75AB292D
+	for <lists+linux-iio@lfdr.de>; Sun, 11 May 2025 16:40:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1291B1898C19
-	for <lists+linux-iio@lfdr.de>; Sun, 11 May 2025 14:29:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1B7563B8FBF
+	for <lists+linux-iio@lfdr.de>; Sun, 11 May 2025 14:40:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA43425D202;
-	Sun, 11 May 2025 14:27:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 909BF25A658;
+	Sun, 11 May 2025 14:40:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VUTFGZsf"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A/KU7lhp"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 919BB25D1ED;
-	Sun, 11 May 2025 14:27:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47CF32BCF5;
+	Sun, 11 May 2025 14:40:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746973640; cv=none; b=Gx1mhi7zQhQopM41Shs9o6PZabvcwybcOsgfCYu5oIPvGimx5b1f1jOBUChOZVMnGYmp/hG0oqwYtow/vT1jrt8laOVy7TOK9tFm3cRAIE0LgBMXwiEFMy0kxFE669cXi/Ggn7dd7hFrOfCDh1cXsNpB5xqWHpyZyp6n5EWUwpQ=
+	t=1746974449; cv=none; b=G74iM8VyTA1rw/pBa8K+ukay8laOkhdoc073Y8d7f5xbKN2sWPkX4XfXQkMSowiMVaefzsIVloWTNm38jVGtgRZs5vBF22aSbrQoyu2+r8uJL4HYgSEQB8GXfNrVh10MI/QJISZRoUBO6tYDa1j0Um3y7wFs/2tpI9zFgkjPZwk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746973640; c=relaxed/simple;
-	bh=qYsPB5KTJZb+XUGm4MW6ZwKZMh54o71O1hC+tg3tZWI=;
+	s=arc-20240116; t=1746974449; c=relaxed/simple;
+	bh=aHn2shim4HRKYpeiFSsXRPiN3gBe4/czch380lKfRwk=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NjQjqKsv4EBSByA7CcRRhU+5nR06pW0ErUtSlyrT45YVD1po8RStMjbT3tRoJDDBw+hgjumhRbkzWDHfHEmWggq26Ui2M/baVlgCX8kykE4mKL4ZAwlKJjQYr5U/oV2ZE5G3DUNGQ7b/zZ7n8hE5QD9njVoarhrkQAckV1lBQd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VUTFGZsf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0707C4CEE4;
-	Sun, 11 May 2025 14:27:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZTv6M/N2lFI2qNDyA7RqRxPUIKFPGCEkElRnymBERv+vD1E6OonWeoP/Fdf88GjYBT4FPfm3zjcAjIFhGE3T50wfVfEXm6et0zMWwQ94WmhqROEShSnkdcEleLvnzHgXUK80uL+fIz5kcWaAqXyxK6weqcdXmcf8PK3z52Vh1fw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A/KU7lhp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4906C4CEE4;
+	Sun, 11 May 2025 14:40:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746973639;
-	bh=qYsPB5KTJZb+XUGm4MW6ZwKZMh54o71O1hC+tg3tZWI=;
+	s=k20201202; t=1746974448;
+	bh=aHn2shim4HRKYpeiFSsXRPiN3gBe4/czch380lKfRwk=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=VUTFGZsfLBrHnjVnBTeej4wSPZzyPI6+32RY1g9O8Wgdp865wvZgZqUP6ZUvCJDST
-	 OW9a5RdYmOw53EABLcl+/LFqcmiT5iL1+avGUChdgS2gHQHfczML3CrO2wTkJ8rz6F
-	 CMazwxn5m+RtnpAo+K7dg0TAGowB8SZaK9LQU5Q11spR3ShzejqeaPM7SnJ1szITOY
-	 sCNQW1pmzbbK6k2NgqwrqJMvUQ4TPg3TVB67TVoslAlYYSSfXXssVHNG27CZLSPrLb
-	 3MWWCAShtdXDHPI9siix40h2m2Xw1ef67f7pd8l4hEffQk+2J/CmA2n9AKwsqWUYnu
-	 zICK5ZaW1dXtg==
-Date: Sun, 11 May 2025 15:27:07 +0100
+	b=A/KU7lhpjRKZ3jj/jjY8nN7xamKYWDj1CZVGjWo9TGalrF8GQuF+3pjSu4/5hnOer
+	 6ToTXUSTfelNO5cuXqMGCr2e3jqI1/8lgv6rcPD7M5bx7n9HEMspVGzrqpzv2srBaB
+	 0AkJf4hArsjM8EwkPnEGTq4EPtZnfUBT28eXcS9tfyXvK1fSq2lScFg4fDCKuG5D+u
+	 4VkYX+OxMNeV9zr17zBKxvZdGbKswCm2V7IPnKVpoz6UXdckl4lMalXKZu5FOtqSPi
+	 bo3Wa2uwryJy7srzxp+AtdCW9SwrIJUBQeLDnmk9DJGlf+iyMJPr4APb170WNDP2BF
+	 yhLJeDRrBffcQ==
+Date: Sun, 11 May 2025 15:40:41 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Markus Burri <markus.burri@mt.com>
-Cc: linux-kernel@vger.kernel.org, Mahesh J Salgaonkar
- <mahesh@linux.ibm.com>, "Oliver O'Halloran" <oohall@gmail.com>, Madhavan
- Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>,
- Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy
- <christophe.leroy@csgroup.eu>, Naveen N Rao <naveen@kernel.org>, Jacek
- Lawrynowicz <jacek.lawrynowicz@linux.intel.com>, Maciej Falkowski
- <maciej.falkowski@linux.intel.com>, Oded Gabbay <ogabbay@kernel.org>, Linus
- Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>,
- Nuno Sa <nuno.sa@analog.com>, Olivier Moysan <olivier.moysan@foss.st.com>,
- Lars-Peter Clausen <lars@metafoo.de>, linuxppc-dev@lists.ozlabs.org,
- dri-devel@lists.freedesktop.org, linux-gpio@vger.kernel.org,
- linux-iio@vger.kernel.org, Markus Burri <markus.burri@bbv.ch>
-Subject: Re: [PATCH v4 1/6] iio: backend: fix out-of-bound write
-Message-ID: <20250511152707.294bc7b9@jic23-huawei>
-In-Reply-To: <20250508130612.82270-2-markus.burri@mt.com>
-References: <20250508130612.82270-1-markus.burri@mt.com>
-	<20250508130612.82270-2-markus.burri@mt.com>
+To: Antoniu Miclaus <antoniu.miclaus@analog.com>
+Cc: <robh@kernel.org>, <conor+dt@kernel.org>, <linux-iio@vger.kernel.org>,
+ <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v5 00/10] Add support for AD4080 ADC
+Message-ID: <20250511154041.3635c7b4@jic23-huawei>
+In-Reply-To: <20250509105019.8887-1-antoniu.miclaus@analog.com>
+References: <20250509105019.8887-1-antoniu.miclaus@analog.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -71,44 +60,63 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu,  8 May 2025 15:06:07 +0200
-Markus Burri <markus.burri@mt.com> wrote:
+On Fri, 9 May 2025 13:50:09 +0300
+Antoniu Miclaus <antoniu.miclaus@analog.com> wrote:
 
-> The buffer is set to 80 character. If a caller write more characters,
-> count is truncated to the max available space in "simple_write_to_buffer".
-> But afterwards a string terminator is written to the buffer at offset count
-> without boundary check. The zero termination is written OUT-OF-BOUND.
+> The AD4080 is a high-speed, low noise, low distortion, 20-bit, Easy
+> Drive, successive approximation register (SAR) analog-to-digital
+> converter (ADC). Maintaining high performance (signal-to-noise and
+> distortion (SINAD) ratio > 90 dBFS) at signal frequencies in excess
+> of 1 MHz enables the AD4080 to service a wide variety of precision,
+> wide bandwidth data acquisition applications.
 > 
-> Add a check that the given buffer is smaller then the buffer to prevent.
-> 
-> Fixes: 035b4989211d ("iio: backend: make sure to NULL terminate stack buffer")
-> Signed-off-by: Markus Burri <markus.burri@mt.com>
-I'm looking for a tag from Nuno on this one before applying.
+> This driver aims to be extended in the future to support multiple parts that are
+> not released yet:
+>     AD4081
+>     AD4082
+>     AD4083
+>     AD4084
+>     AD4085
+>     AD4086
+>     AD4087
+>     AD4088
 
-J
-> ---
->  drivers/iio/industrialio-backend.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
+Hi. 
+
+I took another look through and think this is now ready to apply.
+However it came in on a Friday and Nuno has not yet had time to review
+so I'll leave it a few days before applying if no other comments come up.
+
+Thanks,
+
+Jonathan
+
 > 
-> diff --git a/drivers/iio/industrialio-backend.c b/drivers/iio/industrialio-backend.c
-> index a43c8d1bb3d0..31fe793e345e 100644
-> --- a/drivers/iio/industrialio-backend.c
-> +++ b/drivers/iio/industrialio-backend.c
-> @@ -155,11 +155,14 @@ static ssize_t iio_backend_debugfs_write_reg(struct file *file,
->  	ssize_t rc;
->  	int ret;
->  
-> +	if (count >= sizeof(buf))
-> +		return -ENOSPC;
-> +
->  	rc = simple_write_to_buffer(buf, sizeof(buf) - 1, ppos, userbuf, count);
->  	if (rc < 0)
->  		return rc;
->  
-> -	buf[count] = '\0';
-> +	buf[rc] = '\0';
->  
->  	ret = sscanf(buf, "%i %i", &back->cached_reg_addr, &val);
->  
+> Antoniu Miclaus (10):
+>   iio: backend: add support for filter config
+>   iio: backend: add support for data alignment
+>   iio: backend: add support for number of lanes
+>   dt-bindings: iio: adc: add ad408x axi variant
+>   iio: adc: adi-axi-adc: add filter type config
+>   iio: adc: adi-axi-adc: add data align process
+>   iio: adc: adi-axi-adc: add num lanes support
+>   dt-bindings: iio: adc: add ad4080
+>   iio: adc: ad4080: add driver support
+>   Documetation: ABI: add sinc1 and sinc5+pf1 filter
+> 
+>  Documentation/ABI/testing/sysfs-bus-iio       |   3 +
+>  .../bindings/iio/adc/adi,ad4080.yaml          |  96 +++
+>  .../bindings/iio/adc/adi,axi-adc.yaml         |   2 +
+>  MAINTAINERS                                   |   8 +
+>  drivers/iio/adc/Kconfig                       |  14 +
+>  drivers/iio/adc/Makefile                      |   1 +
+>  drivers/iio/adc/ad4080.c                      | 575 ++++++++++++++++++
+>  drivers/iio/adc/adi-axi-adc.c                 |  77 +++
+>  drivers/iio/industrialio-backend.c            |  58 ++
+>  include/linux/iio/backend.h                   |  19 +
+>  10 files changed, 853 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad4080.yaml
+>  create mode 100644 drivers/iio/adc/ad4080.c
+> 
 
 

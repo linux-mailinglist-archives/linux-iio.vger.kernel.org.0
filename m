@@ -1,81 +1,80 @@
-Return-Path: <linux-iio+bounces-19472-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19473-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE291AB3BC3
-	for <lists+linux-iio@lfdr.de>; Mon, 12 May 2025 17:15:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7386FAB3BD5
+	for <lists+linux-iio@lfdr.de>; Mon, 12 May 2025 17:19:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1D2993B538C
-	for <lists+linux-iio@lfdr.de>; Mon, 12 May 2025 15:15:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 110FC189F2D6
+	for <lists+linux-iio@lfdr.de>; Mon, 12 May 2025 15:19:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C317719ABD4;
-	Mon, 12 May 2025 15:15:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9C84239E84;
+	Mon, 12 May 2025 15:19:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="NPkMYGdq"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="ox1TmMNK"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+Received: from mail-oi1-f171.google.com (mail-oi1-f171.google.com [209.85.167.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23D2A1CCEC8
-	for <linux-iio@vger.kernel.org>; Mon, 12 May 2025 15:15:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9AA32309B3
+	for <linux-iio@vger.kernel.org>; Mon, 12 May 2025 15:19:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747062946; cv=none; b=Cebz8IzOmZF8PcLjRm4/y6Gqg7FYBn0INzl+jeWg8erbcNYX1oZYEEoB1DbAhkCrKeDmt1FuXrPrUssdrWu1Ey0U2FZDubf8zSe6Y+OWIqJoKqBt7GDF4ItOI12hruGTUhZHvJELiQYZxNpL54KZrKmOFQ4fZFvsdpMpTYHqn/Q=
+	t=1747063160; cv=none; b=aqX1fU1tfBa7qh/CYtJXAeiFLYMYdNMXaljT0CkiTfRmEw9cJUbB2w9wspji5KTDqQGAl0e/lPV0G7hKckY9o6NcTUQVV3zj57dbtQM2u0KifLLEtRb3NfND4ETRwycGO25C70B/jXCJ77i/U40OR/SyVfti6nBdtx4OfoyLWjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747062946; c=relaxed/simple;
-	bh=zF4PQS8RQFM30N3ao4kEuN2RsoQHNBfVK/8QGFaitO8=;
+	s=arc-20240116; t=1747063160; c=relaxed/simple;
+	bh=YLRhKQPiXdebeEoWu36rYII0+EGFuA/AZrvLs65tpPc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TjaHdJKkQvAYUnAW4l61ga9sL4lRDy8l8lnjyScPcqu/JLv6R5Xn2yZGW9znc4XvpaC5oycc6p+OgFXzEmnfkE8xADOxCI3NKL28wpmhsXyk1HKnkPh05tSma1H4fFPKFtKp8FHK0DR6OZdy/FQeDmXZ+bRRPU5vr5/RoFoYZW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=NPkMYGdq; arc=none smtp.client-ip=209.85.216.52
+	 In-Reply-To:Content-Type; b=MIt8gOZSqjIQp36U1HdMbZ9d9tIRsZsHrJH4SWfREah46j98gaAex/BJ4G+ipV1kCKHWSYqBsUOUb9JRpBccYmBWdbmAvWAfyr42jSTIu1C5s+cNNjAzdr6hOdFf49bKc/CYJoWsgAa2pG9QpTv8VdLFnsbOx1Oks5Hi5kLsw48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=ox1TmMNK; arc=none smtp.client-ip=209.85.167.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-30a8cbddca4so5229651a91.3
-        for <linux-iio@vger.kernel.org>; Mon, 12 May 2025 08:15:43 -0700 (PDT)
+Received: by mail-oi1-f171.google.com with SMTP id 5614622812f47-404a5f4cdedso254674b6e.0
+        for <linux-iio@vger.kernel.org>; Mon, 12 May 2025 08:19:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1747062943; x=1747667743; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1747063157; x=1747667957; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=d0n+Mfncf1dF7UbdvMh/Y3Vkt6ppEmOAhKQI7/Xctfs=;
-        b=NPkMYGdqygEadNa9LBxCCsLaDWqp4GRfS8Ph/xx/qGxOGPd6hDtfGyacyAIcTs026J
-         XJSoBBNAt5MhW+Ef40nJeLNLyYIq0IPafG8V/XqKhS7RAQUdxaQ7ZDj29uzdzT8esr4Y
-         QfdsgqR63ugM64JgjPrM/r0nO3DgiRIhFkE6OcwINl9E10F2f+9iN9bN9dz2axCXfs7t
-         Rgd9WAV1o/WeEORfTBRaCAMoC1DOhD+cZUcSGhwXhg5izye20HxjlROwGjLgGYOkAlCy
-         C5S2GJWp/HDi0W5vvyT+FAAjmnOPikPwo+VfsbGnWY73IoV43GXQVQqNaNDRWSumS2Ff
-         Bxcw==
+        bh=uB97RORFeCN+m++iQb4oHIgwP6lqwFalZZAX+MQgG3w=;
+        b=ox1TmMNKgrKcBcX3tpbmId1cWVUXHh8yZUEIFLXQhYBgniJIgCV6w++of692fHNA5R
+         2dE4jD+YbstQn/sBNZ80boqZ96gZG02al23FqNwgVnoYIBSKOGA6uAo207P+dvL0KFiQ
+         AYiY+LN21yNxw0nLGBQ67My5fPwnlhRsHl914YN9/VCz867SWBhc20exn5WuP/8WtFuQ
+         uE6+kqTtqJU6pF5lo04l7U/d7Wy7RmO9T2SjLaATvYb9WHD8iBCyCmlyJOKQhv3S1haS
+         1Oql08n8BuafKsjFe0gqC5eKNg+UJkUvM/y8bwDOF/iBN/1NtZU78eEFKuX2nOUNH5X+
+         cstA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747062943; x=1747667743;
+        d=1e100.net; s=20230601; t=1747063157; x=1747667957;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=d0n+Mfncf1dF7UbdvMh/Y3Vkt6ppEmOAhKQI7/Xctfs=;
-        b=jmiadNSvgAz9itzjjH1uNl4cLRxqsgOc+HUsiq46tTA2GfAmv8yTgmEmi8q7fS31so
-         DF6d0S3R2OzgBc1lGrb3TcqsR699fZ/udg/hCVej6tbS4iJgDD7ulSfcS0QDjT6ZNo/n
-         xSuk1vXVdHprzKRhMMuVOARFP7BFqB48bXJijelbKqkFg1HN6Fb2A2UQGbP9ySxVLP7t
-         Z7+7/ITaGoRtKgHZ4E6WsPEVTjPO4kC4TYzP6Ek+nxuwIkwweczQjMaLL5fn1iDyZWLD
-         Ub9wBk6kSJ+ES4nhW3Iodf/6TESikZl2tWEfZbwgTFQABQjpyG6nKirhsMoDi/tRR3cV
-         34Tw==
-X-Forwarded-Encrypted: i=1; AJvYcCWFNxg/K2TS8D/iHHk0u+WID/3ix3U+ycSbxVJDzSLfKmFqSsqHKhmGZVeDj0MLk0U9aoP4bvFo1So=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz8mwIK3xASuZew6uFaW5QqcoXPjL93DBugeWmpiBfOMLgUAQlR
-	6Q0zW1hl9k3Lx9JJM/mRIAiQvR5ZRrO4MvEq886k7IhOLLtpsI6MV6ZhnwJ+v3R36eRbRRDTUJq
-	+
-X-Gm-Gg: ASbGnct/VVXfWIvlDias/cz1LNOG2UMXPtwF9he6JsgYaswvOy5qmXGjnBO7N3cxt6m
-	kWRmcmtQpBHmLcU+mbL8j1jzhTwBRGw2BVuEQhnVVeUxGTqEn1yRw49UDuU7u79m8mFcCOlaxnc
-	Hp6BRM9GfthOBiaI1achisJ4p65tNykwBaBUxDV0MsD5qUbzFFqoE7tBv4Vda9Nt4GX+0xxN4l5
-	AQ3tFuswgZEY2gqQfJ22p662mR4xC9q+iVoDKJx6igPyN71hYguGvjLf7yHKfW2zNBIF+V04WEu
-	xbOl4qNF0TTPa6LYJHQoGrjKnmJAFdC9HTjwzhL9dQLSDL+PphbS/rLi4ZofxYp/djiiZH+lmUM
-	wMgowJZkmnmUJ+vZwD5LTeliWWJ/m
-X-Google-Smtp-Source: AGHT+IHZGDRNs+8vOMkC0p04fQzG/ssmfSh7XZKqv3ixjm0TN3TuT3LuzzKvBaCQb7HZ2b2RSV9r0w==
-X-Received: by 2002:a05:6808:1582:b0:400:fa6b:dc93 with SMTP id 5614622812f47-4037fec216emr8370575b6e.39.1747062932740;
-        Mon, 12 May 2025 08:15:32 -0700 (PDT)
+        bh=uB97RORFeCN+m++iQb4oHIgwP6lqwFalZZAX+MQgG3w=;
+        b=g6LvjFeD/7Nl8fGOp9YChhZGdWNDCQcsdiPk9E9ETvMHmQaiBMkmC9snU5AadaTESW
+         gUwfZ5ultd9z2iOJ406p5hZhT6Mvw+3lD3/ItDCGklI4xAJdT6f11reFn7K+LwwyuuV0
+         iNm+5n6mypeSdZyvBhQZb020lbYQStcCT4ajjB3zXu6YZyrT6qHO7t+lvk01iTdifTqQ
+         hrjevPNkzUsgfz8wcWCI90gJ/1jjJBDgY/1K12sWb7INhIlPmdT2CcfzaOgzLG7CEkY9
+         mYsxk1752FfFH+TeUi9aEVafYQHB9skLBn9bRlnzUix1erHS1sWHnRJvxqYn7Fox53xS
+         rqpg==
+X-Forwarded-Encrypted: i=1; AJvYcCUwJ7gcUHRw/wjUUno6KjUudDUSPku05gIgOYnIBTT7o2dLNjLhFX70QwpzcEbzU797A3j6Wp3f9nE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyJ70W+spxubvDdapBwi4tQbetq2YyyI/pWtiI3YlMqYnL2E1uC
+	BkfWCOlAE/jFkeNS1cLYMz5Nt/W4G9bHI6AevztFTxtAjXZC29CMJh8srWy/bgQ=
+X-Gm-Gg: ASbGncvNyceORO0TQG6E26oqtE/8qm4YKFTvmKor1o0YEEwEbE+aHaB+FUKfaPZi29T
+	4zIZuKlawHVcjKUHqxt/aSmf6XvAqpWBC+hqkvwRt04SLQ9g0eGSlFxFLCyErHuuZ5IsU49NmWi
+	vyfsw1mnURK436e9kj107Oq27PYF727ZC4Krh8SeZqTylokZPFFlTY8mcMS3fNDt3rB2nEsrPqq
+	wIVmsOiMyW5Gg1KzQDNQRYvQGB2VtiFHlOUfuDkLcNVL9lRf6ZN6mZw8yP9Fj6W1gT/pc/GCeww
+	Z4enFjmeZzJs103rwhMjFAYZs9sk6YWvlRg7t6uFStIiADa+mRr3jlx/yT9mNTtcArDhGaBL0s/
+	iVoyIPTtkqKbSp07iEaLSGCPsXfj4
+X-Google-Smtp-Source: AGHT+IF4wUVmJBZ3K8txZjwLLOWfdyKyYz1MbDWVE24RIYHa/SNfHkpPunaTfB6E0UsECakCsaE/HA==
+X-Received: by 2002:a05:6808:1409:b0:3f6:ab0d:8dc0 with SMTP id 5614622812f47-403800d6897mr7978911b6e.24.1747063156758;
+        Mon, 12 May 2025 08:19:16 -0700 (PDT)
 Received: from ?IPV6:2600:8803:e7e4:1d00:fd2e:ffda:4c42:b314? ([2600:8803:e7e4:1d00:fd2e:ffda:4c42:b314])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-403802d369fsm1565218b6e.17.2025.05.12.08.15.29
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-4038038920asm1571039b6e.34.2025.05.12.08.19.14
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 12 May 2025 08:15:31 -0700 (PDT)
-Message-ID: <44929bd2-4abf-4c7b-b3c0-382bd030800f@baylibre.com>
-Date: Mon, 12 May 2025 10:15:29 -0500
+        Mon, 12 May 2025 08:19:16 -0700 (PDT)
+Message-ID: <945f9653-f5b2-479c-92c5-396f0d0e8b26@baylibre.com>
+Date: Mon, 12 May 2025 10:19:14 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -83,7 +82,7 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 3/7] include: linux: move adi-axi-common.h out of fpga
+Subject: Re: [PATCH v5 7/7] clk: clk-axi-clkgen: fix coding style issues
 To: nuno.sa@analog.com, linux-clk@vger.kernel.org,
  linux-fpga@vger.kernel.org, dmaengine@vger.kernel.org,
  linux-hwmon@vger.kernel.org, linux-iio@vger.kernel.org,
@@ -96,54 +95,55 @@ Cc: Stephen Boyd <sboyd@kernel.org>,
  Michael Hennerich <Michael.Hennerich@analog.com>,
  Jonathan Cameron <jic23@kernel.org>, Trevor Gamblin <tgamblin@baylibre.com>,
  =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
- Mark Brown <broonie@kernel.org>, Mike Turquette <mturquette@linaro.org>,
- Xu Yilun <yilun.xu@linux.intel.com>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>
+ Mark Brown <broonie@kernel.org>, Mike Turquette <mturquette@linaro.org>
 References: <20250512-dev-axi-clkgen-limits-v5-0-a86b9a368e05@analog.com>
- <20250512-dev-axi-clkgen-limits-v5-3-a86b9a368e05@analog.com>
+ <20250512-dev-axi-clkgen-limits-v5-7-a86b9a368e05@analog.com>
 Content-Language: en-US
 From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <20250512-dev-axi-clkgen-limits-v5-3-a86b9a368e05@analog.com>
+In-Reply-To: <20250512-dev-axi-clkgen-limits-v5-7-a86b9a368e05@analog.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 On 5/12/25 9:46 AM, Nuno Sá via B4 Relay wrote:
 > From: Nuno Sá <nuno.sa@analog.com>
 > 
-> The adi-axi-common.h header has some common defines used in various ADI
-> IPs. However they are not specific for any fpga manager so it's
-> questionable for the header to live under include/linux/fpga. Hence
-> let's just move one directory up and update all users.
+> This is just cosmetics and so no functional changes intended.
 > 
-> Suggested-by: Xu Yilun <yilun.xu@linux.intel.com>
-> Acked-by: Xu Yilun <yilun.xu@intel.com>
-> Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com> # for IIO
+> While at it, sort header in alphabetical order.
+> 
 > Signed-off-by: Nuno Sá <nuno.sa@analog.com>
 > ---
->  drivers/clk/clk-axi-clkgen.c              | 2 ++
->  drivers/dma/dma-axi-dmac.c                | 2 +-
->  drivers/hwmon/axi-fan-control.c           | 2 +-
->  drivers/iio/adc/adi-axi-adc.c             | 3 +--
->  drivers/iio/dac/adi-axi-dac.c             | 2 +-
->  drivers/pwm/pwm-axi-pwmgen.c              | 2 +-
->  drivers/spi/spi-axi-spi-engine.c          | 2 +-
->  include/linux/{fpga => }/adi-axi-common.h | 0
->  8 files changed, 8 insertions(+), 7 deletions(-)
+>  drivers/clk/clk-axi-clkgen.c | 85 ++++++++++++++++++++++----------------------
+>  1 file changed, 43 insertions(+), 42 deletions(-)
 > 
 > diff --git a/drivers/clk/clk-axi-clkgen.c b/drivers/clk/clk-axi-clkgen.c
-> index 2a95f9b220234a1245024a821c50e1eb9c104ac9..31915f8f5565f2ef5d17c0b4a0c91a648005b3e6 100644
+> index 40ca03204010a15078f90935effbe58c4c3a00bf..a268d5ccf5798dd20cc1328369c2c9c45b37282a 100644
 > --- a/drivers/clk/clk-axi-clkgen.c
 > +++ b/drivers/clk/clk-axi-clkgen.c
-> @@ -16,6 +16,8 @@
->  #include <linux/mod_devicetable.h>
->  #include <linux/err.h>
+> @@ -6,18 +6,18 @@
+>   *  Author: Lars-Peter Clausen <lars@metafoo.de>
+>   */
 >  
 > +#include <linux/adi-axi-common.h>
-> +
 
-This one is adding, not changing. Was it supposed to be in a later patch?
+Could have just added this one here in the first place. :-)
 
->  #define AXI_CLKGEN_V2_REG_RESET		0x40
->  #define AXI_CLKGEN_V2_REG_CLKSEL	0x44
->  #define AXI_CLKGEN_V2_REG_DRP_CNTRL	0x70
+>  #include <linux/bits.h>
+> -#include <linux/platform_device.h>
+>  #include <linux/clk.h>
+>  #include <linux/clk-provider.h>
+> -#include <linux/slab.h>
+> +#include <linux/err.h>
+>  #include <linux/io.h>
+> -#include <linux/of.h>
+>  #include <linux/module.h>
+>  #include <linux/mod_devicetable.h>
+> -#include <linux/err.h>
+> -
+> -#include <linux/adi-axi-common.h>
+> +#include <linux/of.h>
+> +#include <linux/platform_device.h>
+> +#include <linux/slab.h>
+> +#include <linux/types.h>
+>  
 

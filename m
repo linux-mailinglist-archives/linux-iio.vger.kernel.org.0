@@ -1,96 +1,124 @@
-Return-Path: <linux-iio+bounces-19459-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19460-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 773A5AB37F8
-	for <lists+linux-iio@lfdr.de>; Mon, 12 May 2025 14:59:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C188AB383D
+	for <lists+linux-iio@lfdr.de>; Mon, 12 May 2025 15:16:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C14C189421F
-	for <lists+linux-iio@lfdr.de>; Mon, 12 May 2025 13:00:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 89AFF17C105
+	for <lists+linux-iio@lfdr.de>; Mon, 12 May 2025 13:16:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 612A1293B6E;
-	Mon, 12 May 2025 12:59:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ECD7293757;
+	Mon, 12 May 2025 13:16:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VsdY9hbU"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="a1mrVFg/"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A63478F43;
-	Mon, 12 May 2025 12:59:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58F912D7BF;
+	Mon, 12 May 2025 13:15:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747054784; cv=none; b=hsfTXy1HMSN8bDLHUDG7YbCRFSLcwVAtgzVfAzK/rE798CzacIcrd25q06+HL7eZBSd/uolWlw6lIvMxqgO9g3M1t/qgwPe/Eic6rOuM/AB4g88sy5oZBtZSG/zrJ+abJnm2jaToYLvJZOvD4IDezjl25bZZB+10E+v108SVFec=
+	t=1747055760; cv=none; b=om+rEeQiVtrKYMQrFeWojgpXuuzsM2uW6/RJ+vGwywK7c8SL4d8ODmhOhxQ2kRissp3gKu44swhjI2Vfa/VvMbK1VfK0Hrh1w1QpUcSODoR2d3Yo5Y1cP+far4JzojYTgLY9uAJC5hVA49jI1xwGPcNV9bzD62A3R8SQ4cAe/3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747054784; c=relaxed/simple;
-	bh=Sl9HhishayHhuvvB5bQuDThhoqmbFaMgmkYIGRlpRog=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bz13aRkb17Oned2NuzkVEf7pWwqEH7l+6M/LybfjeejdWOGGAGG4BX/iGNleurF31IDIa8UNxlQjJmgPWe5103/YqaW6Y8kj8rObHuOin3yyQ4ilA4T6Lw9jGSlsps/oZS13c/wT46rGKdlg95ZgM6nJhkIq6l5Cd/Ae+ZhXg40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VsdY9hbU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D7B9C4CEE7;
-	Mon, 12 May 2025 12:59:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747054783;
-	bh=Sl9HhishayHhuvvB5bQuDThhoqmbFaMgmkYIGRlpRog=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=VsdY9hbUj7lzvgCG+qD3jMnd/6+YmALHBCgEFxiAI5SeZV0QsLiluVIisah5mqeQJ
-	 caJXV365FgBEgoe/qhzjhhu7c3uteuwTTdTE3bRKWDQ5K3dNAqMTjp94iGN/dcDq5M
-	 dPlrnJtUEJTnW0mCls7X2FaBzWgrV2yiQNPfv0cdFuXUnMbhqlTChttFa4QXMIDG+/
-	 BB8J4IKc2qJUPnTY6PslvQOhR2xmcm2HEPMRJ3G04adrg2HGyCg3xA/wYv5+4TMwpm
-	 889vc2UYfKPbKuRjWHqDQwoOLvnXaMtx57t8OGRjD4w5t36XsqpPMiGGg+BbLyKttv
-	 LZAAXBB1X+qRg==
-Date: Mon, 12 May 2025 07:59:41 -0500
-From: Rob Herring <robh@kernel.org>
-To: Conor Dooley <conor@kernel.org>
-Cc: Jonathan Santos <Jonathan.Santos@analog.com>, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-gpio@vger.kernel.org, andy@kernel.org, nuno.sa@analog.com,
-	Michael.Hennerich@analog.com, marcelo.schmitt@analog.com,
-	jic23@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	marcelo.schmitt1@gmail.com, linus.walleij@linaro.org, brgl@bgdev.pl,
-	lgirdwood@gmail.com, broonie@kernel.org, jonath4nns@gmail.com,
-	dlechner@baylibre.com, David Lechner <dlechner@baylirbe.com>
-Subject: Re: [PATCH v7 03/12] dt-bindings: iio: adc: ad7768-1: add
- trigger-sources property
-Message-ID: <20250512125941.GA2952373-robh@kernel.org>
-References: <cover.1746662899.git.Jonathan.Santos@analog.com>
- <731196750f27eee0bad5493647edb2f67a05a6e2.1746662899.git.Jonathan.Santos@analog.com>
- <20250509-gala-unfiled-fd273655b89d@spud>
+	s=arc-20240116; t=1747055760; c=relaxed/simple;
+	bh=N+0LFGTtI6zB+BSNgrVSHcilV81hSz+0mu8K+VGrGKw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=EYUbykmvOU7Rf26M0YbDp+5X/ka8INczsGnO1/nirQoTGjHXLlEWLnanAPJHCnBhUO5H4qL3ZJVwJf3zxjKrYfGlRwKpX8vl1Klz0oSr2jTQE0JSC32NXHojvTWRB+NXd99ZZnxSqtYljYHRuWFwwornkI+vRYzc2dnvXKtAspc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=a1mrVFg/; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1747055758; x=1778591758;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=N+0LFGTtI6zB+BSNgrVSHcilV81hSz+0mu8K+VGrGKw=;
+  b=a1mrVFg/9jyxt7ZswjRlBcFkjn+Fo86bTDkGxLCPcmk6E+8Iqv2N+W+x
+   0uBxa8YRGJpiQQey4VS8T1poFw5memjjC1RI5lMKBbR679hK1SFIu7Yzy
+   rcIEil5FK0JFn6rIE5NHPx46ULkINvUs6s3eyOme6SKyUykUwQPNzM0lM
+   WeK5mVzhkcIxXs0A9KYKkQlzBbpEUGCZ8dKYpEl5Bh1qeRLfiINUfaNyK
+   e/outxpQZoWdzssUpWX53uqCwQp2t5gr5hGvPfPYilHAb58R7v4Hymu79
+   eJrv862jWj92IxclJoFXwNIOkkEJr5+kbyqJy1KkPtMvd7ylrg5AYg5HO
+   Q==;
+X-CSE-ConnectionGUID: 82/VeHVETf2UzY6bNe3bjw==
+X-CSE-MsgGUID: xNexGs2hRJKMK3vo4dU39w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11431"; a="74243965"
+X-IronPort-AV: E=Sophos;i="6.15,282,1739865600"; 
+   d="scan'208";a="74243965"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2025 06:15:57 -0700
+X-CSE-ConnectionGUID: mF0Tr4TVTgSXs/DMLsD7rQ==
+X-CSE-MsgGUID: /tqYRHGYSri+FGM+Rb+4MA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,282,1739865600"; 
+   d="scan'208";a="138329163"
+Received: from tronach-mobl.ger.corp.intel.com (HELO [10.245.84.129]) ([10.245.84.129])
+  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2025 06:15:51 -0700
+Message-ID: <c26c38da-401e-4044-8b9e-cd5547e61677@linux.intel.com>
+Date: Mon, 12 May 2025 15:15:49 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250509-gala-unfiled-fd273655b89d@spud>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 2/6] accel/ivpu: Use effective buffer size for zero
+ terminator
+To: Markus Burri <markus.burri@mt.com>, linux-kernel@vger.kernel.org
+Cc: Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+ Oliver O'Halloran <oohall@gmail.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Naveen N Rao <naveen@kernel.org>,
+ Maciej Falkowski <maciej.falkowski@linux.intel.com>,
+ Oded Gabbay <ogabbay@kernel.org>, Linus Walleij <linus.walleij@linaro.org>,
+ Bartosz Golaszewski <brgl@bgdev.pl>, Nuno Sa <nuno.sa@analog.com>,
+ Olivier Moysan <olivier.moysan@foss.st.com>,
+ Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+ linuxppc-dev@lists.ozlabs.org, dri-devel@lists.freedesktop.org,
+ linux-gpio@vger.kernel.org, linux-iio@vger.kernel.org,
+ Markus Burri <markus.burri@bbv.ch>
+References: <20250508130612.82270-1-markus.burri@mt.com>
+ <20250508130612.82270-3-markus.burri@mt.com>
+Content-Language: en-US
+From: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173, 80-298
+ Gdansk - KRS 101882 - NIP 957-07-52-316
+In-Reply-To: <20250508130612.82270-3-markus.burri@mt.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, May 09, 2025 at 05:18:55PM +0100, Conor Dooley wrote:
-> On Thu, May 08, 2025 at 02:03:30PM -0300, Jonathan Santos wrote:
-> > +dependencies:
-> > +  adi,sync-in-gpios:
-> > +    not:
-> > +      required:
-> > +        - trigger-sources
-> > +  trigger-sources:
-> > +    not:
-> > +      required:
-> > +        - adi,sync-in-gpios
+Thanks for the fix, applied to drm-misc-fixes
+
+On 5/8/2025 3:06 PM, Markus Burri wrote:
+> Use the effective written size instead of original size as index for zero
+> termination. If the input from user-space is to larger and the input is
+> truncated, the original size is out-of-bound.
+> Since there is an upfront size check here, the change is for consistency.
 > 
-> Actually, this is normally not written like this. Usually it is done as
-> an allOf entry:
->   - if:
->       required:
->         - maxim,gpio-poc
->     then:
->       properties:
->         poc-supply: false
->         gpio-controller: false
+> Signed-off-by: Markus Burri <markus.burri@mt.com>
+> ---
+>  drivers/accel/ivpu/ivpu_debugfs.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/accel/ivpu/ivpu_debugfs.c b/drivers/accel/ivpu/ivpu_debugfs.c
+> index f0dad0c9ce33..cd24ccd20ba6 100644
+> --- a/drivers/accel/ivpu/ivpu_debugfs.c
+> +++ b/drivers/accel/ivpu/ivpu_debugfs.c
+> @@ -455,7 +455,7 @@ priority_bands_fops_write(struct file *file, const char __user *user_buf, size_t
+>  	if (ret < 0)
+>  		return ret;
+>  
+> -	buf[size] = '\0';
+> +	buf[ret] = '\0';
+>  	ret = sscanf(buf, "%u %u %u %u", &band, &grace_period, &process_grace_period,
+>  		     &process_quantum);
+>  	if (ret != 4)
 
-Using 'dependencies' is fine here. It's actually shorter.
-
-Rob
 

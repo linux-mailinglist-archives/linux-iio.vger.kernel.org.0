@@ -1,136 +1,141 @@
-Return-Path: <linux-iio+bounces-19462-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19463-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70445AB3A3C
-	for <lists+linux-iio@lfdr.de>; Mon, 12 May 2025 16:15:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56BCBAB3B0B
+	for <lists+linux-iio@lfdr.de>; Mon, 12 May 2025 16:47:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F0E4B17C58D
-	for <lists+linux-iio@lfdr.de>; Mon, 12 May 2025 14:15:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E2AD9188F4E7
+	for <lists+linux-iio@lfdr.de>; Mon, 12 May 2025 14:47:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 945571EBA14;
-	Mon, 12 May 2025 14:15:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 202D222A4E0;
+	Mon, 12 May 2025 14:46:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="bw8UddU/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MVesmxv4"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ot1-f54.google.com (mail-ot1-f54.google.com [209.85.210.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F8D21EC01D
-	for <linux-iio@vger.kernel.org>; Mon, 12 May 2025 14:15:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B976A19C569;
+	Mon, 12 May 2025 14:46:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747059332; cv=none; b=o8ZJjQZ5pA1etb9xygJTGsJAMIhFoipixqSNyf6jBcCBjyHTXDaxUTQAo5Svf8KBAaxBHf+b++a9cnT7J43Zc0qO+T0GjgyXqW3XOpenRTkrTtpGHlr222hKDVPDsx/gda+ccwAqJTPSEwW0RGJncd7uXVbJMskputpatUP4ZyM=
+	t=1747061206; cv=none; b=U3knhArpRhWjdL4eLqEQdGnrLO8iBtylLznEWr8efW31XRBCrkfzShKoLYZNbpt6Kh+fvC8oN2S0jl//3adVGcni9wf0H3WgUumUqjE5G4vTx+wRQShDU5r2nFH5N8bXuL35oyzyJclFwBmHGHZlvahu0H0ZLPTyaFAxwfWSxsU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747059332; c=relaxed/simple;
-	bh=nNU/RFz2rUbNl7nLf7Z8+rvRbBvzu5h/opPgTl9yzxA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=IFBl9DGA5+S7coCIiD4YHfbRcW19Rrol+criDHKasn8refRWCEkOvKeHYk3slAclns0WYtjdfJqSN7r1p/Nbw9/XwtfhwgQV9zlZfj+tFo+fc16rwxd72ub1jQtqXMyOpLicZM0vxO/uRkhsMy5MeRnoAp8OfJXbGryUP4EdIrs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=bw8UddU/; arc=none smtp.client-ip=209.85.210.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ot1-f54.google.com with SMTP id 46e09a7af769-7302a769534so2990145a34.1
-        for <linux-iio@vger.kernel.org>; Mon, 12 May 2025 07:15:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1747059329; x=1747664129; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=5ZkQGRREx70HQmMXnJ2JUFahkKh8y7M/M223iiroUNg=;
-        b=bw8UddU/wc/Hi3X8dltpVwdE0zslMaZ6BZxCPfOevQSpYb4Joy0N1owoi+5k/um9aI
-         U4oWu6+cdt2i+gWJInEiRFZQHMiv9lL2QCKq/BwsHTuIMvVCDjDSVXmSGrXqWRQJphH3
-         tBIScIESt4qK1aHJ6u3JgeXJ4xUcgBGgCZ7I22+TJ5/zxoVaVWJ95IMlZgfjnHLlJttP
-         3SMtexBUt77PkAPGk7oQibFHcWetavzBbH3xhfl1Jl3h2XM66Jl+6RUjsjb6ew4NPgHP
-         7af8EBC/c/OGFx/1MMIIKBGfI46jQ+71XfXw1Ljy+dPrQLeTTSzt7u01BAhT3yTVQ6Ff
-         ipkg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747059329; x=1747664129;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=5ZkQGRREx70HQmMXnJ2JUFahkKh8y7M/M223iiroUNg=;
-        b=TQkRfvFcyG/B/XyQ6xOAwKSvKpy+CmB7f9dWAPODCnyFgUjobqN0FQht+U0/2PGrFo
-         TnPT7UZGPTlxdPU+Qw/2T/cYMoCVXQjMLvbaEuTT98IJyxAmdu1nANFkIqtvBYykCMhq
-         kJfsIn/dskZX/tRJAKrXv+FeiASmRd4Pwb+UMfc3EolFCI8owoDtWBd50Ca/ia4uDXI7
-         YJf7Zp4rjKD3L1dI76VV7iojPyXcDnmkpt7xm955xkY1T+vWGPuJmnrzfHTQquJvF1cj
-         e+++HuUxVPAvQOxM0Ivk0vPcZbU38JVs6V2yzfVzjuMZ7mt3rPWKfTq4OMdETTXKX9fp
-         Tsvg==
-X-Forwarded-Encrypted: i=1; AJvYcCUxiwz0I4rAXWPRIKSSUNd8XAESmzNU51E1w96lxbwJ68zbBslIt3oeEI8GxCaKSu0ADBFPstKy84I=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwA1EaphT37jRQHpJJ3mrXDpnzoMw6qQduFTSgOaW0kKkHlV3+y
-	qiQQ4s9t0hVvG12tdf+ppWXfhQf0TpIi7PmOVbq71fWgCxVQIFXvmQEXjokLtdcL/9KNRv7ea4/
-	b
-X-Gm-Gg: ASbGncuKfMMJerSLG4zca0+czRdDtolpODd4mgHy4IsyRxgYjXqRZpi/PVTS/ooxezI
-	5feERGu1mHeBWQSKIH53UQkInKKWq+acoNekZvO6WxpZk8mRKs2sl2NgOE9JuiigGcIwgdJThNT
-	YLZthYXY85lySfPnEE21VR5bcPNz+A6E8jIPYIMt9TKMRisFrvQ2PUjrnB+tcFJTwHbHv89Dje2
-	wHaZA/KvcaPW/VrUs7tZnM5T7Pv+84FvGRGQHmzGyKArG8sMXbPTp4Pvcz2kaxcgPsIOZNzhi92
-	WTTOEa/zAA+YoXm5wNt54wXRa7t3jO/sIJ4+Fq/PGrdh7KuwZ5TqsxSYIjXSYNkjHlU92nGQKwG
-	BMVSKNfTKXaOk7Ad4cGbRK+JRnjlq
-X-Google-Smtp-Source: AGHT+IHCEnMxUGxiLvsEuMQ4xMc51y5Br4FOqLhzjMrNBPxOpyphbh4RrGySc1szYHqvL/h+260LuA==
-X-Received: by 2002:a05:6830:6611:b0:72b:a465:d93c with SMTP id 46e09a7af769-73226b09920mr8559233a34.20.1747059328997;
-        Mon, 12 May 2025 07:15:28 -0700 (PDT)
-Received: from ?IPV6:2600:8803:e7e4:1d00:fd2e:ffda:4c42:b314? ([2600:8803:e7e4:1d00:fd2e:ffda:4c42:b314])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-732264d78fbsm1563212a34.32.2025.05.12.07.15.26
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 12 May 2025 07:15:27 -0700 (PDT)
-Message-ID: <5f373faf-2ca4-405d-8709-2ec91a05f86d@baylibre.com>
-Date: Mon, 12 May 2025 09:15:25 -0500
+	s=arc-20240116; t=1747061206; c=relaxed/simple;
+	bh=JkM/nxZuW8/XtDWXx2zZGIoDGGsavYmJRK+QqVbajJI=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=M5BGeECu1KqY2S0YDApWtvXEZD25at8GEjYYRvLzyP57T10EJj1Bkh3iE5Xy6kqp5YlngaoyfdAlforSkrXy1rKYRgMNu38KYrFLYdnqO8EOwHvmnHtYyQ3I+SnMZm+wmsFCXE2A02CMRqX1qENDE2DU+/V1glArAv1DJJfsyUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MVesmxv4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 8C07CC4CEE7;
+	Mon, 12 May 2025 14:46:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1747061206;
+	bh=JkM/nxZuW8/XtDWXx2zZGIoDGGsavYmJRK+QqVbajJI=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=MVesmxv41We+7F72e7PtVsvCBvv91s5xU5hCghkJoW8SO/YIDgxAWNOavgcR6BYFz
+	 uJ6zl9RAXK6EI8VMqrm9dxFqWFj0khKCuaV6A5EuYJrgt6ACQ3B3txKq/+HDn8e/Si
+	 84q5k8oHvtxItigKhH55sMQalbQBJoPKa/ZnQ3Ru0Oy+fTBdoajfyaw7+aKXIrJXOD
+	 7AUcIc38xNq5gandCeQSIyjLQfACunq5bOIrl7U3OHR/XKq0iFwaYK4cP0AU3bOdok
+	 Uk5geLw0ojo/lAiX+Gxc5W9oIxNc9hEVBTBcQKzrdvChf/90uj5jTnBsefdjb4OnZv
+	 jj+4bV/ouy6JQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 79EB2C3ABC3;
+	Mon, 12 May 2025 14:46:46 +0000 (UTC)
+From: =?utf-8?q?Nuno_S=C3=A1_via_B4_Relay?= <devnull+nuno.sa.analog.com@kernel.org>
+Subject: [PATCH v5 0/7] clk: clk-axi-clkgen: improvements and some fixes
+Date: Mon, 12 May 2025 15:46:43 +0100
+Message-Id: <20250512-dev-axi-clkgen-limits-v5-0-a86b9a368e05@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 10/10] Documetation: ABI: add sinc1 and sinc5+pf1
- filter
-To: Antoniu Miclaus <antoniu.miclaus@analog.com>, jic23@kernel.org,
- robh@kernel.org, conor+dt@kernel.org, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20250509105019.8887-1-antoniu.miclaus@analog.com>
- <20250509105019.8887-11-antoniu.miclaus@analog.com>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <20250509105019.8887-11-antoniu.miclaus@analog.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIANMJImgC/33QQW7DIBAF0KtErEPFzGA7dNV7VFlgGBxUx65Mh
+ BJFvntx1MqtIlesPtI8/nAXiafISbzu7mLiHFMchxKq/U64kx06ltGXLFBhpRAO0nOW9hql6z8
+ 6HmQfz/GSZE2hVa5iR4dWlNnPiUO8Ptz3Y8mnmC7jdHs8k2G5/RHNhphBKol1aDiAdt64NzvYf
+ uxe3HgWC5lxZQhoi8HCQEOW0fqaAJ4YWhmtmi2GCkPkmoCNM742v5n99/dohP/GNSpqdWCPzjy
+ 10GuLcrYYvbSwvgLUDIb/LjPP8xf9wCNvzwEAAA==
+X-Change-ID: 20250218-dev-axi-clkgen-limits-63fb0c5ec38b
+To: linux-clk@vger.kernel.org, linux-fpga@vger.kernel.org, 
+ dmaengine@vger.kernel.org, linux-hwmon@vger.kernel.org, 
+ linux-iio@vger.kernel.org, linux-pwm@vger.kernel.org, 
+ linux-spi@vger.kernel.org
+Cc: Stephen Boyd <sboyd@kernel.org>, 
+ Michael Turquette <mturquette@baylibre.com>, 
+ Moritz Fischer <mdf@kernel.org>, Wu Hao <hao.wu@intel.com>, 
+ Xu Yilun <yilun.xu@intel.com>, Tom Rix <trix@redhat.com>, 
+ Vinod Koul <vkoul@kernel.org>, Jean Delvare <jdelvare@suse.com>, 
+ Guenter Roeck <linux@roeck-us.net>, 
+ Michael Hennerich <Michael.Hennerich@analog.com>, 
+ Jonathan Cameron <jic23@kernel.org>, Trevor Gamblin <tgamblin@baylibre.com>, 
+ =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>, 
+ David Lechner <dlechner@baylibre.com>, Mark Brown <broonie@kernel.org>, 
+ Mike Turquette <mturquette@linaro.org>, Xu Yilun <yilun.xu@linux.intel.com>, 
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1747061206; l=1903;
+ i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
+ bh=JkM/nxZuW8/XtDWXx2zZGIoDGGsavYmJRK+QqVbajJI=;
+ b=hHrYNf5zdtiVEfAwcvmOhlMT+ZU1AkRzIsgLoiDGry69CjKzUCbhlVY0RfXmGxN4pKrc5pVmC
+ ZcKXEopQJzqAX+m/sI6uEaAxg/7M2jXGpKgRMURR4Of1Orfqswj7jOQ
+X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
+ pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
+X-Endpoint-Received: by B4 Relay for nuno.sa@analog.com/20231116 with
+ auth_id=100
+X-Original-From: =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>
+Reply-To: nuno.sa@analog.com
 
-On 5/9/25 5:50 AM, Antoniu Miclaus wrote:
-> Add sinc1 and sinc5+pf1 filter types used for ad4080 device.
-> 
-> Add these two options into the filter_type available attribute.
-> 
-> Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
-> ---
->  Documentation/ABI/testing/sysfs-bus-iio | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/Documentation/ABI/testing/sysfs-bus-iio b/Documentation/ABI/testing/sysfs-bus-iio
-> index b8838cb92d38..2dfb74b5a990 100644
-> --- a/Documentation/ABI/testing/sysfs-bus-iio
-> +++ b/Documentation/ABI/testing/sysfs-bus-iio
-> @@ -2275,6 +2275,8 @@ Description:
->  		Reading returns a list with the possible filter modes. Options
->  		for the attribute:
->  
+This series starts with a small fix and then a bunch of small
+improvements. The main change though is to allow detecting of
+struct axi_clkgen_limits during probe().
 
-Should also add:
+---
+Changes in v5:
+- Patch 5:
+  * Drop voltage register from common header (not common);
+  * Drop 'fpga' from the commit subject.
+- Patch 6:
+  * Define voltage register here.
+- Patch 8:
+  * Sort headers in alphabetical order.
 
-		* "none" - Filter is disabled/bypassed.
+- Link to v4: https://lore.kernel.org/r/20250505-dev-axi-clkgen-limits-v4-0-3ad5124e19e1@analog.com
+- Link to v3: https://lore.kernel.org/r/20250421-dev-axi-clkgen-limits-v3-0-4203b4fed2c9@analog.com
+- Link to v2: https://lore.kernel.org/r/20250313-dev-axi-clkgen-limits-v2-0-173ae2ad6311@analog.com
+- Link to v1: https://lore.kernel.org/r/20250219-dev-axi-clkgen-limits-v1-0-26f7ef14cd9c@analog.com
 
-> +		* "sinc1" - The digital sinc1 filter. Fast 1st
-> +		  conversion time. Poor noise performance.
->  		* "sinc3" - The digital sinc3 filter. Moderate 1st
->  		  conversion time. Good noise performance.
->  		* "sinc4" - Sinc 4. Excellent noise performance. Long
-> @@ -2290,6 +2292,7 @@ Description:
->  		* "sinc3+pf2" - Sinc3 + device specific Post Filter 2.
->  		* "sinc3+pf3" - Sinc3 + device specific Post Filter 3.
->  		* "sinc3+pf4" - Sinc3 + device specific Post Filter 4.
-> +		* "sinc5+pf1" - Sinc5 + device specific Post Filter 1.
->  
->  What:		/sys/bus/iio/devices/iio:deviceX/filter_type
->  What:		/sys/bus/iio/devices/iio:deviceX/in_voltageY-voltageZ_filter_type
+---
+Nuno Sá (7):
+      clk: clk-axi-clkgen: fix fpfd_max frequency for zynq
+      clk: clk-axi-clkgen: make sure to include mod_devicetable.h
+      include: linux: move adi-axi-common.h out of fpga
+      include: adi-axi-common: add new helper macros
+      clk: clk-axi-clkgen: detect axi_clkgen_limits at runtime
+      clk: clk-axi-clkgen move to min/max()
+      clk: clk-axi-clkgen: fix coding style issues
+
+ drivers/clk/clk-axi-clkgen.c        | 160 +++++++++++++++++++++++++-----------
+ drivers/dma/dma-axi-dmac.c          |   2 +-
+ drivers/hwmon/axi-fan-control.c     |   2 +-
+ drivers/iio/adc/adi-axi-adc.c       |   3 +-
+ drivers/iio/dac/adi-axi-dac.c       |   2 +-
+ drivers/pwm/pwm-axi-pwmgen.c        |   2 +-
+ drivers/spi/spi-axi-spi-engine.c    |   2 +-
+ include/linux/adi-axi-common.h      |  56 +++++++++++++
+ include/linux/fpga/adi-axi-common.h |  23 ------
+ 9 files changed, 175 insertions(+), 77 deletions(-)
+---
+base-commit: 82f69876ef45ad66c0b114b786c7c6ac0f6a4580
+change-id: 20250218-dev-axi-clkgen-limits-63fb0c5ec38b
+--
+
+Thanks!
+- Nuno Sá
+
 
 

@@ -1,288 +1,579 @@
-Return-Path: <linux-iio+bounces-19503-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19504-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD1FCAB5AA5
-	for <lists+linux-iio@lfdr.de>; Tue, 13 May 2025 19:00:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0F25AB5B2E
+	for <lists+linux-iio@lfdr.de>; Tue, 13 May 2025 19:26:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C8AB546392B
-	for <lists+linux-iio@lfdr.de>; Tue, 13 May 2025 17:00:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B7F8466E31
+	for <lists+linux-iio@lfdr.de>; Tue, 13 May 2025 17:26:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC7802BEC56;
-	Tue, 13 May 2025 16:59:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 611FC28D8CE;
+	Tue, 13 May 2025 17:26:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="sYdnMAgN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hG94Lgo8"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ot1-f54.google.com (mail-ot1-f54.google.com [209.85.210.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B85A2BEC41
-	for <linux-iio@vger.kernel.org>; Tue, 13 May 2025 16:59:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E760645;
+	Tue, 13 May 2025 17:26:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747155592; cv=none; b=p10pSthWcu5q1D9AkiWMYDhea+hp84sYik62eNUx7dBYWQyQ27tr7wI8mDECSRb3HWSHvK3SDXIfvsG+jMFx0Xr1kBpmQw7q50Hk0uiM+CYeN3N4bT7Ly9j4wxDtJb3/duqLXqZ7vfx752ThfWk9FyNAtxmqVMBSS4CNWV6M1Jg=
+	t=1747157195; cv=none; b=hj06+kBKK0UCO6AqMg8QRY26MGN/tesEzdoC8jdGgV2dUrGK+pb5pNFE3+SqQP9XTUpGpNrXeMJL3TQ58/Du78yeDcspJ0b4MOYtR0WbTY7CVnId90PD/2azKVfWVybyE5nSWFVP0kBI9eGOLsJ8glSAgQPW4SKvEq7weY8/bdk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747155592; c=relaxed/simple;
-	bh=uTuyj40J4EzBIPZVOkVurxssgICHBMw5W/uQLUIwyzM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IKS9XWyS6r8XXg2I9BobJ46rn7dO+4s+EF516zpkYyXuDLBqOY9HNW51DysqJIk795WWsy7RJnBJIz51JYLflQuBZrAoK0Ef3vm1WnvP+wTpVYMP3wyMfYb+gVMzSd5pk6rQvnGlafSd9SIVKS1p3+4srMUbdY8hMESUMfsD5Us=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=sYdnMAgN; arc=none smtp.client-ip=209.85.210.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ot1-f54.google.com with SMTP id 46e09a7af769-72b82c8230aso1685136a34.2
-        for <linux-iio@vger.kernel.org>; Tue, 13 May 2025 09:59:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1747155589; x=1747760389; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=5DfNtscBhbXFs2gyDNumFo8Rit0vQ0+JYgK+dk4/zzQ=;
-        b=sYdnMAgNrtbrpYcoRQcOzRxyRs1BOd1E7jx60EcFbdcWdCf6mMDRQQsQa3Mj84zsIY
-         O1opPIfR7vcWOdOvWFaS1CHu+7xpB7iww0+b4RdELTTJ+7jD0ZtXcQSVOO4lyPz2OyTo
-         EUobJk/dn0MCaVaLVxqU9xjkIXIku+FF4K3ATPb5er/wxAyghxOWM5U8/UBp4phSZ8p2
-         W3vcqFqMcAyDuxUYUQJGJ5gtYN0EeTcSnNYgza5uOwbBn0iOesIemHTKTAdLOwkSirrL
-         d8h+J8Xh1cet3RnfYCZfu4SzfnE2oDk3yLI/h2GoVXUepGSxzwBwkhWAMNftT1Bm2fwI
-         MU6g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747155589; x=1747760389;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=5DfNtscBhbXFs2gyDNumFo8Rit0vQ0+JYgK+dk4/zzQ=;
-        b=Px2C+/R4vabfshjpb+6jsAnkB/9rriCc7aJT1Q17YcdBQ2/2zZ0Wrq1YsPvDK3VMlP
-         cAsMOn266F2yj8uGX78T0ne4VT9sYOpI7DSyVfADTQUvgz4zhSTdamYlk5b02UdE0vMj
-         fVDmqOeXr35VxLe/DL9paEUsx4yHrPD1E7zZYTdYFsj62P7yK8ioiZksGixC829ay+qG
-         +kuetvx2s7JuqJDUbdZgMTATAVZAvpuaRmrcsZ8IWgmql3hmvhfJwa/VKJobWhwhKFh3
-         3R3OayastNSgDgPxCS6dS3QXhvAFJtUBKaxil7p3JVe9zMiTwzYhTVYCyXg4WqeoJLzQ
-         Se4A==
-X-Forwarded-Encrypted: i=1; AJvYcCVn1/P1NaA1rPZTU3HPKlas1wPYGs+JHNXkMgh6WQs2PmZfPtVV065oj7C5wKQSbD4T3cf8unpMHrY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzoKLvSzMqWyV4H9Yo2WdLdxCKbdjdscH1eC+3+vWy3WbbV2bDr
-	xrfYJEY8HT/ug70VJjVv18PaaMUkSCS6hBfpA0xm5C2egBR7fKd93jl3+OoE2lo=
-X-Gm-Gg: ASbGnct4AV9YPOuT/6LnXOQbXVWQiH5vr1V0DWIi0+FY3S4KK65PjZh9ZIcVh32+vyN
-	ypCSEn6xbdK7gWLuD+71xGDzlLxkqFzjPcloRIvJ7HyOQNK4Y7HLiAyDHe/5B2gYfDy+8d3e35l
-	HTOy4lITBAyPUot0EbpamJ0zOU9QJP0O/bEa10PtywMnBmXiF9dpOL6ok8kfliTwx7xtay2GEl8
-	lkK+CCpbgVC/4K/H31Qz90P9NxkK2takScv3zmBH//H1dIzwF0cuUnTjgIwAsCpaIJt6ZJPC67b
-	r8wh1lMxiVcJDiRqswln2Gkkfvk2SDN6XuzimNX9GuSNEyocRM5EnCMjDTyxp4AicSUdaPyw8ti
-	kdzAqjkQhgbYv/LY5I2KKwy+KyeKFESpM7g==
-X-Google-Smtp-Source: AGHT+IFVNY2JHdN9LlKpbP4xRxpGp6jZeIWIg0v3ADYENavUt0i8wtRI/xezBkTrCrcnHm9IYiGWNw==
-X-Received: by 2002:a05:6830:6181:b0:72b:98d9:6b2d with SMTP id 46e09a7af769-734e13f2dc9mr10575a34.8.1747155588946;
-        Tue, 13 May 2025 09:59:48 -0700 (PDT)
-Received: from ?IPV6:2600:8803:e7e4:1d00:d74:845a:15c:3fdc? ([2600:8803:e7e4:1d00:d74:845a:15c:3fdc])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-732264d59e1sm1987311a34.34.2025.05.13.09.59.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 13 May 2025 09:59:48 -0700 (PDT)
-Message-ID: <af53ae18-d997-4afa-a3e5-7ff5f624bdc3@baylibre.com>
-Date: Tue, 13 May 2025 11:59:47 -0500
+	s=arc-20240116; t=1747157195; c=relaxed/simple;
+	bh=XZgV1QhYSzMi+mWphJqQXwlDvh4uyqmyqWtHN4e9RH4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kiZqI/v9Rs2MSXa3kobUgf1RnchfJpoSDg8EF6wNhwDHSIj6GeaktoWujjJnpe/G99slaB2/b1HuAaB/bimyi5x01bvHrmfVVmTIJX44cx7ibWNsWRyMJLKu0NPM+pelr6F1nCpFS7qXgWYTWOdmM8qHKC0B7UNFVlrxubStTJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hG94Lgo8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5D66C4CEE4;
+	Tue, 13 May 2025 17:26:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1747157194;
+	bh=XZgV1QhYSzMi+mWphJqQXwlDvh4uyqmyqWtHN4e9RH4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=hG94Lgo80sRFtjwwMGBmTwEXXng+JnM53gX3BWiYYC3Gzm/ECanYocLNIWj8k1rGA
+	 rWLThq9KpGk7mRcYwxDTWEuG1psrUaos0d+WGZx5VFbenjoXA+JvMbFBqIp3IJDFHa
+	 mc0cyQkiLmoagHYGJ8Lt6jg8i5l9zZ3m5O++34j1N3tIH9ILHtebDSdPmjwhMBmzoJ
+	 1HegOkvcWgbix37heFeUwvOef3P9SqQMOwrM/h+VMNKSBx6Pk12pzPpv9FnYfDiJHN
+	 1ZFkvV1cZ5AUPo4Yv2vrhW1Zwwvd0tqkwdrZXLGwHMBU+Z3LssQXxOkLDk2crfM2/8
+	 feF/bizRpq0EA==
+Date: Tue, 13 May 2025 19:26:31 +0200
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+To: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
+Cc: Linus Walleij <linus.walleij@linaro.org>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Heiko Stuebner <heiko@sntech.de>, 
+	William Breathitt Gray <wbg@kernel.org>, Sebastian Reichel <sebastian.reichel@collabora.com>, 
+	Kever Yang <kever.yang@rock-chips.com>, linux-gpio@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	linux-pwm@vger.kernel.org, linux-iio@vger.kernel.org, kernel@collabora.com, 
+	Jonas Karlman <jonas@kwiboo.se>, Detlev Casanova <detlev.casanova@collabora.com>
+Subject: Re: [PATCH 5/7] pwm: Add rockchip PWMv4 driver
+Message-ID: <zg47we7oopvuayi7wyosq6j7uuzz4numystbmluezsim2pxg4g@zvtm3pwzkice>
+References: <20250408-rk3576-pwm-v1-0-a49286c2ca8e@collabora.com>
+ <20250408-rk3576-pwm-v1-5-a49286c2ca8e@collabora.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 07/10] iio: adc: ad4170: Add clock provider support
-To: Marcelo Schmitt <marcelo.schmitt@analog.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-gpio@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Cc: jic23@kernel.org, lars@metafoo.de, Michael.Hennerich@analog.com,
- nuno.sa@analog.com, andy@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, linus.walleij@linaro.org, brgl@bgdev.pl,
- marcelo.schmitt1@gmail.com
-References: <cover.1747083143.git.marcelo.schmitt@analog.com>
- <a0d049e5fbab5cdeff266da886fd765b2b0d1af1.1747083143.git.marcelo.schmitt@analog.com>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <a0d049e5fbab5cdeff266da886fd765b2b0d1af1.1747083143.git.marcelo.schmitt@analog.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="bywnufiblausx7ms"
+Content-Disposition: inline
+In-Reply-To: <20250408-rk3576-pwm-v1-5-a49286c2ca8e@collabora.com>
 
-On 5/13/25 7:35 AM, Marcelo Schmitt wrote:
-> The AD4170 chip can use an externally supplied clock at the XTAL2 pin, or
-> an external crystal connected to the XTAL1 and XTAL2 pins. Alternatively,
-> the AD4170 can provide its 16 MHz internal clock at the XTAL2 pin. Extend
-> the AD4170 driver so it effectively uses the provided external clock, if
-> any, or supplies its own clock as a clock provider.
 
-Is support for CLKDIV intentionally omitted? Might be worth mentioning
-if that is the case.
+--bywnufiblausx7ms
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH 5/7] pwm: Add rockchip PWMv4 driver
+MIME-Version: 1.0
 
-> 
-> Reviewed-by: Nuno Sá <nuno.sa@analog.com>
-> Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
+Hello Nicolas,
+
+On Tue, Apr 08, 2025 at 02:32:17PM +0200, Nicolas Frattaroli wrote:
+> The Rockchip RK3576 brings with it a new PWM IP, in downstream code
+> referred to as "v4". This new IP is different enough from the previous
+> Rockchip IP that I felt it necessary to add a new driver for it, instead
+> of shoehorning it in the old one.
+>=20
+> Add this new driver, based on the PWM core's waveform APIs. Its platform
+> device is registered by the parent mfpwm driver, from which it also
+> receives a little platform data struct, so that mfpwm can guarantee that
+> all the platform device drivers spread across different subsystems for
+> this specific hardware IP do not interfere with each other.
+>=20
+> Signed-off-by: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
 > ---
+>  MAINTAINERS                   |   1 +
+>  drivers/pwm/Kconfig           |  13 ++
+>  drivers/pwm/Makefile          |   1 +
+>  drivers/pwm/pwm-rockchip-v4.c | 336 ++++++++++++++++++++++++++++++++++++=
+++++++
+>  4 files changed, 351 insertions(+)
+>=20
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index e6a9347be1e7889089e1d9e655cb23c2d8399b40..3ddd245fd4ad8d9ed2e762910=
+a7a1f6436f93e34 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -20891,6 +20891,7 @@ L:	linux-rockchip@lists.infradead.org
+>  L:	linux-pwm@vger.kernel.org
+>  S:	Maintained
+>  F:	Documentation/devicetree/bindings/pwm/rockchip,rk3576-pwm.yaml
+> +F:	drivers/pwm/pwm-rockchip-v4.c
+>  F:	drivers/soc/rockchip/mfpwm.c
+>  F:	include/soc/rockchip/mfpwm.h
+> =20
+> diff --git a/drivers/pwm/Kconfig b/drivers/pwm/Kconfig
+> index 4731d5b90d7edcc61138e4a5bf7e98906953ece4..242039f62ab091cea337bf27e=
+f310bcf696b6ed0 100644
+> --- a/drivers/pwm/Kconfig
+> +++ b/drivers/pwm/Kconfig
+> @@ -540,6 +540,19 @@ config PWM_ROCKCHIP
+>  	  Generic PWM framework driver for the PWM controller found on
+>  	  Rockchip SoCs.
+> =20
+> +config PWM_ROCKCHIP_V4
+> +	tristate "Rockchip PWM v4 support"
+> +	depends on ARCH_ROCKCHIP || COMPILE_TEST
+> +	depends on ROCKCHIP_MFPWM
+> +	depends on HAS_IOMEM
+> +	help
+> +	  Generic PWM framework driver for the PWM controller found on
+> +	  later Rockchip SoCs such as the RK3576.
+> +
+> +	  Uses the Rockchip Multi-function PWM controller driver infrastructure
+> +	  to guarantee fearlessly concurrent operation with other functions of
+> +	  the same device implemented by drivers in other subsystems.
+> +
+>  config PWM_RZ_MTU3
+>  	tristate "Renesas RZ/G2L MTU3a PWM Timer support"
+>  	depends on RZ_MTU3
+> diff --git a/drivers/pwm/Makefile b/drivers/pwm/Makefile
+> index 539e0def3f82fcb866ab83a0346a15f7efdd7127..b5aca7ff58ac83f844581df52=
+6624617025291de 100644
+> --- a/drivers/pwm/Makefile
+> +++ b/drivers/pwm/Makefile
+> @@ -49,6 +49,7 @@ obj-$(CONFIG_PWM_RASPBERRYPI_POE)	+=3D pwm-raspberrypi-=
+poe.o
+>  obj-$(CONFIG_PWM_RCAR)		+=3D pwm-rcar.o
+>  obj-$(CONFIG_PWM_RENESAS_TPU)	+=3D pwm-renesas-tpu.o
+>  obj-$(CONFIG_PWM_ROCKCHIP)	+=3D pwm-rockchip.o
+> +obj-$(CONFIG_PWM_ROCKCHIP_V4)	+=3D pwm-rockchip-v4.o
+>  obj-$(CONFIG_PWM_RZ_MTU3)	+=3D pwm-rz-mtu3.o
+>  obj-$(CONFIG_PWM_SAMSUNG)	+=3D pwm-samsung.o
+>  obj-$(CONFIG_PWM_SIFIVE)	+=3D pwm-sifive.o
+> diff --git a/drivers/pwm/pwm-rockchip-v4.c b/drivers/pwm/pwm-rockchip-v4.c
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..980b27454ef9b930bef0496ca=
+528533cf419fa0e
+> --- /dev/null
+> +++ b/drivers/pwm/pwm-rockchip-v4.c
+> @@ -0,0 +1,336 @@
+> +// SPDX-License-Identifier: GPL-2.0-or-later
+> +/*
+> + * Copyright (c) 2025 Collabora Ltd.
+> + *
+> + * A Pulse-Width-Modulation (PWM) generator driver for the generators fo=
+und in
+> + * Rockchip SoCs such as the RK3576, internally referred to as "PWM v4".=
+ Uses
+> + * the MFPWM infrastructure to guarantee exclusive use over the device w=
+ithout
+> + * other functions of the device from different drivers interfering with=
+ its
+> + * operation while it's active.
 
-...
+Can you please add a "Limitations" paragraph here similar to the other
+newer drivers that explains how the hardware behave on disable
+(inactive? High-Z? freeze?), if there are glitches possible when
+settings are changed or if the currently running period is completed on
+reconfiguration.
 
-> @@ -329,6 +348,9 @@ struct ad4170_state {
->  	struct completion completion;
->  	int pins_fn[AD4170_NUM_ANALOG_PINS];
->  	u32 int_pin_sel;
-> +	struct clk_hw int_clk_hw;
-> +	struct clk *ext_clk;
-
-This isn't used outside of ad4170_clock_select() so can be made a local variable there.
-
-> +	unsigned int clock_ctrl;
->  	/*
->  	 * DMA (thus cache coherency maintenance) requires the transfer buffers
->  	 * to live in their own cache lines.
-> @@ -1656,6 +1678,120 @@ static int ad4170_parse_channels(struct iio_dev *indio_dev)
->  	return 0;
->  }
->  
-> +static struct ad4170_state *clk_hw_to_ad4170(struct clk_hw *hw)
-> +{
-> +	return container_of(hw, struct ad4170_state, int_clk_hw);
-> +}
+> + *
+> + * Authors:
+> + *     Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
+> + */
 > +
-> +static unsigned long ad4170_sel_clk(struct ad4170_state *st,
-> +				    unsigned int clk_sel)
-> +{
-> +	st->clock_ctrl &= ~AD4170_CLOCK_CTRL_CLOCKSEL_MSK;
-> +	st->clock_ctrl |= FIELD_PREP(AD4170_CLOCK_CTRL_CLOCKSEL_MSK, clk_sel);
-
-Do we need to claim direct mode here to avoid poking registers during
-a buffered read?
-
-> +	return regmap_write(st->regmap, AD4170_CLOCK_CTRL_REG, st->clock_ctrl);
-> +}
+> +#include <linux/platform_device.h>
+> +#include <linux/pwm.h>
+> +#include <soc/rockchip/mfpwm.h>
 > +
-> +static unsigned long ad4170_clk_recalc_rate(struct clk_hw *hw,
-> +					    unsigned long parent_rate)
-> +{
-> +	return AD4170_INT_CLOCK_16MHZ;
-> +}
-> +
-> +static int ad4170_clk_output_is_enabled(struct clk_hw *hw)
-> +{
-> +	struct ad4170_state *st = clk_hw_to_ad4170(hw);
-> +	u32 clk_sel;
-> +
-> +	clk_sel = FIELD_GET(AD4170_CLOCK_CTRL_CLOCKSEL_MSK, st->clock_ctrl);
-> +	return clk_sel == AD4170_CLOCK_CTRL_CLOCKSEL_INT_OUT;
-> +}
-> +
-> +static int ad4170_clk_output_prepare(struct clk_hw *hw)
-> +{
-> +	struct ad4170_state *st = clk_hw_to_ad4170(hw);
-> +
-> +	return ad4170_sel_clk(st, AD4170_CLOCK_CTRL_CLOCKSEL_INT_OUT);
-> +}
-> +
-> +static void ad4170_clk_output_unprepare(struct clk_hw *hw)
-> +{
-> +	struct ad4170_state *st = clk_hw_to_ad4170(hw);
-> +
-> +	ad4170_sel_clk(st, AD4170_CLOCK_CTRL_CLOCKSEL_INT);
-> +}
-> +
-> +static const struct clk_ops ad4170_int_clk_ops = {
-> +	.recalc_rate = ad4170_clk_recalc_rate,
-> +	.is_enabled = ad4170_clk_output_is_enabled,
-> +	.prepare = ad4170_clk_output_prepare,
-> +	.unprepare = ad4170_clk_output_unprepare,
+> +struct rockchip_pwm_v4 {
+> +	struct rockchip_mfpwm_func *pwmf;
+> +	struct pwm_chip chip;
 > +};
 > +
-> +static int ad4170_register_clk_provider(struct iio_dev *indio_dev)
+> +struct rockchip_pwm_v4_wf {
+> +	u32 period;
+> +	u32 duty;
+> +	u32 offset;
+> +	u8 enable;
+> +};
+> +
+> +static inline struct rockchip_pwm_v4 *to_rockchip_pwm_v4(struct pwm_chip=
+ *chip)
 > +{
-> +	struct ad4170_state *st = iio_priv(indio_dev);
-> +	struct device *dev = indio_dev->dev.parent;
-> +	struct clk_init_data init = {};
-> +	int ret;
-> +
-> +	if (!IS_ENABLED(CONFIG_COMMON_CLK))
-
-Driver depends on COMMON_CLK so isn't this dead code?
-
-> +		return 0;
-> +
-> +	if (device_property_read_string(dev, "clock-output-names", &init.name)) {
-> +		init.name = devm_kasprintf(dev, GFP_KERNEL, "%pfw",
-> +					   dev_fwnode(dev));
-> +		if (!init.name)
-> +			return -ENOMEM;
-> +	}
-> +
-> +	init.ops = &ad4170_int_clk_ops;
-> +
-> +	st->int_clk_hw.init = &init;
-> +	ret = devm_clk_hw_register(dev, &st->int_clk_hw);
-> +	if (ret)
-> +		return ret;
-> +
-> +	return devm_of_clk_add_hw_provider(dev, of_clk_hw_simple_get,
-> +					   &st->int_clk_hw);
+> +	return pwmchip_get_drvdata(chip);
 > +}
 > +
-> +static int ad4170_clock_select(struct iio_dev *indio_dev)
+> +/**
+> + * rockchip_pwm_v4_round_single - convert a PWM parameter to hardware
+> + * @rate: clock rate of the PWM clock, as per clk_get_rate
+> + * @in_val: parameter in nanoseconds to convert
+> + * @out_val: pointer to location where converted result should be stored.
+> + *
+> + * If @out_val is %NULL, no calculation is performed.
+> + *
+> + * Return:
+> + * * %0          - Success
+> + * * %-EOVERFLOW - Result too large for target type
+> + */
+> +static int rockchip_pwm_v4_round_single(unsigned long rate, u64 in_val,
+> +					u32 *out_val)
 > +{
-> +	struct ad4170_state *st = iio_priv(indio_dev);
-> +	struct device *dev = &st->spi->dev;
-> +	int ret;
+> +	u64 tmp;
 > +
-> +	st->mclk_hz = AD4170_INT_CLOCK_16MHZ;
+> +	if (!out_val)
+> +		return 0;
 
-Would make more sense to move this inside of the if (ret < 0) instead of
-writing over it later.
+This is never hit, so better drop it.
 
-> +	ret = device_property_match_property_string(dev, "clock-names",
-> +						    ad4170_clk_sel,
-> +						    ARRAY_SIZE(ad4170_clk_sel));
-> +	if (ret < 0) {
-> +		/* Use internal clock reference */
-> +		st->clock_ctrl |= FIELD_PREP(AD4170_CLOCK_CTRL_CLOCKSEL_MSK,
-> +					     AD4170_CLOCK_CTRL_CLOCKSEL_INT_OUT);
+> +	tmp =3D mult_frac(rate, in_val, NSEC_PER_SEC);
+> +	if (tmp > U32_MAX)
+> +		return -EOVERFLOW;
 
-Seems like we would want to start in the AD4170_CLOCK_CTRL_CLOCKSEL_INT state.
+Is it clear that this cannot overflow the u64?
 
-Also, could skip registering clock provider if #clock-cells is not present.
-
-> +		return ad4170_register_clk_provider(indio_dev);
-> +	}
-> +
-> +	/* Use external clock reference */
-> +	st->ext_clk = devm_clk_get_enabled(dev, ad4170_clk_sel[ret]);
-> +	if (IS_ERR(st->ext_clk))
-> +		return dev_err_probe(dev, PTR_ERR(st->ext_clk),
-> +				     "Failed to get external clock\n");
-> +
-> +	st->clock_ctrl |= FIELD_PREP(AD4170_CLOCK_CTRL_CLOCKSEL_MSK,
-> +				     AD4170_CLOCK_CTRL_CLOCKSEL_EXT + ret);
-> +
-> +	st->mclk_hz = clk_get_rate(st->ext_clk);
-> +	if (st->mclk_hz < AD4170_EXT_CLOCK_MHZ_MIN ||
-> +	    st->mclk_hz > AD4170_EXT_CLOCK_MHZ_MAX) {
-> +		return dev_err_probe(dev, -EINVAL,
-> +				     "Invalid external clock frequency %u\n",
-> +				     st->mclk_hz);
-> +	}
+> +	*out_val =3D tmp;
 > +
 > +	return 0;
 > +}
 > +
->  static int ad4170_parse_firmware(struct iio_dev *indio_dev)
->  {
->  	struct ad4170_state *st = iio_priv(indio_dev);
-> @@ -1663,7 +1799,13 @@ static int ad4170_parse_firmware(struct iio_dev *indio_dev)
->  	int reg_data, ret;
->  	unsigned int i;
->  
-> -	st->mclk_hz = AD4170_INT_CLOCK_16MHZ;
-> +	ret = ad4170_clock_select(indio_dev);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret, "Failed to setup device clock\n");
+> +/**
+> + * rockchip_pwm_v4_round_params - convert PWM parameters to hardware
+> + * @rate: PWM clock rate to do the calculations at
+> + * @duty: PWM duty cycle in nanoseconds
+> + * @period: PWM period in nanoseconds
+> + * @offset: PWM offset in nanoseconds
+> + * @out_duty: pointer to where the rounded duty value should be stored
+> + *            if NULL, don't calculate or store it
+> + * @out_period: pointer to where the rounded period value should be stor=
+ed
+> + *              if NULL, don't calculate or store it
+> + * @out_offset: pointer to where the rounded offset value should be stor=
+ed
+> + *              if NULL, don't calculate or store it
+> + *
+> + * Convert nanosecond-based duty/period/offset parameters to the PWM har=
+dware's
+> + * native rounded representation in number of cycles at clock rate @rate=
+=2E If an
+> + * out_ parameter is a NULL pointer, the corresponding parameter will no=
+t be
+> + * calculated or stored. Should an overflow error occur for any of the
+> + * parameters, assume the data at all the out_ locations is invalid and =
+may not
+> + * even have been touched at all.
+> + *
+> + * Return:
+> + * * %0          - Success
+> + * * %-EOVERFLOW - One of the results is too large for the PWM hardware
+> + */
+> +static int rockchip_pwm_v4_round_params(unsigned long rate, u64 duty,
+> +					u64 period, u64 offset, u32 *out_duty,
+> +					u32 *out_period, u32 *out_offset)
+> +{
+> +	int ret;
 > +
-> +	ret = regmap_write(st->regmap, AD4170_CLOCK_CTRL_REG, st->clock_ctrl);
+> +	ret =3D rockchip_pwm_v4_round_single(rate, duty, out_duty);
 > +	if (ret)
 > +		return ret;
+> +
+> +	ret =3D rockchip_pwm_v4_round_single(rate, period, out_period);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret =3D rockchip_pwm_v4_round_single(rate, offset, out_offset);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return 0;
+> +}
+> +
+> +static int rockchip_pwm_v4_round_wf_tohw(struct pwm_chip *chip,
+> +					 struct pwm_device *pwm,
+> +					 const struct pwm_waveform *wf,
+> +					 void *_wfhw)
+> +{
+> +	struct rockchip_pwm_v4 *pc =3D to_rockchip_pwm_v4(chip);
+> +	struct rockchip_pwm_v4_wf *wfhw =3D _wfhw;
+> +	unsigned long rate;
+> +	int ret =3D 0;
+> +
+> +	/* We do not want chosen_clk to change out from under us here */
+> +	ret =3D mfpwm_acquire(pc->pwmf);
+> +	if (ret)
+> +		return ret;
+> +
+> +	rate =3D mfpwm_clk_get_rate(pc->pwmf->parent);
+> +
+> +	ret =3D rockchip_pwm_v4_round_params(rate, wf->duty_length_ns,
+> +					   wf->period_length_ns,
+> +					   wf->duty_offset_ns, &wfhw->duty,
+> +					   &wfhw->period, &wfhw->offset);
+> +
+> +	if (wf->period_length_ns > 0)
+> +		wfhw->enable =3D PWMV4_EN_BOTH_MASK;
+> +	else
+> +		wfhw->enable =3D 0;
+> +
+> +	dev_dbg(&chip->dev, "tohw: duty =3D %u, period =3D %u, offset =3D %u, r=
+ate %lu\n",
+> +		wfhw->duty, wfhw->period, wfhw->offset, rate);
+> +
+> +	mfpwm_release(pc->pwmf);
+> +	return ret;
 
-Why not just do the regmap_write() in ad4170_clock_select() to keep it all
-together?
+This is wrong. If a too high value for (say) period_length_ns is
+requested, you're supposed to configure the maximal possible
+period_length and not return a failure.
 
->  
->  	for (i = 0; i < AD4170_NUM_ANALOG_PINS; i++)
->  		st->pins_fn[i] = AD4170_PIN_UNASIGNED;
+> +}
+> +
+> +static int rockchip_pwm_v4_round_wf_fromhw(struct pwm_chip *chip,
+> +					   struct pwm_device *pwm,
+> +					   const void *_wfhw,
+> +					   struct pwm_waveform *wf)
+> +{
+> +	struct rockchip_pwm_v4 *pc =3D to_rockchip_pwm_v4(chip);
+> +	const struct rockchip_pwm_v4_wf *wfhw =3D _wfhw;
+> +	unsigned long rate;
+> +	int ret =3D 0;
+> +
+> +	/* We do not want chosen_clk to change out from under us here */
 
+This is also true while the PWM is enabled.=20
+
+> +	ret =3D mfpwm_acquire(pc->pwmf);
+> +	if (ret)
+> +		return ret;
+> +
+> +	rate =3D mfpwm_clk_get_rate(pc->pwmf->parent);
+
+Why isn't that a proper clock that you can call clk_get_rate() (and
+clk_rate_exclusive_get()) for?
+
+> +	/* Let's avoid a cool division-by-zero if the clock's busted. */
+> +	if (!rate) {
+> +		ret =3D -EINVAL;
+> +		goto out_mfpwm_release;
+> +	}
+> +
+> +	wf->duty_length_ns =3D mult_frac(wfhw->duty, NSEC_PER_SEC, rate);
+> +
+> +	if (pwmv4_is_enabled(wfhw->enable))
+> +		wf->period_length_ns =3D mult_frac(wfhw->period, NSEC_PER_SEC,
+> +						 rate);
+> +	else
+> +		wf->period_length_ns =3D 0;
+> +
+> +	wf->duty_offset_ns =3D mult_frac(wfhw->offset, NSEC_PER_SEC, rate);
+> +
+> +	dev_dbg(&chip->dev, "fromhw: duty =3D %llu, period =3D %llu, offset =3D=
+ %llu\n",
+> +		wf->duty_length_ns, wf->period_length_ns, wf->duty_offset_ns);
+
+In my experience it't helpful to include rate in the output here.
+
+> +out_mfpwm_release:
+> +	mfpwm_release(pc->pwmf);
+> +	return ret;
+> +}
+> +
+> +static int rockchip_pwm_v4_read_wf(struct pwm_chip *chip, struct pwm_dev=
+ice *pwm,
+> +				   void *_wfhw)
+> +{
+> +	struct rockchip_pwm_v4 *pc =3D to_rockchip_pwm_v4(chip);
+> +	struct rockchip_pwm_v4_wf *wfhw =3D _wfhw;
+> +	int ret =3D 0;
+> +
+> +
+> +	ret =3D mfpwm_acquire(pc->pwmf);
+> +	if (ret)
+> +		return ret;
+> +
+> +	wfhw->period =3D mfpwm_reg_read(pc->pwmf->base, PWMV4_REG_PERIOD);
+> +	wfhw->duty =3D mfpwm_reg_read(pc->pwmf->base, PWMV4_REG_DUTY);
+> +	wfhw->offset =3D mfpwm_reg_read(pc->pwmf->base, PWMV4_REG_OFFSET);
+> +	wfhw->enable =3D mfpwm_reg_read(pc->pwmf->base, PWMV4_REG_ENABLE) & PWM=
+V4_EN_BOTH_MASK;
+> +
+> +	mfpwm_release(pc->pwmf);
+> +
+> +	return 0;
+> +}
+> +
+> +static int rockchip_pwm_v4_write_wf(struct pwm_chip *chip, struct pwm_de=
+vice *pwm,
+> +				    const void *_wfhw)
+> +{
+> +	struct rockchip_pwm_v4 *pc =3D to_rockchip_pwm_v4(chip);
+> +	const struct rockchip_pwm_v4_wf *wfhw =3D _wfhw;
+> +	bool was_enabled =3D false;
+> +	int ret =3D 0;
+> +
+> +	ret =3D mfpwm_acquire(pc->pwmf);
+> +	if (ret)
+> +		return ret;
+> +
+> +	was_enabled =3D pwmv4_is_enabled(mfpwm_reg_read(pc->pwmf->base,
+> +						      PWMV4_REG_ENABLE));
+> +
+> +	/*
+> +	 * "But Nicolas", you ask with valid concerns, "why would you enable the
+> +	 * PWM before setting all the parameter registers?"
+
+Funny, I had this thought alread for mfpwm_acquire() above. Do you also
+need that if wfhw->enable =3D=3D 0?
+
+> +	 * Excellent question, Mr. Reader M. Strawman! The RK3576 TRM Part 1
+> +	 * Section 34.6.3 specifies that this is the intended order of writes.
+> +	 * Doing the PWM_EN and PWM_CLK_EN writes after the params but before
+> +	 * the CTRL_UPDATE_EN, or even after the CTRL_UPDATE_EN, results in
+> +	 * erratic behaviour where repeated turning on and off of the PWM may
+> +	 * not turn it off under all circumstances. This is also why we don't
+> +	 * use relaxed writes; it's not worth the footgun.
+> +	 */
+> +	mfpwm_reg_write(pc->pwmf->base, PWMV4_REG_ENABLE,
+> +			REG_UPDATE_WE(wfhw->enable, 0, 1));
+> +
+> +	mfpwm_reg_write(pc->pwmf->base, PWMV4_REG_PERIOD, wfhw->period);
+> +	mfpwm_reg_write(pc->pwmf->base, PWMV4_REG_DUTY, wfhw->duty);
+> +	mfpwm_reg_write(pc->pwmf->base, PWMV4_REG_OFFSET, wfhw->offset);
+> +
+> +	mfpwm_reg_write(pc->pwmf->base, PWMV4_REG_CTRL, PWMV4_CTRL_CONT_FLAGS);
+> +
+> +	/* Commit new configuration to hardware output. */
+> +	mfpwm_reg_write(pc->pwmf->base, PWMV4_REG_ENABLE,
+> +			PWMV4_CTRL_UPDATE_EN(1));
+
+PWMV4_CTRL_UPDATE_EN is always only used with 1 as parameter, so maybe
+simplify the definition to BIT(2)?
+
+> +	if (pwmv4_is_enabled(wfhw->enable)) {
+> +		if (!was_enabled) {
+> +			dev_dbg(&chip->dev, "enabling PWM output\n");
+> +			ret =3D mfpwm_pwmclk_enable(pc->pwmf);
+> +			if (ret)
+> +				goto err_mfpwm_release;
+> +
+> +			/*
+> +			 * Output should be on now, acquire device to guarantee
+> +			 * exclusion with other device functions while it's on.
+> +			 */
+> +			ret =3D mfpwm_acquire(pc->pwmf);
+> +			if (ret)
+> +				goto err_mfpwm_release;
+
+Alternatively to calling mfpwm_acquire once more, you could also skip
+the mfpwm_release() below. That makes the code a bit more complicated,
+but also reduces the number of possible failing points.
+
+> +		}
+> +	} else if (was_enabled) {
+> +		dev_dbg(&chip->dev, "disabling PWM output\n");
+> +		mfpwm_pwmclk_disable(pc->pwmf);
+> +		/* Output is off now, extra release to balance extra acquire */
+> +		mfpwm_release(pc->pwmf);
+> +	}
+> +
+> +err_mfpwm_release:
+> +	mfpwm_release(pc->pwmf);
+> +
+> +	return ret;
+> +}
+> +
+> +/* We state the PWM chip is atomic, so none of these functions should sl=
+eep. */
+> +static const struct pwm_ops rockchip_pwm_v4_ops =3D {
+> +	.sizeof_wfhw =3D sizeof(struct rockchip_pwm_v4_wf),
+> +	.round_waveform_tohw =3D rockchip_pwm_v4_round_wf_tohw,
+> +	.round_waveform_fromhw =3D rockchip_pwm_v4_round_wf_fromhw,
+> +	.read_waveform =3D rockchip_pwm_v4_read_wf,
+> +	.write_waveform =3D rockchip_pwm_v4_write_wf,
+> +};
+> +
+> +static int rockchip_pwm_v4_probe(struct platform_device *pdev)
+> +{
+> +	struct rockchip_mfpwm_func *pwmf =3D dev_get_platdata(&pdev->dev);
+> +	struct rockchip_pwm_v4 *pc;
+> +	struct pwm_chip *chip;
+> +	int ret;
+> +
+> +	chip =3D devm_pwmchip_alloc(&pdev->dev, 1, sizeof(*pc));
+> +	if (IS_ERR(chip))
+> +		return PTR_ERR(chip);
+> +
+> +	pc =3D to_rockchip_pwm_v4(chip);
+> +	pc->pwmf =3D pwmf;
+> +
+> +	platform_set_drvdata(pdev, pc);
+> +
+> +	chip->ops =3D &rockchip_pwm_v4_ops;
+> +	chip->atomic =3D true;
+> +
+
+If the PWM is already enabled you better call mfpwm_acquire() here?
+
+> +	ret =3D pwmchip_add(chip);
+> +	if (ret)
+> +		return dev_err_probe(&pdev->dev, ret, "failed to add PWM chip\n");
+> +
+> +	return 0;
+> +}
+> +
+> +static void rockchip_pwm_v4_remove(struct platform_device *pdev)
+> +{
+> +	struct rockchip_pwm_v4 *pc =3D platform_get_drvdata(pdev);
+
+	pwmchip_remove()?
+
+> +	mfpwm_remove_func(pc->pwmf);
+
+Maybe make this a devm function?
+
+> +}
+> +
+> +static const struct platform_device_id rockchip_pwm_v4_ids[] =3D {
+> +	{ .name =3D "pwm-rockchip-v4", },
+> +	{ /* sentinel */ }
+> +};
+> +MODULE_DEVICE_TABLE(platform, rockchip_pwm_v4_ids);
+> +
+> +static struct platform_driver rockchip_pwm_v4_driver =3D {
+> +	.probe =3D rockchip_pwm_v4_probe,
+> +	.remove =3D rockchip_pwm_v4_remove,
+> +	.driver =3D {
+> +		.name =3D "pwm-rockchip-v4",
+> +	},
+> +	.id_table =3D rockchip_pwm_v4_ids,
+> +};
+> +module_platform_driver(rockchip_pwm_v4_driver);
+> +
+> +MODULE_AUTHOR("Nicolas Frattaroli <nicolas.frattaroli@collabora.com>");
+> +MODULE_DESCRIPTION("Rockchip PWMv4 Driver");
+> +MODULE_LICENSE("GPL");
+> +MODULE_IMPORT_NS("ROCKCHIP_MFPWM");
+
+There are different tastes, but if you ask me that MODULE_IMPORT_NS can
+go into the header declaring the functions from that namespace.
+
+Best regards
+Uwe
+
+--bywnufiblausx7ms
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmgjgMQACgkQj4D7WH0S
+/k7Qlgf+O/l7HDymMM5t36I+KPbPhBTm3xQiphlueFh5o/aHfTcHa7UVk4s9hfXn
+CvXm/O5Qb3axq4iXTrCfcycMC8OKtK7DrtUyDxE49Vs3tRt4iGLerK2mOw4t2AEw
+Gm54pelJMAZPgyj1fwkklLA5C5aIWTYStQBOPErOUBAzF6OWNyOqkc3DjBkrO0Sd
+M2gbxSC2zHScBZVXGDimSQILTHxImSrUtISjqt/BTPMxL+SjlB3k1e4yHdGaRcJA
+Gh7TIwGSKlQ8I7URIcVqFL6bGU8XRwdoqlhzg4Qu1CP9Az3a6kkNGCA4+yMbvBSf
+7dVgTLnngGri45ELhcCJWdYw/znhHQ==
+=ibLa
+-----END PGP SIGNATURE-----
+
+--bywnufiblausx7ms--
 

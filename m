@@ -1,78 +1,83 @@
-Return-Path: <linux-iio+bounces-19486-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19487-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB5D8AB54D3
-	for <lists+linux-iio@lfdr.de>; Tue, 13 May 2025 14:34:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97AC4AB54DC
+	for <lists+linux-iio@lfdr.de>; Tue, 13 May 2025 14:35:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6F7287AC687
-	for <lists+linux-iio@lfdr.de>; Tue, 13 May 2025 12:33:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AFE054A1B64
+	for <lists+linux-iio@lfdr.de>; Tue, 13 May 2025 12:35:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 369E6268699;
-	Tue, 13 May 2025 12:34:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B82B28DF22;
+	Tue, 13 May 2025 12:34:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="1vhiSDFI"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="cuXvpyzH"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+Received: from mx0b-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1D87433C8;
-	Tue, 13 May 2025 12:34:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDC1E24EA90;
+	Tue, 13 May 2025 12:34:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747139661; cv=none; b=tRwqOeK4mKopF7ftEL65GzjmoQ7wG/TkR33170zWAIOSfS+Um1VLa8M48zCweCUGJ18ggyMSQ+u3qQqnv4bbBE666Qh2tMS0nv3iFdlVVInqDH/sxTxKGteb92XSOIrPwKGFPgUUp2d+UdLEBemDaVJR4DxOQ1r4b8FMCiyBvqQ=
+	t=1747139685; cv=none; b=KjtA6f1DdgSq7AOzXoIyojRKLVm3c7qkDL5CSi8qg6wqBpz4SC2ukGLzBJSuLHkrpksJryKMEcQ0QaKH7ObjZlCcA61aJDStis8qebaPfZA4lwU/fS2470XgIbLKELPEEZvDIOAiV7VDvnzcIyY3ze0h63ZtwzQZhZQ4XxwNVCQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747139661; c=relaxed/simple;
-	bh=imWSPaOXD9MeCqg/vjBPtip3n1AsC7/GDfvELLCNQ1M=;
+	s=arc-20240116; t=1747139685; c=relaxed/simple;
+	bh=B4jPIWSynNUN/ObinYK3G8ofxcUmEmf2GTPsf7vi714=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XqoC3UfNqsNdQA4yzwSZtZ3Gyi7ryavBdacYG7CWLJH2UivNzVl2rcBGxdQEr/WC9kyCYQwZD9AktUv7Lf2wWHWs0AhWIUE6uCDLQYlYseyFVxnjNU5b633M7dnoh8gUyIfgBN/9ZEzyuBafaLwwcMYX4lPtB0t5iRBSBzcpMMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=1vhiSDFI; arc=none smtp.client-ip=148.163.135.77
+	 MIME-Version:Content-Type; b=KiGG7tU6wyvemvjUT2o+L5MpMwz22FwsKtPmAA7MRVy2ejASewRsEEN+Ip+k7HgWw2bmTs4S5AbcuLjNaU3wKIO4bMRvikeUKSJdkO6wycB+6z7QrNvO4MNcGkUbWlWwspUop7YGwB4eP7g1u4DTbL4Z2OhYGmruuDpT8xbk73I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=cuXvpyzH; arc=none smtp.client-ip=148.163.135.77
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
-Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-	by mx0a-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54DBMTUq007943;
-	Tue, 13 May 2025 08:33:59 -0400
+Received: from pps.filterd (m0375855.ppops.net [127.0.0.1])
+	by mx0b-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54D9mP1x024818;
+	Tue, 13 May 2025 08:34:22 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=DKIM; bh=/r5FV
-	5HQTRpHspXnEoltgAt2Vpkpbz7Pm8vdzh3ZMSE=; b=1vhiSDFIfa667eN/DoyFn
-	8nfxCgavFDhblF0UQ/BUx5VmLC6SHhxiWLbP2MBitkGxYmCkP6ylof1EWpMRQ7Zj
-	dAvR+E7u8Nnp4U/XDwfnARFe8fL8XAcS2bDVOvV88ItW9Qm9F5h7bNZn07dVxFY+
-	+QZF6NwewCpxjAfB8FK3yJ4buN06HgO+kxmRqktmiyfx1qQtzrUT6pQ65eF55m4H
-	KVWUcgRiXa4z5aw90sWPBj1rtA9wk8uGGk1Nm5CtnMBc/xwuPYZ46Alo4glIvRt1
-	uvgZQo6rZFPMdoh9UYNMd+spBHhAVbTi5awykfZDZ+XcnskehQLIa3KTkoAnsP7B
-	g==
+	:message-id:mime-version:references:subject:to; s=DKIM; bh=jpx7u
+	ylA0oBQ14yE4ZaKUKi2w6hlxgJ2Av5Mmx4MIUo=; b=cuXvpyzHKRj1271ztZp9B
+	/+M3/nxTi0lxp6Fqw9q6ouswmWnZymyaK6Q1n12TJgf/p0uBnHg3hYh27W5FbGeb
+	UrVreNDNBcliZm7jmsSrsDkKbAezIL/ndMXGKPK7RPXN/NKG15WOkBGTIlI/dcnm
+	MKBStXHb1cJ1zhQHdxfD5KSfeFHFQatukdtS/tYZ7Vr7mg9qoiu3nY2eMPHvfzP9
+	5YuGdADsl+i7zxZOZums9QqCPVbCrJ1jrcwcAHMPfGzRjAcqTuzzkTpjaBEdNCmf
+	wZr4PWXwG+N9FsKvhY+0HnbvLP8BcZus+HsF8x0LEopNZWJdhm1oYugUyoDTV7OA
+	w==
 Received: from nwd2mta4.analog.com ([137.71.173.58])
-	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 46kx53aep0-1
+	by mx0b-00128a01.pphosted.com (PPS) with ESMTPS id 46m3s98sj3-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 13 May 2025 08:33:58 -0400 (EDT)
-Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
-	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 54DCXvvE040937
+	Tue, 13 May 2025 08:34:21 -0400 (EDT)
+Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
+	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 54DCYKsw040972
 	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Tue, 13 May 2025 08:33:57 -0400
-Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Tue, 13 May
- 2025 08:33:57 -0400
+	Tue, 13 May 2025 08:34:20 -0400
+Received: from ASHBCASHYB5.ad.analog.com (10.64.17.133) by
+ ASHBMBX8.ad.analog.com (10.64.17.5) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Tue, 13 May 2025 08:34:20 -0400
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by
+ ASHBCASHYB5.ad.analog.com (10.64.17.133) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Tue, 13 May 2025 08:34:20 -0400
 Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
  (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Tue, 13 May 2025 08:33:57 -0400
+ Transport; Tue, 13 May 2025 08:34:20 -0400
 Received: from work.ad.analog.com (HYB-hERzalRezfV.ad.analog.com [10.65.205.9])
-	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 54DCXgHb007451;
-	Tue, 13 May 2025 08:33:44 -0400
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 54DCY1eP007460;
+	Tue, 13 May 2025 08:34:04 -0400
 From: Marcelo Schmitt <marcelo.schmitt@analog.com>
 To: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
         <linux-gpio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC: <jic23@kernel.org>, <lars@metafoo.de>, <Michael.Hennerich@analog.com>,
+CC: Ana-Maria Cusco <ana-maria.cusco@analog.com>, <jic23@kernel.org>,
+        <lars@metafoo.de>, <Michael.Hennerich@analog.com>,
         <dlechner@baylibre.com>, <nuno.sa@analog.com>, <andy@kernel.org>,
         <robh@kernel.org>, <krzk+dt@kernel.org>, <conor+dt@kernel.org>,
         <linus.walleij@linaro.org>, <brgl@bgdev.pl>,
         <marcelo.schmitt1@gmail.com>
-Subject: [PATCH v3 01/10] dt-bindings: iio: adc: Add AD4170
-Date: Tue, 13 May 2025 09:33:40 -0300
-Message-ID: <5fa867cff437c0c6d3f0122af823e1677a12d189.1747083143.git.marcelo.schmitt@analog.com>
+Subject: [PATCH v3 02/10] iio: adc: Add basic support for AD4170
+Date: Tue, 13 May 2025 09:34:00 -0300
+Message-ID: <2c308bf8464660079ec6da82a62316e9f2ebd5f7.1747083143.git.marcelo.schmitt@analog.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1747083143.git.marcelo.schmitt@analog.com>
 References: <cover.1747083143.git.marcelo.schmitt@analog.com>
@@ -85,615 +90,1675 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
 X-ADIRuleOP-NewSCL: Rule Triggered
-X-Authority-Analysis: v=2.4 cv=a4sw9VSF c=1 sm=1 tr=0 ts=68233c37 cx=c_pps
+X-Proofpoint-ORIG-GUID: FFix1LgsfJzgL9hbSiO8qZsdX2RfJWfU
+X-Authority-Analysis: v=2.4 cv=ZaUdNtVA c=1 sm=1 tr=0 ts=68233c4d cx=c_pps
  a=3WNzaoukacrqR9RwcOSAdA==:117 a=3WNzaoukacrqR9RwcOSAdA==:17
- a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=gEfo2CItAAAA:8 a=gAnH3GRIAAAA:8
- a=VwQbUJbxAAAA:8 a=qjk4kMxMGZ-Z2-xVo1MA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=sptkURWiP4Gy88Gu7hUp:22
-X-Proofpoint-ORIG-GUID: iB1SWDxRugx3S0CZhlzamogTx2ShpjVP
-X-Proofpoint-GUID: iB1SWDxRugx3S0CZhlzamogTx2ShpjVP
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTEzMDExOSBTYWx0ZWRfX+qd+qu7aCTwn
- eeRaz9+Cy+v3O1xh8MiINJ70HOt5xGBILowZW9IjU8eqBsTNDPnJ6YE5nKkBq8z9xqWGmBVSe9x
- /9On7ShJRrQIlWLrItHsZukip2EpT+70Cg3Td3G0U+w8erEISJxgL/Nus1tN2hrY7jIS+H/K+hm
- 8ci2E4xbhfACvo+ZXL2ePMoOo+qML+OLYuu4pj1WjThz7aEwq+QMEQymhMy+NQX8/MjZ7Z41w4G
- kQ+Pgg3VvAHpZT4YdKJZNjD1xip9Y1Zuzs2JBoxSI6eFQoIPOdbSC1Yk8lh3tIbV5Jdl0bZJ2aB
- MK3hE9j14+9MHAzi7W9hlviXfsK3PPKh5t8LNO/UJpgpkiLdQHlCeTXoNVwHX+8ait6F51cm2TU
- Q7xrtoF/jRgVtMOYbTXXjvXC9Rl+yoxycnztORNwo0xyEzmyHvF7DZ8EvW8kQ0CFWc+6qNsH
+ a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=gAnH3GRIAAAA:8 a=VwQbUJbxAAAA:8
+ a=b0wCbPrZ4HCabX0yd54A:9 a=c5xvIWV1ldkqai98:21 a=3ZKOabzyN94A:10
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: FFix1LgsfJzgL9hbSiO8qZsdX2RfJWfU
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTEzMDExNyBTYWx0ZWRfX/3Ot9gh6si/y
+ qyKENFKgJ0DruBRPFVva832hK81W3QIvTaKF9Tp+4SIBJNaEWDizPZygP9/9X5VcMSyUFh7fvf9
+ eMsWwwT01CYNJHFOq+ncX0tL1LUd3S2m8wOCvnhipY3jet0LcQm5iqdV+o6Xw+n88teyAlxvDEG
+ ZwQlChWy2rzv2RdetHCMsiZq4RlofyxR7OO9d7km519NPkEKoQgQfDpkCwGdE0gituhwGSizcw1
+ OpcNV7785IwGUbTbSzqR7u4K8CG7qMvMoGkazVt8EJoXfFVRhvg5CIBv/Y0rd8jych2nYRClbIG
+ wGKsSmhadGn8ZLNe2BcEG5KEu6wtx8vKs0ZH2huMFW+HzE7bXm0y9pJSwCH6AdVpTrpS0eIrYYu
+ GoU8K6HTx+NFLn+EZf4e6sPkOXqQjcn0Z3Sz9F9n6u+ZWIXFqsF4Pt0/qQNTZ6/zWAvSL+e3
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
  definitions=2025-05-13_01,2025-05-09_01,2025-02-21_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 mlxscore=0 impostorscore=0 lowpriorityscore=0 malwarescore=0
- phishscore=0 spamscore=0 clxscore=1011 bulkscore=0 mlxlogscore=999
- priorityscore=1501 adultscore=0 classifier=spam authscore=0 authtc=n/a
- authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2504070000 definitions=main-2505130119
+ lowpriorityscore=0 malwarescore=0 bulkscore=0 phishscore=0 clxscore=1011
+ mlxscore=0 impostorscore=0 suspectscore=0 mlxlogscore=999 adultscore=0
+ spamscore=0 priorityscore=1501 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2504070000
+ definitions=main-2505130117
 
-Add device tree documentation for AD4170 and similar sigma-delta ADCs.
-The AD4170 is a 24-bit, multichannel, sigma-delta ADC.
+From: Ana-Maria Cusco <ana-maria.cusco@analog.com>
 
+The AD4170 is a multichannel, low noise, 24-bit precision sigma-delta
+analog to digital converter. The AD4170 design offers a flexible data
+aquisition solution with crosspoint multiplexed analog inputs, configurable
+ADC voltage reference inputs, ultra-low noise integrated PGA, digital
+filtering, wide range of configurable output data rates, internal
+oscillator and temperature sensor, four GPIOs, and integrated features for
+interfacing with load cell weigh scales, RTD, and thermocouple sensors.
+
+Add basic support for the AD4170 ADC with the following features:
+- Single-shot read.
+- Analog front end PGA configuration.
+- Differential and pseudo-differential input configuration.
+
+Signed-off-by: Ana-Maria Cusco <ana-maria.cusco@analog.com>
+Co-developed-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
 Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
 ---
 Change log v2 -> v3
+- Updated Copyright year.
+- Separated handling of channel setup cases for better understanding of code flow.
+- Now comparing setups field by field instead of using memcmp().
+- Disable channel on ad4170_read_sample() error path.
+- Reinit completion before entering single conversion mode.
+- Organized ad4170_sinc3_filt_fs_tbl.
+- Used clamp to simplify configuration value checking.
+- Returned earlier whenever possible.
+- Used HZ_PER_KHZ/MHZ.
+- Declared internal voltage reference constant AD4170_INT_REF_2_5V
+- Many other minor code style and readability improvements.
 
-[device tree changes]
-- Removed unneeded allOf.
-- Removed occurences of adi,sensor-type type re-declaration.
-- Created type for the AD4170 channels, allowing to avoid dt doc repetition.
+ MAINTAINERS              |    1 +
+ drivers/iio/adc/Kconfig  |   12 +
+ drivers/iio/adc/Makefile |    1 +
+ drivers/iio/adc/ad4170.c | 1553 ++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 1567 insertions(+)
+ create mode 100644 drivers/iio/adc/ad4170.c
 
- .../bindings/iio/adc/adi,ad4170.yaml          | 544 ++++++++++++++++++
- MAINTAINERS                                   |   7 +
- 2 files changed, 551 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad4170.yaml
-
-diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad4170.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad4170.yaml
-new file mode 100644
-index 000000000000..0a06258b6631
---- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/adc/adi,ad4170.yaml
-@@ -0,0 +1,544 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/iio/adc/adi,ad4170.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Analog Devices AD4170 and similar Analog to Digital Converters
-+
-+maintainers:
-+  - Marcelo Schmitt <marcelo.schmitt@analog.com>
-+
-+description: |
-+  Analog Devices AD4170 series of Sigma-delta Analog to Digital Converters.
-+  Specifications can be found at:
-+    https://www.analog.com/media/en/technical-documentation/data-sheets/ad4170-4.pdf
-+    https://www.analog.com/media/en/technical-documentation/data-sheets/ad4190-4.pdf
-+    https://www.analog.com/media/en/technical-documentation/data-sheets/ad4195-4.pdf
-+
-+$ref: /schemas/spi/spi-peripheral-props.yaml#
-+
-+$defs:
-+  ad4170-channel:
-+    type: object
-+    $ref: /schemas/iio/adc/adc.yaml#
-+    description:
-+      Common properties for configuring AD4170 channels.
-+
-+    properties:
-+      adi,reference-select:
-+        description: |
-+          Selects the reference source to use when converting on the specific
-+          channel. Valid values are:
-+          0: Differential reference voltage REFIN+ - REFIN−.
-+          1: Differential reference voltage REFIN2+ - REFIN2−.
-+          2: Internal 2.5V referece (REFOUT) relative to AVSS.
-+          3: Analog supply voltage (AVDD) relative AVSS.
-+        $ref: /schemas/types.yaml#/definitions/uint8
-+        enum: [0, 1, 2, 3]
-+
-+
-+  sensor-node:
-+    type: object
-+    $ref: '#/$defs/ad4170-channel'
-+    description:
-+      The AD4170 and similar designs have features to aid interfacing with weigh
-+      scale, RTD, and thermocouple sensors. Each of those sensor types requires
-+      either distinct wiring configuration or external circuitry for proper
-+      sensor operation and can use different AD4170 functionality on their
-+      setups. A key characteristic of those external sensors is that they must
-+      be excited either by voltage supply or by AD4170 excitation signals. The
-+      sensor can then be read through a pair of analog inputs. These properties
-+      describe external sensor circuitry connected to the ADC.
-+
-+    properties:
-+      reg:
-+        description:
-+          Channel number. Connects the sensor to the channel with this number
-+          of the device.
-+        minimum: 1
-+        maximum: 16
-+
-+      diff-channels:
-+        description:
-+          Defines the ADC input pins used to read sensor data. Only regular
-+          analog input pins can be used.
-+        items:
-+          enum: [0, 1, 2, 3, 4, 5, 6, 7, 8]
-+
-+      bipolar: true
-+
-+      adi,sensor-type:
-+        description: |
-+          Type of sensor connected to the device. Depending on the sensor type
-+          (weigh scale, RTD, or thermocouple) the values of sensor-node
-+          properties have slightly different constraints. This property
-+          specifies which particular external sensor is connected to the ADC so
-+          the sensor-node properties can be properly parsed and verified. The
-+          possible sensor types are:
-+          0: weigh scale;
-+          1: RTD;
-+          2: thermocouple.
-+        $ref: /schemas/types.yaml#/definitions/uint8
-+
-+      adi,excitation-ac:
-+        type: boolean
-+        description:
-+          Whether the external sensor has to be AC or DC excited.
-+
-+      adi,excitation-pins:
-+        $ref: /schemas/types.yaml#/definitions/uint32-array
-+        description:
-+          Pins used to excite the sensor or external circuit that contains the
-+          sensor. Thermocouples and RTD sensors are excited either with one
-+          current source or with a pair of current sources to minimize the
-+          excitation current mismatch and the excitation current drift matching
-+          on the ADC. E.g. <0>; <1>; <0 1>. Load cell weigh scales may be
-+          excited with one current source, a pair of excitation currents, or two
-+          pairs of excitation currents. When four pins are defined, the first
-+          two values specify the first pair and the last ones specify the second
-+          pair of excitation currents. E.g. <0>; <0 1>; <0 1 2 3>.
-+        items:
-+          minimum: 0
-+          maximum: 20
-+
-+      adi,excitation-current-microamp:
-+        description:
-+          Excitation current in microamperes to be output to each excitation pin
-+          specified by adi,excitation-pins property. If not provided and
-+          adi,excitation-ac is true, use predefined ACX1, ACX1 negated, ACX2,
-+          and ACX2 negated signals to AC excite the bridge circuit. Those
-+          singals are output on GPIO2, GPIO0, GPIO3, and GPIO1, respectively.
-+        enum: [0, 10, 50, 100, 250, 500, 1000, 1500]
-+        default: 0
-+
-+      adi,power-down-switch-pin:
-+        description:
-+          Number of the GPIO used as power-down switch for the bridge circuit.
-+        $ref: /schemas/types.yaml#/definitions/uint8
-+        enum: [0, 1]
-+
-+      adi,vbias:
-+        type: boolean
-+        description:
-+          For unbiased thermocouple applications, the voltage generated by the
-+          thermocouple must be biased around some DC voltage. When present, this
-+          property specifies a bias voltage of (AVDD + AVSS)/2 to be applied as
-+          common-mode voltage for the sensor.
-+
-+    required:
-+      - reg
-+      - diff-channels
-+      - bipolar
-+      - adi,sensor-type
-+      - adi,reference-select
-+
-+
-+properties:
-+  compatible:
-+    enum:
-+      - adi,ad4170
-+      - adi,ad4190
-+      - adi,ad4195
-+
-+  avss-supply:
-+    description:
-+      Referece voltage supply for AVSS. If provided, describes the magnitude
-+      (absolute value) of the negative voltage supplied to the AVSS pin. Since
-+      AVSS must be −2.625V minimum and 0V maximum, the declared supply voltage
-+      must be between 0 and 2.65V. If not provided, AVSS is assumed to be at
-+      system ground (0V).
-+
-+  avdd-supply:
-+    description:
-+      A supply of 4.75V to 5.25V relative to AVSS that powers the chip (AVDD).
-+
-+  iovdd-supply:
-+    description: 1.7V to 5.25V reference supply to the serial interface (IOVDD).
-+
-+  refin1p-supply:
-+    description: REFIN+ supply that can be used as reference for conversion.
-+
-+  refin1n-supply:
-+    description: REFIN- supply that can be used as reference for conversion. If
-+      provided, describes the magnitude (absolute value) of the negative voltage
-+      supplied to the REFIN- pin.
-+
-+  refin2p-supply:
-+    description: REFIN2+ supply that can be used as reference for conversion.
-+
-+  refin2n-supply:
-+    description: REFIN2- supply that can be used as reference for conversion. If
-+      provided, describes the magnitude (absolute value) of the negative voltage
-+      supplied to the REFIN2- pin.
-+
-+  spi-cpol: true
-+
-+  spi-cpha: true
-+
-+  interrupts:
-+    maxItems: 1
-+
-+  interrupt-names:
-+    description:
-+      Specify which pin should be configured as Data Ready interrupt.
-+    enum:
-+      - sdo
-+      - dig_aux1
-+    default: sdo
-+
-+  clocks:
-+    maxItems: 1
-+    description:
-+      Optional external clock source. Can specify either an external clock or
-+      external crystal.
-+
-+  clock-names:
-+    enum:
-+      - ext-clk
-+      - xtal
-+    default: ext-clk
-+
-+  '#clock-cells':
-+    const: 0
-+
-+  clock-output-names:
-+    maxItems: 1
-+
-+  gpio-controller: true
-+
-+  "#gpio-cells":
-+    const: 2
-+    description: |
-+      The first cell is for the GPIO number: 0 to 3.
-+      The second cell takes standard GPIO flags.
-+
-+  ldac-gpios:
-+    description:
-+      GPIO connected to DIG_AUX2 pin to be used as LDAC toggle to control the
-+      transfer of data from the DAC_INPUT_A register to the DAC.
-+    maxItems: 1
-+
-+  '#address-cells':
-+    const: 1
-+
-+  '#size-cells':
-+    const: 0
-+
-+patternProperties:
-+  "^channel@[0-9a-f]$":
-+    $ref: '#/$defs/ad4170-channel'
-+    unevaluatedProperties: false
-+    description:
-+      Represents the external channels which are connected to the ADC.
-+
-+    properties:
-+      reg:
-+        description:
-+          The channel number.
-+        minimum: 0
-+        maximum: 15
-+
-+      diff-channels:
-+        description: |
-+          This property is used for defining the inputs of a differential
-+          voltage channel. The first value is the positive input and the second
-+          value is the negative input of the channel.
-+
-+          Besides the analog input pins AIN0 to AIN8, there are special inputs
-+          that can be selected with the following values:
-+          17: Internal temperature sensor
-+          18: (AVDD-AVSS)/5
-+          19: (IOVDD-DGND)/5
-+          20: DAC output
-+          21: ALDO
-+          22: DLDO
-+          23: AVSS
-+          24: DGND
-+          25: REFIN+
-+          26: REFIN-
-+          27: REFIN2+
-+          28: REFIN2-
-+          29: REFOUT
-+          For the internal temperature sensor, use the input number for both
-+          inputs (i.e. diff-channels = <17 17>).
-+        items:
-+          enum: [0, 1, 2, 3, 4, 5, 6, 7, 8, 17, 18, 19, 20, 21, 22, 23, 24, 25,
-+                 26, 27, 28, 29]
-+
-+      single-channel: true
-+
-+      common-mode-channel: true
-+
-+      bipolar: true
-+
-+      adi,buffered-positive:
-+        description: |
-+          Enable precharge buffer, full buffer, or skip reference buffering of
-+          the positive voltage reference. Because the output impedance of the
-+          source driving the voltage reference inputs may be dynamic, RC
-+          combinations of those inputs can cause DC gain errors if the reference
-+          inputs go unbuffered into the ADC. Enable reference buffering if the
-+          provided reference source has dynamic high impedance output. Note the
-+          absolute voltage allowed on positive reference inputs (REFIN+,
-+          REFIN2+) is from AVSS − 50 mV to AVDD + 50 mV when the reference
-+          buffers are disabled but narrows to AVSS to AVDD when reference
-+          buffering is enabled or in precharge mode.
-+          0: Reference precharge buffer.
-+          1: Full Buffer.
-+          2: Bypass reference buffers (buffering disabled).
-+        $ref: /schemas/types.yaml#/definitions/uint8
-+        enum: [0, 1, 2]
-+        default: 1
-+
-+      adi,buffered-negative:
-+        description: |
-+          Enable precharge buffer, full buffer, or skip reference buffering of
-+          the negative voltage reference. Because the output impedance of the
-+          source driving the voltage reference inputs may be dynamic, RC
-+          combinations of those inputs can cause DC gain errors if the reference
-+          inputs go unbuffered into the ADC. Enable reference buffering if the
-+          provided reference source has dynamic high impedance output. Note the
-+          absolute voltage allowed on negative reference inputs (REFIN-,
-+          REFIN2-) is from AVSS − 50 mV to AVDD + 50 mV when the reference
-+          buffers are disabled but narrows to AVSS to AVDD when reference
-+          buffering is enabled or in precharge mode.
-+          0: Reference precharge buffer.
-+          1: Full Buffer.
-+          2: Bypass reference buffers (buffering disabled).
-+        $ref: /schemas/types.yaml#/definitions/uint8
-+        enum: [0, 1, 2]
-+        default: 1
-+
-+    required:
-+      - reg
-+
-+    oneOf:
-+      - required: [single-channel]
-+        properties:
-+          diff-channels: false
-+      - required: [diff-channels]
-+        properties:
-+          single-channel: false
-+          common-mode-channel: false
-+
-+  "^weighscale@":
-+    $ref: '#/$defs/sensor-node'
-+    unevaluatedProperties: false
-+
-+    properties:
-+      diff-channels: true
-+      bipolar: true
-+
-+      adi,sensor-type:
-+        description: Weigh scale sensor.
-+        const: 0
-+
-+      adi,excitation-pins: true
-+
-+  "^rtd@":
-+    $ref: '#/$defs/sensor-node'
-+    unevaluatedProperties: false
-+
-+    properties:
-+      diff-channels: true
-+      bipolar: true
-+
-+      adi,sensor-type:
-+        description: RTD sensor.
-+        const: 1
-+
-+      adi,excitation-pins: true
-+
-+      adi,excitation-current-microamp: true
-+
-+    required:
-+      - adi,excitation-pins
-+      - adi,excitation-current-microamp
-+
-+  "^thermocouple@":
-+    $ref: '#/$defs/sensor-node'
-+    unevaluatedProperties: false
-+
-+    properties:
-+      diff-channels: true
-+      bipolar: true
-+
-+      adi,sensor-type:
-+        description: Thermocouple sensor.
-+        const: 2
-+
-+    required:
-+      - adi,excitation-pins
-+      - adi,excitation-current-microamp
-+
-+required:
-+  - compatible
-+  - reg
-+  - avdd-supply
-+  - iovdd-supply
-+  - spi-cpol
-+  - spi-cpha
-+
-+allOf:
-+  # Some devices don't have integrated DAC
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            enum:
-+              - adi,ad4190
-+              - adi,ad4195
-+    then:
-+      properties:
-+        ldac-gpios: false
-+
-+unevaluatedProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/interrupt-controller/irq.h>
-+    spi {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        adc@0 {
-+            compatible = "adi,ad4170";
-+            reg = <0>;
-+            spi-max-frequency = <20000000>;
-+            spi-cpol;
-+            spi-cpha;
-+            avdd-supply = <&avdd>;
-+            iovdd-supply = <&iovdd>;
-+            interrupt-parent = <&gpio_in>;
-+            interrupts = <0 IRQ_TYPE_EDGE_FALLING>;
-+            #address-cells = <1>;
-+            #size-cells = <0>;
-+
-+            // Sample AIN0 with respect to DGND throughout AVDD/DGND input range
-+            // Pseudo-differential unipolar
-+            channel@0 {
-+                reg = <0>;
-+                single-channel = <0>;
-+                common-mode-channel = <24>;
-+                adi,reference-select = /bits/ 8 <3>;
-+            };
-+            // Weigh scale sensor
-+            weighscale@1 {
-+                reg = <1>;
-+                bipolar;
-+                diff-channels = <1 2>;
-+                adi,sensor-type = /bits/ 8 <0>;
-+                adi,reference-select = /bits/ 8 <0>;
-+                adi,excitation-ac;
-+                adi,excitation-pins = <19 20>;
-+                adi,power-down-switch-pin = /bits/ 8 <0>;
-+            };
-+            // RTD sensor
-+            rtd@2 {
-+                reg = <2>;
-+                bipolar;
-+                diff-channels = <3 4>;
-+                adi,sensor-type = /bits/ 8 <1>;
-+                adi,reference-select = /bits/ 8 <0>;
-+                adi,excitation-ac;
-+                adi,excitation-pins = <5 6>;
-+                adi,excitation-current-microamp = <500>;
-+            };
-+            // Thermocouple sensor
-+            thermocouple@3 {
-+                reg = <3>;
-+                bipolar;
-+                diff-channels = <7 8>;
-+                adi,sensor-type = /bits/ 8 <2>;
-+                adi,reference-select = /bits/ 8 <0>;
-+                adi,excitation-pins = <18>;
-+                adi,excitation-current-microamp = <500>;
-+                adi,vbias;
-+            };
-+        };
-+    };
-+  - |
-+    #include <dt-bindings/interrupt-controller/irq.h>
-+    spi {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        adc@0 {
-+            compatible = "adi,ad4170";
-+            reg = <0>;
-+            spi-max-frequency = <20000000>;
-+            spi-cpol;
-+            spi-cpha;
-+            avdd-supply = <&avdd>;
-+            iovdd-supply = <&iovdd>;
-+            interrupt-parent = <&gpio_in>;
-+            interrupts = <0 IRQ_TYPE_EDGE_FALLING>;
-+            #address-cells = <1>;
-+            #size-cells = <0>;
-+
-+            // Sample AIN0 with respect to AIN1 throughout AVDD/AVSS input range
-+            // Differential bipolar. If AVSS < 0V, differential true bipolar
-+            channel@0 {
-+                reg = <0>;
-+                bipolar;
-+                diff-channels = <0 1>;
-+                adi,reference-select = /bits/ 8 <3>;
-+            };
-+            // Sample AIN2 with respect to DGND throughout AVDD/DGND input range
-+            // Pseudo-differential unipolar
-+            channel@1 {
-+                reg = <1>;
-+                single-channel = <2>;
-+                common-mode-channel = <24>;
-+                adi,reference-select = /bits/ 8 <3>;
-+            };
-+            // Sample AIN3 with respect to 2.5V throughout AVDD/AVSS input range
-+            // Pseudo-differential bipolar
-+            channel@2 {
-+                reg = <2>;
-+                bipolar;
-+                single-channel = <3>;
-+                common-mode-channel = <29>;
-+                adi,reference-select = /bits/ 8 <3>;
-+            };
-+            // Sample AIN4 with respect to DGND throughout AVDD/AVSS input range
-+            // Pseudo-differential bipolar
-+            channel@3 {
-+                reg = <3>;
-+                bipolar;
-+                single-channel = <4>;
-+                common-mode-channel = <24>;
-+                adi,reference-select = /bits/ 8 <3>;
-+            };
-+            // Sample AIN5 with respect to 2.5V throughout AVDD/AVSS input range
-+            // Pseudo-differential unipolar (AD4170 datasheet page 46 example)
-+            channel@4 {
-+                reg = <4>;
-+                single-channel = <5>;
-+                common-mode-channel = <29>;
-+                adi,reference-select = /bits/ 8 <3>;
-+            };
-+            // Sample AIN6 with respect to 2.5V throughout REFIN+/REFIN- input range
-+            // Pseudo-differential bipolar
-+            channel@5 {
-+                reg = <5>;
-+                bipolar;
-+                single-channel = <6>;
-+                common-mode-channel = <29>;
-+                adi,reference-select = /bits/ 8 <0>;
-+            };
-+            // Weigh scale sensor
-+            weighscale@6 {
-+                reg = <6>;
-+                bipolar;
-+                diff-channels = <7 8>;
-+                adi,reference-select = /bits/ 8 <0>;
-+                adi,sensor-type = /bits/ 8 <0>;
-+                adi,excitation-ac;
-+                adi,excitation-pins = <17 18 19 20>;
-+            };
-+        };
-+    };
-+...
-+
 diff --git a/MAINTAINERS b/MAINTAINERS
-index cc9582b14ced..0a8f2c7a139c 100644
+index 0a8f2c7a139c..541e37ed304e 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -1346,6 +1346,13 @@ F:	Documentation/ABI/testing/sysfs-bus-iio-adc-ad4130
- F:	Documentation/devicetree/bindings/iio/adc/adi,ad4130.yaml
- F:	drivers/iio/adc/ad4130.c
+@@ -1352,6 +1352,7 @@ L:	linux-iio@vger.kernel.org
+ S:	Supported
+ W:	https://ez.analog.com/linux-software-drivers
+ F:	Documentation/devicetree/bindings/iio/adc/adi,ad4170.yaml
++F:	drivers/iio/adc/ad4170.c
  
-+ANALOG DEVICES INC AD4170 DRIVER
-+M:	Marcelo Schmitt <marcelo.schmitt@analog.com>
-+L:	linux-iio@vger.kernel.org
-+S:	Supported
-+W:	https://ez.analog.com/linux-software-drivers
-+F:	Documentation/devicetree/bindings/iio/adc/adi,ad4170.yaml
-+
  ANALOG DEVICES INC AD4695 DRIVER
  M:	Michael Hennerich <michael.hennerich@analog.com>
- M:	Nuno Sá <nuno.sa@analog.com>
+diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
+index 0fe6601e59ed..594b9f55ec0a 100644
+--- a/drivers/iio/adc/Kconfig
++++ b/drivers/iio/adc/Kconfig
+@@ -70,6 +70,18 @@ config AD4130
+ 	  To compile this driver as a module, choose M here: the module will be
+ 	  called ad4130.
+ 
++
++config AD4170
++	tristate "Analog Device AD4170 ADC Driver"
++	depends on SPI
++	select REGMAP_SPI
++	help
++	  Say yes here to build support for Analog Devices AD4170 SPI analog
++	  to digital converters (ADC).
++
++	  To compile this driver as a module, choose M here: the module will be
++	  called ad4170.
++
+ config AD4695
+ 	tristate "Analog Device AD4695 ADC Driver"
+ 	depends on SPI
+diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
+index 07d4b832c42e..d3a1376d1f96 100644
+--- a/drivers/iio/adc/Makefile
++++ b/drivers/iio/adc/Makefile
+@@ -11,6 +11,7 @@ obj-$(CONFIG_AD_SIGMA_DELTA) += ad_sigma_delta.o
+ obj-$(CONFIG_AD4000) += ad4000.o
+ obj-$(CONFIG_AD4030) += ad4030.o
+ obj-$(CONFIG_AD4130) += ad4130.o
++obj-$(CONFIG_AD4170) += ad4170.o
+ obj-$(CONFIG_AD4695) += ad4695.o
+ obj-$(CONFIG_AD4851) += ad4851.o
+ obj-$(CONFIG_AD7091R) += ad7091r-base.o
+diff --git a/drivers/iio/adc/ad4170.c b/drivers/iio/adc/ad4170.c
+new file mode 100644
+index 000000000000..bf19b31095ee
+--- /dev/null
++++ b/drivers/iio/adc/ad4170.c
+@@ -0,0 +1,1553 @@
++// SPDX-License-Identifier: GPL-2.0+
++/*
++ * Copyright (C) 2025 Analog Devices, Inc.
++ * Author: Ana-Maria Cusco <ana-maria.cusco@analog.com>
++ * Author: Marcelo Schmitt <marcelo.schmitt@analog.com>
++ */
++
++#include <linux/bitfield.h>
++#include <linux/bitmap.h>
++#include <linux/bitops.h>
++#include <linux/bits.h>
++#include <linux/delay.h>
++#include <linux/device.h>
++#include <linux/err.h>
++#include <linux/iio/iio.h>
++#include <linux/interrupt.h>
++#include <linux/irq.h>
++#include <linux/math64.h>
++#include <linux/module.h>
++#include <linux/property.h>
++#include <linux/regmap.h>
++#include <linux/regulator/consumer.h>
++#include <linux/spi/spi.h>
++#include <linux/unaligned.h>
++#include <linux/units.h>
++#include <linux/util_macros.h>
++
++/*
++ * AD4170 registers
++ * Multibyte register addresses point to the most significant byte which is the
++ * address to use to get the most significant byte first (address accessed is
++ * decremented by one for each data byte)
++ *
++ * Each register address define follows the AD4170_<REG_NAME>_REG form.
++ * Each mask follows the AD4170_<REG_NAME>_<FIELD_NAME> form.
++ * E.g. AD4170_PIN_MUXING_DIG_AUX1_CTRL_MSK is for accessing DIG_AUX1_CTRL field
++ * of PIN_MUXING_REG.
++ * Each constant follows the AD4170_<REG_NAME>_<FIELD_NAME>_<FUNCTION> form.
++ * E.g. AD4170_PIN_MUXING_DIG_AUX1_DISABLED is the value written to
++ * DIG_AUX1_CTRL field of PIN_MUXING register to disable DIG_AUX1 pin.
++ * Some register names and register field names are shortened versions of
++ * their datasheet counterpart names to provide better code readability.
++ */
++#define AD4170_CONFIG_A_REG				0x00
++#define AD4170_DATA_24B_REG				0x1E
++#define AD4170_PIN_MUXING_REG				0x69
++#define AD4170_ADC_CTRL_REG				0x71
++#define AD4170_CHAN_EN_REG				0x79
++#define AD4170_CHAN_SETUP_REG(x)			(0x81 + 4 * (x))
++#define AD4170_CHAN_MAP_REG(x)				(0x83 + 4 * (x))
++#define AD4170_MISC_REG(x)				(0xC1 + 14 * (x))
++#define AD4170_AFE_REG(x)				(0xC3 + 14 * (x))
++#define AD4170_FILTER_REG(x)				(0xC5 + 14 * (x))
++#define AD4170_FILTER_FS_REG(x)				(0xC7 + 14 * (x))
++#define AD4170_OFFSET_REG(x)				(0xCA + 14 * (x))
++#define AD4170_GAIN_REG(x)				(0xCD + 14 * (x))
++
++#define AD4170_REG_READ_MASK				BIT(14)
++
++/* AD4170_CONFIG_A_REG - INTERFACE_CONFIG_A REGISTER */
++#define AD4170_SW_RESET_MSK				(BIT(7) | BIT(0))
++
++/* AD4170_PIN_MUXING_REG */
++#define AD4170_PIN_MUXING_DIG_AUX1_CTRL_MSK		GENMASK(5, 4)
++
++/* AD4170_ADC_CTRL_REG */
++#define AD4170_ADC_CTRL_MULTI_DATA_REG_SEL_MSK		BIT(7)
++#define AD4170_ADC_CTRL_MODE_MSK			GENMASK(3, 0)
++
++/* AD4170_CHAN_EN_REG */
++#define AD4170_CHAN_EN(ch)				BIT(ch)
++
++/* AD4170_CHAN_SETUP_REG */
++#define AD4170_CHAN_SETUP_SETUP_MSK			GENMASK(2, 0)
++
++/* AD4170_CHAN_MAP_REG */
++#define AD4170_CHAN_MAP_AINP_MSK			GENMASK(12, 8)
++#define AD4170_CHAN_MAP_AINM_MSK			GENMASK(4, 0)
++
++/* AD4170_AFE_REG */
++#define AD4170_AFE_REF_BUF_M_MSK			GENMASK(11, 10)
++#define AD4170_AFE_REF_BUF_P_MSK			GENMASK(9, 8)
++#define AD4170_AFE_REF_SELECT_MSK			GENMASK(6, 5)
++#define AD4170_AFE_BIPOLAR_MSK				BIT(4)
++#define AD4170_AFE_PGA_GAIN_MSK				GENMASK(3, 0)
++
++/* AD4170 register constants */
++
++/* AD4170_CHAN_MAP_REG constants */
++#define AD4170_CHAN_MAP_AIN(x)			(x)
++#define AD4170_CHAN_MAP_TEMP_SENSOR		17
++#define AD4170_CHAN_MAP_AVDD_AVSS_P		18
++#define AD4170_CHAN_MAP_AVDD_AVSS_N		18
++#define AD4170_CHAN_MAP_IOVDD_DGND_P		19
++#define AD4170_CHAN_MAP_IOVDD_DGND_N		19
++#define AD4170_CHAN_MAP_AVSS			23
++#define AD4170_CHAN_MAP_DGND			24
++#define AD4170_CHAN_MAP_REFIN1_P		25
++#define AD4170_CHAN_MAP_REFIN1_N		26
++#define AD4170_CHAN_MAP_REFIN2_P		27
++#define AD4170_CHAN_MAP_REFIN2_N		28
++#define AD4170_CHAN_MAP_REFOUT			29
++
++/* AD4170_PIN_MUXING_REG constants */
++#define AD4170_PIN_MUXING_DIG_AUX1_DISABLED		0x0
++#define AD4170_PIN_MUXING_DIG_AUX1_RDY			0x1
++
++/* AD4170_ADC_CTRL_REG constants */
++#define AD4170_ADC_CTRL_MODE_SINGLE			0x4
++#define AD4170_ADC_CTRL_MODE_IDLE			0x7
++
++/* Device properties and auxiliary constants */
++
++#define AD4170_NUM_ANALOG_PINS				9
++#define AD4170_MAX_CHANNELS				16
++#define AD4170_MAX_ANALOG_PINS				8
++#define AD4170_MAX_SETUPS				8
++#define AD4170_INVALID_SETUP				9
++#define AD4170_SPI_MAX_XFER_LEN				6
++
++#define AD4170_INT_REF_2_5V				2500000
++
++/* Internal and external clock properties */
++#define AD4170_INT_CLOCK_16MHZ				(16 * HZ_PER_MHZ)
++
++#define AD4170_NUM_PGA_OPTIONS				10
++
++#define AD4170_GAIN_REG_DEFAULT				0x555555
++
++/* Analog pin functions  */
++#define AD4170_PIN_UNASIGNED				0x00
++
++static const unsigned int ad4170_reg_size[] = {
++	[AD4170_CONFIG_A_REG] = 1,
++	[AD4170_DATA_24B_REG] = 3,
++	[AD4170_PIN_MUXING_REG] = 2,
++	[AD4170_ADC_CTRL_REG] = 2,
++	[AD4170_CHAN_EN_REG] = 2,
++	/*
++	 * CHANNEL_SETUP and CHANNEL_MAP register are all 2 byte size each and
++	 * their addresses are interleaved such that we have CHANNEL_SETUP0
++	 * address followed by CHANNEL_MAP0 address, followed by CHANNEL_SETUP1,
++	 * and so on until CHANNEL_MAP15.
++	 * Thus, initialize the register size for them only once.
++	 */
++	[AD4170_CHAN_SETUP_REG(0) ... AD4170_CHAN_MAP_REG(AD4170_MAX_CHANNELS - 1)] = 2,
++	/*
++	 * MISC, AFE, FILTER, FILTER_FS, OFFSET, and GAIN register addresses are
++	 * also interleaved but MISC, AFE, FILTER, FILTER_FS, OFFSET are 16-bit
++	 * while OFFSET, GAIN are 24-bit registers so we can't init them all to
++	 * the same size.
++	 */
++	[AD4170_MISC_REG(0) ... AD4170_FILTER_FS_REG(0)] = 2,
++	[AD4170_MISC_REG(1) ... AD4170_FILTER_FS_REG(1)] = 2,
++	[AD4170_MISC_REG(2) ... AD4170_FILTER_FS_REG(2)] = 2,
++	[AD4170_MISC_REG(3) ... AD4170_FILTER_FS_REG(3)] = 2,
++	[AD4170_MISC_REG(4) ... AD4170_FILTER_FS_REG(4)] = 2,
++	[AD4170_MISC_REG(5) ... AD4170_FILTER_FS_REG(5)] = 2,
++	[AD4170_MISC_REG(6) ... AD4170_FILTER_FS_REG(6)] = 2,
++	[AD4170_MISC_REG(7) ... AD4170_FILTER_FS_REG(7)] = 2,
++	[AD4170_OFFSET_REG(0) ... AD4170_GAIN_REG(0)] = 3,
++	[AD4170_OFFSET_REG(1) ... AD4170_GAIN_REG(1)] = 3,
++	[AD4170_OFFSET_REG(2) ... AD4170_GAIN_REG(2)] = 3,
++	[AD4170_OFFSET_REG(3) ... AD4170_GAIN_REG(3)] = 3,
++	[AD4170_OFFSET_REG(4) ... AD4170_GAIN_REG(4)] = 3,
++	[AD4170_OFFSET_REG(5) ... AD4170_GAIN_REG(5)] = 3,
++	[AD4170_OFFSET_REG(6) ... AD4170_GAIN_REG(6)] = 3,
++	[AD4170_OFFSET_REG(7) ... AD4170_GAIN_REG(7)] = 3,
++};
++
++enum ad4170_ref_buf {
++	AD4170_REF_BUF_PRE,	/* Pre-charge referrence buffer */
++	AD4170_REF_BUF_FULL,	/* Full referrence buffering */
++	AD4170_REF_BUF_BYPASS	/* Bypass referrence buffering */
++};
++
++enum ad4170_ref_select {
++	AD4170_REF_REFIN1,
++	AD4170_REF_REFIN2,
++	AD4170_REF_REFOUT,
++	AD4170_REF_AVDD
++};
++
++enum ad4170_regulator {
++	AD4170_AVDD_SUP,
++	AD4170_AVSS_SUP,
++	AD4170_IOVDD_SUP,
++	AD4170_REFIN1P_SUP,
++	AD4170_REFIN1N_SUP,
++	AD4170_REFIN2P_SUP,
++	AD4170_REFIN2N_SUP,
++	AD4170_MAX_SUP
++};
++
++enum ad4170_int_pin_sel {
++	AD4170_INT_PIN_SDO,
++	AD4170_INT_PIN_DIG_AUX1,
++};
++
++static const char * const ad4170_int_pin_names[] = {
++	[AD4170_INT_PIN_SDO] = "sdo",
++	[AD4170_INT_PIN_DIG_AUX1] = "dig_aux1",
++};
++
++struct ad4170_chip_info {
++	const char *name;
++};
++
++static const struct ad4170_chip_info ad4170_chip_info = {
++	.name = "ad4170",
++};
++
++static const struct ad4170_chip_info ad4190_chip_info = {
++	.name = "ad4190",
++};
++
++static const struct ad4170_chip_info ad4195_chip_info = {
++	.name = "ad4195",
++};
++
++/*
++ * There are 8 of each MISC, AFE, FILTER, FILTER_FS, OFFSET, and GAIN
++ * configuration registers. That is, there are 8 miscellaneous registers, MISC0
++ * to MISC7. Each MISC register is associated with a setup; MISCN is associated
++ * with setup number N. The other 5 above mentioned types of registers have
++ * analogous structure. A setup is a set of those registers. For example,
++ * setup 1 comprises of MISC1, AFE1, FILTER1, FILTER_FS1, OFFSET1, and GAIN1
++ * registers. Also, there are 16 CHANNEL_SETUP registers (CHANNEL_SETUP0 to
++ * CHANNEL_SETUP15). Each channel setup is associated with one of the 8 possible
++ * setups. Thus, AD4170 can support up to 16 channels but, since there are only
++ * 8 available setups, channels must share settings if more than 8 channels are
++ * configured.
++ *
++ * If this struct is modified, ad4170_setup_eq() will probably need to be
++ * updated too.
++ */
++struct ad4170_setup {
++	u16 misc;
++	u16 afe;
++	u16 filter;
++	u16 filter_fs;
++	u32 offset; /* For calibration purposes */
++	u32 gain; /* For calibration purposes */
++};
++
++struct ad4170_setup_info {
++	struct ad4170_setup setup;
++	unsigned int enabled_channels;
++	unsigned int channels;
++};
++
++struct ad4170_chan_info {
++	unsigned int input_range_uv;
++	unsigned int setup_num; /* Index to access state setup_infos array */
++	struct ad4170_setup setup; /* cached setup */
++	int offset_tbl[10];
++	u32 scale_tbl[10][2];
++	bool initialized;
++	bool enabled;
++};
++
++struct ad4170_state {
++	struct mutex lock; /* Protect read-modify-write and multi write sequences */
++	int vrefs_uv[AD4170_MAX_SUP];
++	u32 mclk_hz;
++	struct ad4170_setup_info setup_infos[AD4170_MAX_SETUPS];
++	struct iio_chan_spec chans[AD4170_MAX_CHANNELS];
++	struct ad4170_chan_info chan_infos[AD4170_MAX_CHANNELS];
++	struct spi_device *spi;
++	struct regmap *regmap;
++	int pins_fn[AD4170_NUM_ANALOG_PINS];
++	u32 int_pin_sel;
++	struct completion completion;
++	/*
++	 * DMA (thus cache coherency maintenance) requires the transfer buffers
++	 * to live in their own cache lines.
++	 */
++	u8 tx_buf[AD4170_SPI_MAX_XFER_LEN] __aligned(IIO_DMA_MINALIGN);
++	u8 rx_buf[4];
++};
++
++static int ad4170_debugfs_reg_access(struct iio_dev *indio_dev,
++				     unsigned int reg, unsigned int writeval,
++				     unsigned int *readval)
++{
++	struct ad4170_state *st = iio_priv(indio_dev);
++
++	if (readval)
++		return regmap_read(st->regmap, reg, readval);
++	else
++		return regmap_write(st->regmap, reg, writeval);
++}
++
++static int ad4170_get_reg_size(struct ad4170_state *st, unsigned int reg,
++			       unsigned int *size)
++{
++	if (reg >= ARRAY_SIZE(ad4170_reg_size))
++		return -EINVAL;
++
++	*size = ad4170_reg_size[reg];
++
++	return 0;
++}
++
++static int ad4170_reg_write(void *context, unsigned int reg, unsigned int val)
++{
++	struct ad4170_state *st = context;
++	unsigned int size;
++	int ret;
++
++	ret = ad4170_get_reg_size(st, reg, &size);
++	if (ret)
++		return ret;
++
++	put_unaligned_be16(reg, st->tx_buf);
++	switch (size) {
++	case 3:
++		put_unaligned_be24(val, &st->tx_buf[2]);
++		break;
++	case 2:
++		put_unaligned_be16(val, &st->tx_buf[2]);
++		break;
++	case 1:
++		st->tx_buf[2] = val;
++		break;
++	default:
++		return -EINVAL;
++	}
++
++	return spi_write(st->spi, st->tx_buf, size + 2);
++}
++
++static int ad4170_reg_read(void *context, unsigned int reg, unsigned int *val)
++{
++	struct ad4170_state *st = context;
++	struct spi_transfer t[] = {
++		{
++			.tx_buf = st->tx_buf,
++			.len = 2,
++		},
++		{
++			.rx_buf = st->rx_buf,
++		},
++	};
++	unsigned int size;
++	int ret;
++
++	ret = ad4170_get_reg_size(st, reg, &size);
++	if (ret)
++		return ret;
++
++	put_unaligned_be16(AD4170_REG_READ_MASK | reg, st->tx_buf);
++	t[1].len = size;
++
++	ret = spi_sync_transfer(st->spi, t, ARRAY_SIZE(t));
++	if (ret)
++		return ret;
++
++	switch (size) {
++	case 3:
++		*val = get_unaligned_be24(st->rx_buf);
++		return 0;
++	case 2:
++		*val = get_unaligned_be16(st->rx_buf);
++		return 0;
++	case 1:
++		*val = st->rx_buf[0];
++		return 0;
++	default:
++		return -EINVAL;
++	}
++}
++
++static const struct regmap_config ad4170_regmap_config = {
++	.reg_read = ad4170_reg_read,
++	.reg_write = ad4170_reg_write,
++};
++
++static bool ad4170_setup_eq(struct ad4170_setup *a, struct ad4170_setup *b)
++{
++	/*
++	 * The use of static_assert() here is to make sure that the comparison
++	 * is adapted whenever struct ad4170_setup is changed.
++	 */
++	static_assert(sizeof(*a) ==
++		      sizeof(struct {
++				     u16 misc;
++				     u16 afe;
++				     u16 filter;
++				     u16 filter_fs;
++				     u32 offset;
++				     u32 gain;
++			     }));
++
++	if (a->misc != b->misc ||
++	    a->afe != b->afe ||
++	    a->filter != b->filter ||
++	    a->filter_fs != b->filter_fs ||
++	    a->offset != b->offset ||
++	    a->gain != b->gain)
++		return false;
++
++	return true;
++}
++
++static int ad4170_find_setup(struct ad4170_state *st,
++			     struct ad4170_setup *target_setup,
++			     unsigned int *setup_num, bool *overwrite)
++{
++	unsigned int i;
++
++	*setup_num = AD4170_INVALID_SETUP;
++	*overwrite = false;
++
++	for (i = 0; i < AD4170_MAX_SETUPS; i++) {
++		struct ad4170_setup_info *setup_info = &st->setup_infos[i];
++
++		/* Immediately accept a matching setup. */
++		if (ad4170_setup_eq(target_setup, &setup_info->setup)) {
++			*setup_num = i;
++			return 0;
++		}
++
++		/* Ignore all setups which are used by enabled channels. */
++		if (setup_info->enabled_channels)
++			continue;
++
++		/* Find the least used slot. */
++		if (*setup_num == AD4170_INVALID_SETUP ||
++		    setup_info->channels < st->setup_infos[*setup_num].channels)
++			*setup_num = i;
++	}
++
++	if (*setup_num == AD4170_INVALID_SETUP)
++		return -EINVAL;
++
++	*overwrite = true;
++	return 0;
++}
++
++static void ad4170_unlink_channel(struct ad4170_state *st, unsigned int channel)
++{
++	struct ad4170_chan_info *chan_info = &st->chan_infos[channel];
++	struct ad4170_setup_info *setup_info = &st->setup_infos[chan_info->setup_num];
++
++	chan_info->setup_num = AD4170_INVALID_SETUP;
++	setup_info->channels--;
++}
++
++static int ad4170_unlink_setup(struct ad4170_state *st, unsigned int setup_num)
++{
++	unsigned int i;
++
++	for (i = 0; i < AD4170_MAX_CHANNELS; i++) {
++		struct ad4170_chan_info *chan_info = &st->chan_infos[i];
++
++		if (!chan_info->initialized || chan_info->setup_num != setup_num)
++			continue;
++
++		ad4170_unlink_channel(st, i);
++	}
++	return 0;
++}
++
++static int ad4170_link_channel_setup(struct ad4170_state *st,
++				     unsigned int chan_addr,
++				     unsigned int setup_num)
++{
++	struct ad4170_setup_info *setup_info = &st->setup_infos[setup_num];
++	struct ad4170_chan_info *chan_info = &st->chan_infos[chan_addr];
++	int ret;
++
++	ret = regmap_update_bits(st->regmap, AD4170_CHAN_SETUP_REG(chan_addr),
++				 AD4170_CHAN_SETUP_SETUP_MSK,
++				 FIELD_PREP(AD4170_CHAN_SETUP_SETUP_MSK, setup_num));
++	if (ret)
++		return ret;
++
++	chan_info->setup_num = setup_num;
++	setup_info->channels++;
++	return 0;
++}
++
++/*
++ * Sets the ADC operating mode. Supported modes are
++ * - Single conversion mode
++ * - Idle mode
++ */
++static int ad4170_set_mode(struct ad4170_state *st, unsigned int mode)
++{
++	return regmap_update_bits(st->regmap, AD4170_ADC_CTRL_REG,
++				  AD4170_ADC_CTRL_MODE_MSK,
++				  FIELD_PREP(AD4170_ADC_CTRL_MODE_MSK, mode));
++}
++
++static int ad4170_write_setup(struct ad4170_state *st, unsigned int setup_num,
++			      struct ad4170_setup *setup)
++{
++	int ret;
++
++	/*
++	 * It is recommended to place the ADC in standby mode or idle mode to
++	 * write to OFFSET and GAIN registers.
++	 */
++	ret = ad4170_set_mode(st, AD4170_ADC_CTRL_MODE_IDLE);
++	if (ret)
++		return ret;
++
++	ret = regmap_write(st->regmap, AD4170_MISC_REG(setup_num), setup->misc);
++	if (ret)
++		return ret;
++
++	ret = regmap_write(st->regmap, AD4170_AFE_REG(setup_num), setup->afe);
++	if (ret)
++		return ret;
++
++	ret = regmap_write(st->regmap, AD4170_FILTER_REG(setup_num),
++			   setup->filter);
++	if (ret)
++		return ret;
++
++	ret = regmap_write(st->regmap, AD4170_FILTER_FS_REG(setup_num),
++			   setup->filter_fs);
++	if (ret)
++		return ret;
++
++	ret = regmap_write(st->regmap, AD4170_OFFSET_REG(setup_num),
++			   setup->offset);
++	if (ret)
++		return ret;
++
++	ret = regmap_write(st->regmap, AD4170_GAIN_REG(setup_num), setup->gain);
++	if (ret)
++		return ret;
++
++	memcpy(&st->setup_infos[setup_num].setup, setup, sizeof(*setup));
++	return 0;
++}
++
++static int ad4170_write_channel_setup(struct ad4170_state *st,
++				      unsigned int chan_addr, bool on_enable)
++{
++	struct ad4170_chan_info *chan_info = &st->chan_infos[chan_addr];
++	bool overwrite;
++	int setup_num;
++	int ret;
++
++	/*
++	 * Similar to AD4130 driver, the following cases need to be handled.
++	 *
++	 * 1. Enabled and linked channel with setup changes:
++	 *    - Find a setup. If not possible, return error.
++	 *    - Unlink channel from current setup.
++	 *    - If the setup found has only disabled channels linked to it,
++	 *      unlink all channels, and write the new setup to it.
++	 *    - Link channel to new setup.
++	 *
++	 * 2. Soon to be enabled and unlinked channel:
++	 *    - Find a setup. If not possible, return error.
++	 *    - If the setup found has only disabled channels linked to it,
++	 *      unlink all channels, and write the new setup to it.
++	 *    - Link channel to the setup.
++	 *
++	 * 3. Disabled and linked channel with setup changes:
++	 *    - Unlink channel from current setup.
++	 *
++	 * 4. Soon to be enabled and linked channel:
++	 * 5. Disabled and unlinked channel with setup changes:
++	 *    - Do nothing.
++	 */
++
++	/* Cases 3, 4, and 5 */
++	if (chan_info->setup_num != AD4170_INVALID_SETUP) {
++		/* Case 4 */
++		if (on_enable)
++			return 0;
++
++		/* Case 3 */
++		if (!chan_info->enabled) {
++			ad4170_unlink_channel(st, chan_addr);
++			return 0;
++		}
++	} else if (!on_enable && !chan_info->enabled) {
++		/* Case 5 */
++		return 0;
++	}
++
++	/* Cases 1 & 2 */
++	ret = ad4170_find_setup(st, &chan_info->setup, &setup_num, &overwrite);
++	if (ret)
++		return ret;
++
++	if (chan_info->setup_num != AD4170_INVALID_SETUP)
++		/* Case 1 */
++		ad4170_unlink_channel(st, chan_addr);
++
++	if (overwrite) {
++		ret = ad4170_unlink_setup(st, setup_num);
++		if (ret)
++			return ret;
++
++		ret = ad4170_write_setup(st, setup_num, &chan_info->setup);
++		if (ret)
++			return ret;
++	}
++
++	return ad4170_link_channel_setup(st, chan_addr, setup_num);
++}
++
++static int ad4170_set_channel_enable(struct ad4170_state *st,
++				     unsigned int chan_addr, bool status)
++{
++	struct ad4170_chan_info *chan_info = &st->chan_infos[chan_addr];
++	struct ad4170_setup_info *setup_info;
++	int ret;
++
++	if (chan_info->enabled == status)
++		return 0;
++
++	if (status) {
++		ret = ad4170_write_channel_setup(st, chan_addr, true);
++		if (ret)
++			return ret;
++	}
++
++	setup_info = &st->setup_infos[chan_info->setup_num];
++
++	ret = regmap_update_bits(st->regmap, AD4170_CHAN_EN_REG,
++				 AD4170_CHAN_EN(chan_addr),
++				 status ? AD4170_CHAN_EN(chan_addr) : 0);
++	if (ret)
++		return ret;
++
++	setup_info->enabled_channels += status ? 1 : -1;
++	chan_info->enabled = status;
++	return 0;
++}
++
++static const struct iio_chan_spec ad4170_channel_template = {
++	.type = IIO_VOLTAGE,
++	.indexed = 1,
++	.differential = 1,
++	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
++			      BIT(IIO_CHAN_INFO_SCALE) |
++			      BIT(IIO_CHAN_INFO_OFFSET),
++	.info_mask_separate_available = BIT(IIO_CHAN_INFO_SCALE),
++	.scan_type = {
++		.realbits = 24,
++		.storagebits = 32,
++		.endianness = IIO_BE,
++	},
++};
++
++/*
++ * Receives the number of a multiplexed AD4170 input (ain_n), and stores the
++ * voltage (in µV) of the specified input into ain_voltage. If the input number
++ * is a ordinary analog input (AIN0 to AIN8), stores zero into ain_voltage.
++ * If a voltage regulator required by a special input is unavailable, return
++ * error code. Return 0 on success.
++ */
++static int ad4170_get_ain_voltage_uv(struct ad4170_state *st, int ain_n,
++				     int *ain_voltage)
++{
++	struct device *dev = &st->spi->dev;
++	int v_diff;
++
++	*ain_voltage = 0;
++	if (ain_n <= AD4170_CHAN_MAP_TEMP_SENSOR)
++		return 0;
++
++	switch (ain_n) {
++	case AD4170_CHAN_MAP_AVDD_AVSS_N:
++		v_diff = st->vrefs_uv[AD4170_AVDD_SUP] - st->vrefs_uv[AD4170_AVSS_SUP];
++		*ain_voltage = v_diff / 5;
++		return 0;
++	case AD4170_CHAN_MAP_IOVDD_DGND_N:
++		*ain_voltage = st->vrefs_uv[AD4170_IOVDD_SUP] / 5;
++		return 0;
++	case AD4170_CHAN_MAP_AVSS:
++		*ain_voltage = st->vrefs_uv[AD4170_AVSS_SUP];
++		return 0;
++	case AD4170_CHAN_MAP_DGND:
++		*ain_voltage = 0;
++		return 0;
++	case AD4170_CHAN_MAP_REFIN1_P:
++		if (st->vrefs_uv[AD4170_REFIN1P_SUP] == -ENODEV)
++			return dev_err_probe(dev, -ENODEV,
++					     "input set to REFIN+ but ref not provided\n");
++
++		*ain_voltage = st->vrefs_uv[AD4170_REFIN1P_SUP];
++		return 0;
++	case AD4170_CHAN_MAP_REFIN1_N:
++		if (st->vrefs_uv[AD4170_REFIN1N_SUP] == -ENODEV)
++			return dev_err_probe(dev, -ENODEV,
++					     "input set to REFIN- but ref not provided\n");
++
++		*ain_voltage = st->vrefs_uv[AD4170_REFIN1N_SUP];
++		return 0;
++	case AD4170_CHAN_MAP_REFIN2_P:
++		if (st->vrefs_uv[AD4170_REFIN2P_SUP] == -ENODEV)
++			return dev_err_probe(dev, -ENODEV,
++					     "input set to REFIN2+ but ref not provided\n");
++
++		*ain_voltage = st->vrefs_uv[AD4170_REFIN2P_SUP];
++		return 0;
++	case AD4170_CHAN_MAP_REFIN2_N:
++		if (st->vrefs_uv[AD4170_REFIN2N_SUP] == -ENODEV)
++			return dev_err_probe(dev, -ENODEV,
++					     "input set to REFIN2- but ref not provided\n");
++
++		*ain_voltage = st->vrefs_uv[AD4170_REFIN2N_SUP];
++		return 0;
++	case AD4170_CHAN_MAP_REFOUT:
++		/* REFOUT is 2.5V relative to AVSS so take that into account */
++		*ain_voltage = st->vrefs_uv[AD4170_AVSS_SUP] + AD4170_INT_REF_2_5V;
++		return 0;
++	default:
++		return -EINVAL;
++	}
++}
++
++static int ad4170_validate_channel_input(struct ad4170_state *st, int pin, bool com)
++{
++	/* Check common-mode input pin is mapped to a special input. */
++	if (com && (pin < AD4170_CHAN_MAP_AVDD_AVSS_P || pin > AD4170_CHAN_MAP_REFOUT))
++		return dev_err_probe(&st->spi->dev, -EINVAL,
++				     "Invalid common-mode input pin number. %d\n",
++				     pin);
++
++	/* Check differential input pin is mapped to a analog input pin. */
++	if (!com && pin > AD4170_MAX_ANALOG_PINS)
++		return dev_err_probe(&st->spi->dev, -EINVAL,
++				     "Invalid analog input pin number. %d\n",
++				     pin);
++
++	return 0;
++}
++
++/*
++ * Verifies whether the channel input configuration is valid by checking the
++ * input numbers.
++ * Returns 0 on valid channel input configuration. -EINVAL otherwise.
++ */
++static int ad4170_validate_channel(struct ad4170_state *st,
++				   struct iio_chan_spec const *chan)
++{
++	int ret;
++
++	ret = ad4170_validate_channel_input(st, chan->channel, false);
++	if (ret)
++		return ret;
++
++	return ad4170_validate_channel_input(st, chan->channel2,
++					     !chan->differential);
++}
++
++/*
++ * Verifies whether the channel configuration is valid by checking the provided
++ * input type, polarity, and voltage references result in a sane input range.
++ * Returns negative error code on failure.
++ */
++static int ad4170_get_input_range(struct ad4170_state *st,
++				  struct iio_chan_spec const *chan,
++				  unsigned int ch_reg, unsigned int ref_sel)
++{
++	bool bipolar = chan->scan_type.sign == 's';
++	struct device *dev = &st->spi->dev;
++	int refp, refn, ain_voltage, ret;
++
++	switch (ref_sel) {
++	case AD4170_REF_REFIN1:
++		if (st->vrefs_uv[AD4170_REFIN1P_SUP] == -ENODEV ||
++		    st->vrefs_uv[AD4170_REFIN1N_SUP] == -ENODEV)
++			return dev_err_probe(dev, -ENODEV,
++					     "REFIN± selected but not provided\n");
++
++		refp = st->vrefs_uv[AD4170_REFIN1P_SUP];
++		refn = st->vrefs_uv[AD4170_REFIN1N_SUP];
++		break;
++	case AD4170_REF_REFIN2:
++		if (st->vrefs_uv[AD4170_REFIN2P_SUP] == -ENODEV ||
++		    st->vrefs_uv[AD4170_REFIN2N_SUP] == -ENODEV)
++			return dev_err_probe(dev, -ENODEV,
++					     "REFIN2± selected but not provided\n");
++
++		refp = st->vrefs_uv[AD4170_REFIN2P_SUP];
++		refn = st->vrefs_uv[AD4170_REFIN2N_SUP];
++		break;
++	case AD4170_REF_AVDD:
++		refp = st->vrefs_uv[AD4170_AVDD_SUP];
++		refn = st->vrefs_uv[AD4170_AVSS_SUP];
++		break;
++	case AD4170_REF_REFOUT:
++		/* REFOUT is 2.5 V relative to AVSS */
++		refp = st->vrefs_uv[AD4170_AVSS_SUP] + AD4170_INT_REF_2_5V;
++		refn = st->vrefs_uv[AD4170_AVSS_SUP];
++		break;
++	default:
++		return -EINVAL;
++	}
++
++	/*
++	 * Find out the analog input range from the channel type, polarity, and
++	 * voltage reference selection.
++	 * AD4170 channels are either differential or pseudo-differential.
++	 * Diff input voltage range: −VREF/gain to +VREF/gain (datasheet page 6)
++	 * Pseudo-diff input voltage range: 0 to VREF/gain (datasheet page 6)
++	 */
++	if (chan->differential) {
++		if (!bipolar)
++			return dev_err_probe(&st->spi->dev, -EINVAL,
++					     "Channel %u differential unipolar\n",
++					     ch_reg);
++
++		/*
++		 * Differential bipolar channel.
++		 * avss-supply is never above 0V.
++		 * Assuming refin1n-supply not above 0V.
++		 * Assuming refin2n-supply not above 0V.
++		 */
++		return refp + abs(refn);
++	}
++	/*
++	 * Some configurations can lead to invalid setups.
++	 * For example, if AVSS = -2.5V, REF_SELECT set to REFOUT (REFOUT/AVSS),
++	 * and pseudo-diff channel configuration set, then the input range
++	 * should go from 0V to +VREF (single-ended - datasheet pg 10), but
++	 * REFOUT/AVSS range would be -2.5V to 0V.
++	 * Check the positive reference is higher than 0V for pseudo-diff
++	 * channels.
++	 */
++	if (refp <= 0)
++		return dev_err_probe(&st->spi->dev, -EINVAL,
++				     "REF+ <= GND for pseudo-diff chan %u\n",
++				     ch_reg);
++
++	if (bipolar)
++		return refp;
++
++	/*
++	 * Pseudo-differential unipolar channel.
++	 * Input expected to swing from IN- to +VREF.
++	 */
++	ret = ad4170_get_ain_voltage_uv(st, chan->channel2, &ain_voltage);
++	if (ret)
++		return ret;
++
++	if (refp - ain_voltage <= 0)
++		return dev_err_probe(&st->spi->dev, -EINVAL,
++				     "Negative input >= REF+ for pseudo-diff chan %u\n",
++				     ch_reg);
++
++	return refp - ain_voltage;
++}
++
++static int __ad4170_read_sample(struct iio_dev *indio_dev,
++				struct iio_chan_spec const *chan, int *val)
++{
++	struct ad4170_state *st = iio_priv(indio_dev);
++	unsigned long settling_time_ms;
++	int ret;
++
++	reinit_completion(&st->completion);
++	ret = ad4170_set_mode(st, AD4170_ADC_CTRL_MODE_SINGLE);
++	if (ret)
++		return ret;
++
++	/*
++	 * When a channel is manually selected by the user, the ADC needs an
++	 * extra time to provide the first stable conversion. The ADC settling
++	 * time depends on the filter type, filter frequency, and ADC clock
++	 * frequency (see datasheet page 53). The maximum settling time among
++	 * all filter configurations is 6291164 / fCLK. Use that formula to wait
++	 * for sufficient time whatever the filter configuration may be.
++	 */
++	settling_time_ms = DIV_ROUND_UP(6291164 * MILLI, st->mclk_hz);
++	ret = wait_for_completion_timeout(&st->completion,
++					  msecs_to_jiffies(settling_time_ms));
++	if (!ret)
++		dev_dbg(&st->spi->dev,
++			"No Data Ready signal. Reading after delay.\n");
++
++	ret = regmap_read(st->regmap, AD4170_DATA_24B_REG, val);
++	if (ret)
++		return ret;
++
++	if (chan->scan_type.sign == 's')
++		*val = sign_extend32(*val, chan->scan_type.realbits - 1);
++
++	return 0;
++}
++
++static int ad4170_read_sample(struct iio_dev *indio_dev,
++			      struct iio_chan_spec const *chan, int *val)
++{
++	struct ad4170_state *st = iio_priv(indio_dev);
++	struct device *dev = &st->spi->dev;
++	int ret, ret2;
++
++	guard(mutex)(&st->lock);
++	/*
++	 * The ADC sequences through all enabled channels. That can lead to
++	 * incorrect channel being sampled if a previous read would have left a
++	 * different channel enabled. Thus, always enable and disable the
++	 * channel on single-shot read.
++	 */
++	ret = ad4170_set_channel_enable(st, chan->address, true);
++	if (ret)
++		return ret;
++
++	ret = __ad4170_read_sample(indio_dev, chan, val);
++	if (ret) {
++		dev_err(dev, "failed to read sample: %d\n", ret);
++
++		ret2 = ad4170_set_channel_enable(st, chan->address, false);
++		if (ret2)
++			dev_err(dev, "failed to disable channel: %d\n", ret2);
++
++		return ret;
++	}
++
++	ret = ad4170_set_channel_enable(st, chan->address, false);
++	if (ret)
++		return ret;
++
++	return IIO_VAL_INT;
++}
++
++static int ad4170_read_raw(struct iio_dev *indio_dev,
++			   struct iio_chan_spec const *chan,
++			   int *val, int *val2, long info)
++{
++	struct ad4170_state *st = iio_priv(indio_dev);
++	struct ad4170_chan_info *chan_info = &st->chan_infos[chan->address];
++	struct ad4170_setup *setup = &chan_info->setup;
++	unsigned int pga;
++	int ret;
++
++	switch (info) {
++	case IIO_CHAN_INFO_RAW:
++		if (!iio_device_claim_direct(indio_dev))
++			return -EBUSY;
++
++		ret = ad4170_read_sample(indio_dev, chan, val);
++		iio_device_release_direct(indio_dev);
++		return ret;
++	case IIO_CHAN_INFO_SCALE:
++		pga = FIELD_GET(AD4170_AFE_PGA_GAIN_MSK, setup->afe);
++		*val = chan_info->scale_tbl[pga][0];
++		*val2 = chan_info->scale_tbl[pga][1];
++		return IIO_VAL_INT_PLUS_NANO;
++	case IIO_CHAN_INFO_OFFSET:
++		pga = FIELD_GET(AD4170_AFE_PGA_GAIN_MSK, setup->afe);
++		*val = chan_info->offset_tbl[pga];
++		return IIO_VAL_INT;
++	default:
++		return -EINVAL;
++	}
++}
++
++static int ad4170_fill_scale_tbl(struct iio_dev *indio_dev,
++				 struct iio_chan_spec const *chan)
++{
++	struct ad4170_state *st = iio_priv(indio_dev);
++	struct ad4170_chan_info *chan_info = &st->chan_infos[chan->address];
++	struct device *dev = &st->spi->dev;
++	int bipolar = chan->scan_type.sign == 's' ? 1 : 0;
++	int precision_bits = chan->scan_type.realbits;
++	int pga, ainm_voltage, ret;
++	unsigned long long offset;
++
++	ainm_voltage = 0;
++	ret = ad4170_get_ain_voltage_uv(st, chan->channel2, &ainm_voltage);
++	if (ret < 0)
++		return dev_err_probe(dev, ret, "Failed to fill scale table\n");
++
++	for (pga = 0; pga < AD4170_NUM_PGA_OPTIONS; pga++) {
++		u64 nv;
++		unsigned int lshift, rshift;
++
++		/*
++		 * The PGA options are numbered from 0 to 9, with option 0 being
++		 * a gain of 2^0 (no actual gain), and 7 meaning a gain of 2^7.
++		 * Option 8, though, sets a gain of 0.5, so the input signal can
++		 * be attenuated by 2 rather than amplified. Option 9, allows
++		 * the signal to bypass the PGA circuitry (no gain).
++		 *
++		 * The scale factor to get ADC output codes to values in mV
++		 * units is given by:
++		 * _scale = (input_range / gain) / 2^precision
++		 * AD4170 gain is a power of 2 so the above can be written as
++		 * _scale = input_range / 2^(precision + gain)
++		 * Keep the input range in µV to avoid truncating the less
++		 * significan bits when right shifting it so to preserve scale
++		 * precision.
++		 */
++		nv = (u64)chan_info->input_range_uv * NANO;
++		lshift = !!(pga & BIT(3)); /* handle options 8 and 9 */
++		rshift = precision_bits - bipolar + (pga & GENMASK(2, 0)) - lshift;
++		chan_info->scale_tbl[pga][0] = 0;
++		chan_info->scale_tbl[pga][1] = div_u64(nv >> rshift, MILLI);
++
++		/*
++		 * If the negative input is not at GND, the conversion result
++		 * (which is relative to IN-) will be offset by the level at IN-.
++		 * Use the scale factor the other way around to go from a known
++		 * voltage to the corresponding ADC output code.
++		 * With that, we are able to get to what would be the output
++		 * code for the voltage at the negative input.
++		 * If the negative input is not fixed, there is no offset.
++		 */
++		offset = ((unsigned long long)abs(ainm_voltage)) * MICRO;
++		offset = DIV_ROUND_CLOSEST_ULL(offset, chan_info->scale_tbl[pga][1]);
++
++		/*
++		 * After divided by the scale, offset will always fit into 31
++		 * bits. For _raw + _offset to be relative to GND, the value
++		 * provided as _offset is of opposite sign than the real offset.
++		 */
++		if (ainm_voltage > 0)
++			chan_info->offset_tbl[pga] = -(int)(offset);
++		else
++			chan_info->offset_tbl[pga] = (int)(offset);
++	}
++	return 0;
++}
++
++static int ad4170_read_avail(struct iio_dev *indio_dev,
++			     struct iio_chan_spec const *chan,
++			     const int **vals, int *type, int *length,
++			     long info)
++{
++	struct ad4170_state *st = iio_priv(indio_dev);
++	struct ad4170_chan_info *chan_info = &st->chan_infos[chan->address];
++
++	switch (info) {
++	case IIO_CHAN_INFO_SCALE:
++		*vals = (int *)chan_info->scale_tbl;
++		*length = ARRAY_SIZE(chan_info->scale_tbl) * 2;
++		*type = IIO_VAL_INT_PLUS_NANO;
++		return IIO_AVAIL_LIST;
++	default:
++		return -EINVAL;
++	}
++}
++
++static int ad4170_set_pga(struct ad4170_state *st,
++			  struct iio_chan_spec const *chan, int val, int val2)
++{
++	struct ad4170_chan_info *chan_info = &st->chan_infos[chan->address];
++	struct ad4170_setup *setup = &chan_info->setup;
++	unsigned int old_pga = FIELD_GET(AD4170_AFE_PGA_GAIN_MSK, setup->afe);
++	unsigned int pga;
++	int ret;
++
++	for (pga = 0; pga < AD4170_NUM_PGA_OPTIONS; pga++) {
++		if (val == chan_info->scale_tbl[pga][0] &&
++		    val2 == chan_info->scale_tbl[pga][1])
++			break;
++	}
++
++	if (pga == AD4170_NUM_PGA_OPTIONS)
++		return -EINVAL;
++
++	if (pga == old_pga)
++		return 0;
++
++	guard(mutex)(&st->lock);
++	setup->afe &= ~AD4170_AFE_PGA_GAIN_MSK;
++	setup->afe |= FIELD_PREP(AD4170_AFE_PGA_GAIN_MSK, pga);
++
++	ret = ad4170_write_channel_setup(st, chan->address, false);
++	if (ret) {
++		setup->afe &= ~AD4170_AFE_PGA_GAIN_MSK;
++		setup->afe |= FIELD_PREP(AD4170_AFE_PGA_GAIN_MSK, old_pga);
++		return ret;
++	}
++
++	return 0;
++}
++
++static int __ad4170_write_raw(struct iio_dev *indio_dev,
++			      struct iio_chan_spec const *chan, int val,
++			      int val2, long info)
++{
++	struct ad4170_state *st = iio_priv(indio_dev);
++
++	switch (info) {
++	case IIO_CHAN_INFO_SCALE:
++		return ad4170_set_pga(st, chan, val, val2);
++	default:
++		return -EINVAL;
++	}
++}
++
++static int ad4170_write_raw(struct iio_dev *indio_dev,
++			    struct iio_chan_spec const *chan, int val,
++			    int val2, long info)
++{
++	int ret;
++
++	if (!iio_device_claim_direct(indio_dev))
++		return -EBUSY;
++
++	ret = __ad4170_write_raw(indio_dev, chan, val, val2, info);
++	iio_device_release_direct(indio_dev);
++	return ret;
++}
++
++static int ad4170_write_raw_get_fmt(struct iio_dev *indio_dev,
++				    struct iio_chan_spec const *chan,
++				    long info)
++{
++	switch (info) {
++	case IIO_CHAN_INFO_SCALE:
++		return IIO_VAL_INT_PLUS_NANO;
++	default:
++		return -EINVAL;
++	}
++}
++
++static const struct iio_info ad4170_info = {
++	.read_raw = ad4170_read_raw,
++	.read_avail = ad4170_read_avail,
++	.write_raw = ad4170_write_raw,
++	.write_raw_get_fmt = ad4170_write_raw_get_fmt,
++	.debugfs_reg_access = ad4170_debugfs_reg_access,
++};
++
++static int ad4170_soft_reset(struct ad4170_state *st)
++{
++	int ret;
++
++	ret = regmap_write(st->regmap, AD4170_CONFIG_A_REG,
++			   AD4170_SW_RESET_MSK);
++	if (ret)
++		return ret;
++
++	/* AD4170-4 requires 1 ms between reset and any register access. */
++	fsleep(MILLI);
++
++	return 0;
++}
++
++static int ad4170_parse_reference(struct ad4170_state *st,
++				  struct fwnode_handle *child,
++				  struct ad4170_setup *setup)
++{
++	struct device *dev = &st->spi->dev;
++	int ret;
++	u8 aux;
++
++	/* Optional positive reference buffering, if omitted we use the default */
++	aux = AD4170_REF_BUF_FULL; /* Default to full precharge buffer enabled. */
++	ret = fwnode_property_read_u8(child, "adi,buffered-positive", &aux);
++	if (!ret) {
++		if (aux < AD4170_REF_BUF_PRE || aux > AD4170_REF_BUF_BYPASS)
++			return dev_err_probe(dev, -EINVAL,
++					     "Invalid adi,buffered-positive: %u\n",
++					     aux);
++	}
++	setup->afe |= FIELD_PREP(AD4170_AFE_REF_BUF_P_MSK, aux);
++
++	/* Optional negative reference buffering, if omitted we use the default */
++	aux = AD4170_REF_BUF_FULL; /* Default to full precharge buffer enabled. */
++	ret = fwnode_property_read_u8(child, "adi,buffered-negative", &aux);
++	if (!ret) {
++		if (aux < AD4170_REF_BUF_PRE || aux > AD4170_REF_BUF_BYPASS)
++			return dev_err_probe(dev, -EINVAL,
++					     "Invalid adi,buffered-negative: %u\n",
++					     aux);
++	}
++	setup->afe |= FIELD_PREP(AD4170_AFE_REF_BUF_M_MSK, aux);
++
++	/* Optional voltage reference selection, if omitted we use the default */
++	aux = AD4170_REF_REFOUT; /* Default reference selection. */
++	ret = fwnode_property_read_u8(child, "adi,reference-select", &aux);
++	if (!ret) {
++		if (aux > AD4170_REF_AVDD)
++			return dev_err_probe(dev, -EINVAL,
++					     "Invalid reference selected %u\n",
++					     aux);
++	}
++	setup->afe |= FIELD_PREP(AD4170_AFE_REF_SELECT_MSK, aux);
++
++	return 0;
++}
++
++static int ad4170_parse_adc_channel_type(struct device *dev,
++					 struct fwnode_handle *child,
++					 struct iio_chan_spec *chan)
++{
++	u32 pins[2];
++	int ret, ret2;
++
++	/* Parse pseudo-differential channel configuration */
++	ret = fwnode_property_read_u32(child, "single-channel", &pins[0]);
++	ret2 = fwnode_property_read_u32(child, "common-mode-channel", &pins[1]);
++	if (!ret && ret2)
++		return dev_err_probe(dev, ret,
++			"single-ended channels must define common-mode-channel\n");
++	if (!ret) {
++		chan->differential = false;
++		chan->channel = pins[0];
++		chan->channel2 = pins[1];
++		return 0;
++	}
++
++	/* Parse differential channel configuration */
++	ret = fwnode_property_read_u32_array(child, "diff-channels", pins,
++					     ARRAY_SIZE(pins));
++	if (!ret) {
++		chan->differential = true;
++		chan->channel = pins[0];
++		chan->channel2 = pins[1];
++		return 0;
++	}
++	return dev_err_probe(dev, ret,
++		"Channel must define one of diff-channels or single-channel.\n");
++}
++
++static int ad4170_parse_channel_node(struct iio_dev *indio_dev,
++				     struct fwnode_handle *child,
++				     unsigned int chan_num)
++{
++	struct ad4170_state *st = iio_priv(indio_dev);
++	struct device *dev = &st->spi->dev;
++	struct ad4170_chan_info *chan_info;
++	struct ad4170_setup *setup;
++	struct iio_chan_spec *chan;
++	unsigned int ch_reg;
++	u8 ref_select;
++	bool bipolar;
++	int ret;
++
++	ret = fwnode_property_read_u32(child, "reg", &ch_reg);
++	if (ret)
++		return dev_err_probe(dev, -EINVAL,
++				     "Failed to read channel reg\n");
++
++	if (ch_reg >= AD4170_MAX_CHANNELS)
++		return dev_err_probe(dev, -EINVAL,
++				     "Channel idx greater than no of channels\n");
++
++	chan = &st->chans[chan_num];
++	*chan = ad4170_channel_template;
++
++	chan->address = ch_reg;
++	chan->scan_index = ch_reg;
++	chan_info = &st->chan_infos[chan->address];
++
++	chan_info->setup_num = AD4170_INVALID_SETUP;
++	chan_info->initialized = true;
++
++	setup = &chan_info->setup;
++	ret = ad4170_parse_reference(st, child, setup);
++	if (ret)
++		return ret;
++
++	ret = ad4170_parse_adc_channel_type(dev, child, chan);
++	if (ret < 0)
++		return ret;
++
++	bipolar = fwnode_property_read_bool(child, "bipolar");
++	setup->afe |= FIELD_PREP(AD4170_AFE_BIPOLAR_MSK, bipolar);
++	if (bipolar)
++		chan->scan_type.sign = 's';
++	else
++		chan->scan_type.sign = 'u';
++
++	ref_select = FIELD_GET(AD4170_AFE_REF_SELECT_MSK, setup->afe);
++	ret = ad4170_validate_channel(st, chan);
++	if (ret < 0)
++		return ret;
++
++	ret = ad4170_get_input_range(st, chan, ch_reg, ref_select);
++	if (ret < 0)
++		return dev_err_probe(dev, ret, "Invalid input config\n");
++
++	chan_info->input_range_uv = ret;
++	return 0;
++}
++
++static int ad4170_parse_channels(struct iio_dev *indio_dev)
++{
++	struct ad4170_state *st = iio_priv(indio_dev);
++	struct device *dev = &st->spi->dev;
++	unsigned int num_channels;
++	unsigned int chan_num = 0;
++	int ret;
++
++	num_channels = device_get_child_node_count(dev);
++
++	if (num_channels > AD4170_MAX_CHANNELS)
++		return dev_err_probe(dev, -EINVAL, "Too many channels\n");
++
++	device_for_each_child_node_scoped(dev, child) {
++		ret = ad4170_parse_channel_node(indio_dev, child, chan_num++);
++		if (ret)
++			return ret;
++	}
++
++	indio_dev->num_channels = num_channels;
++	indio_dev->channels = st->chans;
++	return 0;
++}
++
++static int ad4170_parse_firmware(struct iio_dev *indio_dev)
++{
++	struct ad4170_state *st = iio_priv(indio_dev);
++	struct device *dev = &st->spi->dev;
++	int reg_data, ret;
++	unsigned int i;
++
++	st->mclk_hz = AD4170_INT_CLOCK_16MHZ;
++
++	for (i = 0; i < AD4170_NUM_ANALOG_PINS; i++)
++		st->pins_fn[i] = AD4170_PIN_UNASIGNED;
++
++	/* On power on, device defaults to using SDO pin for data ready signal */
++	st->int_pin_sel = AD4170_INT_PIN_SDO;
++	ret = device_property_match_property_string(dev, "interrupt-names",
++						    ad4170_int_pin_names,
++						    ARRAY_SIZE(ad4170_int_pin_names));
++	if (ret >= 0)
++		st->int_pin_sel = ret;
++
++	reg_data = FIELD_PREP(AD4170_PIN_MUXING_DIG_AUX1_CTRL_MSK,
++			      st->int_pin_sel == AD4170_INT_PIN_DIG_AUX1 ?
++			      AD4170_PIN_MUXING_DIG_AUX1_RDY :
++			      AD4170_PIN_MUXING_DIG_AUX1_DISABLED);
++
++	ret = regmap_update_bits(st->regmap, AD4170_PIN_MUXING_REG,
++				 AD4170_PIN_MUXING_DIG_AUX1_CTRL_MSK, reg_data);
++	if (ret)
++		return ret;
++
++	return ad4170_parse_channels(indio_dev);
++}
++
++static int ad4170_initial_config(struct iio_dev *indio_dev)
++{
++	struct ad4170_state *st = iio_priv(indio_dev);
++	struct device *dev = &st->spi->dev;
++	unsigned int i;
++	int ret;
++
++	ret = ad4170_set_mode(st, AD4170_ADC_CTRL_MODE_IDLE);
++	if (ret)
++		return dev_err_probe(dev, ret,
++				     "Failed to set ADC mode to idle\n");
++
++	for (i = 0; i < indio_dev->num_channels; i++) {
++		struct ad4170_chan_info *chan_info;
++		struct iio_chan_spec const *chan;
++		struct ad4170_setup *setup;
++		unsigned int val;
++
++		chan = &indio_dev->channels[i];
++		chan_info = &st->chan_infos[chan->address];
++
++		setup = &chan_info->setup;
++		setup->gain = AD4170_GAIN_REG_DEFAULT;
++		ret = ad4170_write_channel_setup(st, chan->address, false);
++		if (ret)
++			return dev_err_probe(dev, ret,
++					     "Failed to write channel setup\n");
++
++		val = FIELD_PREP(AD4170_CHAN_MAP_AINP_MSK, chan->channel) |
++		      FIELD_PREP(AD4170_CHAN_MAP_AINM_MSK, chan->channel2);
++
++		ret = regmap_write(st->regmap, AD4170_CHAN_MAP_REG(i), val);
++		if (ret)
++			return dev_err_probe(dev, ret,
++					     "Failed to write CHAN_MAP_REG\n");
++
++		ret = ad4170_fill_scale_tbl(indio_dev, chan);
++		if (ret)
++			return dev_err_probe(dev, ret,
++					     "Failed to fill scale tbl\n");
++	}
++
++	/* Disable all channels to avoid reading from unexpected channel */
++	ret = regmap_write(st->regmap, AD4170_CHAN_EN_REG, 0);
++	if (ret)
++		return dev_err_probe(dev, ret,
++				     "Failed to disable channels\n");
++
++	/*
++	 * Configure channels to share the same data output register, i.e. data
++	 * can be read from the same register address regardless of channel
++	 * number.
++	 */
++	return regmap_update_bits(st->regmap, AD4170_ADC_CTRL_REG,
++				 AD4170_ADC_CTRL_MULTI_DATA_REG_SEL_MSK,
++				 AD4170_ADC_CTRL_MULTI_DATA_REG_SEL_MSK);
++}
++
++static irqreturn_t ad4170_irq_handler(int irq, void *dev_id)
++{
++	struct iio_dev *indio_dev = dev_id;
++	struct ad4170_state *st = iio_priv(indio_dev);
++
++	complete(&st->completion);
++
++	return IRQ_HANDLED;
++};
++
++static int ad4170_regulator_setup(struct ad4170_state *st)
++{
++	struct device *dev = &st->spi->dev;
++	int ret;
++
++	/* Required regulators */
++	ret = devm_regulator_get_enable_read_voltage(dev, "avdd");
++	if (ret < 0)
++		return dev_err_probe(dev, ret, "Failed to get AVDD voltage.\n");
++
++	st->vrefs_uv[AD4170_AVDD_SUP] = ret;
++
++	ret = devm_regulator_get_enable_read_voltage(dev, "iovdd");
++	if (ret < 0)
++		return dev_err_probe(dev, ret, "Failed to get IOVDD voltage.\n");
++
++	st->vrefs_uv[AD4170_IOVDD_SUP] = ret;
++
++	/* Optional regulators */
++	ret = devm_regulator_get_enable_read_voltage(dev, "avss");
++	if (ret < 0 && ret != -ENODEV)
++		return dev_err_probe(dev, ret, "Failed to get AVSS voltage.\n");
++
++	/* Assume AVSS at GND (0V) if not provided */
++	st->vrefs_uv[AD4170_AVSS_SUP] = ret == -ENODEV ? 0 : -ret;
++
++	ret = devm_regulator_get_enable_read_voltage(dev, "refin1p");
++	if (ret < 0 && ret != -ENODEV)
++		return dev_err_probe(dev, ret, "Failed to get REFIN+ voltage.\n");
++
++	st->vrefs_uv[AD4170_REFIN1P_SUP] = ret;
++
++	ret = devm_regulator_get_enable_read_voltage(dev, "refin1n");
++	if (ret < 0 && ret != -ENODEV)
++		return dev_err_probe(dev, ret, "Failed to get REFIN- voltage.\n");
++
++	/* Negative supplies are assumed to provide negative voltage */
++	st->vrefs_uv[AD4170_REFIN1N_SUP] = ret == -ENODEV ? -ENODEV : -ret;
++
++	ret = devm_regulator_get_enable_read_voltage(dev, "refin2p");
++	if (ret < 0 && ret != -ENODEV)
++		return dev_err_probe(dev, ret, "Failed to get REFIN2+ voltage.\n");
++
++	st->vrefs_uv[AD4170_REFIN2P_SUP] = ret;
++
++	ret = devm_regulator_get_enable_read_voltage(dev, "refin2n");
++	if (ret < 0 && ret != -ENODEV)
++		return dev_err_probe(dev, ret, "Failed to get REFIN2- voltage.\n");
++
++	/* Negative supplies are assumed to provide negative voltage */
++	st->vrefs_uv[AD4170_REFIN2N_SUP] = ret == -ENODEV ? -ENODEV : -ret;
++
++	return 0;
++}
++
++static int ad4170_probe(struct spi_device *spi)
++{
++	const struct ad4170_chip_info *chip;
++	struct device *dev = &spi->dev;
++	struct iio_dev *indio_dev;
++	struct ad4170_state *st;
++	int ret;
++
++	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*st));
++	if (!indio_dev)
++		return -ENOMEM;
++
++	st = iio_priv(indio_dev);
++	ret = devm_mutex_init(dev, &st->lock);
++	if (ret)
++		return ret;
++
++	chip = spi_get_device_match_data(spi);
++	if (!chip)
++		return -EINVAL;
++
++	indio_dev->name = chip->name;
++	indio_dev->info = &ad4170_info;
++
++	st->spi = spi;
++
++	st->regmap = devm_regmap_init(dev, NULL, st, &ad4170_regmap_config);
++	if (IS_ERR(st->regmap))
++		return dev_err_probe(dev, PTR_ERR(st->regmap),
++				     "Failed to initialize regmap\n");
++
++	ret = ad4170_regulator_setup(st);
++	if (ret)
++		return ret;
++
++	ret = ad4170_soft_reset(st);
++	if (ret)
++		return ret;
++
++	ret = ad4170_parse_firmware(indio_dev);
++	if (ret)
++		return dev_err_probe(dev, ret, "Failed to parse firmware\n");
++
++	ret = ad4170_initial_config(indio_dev);
++	if (ret)
++		return dev_err_probe(dev, ret, "Failed to setup device\n");
++
++	init_completion(&st->completion);
++
++	if (spi->irq) {
++		ret = devm_request_irq(&st->spi->dev, st->spi->irq,
++				       &ad4170_irq_handler, IRQF_ONESHOT,
++				       indio_dev->name, indio_dev);
++		if (ret)
++			return ret;
++	}
++
++	return devm_iio_device_register(dev, indio_dev);
++}
++
++static const struct spi_device_id ad4170_id_table[] = {
++	{ "ad4170", (kernel_ulong_t)&ad4170_chip_info },
++	{ "ad4190", (kernel_ulong_t)&ad4190_chip_info },
++	{ "ad4195", (kernel_ulong_t)&ad4195_chip_info },
++	{ }
++};
++MODULE_DEVICE_TABLE(spi, ad4170_id_table);
++
++static const struct of_device_id ad4170_of_match[] = {
++	{ .compatible = "adi,ad4170", .data = &ad4170_chip_info },
++	{ .compatible = "adi,ad4190", .data = &ad4190_chip_info },
++	{ .compatible = "adi,ad4195", .data = &ad4195_chip_info },
++	{ }
++};
++MODULE_DEVICE_TABLE(of, ad4170_of_match);
++
++static struct spi_driver ad4170_driver = {
++	.driver = {
++		.name = "ad4170",
++		.of_match_table = ad4170_of_match,
++	},
++	.probe = ad4170_probe,
++	.id_table = ad4170_id_table,
++};
++module_spi_driver(ad4170_driver);
++
++MODULE_AUTHOR("Ana-Maria Cusco <ana-maria.cusco@analog.com>");
++MODULE_AUTHOR("Marcelo Schmitt <marcelo.schmitt@analog.com>");
++MODULE_DESCRIPTION("Analog Devices AD4170 SPI driver");
++MODULE_LICENSE("GPL");
 -- 
 2.47.2
 

@@ -1,86 +1,97 @@
-Return-Path: <linux-iio+bounces-19514-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19515-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BEB5AB6B5E
-	for <lists+linux-iio@lfdr.de>; Wed, 14 May 2025 14:23:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7060EAB7112
+	for <lists+linux-iio@lfdr.de>; Wed, 14 May 2025 18:19:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D93684A8580
-	for <lists+linux-iio@lfdr.de>; Wed, 14 May 2025 12:23:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C1E6F1B63571
+	for <lists+linux-iio@lfdr.de>; Wed, 14 May 2025 16:19:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7850D277807;
-	Wed, 14 May 2025 12:22:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C423527A442;
+	Wed, 14 May 2025 16:19:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Va79Lqq/"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD25D27702E;
-	Wed, 14 May 2025 12:22:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77A7B2797AB;
+	Wed, 14 May 2025 16:19:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747225370; cv=none; b=hUSsd1DmSGXo80q5QYOQCXlEe0HKgsEtAZbzobDSKZ5phTL5POLKuMNdsOIlSHk3mUoBwexAGZumILi2fgX5MSGlrMsNl5yHQGo+C3t1mfyGy3w1KFLuMXHwaCUWi6sp4oe9O1TyFSy2QScT5AOPAteflI84AEgYhCpy39EYvQE=
+	t=1747239572; cv=none; b=Tg/9uk74lPF+cdMSStfdFSHnV25ZYqE7q//NjigaMHdPnEhDmmqi5iC5/riGsWGGb6VRffyGGnDmUV9vW0uO2gw+6q+mZsx0dINR9JovZyB5GXndiNHZ35U7hoUB7BORU8vNktYhNaNGi9t7Or+N5bdTVgxDP7hctDZ0NpjYCLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747225370; c=relaxed/simple;
-	bh=ShtTxybA8pSJ7wyMwMRyYgxu02/LISKACxEbjzHDZ5k=;
+	s=arc-20240116; t=1747239572; c=relaxed/simple;
+	bh=TkcKReooaX7BWS/X7043yb29DlAjrU6sVJsBD2so59o=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eCbILQTjZyqakl8mjya2dHlCY/XhmBC3AHKvUWrTu7U3JBlt+si9iHsvyJxctyNqqSU9DIIYJhSlwK9WTJ1gQBauzhgRrY/JU27zUT/cg21/hqnxefOg+MODN4Q0oQTP/jqOGBgCb72FGJbJ87MO0VlLWrP9JD9ASl4vehtbP5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=fail smtp.mailfrom=kernel.org; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=kernel.org
-X-CSE-ConnectionGUID: qHvms8rGQKOyNORvdbYkkQ==
-X-CSE-MsgGUID: ZLm7p5hIQhu+HbZetW8r6g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11433"; a="66526241"
-X-IronPort-AV: E=Sophos;i="6.15,288,1739865600"; 
-   d="scan'208";a="66526241"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 May 2025 05:22:48 -0700
-X-CSE-ConnectionGUID: jVh6CU3DTDishg36Z2t4Xg==
-X-CSE-MsgGUID: ywqvxL3qQsahLY7v8B01SQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,288,1739865600"; 
-   d="scan'208";a="138946955"
-Received: from smile.fi.intel.com ([10.237.72.52])
-  by orviesa008.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 May 2025 05:22:45 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
-	(envelope-from <andy@kernel.org>)
-	id 1uFB8D-00000001Y1g-3TVL;
-	Wed, 14 May 2025 15:22:41 +0300
-Date: Wed, 14 May 2025 15:22:41 +0300
-From: Andy Shevchenko <andy@kernel.org>
-To: Chen Ni <nichen@iscas.ac.cn>
-Cc: jic23@kernel.org, dlechner@baylibre.com, nuno.sa@analog.com,
-	mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
-	u.kleine-koenig@baylibre.com, robh@kernel.org, tglx@linutronix.de,
-	jirislaby@kernel.org, linux-iio@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: adc: stm32-adc: Fix race in installing chained IRQ
- handler
-Message-ID: <aCSLEZoeafOporMf@smile.fi.intel.com>
-References: <20250514085138.3221059-1-nichen@iscas.ac.cn>
+	 Content-Type:Content-Disposition:In-Reply-To; b=cFkxG69A4TujyYv/IRtZH5+cnIV6YNNFjnRH94XSjJT/QKv25q1NloRVsNuePXvkx2AleJoJz3J1HN7gAntqi9iTRVaHUVPmch/T5+9YttSS9x79zOOI5iS9xZcTtbw4LsyG16vcOBUgEdKQiQ7H5nWddabzfNRAF6D8L1yMxLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Va79Lqq/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 496F9C4CEE3;
+	Wed, 14 May 2025 16:19:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1747239571;
+	bh=TkcKReooaX7BWS/X7043yb29DlAjrU6sVJsBD2so59o=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Va79Lqq/yhvHgFZ6MuuLDL2mVIHmbUPKMAmBOSwLwdT7Whr7v5fwOvh+ASzXy1k8I
+	 P7liWHi43ooRWLnCbZtmNWyBUDYPr+TnacRvr2xO6ZlMSK5Zy1aXiEjgTQla9A3E46
+	 wbTURDIBcs1q3/v8wuKJWgrzaT94YJJkL5H2TI3mNMqw/s2C63yVvkYQ/qiqnWS50I
+	 aaW+OcwoxFQiBEW+ZkO6OpRZG4JHeAt7sZculNzaDhMUmJtSgdQHbrjlfqe+/j80ir
+	 wcczzQM+oKa8Xax/hLgt5M/ddgH2mtuubMJTypAGzxyVrwGzbN6TBHwdwaw5DMIcLT
+	 XsuMgeMYpiErA==
+Date: Wed, 14 May 2025 17:19:27 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Jianping.Shen@de.bosch.com
+Cc: jic23@kernel.org, lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, dima.fedrau@gmail.com,
+	marcelo.schmitt1@gmail.com, linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Christian.Lorenz3@de.bosch.com, Ulrike.Frauendorf@de.bosch.com,
+	Kai.Dolde@de.bosch.com
+Subject: Re: [PATCH v2 1/2] dt-bindings: iio: imu: smi330: Add binding
+Message-ID: <20250514-deserve-marina-224bef5b2db3@spud>
+References: <20250513150028.42775-1-Jianping.Shen@de.bosch.com>
+ <20250513150028.42775-2-Jianping.Shen@de.bosch.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="4s1uKMatRE6dYioR"
+Content-Disposition: inline
+In-Reply-To: <20250513150028.42775-2-Jianping.Shen@de.bosch.com>
+
+
+--4s1uKMatRE6dYioR
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250514085138.3221059-1-nichen@iscas.ac.cn>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, May 14, 2025 at 04:51:38PM +0800, Chen Ni wrote:
-> Fix a race where a pending interrupt could be received and the handler
-> called before the handler's data has been setup, by converting to
-> irq_set_chained_handler_and_data().
+On Tue, May 13, 2025 at 05:00:27PM +0200, Jianping.Shen@de.bosch.com wrote:
+> From: Jianping Shen <Jianping.Shen@de.bosch.com>
+>=20
+> Add devicetree binding for Bosch imu smi330.
+> The smi330 is a combined three axis angular rate and
+> three axis acceleration sensor module.
+>=20
+> Signed-off-by: Jianping Shen <Jianping.Shen@de.bosch.com>
 
-Sounds like it needs a Fixes tag.
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
 
--- 
-With Best Regards,
-Andy Shevchenko
+--4s1uKMatRE6dYioR
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
 
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaCTCjwAKCRB4tDGHoIJi
+0lSKAP9XoBcsBcAdPPriU4TgFQX92hjMfjGf7mekfhfTPRNkrgD8D00B/qrlj8XA
+7fmpWz5WiL9b0XbGEhRbFScC7dmT0Qs=
+=jlLn
+-----END PGP SIGNATURE-----
+
+--4s1uKMatRE6dYioR--
 

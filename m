@@ -1,102 +1,152 @@
-Return-Path: <linux-iio+bounces-19516-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19517-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07349AB7134
-	for <lists+linux-iio@lfdr.de>; Wed, 14 May 2025 18:25:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDEBDAB72E3
+	for <lists+linux-iio@lfdr.de>; Wed, 14 May 2025 19:35:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EF6834A2959
-	for <lists+linux-iio@lfdr.de>; Wed, 14 May 2025 16:24:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ACB4D1B66A1D
+	for <lists+linux-iio@lfdr.de>; Wed, 14 May 2025 17:35:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E5DD27AC3A;
-	Wed, 14 May 2025 16:23:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD02327B4E7;
+	Wed, 14 May 2025 17:35:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EAsE+C/m"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z9sLiJZj"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f182.google.com (mail-vk1-f182.google.com [209.85.221.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 558BA1B6CEF;
-	Wed, 14 May 2025 16:23:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8218B1FBC90
+	for <linux-iio@vger.kernel.org>; Wed, 14 May 2025 17:35:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747239839; cv=none; b=NcYglxh5kUa0BD0odsD0QvM1MeWg18rmyIT/z0Yfifrn61gf4sPvPbIVnoNQd64MJjafL1CAJuBNBJlOcCUJA0ShPLdW7ybeb7ISXhAnFwaiW3kbwKqKTyM/CNzv7l6tpkxAUWwOzzVa06Jou9tN5YtMF49Keb6xL9+qIYjEnD4=
+	t=1747244137; cv=none; b=KsS39bWrseOfm/+OXDVpVfHjigbX22bCXw+QxML353tklrZBS/DuSL8lUneo5B2kTD6KvTo//he1EL6TWX8T2He1zoffTEhgudeebcRZYur7jdO8FEmIgjY/b6shMA4DU8Hsg9iWIi48WYDeGtHpv54yOVeztnjWIUsZmZsPleE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747239839; c=relaxed/simple;
-	bh=lrLhJLoo2vbTqU+2eXNTtOuTu8Dnoq3oQi1OJchUu2o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rZy1wNrr9ecerpRUsD0j4gOMkuSgrMAiA4+ER5JoDa+gIs6kapMEiDcqfyZG3zPiE/zRiYtpiS0D2uNhdHuWmdpfL3kLTGbN4OnxJdbn7O5LAy5hml3Jo810+Q0zK7ZbuJSMYjl/9BA6jtbBMoxtHtUPf18dOy7Pk2XB9BY0ylw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EAsE+C/m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0115C4CEE9;
-	Wed, 14 May 2025 16:23:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747239838;
-	bh=lrLhJLoo2vbTqU+2eXNTtOuTu8Dnoq3oQi1OJchUu2o=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=EAsE+C/myC7TcmYfp5eVcVbUzequD8dGG+1+v1bui65JDj5F2IxLTukY0glmet1Mh
-	 ijmodMEaDdLUKgT0Vpe4bKzdwtdgy/A2UpS0KssUMsJa+9/sb0rJV99IhypGM6gjQP
-	 xl0BB+8p42Cwrg4TLlZ89WKr+LnwjK0nrpgPlJHlI8PkGmpB4rOZPAgNe54/vVuXqF
-	 +yNBzWAmWeA1b8dZaq3UQ/r0dO5/bhxbGVIshZq1Nw68ICF67L5awnscCgcJWlFXOa
-	 E3wWyFuDCy9W7uXYAAtDXJS9syhYMY2Y97tNJqemvARkYWjUHTQSvK3QckZKgNC2x2
-	 3x1CI8s5s0PLw==
-Date: Wed, 14 May 2025 17:23:54 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Matti Vaittinen <mazziesaccount@gmail.com>
-Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] dt-bindings: iio: adc: Add ROHM BD79100G
-Message-ID: <20250514-elope-ultimate-0c44ed3be88b@spud>
-References: <4907a096eee1f54afae834213cf721b551382d4e.1747203712.git.mazziesaccount@gmail.com>
+	s=arc-20240116; t=1747244137; c=relaxed/simple;
+	bh=EyH887FyIkjfdlaBlYHVZB4u2OxCoUrzPccypAbPf0Q=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=gwoHGmfDKP+Ova7zKEy9r/+k2fV3NJ1doD8FzhfXBSz0mt8PnGtk/QHxJUg5LOidtM1Uonm8mBwl5S/I8bZ7zrxb+YkGPH1yqEoxvQfzw/Ots7kJCLtDQyZ8ORjfu7Z3502TzOvnkCQ6GH0QQl55IsXAUinzCx6lIyLiTR0oiqs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z9sLiJZj; arc=none smtp.client-ip=209.85.221.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vk1-f182.google.com with SMTP id 71dfb90a1353d-52c85c0d473so1254298e0c.2
+        for <linux-iio@vger.kernel.org>; Wed, 14 May 2025 10:35:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1747244134; x=1747848934; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=kPAxEwhugIYtlKiMTJRbGSYbcWigPkRu/XosQLLUCRA=;
+        b=Z9sLiJZjPZ2bfkIMg/STfFk7VRV0aR4M5vqQ21f5N+bBz59rRA/qlLWewW/4wYacrL
+         3cdYf3pUpvNQf91DJCrOXbg6EWDtVjVLDBY7zcPdfyLVEXwxrvJ7DWWnVs5TtAwa9J2d
+         Eo65wGRrkMlMvSBhRyz8IlFN27Cg2fe+f97fNk0inPVQhh5NhU7JRC5LyFaU43bOzJOx
+         oWLXcs+RzuAcIh2BiaBYHqgNszI1HnwRaHLl0WQBRwDt9EtlIsTUFfPXVd8f3smpPK6Y
+         GxBvcAvwi4IQrflBiVypFv19q2s6gZRf/2sYGTWmFFsqCktv716YmY8/eSiDk0D4Yv4W
+         azGg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747244134; x=1747848934;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=kPAxEwhugIYtlKiMTJRbGSYbcWigPkRu/XosQLLUCRA=;
+        b=FK71Q2RfvU9PuCqpFs2qhkrCOZ2eMvH5VJWQ77cg8Xn71QtiS5fnEIXTdiy3doQHHz
+         KWFti/QHW8f7dzFztuhxTvq1ax7Eb5gRi3utudZ9sma1+XrpI36N+wmen4YdwsyM5oax
+         dkSjh1YfCOG49Eff7SyxnUE15bZOhbWvPYsF8ZmtPVzD8N8LjDSHWOYsCnnZUe4ZpncH
+         MN2/NmnfklfwfIbnDhdhG5N6k6MkekDSVrsBvWu0bfpst4qQx/3/lkdXQzF4cmgGeMTw
+         BM2zz/4HumRTUFHiH1c0oa5Nxqx6CqMsqeaa793Va0Bto3Ta+DIC0UqpvtY37E4g6MnL
+         2DPA==
+X-Forwarded-Encrypted: i=1; AJvYcCXNe0aSRHv99D/AGIt3n9RYL0jbTBYYeB18PjFIkG1ekMjcQnwaWjuBkAA+U9cBiwmXN5V7Z61/66c=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxZLQRtegz6i6+q3NWDImAsnmXnHs95owy1fSOeIoYvGlDbIaX3
+	kK2xgwIRsY5bMbekeDfOpF+CilzB4W7mZBaHnDdn87u2YdhK7xRL
+X-Gm-Gg: ASbGncstumGUuCDcWUAA6cppXxQTQGtkI6CDR4uHE2OvpVOkCsmYbimFantWHD52qVp
+	bWRJALAidMRNbZczS3WbB99oSbaAVJ2Tp1RDE3gbegMIkMmHCLf1zU4zS91y7kD3/p1Zmad5ceR
+	hO3t9q+Z7z13UZzAqcorCrT2FWhj+EWe/QBKRFYckeee1IH5t1Ih6Bm5f3lO4DfFS27kLiXkmaD
+	nTI90pYjcaCwaWs/+09Q5WKKNuOY49hqvUg+fjgPMDrjcm6nAz/tRH98faHFdRf2DdbohZu7fMp
+	W2Egt4j8WhsWQGgIlTmb7DApgHcWRNr4lf3ksxIRkhgJx3Yd1Q0t1+hvvR96DCEjhQ==
+X-Google-Smtp-Source: AGHT+IFmxdDPGiP3oo54067YrhNHuqyXktlaXFPO5qfEBEJqXU0vHToIbPnmmk5PaI9wVV7igDN9jQ==
+X-Received: by 2002:a05:6122:3c83:b0:525:bf40:e628 with SMTP id 71dfb90a1353d-52d9c6cce01mr4218019e0c.6.1747244134130;
+        Wed, 14 May 2025 10:35:34 -0700 (PDT)
+Received: from octavuiPC.semfio.usp.br ([143.107.45.1])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-52c7ff62bbesm5204256e0c.29.2025.05.14.10.35.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 14 May 2025 10:35:33 -0700 (PDT)
+From: =?UTF-8?q?Oct=C3=A1vio=20Carneiro?= <ocarneiro1@gmail.com>
+To: jic23@kernel.orgl,
+	linux-iio@vger.kernel.org
+Cc: ocarneiro1@gmail.com,
+	fernandolimabusiness@gmail.com,
+	eijiuchiyama@usp.br
+Subject: [PATCH] iio: adc: ti-ads131e08: Add iio_device_claim_direct() to protect buffered captures
+Date: Wed, 14 May 2025 14:35:29 -0300
+Message-Id: <20250514173529.5852-1-ocarneiro1@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="hb+DHPO2trCPQpoC"
-Content-Disposition: inline
-In-Reply-To: <4907a096eee1f54afae834213cf721b551382d4e.1747203712.git.mazziesaccount@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
+Add iio_device_claim_direct() to protect buffered captures. In
+ads131e08_debugfs_reg_access and ads131e08_trigger_handler, data
+reads are protected by the function call to avoid possible errors
+caused by concurrent access.
 
---hb+DHPO2trCPQpoC
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Octávio Carneiro <ocarneiro1@gmail.com>
+Co-developed-by: Fernando Lima <fernandolimabusiness@gmail.com>
+Signed-off-by: Fernando Lima <fernandolimabusiness@gmail.com>
+Co-developed-by: Lucas Eiji <eijiuchiyama@usp.br>
+Signed-off-by: Lucas Eiji <eijiuchiyama@usp.br>
+---
+ drivers/iio/adc/ti-ads131e08.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-On Wed, May 14, 2025 at 09:25:13AM +0300, Matti Vaittinen wrote:
-> The ROHM BD79100G is a 12-bit ADC which can be read over SPI. Device has
-> no MOSI pin. ADC results can be read from MISO by clocking in 16 bits.
-> The 4 leading bits will be zero, last 12 containig the data.
->=20
-> Device has only VCC supply pin, which acts also as a VFS, determining the
-> voltage for full 12-bits. Specifying it is mandatory.
->=20
-> This seems identical to the ti,ads7866.
->=20
-> Support ROHM BU79100G using ti,ads7866 as a fallback.
->=20
-> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+diff --git a/drivers/iio/adc/ti-ads131e08.c b/drivers/iio/adc/ti-ads131e08.c
+index c6096b646..00a7e6494 100644
+--- a/drivers/iio/adc/ti-ads131e08.c
++++ b/drivers/iio/adc/ti-ads131e08.c
+@@ -578,12 +578,16 @@ static int ads131e08_debugfs_reg_access(struct iio_dev *indio_dev,
+ {
+ 	struct ads131e08_state *st = iio_priv(indio_dev);
+ 
++	if (!iio_device_claim_direct(indio_dev))
++		return -EBUSY;
++
+ 	if (readval) {
+ 		int ret = ads131e08_read_reg(st, reg);
+ 		*readval = ret;
+ 		return ret;
+ 	}
+ 
++	iio_device_release_direct(indio_dev);
+ 	return ads131e08_write_reg(st, reg, writeval);
+ }
+ 
+@@ -627,9 +631,11 @@ static irqreturn_t ads131e08_trigger_handler(int irq, void *private)
+ 	unsigned int num_bytes = ADS131E08_NUM_DATA_BYTES(st->data_rate);
+ 	u8 tweek_offset = num_bytes == 2 ? 1 : 0;
+ 
+-	if (iio_trigger_using_own(indio_dev))
++	if (iio_trigger_using_own(indio_dev)) {
++		if (!iio_device_claim_direct(indio_dev))
++			return -EBUSY;
+ 		ret = ads131e08_read_data(st, st->readback_len);
+-	else
++	} else
+ 		ret = ads131e08_pool_data(st);
+ 
+ 	if (ret)
+@@ -670,6 +676,7 @@ static irqreturn_t ads131e08_trigger_handler(int irq, void *private)
+ out:
+ 	iio_trigger_notify_done(indio_dev->trig);
+ 
++	iio_device_release_direct(indio_dev);
+ 	return IRQ_HANDLED;
+ }
+ 
+-- 
+2.34.1
 
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
-
---hb+DHPO2trCPQpoC
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaCTDmgAKCRB4tDGHoIJi
-0uOYAQCKuYQfMWcQTIc9ajlwT+1A4gLc9JqW4h9bDgW5awfqYgEA3xIoRxpnGPMM
-jckhRaYx/Z09P6R2VfMn38JBB8CQdAY=
-=dwKe
------END PGP SIGNATURE-----
-
---hb+DHPO2trCPQpoC--
 

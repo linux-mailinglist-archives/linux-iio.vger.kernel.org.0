@@ -1,62 +1,54 @@
-Return-Path: <linux-iio+bounces-19557-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19558-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82FC8AB8D65
-	for <lists+linux-iio@lfdr.de>; Thu, 15 May 2025 19:15:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1642CAB8D84
+	for <lists+linux-iio@lfdr.de>; Thu, 15 May 2025 19:19:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8842317C020
-	for <lists+linux-iio@lfdr.de>; Thu, 15 May 2025 17:14:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5A2971735DF
+	for <lists+linux-iio@lfdr.de>; Thu, 15 May 2025 17:18:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96B1E2561D1;
-	Thu, 15 May 2025 17:14:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C5F8218858;
+	Thu, 15 May 2025 17:17:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pwK8HXO4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iuOcpwVS"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46B5F255F55;
-	Thu, 15 May 2025 17:14:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0D1741C63
+	for <linux-iio@vger.kernel.org>; Thu, 15 May 2025 17:17:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747329286; cv=none; b=dw8N4uLCzu4u5mhh/yI0U0ASDGIDiDr4XkGZSaQeDei/Eezb2W669TkM1tz1NHD88cli50+r6DOxYw9oJYObwbsv0yYJjPfF66KJRml6zIOwiD/Yxq+hlbjW6hlnwKbPf5h/xziOe1fTgw3HWH2MonSIt1ohA0g2zU87b5LXCMc=
+	t=1747329477; cv=none; b=ThAhQ4iyLm4NbmzGOsYgtUcp128uCPGYJnG33yGJ4asP3dVp1LQwD0QQ6rogrB+TG72rZv/RA+jXd7NisYwYwb0wEsdBdEehS10k2UJr4W8W7HQokn2rU5wyY/qfBZqfsD09HZBDn5VGngTlsMns5EVH3BhtmG+yoXGiwpOZMBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747329286; c=relaxed/simple;
-	bh=nnM2Yxfy6SvDhbcADSk+0ey43o1zPShMFIO10useVYI=;
+	s=arc-20240116; t=1747329477; c=relaxed/simple;
+	bh=73hjrD+y61HXcgYHTNhNIJWljt7SwiYM31ab7tMPucs=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rb83V6WuPpm/FG3n4hdEzH3Gwha6PbnlORGxhLrvFuXSLFAreTmwvZ/J9WGC/R7WcWQANUTynNIhAE0fMYPk+dFiKr4rT2eHJkkfF6ZcEvDeVTbvffxrPY4x01inxb0yAOSrNPmNNoN4py8oYdECUQypJVFWa2rqt7kzQ290J+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pwK8HXO4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E092C4CEE7;
-	Thu, 15 May 2025 17:14:41 +0000 (UTC)
+	 MIME-Version:Content-Type; b=uJBJye1MQTssVBO6E9335RO1sRWoY3cbx1an5/NSmTMJUS9s77dZlSkKhcOHzItDBXJXphZQwyTa07LNBfn9ohZUEbD3zDHWBYQh9nsJ/Z32rMTLa22ydIKQboU8EES9XBZgM5Dfu27aWyfmL/uzkIom9TvYSoMIedlKCHx3BAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iuOcpwVS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36A9DC4CEE7;
+	Thu, 15 May 2025 17:17:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747329285;
-	bh=nnM2Yxfy6SvDhbcADSk+0ey43o1zPShMFIO10useVYI=;
+	s=k20201202; t=1747329477;
+	bh=73hjrD+y61HXcgYHTNhNIJWljt7SwiYM31ab7tMPucs=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=pwK8HXO4uggupbL/lw5z5EwiF4qgCO22Gfye6S082uMvMxfUl/rbQ9uKrDglVdzzu
-	 5sFz8nzyPO7pLlqofWtRAFDQG01LrTDxriCHp1RfU8Wsg3P6aHCkzGT+ViE2tjlpE2
-	 8QtdofQ2Y3lSo8jtXNXtfEf9Lx6jwqj6XrG7bMapI+9uMecGodDIfZSmneX+ed+5re
-	 3VFQvTGMURgWSI6DAs/W30drIL1DSgVmxz2NNhcaO9BnizFsSsZIXfYy9unKyWNQ6g
-	 JiZzGxWavhTMOQ/sxrpeV366Tb/yH8s+vV+VFORpERT+HYRZi6L9NZ1lTHkPI+GRnA
-	 6jq7rLaAevoZg==
-Date: Thu, 15 May 2025 18:14:25 +0100
+	b=iuOcpwVSR4tweSD2cApBAg6v1iVaOe+0DrOrfQK7IGJtqeUMgyt48o7doJKf6BrD9
+	 lTclI4rzcl1shhcMYUuhC9n022V3tRlRe7lhIzkA7VBxkCi+6b/K3trOcXKMbpL2Tz
+	 OEEt8KJA7fTyiircbHFm5vQwDvHdRJ6T7y795TvFsAyoOTWG5jNTzn4YGxSuW6DU6/
+	 Jovn05aCxndSU/sHwkbyTlr0L3if5lza+8Nv9PUHPl8EiEU3Vya6Ld+treypAdGogH
+	 zMgzmmUyFAQgFfzk9uFm2SSWGK14xgiDo8XJuKgsKTyPzaHvJGourvV/kJKlaMvNba
+	 2HkyWncrGGgcw==
+Date: Thu, 15 May 2025 18:17:51 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Alexandru Soponar <asoponar@taladin.ro>
-Cc: linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org,
- linux-iio@vger.kernel.org, linux-leds@vger.kernel.org,
- linux-watchdog@vger.kernel.org, jdelvare@suse.com, linux@roeck-us.net,
- pavel@ucw.cz, lee@kernel.org, baocheng.su@siemens.com,
- wim@linux-watchdog.org, tobias.schaffner@siemens.com,
- angelogioacchino.delregno@collabora.com, benedikt.niedermayr@siemens.com,
- matthias.bgg@gmail.com, aardelean@baylibre.com, contact@sopy.one
-Subject: Re: [PATCH 12/16] iio: max44009: Fix type incompatibility with
- non-macro find_closest
-Message-ID: <20250515181425.6a16455c@jic23-huawei>
-In-Reply-To: <20250515081332.151250-13-asoponar@taladin.ro>
-References: <20250515081332.151250-1-asoponar@taladin.ro>
-	<20250515081332.151250-13-asoponar@taladin.ro>
+To: Gabriel Souza Araujo <gabrielfsouza.araujo@gmail.com>
+Cc: linux-iio@vger.kernel.org, Cesar Bispo <cesar.bispo@ime.usp.br>
+Subject: Re: [PATCH v2] iio: adc: Modernize single regulator call
+Message-ID: <20250515181751.24afaf92@jic23-huawei>
+In-Reply-To: <20250514185239.10078-1-gabrielfsouza.araujo@gmail.com>
+References: <20250514185239.10078-1-gabrielfsouza.araujo@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -67,34 +59,57 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 15 May 2025 11:13:28 +0300
-Alexandru Soponar <asoponar@taladin.ro> wrote:
+On Wed, 14 May 2025 15:52:20 -0300
+Gabriel Souza Araujo <gabrielfsouza.araujo@gmail.com> wrote:
 
-> The max44009_int_time_ns_array array was previously declared as u32 but
-> used with find_closest(). With find_closest() now implemented as a
-> function taking signed int parameters instead of a macro, passing unsigned
-> arrays causes type incompatibility errors. This patch changes the arrays
-> type from u32 to int to ensure compatibility with the function signature
-> and prevent compilation errors.
+> Replace a single instance of legacy regulator with devm_regulator_get_enable().
+> This change improves code clarity and aligns with modern kernel APIs.
+This description does not match the patch.
+
 > 
-> Signed-off-by: Alexandru Soponar <asoponar@taladin.ro>
-Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Signed-off-by: Gabriel Souza Araujo <gabrielfsouza.araujo@gmail.com>
+> Co-developed-by: Cesar Bispo <cesar.bispo@ime.usp.br>
+> Signed-off-by: Cesar Bispo <cesar.bispo@ime.usp.br>
 > ---
->  drivers/iio/light/max44009.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> The first version [1] did not compile due to incorrect use of pointers and improper 
+> parameterization of the devm_regulator_get_enable() function. 
+> These issues have been fixed, and the code now compiles successfully.
 > 
-> diff --git a/drivers/iio/light/max44009.c b/drivers/iio/light/max44009.c
-> index 8cd7f5664e5b..d274224fc210 100644
-> --- a/drivers/iio/light/max44009.c
-> +++ b/drivers/iio/light/max44009.c
-> @@ -55,7 +55,7 @@
->  /* The fixed-point fractional multiplier for de-scaling threshold values */
->  #define MAX44009_FRACT_MULT 1000000
+> [1] https://lore.kernel.org/linux-iio/20250429160526.5934-1-cesar.bispo@ime.usp.br/
+> 
+>  drivers/iio/adc/qcom-pm8xxx-xoadc.c | 6 ++----
+>  1 file changed, 2 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/iio/adc/qcom-pm8xxx-xoadc.c b/drivers/iio/adc/qcom-pm8xxx-xoadc.c
+> index 226285992..8b2e798d0 100644
+> --- a/drivers/iio/adc/qcom-pm8xxx-xoadc.c
+> +++ b/drivers/iio/adc/qcom-pm8xxx-xoadc.c
+> @@ -923,7 +923,7 @@ static int pm8xxx_xoadc_probe(struct platform_device *pdev)
+>  			pm8xxx_eoc_irq, NULL, 0, variant->name, indio_dev);
+>  	if (ret) {
+>  		dev_err(dev, "unable to request IRQ\n");
+> -		goto out_disable_vref;
+> +		return ret;
+>  	}
 >  
-> -static const u32 max44009_int_time_ns_array[] = {
-> +static const int max44009_int_time_ns_array[] = {
->  	800000000,
->  	400000000,
->  	200000000,
+>  	indio_dev->name = variant->name;
+> @@ -934,7 +934,7 @@ static int pm8xxx_xoadc_probe(struct platform_device *pdev)
+>  
+>  	ret = iio_device_register(indio_dev);
+>  	if (ret)
+> -		goto out_disable_vref;
+> +		return ret;
+>  
+>  	ret = pm8xxx_calibrate_device(adc);
+>  	if (ret)
+> @@ -946,8 +946,6 @@ static int pm8xxx_xoadc_probe(struct platform_device *pdev)
+>  
+>  out_unreg_device:
+>  	iio_device_unregister(indio_dev);
+> -out_disable_vref:
+> -	regulator_disable(adc->vref);
+>  
+>  	return ret;
+>  }
 
 

@@ -1,127 +1,142 @@
-Return-Path: <linux-iio+bounces-19544-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19545-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82B83AB8275
-	for <lists+linux-iio@lfdr.de>; Thu, 15 May 2025 11:25:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E21C0AB83C1
+	for <lists+linux-iio@lfdr.de>; Thu, 15 May 2025 12:27:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4EC5A1B668A2
-	for <lists+linux-iio@lfdr.de>; Thu, 15 May 2025 09:25:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7DEBB3B3750
+	for <lists+linux-iio@lfdr.de>; Thu, 15 May 2025 10:26:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30C05296D09;
-	Thu, 15 May 2025 09:24:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7180297B8C;
+	Thu, 15 May 2025 10:26:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A7mU282L"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ICO1aErG"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7F2D221296;
-	Thu, 15 May 2025 09:24:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C79717993;
+	Thu, 15 May 2025 10:26:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747301097; cv=none; b=E3XVRriMAD8lsLgYCd30CCZzqiG1+knGIo9Fw6f9zRLF+Q86oWM0m5Ej8Qtj7xrtAXi8PCWpoaPt+yRZfugpRH0LYkwyZl5aTLrBwlQcG41Xh29SBIVbPMAwDE+jGC8zXjncAVlb62lWRpmpNf8mKlImGJbxTYOPClfhwMJRvtY=
+	t=1747304819; cv=none; b=qBnSpJ0sHZbdp8z/TDyxJMF6s1nIx/S0Vx7WqC8oPOGkzZXeZxbLdxW9vmjxmFxR1c4kOgamTX8vGCK7j2mlWSV6PDb/J7d8p//7FO2qwNXXEdDtvXncikmAeJ8zePMRVqBbA0TP16z4fxsW1gVsLhROMtfLDXC6C/mzK88FCok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747301097; c=relaxed/simple;
-	bh=JZp32cGnARt5v5SngWT8bwZW1Jh8iJC7PUvH3dlXTsI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=R4liFbo1pr/73dqUtm8X9RXRpJjn3vWj8OSzJVS03J9TxvgHKN/9zyWl7uwxvqGfa3Wv21o5FGVnkedyHXfWsltCXnKhbEb+Hg1s5MxMHQ8syCfaqHs74xIkqgnGLOWGMzweo0nY+yn4FtxEQvo5kD5doTKPyhU+Ae4KjVS7vRc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A7mU282L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C28A3C4CEE7;
-	Thu, 15 May 2025 09:24:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747301096;
-	bh=JZp32cGnARt5v5SngWT8bwZW1Jh8iJC7PUvH3dlXTsI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=A7mU282LSWsGdpwJ5DOiLTIAyqVyxqrlhiVc/v/e9xV8IF8oplET2K7F1vaW9ndS9
-	 Tlas2OXmX6IsN+pRPlTSwvSVtCP/Cw8hsCLXnTBqvAPakVN7aP6hBug3Z5jAfSXubn
-	 ZZrk7AA4uR2EeRexTRs3IkByDiF4sfYVO8tBjoHvFYBpCuapOsYHAbkzEnbptayKPG
-	 MaoK0JqisvSZA0NJiNex8WCJ8Q3RnsW2nI/+VLG9cLM4obd3XEaUHaDi8QTplnEc1M
-	 321EnbfQT9BLZhjy61zQ22mIKJpakf9bnmHCgr0tDdiOLD7gc8Vv4jdSy+oggRK3O8
-	 BkvdzdvjkhAOg==
-Date: Thu, 15 May 2025 11:24:53 +0200
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-To: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
-	wbg@kernel.org, jic23@kernel.org, catalin.marinas@arm.com, will@kernel.org, 
-	devicetree@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org, 
-	linux-pwm@vger.kernel.org, olivier.moysan@foss.st.com, lee@kernel.org, 
-	alexandre.torgue@foss.st.com
-Subject: Re: [PATCH v3 4/8] pwm: stm32: add support for stm32mp25
-Message-ID: <5ui74qlssllgn4h34by5jcpi5g6rknziclcsh4w27tjvznynsv@lcjtjxn6rovl>
-References: <20250110091922.980627-1-fabrice.gasnier@foss.st.com>
- <20250110091922.980627-5-fabrice.gasnier@foss.st.com>
- <4b641513-ff2e-43ab-8074-ba6b521875e2@foss.st.com>
+	s=arc-20240116; t=1747304819; c=relaxed/simple;
+	bh=rHO0Fp08LZpUyRjpdcGtriQqtVm32Fg2XpyQfGbqgGw=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=jpcx+UaVV2LAA1x7LZKddc/sFQwVOy8iSo0YOCM8EktfD+b4vrbc47ifIrhADByvIFQn6Qz7s6F/YZpgjcXZz+bhAE2FgZijRk8yzLweX+FWHzbSU/gYHT3g43gAq+ET008kGRIyiYgX/0REHnfP3Xys9jbQ9g/9rhdiNH5fprE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ICO1aErG; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-43cebe06e9eso5743235e9.3;
+        Thu, 15 May 2025 03:26:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1747304816; x=1747909616; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=gk0+gInQFLq5TPyTiE4dxKzocRffo/w6/nhsIkH+AfE=;
+        b=ICO1aErGImOiBApjuIk1aVcNRohHb6r4L7lPyJtU8bbvmLcR1AqHHWEyaQFlG9KQw1
+         7MK2Y7ZOlI5RwntauiUKrtpkHb80f8pC2g0UlV5bcvLgHqumFOU8hYnyO//Kn93IiDlg
+         FN5OFYeHM0gVWEQjidl4YVjBriTkOK4i6oxyp+dfqjttFBq/IUspshCROhTuZTf/5g6N
+         atDsl3YTdIQkxHyY3lgKLq97hsZ7bWK7PPuUpGXvF6H6O4fz4Oq7CbwbROXr3XYPq0yR
+         K3eFsvC3xr080QAaEGBCjMX59P498VBiMRCQw2quJ4EHNVno1s08XH8V/NC6APalO4BS
+         gQpA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747304816; x=1747909616;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=gk0+gInQFLq5TPyTiE4dxKzocRffo/w6/nhsIkH+AfE=;
+        b=fyJcg5rDXRViAUgfNXJv2uNlsrBGnue0xjesS+PmHDAr0s5M+xnScYkMmuS3c305lr
+         E7cuvY85Ee5ZLSiVtUxhA+36n+Js5ZWIEtn4YevTQxai++0VBkdAgWspf7/oejKzUtkH
+         AT8PYVL69Es7I6jUvujZCLS4baEJWcYUQWYME5XYppZCcashqgOc5//bhRWRlHRC6psu
+         iMgS1ZUa7Iyt/Tf8Wok3YGPH25i6RvO3YMYSl9VI/PpvuFhlM9SEh8E0GR7nBSwUJV3/
+         AB63oKRW9pzsJxu3fmZU42hEokBGbz07DiYUwxd9BnOPEBCNlLWP26R1R9G/mZzibN4m
+         ruHw==
+X-Forwarded-Encrypted: i=1; AJvYcCURsL4TVuf2L8Mjx4jfGc1Sj2hR2VCJ7TGmaJgB9Di3KzjLM90sgZ0Y0TlcTmBDfIgZW9HMi5IVIgIKPh0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwhHzOlqC8UJ7ehkWcmsm1b73YCFRdp7rx2ugK5pzThoJ/OTZ9b
+	Q+jsudmP1vYDKmXtimFrS1Z83uDvjibeP6S///BlGs+NhwTud6mU
+X-Gm-Gg: ASbGncvDsk9qPfCXZytdRxqx730+CorBnJ9C8Hw3oEh7LATmTx8O6FmLaNQZy/Syzho
+	nS35YEB+K3RpuAtQxYbvhGXj7w2VD7EI45gLYKFQSvAu8lc+2pee1pupWGu1Xo0L6vTGKl9+lW7
+	K0WMKH03mUG7rwmy9r3p8ddv7ZcvPu2Ab5Zp0g+IXW92hbHmKHYcX/VPKl4e59tOOVxIM/L0bVQ
+	zrDNYxU8S78q2YugJtGav5GmtrkFWAh453G3CDK2C3P63eTNH2Q8dP6l1YeSnADpSI3v4HFQbFU
+	7P6buP5cMtAYAihtRwlGtvN4VH72owYT/O2PZzsPQgAMvXlLc+HyTZHAZdrH
+X-Google-Smtp-Source: AGHT+IFVgomBW1IBuXpOUR8LYcnGSxhFAoIygDxxwvgbwklcoUaA6rWn38wHMH/dhn9JUS9lxDBang==
+X-Received: by 2002:a05:600c:154a:b0:440:54ef:dfdc with SMTP id 5b1f17b1804b1-442f96e671dmr15113075e9.8.1747304815938;
+        Thu, 15 May 2025 03:26:55 -0700 (PDT)
+Received: from [10.5.0.2] ([45.94.208.98])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-442f39ef400sm60703995e9.33.2025.05.15.03.26.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 15 May 2025 03:26:55 -0700 (PDT)
+Message-ID: <229cf78caaa7e9f2bb4cfa62c019acd51a1cd684.camel@gmail.com>
+Subject: Re: [PATCH v2] iio: adc: stm32-adc: Fix race in installing chained
+ IRQ handler
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: Chen Ni <nichen@iscas.ac.cn>, jic23@kernel.org, dlechner@baylibre.com, 
+	nuno.sa@analog.com, andy@kernel.org, mcoquelin.stm32@gmail.com, 
+	alexandre.torgue@foss.st.com, u.kleine-koenig@baylibre.com,
+ tglx@linutronix.de, 	robh@kernel.org, jirislaby@kernel.org,
+ fabrice.gasnier@foss.st.com
+Cc: linux-iio@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Date: Thu, 15 May 2025 11:26:56 +0100
+In-Reply-To: <20250515083101.3811350-1-nichen@iscas.ac.cn>
+References: <20250515083101.3811350-1-nichen@iscas.ac.cn>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.1 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="dxezo4t7v65ydh54"
-Content-Disposition: inline
-In-Reply-To: <4b641513-ff2e-43ab-8074-ba6b521875e2@foss.st.com>
 
-
---dxezo4t7v65ydh54
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v3 4/8] pwm: stm32: add support for stm32mp25
-MIME-Version: 1.0
-
-Hello Fabrice,
-
-On Wed, May 14, 2025 at 11:30:26AM +0200, Fabrice Gasnier wrote:
-> On 1/10/25 10:19, Fabrice Gasnier wrote:
-> > Add support for STM32MP25 SoC. Use newly introduced compatible to handle
-> > new features along with registers and bits diversity.
-> > The MFD part of the driver fills in ipidr, so it is used to check the
-> > hardware configuration register, when available to gather the number
-> > of PWM channels and complementary outputs.
-> >=20
-> > Signed-off-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-> > ---
-> > Changes in v2:
-> > Address Uwe review comments:
-> > - Make MAX_PWM_OUTPUT definition less generic: STM32_PWM_MAX_OUTPUT
-> > - No need to initialize 'npwm'
-> > - refactor code, for *num_enabled to use same code path
-> > ---
-> >  drivers/pwm/pwm-stm32.c | 42 ++++++++++++++++++++++++++++++++++-------
-> >  1 file changed, 35 insertions(+), 7 deletions(-)
+On Thu, 2025-05-15 at 16:31 +0800, Chen Ni wrote:
+> Fix a race where a pending interrupt could be received and the handler
+> called before the handler's data has been setup, by converting to
+> irq_set_chained_handler_and_data().
 >=20
-> Hi Uwe,
+> Fixes: d58c67d1d851 ("iio: adc: stm32-adc: add support for STM32MP1")
+> Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+> ---
+
+Reviewed-by: Nuno S=C3=A1 <nuno.sa@analog.com>
+
+> Changelog:
 >=20
-> I think this patch still miss some reviews.
-> The first patches of this series have been merged.
+> v1 -> v2:
 >=20
-> Is it ok for you to merge, or shall I resend separately ?
-
-I have it still on my radar, no need to resend. I just have to find the
-time to look into it in more detail.
-
-Best regards
-Uwe
-
---dxezo4t7v65ydh54
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmglstgACgkQj4D7WH0S
-/k7tvQgAr0tuQYW7a8kZHG4D+r8Ju5Etk+73ekoD+5NJcmpwe6C8Nye8E3mKfgS6
-bWCXuQS9aBsBvnmwFzIV9jkcwJrdeejQfv46EJ0IOZZFloj7b/vB3K/L/dzS3Ray
-XkPiy+M1R1rGt5B5X1U2gyUK6QRCE4KOMquhXMRCQxO7zqXlozUOk2rcmcAzgGMV
-tpQY/lDPoA9V6k4R6WL4yGAzwybvl+ASbzdrDmsjuIcW9On5Y5xDzkeVH9RSU5P0
-apvIu6hfS3bj3LvTF8QiT9emDOMQJAMU0J5t2YOeazfw/A7rFfqFQl7FA4Z2nDGZ
-wxTfL+UCcOGnVPHKb0fByZ5OKLMqrA==
-=ZB/v
------END PGP SIGNATURE-----
-
---dxezo4t7v65ydh54--
+> 1. Add Fixes tag.
+> ---
+> =C2=A0drivers/iio/adc/stm32-adc-core.c | 7 +++----
+> =C2=A01 file changed, 3 insertions(+), 4 deletions(-)
+>=20
+> diff --git a/drivers/iio/adc/stm32-adc-core.c b/drivers/iio/adc/stm32-adc=
+-
+> core.c
+> index bd3458965bff..21c04a98b3b6 100644
+> --- a/drivers/iio/adc/stm32-adc-core.c
+> +++ b/drivers/iio/adc/stm32-adc-core.c
+> @@ -430,10 +430,9 @@ static int stm32_adc_irq_probe(struct platform_devic=
+e
+> *pdev,
+> =C2=A0		return -ENOMEM;
+> =C2=A0	}
+> =C2=A0
+> -	for (i =3D 0; i < priv->cfg->num_irqs; i++) {
+> -		irq_set_chained_handler(priv->irq[i], stm32_adc_irq_handler);
+> -		irq_set_handler_data(priv->irq[i], priv);
+> -	}
+> +	for (i =3D 0; i < priv->cfg->num_irqs; i++)
+> +		irq_set_chained_handler_and_data(priv->irq[i],
+> +						 stm32_adc_irq_handler,
+> priv);
+> =C2=A0
+> =C2=A0	return 0;
+> =C2=A0}
 

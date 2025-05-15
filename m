@@ -1,59 +1,59 @@
-Return-Path: <linux-iio+bounces-19538-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19529-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BE61AB8183
-	for <lists+linux-iio@lfdr.de>; Thu, 15 May 2025 10:54:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 692A4AB8122
+	for <lists+linux-iio@lfdr.de>; Thu, 15 May 2025 10:44:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD8D418882DC
-	for <lists+linux-iio@lfdr.de>; Thu, 15 May 2025 08:52:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C50A83A74A8
+	for <lists+linux-iio@lfdr.de>; Thu, 15 May 2025 08:41:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B4ED295D89;
-	Thu, 15 May 2025 08:52:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AC98212B18;
+	Thu, 15 May 2025 08:41:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=taladin.ro header.i=@taladin.ro header.b="I5GISWNL"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=taladin.ro header.i=@taladin.ro header.b="LHUUwW/G"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from clean103.mxserver.ro (clean103.mxserver.ro [176.223.125.170])
+Received: from clean107.mxserver.ro (clean107.mxserver.ro [176.223.123.191])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F7042949F9;
-	Thu, 15 May 2025 08:52:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=176.223.125.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FDA0202F67;
+	Thu, 15 May 2025 08:41:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=176.223.123.191
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747299133; cv=none; b=CdLvXfC7jLBVM3xPnmw86pAhzDWDdk1ftxcm3U4Pd6cz7FaR7UP8OZFKXaTdtBrZe+NoPdr1weAFw8/Y1c5c9vLrW8t+JeiLWRm0f+wKs7Iq3g3iKBarB3IupxuUu4bNGsMUUlJqlOSBhxMEjjJPZxNwbfRZ4+FCuA0h0MuBHi8=
+	t=1747298497; cv=none; b=aWFmn/znpOZeN+e2HRGd4oNw6pAUSwL7+Hqm9euIDHI+Y+x3IF71jU+6ysNLF1ZON2itzn1hYkwUO8VQ6C2sAZfcVXSu37L2gE36hGvsUxFAHaoOomkFvoE66lfacWOFe7FeRRDNTJwavo61J91vUa8GIJwprmpFGWdaKf4wvxY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747299133; c=relaxed/simple;
-	bh=q/hTLxGkevrKMP4/fm1sZBbPK6IIoosv/EPhSqzLYSo=;
+	s=arc-20240116; t=1747298497; c=relaxed/simple;
+	bh=bCbjH+cBqaaixa9+TY8w+NZGMFvMQ38v6+3wrV3dMy4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bnhyiIM/5nOJqKCztLqClJVyaCmFjxhDKdaEGV2k5pQ1WBxRz1aDdC6wlXKjQCh3Yv0YShTwqKS2M3zx8XiJV5ZXqmt5kwEEcuI+mHyvNX2e4E2E7IB4bPufOepJ/1wd5bcJ+VeyakpiozjaT+bDQ53n6Md8l2t0y14kwDk8WFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=taladin.ro; spf=pass smtp.mailfrom=taladin.ro; dkim=pass (2048-bit key) header.d=taladin.ro header.i=@taladin.ro header.b=I5GISWNL; arc=none smtp.client-ip=176.223.125.170
+	 MIME-Version; b=VuoAhaVh9vGkMVKeCcV0S+8Z9CUGZF/yZEZNGqaAt+o2PdxMoao/JX8Ogb+jQ6j30kOJ5MjJjmzGjKnoZgLiTGAqBR0pdTcDbvI3TOlQBiStsAXxuln332kvFBRpvGk/+UIQKP7yb+Y+xpDHQfHNRXWYLQ2YEvEOYvroDq5AfHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=taladin.ro; spf=pass smtp.mailfrom=taladin.ro; dkim=pass (2048-bit key) header.d=taladin.ro header.i=@taladin.ro header.b=LHUUwW/G; arc=none smtp.client-ip=176.223.123.191
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=taladin.ro
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=taladin.ro
 Received: from cloud347.c-f.ro ([185.236.86.218])
 	by cleanserver1.mxserver.ro with esmtps (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <asoponar@taladin.ro>)
-	id 1uFTm5-00H1Ro-65; Thu, 15 May 2025 04:17:12 -0400
+	id 1uFTm7-00H1Wf-8B; Thu, 15 May 2025 04:17:14 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=taladin.ro;
 	s=default; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
 	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=koakyKDUeUIeXFkt5kHFcp8R9b8v4EKGe5vzuuktP7U=; b=I5GISWNLK58PKla/LyJdEMylzb
-	pnP5NkUlRT1ZxS0cdp67LfIcRRV9pkS2JRrg1B9np0hpEU90qPExPVJck7HACbC0P21pKzfn95JvD
-	iiJmRVa6Qtj/X2PP24tJr/JcXtaicxxKbfQW1Nw6I7gCL66WHBdX9k2Q9GDv915sM4WAqXdxumagh
-	vzBUTzS8oNgaY9awb/miMx2SX8+Kn3W/43KA1KPzOfS+05huC60U0Gs6fvnkEaBmO2zB+/6Csi3xW
-	fLBhE29dkoUzDBtALBhlQe6WauOdpgVtc6Vp0Jdzek5ai4JrYNjUQGeEa9ILM+PaYABztHTb/HHOe
-	HsT64JgA==;
-Received: from [109.166.137.172] (port=39050 helo=localhost)
+	bh=1bK3x9Cf1janHuAyHMAjvkEWzTeVMVa5qbM6x9ETvWw=; b=LHUUwW/GPGI2EuBOSzr6OoZVt3
+	6LUBS3+ZuTMuYWoLCQ1NrGQ3AMkyhn5O389VsX+/o+b741lWVzclDVAG+6U8XfDB7Imo0YT/dWTwa
+	M8rM4ymvm6fSGQP/7mOp7glxAUPqBj2Wme73SgwS7hKA1ZxToPP5AfiXCrnPM1Uv/NikpxTrgtntC
+	PwAbBZKsXShfC3ooMb9DtyJPUcdrjGjH3NY/Tfd1VCEG0WdPKd5Ml6e5NHUZA7nj6WBbOzL/nq8r+
+	BpCyKGJHzw7v2G8+CfUE1/ov9D3OlC99QtSDKg8hLTm7lfTWCGBJo2Q5XCblWZglLagtWSDrOxh1L
+	8nJswmrA==;
+Received: from [109.166.137.172] (port=39052 helo=localhost)
 	by cloud347.c-f.ro with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.98.1)
 	(envelope-from <asoponar@taladin.ro>)
-	id 1uFTlv-00000006qIN-0WJA;
-	Thu, 15 May 2025 11:17:04 +0300
+	id 1uFTlx-00000006qJ7-0WAp;
+	Thu, 15 May 2025 11:17:06 +0300
 From: Alexandru Soponar <asoponar@taladin.ro>
 To: linux-kernel@vger.kernel.org,
 	linux-hwmon@vger.kernel.org,
@@ -74,9 +74,9 @@ Cc: jdelvare@suse.com,
 	aardelean@baylibre.com,
 	contact@sopy.one,
 	Alexandru Soponar <asoponar@taladin.ro>
-Subject: [PATCH 12/16] iio: max44009: Fix type incompatibility with non-macro find_closest
-Date: Thu, 15 May 2025 11:13:28 +0300
-Message-ID: <20250515081332.151250-13-asoponar@taladin.ro>
+Subject: [PATCH 13/16] leds: eds-mt6370-rgb: Fix type incompatibility with find_closest()
+Date: Thu, 15 May 2025 11:13:29 +0300
+Message-ID: <20250515081332.151250-14-asoponar@taladin.ro>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250515081332.151250-1-asoponar@taladin.ro>
 References: <20250515081332.151250-1-asoponar@taladin.ro>
@@ -91,9 +91,9 @@ X-SpamExperts-Domain: cloud347.c-f.ro
 X-SpamExperts-Username: 185.236.86.218
 Authentication-Results: mxserver.ro; auth=pass smtp.auth=185.236.86.218@cloud347.c-f.ro
 X-SpamExperts-Outgoing-Class: ham
-X-SpamExperts-Outgoing-Evidence: SB/global_tokens (0.00920917721819)
+X-SpamExperts-Outgoing-Evidence: Combined (0.02)
 X-Recommended-Action: accept
-X-Filter-ID: Pt3MvcO5N4iKaDQ5O6lkdGlMVN6RH8bjRMzItlySaT9LmVb6q1/FaccTvM3orKErPUtbdvnXkggZ
+X-Filter-ID: Pt3MvcO5N4iKaDQ5O6lkdGlMVN6RH8bjRMzItlySaT94YpnLF5SwLL9ehD3Nt/zePUtbdvnXkggZ
  3YnVId/Y5jcf0yeVQAvfjHznO7+bT5w1OL79HMxE022P+rQy8YAdcSeERs4TOTnIH1kc1IWc5TSx
  S75yz9IFZiY7BarU/NrpK8SEOwGmfn6ucAKqn/OHRh3BqzFaEnAEj4UixLJBjVNiLZt/QXQnOBRD
  +jq1HsIBmHTFdhqXZEtguZY7iGKpkcJnJKaJfT+dw1udmv00tbIRNtoyOobb3xnDyRRylAVTYi2b
@@ -103,47 +103,70 @@ X-Filter-ID: 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
- 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
+ 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
- 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
+ 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
+ NlKN8tqRiXqTYOVbu7qFs1k1cwrc0cM1w7Y=
 X-Report-Abuse-To: spam@cleanserver1.mxserver.ro
 X-Complaints-To: abuse@cleanserver1.mxserver.ro
 
-The max44009_int_time_ns_array array was previously declared as u32 but
-used with find_closest(). With find_closest() now implemented as a
-function taking signed int parameters instead of a macro, passing unsigned
-arrays causes type incompatibility errors. This patch changes the arrays
-type from u32 to int to ensure compatibility with the function signature
-and prevent compilation errors.
+The common_tfreqs and mt6372_tfreqs arrays were previously declared as
+unsigned int but used with find_closest(), which now takes signed int
+parameters. Change these arrays from unsigned int to int to maintain type
+compatibility with the find_closest() function signature and prevent
+compilation errors.
 
 Signed-off-by: Alexandru Soponar <asoponar@taladin.ro>
 ---
- drivers/iio/light/max44009.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/leds/rgb/leds-mt6370-rgb.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/iio/light/max44009.c b/drivers/iio/light/max44009.c
-index 8cd7f5664e5b..d274224fc210 100644
---- a/drivers/iio/light/max44009.c
-+++ b/drivers/iio/light/max44009.c
-@@ -55,7 +55,7 @@
- /* The fixed-point fractional multiplier for de-scaling threshold values */
- #define MAX44009_FRACT_MULT 1000000
+diff --git a/drivers/leds/rgb/leds-mt6370-rgb.c b/drivers/leds/rgb/leds-mt6370-rgb.c
+index ebd3ba878dd5..6ce11432dd96 100644
+--- a/drivers/leds/rgb/leds-mt6370-rgb.c
++++ b/drivers/leds/rgb/leds-mt6370-rgb.c
+@@ -135,7 +135,7 @@ struct mt6370_led {
+ };
  
--static const u32 max44009_int_time_ns_array[] = {
-+static const int max44009_int_time_ns_array[] = {
- 	800000000,
- 	400000000,
- 	200000000,
+ struct mt6370_pdata {
+-	const unsigned int *tfreq;
++	const int *tfreq;
+ 	unsigned int tfreq_len;
+ 	u16 reg_rgb1_tr;
+ 	s16 reg_rgb_chrind_tr;
+@@ -212,11 +212,11 @@ static const struct linear_range mt6372_led_ranges[R_MAX_RANGES] = {
+ 	[R_LED_TOFF]	= { 250, 0, 15, 500 },
+ };
+ 
+-static const unsigned int common_tfreqs[] = {
++static const int common_tfreqs[] = {
+ 	10000, 5000, 2000, 1000, 500, 200, 5, 1,
+ };
+ 
+-static const unsigned int mt6372_tfreqs[] = {
++static const int mt6372_tfreqs[] = {
+ 	8000, 4000, 2000, 1000, 500, 250, 8, 4,
+ };
+ 
+@@ -304,7 +304,8 @@ static int mt6370_set_led_freq(struct mt6370_priv *priv, unsigned int led_no, un
+ 	const struct mt6370_pdata *pdata = priv->pdata;
+ 	enum mt6370_led_field sel_field;
+ 	unsigned int tfreq_len = pdata->tfreq_len;
+-	unsigned int tsum, sel;
++	unsigned int sel;
++	int tsum;
+ 
+ 	tsum = ton + toff;
+ 
 -- 
 2.49.0
 

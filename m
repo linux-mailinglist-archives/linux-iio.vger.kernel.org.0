@@ -1,58 +1,59 @@
-Return-Path: <linux-iio+bounces-19534-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19533-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDFBBAB8150
-	for <lists+linux-iio@lfdr.de>; Thu, 15 May 2025 10:48:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2011FAB813C
+	for <lists+linux-iio@lfdr.de>; Thu, 15 May 2025 10:47:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 07C5018841DC
-	for <lists+linux-iio@lfdr.de>; Thu, 15 May 2025 08:47:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 67F5D171D2F
+	for <lists+linux-iio@lfdr.de>; Thu, 15 May 2025 08:47:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5481F1ADFFE;
-	Thu, 15 May 2025 08:47:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B53DA28C845;
+	Thu, 15 May 2025 08:47:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=taladin.ro header.i=@taladin.ro header.b="CVZEwBWS"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=taladin.ro header.i=@taladin.ro header.b="fenBMFXb"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from clean236.mxserver.ro (clean236.mxserver.ro [46.102.249.236])
+Received: from clean203.mxserver.ro (clean203.mxserver.ro [176.223.127.109])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F19B28C84D;
-	Thu, 15 May 2025 08:47:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.102.249.236
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0CE828A1ED;
+	Thu, 15 May 2025 08:47:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=176.223.127.109
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747298843; cv=none; b=eZS+MOmenDdwgwEiJj/N60aQb50jxTOJrefGVx+jFJDdUySSl6YTYklTXt/ZffWJJ3MMpyB1whJe3H6jPQL/KsT+Bfvaryudci2HMxwod+sz9tkK0fNWQYojyuoC5XzuJphY+gjJx9Y4K4aKzlZ4Ue/es0GeoC8hLYcwrNS7CVc=
+	t=1747298835; cv=none; b=UHnmHdJaK6z9rXtbex6XF3fx23Eaf43QcH5tzwuP734yKyxk9LbMwlG7JSNnGPWkI5V0YaTPUAaKSJU386xXBhHJan7IBU9ExGyuaEJBAMc1t1QesSu692trGYnI5JFD99nCIVUy+E9vRY9ov91YaF5k4EFKgVKa80S71O4fX5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747298843; c=relaxed/simple;
-	bh=cRWidd52qz45UTzRBYVqc/bvlG4ksdV/625FmAaW0Gk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cUJmArn9N1RbA1ZlFAh9IMA/U+HYdrBvIFv9tEunzlAeArK/2oQzDNz1hYw6/NlrzhmIoAX5pefqhDqeEE9iClV28jtSv8VhXSheSTq8qYC+NXE31rpBQvS5tdXquUN5RzUtmoCIeLo3JFAZArRvQ29HOpyApPcy+/RlZz+3wrI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=taladin.ro; spf=pass smtp.mailfrom=taladin.ro; dkim=pass (2048-bit key) header.d=taladin.ro header.i=@taladin.ro header.b=CVZEwBWS; arc=none smtp.client-ip=46.102.249.236
+	s=arc-20240116; t=1747298835; c=relaxed/simple;
+	bh=BcQ7dOGMy2G6f074qdjFwf6ztnYAuEy9X4leTqnduAo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=TOKsNz/2jE+dftqruXHsFHpd3kNBZX4YaGPckieNUlofQHtLgW27/lcel63sLbWGXvh4FXwc1mRuF9s+F6MTg/xuU+tSFw58LCPJzU4FDGybRz7oJniug4WKc/ND0Ely9Ovka+s8YEeKCusY+mw78AE2lLnCtWKF43yiIhQNTTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=taladin.ro; spf=pass smtp.mailfrom=taladin.ro; dkim=pass (2048-bit key) header.d=taladin.ro header.i=@taladin.ro header.b=fenBMFXb; arc=none smtp.client-ip=176.223.127.109
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=taladin.ro
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=taladin.ro
 Received: from cloud347.c-f.ro ([185.236.86.218])
 	by cleanserver2.mxserver.ro with esmtps (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <asoponar@taladin.ro>)
-	id 1uFTlx-001Vs0-E1; Thu, 15 May 2025 04:17:08 -0400
+	id 1uFTlx-001Vt8-Ds; Thu, 15 May 2025 04:17:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=taladin.ro;
-	s=default; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:
-	Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	s=default; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
+	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=9osiAM7EArqlFfuk2KHjpv3HYzglesdn+c5l6d4e9HA=; b=CVZEwBWSBbFK+YvvNXxlW1Grsy
-	fUveYrcJOUUeyQai73Xtm2fsSD06D6pN3sw9FX1zBolIrEpzV8iLtM1FxjbQSXv8oPAfiCTw66GGv
-	ZCWjLEk4slWdlSNhpTPzfBZnYfVYKBTp4dz+o/UlNECYRnXVUXZk9YOC29AYBom4FhOYVF9hDoL5B
-	1FmsJqoEuRktdMq+egZ2i43BP4mXpPe8a3YPLR/0GBFAYMzM+vFu2f4OxbUERB2QAy9kWBXLsaSLc
-	e/djPOh3WXVuV4ejrt1no7A6N+W6zYCDuUjqHvR4XYfng4uER3BuJISiv+2mnRqL4S4K2ytxtCg2D
-	+/vchoyw==;
-Received: from [109.166.137.172] (port=37860 helo=localhost)
+	bh=kA8DKQFtSt4jcUAuOIp1O8zgOjmBlKqw0lLnqHTc59w=; b=fenBMFXbembk3toPDrviTqAU9G
+	ORJ4AR0BA6Ba6Swva8vCMHx4ghdyXMQtA1sMAWC6Uu0Vo9Q278jCOsTwFWpfBBJeAuixYi12c2Hdm
+	VA+gcgC9/Kb42N6CD3J/C6MoZsKKWM4QxNR5upmOH8jUDBGiHYZmcG+8r6FP4UN9pLW3FZ6XkxKX+
+	aWiXx45iEzZmkLVyPexI4x8U0XR5C2uRxND6+cPlWsKr7HwcbUzYNWsndFDvctUjD/M9b7qzLTlnm
+	BPI5leadzWC+y/edqiC48/HZGsvqB/9FXk+rofE8hNdmTvSR6+IuIvUzzX2yXt4/IfSdANlztKrOc
+	f00EdStg==;
+Received: from [109.166.137.172] (port=37864 helo=localhost)
 	by cloud347.c-f.ro with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.98.1)
 	(envelope-from <asoponar@taladin.ro>)
-	id 1uFTlj-00000006q6u-2GBu;
-	Thu, 15 May 2025 11:16:52 +0300
+	id 1uFTll-00000006q7R-0Bbp;
+	Thu, 15 May 2025 11:16:54 +0300
 From: Alexandru Soponar <asoponar@taladin.ro>
 To: linux-kernel@vger.kernel.org,
 	linux-hwmon@vger.kernel.org,
@@ -73,10 +74,12 @@ Cc: jdelvare@suse.com,
 	aardelean@baylibre.com,
 	contact@sopy.one,
 	Alexandru Soponar <asoponar@taladin.ro>
-Subject: [PATCH 0/16] lib: Refactor find_closest() and find_closest_descending() from macros to lib functions
-Date: Thu, 15 May 2025 11:13:16 +0300
-Message-ID: <20250515081332.151250-1-asoponar@taladin.ro>
+Subject: [PATCH 01/16] hwmon: w83795: Fix type incompatibility with non-macro find_closest
+Date: Thu, 15 May 2025 11:13:17 +0300
+Message-ID: <20250515081332.151250-2-asoponar@taladin.ro>
 X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250515081332.151250-1-asoponar@taladin.ro>
+References: <20250515081332.151250-1-asoponar@taladin.ro>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -88,9 +91,9 @@ X-SpamExperts-Domain: cloud347.c-f.ro
 X-SpamExperts-Username: 185.236.86.218
 Authentication-Results: mxserver.ro; auth=pass smtp.auth=185.236.86.218@cloud347.c-f.ro
 X-SpamExperts-Outgoing-Class: ham
-X-SpamExperts-Outgoing-Evidence: SB/global_tokens (0.00142511043704)
+X-SpamExperts-Outgoing-Evidence: Combined (0.02)
 X-Recommended-Action: accept
-X-Filter-ID: Pt3MvcO5N4iKaDQ5O6lkdGlMVN6RH8bjRMzItlySaT/l1RxW2J9YM5Z2+IdQaoSXPUtbdvnXkggZ
+X-Filter-ID: Pt3MvcO5N4iKaDQ5O6lkdGlMVN6RH8bjRMzItlySaT/O7UgxM56v2QHekgcNkOkZPUtbdvnXkggZ
  3YnVId/Y5jcf0yeVQAvfjHznO7+bT5w1OL79HMxE022P+rQy8YAdcSeERs4TOTnIH1kc1IWc5TSx
  S75yz9IFZiY7BarU/NrpK8SEOwGmfn6ucAKqn/OHRh3BqzFaEnAEj4UixLJBjVNiLZt/QXQnOBRD
  +jq1HsIBmHTFdhqXZEtguZY7iGKpkcJnJKaJfT+dw1udmv00tbIRNtoyOobb3xnDyRRylAVTYi2b
@@ -100,84 +103,47 @@ X-Filter-ID: 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
- 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
+ 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
- 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
+ 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
+ 0N7182QNMEbAtB23JpYTnB2HqfPoGtp9xnk=
 X-Report-Abuse-To: spam@cleanserver1.mxserver.ro
 X-Complaints-To: abuse@cleanserver1.mxserver.ro
 
-This patch series converts the find_closest() and find_closest_descending() macros
-into proper library functions. The conversion moves these utilities from macro
-implementations in util_macros.h to standard C functions in lib/find_closest.c.
+The pwm_freq_cksel0 array was previously declared as u16 but used with
+find_closest_descending(). Now that find_closest_descending() is
+implemented as a function with 'int' parameters instead of a macro,
+passing unsigned arrays causes type incompatibility errors. This patch
+changes the array type from u16 to int to match the function's signature
+and prevent compilation errors.
 
-The first 15 patches modify individual callers across hwmon, iio, leds, regulator,
-and watchdog subsystems to ensure they work correctly with the new function-based
-implementation. This maintains compatibility while allowing the final conversion.
+Signed-off-by: Alexandru Soponar <asoponar@taladin.ro>
+---
+ drivers/hwmon/w83795.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-The final patch implements the actual refactoring by moving the code to
-lib/find_closest.c. This approach was chosen based on discussions between
-Andrew Morton and Alexandru Ardelean[1], who suggested that a non-inline
-implementation would be appropriate given the size of the functions.
-
-The refactoring avoids of macro expansion-related issues and proper function
-prototypes with well-defined parameter types.
-
-Links:
-[1] https://lore.kernel.org/lkml/20241105145406.554365-1-aardelean@baylibre.com/
-
-Alexandru Soponar (16):
-  hwmon: w83795: Fix type incompatibility with non-macro find_closest
-  hwmon: emc1403: Fix type incompatibility with non-macro find_closest
-  hwmon: ina3221: Fix type incompatibility with non-macro find_closest
-  hwmon: lm95234: Fix type incompatibility with non-macro find_closest
-  hwmon: max1619: Fix type incompatibility with non-macro find_closest
-  hwmon: lm75: Fix type incompatibility with non-macro find_closest
-  hwmon: ltc4282: Fix type incompatibility with non-macro find_closest
-  hwmon: max6639: Fix type incompatibility with non-macro find_closest
-  hwmon: max20740: Fix type incompatibility with non-macro find_closest
-  iio: ad7606: Fix type incompatibility with non-macro find_closest
-  iio: mcp3564: Fix type incompatibility with non-macro find_closest
-  iio: max44009: Fix type incompatibility with non-macro find_closest
-  leds: eds-mt6370-rgb: Fix type incompatibility with find_closest()
-  regulator: max77857: Fix type incompatibility with find_closest()
-  watchdog: simatic-ipc-wdt: Fix type incompatibility with
-    find_closest()
-  lib: move find_closest() and find_closest_descending() to lib
-    functions
-
- drivers/hwmon/emc1403.c                |  2 +-
- drivers/hwmon/ina3221.c                |  8 +--
- drivers/hwmon/lm75.c                   | 42 +++++++--------
- drivers/hwmon/lm95234.c                |  2 +-
- drivers/hwmon/ltc4282.c                |  2 +-
- drivers/hwmon/max1619.c                |  2 +-
- drivers/hwmon/max6639.c                |  2 +-
- drivers/hwmon/pmbus/max20730.c         |  4 +-
- drivers/hwmon/w83795.c                 |  2 +-
- drivers/iio/adc/ad7606.c               |  8 +--
- drivers/iio/adc/mcp3564.c              |  2 +-
- drivers/iio/light/max44009.c           |  2 +-
- drivers/leds/rgb/leds-mt6370-rgb.c     |  9 ++--
- drivers/regulator/max77857-regulator.c |  2 +-
- drivers/watchdog/simatic-ipc-wdt.c     |  2 +-
- include/linux/find_closest.h           | 13 +++++
- include/linux/util_macros.h            | 61 +---------------------
- lib/Makefile                           |  2 +-
- lib/find_closest.c                     | 71 ++++++++++++++++++++++++++
- 19 files changed, 132 insertions(+), 106 deletions(-)
- create mode 100644 include/linux/find_closest.h
- create mode 100644 lib/find_closest.c
-
+diff --git a/drivers/hwmon/w83795.c b/drivers/hwmon/w83795.c
+index 5174db69db5e..1b63bd540f6c 100644
+--- a/drivers/hwmon/w83795.c
++++ b/drivers/hwmon/w83795.c
+@@ -273,7 +273,7 @@ static inline s8 temp_to_reg(long val, s8 min, s8 max)
+ 	return clamp_val(val / 1000, min, max);
+ }
+ 
+-static const u16 pwm_freq_cksel0[16] = {
++static const int pwm_freq_cksel0[16] = {
+ 	1024, 512, 341, 256, 205, 171, 146, 128,
+ 	85, 64, 32, 16, 8, 4, 2, 1
+ };
 -- 
 2.49.0
 

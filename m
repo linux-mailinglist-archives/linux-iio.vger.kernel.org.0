@@ -1,118 +1,127 @@
-Return-Path: <linux-iio+bounces-19527-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19544-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8508AB80EE
-	for <lists+linux-iio@lfdr.de>; Thu, 15 May 2025 10:38:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82B83AB8275
+	for <lists+linux-iio@lfdr.de>; Thu, 15 May 2025 11:25:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 837B01BC17F2
-	for <lists+linux-iio@lfdr.de>; Thu, 15 May 2025 08:36:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4EC5A1B668A2
+	for <lists+linux-iio@lfdr.de>; Thu, 15 May 2025 09:25:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE3672882A7;
-	Thu, 15 May 2025 08:32:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30C05296D09;
+	Thu, 15 May 2025 09:24:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A7mU282L"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3FF627FB16;
-	Thu, 15 May 2025 08:32:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7F2D221296;
+	Thu, 15 May 2025 09:24:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747297943; cv=none; b=aGi8cEy6O9L8392l4WkFiyzCT38zY035YovoplMxxM1OrV6eVcQz1OpjcE/JzpIdf3D6b8rVN92LZfbs7uMteFWCWoNRPT0nJn8sZAMOL2jNlg6o1A93ba6hoTX8cstg7C2QO8DDZLpYF4+y+mcHevh3ttYY5mT/uiYWvrt2dpI=
+	t=1747301097; cv=none; b=E3XVRriMAD8lsLgYCd30CCZzqiG1+knGIo9Fw6f9zRLF+Q86oWM0m5Ej8Qtj7xrtAXi8PCWpoaPt+yRZfugpRH0LYkwyZl5aTLrBwlQcG41Xh29SBIVbPMAwDE+jGC8zXjncAVlb62lWRpmpNf8mKlImGJbxTYOPClfhwMJRvtY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747297943; c=relaxed/simple;
-	bh=ft0dKBqcbX3Ig1fHTnCsSOWKg6T6rN12vq7j5B2OZUM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=icPL5hpWtEhhlWbmm527xrrFX+3HqC6lrM3taMeSBCRt/ocs6qlfkK4E8nbuQXgOeGpodtPuRb4HKKrFILNnAj5M+oB+kzrIxwvaAWNw1vpHRSC4P6OLqIl/unlw9mIkz0Cx3oS3XgLY4fP1SYwJmMFEPxnSYrN4GIqK0Du/AUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from localhost (unknown [124.16.138.129])
-	by APP-05 (Coremail) with SMTP id zQCowAAHRg58piVoyo_ZFQ--.49488S2;
-	Thu, 15 May 2025 16:31:56 +0800 (CST)
-From: Chen Ni <nichen@iscas.ac.cn>
-To: jic23@kernel.org,
-	dlechner@baylibre.com,
-	nuno.sa@analog.com,
-	andy@kernel.org,
-	mcoquelin.stm32@gmail.com,
-	alexandre.torgue@foss.st.com,
-	u.kleine-koenig@baylibre.com,
-	tglx@linutronix.de,
-	robh@kernel.org,
-	jirislaby@kernel.org,
-	fabrice.gasnier@foss.st.com
-Cc: linux-iio@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Chen Ni <nichen@iscas.ac.cn>
-Subject: [PATCH v2] iio: adc: stm32-adc: Fix race in installing chained IRQ handler
-Date: Thu, 15 May 2025 16:31:01 +0800
-Message-Id: <20250515083101.3811350-1-nichen@iscas.ac.cn>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1747301097; c=relaxed/simple;
+	bh=JZp32cGnARt5v5SngWT8bwZW1Jh8iJC7PUvH3dlXTsI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=R4liFbo1pr/73dqUtm8X9RXRpJjn3vWj8OSzJVS03J9TxvgHKN/9zyWl7uwxvqGfa3Wv21o5FGVnkedyHXfWsltCXnKhbEb+Hg1s5MxMHQ8syCfaqHs74xIkqgnGLOWGMzweo0nY+yn4FtxEQvo5kD5doTKPyhU+Ae4KjVS7vRc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A7mU282L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C28A3C4CEE7;
+	Thu, 15 May 2025 09:24:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1747301096;
+	bh=JZp32cGnARt5v5SngWT8bwZW1Jh8iJC7PUvH3dlXTsI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=A7mU282LSWsGdpwJ5DOiLTIAyqVyxqrlhiVc/v/e9xV8IF8oplET2K7F1vaW9ndS9
+	 Tlas2OXmX6IsN+pRPlTSwvSVtCP/Cw8hsCLXnTBqvAPakVN7aP6hBug3Z5jAfSXubn
+	 ZZrk7AA4uR2EeRexTRs3IkByDiF4sfYVO8tBjoHvFYBpCuapOsYHAbkzEnbptayKPG
+	 MaoK0JqisvSZA0NJiNex8WCJ8Q3RnsW2nI/+VLG9cLM4obd3XEaUHaDi8QTplnEc1M
+	 321EnbfQT9BLZhjy61zQ22mIKJpakf9bnmHCgr0tDdiOLD7gc8Vv4jdSy+oggRK3O8
+	 BkvdzdvjkhAOg==
+Date: Thu, 15 May 2025 11:24:53 +0200
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+To: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
+	wbg@kernel.org, jic23@kernel.org, catalin.marinas@arm.com, will@kernel.org, 
+	devicetree@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org, 
+	linux-pwm@vger.kernel.org, olivier.moysan@foss.st.com, lee@kernel.org, 
+	alexandre.torgue@foss.st.com
+Subject: Re: [PATCH v3 4/8] pwm: stm32: add support for stm32mp25
+Message-ID: <5ui74qlssllgn4h34by5jcpi5g6rknziclcsh4w27tjvznynsv@lcjtjxn6rovl>
+References: <20250110091922.980627-1-fabrice.gasnier@foss.st.com>
+ <20250110091922.980627-5-fabrice.gasnier@foss.st.com>
+ <4b641513-ff2e-43ab-8074-ba6b521875e2@foss.st.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowAAHRg58piVoyo_ZFQ--.49488S2
-X-Coremail-Antispam: 1UD129KBjvdXoWrtrWUJF45KF13ZFyxGw4UArb_yoWkGrgEg3
-	97ZwnxGw4Iyr9Iyw17XFnxZa4SqrW8KwsrCr1vvFZ3Gr9rZry5ZrsIvFsxur18WFykCas7
-	ZFyxC3yfC3y5GjkaLaAFLSUrUUUUbb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUbfkFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
-	Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AKxVWxJr
-	0_GcWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
-	2Ix0cI8IcVAFwI0_Jrv_JF1lYx0Ex4A2jsIE14v26r4UJVWxJr1lOx8S6xCaFVCjc4AY6r
-	1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02
-	628vn2kIc2xKxwCY1x0262kKe7AKxVW8ZVWrXwCY02Avz4vE14v_GFyl42xK82IYc2Ij64
-	vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8G
-	jcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a6rW5MIIYrxkI7VAKI48JMIIF0xvE2I
-	x0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK
-	8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I
-	0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjTRuksqDUUUU
-X-CM-SenderInfo: xqlfxv3q6l2u1dvotugofq/
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="dxezo4t7v65ydh54"
+Content-Disposition: inline
+In-Reply-To: <4b641513-ff2e-43ab-8074-ba6b521875e2@foss.st.com>
 
-Fix a race where a pending interrupt could be received and the handler
-called before the handler's data has been setup, by converting to
-irq_set_chained_handler_and_data().
 
-Fixes: d58c67d1d851 ("iio: adc: stm32-adc: add support for STM32MP1")
-Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
----
-Changelog:
+--dxezo4t7v65ydh54
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v3 4/8] pwm: stm32: add support for stm32mp25
+MIME-Version: 1.0
 
-v1 -> v2:
+Hello Fabrice,
 
-1. Add Fixes tag.
----
- drivers/iio/adc/stm32-adc-core.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+On Wed, May 14, 2025 at 11:30:26AM +0200, Fabrice Gasnier wrote:
+> On 1/10/25 10:19, Fabrice Gasnier wrote:
+> > Add support for STM32MP25 SoC. Use newly introduced compatible to handle
+> > new features along with registers and bits diversity.
+> > The MFD part of the driver fills in ipidr, so it is used to check the
+> > hardware configuration register, when available to gather the number
+> > of PWM channels and complementary outputs.
+> >=20
+> > Signed-off-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+> > ---
+> > Changes in v2:
+> > Address Uwe review comments:
+> > - Make MAX_PWM_OUTPUT definition less generic: STM32_PWM_MAX_OUTPUT
+> > - No need to initialize 'npwm'
+> > - refactor code, for *num_enabled to use same code path
+> > ---
+> >  drivers/pwm/pwm-stm32.c | 42 ++++++++++++++++++++++++++++++++++-------
+> >  1 file changed, 35 insertions(+), 7 deletions(-)
+>=20
+> Hi Uwe,
+>=20
+> I think this patch still miss some reviews.
+> The first patches of this series have been merged.
+>=20
+> Is it ok for you to merge, or shall I resend separately ?
 
-diff --git a/drivers/iio/adc/stm32-adc-core.c b/drivers/iio/adc/stm32-adc-core.c
-index bd3458965bff..21c04a98b3b6 100644
---- a/drivers/iio/adc/stm32-adc-core.c
-+++ b/drivers/iio/adc/stm32-adc-core.c
-@@ -430,10 +430,9 @@ static int stm32_adc_irq_probe(struct platform_device *pdev,
- 		return -ENOMEM;
- 	}
- 
--	for (i = 0; i < priv->cfg->num_irqs; i++) {
--		irq_set_chained_handler(priv->irq[i], stm32_adc_irq_handler);
--		irq_set_handler_data(priv->irq[i], priv);
--	}
-+	for (i = 0; i < priv->cfg->num_irqs; i++)
-+		irq_set_chained_handler_and_data(priv->irq[i],
-+						 stm32_adc_irq_handler, priv);
- 
- 	return 0;
- }
--- 
-2.25.1
+I have it still on my radar, no need to resend. I just have to find the
+time to look into it in more detail.
 
+Best regards
+Uwe
+
+--dxezo4t7v65ydh54
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmglstgACgkQj4D7WH0S
+/k7tvQgAr0tuQYW7a8kZHG4D+r8Ju5Etk+73ekoD+5NJcmpwe6C8Nye8E3mKfgS6
+bWCXuQS9aBsBvnmwFzIV9jkcwJrdeejQfv46EJ0IOZZFloj7b/vB3K/L/dzS3Ray
+XkPiy+M1R1rGt5B5X1U2gyUK6QRCE4KOMquhXMRCQxO7zqXlozUOk2rcmcAzgGMV
+tpQY/lDPoA9V6k4R6WL4yGAzwybvl+ASbzdrDmsjuIcW9On5Y5xDzkeVH9RSU5P0
+apvIu6hfS3bj3LvTF8QiT9emDOMQJAMU0J5t2YOeazfw/A7rFfqFQl7FA4Z2nDGZ
+wxTfL+UCcOGnVPHKb0fByZ5OKLMqrA==
+=ZB/v
+-----END PGP SIGNATURE-----
+
+--dxezo4t7v65ydh54--
 

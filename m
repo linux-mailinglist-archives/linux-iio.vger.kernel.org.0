@@ -1,48 +1,48 @@
-Return-Path: <linux-iio+bounces-19609-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19610-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 509DFABA53F
-	for <lists+linux-iio@lfdr.de>; Fri, 16 May 2025 23:35:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36D37ABA544
+	for <lists+linux-iio@lfdr.de>; Fri, 16 May 2025 23:36:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 047707A3A36
-	for <lists+linux-iio@lfdr.de>; Fri, 16 May 2025 21:34:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CEB334A81BD
+	for <lists+linux-iio@lfdr.de>; Fri, 16 May 2025 21:36:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 286C522DFBB;
-	Fri, 16 May 2025 21:35:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6E3D280332;
+	Fri, 16 May 2025 21:35:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k2WBdQxq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hCJVlDCl"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD84C17BD9;
-	Fri, 16 May 2025 21:35:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95EB028031D;
+	Fri, 16 May 2025 21:35:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747431339; cv=none; b=qoA0JCcX2uOCVyBOvC7u0TXVDXwu51yOGZBGpLhNNmpbGG6JAR6zqmrO7gvUBl6zFuQxFaokWUbfr+hNZiKe1dKI7pC9T84RAiGo/+hcLwa+pfSCTape7AodRKA4nUzfQV79cwcf3A9QV2Z3++QaD6D/jRxASCvjp1hidfUrcy8=
+	t=1747431345; cv=none; b=lT7v3kmFANZyeMuUfHJxbauh7DM/D4ZTc2o2k7+PUKEQ3EdmqIMH4uZ+982Ug+Kh/gWHbU07dfsYsy2GmOCsW0MK4I1JdSFryUDanJbDSOCh8uD/z9PToJ+75G5rjipH+nNkxK0RL7ZnLMqV89jFOeQ7jPxENgj1Gu3AoUmg/hg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747431339; c=relaxed/simple;
-	bh=WPrDGRUp06890/GkJMf1F4VqNmBo603+BkanNt0ZETg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=Y1N539rDzdk7qEMz8kyEkUe5vtA0CMjKWxWNZGSxH7s4DJtI9AZAJdkwYQccWWY30M0E4PNGPAj+ZW9Ijbb2jZm79Bg2lpmh5NtkApi8QWLTBCpl+jFKYVqdovL9QFivMmPRU55fi+s1zfpWNY3glTK5pZ12qg9nnf88ULNANEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k2WBdQxq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4A48C4CEE4;
-	Fri, 16 May 2025 21:35:33 +0000 (UTC)
+	s=arc-20240116; t=1747431345; c=relaxed/simple;
+	bh=j1ruRMNqvYg22uItOxJBvLjPf2urbsTmYoBaw8oZ93E=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=sS2blg5tw+8xosv0jry8SndbEOoaGPd627in3QIdKzdRn6bzV5Iw/3XgweT5EqApTYXuIIwls1zBarxV8AKPTT6T9DMZrQkfisCjWEb8741s44ZBmFD5d73VYcm6h8Ro7nUDuYyREoKTW/JjB8gW+pdGHcaPOBwXalo3rRn8EI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hCJVlDCl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1643C4CEE9;
+	Fri, 16 May 2025 21:35:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747431339;
-	bh=WPrDGRUp06890/GkJMf1F4VqNmBo603+BkanNt0ZETg=;
-	h=Date:Subject:To:References:From:In-Reply-To:From;
-	b=k2WBdQxqWqhfx7Fs9Ti+IlfeVY+e+qn1C5Crjk6I2RLkUir5OowkjCRP69wa0SweI
-	 oEiMPGmn3AmLjTh4Lwh+utin7G8/CQXG+Je9tlDYSNpyqgxOD0CNAU/xaDHQvn37fK
-	 B6y63r/Kg364yHEQatkjnD+4HTCjlP7AOV2f5AIMkij2i3hR91fO8Pm2LXtRV+EAcA
-	 d3zQ4OROMBAIKRsXxfzSOlIWIkTeXbtvzGtRLsbkqAQ+Wktwp4UOdswASmY5kEUFRU
-	 d8JmhPa1xswLbj3Rdg1QPcgkHL+RexCG1ve3/0qfQVPeW8yvVdQ085ebuu2Vro4vkW
-	 LNYBwbb6Usr9g==
-Message-ID: <cabc9c67-9ae4-4883-8c97-b48930c37dd6@kernel.org>
-Date: Fri, 16 May 2025 21:30:55 +0200
+	s=k20201202; t=1747431343;
+	bh=j1ruRMNqvYg22uItOxJBvLjPf2urbsTmYoBaw8oZ93E=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=hCJVlDClmNIfMNPDJikF5f8+4dp1aX3y0Hc7Dpnw27kNKONV9qSJUW7TYbtS+sZ+S
+	 RHNhIWNFIcOeJq7K5vz1BBDcVBYBjRhgBUH03IKM9cfTm5PiOO5SWsZQYDjircWlvy
+	 V8Js2a5erk9l1bs0iLQoFpfUR7FLVLJKf/aNaUTeqi7w73OzLd+IxzRhmNtgOIBXky
+	 LYje8srQSekNwzypexSQVLwuZkCWn6X5aQaIi4tujBuJDMNW4CConWdubPDIyy8cwA
+	 HKMylv+9wKX0Mn1HmDkqc2gp8J+GjORvg9F/kaO8ucMovOhCIQ828RvDq/yuaPjyaJ
+	 nNaz+tHUSDFnQ==
+Message-ID: <c8ff6830-5d22-45f0-8130-c6b434dc897d@kernel.org>
+Date: Fri, 16 May 2025 21:34:20 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -50,28 +50,14 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 3/4] dt-bindings: iio: adc: add ad7405
-To: Pop Ioan Daniel <pop.ioan-daniel@analog.com>,
- Lars-Peter Clausen <lars@metafoo.de>,
- Michael Hennerich <Michael.Hennerich@analog.com>,
- Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>,
- =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
- Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Sergiu Cuciurean <sergiu.cuciurean@analog.com>,
- Dragos Bogdan <dragos.bogdan@analog.com>,
- Antoniu Miclaus <antoniu.miclaus@analog.com>,
- Olivier Moysan <olivier.moysan@foss.st.com>,
- Javier Carrasco <javier.carrasco.cruz@gmail.com>,
- Matti Vaittinen <mazziesaccount@gmail.com>,
- Tobias Sperling <tobias.sperling@softing.com>,
- Alisa-Dariana Roman <alisadariana@gmail.com>,
- Marcelo Schmitt <marcelo.schmitt@analog.com>,
- Trevor Gamblin <tgamblin@baylibre.com>,
- Matteo Martelli <matteomartelli3@gmail.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20250516105810.3028541-1-pop.ioan-daniel@analog.com>
- <20250516105810.3028541-4-pop.ioan-daniel@analog.com>
+Subject: Re: [PATCH] dt-bindings:iio:gyroscope:invensense,itg3200: add binding
+To: Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>
+Cc: andy@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org,
+ dlechner@baylibre.com, krzk+dt@kernel.org, linux-kernel@vger.kernel.org,
+ nuno.sa@analog.com, robh@kernel.org, ~lkcamp/patches@lists.sr.ht,
+ jic23@kernel.org, linux-iio@vger.kernel.org
+References: <59220742-18b1-4704-bb5c-8b79f0099139@baylibre.com>
+ <20250515221108.3890-1-rodrigo.gobbi.7@gmail.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -117,23 +103,21 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <20250516105810.3028541-4-pop.ioan-daniel@analog.com>
+In-Reply-To: <20250515221108.3890-1-rodrigo.gobbi.7@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 16/05/2025 12:58, Pop Ioan Daniel wrote:
-> Add devicetree bindings for ad7405/adum770x family.
+On 16/05/2025 00:09, Rodrigo Gobbi wrote:
+>> Also just noticed that the IIO mailing list and Jonathan are missing
+>> from the CC. Need to add those to have a chance of this getting picked
+>> up.
 > 
-> Signed-off-by: Pop Ioan Daniel <pop.ioan-daniel@analog.com>
-> ---
-> changes in v2:
->  - fix properties: clocks issue
->  .../bindings/iio/adc/adi,ad7405.yaml          | 60 +++++++++++++++++++
->  1 file changed, 60 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad7405.yaml
-> 
+> Adding CC since I`ve missed.
+> Tks and regards.
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+
+No, you need to resend. By adding them on Cc they do not magically get
+all the discussions from other emails.
 
 Best regards,
 Krzysztof

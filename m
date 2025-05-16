@@ -1,265 +1,224 @@
-Return-Path: <linux-iio+bounces-19599-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19600-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B813ABA027
-	for <lists+linux-iio@lfdr.de>; Fri, 16 May 2025 17:44:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B5BAABA031
+	for <lists+linux-iio@lfdr.de>; Fri, 16 May 2025 17:45:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 92914A04295
-	for <lists+linux-iio@lfdr.de>; Fri, 16 May 2025 15:43:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 225463ADA59
+	for <lists+linux-iio@lfdr.de>; Fri, 16 May 2025 15:45:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4611C1C5D4E;
-	Fri, 16 May 2025 15:43:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAEB91C9EB1;
+	Fri, 16 May 2025 15:45:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="l5Hi6IPW"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="vZmzqCd4"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ua1-f53.google.com (mail-ua1-f53.google.com [209.85.222.53])
+Received: from mail-ot1-f53.google.com (mail-ot1-f53.google.com [209.85.210.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59BCB1B4F09;
-	Fri, 16 May 2025 15:43:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEEC21C84C4
+	for <linux-iio@vger.kernel.org>; Fri, 16 May 2025 15:45:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747410223; cv=none; b=XyZak3PmhFnVqKpA8NIC1jb7IP51I6Vv5l/tU4vwa2BPdECOT4usmUXtNdiRSS7O1rtbGAU+rllj0WOvsneIwqv5GNrW19BjieWiXq0Kh2RnyJFNcjdJDX4eWEEmldxBfvVd3fC6piY3+/tjodN686VU9A5zklwEUyv0GwTKwt0=
+	t=1747410315; cv=none; b=tkKIjUPCt6tn1KpNSRsGeghPt+WqDygKc9pBPFUPmtkGK768XzlwnPqQMvtoFNzM2LfCIHTeEnakDSDefGCg1xpTvMckChn1ocg3x5vHbP8X2DYmjUCcSvPGZgR9JfoA1xofQeooVOY+G+zo5CvQCLgxWjM4yv6vZBNhF6TllRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747410223; c=relaxed/simple;
-	bh=JdE1zOENuVbx36wBTnd2zRX98IwRHuPeDvGz6NXdT70=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tYG/bRXEk7s7yTmdAvC/eQJZLxuQD3n/BglqKBk0nMhdfZrdYspayyfTIr4FXJuqjNB29peCMncGWKBPli11JtaiRi73zrOPD3D0KxTYxQuGxWf5YFziPSimamhKzXYhd/l1EY/Qv0e8G7SCjG0bmr0vYHfJxGvOX6ZTDZiObfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=l5Hi6IPW; arc=none smtp.client-ip=209.85.222.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ua1-f53.google.com with SMTP id a1e0cc1a2514c-86dc3482b3dso2205716241.0;
-        Fri, 16 May 2025 08:43:41 -0700 (PDT)
+	s=arc-20240116; t=1747410315; c=relaxed/simple;
+	bh=GPqjEiXfvgpVyzD7MfRLrA0RhaihGYpKr3DGczzpvTA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DdgGZZdShB5DpPizP0dJfmHEpRJ43g7Hwg8bE6pWd6umcJu1e2P854tiFvIouX3mlxL6xx3QtuWpPlDWpVJ0iFMHE10d/P4vJI74TbP6georn/5ZYO8jHsoQHUlfTH0G32vuQE7U3OeE3GFzrlfoKFXO9OBPaQUWr+5sapD6U8s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=vZmzqCd4; arc=none smtp.client-ip=209.85.210.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-ot1-f53.google.com with SMTP id 46e09a7af769-72c14235af3so1818945a34.3
+        for <linux-iio@vger.kernel.org>; Fri, 16 May 2025 08:45:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1747410220; x=1748015020; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=wjNmcOXLLQSabYEk9is/iDidcy39077ZDWkUH1PgLhI=;
-        b=l5Hi6IPW6CiB9lpBsSy5LnXUb+gDnHBbwDaJyn8zGx9wOBTwBrqP2LVyEX9qXvmA1R
-         HmKuak60HFcfXIZbh5FrQXxvsFuMaUU9BXAAtfZUnhGT7orLSoIDQyCv1BiDsWSNXcwz
-         teMfmYyMIc32xCM3DiMnNp4LkcaBut9y+TQdmFNh/6YZqUAQI1Pha71cDsm/hlKsAk6t
-         Hueb/0bpWzlkPgzAQBmop2H+H4f9KRXChmWQomXIOKSjovyWSEeREreK9rOv1GzpH5vv
-         G9RpckkRIB6vYYD+jsPvwqOmADlxfjQqqBD0/ht91q7Rh2aLANQfoa+KYiss24dqPTQi
-         oB3g==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1747410311; x=1748015111; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=7Ec1M58FKkAOe/rNmBRU5GFp7ntrZHiowIyOOzinjDk=;
+        b=vZmzqCd4B1S9g7Y1eUe58JAxpVOfMLRS/EfrN48K8nT9Ckz/17kb/TKZzxmQDYDBLB
+         sqgvdl+4xf/RpwTAfWTChaLgx/r5Okk64g/5n8FMNe7vIezENo/ToHO6kop3EHzJrgu3
+         W00ztlXGJfLDBoNLos5bJGbzoa+7Ly8X47A8KaUf5uJQ1zlwokuwqiM8EZzqVroRRklz
+         MYeCGDnsKd9nSCBeucvQjpHTCZHG96nLUkiaQCRK5dtw8rUveHsE+rHcZo2Nk7jxJsJQ
+         s2sTnONuCAHD3psk8Ek52I8x3sc7+2tHjE7BFi1IJ65bPdYhs351YwUeP8/USfWeWbrD
+         yehA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747410220; x=1748015020;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
+        d=1e100.net; s=20230601; t=1747410311; x=1748015111;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=wjNmcOXLLQSabYEk9is/iDidcy39077ZDWkUH1PgLhI=;
-        b=nKTb/HUjuQ/Jql2tzs/SAgQywn9l+ggk1l9CdBHz3frFnzeUTGmMC9c/uOvH0dPkwh
-         lZv87xsFT8hDvaia/+hgsFYRatw0YRCE4Ha/qGNidXdRi9QtrkpgTvjWf11wlqy96/O+
-         Y6JKJsqOBAsLEdRT2SlHfd6Vc+QSfhwwk6WTN5WAANJ4vNdfKkdGN2VEAqgE3z3vfsvu
-         me1ocDcm8BQwCt9LJ2aHj1TiHqWEBVXabEsAU8hm9EBfDCTvmIKuYz2Kp1OzzBbQkk+E
-         tcbbLlXY1NSlThRESWvVZL7jGLJgCU4YAFETucdnDVVXeM6+VIxHkpmLDuA1rzBeDq5T
-         8/9w==
-X-Forwarded-Encrypted: i=1; AJvYcCU+4V12OUPhc2sPD26MnpMF/tbLdEqMvaryuXJxP02KdLrG6wK4/IYNeP1HiM8ebQDFZiylIyr9zq7G@vger.kernel.org, AJvYcCWKhq5HiQUBQNFAcBMmJKraP3bEBzMHm36uL2T9V5ftNyUUsmGFRed23dRnMwxxGBiKfEcwCp3laaY9aw==@vger.kernel.org, AJvYcCX29B+he6tacCIUvUmMrVNu2BD1gPHKYYqSqn/0jwb9MLj9urkmdqPXZPDRaR4bEbKyTtNqiMmLzc9C0xVX@vger.kernel.org, AJvYcCXdSazYyECbPZFUqf9PKxwLHJ+S0dPo17+wX+tzBMhatcSoGS7Qfra74KwGK/iWdpkNU7UZZSqs39pe@vger.kernel.org
-X-Gm-Message-State: AOJu0YzXeG/sbLmdLHUXWOTfaiSO84blOLXLocQnRVCDb38AfYG25ghs
-	RUOr5tphy8hFj/KwBvUtblXZ3Tqkr72vnzsqEF15+PUbwOEZ8qucaCYj37lgD3vuRYo=
-X-Gm-Gg: ASbGnct38EqnhERQ3sLFwZuw5QchyoPgp0Vq8OHkDvLol6ZwZeBzv/nQTpIoSZJi8DW
-	yC9dkMXrh++i8t0L+A8MS39MSJ94GF5XTIJOciOzVGXXQfaLFtxguKzGhFOPVH7iDv0JqzCT/OP
-	BkBKtYuH6d5tdqwmzwjaR44j06S9YsL38GC/YqvrErZZeNNZOYjT0q60HIdpVZzK5CipQsXsn/C
-	Hf98eMptDw4szwWd0Da5ZtH0C2+XRYB48QyhnCIJXLc6NDm0m/+4grpNMRwOTILdN/PJ/loH682
-	GdMng3IR2FnGh90lxazHcUSrHm2wQjEURGIkIwodO84LERwbcQZXB0phXOPI
-X-Google-Smtp-Source: AGHT+IHvG4FVQp4e/eKHXTxDq3Vg3QnZP1emTn7spybnjDSiEjB5GDXmM4vdwyTK0anMEzFD4tfLog==
-X-Received: by 2002:a05:6122:2c2f:b0:52d:bcd1:ab55 with SMTP id 71dfb90a1353d-52dbcd1aba9mr2892034e0c.2.1747410219998;
-        Fri, 16 May 2025 08:43:39 -0700 (PDT)
-Received: from localhost ([2804:30c:1623:d000:b599:2ab9:58bc:e4e3])
-        by smtp.gmail.com with UTF8SMTPSA id 71dfb90a1353d-52dba94090dsm2053529e0c.16.2025.05.16.08.43.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 May 2025 08:43:38 -0700 (PDT)
-Date: Fri, 16 May 2025 12:45:05 -0300
-From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Marcelo Schmitt <marcelo.schmitt@analog.com>, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-gpio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, jic23@kernel.org, lars@metafoo.de,
-	Michael.Hennerich@analog.com, nuno.sa@analog.com, andy@kernel.org,
-	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	linus.walleij@linaro.org, brgl@bgdev.pl
-Subject: Re: [PATCH v3 01/10] dt-bindings: iio: adc: Add AD4170
-Message-ID: <aCddgYRWrLPlGeuR@debian-BULLSEYE-live-builder-AMD64>
-References: <cover.1747083143.git.marcelo.schmitt@analog.com>
- <5fa867cff437c0c6d3f0122af823e1677a12d189.1747083143.git.marcelo.schmitt@analog.com>
- <2ab9a6e2-a331-4995-8d42-00290bc825e7@baylibre.com>
+        bh=7Ec1M58FKkAOe/rNmBRU5GFp7ntrZHiowIyOOzinjDk=;
+        b=gVqCfwEhpim5JgYQBzRfLKV3vAnKQqQwSkB27Mql7T0RkA40QcjhdIIkhcG+6Gqpsl
+         KMEJqc7V+xZSxszG1XpkSzGD+E2iKexMUwnKRfBtHlEapPJf0ZYk4vJac6Oobn85vqQx
+         4R09Nzk1nRaVe1ha4qIAHsF8rTvYTLmuZLbTaR+LQG9eEqODT6sKHqNzVx8SoVGvr8/L
+         8Q/xPVKd7fGrebH1REbV37j2BXohmhWwrsH5AHzJ66VxhOl07e56pxfcFIG4dBF4t4sf
+         RD1KC4JH55N5AkL3dde5mtP7i0ttNsqS5cvaL6JQksFyzvtGgQX55r/AB9k912bOJ1HZ
+         7KBQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWcw3pjlz8byV84fZvdfTwuAIDZeDE1wLxTwgl4J/PQH/+qGi6kO77TSz2qRiv7Myn0/HuWbnjwev0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxRpwX7iIMNSb77XgQcScMl9a8CAU0wUOU2g0+m2FsUaMYm8HwA
+	AJ28LcyLf29KnXBX0nNwqhYbx+W7/b69h1QbACVB3lvpy1UhdhAQrlX8c4BfVy1h7vc=
+X-Gm-Gg: ASbGncv2q9IDvKvqHlLUAOQ6pqedI4h1INjQ16yF7nk72neCZAEx6Q57xzHO7avQQDz
+	J7+SRggoH4wKA18sY0D447S31wWMsjxCdLWl5M3ADqGV/X+WbMr1NIwKpW7n7Zpinyvu4KpisSU
+	LxUOBrDP8IuZYppgKV4BPTTyFNYyk39n5LLxwWL7MJ80EQ9hGS5f7hzEoHJAfE6zRAEDTxwb1Ii
+	rH4T+Wd6li5NPcMzIe9kAnq5d6hLS6vvj0xyft12vk1rTfrCPJxVVyhLF3NT5+ut8i1eHM103cm
+	vFVFpF6dvgQzJQusEE9kbhS+X7I5hSMyoWaJ2FlaWQzYFb2FNF9qTng/EtmCBQ+qns9SFMb7DEn
+	7IdPE9VEStEwbmtA9rjUOazFLEg==
+X-Google-Smtp-Source: AGHT+IFTiBMCmlFr4Xr0IwvjcWT2W9Ff39GtxaqewQ9MPpe3zVgv86xbspnneLI+BuJWWeAsX6ukEg==
+X-Received: by 2002:a05:6830:d82:b0:72b:7e3c:7284 with SMTP id 46e09a7af769-734f994c4f5mr1927613a34.18.1747410310861;
+        Fri, 16 May 2025 08:45:10 -0700 (PDT)
+Received: from ?IPV6:2600:8803:e7e4:1d00:d2f:9b08:7c22:3090? ([2600:8803:e7e4:1d00:d2f:9b08:7c22:3090])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-734f6a4b101sm389197a34.9.2025.05.16.08.45.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 16 May 2025 08:45:10 -0700 (PDT)
+Message-ID: <5318e6be-5299-47bf-8c6d-1d30a1765b9b@baylibre.com>
+Date: Fri, 16 May 2025 10:45:09 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 3/4] dt-bindings: iio: adc: add ad7405
+To: Conor Dooley <conor@kernel.org>,
+ Pop Ioan Daniel <pop.ioan-daniel@analog.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>,
+ Michael Hennerich <Michael.Hennerich@analog.com>,
+ Jonathan Cameron <jic23@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ Sergiu Cuciurean <sergiu.cuciurean@analog.com>,
+ Dragos Bogdan <dragos.bogdan@analog.com>,
+ Antoniu Miclaus <antoniu.miclaus@analog.com>,
+ Olivier Moysan <olivier.moysan@foss.st.com>,
+ Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+ Matti Vaittinen <mazziesaccount@gmail.com>,
+ Tobias Sperling <tobias.sperling@softing.com>,
+ Alisa-Dariana Roman <alisadariana@gmail.com>,
+ Marcelo Schmitt <marcelo.schmitt@analog.com>,
+ Trevor Gamblin <tgamblin@baylibre.com>,
+ Matteo Martelli <matteomartelli3@gmail.com>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250516105810.3028541-1-pop.ioan-daniel@analog.com>
+ <20250516105810.3028541-4-pop.ioan-daniel@analog.com>
+ <20250516-moonshine-engine-006e72665702@spud>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <20250516-moonshine-engine-006e72665702@spud>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <2ab9a6e2-a331-4995-8d42-00290bc825e7@baylibre.com>
 
-...
-> > +
-> > +    properties:
-> > +      adi,reference-select:
-> > +        description: |
-> > +          Selects the reference source to use when converting on the specific
-> > +          channel. Valid values are:
-> > +          0: Differential reference voltage REFIN+ - REFIN−.
-> > +          1: Differential reference voltage REFIN2+ - REFIN2−.
-> > +          2: Internal 2.5V referece (REFOUT) relative to AVSS.
-> > +          3: Analog supply voltage (AVDD) relative AVSS.
-> > +        $ref: /schemas/types.yaml#/definitions/uint8
-> > +        enum: [0, 1, 2, 3]
-> Using strings instead of int for this and most of the other custom enums here
-> would make them self-documenting and easier to use.
-
-The numbers match the values that are documented in the datasheet for each
-option of voltage reference available to use with a channel. So we would be
-using numbers mostly to define values of some unit and pin numbers (e.g. 100 for
-the microamp property)? Not really excited about doing this change because I
-think it will make the dtb a bit larger and the driver code a bit more lengthy,
-but can do that for v4.
-
-...
-> > +      adi,sensor-type:
-> > +        description: |
-> > +          Type of sensor connected to the device. Depending on the sensor type
-> > +          (weigh scale, RTD, or thermocouple) the values of sensor-node
-> > +          properties have slightly different constraints. This property
-> > +          specifies which particular external sensor is connected to the ADC so
-> > +          the sensor-node properties can be properly parsed and verified. The
-> > +          possible sensor types are:
-> > +          0: weigh scale;
-> > +          1: RTD;
-> > +          2: thermocouple.
-> > +        $ref: /schemas/types.yaml#/definitions/uint8
-> This property seems reduandant since it has to match the node name.
+On 5/16/25 9:18 AM, Conor Dooley wrote:
+> On Fri, May 16, 2025 at 01:58:03PM +0300, Pop Ioan Daniel wrote:
+>> Add devicetree bindings for ad7405/adum770x family.
+>>
+>> Signed-off-by: Pop Ioan Daniel <pop.ioan-daniel@analog.com>
+>> ---
+>> changes in v2:
+>>  - fix properties: clocks issue
+>>  .../bindings/iio/adc/adi,ad7405.yaml          | 60 +++++++++++++++++++
+>>  1 file changed, 60 insertions(+)
+>>  create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad7405.yaml
+>>
+>> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7405.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7405.yaml
+>> new file mode 100644
+>> index 000000000000..939de3bd6f26
+>> --- /dev/null
+>> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7405.yaml
+>> @@ -0,0 +1,60 @@
+>> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+>> +# Copyright 2025 Analog Devices Inc.
+>> +%YAML 1.2
+>> +---
+>> +$id: http://devicetree.org/schemas/iio/adc/adi,ad7405.yaml#
+>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+>> +
+>> +title: Analog Devices AD7405 family
+>> +
+>> +maintainers:
+>> +  - Dragos Bogdan <dragos.bogdan@analog.com>
+>> +  - Pop Ioan Daniel <pop.ioan-daniel@analog.com>
+>> +
+>> +description: |
+>> +  Analog Devices AD7405 is a high performance isolated ADC, 1-channel,
+>> +  16-bit with a second-order Σ-Δ modulator that converts an analog input signal
+>> +  into a high speed, single-bit data stream.
+>> +
+>> +  https://www.analog.com/media/en/technical-documentation/data-sheets/ad7405.pdf
+>> +  https://www.analog.com/media/en/technical-documentation/data-sheets/adum7701.pdf
+>> +  https://www.analog.com/media/en/technical-documentation/data-sheets/adum7702.pdf
+>> +  https://www.analog.com/media/en/technical-documentation/data-sheets/ADuM7703.pdf
+>> +
+>> +properties:
+>> +  compatible:
+>> +    enum:
+>> +      - adi,ad7405
+>> +      - adi,adum7701
+>> +      - adi,adum7702
+>> +      - adi,adum7703
+>> +
+>> +  clocks:
+>> +    maxItems: 1
+>> +
+>> +  vdd1-supply: true
+>> +
+>> +  vdd2-supply: true
+>> +
+>> +  io-backends:
+>> +    maxItems: 1
+>> +
+>> +required:
+>> +  - compatible
+>> +  - clocks
+>> +  - vdd1-supply
+>> +  - vdd2-supply
+>> +  - io-backends
+>> +
+>> +additionalProperties: false
+>> +
+>> +examples:
+>> +  - |
+>> +    adc {
+>> +        compatible = "adi,ad7405";
+>> +        clocks = <&axi_clk_gen 0>;
 > 
-> i.e. weighscale@... is is always adi,sensor-type = <0>; and so on.
+> No reg here, how do you actually access this device?
+> Is it entirely via the backend?
 
-Yes, can we rely on node names I'll do that for v4.
+Yeah, it is just a high speed serial bus (not SPI) that reads data
+and there are no programmable registers.
 
-...
-> > +
-> > +      adi,power-down-switch-pin:
-> > +        description:
-> > +          Number of the GPIO used as power-down switch for the bridge circuit.
-> > +        $ref: /schemas/types.yaml#/definitions/uint8
-> > +        enum: [0, 1]
-> This isn't required, so what is the default if omitted?
+It would probably make sense to have this as a child node of the
+backend rather than a random platform device. We had a similar
+discussion about a similar case a while back [1].
 
-We don't care about it when the property is omitted.
-Do we need a default even when the property is not required and we don't care
-when it's not set?
+However, the conclusion in that case was different because that
+device had both configuration registers and non-SPI compatible
+data stream on the same lines. So we concluded that even though
+this was the same line on the DAC, it was two different buses.
+We ended up with the AXI ADC node as a parent SPI controller node
+that also used the io-backends binding to represent the separate
+data bus.
 
-...
-> > +      diff-channels:
-> > +        description: |
-> > +          This property is used for defining the inputs of a differential
-> > +          voltage channel. The first value is the positive input and the second
-> > +          value is the negative input of the channel.
-> > +
-> > +          Besides the analog input pins AIN0 to AIN8, there are special inputs
-> > +          that can be selected with the following values:
-> > +          17: Internal temperature sensor
-> > +          18: (AVDD-AVSS)/5
-> > +          19: (IOVDD-DGND)/5
-> > +          20: DAC output
-> > +          21: ALDO
-> > +          22: DLDO
-> > +          23: AVSS
-> > +          24: DGND
-> > +          25: REFIN+
-> > +          26: REFIN-
-> > +          27: REFIN2+
-> > +          28: REFIN2-
-> > +          29: REFOUT
-> > +          For the internal temperature sensor, use the input number for both
-> > +          inputs (i.e. diff-channels = <17 17>).
-> > +        items:
-> > +          enum: [0, 1, 2, 3, 4, 5, 6, 7, 8, 17, 18, 19, 20, 21, 22, 23, 24, 25,
-> > +                 26, 27, 28, 29]
-> 
-> A Header file with macros for these would be nice since it seems like we
-> have to use the higher-numbered ones a lot with the common-mode-channel
-> properties in the examples.
+In this case though, we only have one bus, so instead of using the
+io-backend binding, we could just have the AXI ADC node be the
+parent of the ADC node as was suggested in [2].
 
-The RFC set had a header with macros for those numbers, but making dt properties
-"look nice" was said to no be a reason to have binding headers. 
-
-https://lore.kernel.org/linux-iio/ikq55kcfu2lmxzeeobu4zwf67xypyikadnpycw2m4d7o6gvmi2@tkepvcvzqzoh/
-
-Also, no other binding would use those values. So, we would have a header
-specific for adi,ad4170?
-
-> 
-> > +
-> > +      single-channel: true
-> > +
-> > +      common-mode-channel: true
-> > +
-> > +      bipolar: true
-> > +
-> > +      adi,buffered-positive:
-> > +        description: |
-> > +          Enable precharge buffer, full buffer, or skip reference buffering of
-> > +          the positive voltage reference. Because the output impedance of the
-> > +          source driving the voltage reference inputs may be dynamic, RC
-> > +          combinations of those inputs can cause DC gain errors if the reference
-> > +          inputs go unbuffered into the ADC. Enable reference buffering if the
-> > +          provided reference source has dynamic high impedance output. Note the
-> > +          absolute voltage allowed on positive reference inputs (REFIN+,
-> > +          REFIN2+) is from AVSS − 50 mV to AVDD + 50 mV when the reference
-> > +          buffers are disabled but narrows to AVSS to AVDD when reference
-> > +          buffering is enabled or in precharge mode.
-> > +          0: Reference precharge buffer.
-> > +          1: Full Buffer.
-> > +          2: Bypass reference buffers (buffering disabled).
-> > +        $ref: /schemas/types.yaml#/definitions/uint8
-> > +        enum: [0, 1, 2]
-> > +        default: 1
-> > +
-> > +      adi,buffered-negative:
-> > +        description: |
-> > +          Enable precharge buffer, full buffer, or skip reference buffering of
-> > +          the negative voltage reference. Because the output impedance of the
-> > +          source driving the voltage reference inputs may be dynamic, RC
-> > +          combinations of those inputs can cause DC gain errors if the reference
-> > +          inputs go unbuffered into the ADC. Enable reference buffering if the
-> > +          provided reference source has dynamic high impedance output. Note the
-> > +          absolute voltage allowed on negative reference inputs (REFIN-,
-> > +          REFIN2-) is from AVSS − 50 mV to AVDD + 50 mV when the reference
-> > +          buffers are disabled but narrows to AVSS to AVDD when reference
-> > +          buffering is enabled or in precharge mode.
-> > +          0: Reference precharge buffer.
-> > +          1: Full Buffer.
-> > +          2: Bypass reference buffers (buffering disabled).
-> > +        $ref: /schemas/types.yaml#/definitions/uint8
-> > +        enum: [0, 1, 2]
-> > +        default: 1
-> Could make a $def for these too to reduce duplication.
-
-I think so, but how? They are only documented here. I can merge them into a
-single adi,buffered property. That will also reduce duplication.
+[1]: https://lore.kernel.org/linux-iio/f9a2b74f371fb4b02486ad7426c57b75739438f3.camel@gmail.com/
+[2]: https://lore.kernel.org/linux-iio/e8af0f3f-a09c-42d7-b8ca-dd633539af73@kernel.org/
 
 > 
-> Also another case where string type would make more sense.
-> 
-> > +
-> > +    required:
-> > +      - reg
-> 
-> reg is already required by adc.yaml
-> 
-> > +
-> > +    oneOf:
-> > +      - required: [single-channel]
-> 
-> Is there a default for common-mode-channel if it isn't required in this case?
+>> +        vdd1-supply = <&vdd1>;
+>> +        vdd2-supply = <&vdd2>;
+>> +        io-backends = <&iio_backend>;
+>> +    };
+>> +...
+>> -- 
+>> 2.34.1
+>>
 
-It should be required. Will make common-mode-channel required in this case. 
-
-
-Thanks,
-Marcelo
 

@@ -1,119 +1,154 @@
-Return-Path: <linux-iio+bounces-19573-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19583-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A935AB96BD
-	for <lists+linux-iio@lfdr.de>; Fri, 16 May 2025 09:44:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4BC8AB97AE
+	for <lists+linux-iio@lfdr.de>; Fri, 16 May 2025 10:29:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 531D5A0044B
-	for <lists+linux-iio@lfdr.de>; Fri, 16 May 2025 07:44:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 408411BC682E
+	for <lists+linux-iio@lfdr.de>; Fri, 16 May 2025 08:29:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EF24228CBE;
-	Fri, 16 May 2025 07:44:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CACE22DA1C;
+	Fri, 16 May 2025 08:27:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dAnZM+dl"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="YWB6fLey"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFA6B19CC3D;
-	Fri, 16 May 2025 07:44:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC20422DA09;
+	Fri, 16 May 2025 08:27:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747381489; cv=none; b=N7rGTS3Lk+r5qaODZZ+19KTro5luZ7yMo6bPOb43W8P3/MGb5Fov9eBJJmf4RnmiH+v33mHzjdlZmrWTdtLnrEVfA9Pn3n1P0yB5s1Sm4SvGoL3nEezfGME0xBb8BRk6QIWafa5qQ69mEcSlGlNaHXQJud+Ev+Pqx89QwgL84MA=
+	t=1747384041; cv=none; b=biUbuf1W01jj0jwOGAwNYix+Hom7Ij8Ie0pyOylarnV8jQRsVdV+vU3ZpZixThYphlGlfpKKDAH9Asb6m+YWMShEDRavgqQ3SucQcnXEF6ugZ6hVC8Jx7BY29df4aQvW8NPjcAhNELC16apC8iXhQ0F9Fjd8ilid5IendSl7vJY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747381489; c=relaxed/simple;
-	bh=KIw8Huc6vUZhcrht53XcPAEGUcuPRVVZ5mcf7sgarkg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rtajGQUrxDl5tQZRdFBoBN0u0T9k+WiaEJUFunNaZwoJf5GxJZo3ZQbKYEJNlRDh4xCE/tj47cUAqyFAtw2Oq4c30Xf/+3aUWNNjg7ylC4py0t6VAK1O76fE90I52jihNoLRtDEClZBRtE/s+orVgmXFEmIh4rAPszTBzI7qDzE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dAnZM+dl; arc=none smtp.client-ip=209.85.221.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-3a35c894313so547772f8f.2;
-        Fri, 16 May 2025 00:44:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1747381485; x=1747986285; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=3BLm9vkXCYt/96TogirZ+THEaz3OcB10jY6XSrA9NLc=;
-        b=dAnZM+dl7JhYpWKv8tnIhJqzAFJ+wr9LknNfXOHtrE6zpEtawOqu/9IcVs5lU1Jwme
-         7hn5MHPnlkET0RZzXZxmpasq0PxLOxYLVQZXXs7IZlF1dLfVWrrOoIjMf0TF59M/vltr
-         sQk81IrOgzKdekDGXuHvU0gc9BCOzB2/UW9s2xYNTWx2zd7j/T4WgWH1t29qwfHnkoOP
-         R0W+oLMcA3HFlJBjYLG5yFVx2JPDmDXxN/W+PXVLr11E4JGxUrVzDQyokRZpmTqOOoOT
-         GkyCJqQU6rmKXQ/DP5l4rdPOapH2w0ZmnCu9OnphXu7Mh6O9H2sl/4S4LvccZGFRKsit
-         aewQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747381485; x=1747986285;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=3BLm9vkXCYt/96TogirZ+THEaz3OcB10jY6XSrA9NLc=;
-        b=DucNER6goDzhXUZDgNuTt70KugjjkyjHB3d0pUCtvXqmjSyTgWANjXoQHT79LKJzZe
-         4J9ml/FnTUpLTJ7LVD/vz1WjDabQeBZAb/gIY4S2L5D9Z86g1hQ0QUGTcKPdpFDnCxtB
-         Qbf6cDrSD5mMYh7oyLJxtYnjp9ZH4Q0BSIqaVh8+xZcPxds4TbGYtS4XXUzVb5krbCPL
-         +7QxlYGLseOGHmd832MlwuuucQxt2uDLz2LF8LieaWOkpwL2turEQUvsKE0HfDNJulC+
-         GusMINxPOYrTc/vVkNgbPIOXJT6O7xVL0LiQz844pEw32vknxnZpxO3609eHY6BjIuGX
-         6mJA==
-X-Forwarded-Encrypted: i=1; AJvYcCUbJwn2GDkkTUOsQ+Q6vy+9aILlcStd88yxjuNbaWHDvjP95kC3boAoMKHAdQHtJhxS19qZZ+LlrNGp@vger.kernel.org, AJvYcCVaTdfzYY7ho4mN6z1I0N5sRKQ3Idj1XEg6kRnWpVsotsINa7NXSzgw9xm396jxOC6GAwomfUDy+ZnZx8PM@vger.kernel.org, AJvYcCXtEpQ/skyIx1eKb7cgNsoAoDS253H/y+3Cf1GVUYC+xlOTe5ljwhFs3LcGH8SYfu4z/voqCxP/xxQi@vger.kernel.org
-X-Gm-Message-State: AOJu0YxqzrbodXKT2gsPgzSciTqQyy9eUl2nu2EhlAGbC5pov52pA5l/
-	Fjbw0KxfnCOjuhSWZM8G0dc846vkQG8guhRqVwA8dHUtQqM8PvZOEphX0AxyoKWHQnM=
-X-Gm-Gg: ASbGncshSRrmS2c5XjuxTqlGR40EzeIp4yvQUqDGzSWc3qnBi/ZmUWItx+sV+klgR5x
-	zJTXofmgRWOPVyWltdrhUiUHZEBTpdgxFk2mZfmr2X9y9AbcpmCQ3XUaOd939U/P6zcobIChTfb
-	hvHCsUZGXLLZ14jMaXxpwInZucSa8vrlq5xf/6ZqNVfguRxeHi0HANvc3qd2C9JV6SvSCAu/mqo
-	Syt1XuO0t6kMr+bVrCfD8F+ZqRkg37Wx5rPATgP7zJAmmpDhU+5RAjPQDdZKpctz8wnEEPd+uau
-	mzc9FtUltgPChuzIzJaM8TtTEeKF6G5VxdNrCz1LSoF58KWbrsb6iPeAyQuQ4c9ttWl26OIgkkg
-	ODR/pqjkuOQ==
-X-Google-Smtp-Source: AGHT+IEI0iipmLPi0vWLMxoTwpXsqFP5+lcK7QRys9Z6brRkts3HtVxE1z5Eqbv41581z+CKUlTdBw==
-X-Received: by 2002:a05:6000:2af:b0:39d:724f:a8ae with SMTP id ffacd0b85a97d-3a35c8355admr2586432f8f.33.1747381484844;
-        Fri, 16 May 2025 00:44:44 -0700 (PDT)
-Received: from ubuntu2204 (207-pool1.nat.godollo.uni-mate.hu. [192.188.242.207])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-442fee0d216sm16675845e9.26.2025.05.16.00.44.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 May 2025 00:44:44 -0700 (PDT)
-Date: Fri, 16 May 2025 09:44:41 +0200
-From: =?utf-8?B?VMOzdGggSsOhbm9z?= <gomba007@gmail.com>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: 
-	=?utf-8?B?VMOzdGggSsOhbm9z?= via B4 Relay <devnull+gomba007.gmail.com@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 2/2] iio: chemical: Add driver for SEN0322
-Message-ID: <objvp7ewogv4g7zw4dfrxzdalxlrb2jo2wdpckmmzwtymrgges@naxumsrw4hdr>
-References: <20250506-iio-chemical-sen0322-v4-0-1465ac8dc190@gmail.com>
- <20250506-iio-chemical-sen0322-v4-2-1465ac8dc190@gmail.com>
- <20250515174416.0d5c49cc@jic23-huawei>
+	s=arc-20240116; t=1747384041; c=relaxed/simple;
+	bh=UtR1DqMS1k3wSay4wJdxZB8iljHT9i5AeMOjluG12mQ=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Vyla9gn95JvfmFNcE4GBqIs3sx+6cePnplpGwACGtZHj1VmW1CGgNAwKP95P5AFmGY20G20B01kzZnGWWxdzFR0k+yKCuVmEYnmGr7pTD3OM9yI1gvIfvIn4cuc5C4ossp1Kit1Rkltf7jqIBMm2l8DwxGyZzwsMQjiNRGQxGH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=YWB6fLey; arc=none smtp.client-ip=148.163.135.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
+Received: from pps.filterd (m0375855.ppops.net [127.0.0.1])
+	by mx0b-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54G6Xg1J010012;
+	Fri, 16 May 2025 04:27:15 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=DKIM; bh=9rIP9xVeUvRrmO4Kz0BbQfSJpOe
+	KkI9QLLX2BtSSIDA=; b=YWB6fLeyhm278LGLYSwwxwcHhY1/wAaCjUF+SyjnqcC
+	OI5sNiftNDZMXNng+1G1/1lffT0lzXbo4dQZsqRbM3Vhb3foYRF3ZL7cf5SbDygf
+	wMwywbgEAoqCU1yLpPhy35PwVzO2LvJrumK054GY2qG0JlGvItge9uWkwnSsMbum
+	u1bcjbyp+Akf75chryL6sVdaABnuIGSdtux+G60LbtO6Z+Wcs9BjalaZ9fhsfjrR
+	2BFwjTLtxrvfiePpjBzf9KhXpXhnJyBaCIJrMXQSMiT/wlQpc2flINmtHrYqs4VU
+	F88Je+r/YIjqzbvTE4S4xF+QWLCEbow/RVydncE/QLA==
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+	by mx0b-00128a01.pphosted.com (PPS) with ESMTPS id 46p070retr-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 16 May 2025 04:27:15 -0400 (EDT)
+Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
+	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 54G8QjKx033595
+	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Fri, 16 May 2025 04:26:45 -0400
+Received: from ASHBCASHYB4.ad.analog.com (10.64.17.132) by
+ ASHBMBX8.ad.analog.com (10.64.17.5) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Fri, 16 May 2025 04:26:45 -0400
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by
+ ASHBCASHYB4.ad.analog.com (10.64.17.132) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Fri, 16 May 2025 04:26:45 -0400
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Fri, 16 May 2025 04:26:45 -0400
+Received: from amiclaus-VirtualBox.ad.analog.com (AMICLAUS-L02.ad.analog.com [10.48.65.120])
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 54G8QZwe031549;
+	Fri, 16 May 2025 04:26:38 -0400
+From: Antoniu Miclaus <antoniu.miclaus@analog.com>
+To: <jic23@kernel.org>, <robh@kernel.org>, <conor+dt@kernel.org>,
+        <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+CC: Antoniu Miclaus <antoniu.miclaus@analog.com>
+Subject: [PATCH v6 00/10] Add support for AD4080 ADC
+Date: Fri, 16 May 2025 11:26:20 +0300
+Message-ID: <20250516082630.8236-1-antoniu.miclaus@analog.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250515174416.0d5c49cc@jic23-huawei>
+Content-Type: text/plain
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-ORIG-GUID: reOcnSfSbtYsURgzsmuMeC2NC9Y7aXip
+X-Proofpoint-GUID: reOcnSfSbtYsURgzsmuMeC2NC9Y7aXip
+X-Authority-Analysis: v=2.4 cv=A/9sP7WG c=1 sm=1 tr=0 ts=6826f6e3 cx=c_pps
+ a=PpDZqlmH/M8setHirZLBMw==:117 a=PpDZqlmH/M8setHirZLBMw==:17
+ a=dt9VzEwgFbYA:10 a=HubKl35eoKcbRmig0ccA:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTE2MDA3OSBTYWx0ZWRfX2fdAE6zTxuBY
+ TrBpNG2vJgRIl0azmIAuCKCOW8+5Ss2gfa3ai3eoeB7YIQwyeb9yT0Bov6aeZG/NV1q6Aev+OCz
+ EQxyfX17DggkiZtktp0GBn2NuNugE9KBWGmsa9hxTmVocD7dSSTmkOT5RFhqpL0fjeeo4teEhvr
+ ZDpnqIinn+4Wncvcg7UjYZBG64sexEOgaUYsqBxhaTVlNw/4iMVgIw+U+CbY+T3kn1UxF17oSf9
+ eoSKRlS04aw/TtdLm5+XEgdVmCW/CZCvskYEjX5/FLLiJfFf5eYPnSHawyYF1saP2IoBII5M9Q8
+ tHu+Yb7tqiVAEsKZwOUS5pjWE6CjXP8g4+7A2w4vFV5QzR8ZZqj2w1PW2Z3QwRLajc1hGfuzeLi
+ 8kNgG/wCfbkJYPsrBJVa9a8InRy2i/4l03yQEWoAS3XqbXJ1okfxlVHwajf37BC60dQ3hQ2t
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-05-16_03,2025-05-15_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 malwarescore=0 mlxlogscore=999 priorityscore=1501 mlxscore=0
+ impostorscore=0 clxscore=1015 adultscore=0 phishscore=0 lowpriorityscore=0
+ bulkscore=0 suspectscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505070000
+ definitions=main-2505160079
 
-Hi!
+The AD4080 is a high-speed, low noise, low distortion, 20-bit, Easy
+Drive, successive approximation register (SAR) analog-to-digital
+converter (ADC). Maintaining high performance (signal-to-noise and
+distortion (SINAD) ratio > 90 dBFS) at signal frequencies in excess
+of 1 MHz enables the AD4080 to service a wide variety of precision,
+wide bandwidth data acquisition applications.
 
-> Will shortly appear in the testing branch of iio.git.  I'll push it out
-> as togreg once it's had minimal 0-day build coverage.
+This driver aims to be extended in the future to support multiple parts that are
+not released yet:
+    AD4081
+    AD4082
+    AD4083
+    AD4084
+    AD4085
+    AD4086
+    AD4087
+    AD4088
 
-Wonderful, thank you!
+Antoniu Miclaus (10):
+  iio: backend: add support for filter config
+  iio: backend: add support for data alignment
+  iio: backend: add support for number of lanes
+  dt-bindings: iio: adc: add ad408x axi variant
+  iio: adc: adi-axi-adc: add filter type config
+  iio: adc: adi-axi-adc: add data align process
+  iio: adc: adi-axi-adc: add num lanes support
+  dt-bindings: iio: adc: add ad4080
+  iio: adc: ad4080: add driver support
+  Documetation: ABI: add sinc1 and sinc5+pf1 filter
 
-> > +	ret = data[0] * 100 + data[1] * 10 + data[2];
-> 
-> return data[0] ...
+ Documentation/ABI/testing/sysfs-bus-iio       |   4 +
+ .../bindings/iio/adc/adi,ad4080.yaml          |  96 +++
+ .../bindings/iio/adc/adi,axi-adc.yaml         |   2 +
+ MAINTAINERS                                   |   8 +
+ drivers/iio/adc/Kconfig                       |  14 +
+ drivers/iio/adc/Makefile                      |   1 +
+ drivers/iio/adc/ad4080.c                      | 620 ++++++++++++++++++
+ drivers/iio/adc/adi-axi-adc.c                 |  77 +++
+ drivers/iio/industrialio-backend.c            |  58 ++
+ include/linux/iio/backend.h                   |  19 +
+ 10 files changed, 899 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad4080.yaml
+ create mode 100644 drivers/iio/adc/ad4080.c
 
-Yep, sorry.
+-- 
+2.49.0
 
-> If nothing else comes up I'll fix this.
-
-Thank you! Please let me know if I have to change something.
-
-Best regards,
-János
 

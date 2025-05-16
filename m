@@ -1,193 +1,163 @@
-Return-Path: <linux-iio+bounces-19595-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19596-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F4C7AB9E80
-	for <lists+linux-iio@lfdr.de>; Fri, 16 May 2025 16:19:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAC79AB9F7C
+	for <lists+linux-iio@lfdr.de>; Fri, 16 May 2025 17:12:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 66CEB166A93
-	for <lists+linux-iio@lfdr.de>; Fri, 16 May 2025 14:19:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D2811C04283
+	for <lists+linux-iio@lfdr.de>; Fri, 16 May 2025 15:06:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E26E71898FB;
-	Fri, 16 May 2025 14:18:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69E1F156237;
+	Fri, 16 May 2025 15:06:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SWXG33jt"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="q4k+XqCi"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f51.google.com (mail-ot1-f51.google.com [209.85.210.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9844A1632DD;
-	Fri, 16 May 2025 14:18:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD42F2AE6F
+	for <linux-iio@vger.kernel.org>; Fri, 16 May 2025 15:06:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747405113; cv=none; b=ruvBkkgK3UJ29487jWHqVUMkItZYJLBb+wV1rxa2e1Mzv7Hrt+Ji6gKPbi3mTNIgVX6m8ldJMIUODL83ZNVvCtMKbfICB4NsFcJs3xumexN1iYsXA76Dan06GJx4euElafRFrFexmSk7ZcHrlHQK/A0ovZiiRNx2qiQwSy7HfEI=
+	t=1747407983; cv=none; b=If57VRf72uSzImMHnLMLjXbkIwMvuOjlRznKZQ1rVbpgUr/2tzwSJhZ4Ptkzapo/w5bXbBY3pgSJbO0uNXBTpkV98EI/t4OnJNMURAaEhTa1CAHBPLS4XDSFFrAs5P6HYIB/nV4xvlQLUs7ksD0S+2dvADqvYh8GQF55+3zNpmw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747405113; c=relaxed/simple;
-	bh=wJC6zw4ize8YvwX8KINR0uybINw/Jty0tJPjNkm1idc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kSaxyY/RULiVrdXI8Ler8aPust1Wqef6qQ03+aVZ6tMJrlgNBwwCoWSE9vrxa9ZlX3FhGwxg+XG1gOD8ef6M1XBOEan+Dloy7XSLH7bS/4zxzAhWOkHn03/75fwLljhaINsQAjVqi8kyS6L1uXFIP3KCcjpIUc43t4N3EL/WTyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SWXG33jt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD18FC4CEE4;
-	Fri, 16 May 2025 14:18:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747405113;
-	bh=wJC6zw4ize8YvwX8KINR0uybINw/Jty0tJPjNkm1idc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SWXG33jt+z9gQJKbLLztRaIhXu3GxC1mAa0ZSlSKQm4IUJrXys/tLQgoGbEyVpyzM
-	 Qkm/KgG7O9POchBxw24pZSWhDuSVXN8Uq3SJ6t/fpj/U+LZY4DBL6KVdey57i1t107
-	 Wz8m0xxe5beLiFlhw50FKELh6evnhdQeRWIez/HvjJe4JM7SMKb41KReJ1EKkgDVa5
-	 ON3tGUogQzuKCn/x+F8hSYJdrXps3pXqwKiyMCyd74KSJf1heyoHdnUXD1v58AxsAq
-	 DRPJ10U3WnmwNAeUyRM2bJwlqTeCfAfRS9jybP5N90hW04pb0QPs2twM8qtkGgiElS
-	 vgs7yd6MmjdKw==
-Date: Fri, 16 May 2025 15:18:26 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Pop Ioan Daniel <pop.ioan-daniel@analog.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Sergiu Cuciurean <sergiu.cuciurean@analog.com>,
-	Dragos Bogdan <dragos.bogdan@analog.com>,
-	Antoniu Miclaus <antoniu.miclaus@analog.com>,
-	Olivier Moysan <olivier.moysan@foss.st.com>,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Matti Vaittinen <mazziesaccount@gmail.com>,
-	Tobias Sperling <tobias.sperling@softing.com>,
-	Alisa-Dariana Roman <alisadariana@gmail.com>,
-	Marcelo Schmitt <marcelo.schmitt@analog.com>,
-	Trevor Gamblin <tgamblin@baylibre.com>,
-	Matteo Martelli <matteomartelli3@gmail.com>,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 3/4] dt-bindings: iio: adc: add ad7405
-Message-ID: <20250516-moonshine-engine-006e72665702@spud>
-References: <20250516105810.3028541-1-pop.ioan-daniel@analog.com>
- <20250516105810.3028541-4-pop.ioan-daniel@analog.com>
+	s=arc-20240116; t=1747407983; c=relaxed/simple;
+	bh=As7Rkm/JYreRJiwzAowlqj582z5EZuQ3RvoMXzdUMsg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=k6nyJDPfUhO4msD/VpwHCIzmGe3Ba70LThEmDanGa20rFIxNU+zrGIBYGZEgYFohL4774MzlCNrw+HIrLAYQMYIpSxJdgtZBVFOP6e5kbC0bAt2l2JA7mD4VBVMRb9RMpOl8LoMFuPQ0Edqo/Ung8opRz2eMtFqkYe+wHTUy5pM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=q4k+XqCi; arc=none smtp.client-ip=209.85.210.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-ot1-f51.google.com with SMTP id 46e09a7af769-72c09f8369cso1095108a34.3
+        for <linux-iio@vger.kernel.org>; Fri, 16 May 2025 08:06:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1747407980; x=1748012780; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=6E5sJD07CRMQgKBqZr6EF6WZtkGakiuVCUUKvmHWSCU=;
+        b=q4k+XqCi6CkVjqFvF+QpdCdA0dRM9Ik1OSnzeI/SRnsfPPdXP2L0Vkjd4wTpKNzvF1
+         JKCjZNEgyllQ8P4uFI78xhGTAh+xZw4AkC+e/qNgH4ejHpfaV/Pxy556oFXYilxXDaq1
+         wWfTgQln4YGkWPGfszBclvN7loPMVaSc7dcDGavcxCYyK+ocJD+w2AOnDTE7tTBX6Yk/
+         2VO74nLvbtcPOBx/a4stqnXdBwYO9e5qTSRKC+PcqDTIEzNgWE7MHSWGGPzNgzQojff6
+         XMoQ+VJtLoC6YsNx1oAZqumDduUeLBUp3x/zSK8km3jpQRKr6MjoAyZmSy2VQid6g5X6
+         IUKQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747407980; x=1748012780;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=6E5sJD07CRMQgKBqZr6EF6WZtkGakiuVCUUKvmHWSCU=;
+        b=RNE8tcN0Di8xjPQhbUMvLMRTi7w4/sqHjKaig159Kyl40GSJAvBzwMx9JqDOU01djf
+         7ywxcCARwmNty/lu/Tqnu3roxe1oRca4Lk4l7WWXKNJMpkkAOKqIdzzIq89eEjF3DNga
+         1mHlVZenAP5xjCNMY5ii2UEyaKdyrXRWr5gN3bpkEyJhGBj5OwKv4HYwnaa4+bhTqK8b
+         371A+DPnVUrleoRCMo1pO7JJQVGFv7WlJfJ2TnCKkNPp+6MApsmLzhL/Ts+Uu+RCN8gV
+         gcNkxpxB/SMpKdkA1rypgAdCJQeicZFA6fm7cG+kTCsxwQFE+uJTU1A0M5Ca8QJtVCqi
+         6qTA==
+X-Forwarded-Encrypted: i=1; AJvYcCWROUUBTouRlKS9T+WT0l0u0Rkcq6VeXViiHrXbTpc/ESnNVvgoKWGajCtUsEk8+y9VW2GeNYgNang=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwZmuzcGQUiCGFuIMXJvhKZr/YDpHzQFrHRTLICVWJmkUpfrWfG
+	k8qmQQdG5QaXHFNU1oXT9IIGm7FWBhNAf81fnOZSVTb3JX5z3G8DQKQ3zI9GYNak5Vg=
+X-Gm-Gg: ASbGncvGe4AvGCxTy2rjwU69ZiI93Cja8kQ28gLH4vRWQA7Bl/imtTg31FWa9GY/c2i
+	+Pb6wJho4gUn0UHobsjrx7LCu+kxsrME/qHa3i4QohdzJEJ1NTwexJBwSzu3UGU0zgY7wf9ulkc
+	EJft/BZmluw5rIwap0hq2rikKBJXXU2+tMru2nP2ZS7bQmVzseqVzTN2Rn2n4roVgLFblll+TRV
+	HY0N8yeRwGDzTC0AbAY6113eOpQVZVTndK/J5XeL52nni0WJ8Pa9hQBaywX9EKlcg702qvWkpGy
+	BiniiExFCcD1r8wT/4DaKCOoRmvuTIFf8vARKPpB5tJkd6MvXyZH37xvaJs/7B3Le/RZTrK6Dmb
+	mGbJDiodrlQBHDvFIqwrxD7CrIg==
+X-Google-Smtp-Source: AGHT+IFNOC7/t80C43iYWbNQzEGuk10Mb1xdW6ECIzwFbq1f/1fkIf8gMb9rA6Zq8f1jvKiFz3JtFA==
+X-Received: by 2002:a05:6830:658c:b0:727:372e:600e with SMTP id 46e09a7af769-734f6b1a0cdmr2441246a34.14.1747407979684;
+        Fri, 16 May 2025 08:06:19 -0700 (PDT)
+Received: from ?IPV6:2600:8803:e7e4:1d00:d2f:9b08:7c22:3090? ([2600:8803:e7e4:1d00:d2f:9b08:7c22:3090])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-734f6b39e93sm372843a34.54.2025.05.16.08.06.18
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 16 May 2025 08:06:19 -0700 (PDT)
+Message-ID: <8e5a9176-1652-41a5-bb8c-cea0d44e4d2d@baylibre.com>
+Date: Fri, 16 May 2025 10:06:18 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="zCsU3JcOku4xXmfF"
-Content-Disposition: inline
-In-Reply-To: <20250516105810.3028541-4-pop.ioan-daniel@analog.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/4] iio: backend: update
+ iio_backend_oversampling_ratio_set
+To: Pop Ioan Daniel <pop.ioan-daniel@analog.com>,
+ Lars-Peter Clausen <lars@metafoo.de>,
+ Michael Hennerich <Michael.Hennerich@analog.com>,
+ Jonathan Cameron <jic23@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ Sergiu Cuciurean <sergiu.cuciurean@analog.com>,
+ Dragos Bogdan <dragos.bogdan@analog.com>,
+ Antoniu Miclaus <antoniu.miclaus@analog.com>,
+ Olivier Moysan <olivier.moysan@foss.st.com>,
+ Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+ Matti Vaittinen <mazziesaccount@gmail.com>,
+ Tobias Sperling <tobias.sperling@softing.com>,
+ Marcelo Schmitt <marcelo.schmitt@analog.com>,
+ Alisa-Dariana Roman <alisadariana@gmail.com>,
+ =?UTF-8?Q?Jo=C3=A3o_Paulo_Gon=C3=A7alves?= <joao.goncalves@toradex.com>,
+ Herve Codina <herve.codina@bootlin.com>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250516105810.3028541-1-pop.ioan-daniel@analog.com>
+ <20250516105810.3028541-2-pop.ioan-daniel@analog.com>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <20250516105810.3028541-2-pop.ioan-daniel@analog.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-
---zCsU3JcOku4xXmfF
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Fri, May 16, 2025 at 01:58:03PM +0300, Pop Ioan Daniel wrote:
-> Add devicetree bindings for ad7405/adum770x family.
->=20
+On 5/16/25 5:58 AM, Pop Ioan Daniel wrote:
+> In the function iio_backend_oversampling_ratio_set the chan parameter
+> was added. The function can be used in contexts where the channel
+> must be specified. All affected files have been modified.
+> 
 > Signed-off-by: Pop Ioan Daniel <pop.ioan-daniel@analog.com>
 > ---
-> changes in v2:
->  - fix properties: clocks issue
->  .../bindings/iio/adc/adi,ad7405.yaml          | 60 +++++++++++++++++++
->  1 file changed, 60 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad7405.=
-yaml
->=20
-> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7405.yaml b/=
-Documentation/devicetree/bindings/iio/adc/adi,ad7405.yaml
-> new file mode 100644
-> index 000000000000..939de3bd6f26
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7405.yaml
-> @@ -0,0 +1,60 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +# Copyright 2025 Analog Devices Inc.
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/adc/adi,ad7405.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Analog Devices AD7405 family
-> +
-> +maintainers:
-> +  - Dragos Bogdan <dragos.bogdan@analog.com>
-> +  - Pop Ioan Daniel <pop.ioan-daniel@analog.com>
-> +
-> +description: |
-> +  Analog Devices AD7405 is a high performance isolated ADC, 1-channel,
-> +  16-bit with a second-order =CE=A3-=CE=94 modulator that converts an an=
-alog input signal
-> +  into a high speed, single-bit data stream.
-> +
-> +  https://www.analog.com/media/en/technical-documentation/data-sheets/ad=
-7405.pdf
-> +  https://www.analog.com/media/en/technical-documentation/data-sheets/ad=
-um7701.pdf
-> +  https://www.analog.com/media/en/technical-documentation/data-sheets/ad=
-um7702.pdf
-> +  https://www.analog.com/media/en/technical-documentation/data-sheets/AD=
-uM7703.pdf
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - adi,ad7405
-> +      - adi,adum7701
-> +      - adi,adum7702
-> +      - adi,adum7703
-> +
-> +  clocks:
-> +    maxItems: 1
-> +
-> +  vdd1-supply: true
-> +
-> +  vdd2-supply: true
-> +
-> +  io-backends:
-> +    maxItems: 1
-> +
-> +required:
-> +  - compatible
-> +  - clocks
-> +  - vdd1-supply
-> +  - vdd2-supply
-> +  - io-backends
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    adc {
-> +        compatible =3D "adi,ad7405";
-> +        clocks =3D <&axi_clk_gen 0>;
+> changes in v3:
+>  - fix ad4851_set_oversampling_ratio function channel error
+>  drivers/iio/adc/ad4851.c           | 6 +++---
+>  drivers/iio/adc/adi-axi-adc.c      | 3 ++-
+>  drivers/iio/industrialio-backend.c | 3 ++-
+>  include/linux/iio/backend.h        | 3 ++-
+>  4 files changed, 9 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/iio/adc/ad4851.c b/drivers/iio/adc/ad4851.c
+> index 98ebc853db79..fccfca256670 100644
+> --- a/drivers/iio/adc/ad4851.c
+> +++ b/drivers/iio/adc/ad4851.c
+> @@ -294,7 +294,7 @@ static int ad4851_scale_fill(struct iio_dev *indio_dev)
+>  }
+>  
+>  static int ad4851_set_oversampling_ratio(struct iio_dev *indio_dev,
+> -					 const struct iio_chan_spec *chan,
+> +					 unsigned int chan,
 
-No reg here, how do you actually access this device?
-Is it entirely via the backend?
+I think passing the channel here is misleading since this is setting the
+oversampling ratio for all channels, not just the one specified.
 
-> +        vdd1-supply =3D <&vdd1>;
-> +        vdd2-supply =3D <&vdd2>;
-> +        io-backends =3D <&iio_backend>;
-> +    };
-> +...
-> --=20
-> 2.34.1
->=20
+I would suggest to make a separate patch that removes the unused
+const struct iio_chan_spec *chan parameter first.
 
---zCsU3JcOku4xXmfF
-Content-Type: application/pgp-signature; name="signature.asc"
+>  					 unsigned int osr)
+>  {
+>  	struct ad4851_state *st = iio_priv(indio_dev);
+> @@ -321,7 +321,7 @@ static int ad4851_set_oversampling_ratio(struct iio_dev *indio_dev,
+>  			return ret;
+>  	}
+>  
+> -	ret = iio_backend_oversampling_ratio_set(st->back, osr);
+> +	ret = iio_backend_oversampling_ratio_set(st->back, chan, osr);
 
------BEGIN PGP SIGNATURE-----
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaCdJMgAKCRB4tDGHoIJi
-0ttWAQCZHPR/d5g4pOwzwPU+IPLwJ/U2F1ULaSQn8yETrxSQWAD+ONIA7VlcVA3U
-hsAHlnrxHmukjdGZA9cYEdL/iJeBug8=
-=hq22
------END PGP SIGNATURE-----
+Then in this patch, just pass 0 here instead of chan with a comment that
+the channel is ignored by the backend being used here.
 
---zCsU3JcOku4xXmfF--
+>  	if (ret)
+>  		return ret;
+>  
 

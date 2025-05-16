@@ -1,178 +1,140 @@
-Return-Path: <linux-iio+bounces-19608-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19609-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C019CABA1F4
-	for <lists+linux-iio@lfdr.de>; Fri, 16 May 2025 19:39:43 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 509DFABA53F
+	for <lists+linux-iio@lfdr.de>; Fri, 16 May 2025 23:35:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 432093AFF19
-	for <lists+linux-iio@lfdr.de>; Fri, 16 May 2025 17:39:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 047707A3A36
+	for <lists+linux-iio@lfdr.de>; Fri, 16 May 2025 21:34:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F0BB272E75;
-	Fri, 16 May 2025 17:39:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 286C522DFBB;
+	Fri, 16 May 2025 21:35:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MW0zoTKa"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k2WBdQxq"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 653651B6D06;
-	Fri, 16 May 2025 17:39:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD84C17BD9;
+	Fri, 16 May 2025 21:35:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747417177; cv=none; b=nqAX5oAhJbXj4z9kvwZyixUhi4cco6VG/U6eh0e7snj+XbVHIhBbY1AuzAckAP3jjnmTF17d16ec6nPTaf5Nq+LWsRAc+5NrMcON2AN2jGU25iPhp1bWK8u5PUiSxuRvLW13N6xq8+3UsAhybBQdNA4fjVfoor+ona9DrZlxQCM=
+	t=1747431339; cv=none; b=qoA0JCcX2uOCVyBOvC7u0TXVDXwu51yOGZBGpLhNNmpbGG6JAR6zqmrO7gvUBl6zFuQxFaokWUbfr+hNZiKe1dKI7pC9T84RAiGo/+hcLwa+pfSCTape7AodRKA4nUzfQV79cwcf3A9QV2Z3++QaD6D/jRxASCvjp1hidfUrcy8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747417177; c=relaxed/simple;
-	bh=WDdPGE1tx7zFa3oY8p0WMBEndLrGqhxdotyVFqZbT1c=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=KljsG7qc85lR2+B9Rw00j+SLHnUsUsKK42dD8g8o5/xgtkitOYCz7JKxSFh67UeB+IxvyhmBjhFlhnI5wq2NATwRh0wjxJtjETOa1+wbBTOAqIJ3dFyh5YL5YwTgi0zpPU84XqxTLkcR6dcbzM3JWyQ7XGWFGjvz4RTzzwHkckc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MW0zoTKa; arc=none smtp.client-ip=209.85.210.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-7376e311086so3053365b3a.3;
-        Fri, 16 May 2025 10:39:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1747417176; x=1748021976; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tUyg69EOHmn6fJiFyTXvge1NaO+118fhYY4ZNlkwbEk=;
-        b=MW0zoTKakArFtHr9hfMStuVYUjpj0oKQFiM0jhtl5gVrrpTQhAGHecyD/i3G89bqsw
-         uNIqpijRd8QR+W3eERLo2XqZiztCgpNdSca9kGl0pcNcPlx0WLrUx3oYYY53/Yc+hTX8
-         BwpYPtDpU78uohiNbpTg3xZ/QcG2yPFO1jcPytRNw8QOwRzNn/Zwh3HWiaH9izhHQI5r
-         GjJJsYKIBBsMOy7evCY6qfW3eokXgERuL93v4gwqPhlZAOevW1XF0qJGRZWICe1AQM8g
-         hnslSfeBc9jHTuRiyiy5rzwC9m+iwbzU8uFg1wc4sX62d16yMgSZOuL4zKBQ6G/pOJNz
-         dhKg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747417176; x=1748021976;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=tUyg69EOHmn6fJiFyTXvge1NaO+118fhYY4ZNlkwbEk=;
-        b=hmK0zYV2LFLCUXAJN5xZ7YTLWF/xzVhnft5kEej2j1FDKaWYF5uev0iYjyUzTmhydc
-         jIAOakPXJ4XlKQnwiHLvNxrjIhjcTKeO7snXzMxE5tX8qrs0s0g/5vbTzSecadC4DgrK
-         IsY4nIQ/C0bsk5rNOHSXVtBVrBrkrpaL1zzfYmppLerylMiWht7KmakpQzms7zDqh7MH
-         2LRad+yxUe0NVpAPhBtrVIUf80uYw9Ep6nLFQukraTdGrDFJi6oGEZhvp5FDIGZqtlqR
-         i+T4iB7B0Vz9QsnVAFS+Eq607JuX4tRAcH+kJy3nCmHKFKICasT2CRIBuRyslYmgY1fF
-         GPhg==
-X-Forwarded-Encrypted: i=1; AJvYcCUM5YgrbCmj4wT0kDCY4nt9czm5anuKQeFVZYR6kTLl/EeGFLr521exNjfG4PP7RjcfEvqCeZL/@vger.kernel.org, AJvYcCWqpu6blMjJEy6pDCbortUQyN8gAs+0SblGQqdrAtZAxS7LVq3Cvuu8F4FwJpQhrwuO97XZGe6dlzE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzzDqeafhulRhYn/tjRNYOuoWIWHwHTMNJBPDH/7XjZDcMj9K6Q
-	DTRna6KzJrWXmK9KfZpf5cc2xOf66U8c1UBwpA6yaPxjE28DGI6FjjUjdkBhLg==
-X-Gm-Gg: ASbGncvnHA9TvEVZV9FYBpyDhIEexnJxEXKIfg/8hJq+JKIGRIw0YDqJeO3FBw38mMO
-	0w2/GwNsJcx19x2jx0AdVZUo1HnuMmVCcuQhVatR3Uy4X83ClaIvueiNlWkBuBHoY/O8eiZ9vY1
-	YLqvVOV5R6tLketjHftG+ieP/h+uyButxOWYpyFJKeOBeDTsGvtDvOGPzZbE0vcTH1Lg+Jdw8bA
-	k2WPrWUwtuLRU1bgrbovtYxgZelxMCCwSIhNeANsBvUQTt0PCMFyO0bjbwwhlavkvR0nPzXhh/7
-	RA7TTxa1RFTbj6HhVj2Y+A0/+l2E9HX7t4FU7KhDiFsVUthCitFZH78HGZTe/OocOg==
-X-Google-Smtp-Source: AGHT+IFZDZYwFZRSdLZjqfMP/kkLuxCVQkmAplhy3X6kvwKvhiHz+L/86zArnCj0gjdgwWQpt4AEDg==
-X-Received: by 2002:a05:6300:218b:b0:216:1ea0:a51a with SMTP id adf61e73a8af0-216219fffedmr6033763637.38.1747417175634;
-        Fri, 16 May 2025 10:39:35 -0700 (PDT)
-Received: from fabio-Precision-3551.. ([2804:14c:485:4b61:93a1:94a9:517a:f69c])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-742a970c85dsm1842201b3a.61.2025.05.16.10.39.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 May 2025 10:39:35 -0700 (PDT)
-From: Fabio Estevam <festevam@gmail.com>
-To: jic23@kernel.org
-Cc: mazziesaccount@gmail.com,
-	linux-iio@vger.kernel.org,
-	Fabio Estevam <festevam@denx.de>,
-	stable@vger.kernel.org
-Subject: [PATCH v2 2/2] iio: adc: max1363: Reorder mode_list[] entries
-Date: Fri, 16 May 2025 14:39:00 -0300
-Message-Id: <20250516173900.677821-2-festevam@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250516173900.677821-1-festevam@gmail.com>
-References: <20250516173900.677821-1-festevam@gmail.com>
+	s=arc-20240116; t=1747431339; c=relaxed/simple;
+	bh=WPrDGRUp06890/GkJMf1F4VqNmBo603+BkanNt0ZETg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=Y1N539rDzdk7qEMz8kyEkUe5vtA0CMjKWxWNZGSxH7s4DJtI9AZAJdkwYQccWWY30M0E4PNGPAj+ZW9Ijbb2jZm79Bg2lpmh5NtkApi8QWLTBCpl+jFKYVqdovL9QFivMmPRU55fi+s1zfpWNY3glTK5pZ12qg9nnf88ULNANEE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k2WBdQxq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4A48C4CEE4;
+	Fri, 16 May 2025 21:35:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1747431339;
+	bh=WPrDGRUp06890/GkJMf1F4VqNmBo603+BkanNt0ZETg=;
+	h=Date:Subject:To:References:From:In-Reply-To:From;
+	b=k2WBdQxqWqhfx7Fs9Ti+IlfeVY+e+qn1C5Crjk6I2RLkUir5OowkjCRP69wa0SweI
+	 oEiMPGmn3AmLjTh4Lwh+utin7G8/CQXG+Je9tlDYSNpyqgxOD0CNAU/xaDHQvn37fK
+	 B6y63r/Kg364yHEQatkjnD+4HTCjlP7AOV2f5AIMkij2i3hR91fO8Pm2LXtRV+EAcA
+	 d3zQ4OROMBAIKRsXxfzSOlIWIkTeXbtvzGtRLsbkqAQ+Wktwp4UOdswASmY5kEUFRU
+	 d8JmhPa1xswLbj3Rdg1QPcgkHL+RexCG1ve3/0qfQVPeW8yvVdQ085ebuu2Vro4vkW
+	 LNYBwbb6Usr9g==
+Message-ID: <cabc9c67-9ae4-4883-8c97-b48930c37dd6@kernel.org>
+Date: Fri, 16 May 2025 21:30:55 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 3/4] dt-bindings: iio: adc: add ad7405
+To: Pop Ioan Daniel <pop.ioan-daniel@analog.com>,
+ Lars-Peter Clausen <lars@metafoo.de>,
+ Michael Hennerich <Michael.Hennerich@analog.com>,
+ Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>,
+ =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
+ Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Sergiu Cuciurean <sergiu.cuciurean@analog.com>,
+ Dragos Bogdan <dragos.bogdan@analog.com>,
+ Antoniu Miclaus <antoniu.miclaus@analog.com>,
+ Olivier Moysan <olivier.moysan@foss.st.com>,
+ Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+ Matti Vaittinen <mazziesaccount@gmail.com>,
+ Tobias Sperling <tobias.sperling@softing.com>,
+ Alisa-Dariana Roman <alisadariana@gmail.com>,
+ Marcelo Schmitt <marcelo.schmitt@analog.com>,
+ Trevor Gamblin <tgamblin@baylibre.com>,
+ Matteo Martelli <matteomartelli3@gmail.com>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250516105810.3028541-1-pop.ioan-daniel@analog.com>
+ <20250516105810.3028541-4-pop.ioan-daniel@analog.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <20250516105810.3028541-4-pop.ioan-daniel@analog.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: Fabio Estevam <festevam@denx.de>
+On 16/05/2025 12:58, Pop Ioan Daniel wrote:
+> Add devicetree bindings for ad7405/adum770x family.
+> 
+> Signed-off-by: Pop Ioan Daniel <pop.ioan-daniel@analog.com>
+> ---
+> changes in v2:
+>  - fix properties: clocks issue
+>  .../bindings/iio/adc/adi,ad7405.yaml          | 60 +++++++++++++++++++
+>  1 file changed, 60 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad7405.yaml
+> 
 
-The IIO core issues warnings when a scan mask is a subset of a previous
-entry in the available_scan_masks array.
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-On a board using a MAX11601, the following warning is observed:
-
-max1363 1-0064: available_scan_mask 7 subset of 6. Never used
-
-This occurs because the entries in the max11607_mode_list[] array are not
-ordered correctly. To fix this, reorder the entries so that no scan mask is
-a subset of an earlier one.
-
-While at it, reorder the mode_list[] arrays for other supported chips as
-well, to prevent similar warnings on different variants.
-
-Cc: stable@vger.kernel.org
-Fixes: 2718f15403fb ("iio: sanity check available_scan_masks array")
-Signed-off-by: Fabio Estevam <festevam@denx.de>
----
-Changes since v1:
-- Also reorder other mode_list entries. (Jonathan)
-
- drivers/iio/adc/max1363.c | 19 +++++++++----------
- 1 file changed, 9 insertions(+), 10 deletions(-)
-
-diff --git a/drivers/iio/adc/max1363.c b/drivers/iio/adc/max1363.c
-index bc44b4604ef4..9dd547e62b6c 100644
---- a/drivers/iio/adc/max1363.c
-+++ b/drivers/iio/adc/max1363.c
-@@ -532,23 +532,23 @@ static const struct iio_chan_spec max1363_channels[] =
- /* Applies to max1236, max1237 */
- static const enum max1363_modes max1236_mode_list[] = {
- 	_s0, _s1, _s2, _s3,
--	s0to1, s0to2, s0to3,
-+	s0to1, s0to2, s2to3, s0to3,
- 	d0m1, d2m3, d1m0, d3m2,
- 	d0m1to2m3, d1m0to3m2,
--	s2to3,
- };
- 
- /* Applies to max1238, max1239 */
- static const enum max1363_modes max1238_mode_list[] = {
- 	_s0, _s1, _s2, _s3, _s4, _s5, _s6, _s7, _s8, _s9, _s10, _s11,
- 	s0to1, s0to2, s0to3, s0to4, s0to5, s0to6,
-+	s6to7, s6to8, s6to9, s6to10, s6to11,
- 	s0to7, s0to8, s0to9, s0to10, s0to11,
- 	d0m1, d2m3, d4m5, d6m7, d8m9, d10m11,
- 	d1m0, d3m2, d5m4, d7m6, d9m8, d11m10,
--	d0m1to2m3, d0m1to4m5, d0m1to6m7, d0m1to8m9, d0m1to10m11,
--	d1m0to3m2, d1m0to5m4, d1m0to7m6, d1m0to9m8, d1m0to11m10,
--	s6to7, s6to8, s6to9, s6to10, s6to11,
--	d6m7to8m9, d6m7to10m11, d7m6to9m8, d7m6to11m10,
-+	d0m1to2m3, d0m1to4m5, d0m1to6m7, d6m7to8m9,
-+	d0m1to8m9, d6m7to10m11, d0m1to10m11, d1m0to3m2,
-+	d1m0to5m4, d1m0to7m6, d7m6to9m8, d1m0to9m8,
-+	d7m6to11m10, d1m0to11m10,
- };
- 
- #define MAX1363_12X_CHANS(bits) {				\
-@@ -584,16 +584,15 @@ static const struct iio_chan_spec max1238_channels[] = MAX1363_12X_CHANS(12);
- 
- static const enum max1363_modes max11607_mode_list[] = {
- 	_s0, _s1, _s2, _s3,
--	s0to1, s0to2, s0to3,
--	s2to3,
-+	s0to1, s0to2, s2to3,
-+	s0to3,
- 	d0m1, d2m3, d1m0, d3m2,
- 	d0m1to2m3, d1m0to3m2,
- };
- 
- static const enum max1363_modes max11608_mode_list[] = {
- 	_s0, _s1, _s2, _s3, _s4, _s5, _s6, _s7,
--	s0to1, s0to2, s0to3, s0to4, s0to5, s0to6, s0to7,
--	s6to7,
-+	s0to1, s0to2, s0to3, s0to4, s0to5, s0to6, s6to7, s0to7,
- 	d0m1, d2m3, d4m5, d6m7,
- 	d1m0, d3m2, d5m4, d7m6,
- 	d0m1to2m3, d0m1to4m5, d0m1to6m7,
--- 
-2.34.1
-
+Best regards,
+Krzysztof
 

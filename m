@@ -1,111 +1,187 @@
-Return-Path: <linux-iio+bounces-19612-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19613-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C909FABAC13
-	for <lists+linux-iio@lfdr.de>; Sat, 17 May 2025 21:27:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AD58ABAE81
+	for <lists+linux-iio@lfdr.de>; Sun, 18 May 2025 09:41:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D2CE9E290C
-	for <lists+linux-iio@lfdr.de>; Sat, 17 May 2025 19:27:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 90BC91888A06
+	for <lists+linux-iio@lfdr.de>; Sun, 18 May 2025 07:41:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BD8B20C02E;
-	Sat, 17 May 2025 19:27:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E0A0201113;
+	Sun, 18 May 2025 07:41:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AwEWUxQt"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uhcg1tpw"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA6CC249F9;
-	Sat, 17 May 2025 19:27:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A689D2FB;
+	Sun, 18 May 2025 07:41:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747510057; cv=none; b=mgQxBEST6cEF9f+12ztMWKjGnf4SHomUWwwwZzrt4iUc9lkgiyMJw3xbWuejSrNVTBa5SBSw+k0Dkg59GZ9ewaFzbpEwm23P0umkRU6dzr1gS3Me5xtvGCeS1guFPUcxBmRnXGgIN4F/oPL3ZuX8LW86uVv31Y5WY6M9i7MxlLE=
+	t=1747554100; cv=none; b=MJAQ5O6aglqxHHPUd3RsV+/HLDy/dLyAltQL3fD4LQFH+OCfdlcfcYCMzAivHmM6jWWLjA2KOhtkUVBbM1LQ+5Q3c1MAEpBFfq40GQaCKMVjrgsZSgS87TvsCxKZXzaIHEiUDMnYP4TQ3usQXqkwxlxVPdUv6sKr9LfErwZGIMI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747510057; c=relaxed/simple;
-	bh=w9elXlLkSFzM8XjcTrJtA0NjFyO07EbS5+qAh+2qcuc=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hOYBIbsWPe0s9BIANREEBHZzwOs1KIQkzj9CQHoVMo4AwlDF28Dygr1qNxjXpqznX8KVUHw4wqi8Xt4oJ3wFT33ijf28dgpjlzGdojNASdlwDdZAif5DGRj2iQblDHdnEsTCd9vTZ6iucpUw+dIjMScpGdwUdsYGehxtoEC+HQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AwEWUxQt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11C3DC4CEE3;
-	Sat, 17 May 2025 19:27:35 +0000 (UTC)
+	s=arc-20240116; t=1747554100; c=relaxed/simple;
+	bh=AHAwzXBAnTp88J/0aYWfanpi1Ub+Fzwmq0oMxgOjE18=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pLZYnhiqpaY//+rty4+LXMis0KtaGqtaGHIt94NqPGEwpxG0BaEqvZMTrRWcuumanJztIECgAYr/Kc2lvP2ja5JkYePfpxviAXi7RcRbaLAdOC4tI7r3Ob7HVxjKpk3vQDDE4ntunMKnJMyqjs0+e61OplXtpGvPRwwgqVCzFRc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uhcg1tpw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74234C4CEE7;
+	Sun, 18 May 2025 07:41:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747510057;
-	bh=w9elXlLkSFzM8XjcTrJtA0NjFyO07EbS5+qAh+2qcuc=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=AwEWUxQt617jfA2sxJXK5zb7Sx/ss/08/3+1XoheRvgXOi9lS7PUHvv3JrNI13iEQ
-	 G8hT3fzo4PPEXsCHK/lWh5jUDmShjXEGvdmCAI/qyFKQmaZsxTY7vZlEhl9HZnxFuB
-	 tPY2ks72LEv9LM2k9No+qlbRfuFlzgyjEDVlgBhTdcODrqfL0Snf9kzTP6BqcL3knC
-	 IXHSLOYBylc6gBSP3IXmYt8Wnu5LPnj7RKoWhlyExp8P2xCosUg9GgdLHG0OqkypXo
-	 ugqwY0o9Wznt2VYXWVP+8VqneRgQBT4kCGyckPYKOr97AofN6DWt5e6eZYyf0VKNEM
-	 el/74h7LrKuDw==
-Date: Sat, 17 May 2025 20:27:35 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Ahelenia =?UTF-8?B?WmllbWlhxYRza2E=?=
- <nabijaczleweli@nabijaczleweli.xyz>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] iio: ssp_sensors: optimalize -> optimize
-Message-ID: <20250517202735.2c589de0@jic23-huawei>
-In-Reply-To: <20250508202202.38c19704@jic23-huawei>
-References: <f6e465fee5a824a67be1ae7c3bc1b72adcf9471f.1746558529.git.nabijaczleweli@nabijaczleweli.xyz>
-	<5a64aa3034c6127d7587de9b7045a12892c01ee5.1746558529.git.nabijaczleweli@nabijaczleweli.xyz>
-	<20250508202202.38c19704@jic23-huawei>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
+	s=k20201202; t=1747554099;
+	bh=AHAwzXBAnTp88J/0aYWfanpi1Ub+Fzwmq0oMxgOjE18=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=uhcg1tpwj28HVLQcJ0DPOi/La9tamrh21D3DiZmOBN872Lec2tPGsNDK4EEQsODE+
+	 DNyK2ZPmM9lCGXzpRS+NmSOBdi3uT6Oclzg4GwoGglOpxwRD4J3DxIqUBInkdz+fSp
+	 qWNBrdwc/8WcA464+En/fqJ9aD4KyzrcfB7h2unt1hPyT5cFTKTFKKYHvPa6Yrlv2P
+	 w22z4TpxnqQZyMIYdm7NH1ez3ZqWuiW+jGNEM/Hoon67SM9y3VVA3JZ5nWEsQEtdip
+	 NJdagNLvNgukzO9jaRFMzixZNP7Y8rCr9bbwel5x7j0zEfmOnZ0eiut/eei4Cy1NgA
+	 /iG+ncIAMuLxw==
+Date: Sun, 18 May 2025 16:41:34 +0900
+From: William Breathitt Gray <wbg@kernel.org>
+To: Dharma Balasubiramani <dharma.b@microchip.com>
+Cc: Kamel Bouhara <kamel.bouhara@bootlin.com>,
+	linux-arm-kernel@lists.infradead.org, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] counter: microchip-tcb-capture: Add watch validation
+ support
+Message-ID: <aCmPLn16Ykabvhjv@ishi>
+References: <CV37uwi-rAqU3els0ckl4KLz5ortFAdc7XXy7ex6-MMhxvptyeMh8vTBXQuZliairKQ1Dy4yM3MyE8o7EZ6VfA==@protonmail.internalid>
+ <20250515-counter-tcb-v1-1-e547061ed80f@microchip.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="TSzCOtGHpFOIyFHN"
+Content-Disposition: inline
+In-Reply-To: <20250515-counter-tcb-v1-1-e547061ed80f@microchip.com>
+
+
+--TSzCOtGHpFOIyFHN
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, 8 May 2025 20:22:02 +0100
-Jonathan Cameron <jic23@kernel.org> wrote:
-
-> On Tue, 6 May 2025 21:10:02 +0200
-> Ahelenia Ziemia=C5=84ska <nabijaczleweli@nabijaczleweli.xyz> wrote:
+On Thu, May 15, 2025 at 10:28:25AM +0530, Dharma Balasubiramani wrote:
+> Introduce a watch validation callback to restrict supported event and
+> channel combinations. This allows userspace to receive notifications only
+> for valid event types and sources. Specifically, enable the following
+> supported events on channels RA, RB, and RC:
 >=20
-> > Signed-off-by: Ahelenia Ziemia=C5=84ska <nabijaczleweli@nabijaczleweli.=
-xyz>
-> > ---
-> >  drivers/iio/common/ssp_sensors/ssp_spi.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >=20
-> > diff --git a/drivers/iio/common/ssp_sensors/ssp_spi.c b/drivers/iio/com=
-mon/ssp_sensors/ssp_spi.c
-> > index f32b04b63ea1..b7f093d7345b 100644
-> > --- a/drivers/iio/common/ssp_sensors/ssp_spi.c
-> > +++ b/drivers/iio/common/ssp_sensors/ssp_spi.c
-> > @@ -104,7 +104,7 @@ static struct ssp_msg *ssp_create_msg(u8 cmd, u16 l=
-en, u16 opt, u32 data)
-> >  /*
-> >   * It is a bit heavy to do it this way but often the function is used =
-to compose
-> >   * the message from smaller chunks which are placed on the stack.  Oft=
-en the
-> > - * chunks are small so memcpy should be optimalized.
-> > + * chunks are small so memcpy should be optimized.
-> >   */
-> >  static inline void ssp_fill_buffer(struct ssp_msg *m, unsigned int off=
-set,
-> >  				   const void *src, unsigned int len) =20
+>   - COUNTER_EVENT_CAPTURE
+>   - COUNTER_EVENT_CHANGE_OF_STATE
+>   - COUNTER_EVENT_OVERFLOW
+>   - COUNTER_EVENT_THRESHOLD
 >=20
-> Applied.
+> Signed-off-by: Dharma Balasubiramani <dharma.b@microchip.com>
+> ---
+>  drivers/counter/microchip-tcb-capture.c | 28 +++++++++++++++++++++++++---
+>  1 file changed, 25 insertions(+), 3 deletions(-)
 >=20
-For future reference don't send typo fixes in a series that covers
-multiple subsystems.  Some sleep deprived maintainer might type
-the wrong thing in b4 and pick up the whole series (including
-the microblaze one) instead of just the one he should be!
+> diff --git a/drivers/counter/microchip-tcb-capture.c b/drivers/counter/mi=
+crochip-tcb-capture.c
+> index 1de3c50b9804..179ff5595143 100644
+> --- a/drivers/counter/microchip-tcb-capture.c
+> +++ b/drivers/counter/microchip-tcb-capture.c
+> @@ -337,6 +337,27 @@ static struct counter_comp mchp_tc_count_ext[] =3D {
+>  	COUNTER_COMP_COMPARE(mchp_tc_count_compare_read, mchp_tc_count_compare_=
+write),
+>  };
+>=20
+> +static int mchp_tc_watch_validate(struct counter_device *counter,
+> +				  const struct counter_watch *watch)
+> +{
+> +	switch (watch->channel) {
+> +	case COUNTER_MCHP_EVCHN_RA:
+> +	case COUNTER_MCHP_EVCHN_RB:
+> +	case COUNTER_MCHP_EVCHN_RC:
 
-Noticed it when double checking the pull request.
+Hello Dharma,
 
-oops
+Include COUNTER_MCHP_EVCHN_CV as well for the sake of completeness. I
+know COUNTER_MCHP_EVCHN_CV and COUNTER_MCHP_EVCHN_RA have the same
+underlying channel id, but we're abstracting this fact so it's good to
+maintain the consistency of the abstraction across all callbacks.
 
-Jonathan
+> +		switch (watch->event) {
+> +		case COUNTER_EVENT_CAPTURE:
+> +		case COUNTER_EVENT_CHANGE_OF_STATE:
+> +		case COUNTER_EVENT_OVERFLOW:
+> +		case COUNTER_EVENT_THRESHOLD:
+> +			return 0;
 
+The watch_validate callback is used to ensure that the requested watch
+configuration is valid: i.e. the watch event is appropriate for the
+watch channel.=20
 
+Looking at include/uapi/linux/counter/microchip-tcb-capture.h:
+
+     * Channel 0:
+     * - CV register changed
+     * - CV overflowed
+     * - RA captured
+     * Channel 1:
+     * - RB captured
+     * Channel 2:
+     * - RC compare triggered
+
+If I'm understanding correctly, channel 0 supports only the
+CHANGE_OF_STATE, OVERFLOW, and CAPTURE events; channel 1 supports only
+CAPTURE events; and channel 2 supports only THRESHOLD events.
+
+Adjust the code to ensure those limitations.
+
+> +		default:
+> +			return -EINVAL;
+> +		}
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +}
+> +
+>  static struct counter_count mchp_tc_counts[] =3D {
+>  	{
+>  		.id =3D 0,
+> @@ -351,12 +372,13 @@ static struct counter_count mchp_tc_counts[] =3D {
+>  };
+>=20
+>  static const struct counter_ops mchp_tc_ops =3D {
+> -	.signal_read    =3D mchp_tc_count_signal_read,
+> +	.action_read    =3D mchp_tc_count_action_read,
+> +	.action_write   =3D mchp_tc_count_action_write,
+>  	.count_read     =3D mchp_tc_count_read,
+>  	.function_read  =3D mchp_tc_count_function_read,
+>  	.function_write =3D mchp_tc_count_function_write,
+> -	.action_read    =3D mchp_tc_count_action_read,
+> -	.action_write   =3D mchp_tc_count_action_write
+> +	.signal_read    =3D mchp_tc_count_signal_read,
+
+It's nice to alphabetize the counter_ops callbacks, but it's also
+unrelated to the watch_validate implementation. Move the alphabetization
+cleanup to a separate patch so that this patch remains dedicated to
+just watch_validate changes.
+
+Thanks,
+
+William Breathitt Gray
+
+--TSzCOtGHpFOIyFHN
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCaCmPLgAKCRC1SFbKvhIj
+K/U6AP9sLI94pWH9oxJ5ojO2ldb52ppFei+ym7sypqbu+AOh9QD/Xqg8FFHAJS9e
+RltMKxTbESVr1UyIV3cfgwTc/eZ3sAw=
+=0BaO
+-----END PGP SIGNATURE-----
+
+--TSzCOtGHpFOIyFHN--
 

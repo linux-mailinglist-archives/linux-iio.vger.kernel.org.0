@@ -1,68 +1,68 @@
-Return-Path: <linux-iio+bounces-19630-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19631-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF93BABB0D8
-	for <lists+linux-iio@lfdr.de>; Sun, 18 May 2025 18:34:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B579ABB0E6
+	for <lists+linux-iio@lfdr.de>; Sun, 18 May 2025 18:45:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 70E863B83E0
-	for <lists+linux-iio@lfdr.de>; Sun, 18 May 2025 16:33:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF9273A5CFD
+	for <lists+linux-iio@lfdr.de>; Sun, 18 May 2025 16:44:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C370E21A449;
-	Sun, 18 May 2025 16:33:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C230421D3E7;
+	Sun, 18 May 2025 16:45:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z92W3h2u"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rc8HLvac"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 784B47FD;
-	Sun, 18 May 2025 16:33:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 731F221D3D1;
+	Sun, 18 May 2025 16:45:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747586037; cv=none; b=Bw4lgF9eILlnxx+/mKoZyhKlvEJWAiKDsDPzAgkSxv4D5W9frVhv+wnpkK0YbodvrY7iYz/TK6MrIUVlwL4ddtAjBDjNbwm5NF4j3hMWgG0H5E2Ohwm/bLQ1AZF/qeCn/440Z52FaD0RSOkavo23FRXMgAfBucNgXuHLHUoO4w4=
+	t=1747586703; cv=none; b=PS4odNkknvsf5oD+NgFhUj9UHdbH5cSCWpaviQxeXRS2rVs0XlaDuXMrf2yP9tJGQbPEkMUGO/gICGSgZCd+ad43AnMRPfZeLcqizVmdkdB6+EDQ3aNH5PbcGWGbNvzxqdGzJJkh2ZKBnRX/oaleJ/UwzStVv9RSb4e5OHAOzlw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747586037; c=relaxed/simple;
-	bh=AIdifPYCgNitnQmkjwa6oXqFv5d8J/QYu38GR+hWbh8=;
+	s=arc-20240116; t=1747586703; c=relaxed/simple;
+	bh=hqYYae6HdTbOX7JwE+TunGPlD72L5BsUZLZ3ArZO5z8=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YSGLRvTM5cPv9/OZ08xUSXaL9lCQVW+cr4gXGhr+NQ54I7cej+ZHwDiXxXq5No3VAKTDJTeAPNKf5bISO4fQyVsczziCPj3tSggul8oIRuWC+PnXncZZNrvndOcxzmB59n8cLTCDuPAWPR6N4Lv3kvwzFgONEeap2ICBEsjd98w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z92W3h2u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEE21C4CEE7;
-	Sun, 18 May 2025 16:33:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=sX2Pbys1H8i2liLFVk74XOvENKz0+u3PAviqQAAIbmF3C+ETpKwb0AcE5APXiCCtLFxmpKWkLKhdJwd1+vyCDLljnVbTPUz3cMo/emkskV1JpkiZH6bPj6Eu9Z9CeypWhnMM4VeNAVLEFFBNkY/8+3SViqI226JDwdk51Bsbyx8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rc8HLvac; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CAC9C4CEE7;
+	Sun, 18 May 2025 16:44:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747586036;
-	bh=AIdifPYCgNitnQmkjwa6oXqFv5d8J/QYu38GR+hWbh8=;
+	s=k20201202; t=1747586702;
+	bh=hqYYae6HdTbOX7JwE+TunGPlD72L5BsUZLZ3ArZO5z8=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Z92W3h2ueIH28d89Q769h0doFHIvdADv67w2UBtHkjaCHIOdGajyzA1ApsV5t8a0c
-	 GCq1NjNOWXp2HMLPEzedJ78absoI8bafRC4Mbut1ePea0wmUCZVvgS7ukM58MB4QlT
-	 fyblXpRnRAApNk0wSD5I66EUverNNpDVCmcNGpklDGZHllE8RAaMh8ijytjOlYcWVB
-	 l7ma0/tAsVhOGHWoXBKQWp3nQgmk6jJ9b2LHPUnBkTVOCqwvqdJVG22SVHtqgKeiQZ
-	 T7NweNdqstECbpUWdD/sOeBCv5rnwd5vE/YDVN26clWeUCCg3RnVJnasopOb3tNoFx
-	 sCZBmURQESTRA==
-Date: Sun, 18 May 2025 17:33:45 +0100
+	b=rc8HLvacxAyWZcWo+E/Juqc1tAlTZDikiyaQB1KVAkSCM3Bo4L9uRxDoJdFYUc/8g
+	 Dou73bK2tAu4SERilMWpN8R4bKwZeTI7lKJodFx/RVreZZPfV13p8F6dkZgQoB7Dml
+	 wgRO95C8KwiEs5cc5zDGesxfUhey75Di/muooDvmZY9vKHq0HRx+izs6rolDRAk6vb
+	 vUwlc5hvDnT7qEZnwYDOmRIDJjXNUOA9ISESiwLZwvqjyYd7ufnIgxYH4Jpl60UQ4D
+	 RToICoLZK7xGbrwvLRKrClk35vB/Yy0BoxfCzjlfufYpm8Hp4tHnpcSvBCi7gwrJ4J
+	 MaEkcoRJDCorQ==
+Date: Sun, 18 May 2025 17:44:50 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: Pop Ioan Daniel <pop.ioan-daniel@analog.com>
 Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
- <Michael.Hennerich@analog.com>, "David Lechner" <dlechner@baylibre.com>,
- Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko
- <andy@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
- <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Sergiu Cuciurean
- <sergiu.cuciurean@analog.com>, "Dragos Bogdan" <dragos.bogdan@analog.com>,
+ <Michael.Hennerich@analog.com>, David Lechner <dlechner@baylibre.com>, Nuno
+ =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Sergiu Cuciurean
+ <sergiu.cuciurean@analog.com>, Dragos Bogdan <dragos.bogdan@analog.com>,
  Antoniu Miclaus <antoniu.miclaus@analog.com>, Olivier Moysan
  <olivier.moysan@foss.st.com>, Javier Carrasco
  <javier.carrasco.cruz@gmail.com>, Matti Vaittinen
  <mazziesaccount@gmail.com>, Tobias Sperling <tobias.sperling@softing.com>,
- Marcelo Schmitt <marcelo.schmitt@analog.com>, Alisa-Dariana Roman
- <alisadariana@gmail.com>, Esteban Blanc <eblanc@baylibre.com>,
- <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v3 4/4] iio: adc: ad7405: add ad7405 driver
-Message-ID: <20250518173345.338050e4@jic23-huawei>
-In-Reply-To: <20250516105810.3028541-5-pop.ioan-daniel@analog.com>
+ Alisa-Dariana Roman <alisadariana@gmail.com>, Marcelo Schmitt
+ <marcelo.schmitt@analog.com>, Trevor Gamblin <tgamblin@baylibre.com>,
+ Matteo Martelli <matteomartelli3@gmail.com>, <linux-iio@vger.kernel.org>,
+ <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v3 3/4] dt-bindings: iio: adc: add ad7405
+Message-ID: <20250518174450.044d2464@jic23-huawei>
+In-Reply-To: <20250516105810.3028541-4-pop.ioan-daniel@analog.com>
 References: <20250516105810.3028541-1-pop.ioan-daniel@analog.com>
-	<20250516105810.3028541-5-pop.ioan-daniel@analog.com>
+	<20250516105810.3028541-4-pop.ioan-daniel@analog.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -73,149 +73,114 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, 16 May 2025 13:58:04 +0300
+On Fri, 16 May 2025 13:58:03 +0300
 Pop Ioan Daniel <pop.ioan-daniel@analog.com> wrote:
 
-> Add support for the AD7405/ADUM770x, a high performance isolated ADC,
-> 1-channel, 16-bit with a second-order =CE=A3-=CE=94 modulator that conver=
-ts an
-> analog input signal into a high speed, single-bit data stream.
+> Add devicetree bindings for ad7405/adum770x family.
 >=20
 > Signed-off-by: Pop Ioan Daniel <pop.ioan-daniel@analog.com>
-More or less just one question to add to David's review.
-
-It's around whether the clock is a separate thing or part of the backend
-(which here kind of incorporates the bus controller).
-
-We wouldn't bother specifying a clock line explicitly for SPI or PCIe so
-why do we need one for this?
-
 > ---
-> changes in v3:
->  - edit ad7405_chip_info struct instances
->  - remove lock
->  - add implementation for IIO_CHAN_INFO_SCALE
->  - use IIO_CHAN_INFO_OVERSAMPLING_RATIO for controlling the decimation ra=
-te
->  - use IIO_CHAN_INFO_SAMP_FREQ for read-only
->  - remove dem_clk_get_enabled() function
->  - remove chip_info variable from probe function
->  - fix indentation
->  - remove max_rate
->  - rename ad7405_set_sampling_rate in ad7405_det_dec_rate
-> add adum7702 and adum7703 chip_info
->  drivers/iio/adc/Kconfig  |  10 ++
->  drivers/iio/adc/Makefile |   1 +
->  drivers/iio/adc/ad7405.c | 276 +++++++++++++++++++++++++++++++++++++++
->  3 files changed, 287 insertions(+)
->  create mode 100644 drivers/iio/adc/ad7405.c
-
-> diff --git a/drivers/iio/adc/ad7405.c b/drivers/iio/adc/ad7405.c
+> changes in v2:
+>  - fix properties: clocks issue
+>  .../bindings/iio/adc/adi,ad7405.yaml          | 60 +++++++++++++++++++
+>  1 file changed, 60 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad7405.=
+yaml
+>=20
+> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7405.yaml b/=
+Documentation/devicetree/bindings/iio/adc/adi,ad7405.yaml
 > new file mode 100644
-> index 000000000000..1a96a283ab01
+> index 000000000000..939de3bd6f26
 > --- /dev/null
-> +++ b/drivers/iio/adc/ad7405.c
-> @@ -0,0 +1,276 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * Analog Devices AD7405 driver
-> + *
-> + * Copyright 2025 Analog Devices Inc.
-> + */
+> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7405.yaml
+> @@ -0,0 +1,60 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +# Copyright 2025 Analog Devices Inc.
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/adc/adi,ad7405.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
 > +
-> +#include <linux/clk.h>
-> +#include <linux/module.h>
-> +#include <linux/mod_devicetable.h>
-> +#include <linux/platform_device.h>
-> +#include <linux/property.h>
-> +#include <linux/regulator/consumer.h>
-> +#include <linux/util_macros.h>
+> +title: Analog Devices AD7405 family
 > +
-> +#include <linux/iio/backend.h>
-> +#include <linux/iio/iio.h>
+> +maintainers:
+> +  - Dragos Bogdan <dragos.bogdan@analog.com>
+> +  - Pop Ioan Daniel <pop.ioan-daniel@analog.com>
 > +
-> +static const unsigned int ad7405_scale_table[][2] =3D {
-> +	{640, 0},
-> +};
+> +description: |
+> +  Analog Devices AD7405 is a high performance isolated ADC, 1-channel,
+> +  16-bit with a second-order =CE=A3-=CE=94 modulator that converts an an=
+alog input signal
+> +  into a high speed, single-bit data stream.
 > +
-> +static const unsigned int adum7702_scale_table[][2] =3D {
-> +	{128, 0},
+> +  https://www.analog.com/media/en/technical-documentation/data-sheets/ad=
+7405.pdf
+> +  https://www.analog.com/media/en/technical-documentation/data-sheets/ad=
+um7701.pdf
+> +  https://www.analog.com/media/en/technical-documentation/data-sheets/ad=
+um7702.pdf
+> +  https://www.analog.com/media/en/technical-documentation/data-sheets/AD=
+uM7703.pdf
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - adi,ad7405
+> +      - adi,adum7701
+> +      - adi,adum7702
+> +      - adi,adum7703
+> +
+> +  clocks:
+> +    maxItems: 1
 
-	{ 128, 0 },
+The closest part we have to this (LVDS bus etc) that I could find was
+the ad7625.  That does use an explicit clock but there is more going
+on as it also has a pwm connected to gate that clock so maybe isn't
+an idea example to follow.
 
-Assuming you keep these (see David's feedback)
+As you will see in the driver review I just sent I'm wondering if an
+explicit clock is a separate thing or considered part of the lvds bus.
 
-> +};
+It's definitely wired to the ADC as a clock but it's also (I think) either
+wired up to the IP we map to the backend (from software point of view)
+or generated by that.
 
-> +static int ad7405_probe(struct platform_device *pdev)
-> +{
-> +	struct device *dev =3D &pdev->dev;
-> +	struct iio_dev *indio_dev;
-> +	struct ad7405_state *st;
-> +	struct clk *clk;
-> +	int ret;
-> +
-> +	indio_dev =3D devm_iio_device_alloc(dev, sizeof(*st));
-> +	if (!indio_dev)
-> +		return -ENOMEM;
-> +
-> +	st =3D iio_priv(indio_dev);
-> +
-> +	st->info =3D device_get_match_data(dev);
-> +	if (!st->info)
-> +		return dev_err_probe(dev, -EINVAL, "no chip info\n");
-> +
-> +	ret =3D devm_regulator_bulk_get_enable(dev, ARRAY_SIZE(ad7405_power_sup=
-plies),
-> +					     ad7405_power_supplies);
-> +
-> +	if (ret)
-> +		return dev_err_probe(dev, ret, "failed to get and enable supplies");
-> +
-> +	clk =3D devm_clk_get_enabled(dev, NULL);
-> +	if (IS_ERR(clk))
-> +		return PTR_ERR(clk);
-> +
-> +	st->ref_frequency =3D clk_get_rate(clk);
+I don't think this device is using an LVDS encoding to allow the clock
+to be established from the data lines alone? 8b/10b or similar (if it were =
+then the
+clock to the ADC only description would be correct choice).
 
-Perhaps an odd question but for a clocked lvds bus like this
-is the clock actually something we should represent as part of
-the bus (so iio_backend interfaces) or separately like this?
+Perhaps this device is one that needs docs in the kernel to talk us
+through how the signalling is working.
 
+Jonathan
 
-> +	if (!st->ref_frequency)
-> +		return -EINVAL;
 > +
-> +	ad7405_fill_samp_freq_table(st);
+> +  vdd1-supply: true
 > +
-> +	indio_dev->dev.parent =3D dev;
-> +	indio_dev->name =3D st->info->name;
-> +	indio_dev->channels =3D &st->info->channel;
-> +	indio_dev->num_channels =3D 1;
-> +	indio_dev->info =3D &ad7405_iio_info;
+> +  vdd2-supply: true
 > +
-> +	st->back =3D devm_iio_backend_get(dev, NULL);
-> +	if (IS_ERR(st->back))
-> +		return dev_err_probe(dev, PTR_ERR(st->back),
-> +				     "failed to get IIO backend");
+> +  io-backends:
+> +    maxItems: 1
 > +
-> +	ret =3D iio_backend_chan_enable(st->back, 0);
-> +	if (ret)
-> +		return ret;
+> +required:
+> +  - compatible
+> +  - clocks
+> +  - vdd1-supply
+> +  - vdd2-supply
+> +  - io-backends
 > +
-> +	ret =3D devm_iio_backend_request_buffer(dev, st->back, indio_dev);
-> +	if (ret)
-> +		return ret;
+> +additionalProperties: false
 > +
-> +	ret =3D devm_iio_backend_enable(dev, st->back);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret =3D ad7405_set_dec_rate(indio_dev, &indio_dev->channels[0], 256);
-> +	if (ret)
-> +		return ret;
-> +
-> +	return devm_iio_device_register(dev, indio_dev);
-> +}
+> +examples:
+> +  - |
+> +    adc {
+> +        compatible =3D "adi,ad7405";
+> +        clocks =3D <&axi_clk_gen 0>;
+> +        vdd1-supply =3D <&vdd1>;
+> +        vdd2-supply =3D <&vdd2>;
+> +        io-backends =3D <&iio_backend>;
+> +    };
+> +...
 
 

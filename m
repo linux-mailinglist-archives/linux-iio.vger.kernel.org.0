@@ -1,75 +1,77 @@
-Return-Path: <linux-iio+bounces-19678-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19679-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBD4BABC095
-	for <lists+linux-iio@lfdr.de>; Mon, 19 May 2025 16:26:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38338ABC098
+	for <lists+linux-iio@lfdr.de>; Mon, 19 May 2025 16:26:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 630E116C078
-	for <lists+linux-iio@lfdr.de>; Mon, 19 May 2025 14:26:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9B00C3AB916
+	for <lists+linux-iio@lfdr.de>; Mon, 19 May 2025 14:26:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2D9828314A;
-	Mon, 19 May 2025 14:26:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14012283FEA;
+	Mon, 19 May 2025 14:26:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jKmPIhIC"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VFJA9TlZ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45B3427A108;
-	Mon, 19 May 2025 14:26:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A283283FD3;
+	Mon, 19 May 2025 14:26:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747664771; cv=none; b=ceO8dFZKgHn73ZWWoZN/tWLHQ2SfI5zc9ouu1aEdYaC9C9mWTXO6ndwVzZXVVXdDRvOQ5hlLDQeMCggLSSPINUsdfnA/S3IpOkIrpFSKNvdNuO0p0O76IHLS+mwnKa8/tnKUM5r11qGJLyYWax0wDIcjliiJVMeO+VpdVr5mmWk=
+	t=1747664775; cv=none; b=qIdDDJgqZIN4593DRKt5jMjDnlVbTEiEiftmStaim9AmVepQ0x8qHcT6QjEGgs2uMw5hvPOlDrRI0HR1UQ4y/yHTM5GQSvJ9zGs2VojQWX2g8qY6QuOzHWNP69UqXQT/3HgfX314rncneumee+oZGlrFWsMMCJbmqKGneMlBf5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747664771; c=relaxed/simple;
-	bh=GwmD4nnJ/4YRZUg/clGh94EIdy399i+4EYIaYGZb7uE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=YuJx8HqlPNfI9oHLjOHqzur/OXv1scLwryITjG0HU0H1YkpWxy6UiuYaA1AiaC9OteFW4KQlhIcgeqy/PIE/eF1LqPXOUJ3Yw5ixLJbaP1pt9AzwVfoh5kNq2yIWCmo4PSWK/INyuX7zyRq4B/QEEAHDehNif0XwN/WYcKn+yyU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jKmPIhIC; arc=none smtp.client-ip=209.85.210.170
+	s=arc-20240116; t=1747664775; c=relaxed/simple;
+	bh=pIsXkfwmbJwpyIPN7p01NdbcZXCT8CBrk099Zl10eFI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ABXRqMoVnMnAx/GjOX8hTTerCYTwANYhGwWs0nIj0R2ivOKThw2YN+6+HH2ACr7G866YDtERL2rU0Bs+nzgV+jofpIqYFsscnrqe74pt4/YFC2XIMTeex3CKk2F3VDT8D1YSelX5SzEPiOjjQdffgfA9xwl+eSZdIxCh3PQgOxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VFJA9TlZ; arc=none smtp.client-ip=209.85.210.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-7426c44e014so4636835b3a.3;
-        Mon, 19 May 2025 07:26:10 -0700 (PDT)
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-742af848148so2052985b3a.1;
+        Mon, 19 May 2025 07:26:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1747664769; x=1748269569; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Fepv5IGy9/iFE+uOGY8zxhCSixa/u5D0eTSI9lhQaO4=;
-        b=jKmPIhICKN1q3Zf41JXfXpulcwrBZdZpW8Cvn1CiAfqROxfb9S0JgeVH5gJKG9ZkxM
-         VVZxk0WaqKvMUF/uwk5al90LYWa4arNa3MTtowssPg1/vpDDe84oih/fscnxgsQHXbTf
-         GbMsmZp47FZI7rbCJU18FGiwQ5kQQgW6bSS9OXBpw18vyIM63PxijPnEaeSOE7bDJTY4
-         ifC39zEi3YMy80e2cW/fVSNWLBQSpsNzpa/Evpq9K4eBX9z9q7/X6kAWO5dT668C2t+5
-         p9HHvyH/ShK8C6tShVAgXyUaNoQ1wM8won0ZEUnoFmhsCDyRpHHV/bKwXyNyz7xBieTA
-         M/Cg==
+        d=gmail.com; s=20230601; t=1747664773; x=1748269573; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Ws6NGUTrhwrUyFzENkHKMEqXVz0k1/x1kYmVqczNDF0=;
+        b=VFJA9TlZyPt4Ojo/hiheBR3MbrA+ED0DUREyQOEfxDpKiSGPJZXufRWwLQX9njv38R
+         jA7YnFmOOd6+4utx1NGkbO+LVp/jEZMdmP5TZHQJZiDpsnX3NgVdmfDwaDvzkTlhOTGD
+         bSA9N/M2HO7caw/qXVFeEsd4FzK1ITk1snbNBBsGjuesC0ifI4H+ggbzat6CWS7CoE5U
+         lrv/+n4PQck+P/jR6PciO5CoM8V9h0eBWS50JYTwr76HdINtJqhdkBnBQ7f9hTmzMq6d
+         VOHJuQSRrfiJJPSz2jI4+LkvQFSkzcJ5J4Dj7YyGlc8nXZ1ioCs9DnTznoTMx9PWcifx
+         49tw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747664769; x=1748269569;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Fepv5IGy9/iFE+uOGY8zxhCSixa/u5D0eTSI9lhQaO4=;
-        b=EOwLaO7KT9eiBSxQR3V5XyJOD7aBYAaZUX2KHvnLwDPJzIvNc/7IM8U6qhL9tP0LTl
-         HhJApshCZrk9/F7W1C5Aj4wUkIYqMr0vDdI3CkFu30hxFSEm1Wchujt9jnDDzXAT2gKQ
-         y3cCTqN9gsqNiV5zxpFxRVLTBkbyNeibfxZApcz4N8t42LY9dcldGZ+7baoq7F7GOO4H
-         NnsGADqeayhxf8/nVX3GIE5jkauRb0PsnHcw9tY/UTMdSofH+Z3fvZwEZiB8zvqj3Hy4
-         c2YHoZ9nBvXOhjuJ6g2etajevJTBLtT3BS/WILbnhSr7qdsEJiTwI2PfT1Yy5ggApCJo
-         MtZA==
-X-Forwarded-Encrypted: i=1; AJvYcCUA1IZRDqumMm+ipZM4TSHia77uaYpY468M+gm3KeT3Bdo1STrmU7GOZg+MNryX3P3APKdKeITquDg=@vger.kernel.org, AJvYcCWSjz2y36xjuyj8RMxJAvCSU5oO466+22mFHDiwQBfjGg3lUUfYn7aczofPOM1sbZ7AYO2R6+yrOK8dECyY@vger.kernel.org
-X-Gm-Message-State: AOJu0YxBIJxzCqOysE7/n2JD9m/4syHceIwnMP0xsGvp2o5QKTCOHOlF
-	5HSvGYkMWHWdiYw/bzz35hW4LGyfW5SFPfqqkhTY4khWJisbvqbOP/kM2SEF4Q==
-X-Gm-Gg: ASbGncuYRtWccpo8bkqDvGt5ULigHhg7/v/rKZUFdPByB1Nu4poqR0WEUaKNpAeHz+t
-	zvgO+DAR8H5agqf+PWnPiRqm6n4qCKB5h+uU7c6FFwtiISwGmjSbngYiyQ+b6AaMuoytLPo9qEe
-	DjG1/UrUMWV7tn4iGfR8gPTk4nV2v/Vgz6PHhU5J8LGNNYaPjY9upL7L8EQ1K1XHcHuEayDQfsM
-	nHBaOdI/+DPx/TNZhSrgzkODflEGbxGrgTDPiqsIgIJYX06ArqwajAvG0OGe5JlmwIQ5NsmxhUJ
-	MQBAEebI8NO+UZCWKQMCxMUm8Bc8Xr0flNDiQJr5rXyhyox7F4roYEPFDQ==
-X-Google-Smtp-Source: AGHT+IGKbAb5p2EgNx/6VsB0S+WNE+aXplzMQ/uyYLudG6BwDonNegqkk2f+CXH/21P4T5wA7OXsrg==
-X-Received: by 2002:a05:6a00:3985:b0:742:a334:466a with SMTP id d2e1a72fcca58-742a97eb677mr18209622b3a.12.1747664769409;
-        Mon, 19 May 2025 07:26:09 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1747664773; x=1748269573;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Ws6NGUTrhwrUyFzENkHKMEqXVz0k1/x1kYmVqczNDF0=;
+        b=ZOmSyll0dfpjrk6nRLTorCnUYGrjEVk7972T7hMhynn9aX05zu1YoGoBrHKSqqhYI7
+         qH9j7Bm9drrB4tqIrq2Gmf0gXliIDbYDejxuf1xtlfM+et74aDVPLE5d08r1B+mWuaS1
+         Et3ZbxgBOmzudtBIo+DB4jT6bs37GxWi7zgKGYPSKxPt8Wi9r3osmqoAQBCrsi5nY9ur
+         ZjP+AKtyXx82tLM3M7ISAPpTUTn2DfQ2Q69h0Uco475vdDgwtSqQYBMUl1OkrrvFhSr/
+         eQhOnje1thCKNrSJ4PDQhOnvKK6ImE4pnkakl4PjXPSVOqOB3oxRZm3Ry3BO+QJyAnQA
+         AJ/A==
+X-Forwarded-Encrypted: i=1; AJvYcCUiNjX2kVppatVxDktencbXiZXBHwZ8lO2TbH+AI3cebo709h7Wkt0+trcFSPraOzH5AlPCoGJeQXw=@vger.kernel.org, AJvYcCXL9YXhL83o6p9CHQnkRWx/jdq63Aq5Vv/X2GiuAboo7+sRQlRFecrNeVPYkNfT/sQ4NN9cXVcFr38Wkchb@vger.kernel.org
+X-Gm-Message-State: AOJu0YxsKuKQNNjBmRj+hnKFssRTIc6wb201hKRBv6h4yorPaB199PK4
+	t2v78tjigEIK8ng8V3Tpjby7ZyH8DYnzdPbDCf3i0txRFjr3MGXJqg2n
+X-Gm-Gg: ASbGncvJt4LctWZtR6vbZJYDYmJJr0EXxK03dS3D+yHp50+PCw0SQPXG5G5vOs/II5n
+	iEO8eUBazBQFE5rcUmI+SpLRR796+eUGfrHuzixJIh1hrt2llcbJws1BNVtbF9Bkth+0r3u0Gtx
+	/LnMgVPHLJ91qRanB58tYD3vSnFyg6jPV2AfUguCblef/gc8OdSlSa+EyaExgKRdIU8bi80r5i5
+	7N7xJW4e4AgRWXa7WwPE6xZPN/HxscW4+fqfvdOhBs2TA8XsX27L5ZIIY/r45m3RiVV9LbOj6KJ
+	VVmJjeTXM/SH2lufuKA9TmbVsjIN/tJ5DP70C/CRBIotT0efzxdEnMvKAem8IkBN/NVO
+X-Google-Smtp-Source: AGHT+IFLB86+GGsQOIbdQ6TWsM7RA3lPV1bojIEbPOR6YJ9mg5Np9dvMCVNczPoT9o9AC34ZtMj7GA==
+X-Received: by 2002:a05:6a00:a24:b0:742:a91d:b2f6 with SMTP id d2e1a72fcca58-742a97e0b3dmr17911736b3a.13.1747664773431;
+        Mon, 19 May 2025 07:26:13 -0700 (PDT)
 Received: from gye-ThinkPad-T590.. ([39.120.225.141])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-742a96e211csm6465303b3a.16.2025.05.19.07.26.07
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-742a96e211csm6465303b3a.16.2025.05.19.07.26.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 May 2025 07:26:08 -0700 (PDT)
+        Mon, 19 May 2025 07:26:13 -0700 (PDT)
 From: Gyeyoung Baek <gye976@gmail.com>
 To: Jonathan Cameron <jic23@kernel.org>,
 	David Lechner <dlechner@baylibre.com>,
@@ -78,10 +80,12 @@ To: Jonathan Cameron <jic23@kernel.org>,
 Cc: Gyeyoung Baek <gye976@gmail.com>,
 	linux-iio@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH RFC 0/9] iio: Introduce new timestamp grabbing APIs
-Date: Mon, 19 May 2025 23:25:52 +0900
-Message-ID: <20250519-timestamp-v1-0-fcb4f6c2721c@gmail.com>
+Subject: [PATCH RFC 1/9] iio: buffer: Fix checkpatch.pl warning
+Date: Mon, 19 May 2025 23:25:53 +0900
+Message-ID: <20250519-timestamp-v1-1-fcb4f6c2721c@gmail.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250519-timestamp-v1-0-fcb4f6c2721c@gmail.com>
+References: <20250519-timestamp-v1-0-fcb4f6c2721c@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -89,53 +93,28 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-X-Change-ID: 20250518-timestamp-a899e78e07e3
 Content-Transfer-Encoding: 8bit
 
-Support automatic timestamp grabbing by passing `true` to the `timestamp_enabled` parameter of `iio_triggered_buffer_setup_new()`.
-So consumer drivers don't need to set `iio_pollfunc_store_time()` as either the tophalf or bottomhalf manually.
-
-For this, triggers must indicate whether they will call `poll()`, `poll_nested()`, or both before
-calling `iio_trigger_register()`. This is necessary because the consumer's handler does not know
-in advance which trigger will be attached.
-
-Once `iio_trigger_attach_poll_func()` is called, a timestamp is grabbed in either the
-tophalf or bottomhalf based on the trigger's type (POLL or POLL_NESTED). If the trigger
-supports both (e.g., at91-sama5d2-adc.c), it is treated as POLL_NESTED since the consumer's
-tophalf is not invoked in poll_nested(), but the bottomhalf always is.
-
-If the attached trigger supports timestamp grabbing itself, the consumer does not need to handle it.
-Instead, the consumer's `poll_func` pointer is passed to the trigger, which can then store the
-timestamp directly into consumer. Trigger drivers can pass timestamp values to consumers in a consistent
-interface using the new API `iio_trigger_store_time()`.
-
-Tested on qemu, with dummy and trig-sysfs drivers tweaked for testing.
+Remove the following trivial warning:
+"WARNING: Block comments should align the * on each line"
 
 Signed-off-by: Gyeyoung Baek <gye976@gmail.com>
 ---
-Gyeyoung Baek (9):
-      iio: buffer: Fix checkpatch.pl warning
-      iio: consumer: Define timestamp-related structures and constants
-      iio: consumer: Add new APIs of triggered_buffer_setup() family
-      iio: consumer: Add new API iio_poll_func_register()
-      iio: consumer: Add new API iio_pollfunc_get_timestamp()
-      iio: trigger: Define timetamp-related structures and constants
-      iio: trigger: Add new API iio_trigger_attach_timestamp()
-      iio: trigger: Add new API iio_trigger_store_time()
-      iio: rpr0521: Use new timestamp-related APIs
+ drivers/iio/buffer/industrialio-triggered-buffer.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- drivers/iio/buffer/industrialio-triggered-buffer.c |  84 ++++++++++++-
- drivers/iio/industrialio-trigger.c                 | 135 ++++++++++++++++++++-
- drivers/iio/light/rpr0521.c                        |  22 +---
- include/linux/iio/trigger.h                        |  16 ++-
- include/linux/iio/trigger_consumer.h               |  23 ++++
- include/linux/iio/triggered_buffer.h               |  25 ++++
- 6 files changed, 283 insertions(+), 22 deletions(-)
----
-base-commit: 43a9eee06bf8a8535d8709b29379bec8cafcab56
-change-id: 20250518-timestamp-a899e78e07e3
+diff --git a/drivers/iio/buffer/industrialio-triggered-buffer.c b/drivers/iio/buffer/industrialio-triggered-buffer.c
+index c06515987e7a..9bf75dee7ff8 100644
+--- a/drivers/iio/buffer/industrialio-triggered-buffer.c
++++ b/drivers/iio/buffer/industrialio-triggered-buffer.c
+@@ -1,5 +1,5 @@
+ // SPDX-License-Identifier: GPL-2.0-only
+- /*
++/*
+  * Copyright (c) 2012 Analog Devices, Inc.
+  *  Author: Lars-Peter Clausen <lars@metafoo.de>
+  */
 
-Best regards,
 -- 
-Gyeyoung Baek <gye976@gmail.com>
+2.43.0
 

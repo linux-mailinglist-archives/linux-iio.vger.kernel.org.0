@@ -1,120 +1,104 @@
-Return-Path: <linux-iio+bounces-19650-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19651-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11AC0ABB4D9
-	for <lists+linux-iio@lfdr.de>; Mon, 19 May 2025 08:09:53 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6D7FABB649
+	for <lists+linux-iio@lfdr.de>; Mon, 19 May 2025 09:36:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9E0C23B76A5
-	for <lists+linux-iio@lfdr.de>; Mon, 19 May 2025 06:09:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C5D2A7A466C
+	for <lists+linux-iio@lfdr.de>; Mon, 19 May 2025 07:34:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEBDE225413;
-	Mon, 19 May 2025 06:09:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76DCA267B68;
+	Mon, 19 May 2025 07:36:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=it-klinger.de header.i=@it-klinger.de header.b="bLzxZKJS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nSBfSPEK"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from www571.your-server.de (www571.your-server.de [78.46.3.230])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF33A2253BD;
-	Mon, 19 May 2025 06:09:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.46.3.230
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2722B2673AA;
+	Mon, 19 May 2025 07:35:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747634974; cv=none; b=czZKdF/RoPJQuT0vvFTVHjvYGvYZPA1+/TKAayJKU41Chd5545udRiwapd9a/8LNQsCnok1i3No8gbPKBd3LwajWP3Vw6qvOxnDoy7/MnygefJhKQ8UjJr8pUjKr9yHKEYG/nGPhFlNOrf5wareA9GA8cXOJLETxL1RRXHj361Y=
+	t=1747640160; cv=none; b=OI7+Rv04Rw1x55wjHaGVJ18jgaqrVgX2NzF5D92qK7KkfKxY+IGeOonQ9XMJs5JA9Am7jCVbLHOJNBTS4CtAbE8vX2OVItyJHb1CWzg2L6lwGSbwSAv7KHwu7ezfhiV2v2YXh0XaWEqxNy9VxAelLa1g9nY6elJ/j8hvYq2Nwq0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747634974; c=relaxed/simple;
-	bh=4hDFARImdHW8q9Xkt1GJf+mXey0ax2ZFZf6iSRxik/8=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=aAtpOiK+Q4C29ieIyn9BXaJ38jtDxzmrrRtdRj3X5U7cvfv40PrWzoK2NWa3TTn2n9+Bzp76KrHjE702Yu8yBE3exyNksRv30cHcy0uy6ohjpLSH7EsMQeJSGPiMcjhOOotCvpcO5QOuqzhGD++fbxeBTe/fygDXj9ql8q/LTC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=it-klinger.de; spf=pass smtp.mailfrom=it-klinger.de; dkim=pass (2048-bit key) header.d=it-klinger.de header.i=@it-klinger.de header.b=bLzxZKJS; arc=none smtp.client-ip=78.46.3.230
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=it-klinger.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=it-klinger.de
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=it-klinger.de; s=default2502; h=Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=SwZCyK5YKWN6Lzgo880+koOFD+smQUGpll47r1Ci+jc=; b=bLzxZKJS2PdeYvbI+rwtGAoKbT
-	WxPCSljV/maQWfvJfantzyVAVn5QPoG8lb4CjgW7n6X0ydlJCMV+gyQ7HDdM7BRH82kczT0bUzNuL
-	Ya22YtW9kSSvqMVILnmFPCl6i9+jAkv4G8sOkmY2ZZHARJQnlGUPXyygn0cA+nDZU5sO3yU3ArKAc
-	T4I18AZKnNHaoubKGk36ncjve7R56g5f34XqWkeQ8imAL2xO/KdxvxVa3aon38r3zgTA/Rmwv8I9A
-	zA9PMoAq9qyNNiaR+/nzxYgKKGXMJEwifEcyVTMYytJcau/MpT6JnqCpTTPQblnbCOYNjhwOSo0uS
-	LVldmWpg==;
-Received: from sslproxy06.your-server.de ([78.46.172.3])
-	by www571.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <ak@it-klinger.de>)
-	id 1uGtgo-000FEF-1O;
-	Mon, 19 May 2025 08:09:30 +0200
-Received: from localhost ([127.0.0.1])
-	by sslproxy06.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ak@it-klinger.de>)
-	id 1uGtgn-000Ogq-32;
-	Mon, 19 May 2025 08:09:29 +0200
-From: Andreas Klinger <ak@it-klinger.de>
-To: jic23@kernel.org,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org
-Cc: lars@metafoo.de,
-	javier.carrasco.cruz@gmail.com,
-	mazziesaccount@gmail.com,
-	andriy.shevchenko@linux.intel.com,
-	arthur.becker@sentec.com,
-	perdaniel.olsson@axis.com,
-	mgonellabolduc@dimonoff.com,
-	muditsharma.info@gmail.com,
-	clamor95@gmail.com,
-	emil.gedenryd@axis.com,
-	ak@it-klinger.de,
-	devicetree@vger.kernel.org,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v4 3/3] MAINTAINER: add maintainer for veml6046x00
-Date: Mon, 19 May 2025 08:08:04 +0200
-Message-Id: <20250519060804.80464-4-ak@it-klinger.de>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250519060804.80464-1-ak@it-klinger.de>
-References: <20250519060804.80464-1-ak@it-klinger.de>
+	s=arc-20240116; t=1747640160; c=relaxed/simple;
+	bh=zVO3+aXmayvngbyw4PYPDuKbl+yyblwK0y0qXrmeAvE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VVAiw1+yFMNcoO0sDqU0LmuzxOQA6LHWe3OVx6EplYhG0Sn+z/WLLAwkyMlNwMuomuvwvFV+KcikiBe8aJ9ofjHmzk9Ys02ZU4l7bPDNHsBPSTXDAiOtYmrvZDpChndHYwmERayXrE0YWybpY9ZU3U8BL2BNSyrHo7YS8l3ddyw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nSBfSPEK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 246D8C4CEE4;
+	Mon, 19 May 2025 07:35:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1747640159;
+	bh=zVO3+aXmayvngbyw4PYPDuKbl+yyblwK0y0qXrmeAvE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=nSBfSPEKXsp/UlGw7oh6zxljPJhursDcFHV+SVB7eJixi2czxaPjMaAWCj8fR+g4o
+	 wrHAs+OAquHVincN9MFKT5NIJksr8FZfvlJ/VYIJT3gOnzscxwi+qNgCx6esb2DVSK
+	 yqt8NBb0L6+ISLqLcM414LnjsMRJFT3BwMa6RqEVtlDCun7+h8ndXvGhkb8//8QhXm
+	 flNeM0oUQcX2TWnyv55TRJ9lv7n5mMb9JTN5COoBbcz1K7WbS/mqw0R8B/2JNq4BpX
+	 KKzemZfAQPADmqX2YG9QT1gE781xOJIWt6p96zlvlcEKhgFnneo89LaJomzVsZoFtU
+	 EvU8U3PVSEpPw==
+Date: Mon, 19 May 2025 08:35:53 +0100
+From: Lee Jones <lee@kernel.org>
+To: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+Cc: daniel.lezcano@linaro.org, alexandre.torgue@foss.st.com,
+	tglx@linutronix.de, ukleinek@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, jic23@kernel.org, robh@kernel.org,
+	catalin.marinas@arm.com, will@kernel.org,
+	devicetree@vger.kernel.org, wbg@kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-iio@vger.kernel.org, linux-pwm@vger.kernel.org,
+	olivier.moysan@foss.st.com
+Subject: [GIT PULL] Immutable branch between MFD, Clocksource and PWM due for
+ the v6.16 merge window
+Message-ID: <20250519073553.GH2936510@google.com>
+References: <20250429125133.1574167-1-fabrice.gasnier@foss.st.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Authenticated-Sender: ak@it-klinger.de
-X-Virus-Scanned: Clear (ClamAV 1.0.7/27641/Sun May 18 10:31:14 2025)
+In-Reply-To: <20250429125133.1574167-1-fabrice.gasnier@foss.st.com>
 
-Add maintainer for Vishay veml6046x00 RGBIR color sensor driver and dt
-binding.
+Enjoy!
 
-Signed-off-by: Andreas Klinger <ak@it-klinger.de>
----
- MAINTAINERS | 6 ++++++
- 1 file changed, 6 insertions(+)
+The following changes since commit 0af2f6be1b4281385b618cb86ad946eded089ac8:
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index f21f1dabb5fe..872273ee6bf6 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -25859,6 +25859,12 @@ S:	Maintained
- F:	Documentation/devicetree/bindings/iio/light/vishay,veml6030.yaml
- F:	drivers/iio/light/veml6030.c
- 
-+VISHAY VEML6046X00 RGBIR COLOR SENSOR DRIVER
-+M:	Andreas Klinger <ak@it-klinger.de>
-+S:	Maintained
-+F:	Documentation/devicetree/bindings/iio/light/vishay,veml6046x00.yaml
-+F:	drivers/iio/light/veml6046x00.c
-+
- VISHAY VEML6075 UVA AND UVB LIGHT SENSOR DRIVER
- M:	Javier Carrasco <javier.carrasco.cruz@gmail.com>
- S:	Maintained
+  Linux 6.15-rc1 (2025-04-06 13:11:33 -0700)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/lee/mfd.git ib-mfd-clocksource-pwm-v6.16
+
+for you to fetch changes up to 3f51b232c1da8e59eb562f1d81533334827a4799:
+
+  pwm: stm32-lp: Add support for stm32mp25 (2025-05-13 11:13:56 +0100)
+
+----------------------------------------------------------------
+Immutable branch between MFD, Clocksource and PWM due for the v6.16 merge window
+
+----------------------------------------------------------------
+Fabrice Gasnier (4):
+      dt-bindings: mfd: stm32-lptimer: Add support for stm32mp25
+      mfd: stm32-lptimer: Add support for stm32mp25
+      clocksource/drivers/stm32-lptimer: Add support for stm32mp25
+      pwm: stm32-lp: Add support for stm32mp25
+
+ .../devicetree/bindings/mfd/st,stm32-lptimer.yaml  |  40 +++-
+ drivers/clocksource/timer-stm32-lp.c               |  61 +++++-
+ drivers/mfd/stm32-lptimer.c                        |  33 +++-
+ drivers/pwm/pwm-stm32-lp.c                         | 219 ++++++++++++++++++---
+ include/linux/mfd/stm32-lptimer.h                  |  37 +++-
+ 5 files changed, 350 insertions(+), 40 deletions(-)
+
 -- 
-2.39.5
-
+Lee Jones [李琼斯]
 

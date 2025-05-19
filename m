@@ -1,119 +1,139 @@
-Return-Path: <linux-iio+bounces-19697-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19703-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35F7FABC26B
-	for <lists+linux-iio@lfdr.de>; Mon, 19 May 2025 17:28:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23D44ABC2FF
+	for <lists+linux-iio@lfdr.de>; Mon, 19 May 2025 17:50:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B30B83AF9F5
-	for <lists+linux-iio@lfdr.de>; Mon, 19 May 2025 15:28:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 443D01B60D56
+	for <lists+linux-iio@lfdr.de>; Mon, 19 May 2025 15:51:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA4FD2857D8;
-	Mon, 19 May 2025 15:28:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1315D286D68;
+	Mon, 19 May 2025 15:50:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="g2ZCtaCj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EpdsjUGE"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oi1-f172.google.com (mail-oi1-f172.google.com [209.85.167.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E50243147
-	for <linux-iio@vger.kernel.org>; Mon, 19 May 2025 15:28:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 818FF27FB36;
+	Mon, 19 May 2025 15:50:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747668505; cv=none; b=A+7F7ddcEbwEt53+YK9Y3NwNXGY0YP7+zfZb7+KPfLvBZQg+JdsFjNgCCnH5mwXeA+CLrvNmXrZBSGsA33WNcChUi3Bf8IFJstWysrqQqwauYaf3etXGQwAGFhjjsKQ0QXTOUoW5w5CJk2/eL8EcpMp2kneWwpnw8J8o9vUwtWU=
+	t=1747669827; cv=none; b=Bn3XZvX9wChWhNxsmXmCJjgBxspeljwJJqyMj+T1rIJlZunBtJ3+nRFjkFWFLSU2jwDA1oaLv4JT7pszFSVm8jZ1PHVYpAaII+4sSAowqn3dmSqZnvM5Xu50GvDn/nQ2LuVF2+IBVu21uiK0bGxEOol+pG9CoW19LFqSGG2fAx4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747668505; c=relaxed/simple;
-	bh=KHxgPGkHJc47h2T7vaf1QrsDbAkmsHgS+s5O8Uan+Pc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SjmCa6Jc2Gq96hx6NkodD/gy9T1tHMCR/y9gOG+5mTiy2XpzW2VrcOfx4IahiB+9Ak8BaAytjSm9NP7k3SA3uktji27mLyPX+VHnKsF8pmJtrBsdou9XxZKI3coOKNdw6pC97L+VLBK+SBr1r10z/+ePv+epOFAaAXhSwIEGAFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=g2ZCtaCj; arc=none smtp.client-ip=209.85.167.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oi1-f172.google.com with SMTP id 5614622812f47-3fcfc85f1f5so1320337b6e.2
-        for <linux-iio@vger.kernel.org>; Mon, 19 May 2025 08:28:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1747668502; x=1748273302; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=gunr5yrkLk/n2a5iSHnU+A4FlqS7JkXXxLbIjVojZgc=;
-        b=g2ZCtaCjO82Af217o/dnZNkg8yDVj5g5HY/zI+6tqqzWKJDmuJ82bhYv5cFDQ0vvOn
-         1OvMW/r68fFmwYhpUugfXNoDVqBIXEWKR64HoWSKb7XkNPyLW2Vy3MafTNodej5t6/S6
-         yzKSFKM6ZoobR86Tqv9wMdSSUZQCauA2wp2iuaGynlAdsMTgyDGAtb7D90AcKvl5qxeS
-         aFnlfRxMinlC349E4TsN4XcnrcDCyfJ5s6qIMCWeV8DZ6QBQJhnPHQMmaUGygpSAFgyi
-         QXU3GXNPtNAk7u9g4jDzl+VyW9ktcziV+MJKK1cL5ruhOpjYDZ+RtFHwkMZBcnG1oVvS
-         ZSDw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747668502; x=1748273302;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=gunr5yrkLk/n2a5iSHnU+A4FlqS7JkXXxLbIjVojZgc=;
-        b=oeTjW+MsHcUJZRhBXVBOFePKzvzqFOQmjbOSlH1x6q1wpZw4ZWmlLKHvc8bSqovIuM
-         vKugX93Qb2lDJQYRihqM6YvQSIegJEcZkeLTNDCG70TZ859tFbtb1UUkU2LQ2feG5f4Q
-         ZqX1q4LbDpNx6aZtK2EXPNndU2ZNVwzuigEQBWro6nR1b3O1DCDRw6hTEZ7NOr7wifVq
-         ZvxuSxaODcARusllYBw0Xem7LFZ5BKhYL7cLq7my1e3SVPWO5r/Uvt5X9aHuqJKemoqJ
-         2/L+M0eGLlEPHy0akNn+60wTxmmbSwviRfu7ClCjDj5HACm2QqkjkFHuh1wLNpv01BUg
-         zW0Q==
-X-Gm-Message-State: AOJu0YzdyuJGrOYhveEx735GRFveWKU8ZnNBDJ0S1cocXICmp6DkGn5y
-	31kewvBjh3fkwIk4hR+Y+r7P8xR+mYd6FR7GlvBeHYZ4js2ZOxNEH3aDuISpfrLu6pQ=
-X-Gm-Gg: ASbGncuVp1NzjbYFrq5bjvDZmxX2xVK5o54f+16LPSAtCNjPZvU1IkViwbGJxVEcup0
-	H7QZhk5HNqBnnsXH9q0dny1TIu8QpqsQEMQUaXJD3fxTqpjmJNL9F7kcyPw95hg2M3AGUUIiAWf
-	qszQD4zQDWxpqPHeyGlf3M0q4TcQ8uPzx2s4ZI5Vm2UH/NqXbV05O8wj/DaZHEMtHERpRGU+wa2
-	w5saY9TtVOc+lmZwXYnhcvrsgmtmzugzUeGrc0bMby2NnHSyq+7DEgP8P8+O7+ymRS7Er7AhRQf
-	l7W7Jyc9eKKNGS9NpaM/5oFs1Pejt23uwcxj2b32M2/fJFjARCqreCKvA9Y2e1d+x0CUWIS6hUX
-	x1d7weioBnf7VpKEooFs2JZWhqQ==
-X-Google-Smtp-Source: AGHT+IENnuG/YXszL2204Pk9pF5KDxPDHR3fkgrZVRSzJWcNVc/KUH1Sh44zKC9K6d9mhWQi2kpzSg==
-X-Received: by 2002:a05:6808:164a:b0:3f7:8f77:2a97 with SMTP id 5614622812f47-404da82c7a9mr7623243b6e.34.1747668502340;
-        Mon, 19 May 2025 08:28:22 -0700 (PDT)
-Received: from ?IPV6:2600:8803:e7e4:1d00:a628:91ca:eb5:d6f5? ([2600:8803:e7e4:1d00:a628:91ca:eb5:d6f5])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-404dc2d4954sm1265375b6e.48.2025.05.19.08.28.21
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 19 May 2025 08:28:21 -0700 (PDT)
-Message-ID: <f06d231d-297f-4c83-b457-b9eb242b9c93@baylibre.com>
-Date: Mon, 19 May 2025 10:28:21 -0500
+	s=arc-20240116; t=1747669827; c=relaxed/simple;
+	bh=7f0ImEZdmQ4sVUUr9o8k+aVzij3X3LUT7iulVIHgJHQ=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=QKJco1QgR4LWsNjVm+r6mhAVznw5z6tF9Wp10zWaZdQeJHMHeR4IW7edIIuzgGzQzGzofAFzPRenxskl+Tyxjyl5/K0DLEZJqTVH+RfKcInowlSFSLj1ei5bj4jMPtQMAwNZU3wX0fuwHVDcu0j5htk4cVbJ3/69yIHJcpvC71o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EpdsjUGE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id E56F9C4CEE4;
+	Mon, 19 May 2025 15:50:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1747669827;
+	bh=7f0ImEZdmQ4sVUUr9o8k+aVzij3X3LUT7iulVIHgJHQ=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=EpdsjUGEp5rIIckMYu1aM2uuyC3aCgch0AmgEB8MiR1gCIzurpNwhuGUdCJajDdJF
+	 9sMEiELXWKgsdn/kLhMrjgNpzk1cp0fByEbzZmGUM59tpqTNE/x6c/Eo5O+/q1pGv4
+	 yztvY574y6fo0VFjGS1WKHaOpfxjKxOSh253SRlqdBcAAe4RsxigCjEBGSqAbYZmNT
+	 2LwuiriLKV4ubVENl09Wrb/FL/YXGfM52aE1AhELb4PXL4/L7kxF+USNVnAXcMqk7J
+	 tFogYFZOhaCzM642SvEfYrGieswtPtPJ2PO/boazLj0ck7X8wvs+Va/FzOxr0XMfar
+	 CHxCIIyXrZVlQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D27DDC2D0CD;
+	Mon, 19 May 2025 15:50:26 +0000 (UTC)
+From: =?utf-8?q?Nuno_S=C3=A1_via_B4_Relay?= <devnull+nuno.sa.analog.com@kernel.org>
+Subject: [PATCH v6 0/7] clk: clk-axi-clkgen: improvements and some fixes
+Date: Mon, 19 May 2025 16:41:05 +0100
+Message-Id: <20250519-dev-axi-clkgen-limits-v6-0-bc4b3b61d1d4@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC 0/9] iio: Introduce new timestamp grabbing APIs
-To: Gyeyoung Baek <gye976@gmail.com>, Jonathan Cameron <jic23@kernel.org>,
- =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
- Andy Shevchenko <andy@kernel.org>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20250519-timestamp-v1-0-fcb4f6c2721c@gmail.com>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <20250519-timestamp-v1-0-fcb4f6c2721c@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIABFRK2gC/33QQW6DMBAF0KtEXseVZ8Y2OKveo+rC2AOxSqCCC
+ KWKuHtN1IpUiMqrb2me//guRh4Sj+J0uIuBpzSmvsvBHg8inH3XsEwxZ4EKjUIoZeRJ+luSof1
+ ouJNtuqTrKC3VlQqGA5WVyLOfA9fp9nDf3nM+p/HaD1+PZyZYbn9FtyNOIJVEWxdcgw7RhVff+
+ bZvXkJ/EQs54coQ0B6DmYGCPKOPlgA2DK2MVsUeQ5khCkWNRXDRumfm+PM9GuG/cY2KKl1zxOA
+ 2LfTaIp89Ri8tfDSAmsHxdhnzxADuMSYzvrSV82RLVuYPM8/zN3zgUU8WAgAA
+X-Change-ID: 20250218-dev-axi-clkgen-limits-63fb0c5ec38b
+To: linux-clk@vger.kernel.org, linux-fpga@vger.kernel.org, 
+ dmaengine@vger.kernel.org, linux-hwmon@vger.kernel.org, 
+ linux-iio@vger.kernel.org, linux-pwm@vger.kernel.org, 
+ linux-spi@vger.kernel.org
+Cc: Stephen Boyd <sboyd@kernel.org>, 
+ Michael Turquette <mturquette@baylibre.com>, 
+ Moritz Fischer <mdf@kernel.org>, Wu Hao <hao.wu@intel.com>, 
+ Xu Yilun <yilun.xu@intel.com>, Tom Rix <trix@redhat.com>, 
+ Vinod Koul <vkoul@kernel.org>, Jean Delvare <jdelvare@suse.com>, 
+ Guenter Roeck <linux@roeck-us.net>, 
+ Michael Hennerich <Michael.Hennerich@analog.com>, 
+ Jonathan Cameron <jic23@kernel.org>, Trevor Gamblin <tgamblin@baylibre.com>, 
+ =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>, 
+ David Lechner <dlechner@baylibre.com>, Mark Brown <broonie@kernel.org>, 
+ Mike Turquette <mturquette@linaro.org>, Xu Yilun <yilun.xu@linux.intel.com>, 
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1747669828; l=1918;
+ i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
+ bh=7f0ImEZdmQ4sVUUr9o8k+aVzij3X3LUT7iulVIHgJHQ=;
+ b=N4/7QPa94o9EyM9f/xBKR/7JgbVeaFY327xya7hTMLcla4UekqHjzjjybKnA67iuvwLOcB0qQ
+ 9W4h93MDTXVAoyRtir588nRc2q1f9XpEB/sNogId0cu3hwH9+MoKWHL
+X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
+ pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
+X-Endpoint-Received: by B4 Relay for nuno.sa@analog.com/20231116 with
+ auth_id=100
+X-Original-From: =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>
+Reply-To: nuno.sa@analog.com
 
-On 5/19/25 9:25 AM, Gyeyoung Baek wrote:
-> Support automatic timestamp grabbing by passing `true` to the `timestamp_enabled` parameter of `iio_triggered_buffer_setup_new()`.
-> So consumer drivers don't need to set `iio_pollfunc_store_time()` as either the tophalf or bottomhalf manually.
-> 
-> For this, triggers must indicate whether they will call `poll()`, `poll_nested()`, or both before
-> calling `iio_trigger_register()`. This is necessary because the consumer's handler does not know
-> in advance which trigger will be attached.
-> 
-> Once `iio_trigger_attach_poll_func()` is called, a timestamp is grabbed in either the
-> tophalf or bottomhalf based on the trigger's type (POLL or POLL_NESTED). If the trigger
-> supports both (e.g., at91-sama5d2-adc.c), it is treated as POLL_NESTED since the consumer's
-> tophalf is not invoked in poll_nested(), but the bottomhalf always is.
-> 
-> If the attached trigger supports timestamp grabbing itself, the consumer does not need to handle it.
-> Instead, the consumer's `poll_func` pointer is passed to the trigger, which can then store the
-> timestamp directly into consumer. Trigger drivers can pass timestamp values to consumers in a consistent
-> interface using the new API `iio_trigger_store_time()`.
+This series starts with a small fix and then a bunch of small
+improvements. The main change though is to allow detecting of
+struct axi_clkgen_limits during probe().
 
-This is explaining what it does and how it works, but we really want to
-know first _why_ we need this and why it is better that what we already
-have or what sort of problem this is fixing that the current situation
-can't handle.
+---
+Changes in v6:
+- Patch 3:
+ * Don't add adi-axi-common.h in axi-clkgen (not needed at this point);
+- Patch 5: 
+ * Add adi-axi-common.h now.
+
+- Link to v5: https://lore.kernel.org/r/20250512-dev-axi-clkgen-limits-v5-0-a86b9a368e05@analog.com
+- Link to v4: https://lore.kernel.org/r/20250505-dev-axi-clkgen-limits-v4-0-3ad5124e19e1@analog.com
+- Link to v3: https://lore.kernel.org/r/20250421-dev-axi-clkgen-limits-v3-0-4203b4fed2c9@analog.com
+- Link to v2: https://lore.kernel.org/r/20250313-dev-axi-clkgen-limits-v2-0-173ae2ad6311@analog.com
+- Link to v1: https://lore.kernel.org/r/20250219-dev-axi-clkgen-limits-v1-0-26f7ef14cd9c@analog.com
+
+---
+Nuno Sá (7):
+      clk: clk-axi-clkgen: fix fpfd_max frequency for zynq
+      clk: clk-axi-clkgen: make sure to include mod_devicetable.h
+      include: linux: move adi-axi-common.h out of fpga
+      include: adi-axi-common: add new helper macros
+      clk: clk-axi-clkgen: detect axi_clkgen_limits at runtime
+      clk: clk-axi-clkgen move to min/max()
+      clk: clk-axi-clkgen: fix coding style issues
+
+ drivers/clk/clk-axi-clkgen.c        | 159 +++++++++++++++++++++++++-----------
+ drivers/dma/dma-axi-dmac.c          |   2 +-
+ drivers/hwmon/axi-fan-control.c     |   2 +-
+ drivers/iio/adc/adi-axi-adc.c       |   3 +-
+ drivers/iio/dac/adi-axi-dac.c       |   2 +-
+ drivers/pwm/pwm-axi-pwmgen.c        |   2 +-
+ drivers/spi/spi-axi-spi-engine.c    |   2 +-
+ include/linux/adi-axi-common.h      |  56 +++++++++++++
+ include/linux/fpga/adi-axi-common.h |  23 ------
+ 9 files changed, 174 insertions(+), 77 deletions(-)
+---
+base-commit: 82f69876ef45ad66c0b114b786c7c6ac0f6a4580
+change-id: 20250218-dev-axi-clkgen-limits-63fb0c5ec38b
+--
+
+Thanks!
+- Nuno Sá
+
 
 

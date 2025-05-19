@@ -1,156 +1,156 @@
-Return-Path: <linux-iio+bounces-19714-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19715-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 694D9ABC554
-	for <lists+linux-iio@lfdr.de>; Mon, 19 May 2025 19:13:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8AEAABC721
+	for <lists+linux-iio@lfdr.de>; Mon, 19 May 2025 20:24:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ADDA64A1115
-	for <lists+linux-iio@lfdr.de>; Mon, 19 May 2025 17:13:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 621B83BB51D
+	for <lists+linux-iio@lfdr.de>; Mon, 19 May 2025 18:24:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 399ED288C05;
-	Mon, 19 May 2025 17:13:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3BD3286D65;
+	Mon, 19 May 2025 18:24:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jW1pHrb1"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CC2/Cw3K"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78E961E9B2F;
-	Mon, 19 May 2025 17:13:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B33A2874EA;
+	Mon, 19 May 2025 18:24:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747674816; cv=none; b=oFnarzFbwEJMdbl7PrIX/PWbEDT4+ZMEe4jU6Lv+O5SR+waB5z31Is6r9BUCUJ2QZC94D4FoNQpx2nfPu2iUlCw719URt8NRSz6Ggz9WUYsl1kw5nEyu70CqYEjXpgXKbb3qRTSgC1DKNSkCS7mJpA2mumXZXcbIZKUm202TDsQ=
+	t=1747679056; cv=none; b=KKMJiwdG++nZy4dRqYT7Z9oniCddH6WK7b5PiD0FYH8i6YXuo5V37jZSZHhPuVH4AuCRrcO/2KDBP721uelSxU7id95HDQ+TSAStaH2bjxyVc9ybJx8H31nYBNhwMRpSFk6S7dFMJObwxKEuzsIH515+F8ZHd/kB+5dD+wdioHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747674816; c=relaxed/simple;
-	bh=Qdi2sd5zKiaqiOmyDGmwmHhX/Extxxcs7bTo59RLOIQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iTLVoXXV2LWQQkU+VXqJSWqCEA2QfMr7zPPNsnMIdcDg536qlr5bF5eGXb3t8rF9OYcFSgEe0o2wCeKkzZKPeZaO0oSJoI4cJ4G8krbKhFnOarYHT78wRJb5fl5siwW/RUZeAqYDa1nJYO2qqPv+sQVXLeQ6amL4pLwQIEtkUE4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jW1pHrb1; arc=none smtp.client-ip=209.85.160.181
+	s=arc-20240116; t=1747679056; c=relaxed/simple;
+	bh=3yuG6YCZZkTsEZ4sjG0vHbbdeqds1A8LT7+eP2zjudo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Mu8JBiumxBeYeOfNy7sCDwnM1jxOwVyxXVL9EMaSBoRXE1jKWoXkETLQ1391VdAvx0X4bFt/8rlT/S9JSY+N8SHoSdn5ZpnvVzDodns/Chuvq0TwmTrnDCAeKgQ1/aC/m9miqSnoQldSauhtKojE4WSfpds1yfYEEmcjqemedFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CC2/Cw3K; arc=none smtp.client-ip=209.85.216.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-47675dc7c79so2173601cf.1;
-        Mon, 19 May 2025 10:13:34 -0700 (PDT)
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-30ea8b7c5c2so2187697a91.3;
+        Mon, 19 May 2025 11:24:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1747674813; x=1748279613; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:reply-to:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=DfS2K+nToaIQZXiWRsqqBr1PnTaklIQKpwVqODFItlg=;
-        b=jW1pHrb1jkLoUIGGJIU3+D1jDSX1Jen+CcYH9FSIBZu6G5GjLfmagw23zl50DDcDbj
-         Ekbwdl0JC6hMPKv2cibu0iI8chDf7pICFv7Tp0Di2gE4k2M3rw4MHo8pkwunghEKqvsv
-         5edlDwt97wfEMQKTE7s/ImTwItbZLwSJJgUvaj1fpCTLSokiNyvswJRT3k6UybfrNmew
-         IPfoIbQ4HzvDu5lxO4cl72fb/pvzdGcQ3ROZMPimD8o4cIQnnPYB/RvT19uNWYpf/3qT
-         JNmxsWTGhVVUXA+cdqrv3EPn+aZ9/gpPPaC0DD5KrkuQquHCYb3rkdYqE5p5cZurbUCy
-         sKgw==
+        d=gmail.com; s=20230601; t=1747679054; x=1748283854; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3yuG6YCZZkTsEZ4sjG0vHbbdeqds1A8LT7+eP2zjudo=;
+        b=CC2/Cw3K6/QCgS/c8gGH0/uWN4iVdq57riVWgUPehyNbJKWNZjmywbMIqjZUy12w0H
+         udJ4Drs3cKNxs+hkZfORP23JqbaNjhJJxCyphs4FDqtSJZrLap7yAnyJk7W/q+lyA3mT
+         2ey9Bd2RVQQZfkHaWlMA4jl2fTRuei+KneauQ0FzBfSk2RuK5pati4l4QS0XejCcHbVh
+         +zzaqVOCftrfNydKLs7OarwkzvMKXQ3loNGfe3jHTS89ACc0QnQysDyu/BshkMwvJbCj
+         0RvHorAdKZyH7PVmqfjBWKFHVVrbOTLT2FIAxLuBGnW7QYHMuBeBRcmteYQtOMGdagSb
+         8lvg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747674813; x=1748279613;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:reply-to:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=DfS2K+nToaIQZXiWRsqqBr1PnTaklIQKpwVqODFItlg=;
-        b=scw4/sZKRCSvXAQohjo35e5Brd4TaFm/zqZzKLqrSrQrQ/rX+LJr6eYjWqZM+2QvGs
-         K5SS9q0K8tsVLJKWLJ2NN9ukDPSzVe13NQ+c9+v8tu2Jf1Dz3Z0/EIeQX9cHq98Wrg/P
-         03UJnWL8DNh7utFgrqHIVDQ3lXpACxjLddAMDhxazrifDek/Vz817yznLclMNpuf4NaJ
-         rL8o9JjkHxeMWSdic7ZUZ2shEILEghxXP8clJSW7ovm7MqM0xPT+bnAPv9QrrhZGr/Cz
-         dGT3rBZLmSkP4C/kE28LY0zm+iuqEtKbt5KUn62/hO73lNf9tfEv201ByDUmV98O8iE3
-         ZomA==
-X-Forwarded-Encrypted: i=1; AJvYcCUVIJnW50Hjy4ImBW7gELbqsnEC73HKqSKhhc85D/tWEEDBHUxKLNuWMCI9Bef0/PFqt2reaOgl1/Ru@vger.kernel.org, AJvYcCVCglWw0IBMYDd4KkuqbxaptAxWG3+eqcQbyRm8tumi/zhUv1gJGigZimPKL4kiz5JdtVuBaknxA9iXiSJL@vger.kernel.org, AJvYcCVxO90fSKrxZhfMcb63jJ4ItQKcT3Jnjg1KRlMWeJrb4mLjJAV2UFt2i6aKd1f0HBpQNNq06TayeNFiXg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyWpdLqpZjaVCc+NQfDN40B8DUM9YExHtqKcRD3l3jJ8nI+KGLz
-	xvzHMsNgiAmcynHfiuOy72Q89y7eOmbEOHKE2FEWSEbjA2q3284EtvrA
-X-Gm-Gg: ASbGncuRGxmqdrVX5zqWpby0VYsIbuCkE8DE77fr7KMKjbLvj5V0x6s7JO/+WFY7ls2
-	g3Lkw+nl0WIauGW4cHSduT5Kt1OFFziHER9TyOxj0pMjC45Qy1E+zyieOpvoeZVquYoAbLUvXDd
-	vXIHlthMfTXeKjpoGEsxIYOxZy98i8XiJAxYZvnRXASU7ptBW+kEkJXChJ2z40gBApo67O92YxQ
-	9zVd1iEG8Pu20imSvDLTCxTNO3um9pyvbYCy1MVqvoQNhRIYfQnvCi2rlHAX6WU41yy95Yfp+Ju
-	jfjkWAauCBJGAIOiASuugmRjh1FNzVPOm4Eh8G0BWkiOnnQQ26rAAZOOKPHmwJ4IcLHV1BH8
-X-Google-Smtp-Source: AGHT+IEmerFA7UG18MKd3PESkSiYA42y9Lh+jF2d/0IAMd3d1SBK/rdF0xGLenMpT4omCyd/haaNlw==
-X-Received: by 2002:ac8:5703:0:b0:476:63e5:eb93 with SMTP id d75a77b69052e-494ae3a253dmr83340531cf.7.1747674813024;
-        Mon, 19 May 2025 10:13:33 -0700 (PDT)
-Received: from JSANTO12-L01.ad.analog.com ([189.121.203.94])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7cd467dd34csm607046285a.47.2025.05.19.10.13.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 May 2025 10:13:32 -0700 (PDT)
-Date: Mon, 19 May 2025 14:13:27 -0300
-From: Jonathan Santos <jonath4nns@gmail.com>
-To: Jonathan Santos <Jonathan.Santos@analog.com>
-Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
-	andy@kernel.org, nuno.sa@analog.com, Michael.Hennerich@analog.com,
-	marcelo.schmitt@analog.com, jic23@kernel.org, robh@kernel.org,
-	krzk+dt@kernel.org, conor+dt@kernel.org, marcelo.schmitt1@gmail.com,
-	linus.walleij@linaro.org, brgl@bgdev.pl, lgirdwood@gmail.com,
-	broonie@kernel.org, dlechner@baylibre.com,
-	Pop Paul <paul.pop@analog.com>
-Subject: Re: [PATCH v8 10/11] iio: adc: ad7768-1: add filter type and
- oversampling ratio attributes
-Message-ID: <aCtmt+ozqSRDGQxi@JSANTO12-L01.ad.analog.com>
-Reply-To: 1aff0f813bb3fee55c5483be860b6885abdb81e5.1747175187.git.Jonathan.Santos@analog.com
-References: <cover.1747175187.git.Jonathan.Santos@analog.com>
- <1aff0f813bb3fee55c5483be860b6885abdb81e5.1747175187.git.Jonathan.Santos@analog.com>
+        d=1e100.net; s=20230601; t=1747679054; x=1748283854;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=3yuG6YCZZkTsEZ4sjG0vHbbdeqds1A8LT7+eP2zjudo=;
+        b=meuImoqKaGbzs6+b6pEW8sRXEUNMi3FDj5qzQvI4s/aT3ckYemhmFPREhVJdeET5hc
+         KrUz515oyMtRB7nPrhhdadEw15+iqC6wfsqcLB7QM9qOl2uZ41XmiPrKTQbDOvJPcPtA
+         iXtxubuYvdJ8l4m/pi9sNIcK37yocC1OI6C6/cAJSSQG7h6p+ichwDfW9zbjK5OxbuWD
+         Hq82gznIeqvtbii1jOr7Ja1Z1iWouOp7TZyzPbg4e26zqFtlgmyF8k5OWyQZ0ztnS+FR
+         8gYpbZGBmdL77rKXIjxGowoMmY54pY/Svmmbr7z27lqwnx+JnNmRehi/2aBzGNlJ257A
+         Egvw==
+X-Forwarded-Encrypted: i=1; AJvYcCUyc95/9RnMhFU8NYqY6kv0JGtA7ruQrGsRkIgyvYS9EsehOEQJJPWIG3J4GJadTbpPGyI3m+R8YjT2Tj/5@vger.kernel.org, AJvYcCWj7X+aFQiHuDlSvNbctSzweKwwgXcVHb/JZWrMf/mBSIxOgn7h0ULgDSIUeGArv0ZfUn7boSGKEaA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxp6sdwLGrAumuYE85nX9TVtUVqAE+XYTLcY+6ZWoi5iVPFwq/Y
+	Ru7w5kNvMQXAk8mGnYT2eZdPnFL4C5VBSJFiwahLIfJQOP0IrbH90SZm5YNvDtTQ3H9JmKSiNUG
+	4HTgmu1fmG/9VvqHDVlF6eP8HgJvjZ60=
+X-Gm-Gg: ASbGncstINKzZPVdmsbLIh1idyHMkYci7fohcTFEmpgb94IvPlWWFI/Iue3QeHYpyn4
+	EWSB7V8m8OUUf7xvV8sp4P/alaakM1XU1K0LR0XFopk9Veelk/HapeprWhJiBrn96LxUbip9A6j
+	wunuMTl996o0VGY4z7otXF0YC3LJCpsd2XnA==
+X-Google-Smtp-Source: AGHT+IHmlpnUrqtWUhYfgZb4ImW7swMGNC/uf5vTuHRu1M1uwil4qqjaBE1ka+WOyVPVZg4y/tYqvYW68YNFda/fAfY=
+X-Received: by 2002:a17:90b:6c8:b0:30e:8f60:b4c with SMTP id
+ 98e67ed59e1d1-30e8f600d77mr21594237a91.16.1747679054505; Mon, 19 May 2025
+ 11:24:14 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1aff0f813bb3fee55c5483be860b6885abdb81e5.1747175187.git.Jonathan.Santos@analog.com>
+References: <20250519-timestamp-v1-0-fcb4f6c2721c@gmail.com> <f06d231d-297f-4c83-b457-b9eb242b9c93@baylibre.com>
+In-Reply-To: <f06d231d-297f-4c83-b457-b9eb242b9c93@baylibre.com>
+From: Gyeyoung Baek <gye976@gmail.com>
+Date: Tue, 20 May 2025 03:24:03 +0900
+X-Gm-Features: AX0GCFvmEWIRJCR1b9xEYVREnCG9wYgk71oNXkvAWn9Tpq1GQNEWrvNKYGsdrow
+Message-ID: <CAKbEzntfFix95SG5CkCzMWGuDXdztTQRv+SYOEaWsSHwmYoCOA@mail.gmail.com>
+Subject: Re: [PATCH RFC 0/9] iio: Introduce new timestamp grabbing APIs
+To: David Lechner <dlechner@baylibre.com>
+Cc: Jonathan Cameron <jic23@kernel.org>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
+	Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 05/15, Jonathan Santos wrote:
-> Separate filter type and decimation rate from the sampling frequency
-> attribute. The new filter type attribute enables sinc3, sinc3+rej60
-> and wideband filters, which were previously unavailable.
-> 
-> Previously, combining decimation and MCLK divider in the sampling
-> frequency obscured performance trade-offs. Lower MCLK divider
-> settings increase power usage, while lower decimation rates reduce
-> precision by decreasing averaging. By creating an oversampling
-> attribute, which controls the decimation, users gain finer control
-> over performance.
-> 
-> The addition of those attributes allows a wider range of sampling
-> frequencies and more access to the device features. Sampling frequency
-> table is updated after every digital filter parameter change.
-> 
-> Changes in the sampling frequency are not allowed anymore while in
-> buffered mode.
-> 
-> Reviewed-by: David Lechner <dlechner@baylibre.com>
-> Co-developed-by: Pop Paul <paul.pop@analog.com>
-> Signed-off-by: Pop Paul <paul.pop@analog.com>
-> Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
-...
-> +
-> +/* Decimation Rate range for each filter type */
-> +static const int ad7768_dec_rate_range[][3] = {
-> +	[AD7768_FILTER_SINC5] = { 8, 8, 1024 },
-> +	[AD7768_FILTER_SINC3] = { 32, 32, 163840 },
-> +	[AD7768_FILTER_WIDEBAND] = { 32, 32, 1024 },
-> +	[AD7768_FILTER_SINC3_REJ60] = { 32, 32, 163840 },
-> +};
-> +
+On Tue, May 20, 2025 at 12:28=E2=80=AFAM David Lechner <dlechner@baylibre.c=
+om> wrote:
+>
+> On 5/19/25 9:25 AM, Gyeyoung Baek wrote:
+> > Support automatic timestamp grabbing by passing `true` to the `timestam=
+p_enabled` parameter of `iio_triggered_buffer_setup_new()`.
+> > So consumer drivers don't need to set `iio_pollfunc_store_time()` as ei=
+ther the tophalf or bottomhalf manually.
+> >
+> > For this, triggers must indicate whether they will call `poll()`, `poll=
+_nested()`, or both before
+> > calling `iio_trigger_register()`. This is necessary because the consume=
+r's handler does not know
+> > in advance which trigger will be attached.
+> >
+> > Once `iio_trigger_attach_poll_func()` is called, a timestamp is grabbed=
+ in either the
+> > tophalf or bottomhalf based on the trigger's type (POLL or POLL_NESTED)=
+. If the trigger
+> > supports both (e.g., at91-sama5d2-adc.c), it is treated as POLL_NESTED =
+since the consumer's
+> > tophalf is not invoked in poll_nested(), but the bottomhalf always is.
+> >
+> > If the attached trigger supports timestamp grabbing itself, the consume=
+r does not need to handle it.
+> > Instead, the consumer's `poll_func` pointer is passed to the trigger, w=
+hich can then store the
+> > timestamp directly into consumer. Trigger drivers can pass timestamp va=
+lues to consumers in a consistent
+> > interface using the new API `iio_trigger_store_time()`.
+>
+> This is explaining what it does and how it works, but we really want to
+> know first _why_ we need this and why it is better that what we already
+> have or what sort of problem this is fixing that the current situation
+> can't handle.
 
-Since we're still discussing some points — is the `step` in 
-`[min step max]` for the IIO range additive or multiplicative? It is not 
-clear on documentation, maybe on purpose or I have missed something.
+Hello David, thanks for the review.
+I see that I didn=E2=80=99t explain the reason properly.
+The following explains the reason for these patch series.
 
-Here, decimation/OSR doubles from 8 or 32 for SINC5/WIDEBAND, and is a 
-multiple of 32 for SINC3. So I'm still unsure how to represent this to be
-clear to the user.
+There are three cases when a timestamp can be grabbed:
+1. In the consumer=E2=80=99s top half (which is the most common case, using
+`iio_pollfunc_store_time()`),
+2. In the consumer=E2=80=99s bottom half,
+3. Directly by the trigger before polling the consumer (for drivers
+using their own trigger).
 
-> +/*
-> + * The AD7768-1 supports three primary filter types:
-> + * Sinc5, Sinc3, and Wideband.
-> + * However, the filter register values can also encode additional parameters
-> + * such as decimation rates and 60Hz rejection. This utility array separates
-> + * the filter type from these parameters.
-> + */
-...
-> -- 
-> 2.34.1
-> 
+Since the consumer can't know what type of trigger will be attached at
+runtime, the following two problems can arise:
+
+1. When a trigger that calls `iio_trigger_poll_nested()` instead of
+`iio_trigger_poll()`is attached:
+most consumer register `iio_pollfunc_store_time()` as top-half
+expecting a timestamp, but top-half is not invoked.
+And this is not the intended behavior of consumer devices.
+2. When a trigger directly provides a timestamp:
+The consumer=E2=80=99s handler checks whether a timestamp has already been
+grabbed using if statement (like light/rpr0521.c),
+or overwrites the existing timestamp even though it was already
+provided by the trigger.
+
+This patch series addresses these two issues.
+
+--
+Best regards,
+Gyeyoung
 

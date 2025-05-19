@@ -1,236 +1,156 @@
-Return-Path: <linux-iio+bounces-19713-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19714-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 519F9ABC4A8
-	for <lists+linux-iio@lfdr.de>; Mon, 19 May 2025 18:36:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 694D9ABC554
+	for <lists+linux-iio@lfdr.de>; Mon, 19 May 2025 19:13:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 882D63B43C6
-	for <lists+linux-iio@lfdr.de>; Mon, 19 May 2025 16:35:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ADDA64A1115
+	for <lists+linux-iio@lfdr.de>; Mon, 19 May 2025 17:13:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D37612874F7;
-	Mon, 19 May 2025 16:35:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 399ED288C05;
+	Mon, 19 May 2025 17:13:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="hY3aAFwM"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jW1pHrb1"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ot1-f47.google.com (mail-ot1-f47.google.com [209.85.210.47])
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F2C6286D77
-	for <linux-iio@vger.kernel.org>; Mon, 19 May 2025 16:35:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78E961E9B2F;
+	Mon, 19 May 2025 17:13:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747672554; cv=none; b=amEZND8ciC0Qb0ze2A2CNrdxninWAAoDwA4MsDsGQApf1e4RFJmOnGdxmkvV8UagkXf39p2e3SCqnJv7Nv8C2yi8jK46xuJzJIX2VI7OSvvSTHBRxQqBr6Bsl5CIwZmeFz4XEw0Ta6ZNfEnE7uFJ/dfu92ssJc28BQCx9EGyQg0=
+	t=1747674816; cv=none; b=oFnarzFbwEJMdbl7PrIX/PWbEDT4+ZMEe4jU6Lv+O5SR+waB5z31Is6r9BUCUJ2QZC94D4FoNQpx2nfPu2iUlCw719URt8NRSz6Ggz9WUYsl1kw5nEyu70CqYEjXpgXKbb3qRTSgC1DKNSkCS7mJpA2mumXZXcbIZKUm202TDsQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747672554; c=relaxed/simple;
-	bh=0QbvWiCAa+GioZRtVuR1peg4Ser/UC7UOzTp8JIZmZ8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VG3kVAhhxWADeLxSBAbBDIHm53vrHP9TFLq5VBm/tROqTzRFXpDWnOugNYOWBmRokXP2+hSaS58lHEili+N/MwTnalAdQCKFrJzc0V5SrINkZfOV5R8KqW1blmxpTzZYfW+RsjZWUuhynT7Sr/3aPF/i4XI6UfW/ddhpDkxA2/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=hY3aAFwM; arc=none smtp.client-ip=209.85.210.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ot1-f47.google.com with SMTP id 46e09a7af769-72ec926e828so1366294a34.0
-        for <linux-iio@vger.kernel.org>; Mon, 19 May 2025 09:35:51 -0700 (PDT)
+	s=arc-20240116; t=1747674816; c=relaxed/simple;
+	bh=Qdi2sd5zKiaqiOmyDGmwmHhX/Extxxcs7bTo59RLOIQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iTLVoXXV2LWQQkU+VXqJSWqCEA2QfMr7zPPNsnMIdcDg536qlr5bF5eGXb3t8rF9OYcFSgEe0o2wCeKkzZKPeZaO0oSJoI4cJ4G8krbKhFnOarYHT78wRJb5fl5siwW/RUZeAqYDa1nJYO2qqPv+sQVXLeQ6amL4pLwQIEtkUE4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jW1pHrb1; arc=none smtp.client-ip=209.85.160.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-47675dc7c79so2173601cf.1;
+        Mon, 19 May 2025 10:13:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1747672550; x=1748277350; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=gmail.com; s=20230601; t=1747674813; x=1748279613; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:reply-to:message-id:subject:cc:to:from:date
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=W58GfmIWiZ3U0eNBo2ssjSmziqMleoXnnwt1PGdnFxg=;
-        b=hY3aAFwMukUfRB4AEd3dg6nw0Qs+GhudysQ/b7DPD6wJ1IDksewyTz7pA7Xiu4wBsC
-         MdCc81yOBJZ5HMK3/TqeQaPyH8yLJmvyU3rW1mN96Y2d0AIJHZPI8++eTkfrj86/ZjXy
-         3j8xWG9XVMpO15C6FKlCxVwPju6N5yWS9gdZy1ADxJghtsX18J/c3vnfYNWmiySrNc3t
-         0s0NP5/TMh6Nc5m2ly6XV+2GDT9mu1cf0N9BxJfHih+0X9r2HcUfBcyM3+T5O3E85oKB
-         EIF2F0yxJsExwNsc8BcUkUF8gO6w5aZNt64W7FcA0fdYz2VecfhatUXstNNyhlQouFzV
-         d+tQ==
+        bh=DfS2K+nToaIQZXiWRsqqBr1PnTaklIQKpwVqODFItlg=;
+        b=jW1pHrb1jkLoUIGGJIU3+D1jDSX1Jen+CcYH9FSIBZu6G5GjLfmagw23zl50DDcDbj
+         Ekbwdl0JC6hMPKv2cibu0iI8chDf7pICFv7Tp0Di2gE4k2M3rw4MHo8pkwunghEKqvsv
+         5edlDwt97wfEMQKTE7s/ImTwItbZLwSJJgUvaj1fpCTLSokiNyvswJRT3k6UybfrNmew
+         IPfoIbQ4HzvDu5lxO4cl72fb/pvzdGcQ3ROZMPimD8o4cIQnnPYB/RvT19uNWYpf/3qT
+         JNmxsWTGhVVUXA+cdqrv3EPn+aZ9/gpPPaC0DD5KrkuQquHCYb3rkdYqE5p5cZurbUCy
+         sKgw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747672550; x=1748277350;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1747674813; x=1748279613;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:reply-to:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=W58GfmIWiZ3U0eNBo2ssjSmziqMleoXnnwt1PGdnFxg=;
-        b=vyYXG5ZlG4uwiki4L45wmnOYxa4cm6B4mYnzYhiQqWM2L2DlPeG1/Zt9k66XYxZ9vx
-         ELrZz43tJQezfOLjPkyKYAr1klaozasD4bDR71eehC9UhpSMAIBd71x2TMv5SEapcMMv
-         vOUQTYtFHZ5HELKNDGsUQ9KdYnu2uSAz1FhHOwmKL562gnZISECViimTtJI7zCHAnZ/v
-         ZyW3VPKg12l7NlssuFi6rNkO3X2cxM8s3UMnpzEbu8h36AqMkDibB1kXndDo8RlZln/I
-         KVgTv+TzBUo7ozbdkyrgJrBwtSNBVTCfVuYcwUWW4xE2QeF6J5rK2+frb9b4ju2FZXEW
-         FKxQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX/VIeDl0LYUymrG6uDhJuvtk8ocSEOiN2c+DhMsRhtwLrhMl3UXTAa78IXOi+8hUkt4nU5ObUg5xI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz9zSwx5sJyLoUgeKzX1plXK13qg3KtjfPtIreHUuf3TfF6lzTl
-	XG7FhPRDDCov1ha1OCwonZJ9ygl7r+imltW5DRMtIL+SL/d3ai9QtGnTTv1JJewSTb8=
-X-Gm-Gg: ASbGncvyeKzjz4v/keTYg03/hJZ4CKD7tLDCEBlu+6iJx5q3SiEQyRllqQZ+GJhsTHR
-	FcC5WWlEAcxoqvwi7LqEFKmhswQh1rFUEoI3TttnqQHHxESXcbF2sZQqKZBHbc2dL8RGJjGKUZJ
-	IMlEg0lxUkzc03qhR7Io4BxtmUqKdkx8rur4exMO03K9mqrAcSShBHGBKVFtsRnWFMngbeXW3ze
-	CDYw4Ljp44g952I5miGnrk6j2yfyoooUq81m7WrVkVZ4og8kKtl+rQJLA027wgAdfTnMcnSzu43
-	7B0IKP2kcYkICkx8L6fzbMyKrGB2yDiVLk+eH9i8kVvdy3rJ86QgHVjpzrBfHRAklvAndejyOuj
-	9kUWKwaaUMA4KKrw3pCbc2SokujfAjYajUBOd
-X-Google-Smtp-Source: AGHT+IEqxryGUIrvlFRjjbZt/fpBB4e1H0kstalMU3B2lw3tKXhvZEegqt/3++j3ZSdhGSKMO3o38w==
-X-Received: by 2002:a05:6870:ad97:b0:2d9:45b7:8ffc with SMTP id 586e51a60fabf-2e3c817196amr7065629fac.3.1747672550446;
-        Mon, 19 May 2025 09:35:50 -0700 (PDT)
-Received: from ?IPV6:2600:8803:e7e4:1d00:a628:91ca:eb5:d6f5? ([2600:8803:e7e4:1d00:a628:91ca:eb5:d6f5])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2e3c06baca3sm1795657fac.19.2025.05.19.09.35.49
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 19 May 2025 09:35:50 -0700 (PDT)
-Message-ID: <ba79221f-9acd-4919-abe9-e2c49e80fb6c@baylibre.com>
-Date: Mon, 19 May 2025 11:35:48 -0500
+        bh=DfS2K+nToaIQZXiWRsqqBr1PnTaklIQKpwVqODFItlg=;
+        b=scw4/sZKRCSvXAQohjo35e5Brd4TaFm/zqZzKLqrSrQrQ/rX+LJr6eYjWqZM+2QvGs
+         K5SS9q0K8tsVLJKWLJ2NN9ukDPSzVe13NQ+c9+v8tu2Jf1Dz3Z0/EIeQX9cHq98Wrg/P
+         03UJnWL8DNh7utFgrqHIVDQ3lXpACxjLddAMDhxazrifDek/Vz817yznLclMNpuf4NaJ
+         rL8o9JjkHxeMWSdic7ZUZ2shEILEghxXP8clJSW7ovm7MqM0xPT+bnAPv9QrrhZGr/Cz
+         dGT3rBZLmSkP4C/kE28LY0zm+iuqEtKbt5KUn62/hO73lNf9tfEv201ByDUmV98O8iE3
+         ZomA==
+X-Forwarded-Encrypted: i=1; AJvYcCUVIJnW50Hjy4ImBW7gELbqsnEC73HKqSKhhc85D/tWEEDBHUxKLNuWMCI9Bef0/PFqt2reaOgl1/Ru@vger.kernel.org, AJvYcCVCglWw0IBMYDd4KkuqbxaptAxWG3+eqcQbyRm8tumi/zhUv1gJGigZimPKL4kiz5JdtVuBaknxA9iXiSJL@vger.kernel.org, AJvYcCVxO90fSKrxZhfMcb63jJ4ItQKcT3Jnjg1KRlMWeJrb4mLjJAV2UFt2i6aKd1f0HBpQNNq06TayeNFiXg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyWpdLqpZjaVCc+NQfDN40B8DUM9YExHtqKcRD3l3jJ8nI+KGLz
+	xvzHMsNgiAmcynHfiuOy72Q89y7eOmbEOHKE2FEWSEbjA2q3284EtvrA
+X-Gm-Gg: ASbGncuRGxmqdrVX5zqWpby0VYsIbuCkE8DE77fr7KMKjbLvj5V0x6s7JO/+WFY7ls2
+	g3Lkw+nl0WIauGW4cHSduT5Kt1OFFziHER9TyOxj0pMjC45Qy1E+zyieOpvoeZVquYoAbLUvXDd
+	vXIHlthMfTXeKjpoGEsxIYOxZy98i8XiJAxYZvnRXASU7ptBW+kEkJXChJ2z40gBApo67O92YxQ
+	9zVd1iEG8Pu20imSvDLTCxTNO3um9pyvbYCy1MVqvoQNhRIYfQnvCi2rlHAX6WU41yy95Yfp+Ju
+	jfjkWAauCBJGAIOiASuugmRjh1FNzVPOm4Eh8G0BWkiOnnQQ26rAAZOOKPHmwJ4IcLHV1BH8
+X-Google-Smtp-Source: AGHT+IEmerFA7UG18MKd3PESkSiYA42y9Lh+jF2d/0IAMd3d1SBK/rdF0xGLenMpT4omCyd/haaNlw==
+X-Received: by 2002:ac8:5703:0:b0:476:63e5:eb93 with SMTP id d75a77b69052e-494ae3a253dmr83340531cf.7.1747674813024;
+        Mon, 19 May 2025 10:13:33 -0700 (PDT)
+Received: from JSANTO12-L01.ad.analog.com ([189.121.203.94])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7cd467dd34csm607046285a.47.2025.05.19.10.13.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 19 May 2025 10:13:32 -0700 (PDT)
+Date: Mon, 19 May 2025 14:13:27 -0300
+From: Jonathan Santos <jonath4nns@gmail.com>
+To: Jonathan Santos <Jonathan.Santos@analog.com>
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
+	andy@kernel.org, nuno.sa@analog.com, Michael.Hennerich@analog.com,
+	marcelo.schmitt@analog.com, jic23@kernel.org, robh@kernel.org,
+	krzk+dt@kernel.org, conor+dt@kernel.org, marcelo.schmitt1@gmail.com,
+	linus.walleij@linaro.org, brgl@bgdev.pl, lgirdwood@gmail.com,
+	broonie@kernel.org, dlechner@baylibre.com,
+	Pop Paul <paul.pop@analog.com>
+Subject: Re: [PATCH v8 10/11] iio: adc: ad7768-1: add filter type and
+ oversampling ratio attributes
+Message-ID: <aCtmt+ozqSRDGQxi@JSANTO12-L01.ad.analog.com>
+Reply-To: 1aff0f813bb3fee55c5483be860b6885abdb81e5.1747175187.git.Jonathan.Santos@analog.com
+References: <cover.1747175187.git.Jonathan.Santos@analog.com>
+ <1aff0f813bb3fee55c5483be860b6885abdb81e5.1747175187.git.Jonathan.Santos@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 16/16] lib: move find_closest() and
- find_closest_descending() to lib functions
-To: Alexandru Soponar <asoponar@taladin.ro>, linux-kernel@vger.kernel.org,
- linux-hwmon@vger.kernel.org, linux-iio@vger.kernel.org,
- linux-leds@vger.kernel.org, linux-watchdog@vger.kernel.org
-Cc: jdelvare@suse.com, linux@roeck-us.net, jic23@kernel.org, pavel@ucw.cz,
- lee@kernel.org, baocheng.su@siemens.com, wim@linux-watchdog.org,
- tobias.schaffner@siemens.com, angelogioacchino.delregno@collabora.com,
- benedikt.niedermayr@siemens.com, matthias.bgg@gmail.com,
- aardelean@baylibre.com, contact@sopy.one
-References: <20250515081332.151250-1-asoponar@taladin.ro>
- <20250515081332.151250-17-asoponar@taladin.ro>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <20250515081332.151250-17-asoponar@taladin.ro>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <1aff0f813bb3fee55c5483be860b6885abdb81e5.1747175187.git.Jonathan.Santos@analog.com>
 
-On 5/15/25 3:13 AM, Alexandru Soponar wrote:
-> Move the utility macros find_closest() and find_closest_descending()
-> from inline macros to proper library functions in lib/.
+On 05/15, Jonathan Santos wrote:
+> Separate filter type and decimation rate from the sampling frequency
+> attribute. The new filter type attribute enables sinc3, sinc3+rej60
+> and wideband filters, which were previously unavailable.
 > 
-> Signed-off-by: Alexandru Soponar <asoponar@taladin.ro>
-> ---
->  include/linux/find_closest.h | 13 +++++++
->  include/linux/util_macros.h  | 61 +------------------------------
->  lib/Makefile                 |  2 +-
->  lib/find_closest.c           | 71 ++++++++++++++++++++++++++++++++++++
->  4 files changed, 86 insertions(+), 61 deletions(-)
->  create mode 100644 include/linux/find_closest.h
->  create mode 100644 lib/find_closest.c
+> Previously, combining decimation and MCLK divider in the sampling
+> frequency obscured performance trade-offs. Lower MCLK divider
+> settings increase power usage, while lower decimation rates reduce
+> precision by decreasing averaging. By creating an oversampling
+> attribute, which controls the decimation, users gain finer control
+> over performance.
 > 
-> diff --git a/include/linux/find_closest.h b/include/linux/find_closest.h
-> new file mode 100644
-> index 000000000000..28a5c4d0c768
-> --- /dev/null
-> +++ b/include/linux/find_closest.h
-> @@ -0,0 +1,13 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +/*
-> + * Find closest element functions
-> + */
-> +#ifndef _LINUX_FIND_CLOSEST_H_
-> +#define _LINUX_FIND_CLOSEST_H_
-> +
-> +#include <linux/types.h>
-
-Is this header really needed?
-
-> +
-> +unsigned int find_closest(int x, const int *a, unsigned int as);
-> +unsigned int find_closest_descending(int x, const int *a, unsigned int as);
-> +
-> +#endif /* _LINUX_FIND_CLOSEST_H_ */
-
+> The addition of those attributes allows a wider range of sampling
+> frequencies and more access to the device features. Sampling frequency
+> table is updated after every digital filter parameter change.
+> 
+> Changes in the sampling frequency are not allowed anymore while in
+> buffered mode.
+> 
+> Reviewed-by: David Lechner <dlechner@baylibre.com>
+> Co-developed-by: Pop Paul <paul.pop@analog.com>
+> Signed-off-by: Pop Paul <paul.pop@analog.com>
+> Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
 ...
+> +
+> +/* Decimation Rate range for each filter type */
+> +static const int ad7768_dec_rate_range[][3] = {
+> +	[AD7768_FILTER_SINC5] = { 8, 8, 1024 },
+> +	[AD7768_FILTER_SINC3] = { 32, 32, 163840 },
+> +	[AD7768_FILTER_WIDEBAND] = { 32, 32, 1024 },
+> +	[AD7768_FILTER_SINC3_REJ60] = { 32, 32, 163840 },
+> +};
+> +
 
-> diff --git a/lib/find_closest.c b/lib/find_closest.c
-> new file mode 100644
-> index 000000000000..d481625cae9d
-> --- /dev/null
-> +++ b/lib/find_closest.c
-> @@ -0,0 +1,71 @@
-> +// SPDX-License-Identifier: GPL-2.0
+Since we're still discussing some points — is the `step` in 
+`[min step max]` for the IIO range additive or multiplicative? It is not 
+clear on documentation, maybe on purpose or I have missed something.
+
+Here, decimation/OSR doubles from 8 or 32 for SINC5/WIDEBAND, and is a 
+multiple of 32 for SINC3. So I'm still unsure how to represent this to be
+clear to the user.
+
 > +/*
-> + * Find closest element functions
-> + *
-> + * Based on previous util_macros.h implementation
+> + * The AD7768-1 supports three primary filter types:
+> + * Sinc5, Sinc3, and Wideband.
+> + * However, the filter register values can also encode additional parameters
+> + * such as decimation rates and 60Hz rejection. This utility array separates
+> + * the filter type from these parameters.
 > + */
-> +
-> +#include <linux/find_closest.h>
-> +#include <linux/module.h>
-> +
-> +/**
-> + * find_closest - locate the closest element in a sorted array
-> + * @x: The reference value.
-> + * @a: The array in which to look for the closest element. Must be sorted
-> + *  in ascending order.
-> + * @as: Size of 'a'.
-> + *
-> + * Returns the index of the element closest to 'x'.
-
-s/Returns/Returns:/
-
-for kernel-doc semantics
-
-> + */
-> +unsigned int find_closest(int x, const int *a, unsigned int as)
-> +{
-> +	unsigned int array_size = as - 1;
-> +	int mid_x, left, right;
-> +	unsigned int i;
-> +
-> +	for (i = 0; i < array_size; i++) {
-> +		mid_x = (a[i] + a[i + 1]) / 2;
-> +		if (x <= mid_x) {
-> +			left = x - a[i];
-> +			right = a[i + 1] - x;
-> +			if (right < left)
-> +				i++;
-> +			break;
-> +		}
-> +	}
-> +
-> +	return i;
-> +}
-> +EXPORT_SYMBOL_GPL(find_closest);
-> +
-> +/**
-> + * find_closest_descending - locate the closest element in a sorted array
-> + * @x: The reference value.
-> + * @a: The array in which to look for the closest element. Must be sorted
-> + *  in descending order.
-> + * @as: Size of 'a'.
-> + *
-
-Would repeat the Returns: section here for completeness.
-
-> + * Similar to find_closest() but 'a' is expected to be sorted in descending
-> + * order.
-
-This seems redundant since @a already says this.
-
->             The iteration is done in reverse order, so that the comparison> + * of 'right' & 'left' also works for unsigned numbers.
-
-This seems like an implementation detail so would be better as a comment inside
-the function. Although, since @a is always signed, is this comment actually
-still applicable?
-
-> + */
-> +unsigned int find_closest_descending(int x, const int *a, unsigned int as)
-> +{
-> +	unsigned int array_size = as - 1;
-> +	int mid_x, left, right;
-> +	unsigned int i;
-> +
-> +	for (i = array_size; i >= 1; i--) {
-> +		mid_x = (a[i] + a[i - 1]) / 2;
-> +		if (x <= mid_x) {
-> +			left = x - a[i];
-> +			right = a[i - 1] - x;
-> +			if (right < left)
-> +				i--;
-> +			break;
-> +		}
-> +	}
-> +
-> +	return i;
-> +}
-> +EXPORT_SYMBOL_GPL(find_closest_descending);
-
+...
+> -- 
+> 2.34.1
+> 
 

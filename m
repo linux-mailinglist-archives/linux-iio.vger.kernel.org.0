@@ -1,113 +1,236 @@
-Return-Path: <linux-iio+bounces-19712-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19713-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74118ABC480
-	for <lists+linux-iio@lfdr.de>; Mon, 19 May 2025 18:28:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 519F9ABC4A8
+	for <lists+linux-iio@lfdr.de>; Mon, 19 May 2025 18:36:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A1270189E927
-	for <lists+linux-iio@lfdr.de>; Mon, 19 May 2025 16:29:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 882D63B43C6
+	for <lists+linux-iio@lfdr.de>; Mon, 19 May 2025 16:35:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F2C72874FF;
-	Mon, 19 May 2025 16:28:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D37612874F7;
+	Mon, 19 May 2025 16:35:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H1SINi+u"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="hY3aAFwM"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f47.google.com (mail-ot1-f47.google.com [209.85.210.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BEA0286D79;
-	Mon, 19 May 2025 16:28:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F2C6286D77
+	for <linux-iio@vger.kernel.org>; Mon, 19 May 2025 16:35:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747672132; cv=none; b=olzH3PrTp2QeVujPMITuoSIcT33FSEBuqhHSqJrilbe3hACcs7OvwYlJS5uPk9sB/4aW+JgbwBWHZgcpqOci4pByT4mWz6aluiwLnQVUqFMtI5FxqEzK6Fdqx7mS5TC9A93Kf0EdoxKYcJ9HkoU5B8pdV/8YoODX6nQU4iy7Lus=
+	t=1747672554; cv=none; b=amEZND8ciC0Qb0ze2A2CNrdxninWAAoDwA4MsDsGQApf1e4RFJmOnGdxmkvV8UagkXf39p2e3SCqnJv7Nv8C2yi8jK46xuJzJIX2VI7OSvvSTHBRxQqBr6Bsl5CIwZmeFz4XEw0Ta6ZNfEnE7uFJ/dfu92ssJc28BQCx9EGyQg0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747672132; c=relaxed/simple;
-	bh=33cTvU1qBUdJ2kbCQM2qxSf1F+IUciULteXqEWFXPyM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LfDtgnGo4SvMAmzpqhOpqpNIipDqU1mVxqDnoLzIUah7qvoRuzcpwR24ZWPBSqiXaMZuLUmNSXX6voJILd+96eLXDCsvkp+XlL0p69LG5dAWWElxP4igmAl9JJP7cziQ4+k8GVpo4gzSCU+UBPZQSQniG1TwxFus3eWqSj6iAMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H1SINi+u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E349AC4CEE4;
-	Mon, 19 May 2025 16:28:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747672131;
-	bh=33cTvU1qBUdJ2kbCQM2qxSf1F+IUciULteXqEWFXPyM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=H1SINi+ujtraVCf67Fj/+P1foxwZZ1nad1P/kJA/kyAfgXGcQiMWQ40cvyhGuG9C3
-	 kB9+98tVsy2sG2EH2OGVU+r6xuxeqfhDfB/3+rSyn9VnnaVQLDtOsaOzlABiUkwAPW
-	 0VXoq3EXPtGEnCBeO5tEiXghea7QG3+M+656FtmI0A0N6RKrFRN/0ehXEjqZLTCjtp
-	 iACApKGzUdQwr//FlFXAvSfCAANYGwDmGt8824jyGoANL/4F+e+iRB5bzbOvs6aT+C
-	 wYdk8SF6ojVeVXC2Wwgv3GhpTDTaOOqLfSicnLNcKeWq6EU/z4/rtCZzpk3vFBN7tO
-	 0jNzRdoySTnMA==
-Date: Mon, 19 May 2025 18:28:48 +0200
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-To: nuno.sa@analog.com
-Cc: linux-clk@vger.kernel.org, linux-fpga@vger.kernel.org, 
-	dmaengine@vger.kernel.org, linux-hwmon@vger.kernel.org, linux-iio@vger.kernel.org, 
-	linux-pwm@vger.kernel.org, linux-spi@vger.kernel.org, Stephen Boyd <sboyd@kernel.org>, 
-	Michael Turquette <mturquette@baylibre.com>, Moritz Fischer <mdf@kernel.org>, Wu Hao <hao.wu@intel.com>, 
-	Xu Yilun <yilun.xu@intel.com>, Tom Rix <trix@redhat.com>, Vinod Koul <vkoul@kernel.org>, 
-	Jean Delvare <jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>, 
-	Michael Hennerich <Michael.Hennerich@analog.com>, Jonathan Cameron <jic23@kernel.org>, 
-	Trevor Gamblin <tgamblin@baylibre.com>, David Lechner <dlechner@baylibre.com>, 
-	Mark Brown <broonie@kernel.org>, Mike Turquette <mturquette@linaro.org>, 
-	Xu Yilun <yilun.xu@linux.intel.com>, Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH v6 3/7] include: linux: move adi-axi-common.h out of fpga
-Message-ID: <gneof3jin55orfncvexyjtj2a2bdcvks6hxuaf4ovqbm6jcl42@kcohbvsi2zmc>
-References: <20250519-dev-axi-clkgen-limits-v6-0-bc4b3b61d1d4@analog.com>
- <20250519-dev-axi-clkgen-limits-v6-3-bc4b3b61d1d4@analog.com>
+	s=arc-20240116; t=1747672554; c=relaxed/simple;
+	bh=0QbvWiCAa+GioZRtVuR1peg4Ser/UC7UOzTp8JIZmZ8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=VG3kVAhhxWADeLxSBAbBDIHm53vrHP9TFLq5VBm/tROqTzRFXpDWnOugNYOWBmRokXP2+hSaS58lHEili+N/MwTnalAdQCKFrJzc0V5SrINkZfOV5R8KqW1blmxpTzZYfW+RsjZWUuhynT7Sr/3aPF/i4XI6UfW/ddhpDkxA2/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=hY3aAFwM; arc=none smtp.client-ip=209.85.210.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-ot1-f47.google.com with SMTP id 46e09a7af769-72ec926e828so1366294a34.0
+        for <linux-iio@vger.kernel.org>; Mon, 19 May 2025 09:35:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1747672550; x=1748277350; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=W58GfmIWiZ3U0eNBo2ssjSmziqMleoXnnwt1PGdnFxg=;
+        b=hY3aAFwMukUfRB4AEd3dg6nw0Qs+GhudysQ/b7DPD6wJ1IDksewyTz7pA7Xiu4wBsC
+         MdCc81yOBJZ5HMK3/TqeQaPyH8yLJmvyU3rW1mN96Y2d0AIJHZPI8++eTkfrj86/ZjXy
+         3j8xWG9XVMpO15C6FKlCxVwPju6N5yWS9gdZy1ADxJghtsX18J/c3vnfYNWmiySrNc3t
+         0s0NP5/TMh6Nc5m2ly6XV+2GDT9mu1cf0N9BxJfHih+0X9r2HcUfBcyM3+T5O3E85oKB
+         EIF2F0yxJsExwNsc8BcUkUF8gO6w5aZNt64W7FcA0fdYz2VecfhatUXstNNyhlQouFzV
+         d+tQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747672550; x=1748277350;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=W58GfmIWiZ3U0eNBo2ssjSmziqMleoXnnwt1PGdnFxg=;
+        b=vyYXG5ZlG4uwiki4L45wmnOYxa4cm6B4mYnzYhiQqWM2L2DlPeG1/Zt9k66XYxZ9vx
+         ELrZz43tJQezfOLjPkyKYAr1klaozasD4bDR71eehC9UhpSMAIBd71x2TMv5SEapcMMv
+         vOUQTYtFHZ5HELKNDGsUQ9KdYnu2uSAz1FhHOwmKL562gnZISECViimTtJI7zCHAnZ/v
+         ZyW3VPKg12l7NlssuFi6rNkO3X2cxM8s3UMnpzEbu8h36AqMkDibB1kXndDo8RlZln/I
+         KVgTv+TzBUo7ozbdkyrgJrBwtSNBVTCfVuYcwUWW4xE2QeF6J5rK2+frb9b4ju2FZXEW
+         FKxQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX/VIeDl0LYUymrG6uDhJuvtk8ocSEOiN2c+DhMsRhtwLrhMl3UXTAa78IXOi+8hUkt4nU5ObUg5xI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz9zSwx5sJyLoUgeKzX1plXK13qg3KtjfPtIreHUuf3TfF6lzTl
+	XG7FhPRDDCov1ha1OCwonZJ9ygl7r+imltW5DRMtIL+SL/d3ai9QtGnTTv1JJewSTb8=
+X-Gm-Gg: ASbGncvyeKzjz4v/keTYg03/hJZ4CKD7tLDCEBlu+6iJx5q3SiEQyRllqQZ+GJhsTHR
+	FcC5WWlEAcxoqvwi7LqEFKmhswQh1rFUEoI3TttnqQHHxESXcbF2sZQqKZBHbc2dL8RGJjGKUZJ
+	IMlEg0lxUkzc03qhR7Io4BxtmUqKdkx8rur4exMO03K9mqrAcSShBHGBKVFtsRnWFMngbeXW3ze
+	CDYw4Ljp44g952I5miGnrk6j2yfyoooUq81m7WrVkVZ4og8kKtl+rQJLA027wgAdfTnMcnSzu43
+	7B0IKP2kcYkICkx8L6fzbMyKrGB2yDiVLk+eH9i8kVvdy3rJ86QgHVjpzrBfHRAklvAndejyOuj
+	9kUWKwaaUMA4KKrw3pCbc2SokujfAjYajUBOd
+X-Google-Smtp-Source: AGHT+IEqxryGUIrvlFRjjbZt/fpBB4e1H0kstalMU3B2lw3tKXhvZEegqt/3++j3ZSdhGSKMO3o38w==
+X-Received: by 2002:a05:6870:ad97:b0:2d9:45b7:8ffc with SMTP id 586e51a60fabf-2e3c817196amr7065629fac.3.1747672550446;
+        Mon, 19 May 2025 09:35:50 -0700 (PDT)
+Received: from ?IPV6:2600:8803:e7e4:1d00:a628:91ca:eb5:d6f5? ([2600:8803:e7e4:1d00:a628:91ca:eb5:d6f5])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2e3c06baca3sm1795657fac.19.2025.05.19.09.35.49
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 19 May 2025 09:35:50 -0700 (PDT)
+Message-ID: <ba79221f-9acd-4919-abe9-e2c49e80fb6c@baylibre.com>
+Date: Mon, 19 May 2025 11:35:48 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="qc7wyrddxi24dmdp"
-Content-Disposition: inline
-In-Reply-To: <20250519-dev-axi-clkgen-limits-v6-3-bc4b3b61d1d4@analog.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 16/16] lib: move find_closest() and
+ find_closest_descending() to lib functions
+To: Alexandru Soponar <asoponar@taladin.ro>, linux-kernel@vger.kernel.org,
+ linux-hwmon@vger.kernel.org, linux-iio@vger.kernel.org,
+ linux-leds@vger.kernel.org, linux-watchdog@vger.kernel.org
+Cc: jdelvare@suse.com, linux@roeck-us.net, jic23@kernel.org, pavel@ucw.cz,
+ lee@kernel.org, baocheng.su@siemens.com, wim@linux-watchdog.org,
+ tobias.schaffner@siemens.com, angelogioacchino.delregno@collabora.com,
+ benedikt.niedermayr@siemens.com, matthias.bgg@gmail.com,
+ aardelean@baylibre.com, contact@sopy.one
+References: <20250515081332.151250-1-asoponar@taladin.ro>
+ <20250515081332.151250-17-asoponar@taladin.ro>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <20250515081332.151250-17-asoponar@taladin.ro>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
+On 5/15/25 3:13 AM, Alexandru Soponar wrote:
+> Move the utility macros find_closest() and find_closest_descending()
+> from inline macros to proper library functions in lib/.
+> 
+> Signed-off-by: Alexandru Soponar <asoponar@taladin.ro>
+> ---
+>  include/linux/find_closest.h | 13 +++++++
+>  include/linux/util_macros.h  | 61 +------------------------------
+>  lib/Makefile                 |  2 +-
+>  lib/find_closest.c           | 71 ++++++++++++++++++++++++++++++++++++
+>  4 files changed, 86 insertions(+), 61 deletions(-)
+>  create mode 100644 include/linux/find_closest.h
+>  create mode 100644 lib/find_closest.c
+> 
+> diff --git a/include/linux/find_closest.h b/include/linux/find_closest.h
+> new file mode 100644
+> index 000000000000..28a5c4d0c768
+> --- /dev/null
+> +++ b/include/linux/find_closest.h
+> @@ -0,0 +1,13 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +/*
+> + * Find closest element functions
+> + */
+> +#ifndef _LINUX_FIND_CLOSEST_H_
+> +#define _LINUX_FIND_CLOSEST_H_
+> +
+> +#include <linux/types.h>
 
---qc7wyrddxi24dmdp
-Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v6 3/7] include: linux: move adi-axi-common.h out of fpga
-MIME-Version: 1.0
+Is this header really needed?
 
-On Mon, May 19, 2025 at 04:41:08PM +0100, Nuno S=E1 via B4 Relay wrote:
-> ...
->  drivers/pwm/pwm-axi-pwmgen.c              | 2 +-
+> +
+> +unsigned int find_closest(int x, const int *a, unsigned int as);
+> +unsigned int find_closest_descending(int x, const int *a, unsigned int as);
+> +
+> +#endif /* _LINUX_FIND_CLOSEST_H_ */
 
-There is nothing scheduled on my side for that driver and the change
-looks as expected.
+...
 
-Take my
+> diff --git a/lib/find_closest.c b/lib/find_closest.c
+> new file mode 100644
+> index 000000000000..d481625cae9d
+> --- /dev/null
+> +++ b/lib/find_closest.c
+> @@ -0,0 +1,71 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Find closest element functions
+> + *
+> + * Based on previous util_macros.h implementation
+> + */
+> +
+> +#include <linux/find_closest.h>
+> +#include <linux/module.h>
+> +
+> +/**
+> + * find_closest - locate the closest element in a sorted array
+> + * @x: The reference value.
+> + * @a: The array in which to look for the closest element. Must be sorted
+> + *  in ascending order.
+> + * @as: Size of 'a'.
+> + *
+> + * Returns the index of the element closest to 'x'.
 
-Acked-by: Uwe Kleine-K=F6nig <ukleinek@kernel.org>
+s/Returns/Returns:/
 
-to get it applied to whatever tree that series will be merged through
-(clk?).
+for kernel-doc semantics
 
-Best regards
-Uwe
+> + */
+> +unsigned int find_closest(int x, const int *a, unsigned int as)
+> +{
+> +	unsigned int array_size = as - 1;
+> +	int mid_x, left, right;
+> +	unsigned int i;
+> +
+> +	for (i = 0; i < array_size; i++) {
+> +		mid_x = (a[i] + a[i + 1]) / 2;
+> +		if (x <= mid_x) {
+> +			left = x - a[i];
+> +			right = a[i + 1] - x;
+> +			if (right < left)
+> +				i++;
+> +			break;
+> +		}
+> +	}
+> +
+> +	return i;
+> +}
+> +EXPORT_SYMBOL_GPL(find_closest);
+> +
+> +/**
+> + * find_closest_descending - locate the closest element in a sorted array
+> + * @x: The reference value.
+> + * @a: The array in which to look for the closest element. Must be sorted
+> + *  in descending order.
+> + * @as: Size of 'a'.
+> + *
 
---qc7wyrddxi24dmdp
-Content-Type: application/pgp-signature; name="signature.asc"
+Would repeat the Returns: section here for completeness.
 
------BEGIN PGP SIGNATURE-----
+> + * Similar to find_closest() but 'a' is expected to be sorted in descending
+> + * order.
 
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmgrXD0ACgkQj4D7WH0S
-/k5bXwf/cJD2ZIBr/eC/DLRua6Dq8h+RlZnDSQh1lehylLta85o6E8oYlHQEZ240
-2lvD0KSsJzcqbMyIKp39Kw+sXNZ6Y737QlYDTkGgKV35JNPfQeEv0GwJrfpGI7vO
-eyxcWys1iV9qbfTb9zAXVdSKU31iGb/sFW2NIOjOcQFLejMnDtFGDpQAmaeILc2B
-Knb8t+KEHMnXTD6FI9f/+YZUX4Bg4FZ6EtLhQqWS2oGu2W4naVpqHdVapeNh4ZVF
-LzTSUKF4ljtL8demEJW4eXSzaD3eYlfYSMThAwocQFUqbs8bttRb+Q1XQwpLIEH9
-l+6sHZcXJ1Q42rpKqAfhyeh0aU650g==
-=BfpI
------END PGP SIGNATURE-----
+This seems redundant since @a already says this.
 
---qc7wyrddxi24dmdp--
+>             The iteration is done in reverse order, so that the comparison> + * of 'right' & 'left' also works for unsigned numbers.
+
+This seems like an implementation detail so would be better as a comment inside
+the function. Although, since @a is always signed, is this comment actually
+still applicable?
+
+> + */
+> +unsigned int find_closest_descending(int x, const int *a, unsigned int as)
+> +{
+> +	unsigned int array_size = as - 1;
+> +	int mid_x, left, right;
+> +	unsigned int i;
+> +
+> +	for (i = array_size; i >= 1; i--) {
+> +		mid_x = (a[i] + a[i - 1]) / 2;
+> +		if (x <= mid_x) {
+> +			left = x - a[i];
+> +			right = a[i - 1] - x;
+> +			if (right < left)
+> +				i--;
+> +			break;
+> +		}
+> +	}
+> +
+> +	return i;
+> +}
+> +EXPORT_SYMBOL_GPL(find_closest_descending);
+
 

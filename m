@@ -1,137 +1,109 @@
-Return-Path: <linux-iio+bounces-19718-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19719-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F9EBABCAE4
-	for <lists+linux-iio@lfdr.de>; Tue, 20 May 2025 00:31:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1ED26ABCC02
+	for <lists+linux-iio@lfdr.de>; Tue, 20 May 2025 02:31:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BBF2A17B53C
-	for <lists+linux-iio@lfdr.de>; Mon, 19 May 2025 22:31:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 89A9A3AB458
+	for <lists+linux-iio@lfdr.de>; Tue, 20 May 2025 00:31:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B50601FAC42;
-	Mon, 19 May 2025 22:31:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52F691DF728;
+	Tue, 20 May 2025 00:31:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Im6H618V"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h9iWDfN4"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
+Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03A0F524F;
-	Mon, 19 May 2025 22:31:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7402EFC08;
+	Tue, 20 May 2025 00:31:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747693899; cv=none; b=V+1SFJRUx8mQqmhvsXnK4nsL/c40qPfXz4d/QhUI16xBikwZFmvs73WZHeJF6WtdZsRLY8uDoq1N+BQTbP3eV2cw7ORFYSLO0qv52aMBu3F7lEWPCdifP3PT8cnPa50bTyUcpOzDgp7ru9KL3q2BxgCQqlJFbFhpcx+r083vUDM=
+	t=1747701098; cv=none; b=gmwGVNAtE3403obXuzpWnXpL224t6uMr4OYG/TFO01YtSodV655ZOMdqWcGvrtMNgEzNCA7J2XoUZyFBZFfrEfP9gA5PJy/nn2Bezubf6UcvrOsbFt1+0ErxHuCIyM17sXjCUi36ejd7SjMX87O7J4XNxOIiaspRlqdczX9FT8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747693899; c=relaxed/simple;
-	bh=twd94YFShG5PaKr1yOCPEGR19p35/1Yadc8USsIYst0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JFdaQOea+vQWwHKi355SroatxNwXufijWngtx6E9zQx3hQRm+rz3jvHBwip3GRQvs7GrsLRaUJHkj/oCTtdUhF971auXNNcFSeSsH1Ic/PTtpt8H5g10mwI3kMxsVLj8gfYoe9NCEyBmkpyipHJUpKRGfjd6SGOGBszX0fgcg1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Im6H618V; arc=none smtp.client-ip=209.85.222.181
+	s=arc-20240116; t=1747701098; c=relaxed/simple;
+	bh=ns9XDYIXLCeBYLBqsS+BgnN5u6+CGHLNqq0gVv2wN+A=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=bxfBMm0qLbtR5P+xoPbhioeOJnvKsXEiVTe2TRYz9vSG72D5r9Q02eCipKQS9Fxc0rcDtlDcqVAUbbzaCPuylmpZ0F86xLunLtvhjrzYWOEuqs/KiOlNj3piruTz19nxjNBlgl+ji97/HHIr51qi9p79apQVUcxaSAsjyDvKG2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h9iWDfN4; arc=none smtp.client-ip=209.85.167.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-7c5f619cc01so73194085a.3;
-        Mon, 19 May 2025 15:31:37 -0700 (PDT)
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-54d6f933152so7610270e87.1;
+        Mon, 19 May 2025 17:31:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1747693897; x=1748298697; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:reply-to:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=rNRhady4NedJvDV1wRtYfXkN0eIeHdeRYwkGiPr6wzc=;
-        b=Im6H618VdaAdx/F1R8I+0fc7Lv7RENbWhYn15EiGBM2MidjfMFUGsu/gHTwvmZAN+y
-         Wpl8707oLRuA88w7P0hzu9MlAG8b7+2AfgxVZ85SKk/MBuSyxeiMrWO+T28eGxGxtZfG
-         25o3oUz9kMRGaEc4QQu+1ncbVk3yroM8nWdRQ2CgCaZPCagv1syF3OIQnYKFzFFWkHix
-         pLheUWuyxqenkZJvFs4p0qMcTVMc8gnzxcELJiB9Vnyt3pfPRfqg48LYJ/eMKx6WE9LQ
-         PXelrq9DVqK4wiUPiPN/TEELw7DYCe1f0ZUAlluBlDDG28k0kqgKoSemNR1f/nLrjsYn
-         INyg==
+        d=gmail.com; s=20230601; t=1747701094; x=1748305894; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ns9XDYIXLCeBYLBqsS+BgnN5u6+CGHLNqq0gVv2wN+A=;
+        b=h9iWDfN4A8T3LUvGjmjtxKbtYskwcBMGzJss7eVMaamTYpVRa/ncu+Qi1A3oMiw4zX
+         PCn6My2yCgknq7Bdob6rEp4CSj9sje6NFhCPGMRyXgCwrFaWkTzFxN/BH/jcxPD4NRNQ
+         NbCYWHsRQc79Gxz3I+QDWy8XCpzz94QrFkRjIYTBPbfJpnYdeY+/Sd0U78FFWXZGF/p3
+         gVEDwUrwmi1YCa18OBwW5exD/ejPO75MsWOJjPcPBQdIu/uMdyoew5M06nQ1bALNLHtu
+         ndQ08h19FZn8PGPjnwQVqRaucm9T2gshUo4WV8vXIKuquUvZDmLG5pgl4wgerZHLFnem
+         LMSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747693897; x=1748298697;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:reply-to:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=rNRhady4NedJvDV1wRtYfXkN0eIeHdeRYwkGiPr6wzc=;
-        b=HAMA6b97SXhv8KJrzz98H1CkCabUzHizwQV7NeHN4Df1hDLD9GwWDJAWabmWmpZUSB
-         CK9izalv2B9E785DRIzRw2mL1GcQm0EnQrvjENKob02F4Aa9RozPpWqb/8xN02ji4ERf
-         KG7txev48+iAiQhSU01/iFrPtykcM7MI6XU2kdQNvHjuH886COLOeasH5gYD16H50uaa
-         gGmr8xR012FCTm5ymTWg0JfE1zP0AJu3ClY2nB9vKROLgk6UVvwh7ngJJYoC+9MngHLj
-         uNAbt3krmcYzLewNkUZhvZGJPgfCvNxv87p5xX9o/8wMYGqHgnjtF6Bwm9Ix4ZqB70PM
-         DtaA==
-X-Forwarded-Encrypted: i=1; AJvYcCUCpZSXpdC0WsqXOgL7nuG//3MXTFBiDAK8Bwtb5DGgDnFOH7KeQIgZhYtkftW2q5YngWW1TrmXFfADHzMs@vger.kernel.org, AJvYcCWLfc3UNBIMjjI1Snm6hAp1vStKQ3punzrQeSS1GvGxBPrpBzOH3P7LkICIY7nifCKbhUDfByIgjtReGg==@vger.kernel.org, AJvYcCWrmx2E7YN1o2QXYDoazJLVgDB7ZCMGvUi2Z3w6+t9YbcJZB8624wBU1r0Qb+9gNIKwr5ekePJHk0xp@vger.kernel.org, AJvYcCXegAP0MbbXWO5BZNIouy+lIf/gLMNdMx44MHHjUi8ad/UeJxCM7Qe89N32yaJfdmNbNb3xsEa90HDp@vger.kernel.org
-X-Gm-Message-State: AOJu0YzV/HVXZnzWLb87DL0FumWLebuUQnDXdzXfXwkiypaZ38h+uhDZ
-	bmDY3lljr/9LLn3/OMWoCRhYRFtQGhwasTSJJZ2l2QQWRcTGrtH5AcYO
-X-Gm-Gg: ASbGncuEAH1t9OpqaOlHyZNcusjfRSm+7LCNFpyPEukFQiyzzeQ7RaSp1Fol/ssakaO
-	vA62CafcClUZJl3cDCZhM0nyLDN7x2B4oXqX3cQOVShEiToZhmiIjxWwN9fhwEL4TyXQuPrzHDS
-	KxRrMjzyrzKblFfOBPgg6AUewJof9d8Zmn4hKa/2htvRI8+lJIzGV80NSJYrb7hTIUmqhFXD4ne
-	CBn5RJcri6mdlCkjKLsYnF9wbIrQ1x//m7JOxfqlXdZKn0XzHUg0y9seRY5MhgIo5Bh4hgD9rTb
-	6aGNTfNPPhq64YJrLzB+IZ2ktafvP5wevol5vBqQ//u5Ur514dIq1+lySyUcOzESn1P3Al/M
-X-Google-Smtp-Source: AGHT+IGh3p0p6XHD6kUXTDkG5ZGADgJ0hhzJakFzthoIXrWXnT4v5hCkzwTklcCcCCf5dr6edgdKFA==
-X-Received: by 2002:a05:620a:6506:b0:7c3:c9d4:95e3 with SMTP id af79cd13be357-7cd46779c90mr967974885a.10.1747693896617;
-        Mon, 19 May 2025 15:31:36 -0700 (PDT)
-Received: from JSANTO12-L01.ad.analog.com ([189.121.203.94])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7cd467ee1fcsm637581485a.52.2025.05.19.15.31.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 May 2025 15:31:35 -0700 (PDT)
-Date: Mon, 19 May 2025 19:31:30 -0300
-From: Jonathan Santos <jonath4nns@gmail.com>
-To: David Lechner <dlechner@baylibre.com>
-Cc: 1aff0f813bb3fee55c5483be860b6885abdb81e5.1747175187.git.Jonathan.Santos@analog.com,
-	Jonathan Santos <Jonathan.Santos@analog.com>,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
-	andy@kernel.org, nuno.sa@analog.com, Michael.Hennerich@analog.com,
-	marcelo.schmitt@analog.com, jic23@kernel.org, robh@kernel.org,
-	krzk+dt@kernel.org, conor+dt@kernel.org, marcelo.schmitt1@gmail.com,
-	linus.walleij@linaro.org, brgl@bgdev.pl, lgirdwood@gmail.com,
-	broonie@kernel.org, Pop Paul <paul.pop@analog.com>
-Subject: Re: [PATCH v8 10/11] iio: adc: ad7768-1: add filter type and
- oversampling ratio attributes
-Message-ID: <aCuxQgCPgeFAqwWh@JSANTO12-L01.ad.analog.com>
-Reply-To: 4843ec52-57e2-418a-b640-8e05ba60959e@baylibre.com
-References: <cover.1747175187.git.Jonathan.Santos@analog.com>
- <1aff0f813bb3fee55c5483be860b6885abdb81e5.1747175187.git.Jonathan.Santos@analog.com>
- <aCtmt+ozqSRDGQxi@JSANTO12-L01.ad.analog.com>
- <4843ec52-57e2-418a-b640-8e05ba60959e@baylibre.com>
+        d=1e100.net; s=20230601; t=1747701094; x=1748305894;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ns9XDYIXLCeBYLBqsS+BgnN5u6+CGHLNqq0gVv2wN+A=;
+        b=SkW9BaPfEjMfryg9WAxOl0Bp4KBPr3GQMqOUmjuhniOtMpylpKApBdnk3rvsyp4mLE
+         q2QsUPM8AP0teepZnIeRUmY/5rmGbM7EncB49LtjhUz+jM9MOXao572+WTTlVbapG642
+         OYy4IzjOi73Lxxt/ldOEMcl9EEuAI4I0wwy5IOlxVpZ7eSXrR0K9IhB2F7S2KqQ0vyh4
+         to/1OxKYw72AAmXU5gS46DwBmfEyA/fU3Ymmn5+oirxuVqKR5nNQaA9/sl6tHU/1/G2K
+         FoyDxHuNGIVTufdzmCu/QFd2B4KcfQYjT+lp0Pva/MbrWNRpghpT+U0AswPFMTIOek5X
+         VFaw==
+X-Forwarded-Encrypted: i=1; AJvYcCVWgKshcP/GyyZub6HXRCq6MP0yugiZTjtTnN85v87/WLqLIqx43qwS6rZiOAfMfUEXzHafz0a28Cs=@vger.kernel.org, AJvYcCX+DCillYWL5P6owmUcYv0tGe2DDw7ezw7QwnY0TpTB2QzBGfe5BGyuZ1e55pqIGTvOH0jvytRs@vger.kernel.org
+X-Gm-Message-State: AOJu0YwqFh2yQbDTTZ7J9SfFMkFM4QfRe/88pHftv+fop9wUYy1Xn6ho
+	fD7IyRYT9KH3qnZBFA3FeE8MWC/grn0hTshj11vqTQkeU7vq5PhSCsAWyUhxqNtxCitiufDhtKV
+	jOKzrwzFPTpzv7kPEW2DZj0sP95bRClg=
+X-Gm-Gg: ASbGncspPLPp+trNjEQy3nKP08X4uPe2rjhGwMw2JeorWMzKsStbNDRybJcpsm0ykUi
+	Y8YCNdQMv6Edpskj1zXCKTDyF40c/2CXguWGPEPORcyOlmzaoY3h6IjJOwL7evBrdNxN7A9/s6A
+	V3EzGHYE4f9sRKr9gXQWvIWcT0H6cNBw3yCf27kEwfBshbP/JgjggdS5XO7q2nZtV2
+X-Google-Smtp-Source: AGHT+IHc3qnC8mMmIb4o3P/26DdOOQXX3nerx+sg0ERdVNJOtlNY+uefNM75tmbBlQiRwdBJb++4jdz/dw+kltKT9Sw=
+X-Received: by 2002:a05:6512:6288:b0:54f:c5cd:ce4f with SMTP id
+ 2adb3069b0e04-550e971b4f6mr3860617e87.6.1747701094191; Mon, 19 May 2025
+ 17:31:34 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <4843ec52-57e2-418a-b640-8e05ba60959e@baylibre.com>
+References: <20250516173900.677821-1-festevam@gmail.com> <a41491e0-595a-4614-a03e-34848446a815@gmail.com>
+In-Reply-To: <a41491e0-595a-4614-a03e-34848446a815@gmail.com>
+From: Fabio Estevam <festevam@gmail.com>
+Date: Mon, 19 May 2025 21:31:22 -0300
+X-Gm-Features: AX0GCFuAOw3iH2QReFfX-AnOKr69vd_4uUAPLtQWzlUBbgyAvbsAPmzDVMS1jzU
+Message-ID: <CAOMZO5CtcmpH6sMpHboEyP50iPG3qGAyzg+TEoR7w2-ykU44_g@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] iio: adc: max1363: Fix MAX1363_4X_CHANS/MAX1363_8X_CHANS[]
+To: Matti Vaittinen <mazziesaccount@gmail.com>
+Cc: jic23@kernel.org, linux-iio@vger.kernel.org, 
+	Fabio Estevam <festevam@denx.de>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 05/19, David Lechner wrote:
-> On 5/19/25 12:13 PM, Jonathan Santos wrote:
-> > On 05/15, Jonathan Santos wrote:
-> 
-> ...
-> >> +
-> >> +/* Decimation Rate range for each filter type */
-> >> +static const int ad7768_dec_rate_range[][3] = {
-> >> +	[AD7768_FILTER_SINC5] = { 8, 8, 1024 },
-> >> +	[AD7768_FILTER_SINC3] = { 32, 32, 163840 },
-> >> +	[AD7768_FILTER_WIDEBAND] = { 32, 32, 1024 },
-> >> +	[AD7768_FILTER_SINC3_REJ60] = { 32, 32, 163840 },
-> >> +};
-> >> +
-> > 
-> > Since we're still discussing some points — is the `step` in 
-> > `[min step max]` for the IIO range additive or multiplicative? It is not 
-> > clear on documentation, maybe on purpose or I have missed something.
-> > 
-> > Here, decimation/OSR doubles from 8 or 32 for SINC5/WIDEBAND, and is a 
-> > multiple of 32 for SINC3. So I'm still unsure how to represent this to be
-> > clear to the user.
-> 
-> Sounds to me like sinc5/wideband should be lists instead of ranges.
-> It is only 6 values.
+Hi Matti,
 
-So can we mix lists and ranges for the same attribute? I see that this
-is not usual.
+On Mon, May 19, 2025 at 2:01=E2=80=AFAM Matti Vaittinen
+<mazziesaccount@gmail.com> wrote:
 
-> 
-> 
+> I could argue the problem which is fixed is not related to the
+> 2718f15403fb. I'd say the problem has been the commit which introduced
+> the 'offending' masks instead. The 2718f15403fb is not fixed by this
+> change. It could help identifying the faulty releases if correct commit
+> was pointed here.
+
+Fair enough, thanks.
+
+I am going through this driver's history, and it looks like the masks
+have been always wrong, since the beginning.
+
+I was not able to point to an exact commit, though.
+
+Maybe I can remove the Fixes line. Jonathan?
 

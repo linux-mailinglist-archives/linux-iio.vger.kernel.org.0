@@ -1,78 +1,78 @@
-Return-Path: <linux-iio+bounces-19751-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19752-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92166ABE788
-	for <lists+linux-iio@lfdr.de>; Wed, 21 May 2025 00:51:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1188EABE78D
+	for <lists+linux-iio@lfdr.de>; Wed, 21 May 2025 00:51:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD1C71B68048
-	for <lists+linux-iio@lfdr.de>; Tue, 20 May 2025 22:51:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AEDA24A311F
+	for <lists+linux-iio@lfdr.de>; Tue, 20 May 2025 22:51:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4909261398;
-	Tue, 20 May 2025 22:50:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DD4C261591;
+	Tue, 20 May 2025 22:50:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A81UsbPW"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RiAUaF/t"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF68125F985;
-	Tue, 20 May 2025 22:50:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D5CA25F78E;
+	Tue, 20 May 2025 22:50:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747781444; cv=none; b=SP6mOvMKF+jumD2Ty2XZ+TlYGGYvcS6xNIpCpg/u9Akbgpnvpy8E6ARKe9upRQvS9reZSyLrAsd/9e0VqZGTOcmmhooERMPKkPnDZX6Ng/IQKEPbbvKhlvnCSb91dU4RXt+G0oALSP/hn0hJ/e5pV4bMZg3ivTbR5nEvk67T2ns=
+	t=1747781444; cv=none; b=D7rXog4S314otrkzeCSuS3KSj+/3nxqSg4zzuKDI/SBHgnPOz9Q6lrVo6ywitzPza+bcfGjh61Yc/NYViRerFxkt+JRhyUatLrJ2g7xE500eCB7Vnhhxnm39nVPSJMXIcgjSvnwEmyiupmiKZl3z8kwxcSLlDcDEPOkXOsY65EM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1747781444; c=relaxed/simple;
-	bh=R9SpEhuEyq4ehpvwcZNQlf9/1GWukf4Pqc+Kz3sbR5E=;
+	bh=TCQwLS0syikPNV8WT/BYxzCcTwgQbI6UeNAiGmncCIE=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=aKGc6u/jndorGvV6ZaRycSxPR4po7BfGv9EEZZPWvaZLtAIXZBiTg5KH2bu0D3rNL2Obp7E7SCcb4KOTDW4BNUDJY3eTB5pwS+3j2RblzmDvkgYo3PJOry+4xUm/S5/7mon1/metI5Wm1+UOx9Rmn2iP+h4Wg267RUllspXRhPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A81UsbPW; arc=none smtp.client-ip=209.85.221.43
+	 MIME-Version; b=NwV+bAstV2d9gfUk943/Z0l4I04iQSSBWbHKznDJLExswN2n9E2r6ZnLI+18Hr55ctc+DMtyfjAoPq5sMacIRH3R+5Hn3hqz5G6vRHLx83C2vdfAU7bye2XeV/nnH7QFQC6Aq1/J965gOpfNAGLIj/HmjYqFcRQwYC1CNV9kYnU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RiAUaF/t; arc=none smtp.client-ip=209.85.221.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-3a361c8a830so690385f8f.0;
-        Tue, 20 May 2025 15:50:41 -0700 (PDT)
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-3a368259589so550556f8f.3;
+        Tue, 20 May 2025 15:50:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1747781440; x=1748386240; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1747781441; x=1748386241; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=YDb8HOZ4Hp1UhkfaoOAEXCBy8LyAOlXzYwG5CU8w1+M=;
-        b=A81UsbPWUjJ6yXvlX8rT5FcYo67hqfkpJPYMUydzmvhIW1EOpuNZActImW7p4LNvnl
-         wkX2sly8zABHMpwUa70xo0ZXoaFzGBMO5e+gXvvjoNUW49s9/C2MQH+rl8zTyZZLVCz8
-         XSG1XtbMLFNr+ZixwZ9It0inUX6JlJ/+Wg0HWETOYAWPlGdHaHjKmB5wBwILwhP7x/go
-         5LmM/oL6Z1I+a3lep+IXL/GZwQalPJMthyhNnfnCcsCMOoHFyXEpB3uYtYvIYMfZ+S/L
-         puzdOQb6gTbB+5HHQsH2ZM0hfF6kQ5ky37lKC4lJZY77LytC/948TEFHE/QzNdvbyNwH
-         yIxA==
+        bh=68q0Ncd5UfHcauV6RTmhDNGvafZvU2UqPZBnr2W5EoE=;
+        b=RiAUaF/tsI97gptoBpadk9AYZ+h7bHHGzEIXXEk2YQfs930egTTrcyYyCLbLr7z8tb
+         HNT+4H5pqs9hDJlla76mPNeHZvl3sJ/nORnKF/+xEs9Nf1pn04KmvgudnrCFJXQAQ83f
+         2Ikcx8WCfDYtUcxWQxqtkAgpY8DopiyAG0g01Dvo6J1kgkrWkJ1JzptENCeNeFltGc0t
+         byWQh2BUVPSN34opxarIasWcp8jn0ptcg7HvHr4QXmwrORNZdrdZWAPYjIhtN7u+JMf5
+         Me5VyiBjCvfIoseE5oiJn6HLorstwXLSJhlJkD8P9tBw8WKbsTvMe0M2qVL6ceiGbCvH
+         Rmrg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747781440; x=1748386240;
+        d=1e100.net; s=20230601; t=1747781441; x=1748386241;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=YDb8HOZ4Hp1UhkfaoOAEXCBy8LyAOlXzYwG5CU8w1+M=;
-        b=LBOD8VPhcLnFufhCXqrOIvpBqs390M/f3cUZ1MMx7lTmj5aGlAdGvC4ynPDkh3Eg2F
-         O7FwPMSek8pL5W+mhWSPh1FDbgsp7rJvg//9H/5sS3okd8/FzFBn+N9JRGznzgFn2+67
-         /IqnpmjQdhfKs0Lc8hVO4Zys4DLZRTmbdne3Y3BxwKi96+QJnrgK4yeni0hk3kWWPCAN
-         SssIkllkMzxv/CdZkmPrw+RiV1q/2wYyFZUjFG08cWMV6lyKauwKU5lmt/qjB9KcFGpT
-         EG9rEsKcUi6d7YHUqitLccjFp0QuxZI8T+EOXRNUf1U8I3VoSD4xSVc7WiHehFXu993X
-         q2gg==
-X-Forwarded-Encrypted: i=1; AJvYcCUBOuB4rpCQHPNELX1lNlqYtV60F9iUVSgsQi8OnO4OFRS9KblZ4bTPe0lSq6snH8BvTg29MFl2Gy1ZTa4E@vger.kernel.org, AJvYcCVW7aXqcXIRt3MTMh4XahXqRb7OCjiMWg4iaff5yEBX5pCHx5++4a6SPExgkg/BTD5cQYALwa9Yl2I=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz2fy+C0qfMCB1VHDAmrzRS/yzlRx5aAxDAREPSlVMpewKWCa0s
-	7/88A+EBVnR+cvLWIfuOEK5lZSFJqFs3g3FHNfvGjkH1/XxIsFaU7Xrg
-X-Gm-Gg: ASbGncvCgD3IVFtX3rbBu90iv3ER4DlRqZqGO4/nHtKp4gZS7H58PFGl8okr4NjzRG1
-	jTH5+DJX1K8Wk3I/GWVoWOXWPXP+7G2bJHMWcKd22gkbE4J84sL57YRAj/xg2r/RiNVp9xMlUfE
-	/WufJ/R9/h6SEhN9DWmcaAGrxU85BPxZibhYAchYzfhIJX6PBLALvwUL8ns/trjofgnHgQwKJeP
-	R8799+y5tDKNIs7anx8ISraVefnYUArwjieu2NKgz3o1mhqC3IPWmU/TO+9JdMK8t3EGHzKqBiz
-	xMZjZNZgSJXYzQ6rwMcl82/61oh2QUTbO7rcgoTOSe/QSkt5ziqRs8Uu6pHJqAOKLAZTeuOCKQN
-	FjBpMIz/pYVnUC8k8KzZvWw==
-X-Google-Smtp-Source: AGHT+IHV4sm7LtB7vdkmiyhCJ33unQ+STkXBhqjxAxUwxdCeZsz//2+ZcF69VpUB1XIwk3uS0+4C3g==
-X-Received: by 2002:a05:6000:3105:b0:3a3:64c2:2a7f with SMTP id ffacd0b85a97d-3a364c22bdemr4304370f8f.13.1747781440083;
-        Tue, 20 May 2025 15:50:40 -0700 (PDT)
+        bh=68q0Ncd5UfHcauV6RTmhDNGvafZvU2UqPZBnr2W5EoE=;
+        b=JebPuo8Ndfxu1My74ozoS5jsoiLs0DN0IyLLHS8khMaNMzlK+Q2mg0iVNpqJg2Xk6x
+         S8VQTu26h2T6+IQyOLrbSRs0pZHnaLen5iALuA64pwsvovn+2McyNOZVUr43tiP//ljJ
+         Jx7qYMICmEh76ig8k/Uofx56++EWFDkXimoncS2cVzS9avglpf2ip/2IAR5WbehmyPXi
+         sahJMyO5CHyxtwCft5KI2bdINzeGeFGolhJ7/w3AVQlzI6OeegxjSzqa64m2r7UO+Mna
+         MreSJ7hEVSBitkG0yWkjigKwCNlh/6I2pZimdPM2mVzhQ7JxHK0epZM0Do8r/Ns47a9c
+         BbQA==
+X-Forwarded-Encrypted: i=1; AJvYcCU13y4xl/v3D4QoqfuGCD/rYzl6vEZq5qN/4aRlPoia6Zw65iBU4z/3sHbrxmK46zv4AbrZ/dbshgmfmf5L@vger.kernel.org, AJvYcCXEwUIBvfU2ecnJqNlWLW/oZbtKIvBlu5guxaivhMHLvVkRtiLy0X1eOYtLLzxU+XQoBhdCedPvl8M=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyuWtv1jISd1cHVT94SWxNKKHamcuz6+BXzlONvwLZ6j3Uo2eao
+	bD0fwKGAFLpBAYW579E8zxnWTfuOC7gIHA4i8vgv5+yLyGNB/jN3QM6+
+X-Gm-Gg: ASbGncu9uigK2CrvhoSgjqm7Ni2CIAgN7gtAgDnCXE7t3QSbT/nDBaMLbC3DWXtSwyr
+	youLfsvYA2xXPTtbaZvonxxPE7fBVJ3C+S6RSX8RhtQRWZQ/W8S0Up1gkAyA06Ngah1+UR/RUET
+	BMxwFWPDQpRwK0WyWJVmX1C2CIqHtRKVzVEoU30Q6Hpg0woEJA0PZQjn7MIH/wBwkG3jKqwTWk5
+	ILPvIH+oLQQW3qJZlOqOMr1H7V33/2lA/+I3YACVK0P2Oa5PGsDQnWBULMGH71zQh0GRyZDHv05
+	wRxpSR6de+BMMgqTJA/ev1W9UL4K3VazZ16TM61T15bmYybIVMABHr05lh/8F2BnrCOgX47dVXq
+	H4TiMY0Vo7hsyorUPim7LTA==
+X-Google-Smtp-Source: AGHT+IEvWWKqbi3SN6ESKboPx+X/Fg/msPMTxQ7GaEcMGWlZ5qQo5C8dLN+c/GTueDRt95X9q08kxA==
+X-Received: by 2002:a5d:5f46:0:b0:3a0:b807:742c with SMTP id ffacd0b85a97d-3a35c826936mr6436308f8f.6.1747781441168;
+        Tue, 20 May 2025 15:50:41 -0700 (PDT)
 Received: from localhost.localdomain (84-72-156-211.dclient.hispeed.ch. [84.72.156.211])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a35ca4d105sm18101588f8f.11.2025.05.20.15.50.39
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a35ca4d105sm18101588f8f.11.2025.05.20.15.50.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 May 2025 15:50:39 -0700 (PDT)
+        Tue, 20 May 2025 15:50:40 -0700 (PDT)
 From: Lothar Rubusch <l.rubusch@gmail.com>
 To: jic23@kernel.org,
 	dlechner@baylibre.com,
@@ -86,9 +86,9 @@ To: jic23@kernel.org,
 Cc: linux-iio@vger.kernel.org,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 03/12] iio: accel: adxl313: configure scan type for buffer
-Date: Tue, 20 May 2025 22:49:58 +0000
-Message-Id: <20250520225007.10990-4-l.rubusch@gmail.com>
+Subject: [PATCH v2 04/12] iio: accel: adxl313: make use of regmap cache
+Date: Tue, 20 May 2025 22:49:59 +0000
+Message-Id: <20250520225007.10990-5-l.rubusch@gmail.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250520225007.10990-1-l.rubusch@gmail.com>
 References: <20250520225007.10990-1-l.rubusch@gmail.com>
@@ -100,28 +100,120 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-According to the datasheet the ADXL313 uses 13 bit in full resolution.
-Also, add signedness, storage bits and endianness.
+Setup regmap cache to cache register configuration. This is a preparatory
+step for follow up patches, to allow easy acces to the cached
+configuration.
 
 Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
 ---
- drivers/iio/accel/adxl313_core.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/iio/accel/adxl313.h      |  2 ++
+ drivers/iio/accel/adxl313_core.c | 17 +++++++++++++++++
+ drivers/iio/accel/adxl313_i2c.c  |  6 ++++++
+ drivers/iio/accel/adxl313_spi.c  |  6 ++++++
+ 4 files changed, 31 insertions(+)
 
+diff --git a/drivers/iio/accel/adxl313.h b/drivers/iio/accel/adxl313.h
+index 72f624af4686..fc937bdf83b6 100644
+--- a/drivers/iio/accel/adxl313.h
++++ b/drivers/iio/accel/adxl313.h
+@@ -54,6 +54,8 @@ extern const struct regmap_access_table adxl312_writable_regs_table;
+ extern const struct regmap_access_table adxl313_writable_regs_table;
+ extern const struct regmap_access_table adxl314_writable_regs_table;
+ 
++bool adxl313_is_volatile_reg(struct device *dev, unsigned int reg);
++
+ enum adxl313_device_type {
+ 	ADXL312,
+ 	ADXL313,
 diff --git a/drivers/iio/accel/adxl313_core.c b/drivers/iio/accel/adxl313_core.c
-index 9c2f3af1d19f..06a771bb4726 100644
+index 06a771bb4726..0c893c286017 100644
 --- a/drivers/iio/accel/adxl313_core.c
 +++ b/drivers/iio/accel/adxl313_core.c
-@@ -184,7 +184,10 @@ static const int adxl313_odr_freqs[][2] = {
- 	.info_mask_shared_by_type_available =				\
- 		BIT(IIO_CHAN_INFO_SAMP_FREQ),				\
- 	.scan_type = {							\
-+		.sign = 's',						\
- 		.realbits = 13,						\
-+		.storagebits = 16,					\
-+		.endianness = IIO_BE,					\
- 	},								\
- }
+@@ -46,6 +46,23 @@ const struct regmap_access_table adxl314_readable_regs_table = {
+ };
+ EXPORT_SYMBOL_NS_GPL(adxl314_readable_regs_table, IIO_ADXL313);
+ 
++bool adxl313_is_volatile_reg(struct device *dev, unsigned int reg)
++{
++	switch (reg) {
++	case ADXL313_REG_DATA_AXIS(0):
++	case ADXL313_REG_DATA_AXIS(1):
++	case ADXL313_REG_DATA_AXIS(2):
++	case ADXL313_REG_DATA_AXIS(3):
++	case ADXL313_REG_DATA_AXIS(4):
++	case ADXL313_REG_DATA_AXIS(5):
++	case ADXL313_REG_FIFO_STATUS:
++		return true;
++	default:
++		return false;
++	}
++}
++EXPORT_SYMBOL_NS_GPL(adxl313_is_volatile_reg, "IIO_ADXL313");
++
+ static int adxl312_check_id(struct device *dev,
+ 			    struct adxl313_data *data)
+ {
+diff --git a/drivers/iio/accel/adxl313_i2c.c b/drivers/iio/accel/adxl313_i2c.c
+index a4cf0cf2c5aa..e8636e8ab14f 100644
+--- a/drivers/iio/accel/adxl313_i2c.c
++++ b/drivers/iio/accel/adxl313_i2c.c
+@@ -21,6 +21,8 @@ static const struct regmap_config adxl31x_i2c_regmap_config[] = {
+ 		.rd_table	= &adxl312_readable_regs_table,
+ 		.wr_table	= &adxl312_writable_regs_table,
+ 		.max_register	= 0x39,
++		.volatile_reg	= adxl313_is_volatile_reg,
++		.cache_type	= REGCACHE_MAPLE,
+ 	},
+ 	[ADXL313] = {
+ 		.reg_bits	= 8,
+@@ -28,6 +30,8 @@ static const struct regmap_config adxl31x_i2c_regmap_config[] = {
+ 		.rd_table	= &adxl313_readable_regs_table,
+ 		.wr_table	= &adxl313_writable_regs_table,
+ 		.max_register	= 0x39,
++		.volatile_reg	= adxl313_is_volatile_reg,
++		.cache_type	= REGCACHE_MAPLE,
+ 	},
+ 	[ADXL314] = {
+ 		.reg_bits	= 8,
+@@ -35,6 +39,8 @@ static const struct regmap_config adxl31x_i2c_regmap_config[] = {
+ 		.rd_table	= &adxl314_readable_regs_table,
+ 		.wr_table	= &adxl314_writable_regs_table,
+ 		.max_register	= 0x39,
++		.volatile_reg	= adxl313_is_volatile_reg,
++		.cache_type	= REGCACHE_MAPLE,
+ 	},
+ };
+ 
+diff --git a/drivers/iio/accel/adxl313_spi.c b/drivers/iio/accel/adxl313_spi.c
+index 9a16b40bff34..68e323e81aeb 100644
+--- a/drivers/iio/accel/adxl313_spi.c
++++ b/drivers/iio/accel/adxl313_spi.c
+@@ -24,6 +24,8 @@ static const struct regmap_config adxl31x_spi_regmap_config[] = {
+ 		.max_register	= 0x39,
+ 		/* Setting bits 7 and 6 enables multiple-byte read */
+ 		.read_flag_mask	= BIT(7) | BIT(6),
++		.volatile_reg	= adxl313_is_volatile_reg,
++		.cache_type	= REGCACHE_MAPLE,
+ 	},
+ 	[ADXL313] = {
+ 		.reg_bits	= 8,
+@@ -33,6 +35,8 @@ static const struct regmap_config adxl31x_spi_regmap_config[] = {
+ 		.max_register	= 0x39,
+ 		/* Setting bits 7 and 6 enables multiple-byte read */
+ 		.read_flag_mask	= BIT(7) | BIT(6),
++		.volatile_reg	= adxl313_is_volatile_reg,
++		.cache_type	= REGCACHE_MAPLE,
+ 	},
+ 	[ADXL314] = {
+ 		.reg_bits	= 8,
+@@ -42,6 +46,8 @@ static const struct regmap_config adxl31x_spi_regmap_config[] = {
+ 		.max_register	= 0x39,
+ 		/* Setting bits 7 and 6 enables multiple-byte read */
+ 		.read_flag_mask	= BIT(7) | BIT(6),
++		.volatile_reg	= adxl313_is_volatile_reg,
++		.cache_type	= REGCACHE_MAPLE,
+ 	},
+ };
  
 -- 
 2.39.5

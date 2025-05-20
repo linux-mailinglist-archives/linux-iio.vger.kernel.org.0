@@ -1,85 +1,86 @@
-Return-Path: <linux-iio+bounces-19737-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19738-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 776AAABDC33
-	for <lists+linux-iio@lfdr.de>; Tue, 20 May 2025 16:21:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E39C0ABDBF7
+	for <lists+linux-iio@lfdr.de>; Tue, 20 May 2025 16:18:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B390417D380
-	for <lists+linux-iio@lfdr.de>; Tue, 20 May 2025 14:10:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 036138C59F8
+	for <lists+linux-iio@lfdr.de>; Tue, 20 May 2025 14:11:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62D34248F46;
-	Tue, 20 May 2025 14:08:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA988248895;
+	Tue, 20 May 2025 14:09:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DAoHyriT"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T2TLDPNZ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81B9A2472B5;
-	Tue, 20 May 2025 14:08:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDBBE246773;
+	Tue, 20 May 2025 14:09:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750135; cv=none; b=apwyXcbyLiRPFJ9p5apJ6uxANy7XJCfDecA9ytgRbLzD5PLBgcOC3os7kjmDQtWodE2pfDaaRhXKkfuiIzPO0yA3FhyfgfmZXlEKhA+9S2vGLmF/7esuvINoIr8Vxb3lISQ7F4gY0UFdAk6HtLDc7+a6GIRqwU/4LXnlNkgN/R0=
+	t=1747750166; cv=none; b=i55OmnWkfCAUK1Cu2aGURpMq0nD2r8l+9tG7q6KnmFK5Nhkd/cI2RzoSGdEOuGtNcdOvLmxgQBSq/UHeLDEi1lQWXwyK37FFaTcncPVlYtb74uzwjnnO9MvZ9SwuduEFCjQ4FLXxAWtpqyA9gLgDwQ0UbckBkjptZdjzPygG1Qs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750135; c=relaxed/simple;
-	bh=EKrW1ao0uX+vpJzi1onxtfutXqkKhmw9wP0fjEy4uKk=;
+	s=arc-20240116; t=1747750166; c=relaxed/simple;
+	bh=e8K31LOWlnlXXttOAQXevqkJDPrYDiCgd1D5Tfw4d9s=;
 	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=rjfzP6XdgRzK1KNcMY6ZhJHtEA3irae3cNq0JqsTTOofXY4+35J883PKdNdu+gfYA7fZ4ONMX/ZO3S99+zigsnjtvRsKCFTT71czpnGGgFvoGgLrF46lVfkArgLn5SpzxwdAZLz3htJk4pJi75u4RbPyXHZqKJh5mmSsxkBozFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DAoHyriT; arc=none smtp.client-ip=209.85.221.47
+	 Content-Type:MIME-Version; b=lcNlO2GHZ1Wzgbul/suQp3LjP0Peec4mxfPzT5IeaxJ4vWHH4iRG9+QXo9QoHHVFTOAP5PDXwqbAcK9hKYleWYf4l/983y/u3uukNnuzGXrp/LPZoIl54yFv6RF0jeVZIRqhoTMD13uZO4O3si99QMdr84Bkxqf/hgDBmdKl3Qk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T2TLDPNZ; arc=none smtp.client-ip=209.85.221.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-3a36e090102so1396529f8f.2;
-        Tue, 20 May 2025 07:08:52 -0700 (PDT)
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-3a374f727dbso1414796f8f.0;
+        Tue, 20 May 2025 07:09:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1747750131; x=1748354931; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1747750163; x=1748354963; darn=vger.kernel.org;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:to:from:subject:message-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=1Hn/LYhmECEspf/Dn0ZU1r59gAeh7cLe2Zio25uygSQ=;
-        b=DAoHyriTfGMhLsXthoTNSunJIjKajFZ76sULjQkPJjIPHVS87TyCuOs0ztqXTQfpsP
-         WXumKox5NKo4NxTCCXOhS2pJKftfeJikvpkRhVcDoLje2cE2AaIvZ3P333tvCrx7IYkt
-         gisYu4JGWLfl3/EGP8gMcS7lBOhd+pka/NVlqE391eV+LIEz0VyyDqssLdPHwopzD30f
-         jWL93hOeiBwPl3nqj+r2777p/uGEfWb9prxUNB2YEVe6KiZKY++fL1JLcSNcBRrxImec
-         tg10hZfaJap1F6JbdkobwyRLrVQEAqP5Ay8joIz+vih+p1AOmgr8+Rqm7vAUL/Ngt6Fp
-         9yIg==
+        bh=7kq9ZmrH0FhY6lpwpF+dSwBW4okcgAAitfUaBL1Vu3c=;
+        b=T2TLDPNZR0MOdm7idcQlM4qDhN64SkFJGVe+uAz0VAcBOTTydLHYaagsPReMWl3rTQ
+         VlLsYl3VO1sT5KpFZ0QHcfL3cXc9adY3FYdilItAK4/UMyhUx3VqQPUElzP0aaZkpz2x
+         1ybHKkK25hTrnlQfP1DJbyjeuMZ2Z2PQueXQj8IFjyKDPjEbaqgwNfmelPP+MFzZAgd1
+         xvnraZrAwnJfFF6Ltju0GFpAtnGFvcaynvgB6u+Q7H4HXDbwseb1rO4M+eI+d2CYndQU
+         It+Sg1pKIzgNog1Oo2hTteNd5dCePQLAj4CF3ev5TjVgttWt+BHf5sT+3/POHLdtzmIl
+         d3Nw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747750131; x=1748354931;
+        d=1e100.net; s=20230601; t=1747750163; x=1748354963;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:to:from:subject:message-id:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=1Hn/LYhmECEspf/Dn0ZU1r59gAeh7cLe2Zio25uygSQ=;
-        b=PIUxPCGHjeQ3KbdrVyqXlxIg8gIGxhLRk9c/xBIQaHwUnd2NLQ1oUUkKyCwLkLSd0U
-         ArMaXudb4g1hE+21O747eaPzrsWEHMOfanzRLUtgkGUwWjSYMR2TDN/UXh2Fg937mXbA
-         3kuEVWjptlSKZb0yT5ipDhqFCkWqE9qL+f+Hj/Sw5dSN/5G+cpPJv2Ej1RjkPE9pJiY/
-         QOvYcSY41gX6m8zDaUfBbc7/f5QMiLWyhyjc/Rfn/3T/n73s6ClgLUGAaGtJO5YUnm9H
-         oa5DLXvZKqOgOzs1kN47utsGnyaEU8SmP4dQpkajRiG2S7XDELSm9veJExnzy0gQxr/c
-         Rnug==
-X-Forwarded-Encrypted: i=1; AJvYcCWhgHD0pDHISG7ErNaspJKCoZd1uhJeF7SYhKQHSaWcpe+H+jO9v/+44bLjL0v14dUyWrvXbdhFLhU=@vger.kernel.org, AJvYcCXgweqRtJmg4KEoJ9A/mbSDJ3CdrLLZ39fj15G3+pkp+cTI5GfDM5oeYetR/Mq6SrHqSZWA4WNrinsJgiBJ@vger.kernel.org
-X-Gm-Message-State: AOJu0YyckK8A8fKrw3wwE+ere4cjjekp/H9/G9l8NiSH4moY7eGCpMSZ
-	qFqWfSTUIzKZ/bSz6jq8uok1nWJv7Auo4dSNgw83j4A9ofXzn09hZxva8er+9lfz
-X-Gm-Gg: ASbGncuAaRPuD4PBPEXDRotkBL4Uhmt1nHBf7cwzKO8HkhM097BaDcKHjJ1/ylJZM4K
-	3r67kUqGEXMoWvugVYVmHbiix/SJweoCH/M9LKBRqcxbJ09RCxsh9rQj/K08WpJKq029zXHhAse
-	fZ4JpDLRHfdzjNpOlU2M4vrK8ykBq0CJF55o2iWL2XdTDr1jn0yuvhBtS8EKxMD3o7b2eKVDROF
-	CtWp74t7nHYH5ob1ACNyqyy9mN2ofy2UT2icpYTC7SR7VkcLagK1VejRI2r//VfsuQhmq9SwZ9k
-	GLESVLAyZ5+2jt2+fcpOJas+dvI3W9zfcvk6fuHnLkZczaR4NA==
-X-Google-Smtp-Source: AGHT+IHQFapr57pcb2+37HK2NBjkiXNKucItcxDhbMdGqj1jAdnCsUg61o4ITQSx8sezRRbb+bPRMg==
-X-Received: by 2002:a05:6000:2385:b0:3a2:6b2:e558 with SMTP id ffacd0b85a97d-3a35c825ae4mr12392803f8f.28.1747750130356;
-        Tue, 20 May 2025 07:08:50 -0700 (PDT)
+        bh=7kq9ZmrH0FhY6lpwpF+dSwBW4okcgAAitfUaBL1Vu3c=;
+        b=q1PxaAKUwY1bRD/zTDZvRoK0NKtt6AnGWkxajA7fiemzkj9Jh3f9h/M/8wPh4vm8Ck
+         mtDs+cvZIFpo+JGKATpUin2AaNuhT2elwdB86hE9WhWTSB6EkhVLyaTF5q9N2aREwx0o
+         ITNFRRwO7FhhCp7qcMNmERhodOkPOppFhN2N5pPEn/VZI83wEGK/o4wTagJKgc5uBynf
+         acpjOmKd6ZCCBV+OFtC6uR4XkhajeilP4CoAWLrmgvgicJzFPt70v00SF85kuKZOqvLI
+         VHQ6mHHhs45E6WJSWCa7gc9a3Ojo/GoeAPcUx5tLuMVXxjfaT3hov1uKSvNwH/NADf2F
+         nACw==
+X-Forwarded-Encrypted: i=1; AJvYcCUbCzhinIz7gbWvSE5MxfezKGIPnqaDWe1tjQMgulZp90saMm2WyphajXqKvG7mup+t7nBRfAWKvdU=@vger.kernel.org, AJvYcCWgj3Fjq0AtG1G3n/xZ8XOBWtirv7GYNFhwUdOAQb98Rg9XAxD5+6l1LmEseKyayLyDgZWM0C1bpp3C5ya2@vger.kernel.org
+X-Gm-Message-State: AOJu0YxLx65t/XjCnoxyLnlfuSp1tnauLfdatCfIy1oHwNHe5YCtojxu
+	rkEvm3HIBo75rY0M387/AlqEmppUIFxTGgTDlLRbeX7dbqVVJWeTeF3/
+X-Gm-Gg: ASbGncv8TjgkqKmXySgpU5L8K49I0j5A7edmbmmWUgcs3eHE5D/vPTqynKqZGxTFO1w
+	j7mwAreqIsLEZshJJ7kQ3RocMWpcY6RN+hB+07AVL6LY6WmHT0yH8RQMlznzpqAjU1cmhH3stTf
+	PwM2cHQJU1FXf6Ni4Oj0YvWromIsuCQZPu70RCc68rHEndD24IgK1P3kIq4+sqx3qkIFG7RJ1EW
+	ssAvSoIsmPlmtQd08V0Y6gkYg66wIYdiXJGzUICchbqYt24J4OvSA/y1BHuRBOM7yA4ksmCAoR3
+	9yTV7uATVLa8c4XXWq8gQKqPNlitW6pOF8FOyGjb4gVvyu/9Ow==
+X-Google-Smtp-Source: AGHT+IG3xLD2kDqL20EVTJM5jSjsZFRlXQ3owNEBgPAao9TO7E7PoOUeC5QcqWf/zcYa6HONXQ5vZg==
+X-Received: by 2002:a05:6000:2212:b0:3a0:b9a4:e516 with SMTP id ffacd0b85a97d-3a35fe677b0mr14229265f8f.17.1747750162776;
+        Tue, 20 May 2025 07:09:22 -0700 (PDT)
 Received: from [10.5.0.2] ([185.128.9.85])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a35ca4d305sm16875311f8f.16.2025.05.20.07.08.49
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a369140048sm12017977f8f.57.2025.05.20.07.09.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 May 2025 07:08:50 -0700 (PDT)
-Message-ID: <5e0eb8b91062a5622b09c5e32f9e662a224d8d80.camel@gmail.com>
-Subject: Re: [PATCH 1/2] iio: adc: ad4080: use lowercase device name
+        Tue, 20 May 2025 07:09:22 -0700 (PDT)
+Message-ID: <8b24ec167ebef4947eb9fe122d546ea8410bc6c2.camel@gmail.com>
+Subject: Re: [PATCH 2/2] iio: adc: ad4080: extend check for data lanes num
 From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
 To: Antoniu Miclaus <antoniu.miclaus@analog.com>, jic23@kernel.org, 
 	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Tue, 20 May 2025 15:08:52 +0100
-In-Reply-To: <20250520110101.29478-1-antoniu.miclaus@analog.com>
+Date: Tue, 20 May 2025 15:09:25 +0100
+In-Reply-To: <20250520110101.29478-2-antoniu.miclaus@analog.com>
 References: <20250520110101.29478-1-antoniu.miclaus@analog.com>
+	 <20250520110101.29478-2-antoniu.miclaus@analog.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.56.1 
@@ -91,11 +92,10 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
 On Tue, 2025-05-20 at 14:01 +0300, Antoniu Miclaus wrote:
-> Update the .name field in the ad4080_chip_info struct
-> from "AD4080" to "ad4080" to follow the common convention
-> in IIO drivers of using lowercase names for device identifiers.
+> Extend the check for st->num_lanes to ensure it is not greater
+> than 2, preventing invalid configurations.
 >=20
-> No functional changes are introduced.
+> The AD4080 only supports up to 2 data lanes.
 >=20
 > Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
 > ---
@@ -106,17 +106,18 @@ Reviewed-by: Nuno S=C3=A1 <nuno.sa@analog.com>
 > =C2=A01 file changed, 1 insertion(+), 1 deletion(-)
 >=20
 > diff --git a/drivers/iio/adc/ad4080.c b/drivers/iio/adc/ad4080.c
-> index e8b2e5e7a68a..c36eb41d738a 100644
+> index c36eb41d738a..6e61787ed321 100644
 > --- a/drivers/iio/adc/ad4080.c
 > +++ b/drivers/iio/adc/ad4080.c
-> @@ -433,7 +433,7 @@ static const struct iio_chan_spec ad4080_channel =3D =
-{
-> =C2=A0};
+> @@ -516,7 +516,7 @@ static int ad4080_properties_parse(struct ad4080_stat=
+e
+> *st)
 > =C2=A0
-> =C2=A0static const struct ad4080_chip_info ad4080_chip_info =3D {
-> -	.name =3D "AD4080",
-> +	.name =3D "ad4080",
-> =C2=A0	.product_id =3D AD4080_CHIP_ID,
-> =C2=A0	.scale_table =3D ad4080_scale_table,
-> =C2=A0	.num_scales =3D ARRAY_SIZE(ad4080_scale_table),
+> =C2=A0	st->num_lanes =3D 1;
+> =C2=A0	device_property_read_u32(dev, "adi,num-lanes", &st->num_lanes);
+> -	if (!st->num_lanes)
+> +	if (!st->num_lanes || st->num_lanes > 2)
+> =C2=A0		return dev_err_probe(dev, -EINVAL,
+> =C2=A0				=C2=A0=C2=A0=C2=A0=C2=A0 "Invalid 'adi,num-lanes' value: %u",
+> =C2=A0				=C2=A0=C2=A0=C2=A0=C2=A0 st->num_lanes);
 

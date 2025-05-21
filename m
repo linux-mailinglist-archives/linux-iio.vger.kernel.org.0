@@ -1,152 +1,337 @@
-Return-Path: <linux-iio+bounces-19761-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19762-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E994ABEB61
-	for <lists+linux-iio@lfdr.de>; Wed, 21 May 2025 07:42:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94028ABECE3
+	for <lists+linux-iio@lfdr.de>; Wed, 21 May 2025 09:16:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 03089188BF6D
-	for <lists+linux-iio@lfdr.de>; Wed, 21 May 2025 05:42:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ECC8A3A18B6
+	for <lists+linux-iio@lfdr.de>; Wed, 21 May 2025 07:16:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B20B6230BDF;
-	Wed, 21 May 2025 05:41:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0143922D783;
+	Wed, 21 May 2025 07:16:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b="JKkEMKAh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hp9xdowd"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9828522FE06
-	for <linux-iio@vger.kernel.org>; Wed, 21 May 2025 05:41:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0AD5199EAF;
+	Wed, 21 May 2025 07:16:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747806099; cv=none; b=agpACK1gtcKPmJnrFex8yoBlUsEEesZVUX4/0tRCe3CqgZ6PWQYEnZTyWSVACAya/yAPoHAJTfwdPTU6NOXik00DMKiJpBV1DRMLUp8sishp1nCWPBldAm97QBHYDVUk8aejC7z6C235FwPajvJ7YsLyvOx1U8AgZGymxQHBsV0=
+	t=1747811781; cv=none; b=sIV2IJB31+jL9z3lQPC0pzElDXVDAQr0Mrl5IGrRhSvRnWl33MTSGlJ8Eb40n+CXSEyMqZ6PL3XycehPDvK6D/NikW+eHidMWILnyoVXuGyN0kf+gzPFdFQA+S+iP8rGkri41LQwpGSQvR7Z5+cpogcQwdBRBDUTfUvvpoOnqQo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747806099; c=relaxed/simple;
-	bh=gVMYi2KXFIxkgo1AzUtu6TFWb8Gd28Rl9AtJgWeGwxA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=aiAlbJ8w6tBtkJLdBn1gNgceFUt0pvkfPXgYYQMoPTww0GwGFdmNqGWkvn+WwoQpFWjoom9x+JAOs5C0Xxhy30nj4DvdLUvDQdegU/jMxJPUMbZ6zFlwSRmJkJFTMGCyY+LqKaxYKG4TnSuqXCxeRebGoMU1Vt1e1xKBXqMpOO0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev; spf=pass smtp.mailfrom=tuxon.dev; dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b=JKkEMKAh; arc=none smtp.client-ip=209.85.208.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tuxon.dev
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-60236e3d093so571322a12.3
-        for <linux-iio@vger.kernel.org>; Tue, 20 May 2025 22:41:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=tuxon.dev; s=google; t=1747806096; x=1748410896; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Xfw7r6IjPRXEXEyQv9Fnmp9CqnD74IPvRrDSDuZuNUA=;
-        b=JKkEMKAh5qq6km3th1iaqQdRpQt04GB+8oDFKIvzCm543Ff/bizd63oLYAr4Qg2404
-         bWHPzcqMgzUU9QNnfCvgg6avHuNZ1vMl+YOCHSxivCN700JW3XSGezAVKgd8OLzfD61H
-         FgtHo0CC9C93j8KEC0eWCLcjEHVt0DMmzppCBPhjFTc2AMHK9ksozkPHEmGwLkV81Cy/
-         xBqh/XUWZO2HUY9K2nSE/+OJP1agT0id6zhHVpBhr/eJmouEvqO5gEfpdz3tcWP4hoXW
-         VMOsKa63zORjJzR8NDz696yFYuAYKb6DiGXhJsba7rBXjXsy6PXc4PJZkAotPSgZizFZ
-         ve5g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747806096; x=1748410896;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Xfw7r6IjPRXEXEyQv9Fnmp9CqnD74IPvRrDSDuZuNUA=;
-        b=LVAaouiGU7bzbKBOeKPjUGS50zF4dLZYDve2KQK8K021HottyaCdBbqgXSp00mFlLj
-         9mDmNYh9I1+WVgJfDjK6elM2VLXRU0RcBd3qaH+qgphOv5hGa9XG0Ozo3sWKcjGCfgR9
-         hHpdMqBfnDsxR4tWqWLxlBT1WbA3hzNGORUOuD8Xo5s8AI3H5TTibEkB/6K0FpDGeDWR
-         cRsYZkWt8hkrnw/DE1cyobeWadPIvgVOztY/baRFYzedjVjey9a8E88lawLD+X46qgE8
-         fj9WKeMoe/qbg4XB/XLB3d59HnOcl+JiCP7/3B2jOyJ+7jI25ok4Ap5YrBw0Oea5eFZj
-         Cpjw==
-X-Forwarded-Encrypted: i=1; AJvYcCWMxXhTBEFl8g8ISlcen4kt6VSAb3jFEfj5Mi1vxksXGsEEZnd9WT36hN6EYmqRodWGg81CWSjiUrc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YydfL4J0V6yrIQp2DSwnsij5KBio8VEMhKMeUVgyKIHU5xwR/yd
-	QMBigiAGQsOcHIPz5e1Dz7chVC80DxxLzah9+gHnFHxr7TX7wNpxZWBRkFKnBwIn3DU=
-X-Gm-Gg: ASbGncu/79jeCAPEUjHKqehHB6kzpjVq+MQUZZoxXSzyxb9dtTJVUnFEAOXTefe+DIb
-	xekbNozahtyNd6yDa1TxjZZoHiwnP3OsOzQPtp9HviBMIo0vLf5XztoB78ZJ7gu2y/8HEz1hZT5
-	w+cWo8RDlzDKFlHhP2RUPx3BEA2JXJB4g26IPgeMcLFWxAYjd6sjeI79nJkzxnE9K4jCFAXLrUr
-	uBz8SAqREWWFinD4BRTD4PSyOOxfdk7KfnFxXHk6u6BhT9aGBSuVFEvdQdHsTJh73YjuEBjrguC
-	A1m952RSGz7JM7J+f9VIqFr0iYe8DAKT+dlpXH6V5XhPbhl8CNnuRtLWJgc=
-X-Google-Smtp-Source: AGHT+IEHcpkHL7FVjfhOCs3RSSgST9xKyVYzTeL//ZqimrYsmpvzaIYc2ltC9ry3ZT20xorhYqoUSw==
-X-Received: by 2002:a17:907:7d86:b0:ad5:61fb:265 with SMTP id a640c23a62f3a-ad561fb301dmr1098617466b.47.1747806095547;
-        Tue, 20 May 2025 22:41:35 -0700 (PDT)
-Received: from [192.168.50.4] ([82.78.167.58])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ad52d06d299sm843248766b.48.2025.05.20.22.41.34
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 20 May 2025 22:41:35 -0700 (PDT)
-Message-ID: <a20fc6ee-c6c3-4013-b175-4918b9a44380@tuxon.dev>
-Date: Wed, 21 May 2025 08:41:33 +0300
+	s=arc-20240116; t=1747811781; c=relaxed/simple;
+	bh=8imMHFUmM7MTaB83XAfNCalYk3NPAFCHsOUX4BjSl2Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kNHpVNk+mz8vgVR1jl6tXlunRTdELDlvtkgBJ0AXwtatVA3APDAWE+pdyz1Z0prtF9oZ99ajR7C0VGO9JQenKet0mZpfxUT10VydyhCj6jqdsilW7uPCumITt5gPbE3iidOtfiChy3Zt+iFzrwH8DzTnBMG+Gv8zpNSI09q91vI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hp9xdowd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A4D9C4CEE4;
+	Wed, 21 May 2025 07:16:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1747811781;
+	bh=8imMHFUmM7MTaB83XAfNCalYk3NPAFCHsOUX4BjSl2Q=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Hp9xdowdHe1yR83P+GClxvwUSGsHwn+xrvcFGcpP7zaBEM438LhPSeB4QHSho2dfM
+	 Y5c3qbUFWrPc+W3f7cjBZfKXgynLSn8EPzu2+kWgZd8w+J/p1/w7SnbiIBSgiz0yT+
+	 3UIEDVHxNmUB9t7yqhM3I+Ds+jNweDYRyYzS6NKXjP7Fn+HcZYFsz9RO4Cum2HUT/1
+	 CuVySPoaUbEs9/lpFF15zpMCkGO5w+4bi1wHWyEJyVvCLjsAh8lF5h7vaLx8eRmNm4
+	 PRMy4zOju78Dv74bMG/NZFoKCj5aBz5nQQpel7lrdbm6MW9PLqcZtnXAUtC9f+9Fup
+	 lw+8xsGWagBHA==
+Date: Wed, 21 May 2025 07:16:18 +0000
+From: Tzung-Bi Shih <tzungbi@kernel.org>
+To: Gwendal Grignou <gwendal@chromium.org>
+Cc: jic23@kernel.org, chrome-platform@lists.linux.dev,
+	linux-iio@vger.kernel.org, Gwendal Grignou <gwendal@google.com>
+Subject: Re: [PATCH] iio: cros_ec_sensors: add cros_ec_activity driver
+Message-ID: <aC19wpJg1KAwv3Lo@google.com>
+References: <20250520040101.3950845-1-gwendal@google.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] driver core: platform: Use devres group to free driver
- probe resources
-To: Ulf Hansson <ulf.hansson@linaro.org>,
- Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, "Rafael J. Wysocki"
- <rafael@kernel.org>, Daniel Lezcano <daniel.lezcano@linaro.org>,
- dakr@kernel.org, linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
- linux-renesas-soc@vger.kernel.org, geert@linux-m68k.org,
- Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-iio@vger.kernel.org,
- bhelgaas@google.com
-References: <8d83ea72-bb81-4c63-bf69-28cf5848ae20@tuxon.dev>
- <20250305140309.744866b2@jic23-huawei> <Z8k8lDxA53gUJa0n@google.com>
- <f74085be-7b14-4551-a0a7-779318a5dc70@tuxon.dev>
- <20250330163129.02f24afb@jic23-huawei>
- <5bca6dfd-fe03-4c44-acf4-a51673124338@tuxon.dev>
- <95f5923f-7a8f-4947-b588-419525930bcb@tuxon.dev>
- <CAPDyKFoMqmCFBoO8FwQe2wHh2kqQi4jUZNFyiNckK7QhGVgmvg@mail.gmail.com>
- <c3a2950a-17ff-444a-bee7-af5e7e10e2bf@tuxon.dev>
- <CAPDyKFozR4qDq4mzcZBK-LcoPf=fGyuJTXwdt=Ey+_DcQOAp0g@mail.gmail.com>
- <4o3wo76st7w6qwyye3rrayuo2qx773i6jfzcnbkhdj76ouh7ds@3e2mblehkgwf>
- <CAPDyKFqMB7XutXba73YHx1X4rm6uc3Fz6yMZ8yM=wgduEmgUDg@mail.gmail.com>
-From: Claudiu Beznea <claudiu.beznea@tuxon.dev>
-Content-Language: en-US
-In-Reply-To: <CAPDyKFqMB7XutXba73YHx1X4rm6uc3Fz6yMZ8yM=wgduEmgUDg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250520040101.3950845-1-gwendal@google.com>
 
-Hi, Ulf,
+On Mon, May 19, 2025 at 09:01:00PM -0700, Gwendal Grignou wrote:
+> ChromeOS EC can report activity information derived from the
+> accelerometer:
+> - reports on-body/off-body as a proximity event.
+> - reports significant motion as an activity event.
 
-On 20.05.2025 15:09, Ulf Hansson wrote:
-> For example, even if the order is made correctly, suppose a driver's
-> ->remove() callback completes by turning off the resources for its
-> device and leaves runtime PM enabled, as it relies on devres to do it
-> some point later. Beyond this point, nothing would prevent userspace
-> for runtime resuming/suspending the device via sysfs. 
+s/^r/R/.
 
-If I'm not wrong, that can't happen? The driver_sysfs_remove() is called
-before device_remove() (which calls the driver remove) is called, this
-being the call path:
+> diff --git a/drivers/iio/common/cros_ec_sensors/Kconfig b/drivers/iio/common/cros_ec_sensors/Kconfig
+> [...]
+> +config IIO_CROS_EC_ACTIVITY
+> +	tristate "ChromeOS EC Activity Sensors"
+> +	depends on IIO_CROS_EC_SENSORS_CORE
+> +	help
+> +	  Module to handle activity events detections presented by the ChromeOS
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+I'm confused and wondering if there is a typo.  Which one:
+- activity event detections
+- activity events
+- activity detections
 
-device_driver_detach() ->
-  device_release_driver_internal() ->
-    __device_release_driver() ->
-      driver_sysfs_remove()
-      // ...
-      device_remove()
+> +	  EC Sensor hub.
 
-And the driver_sysfs_remove() calls in the end __kernfs_remove() which
-looks to me like the place that actually drops the entries from sysfs, this
-being a call path for it:
+s/S/s/?
 
-driver_sysfs_remove() ->
-  sysfs_remove_link() ->
-    kernfs_remove_by_name() ->
-      kernfs_remove_by_name_ns() ->
-        __kernfs_remove() ->
+> +	  Activities can be a proximity detector (on body/off body detection)
+> +	  or an activity to trigger an event on significant motion.
 
-activating the following line in __kernfs_remove():
+s/an activity to trigger //?
 
-pr_debug("kernfs %s: removing\n", kernfs_rcu_name(kn));
+> diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_activity.c b/drivers/iio/common/cros_ec_sensors/cros_ec_activity.c
+> [...]
+> +// SPDX-License-Identifier: GPL-2.0
+> +//
 
-leads to the following prints when unbinding the watchdog device from its
-watchdog driver (attached to platform bus) on my board:
-https://p.fr33tux.org/935252
+Drop the empty comment line.
 
-Thank you,
-Claudiu
+> +/*
+> + * cros_ec_sensors_activity - Driver for activities/gesture recognition.
+> + *
+> + * Copyright 2025 Google, Inc
+> + *
+> + * This driver uses the cros-ec interface to communicate with the Chrome OS
+
+s/Chrome OS/ChromeOS/.
+
+> +#include <linux/delay.h>
+
+Drop it.  The driver doesn't use anything from the header.
+
+> +#include <linux/device.h>
+> +#include <linux/iio/common/cros_ec_sensors_core.h>
+> +#include <linux/iio/events.h>
+> +#include <linux/iio/iio.h>
+> +#include <linux/iio/trigger_consumer.h>
+> +#include <linux/kernel.h>
+> +#include <linux/module.h>
+> +#include <linux/platform_data/cros_ec_commands.h>
+> +#include <linux/platform_data/cros_ec_proto.h>
+> +#include <linux/platform_device.h>
+
+I guess the list may be copied from somewhere drivers.  Could you review
+again to make sure the driver needs to include them?
+
+> +#include <linux/slab.h>
+
+Drop it.  The driver doesn't use anything from the header.
+
+> +static const struct iio_event_spec cros_ec_activity_single_shot[] = {
+> +	{
+> +		.type = IIO_EV_TYPE_CHANGE,
+> +		/* significant motion trigger when we get out of still. */
+> +		.dir = IIO_EV_DIR_FALLING,
+> +		.mask_separate = BIT(IIO_EV_INFO_ENABLE),
+> +	 },
+
+Remove the extra space before "}".
+
+> +static const struct iio_event_spec cros_ec_body_detect_events[] = {
+> +	{
+> +		.type = IIO_EV_TYPE_CHANGE,
+> +		.dir = IIO_EV_DIR_EITHER,
+> +		.mask_separate = BIT(IIO_EV_INFO_ENABLE),
+> +	 },
+
+Remove the extra space before "}".
+
+> +static int ec_sensors_read(struct iio_dev *indio_dev,
+> +			   struct iio_chan_spec const *chan,
+> +			   int *val, int *val2, long mask)
+> +{
+> +	struct cros_ec_sensors_state *st = iio_priv(indio_dev);
+> +	int ret;
+> +
+> +	mutex_lock(&st->core.cmd_lock);
+> +	if (chan->type == IIO_PROXIMITY &&
+> +	    mask == IIO_CHAN_INFO_RAW) {
+> +		st->core.param.cmd = MOTIONSENSE_CMD_GET_ACTIVITY;
+> +		st->core.param.get_activity.activity =
+> +			MOTIONSENSE_ACTIVITY_BODY_DETECTION;
+> +		if (cros_ec_motion_send_host_cmd(&st->core, 0) !=
+> +				EC_RES_SUCCESS) {
+
+cros_ec_motion_send_host_cmd() returns 0 or negative errno like most other
+kernel APIs.  Even though EC_RES_SUCCESS is also 0, however, they aren't
+the same domain space (see also cros_ec_map_error()).  Don't use it.
+
+		if (cros_ec_motion_send_host_cmd(&st->core, 0))
+
+> +static int cros_ec_read_event_config(struct iio_dev *indio_dev,
+> [...]
+> +	switch (chan->type) {
+> +	case IIO_PROXIMITY:
+> +		ret = !!(st->core.resp->list_activities.enabled &
+> +			 (1 << MOTIONSENSE_ACTIVITY_BODY_DETECTION));
+> +		break;
+> +	case IIO_ACTIVITY:
+> +		if (chan->channel2 == IIO_MOD_STILL) {
+> +			ret = !!(st->core.resp->list_activities.enabled &
+> +				 (1 << MOTIONSENSE_ACTIVITY_SIG_MOTION));
+> +		} else {
+> +			dev_warn(&indio_dev->dev, "Unknown activity: %d\n",
+> +				 chan->channel2);
+> +			ret = -EINVAL;
+> +		}
+> +		break;
+> +	default:
+> +		dev_warn(&indio_dev->dev, "Unknown channel type: %d\n",
+> +			 chan->type);
+> +		ret = -EINVAL;
+
+Curious about: wouldn't compiler or some checkers emit warnings about it
+lacks a `break`?
+
+> +static int cros_ec_write_event_config(struct iio_dev *indio_dev,
+> [...]
+> +	switch (chan->type) {
+> +	case IIO_PROXIMITY:
+> +		st->core.param.set_activity.activity =
+> +			MOTIONSENSE_ACTIVITY_BODY_DETECTION;
+> +		break;
+> +	case IIO_ACTIVITY:
+> +		if (chan->channel2 == IIO_MOD_STILL) {
+> +			st->core.param.set_activity.activity =
+> +				MOTIONSENSE_ACTIVITY_SIG_MOTION;
+> +		} else {
+> +			dev_warn(&indio_dev->dev, "Unknown activity: %d\n",
+> +				 chan->channel2);
+> +		}
+> +		break;
+> +	default:
+> +		dev_warn(&indio_dev->dev, "Unknown channel type: %d\n",
+> +			 chan->type);
+
+Same here.
+
+> +static int cros_ec_sensors_probe(struct platform_device *pdev)
+> +{
+> +	struct device *dev = &pdev->dev;
+> +	struct cros_ec_device *ec_device = dev_get_drvdata(dev->parent);
+> +	struct iio_dev *indio_dev;
+> +	struct cros_ec_sensors_state *st;
+> +	struct iio_chan_spec *channel;
+> +	unsigned long activities;
+> +	int i, index, ret, nb_activities;
+> +
+> +	if (!ec_device) {
+> +		dev_warn(&pdev->dev, "No CROS EC device found.\n");
+
+The function already has a local variable `dev` for `&pdev->dev`.  Use it.
+
+> +		return -EINVAL;
+> +	}
+> +
+> +	indio_dev = devm_iio_device_alloc(&pdev->dev, sizeof(*st));
+
+`dev`.
+
+> +	if (!indio_dev)
+> +		return -ENOMEM;
+> +
+> +	ret = cros_ec_sensors_core_init(pdev, indio_dev, true,
+> +					cros_ec_activity_capture);
+> +	if (ret)
+> +		return ret;
+> +
+> +	indio_dev->info = &ec_sensors_info;
+> +	st = iio_priv(indio_dev);
+> +	st->core.type = st->core.resp->info.type;
+> +
+> +	/*
+> +	 * List all available activities
+> +	 */
+> +	st->core.param.cmd = MOTIONSENSE_CMD_LIST_ACTIVITIES;
+> +	ret = cros_ec_motion_send_host_cmd(&st->core, 0);
+> +	if (ret)
+> +		return ret;
+> +	activities = st->core.resp->list_activities.enabled |
+> +		     st->core.resp->list_activities.disabled;
+> +	nb_activities = hweight_long(activities) + 1;
+
+Moving the line just right before the following devm_kcalloc() for
+`st->channels` makes more sense.
+
+> +
+> +	if (!activities)
+> +		return -ENODEV;
+> +
+> +	/* Allocate a channel per activity and one for timestamp */
+> +	st->channels = devm_kcalloc(&pdev->dev, nb_activities,
+> +				    sizeof(*st->channels), GFP_KERNEL);
+> +	if (!st->channels)
+> +		return -ENOMEM;
+> +
+> +	channel = &st->channels[0];
+> +	index = 0;
+> +	for_each_set_bit(i, &activities, BITS_PER_LONG) {
+> +		channel->scan_index = index;
+
+It seems the loop body doesn't use the `channel->scan_index`.  Move the
+assignment to the end of loop body when it's sure to occupy the index?
+
+		channel->scan_index = index++;
+
+> +
+> +		/* List all available activities */
+
+Drop the comment as it doesn't reflect what the following code does?
+
+> +		if (i == MOTIONSENSE_ACTIVITY_BODY_DETECTION) {
+> +			channel->type = IIO_PROXIMITY;
+> +			channel->info_mask_separate = BIT(IIO_CHAN_INFO_RAW);
+> +			channel->modified = 0;
+> +			channel->event_spec = cros_ec_body_detect_events;
+> +			channel->num_event_specs =
+> +				ARRAY_SIZE(cros_ec_body_detect_events);
+> +			st->body_detection_channel_index = index;
+> +		} else {
+> +			channel->type = IIO_ACTIVITY;
+> +			channel->modified = 1;
+> +			channel->event_spec = cros_ec_activity_single_shot;
+> +			channel->num_event_specs =
+> +				ARRAY_SIZE(cros_ec_activity_single_shot);
+> +			if (i == MOTIONSENSE_ACTIVITY_SIG_MOTION) {
+> +				channel->channel2 = IIO_MOD_STILL;
+> +				st->sig_motion_channel_index = index;
+> +			} else {
+> +				dev_warn(&pdev->dev,
+
+`dev`.
+
+> +					 "Unknown activity: %d\n", i);
+> +				continue;
+> +			}
+> +		}
+> +		channel->ext_info = cros_ec_sensors_limited_info;
+> +		channel++;
+> +		index++;
+> +	}
+> +
+> +	/* Timestamp */
+> +	channel->scan_index = index;
+> +	channel->type = IIO_TIMESTAMP;
+> +	channel->channel = -1;
+> +	channel->scan_type.sign = 's';
+> +	channel->scan_type.realbits = 64;
+> +	channel->scan_type.storagebits = 64;
+> +
+> +	indio_dev->channels = st->channels;
+> +	indio_dev->num_channels = index + 1;
+> +
+> +	st->core.read_ec_sensors_data = cros_ec_sensors_read_cmd;
+
+The statement here isn't intuitive.  Can it move somewhere above when setting
+the `st->core`?  E.g. right after the assignment for `st->core.type`.
 

@@ -1,377 +1,269 @@
-Return-Path: <linux-iio+bounces-19784-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19785-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3F57AC08CF
-	for <lists+linux-iio@lfdr.de>; Thu, 22 May 2025 11:34:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43F69AC08FF
+	for <lists+linux-iio@lfdr.de>; Thu, 22 May 2025 11:49:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 393DA7AAB28
-	for <lists+linux-iio@lfdr.de>; Thu, 22 May 2025 09:33:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 765283B2386
+	for <lists+linux-iio@lfdr.de>; Thu, 22 May 2025 09:48:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 202DF2853FF;
-	Thu, 22 May 2025 09:34:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCB33287504;
+	Thu, 22 May 2025 09:48:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HPTobsBZ"
+	dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b="dgm6F4R3"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBF44267F5D;
-	Thu, 22 May 2025 09:34:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F79C280321
+	for <linux-iio@vger.kernel.org>; Thu, 22 May 2025 09:48:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747906464; cv=none; b=UnAtK5WzUdRlu4FdwqrL0M9TrZX9tmYirqr+zev/b7t2IzO/f2XhzoVeTeSycrBNVdxRmLoVsf0CRvrbnuS4E/AhgDCUJQKeUpj1kMlRMGpgYOpP5M4FjE53cOGpEBNH+Vs4iIPftoWFiLI+PWMFTekSGG5f4/LJvr0rcuYdy60=
+	t=1747907339; cv=none; b=j7gzg2/yINf6GtFiuPDz7lBSfuAIkufzV+cJEmhpvpKR31B3kM02FyDUEn+issZ710JQAu9i1yMQo2FG/RQ8G5IjUxfzOVyzigK8rPU2YgNLfBvddBiXzo6g+E9zVmoZf/mFoznu5lpJBehtKG9mjPm22m+uCHUhkfJ0PtkHj5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747906464; c=relaxed/simple;
-	bh=hpKXOtyoSf4xG6o4qNfJQnxtdgo+kFGkLBW9Di51cYE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=UVSZQdIm2JhEWAoxUCwq9RL3trMJ/BMXdN3t+zEbyrNHzjSx6phbjeFmCnyq7cqpVkejOVfrIlKlTscaQ8NbvUTLPIJTVYgrwkQgP5oqHRFYk1y8bb/e6WR1ie4oH8dsMbO83lCVLUtcpRuAbSvwsXFvE+LVSvZakSmtY9LntN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HPTobsBZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 26BCAC4CEE4;
-	Thu, 22 May 2025 09:34:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747906464;
-	bh=hpKXOtyoSf4xG6o4qNfJQnxtdgo+kFGkLBW9Di51cYE=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=HPTobsBZmNNXzg4IQi7m/PU0mzqUkGF8d4NrOD+UdtSumuSzsatIPNefF5sp+9TIt
-	 YtXTYDRYQUd5oebdUX6IETeNi4BBLkNCJ71z+ZZrSF61/M7lv6+eJOmekeDW+leIVr
-	 6UO8/NGWBO/3KCfPBJnSAisUtNI5oxFJEGuXqnmjn17SWB+71SqGElpaN7XHusxhG+
-	 qw8QlLjfTqdoLk5mMjWxCHar0m4gPbY6hnHCqEm/lJVoJLRjxGXkzg3fo6OLRgUTpb
-	 IxlpBkWlBHuhV/FO8DIQdYW7PFkmqdZOmxcjkOgNGdECTbEB7Y28VYnzkt0+5mM5sH
-	 GJ/hSZRr3UVtg==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1356FC54E65;
-	Thu, 22 May 2025 09:34:24 +0000 (UTC)
-From: Maud Spierings via B4 Relay <devnull+maudspierings.gocontroll.com@kernel.org>
-Date: Thu, 22 May 2025 11:34:20 +0200
-Subject: [PATCH] iio: common: st_sensors: Fix use of uninitialize device
- structs
+	s=arc-20240116; t=1747907339; c=relaxed/simple;
+	bh=qdGgntxIIjfcvQxUD7MkNPywpqkarEzTXwYkWCvLQjA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=RizuwVwhPO8wHQqUxsZGXo5Nt2eMPy8+Tu/LRLCmfcRcFr7rNfERQ5V+2ba7zzemmwz9tSQ4W39YMzEUc7NarnUKW0JPIE2EBRbWjmPSRiMZVexrFlwmFj4U/keYpzlF1GLmNZsuERJw+VEmaGxpMEfEzW7wc7FJFScJF1PRhb8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev; spf=pass smtp.mailfrom=tuxon.dev; dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b=dgm6F4R3; arc=none smtp.client-ip=209.85.218.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tuxon.dev
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-ad563b69908so746678166b.3
+        for <linux-iio@vger.kernel.org>; Thu, 22 May 2025 02:48:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=tuxon.dev; s=google; t=1747907336; x=1748512136; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=klE7E1sXnfwhBGRUczKqI9pMXJRo0twyYdkymVqjNqM=;
+        b=dgm6F4R3vfZWOv//68H/pqtnnjo3/wP4hmTqw8WMXYHhgRkPedDTEtsmq2LHi0b6iy
+         wEWmsCIOcTsRPH/2Jv7XLk+HCmFSj9rIiyvzndkrEni9fZWevgzlgW9U/W6HfDqMgh6F
+         PesVYmrcufFJ7Dtvp0mRcavRZmvFufYsDFej8kiVbd91IOPiTgjyLDIJdOT7YVqoIyYD
+         wW5j8RRo/v7ck6/dV24VLYuxLm44U2GWqOUrIjAJDLY99SjbmXfX70CXwNdoY6KUJBQf
+         OxRQ15e3KNG8caw/UZsaELvEqnRpnjeY2Ip1pxUQWPXWrI5C1xSb4cptUOn0FYTLXdhZ
+         Y8tQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747907336; x=1748512136;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=klE7E1sXnfwhBGRUczKqI9pMXJRo0twyYdkymVqjNqM=;
+        b=jXYcJvhxPu57mnYjJpeFkKIkI/g9pFBDsqsnYKE1qFHqxdOdOHnzySzEiSpjekd5K0
+         swCL6emI5ee2E+ZMnjRhvTLoTj8Tp+KjppbsQnNczcR47c7+H0KS2s01Zgc8g4NAvYDd
+         8oOKC7JYcrqon7nPS3rwjSYnzZRK9SylA65/VCxnO427ZH0Q4V+qpP2yFRQUtUFCqcDn
+         U/DDvWQ3MtqiamIKxiTqUuFYMRJMDba5ZkbCDQO/xQYvqH8a8vOF7tOejAePzWI7jgr5
+         eXcE30qQ+GYN/4gNtpKKq6PKK4xMgpUvYNGad6XuDyUUkiVMAmf2chiPMuG+dRh6HpPq
+         9+8A==
+X-Forwarded-Encrypted: i=1; AJvYcCW/IrDMHLneQSUt5QgBc7DuBpbeZ7oWh5L2lKM3zT31XMx9Wf0OgLcJ/An//VuRjYP4vjpaWbBu7NA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxeHaYg2rBpSpZqdlm/esUaQEmD5lOpv3iZqm/NyvtAICC0HXBA
+	BS/stpNXaVqquIWMNqattt6m1w7i/8oe+l6qzIkZXoe5eXB09im8LCrWj+mcQxBICfo=
+X-Gm-Gg: ASbGnctrhIJ04/nPJ1fpkDAf+69k/L4bKaw7hW3e2gpgOPQKX5G6b3Kuy5h4rItor1K
+	A04tl3btdV7+7QIgdblx6DFe6DW/wlqeTkSGbqa4SO+mkNi9jwRbKLSeIczAzxzyoW0/9uYbeLb
+	J2ZsnKHDpXk20Jz8hpONg6zV955Obk+wWKmY7cCu8Uj+UxYRw63FrygjIYYp0zN12U8/MT2ZSQ4
+	Sqa3bsZ135DKPFyMo1ptCVcbWM40/2IGhIP6gadYNeQsfLrVI3JwAAx05RK8jHQmsJPEx0Qa+wI
+	uR1mmgFa1d9oIJXQV7i94coPD2F9DkB4eiL0PSmUGqrPLFCtR+qhAU+Xsy8=
+X-Google-Smtp-Source: AGHT+IGR5u6qykqEC57e3nACLD+fywuUN8Jcwlf4E/4zcXLVu7BeLHKEwlYarei9wxiFcWeh77KjeA==
+X-Received: by 2002:a17:906:230a:b0:ad4:f6d2:431b with SMTP id a640c23a62f3a-ad536dce6cfmr1624516166b.44.1747907335489;
+        Thu, 22 May 2025 02:48:55 -0700 (PDT)
+Received: from [192.168.50.4] ([82.78.167.58])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ad52d438403sm1040645066b.123.2025.05.22.02.48.54
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 22 May 2025 02:48:55 -0700 (PDT)
+Message-ID: <3b1963ba-f93f-48f2-8fb0-a485dd80ffcb@tuxon.dev>
+Date: Thu, 22 May 2025 12:48:53 +0300
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] driver core: platform: Use devres group to free driver
+ probe resources
+To: Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+ Ulf Hansson <ulf.hansson@linaro.org>
+Cc: Jonathan Cameron <jic23@kernel.org>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, Daniel Lezcano <daniel.lezcano@linaro.org>,
+ dakr@kernel.org, linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+ linux-renesas-soc@vger.kernel.org, geert@linux-m68k.org,
+ Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-iio@vger.kernel.org,
+ bhelgaas@google.com
+References: <20250330163129.02f24afb@jic23-huawei>
+ <5bca6dfd-fe03-4c44-acf4-a51673124338@tuxon.dev>
+ <95f5923f-7a8f-4947-b588-419525930bcb@tuxon.dev>
+ <CAPDyKFoMqmCFBoO8FwQe2wHh2kqQi4jUZNFyiNckK7QhGVgmvg@mail.gmail.com>
+ <c3a2950a-17ff-444a-bee7-af5e7e10e2bf@tuxon.dev>
+ <CAPDyKFozR4qDq4mzcZBK-LcoPf=fGyuJTXwdt=Ey+_DcQOAp0g@mail.gmail.com>
+ <4o3wo76st7w6qwyye3rrayuo2qx773i6jfzcnbkhdj76ouh7ds@3e2mblehkgwf>
+ <CAPDyKFqMB7XutXba73YHx1X4rm6uc3Fz6yMZ8yM=wgduEmgUDg@mail.gmail.com>
+ <a20fc6ee-c6c3-4013-b175-4918b9a44380@tuxon.dev>
+ <CAPDyKFpbeLJUiB_xQbqDib+-8Q3AcJNVg+DuEcqmVGMbFdNxwA@mail.gmail.com>
+ <fgl4w5uhxci7rrbdigtni72vveb2gqemh6iccz4qruqkek5rja@rzwkcjg6hkid>
+From: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+Content-Language: en-US
+In-Reply-To: <fgl4w5uhxci7rrbdigtni72vveb2gqemh6iccz4qruqkek5rja@rzwkcjg6hkid>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250522-st_iio_fix-v1-1-d689b35f1612@gocontroll.com>
-X-B4-Tracking: v=1; b=H4sIAJvvLmgC/x2MQQqAIBAAvyJ7TtBFIfpKhISutRcNjQjEvycdZ
- 2CmQaXCVGERDQo9XDmnAXoS4M89HSQ5DAZUaJVFlPV2zNlFfqX2do4hmGBQwQiuQkP/s3Xr/QP
- 0XjgnXAAAAA==
-X-Change-ID: 20250522-st_iio_fix-1c58fdd4d420
-To: Jonathan Cameron <jic23@kernel.org>, 
- David Lechner <dlechner@baylibre.com>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Andy Shevchenko <andy@kernel.org>, Christian Heusel <christian@heusel.eu>, 
- Linus Walleij <linus.walleij@linaro.org>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org, Maud Spierings <maudspierings@gocontroll.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1747906463; l=10759;
- i=maudspierings@gocontroll.com; s=20250214; h=from:subject:message-id;
- bh=Mdj2WfRjKzTBET/uFBcIR1a0EOi/GvllTkbb92crl9w=;
- b=UpaCA0nqrYIws4zb0iA5LinivK852Q8vvz2NyyjZMtTtPE7oTKBn2WDCZ5MCM7BjC7hOxRQ1f
- WIbnuPH2E2/B8jPsbrl8t4yZcKYxYy2UyDBC0CX5LCcPPqaiTvcO28F
-X-Developer-Key: i=maudspierings@gocontroll.com; a=ed25519;
- pk=7chUb8XpaTQDvWhzTdHC0YPMkTDloELEC7q94tOUyPg=
-X-Endpoint-Received: by B4 Relay for maudspierings@gocontroll.com/20250214
- with auth_id=341
-X-Original-From: Maud Spierings <maudspierings@gocontroll.com>
-Reply-To: maudspierings@gocontroll.com
 
-From: Maud Spierings <maudspierings@gocontroll.com>
+Hi, Ulf,
 
-Throughout the various probe functions &indio_dev->dev is used before it
-is initialized. This caused a kernel panic in st_sensors_power_enable
-when the call to devm_regulator_bulk_get_enable() fails and then calls
-dev_err_probe() with the uninitialized device.
+On 21.05.2025 17:57, Dmitry Torokhov wrote:
+> On Wed, May 21, 2025 at 02:37:08PM +0200, Ulf Hansson wrote:
+>> On Wed, 21 May 2025 at 07:41, Claudiu Beznea <claudiu.beznea@tuxon.dev> wrote:
+>>>
+>>> Hi, Ulf,
+>>>
+>>> On 20.05.2025 15:09, Ulf Hansson wrote:
+>>>> For example, even if the order is made correctly, suppose a driver's
+>>>> ->remove() callback completes by turning off the resources for its
+>>>> device and leaves runtime PM enabled, as it relies on devres to do it
+>>>> some point later. Beyond this point, nothing would prevent userspace
+>>>> for runtime resuming/suspending the device via sysfs.
+>>>
+>>> If I'm not wrong, that can't happen? The driver_sysfs_remove() is called
+>>> before device_remove() (which calls the driver remove) is called, this
+>>> being the call path:
+>>>
+>>> device_driver_detach() ->
+>>>   device_release_driver_internal() ->
+>>>     __device_release_driver() ->
+>>>       driver_sysfs_remove()
+>>>       // ...
+>>>       device_remove()
+>>>
+>>> And the driver_sysfs_remove() calls in the end __kernfs_remove() which
+>>> looks to me like the place that actually drops the entries from sysfs, this
+>>> being a call path for it:
+>>>
+>>> driver_sysfs_remove() ->
+>>>   sysfs_remove_link() ->
+>>>     kernfs_remove_by_name() ->
+>>>       kernfs_remove_by_name_ns() ->
+>>>         __kernfs_remove() ->
+>>>
+>>> activating the following line in __kernfs_remove():
+>>>
+>>> pr_debug("kernfs %s: removing\n", kernfs_rcu_name(kn));
+>>>
+>>> leads to the following prints when unbinding the watchdog device from its
+>>> watchdog driver (attached to platform bus) on my board:
+>>> https://p.fr33tux.org/935252
+>>
+>> Indeed this is a very good point you make! I completely overlooked
+>> this fact, thanks a lot for clarifying this!
+>>
+>> However, my main point still stands.
+>>
+>> In the end, there is nothing preventing rpm_suspend|resume|idle() in
+>> drivers/base/power/runtime.c from running (don't forget runtime PM is
+>> asynchronous too) for the device in question. This could lead to that
+>> a ->runtime_suspend|resume|idle() callback becomes executed at any
+>> point in time, as long as we haven't called pm_runtime_disable() for
+>> the device.
+> 
+> So exactly the same may happen if you enter driver->remove() and
+> something calls runtime API before pm_runtime_disable() is called.
+> The driver has (as they should be doing currently) be prepared for this.
 
-This seems to only cause a panic with dev_err_probe(), dev_err,
-dev_warn and dev_info don't seem to cause a panic, but are fixed
-as well.
+I took the time and tried to do a comparison of the current solutions
+(describing the bad and good things I see), trying to understand your
+concerns with regards to RPM suspend|resume|idle while unbinding a device
+from its driver.
 
----
-When I search for general &indio_dev->dev usage, I see quite a lot more
-hits, but I am not sure if there are issues with those too.
+I see the following cases:
 
-This issue has existed for a long time it seems and therefore it is
-nearly impossible to find a proper fixes tag. I would love to see it at
-least backported to 6.12 as that is where I encountered it, and I
-believe the patch should apply without conflicts.
+Case 1/ the current approach when devm_pm_runtime_enable() is used in
+driver's ->probe() with the current code base:
 
-The investigation into this issue can be found in this thread [1]
+- right after driver ->remove() finish its execution clocks are detached
+  from the PM domain, through dev_pm_domain_detach() call in
+  platform_remove()
 
-[1]: https://lore.kernel.org/all/AM7P189MB100986A83D2F28AF3FFAF976E39EA@AM7P189MB1009.EURP189.PROD.OUTLOOK.COM/
+- any subsequent RPM resume|suspend|idle will lead to failure if the driver
+  specific RPM APIs access directly registers and counts on PM domain to
+  enable/disable the clocks
 
-Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
----
- drivers/iio/accel/st_accel_core.c                  | 10 +++----
- drivers/iio/common/st_sensors/st_sensors_core.c    | 35 +++++++++++-----------
- drivers/iio/common/st_sensors/st_sensors_trigger.c | 18 +++++------
- 3 files changed, 31 insertions(+), 32 deletions(-)
+- at this point, if the IRQs are shared (but not only) and devm requested
+  the driver's IRQ handler can still be called asynchronously; driver
+  should be prepared for such events and should be written to work for such
+  scenarios; but as the clocks are not in the PM domain anymore and RPM is
+  still enabled at this point, if the driver don't run runtime suspend on
+  probe (and runtime resume/suspend on runtime), I think (because I haven't
+  investigated this yet) it can't rely on pm_runtime_active()/
+  pm_runtime_suspended() checks in interrupt handlers
+  and can't decide if it can interrogate registers or not; interrogating
+  should lead to failure at this stage as the clocks are disabled; drivers
+  should work in such scenario and the CONFIG_DEBUG_SHIRQ is a way to check
+  they can; I previously debugged a similar issue on drivers/net/ethernet/
+  renesas/ravb driver where using devm_pm_runtime_enable() in probe and
+  pm_runtime_suspended() checks in IRQ handlers was the way to make this
+  scenario happy; at that time I wasn't able to find that
+  dev_pm_domain_detach() have the impact discussed in this thread
 
-diff --git a/drivers/iio/accel/st_accel_core.c b/drivers/iio/accel/st_accel_core.c
-index 99cb661fabb2d9cc1943fa8d0a6f3becb71126e6..a7961c610ed203d039bbf298c8883031a578fb0b 100644
---- a/drivers/iio/accel/st_accel_core.c
-+++ b/drivers/iio/accel/st_accel_core.c
-@@ -1353,6 +1353,7 @@ static int apply_acpi_orientation(struct iio_dev *indio_dev)
- 	union acpi_object *ont;
- 	union acpi_object *elements;
- 	acpi_status status;
-+	struct device *parent = indio_dev->dev.parent;
- 	int ret = -EINVAL;
- 	unsigned int val;
- 	int i, j;
-@@ -1371,7 +1372,7 @@ static int apply_acpi_orientation(struct iio_dev *indio_dev)
- 	};
- 
- 
--	adev = ACPI_COMPANION(indio_dev->dev.parent);
-+	adev = ACPI_COMPANION(parent);
- 	if (!adev)
- 		return -ENXIO;
- 
-@@ -1380,8 +1381,7 @@ static int apply_acpi_orientation(struct iio_dev *indio_dev)
- 	if (status == AE_NOT_FOUND) {
- 		return -ENXIO;
- 	} else if (ACPI_FAILURE(status)) {
--		dev_warn(&indio_dev->dev, "failed to execute _ONT: %d\n",
--			 status);
-+		dev_warn(parent, "failed to execute _ONT: %d\n", status);
- 		return status;
- 	}
- 
-@@ -1457,12 +1457,12 @@ static int apply_acpi_orientation(struct iio_dev *indio_dev)
- 	}
- 
- 	ret = 0;
--	dev_info(&indio_dev->dev, "computed mount matrix from ACPI\n");
-+	dev_info(parent, "computed mount matrix from ACPI\n");
- 
- out:
- 	kfree(buffer.pointer);
- 	if (ret)
--		dev_dbg(&indio_dev->dev,
-+		dev_dbg(parent,
- 			"failed to apply ACPI orientation data: %d\n", ret);
- 
- 	return ret;
-diff --git a/drivers/iio/common/st_sensors/st_sensors_core.c b/drivers/iio/common/st_sensors/st_sensors_core.c
-index 8ce1dccfea4f5aaff45d3d40f6542323dd1f0b09..11cbf561b16d41f429745abb516c137cfbb302bb 100644
---- a/drivers/iio/common/st_sensors/st_sensors_core.c
-+++ b/drivers/iio/common/st_sensors/st_sensors_core.c
-@@ -154,7 +154,7 @@ static int st_sensors_set_fullscale(struct iio_dev *indio_dev, unsigned int fs)
- 	return err;
- 
- st_accel_set_fullscale_error:
--	dev_err(&indio_dev->dev, "failed to set new fullscale.\n");
-+	dev_err(indio_dev->dev.parent, "failed to set new fullscale.\n");
- 	return err;
- }
- 
-@@ -231,7 +231,7 @@ int st_sensors_power_enable(struct iio_dev *indio_dev)
- 					     ARRAY_SIZE(regulator_names),
- 					     regulator_names);
- 	if (err)
--		return dev_err_probe(&indio_dev->dev, err,
-+		return dev_err_probe(parent, err,
- 				     "unable to enable supplies\n");
- 
- 	return 0;
-@@ -241,13 +241,14 @@ EXPORT_SYMBOL_NS(st_sensors_power_enable, "IIO_ST_SENSORS");
- static int st_sensors_set_drdy_int_pin(struct iio_dev *indio_dev,
- 					struct st_sensors_platform_data *pdata)
- {
-+	struct device *parent = indio_dev->dev.parent;
- 	struct st_sensor_data *sdata = iio_priv(indio_dev);
- 
- 	/* Sensor does not support interrupts */
- 	if (!sdata->sensor_settings->drdy_irq.int1.addr &&
- 	    !sdata->sensor_settings->drdy_irq.int2.addr) {
- 		if (pdata->drdy_int_pin)
--			dev_info(&indio_dev->dev,
-+			dev_info(parent,
- 				 "DRDY on pin INT%d specified, but sensor does not support interrupts\n",
- 				 pdata->drdy_int_pin);
- 		return 0;
-@@ -256,29 +257,27 @@ static int st_sensors_set_drdy_int_pin(struct iio_dev *indio_dev,
- 	switch (pdata->drdy_int_pin) {
- 	case 1:
- 		if (!sdata->sensor_settings->drdy_irq.int1.mask) {
--			dev_err(&indio_dev->dev,
--					"DRDY on INT1 not available.\n");
-+			dev_err(parent, "DRDY on INT1 not available.\n");
- 			return -EINVAL;
- 		}
- 		sdata->drdy_int_pin = 1;
- 		break;
- 	case 2:
- 		if (!sdata->sensor_settings->drdy_irq.int2.mask) {
--			dev_err(&indio_dev->dev,
--					"DRDY on INT2 not available.\n");
-+			dev_err(parent, "DRDY on INT2 not available.\n");
- 			return -EINVAL;
- 		}
- 		sdata->drdy_int_pin = 2;
- 		break;
- 	default:
--		dev_err(&indio_dev->dev, "DRDY on pdata not valid.\n");
-+		dev_err(parent, "DRDY on pdata not valid.\n");
- 		return -EINVAL;
- 	}
- 
- 	if (pdata->open_drain) {
- 		if (!sdata->sensor_settings->drdy_irq.int1.addr_od &&
- 		    !sdata->sensor_settings->drdy_irq.int2.addr_od)
--			dev_err(&indio_dev->dev,
-+			dev_err(parent,
- 				"open drain requested but unsupported.\n");
- 		else
- 			sdata->int_pin_open_drain = true;
-@@ -336,6 +335,7 @@ EXPORT_SYMBOL_NS(st_sensors_dev_name_probe, "IIO_ST_SENSORS");
- int st_sensors_init_sensor(struct iio_dev *indio_dev,
- 					struct st_sensors_platform_data *pdata)
- {
-+	struct device *parent = indio_dev->dev.parent;
- 	struct st_sensor_data *sdata = iio_priv(indio_dev);
- 	struct st_sensors_platform_data *of_pdata;
- 	int err = 0;
-@@ -343,7 +343,7 @@ int st_sensors_init_sensor(struct iio_dev *indio_dev,
- 	mutex_init(&sdata->odr_lock);
- 
- 	/* If OF/DT pdata exists, it will take precedence of anything else */
--	of_pdata = st_sensors_dev_probe(indio_dev->dev.parent, pdata);
-+	of_pdata = st_sensors_dev_probe(parent, pdata);
- 	if (IS_ERR(of_pdata))
- 		return PTR_ERR(of_pdata);
- 	if (of_pdata)
-@@ -370,7 +370,7 @@ int st_sensors_init_sensor(struct iio_dev *indio_dev,
- 		if (err < 0)
- 			return err;
- 	} else
--		dev_info(&indio_dev->dev, "Full-scale not possible\n");
-+		dev_info(parent, "Full-scale not possible\n");
- 
- 	err = st_sensors_set_odr(indio_dev, sdata->odr);
- 	if (err < 0)
-@@ -405,7 +405,7 @@ int st_sensors_init_sensor(struct iio_dev *indio_dev,
- 			mask = sdata->sensor_settings->drdy_irq.int2.mask_od;
- 		}
- 
--		dev_info(&indio_dev->dev,
-+		dev_info(parent,
- 			 "set interrupt line to open drain mode on pin %d\n",
- 			 sdata->drdy_int_pin);
- 		err = st_sensors_write_data_with_mask(indio_dev, addr,
-@@ -593,21 +593,20 @@ EXPORT_SYMBOL_NS(st_sensors_get_settings_index, "IIO_ST_SENSORS");
- int st_sensors_verify_id(struct iio_dev *indio_dev)
- {
- 	struct st_sensor_data *sdata = iio_priv(indio_dev);
-+	struct device *parent = indio_dev->dev.parent;
- 	int wai, err;
- 
- 	if (sdata->sensor_settings->wai_addr) {
- 		err = regmap_read(sdata->regmap,
- 				  sdata->sensor_settings->wai_addr, &wai);
- 		if (err < 0) {
--			dev_err(&indio_dev->dev,
--				"failed to read Who-Am-I register.\n");
--			return err;
-+			return dev_err_probe(parent, err,
-+					     "failed to read Who-Am-I register.\n");
- 		}
- 
- 		if (sdata->sensor_settings->wai != wai) {
--			dev_warn(&indio_dev->dev,
--				"%s: WhoAmI mismatch (0x%x).\n",
--				indio_dev->name, wai);
-+			dev_warn(parent, "%s: WhoAmI mismatch (0x%x).\n",
-+				 indio_dev->name, wai);
- 		}
- 	}
- 
-diff --git a/drivers/iio/common/st_sensors/st_sensors_trigger.c b/drivers/iio/common/st_sensors/st_sensors_trigger.c
-index 9d4bf822a15dfcdd6c2835f6b9d7698cd3cb0b08..32c3278968089699dff5329e943d92b151b55fdf 100644
---- a/drivers/iio/common/st_sensors/st_sensors_trigger.c
-+++ b/drivers/iio/common/st_sensors/st_sensors_trigger.c
-@@ -127,7 +127,7 @@ int st_sensors_allocate_trigger(struct iio_dev *indio_dev,
- 	sdata->trig = devm_iio_trigger_alloc(parent, "%s-trigger",
- 					     indio_dev->name);
- 	if (sdata->trig == NULL) {
--		dev_err(&indio_dev->dev, "failed to allocate iio trigger.\n");
-+		dev_err(parent, "failed to allocate iio trigger.\n");
- 		return -ENOMEM;
- 	}
- 
-@@ -143,7 +143,7 @@ int st_sensors_allocate_trigger(struct iio_dev *indio_dev,
- 	case IRQF_TRIGGER_FALLING:
- 	case IRQF_TRIGGER_LOW:
- 		if (!sdata->sensor_settings->drdy_irq.addr_ihl) {
--			dev_err(&indio_dev->dev,
-+			dev_err(parent,
- 				"falling/low specified for IRQ but hardware supports only rising/high: will request rising/high\n");
- 			if (irq_trig == IRQF_TRIGGER_FALLING)
- 				irq_trig = IRQF_TRIGGER_RISING;
-@@ -156,21 +156,21 @@ int st_sensors_allocate_trigger(struct iio_dev *indio_dev,
- 				sdata->sensor_settings->drdy_irq.mask_ihl, 1);
- 			if (err < 0)
- 				return err;
--			dev_info(&indio_dev->dev,
-+			dev_info(parent,
- 				 "interrupts on the falling edge or active low level\n");
- 		}
- 		break;
- 	case IRQF_TRIGGER_RISING:
--		dev_info(&indio_dev->dev,
-+		dev_info(parent,
- 			 "interrupts on the rising edge\n");
- 		break;
- 	case IRQF_TRIGGER_HIGH:
--		dev_info(&indio_dev->dev,
-+		dev_info(parent,
- 			 "interrupts active high level\n");
- 		break;
- 	default:
- 		/* This is the most preferred mode, if possible */
--		dev_err(&indio_dev->dev,
-+		dev_err(parent,
- 			"unsupported IRQ trigger specified (%lx), enforce rising edge\n", irq_trig);
- 		irq_trig = IRQF_TRIGGER_RISING;
- 	}
-@@ -179,7 +179,7 @@ int st_sensors_allocate_trigger(struct iio_dev *indio_dev,
- 	if (irq_trig == IRQF_TRIGGER_FALLING ||
- 	    irq_trig == IRQF_TRIGGER_RISING) {
- 		if (!sdata->sensor_settings->drdy_irq.stat_drdy.addr) {
--			dev_err(&indio_dev->dev,
-+			dev_err(parent,
- 				"edge IRQ not supported w/o stat register.\n");
- 			return -EOPNOTSUPP;
- 		}
-@@ -214,13 +214,13 @@ int st_sensors_allocate_trigger(struct iio_dev *indio_dev,
- 					sdata->trig->name,
- 					sdata->trig);
- 	if (err) {
--		dev_err(&indio_dev->dev, "failed to request trigger IRQ.\n");
-+		dev_err(parent, "failed to request trigger IRQ.\n");
- 		return err;
- 	}
- 
- 	err = devm_iio_trigger_register(parent, sdata->trig);
- 	if (err < 0) {
--		dev_err(&indio_dev->dev, "failed to register iio trigger.\n");
-+		dev_err(parent, "failed to register iio trigger.\n");
- 		return err;
- 	}
- 	indio_dev->trig = iio_trigger_get(sdata->trig);
+Case 2/ What is proposed in this patch: devm_pm_runtime_enable() used +
+open devres group after dev_pm_domain_attach() (in probe) and close the
+devres group before dev_pm_domain_attach() (in remove):
 
----
-base-commit: 7bac2c97af4078d7a627500c9bcdd5b033f97718
-change-id: 20250522-st_iio_fix-1c58fdd4d420
+- right after the driver ->remove() is executed only the driver allocated
+  devres resources are freed; this happens before dev_pm_domain_deattach()
+  is called, though the proposed devres_release_group() call in this patch
 
-Best regards,
--- 
-Maud Spierings <maudspierings@gocontroll.com>
+- while doing this, driver can still get async RPM suspend|resume|idle
+  requests; is like the execution is in the driver ->remove()
+  but the pm_runtime_disable() hasn't been called yet
 
+- as the runtime PM is enabled in driver's ->probe() mostly after the HW is
+  prepared to take requests and all the other devm resources are allocated,
+  the RPM disable is going to be among the first things to be called by the
+  devres_release_group()
+
+- then, after RPM disable, all the devres resources allocated only in the
+  driver's ->probe() are cleaned up in reverse order, just like
+  device_unbind_cleanup() -> devres_release_all() call in
+  __device_release_driver() is doing, but limited only to the resources
+  allocated by the driver itself; I personally see this like manually
+  allocating and freeing resources in the driver itself w/o relying on
+  devres
+
+- then it comes the turn of dev_pm_domain_detach() call in
+  platform_remove(): at the time dev_pm_domain_detach() is executed the
+  runtime PM is disabled and all the devres resources allocated by driver
+  are freed as well
+
+- after the dev_pm_domain_detach() is executed all the driver resources
+  are cleaned up, the driver can't get IRQs as it's handler was already
+  unregistered, no other user can execute rpm suspend|resume|idle
+  as the RPM is disabled at this time
+
+Case 3/ devm_pm_runtime_enabled() dropped and replaced by manual cleanup:
+- the driver code is going be complicated, difficult to maintain and error
+  prone
+
+I may have missed considering things when describing the case 2 (which is
+what is proposed by this patch) as I don't have the full picture behind the
+dev_pm_domain_detach() call in platform bus remove. If so, please correct me.
+
+Thank you,
+Claudiu
+
+> 
+>>
+>> That's why the devm_pm_runtime_enable() should be avoided as it simply
+>> introduces a race-condition. Drivers need to be more careful and use
+>> pm_runtime_enable|disable() explicitly to control the behaviour.
+> 
+> You make it sound like we are dealing with some non-deterministic
+> process, like garbage collector, where runtime disable done by devm
+> happens at some unspecified point in the future. However we are dealing
+> with very well defined order of operations, all happening within
+> __device_release_driver() call. It is the same scope as when using
+> manual pm_runtime_disable(). Just the order is wrong, that is it.
+> 
+> Thanks.
+> 
 
 

@@ -1,78 +1,78 @@
-Return-Path: <linux-iio+bounces-19841-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19842-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 977F7AC2BCE
-	for <lists+linux-iio@lfdr.de>; Sat, 24 May 2025 00:36:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E8A1AC2BD3
+	for <lists+linux-iio@lfdr.de>; Sat, 24 May 2025 00:37:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5AF954E50D5
-	for <lists+linux-iio@lfdr.de>; Fri, 23 May 2025 22:36:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 457CD4E4BE4
+	for <lists+linux-iio@lfdr.de>; Fri, 23 May 2025 22:37:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C5F221D3C7;
-	Fri, 23 May 2025 22:36:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F0A921D5A2;
+	Fri, 23 May 2025 22:36:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AyjFhA8d"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZLZmJx21"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 217CA21A45D;
-	Fri, 23 May 2025 22:35:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20E4121C9E5;
+	Fri, 23 May 2025 22:35:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748039760; cv=none; b=F1jVF3+ng5kQy90P96W7Fi7DLHukwoQC9t0jvWwFswqd51DJCbqrhpTnVp/7A6g5IbusOGKn5ov0dxITNsMuZM/J8xvYHS3BmpcL0BZpqaUIz0YDkdY/l2zW1BCC6OWTny9LmHRa/iVyUZ4claG0PzpBf6nM/rYg7/A5/YVFab8=
+	t=1748039762; cv=none; b=M3HuyneNrK8zhA48mODcWvF5C+Sk9GfMG+aV0wYu70rARGiCXQz3vJf76569rT+id4Z7LvOdc8OdWC1kg7ShR0/nlIWvtyjgbcmGhT0gKjPrxRjJKg03nPw+//L6T4P7kdk7cb9tJkGaYyr+YqQ6sTo/0zSYULXP8R3kKgZfnrA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748039760; c=relaxed/simple;
-	bh=vJ/8rMeyIi1bRVEcaZendCDBuwqXRlAolkdgA8duC38=;
+	s=arc-20240116; t=1748039762; c=relaxed/simple;
+	bh=8yjSCH8WCRpZIG5NRsSFo7Ds+NsS88x+7SYrXp6vIzQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=tUZkjyyyLFJ3c0qIhI4EiKxyi37ubWpzQJPlGT3TDj80PQos9OxcYwkQwxjWuNehAjOHnKBQ3FfBiBw6AJP4DwsFoBvbU2JCMkZEK5Gj+IO2kaccYgsrYoGXJX6Uod73mAnScjHkJTbEvnzWkxfmwY6lLq5TJ0QuF9a3E9YYxiA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AyjFhA8d; arc=none smtp.client-ip=209.85.128.46
+	 MIME-Version; b=CzPEejmNoOsJv/Bl5i0JOvgWB0NcPenQ1kMy7WlARQx6nheOMpUIikkYboTKdyhMNX+dFN6r0l4A2yYQdj0MDmWhV534m5qL37nA9gAH0cKAqdsdfNWNbwYGDuLMlJQDflUK/IKv4WB6//qFqOr/bzvtTRAmymxwe20UsxjZKdk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZLZmJx21; arc=none smtp.client-ip=209.85.128.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-43d4ff56136so359565e9.3;
-        Fri, 23 May 2025 15:35:58 -0700 (PDT)
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-43d72b749dcso345705e9.1;
+        Fri, 23 May 2025 15:35:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1748039757; x=1748644557; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1748039758; x=1748644558; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=LhBiTKknxfnB+PZ8TAf2iEXT71M+j5r93pB6ZoGib7Y=;
-        b=AyjFhA8dyDaTBx+d92nRYRBgB8WZzeb8nbLY3FIHtRppBXmoezUcdAtE4Iux+/NlCc
-         FY6f3SUIuWWNWE6Nm1neWoD8mCpr3l1xc3JrOu1dBx94HOfWNFP5/LaBESQg0KxiQVmx
-         AQkXHoIpDgs4dxs1go1hTaLW79McyR3o8RxcrFM10n/btyiEL4bAFUwWcdHUpwH3Br8c
-         TlBzHlJma81/3uWnQz22ve6ghefXupMI0XRP2XwH9e6PCq7OQHnVWQKZpQH/8RfPp6dL
-         bb9/E53hM0fxIoiMh5g2MSza3rxugPJssW6rxEfxVZJhAru1OMQ2uqqJgRsSO+2FiDCd
-         60lA==
+        bh=pB2Dld8GBSiv1dFmhoAYgFczo//9ekm6Q2JYpGshXDk=;
+        b=ZLZmJx21OfifH/tvJ17Qc9SVbQReyf1woCEdq7gGE9enA5rL/iIp7WkfcKq6MYdJSE
+         FSSdTStkNApVi3LTw7/wxeM0/nV5vsGGD0cWUldFLhnEkxi+qVU+/x6v7PSyq7reS9PR
+         2F/JtkstbKl+ydxCW5hiJUeiSW+/hMihde2eDOVtR511AKcGXDknNIpY1JlJXubBYEV+
+         t8dRAgHzzL1rAgmwgpD3QGL702eCmoR2hM3A0knb2qHvWxWx1zFAef0zHuKOpEhCkw0e
+         QFfMQrTCy+OxyiHefI/teLIIowFIVBvIRYK59lqDCpNy9ZexKGHAOQ4s4JooQdxesSI0
+         HHSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748039757; x=1748644557;
+        d=1e100.net; s=20230601; t=1748039758; x=1748644558;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=LhBiTKknxfnB+PZ8TAf2iEXT71M+j5r93pB6ZoGib7Y=;
-        b=ngZZbSSZWzZdaZNJjFjAbeLTaGy7qDKfYxQKIb4zfsWaB+plTlOJY2ga0JxBODrAS8
-         lBtjTnBFWQsFXQ1Pt7qVbtagttmewXmTgULeNtkjCI27kYokkGf8zDfO7FIyP0l9Lo6L
-         OBXUxrh3XBOdy4qgBN8v4QHcMzNUGIz1wXnpaZgKmsvs8hYGFlMqhba+yE1TeKhcYKfX
-         X4gI1ysTx0NaLakm4wlXlBHEEBk6AsFKG9OvrK3HMe+tuN/5IJ0++jrGPEnDfYi5NeVD
-         ZjtqXBoWPqcV32f6Tp4U51A1sz81Rc5qyz8f8jCfTfA0LUOLvLuoHYTWPJ9qyU3klkIZ
-         5Tug==
-X-Forwarded-Encrypted: i=1; AJvYcCWk+DtmUEa7WYeUwXRXscN7S9Z44YyhNMIyERz/4T6kPe2NyWAlMBAyY/1Kn5OYmrEJS42NqjBZ/ns=@vger.kernel.org, AJvYcCX49vySZ8rKjoziDGszeUg3WWu+IC/qNq8DyQu+KxGwHl2klAkfp6gaPQLSo8fjJT7A9vtYQAiYvn+ax5y4@vger.kernel.org, AJvYcCXyI5xBdsmTyIv6eNAiUCzWqeGVaaHmWopJymg//nf1kh63zOKg4YNyxbnYy6nbcDYhwGA6B+XVtIFE@vger.kernel.org
-X-Gm-Message-State: AOJu0YwUKdViIhf/9KAU6bK6QnzPBvaWwZ6J5OaiYxAL6HU0psQHVDh0
-	vKsnFLYmvJFe1G26cFC0csb/IbwCMVU/u4fzFLDjN36HDDUPvxqbbFL1
-X-Gm-Gg: ASbGncsYGBF75rlcPmOM5/UcON2LOWD7LY9LshojP/49RBzAcC5z9wnjq4WgAakMR/e
-	JuUuuC4RYg6GsTyAyQKwFt9YimrGW9tU/SyM9rmE/Gdeb3FNJ5FsYeV9U+qKDsnU1RBQoSkAy34
-	4LzYjY9VF5H1OfgMZF7FuVhjoxLyH/31tEqLwz6oJEbYOWnmwT3j4saLiC3KuQk5HkI/4neOjuk
-	XJteGhm5flOr9e/qntiVGcG5a3jMIzqFaTiiHt/GiC6yQb0ko3QWFKwD2WanWx/LKkOe9A1s56Y
-	6MVOn6tkYCy5eR6yxHcNAQ8CZOGxoPCQqqRldNmOtyGpXbsDBYiP1dq/fK+LhJAottpAaSY4a1P
-	uIQ3LtTkSHRhALGjiZDXKBw==
-X-Google-Smtp-Source: AGHT+IHnQP6hEToES8acCUU9ioSjSRksNxCFPn6G2r1nShG2g3RM1aNP8gFFDcU2rpF4DIC0srxIMQ==
-X-Received: by 2002:a05:600c:4fcd:b0:43b:c0fa:f9bf with SMTP id 5b1f17b1804b1-44c919e1fa0mr2077675e9.3.1748039757035;
-        Fri, 23 May 2025 15:35:57 -0700 (PDT)
+        bh=pB2Dld8GBSiv1dFmhoAYgFczo//9ekm6Q2JYpGshXDk=;
+        b=e772EOHkrjgtXywPePYOaay5L9IAsKInWqOiNb8QAiNsb6caU2Z0prxP9N+wVkqIiB
+         IigmVyXdIfBDNFwphLTEt17EUxusbNmECjGkrbBGDc9CBeSNpPzZ3mHPw3z4W7fkBo6d
+         lQ98RT6lc0AyRPrrMHz8/ZKSskPNxs08dMmwpGJlSxacsm43nRggiGG4a9NdsIpQPhTy
+         7arorufP8V4ptSQuzzttyVN6I9H9PR3/tDdnfmkRRp8jZ/rguFP7Vb4IEYYzhOhBLGKZ
+         xBqbu46E/EaFkPv6WKlT90yutp0TooPk8Ay+rz2TradHR3/fdb+TgyJMguiL/n/G8IF+
+         UaGQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU6afT1PKwgZi/HtcnSFZiA9xrY3wqlHzDPymKUtPzAmFZWqTLiqQKvX/ABZs+urEV2DJ0J0P+Go5Q=@vger.kernel.org, AJvYcCX8nOZlrfsYHrZxXcfoDXSVKH1R2LK+LH+xgQwHAdxAzZuQHHfejyTh3qfpYNsCIHiAGO3cimptak1RM6Xj@vger.kernel.org, AJvYcCXIRjglBmqQ8eYlqKzseBiuJ24XIMOfM+oeHlMdf/0i9oldOyv3PofpyR2GEJ/6XeRwx4E8WfVs1BC4@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw2YSIZr6nERYqZUrBn5j9u2CH6UEVme6/wz6ADKPMnHjDBNsUB
+	SnkfIhfr8S0zCkVJzvTUjM8MjCR7+CMqV3e6YrFr3DfutZPZ3D1bIRo+
+X-Gm-Gg: ASbGncuh6eSJJo3QXvqnlclHTB9fE9aM2HUdJ2v76uBXE3Wc4zp9SB/Z2RqhG5EAV/G
+	P6Cczm6Zk/xejC1UKcTnqeTZHC3HCphn2iEgUs8AccV4lBg1MmnhiEKfaisCLZEz0h3tgaVnqwZ
+	f3CtWUpmoW/1oeTas3Poqe7qnOZn0PSiTVuKhwQ8DiGEaqOL3Hxg3VFQ7ZFJNJcC6KHr5U8aGlp
+	1PHLvlPXSJXVw0VVj2BSnTnR5N+u+fVSCy7sujFXi4IIgLFvtR+r7TAe1iHOOrlQiCbeZRP10t5
+	Xo2nDHYDrZqpLxkxiF1QI21h1++weM23iXEssFm8792nM/uJzzfq/cjvLD1QGrcWH0o3WiMlWrT
+	wXJb8966ioVlnZbJrf8agcQ==
+X-Google-Smtp-Source: AGHT+IHKt4cl/uRCK734vJ5oz76OO1YaoHLf6CAFIzQ97HzIskdNskzY7EDjTPEQ0YI2kLEsrKwdxg==
+X-Received: by 2002:a05:6000:40e0:b0:3a3:6273:7ff6 with SMTP id ffacd0b85a97d-3a4cb4999admr254831f8f.11.1748039758175;
+        Fri, 23 May 2025 15:35:58 -0700 (PDT)
 Received: from localhost.localdomain (84-72-156-211.dclient.hispeed.ch. [84.72.156.211])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-447f6b29672sm165202375e9.3.2025.05.23.15.35.56
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-447f6b29672sm165202375e9.3.2025.05.23.15.35.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 23 May 2025 15:35:56 -0700 (PDT)
+        Fri, 23 May 2025 15:35:57 -0700 (PDT)
 From: Lothar Rubusch <l.rubusch@gmail.com>
 To: jic23@kernel.org,
 	dlechner@baylibre.com,
@@ -86,9 +86,9 @@ Cc: l.rubusch@gmail.com,
 	linux-iio@vger.kernel.org,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v3 05/12] iio: accel: adxl313: add function to enable measurement
-Date: Fri, 23 May 2025 22:35:16 +0000
-Message-Id: <20250523223523.35218-6-l.rubusch@gmail.com>
+Subject: [PATCH v3 06/12] iio: accel: adxl313: prepare interrupt handling
+Date: Fri, 23 May 2025 22:35:17 +0000
+Message-Id: <20250523223523.35218-7-l.rubusch@gmail.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250523223523.35218-1-l.rubusch@gmail.com>
 References: <20250523223523.35218-1-l.rubusch@gmail.com>
@@ -100,58 +100,111 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add a function to enable measurement. The data-sheet recomments turning of
-measurement while modifying certain config registers. This is a preparatory
-step.
+Evaluate the devicetree property for an optional interrupt line, and
+configure the interrupt mapping accordingly. When no interrupt line
+is defined in the devicetree, keep the FIFO in bypass mode as before.
 
 Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
 ---
- drivers/iio/accel/adxl313.h      |  3 +--
- drivers/iio/accel/adxl313_core.c | 10 +++++++---
- 2 files changed, 8 insertions(+), 5 deletions(-)
+ drivers/iio/accel/adxl313.h      |  8 ++++++++
+ drivers/iio/accel/adxl313_core.c | 31 +++++++++++++++++++++++++++++++
+ 2 files changed, 39 insertions(+)
 
 diff --git a/drivers/iio/accel/adxl313.h b/drivers/iio/accel/adxl313.h
-index fc937bdf83b6..9bf2facdbf87 100644
+index 9bf2facdbf87..ab109d1c359e 100644
 --- a/drivers/iio/accel/adxl313.h
 +++ b/drivers/iio/accel/adxl313.h
-@@ -36,8 +36,7 @@
- #define ADXL313_RATE_MSK		GENMASK(3, 0)
- #define ADXL313_RATE_BASE		6
+@@ -21,7 +21,9 @@
+ #define ADXL313_REG_ACT_INACT_CTL	0x27
+ #define ADXL313_REG_BW_RATE		0x2C
+ #define ADXL313_REG_POWER_CTL		0x2D
++#define ADXL313_REG_INT_ENABLE		0x2E
+ #define ADXL313_REG_INT_MAP		0x2F
++#define ADXL313_REG_INT_SOURCE		0x30
+ #define ADXL313_REG_DATA_FORMAT		0x31
+ #define ADXL313_REG_DATA_AXIS(index)	(0x32 + ((index) * 2))
+ #define ADXL313_REG_FIFO_CTL		0x38
+@@ -45,6 +47,11 @@
+ #define ADXL313_SPI_3WIRE		BIT(6)
+ #define ADXL313_I2C_DISABLE		BIT(6)
  
--#define ADXL313_POWER_CTL_MSK		GENMASK(3, 2)
--#define ADXL313_MEASUREMENT_MODE	BIT(3)
-+#define ADXL313_POWER_CTL_MSK		BIT(3)
++#define ADXL313_REG_FIFO_CTL_MODE_MSK		GENMASK(7, 6)
++
++#define ADXL313_FIFO_BYPASS			0
++#define ADXL313_FIFO_STREAM			2
++
+ extern const struct regmap_access_table adxl312_readable_regs_table;
+ extern const struct regmap_access_table adxl313_readable_regs_table;
+ extern const struct regmap_access_table adxl314_readable_regs_table;
+@@ -65,6 +72,7 @@ struct adxl313_data {
+ 	struct regmap	*regmap;
+ 	const struct adxl313_chip_info *chip_info;
+ 	struct mutex	lock; /* lock to protect transf_buf */
++	int irq;
+ 	__le16		transf_buf __aligned(IIO_DMA_MINALIGN);
+ };
  
- #define ADXL313_RANGE_MSK		GENMASK(1, 0)
- #define ADXL313_RANGE_MAX		3
 diff --git a/drivers/iio/accel/adxl313_core.c b/drivers/iio/accel/adxl313_core.c
-index 0c893c286017..6170c9daa30f 100644
+index 6170c9daa30f..9db318a03eea 100644
 --- a/drivers/iio/accel/adxl313_core.c
 +++ b/drivers/iio/accel/adxl313_core.c
-@@ -63,6 +63,12 @@ bool adxl313_is_volatile_reg(struct device *dev, unsigned int reg)
- }
- EXPORT_SYMBOL_NS_GPL(adxl313_is_volatile_reg, "IIO_ADXL313");
+@@ -8,11 +8,17 @@
+  */
  
-+static int adxl313_set_measure_en(struct adxl313_data *data, bool en)
-+{
-+	return regmap_assign_bits(data->regmap, ADXL313_REG_POWER_CTL,
-+				  ADXL313_POWER_CTL_MSK, en);
-+}
+ #include <linux/bitfield.h>
++#include <linux/interrupt.h>
+ #include <linux/module.h>
++#include <linux/property.h>
+ #include <linux/regmap.h>
+ 
+ #include "adxl313.h"
+ 
++#define ADXL313_INT_NONE			U8_MAX
++#define ADXL313_INT1				1
++#define ADXL313_INT2				2
 +
- static int adxl312_check_id(struct device *dev,
- 			    struct adxl313_data *data)
+ static const struct regmap_range adxl312_readable_reg_range[] = {
+ 	regmap_reg_range(ADXL313_REG_DEVID0, ADXL313_REG_DEVID0),
+ 	regmap_reg_range(ADXL313_REG_OFS_AXIS(0), ADXL313_REG_OFS_AXIS(2)),
+@@ -436,6 +442,7 @@ int adxl313_core_probe(struct device *dev,
  {
-@@ -410,9 +416,7 @@ static int adxl313_setup(struct device *dev, struct adxl313_data *data,
+ 	struct adxl313_data *data;
+ 	struct iio_dev *indio_dev;
++	u8 int_line;
+ 	int ret;
+ 
+ 	indio_dev = devm_iio_device_alloc(dev, sizeof(*data));
+@@ -461,6 +468,30 @@ int adxl313_core_probe(struct device *dev,
+ 		return ret;
  	}
  
- 	/* Enables measurement mode */
--	return regmap_update_bits(data->regmap, ADXL313_REG_POWER_CTL,
--				  ADXL313_POWER_CTL_MSK,
--				  ADXL313_MEASUREMENT_MODE);
-+	return adxl313_set_measure_en(data, true);
++	int_line = ADXL313_INT1;
++	data->irq = fwnode_irq_get_byname(dev_fwnode(dev), "INT1");
++	if (data->irq < 0) {
++		int_line = ADXL313_INT2;
++		data->irq = fwnode_irq_get_byname(dev_fwnode(dev), "INT2");
++		if (data->irq < 0)
++			int_line = ADXL313_INT_NONE;
++	}
++
++	if (int_line == ADXL313_INT1 || int_line == ADXL313_INT2) {
++		/* FIFO_STREAM mode */
++		ret = regmap_assign_bits(data->regmap, ADXL313_REG_INT_MAP,
++					 0xff, int_line == ADXL313_INT2);
++		if (ret)
++			return ret;
++	} else {
++		/* FIFO_BYPASSED mode */
++		ret = regmap_write(data->regmap, ADXL313_REG_FIFO_CTL,
++				   FIELD_PREP(ADXL313_REG_FIFO_CTL_MODE_MSK,
++					      ADXL313_FIFO_BYPASS));
++		if (ret)
++			return ret;
++	}
++
+ 	return devm_iio_device_register(dev, indio_dev);
  }
- 
- /**
+ EXPORT_SYMBOL_NS_GPL(adxl313_core_probe, IIO_ADXL313);
 -- 
 2.39.5
 

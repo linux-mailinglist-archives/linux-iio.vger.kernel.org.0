@@ -1,128 +1,164 @@
-Return-Path: <linux-iio+bounces-19851-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19852-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B114CAC2EE8
-	for <lists+linux-iio@lfdr.de>; Sat, 24 May 2025 12:34:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 796ECAC3132
+	for <lists+linux-iio@lfdr.de>; Sat, 24 May 2025 22:25:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A8B08A21369
-	for <lists+linux-iio@lfdr.de>; Sat, 24 May 2025 10:34:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F2337179D20
+	for <lists+linux-iio@lfdr.de>; Sat, 24 May 2025 20:25:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A07B19E806;
-	Sat, 24 May 2025 10:34:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8239D1DD529;
+	Sat, 24 May 2025 20:25:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b="SrtgbnFI"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DE6Dxzeu"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-0301.mail-europe.com (mail-0301.mail-europe.com [188.165.51.139])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E26A4A1D;
-	Sat, 24 May 2025 10:34:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.165.51.139
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93B48367
+	for <linux-iio@vger.kernel.org>; Sat, 24 May 2025 20:25:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748082876; cv=none; b=IZ/vkoujGR2/+0rDeuXjnMtFkuDaYI7VvgPXYMOxEECzdQyornhvwUFymT4OpqICFHIE5mJKRtj9Gs9ULdBn6oquL0ExsPVlnqabe5ztlTtdmPsqo9LASZnAuDQk3aU0lt+ewEYQEDqeKhbtrLnnVTLYGkjhE+ruTxIIr40Di2U=
+	t=1748118317; cv=none; b=WIcAX9kqLQoBkiDq+7OGdu+Pj+SFmh5nOfnOBSQzJlHIMymhRW5WRjg5bzL448DoFJ30zfrzJzzuszJLFrMyRuFbQWZS3NihL51cdu4W9QQtrnQbMefa5555TpXZ4dz38U5QDDfkFDsc8Njoh6c3ryqvanApH15APRC6r1dSCcI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748082876; c=relaxed/simple;
-	bh=lsFtioseImBgHOQCJ/8wNlWF3Zh2XAqHF4Wf1kYgKMs=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=R8cucCYX4aOM7Di/zJhOSAUavT7QHLBFtBEQSxgCGq4C4d23IfaH2Ad7pQJD3ZRDvm5l4i7iTiPR7SYhUv6BEQI4eVpm1ic3NRNLf+yPsWfU3u3gHF2SOdEJwqK7ddYF5D619T+9uOUMe+4dREUXctKsX7lQ//hCQXkf7PqcAOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=geanix.com; spf=pass smtp.mailfrom=geanix.com; dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b=SrtgbnFI; arc=none smtp.client-ip=188.165.51.139
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=geanix.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=geanix.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=geanix.com;
-	s=protonmail; t=1748082862; x=1748342062;
-	bh=3utV04QVDNdgmlcQ0/F+/DRX6Wib0HgLdg3n7ShD7iY=;
-	h=From:Date:Subject:Message-Id:To:Cc:From:To:Cc:Date:Subject:
-	 Reply-To:Feedback-ID:Message-ID:BIMI-Selector:List-Unsubscribe:
-	 List-Unsubscribe-Post;
-	b=SrtgbnFIqZ0jF+TED7bsuMBaYN4YKev1Eg1GL+UnoKZ0RrRbKneAEpfrwiZN1pLIY
-	 b5sM+7UCD7OH1tqc2ybOHoPMgQjOslr3K/Tx9kpf+w1LuvD/Bj5Yovxgod9ZcJMRrr
-	 h4zdVoCNuBjZuPnkd+VillxeRf3d42wmEjFjPskFGc3mz1I9WdWFl+TBGNri5e7rI9
-	 l4ucd6BpnzgzB0QkmjdehzNfA9v0SITK5ovnnQmxihc2Bu0uE0yGEPMX5+qM/CiCxi
-	 6GdnVz34KDN0hbwEEybRJGRyl6+p5gd3LjfPb9bAXFWLHDpHApS0piiVt4jw0325mE
-	 x4xMnO+YOPd4g==
-X-Pm-Submission-Id: 4b4JL43xZ3zDNK
-From: Sean Nyekjaer <sean@geanix.com>
-Date: Sat, 24 May 2025 12:34:09 +0200
-Subject: [PATCH] iio: accel: fxls8962af: Fix use after free in
- fxls8962af_fifo_flush
+	s=arc-20240116; t=1748118317; c=relaxed/simple;
+	bh=35Jg99+9L9nMroxFyxo7u144LI2p14HcaSqgXHGeYa0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=c8s4rQf+QVtM9FX4rGad6aZ8hxYfW1mztPkDOVoHGRecW4OSbdXkLg6VRuIcL5dRIzXvlfmT/JNiH2E9h0jFxKib3oNHgYNIjk1Bd8hbGSAWdlOGUnGkZDqXg9eVkhiI/KuicgSgROO84rjcYO8ddHQJIvddXA540u3qe2AjPgE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DE6Dxzeu; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-443a787bd14so14524035e9.1
+        for <linux-iio@vger.kernel.org>; Sat, 24 May 2025 13:25:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1748118314; x=1748723114; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=jqXl3fQCB4R2DJmYhx57JmTlEOPnrVgkNI0fnLFUrtk=;
+        b=DE6Dxzeuhy/wBpTPd3YCZSSlcfPiz7Qp/KlwjraRZ3zflDmu1zKGoT1+A3mI7/INCn
+         y/P9IDahSpikdtt6Gb2gli1mBTQ2ZCRKAl6nke2Y1C+LeVd5RqAvNWKIHMJuHvxVfbf4
+         1bY124I0UWyDllQBSoWiOl1wS1kg8VlKHKCDJ3L0PNF0YqdDFj4iMzOQogN8EFqZHScZ
+         9TQMvhKLHgvQi3nsjYyjqjtrdPUUWlvFd9HLuI+MMzJO08jlmw0pj9ymLHGZTGPV3ucx
+         XH4Pi1LHUABJzZd7LqazU4TSXvD/AXHlNfd81ljPHBKBxBxsvAqB8Ghfj0MVf+gTjPJD
+         j7/g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748118314; x=1748723114;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=jqXl3fQCB4R2DJmYhx57JmTlEOPnrVgkNI0fnLFUrtk=;
+        b=pFx76BJ9oRlfq5E3OpfdORoQTD/NcJ6Sa6QHtPlmfhFGM8sjjuyGaIoAIZrbAdynxp
+         96DLzD9RRm89R5k0AgE9TEcmGpONecmZ5EYT9Hx8b7PiUPlOQGGj9eYoR5lNUqj9v+ZA
+         ElFMbQWgKvqcUX4D3br/QnST7ZCfjwiy2+Ut+3t0FzVuLDwsG5E0nSjZE/TjbzYu2p2K
+         iLaNNans1AopHybihvEkotYUc56Dhj63Fy94hvCMLI0EQU0QeN3H6nkoKzRhT/yG0TBy
+         +ZeSDMlKBrCP/t5LhawVr5KlJumSDvSZP/C892ieDJiHnUUMqdI5+dSXIaQ+mJt2PoH6
+         H3cw==
+X-Forwarded-Encrypted: i=1; AJvYcCXqhCwuXXY3vAKEnrysUOJTbPHZHAXGw4KztoD7n4QjoehQLtPzgp8QXdW99FzR5v4+fe3GWLZ0GXA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxC6MDPjHtiRioUwO01cLvCy2btkGBubb1fd2Gnnb7tjXTTBMa6
+	v9jNw/3O5qeMMAhE5aPyAbwVMVMmMRzQRRHK2NfMZw+stzCKoV4KQm7S
+X-Gm-Gg: ASbGncs4sho91M18G8HWXJdAtKImcXeCbeb3hJbLkXhjQ4uA4BexDZWhPWFgsLDpuqs
+	Rtkm2fMLD3+8dIEmmR71GWN/wOkxx7ke/D/kqabPJrj++oWvJlkVMRnvi6ie8oYyqcQZMnDoUN0
+	vbhJ8z5V8n0IvP6Cx6iYo0PtBYbXnTd/HuejNRotgEhXHz5FH2QjbWeW8WrjY5wa7e7dpuPZYQW
+	Ao/c2SL591bWSsk5JwLMkS8OejmBUP2woytZ+LmT8oUJxXs9ukR8o3ZdPwFyznVUIR5uQ7Ll2Qa
+	DYWJHeuRJ1nH0MAotfvvPMQ+qj2Ex9FedtSMNL8nUtrlDLuSSwWOALQlWC6Gww8=
+X-Google-Smtp-Source: AGHT+IHiJEe5PeegOUqaHO34kVh8pmb6agEgtkk55+MYxEHdcNrosDalr5AXecV5I/w8CFXgzXM4Qw==
+X-Received: by 2002:a05:600c:1d95:b0:43b:ca8c:fca3 with SMTP id 5b1f17b1804b1-44c7bda06c8mr39334115e9.11.1748118313678;
+        Sat, 24 May 2025 13:25:13 -0700 (PDT)
+Received: from [192.168.1.121] ([176.206.99.211])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-442ebdc362fsm284843785e9.1.2025.05.24.13.25.12
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 24 May 2025 13:25:12 -0700 (PDT)
+Message-ID: <cddc4a4f-f982-49ec-a03b-3e26038057fe@gmail.com>
+Date: Sat, 24 May 2025 22:25:11 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] iio: bmi270: suspend and resume triggering on
+ relevant pm operations
+To: Andy Shevchenko <andy@kernel.org>
+Cc: Jonathan Cameron <jic23@kernel.org>, Alex Lanzano
+ <lanzano.alex@gmail.com>, David Lechner <dlechner@baylibre.com>,
+ =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, linux-iio@vger.kernel.org,
+ "Derek J. Clark" <derekjohn.clark@gmail.com>,
+ =?UTF-8?Q?Philip_M=C3=BCller?= <philm@manjaro.org>,
+ Justin Weiss <justin@justinweiss.com>
+References: <20250509171526.7842-1-benato.denis96@gmail.com>
+ <20250509171526.7842-2-benato.denis96@gmail.com>
+ <aCG3YRP66cKyzr1B@smile.fi.intel.com>
+Content-Language: en-US, it-IT, en-US-large
+From: Denis Benato <benato.denis96@gmail.com>
+In-Reply-To: <aCG3YRP66cKyzr1B@smile.fi.intel.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250524-fxlsrace-v1-1-dec506dc87ae@geanix.com>
-X-B4-Tracking: v=1; b=H4sIAKCgMWgC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDI1MDUyMT3bSKnOKixORU3TSTFCODVCPLtCQjSyWg8oKi1LTMCrBR0bG1tQA
- mwpIQWgAAAA==
-X-Change-ID: 20250524-fxlsrace-f4d20e29fb29
-To: Jonathan Cameron <jic23@kernel.org>, 
- David Lechner <dlechner@baylibre.com>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Andy Shevchenko <andy@kernel.org>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org, Sean Nyekjaer <sean@geanix.com>
-X-Mailer: b4 0.14.2
 
-fxls8962af_fifo_flush() uses indio_dev->active_scan_mask (with
-iio_for_each_active_channel()) without making sure the indio_dev
-stays in buffer mode.
-There is a race if indio_dev exits buffer mode in the middle of the
-interrupt that flushes the fifo. Fix this by calling
-iio_device_claim_buffer_mode() to ensure indio_dev can't exit buffer
-mode during the flush.
 
-Unable to handle kernel NULL pointer dereference at virtual address 00000000 when read
-[...]
-_find_first_bit_le from fxls8962af_fifo_flush+0x17c/0x290
-fxls8962af_fifo_flush from fxls8962af_interrupt+0x80/0x178
-fxls8962af_interrupt from irq_thread_fn+0x1c/0x7c
-irq_thread_fn from irq_thread+0x110/0x1f4
-irq_thread from kthread+0xe0/0xfc
-kthread from ret_from_fork+0x14/0x2c
+On 5/12/25 10:54, Andy Shevchenko wrote:
+> On Fri, May 09, 2025 at 07:15:25PM +0200, Denis Benato wrote:
+>> Prevent triggers from stop working after the device has entered sleep:
+>> use iio_device_suspend_triggering and iio_device_resume_triggering helpers.
+> The cover letter call it a fix, where is the Fixes tag?
+I didn't know if it was okay to use that tag while to root cause is still there and it needs to be fixed for a lot more devices.
 
-Fixes: 79e3a5bdd9ef ("iio: accel: fxls8962af: add hw buffered sampling")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sean Nyekjaer <sean@geanix.com>
----
- drivers/iio/accel/fxls8962af-core.c | 5 +++++
- 1 file changed, 5 insertions(+)
+I was also attempting to make this patch very similar to accepted one: https://lore.kernel.org/all/20240807185619.7261-3-benato.denis96@gmail.com/
 
-diff --git a/drivers/iio/accel/fxls8962af-core.c b/drivers/iio/accel/fxls8962af-core.c
-index 6d23da3e7aa22c61f2d9348bb91d70cc5719a732..7db83ebeea823173d79bf8ff484add16f575edfc 100644
---- a/drivers/iio/accel/fxls8962af-core.c
-+++ b/drivers/iio/accel/fxls8962af-core.c
-@@ -973,6 +973,9 @@ static int fxls8962af_fifo_flush(struct iio_dev *indio_dev)
- 	if (ret)
- 		return ret;
- 
-+	if (iio_device_claim_buffer_mode(indio_dev) < 0)
-+		return 0;
-+
- 	/* Demux hw FIFO into kfifo. */
- 	for (i = 0; i < count; i++) {
- 		int j, bit;
-@@ -989,6 +992,8 @@ static int fxls8962af_fifo_flush(struct iio_dev *indio_dev)
- 		tstamp += sample_period;
- 	}
- 
-+	iio_device_release_buffer_mode(indio_dev);
-+
- 	return count;
- }
- 
+Is fixed tag appropriate?
 
----
-base-commit: 5c3fcb36c92443a9a037683626a2e43d8825f783
-change-id: 20250524-fxlsrace-f4d20e29fb29
+>
+> ...
+>
+>> +const struct dev_pm_ops bmi270_core_pm_ops = {
+>> +	RUNTIME_PM_OPS(bmi270_core_runtime_suspend,
+>> +		       bmi270_core_runtime_resume, NULL)
+> One line (it's only 85 characters and it's fine in this case).
 
-Best regards,
--- 
-Sean Nyekjaer <sean@geanix.com>
 
+Okay, will send a new version when I have answer to the above question.
+
+
+>> +};
+> ...
+>
+>> --- a/drivers/iio/imu/bmi270/bmi270_i2c.c
+>> +++ b/drivers/iio/imu/bmi270/bmi270_i2c.c
+>> @@ -52,6 +52,7 @@ static const struct of_device_id bmi270_of_match[] = {
+>>  static struct i2c_driver bmi270_i2c_driver = {
+>>  	.driver = {
+>>  		.name = "bmi270_i2c",
+>> +		.pm = pm_ptr(&bmi270_core_pm_ops),
+> Is pm.h included?
+I assumed it was not needed since the i2c_driver definition should be enough.
+
+
+I will include pm.h on the next version, thanks.
+
+
+>
+>>  		.acpi_match_table = bmi270_acpi_match,
+>>  		.of_match_table = bmi270_of_match,
+>>  	},
+>> diff --git a/drivers/iio/imu/bmi270/bmi270_spi.c b/drivers/iio/imu/bmi270/bmi270_spi.c
+>> index 88a77aba5e4f..b25171413531 100644
+>> --- a/drivers/iio/imu/bmi270/bmi270_spi.c
+>> +++ b/drivers/iio/imu/bmi270/bmi270_spi.c
+>> @@ -79,6 +79,7 @@ static const struct of_device_id bmi270_of_match[] = {
+>>  static struct spi_driver bmi270_spi_driver = {
+>>  	.driver = {
+>>  		.name = "bmi270",
+>> +		.pm = pm_ptr(&bmi270_core_pm_ops),
+> Ditto.
+>>  		.of_match_table = bmi270_of_match,
+>>  	},
+>>  	.probe = bmi270_spi_probe,
+I don't know how but your answer was lost in my mail.
+
+Sorry for the late response and thank you for your suggestions,
+Denis
 

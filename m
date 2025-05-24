@@ -1,330 +1,231 @@
-Return-Path: <linux-iio+bounces-19848-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19849-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD8D3AC2BE5
-	for <lists+linux-iio@lfdr.de>; Sat, 24 May 2025 00:38:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18CB6AC2C91
+	for <lists+linux-iio@lfdr.de>; Sat, 24 May 2025 02:00:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 02D3B1C20397
-	for <lists+linux-iio@lfdr.de>; Fri, 23 May 2025 22:38:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1FB6D3B99CC
+	for <lists+linux-iio@lfdr.de>; Sat, 24 May 2025 00:00:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBD99224AE1;
-	Fri, 23 May 2025 22:36:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62DAE1C5486;
+	Sat, 24 May 2025 00:00:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KiQaHWH4"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FUcz2oJL"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F6FE214A74;
-	Fri, 23 May 2025 22:36:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 859FB4C7C;
+	Sat, 24 May 2025 00:00:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748039769; cv=none; b=Ui5T7aOyhqT4vD/mK84GAc4Jmm1eXkt0G/6CvPj8rvNBIOhRurE9Syhrrn6IW+C5t8Ew5xmLGbP5chX2EVBv5OkC20dlenadVR0Rn8uxvXAH7U1ATQTAfoCoUrWXF9P+3TmOaJU1w3nQ2Il3UgFIgDxeX80JX7np5I8aFtRGfvA=
+	t=1748044827; cv=none; b=oIw1smAJjPqc5wVTE2UdltkaqS8QvRf2wjkLNZfcOdY1F8KPeiSIiU7/M+Ndq2dSyDRdYf6KMJXNPGw2PbMej19eXmWIGiRZVeWXRhVggogPDn2MqtYVnSAn+vOsDZw+4eUm1KblzeRppiUmMX/8pzygHi2OUWX6xofNwtonjTE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748039769; c=relaxed/simple;
-	bh=h8H53WstQAHtKB7BqisUydwF30h1NlWHqWKS0j9d0QU=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ax+8NKBXyDb8/gbRoqXk7cvVQb87U23ekg2bHgfQT5413qlbyqX3yx8HCWl4+SMEdAlNXZfeFtsX0KhtXNEN/Awg8CACyKNWGJh92dpGKNHkU92xb1TpUZl/pG5rYM2grR+duZtaLaoSYn7Iqmbvui/xdAnKN51bDcxhBlehhlA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KiQaHWH4; arc=none smtp.client-ip=209.85.221.41
+	s=arc-20240116; t=1748044827; c=relaxed/simple;
+	bh=TNxK7mTWRgfqHFOlA9knAWb8UG7aQsjnNGtP0nwujr0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JjhPic57ucu1gUS74iCZYUxZ5Jbmgrw99NekuoD7SNCSH5ULCK5h0xXBJ4PPbkMZ/LhLc9bzudUNH7elzh/VyCiLFb1/TK+NN9Sa2EQW5vVHxRTw5J31jbky6wsK8IaJPOqsi1S9jYHbCUj79d3HBZb2EQHp1cVmfcEBYEW+NBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FUcz2oJL; arc=none smtp.client-ip=209.85.219.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-3a4c58df045so52704f8f.1;
-        Fri, 23 May 2025 15:36:07 -0700 (PDT)
+Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-6fa9c907cacso719386d6.1;
+        Fri, 23 May 2025 17:00:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1748039766; x=1748644566; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1748044824; x=1748649624; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=DgqBxuRnRBCBlpgOJitYe+JYUaYesgoujNN7Mj4ZDPA=;
-        b=KiQaHWH4NPadu3RlkBSnZNnJlV6L0KLw6XRT+aUwPkxeJ2nspKKIGaosvj7zS934Ia
-         /vKPkV6YvknKnUMZs9FgUnK97xmvLFQh5ibDxEAqGfNnWW9f4HqCN/P5teH12hkdA86f
-         2F6iYjFd0DOTwa4rOvCQO9Lq7C46fykZUw7MxqVqz86Ts8fzCwaJVrs1YNbTSRX/BZpO
-         Tqd+4KfUtv4Kc3aim8smlWoizEQYlYakd8Nj3w4SfETBv6uf9dvLJJskWACYeeADfxQd
-         aPi4VDmCA6vbKrcKb4a38DXJA0dl8WIvHqv4eIU3quNIzlTXKA1KQBDvsGM/upYHJHP0
-         ACjQ==
+        bh=9g0bCtwZKg4p785vc5FWBzUYXiC+e3vu3lEqFvrGvvQ=;
+        b=FUcz2oJLRLwh7TG27ciHJRTX7uNuPhlqlv8MibCAN1+uZxHRUC1TryF/cGnYNn7p9x
+         ulQeDt4ZZso6P/E/tJNOk5xGqNVCyg6gRzQvlyjJ/UfioZIQqU1/YKChbPnbRXHbvPZq
+         PWmfc04O70+kD7LqiZkOst3q7vW9772P/L+eTtuReFIlUuWbXBzdFWTMo72rGsa23XSs
+         kxOtG2LJ8CtH+YkYN0XmBmu0ltuKj8lottvIeQ//vBG7QzKKj/tx5j/QEuPnxnA2L6T4
+         any5OnXi3bcBSFkbcAmz7zesd0KBjSwov2OmrhnGGyjRtLOnGBthg3JT0fYDQt7TpH93
+         EHCg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748039766; x=1748644566;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1748044824; x=1748649624;
+        h=in-reply-to:content-disposition:mime-version:references:reply-to
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=DgqBxuRnRBCBlpgOJitYe+JYUaYesgoujNN7Mj4ZDPA=;
-        b=NHTwYILNtzKXNv6Ri/UXvrQwAFdBjOXr85rtrZ4RKr9KZcP7IRfK8dimk7Uhpp/7rh
-         pyy4UkDjqz6XnUIXBGoyC2Us4seFVPEnWyEGqOYvHkuyj/gm3cG3NuBof5bpMUAmSRPs
-         9mxDcuoSeqCCMNPbTzMyn2IuiHr+fCjZbaZBs8p9282AiekACwhyokmF5jECem6eOIQu
-         JAQYk6SoH9RAG0SA35xdJqcbn9ZbZDZX1uuVV/J8P3INd3yVvEYPgRszjzL6bpxZj14d
-         0k4yuK11KIa2EHoZxOL7sNd0CkFPfXDsseW6n8yc19g2ocou3aBjk8g0RlIh6lhXLqa9
-         77WQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUAvzBhnc6GojUub+5I6vj4T77xi0ybB+IivapIwAG8+2GmWt34qA4jCLXg3NF089Z1iVa9fqFX7PLdMWqF@vger.kernel.org, AJvYcCUI0kX6d82P2Ocvo92QaaUwkdX6SD5j+pxsSEp/DhORjEL+Je5AD6LW79TFDPEp4q6hwlGlDKwhknQU@vger.kernel.org, AJvYcCVed7co+vNfO6EBUclXKJPJdOAcgk/O8rgRR47KfB1KYCgZ0lWmiQLGSEbdSsJcSmDv6uz1RADxfqI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzSB7bgf4BU0kuoaIQ2V128Mi2yLyci86NPyFNGe0Me191UeyDC
-	rz3Ts/Vqq81oAiu/4bKV0ACRKRWHXuvhDkQc5UfXuGymQKVGEO43kaoB
-X-Gm-Gg: ASbGncuC1ieQsjTetxy+3SN4Wvwm0NzMHh3rhhowBq5rJu5RaFgXZSjCVhNetEfqWNR
-	FeG9MtfxmDa5IUxl+M/2G09R1mUgCTfQ8MU7inC0ycj6i7ByZCAINHgsI8xeBBQokxUNAbAF4Px
-	Ygxpw4yD1dMruKUcYi6WXvd/I4oMhncF3Vc4YYJtswolB60ZzfhhwO0zds6+08ddaLvIaYzZDez
-	eoSJcMhdcNLkMRrP6WkqebHkcgFVnrOrUtjjWsatClWuN/gK8JwelzbC3kbf9jfEXbG3YmDsoMd
-	kEhyJaJe00Wx1v7VADn0wUO5kyzONCyWXBoSr/ojngdD0DE0iCHRqOzp3cI5hjYqCE4e7gQYJ+t
-	f8akTCvHw8GymzoIbtN6rxg==
-X-Google-Smtp-Source: AGHT+IH/GZdAZkTaBi/kiiSkP/j5SFtXpZ/rqheO2fODZCfFWDOvWxVFoj6aMabTImiCBTS68iFtdA==
-X-Received: by 2002:a05:600c:1c24:b0:439:9ec5:dfa with SMTP id 5b1f17b1804b1-44c938cb1e6mr2131675e9.7.1748039765729;
-        Fri, 23 May 2025 15:36:05 -0700 (PDT)
-Received: from localhost.localdomain (84-72-156-211.dclient.hispeed.ch. [84.72.156.211])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-447f6b29672sm165202375e9.3.2025.05.23.15.36.04
+        bh=9g0bCtwZKg4p785vc5FWBzUYXiC+e3vu3lEqFvrGvvQ=;
+        b=LsLEBoA/8LsAopHhrIB1gF3GarNLFWDO4P6FHDE5SK2eNwtaethQQmsE+qY5u6chjY
+         x/KaoOCFeFAg7cNUE+MLXhI7pL3mxOeSRzAu3R19CtLDzG9/zAdYGzepSi/42BguVQus
+         iAflXaF6W5at+JKEkJYNYbM7YbNSe8lFrtvuNuL+saZ5bb+eax18Df8jc8C+GKnhq5bD
+         a1xpprFfMr3U+4Eou05aHtrowu7PBMR9IkD4IVZdCYYt6SYJ6q+QkARYV5Ps5CzCH/Jw
+         lXDIVqi5ttNyddQIVV/uCYezM8zBVDXP6aFhmIwf7RLL+OJI7xbawIKqLg/jjnL2zgfU
+         V0vg==
+X-Forwarded-Encrypted: i=1; AJvYcCUSUMFr+aaTzpE7Uj4HaRf9qA0C4AZmj60pbv+uhD9c/gkCdF48WrIysdR2SNDcXTm9U796bnN0KCQZdnXU@vger.kernel.org, AJvYcCXDx3S4p8B2kRZS7nhmkio1/m4k2mkGgd7U4fskbtsPTUoZkWyUwCl3lRwMHbs40ssdpS/rNhG7xam8@vger.kernel.org, AJvYcCXNs/MI2KimsFhxb0nl8yrRHw47ANzW+rlWqbxM29x0++qA961Ez/tOKTcilWD3cnc1An4zcNdDKed2@vger.kernel.org, AJvYcCXeqye8InnnhmmhZzHgB2ISRDJKAubP70nuc+DgCVd/5Ye8Y5wWDgthvBc0iAkOJv1UHjeK1ryeCa5d3w==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyutb6Ry4YTDnxjovBfiameVSa2g5hrEIVN3U3N/D69mZigMcnH
+	eLe3k+7uCC+39f3z4CFxFe5EbG9OywRq1Rj1tUZRwUzXHpVgKU0re6VO
+X-Gm-Gg: ASbGncs7U3A4hRX5HQhCusQvVWHmoEqKVPR6F3prvA0ouHpDOF/DMSGNWHozHQvBQWB
+	WJcMNjK6Vfa4xaxyLgqFsChONqScYjFXId2DIjjo4BVFGhEXVo3rFl+Zt2W/RXunOjWTz2w8bZh
+	UCRXat9ODRiv8mkHmgJ/2dkvKv82ZFXb53oyYUZF/5gkzdywZldWS/409C4U3SHij4T/Tcl6jI7
+	+lsb6WgNdScdwpupIbGng32dVR8atJyv/ZcNUPqgAzl5l3FYAcELp40Rc4la2Uvygr8ySb6jGLZ
+	DU3CHP/9ajr4qartTePLVJ8zAGh4XvKzQzGbzQsNnVBl7J8/39Ht16tGr9e7DxjWWCLT0WVk8Tc
+	VErS7h3g=
+X-Google-Smtp-Source: AGHT+IH6VVwSEesBgULWBddMghxWcMgx95hbJxuBZHbEXRgYNm4ei9O3lM42bP5G9QWa4OOvSKv9Lw==
+X-Received: by 2002:ac8:5710:0:b0:48a:80e5:72bb with SMTP id d75a77b69052e-49f46055e2cmr7140761cf.2.1748044824092;
+        Fri, 23 May 2025 17:00:24 -0700 (PDT)
+Received: from JSANTO12-L01.ad.analog.com ([189.121.203.94])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-494ae528ffasm120727491cf.73.2025.05.23.17.00.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 23 May 2025 15:36:05 -0700 (PDT)
-From: Lothar Rubusch <l.rubusch@gmail.com>
-To: jic23@kernel.org,
-	dlechner@baylibre.com,
-	nuno.sa@analog.com,
-	andy@kernel.org,
-	corbet@lwn.net,
-	lucas.p.stankus@gmail.com,
-	lars@metafoo.de,
-	Michael.Hennerich@analog.com
-Cc: l.rubusch@gmail.com,
-	linux-iio@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v3 12/12] docs: iio: add ADXL313 accelerometer
-Date: Fri, 23 May 2025 22:35:23 +0000
-Message-Id: <20250523223523.35218-13-l.rubusch@gmail.com>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250523223523.35218-1-l.rubusch@gmail.com>
-References: <20250523223523.35218-1-l.rubusch@gmail.com>
+        Fri, 23 May 2025 17:00:23 -0700 (PDT)
+Date: Fri, 23 May 2025 21:00:17 -0300
+From: Jonathan Santos <jonath4nns@gmail.com>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Andy Shevchenko <andy@kernel.org>,
+	Jonathan Santos <Jonathan.Santos@analog.com>,
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
+	nuno.sa@analog.com, Michael.Hennerich@analog.com,
+	marcelo.schmitt@analog.com, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, marcelo.schmitt1@gmail.com,
+	linus.walleij@linaro.org, brgl@bgdev.pl, lgirdwood@gmail.com,
+	broonie@kernel.org, dlechner@baylibre.com
+Subject: Re: [PATCH v8 08/11] iio: adc: ad7768-1: add support for
+ Synchronization over SPI
+Message-ID: <aDEMEWQvu0r9stCh@JSANTO12-L01.ad.analog.com>
+Reply-To: 20250518175832.77b8d670@jic23-huawei.smtp.subspace.kernel.org
+References: <cover.1747175187.git.Jonathan.Santos@analog.com>
+ <59f45c9af16fa68f2a479f824129f5a9f2cd0997.1747175187.git.Jonathan.Santos@analog.com>
+ <aCcFXolH0FVBSP11@smile.fi.intel.com>
+ <20250518175832.77b8d670@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=y
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250518175832.77b8d670@jic23-huawei>
 
-Add documentation for the ADXL313 accelerometer driver.
+On 05/18, Jonathan Cameron wrote:
+> On Fri, 16 May 2025 12:29:02 +0300
+> Andy Shevchenko <andy@kernel.org> wrote:
+> 
+> > On Thu, May 15, 2025 at 06:13:56PM -0300, Jonathan Santos wrote:
+> > > The synchronization method using GPIO requires the generated pulse to be
+> > > truly synchronous with the base MCLK signal. When it is not possible to
+> > > do that in hardware, the datasheet recommends using synchronization over
+> > > SPI, where the generated pulse is already synchronous with MCLK. This
+> > > requires the SYNC_OUT pin to be connected to the SYNC_IN pin.
+> > > 
+> > > Use trigger-sources property to enable device synchronization over SPI
+> > > and multi-device synchronization while replacing sync-in-gpios property.  
+> Given some discussion in here I'll not (yet) pick up this series.
+> 
+> It's almost certainly just missed the coming merge window anyway so
+> we have time.
+> 
+> > 
+> > ...
+> > 
+> > > +static int ad7768_trigger_sources_get_sync(struct device *dev,
+> > > +					   struct ad7768_state *st)
+> > > +{
+> > > +	struct fwnode_reference_args args;
+> > > +	struct fwnode_handle *fwnode = dev_fwnode(dev);
+> > > +	int ret;
+> > > +
+> > > +	/*
+> > > +	 * The AD7768-1 allows two primary methods for driving the SYNC_IN pin
+> > > +	 * to synchronize one or more devices:
+> > > +	 * 1. Using an external GPIO.
+> > > +	 * 2. Using a SPI command, where the SYNC_OUT pin generates a
+> > > +	 *    synchronization pulse that drives the SYNC_IN pin.
+> > > +	 */
+> > > +	if (!fwnode_property_present(fwnode, "trigger-sources")) {  
+> > 
+> > I'm wondering if you can split the below to a separate function and do something like
+> > 
+> > 	if (fwnode_property_present(...))
+> > 		return setup_trigger_source(...);
+> > 
+> > 	...
+> > 	en_spi_sync = true;
+> > 	return 0;
+> > 
+> > > +		/*
+> > > +		 * In the absence of trigger-sources property, enable self
+> > > +		 * synchronization over SPI (SYNC_OUT).
+> > > +		 */
+> > > +		st->en_spi_sync = true;
+> > > +		return 0;
+> > > +	}
+> > > +
+> > > +	ret = fwnode_property_get_reference_args(fwnode,
+> > > +						 "trigger-sources",
+> > > +						 "#trigger-source-cells",
+> > > +						 0,
+> > > +						 AD7768_TRIGGER_SOURCE_SYNC_IDX,
+> > > +						 &args);  
+> > 
+> > 
+> > __free(fwnode_handle) ?
+> 
+> For args.fwnode?
+> 
+> That's fiddly to do and needs a different local variable to...
+> 
+> 
+> 
+> > 
+> > > +	if (ret)
+> > > +		return ret;
+> > > +
+> > > +	fwnode = args.fwnode;
+> 
+> this one.
+> 
+> You could wrap it up in a function to make that works cleanly.
+> So something similar to fwnode_find_reference() but with the
+> rest of the arguments.  Is there appetite for such a wrapper
+> in the generic property code?
+>
 
-Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
----
- Documentation/iio/adxl313.rst | 196 ++++++++++++++++++++++++++++++++++
- Documentation/iio/index.rst   |   1 +
- 2 files changed, 197 insertions(+)
- create mode 100644 Documentation/iio/adxl313.rst
+you mean like:
 
-diff --git a/Documentation/iio/adxl313.rst b/Documentation/iio/adxl313.rst
-new file mode 100644
-index 000000000000..8c4e2d141594
---- /dev/null
-+++ b/Documentation/iio/adxl313.rst
-@@ -0,0 +1,196 @@
-+.. SPDX-License-Identifier: GPL-2.0
-+
-+===============
-+ADXL313 driver
-+===============
-+
-+This driver supports Analog Device's ADXL313 on SPI/I2C bus.
-+
-+1. Supported devices
-+====================
-+
-+* `ADXL313 <https://www.analog.com/ADXL313>`_
-+
-+The ADXL313is a low noise density, low power, 3-axis accelerometer with
-+selectable measurement ranges. The ADXL313 supports the ±0.5 g, ±1 g, ±2 g and
-+±4 g ranges.
-+
-+2. Device attributes
-+====================
-+
-+Accelerometer measurements are always provided.
-+
-+Temperature data are also provided. This data can be used to monitor the
-+internal system temperature or to improve the temperature stability of the
-+device via calibration.
-+
-+Each IIO device, has a device folder under ``/sys/bus/iio/devices/iio:deviceX``,
-+where X is the IIO index of the device. Under these folders reside a set of
-+device files, depending on the characteristics and features of the hardware
-+device in questions. These files are consistently generalized and documented in
-+the IIO ABI documentation.
-+
-+The following tables show the adxl313 related device files, found in the
-+specific device folder path ``/sys/bus/iio/devices/iio:deviceX``.
-+
-++---------------------------------------------------+----------------------------------------------------------+
-+| 3-Axis Accelerometer related device files         | Description                                              |
-++---------------------------------------------------+----------------------------------------------------------+
-+| in_accel_scale                                    | Scale for the accelerometer channels.                    |
-++---------------------------------------------------+----------------------------------------------------------+
-+| in_accel_x_calibbias                              | Calibration offset for the X-axis accelerometer channel. |
-++---------------------------------------------------+----------------------------------------------------------+
-+| in_accel_x_raw                                    | Raw X-axis accelerometer channel value.                  |
-++---------------------------------------------------+----------------------------------------------------------+
-+| in_accel_y_calibbias                              | y-axis acceleration offset correction                    |
-++---------------------------------------------------+----------------------------------------------------------+
-+| in_accel_y_raw                                    | Raw Y-axis accelerometer channel value.                  |
-++---------------------------------------------------+----------------------------------------------------------+
-+| in_accel_z_calibbias                              | Calibration offset for the Z-axis accelerometer channel. |
-++---------------------------------------------------+----------------------------------------------------------+
-+| in_accel_z_raw                                    | Raw Z-axis accelerometer channel value.                  |
-++---------------------------------------------------+----------------------------------------------------------+
-+
-++---------------------------------------+----------------------------------------------+
-+| Miscellaneous device files            | Description                                  |
-++---------------------------------------+----------------------------------------------+
-+| name                                  | Name of the IIO device.                      |
-++---------------------------------------+----------------------------------------------+
-+| in_accel_sampling_frequency           | Currently selected sample rate.              |
-++---------------------------------------+----------------------------------------------+
-+| in_accel_sampling_frequency_available | Available sampling frequency configurations. |
-++---------------------------------------+----------------------------------------------+
-+
-+Channels processed values
-+-------------------------
-+
-+A channel value can be read from its _raw attribute. The value returned is the
-+raw value as reported by the devices. To get the processed value of the channel,
-+apply the following formula:
-+
-+.. code-block:: bash
-+
-+        processed value = (_raw + _offset) * _scale
-+
-+Where _offset and _scale are device attributes. If no _offset attribute is
-+present, simply assume its value is 0.
-+
-+The ADXL313 driver offers data for a single types of channels, the table below
-+shows the measurement units for the processed value, which are defined by the
-+IIO framework:
-+
-++-------------------------------------+---------------------------+
-+| Channel type                        | Measurement unit          |
-++-------------------------------------+---------------------------+
-+| Acceleration on X, Y, and Z axis    | Meters per Second squared |
-++-------------------------------------+---------------------------+
-+
-+Usage examples
-+--------------
-+
-+Show device name:
-+
-+.. code-block:: bash
-+
-+        root:/sys/bus/iio/devices/iio:device0> cat name
-+        adxl313
-+
-+Show accelerometer channels value:
-+
-+.. code-block:: bash
-+
-+        root:/sys/bus/iio/devices/iio:device0> cat in_accel_x_raw
-+        2
-+        root:/sys/bus/iio/devices/iio:device0> cat in_accel_y_raw
-+        -57
-+        root:/sys/bus/iio/devices/iio:device0> cat in_accel_z_raw
-+        2
-+        root:/sys/bus/iio/devices/iio:device0> cat in_accel_scale
-+        0.009576806
-+
-+- X-axis acceleration = in_accel_x_raw * in_accel_scale = 0.0191536 m/s^2
-+- Y-axis acceleration = in_accel_y_raw * in_accel_scale = -0.5458779 m/s^2
-+- Z-axis acceleration = in_accel_z_raw * in_accel_scale = 0.0191536 m/s^2
-+
-+Set calibration offset for accelerometer channels. Note, the calibration will be
-+rounded according to the graduation of LSB units:
-+
-+.. code-block:: bash
-+
-+        root:/sys/bus/iio/devices/iio:device0> cat in_accel_x_calibbias
-+        0
-+
-+        root:/sys/bus/iio/devices/iio:device0> echo 50 > in_accel_x_calibbias
-+        root:/sys/bus/iio/devices/iio:device0> cat in_accel_x_calibbias
-+        48
-+
-+Set sampling frequency:
-+
-+.. code-block:: bash
-+
-+        root:/sys/bus/iio/devices/iio:device0> cat in_accel_sampling_frequency
-+        100.000000
-+        root:/sys/bus/iio/devices/iio:device0> cat in_accel_sampling_frequency_available
-+        6.250000 12.500000 25.000000 50.000000 100.000000 200.000000 400.000000 800.000000 1600.000000 3200.000000
-+
-+        root:/sys/bus/iio/devices/iio:device0> echo 400 > in_accel_sampling_frequency
-+        root:/sys/bus/iio/devices/iio:device0> cat in_accel_sampling_frequency
-+        400.000000
-+
-+3. Device buffers
-+=================
-+
-+This driver supports IIO buffers.
-+
-+All devices support retrieving the raw acceleration measurements using buffers.
-+
-+Usage examples
-+--------------
-+
-+Select channels for buffer read:
-+
-+.. code-block:: bash
-+
-+        root:/sys/bus/iio/devices/iio:device0> echo 1 > scan_elements/in_accel_x_en
-+        root:/sys/bus/iio/devices/iio:device0> echo 1 > scan_elements/in_accel_y_en
-+        root:/sys/bus/iio/devices/iio:device0> echo 1 > scan_elements/in_accel_z_en
-+
-+Set the number of samples to be stored in the buffer:
-+
-+.. code-block:: bash
-+
-+        root:/sys/bus/iio/devices/iio:device0> echo 10 > buffer/length
-+
-+Enable buffer readings:
-+
-+.. code-block:: bash
-+
-+        root:/sys/bus/iio/devices/iio:device0> echo 1 > buffer/enable
-+
-+Obtain buffered data:
-+
-+.. code-block:: bash
-+
-+        root:/sys/bus/iio/devices/iio:device0> hexdump -C /dev/iio\:device0
-+        ...
-+        000000d0  01 fc 31 00 c7 ff 03 fc  31 00 c7 ff 04 fc 33 00  |..1.....1.....3.|
-+        000000e0  c8 ff 03 fc 32 00 c5 ff  ff fc 32 00 c7 ff 0a fc  |....2.....2.....|
-+        000000f0  30 00 c8 ff 06 fc 33 00  c7 ff 01 fc 2f 00 c8 ff  |0.....3...../...|
-+        00000100  02 fc 32 00 c6 ff 04 fc  33 00 c8 ff 05 fc 33 00  |..2.....3.....3.|
-+        00000110  ca ff 02 fc 31 00 c7 ff  02 fc 30 00 c9 ff 09 fc  |....1.....0.....|
-+        00000120  35 00 c9 ff 08 fc 35 00  c8 ff 02 fc 31 00 c5 ff  |5.....5.....1...|
-+        00000130  03 fc 32 00 c7 ff 04 fc  32 00 c7 ff 02 fc 31 00  |..2.....2.....1.|
-+        00000140  c7 ff 08 fc 30 00 c7 ff  02 fc 32 00 c5 ff ff fc  |....0.....2.....|
-+        00000150  31 00 c5 ff 04 fc 31 00  c8 ff 03 fc 32 00 c8 ff  |1.....1.....2...|
-+        00000160  01 fc 31 00 c7 ff 05 fc  31 00 c3 ff 04 fc 31 00  |..1.....1.....1.|
-+        00000170  c5 ff 04 fc 30 00 c7 ff  03 fc 31 00 c9 ff 03 fc  |....0.....1.....|
-+        ...
-+
-+See ``Documentation/iio/iio_devbuf.rst`` for more information about how buffered
-+data is structured.
-+
-+4. IIO Interfacing Tools
-+========================
-+
-+See ``Documentation/iio/iio_tools.rst`` for the description of the available IIO
-+interfacing tools.
-diff --git a/Documentation/iio/index.rst b/Documentation/iio/index.rst
-index 2d6afc5a8ed5..c106402a91f7 100644
---- a/Documentation/iio/index.rst
-+++ b/Documentation/iio/index.rst
-@@ -31,6 +31,7 @@ Industrial I/O Kernel Drivers
-    adis16475
-    adis16480
-    adis16550
-+   adxl313
-    adxl380
-    bno055
-    ep93xx_adc
--- 
-2.39.5
+fwnode_find_reference_args(const struct fwnode_handle *fwnode,
+			   const char *name, const char *nargs_prop,
+			   unsigned int nargs, unsigned int index,
+			   struct fwnode_reference_args *args)
 
+I don't know if it helps that much and since we are not handling
+arguments right know, I think fwnode_find_reference() would work (or not?).
+In that case maybe we add some note or TODO to explain why. 
+
+> 
+> > > +	/* First, try getting the GPIO trigger source */
+> > > +	if (fwnode_device_is_compatible(fwnode, "gpio-trigger")) {
+> > > +		st->gpio_sync_in = devm_fwnode_gpiod_get_index(dev, fwnode,
+> > > +							       NULL,
+> > > +							       0,
+> > > +							       GPIOD_OUT_LOW,
+> > > +							       "sync-in");
+> > > +		ret = PTR_ERR_OR_ZERO(st->gpio_sync_in);
+> > > +		goto out_put_node;
+> > > +	}
+> > > +
+> > > +	/*
+> > > +	 * TODO: Support the other cases when we have a trigger subsystem to
+> > > +	 * reliably handle other types of devices as trigger sources.
+> > > +	 *
+> > > +	 * For now, return an error message. For self triggering, omit the
+> > > +	 * trigger-sources property.
+> > > +	 */
+> > > +	ret = dev_err_probe(dev, -EOPNOTSUPP, "Invalid synchronization trigger source\n");
+> > > +
+> > > +out_put_node:  
+> > 
+> > The above will allow to get rid of this label.
+> > 
+> > > +	fwnode_handle_put(args.fwnode);
+> > > +	return ret;
+> > > +}  
+> > 
+> 
 

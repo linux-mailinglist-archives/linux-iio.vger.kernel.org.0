@@ -1,54 +1,56 @@
-Return-Path: <linux-iio+bounces-19896-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19897-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22B11AC350E
-	for <lists+linux-iio@lfdr.de>; Sun, 25 May 2025 16:09:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FFE2AC3512
+	for <lists+linux-iio@lfdr.de>; Sun, 25 May 2025 16:11:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AACE2189378C
-	for <lists+linux-iio@lfdr.de>; Sun, 25 May 2025 14:09:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C9021893903
+	for <lists+linux-iio@lfdr.de>; Sun, 25 May 2025 14:11:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D09181F4615;
-	Sun, 25 May 2025 14:09:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEA861F4626;
+	Sun, 25 May 2025 14:11:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A/dv+asP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dP0awLqo"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 917FC28EA
-	for <linux-iio@vger.kernel.org>; Sun, 25 May 2025 14:09:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B6A828EA;
+	Sun, 25 May 2025 14:11:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748182171; cv=none; b=Y8lbIBeweuREkBCPTZxJrumDe9grcrmrZ7FSKpBG8ff4tM4DAosen6Y83NjCppBimjcUKknARR2GFcJbwHH3+RLqvR+lF06x6iLQ2mOvK7RSPlnpuoF0flylukO3gCzN/nfeSSE7eenxLJ6lI+kY2ekpoKVlepH3TgTC3F7qfM8=
+	t=1748182284; cv=none; b=WDdfpoZRbhIpAA5a3kBCcnIWyJp1QNyNlFLOh2sroHNPF3Rykq58QeDMz4tJ8xooP+4svGMDcUILVdgwm9ffBo21zn1tlF4YzGw05WpCUXguqTZbilNctb5ggIlg8TRh4bCJ16I+OUrs8W5hsuKFgX1juhmfTUKjSVpgWXwTH6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748182171; c=relaxed/simple;
-	bh=mkhtnHnRo0KSw0Dgb8PHBeI8y13SWbNqqKn0ueyZ+0g=;
+	s=arc-20240116; t=1748182284; c=relaxed/simple;
+	bh=9zFisc4BvkUnb0sacXYazLwTXa3jFFku3wzY2GozKVg=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=c2NwAFacxUGEIJ2Hng4COciSlKS27fMXk3IQYqRuSZ2CCH0VIWHzgL+12FW/mXAUJN2peBuHtRYU9AznGddLH7VCBK0x4N5bQYKOqAUmybc+0R38JFJDeZ93b+BwttRqifj+Yt3ba38n8ozNw9xU4MIeNWLzpl6GrWeBrt4KGXQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A/dv+asP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DCA1C4CEEA;
-	Sun, 25 May 2025 14:09:29 +0000 (UTC)
+	 MIME-Version:Content-Type; b=tmVYZ7r7iybiXulQJSYrQPpMae9391wLlOIgD6K+h/GFPT09r8Q1y1ASk2sja3uc3C8h5QM6IEa2muUmoC+ois9NMq5LSFJKC4c775rS9eTriYZYArPIyIaMMBDS06MTqNiF1gvznLGV+Pwqk/8vLUXA/e8xdKvVcgbQWCAEBhQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dP0awLqo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 332C4C4CEEA;
+	Sun, 25 May 2025 14:11:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748182170;
-	bh=mkhtnHnRo0KSw0Dgb8PHBeI8y13SWbNqqKn0ueyZ+0g=;
+	s=k20201202; t=1748182284;
+	bh=9zFisc4BvkUnb0sacXYazLwTXa3jFFku3wzY2GozKVg=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=A/dv+asP8x/KfU4d97l8YzitoZpZa4DQmrfewmnOr5Tc76Hp7bh0Qp+kO2VfYewt0
-	 f1GY55ASK92Fh/qDyUG9UF/Edx6yOxvX1ffNmPVoOBjFA9UdOUJZnKzq56f1ajVaqV
-	 4C13xGbk3tJAGa9ma/s/byizuJZYw2jf8gVV8SrSf+3S3jGKQi1cyO4ziZnVyHVxMV
-	 o+gOi/uYEVrvG+LpZnd4QRW+QkWKdzftibAoZPxMhewaYiXm3QSiwPf1NPiBqTxAbc
-	 QwjPCwAekDSUjiU+WxSZfaY3VDZxyHaJFrWG0g0y6PoYASOZwdkSIe1L1XqK7XRfxn
-	 quIldXFPZ4B+A==
-Date: Sun, 25 May 2025 15:09:25 +0100
+	b=dP0awLqoZql0IRsd4pFqgqK1ZePDbBFLGkkWBGwVcj8fYu8uUGZdfJC9mJtDXFcQP
+	 yaLkFffuRzksuqys9a4gwPOt3iYIfn4P27TC/fSORhiCyS7hhGlrllqSmjZvxldXNt
+	 gThG1d55a87ijAllEe6Udvl2v9jOt9bt9ImQt0NEb9eEpZk6SGwQ1BeRSfC0PpVs7D
+	 wPi7phKCX2W4/zJCoYzxaHpTOpfKReDkao1KCtCWvyz0OwFc/1b2mwuRUIUfVhbbku
+	 uaPIetXG16dalRnl+8i0bm3gAAqRtLiuh3/2xeCGTseMjxn0OhSR3lTt36Q8lJjNkd
+	 i4fzmregzh29A==
+Date: Sun, 25 May 2025 15:11:18 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Gabriel Souza Araujo <gabrielfsouza.araujo@gmail.com>
-Cc: linux-iio@vger.kernel.org, Cesar Bispo <cesar.bispo@ime.usp.br>
-Subject: Re: [PATCH v3] iio: adc: Modernize single regulartor call
-Message-ID: <20250525150925.727aa0ad@jic23-huawei>
-In-Reply-To: <20250521185807.139828-1-gabrielfsouza.araujo@gmail.com>
-References: <20250521185807.139828-1-gabrielfsouza.araujo@gmail.com>
+To: Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>
+Cc: Antoniu Miclaus <antoniu.miclaus@analog.com>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] iio: adc: ad4080: use lowercase device name
+Message-ID: <20250525151118.1384a139@jic23-huawei>
+In-Reply-To: <5e0eb8b91062a5622b09c5e32f9e662a224d8d80.camel@gmail.com>
+References: <20250520110101.29478-1-antoniu.miclaus@analog.com>
+	<5e0eb8b91062a5622b09c5e32f9e662a224d8d80.camel@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -56,95 +58,46 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, 21 May 2025 15:54:03 -0300
-Gabriel Souza Araujo <gabrielfsouza.araujo@gmail.com> wrote:
+On Tue, 20 May 2025 15:08:52 +0100
+Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
 
-> Replace a single instance of legacy regulator with devm_regulator_get_enable().
-> This change improves code clarity and aligns with modern kernel APIs.
-Typo in patch title (regulator)
+> On Tue, 2025-05-20 at 14:01 +0300, Antoniu Miclaus wrote:
+> > Update the .name field in the ad4080_chip_info struct
+> > from "AD4080" to "ad4080" to follow the common convention
+> > in IIO drivers of using lowercase names for device identifiers.
+> >=20
+> > No functional changes are introduced.
+Isn't this what is read back from /sys/bus/iio/devices/iio\:device0/name?
 
-> 
-> Signed-off-by: Gabriel Souza Araujo <gabrielfsouza.araujo@gmail.com>
-> Co-developed-by: Cesar Bispo <cesar.bispo@ime.usp.br>
-> Signed-off-by: Cesar Bispo <cesar.bispo@ime.usp.br>
+changing it is a functional change.  I'd argue it's a fix and deserved
+a fixed tag.
 
-Getting better, but you need to do a little more reading on how device managed
-cleanup works.
-
-Jonathan
-
-> ---
-> The first version [1] did not compile due to incorrect use of pointers and improper
-> parameterization of the devm_regulator_get_enable() function. 
-> These issues have been fixed, and the code now compiles successfully.
-> Additionally, version two [2] had an incomplete patch, which has also 
-> been addressed in this version.
-> 
-> [1] https://lore.kernel.org/linux-iio/20250429160526.5934-1-cesar.bispo@ime.usp.br/
-> [2] https://lore.kernel.org/linux-iio/20250514185239.10078-1-gabrielfsouza.araujo@gmail.com/
-> 
->  drivers/iio/adc/qcom-pm8xxx-xoadc.c | 13 +++----------
->  1 file changed, 3 insertions(+), 10 deletions(-)
-> 
-> diff --git a/drivers/iio/adc/qcom-pm8xxx-xoadc.c b/drivers/iio/adc/qcom-pm8xxx-xoadc.c
-> index 31f88cf7f7f1..a37ba6fad146 100644
-> --- a/drivers/iio/adc/qcom-pm8xxx-xoadc.c
-> +++ b/drivers/iio/adc/qcom-pm8xxx-xoadc.c
-> @@ -911,11 +911,7 @@ static int pm8xxx_xoadc_probe(struct platform_device *pdev)
->  	adc->map = map;
->  
->  	/* Bring up regulator */
-> -	adc->vref = devm_regulator_get(dev, "xoadc-ref");
-> -	if (IS_ERR(adc->vref))
-> -		return dev_err_probe(dev, PTR_ERR(adc->vref),
-> -				     "failed to get XOADC VREF regulator\n");
-> -	ret = regulator_enable(adc->vref);
-> +	ret = devm_regulator_get_enable(dev, "xoadc-ref");
-
-Have a read up on what this is doing.   Hint, it is both about simplifying error
-paths and about simplifying remove paths - you only deal with changes needed
-for the error path here.
-
->  	if (ret) {
->  		dev_err(dev, "failed to enable XOADC VREF regulator\n");
->  		return ret;
-> @@ -925,7 +921,7 @@ static int pm8xxx_xoadc_probe(struct platform_device *pdev)
->  			pm8xxx_eoc_irq, NULL, 0, variant->name, indio_dev);
->  	if (ret) {
->  		dev_err(dev, "unable to request IRQ\n");
-
-Consider a follow up to use return dev_err_probe() in places like this to
-simplify the code.
-
-> -		goto out_disable_vref;
-> +		return ret;
->  	}
->  
->  	indio_dev->name = variant->name;
-> @@ -936,7 +932,7 @@ static int pm8xxx_xoadc_probe(struct platform_device *pdev)
->  
->  	ret = iio_device_register(indio_dev);
-Given this is all that is not manually cleaned up, please add a second patch
-to use devm_iio_device_register() for this.
-
->  	if (ret)
-> -		goto out_disable_vref;
-> +		return ret;
->  
->  	ret = pm8xxx_calibrate_device(adc);
->  	if (ret)
-> @@ -948,9 +944,6 @@ static int pm8xxx_xoadc_probe(struct platform_device *pdev)
->  
->  out_unreg_device:
->  	iio_device_unregister(indio_dev);
-> -out_disable_vref:
-> -	regulator_disable(adc->vref);
-> -
->  	return ret;
->  }
->  
+> >=20
+> > Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+> > --- =20
+>=20
+> Reviewed-by: Nuno S=C3=A1 <nuno.sa@analog.com>
+>=20
+> > =C2=A0drivers/iio/adc/ad4080.c | 2 +-
+> > =C2=A01 file changed, 1 insertion(+), 1 deletion(-)
+> >=20
+> > diff --git a/drivers/iio/adc/ad4080.c b/drivers/iio/adc/ad4080.c
+> > index e8b2e5e7a68a..c36eb41d738a 100644
+> > --- a/drivers/iio/adc/ad4080.c
+> > +++ b/drivers/iio/adc/ad4080.c
+> > @@ -433,7 +433,7 @@ static const struct iio_chan_spec ad4080_channel =
+=3D {
+> > =C2=A0};
+> > =C2=A0
+> > =C2=A0static const struct ad4080_chip_info ad4080_chip_info =3D {
+> > -	.name =3D "AD4080",
+> > +	.name =3D "ad4080",
+> > =C2=A0	.product_id =3D AD4080_CHIP_ID,
+> > =C2=A0	.scale_table =3D ad4080_scale_table,
+> > =C2=A0	.num_scales =3D ARRAY_SIZE(ad4080_scale_table), =20
+>=20
 
 

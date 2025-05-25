@@ -1,66 +1,60 @@
-Return-Path: <linux-iio+bounces-19856-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19857-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDE6BAC3368
-	for <lists+linux-iio@lfdr.de>; Sun, 25 May 2025 11:27:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31EDBAC336B
+	for <lists+linux-iio@lfdr.de>; Sun, 25 May 2025 11:30:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 28A171890FE7
-	for <lists+linux-iio@lfdr.de>; Sun, 25 May 2025 09:27:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E52F91764D2
+	for <lists+linux-iio@lfdr.de>; Sun, 25 May 2025 09:30:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 987F31E5B64;
-	Sun, 25 May 2025 09:27:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BC521BC099;
+	Sun, 25 May 2025 09:30:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VuK2HLae"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h+9bVgIU"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D5503211;
-	Sun, 25 May 2025 09:27:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB080101FF;
+	Sun, 25 May 2025 09:30:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748165227; cv=none; b=CwGSnto+I8OAoQVsBIdeHu/NHmOcnsP9MaDGcHMCyir7xqOIa6IdvinuPc3Z2a61lXfcf2Rt/PptdjY0qEdlo8mNQwtrQ4NfVKAKRL1yVeyBItOG/nme4GW8z45bKBmIYjWpNjsrZUT0FlOjdVngwYVo7iLYBeVb2PBcWVrIF9Q=
+	t=1748165428; cv=none; b=UOFgCMbirzu89F1ZSdQwaSwHiWSrVJp2g3mIQYmVW6h5Sb85w67r0F9o4Y5gHa7d71dWo5zM5AvTcn18svdEV2zpsFs5utjYuOZnwvyg0SnpetkGgFk7rFYakAHFZad4SLl9CDf0snv7/GpqN6Zj8WdTnvRNPH4H2NKEmrS4Zew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748165227; c=relaxed/simple;
-	bh=Htcbn+KyEsVVp9c2bRKjfXUW1dKWwN+XtF2ZkuOSr8s=;
+	s=arc-20240116; t=1748165428; c=relaxed/simple;
+	bh=FK7fJoaY67rJ0ofhpZsxa0KwOuodLzDAxfhAisdsqFE=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=R+ev01c2rj7RGLa0RIdELJy+q2qXPWCivshtgd4ee8QQwqoElHsE/hsefa2pQKhKcRtbd2dHJsfDJVFxWgYlC8zfJt9Zxl5snK4cM3OzX4ca21iVlrn3ZkpmRBGj+PLvRvjacTmiRnuxNP8unjrYnOt50E2ecg4w/UjTdXYp0lg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VuK2HLae; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E5C3C4CEEA;
-	Sun, 25 May 2025 09:26:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=IWiU8ig5vWyet7MCM9tuvyc0dU5ozIIUDPQrFRHsnzGgqqEphZ2dyz6O1YlS5/yet/XrqxVlS7s9As/fTOHWaD4HmFZqDFb0DcIgrz4IAeYjIFWrC2njJhL9EB7qp3VUfPO1TCF6RASESIPcfDoU/9fYIKxKLKAfKtyRuXFFLY8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h+9bVgIU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3009C4CEEA;
+	Sun, 25 May 2025 09:30:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748165224;
-	bh=Htcbn+KyEsVVp9c2bRKjfXUW1dKWwN+XtF2ZkuOSr8s=;
+	s=k20201202; t=1748165427;
+	bh=FK7fJoaY67rJ0ofhpZsxa0KwOuodLzDAxfhAisdsqFE=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=VuK2HLaem2onVHwfS8qW+RYrrZ3YEYH9fCNhLpOtyJCgi5rX+wzQmmYY55MV/pNnE
-	 fWzsBoHhWwYLw3j74ptI4dXHQZOHdLI4Yaofv82l9FgMrLEOjpoZrUXFO/xMJK59i+
-	 ebUdLMBFw+uZa2NTzDf0fn5wan9jKVyN8ZnY6glM9ctLTsytwn691J5IFCauLOwdlU
-	 /Zr0lnXQdt5TPYe8kSUvx0+iBWsA3Q+XOT5oB+XFFejUlIGlB8h1vq6mU2eHBde/lt
-	 832OJP59vPr7QOR3+KlFQ1WtE8HhrDwBm6dXTfdNxY1JWK7oQxrq1BUBIZaYYAI2gA
-	 OIAPGtJtcDNsw==
-Date: Sun, 25 May 2025 10:26:54 +0100
+	b=h+9bVgIUFSekKnduhJUBHdhTmOCMBaz16+rASCPCDDFlObJ9SdTnXta+g93Z8x2Hh
+	 Ho/m8FHkDXBb+KOIRxsohIUrk9sVWINWhNoISXIH/VteEPjrTz4eAUk4mZjG3hOOfU
+	 z4NFnyjakXE9ZTh7QhT36VU8vWDx3Xk4ZfiEZUAzPk9fSo298zqwXKKicOHRZrMwCm
+	 l6G+cI7P1VISKE0ce6Pf5zeTqzQueEGvRTOjk8Bk7iZUR8I+pIo74IWtYR6eO3AQG1
+	 ur2+ad//8uEP8eLqMGVGQmrM3A/7QVgACO9yfX2CMnqqbbsoqwUqecucnAzNb53u6k
+	 CJLR57mtxtkCw==
+Date: Sun, 25 May 2025 10:30:19 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Markus Burri <markus.burri@mt.com>
-Cc: linux-kernel@vger.kernel.org, Mahesh J Salgaonkar
- <mahesh@linux.ibm.com>, "Oliver O'Halloran" <oohall@gmail.com>, Madhavan
- Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>,
- Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy
- <christophe.leroy@csgroup.eu>, Naveen N Rao <naveen@kernel.org>, Jacek
- Lawrynowicz <jacek.lawrynowicz@linux.intel.com>, Maciej Falkowski
- <maciej.falkowski@linux.intel.com>, Oded Gabbay <ogabbay@kernel.org>, Linus
- Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>,
- Nuno Sa <nuno.sa@analog.com>, Olivier Moysan <olivier.moysan@foss.st.com>,
- Lars-Peter Clausen <lars@metafoo.de>, linuxppc-dev@lists.ozlabs.org,
- dri-devel@lists.freedesktop.org, linux-gpio@vger.kernel.org,
- linux-iio@vger.kernel.org, Markus Burri <markus.burri@bbv.ch>
-Subject: Re: [PATCH v4 3/6] iio: fix potential out-of-bound write
-Message-ID: <20250525102654.5b761490@jic23-huawei>
-In-Reply-To: <20250508130612.82270-4-markus.burri@mt.com>
-References: <20250508130612.82270-1-markus.burri@mt.com>
-	<20250508130612.82270-4-markus.burri@mt.com>
+To: Waqar Hameed <waqar.hameed@axis.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, <kernel@axis.com>,
+ <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>
+Subject: Re: [PATCH 3/3] iio: Add driver for Nicera D3-323-AA PIR sensor
+Message-ID: <20250525103019.3773be94@jic23-huawei>
+In-Reply-To: <pndo6vnfrnp.fsf@axis.com>
+References: <cover.1746802541.git.waqar.hameed@axis.com>
+	<c5184074d85b68ca35ccb29ab94d774203b93535.1746802541.git.waqar.hameed@axis.com>
+	<20250511131432.1c6e381c@jic23-huawei>
+	<pndldqwiihi.fsf@axis.com>
+	<20250518183852.7e9afdac@jic23-huawei>
+	<pndo6vnfrnp.fsf@axis.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -71,47 +65,56 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu,  8 May 2025 15:06:09 +0200
-Markus Burri <markus.burri@mt.com> wrote:
+On Tue, 20 May 2025 13:27:54 +0200
+Waqar Hameed <waqar.hameed@axis.com> wrote:
 
-> The buffer is set to 20 characters. If a caller write more characters,
-> count is truncated to the max available space in "simple_write_to_buffer".
-> To protect from OoB access, check that the input size fit into buffer and
-> add a zero terminator after copy to the end of the copied data.
+> On Sun, May 18, 2025 at 18:38 +0100 Jonathan Cameron <jic23@kernel.org> wrote:
 > 
-> Signed-off-by: Markus Burri <markus.burri@mt.com>
-I added
-Fixes: 6d5dd486c715 ("iio: core: make use of simple_write_to_buffer()")
-
-If it predates that we'll need a manual backport anyway. If you have time to
-take a look at that Markus that would be great.
-
-Jonathan
-
-> ---
->  drivers/iio/industrialio-core.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
+> >> >> +#define D3323AA_DRV_NAME "d3323aa"    
+> >> >
+> >> > Put that inline where used.  A define like this both implies that various values
+> >> > must be the same when they need not be and means that we have to go find the
+> >> > define to fine out what they are set to.  Just setting the strings directly
+> >> > tends to end up more readable.    
+> >> 
+> >> Sure, we can do that. (There are a bunch of IIO-drivers doing this, so I
+> >> just thought that was the "convention".)  
+> >
+> > I'm sometimes in less fussy mood.  One day I might just clean those up
+> > so there is nothing to copy into new drivers!  
 > 
-> diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
-> index b9f4113ae5fc..ebf17ea5a5f9 100644
-> --- a/drivers/iio/industrialio-core.c
-> +++ b/drivers/iio/industrialio-core.c
-> @@ -410,12 +410,15 @@ static ssize_t iio_debugfs_write_reg(struct file *file,
->  	char buf[80];
->  	int ret;
->  
-> +	if (count >= sizeof(buf))
-> +		return -EINVAL;
-> +
->  	ret = simple_write_to_buffer(buf, sizeof(buf) - 1, ppos, userbuf,
->  				     count);
->  	if (ret < 0)
->  		return ret;
->  
-> -	buf[count] = '\0';
-> +	buf[ret] = '\0';
->  
->  	ret = sscanf(buf, "%i %i", &reg, &val);
->  
+> A quick search tells that there are (at least) 105 of those:
+> 
+>   rgrep -A 30 "\.driver" drivers/iio/ | grep "\.name" | grep -v '"'
+>   
+> I was just about to write a small Python script to fix those, but just
+> wanted to confirm with you before spending more time on this. So if you
+> don't want to do this yourself, I can help your here :)
+
+It's probably not worth the churn on the ones that have the string repeated
+multiple times.  However, perhaps any that are only using it for .name would
+be good to tidy up?  Those are less a case of it being 'taste' vs it being silly
+to have a define!
+
+> 
+> >>  
+> >> >> +	/* Input clock or output detection signal (Vout). */    
+> >> >
+> >> > I'd rename. Vout kind of suggests a variable voltage. This seems to just
+> >> > be a level signal.    
+> >>   
+> >> >> +	struct gpio_desc *gpiod_clk_vout;    
+> >> 
+> >> Yeah, it's a weird pin with multiple use-cases... I just named it
+> >> according to what the datasheet calls it. What about
+> >> `gpiod_clk_detection`?  
+> >
+> > That sounds like it's detecting a clock.  Hmm.  
+> > gpiod_clkin_detectout maybe?  
+> 
+> No objections.
+> 
+> [...]
+> 
 
 

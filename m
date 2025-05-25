@@ -1,60 +1,62 @@
-Return-Path: <linux-iio+bounces-19857-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19858-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31EDBAC336B
-	for <lists+linux-iio@lfdr.de>; Sun, 25 May 2025 11:30:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49709AC336E
+	for <lists+linux-iio@lfdr.de>; Sun, 25 May 2025 11:33:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E52F91764D2
-	for <lists+linux-iio@lfdr.de>; Sun, 25 May 2025 09:30:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DFCB018965F6
+	for <lists+linux-iio@lfdr.de>; Sun, 25 May 2025 09:33:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BC521BC099;
-	Sun, 25 May 2025 09:30:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7FFF143895;
+	Sun, 25 May 2025 09:33:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h+9bVgIU"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q9cWX7dc"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB080101FF;
-	Sun, 25 May 2025 09:30:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68F6042AA5
+	for <linux-iio@vger.kernel.org>; Sun, 25 May 2025 09:33:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748165428; cv=none; b=UOFgCMbirzu89F1ZSdQwaSwHiWSrVJp2g3mIQYmVW6h5Sb85w67r0F9o4Y5gHa7d71dWo5zM5AvTcn18svdEV2zpsFs5utjYuOZnwvyg0SnpetkGgFk7rFYakAHFZad4SLl9CDf0snv7/GpqN6Zj8WdTnvRNPH4H2NKEmrS4Zew=
+	t=1748165593; cv=none; b=QpxU/ZbzhozBCKnklaHvMTo2sfSqh/YrgTF+uMtm96l7NjEMA5blZYoB9PTjZbe0CQYActuG3C35SXzTa6VaLOFoa78Xojuqfi2l63AvAbb0fPKz7C6pQa6UYBg7S0NT0AsP8vakT0UwDD+7vQ+TNedD9dcNV8D3ZgFg13mkaL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748165428; c=relaxed/simple;
-	bh=FK7fJoaY67rJ0ofhpZsxa0KwOuodLzDAxfhAisdsqFE=;
+	s=arc-20240116; t=1748165593; c=relaxed/simple;
+	bh=+wzh/vGkXe/frL37fuMnqEiv80UCrhFXpO/TDVweoWQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IWiU8ig5vWyet7MCM9tuvyc0dU5ozIIUDPQrFRHsnzGgqqEphZ2dyz6O1YlS5/yet/XrqxVlS7s9As/fTOHWaD4HmFZqDFb0DcIgrz4IAeYjIFWrC2njJhL9EB7qp3VUfPO1TCF6RASESIPcfDoU/9fYIKxKLKAfKtyRuXFFLY8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h+9bVgIU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3009C4CEEA;
-	Sun, 25 May 2025 09:30:24 +0000 (UTC)
+	 MIME-Version:Content-Type; b=X5TTf0xrZ9DNCR1CvYHPbhcCPfn1gBCKf4Dctc0nI77OrC3zpVki6Xbg2QXnG5scf+O5Jt1IYf8VGYIuiuefbjDWSN/EQZUYePwVDBkmget/Bd6Q5Lub41ikXQDoxFdDknvrNQKFTf9GwWEFPYQH6BVJHkVKWA4TBQKyN5pWr10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q9cWX7dc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FD18C4CEEA;
+	Sun, 25 May 2025 09:33:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748165427;
-	bh=FK7fJoaY67rJ0ofhpZsxa0KwOuodLzDAxfhAisdsqFE=;
+	s=k20201202; t=1748165592;
+	bh=+wzh/vGkXe/frL37fuMnqEiv80UCrhFXpO/TDVweoWQ=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=h+9bVgIUFSekKnduhJUBHdhTmOCMBaz16+rASCPCDDFlObJ9SdTnXta+g93Z8x2Hh
-	 Ho/m8FHkDXBb+KOIRxsohIUrk9sVWINWhNoISXIH/VteEPjrTz4eAUk4mZjG3hOOfU
-	 z4NFnyjakXE9ZTh7QhT36VU8vWDx3Xk4ZfiEZUAzPk9fSo298zqwXKKicOHRZrMwCm
-	 l6G+cI7P1VISKE0ce6Pf5zeTqzQueEGvRTOjk8Bk7iZUR8I+pIo74IWtYR6eO3AQG1
-	 ur2+ad//8uEP8eLqMGVGQmrM3A/7QVgACO9yfX2CMnqqbbsoqwUqecucnAzNb53u6k
-	 CJLR57mtxtkCw==
-Date: Sun, 25 May 2025 10:30:19 +0100
+	b=Q9cWX7dc4xb8a4mw/NRyGe4aypGDr3pNVEINiIcxqiTiP38/GI1VzWo0h94P1U84n
+	 S3gKwmq6yznCYEhnc5UTQEKZPuNrTUMqnfbiDis/HEks5VZ20/dD6SSWFvpwexLumP
+	 v8m43OwnzxZtTxe8YZ1JrXbMLzh6UoPAARinx3D94tbzIFssaSas+qUIzs+3tlMOG1
+	 xkAyn/lT0s3zbZJSUbjgC2CesiaNEw9iYN3dRDdThNUR6DKkdVLllCqh3UJTJFlwiW
+	 AwUFVdzjLa0NX51q5fYavRFtsOmBwUqYQXBV11fpjJcMk0Ol2MRsKej8n1CXZOHNFu
+	 6mfgj/egoATqA==
+Date: Sun, 25 May 2025 10:33:04 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Waqar Hameed <waqar.hameed@axis.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, <kernel@axis.com>,
- <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH 3/3] iio: Add driver for Nicera D3-323-AA PIR sensor
-Message-ID: <20250525103019.3773be94@jic23-huawei>
-In-Reply-To: <pndo6vnfrnp.fsf@axis.com>
-References: <cover.1746802541.git.waqar.hameed@axis.com>
-	<c5184074d85b68ca35ccb29ab94d774203b93535.1746802541.git.waqar.hameed@axis.com>
-	<20250511131432.1c6e381c@jic23-huawei>
-	<pndldqwiihi.fsf@axis.com>
-	<20250518183852.7e9afdac@jic23-huawei>
-	<pndo6vnfrnp.fsf@axis.com>
+To: Denis Benato <benato.denis96@gmail.com>
+Cc: Andy Shevchenko <andy@kernel.org>, Alex Lanzano
+ <lanzano.alex@gmail.com>, David Lechner <dlechner@baylibre.com>, Nuno
+ =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, linux-iio@vger.kernel.org, "Derek J.
+ Clark" <derekjohn.clark@gmail.com>, Philip =?UTF-8?B?TcO8bGxlcg==?=
+ <philm@manjaro.org>, Justin Weiss <justin@justinweiss.com>
+Subject: Re: [PATCH 1/2] iio: bmi270: suspend and resume triggering on
+ relevant pm operations
+Message-ID: <20250525103304.65ba359d@jic23-huawei>
+In-Reply-To: <cddc4a4f-f982-49ec-a03b-3e26038057fe@gmail.com>
+References: <20250509171526.7842-1-benato.denis96@gmail.com>
+	<20250509171526.7842-2-benato.denis96@gmail.com>
+	<aCG3YRP66cKyzr1B@smile.fi.intel.com>
+	<cddc4a4f-f982-49ec-a03b-3e26038057fe@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -65,56 +67,76 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 20 May 2025 13:27:54 +0200
-Waqar Hameed <waqar.hameed@axis.com> wrote:
+On Sat, 24 May 2025 22:25:11 +0200
+Denis Benato <benato.denis96@gmail.com> wrote:
 
-> On Sun, May 18, 2025 at 18:38 +0100 Jonathan Cameron <jic23@kernel.org> wrote:
+> On 5/12/25 10:54, Andy Shevchenko wrote:
+> > On Fri, May 09, 2025 at 07:15:25PM +0200, Denis Benato wrote:  
+> >> Prevent triggers from stop working after the device has entered sleep:
+> >> use iio_device_suspend_triggering and iio_device_resume_triggering helpers.  
+> > The cover letter call it a fix, where is the Fixes tag?  
+> I didn't know if it was okay to use that tag while to root cause is still there and it needs to be fixed for a lot more devices.
 > 
-> >> >> +#define D3323AA_DRV_NAME "d3323aa"    
-> >> >
-> >> > Put that inline where used.  A define like this both implies that various values
-> >> > must be the same when they need not be and means that we have to go find the
-> >> > define to fine out what they are set to.  Just setting the strings directly
-> >> > tends to end up more readable.    
-> >> 
-> >> Sure, we can do that. (There are a bunch of IIO-drivers doing this, so I
-> >> just thought that was the "convention".)  
+> I was also attempting to make this patch very similar to accepted one: https://lore.kernel.org/all/20240807185619.7261-3-benato.denis96@gmail.com/
+> 
+> Is fixed tag appropriate?
+
+I think it probably is appropriate given not having a trigger restart after returning
+from suspend is unlikely to be desired behaviour.
+
+Jonathan
+
+> 
 > >
-> > I'm sometimes in less fussy mood.  One day I might just clean those up
-> > so there is nothing to copy into new drivers!  
+> > ...
+> >  
+> >> +const struct dev_pm_ops bmi270_core_pm_ops = {
+> >> +	RUNTIME_PM_OPS(bmi270_core_runtime_suspend,
+> >> +		       bmi270_core_runtime_resume, NULL)  
+> > One line (it's only 85 characters and it's fine in this case).  
 > 
-> A quick search tells that there are (at least) 105 of those:
 > 
->   rgrep -A 30 "\.driver" drivers/iio/ | grep "\.name" | grep -v '"'
->   
-> I was just about to write a small Python script to fix those, but just
-> wanted to confirm with you before spending more time on this. So if you
-> don't want to do this yourself, I can help your here :)
-
-It's probably not worth the churn on the ones that have the string repeated
-multiple times.  However, perhaps any that are only using it for .name would
-be good to tidy up?  Those are less a case of it being 'taste' vs it being silly
-to have a define!
-
+> Okay, will send a new version when I have answer to the above question.
 > 
-> >>  
-> >> >> +	/* Input clock or output detection signal (Vout). */    
-> >> >
-> >> > I'd rename. Vout kind of suggests a variable voltage. This seems to just
-> >> > be a level signal.    
-> >>   
-> >> >> +	struct gpio_desc *gpiod_clk_vout;    
-> >> 
-> >> Yeah, it's a weird pin with multiple use-cases... I just named it
-> >> according to what the datasheet calls it. What about
-> >> `gpiod_clk_detection`?  
-> >
-> > That sounds like it's detecting a clock.  Hmm.  
-> > gpiod_clkin_detectout maybe?  
 > 
-> No objections.
+> >> +};  
+> > ...
+> >  
+> >> --- a/drivers/iio/imu/bmi270/bmi270_i2c.c
+> >> +++ b/drivers/iio/imu/bmi270/bmi270_i2c.c
+> >> @@ -52,6 +52,7 @@ static const struct of_device_id bmi270_of_match[] = {
+> >>  static struct i2c_driver bmi270_i2c_driver = {
+> >>  	.driver = {
+> >>  		.name = "bmi270_i2c",
+> >> +		.pm = pm_ptr(&bmi270_core_pm_ops),  
+> > Is pm.h included?  
+> I assumed it was not needed since the i2c_driver definition should be enough.
 > 
-> [...]
+> 
+> I will include pm.h on the next version, thanks.
+> 
+> 
+> >  
+> >>  		.acpi_match_table = bmi270_acpi_match,
+> >>  		.of_match_table = bmi270_of_match,
+> >>  	},
+> >> diff --git a/drivers/iio/imu/bmi270/bmi270_spi.c b/drivers/iio/imu/bmi270/bmi270_spi.c
+> >> index 88a77aba5e4f..b25171413531 100644
+> >> --- a/drivers/iio/imu/bmi270/bmi270_spi.c
+> >> +++ b/drivers/iio/imu/bmi270/bmi270_spi.c
+> >> @@ -79,6 +79,7 @@ static const struct of_device_id bmi270_of_match[] = {
+> >>  static struct spi_driver bmi270_spi_driver = {
+> >>  	.driver = {
+> >>  		.name = "bmi270",
+> >> +		.pm = pm_ptr(&bmi270_core_pm_ops),  
+> > Ditto.  
+> >>  		.of_match_table = bmi270_of_match,
+> >>  	},
+> >>  	.probe = bmi270_spi_probe,  
+> I don't know how but your answer was lost in my mail.
+> 
+> Sorry for the late response and thank you for your suggestions,
+> Denis
 > 
 
 

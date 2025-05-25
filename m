@@ -1,85 +1,89 @@
-Return-Path: <linux-iio+bounces-19872-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19873-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25058AC344E
-	for <lists+linux-iio@lfdr.de>; Sun, 25 May 2025 13:56:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3C72AC3451
+	for <lists+linux-iio@lfdr.de>; Sun, 25 May 2025 13:56:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D1D7A175D04
-	for <lists+linux-iio@lfdr.de>; Sun, 25 May 2025 11:56:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A0DE83B5EB2
+	for <lists+linux-iio@lfdr.de>; Sun, 25 May 2025 11:55:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 374C11F2388;
-	Sun, 25 May 2025 11:56:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 978071F2C45;
+	Sun, 25 May 2025 11:56:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PRarqGzX"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LVTVfpgY"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ua1-f54.google.com (mail-ua1-f54.google.com [209.85.222.54])
+Received: from mail-ua1-f45.google.com (mail-ua1-f45.google.com [209.85.222.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FA9C1DF26B;
-	Sun, 25 May 2025 11:56:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C56451DF26B;
+	Sun, 25 May 2025 11:56:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748174162; cv=none; b=Y9Q5CHMhilgnhsOZ5VY6L6j3Nj8VMWWyD9+U95uFRPKIaT5VdJbPzraSIzkmG9zYCO8E7re64y/zb0oeaQX6lojdKMkmq6E7JwuzWP7ntN/EuBDZgEQhlsO9SOc8k+4PyWeECzYjqxZkVccBJQ7fxz3A3stefLOZYu9/+qlP0yA=
+	t=1748174164; cv=none; b=bPnu3c12W8JDGiv0SSjl7LVh6LkE/1Ytdzcb1Sx+4Cyv+cLC4EUhsyxeQWFrYTfm2eZGOMGCW+kVEeqQkyA8SK5oRXCN2m/SGmvsaUr+CqP7l0ykE/0AtLC6M8VlNMHmkQsXcoKnM3SpCrv1y/4lvoaZh9tmR3qf9O2VeMYvHNo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748174162; c=relaxed/simple;
-	bh=rzj4RSMgTitDgsfiG8R9TrQopONaWE0UqE+vmKQYo5g=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=CxlzjxdP0cr2nw9lPh0m5eehPJm9+XxK7yFsKBZbgDbXJue6gVFkvY9+PQhKLQAvMf1lC+4WG32hPCzum5jvRQ255QNGE/CNx2XJsi9K8lSeC2n+IQhdWc+WOmPZrH4CketF3LQms7E2npqqnFmVcG+fHArvmc4xkYHfmenC6J4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PRarqGzX; arc=none smtp.client-ip=209.85.222.54
+	s=arc-20240116; t=1748174164; c=relaxed/simple;
+	bh=E+2/fZKdPaU7ca49FSsfP9AXKnBpKjmWYrsoU/icpF8=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=bqWSlQpxdeW4K+NJWR9djfy4deVNYhdGzOx5WGFTnOtb8WGFbYzv+VWFtRw9O78xPCiHcJYFhvSXEoyLBBCRMO/NGDwqYlGRMFejMe2z0XNfFrYtnKdFmlLLRUvaBwTrCN57Q8RAwZqsi4UC2AXfivxB1pS/VHUtl1iUNn7JfP0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LVTVfpgY; arc=none smtp.client-ip=209.85.222.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ua1-f54.google.com with SMTP id a1e0cc1a2514c-87de33ccdb4so418258241.2;
-        Sun, 25 May 2025 04:56:00 -0700 (PDT)
+Received: by mail-ua1-f45.google.com with SMTP id a1e0cc1a2514c-87dfe906a87so40610241.0;
+        Sun, 25 May 2025 04:56:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1748174159; x=1748778959; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=/6Iyvae425oa5vml4Qw6ME2a3u8XHgSU+g4q8Mbi88M=;
-        b=PRarqGzX9soK82coR62u79TatiGrIbZP6TURTnOVeS3XBxPcb44xlBbq0EuiFpbYbu
-         t301q29qnCSMed62WTbFFzlMoO3SwM9t17lnGaus1nsPK6HNqSo82so2FX0GbVPy9OG2
-         GzFYRGzisrfX7HDDXPwEWSpLPSJ8h7VtcR/iQGLtOMK8hFr3fS6xeR5DVp+h3beYFsbP
-         60qdw9SYTJcP897KdmyVv7OrmuZn5QVLDddqzl95988d5mGc8Dm2R6bUW1nyB8kAay9B
-         t5l/GJ4xQa00/n3KOh9Rh/Pr45nn14MRXDskZXjpjd6bOO760nP++9+8Uy2uwc3UinFG
-         LTfw==
+        d=gmail.com; s=20230601; t=1748174161; x=1748778961; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lVs56YPAZB6QL9nW64t7FObev9+e4WZttWHfdkbTmtc=;
+        b=LVTVfpgYfxyPUVibfWrhZDwJdxO5jyiD6y2F6Tqe3Nd73/LxQRwHZ/j3tZC1ZlnPoq
+         FVcuT1q6EwndV7TqaDuRP+ARlqYbeQlJnWVhP4Fg4LgU21YbbdZTWNvVKkgJ9vxOhMU5
+         9KVbYvxImgdUculte0aX/Vk7fR4kX294jMcz9bMo9kuP8C+mXsFdDBUWTO+woxKaEylE
+         arodDKnwzIbzkRNBnQ2EV4xo6yTW1QoIz6QePtHC1vcRRO9Uwtn7jzxO9OkYqAgOpBT8
+         UxJSwPh8VGAsFwGOhbVDH9EWIaXSlknRyymjQq3nO4QHYBsiL8sWvlUP1k95EI7Rcwel
+         EG1w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748174159; x=1748778959;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=/6Iyvae425oa5vml4Qw6ME2a3u8XHgSU+g4q8Mbi88M=;
-        b=uXmkMHPB1im8Y6NZrOy3MmedKQjwBV1UyAmN5L6GC1xwT/Jr0CyzaT95DLKcihhXiy
-         qNUGTr1bJqFMxNnXGbFVwSM73wotUEA7vq7HXAaNBd2Q4K8KQQotsad0wGQLt2zWPiXu
-         vRRi8pYH7zem8GDh9Jxy0pOL9Nay/lLOGD0o37N34XuIP2q7xtaKpB4m9QW9ep/QsOZ6
-         U2FnQXanktM+ihlFBA2OOa8HHBu1KAWKqw8YyX9t4nuMzP8bRX7xmEs7zIqI+PXCZNxL
-         nQry81HkBxHEwkDd6sHfM4CDwYF/lcnJtnzVwJabpv1gZuAUZ7PBlChbO8Pqu9gbo86y
-         psnA==
-X-Forwarded-Encrypted: i=1; AJvYcCWaRm5S/7aexZW7EPQjczSF3WSyE8sO8YoWOv6FcM8HJLISjgeWTFbJokfXZx04pC+dGn4yLRc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyDW9a8L6Um0Ap432tG7d30/5MPJZgh/CPsacVqaB7aFYtoQOnO
-	qMmjREtDykjdFksnqrD46/xAG2ms3SUywJWIb1fSgCci/cquaG4ScJjZ
-X-Gm-Gg: ASbGncsuMRf63U3sU6DpFKF72mmGwr+kGG7lAgSrVZc0CdI8CipdBTgSQm+sI7SmpuF
-	HyMT+uf/ubHPJ1DUWtMBGU+NrJda4WvdO4s9/PurVB62KUtPc1XLt5or60qdjF5mi2YOR7UxE/O
-	51secaMHSxW7c9LV1zkDqp9egpnzmP32IPO6BFS6/TRGN0Ppel6f0ho3gl5KuaCKJUjnYulnkRg
-	OunRQJ04K+NAlfBDq+wlXbfmJRNg3903aRmCcFZSi1SAI7z3LlWn4Ixu62VEHydd33lBQ/VSkjt
-	ta/0MNFKk6HXk6ZOB0bs6jsLcdKg7/Vht+7QeHc01PM43+/guL10a4EVDSvMu7tD5g==
-X-Google-Smtp-Source: AGHT+IFre9C/rkzIeD/KNw8KjQpBWme/UdL/dOajuTuX9Z/EB5mL1xvwxMDh5y464YIkN8uw/WlgOw==
-X-Received: by 2002:a05:6102:5f0c:b0:4de:3d34:8bcc with SMTP id ada2fe7eead31-4e42417674bmr4663403137.19.1748174159033;
-        Sun, 25 May 2025 04:55:59 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1748174161; x=1748778961;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=lVs56YPAZB6QL9nW64t7FObev9+e4WZttWHfdkbTmtc=;
+        b=ip10/o8CNtUw29qP5x1W67/LP4cDsSRYRGcZwRLa+EIhBfCnwXjDsAHNjPt4x6zhXd
+         LucQ1TcEfTgfAtkjay76wW7hY1uJnWrXzPIOuEHirSUsbjAGadrTRqjfgXLNc3Q/OHMJ
+         CiOccS6EhUwWLr9aTOq6xkd7L1AwBKdfHZZYqO3i29vPfGKaH4RAqVsH+a18qHt+jDtg
+         CPnJIqMJcxQwpXfhgcPfEl1tTdzI88zqZj++0jj1HdExrfitkVuODelMxmq4OtV9X0Fv
+         2zvBQBVzhExATwyF3b1jPDgDXRDYUaIsrQER5aRmi7v72f4H3WHA49h1dtBtpXPkTEMC
+         tdfw==
+X-Forwarded-Encrypted: i=1; AJvYcCU/6TkLXlfrOWw3IFf1JYhr2mpX/6QEsmYrt4jKnR/P/T0BLhsEkLUZ/pa99scJwzMiI/7fjWE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyAgEFfGHRM7z3ED/iqxQmppoxbrhiTO/hnYAPxqscJ7WWZGVb0
+	Kk3TRurbp2yOkuQZR96dLpnhfSbWQqhYCC+uUvRh/Yju5a4YHuA0+IGsQ0wsAA==
+X-Gm-Gg: ASbGncv8MJtzn3JCBAHLgbvUuXLi0xr4JLWipdacmCS/NtrHEJe7pSHzf0PyC0McO+o
+	2RMZ+0P++cdECLjnNQ1k6hewVKVgvk3JO4azYF33cxpWXVjThDfBNlHHXf1yQV6sP697v1cvtms
+	01s8zuA+QQ4tkk6LfIlFIO6GqyxsAG4uWm1DdbihzgDsinmXXhqyADOnqKoGf/a12V8k8ZGLx4n
+	uRTbN4SphnJZXZnFNqfn1wwVtqFT/S9JB6JvU5bC+wzbbmdmAG5lTI0QA/ZPGcN/mpRkatMHgV3
+	G6/2Tk5Cj2cqe58rFtea3aNlsVEzR+G+1bpsTsN8MSaSJipbsE2Mfkz7hgj8JNT4TQ==
+X-Google-Smtp-Source: AGHT+IGtFBZcfM4iabDS1xJZX3T6vNAXm8ytKMPiifbdERLDdpIkbafrzmpCqPCTtZYEiK/qd1MYHg==
+X-Received: by 2002:a05:6102:3e91:b0:4c1:91e0:d5d6 with SMTP id ada2fe7eead31-4e4240bc2f4mr4294459137.12.1748174161654;
+        Sun, 25 May 2025 04:56:01 -0700 (PDT)
 Received: from fabio-Precision-3551.. ([2804:14c:485:4b61:fe1b:24a1:48d2:8bd2])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-87dede7d81fsm2185872241.23.2025.05.25.04.55.56
+        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-87dede7d81fsm2185872241.23.2025.05.25.04.55.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 25 May 2025 04:55:58 -0700 (PDT)
+        Sun, 25 May 2025 04:56:01 -0700 (PDT)
 From: Fabio Estevam <festevam@gmail.com>
 To: jic23@kernel.org
 Cc: linux-iio@vger.kernel.org,
 	mazziesaccount@gmail.com,
 	Fabio Estevam <festevam@denx.de>,
 	stable@vger.kernel.org
-Subject: [PATCH v3 1/2] iio: adc: max1363: Fix MAX1363_4X_CHANS/MAX1363_8X_CHANS[]
-Date: Sun, 25 May 2025 08:55:45 -0300
-Message-Id: <20250525115546.2368007-1-festevam@gmail.com>
+Subject: [PATCH v3 2/2] iio: adc: max1363: Reorder mode_list[] entries
+Date: Sun, 25 May 2025 08:55:46 -0300
+Message-Id: <20250525115546.2368007-2-festevam@gmail.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250525115546.2368007-1-festevam@gmail.com>
+References: <20250525115546.2368007-1-festevam@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -90,95 +94,86 @@ Content-Transfer-Encoding: 8bit
 
 From: Fabio Estevam <festevam@denx.de>
 
-Since commit 2718f15403fb ("iio: sanity check available_scan_masks array"),
-booting a board populated with a MAX11601 results in a flood of warnings:
+The IIO core issues warnings when a scan mask is a subset of a previous
+entry in the available_scan_masks array.
 
-max1363 1-0064: available_scan_mask 8 subset of 0. Never used
-max1363 1-0064: available_scan_mask 9 subset of 0. Never used
-max1363 1-0064: available_scan_mask 10 subset of 0. Never used
-max1363 1-0064: available_scan_mask 11 subset of 0. Never used
-max1363 1-0064: available_scan_mask 12 subset of 0. Never used
-max1363 1-0064: available_scan_mask 13 subset of 0. Never used
-...
+On a board using a MAX11601, the following warning is observed:
 
-These warnings are caused by incorrect offsets used for differential
-channels in the MAX1363_4X_CHANS() and MAX1363_8X_CHANS() macros.
+max1363 1-0064: available_scan_mask 7 subset of 6. Never used
 
-The max1363_mode_table[] defines the differential channel mappings as
-follows:
+This occurs because the entries in the max11607_mode_list[] array are not
+ordered correctly. To fix this, reorder the entries so that no scan mask is
+a subset of an earlier one.
 
-MAX1363_MODE_DIFF_SINGLE(0, 1, 1 << 12),
-MAX1363_MODE_DIFF_SINGLE(2, 3, 1 << 13),
-MAX1363_MODE_DIFF_SINGLE(4, 5, 1 << 14),
-MAX1363_MODE_DIFF_SINGLE(6, 7, 1 << 15),
-MAX1363_MODE_DIFF_SINGLE(8, 9, 1 << 16),
-MAX1363_MODE_DIFF_SINGLE(10, 11, 1 << 17),
-MAX1363_MODE_DIFF_SINGLE(1, 0, 1 << 18),
-MAX1363_MODE_DIFF_SINGLE(3, 2, 1 << 19),
-MAX1363_MODE_DIFF_SINGLE(5, 4, 1 << 20),
-MAX1363_MODE_DIFF_SINGLE(7, 6, 1 << 21),
-MAX1363_MODE_DIFF_SINGLE(9, 8, 1 << 22),
-MAX1363_MODE_DIFF_SINGLE(11, 10, 1 << 23),
-
-Update the macros to follow this same pattern, ensuring that the scan masks
-are valid and preventing the warnings.
+While at it, reorder the mode_list[] arrays for other supported chips as
+well, to prevent similar warnings on different variants.
 
 Cc: <stable@vger.kernel.org> #6.12
-Suggested-by: Jonathan Cameron <jic23@kernel.org>
 Signed-off-by: Fabio Estevam <festevam@denx.de>
 ---
 Changes since v2:
 - Removed incorrect Fixes: tag (Matti)
 
 Changes since v1:
-- Fix the problem by changing the MAX1363_4X_CHANS() and MAX1363_8X_CHANS()
-macros. (Jonathan)
+- Also reorder other mode_list entries. (Jonathan)
 
- drivers/iio/adc/max1363.c | 24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+ drivers/iio/adc/max1363.c | 19 +++++++++----------
+ 1 file changed, 9 insertions(+), 10 deletions(-)
 
 diff --git a/drivers/iio/adc/max1363.c b/drivers/iio/adc/max1363.c
-index a7e9912fb44a..bc44b4604ef4 100644
+index bc44b4604ef4..9dd547e62b6c 100644
 --- a/drivers/iio/adc/max1363.c
 +++ b/drivers/iio/adc/max1363.c
-@@ -511,10 +511,10 @@ static const struct iio_event_spec max1363_events[] = {
- 	MAX1363_CHAN_U(1, _s1, 1, bits, ev_spec, num_ev_spec),		\
- 	MAX1363_CHAN_U(2, _s2, 2, bits, ev_spec, num_ev_spec),		\
- 	MAX1363_CHAN_U(3, _s3, 3, bits, ev_spec, num_ev_spec),		\
--	MAX1363_CHAN_B(0, 1, d0m1, 4, bits, ev_spec, num_ev_spec),	\
--	MAX1363_CHAN_B(2, 3, d2m3, 5, bits, ev_spec, num_ev_spec),	\
--	MAX1363_CHAN_B(1, 0, d1m0, 6, bits, ev_spec, num_ev_spec),	\
--	MAX1363_CHAN_B(3, 2, d3m2, 7, bits, ev_spec, num_ev_spec),	\
-+	MAX1363_CHAN_B(0, 1, d0m1, 12, bits, ev_spec, num_ev_spec),	\
-+	MAX1363_CHAN_B(2, 3, d2m3, 13, bits, ev_spec, num_ev_spec),	\
-+	MAX1363_CHAN_B(1, 0, d1m0, 18, bits, ev_spec, num_ev_spec),	\
-+	MAX1363_CHAN_B(3, 2, d3m2, 19, bits, ev_spec, num_ev_spec),	\
- 	IIO_CHAN_SOFT_TIMESTAMP(8)					\
- 	}
+@@ -532,23 +532,23 @@ static const struct iio_chan_spec max1363_channels[] =
+ /* Applies to max1236, max1237 */
+ static const enum max1363_modes max1236_mode_list[] = {
+ 	_s0, _s1, _s2, _s3,
+-	s0to1, s0to2, s0to3,
++	s0to1, s0to2, s2to3, s0to3,
+ 	d0m1, d2m3, d1m0, d3m2,
+ 	d0m1to2m3, d1m0to3m2,
+-	s2to3,
+ };
  
-@@ -609,14 +609,14 @@ static const enum max1363_modes max11608_mode_list[] = {
- 	MAX1363_CHAN_U(5, _s5, 5, bits, NULL, 0),	\
- 	MAX1363_CHAN_U(6, _s6, 6, bits, NULL, 0),	\
- 	MAX1363_CHAN_U(7, _s7, 7, bits, NULL, 0),	\
--	MAX1363_CHAN_B(0, 1, d0m1, 8, bits, NULL, 0),	\
--	MAX1363_CHAN_B(2, 3, d2m3, 9, bits, NULL, 0),	\
--	MAX1363_CHAN_B(4, 5, d4m5, 10, bits, NULL, 0),	\
--	MAX1363_CHAN_B(6, 7, d6m7, 11, bits, NULL, 0),	\
--	MAX1363_CHAN_B(1, 0, d1m0, 12, bits, NULL, 0),	\
--	MAX1363_CHAN_B(3, 2, d3m2, 13, bits, NULL, 0),	\
--	MAX1363_CHAN_B(5, 4, d5m4, 14, bits, NULL, 0),	\
--	MAX1363_CHAN_B(7, 6, d7m6, 15, bits, NULL, 0),	\
-+	MAX1363_CHAN_B(0, 1, d0m1, 12, bits, NULL, 0),	\
-+	MAX1363_CHAN_B(2, 3, d2m3, 13, bits, NULL, 0),	\
-+	MAX1363_CHAN_B(4, 5, d4m5, 14, bits, NULL, 0),	\
-+	MAX1363_CHAN_B(6, 7, d6m7, 15, bits, NULL, 0),	\
-+	MAX1363_CHAN_B(1, 0, d1m0, 18, bits, NULL, 0),	\
-+	MAX1363_CHAN_B(3, 2, d3m2, 19, bits, NULL, 0),	\
-+	MAX1363_CHAN_B(5, 4, d5m4, 20, bits, NULL, 0),	\
-+	MAX1363_CHAN_B(7, 6, d7m6, 21, bits, NULL, 0),	\
- 	IIO_CHAN_SOFT_TIMESTAMP(16)			\
- }
- static const struct iio_chan_spec max11602_channels[] = MAX1363_8X_CHANS(8);
+ /* Applies to max1238, max1239 */
+ static const enum max1363_modes max1238_mode_list[] = {
+ 	_s0, _s1, _s2, _s3, _s4, _s5, _s6, _s7, _s8, _s9, _s10, _s11,
+ 	s0to1, s0to2, s0to3, s0to4, s0to5, s0to6,
++	s6to7, s6to8, s6to9, s6to10, s6to11,
+ 	s0to7, s0to8, s0to9, s0to10, s0to11,
+ 	d0m1, d2m3, d4m5, d6m7, d8m9, d10m11,
+ 	d1m0, d3m2, d5m4, d7m6, d9m8, d11m10,
+-	d0m1to2m3, d0m1to4m5, d0m1to6m7, d0m1to8m9, d0m1to10m11,
+-	d1m0to3m2, d1m0to5m4, d1m0to7m6, d1m0to9m8, d1m0to11m10,
+-	s6to7, s6to8, s6to9, s6to10, s6to11,
+-	d6m7to8m9, d6m7to10m11, d7m6to9m8, d7m6to11m10,
++	d0m1to2m3, d0m1to4m5, d0m1to6m7, d6m7to8m9,
++	d0m1to8m9, d6m7to10m11, d0m1to10m11, d1m0to3m2,
++	d1m0to5m4, d1m0to7m6, d7m6to9m8, d1m0to9m8,
++	d7m6to11m10, d1m0to11m10,
+ };
+ 
+ #define MAX1363_12X_CHANS(bits) {				\
+@@ -584,16 +584,15 @@ static const struct iio_chan_spec max1238_channels[] = MAX1363_12X_CHANS(12);
+ 
+ static const enum max1363_modes max11607_mode_list[] = {
+ 	_s0, _s1, _s2, _s3,
+-	s0to1, s0to2, s0to3,
+-	s2to3,
++	s0to1, s0to2, s2to3,
++	s0to3,
+ 	d0m1, d2m3, d1m0, d3m2,
+ 	d0m1to2m3, d1m0to3m2,
+ };
+ 
+ static const enum max1363_modes max11608_mode_list[] = {
+ 	_s0, _s1, _s2, _s3, _s4, _s5, _s6, _s7,
+-	s0to1, s0to2, s0to3, s0to4, s0to5, s0to6, s0to7,
+-	s6to7,
++	s0to1, s0to2, s0to3, s0to4, s0to5, s0to6, s6to7, s0to7,
+ 	d0m1, d2m3, d4m5, d6m7,
+ 	d1m0, d3m2, d5m4, d7m6,
+ 	d0m1to2m3, d0m1to4m5, d0m1to6m7,
 -- 
 2.34.1
 

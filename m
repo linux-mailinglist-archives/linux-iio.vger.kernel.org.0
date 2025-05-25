@@ -1,59 +1,59 @@
-Return-Path: <linux-iio+bounces-19877-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19878-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33C9FAC3492
-	for <lists+linux-iio@lfdr.de>; Sun, 25 May 2025 14:33:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17258AC34A6
+	for <lists+linux-iio@lfdr.de>; Sun, 25 May 2025 14:48:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BC6AD1890F85
-	for <lists+linux-iio@lfdr.de>; Sun, 25 May 2025 12:33:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E2EAA3B3EC6
+	for <lists+linux-iio@lfdr.de>; Sun, 25 May 2025 12:48:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C98D51DF254;
-	Sun, 25 May 2025 12:33:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C65E61F30A9;
+	Sun, 25 May 2025 12:48:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WlZ3cYRl"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OfeTPwpf"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80A82FC1D;
-	Sun, 25 May 2025 12:33:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E7FB282F1;
+	Sun, 25 May 2025 12:48:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748176413; cv=none; b=Qps0OZHBUvxA6NCjxIbB7pu2WtZOslSbPug4nebSuec7O7WM1ou2DOLQ36X/MnhFsIqyXxsDOfEMgVC+2h1RcOeuhBw/Sx5bvQiuZ263/puU+nxZ14h+rF6ehD2cBfq0hOU3+pDWJCZZZcF8RYb2H9JJvL3C/RLk4uS/cjDT9O4=
+	t=1748177321; cv=none; b=OpK6ufnNFAsC8Zmlr8FNUpTxIzAWCk7A7toySYv81khYNjj+f/W/joNawNhjpK234Yq7Klmmh2h5ztbXqSmj4v82NzcaPRERRulBPccFZ3oNk/icnBgwTCFq+ZeSztIVLRIheYMtuDbrjQrDVBv3L9JWbzPzWPKTwuX7XZTxK8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748176413; c=relaxed/simple;
-	bh=hIuIlhuZNJDW5L2piUkx5iUdAk1UaXHfkrN/76XdtI8=;
+	s=arc-20240116; t=1748177321; c=relaxed/simple;
+	bh=u9/4XIHZBrCOuCXoikwRXSkA3my/nbnLHX1nE95Jvpw=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oqdVVLzGbvK1tlUzg4tmLV1i+wfNkx70nmkznLgmYu0kcBehTJXh+mz77g6haEtqWrhILH6zZbMlgtZBWJowMQKAvly3VFP++ebFQ569AJEJmfA7HFIqOo6nj23AvdsAuS6KWsN7cJYt+WxJqGJGiDRTarnLodDXh06n3ThLBeI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WlZ3cYRl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BEBBC4CEEA;
-	Sun, 25 May 2025 12:33:29 +0000 (UTC)
+	 MIME-Version:Content-Type; b=LuJDus/ya0C7XyQy6ZNHgCZJcAhBCEHW+k93tOXtMn6MhSnW/+qB0MAR2kgIZXhDLvT9tGx7Crx14RLdnfP9a3xJgMWBJ4C7tJ11s+NCKh9d2B8Cl5gDNOpYy83+ZwRJeSOlq0xg09BLh2LoN3NQ6Tx9cE9ajbYum4G+0naQtOE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OfeTPwpf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C219C4CEEA;
+	Sun, 25 May 2025 12:48:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748176413;
-	bh=hIuIlhuZNJDW5L2piUkx5iUdAk1UaXHfkrN/76XdtI8=;
+	s=k20201202; t=1748177320;
+	bh=u9/4XIHZBrCOuCXoikwRXSkA3my/nbnLHX1nE95Jvpw=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=WlZ3cYRlokMLjsYVB09Y6zzriHoKVwVOOT3b6ea6z7SQCtDyN4kKfPokd7ZIPHZj9
-	 NLU+ay5oX74T2vFeDC3je0ubFEhsOH03g4HUWUtVkKXjCZGMSFVYtIt0mUI/2dwOKc
-	 3AzLbI7n3OQG8fLGF1cOUO4pUjm1ggT/WlRNBbLFmtbIpyAJxVbfJWzu4+7bBR6vNu
-	 PL8tfjBAxTNhWEz7zgh77cVBAUBscnUUcdk6YRxR6t/s6iqwRjexLoxJhlu2vcOION
-	 csplkD9uOgG+pggFQSKr+VXgiJHh87V5MY6fUZ5B+qP0LOIKJV4QcvZVSbf1ZJ4DHe
-	 0qfVnXGX1++gw==
-Date: Sun, 25 May 2025 13:33:25 +0100
+	b=OfeTPwpfQ87/YWshKJRQudj2SxzWKUiGnkxUxPLdIaYE3VanwD0UaWgCZeVO8KA6g
+	 cHcHfYC+YKWpHMRgom85nHNSM2qM6OEGgf7ylm8m7rmRoeUlG5TNJHwJl7Kq92QiXg
+	 zTgHlanlaOxIwW0laTMV7t+ErVgS+ggJm0QHRNiDR1k0QrAqRlZrgYOgR+xei/3+6B
+	 9Nd9cPnPkdqiN0uAg28iOoo1bMkZibZt1tIuQ8mRiMB6u+ynN7PdqBAPZgg+0IFEHX
+	 t9THGnGfbzOVcwIC7VAcxFYxnTu09QB7dkirsfP/AJZ/vLr4dVh/Vw0URSvfIokQE7
+	 2nAP3Dk2Uh8bw==
+Date: Sun, 25 May 2025 13:48:31 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: Lothar Rubusch <l.rubusch@gmail.com>
 Cc: dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org,
  corbet@lwn.net, lucas.p.stankus@gmail.com, lars@metafoo.de,
  Michael.Hennerich@analog.com, linux-iio@vger.kernel.org,
  linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 06/12] iio: accel: adxl313: prepare interrupt
+Subject: Re: [PATCH v3 07/12] iio: accel: adxl313: add basic interrupt
  handling
-Message-ID: <20250525133325.2a70e888@jic23-huawei>
-In-Reply-To: <20250523223523.35218-7-l.rubusch@gmail.com>
+Message-ID: <20250525134831.68b3c905@jic23-huawei>
+In-Reply-To: <20250523223523.35218-8-l.rubusch@gmail.com>
 References: <20250523223523.35218-1-l.rubusch@gmail.com>
-	<20250523223523.35218-7-l.rubusch@gmail.com>
+	<20250523223523.35218-8-l.rubusch@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -64,133 +64,226 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 23 May 2025 22:35:17 +0000
+On Fri, 23 May 2025 22:35:18 +0000
 Lothar Rubusch <l.rubusch@gmail.com> wrote:
 
-> Evaluate the devicetree property for an optional interrupt line, and
-> configure the interrupt mapping accordingly. When no interrupt line
-> is defined in the devicetree, keep the FIFO in bypass mode as before.
+> Prepare the interrupt handler. Add register entries to evaluate the
+> incoming interrupt. Add functions to clear status registers and reset the
+> FIFO.
 > 
 > Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
+Hi Lothar,
+
+A few comments inline.
+
 > ---
->  drivers/iio/accel/adxl313.h      |  8 ++++++++
->  drivers/iio/accel/adxl313_core.c | 31 +++++++++++++++++++++++++++++++
->  2 files changed, 39 insertions(+)
-> 
-> diff --git a/drivers/iio/accel/adxl313.h b/drivers/iio/accel/adxl313.h
-> index 9bf2facdbf87..ab109d1c359e 100644
-> --- a/drivers/iio/accel/adxl313.h
-> +++ b/drivers/iio/accel/adxl313.h
-> @@ -21,7 +21,9 @@
->  #define ADXL313_REG_ACT_INACT_CTL	0x27
->  #define ADXL313_REG_BW_RATE		0x2C
->  #define ADXL313_REG_POWER_CTL		0x2D
-> +#define ADXL313_REG_INT_ENABLE		0x2E
->  #define ADXL313_REG_INT_MAP		0x2F
-> +#define ADXL313_REG_INT_SOURCE		0x30
->  #define ADXL313_REG_DATA_FORMAT		0x31
->  #define ADXL313_REG_DATA_AXIS(index)	(0x32 + ((index) * 2))
->  #define ADXL313_REG_FIFO_CTL		0x38
-> @@ -45,6 +47,11 @@
->  #define ADXL313_SPI_3WIRE		BIT(6)
->  #define ADXL313_I2C_DISABLE		BIT(6)
->  
-> +#define ADXL313_REG_FIFO_CTL_MODE_MSK		GENMASK(7, 6)
-> +
-> +#define ADXL313_FIFO_BYPASS			0
-> +#define ADXL313_FIFO_STREAM			2
-> +
->  extern const struct regmap_access_table adxl312_readable_regs_table;
->  extern const struct regmap_access_table adxl313_readable_regs_table;
->  extern const struct regmap_access_table adxl314_readable_regs_table;
-> @@ -65,6 +72,7 @@ struct adxl313_data {
->  	struct regmap	*regmap;
->  	const struct adxl313_chip_info *chip_info;
->  	struct mutex	lock; /* lock to protect transf_buf */
-> +	int irq;
+>  drivers/iio/accel/adxl313.h      |  16 ++++
+>  drivers/iio/accel/adxl313_core.c | 134 +++++++++++++++++++++++++++++++
+>  2 files changed, 150 insertions(+)
 
-Curious.  Why do we need to keep this around?  Normally we only need
-the actual interrupt number in the probe() function.
 
->  	__le16		transf_buf __aligned(IIO_DMA_MINALIGN);
->  };
->  
+
+>  struct adxl313_chip_info {
 > diff --git a/drivers/iio/accel/adxl313_core.c b/drivers/iio/accel/adxl313_core.c
-> index 6170c9daa30f..9db318a03eea 100644
+> index 9db318a03eea..1e085f0c61a0 100644
 > --- a/drivers/iio/accel/adxl313_core.c
 > +++ b/drivers/iio/accel/adxl313_core.c
-> @@ -8,11 +8,17 @@
->   */
->  
+> @@ -10,15 +10,24 @@
 >  #include <linux/bitfield.h>
-> +#include <linux/interrupt.h>
+>  #include <linux/interrupt.h>
 >  #include <linux/module.h>
-> +#include <linux/property.h>
+> +#include <linux/overflow.h>
+>  #include <linux/property.h>
 >  #include <linux/regmap.h>
 >  
->  #include "adxl313.h"
->  
-> +#define ADXL313_INT_NONE			U8_MAX
-> +#define ADXL313_INT1				1
-> +#define ADXL313_INT2				2
+> +#include <linux/iio/buffer.h>
+> +#include <linux/iio/events.h>
+> +#include <linux/iio/iio.h>
+> +#include <linux/iio/kfifo_buf.h>
+> +#include <linux/iio/sysfs.h>
+
+This is an odd selection of headers to add now. Why do we need them but didn't
+before?  Some of these aren't used yet so drop them (events.h, sysfs.h I think)
+
 > +
+
 >  static const struct regmap_range adxl312_readable_reg_range[] = {
 >  	regmap_reg_range(ADXL313_REG_DEVID0, ADXL313_REG_DEVID0),
 >  	regmap_reg_range(ADXL313_REG_OFS_AXIS(0), ADXL313_REG_OFS_AXIS(2)),
-> @@ -436,6 +442,7 @@ int adxl313_core_probe(struct device *dev,
->  {
->  	struct adxl313_data *data;
->  	struct iio_dev *indio_dev;
-> +	u8 int_line;
->  	int ret;
->  
->  	indio_dev = devm_iio_device_alloc(dev, sizeof(*data));
-> @@ -461,6 +468,30 @@ int adxl313_core_probe(struct device *dev,
->  		return ret;
+> @@ -62,6 +71,7 @@ bool adxl313_is_volatile_reg(struct device *dev, unsigned int reg)
+>  	case ADXL313_REG_DATA_AXIS(4):
+>  	case ADXL313_REG_DATA_AXIS(5):
+>  	case ADXL313_REG_FIFO_STATUS:
+> +	case ADXL313_REG_INT_SOURCE:
+>  		return true;
+>  	default:
+>  		return false;
+> @@ -363,6 +373,118 @@ static int adxl313_write_raw(struct iio_dev *indio_dev,
 >  	}
->  
-> +	int_line = ADXL313_INT1;
-> +	data->irq = fwnode_irq_get_byname(dev_fwnode(dev), "INT1");
-> +	if (data->irq < 0) {
-> +		int_line = ADXL313_INT2;
-> +		data->irq = fwnode_irq_get_byname(dev_fwnode(dev), "INT2");
-> +		if (data->irq < 0)
-> +			int_line = ADXL313_INT_NONE;
-> +	}
-> +
-> +	if (int_line == ADXL313_INT1 || int_line == ADXL313_INT2) {
-
-Why not int_line != ADXL313_INT_NONE ?
-Or flip the logic so that you do that case first.
-
-> +		/* FIFO_STREAM mode */
-> +		ret = regmap_assign_bits(data->regmap, ADXL313_REG_INT_MAP,
-
-A number of bits in this register are give in datasheet as always 0.
-As a general rule writing bits documented like that is unwise. Sometimes
-they have undocumented side effects.
-
-> +					 0xff, int_line == ADXL313_INT2);
-> +		if (ret)
-> +			return ret;
-> +	} else {
-> +		/* FIFO_BYPASSED mode */
-
-I'd like the comment to say why you bypass the fifo in this case.
-In theory nothing stops us polling for the watermark. I don't mind
-the driver not doing that because all reasonable boards will wire
-the interrupt if they want fifo support, but we should talk a little
-more about why here.
-
-> +		ret = regmap_write(data->regmap, ADXL313_REG_FIFO_CTL,
-> +				   FIELD_PREP(ADXL313_REG_FIFO_CTL_MODE_MSK,
-> +					      ADXL313_FIFO_BYPASS));
-> +		if (ret)
-> +			return ret;
-> +	}
-> +
->  	return devm_iio_device_register(dev, indio_dev);
 >  }
->  EXPORT_SYMBOL_NS_GPL(adxl313_core_probe, IIO_ADXL313);
+>  
+> +static int adxl313_get_samples(struct adxl313_data *data)
+
+I doubt this gets called from multiple places. I'd just put
+the code inline and no have this helper at all.
+
+> +{
+> +	unsigned int regval = 0;
+> +	int ret;
+> +
+> +	ret = regmap_read(data->regmap, ADXL313_REG_FIFO_STATUS, &regval);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return FIELD_GET(ADXL313_REG_FIFO_STATUS_ENTRIES_MSK, regval);
+> +}
+> +
+> +static int adxl313_set_fifo(struct adxl313_data *data)
+> +{
+> +	unsigned int int_line;
+> +	int ret;
+> +
+> +	ret = adxl313_set_measure_en(data, false);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = regmap_read(data->regmap, ADXL313_REG_INT_MAP, &int_line);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = regmap_write(data->regmap, ADXL313_REG_FIFO_CTL,
+> +			   FIELD_PREP(ADXL313_REG_FIFO_CTL_MODE_MSK, data->fifo_mode));
+
+Check ret.
+
+> +
+> +	return adxl313_set_measure_en(data, true);
+> +}
+> +
+> +static int adxl313_fifo_transfer(struct adxl313_data *data, int samples)
+> +{
+> +	size_t count;
+> +	unsigned int i;
+> +	int ret;
+> +
+> +	count = array_size(sizeof(data->fifo_buf[0]), ADXL313_NUM_AXIS);
+> +	for (i = 0; i < samples; i++) {
+> +		ret = regmap_bulk_read(data->regmap, ADXL313_REG_XYZ_BASE,
+> +				       data->fifo_buf + (i * count / 2), count);
+
+that 2 is I'd guessed based on size of some data store element?  
+I'd guess sizeof(data->fifo_buf[0]) is appropriate.
+
+
+> +		if (ret)
+> +			return ret;
+> +	}
+> +	return 0;
+> +}
+> +
+> +/**
+> + * adxl313_fifo_reset() - Reset the FIFO and interrupt status registers.
+> + * @data: The device data.
+> + *
+> + * Reset the FIFO status registers. Reading out status registers clears the
+
+I think you already read it before calling this. So how is it ever set?
+
+> + * FIFO and interrupt configuration. Thus do not evaluate regmap return values.
+> + * Ignore particular read register content. Register content is not processed
+> + * any further. Therefore the function returns void.
+> + */
+> +static void adxl313_fifo_reset(struct adxl313_data *data)
+
+As below.  This isn't a reset.  Fifo reset is normally the term used
+for when we have lost tracking of what is in the fifo and drop all data,
+not normal readback.
+
+> +{
+> +	unsigned int regval;
+> +	int samples;
+> +
+> +	adxl313_set_measure_en(data, false);
+Disabling measurement to read a fifo is unusual -  is this really necessary
+as it presumably puts a gap in the data, which is what we are trying
+to avoid by using a fifo.
+
+> +
+> +	samples = adxl313_get_samples(data);
+> +	if (samples > 0)
+> +		adxl313_fifo_transfer(data, samples);
+> +
+> +	regmap_read(data->regmap, ADXL313_REG_INT_SOURCE, &regval);
+
+Not processing the convents of INT_SOURCE every time you read it
+introduces race conditions.  This logic needs a rethink so that
+never happens.  I guess this is why you are disabling measurement
+to stop the status changing?  Just whatever each read of INT_SOURCE
+tells us we need to handle and all should be fine without disabling
+measurement.  That read should only clear bits that are set, so no
+race conditions.
+
+> +
+> +	adxl313_set_measure_en(data, true);
+> +}
+> +
+> +static int adxl313_buffer_postenable(struct iio_dev *indio_dev)
+> +{
+> +	struct adxl313_data *data = iio_priv(indio_dev);
+> +
+> +	data->fifo_mode = ADXL313_FIFO_STREAM;
+
+If you always set fifo_mode before calling _set_fifo() probably better
+to pass the value in as a separate parameter and store it as necessary
+inside that function.
+
+> +	return adxl313_set_fifo(data);
+> +}
+> +
+> +static int adxl313_buffer_predisable(struct iio_dev *indio_dev)
+> +{
+> +	struct adxl313_data *data = iio_priv(indio_dev);
+> +	int ret;
+> +
+> +	data->fifo_mode = ADXL313_FIFO_BYPASS;
+> +	ret = adxl313_set_fifo(data);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return regmap_write(data->regmap, ADXL313_REG_INT_ENABLE, 0);
+> +}
+> +
+> +static const struct iio_buffer_setup_ops adxl313_buffer_ops = {
+> +	.postenable = adxl313_buffer_postenable,
+> +	.predisable = adxl313_buffer_predisable,
+> +};
+> +
+> +static irqreturn_t adxl313_irq_handler(int irq, void *p)
+> +{
+> +	struct iio_dev *indio_dev = p;
+> +	struct adxl313_data *data = iio_priv(indio_dev);
+> +	int int_stat;
+> +
+> +	if (regmap_read(data->regmap, ADXL313_REG_INT_SOURCE, &int_stat))
+
+Failure to read is one thing we should handle, but also we should handle
+int_stat telling us there were no interrupts set for this device.
+
+> +		return IRQ_NONE;
+> +
+> +	adxl313_fifo_reset(data);
+
+Given we don't know it had anything to do with the fifo at this point
+resetting the fifo doesn't make much sense.  I'd expect a check
+on int_status, probably for overrun, before doing this.
+
+Ah. On closer inspection this isn't resetting the fifo, it's just
+reading it.  Rename that function and make it dependent on what
+was in int_stat.
+
+
+> +
+> +	return IRQ_HANDLED;
+> +}
 
 

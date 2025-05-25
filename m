@@ -1,160 +1,134 @@
-Return-Path: <linux-iio+bounces-19853-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19854-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD499AC32BB
-	for <lists+linux-iio@lfdr.de>; Sun, 25 May 2025 09:35:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF892AC3356
+	for <lists+linux-iio@lfdr.de>; Sun, 25 May 2025 11:20:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 828E4177AA7
-	for <lists+linux-iio@lfdr.de>; Sun, 25 May 2025 07:35:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CB4C23B867A
+	for <lists+linux-iio@lfdr.de>; Sun, 25 May 2025 09:19:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 018BE1E493C;
-	Sun, 25 May 2025 07:35:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 815141DDC1B;
+	Sun, 25 May 2025 09:20:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=it-klinger.de header.i=@it-klinger.de header.b="uObr2CJ/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z0e70Sgl"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from www571.your-server.de (www571.your-server.de [78.46.3.230])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A2AF18DB0D;
-	Sun, 25 May 2025 07:35:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.46.3.230
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 356192770B;
+	Sun, 25 May 2025 09:20:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748158508; cv=none; b=qyYIq85pD/QxcHKDuJXU4FfWrjQtrQaJLKFlVwL7XYEnK+44b9Ho0D76+fzbT54YLTEpNGOXI/vKhJAHP8RuaVnatM8rsOMcc2rbRWZ3X4I3QxnZT4JWZowr590YNfKlGjbbmoy3L3MfV0TGyYt8h/Y4RbwUC3uS/UonU4kc0MM=
+	t=1748164805; cv=none; b=j9tn7YOrUpITigZssMjXiVqxHnBrjZEstY94QoOTuutHmXTLoL+iywmTPqSULnyceR2jleM9D1ZsmAqlq8kflyDkTWi90YEucIckssPoQhdFNb9/CxMG+6u7WgQsA6hUVFvHUtH7X8PJ/iHZICzZUkXJVii5MfCJnilaEEDcIyE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748158508; c=relaxed/simple;
-	bh=mMu67Ud9w4LRVdNAVeeRi2tiVfqaGBfScHnTBYfhtPU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sC053xy1gtLXpGq0tnDTCYSbES0eKGRnWM3zscS4we/1N8x3eh4/1/rty9MFaVaWymG6ReYoZZ7ghdyIM4JxQwy228fKVpfmrvA7kcCLheh5xSSiGFSeGG1z8sUVbE0/6JoL21mwR2V/yH6hTWr5Kw9ls3l+w6R0bw4DTvG+UUE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=it-klinger.de; spf=pass smtp.mailfrom=it-klinger.de; dkim=pass (2048-bit key) header.d=it-klinger.de header.i=@it-klinger.de header.b=uObr2CJ/; arc=none smtp.client-ip=78.46.3.230
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=it-klinger.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=it-klinger.de
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=it-klinger.de; s=default2502; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=rjNuVY7Zq4l4Qpw6Ak1J6G7FtcipVqJJf74Nk2EbkhQ=; b=uObr2CJ/aV/OxtLJFDTjtUknMJ
-	QyvtTFnhv/JUpPbdWUNXiRf/ecjff7STnPfpazJmXlUtOpLwBQZoWUX6bgIMSSvXBqpMnegq2ouoR
-	EFvkk4vncorYety/X5AhHQm/Av+KT914E/GmYrtTBQzZrvwZwkRONuwepBvH5zbjzL/v3lzjF75gr
-	WII9AbWGQWiNNJ03SV3XWzXPNw51KlBenqu/VQf9rmpdiI22rOQ0njqt1pP3HXamD+ELpED6GQT3I
-	qctKGNhEscGAB6hxsys7lIR+KoSIamzIJyIaEt3zHE6nxutZX9V/2IC7U4e2/QoDIbRLd+ja5cExA
-	cX10ZipQ==;
-Received: from sslproxy02.your-server.de ([78.47.166.47])
-	by www571.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <ak@it-klinger.de>)
-	id 1uJ5sk-000Gre-1c;
-	Sun, 25 May 2025 09:34:54 +0200
-Received: from localhost ([127.0.0.1])
-	by sslproxy02.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ak@it-klinger.de>)
-	id 1uJ5sk-000AvQ-01;
-	Sun, 25 May 2025 09:34:54 +0200
-Date: Sun, 25 May 2025 09:34:52 +0200
-From: Andreas Klinger <ak@it-klinger.de>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: jic23@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, lars@metafoo.de,
-	javier.carrasco.cruz@gmail.com, mazziesaccount@gmail.com,
-	arthur.becker@sentec.com, perdaniel.olsson@axis.com,
-	mgonellabolduc@dimonoff.com, muditsharma.info@gmail.com,
-	clamor95@gmail.com, emil.gedenryd@axis.com,
-	devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 2/3] iio: light: add support for veml6046x00 RGBIR
- color sensor
-Message-ID: <aDLIHEj4lqlgargJ@mail.your-server.de>
-References: <20250519060804.80464-1-ak@it-klinger.de>
- <20250519060804.80464-3-ak@it-klinger.de>
- <aCsQKUwGeq4Ed4ai@smile.fi.intel.com>
+	s=arc-20240116; t=1748164805; c=relaxed/simple;
+	bh=M6wNUdl+f/LJKZELy9CIlDDMGL8GGdionU7cG+oIVJQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=pds/fjAHHN21uwIBm5Dtoe0DOoOnhgRC3Uy/nt2h9V5WvlEOXH1KQNuTgTuIm/iqT+YeUpQft/jvx+RamAE24t1SHbTXAkDdYgp0JD/b6SkciBw0fs7LV3W2RjfMCItUpP9wpAoJf7yvbE7+UIbnblEhz01OaSlYsXeyoEngHpY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z0e70Sgl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEB1AC4CEEA;
+	Sun, 25 May 2025 09:19:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1748164804;
+	bh=M6wNUdl+f/LJKZELy9CIlDDMGL8GGdionU7cG+oIVJQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Z0e70SglbUOUYIUwGE9EvW/JcY14JljkXPcrXvRwOWMfKnOoZdPxFBk8x8EpFANPI
+	 vG1u78itnbNpPvqJV9za7eDRQY7XiGc2O7R63dkSTog6u6Uhs9V0ueAnnn3xAPPb5N
+	 NwgpL7Hr54FI18ZatUXKTjIXNlibhMXTDRag936yRj1pELwLfCoJnG4HDYHId6DCex
+	 74tRpY6EUPIkdT8JgYWiDgVG4pfAUzLo+J6CpUlIxjEgTttC2+uVcp+CRt0A56C/PS
+	 4Dw7oQHewMIHBpcl9NpvXPNpOrRqIeUMG/Kt/haznyrvxckVqMqHM4XmaH8IuvBeSY
+	 SF/KBNh4I7ppw==
+Date: Sun, 25 May 2025 10:19:53 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Markus Burri <markus.burri@mt.com>
+Cc: linux-kernel@vger.kernel.org, Mahesh J Salgaonkar
+ <mahesh@linux.ibm.com>, "Oliver O'Halloran" <oohall@gmail.com>, Madhavan
+ Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>,
+ Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy
+ <christophe.leroy@csgroup.eu>, Naveen N Rao <naveen@kernel.org>, Jacek
+ Lawrynowicz <jacek.lawrynowicz@linux.intel.com>, Maciej Falkowski
+ <maciej.falkowski@linux.intel.com>, Oded Gabbay <ogabbay@kernel.org>, Linus
+ Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>,
+ Nuno Sa <nuno.sa@analog.com>, Olivier Moysan <olivier.moysan@foss.st.com>,
+ Lars-Peter Clausen <lars@metafoo.de>, linuxppc-dev@lists.ozlabs.org,
+ dri-devel@lists.freedesktop.org, linux-gpio@vger.kernel.org,
+ linux-iio@vger.kernel.org, Markus Burri <markus.burri@bbv.ch>
+Subject: Re: [PATCH v4 1/6] iio: backend: fix out-of-bound write
+Message-ID: <20250525101953.7930a410@jic23-huawei>
+In-Reply-To: <20250511152707.294bc7b9@jic23-huawei>
+References: <20250508130612.82270-1-markus.burri@mt.com>
+	<20250508130612.82270-2-markus.burri@mt.com>
+	<20250511152707.294bc7b9@jic23-huawei>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="o+cMHJOAAGa7G8wa"
-Content-Disposition: inline
-In-Reply-To: <aCsQKUwGeq4Ed4ai@smile.fi.intel.com>
-X-Authenticated-Sender: ak@it-klinger.de
-X-Virus-Scanned: Clear (ClamAV 1.0.7/27647/Sat May 24 10:30:52 2025)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
+On Sun, 11 May 2025 15:27:07 +0100
+Jonathan Cameron <jic23@kernel.org> wrote:
 
---o+cMHJOAAGa7G8wa
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> On Thu,  8 May 2025 15:06:07 +0200
+> Markus Burri <markus.burri@mt.com> wrote:
+> 
+> > The buffer is set to 80 character. If a caller write more characters,
+> > count is truncated to the max available space in "simple_write_to_buffer".
+> > But afterwards a string terminator is written to the buffer at offset count
+> > without boundary check. The zero termination is written OUT-OF-BOUND.
+> > 
+> > Add a check that the given buffer is smaller then the buffer to prevent.
+> > 
+> > Fixes: 035b4989211d ("iio: backend: make sure to NULL terminate stack buffer")
+> > Signed-off-by: Markus Burri <markus.burri@mt.com>  
+> I'm looking for a tag from Nuno on this one before applying.
 
-Hi Andy,
+Please make sure to pick up tags on earlier versions. Nuno had sent a RB for
+this one which I've now added.
 
-thanks for the review. I have a question and a comment below.
+People don't tend to look again at patches that they've already tagged so Nuno
+probably didn't see my ask for a tag above.
 
-Andy Shevchenko <andriy.shevchenko@linux.intel.com> schrieb am Mo, 19. Mai =
-14:04:
-> > +/*
-> > + * veml6046x00_gain_pd - translation from gain index (used in the driv=
-er) to
-> > + * gain (sensor) and PD
-> > + * @gain_sen:	Gain used in the sensor as described in the datasheet of=
- the
-> > + *		sensor
-> > + * @pd:		Photodiode size in the sensor
->=20
-> This is made to look like kernel-doc, but it's not marked as a such, why?
+Anyhow, now applied but will have to wait for a rebase of my fixes-togreg tree
+on rc1 once available.
 
-I'll remove the '@'
+Thanks,
 
-=2E..
+Jonathan
 
-> > +	ret =3D regmap_clear_bits(data->regmap, VEML6046X00_REG_CONF0,
-> > +							VEML6046X00_CONF0_ON_0);
->=20
-> Something wrong with the indentation. Please, fix all places like this...
->=20
-> > +	if (ret) {
-> > +		dev_err(dev, "Failed to set bit for power on %d\n", ret);
-> > +		return ret;
-> > +	}
+> 
+> J
+> > ---
+> >  drivers/iio/industrialio-backend.c | 5 ++++-
+> >  1 file changed, 4 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/iio/industrialio-backend.c b/drivers/iio/industrialio-backend.c
+> > index a43c8d1bb3d0..31fe793e345e 100644
+> > --- a/drivers/iio/industrialio-backend.c
+> > +++ b/drivers/iio/industrialio-backend.c
+> > @@ -155,11 +155,14 @@ static ssize_t iio_backend_debugfs_write_reg(struct file *file,
+> >  	ssize_t rc;
+> >  	int ret;
+> >  
+> > +	if (count >= sizeof(buf))
+> > +		return -ENOSPC;
 > > +
-> > +	return regmap_clear_bits(data->regmap, VEML6046X00_REG_CONF1,
-> > +							VEML6046X00_CONF1_ON_1);
->=20
-> ...or like this.
->=20
-> > +}
+> >  	rc = simple_write_to_buffer(buf, sizeof(buf) - 1, ppos, userbuf, count);
+> >  	if (rc < 0)
+> >  		return rc;
+> >  
+> > -	buf[count] = '\0';
+> > +	buf[rc] = '\0';
+> >  
+> >  	ret = sscanf(buf, "%i %i", &back->cached_reg_addr, &val);
+> >    
+> 
+> 
 
-I don't get the point what is wrong with the indentation. In the coding-sty=
-le it
-says the decendant line should be placed to the right.
-Did i miss something?
-
-Best regards,
-
-Andreas
-
-
---o+cMHJOAAGa7G8wa
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQGzBAABCgAdFiEE7/NrAFtB/Pj7rTUyyHDM+xwPAVEFAmgyyBsACgkQyHDM+xwP
-AVE9uAv9FAsOdICiVxcMeS2lQBnbog/ke6YBclqe2ny0NeHs5cClnnV/04GVIpoP
-3rHVqxwU7W/9PSV39hlcOUB38Kj+/WhFuqf3RFDFK30SMBuhB/Mc6f6PU6T6m4px
-dyQdfF3LENDNARbhiwV3k3X7+hSLN7+5wW9RaGhwE383vBpFJcr25xzg7gPbSsuH
-sGkHEA3afVPd+0n2uq/ASB0yL2F4dbxsxH74Kp1j0fem8YXqf4EvZJKOzLulu4jF
-SrYt8NRJQ2WGu9eGTBogbYUlH79PZIvGyM1Yd5Q0kskmWo+F9676iQdrrIJXy+8w
-PHM4hIz5brlTDC46xga9sG75W+t14z/n8iZCIbd5UziSTvcisVjLo02oC/3L/SI9
-WqMmQHpE5VZ3xfoKAOaJdXG4oMot57a7J4v8LvJj7Y+YKEfrKoqzTEbh+KQSq5Vu
-V2Rx21m9pQRlpVH9p2MrHcczxibsJns0kRL4ewlW20YW+pq8FJF9aRAUSNhj9p+b
-+QKFaCvi
-=goN0
------END PGP SIGNATURE-----
-
---o+cMHJOAAGa7G8wa--
 

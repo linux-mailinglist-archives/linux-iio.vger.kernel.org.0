@@ -1,137 +1,129 @@
-Return-Path: <linux-iio+bounces-19920-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19921-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 155FAAC3B97
-	for <lists+linux-iio@lfdr.de>; Mon, 26 May 2025 10:23:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBDDAAC3C05
+	for <lists+linux-iio@lfdr.de>; Mon, 26 May 2025 10:51:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D8A191895B16
-	for <lists+linux-iio@lfdr.de>; Mon, 26 May 2025 08:23:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E9041896902
+	for <lists+linux-iio@lfdr.de>; Mon, 26 May 2025 08:51:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55DFA1E5B72;
-	Mon, 26 May 2025 08:23:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D6B21EF387;
+	Mon, 26 May 2025 08:51:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="Zfi/Nceo"
+	dkim=pass (2048-bit key) header.d=it-klinger.de header.i=@it-klinger.de header.b="Ky+HBJTP"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+Received: from www571.your-server.de (www571.your-server.de [78.46.3.230])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 900841E32DB;
-	Mon, 26 May 2025 08:22:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E3F91EEA47;
+	Mon, 26 May 2025 08:51:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.46.3.230
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748247781; cv=none; b=SfwOnP6KUpPjo5/3MVtGkEcswmnqn7VhbUbUk/c6rSriFWDWKT2HKA2TPg14fLk8R9po4cvvJL9IWsFwCS6AHUlbka5twADSdIdjlcKOHD5N94wvUZ5V1UcUbb0telj4U0iawZ08b5Gl7qVE53Zm4xjmLqf+18PyPEXaLxy/iA0=
+	t=1748249488; cv=none; b=uMk3lXC7Dv22KXs5xklvIgJHC9WX4qGx5ENgHRqQbYR7U+UqRFbkZ/Kd4YXYkwZ4zM7rwv6HtPAD5aOOygB6YWOAqq015ZvJvF39QQJ1N8iRDgDZy9zTNufOt6J+QlxYbGco1aOyWSUKz1aE1ZetIvrVY4NkDw9/ycVzKqSyilo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748247781; c=relaxed/simple;
-	bh=2KWGZqpL6ham/Q0N5PUCqGJYyzBKQe9H13tYc978hyU=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FKzAWcMLNlucvutxrCWPitD0nuzX1g5S3BX2iGyUPnhhlDGPnL5M6jLdNORHzkP3VEwxWC8UBn+qbEAo5tQ/NUSNJuFRhOMx+gFHLZSL75FAzPcjCuUcBrAtyHBKJQj1j34Sl29uEPCer40TcMKTAxT5bLkAnOQnA/VCgpQwwlk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=Zfi/Nceo; arc=none smtp.client-ip=148.163.135.77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-	by mx0a-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54Q6Fhis021644;
-	Mon, 26 May 2025 04:22:51 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=DKIM; bh=ej5T3
-	MjH+ZxmpbsNfOcLqm7MXXx2F089tYefr5/DKVQ=; b=Zfi/NceoNjBSH5vv5N6qo
-	R9sTI2OHtO9mJxhgMqJrJV2eAMXSgI8+/k/bulp5/OrUxQAfb35GBsBL68NgFsEY
-	E2IQMPK92XZBYk5Tr0x+hAcTtPgTUarlgxX2XIC1f1iI7ae6GZTdB0qdPpGgahkf
-	HlM7z2FtcFwJ0GmV9JnUQU+5FLwWuFGrhSidhd92vVqx/wlUBrYtD6eIzRikJJnr
-	ZMgYgNwpjU1f8HEbzdRD5Pam/Oz1Qg5SW0Q0vxqb66Bgsp1BbgUcUi3GBgHhMsCU
-	BmHffsCYNNJp5qMdhDn1z/BQNjgSHXFjgcZwFQb0l8bPNHAbpRhZ9pLOoRbLoxty
-	Q==
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 46ub16f9c1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 26 May 2025 04:22:51 -0400 (EDT)
-Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
-	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 54Q8MoNd026835
-	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Mon, 26 May 2025 04:22:50 -0400
-Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by ASHBMBX8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Mon, 26 May
- 2025 04:22:50 -0400
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server id 15.2.1748.10 via Frontend
- Transport; Mon, 26 May 2025 04:22:50 -0400
-Received: from amiclaus-VirtualBox.ad.analog.com (AMICLAUS-L02.ad.analog.com [10.48.65.174])
-	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 54Q8MdJB015981;
-	Mon, 26 May 2025 04:22:44 -0400
-From: Antoniu Miclaus <antoniu.miclaus@analog.com>
-To: <jic23@kernel.org>, <linux-iio@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-CC: Antoniu Miclaus <antoniu.miclaus@analog.com>,
-        =?UTF-8?q?Nuno=20S=C3=A1?=
-	<nuno.sa@analog.com>
-Subject: [PATCH v2 2/2] iio: adc: ad4080: extend check for data lanes num
-Date: Mon, 26 May 2025 11:22:28 +0300
-Message-ID: <20250526082228.4961-2-antoniu.miclaus@analog.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250526082228.4961-1-antoniu.miclaus@analog.com>
-References: <20250526082228.4961-1-antoniu.miclaus@analog.com>
+	s=arc-20240116; t=1748249488; c=relaxed/simple;
+	bh=IDkEifP/ECIx4HCcJ3KVZJy4RtQfztssOHDisYPPwTM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=bOQBRJOvqI5n6UuVe+kUaBMr5ussnD+DqM8WW0mEOPA/47q8maqXlDoyUg0TRRECJ0ZAJW4JUVgfS0DVh5u51fYXdwNBHQvi3EpDM9vnAHndRAcOFJhdZdt/tQEQMcgE57A1nHwedJ3dhSIceR57xWbE6T+RVnIT3TOvQ9tWUEs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=it-klinger.de; spf=pass smtp.mailfrom=it-klinger.de; dkim=pass (2048-bit key) header.d=it-klinger.de header.i=@it-klinger.de header.b=Ky+HBJTP; arc=none smtp.client-ip=78.46.3.230
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=it-klinger.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=it-klinger.de
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=it-klinger.de; s=default2502; h=Content-Transfer-Encoding:MIME-Version:
+	Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References;
+	bh=hRzdxS19X09vLm7U2fkj9IPgR3UF3IGS8v5nrEYKLXc=; b=Ky+HBJTPeDaMvtnKxLA1uMJ6bI
+	WzFsSg3lq64kyAWOk2pNWlO087hrAeTNxfXaewMtK5+LB0K/p1j/bN182qWIYOIF4aBMhllImD3KN
+	p0FFcQ5YhQPb+WVhDRiTk7V9ukQwGsLJrc/swLPxFuoNzMPHEn8FdgGwunSjSs1XHe5D9p7A6n9kq
+	ZzLwUDpholBCxQuj3LMgrV9SxJtl3s9xRPoArN7tQRCJFsab+EyEoY0eJDBHzxrCBi1TSmcTPHNe8
+	RcXmFeuSY+S46VYciilss8JtcCsZO7djLgLcj94gWLcjSKcd/OwMTYqFLSy51x4WLEO+F5UatSfpH
+	m8H89YuQ==;
+Received: from sslproxy02.your-server.de ([78.47.166.47])
+	by www571.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <ak@it-klinger.de>)
+	id 1uJTYA-000Cpi-0R;
+	Mon, 26 May 2025 10:51:14 +0200
+Received: from localhost ([127.0.0.1])
+	by sslproxy02.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ak@it-klinger.de>)
+	id 1uJTY9-000C3y-2C;
+	Mon, 26 May 2025 10:51:13 +0200
+From: Andreas Klinger <ak@it-klinger.de>
+To: jic23@kernel.org,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org
+Cc: lars@metafoo.de,
+	javier.carrasco.cruz@gmail.com,
+	mazziesaccount@gmail.com,
+	andriy.shevchenko@linux.intel.com,
+	arthur.becker@sentec.com,
+	perdaniel.olsson@axis.com,
+	mgonellabolduc@dimonoff.com,
+	muditsharma.info@gmail.com,
+	clamor95@gmail.com,
+	emil.gedenryd@axis.com,
+	ak@it-klinger.de,
+	devicetree@vger.kernel.org,
+	linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v5 0/3] iio:light: add driver for veml6046x00 RGBIR color sensor
+Date: Mon, 26 May 2025 10:50:38 +0200
+Message-Id: <20250526085041.9197-1-ak@it-klinger.de>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-GUID: o-3eo_LfeivqUsmU0lF_ukr4VJgK9x39
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTI2MDA3MCBTYWx0ZWRfXyv43VdLBuR5a
- J2xShgxvdzkapG+KlIjXdGWzZ14ZE9O0bHMPwnmliUJ3ShSrR0DJYOWmbm6fGkHhvDZbktllYDQ
- rAPNaCrxWR6xEIkEamQ2UyhyyhtMAryVpFC7yqizY3IL9nwUR9AL25g8MPJOG+YEEtfKV+3f4l1
- 9ZxeLJlI/xxHrcrbg3xp+OTEUtEARgy2vCxrtfHr7tAYAfZy5EaMHiUQh9VcAQTMUo/5ZHGSSqX
- ehbQ9fR/AI9JkuIySY2sIEWn3YxerQrC6ZmHRvvzGbU9+ryk0QvfSTUC6GxQ5p1VWXbhOTMwNZq
- yN1ogq2j0cUkjr8T8/3FTZq2/7igJGS1hghuQT98jaWDL2C8Xdsdbnv5izjFzUVVOF8BB28uIW6
- HCgssVXbmW7mgki6HiXNKIzMLvN9gwEKThJnYAdCtUbSwGONRfo6pzMuFWsAtZaHvcVW/qpk
-X-Authority-Analysis: v=2.4 cv=XemJzJ55 c=1 sm=1 tr=0 ts=683424db cx=c_pps
- a=3WNzaoukacrqR9RwcOSAdA==:117 a=3WNzaoukacrqR9RwcOSAdA==:17
- a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=gAnH3GRIAAAA:8 a=GGKVI5b-SMvUNDNwoSIA:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: o-3eo_LfeivqUsmU0lF_ukr4VJgK9x39
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-05-26_04,2025-05-22_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 mlxscore=0 priorityscore=1501 suspectscore=0 phishscore=0
- impostorscore=0 malwarescore=0 bulkscore=0 lowpriorityscore=0 spamscore=0
- mlxlogscore=999 adultscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505160000
- definitions=main-2505260070
+X-Authenticated-Sender: ak@it-klinger.de
+X-Virus-Scanned: Clear (ClamAV 1.0.7/27648/Sun May 25 10:31:16 2025)
 
-Extend the check for st->num_lanes to ensure it is not greater
-than 2, preventing invalid configurations.
+This patchset adds an IIO driver for Vishay veml6046x00 RGBIR color sensor
 
-The AD4080 only supports up to 2 data lanes.
+Changes in v5:
+- Thanks to the feedback of Andy and further explanations of Jonathan many
+  improvements could be implemented.
+- add documentation in kernel-doc format
+- iio_push_to_buffers_with_ts() is not used as also testing against
+  linux-stable where it is not available so far.
 
-Reviewed-by: Nuno Sá <nuno.sa@analog.com>
-Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
----
-no changes in v2.
- drivers/iio/adc/ad4080.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Changes in v4:
+- implement feedback from Andy and Jonathan
+- implement feedback from vendor (reading interrupt register as bulk read)
 
-diff --git a/drivers/iio/adc/ad4080.c b/drivers/iio/adc/ad4080.c
-index c36eb41d738a..6e61787ed321 100644
---- a/drivers/iio/adc/ad4080.c
-+++ b/drivers/iio/adc/ad4080.c
-@@ -516,7 +516,7 @@ static int ad4080_properties_parse(struct ad4080_state *st)
- 
- 	st->num_lanes = 1;
- 	device_property_read_u32(dev, "adi,num-lanes", &st->num_lanes);
--	if (!st->num_lanes)
-+	if (!st->num_lanes || st->num_lanes > 2)
- 		return dev_err_probe(dev, -EINVAL,
- 				     "Invalid 'adi,num-lanes' value: %u",
- 				     st->num_lanes);
+Changes in v3:
+- implement a lot of feedback from Jonathan
+- change scale value to real factor of lux per raw count instead of hardware
+  gain
+- optimize code by using more lookup tables
+- remove unimplemented threshold functionality
+
+Changes in v2:
+- fix missing include for example in vishay,veml6046x00.yaml
+
+Andreas Klinger (3):
+  dt-bindings: iio: light: veml6046x00: add color sensor
+  iio: light: add support for veml6046x00 RGBIR color sensor
+  MAINTAINER: add maintainer for veml6046x00
+
+ .../iio/light/vishay,veml6046x00.yaml         |   51 +
+ MAINTAINERS                                   |    6 +
+ drivers/iio/light/Kconfig                     |   13 +
+ drivers/iio/light/Makefile                    |    1 +
+ drivers/iio/light/veml6046x00.c               | 1007 +++++++++++++++++
+ 5 files changed, 1078 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/light/vishay,veml6046x00.yaml
+ create mode 100644 drivers/iio/light/veml6046x00.c
+
 -- 
-2.49.0
+2.39.5
 
 

@@ -1,155 +1,167 @@
-Return-Path: <linux-iio+bounces-19945-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19946-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFAE0AC421E
-	for <lists+linux-iio@lfdr.de>; Mon, 26 May 2025 17:10:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AA2BAC4297
+	for <lists+linux-iio@lfdr.de>; Mon, 26 May 2025 17:52:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C7FB3A4FE0
-	for <lists+linux-iio@lfdr.de>; Mon, 26 May 2025 15:10:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2BF6617918E
+	for <lists+linux-iio@lfdr.de>; Mon, 26 May 2025 15:52:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B73A211A3D;
-	Mon, 26 May 2025 15:10:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B8662101B7;
+	Mon, 26 May 2025 15:52:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gDq8X7SL"
+	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="7KAOfWuS"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com [185.132.182.106])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13DBA1FCF41;
-	Mon, 26 May 2025 15:10:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE93F1EEA47;
+	Mon, 26 May 2025 15:52:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.132.182.106
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748272217; cv=none; b=nBm2C+DrYmHpMKre6ll+SCNbAqevZV2KJoYGdsqyWYUZhyf0Lp5jULa4YYppBh628LO/P+DHuAsyscdpfCKw4V+Ad0UNFO+/oZ9dyA5fJgpPovSMP4vrDu6ypKJBDWwAp3u7ErPBFCo5f2XMcYp2WYh+eo4IsAhuIrmGggyzNbM=
+	t=1748274733; cv=none; b=n1OmWhPHwokQKQIRXbuB4orODHFXPzqjx4b6XhsvNtt1N9xHHjaO0E9ebcas5mqN18C4zOPjowlxOvcRnjK4zrZJYZ+u8un5Pg5NERVi7bKk/rgN4G7eCnXW4StdHPI/O9lqiSfG6diM6h2mislJv+DhWAjoYsPmjwQ/dQIcuZY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748272217; c=relaxed/simple;
-	bh=t8DyhwSvrHrndgCFWTpxwuKS78RJvgE3OL1d/UezY04=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OnFMohNW45X05f4NJEidQXQY6T5wTzgOcfdikp9m3UvaDAyEND7j8F6gNioZ3QTrFf7CEhHLilenSR10lQYoJq0SKDGPU2h2cc79JAbhYH5cyDV3kTtdBeSCOlaXTBnar3cDK1EpPkjbulYYEEg+P/lmWx38JPVAaJJUD+nfS4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gDq8X7SL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3F68C4CEE7;
-	Mon, 26 May 2025 15:10:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748272215;
-	bh=t8DyhwSvrHrndgCFWTpxwuKS78RJvgE3OL1d/UezY04=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gDq8X7SLVJAQZLOaICO4neyZ6IGi8PTyeQMj8XDUoy441aZ9o4qewQ433d8bd1mak
-	 ToCvnIrgB/8FSERGi34KABew7xbdzUwm6j9/EOuYoNQqRA4OMXj/3izkkiTDMyupd8
-	 uZqwHqE/uLgd+rtqGPRNbjKuZ1fK7C07ZRQjWRxOk1lbzoxQK2+DwIvWRAG7b6v9Nd
-	 PITIv3TEnPVb4DjrrlZRsZzdXQLPPOff0iOu1u8agdHxzkpyQuDwf2PsUoG8oWjKnT
-	 EuOGFrFSpGwdntHy+Xhn+0bzV60MdvDuVKhLhH49RmNU9+oTVtshjWIhZYwvCESnoE
-	 FmORZ9FN11BHQ==
-Date: Mon, 26 May 2025 16:10:10 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Angelo Dureghello <adureghello@baylibre.com>
-Cc: Nuno Sa <nuno.sa@analog.com>, Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	devicetree@vger.kernel.org
-Subject: Re: [PATCH v2] dt-bindings: iio: adc: adi,ad7606: fix dt_schema
- validation warning
-Message-ID: <20250526-moaner-hassle-816968c2e63d@spud>
-References: <20250526-wip-bl-ad7606-dtschema-fixes-v2-1-9bd56d039489@baylibre.com>
+	s=arc-20240116; t=1748274733; c=relaxed/simple;
+	bh=za6bVeF1c6KeXsHnOuzuJWYKeSGH1gVcfLmfUUP+kaw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=tF49SjQetrinvezoPxe8yi71tg1oXPL7ANkbDftU8fjPGTxy8Xgw8d3KHrfEbcSBSTjtzzNhPe4Ysh1plnzghqZ0y1W7ZXcgXmj+zk6Vf2hBaGhfXVIKMQWwn90Zu2ZE/TYUM3aiG31OHrmi/kFhWUcirF5QkO9bJ95pVF+kP7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=7KAOfWuS; arc=none smtp.client-ip=185.132.182.106
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
+Received: from pps.filterd (m0369458.ppops.net [127.0.0.1])
+	by mx07-00178001.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54QB4fPp012749;
+	Mon, 26 May 2025 17:51:45 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=selector1; bh=
+	rW5ZHuaPdfqfwDvrnkrsezcElkYLPA1vqOkoWGgulJw=; b=7KAOfWuSkxrfv3ap
+	O/Sd902RG47wwlINI4gwwK7ogvvAsXgo4HKT2hcSwYMLVZjKAzZBh4Jqlzi3/DC5
+	UB6qLfo2/9JVQ+w+LizQVutPccWnKsLldljzQ69yzezypqQbxJyyr8hVJzYHeatI
+	oQsACu+tzGfsUuiODQFi8BxsiPO4RYcdPpA1/vVxdUGm0ctQj9dTvy0LQmJEi8C5
+	1/Fh3z+pnmZpvX0jnyBWOQQpF2tGmN+Wr4rIn0Hz2Vlx6tQG4JnxtZVUoxjI70Tl
+	PHa0sdv/yDXDIkr54h9okZ7Vov/saSr6jtTloRwKPzoo1SmxwjC7DfxqsfyozAlU
+	tNr7oQ==
+Received: from beta.dmz-ap.st.com (beta.dmz-ap.st.com [138.198.100.35])
+	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 46uqp4dnhb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 26 May 2025 17:51:45 +0200 (MEST)
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+	by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id E564F40056;
+	Mon, 26 May 2025 17:50:19 +0200 (CEST)
+Received: from Webmail-eu.st.com (eqndag1node5.st.com [10.75.129.134])
+	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 9BE99ACB869;
+	Mon, 26 May 2025 17:48:33 +0200 (CEST)
+Received: from SAFDAG1NODE1.st.com (10.75.90.17) by EQNDAG1NODE5.st.com
+ (10.75.129.134) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 26 May
+ 2025 17:48:33 +0200
+Received: from [10.48.86.222] (10.48.86.222) by SAFDAG1NODE1.st.com
+ (10.75.90.17) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 26 May
+ 2025 17:48:32 +0200
+Message-ID: <ab75c390-b172-4dbb-b46b-8cbf64d4600a@foss.st.com>
+Date: Mon, 26 May 2025 17:48:31 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="+ULwQ2yavHF/YWAl"
-Content-Disposition: inline
-In-Reply-To: <20250526-wip-bl-ad7606-dtschema-fixes-v2-1-9bd56d039489@baylibre.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] iio: adc: stm32-adc: Fix race in installing chained
+ IRQ handler
+To: Jonathan Cameron <jic23@kernel.org>,
+        =?UTF-8?Q?Nuno_S=C3=A1?=
+	<noname.nuno@gmail.com>
+CC: Chen Ni <nichen@iscas.ac.cn>, <dlechner@baylibre.com>,
+        <nuno.sa@analog.com>, <andy@kernel.org>, <mcoquelin.stm32@gmail.com>,
+        <alexandre.torgue@foss.st.com>, <u.kleine-koenig@baylibre.com>,
+        <tglx@linutronix.de>, <robh@kernel.org>, <jirislaby@kernel.org>,
+        <linux-iio@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+        Olivier Moysan <olivier.moysan@foss.st.com>
+References: <20250515083101.3811350-1-nichen@iscas.ac.cn>
+ <229cf78caaa7e9f2bb4cfa62c019acd51a1cd684.camel@gmail.com>
+ <20250525120703.5dd89fc2@jic23-huawei>
+Content-Language: en-US
+From: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+In-Reply-To: <20250525120703.5dd89fc2@jic23-huawei>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: EQNCAS1NODE3.st.com (10.75.129.80) To SAFDAG1NODE1.st.com
+ (10.75.90.17)
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-05-26_08,2025-05-26_02,2025-03-28_01
 
 
---+ULwQ2yavHF/YWAl
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On 5/25/25 13:07, Jonathan Cameron wrote:
+> On Thu, 15 May 2025 11:26:56 +0100
+> Nuno Sá <noname.nuno@gmail.com> wrote:
+> 
+>> On Thu, 2025-05-15 at 16:31 +0800, Chen Ni wrote:
+>>> Fix a race where a pending interrupt could be received and the handler
+>>> called before the handler's data has been setup, by converting to
+>>> irq_set_chained_handler_and_data().
+>>>
+>>> Fixes: d58c67d1d851 ("iio: adc: stm32-adc: add support for STM32MP1")
+>>> Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+>>> ---  
+>>
+>> Reviewed-by: Nuno Sá <nuno.sa@analog.com>
+> Looks good to me and I've queued it up for after rc1.  If any
+> ST folk have time to take a look that would be great.
 
-On Mon, May 26, 2025 at 03:19:08PM +0200, Angelo Dureghello wrote:
-> From: Angelo Dureghello <adureghello@baylibre.com>
->=20
-> Fix following dt_schema warning when offload is used:
->=20
->   DTC [C] arch/arm/boot/dts/xilinx/zynq-zed-adv7511-ad7606.dtb
-> /home/angelo/dev-baylibre/linux-iio/arch/arm/boot/dts/xilinx/zynq-zed-adv=
-7511-ad7606.dtb: adc@0: 'oneOf' conditional failed, one must be fixed:
-> 	'interrupts' is a required property
-> 	'io-backends' is a required property
-> 	from schema $id: http://devicetree.org/schemas/iio/adc/adi,ad7606.yaml#
->=20
-> There isn't any reason that we couldn't have interrupts wired up at the
-> same time we are using io-backends or SPI offload, so dropping off the
-> related "oneOf" block entirely.
->=20
-> Fixes: ccf8c3f106a2 ("dt-bindings: iio: adc: adi,ad7606: add SPI offload =
-properties")
-> Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
+Hi Jonathan,
 
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
+One minor comment at my end, not sure if that changes a lot...
+This could be a fix for the older commit:
+1add69880240 ("iio: adc: Add support for STM32 ADC core")
 
-> ---
-> Fix dt_schema validation warning.
->=20
-> Link: https://lore.kernel.org/linux-iio/20250408-wip-bl-ad3552r-fixes-v4-=
-0-b33c0264bd78@baylibre.com
-> ---
-> Changes in v2:
-> - Change removing the related oneOf block.=20
-> - Link to v1: https://lore.kernel.org/r/20250523-wip-bl-ad7606-dtschema-f=
-ixes-v1-1-d9147fb2a199@baylibre.com
-> ---
->  Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml | 6 ------
->  1 file changed, 6 deletions(-)
->=20
-> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml b/=
-Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml
-> index 29f12d650442b8ff2eb455306ce59a0e87867ddd..1a5209139e1338f803c66ad2b=
-4d63ad53cc11d96 100644
-> --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml
-> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml
-> @@ -223,12 +223,6 @@ allOf:
->        - required:
->            - pwms
-> =20
-> -  - oneOf:
-> -      - required:
-> -          - interrupts
-> -      - required:
-> -          - io-backends
-> -
->    - if:
->        properties:
->          compatible:
->=20
-> ---
-> base-commit: 3964c6e5877f054497ffccc7d00f8f7add307d0d
-> change-id: 20250523-wip-bl-ad7606-dtschema-fixes-5e6ab342e043
->=20
-> Best regards,
-> --=20
-> Angelo Dureghello <adureghello@baylibre.com>
->=20
+Apart from that, you can add my:
+Tested-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+Reviewed-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
 
---+ULwQ2yavHF/YWAl
-Content-Type: application/pgp-signature; name="signature.asc"
+BR,
+Fabrice
 
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaDSEUgAKCRB4tDGHoIJi
-0j2wAQD5AfCRUPpKLmj2M1u1ve5izNl9I19KzSdHNySeO2hH4gEArxDQXrhAXXnO
-SXXYYGUr6IyIlN2Ruceocxb8DOo5bA0=
-=nsA6
------END PGP SIGNATURE-----
-
---+ULwQ2yavHF/YWAl--
+> 
+> Jonathan
+> 
+>>
+>>> Changelog:
+>>>
+>>> v1 -> v2:
+>>>
+>>> 1. Add Fixes tag.
+>>> ---
+>>>  drivers/iio/adc/stm32-adc-core.c | 7 +++----
+>>>  1 file changed, 3 insertions(+), 4 deletions(-)
+>>>
+>>> diff --git a/drivers/iio/adc/stm32-adc-core.c b/drivers/iio/adc/stm32-adc-
+>>> core.c
+>>> index bd3458965bff..21c04a98b3b6 100644
+>>> --- a/drivers/iio/adc/stm32-adc-core.c
+>>> +++ b/drivers/iio/adc/stm32-adc-core.c
+>>> @@ -430,10 +430,9 @@ static int stm32_adc_irq_probe(struct platform_device
+>>> *pdev,
+>>>  		return -ENOMEM;
+>>>  	}
+>>>  
+>>> -	for (i = 0; i < priv->cfg->num_irqs; i++) {
+>>> -		irq_set_chained_handler(priv->irq[i], stm32_adc_irq_handler);
+>>> -		irq_set_handler_data(priv->irq[i], priv);
+>>> -	}
+>>> +	for (i = 0; i < priv->cfg->num_irqs; i++)
+>>> +		irq_set_chained_handler_and_data(priv->irq[i],
+>>> +						 stm32_adc_irq_handler,
+>>> priv);
+>>>  
+>>>  	return 0;
+>>>  }  
+> 
 

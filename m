@@ -1,396 +1,194 @@
-Return-Path: <linux-iio+bounces-19929-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19930-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3DD2AC3D87
-	for <lists+linux-iio@lfdr.de>; Mon, 26 May 2025 12:00:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4032EAC3D97
+	for <lists+linux-iio@lfdr.de>; Mon, 26 May 2025 12:04:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 65DFF3A68D7
-	for <lists+linux-iio@lfdr.de>; Mon, 26 May 2025 10:00:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE3641897B77
+	for <lists+linux-iio@lfdr.de>; Mon, 26 May 2025 10:05:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C2111F2B90;
-	Mon, 26 May 2025 10:00:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA3C71F4C96;
+	Mon, 26 May 2025 10:04:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LT+VaS5U"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="M4g5Y3nW"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E217C3C465;
-	Mon, 26 May 2025 10:00:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D30F91F4262
+	for <linux-iio@vger.kernel.org>; Mon, 26 May 2025 10:04:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748253646; cv=none; b=m5Aoifkt4E+dBsyxLI0tcCJ3W4caaJn+GgJDw3cIT5keZxqcqomwJ2XrcH8DoU5euQYxt4FYNvhQMvlBea44PJ5373IX0tKVUi2k1LzrfiatQxH4vqvBKPFYIGJ0iTuEr48R2WRSWZ4c4sPMsOEsAMa2ToNTrlIT5KfcU3L7iek=
+	t=1748253885; cv=none; b=hADKa7lDKEUGtrGZ0wXsCNIxmQGV0ZAVdn7Pc1ss50iIkqwRlKET7W50Lh7NvSF9T9K3arpL9xB3pTi9gI4zNqKXWNwQBaNrtwngctiOuimY08Yc3uO8eTq/OF5rdca7ZfRfDkBHbo3m6eTxLFSw5QGmdiWOVSNZxWviaKYdyoc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748253646; c=relaxed/simple;
-	bh=QMOcHQKOixiFHCCoUumVRhB/j/Jn50UQw+FeHbfYf5o=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=WwdlFHxFUbzZFfkSLQ7e06dX/LFrD9JbCIgtQ2efeTOgdULPJn9Ij++IlcImXE7yGMifWvt3v2VUWe/l+WauJ7+4Q2NGTfj4143mDcZXFG7A+DDTjYVD/XMSGZkme6j6XPJpnpRCbpD6VefRPXrPsdfaC0eC0/EjBip6gu4jIxg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LT+VaS5U; arc=none smtp.client-ip=209.85.128.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-43cec5cd73bso15495335e9.3;
-        Mon, 26 May 2025 03:00:44 -0700 (PDT)
+	s=arc-20240116; t=1748253885; c=relaxed/simple;
+	bh=eSK6YZcLQNcfWyBCA5lDtS+FZisIhv1cZBflT0atmTw=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=fB3qbr7wVW/rm24w8siUumaO428scfaq42Sm2ZyegdaCC/tjdRcv0n/wn/Yt+9MZe0M/6f2me+qHEyqbxj4Is91OS2poOzdjQavSMMTZyiYJlc4CfBqrA7cgCRxKkdGE6KYZE3WooMu2oP2KxLWAmrG2oFbyJGAG6/u+YO1DZgY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=M4g5Y3nW; arc=none smtp.client-ip=209.85.221.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-3a375d758a0so1791023f8f.0
+        for <linux-iio@vger.kernel.org>; Mon, 26 May 2025 03:04:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1748253643; x=1748858443; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:to:from:subject:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=eicpoJrb0fZY7y6sTaFmu8OzAD0wjIi85iAmFVAlBtI=;
-        b=LT+VaS5UnPpdKYgaw5Kaw/J9v0z3bPhwiItt8SV3p34PhuHvOWqG0BSNVLmeYTLgG6
-         qzop3xIMQuJzD3rPjMe0BqU/vwoWTq8F+qzqwfelC5QXDMNFkdE9FLkesHJAP5Aqm80O
-         G6tkOGrRzvcfcHma75f0a01xs+57V4jhtOzvnwHr1Rp7bqoI1kJJIfcsH/zjBfEjRQqt
-         GNq1nXyuU0pjY4CMnd7rhmKHfxrrBD8cCtCUNh/xlkuT02ldHrWjs+QxpvC6Y+InliGl
-         T/fxbadhIsrDgfZIvVO/nfJLhOhHpgRbUFHDQ7N52Z7WGBfsqWkh8TA7HtIt82snYHLQ
-         xzWQ==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1748253881; x=1748858681; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=DV2U6idgVojBbiD7oQDIMDL4s90BH7rw7O7YWkBzKdA=;
+        b=M4g5Y3nWO370Zacw7hWSenWJoRdKlSf5imPCM1zFvWuGmSlfBnFhsLCsjhgWaxe+6l
+         BqXEwDXDgZnvLvpJwuKgaw6FbgdwM6U9qrFQKkTD8rAzWxjQjbx7JfJ7Y1To/StghCxo
+         NjViCAm54A2x8uET7VOUcZrn0HDsrD8X1EFZhTid+kiwzHYDdULrc1AlpiRDzxIoi7UZ
+         Efdh+9nR+ue9obvZKdwKzzgiBDOeKaH50NT7kPcSGpN2nxHZDQNo6PSy0qN9uY547vMU
+         gIbapzhdR7KDDWHeFLRFCylRiwbykkTAOd1Lod9ZtufiakAdYmsentReXYr9ybU9R/Cg
+         2RAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748253643; x=1748858443;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:to:from:subject:message-id:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=eicpoJrb0fZY7y6sTaFmu8OzAD0wjIi85iAmFVAlBtI=;
-        b=EswfiIKxrsOGqQyxMKpqbXa6Mbbku6DL1qwzX0Kg+4yYnrKMeczrYPfr9auLYZ4zdI
-         kzlgDtppJXZnEsw6nyJFaf7h9q419LNayqPGVUdZ/qY0SXvO4Fsymud7APCuZccb9XYl
-         UqGyR3HR1EtCb+vJ7PvahjV8urmmJclMqc9k8xS0h9vBCMY9nn5KtOds83Pg58JFrQuj
-         n/uHhZNV3YQdl7llvpJXhyNXZgl9ywIEOlo1TkAnhFgd41ovKNQJjmjJVds/KOU87k7I
-         ztKeqZ5U3IMhDcgmW3Uz/KkYfH6ik00VJqf/ULcNXTDAeqLOJouEjLpkm90vn3TdiSnf
-         lQzQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVEPg7mBkiBHIkkYmy9qhrv1ug1GfiUBWhKKNpqAGM2/zvX/j1ETAdT56H+fO4lB5iGIKFckgmRowLbC86u@vger.kernel.org, AJvYcCVYsnJEjoFhrDDNrIt2QWlcBiGk7Doxw4onOuvASRBNZ0BMRLYFC3LQCw2KjzgesjbeaB3G/1M4LlNZ@vger.kernel.org, AJvYcCWz3RRAPOqqyj6H5wffPpCnXJdEiQRjLMn4CmfrsDHFWfmgh9oa7ZB+RFaOcCGRqRr019v7NQ1pSezQ@vger.kernel.org
-X-Gm-Message-State: AOJu0YwXLMDVcSP0tncqwSLp4VKJVEhejQFQnD/DwufZNSloDRJOrrq4
-	PbsqyhkmnGDeFKWSF2qaVokgtuVjmG2voNl/UzgHBrpd14CMybNKzq/P
-X-Gm-Gg: ASbGnctOe8gVbJaj/TU66IR4ASfTKiR2p0VEyeHV8kluQdMpeWLhLEWcTlOCV+gBEA1
-	hvgD28hU7XsaHG/L8KdztKnOTEpoFsE+sPHB72x40HsegwUUEMwEK5VdDZhK6adqx+IfAyn8juz
-	atPtUuqO5/ibufxua7Dh1rNsXyeTatzRU0o4R5uDbQRFTHfDG3afV/lwgjZr5LGbBlLKccJGKaE
-	OOwZS6WXESzqGfGnRm6FpeNnymYQMX6m1sfnss6LsyGMgX797Tuq8yfJUhGmNiiizFkmL4scUpa
-	X2Fb3dclOH9929FUsPOfDZSJ6APC1r3oPzzaQVfsUCafNrYYAMWnU2Jp
-X-Google-Smtp-Source: AGHT+IFyPQ4Wmke7I/ldBmQ9xIXo1pz+RbcwWPzddrOPwodQoUH2HBPsO/ug0U9yclj2a7jniWZ4gA==
-X-Received: by 2002:a05:6000:2585:b0:3a3:5918:bb9e with SMTP id ffacd0b85a97d-3a4cb4b8792mr6363492f8f.59.1748253642985;
-        Mon, 26 May 2025 03:00:42 -0700 (PDT)
-Received: from [100.73.1.233] ([185.128.9.226])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a4c90624cfsm8194980f8f.62.2025.05.26.03.00.41
+        d=1e100.net; s=20230601; t=1748253881; x=1748858681;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=DV2U6idgVojBbiD7oQDIMDL4s90BH7rw7O7YWkBzKdA=;
+        b=hhfZnOR3oTYpOhly0ZvlCsWM7yPxEI/xTuustzpv/iP9uCjUVEqX/HPpTuV+VQ79mM
+         2ZQnbWBG76e0fplYgZw+nlByNjLc7Fb1GqckAgaN6epdXRTN9cZq3EqnRjD9+DTZhLPQ
+         INGJCo1vVakueUpW4KY0+WWntsRY/i8q/18mMH2lNmcIpQy+7IiU2W4PPn++auouULTK
+         kXxZySlmTqEkdtaf5PE6ezyuwz6IBNrampWwWB4YhrHRWSuM4M/TGthgIxdbh2E3MqkW
+         XwfzfhZOiZNrWH1S0Sb/l+zwzoxyfZmD3n3xvRk/NsH3uUV33xDDIxlng7HZnTdbBlzR
+         5Jqg==
+X-Gm-Message-State: AOJu0YzkARJFv2ARau+kh2x0r9EGCx1RQpPhS1u8vtYMVPaejM240oMI
+	nwxfNAdKvhv6u4mbU+jJCN0JuRYNYKN31bd+2BeCm8m9UwlfX/A17SZDj38Hl3IVFD8=
+X-Gm-Gg: ASbGncuMtIqWK7wgjCWQjVfhvv4ODjibMqtbV9k4SYibErETI9xX/1GTN/Fv4JIpk8o
+	1jgLOwXczeLe7VkkEzYoXZpV7k+2dBcu6tvh4yH7cVwARXmfkPs13euia1ID0dsaPnqUen1Ievl
+	Q1WIa6u7Oolbm5F2p83e4YEp7J/Kca4VczWvU3RBBTBttA32i17/f7hZBwA885/8X+E1mMDZOI3
+	x9sedowkxd34bB3i9soRXJm091j3/doKfgAoFLd7Bows9AAOphebWINFpgxKoHOX19UHhtk0WTo
+	6irGEy1JF4104Rd8dqSnmYE3xpzbf2zr7Cx8lrod8zcQRH3lnL6XltbThzewfnaNIDdKweUvmBn
+	QKDsMIN0dNtfwjovcL0sQoEDDPwGeKqE=
+X-Google-Smtp-Source: AGHT+IGPPusAGdBj+JyaVRhQQ6sAZOIsx4vzH7PAiLud1ABGfWxc4dBci9VDUB4fBJQIrwDdRYc/Uw==
+X-Received: by 2002:a05:6000:4027:b0:39c:1f02:5409 with SMTP id ffacd0b85a97d-3a4cb4619camr5820777f8f.9.1748253880831;
+        Mon, 26 May 2025 03:04:40 -0700 (PDT)
+Received: from [192.168.0.2] (host-80-116-51-117.retail.telecomitalia.it. [80.116.51.117])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a35ca888fcsm36141834f8f.78.2025.05.26.03.04.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 May 2025 03:00:42 -0700 (PDT)
-Message-ID: <4a357e2412efe86cd9efc46baeb2e5d475e29515.camel@gmail.com>
-Subject: Re: [PATCH v4 6/6] iio: adc: ad7405: add ad7405 driver
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Pop Ioan Daniel <pop.ioan-daniel@analog.com>, Lars-Peter Clausen	
- <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, 
- Jonathan Cameron	 <jic23@kernel.org>, David Lechner
- <dlechner@baylibre.com>, Nuno =?ISO-8859-1?Q?S=E1?=	 <nuno.sa@analog.com>,
- Andy Shevchenko <andy@kernel.org>, Rob Herring	 <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley	
- <conor+dt@kernel.org>, Sergiu Cuciurean <sergiu.cuciurean@analog.com>, 
- Dragos Bogdan <dragos.bogdan@analog.com>, Antoniu Miclaus
- <antoniu.miclaus@analog.com>, Olivier Moysan	 <olivier.moysan@foss.st.com>,
- Javier Carrasco <javier.carrasco.cruz@gmail.com>,  Matti Vaittinen
- <mazziesaccount@gmail.com>, Tobias Sperling <tobias.sperling@softing.com>,
- Alisa-Dariana Roman	 <alisadariana@gmail.com>, Marcelo Schmitt
- <marcelo.schmitt@analog.com>, 	linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, 	linux-kernel@vger.kernel.org
-Date: Mon, 26 May 2025 11:00:45 +0100
-In-Reply-To: <20250519140220.81489-7-pop.ioan-daniel@analog.com>
-References: <20250519140220.81489-1-pop.ioan-daniel@analog.com>
-	 <20250519140220.81489-7-pop.ioan-daniel@analog.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.1 
+        Mon, 26 May 2025 03:04:40 -0700 (PDT)
+From: Angelo Dureghello <adureghello@baylibre.com>
+X-Google-Original-From: Angelo Dureghello <adureghello@baylibre.org>
+Subject: [PATCH v7 0/6] iio: adc: add ad7606 calibration support
+Date: Mon, 26 May 2025 12:03:15 +0200
+Message-Id: <20250526-wip-bl-ad7606-calibration-v7-0-b487022ce199@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAGM8NGgC/43QzWrDMAwH8FcpPs9Dlvy5095j7GDH9mromuKUb
+ KXk3ef0sjCC2fEvoZ+E7mxKtaSJvRzurKa5TGU8t2CeDmw4+vNH4iW2zBBQgUTHv8qFhxP30Wj
+ QfPCnEqq/timO4Mlpr4EUsjZ/qSmX74f99t7ysUzXsd4eq2axVv+jzoIDT0FGaVEEYfA1+NvaT
+ s/D+MlWeMZfTAH2MGyYMDJE8BmsCDsYbTHdw6hhOgUTdDJIYHYwucVsD5MNc8JTRksm6b3L1AY
+ T3Z+phklQMg9mcJniDqY3GHZ/plfMmuBAEkUPf7BlWX4Azz2OqUYCAAA=
+X-Change-ID: 20250429-wip-bl-ad7606-calibration-20a396a60352
+To: Jonathan Cameron <jic23@kernel.org>, 
+ David Lechner <dlechner@baylibre.com>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Andy Shevchenko <andy@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, 
+ Michael Hennerich <Michael.Hennerich@analog.com>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Michael Hennerich <michael.hennerich@analog.com>, 
+ devicetree@vger.kernel.org, Angelo Dureghello <adureghello@baylibre.com>, 
+ Conor Dooley <conor.dooley@microchip.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3377;
+ i=adureghello@baylibre.com; h=from:subject:message-id;
+ bh=eSK6YZcLQNcfWyBCA5lDtS+FZisIhv1cZBflT0atmTw=;
+ b=owGbwMvMwCXGf3bn1e/btlsznlZLYsgwscnecHDetTezxVZkrj1a5fzq4urwyu/tLLxO7rM6J
+ /AKt15r7yhlYRDjYpAVU2SpS4wwCb0dKqW8gHE2zBxWJpAhDFycAjCR93sZGRqnrNb48dpgVo3/
+ lfVHs5X/xu9dsGhCepHFk/TM03fst71m+O/p8O+j6uzzthb7Dt4+HxfQ26UtefSJM5fMH6bbe9h
+ qJnIDAA==
+X-Developer-Key: i=adureghello@baylibre.com; a=openpgp;
+ fpr=703CDFAD8B573EB00850E38366D1CB9419AF3953
 
-On Mon, 2025-05-19 at 17:02 +0300, Pop Ioan Daniel wrote:
-> Add support for the AD7405/ADUM770x, a high performance isolated ADC,
-> 1-channel, 16-bit with a second-order =CE=A3-=CE=94 modulator that conver=
-ts an
-> analog input signal into a high speed, single-bit data stream.
->=20
-> Signed-off-by: Pop Ioan Daniel <pop.ioan-daniel@analog.com>
-> ---
+Add gain, offset and phase (as a delay) calibration support, for
+ad7606b, ad7606c16 and ad7606c18.
 
-Hi,
+Calibration is available for devices with software mode capability. 
 
-Just a couple of notes from me...
-=20
-> changes in v4:
-> =C2=A0- changes in "depends on" instead of "select" for IIO_BACKEND in Kc=
-onfig
-> =C2=A0- remove scale_tables variables
-> =C2=A0- remove sample_frequency_tbl, sample_frequency
-> =C2=A0- remove ad7405_fill_samp_freq_table function
-> =C2=A0- rewrite ad7405_get_scale function as suggested
-> =C2=A0- make sampling_frequency read-only
-> =C2=A0- implement IIO_CHAN_INFO_OFFSET as suggested
-> =C2=A0- fix code style
->=20
-> =C2=A0drivers/iio/adc/Kconfig=C2=A0 |=C2=A0 10 ++
-> =C2=A0drivers/iio/adc/Makefile |=C2=A0=C2=A0 1 +
-> =C2=A0drivers/iio/adc/ad7405.c | 250 ++++++++++++++++++++++++++++++++++++=
-+++
-> =C2=A03 files changed, 261 insertions(+)
-> =C2=A0create mode 100644 drivers/iio/adc/ad7405.c
->=20
-> diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-> index ad06cf556785..43af2070e27f 100644
-> --- a/drivers/iio/adc/Kconfig
-> +++ b/drivers/iio/adc/Kconfig
-> @@ -251,6 +251,16 @@ config AD7380
-> =C2=A0	=C2=A0 To compile this driver as a module, choose M here: the modu=
-le will
-> be
-> =C2=A0	=C2=A0 called ad7380.
-> =C2=A0
-> +config AD7405
-> +	tristate "Analog Device AD7405 ADC Driver"
-> +	depends on IIO_BACKEND
-> +	help
-> +	=C2=A0 Say yes here to build support for Analog Devices AD7405, ADUM770=
-1,
-> +	=C2=A0 ADUM7702, ADUM7703 analog to digital converters (ADC).
-> +
-> +	=C2=A0 To compile this driver as a module, choose M here: the module wi=
-ll
-> be
-> +	=C2=A0 called ad7405.
-> +
-> =C2=A0config AD7476
-> =C2=A0	tristate "Analog Devices AD7476 1-channel ADCs driver and other
-> similar devices from AD and TI"
-> =C2=A0	depends on SPI
-> diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
-> index 07d4b832c42e..8115f30b7862 100644
-> --- a/drivers/iio/adc/Makefile
-> +++ b/drivers/iio/adc/Makefile
-> @@ -26,6 +26,7 @@ obj-$(CONFIG_AD7291) +=3D ad7291.o
-> =C2=A0obj-$(CONFIG_AD7292) +=3D ad7292.o
-> =C2=A0obj-$(CONFIG_AD7298) +=3D ad7298.o
-> =C2=A0obj-$(CONFIG_AD7380) +=3D ad7380.o
-> +obj-$(CONFIG_AD7405) +=3D ad7405.o
-> =C2=A0obj-$(CONFIG_AD7476) +=3D ad7476.o
-> =C2=A0obj-$(CONFIG_AD7606_IFACE_PARALLEL) +=3D ad7606_par.o
-> =C2=A0obj-$(CONFIG_AD7606_IFACE_SPI) +=3D ad7606_spi.o
-> diff --git a/drivers/iio/adc/ad7405.c b/drivers/iio/adc/ad7405.c
-> new file mode 100644
-> index 000000000000..fb249c83b87b
-> --- /dev/null
-> +++ b/drivers/iio/adc/ad7405.c
-> @@ -0,0 +1,250 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * Analog Devices AD7405 driver
-> + *
-> + * Copyright 2025 Analog Devices Inc.
-> + */
-> +
-> +#include <linux/clk.h>
-> +#include <linux/module.h>
-> +#include <linux/mod_devicetable.h>
-> +#include <linux/platform_device.h>
-> +#include <linux/property.h>
-> +#include <linux/regulator/consumer.h>
-> +#include <linux/util_macros.h>
-> +
-> +#include <linux/iio/backend.h>
-> +#include <linux/iio/iio.h>
-> +
-> +static const unsigned int ad7405_dec_rates[] =3D {
-> +	4096, 2048, 1024, 512, 256, 128, 64, 32,
-> +};
-> +
-> +struct ad7405_chip_info {
-> +	const char *name;
-> +	struct iio_chan_spec channel;
-> +	const unsigned int full_scale_mv;
-> +};
-> +
-> +struct ad7405_state {
-> +	struct iio_backend *back;
-> +	const struct ad7405_chip_info *info;
-> +	unsigned int ref_frequency;
-> +	unsigned int dec_rate;
-> +};
-> +
-> +static int ad7405_set_dec_rate(struct iio_dev *indio_dev,
-> +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 const struct iio_chan_spec *chan=
-,
-> +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 unsigned int dec_rate)
-> +{
-> +	struct ad7405_state *st =3D iio_priv(indio_dev);
-> +	int ret;
-> +
-> +	ret =3D iio_backend_oversampling_ratio_set(st->back, chan->scan_index,
-> dec_rate);
-> +	if (ret)
-> +		return ret;
-> +
-> +	st->dec_rate =3D dec_rate;
-> +
-> +	return 0;
-> +}
-> +
-> +static int ad7405_get_scale(struct ad7405_state *st, int *val, int *val2=
-)
-> +{
-> +	*val =3D st->info->full_scale_mv;
-> +	*val2 =3D st->info->channel.scan_type.realbits - 1;
-> +
-> +	return IIO_VAL_FRACTIONAL_LOG2;
-> +}
-> +
-> +static int ad7405_read_raw(struct iio_dev *indio_dev,
-> +			=C2=A0=C2=A0 const struct iio_chan_spec *chan, int *val,
-> +			=C2=A0=C2=A0 int *val2, long info)
-> +{
-> +	struct ad7405_state *st =3D iio_priv(indio_dev);
-> +
-> +	switch (info) {
-> +	case IIO_CHAN_INFO_SCALE:
-> +		return ad7405_get_scale(st, val, val2);
-> +	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
-> +		*val =3D st->dec_rate;
+Offset and phase calibration is configurable by sysfs attributes, while
+gain calibration value in ohms must match the external RFilter value,
+when an external RFilter is available, so implemented through a specific
+devicetree "adi,rfilter-ohms" property.
 
-I'm typically picky with this but I really think that we need a lock to be =
-used
-here and in ad7405_set_dec_rate(). Alternatively we could add
-iio_backend_oversampling_ratio_get() but I would likely avoid a new op just=
- for
-this.
+This patchset depends on:
+https://lore.kernel.org/linux-iio/20250505131544.0a7477a2@jic23-huawei/
 
-> +		return IIO_VAL_INT;
-> +	case IIO_CHAN_INFO_SAMP_FREQ:
-> +		*val =3D DIV_ROUND_CLOSEST_ULL(st->ref_frequency, st-
-> >dec_rate);
-> +		return IIO_VAL_INT;
-> +	case IIO_CHAN_INFO_OFFSET:
-> +		*val =3D 2 << (st->info->channel.scan_type.realbits - 1);
-> +		return IIO_VAL_INT;
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +}
-> +
-> +static int ad7405_write_raw(struct iio_dev *indio_dev,
-> +			=C2=A0=C2=A0=C2=A0 struct iio_chan_spec const *chan, int val,
-> +			=C2=A0=C2=A0=C2=A0 int val2, long info)
-> +{
-> +	switch (info) {
-> +	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
-> +		return ad7405_set_dec_rate(indio_dev, chan, val);
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +}
-> +
-> +static int ad7405_read_avail(struct iio_dev *indio_dev,
-> +			=C2=A0=C2=A0=C2=A0=C2=A0 struct iio_chan_spec const *chan,
-> +			=C2=A0=C2=A0=C2=A0=C2=A0 const int **vals, int *type, int *length,
-> +			=C2=A0=C2=A0=C2=A0=C2=A0 long info)
-> +{
-> +	switch (info) {
-> +	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
-> +		*vals =3D ad7405_dec_rates;
-> +		*length =3D ARRAY_SIZE(ad7405_dec_rates);
-> +		*type =3D IIO_VAL_INT;
-> +		return IIO_AVAIL_LIST;
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +}
-> +
-> +static const struct iio_info ad7405_iio_info =3D {
-> +	.read_raw =3D &ad7405_read_raw,
-> +	.write_raw =3D &ad7405_write_raw,
-> +	.read_avail =3D &ad7405_read_avail,
-> +};
-> +
-> +#define AD7405_IIO_CHANNEL {					\
-> +	.type =3D IIO_VOLTAGE,					\
-> +	.info_mask_shared_by_type =3D BIT(IIO_CHAN_INFO_SCALE) |	\
-> +			BIT(IIO_CHAN_INFO_OFFSET),		\
-> +	.info_mask_shared_by_all =3D IIO_CHAN_INFO_SAMP_FREQ |	\
-> +			BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),	\
-> +	.info_mask_shared_by_all_available =3D			\
-> +			BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),	\
-> +	.indexed =3D 1,						\
-> +	.channel =3D 0,						\
-> +	.channel2 =3D 1,						\
-> +	.differential =3D 1,					\
-> +	.scan_index =3D 0,					\
-> +	.scan_type =3D {						\
-> +		.sign =3D 'u',					\
-> +		.realbits =3D 16,					\
-> +		.storagebits =3D 16,				\
-> +	},							\
-> +}
-> +
-> +static const struct ad7405_chip_info ad7405_chip_info =3D {
-> +	.name =3D "AD7405",
-> +	.full_scale_mv =3D 320,
-> +	.channel =3D AD7405_IIO_CHANNEL,
-> +};
-> +
-> +static const struct ad7405_chip_info adum7701_chip_info =3D {
-> +	.name =3D "ADUM7701",
-> +	.full_scale_mv =3D 320,
-> +	.channel =3D AD7405_IIO_CHANNEL,
-> +};
-> +
-> +static const struct ad7405_chip_info adum7702_chip_info =3D {
-> +	.name =3D "ADUM7702",
-> +	.full_scale_mv =3D 64,
-> +	.channel =3D AD7405_IIO_CHANNEL,
-> +};
-> +
-> +static const struct ad7405_chip_info adum7703_chip_info =3D {
-> +	.name =3D "ADUM7703",
-> +	.full_scale_mv =3D 320,
-> +	.channel =3D AD7405_IIO_CHANNEL,
-> +};
-> +
-> +static const char * const ad7405_power_supplies[] =3D {
-> +	"vdd1",	"vdd2",
-> +};
-> +
-> +static int ad7405_probe(struct platform_device *pdev)
-> +{
-> +	struct device *dev =3D &pdev->dev;
-> +	struct iio_dev *indio_dev;
-> +	struct ad7405_state *st;
-> +	struct clk *clk;
-> +	int ret;
-> +
-> +	indio_dev =3D devm_iio_device_alloc(dev, sizeof(*st));
-> +	if (!indio_dev)
-> +		return -ENOMEM;
-> +
-> +	st =3D iio_priv(indio_dev);
-> +
-> +	st->info =3D device_get_match_data(dev);
-> +	if (!st->info)
-> +		return dev_err_probe(dev, -EINVAL, "no chip info\n");
-> +
-> +	ret =3D devm_regulator_bulk_get_enable(dev,
-> ARRAY_SIZE(ad7405_power_supplies),
-> +					=C2=A0=C2=A0=C2=A0=C2=A0 ad7405_power_supplies);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret, "failed to get and enable
-> supplies");
-> +
-> +	clk =3D devm_clk_get_enabled(dev, NULL);
-> +	if (IS_ERR(clk))
-> +		return PTR_ERR(clk);
-> +
-> +	st->ref_frequency =3D clk_get_rate(clk);
-> +	if (!st->ref_frequency)
-> +		return -EINVAL;
-> +
-> +	indio_dev->dev.parent =3D dev;
+Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
+---
+Changes in v7:
+- Fix each wrong commit desc. occurence related to convdelay.
+- Fix ABI documentation with better words.
+- Fix wrong comments in driver source code.
+- Add r_gain default before reading the fdt value.
+- Link to v6: https://lore.kernel.org/r/20250522-wip-bl-ad7606-calibration-v6-0-487b90433da0@baylibre.com
 
-no need for the above
+Changes in v6:
+- exit for error in case of fdt that breaks the dt_schema,
+- add (5/6) patch to fix the above on older code too, 
+- Link to v5: https://lore.kernel.org/r/20250519-wip-bl-ad7606-calibration-v5-0-4054fc7c9f3d@baylibre.com
 
-- Nuno S=C3=A1
+Changes in v5:
+- fix tab/spaces wrong formatting on ABI doc (1/5),
+- fix description in ABI doc (1/5),
+- fix code multiline alignments (3/5),
+- fix calibration offset calculation as oneliner expression (3/5), 
+- Link to v4: https://lore.kernel.org/r/20250508-wip-bl-ad7606-calibration-v4-0-91a3f2837e6b@baylibre.com
+
+Changes in v4:
+- fix ad7606_chan_calib_gain_setup appropriately to be called once.
+- Link to v3: https://lore.kernel.org/r/20250506-wip-bl-ad7606-calibration-v3-0-6eb7b6e72307@baylibre.com
+
+Changes in v3:
+- fix dt_bindings,
+- change sysfs calib_delay to convdelay,
+- fix sysfs documentation accordingly,
+- used u32 for reg and r_gain,
+- used DIV_ROUND_CLOSEST for setting r_gain,
+- minor syntax fixes,
+- Link to v2: https://lore.kernel.org/r/20250502-wip-bl-ad7606-calibration-v2-0-174bd0af081b@baylibre.com
+
+Changes in v2:
+- change phase_delay to calib_delay,
+- fix dt_bindings,
+- fix gain calibarion fdt parsing,
+- fix ad7606c-18 calib offset range,
+- fix calib offset calculation,
+- fix calib gain range,
+- Link to v1: https://lore.kernel.org/r/20250429-wip-bl-ad7606-calibration-v1-0-eb4d4821b172@baylibre.com
+
+---
+Angelo Dureghello (6):
+      Documentation: ABI: IIO: add calibconv_delay documentation
+      iio: core: add ADC delay calibration definition
+      iio: adc: ad7606: add offset and phase calibration support
+      dt-bindings: iio: adc: adi,ad7606: add gain calibration support
+      iio: adc: ad7606: exit for invalid fdt dt_schema properties
+      iio: adc: ad7606: add gain calibration support
+
+ Documentation/ABI/testing/sysfs-bus-iio            |  24 +++
+ .../devicetree/bindings/iio/adc/adi,ad7606.yaml    |  29 +++
+ drivers/iio/adc/ad7606.c                           | 218 ++++++++++++++++++++-
+ drivers/iio/adc/ad7606.h                           |  12 ++
+ drivers/iio/industrialio-core.c                    |   1 +
+ include/linux/iio/types.h                          |   1 +
+ 6 files changed, 279 insertions(+), 6 deletions(-)
+---
+base-commit: 789fd0b1a017f1582fee73effb5cfa740ad6569b
+change-id: 20250429-wip-bl-ad7606-calibration-20a396a60352
+
+Best regards,
+-- 
+Angelo Dureghello <adureghello@baylibre.com>
+
 

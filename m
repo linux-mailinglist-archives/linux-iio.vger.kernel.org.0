@@ -1,78 +1,78 @@
-Return-Path: <linux-iio+bounces-19942-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19943-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE6CDAC3F3D
-	for <lists+linux-iio@lfdr.de>; Mon, 26 May 2025 14:21:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD67BAC3F46
+	for <lists+linux-iio@lfdr.de>; Mon, 26 May 2025 14:22:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ADC35175B90
-	for <lists+linux-iio@lfdr.de>; Mon, 26 May 2025 12:21:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EEAC218880E2
+	for <lists+linux-iio@lfdr.de>; Mon, 26 May 2025 12:22:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18C4D201270;
-	Mon, 26 May 2025 12:21:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9427E200B8B;
+	Mon, 26 May 2025 12:21:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b="LgBdsi46"
+	dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b="Bsk4MkA0"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C294A1FFC4B
-	for <linux-iio@vger.kernel.org>; Mon, 26 May 2025 12:21:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E73720296D
+	for <linux-iio@vger.kernel.org>; Mon, 26 May 2025 12:21:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748262082; cv=none; b=Hd2Cib/nNwkPCssdYSu2z0BeN2cyjkPMEMjEQe5th3/B5gB1CDkE9cj5wtTpNs+KXEi7VJE39qdXyRm9W1hMi1YZs3btFAR83kZ4Ffyj/oVi9Ls9r7G+h6Zkj5ocRLnoRD1hRv8jzzF9TVDLZ2IySLWEOcJAGDmzX4R+dma64+8=
+	t=1748262085; cv=none; b=hGwWRIsWgWN4RYQpeewNnRhpuWkkVGDsq62jqwn+d/Gr3EPw/IDf2rEiVb6idVO3hYzY0Vi/ic8/OORY00OUuHhYlynR2QzxZAIfSBl8qgez4hA9ADXKUs8QDrJpD3+pl2FpgRNfjTyI4FGdl4x5286TAAiyUlntNmmSanJ8V34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748262082; c=relaxed/simple;
-	bh=KWwzDCjjG18fT8xW6cAYE3VLd5IE15tUhmWcO65s6W4=;
+	s=arc-20240116; t=1748262085; c=relaxed/simple;
+	bh=0ngO20W7VIXOPPIpKLH9V0T5vSnlC+XP/HDxogKEcvw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j2DdtBf6+XH7BXs/1rPTJbSvHSmhLLAmj/ws/7mJ3nSX1yUIvoJRKKOnVw9f44YsXdE2m59TMyJlBmYZg9ZddIOCLl1UsicNlMTruGDZ5tUU3X7qEElus3dCGJ2OpvdlstSFGbm2xQIGTUM12cxkDK/2/xTfFSUl2ZSJaqYZWhk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev; spf=pass smtp.mailfrom=tuxon.dev; dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b=LgBdsi46; arc=none smtp.client-ip=209.85.218.49
+	 MIME-Version; b=IzGszkDQzk82JhPbPd1SjcR+1L9RONcYaBjEoC54fJdWnLfea7+9XH6PaamNelsyUJqzIQo10utmF/nMsbjCbq8rxulhq1NzXkQRuuCxyu2VCrmliA0ymhKJWBYLCbUsPhZj1hDj5Nx4V6JKYNbOtvb2B8AnZRicoZrW/+30GGA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev; spf=pass smtp.mailfrom=tuxon.dev; dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b=Bsk4MkA0; arc=none smtp.client-ip=209.85.208.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tuxon.dev
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-ad56cbc7b07so323271666b.0
-        for <linux-iio@vger.kernel.org>; Mon, 26 May 2025 05:21:20 -0700 (PDT)
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-601dfef6a8dso3611814a12.1
+        for <linux-iio@vger.kernel.org>; Mon, 26 May 2025 05:21:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=tuxon.dev; s=google; t=1748262079; x=1748866879; darn=vger.kernel.org;
+        d=tuxon.dev; s=google; t=1748262081; x=1748866881; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=kbJUWdOsVxF3giB8Ozh7+t9RUE5aBB4VpYJNrYUW3+w=;
-        b=LgBdsi46z5+XwnfILszp4c8/5WuDQuBXLmggFxLUq1yvsDgncpyteGnl2BWvAyNMiR
-         pvkh0wMQom90xhNCcjnp4RZ5i3KXUXi61vQeOUKtpCKhD/nFpjVeIHw4atVwdy7hdwX1
-         z5XHLKDKumWau8QxOmzjXVHmOCqLypV4KfIcajFjS7C98LScKpbGyDseqBSKJD0BL89o
-         3s10DCSvSWfnNVE8xE6V5DLn9u4FSF5n/QY5CKl4XdObcV1peaHpskKBmTaF2asCjr29
-         YL63XYdncn69jIRPpk5KdCD2gAGWZNTW5lIr236eSNXShUXsF00Krl93WT59cDPvqBQ6
-         rsYA==
+        bh=kTKtxx+v02w/uCQvxtiKHkLQ6WbqMeNJ42C/cOEagi4=;
+        b=Bsk4MkA0sOfIaC1ZLPxwhW9B1uEY8d+j0fZJAjLzUZwm/kCS+hnglaEBszbAfgXslP
+         in/gibIuW5OXP0lr8WEG4x4QPgopSajeFCpvXREwXqLhQJVvQPWiasoMOEckDvDi3Ryi
+         3eLvduSEMvtg+BNZMGIhDcW8Hy6F7BpYXbA55VL6PGt21UyRPrQqLSlP7M3mGzdMSZVO
+         4ddTi4XANae7mepb4Xj30xm8hHpCcMiXPyZCB0oHZ/Gi/XpAkR02G6rA3fMtmz4oAjAA
+         eZ3NhuQ1BO0xiD+FssUtvLESwRWWwkureqAoM+zBvFMoe0FybxDhzLFR8NkfsNC+KWzP
+         6Z/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748262079; x=1748866879;
+        d=1e100.net; s=20230601; t=1748262081; x=1748866881;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=kbJUWdOsVxF3giB8Ozh7+t9RUE5aBB4VpYJNrYUW3+w=;
-        b=HhqVYZYkVGm2dt+woDQJwSc9kMp4mr5oRkyUDBeHz2sXUBHHEPwK6CmYZl7gl9bTk/
-         Xx3NkYZSuouplRqnM9U13VKXaWp+jFzQoe3Q2qClpofvhSraTv5M7fJmpQ3UDO4lQI4t
-         UEKbwbw1+fbHGFQfuawQeLk+UlEVBGQmQ0E06TWj0ru7CVMc4zALGezU5DiiXVBzSfu+
-         1QLAI3NIu6xwziEFHMz3myYAcBldIdthdsP0KvJlU0oSLU20d2pJ3nOfvv2LH1NgvGJp
-         oOXKi9zR2aIZqN3MvvMbic40e+5F9udMoIL3hwAuyfykIT0PpELHpjRj1WLQ5xu0xloa
-         empw==
-X-Forwarded-Encrypted: i=1; AJvYcCWBMlyrTONzhzzL0xNDXZ31NppOu3pPKFh2riSxM+nUlBCYyC985029h9g+4y8H1zg/I7u6l7uDrFs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzOnhWfMRDsLp4N+E6Qz/+I1oI9bXwCtiv02a0JpilZZnFIe+Fb
-	LoBZy1lpBuVsSn+TRHHg3EI08ecRmjcksz6bIrzWKIw7+5eerSKo3cdKV2uAQpDFdPA=
-X-Gm-Gg: ASbGnctTD8KM9E0hCvzFCMzTpdYB48YR+FBC/qBTXdsId7hsoJiPnWgmt/DOzZRpF+2
-	OEHz3oBYcKNwaXuuLnDBonX7Q9y921y3WCW9v6B7B0/RYLCh/s8NwOqnKOd4jpxKzqKvzbexnbi
-	17xCF7g4Bvx7N95Egmy7Z3cunsekc4dpwLIv3teitlkG1DzpT+hOpzmAT/fyFyv/NsKblWeFIdI
-	xzQ9zZnSzwV1giCcneHp4DVhrUvGgAiBJOvNulM4pSPwH1MK2PlO/k29gshgoPHk2jzG5uGUScq
-	4NRfowKyU4jta1/VHzNddHADF6XPaZutkUIg6bgzOnCWCbEWX3kfPmUDq33decZ/VCwTzNzASvI
-	kF1wE
-X-Google-Smtp-Source: AGHT+IFzn8pObOT2e9m03kGlgIH4jUcwkUCOFOcpQ8RfJK68WHE+CNfFZct1ljVHOLC2VTkxUWLOVg==
-X-Received: by 2002:a17:907:7fa5:b0:ad4:cc66:1524 with SMTP id a640c23a62f3a-ad85b21206amr829348166b.54.1748262078944;
-        Mon, 26 May 2025 05:21:18 -0700 (PDT)
+        bh=kTKtxx+v02w/uCQvxtiKHkLQ6WbqMeNJ42C/cOEagi4=;
+        b=m5JQrU1ekLCXdKb0SijTwo3yutV8qplql/gLabYYPWNfL3NQ7wMmWLIF2d0clISd5b
+         hd/AANdsZdRzriXN4xymqoY4zUBe9whaloXZTDHA5F0x5f34epgZaB8yDoUjBzfr6T8k
+         26u2kH396DzBpr7yGJk0m5zkviEMTSyd8Q2G1WgJJ9p6jQSmAuf8bS3G1OSOEFunlgtE
+         7WzhIW0tyiFmAnDSrAAuUP2KI7bFh3oq7Who0SDr6mUZ2PpyJBBIBXa7IK3vB/VZri72
+         k1A3tGgVa9d7ky6VG4In7krNvCTLCdroq/Xt70W6pUVK05m8FTt8+RXYNaBOhLXmzl0n
+         aQ8A==
+X-Forwarded-Encrypted: i=1; AJvYcCXB+5La2jFMk+N5yHX8brJmvwweNMER73U0WGKWo6mEKGMiXgGprAZHHqOe5qBDOO5UAK9PXfsius4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwI2oK+YUxw7/vCzszbYADXXqY4eVU6G4QkDGJppQaPFdtSTfpz
+	S/B01ySw1/JBa742g12auJn+3S2lVYIW5rXocgZI+ca+ZwB88d4Qkf6fSHSJkztRi0I=
+X-Gm-Gg: ASbGncup79gRFx/J+9vDZdwiJqhCMqU0+7KmIIYFH3NwCbqWmN3ezWPGfv2Yi2gyBds
+	9YmUeqtUuUiU6OLkMugrc4ObYsWyuPnwJR4V9V15jmN3rLLkrUFI5QyVLLBxP8kqjlmQlwbOaSk
+	eU3e7boSr2ZIH3bTiDeubrHs2l3zGc5KY/MC94XBCUaA4J+sa6oLCB+lhnpurydOmhoKscfBMUp
+	SJqDYHKTe9IzmOg4krJ8FQaV0MFmZhDvZXHsx8JJ8Du6SoAgVa8JB4D94VQgCPa92FkwZw+hv6e
+	7LGpzPWvw4raXaQI22DYdY3qq97nZyEhZK6MOmoHGx4YqTbzL9S8GZLbaSL5TEUFIvozwOHtyQz
+	UmTAP
+X-Google-Smtp-Source: AGHT+IFGyTBXRx1OP1elaikpqfnexAwlKW1XYqDCPwkgr0d6u1X7vnNpG3ig1OaG24SWaOx2VsJBvg==
+X-Received: by 2002:a17:907:9812:b0:ac7:3817:d8da with SMTP id a640c23a62f3a-ad85b2121f6mr710370266b.52.1748262080705;
+        Mon, 26 May 2025 05:21:20 -0700 (PDT)
 Received: from claudiu-X670E-Pro-RS.. ([82.78.167.58])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ad52d071c36sm1687630066b.64.2025.05.26.05.21.17
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ad52d071c36sm1687630066b.64.2025.05.26.05.21.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 May 2025 05:21:18 -0700 (PDT)
+        Mon, 26 May 2025 05:21:20 -0700 (PDT)
 From: Claudiu <claudiu.beznea@tuxon.dev>
 X-Google-Original-From: Claudiu <claudiu.beznea.uj@bp.renesas.com>
 To: gregkh@linuxfoundation.org,
@@ -92,9 +92,9 @@ Cc: claudiu.beznea@tuxon.dev,
 	bhelgaas@google.com,
 	geert@linux-m68k.org,
 	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Subject: [PATCH v2 1/2] PM: domains: Add devres variant for dev_pm_domain_attach()
-Date: Mon, 26 May 2025 15:20:53 +0300
-Message-ID: <20250526122054.65532-2-claudiu.beznea.uj@bp.renesas.com>
+Subject: [PATCH v2 2/2] driver core: platform: Use devm_pm_domain_attach()
+Date: Mon, 26 May 2025 15:20:54 +0300
+Message-ID: <20250526122054.65532-3-claudiu.beznea.uj@bp.renesas.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250526122054.65532-1-claudiu.beznea.uj@bp.renesas.com>
 References: <20250526122054.65532-1-claudiu.beznea.uj@bp.renesas.com>
@@ -108,169 +108,118 @@ Content-Transfer-Encoding: 8bit
 
 From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-The dev_pm_domain_attach() function is typically used in bus code alongside
-dev_pm_domain_detach(), often following patterns like:
+On the Renesas RZ/G3S (and other Renesas SoCs, e.g., RZ/G2{L, LC, UL}),
+clocks are managed through PM domains. These PM domains, registered on
+behalf of the clock controller driver, are configured with
+GENPD_FLAG_PM_CLK. In most of the Renesas drivers used by RZ SoCs, the
+clocks are enabled/disabled using runtime PM APIs. The power domains may
+also have power_on/power_off support implemented. After the device PM
+domain is powered off any CPU accesses to these domains leads to system
+aborts.
 
-static int bus_probe(struct device *_dev)
-{
-    struct bus_driver *drv = to_bus_driver(dev->driver);
-    struct bus_device *dev = to_bus_device(_dev);
-    int ret;
+During probe, devices are attached to the PM domain controlling their
+clocks and power. Similarly, during removal, devices are detached from the
+PM domain.
 
-    // ...
+The detachment call stack is as follows:
 
-    ret = dev_pm_domain_attach(_dev, true);
-    if (ret)
-        return ret;
+device_driver_detach() ->
+  device_release_driver_internal() ->
+    __device_release_driver() ->
+      device_remove() ->
+        platform_remove() ->
+	  dev_pm_domain_detach()
 
-    if (drv->probe)
-        ret = drv->probe(dev);
+During driver unbind, after the device is detached from its PM domain,
+the device_unbind_cleanup() function is called, which subsequently invokes
+devres_release_all(). This function handles devres resource cleanup.
 
-    // ...
-}
+If runtime PM is enabled in driver probe via devm_pm_runtime_enable(), the
+cleanup process triggers the action or reset function for disabling runtime
+PM. This function is pm_runtime_disable_action(), which leads to the
+following call stack of interest when called:
 
-static void bus_remove(struct device *_dev)
-{
-    struct bus_driver *drv = to_bus_driver(dev->driver);
-    struct bus_device *dev = to_bus_device(_dev);
+pm_runtime_disable_action() ->
+  pm_runtime_dont_use_autosuspend() ->
+    __pm_runtime_use_autosuspend() ->
+      update_autosuspend() ->
+        rpm_idle()
 
-    if (drv->remove)
-        drv->remove(dev);
-    dev_pm_domain_detach(_dev);
-}
+The rpm_idle() function attempts to resume the device at runtime. However,
+at the point it is called, the device is no longer part of a PM domain
+(which manages clocks and power states). If the driver implements its own
+runtime PM APIs for specific functionalities - such as the rzg2l_adc
+driver - while also relying on the power domain subsystem for power
+management, rpm_idle() will invoke the driver's runtime PM API. However,
+since the device is no longer part of a PM domain at this point, the PM
+domain's runtime PM APIs will not be called. This leads to system aborts on
+Renesas SoCs.
 
-When the driver's probe function uses devres-managed resources that depend
-on the power domain state, those resources are released later during
-device_unbind_cleanup().
+Another identified case is when a subsystem performs various cleanups
+using device_unbind_cleanup(), calling driver-specific APIs in the process.
+A known example is the thermal subsystem, which may call driver-specific
+APIs to disable the thermal device. The relevant call stack in this case
+is:
 
-Releasing devres-managed resources that depend on the power domain state
-after detaching the device from its PM domain can cause failures.
+device_driver_detach() ->
+  device_release_driver_internal() ->
+    device_unbind_cleanup() ->
+      devres_release_all() ->
+        devm_thermal_of_zone_release() ->
+	  thermal_zone_device_disable() ->
+	    thermal_zone_device_set_mode() ->
+	      struct thermal_zone_device_ops::change_mode()
 
-For example, if the driver uses devm_pm_runtime_enable() in its probe
-function, and the device's clocks are managed by the PM domain, then
-during removal the runtime PM is disabled in device_unbind_cleanup() after
-the clocks have been removed from the PM domain. It may happen that the
-devm_pm_runtime_enable() action causes the device to be runtime-resumed.
-If the driver specific runtime PM APIs access registers directly, this
-will lead to accessing device registers without clocks being enabled.
-Similar issues may occur with other devres actions that access device
-registers.
+At the moment the driver-specific change_mode() API is called, the device
+is no longer part of its PM domain. Accessing its registers without proper
+power management leads to system aborts.
 
-Add devm_pm_domain_attach(). When replacing the dev_pm_domain_attach() and
-dev_pm_domain_detach() in bus probe and bus remove, it ensures that the
-device is detached from its PM domain in device_unbind_cleanup(), only
-after all driver's devres-managed resources have been release.
-
-For flexibility, the implemented devm_pm_domain_attach() has 2 state
-arguments, one for the domain state on attach, one for the domain state on
-detach.
+Use devm_pm_domain_attach(). This ensures that driver-specific devm actions
+or reset functions are executed in sequence with PM domain attach
+action or reset and the driver will not end up runtime resuming the device
+when it is not anymore managed by it's PM domain.
 
 Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 ---
 
 Changes in v2:
-- none; this patch is new
+- dropped the devres group open/close approach and use
+  devm_pm_domain_attach()
+- adjusted patch description to reflect the new approach
 
- drivers/base/power/common.c | 59 +++++++++++++++++++++++++++++++++++++
- include/linux/pm_domain.h   |  8 +++++
- 2 files changed, 67 insertions(+)
+ drivers/base/platform.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/base/power/common.c b/drivers/base/power/common.c
-index 781968a128ff..6ef0924efe2e 100644
---- a/drivers/base/power/common.c
-+++ b/drivers/base/power/common.c
-@@ -115,6 +115,65 @@ int dev_pm_domain_attach(struct device *dev, bool power_on)
- }
- EXPORT_SYMBOL_GPL(dev_pm_domain_attach);
+diff --git a/drivers/base/platform.c b/drivers/base/platform.c
+index 075ec1d1b73a..0b2036d4bf4b 100644
+--- a/drivers/base/platform.c
++++ b/drivers/base/platform.c
+@@ -1396,15 +1396,12 @@ static int platform_probe(struct device *_dev)
+ 	if (ret < 0)
+ 		return ret;
  
-+/**
-+ * devm_pm_domain_detach_off - devres action for devm_pm_domain_attach() to
-+ * detach a device and power it off.
-+ * @dev: device to detach.
-+ *
-+ * This function reverse the actions from devm_pm_domain_attach().
-+ * It will be invoked during the remove phase from drivers implicitly.
-+ */
-+static void devm_pm_domain_detach_off(void *dev)
-+{
-+	dev_pm_domain_detach(dev, true);
-+}
-+
-+/**
-+ * devm_pm_domain_detach_on - devres action for devm_pm_domain_attach() to
-+ * detach a device and power it on.
-+ * @dev: device to detach.
-+ *
-+ * This function reverse the actions from devm_pm_domain_attach().
-+ * It will be invoked during the remove phase from drivers implicitly.
-+ */
-+static void devm_pm_domain_detach_on(void *dev)
-+{
-+	dev_pm_domain_detach(dev, false);
-+}
-+
-+/**
-+ * devm_pm_domain_attach - devres-enabled version of dev_pm_domain_attach()
-+ * @dev: Device to attach.
-+ * @attach_power_on: Use to indicate whether we should power on the device
-+ *                   when attaching (true indicates the device is powered on
-+ *                   when attaching).
-+ * @detach_power_off: Used to indicate whether we should power off the device
-+ *                    when detaching (true indicates the device is powered off
-+ *                    when detaching).
-+ *
-+ * NOTE: this will also handle calling dev_pm_domain_detach() for
-+ * you during remove phase.
-+ *
-+ * Returns 0 on successfully attached PM domain, or a negative error code in
-+ * case of a failure.
-+ */
-+int devm_pm_domain_attach(struct device *dev, bool attach_power_on,
-+			  bool detach_power_off)
-+{
-+	int ret;
-+
-+	ret = dev_pm_domain_attach(dev, attach_power_on);
-+	if (ret)
-+		return ret;
-+
-+	if (detach_power_off)
-+		return devm_add_action_or_reset(dev, devm_pm_domain_detach_off,
-+						dev);
-+
-+	return devm_add_action_or_reset(dev, devm_pm_domain_detach_on, dev);
-+}
-+EXPORT_SYMBOL_GPL(devm_pm_domain_attach);
-+
- /**
-  * dev_pm_domain_attach_by_id - Associate a device with one of its PM domains.
-  * @dev: The device used to lookup the PM domain.
-diff --git a/include/linux/pm_domain.h b/include/linux/pm_domain.h
-index 0b18160901a2..ee798b090d17 100644
---- a/include/linux/pm_domain.h
-+++ b/include/linux/pm_domain.h
-@@ -509,6 +509,8 @@ struct device *dev_pm_domain_attach_by_name(struct device *dev,
- int dev_pm_domain_attach_list(struct device *dev,
- 			      const struct dev_pm_domain_attach_data *data,
- 			      struct dev_pm_domain_list **list);
-+int devm_pm_domain_attach(struct device *dev, bool attach_power_on,
-+			  bool detach_power_off);
- int devm_pm_domain_attach_list(struct device *dev,
- 			       const struct dev_pm_domain_attach_data *data,
- 			       struct dev_pm_domain_list **list);
-@@ -539,6 +541,12 @@ static inline int dev_pm_domain_attach_list(struct device *dev,
- 	return 0;
+-	ret = dev_pm_domain_attach(_dev, true);
++	ret = devm_pm_domain_attach(_dev, true, true);
+ 	if (ret)
+ 		goto out;
+ 
+-	if (drv->probe) {
++	if (drv->probe)
+ 		ret = drv->probe(dev);
+-		if (ret)
+-			dev_pm_domain_detach(_dev, true);
+-	}
+ 
+ out:
+ 	if (drv->prevent_deferred_probe && ret == -EPROBE_DEFER) {
+@@ -1422,7 +1419,6 @@ static void platform_remove(struct device *_dev)
+ 
+ 	if (drv->remove)
+ 		drv->remove(dev);
+-	dev_pm_domain_detach(_dev, true);
  }
  
-+static int devm_pm_domain_attach(struct device *dev, bool attach_power_on,
-+				 bool detach_power_off)
-+{
-+	return 0;
-+}
-+
- static inline int devm_pm_domain_attach_list(struct device *dev,
- 					     const struct dev_pm_domain_attach_data *data,
- 					     struct dev_pm_domain_list **list)
+ static void platform_shutdown(struct device *_dev)
 -- 
 2.43.0
 

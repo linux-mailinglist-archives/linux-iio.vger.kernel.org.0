@@ -1,134 +1,246 @@
-Return-Path: <linux-iio+bounces-19954-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19955-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C89EAC4478
-	for <lists+linux-iio@lfdr.de>; Mon, 26 May 2025 22:34:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 628C7AC448F
+	for <lists+linux-iio@lfdr.de>; Mon, 26 May 2025 22:45:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E8823172295
-	for <lists+linux-iio@lfdr.de>; Mon, 26 May 2025 20:34:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E8698169666
+	for <lists+linux-iio@lfdr.de>; Mon, 26 May 2025 20:45:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0342723E325;
-	Mon, 26 May 2025 20:34:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 453761E32DB;
+	Mon, 26 May 2025 20:45:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Lpw4mthy"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gd7sQbpK"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f171.google.com (mail-yb1-f171.google.com [209.85.219.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4EFE1607AC;
-	Mon, 26 May 2025 20:34:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AE1E1A23A6;
+	Mon, 26 May 2025 20:45:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748291682; cv=none; b=RnGLZERMOXrukBH6cHHOFVGxUOmBBseUr3e8G/LytfQXUXdBIbWovhhBrhTceKLen1A6baVU6bBnf76cjhWlTyOGXSsm2c2A5KqW78QCSNjjIBr8QhaLj7YMs+VLJuwz6YldV076UPvT0Cc86/joko/mtO34gZDWzfi9cfAceSI=
+	t=1748292315; cv=none; b=GxHRBqLjbcUuRcc5peFPLmADaujC0uVOf/q7QZZvevH5XIwFwDXkfYjUYpJ34mZZpoCx4BOOzzXl5fTEUlCU5O4gMozQv0MhP/h95ctaSK/+gm9hYRoJ0lU/SvyCQXp7lZ6JHFF5zzRQPxkz+n/XekBn1x0GyIJPjP/vbCsmHdo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748291682; c=relaxed/simple;
-	bh=T40zv2BAbAAN5c8Kb2iLFjCSDe/dOZ4P0aid1xJ+yWk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hPgAHXei+rr3rwaol4cz/LMHdomA0nEgvbzvVRcFih1xqv69ep2r7vDqRTJQcm3k2w4mfUyBtOchcYrbOq9ZXhJbc/yMsNIsr7D0OMFvCwB9dc1pL6nXCo7bFTRBMvOtXAeZ1HU55SaEbVRyxj4x+4ajbs8DK/EXXv5d1tSBhew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Lpw4mthy; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1748291681; x=1779827681;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=T40zv2BAbAAN5c8Kb2iLFjCSDe/dOZ4P0aid1xJ+yWk=;
-  b=Lpw4mthyXX99j6o6Aa9e3Yrhu31IWXlY4YnO5zz++dd3XyWiaeF+7/6O
-   towjigPg61CYmbQdGxU6uHoXGIdVeeFWxHkEsplpGqKVWlzb0K4H8604B
-   MSynP9HXZdnEdI1acTkInFfvcFJNHph44gtHNhlBU2ZjFDurSWXFC4TMR
-   wWTmeF1huTeth+WqGlE7hBSJD1+GgYzoBejD3LgcgmzhrQjGyKIzp72Wm
-   y6J1sgvrm3MOMufiZ/MUdSQao5e/+w24CoxqnDbpM5FJovrN0abNQDCaj
-   lCbCxQFMoDGSMAj2+PEy3Z0TFWDXxaE2J0a2XDQdfOxjlIBSmjBpLUsCG
-   A==;
-X-CSE-ConnectionGUID: /LTgkgTqQzerOU38DCNQvw==
-X-CSE-MsgGUID: MSYZ78FsR6O5XZAH8RKOnw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11445"; a="54076956"
-X-IronPort-AV: E=Sophos;i="6.15,316,1739865600"; 
-   d="scan'208";a="54076956"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 May 2025 13:34:40 -0700
-X-CSE-ConnectionGUID: thHqHVQNTF6ZChP9KB98xw==
-X-CSE-MsgGUID: S+67gckpT0q9fyK79kpnpw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,316,1739865600"; 
-   d="scan'208";a="147746767"
-Received: from lkp-server01.sh.intel.com (HELO 1992f890471c) ([10.239.97.150])
-  by orviesa005.jf.intel.com with ESMTP; 26 May 2025 13:34:36 -0700
-Received: from kbuild by 1992f890471c with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uJeWn-000ShA-25;
-	Mon, 26 May 2025 20:34:33 +0000
-Date: Tue, 27 May 2025 04:34:27 +0800
-From: kernel test robot <lkp@intel.com>
-To: Claudiu <claudiu.beznea@tuxon.dev>, gregkh@linuxfoundation.org,
-	rafael@kernel.org, dakr@kernel.org, len.brown@intel.com,
-	pavel@kernel.org, ulf.hansson@linaro.org, jic23@kernel.org,
-	daniel.lezcano@linaro.org, dmitry.torokhov@gmail.com
-Cc: oe-kbuild-all@lists.linux.dev, claudiu.beznea@tuxon.dev,
-	linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
-	linux-iio@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-	bhelgaas@google.com, geert@linux-m68k.org,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Subject: Re: [PATCH v2 1/2] PM: domains: Add devres variant for
- dev_pm_domain_attach()
-Message-ID: <202505270434.ft8ekK9H-lkp@intel.com>
-References: <20250526122054.65532-2-claudiu.beznea.uj@bp.renesas.com>
+	s=arc-20240116; t=1748292315; c=relaxed/simple;
+	bh=8XlFPKAgRZu8iNf7wu/BNssYGbs3cVElibPBDElcwUs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=CoTOxQYKPAeNEack0ecsxWpTIGvedSKgThZVRAMTDQA/ov6gQ9XXwLIXzCphe6zi+0Y18p8M8eFwf1C0+USt++f7GN+8CDS/gAJaqtUHNVM8C7GY5NcsUwGtQhb9RsXlimJDnQMFnyS0SFmMJx/6GmcDpnRVbkDGqrY/SqRg4Qg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gd7sQbpK; arc=none smtp.client-ip=209.85.219.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yb1-f171.google.com with SMTP id 3f1490d57ef6-e7db5b0ddb1so139592276.2;
+        Mon, 26 May 2025 13:45:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1748292312; x=1748897112; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Rqf564IOkfuJ6413mTRFf6vGhtbkwIX3nVlwVv5RmSQ=;
+        b=gd7sQbpKACMcly2FkJKdWqcF8eAohKD8pghxCtrLuZ4aSEOhmEA/Xv6VixN/83nJGz
+         2fYAdVeZ11Y2TNvtxy9POd2BKHVKtywSXReiwQUDyY0X5rSSUmXYgrQdI3L2zjvZ0bhb
+         MbrjctrHG/U34c4mdlExXf+KxChmF6a/A3PLfsVIgRloWqrwqa+7HBMpdgJB+/syzvWb
+         3zYhYLFd4Kl4dlkXvycX3ZROZ/xnJC5WZ82Tf5sGW3S46GtIFMhqT4kVJ7XOlEXvPAsc
+         EgsOUEK8+2P+8za8dBXdIYG2gXEFm7cvw4KPVPDHUoGpXUJJKSw1DWTkb/+EBU85gVqh
+         VNdw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748292312; x=1748897112;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Rqf564IOkfuJ6413mTRFf6vGhtbkwIX3nVlwVv5RmSQ=;
+        b=Hm9TAcnzwiXhwgBTcSxV9wEnzE6Nfu8nmDDc9OabE2dUExoJz2wUshHXlBqjyvBpcY
+         XS5xlC4Rb2km729SmQjoCZbkEUX0fi4Z6k9jgqfd2EQ35gL+UnivDPdFsmlS4m6HO4kC
+         OuHYNWj6qCI5bOjq3LO2JlkmJuur/vSheGuqUyIYCi+hB46RKyfkDcWzgUFLvBTQ9X8u
+         I1CIEXtrVWKQM85LWINosdLyfTyGk681TKN2Km2UTar734QTPcLuOVSnpiOjV+HWiG/z
+         aQse6NgZ9YwSrFfZYpH51KJ33xcZJcEqH2QQwQeBJqthkIoToOJ4LTNrC3pd8U47bZg2
+         nlaA==
+X-Forwarded-Encrypted: i=1; AJvYcCW09K8Rrf5kwmBm3qHRsN8vGADGMtSpuBDCNyU5QWURZOtFAgCJIqc44TmiEt1gglATA7Pc8SJYJblnBppO@vger.kernel.org, AJvYcCWaGCL/bDsZfopShcObuyGgUPgjrPoGOLdvRRegJn1a0ANfmWpb+flz4loErG+/sea52PEDvREWjWSi@vger.kernel.org, AJvYcCXWH2OZfaRJX5X2JFIjPptUkLh/M78NjCTEr5NYV/v5Kv6h/2Y0Hy6C0IpalILC2goncNcCKgZk0Dc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzcnLESfn2GSh86iSnBRIbmdMvfEf0EfieAGHRvLXWg3NR7gQqb
+	VVomWObgeBU/uquAUYGgVWXMWESsX2eS/I2hJaEO0vBtEGD0jAB7vxkxliUhypSYJtl+sgrPg13
+	1FQPyUOAErkLJMRmnS6uM3sguHh1MbFCCM98j
+X-Gm-Gg: ASbGncvuAFdYSw95NDaMYQVmikBJlp72DlReqlRQG0aXNlpLaMemz0Hq1arTQm3EvL4
+	w+PFPbVJbEFHjyvxr6tOemLwPXFg1QhOgAJACCEWh3pXV0A2Ca8A8b2biWOutwhCX/r6kuATic+
+	jJAOp9VNxHzu+NvKnenAC9QS4oBZnallHoLWfUamZD22I=
+X-Google-Smtp-Source: AGHT+IGdBy5zw4tTzbnTdoJ6ppl77oUzVRKJu8Q+Tu2nce+ksoqH7+b9/m0gtrRcpaYpMh/JI1/29vanzAd5xvFReh8=
+X-Received: by 2002:a05:690c:4d03:b0:70e:4745:33d4 with SMTP id
+ 00721157ae682-70e474534d2mr39344047b3.7.1748292312213; Mon, 26 May 2025
+ 13:45:12 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250526122054.65532-2-claudiu.beznea.uj@bp.renesas.com>
+References: <20250523223523.35218-1-l.rubusch@gmail.com> <20250523223523.35218-5-l.rubusch@gmail.com>
+ <20250525132216.0bbc7067@jic23-huawei>
+In-Reply-To: <20250525132216.0bbc7067@jic23-huawei>
+From: Lothar Rubusch <l.rubusch@gmail.com>
+Date: Mon, 26 May 2025 22:44:35 +0200
+X-Gm-Features: AX0GCFuNL-6WiLGB2hsMgCme7HXIhsANbBf-3eOD4wpjLlWpAt_OeqCzXs3Td90
+Message-ID: <CAFXKEHa5pK_wc+JJR1EWtJt=Z5Dwj-+rKD9+W-sEMn7uxFNvcg@mail.gmail.com>
+Subject: Re: [PATCH v3 04/12] iio: accel: adxl313: make use of regmap cache
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org, corbet@lwn.net, 
+	lucas.p.stankus@gmail.com, lars@metafoo.de, Michael.Hennerich@analog.com, 
+	linux-iio@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Claudiu,
+Hi,
 
-kernel test robot noticed the following build warnings:
+On Sun, May 25, 2025 at 2:22=E2=80=AFPM Jonathan Cameron <jic23@kernel.org>=
+ wrote:
+>
+> On Fri, 23 May 2025 22:35:15 +0000
+> Lothar Rubusch <l.rubusch@gmail.com> wrote:
+>
+> > Setup regmap cache to cache register configuration. This is a preparato=
+ry
+> > step for follow up patches, to allow easy acces to the cached
+> > configuration.
+>
+> I think this stands on it's own given registers like the calibbias
+> are already both written and read from.  So I'd generalize the justificat=
+ion
+> to simply reducing unnecessary bus traffic.
+>
 
-[auto build test WARNING on rafael-pm/linux-next]
-[also build test WARNING on rafael-pm/bleeding-edge driver-core/driver-core-testing driver-core/driver-core-next driver-core/driver-core-linus amd-pstate/linux-next amd-pstate/bleeding-edge linus/master v6.15 next-20250526]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+I (think I) need regmap cache especially for activity / inactivity.
+For instance, using cached settings should make it easier to verify
+what was enabled when evaluating incomming interrupts. I will rework
+the commit message here.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Claudiu/PM-domains-Add-devres-variant-for-dev_pm_domain_attach/20250526-202318
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
-patch link:    https://lore.kernel.org/r/20250526122054.65532-2-claudiu.beznea.uj%40bp.renesas.com
-patch subject: [PATCH v2 1/2] PM: domains: Add devres variant for dev_pm_domain_attach()
-config: arm-randconfig-002-20250527 (https://download.01.org/0day-ci/archive/20250527/202505270434.ft8ekK9H-lkp@intel.com/config)
-compiler: arm-linux-gnueabi-gcc (GCC) 7.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250527/202505270434.ft8ekK9H-lkp@intel.com/reproduce)
+Best,
+L
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202505270434.ft8ekK9H-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
-   In file included from drivers/amba/bus.c:15:0:
->> include/linux/pm_domain.h:534:12: warning: 'devm_pm_domain_attach' defined but not used [-Wunused-function]
-    static int devm_pm_domain_attach(struct device *dev, bool attach_power_on,
-               ^~~~~~~~~~~~~~~~~~~~~
-
-
-vim +/devm_pm_domain_attach +534 include/linux/pm_domain.h
-
-   533	
- > 534	static int devm_pm_domain_attach(struct device *dev, bool attach_power_on,
-   535					 bool detach_power_off)
-   536	{
-   537		return 0;
-   538	}
-   539	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+> Jonathan
+>
+> >
+> > Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
+> > ---
+> >  drivers/iio/accel/adxl313.h      |  2 ++
+> >  drivers/iio/accel/adxl313_core.c | 17 +++++++++++++++++
+> >  drivers/iio/accel/adxl313_i2c.c  |  6 ++++++
+> >  drivers/iio/accel/adxl313_spi.c  |  6 ++++++
+> >  4 files changed, 31 insertions(+)
+> >
+> > diff --git a/drivers/iio/accel/adxl313.h b/drivers/iio/accel/adxl313.h
+> > index 72f624af4686..fc937bdf83b6 100644
+> > --- a/drivers/iio/accel/adxl313.h
+> > +++ b/drivers/iio/accel/adxl313.h
+> > @@ -54,6 +54,8 @@ extern const struct regmap_access_table adxl312_writa=
+ble_regs_table;
+> >  extern const struct regmap_access_table adxl313_writable_regs_table;
+> >  extern const struct regmap_access_table adxl314_writable_regs_table;
+> >
+> > +bool adxl313_is_volatile_reg(struct device *dev, unsigned int reg);
+> > +
+> >  enum adxl313_device_type {
+> >       ADXL312,
+> >       ADXL313,
+> > diff --git a/drivers/iio/accel/adxl313_core.c b/drivers/iio/accel/adxl3=
+13_core.c
+> > index 06a771bb4726..0c893c286017 100644
+> > --- a/drivers/iio/accel/adxl313_core.c
+> > +++ b/drivers/iio/accel/adxl313_core.c
+> > @@ -46,6 +46,23 @@ const struct regmap_access_table adxl314_readable_re=
+gs_table =3D {
+> >  };
+> >  EXPORT_SYMBOL_NS_GPL(adxl314_readable_regs_table, IIO_ADXL313);
+> >
+> > +bool adxl313_is_volatile_reg(struct device *dev, unsigned int reg)
+> > +{
+> > +     switch (reg) {
+> > +     case ADXL313_REG_DATA_AXIS(0):
+> > +     case ADXL313_REG_DATA_AXIS(1):
+> > +     case ADXL313_REG_DATA_AXIS(2):
+> > +     case ADXL313_REG_DATA_AXIS(3):
+> > +     case ADXL313_REG_DATA_AXIS(4):
+> > +     case ADXL313_REG_DATA_AXIS(5):
+> > +     case ADXL313_REG_FIFO_STATUS:
+> > +             return true;
+> > +     default:
+> > +             return false;
+> > +     }
+> > +}
+> > +EXPORT_SYMBOL_NS_GPL(adxl313_is_volatile_reg, "IIO_ADXL313");
+> > +
+> >  static int adxl312_check_id(struct device *dev,
+> >                           struct adxl313_data *data)
+> >  {
+> > diff --git a/drivers/iio/accel/adxl313_i2c.c b/drivers/iio/accel/adxl31=
+3_i2c.c
+> > index a4cf0cf2c5aa..e8636e8ab14f 100644
+> > --- a/drivers/iio/accel/adxl313_i2c.c
+> > +++ b/drivers/iio/accel/adxl313_i2c.c
+> > @@ -21,6 +21,8 @@ static const struct regmap_config adxl31x_i2c_regmap_=
+config[] =3D {
+> >               .rd_table       =3D &adxl312_readable_regs_table,
+> >               .wr_table       =3D &adxl312_writable_regs_table,
+> >               .max_register   =3D 0x39,
+> > +             .volatile_reg   =3D adxl313_is_volatile_reg,
+> > +             .cache_type     =3D REGCACHE_MAPLE,
+> >       },
+> >       [ADXL313] =3D {
+> >               .reg_bits       =3D 8,
+> > @@ -28,6 +30,8 @@ static const struct regmap_config adxl31x_i2c_regmap_=
+config[] =3D {
+> >               .rd_table       =3D &adxl313_readable_regs_table,
+> >               .wr_table       =3D &adxl313_writable_regs_table,
+> >               .max_register   =3D 0x39,
+> > +             .volatile_reg   =3D adxl313_is_volatile_reg,
+> > +             .cache_type     =3D REGCACHE_MAPLE,
+> >       },
+> >       [ADXL314] =3D {
+> >               .reg_bits       =3D 8,
+> > @@ -35,6 +39,8 @@ static const struct regmap_config adxl31x_i2c_regmap_=
+config[] =3D {
+> >               .rd_table       =3D &adxl314_readable_regs_table,
+> >               .wr_table       =3D &adxl314_writable_regs_table,
+> >               .max_register   =3D 0x39,
+> > +             .volatile_reg   =3D adxl313_is_volatile_reg,
+> > +             .cache_type     =3D REGCACHE_MAPLE,
+> >       },
+> >  };
+> >
+> > diff --git a/drivers/iio/accel/adxl313_spi.c b/drivers/iio/accel/adxl31=
+3_spi.c
+> > index 9a16b40bff34..68e323e81aeb 100644
+> > --- a/drivers/iio/accel/adxl313_spi.c
+> > +++ b/drivers/iio/accel/adxl313_spi.c
+> > @@ -24,6 +24,8 @@ static const struct regmap_config adxl31x_spi_regmap_=
+config[] =3D {
+> >               .max_register   =3D 0x39,
+> >               /* Setting bits 7 and 6 enables multiple-byte read */
+> >               .read_flag_mask =3D BIT(7) | BIT(6),
+> > +             .volatile_reg   =3D adxl313_is_volatile_reg,
+> > +             .cache_type     =3D REGCACHE_MAPLE,
+> >       },
+> >       [ADXL313] =3D {
+> >               .reg_bits       =3D 8,
+> > @@ -33,6 +35,8 @@ static const struct regmap_config adxl31x_spi_regmap_=
+config[] =3D {
+> >               .max_register   =3D 0x39,
+> >               /* Setting bits 7 and 6 enables multiple-byte read */
+> >               .read_flag_mask =3D BIT(7) | BIT(6),
+> > +             .volatile_reg   =3D adxl313_is_volatile_reg,
+> > +             .cache_type     =3D REGCACHE_MAPLE,
+> >       },
+> >       [ADXL314] =3D {
+> >               .reg_bits       =3D 8,
+> > @@ -42,6 +46,8 @@ static const struct regmap_config adxl31x_spi_regmap_=
+config[] =3D {
+> >               .max_register   =3D 0x39,
+> >               /* Setting bits 7 and 6 enables multiple-byte read */
+> >               .read_flag_mask =3D BIT(7) | BIT(6),
+> > +             .volatile_reg   =3D adxl313_is_volatile_reg,
+> > +             .cache_type     =3D REGCACHE_MAPLE,
+> >       },
+> >  };
+> >
+>
 

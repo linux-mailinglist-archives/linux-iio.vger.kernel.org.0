@@ -1,142 +1,137 @@
-Return-Path: <linux-iio+bounces-19957-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19958-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A70D7AC458C
-	for <lists+linux-iio@lfdr.de>; Tue, 27 May 2025 01:34:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D4BEAC458D
+	for <lists+linux-iio@lfdr.de>; Tue, 27 May 2025 01:37:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5A6E31897C77
-	for <lists+linux-iio@lfdr.de>; Mon, 26 May 2025 23:34:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 081253B8E61
+	for <lists+linux-iio@lfdr.de>; Mon, 26 May 2025 23:37:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8B051A8412;
-	Mon, 26 May 2025 23:34:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B8221F866B;
+	Mon, 26 May 2025 23:37:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lLLSifDI"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b0BSZ9x9"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E34A4189F5C
-	for <linux-iio@vger.kernel.org>; Mon, 26 May 2025 23:33:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23D32198E91;
+	Mon, 26 May 2025 23:37:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748302441; cv=none; b=Jyx39CI/WjtH8nmTEDvfg+3PpmYJvv5tBmTCjzX0Bz8v/giaXSpQpZTpRH0sWhx03FynY8JG8cc+wymTNwiUNiTqMb+iDOqddqJelnf/DBTB/QCwZosGXorbv5rRXXG3jiSLZfjtE2r61GZwjv3rWNuZbUZ1Z6WIleUWv9Tdq/A=
+	t=1748302646; cv=none; b=nYxXCdDAWw0UNykKyEaS3KATWlsgrKzVtfNF3pjSKGq64RUgKtbGRmhQJNOy5FScANtazKKN4FKcA8yGNBSBE059F4NVqvy7DJAQVic+0WrkJTQQQg4ALdZt8eLZz7xJAPa/kpT5K6T6CyO6bwtUV/OdAKFKdm3QnLFQTmS7u0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748302441; c=relaxed/simple;
-	bh=nHZrcBzkZJEDn6Zi+e8JAjrzOGOeKqmF3xJsSAD0z9o=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=niGQ+E+4BzWyiyqx7uTmraJWPWvTYyPiG5lh4tAEPL6DPeVRQXNfgzVA5nOuQuGFqELentzxr1LE0se2yDSSrtALD/Ako49c+onT5GmElNHD9a611n5Z4LBQGjNTaLjrB6cAtBcf57OcNTdcc04JfWm1tSLqp6A7JEMuHdFOjPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lLLSifDI; arc=none smtp.client-ip=209.85.218.43
+	s=arc-20240116; t=1748302646; c=relaxed/simple;
+	bh=Io1s0ucwQzNq4LIHtzo99IEww7I3qEbMJYor71jOtuM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Y68wSfMSnj9prO5CqCWeD5FcyUmMC+6rCf6bsWqdcIB8hFF01V0taN0PazvcyDSvojp10OwPJGU6PE2p4KqRJIsQxh7DkPZykiSxz8TOVEkcNDe2PeNDEnzc42sXy9ZWALAFpnJXMo8/KYkEt4ComR2xplnolaRazCTMXl0ZsCs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=b0BSZ9x9; arc=none smtp.client-ip=209.85.128.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-acae7e7587dso347769666b.2
-        for <linux-iio@vger.kernel.org>; Mon, 26 May 2025 16:33:59 -0700 (PDT)
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-442f4a3a4d6so18549915e9.0;
+        Mon, 26 May 2025 16:37:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1748302438; x=1748907238; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Lac+FdAY3KiBltEEEow5TInPKl0xdlSVDqOAr8z4jjc=;
-        b=lLLSifDI7pY7lc5iBNn3FBnQENb6lESNAcUQPT4nkNzzkrisl6K6ZNg7sctNlfRPI0
-         U9NmXXjW8syOoA0BFkvQF5uaNNiofLRgiK/WmfbRec1Qjo9JOFBNxNUCOiq4b9mSNW/u
-         om5p09bogy7mii60VSSRBDbltUCIhxYudVP2vuN2ybQcVerEIcyyOyxE9idlXMz6MzFe
-         KDanmJiWOO4FpbKXa9jTu3D+EyaEg7ZmleLWj3hnLrTdnHDJQC9JnW2bvSM2LYapKotN
-         w3ivE4ftwf6Z6WngQz1r95OXFwMIrbjlBvE0L8maXes3blzUIGKQlITMe7pjV93OyLAf
-         ByPg==
+        d=gmail.com; s=20230601; t=1748302643; x=1748907443; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Io1s0ucwQzNq4LIHtzo99IEww7I3qEbMJYor71jOtuM=;
+        b=b0BSZ9x9l46n1aTDtbUYtwgTcIoAOJEkk87FNJ7dwkX8wPFdVTBxKdXsgzi8oTzEiz
+         0KHnRb476XKZ7coiFA9hAaT2Sw2xLYgaGgRj/rSFI5hjwRKPI86lzz4dbZz1MEia0tGQ
+         xKG+3i53E2NJh7xWoghYICiCwQ09kQ7ZvPirRV2jQKA9DslXNTLVpK+YRpNH4SqrlmFO
+         AqqIuXUu0wm23PRgVMxo3YWp14yrLHNRC0G0CRN6S12EVQsXpyh8WPQVsPAm6xP5Es6q
+         xUGCAlwVWUzIH+iiD/T+Yn7N9nAuBPcCu/v2Xzl21yNXxJMA+ddr2RZDeMEW7jbQ+KP4
+         ogGw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748302438; x=1748907238;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Lac+FdAY3KiBltEEEow5TInPKl0xdlSVDqOAr8z4jjc=;
-        b=KB9fSXMMWyuWoKJWu21iGKuOUaB+HK6dYV9t5qDH6NvEoR93mEO2xLt1lIdqll5h6Q
-         HwpLpSQdtkIgbTiWek02vbaEJ15cTBlZpqkEIGcFwEX9QOVvamFInnQpI0Vswj4uvYRb
-         nhgdf2xd01fTWSpyjv9655fFUVGR1GXNmt9ctxU6grTbW+r799uYi9MXaDbtgvIguQFC
-         fPQgj2hx0vxq8lmDE2ErsDWjG0PzeXBj0Na8Wsx2kYIDNgacE1yoBOR/5u30duoycrEh
-         gQU/HBqUlVslZxZLQJ42lm8FhFymO5RIWlNTLK5VbSJsjseWiiPKt58By+MCPbGExroA
-         PmDA==
-X-Forwarded-Encrypted: i=1; AJvYcCXwl9789umt9A6R2iSvb8CqZ1png/wfw8pzyjhRZ6zU8KFVcU9OsNBIqZ9fkN26UTfChMlsN0uGWtk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx3fxkDmS92C3Ehq0zyF4PYVZ5geSpp9JGzLa+s9W3mOSXTeKBj
-	F07WNZf8U1xxWxXkzXcO29vYnPN+bwtp5iLWGArxapG30fwo2HMS2h7opvfzWyEVrDCsxcuxCvR
-	+VwuesKSdELD5zQlVb55MPZnUzPyNmi0=
-X-Gm-Gg: ASbGnct9tEGgkbldgcNF2l73GX/MbqWyHFrnRVvpcr490F/uInaBTMR4Qhft5jccsHO
-	VcfUPvsEmmqgCGnavVQ+zyt7eSOXHpqtZp+sol2n3TRsY7KvIlrDMQAgl1Avjq73oLMwAJvDmNR
-	t3j/7C0qXHYYhPEnSt4ZtT4jj3ewyauRyhOw==
-X-Google-Smtp-Source: AGHT+IEQr8erVZF8rQUK1QgYG6v4PuD4CTfmm39vFtuO3hka/Z+m4Bh0YLd2iG19w0s2D/1Y1qfSokMpogziEDANpDM=
-X-Received: by 2002:a17:907:7252:b0:ad2:4d69:6da5 with SMTP id
- a640c23a62f3a-ad85b213577mr834295366b.57.1748302438014; Mon, 26 May 2025
- 16:33:58 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1748302643; x=1748907443;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Io1s0ucwQzNq4LIHtzo99IEww7I3qEbMJYor71jOtuM=;
+        b=sKlrNmbrK5JFVx+84N6VDpGxDUD0+hfs1q7Puog+lqX4bTkXtF7C1opnyEwn3B12E1
+         1l9WW1Gp5enW/kEytguySteZ1MdXPuOVFvEW0+M9UME/CPikPTYEJvNGkcx5U1cEcK3h
+         3EKVIxQoBMm4vcdPabISQwqmz8eMM9dZliJzf6uMSe+VIirCmyufA2SJoSCYjJRbcHgp
+         jHrY7b12xwUtdl1aW9i6fjQCusIut6ViXGl3T0OG5YJctvzNJ6iL5nELsxYtwBuEE6A9
+         4yftQ7UA7uqfXYrWz5f9+sUzJnlNL29HqbPIE8kxEfR26c4sG6Z+Lwp9S1StXe3uJGSR
+         PLuQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUVWf3Kz0IjL5UIkEZcdP11haBPWLX0Ag5pyipx7w8z+UqbiJxTHrxKP+XrxsZIX8QD8c3fquIOEEI=@vger.kernel.org, AJvYcCW27LU6r9hXXVyC8Z0IcIQMf/UxKgGtDHrnbDwwPgyFf7J3nE4qEM4SbAVfxdTrlnA3UjwCEl9h3kb10eZz@vger.kernel.org
+X-Gm-Message-State: AOJu0YyKvI8Phq6GADJhZDZyDJQpN7LJddy5lpQt3Px3wLfCXqV/Ltc8
+	51s1297JfS3NqPu1do3VcX79e+JkbcT75V1AbXc14hpqKmNvApeF+KgS
+X-Gm-Gg: ASbGnctCuxQ20zrsSHdcfx+vEqOhaXhovXxIKCiTyFG9otWMpYlgGwhOqnbodocX+sI
+	vbgZoXRseBnl5DAD5PMOJ7wTfzZnByU4b4HJwaVa+0CO/mbg4iPw400cyywIhKIaxKALi+nHGGw
+	oy/fGvov8M1r2905OLp3h3dRA+8d9CPgLW9ALyEXrMfKDY6B23GKSEu5j3y4f3jt0SISOVDhzc1
+	JgLZpZCDlACuodb2RLrBz2eItFVa8bnrFky7z442F4jN86cy8e26hCqwed3HdPMPygBzyB/hS5r
+	J5tRaXz+XmxSyh9+cA9QoO4CLY77Ndu6XYYmv5Wkqu/yvTgulVtXrNgGYW2bDQA=
+X-Google-Smtp-Source: AGHT+IEeW10VyZ+dmhwNbjqDFFTTiEqy50O9g1oMePmSq7t+DvTZrAFmo26tTi90MSvFkL28S0mWEw==
+X-Received: by 2002:a05:600c:4f46:b0:442:7c40:fda4 with SMTP id 5b1f17b1804b1-44b516966damr119157985e9.1.1748302643043;
+        Mon, 26 May 2025 16:37:23 -0700 (PDT)
+Received: from [192.168.1.121] ([176.206.99.211])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-447f1ef035csm245570305e9.11.2025.05.26.16.37.21
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 26 May 2025 16:37:21 -0700 (PDT)
+Message-ID: <b552663f-b3f3-44b0-8042-533d249dcabe@gmail.com>
+Date: Tue, 27 May 2025 01:37:21 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250422191114.32832-1-nattanferreira58@gmail.com> <222efff5-38d6-483f-8e5b-b0f07cb98130@tweaklogic.com>
-In-Reply-To: <222efff5-38d6-483f-8e5b-b0f07cb98130@tweaklogic.com>
-From: Nattan Ferreira <nattanferreira58@gmail.com>
-Date: Mon, 26 May 2025 20:33:46 -0300
-X-Gm-Features: AX0GCFs896RXK5FcBSkFaT-uFshaPf2wmEUkP0XsM2XVXVwXsQak3UQKUl37YTg
-Message-ID: <CAKj1jXo2nYWBeUFr62h+Y4C=hfebaMP3gxVWkH-eaVpCi=JYng@mail.gmail.com>
-Subject: Re: [PATCH v3] iio: light: apds9306: Refactor threshold get/set
- functions to use helper
-To: Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
-Cc: jic23@kernel.org, lucasantonio.santos@usp.br, linux-iio@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/2] iio: fix suspend and resume triggering for bmi160
+ and bmi270
+To: Andy Shevchenko <andy@kernel.org>
+Cc: Jonathan Cameron <jic23@kernel.org>, David Lechner
+ <dlechner@baylibre.com>, =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
+ Alex Lanzano <lanzano.alex@gmail.com>,
+ =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+ Peter Zijlstra <peterz@infradead.org>, Danila Tikhonov <danila@jiaxyga.com>,
+ Greg KH <gregkh@linuxfoundation.org>,
+ "Derek J . Clark" <derekjohn.clark@gmail.com>,
+ =?UTF-8?Q?Philip_M=C3=BCller?= <philm@manjaro.org>,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250525142530.71955-1-benato.denis96@gmail.com>
+ <aDTHzs5AtiNmYIAF@smile.fi.intel.com>
+ <86d1b019-faec-40ab-b850-8fad22dc4321@gmail.com>
+ <aDTMseDPCGoTRJR_@smile.fi.intel.com>
+Content-Language: en-US, it-IT, en-US-large
+From: Denis Benato <benato.denis96@gmail.com>
+In-Reply-To: <aDTMseDPCGoTRJR_@smile.fi.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi Subhajit,
 
-Thanks for the feedback.
+On 5/26/25 22:18, Andy Shevchenko wrote:
+> On Mon, May 26, 2025 at 10:13:00PM +0200, Denis Benato wrote:
+>> On 5/26/25 21:58, Andy Shevchenko wrote:
+>>> On Sun, May 25, 2025 at 04:25:28PM +0200, Denis Benato wrote:
+>>>> Two imu devices bmi160 and bmi270 are similar to bmi323, with the same bug and
+>>>> a common usecase: fix the aforementioned bug about triggering not resuming
+>>>> after sleep in the same way it was solved for the bmi323 device driver.
+>>>>
+>>>> The bmi270 patch has been tested on a device where the device irq pin
+>>>> is connected to the CPU ensuring it doesn't cause harm to devices that
+>>>> do not use hrtimer or other external triggers.
+>>>>
+>>>> Changelog from v1 [1]
+>>>> - include linux/pm.h where needed
+>>>> - used "Closed" to reference the solved issue for each driver
+>>>> - merged two lines into one (on both drivers)
+>>> I got this series twice without any (?) difference in the versions. Care to
+>>> explain what's going on?
+>>>
+>> I am sorry: mails were not being sent to the main lkml nor the iio mailing list and so
+>> I resent to everybody, otherwise doing "answer to all" would have created a mess
+>> where discussions would get lost.
+> Always mention this kind of things in a cover letter when resending and
+> ideally add a word 'resend' to the Subject.
+>
+Thank you. I wasn't sure if using RESEND was a good idea because I have only read about it being mentioned in
+the context of the original being lost and was thinking about the mailing list receiving a RESEND without the original one.
+I will keep this in mind for the future, hoping I won't do this silly mistake again.
 
-I=E2=80=99ll send a new version with an updated commit message to better
-reflect the intent of the change, focusing on clarity and code
-consistency rather than line count reduction.
-
-Best regards,
-Nattan
-
-On Thu, Apr 24, 2025 at 10:03=E2=80=AFAM Subhajit Ghosh
-<subhajit.ghosh@tweaklogic.com> wrote:
->
-> Hi Nattan, Lucas,
->
-> > Refactor the apds9306_event_thresh_get and apds9306_event_thresh_set
-> > functions to use a helper function (apds9306_get_thresh_reg) for obtain=
-ing the
-> > correct register based on the direction of the event. This improves cod=
-e
-> > readability,minimize the number of lines  and maintains consistency
-> It actually adds four more lines to the driver file. Rephrase maybe.
->
-> >   drivers/iio/light/apds9306.c | 36 ++++++++++++++++++++---------------=
--
-> >   1 file changed, 20 insertions(+), 16 deletions(-)
-> 20 additions and 16 deletions.
->
-> > @@ -769,22 +776,19 @@ static int apds9306_event_thresh_get(struct apds9=
-306_data *data, int dir,
-> >   static int apds9306_event_thresh_set(struct apds9306_data *data, int =
-dir,
-> >                                    int val)
-> >   {
-> > -     int var;
-> > +     int reg;
-> I like the name changed from 'var' to reg', makes much more sense.
-> >       u8 buff[3];
-> >
-> There is always a balance/trade-off between modularity and execution spee=
-d.
-> I agree with Marcelo's reply in the first patch and I also think that sep=
-arate function for this does not add much value.
->
-> Overall the patch looks good to me.
->
-> With the above:
-> Acked-by: Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
->
-> Regards,
-> Subhajit Ghosh
+Thanks for you patience.
 

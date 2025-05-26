@@ -1,152 +1,390 @@
-Return-Path: <linux-iio+bounces-19917-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19918-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81B54AC39F9
-	for <lists+linux-iio@lfdr.de>; Mon, 26 May 2025 08:35:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44575AC3A57
+	for <lists+linux-iio@lfdr.de>; Mon, 26 May 2025 09:03:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3CC99172E66
-	for <lists+linux-iio@lfdr.de>; Mon, 26 May 2025 06:35:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C44DC1894AF4
+	for <lists+linux-iio@lfdr.de>; Mon, 26 May 2025 07:04:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 224BE1C861D;
-	Mon, 26 May 2025 06:34:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 424201DD9AD;
+	Mon, 26 May 2025 07:03:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XU3KFZ6X"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B/Ki+qMh"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C3511876;
-	Mon, 26 May 2025 06:34:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EABA219CD1B;
+	Mon, 26 May 2025 07:03:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748241297; cv=none; b=fimHknM3GTsTbSMOCuVzuJlqB6ofox4zubm92+bu8BRQJwW4p93xTAaxdE6NNj++M1WBJp6h8Xfe8z22lNpw8+DfmSjbRP6OyAni6vSYKu8wC+dZvEfqpj7dkvtFbT/Ktp2/zCBsWwIDwn1WBdGvRdSMHfwIYKooxH0zWbVX5Bs=
+	t=1748243025; cv=none; b=PeuVne3Ubg8LQbzk238q1VTvUExD++GTP8v9BfYAY4q+/IslFUPlu4Z+o8UMClyvkx7uFSXIFm0kIfF3H1R6QAIkf73oHnMks2MPXtZZDjJp6wJWh1C4qKQ23y3mSpF9yhHtT1wzfqlZAkkdrmClVNUGWR6/HGwcEq2ANd3r90o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748241297; c=relaxed/simple;
-	bh=94OdaYNEygfup+oQPYOAJ0AdhtbuUnh2LxuOdssRxBM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SU6ECYGIum3tOjnB10ov4CkKmwAvMwyfqS/X9E8O+Hz75Q7zfPRbyfvpq6y+2S7MwLsuRtVnCkIs41hHc/4GjlYPHUgnL4decAiN3/My59OjCBjK9uPEkqC8wpBNWIGe9FEreqm0uWECpnpvRO0sC/fFsVFrfRt0M3hlHtODl7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XU3KFZ6X; arc=none smtp.client-ip=209.85.167.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-551efd86048so2613637e87.3;
-        Sun, 25 May 2025 23:34:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1748241294; x=1748846094; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=gI8FOPza4v9Smn8LowCF+XjFHXXgnLrt0WA3pq9kUEI=;
-        b=XU3KFZ6XcC5ymtYjkwUV9MYSiuKjdo/jIdNN0k3rmSqW/rQPn4p2R477EY7RUApTJI
-         4tTV4NvRmzKwC+mSOtKVzvXpVfM3+6+weAFIPoo++yvUWNy/5DmRj4zkDAIivo9VU9dI
-         mJugV/Hw/IheNY8SkwVaSQePi6Rx7+PGItoUfGyqMssu8nYfZy/wgvTUf+3eWiN7wl5f
-         m33MOEV8gBus7z81b20nbW0UkK9Vw/MPtGnQadwTEkbRZXKLvhMIRsmWPa8aYakaqttn
-         ckGB7kzYQ2aI3YSE+DmB2FvdqhYTtiT4t4STVHORjcpIaARjdQVvOA4O3pqAktVcbznH
-         dzjQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748241294; x=1748846094;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=gI8FOPza4v9Smn8LowCF+XjFHXXgnLrt0WA3pq9kUEI=;
-        b=nNTIlnijrNSkdnrqZI3Z4ubZREm23tKMJh4h3MiXfzKYYwL5xeRLFgsvcqZonLy7D4
-         lCM0GTMSq0eXwS75VV2U67CBMI8Zpn4RMdlqeJaxLeHEra43g1r95wG1tEarH3rZImso
-         ib1Wd/WB67IPLtXTP1TmxFFPwhcTMNJEya3Pj9nLMsJTuLl8mHPMfrpAnYCzKFDeT98i
-         L+qd8ySHlY7QbzUWx+D2+NQ+OTkIw4gh30JfyJ8AhB60NOdkhYlmJiuEFSAsBpf59KO4
-         NOTceqk8PqPejBY0nVv4iLYdlc4Cm3yd2WHAoB3+OnejgyLd2FRBcVS+rVH21yFawGZ2
-         +QqA==
-X-Forwarded-Encrypted: i=1; AJvYcCV5V9x943u2oQxA8h+7hUtxtrIBhB6leUTRmt+hO8s963sExJPbBBudmCJltDIqS8jNujMAJVQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwTzICXm/JzYEbavM6tVx3l6AMVUtCVVyfrbvDgN/KEhRWFt0HF
-	yEHFYra8wYfD6AA4tXSLlvt+aP+RmgNePl1o3ZpFaLdFCd0I6jJH0IT57NfbBg==
-X-Gm-Gg: ASbGncuo8eu/P9dHFVYlAo9qEUFUGe1bt/nOFeXm+vzG3X63ZPgeEDrDLatXy9xicHC
-	0An4nviDdPk0K8bKbIZqBKCNjHduU4SqP8scrWmFcUHl6KRkcJRqrgyA6Sk+WhUGIZnsZF53OHD
-	fjLYpqrSBVPJsEqoy3DxRH9vD2xzVljHv01Vh42TJ7J+6TYTnpRDCn7ihruY5LC0m3H7RUKsxRg
-	6Lo1cbeXvhkr8R6FqofUNyVRSo0JTSE0j3gdys5f7BkCJBBS7yx5GWWzVU/61B9+gbjQVt8IG4l
-	oTVxbmIRoQpj6qpBB3htx6LCqRPJCFH432gqO7M63hLfApfp5qzCLkEHceqQkqjr825PHT/8Qzw
-	wzOqbg0xekikqDoNlYwwITvFVhnr9flyH
-X-Google-Smtp-Source: AGHT+IEa3xEE0v3l6txJ4zP2wIhrh20i1me7aOHvrEkNgUi0xcocCT9fDN0mCQQrvjFo4A6qcV+uMw==
-X-Received: by 2002:a05:6512:159b:b0:54f:c33c:a5ec with SMTP id 2adb3069b0e04-5521cba3c41mr2235023e87.45.1748241293960;
-        Sun, 25 May 2025 23:34:53 -0700 (PDT)
-Received: from ?IPV6:2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703? ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-550e702da4dsm4972136e87.202.2025.05.25.23.34.51
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 25 May 2025 23:34:53 -0700 (PDT)
-Message-ID: <4e058703-0d2e-4d98-864a-2e12af44a580@gmail.com>
-Date: Mon, 26 May 2025 09:34:51 +0300
+	s=arc-20240116; t=1748243025; c=relaxed/simple;
+	bh=MMk5/uMd+GF1UB5m73CeK6sdi688uKa5o4LyBYY2AI0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=WiIFdhimBLj/B/lsha0T6JYs3GNMz0Y0+CiaImVQcH5OpugZQkIS2OC2HjzTID7IwRKvoniUJGVKLO60VaLnGw4rCCFK/1q45io+0r3bkjDhFk9sZ8fV9LUKtncvXFnv0FGIQwslWB2RgTiJyZYGMuCJo3aLd6heE0W9SyrCrJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B/Ki+qMh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 5E491C4CEE7;
+	Mon, 26 May 2025 07:03:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1748243024;
+	bh=MMk5/uMd+GF1UB5m73CeK6sdi688uKa5o4LyBYY2AI0=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=B/Ki+qMhgvcOxmPYEi4S16rbY/tc1Ze9VgXfNm507bQ11vqFThTL3//gpZkRNB7pg
+	 nSK4W9JpyHu4KLvCNoHWi3Z7wuSZ3bzKJ8a71tyddhf/QWnK7446WM3XDs3ft166zB
+	 Az9EgQuScgCLe7g4UwAvsmCTvxJ0Ow0dqbTBTlbE7xNskE9eqGGySbeeGBXJn4ssie
+	 VKZzyVgIXLzJYV/5RMTszNKVioJeBW+rYRiL/24JCpHlX0AAswo45LHu5aRmI8FnIS
+	 0JBGOM7IP6riyJLN6bf7SG03qMU0HEKczmOiRwT/yu0O5V0gCahbH7Kbiplkb9GfAS
+	 NSQD3ixlByvWg==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4A0FFC54FB3;
+	Mon, 26 May 2025 07:03:44 +0000 (UTC)
+From: Maud Spierings via B4 Relay <devnull+maudspierings.gocontroll.com@kernel.org>
+Date: Mon, 26 May 2025 09:03:40 +0200
+Subject: [PATCH v3] iio: common: st_sensors: Fix use of uninitialize device
+ structs
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/2] iio: adc: max1363: Fix
- MAX1363_4X_CHANS/MAX1363_8X_CHANS[]
-To: Fabio Estevam <festevam@gmail.com>, jic23@kernel.org
-Cc: linux-iio@vger.kernel.org, Fabio Estevam <festevam@denx.de>,
- stable@vger.kernel.org
-References: <20250525115546.2368007-1-festevam@gmail.com>
-Content-Language: en-US, en-AU, en-GB, en-BW
-From: Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <20250525115546.2368007-1-festevam@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20250526-st_iio_fix-v3-1-039fec38707c@gocontroll.com>
+X-B4-Tracking: v=1; b=H4sIAEsSNGgC/3WMQQ6CMBAAv0L2bE270Aqe/IcxBNsCm2BrWtJoC
+ H+3cFWPM8nMAtEGshHOxQLBJorkXYbyUIAeOzdYRiYzIEfJJSKLc0vk255eTGhZ98ZUpkIOOXg
+ Gm/U+u94yjxRnH977O4nN/twkwQQzqm7upeyFEngZvPZuDn6ajto/YHsl/N9j7vmpK1FJ2TWN+
+ urXdf0ASZiCR+kAAAA=
+X-Change-ID: 20250522-st_iio_fix-1c58fdd4d420
+To: Jonathan Cameron <jic23@kernel.org>, 
+ David Lechner <dlechner@baylibre.com>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Andy Shevchenko <andy@kernel.org>, Christian Heusel <christian@heusel.eu>, 
+ Linus Walleij <linus.walleij@linaro.org>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org, Maud Spierings <maudspierings@gocontroll.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1748243023; l=11339;
+ i=maudspierings@gocontroll.com; s=20250214; h=from:subject:message-id;
+ bh=Qqt9XE7k6jzMfflRu7bsFCiZg9ry06DYpLkn0Zt2L2Q=;
+ b=bqPTkRr9BBTpX41rBICDyxe77dGsOEIQir7BfcLJ+oYQYKlV1nplyL+70McBjpkcJcNl1ESAe
+ Xli2YR/8adADEtM43uqEKTlyAVDNiq3qYipt0HUvTxULLb/L+JZRAqv
+X-Developer-Key: i=maudspierings@gocontroll.com; a=ed25519;
+ pk=7chUb8XpaTQDvWhzTdHC0YPMkTDloELEC7q94tOUyPg=
+X-Endpoint-Received: by B4 Relay for maudspierings@gocontroll.com/20250214
+ with auth_id=341
+X-Original-From: Maud Spierings <maudspierings@gocontroll.com>
+Reply-To: maudspierings@gocontroll.com
 
-On 25/05/2025 14:55, Fabio Estevam wrote:
-> From: Fabio Estevam <festevam@denx.de>
-> 
-> Since commit 2718f15403fb ("iio: sanity check available_scan_masks array"),
-> booting a board populated with a MAX11601 results in a flood of warnings:
-> 
-> max1363 1-0064: available_scan_mask 8 subset of 0. Never used
-> max1363 1-0064: available_scan_mask 9 subset of 0. Never used
-> max1363 1-0064: available_scan_mask 10 subset of 0. Never used
-> max1363 1-0064: available_scan_mask 11 subset of 0. Never used
-> max1363 1-0064: available_scan_mask 12 subset of 0. Never used
-> max1363 1-0064: available_scan_mask 13 subset of 0. Never used
-> ...
-> 
-> These warnings are caused by incorrect offsets used for differential
-> channels in the MAX1363_4X_CHANS() and MAX1363_8X_CHANS() macros.
-> 
-> The max1363_mode_table[] defines the differential channel mappings as
-> follows:
-> 
-> MAX1363_MODE_DIFF_SINGLE(0, 1, 1 << 12),
-> MAX1363_MODE_DIFF_SINGLE(2, 3, 1 << 13),
-> MAX1363_MODE_DIFF_SINGLE(4, 5, 1 << 14),
-> MAX1363_MODE_DIFF_SINGLE(6, 7, 1 << 15),
-> MAX1363_MODE_DIFF_SINGLE(8, 9, 1 << 16),
-> MAX1363_MODE_DIFF_SINGLE(10, 11, 1 << 17),
-> MAX1363_MODE_DIFF_SINGLE(1, 0, 1 << 18),
-> MAX1363_MODE_DIFF_SINGLE(3, 2, 1 << 19),
-> MAX1363_MODE_DIFF_SINGLE(5, 4, 1 << 20),
-> MAX1363_MODE_DIFF_SINGLE(7, 6, 1 << 21),
-> MAX1363_MODE_DIFF_SINGLE(9, 8, 1 << 22),
-> MAX1363_MODE_DIFF_SINGLE(11, 10, 1 << 23),
-> 
-> Update the macros to follow this same pattern, ensuring that the scan masks
-> are valid and preventing the warnings.
-> 
-> Cc: <stable@vger.kernel.org> #6.12
-> Suggested-by: Jonathan Cameron <jic23@kernel.org>
-> Signed-off-by: Fabio Estevam <festevam@denx.de>
-> ---
-> Changes since v2:
-> - Removed incorrect Fixes: tag (Matti)
+From: Maud Spierings <maudspierings@gocontroll.com>
 
-This looks good to me now. I won't give an RB-tag as reviewing a change 
-like this would really require me to go through the data-sheets for 
-these devices to understand the channel configs - and I haven't done it. 
-If 'acked-by' can be translated as "In principle, and without deep dive 
-into the details, the change looks like a right thing to do" - then feel 
-free to add:
-Acked-by: Matti Vaittinen <mazziesaccount@gmail.com>
-although, coming from a non maintainer/reviewer, I suppose it isn't 
-worth much :) Anyways, my comments are fully met :)
+Throughout the various probe functions &indio_dev->dev is used before it
+is initialized. This caused a kernel panic in st_sensors_power_enable()
+when the call to devm_regulator_bulk_get_enable() fails and then calls
+dev_err_probe() with the uninitialized device.
 
-Yours,
-	-- Matti
+This seems to only cause a panic with dev_err_probe(), dev_err(),
+dev_warn() and dev_info() don't seem to cause a panic, but are fixed
+as well.
+
+The issue is reported and traced here: [1]
+
+[1]: https://lore.kernel.org/all/AM7P189MB100986A83D2F28AF3FFAF976E39EA@AM7P189MB1009.EURP189.PROD.OUTLOOK.COM/
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
+---
+When I search for general &indio_dev->dev usage, I see quite a lot more
+hits, but I am not sure if there are issues with those too.
+
+This issue has existed for a long time it seems and therefore it is
+nearly impossible to find a proper fixes tag. I would love to see it at
+least backported to 6.12 as that is where I encountered it, and I
+believe the patch should apply without conflicts.
+---
+Changes in v3:
+- Added the stable cc to the commit message
+- Move the link to the original issue to the commit message
+- Fix function notation in the commit message
+- Move some more of the dev_*() calls to one line
+- Link to v2: https://lore.kernel.org/r/20250522-st_iio_fix-v2-1-07a32655a996@gocontroll.com
+
+Changes in v2:
+- Added SoB in commit message
+- Link to v1: https://lore.kernel.org/r/20250522-st_iio_fix-v1-1-d689b35f1612@gocontroll.com
+---
+ drivers/iio/accel/st_accel_core.c                  | 10 +++---
+ drivers/iio/common/st_sensors/st_sensors_core.c    | 36 ++++++++++------------
+ drivers/iio/common/st_sensors/st_sensors_trigger.c | 20 ++++++------
+ 3 files changed, 31 insertions(+), 35 deletions(-)
+
+diff --git a/drivers/iio/accel/st_accel_core.c b/drivers/iio/accel/st_accel_core.c
+index 99cb661fabb2d9cc1943fa8d0a6f3becb71126e6..a7961c610ed203d039bbf298c8883031a578fb0b 100644
+--- a/drivers/iio/accel/st_accel_core.c
++++ b/drivers/iio/accel/st_accel_core.c
+@@ -1353,6 +1353,7 @@ static int apply_acpi_orientation(struct iio_dev *indio_dev)
+ 	union acpi_object *ont;
+ 	union acpi_object *elements;
+ 	acpi_status status;
++	struct device *parent = indio_dev->dev.parent;
+ 	int ret = -EINVAL;
+ 	unsigned int val;
+ 	int i, j;
+@@ -1371,7 +1372,7 @@ static int apply_acpi_orientation(struct iio_dev *indio_dev)
+ 	};
+ 
+ 
+-	adev = ACPI_COMPANION(indio_dev->dev.parent);
++	adev = ACPI_COMPANION(parent);
+ 	if (!adev)
+ 		return -ENXIO;
+ 
+@@ -1380,8 +1381,7 @@ static int apply_acpi_orientation(struct iio_dev *indio_dev)
+ 	if (status == AE_NOT_FOUND) {
+ 		return -ENXIO;
+ 	} else if (ACPI_FAILURE(status)) {
+-		dev_warn(&indio_dev->dev, "failed to execute _ONT: %d\n",
+-			 status);
++		dev_warn(parent, "failed to execute _ONT: %d\n", status);
+ 		return status;
+ 	}
+ 
+@@ -1457,12 +1457,12 @@ static int apply_acpi_orientation(struct iio_dev *indio_dev)
+ 	}
+ 
+ 	ret = 0;
+-	dev_info(&indio_dev->dev, "computed mount matrix from ACPI\n");
++	dev_info(parent, "computed mount matrix from ACPI\n");
+ 
+ out:
+ 	kfree(buffer.pointer);
+ 	if (ret)
+-		dev_dbg(&indio_dev->dev,
++		dev_dbg(parent,
+ 			"failed to apply ACPI orientation data: %d\n", ret);
+ 
+ 	return ret;
+diff --git a/drivers/iio/common/st_sensors/st_sensors_core.c b/drivers/iio/common/st_sensors/st_sensors_core.c
+index 8ce1dccfea4f5aaff45d3d40f6542323dd1f0b09..dac593be56958fd0be92e13f628350fcfd0f040d 100644
+--- a/drivers/iio/common/st_sensors/st_sensors_core.c
++++ b/drivers/iio/common/st_sensors/st_sensors_core.c
+@@ -154,7 +154,7 @@ static int st_sensors_set_fullscale(struct iio_dev *indio_dev, unsigned int fs)
+ 	return err;
+ 
+ st_accel_set_fullscale_error:
+-	dev_err(&indio_dev->dev, "failed to set new fullscale.\n");
++	dev_err(indio_dev->dev.parent, "failed to set new fullscale.\n");
+ 	return err;
+ }
+ 
+@@ -231,8 +231,7 @@ int st_sensors_power_enable(struct iio_dev *indio_dev)
+ 					     ARRAY_SIZE(regulator_names),
+ 					     regulator_names);
+ 	if (err)
+-		return dev_err_probe(&indio_dev->dev, err,
+-				     "unable to enable supplies\n");
++		return dev_err_probe(parent, err, "unable to enable supplies\n");
+ 
+ 	return 0;
+ }
+@@ -241,13 +240,14 @@ EXPORT_SYMBOL_NS(st_sensors_power_enable, "IIO_ST_SENSORS");
+ static int st_sensors_set_drdy_int_pin(struct iio_dev *indio_dev,
+ 					struct st_sensors_platform_data *pdata)
+ {
++	struct device *parent = indio_dev->dev.parent;
+ 	struct st_sensor_data *sdata = iio_priv(indio_dev);
+ 
+ 	/* Sensor does not support interrupts */
+ 	if (!sdata->sensor_settings->drdy_irq.int1.addr &&
+ 	    !sdata->sensor_settings->drdy_irq.int2.addr) {
+ 		if (pdata->drdy_int_pin)
+-			dev_info(&indio_dev->dev,
++			dev_info(parent,
+ 				 "DRDY on pin INT%d specified, but sensor does not support interrupts\n",
+ 				 pdata->drdy_int_pin);
+ 		return 0;
+@@ -256,29 +256,27 @@ static int st_sensors_set_drdy_int_pin(struct iio_dev *indio_dev,
+ 	switch (pdata->drdy_int_pin) {
+ 	case 1:
+ 		if (!sdata->sensor_settings->drdy_irq.int1.mask) {
+-			dev_err(&indio_dev->dev,
+-					"DRDY on INT1 not available.\n");
++			dev_err(parent, "DRDY on INT1 not available.\n");
+ 			return -EINVAL;
+ 		}
+ 		sdata->drdy_int_pin = 1;
+ 		break;
+ 	case 2:
+ 		if (!sdata->sensor_settings->drdy_irq.int2.mask) {
+-			dev_err(&indio_dev->dev,
+-					"DRDY on INT2 not available.\n");
++			dev_err(parent, "DRDY on INT2 not available.\n");
+ 			return -EINVAL;
+ 		}
+ 		sdata->drdy_int_pin = 2;
+ 		break;
+ 	default:
+-		dev_err(&indio_dev->dev, "DRDY on pdata not valid.\n");
++		dev_err(parent, "DRDY on pdata not valid.\n");
+ 		return -EINVAL;
+ 	}
+ 
+ 	if (pdata->open_drain) {
+ 		if (!sdata->sensor_settings->drdy_irq.int1.addr_od &&
+ 		    !sdata->sensor_settings->drdy_irq.int2.addr_od)
+-			dev_err(&indio_dev->dev,
++			dev_err(parent,
+ 				"open drain requested but unsupported.\n");
+ 		else
+ 			sdata->int_pin_open_drain = true;
+@@ -336,6 +334,7 @@ EXPORT_SYMBOL_NS(st_sensors_dev_name_probe, "IIO_ST_SENSORS");
+ int st_sensors_init_sensor(struct iio_dev *indio_dev,
+ 					struct st_sensors_platform_data *pdata)
+ {
++	struct device *parent = indio_dev->dev.parent;
+ 	struct st_sensor_data *sdata = iio_priv(indio_dev);
+ 	struct st_sensors_platform_data *of_pdata;
+ 	int err = 0;
+@@ -343,7 +342,7 @@ int st_sensors_init_sensor(struct iio_dev *indio_dev,
+ 	mutex_init(&sdata->odr_lock);
+ 
+ 	/* If OF/DT pdata exists, it will take precedence of anything else */
+-	of_pdata = st_sensors_dev_probe(indio_dev->dev.parent, pdata);
++	of_pdata = st_sensors_dev_probe(parent, pdata);
+ 	if (IS_ERR(of_pdata))
+ 		return PTR_ERR(of_pdata);
+ 	if (of_pdata)
+@@ -370,7 +369,7 @@ int st_sensors_init_sensor(struct iio_dev *indio_dev,
+ 		if (err < 0)
+ 			return err;
+ 	} else
+-		dev_info(&indio_dev->dev, "Full-scale not possible\n");
++		dev_info(parent, "Full-scale not possible\n");
+ 
+ 	err = st_sensors_set_odr(indio_dev, sdata->odr);
+ 	if (err < 0)
+@@ -405,7 +404,7 @@ int st_sensors_init_sensor(struct iio_dev *indio_dev,
+ 			mask = sdata->sensor_settings->drdy_irq.int2.mask_od;
+ 		}
+ 
+-		dev_info(&indio_dev->dev,
++		dev_info(parent,
+ 			 "set interrupt line to open drain mode on pin %d\n",
+ 			 sdata->drdy_int_pin);
+ 		err = st_sensors_write_data_with_mask(indio_dev, addr,
+@@ -593,21 +592,20 @@ EXPORT_SYMBOL_NS(st_sensors_get_settings_index, "IIO_ST_SENSORS");
+ int st_sensors_verify_id(struct iio_dev *indio_dev)
+ {
+ 	struct st_sensor_data *sdata = iio_priv(indio_dev);
++	struct device *parent = indio_dev->dev.parent;
+ 	int wai, err;
+ 
+ 	if (sdata->sensor_settings->wai_addr) {
+ 		err = regmap_read(sdata->regmap,
+ 				  sdata->sensor_settings->wai_addr, &wai);
+ 		if (err < 0) {
+-			dev_err(&indio_dev->dev,
+-				"failed to read Who-Am-I register.\n");
+-			return err;
++			return dev_err_probe(parent, err,
++					     "failed to read Who-Am-I register.\n");
+ 		}
+ 
+ 		if (sdata->sensor_settings->wai != wai) {
+-			dev_warn(&indio_dev->dev,
+-				"%s: WhoAmI mismatch (0x%x).\n",
+-				indio_dev->name, wai);
++			dev_warn(parent, "%s: WhoAmI mismatch (0x%x).\n",
++				 indio_dev->name, wai);
+ 		}
+ 	}
+ 
+diff --git a/drivers/iio/common/st_sensors/st_sensors_trigger.c b/drivers/iio/common/st_sensors/st_sensors_trigger.c
+index 9d4bf822a15dfcdd6c2835f6b9d7698cd3cb0b08..8a8ab688d7980f6dd43c660f90a0eba32c38388b 100644
+--- a/drivers/iio/common/st_sensors/st_sensors_trigger.c
++++ b/drivers/iio/common/st_sensors/st_sensors_trigger.c
+@@ -127,7 +127,7 @@ int st_sensors_allocate_trigger(struct iio_dev *indio_dev,
+ 	sdata->trig = devm_iio_trigger_alloc(parent, "%s-trigger",
+ 					     indio_dev->name);
+ 	if (sdata->trig == NULL) {
+-		dev_err(&indio_dev->dev, "failed to allocate iio trigger.\n");
++		dev_err(parent, "failed to allocate iio trigger.\n");
+ 		return -ENOMEM;
+ 	}
+ 
+@@ -143,7 +143,7 @@ int st_sensors_allocate_trigger(struct iio_dev *indio_dev,
+ 	case IRQF_TRIGGER_FALLING:
+ 	case IRQF_TRIGGER_LOW:
+ 		if (!sdata->sensor_settings->drdy_irq.addr_ihl) {
+-			dev_err(&indio_dev->dev,
++			dev_err(parent,
+ 				"falling/low specified for IRQ but hardware supports only rising/high: will request rising/high\n");
+ 			if (irq_trig == IRQF_TRIGGER_FALLING)
+ 				irq_trig = IRQF_TRIGGER_RISING;
+@@ -156,21 +156,19 @@ int st_sensors_allocate_trigger(struct iio_dev *indio_dev,
+ 				sdata->sensor_settings->drdy_irq.mask_ihl, 1);
+ 			if (err < 0)
+ 				return err;
+-			dev_info(&indio_dev->dev,
++			dev_info(parent,
+ 				 "interrupts on the falling edge or active low level\n");
+ 		}
+ 		break;
+ 	case IRQF_TRIGGER_RISING:
+-		dev_info(&indio_dev->dev,
+-			 "interrupts on the rising edge\n");
++		dev_info(parent, "interrupts on the rising edge\n");
+ 		break;
+ 	case IRQF_TRIGGER_HIGH:
+-		dev_info(&indio_dev->dev,
+-			 "interrupts active high level\n");
++		dev_info(parent, "interrupts active high level\n");
+ 		break;
+ 	default:
+ 		/* This is the most preferred mode, if possible */
+-		dev_err(&indio_dev->dev,
++		dev_err(parent,
+ 			"unsupported IRQ trigger specified (%lx), enforce rising edge\n", irq_trig);
+ 		irq_trig = IRQF_TRIGGER_RISING;
+ 	}
+@@ -179,7 +177,7 @@ int st_sensors_allocate_trigger(struct iio_dev *indio_dev,
+ 	if (irq_trig == IRQF_TRIGGER_FALLING ||
+ 	    irq_trig == IRQF_TRIGGER_RISING) {
+ 		if (!sdata->sensor_settings->drdy_irq.stat_drdy.addr) {
+-			dev_err(&indio_dev->dev,
++			dev_err(parent,
+ 				"edge IRQ not supported w/o stat register.\n");
+ 			return -EOPNOTSUPP;
+ 		}
+@@ -214,13 +212,13 @@ int st_sensors_allocate_trigger(struct iio_dev *indio_dev,
+ 					sdata->trig->name,
+ 					sdata->trig);
+ 	if (err) {
+-		dev_err(&indio_dev->dev, "failed to request trigger IRQ.\n");
++		dev_err(parent, "failed to request trigger IRQ.\n");
+ 		return err;
+ 	}
+ 
+ 	err = devm_iio_trigger_register(parent, sdata->trig);
+ 	if (err < 0) {
+-		dev_err(&indio_dev->dev, "failed to register iio trigger.\n");
++		dev_err(parent, "failed to register iio trigger.\n");
+ 		return err;
+ 	}
+ 	indio_dev->trig = iio_trigger_get(sdata->trig);
+
+---
+base-commit: 7bac2c97af4078d7a627500c9bcdd5b033f97718
+change-id: 20250522-st_iio_fix-1c58fdd4d420
+
+Best regards,
+-- 
+Maud Spierings <maudspierings@gocontroll.com>
+
+
 

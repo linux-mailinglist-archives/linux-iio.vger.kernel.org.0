@@ -1,122 +1,102 @@
-Return-Path: <linux-iio+bounces-19948-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19949-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAF01AC435A
-	for <lists+linux-iio@lfdr.de>; Mon, 26 May 2025 19:16:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87506AC442F
+	for <lists+linux-iio@lfdr.de>; Mon, 26 May 2025 21:58:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CD5DE7AAE6A
-	for <lists+linux-iio@lfdr.de>; Mon, 26 May 2025 17:14:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 376981899492
+	for <lists+linux-iio@lfdr.de>; Mon, 26 May 2025 19:58:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDB7323F26B;
-	Mon, 26 May 2025 17:15:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CORWmKat"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3F1D23E34D;
+	Mon, 26 May 2025 19:58:15 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D93C20C038;
-	Mon, 26 May 2025 17:15:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1574E1C8639;
+	Mon, 26 May 2025 19:58:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748279718; cv=none; b=mclyKn9rmwRtA6QJ1nrNRBwOLCe21aPStQLF5q+KnIvXXixe0otQDCFyWpsMzkyqbHfNCRUoRllch8Uhzl3gzWjb61N4rCukra0ad3wE8nijU66GXwiu4AVz8srLq4uB9DD8kKvKc8FnCTEMqrzOcFQIvsny9iHiRFIi4IKeAMo=
+	t=1748289495; cv=none; b=VkKfG9m99Ret1v1s6BxY+7Mr+1hzRkd7f5ItZUVBR/6Exh7+oGj0ljllTddjj/XGFgJ3gCRRSwMOZzWqMzNvJUluN5hsmREcVgfXPdRrp7BbYiHSOLc1Rf+LfYBTN8lh9tlW10m8dsg1aDEZ3y2p+Fao0E0ciXTdwX7cQkMZRtg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748279718; c=relaxed/simple;
-	bh=pfsFF7BpAY3n3Qf9e396Rf5DRmX/signbkQkMULVops=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LG4IVnhK8i/jWSxjbUwhOkUsPOITHpVKw5gFmPJ9SdUKLwH90dS8QMncJYa12obGxpVhmZXiYh9Y9UKtHq1VBO1u3DdKc5c8fCqzDamb2r4ApgdHZF0Abrq78iXZbLBK6llZsT3ZEv1TyS8LcC56nDC0tyyDPwHc+r+i3TVYpjU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CORWmKat; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18903C4CEE7;
-	Mon, 26 May 2025 17:15:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748279715;
-	bh=pfsFF7BpAY3n3Qf9e396Rf5DRmX/signbkQkMULVops=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=CORWmKatw7aPIYw/4Gk67yAhIcZsgOT55fVqR4ihMEKucmXVD+vDjgLZTq+53rg0P
-	 Sx9Q8vwNgUUQSV5s8+GRDu3AEpvpFHTDrpSt4A5cHWY66zU5NUst80WSZqC0AjEmXp
-	 t38jpnG+urKbV88ZO56dc5faJ2Jydei+w+IHcJRKEacSWcBO4GNase7y6L8fTUl4jf
-	 qKj48ituQnUCK4jUTA+Eu7r8F3l5uMiZ3iK1jcNSrefAyFtK6w+O7l2TTjtlUcxv3E
-	 N+WDzTUU3l5zgZTLYk1LpTziFC+o9t2INP1cqEM/NcA5iCgNW+5/7uk7SdLR4imASW
-	 EFKoJ07llistQ==
-Date: Mon, 26 May 2025 18:15:08 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Gyeyoung Baek <gye976@gmail.com>
-Cc: David Lechner <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?=
- <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH RFC 1/9] iio: buffer: Fix checkpatch.pl warning
-Message-ID: <20250526181508.6203c21a@jic23-huawei>
-In-Reply-To: <CAKbEznvdKJx_t2OcYfAJuAP8FVpTjup63Ct6aFvSYuK=-B061A@mail.gmail.com>
-References: <20250519-timestamp-v1-0-fcb4f6c2721c@gmail.com>
-	<20250519-timestamp-v1-1-fcb4f6c2721c@gmail.com>
-	<20250525183528.14877bd2@jic23-huawei>
-	<CAKbEznvdKJx_t2OcYfAJuAP8FVpTjup63Ct6aFvSYuK=-B061A@mail.gmail.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1748289495; c=relaxed/simple;
+	bh=xgDRotCIsPUnISKHDB9ItQyJoq4SJ6NqR8XbydMpiVc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BLdfqLEfu/Bv28p0kflKZAk39B7OB8331tQfFmb/wNBg8lrW3ZUMUjy1swlS3jyyqGH4czkt8RePVnIMB2LQ+59RSmWrCxcC+a0uXxnVMsOJ2A/xO8qZ7uI1XGQxEyU2SoH8LRcPfWZe+XB10hjcqReJxb9mX+i/fZpERflzxas=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=fail smtp.mailfrom=kernel.org; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=kernel.org
+X-CSE-ConnectionGUID: 6S8oVnuVRniHBXmrTudRIw==
+X-CSE-MsgGUID: e/Cjf9y5Q4q9ghMWRuNLDw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11445"; a="50152893"
+X-IronPort-AV: E=Sophos;i="6.15,316,1739865600"; 
+   d="scan'208";a="50152893"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 May 2025 12:58:14 -0700
+X-CSE-ConnectionGUID: p8yZzFBwTIq8xpmAGp/Mlg==
+X-CSE-MsgGUID: oXh91ldlTWWmTaoBUo5wSg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,316,1739865600"; 
+   d="scan'208";a="142507423"
+Received: from smile.fi.intel.com ([10.237.72.52])
+  by fmviesa007.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 May 2025 12:58:10 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
+	(envelope-from <andy@kernel.org>)
+	id 1uJdxW-00000000yJq-3oMm;
+	Mon, 26 May 2025 22:58:06 +0300
+Date: Mon, 26 May 2025 22:58:06 +0300
+From: Andy Shevchenko <andy@kernel.org>
+To: Denis Benato <benato.denis96@gmail.com>
+Cc: Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Alex Lanzano <lanzano.alex@gmail.com>,
+	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Danila Tikhonov <danila@jiaxyga.com>,
+	Greg KH <gregkh@linuxfoundation.org>,
+	"Derek J . Clark" <derekjohn.clark@gmail.com>,
+	Philip =?iso-8859-1?Q?M=FCller?= <philm@manjaro.org>,
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 0/2] iio: fix suspend and resume triggering for bmi160
+ and bmi270
+Message-ID: <aDTHzs5AtiNmYIAF@smile.fi.intel.com>
+References: <20250525142530.71955-1-benato.denis96@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250525142530.71955-1-benato.denis96@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Mon, 26 May 2025 14:30:41 +0900
-Gyeyoung Baek <gye976@gmail.com> wrote:
+On Sun, May 25, 2025 at 04:25:28PM +0200, Denis Benato wrote:
+> Two imu devices bmi160 and bmi270 are similar to bmi323, with the same bug and
+> a common usecase: fix the aforementioned bug about triggering not resuming
+> after sleep in the same way it was solved for the bmi323 device driver.
+> 
+> The bmi270 patch has been tested on a device where the device irq pin
+> is connected to the CPU ensuring it doesn't cause harm to devices that
+> do not use hrtimer or other external triggers.
+> 
+> Changelog from v1 [1]
+> - include linux/pm.h where needed
+> - used "Closed" to reference the solved issue for each driver
+> - merged two lines into one (on both drivers)
 
-> On Mon, May 26, 2025 at 2:35=E2=80=AFAM Jonathan Cameron <jic23@kernel.or=
-g> wrote:
-> >
-> > On Mon, 19 May 2025 23:25:53 +0900
-> > Gyeyoung Baek <gye976@gmail.com> wrote:
-> > =20
-> > > Remove the following trivial warning:
-> > > "WARNING: Block comments should align the * on each line"
-> > >
-> > > Signed-off-by: Gyeyoung Baek <gye976@gmail.com> =20
-> > Applied.
-> >
-> > As a general rule don't send unrelated cleanup in an RFC series
-> > doing something interesting!  They might get missed. =20
->=20
-> Well, since the patches modify the same file, I considered them
-> dependent and grouped them into a single series. But now realize it
-> would be more appropriate to split patches logically.
-> Thanks for pointing it out.
-If there was a chance of a merge conflict I'd agree with you
-but I'd be very surprised to see one with this change given where
-it is in the file.
+I got this series twice without any (?) difference in the versions. Care to
+explain what's going on?
 
-No problem though, the only result of too much grouping is
-things might not go in as quickly!
 
-Jonathan
+-- 
+With Best Regards,
+Andy Shevchenko
 
->=20
-> Gyeyoung
->=20
-> > Jonathan =20
-> > > ---
-> > >  drivers/iio/buffer/industrialio-triggered-buffer.c | 2 +-
-> > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > >
-> > > diff --git a/drivers/iio/buffer/industrialio-triggered-buffer.c b/dri=
-vers/iio/buffer/industrialio-triggered-buffer.c
-> > > index c06515987e7a..9bf75dee7ff8 100644
-> > > --- a/drivers/iio/buffer/industrialio-triggered-buffer.c
-> > > +++ b/drivers/iio/buffer/industrialio-triggered-buffer.c
-> > > @@ -1,5 +1,5 @@
-> > >  // SPDX-License-Identifier: GPL-2.0-only
-> > > - /*
-> > > +/*
-> > >   * Copyright (c) 2012 Analog Devices, Inc.
-> > >   *  Author: Lars-Peter Clausen <lars@metafoo.de>
-> > >   */
-> > > =20
-> > =20
->=20
 
 

@@ -1,84 +1,98 @@
-Return-Path: <linux-iio+bounces-19940-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19941-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 609C4AC3F09
-	for <lists+linux-iio@lfdr.de>; Mon, 26 May 2025 14:05:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C714AAC3F3B
+	for <lists+linux-iio@lfdr.de>; Mon, 26 May 2025 14:21:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 292E87A9B59
-	for <lists+linux-iio@lfdr.de>; Mon, 26 May 2025 12:03:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8FF28176015
+	for <lists+linux-iio@lfdr.de>; Mon, 26 May 2025 12:21:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 261021FBEB3;
-	Mon, 26 May 2025 12:04:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB9CA1FFC59;
+	Mon, 26 May 2025 12:21:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dXCatmv9"
+	dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b="e4kzRv9X"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ua1-f42.google.com (mail-ua1-f42.google.com [209.85.222.42])
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2521A17CA1B
-	for <linux-iio@vger.kernel.org>; Mon, 26 May 2025 12:04:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A8E436124
+	for <linux-iio@vger.kernel.org>; Mon, 26 May 2025 12:21:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748261095; cv=none; b=U1DEYeSrn+Tmfnfko6cDpUJkZfVupIwNShuhnQN5Rpo4wBSgu7kAz+ce2+vQvdSOVx6SADyevaVCxQ1T3gLOyfcsZeO/Vei9lamNM3wFvPKb0SAg+1Nx7nr8ttWaKQ11MdSlHpQFQa5ae//hqqpD9cRT7UcOphdEGao9diP/IFY=
+	t=1748262081; cv=none; b=hIFoYD3CK/0C0NVSdePW6iZude1z78vIPFAvEL6AzaVDWQL8BHiD6M9hEtdHFxW5hiXpcq4cgEaGaso6QhxZmFlsMG0BZ1C1ivMUFJSkXyL7DsyKmmnA1keMxU+9+0tiO8q6/0IdNW+Xns54ZjRhiBtzVb+YpkcvLFSaih9ny1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748261095; c=relaxed/simple;
-	bh=VjJO6SQpeyw+pyH1FXTbjhh98/koOqkeGtW+RTSUTmE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=UQkRFXBnbFfOfBjYGt258S25JpXNvy1spsaUqFJxxZ9kiidk+fMolHOwGGpDdX2AAzisNsEwi956+QbNzFjX+WWWjYdbeoKBy9neU93UrHEvBThY0mXKnpkVcxu/ruGJ8AeZ2uCSq/6EYnqt8DNz0i8BazKt57tb0n0rjMmXwZc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dXCatmv9; arc=none smtp.client-ip=209.85.222.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ua1-f42.google.com with SMTP id a1e0cc1a2514c-877d7fa49e0so1370258241.2
-        for <linux-iio@vger.kernel.org>; Mon, 26 May 2025 05:04:53 -0700 (PDT)
+	s=arc-20240116; t=1748262081; c=relaxed/simple;
+	bh=OSjenUtGeUxY2QKIW0qhPspnf7oHuTj3PCtjTBlzbp4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=be9JJbsZsMKnBgvcOtvJACmfD+ovSKgE3kVlkN66Kt5UYG+mBw3a8cl+wN6JR25U5g7U0QBfWWoF38/4LTCyoJI/iO1kX7zvgsPU7wxYmdYJptNotNRYgcCFy5BJiSTwgUOZqbjYeY0J1nvzLsyRnYn6ohrLxA8+Eu1d71nxijE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev; spf=pass smtp.mailfrom=tuxon.dev; dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b=e4kzRv9X; arc=none smtp.client-ip=209.85.208.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tuxon.dev
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-604bf67b515so1109999a12.0
+        for <linux-iio@vger.kernel.org>; Mon, 26 May 2025 05:21:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1748261093; x=1748865893; darn=vger.kernel.org;
+        d=tuxon.dev; s=google; t=1748262077; x=1748866877; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=K9ZQ8kVde9XqUB74n7bH8F4cibBjuup/aJuo/qRB6zI=;
-        b=dXCatmv9B8KjaThoG7L9fAm3JocMLOdR2kl5Wu3q4qZf6f0EmxgZjKE9Pln38QNihO
-         Z+71i7j2PVFhBL1zi1TnLBTZBkMzfKGx1+BR8CGcxfdENg5maF2yScCqNkLmiY39IMP4
-         yBsT/Tyi9lph9Q6WHuqfdt08J3IsAcGuReYri0mN4z6ZtWDnbbHOZ6FQrQfIoeiK7NYN
-         NyTHJexLEpFTx6yG2Gya00L/6/UhlBHS3rFCmP5yoJwBHqBT6jI3g1HYt8IxQKMWd86W
-         BiEm8wpsXGlQDFMRvN+FhnH6HGGv9FsHnSP7jADjmJx2KkypDu5DFxc92LDyftzorGAV
-         JvKg==
+        bh=768zz3A5MyltBkQLlSbOf4oJniHEYxMfBQNxunlsy5M=;
+        b=e4kzRv9X7YDuVP+psgZDvgW2JfxVPKQjZGqnHmZ9nazMd8PSdws/UwD7htHySuvzd9
+         lDDDuEjaJD2+QeOhzmL+T0NmYGm1rPgIdsrqy/0VHiTGK8N7+F5UbKeRT/yulQjQq2f7
+         g+1FZXOwttW2qWUoPZKlVmme8oF2sVrT93wJcmwJqdjuzS0LwiCW1T2EkGSDVjt1Ndfh
+         RoLazqb5d+nnzkkhmKlotpWHeHFZLuWpvYk/w2+jumB/xaIYPq3WDTsZcxLNDZVeNEnD
+         QXIpoptNMDiRNrXpQGhO3pqRJUmhZ9EWGqcVv/JIgDSBFdXLJ5SCbZOzPNMkBs/Kg11F
+         iFwQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748261093; x=1748865893;
+        d=1e100.net; s=20230601; t=1748262077; x=1748866877;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=K9ZQ8kVde9XqUB74n7bH8F4cibBjuup/aJuo/qRB6zI=;
-        b=MGSIsilySl7M2ohvczG1ubUDLeONHLeMi7vSd8D7jTKJIXUh1k1OH6RDjqRtpk0QNg
-         bYA24zbM8+QItlLpeuNlo+4NOYS7U6i/KdZ+5XeKmWo2N2c+ZNDMLUPm4pJx6HPhiJu+
-         R3NsNGzmUhOl34ZyyX+e/Ee+GGgR0NdIb/Pw+fVqSFF9z/ik7qB+PeTlW52ZKUaUkcrX
-         5Rf7UiFwZ5OzElJVvz5EtivA+FRjitx/y0jcHmcdV5S8ue+i5EEmQU0sk2EpsRi9mjy7
-         JYf9zpPmAzFqajxi87gBtpB12+77sEChDzQ3W7yREmgjedKIFd0AeV07cFzaf9/i52ld
-         +4/A==
-X-Forwarded-Encrypted: i=1; AJvYcCV4Tnu/TDL8+92LdpYtB0WCzy2s7pdf/7gxOcMXOfa8oPtjZqtPSy2TtTTwLjR4IUwEfQ/+SYlAo4k=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzvOAgo5U7WNXkhU86yD9B89W1Y6kSVkKCswVqvAujDF503NGaj
-	lcGTdZXwsR2pm8fbiDFMThOl0wG60pl2/IMsw31cvmEfRxLQhFYkLrcw
-X-Gm-Gg: ASbGncvOfhMp76JuGJk5bnTMZl769zodg3v9VZ0kI0tzj3P3ZvoUKAY0f7KetUe+4/a
-	pFCFowaQDbxb7qh1O8i30qcXUg/zWABFBZxbC6/VMqWlPcV9l5S168PJdMdqGylX8FrIZPct5dW
-	Z8tur3VcG4ELPinvwty8jJu5EHZUKacT5cmaAMWPQQylN+CpsronvZAnI8ko+4tGwWtn07Ncuvh
-	R1lrmYBpwniwMteNN0v3wHG1v2Q0nYNUZ9G8G9h1Vdch0S6G6yg3bXKKrCBjsYpcLBOyChfECWo
-	G/CgR/8seWm5m9l4w6g8Ngt2D1iiMgcGQ/SBV1PlashRoQ==
-X-Google-Smtp-Source: AGHT+IFvi+3Y7xUHSFZwrgtd4Kwwux1y7HFnaF7DAAZsck+3R2qDBZckeqFse/TL9mjwK2Y9yuD9JQ==
-X-Received: by 2002:a05:6122:2207:b0:52a:863f:78dd with SMTP id 71dfb90a1353d-52f2c57fc1cmr6493401e0c.6.1748261092928;
-        Mon, 26 May 2025 05:04:52 -0700 (PDT)
-Received: from BMO.. ([2804:1b3:a780:dcf9:96bf:ac40:fe1:13a8])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-52dba91072dsm17625682e0c.8.2025.05.26.05.04.48
+        bh=768zz3A5MyltBkQLlSbOf4oJniHEYxMfBQNxunlsy5M=;
+        b=K4VZqEMcuJ/BRygD3+8li6eAU/DMsV0duXx5YYTq6PO5xUNFncDdGo/Azhw/jFvXW0
+         LTt85oBraM7R8jGuttrtfZ0dsBT+jmoqDw6Ma+2cVVJu3FQeubOAJEPvPKCCfjTpBfrr
+         azAboiuT7iXCzp94pUao8OlssfS47dOByOHZ3coj9QHuUEePtfTrM4dUZ+bCfOY/HcAz
+         nqpLgrm5Paxxzm67QHiiimgBYQferbJ7Bm7LRfcXaBobS3XSG8mc1eRP9Cn8RvSrCka0
+         goMwJ/jD/apJ3lFuIaMUOVpG3/0y8rTxpqLwB9/0vXRmX6IpWh+F9rKmCVapPYvhpz0j
+         5Icw==
+X-Forwarded-Encrypted: i=1; AJvYcCX4Jq5qKn1TUNCwsEEDq7hAAJUl3gT3d8DGUsjAFv+b3wwaKe0iXBHEwOP619iuu6YQQXHKZWd7hhs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwQkovHRDy/I045Nc+dOjCoiaEwofEYe5X6IoS7HnzaQ75EbO8P
+	AiLtg6j9w2+sF6mhzzX9DIZodEnlry2ImPVCIcsZCafatUCahphGCB+PB/9JMHtivCY=
+X-Gm-Gg: ASbGnct7Yjbe65ixeA8lCI7+DWcj65ZIuufbXClhw4pf55CqAGo8dkCg2IagwJQidWf
+	JcDPYYqHEBcHm3HgCTW4lczPbO914F+J4R7s4zKlKxghlxWb+oZ21wgFfdCkf1LSFBR1eF01lwq
+	hw0xuaE+gfdFGHboCpb2TYxb0vnlT2Iq6Ct7WKhq8kK+pNNSOOmjCSXuK2Hjk5DK8frND291QWZ
+	UnkZQP0rZvMCXCAuBY7UQmRVUn710h7wFRifqVh4vpC5I70detNBeRJATw1NLZxkwsdGySWr6BA
+	KozBLSrG7D9/+/ELfI7TEYiqHkbRqlVr7oL3mOJ4BVZn+CrA43YlrUZi2Mn72E8jPoWHi2Bpw/H
+	ay/p7
+X-Google-Smtp-Source: AGHT+IF/1QayFTF9qsFXVEeDjJ2ecvcZuUY2FjpmdnnRWet2lfUsBrEqZWoEsIXUVBdEMDGEtRJkAg==
+X-Received: by 2002:a17:907:8dcb:b0:ad5:1fe4:4d0d with SMTP id a640c23a62f3a-ad85b2065d0mr729565366b.61.1748262077456;
+        Mon, 26 May 2025 05:21:17 -0700 (PDT)
+Received: from claudiu-X670E-Pro-RS.. ([82.78.167.58])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ad52d071c36sm1687630066b.64.2025.05.26.05.21.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 May 2025 05:04:52 -0700 (PDT)
-From: Bianca <biancalvao@gmail.com>
-To: jic23@kernel.org
-Cc: juliacalixtorosa@usp.br,
-	=?UTF-8?q?Bianca=20Costa=20Galv=C3=A3o?= <biancalvao@gmail.com>,
-	=?UTF-8?q?Bianca=20Costa=20Galv=C3=A3o?= <biancagalvao@usp.br>,
-	linux-iio@vger.kernel.org
-Subject: [PATCH v2] iio: magnetometer: mmc35240: unify reg-access predicates
-Date: Mon, 26 May 2025 09:03:30 -0300
-Message-ID: <20250526120340.16880-1-biancalvao@gmail.com>
+        Mon, 26 May 2025 05:21:17 -0700 (PDT)
+From: Claudiu <claudiu.beznea@tuxon.dev>
+X-Google-Original-From: Claudiu <claudiu.beznea.uj@bp.renesas.com>
+To: gregkh@linuxfoundation.org,
+	rafael@kernel.org,
+	dakr@kernel.org,
+	len.brown@intel.com,
+	pavel@kernel.org,
+	ulf.hansson@linaro.org,
+	jic23@kernel.org,
+	daniel.lezcano@linaro.org,
+	dmitry.torokhov@gmail.com
+Cc: claudiu.beznea@tuxon.dev,
+	linux-kernel@vger.kernel.org,
+	linux-pm@vger.kernel.org,
+	linux-iio@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org,
+	bhelgaas@google.com,
+	geert@linux-m68k.org,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Subject: [PATCH v2 0/2] PM: domains: add devm_pm_domain_attach()
+Date: Mon, 26 May 2025 15:20:52 +0300
+Message-ID: <20250526122054.65532-1-claudiu.beznea.uj@bp.renesas.com>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -86,64 +100,36 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Bianca Costa Galvão <biancalvao@gmail.com>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-Refactor the two complementary helper functions
-`mmc35240_is_volatile_reg()` and
-`mmc35240_is_writeable_reg()` by implementing the volatile predicate
-as the logical negation of the writeable predicate. This removes the
-duplicate bit-mask checks and makes the intent clearer.
+Hi,
 
-Changes since v1:
-- Removed the obsolete mmc35240_reg_check() helper.
-- Wrapped commit message and body to 75 columns.
-- Fixed indentation in mmc35240_is_writeable_reg() to use tabs.
+As a result of discussion at [1], series adds the devm_pm_domain_attach()
+and uses it in platform bus probe.
 
-Signed-off-by: Bianca Costa Galvão <biancagalvao@usp.br>
-Co-developed-by: Júlia Calixto Rosa <juliacalixtorosa@usp.br>
-Signed-off-by: Júlia Calixto Rosa <juliacalixtorosa@usp.br>
----
- drivers/iio/magnetometer/mmc35240.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+Please provide your feedback.
 
-diff --git a/drivers/iio/magnetometer/mmc35240.c b/drivers/iio/magnetometer/mmc35240.c
-index 07f58567e521..6cfb89295802 100644
---- a/drivers/iio/magnetometer/mmc35240.c
-+++ b/drivers/iio/magnetometer/mmc35240.c
-@@ -418,14 +418,16 @@ static const struct iio_info mmc35240_info = {
- 	.attrs		= &mmc35240_attribute_group,
- };
- 
--static bool mmc35240_reg_check(unsigned int reg)
--{
--	return reg == MMC35240_REG_CTRL0 || reg == MMC35240_REG_CTRL1;
--}
- 
- static bool mmc35240_is_writeable_reg(struct device *dev, unsigned int reg)
- {
--	return mmc35240_reg_check(reg);
-+	switch (reg) {
-+	case MMC35240_REG_CTRL0:
-+	case MMC35240_REG_CTRL1:
-+		return true;
-+	default:
-+    	return false;
-+	}
- }
- 
- static bool mmc35240_is_readable_reg(struct device *dev, unsigned int reg)
-@@ -447,7 +449,7 @@ static bool mmc35240_is_readable_reg(struct device *dev, unsigned int reg)
- 
- static bool mmc35240_is_volatile_reg(struct device *dev, unsigned int reg)
- {
--	return !mmc35240_reg_check(reg);
-+	return !mmc35240_is_writeable_reg(dev, reg);
- }
- 
- static const struct reg_default mmc35240_reg_defaults[] = {
+Thank you,
+Claudiu
+
+[1] https://lore.kernel.org/all/20250215130849.227812-1-claudiu.beznea.uj@bp.renesas.com
+
+Changes in v2:
+- add devm_pm_domain_attach()
+- drop the devres grup open/close approach and use the newly added
+  devm_pm_domain_attach()
+
+Claudiu Beznea (2):
+  PM: domains: Add devres variant for dev_pm_domain_attach()
+  driver core: platform: Use devm_pm_domain_attach()
+
+ drivers/base/platform.c     |  8 ++---
+ drivers/base/power/common.c | 59 +++++++++++++++++++++++++++++++++++++
+ include/linux/pm_domain.h   |  8 +++++
+ 3 files changed, 69 insertions(+), 6 deletions(-)
+
 -- 
 2.43.0
 

@@ -1,390 +1,135 @@
-Return-Path: <linux-iio+bounces-19918-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19919-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44575AC3A57
-	for <lists+linux-iio@lfdr.de>; Mon, 26 May 2025 09:03:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED1D1AC3B95
+	for <lists+linux-iio@lfdr.de>; Mon, 26 May 2025 10:23:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C44DC1894AF4
-	for <lists+linux-iio@lfdr.de>; Mon, 26 May 2025 07:04:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9632316DDAB
+	for <lists+linux-iio@lfdr.de>; Mon, 26 May 2025 08:23:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 424201DD9AD;
-	Mon, 26 May 2025 07:03:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D76F01DED4C;
+	Mon, 26 May 2025 08:22:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B/Ki+qMh"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="CfDgTiqo"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EABA219CD1B;
-	Mon, 26 May 2025 07:03:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16A831DDA34;
+	Mon, 26 May 2025 08:22:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748243025; cv=none; b=PeuVne3Ubg8LQbzk238q1VTvUExD++GTP8v9BfYAY4q+/IslFUPlu4Z+o8UMClyvkx7uFSXIFm0kIfF3H1R6QAIkf73oHnMks2MPXtZZDjJp6wJWh1C4qKQ23y3mSpF9yhHtT1wzfqlZAkkdrmClVNUGWR6/HGwcEq2ANd3r90o=
+	t=1748247778; cv=none; b=VTmnUHJwoqUm8X5maHwS/tgaYUnosBR2VWoRlGTlbezLfTFSzgAExDz/AGw1oc1y3/pK59wKjAfswb+Iqa0CsWGwhjBMIFZpGpKSBj4RsObPwAB30LY/+Ou/zkSTqGIbkEKsYhQUNf9lpOhMk9gGmF3PctHiYA4CoypkQiJGVxU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748243025; c=relaxed/simple;
-	bh=MMk5/uMd+GF1UB5m73CeK6sdi688uKa5o4LyBYY2AI0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=WiIFdhimBLj/B/lsha0T6JYs3GNMz0Y0+CiaImVQcH5OpugZQkIS2OC2HjzTID7IwRKvoniUJGVKLO60VaLnGw4rCCFK/1q45io+0r3bkjDhFk9sZ8fV9LUKtncvXFnv0FGIQwslWB2RgTiJyZYGMuCJo3aLd6heE0W9SyrCrJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B/Ki+qMh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 5E491C4CEE7;
-	Mon, 26 May 2025 07:03:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748243024;
-	bh=MMk5/uMd+GF1UB5m73CeK6sdi688uKa5o4LyBYY2AI0=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=B/Ki+qMhgvcOxmPYEi4S16rbY/tc1Ze9VgXfNm507bQ11vqFThTL3//gpZkRNB7pg
-	 nSK4W9JpyHu4KLvCNoHWi3Z7wuSZ3bzKJ8a71tyddhf/QWnK7446WM3XDs3ft166zB
-	 Az9EgQuScgCLe7g4UwAvsmCTvxJ0Ow0dqbTBTlbE7xNskE9eqGGySbeeGBXJn4ssie
-	 VKZzyVgIXLzJYV/5RMTszNKVioJeBW+rYRiL/24JCpHlX0AAswo45LHu5aRmI8FnIS
-	 0JBGOM7IP6riyJLN6bf7SG03qMU0HEKczmOiRwT/yu0O5V0gCahbH7Kbiplkb9GfAS
-	 NSQD3ixlByvWg==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4A0FFC54FB3;
-	Mon, 26 May 2025 07:03:44 +0000 (UTC)
-From: Maud Spierings via B4 Relay <devnull+maudspierings.gocontroll.com@kernel.org>
-Date: Mon, 26 May 2025 09:03:40 +0200
-Subject: [PATCH v3] iio: common: st_sensors: Fix use of uninitialize device
- structs
+	s=arc-20240116; t=1748247778; c=relaxed/simple;
+	bh=OV4iA5Tsz75wseP0OMc150c3LmeLNxwlc5BR6jf9QXY=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=hkv1oYMRaj9inyW7wFiQuTENjucRDg9Qt9wcEXE7DwGZfYS7WsxMXj7Y3Xy1xToFVFlbyZ5w74Wca/EbuxMblzSCUMKQ8iX78iuOXN+h98BNvXoaoE2/3bnUsH3k1CKuh7OCoqlopF0CX3dFkxmMTL1rlH3pkakV1WxBDuBDFSI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=CfDgTiqo; arc=none smtp.client-ip=148.163.135.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+	by mx0a-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54Q6Fhir021644;
+	Mon, 26 May 2025 04:22:48 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=DKIM; bh=hWYYAdPJxWmcW9eifcpBR5SaiRH
+	nAgz4BuGzFoVo4fg=; b=CfDgTiqocqiVqJurczcBz1XKifpMrploXLl7mlGxLK3
+	Nh0zA02Ku1X9XlO9lPgWrXdySonT9kbzh1HTjfCWdibV+PirZ3oDyvRE1qK3pC/h
+	z9StQ3+Wy6qYkF/jmdU8QEJo9e/0rrhYdUw2aD0sOahpybRLizjq8NfTNziFyISM
+	m7x7W8jRTvs1f2WBY2wKs9D0/hogx2Z2Vdpe32aroJ0N9RF/kXiIWuPfkVwmlZWE
+	xCTEOxMjmqcj35/gbk3YcbGZESwwqC5EzBLLezS97zhYDbbg9D06OrwUoXi01xN5
+	1QlwJzRwC75dsAzGi+CVZPCNPcaptfO1COjGCg491dQ==
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 46ub16f9bx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 26 May 2025 04:22:48 -0400 (EDT)
+Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
+	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 54Q8MlfU026827
+	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Mon, 26 May 2025 04:22:47 -0400
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by ASHBMBX8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Mon, 26 May
+ 2025 04:22:47 -0400
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server id 15.2.1748.10 via Frontend
+ Transport; Mon, 26 May 2025 04:22:47 -0400
+Received: from amiclaus-VirtualBox.ad.analog.com (AMICLAUS-L02.ad.analog.com [10.48.65.174])
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 54Q8MdJA015981;
+	Mon, 26 May 2025 04:22:41 -0400
+From: Antoniu Miclaus <antoniu.miclaus@analog.com>
+To: <jic23@kernel.org>, <linux-iio@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+CC: Antoniu Miclaus <antoniu.miclaus@analog.com>,
+        =?UTF-8?q?Nuno=20S=C3=A1?=
+	<nuno.sa@analog.com>
+Subject: [PATCH v2 1/2] iio: adc: ad4080: use lowercase device name
+Date: Mon, 26 May 2025 11:22:27 +0300
+Message-ID: <20250526082228.4961-1-antoniu.miclaus@analog.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250526-st_iio_fix-v3-1-039fec38707c@gocontroll.com>
-X-B4-Tracking: v=1; b=H4sIAEsSNGgC/3WMQQ6CMBAAv0L2bE270Aqe/IcxBNsCm2BrWtJoC
- H+3cFWPM8nMAtEGshHOxQLBJorkXYbyUIAeOzdYRiYzIEfJJSKLc0vk255eTGhZ98ZUpkIOOXg
- Gm/U+u94yjxRnH977O4nN/twkwQQzqm7upeyFEngZvPZuDn6ajto/YHsl/N9j7vmpK1FJ2TWN+
- urXdf0ASZiCR+kAAAA=
-X-Change-ID: 20250522-st_iio_fix-1c58fdd4d420
-To: Jonathan Cameron <jic23@kernel.org>, 
- David Lechner <dlechner@baylibre.com>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Andy Shevchenko <andy@kernel.org>, Christian Heusel <christian@heusel.eu>, 
- Linus Walleij <linus.walleij@linaro.org>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org, Maud Spierings <maudspierings@gocontroll.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1748243023; l=11339;
- i=maudspierings@gocontroll.com; s=20250214; h=from:subject:message-id;
- bh=Qqt9XE7k6jzMfflRu7bsFCiZg9ry06DYpLkn0Zt2L2Q=;
- b=bqPTkRr9BBTpX41rBICDyxe77dGsOEIQir7BfcLJ+oYQYKlV1nplyL+70McBjpkcJcNl1ESAe
- Xli2YR/8adADEtM43uqEKTlyAVDNiq3qYipt0HUvTxULLb/L+JZRAqv
-X-Developer-Key: i=maudspierings@gocontroll.com; a=ed25519;
- pk=7chUb8XpaTQDvWhzTdHC0YPMkTDloELEC7q94tOUyPg=
-X-Endpoint-Received: by B4 Relay for maudspierings@gocontroll.com/20250214
- with auth_id=341
-X-Original-From: Maud Spierings <maudspierings@gocontroll.com>
-Reply-To: maudspierings@gocontroll.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-GUID: KR-0ZUhVJsswada7HJpUSEcd_JWbRRTX
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTI2MDA3MCBTYWx0ZWRfX1LUNfRwzBbxS
+ 3jAn3R5hmubXpYQqKjtEX1eMzEFOirS/y2MqvkRpuSglOfO/DjbWPLeT8M1WtK+5//BBNR86mkU
+ 56d+XGK7NPpXN6CUf5osdngeguEAW5DmYuQc7/xxECpeZIJUpPCLjq4f0qm2S/+xiRgiNJ0vvWp
+ cI9d4oVhFD7JlMnJaMDEbE+j+Nd+la96pjWefIrC/6Q6oCWcI4wH2OBbmGUgQ6e9cT5kIQVX3sq
+ nnWzQwepKjMmgUMB2n+YurM5hyvjcO6HxIxHpyob0j66FNUmFMP03xii3G1UHAuGh5pyeQgWwNe
+ 0DGoHiPqU/WgS3X8IJ2qwmsTUM0kZcTHFUBuAOLa56W9F3anSsUzALRoMon9lY/m7dHrZDkAOr6
+ 4xAbR7+rexRPAcoV/NkE0MvA1gWvR2ujC/I+0KVv29NL2D3BhX1arNBCKMq8P1wsneB2oc7H
+X-Authority-Analysis: v=2.4 cv=XemJzJ55 c=1 sm=1 tr=0 ts=683424d8 cx=c_pps
+ a=3WNzaoukacrqR9RwcOSAdA==:117 a=3WNzaoukacrqR9RwcOSAdA==:17
+ a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=gAnH3GRIAAAA:8 a=cweWXZ_D9D-fF1LecnIA:9
+ a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: KR-0ZUhVJsswada7HJpUSEcd_JWbRRTX
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-05-26_04,2025-05-22_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 mlxscore=0 priorityscore=1501 suspectscore=0 phishscore=0
+ impostorscore=0 malwarescore=0 bulkscore=0 lowpriorityscore=0 spamscore=0
+ mlxlogscore=995 adultscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505160000
+ definitions=main-2505260070
 
-From: Maud Spierings <maudspierings@gocontroll.com>
+Update the .name field in the ad4080_chip_info struct
+from "AD4080" to "ad4080" to follow the common convention
+in IIO drivers of using lowercase names for device identifiers.
 
-Throughout the various probe functions &indio_dev->dev is used before it
-is initialized. This caused a kernel panic in st_sensors_power_enable()
-when the call to devm_regulator_bulk_get_enable() fails and then calls
-dev_err_probe() with the uninitialized device.
-
-This seems to only cause a panic with dev_err_probe(), dev_err(),
-dev_warn() and dev_info() don't seem to cause a panic, but are fixed
-as well.
-
-The issue is reported and traced here: [1]
-
-[1]: https://lore.kernel.org/all/AM7P189MB100986A83D2F28AF3FFAF976E39EA@AM7P189MB1009.EURP189.PROD.OUTLOOK.COM/
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
+Fixes: 1ff3f56f846b ("iio: adc: ad4080: add driver support")
+Reviewed-by: Nuno Sá <nuno.sa@analog.com>
+Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
 ---
-When I search for general &indio_dev->dev usage, I see quite a lot more
-hits, but I am not sure if there are issues with those too.
+changes in v2:
+ - drop "no functional changes" from commit body
+ - add fixes tag
+ drivers/iio/adc/ad4080.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-This issue has existed for a long time it seems and therefore it is
-nearly impossible to find a proper fixes tag. I would love to see it at
-least backported to 6.12 as that is where I encountered it, and I
-believe the patch should apply without conflicts.
----
-Changes in v3:
-- Added the stable cc to the commit message
-- Move the link to the original issue to the commit message
-- Fix function notation in the commit message
-- Move some more of the dev_*() calls to one line
-- Link to v2: https://lore.kernel.org/r/20250522-st_iio_fix-v2-1-07a32655a996@gocontroll.com
-
-Changes in v2:
-- Added SoB in commit message
-- Link to v1: https://lore.kernel.org/r/20250522-st_iio_fix-v1-1-d689b35f1612@gocontroll.com
----
- drivers/iio/accel/st_accel_core.c                  | 10 +++---
- drivers/iio/common/st_sensors/st_sensors_core.c    | 36 ++++++++++------------
- drivers/iio/common/st_sensors/st_sensors_trigger.c | 20 ++++++------
- 3 files changed, 31 insertions(+), 35 deletions(-)
-
-diff --git a/drivers/iio/accel/st_accel_core.c b/drivers/iio/accel/st_accel_core.c
-index 99cb661fabb2d9cc1943fa8d0a6f3becb71126e6..a7961c610ed203d039bbf298c8883031a578fb0b 100644
---- a/drivers/iio/accel/st_accel_core.c
-+++ b/drivers/iio/accel/st_accel_core.c
-@@ -1353,6 +1353,7 @@ static int apply_acpi_orientation(struct iio_dev *indio_dev)
- 	union acpi_object *ont;
- 	union acpi_object *elements;
- 	acpi_status status;
-+	struct device *parent = indio_dev->dev.parent;
- 	int ret = -EINVAL;
- 	unsigned int val;
- 	int i, j;
-@@ -1371,7 +1372,7 @@ static int apply_acpi_orientation(struct iio_dev *indio_dev)
- 	};
+diff --git a/drivers/iio/adc/ad4080.c b/drivers/iio/adc/ad4080.c
+index e8b2e5e7a68a..c36eb41d738a 100644
+--- a/drivers/iio/adc/ad4080.c
++++ b/drivers/iio/adc/ad4080.c
+@@ -433,7 +433,7 @@ static const struct iio_chan_spec ad4080_channel = {
+ };
  
- 
--	adev = ACPI_COMPANION(indio_dev->dev.parent);
-+	adev = ACPI_COMPANION(parent);
- 	if (!adev)
- 		return -ENXIO;
- 
-@@ -1380,8 +1381,7 @@ static int apply_acpi_orientation(struct iio_dev *indio_dev)
- 	if (status == AE_NOT_FOUND) {
- 		return -ENXIO;
- 	} else if (ACPI_FAILURE(status)) {
--		dev_warn(&indio_dev->dev, "failed to execute _ONT: %d\n",
--			 status);
-+		dev_warn(parent, "failed to execute _ONT: %d\n", status);
- 		return status;
- 	}
- 
-@@ -1457,12 +1457,12 @@ static int apply_acpi_orientation(struct iio_dev *indio_dev)
- 	}
- 
- 	ret = 0;
--	dev_info(&indio_dev->dev, "computed mount matrix from ACPI\n");
-+	dev_info(parent, "computed mount matrix from ACPI\n");
- 
- out:
- 	kfree(buffer.pointer);
- 	if (ret)
--		dev_dbg(&indio_dev->dev,
-+		dev_dbg(parent,
- 			"failed to apply ACPI orientation data: %d\n", ret);
- 
- 	return ret;
-diff --git a/drivers/iio/common/st_sensors/st_sensors_core.c b/drivers/iio/common/st_sensors/st_sensors_core.c
-index 8ce1dccfea4f5aaff45d3d40f6542323dd1f0b09..dac593be56958fd0be92e13f628350fcfd0f040d 100644
---- a/drivers/iio/common/st_sensors/st_sensors_core.c
-+++ b/drivers/iio/common/st_sensors/st_sensors_core.c
-@@ -154,7 +154,7 @@ static int st_sensors_set_fullscale(struct iio_dev *indio_dev, unsigned int fs)
- 	return err;
- 
- st_accel_set_fullscale_error:
--	dev_err(&indio_dev->dev, "failed to set new fullscale.\n");
-+	dev_err(indio_dev->dev.parent, "failed to set new fullscale.\n");
- 	return err;
- }
- 
-@@ -231,8 +231,7 @@ int st_sensors_power_enable(struct iio_dev *indio_dev)
- 					     ARRAY_SIZE(regulator_names),
- 					     regulator_names);
- 	if (err)
--		return dev_err_probe(&indio_dev->dev, err,
--				     "unable to enable supplies\n");
-+		return dev_err_probe(parent, err, "unable to enable supplies\n");
- 
- 	return 0;
- }
-@@ -241,13 +240,14 @@ EXPORT_SYMBOL_NS(st_sensors_power_enable, "IIO_ST_SENSORS");
- static int st_sensors_set_drdy_int_pin(struct iio_dev *indio_dev,
- 					struct st_sensors_platform_data *pdata)
- {
-+	struct device *parent = indio_dev->dev.parent;
- 	struct st_sensor_data *sdata = iio_priv(indio_dev);
- 
- 	/* Sensor does not support interrupts */
- 	if (!sdata->sensor_settings->drdy_irq.int1.addr &&
- 	    !sdata->sensor_settings->drdy_irq.int2.addr) {
- 		if (pdata->drdy_int_pin)
--			dev_info(&indio_dev->dev,
-+			dev_info(parent,
- 				 "DRDY on pin INT%d specified, but sensor does not support interrupts\n",
- 				 pdata->drdy_int_pin);
- 		return 0;
-@@ -256,29 +256,27 @@ static int st_sensors_set_drdy_int_pin(struct iio_dev *indio_dev,
- 	switch (pdata->drdy_int_pin) {
- 	case 1:
- 		if (!sdata->sensor_settings->drdy_irq.int1.mask) {
--			dev_err(&indio_dev->dev,
--					"DRDY on INT1 not available.\n");
-+			dev_err(parent, "DRDY on INT1 not available.\n");
- 			return -EINVAL;
- 		}
- 		sdata->drdy_int_pin = 1;
- 		break;
- 	case 2:
- 		if (!sdata->sensor_settings->drdy_irq.int2.mask) {
--			dev_err(&indio_dev->dev,
--					"DRDY on INT2 not available.\n");
-+			dev_err(parent, "DRDY on INT2 not available.\n");
- 			return -EINVAL;
- 		}
- 		sdata->drdy_int_pin = 2;
- 		break;
- 	default:
--		dev_err(&indio_dev->dev, "DRDY on pdata not valid.\n");
-+		dev_err(parent, "DRDY on pdata not valid.\n");
- 		return -EINVAL;
- 	}
- 
- 	if (pdata->open_drain) {
- 		if (!sdata->sensor_settings->drdy_irq.int1.addr_od &&
- 		    !sdata->sensor_settings->drdy_irq.int2.addr_od)
--			dev_err(&indio_dev->dev,
-+			dev_err(parent,
- 				"open drain requested but unsupported.\n");
- 		else
- 			sdata->int_pin_open_drain = true;
-@@ -336,6 +334,7 @@ EXPORT_SYMBOL_NS(st_sensors_dev_name_probe, "IIO_ST_SENSORS");
- int st_sensors_init_sensor(struct iio_dev *indio_dev,
- 					struct st_sensors_platform_data *pdata)
- {
-+	struct device *parent = indio_dev->dev.parent;
- 	struct st_sensor_data *sdata = iio_priv(indio_dev);
- 	struct st_sensors_platform_data *of_pdata;
- 	int err = 0;
-@@ -343,7 +342,7 @@ int st_sensors_init_sensor(struct iio_dev *indio_dev,
- 	mutex_init(&sdata->odr_lock);
- 
- 	/* If OF/DT pdata exists, it will take precedence of anything else */
--	of_pdata = st_sensors_dev_probe(indio_dev->dev.parent, pdata);
-+	of_pdata = st_sensors_dev_probe(parent, pdata);
- 	if (IS_ERR(of_pdata))
- 		return PTR_ERR(of_pdata);
- 	if (of_pdata)
-@@ -370,7 +369,7 @@ int st_sensors_init_sensor(struct iio_dev *indio_dev,
- 		if (err < 0)
- 			return err;
- 	} else
--		dev_info(&indio_dev->dev, "Full-scale not possible\n");
-+		dev_info(parent, "Full-scale not possible\n");
- 
- 	err = st_sensors_set_odr(indio_dev, sdata->odr);
- 	if (err < 0)
-@@ -405,7 +404,7 @@ int st_sensors_init_sensor(struct iio_dev *indio_dev,
- 			mask = sdata->sensor_settings->drdy_irq.int2.mask_od;
- 		}
- 
--		dev_info(&indio_dev->dev,
-+		dev_info(parent,
- 			 "set interrupt line to open drain mode on pin %d\n",
- 			 sdata->drdy_int_pin);
- 		err = st_sensors_write_data_with_mask(indio_dev, addr,
-@@ -593,21 +592,20 @@ EXPORT_SYMBOL_NS(st_sensors_get_settings_index, "IIO_ST_SENSORS");
- int st_sensors_verify_id(struct iio_dev *indio_dev)
- {
- 	struct st_sensor_data *sdata = iio_priv(indio_dev);
-+	struct device *parent = indio_dev->dev.parent;
- 	int wai, err;
- 
- 	if (sdata->sensor_settings->wai_addr) {
- 		err = regmap_read(sdata->regmap,
- 				  sdata->sensor_settings->wai_addr, &wai);
- 		if (err < 0) {
--			dev_err(&indio_dev->dev,
--				"failed to read Who-Am-I register.\n");
--			return err;
-+			return dev_err_probe(parent, err,
-+					     "failed to read Who-Am-I register.\n");
- 		}
- 
- 		if (sdata->sensor_settings->wai != wai) {
--			dev_warn(&indio_dev->dev,
--				"%s: WhoAmI mismatch (0x%x).\n",
--				indio_dev->name, wai);
-+			dev_warn(parent, "%s: WhoAmI mismatch (0x%x).\n",
-+				 indio_dev->name, wai);
- 		}
- 	}
- 
-diff --git a/drivers/iio/common/st_sensors/st_sensors_trigger.c b/drivers/iio/common/st_sensors/st_sensors_trigger.c
-index 9d4bf822a15dfcdd6c2835f6b9d7698cd3cb0b08..8a8ab688d7980f6dd43c660f90a0eba32c38388b 100644
---- a/drivers/iio/common/st_sensors/st_sensors_trigger.c
-+++ b/drivers/iio/common/st_sensors/st_sensors_trigger.c
-@@ -127,7 +127,7 @@ int st_sensors_allocate_trigger(struct iio_dev *indio_dev,
- 	sdata->trig = devm_iio_trigger_alloc(parent, "%s-trigger",
- 					     indio_dev->name);
- 	if (sdata->trig == NULL) {
--		dev_err(&indio_dev->dev, "failed to allocate iio trigger.\n");
-+		dev_err(parent, "failed to allocate iio trigger.\n");
- 		return -ENOMEM;
- 	}
- 
-@@ -143,7 +143,7 @@ int st_sensors_allocate_trigger(struct iio_dev *indio_dev,
- 	case IRQF_TRIGGER_FALLING:
- 	case IRQF_TRIGGER_LOW:
- 		if (!sdata->sensor_settings->drdy_irq.addr_ihl) {
--			dev_err(&indio_dev->dev,
-+			dev_err(parent,
- 				"falling/low specified for IRQ but hardware supports only rising/high: will request rising/high\n");
- 			if (irq_trig == IRQF_TRIGGER_FALLING)
- 				irq_trig = IRQF_TRIGGER_RISING;
-@@ -156,21 +156,19 @@ int st_sensors_allocate_trigger(struct iio_dev *indio_dev,
- 				sdata->sensor_settings->drdy_irq.mask_ihl, 1);
- 			if (err < 0)
- 				return err;
--			dev_info(&indio_dev->dev,
-+			dev_info(parent,
- 				 "interrupts on the falling edge or active low level\n");
- 		}
- 		break;
- 	case IRQF_TRIGGER_RISING:
--		dev_info(&indio_dev->dev,
--			 "interrupts on the rising edge\n");
-+		dev_info(parent, "interrupts on the rising edge\n");
- 		break;
- 	case IRQF_TRIGGER_HIGH:
--		dev_info(&indio_dev->dev,
--			 "interrupts active high level\n");
-+		dev_info(parent, "interrupts active high level\n");
- 		break;
- 	default:
- 		/* This is the most preferred mode, if possible */
--		dev_err(&indio_dev->dev,
-+		dev_err(parent,
- 			"unsupported IRQ trigger specified (%lx), enforce rising edge\n", irq_trig);
- 		irq_trig = IRQF_TRIGGER_RISING;
- 	}
-@@ -179,7 +177,7 @@ int st_sensors_allocate_trigger(struct iio_dev *indio_dev,
- 	if (irq_trig == IRQF_TRIGGER_FALLING ||
- 	    irq_trig == IRQF_TRIGGER_RISING) {
- 		if (!sdata->sensor_settings->drdy_irq.stat_drdy.addr) {
--			dev_err(&indio_dev->dev,
-+			dev_err(parent,
- 				"edge IRQ not supported w/o stat register.\n");
- 			return -EOPNOTSUPP;
- 		}
-@@ -214,13 +212,13 @@ int st_sensors_allocate_trigger(struct iio_dev *indio_dev,
- 					sdata->trig->name,
- 					sdata->trig);
- 	if (err) {
--		dev_err(&indio_dev->dev, "failed to request trigger IRQ.\n");
-+		dev_err(parent, "failed to request trigger IRQ.\n");
- 		return err;
- 	}
- 
- 	err = devm_iio_trigger_register(parent, sdata->trig);
- 	if (err < 0) {
--		dev_err(&indio_dev->dev, "failed to register iio trigger.\n");
-+		dev_err(parent, "failed to register iio trigger.\n");
- 		return err;
- 	}
- 	indio_dev->trig = iio_trigger_get(sdata->trig);
-
----
-base-commit: 7bac2c97af4078d7a627500c9bcdd5b033f97718
-change-id: 20250522-st_iio_fix-1c58fdd4d420
-
-Best regards,
+ static const struct ad4080_chip_info ad4080_chip_info = {
+-	.name = "AD4080",
++	.name = "ad4080",
+ 	.product_id = AD4080_CHIP_ID,
+ 	.scale_table = ad4080_scale_table,
+ 	.num_scales = ARRAY_SIZE(ad4080_scale_table),
 -- 
-Maud Spierings <maudspierings@gocontroll.com>
-
+2.49.0
 
 

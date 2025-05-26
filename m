@@ -1,260 +1,290 @@
-Return-Path: <linux-iio+bounces-19936-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19937-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86802AC3DA8
-	for <lists+linux-iio@lfdr.de>; Mon, 26 May 2025 12:05:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 639D7AC3DBF
+	for <lists+linux-iio@lfdr.de>; Mon, 26 May 2025 12:21:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0BB2F1898097
-	for <lists+linux-iio@lfdr.de>; Mon, 26 May 2025 10:06:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD5BB1894137
+	for <lists+linux-iio@lfdr.de>; Mon, 26 May 2025 10:21:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89DC01FDA61;
-	Mon, 26 May 2025 10:04:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77A691F4631;
+	Mon, 26 May 2025 10:21:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="tlwiup4Y"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PYDJuGRY"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47B451F4C94
-	for <linux-iio@vger.kernel.org>; Mon, 26 May 2025 10:04:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D02A1E5B7D;
+	Mon, 26 May 2025 10:21:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748253894; cv=none; b=ImC9XLfmaYqnFPGBhDK2NLkN0JYeoRo2qRXJtNcuUYvuTSsaieI/Gl08+uLUWpGlQ/BV2/m2mOXPSL+cXzwXvv2cYhZ6oRaJelAOaKn1PxIItb37smYUOq7CPCkbi+7BVBwPbi+ocGaP8oHqlb8ZEwSDXD7eF5U9TWKJV3HRizE=
+	t=1748254878; cv=none; b=flfHq5SafFbGZd3rSOaJnDw0GDENmkgv3cwXEMu5HEx+Ka/sAGRWSYph3RorBB4Wc7HePpaVIycfM4kaIDGOItt8BD8zeTYyCqLfxPQtX/Y6DmgAWMah2JmMLmJdNlhGBM0EA0S8sGXkNnEovXCAhiLjJvewnWwsLUvagCSwddM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748253894; c=relaxed/simple;
-	bh=+6B4Ob+yfzec6F/Q3oyJRE9udnynOrOuj3LLQ6kkxsA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=L/tKMK2XyqcirJe1AKfqEccRc6hxTNZ4mQfPHTRa3giMPOqyKAZeuC4KKjeLeMhJCIxh9/rU/D/lYae82g9oBZ/Qx0i5P0ijYRbgLQeBG/XFHDlI0ei4g9P2JCFSg9YQOgfsW1TxNLWAMWOmcqpe8y1gwRniteuBswa0BM9D/aA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=tlwiup4Y; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-441c99459e9so12252455e9.3
-        for <linux-iio@vger.kernel.org>; Mon, 26 May 2025 03:04:52 -0700 (PDT)
+	s=arc-20240116; t=1748254878; c=relaxed/simple;
+	bh=p2gK8iwaWKY6guqBl2DKOLD8mONcUKHwX183TyfcQG8=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=gxwonZnzHWCFqqQxsT0kR0c2KREt9k5rnBobX86cuqOXo0QNktPaHc/dFpIw10o7ADGZUICkML5MMuOT0B8hGF/WwjJlv678aevxxTNMoYZo+o8fuK5oFhS6njLIYgTWKuNNOE1Th1RZZ9aYFpQQwlDZIUGexHZKjhgAMeZOAzU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PYDJuGRY; arc=none smtp.client-ip=209.85.221.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-3a36e090102so1138549f8f.2;
+        Mon, 26 May 2025 03:21:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1748253890; x=1748858690; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=W0tSdZHx7w1B//uEapJ6mnjhDL7NbW0bow2VA9wTvIw=;
-        b=tlwiup4Ym9MTVzU/Yje7LUL6h/0fWuSxaY1FDCAIekR/6/D+585vYbKMqcUKJLe979
-         c6+omtoUshiEEcGLErB2ARAgtuyMix+0hok/iCgVx5RjS4kNWOzs30kWQz7Ln3r1Dg4x
-         a7X42pcl2kBLETttmW1KD2Xc7vF3MRCNywcibWg9zyf57LrJI0rbVA/x0m/D74Ehy7AB
-         r83/pOfuwx2F60J1cq8ySWd1DNhQB+kuUMumYra46Z5ftQ4LlGuFd4QnBKgHD3inVZp6
-         hjxkPHP5zQJohB9YRRUb2kfComv9UGRmH9E29t8cIUpGU48oCSUbAGnHyizJV45Y8jeY
-         VVNg==
+        d=gmail.com; s=20230601; t=1748254875; x=1748859675; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=yDvvEg63RaMwETBjnBaEEie893D+QP16pmtX1cgvqSo=;
+        b=PYDJuGRYBdIId1ghEWL9YYBuvRJtCuhWBG7Whkusx8MMe4BYHYCmcNseUTaUjjGqfd
+         iTQJ3LVpHusHBeru3ONIOs/kPJuVLRKUZzluHVzw9HV2uswALAJWTpSahv1J3+B99NdI
+         by/1AHWDUuyq2pk6xt4Vb7BFhkIB1Z+xARvo7t/Gcg5FnZZR4RHi3BFREABUDxcACCGC
+         G35A15F4rYg7flLj5ZcMNw3Id682u3C/8N9ikzyj8hNT+ntmOsi2M0xrX8UApUi5O8bO
+         rTBvUClWapHI5uA98O3FTHspoq7TYFH8Nxwp6U9zZxcBOHOyLlAmmVmI9zDcNNkIs4b9
+         RCoQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748253890; x=1748858690;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=W0tSdZHx7w1B//uEapJ6mnjhDL7NbW0bow2VA9wTvIw=;
-        b=M4JZDAQLUtSrQGQDferYI2CtdC5M3hagrpzejyVhWv56p/Bd3AbQwdN/H+Rrjrv9Jp
-         hkITkZ2KJOcJuz5BSdv+JZu3+Lpn8rL0PFJYWfu3LTW+NWP2aZqzGdHhuNU3TAab6dgX
-         /4DRvpo8F/gKCtKXISSg+DeqTjQKWrrcOx+mSFQn+wXqt+Oef4SibbVpiVKYTi/OcP0q
-         /yiYaPHvDp0Wf2yyWkPinQFoVMjsXvZEJKUv0mhCNvXZQ3nCwLXfSaz+6p8YZSwycVEB
-         5dtjP1L8EHqJczRNtkcq5idraESyG6STShiaztQ8Xi1iujubmE4FSuMzNnZTyVwL9uHT
-         uzjg==
-X-Gm-Message-State: AOJu0YwzhahU2yI1HxBpYHoS3Uv2/RO1ghyCF8k8vSo5WUet34L7GtRr
-	UUse+ZGN2OnIDjou7LRtg1v9zpZVJ9b7iDmIk94dIf/hMI97yunwS0txqgW9uBNoHZk=
-X-Gm-Gg: ASbGncv5JUHVgHW9b/NY/b2nrXsXixXSrNqE3vdFFHLj4toaFDZ5QliQ69XG0vTqp5J
-	wO/NpNX6qHyRYLAcLzUNgs4DNoo/j4qOvMBuCiFMw9raRq/7j98tEkyw8dHCwFpdXOWUZhB8wlh
-	FdeVyRhAm0DuuYNaPGpzC7HFiqa2I04ZBmg67JUfngVciRCtpGqUfIdGw4Dals+DYkwDdkB5y9p
-	mOUI3JsO5sLihnQM02P0Yw6d+iIeHdHcAQVPqMzkwuSTOKJHlw/2NPJ9WqMu+7R8crJEd5Tq9GP
-	zYN8aIt8Qi6mrk0ImqI1U5BCq5pLiLPKW361E9Qic4Jttvg51toju46rbjeL//O1PCe3DFJ8dCK
-	XkLcQc2g0HZ9LA/on4Atf606Z89FacZw=
-X-Google-Smtp-Source: AGHT+IGaJt2vHpqfKlS5cBDtDHQGsqtmwZDKEFRfCosf+8OmOWWt9tc/0NIdrcJ31CrE9tEfO9+IzQ==
-X-Received: by 2002:a05:600c:4fc9:b0:43c:ec4c:25b4 with SMTP id 5b1f17b1804b1-44c91ad70d0mr93867775e9.10.1748253890567;
-        Mon, 26 May 2025 03:04:50 -0700 (PDT)
-Received: from [192.168.0.2] (host-80-116-51-117.retail.telecomitalia.it. [80.116.51.117])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a35ca888fcsm36141834f8f.78.2025.05.26.03.04.49
+        d=1e100.net; s=20230601; t=1748254875; x=1748859675;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=yDvvEg63RaMwETBjnBaEEie893D+QP16pmtX1cgvqSo=;
+        b=OIxg6P9NvwcGvGoYbOJnHbobgIVKjy0blo6fICcwNDuoVrFa5sCVhcaiAqASVi0dBG
+         ocyOX0dETa/SVtmole+3Sr88SI0df/2Gf1be0NFotsCCdaFgNvci92FESRB02Tj2pg2Y
+         77OXzMWcSNCnsExP3AeQNXLPXzFd1f/2vUoS/3X88J8GWE2wNQ0c32IUoKcIHwUalH5f
+         li7+gHBCHkXGYfXhbvdISZdwf6JwaU7QUqcb+F1PgJNrRtHcUxVQPF+dUXLxF7JbDUuC
+         PeBqGY2otehOL6Fi2nQ57ki27sAFWOiwHw/mfjl5Z+TaZivEaJGfu9CQ3TzWBF14NAut
+         3HLw==
+X-Forwarded-Encrypted: i=1; AJvYcCUYg2ve/sE+VXQr4OO10INhhcbgxIrziTLVqFwt0W4ymjBQ2Ih5Qtjvm0iPUvyAj1gMuH+aMKKPE6Hw@vger.kernel.org, AJvYcCUfT/1qqkOWgIcjK6C50qoJ0LVxePTPVKCfbw4PN/6+q8QUi9MNonuStoqZOoz02HeXx3qzGGwykzF4RrVB@vger.kernel.org, AJvYcCVMhFwlZ4+P8905FoUaaqUn968QsyUttWmn/50LKaazHouPSz5ADXLGQMYdypWtPGqghb/rGwH4KFaH3w==@vger.kernel.org, AJvYcCVqpW569c5WXYo9Q6igfQiQreOtTSs/7yoMhsIPhKvJL5m/7VDRkKT13Ndzl4RVj1QRkpwviQhKAeM1@vger.kernel.org
+X-Gm-Message-State: AOJu0Yydg7pKlR+qY1KZER+p8iqefYb79tjyl6ZcJhpDwHmnCjj16/aN
+	2T3EZHan5UgGeGCjpamxsB9mTN+loOII/JJrgPeyMG42Vl7AcwcNmdXjdwkGxa1tSc0=
+X-Gm-Gg: ASbGncuYDG2KsEDk9kYhCPGca2VDTRfLwGAjaj4ou+jNukCMuiWIwlTJADDhwFqicf0
+	vUsilRZ+WQqGE4U3OtGdEoA5SyoE9PqZy2w6eBMW/O6lhzHEBe80N//FHwM8bTRvIBPs5i1Ih4S
+	Z2tWl3dD9GLqKtvJkyByRK+vSm5NJfNZvFw5kpCxkpSIHjqE6uXUcEH4PtY0+3FEpJvy0aIN5vq
+	yeRiEUh+yU50eBLmK1wDlhQbzrRqC0p8C8LkMOxnMU4fj2DV2+VGnyNAfKyZGwG41NTtoJREx10
+	ej+IwYh2P0yo5A5/1DuaF9//81J6g47PjNjMP2/WGBHEXr/xeWXntjhc
+X-Google-Smtp-Source: AGHT+IHHLdzyh4ldfuqGdkWQ/KWMg/H/cJzxp87GB8pPL8XIM8U+WILu9uXeT2fI6lvKnnSp6kwH1g==
+X-Received: by 2002:a05:6000:238a:b0:3a4:d367:c5aa with SMTP id ffacd0b85a97d-3a4d367c798mr4265259f8f.20.1748254874308;
+        Mon, 26 May 2025 03:21:14 -0700 (PDT)
+Received: from [100.73.1.233] ([185.128.9.226])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-447f23c080asm239676925e9.22.2025.05.26.03.21.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 May 2025 03:04:50 -0700 (PDT)
-From: Angelo Dureghello <adureghello@baylibre.com>
-X-Google-Original-From: Angelo Dureghello <adureghello@baylibre.org>
-Date: Mon, 26 May 2025 12:03:21 +0200
-Subject: [PATCH v7 6/6] iio: adc: ad7606: add gain calibration support
+        Mon, 26 May 2025 03:21:13 -0700 (PDT)
+Message-ID: <a1fc70b489cc6396200cb777795183f42ed31719.camel@gmail.com>
+Subject: Re: [PATCH v3 02/10] iio: adc: Add basic support for AD4170
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: Marcelo Schmitt <marcelo.schmitt@analog.com>, linux-iio@vger.kernel.org,
+ 	devicetree@vger.kernel.org, linux-gpio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Cc: Ana-Maria Cusco <ana-maria.cusco@analog.com>, jic23@kernel.org, 
+	lars@metafoo.de, Michael.Hennerich@analog.com, dlechner@baylibre.com, 
+	nuno.sa@analog.com, andy@kernel.org, robh@kernel.org, krzk+dt@kernel.org, 
+	conor+dt@kernel.org, linus.walleij@linaro.org, brgl@bgdev.pl, 
+	marcelo.schmitt1@gmail.com
+Date: Mon, 26 May 2025 11:21:17 +0100
+In-Reply-To: <2c308bf8464660079ec6da82a62316e9f2ebd5f7.1747083143.git.marcelo.schmitt@analog.com>
+References: <cover.1747083143.git.marcelo.schmitt@analog.com>
+	 <2c308bf8464660079ec6da82a62316e9f2ebd5f7.1747083143.git.marcelo.schmitt@analog.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.1 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20250526-wip-bl-ad7606-calibration-v7-6-b487022ce199@baylibre.com>
-References: <20250526-wip-bl-ad7606-calibration-v7-0-b487022ce199@baylibre.com>
-In-Reply-To: <20250526-wip-bl-ad7606-calibration-v7-0-b487022ce199@baylibre.com>
-To: Jonathan Cameron <jic23@kernel.org>, 
- David Lechner <dlechner@baylibre.com>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Andy Shevchenko <andy@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, 
- Michael Hennerich <Michael.Hennerich@analog.com>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Michael Hennerich <michael.hennerich@analog.com>, 
- devicetree@vger.kernel.org, Angelo Dureghello <adureghello@baylibre.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5427;
- i=adureghello@baylibre.com; h=from:subject:message-id;
- bh=2enztWCaqivWNg+b+KQz77hVRXgwpcSxoo97MZwtRNU=;
- b=owGbwMvMwCXGf3bn1e/btlsznlZLYsgwscnepuFy44nCxIgXm87tebY6bIvu82tRyW5Hdu9TN
- plYLxdq0VHKwiDGxSArpshSlxhhEno7VEp5AeNsmDmsTCBDGLg4BWAiv3sY/tdMPfr8w9zq+U/b
- DQKPbQ2+fVwgoW+dWMGk1Lrc4OhzgVUM/ywKUhMS3hpZSzVI7xWfJ9Kpf+5I8fldDD7/z/jcssr
- N5QQA
-X-Developer-Key: i=adureghello@baylibre.com; a=openpgp;
- fpr=703CDFAD8B573EB00850E38366D1CB9419AF3953
 
-From: Angelo Dureghello <adureghello@baylibre.com>
+On Tue, 2025-05-13 at 09:34 -0300, Marcelo Schmitt wrote:
+> From: Ana-Maria Cusco <ana-maria.cusco@analog.com>
+>=20
+> The AD4170 is a multichannel, low noise, 24-bit precision sigma-delta
+> analog to digital converter. The AD4170 design offers a flexible data
+> aquisition solution with crosspoint multiplexed analog inputs, configurab=
+le
+> ADC voltage reference inputs, ultra-low noise integrated PGA, digital
+> filtering, wide range of configurable output data rates, internal
+> oscillator and temperature sensor, four GPIOs, and integrated features fo=
+r
+> interfacing with load cell weigh scales, RTD, and thermocouple sensors.
+>=20
+> Add basic support for the AD4170 ADC with the following features:
+> - Single-shot read.
+> - Analog front end PGA configuration.
+> - Differential and pseudo-differential input configuration.
+>=20
+> Signed-off-by: Ana-Maria Cusco <ana-maria.cusco@analog.com>
+> Co-developed-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
+> Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
+> ---
 
-Add gain calibration support, using resistor values set on devicetree,
-values to be set accordingly with ADC external RFilter, as explained in
-the ad7606c-16 datasheet, rev0, page 37.
+Looks very good. Just some small notes...
 
-Usage example in the fdt yaml documentation.
+> Change log v2 -> v3
+> - Updated Copyright year.
+> - Separated handling of channel setup cases for better understanding of c=
+ode
+> flow.
+> - Now comparing setups field by field instead of using memcmp().
+> - Disable channel on ad4170_read_sample() error path.
+> - Reinit completion before entering single conversion mode.
+> - Organized ad4170_sinc3_filt_fs_tbl.
+> - Used clamp to simplify configuration value checking.
+> - Returned earlier whenever possible.
+> - Used HZ_PER_KHZ/MHZ.
+> - Declared internal voltage reference constant AD4170_INT_REF_2_5V
+> - Many other minor code style and readability improvements.
+>=20
+> =C2=A0MAINTAINERS=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=A0 1 +
+> =C2=A0drivers/iio/adc/Kconfig=C2=A0 |=C2=A0=C2=A0 12 +
+> =C2=A0drivers/iio/adc/Makefile |=C2=A0=C2=A0=C2=A0 1 +
+> =C2=A0drivers/iio/adc/ad4170.c | 1553 +++++++++++++++++++++++++++++++++++=
++++
+> =C2=A04 files changed, 1567 insertions(+)
+> =C2=A0create mode 100644 drivers/iio/adc/ad4170.c
+>=20
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 0a8f2c7a139c..541e37ed304e 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -1352,6 +1352,7 @@ L:	linux-iio@vger.kernel.org
+> =C2=A0S:	Supported
+> =C2=A0W:	https://ez.analog.com/linux-software-drivers
+> =C2=A0F:	Documentation/devicetree/bindings/iio/adc/adi,ad4170.yaml
+> +F:	drivers/iio/adc/ad4170.c
+> =C2=A0
+> =C2=A0ANALOG DEVICES INC AD4695 DRIVER
+> =C2=A0M:	Michael Hennerich <michael.hennerich@analog.com>
+> diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
+> index 0fe6601e59ed..594b9f55ec0a 100644
+> --- a/drivers/iio/adc/Kconfig
+> +++ b/drivers/iio/adc/Kconfig
+> @@ -70,6 +70,18 @@ config AD4130
+> =C2=A0	=C2=A0 To compile this driver as a module, choose M here: the modu=
+le will
+> be
+> =C2=A0	=C2=A0 called ad4130.
+> =C2=A0
+> +
+> +config AD4170
+> +	tristate "Analog Device AD4170 ADC Driver"
+> +	depends on SPI
+> +	select REGMAP_SPI
+> +	help
+> +	=C2=A0 Say yes here to build support for Analog Devices AD4170 SPI anal=
+og
+> +	=C2=A0 to digital converters (ADC).
+> +
+> +	=C2=A0 To compile this driver as a module, choose M here: the module wi=
+ll
+> be
+> +	=C2=A0 called ad4170.
+> +
+> =C2=A0config AD4695
+> =C2=A0	tristate "Analog Device AD4695 ADC Driver"
+> =C2=A0	depends on SPI
+> diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
+> index 07d4b832c42e..d3a1376d1f96 100644
+> --- a/drivers/iio/adc/Makefile
+> +++ b/drivers/iio/adc/Makefile
+> @@ -11,6 +11,7 @@ obj-$(CONFIG_AD_SIGMA_DELTA) +=3D ad_sigma_delta.o
+> =C2=A0obj-$(CONFIG_AD4000) +=3D ad4000.o
+> =C2=A0obj-$(CONFIG_AD4030) +=3D ad4030.o
+> =C2=A0obj-$(CONFIG_AD4130) +=3D ad4130.o
+> +obj-$(CONFIG_AD4170) +=3D ad4170.o
+> =C2=A0obj-$(CONFIG_AD4695) +=3D ad4695.o
+> =C2=A0obj-$(CONFIG_AD4851) +=3D ad4851.o
+> =C2=A0obj-$(CONFIG_AD7091R) +=3D ad7091r-base.o
+> diff --git a/drivers/iio/adc/ad4170.c b/drivers/iio/adc/ad4170.c
+> new file mode 100644
+> index 000000000000..bf19b31095ee
+> --- /dev/null
+> +++ b/drivers/iio/adc/ad4170.c
+> @@ -0,0 +1,1553 @@
+> +// SPDX-License-Identifier: GPL-2.0+
+> +/*
+> + * Copyright (C) 2025 Analog Devices, Inc.
+> + * Author: Ana-Maria Cusco <ana-maria.cusco@analog.com>
+> + * Author: Marcelo Schmitt <marcelo.schmitt@analog.com>
+> + */
+> +
+> +#include <linux/bitfield.h>
+> +#include <linux/bitmap.h>
+> +#include <linux/bitops.h>
+> +#include <linux/bits.h>
+> +#include <linux/delay.h>
+> +#include <linux/device.h>
+> +#include <linux/err.h>
+> +#include <linux/iio/iio.h>
+> +#include <linux/interrupt.h>
+> +#include <linux/irq.h>
+> +#include <linux/math64.h>
+> +#include <linux/module.h>
+> +#include <linux/property.h>
+> +#include <linux/regmap.h>
+> +#include <linux/regulator/consumer.h>
+> +#include <linux/spi/spi.h>
+> +#include <linux/unaligned.h>
+> +#include <linux/units.h>
+> +#include <linux/util_macros.h>
+>=20
 
-Tested-by: David Lechner <dlechner@baylibre.com>
-Reviewed-by: Nuno Sá <nuno.sa@analog.com>
-Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
----
- drivers/iio/adc/ad7606.c | 48 ++++++++++++++++++++++++++++++++++++++++++++++++
- drivers/iio/adc/ad7606.h |  3 +++
- 2 files changed, 51 insertions(+)
+...
 
-diff --git a/drivers/iio/adc/ad7606.c b/drivers/iio/adc/ad7606.c
-index e0a666cc0e14255754e74daa9e1e88bc4ad1665c..3fe035d25024c174cb546f2e4b706b573abbe761 100644
---- a/drivers/iio/adc/ad7606.c
-+++ b/drivers/iio/adc/ad7606.c
-@@ -33,6 +33,10 @@
- 
- #include "ad7606.h"
- 
-+#define AD7606_CALIB_GAIN_MIN	0
-+#define AD7606_CALIB_GAIN_STEP	1024
-+#define AD7606_CALIB_GAIN_MAX	(63 * AD7606_CALIB_GAIN_STEP)
-+
- /*
-  * Scales are computed as 5000/32768 and 10000/32768 respectively,
-  * so that when applied to the raw values they provide mV values.
-@@ -125,6 +129,7 @@ static int ad7609_chan_scale_setup(struct iio_dev *indio_dev,
- 				   struct iio_chan_spec *chan);
- static int ad7616_sw_mode_setup(struct iio_dev *indio_dev);
- static int ad7606b_sw_mode_setup(struct iio_dev *indio_dev);
-+static int ad7606_chan_calib_gain_setup(struct iio_dev *indio_dev);
- 
- const struct ad7606_chip_info ad7605_4_info = {
- 	.max_samplerate = 300 * KILO,
-@@ -180,6 +185,7 @@ const struct ad7606_chip_info ad7606b_info = {
- 	.scale_setup_cb = ad7606_16bit_chan_scale_setup,
- 	.sw_setup_cb = ad7606b_sw_mode_setup,
- 	.offload_storagebits = 32,
-+	.calib_gain_setup_cb = ad7606_chan_calib_gain_setup,
- 	.calib_offset_avail = ad7606_calib_offset_avail,
- 	.calib_phase_avail = ad7606b_calib_phase_avail,
- };
-@@ -195,6 +201,7 @@ const struct ad7606_chip_info ad7606c_16_info = {
- 	.scale_setup_cb = ad7606c_16bit_chan_scale_setup,
- 	.sw_setup_cb = ad7606b_sw_mode_setup,
- 	.offload_storagebits = 32,
-+	.calib_gain_setup_cb = ad7606_chan_calib_gain_setup,
- 	.calib_offset_avail = ad7606_calib_offset_avail,
- 	.calib_phase_avail = ad7606c_calib_phase_avail,
- };
-@@ -246,6 +253,7 @@ const struct ad7606_chip_info ad7606c_18_info = {
- 	.scale_setup_cb = ad7606c_18bit_chan_scale_setup,
- 	.sw_setup_cb = ad7606b_sw_mode_setup,
- 	.offload_storagebits = 32,
-+	.calib_gain_setup_cb = ad7606_chan_calib_gain_setup,
- 	.calib_offset_avail = ad7606c_18bit_calib_offset_avail,
- 	.calib_phase_avail = ad7606c_calib_phase_avail,
- };
-@@ -355,6 +363,39 @@ static int ad7606_get_chan_config(struct iio_dev *indio_dev, int ch,
- 	return 0;
- }
- 
-+static int ad7606_chan_calib_gain_setup(struct iio_dev *indio_dev)
-+{
-+	struct ad7606_state *st = iio_priv(indio_dev);
-+	unsigned int num_channels = st->chip_info->num_adc_channels;
-+	struct device *dev = st->dev;
-+	int ret;
-+
-+	device_for_each_child_node_scoped(dev, child) {
-+		u32 reg, r_gain;
-+
-+		ret = fwnode_property_read_u32(child, "reg", &reg);
-+		if (ret)
-+			return ret;
-+
-+		/* Chan reg is a 1-based index. */
-+		if (reg < 1 || reg > num_channels)
-+			return ret;
-+
-+		r_gain = 0;
-+		ret = fwnode_property_read_u32(child, "adi,rfilter-ohms",
-+					       &r_gain);
-+		if (r_gain > AD7606_CALIB_GAIN_MAX)
-+			return -EINVAL;
-+
-+		ret = st->bops->reg_write(st, AD7606_CALIB_GAIN(reg - 1),
-+			DIV_ROUND_CLOSEST(r_gain, AD7606_CALIB_GAIN_STEP));
-+		if (ret)
-+			return ret;
-+	}
-+
-+	return 0;
-+}
-+
- static int ad7606c_18bit_chan_scale_setup(struct iio_dev *indio_dev,
- 					  struct iio_chan_spec *chan)
- {
-@@ -1444,6 +1485,13 @@ static int ad7606_probe_channels(struct iio_dev *indio_dev)
- 	if (slow_bus)
- 		channels[i] = (struct iio_chan_spec)IIO_CHAN_SOFT_TIMESTAMP(i);
- 
-+	/* Setting up gain calibration for all channels. */
-+	if (st->sw_mode_en && st->chip_info->calib_offset_avail) {
-+		ret = st->chip_info->calib_gain_setup_cb(indio_dev);
-+		if (ret)
-+			return ret;
-+	}
-+
- 	indio_dev->channels = channels;
- 
- 	return 0;
-diff --git a/drivers/iio/adc/ad7606.h b/drivers/iio/adc/ad7606.h
-index f613583a7fa4095115b0b28e3f8e51cd32b93524..6313eea2bd0ccf97222a50dc26d8ec65042d0db7 100644
---- a/drivers/iio/adc/ad7606.h
-+++ b/drivers/iio/adc/ad7606.h
-@@ -50,6 +50,7 @@ struct ad7606_state;
- typedef int (*ad7606_scale_setup_cb_t)(struct iio_dev *indio_dev,
- 				       struct iio_chan_spec *chan);
- typedef int (*ad7606_sw_setup_cb_t)(struct iio_dev *indio_dev);
-+typedef int (*ad7606_calib_gain_setup_cb_t)(struct iio_dev *indio_dev);
- 
- /**
-  * struct ad7606_chip_info - chip specific information
-@@ -66,6 +67,7 @@ typedef int (*ad7606_sw_setup_cb_t)(struct iio_dev *indio_dev);
-  * @init_delay_ms:	required delay in milliseconds for initialization
-  *			after a restart
-  * @offload_storagebits: storage bits used by the offload hw implementation
-+ * @calib_gain_setup_cb: callback to setup of gain calibration
-  * @calib_offset_avail: pointer to offset calibration range/limits array
-  * @calib_phase_avail:  pointer to phase calibration range/limits array
-  */
-@@ -81,6 +83,7 @@ struct ad7606_chip_info {
- 	bool				os_req_reset;
- 	unsigned long			init_delay_ms;
- 	u8				offload_storagebits;
-+	ad7606_calib_gain_setup_cb_t	calib_gain_setup_cb;
- 	const int			*calib_offset_avail;
- 	const int			(*calib_phase_avail)[2];
- };
+> +
+> +static int ad4170_debugfs_reg_access(struct iio_dev *indio_dev,
+> +				=C2=A0=C2=A0=C2=A0=C2=A0 unsigned int reg, unsigned int writeval,
+> +				=C2=A0=C2=A0=C2=A0=C2=A0 unsigned int *readval)
+> +{
+> +	struct ad4170_state *st =3D iio_priv(indio_dev);
+> +
+> +	if (readval)
+> +		return regmap_read(st->regmap, reg, readval);
+> +	else
+> +		return regmap_write(st->regmap, reg, writeval);
 
--- 
-2.49.0
+redundant else
 
+...
+
+>=20
+> +
+> +/*
+> + * Sets the ADC operating mode. Supported modes are
+> + * - Single conversion mode
+> + * - Idle mode
+> + */
+> +static int ad4170_set_mode(struct ad4170_state *st, unsigned int mode)
+> +{
+> +	return regmap_update_bits(st->regmap, AD4170_ADC_CTRL_REG,
+> +				=C2=A0 AD4170_ADC_CTRL_MODE_MSK,
+> +				=C2=A0 FIELD_PREP(AD4170_ADC_CTRL_MODE_MSK,
+> mode));
+> +}
+
+I'm usually not a fan of these wrappers.
+
+...
+
+>=20
+> +
+> +static int ad4170_parse_firmware(struct iio_dev *indio_dev)
+> +{
+> +	struct ad4170_state *st =3D iio_priv(indio_dev);
+> +	struct device *dev =3D &st->spi->dev;
+> +	int reg_data, ret;
+> +	unsigned int i;
+> +
+> +	st->mclk_hz =3D AD4170_INT_CLOCK_16MHZ;
+> +
+> +	for (i =3D 0; i < AD4170_NUM_ANALOG_PINS; i++)
+> +		st->pins_fn[i] =3D AD4170_PIN_UNASIGNED;
+
+Isn't the above the default already?
+
+
+- Nuno S=C3=A1
 

@@ -1,246 +1,151 @@
-Return-Path: <linux-iio+bounces-19955-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19956-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 628C7AC448F
-	for <lists+linux-iio@lfdr.de>; Mon, 26 May 2025 22:45:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7A27AC4505
+	for <lists+linux-iio@lfdr.de>; Mon, 26 May 2025 23:58:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E8698169666
-	for <lists+linux-iio@lfdr.de>; Mon, 26 May 2025 20:45:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F00318983F8
+	for <lists+linux-iio@lfdr.de>; Mon, 26 May 2025 21:58:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 453761E32DB;
-	Mon, 26 May 2025 20:45:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DB08241666;
+	Mon, 26 May 2025 21:58:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gd7sQbpK"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lHZRi3yg"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-yb1-f171.google.com (mail-yb1-f171.google.com [209.85.219.171])
+Received: from mail-vk1-f178.google.com (mail-vk1-f178.google.com [209.85.221.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AE1E1A23A6;
-	Mon, 26 May 2025 20:45:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 608683C465;
+	Mon, 26 May 2025 21:58:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748292315; cv=none; b=GxHRBqLjbcUuRcc5peFPLmADaujC0uVOf/q7QZZvevH5XIwFwDXkfYjUYpJ34mZZpoCx4BOOzzXl5fTEUlCU5O4gMozQv0MhP/h95ctaSK/+gm9hYRoJ0lU/SvyCQXp7lZ6JHFF5zzRQPxkz+n/XekBn1x0GyIJPjP/vbCsmHdo=
+	t=1748296701; cv=none; b=oYy9KZ6RaYbKJflhYF1apmMgRsxzdT4kq7F7OIDSCtIhncQNfSka6uRjVSNhNSTYKWyonQ1dhypNfv1DO4Ti5rFUhyp/niPgm4OdQ5wA+CpB+niBzarB+NL7BMRtEwbrZ6QBFRnMElzGWDb0lVksDkTjfcNIZ4PpuWVev5opuSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748292315; c=relaxed/simple;
-	bh=8XlFPKAgRZu8iNf7wu/BNssYGbs3cVElibPBDElcwUs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CoTOxQYKPAeNEack0ecsxWpTIGvedSKgThZVRAMTDQA/ov6gQ9XXwLIXzCphe6zi+0Y18p8M8eFwf1C0+USt++f7GN+8CDS/gAJaqtUHNVM8C7GY5NcsUwGtQhb9RsXlimJDnQMFnyS0SFmMJx/6GmcDpnRVbkDGqrY/SqRg4Qg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gd7sQbpK; arc=none smtp.client-ip=209.85.219.171
+	s=arc-20240116; t=1748296701; c=relaxed/simple;
+	bh=xcUSEYoldTD1RC1lJhH+CpwaZzrcOK6quYSEv6cLkW0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oITvJfXsGR3YJKgiJ1oIMSNH2ZL3XCSbVP1CKrCwO5CnLP0bAktieHJgpyGeZoavRb/H5Q0nZMP+7+GYWjoSZjvVRGuVITx0o1/U6QZ+VhD2eUdxSmlXrOv+64lcalvb8LLqinf/yuBJoVgTfxeu5qnSUh6xXfNVbeyOtAbwPNs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lHZRi3yg; arc=none smtp.client-ip=209.85.221.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yb1-f171.google.com with SMTP id 3f1490d57ef6-e7db5b0ddb1so139592276.2;
-        Mon, 26 May 2025 13:45:13 -0700 (PDT)
+Received: by mail-vk1-f178.google.com with SMTP id 71dfb90a1353d-52edc9ad68aso757672e0c.0;
+        Mon, 26 May 2025 14:58:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1748292312; x=1748897112; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Rqf564IOkfuJ6413mTRFf6vGhtbkwIX3nVlwVv5RmSQ=;
-        b=gd7sQbpKACMcly2FkJKdWqcF8eAohKD8pghxCtrLuZ4aSEOhmEA/Xv6VixN/83nJGz
-         2fYAdVeZ11Y2TNvtxy9POd2BKHVKtywSXReiwQUDyY0X5rSSUmXYgrQdI3L2zjvZ0bhb
-         MbrjctrHG/U34c4mdlExXf+KxChmF6a/A3PLfsVIgRloWqrwqa+7HBMpdgJB+/syzvWb
-         3zYhYLFd4Kl4dlkXvycX3ZROZ/xnJC5WZ82Tf5sGW3S46GtIFMhqT4kVJ7XOlEXvPAsc
-         EgsOUEK8+2P+8za8dBXdIYG2gXEFm7cvw4KPVPDHUoGpXUJJKSw1DWTkb/+EBU85gVqh
-         VNdw==
+        d=gmail.com; s=20230601; t=1748296699; x=1748901499; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=1I+4BH67s9bB6lJRMyuQUMdvU+PZzM1tv6dmdmBbxHY=;
+        b=lHZRi3ygw7PSF5m/iSAA6AgXgJ9Jw3QIvN9SAsWLp6cXMzsber5/vjKohLEQntDgFU
+         sTZgAb+56a+qC+CMXsyrL/GpK/lYdn230+ZpC8N3LdSEq7WLisVIaMLlHlJ7qcXHNKtm
+         MC58V4cuZ1yK83mWyKEQA9Ub+PkcoCvdJ9EK1MHYn1nsIyCClueWa6zvgvLZ5asxv9+4
+         WjtBFu02+lIFOF5E+3/sQ1AFueMec1BZtG2GYicHQymHXqK/oIZWVVh0WoXPEf11+aoL
+         tRGMrSWB7JDz7ocV9nwuakNWag9s08t806bLwuPl9s7a+Q4rMUaycMg0zuS4CLKODwDh
+         Pu0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748292312; x=1748897112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Rqf564IOkfuJ6413mTRFf6vGhtbkwIX3nVlwVv5RmSQ=;
-        b=Hm9TAcnzwiXhwgBTcSxV9wEnzE6Nfu8nmDDc9OabE2dUExoJz2wUshHXlBqjyvBpcY
-         XS5xlC4Rb2km729SmQjoCZbkEUX0fi4Z6k9jgqfd2EQ35gL+UnivDPdFsmlS4m6HO4kC
-         OuHYNWj6qCI5bOjq3LO2JlkmJuur/vSheGuqUyIYCi+hB46RKyfkDcWzgUFLvBTQ9X8u
-         I1CIEXtrVWKQM85LWINosdLyfTyGk681TKN2Km2UTar734QTPcLuOVSnpiOjV+HWiG/z
-         aQse6NgZ9YwSrFfZYpH51KJ33xcZJcEqH2QQwQeBJqthkIoToOJ4LTNrC3pd8U47bZg2
-         nlaA==
-X-Forwarded-Encrypted: i=1; AJvYcCW09K8Rrf5kwmBm3qHRsN8vGADGMtSpuBDCNyU5QWURZOtFAgCJIqc44TmiEt1gglATA7Pc8SJYJblnBppO@vger.kernel.org, AJvYcCWaGCL/bDsZfopShcObuyGgUPgjrPoGOLdvRRegJn1a0ANfmWpb+flz4loErG+/sea52PEDvREWjWSi@vger.kernel.org, AJvYcCXWH2OZfaRJX5X2JFIjPptUkLh/M78NjCTEr5NYV/v5Kv6h/2Y0Hy6C0IpalILC2goncNcCKgZk0Dc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzcnLESfn2GSh86iSnBRIbmdMvfEf0EfieAGHRvLXWg3NR7gQqb
-	VVomWObgeBU/uquAUYGgVWXMWESsX2eS/I2hJaEO0vBtEGD0jAB7vxkxliUhypSYJtl+sgrPg13
-	1FQPyUOAErkLJMRmnS6uM3sguHh1MbFCCM98j
-X-Gm-Gg: ASbGncvuAFdYSw95NDaMYQVmikBJlp72DlReqlRQG0aXNlpLaMemz0Hq1arTQm3EvL4
-	w+PFPbVJbEFHjyvxr6tOemLwPXFg1QhOgAJACCEWh3pXV0A2Ca8A8b2biWOutwhCX/r6kuATic+
-	jJAOp9VNxHzu+NvKnenAC9QS4oBZnallHoLWfUamZD22I=
-X-Google-Smtp-Source: AGHT+IGdBy5zw4tTzbnTdoJ6ppl77oUzVRKJu8Q+Tu2nce+ksoqH7+b9/m0gtrRcpaYpMh/JI1/29vanzAd5xvFReh8=
-X-Received: by 2002:a05:690c:4d03:b0:70e:4745:33d4 with SMTP id
- 00721157ae682-70e474534d2mr39344047b3.7.1748292312213; Mon, 26 May 2025
- 13:45:12 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1748296699; x=1748901499;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1I+4BH67s9bB6lJRMyuQUMdvU+PZzM1tv6dmdmBbxHY=;
+        b=Cqtx15e/skdsO3bcni1ImoNX3mxIUViK84MyoAiUdErnDZ/glRj+qQawTO20xYJh1f
+         RNiAl8i4iaUwgLiJuTBvUX3TILPq8zOeXlhOPUPzZMAUBF2TcRB/WUEvaMKFMtXJeg2y
+         WrEWaY27e3Ph34qTVbbXYwk8ZtHV1EJtBBXkaHq27FATQOU+leTn34y58vOcSvrhNDvd
+         CNJ87usQFy2CqeJurBNHlkyujnSc7vAPIab9cHRLXpnUyWhc6dNEN4nd2AK3pnwfwTY7
+         KCorEk9Ch5TLgEfJIdT2hXfhmAolc1PxcljVD/WP7wbnTJu989EAKdBxG0rCOM+b8bVg
+         vl1A==
+X-Forwarded-Encrypted: i=1; AJvYcCU4SlFvsrVkgHOtEdV6BV5k2w28lNXe3P7Ap3Ico/xXyNtzvshqYoL+zJBiHxW5Wa2xmrW5eKnf7y5VqoLX@vger.kernel.org, AJvYcCU7M6VxWj4f07606/FvcP/xf3gV4hGreKkFvkYUa82cuXbn8W8T/Khmyk3XZb8tqouEaoRy8ENK3edEFg==@vger.kernel.org, AJvYcCUV0KJawe2LLPBK3lqxBlNoj27IjGEAx9aoV16gFMDjvlimYFjryfbDzDPcmQoy/yV49RwfbCxjPP/U@vger.kernel.org, AJvYcCVE8tQigmCUKxDohqayeV5pY9hRCtcts32LdeKrqSa8r6k8LqGHZNSN0uawn8Hn/86IHwZEjmO2Ruwy@vger.kernel.org
+X-Gm-Message-State: AOJu0YykiWYbLejn2pnwyGA/4NW/wRYTLjyVVYxUwPR9jZlZXn2eGC3P
+	Rt524XB3fRh7qVgru2hnY6LyyVmB3HmH6xgVQjVQZaqGrqJd5EiYlzGNKrbZsgtmHUQ=
+X-Gm-Gg: ASbGncvRYkzXslXM3vf/D4zQa7Kt3aUe3UBgZTLhSJRjg/crlx+P7s3xosa58w76xvV
+	Qxo4G7fyzFX0QkL2JnpM83MmP4p4wiNa6knUhT1E2TZhNoBIW/qqz5dr5/Gb/sPvbT9nRgQFtYq
+	T0kPLX1XxpstW+56ECZeqcLlRvfq4iUCLJ3QP3S5i3mlxCadDQQuSL0N6iJdbKgo+ObH7TmP1Nm
+	AEkewPelZ3EHX08DPkxL8eAbyvDYKZl/A66c51OXGuO81IfWPLVyrQ0zos92dqtKMYzMj85t2G9
+	X5PbhrtNwa2V9JmaNp/vV+SKd2cej0cTs3pojKEIfiCLNQp7fkExXYxx2+g=
+X-Google-Smtp-Source: AGHT+IF8kRpMSFR2eFduvuz/OHFjktMA/BDCeXs95tsxes27B9OG84NRncpHF/uZo1yeIYKTNTAqUw==
+X-Received: by 2002:a05:6122:8b04:b0:520:997d:d0b4 with SMTP id 71dfb90a1353d-52f2c4c8022mr8154103e0c.4.1748296699064;
+        Mon, 26 May 2025 14:58:19 -0700 (PDT)
+Received: from localhost ([2804:30c:922:f300:98b4:5361:e180:4387])
+        by smtp.gmail.com with UTF8SMTPSA id 71dfb90a1353d-52dbab6d274sm18502645e0c.47.2025.05.26.14.58.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 26 May 2025 14:58:18 -0700 (PDT)
+Date: Mon, 26 May 2025 18:59:48 -0300
+From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Marcelo Schmitt <marcelo.schmitt@analog.com>, linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-gpio@vger.kernel.org,
+	linux-kernel@vger.kernel.org, lars@metafoo.de,
+	Michael.Hennerich@analog.com, dlechner@baylibre.com,
+	nuno.sa@analog.com, andy@kernel.org, robh@kernel.org,
+	krzk+dt@kernel.org, conor+dt@kernel.org, linus.walleij@linaro.org,
+	brgl@bgdev.pl
+Subject: Re: [PATCH v3 01/10] dt-bindings: iio: adc: Add AD4170
+Message-ID: <aDTkVFDNYeyIldBs@debian-BULLSEYE-live-builder-AMD64>
+References: <cover.1747083143.git.marcelo.schmitt@analog.com>
+ <5fa867cff437c0c6d3f0122af823e1677a12d189.1747083143.git.marcelo.schmitt@analog.com>
+ <20250525111148.4ca96a55@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250523223523.35218-1-l.rubusch@gmail.com> <20250523223523.35218-5-l.rubusch@gmail.com>
- <20250525132216.0bbc7067@jic23-huawei>
-In-Reply-To: <20250525132216.0bbc7067@jic23-huawei>
-From: Lothar Rubusch <l.rubusch@gmail.com>
-Date: Mon, 26 May 2025 22:44:35 +0200
-X-Gm-Features: AX0GCFuNL-6WiLGB2hsMgCme7HXIhsANbBf-3eOD4wpjLlWpAt_OeqCzXs3Td90
-Message-ID: <CAFXKEHa5pK_wc+JJR1EWtJt=Z5Dwj-+rKD9+W-sEMn7uxFNvcg@mail.gmail.com>
-Subject: Re: [PATCH v3 04/12] iio: accel: adxl313: make use of regmap cache
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org, corbet@lwn.net, 
-	lucas.p.stankus@gmail.com, lars@metafoo.de, Michael.Hennerich@analog.com, 
-	linux-iio@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250525111148.4ca96a55@jic23-huawei>
 
-Hi,
+Hi Jonathan,
 
-On Sun, May 25, 2025 at 2:22=E2=80=AFPM Jonathan Cameron <jic23@kernel.org>=
- wrote:
->
-> On Fri, 23 May 2025 22:35:15 +0000
-> Lothar Rubusch <l.rubusch@gmail.com> wrote:
->
-> > Setup regmap cache to cache register configuration. This is a preparato=
-ry
-> > step for follow up patches, to allow easy acces to the cached
-> > configuration.
->
-> I think this stands on it's own given registers like the calibbias
-> are already both written and read from.  So I'd generalize the justificat=
-ion
-> to simply reducing unnecessary bus traffic.
->
+I'm still working on the changes suggested for this set.
+Just to mention, I've updated the dt-binding to declare only channel nodes under
+the ADC node.
 
-I (think I) need regmap cache especially for activity / inactivity.
-For instance, using cached settings should make it easier to verify
-what was enabled when evaluating incomming interrupts. I will rework
-the commit message here.
+... 
+> > +      adi,sensor-type:
+> > +        description: |
+> > +          Type of sensor connected to the device. Depending on the sensor type
+> > +          (weigh scale, RTD, or thermocouple) the values of sensor-node
+> > +          properties have slightly different constraints. This property
+> > +          specifies which particular external sensor is connected to the ADC so
+> > +          the sensor-node properties can be properly parsed and verified. The
+> > +          possible sensor types are:
+> > +          0: weigh scale;
+> > +          1: RTD;
+> > +          2: thermocouple.
+> > +        $ref: /schemas/types.yaml#/definitions/uint8
+> 
+> I think this should be an enum of strings.  That will give us a clean
+> way to extend it for other sensor types in future.
+Ack
 
-Best,
-L
-
-> Jonathan
->
-> >
-> > Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
-> > ---
-> >  drivers/iio/accel/adxl313.h      |  2 ++
-> >  drivers/iio/accel/adxl313_core.c | 17 +++++++++++++++++
-> >  drivers/iio/accel/adxl313_i2c.c  |  6 ++++++
-> >  drivers/iio/accel/adxl313_spi.c  |  6 ++++++
-> >  4 files changed, 31 insertions(+)
-> >
-> > diff --git a/drivers/iio/accel/adxl313.h b/drivers/iio/accel/adxl313.h
-> > index 72f624af4686..fc937bdf83b6 100644
-> > --- a/drivers/iio/accel/adxl313.h
-> > +++ b/drivers/iio/accel/adxl313.h
-> > @@ -54,6 +54,8 @@ extern const struct regmap_access_table adxl312_writa=
-ble_regs_table;
-> >  extern const struct regmap_access_table adxl313_writable_regs_table;
-> >  extern const struct regmap_access_table adxl314_writable_regs_table;
-> >
-> > +bool adxl313_is_volatile_reg(struct device *dev, unsigned int reg);
+...
 > > +
-> >  enum adxl313_device_type {
-> >       ADXL312,
-> >       ADXL313,
-> > diff --git a/drivers/iio/accel/adxl313_core.c b/drivers/iio/accel/adxl3=
-13_core.c
-> > index 06a771bb4726..0c893c286017 100644
-> > --- a/drivers/iio/accel/adxl313_core.c
-> > +++ b/drivers/iio/accel/adxl313_core.c
-> > @@ -46,6 +46,23 @@ const struct regmap_access_table adxl314_readable_re=
-gs_table =3D {
-> >  };
-> >  EXPORT_SYMBOL_NS_GPL(adxl314_readable_regs_table, IIO_ADXL313);
-> >
-> > +bool adxl313_is_volatile_reg(struct device *dev, unsigned int reg)
-> > +{
-> > +     switch (reg) {
-> > +     case ADXL313_REG_DATA_AXIS(0):
-> > +     case ADXL313_REG_DATA_AXIS(1):
-> > +     case ADXL313_REG_DATA_AXIS(2):
-> > +     case ADXL313_REG_DATA_AXIS(3):
-> > +     case ADXL313_REG_DATA_AXIS(4):
-> > +     case ADXL313_REG_DATA_AXIS(5):
-> > +     case ADXL313_REG_FIFO_STATUS:
-> > +             return true;
-> > +     default:
-> > +             return false;
-> > +     }
-> > +}
-> > +EXPORT_SYMBOL_NS_GPL(adxl313_is_volatile_reg, "IIO_ADXL313");
+> > +  interrupts:
+> > +    maxItems: 1
+> 
+> What if they are both wired?  At that point shouldn't software
+> make up it's mind which to use?
+
+Not sure I understand the concern here. Is 'interrupt-names' property expected
+to precede 'interrupts' in dt-doc? For AD4170 and similar parts, the data
+ready signal (/RDY) is by default provided on the SDO line after the completion
+of a conversion. Alternatively, it can be provided on the DIG_AUX1 pin in
+which case the chip disables the RDY function on SDO. So, there can only be one
+data ready interrupt enabled at a time. Guess I'll add some description to make
+clear only one interrupt can be enabled.
+
 > > +
-> >  static int adxl312_check_id(struct device *dev,
-> >                           struct adxl313_data *data)
-> >  {
-> > diff --git a/drivers/iio/accel/adxl313_i2c.c b/drivers/iio/accel/adxl31=
-3_i2c.c
-> > index a4cf0cf2c5aa..e8636e8ab14f 100644
-> > --- a/drivers/iio/accel/adxl313_i2c.c
-> > +++ b/drivers/iio/accel/adxl313_i2c.c
-> > @@ -21,6 +21,8 @@ static const struct regmap_config adxl31x_i2c_regmap_=
-config[] =3D {
-> >               .rd_table       =3D &adxl312_readable_regs_table,
-> >               .wr_table       =3D &adxl312_writable_regs_table,
-> >               .max_register   =3D 0x39,
-> > +             .volatile_reg   =3D adxl313_is_volatile_reg,
-> > +             .cache_type     =3D REGCACHE_MAPLE,
-> >       },
-> >       [ADXL313] =3D {
-> >               .reg_bits       =3D 8,
-> > @@ -28,6 +30,8 @@ static const struct regmap_config adxl31x_i2c_regmap_=
-config[] =3D {
-> >               .rd_table       =3D &adxl313_readable_regs_table,
-> >               .wr_table       =3D &adxl313_writable_regs_table,
-> >               .max_register   =3D 0x39,
-> > +             .volatile_reg   =3D adxl313_is_volatile_reg,
-> > +             .cache_type     =3D REGCACHE_MAPLE,
-> >       },
-> >       [ADXL314] =3D {
-> >               .reg_bits       =3D 8,
-> > @@ -35,6 +39,8 @@ static const struct regmap_config adxl31x_i2c_regmap_=
-config[] =3D {
-> >               .rd_table       =3D &adxl314_readable_regs_table,
-> >               .wr_table       =3D &adxl314_writable_regs_table,
-> >               .max_register   =3D 0x39,
-> > +             .volatile_reg   =3D adxl313_is_volatile_reg,
-> > +             .cache_type     =3D REGCACHE_MAPLE,
-> >       },
-> >  };
-> >
-> > diff --git a/drivers/iio/accel/adxl313_spi.c b/drivers/iio/accel/adxl31=
-3_spi.c
-> > index 9a16b40bff34..68e323e81aeb 100644
-> > --- a/drivers/iio/accel/adxl313_spi.c
-> > +++ b/drivers/iio/accel/adxl313_spi.c
-> > @@ -24,6 +24,8 @@ static const struct regmap_config adxl31x_spi_regmap_=
-config[] =3D {
-> >               .max_register   =3D 0x39,
-> >               /* Setting bits 7 and 6 enables multiple-byte read */
-> >               .read_flag_mask =3D BIT(7) | BIT(6),
-> > +             .volatile_reg   =3D adxl313_is_volatile_reg,
-> > +             .cache_type     =3D REGCACHE_MAPLE,
-> >       },
-> >       [ADXL313] =3D {
-> >               .reg_bits       =3D 8,
-> > @@ -33,6 +35,8 @@ static const struct regmap_config adxl31x_spi_regmap_=
-config[] =3D {
-> >               .max_register   =3D 0x39,
-> >               /* Setting bits 7 and 6 enables multiple-byte read */
-> >               .read_flag_mask =3D BIT(7) | BIT(6),
-> > +             .volatile_reg   =3D adxl313_is_volatile_reg,
-> > +             .cache_type     =3D REGCACHE_MAPLE,
-> >       },
-> >       [ADXL314] =3D {
-> >               .reg_bits       =3D 8,
-> > @@ -42,6 +46,8 @@ static const struct regmap_config adxl31x_spi_regmap_=
-config[] =3D {
-> >               .max_register   =3D 0x39,
-> >               /* Setting bits 7 and 6 enables multiple-byte read */
-> >               .read_flag_mask =3D BIT(7) | BIT(6),
-> > +             .volatile_reg   =3D adxl313_is_volatile_reg,
-> > +             .cache_type     =3D REGCACHE_MAPLE,
-> >       },
-> >  };
-> >
->
+> > +  interrupt-names:
+> > +    description:
+> > +      Specify which pin should be configured as Data Ready interrupt.
+> > +    enum:
+> > +      - sdo
+> > +      - dig_aux1
+> > +    default: sdo
+> > +
+
+Thanks,
+Marcelo
 

@@ -1,139 +1,128 @@
-Return-Path: <linux-iio+bounces-19972-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19974-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2313AC5BB9
-	for <lists+linux-iio@lfdr.de>; Tue, 27 May 2025 22:58:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA2BFAC5C07
+	for <lists+linux-iio@lfdr.de>; Tue, 27 May 2025 23:10:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E97273BC8E3
-	for <lists+linux-iio@lfdr.de>; Tue, 27 May 2025 20:58:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7A27616A6C9
+	for <lists+linux-iio@lfdr.de>; Tue, 27 May 2025 21:10:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E982D20C48D;
-	Tue, 27 May 2025 20:58:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64249211276;
+	Tue, 27 May 2025 21:10:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="AJ0RhplB"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dbjvdyPx"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEF9E20E00A
-	for <linux-iio@vger.kernel.org>; Tue, 27 May 2025 20:58:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C62941FFC4F;
+	Tue, 27 May 2025 21:10:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748379516; cv=none; b=aIRtWNq4T2dm/l9Sf/IL4bUDIAU8tLqkoyWmg522/JrqOVh4SwjQUQsuGqwTr43wbkJRWFhOG95mVSQgwJfGQlM/D4lM1T/TCDAJBM8ux/tLN1BxjJp/V57I1A9wox0viubEnmWDgmHfi86eh6sGWZp9+4lk9iuwnnnUAhSvaRc=
+	t=1748380242; cv=none; b=ReIetJHQc9rkxSc6VvJkz7TTZivgBTmRmBc8oOB0KTu4aKt4irxaxGSGrshF7xIq7jtddxPjjDlY2cjt8UvRQpJj2pmZQ/a8QWb0gTPlIhymhY+Uld8ou3kJLf8+hfAqZcemdikU7j63dhsYTBtkTvCN8K6jvGN1dGGDD18EvPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748379516; c=relaxed/simple;
-	bh=2j55HxG++1o7+pdJWJRqq9KAan58dr5frReyQGE0B2E=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ow207fLWTKqNgI2ZDV6ireZc2oSYe3+ZK4CapNmGVTvtXkGEU/OI/iJXyGbPS86DaUie+anRqKnXF96f8/zDFGl8Q588+Q5pVhwWM0QrT3OQJr8S3giasV/WNB7j6AsNuP1HgjOlvSml6u32MxLnei/QAccLKcIw97d2LV+EhCc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=AJ0RhplB; arc=none smtp.client-ip=209.85.218.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-ad5273c1fd7so761266066b.1
-        for <linux-iio@vger.kernel.org>; Tue, 27 May 2025 13:58:33 -0700 (PDT)
+	s=arc-20240116; t=1748380242; c=relaxed/simple;
+	bh=zCpa2pqyI2zP8sKDp4CTvJFpQyIi80OjbDKWSt2XCJ0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=YDcF+y//a/yoYbbwpSJA+NyFw+UBvb0HZWkjY9lD1F07GCmiq72f4lZ+VlJaelkrfbxzkhq3XFmPcSDMi+totOcEH3wySRyitda32/qi2u9zM0b4Rgzg+iSbGH3kdu0RXU7Bvz1penzjoIiyxQZLuZFTgHVOSr8A/xwsuvKuwdg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dbjvdyPx; arc=none smtp.client-ip=209.85.216.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-3114560d74aso2708439a91.0;
+        Tue, 27 May 2025 14:10:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1748379512; x=1748984312; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=emZjqiREaoGi2yubeCTwRZ5yCy+c8DdCcg3D/FzZ4eY=;
-        b=AJ0RhplBanWbCI5um31fl/RlDCLD8AZ33+lmwzwuatABE7i4B2FYcdmqEo/Evs9RsV
-         KHGhld73XZSo66BuiiOsUqseQetsOvfkvrJefYTw/04G5kXJX/M381DPVfYSaBZyJUDW
-         75jHG3LXuacm0w51ToeDNTjwbLS/D9nQ/pZ8GuL3ouKYsqqmP0O6JFvf6trpYdUu8Yvs
-         p4F2dQTeQkQGYepnY1Wimj1LO+C8x8SKSDydKn696WOR413k+py4trLBDuwH2V7DRVJ1
-         Jz8nDH5EBGeQNaRKcMNBcLPrB+LkFK8D0fVYH3/0Xax8jfyLJNZSaRzBPn8VUDER/2Hk
-         p9kw==
+        d=gmail.com; s=20230601; t=1748380240; x=1748985040; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ra/Kzn/tsEt4UqEeAwhyx54MKmURC8T1Q/5luTcmyIs=;
+        b=dbjvdyPxYqNLigadLrg5FUTU2Sg2HDlLZpIiOnYsVi/xHRsHTv0kOak1wLBvoK+6KE
+         M6+B4u1panm0g0/I08/ZzoRLouD2UfO/V4J8UBsm75E0Tb/5k1OjL6gZth8cmwcwTaXU
+         wFUBRyW3p1lzi9Rh3qg/1M12ecanv9GzdaklQ62qecqti3CAyr+tNmU31j+YBNgdviE2
+         7toknj5XB422jzoQLsoICF3yFzBbkg9jEwy5KwBj9p6IyR8f0ldQvD3me3JLPcBKxnRN
+         eILIq77hzGo5yJBiBWQUqReHn4cx3wChS/Gxm9fD8pgqtJzcsa9X8bGiBsDXZJ6gJjyf
+         6vgA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748379512; x=1748984312;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=emZjqiREaoGi2yubeCTwRZ5yCy+c8DdCcg3D/FzZ4eY=;
-        b=VMgl5rJLgPQ7+U9pITuIcmwuXKZucEIqNr1u19x6EaURNA98soLD0lXBS7LUtTsbMB
-         nSw2NQuubCR/OsHfF0Z8rzexmxtCvzO27Bno4JCYm0FORE4M+474iDeYTedLw1uFX+As
-         l4biKVkxnMsbpJTkceQ8ZHq10zVLZe/EXBmHhRScoyCZLBCPMQCZ+q/5Y7UDKJjzj+2x
-         A9Hrx6jmcLwJEyZ6NP4UUpM5eJH2PfhxyMxWSUKog0iV9dbwvTsmL8k0LnPCcJJjwLOx
-         xyIBNWZl2RpACdM8a7al30Ar2vIuItDP8yOO8PV27fcKcNOCPC0Qq/vNIySADhnReR25
-         wzNg==
-X-Forwarded-Encrypted: i=1; AJvYcCUzYP9Wyf5Vens1jrOjdZODgvDIweFIvczIArcFLDBqdMc+4uoaQsCsoRS6RJfhf0zhD9ZigsjWZf4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxsaQHAjtArk+Fl4ijF3ciCUYT27cYAJ5RihsXFiMz5ajYimVYX
-	uZAC/042wKvGloP/kIvwMtue/fl2UCN2+eTiO/hrYqpWUfy437+4YpwicVlHpdcw3AM=
-X-Gm-Gg: ASbGnctFDlWaIc2T9kAv9GGhPTEf5aqrWNXpUdaQN3EI222VxXaBQZYfS4eU7iHWAvH
-	z19qowLGFW8kHTz+RsPnutcEu1o6fWmoquQqFHMpNVtA2Bz7YWwjyDgFNuGeXrbwXMNR0MkmyKf
-	dvGIrD02mA/Gzilu7C6+5Z7PxzR0Ws+xpyPFOpb2PutDuZ0N/lFLPLN6bPXmXA6hKLq2P53RJeY
-	JzzWTB6aV/zX/za6vJm9zusPyCnYy6runB9yfeWU3nvgJaoW3/Vhr5wemMSrjipK6uIyNb/jEro
-	YM04+BKY+oqmxm8MauVvSPJsgz2suryZe4cBu+ZWtCXXv0mEvee5q8k1
-X-Google-Smtp-Source: AGHT+IFSEZFLth1i2WF8idDSnCTLky4n60ge/cYVhqY9JgIM5s7CPdNemkYhutHt9SrVLqbShViWHg==
-X-Received: by 2002:a17:906:9fcc:b0:ad5:10d9:9061 with SMTP id a640c23a62f3a-ad85b2799cdmr1438576166b.54.1748379512173;
-        Tue, 27 May 2025 13:58:32 -0700 (PDT)
-Received: from localhost ([2a02:8071:b783:6940:36f3:9aff:fec2:7e46])
-        by smtp.gmail.com with UTF8SMTPSA id a640c23a62f3a-ad89f087eb3sm10913366b.42.2025.05.27.13.58.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 May 2025 13:58:31 -0700 (PDT)
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-To: Biju Das <biju.das.jz@bp.renesas.com>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
-	Thomas Gleixner <tglx@linutronix.de>
-Cc: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Magnus Damm <magnus.damm@gmail.com>,
-	linux-iio@vger.kernel.org,
-	linux-pwm@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org,
-	devicetree@vger.kernel.org
-Subject: [PATCH] dt-bindings: timer: renesas,rz-mtu3: Use #pwm-cells = <3>
-Date: Tue, 27 May 2025 22:58:22 +0200
-Message-ID: <20250527205823.377785-2-u.kleine-koenig@baylibre.com>
-X-Mailer: git-send-email 2.47.2
+        d=1e100.net; s=20230601; t=1748380240; x=1748985040;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ra/Kzn/tsEt4UqEeAwhyx54MKmURC8T1Q/5luTcmyIs=;
+        b=KuglWoY8GRTXtSXEqlaUFTvFsC+L0BBVvquWd4GxKoBeqZxwnhrRtjX2fpzXqxqaj3
+         TMYXiafbOEmty/C9gfiVpZ2SxONuZcNOqwgK3BkzxkgpMrN1hd99R7VdfCUDKEQD2tH+
+         mLc3jJLHDvXamGupnR7FY6UaInRRbtfqld4uZiWlBDX1qkw9gJOtY+mpwcBDHvQv3txF
+         bLuhzEo9TGl39EOPZuG5ZAMXy+qFQNLn41gQTSrXeHz4HY6fX+hcmHqCyqdlRAlRnDqF
+         mI/La/ti1VyRswrajHQrzVa9FTXupeoRzG3shyWLCpmdjagHxnCS6JYjLYKum53KmNZp
+         6bPA==
+X-Forwarded-Encrypted: i=1; AJvYcCUsIZwciW9IJQZSGiV8h0MdB42hp5O3OOoy+onFM7/y5PXRcHVz3quM1UUwigdbSx9PIq5wgik897o=@vger.kernel.org, AJvYcCVqpy2dOYfRBf/Zez6wrP7vnB+D5GKyiNeLuIsJf5fxXIXHeiasMTkaOmF36YA18JcQuAu0Q7WrYjTdkybL@vger.kernel.org
+X-Gm-Message-State: AOJu0YyU6X8wzcsEqTv+Ecez941HsfziKQZmGXD+w8RiF6XR+Z03dLDQ
+	ofy8YU6iHnJlE7/+RuM4UD0Qe4snTbrtWPcoEXW5SBTiUw5c8517/wpZSf0VLjiJ7qtYhiKtI0X
+	7nhkxtCPufyX0EAgj612keluYcyxy7oM=
+X-Gm-Gg: ASbGncuwZs/WPb9fWoB78K+eQOyN5+3199UGR1/mNUOJpcdtzll7zRgDDnuDozxed9x
+	6miInl6kB+D5pXQRZy/EKU8RctgsANMyyZr4iN5gLjZmUWsQeMPkvcy28ZULicruhYLkiIUvEA9
+	Uo4cvRJocc4OiMaiPKC6wd/QuF6+pbCXm5bA==
+X-Google-Smtp-Source: AGHT+IHl7P715WOF+LWqioosOOq3h5WiYgB+6CL8eDZad3EuHhNMuisn5T9/tqND2t4UBilrDM8H7rGnOyMxt470NGo=
+X-Received: by 2002:a17:90a:c2c3:b0:30e:6ac1:3716 with SMTP id
+ 98e67ed59e1d1-3110fc03f88mr18789493a91.34.1748380239820; Tue, 27 May 2025
+ 14:10:39 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1236; i=u.kleine-koenig@baylibre.com; h=from:subject; bh=2j55HxG++1o7+pdJWJRqq9KAan58dr5frReyQGE0B2E=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBoNidvchLGx7sJjDw3XkwQtzCLWhAeydC1fapAB pgG/EcJqb6JATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCaDYnbwAKCRCPgPtYfRL+ TkqoB/wK0DVgPpFOwwCl+wHBSQVPaTp1DW1ZvFm00WeB35+fPi1flMBZ+hKGs/T0AhBdxZr2ywZ +wq8QkADqh6Flsu6YnJRv1exQltwYc7vjrxp4TwS208gkoVumNnXP7USgOE2+6uvnbq7jBSOUM0 48VTg7JHcBnzrtxwao8kXZCpnmEsONL+XqZQp9sEAbtPVEbCaYVfS/jjtYGQJBNmqNI+Dkc6+b9 wxH1QTw097C9jSTs4dTlpSz019TD/Slv72e0rfG225EsDJwBFlsUDSFI3/m0WdwZYItyzLHFQen ZtENDa39RRNxVRKqaQGJQ2Up5xqVPJv0xSPYTRI3OehU3sdW
-X-Developer-Key: i=u.kleine-koenig@baylibre.com; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
-Content-Transfer-Encoding: 8bit
+References: <20250527200534.98689-1-gye976@gmail.com> <CAHp75VcUr7-X+F1f=wPH4=Z7q3kFffv8BgkmKWM4VTjy2w-tGg@mail.gmail.com>
+In-Reply-To: <CAHp75VcUr7-X+F1f=wPH4=Z7q3kFffv8BgkmKWM4VTjy2w-tGg@mail.gmail.com>
+From: Gyeyoung Baek <gye976@gmail.com>
+Date: Wed, 28 May 2025 06:10:28 +0900
+X-Gm-Features: AX0GCFvB4TCZpBHeDE8nL4wxgndVCu-VH6I0tAyloGsL1wNjNLRxFmZlXW9TuoI
+Message-ID: <CAKbEznuuGX3Gnqg6WF2mqbigRps0gzK_PfGHGNy8-v1WOZoMUQ@mail.gmail.com>
+Subject: Re: [PATCH] iio: trigger: Avoid data race
+To: Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
+	=?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
+	Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-With the goal to unify all PWM bindings to use #pwm-cells = <3> update
-the renesas,rz-mtu3 binding accordingly. Keep <2> documented as a
-deprecated value at least until the in-tree device trees are fixed
-accordingly.
+On Wed, May 28, 2025 at 5:25=E2=80=AFAM Andy Shevchenko
+<andy.shevchenko@gmail.com> wrote:
+>
+> On Tue, May 27, 2025 at 10:05=E2=80=AFPM Gyeyoung Baek <gye976@gmail.com>=
+ wrote:
+> >
+> > A data race could occur between `atomic_read()` and `atomic_set()`
+> > Use `atomic_cmpxchg_relaxed()` to group them atomically.
+> >
+> > Previously the main logic was executed when `use_count` is 0.
+> > Now it returns early when `use_count` is not 0.
+>
+> > -       int i;
+>
+> I don't see the point in changing this line.
+> ...
+>
+> > -       int i;
+>
+> Ditto.
+>
+> ...
+>
+> At bare minimum they are not relevant to the patch change and haven't
+> been described in the commit messages.
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
----
- .../devicetree/bindings/timer/renesas,rz-mtu3.yaml         | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+Hi Andy, thanks for your review.
+I initially skipped this part as I thought it was minor.
+But on a second look, it seems better to separate the declaration from
+the logic.
 
-diff --git a/Documentation/devicetree/bindings/timer/renesas,rz-mtu3.yaml b/Documentation/devicetree/bindings/timer/renesas,rz-mtu3.yaml
-index 3931054b42fb..3ad10c5b66ba 100644
---- a/Documentation/devicetree/bindings/timer/renesas,rz-mtu3.yaml
-+++ b/Documentation/devicetree/bindings/timer/renesas,rz-mtu3.yaml
-@@ -221,7 +221,10 @@ properties:
-     maxItems: 1
- 
-   "#pwm-cells":
--    const: 2
-+    oneOf:
-+      - const: 2
-+        deprecated: true
-+      - const: 3
- 
- required:
-   - compatible
-@@ -299,5 +302,5 @@ examples:
-       clocks = <&cpg CPG_MOD R9A07G044_MTU_X_MCK_MTU3>;
-       power-domains = <&cpg>;
-       resets = <&cpg R9A07G044_MTU_X_PRESET_MTU3>;
--      #pwm-cells = <2>;
-+      #pwm-cells = <3>;
-     };
+What do you think about the data race logic? Would it make sense?
 
-base-commit: 0ff41df1cb268fc69e703a08a57ee14ae967d0ca
--- 
-2.47.2
-
+>
+> --
+> With Best Regards,
+> Andy Shevchenko
 

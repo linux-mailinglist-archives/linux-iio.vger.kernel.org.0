@@ -1,176 +1,156 @@
-Return-Path: <linux-iio+bounces-19994-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19995-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9814BAC6D8A
-	for <lists+linux-iio@lfdr.de>; Wed, 28 May 2025 18:10:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E9D02AC6EAA
+	for <lists+linux-iio@lfdr.de>; Wed, 28 May 2025 19:02:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 53A3A4E2C9F
-	for <lists+linux-iio@lfdr.de>; Wed, 28 May 2025 16:10:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B93CD17284C
+	for <lists+linux-iio@lfdr.de>; Wed, 28 May 2025 17:02:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB5E228C86A;
-	Wed, 28 May 2025 16:09:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ob8KMb7s"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17E421F461A;
+	Wed, 28 May 2025 17:02:23 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 001F828C854;
-	Wed, 28 May 2025 16:09:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6F55CA6F;
+	Wed, 28 May 2025 17:02:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748448597; cv=none; b=CHusmOkR7EGBZDrS2jfewd61Y9A7KU0FN95Ffv/xGZrqBIkGZZtJilcFNVtS2G/Xlh91B7uSArQth5LFJc5izhNn9k/xCAvIQhrlaMVdIo+vFznj7qQSOvTyQVu1c2Zv+TBrHY/5GnVyR6LlgVr8+pZ3SPwPFN7lZyPzNHaEQwQ=
+	t=1748451742; cv=none; b=GJiOO74CqjsHscHOpVHXi85KQjSYIu/JJ1OTnCdz4Eg2xFGHbnpQsRTbZkwINALqLCW4BItT2Rtj5W+hhW3K+2bE3U7YkAWdx7nOtfXxq9PefqTwuPTQKJOMbnNmUmD60F9dQv4EyBJ9XQxv2cLjPIk3oPBpIL1TqRNv35GjTb4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748448597; c=relaxed/simple;
-	bh=4pIzHoj8Wd1R86ms192nvXS2WXmNPmnprRiEWCCPGQM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FDprm9STEEBjtWEACuut1bAQ1IBYDbasLQUtZKyS2szeG1t8To7XKT0O0IYG2AcTjniBjriGgx8+//Z6fu6yScc4mHDywQrg9BMeeVBF42qBRZGX92EifxHTznNnh2TqvkulpIO1l/Z77VxPq4rNn/J/hX60eHmCgUDJFUMIV7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ob8KMb7s; arc=none smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2349282084bso303095ad.1;
-        Wed, 28 May 2025 09:09:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1748448595; x=1749053395; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=0ndd+6L/B1sq36+O8/FHu3Tozs8dSSyaGb710UgM7Sw=;
-        b=Ob8KMb7sXw9qOww1CJ+j2EA3BohfJgH+6+eIzgJygYs8Us/xuZVykTg3l1qoiOk94Z
-         kK69CrKS0dPGY4xLxuXuLNdHfWQ0b854d4qCo+bI6I7hSuvi3GfDwTVUIhq/YtDkvmm5
-         ygGCsMuU4eTR9zOwScX7SbRNEyY0GnRIIcU9kcx3SbBXkCE95cLAaBJKdutNOaRn/v7b
-         POxaohp2SJNd+ipVNGgq12RtBIbfZ0SQNtFuUdprB7a0Wx54o2TdnYfjXnquTlAQdydi
-         m4r3AFGACrS5GPVR+blIvfPKHZyAmjUPI8uJcYOj6MrF1CuAbemtXbmskKrGPMjrZhmh
-         DiDg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748448595; x=1749053395;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0ndd+6L/B1sq36+O8/FHu3Tozs8dSSyaGb710UgM7Sw=;
-        b=mCZTFt+KRgzPendUq2S+9dmQlPs8s+LB+Fau71547arXwu8zp0+ZO05yh/1jjoJy7a
-         EQWkpEjhQL8/To/6V5zDRNysJUiJc1mcOCe5wqOVObuEkScWPtCrQfzg4jC87OHa0rws
-         H8cEk3KFi6wX8bMpoRdtenoV2ObTrUNRHKd0sdvT8O7bYAXPUeMQIVWejbjjygKBkPVp
-         49kyJ06LkIHBSRS9pNAf0/6FAJ/ZRb8p/pmx/unw+29yLdF8Lvsl3BcVsqY/QiiiA3Jj
-         dvnx7UpqGKkYiU+R6jraxDDADTfwT9szhJwXKS9q5lfaDYzH6zy2OaKvefLyTs+tanDT
-         TheQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW5YC3IgSQNFTFJa89ACBYMYvD1WBJkYwxTDbQ+is/q1NdrRM5flVaj2t8CZFZeZLY57i+a1rx3VEHDyadm+46lnbo=@vger.kernel.org, AJvYcCWPdzGd5Dkb+5YEx600LeUQra2Ze/Fr6S/8qDrrjfP93b8FurWeE9ow40CxGEvCbTM4Ocfs4vriwOQ=@vger.kernel.org, AJvYcCWfphGpcIlN7PPSZFGEZGMGab9uFGF+OfvbkPEWfkzMK+AOTOpwTt6tmoK7ZK6lJf5CmA4ro54tGbjJjLtp@vger.kernel.org, AJvYcCX/kmw5uCT9wJnRNbk77b/ljR+B/Dlt2mbys26QoD+pWkZgC/+lDXHorSgYACj6vPI0tYYHF2X59xA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzLxIbHYRuvqJZedLzUXuWYkZrv2YKhUiqcLsymzh0TS6BUcso2
-	p2LKCWgz7RhQAq5VysvFHlPi8Cs8v/wtMlrccjutWYRVbaHJTeC9sfJ4
-X-Gm-Gg: ASbGncslFdsCJMFGXd6GbrebIqOjKBYs1I8Y2Ou9pN9Tpd+dDHBfzSlTtHf/31NIDDd
-	LdYBAUlD06rR4sGkWiooXQQOjdbYhND1i8rhIG5NFMXurba2TAJCzezIc9VpxsENQb2mugpqz0m
-	dqLjlaU6GqSJ1unW0fRkHQKqaGXghglUyrxtWAXvDKdE0vcK8dsAjz72TJa9ZH0r1eDTnIEKbII
-	3P+jRQ7LGC1JHOcTA1jkpHVtAEd+F2eSNSUUjSg7dfVZRiMdpb4qJLX3SXX+BxBCc0Fk6kWcjqL
-	XgXfmXPjnJys+J7g3DXe4yzTrW+R5QwQVJi10DpwuJ24Z67fa8ef
-X-Google-Smtp-Source: AGHT+IEct1Mu/j97rbbxjLzBpmVysIk9gdkVmOYKtsSlG+RsTHJF3YcX0aRp3FdZFqor4oEVwjdt3g==
-X-Received: by 2002:a17:903:4b0d:b0:234:a139:1208 with SMTP id d9443c01a7336-234a139160dmr96789515ad.16.1748448594950;
-        Wed, 28 May 2025 09:09:54 -0700 (PDT)
-Received: from google.com ([2620:15c:9d:2:a04a:d85e:c794:147c])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-234d35acbdasm13535885ad.197.2025.05.28.09.09.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 May 2025 09:09:54 -0700 (PDT)
-Date: Wed, 28 May 2025 09:09:51 -0700
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To: Ulf Hansson <ulf.hansson@linaro.org>
-Cc: Claudiu Beznea <claudiu.beznea@tuxon.dev>, gregkh@linuxfoundation.org, 
-	rafael@kernel.org, dakr@kernel.org, len.brown@intel.com, pavel@kernel.org, 
-	jic23@kernel.org, daniel.lezcano@linaro.org, linux-kernel@vger.kernel.org, 
-	linux-pm@vger.kernel.org, linux-iio@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
-	bhelgaas@google.com, geert@linux-m68k.org, 
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Subject: Re: [PATCH v2 1/2] PM: domains: Add devres variant for
- dev_pm_domain_attach()
-Message-ID: <rmc7me6rvumr6pcekgp5lsrxtuge5houitn474lkljew2hzdcw@z7wh2vtntvs5>
-References: <20250526122054.65532-1-claudiu.beznea.uj@bp.renesas.com>
- <20250526122054.65532-2-claudiu.beznea.uj@bp.renesas.com>
- <hojdkntm3q5a5ywya7n5i4zy24auko4u6zdqm25infhd44nyfx@x2evb6sc2d45>
- <111d2d6c-8ac0-40b9-94c3-02f2f64ef9fe@tuxon.dev>
- <CAPDyKFoQYTNBhtBXY-Ds7E0TohtA6558W1Jf3cLsnXDQC74DSg@mail.gmail.com>
+	s=arc-20240116; t=1748451742; c=relaxed/simple;
+	bh=BPHRlGQHl/3MSxPFSO8Vd6F+fQkuJJ1rjfhVgzceE3I=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=KIhwP3uJ5VbFJQbienrxMVdGifMbpOWaF4BLNbX9vfteggkAzkGkbpzJaIf0rfqY14Ypsmrd+qFN9WimJ+0nFWT4eoY50ladzXAdwXagmV8E4YI3/WP/Ce1ZN79S2T5N6tFXc72Ap/wiAo9LAkk7FWesQagxe2c+6T03dF5cb0M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4b6wkS0Jvtz6HJby;
+	Thu, 29 May 2025 01:01:04 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+	by mail.maildlp.com (Postfix) with ESMTPS id 3D541140277;
+	Thu, 29 May 2025 01:02:17 +0800 (CST)
+Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Wed, 28 May
+ 2025 19:02:16 +0200
+Date: Wed, 28 May 2025 18:02:14 +0100
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+To: Gyeyoung Baek <gye976@gmail.com>
+CC: Andy Shevchenko <andy.shevchenko@gmail.com>, Jonathan Cameron
+	<jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, Nuno
+ =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>, Andy Shevchenko
+	<andy@kernel.org>, <linux-iio@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] iio: trigger: Avoid data race
+Message-ID: <20250528180214.00002253@huawei.com>
+In-Reply-To: <CAKbEznt7ZhN9gZWy-7wHhFhwbF8XtCGrukuxe4eAFZpfxfu6vg@mail.gmail.com>
+References: <20250527200534.98689-1-gye976@gmail.com>
+	<CAHp75VcUr7-X+F1f=wPH4=Z7q3kFffv8BgkmKWM4VTjy2w-tGg@mail.gmail.com>
+	<CAKbEznuuGX3Gnqg6WF2mqbigRps0gzK_PfGHGNy8-v1WOZoMUQ@mail.gmail.com>
+	<CAHp75VfEeNyspiMSax1_d+cpbmCQQVbOBEPCHuAag2O0ZHC1jA@mail.gmail.com>
+	<CAKbEznt7ZhN9gZWy-7wHhFhwbF8XtCGrukuxe4eAFZpfxfu6vg@mail.gmail.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAPDyKFoQYTNBhtBXY-Ds7E0TohtA6558W1Jf3cLsnXDQC74DSg@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: lhrpeml100012.china.huawei.com (7.191.174.184) To
+ frapeml500008.china.huawei.com (7.182.85.71)
 
-On Wed, May 28, 2025 at 06:04:45PM +0200, Ulf Hansson wrote:
-> [...]
-> 
-> > >> +/**
-> > >> + * devm_pm_domain_attach - devres-enabled version of dev_pm_domain_attach()
-> > >> + * @dev: Device to attach.
-> > >> + * @attach_power_on: Use to indicate whether we should power on the device
-> > >> + *                   when attaching (true indicates the device is powered on
-> > >> + *                   when attaching).
-> > >> + * @detach_power_off: Used to indicate whether we should power off the device
-> > >> + *                    when detaching (true indicates the device is powered off
-> > >> + *                    when detaching).
-> > >> + *
-> > >> + * NOTE: this will also handle calling dev_pm_domain_detach() for
-> > >> + * you during remove phase.
-> > >> + *
-> > >> + * Returns 0 on successfully attached PM domain, or a negative error code in
-> > >> + * case of a failure.
-> > >> + */
-> > >> +int devm_pm_domain_attach(struct device *dev, bool attach_power_on,
-> > >> +                      bool detach_power_off)
-> > >
-> > > Do we have examples where we power on a device and leave it powered on
-> > > (or do not power on device on attach but power off it on detach)? I
-> >
-> > I haven't found one yet.
-> >
-> > > believe devm release should strictly mirror the acquisition, so separate
-> > > flag is not needed.
-> >
-> > I was in the middle whether I should do it with 2 flags or only to revert
-> > the acquisition.
-> >
-> > >
-> > >
-> > >> +{
-> > >> +    int ret;
-> > >> +
-> > >> +    ret = dev_pm_domain_attach(dev, attach_power_on);
-> > >> +    if (ret)
-> > >> +            return ret;
-> > >> +
-> > >> +    if (detach_power_off)
-> > >> +            return devm_add_action_or_reset(dev, devm_pm_domain_detach_off,
-> > >> +                                            dev);
-> > >> +
-> > >> +    return devm_add_action_or_reset(dev, devm_pm_domain_detach_on, dev);
-> > >
-> > > Instead of 2 separate cleanup methods maybe define dedicated devres:
-> > >
-> > > struct dev_pm_domain_devres {
-> > >       struct device *dev;
-> > >       bool power_off;
-> > > }
-> > >
-> > > ?
-> >
-> > That was the other option I've thought about but I found the one with 2
-> > cleanup methods to be simpler. What would you prefer here?
-> >
-> > Ulf: could you please let me know what would you prefer here?
-> 
-> As it looks like we agreed to use one cleanup method, the struct
-> dev_pm_domain_devres seems superfluous to me.
+On Wed, 28 May 2025 16:17:06 +0900
+Gyeyoung Baek <gye976@gmail.com> wrote:
 
-I think we agreed that cleanup should mirror the acquisition, that is
-true. But since attaching to the domain has an option to either turn the
-device on or not we still need 2 cleanup branches. They can either be
-implemented with 2 cleanup callbacks or with 1 callback and dedicated
-devres structure.
+> On Wed, May 28, 2025 at 6:19=E2=80=AFAM Andy Shevchenko
+> <andy.shevchenko@gmail.com> wrote:
+> >
+> > On Tue, May 27, 2025 at 11:10=E2=80=AFPM Gyeyoung Baek <gye976@gmail.co=
+m> wrote: =20
+> > > On Wed, May 28, 2025 at 5:25=E2=80=AFAM Andy Shevchenko
+> > > <andy.shevchenko@gmail.com> wrote: =20
+> > > > On Tue, May 27, 2025 at 10:05=E2=80=AFPM Gyeyoung Baek <gye976@gmai=
+l.com> wrote: =20
+> >
+> > ...
+> > =20
+> > > > At bare minimum they are not relevant to the patch change and haven=
+'t
+> > > > been described in the commit messages. =20
+> > >
+> > > Hi Andy, thanks for your review.
+> > > I initially skipped this part as I thought it was minor.
+> > > But on a second look, it seems better to separate the declaration from
+> > > the logic.
+> > >
+> > > What do you think about the data race logic? Would it make sense? =20
+> >
+> > The point is valid, the atomic_read() + atomic_set() is 101 thingy,
+> > whoever did that doesn't really have a clue what atomic(ity) is. =20
 
-Thanks.
+:)=20
 
--- 
-Dmitry
+I'm trying to recall what this protection is actually for so this might
+be a little vague as descriptions go...
+
+The key here is what can happen in that 'race' and hence why I'm still fair=
+ly=20
+sure it isn't a real race.  Firstly this is called in an irq handler
+so we can only have one call of this particular function at a time
+for a given trigger.  So no race against itself.
+
+The atomic part is about decrements that can happen elsewhere, but there
+can never be 'more' decrements than the value we set the counter to in this
+function.  That is it never goes negative.
+
+Those decrements ultimately happen in calls that can't happen until after
+the set (via various convoluted paths ultimately getting to
+iio_trigger_notify_done()).  In many cases the trigger is masked until it
+is reenabled on the counter =3D=3D 0 (elsewhere) - but not always...
+
+IIRC correctly aim is to not double trigger in cases where we can't mask
+the trigger (a particularly rubbish trigger) - so if any of the downstream
+devices still hasn't called iio_trigger_notify_done() then we quietly
+drop this particular irq on the floor. We don't mind dropping a few
+too many, just dropping too few a then we end up loosing count of who
+has to be 'done' with the trigger.
+
+Hence the counter won't change between atomic_get and the atomic_set
+as it's always 0 which means no one else is left to decrement it.
+
+Atomics don't always need to be atomic all the time, they just are in
+some states.
+
+So, is this something that has caused observed problems, or based
+on code inspection? My remembering of what was going on here might well
+be flawed.
+
+There are some 'fun' corners for what happens after that set though
+where a handler can run fast enough in race conditions we end up
+hitting 0 in iio_trigger_notify_done_atomic() and have to schedule
+restarting of the trigger because that might involve a bus write over
+a sleeping bus.  That one was a painful bug report some years ago...
+
+Jonathan
+
+>=20
+> Thanks for your explanation.
+> Then I=E2=80=99ll send a v2 patch with only the `int i` change, following=
+ the
+> review feedback.
+>=20
+> --
+> Best regards,
+> Gyeyoung
+>=20
+>=20
+
 

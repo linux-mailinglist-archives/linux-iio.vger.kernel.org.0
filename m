@@ -1,289 +1,120 @@
-Return-Path: <linux-iio+bounces-19981-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19983-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39C94AC61B8
-	for <lists+linux-iio@lfdr.de>; Wed, 28 May 2025 08:14:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C48FAAC61D4
+	for <lists+linux-iio@lfdr.de>; Wed, 28 May 2025 08:22:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B95203B2316
-	for <lists+linux-iio@lfdr.de>; Wed, 28 May 2025 06:13:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 840574A3D9C
+	for <lists+linux-iio@lfdr.de>; Wed, 28 May 2025 06:22:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C38D4213244;
-	Wed, 28 May 2025 06:13:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADDC6228CBE;
+	Wed, 28 May 2025 06:22:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="OWatpCnL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CyXNFi2J"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01646210F65;
-	Wed, 28 May 2025 06:13:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61B883595D;
+	Wed, 28 May 2025 06:22:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748412836; cv=none; b=VfOKHw+6lr9GqGgVo/af/Ccch6yIrn+mHenNLaZwVRZSPEPjcTin7YuxEVclsQn5ul8UiJvwykzzUz4SlQxqUvEZc1pXYlfP2mqYOE3KXQGouDCagJQrZyDW5y0ALa/7p/HhEWgmGlaeXk3X9MhiyzAClh3IFm4KDwCpDyl4YbI=
+	t=1748413327; cv=none; b=gBz55vlZIItr0hLG/OoKeThL2fgzBfJ/ylswt4JENDIXPvk3oz/fGLV15IavSfCcn9cvMc9bQmd9Gf2Mpg2V3z0qhC9s2MJyg+UTCNHvNoBdUjsGe2v9IiEfFdsvdX5IbnzfgdnIuxs6APELa58pGvE3hRDr2Bhh6nxZgW01T/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748412836; c=relaxed/simple;
-	bh=timdkqszBy9pRJGN5hJ0FwkI0yGkdV1tziqvIcqNk+w=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=cFviUiGYJEN3VFKhftELR2cfOFsIPdbpLkJRgMON2+dm7rlgXNSsGbbETF6N8hUv/PPbgp8V3JSSS9T5WUkxzZgv86u6oXoeULNxZAwnyVPkQh3wte5yf8UKNlT2cF9yOexL8yu8G57v/OXSj5ZToBXWE+ZpdGPYYYj/z4vmB9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=OWatpCnL; arc=none smtp.client-ip=68.232.153.233
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1748412835; x=1779948835;
-  h=from:date:subject:mime-version:content-transfer-encoding:
-   message-id:references:in-reply-to:to:cc;
-  bh=timdkqszBy9pRJGN5hJ0FwkI0yGkdV1tziqvIcqNk+w=;
-  b=OWatpCnLvhiWTMp8VyDL6TI8fIOdj8xuzcAGLjSwkvk9JAQO3d1IrmAl
-   7ltb/OetaXvVcSckB+aPKzL0fYfwSRmv0VbiJ/wgk9XBIXtMLh4tLO2as
-   X7sA1UsMydlPF7U/wSAqFGI0uJz7NU4boLrLH/l3dWInWZbO/uPS7WZ6d
-   UjrL4fntwtUaIZIf/N5yOoXfSnMI2y7kmG9qDsnHWl7VjEuHP56MgC+pV
-   GOe+U5oOl3xMjEggJPVkRSnS0aeMJ4osLxCf5bBORtCXLghPaBiPhoV7M
-   1SIcmKjqt4p6Bs9rFR4FZcrSJCrp5UIxnpuCuK3m0viQKSv9rFF9KO15O
-   Q==;
-X-CSE-ConnectionGUID: Na4ii3iOTbObYzT6z7QrlA==
-X-CSE-MsgGUID: /JIRnDJ9QduRg7sJME2snQ==
-X-IronPort-AV: E=Sophos;i="6.15,320,1739862000"; 
-   d="scan'208";a="42149725"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa3.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 27 May 2025 23:13:53 -0700
-Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
- chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44; Tue, 27 May 2025 23:13:23 -0700
-Received: from [127.0.0.1] (10.10.85.11) by chn-vm-ex01.mchp-main.com
- (10.10.85.143) with Microsoft SMTP Server id 15.1.2507.44 via Frontend
- Transport; Tue, 27 May 2025 23:13:20 -0700
-From: Dharma Balasubiramani <dharma.b@microchip.com>
-Date: Wed, 28 May 2025 11:43:05 +0530
-Subject: [PATCH 2/2] counter: microchip-tcb-capture: Add DMA support for
- TC_RAB register reads
+	s=arc-20240116; t=1748413327; c=relaxed/simple;
+	bh=dkeqXqP5bwN2yutJIiKxhDYA23yreeU/xaihJHx2wWQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=PrgKJVkP1oaSZ2z8sB/UYJNbmVqFdSVOONJ+J2mgT4Z9Qscc1XIkG3K0tC0HEE/zWAEWY8vFJXitbPdCShebLUoFswqAPZtm0LCQ/eD9Y7hnoSKM4ZRpRlrWCdWlKpkzQ+NtCGeZRz6SO009S5VZERADrL/jd6BWhi+Gx1LDaOU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CyXNFi2J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CDF8C4CEE7;
+	Wed, 28 May 2025 06:22:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1748413326;
+	bh=dkeqXqP5bwN2yutJIiKxhDYA23yreeU/xaihJHx2wWQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=CyXNFi2J81j85OvBG1p1WD0UYqwkb4jyWDLTuAgkdWOOhwrVyHVdn5N7pQZxLq3BR
+	 O8OCzwJpbvvLEBWhqiMDtzEBpHbwKAVe2d0yeJuRR0cKtETAMh8tJ9zFMFL7+ON4kX
+	 rhxfi/4NjS/zQB1hTTnYTmUUAMjaxhrMe5MNokiH281npEeJsZK6CA2JSdEEDB3zDp
+	 sA5Hd/x7qidxUGeV+BloXGYPoDlbYV/27z8Eg5NGXJxMLDpOm5uG96ts5YTICNiCru
+	 SS5r/k019tSB8rZM7x7x1YgZPTyJ34gqdjB6ivSVjcyeZahAWLXeBAeWAMkQfRv6+5
+	 o6YlR62LjG/Nw==
+Message-ID: <50121bd6-76ae-4417-86c2-d5ef71164dfe@kernel.org>
+Date: Wed, 28 May 2025 08:22:01 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] dt-bindings: iio: gyroscope: invensense,itg3200: add
+ binding
+To: Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>, jic23@kernel.org,
+ robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org,
+ manuel.stahl@iis.fraunhofer.de
+Cc: ~lkcamp/patches@lists.sr.ht, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250527210308.4693-1-rodrigo.gobbi.7@gmail.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <20250527210308.4693-1-rodrigo.gobbi.7@gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-ID: <20250528-mchp-tcb-dma-v1-2-083a41fb7b51@microchip.com>
-References: <20250528-mchp-tcb-dma-v1-0-083a41fb7b51@microchip.com>
-In-Reply-To: <20250528-mchp-tcb-dma-v1-0-083a41fb7b51@microchip.com>
-To: Kamel Bouhara <kamel.bouhara@bootlin.com>, William Breathitt Gray
-	<wbg@kernel.org>, Nicolas Ferre <nicolas.ferre@microchip.com>, "Alexandre
- Belloni" <alexandre.belloni@bootlin.com>, Claudiu Beznea
-	<claudiu.beznea@tuxon.dev>
-CC: <linux-arm-kernel@lists.infradead.org>, <linux-iio@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, Dharma Balasubiramani
-	<dharma.b@microchip.com>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1748412791; l=5988;
- i=dharma.b@microchip.com; s=20240209; h=from:subject:message-id;
- bh=timdkqszBy9pRJGN5hJ0FwkI0yGkdV1tziqvIcqNk+w=;
- b=kPxGwSciC4VTlx2DjWq3wGdOzg0lsJ2YPOQbl09O2vKiubiXkJp0NNdYlmqYdQtozf2ws0mrT
- dhSgpNfyYhMDglCAnrOIjUz24hCHa9UU4MXRWgLVVcf1Q8F0yXkqeEC
-X-Developer-Key: i=dharma.b@microchip.com; a=ed25519;
- pk=kCq31LcpLAe9HDfIz9ZJ1U7T+osjOi7OZSbe0gqtyQ4=
 
-Add optional DMA-based data transfer support to read the TC_RAB register,
-which provides the next unread captured value from either RA or RB. This
-improves performance and offloads CPU when mchp,use-dma-cap is enabled in
-the device tree.
+On 27/05/2025 22:55, Rodrigo Gobbi wrote:
+> There is no txt file for it, add yaml for invensense,itg3200 gyroscope.
 
-Signed-off-by: Dharma Balasubiramani <dharma.b@microchip.com>
----
- drivers/counter/microchip-tcb-capture.c | 110 +++++++++++++++++++++++++++++++-
- include/soc/at91/atmel_tcb.h            |   1 +
- 2 files changed, 108 insertions(+), 3 deletions(-)
+... which is already used in DTS and driver.
 
-diff --git a/drivers/counter/microchip-tcb-capture.c b/drivers/counter/microchip-tcb-capture.c
-index 9634da75bd1a..fa177edc6803 100644
---- a/drivers/counter/microchip-tcb-capture.c
-+++ b/drivers/counter/microchip-tcb-capture.c
-@@ -6,6 +6,9 @@
-  */
- #include <linux/clk.h>
- #include <linux/counter.h>
-+#include <linux/dmaengine.h>
-+#include <linux/dma-direction.h>
-+#include <linux/dma-mapping.h>
- #include <linux/interrupt.h>
- #include <linux/mfd/syscon.h>
- #include <linux/module.h>
-@@ -28,9 +31,19 @@
- #define ATMEL_TC_QDEN			BIT(8)
- #define ATMEL_TC_POSEN			BIT(9)
- 
-+struct mchp_tc_dma {
-+	struct dma_chan *chan;
-+	struct dma_slave_config slave_cfg;
-+	u32 *buf;
-+	dma_addr_t addr;
-+	phys_addr_t phy_addr;
-+	bool enabled;
-+};
-+
- struct mchp_tc_data {
- 	const struct atmel_tcb_config *tc_cfg;
- 	struct platform_device *pdev;
-+	struct mchp_tc_dma dma;
- 	struct regmap *regmap;
- 	void __iomem *base;
- 	int qdec_mode;
-@@ -74,6 +87,61 @@ static struct counter_synapse mchp_tc_count_synapses[] = {
- 	}
- };
- 
-+static void mchp_tc_dma_remove(void *data)
-+{
-+	struct mchp_tc_data *priv = data;
-+
-+	if (priv->dma.buf)
-+		dma_free_coherent(&priv->pdev->dev, sizeof(u32),
-+				  priv->dma.buf, priv->dma.addr);
-+
-+	if (priv->dma.chan)
-+		dma_release_channel(priv->dma.chan);
-+}
-+
-+static int mchp_tc_dma_transfer(struct mchp_tc_data *priv, u32 *val)
-+{
-+	struct dma_async_tx_descriptor *desc;
-+	struct device *dev = &priv->pdev->dev;
-+	dma_cookie_t cookie;
-+	int ret;
-+
-+	ret = dmaengine_slave_config(priv->dma.chan, &priv->dma.slave_cfg);
-+	if (ret) {
-+		dev_err(dev, "DMA slave_config failed (%d)\n", ret);
-+		return ret;
-+	}
-+
-+	desc = dmaengine_prep_dma_memcpy(priv->dma.chan,
-+					 priv->dma.addr,
-+					 priv->dma.slave_cfg.src_addr,
-+					 sizeof(u32),
-+					 DMA_CTRL_ACK | DMA_PREP_INTERRUPT);
-+	if (!desc) {
-+		dev_err(dev, "DMA prep descriptor failed\n");
-+		return -ENOMEM;
-+	}
-+
-+	cookie = dmaengine_submit(desc);
-+	if (dma_submit_error(cookie)) {
-+		dev_err(dev, "DMA submit error (%d)\n", cookie);
-+		return cookie ?: -EIO;
-+	}
-+
-+	dma_async_issue_pending(priv->dma.chan);
-+
-+	ret = dma_sync_wait(priv->dma.chan, cookie);
-+	if (ret) {
-+		dev_err(dev, "DMA transfer timed out (%d)\n", ret);
-+		return ret;
-+	}
-+
-+	/* Retrieve the 32-bit value the engine just copied */
-+	*val = le32_to_cpu(*(u32 *)priv->dma.buf);
-+
-+	return 0;
-+}
-+
- static int mchp_tc_count_function_read(struct counter_device *counter,
- 				       struct counter_count *count,
- 				       enum counter_function *function)
-@@ -260,20 +328,25 @@ static int mchp_tc_count_cap_read(struct counter_device *counter,
- 				  struct counter_count *count, size_t idx, u64 *val)
- {
- 	struct mchp_tc_data *const priv = counter_priv(counter);
--	u32 cnt;
-+	u32 cnt, reg_offset;
- 	int ret;
- 
- 	switch (idx) {
- 	case COUNTER_MCHP_EXCAP_RA:
--		ret = regmap_read(priv->regmap, ATMEL_TC_REG(priv->channel[0], RA), &cnt);
-+		reg_offset = ATMEL_TC_REG((priv->channel[0]), RA);
- 		break;
- 	case COUNTER_MCHP_EXCAP_RB:
--		ret = regmap_read(priv->regmap, ATMEL_TC_REG(priv->channel[0], RB), &cnt);
-+		reg_offset = ATMEL_TC_REG((priv->channel[0]), RB);
- 		break;
- 	default:
- 		return -EINVAL;
- 	}
- 
-+	if (!priv->dma.enabled)
-+		ret = regmap_read(priv->regmap, reg_offset, &cnt);
-+	else
-+		ret = mchp_tc_dma_transfer(priv, &cnt);
-+
- 	if (ret < 0)
- 		return ret;
- 
-@@ -578,6 +651,7 @@ static int mchp_tc_probe(struct platform_device *pdev)
- 	if (ret)
- 		return ret;
- 
-+	priv->dma.phy_addr = parent_res->start;
- 	priv->tc_cfg = tcb_config;
- 	priv->regmap = regmap;
- 	priv->pdev = pdev;
-@@ -589,6 +663,36 @@ static int mchp_tc_probe(struct platform_device *pdev)
- 	counter->num_signals = ARRAY_SIZE(mchp_tc_count_signals);
- 	counter->signals = mchp_tc_count_signals;
- 
-+	/* Check the dma flag */
-+	priv->dma.enabled = of_property_read_bool(np, "mchp,use-dma-cap") ? true : false;
-+
-+	if (priv->dma.enabled) {
-+		/* Initialise DMA */
-+		priv->dma.buf = dma_alloc_coherent(&pdev->dev, sizeof(u32),
-+						   &priv->dma.addr, GFP_KERNEL);
-+		if (!priv->dma.buf)
-+			return -ENOMEM;
-+
-+		priv->dma.chan = dma_request_chan(&parent_pdev->dev, "rx");
-+		if (IS_ERR(priv->dma.chan))
-+			return -EINVAL;
-+
-+		dev_info(&pdev->dev, "Using %s (rx) for DMA transfers\n",
-+			 dma_chan_name(priv->dma.chan));
-+
-+		/* Configure DMA channel to read TC AB register */
-+		priv->dma.slave_cfg.direction = DMA_DEV_TO_MEM;
-+		priv->dma.slave_cfg.src_addr = priv->dma.phy_addr + ATMEL_TC_REG(priv->channel[0],
-+										 RAB);
-+		priv->dma.slave_cfg.src_addr_width = DMA_SLAVE_BUSWIDTH_4_BYTES;
-+		priv->dma.slave_cfg.src_maxburst = 1;
-+		priv->dma.slave_cfg.dst_maxburst = 1;
-+
-+		ret = devm_add_action_or_reset(&pdev->dev, mchp_tc_dma_remove, priv);
-+		if (ret)
-+			return ret;
-+	}
-+
- 	i = of_irq_get(np->parent, 0);
- 	if (i == -EPROBE_DEFER)
- 		return -EPROBE_DEFER;
-diff --git a/include/soc/at91/atmel_tcb.h b/include/soc/at91/atmel_tcb.h
-index 26b56a07bd1f..9fad7f58a56a 100644
---- a/include/soc/at91/atmel_tcb.h
-+++ b/include/soc/at91/atmel_tcb.h
-@@ -243,6 +243,7 @@ extern const u8 atmel_tc_divisors[5];
- #define ATMEL_TC_RA	0x14		/* register A */
- #define ATMEL_TC_RB	0x18		/* register B */
- #define ATMEL_TC_RC	0x1c		/* register C */
-+#define ATMEL_TC_RAB	0x0c		/* register AB */
- 
- #define ATMEL_TC_SR	0x20		/* status (read-only) */
- /* Status-only flags */
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
--- 
-2.43.0
-
+Best regards,
+Krzysztof
 

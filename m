@@ -1,189 +1,184 @@
-Return-Path: <linux-iio+bounces-20010-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20011-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C129AC80A2
-	for <lists+linux-iio@lfdr.de>; Thu, 29 May 2025 18:02:22 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A7B3AC80D1
+	for <lists+linux-iio@lfdr.de>; Thu, 29 May 2025 18:23:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C06D01BC1844
-	for <lists+linux-iio@lfdr.de>; Thu, 29 May 2025 16:02:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0BA307A5EB4
+	for <lists+linux-iio@lfdr.de>; Thu, 29 May 2025 16:22:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E7BC20C47C;
-	Thu, 29 May 2025 16:02:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B957D22CBEA;
+	Thu, 29 May 2025 16:23:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="xZiDlvnA"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OEJG8klE"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ot1-f53.google.com (mail-ot1-f53.google.com [209.85.210.53])
+Received: from mail-yb1-f179.google.com (mail-yb1-f179.google.com [209.85.219.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58ACA1D6187
-	for <linux-iio@vger.kernel.org>; Thu, 29 May 2025 16:02:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBBE319AD90;
+	Thu, 29 May 2025 16:23:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748534535; cv=none; b=qtcbyoOoyEbBTvc1X+QY5DQ08cUfn/qHBedx2znHSBMR0vSUEz05w7E+Kew3aYQh8TALCgMYyv1tgm+D5ClKGyXsTcZ8MVYC5TLf/GYFZQmJyMI4G7XUhHTjGFW82FfMO6SF3iot1S/oTn7UF7CueMbJNprnhjTsXzCM0Udl+IA=
+	t=1748535809; cv=none; b=SaIcUALRVbFJOSzQ2zQxtvtFJ0olto4nbnjp/v6I3E7D7w9TtMEzBDzG1gUghd/VZfhI7Elh7MNKdG2xCyLERtRxC1PL/VTqc/GOc83ZrGj1gGQLp+eJ9KXmPHj8cX/EK19+8j0k2syLyWHYY2xNkDyZU0bk0VqxcFTebpEet7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748534535; c=relaxed/simple;
-	bh=C81KAP8MCgz9yCar2aPGpjjkTEombEIZnVIf/7ZW2yg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=o61STBs+M1ue3AKvnNXKHc5ct3ZCIOa3Jp22s+n0AsJyst3fdUxlzPykT2wzTYlFNsSmLiRG/bLVfsHoUVbX0PF3d/3iUQjIPeLJgR/tOi2VX7CrIKPAt3OQ3va+AJIa605L0aNuAdhCmJKpAo+n/nmroOIIM8B0K82p0EgmbRM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=xZiDlvnA; arc=none smtp.client-ip=209.85.210.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ot1-f53.google.com with SMTP id 46e09a7af769-72ecc0eeb8bso377411a34.0
-        for <linux-iio@vger.kernel.org>; Thu, 29 May 2025 09:02:13 -0700 (PDT)
+	s=arc-20240116; t=1748535809; c=relaxed/simple;
+	bh=y88bWnjdDmH8A53C7ItcbB51L4+6m81K5nRKHO9GgrA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=u0BySTveLefhPHN0F8r/KHvNXXRKcrmu5/5Y/ixnnK7LwEARY8cwiCAGqP3RWe9aW6Jiydk6eRbvC9/lt2qhpESuK6Qoci5KKZe6KlvQXRGPs6+rUee2M49OZQmB7Gv9hP6dwGXdhPG4TR1tqyq3sW2yknjQEOnow2QumhL2YSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OEJG8klE; arc=none smtp.client-ip=209.85.219.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yb1-f179.google.com with SMTP id 3f1490d57ef6-e7d74904be7so100445276.2;
+        Thu, 29 May 2025 09:23:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1748534532; x=1749139332; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=77AhuRKjycx8Mt4z2m2J0PcEvKOBj2b0tESM7TEnK1U=;
-        b=xZiDlvnAH8JBdtrwDz09E/mkZwswDvaaRndVBbRH2MZjwuDJcIxLTT8nflCNY4tSbR
-         vIZ8h476P2YgKDPDFDPvAbfWrZdMuWPy0j/5PhdDGcuB/HGPMfPGjfC7RB21x0FXac19
-         ared2KJajqTznNs2hNajDGC2qyYZQ/wMWo7xGsqKA1JY1dSPEQnrnt9LPlU84D4m+1mI
-         oRJLaBRIT/Xjpso3ySXYY1Fj7tkAktqHHO3VxLoOlI9yEaX+XtvzwP7nAkfuztjmiv4N
-         PIxbE2yGWqBP28FXdQ/NkzeysZXYbMlzuxdY9BAVIPoaaxJh5PxFy7h1XoiWcKHLcPH9
-         rtXg==
+        d=gmail.com; s=20230601; t=1748535807; x=1749140607; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Y628e+r5J46wCH9AZO34Qtcv0eqO1tFbg737Vp+QQ1Y=;
+        b=OEJG8klEQhlmOtNzEHNzSxTg910dfpQYm662Fu2bgV9PZiNGsYdp7aP9+AJBLk+gsV
+         7iw2GLhCD/RzxzQCBs8b8/dCausxiVfm2nD+D46aDhpxu6g9m98khKkntMfyWbKkSRJ9
+         UAAfOifq8udnqZoRFu747oJL9Qa+d6F+eOGURLvthFa8zXGVPq28Qf+OssKa7uTnUDLA
+         FssbFKOaDpVYMY6fPWeModP+v5/ujYijQfEbsjlWjoL/id24Ne42FZlghI9eEJVFGgkS
+         cfAoCNxNNQL3AOKHXRMfdFN22IOFunuLLaLsY0MPqY6ra0DC4xFexNxK7J0jmr2KhdZ1
+         KXbQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748534532; x=1749139332;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=77AhuRKjycx8Mt4z2m2J0PcEvKOBj2b0tESM7TEnK1U=;
-        b=jpBEzK1J5tNiD9JRnDeIsz0ykdG2nO1tQKokRX1emFPk47/I8l9+tqlDrkqX/ic/Ky
-         gAIzmr70BwjCpV5iQuhiKIaDGdseZsJwA1Yy7i+boc06d42jgPzBzpWGP3lEmdAkprFQ
-         EJdnQhHKrokYy5NFXRfliYDlsC5/cnJEj5PyyhGrzIqwAzUW31lANC/rZihwHyLe8HF+
-         E//OohRtZ0WnCZiTevAXKvX9dI7qaj0br3jUZzwXsjr3+W0Q9tb3p3cBVXILiVgUI9Lt
-         Z67Wfl0/UNXp2YkXpOL38QEPqh0aptsbe0rBfpqDLNbRY6nmG99MNg4PW+zCB3UrUhRN
-         reiQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW+71fta5U6htCOZUv6Ep/6ogiqWCjMTgURmOGlmiLS/5AF/6UxnYJ62ycf6vRC0y/YWDkXkObyiQc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwUjZ1Ey390LOlD+9qTVTwdGe8gRRdX1IiFHt1y5YdOyr1k6pE2
-	yyb+V77ToqfGsbY3cjlMdZfmR5mbQXBzZ/4n9B3eXhrUFZ5OP+kYZt3UtqZ3Mf1TC70=
-X-Gm-Gg: ASbGncs9Do6eY4e1ZB7TlLJnRSTXrprn8Wy08DeD3olAitnq9NOuHuhe+k4erAwetoa
-	xTiJi0k4RuUhVLAN4O2SulSUZrlyQKNVUQAERMSwJlu4fXL+8pt0mq8f+DOR7Lh5le97MLqHdOy
-	gXqD7gckJ1SzVkICbnKJqPFoHQt0Bo6/K+Rw9eOTYfksW43VjALwYOhuC9MWP7l7TevI3JOpqky
-	++0lndMrzeN75PJv3Wo/6s/4cg9WBCkN+nXMScNianRa83IsE9Uqkq3zBqX1WlvMMbOzC/8/TX/
-	dS7MIkymCBXiB1tsMy2Gxtc7QxhpopwsD6UrodcsEdjoWmO+qhrJiheXG6iVhgCNPLBnhBRlIqY
-	jfbzr/rr+NAQUNQ1qqzXSFAvAeg==
-X-Google-Smtp-Source: AGHT+IHkcqd5CwVFJ6fSnhyuSCPtdIuaJyq7PUMwZT0yRXfoKWliGSzc/z/d9bWNKzbH+lkeh5x/gg==
-X-Received: by 2002:a05:6808:338c:b0:406:6fd3:ff13 with SMTP id 5614622812f47-406797134cbmr30276b6e.25.1748534532242;
-        Thu, 29 May 2025 09:02:12 -0700 (PDT)
-Received: from ?IPV6:2600:8803:e7e4:1d00:928b:5d5c:6cd9:1a4? ([2600:8803:e7e4:1d00:928b:5d5c:6cd9:1a4])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-60c14c711edsm41211eaf.12.2025.05.29.09.02.09
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 29 May 2025 09:02:10 -0700 (PDT)
-Message-ID: <ed40509d-9627-43ce-b209-ca07674988ff@baylibre.com>
-Date: Thu, 29 May 2025 11:02:08 -0500
+        d=1e100.net; s=20230601; t=1748535807; x=1749140607;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Y628e+r5J46wCH9AZO34Qtcv0eqO1tFbg737Vp+QQ1Y=;
+        b=W9FRigxgjyc52ZjQ5ngdy4DNWuALRwv78EgdffsjNDye6LCWT4V8Q9pFGPCuMIMyz1
+         gL/r9k0VvSN1IWYGMJM2o3oSTJwN5K/BEBURUDNNe2LY8GssBeSmVrdSHhj4D/Uhg53R
+         8oxyVsm19KMjoOKBeEwZDj/wdkWXfh4+U8CvApa3lN+U6r+5NwckGmWBoKA/Q74ZwS10
+         mdnh9ip98PmzrCPurqEuKi7/ZNEwXDS0OnKFLAsV1S9JfUqGRSjZxsLtlHa/maRuoRzv
+         DXgJmz5Q6SQPArjn9ODPyA8A6RpAdb3PTH0NOpHU02mL9Oeh2o3VkMmeuviCApMDW3a5
+         1Aeg==
+X-Forwarded-Encrypted: i=1; AJvYcCUQEP628BKSm0tK3JWpmzyaeIzlT1oLjxSUAj/ehVrPMIumqu5eNDyWrIyfqrewJ77wBgvC01Hz01JNCJVo@vger.kernel.org, AJvYcCUTfRq5iKzHJqgV1a/CCm/isaPQ3PvN7wsZHuIuKAAHVKupEZ4EllPRX9v5GQz/d5bwEybtICsjcKWj@vger.kernel.org, AJvYcCVEoXQpquGZuUZqe24t3tGZBKE71+ye5s8yb0ZOnBqMp6r4FTEnodW/mQYsqTznwuek4xWZAmoRSMk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx4SCSsskHYWpp9KMrE71/vPyhq2fz2NpUjNjy7s7LactQuVf5R
+	NnlHE/frK2+NnH3lkf1tHMHJnw+D3jEUF7dBy9gjCF01RNMMXtD9JFrpoptXWV/CCcxzPu+Yc3r
+	GV/38RjoZIXqFJcwk4YnNcePXZhzKwcA=
+X-Gm-Gg: ASbGncunAxwSGEA+BLFSeOFYe5OHCTnH5YLWBmYjNTyeHpsLI+DFxiJiJt7nH1CgWK2
+	L2Ykm/ynm+lPUdIPlW/Z+RsdRAGN+1VjiWGh0ggZWn6KvAOd5DYkPN5VMHI16VZoWIbY2bi0SE9
+	g39Crh0GDG7IMzZ0s1rTEDRG5UigmZy60I
+X-Google-Smtp-Source: AGHT+IGhObu3W6mQruMR/+MrCuHMLXN9Vg4M2aXNyeRCnDSL2N9NCp8mknXUuMRRBVrSuN72UeazYuMSeQSlYdpxwvA=
+X-Received: by 2002:a05:690c:4808:b0:70e:923:217d with SMTP id
+ 00721157ae682-70f97e11cbbmr481117b3.1.1748535806730; Thu, 29 May 2025
+ 09:23:26 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] iio: accel: fxls8962af: Fix use after free in
- fxls8962af_fifo_flush
-To: Sean Nyekjaer <sean@geanix.com>, Jonathan Cameron <jic23@kernel.org>,
- =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
- Andy Shevchenko <andy@kernel.org>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20250524-fxlsrace-v1-1-dec506dc87ae@geanix.com>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <20250524-fxlsrace-v1-1-dec506dc87ae@geanix.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20250523223523.35218-1-l.rubusch@gmail.com> <20250523223523.35218-10-l.rubusch@gmail.com>
+ <20250525140351.559be514@jic23-huawei>
+In-Reply-To: <20250525140351.559be514@jic23-huawei>
+From: Lothar Rubusch <l.rubusch@gmail.com>
+Date: Thu, 29 May 2025 18:22:50 +0200
+X-Gm-Features: AX0GCFvzeuawi05YPC7HpbpaM7CtaLMYnQbBAczI4RTC1RjBW97G2T84TwCz5CA
+Message-ID: <CAFXKEHb96Kyr_L_Mw3UQxxD=nR8X2bU3TCcgH6OWsqYfaQtE+Q@mail.gmail.com>
+Subject: Re: [PATCH v3 09/12] iio: accel: adxl313: add activity sensing
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org, corbet@lwn.net, 
+	lucas.p.stankus@gmail.com, lars@metafoo.de, Michael.Hennerich@analog.com, 
+	linux-iio@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 5/24/25 5:34 AM, Sean Nyekjaer wrote:
-> fxls8962af_fifo_flush() uses indio_dev->active_scan_mask (with
-> iio_for_each_active_channel()) without making sure the indio_dev
-> stays in buffer mode.
-> There is a race if indio_dev exits buffer mode in the middle of the
-> interrupt that flushes the fifo. Fix this by calling
-> iio_device_claim_buffer_mode() to ensure indio_dev can't exit buffer
-> mode during the flush.
-> 
-> Unable to handle kernel NULL pointer dereference at virtual address 00000000 when read
-> [...]
-> _find_first_bit_le from fxls8962af_fifo_flush+0x17c/0x290
-> fxls8962af_fifo_flush from fxls8962af_interrupt+0x80/0x178
-> fxls8962af_interrupt from irq_thread_fn+0x1c/0x7c
-> irq_thread_fn from irq_thread+0x110/0x1f4
-> irq_thread from kthread+0xe0/0xfc
-> kthread from ret_from_fork+0x14/0x2c
-> 
-> Fixes: 79e3a5bdd9ef ("iio: accel: fxls8962af: add hw buffered sampling")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Sean Nyekjaer <sean@geanix.com>
-> ---
->  drivers/iio/accel/fxls8962af-core.c | 5 +++++
->  1 file changed, 5 insertions(+)
-> 
-> diff --git a/drivers/iio/accel/fxls8962af-core.c b/drivers/iio/accel/fxls8962af-core.c
-> index 6d23da3e7aa22c61f2d9348bb91d70cc5719a732..7db83ebeea823173d79bf8ff484add16f575edfc 100644
-> --- a/drivers/iio/accel/fxls8962af-core.c
-> +++ b/drivers/iio/accel/fxls8962af-core.c
-> @@ -973,6 +973,9 @@ static int fxls8962af_fifo_flush(struct iio_dev *indio_dev)
->  	if (ret)
->  		return ret;
->  
-> +	if (iio_device_claim_buffer_mode(indio_dev) < 0)
-> +		return 0;
-> +
+Hi Jonathan,
 
-I see one other driver with a check like this, so I suppose there is some precedent,
-but I wonder if this could be fixed instead with:
+On Sun, May 25, 2025 at 3:04=E2=80=AFPM Jonathan Cameron <jic23@kernel.org>=
+ wrote:
+>
+> On Fri, 23 May 2025 22:35:20 +0000
+> Lothar Rubusch <l.rubusch@gmail.com> wrote:
+>
+> > Add possibilities to set a threshold for activity sensing. Extend the
+> > interrupt handler to process activity interrupts. Provide functions to =
+set
+> > the activity threshold and to enable/disable activity sensing. Further =
+add
+> > a fake channel for having x, y and z axis anded on the iio channel.
+> >
+> > This is a preparatory patch. Some of the definitions and functions are
+> > supposed to be extended for inactivity later on.
+> >
+> > Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
+> One comment I found confusing.
+>
+> I see this hardware is similar to our friend the axl345 so some of the ou=
+tcomes
+> of final reviews on that series may apply here as well.
 
----
-diff --git a/drivers/iio/accel/fxls8962af-core.c b/drivers/iio/accel/fxls8962af-core.c
-index 9aa02f599ae9..2034f4407dd7 100644
---- a/drivers/iio/accel/fxls8962af-core.c
-+++ b/drivers/iio/accel/fxls8962af-core.c
-@@ -866,6 +866,8 @@ static int fxls8962af_buffer_predisable(struct iio_dev *indio_dev)
- 	if (ret)
- 		return ret;
- 
-+	synchronize_irq(data->irq);
-+
- 	ret = __fxls8962af_fifo_set_mode(data, false);
- 
- 	if (data->enable_event)
----
+Yes. To be honest with you, I already saw several places, where I
+probably need to send you some refac for the ADXL345 as well.
+Implementing the same type of source a second time, sometimes leads
+[me] to different[/better?] solutions and brings different insights.
 
-This should ensure that if the interrupt handler is running while trying to
-disable the buffer, that the interrupt handler completes before returning
-from fxls8962af_buffer_predisable(). And no more interrupts should occur
-because the interrupt was disabled before waiting for completion.
+>
+> > ---
+> >  drivers/iio/accel/adxl313_core.c | 229 ++++++++++++++++++++++++++++++-
+> >  1 file changed, 227 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/drivers/iio/accel/adxl313_core.c b/drivers/iio/accel/adxl3=
+13_core.c
+> > index 80991cd9bd79..74bb7cfe8a55 100644
+> > --- a/drivers/iio/accel/adxl313_core.c
+> > +++ b/drivers/iio/accel/adxl313_core.c
+>
+> >  static const unsigned long adxl313_scan_masks[] =3D {
+> > @@ -300,6 +334,60 @@ static int adxl313_read_freq_avail(struct iio_dev =
+*indio_dev,
+> >       }
+> >  }
+> >
+> > +static int adxl313_is_act_inact_en(struct adxl313_data *data,
+> > +                                enum adxl313_activity_type type)
+> > +{
+> > +     unsigned int axis_ctrl;
+> > +     unsigned int regval;
+> > +     int axis_en, int_en, ret;
+> > +
+> > +     ret =3D regmap_read(data->regmap, ADXL313_REG_ACT_INACT_CTL, &axi=
+s_ctrl);
+> > +     if (ret)
+> > +             return ret;
+> > +
+> > +     /* Check if axis for activity are enabled */
+>
+> If all 3 axis perhaps?  Or If any axis?  I'm not sure what intent is here=
+.
 
->  	/* Demux hw FIFO into kfifo. */
->  	for (i = 0; i < count; i++) {
->  		int j, bit;
-> @@ -989,6 +992,8 @@ static int fxls8962af_fifo_flush(struct iio_dev *indio_dev)
->  		tstamp += sample_period;
->  	}
->  
-> +	iio_device_release_buffer_mode(indio_dev);
-> +
->  	return count;
->  }
->  
-> 
-> ---
-> base-commit: 5c3fcb36c92443a9a037683626a2e43d8825f783
-> change-id: 20250524-fxlsrace-f4d20e29fb29
-> 
-> Best regards,
+For the ADXL313 I do generally all axis, i.e. x-, y-, z-axis - enabled
+and disabled, respectively. I'll modify the comment.
 
-In addition to the race you have identified, I wonder if there is also a race
-in fxls8962af_suspend(). This one wouldn't cause a crash, but would cause an
-immediate wake.
+Sry about spamming the ML with my emails about the reset function. I
+oversaw your other mail. Patches will be merged.
 
-fxls8962af_suspend() calls enable_irq_wake(data->irq); before disabling the
-interrupt by calling fxls8962af_buffer_predisable(indio_dev);
+Best,
+L
 
-It seems like the order should be reversed.
-
+>
+> > +     if (type !=3D ADXL313_ACTIVITY)
+> > +             return 0;
+> > +
+> > +     axis_en =3D FIELD_GET(ADXL313_ACT_XYZ_EN, axis_ctrl);
+> > +
+> > +     /* The axis are enabled, now check if specific interrupt is enabl=
+ed */
+> > +     ret =3D regmap_read(data->regmap, ADXL313_REG_INT_ENABLE, &regval=
+);
+> > +     if (ret)
+> > +             return ret;
+> > +
+> > +     int_en =3D adxl313_act_int_reg[type] & regval;
+> > +
+> > +     return axis_en && int_en;
+> > +}
+>
 

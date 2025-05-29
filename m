@@ -1,184 +1,118 @@
-Return-Path: <linux-iio+bounces-20011-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20012-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A7B3AC80D1
-	for <lists+linux-iio@lfdr.de>; Thu, 29 May 2025 18:23:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2636AC8165
+	for <lists+linux-iio@lfdr.de>; Thu, 29 May 2025 19:02:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0BA307A5EB4
-	for <lists+linux-iio@lfdr.de>; Thu, 29 May 2025 16:22:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B91121C04B4A
+	for <lists+linux-iio@lfdr.de>; Thu, 29 May 2025 17:02:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B957D22CBEA;
-	Thu, 29 May 2025 16:23:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7578522F176;
+	Thu, 29 May 2025 17:01:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OEJG8klE"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TCiRTT0L"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-yb1-f179.google.com (mail-yb1-f179.google.com [209.85.219.179])
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBBE319AD90;
-	Thu, 29 May 2025 16:23:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA9661C84C6;
+	Thu, 29 May 2025 17:01:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748535809; cv=none; b=SaIcUALRVbFJOSzQ2zQxtvtFJ0olto4nbnjp/v6I3E7D7w9TtMEzBDzG1gUghd/VZfhI7Elh7MNKdG2xCyLERtRxC1PL/VTqc/GOc83ZrGj1gGQLp+eJ9KXmPHj8cX/EK19+8j0k2syLyWHYY2xNkDyZU0bk0VqxcFTebpEet7Y=
+	t=1748538087; cv=none; b=pMRT3ZkKkeSZzspxwDhDWts1N92Kovv59lzWts51CGmlF+ww1Rv6cvzSpZ3RHxMM5cCAJ+PHSqraKlble04JE7fo9r1Q4zov0mTcpT+Cc+6GasTkwMomILyxPAUPbt8aNNaKTaZwG1MQOUqMpaYV+BqR2JNihyTMDEbpUA359kY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748535809; c=relaxed/simple;
-	bh=y88bWnjdDmH8A53C7ItcbB51L4+6m81K5nRKHO9GgrA=;
+	s=arc-20240116; t=1748538087; c=relaxed/simple;
+	bh=Qon+5AIEhGN/U2Ml0PzbagpjZv5nBG0yly2bPaMLFYg=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=u0BySTveLefhPHN0F8r/KHvNXXRKcrmu5/5Y/ixnnK7LwEARY8cwiCAGqP3RWe9aW6Jiydk6eRbvC9/lt2qhpESuK6Qoci5KKZe6KlvQXRGPs6+rUee2M49OZQmB7Gv9hP6dwGXdhPG4TR1tqyq3sW2yknjQEOnow2QumhL2YSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OEJG8klE; arc=none smtp.client-ip=209.85.219.179
+	 To:Cc:Content-Type; b=iM6d5L18GO3OROTg5YNVFQq0g4tdreffAmX9TMdghhFTfYRJhR/JkMJXuDGsQ3k/00V8gJZORsOCqWNKbvbe13JFGgCKSDS8BPisM/jEd0KDHyizCQgkCfk3gPdkqIDisec4U37LB/iKjOJ9mPm7gPPJeo8CN8sdpdM8AS67Tuw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TCiRTT0L; arc=none smtp.client-ip=209.85.214.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yb1-f179.google.com with SMTP id 3f1490d57ef6-e7d74904be7so100445276.2;
-        Thu, 29 May 2025 09:23:27 -0700 (PDT)
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2349282084bso14875335ad.1;
+        Thu, 29 May 2025 10:01:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1748535807; x=1749140607; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1748538085; x=1749142885; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Y628e+r5J46wCH9AZO34Qtcv0eqO1tFbg737Vp+QQ1Y=;
-        b=OEJG8klEQhlmOtNzEHNzSxTg910dfpQYm662Fu2bgV9PZiNGsYdp7aP9+AJBLk+gsV
-         7iw2GLhCD/RzxzQCBs8b8/dCausxiVfm2nD+D46aDhpxu6g9m98khKkntMfyWbKkSRJ9
-         UAAfOifq8udnqZoRFu747oJL9Qa+d6F+eOGURLvthFa8zXGVPq28Qf+OssKa7uTnUDLA
-         FssbFKOaDpVYMY6fPWeModP+v5/ujYijQfEbsjlWjoL/id24Ne42FZlghI9eEJVFGgkS
-         cfAoCNxNNQL3AOKHXRMfdFN22IOFunuLLaLsY0MPqY6ra0DC4xFexNxK7J0jmr2KhdZ1
-         KXbQ==
+        bh=Qon+5AIEhGN/U2Ml0PzbagpjZv5nBG0yly2bPaMLFYg=;
+        b=TCiRTT0LLb2alGI/WCepl57tnl1FHeUOLbwD8UMmGNn97ldwSfHfvFW/pCXob38hj7
+         YzBdpqHYO3UOZzsHKAWNHFlyhUgaXpWpaGN8A66nFtgM0TjAKykrrATVPs8WIMeFx329
+         yQusXgpO0aoqLI8JLxA+ixlvg2JbUmMFFOKo3ZG4AqhSQuAqTmMZtfAFI8DyY7lbqEiU
+         t3Yn6WOsqFbq7u/Ybd4AZclV0ZBS9vX6K8QjFQ4bKIzOfQSvsBUwUvAlcpgLPbD3iJ+A
+         FsABXk61WQf20SrEIPkUWnzdsrf2fM2AxxaRvcAhU1QbwqO3iqEfF/i+WhloAQ0+VXe0
+         GiaQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748535807; x=1749140607;
+        d=1e100.net; s=20230601; t=1748538085; x=1749142885;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Y628e+r5J46wCH9AZO34Qtcv0eqO1tFbg737Vp+QQ1Y=;
-        b=W9FRigxgjyc52ZjQ5ngdy4DNWuALRwv78EgdffsjNDye6LCWT4V8Q9pFGPCuMIMyz1
-         gL/r9k0VvSN1IWYGMJM2o3oSTJwN5K/BEBURUDNNe2LY8GssBeSmVrdSHhj4D/Uhg53R
-         8oxyVsm19KMjoOKBeEwZDj/wdkWXfh4+U8CvApa3lN+U6r+5NwckGmWBoKA/Q74ZwS10
-         mdnh9ip98PmzrCPurqEuKi7/ZNEwXDS0OnKFLAsV1S9JfUqGRSjZxsLtlHa/maRuoRzv
-         DXgJmz5Q6SQPArjn9ODPyA8A6RpAdb3PTH0NOpHU02mL9Oeh2o3VkMmeuviCApMDW3a5
-         1Aeg==
-X-Forwarded-Encrypted: i=1; AJvYcCUQEP628BKSm0tK3JWpmzyaeIzlT1oLjxSUAj/ehVrPMIumqu5eNDyWrIyfqrewJ77wBgvC01Hz01JNCJVo@vger.kernel.org, AJvYcCUTfRq5iKzHJqgV1a/CCm/isaPQ3PvN7wsZHuIuKAAHVKupEZ4EllPRX9v5GQz/d5bwEybtICsjcKWj@vger.kernel.org, AJvYcCVEoXQpquGZuUZqe24t3tGZBKE71+ye5s8yb0ZOnBqMp6r4FTEnodW/mQYsqTznwuek4xWZAmoRSMk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx4SCSsskHYWpp9KMrE71/vPyhq2fz2NpUjNjy7s7LactQuVf5R
-	NnlHE/frK2+NnH3lkf1tHMHJnw+D3jEUF7dBy9gjCF01RNMMXtD9JFrpoptXWV/CCcxzPu+Yc3r
-	GV/38RjoZIXqFJcwk4YnNcePXZhzKwcA=
-X-Gm-Gg: ASbGncunAxwSGEA+BLFSeOFYe5OHCTnH5YLWBmYjNTyeHpsLI+DFxiJiJt7nH1CgWK2
-	L2Ykm/ynm+lPUdIPlW/Z+RsdRAGN+1VjiWGh0ggZWn6KvAOd5DYkPN5VMHI16VZoWIbY2bi0SE9
-	g39Crh0GDG7IMzZ0s1rTEDRG5UigmZy60I
-X-Google-Smtp-Source: AGHT+IGhObu3W6mQruMR/+MrCuHMLXN9Vg4M2aXNyeRCnDSL2N9NCp8mknXUuMRRBVrSuN72UeazYuMSeQSlYdpxwvA=
-X-Received: by 2002:a05:690c:4808:b0:70e:923:217d with SMTP id
- 00721157ae682-70f97e11cbbmr481117b3.1.1748535806730; Thu, 29 May 2025
- 09:23:26 -0700 (PDT)
+        bh=Qon+5AIEhGN/U2Ml0PzbagpjZv5nBG0yly2bPaMLFYg=;
+        b=wOekApubejW3U+9cXRcT7280uSQfHVjk5jGx3WPnOEpcZMxlOWSWu8zZq/bkQ62vrM
+         MDGTjXmPVIx2Z9XVAD3Y8FbwtFCVR3BCYMFjVIJr9Dcn40tnd+0g0Dky7G0f97joRnpX
+         4/w/PGO8+eozaTxZHrquWNheu6o+h7xqC6NaSUraURaxA7PgTh3thegY9wpaa6hfCbyY
+         rCkyLQ1pZ27qlyp9d5dKfDZ6UZ+lpv/50c0AW3jctB9INp7LcpJAnKR8Uv942+P/HpTE
+         eGQPfwaDvT1/VFqQZi5pZ1UNlxSNWUcMWpVoNgN4uAwMME7OwBu3ZY7akoRRpM36U5ym
+         Lzbg==
+X-Forwarded-Encrypted: i=1; AJvYcCV5WcEyEwA9r9VKXPzBoRO/7YAKC1iI+3fEvFp6vlQTVuhWp+hzO8ibq+zRt6TQ3g4YukO9MOG50QOmbeH3@vger.kernel.org, AJvYcCVEbr5cTQqlSEJPu4AlnSbbLT+k9VwCQiXLsQwiPA/YAWYRB9v/E6KL1IeewQg0dcxdjuhYXFu2hf0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyw0+VWDaIZyTnVR3LMS0X2QcUied/KudfllHUoqTO0UjLNbK/h
+	C+r9B6546HS7wyJY8JtxRZ5SIGWm7E6WhSwX1vYAEjBuO8eYZfC77VyUtEFMEezYbZTYqTGiax6
+	8PcNVzXnwJXk/vNvCiz9YK76T9x04icQ=
+X-Gm-Gg: ASbGnctFLjoqJkigYYG1e7HiF1E/2U+oVky6dy3xyL3oX2fFL9ZjNVYsstrZvYhjTs1
+	Il9ceFObdF5n/l4RKCFYexYzIUHzYyctzFViVxd3NzFtnmx04MkMf0bloC/qBTjC1vqW23mi7Pb
+	0W7oJPHmvi8ZOcJnoyu+gDJRKlLEdOR7YKPtdurUpCwNFF
+X-Google-Smtp-Source: AGHT+IFgkNP7vkcrTlYYHlOtz69B/akTJbc6L2wvPEc1Ps7LHmn5FBeLxi/zMLqmHRyEptAlLY/KDlED/nG9Iabckpw=
+X-Received: by 2002:a17:90b:3b52:b0:311:c1ec:7d05 with SMTP id
+ 98e67ed59e1d1-31241a805femr414821a91.35.1748538083548; Thu, 29 May 2025
+ 10:01:23 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250523223523.35218-1-l.rubusch@gmail.com> <20250523223523.35218-10-l.rubusch@gmail.com>
- <20250525140351.559be514@jic23-huawei>
-In-Reply-To: <20250525140351.559be514@jic23-huawei>
-From: Lothar Rubusch <l.rubusch@gmail.com>
-Date: Thu, 29 May 2025 18:22:50 +0200
-X-Gm-Features: AX0GCFvzeuawi05YPC7HpbpaM7CtaLMYnQbBAczI4RTC1RjBW97G2T84TwCz5CA
-Message-ID: <CAFXKEHb96Kyr_L_Mw3UQxxD=nR8X2bU3TCcgH6OWsqYfaQtE+Q@mail.gmail.com>
-Subject: Re: [PATCH v3 09/12] iio: accel: adxl313: add activity sensing
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org, corbet@lwn.net, 
-	lucas.p.stankus@gmail.com, lars@metafoo.de, Michael.Hennerich@analog.com, 
-	linux-iio@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+References: <20250528080119.9380-1-gye976@gmail.com> <CAHp75VdhgftCKAuBuoDJ4d9HcKLqkGJ+bdx5gxQmkCSWO7SBAw@mail.gmail.com>
+ <CAKbEznv+GCBOaWxkgcufJrX4knYT=JKQC3iekowFThs7b7CuXw@mail.gmail.com> <20250528180305.000079b7@huawei.com>
+In-Reply-To: <20250528180305.000079b7@huawei.com>
+From: Gyeyoung Baek <gye976@gmail.com>
+Date: Fri, 30 May 2025 02:01:11 +0900
+X-Gm-Features: AX0GCFuyJmo4JEbVA_vmmzf3ceUBnLThRWzdizDbc0waB5aWRAl4voTxru1_4FY
+Message-ID: <CAKbEznto+=5JQSrnEVM-n+svfsRSA_ebm9msj3gaoCjFkqPw8w@mail.gmail.com>
+Subject: Re: [PATCH v2] iio: trigger: Avoid data race
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Andy Shevchenko <andy.shevchenko@gmail.com>, Jonathan Cameron <jic23@kernel.org>, 
+	David Lechner <dlechner@baylibre.com>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
+	Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi Jonathan,
+On Thu, May 29, 2025 at 2:03=E2=80=AFAM Jonathan Cameron
+<Jonathan.Cameron@huawei.com> wrote:
+>
+> On Wed, 28 May 2025 22:27:25 +0900
+> Gyeyoung Baek <gye976@gmail.com> wrote:
+>
+> > On Wed, May 28, 2025 at 6:22=E2=80=AFPM Andy Shevchenko
+> > <andy.shevchenko@gmail.com> wrote:
+> > >
+> > > On Wed, May 28, 2025 at 10:01=E2=80=AFAM Gyeyoung Baek <gye976@gmail.=
+com> wrote:
 
-On Sun, May 25, 2025 at 3:04=E2=80=AFPM Jonathan Cameron <jic23@kernel.org>=
- wrote:
->
-> On Fri, 23 May 2025 22:35:20 +0000
-> Lothar Rubusch <l.rubusch@gmail.com> wrote:
->
-> > Add possibilities to set a threshold for activity sensing. Extend the
-> > interrupt handler to process activity interrupts. Provide functions to =
-set
-> > the activity threshold and to enable/disable activity sensing. Further =
-add
-> > a fake channel for having x, y and z axis anded on the iio channel.
 > >
-> > This is a preparatory patch. Some of the definitions and functions are
-> > supposed to be extended for inactivity later on.
-> >
-> > Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
-> One comment I found confusing.
+> > Yes, then I'll send v3, thanks!
+> Slow down :)
 >
-> I see this hardware is similar to our friend the axl345 so some of the ou=
-tcomes
-> of final reviews on that series may apply here as well.
+> Reply to v1. In general don't rush new versions out so quickly.
 
-Yes. To be honest with you, I already saw several places, where I
-probably need to send you some refac for the ADXL345 as well.
-Implementing the same type of source a second time, sometimes leads
-[me] to different[/better?] solutions and brings different insights.
+Yes, I should have waited for your review...
+I thought the situation was pretty simple,
+but there were many details as you pointed out.
+I'll be more careful going forward, thanks.
 
->
-> > ---
-> >  drivers/iio/accel/adxl313_core.c | 229 ++++++++++++++++++++++++++++++-
-> >  1 file changed, 227 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/drivers/iio/accel/adxl313_core.c b/drivers/iio/accel/adxl3=
-13_core.c
-> > index 80991cd9bd79..74bb7cfe8a55 100644
-> > --- a/drivers/iio/accel/adxl313_core.c
-> > +++ b/drivers/iio/accel/adxl313_core.c
->
-> >  static const unsigned long adxl313_scan_masks[] =3D {
-> > @@ -300,6 +334,60 @@ static int adxl313_read_freq_avail(struct iio_dev =
-*indio_dev,
-> >       }
-> >  }
-> >
-> > +static int adxl313_is_act_inact_en(struct adxl313_data *data,
-> > +                                enum adxl313_activity_type type)
-> > +{
-> > +     unsigned int axis_ctrl;
-> > +     unsigned int regval;
-> > +     int axis_en, int_en, ret;
-> > +
-> > +     ret =3D regmap_read(data->regmap, ADXL313_REG_ACT_INACT_CTL, &axi=
-s_ctrl);
-> > +     if (ret)
-> > +             return ret;
-> > +
-> > +     /* Check if axis for activity are enabled */
->
-> If all 3 axis perhaps?  Or If any axis?  I'm not sure what intent is here=
-.
-
-For the ADXL313 I do generally all axis, i.e. x-, y-, z-axis - enabled
-and disabled, respectively. I'll modify the comment.
-
-Sry about spamming the ML with my emails about the reset function. I
-oversaw your other mail. Patches will be merged.
-
-Best,
-L
-
->
-> > +     if (type !=3D ADXL313_ACTIVITY)
-> > +             return 0;
-> > +
-> > +     axis_en =3D FIELD_GET(ADXL313_ACT_XYZ_EN, axis_ctrl);
-> > +
-> > +     /* The axis are enabled, now check if specific interrupt is enabl=
-ed */
-> > +     ret =3D regmap_read(data->regmap, ADXL313_REG_INT_ENABLE, &regval=
-);
-> > +     if (ret)
-> > +             return ret;
-> > +
-> > +     int_en =3D adxl313_act_int_reg[type] & regval;
-> > +
-> > +     return axis_en && int_en;
-> > +}
->
+--
+Best regards,
+Gyeyoung
 

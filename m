@@ -1,81 +1,81 @@
-Return-Path: <linux-iio+bounces-20000-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-19999-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F320AAC7AD9
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DA5CAC7AD8
 	for <lists+linux-iio@lfdr.de>; Thu, 29 May 2025 11:16:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 414FE3BB80E
-	for <lists+linux-iio@lfdr.de>; Thu, 29 May 2025 09:15:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 133CD4E36AA
+	for <lists+linux-iio@lfdr.de>; Thu, 29 May 2025 09:16:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 238BD21C187;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2386321C186;
 	Thu, 29 May 2025 09:16:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="xMwwPT9R"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="uGVg0411"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE09ED2FF
-	for <linux-iio@vger.kernel.org>; Thu, 29 May 2025 09:15:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02C8A219303
+	for <linux-iio@vger.kernel.org>; Thu, 29 May 2025 09:15:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748510161; cv=none; b=Qydhe+ZEjsW2mtQxxTxCMoh2ORPRyJ196TIwjyLXXTsDoxeHpjXdRx2s5B4ffcxFncC6+GkEr+FhToXO9S5dxO03gonk8xzfZ2LFuwFRYwIOLWZwGhZSF7MVo7AXAyBuUCwI2NeTm9ct76Ak57SLPATphipKzwvqAzQZliA5v+A=
+	t=1748510161; cv=none; b=fF2bJxgiQ60qOqof1n4GnXaVs9oiqGg2wBnjnCt8HUGlVqitMN08ZieA4YsQbXriJ5uWyiFCIxqLsoLRCJS4Y3kUth4ZaY8HVsXbdxBQcahLn4XXOWByQPHUfHw98LeWq9knu7ZjbGorkaVEM97gduwYeqxWk1dVt8m7fgkUQcw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1748510161; c=relaxed/simple;
-	bh=dgQwzlZ78BgpNxIj5EI6KF5CPzlkbHaCeBBTWQKGv/M=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=CLRCWxmUzDR2U8AIQc6AtLQy8N+bYpdKugmz+ilvSUqCztTOA7xy6eaDsKVn2Zh9lTojg3LVzEXFwBgs/JN6qN8vUXt6LaJZEz1vJ8ayBv193BFBwUSRZYWuTh6MD6LkVRI3/Y+H14T+08YsTIrJ4mDdGcHiMIyrEm8n1eAgxLE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=xMwwPT9R; arc=none smtp.client-ip=209.85.128.53
+	bh=EuVopUch3RvcMm8wwL4YgvpMZfFl3NzeePoEsn6JRZg=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=cMdCcGBdKfxeIkz1yl3dPf2FZUJ8P0HFABwUj8Mpms9PZUz1h84T2RLiZ34LODREohtrLCxExWrkjjnALMqUiZykiQH8ozaS2jO+JFCwC9oTQRfALPsrj/7sh6Sx5oBljUWNYAn+LO6HNlqvngTMj1PYXsHo+6IpStq7FcdLjV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=uGVg0411; arc=none smtp.client-ip=209.85.128.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-441c99459e9so4872875e9.3
-        for <linux-iio@vger.kernel.org>; Thu, 29 May 2025 02:15:58 -0700 (PDT)
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-43cf680d351so11838295e9.0
+        for <linux-iio@vger.kernel.org>; Thu, 29 May 2025 02:15:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1748510157; x=1749114957; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ri4BKapRmsthsSzIIgwhod8a8EzAqSCrIVP+j9E6hD4=;
-        b=xMwwPT9R9QelsDYEcjdDnBsV2+gZuw3WE8Tr/QSMsxSWrRBypvsABR0rhNXC8uCiXL
-         rl6ziNmLSosXiiIl46kGUx4pLXtK+VPNLwBA96pt6q90JHZigZy8DwujbSO3vbJXLI6y
-         JxA4LrQcNdcbmXZ/rGGAvk6uhwZvkUeiUyNexR7WhfDs5NBuni209c2IkMC/2GDGhDGW
-         vJfVThmUIMnTuangLjNs/FqKY2rdAfbkQ154+op8LFQ6MbkDrzIGx9Rwfq5JHcKSLDFL
-         Ng4zmoUxOMAxd+gdezPE3M1CpYNkwF240qscVpnrHjA/MlVOM6W6rYuCgRhrwWW58fgM
-         KGTA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748510157; x=1749114957;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1748510158; x=1749114958; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=ri4BKapRmsthsSzIIgwhod8a8EzAqSCrIVP+j9E6hD4=;
-        b=FrsKl1Ss7Qwvg1UBVNJI4WSH1XHkcP8axALURM6f+qn8jJb/qWRjpky7CE3f0MeceV
-         EO34dgPTQPaHI3xbXnvAyYi9fNvzPlw0xT5PQcy461ri5J5WGiv6F7h1fWDrrJm55o1t
-         TbRwZ+odoCIbMm0vBBBlj97ccPIXQVBlSe/nxydbfOOoiByFJUIeCDCYPC81LKeok7EE
-         VToQ7/IuXdbqnTQl6S6AhoKKr5vzdXfH68x2ZTyloSOo4EWQyyD3OcNEokqJaIy4VOlb
-         Ets3sIIc+DMev2CVp7woIPWzsNfLD7MC0mgE65lsNKYzBSJpcJlli/qN8+U+9Mui7/Gj
-         aTbg==
-X-Gm-Message-State: AOJu0YwxMsLJ26P9kDolcF2jU1Ei/OQcgiP/O1ZgcM+KowceoV+BCqmd
-	X3pdPschS64UnLTsJEoJTHIHM5DtJDDgi8wj920rxXcp6G47gqiOUhLY3M5R8bYlnMg=
-X-Gm-Gg: ASbGncsB8qOTQ1knUBsCTDclU2SP6WHACaRgQl7Y3iDZuEY0y69MYUt8OxpJBmKscR8
-	nCKA8KALnJMkWxeaCNsMJZ1RVGnvG38AtIGQwhlPsRsJYx38r9fYkYRRSwDNMZ27p1JSbdvzmJr
-	fadM7EBFx2vmHH5i0hxXm+OovlIE4N/VGVQcwm22adN3KY7IINJE+LwAf790upT21RHCeA9D3kY
-	J5R6Uw6itBhlDCRC8WptBIWmM6d6fym18Q9bDm2/+f2Rcza1nXlG7NTFHgMSNHsR00hy2XElEvr
-	OKHCeH9NVDjmYic2fS4IKFuZbmTR6M5ViIAFKPNsC+V37HkFbDeYauBu1T7H1EVzJzKCoLrFyhh
-	5HgCxISl2nTKH37KmcFiHgd1aKQKFMtW6ErJek+to3g==
-X-Google-Smtp-Source: AGHT+IEJjdD4jVw4IBSE2F10tS3OahqEngmAPlCUh+JCF/Lrsh11gYsYhNMqeg1R7hRVjK3TitRUug==
-X-Received: by 2002:a05:600c:34d2:b0:439:8c80:6af4 with SMTP id 5b1f17b1804b1-4507256216dmr43854925e9.19.1748510157028;
-        Thu, 29 May 2025 02:15:57 -0700 (PDT)
+        bh=lmgqoKB1/8SUojJrwigc9jIEEcoeGxp7/cQDPaSjq8M=;
+        b=uGVg04111x4ebYSbS/+cu1Ijo0fP8cy1LAfXasWe+SIwCgJTZ98EsC+a2db7O33c+d
+         ETJADGql4CkTfMP3dRSCsCWlCkygJiUOPokkTsSdyhodJq2jGKsSHg200gchzbBt+9Uc
+         RHLgjdtyepJZSuaaVMOWmi72QHdQGGcxSMndZ1DOMe/Yj789BJ7VQgZzeZfGUHi8xfK+
+         xIN7KTyHirZg78PJ1kq+m0hCTk9JmpXRIHDMgygfqgkZJdUUwyRzMh7OPn9VvVC04CVE
+         8qduLHuFv+Du6Sw5ja5kwleeavuR1tF5XnD3Ygn4xKHrEZYM/VDtqsYpPCCO5ub/tkuf
+         TCWA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748510158; x=1749114958;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=lmgqoKB1/8SUojJrwigc9jIEEcoeGxp7/cQDPaSjq8M=;
+        b=maHq056D75DzG7xUQSUAEzW0t+MYN6L7Ar6T3woiuQtJ6FSeHlrQov+0GXqYiK7axZ
+         7Jk3RAnZ22uFZ0iVU8FHt9JCWlY3ERdGWf1MNvNgbxlPDiUnZ06C1ekHhmWEPx2biZBq
+         /7SLECtI6VrVH4bl4kwqNwo2RSeqNZfxLg+Lh2232+qAm2MAFQVOD6OMBsLoRn6HeBOb
+         RlY6lkh6Va1ZTlgE6rqAC8DIaXrg7TnsDOXlU8sDsNKHWHtF3kNil24tAPTrORUpN1RK
+         N/53RE9TSuGoQGQsUDOuhFDAMKX/QwK+uTv6rn9gFl7ZHtQtM2K+1/889oeKnNFKLEhy
+         N6pg==
+X-Gm-Message-State: AOJu0Yxu58y6ZIR6K6MlVoBoDMA4N0spkKb5TLj3qFP1NC9JaEWsWW0V
+	cawgzixm9WPXgATMCq+zlGPAksq3P47did9qhoLqJQV2pNXQogh7JdE6IhGIDhogaZc=
+X-Gm-Gg: ASbGnct+oIN3K1BfJ0F+xi6BJTBtZDssxcP1z25qmf5JoJtJhSe6JHjuJSrL3Nxt+fj
+	AaFW4k5JDpAAbwhLD/yoLiQCMf61M388cXk6KGwsJxyC9h426eFw+hVg8AjfYgErKbHfXUyMjAl
+	vP037S1cD6ywpeacw9fHJuouBSZZXu1/Iq/UWVkOvMDNI2N8Rq1FgygElm8tf7JRFKfjVw+c3bB
+	RXAcAK8IX31Q2aym/DTZUJLrPLlNnNUzCn9tHY4ybsny/8T/MGduT3J3fm9v5QbEiKj460WTlyL
+	/bNceTQmWTg4I3wsZELOXfyaHKcJhxDsYLGNuZFvBHcGCKgFG1swj+03jKiUxr/E80vLrQM5G0P
+	AidmUaIugIxJQLrCyVErSJbwl5yvBMfU=
+X-Google-Smtp-Source: AGHT+IEvLfj9BL1ztMv9CtDCi1fKM3delubMKoMo6AZBVoD7y6ZKAUIZodqOon+tI100H4Dxv9BUVw==
+X-Received: by 2002:a05:600c:450b:b0:439:8878:5029 with SMTP id 5b1f17b1804b1-450ce81cd83mr27275015e9.2.1748510158379;
+        Thu, 29 May 2025 02:15:58 -0700 (PDT)
 Received: from [192.168.0.2] (host-80-116-51-117.retail.telecomitalia.it. [80.116.51.117])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-450cfc348bdsm14318475e9.33.2025.05.29.02.15.54
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-450cfc348bdsm14318475e9.33.2025.05.29.02.15.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 May 2025 02:15:56 -0700 (PDT)
+        Thu, 29 May 2025 02:15:57 -0700 (PDT)
 From: Angelo Dureghello <adureghello@baylibre.com>
 X-Google-Original-From: Angelo Dureghello <adureghello@baylibre.org>
-Subject: [PATCH 0/2] iio: adc: ad7606: enable Vdrive and Vrefin power
- supply voltages
-Date: Thu, 29 May 2025 11:13:53 +0200
-Message-Id: <20250529-wip-bl-ad7606-reference-voltages-v1-0-9b8f16ef0f20@baylibre.com>
+Date: Thu, 29 May 2025 11:13:54 +0200
+Subject: [PATCH 1/2] iio: adc: ad7606: enable Vdrive power supply
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -84,10 +84,9 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAFElOGgC/x2NwQqDMBAFf0X23IW4NCn2V0oPMXnqgkRJigriv
- zd4HBhmTirIikLv5qSMTYsuqUL7aChMPo1gjZVJjFhjpeNdV+5n9vHljOOMARkpgLdl/vkRhcU
- Nz86Kia0Eqpm1Onrci8/3uv5EBNs2cgAAAA==
-X-Change-ID: 20250529-wip-bl-ad7606-reference-voltages-26f49520d12c
+Message-Id: <20250529-wip-bl-ad7606-reference-voltages-v1-1-9b8f16ef0f20@baylibre.com>
+References: <20250529-wip-bl-ad7606-reference-voltages-v1-0-9b8f16ef0f20@baylibre.com>
+In-Reply-To: <20250529-wip-bl-ad7606-reference-voltages-v1-0-9b8f16ef0f20@baylibre.com>
 To: Lars-Peter Clausen <lars@metafoo.de>, 
  Michael Hennerich <Michael.Hennerich@analog.com>, 
  Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
@@ -96,33 +95,44 @@ To: Lars-Peter Clausen <lars@metafoo.de>,
 Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
  Angelo Dureghello <adureghello@baylibre.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=595;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=907;
  i=adureghello@baylibre.com; h=from:subject:message-id;
- bh=dgQwzlZ78BgpNxIj5EI6KF5CPzlkbHaCeBBTWQKGv/M=;
- b=owGbwMvMwCXGf3bn1e/btlsznlZLYsiwUA2RYpptFNLRc25xvkLwRQ/73+wm6cd8lmW8SJl+T
- m/DyZZtHaUsDGJcDLJiiix1iREmobdDpZQXMM6GmcPKBDKEgYtTACYSsJ6R4fiHFyfPcPnlaXr/
- 8NmlUHH189aKdztb9HbMDT2TeaBSZTbD/0SN336yDou3TjBU6jFZVWISxsh2kLP3wZWFhtU7r/7
- VZQMA
+ bh=WbJxk5bQxvmJFaViamimQiGxr43ZTZXKFb47GKJ4NwQ=;
+ b=owGbwMvMwCXGf3bn1e/btlsznlZLYsiwUK0y3GE+8d1820V5z3j0kyYVcO3hm/Cw7An/porti
+ Un7l2x61lHKwiDGxSArpshSlxhhEno7VEp5AeNsmDmsTCBDGLg4BWAiOgYM/6xux644UX75XQTf
+ pIU5uxRXV5yJYOtLl/+a5r5w0amXV7MZGW6eb+HeE2e32YSxaqvNr3NGkmvCzSI05JqfRR5brZj
+ 6mxcA
 X-Developer-Key: i=adureghello@baylibre.com; a=openpgp;
  fpr=703CDFAD8B573EB00850E38366D1CB9419AF3953
 
-Enable Vdrive and Vrefin power supply voltages. Related fdt properties
-are already defined in ad7606 dt_schema.
+From: Angelo Dureghello <adureghello@baylibre.com>
+
+Enable Vdrive power supply. The "vdrive-supply" property is mandatory,
+already declared in fdt dt_schema.
 
 Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
 ---
-Angelo Dureghello (2):
-      iio: adc: ad7606: enable Vdrive power supply
-      iio: adc: ad7606: add enabling of optional Vrefin voltage
+ drivers/iio/adc/ad7606.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
- drivers/iio/adc/ad7606.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
----
-base-commit: aa1b3efb8425b572d67df2f5d47ee4ed25571428
-change-id: 20250529-wip-bl-ad7606-reference-voltages-26f49520d12c
+diff --git a/drivers/iio/adc/ad7606.c b/drivers/iio/adc/ad7606.c
+index 185243dee86ed2e9ebc43b578003d0c010e97a9f..3bbe9c05b5edbc11e8016c995c6ab64104836e7b 100644
+--- a/drivers/iio/adc/ad7606.c
++++ b/drivers/iio/adc/ad7606.c
+@@ -1330,6 +1330,11 @@ int ad7606_probe(struct device *dev, int irq, void __iomem *base_address,
+ 		return dev_err_probe(dev, ret,
+ 				     "Failed to enable specified AVcc supply\n");
+ 
++	ret = devm_regulator_get_enable(dev, "vdrive");
++	if (ret)
++		return dev_err_probe(dev, ret,
++				     "Failed to enable Vdrive supply\n");
++
+ 	st->chip_info = chip_info;
+ 
+ 	if (st->chip_info->oversampling_num) {
 
-Best regards,
 -- 
-Angelo Dureghello <adureghello@baylibre.com>
+2.49.0
 
 

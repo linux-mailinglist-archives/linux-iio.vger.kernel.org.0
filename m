@@ -1,136 +1,332 @@
-Return-Path: <linux-iio+bounces-20041-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20042-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5844AC929C
-	for <lists+linux-iio@lfdr.de>; Fri, 30 May 2025 17:39:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6857CAC92C3
+	for <lists+linux-iio@lfdr.de>; Fri, 30 May 2025 17:55:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 882F21C08301
-	for <lists+linux-iio@lfdr.de>; Fri, 30 May 2025 15:40:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 233B84A4743
+	for <lists+linux-iio@lfdr.de>; Fri, 30 May 2025 15:55:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE157233D8E;
-	Fri, 30 May 2025 15:39:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFDE622F169;
+	Fri, 30 May 2025 15:55:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="kaI9XafS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uGL9zKJw"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ot1-f53.google.com (mail-ot1-f53.google.com [209.85.210.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE2E31E515
-	for <linux-iio@vger.kernel.org>; Fri, 30 May 2025 15:39:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7499E19CC3A;
+	Fri, 30 May 2025 15:55:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748619582; cv=none; b=EF5gveX7/BSkVpCoTqlJMLA6vkPQghzyI5dikl74n1d64VYquP442QayU7JZxRZ7yTpHfhus7OnzoX5gQ5aazvzXRAt4NH9u7CoOfFYHxi5UPaApDeCbd92eGlhCKvvp9K7gJaSV7k8weCpRcw726EuNMW/fVBGhMZ4M3IV+/nI=
+	t=1748620521; cv=none; b=QD99kZSoSuiqy6IEJ/kssPCau9h0KGV5V36O8I1ymWsJh/QFfcFUrsbvWdD78/ObYpb94toyEJDWYFJxNKxsaDf6HQtxiCNzk+EKr830geLK29tXvJ+anTRoRYm28QkeUeUF9P+VSPgKecrkg7QhSpUwK9Y0KSOsGSccBP9gPzo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748619582; c=relaxed/simple;
-	bh=b7btFpwI/5wm+1ld40EI1n6LRFzHnxTFCCMCb981U+s=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=E2GiwYiGhY1jn9bcoqQRie9BT3xnMC4b6oN2lFn7WHQip08isYJbi/R0FghP1yGV1TAMAUczWX/gBJ1C4h699chosz4zYpVCHvl2nWSY++PSqv2WqX7e6Ghh4UQV9OimKLPX7A9WJYGnxYtN4Sip5lIilya1InHLrgs5+ylFj0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=kaI9XafS; arc=none smtp.client-ip=209.85.210.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ot1-f53.google.com with SMTP id 46e09a7af769-73044329768so1709928a34.3
-        for <linux-iio@vger.kernel.org>; Fri, 30 May 2025 08:39:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1748619579; x=1749224379; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=/u7rwzZrSAyNyyRlGLwaH/GU4L7iGPNEX79+p0QShAA=;
-        b=kaI9XafSoEdalIm4caDGuC9wGxr12KZGxH4cx3VOl1aSFu5zAcJmOmGwMdEIG7P0gI
-         8bgKPkT9JdEwe02Oxtwj0X01OEg1n8ER9+XvyLT7zOB6z1kpWAsoduIMjiGfJiGjr2KI
-         ar3qAOCPqKlqlfLGAi30t7Plco952E2z1N0cGl6qZw8Eq2soVDdZTzJlgUWzcYBwUB84
-         iqou0D3V5irn+MBLRZlNuCKdPH67i7m181GLYzVtj/ehu3GniBU4yDIPIRDBuy5rHmHi
-         /aSxT0mdmHGgChNfL2y8sJVSb7B2p8FZYOTe5OraVlLkv8sBGjVE1IXtiuRLrIALmzeE
-         9ZSA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748619579; x=1749224379;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/u7rwzZrSAyNyyRlGLwaH/GU4L7iGPNEX79+p0QShAA=;
-        b=Ara1CQ5a8nNI1NV75riunRT/xyXTsBQnyYO3hXyCjLk1bI63Ynr0mF7u3O7GjPBtsi
-         jOpu5AkJSEnlKei1IGFjle5E/lvkA+WCdl+G6ELPcphNUKEXXRn4gGVWQhV1n/M4adF4
-         J3+3mlK7W/12nY0ITxt4Go0Z+v37wK6IeyvJrq3YpJSGQAZTAQVLwzWUR5qrPVpqMtoE
-         jwo1TWX6XIcNsAr3fuFwAQasBi+DVXapZzFZP6IG8WFp17GGBJc8gvTi+uNbncWk/Xax
-         MoZLENeZwgEna1QXlXEQyqtygBokMkw1voeN++3RBIgIGquEHmCVYbEV8ZpjcME2diat
-         bpsQ==
-X-Gm-Message-State: AOJu0Yy8EZVi2CDdYBxmy/TSAvAkxFgF9yj3hE7uf2Jg6GmgApbumqyt
-	tMptPA/kygw975HRPBFe8hMIIplbC0H+TRUrkwntTFrnCFUwxozGqnSTtaMv+49G6Rbs3LnHPDJ
-	evMdZ
-X-Gm-Gg: ASbGncukibcyINqy/kvk7cjSPXtYox7gW4AGIvBegHQygLsj1PBk+4mWYTL0ZzY9FmA
-	5GasYMSBl1ZKPDzCHXFNjVMjKAd44Cg+koCF/vD3yNHVH52qTBRUF7KslICl27i9RRgJFcrHdmR
-	Hft+GTfy3DLUqSNYlcgNXzoveNbE8hKlam1cHXe4wqRNBk7ZvtXyQjAUlUCwyexXjf9mYjUiU58
-	89cAqOPzGEcTkxbqMRXvJnMdJ3gXmdj3M79PH3ChoeO7n68mhzwAXokv1bcPFbjHsaspglyLvMy
-	2sRwqaNvzDJz9NjE9aS7F8puGUiY4RqscTTg241pQxH1j9FOPYjRzLKv6NEI2WQ2xWN79aR0nQw
-	QYjbpEzrIXv6M1ko40q7lrXAk5PMLzbN4zudo73I=
-X-Google-Smtp-Source: AGHT+IGG6DMBSGgPWCHIO7NgNhnGv4pO+yLYXB7qonCi9he/56OL0CJOqlpr62QtRv63Lv82VFI8iw==
-X-Received: by 2002:a05:6830:2110:b0:72b:84ab:b1bc with SMTP id 46e09a7af769-736688ded63mr2273128a34.2.1748619568685;
-        Fri, 30 May 2025 08:39:28 -0700 (PDT)
-Received: from ?IPV6:2600:8803:e7e4:1d00:29cb:b1cd:c8f4:2777? ([2600:8803:e7e4:1d00:29cb:b1cd:c8f4:2777])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-735af9ef0d7sm621689a34.56.2025.05.30.08.39.27
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 30 May 2025 08:39:28 -0700 (PDT)
-Message-ID: <73be8e49-3130-4dcd-9286-689ef55badd9@baylibre.com>
-Date: Fri, 30 May 2025 10:39:27 -0500
+	s=arc-20240116; t=1748620521; c=relaxed/simple;
+	bh=8PdC2kYuXqxW3YVc+vbFC1LPwUWHTwY8QdyF2cDROX0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dHjusrJBt3looYqHlUwPm94j+sCfuLzC+Dl2Z1T6lFyGtR5aw0Kt1E9hcShE0/B/CBuGkDu6LOhURQvK5xDifybj2WX3+LfX75roMvLXRfLnz+s4OH17+uaBK5NjTj61vQ7P80+tHudai52Ecw7T0aRUdag1tTzWoP8r/mkGclE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uGL9zKJw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91EB0C4CEE9;
+	Fri, 30 May 2025 15:55:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1748620520;
+	bh=8PdC2kYuXqxW3YVc+vbFC1LPwUWHTwY8QdyF2cDROX0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=uGL9zKJwZJh+pfq2qvhUTrfetVdx3bxBkvY0kaxFYn8ts/y4uzf/jeJU0m0umP2SV
+	 SOnPULjLjdsJRi5FveA2YMtGpMjPnIOX5M9HSkaBn63im/bK4HPGkv8+o5BhpzUlvR
+	 RMsgD8aiTHejNbqeZsMVCJHaOJqyINrcktakPCjKEHKif7m3Lw8aTG7TIGKnpedhSv
+	 5lqpzYs066S6Jcz0A4bCl6OsPWA3Wbiemfu9XsnfSAkkGUYUHKrwSPdwHi20h+Wn6g
+	 f+mI9yxfXOBgkKKvh4bmNKLaiSvJGMeQxuO0ac1um6axB83LI4TLPiFT1+lhZuo3mO
+	 EcUACd9T2wcRA==
+Date: Fri, 30 May 2025 16:55:16 +0100
+From: Conor Dooley <conor@kernel.org>
+To: David Lechner <dlechner@baylibre.com>
+Cc: victor.duicu@microchip.com, jic23@kernel.org, nuno.sa@analog.com,
+	andy@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, marius.cristea@microchip.com,
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] dt-bindings: iio: temperature: add support for
+ MCP998X
+Message-ID: <20250530-dramatize-camisole-0a1aa9a38281@spud>
+References: <20250529093628.15042-1-victor.duicu@microchip.com>
+ <20250529093628.15042-2-victor.duicu@microchip.com>
+ <0f68e3f9-cba5-4df3-8e56-2cccbccf35ce@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] iio: adc: ad7606: add enabling of optional Vrefin
- voltage
-To: Angelo Dureghello <adureghello@baylibre.com>,
- Lars-Peter Clausen <lars@metafoo.de>,
- Michael Hennerich <Michael.Hennerich@analog.com>,
- Jonathan Cameron <jic23@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?=
- <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20250530-wip-bl-ad7606-reference-voltages-v2-0-d5e1ad7e6f14@baylibre.com>
- <20250530-wip-bl-ad7606-reference-voltages-v2-2-d5e1ad7e6f14@baylibre.com>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <20250530-wip-bl-ad7606-reference-voltages-v2-2-d5e1ad7e6f14@baylibre.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="e/ifQMFPjIAS9lJY"
+Content-Disposition: inline
+In-Reply-To: <0f68e3f9-cba5-4df3-8e56-2cccbccf35ce@baylibre.com>
 
-On 5/30/25 9:27 AM, Angelo Dureghello wrote:
-> From: Angelo Dureghello <adureghello@baylibre.com>
-> 
-> Add optional refin voltage enabling. The property "refin-supply" is
-> already available and optional in the current fdt dt_schema.
-> 
-> Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
-> ---
->  drivers/iio/adc/ad7606.c | 5 +++++
->  1 file changed, 5 insertions(+)
-> 
-> diff --git a/drivers/iio/adc/ad7606.c b/drivers/iio/adc/ad7606.c
-> index 3bbe9c05b5edbc11e8016c995c6ab64104836e7b..4fd9638eb6e56f800c7c97425e45e04f269e3df7 100644
-> --- a/drivers/iio/adc/ad7606.c
-> +++ b/drivers/iio/adc/ad7606.c
-> @@ -1335,6 +1335,11 @@ int ad7606_probe(struct device *dev, int irq, void __iomem *base_address,
->  		return dev_err_probe(dev, ret,
->  				     "Failed to enable Vdrive supply\n");
->  
-> +	ret = devm_regulator_get_enable_optional(dev, "refin");
-> +	if (ret && ret != -ENODEV)
-> +		return dev_err_probe(dev, ret,
-> +				     "failed to enable REFIN voltage\n");
 
-s/failed/Failed/
-s/voltage/supply/
+--e/ifQMFPjIAS9lJY
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-to be consistent with AVcc and Vdrive messages
+On Thu, May 29, 2025 at 01:13:38PM -0500, David Lechner wrote:
+> On 5/29/25 4:36 AM, victor.duicu@microchip.com wrote:
+> > From: Victor Duicu <victor.duicu@microchip.com>
+> >=20
+> > This is the devicetree schema for Microchip MCP998X/33 and
+> > MCP998XD/33D Multichannel Automotive Temperature Monitor Family.
+> >=20
+> > Signed-off-by: Victor Duicu <victor.duicu@microchip.com>
+> > ---
+> >  .../iio/temperature/microchip,mcp9982.yaml    | 174 ++++++++++++++++++
+> >  1 file changed, 174 insertions(+)
+> >  create mode 100644 Documentation/devicetree/bindings/iio/temperature/m=
+icrochip,mcp9982.yaml
+> >=20
+> > diff --git a/Documentation/devicetree/bindings/iio/temperature/microchi=
+p,mcp9982.yaml b/Documentation/devicetree/bindings/iio/temperature/microchi=
+p,mcp9982.yaml
+> > new file mode 100644
+> > index 000000000000..249470c8953b
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/iio/temperature/microchip,mcp99=
+82.yaml
+> > @@ -0,0 +1,174 @@
+> > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> > +%YAML 1.2
+> > +---
+> > +$id: http://devicetree.org/schemas/iio/temperature/microchip,mcp9982.y=
+aml#
+> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > +
+> > +title: Microchip MCP998X/33 and MCP998XD/33D Multichannel Automotive
+> > +       Temperature Monitor Family
+> > +
+> > +maintainers:
+> > +  - Victor Duicu <victor.duicu@microchip.com>
+> > +
+> > +description: |
+> > +  The MCP998X/33 and MCP998XD/33D family is a high-accuracy 2-wire mul=
+tichannel
+> > +  automotive temperature monitor.
+> > +  The datasheet can be found here:
+> > +    https://ww1.microchip.com/downloads/aemDocuments/documents/MSLD/Pr=
+oductDocuments/DataSheets/MCP998X-Family-Data-Sheet-DS20006827.pdf
+> > +
+> > +properties:
+> > +  compatible:
+> > +    enum:
+> > +      - microchip,mcp9933
+> > +      - microchip,mcp9933d
+> > +      - microchip,mcp9982
+> > +      - microchip,mcp9982d
+> > +      - microchip,mcp9983
+> > +      - microchip,mcp9983d
+> > +      - microchip,mcp9984
+> > +      - microchip,mcp9984d
+> > +      - microchip,mcp9985
+> > +      - microchip,mcp9985d
+> > +
+> > +  reg:
+> > +    maxItems: 1
+> > +
+> > +  interrupts:
+> > +    maxItems: 2
+> > +
+> > +  interrupt-names:
+> > +    description:
+> > +      alert1 indicates a HIGH or LOW limit was exceeded.
+> > +      alert2 indicates a THERM limit was exceeded.
+>=20
+> I think we need minItems: 1 here.
+>=20
+> > +    items:
+> > +      - const: alert1
+> > +      - const: alert2
+>=20
+> Typically, interrupts are named after the pin they are wired to, not
+> the signal. This is especially true when a single pin can be configured
+> for different signals as is the case here.
+>=20
+> There is a /ALERT//THERM pin on all chips and a /THERM//ADDR pin on some
+> chips.
+>=20
+> So I would expect the names to match that:
+>=20
+>     items:
+>       - const: alert-therm
+>       - const: therm-addr
+>=20
+> And then extra descriptions probably aren't needed.
+>=20
+> If we want to be extra careful, we could also add an -if: below to set
+> maxItems: 1 for interrupts and interrupt-names on chips that only have
+> the one pin.
+>=20
+> And I assume that the /SYS_SHDN pin would never be wired up as an interru=
+pt?
+>=20
+> > +
+> > +  "#address-cells":
+> > +    const: 1
+> > +
+> > +  "#size-cells":
+> > +    const: 0
+> > +
+> > +  microchip,apdd-state:
+> > +    description:
+> > +      Enable anti-parallel diode mode operation.
+> > +      MCP9984/84D/85/85D and MCP9933/33D support reading two external =
+diodes
+> > +      in anti-parallel connection on the same set of pins.
+> > +      Omit this tag to disable anti-parallel diode mode.
+> > +    type: boolean
+> > +
+> > +  microchip,recd12:
+> > +    description:
+> > +      Enable resistance error correction for external channels 1 and 2.
+> > +      Omit this tag to disable REC for channels 1 and 2.
+> > +    type: boolean
+> > +
+> > +  microchip,recd34:
+> > +    description:
+> > +      Enable resistance error correction for external channels 3 and 4.
+> > +      Omit this tag to disable REC for channels 3 and 4.
 
-> +
->  	st->chip_info = chip_info;
->  
->  	if (st->chip_info->oversampling_num) {
-> 
+Why are these two devicetree properties, rather than runtime controls?
 
+> > +    type: boolean
+> > +
+> > +  label:
+> > +    description: Unique name to identify which device this is.
+> > +
+> > +  vdd-supply: true
+> > +
+> > +patternProperties:
+> > +  "^channel@[1-4]$":
+> > +    description:
+> > +      Represents the external temperature channels to which
+> > +      a remote diode is connected.
+> > +    type: object
+> > +
+> > +    properties:
+> > +      reg:
+> > +        items:
+> > +          minimum: 1
+> > +          maximum: 4
+> > +
+> > +      microchip,ideality-factor:
+> > +        description:
+> > +          Each channel has an ideality factor.
+> > +          Beta compensation and resistance error correction automatica=
+lly
+> > +          correct for most ideality errors. So ideality factor does no=
+t need
+> > +          to be adjusted in general.
+> > +          Omit this tag in order to set the default value.
+> > +        $ref: /schemas/types.yaml#/definitions/uint32
+> > +        default: 18
+> > +
+> > +      label:
+> > +        description: Unique name to identify which channel this is.
+> > +
+> > +    required:
+> > +      - reg
+> > +
+> > +    additionalProperties: false
+> > +
+> > +required:
+> > +  - compatible
+> > +  - reg
+> > +  - vdd-supply
+> > +
+> > +allOf:
+> > +  - if:
+> > +      properties:
+> > +        compatible:
+> > +          contains:
+> > +            enum:
+> > +              - microchip,mcp9982
+> > +              - microchip,mcp9982d
+> > +              - microchip,mcp9983
+> > +              - microchip,mcp9983d
+> > +    then:
+> > +      properties:
+> > +        microchip,apdd-state: false
+> > +  - if:
+> > +      properties:
+> > +        compatible:
+> > +          contains:
+> > +            enum:
+> > +              - microchip,mcp9982
+> > +              - microchip,mcp9982d
+> > +              - microchip,mcp9933
+> > +              - microchip,mcp9933d
+> > +    then:
+> > +      properties:
+> > +        microchip,recd34: false
+> > +
+> > +additionalProperties: false
+> > +
+> > +examples:
+> > +  - |
+> > +    i2c {
+> > +        #address-cells =3D <1>;
+> > +        #size-cells =3D <0>;
+> > +
+> > +        temperature-sensor@4c {
+> > +            compatible =3D "microchip,mcp9985";
+> > +            reg =3D <0x4c>;
+> > +
+> > +            #address-cells =3D <1>;
+> > +            #size-cells =3D <0>;
+> > +
+> > +            label =3D "temperature-sensor";
+>=20
+> This is the same as the node name, so probably not the best
+> example of a label.
+
+Ye, I'm not convinced this property has any value, when the channels
+themselves can have labels.
+
+>=20
+> > +
+> > +            microchip,apdd-state;
+> > +            microchip,recd12;
+> > +            microchip,recd34;
+> > +            vdd-supply =3D <&vdd>;
+> > +
+> > +            channel@1 {
+> > +                reg =3D <0x1>;
+>=20
+> Why 0x here?
+>=20
+> > +                label =3D "CPU Temperature";
+> > +            };
+> > +
+> > +            channel@2 {
+> > +                reg =3D <0x2>;
+> > +                label =3D "GPU Temperature";
+> > +            };
+> > +        };
+> > +    };
+> > +
+> > +...
+>=20
+
+--e/ifQMFPjIAS9lJY
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaDnU5AAKCRB4tDGHoIJi
+0jhcAQDkD/eIZOanXqiKJ11EUmuSbVgbIE//E+mQmRkb4zrMCgEA6aK7uAeokpJM
+jECgVIoOVJt//Kb9FoilMSTZfau47wE=
+=qiRt
+-----END PGP SIGNATURE-----
+
+--e/ifQMFPjIAS9lJY--
 

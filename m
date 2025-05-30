@@ -1,135 +1,155 @@
-Return-Path: <linux-iio+bounces-20058-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20059-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 661CAAC95F9
-	for <lists+linux-iio@lfdr.de>; Fri, 30 May 2025 21:14:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34B4EAC9636
+	for <lists+linux-iio@lfdr.de>; Fri, 30 May 2025 21:52:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1750C7A6831
-	for <lists+linux-iio@lfdr.de>; Fri, 30 May 2025 19:13:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 092497B4B7D
+	for <lists+linux-iio@lfdr.de>; Fri, 30 May 2025 19:50:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75432278154;
-	Fri, 30 May 2025 19:14:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8791B23ED69;
+	Fri, 30 May 2025 19:51:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="0PITlNZT"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dZYRHCM1"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com [209.85.210.43])
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F8A523D28E
-	for <linux-iio@vger.kernel.org>; Fri, 30 May 2025 19:14:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4A4E213E78;
+	Fri, 30 May 2025 19:51:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748632476; cv=none; b=OaNh/6tXQoBIm04OHjPb1OaxA9d7lpgWSA38HY6PzlFxrmKzdq2/HQqCliLj+gl0371haP7moMC8Hh0UzxwNgngiBZ7esJbruUEMha0AhH0VQ8o8ukLb5kMw4H8pPuo0Ztq7aGKupXOWI6Ger4fWoBNJV4jpXBH3DHPe/mQF0Pk=
+	t=1748634717; cv=none; b=RgFxWlHMDdaLrtSyIi9WXuqlskFi1nbfXibsHp5R4I9eY6UUvo8wIhyd56XXyoQQmIdIjJILeVH/uWkzLX/6SRWl5s1V0BAvbA9RCsKIeQ0dtyoSBQW9IKQFaKUIlVMXcm9gDHbY7TumnQeKD7KjdFT7cUlshbVK5Oirn4eHIA4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748632476; c=relaxed/simple;
-	bh=n0bPzSDW+HlaSAhgO1u0Y2tk8Tz3wmhJR1U+ZzeshEY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dYoTlsljMKNzoJKB09jdz3tGdRkBABQvgIVaZIuSSefmZpAKHPmOgs2lA+iRJcwmYpND5QgfcoXfXt5YfsYZ7cuyfEcKZPOHknsqwzsssjJn2hMlDxLRCAF2skisDSVM5pizuZmJa6GeWPCP5SmY3NhCRKk6rcRaQD4/vXz9BKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=0PITlNZT; arc=none smtp.client-ip=209.85.210.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-7303d9d5edeso793755a34.1
-        for <linux-iio@vger.kernel.org>; Fri, 30 May 2025 12:14:34 -0700 (PDT)
+	s=arc-20240116; t=1748634717; c=relaxed/simple;
+	bh=h1vwi/RyC+UZ4DB7N0ebzDTcNRnkLkH/wUoGdyhSUHA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=VZu3gt6B8GuAXYNKAnOrn3RKyALIGQ1/Ymtl0NC/3bM4Ibl75hIGTIRd23qJl2FzK/GZhigLL6JbXMdnTG0t//qhff6mHzZEBhAxG62jLkAN803cDcx7+wC95alpgF0rvxg6/6IRgZmtSv4AsaUuyBdobb99Su8Aa2HpQPvF/1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dZYRHCM1; arc=none smtp.client-ip=209.85.218.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-ad88eb71eb5so287663166b.0;
+        Fri, 30 May 2025 12:51:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1748632473; x=1749237273; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=lHHqZAsVpviFayOBzyBP+5p9wWvjbFoN8P1d5tfq8pE=;
-        b=0PITlNZTk9EPbpGwyLacMtZMl6g8zuflihzfy5Wjtko//4KsuuUnHuNvDR5CCMkbxB
-         CmESIVHgwcl5dMCNdlPMbBYkONHpG00Dss8akuWlb8u7cNPskQJRL3rTOHMsfgp6nZOL
-         0gaQyi2tMRuD4qeOUKYpKtQ+HBkG+QwkB5hZ3PMMlPezWWGKIRuQwpQdEKmXWAnG038h
-         6NEhM45bcmJ+hWu5B5sZaqtsjmHLCrPOKsk/OeilnYb60ZzNyXWLQncK6kNKGdeqDQ7s
-         Ja+H94OLtE5uSc7HOlHosK4APizZHjRmKaS/b3YW+DfVN5F0vZXpzUTA6CkO8EKO5jul
-         RyRg==
+        d=gmail.com; s=20230601; t=1748634714; x=1749239514; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=K1bTm55x2YHPx2PWXkKZWZjmWDSjseae9B+twvDPQJc=;
+        b=dZYRHCM1P1S5uOszEWlfWutPmIzcATUdJJ/PCbOSJ806/Bi95UVdYzCarrNiTvTB8A
+         C5IhMWOGlowrdYLcuI45VZar0sAy9Bg/jKJ2O7uT7esgKJu/ezL055uJOzqA86WrISdM
+         JYA6XNE8vFnSn9g7O6i4nA0z19tkIu9jdljvhACFWENIZWkxow5ukVlXqWuByVPI68zf
+         G6LYQcwlJKTRPbJH7vq2kVJACK+8k0SSoQgMhpX1IqHCnWqHS3ETOG0w5b1B+nb52De0
+         HsAEyyOOENEAiiqgcjg28+fIveVJIr0gAKMQ9mG4+ZqIvbOnhEyUAOhglj5okvJ/HPE1
+         lUag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748632473; x=1749237273;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=lHHqZAsVpviFayOBzyBP+5p9wWvjbFoN8P1d5tfq8pE=;
-        b=bIfGRFXDjRgVAlKhf2FmtBxxYYaBtEov9mTsAUEu/AC9J9l/Qn4PmLMXhxHw/6kZDt
-         5QIKdw2ZB3Wcbe6Vl6TKd9A/F3+S3+8yCP57mjOUAS8oTr9qDuYjCEor8MHGju2BkfJ+
-         kcVCDFSYNndwdd5EbTz/0w3jYvqIbzn8XHjwLMUt862DZEpeHrno7GJTZsk7naxJCzP2
-         gJtMbHAzrUpeTR86+AogAjVSIVWqBcKH4EbaaXbPRFSn8ZR3/twjTb6IxPi2AJiTtBh4
-         2j2g1YZwP2WIOBCxrc71vSJE2Li1QFwx/jMQHQwAoNihbYYxO0XymrerQcqtJ2AP6rER
-         EMOQ==
-X-Gm-Message-State: AOJu0YydFy4tVpxGV+tl4xyfSFi5iKUBcoZUW/yrADY4t2lGKSFWsbu7
-	+vpdFjmb42O8RWN97VDNL1/vicXsCQ1tkPCdrMUIo3Vcdor31f9bGCw2byXvgkaHkEQ=
-X-Gm-Gg: ASbGncvcd0ViGubnKDkpCc9yrm+iECuk8WJOux4USsZL8r3HlnL2aajvEGSBnVh3QYZ
-	tdqRSdeT6Ve2awJd1z2AYlBAj+ylPilx78z8C+OZuIaiPNKY6T5wEINQGxeSr/wSm+W8kLmQfZ7
-	Lb4ecOFFaHgo8FmdesDkHdHLKXnmlonoFwxzKkfpLGa2/YsC1ttLmfuV6dKFhIVEm2FnXICHy6k
-	uXglwaOSr0PwL1X1mIFGSmeH6WuTE4cLJXxpvO2jqfKwLUg3H7DOnJE0KDzdtWtw1Gtmmb6f1Zm
-	Cq1hwXfY9UVLhKt0SLNzNtBd3iB3AlNQDKu3kXPwtCx3m2BxURkL+bGVQz77TGEQhhWSH03jlze
-	sGaLWlTAkAZ+/8PQIkP2nxYvsMcQW
-X-Google-Smtp-Source: AGHT+IHPxI3UBPpTmwRtvH3AUGD4B8Qbyg+V45TvwOxwL3NJO9g1RZBHm35gXZgxpvqaXtWJbZSWDQ==
-X-Received: by 2002:a05:6830:6a15:b0:72b:9a2e:7828 with SMTP id 46e09a7af769-73670cd6814mr2983963a34.28.1748632473479;
-        Fri, 30 May 2025 12:14:33 -0700 (PDT)
-Received: from ?IPV6:2600:8803:e7e4:1d00:29cb:b1cd:c8f4:2777? ([2600:8803:e7e4:1d00:29cb:b1cd:c8f4:2777])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-735af82d4bfsm692406a34.1.2025.05.30.12.14.32
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 30 May 2025 12:14:33 -0700 (PDT)
-Message-ID: <90226114-646c-4af7-bd38-361ac383699f@baylibre.com>
-Date: Fri, 30 May 2025 14:14:32 -0500
+        d=1e100.net; s=20230601; t=1748634714; x=1749239514;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=K1bTm55x2YHPx2PWXkKZWZjmWDSjseae9B+twvDPQJc=;
+        b=uC9lGphBJJMhJkVcLaZxP4mIYzyzLHSV1b2CsYgwGv4nDmcHNTH3JKdjoRc0N/1T61
+         EcQgXp1IrlxQu0ay5Wl2HZTAWedndly2gc9lDw4qiN9x4QH2DYOFAGS1M8z1YR+un/4/
+         vh/vn4onbVK0f34Hb7m0ePfAl0QaOniki6jxwGfLGkES5zI8ZUWoMZA8EoMYOzjRsCgH
+         jzARZYTEsxyXmJWywUNiMor/P2Tl0qQmiVpydsz6tvgP+KFNiQedZEAKfbve2w+hY8Ao
+         WkyWgSqbxhBhAHaoKBTm60gWtuc83OGZFklhiv6CEW3YKDmy+DBe/vkFXN1rT6rG3NTG
+         gTRg==
+X-Forwarded-Encrypted: i=1; AJvYcCURWPMX0e1xcfmF/gal+v2u6f/8z4zmISx3lN4EYss7bczZniRxglPD0L9mijvwz7LVH1oBrRL6AONkIJrE@vger.kernel.org, AJvYcCUvBCoUENNFBKKf4wrrr6Q2zrQgTUYd3VEKmC28xjNg1GPRnU68I3WM68stECMZYP1JNP+jQHHI@vger.kernel.org, AJvYcCX5EpQltgGyYSLy5JQCXZp6El2VX0v4y2Ti+u3miD13Sod6QZNAtg8F0HyTWmlOdpxiUyz6OrzJMJs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyjEc4Bokbh0ZvVZKt7T+E+z6aVBGKbhBRVovAYxRPQ6qLscnwy
+	Znxlvx4HSPPCUnuX2RFlX/Fj0V12jCfWmlRK1pHm6m6Od8Xi/XuBwN2Fw6+SQJ5W17hjtWekbn0
+	seTR0Pp2T8dm6UjPQI1vQEolH+aRydKz+OFTW3SA=
+X-Gm-Gg: ASbGnctyELdF1X++WtSxkttNllmICXQYB9mE+iTSMJsx6Ui7VWeeYiA5Ir96avlO/H6
+	AnZppLLGfx7U4Y7ONOVox6/MmCtg5LP7nWIr94jYQXpOaSVRDR4cDlCkh++L/+aIKWI8YLFudEC
+	Rrup7WAKQdv6JA9KSu0SN7b0Yi6UJQShW9
+X-Google-Smtp-Source: AGHT+IFnm9/l+FfpvwAvzjoQjryBXod5MID+4KyoaE1x1pREYm3Q8LMuGU8C0qRqQqfuHeHwXCHL9Ar+jRJWWnFZ7L8=
+X-Received: by 2002:a17:906:36d9:b0:adb:3509:b459 with SMTP id
+ a640c23a62f3a-adb3509b66bmr291824066b.19.1748634713720; Fri, 30 May 2025
+ 12:51:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] iio: adc: adi-axi-adc: fix ad7606_bus_reg_read()
-To: Michael Hennerich <Michael.Hennerich@analog.com>,
- Jonathan Cameron <jic23@kernel.org>,
- Angelo Dureghello <adureghello@baylibre.com>,
- Guillaume Stols <gstols@baylibre.com>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20250530-iio-adc-adi-axi-adc-fix-ad7606_bus_reg_read-v1-1-ce8f7cb4d663@baylibre.com>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <20250530-iio-adc-adi-axi-adc-fix-ad7606_bus_reg_read-v1-1-ce8f7cb4d663@baylibre.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20250524-fxlsrace-v1-1-dec506dc87ae@geanix.com>
+ <ed40509d-9627-43ce-b209-ca07674988ff@baylibre.com> <CAHp75VeAOFXuxsiAEwJ=dMJ8NZsyA7E-h4L=2ZgpprdUXU2EUA@mail.gmail.com>
+ <67c33f11-0196-44f4-9cdd-762618cb88be@baylibre.com> <aDnwMDGDf3-KUb3J@smile.fi.intel.com>
+ <6825fc30-d8ef-4a10-98ec-79ed303dd145@baylibre.com>
+In-Reply-To: <6825fc30-d8ef-4a10-98ec-79ed303dd145@baylibre.com>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Fri, 30 May 2025 22:51:17 +0300
+X-Gm-Features: AX0GCFsAj8I7Zw9C8mwvgYPqnnfqSvfd9Y3x43Ewi-ghQRbpROjVq0lPwutlJX0
+Message-ID: <CAHp75VcHqqu+gJA-7Kz+eFu_CCh13SyNmvUC0E2Rp3ucLhUmqA@mail.gmail.com>
+Subject: Re: [PATCH] iio: accel: fxls8962af: Fix use after free in fxls8962af_fifo_flush
+To: David Lechner <dlechner@baylibre.com>
+Cc: Sean Nyekjaer <sean@geanix.com>, Jonathan Cameron <jic23@kernel.org>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 5/30/25 2:09 PM, David Lechner wrote:
-> Mask the value read before returning it. The value read over the
-> parallel bus via the AXI ADC IP block contains both the address and
-> the data, but callers expect val to only contain the data.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 79c47485e438 ("iio: adc: adi-axi-adc: add support for AD7606 register writing")
-> Signed-off-by: David Lechner <dlechner@baylibre.com>
-> ---
->  drivers/iio/adc/adi-axi-adc.c | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/drivers/iio/adc/adi-axi-adc.c b/drivers/iio/adc/adi-axi-adc.c
-> index cf942c043457ccea49207c3900153ee371b3774f..d4759a98b4062bc25ea088e3868806e82db03e8d 100644
-> --- a/drivers/iio/adc/adi-axi-adc.c
-> +++ b/drivers/iio/adc/adi-axi-adc.c
-> @@ -457,6 +457,9 @@ static int ad7606_bus_reg_read(struct iio_backend *back, u32 reg, u32 *val)
->  	axi_adc_raw_write(back, addr);
->  	axi_adc_raw_read(back, val);
->  
-> +	/* Register value is 8 bits. Remove address bits. */
-> +	*val &= 0xFF;
+On Fri, May 30, 2025 at 8:57=E2=80=AFPM David Lechner <dlechner@baylibre.co=
+m> wrote:
+> On 5/30/25 12:51 PM, Andy Shevchenko wrote:
+> > On Thu, May 29, 2025 at 01:49:16PM -0500, David Lechner wrote:
+> >> On 5/29/25 1:16 PM, Andy Shevchenko wrote:
+> >>> On Thu, May 29, 2025 at 7:02=E2=80=AFPM David Lechner <dlechner@bayli=
+bre.com> wrote:
+> >>>> On 5/24/25 5:34 AM, Sean Nyekjaer wrote:
 
-I just found out that there is ADI_AXI_REG_VALUE_MASK we can use
-here instead of 0xFF.
+...
 
-> +
->  	/* Write 0x0 on the bus to get back to ADC mode */
->  	axi_adc_raw_write(back, 0);
->  
-> 
-> ---
-> base-commit: 7cdfbc0113d087348b8e65dd79276d0f57b89a10
-> change-id: 20250530-iio-adc-adi-axi-adc-fix-ad7606_bus_reg_read-f2bbb503db8b
-> 
-> Best regards,
+> >>>> fxls8962af_suspend() calls enable_irq_wake(data->irq); before disabl=
+ing the
+> >>>> interrupt by calling fxls8962af_buffer_predisable(indio_dev);
+> >>>>
+> >>>> It seems like the order should be reversed.
+> >>>
+> >>> AFAIU the wake capability of IRQ line is orthogonal to the interrupt
+> >>> controller enabling (unmasking) / disabling (masking) the line itself=
+.
+> >>> Or did you mean something else?
+> >>
+> >> I don't know enough about how suspend/wake stuff works to say for sure=
+.
+> >>
+> >> I just saw the comment:
+> >>
+> >>      /*
+> >>       * Disable buffer, as the buffer is so small the device will wake
+> >>       * almost immediately.
+> >>       */
+> >>
+> >> so I assumed someone had observed something like this happening alread=
+y.
+> >> If an interrupt occurs between enable_irq_wake() and actually
+> >> going into a low power mode, what effect does it have? I ask because I
+> >> don't know.
+> >
+> > To be a "wake source" means to be capable of signaling to the system th=
+at wake
+> > is needed. If an event comes after enabling an IRQ line to be a wake so=
+urce,
+> > that should wakeup the system (independently if that IRQ line is disabl=
+ed or
+> > not on the IRQ controller side).
+>
+> OK, more clear now.
 
+FWIW, https://elixir.bootlin.com/linux/v6.15/source/kernel/irq/manage.c#L88=
+7
+
+> So I should have been more specific with my previous
+> comment. When I said, "before disabling the interrupt", I didn't mean
+> calling disable_irq(). I meant disabling the actual output pin on the
+> accelerometer chip.
+
+Ah, in that case it's of course a different case.
+
+--=20
+With Best Regards,
+Andy Shevchenko
 

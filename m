@@ -1,130 +1,153 @@
-Return-Path: <linux-iio+bounces-20032-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20031-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 545C7AC8762
-	for <lists+linux-iio@lfdr.de>; Fri, 30 May 2025 06:40:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E305AC875E
+	for <lists+linux-iio@lfdr.de>; Fri, 30 May 2025 06:40:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 75A0E9E3431
-	for <lists+linux-iio@lfdr.de>; Fri, 30 May 2025 04:40:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2D6E01BA5BCD
+	for <lists+linux-iio@lfdr.de>; Fri, 30 May 2025 04:40:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23F021E2607;
-	Fri, 30 May 2025 04:40:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77BB11DB95E;
+	Fri, 30 May 2025 04:40:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TAG0axz4"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cxHur36q"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 405B619F421;
-	Fri, 30 May 2025 04:40:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93A5A4685;
+	Fri, 30 May 2025 04:40:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748580039; cv=none; b=jkIcwJvANAX7aNXODGbHhh4MiVx54qSXzN2vcNpYW6X/kgEc02NXqS5ODyzKVbevAYgRyRky8UWfT7iL4i3P38I9CL0biBLiyeA93AVHizy4hzQhq2lMDItF8b8hJDyWSAVerEK1iWfRi6N5TVeq9Lx5j3SsypaTjvyvr5KA5dE=
+	t=1748580020; cv=none; b=Hu/9DN4JCtfrJ6kz8P62azKe7qpckL4/JabUXMne/5ZtGvs5xgqIwcu8tz0R3wtvj4z5xgyVIQWwA/xc1dtFRmBLUkpUTzqc3lDR1M3IIShbnsPADqDCUSCB1LFHtWJoQRrF1DqlM8Uw+pEgnkwxoPm5YybHr3W71UxEHdis1Zg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748580039; c=relaxed/simple;
-	bh=ZnMRKAcuaAD1rxpeXbjaOqFS9Omdp1aqc5Y0HvQwzHY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fijYMe8XVj8s3cnqvTibkdezUn3QTdNexRwx45ozl8dsfKWGzGys2zkkUuLOkyD4SxJ6TzzONulgBzCkJ7CjLHHlwJx5/A56QsXPxar07SRh+gDrmhlAH7FFZKuSCkpv5VkvrZopm0vNCm+COY9xIAjaDn9Efb5ixNg8lJaFPVM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TAG0axz4; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1748580039; x=1780116039;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=ZnMRKAcuaAD1rxpeXbjaOqFS9Omdp1aqc5Y0HvQwzHY=;
-  b=TAG0axz46DzvNfUlJK5IbdecvsKgw0IJZL50xrvSDnAUWlOw6YeIHKvH
-   wutILlm0xBJ5G7LI5DX2QP9t/1UFzMKVjYbu2odfsKL+kRi/FlEL/yu6z
-   bBBuqCfSYNFkS9KiZx3jUqordGGHkEXUsj5slrqUE2hfOQSkXixzSA2Uf
-   IeFsrkMb2UVDjYPWa02gZZIUHgcDc9K33w7kz03m955tOk7vmq7f92KI2
-   xVfICA4R38owonYX/7+2NBhY+4Y2p6SyQNIwmgw4sDdLmKr9nggExIrcn
-   dF0eNGEbYlwFvxeq9LhjDXfkLJwclpCEz89NyTu5/dwTCsaKStGhHG2or
-   w==;
-X-CSE-ConnectionGUID: 5bBlYA6VTDyQJPoXSYDlwQ==
-X-CSE-MsgGUID: hLtRwxFvTcCbPSpLjQeAJQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11448"; a="49907997"
-X-IronPort-AV: E=Sophos;i="6.16,194,1744095600"; 
-   d="scan'208";a="49907997"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 May 2025 21:40:38 -0700
-X-CSE-ConnectionGUID: g09oUuRoQEW0E6yFOep4yA==
-X-CSE-MsgGUID: hRzTB1UPRx+E/ZQgolDxcg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,194,1744095600"; 
-   d="scan'208";a="144747777"
-Received: from lkp-server01.sh.intel.com (HELO 1992f890471c) ([10.239.97.150])
-  by orviesa008.jf.intel.com with ESMTP; 29 May 2025 21:40:34 -0700
-Received: from kbuild by 1992f890471c with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uKrXk-000XLA-0y;
-	Fri, 30 May 2025 04:40:32 +0000
-Date: Fri, 30 May 2025 12:39:46 +0800
-From: kernel test robot <lkp@intel.com>
-To: victor.duicu@microchip.com, jic23@kernel.org, dlechner@baylibre.com,
-	nuno.sa@analog.com, andy@kernel.org, robh@kernel.org,
-	krzk+dt@kernel.org, conor+dt@kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, marius.cristea@microchip.com,
-	victor.duicu@microchip.com, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] iio: temperature: add support for MCP998X
-Message-ID: <202505301210.l4ZriiEX-lkp@intel.com>
-References: <20250529093628.15042-3-victor.duicu@microchip.com>
+	s=arc-20240116; t=1748580020; c=relaxed/simple;
+	bh=tswNpo2MQRV8iZVc5uTtJMk25/mhQ6GNaxBR/5g5e8c=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=iYwOR7mxU2/gVpSnDqCVb3EfMY5TndhAWpXpSrRevwzAqYwDkbSVTWEYjQrSnnlSR1vFWeaazQX3GMteJq/zAhldbVl96vAdIUQc4E3b0N40QYYaZG2vcvPElGAuxQ6uz8u1PddL/PquQDUgKEXeqrTJtTl6U/+NXNyb5bhpV1g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cxHur36q; arc=none smtp.client-ip=209.85.167.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-54b0d638e86so2448256e87.1;
+        Thu, 29 May 2025 21:40:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1748580017; x=1749184817; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=D7jDRPsfJcmBmBsRRdllGyKMX+F8KKZ2LgksoyEvwJo=;
+        b=cxHur36qjEJSNIMHs3D7hj8XyGjTgoyueqahlbIecO99RHcb7thMOyOHFUK3HJaOKI
+         QDwfsKe4jcJVrCPMK1dwVmo0oXhN7dYhgH7EO1nirqEsxktxe6k1Sas8Cwfu5UxPZH7R
+         wODlT+iPuQtAWzcai6pK8gPtW4vdESeOdprSjv6q64O9llBhd106zk311xHazx64jZUt
+         nGK/+tXBjsS2Xzz6EZQvUPMb2xeUX/OIl10CSh9q3rqv325WCYKxT08/HyS43GoJXHtx
+         07C9KkWjdPBfzOFr8fyHEX006+Zt5K5EwRde9MZVaJEgo3Oj8yHs/jVCiLJcvr7DSZjV
+         Vs2A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748580017; x=1749184817;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=D7jDRPsfJcmBmBsRRdllGyKMX+F8KKZ2LgksoyEvwJo=;
+        b=IH4gzpiNoFDaENHPjzvBtTPMmmPgVaPFL//nxIYLB39IY7HY7ERYyLDBKN1zHU2NM7
+         Ri7TC/8UaeW+434Q3Vn1T+Ixn7PhvE7vIvD/uH304tiS0mecK58qmX73VK5LH0ZbbO45
+         Myh9jJlg8YTd09q8+0pUzZlazKrvVhmOTpIlvDLERpaNWAEilUK5KFi1SHBS8wb21w0K
+         X/Adnpnilo4gdOfHrk1HCf4iqKlQTp6aet8Xmdq5zcPm3gv498V6H132b2Tqd5M5F+vH
+         M8bOq1/5JTCF6tVHGnfxhuJ5f5LQCgLDAw3/Xk6ETU+clVqsDnkH7tyIKDgIGnk9zeL+
+         I70g==
+X-Forwarded-Encrypted: i=1; AJvYcCVa4pgDLYNdL1wFu/CAawpc/ZxWZu1wcrdh6focFg0YjnbfrsF0KbS1zjEqqUrOMryfg3Q+l/GKaw4=@vger.kernel.org, AJvYcCWW+pqXylgvNvkHfIxzTiFZBHZgfUP+KFU17PStC/7C/d8DmuGhLvbjgG6vvnCSmaP4D5x6SXlsGMPr6Hic@vger.kernel.org
+X-Gm-Message-State: AOJu0YwPI789tqPe4FMA1+sEpkJjbNK13pCnRIZutN+n7CbsbK2fXiYz
+	/Bn2y0Y2GfmxKQcZN93NpvUQGti+G4XzA6NIMvnG2zsT49514VDnXvlH
+X-Gm-Gg: ASbGnctabZ+/+VTjelCzvpF2bSmj2loaK+/Nqcw9RN2BKyFWLclwAlREBZvd3efAypG
+	RCCqNedHwn3XI3BjKfw8L2X59q+/e/0b0zS9Bs4bOnesLwazVwlzaVrKu5axT0LlT2/hnsJk6gI
+	+7SJK+PH3yTBx3pYWLwZ7wAuDnF+2cfTz5SqXJvVR1dmTiJ16t4OE3lsnvT3CvaDQ7XYOEtLqKv
+	RKcrduUGLpH8R8xPqJzG9+oKVwI09opdgurM9TlXyeqsIboxcjAFmyeNeRHesYHVO4uo508m2WF
+	UHSSa9T4XOw8Z1DcoL07xaxlUzzXHcRqdEcn6IkQwXWZzzxPKQYdPcu3qg==
+X-Google-Smtp-Source: AGHT+IHu9f/lZxhijaI0tk/8HTQACRU2iT+CPX1N5gLWM5rgUo4yJz2PEV6PyeZqnL1e5IHaDwG06A==
+X-Received: by 2002:ac2:4c45:0:b0:553:358e:72a8 with SMTP id 2adb3069b0e04-5533d1aa8f5mr235349e87.38.1748580016329;
+        Thu, 29 May 2025 21:40:16 -0700 (PDT)
+Received: from mva-rohm ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5533787d347sm570414e87.36.2025.05.29.21.40.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 29 May 2025 21:40:15 -0700 (PDT)
+Date: Fri, 30 May 2025 07:40:08 +0300
+From: Matti Vaittinen <mazziesaccount@gmail.com>
+To: Matti Vaittinen <mazziesaccount@gmail.com>,
+	Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] iio: adc: ad7476: Support ROHM BU79100G
+Message-ID: <aDk2qNE9LTVnfAFM@mva-rohm>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="5IHD3CUwPkLWn4dS"
+Content-Disposition: inline
+
+
+--5IHD3CUwPkLWn4dS
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250529093628.15042-3-victor.duicu@microchip.com>
+Content-Transfer-Encoding: quoted-printable
 
-Hi,
+ROHM BU79100G is a 12-bit, single channel ADC. From the software point
+of view it is identical to the TI's ADS7866. Support reading ADC
+measurements using the ad7476.c
 
-kernel test robot noticed the following build warnings:
+Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+---
 
-[auto build test WARNING on 0c86e33819785fe50616b6ee3fb35c1e4be406d5]
+Please, see the relevant discussion (as to why an ID for a fallback is
+added) in:
+https://lore.kernel.org/all/f8ec547a-5924-4563-aa1d-dde8227844fa@gmail.com/
 
-url:    https://github.com/intel-lab-lkp/linux/commits/victor-duicu-microchip-com/dt-bindings-iio-temperature-add-support-for-MCP998X/20250529-173844
-base:   0c86e33819785fe50616b6ee3fb35c1e4be406d5
-patch link:    https://lore.kernel.org/r/20250529093628.15042-3-victor.duicu%40microchip.com
-patch subject: [PATCH v2 2/2] iio: temperature: add support for MCP998X
-config: m68k-randconfig-r111-20250530 (https://download.01.org/0day-ci/archive/20250530/202505301210.l4ZriiEX-lkp@intel.com/config)
-compiler: m68k-linux-gcc (GCC) 12.4.0
-reproduce: (https://download.01.org/0day-ci/archive/20250530/202505301210.l4ZriiEX-lkp@intel.com/reproduce)
+This patch was based on v6.15-rc1. I can rebase if needed.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202505301210.l4ZriiEX-lkp@intel.com/
+ drivers/iio/adc/ad7476.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-sparse warnings: (new ones prefixed by >>)
->> drivers/iio/temperature/mcp9982.c:200:14: sparse: sparse: symbol 'mcp9982_3db_values_map_tbl' was not declared. Should it be static?
+diff --git a/drivers/iio/adc/ad7476.c b/drivers/iio/adc/ad7476.c
+index 37b0515cf4fc..d48ee8f1d547 100644
+--- a/drivers/iio/adc/ad7476.c
++++ b/drivers/iio/adc/ad7476.c
+@@ -435,6 +435,13 @@ static const struct spi_device_id ad7476_id[] =3D {
+ 	{ "ads7866", ID_ADS7866 },
+ 	{ "ads7867", ID_ADS7867 },
+ 	{ "ads7868", ID_ADS7868 },
++	/*
++	 * The ROHM BU79100G is identical to the TI's ADS7866 from the software
++	 * point of view. The binding document mandates the ADS7866 to be
++	 * marked as a fallback for the BU79100G, but we still need the SPI ID
++	 * here to make the module loading work.
++	 */
++	{ "bu79100g", ID_ADS7866 },
+ 	{ "ltc2314-14", ID_LTC2314_14 },
+ 	{ }
+ };
+--=20
+2.49.0
 
-vim +/mcp9982_3db_values_map_tbl +200 drivers/iio/temperature/mcp9982.c
 
-   199	
- > 200	unsigned int mcp9982_3db_values_map_tbl[11][3][2];
-   201	static const int mcp9982_sampl_fr[][2] = {
-   202		{ 1, 16 },
-   203		{ 1, 8 },
-   204		{ 1, 4 },
-   205		{ 1, 2 },
-   206		{ 1, 1 },
-   207		{ 2, 1 },
-   208		{ 4, 1 },
-   209		{ 8, 1 },
-   210		{ 16, 1 },
-   211		{ 32, 1 },
-   212		{ 64, 1 },
-   213	};
-   214	
+--5IHD3CUwPkLWn4dS
+Content-Type: application/pgp-signature; name=signature.asc
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmg5NqQACgkQeFA3/03a
+ocUt9gf+IQJ+h80DmDoTrIetVncPDukfz8CBkHPrb6XvFSz8GF9xLZufuKvmf5Os
+QK40O74UtmuuRmliEzSdPefVEZOPgQzQenDwN1lnz2+YtUonn5VCIlvWc15yvwDD
+hdsIVaqt7sJ8vNRu6EDZk2oviLmjH34hISXd5+WP7euLUvGIadj6XAWgNxOy4YKc
+onMeGXtehcDjRfM8gEwgaDaU61f5rSuRvBho1aynIc/LRbmK/Z/F2tGtdywjRY2/
+WzuWWWeaAMLqJYI/q/qIGCriorowALLkrxvtCQ3FTefv9f+/GPlXyepOYJXXsvaf
+IdsE5DUIQsO9YP86jQuHHDYgKiD+bg==
+=29ns
+-----END PGP SIGNATURE-----
+
+--5IHD3CUwPkLWn4dS--
 

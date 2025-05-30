@@ -1,181 +1,165 @@
-Return-Path: <linux-iio+bounces-20047-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20048-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B938AC940C
-	for <lists+linux-iio@lfdr.de>; Fri, 30 May 2025 18:57:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C05DAC9473
+	for <lists+linux-iio@lfdr.de>; Fri, 30 May 2025 19:13:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 181871894F41
-	for <lists+linux-iio@lfdr.de>; Fri, 30 May 2025 16:57:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 59B191BC1C21
+	for <lists+linux-iio@lfdr.de>; Fri, 30 May 2025 17:13:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BF04235068;
-	Fri, 30 May 2025 16:56:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8302C76034;
+	Fri, 30 May 2025 17:13:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="nN/2+aWN"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f44.google.com (mail-oo1-f44.google.com [209.85.161.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 655034431;
-	Fri, 30 May 2025 16:56:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F06A23504E
+	for <linux-iio@vger.kernel.org>; Fri, 30 May 2025 17:13:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748624217; cv=none; b=NJEc+25ZeIiAapOjpPT0wL75cufyeDzxbHb5EPD6yasWwOnWFMF4872GuHn1e5+QLhr8Il+i1aBE3IPz9jmZsiR846yVgLrAhZi4Dkp7AUtaue3R/T3Kqzr+8APB7h7q8kGZ/ZfaPDwCCgLWbXyoA+8JfUywDFtYyxsayJd/y/I=
+	t=1748625204; cv=none; b=GmbhcRs+foXI0FVdMkbpqwDomJx7MQdJmVZO2xUOGquoiNx5h4Yq91IayhDvSUAcafu5NIgOyWbMOYQPzXopqUxZJLM5rMIDq0v5BaiUpQcZIkKt+yJkYLkB/TD8RfH0fv8ChTsXTHxph96k2s+M108Nmxmu3dDMO1qVbEECn+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748624217; c=relaxed/simple;
-	bh=X7cpegp2UbpSBxXPF/B2OYNV11nvguV8s1OAoSDsrFk=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=azDLDQEWxDpBawf+jBQBCuo56xcVD/GmYdAo4XByb2FwvLRAlaDEM2MDCy9kCsqsS908naxkj0YzF2h4j1DS9QF1O9WdpXmtS83BSAoVJYeuX3/Cqjzgp3wXxfFczrfALxVEiXAmwLUVTp8t2oAq28bUjJjkg9/NSFnHcZG0HD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.216])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4b88W90j2dz6K5lR;
-	Sat, 31 May 2025 00:55:33 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
-	by mail.maildlp.com (Postfix) with ESMTPS id EC4431402E9;
-	Sat, 31 May 2025 00:56:51 +0800 (CST)
-Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
- (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Fri, 30 May
- 2025 18:56:51 +0200
-Date: Fri, 30 May 2025 17:56:49 +0100
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-To: Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>
-CC: <jic23@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
-	<conor+dt@kernel.org>, <dlechner@baylibre.com>, <nuno.sa@analog.com>,
-	<andy@kernel.org>, <manuel.stahl@iis.fraunhofer.de>,
-	<~lkcamp/patches@lists.sr.ht>, <linux-iio@vger.kernel.org>,
-	<devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2] dt-bindings: iio: gyroscope: invensense,itg3200: add
- binding
-Message-ID: <20250530175649.000005d0@huawei.com>
-In-Reply-To: <20250527210308.4693-1-rodrigo.gobbi.7@gmail.com>
-References: <20250527210308.4693-1-rodrigo.gobbi.7@gmail.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	s=arc-20240116; t=1748625204; c=relaxed/simple;
+	bh=JphQTvb3I10QtM736571WKwUkv4cf1iWTbPNd3rRn88=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=n2nafntWyovTaXog1bmXmxo2TMrlqSJpns9RK2Pn5o34kJXeGzvd/5r/P2DhXYq6kFE2OS5mMhhw5Mc44U9+I1hiSoI0/CJLVjWJFhP07W4oMsH5OLx75Ox0609sZMmCsMiBKF5QqNPCugFmHlkswHoJ9ZCdo9oT6FcTOHA5th4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=nN/2+aWN; arc=none smtp.client-ip=209.85.161.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oo1-f44.google.com with SMTP id 006d021491bc7-605f7d3215cso1139765eaf.0
+        for <linux-iio@vger.kernel.org>; Fri, 30 May 2025 10:13:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1748625200; x=1749230000; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ZL7m4q85jSj/za+Y9tnRe4NNGzdKPfTLBdq6Osao+v0=;
+        b=nN/2+aWN20sISMQujl6VEylpjeYf9133z5MR5pjE9/820vk9PEuxkyFaA/yomG6AD3
+         5L8JWxuatyLslT5WPGCkiNPNwSTVdcEeoaAlE71E+1OdHkSfz4hQwC704S+ifIHT2ZHV
+         XFhvvzxdjOHjfO9JBs2T/dG9/ET0nsSEFdrqZvSdaAfqwHCl+9bEtx/16IL1o0v20u1D
+         X1JQ3cRReKW2S/JNNji3zO4Io5ZYOrYms+Vjg3Ocd0/4nGDAk4bcuk/AVarVNyMWFj9y
+         NfLt8HmZJ5iROWi+h/Jc5YrlkeHOyt9TyUg/FupR6ljbXABtOFaG4eFk5vfIzLuXMAIE
+         e9fA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748625200; x=1749230000;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZL7m4q85jSj/za+Y9tnRe4NNGzdKPfTLBdq6Osao+v0=;
+        b=Wv8HmR1Gm2FB3DaXrucHO5oYIFLP3jMY8Jl/AH7M3fpybOaIlWai9mCXPwPgOU5Qnd
+         ocAtrwpcSRhRjjx2A440FmjFCdluwdP8EGqvqDsNAssmeW1E6qmm5tsZkSzGNz8roiMO
+         /KubL6Y8yWo411ZFY0O9uyVW8y31VLFnsDuhs9KE1KfkXQz9UxobOUpktfRS6jkyV43M
+         2rtPHZt8y5EAIB96/crW+MtF8OwsGGcMgNC4VO8zkfIDy5rB2z76ZXkVaPxWOruI/M40
+         YJyi49H+BgNzlzbGebC+bxVuocHhXZDMbJdg79YSl6bIS8BSq5mbNeTZdj/hCmzEoScM
+         l8Vw==
+X-Gm-Message-State: AOJu0YxrImk5swioZ0YJdRVPKm5YAaKjjhgqk4QceHUc7IEX0rSF1my9
+	px6rAi4ehOuqASS2HN9D0GUHxdGTcBomJwLs9Ti+r267qAjoPirlNXCDuDWtu/E4VBk=
+X-Gm-Gg: ASbGncu763iktiec/R+YixifnGD3SfeVU/DywRW4tHDqrgx0pCRA+CpzZT/UxYkgmjA
+	rLmwzjuhwyRZgS2ziLiXcf7sZ1ap1y6mo4a09Cv9qCIQ8vUbMT/Q0q24O41fhj1JMg34RA+4Z9P
+	p3JFveeX4nW01ruuqDylYfqSvBc2v39onQNazTP/nLkte40NoZFeXZwiBjZkQRaj+UIWaE/zrWI
+	qo3pGVyKndDiL3NmxworPEi5GzZVtqkpT3mxZsD3C2WblN3WSpS7PtoUFyqpE+R4srbE8xidr15
+	Mx3L81GNW99g9SoMVYUhnKbomjgYuBGYUzFV2ntMc9ym3QzCjn1QQHKzhF7o2fI9S1Hr/cQuoiK
+	v6BF4GACpyGO5gFnqhDpFHM0sscjP
+X-Google-Smtp-Source: AGHT+IF7W6PC+bFQuVbbZoJTqkb0DmlG3Whd0OGS2QBfP/HS2hvOFEnWN4sDjCl3GW7f1+nBzmvCMg==
+X-Received: by 2002:a05:6820:2017:b0:60b:ca08:a73c with SMTP id 006d021491bc7-60c4d70d3b6mr2603070eaf.6.1748625200501;
+        Fri, 30 May 2025 10:13:20 -0700 (PDT)
+Received: from ?IPV6:2600:8803:e7e4:1d00:29cb:b1cd:c8f4:2777? ([2600:8803:e7e4:1d00:29cb:b1cd:c8f4:2777])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-60c14c42c16sm442474eaf.7.2025.05.30.10.13.19
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 30 May 2025 10:13:20 -0700 (PDT)
+Message-ID: <98ccc736-a44f-43a7-acff-ac5a4cc33023@baylibre.com>
+Date: Fri, 30 May 2025 12:13:19 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml100006.china.huawei.com (7.191.160.224) To
- frapeml500008.china.huawei.com (7.182.85.71)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 6/6] iio: adc: ad7606: add gain calibration support
+To: Angelo Dureghello <adureghello@baylibre.com>,
+ Jonathan Cameron <jic23@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
+ Lars-Peter Clausen <lars@metafoo.de>,
+ Michael Hennerich <Michael.Hennerich@analog.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org
+References: <20250526-wip-bl-ad7606-calibration-v7-0-b487022ce199@baylibre.com>
+ <20250526-wip-bl-ad7606-calibration-v7-6-b487022ce199@baylibre.com>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <20250526-wip-bl-ad7606-calibration-v7-6-b487022ce199@baylibre.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Tue, 27 May 2025 17:55:28 -0300
-Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com> wrote:
-
-> There is no txt file for it, add yaml for invensense,itg3200 gyroscope.
+On 5/26/25 5:03 AM, Angelo Dureghello wrote:
+> From: Angelo Dureghello <adureghello@baylibre.com>
 > 
-> Signed-off-by: Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>
+> Add gain calibration support, using resistor values set on devicetree,
+> values to be set accordingly with ADC external RFilter, as explained in
+> the ad7606c-16 datasheet, rev0, page 37.
+> 
+> Usage example in the fdt yaml documentation.
+> 
+> Tested-by: David Lechner <dlechner@baylibre.com>
+
+Testing this with parallel interface today instead of SPI and found a bug.
+
+> Reviewed-by: Nuno Sá <nuno.sa@analog.com>
+> Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
 > ---
-> Originally I`ve added @Jonathan as the binding maintainer due another thread
-> but @Krzysztof mentioned at v1: "...this should be someone interested in the hardware".
-> I`m not sure who might be this person in this case, a reasonable choice would be
-> the original author of the driver, but looks like his last patch is from a
-> long time ago [2] but I`ll ping here.
-> 
-> Dear @Manuel Stahl, I`ve noticed that since the driver was added,
-> there was no binding doc for it and this is what this patch is addressing.
-> In this case, a maintainer ref is required inside the .yaml file and I would
-> like to ask if I can add you in this case. 
-> I would appreciate your comment or suggestion over this topic.
 
-Manuel has not been active for quite a while. You never know though!
+...
 
-Fall back to me if needed given I end up seeing all these changes anyway.
+> +static int ad7606_chan_calib_gain_setup(struct iio_dev *indio_dev)
+> +{
+> +	struct ad7606_state *st = iio_priv(indio_dev);
+> +	unsigned int num_channels = st->chip_info->num_adc_channels;
+> +	struct device *dev = st->dev;
+> +	int ret;
+> +
+> +	device_for_each_child_node_scoped(dev, child) {
+> +		u32 reg, r_gain;
+> +
+> +		ret = fwnode_property_read_u32(child, "reg", &reg);
+> +		if (ret)
+> +			return ret;
+> +
+> +		/* Chan reg is a 1-based index. */
+> +		if (reg < 1 || reg > num_channels)
+> +			return ret;
+> +
+> +		r_gain = 0;
+> +		ret = fwnode_property_read_u32(child, "adi,rfilter-ohms",
+> +					       &r_gain);
+> +		if (r_gain > AD7606_CALIB_GAIN_MAX)
+> +			return -EINVAL;
+> +
+> +		ret = st->bops->reg_write(st, AD7606_CALIB_GAIN(reg - 1),
+> +			DIV_ROUND_CLOSEST(r_gain, AD7606_CALIB_GAIN_STEP));
 
-I can make that change whilst applying.
+ad7606_chan_calib_gain_setup() is called before ad7606_reset() so any value
+written here will be cleared by the reset.
 
-Jonathan
+Also, this is called before st->bops->iio_backend_config() so when using
+the parallel bus, this causes a segfault.
 
-> 
-> Tks all and regards.
-> 
-> Changelog:
-> v2: 
->     - removed the register map link; there is no datasheet available at public ref. At [1],
->     it is just a product overview, so we can`t use it;
->     - add supplies and external clocks (I`ve used as ref iio/gyroscope/invensense,mpu3050.yaml);
->     - add the author of the driver as the maintainer of this file but I`m CC him in
->     order to get his opinion about it;
->     - adding some CC missing at v1;
-> 
-> v1: https://lore.kernel.org/linux-devicetree/20250515002817.81863-1-rodrigo.gobbi.7@gmail.com/
-> 
-> [1] https://invensense.tdk.com/products/motion-tracking/3-axis/itg-3200/
-> [2] https://web.git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/log/?qt=author&q=Manuel+Stahl
-> ---
->  .../iio/gyroscope/invensense,itg3200.yaml     | 59 +++++++++++++++++++
->  1 file changed, 59 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/gyroscope/invensense,itg3200.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/gyroscope/invensense,itg3200.yaml b/Documentation/devicetree/bindings/iio/gyroscope/invensense,itg3200.yaml
-> new file mode 100644
-> index 000000000000..4b2f9a57c6ea
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/gyroscope/invensense,itg3200.yaml
-> @@ -0,0 +1,59 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/gyroscope/invensense,itg3200.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Invensense ITG-3200 Gyroscope
-> +
-> +maintainers:
-> +  - Manuel Stahl <manuel.stahl@iis.fraunhofer.de>
-> +
-> +description: |
-> +  Triple-axis, digital output gyroscope with a three 16-bit analog-to-digital
-> +  converters (ADCs) for digitizing the gyro outputs, a user-selectable internal
-> +  low-pass filter bandwidth, and a Fast-Mode I2C.
-> +
-> +properties:
-> +  compatible:
-> +    const: invensense,itg3200
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  vdd-supply: true
-> +
-> +  vlogic-supply: true
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +  mount-matrix:
-> +    description: an optional 3x3 mounting rotation matrix.
-> +
-> +  clocks:
-> +    maxItems: 1
-> +
-> +  clock-names:
-> +    items:
-> +      - const: ext_clock
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/interrupt-controller/irq.h>
-> +    i2c {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +        gyroscope@68 {
-> +            compatible = "invensense,itg3200";
-> +            reg = <0x68>;
-> +            interrupt-parent = <&gpio2>;
-> +            interrupts = <24 IRQ_TYPE_EDGE_FALLING>;
-> +        };
-> +    };
+The simplest thing to do is probably store the r_gain values and then
+create a new function to write that data to the registers and call that
+near the end of the probe() function.
 
+> +		if (ret)
+> +			return ret;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
 

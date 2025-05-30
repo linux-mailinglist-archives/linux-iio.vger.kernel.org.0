@@ -1,173 +1,144 @@
-Return-Path: <linux-iio+bounces-20035-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20036-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89CA1AC8A99
-	for <lists+linux-iio@lfdr.de>; Fri, 30 May 2025 11:18:27 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC93FAC8D01
+	for <lists+linux-iio@lfdr.de>; Fri, 30 May 2025 13:35:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C95559E0362
-	for <lists+linux-iio@lfdr.de>; Fri, 30 May 2025 09:18:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CF5E97A7B79
+	for <lists+linux-iio@lfdr.de>; Fri, 30 May 2025 11:33:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C515E21E082;
-	Fri, 30 May 2025 09:18:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 342C821D3EC;
+	Fri, 30 May 2025 11:35:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="JO9V1K8/"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VcVOgxdF"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-yb1-f175.google.com (mail-yb1-f175.google.com [209.85.219.175])
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF5A121883E
-	for <linux-iio@vger.kernel.org>; Fri, 30 May 2025 09:18:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57F4619F10A;
+	Fri, 30 May 2025 11:35:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748596701; cv=none; b=CgBw3o6VlrTL8nG/y0hgFxn5bfi3XkL2ZM2oJ/W7qc1Z3G/938w7vVg3IJpo9ln9o6Nz3lxEKxQJgD75xfoQ0SbZsSlqiRfqN+VzuEIvnZtklqZWjz19EYWB/x7UJgEL6j/FZK01t07Mj3iWVkOJcfH+W/qseAbhwzkCxZNgapw=
+	t=1748604905; cv=none; b=W6x9himcJfJk+Yo9egeXHeqjKME0q8Ouhwls5VL0ZRP+A5pzAaqUzZYluOtuHTSAgvpn6OmdyhK2kq1TMPkFBcd7Q+yPmm64R7b3ZZJveNjH/zOCsguPRVCtlQzk/P4BCWhvRBBfZ9hR8fcN8GPd+WttdvqRN2owPQPyhFrYtDk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748596701; c=relaxed/simple;
-	bh=ebOJBYeeHCkyALDjIWQdDTTwURnubvG/RMOC2ONZm84=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=eDJ0kSFzLSEciIm4jDaWE/MGgtnnMmCEBBTzl8PWdb4bIaOxWTagREF4LrWjK/giIUahfRzcXQ2NSk7hozn4LSJZrajNOmBOhNIndxHGaiWybs1jJ6sRdo9ypP/fRZO5R4QUpczb3g3SsP6a4PqqQ09G9w5knx+7gP23P5XyY1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=JO9V1K8/; arc=none smtp.client-ip=209.85.219.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-yb1-f175.google.com with SMTP id 3f1490d57ef6-e731a56e111so1632481276.1
-        for <linux-iio@vger.kernel.org>; Fri, 30 May 2025 02:18:19 -0700 (PDT)
+	s=arc-20240116; t=1748604905; c=relaxed/simple;
+	bh=CG06fp9oxw2A9Hp9lU3htFVmuec+nEGVCdamaunhVZc=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Oxd7E1f7/II2wrQazwZnyNbUWg+M98ViRUvhw1bV0W+BHHuJi3Mkoj0uqmfiqyI53ZIfcqNw77QPfUsYYyXqSV2ZQhcDbfX2GTdsH5OYiVdhbs3R7hMQFjwf/Z87i3s2OmpSXxhGbt+4j2auIwDs+Bp+AC1tEZbQPuMHOOXINWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VcVOgxdF; arc=none smtp.client-ip=209.85.221.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-3a376ba6f08so1155056f8f.1;
+        Fri, 30 May 2025 04:35:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1748596699; x=1749201499; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=9LSJUMPXEV1M8KFzX9qlsWTgwSLRhfElyDaP/rhgR2Q=;
-        b=JO9V1K8/JqVH6STc3aC5hUeFMsyAGvVmnOc6iVsh+JcQAzddXP4NWCcPSxZbqcE9H+
-         pbtJNqQ/kFu6zyfjQ0Ju8XwmisQPpwGLUi90u6fT1PFy40xo0RK63H/92/TLV7WnV7we
-         O0hXGEjC9UEK3YZXz8n8yTmLdej1Oab3M2cdXFFldlKpChgPb5moAEtjTLkzdxKYbSIj
-         BMxFTGg8lngG82+wA7OA9i9AuU3eK1oL4Jl3V2sQGreDu0w0W9NqBxKPZXAxmQ/qBCNL
-         Aq94l5qiD0ncP+b5o3GRjI4V9IJra6qm48SWpqIZKoRCBsLE4UapoLHxkiO2A+VZaqna
-         CMSw==
+        d=gmail.com; s=20230601; t=1748604902; x=1749209702; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=YBpe3PrQUq1ns6R+TSo33OXoWmnCrWav1Gc9aMJzuC0=;
+        b=VcVOgxdFueHnOXKCMxv9tddDpSw5rTSHnvlmbNkD0G2o61YZ++955Wa+RiYbxqDUsn
+         tFBbxpXhw+LB1pU7TsGDellDe7DmFMtRsoCWXKWfpUbaj82h12lVk9VqZLyuf+4IGpll
+         0QzTZ70tOUqMylF74/3HJsfgjduyfsvCZbU4mjU/8xgdYEtczJIbfJQZo0U+k0Xk/BHF
+         wFQjEaWtO6Zd9oc4CXjCyUWRaH667aLYlRBdL3j82p6ze4fPOlGc+cgWYy7Y4uTh1IkG
+         oD36B+r3QfxLQQMn1o47Lym5QGpBE8smiBJzUxNRf6qW90llwvPPOTrpOF+SkcQsa0Dk
+         KTzA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748596699; x=1749201499;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=9LSJUMPXEV1M8KFzX9qlsWTgwSLRhfElyDaP/rhgR2Q=;
-        b=DhZ2Nar3h5MQDalxdxpCHc8dXJSMzlOkoCukFwb3EdIvYtBcv+tOrs3vzA7+ToXNVD
-         GryeMOgR6XJ1vyJRFfh+XaiLdMGeDy4mnXV0wZtv+DN00UL0wFZAqFIliEOLErXVwtAe
-         5ZIO0T/g31cCWMz9DVpoNmzSoF6+XUJR1xGLWAOCbDMIn5be4AD4mRRK91302ePMRPvQ
-         kOCGMBjc0lhaIP9bgTeYVtrAK8vpdPLGNNwxZmXqvhOBusHVmgxIfM4o9e0XdZtXck17
-         v3VN41B2vgNVhO9X7W6cpyGFPOew9HEXBKbLgYNDTD1FBtS/kYQb09+xrS2BusT5UXPe
-         x+8A==
-X-Forwarded-Encrypted: i=1; AJvYcCV1ekHukkYfkNaCZshmVGLTZpTg4G28LKWFsboPPgaOtepruDOvaiGArYt8rJJCldxgUhkCGq/ZZHo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzqOabEYV6dzaMdTLKaK3TlXQ/rohcYgNIhxOn+K5jFi9quufQb
-	sSlRy7exdts5IY4OaKNoCRV3ZGz4PymCzLxl/nq+WhIvAaOjMhLaym3wuhLd1TEXWPq7HLJnDQC
-	xznc2cHXSM9/CbxjBMG6Kj5//JdbsfY6hD7hwx1O1zQ==
-X-Gm-Gg: ASbGncsK6Ybj7ETGGFphgKpI3THNoAh29G99WUpv9NIIEooHXBL63wyjhwmBs7OsVqc
-	cyL+4uj4e/54im7JJkCWEUUV1ptL/eB2se7L4awnNGj5BBjLEuz3hYY2ZpYu5yx3m0kyAKI13Ro
-	e73V0Rmrh6HgW8180vnoFEIp4oGEZIjkPc4Q==
-X-Google-Smtp-Source: AGHT+IFfycBwEI3FxueTISbpHh6OJPQeP2Lrq+8rdRXtzuwP9IhvuccKAVwiT0W7cxN5YrLOeQ38HlPh8PvZt5WQSe4=
-X-Received: by 2002:a05:6902:1003:b0:e7d:9bfb:a320 with SMTP id
- 3f1490d57ef6-e7f81f064a1mr3911070276.36.1748596698927; Fri, 30 May 2025
- 02:18:18 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1748604902; x=1749209702;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=YBpe3PrQUq1ns6R+TSo33OXoWmnCrWav1Gc9aMJzuC0=;
+        b=kSJzcbJxgOc0qnrdwW7le6wsIhTozM6Qit216ABB3utVtr/ZZ0QW86V0Asyqg8zgnm
+         ImjzSQcsX6pWPclkdmaXSs2XOtbppxD1lfRbnhChWshtBxyrEPeEqgmLmNivqhbbxoIL
+         eQzqMLYT1n/KQmldX9gvI8G7Nu5zLmVysIKeE/getHE6uOlBSNvWfaCPtYvzkeul+eSq
+         rGGunOgfBiljEhdijwA6yuiZ6bjNnj3llR3hARXkvQT5xZzisHyEPeE9oqWQ7slnrCA6
+         bjqxFQLJRchli/UR7k6HkoILSi+ADIXe2YmvNr6wn4sCgA5wx9yAjFj7vTAuAEVlKU2v
+         /Vsw==
+X-Forwarded-Encrypted: i=1; AJvYcCVQzt19WDqdsyqAcc9iYsavOb/ewxDMAWrJuqGNHhmSXdUwb1INieWnMdrut+hWqOmRlYO92lptkwY=@vger.kernel.org, AJvYcCWJDlHo6pNE3k7LLf52DLtNS+fbORjSoZ2/wUlXrS38750PS9mnLYzznPyZ0MdX8LZYlKSnUbrnbgjrwR5M@vger.kernel.org
+X-Gm-Message-State: AOJu0YyPPEvD3A4be4FmEORf0MfeY8lJ8+B73aHZ7VubJMJ9KVHAq8DW
+	0gl5iUPQGoI3cIo9V4fbSK8RM51roO5gR+UzhGseZIKzRRJLgBAMWSuBzqWsoIWE
+X-Gm-Gg: ASbGncuF/ryZBKXbRojR4Mic80bhlTNj9g4IKDIxm/3t9IeoX/4O7/Q5hyebtVachm+
+	1yFUvBCIaQMmFEqiL7vlqJMhaeoOMJnyXwuAc4VnfYVrOHAKNGU7wTw9ndiFEb/Lo2YCYEi68w3
+	jnHQMlcY8owFDGKdBOY6rkvcSQvEgi5LIo1xxPK/ioRkbrbM+sKJiNYADcf4EiLc6Rn6birxOd0
+	y37m87mhUbEk3uLwIpA7DUWjmvD8I9hlf5MKXP+WkmtlABwx/HQrsoxGyJ5JwT6i85+UiYt8DyI
+	Km5HEmzzvRqmqRDeFKto3AyKSUJKL7/Dee4w30jFEgtdNAfmquEotwh/97c=
+X-Google-Smtp-Source: AGHT+IEoOAfnaxRfbQwqOjAF0PRksoZIKNnV5NXFbl/T8R/8GbaKzu40Keb71uToE+k8fQVEZ3Pm2w==
+X-Received: by 2002:a05:6000:4283:b0:3a4:ddd6:427f with SMTP id ffacd0b85a97d-3a4f7a6e56fmr2382612f8f.35.1748604901469;
+        Fri, 30 May 2025 04:35:01 -0700 (PDT)
+Received: from [192.168.1.187] ([161.230.67.253])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a4efe73eebsm4535990f8f.44.2025.05.30.04.35.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 30 May 2025 04:35:00 -0700 (PDT)
+Message-ID: <9e6d503cc7715e14c5fd6b219c123166d1cf2342.camel@gmail.com>
+Subject: Re: [PATCH 2/2] iio: adc: ad7606: add enabling of optional Vrefin
+ voltage
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: Angelo Dureghello <adureghello@baylibre.com>, David Lechner
+	 <dlechner@baylibre.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
+	 <Michael.Hennerich@analog.com>, Jonathan Cameron <jic23@kernel.org>, Nuno
+ =?ISO-8859-1?Q?S=E1?=
+	 <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, 
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Fri, 30 May 2025 12:35:05 +0100
+In-Reply-To: <dv72cvn7rihavqxg6wnybhedhunabo7bremwb5pkutqljwarcf@eo6zc7vi7fbu>
+References: 
+	<20250529-wip-bl-ad7606-reference-voltages-v1-0-9b8f16ef0f20@baylibre.com>
+	 <20250529-wip-bl-ad7606-reference-voltages-v1-2-9b8f16ef0f20@baylibre.com>
+	 <521f5868-5836-47d9-9a68-88a9d4e843f6@baylibre.com>
+	 <dv72cvn7rihavqxg6wnybhedhunabo7bremwb5pkutqljwarcf@eo6zc7vi7fbu>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250526122054.65532-1-claudiu.beznea.uj@bp.renesas.com>
- <20250526122054.65532-2-claudiu.beznea.uj@bp.renesas.com> <hojdkntm3q5a5ywya7n5i4zy24auko4u6zdqm25infhd44nyfx@x2evb6sc2d45>
- <111d2d6c-8ac0-40b9-94c3-02f2f64ef9fe@tuxon.dev> <CAPDyKFoQYTNBhtBXY-Ds7E0TohtA6558W1Jf3cLsnXDQC74DSg@mail.gmail.com>
- <rmc7me6rvumr6pcekgp5lsrxtuge5houitn474lkljew2hzdcw@z7wh2vtntvs5>
-In-Reply-To: <rmc7me6rvumr6pcekgp5lsrxtuge5houitn474lkljew2hzdcw@z7wh2vtntvs5>
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Fri, 30 May 2025 11:17:42 +0200
-X-Gm-Features: AX0GCFvzfTrcuWANsmOBcb2p2VazFw-uQgVJQLGJOuhNKKaI5gJPiizsYJAEId8
-Message-ID: <CAPDyKFpsk-o0KvaJK+dgNDvW30piHKgvtyOxF7URaUEvrPZmZA@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] PM: domains: Add devres variant for dev_pm_domain_attach()
-To: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Cc: Claudiu Beznea <claudiu.beznea@tuxon.dev>, gregkh@linuxfoundation.org, rafael@kernel.org, 
-	dakr@kernel.org, len.brown@intel.com, pavel@kernel.org, jic23@kernel.org, 
-	daniel.lezcano@linaro.org, linux-kernel@vger.kernel.org, 
-	linux-pm@vger.kernel.org, linux-iio@vger.kernel.org, 
-	linux-renesas-soc@vger.kernel.org, bhelgaas@google.com, geert@linux-m68k.org, 
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Content-Type: text/plain; charset="UTF-8"
 
-On Wed, 28 May 2025 at 18:09, Dmitry Torokhov <dmitry.torokhov@gmail.com> wrote:
->
-> On Wed, May 28, 2025 at 06:04:45PM +0200, Ulf Hansson wrote:
-> > [...]
-> >
-> > > >> +/**
-> > > >> + * devm_pm_domain_attach - devres-enabled version of dev_pm_domain_attach()
-> > > >> + * @dev: Device to attach.
-> > > >> + * @attach_power_on: Use to indicate whether we should power on the device
-> > > >> + *                   when attaching (true indicates the device is powered on
-> > > >> + *                   when attaching).
-> > > >> + * @detach_power_off: Used to indicate whether we should power off the device
-> > > >> + *                    when detaching (true indicates the device is powered off
-> > > >> + *                    when detaching).
-> > > >> + *
-> > > >> + * NOTE: this will also handle calling dev_pm_domain_detach() for
-> > > >> + * you during remove phase.
-> > > >> + *
-> > > >> + * Returns 0 on successfully attached PM domain, or a negative error code in
-> > > >> + * case of a failure.
-> > > >> + */
-> > > >> +int devm_pm_domain_attach(struct device *dev, bool attach_power_on,
-> > > >> +                      bool detach_power_off)
-> > > >
-> > > > Do we have examples where we power on a device and leave it powered on
-> > > > (or do not power on device on attach but power off it on detach)? I
-> > >
-> > > I haven't found one yet.
-> > >
-> > > > believe devm release should strictly mirror the acquisition, so separate
-> > > > flag is not needed.
-> > >
-> > > I was in the middle whether I should do it with 2 flags or only to revert
-> > > the acquisition.
-> > >
-> > > >
-> > > >
-> > > >> +{
-> > > >> +    int ret;
-> > > >> +
-> > > >> +    ret = dev_pm_domain_attach(dev, attach_power_on);
-> > > >> +    if (ret)
-> > > >> +            return ret;
-> > > >> +
-> > > >> +    if (detach_power_off)
-> > > >> +            return devm_add_action_or_reset(dev, devm_pm_domain_detach_off,
-> > > >> +                                            dev);
-> > > >> +
-> > > >> +    return devm_add_action_or_reset(dev, devm_pm_domain_detach_on, dev);
-> > > >
-> > > > Instead of 2 separate cleanup methods maybe define dedicated devres:
-> > > >
-> > > > struct dev_pm_domain_devres {
-> > > >       struct device *dev;
-> > > >       bool power_off;
-> > > > }
-> > > >
-> > > > ?
-> > >
-> > > That was the other option I've thought about but I found the one with 2
-> > > cleanup methods to be simpler. What would you prefer here?
-> > >
-> > > Ulf: could you please let me know what would you prefer here?
-> >
-> > As it looks like we agreed to use one cleanup method, the struct
-> > dev_pm_domain_devres seems superfluous to me.
->
-> I think we agreed that cleanup should mirror the acquisition, that is
-> true. But since attaching to the domain has an option to either turn the
-> device on or not we still need 2 cleanup branches. They can either be
-> implemented with 2 cleanup callbacks or with 1 callback and dedicated
-> devres structure.
+On Fri, 2025-05-30 at 09:39 +0200, Angelo Dureghello wrote:
+> On 29.05.2025 12:52, David Lechner wrote:
+> > On 5/29/25 4:13 AM, Angelo Dureghello wrote:
+> > > From: Angelo Dureghello <adureghello@baylibre.com>
+> > >=20
+> > > Add optional refin voltage enabling. The property "refin-supply" is
+> > > already available and optional in the current fdt dt_schema.
+> > >=20
+> > > Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
+> > > ---
+> > > =C2=A0drivers/iio/adc/ad7606.c | 4 ++++
+> > > =C2=A01 file changed, 4 insertions(+)
+> > >=20
+> > > diff --git a/drivers/iio/adc/ad7606.c b/drivers/iio/adc/ad7606.c
+> > > index
+> > > 3bbe9c05b5edbc11e8016c995c6ab64104836e7b..21e63260965c32988d0ab3b8bb1=
+201aa
+> > > 2396f1ba 100644
+> > > --- a/drivers/iio/adc/ad7606.c
+> > > +++ b/drivers/iio/adc/ad7606.c
+> > > @@ -1335,6 +1335,10 @@ int ad7606_probe(struct device *dev, int irq, =
+void
+> > > __iomem *base_address,
+> > > =C2=A0		return dev_err_probe(dev, ret,
+> > > =C2=A0				=C2=A0=C2=A0=C2=A0=C2=A0 "Failed to enable Vdrive supply\n"=
+);
+> > > =C2=A0
+> > > +	ret =3D devm_regulator_get_enable_optional(dev, "refin");
+> > > +	if (ret < 0 && ret !=3D -ENODEV)
+> >=20
+> > < 0 is probably not needed.
+> >=20
+> The above code looks correct to me. What is the issue ?
+> =C2=A0
 
-Yes, you are right. Better with one callback and using struct
-dev_pm_domain_devres to manage the power_off parameter.
+Not that there's an issue with the code. I think David means that ret > 0 h=
+as no
+meaning (function on return values <=3D 0) which means that if (ret) is eno=
+ugh.=20
 
-Kind regards
-Uffe
+- Nuno S=C3=A1
 

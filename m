@@ -1,56 +1,62 @@
-Return-Path: <linux-iio+bounces-20069-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20070-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DA44AC9B92
-	for <lists+linux-iio@lfdr.de>; Sat, 31 May 2025 17:43:11 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4919AC9B96
+	for <lists+linux-iio@lfdr.de>; Sat, 31 May 2025 17:50:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7CF9C3B57EC
-	for <lists+linux-iio@lfdr.de>; Sat, 31 May 2025 15:42:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A15527ACC86
+	for <lists+linux-iio@lfdr.de>; Sat, 31 May 2025 15:49:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AC3D23D281;
-	Sat, 31 May 2025 15:43:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 972B81531E1;
+	Sat, 31 May 2025 15:50:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ujryb/xX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DBtwwE+k"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0891111185;
-	Sat, 31 May 2025 15:43:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42B6117BB6;
+	Sat, 31 May 2025 15:50:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748706185; cv=none; b=dVB9lpmS9YUHh+bf9HUl3sp1joKVd6xcbuc7k56dXU20o41tEt0AYVIC4eoN4jr8AnNvOZs1VaLNy/6QhMQsUlJm2GpI1WVEWLYsRCkh33LbSiIlDTn1SWJxhaV5nc1KZN/afWX2vnkA3WTILof+c8Xl2MZAU4qu+IltGZWSI1Y=
+	t=1748706642; cv=none; b=mLdTn/ZzlMhH4ZpdJ8XzvdS2sGXyO8woQk8glUZD21DDWR5VK90UeRprL/C8QAjMnrVZ0DW8o61lgwTcfX3i2L5JQV0UFA5ocD82ATExVXQfIWxNC2+LY09C7bH+Xen5kCn4DGQB1GlZU2ewrmiHefklNmqKbJUpkj9o/c9FijA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748706185; c=relaxed/simple;
-	bh=RJrqCSxOJMSjx2fTZncUiQV6/mnDlT5rbVx7f21sSIg=;
+	s=arc-20240116; t=1748706642; c=relaxed/simple;
+	bh=eI19CTNEOdH781i8gsxlfOonT+Lz1KC/cydNhSmDoFQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cdY4dJk4imus1Prl2CEzUAZZ5KXeSsOZsX1sFUc3n4ArrtFCZR2Zqi+FkRrwm95CVd0tsLBQ5PVNPLbm7Oe3n3N6Y8jLKEvehq0vZPIw00ZRKXhomBmxHQiNSngOLkdNH0hepY39I4FgCOk0Jsn+Ea31RsZC70UB42O4S+3TEPU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ujryb/xX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C853BC4CEEF;
-	Sat, 31 May 2025 15:43:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=TQuOWl/m/W8uo2qcAgC4TOcWd02kqbJFcOBaNpzLmDTos1JwnqJMsREiJTiH78XShfwHHeRLO/Y0zIr5OShflRVdJ5GQL5+KFqFm9auyqeWgVURmClawiuserw6RxREyygVHtoIDXZ7Ce+BlcivjeeujY3d5x3a7Pf/GmLI64RQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DBtwwE+k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08393C4CEE3;
+	Sat, 31 May 2025 15:50:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748706184;
-	bh=RJrqCSxOJMSjx2fTZncUiQV6/mnDlT5rbVx7f21sSIg=;
+	s=k20201202; t=1748706641;
+	bh=eI19CTNEOdH781i8gsxlfOonT+Lz1KC/cydNhSmDoFQ=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Ujryb/xXZchzHDW5TkUX8DUjsFoL1Ym96UVgQeFTGwefIBFpvAIrq+ywpACA39Z9x
-	 zDdp7e8fTzhRhVZ/46VTSF0kzv/IQ9cf1o3yQ3qcaFSWhUvpEdxEbp6Dk5nW59dv+d
-	 RmWTdvTNo8PLYqaHa2T3zpyPa4l+n3WSey49Qh695o7oXcqcECh7axbwfKQTjzDyiF
-	 7/SdpEXvvXPC8zcd0gPnlP1OChhViADSpa0/j+qfk/1NuspW0D6F7HzUFwU5zEjZtz
-	 JOCCeGtaoh2hpph5k/ySXNICJ6cJ5jR2UuH7wmv/fl8Zs0BwZHrGFiBnw0/DdFXnaG
-	 IU7w5E1PAHJPA==
-Date: Sat, 31 May 2025 16:42:58 +0100
+	b=DBtwwE+kYQHknxs+X6DNnCMF+j+ncLJtzpvuJWAAGXZ1XfEPud4DLMdf4tWt2o28X
+	 mHxAfnw90M/hJGeQDdXn2FVilxn+0wBl9y3ldetLAhBkSto0py+16kdlXtoLECMDer
+	 sQ6T5rCVjrhZSAoJAZLlcSbyK/tKXCD62N9t0WpabWAZVUc0NNcYUNtvbTz6dOOtcu
+	 EO4cEsX5U9Qwk6BmbT/WXUq1h9nAHiz4BdeJlovgEHJ7UQns23rAIsJHRBSGO3QkeU
+	 lv0fvDO7gMz4Ehq/BqUw15NlLVa0rO4aZQ7Yyd29AYKs9u8JgXlSqhNyS28hsG8mOf
+	 3zQu2uN41H5IQ==
+Date: Sat, 31 May 2025 16:50:30 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Matti Vaittinen <mazziesaccount@gmail.com>
-Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>, Lars-Peter Clausen
- <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: adc: ad7476: Support ROHM BU79100G
-Message-ID: <20250531164258.47f0d1a2@jic23-huawei>
-In-Reply-To: <aDk2qNE9LTVnfAFM@mva-rohm>
-References: <aDk2qNE9LTVnfAFM@mva-rohm>
+To: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+Cc: Marcelo Schmitt <marcelo.schmitt@analog.com>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-gpio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, lars@metafoo.de,
+ Michael.Hennerich@analog.com, dlechner@baylibre.com, nuno.sa@analog.com,
+ andy@kernel.org, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ linus.walleij@linaro.org, brgl@bgdev.pl
+Subject: Re: [PATCH v3 01/10] dt-bindings: iio: adc: Add AD4170
+Message-ID: <20250531165030.17916667@jic23-huawei>
+In-Reply-To: <aDTkVFDNYeyIldBs@debian-BULLSEYE-live-builder-AMD64>
+References: <cover.1747083143.git.marcelo.schmitt@analog.com>
+	<5fa867cff437c0c6d3f0122af823e1677a12d189.1747083143.git.marcelo.schmitt@analog.com>
+	<20250525111148.4ca96a55@jic23-huawei>
+	<aDTkVFDNYeyIldBs@debian-BULLSEYE-live-builder-AMD64>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -61,43 +67,76 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 30 May 2025 07:40:08 +0300
-Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+On Mon, 26 May 2025 18:59:48 -0300
+Marcelo Schmitt <marcelo.schmitt1@gmail.com> wrote:
 
-> ROHM BU79100G is a 12-bit, single channel ADC. From the software point
-> of view it is identical to the TI's ADS7866. Support reading ADC
-> measurements using the ad7476.c
+> Hi Jonathan,
 > 
-> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
-Applied.
-> ---
+> I'm still working on the changes suggested for this set.
+> Just to mention, I've updated the dt-binding to declare only channel nodes under
+> the ADC node.
 > 
-> Please, see the relevant discussion (as to why an ID for a fallback is
-> added) in:
-> https://lore.kernel.org/all/f8ec547a-5924-4563-aa1d-dde8227844fa@gmail.com/
+> ... 
+> > > +      adi,sensor-type:
+> > > +        description: |
+> > > +          Type of sensor connected to the device. Depending on the sensor type
+> > > +          (weigh scale, RTD, or thermocouple) the values of sensor-node
+> > > +          properties have slightly different constraints. This property
+> > > +          specifies which particular external sensor is connected to the ADC so
+> > > +          the sensor-node properties can be properly parsed and verified. The
+> > > +          possible sensor types are:
+> > > +          0: weigh scale;
+> > > +          1: RTD;
+> > > +          2: thermocouple.
+> > > +        $ref: /schemas/types.yaml#/definitions/uint8  
+> > 
+> > I think this should be an enum of strings.  That will give us a clean
+> > way to extend it for other sensor types in future.  
+> Ack
 > 
-> This patch was based on v6.15-rc1. I can rebase if needed.
+> ...
+> > > +
+> > > +  interrupts:
+> > > +    maxItems: 1  
+> > 
+> > What if they are both wired?  At that point shouldn't software
+> > make up it's mind which to use?  
 > 
->  drivers/iio/adc/ad7476.c | 7 +++++++
->  1 file changed, 7 insertions(+)
+> Not sure I understand the concern here. Is 'interrupt-names' property expected
+> to precede 'interrupts' in dt-doc? For AD4170 and similar parts, the data
+> ready signal (/RDY) is by default provided on the SDO line after the completion
+> of a conversion. Alternatively, it can be provided on the DIG_AUX1 pin in
+> which case the chip disables the RDY function on SDO. So, there can only be one
+> data ready interrupt enabled at a time. Guess I'll add some description to make
+> clear only one interrupt can be enabled.
+
+DT is describing the wiring, not what should be enabled by the driver.
+
+There is no need for it to restrict to 1 interrupt if someone has wired them
+both that I can think of.  In that circumstance the driver gets to decide
+between the mess of shared SDO / dataready handling vs a nice
+separate signal on dig_aux1
+
+If both are wired to the host on appropriate pins, up to the driver to
+decide what it wants.  A driver may also only supports the
+dig_aux1 combination or only the sdo combination and so just fail to load
+if it isn't happy with the one the DT author thought mattered.
+Providing both if that is what is wired, gives the flexibility to find
+the right one. 
+
 > 
-> diff --git a/drivers/iio/adc/ad7476.c b/drivers/iio/adc/ad7476.c
-> index 37b0515cf4fc..d48ee8f1d547 100644
-> --- a/drivers/iio/adc/ad7476.c
-> +++ b/drivers/iio/adc/ad7476.c
-> @@ -435,6 +435,13 @@ static const struct spi_device_id ad7476_id[] = {
->  	{ "ads7866", ID_ADS7866 },
->  	{ "ads7867", ID_ADS7867 },
->  	{ "ads7868", ID_ADS7868 },
-> +	/*
-> +	 * The ROHM BU79100G is identical to the TI's ADS7866 from the software
-> +	 * point of view. The binding document mandates the ADS7866 to be
-> +	 * marked as a fallback for the BU79100G, but we still need the SPI ID
-> +	 * here to make the module loading work.
-> +	 */
-> +	{ "bu79100g", ID_ADS7866 },
->  	{ "ltc2314-14", ID_LTC2314_14 },
->  	{ }
->  };
+> > > +
+> > > +  interrupt-names:
+> > > +    description:
+> > > +      Specify which pin should be configured as Data Ready interrupt.
+> > > +    enum:
+> > > +      - sdo
+> > > +      - dig_aux1
+> > > +    default: sdo
+> > > +  
+> 
+> Thanks,
+> Marcelo
+> 
 
 

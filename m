@@ -1,158 +1,109 @@
-Return-Path: <linux-iio+bounces-20095-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20096-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C7EEAC9CF1
-	for <lists+linux-iio@lfdr.de>; Sat, 31 May 2025 23:48:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08BAEAC9D20
+	for <lists+linux-iio@lfdr.de>; Sun,  1 Jun 2025 00:13:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E8A33BA28A
-	for <lists+linux-iio@lfdr.de>; Sat, 31 May 2025 21:48:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0FF2A1895B13
+	for <lists+linux-iio@lfdr.de>; Sat, 31 May 2025 22:14:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 135F51DAC92;
-	Sat, 31 May 2025 21:48:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 398811DF270;
+	Sat, 31 May 2025 22:13:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b="S/veJHBk"
+	dkim=pass (2048-bit key) header.d=zash.se header.i=@zash.se header.b="jJvRM59/"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
+Received: from dimidiatus.zash.se (dimidiatus.zash.se [185.97.32.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D279C1ACE0C;
-	Sat, 31 May 2025 21:48:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.11.138.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A9E3EEA8;
+	Sat, 31 May 2025 22:13:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.97.32.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748728122; cv=none; b=orv2GTHXDICSB/zhEQEI17r+xj5Ks9RUWpJTeEaRAYiwB6fxr12b1ab/RHIfxWg94YPBfzJN+VpI0/g6tA5BFiDtRp1TSTkQEbWsU6EwHrhhAKow6cGp97HisjPEmEGDiiRDTVrG365/9OV1r9Dfv35LzJ6rb3CqMESTGY0Vk9o=
+	t=1748729620; cv=none; b=M+YoGxQcKBWi6eJIG/NaVLYoyDmWNhF6j5eFMh9GP+frKGEnMigYDvKoDWHWmcAYYOF9UrI34oFAo5Lwt9BQHA6/NKzMXfHfsuKsytcSc9HHZe9kKAU12ArN/dKMF+8r+VVweJih0IaywZPA+P+2eCZ0GcYZU6W63SGmK8m4KRk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748728122; c=relaxed/simple;
-	bh=dr5WfIFnDvxt8uCn0X7Wh0AAlu8MV4VHpUff1slIYog=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iFYxdfu8MXiWLpJDLIEkngqXcB6ntMvbb9yZCy3jnaFee+TEgy8PRqx0QSGBcP2kMslR8Tdu3X6Ro5HlXBkOeffFywegjm75wlLmasc/EmPd0tz5ZRpRYjUnWq91WG2dCm18zOucUjBxPfqRCS9wcbf2t8B5Mc6amwZ7l+hQpBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de; spf=pass smtp.mailfrom=sntech.de; dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b=S/veJHBk; arc=none smtp.client-ip=185.11.138.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sntech.de
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=sntech.de;
-	s=gloria202408; h=Content-Type:Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=7u2qauzFTP/rcfL2a+zDfaRZel9Pi3gl/2pshUKS3Yk=; b=S/veJHBk4K4AhMATBTSQloGQ/s
-	SExGYxn3vLkx2Q5mkmsp0Kv0K+HTFKscAq30eVlszyNmHjpIMlxe/wFsDhlRhxi/yl2bItdRpd/c3
-	YP4DoEl8pZojG29DsB8iQbYu6yCJ0Id9+IuvCdPqOIV/cAMqalAKqDw6vmBtKD/L0UKJVIeHaLKg1
-	S1cNU9BLdN+/Nw1QA81Z2eyTzfCHis7/U5yc1Vh/VPMWkmL45r+AKeIdy/7b3dTX39inxEWjBsoMT
-	9Ij0k2rb6NW1oewrgOJadOIq1GjyOWNqT9uiD5ORDZ/YR9vh5FDP+HssP53zQGw5j8slLg9mO45xs
-	RNYOc6kg==;
-Received: from i53875a3e.versanet.de ([83.135.90.62] helo=diego.localnet)
-	by gloria.sntech.de with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <heiko@sntech.de>)
-	id 1uLU46-0001IH-Ji; Sat, 31 May 2025 23:48:30 +0200
-From: Heiko =?UTF-8?B?U3TDvGJuZXI=?= <heiko@sntech.de>
-To: Linus Walleij <linus.walleij@linaro.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
- Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <ukleinek@kernel.org>,
- William Breathitt Gray <wbg@kernel.org>,
- Sebastian Reichel <sebastian.reichel@collabora.com>,
- Kever Yang <kever.yang@rock-chips.com>,
- Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
-Cc: linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org,
- linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org,
- linux-iio@vger.kernel.org, kernel@collabora.com,
- Jonas Karlman <jonas@kwiboo.se>,
- Detlev Casanova <detlev.casanova@collabora.com>,
- Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
-Subject: Re: [PATCH 4/7] soc: rockchip: add mfpwm driver
-Date: Sat, 31 May 2025 23:48:29 +0200
-Message-ID: <2188729.OBFZWjSADL@diego>
-In-Reply-To: <20250408-rk3576-pwm-v1-4-a49286c2ca8e@collabora.com>
-References:
- <20250408-rk3576-pwm-v1-0-a49286c2ca8e@collabora.com>
- <20250408-rk3576-pwm-v1-4-a49286c2ca8e@collabora.com>
+	s=arc-20240116; t=1748729620; c=relaxed/simple;
+	bh=EufhE4khXJfcXaIToKySlWjWh0rkPLuopmauJx8nfF8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=a13PW8zFeYyHOhYcujEo5JyftGE6qiCSqEnlIBrWVRPSPaI8GSwizS1JAqiBa+FwY19NkrVP1FSNdgY7yRYujqoFJQBnAiwfWBeWzvbNa28TqeFCL8bpYNky7NiPVEG/72Uw1su4BsqXBel/K5Vt64UsYIk8K3ZFk/n/Z4wedr8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=zash.se; spf=pass smtp.mailfrom=zash.se; dkim=pass (2048-bit key) header.d=zash.se header.i=@zash.se header.b=jJvRM59/; arc=none smtp.client-ip=185.97.32.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=zash.se
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zash.se
+Received: from mail.zash.se (cerdale.zash.se [IPv6:2a00:66c0:7:1::cd1e])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (secp384r1) server-digest SHA384)
+	(Client did not present a certificate)
+	by dimidiatus.zash.se (Postfix) with ESMTPS id 958E719F5D8;
+	Sun,  1 Jun 2025 00:05:14 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zash.se; s=2025;
+	t=1748729105; bh=SVotxztx5CJUQc5mS0Q1kj0N0+zv2DMFiBjZ7PfRb3s=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=jJvRM59/TB7v+qAsievCIxoXPQ7HUOs3PNoXZWguAzaFIVEQ4j+Vt8ic2WdEiqYUt
+	 YoyVBrWTNWYUq2fv4Vp1MVDL5P32SZnM8Ijsfw3PotFs7duJXUd3keVcrC1suyxuoL
+	 CKicMw0Pn4wLfoqVyZZCzTSAqBt8eMwRsqlrkBTR6gTm1Ozm4C0RIiWfbQdd8kFp1I
+	 PM9pfEruXnMlFUjEINDm3BN8l5ksFYLrZgcfQw/vAqJyUVcYxPEMQnOScNesLU1155
+	 MAQYMfNTxpfzdbanXwUAhKrfzAJvFwxhREdN18a+OVxinb2aUs/85Z5MsYgsRuLxB2
+	 63o0yD50N4XBw==
+Received: from localhost (localhost [::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.zash.se (Postfix) with ESMTPSA id B4C376E0076;
+	Sun,  1 Jun 2025 00:05:04 +0200 (CEST)
+Date: Sun, 1 Jun 2025 00:05:02 +0200
+From: Kim Alvefur <zash@zash.se>
+To: Salvatore Bonaccorso <carnil@debian.org>
+Cc: 1106411@bugs.debian.org, Stephan Gerhold <stephan@gerhold.net>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
+	Andy Shevchenko <andy.shevchenko@gmail.com>,
+	Peter Zijlstra <peterz@infradead.org>, linux-kernel@vger.kernel.org
+Subject: Re: kernel NULL pointer dereference in bmc150_accel_core / RIP:
+ 0010:bmc150_accel_set_interrupt+0x68/0x120 [bmc150_accel_core]
+Message-ID: <aDt9DrWxKOUZHQ3K@spisula.zash.se>
+References: <174809774197.3242.15028356144506391196.reportbug@spisula.zash.se>
+ <aDMuJsV4Mxb1IVoZ@eldamar.lan>
+ <174809774197.3242.15028356144506391196.reportbug@spisula.zash.se>
+ <aDnt9LkEZjb4DOO-@spisula.zash.se>
+ <aDtZqwjKtpyguppg@eldamar.lan>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <aDtZqwjKtpyguppg@eldamar.lan>
+Jabber-ID: zash@zash.se
 
-Am Dienstag, 8. April 2025, 14:32:16 Mitteleurop=C3=A4ische Sommerzeit schr=
-ieb Nicolas Frattaroli:
-> With the Rockchip RK3576, the PWM IP used by Rockchip has changed
-> substantially. Looking at both the downstream pwm-rockchip driver as
-> well as the mainline pwm-rockchip driver made it clear that with all its
-> additional features and its differences from previous IP revisions, it
-> is best supported in a new driver.
->=20
-> This brings us to the question as to what such a new driver should be.
-> To me, it soon became clear that it should actually be several new
-> drivers, most prominently when Uwe Kleine-K=C3=B6nig let me know that I
-> should not implement the pwm subsystem's capture callback, but instead
-> write a counter driver for this functionality.
->=20
-> Combined with the other as-of-yet unimplemented functionality of this
-> new IP, it became apparent that it needs to be spread across several
-> subsystems.
->=20
-> For this reason, we add a new platform bus based driver, called mfpwm
-> (short for "Multi-function PWM"). This "parent" driver makes sure that
-> only one device function driver is using the device at a time, and is in
-> charge of registering the platform bus devices for the individual device
-> functions offered by the device.
->=20
-> An acquire/release pattern is used to guarantee that device function
-> drivers don't step on each other's toes.
->=20
-> Signed-off-by: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
+On Sat, May 31, 2025 at 09:34:03PM +0200, Salvatore Bonaccorso wrote:
+>On Fri, May 30, 2025 at 07:42:12PM +0200, Kim Alvefur wrote:
+>> So far it seems to happen on every boot, between unlocking LUKS and the
+>> login manager starting.
+>>
+>> I wonder if this is related to another symptom this machine has, where
+>> it fails to complete suspend and goes into a state where the only action
+>> that has any effect is a long-press of the power button to turn it off.
+>
+>Looking through the boot log I'm noticing the following:
+>
+>> May 30 19:21:47 spisula kernel: bmc150_accel_i2c i2c-BOSC0200:00: supply vdd not found, using dummy regulator
+>> May 30 19:21:47 spisula kernel: bmc150_accel_i2c i2c-BOSC0200:00: supply vddio not found, using dummy regulator
+>[...]
+>> May 30 19:21:47 spisula kernel: bmc150_accel_i2c i2c-BOSC0200:base: supply vdd not found, using dummy regulator
+>> May 30 19:21:47 spisula kernel: bmc150_accel_i2c i2c-BOSC0200:base: supply vddio not found, using dummy regulator
+>
+>and iio-sensor-proxy might fail to handle then the bosch 0200
+>accelerometer. You proobably cannot temporary purge the
+>iio-sensor-proxy if installed by reverse dependencies, but might you
+>try to temporarily mask the service and retest a boot?
 
-actually trying to compile this, led me to
+That seems to have an effect, no "BUG: ..." in dmesg now, and the
+machine made it trough a suspends and resume cycle.
 
-aarch64-linux-gnu-ld: drivers/soc/rockchip/mfpwm.o: in function `mfpwm_reg_=
-read':
-/home/devel/hstuebner/00_git-repos/linux-rockchip/_build-arm64/../include/s=
-oc/rockchip/mfpwm.h:423: multiple definition of `mfpwm_reg_read'; drivers/p=
-wm/pwm-rockchip-v4.o:/home/devel/hstuebner/00_git-repos/linux-rockchip/_bui=
-ld-arm64/../include/soc/rockchip/mfpwm.h:423: first defined here
-aarch64-linux-gnu-ld: drivers/soc/rockchip/mfpwm.o: in function `mfpwm_reg_=
-write':
-/home/devel/hstuebner/00_git-repos/linux-rockchip/_build-arm64/../include/s=
-oc/rockchip/mfpwm.h:428: multiple definition of `mfpwm_reg_write'; drivers/=
-pwm/pwm-rockchip-v4.o:/home/devel/hstuebner/00_git-repos/linux-rockchip/_bu=
-ild-arm64/../include/soc/rockchip/mfpwm.h:428: first defined here
-make[3]: *** [../scripts/Makefile.vmlinux_o:72: vmlinux.o] Fehler 1
-
-
-during the linking stage - with the driver as builtin
-
-
-> +inline u32 mfpwm_reg_read(void __iomem *base, u32 reg)
-> +{
-> +	return readl(base + reg);
-> +}
-> +
-> +inline void mfpwm_reg_write(void __iomem *base, u32 reg, u32 val)
-> +{
-> +	writel(val, base + reg);
-> +}
-
-making that a "static inline ..." solves that.
-
-
-On a more general note, what is the differentiation to an MFD here?
-
-Like you can already bind dt-nodes to MFD subdevices, and can implement
-the exclusivity API thing on top of a general mfd device, to make sure only
-one mfd-cell gets activated at one time.
-
-Other than that, this looks like it reimplements MFDs?
-
-Also handing around a regmap might be nicer, compared to readl/writel.
-
-
-Heiko
-
-
-
+-- 
+Kim "Zash" Alvefur
 

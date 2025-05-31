@@ -1,60 +1,57 @@
-Return-Path: <linux-iio+bounces-20075-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20076-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DEADAC9BA9
-	for <lists+linux-iio@lfdr.de>; Sat, 31 May 2025 18:15:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D316AC9BAE
+	for <lists+linux-iio@lfdr.de>; Sat, 31 May 2025 18:18:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6036F3BD643
-	for <lists+linux-iio@lfdr.de>; Sat, 31 May 2025 16:15:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5AB1D17C182
+	for <lists+linux-iio@lfdr.de>; Sat, 31 May 2025 16:18:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3436149C4A;
-	Sat, 31 May 2025 16:15:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7B65185E4A;
+	Sat, 31 May 2025 16:18:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P8cw/xQc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W+CRmwRm"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD5C515E96;
-	Sat, 31 May 2025 16:15:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F02117A31D;
+	Sat, 31 May 2025 16:18:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748708134; cv=none; b=WsIS5jXpi0gfybGWvNigJYYWa8mY3nRnNVTP7ib8Qjkt2TjOOzEjY1ImvUYBOcFzJTyftpJMn2zakdy3jWsU+wrpoEhfqM/jxuWDJLt9Iuul7R8U84pUY6f+wnOUpxFvOtA54kPlMyBVaaTNTAsvwMF2JTMS9/iyAK3KfWkcXtI=
+	t=1748708324; cv=none; b=DSwXZWzekZb2ISc88T7+esSANWodto0QUkXF4bcpGpVTXVOQ49vdBhw02/+FvuacqTzk1eOUz7VnjA3drSMCEnJQFrG1wxiPyeNtj+jpe2khPmqNlNcDHpGmn81ejld41dxLyvCivMFJENYFOXuftnZepnU8zVqTVibs8jfDoP0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748708134; c=relaxed/simple;
-	bh=triALQDZdrI8N+OpvJBoFVb40OEfCWpbOrTjgR0NXnA=;
+	s=arc-20240116; t=1748708324; c=relaxed/simple;
+	bh=6XW6rvHYYe6NmPi1aP+xp49GhLfblEpiI49g8P2fQCo=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HogDLR2SELeQYkJmuA40kysHyYbZdZsh2bpYbhml4TES+0sz0Ej9xAm2HfFbopOkM4mzygmyTbWBcX5cEetIG/AkxO1acfjsEsq054H7Tou27TCbhxFcdmKocPIg7gX89CUN+3gAQ4AEGcQ/8ejNuvo3DjdGTxZzXHQar0jqayQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P8cw/xQc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8DF5C4CEE3;
-	Sat, 31 May 2025 16:15:30 +0000 (UTC)
+	 MIME-Version:Content-Type; b=dbc01hiSYuyMcEuDYY3PmblwFW6dzogW42UMgxtlNIxRUa22qLNcRy/THk6cZDr9KY6RNBU0LXnseXwPVbyQxVUQCwOILZLhQG0PqneUToLKVhBHUZ1FfXKjPlWmubwHSdVlvUK6K1eLD9veDT45X/S7rTCPE+T5qCJJ/y8YNwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W+CRmwRm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83D69C4CEE3;
+	Sat, 31 May 2025 16:18:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748708134;
-	bh=triALQDZdrI8N+OpvJBoFVb40OEfCWpbOrTjgR0NXnA=;
+	s=k20201202; t=1748708324;
+	bh=6XW6rvHYYe6NmPi1aP+xp49GhLfblEpiI49g8P2fQCo=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=P8cw/xQcV401k5Qj6Q11ydVwR0q0Xk/4pK9q22OSv79CcDQBV4k0L7TmMXYX9LKwK
-	 6mPYCwT/eFmtnTtmWab4ybLK4McAmUWUMHU7qVlsp+hQmfQgJmDJ7PAYRpD+87KTLR
-	 arf/HsvGUtGkiZr7brhsibduwaZ3wtIay3fgumh19vXxZqp+x2GRihfc13F7W/teg2
-	 KxMKOulwiFQ9Uy2rn617OZYqDaWL4DUr4tf70bFZFtfT4Gy/MjAI2yKFWDE3wwtSYZ
-	 HEaJy/l8KJ4k2Hl4qI9xXZGTPQvMnUS+57LfhaqtTsNM0I3kJzE7sxT8KBW2R+wBMJ
-	 NL7r0SHWSf7MQ==
-Date: Sat, 31 May 2025 17:15:27 +0100
+	b=W+CRmwRmFU8uaIsjGDgRT3CVvlci4orRZbUsCVLLv/nq+AVeNNNXsXNA32r+/UoLr
+	 leYRBoJYCcVYBNrUO2eQ/u5nNwemPFAOtf12IdRAZZqFAtdFg2oHc5juFotn7OZUXI
+	 7rSwyC8ui515g9fTbBUmsKJKK954HwLPS6qVp8ebF7gJIqXU2AbDrFkUkNnp/BZOYk
+	 K3FsuRC88S+mQuzUID9CbeclTTtz9PV0okK+Z0jOJYJPzcLeFYK8UHxb3UazFy5MLl
+	 27Mt8gc1pcU6dOjPM8sQwY9+PK8k2HfCM7+2T6ugxAnPpRaU9igsmcgNwYflAcm8mD
+	 9AFu3YnX7iWEA==
+Date: Sat, 31 May 2025 17:18:37 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: David Lechner <dlechner@baylibre.com>
-Cc: Angelo Dureghello <adureghello@baylibre.com>, Lars-Peter Clausen
- <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, Nuno
- =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] iio: adc: ad7606: add enabling of optional
- Vrefin voltage
-Message-ID: <20250531171527.2b12b2a2@jic23-huawei>
-In-Reply-To: <73be8e49-3130-4dcd-9286-689ef55badd9@baylibre.com>
-References: <20250530-wip-bl-ad7606-reference-voltages-v2-0-d5e1ad7e6f14@baylibre.com>
-	<20250530-wip-bl-ad7606-reference-voltages-v2-2-d5e1ad7e6f14@baylibre.com>
-	<73be8e49-3130-4dcd-9286-689ef55badd9@baylibre.com>
+Cc: Michael Hennerich <Michael.Hennerich@analog.com>, Angelo Dureghello
+ <adureghello@baylibre.com>, Guillaume Stols <gstols@baylibre.com>,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH v2] iio: adc: adi-axi-adc: fix ad7606_bus_reg_read()
+Message-ID: <20250531171837.1490051a@jic23-huawei>
+In-Reply-To: <20250530-iio-adc-adi-axi-adc-fix-ad7606_bus_reg_read-v2-1-ad2dfc0694ce@baylibre.com>
+References: <20250530-iio-adc-adi-axi-adc-fix-ad7606_bus_reg_read-v2-1-ad2dfc0694ce@baylibre.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -65,55 +62,64 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 30 May 2025 10:39:27 -0500
+On Fri, 30 May 2025 16:50:14 -0500
 David Lechner <dlechner@baylibre.com> wrote:
 
-> On 5/30/25 9:27 AM, Angelo Dureghello wrote:
-> > From: Angelo Dureghello <adureghello@baylibre.com>
-> > 
-> > Add optional refin voltage enabling. The property "refin-supply" is
-> > already available and optional in the current fdt dt_schema.
-> > 
-> > Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
-Tweaked and applied. 
-
-I also added:
-
-Note that the driver does not need to take any actions if the supply
-is not present because a pin strap is used to change the behavior
-of the device if an external reference is connected.
-
-To the description
-
-(applied patch 1 as well)
-
-> > ---
-> >  drivers/iio/adc/ad7606.c | 5 +++++
-> >  1 file changed, 5 insertions(+)
-> > 
-> > diff --git a/drivers/iio/adc/ad7606.c b/drivers/iio/adc/ad7606.c
-> > index 3bbe9c05b5edbc11e8016c995c6ab64104836e7b..4fd9638eb6e56f800c7c97425e45e04f269e3df7 100644
-> > --- a/drivers/iio/adc/ad7606.c
-> > +++ b/drivers/iio/adc/ad7606.c
-> > @@ -1335,6 +1335,11 @@ int ad7606_probe(struct device *dev, int irq, void __iomem *base_address,
-> >  		return dev_err_probe(dev, ret,
-> >  				     "Failed to enable Vdrive supply\n");
-> >  
-> > +	ret = devm_regulator_get_enable_optional(dev, "refin");
-> > +	if (ret && ret != -ENODEV)
-> > +		return dev_err_probe(dev, ret,
-> > +				     "failed to enable REFIN voltage\n");  
+> Mask the value read before returning it. The value read over the
+> parallel bus via the AXI ADC IP block contains both the address and
+> the data, but callers expect val to only contain the data.
 > 
-> s/failed/Failed/
-> s/voltage/supply/
+> axi_adc_raw_write() takes a u32 parameter, so addr was the wrong type.
+> This wasn't causing any issues but is corrected anyway since we are
+> touching the same line to add a new variable.
 > 
-> to be consistent with AVcc and Vdrive messages
+> Cc: stable@vger.kernel.org
+> Fixes: 79c47485e438 ("iio: adc: adi-axi-adc: add support for AD7606 register writing")
+> Signed-off-by: David Lechner <dlechner@baylibre.com>
+I've applied this to my temporary fixes-togreg-for-6.16 branch for now.
+That will get rebased on rc1 once available.  As such I'm fine adding
+tags or indeed dropping it again if others have feedback!
+
+Jonathan
+
+> ---
+> Changes in v2:
+> - Use ADI_AXI_REG_VALUE_MASK instead of hard-coding 0xFF.
+> - Introduce local variable and use FIELD_PREP() instead of modifying val.
+> - Link to v1: https://lore.kernel.org/r/20250530-iio-adc-adi-axi-adc-fix-ad7606_bus_reg_read-v1-1-ce8f7cb4d663@baylibre.com
+> ---
+>  drivers/iio/adc/adi-axi-adc.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
 > 
-> > +
-> >  	st->chip_info = chip_info;
-> >  
-> >  	if (st->chip_info->oversampling_num) {
-> >   
+> diff --git a/drivers/iio/adc/adi-axi-adc.c b/drivers/iio/adc/adi-axi-adc.c
+> index cf942c043457ccea49207c3900153ee371b3774f..fc745297bcb82cf2cf7f30c7fcf9bba2d861a48c 100644
+> --- a/drivers/iio/adc/adi-axi-adc.c
+> +++ b/drivers/iio/adc/adi-axi-adc.c
+> @@ -445,7 +445,7 @@ static int axi_adc_raw_read(struct iio_backend *back, u32 *val)
+>  static int ad7606_bus_reg_read(struct iio_backend *back, u32 reg, u32 *val)
+>  {
+>  	struct adi_axi_adc_state *st = iio_backend_get_priv(back);
+> -	int addr;
+> +	u32 addr, reg_val;
+>  
+>  	guard(mutex)(&st->lock);
+>  
+> @@ -455,7 +455,9 @@ static int ad7606_bus_reg_read(struct iio_backend *back, u32 reg, u32 *val)
+>  	 */
+>  	addr = FIELD_PREP(ADI_AXI_REG_ADDRESS_MASK, reg) | ADI_AXI_REG_READ_BIT;
+>  	axi_adc_raw_write(back, addr);
+> -	axi_adc_raw_read(back, val);
+> +	axi_adc_raw_read(back, &reg_val);
+> +
+> +	*val = FIELD_GET(ADI_AXI_REG_VALUE_MASK, reg_val);
+>  
+>  	/* Write 0x0 on the bus to get back to ADC mode */
+>  	axi_adc_raw_write(back, 0);
 > 
+> ---
+> base-commit: 7cdfbc0113d087348b8e65dd79276d0f57b89a10
+> change-id: 20250530-iio-adc-adi-axi-adc-fix-ad7606_bus_reg_read-f2bbb503db8b
+> 
+> Best regards,
 
 

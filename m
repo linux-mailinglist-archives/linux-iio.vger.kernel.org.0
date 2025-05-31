@@ -1,61 +1,61 @@
-Return-Path: <linux-iio+bounces-20072-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20073-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD308AC9B9E
-	for <lists+linux-iio@lfdr.de>; Sat, 31 May 2025 18:05:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F24D5AC9BA1
+	for <lists+linux-iio@lfdr.de>; Sat, 31 May 2025 18:07:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D89EB3BF9A3
-	for <lists+linux-iio@lfdr.de>; Sat, 31 May 2025 16:04:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 08E16189ED23
+	for <lists+linux-iio@lfdr.de>; Sat, 31 May 2025 16:07:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4C301537C8;
-	Sat, 31 May 2025 16:04:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C981156C79;
+	Sat, 31 May 2025 16:07:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bb2T6rnb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O9wFa3tv"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 547F2DF42;
-	Sat, 31 May 2025 16:04:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E77D7DF42;
+	Sat, 31 May 2025 16:07:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748707498; cv=none; b=acNzAqh96T3fA/juWqrfWC0noaypLd1LVjD0FiNT/C3lVHvZw84WsZH7HTYXHmLd9atXgQ5a2xIL+Wn+zMJnvkTCSaaSGhF8V5Xx1GF/KxXkmaJReDT/p25+9OpdcVXMhaFDIUV8eyJzjk+yzYpwu4EeKizVJSNGpYcnbCxeB94=
+	t=1748707655; cv=none; b=oV26+ai0X0KKLllNIq/lp+rW8PkntTkh9DfTBLbCeiiEYlaKsuqe4m8WqbUXlx5KTZteZWvmhro6pBwur4t6d2lMykmX9H2Mu/fCdeDBfqv1zHUmZtOJV+XgQU9acUm4e29PoraYneY6C43BtKcXzWixRDOL6JwacjTZ/WC5D78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748707498; c=relaxed/simple;
-	bh=QwnqlQc8eO59QC1iazn3MfJicRUUxiL9Sp8eFgFfSYc=;
+	s=arc-20240116; t=1748707655; c=relaxed/simple;
+	bh=1FC4MvVxMQ36EngaozUWlCkIiO99uwphbqFgEWrruRk=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rjQfSp50L2bCRrrk9RQZQt9cN0VSJN2rKIxDUGxmUIxtxKRy0xMaiDAc/ce7J3CzD+yNir7fxIDAUqU1PM8jFcUNzMbHw/7L6FPbw0l2HF8CPN8sxXQ3ARgl18d2+WFKi1XkuH94uWXDHLpW4MHXlKYi+JfIZVtVU83eHgYnFq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bb2T6rnb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E52BFC4CEE3;
-	Sat, 31 May 2025 16:04:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=eoJpfd/l4xPZRXSvwL3Ep9J+49oHjML0jWfmvscZbQQ0mRaCEdLv88xF47UeWQcl8NnYHmlufLo/b65BJKRcV0VhBiQsImUUtcDA6TlJHmMcQmCNusUVtB41/wAG88GFThavyzhro1WVxMSziAOkcAu1XHErgB96s5CN09YOuVM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O9wFa3tv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19746C4CEE3;
+	Sat, 31 May 2025 16:07:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748707497;
-	bh=QwnqlQc8eO59QC1iazn3MfJicRUUxiL9Sp8eFgFfSYc=;
+	s=k20201202; t=1748707654;
+	bh=1FC4MvVxMQ36EngaozUWlCkIiO99uwphbqFgEWrruRk=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=bb2T6rnbeL11klfDAZkf76s7ljB1hTCcQ9j3PkpMyAug+lI/60Lmy8ihrTP6Z6gqL
-	 crMZxzP/pl/9PARi3sQwkrF7KKxxkI2GLt9t/+zP5qkm22//tyHvGYeI8LqkA8Aahl
-	 jq5+DlrDPZ2FfOZkJ7nMe7quG78IA37maZajH09xDuPWY8hvV/hFGGvZgurFdDjyXo
-	 e9sQqvQA/zIUSfnbe2wcmX+k9/aaHMoe8HAYbhtxKRY10jHMR60Rl29EFkhoS349nA
-	 cOT9nYWhNEFEyPzoiNB85RN7/63uC3SK6vPmDz2hvT/2K2hIy4Pq6haf1ZpUK0WxMr
-	 oe+jSCxMtipOg==
-Date: Sat, 31 May 2025 17:04:48 +0100
+	b=O9wFa3tvHznaSClIqfzBwnBZqBdeA9+lYZOHWXLSLE5sjUWAfFBs2dyOj+I6LHDck
+	 prTql7KGRScldruTcEDeqD3in9ZgHaTWsmRbHoCpCoNGljDs8Yzh/kKPMb6dIRqBsN
+	 7swqrhUqBwlYhxMFNU0wSIkGFMq58KzHPyxVAsE2Cq3akxBrichUenH4bCxK4jrXMc
+	 NBJ/RpdH4bcXsfTjvR84N58ZiaoYNcwDJr98xycIcSvVsUqWtZtRTXBjx4CV56yIVa
+	 L9p0Fz3hD0sr9VAMYR5g3w5RY94oxU2wuEfj4ANxOaQgRSLqmE43tIiNx48wEUfGLJ
+	 3xe3JICeiA7hg==
+Date: Sat, 31 May 2025 17:07:24 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: Angelo Dureghello <adureghello@baylibre.com>
-Cc: Nuno Sa <nuno.sa@analog.com>, Lars-Peter Clausen <lars@metafoo.de>,
- Michael Hennerich <Michael.Hennerich@analog.com>, David Lechner
- <dlechner@baylibre.com>, Andy Shevchenko <andy@kernel.org>, Rob Herring
- <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, Jonathan Cameron
- <Jonathan.Cameron@huawei.com>, devicetree@vger.kernel.org
-Subject: Re: [PATCH v2] dt-bindings: iio: adc: adi,ad7606: fix dt_schema
- validation warning
-Message-ID: <20250531170448.2be25330@jic23-huawei>
-In-Reply-To: <20250526-wip-bl-ad7606-dtschema-fixes-v2-1-9bd56d039489@baylibre.com>
-References: <20250526-wip-bl-ad7606-dtschema-fixes-v2-1-9bd56d039489@baylibre.com>
+Cc: David Lechner <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Lars-Peter Clausen
+ <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, Rob
+ Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor
+ Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH v7 1/6] Documentation: ABI: IIO: add calibconv_delay
+ documentation
+Message-ID: <20250531170724.12373532@jic23-huawei>
+In-Reply-To: <20250526-wip-bl-ad7606-calibration-v7-1-b487022ce199@baylibre.com>
+References: <20250526-wip-bl-ad7606-calibration-v7-0-b487022ce199@baylibre.com>
+	<20250526-wip-bl-ad7606-calibration-v7-1-b487022ce199@baylibre.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -66,69 +66,64 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 26 May 2025 15:19:08 +0200
+On Mon, 26 May 2025 12:03:16 +0200
 Angelo Dureghello <adureghello@baylibre.com> wrote:
 
 > From: Angelo Dureghello <adureghello@baylibre.com>
 > 
-> Fix following dt_schema warning when offload is used:
-> 
->   DTC [C] arch/arm/boot/dts/xilinx/zynq-zed-adv7511-ad7606.dtb
-> /home/angelo/dev-baylibre/linux-iio/arch/arm/boot/dts/xilinx/zynq-zed-adv7511-ad7606.dtb: adc@0: 'oneOf' conditional failed, one must be fixed:
-> 	'interrupts' is a required property
-> 	'io-backends' is a required property
-> 	from schema $id: http://devicetree.org/schemas/iio/adc/adi,ad7606.yaml#
-> 
-> There isn't any reason that we couldn't have interrupts wired up at the
-> same time we are using io-backends or SPI offload, so dropping off the
-> related "oneOf" block entirely.
-> 
-> Fixes: ccf8c3f106a2 ("dt-bindings: iio: adc: adi,ad7606: add SPI offload properties")
-That ID seems to be wrong.   Probably down to the messy rebase I had to do pre pull
-request.  Fixed up to be 81fe5529e812
+> Add new IIO "convdelay" documentation.
+That's not what the patch title says... It's called calibconv_delay still
+there.
 
-Applied to the fixes-togreg-for-6.16 branch that will become fixes-togreg after rc1
-is available to rebase on.
-
-Thanks,
+I'd fix that and version number, but looks like you are going to be doing
+a v8 anyway based on David's feedback on patch 6.
 
 Jonathan
 
+> 
+> The ad7606 implements a phase calibation feature, in nanoseconds.
+> Being this a time delay, using the convdelay suffix.
+> 
 > Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
 > ---
-> Fix dt_schema validation warning.
+>  Documentation/ABI/testing/sysfs-bus-iio | 24 ++++++++++++++++++++++++
+>  1 file changed, 24 insertions(+)
 > 
-> Link: https://lore.kernel.org/linux-iio/20250408-wip-bl-ad3552r-fixes-v4-0-b33c0264bd78@baylibre.com
-> ---
-> Changes in v2:
-> - Change removing the related oneOf block. 
-> - Link to v1: https://lore.kernel.org/r/20250523-wip-bl-ad7606-dtschema-fixes-v1-1-d9147fb2a199@baylibre.com
-> ---
->  Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml | 6 ------
->  1 file changed, 6 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml
-> index 29f12d650442b8ff2eb455306ce59a0e87867ddd..1a5209139e1338f803c66ad2b4d63ad53cc11d96 100644
-> --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml
-> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml
-> @@ -223,12 +223,6 @@ allOf:
->        - required:
->            - pwms
+> diff --git a/Documentation/ABI/testing/sysfs-bus-iio b/Documentation/ABI/testing/sysfs-bus-iio
+> index ef52c427a015cf47bb9847782e13afbee01e9f31..7e59cbd5acb85fd0909c1d56f9d76a84933d418a 100644
+> --- a/Documentation/ABI/testing/sysfs-bus-iio
+> +++ b/Documentation/ABI/testing/sysfs-bus-iio
+> @@ -559,6 +559,30 @@ Description:
+>  		- a small discrete set of values like "0 2 4 6 8"
+>  		- a range specified as "[min step max]"
 >  
-> -  - oneOf:
-> -      - required:
-> -          - interrupts
-> -      - required:
-> -          - io-backends
-> -
->    - if:
->        properties:
->          compatible:
+> +What:		/sys/bus/iio/devices/iio:deviceX/in_voltageY_convdelay
+> +KernelVersion:	6.16
+> +Contact:	linux-iio@vger.kernel.org
+> +Description:
+> +		Delay of start of conversion from common reference point shared
+> +		by all channels. Can be writable when used to compensate for
+> +		delay variation introduced by external filters feeding a
+> +		simultaneous sampling ADC.
+> +
+> +		E.g., for the ad7606 ADC series, this value is intended as a
+> +		configurable time delay in seconds, to correct delay introduced
+> +		by an optional external filtering circuit.
+> +
+> +What:		/sys/bus/iio/devices/iio:deviceX/in_voltageY_convdelay_available
+> +KernelVersion:	6.16
+> +Contact:	linux-iio@vger.kernel.org
+> +Description:
+> +		Available values of convdelay. Maybe expressed as:
+> +
+> +		- a range specified as "[min step max]"
+> +
+> +		If shared across all channels, <type>_convdelay_available
+> +		is used.
+> +
+>  What:		/sys/bus/iio/devices/iio:deviceX/in_accel_x_calibscale
+>  What:		/sys/bus/iio/devices/iio:deviceX/in_accel_y_calibscale
+>  What:		/sys/bus/iio/devices/iio:deviceX/in_accel_z_calibscale
 > 
-> ---
-> base-commit: 3964c6e5877f054497ffccc7d00f8f7add307d0d
-> change-id: 20250523-wip-bl-ad7606-dtschema-fixes-5e6ab342e043
-> 
-> Best regards,
 
 

@@ -1,60 +1,64 @@
-Return-Path: <linux-iio+bounces-20086-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20087-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B767AC9C0C
-	for <lists+linux-iio@lfdr.de>; Sat, 31 May 2025 19:29:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7A1FAC9C14
+	for <lists+linux-iio@lfdr.de>; Sat, 31 May 2025 19:43:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3FF723A8943
-	for <lists+linux-iio@lfdr.de>; Sat, 31 May 2025 17:29:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6797F3BEA4E
+	for <lists+linux-iio@lfdr.de>; Sat, 31 May 2025 17:42:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 407E9193436;
-	Sat, 31 May 2025 17:29:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 658C819ABD1;
+	Sat, 31 May 2025 17:42:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mMaLHcdN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iCAuOuZc"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAC1D290F;
-	Sat, 31 May 2025 17:29:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 080E23B19A;
+	Sat, 31 May 2025 17:42:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748712591; cv=none; b=d1EcJSd4EzqwDOQ7WWECIBcY3e8FmncSLrgeqbsdNMciab4JzBOK2q5icx0l4Scp/z9xOv/aEQcyT7fP4DNAyd1ygAyA06EXEuL7SaUc2mhCBg36mXd8CM/epwOWwegMqysXUs60xo6sRm1XEUhHUkm4HSFwYTFCOhAcNrO0kpU=
+	t=1748713375; cv=none; b=jfpDbMCW7Y8mDKY0Y2wXkwMHdtkye/MyPYATqt4RKDcZFReT3idZ/fw5LV7NR4Hbk3L+bqqe/O4i8bFhVUVVIPf21FO6qi87z1AHHcPI85WHmq+X9SlR/ljYKRVTRxEv1bJFKxrY26WfbmyZdZT/KxmzknQ1LH/YIlfgZS4tZpw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748712591; c=relaxed/simple;
-	bh=MiJ3W0UWWO3SczXh3w70YfSSrfIeau2mBBSZz1zZRhA=;
+	s=arc-20240116; t=1748713375; c=relaxed/simple;
+	bh=Iva5rHF/MAVSoSgGRlbmsQ1Mf85wBltXL8rYWFF5QzY=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eahsqme6Xu1y+kYfH9YhIZNahadgy4qZMuFZEC6CZHw6pI/7WS8l7olPRsWczai91J7RH0a0fEnARKjBQq6iSpswuB8AeyOt8BLzuYGOFk+IBOPy0NdxS8hzySdxRi+0qeWcQ+5Ev89oxYpZJctjG29g0YRbSOqqBZsIsAbvXLw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mMaLHcdN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFD99C4CEE3;
-	Sat, 31 May 2025 17:29:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=HRtav2EBVDZ67L6xSj+wDNEFEwg68DgwpAOdam6F7+CUCqk9UymARGkII1h1xVDJr/aINkbvLrH0SkXVj1t4OS3fRoWqM8+Xd65PLNUkDVsjn42qmAafsY6Hk2sXETMITqGjqIRohDbN/fkLQsZYO1KYA0Osikhw0H8o2OjkdQ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iCAuOuZc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2912C4CEE3;
+	Sat, 31 May 2025 17:42:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748712590;
-	bh=MiJ3W0UWWO3SczXh3w70YfSSrfIeau2mBBSZz1zZRhA=;
+	s=k20201202; t=1748713374;
+	bh=Iva5rHF/MAVSoSgGRlbmsQ1Mf85wBltXL8rYWFF5QzY=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=mMaLHcdNl4k9nS+dWbaRBK3m7SMoTPw8BylFi/iTZgWDCVUfTm7jDEL+0jN8t9IFd
-	 GkylHGZ93UgxAuz9EQOKTwWNBzl5y8IH7vZOMDLv/TF4TNsVNf1TFfdFTypzEGIhMB
-	 afhnBHQC9TX/2DPRCmqK0qTt5to0S42Dffuyyn8umrvHUV//oymE+vfVw43sfyN4tn
-	 7nEksqAi2peHs7FDdGEjPrXNsX6N8zB459GLUFI1vMnKmzqJc+zx48jNhUqBCeNJcN
-	 KKGlBoygd3PWnS61BMvdED0yxb/2rdlJRMSF1NCv2sz/a9mlKEcua+9Ic00h8M37NA
-	 nv29ernm9liIA==
-Date: Sat, 31 May 2025 18:29:41 +0100
+	b=iCAuOuZccwSniju3wtQ1/YL9YqNaTH2yu61vHn1g4dZ2nHLwe1LAVeZKm7qn/33bB
+	 2FIjNOOeg7q3Gb7WbN716cp6sauzZuYJ2ONRo4I7w99uo23Zr3Yt/6uCiUOdsCeMn3
+	 GMeSg3thU3fDis892ECaOvSnIdl6Ra4PLAhR6d3WGsfereNBb/ZUoaKUgeA6KITfMC
+	 X/JgXBzlvlPpWe+3c+WNYwVTJzVJ67LZD/mDeFh+zYXpPNHgHRWJKoSAdV4q9XAgJ3
+	 /3kgbEAR806TcWJAi0htKC4lOkpxExlcvKxPmK3w+/7aGiFJ50REvqBxblZRYJjqMe
+	 KgFerdgsoTsGQ==
+Date: Sat, 31 May 2025 18:42:42 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>, linus.walleij@linaro.org,
- dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org,
- robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- ~lkcamp/patches@lists.sr.ht, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] dt-bindings: iio: gyro: invensense,mpu3050: change irq
- maxItems
-Message-ID: <20250531182941.3d274d5c@jic23-huawei>
-In-Reply-To: <ad946c3b-b2b9-4fdd-8b70-6fd493dc5dab@kernel.org>
-References: <20250527215818.13000-1-rodrigo.gobbi.7@gmail.com>
-	<ad946c3b-b2b9-4fdd-8b70-6fd493dc5dab@kernel.org>
+To: Andy Shevchenko <andy@kernel.org>
+Cc: Jonathan Santos <Jonathan.Santos@analog.com>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org, nuno.sa@analog.com,
+ Michael.Hennerich@analog.com, marcelo.schmitt@analog.com, robh@kernel.org,
+ krzk+dt@kernel.org, conor+dt@kernel.org, marcelo.schmitt1@gmail.com,
+ linus.walleij@linaro.org, brgl@bgdev.pl, lgirdwood@gmail.com,
+ broonie@kernel.org, jonath4nns@gmail.com, dlechner@baylibre.com,
+ rafael@kernel.org, djrscally@gmail.com
+Subject: Re: [PATCH v9 09/12] iio: adc: ad7768-1: add support for
+ Synchronization over SPI
+Message-ID: <20250531184242.468e9e27@jic23-huawei>
+In-Reply-To: <aDnuvAdkcTAP2tMt@smile.fi.intel.com>
+References: <cover.1748447035.git.Jonathan.Santos@analog.com>
+	<27cccb51cc56f1bb57cb06d279854a503d779e25.1748447035.git.Jonathan.Santos@analog.com>
+	<aDnuvAdkcTAP2tMt@smile.fi.intel.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -65,21 +69,65 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 28 May 2025 07:55:40 +0200
-Krzysztof Kozlowski <krzk@kernel.org> wrote:
+On Fri, 30 May 2025 20:45:32 +0300
+Andy Shevchenko <andy@kernel.org> wrote:
 
-> On 27/05/2025 23:51, Rodrigo Gobbi wrote:
-> > The mpu3050 datasheet describes that this IC only supports one INT pin,
-> > which means one item with two cells inside binding.
-> > Change max to match this description.  
-> Fixes: 749787477ae4 ("dt-bindings:iio:gyro:invensense,mpu3050: txt to yaml format conversion.")
+> On Thu, May 29, 2025 at 07:50:29PM -0300, Jonathan Santos wrote:
+> > The synchronization method using GPIO requires the generated pulse to be
+> > truly synchronous with the base MCLK signal. When it is not possible to
+> > do that in hardware, the datasheet recommends using synchronization over
+> > SPI, where the generated pulse is already synchronous with MCLK. This
+> > requires the SYNC_OUT pin to be connected to the SYNC_IN pin.
+> > 
+> > Use trigger-sources property to enable device synchronization over SPI
+> > and multi-device synchronization while replacing sync-in-gpios property.  
 > 
+> ...
 > 
-> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Applied to the fixes-togreg-for-6.16 branch of iio.git.
+> > struct ad7768_state {  
+> 
+> >  	struct iio_trigger *trig;
+> >  	struct gpio_desc *gpio_sync_in;
+> >  	struct gpio_desc *gpio_reset;  
+> 
+> > +	bool en_spi_sync;  
+> 
+> I'm wondering if moving this...
+> 
+> >  	const char *labels[ARRAY_SIZE(ad7768_channels)];
+> >  	struct gpio_chip gpiochip;  
+> 
+> ...to here saves a few bytes in accordance to `pahole`.
+> 
+> >  };  
+> 
+> ...
+> 
+> > +static int ad7768_trigger_sources_sync_setup(struct device *dev,
+> > +					     struct fwnode_handle *dev_fwnode,
+> > +					     struct ad7768_state *st)
+> > +{
+> > +	struct fwnode_reference_args args;
+> > +
+> > +	struct fwnode_handle *fwnode __free(fwnode_handle) =
+> > +		fwnode_find_reference_args(dev_fwnode, "trigger-sources",
+> > +					   "#trigger-source-cells", 0,
+> > +					   AD7768_TRIGGER_SOURCE_SYNC_IDX, &args);  
+> 
+> I don't see how args are being used. This puts in doubt the need of the first
+> patch.
 
-> 
-> Best regards,
-> Krzysztof
+That did get discussed (more context needed in the commit message for patch 1).
+I wasn't happy with ignoring #trigger-source-cells which is required in the
+binding but here is known to be 0.
 
+If it was larger than 0 but we didn't care about the arguments I believe
+we'd still need to use this call to take the right stride through the
+data array that this is coming from.
+Ultimately I think that is this bit of code establishing the end of the phandle.
+https://elixir.bootlin.com/linux/v6.15/source/drivers/of/base.c#L1300
+
+I might have gotten it wrong how this all works though!
+
+J
 

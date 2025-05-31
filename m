@@ -1,60 +1,55 @@
-Return-Path: <linux-iio+bounces-20081-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20082-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F851AC9BD9
-	for <lists+linux-iio@lfdr.de>; Sat, 31 May 2025 19:03:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9666AC9BDE
+	for <lists+linux-iio@lfdr.de>; Sat, 31 May 2025 19:08:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 38F73189D954
-	for <lists+linux-iio@lfdr.de>; Sat, 31 May 2025 17:03:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EBFA39E4D25
+	for <lists+linux-iio@lfdr.de>; Sat, 31 May 2025 17:07:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C2571465A1;
-	Sat, 31 May 2025 17:03:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56AC01494A8;
+	Sat, 31 May 2025 17:08:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AOo4/ZeE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UUnA6Hly"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7CAD290F;
-	Sat, 31 May 2025 17:03:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13AEA45C14;
+	Sat, 31 May 2025 17:07:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748711009; cv=none; b=I1o3Z9eswraUbKQimyYracxEdTfrIrwQ/EHdEZPwgsrFhpqfn2mBr5xuGKK+wxFXgVeKbcc2VcdqGlhhnBscQGFS+47tLBiGMRDL6RL4ro6Fe0Udnz3+cej5O0Smw8obCTMr+JJuMuwHz/08DwLStyf/X5FWhhdSRY3nZLOUH5U=
+	t=1748711280; cv=none; b=ooY0w+wz5FFp5eAJaODxPXaD2F+jK5MhlVQwBFk3BHs8uUnJW6o52f+uVJb2ngDWbrLN95ISC7v2k8L2thMfZHelO/J8eQmecmnIz2Xgua4BGk967m6M0Sn9+3iTh6Vg8x3bs50LDMGFQaHD4KRLfpfg+C9hXWXq7xiXEW8VCT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748711009; c=relaxed/simple;
-	bh=zELDVTQmOQiapIfQpA7SV2UfpOmvrTozdeB+kwVTqZ4=;
+	s=arc-20240116; t=1748711280; c=relaxed/simple;
+	bh=aSOMo378xDNB/Q1bUszkJNg9T/8HO79eDD4pINt+f9I=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TOmpvDn9+KNjfZcJhD0dnSCgGfPfgGbmfEoWxhcYcq54Aa9cb0IFGRTv1D4AYyJxBPxN5XcQE3PC0ZbRtIhP7bkEPU3Uu48XoIxetixvBRiQM5Aw4pR+1v5u3XlcR/qaDPsKl1fVtTb6dFyiJRjds2M7+I5UrDE2UH3Jtqv60qE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AOo4/ZeE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A98CEC4CEE3;
-	Sat, 31 May 2025 17:03:24 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hwS9lqhhHKNC3d1O4B536QAeQSBHe6beIeYsRzTPe41QO30VOaTi1Df1Iluh1/E9RGx0JJAkPTuzGQPw+ZtjC0o7F5hQe9HN0PIaw+CimJgFjtF2UHW+nInRdRRFJA557B8gChV/9HsWSLvQqYS7EfHNlFWsmA/eB3PzsjVXqsA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UUnA6Hly; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C7B2C4CEEE;
+	Sat, 31 May 2025 17:07:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748711008;
-	bh=zELDVTQmOQiapIfQpA7SV2UfpOmvrTozdeB+kwVTqZ4=;
+	s=k20201202; t=1748711279;
+	bh=aSOMo378xDNB/Q1bUszkJNg9T/8HO79eDD4pINt+f9I=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=AOo4/ZeEg9jBo2TBmwAobYHj77/Aa7gij5kmklFMwoxh9ZXTcKQShJ9616tSF+lfW
-	 SPoc4ulZdsWAG0wOL3gcORATRWI1RGwiZ+eeL4vxxK2qL+U/PziSCrHYQMk+GTxyPO
-	 mq4US6BRcsDVfgSjfwggzyTURCADRT3IAzsDRrOr42zbQH86rIAuY7Ym4EOT9VrDDc
-	 IFXDRh87RWhTHIVrjJcvDIgBl4kMVJ3em6WNrhES2IbPr2Txzq4eITXeEb+8Ub6gVa
-	 hIQHyIEu/SJKka5qPffXlzJ644oXjYyk3+Z42xbXMmY5OYdERcw5mnhGwn+R6Ydgeh
-	 gknPOuR9CW97A==
-Date: Sat, 31 May 2025 18:03:19 +0100
+	b=UUnA6HlyqXLjdyhxTOguPm9aghp8EJvU+JZ1h2VkY7aZ3E5DtJ8DUgmBAP5YHYmgI
+	 zkWDrc0Y0tv37uSFMcENWdlDDVi+B8E5ZXsCd4/4ekrtPfex3nQN4aVjCiF4pUVtFg
+	 qPEBihGQQmbAXNiqLpjTjtMvzf6COL4eX26EA+DCqpM3om+bHHS54BF4PhWloXxU9B
+	 n0rTuq7xARSM55BRpsjxtQha1p3sSEc4g5Pz9gQdzoM9YQ3L1KO87QfHX9Y7mITTDj
+	 3/EKwmjYU5dSpgtx/LZKB5+N0mgmvkA0fIk3horV5Y1Jwz6kY8jk6m1RpBEEdPpJw8
+	 spjLU1yWCphGQ==
+Date: Sat, 31 May 2025 18:07:53 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Maud Spierings via B4 Relay
- <devnull+maudspierings.gocontroll.com@kernel.org>
-Cc: maudspierings@gocontroll.com, David Lechner <dlechner@baylibre.com>,
- Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko
- <andy@kernel.org>, Christian Heusel <christian@heusel.eu>, Linus Walleij
- <linus.walleij@linaro.org>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v4] iio: common: st_sensors: Fix use of uninitialize
- device structs
-Message-ID: <20250531180319.21365159@jic23-huawei>
-In-Reply-To: <20250527-st_iio_fix-v4-1-12d89801c761@gocontroll.com>
-References: <20250527-st_iio_fix-v4-1-12d89801c761@gocontroll.com>
+To: Antoniu Miclaus <antoniu.miclaus@analog.com>
+Cc: <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Nuno
+ =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>
+Subject: Re: [PATCH v2 1/2] iio: adc: ad4080: use lowercase device name
+Message-ID: <20250531180753.12357ec5@jic23-huawei>
+In-Reply-To: <20250526082228.4961-1-antoniu.miclaus@analog.com>
+References: <20250526082228.4961-1-antoniu.miclaus@analog.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -62,333 +57,45 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, 27 May 2025 08:36:08 +0200
-Maud Spierings via B4 Relay <devnull+maudspierings.gocontroll.com@kernel.org> wrote:
+On Mon, 26 May 2025 11:22:27 +0300
+Antoniu Miclaus <antoniu.miclaus@analog.com> wrote:
 
-> From: Maud Spierings <maudspierings@gocontroll.com>
-> 
-> Throughout the various probe functions &indio_dev->dev is used before it
-> is initialized. This caused a kernel panic in st_sensors_power_enable()
-> when the call to devm_regulator_bulk_get_enable() fails and then calls
-> dev_err_probe() with the uninitialized device.
-> 
-> This seems to only cause a panic with dev_err_probe(), dev_err(),
-> dev_warn() and dev_info() don't seem to cause a panic, but are fixed
-> as well.
-> 
-> The issue is reported and traced here: [1]
-> 
-> Link: https://lore.kernel.org/all/AM7P189MB100986A83D2F28AF3FFAF976E39EA@AM7P189MB1009.EURP189.PROD.OUTLOOK.COM/ [1]
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
-> ---
-> When I search for general &indio_dev->dev usage, I see quite a lot more
-> hits, but I am not sure if there are issues with those too.
-
-For probe error messages I'd like to see them all moved over to the parent
-device but more generally it may make sense to use indio_dev->dev
-
-As per the earlier discussion I still wonder if we should harden
-device_set_deferred_reason() against this condition just as a
-defense in depth thing.
-
-Anyhow, this is a good change in any case. Applied to the fixes-togreg-for-6.16 branch
-that I'll rebase on rc1 once available.
+> Update the .name field in the ad4080_chip_info struct
+> from "AD4080" to "ad4080" to follow the common convention
+> in IIO drivers of using lowercase names for device identifiers.
+>=20
+> Fixes: 1ff3f56f846b ("iio: adc: ad4080: add driver support")
+> Reviewed-by: Nuno S=C3=A1 <nuno.sa@analog.com>
+> Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+I squashed both patches into the original commit as that is still
+on a tree that I can rebase as I'll do that on rc1 anyway once available.
 
 Thanks,
 
 Jonathan
 
-
-> 
-> This issue has existed for a long time it seems and therefore it is
-> nearly impossible to find a proper fixes tag. I would love to see it at
-> least backported to 6.12 as that is where I encountered it, and I
-> believe the patch should apply without conflicts.
 > ---
-> Changes in v4:
-> - Put the link to the original issue in a proper link tag
-> - Remove stray newline
-> - Link to v3: https://lore.kernel.org/r/20250526-st_iio_fix-v3-1-039fec38707c@gocontroll.com
-> 
-> Changes in v3:
-> - Added the stable cc to the commit message
-> - Move the link to the original issue to the commit message
-> - Fix function notation in the commit message
-> - Move some more of the dev_*() calls to one line
-> - Link to v2: https://lore.kernel.org/r/20250522-st_iio_fix-v2-1-07a32655a996@gocontroll.com
-> 
-> Changes in v2:
-> - Added SoB in commit message
-> - Link to v1: https://lore.kernel.org/r/20250522-st_iio_fix-v1-1-d689b35f1612@gocontroll.com
-> ---
->  drivers/iio/accel/st_accel_core.c                  | 10 +++---
->  drivers/iio/common/st_sensors/st_sensors_core.c    | 36 ++++++++++------------
->  drivers/iio/common/st_sensors/st_sensors_trigger.c | 20 ++++++------
->  3 files changed, 31 insertions(+), 35 deletions(-)
-> 
-> diff --git a/drivers/iio/accel/st_accel_core.c b/drivers/iio/accel/st_accel_core.c
-> index 99cb661fabb2d9cc1943fa8d0a6f3becb71126e6..a7961c610ed203d039bbf298c8883031a578fb0b 100644
-> --- a/drivers/iio/accel/st_accel_core.c
-> +++ b/drivers/iio/accel/st_accel_core.c
-> @@ -1353,6 +1353,7 @@ static int apply_acpi_orientation(struct iio_dev *indio_dev)
->  	union acpi_object *ont;
->  	union acpi_object *elements;
->  	acpi_status status;
-> +	struct device *parent = indio_dev->dev.parent;
->  	int ret = -EINVAL;
->  	unsigned int val;
->  	int i, j;
-> @@ -1371,7 +1372,7 @@ static int apply_acpi_orientation(struct iio_dev *indio_dev)
->  	};
->  
->  
-> -	adev = ACPI_COMPANION(indio_dev->dev.parent);
-> +	adev = ACPI_COMPANION(parent);
->  	if (!adev)
->  		return -ENXIO;
->  
-> @@ -1380,8 +1381,7 @@ static int apply_acpi_orientation(struct iio_dev *indio_dev)
->  	if (status == AE_NOT_FOUND) {
->  		return -ENXIO;
->  	} else if (ACPI_FAILURE(status)) {
-> -		dev_warn(&indio_dev->dev, "failed to execute _ONT: %d\n",
-> -			 status);
-> +		dev_warn(parent, "failed to execute _ONT: %d\n", status);
->  		return status;
->  	}
->  
-> @@ -1457,12 +1457,12 @@ static int apply_acpi_orientation(struct iio_dev *indio_dev)
->  	}
->  
->  	ret = 0;
-> -	dev_info(&indio_dev->dev, "computed mount matrix from ACPI\n");
-> +	dev_info(parent, "computed mount matrix from ACPI\n");
->  
->  out:
->  	kfree(buffer.pointer);
->  	if (ret)
-> -		dev_dbg(&indio_dev->dev,
-> +		dev_dbg(parent,
->  			"failed to apply ACPI orientation data: %d\n", ret);
->  
->  	return ret;
-> diff --git a/drivers/iio/common/st_sensors/st_sensors_core.c b/drivers/iio/common/st_sensors/st_sensors_core.c
-> index 8ce1dccfea4f5aaff45d3d40f6542323dd1f0b09..dac593be56958fd0be92e13f628350fcfd0f040d 100644
-> --- a/drivers/iio/common/st_sensors/st_sensors_core.c
-> +++ b/drivers/iio/common/st_sensors/st_sensors_core.c
-> @@ -154,7 +154,7 @@ static int st_sensors_set_fullscale(struct iio_dev *indio_dev, unsigned int fs)
->  	return err;
->  
->  st_accel_set_fullscale_error:
-> -	dev_err(&indio_dev->dev, "failed to set new fullscale.\n");
-> +	dev_err(indio_dev->dev.parent, "failed to set new fullscale.\n");
->  	return err;
->  }
->  
-> @@ -231,8 +231,7 @@ int st_sensors_power_enable(struct iio_dev *indio_dev)
->  					     ARRAY_SIZE(regulator_names),
->  					     regulator_names);
->  	if (err)
-> -		return dev_err_probe(&indio_dev->dev, err,
-> -				     "unable to enable supplies\n");
-> +		return dev_err_probe(parent, err, "unable to enable supplies\n");
->  
->  	return 0;
->  }
-> @@ -241,13 +240,14 @@ EXPORT_SYMBOL_NS(st_sensors_power_enable, "IIO_ST_SENSORS");
->  static int st_sensors_set_drdy_int_pin(struct iio_dev *indio_dev,
->  					struct st_sensors_platform_data *pdata)
->  {
-> +	struct device *parent = indio_dev->dev.parent;
->  	struct st_sensor_data *sdata = iio_priv(indio_dev);
->  
->  	/* Sensor does not support interrupts */
->  	if (!sdata->sensor_settings->drdy_irq.int1.addr &&
->  	    !sdata->sensor_settings->drdy_irq.int2.addr) {
->  		if (pdata->drdy_int_pin)
-> -			dev_info(&indio_dev->dev,
-> +			dev_info(parent,
->  				 "DRDY on pin INT%d specified, but sensor does not support interrupts\n",
->  				 pdata->drdy_int_pin);
->  		return 0;
-> @@ -256,29 +256,27 @@ static int st_sensors_set_drdy_int_pin(struct iio_dev *indio_dev,
->  	switch (pdata->drdy_int_pin) {
->  	case 1:
->  		if (!sdata->sensor_settings->drdy_irq.int1.mask) {
-> -			dev_err(&indio_dev->dev,
-> -					"DRDY on INT1 not available.\n");
-> +			dev_err(parent, "DRDY on INT1 not available.\n");
->  			return -EINVAL;
->  		}
->  		sdata->drdy_int_pin = 1;
->  		break;
->  	case 2:
->  		if (!sdata->sensor_settings->drdy_irq.int2.mask) {
-> -			dev_err(&indio_dev->dev,
-> -					"DRDY on INT2 not available.\n");
-> +			dev_err(parent, "DRDY on INT2 not available.\n");
->  			return -EINVAL;
->  		}
->  		sdata->drdy_int_pin = 2;
->  		break;
->  	default:
-> -		dev_err(&indio_dev->dev, "DRDY on pdata not valid.\n");
-> +		dev_err(parent, "DRDY on pdata not valid.\n");
->  		return -EINVAL;
->  	}
->  
->  	if (pdata->open_drain) {
->  		if (!sdata->sensor_settings->drdy_irq.int1.addr_od &&
->  		    !sdata->sensor_settings->drdy_irq.int2.addr_od)
-> -			dev_err(&indio_dev->dev,
-> +			dev_err(parent,
->  				"open drain requested but unsupported.\n");
->  		else
->  			sdata->int_pin_open_drain = true;
-> @@ -336,6 +334,7 @@ EXPORT_SYMBOL_NS(st_sensors_dev_name_probe, "IIO_ST_SENSORS");
->  int st_sensors_init_sensor(struct iio_dev *indio_dev,
->  					struct st_sensors_platform_data *pdata)
->  {
-> +	struct device *parent = indio_dev->dev.parent;
->  	struct st_sensor_data *sdata = iio_priv(indio_dev);
->  	struct st_sensors_platform_data *of_pdata;
->  	int err = 0;
-> @@ -343,7 +342,7 @@ int st_sensors_init_sensor(struct iio_dev *indio_dev,
->  	mutex_init(&sdata->odr_lock);
->  
->  	/* If OF/DT pdata exists, it will take precedence of anything else */
-> -	of_pdata = st_sensors_dev_probe(indio_dev->dev.parent, pdata);
-> +	of_pdata = st_sensors_dev_probe(parent, pdata);
->  	if (IS_ERR(of_pdata))
->  		return PTR_ERR(of_pdata);
->  	if (of_pdata)
-> @@ -370,7 +369,7 @@ int st_sensors_init_sensor(struct iio_dev *indio_dev,
->  		if (err < 0)
->  			return err;
->  	} else
-> -		dev_info(&indio_dev->dev, "Full-scale not possible\n");
-> +		dev_info(parent, "Full-scale not possible\n");
->  
->  	err = st_sensors_set_odr(indio_dev, sdata->odr);
->  	if (err < 0)
-> @@ -405,7 +404,7 @@ int st_sensors_init_sensor(struct iio_dev *indio_dev,
->  			mask = sdata->sensor_settings->drdy_irq.int2.mask_od;
->  		}
->  
-> -		dev_info(&indio_dev->dev,
-> +		dev_info(parent,
->  			 "set interrupt line to open drain mode on pin %d\n",
->  			 sdata->drdy_int_pin);
->  		err = st_sensors_write_data_with_mask(indio_dev, addr,
-> @@ -593,21 +592,20 @@ EXPORT_SYMBOL_NS(st_sensors_get_settings_index, "IIO_ST_SENSORS");
->  int st_sensors_verify_id(struct iio_dev *indio_dev)
->  {
->  	struct st_sensor_data *sdata = iio_priv(indio_dev);
-> +	struct device *parent = indio_dev->dev.parent;
->  	int wai, err;
->  
->  	if (sdata->sensor_settings->wai_addr) {
->  		err = regmap_read(sdata->regmap,
->  				  sdata->sensor_settings->wai_addr, &wai);
->  		if (err < 0) {
-> -			dev_err(&indio_dev->dev,
-> -				"failed to read Who-Am-I register.\n");
-> -			return err;
-> +			return dev_err_probe(parent, err,
-> +					     "failed to read Who-Am-I register.\n");
->  		}
->  
->  		if (sdata->sensor_settings->wai != wai) {
-> -			dev_warn(&indio_dev->dev,
-> -				"%s: WhoAmI mismatch (0x%x).\n",
-> -				indio_dev->name, wai);
-> +			dev_warn(parent, "%s: WhoAmI mismatch (0x%x).\n",
-> +				 indio_dev->name, wai);
->  		}
->  	}
->  
-> diff --git a/drivers/iio/common/st_sensors/st_sensors_trigger.c b/drivers/iio/common/st_sensors/st_sensors_trigger.c
-> index 9d4bf822a15dfcdd6c2835f6b9d7698cd3cb0b08..8a8ab688d7980f6dd43c660f90a0eba32c38388b 100644
-> --- a/drivers/iio/common/st_sensors/st_sensors_trigger.c
-> +++ b/drivers/iio/common/st_sensors/st_sensors_trigger.c
-> @@ -127,7 +127,7 @@ int st_sensors_allocate_trigger(struct iio_dev *indio_dev,
->  	sdata->trig = devm_iio_trigger_alloc(parent, "%s-trigger",
->  					     indio_dev->name);
->  	if (sdata->trig == NULL) {
-> -		dev_err(&indio_dev->dev, "failed to allocate iio trigger.\n");
-> +		dev_err(parent, "failed to allocate iio trigger.\n");
->  		return -ENOMEM;
->  	}
->  
-> @@ -143,7 +143,7 @@ int st_sensors_allocate_trigger(struct iio_dev *indio_dev,
->  	case IRQF_TRIGGER_FALLING:
->  	case IRQF_TRIGGER_LOW:
->  		if (!sdata->sensor_settings->drdy_irq.addr_ihl) {
-> -			dev_err(&indio_dev->dev,
-> +			dev_err(parent,
->  				"falling/low specified for IRQ but hardware supports only rising/high: will request rising/high\n");
->  			if (irq_trig == IRQF_TRIGGER_FALLING)
->  				irq_trig = IRQF_TRIGGER_RISING;
-> @@ -156,21 +156,19 @@ int st_sensors_allocate_trigger(struct iio_dev *indio_dev,
->  				sdata->sensor_settings->drdy_irq.mask_ihl, 1);
->  			if (err < 0)
->  				return err;
-> -			dev_info(&indio_dev->dev,
-> +			dev_info(parent,
->  				 "interrupts on the falling edge or active low level\n");
->  		}
->  		break;
->  	case IRQF_TRIGGER_RISING:
-> -		dev_info(&indio_dev->dev,
-> -			 "interrupts on the rising edge\n");
-> +		dev_info(parent, "interrupts on the rising edge\n");
->  		break;
->  	case IRQF_TRIGGER_HIGH:
-> -		dev_info(&indio_dev->dev,
-> -			 "interrupts active high level\n");
-> +		dev_info(parent, "interrupts active high level\n");
->  		break;
->  	default:
->  		/* This is the most preferred mode, if possible */
-> -		dev_err(&indio_dev->dev,
-> +		dev_err(parent,
->  			"unsupported IRQ trigger specified (%lx), enforce rising edge\n", irq_trig);
->  		irq_trig = IRQF_TRIGGER_RISING;
->  	}
-> @@ -179,7 +177,7 @@ int st_sensors_allocate_trigger(struct iio_dev *indio_dev,
->  	if (irq_trig == IRQF_TRIGGER_FALLING ||
->  	    irq_trig == IRQF_TRIGGER_RISING) {
->  		if (!sdata->sensor_settings->drdy_irq.stat_drdy.addr) {
-> -			dev_err(&indio_dev->dev,
-> +			dev_err(parent,
->  				"edge IRQ not supported w/o stat register.\n");
->  			return -EOPNOTSUPP;
->  		}
-> @@ -214,13 +212,13 @@ int st_sensors_allocate_trigger(struct iio_dev *indio_dev,
->  					sdata->trig->name,
->  					sdata->trig);
->  	if (err) {
-> -		dev_err(&indio_dev->dev, "failed to request trigger IRQ.\n");
-> +		dev_err(parent, "failed to request trigger IRQ.\n");
->  		return err;
->  	}
->  
->  	err = devm_iio_trigger_register(parent, sdata->trig);
->  	if (err < 0) {
-> -		dev_err(&indio_dev->dev, "failed to register iio trigger.\n");
-> +		dev_err(parent, "failed to register iio trigger.\n");
->  		return err;
->  	}
->  	indio_dev->trig = iio_trigger_get(sdata->trig);
-> 
-> ---
-> base-commit: 7bac2c97af4078d7a627500c9bcdd5b033f97718
-> change-id: 20250522-st_iio_fix-1c58fdd4d420
-> 
-> Best regards,
+> changes in v2:
+>  - drop "no functional changes" from commit body
+>  - add fixes tag
+>  drivers/iio/adc/ad4080.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/iio/adc/ad4080.c b/drivers/iio/adc/ad4080.c
+> index e8b2e5e7a68a..c36eb41d738a 100644
+> --- a/drivers/iio/adc/ad4080.c
+> +++ b/drivers/iio/adc/ad4080.c
+> @@ -433,7 +433,7 @@ static const struct iio_chan_spec ad4080_channel =3D {
+>  };
+> =20
+>  static const struct ad4080_chip_info ad4080_chip_info =3D {
+> -	.name =3D "AD4080",
+> +	.name =3D "ad4080",
+>  	.product_id =3D AD4080_CHIP_ID,
+>  	.scale_table =3D ad4080_scale_table,
+>  	.num_scales =3D ARRAY_SIZE(ad4080_scale_table),
 
 

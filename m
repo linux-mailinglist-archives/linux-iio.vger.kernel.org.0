@@ -1,62 +1,65 @@
-Return-Path: <linux-iio+bounces-20070-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20071-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4919AC9B96
-	for <lists+linux-iio@lfdr.de>; Sat, 31 May 2025 17:50:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC473AC9B9A
+	for <lists+linux-iio@lfdr.de>; Sat, 31 May 2025 17:56:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A15527ACC86
-	for <lists+linux-iio@lfdr.de>; Sat, 31 May 2025 15:49:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C70003B3316
+	for <lists+linux-iio@lfdr.de>; Sat, 31 May 2025 15:56:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 972B81531E1;
-	Sat, 31 May 2025 15:50:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01C89155C87;
+	Sat, 31 May 2025 15:56:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DBtwwE+k"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lWQZrisG"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42B6117BB6;
-	Sat, 31 May 2025 15:50:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B19AA17BB6;
+	Sat, 31 May 2025 15:56:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748706642; cv=none; b=mLdTn/ZzlMhH4ZpdJ8XzvdS2sGXyO8woQk8glUZD21DDWR5VK90UeRprL/C8QAjMnrVZ0DW8o61lgwTcfX3i2L5JQV0UFA5ocD82ATExVXQfIWxNC2+LY09C7bH+Xen5kCn4DGQB1GlZU2ewrmiHefklNmqKbJUpkj9o/c9FijA=
+	t=1748707004; cv=none; b=jr+MDq2JawBAzcDF0cRgkb/aG56T9oPNnern+kNmp5Kbt6DQuF9MuxW3acpW16QnYmezC8Ya7uK9qysY7raHKpTdHT7b1geUIzFJlTn7n5xVqkCOfslDkEplRxt5COtF8zaaocIhX0vwdhI3j7vJMdwt96QsLdmq1ucguCZ/AWY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748706642; c=relaxed/simple;
-	bh=eI19CTNEOdH781i8gsxlfOonT+Lz1KC/cydNhSmDoFQ=;
+	s=arc-20240116; t=1748707004; c=relaxed/simple;
+	bh=Si0gaSTIfmA9UreI5SjdzlMFGHES65UvOtKJTsLJWeU=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TQuOWl/m/W8uo2qcAgC4TOcWd02kqbJFcOBaNpzLmDTos1JwnqJMsREiJTiH78XShfwHHeRLO/Y0zIr5OShflRVdJ5GQL5+KFqFm9auyqeWgVURmClawiuserw6RxREyygVHtoIDXZ7Ce+BlcivjeeujY3d5x3a7Pf/GmLI64RQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DBtwwE+k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08393C4CEE3;
-	Sat, 31 May 2025 15:50:35 +0000 (UTC)
+	 MIME-Version:Content-Type; b=D+iGpWdtjCJ/it5MZVumjBOYmBGt+wxPSuhi1qekTx1g8/KBwIQN4CcH/yxypIXivhQZBrFRMxjE6AxKwYoEoSS6U7KMNY6RjQVQCs3MrQAE9ocCoyRGXtMNCJeTM81coYbQp/oALw2XobOMgFsieGmgXpPHGq7L01p1s2xA5+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lWQZrisG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E90EBC4CEE3;
+	Sat, 31 May 2025 15:56:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748706641;
-	bh=eI19CTNEOdH781i8gsxlfOonT+Lz1KC/cydNhSmDoFQ=;
+	s=k20201202; t=1748707004;
+	bh=Si0gaSTIfmA9UreI5SjdzlMFGHES65UvOtKJTsLJWeU=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=DBtwwE+kYQHknxs+X6DNnCMF+j+ncLJtzpvuJWAAGXZ1XfEPud4DLMdf4tWt2o28X
-	 mHxAfnw90M/hJGeQDdXn2FVilxn+0wBl9y3ldetLAhBkSto0py+16kdlXtoLECMDer
-	 sQ6T5rCVjrhZSAoJAZLlcSbyK/tKXCD62N9t0WpabWAZVUc0NNcYUNtvbTz6dOOtcu
-	 EO4cEsX5U9Qwk6BmbT/WXUq1h9nAHiz4BdeJlovgEHJ7UQns23rAIsJHRBSGO3QkeU
-	 lv0fvDO7gMz4Ehq/BqUw15NlLVa0rO4aZQ7Yyd29AYKs9u8JgXlSqhNyS28hsG8mOf
-	 3zQu2uN41H5IQ==
-Date: Sat, 31 May 2025 16:50:30 +0100
+	b=lWQZrisGAesr6zhFA4NExGYhOrZS8k5bUecjEphb+vIBGYHPwTBeqB50DJHsFf6g4
+	 wJxcUDzXyg1sxo6zg2VhlpzelUyteHsGQe+xpjCMwTNt6RAtOIMqj3U8BWjIr/DyUT
+	 IPhro+M4iwUH/6LIylWdCUwzGsn0F9dLfWkPG2TYSh7RTMG47E+L3rAByuJ0r4H2IF
+	 tDBBmefxYoGefboyx6ohp3VOOuFovzk7k2hrr1+Bv9p97h0Avkiix4mJTt/tQj0YUk
+	 Sz2d7f0wxpd54jYj04AszohRxesb3wcEnk1uA7PKDsRxNm57yZq/br3R+EVNXAH0ok
+	 sxQwY08AnAQkw==
+Date: Sat, 31 May 2025 16:56:35 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-Cc: Marcelo Schmitt <marcelo.schmitt@analog.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-gpio@vger.kernel.org,
- linux-kernel@vger.kernel.org, lars@metafoo.de,
- Michael.Hennerich@analog.com, dlechner@baylibre.com, nuno.sa@analog.com,
- andy@kernel.org, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- linus.walleij@linaro.org, brgl@bgdev.pl
-Subject: Re: [PATCH v3 01/10] dt-bindings: iio: adc: Add AD4170
-Message-ID: <20250531165030.17916667@jic23-huawei>
-In-Reply-To: <aDTkVFDNYeyIldBs@debian-BULLSEYE-live-builder-AMD64>
-References: <cover.1747083143.git.marcelo.schmitt@analog.com>
-	<5fa867cff437c0c6d3f0122af823e1677a12d189.1747083143.git.marcelo.schmitt@analog.com>
-	<20250525111148.4ca96a55@jic23-huawei>
-	<aDTkVFDNYeyIldBs@debian-BULLSEYE-live-builder-AMD64>
+To: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+Cc: Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>, Chen Ni
+ <nichen@iscas.ac.cn>, <dlechner@baylibre.com>, <nuno.sa@analog.com>,
+ <andy@kernel.org>, <mcoquelin.stm32@gmail.com>,
+ <alexandre.torgue@foss.st.com>, <u.kleine-koenig@baylibre.com>,
+ <tglx@linutronix.de>, <robh@kernel.org>, <jirislaby@kernel.org>,
+ <linux-iio@vger.kernel.org>, <linux-stm32@st-md-mailman.stormreply.com>,
+ <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+ Olivier Moysan <olivier.moysan@foss.st.com>
+Subject: Re: [PATCH v2] iio: adc: stm32-adc: Fix race in installing chained
+ IRQ handler
+Message-ID: <20250531165635.262839dc@jic23-huawei>
+In-Reply-To: <ab75c390-b172-4dbb-b46b-8cbf64d4600a@foss.st.com>
+References: <20250515083101.3811350-1-nichen@iscas.ac.cn>
+	<229cf78caaa7e9f2bb4cfa62c019acd51a1cd684.camel@gmail.com>
+	<20250525120703.5dd89fc2@jic23-huawei>
+	<ab75c390-b172-4dbb-b46b-8cbf64d4600a@foss.st.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -64,79 +67,85 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, 26 May 2025 18:59:48 -0300
-Marcelo Schmitt <marcelo.schmitt1@gmail.com> wrote:
+On Mon, 26 May 2025 17:48:31 +0200
+Fabrice Gasnier <fabrice.gasnier@foss.st.com> wrote:
 
+> On 5/25/25 13:07, Jonathan Cameron wrote:
+> > On Thu, 15 May 2025 11:26:56 +0100
+> > Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
+> >  =20
+> >> On Thu, 2025-05-15 at 16:31 +0800, Chen Ni wrote: =20
+> >>> Fix a race where a pending interrupt could be received and the handler
+> >>> called before the handler's data has been setup, by converting to
+> >>> irq_set_chained_handler_and_data().
+> >>>
+> >>> Fixes: d58c67d1d851 ("iio: adc: stm32-adc: add support for STM32MP1")
+> >>> Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+> >>> ---   =20
+> >>
+> >> Reviewed-by: Nuno S=C3=A1 <nuno.sa@analog.com> =20
+> > Looks good to me and I've queued it up for after rc1.  If any
+> > ST folk have time to take a look that would be great. =20
+>=20
 > Hi Jonathan,
-> 
-> I'm still working on the changes suggested for this set.
-> Just to mention, I've updated the dt-binding to declare only channel nodes under
-> the ADC node.
-> 
-> ... 
-> > > +      adi,sensor-type:
-> > > +        description: |
-> > > +          Type of sensor connected to the device. Depending on the sensor type
-> > > +          (weigh scale, RTD, or thermocouple) the values of sensor-node
-> > > +          properties have slightly different constraints. This property
-> > > +          specifies which particular external sensor is connected to the ADC so
-> > > +          the sensor-node properties can be properly parsed and verified. The
-> > > +          possible sensor types are:
-> > > +          0: weigh scale;
-> > > +          1: RTD;
-> > > +          2: thermocouple.
-> > > +        $ref: /schemas/types.yaml#/definitions/uint8  
-> > 
-> > I think this should be an enum of strings.  That will give us a clean
-> > way to extend it for other sensor types in future.  
-> Ack
-> 
-> ...
-> > > +
-> > > +  interrupts:
-> > > +    maxItems: 1  
-> > 
-> > What if they are both wired?  At that point shouldn't software
-> > make up it's mind which to use?  
-> 
-> Not sure I understand the concern here. Is 'interrupt-names' property expected
-> to precede 'interrupts' in dt-doc? For AD4170 and similar parts, the data
-> ready signal (/RDY) is by default provided on the SDO line after the completion
-> of a conversion. Alternatively, it can be provided on the DIG_AUX1 pin in
-> which case the chip disables the RDY function on SDO. So, there can only be one
-> data ready interrupt enabled at a time. Guess I'll add some description to make
-> clear only one interrupt can be enabled.
+>=20
+> One minor comment at my end, not sure if that changes a lot...
+> This could be a fix for the older commit:
+> 1add69880240 ("iio: adc: Add support for STM32 ADC core")
 
-DT is describing the wiring, not what should be enabled by the driver.
+Agreed. I've tweaked the message.  It won't apply cleanly all that way
+but at least we flagged it for anyone who cares to backport past the code
+movement in the Fixes tag Chen used.
 
-There is no need for it to restrict to 1 interrupt if someone has wired them
-both that I can think of.  In that circumstance the driver gets to decide
-between the mess of shared SDO / dataready handling vs a nice
-separate signal on dig_aux1
-
-If both are wired to the host on appropriate pins, up to the driver to
-decide what it wants.  A driver may also only supports the
-dig_aux1 combination or only the sdo combination and so just fail to load
-if it isn't happy with the one the DT author thought mattered.
-Providing both if that is what is wired, gives the flexibility to find
-the right one. 
-
-> 
-> > > +
-> > > +  interrupt-names:
-> > > +    description:
-> > > +      Specify which pin should be configured as Data Ready interrupt.
-> > > +    enum:
-> > > +      - sdo
-> > > +      - dig_aux1
-> > > +    default: sdo
-> > > +  
-> 
-> Thanks,
-> Marcelo
-> 
+>=20
+> Apart from that, you can add my:
+> Tested-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+> Reviewed-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+Added.
+>=20
+> BR,
+> Fabrice
+>=20
+> >=20
+> > Jonathan
+> >  =20
+> >> =20
+> >>> Changelog:
+> >>>
+> >>> v1 -> v2:
+> >>>
+> >>> 1. Add Fixes tag.
+> >>> ---
+> >>> =C2=A0drivers/iio/adc/stm32-adc-core.c | 7 +++----
+> >>> =C2=A01 file changed, 3 insertions(+), 4 deletions(-)
+> >>>
+> >>> diff --git a/drivers/iio/adc/stm32-adc-core.c b/drivers/iio/adc/stm32=
+-adc-
+> >>> core.c
+> >>> index bd3458965bff..21c04a98b3b6 100644
+> >>> --- a/drivers/iio/adc/stm32-adc-core.c
+> >>> +++ b/drivers/iio/adc/stm32-adc-core.c
+> >>> @@ -430,10 +430,9 @@ static int stm32_adc_irq_probe(struct platform_d=
+evice
+> >>> *pdev,
+> >>> =C2=A0		return -ENOMEM;
+> >>> =C2=A0	}
+> >>> =C2=A0
+> >>> -	for (i =3D 0; i < priv->cfg->num_irqs; i++) {
+> >>> -		irq_set_chained_handler(priv->irq[i], stm32_adc_irq_handler);
+> >>> -		irq_set_handler_data(priv->irq[i], priv);
+> >>> -	}
+> >>> +	for (i =3D 0; i < priv->cfg->num_irqs; i++)
+> >>> +		irq_set_chained_handler_and_data(priv->irq[i],
+> >>> +						 stm32_adc_irq_handler,
+> >>> priv);
+> >>> =C2=A0
+> >>> =C2=A0	return 0;
+> >>> =C2=A0}   =20
+> >  =20
+>=20
 
 

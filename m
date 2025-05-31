@@ -1,65 +1,61 @@
-Return-Path: <linux-iio+bounces-20071-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20072-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC473AC9B9A
-	for <lists+linux-iio@lfdr.de>; Sat, 31 May 2025 17:56:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD308AC9B9E
+	for <lists+linux-iio@lfdr.de>; Sat, 31 May 2025 18:05:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C70003B3316
-	for <lists+linux-iio@lfdr.de>; Sat, 31 May 2025 15:56:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D89EB3BF9A3
+	for <lists+linux-iio@lfdr.de>; Sat, 31 May 2025 16:04:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01C89155C87;
-	Sat, 31 May 2025 15:56:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4C301537C8;
+	Sat, 31 May 2025 16:04:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lWQZrisG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bb2T6rnb"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B19AA17BB6;
-	Sat, 31 May 2025 15:56:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 547F2DF42;
+	Sat, 31 May 2025 16:04:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748707004; cv=none; b=jr+MDq2JawBAzcDF0cRgkb/aG56T9oPNnern+kNmp5Kbt6DQuF9MuxW3acpW16QnYmezC8Ya7uK9qysY7raHKpTdHT7b1geUIzFJlTn7n5xVqkCOfslDkEplRxt5COtF8zaaocIhX0vwdhI3j7vJMdwt96QsLdmq1ucguCZ/AWY=
+	t=1748707498; cv=none; b=acNzAqh96T3fA/juWqrfWC0noaypLd1LVjD0FiNT/C3lVHvZw84WsZH7HTYXHmLd9atXgQ5a2xIL+Wn+zMJnvkTCSaaSGhF8V5Xx1GF/KxXkmaJReDT/p25+9OpdcVXMhaFDIUV8eyJzjk+yzYpwu4EeKizVJSNGpYcnbCxeB94=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748707004; c=relaxed/simple;
-	bh=Si0gaSTIfmA9UreI5SjdzlMFGHES65UvOtKJTsLJWeU=;
+	s=arc-20240116; t=1748707498; c=relaxed/simple;
+	bh=QwnqlQc8eO59QC1iazn3MfJicRUUxiL9Sp8eFgFfSYc=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=D+iGpWdtjCJ/it5MZVumjBOYmBGt+wxPSuhi1qekTx1g8/KBwIQN4CcH/yxypIXivhQZBrFRMxjE6AxKwYoEoSS6U7KMNY6RjQVQCs3MrQAE9ocCoyRGXtMNCJeTM81coYbQp/oALw2XobOMgFsieGmgXpPHGq7L01p1s2xA5+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lWQZrisG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E90EBC4CEE3;
-	Sat, 31 May 2025 15:56:38 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rjQfSp50L2bCRrrk9RQZQt9cN0VSJN2rKIxDUGxmUIxtxKRy0xMaiDAc/ce7J3CzD+yNir7fxIDAUqU1PM8jFcUNzMbHw/7L6FPbw0l2HF8CPN8sxXQ3ARgl18d2+WFKi1XkuH94uWXDHLpW4MHXlKYi+JfIZVtVU83eHgYnFq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bb2T6rnb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E52BFC4CEE3;
+	Sat, 31 May 2025 16:04:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748707004;
-	bh=Si0gaSTIfmA9UreI5SjdzlMFGHES65UvOtKJTsLJWeU=;
+	s=k20201202; t=1748707497;
+	bh=QwnqlQc8eO59QC1iazn3MfJicRUUxiL9Sp8eFgFfSYc=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=lWQZrisGAesr6zhFA4NExGYhOrZS8k5bUecjEphb+vIBGYHPwTBeqB50DJHsFf6g4
-	 wJxcUDzXyg1sxo6zg2VhlpzelUyteHsGQe+xpjCMwTNt6RAtOIMqj3U8BWjIr/DyUT
-	 IPhro+M4iwUH/6LIylWdCUwzGsn0F9dLfWkPG2TYSh7RTMG47E+L3rAByuJ0r4H2IF
-	 tDBBmefxYoGefboyx6ohp3VOOuFovzk7k2hrr1+Bv9p97h0Avkiix4mJTt/tQj0YUk
-	 Sz2d7f0wxpd54jYj04AszohRxesb3wcEnk1uA7PKDsRxNm57yZq/br3R+EVNXAH0ok
-	 sxQwY08AnAQkw==
-Date: Sat, 31 May 2025 16:56:35 +0100
+	b=bb2T6rnbeL11klfDAZkf76s7ljB1hTCcQ9j3PkpMyAug+lI/60Lmy8ihrTP6Z6gqL
+	 crMZxzP/pl/9PARi3sQwkrF7KKxxkI2GLt9t/+zP5qkm22//tyHvGYeI8LqkA8Aahl
+	 jq5+DlrDPZ2FfOZkJ7nMe7quG78IA37maZajH09xDuPWY8hvV/hFGGvZgurFdDjyXo
+	 e9sQqvQA/zIUSfnbe2wcmX+k9/aaHMoe8HAYbhtxKRY10jHMR60Rl29EFkhoS349nA
+	 cOT9nYWhNEFEyPzoiNB85RN7/63uC3SK6vPmDz2hvT/2K2hIy4Pq6haf1ZpUK0WxMr
+	 oe+jSCxMtipOg==
+Date: Sat, 31 May 2025 17:04:48 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-Cc: Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>, Chen Ni
- <nichen@iscas.ac.cn>, <dlechner@baylibre.com>, <nuno.sa@analog.com>,
- <andy@kernel.org>, <mcoquelin.stm32@gmail.com>,
- <alexandre.torgue@foss.st.com>, <u.kleine-koenig@baylibre.com>,
- <tglx@linutronix.de>, <robh@kernel.org>, <jirislaby@kernel.org>,
- <linux-iio@vger.kernel.org>, <linux-stm32@st-md-mailman.stormreply.com>,
- <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
- Olivier Moysan <olivier.moysan@foss.st.com>
-Subject: Re: [PATCH v2] iio: adc: stm32-adc: Fix race in installing chained
- IRQ handler
-Message-ID: <20250531165635.262839dc@jic23-huawei>
-In-Reply-To: <ab75c390-b172-4dbb-b46b-8cbf64d4600a@foss.st.com>
-References: <20250515083101.3811350-1-nichen@iscas.ac.cn>
-	<229cf78caaa7e9f2bb4cfa62c019acd51a1cd684.camel@gmail.com>
-	<20250525120703.5dd89fc2@jic23-huawei>
-	<ab75c390-b172-4dbb-b46b-8cbf64d4600a@foss.st.com>
+To: Angelo Dureghello <adureghello@baylibre.com>
+Cc: Nuno Sa <nuno.sa@analog.com>, Lars-Peter Clausen <lars@metafoo.de>,
+ Michael Hennerich <Michael.Hennerich@analog.com>, David Lechner
+ <dlechner@baylibre.com>, Andy Shevchenko <andy@kernel.org>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Jonathan Cameron
+ <Jonathan.Cameron@huawei.com>, devicetree@vger.kernel.org
+Subject: Re: [PATCH v2] dt-bindings: iio: adc: adi,ad7606: fix dt_schema
+ validation warning
+Message-ID: <20250531170448.2be25330@jic23-huawei>
+In-Reply-To: <20250526-wip-bl-ad7606-dtschema-fixes-v2-1-9bd56d039489@baylibre.com>
+References: <20250526-wip-bl-ad7606-dtschema-fixes-v2-1-9bd56d039489@baylibre.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -67,85 +63,72 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Mon, 26 May 2025 17:48:31 +0200
-Fabrice Gasnier <fabrice.gasnier@foss.st.com> wrote:
+On Mon, 26 May 2025 15:19:08 +0200
+Angelo Dureghello <adureghello@baylibre.com> wrote:
 
-> On 5/25/25 13:07, Jonathan Cameron wrote:
-> > On Thu, 15 May 2025 11:26:56 +0100
-> > Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
-> >  =20
-> >> On Thu, 2025-05-15 at 16:31 +0800, Chen Ni wrote: =20
-> >>> Fix a race where a pending interrupt could be received and the handler
-> >>> called before the handler's data has been setup, by converting to
-> >>> irq_set_chained_handler_and_data().
-> >>>
-> >>> Fixes: d58c67d1d851 ("iio: adc: stm32-adc: add support for STM32MP1")
-> >>> Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
-> >>> ---   =20
-> >>
-> >> Reviewed-by: Nuno S=C3=A1 <nuno.sa@analog.com> =20
-> > Looks good to me and I've queued it up for after rc1.  If any
-> > ST folk have time to take a look that would be great. =20
->=20
-> Hi Jonathan,
->=20
-> One minor comment at my end, not sure if that changes a lot...
-> This could be a fix for the older commit:
-> 1add69880240 ("iio: adc: Add support for STM32 ADC core")
+> From: Angelo Dureghello <adureghello@baylibre.com>
+> 
+> Fix following dt_schema warning when offload is used:
+> 
+>   DTC [C] arch/arm/boot/dts/xilinx/zynq-zed-adv7511-ad7606.dtb
+> /home/angelo/dev-baylibre/linux-iio/arch/arm/boot/dts/xilinx/zynq-zed-adv7511-ad7606.dtb: adc@0: 'oneOf' conditional failed, one must be fixed:
+> 	'interrupts' is a required property
+> 	'io-backends' is a required property
+> 	from schema $id: http://devicetree.org/schemas/iio/adc/adi,ad7606.yaml#
+> 
+> There isn't any reason that we couldn't have interrupts wired up at the
+> same time we are using io-backends or SPI offload, so dropping off the
+> related "oneOf" block entirely.
+> 
+> Fixes: ccf8c3f106a2 ("dt-bindings: iio: adc: adi,ad7606: add SPI offload properties")
+That ID seems to be wrong.   Probably down to the messy rebase I had to do pre pull
+request.  Fixed up to be 81fe5529e812
 
-Agreed. I've tweaked the message.  It won't apply cleanly all that way
-but at least we flagged it for anyone who cares to backport past the code
-movement in the Fixes tag Chen used.
+Applied to the fixes-togreg-for-6.16 branch that will become fixes-togreg after rc1
+is available to rebase on.
 
->=20
-> Apart from that, you can add my:
-> Tested-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-> Reviewed-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-Added.
->=20
-> BR,
-> Fabrice
->=20
-> >=20
-> > Jonathan
-> >  =20
-> >> =20
-> >>> Changelog:
-> >>>
-> >>> v1 -> v2:
-> >>>
-> >>> 1. Add Fixes tag.
-> >>> ---
-> >>> =C2=A0drivers/iio/adc/stm32-adc-core.c | 7 +++----
-> >>> =C2=A01 file changed, 3 insertions(+), 4 deletions(-)
-> >>>
-> >>> diff --git a/drivers/iio/adc/stm32-adc-core.c b/drivers/iio/adc/stm32=
--adc-
-> >>> core.c
-> >>> index bd3458965bff..21c04a98b3b6 100644
-> >>> --- a/drivers/iio/adc/stm32-adc-core.c
-> >>> +++ b/drivers/iio/adc/stm32-adc-core.c
-> >>> @@ -430,10 +430,9 @@ static int stm32_adc_irq_probe(struct platform_d=
-evice
-> >>> *pdev,
-> >>> =C2=A0		return -ENOMEM;
-> >>> =C2=A0	}
-> >>> =C2=A0
-> >>> -	for (i =3D 0; i < priv->cfg->num_irqs; i++) {
-> >>> -		irq_set_chained_handler(priv->irq[i], stm32_adc_irq_handler);
-> >>> -		irq_set_handler_data(priv->irq[i], priv);
-> >>> -	}
-> >>> +	for (i =3D 0; i < priv->cfg->num_irqs; i++)
-> >>> +		irq_set_chained_handler_and_data(priv->irq[i],
-> >>> +						 stm32_adc_irq_handler,
-> >>> priv);
-> >>> =C2=A0
-> >>> =C2=A0	return 0;
-> >>> =C2=A0}   =20
-> >  =20
->=20
+Thanks,
+
+Jonathan
+
+> Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
+> ---
+> Fix dt_schema validation warning.
+> 
+> Link: https://lore.kernel.org/linux-iio/20250408-wip-bl-ad3552r-fixes-v4-0-b33c0264bd78@baylibre.com
+> ---
+> Changes in v2:
+> - Change removing the related oneOf block. 
+> - Link to v1: https://lore.kernel.org/r/20250523-wip-bl-ad7606-dtschema-fixes-v1-1-d9147fb2a199@baylibre.com
+> ---
+>  Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml | 6 ------
+>  1 file changed, 6 deletions(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml
+> index 29f12d650442b8ff2eb455306ce59a0e87867ddd..1a5209139e1338f803c66ad2b4d63ad53cc11d96 100644
+> --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml
+> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml
+> @@ -223,12 +223,6 @@ allOf:
+>        - required:
+>            - pwms
+>  
+> -  - oneOf:
+> -      - required:
+> -          - interrupts
+> -      - required:
+> -          - io-backends
+> -
+>    - if:
+>        properties:
+>          compatible:
+> 
+> ---
+> base-commit: 3964c6e5877f054497ffccc7d00f8f7add307d0d
+> change-id: 20250523-wip-bl-ad7606-dtschema-fixes-5e6ab342e043
+> 
+> Best regards,
 
 

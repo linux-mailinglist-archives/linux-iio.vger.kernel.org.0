@@ -1,78 +1,78 @@
-Return-Path: <linux-iio+bounces-20100-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20101-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDE86AC9F85
-	for <lists+linux-iio@lfdr.de>; Sun,  1 Jun 2025 19:22:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1A84AC9F8B
+	for <lists+linux-iio@lfdr.de>; Sun,  1 Jun 2025 19:23:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7D1011716BD
-	for <lists+linux-iio@lfdr.de>; Sun,  1 Jun 2025 17:22:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 09AFE1893483
+	for <lists+linux-iio@lfdr.de>; Sun,  1 Jun 2025 17:23:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 053CB1FAC34;
-	Sun,  1 Jun 2025 17:21:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C7D71FF61E;
+	Sun,  1 Jun 2025 17:21:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RMhVIBwB"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IQefAsly"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB1CB1F151D;
-	Sun,  1 Jun 2025 17:21:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A02E01F866A;
+	Sun,  1 Jun 2025 17:21:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748798516; cv=none; b=ZeBiz93Amea+VI0A/nNWX9uSSo95qigyx/iuS+nvrLCeEZdpzYqgG4Z5ueCEP2GdOc5q/GsNfFiekNr5GrCAs59ihFMdXm9oA7StvJAvyC2Zy8Z5ywqobXGgPVQYnW+u9RWa/0BCejwrK5SSTvdWWj8hbHrEfu1LwWexwcPVpv0=
+	t=1748798518; cv=none; b=HgHK4ImcVPgRoUuhh9nPFMVlzFwxNU5M1DQdihWihrKiamKYPw23Q5A0ni9oBD2iGd7C3/6irOasm+vVgMyfoe3Linxqc/5K05eokTSn34+49822uuKO9dGhPhJ+WVImDN5NDfoFJX9WH4lj0WOSxfjPmKoF/Tpav15XdYfsh6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748798516; c=relaxed/simple;
-	bh=/p9vBRUZH5DSs8sEgpgj+vVFu1JVSWMfF5ad2iZj84c=;
+	s=arc-20240116; t=1748798518; c=relaxed/simple;
+	bh=kFiMkvCOIRVqtMWYXPd/AZpWgNM2n4LnCr36yt29o30=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=gb8jyyfsHjner6NfGZ0sM0ZZKcDhKqbK61mWNYUeBRX/sWkKoCFrPY2H+AiKL6rHbds090lK99KttzaPrpghDZBAPuBU9MzlM2+QDENAPCVFwsXUt76YsluD2wuBBrqSHXZMiOwSLSNUjB+0CCISsYVNDkbUVCf8rKmgd000Jp4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RMhVIBwB; arc=none smtp.client-ip=209.85.128.48
+	 MIME-Version; b=qTutpkMbdRZ5JyH1tmigEtW8TRL4DRKVG+mAVlkOL/Z/7OIH2dViKIndZzjnxnX/N+udk0MWWkr/4u8Zer7mjKb4Hf/DnN6QLnQGO0uZxyKt1yKsVce/YLc7RpUoYYP3QSyWBeNNUsJN60AsIgTNNVh/jD5bo9/3TcaQHEEsE2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IQefAsly; arc=none smtp.client-ip=209.85.128.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-450ddb35583so424065e9.1;
-        Sun, 01 Jun 2025 10:21:54 -0700 (PDT)
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-44069f5f3aaso1111595e9.2;
+        Sun, 01 Jun 2025 10:21:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1748798513; x=1749403313; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1748798515; x=1749403315; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=nkC+i/O09kqU1WcdP/dP2GnoPIaaTxjblb2LNGEDcpA=;
-        b=RMhVIBwByxcbPlVMreb+0y3tMJ3+rlnatFL1vcWxZDC3YKE/oyyv4UyxdMde8Udjw1
-         xUcDJdbpopXUV3K9E7njDL0TsYw8bv7IBsUGs6cSv1UW331jT+kBKLwQTFj+s7tGhvgm
-         Yx9094T/m3CBqkkD+14FhFe2QIIo25YtDTbBZebGweIh75D7CGAv3VxWJhI+iblXkXUF
-         fk3IEH0NDW6rERHHPjmmhD5LFo/sFBSeLt3+zyKLMSeUe9WZCHpCxt/iPIQx5ks9pjUb
-         r4g7ycPIJKPn2L5/HlPQCaeBOBdGmXTcP9GHX/a9deQNm0IZTYrT8UE/pC02Lt3a/2HX
-         GLmg==
+        bh=UeYCG8HkXRXIHHGQ9W/UCo5tolHvwhv1GUMJTmxb+OQ=;
+        b=IQefAslyGk3gHf4HMoxErihVsuotvqXq9GhD6+7ToLL9f8ei3YM/LzRVHka6RkpErv
+         YO7Gy4GGj2FURa5EailVYNYXYsWd3XYhJXsnFmD+89vFWyoAoiN43drbE+ZYznpBykp0
+         y3QlobOIJ5hi1tZdEJw9sjQh/1loc43tpdqnaYeEb+RyJhX9U4ftF0GMYesHnsmTazZP
+         lNa6HXCRjh5zmq5Fo/qr35WR279HLodQGQ+k/zCkuDTlhSruAihNNgbSl74l27MNstSM
+         OvVsyjIqmfzFpM56G86P40nehCiXNQ2jpN6XQRdVhQODq81M9Ey1kfFjQPQcb9keC/4T
+         hBSg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748798513; x=1749403313;
+        d=1e100.net; s=20230601; t=1748798515; x=1749403315;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=nkC+i/O09kqU1WcdP/dP2GnoPIaaTxjblb2LNGEDcpA=;
-        b=CqJCc1++qkutghuKTsLtqv1/iAmsGn2Rz1hOwDcDKI8kVk/6GKu8QUcI6ip/Va7aL/
-         Nz5PLAMRJ2prdDB4yFmKESjfOq0QUs04jCyFfCK18BBHw2HfEqYbRnxcp26FKnxs4SCc
-         4DZVNHBHfk5ImYNP+3lXQhSp6MP69zOGvl8Nocxre5nE54t5XTvPm2s2tcGV9qXTbYKa
-         xfgkFvrV+vIVvPD2uofh5j36F2QjpbeONx3AUFKY3Ythsen8+euM5HAE3YdUm0JZZKUd
-         tZku905r8ILk28yruhagZB2Lm+YUxdbtFb2OTkSVifFf3Mzzu+0uwV0/D4nO4HO88p/S
-         TWQA==
-X-Forwarded-Encrypted: i=1; AJvYcCVX2d4fvbEoGTYYOfdfSVjCaRQRmDSAch4ULYY66jITgcgdChEz/RH1HZLhrah1hw+dqDPeHLTNCUAaGKZi@vger.kernel.org, AJvYcCVzS4rDHp0DfJv66vgTsgv+4NzVu42WgRGg9IlNKH/0mpWva5+foXxMA27rfzDk8Ex4V0j41/WdSio=@vger.kernel.org, AJvYcCW1bor65hSan3wji1Ka45YRUpFsZnf2TBYEhTyLs+RkfP0Of4ZoKIyOPylUnz+74uOFRcZJrf52Jqi4@vger.kernel.org
-X-Gm-Message-State: AOJu0YwjlWlpU4/+plySTgvKICGdbGpoERzpPealy3zOWyH5iElzvCcN
-	T5f+AAj5JZILBL06ODcwayJ1dlfWOURPh2hRmdBVYaUZq5ZeG+Ro7Q2a
-X-Gm-Gg: ASbGncsk4XxJOIi3wQVVmoO0Bp28aLjUl+zHJ9fjI9WIRRZ8LqN862iVMpih/kDv2sI
-	FLQPrySGHz9znDTws59P0+QbVL9icNIW4/k3YrnN1EIi9F6o+w3PP1YPfksllZbV/LhMhJWxBcA
-	VFAKdvcKi/E8acnGp9JFpCa5Ne5X1C6NcCKkD9CViW2+tQ5OciyY19CfT+LmDdTfRX7bUjlwGGO
-	SGeFXP2g6R6FV90tHquwdWnhFN9NcZnczH+T320e/x12kdt4/aSy4dRfIAFfmzWiieIVSXhANfl
-	2WDUT2U3MFjW/RAAyxaJjpD4QBAotfb9lm7nq7a3virRG9yfftw8OmjW19eQqVihv10vT8xMH7Z
-	Q0xlbC1oapiU2k8UQqPzMr7JSK1gIsMxq
-X-Google-Smtp-Source: AGHT+IHe7Kisg2praPSQBOkCJl+bv+Fx/s+RyYm8WqvftkcBFip3pjX8j+chvpOJkHEcQiP+1AMqhQ==
-X-Received: by 2002:a05:600c:1c8d:b0:43b:c0fa:f9c4 with SMTP id 5b1f17b1804b1-450d7bae255mr27584565e9.4.1748798513065;
-        Sun, 01 Jun 2025 10:21:53 -0700 (PDT)
+        bh=UeYCG8HkXRXIHHGQ9W/UCo5tolHvwhv1GUMJTmxb+OQ=;
+        b=Q8pu0CbvClc8RZ2TYWDGrZfn+se+5K05bCp3kUPhr99D2hdVqqzLrpcIYEbqCIT9Kt
+         QPnHHNHvis+txe1lnbHQIlwAozJbN6BEIPRAue8MTaGdNOLyDQe5R0hhXktmOIYbD6Cu
+         4vw3yyMSj+v9uUIPqyJNuDFLFCXc91xVq5fqCR8C1e2IYIlMVPKG8JliBc+Ko5jmaxkO
+         cr9mS30eQiGGuWX79RvkXojAHa8u9tihr/syznQO8BAoUlBz4pyD1rYaWS/PofjPK8sG
+         yByW8Id+crP+uVMIYx5nB+tH4bMFODwO5r56BdB5aqvgemsX0cjDv47kxY2LwLUyXTK0
+         +fmg==
+X-Forwarded-Encrypted: i=1; AJvYcCUodlEW/BqEYjNAP11PMghoWNx2U28Znf6JfR5JZWYLbpUfGXLizxGPPQENXv1x9beQaWADqBE2K7n2rgY6@vger.kernel.org, AJvYcCWHS5ErlCa1Dj/LVR09zZF6AycDkaQxTYiAFfbnzvy0V5H1rv2XKlboJFBGmkj3x147k1WBHEJ1huo=@vger.kernel.org, AJvYcCWarUznIJzMtiSrOsj+Dd4ytfmH58NU8URS0zfKcP7a+BMx0GvXCMwKI9JeOSDH+Z1PKvHLDIR/tfEL@vger.kernel.org
+X-Gm-Message-State: AOJu0YynBC0gQOg6hUyP6ypmi4DCSkinhlPjFWkmZAdebIRZtaCcpOyz
+	xWwM4q9lXFHmPrxKUMY22nTVOCXdI8hvN7TphoREVXxNXaQ94W78GqYU
+X-Gm-Gg: ASbGncvxp/5dG+Pffp8Uv5OxawAc8mFvaO6W7adAPmvJHuRZHgYcG9hlXgT6W/hWY3t
+	NVI/jrYWI7uHldD+LmZEGujiY8ZnYtZuBi+gbeFke39nEwmw5zsQbDGGAq2cAzlM7dGEFQ4Kuxo
+	jbtuU44fGI+t0bksAGzz+OXFvgaXBx1mLwzpmIgE6yTrF1S4KZx9Lu2VJLcHLrhhVjmkCDYGksE
+	gJG2FbUPAeKzwGu/xqz+dwgZVxH9YbEfckx/kFYrj54OZYx3RyjqgdR66teaF22fAIWd9Kyd5nD
+	kUXCeO5Mnxb/S25TtWhy7y7h681cmmizOgy+IdSld5pe807WzB6rNBwndGPjgUB+A68PHXPa6sm
+	0V7XiX9FPw5logmxvIPqumwHw/fVCKjblR6GmPvB7W2A=
+X-Google-Smtp-Source: AGHT+IF2r0NjGU9pE0kv12DokvhTwolUZYq7BDqrmPlf0MhtFJnppJPFP9mEYSivSkVn8OUjjoeT8A==
+X-Received: by 2002:a05:600c:1c8d:b0:43b:c0fa:f9c4 with SMTP id 5b1f17b1804b1-450d7bae255mr27584685e9.4.1748798514739;
+        Sun, 01 Jun 2025 10:21:54 -0700 (PDT)
 Received: from localhost.localdomain (84-72-156-211.dclient.hispeed.ch. [84.72.156.211])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a4f009f9d6sm11890444f8f.84.2025.06.01.10.21.50
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a4f009f9d6sm11890444f8f.84.2025.06.01.10.21.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 01 Jun 2025 10:21:52 -0700 (PDT)
+        Sun, 01 Jun 2025 10:21:54 -0700 (PDT)
 From: Lothar Rubusch <l.rubusch@gmail.com>
 To: jic23@kernel.org,
 	dlechner@baylibre.com,
@@ -87,9 +87,9 @@ Cc: l.rubusch@gmail.com,
 	linux-iio@vger.kernel.org,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v4 03/11] iio: accel: adxl313: make use of regmap cache
-Date: Sun,  1 Jun 2025 17:21:31 +0000
-Message-Id: <20250601172139.59156-4-l.rubusch@gmail.com>
+Subject: [PATCH v4 04/11] iio: accel: adxl313: add function to enable measurement
+Date: Sun,  1 Jun 2025 17:21:32 +0000
+Message-Id: <20250601172139.59156-5-l.rubusch@gmail.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250601172139.59156-1-l.rubusch@gmail.com>
 References: <20250601172139.59156-1-l.rubusch@gmail.com>
@@ -101,121 +101,67 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Setup regmap cache to cache register configuration. This is a preparatory
-step for follow up patches. Using cached settings will help at inerrupt
-handling, to generate activity and inactivity events.
+Rework controlling measurement and standby of the sensor. Therefore,
+replace writing the register directly by encapsulating this and dealing
+with the return value in a separte function to enable and disable
+measurement. This will help to avoid redundant code in all locations
+where the sensor configuration needs to be adjusted, thus measurement will
+be set to standby, in follow up patches.
+
+Further, reduce the control mask to only the measurement bit. The sleep bit
+actually controls a different behavior (not just putting the sensor to
+standby for configuration, but turning it into sleep mode) and it is not
+used so far. In consequence, there is no need to cover sleep bit and
+measurement with the same mask.
 
 Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
 ---
- drivers/iio/accel/adxl313.h      |  2 ++
- drivers/iio/accel/adxl313_core.c | 17 +++++++++++++++++
- drivers/iio/accel/adxl313_i2c.c  |  6 ++++++
- drivers/iio/accel/adxl313_spi.c  |  6 ++++++
- 4 files changed, 31 insertions(+)
+ drivers/iio/accel/adxl313.h      |  3 +--
+ drivers/iio/accel/adxl313_core.c | 10 +++++++---
+ 2 files changed, 8 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/iio/accel/adxl313.h b/drivers/iio/accel/adxl313.h
-index 72f624af4686..fc937bdf83b6 100644
+index fc937bdf83b6..9bf2facdbf87 100644
 --- a/drivers/iio/accel/adxl313.h
 +++ b/drivers/iio/accel/adxl313.h
-@@ -54,6 +54,8 @@ extern const struct regmap_access_table adxl312_writable_regs_table;
- extern const struct regmap_access_table adxl313_writable_regs_table;
- extern const struct regmap_access_table adxl314_writable_regs_table;
+@@ -36,8 +36,7 @@
+ #define ADXL313_RATE_MSK		GENMASK(3, 0)
+ #define ADXL313_RATE_BASE		6
  
-+bool adxl313_is_volatile_reg(struct device *dev, unsigned int reg);
-+
- enum adxl313_device_type {
- 	ADXL312,
- 	ADXL313,
+-#define ADXL313_POWER_CTL_MSK		GENMASK(3, 2)
+-#define ADXL313_MEASUREMENT_MODE	BIT(3)
++#define ADXL313_POWER_CTL_MSK		BIT(3)
+ 
+ #define ADXL313_RANGE_MSK		GENMASK(1, 0)
+ #define ADXL313_RANGE_MAX		3
 diff --git a/drivers/iio/accel/adxl313_core.c b/drivers/iio/accel/adxl313_core.c
-index 06a771bb4726..0c893c286017 100644
+index 0c893c286017..6170c9daa30f 100644
 --- a/drivers/iio/accel/adxl313_core.c
 +++ b/drivers/iio/accel/adxl313_core.c
-@@ -46,6 +46,23 @@ const struct regmap_access_table adxl314_readable_regs_table = {
- };
- EXPORT_SYMBOL_NS_GPL(adxl314_readable_regs_table, IIO_ADXL313);
+@@ -63,6 +63,12 @@ bool adxl313_is_volatile_reg(struct device *dev, unsigned int reg)
+ }
+ EXPORT_SYMBOL_NS_GPL(adxl313_is_volatile_reg, "IIO_ADXL313");
  
-+bool adxl313_is_volatile_reg(struct device *dev, unsigned int reg)
++static int adxl313_set_measure_en(struct adxl313_data *data, bool en)
 +{
-+	switch (reg) {
-+	case ADXL313_REG_DATA_AXIS(0):
-+	case ADXL313_REG_DATA_AXIS(1):
-+	case ADXL313_REG_DATA_AXIS(2):
-+	case ADXL313_REG_DATA_AXIS(3):
-+	case ADXL313_REG_DATA_AXIS(4):
-+	case ADXL313_REG_DATA_AXIS(5):
-+	case ADXL313_REG_FIFO_STATUS:
-+		return true;
-+	default:
-+		return false;
-+	}
++	return regmap_assign_bits(data->regmap, ADXL313_REG_POWER_CTL,
++				  ADXL313_POWER_CTL_MSK, en);
 +}
-+EXPORT_SYMBOL_NS_GPL(adxl313_is_volatile_reg, "IIO_ADXL313");
 +
  static int adxl312_check_id(struct device *dev,
  			    struct adxl313_data *data)
  {
-diff --git a/drivers/iio/accel/adxl313_i2c.c b/drivers/iio/accel/adxl313_i2c.c
-index a4cf0cf2c5aa..e8636e8ab14f 100644
---- a/drivers/iio/accel/adxl313_i2c.c
-+++ b/drivers/iio/accel/adxl313_i2c.c
-@@ -21,6 +21,8 @@ static const struct regmap_config adxl31x_i2c_regmap_config[] = {
- 		.rd_table	= &adxl312_readable_regs_table,
- 		.wr_table	= &adxl312_writable_regs_table,
- 		.max_register	= 0x39,
-+		.volatile_reg	= adxl313_is_volatile_reg,
-+		.cache_type	= REGCACHE_MAPLE,
- 	},
- 	[ADXL313] = {
- 		.reg_bits	= 8,
-@@ -28,6 +30,8 @@ static const struct regmap_config adxl31x_i2c_regmap_config[] = {
- 		.rd_table	= &adxl313_readable_regs_table,
- 		.wr_table	= &adxl313_writable_regs_table,
- 		.max_register	= 0x39,
-+		.volatile_reg	= adxl313_is_volatile_reg,
-+		.cache_type	= REGCACHE_MAPLE,
- 	},
- 	[ADXL314] = {
- 		.reg_bits	= 8,
-@@ -35,6 +39,8 @@ static const struct regmap_config adxl31x_i2c_regmap_config[] = {
- 		.rd_table	= &adxl314_readable_regs_table,
- 		.wr_table	= &adxl314_writable_regs_table,
- 		.max_register	= 0x39,
-+		.volatile_reg	= adxl313_is_volatile_reg,
-+		.cache_type	= REGCACHE_MAPLE,
- 	},
- };
+@@ -410,9 +416,7 @@ static int adxl313_setup(struct device *dev, struct adxl313_data *data,
+ 	}
  
-diff --git a/drivers/iio/accel/adxl313_spi.c b/drivers/iio/accel/adxl313_spi.c
-index 9a16b40bff34..68e323e81aeb 100644
---- a/drivers/iio/accel/adxl313_spi.c
-+++ b/drivers/iio/accel/adxl313_spi.c
-@@ -24,6 +24,8 @@ static const struct regmap_config adxl31x_spi_regmap_config[] = {
- 		.max_register	= 0x39,
- 		/* Setting bits 7 and 6 enables multiple-byte read */
- 		.read_flag_mask	= BIT(7) | BIT(6),
-+		.volatile_reg	= adxl313_is_volatile_reg,
-+		.cache_type	= REGCACHE_MAPLE,
- 	},
- 	[ADXL313] = {
- 		.reg_bits	= 8,
-@@ -33,6 +35,8 @@ static const struct regmap_config adxl31x_spi_regmap_config[] = {
- 		.max_register	= 0x39,
- 		/* Setting bits 7 and 6 enables multiple-byte read */
- 		.read_flag_mask	= BIT(7) | BIT(6),
-+		.volatile_reg	= adxl313_is_volatile_reg,
-+		.cache_type	= REGCACHE_MAPLE,
- 	},
- 	[ADXL314] = {
- 		.reg_bits	= 8,
-@@ -42,6 +46,8 @@ static const struct regmap_config adxl31x_spi_regmap_config[] = {
- 		.max_register	= 0x39,
- 		/* Setting bits 7 and 6 enables multiple-byte read */
- 		.read_flag_mask	= BIT(7) | BIT(6),
-+		.volatile_reg	= adxl313_is_volatile_reg,
-+		.cache_type	= REGCACHE_MAPLE,
- 	},
- };
+ 	/* Enables measurement mode */
+-	return regmap_update_bits(data->regmap, ADXL313_REG_POWER_CTL,
+-				  ADXL313_POWER_CTL_MSK,
+-				  ADXL313_MEASUREMENT_MODE);
++	return adxl313_set_measure_en(data, true);
+ }
  
+ /**
 -- 
 2.39.5
 

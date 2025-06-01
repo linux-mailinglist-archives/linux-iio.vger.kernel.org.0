@@ -1,87 +1,86 @@
-Return-Path: <linux-iio+bounces-20115-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20116-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12CABACA03F
-	for <lists+linux-iio@lfdr.de>; Sun,  1 Jun 2025 21:27:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8024FACA048
+	for <lists+linux-iio@lfdr.de>; Sun,  1 Jun 2025 21:38:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA2AB17207E
-	for <lists+linux-iio@lfdr.de>; Sun,  1 Jun 2025 19:27:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 71A3C3B2FE8
+	for <lists+linux-iio@lfdr.de>; Sun,  1 Jun 2025 19:38:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 757DE238C29;
-	Sun,  1 Jun 2025 19:27:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D57C0239086;
+	Sun,  1 Jun 2025 19:38:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IniqD/X9"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="f/Re1fE6"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ED0A1BC2A;
-	Sun,  1 Jun 2025 19:27:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F17B22DCC01;
+	Sun,  1 Jun 2025 19:38:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748806043; cv=none; b=elvbgK54EaCNZ+SUpXryKX3eLJXs3jpnxhCHtNv2m86PtWEsnQ/qNcj+Yw1EGaP2qvM+3VWFvg8xFI8oCd96zKT6GWh7fBN0QQkTss7gO8Gfk14uE1jefhm0XzmdIE4yj3/bweu64o6FY1rh9xaEXkfWM5RUMxnAvxE3BXlGW6E=
+	t=1748806721; cv=none; b=pcgw1Ym/uIkbGEea2aOndCansrgO/DKReWlCmvIDDFc2TUZwwKEpSV+kR9Ch6zT7OK9TnSoqTbeZZ+nI4UYHtQTj9ifDy5Jeeen+ZmXnOsWiTJ1uD97LC+VYS0yiWHwmLWGdexywPbwrTRPQlwCxBype5UuxLKD+gPCEZs3d0uw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748806043; c=relaxed/simple;
-	bh=ScLkdUn4PMY6wgYArU7L6vbvveEf7NzRCheQBOeVmFw=;
+	s=arc-20240116; t=1748806721; c=relaxed/simple;
+	bh=IeG8UKCg4lvF/tYhYOPRz/Q1JPgIutr1oWCut5JjwBg=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CGX6aIPmN5ikm52ypeKzo/dm1faO6IniHqIWUKkAX70839K97vlCHFbnQNrVNZOgqMV2MhCSqIuXpcDXlcr0/Z0mTI393clXpkDThK8I+DgxuiD9sz2M0cDHNxG8w1hLQ/rVIkmN2mUN6YhQ7jMfzR4/4zScu9y4D/kwScJEVVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IniqD/X9; arc=none smtp.client-ip=209.85.218.54
+	 To:Cc:Content-Type; b=j6R6VVYtt7ZhQwu6mWWm9irVoXXQN1XgFzV9tAYMsEjtHCI9YBtk9yYXXQO/+ozaIuH0rhQcrcIVl8CpbPruxJcJ/SawKHFBXp13u+7nPYNesioafSNBADY0Tk0cdKSHN8sEubxpC8XqnsgrELhURfE5U/akr8dstg9azkiCnEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=f/Re1fE6; arc=none smtp.client-ip=209.85.218.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-ad883afdf0cso714940766b.0;
-        Sun, 01 Jun 2025 12:27:21 -0700 (PDT)
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-adb4e36904bso232390166b.1;
+        Sun, 01 Jun 2025 12:38:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1748806040; x=1749410840; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1748806718; x=1749411518; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=jc/k+pCtYU6pJW7Wb+/1+zZ1iirP7vqOl4NvXjjQC0s=;
-        b=IniqD/X95HbctEkenWGYZF4HF8bb2Wa9zY0ZE3NWxDT0MusbNrPXW1pnXNK/R676Kq
-         TiQ4TiXipuE5cw5LB8QBzPugG8VGrzA7a8g7FDYjcWMZtNQUJ46d2x0zVHzThAiuRF83
-         IHm1fZenRbCNAM/8WGJbKDhbXRPcFFuF1X3WEmIzCbxxUlkK8SduwsHrgdEovmXUk3d+
-         QMfU44SonFtORIDVDWuF1LgRPv2a9CTrRM90znQfUOgQr5iUOVa/Iw5kg0IDaCxy3DS5
-         ejWFuYSy2vznL59Jlp3TptotrDc1V3f6AaGv1U5MSnU53LT3ifSOy5gxt5m8OPUJFNxv
-         VJ8A==
+        bh=B11mIr/s1+fKxEHSw/QmoGkOx26Vq2+vDkpLrQaTVx4=;
+        b=f/Re1fE6aTUYVbQ0IJbpA2USQOBBnCrBhGWx/dFhPuX3J6zVRwBjUlW6gGsG1+xINt
+         8bbHDckfNOMCBthLCrRSMLSMMFUZpQci2XUFZEuwXDScK4zZsS2A2+Bxo2FJ0HzPEY13
+         ebtI7WQqPLDH9UM+zmwVHbFcGvyb3fcc0iMeEmm0OqyhXZyyqJ7kLHY2xA5kokT0TLzo
+         T/SA87123tULwkPFV5cE4q75fOYYMuxYgSRAN4Q1TtyGooSYF4wcLmIH6tobFV2Yszhs
+         Xha8yd+nglrLDAIKOF3fcOoh6OY0a9DRD3QhhzyFLiWsA3/G9kBC8qqM8fgZw/UhFvaD
+         XVXw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748806040; x=1749410840;
+        d=1e100.net; s=20230601; t=1748806718; x=1749411518;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=jc/k+pCtYU6pJW7Wb+/1+zZ1iirP7vqOl4NvXjjQC0s=;
-        b=UqPZrnKcy5gMgj5I9wEm1lK4itxxWbld+pr9lDqdqwlJ4vvk0M4rw0eUt5zDU7skTK
-         EfA+ZlzVmy7Px+vu0t8C14PkL1e/YyW9yTizUPw/5V/AdFkvFYaKD+NTvVEjbjlDSnI2
-         7rej+wmAlvtPW+m1vOE/0/PMHIFtNkEVMYQEu1/nA8t2snXF/vpmbt13TMwwa4SFC2Va
-         bOX66084h/NtQacw8BKLd1cMvifny/dlm7wzQ02dg15sqlH7nLMo2n1/yXzCD6pOFh7p
-         9ban8z18rpS1gdqY5MXi2xMum57kHJS8msgJMaof18/cXsb0MaMWsyhS5cehjr91OQDz
-         6eNg==
-X-Forwarded-Encrypted: i=1; AJvYcCVz0uY1V9Owo/+hP4wIgjKfTDJeT4M3CeFvtsxmfz9bQoyOm0/mtJ5BiuzbbsgE59RtcewJR7VlxXo=@vger.kernel.org, AJvYcCWrh6noaxrblxFDbFghhfFZ77XYmUjs9bmt22qCVh807bKVHkChQCaFKojyqaHX3npZoysM2XjJlHnq@vger.kernel.org, AJvYcCWzGSmTTm0F3RqBNAeVI5Fm9eC5ao+5gs0bzODDCp6AiU6euuijIeV15/su3lfQZW/Jt3ST/tGMIPwjL+iL@vger.kernel.org
-X-Gm-Message-State: AOJu0YyZrkyDh02sQ6C2QtQN8ZEGDPFkL1m2SSjGMWbfRsgK5YRliInQ
-	utwNlie+eYeJUzWBUJ8rjwiicigN2aqURAIHFSm4vFvS4JsDAeT7HOkwqyVZ42JPEzSc23Rqs2+
-	AUfskxGN4mDhGvTLmTxbZfyx6XKb7wltH+gwU
-X-Gm-Gg: ASbGnctuoiE09w9m2+tSlMzJtcflYkLTyKiEep15EVGuziWDzrm8+Z1+zUSloPSGsbz
-	2gP+ksYK5V4BBd+yC/Oq+K4SIhUgifjU3xMfN11RJ8ivqNU0ZjL0UzF1gPiomuwUfuf56Cx1H25
-	4lDmtpVcWxMEsQfSdKOALaZzeOMcoVYMjA
-X-Google-Smtp-Source: AGHT+IF5k4C0Bcd/ybdwcDgzNvrtEuVO9s6UNeWqrxE1lZmbP2mEABJ4x2uUF7W2NDX83BWL074nNz2nhmj1l9D+9sw=
-X-Received: by 2002:a17:906:a996:b0:ad8:9909:20aa with SMTP id
- a640c23a62f3a-adb36bee594mr719706466b.40.1748806039692; Sun, 01 Jun 2025
- 12:27:19 -0700 (PDT)
+        bh=B11mIr/s1+fKxEHSw/QmoGkOx26Vq2+vDkpLrQaTVx4=;
+        b=JQy9MVB+dInRCtZckfrGYWOKxKizaWVA6DGC6V3/y7i6Um8shcVUH4FzgFGy7RAdvJ
+         /Vn6WRHyMXgKswEkTXiPMhHXH4jPhEtXIZ/4e1bzm6zoKZvk8hOdmhF7n1QuJXEQti5U
+         UeZrsjN0YH8QtfdVGqu8sxJLoqjxNHrYKFbzz4v24jrBGNK6AdNqDE8DFydwUmZmq/0J
+         oHy5/6U4FHhZJ/Zw8JBqFXQPXTIfvPH7RUPNply5rEPVg1f2FmYujB0+YK54PVLA0HQK
+         jxrA3By4rGRwsND1bh7JilJi4GEEtMw1EN+N9UeAk0R+SphBneoCj1r1dFAnTne1jUsv
+         1ygg==
+X-Forwarded-Encrypted: i=1; AJvYcCVxpDxxzaUUBFKOckY07CxXh6WND5GP4zYMnMKjYcG/EU5kyxfBJnXbl1MPsfPeY7coV1EZcqFc/Ao=@vger.kernel.org, AJvYcCWJej44rkhE37xZ+9s9BQu+GGNp54ESUvjvyjD5tLc6Ap0kXaiTlqBeLy8wpOpd4ejp5Nw8f3A0EZAz@vger.kernel.org, AJvYcCXV2f4DAUOdHP9D54go8f6ny9G/5saGVpy7G1HJuGgUqgnMubmhR8putoCyNCh2sDXwovdYW3cz9afqFyQA@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz978LOoCllwiS/uEf2RHs+Kl9K3hFcqFqcretlXOZWonzB/MAm
+	LkKW0gtC04LVsJZAwGWQ6G1/O/1Lhe/ZuhVowtE4oZRTtJFUOjkvjRb8ZZZC75Qx96/F3amN30V
+	Dm/yd4OFOYK5Tc1vuqLDTf2T0ETH1sFk=
+X-Gm-Gg: ASbGnctNLXPwRWpFejJGDhbyWt0impTXPapkZkcpiczhBjPj5VpTjzcLa+tucMPt3JY
+	9HfG/l/fiN76cOUqTPSlTQTyhkvHMfZbijlVOigQi6Y5fH/I6bq0qxshU2EYBrK9GUPbsL5WzXv
+	aKNElEhrUgU+c5ZuP1vSby5d6GBg5Xj60q/jUnlm01lxI=
+X-Google-Smtp-Source: AGHT+IEqDt9KECAGnDpIRfjKZd/9Tuo1/lahFMEac0foWC/x+1y5j8HG4Ba0gnqpHlOPs6kVPE8N32+n6BYylslE2dA=
+X-Received: by 2002:a17:907:9450:b0:ad8:9e5b:9217 with SMTP id
+ a640c23a62f3a-adb36bfb683mr906120166b.45.1748806718050; Sun, 01 Jun 2025
+ 12:38:38 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250601172139.59156-1-l.rubusch@gmail.com> <20250601172139.59156-7-l.rubusch@gmail.com>
-In-Reply-To: <20250601172139.59156-7-l.rubusch@gmail.com>
+References: <20250601172139.59156-1-l.rubusch@gmail.com> <20250601172139.59156-8-l.rubusch@gmail.com>
+In-Reply-To: <20250601172139.59156-8-l.rubusch@gmail.com>
 From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Sun, 1 Jun 2025 22:26:42 +0300
-X-Gm-Features: AX0GCFupdY86AmtyRSyHYdTfVMRHIiwnj_7rlmrr-KRB-HeB42H8neEe03J_my0
-Message-ID: <CAHp75Ve6nifph44F-_sOwqSBBy_Ay5BeH9QxWMmMUNR1N7wUzQ@mail.gmail.com>
-Subject: Re: [PATCH v4 06/11] iio: accel: adxl313: add basic interrupt
- handling for FIFO watermark
+Date: Sun, 1 Jun 2025 22:38:01 +0300
+X-Gm-Features: AX0GCFvqz6k77Rudh7415Hm0JJsDqI38u-Cisvz1_GqJgo6zEIT4Nkzp4fjjzko
+Message-ID: <CAHp75VemOXhpRp2hfDhvzi3y5j5oL-_0xMmWRWkwEtX7Ks5nMQ@mail.gmail.com>
+Subject: Re: [PATCH v4 07/11] iio: accel: adxl313: add activity sensing
 To: Lothar Rubusch <l.rubusch@gmail.com>
 Cc: jic23@kernel.org, dlechner@baylibre.com, nuno.sa@analog.com, 
 	andy@kernel.org, corbet@lwn.net, lucas.p.stankus@gmail.com, lars@metafoo.de, 
@@ -93,74 +92,113 @@ Content-Transfer-Encoding: quoted-printable
 On Sun, Jun 1, 2025 at 8:22=E2=80=AFPM Lothar Rubusch <l.rubusch@gmail.com>=
  wrote:
 >
-> Prepare the interrupt handler. Add register entries to evaluate the
-> incoming interrupt. Add functions to clear status registers and reset the
-> FIFO.
->
-> Add FIFO watermark configuration and evaluation. Let a watermark to be
-> configured. Evaluate the interrupt accordingly. Read out the FIFO content
-> and push the values to the IIO channel.
+> Add possibilities to set a threshold for activity sensing. Extend the
+> interrupt handler to process activity interrupts. Provide functions to se=
+t
+> the activity threshold and to enable/disable activity sensing. Further ad=
+d
+> a fake channel for having x, y and z axis anded on the iio channel.
+
+IIO
+
+And what does the 'anded' mean?
+
+> This is a preparatory patch. Some of the definitions and functions are
+> supposed to be extended for inactivity later on.
 
 ...
 
-> +static int adxl313_set_watermark(struct iio_dev *indio_dev, unsigned int=
- value)
+> +static int adxl313_is_act_inact_en(struct adxl313_data *data,
+> +                                  enum adxl313_activity_type type)
 > +{
-> +       struct adxl313_data *data =3D iio_priv(indio_dev);
-> +       const unsigned int fifo_mask =3D 0x1f, interrupt_mask =3D 0x02;
-
-GENMASK()
-BIT()
-
-> +       int ret;
+> +       unsigned int axis_ctrl;
+> +       unsigned int regval;
+> +       int axis_en, int_en, ret;
 > +
-> +       value =3D min(value, ADXL313_FIFO_SIZE - 1);
-> +
-> +       ret =3D regmap_update_bits(data->regmap, ADXL313_REG_FIFO_CTL,
-> +                                fifo_mask, value);
+> +       ret =3D regmap_read(data->regmap, ADXL313_REG_ACT_INACT_CTL, &axi=
+s_ctrl);
 > +       if (ret)
 > +               return ret;
 > +
-> +       data->watermark =3D value;
+> +       /* Check if axis for activity are enabled */
+> +       if (type !=3D ADXL313_ACTIVITY)
+> +               return 0;
 > +
-> +       return regmap_update_bits(data->regmap, ADXL313_REG_INT_ENABLE,
-> +                                 interrupt_mask, ADXL313_INT_WATERMARK);
-> +}
+> +       axis_en =3D FIELD_GET(ADXL313_ACT_XYZ_EN, axis_ctrl);
 
-...
+If it's false, it will be false anyway. No need to defer the check:
 
-> +static int adxl313_get_samples(struct adxl313_data *data)
-> +{
-> +       unsigned int regval =3D 0;
+  if (!axis_en)
+    return false;
 
-Useless assignment.
-
-> +       int ret;
-> +
-> +       ret =3D regmap_read(data->regmap, ADXL313_REG_FIFO_STATUS, &regva=
-l);
+> +       /* The axis are enabled, now check if specific interrupt is enabl=
+ed */
+> +       ret =3D regmap_read(data->regmap, ADXL313_REG_INT_ENABLE, &regval=
+);
 > +       if (ret)
 > +               return ret;
 > +
-> +       return FIELD_GET(ADXL313_REG_FIFO_STATUS_ENTRIES_MSK, regval);
+> +       int_en =3D adxl313_act_int_reg[type] & regval;
+> +
+> +       return axis_en && int_en;
+
+  return ... & regval;
+
 > +}
+
+I have already commented on this a couple of times.
 
 ...
 
-> +               ret =3D devm_request_threaded_irq(dev, irq, NULL,
-> +                                               &adxl313_irq_handler,
-> +                                               IRQF_SHARED | IRQF_ONESHO=
-T,
-> +                                               indio_dev->name, indio_de=
-v);
+> +       /* Scale factor 15.625 mg/LSB */
+> +       regval =3D DIV_ROUND_CLOSEST(MICRO * val + val2, 15625);
+
+I would rather do
+
+val * MICRO + val2
+
+which is read more naturally (we will easily get that the expression
+uses MICRO scale).
+
+...
+
+> +       int ret =3D -ENOENT;
+> +
+> +       if (FIELD_GET(ADXL313_INT_ACTIVITY, int_stat)) {
+> +               ret =3D iio_push_event(indio_dev,
+> +                                    IIO_MOD_EVENT_CODE(IIO_ACCEL, 0,
+> +                                                       IIO_MOD_X_OR_Y_OR=
+_Z,
+> +                                                       IIO_EV_TYPE_MAG,
+> +                                                       IIO_EV_DIR_RISING=
+),
+> +                                    ts);
 > +               if (ret)
 > +                       return ret;
+> +       }
+>
+>         if (FIELD_GET(ADXL313_INT_WATERMARK, int_stat)) {
+>                 samples =3D adxl313_get_samples(data);
+>                 if (samples < 0)
+>                         return samples;
+>
+> -               return adxl313_fifo_push(indio_dev, samples);
+> +               ret =3D adxl313_fifo_push(indio_dev, samples);
 
-Now I see the first user of 'irq'. Logically these two patches may not
-be split. Or split should be made differently, let's say IRQ type
-holding variable + switch case can go in the first preparatory patch
-(however it will make a little sense without real users, as it is/will
-be a dead code).
+This is not needed...
+
+>         }
+>
+>         /* Return error if no event data was pushed to the IIO channel. *=
+/
+> -       return -ENOENT;
+> +       return ret;
+
+...and this looks wrong.
+
+Before the case was clear, if we have no respective bit set in the
+int_stat, we return ENOENT. Now it depends on the other bit. If this
+is correct behaviour, it needs a comment.
 
 --=20
 With Best Regards,

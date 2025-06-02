@@ -1,66 +1,79 @@
-Return-Path: <linux-iio+bounces-20151-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20152-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2602AACB586
-	for <lists+linux-iio@lfdr.de>; Mon,  2 Jun 2025 17:05:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B43F6ACB669
+	for <lists+linux-iio@lfdr.de>; Mon,  2 Jun 2025 17:17:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A0D557ABA05
-	for <lists+linux-iio@lfdr.de>; Mon,  2 Jun 2025 15:02:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 243B61944E1D
+	for <lists+linux-iio@lfdr.de>; Mon,  2 Jun 2025 15:06:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C106D22FAFD;
-	Mon,  2 Jun 2025 14:55:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFF06238D54;
+	Mon,  2 Jun 2025 14:59:09 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA6F2227E95;
-	Mon,  2 Jun 2025 14:55:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C1E0238174;
+	Mon,  2 Jun 2025 14:59:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876155; cv=none; b=EFAUgxg+5VUSeNNjQmsb99PSJ2xdAHFYSxz/NVN6e5t9wP550FTRTJN/Cwu9Ag/oXzrLCKsYaDHfRLoMeRwBL5FmgLroUEAPBBOS2HHm1gCQ8M+GbZ0j6QjGJNl0wtLrQyltML+u6XGp7CxlPR162vqgU7YT/Wn7IvIb8HuGPDU=
+	t=1748876349; cv=none; b=OjO23n7Ld9QvRK/BXNkMOGeRUt/mgEq6sg0ttPys9w+08lW2DV4U1UL/Okcv0O3vTYYhTjzyO2bDCTT6nKhLwAjvxBQICX/kkKkbNch3LqETNClUYotLeBbHka+0i99qk0nJylai9WbT2YCDBmatFN7wqZEbYoc9oF2fI5bCH8w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876155; c=relaxed/simple;
-	bh=OTDnDpz91oo7TI10WrL8VLx5msdpHQhefrkAOSWO9kw=;
+	s=arc-20240116; t=1748876349; c=relaxed/simple;
+	bh=U76p8J/dP1FRLW1OHfizZCnhk6f8RLVJiirARJ5Ua3o=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cyjwvd4eohEL1lDSmIopkhTkxbKHkIyVdEacw0FLaqFkXE1JQBqkeqBb1p67jVwt+nbUeKYVm7oLjHPj9ycd2EyuGGn11exaUB6cPLSfHkRtsSutZkbNie+y62znA526wzwy7tOwdtR8/txsaJO9fOVaxlZ8NC4vR0Z0SbsQzTk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=fail smtp.mailfrom=kernel.org; arc=none smtp.client-ip=192.198.163.8
+	 Content-Type:Content-Disposition:In-Reply-To; b=hsLW2ElVxcoJk4ZUGa47sVM2+xOMJ473GGBZeIPzK9gRiJUAQaKyEgeS2YSOBpspwDPs5u94WAU5QAMMzVCkHwwVPxLObdbgEk6WrcQQhHYoaIXm4rDdd4A7nbMVnLuOA2WLnWJoZQ4L+nCWCHGhVd5uwlrqCvipeFbG+HaV1Ew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=fail smtp.mailfrom=kernel.org; arc=none smtp.client-ip=192.198.163.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=kernel.org
-X-CSE-ConnectionGUID: FbKZ4WJ2Rj6hHvo7IvWwCQ==
-X-CSE-MsgGUID: hstPhcp2RTeA4P8obRJ0yQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11451"; a="68436266"
+X-CSE-ConnectionGUID: gaUjNlcFQ8u550OaGhL61Q==
+X-CSE-MsgGUID: m3UexrM0S2GT/Ri+ML6VUw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11451"; a="38512399"
 X-IronPort-AV: E=Sophos;i="6.16,203,1744095600"; 
-   d="scan'208";a="68436266"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jun 2025 07:55:53 -0700
-X-CSE-ConnectionGUID: oHYVTvX5T8WyxghHliO4Ag==
-X-CSE-MsgGUID: dtO+QBWoQlKFsWE9GPPfHg==
+   d="scan'208";a="38512399"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jun 2025 07:59:07 -0700
+X-CSE-ConnectionGUID: 8Dyvj7vwSx+NQ2Hya0Mppw==
+X-CSE-MsgGUID: hr82fmzXR2uwYsMY4XUFiQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,203,1744095600"; 
-   d="scan'208";a="148422996"
+   d="scan'208";a="149563320"
 Received: from smile.fi.intel.com ([10.237.72.52])
-  by fmviesa003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jun 2025 07:55:49 -0700
+  by orviesa004.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jun 2025 07:59:03 -0700
 Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
 	(envelope-from <andy@kernel.org>)
-	id 1uM6Zm-00000002sAx-2EuP;
-	Mon, 02 Jun 2025 17:55:46 +0300
-Date: Mon, 2 Jun 2025 17:55:46 +0300
+	id 1uM6ct-00000002sDm-0isY;
+	Mon, 02 Jun 2025 17:58:59 +0300
+Date: Mon, 2 Jun 2025 17:58:58 +0300
 From: Andy Shevchenko <andy@kernel.org>
-To: Marcelo Schmitt <marcelo.schmitt@analog.com>
-Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Ana-Maria Cusco <ana-maria.cusco@analog.com>, jic23@kernel.org,
-	lars@metafoo.de, Michael.Hennerich@analog.com,
-	dlechner@baylibre.com, nuno.sa@analog.com, robh@kernel.org,
-	krzk+dt@kernel.org, conor+dt@kernel.org, linus.walleij@linaro.org,
-	brgl@bgdev.pl, marcelo.schmitt1@gmail.com
-Subject: Re: [PATCH v4 02/11] iio: adc: Add basic support for AD4170
-Message-ID: <aD27cobHWeBX8o30@smile.fi.intel.com>
-References: <cover.1748829860.git.marcelo.schmitt@analog.com>
- <e79f9a126672b33b8a7c01f650fee43a68c74029.1748829860.git.marcelo.schmitt@analog.com>
+To: Pop Ioan Daniel <pop.ioan-daniel@analog.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Sergiu Cuciurean <sergiu.cuciurean@analog.com>,
+	Dragos Bogdan <dragos.bogdan@analog.com>,
+	Antoniu Miclaus <antoniu.miclaus@analog.com>,
+	Olivier Moysan <olivier.moysan@foss.st.com>,
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Matti Vaittinen <mazziesaccount@gmail.com>,
+	Tobias Sperling <tobias.sperling@softing.com>,
+	Alisa-Dariana Roman <alisadariana@gmail.com>,
+	Marcelo Schmitt <marcelo.schmitt@analog.com>,
+	Herve Codina <herve.codina@bootlin.com>, linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5 2/5] iio: backend: update
+ iio_backend_oversampling_ratio_set
+Message-ID: <aD28MuVP8MgvKMmt@smile.fi.intel.com>
+References: <20250602134349.1930891-1-pop.ioan-daniel@analog.com>
+ <20250602134349.1930891-3-pop.ioan-daniel@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -69,136 +82,32 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <e79f9a126672b33b8a7c01f650fee43a68c74029.1748829860.git.marcelo.schmitt@analog.com>
+In-Reply-To: <20250602134349.1930891-3-pop.ioan-daniel@analog.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Mon, Jun 02, 2025 at 08:36:47AM -0300, Marcelo Schmitt wrote:
-> From: Ana-Maria Cusco <ana-maria.cusco@analog.com>
-> 
-> The AD4170 is a multichannel, low noise, 24-bit precision sigma-delta
-> analog to digital converter. The AD4170 design offers a flexible data
-> acquisition solution with crosspoint multiplexed analog inputs,
-> configurable ADC voltage reference inputs, ultra-low noise integrated PGA,
-> digital filtering, wide range of configurable output data rates, internal
-> oscillator and temperature sensor, four GPIOs, and integrated features for
-> interfacing with load cell weigh scales, RTD, and thermocouple sensors.
-> 
-> Add basic support for the AD4170 ADC with the following features:
-> - Single-shot read.
-> - Analog front end PGA configuration.
-> - Differential and pseudo-differential input configuration.
+On Mon, Jun 02, 2025 at 04:43:40PM +0300, Pop Ioan Daniel wrote:
+> Add chan parameter to iio_backend_oversampling_ratio_set() to allow
+> for contexts where the channel must be specified. Modify all
+> existing users.
 
 ...
 
-+ array_size.h
+> static int ad4851_set_oversampling_ratio(struct iio_dev *indio_dev,
 
-> +#include <linux/bitfield.h>
-> +#include <linux/bitmap.h>
+>  		if (ret)
+>  			return ret;
+>  	}
 
-> +#include <linux/bitops.h>
-> +#include <linux/bits.h>
+> -
 
-bitmap.h guarantees to include the two above, but it;s not a big deal to leave
-them.
+Why do you remove this blank line? To me these two blocks do not look toughly
+coupled.
 
-> +#include <linux/cleanup.h>
-> +#include <linux/delay.h>
-> +#include <linux/device.h>
-> +#include <linux/err.h>
-> +#include <linux/iio/iio.h>
-> +#include <linux/interrupt.h>
-> +#include <linux/irq.h>
-> +#include <linux/math64.h>
-> +#include <linux/module.h>
-> +#include <linux/property.h>
-> +#include <linux/regmap.h>
-> +#include <linux/regulator/consumer.h>
-> +#include <linux/spi/spi.h>
-
-+ types.h
-
-> +#include <linux/unaligned.h>
-> +#include <linux/units.h>
-> +#include <linux/util_macros.h>
-
-...
-
-> +static bool ad4170_setup_eq(struct ad4170_setup *a, struct ad4170_setup *b)
-> +{
-> +	/*
-> +	 * The use of static_assert() here is to make sure that the comparison
-> +	 * is adapted whenever struct ad4170_setup is changed.
-> +	 */
-> +	static_assert(sizeof(*a) ==
-> +		      sizeof(struct {
-> +				     u16 misc;
-> +				     u16 afe;
-> +				     u16 filter;
-> +				     u16 filter_fs;
-> +				     u32 offset;
-> +				     u32 gain;
-> +			     }));
-
-I think it doesn't make much sense unless one uses memcpy().
-
-> +	if (a->misc != b->misc ||
-> +	    a->afe != b->afe ||
-> +	    a->filter != b->filter ||
-> +	    a->filter_fs != b->filter_fs ||
-> +	    a->offset != b->offset ||
-> +	    a->gain != b->gain)
-> +		return false;
-> +
-> +	return true;
-> +}
-
-...
-
-> +static int ad4170_soft_reset(struct ad4170_state *st)
-> +{
-> +	int ret;
-> +
-> +	ret = regmap_write(st->regmap, AD4170_CONFIG_A_REG,
-> +			   AD4170_SW_RESET_MSK);
-> +	if (ret)
-> +		return ret;
-> +
-> +	/* AD4170-4 requires 1 ms between reset and any register access. */
-> +	fsleep(MILLI);
-
-1 * USEC_PER_MSEC
-
-(need time.h)
-
-...
-
-> +	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*st));
-> +	if (!indio_dev)
-> +		return -ENOMEM;
-> +
-> +	st = iio_priv(indio_dev);
-
-+ blank line here.
-
-> +	ret = devm_mutex_init(dev, &st->lock);
-> +	if (ret)
-> +		return ret;
-
-> +	chip = spi_get_device_match_data(spi);
-> +	if (!chip)
-> +		return -EINVAL;
-> +
-> +	indio_dev->name = chip->name;
-> +	indio_dev->info = &ad4170_info;
-
-> +	st->spi = spi;
-
-Can be grouped with above st = ...
-
-> +	st->regmap = devm_regmap_init(dev, NULL, st, &ad4170_regmap_config);
-> +	if (IS_ERR(st->regmap))
-> +		return dev_err_probe(dev, PTR_ERR(st->regmap),
-> +				     "Failed to initialize regmap\n");
+> -	ret = iio_backend_oversampling_ratio_set(st->back, osr);
+> +	/* Channel is ignored by the backend being used here */
+> +	ret = iio_backend_oversampling_ratio_set(st->back, 0, osr);
+>  	if (ret)
+>  		return ret;
 
 -- 
 With Best Regards,

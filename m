@@ -1,442 +1,200 @@
-Return-Path: <linux-iio+bounces-20125-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20126-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8D74ACAD11
-	for <lists+linux-iio@lfdr.de>; Mon,  2 Jun 2025 13:16:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3467AACAD44
+	for <lists+linux-iio@lfdr.de>; Mon,  2 Jun 2025 13:35:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED375196083C
-	for <lists+linux-iio@lfdr.de>; Mon,  2 Jun 2025 11:17:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 33EB33BB724
+	for <lists+linux-iio@lfdr.de>; Mon,  2 Jun 2025 11:35:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AC161EBA0D;
-	Mon,  2 Jun 2025 11:16:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 796BB1F866A;
+	Mon,  2 Jun 2025 11:35:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ik+8vz6n"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="d1+1oxtz"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-vk1-f171.google.com (mail-vk1-f171.google.com [209.85.221.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F6C82F41;
-	Mon,  2 Jun 2025 11:16:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 870E92C3278;
+	Mon,  2 Jun 2025 11:35:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748862998; cv=none; b=t/8eF8E4OvEpvsVkbLUHoacBrJjeZFjIZacLcv0VRlSL/S1M9nNO8uc75JJ7oRiqZlbAVXFkMAGSPl97TgM+UtcwRVCI5jtVdhcp3FklUbWy5nu95zjVOtB0VU/NKOTt6Kv4xctduTZcguYpGFdh1gQJEYmbwwUIwdDZ0D0JoBg=
+	t=1748864129; cv=none; b=mnJwnsNL13XlidAGj/zWE9Eh9Vyr6azVmr34WoTVVjs6g1Ge+O0/MCZ7cBWSK3YwMe0gwgvtzs+IGQSpPXEwBTB4MeX5N0AVtKRc3AE0B4F7LtoexQSnylc7Z1WXZNU2rvAiVNr5zpRO8f9ULzTezt99a0r+ZQbsQDhF7Sm5J6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748862998; c=relaxed/simple;
-	bh=4OT8dMpWFfRv+z7H1pdYOxW7SBC/RdYIz2rgJ9mw79I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=f71Gg0yA/GpI03Z5rpYQJtsYkxPIM1dRHlicxe6Wgz9kIoBcT43TiedDC2uTG/8u2DcMPE1ZfLBXDAlN5VDZ3we70tUVb0WlBZ+FufzArIEKaodeROiej587Yro6fChrg2H3o+apLfUHgv8rszlfdzEHz2evJnrCj8FigLOhmUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ik+8vz6n; arc=none smtp.client-ip=209.85.221.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vk1-f171.google.com with SMTP id 71dfb90a1353d-527a2b89a11so1648292e0c.2;
-        Mon, 02 Jun 2025 04:16:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1748862995; x=1749467795; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=PKLuI0S04K4LHs4sr1kzhjQoZYDDn3yve0UomIXNTlE=;
-        b=Ik+8vz6nqH2qZF44+FqWRLjxDsznNvOdCbwJdJnAezcsuX/Erva3BZ+P8yp18SmODh
-         3ZpnyFMzHW5M8q5qmWBeDZhP0NRzwyq7b1EphjvoROc82q9zw9k3OrYuR7cTrZmG/vXI
-         ea2cQrdVHtcya7X/lXCn+u2HkdkfO+easXEmcMYxSw9herOmYS+kVwhXfnS0yVCGaJww
-         3m+2gmzq1cPhdtPSkL1LlPQDtQ//ryRUdlocDuGcHDkg7d1UQ3OnSra9JREU2sxHQnGc
-         qPzIAmHMDvGQ0Ogz9qaOpaZNH7ry3+2o/y3VH7pZyLSoi7Hw3ai1DWw+bTt15hnJ3j7Y
-         u6qg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748862995; x=1749467795;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PKLuI0S04K4LHs4sr1kzhjQoZYDDn3yve0UomIXNTlE=;
-        b=YfScKT4rTReV7PCOrOInnLYE58/iD7UkJQciHdmjXhFpn/m/RcZK/yA2iUPnZilZxp
-         l2DGN1aGJCW+myn9soAhRqwMsOTZwloxQfbm3irvf5i19RDy/FNlSiNF/cLt7Znf5LOf
-         tSnWrKTo/iQBSlViJMnN5QnqInsiSv8LerYC1QtmVZym1b6N0sv235GpKLgViYm6KSC7
-         NeocAF6rMVdIIc6a1k57GXpG9jISH87slj8O8pJMMN1yn95NNWWIQAkVOjZBkwS47y2J
-         s/K9tNukUqsgvG2iyz82A2uZrzZqmN/bUU6F0EcMVR4ZYmwxNOeDlvrbLuiopMaGUcv+
-         wO/Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUX8OTUiOKHrm0k6w+amYQ6cYVAIK0lrzIOAHRE5s9Grgh5Q4fkmOQIDgz/Mepw53GUSO9YxOHwxkg8@vger.kernel.org, AJvYcCVOXRpt9ut9BXw7cSgpDUm9odetvxcbvQlqJjpBMuk0JOK1Uy9SgYsF34aYQWJd155YPIIAdMRLKg2U@vger.kernel.org, AJvYcCWl3szmDZp5mqTEhevILxXbBVyK3ya3GtyH9VwPQFma3uFSOyeFW6iXd1aAPBPCzy8qCQZMjVIPx/LH@vger.kernel.org, AJvYcCXEO7prIY+RXwjhs6ks1gM4VH931sdEChNSkSaSRCLq7V52vFUJWT9GcAyrcp1RsoI/r5NJxGcPjcl+B8Ne@vger.kernel.org, AJvYcCXooV78v8z3lUZfLTZPF7Bh8xDKrMrW61raiugy3d/hA5V9lQJupG3Jd0NiW8XBs6XA+3S/zSFti5ul@vger.kernel.org
-X-Gm-Message-State: AOJu0YxiR0uzrTx31MkLr+ctS0c9QinNLfDHY+DU9N/Opb8DV09m+4Qc
-	qka32OaJ4CpmCEOTXUtaa42BCasQUTfn1qg+J7QU3k1FUO5lFLa+KrOK
-X-Gm-Gg: ASbGncsrxj4tObD9XYNCvKG3gfd9yYmiFamzNyWR8odzpkVRULCn0PYA6GbyzHKSeD3
-	Lm4s4IyPGv64M74wC8oiq5Fnlmozup6QptPW5XqZLyRLhRJ0K+PRS66ApJz3HfBvMwHqv8aiVr4
-	tOnOg5Uolg7UcSQAN9Elup/YXgY0PfI76AA3u7/xnY2Cn1umxMYsZwfsaDzcDKdqxRI84legquL
-	8++WY6XwAclubsrZ6Qxy9Kxy3HI6qj2MWsiHRLvKYMK0xgFsPhary0emsy9qZH1k7uxo/f04ggc
-	GgZkPMSu7WIcn6NLnx43jvSXlRBlQ7ns82q+b3cD4acFo9PLk+Ah948I59Ca4/AYJ9VnwwfXmTb
-	AsjKK7G0LN+s=
-X-Google-Smtp-Source: AGHT+IE1fCcnudgIyjz/EVtkZki9Gx2Qym/YMRI6t0KTxFoSgpTwKryR/zHmVu0g33PqZq6K6wbYfA==
-X-Received: by 2002:a05:6122:3d01:b0:52a:791f:7e20 with SMTP id 71dfb90a1353d-53080f76fd9mr10502605e0c.4.1748862994774;
-        Mon, 02 Jun 2025 04:16:34 -0700 (PDT)
-Received: from HYB-DlYm71t3hSl.ad.analog.com ([2001:a61:1225:ec01:ecf2:8e21:9f0f:159e])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-53074c32099sm7263789e0c.41.2025.06.02.04.16.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Jun 2025 04:16:34 -0700 (PDT)
-Date: Mon, 2 Jun 2025 13:16:22 +0200
-From: Jorge Marques <gastmaier@gmail.com>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Jorge Marques <jorge.marques@analog.com>, 
-	Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, 
-	Michael Hennerich <Michael.Hennerich@analog.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Jonathan Corbet <corbet@lwn.net>, Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>, 
-	Andy Shevchenko <andy@kernel.org>, Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>, 
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-pwm@vger.kernel.org
-Subject: Re: [PATCH v2 5/5] iio: adc: add support for ad4052
-Message-ID: <zofjbh4yvtz4sfj2t6cpdohqqlrgwqdqtiahpvalbbfv2tdqqi@g5zpdp3zn4gb>
-References: <20250422-iio-driver-ad4052-v2-0-638af47e9eb3@analog.com>
- <20250422-iio-driver-ad4052-v2-5-638af47e9eb3@analog.com>
- <c82b8c53-e653-4cd3-80ef-37c5daf9314c@baylibre.com>
+	s=arc-20240116; t=1748864129; c=relaxed/simple;
+	bh=rF/9b3LJ3IA8TfLAcik97ecBjzWIPZPNPh6eJpq38Io=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=lT4+qT+Z2ovIxu0gZqBZbhnixpcEP7zLCNTrI893sXrIq5EJlISY95VNFOhzTKsmESHl719XAyZ8zyu4qfU1pWyTDoe7txjbkWQMiAlWIodyZLkUf5onk4EDTtgKviRHJ8ITNLUsESd+OyIyRIzjsRmL90/LsKX7ElM2i7An06w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=d1+1oxtz; arc=none smtp.client-ip=148.163.135.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+	by mx0a-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5528HtcN021951;
+	Mon, 2 Jun 2025 07:34:56 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=DKIM; bh=StonQp8T+GwsIst/+wugE6MZqc/
+	OMQy2k/0svrvjomI=; b=d1+1oxtzmTurjFlo+/BcekOfQubKo7GvKFd3DWk5+2b
+	A9MIaUE9Gzf+IlkixTA/Uw4c91jH/vgB8cQar9u5nssH3xSTSUjY4ZW23rsQk8Ok
+	9gaBKI/Xm8GNDLGL7oe/WHeugS1iOoZ5HPBI8/oT1n+otJcDSciaviA2fsse6S9O
+	IeNfeBYPstymOm3OyVaxyooaV4V7E0bhlx2n9JtOQfXGBsJlfH9uyj/FKp8R4WCW
+	gT2UpCBw91UuXkuVVEbS8PBCat5P5teS7OgWt9lt/G2cBLnUwGLbUgJvHQVztzuV
+	hidRVnu3nZS/qBVlCF1uGU6y3CzysryMUfgZ9BJVVmg==
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 46yxp57apk-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 02 Jun 2025 07:34:55 -0400 (EDT)
+Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
+	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 552BYsYf023136
+	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Mon, 2 Jun 2025 07:34:54 -0400
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by ASHBMBX9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Mon, 2 Jun
+ 2025 07:34:54 -0400
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server id 15.2.1748.10 via Frontend
+ Transport; Mon, 2 Jun 2025 07:34:54 -0400
+Received: from work.ad.analog.com (HYB-hERzalRezfV.ad.analog.com [10.65.205.9])
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 552BYaou024822;
+	Mon, 2 Jun 2025 07:34:38 -0400
+From: Marcelo Schmitt <marcelo.schmitt@analog.com>
+To: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-gpio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC: <jic23@kernel.org>, <lars@metafoo.de>, <Michael.Hennerich@analog.com>,
+        <dlechner@baylibre.com>, <nuno.sa@analog.com>, <andy@kernel.org>,
+        <robh@kernel.org>, <krzk+dt@kernel.org>, <conor+dt@kernel.org>,
+        <linus.walleij@linaro.org>, <brgl@bgdev.pl>,
+        <marcelo.schmitt1@gmail.com>
+Subject: [PATCH v4 00/11] iio: adc: Add support for AD4170 series of ADCs
+Date: Mon, 2 Jun 2025 08:34:31 -0300
+Message-ID: <cover.1748829860.git.marcelo.schmitt@analog.com>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <c82b8c53-e653-4cd3-80ef-37c5daf9314c@baylibre.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Authority-Analysis: v=2.4 cv=HdIUTjE8 c=1 sm=1 tr=0 ts=683d8c5f cx=c_pps
+ a=PpDZqlmH/M8setHirZLBMw==:117 a=PpDZqlmH/M8setHirZLBMw==:17
+ a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=VwQbUJbxAAAA:8 a=gAnH3GRIAAAA:8
+ a=DCPjQr0N_ePN03jlYIoA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjAyMDA5OSBTYWx0ZWRfXyBajPOEwOLzI
+ 6Rbd7FImKJ3hh66+wqFHaG4uskdIThJoUYM410WdjhTU6kgecnqVNRIrK2/lhvRO2yeVN0wmog6
+ CjWkGf5j9+mYpHa4MrcRq9Dvro0smp1HkVkULPJfd3HLVD3hWFhUEaZpldwkV131W3Z6pnqSkEP
+ QBEsnH2vsIGCqYtKnMVgq8KFkpBJoxnYJTviAl/wifoavufAi6iLALcjDUdGhQa7Extqe5qbpuC
+ TvlCujVZj7fxdrAK/Kg4AC4bNbWYu5TOX1ERY625PKEtFZAlNXwd4wD+kI1MzaALQ8g7x3Z+yPd
+ mdP0Ez43cPBQQGsXWqaSNTkJ+WbWAq1rnJekv862P4zKO55kENqxSlwEMRiOP9Zznv9ZaQl+mC2
+ 2c89Xcxe8w6hNvNK9lA62m8vclxOusOwWILCTM8mvvT5QYYDFd+uCd5mLbytQq1dJJ0gv/SZ
+X-Proofpoint-ORIG-GUID: nRdhRdhYHL_nP-Nx18jD7ummIYC-iOjr
+X-Proofpoint-GUID: nRdhRdhYHL_nP-Nx18jD7ummIYC-iOjr
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-06-02_05,2025-05-30_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxlogscore=999 mlxscore=0 lowpriorityscore=0 bulkscore=0 spamscore=0
+ adultscore=0 suspectscore=0 impostorscore=0 phishscore=0 clxscore=1015
+ priorityscore=1501 malwarescore=0 classifier=spam authscore=0 authtc=n/a
+ authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2505160000 definitions=main-2506020099
 
-Hi David,
+Hi,
 
-On Fri, Apr 25, 2025 at 06:13:48PM -0500, David Lechner wrote:
-> On 4/22/25 6:34 AM, Jorge Marques wrote:
-> > The AD4052/AD4058/AD4050/AD4056 are versatile, 16-bit/12-bit,
-> > successive approximation register (SAR) analog-to-digital converter (ADC)
-> > that enables low-power, high-density data acquisition solutions without
-> > sacrificing precision.
-> > This ADC offers a unique balance of performance and power efficiency,
-> > plus innovative features for seamlessly switching between high-resolution
-> > and low-power modes tailored to the immediate needs of the system.
-> > The AD4052/AD4058/AD4050/AD4056 are ideal for battery-powered,
-> > compact data acquisition and edge sensing applications.
-> > 
-> > Signed-off-by: Jorge Marques <jorge.marques@analog.com>
-> > ---
-> >  MAINTAINERS              |    1 +
-> >  drivers/iio/adc/Kconfig  |   14 +
-> >  drivers/iio/adc/Makefile |    1 +
-> >  drivers/iio/adc/ad4052.c | 1425 ++++++++++++++++++++++++++++++++++++++++++++++
-> 
-> This patch is way too big, so I didn't review most of it yet. But time to call
-> it quits for today. In the future, it would be a lot easier for reviewers if
-> you can split things into multiple patches instead of implementing all of the
-> features at once. E.g. start with just a basic driver, then a patch to add
-> oversampling support, then another patch to add SPI offload support. 500 lines
-> is a more manageable size for review.
-> 
+As always, thank you to all reviewers of previous versions of this set.
+v4 comes with a few changes to comply with suggestions provided to v3, being
+most of them related to the adaptation of dt-binding properties.
 
-Ack. I split v3 into three commits: base, offload and iio events.
-My playground is here: https://github.com/gastmaier/adi-linux/pull/9
+This patch set adds support for Analog Devices AD4170 and similar sigma-delta ADCs.
 
-> ...
-> 
-> > +static int ad4052_update_xfer_offload(struct iio_dev *indio_dev,
-> > +				      struct iio_chan_spec const *chan)
-> > +{
-> > +	struct ad4052_state *st = iio_priv(indio_dev);
-> > +	const struct iio_scan_type *scan_type;
-> > +	struct spi_transfer *xfer = &st->xfer;
-> > +
-> > +	scan_type = iio_get_current_scan_type(indio_dev, chan);
-> > +
-> > +	if (IS_ERR(scan_type))
-> > +		return PTR_ERR(scan_type);
-> > +
-> > +	xfer = &st->offload_xfer;
-> > +	xfer->bits_per_word = scan_type->realbits;
-> > +	xfer->len = BITS_TO_BYTES(scan_type->storagebits);
-> 
-> This doesn't work for oversampling. realbits may be 16 while storagebits is 32.
-> But the SPI controller needs to know how many realbits-sized words to read.
-> 
-> So this should be 
-> 
-> 	xfer->len = BITS_TO_BYTES(scan_type->realbits);
-> 
+Patch 1 adds device tree documentation for the parts.
+Patch 2 adds basic device support.
+Patch 3 adds support for calibration scale.
+Patch 4 adds support for calibration bias.
+Patch 5 adds support for sample frequency along with filter type configuration.
+Patch 6 adds support for buffered ADC reading.
+Patch 7 adds clock provider support
+Patch 8 adds GPIO controller support.
+Patch 9 adds internal temperature sensor support.
+Patch 10 adds support for external RTD and bridge circuit sensors.
+Patch 11 adds timestamp channel [new patch]
 
-Agreed, but due to spi message optimization needs to be:
+Change log v3 -> v4
 
-  	xfer->len = scan_type->realbits == 24 ? 4 : 2;
+[Device tree changes]
+- Dropped sensor-node and most of defs.
+- Updated external sensor props to have similar name and type of adi,ad4130 ones.
+- Added constraints to properties related to external bridge sensor excitation.
 
-Because 3 bytes cannot be optimized.
-> > +
-> > +	spi_message_init_with_transfers(&st->offload_msg, &st->offload_xfer, 1);
-> > +	st->offload_msg.offload = st->offload;
-> > +
-> > +	return spi_optimize_message(st->spi, &st->offload_msg);
-> 
-> I know it is like this in a few other drivers already, but I don't like having
-> spi_optimize_message() in this funtion because it makes it really easy to
-> forget to do have balanced calls to spi_unoptimize_message().
-> 
+[General IIO driver changes]
+- Locked device mutex to ensure attribute read correctness on all archs
+- Fixed typo unasigned -> unassigned
 
-Ack.
+[Basic driver patch]
+- Added previously missing #include <linux/cleanup.h>.
+- Moved struct completion declaration to reduce commit diff.
 
-> > +}
-> > +
-> 
-> ...
-> 
-> > +static const struct iio_buffer_setup_ops ad4052_buffer_setup_ops = {
-> > +	.postenable = &ad4052_buffer_postenable,
-> > +	.predisable = &ad4052_buffer_predisable,
-> > +};
-> 
-> Would be nice to add "offload" to the name of this struct and the callbacks
-> to make it clear that these are only for the SPI offload use case.
-> 
-Ack.
-> ...
-> 
-> > +
-> > +static bool ad4052_offload_trigger_match(struct spi_offload_trigger *trigger,
-> > +					 enum spi_offload_trigger_type type,
-> > +					 u64 *args, u32 nargs)
-> > +{
-> 
-> We should be checking the args here according to what I suggested in my reply
-> to the devicetree bindings patch. Right now it is assuming that we are only
-> using this for SPI offload and that the pin used is GP1 and the event is data
-> read. We should at least verify that the args match those assumptions.
-> 
-> For bonus points, we could implement allowing GPO as well.
-> 
+[Calibration scale/gain patch]
+[Calibration bias/offset patch]
+- No longer restoring calib gain or calib offset on reg write fail.
 
-Yes, it is assuming as you mentioned.
-I'm okay with "at least verifying".
-but then I need to look-up at the parent node first, since it resides at
-the spi-controller node, if that's ok.
+[Digital filter and sample frequency config patch]
+- Use scoped_guard to ensure correct lock release order in ad4170_set_filter_type().
 
-> > +	return type == SPI_OFFLOAD_TRIGGER_DATA_READY;
-> > +}
-> > +
-> > +static const struct spi_offload_trigger_ops ad4052_offload_trigger_ops = {
-> > +	.match = ad4052_offload_trigger_match,
-> > +};
-> > +
-> > +static int ad4052_request_offload(struct iio_dev *indio_dev)
-> > +{
-> > +	struct ad4052_state *st = iio_priv(indio_dev);
-> > +	struct device *dev = &st->spi->dev;
-> > +	struct dma_chan *rx_dma;
-> > +	struct spi_offload_trigger_info trigger_info = {
-> > +		.fwnode = dev_fwnode(dev),
-> > +		.ops = &ad4052_offload_trigger_ops,
-> > +		.priv = st,
-> > +	};
-> > +	struct pwm_state pwm_st;
-> > +	int ret;
-> > +
-> > +	indio_dev->setup_ops = &ad4052_buffer_setup_ops;
-> > +
-> > +	ret = devm_spi_offload_trigger_register(dev, &trigger_info);
-> > +	if (ret)
-> > +		return dev_err_probe(dev, ret,
-> > +				     "failed to register offload trigger\n");
-> 
-> Strictly speaking, the trigger-source provider is indendant of using it for
-> SPI offload. I guess this is fine here for now though.
-> 
-Ok.
-> > +
-> > +	st->offload_trigger = devm_spi_offload_trigger_get(dev, st->offload,
-> > +							   SPI_OFFLOAD_TRIGGER_DATA_READY);
-> > +	if (IS_ERR(st->offload_trigger))
-> > +		return PTR_ERR(st->offload_trigger);
-> > +
-> > +	st->cnv_pwm = devm_pwm_get(dev, NULL);
-> > +	if (IS_ERR(st->cnv_pwm))
-> > +		return dev_err_probe(dev, PTR_ERR(st->cnv_pwm),
-> > +				     "failed to get CNV PWM\n");
-> > +
-> > +	pwm_init_state(st->cnv_pwm, &pwm_st);
-> > +
-> > +	pwm_st.enabled = false;
-> > +	pwm_st.duty_cycle = AD4052_T_CNVH_NS * 2;
-> > +	pwm_st.period = DIV_ROUND_UP_ULL(NSEC_PER_SEC,
-> > +					 AD4052_MAX_RATE(st->grade));
-> > +
-> > +	ret = pwm_apply_might_sleep(st->cnv_pwm, &pwm_st);
-> > +	if (ret)
-> > +		return dev_err_probe(dev, ret, "failed to apply CNV PWM\n");
-> > +
-> > +	ret = devm_add_action_or_reset(dev, ad4052_pwm_disable, st->cnv_pwm);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	rx_dma = devm_spi_offload_rx_stream_request_dma_chan(dev, st->offload);
-> > +	if (IS_ERR(rx_dma))
-> > +		return PTR_ERR(rx_dma);
-> > +
-> > +	return devm_iio_dmaengine_buffer_setup_with_handle(dev, indio_dev, rx_dma,
-> > +							   IIO_BUFFER_DIRECTION_IN);
-> > +}
-> > +
-> > +static int ad4052_probe(struct spi_device *spi)
-> > +{
-> > +	const struct ad4052_chip_info *chip;
-> > +	struct device *dev = &spi->dev;
-> > +	struct iio_dev *indio_dev;
-> > +	struct ad4052_state *st;
-> > +	int ret = 0;
-> > +
-> > +	chip = spi_get_device_match_data(spi);
-> > +	if (!chip)
-> > +		return dev_err_probe(dev, -ENODEV,
-> > +				     "Could not find chip info data\n");
-> > +
-> > +	indio_dev = devm_iio_device_alloc(dev, sizeof(*st));
-> > +	if (!indio_dev)
-> > +		return -ENOMEM;
-> > +
-> > +	st = iio_priv(indio_dev);
-> > +	st->spi = spi;
-> > +	spi_set_drvdata(spi, st);
-> > +	init_completion(&st->completion);
-> > +
-> > +	st->regmap = devm_regmap_init_spi(spi, &ad4052_regmap_config);
-> > +	if (IS_ERR(st->regmap))
-> > +		return dev_err_probe(dev, PTR_ERR(st->regmap),
-> > +				     "Failed to initialize regmap\n");
-> > +
-> > +	st->mode = AD4052_SAMPLE_MODE;
-> > +	st->wait_event = false;
-> > +	st->chip = chip;
-> > +	st->grade = chip->prod_id <= 0x75 ? AD4052_2MSPS : AD4052_500KSPS;
-> > +	st->oversampling_frequency = AD4052_FS_OFFSET(st->grade);
-> > +	st->events_frequency = AD4052_FS_OFFSET(st->grade);
-> 
-> Somewhere around here, we should be turning on the power supplies. Also, it
-> looks like we need some special handling to get the reference volage. If there
-> is a supply connected to REF, use that, if not, use VDD which requires writing
-> to a register to let the chip know.
-> 
-Yes, v3 will add regulators.
-Vref can be sourced from either REF (default) or VDD.
-So the idea is, if REF node not provided, set VDD as REF?
+[Buffer support patch]
+- Fixed a bug in the filling of the IIO device buffer.
 
-> > +
-> > +	st->cnv_gp = devm_gpiod_get_optional(dev, "cnv", GPIOD_OUT_LOW);
-> > +	if (IS_ERR(st->cnv_gp))
-> > +		return dev_err_probe(dev, PTR_ERR(st->cnv_gp),
-> > +				     "Failed to get cnv gpio\n");
-> > +
-> > +	indio_dev->modes = INDIO_BUFFER_HARDWARE | INDIO_DIRECT_MODE;
-> 
-> INDIO_BUFFER_HARDWARE should not be set here. If using SPI offload,
-> devm_iio_dmaengine_buffer_setup_with_handle() will add it automatically.
-> For non-SPI-offload operation, it should not be set.
-> 
-Ack.
-> > +	indio_dev->num_channels = 1;
-> > +	indio_dev->info = &ad4052_info;
-> > +	indio_dev->name = chip->name;
-> > +
-> > +	st->offload = devm_spi_offload_get(dev, spi, &ad4052_offload_config);
-> 
-> This
-> 
-> > +	if (IS_ERR(st->offload))
-> > +		return PTR_ERR(st->offload);
-> 
-> should be
-> 
-> 	ret = PTR_ERR_OR_ZERO(st->offload);
-> 
-Ack.
+[CLOCK provider patch]
+- Explicitly stated that clock divider (CLKDIV) control support is not provided.
+- Skipped clock provider register if "#clock-cells" is not present.
 
-> > +
-> > +	if (ret && ret != -ENODEV)
-> > +		return dev_err_probe(dev, ret, "Failed to get offload\n");
-> > +
-> > +	if (ret == -ENODEV) {
-> > +		st->offload_trigger = NULL;
-> > +		indio_dev->channels = chip->channels;
-> > +	} else {
-> > +		indio_dev->channels = chip->offload_channels;
-> > +		ret = ad4052_request_offload(indio_dev);
-> > +		if (ret)
-> > +			return dev_err_probe(dev, ret,
-> > +					     "Failed to configure offload\n");
-> > +	}
-> > +
-> > +	st->xfer.rx_buf = &st->d32;
-> 
-> I don't think we want this set globally. I.e. it doesn't make sense for SPI
-> offload xfers.
-> 
-Ack.
+[GPIO controller patch]
+- Made AD4170 depend on GPIOLIB.
 
-> > +
-> > +	ret = ad4052_soft_reset(st);
-> > +	if (ret)
-> > +		return dev_err_probe(dev, ret, "AD4052 failed to soft reset\n");
-> > +
-> > +	ret = ad4052_check_ids(st);
-> > +	if (ret)
-> > +		return dev_err_probe(dev, ret,
-> > +				     "AD4052 fields assertions failed\n");
-> > +
-> > +	ret = ad4052_setup(indio_dev, indio_dev->channels);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	ret = regmap_write(st->regmap, AD4052_REG_DEVICE_STATUS,
-> > +			   AD4052_DEVICE_STATUS_DEVICE_RESET);
-> 
-> Why not include this in ad4052_setup() or even ad4052_soft_reset()?
-> 
-Ack.
-But on setup to not write registers before doing the sanity test.
+[External sensor patch]
+- Update to string adi,sensor-type dt property.
+- Adapted external sensor dt prop parsing to work with the updated version of those props.
+- Improvements to readability.
 
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	ret = ad4052_request_irq(indio_dev);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	ad4052_update_xfer_raw(indio_dev, indio_dev->channels);
-> > +
-> > +	pm_runtime_set_active(dev);
-> > +	ret = devm_pm_runtime_enable(dev);
-> > +	if (ret)
-> > +		return dev_err_probe(dev, ret,
-> > +				     "Failed to enable pm_runtime\n");
-> > +
-> > +	pm_runtime_set_autosuspend_delay(dev, 1000);
-> > +	pm_runtime_use_autosuspend(dev);
-> > +
-> > +	return devm_iio_device_register(dev, indio_dev);
-> > +}
-> > +
-> > +static int ad4052_runtime_suspend(struct device *dev)
-> > +{
-> > +	struct ad4052_state *st = dev_get_drvdata(dev);
-> > +
-> > +	return regmap_write(st->regmap, AD4052_REG_DEVICE_CONFIG,
-> > +			    FIELD_PREP(AD4052_DEVICE_CONFIG_POWER_MODE_MSK,
-> > +				       AD4052_DEVICE_CONFIG_LOW_POWER_MODE));
-> > +}
-> > +
-> > +static int ad4052_runtime_resume(struct device *dev)
-> > +{
-> > +	struct ad4052_state *st = dev_get_drvdata(dev);
-> > +	int ret;
-> > +
-> > +	ret = regmap_write(st->regmap, AD4052_REG_DEVICE_CONFIG,
-> > +			   FIELD_PREP(AD4052_DEVICE_CONFIG_POWER_MODE_MSK, 0));
-> 
-> regmap_clear_bits() would be shorter if there isn't going to be a macro to
-> explain the meaning of 0.
-> 
-Ack.
-> > +	return ret;
-> > +}
-> > +
+[New patch - Add timestamp channel]
 
-Regards,
-Jorge
+Link to v3: https://lore.kernel.org/linux-iio/cover.1747083143.git.marcelo.schmitt@analog.com/
+Link to v2: https://lore.kernel.org/linux-iio/cover.1745841276.git.marcelo.schmitt@analog.com/
+Link to v1: https://lore.kernel.org/linux-iio/cover.1744200264.git.marcelo.schmitt@analog.com/
+
+Ana-Maria Cusco (1):
+  iio: adc: Add basic support for AD4170
+
+Marcelo Schmitt (10):
+  dt-bindings: iio: adc: Add AD4170
+  iio: adc: ad4170: Add support for calibration gain
+  iio: adc: ad4170: Add support for calibration bias
+  iio: adc: ad4170: Add digital filter and sample frequency config
+    support
+  iio: adc: ad4170: Add support for buffered data capture
+  iio: adc: ad4170: Add clock provider support
+  iio: adc: ad4170: Add GPIO controller support
+  iio: adc: ad4170: Add support for internal temperature sensor
+  iio: adc: ad4170: Add support for weigh scale and RTD sensors
+  iio: adc: ad4170: Add timestamp channel
+
+ .../bindings/iio/adc/adi,ad4170.yaml          |  543 +++
+ MAINTAINERS                                   |    8 +
+ drivers/iio/adc/Kconfig                       |   16 +
+ drivers/iio/adc/Makefile                      |    1 +
+ drivers/iio/adc/ad4170.c                      | 2973 +++++++++++++++++
+ 5 files changed, 3541 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad4170.yaml
+ create mode 100644 drivers/iio/adc/ad4170.c
+
+
+base-commit: c06335516e8c14f501a479a4d9de0e6c09c52ef2
+-- 
+2.47.2
+
 

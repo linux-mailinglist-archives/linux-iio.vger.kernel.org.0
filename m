@@ -1,164 +1,220 @@
-Return-Path: <linux-iio+bounces-20169-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20170-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC070ACBA17
-	for <lists+linux-iio@lfdr.de>; Mon,  2 Jun 2025 19:15:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0496DACBA30
+	for <lists+linux-iio@lfdr.de>; Mon,  2 Jun 2025 19:24:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E9D38188964D
-	for <lists+linux-iio@lfdr.de>; Mon,  2 Jun 2025 17:15:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 508E91887AB0
+	for <lists+linux-iio@lfdr.de>; Mon,  2 Jun 2025 17:24:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5E6022541F;
-	Mon,  2 Jun 2025 17:15:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42E9E226D1D;
+	Mon,  2 Jun 2025 17:23:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Zt17EzvH"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="OvwwslSn"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
+Received: from mail-oi1-f179.google.com (mail-oi1-f179.google.com [209.85.167.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CADD1FDD;
-	Mon,  2 Jun 2025 17:15:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2E6722686F
+	for <linux-iio@vger.kernel.org>; Mon,  2 Jun 2025 17:23:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748884532; cv=none; b=jsPHi7mnSS/lExzEWOdQhP+FiWDpJrgZD+KFmzzSrGSf8i9rbcW+O3AlYe0ffUNbfEK//Oj6PPQKLJ9vRjBqemMYzXENvkNOk4jbMY2dig0fvFDuBs6XGU5U6ORhW8/89JptokrSlcoC8AMYQPlpjoxROw47N3ZfhzWca1udNu4=
+	t=1748885026; cv=none; b=FSDaJs32m6gL5TTR4bysw3y+3jiLyzACX/6PD25D4FDvkNV0yE036o6hV6dONXhFDt64J4OGYA7mItujJbpcJ34RMaJZyYep9jpRykAUE/dsGhSry68P7/YKteyMdaAxCMv/QNhfBWK/1VUQ2CuN75IuUvWyOC2I6ylGs+dzn1E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748884532; c=relaxed/simple;
-	bh=BSPZ+8k3j7hRfUMuTmnUvpVGMIHP+qqGksybdohOw0U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=toO1FqEKvm2FnnLepxqw1xuSYsSVCDwOqmxhNZeojBXB5cY25mDxQBxI0KrHNMRr8D4tN2P9RNQxJ/jmT/0CpsHcZY7sg+yETZh+LyUVCO0UqTfrbj5IboETnapqexGMZdSeMdCQBhnO6OIidBFxbdZSef4/yF3MlNYjTaP5iHc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Zt17EzvH; arc=none smtp.client-ip=209.85.219.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-6fad77c3ce1so1178506d6.2;
-        Mon, 02 Jun 2025 10:15:30 -0700 (PDT)
+	s=arc-20240116; t=1748885026; c=relaxed/simple;
+	bh=r0Srhe/ZFSlTd2d/RdFpJIbbLWqeYqSSyXCuK8RILNs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=S36EqohmK1H1e1yngwZEIcfY/SrexMdRpy759ryT6x4JR2bXNfSupTxcASGHZe/Ecg2CmonQJ4Ar1se6+Wi+GX9IIbMWIjKlC4wT8g6k/FerDbRrydHHuGgqMmcyixvU3DsQm+TqlLrHXKfeuXDjvDFUJb3PqV2VywDTMdUTFuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=OvwwslSn; arc=none smtp.client-ip=209.85.167.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oi1-f179.google.com with SMTP id 5614622812f47-407a3c10d03so1721826b6e.2
+        for <linux-iio@vger.kernel.org>; Mon, 02 Jun 2025 10:23:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1748884530; x=1749489330; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cPqj+hlUb15Vo0gwcmnc7OruGv7UIdZSe73EVhzlEf4=;
-        b=Zt17EzvHDopbB1vda7uvsy6AXNlsY0zQ0k854GltCZyM/RsYeCGXWNowKFTSMFtg/w
-         3Wy6TAe0dIElTio4stpy8Yw+1ECmRGrGQxxOsDE19AxJ2YAWt6RlEFsg8uaEylUHKX+Q
-         eFANk0NMewVcm3O4SdpaIFIrXeWCE8vAgJ+IoZMZcWoHK2oakRBiX30LdCj7ucWM37Bj
-         szOOS7WyiiMYM9rkhmvXv4m1Dsp0yONxbphUyCNi3cOfVvWfQ/+GAdpngZE6Mj97SO2p
-         wOhclhyWvS4G1XcBdx/VCFufCSuLcymMhgbdkm4bmoYkT14YVYRaZ5+IShItFF4mFos6
-         6z1w==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1748885023; x=1749489823; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=MzFNRbVnIR8z38r4bV92OVe26qdtExOhHTzdvqaLzx4=;
+        b=OvwwslSnr3J7Lu7JN8KIS+UGohilB0jebW/fZ4RiB+EAnFdRMtQUZQk8PUcCvktr90
+         wDkLdX0ryDTlwHnpLQ4VJue5pVJxmiKR+2f6jamo3OyoMBJjWK0BeaHMQKKmcG81GNAg
+         HC2+0xYOQFQaMReRW21j8RnO3+FUOLHSQhmn0zdiLLueyuTRIR2UmENkjhwXjJR3kKUv
+         6en/qa9BKG6+9JWn+btdzTXPBkYPp/NwR2CZWNLC6723Unp/Xh8QcIhktAdCtEQUVAWm
+         nKX9PVnVvRMjgPjr4EN5WgC88F6tgmyI0bu7GZtHp8TyG4Oj7ZJ6ka+tTQLZGSKrTmtv
+         spTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748884530; x=1749489330;
-        h=in-reply-to:content-disposition:mime-version:references:reply-to
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=cPqj+hlUb15Vo0gwcmnc7OruGv7UIdZSe73EVhzlEf4=;
-        b=UaAqD+ZLdgXE4lkI8OMnTaphasTZdi/Q7XV3aChKiUiXJducH7lme/K35190731xhe
-         /4NYZ/OAG+iqQSGBDyu1dAUztWJEIMxaQYz8v2N1wN2XcdTIjV56EPoP9KQ2u32jtBZm
-         gdzcHHMlkJuJs00Q65oZCjtoXwGBqJAxmTIQOXqbC1uMJIwm7kIDDGHCZKtOo9WMZact
-         pRI+H9T86s92GZoPadENuXYwIotmioa4ckjME783xOALmQGPFCN4thJ3av2qxqwcZ/9U
-         cHsdcOWyoXsHnw2zb7f5pmueSZIEA+7pEHGoH78ESK8WmpaJJHGU399V/PAJoFYnrsqW
-         hRBg==
-X-Forwarded-Encrypted: i=1; AJvYcCUO3YsEHvDU+5HduRSUeZ2ZlpMIC0aI+FV2OTvfANhlFtFqdJ23d18EdUTkJyVwbPc8ATaLS/MowM7Lvg==@vger.kernel.org, AJvYcCUiJXaj92fMYOtuhfNeq4hb/5AFO0H609YN2vgW5rV/0FAzNqq2weZeIPP4rJgkTincu8YlkEyW81pygcNE@vger.kernel.org, AJvYcCWUXw6B8zglvBTKrY87GMv0xD8thR3YC5ZZWBXM5mZ5SE2eiGEpkWGl1KvzGE/mFiUeLdZTcsWTBLxn@vger.kernel.org, AJvYcCWX23JNV6FnKWTff33cXxA4Sqy5XnlT5s4vj9KDfY/T5L78r+Kfpy15CyDyUWPi+oNf4AiXv/Zxg5T+fw==@vger.kernel.org, AJvYcCXfkFM5Abyc+7/paVpLJs0i08c8n+UoAM9uhvsFeYndcQEUbdvLNuh51pYx5FqvDhFbdYEgROM5uBen@vger.kernel.org
-X-Gm-Message-State: AOJu0YxJ8nVbx3W1Ye7iMH19Arw//n1c6BC5TqJctZ0MMCpOlNYM7niu
-	5RL1lu9KTiYhXBAEA2KQpxRcdDMd3IeHJCsWCyRSUcUP0DvQU1DAG1QF
-X-Gm-Gg: ASbGncvMVvNtNV5TSBMV+Pc0RnqGLmUa450B9WHTLdq8RfYR9U/KaCI4rphJPW+Nv81
-	vrkq5zJE0F9FOI8Bh8dH9svoX0TvQccfsuYmv8Lbu30bj5z6JGIU2RqE3tfP7dtFRGJnPoNGlzw
-	UgagZyMG8/VDadhMxj5h19fmswty3XkdJ+yF64IltZFv4TRhNOWaEgkTNx7JYx89PQ2Uw6IWztP
-	v1+ZKXM/8wcyFjbMpKNbzIJl1U/+jUO+xfa7oL7ym8hMFsAlu40wFkEW9XiKPDi9IiqxKOZdyGg
-	CfIYargcNxeqkionnEk/fc/E2RK0+9JUmm0cUQS2ZlHe6N5sSJxmGwoWMVuVfil8jgvHCD9xnYB
-	GVMky+hU=
-X-Google-Smtp-Source: AGHT+IEXoxkzXT24Ug4BWtO98apWkgU/PzoKpBIv7F4ljkTOJkULgLYOyNFTPtMiFl4pDML3ami7BQ==
-X-Received: by 2002:ad4:5ca5:0:b0:6fa:be81:e18f with SMTP id 6a1803df08f44-6fad059a7f8mr86733506d6.0.1748884529431;
-        Mon, 02 Jun 2025 10:15:29 -0700 (PDT)
-Received: from JSANTO12-L01.ad.analog.com ([189.121.203.94])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6fac6e1c800sm63659146d6.102.2025.06.02.10.15.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Jun 2025 10:15:28 -0700 (PDT)
-Date: Mon, 2 Jun 2025 14:15:23 -0300
-From: Jonathan Santos <jonath4nns@gmail.com>
-To: Andy Shevchenko <andy@kernel.org>
-Cc: Jonathan Santos <Jonathan.Santos@analog.com>, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org,
-	nuno.sa@analog.com, Michael.Hennerich@analog.com,
-	marcelo.schmitt@analog.com, jic23@kernel.org, robh@kernel.org,
-	krzk+dt@kernel.org, conor+dt@kernel.org, marcelo.schmitt1@gmail.com,
-	linus.walleij@linaro.org, brgl@bgdev.pl, lgirdwood@gmail.com,
-	broonie@kernel.org, dlechner@baylibre.com, rafael@kernel.org,
-	djrscally@gmail.com
-Subject: Re: [PATCH v9 09/12] iio: adc: ad7768-1: add support for
- Synchronization over SPI
-Message-ID: <aD3cK5PioN7Rw3pP@JSANTO12-L01.ad.analog.com>
-Reply-To: aDnuvAdkcTAP2tMt@smile.fi.intel.com
-References: <cover.1748447035.git.Jonathan.Santos@analog.com>
- <27cccb51cc56f1bb57cb06d279854a503d779e25.1748447035.git.Jonathan.Santos@analog.com>
- <aDnuvAdkcTAP2tMt@smile.fi.intel.com>
+        d=1e100.net; s=20230601; t=1748885023; x=1749489823;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=MzFNRbVnIR8z38r4bV92OVe26qdtExOhHTzdvqaLzx4=;
+        b=c2o56rvzR/OJhSnlYIZNUVcfy9hcdo5ifzSOorWaKst5YeGRPENhYHrxr64WXben/f
+         ivseCAlJ5gU+8g4uVVEOSvRT4Jx8FM0tcc37+N5GL/J8I4qMcbYqeHBbutuAV/QTsuXy
+         X7jDhaphKhd5bKYl4VYwKjmKNnDo5Cvefrsh0jldGT2wjm63N/ExEa9gLwN/6hj/DsGM
+         AeeL1dKaaOz5h4yblWTQFmU3z902ypxaYLq73dPtx/NCjITV2y9sQBWLSxqhPmS2qQYn
+         6x9pRHjFRXeq4HSDGOvwaQZmXQAI6fHCQBej8+6nF/UD4FbweqQk9Yu3b1Cvaux1NqCA
+         bcoA==
+X-Forwarded-Encrypted: i=1; AJvYcCWkOKpNsZf2K9ad0mZMYA7nd1dgY67Wur2wFkGTFWC8wORp5Ytpx4JJpIE41qhTDuhmuvxeJVHtkWs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwmiFXHLp5vsuEx4Mi68VyyWEMpgPFU/HH9C7kEYXDKG9rojXuE
+	7PE1VY2zEwlk+5qF/umOztC7UbbLPbtdsxkAxczRipK2E19QvbTR8nLT1LObLxAIUV0=
+X-Gm-Gg: ASbGnctypE0qejUYxrV4rThDlIeLx73KplAlTikSlSsZC8oBu61D+ldU3EphNsLx/j9
+	fGT3IEKKkr9Ilrm/DFoIf2IScggSSwaGJVqbEDLp/ukg0tqEqyLH4Ayj6nGOrSIWanpaCUP2OWd
+	Ebq7GXdYwFr948iCPLqlt2zSEN9M+eeomQfXUS5uiw4d6ekRG0pcDg+pWFCNr+rNGxuddjTc+m/
+	CgTzPD7BGBCwHiBLUOKuv2AWQ7bZmT5Ay7RiMWbyNZUj5sHdPkMY3NfuKk7eNnXaVChK9Pvbq2t
+	qt+ZesbsoWkWwisTbyedMIiyFvOjDnR7L8c9SqhChosPN4qD67puyYu+iIceF5NQsF6BBVz6aeB
+	E1qIDGaf/pGq2Fwi7edsU6QJ5sbHimUEiCyPldXE=
+X-Google-Smtp-Source: AGHT+IF/xPy2n8rJ6168kLQsxv7ffSrx4BuuXj2i7ygSF4TQfB25Gz7EO+g2oYAOQ65OBubji4r0aw==
+X-Received: by 2002:a05:6808:3307:b0:406:755a:9352 with SMTP id 5614622812f47-407a665402dmr5823437b6e.38.1748885022856;
+        Mon, 02 Jun 2025 10:23:42 -0700 (PDT)
+Received: from ?IPV6:2600:8803:e7e4:1d00:74f4:5886:86e1:3bcf? ([2600:8803:e7e4:1d00:74f4:5886:86e1:3bcf])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-40678ce8480sm1507195b6e.36.2025.06.02.10.23.41
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 02 Jun 2025 10:23:42 -0700 (PDT)
+Message-ID: <fca1e8c7-2c1c-4244-a109-f674940d6030@baylibre.com>
+Date: Mon, 2 Jun 2025 12:23:40 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aDnuvAdkcTAP2tMt@smile.fi.intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 3/5] dt-bindings: iio: adc: Add adi,ad4052
+To: Jorge Marques <gastmaier@gmail.com>
+Cc: Jorge Marques <jorge.marques@analog.com>,
+ Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+ Michael Hennerich <Michael.Hennerich@analog.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+ =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
+ Andy Shevchenko <andy@kernel.org>, =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?=
+ <ukleinek@kernel.org>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-pwm@vger.kernel.org
+References: <20250422-iio-driver-ad4052-v2-0-638af47e9eb3@analog.com>
+ <20250422-iio-driver-ad4052-v2-3-638af47e9eb3@analog.com>
+ <88a326e7-3910-4e02-b4ba-7afe06402871@baylibre.com>
+ <hvexchm2ozsto5s2o6n5j2z3odrkbcamgmg67umd4aehwzmgie@dvtx6anioasq>
+ <1b0e9003-7322-46fa-b2ba-518a142616dc@baylibre.com>
+ <vchomz3iazgdmotcs3jskrugi2qmdxyo74t4ruo2fsc7cjwtqb@7rtdmdkxobvg>
+ <a6f62963-5776-47e4-bdac-78e921a6e476@baylibre.com>
+ <a6cguahvrbqjv2wtisvgg2wvm2tj3awmn7omo6ebfpts6v546o@4xzpj353vlsx>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <a6cguahvrbqjv2wtisvgg2wvm2tj3awmn7omo6ebfpts6v546o@4xzpj353vlsx>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On 05/30, Andy Shevchenko wrote:
-> On Thu, May 29, 2025 at 07:50:29PM -0300, Jonathan Santos wrote:
- 
-> > +static int ad7768_trigger_sources_sync_setup(struct device *dev,
-> > +					     struct fwnode_handle *dev_fwnode,
-> > +					     struct ad7768_state *st)
-> > +{
-> > +	struct fwnode_reference_args args;
-> > +
-> > +	struct fwnode_handle *fwnode __free(fwnode_handle) =
-> > +		fwnode_find_reference_args(dev_fwnode, "trigger-sources",
-> > +					   "#trigger-source-cells", 0,
-> > +					   AD7768_TRIGGER_SOURCE_SYNC_IDX, &args);
+On 6/2/25 11:32 AM, Jorge Marques wrote:
+> Hi David,
 > 
-> I don't see how args are being used. This puts in doubt the need of the first
-> patch.
+> On Mon, Jun 02, 2025 at 10:17:18AM -0500, David Lechner wrote:
+>> On 6/2/25 4:17 AM, Jorge Marques wrote:
+>>> On Tue, Apr 29, 2025 at 10:45:20AM -0500, David Lechner wrote:
+>>>> On 4/29/25 8:48 AM, Jorge Marques wrote:
+>>>>> Hi David, 
+>>>>>
+>>>>> I didn't went through your's and Jonathan's ad4052.c review yet,
+>>>>> but for the trigger-source-cells I need to dig deeper and make
+>>>>> considerable changes to the driver, as well as hardware tests.
+>>>>> My idea was to have a less customizable driver, but I get that it is
+>>>>> more interesting to make it user-definable.
+>>>>
+>>>> We don't need to make the driver support all possibilities, but the devicetree
+>>>> needs to be as complete as possible since it can't be as easily changed in the
+>>>> future.
+>>>>
+>>>
+>>> Ack.
+>>>
+>>> I see that the node goes in the spi controller (the parent). To use the
+>>> same information in the driver I need to look-up the parent node, then
+>>> the node. I don't plan to do that in the version of the driver, just an
+>>> observation.
+>>>
+>>> There is something else I want to discuss on the dt-bindings actually.
+>>> According to the schema, the spi-max-frequency is:
+>>>
+>>>   > Maximum SPI clocking speed of the device in Hz.
+>>>
+>>> The ad4052 has 2 maximum speeds: Configuration mode (lower) and ADC Mode
+>>> (higher, depends on VIO). The solution I came up, to not require a
+>>> custom regmap spi bus, is to have spi-max-frequency bound the
+>>> Configuration mode speed,
+>>
+>> The purpose of spi-max-frequency in the devicetree is that sometimes
+>> the wiring of a complete system makes the effective max frequency
+>> lower than what is allowed by the datasheet. So this really needs
+>> to be the absolute highest frequency allowed.
+>>
+>>> and have ADC Mode set by VIO regulator
+>>> voltage, through spi_transfer.speed_hz. At the end of the day, both are
+>>> bounded by the spi controller maximum speed.
+>>
+>> If spi_transfer.speed_hz > spi-max-frequency, then the core SPI code
+>> uses spi-max-frequency. So I don't think this would actually work.
+>>
+> Ok, so that's something that may be worth some attention.
 > 
+> At spi/spi.c#2472
+> 	if (!of_property_read_u32(nc, "spi-max-frequency", &value))
+> 		spi->max_speed_hz = value;
+> 
+> At spi/spi.c#4090
+> 	if (!xfer->speed_hz)
+> 		xfer->speed_hz = spi->max_speed_hz;
+> 
+> So, speed_hz is max-spi-frequency only if xfer->speed_hz is 0 and
+> not bounded by it.
 
-If the wrapper is the issue, maybe it is better doing this instead?
+Ah, OK, my memory was wrong. It is only bound by the controller max
+speed, not the device max speed.
 
-static int ad7768_trigger_sources_sync_setup(struct device *dev,
-					     struct fwnode_handle *dev_fwnode,
-					     struct ad7768_state *st)
-{
-	struct fwnode_reference_args args;
-	struct fwnode_handle *fwnode __free(fwnode_handle) = NULL;
-	int ret;
+	if (ctlr->max_speed_hz && xfer->speed_hz > ctlr->max_speed_hz)
+		xfer->speed_hz = ctlr->max_speed_hz;
 
-	ret = fwnode_property_get_reference_args(dev_fwnode, "trigger-sources",
-						 "#trigger-source-cells", 0,
-						 AD7768_TRIGGER_SOURCE_SYNC_IDX, &args);
-	if (ret)
-		return ret;
+It does seem odd that it would allow setting an individual xfer
+speed higher than than the given device max speed. I suppose we
+could submit a patch adding that check to the SPI core code and
+see what Mark has to say.
 
-	fwnode = args.fwnode;
-> > +	/* First, try getting the GPIO trigger source */
-> > +	if (fwnode_device_is_compatible(fwnode, "gpio-trigger")) {
-> > +		st->gpio_sync_in = devm_fwnode_gpiod_get_index(dev, fwnode,
-> > +							       NULL,
-> > +							       0,
-> > +							       GPIOD_OUT_LOW,
-> > +							       "sync-in");
-> > +		return PTR_ERR_OR_ZERO(st->gpio_sync_in);
-> > +	}
-> > +
-> > +	/*
-> > +	 * TODO: Support the other cases when we have a trigger subsystem
-> > +	 * to reliably handle other types of devices as trigger sources.
-> > +	 *
-> > +	 * For now, return an error message. For self triggering, omit the
-> > +	 * trigger-sources property.
-> > +	 */
-> > +	return dev_err_probe(dev, -EOPNOTSUPP, "Invalid synchronization trigger source\n");
-> > +}
+> 
+> Then at spi-axi-spi-engine.c:
+> 
+> 	static int spi_engine_precompile_message(struct spi_message *msg)
+> 	{
+>   		clk_div = DIV_ROUND_UP(max_hz, xfer->speed_hz);
+> 		xfer->effective_speed_hz = max_hz / min(clk_div, 256U);
+> 	}
+> 
+> Where max_hz is set only by the IP spi_clk. If at the driver I set
+> xfer.speed_hz, it won't be bounded by max-spi-frequency.
+> 
+> The only that seems to bound as described is the layer for flash memory
+> at spi-mem.c@spi_mem_adjust_op_freq.
+> 
+> For the adc driver, I will then consider your behavioral description and
+> create a custom regmap bus to limit set the reg access speed (fixed),
+> and keep adc mode speed set by VIO. And consider spi-max-frequency can
+> further reduce both speeds.
+> (or should instead be handled at the driver like spi-mem.c ?)
 
-Then we can get rid of the first patch.
+It would be more work, but if it is common enough, we could generalize this
+in the core code. For example add a spi-register-max-frequency binding (or
+even a more general spi-max-freqency-map to map operations to max frequencies).
+Then we could bake it into the regmap_spi code to handle this property
+and not have to make a separate bus.
 
-Regards,
-Jonathan S.
+FWIW, there are also some SPI TFT displays that use a different frequency
+for register access compared to framebuffer data that could potentially
+use this too. Right now, these just have a hard-coded register access
+frequency of e.g. 10 MHz.
+
+> 
+> Thanks for the quick reply!
+> Jorge
+
 

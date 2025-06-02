@@ -1,237 +1,124 @@
-Return-Path: <linux-iio+bounces-20138-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20139-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04D8FACADDE
-	for <lists+linux-iio@lfdr.de>; Mon,  2 Jun 2025 14:16:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C61C8ACADEE
+	for <lists+linux-iio@lfdr.de>; Mon,  2 Jun 2025 14:23:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 917723A6750
-	for <lists+linux-iio@lfdr.de>; Mon,  2 Jun 2025 12:16:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 120F73B9A23
+	for <lists+linux-iio@lfdr.de>; Mon,  2 Jun 2025 12:22:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 407B42040A7;
-	Mon,  2 Jun 2025 12:16:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2C9B2139B6;
+	Mon,  2 Jun 2025 12:23:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=nicolas.frattaroli@collabora.com header.b="O39AVe9T"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XH8P+s/6"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE6D41C32;
-	Mon,  2 Jun 2025 12:16:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748866606; cv=pass; b=cawz5ZaqLiV3hQsupi75B6LkYYztETAUrApPSH8dUr6bKAzfbpZ02uwwz+i4Bq2VkRPRrOWHbdG5CKd+Ff/1NLI06Uvpch2D7PBJloHymiI1gd3/ChyOesGjZrxqSIHvuTQ+hTlQhCdFB8KdQW9bg+JCxkxTOemn/NJYsxTjfeY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748866606; c=relaxed/simple;
-	bh=spiz+6jbQPJUaIKTN+CGRiXzusNZXCuqtp/xZHVjtfE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=A7eNMzINlrvwtLrxSX9k4+IY8kyzJEYUEq1S8/FCFNs7zlnpC5oo3noYz4jpe9k3LvpyU/oYjFuU9uu5xck7SK936ZMjZpGxtxBuL2bVAw7dJ6V9CNX481tNYnlUNoBxHFZ1yMR4S3PF1AMfnX4zKMu5Td6mKNCIHIvrkE76Ous=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=nicolas.frattaroli@collabora.com header.b=O39AVe9T; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-ARC-Seal: i=1; a=rsa-sha256; t=1748866555; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=Vze/kjONo0AB70e1wZ0QkC2ynBo7Zq0uf545gqPwLvISGOTvuXAzUA+ZQUkgT/yabPY4SAI2wwfEWd++Pw3ju8eduO8POg4kuAyjrjtBUPFe1VIXQ8CPEs6/uW48a5pNQRRtUDuzPd49Pq89mcCcI+He1MfMlB0Ae4mruy/63t4=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1748866555; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=+Aed1G3zEdiAE6/euJzRcaSWP5Y0mYDbnxPBMhKta6o=; 
-	b=Iw8ItoI0JX6aQ7esTRNbGbiSqiY+ajT7E3BJrKp1tp4mWqzgrycY7i4VNskyjzLnX6K4u6E59RojQDqqL8WpN3cLmJNGRiLl1gHrZnTGn6eQP0ldwqgtMogpDTDMFSXhgOH1r9GUfwXsAAstygtb/1rooxcO3R0AsBzW1FynCsM=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=nicolas.frattaroli@collabora.com;
-	dmarc=pass header.from=<nicolas.frattaroli@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1748866555;
-	s=zohomail; d=collabora.com; i=nicolas.frattaroli@collabora.com;
-	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Content-Type:Message-Id:Reply-To;
-	bh=+Aed1G3zEdiAE6/euJzRcaSWP5Y0mYDbnxPBMhKta6o=;
-	b=O39AVe9TKwe84UGQR/XEuzyNvSLxFaej5EFC98AH5IcrJ9mhLCJkAz3qaYrbCR9o
-	Noy0MVDMzoyJCuqqYeai7k8gxbeP26nKRLSelY36aQlr373aHsEfUJelARxQdb4wGdR
-	nqdhZxkeKZF7d+Wr9EUcC0NT9lkWqv/EleeL9MEE=
-Received: by mx.zohomail.com with SMTPS id 1748866552562746.0707424997689;
-	Mon, 2 Jun 2025 05:15:52 -0700 (PDT)
-From: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
-To: Linus Walleij <linus.walleij@linaro.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
- Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <ukleinek@kernel.org>,
- William Breathitt Gray <wbg@kernel.org>,
- Sebastian Reichel <sebastian.reichel@collabora.com>,
- Kever Yang <kever.yang@rock-chips.com>,
- Heiko =?UTF-8?B?U3TDvGJuZXI=?= <heiko@sntech.de>
-Cc: linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org,
- linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org,
- linux-iio@vger.kernel.org, kernel@collabora.com,
- Jonas Karlman <jonas@kwiboo.se>,
- Detlev Casanova <detlev.casanova@collabora.com>
-Subject: Re: [PATCH 4/7] soc: rockchip: add mfpwm driver
-Date: Mon, 02 Jun 2025 14:15:45 +0200
-Message-ID: <13790724.uLZWGnKmhe@workhorse>
-In-Reply-To: <2188729.OBFZWjSADL@diego>
-References:
- <20250408-rk3576-pwm-v1-0-a49286c2ca8e@collabora.com>
- <20250408-rk3576-pwm-v1-4-a49286c2ca8e@collabora.com>
- <2188729.OBFZWjSADL@diego>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81DF17485;
+	Mon,  2 Jun 2025 12:23:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1748866982; cv=none; b=aqVQJimT1I9pVdYoaxORxmAy7/5nIaLpaifpla2N0tBmuKmD1uT/CP/aWEbNvqoXmmrqvMMhdLm/dPcXf4ioED48TK3+hPA6V4a+JMOWYW4fFaUOW1lfg5xLKOZtfH08MWkcpMfIUPxtWRPD/78orl9FyLh+kq/+Cu5vsJq1qbg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1748866982; c=relaxed/simple;
+	bh=LrpYnWwRqQ2fm/LULB92EX1rn4RlP8w3zOCG97Ytfb0=;
+	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
+	 Message-Id:Subject; b=q+M99lU5sLzCuutkg5EI0Kx0OJke8xL8eEJmHIPKMZa9kSQRBHkHMxWvUhM8FHs3aRxkWam0jd+fTAmdo6XEt5Py6b0jjSw1bDPh6U+MxdglX50Mu/qL1BynPAGSvAcO6b2UGy8BHe2Gu5yIIYr+H2vDE+B0C6hEQOfTn5XXF7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XH8P+s/6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5406C4CEF1;
+	Mon,  2 Jun 2025 12:23:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1748866981;
+	bh=LrpYnWwRqQ2fm/LULB92EX1rn4RlP8w3zOCG97Ytfb0=;
+	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
+	b=XH8P+s/6uHV0G/AUxM/CUAKy1Bx8y4n7STCn3MNsw0QSUv7jbkKemEwBZHZLi7GSe
+	 dlBoxSiFnVxEJxMXlnIOQ73bJK7QkaF6ZL8Q01gt9h2Mp0QOr0w39M74LrRKT9LWeF
+	 kWdtqAuYJWRLUFLiy756cCW0xwmRbgxuBGhrZzFo12EiMtp+hke6HR0iDxp0KeoYPN
+	 ytVlyyppkVOJVfXlmaEAdzFEVANeiRL85qP+GI8FBfFgdtHju/rCyQTPAJLov/5ftD
+	 iF/Qmg50PcpKbL1xXRbdSoDLZYSfkj7dr4c+rJrEFiwXlIBYpHbwup1VzlLVP99Uo8
+	 MZ6ZTPKpkE04A==
+Date: Mon, 02 Jun 2025 07:23:00 -0500
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="utf-8"
-
-On Saturday, 31 May 2025 23:48:29 Central European Summer Time Heiko St=C3=
-=BCbner wrote:
-> Am Dienstag, 8. April 2025, 14:32:16 Mitteleurop=C3=A4ische Sommerzeit sc=
-hrieb Nicolas Frattaroli:
-> > With the Rockchip RK3576, the PWM IP used by Rockchip has changed
-> > substantially. Looking at both the downstream pwm-rockchip driver as
-> > well as the mainline pwm-rockchip driver made it clear that with all its
-> > additional features and its differences from previous IP revisions, it
-> > is best supported in a new driver.
-> >=20
-> > This brings us to the question as to what such a new driver should be.
-> > To me, it soon became clear that it should actually be several new
-> > drivers, most prominently when Uwe Kleine-K=C3=B6nig let me know that I
-> > should not implement the pwm subsystem's capture callback, but instead
-> > write a counter driver for this functionality.
-> >=20
-> > Combined with the other as-of-yet unimplemented functionality of this
-> > new IP, it became apparent that it needs to be spread across several
-> > subsystems.
-> >=20
-> > For this reason, we add a new platform bus based driver, called mfpwm
-> > (short for "Multi-function PWM"). This "parent" driver makes sure that
-> > only one device function driver is using the device at a time, and is in
-> > charge of registering the platform bus devices for the individual device
-> > functions offered by the device.
-> >=20
-> > An acquire/release pattern is used to guarantee that device function
-> > drivers don't step on each other's toes.
-> >=20
-> > Signed-off-by: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
->=20
-> actually trying to compile this, led me to
->=20
-> aarch64-linux-gnu-ld: drivers/soc/rockchip/mfpwm.o: in function `mfpwm_re=
-g_read':
-> /home/devel/hstuebner/00_git-repos/linux-rockchip/_build-arm64/../include=
-/soc/rockchip/mfpwm.h:423: multiple definition of `mfpwm_reg_read'; drivers=
-/pwm/pwm-rockchip-v4.o:/home/devel/hstuebner/00_git-repos/linux-rockchip/_b=
-uild-arm64/../include/soc/rockchip/mfpwm.h:423: first defined here
-> aarch64-linux-gnu-ld: drivers/soc/rockchip/mfpwm.o: in function `mfpwm_re=
-g_write':
-> /home/devel/hstuebner/00_git-repos/linux-rockchip/_build-arm64/../include=
-/soc/rockchip/mfpwm.h:428: multiple definition of `mfpwm_reg_write'; driver=
-s/pwm/pwm-rockchip-v4.o:/home/devel/hstuebner/00_git-repos/linux-rockchip/_=
-build-arm64/../include/soc/rockchip/mfpwm.h:428: first defined here
-> make[3]: *** [../scripts/Makefile.vmlinux_o:72: vmlinux.o] Fehler 1
->=20
->=20
-> during the linking stage - with the driver as builtin
->=20
->=20
-> > +inline u32 mfpwm_reg_read(void __iomem *base, u32 reg)
-> > +{
-> > +	return readl(base + reg);
-> > +}
-> > +
-> > +inline void mfpwm_reg_write(void __iomem *base, u32 reg, u32 val)
-> > +{
-> > +	writel(val, base + reg);
-> > +}
->=20
-> making that a "static inline ..." solves that.
-
-Ack, will change
-
->=20
->=20
-> On a more general note, what is the differentiation to an MFD here?
->=20
-> Like you can already bind dt-nodes to MFD subdevices, and can implement
-> the exclusivity API thing on top of a general mfd device, to make sure on=
-ly
-> one mfd-cell gets activated at one time.
->=20
-> Other than that, this looks like it reimplements MFDs?
-
-What initially made me not make this an MFD was Uwe Kleine-K=C3=B6nig expre=
-ssing
-some doubts, which lead me to alternatives like the auxiliary bus. Reading =
-the
-auxiliary bus docs I found:
-
-  A key requirement for utilizing the auxiliary bus is that there is no
-  dependency on a physical bus, device, register accesses or regmap support.
-  These individual devices split from the core cannot live on the platform
-  bus as they are not physical devices that are controlled by DT/ACPI. The
-  same argument applies for not using MFD in this scenario as MFD relies on
-  individual function devices being physical devices.
-
-Additionally, LWN[1] about the auxiliary bus, which I've read up on during =
-my
-ill-fated journey into that version of the driver, also goes further into w=
-hy
-MFD is sometimes a bad fit:
-
-  Linux already includes a number of drivers for multi-function devices. One
-  of the ways to support them is the Multi-Function Devices (MFD) subsystem.
-  It handles independent devices "glued" together into one hardware block
-  which may contain some shared resources. MFD allows access to device
-  registers either directly, or using a common bus. In this second case, it
-  conveniently multiplexes accesses on Inter-Integrated Circuit (I2C) or
-  Serial Peripheral Interface (SPI) buses. As the MFD sub-devices are
-  separate, MFD drivers do not share a common state.
-
-  The devices Ertman addresses do not fit well into the MFD model. Devices
-  using the auxiliary bus provide subsets of the capabilities of a single
-  hardware device. They do not expose separate register sets for each
-  function; thus they cannot be described by devicetrees or discovered by
-  ACPI. Their drivers need to share access to the hardware. Events concerni=
-ng
-  all sub-functionalities (like power management) need to be properly handl=
-ed
-  by all drivers.
-
-The individual function devices may be all pointing at the same physical
-device here, but they're not distinct parts of the device. However, there
-still *is* a physical device, which convinced me that auxiliary bus wasn't
-the right one either, and the idea for just using the platform bus came
-during a work meeting. If someone with experience on aux bus vs platform bus
-(what this uses) vs MFD, then feel free to chime in. Unfortunately, as is t=
-he
-norm, I can't seem to find much in terms of MFD documentation. Needing to k=
-now
-what type of exclusion they guarantee and what type of abstractions they br=
-ing
-with them that would make them more useful than my solution would need some
-justification in more than just an auto-generated header listing.
-
-I am very inclined to start pretending things that aren't documented do
-not actually exist in the kernel, because it's very annoying to have to
-constantly deal with this.
-
->=20
-> Also handing around a regmap might be nicer, compared to readl/writel.
-
-Strong disagree, adding error handling around every single register read
-and write, and needing to always read into a variable rather than getting
-the read value as a return value, made the drivers a lot uglier in a
-previous iteration of this.
-
->=20
->=20
-> Heiko
->=20
-
-Kind regards,
-Nicolas Frattaroli
-
-[1]: https://lwn.net/Articles/840416/
+From: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: nuno.sa@analog.com, andy@kernel.org, linus.walleij@linaro.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Michael.Hennerich@analog.com, conor+dt@kernel.org, 
+ linux-iio@vger.kernel.org, brgl@bgdev.pl, dlechner@baylibre.com, 
+ lars@metafoo.de, marcelo.schmitt1@gmail.com, jic23@kernel.org, 
+ krzk+dt@kernel.org, linux-gpio@vger.kernel.org
+To: Marcelo Schmitt <marcelo.schmitt@analog.com>
+In-Reply-To: <187e038cb9e7dbe3991149885cb0a4b30376660c.1748829860.git.marcelo.schmitt@analog.com>
+References: <cover.1748829860.git.marcelo.schmitt@analog.com>
+ <187e038cb9e7dbe3991149885cb0a4b30376660c.1748829860.git.marcelo.schmitt@analog.com>
+Message-Id: <174886697998.948762.16527380744873036141.robh@kernel.org>
+Subject: Re: [PATCH v4 01/11] dt-bindings: iio: adc: Add AD4170
 
 
+On Mon, 02 Jun 2025 08:36:24 -0300, Marcelo Schmitt wrote:
+> Add device tree documentation for AD4170 and similar sigma-delta ADCs.
+> The AD4170 is a 24-bit, multichannel, sigma-delta ADC.
+> 
+> Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
+> ---
+> Change log v3 -> v4
+> - Dropped sensor-node and most of defs.
+> - Updated external sensor props to have similar name and type of adi,ad4130 ones.
+> - Added constraints to properties related to external bridge sensor excitation.
+> 
+> Some explanation about the constraints to weigh scale sensor types.
+> 
+> The predefined ACX1, ACX1 negated, ACX2, and ACX2 negated signals are used to AC
+> excite external bridge circuits and are output on GPIO2, GPIO0, GPIO3, and
+> GPIO1, respectively. If only two pins are specified for AC excitation, only ACX1
+> and ACX2 (GPIO2 and GPIO3) are used. Because of that, if AC excitation is
+> specified/requested, then those specific GPIO pins must be used with the bridge.
+> Otherwise, the bridge won't get properly excited and we also cannot guarantee to
+> avoid short-circuit conditions since the level set to GPIOs to DC excite the
+> bridge depends on the GPIO number. See AD4170 datasheet Figure 113 Weigh Scale
+> (AC Excitation) for the reference circuit diagram.
+> Link: https://www.analog.com/media/en/technical-documentation/data-sheets/ad4170-4.pdf#unique_149_Connect_42_ID10354
+> 
+>  .../bindings/iio/adc/adi,ad4170.yaml          | 543 ++++++++++++++++++
+>  MAINTAINERS                                   |   7 +
+>  2 files changed, 550 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad4170.yaml
+> 
+
+My bot found errors running 'make dt_binding_check' on your patch:
+
+yamllint warnings/errors:
+
+dtschema/dtc warnings/errors:
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/iio/adc/adi,ad4170.yaml: properties:interrupt-names: 'enum' should not be valid under {'enum': ['const', 'enum', 'exclusiveMaximum', 'exclusiveMinimum', 'minimum', 'maximum', 'multipleOf', 'pattern']}
+	hint: Scalar and array keywords cannot be mixed
+	from schema $id: http://devicetree.org/meta-schemas/keywords.yaml#
+
+doc reference errors (make refcheckdocs):
+
+See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/187e038cb9e7dbe3991149885cb0a4b30376660c.1748829860.git.marcelo.schmitt@analog.com
+
+The base for the series is generally the latest rc1. A different dependency
+should be noted in *this* patch.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit after running the above command yourself. Note
+that DT_SCHEMA_FILES can be set to your schema file to speed up checking
+your schema. However, it must be unset to test all examples with your schema.
 
 

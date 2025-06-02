@@ -1,176 +1,161 @@
-Return-Path: <linux-iio+bounces-20155-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20156-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F93EACB7EF
-	for <lists+linux-iio@lfdr.de>; Mon,  2 Jun 2025 17:33:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DBA7ACB845
+	for <lists+linux-iio@lfdr.de>; Mon,  2 Jun 2025 17:38:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C0F3194118D
-	for <lists+linux-iio@lfdr.de>; Mon,  2 Jun 2025 15:16:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 56B854C47C9
+	for <lists+linux-iio@lfdr.de>; Mon,  2 Jun 2025 15:21:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96FE52C324F;
-	Mon,  2 Jun 2025 15:10:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABC25226863;
+	Mon,  2 Jun 2025 15:17:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=axis.com header.i=@axis.com header.b="ggbHmS57"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="uQqnRoC8"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013004.outbound.protection.outlook.com [40.107.159.4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f46.google.com (mail-oa1-f46.google.com [209.85.160.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0583221F10;
-	Mon,  2 Jun 2025 15:10:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.4
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877005; cv=fail; b=dbOnFOfchqI41ebO+AMU67mcoyEc0vY36k9nsXdmBuM5CiiZDwZ7deQMp6b8LcDjBK2SCSlLS5BBjSkMhbQBCSrXxzDB/q1aTI8yi2L2GHxfQJTUtSbpIKZfsxQqRu5io8Qc9M3q5BdtfYnL8nM3Z2PlVVAiGVpAJn+2Xv1A7Vg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877005; c=relaxed/simple;
-	bh=lZaRJknGNWdDWZwVXVKCeWFq+a/pkXzqxomIx3jcziI=;
-	h=From:To:CC:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=ZaUra/8E51gxXKiHLqhX/JiDSLmaCT/ff7GsZBqhCy9Cu8J3SBH5zom38bdvJWtiKGPjZuECD2vtRR11Cu3nH4j37RR36YYKn1d2QBovM0FlPfUEnuuOxkgwuH73IzImlJTqSdJ57nlXgXSqF6pJ6yu4Dj8WHJxnQWB885F/nTg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=axis.com; spf=pass smtp.mailfrom=axis.com; dkim=pass (1024-bit key) header.d=axis.com header.i=@axis.com header.b=ggbHmS57; arc=fail smtp.client-ip=40.107.159.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=axis.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=axis.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=gyIKJFKsMrRioRzwCxOWChhkpW/hLgvQ24Jt6pw0AAb8lW6V7lnglXj2dd6nWY8gDRcEXmkiztma0i6rq+4ssgl22UG7GMLrde/H01q8Psp4iWD8MBXPnnSShzSpvBvdcNZV2tnMxBenpJv58ncbzoN/gJbJtKoy3MqCqhVi23gXXl8kMENLLOyahCd58GLKi04Rclw/3dXLpDlAPl0OlokOJAX49JmO7iIXrmGA8P4UQaJwNc+Aj1ETRx8xjbObMmLbzp8Dtv1tQ64ijLp6FgO7VSV8Q51hvHu8P/VbVTYZsLEDTDJzFueo5KmCITXGKlEvT2xrWRYsUdExJhwXNg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=kfogDyODVylQlblQY39+5DYWGF9yw+3yoqLSD9nbfFY=;
- b=Q89HS6+HCulIOzLnCPhc8NQ8+wkiZTSIznM2LpC0W8BvEKxFqq7kJxZSaVOOSYr0YLp8aYvp0WKtb0t9gEutcGKc9yyP/nxdqQ2Kq6mrSUZq2lejgOTIGMaO1U0vpuW3LZKTuSQybWIZeF1Vh5qzQ+IlqIuHgCJB7ZMzC8M+Lk9ydGkwU7MX41nVgAd0Amf7LgMEytuMIJe9J9SNREEXCjmECd3+ocEKDhup6B8VBgfwSMxgrOahxInufTjQBxt2YWBxzkZgjZVpX+ktetnhna73ErPqnZgR49FG4JvWDU5QxP0iMwzmq6a7zbrie94M7sDMzqEjl6gME1B2CAJnYQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 195.60.68.100) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=axis.com;
- dmarc=pass (p=none sp=none pct=100) action=none header.from=axis.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axis.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=kfogDyODVylQlblQY39+5DYWGF9yw+3yoqLSD9nbfFY=;
- b=ggbHmS57ZP8DnT6sLa34fT11ChqYPx0GI+xDYaLXoVHvN5h/hXUznymU/vkoyexXmyviHqXiwzSC/i2Do5WzAu6csWSDq5gDfYPvAgeGr1fdHIfPzSBUGG3uapUTBTTzlv/0zk0f1PACGzAiAMFgnIOISdeTAzwghQzn1CbGtxE=
-Received: from DUZPR01CA0250.eurprd01.prod.exchangelabs.com
- (2603:10a6:10:4b5::6) by DBAPR02MB6407.eurprd02.prod.outlook.com
- (2603:10a6:10:191::20) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8813.17; Mon, 2 Jun
- 2025 15:10:00 +0000
-Received: from DB5PEPF00014B88.eurprd02.prod.outlook.com
- (2603:10a6:10:4b5:cafe::e7) by DUZPR01CA0250.outlook.office365.com
- (2603:10a6:10:4b5::6) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8792.23 via Frontend Transport; Mon,
- 2 Jun 2025 15:10:08 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 195.60.68.100)
- smtp.mailfrom=axis.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=axis.com;
-Received-SPF: Pass (protection.outlook.com: domain of axis.com designates
- 195.60.68.100 as permitted sender) receiver=protection.outlook.com;
- client-ip=195.60.68.100; helo=mail.axis.com; pr=C
-Received: from mail.axis.com (195.60.68.100) by
- DB5PEPF00014B88.mail.protection.outlook.com (10.167.8.196) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8792.29 via Frontend Transport; Mon, 2 Jun 2025 15:10:00 +0000
-Received: from pc52311-2249 (10.4.0.13) by se-mail01w.axis.com (10.20.40.7)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.44; Mon, 2 Jun
- 2025 17:10:00 +0200
-From: Waqar Hameed <waqar.hameed@axis.com>
-To: Jonathan Cameron <jic23@kernel.org>
-CC: Lars-Peter Clausen <lars@metafoo.de>, <kernel@axis.com>,
-	<linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH 3/3] iio: Add driver for Nicera D3-323-AA PIR sensor
-In-Reply-To: <20250531161029.4010a3d6@jic23-huawei> (Jonathan Cameron's
-	message of "Sat, 31 May 2025 16:10:29 +0100")
-References: <cover.1746802541.git.waqar.hameed@axis.com>
-	<c5184074d85b68ca35ccb29ab94d774203b93535.1746802541.git.waqar.hameed@axis.com>
-	<20250511131432.1c6e381c@jic23-huawei> <pndldqwiihi.fsf@axis.com>
-	<20250518183852.7e9afdac@jic23-huawei> <pndo6vnfrnp.fsf@axis.com>
-	<20250525103019.3773be94@jic23-huawei> <pndecwa85z5.fsf@axis.com>
-	<20250531161029.4010a3d6@jic23-huawei>
-User-Agent: a.out
-Date: Mon, 2 Jun 2025 17:09:59 +0200
-Message-ID: <pndr0026uyg.fsf@axis.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AB91226556
+	for <linux-iio@vger.kernel.org>; Mon,  2 Jun 2025 15:17:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.46
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1748877443; cv=none; b=L5+gdqKYhw7545/y9P6zfiVJ8aGOhSNCXrIPkgspZT95M90r/bWP7c33TFDwRSldqp887WilYBVprRVte+5F3RWZYoNo/ZZzWog97r3bl3EIHiNeQn9HIGCpI0Wc5WsNs4zx7RzzkMHSpe5nrcPuzpzBQWruOeo8eQbBZewfLfY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1748877443; c=relaxed/simple;
+	bh=6PeBJSTna6lX3rGrf4lCGvp5OKDfktdRcJOfJVLf5WA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lcQb7byc9UCI7Am8drUrFoe7+tHDkvZV7VDSO1R5aHQ2u/EJDK/I8HOOacsnEINQTm6P2FyKkBTe3hID031UDeot2Twqt6nnV5PCAKqLAF/iBSkhu+4pgwe054+1eGNeoz9jP+WDCfvPeYVUlPxzz8S7W+QY6PifmbnL292vCFg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=uQqnRoC8; arc=none smtp.client-ip=209.85.160.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-2d0920ce388so2440648fac.0
+        for <linux-iio@vger.kernel.org>; Mon, 02 Jun 2025 08:17:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1748877440; x=1749482240; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=/FLsGzoXOAagEvr3iBgspYfHnJfzfNsAWbJHVPi43wg=;
+        b=uQqnRoC8bVrAJ7GFrYX0xzTIwaXDpPLPMjgilPOwjvArRDhEbMTgS1k4xHvtQ7SSMd
+         G9qoY5vjSo3/Gxq81aBGy+Xk1TWeaenwWzArmqCTl79zmPpzFWgPgY8wywSOUqqGBf3l
+         lqSEFYtXKeE/4IKWuMfjlcvRqgdJ4dHT3915o0KvFTno0SnYWPl6ekdBn4ZuoWPF9wpZ
+         U2Dji7zezOajUxoct4hiSze9Titte6XhsSSQf2U8f71uGPjuhgQxu5FVSRnZXpvV5y3n
+         FuADPKRHrzhvwqO00MQE0sF+wGUUvxNTiPXn2BTKapnFVA5L4m98/c4RH12SXJV/iDR8
+         sRdg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748877440; x=1749482240;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=/FLsGzoXOAagEvr3iBgspYfHnJfzfNsAWbJHVPi43wg=;
+        b=UoaSm/IpI/WJNTlu7ww735ikKOPnsroVg2i6Kz97i9AIEoVdmKkE42C84VpJ0Aljji
+         POCT+9T7qdhW6Y9rNhXCh6K/RSfAFfy/ZbMiKKRBLgvLhaLf49N3Hihn80PhRYtTDCPO
+         r9p22GhRcN9vfueiS1CAI4I8FTzaERDW7Nk9RgB5LpeD0xy1wa8jpYssAek7xdTxGkmZ
+         TqdJ3ITczxT58qlzVOROkm6a9j+zqoGiPptYwp76hQA1qceUPNAiPrXr3qQ/ZRRNWJ1d
+         iNyiStxzwVErCj83W7NYOe154OTnp6RQSbo1WAG+KF+oyIpEe+LoMk+sGH2sltFpSWN/
+         kFdA==
+X-Forwarded-Encrypted: i=1; AJvYcCXajPkSu1e4Dt23u5OiJDk9JEWEW+ni8Vz/P1zhddbmSK+zs9VvJshIU8P62wHQaiLsIYOFdIEDizc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy9x0jT27+UQaoIGj/UI/jFVQTN5FniWRXG+RTOVix7IhcqjmnC
+	GAGE9rkzzwPqChHse2wF8V8+iBmv1O+gGbvhbywV0uBa0rwBH33jD7k6zZ8T32kp7CM=
+X-Gm-Gg: ASbGncsO6K2qJDrehMdtA0NrLqG3dKi/1YdFIaxFyTVEuGu7wZiTiVJ5C53xeGZbmHs
+	CQLA4ewPlU8j9jcvNeoQ/pDt3P4qpU7R3RaPbeLoNj3cgQrBiH8bBEtJpa4vi0kegROv8fJEcUl
+	fqXzpbwTZ14a8m39bsfBJFQnV6/vAHW6DpmF7G/VjRnR2IBhWg0zZeUUIC2XiNhZ5uAjMkHEfQ6
+	S2qsWfL3MoRLGxQBpswV7UP43470yy/9VFC4xuPVOReRGzLaS3LltFsSc24ErdUzt678IH5NO9f
+	xTNPPt9Y7l96T30CPt8JJ1YagBJwrfe44k0NSFHiIQDv8DDNBH0Tan6snL3j1FviVVl+8Myi3LS
+	VPmnNwc57QgiSR5hSuUFn/mIapnyHfuqPnnhvmYv4vmkiQgbcuQ==
+X-Google-Smtp-Source: AGHT+IFJw1a45g7SyLmMPrQb2Epc56Sa07pw4E8vlKLf+JG+t/AybNRoowveYczNrGBWjBjxY3fQ3g==
+X-Received: by 2002:a05:6870:5493:b0:2d6:af0:8d8e with SMTP id 586e51a60fabf-2e92115fb6fmr8227470fac.2.1748877440482;
+        Mon, 02 Jun 2025 08:17:20 -0700 (PDT)
+Received: from ?IPV6:2600:8803:e7e4:1d00:74f4:5886:86e1:3bcf? ([2600:8803:e7e4:1d00:74f4:5886:86e1:3bcf])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2e90681c6ffsm1783595fac.29.2025.06.02.08.17.18
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 02 Jun 2025 08:17:20 -0700 (PDT)
+Message-ID: <a6f62963-5776-47e4-bdac-78e921a6e476@baylibre.com>
+Date: Mon, 2 Jun 2025 10:17:18 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ClientProxiedBy: se-mail02w.axis.com (10.20.40.8) To se-mail01w.axis.com
- (10.20.40.7)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB5PEPF00014B88:EE_|DBAPR02MB6407:EE_
-X-MS-Office365-Filtering-Correlation-Id: 09fd4eab-a857-4b9b-a33d-08dda1e78b8f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|1800799024|36860700013|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?c+pI1GjxvN6pTwXGbCiH3WzQKmeWbAhOb0J+Mp0aJzmhtVVxSeoE/HQVqhyq?=
- =?us-ascii?Q?bt8qxnfvX1kS2+1uRr7pAhDczOtY4ElB1GJt25YZXOIMRHb0PSi2APVW5dZw?=
- =?us-ascii?Q?CKx0keep6Y5Y+VE80Q7XPg6dUWCpXxhmK/UllLsKHfo/98NgjJ0c1ATNkADo?=
- =?us-ascii?Q?h2B0zGNTGP+6ueroKrlpxqoSCp9WwX89RwDX8vSB0eqneW9tU87OoqUdh7uH?=
- =?us-ascii?Q?JjQTdBFxpuOrP4m098TDoYf9SN4p5Rzu7CCbVOi+UBL9w0tGTIWNO0BbXizq?=
- =?us-ascii?Q?c3qiEGVlyHyDUYzx5gC2MGL2SnQg/0s1HXpYnLVQiDesLSVbIocZMHGRX4mg?=
- =?us-ascii?Q?4z8yNaEZ5L/kGQzg6WNj8NkpMf99N5Czco/YgqsilqzHJBF1YMbP0asE+MjX?=
- =?us-ascii?Q?O5rStXqQPttFB6btvXGIzhmqGTjfKTx6kdkFp3Et5XCTtro8icFSOUyY9pv+?=
- =?us-ascii?Q?/rgnPQbtIhatbfuSmDTrAWQC5J2VGTVN+T7ezhGtm2GVFRZvXDXRJkd/KaMG?=
- =?us-ascii?Q?mWQfF282eVov+BDArEM4g9fsiO2FR5KX0WfM8NG0mlf7xz7/oSF7nOOa17VM?=
- =?us-ascii?Q?mzQsMdSR4m9HjkDocLhRYXIk3BDBqTvxtffHMh6HBIHaZlKIEhKaNAPQpFlP?=
- =?us-ascii?Q?2N71kudppNC+S8tGY8Gw4XABaPpK9zfaVgkzNtz7tsWgn/h1ngAQYHwD/Hg1?=
- =?us-ascii?Q?L6ikAcuv3+gq1SrXFhxVGEhSYqN9lA0rkiNgxK+mmzfXJ2Th6t31swLnugf5?=
- =?us-ascii?Q?od7TYkcr9dhEmeKjxb0/hlXcF2zLjx1MDkd3qilguI6YZZdPDBIM5bmVPYAO?=
- =?us-ascii?Q?8OifND8Jp0izPAa1dOl68xswuUlBoF3BS8V+3651X3vU74GrJtZO1XactwKG?=
- =?us-ascii?Q?nmLuOnOdm0hFBDJZF91LK2GjJuwqhrI4UJB70wDUNRjqXL+zS3xr5LJ8JpwH?=
- =?us-ascii?Q?Z3SebLtrEPNVfegdjiAFsesCunqVsKN6GwagedoXtewHkNOsNYx2fSTdGS5o?=
- =?us-ascii?Q?02GXWi8HkbL+5blY3ZT1mbnnGZNK2ZysBGp/uzxdkVKtfC8frOrXcqrnlCgH?=
- =?us-ascii?Q?VuCsq/PONdM/eWHSUYypnBH4B34FGgWKXhr/YVBtZulKtr0E8z8Ucv4sTmxR?=
- =?us-ascii?Q?e+WJP96va9MB2MLGmUD++J94OTRGb7vAzmSc7DzeBGgPFkJtfxv1L6fhMBOn?=
- =?us-ascii?Q?HNWdROHr2PxScDGdQSqJjPvOcjiu2HX2bI/kB9g9pi45SBLVfeV85O6IdOtX?=
- =?us-ascii?Q?AisgFHtulikw/lbtFOBSZZG3gCVkAdLsIOrSMEJgc/ujWLFITevKyfLsbaow?=
- =?us-ascii?Q?4jfc0MOqemnEzzy2LJ16SwetfuKSMcTM88P//hddJdtFHbGx1r0bQh+0fuBY?=
- =?us-ascii?Q?UlbReoj7dOHr7ORosnWrhrAH1xpPcS9xLjq+NCEgIDNeo7DMEmE8bgII1QlM?=
- =?us-ascii?Q?Acm2bz4Br4Hdw1/sN4Q+EztJ41JLUQo06xqHktWawsr4lBejLWma0nvzNpJC?=
- =?us-ascii?Q?+lzG7G8n8XDIvbN+XoeA8ZdF1V+yw3W+wqnD?=
-X-Forefront-Antispam-Report:
-	CIP:195.60.68.100;CTRY:SE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.axis.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(36860700013)(376014);DIR:OUT;SFP:1101;
-X-OriginatorOrg: axis.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Jun 2025 15:10:00.6914
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 09fd4eab-a857-4b9b-a33d-08dda1e78b8f
-X-MS-Exchange-CrossTenant-Id: 78703d3c-b907-432f-b066-88f7af9ca3af
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=78703d3c-b907-432f-b066-88f7af9ca3af;Ip=[195.60.68.100];Helo=[mail.axis.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	DB5PEPF00014B88.eurprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBAPR02MB6407
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 3/5] dt-bindings: iio: adc: Add adi,ad4052
+To: Jorge Marques <gastmaier@gmail.com>
+Cc: Jorge Marques <jorge.marques@analog.com>,
+ Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+ Michael Hennerich <Michael.Hennerich@analog.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+ =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
+ Andy Shevchenko <andy@kernel.org>, =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?=
+ <ukleinek@kernel.org>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-pwm@vger.kernel.org
+References: <20250422-iio-driver-ad4052-v2-0-638af47e9eb3@analog.com>
+ <20250422-iio-driver-ad4052-v2-3-638af47e9eb3@analog.com>
+ <88a326e7-3910-4e02-b4ba-7afe06402871@baylibre.com>
+ <hvexchm2ozsto5s2o6n5j2z3odrkbcamgmg67umd4aehwzmgie@dvtx6anioasq>
+ <1b0e9003-7322-46fa-b2ba-518a142616dc@baylibre.com>
+ <vchomz3iazgdmotcs3jskrugi2qmdxyo74t4ruo2fsc7cjwtqb@7rtdmdkxobvg>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <vchomz3iazgdmotcs3jskrugi2qmdxyo74t4ruo2fsc7cjwtqb@7rtdmdkxobvg>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Sat, May 31, 2025 at 16:10 +0100 Jonathan Cameron <jic23@kernel.org> wrote:
+On 6/2/25 4:17 AM, Jorge Marques wrote:
+> On Tue, Apr 29, 2025 at 10:45:20AM -0500, David Lechner wrote:
+>> On 4/29/25 8:48 AM, Jorge Marques wrote:
+>>> Hi David, 
+>>>
+>>> I didn't went through your's and Jonathan's ad4052.c review yet,
+>>> but for the trigger-source-cells I need to dig deeper and make
+>>> considerable changes to the driver, as well as hardware tests.
+>>> My idea was to have a less customizable driver, but I get that it is
+>>> more interesting to make it user-definable.
+>>
+>> We don't need to make the driver support all possibilities, but the devicetree
+>> needs to be as complete as possible since it can't be as easily changed in the
+>> future.
+>>
+> 
+> Ack.
+> 
+> I see that the node goes in the spi controller (the parent). To use the
+> same information in the driver I need to look-up the parent node, then
+> the node. I don't plan to do that in the version of the driver, just an
+> observation.
+> 
+> There is something else I want to discuss on the dt-bindings actually.
+> According to the schema, the spi-max-frequency is:
+> 
+>   > Maximum SPI clocking speed of the device in Hz.
+> 
+> The ad4052 has 2 maximum speeds: Configuration mode (lower) and ADC Mode
+> (higher, depends on VIO). The solution I came up, to not require a
+> custom regmap spi bus, is to have spi-max-frequency bound the
+> Configuration mode speed,
 
-[...]
+The purpose of spi-max-frequency in the devicetree is that sometimes
+the wiring of a complete system makes the effective max frequency
+lower than what is allowed by the datasheet. So this really needs
+to be the absolute highest frequency allowed.
 
->> I think if you use it in multiple places, it should definitively be a
->> macro definition. I just sent some patches for those that only used it
->> once (I didn't include those with `KBUILD_MODNAME`. We can discuss if we
->> should also address those in that thread).
->
-> I would disagree slightly.  If it is used in multiple places because there
-> is some inherent reason they should have same string then I absolutely agree.
-> If it's just because it's a convenient string that is used twice in places
-> that could have had different string then not so much.
+> and have ADC Mode set by VIO regulator
+> voltage, through spi_transfer.speed_hz. At the end of the day, both are
+> bounded by the spi controller maximum speed.
 
-Absolutely! If two places can end up with different strings, then they
-shouldn't share the same variable in the first place. I was not as clear
-as you with my one-sentence :)
+If spi_transfer.speed_hz > spi-max-frequency, then the core SPI code
+uses spi-max-frequency. So I don't think this would actually work.
 
->> However, there are a bunch of drivers that _only_ use a macro definition
->> in `.name` and `indio_dev->name`, including this one. That _is_ more
->> than one place, so we should actually leave it? Or do you still think we
->> should have the same string literal in both places, as you originally
->> commented above?
->
-> I'd prefer that for new code, but it is a less clear cut case than the ones
-> you have tidied up, so not worth the churn of tidying up unless people
-> are otherwise working on the relevant drivers.
+> 
+> My concern is that having ADC mode speed higher than spi-max-frequency
+> may be counter-intuitive, still, it allows to achieve the max data sheet
+> speed considering VIO voltage with the lowest code boilerplate.
+> 
+> Let me know if I can proceed this way before submitting V3.
 
-Sure, let's use string literals in this driver then.
 

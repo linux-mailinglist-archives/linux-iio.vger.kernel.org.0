@@ -1,166 +1,123 @@
-Return-Path: <linux-iio+bounces-20177-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20178-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CC3CACC614
-	for <lists+linux-iio@lfdr.de>; Tue,  3 Jun 2025 14:01:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC270ACC67C
+	for <lists+linux-iio@lfdr.de>; Tue,  3 Jun 2025 14:26:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 387787A155D
-	for <lists+linux-iio@lfdr.de>; Tue,  3 Jun 2025 12:00:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E31A3A3C5D
+	for <lists+linux-iio@lfdr.de>; Tue,  3 Jun 2025 12:25:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D54122D7BF;
-	Tue,  3 Jun 2025 12:01:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F35A22E402;
+	Tue,  3 Jun 2025 12:26:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Wi9pdO/v"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b="M33qxHlW"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-0301.mail-europe.com (mail-0301.mail-europe.com [188.165.51.139])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8230446B8;
-	Tue,  3 Jun 2025 12:01:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9004A22F765
+	for <linux-iio@vger.kernel.org>; Tue,  3 Jun 2025 12:26:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.165.51.139
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748952094; cv=none; b=o8dVoTsNOdChcmxe3jlFBX8d5zBBH9Gvp5leT/WXkgIZDfES7nwbO/8FJLQ233gWErVxaG8XfMMzM1/mGqYmyrAg4reK1OJdf7FAr56rLpVnB+Ojzq0/Ukf4BIIciv3k1VXYqtPHFZEodGteXwAlaxP8UFAzRTufIMVEhPJ9H4w=
+	t=1748953564; cv=none; b=UGVVEW1O/9LhUamojXRcVwmroDfpLwWZcRB7bYXw4AE86Cp46nwBSfJw2lgQaTQVHCRRB05nW+kfuhJcwd2qNfRR3BfXfq8oWQQElyYY3G6C+LIQfK2OTCAWVyDhx1WRdQMmi4dG/FR8RwUnn8UoP+EY9D1H82qVK6RdBg21YyY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748952094; c=relaxed/simple;
-	bh=h92UUlXMO/KLL58P3PSjFD/SbuRQD19YhC6UgkrFuhM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FNAK3qMdUcN/NgGTjbbAZlAlBKd4CaP1jiEg6K8SZs2FxQ7GjL/dJ55E4bnutiuzQUmU+WX6SNOE/DnB3806+QDvXikNrhwPZEeFGfeLyLrIE9CbMA9GWJ47Hfl5vGGCdP1EsBnLgOTRy1SmIQrxXOUM4hbeJNk1XOEkUWQhBiQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Wi9pdO/v; arc=none smtp.client-ip=209.85.160.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-4a56cc0def0so44893551cf.3;
-        Tue, 03 Jun 2025 05:01:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1748952091; x=1749556891; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Y5gk2lwOOOLeohREzJWg+/TaGpOi69oLrNHUYeAZNaU=;
-        b=Wi9pdO/vzywpOzQrpkzHt0NbVVukb8zemqSMNuT2YhAPRYBvLxVA07wa9BzxOzory3
-         yXFRmJEtb+KlHwx0Brvelt3bO5mIu/aJphk+lc1J98wKmyJYYqFPoCsCc76ELX/eTq6T
-         UpBds4Q9BPvSsIazN8T5ss1+yphLzRoYf0GLNavvGl+VBfkknK0jAlY0f4owi7thQML/
-         gyK/sfBkl5qsiJNwMxZyywTMcjWclX5PNH7D/eAd5oAgAMRdIijGHQJqTIJldhQWyXjn
-         x/03LBWDzPWuNRvtn7/JLJUdTziHE/R1z+uqj8w4sxTF5f52QbvG3kIRD/MD9ZfSchYh
-         Vypg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748952091; x=1749556891;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Y5gk2lwOOOLeohREzJWg+/TaGpOi69oLrNHUYeAZNaU=;
-        b=Z5756HJjI32ZL7qU1cy52JuJn6m30LKMSbhdO9Kumze9VjlF89DDm3YUv4iwAJZ/Gl
-         omFFNu7Qy/LKvXEgqXSY3O7eZISPQS+ynbvjcVRqtv/+a79GjDJO46315YT6ZCeBQk9y
-         BpbOyevjqfdF9YmEFC39I7PcxP0CL05T+GyXWUeu/o/YIESRvzvBvkjo8oXB1TrHuv5v
-         W4dhRihvesqtp4QL+Oz1TgzSVrXA1hCN3TVj69VdKAXjC3Dk+Pb9zMvTZd5w/tXwlw43
-         ONYv1UVEYjm19al6yLZct9oA0AubarU1ylGEJlE3AnzIe52f1MlZ/T+NIwfSjH1clrao
-         BUmw==
-X-Forwarded-Encrypted: i=1; AJvYcCU89QKfa15J57Wk6VdmS5DoiGqn0EfYvpVdYB7EM+asO4CPsETc8UMr8vjUw26s92lmUdP/V2x2/Fap@vger.kernel.org, AJvYcCVkCl9xsh0nE7HoNvHit4sIewvJ2fKLoWCDYlWE/7fJnNcF11PhDCh9021KfNDrlI9IjSk61b8rocQu@vger.kernel.org, AJvYcCW1D+h5d25nx+iDCUCym2SgvqOVDZH/XLwhXB/OX+qhPRxpzq7AaR9THJnjYVW8sYHBUiGiPgz8hhX7QfQX@vger.kernel.org, AJvYcCWY9LZTbK6pirrxJuh9Cv0Fvnirvhd6ZV/+vZQIV/7/u9rGfbqqkw8aJ9sXvAj9a4DNIYfKQQN6hSvuQw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx2A7xJ8kpMH1JFKK/d82eZYPbm4AvLsp4sjGQMqPmzYCCeKtkj
-	iGJM8r3X+RH9wDS+LvMNg6im4njjfSQB7W7oZW884/BQQk8v+p0+PqrbKbOKLoceUOk=
-X-Gm-Gg: ASbGnct8lx0KKUGtdCYaND6I4/M0OooaWsW+C6BrhpGJZ8wlTPSJVW0rGj7qXXa6u0X
-	Ke6X0e3VZz9MV5RARh9BxcNXUPk+nE3smnoYX8FFGIrQnJ7UVWQ84GqV5Z5TzjlCodouC9A+5xl
-	BCbJhJinpdJfB4H4ktozozbiysfVkN1fv+7cbLcA/WTt5j36cqlx9tJYgMtmLZH90ff0jRTGlg0
-	StwxoQhLTWZrLvdMJFqk5CV2+TZMZjTAwn2R+pDL7JtSd0TBs9oS8EB5Am82bksQhrB1CWCOTag
-	eO/Tf4ByY49o12Am2pyhriuvDC+JOK9yDdITqurGY3bMqBlzOl7hsFHf+9vUU12riyAejQ==
-X-Google-Smtp-Source: AGHT+IHkd3xP0AuVWx7aZOobspQQuluiMGh3RGmXtKIFGOpQiJHf47IF+VP77KmJCWKRTBLn9KS7lA==
-X-Received: by 2002:a05:6102:949:b0:4e6:f7e9:c4a5 with SMTP id ada2fe7eead31-4e701ccd25emr8903178137.22.1748952080349;
-        Tue, 03 Jun 2025 05:01:20 -0700 (PDT)
-Received: from localhost ([2804:30c:406b:9100:2a26:16f5:c81:e61f])
-        by smtp.gmail.com with UTF8SMTPSA id ada2fe7eead31-4e64e9f7ff2sm8433407137.27.2025.06.03.05.01.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Jun 2025 05:01:19 -0700 (PDT)
-Date: Tue, 3 Jun 2025 09:02:56 -0300
-From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-To: Andy Shevchenko <andy@kernel.org>
-Cc: Marcelo Schmitt <marcelo.schmitt@analog.com>, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-gpio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Ana-Maria Cusco <ana-maria.cusco@analog.com>, jic23@kernel.org,
-	lars@metafoo.de, Michael.Hennerich@analog.com,
-	dlechner@baylibre.com, nuno.sa@analog.com, robh@kernel.org,
-	krzk+dt@kernel.org, conor+dt@kernel.org, linus.walleij@linaro.org,
-	brgl@bgdev.pl
-Subject: Re: [PATCH v4 02/11] iio: adc: Add basic support for AD4170
-Message-ID: <aD7kcFupREh4lW0s@debian-BULLSEYE-live-builder-AMD64>
-References: <cover.1748829860.git.marcelo.schmitt@analog.com>
- <e79f9a126672b33b8a7c01f650fee43a68c74029.1748829860.git.marcelo.schmitt@analog.com>
- <aD27cobHWeBX8o30@smile.fi.intel.com>
- <aD3XQfUfxIiz62ZU@debian-BULLSEYE-live-builder-AMD64>
- <aD6x2caTMd1eBInM@smile.fi.intel.com>
+	s=arc-20240116; t=1748953564; c=relaxed/simple;
+	bh=/yXZlGDs4md91/o0FVCW0coTLoknhoIAGtxjk/CnPB8=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=PS6TqtSWVp92SlDJDjGmxGaKJdkl4ct0ZK1WR43trWbd3qjvXhLus/oMqYtV1eMie4/Gd5/liZDYMQnpoEVMN5063LgGl12opQvT8DBbNvtx0dgtPSTEfOu4Cwr2HXd08CfTo+KQthd7HAVdWSLt5sjdCSmOZomwMrVQmC8CXAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=geanix.com; spf=pass smtp.mailfrom=geanix.com; dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b=M33qxHlW; arc=none smtp.client-ip=188.165.51.139
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=geanix.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=geanix.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=geanix.com;
+	s=protonmail; t=1748953552; x=1749212752;
+	bh=3ez5X2N+es+sI87jrlyxEtNtyTKsgzhcCRRSrcaEdco=;
+	h=From:Date:Subject:Message-Id:To:Cc:From:To:Cc:Date:Subject:
+	 Reply-To:Feedback-ID:Message-ID:BIMI-Selector:List-Unsubscribe:
+	 List-Unsubscribe-Post;
+	b=M33qxHlWhiExvR2Gqi6iP+7rnIC5jZekvPmMVCnPfneOZkhJ5nlQl69QIe67pQwhF
+	 1ByWlj5XfdndnbJ2QTiFg+GaEZjLVM86TkAwDTYTHYMqbw6oMhokonwXewWKeAJdR1
+	 mHWAK5Qp+ACqMU9DcLBb6SABpw8tmMQyykBNHyAk/RMK8L3oi9GRG1oUP/jIB1DI27
+	 sv2pNYybbGm6POQRcza9ukBtpM/cJ7ikrdSBn2BwbU8LAnWux/BuWxVK9QMFjeX4Ip
+	 WLIJEFnqim5H9LArQwVsrOYY8EarXeFVPe9869aRfROxhMnEy+JGgDr7M6nwsBhB7Y
+	 TSm3WSsmM1TUg==
+X-Pm-Submission-Id: 4bBVL63mZqz1DDSS
+From: Sean Nyekjaer <sean@geanix.com>
+Date: Tue, 03 Jun 2025 14:25:44 +0200
+Subject: [PATCH v2] iio: accel: fxls8962af: Fix use after free in
+ fxls8962af_fifo_flush
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aD6x2caTMd1eBInM@smile.fi.intel.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250603-fxlsrace-v2-1-5381b36ba1db@geanix.com>
+X-B4-Tracking: v=1; b=H4sIAMfpPmgC/23MQQ7CIBCF4as0sxZDJ0WtK+9hukAY2kkUGjAE0
+ 3B3sWuX/8vLt0GiyJTg2m0QKXPi4FvgoQOzaD+TYNsaUKKSCgfhyjNFbUi4waIkHN0DR2j3NZL
+ jslP3qfXC6R3iZ5dz/1v/ILkXvbBklDxZczlrus2kPZejCS+Yaq1fB8s/maEAAAA=
+X-Change-ID: 20250524-fxlsrace-f4d20e29fb29
+To: Jonathan Cameron <jic23@kernel.org>, 
+ David Lechner <dlechner@baylibre.com>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Andy Shevchenko <andy@kernel.org>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org, Sean Nyekjaer <sean@geanix.com>
+X-Mailer: b4 0.14.2
 
-On 06/03, Andy Shevchenko wrote:
-> On Mon, Jun 02, 2025 at 01:54:25PM -0300, Marcelo Schmitt wrote:
-> 
-> ...
-> 
-> > > > +static bool ad4170_setup_eq(struct ad4170_setup *a, struct ad4170_setup *b)
-> > > > +{
-> > > > +	/*
-> > > > +	 * The use of static_assert() here is to make sure that the comparison
-> > > > +	 * is adapted whenever struct ad4170_setup is changed.
-> > > > +	 */
-Does the reason given in the comment justify the use of static_assert?
+fxls8962af_fifo_flush() uses indio_dev->active_scan_mask (with
+iio_for_each_active_channel()) without making sure the indio_dev
+stays in buffer mode.
+There is a race if indio_dev exits buffer mode in the middle of the
+interrupt that flushes the fifo. Fix this by calling
+synchronize_irq() to ensure that no interrupt is currently running when
+disabling buffer mode.
 
-> > > > +	static_assert(sizeof(*a) ==
-> > > > +		      sizeof(struct {
-> > > > +				     u16 misc;
-> > > > +				     u16 afe;
-> > > > +				     u16 filter;
-> > > > +				     u16 filter_fs;
-> > > > +				     u32 offset;
-> > > > +				     u32 gain;
-> > > > +			     }));
-> > > 
-> > > I think it doesn't make much sense unless one uses memcpy().
-> > 
-> > memcpy() is used to update the setups after reg write succeeds.
-> > Also, previously, memcmp() was used to compare setups.
-> > Since struct ad4170_setup has only unsigned integers (no floating point fields
-> > like ad7124 had [1]), ad4170 works properly when comparing setups with memcmp().
-> > Though, it was asked to do explicit field matching on previous reviews [2] so
-> > that's how it had been since then. Well, both ways work for ad4170. We can
-> > compare setup with memcmp(), or do the comparison field by field. I don't mind
-> > changing it again if requested. I guess we only need to reach an agreement about
-> > what to go with.
-> 
-> The question was "why do you need the static_assert() now?"
+Unable to handle kernel NULL pointer dereference at virtual address 00000000 when read
+[...]
+_find_first_bit_le from fxls8962af_fifo_flush+0x17c/0x290
+fxls8962af_fifo_flush from fxls8962af_interrupt+0x80/0x178
+fxls8962af_interrupt from irq_thread_fn+0x1c/0x7c
+irq_thread_fn from irq_thread+0x110/0x1f4
+irq_thread from kthread+0xe0/0xfc
+kthread from ret_from_fork+0x14/0x2c
 
-To ensure that the comparison function gets updated if struct ad4170_setup is
-ever modified? This intends to be similar to what was implemented in ad7124
-driver as the chips have similar channel configuration mechanisms. We also
-have ad7173 and ad4130 using static_assert for analogous purpose. There was
-also a comment about static_assert above.
+Fixes: 79e3a5bdd9ef ("iio: accel: fxls8962af: add hw buffered sampling")
+Cc: stable@vger.kernel.org
+Suggested-by: David Lechner <dlechner@baylibre.com>
+Signed-off-by: Sean Nyekjaer <sean@geanix.com>
+---
+Changes in v2:
+- As per David's suggestion; switched to use synchronize_irq() instead.
+- Link to v1: https://lore.kernel.org/r/20250524-fxlsrace-v1-1-dec506dc87ae@geanix.com
+---
+ drivers/iio/accel/fxls8962af-core.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/iio/accel/fxls8962af-core.c b/drivers/iio/accel/fxls8962af-core.c
+index 6d23da3e7aa22c61f2d9348bb91d70cc5719a732..f2558fba491dffa78b26d47d2cd9f1f4d9811f54 100644
+--- a/drivers/iio/accel/fxls8962af-core.c
++++ b/drivers/iio/accel/fxls8962af-core.c
+@@ -866,6 +866,8 @@ static int fxls8962af_buffer_predisable(struct iio_dev *indio_dev)
+ 	if (ret)
+ 		return ret;
+ 
++	synchronize_irq(data->irq);
++
+ 	ret = __fxls8962af_fifo_set_mode(data, false);
+ 
+ 	if (data->enable_event)
+
+---
+base-commit: 5c3fcb36c92443a9a037683626a2e43d8825f783
+change-id: 20250524-fxlsrace-f4d20e29fb29
 
 Best regards,
-Marcelo
+-- 
+Sean Nyekjaer <sean@geanix.com>
 
-> 
-> > [1]: https://lore.kernel.org/all/20250303114659.1672695-13-u.kleine-koenig@baylibre.com/
-> > [2]: https://lore.kernel.org/linux-iio/20250504192117.5e19f44b@jic23-huawei/
-> > 
-> > > > +	if (a->misc != b->misc ||
-> > > > +	    a->afe != b->afe ||
-> > > > +	    a->filter != b->filter ||
-> > > > +	    a->filter_fs != b->filter_fs ||
-> > > > +	    a->offset != b->offset ||
-> > > > +	    a->gain != b->gain)
-> > > > +		return false;
-> > > > +
-> > > > +	return true;
-> > > > +}
-> 
-> -- 
-> With Best Regards,
-> Andy Shevchenko
 

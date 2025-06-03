@@ -1,71 +1,81 @@
-Return-Path: <linux-iio+bounces-20183-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20184-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60471ACC826
-	for <lists+linux-iio@lfdr.de>; Tue,  3 Jun 2025 15:43:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C2486ACC8A2
+	for <lists+linux-iio@lfdr.de>; Tue,  3 Jun 2025 16:01:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DBA613A2377
-	for <lists+linux-iio@lfdr.de>; Tue,  3 Jun 2025 13:43:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5DBC33A5654
+	for <lists+linux-iio@lfdr.de>; Tue,  3 Jun 2025 14:01:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8F0D23535C;
-	Tue,  3 Jun 2025 13:43:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 037BC2356CF;
+	Tue,  3 Jun 2025 14:01:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hX/ulD3n"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBB982040B6;
-	Tue,  3 Jun 2025 13:43:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86DB8230268;
+	Tue,  3 Jun 2025 14:01:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748958232; cv=none; b=i6vzRtm8Gujqa0NNhnt+3AAhHOOpFToR/LicL9mjdkpR3vTT0KFlIqreutRHGFO33qedQcT+710s6HaKfKJHz+HN4aGrq3ky+dBt4uYjsrUoIIbvsfd4kLrfglaWb2gKoA8E1fHcF5wozli4FnRq0QIu1XhuGIeL5+nk28+24Fs=
+	t=1748959279; cv=none; b=OD5mQbsRSakcS5C53SOosvGNBqitihi8TKLfRulVjLXMz1qq0IvTCjllcGCEfao2TV9oKoYjYWMor5J1FeWsuAiZguedpnpqgiyrx0mtx2zyzg6C6DiCmtjzjR5jH9NhwbNSUUhxtv1S4/ps41oMzvt86XPjQ7U1IdSvLCUbFBM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748958232; c=relaxed/simple;
-	bh=O/9vgjzrltqM0RlHHMSySJpGp65xGYUrOzaYg0fKtq8=;
+	s=arc-20240116; t=1748959279; c=relaxed/simple;
+	bh=3q0Obe4Cn9KiuhkbJK81hf7Mt1MlSJlm7+3onifiVyc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZTVn/a7ltRX1IYoSKQwzi+g+7YZy7euIMsSe5BE35ipVSJsQoAFdjFbeiR3jXB8HBSzqBha09cmgzzokYM2ZsclAef2zlvNtTgdxePCezDhkuJJMLqzztHAV8v0B9qiErdGNKFt++jBtSF3DhQxrLk4sqsgVDDddOJrqi+kQzw0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=fail smtp.mailfrom=kernel.org; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=kernel.org
-X-CSE-ConnectionGUID: ECmCQW5wS5uoVJQonQgH6g==
-X-CSE-MsgGUID: tu5OPRmkQUyE3n7cpo7qWQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11453"; a="51098931"
+	 Content-Type:Content-Disposition:In-Reply-To; b=BJLq0t77hqn4iJ6ic2eI4GNe9lpQffUh8S87PvWSxVfCSo7t2hMHNLNq+jpPnSwH/DlP0UBSXcxJMYs/yMNyo1xXdeFJspQrUfY1pXMA2wDaYkK+vcmxBJpVh1ZR2sIDmkgy+o0LfXqCaWjcIDFoJUbUGydniP6TkcjJmOr9RMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hX/ulD3n; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1748959276; x=1780495276;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=3q0Obe4Cn9KiuhkbJK81hf7Mt1MlSJlm7+3onifiVyc=;
+  b=hX/ulD3nsKTvvtGTE4P6egq7KjsvK8RlTdtGxdW2VCoOJU4Ws8y8cfSY
+   ACeeF8rdziLBHWq37XhaT7LPAl8jEOGmHX7/dEso0jKZHqxMY5ble39Gk
+   nAldIjf5JN+EjV4ePCGQWFGOzRlRuexUvEoXKoFh+U3MoX8liV3Tz6GDh
+   Xq6lTUsEHo0S7UhAotLI7iVOHd3L5QEWzm3oIB5tumAnaF6F8HhA9lPJG
+   APxXZX1+y5Q8mERJsvwPB55qGu3/AVIAvhdQCBp0q+gnuJuHJjN7Q+ado
+   HLDVITfgdffpxeS0hId9Nf067hX8s4kTJclw0Jm1S6wM/V6ARXfi7tW9P
+   Q==;
+X-CSE-ConnectionGUID: iHXR31chRJemZ2j6A2Tz2w==
+X-CSE-MsgGUID: CbeBxpZ4Q4OckJ/1W/EamA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11453"; a="50917607"
 X-IronPort-AV: E=Sophos;i="6.16,206,1744095600"; 
-   d="scan'208";a="51098931"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jun 2025 06:43:50 -0700
-X-CSE-ConnectionGUID: DRkJL9YPQ3+fRf/gD69gjA==
-X-CSE-MsgGUID: o778+cpFTR2J40dlstcPfQ==
+   d="scan'208";a="50917607"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jun 2025 07:01:15 -0700
+X-CSE-ConnectionGUID: 7a90o6iiTQC8JluBJZh12A==
+X-CSE-MsgGUID: JX6gQmiOR4GZElohKVUDVw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,206,1744095600"; 
-   d="scan'208";a="144838262"
-Received: from smile.fi.intel.com ([10.237.72.52])
-  by orviesa010.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jun 2025 06:43:46 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
-	(envelope-from <andy@kernel.org>)
-	id 1uMRva-00000003HZk-3B1J;
-	Tue, 03 Jun 2025 16:43:42 +0300
-Date: Tue, 3 Jun 2025 16:43:42 +0300
-From: Andy Shevchenko <andy@kernel.org>
-To: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-Cc: Marcelo Schmitt <marcelo.schmitt@analog.com>, linux-iio@vger.kernel.org,
+   d="scan'208";a="144898424"
+Received: from lkp-server01.sh.intel.com (HELO e8142ee1dce2) ([10.239.97.150])
+  by orviesa009.jf.intel.com with ESMTP; 03 Jun 2025 07:01:11 -0700
+Received: from kbuild by e8142ee1dce2 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uMSCS-0002Uz-2q;
+	Tue, 03 Jun 2025 14:01:08 +0000
+Date: Tue, 3 Jun 2025 22:00:43 +0800
+From: kernel test robot <lkp@intel.com>
+To: Marcelo Schmitt <marcelo.schmitt@analog.com>, linux-iio@vger.kernel.org,
 	devicetree@vger.kernel.org, linux-gpio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev,
 	Ana-Maria Cusco <ana-maria.cusco@analog.com>, jic23@kernel.org,
 	lars@metafoo.de, Michael.Hennerich@analog.com,
-	dlechner@baylibre.com, nuno.sa@analog.com, robh@kernel.org,
-	krzk+dt@kernel.org, conor+dt@kernel.org, linus.walleij@linaro.org,
-	brgl@bgdev.pl
+	dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org,
+	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	linus.walleij@linaro.org, brgl@bgdev.pl, marcelo.schmitt1@gmail.com
 Subject: Re: [PATCH v4 02/11] iio: adc: Add basic support for AD4170
-Message-ID: <aD78Di51VHxtOtJG@smile.fi.intel.com>
-References: <cover.1748829860.git.marcelo.schmitt@analog.com>
- <e79f9a126672b33b8a7c01f650fee43a68c74029.1748829860.git.marcelo.schmitt@analog.com>
- <aD27cobHWeBX8o30@smile.fi.intel.com>
- <aD3XQfUfxIiz62ZU@debian-BULLSEYE-live-builder-AMD64>
- <aD6x2caTMd1eBInM@smile.fi.intel.com>
- <aD7kcFupREh4lW0s@debian-BULLSEYE-live-builder-AMD64>
+Message-ID: <202506032131.wuzW0a3k-lkp@intel.com>
+References: <e79f9a126672b33b8a7c01f650fee43a68c74029.1748829860.git.marcelo.schmitt@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -74,78 +84,81 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aD7kcFupREh4lW0s@debian-BULLSEYE-live-builder-AMD64>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+In-Reply-To: <e79f9a126672b33b8a7c01f650fee43a68c74029.1748829860.git.marcelo.schmitt@analog.com>
 
-On Tue, Jun 03, 2025 at 09:02:56AM -0300, Marcelo Schmitt wrote:
-> On 06/03, Andy Shevchenko wrote:
-> > On Mon, Jun 02, 2025 at 01:54:25PM -0300, Marcelo Schmitt wrote:
+Hi Marcelo,
 
-...
+kernel test robot noticed the following build warnings:
 
-> > > > > +static bool ad4170_setup_eq(struct ad4170_setup *a, struct ad4170_setup *b)
-> > > > > +{
-> > > > > +	/*
-> > > > > +	 * The use of static_assert() here is to make sure that the comparison
-> > > > > +	 * is adapted whenever struct ad4170_setup is changed.
-> > > > > +	 */
-> Does the reason given in the comment justify the use of static_assert?
+[auto build test WARNING on c06335516e8c14f501a479a4d9de0e6c09c52ef2]
 
-Should I repeat myself? It makes a little sense when no memcmp() is involved.
+url:    https://github.com/intel-lab-lkp/linux/commits/Marcelo-Schmitt/dt-bindings-iio-adc-Add-AD4170/20250603-105744
+base:   c06335516e8c14f501a479a4d9de0e6c09c52ef2
+patch link:    https://lore.kernel.org/r/e79f9a126672b33b8a7c01f650fee43a68c74029.1748829860.git.marcelo.schmitt%40analog.com
+patch subject: [PATCH v4 02/11] iio: adc: Add basic support for AD4170
+config: m68k-allmodconfig (https://download.01.org/0day-ci/archive/20250603/202506032131.wuzW0a3k-lkp@intel.com/config)
+compiler: m68k-linux-gcc (GCC) 15.1.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250603/202506032131.wuzW0a3k-lkp@intel.com/reproduce)
 
-> > > > > +	static_assert(sizeof(*a) ==
-> > > > > +		      sizeof(struct {
-> > > > > +				     u16 misc;
-> > > > > +				     u16 afe;
-> > > > > +				     u16 filter;
-> > > > > +				     u16 filter_fs;
-> > > > > +				     u32 offset;
-> > > > > +				     u32 gain;
-> > > > > +			     }));
-> > > > 
-> > > > I think it doesn't make much sense unless one uses memcpy().
-> > > 
-> > > memcpy() is used to update the setups after reg write succeeds.
-> > > Also, previously, memcmp() was used to compare setups.
-> > > Since struct ad4170_setup has only unsigned integers (no floating point fields
-> > > like ad7124 had [1]), ad4170 works properly when comparing setups with memcmp().
-> > > Though, it was asked to do explicit field matching on previous reviews [2] so
-> > > that's how it had been since then. Well, both ways work for ad4170. We can
-> > > compare setup with memcmp(), or do the comparison field by field. I don't mind
-> > > changing it again if requested. I guess we only need to reach an agreement about
-> > > what to go with.
-> > 
-> > The question was "why do you need the static_assert() now?"
-> 
-> To ensure that the comparison function gets updated if struct ad4170_setup is
-> ever modified? This intends to be similar to what was implemented in ad7124
-> driver as the chips have similar channel configuration mechanisms. We also
-> have ad7173 and ad4130 using static_assert for analogous purpose. There was
-> also a comment about static_assert above.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202506032131.wuzW0a3k-lkp@intel.com/
 
-Does this won;t work if you changes field types? (Assuming only integers to
-integers) I believe it doesn't affect the field-by-field comparison.
+All warnings (new ones prefixed by >>):
 
-The other drivers may have different approach, have you studied them? Do they
-use memcmp()
+   drivers/iio/adc/ad4170.c: In function 'ad4170_parse_reference':
+>> drivers/iio/adc/ad4170.c:1130:13: warning: variable 'ret' set but not used [-Wunused-but-set-variable]
+    1130 |         int ret;
+         |             ^~~
 
-> > > [1]: https://lore.kernel.org/all/20250303114659.1672695-13-u.kleine-koenig@baylibre.com/
-> > > [2]: https://lore.kernel.org/linux-iio/20250504192117.5e19f44b@jic23-huawei/
-> > > 
-> > > > > +	if (a->misc != b->misc ||
-> > > > > +	    a->afe != b->afe ||
-> > > > > +	    a->filter != b->filter ||
-> > > > > +	    a->filter_fs != b->filter_fs ||
-> > > > > +	    a->offset != b->offset ||
-> > > > > +	    a->gain != b->gain)
-> > > > > +		return false;
-> > > > > +
-> > > > > +	return true;
-> > > > > +}
+
+vim +/ret +1130 drivers/iio/adc/ad4170.c
+
+  1124	
+  1125	static int ad4170_parse_reference(struct ad4170_state *st,
+  1126					  struct fwnode_handle *child,
+  1127					  struct ad4170_setup *setup)
+  1128	{
+  1129		struct device *dev = &st->spi->dev;
+> 1130		int ret;
+  1131		u32 aux;
+  1132	
+  1133		/* Optional positive reference buffering */
+  1134		aux = AD4170_REF_BUF_FULL; /* Default to full precharge buffer enabled. */
+  1135		fwnode_property_read_u32(child, "adi,positive-reference-buffer", &aux);
+  1136		if (aux < AD4170_REF_BUF_PRE || aux > AD4170_REF_BUF_BYPASS)
+  1137			return dev_err_probe(dev, -EINVAL,
+  1138					     "Invalid adi,positive-reference-buffer: %u\n",
+  1139					     aux);
+  1140	
+  1141		setup->afe |= FIELD_PREP(AD4170_AFE_REF_BUF_P_MSK, aux);
+  1142	
+  1143		/* Optional negative reference buffering */
+  1144		aux = AD4170_REF_BUF_FULL; /* Default to full precharge buffer enabled. */
+  1145		fwnode_property_read_u32(child, "adi,negative-reference-buffer", &aux);
+  1146		if (aux < AD4170_REF_BUF_PRE || aux > AD4170_REF_BUF_BYPASS)
+  1147			return dev_err_probe(dev, -EINVAL,
+  1148					     "Invalid adi,negative-reference-buffer: %u\n",
+  1149					     aux);
+  1150	
+  1151		setup->afe |= FIELD_PREP(AD4170_AFE_REF_BUF_M_MSK, aux);
+  1152	
+  1153		/* Optional voltage reference selection */
+  1154		aux = AD4170_REF_REFOUT; /* Default reference selection. */
+  1155		ret = fwnode_property_read_u32(child, "adi,reference-select", &aux);
+  1156		if (aux > AD4170_REF_AVDD)
+  1157			return dev_err_probe(dev, -EINVAL,
+  1158					     "Invalid reference selected %u\n",
+  1159					     aux);
+  1160	
+  1161		setup->afe |= FIELD_PREP(AD4170_AFE_REF_SELECT_MSK, aux);
+  1162	
+  1163		return 0;
+  1164	}
+  1165	
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 

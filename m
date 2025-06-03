@@ -1,126 +1,151 @@
-Return-Path: <linux-iio+bounces-20182-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20183-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21BF1ACC7F9
-	for <lists+linux-iio@lfdr.de>; Tue,  3 Jun 2025 15:36:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 60471ACC826
+	for <lists+linux-iio@lfdr.de>; Tue,  3 Jun 2025 15:43:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA4933A27B7
-	for <lists+linux-iio@lfdr.de>; Tue,  3 Jun 2025 13:36:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DBA613A2377
+	for <lists+linux-iio@lfdr.de>; Tue,  3 Jun 2025 13:43:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4397B231828;
-	Tue,  3 Jun 2025 13:36:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b="QhJAu2f1"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8F0D23535C;
+	Tue,  3 Jun 2025 13:43:52 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-0201.mail-europe.com (mail-0201.mail-europe.com [51.77.79.158])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 977682253EC;
-	Tue,  3 Jun 2025 13:36:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.77.79.158
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBB982040B6;
+	Tue,  3 Jun 2025 13:43:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748957798; cv=none; b=qq8H6ZfSpexaXIRkecPEAxIl6JbvcGaA/uXyBoDM44nRwZMQ2KBuI3uZHelhrN4PM3LBEuoZSS6xw0h/RiYYxRtNp0UTFyQn6eHUrFiIQXr920vNRXquroxi91yM95mvkuTZCEIoDkmYSLz8RK+STHIUeCGu43lSSCYYgkfF3kc=
+	t=1748958232; cv=none; b=i6vzRtm8Gujqa0NNhnt+3AAhHOOpFToR/LicL9mjdkpR3vTT0KFlIqreutRHGFO33qedQcT+710s6HaKfKJHz+HN4aGrq3ky+dBt4uYjsrUoIIbvsfd4kLrfglaWb2gKoA8E1fHcF5wozli4FnRq0QIu1XhuGIeL5+nk28+24Fs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748957798; c=relaxed/simple;
-	bh=u8bo3OjBKLU25bFgIAgJKN30zbeJrVdkYwBGgX+OFbU=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Pix9yBTQvUkvLe2lOjMUSkoKk0P5keY4XFecAXOoQzpjHUYAztO6AhpJwEdL087Oy2NVq0rCHEDhhKKDzd4WSM9wtO58KmivbZOVBz93RlkUoEw0YAHQUQn5ic20aR1jKqkKQD1CWpnc4ho4Z99lp/ZJ7pxUiiqwtq2lPuB/Wsw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=geanix.com; spf=pass smtp.mailfrom=geanix.com; dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b=QhJAu2f1; arc=none smtp.client-ip=51.77.79.158
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=geanix.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=geanix.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=geanix.com;
-	s=protonmail; t=1748957781; x=1749216981;
-	bh=u8bo3OjBKLU25bFgIAgJKN30zbeJrVdkYwBGgX+OFbU=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=QhJAu2f16w6861P/LsAFJGRMIXZtAYN4wFH99SwJ90CKVVjL8XYxGdvoZRB2Hek3G
-	 0lN1SZDnfAVw8d4PSoQFM7yYv0VZ+N9JboN4Si5voIMhMThN4qELqngbIl8Wm+sCxI
-	 I2Zy3mSLsf2qY+1w7Awd85JL2mcCUqn3fKNhWEwqQNcaUr1mV5kJEfMcgpFRwicWEW
-	 oWo3FUkcuYHGs2Ji4lw/qadN+orbh8XuYRGa8+OEdARVcLPHY80ntfDJ1G3hT4CDSz
-	 jVmCM8RKaYNZRL9qpyvSq2X+uTJ2JshzqJH+G79gPo5AOUsWwHlkwOYpR7SuJMW+v/
-	 Ie4EChrPu/TpA==
-Date: Tue, 03 Jun 2025 13:36:15 +0000
-To: David Lechner <dlechner@baylibre.com>
-From: Sean Nyekjaer <sean@geanix.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, =?utf-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2] iio: accel: fxls8962af: Fix use after free in fxls8962af_fifo_flush
-Message-ID: <5zdrnf75n2nfuk3bjzynnj2b57fkptk3lltjf4xaloxorzk27w@6qwdcn5tfynz>
-In-Reply-To: <b1f0dbee-13bd-4e5c-90b9-c6d88cb15971@baylibre.com>
-References: <20250603-fxlsrace-v2-1-5381b36ba1db@geanix.com> <b1f0dbee-13bd-4e5c-90b9-c6d88cb15971@baylibre.com>
-Feedback-ID: 134068486:user:proton
-X-Pm-Message-ID: bea842e6bfb0e313869a8703f93e9a8f3731ba7e
+	s=arc-20240116; t=1748958232; c=relaxed/simple;
+	bh=O/9vgjzrltqM0RlHHMSySJpGp65xGYUrOzaYg0fKtq8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZTVn/a7ltRX1IYoSKQwzi+g+7YZy7euIMsSe5BE35ipVSJsQoAFdjFbeiR3jXB8HBSzqBha09cmgzzokYM2ZsclAef2zlvNtTgdxePCezDhkuJJMLqzztHAV8v0B9qiErdGNKFt++jBtSF3DhQxrLk4sqsgVDDddOJrqi+kQzw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=fail smtp.mailfrom=kernel.org; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=kernel.org
+X-CSE-ConnectionGUID: ECmCQW5wS5uoVJQonQgH6g==
+X-CSE-MsgGUID: tu5OPRmkQUyE3n7cpo7qWQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11453"; a="51098931"
+X-IronPort-AV: E=Sophos;i="6.16,206,1744095600"; 
+   d="scan'208";a="51098931"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jun 2025 06:43:50 -0700
+X-CSE-ConnectionGUID: DRkJL9YPQ3+fRf/gD69gjA==
+X-CSE-MsgGUID: o778+cpFTR2J40dlstcPfQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,206,1744095600"; 
+   d="scan'208";a="144838262"
+Received: from smile.fi.intel.com ([10.237.72.52])
+  by orviesa010.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jun 2025 06:43:46 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
+	(envelope-from <andy@kernel.org>)
+	id 1uMRva-00000003HZk-3B1J;
+	Tue, 03 Jun 2025 16:43:42 +0300
+Date: Tue, 3 Jun 2025 16:43:42 +0300
+From: Andy Shevchenko <andy@kernel.org>
+To: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+Cc: Marcelo Schmitt <marcelo.schmitt@analog.com>, linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-gpio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Ana-Maria Cusco <ana-maria.cusco@analog.com>, jic23@kernel.org,
+	lars@metafoo.de, Michael.Hennerich@analog.com,
+	dlechner@baylibre.com, nuno.sa@analog.com, robh@kernel.org,
+	krzk+dt@kernel.org, conor+dt@kernel.org, linus.walleij@linaro.org,
+	brgl@bgdev.pl
+Subject: Re: [PATCH v4 02/11] iio: adc: Add basic support for AD4170
+Message-ID: <aD78Di51VHxtOtJG@smile.fi.intel.com>
+References: <cover.1748829860.git.marcelo.schmitt@analog.com>
+ <e79f9a126672b33b8a7c01f650fee43a68c74029.1748829860.git.marcelo.schmitt@analog.com>
+ <aD27cobHWeBX8o30@smile.fi.intel.com>
+ <aD3XQfUfxIiz62ZU@debian-BULLSEYE-live-builder-AMD64>
+ <aD6x2caTMd1eBInM@smile.fi.intel.com>
+ <aD7kcFupREh4lW0s@debian-BULLSEYE-live-builder-AMD64>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aD7kcFupREh4lW0s@debian-BULLSEYE-live-builder-AMD64>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Tue, Jun 03, 2025 at 08:29:51AM +0100, David Lechner wrote:
-> On 6/3/25 7:25 AM, Sean Nyekjaer wrote:
-> > fxls8962af_fifo_flush() uses indio_dev->active_scan_mask (with
-> > iio_for_each_active_channel()) without making sure the indio_dev
-> > stays in buffer mode.
-> > There is a race if indio_dev exits buffer mode in the middle of the
-> > interrupt that flushes the fifo. Fix this by calling
-> > synchronize_irq() to ensure that no interrupt is currently running when
-> > disabling buffer mode.
-> >
-> > Unable to handle kernel NULL pointer dereference at virtual address 000=
-00000 when read
-> > [...]
-> > _find_first_bit_le from fxls8962af_fifo_flush+0x17c/0x290
-> > fxls8962af_fifo_flush from fxls8962af_interrupt+0x80/0x178
-> > fxls8962af_interrupt from irq_thread_fn+0x1c/0x7c
-> > irq_thread_fn from irq_thread+0x110/0x1f4
-> > irq_thread from kthread+0xe0/0xfc
-> > kthread from ret_from_fork+0x14/0x2c
-> >
-> > Fixes: 79e3a5bdd9ef ("iio: accel: fxls8962af: add hw buffered sampling"=
-)
-> > Cc: stable@vger.kernel.org
-> > Suggested-by: David Lechner <dlechner@baylibre.com>
-> > Signed-off-by: Sean Nyekjaer <sean@geanix.com>
-> > ---
-> > Changes in v2:
-> > - As per David's suggestion; switched to use synchronize_irq() instead.
-> > - Link to v1: https://lore.kernel.org/r/20250524-fxlsrace-v1-1-dec506dc=
-87ae@geanix.com
-> Were you able to find a way to reproduce the bug well enough to
-> test this?
->=20
+On Tue, Jun 03, 2025 at 09:02:56AM -0300, Marcelo Schmitt wrote:
+> On 06/03, Andy Shevchenko wrote:
+> > On Mon, Jun 02, 2025 at 01:54:25PM -0300, Marcelo Schmitt wrote:
 
-Yeah. Sorry I didn't included the reproducer :)
+...
 
-I added:
-diff --git a/drivers/iio/accel/fxls8962af-core.c b/drivers/iio/accel/fxls89=
-62af-core.c
-index f2558fba491d..ce9a14245f83 100644
---- a/drivers/iio/accel/fxls8962af-core.c
-+++ b/drivers/iio/accel/fxls8962af-core.c
-@@ -1040,6 +1040,8 @@ static irqreturn_t fxls8962af_interrupt(int irq, void=
- *p)
- =09unsigned int reg;
- =09int ret;
-=20
-+=09usleep_range(10000, 15000);
-+
- =09ret =3D regmap_read(data->regmap, FXLS8962AF_INT_STATUS, &reg);
- =09if (ret)
- =09=09return IRQ_NONE;
+> > > > > +static bool ad4170_setup_eq(struct ad4170_setup *a, struct ad4170_setup *b)
+> > > > > +{
+> > > > > +	/*
+> > > > > +	 * The use of static_assert() here is to make sure that the comparison
+> > > > > +	 * is adapted whenever struct ad4170_setup is changed.
+> > > > > +	 */
+> Does the reason given in the comment justify the use of static_assert?
 
-And it was reproduceable within 10 secs:
-root@localhost:/sys/bus/iio/devices/iio:device0/buffer0#
-while true; do echo 1 > enable; sleep 1; echo 0 > enable; sleep 1; done
+Should I repeat myself? It makes a little sense when no memcmp() is involved.
 
-With synchronize_irq(data->irq); I have not been able to reproduce it.
+> > > > > +	static_assert(sizeof(*a) ==
+> > > > > +		      sizeof(struct {
+> > > > > +				     u16 misc;
+> > > > > +				     u16 afe;
+> > > > > +				     u16 filter;
+> > > > > +				     u16 filter_fs;
+> > > > > +				     u32 offset;
+> > > > > +				     u32 gain;
+> > > > > +			     }));
+> > > > 
+> > > > I think it doesn't make much sense unless one uses memcpy().
+> > > 
+> > > memcpy() is used to update the setups after reg write succeeds.
+> > > Also, previously, memcmp() was used to compare setups.
+> > > Since struct ad4170_setup has only unsigned integers (no floating point fields
+> > > like ad7124 had [1]), ad4170 works properly when comparing setups with memcmp().
+> > > Though, it was asked to do explicit field matching on previous reviews [2] so
+> > > that's how it had been since then. Well, both ways work for ad4170. We can
+> > > compare setup with memcmp(), or do the comparison field by field. I don't mind
+> > > changing it again if requested. I guess we only need to reach an agreement about
+> > > what to go with.
+> > 
+> > The question was "why do you need the static_assert() now?"
+> 
+> To ensure that the comparison function gets updated if struct ad4170_setup is
+> ever modified? This intends to be similar to what was implemented in ad7124
+> driver as the chips have similar channel configuration mechanisms. We also
+> have ad7173 and ad4130 using static_assert for analogous purpose. There was
+> also a comment about static_assert above.
 
-/Sean
+Does this won;t work if you changes field types? (Assuming only integers to
+integers) I believe it doesn't affect the field-by-field comparison.
+
+The other drivers may have different approach, have you studied them? Do they
+use memcmp()
+
+> > > [1]: https://lore.kernel.org/all/20250303114659.1672695-13-u.kleine-koenig@baylibre.com/
+> > > [2]: https://lore.kernel.org/linux-iio/20250504192117.5e19f44b@jic23-huawei/
+> > > 
+> > > > > +	if (a->misc != b->misc ||
+> > > > > +	    a->afe != b->afe ||
+> > > > > +	    a->filter != b->filter ||
+> > > > > +	    a->filter_fs != b->filter_fs ||
+> > > > > +	    a->offset != b->offset ||
+> > > > > +	    a->gain != b->gain)
+> > > > > +		return false;
+> > > > > +
+> > > > > +	return true;
+> > > > > +}
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
 
 

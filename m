@@ -1,67 +1,67 @@
-Return-Path: <linux-iio+bounces-20207-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20206-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46536ACDF41
-	for <lists+linux-iio@lfdr.de>; Wed,  4 Jun 2025 15:36:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3C9DACDF48
+	for <lists+linux-iio@lfdr.de>; Wed,  4 Jun 2025 15:36:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BD4717A9085
-	for <lists+linux-iio@lfdr.de>; Wed,  4 Jun 2025 13:34:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1E2FF1899635
+	for <lists+linux-iio@lfdr.de>; Wed,  4 Jun 2025 13:36:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9036B28FFD8;
-	Wed,  4 Jun 2025 13:36:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58FA628FABE;
+	Wed,  4 Jun 2025 13:36:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="yIHik8Pg"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="uEpNJ34p"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+Received: from mx0b-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC14B28E610;
-	Wed,  4 Jun 2025 13:36:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A4B233DF;
+	Wed,  4 Jun 2025 13:36:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749044164; cv=none; b=Ip+hzlqhdnNPfZ04riZFIhHnelAWHial8iOtx8gEq6TJ91s3GMr1qVloNr0Qp+iuJ9zj+k32txXfrJLo5Hxvp6gW2Us5vCF5hbsXhwAsLmtU7yzD95UuHtDFnoYJF8yWYBdKF3EKUmpNb/JQvoRieI6TrOWd59RfepVR2sIwDLA=
+	t=1749044163; cv=none; b=SDSyTRiy2RSKoqMuWC9D5yU5JAl4ttffKtzXCLMulzo1dwylaqtSV5PpxxVw+KVOPwY4BTd/HzSeJjPXMwelVZSX4QjKOP7qkMIsjH3XjadqjgMDRkqB6jyOkQO/FiS0SdOHImS/JyN0hTW6oTpExNF2ISoRFF5AfINwVUnPHBs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749044164; c=relaxed/simple;
-	bh=qyyWAcb4tyvZwqvXmqUt1NsxFCrKyOmrUp190XU3Fqk=;
+	s=arc-20240116; t=1749044163; c=relaxed/simple;
+	bh=i4D1V8FFbbAl8HqUbgC5htGfbdURz5fJHtLugYhTQTA=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tATkRaTudpW2OuGivB1mdFrOSQC0b6NIl6bol9Dt1dVaGe4TYGy41OIm4aW2Q8c0pH6Ic93jzrkj/8I2fg5Q19Yfo37608iF5/usvr+pkdUgHjF9clzvXVQ0tqLLK6i+4tzS07FB6w6FP2FfbfUpWzlXHPFGNt+fFU2gaq/u25g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=yIHik8Pg; arc=none smtp.client-ip=148.163.135.77
+	 MIME-Version:Content-Type; b=hpC++QZsA36oBxYFyO924vDpT0Z1N5yqwYczPjHpYyYC4vGNxanL+lx40G/Rlboc2Wnr/9Sg9xvs9czZxTEsIdvRmHUFp7LR7jO7WBqq65F76ma5PxRmpftq+Wr5Bed3jVQs6I+ws2LsZRxXCJ3+4q/5HHH4zxP8Yibkm9aXzeU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=uEpNJ34p; arc=none smtp.client-ip=148.163.135.77
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-	by mx0a-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 554BhisB028811;
-	Wed, 4 Jun 2025 09:35:40 -0400
+Received: from pps.filterd (m0375855.ppops.net [127.0.0.1])
+	by mx0b-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 554CLenJ030757;
+	Wed, 4 Jun 2025 09:35:36 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=
 	content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=DKIM; bh=6+4OQ
-	Vr59kJNDqEMSIRD5EZr7b4y3gwa4a34o3K29e0=; b=yIHik8PgIy+YYZ2Se8XtK
-	gsjadqrMiyKuhgz82Suc6KDcIDWibn5ddsq7w5vjexqLDIex3ol5OfLW2wAnf1Do
-	kEZE3wUyBauxa8bMIbhIcJzf1m2bhvhwlYFaMcIvwviL9zmN5I2LHFezyx+csyAv
-	xuQRxFa4p4/Y9mCQI+VB0ngnQkFT7AlslLzffaLo0bn9efMhCOQbImuaYQ5JK5h6
-	0NovNVcFjt61VgHMisZrR+3GRUiiUTaveYFD/cdEzRjXHmu6ynJw+TcAG7IEeIOk
-	rFqk8jfGdiQUOAj8emNULns/PdFhDBcTp5NPguW8bW4qXTNZRlo8iIwPufJeGgh4
+	:message-id:mime-version:references:subject:to; s=DKIM; bh=TBAnR
+	hov1+58E85smY4BftHM40ijCitXRyw4O5nRnLQ=; b=uEpNJ34py1yumSeHabVCm
+	Gxwq7ne+7xc+AnAhV7/hUgzK4AffpOnc/+VrS7lLcgGyI7ysLy3Rj6y8i+kGlQQ4
+	QW8Czll7lVRC4ssvH+uxGCrIw/vkgSHaNYexfWnr7KQVerFgPLVX95hJxTqeOpm1
+	GotuAIlMM4F3Vfo8dvH4gU9kvhRGuzb24ouq9dypYZAAadKyrLsvqc2+k6kjwWjf
+	3RfiGH3P3QWgrwNVfP1KSfjgfHNv+SZiTBPDNTJkQWZJm5oQ65hIAzeGqPDy0tdm
+	DO+hRP1ZTmc0Vbxe16CrxtIa27efdigfanM/xTU4ffMSsHuyU8fgqNRBTPgokl6R
 	w==
-Received: from nwd2mta3.analog.com ([137.71.173.56])
-	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 471g9j2jjh-1
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+	by mx0b-00128a01.pphosted.com (PPS) with ESMTPS id 472p2vgcmd-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 04 Jun 2025 09:35:39 -0400 (EDT)
-Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
-	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 554DZO3v007772
+	Wed, 04 Jun 2025 09:35:36 -0400 (EDT)
+Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
+	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 554DZZ57030313
 	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Wed, 4 Jun 2025 09:35:24 -0400
-Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by ASHBMBX8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server (version=TLS1_2,
+	Wed, 4 Jun 2025 09:35:35 -0400
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by ASHBMBX9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Wed, 4 Jun
- 2025 09:35:24 -0400
+ 2025 09:35:35 -0400
 Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
  (10.64.17.5) with Microsoft SMTP Server id 15.2.1748.10 via Frontend
- Transport; Wed, 4 Jun 2025 09:35:24 -0400
+ Transport; Wed, 4 Jun 2025 09:35:33 -0400
 Received: from romlx5.adlk.analog.com ([10.48.65.73])
-	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 554DYVPZ029277;
-	Wed, 4 Jun 2025 09:35:14 -0400
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 554DYVPa029277;
+	Wed, 4 Jun 2025 09:35:26 -0400
 From: Pop Ioan Daniel <pop.ioan-daniel@analog.com>
 To: Lars-Peter Clausen <lars@metafoo.de>,
         Michael Hennerich
@@ -86,17 +86,18 @@ To: Lars-Peter Clausen <lars@metafoo.de>,
         Matti Vaittinen
 	<mazziesaccount@gmail.com>,
         Tobias Sperling <tobias.sperling@softing.com>,
-        Alisa-Dariana Roman <alisadariana@gmail.com>,
-        Marcelo Schmitt
-	<marcelo.schmitt@analog.com>,
+        Marcelo Schmitt <marcelo.schmitt@analog.com>,
+        Alisa-Dariana Roman
+	<alisadariana@gmail.com>,
         AngeloGioacchino Del Regno
 	<angelogioacchino.delregno@collabora.com>,
-        Ioan Daniel
-	<pop.ioan-daniel@analog.com>, <linux-iio@vger.kernel.org>,
+        Trevor Gamblin
+	<tgamblin@baylibre.com>,
+        Ioan Daniel <pop.ioan-daniel@analog.com>, <linux-iio@vger.kernel.org>,
         <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH v6 3/5] iio: adc: adi-axi-adc: add axi_adc_oversampling_ratio_set
-Date: Wed, 4 Jun 2025 16:34:05 +0300
-Message-ID: <20250604133413.1528693-4-pop.ioan-daniel@analog.com>
+Subject: [PATCH v6 4/5] dt-bindings: iio: adc: add ad7405
+Date: Wed, 4 Jun 2025 16:34:06 +0300
+Message-ID: <20250604133413.1528693-5-pop.ioan-daniel@analog.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250604133413.1528693-1-pop.ioan-daniel@analog.com>
 References: <20250604133413.1528693-1-pop.ioan-daniel@analog.com>
@@ -109,81 +110,105 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
 X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-GUID: O5bmGVb8aBf7H_K9Vumlxzj83eh3gDm-
-X-Authority-Analysis: v=2.4 cv=DfIXqutW c=1 sm=1 tr=0 ts=68404bac cx=c_pps
- a=PpDZqlmH/M8setHirZLBMw==:117 a=PpDZqlmH/M8setHirZLBMw==:17
- a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=IpJZQVW2AAAA:8 a=gAnH3GRIAAAA:8
- a=hj20C08OGkFrgq5-ZMUA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=IawgGOuG5U0WyFbmm1f5:22
-X-Proofpoint-ORIG-GUID: O5bmGVb8aBf7H_K9Vumlxzj83eh3gDm-
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjA0MDEwNCBTYWx0ZWRfX2QKkoioE4HMf
- 86tskbH3Fkry2CQxV2bdsasqOFCtwXvBpXNfmpuXUnS6GcrDz8yInqNSIQ0TRyLevSlCUbgPd51
- 6fQwot0mSSVqAb+pc/qzdM1Dy2ZP92wd3T/yg/eBpR6N6OgYy/a6ngIJTnhPh11PERmKYygmN2R
- 1gym7jHAGPp6uiFPkSawxR/u687Aym+xaWqt/Z2sOKJhA1svbFet2liUhyIHsdviNnZyivES70G
- 2Xsl/cvZRytjnVRevr8ii5bbz/aF5vGX/beAEpLVtbDJWbFVTMciwuuLhOorc2VYX9av8RaLlpm
- bEL32+B/ttLarNAwnvrziJDSiihE8IkPyUskIUZ8APJCAHU0vDqPs0smsryLGVhtriuDlKIXg3w
- RWcVsLqn4abW6ldLrXGnkFGFaXZCm8YSPn3D2KySoPY+g1dIdRvgckVcI75L7zTXfhBEZ3hP
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjA0MDEwMyBTYWx0ZWRfX4t1NH/6/2/h2
+ vJuES6ESa3Xmz5BB2TNds48iTQKV14WoE5Mvn/PJzIU+2nBjKe4Kdse7AiBHEU9o7rokJoxB3Q6
+ G5oWpHZcpQLdx1V8PN1XBdfekLipxxD8Laq32n2hBvTI5KMfDy6mOjYfCzuq7cjbpTmu01pj5Xm
+ wbacFBuZQHxnNoqAi6IPtVN45leIPBTBEZtgYIIWPD+1s2WhkeP9mKiyR1igDsT+E2CFEWoHgfK
+ 24rSuOwvMkdkjNflJdqi8LzKMKj6Ky9rKpPY08XILVnzodERAyOxT4nZrFUl0wcsUyDBepYAT4V
+ 6dJAE4l6s8E03+HHeRw0+KaglLfuknECzgIBSOhQD95K4jjgLkupVGLZDosjz7Ct7FGOq6OnSe2
+ Cup3JTRKCHfiB8ipT/tfoaMZiR8swXyg/ejMZ/LVlGnixPvfw8t1HOTGoDG2z8ILmkclwmff
+X-Proofpoint-GUID: 1FYdpM9RH1uPaWuBhgh4WWnlD2QIWVlw
+X-Proofpoint-ORIG-GUID: 1FYdpM9RH1uPaWuBhgh4WWnlD2QIWVlw
+X-Authority-Analysis: v=2.4 cv=CdgI5Krl c=1 sm=1 tr=0 ts=68404ba8 cx=c_pps
+ a=3WNzaoukacrqR9RwcOSAdA==:117 a=3WNzaoukacrqR9RwcOSAdA==:17
+ a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=gEfo2CItAAAA:8 a=gAnH3GRIAAAA:8
+ a=BlUfrHhC_0NcX1HyLxIA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=sptkURWiP4Gy88Gu7hUp:22
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
  definitions=2025-06-04_03,2025-06-03_02,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 malwarescore=0 clxscore=1015 priorityscore=1501 suspectscore=0
- adultscore=0 mlxlogscore=999 spamscore=0 impostorscore=0 phishscore=0
- lowpriorityscore=0 bulkscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2506040104
+ priorityscore=1501 bulkscore=0 lowpriorityscore=0 impostorscore=0
+ clxscore=1015 mlxscore=0 adultscore=0 phishscore=0 mlxlogscore=999
+ spamscore=0 suspectscore=0 malwarescore=0 classifier=spam authscore=0
+ authtc=n/a authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2505280000 definitions=main-2506040103
 
-Add support for setting decimation rate.
+Add devicetree bindings for ad7405/adum770x family.
 
-Reviewed-by: David Lechner <dlechner@baylibre.com>
-Reviewed-by: Nuno Sá <nuno.sa@analog.com>
 Signed-off-by: Pop Ioan Daniel <pop.ioan-daniel@analog.com>
 ---
- drivers/iio/adc/adi-axi-adc.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+no changes in v6.
+ .../bindings/iio/adc/adi,ad7405.yaml          | 60 +++++++++++++++++++
+ 1 file changed, 60 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad7405.yaml
 
-diff --git a/drivers/iio/adc/adi-axi-adc.c b/drivers/iio/adc/adi-axi-adc.c
-index 9e8c30230791..0b8673668745 100644
---- a/drivers/iio/adc/adi-axi-adc.c
-+++ b/drivers/iio/adc/adi-axi-adc.c
-@@ -80,6 +80,9 @@
- #define ADI_AXI_ADC_REG_CHAN_CTRL_3(c)		(0x0418 + (c) * 0x40)
- #define   ADI_AXI_ADC_CHAN_PN_SEL_MASK		GENMASK(19, 16)
- 
-+#define ADI_AXI_ADC_REG_CHAN_USR_CTRL_2(c)	(0x0424 + (c) * 0x40)
-+#define   ADI_AXI_ADC_CHAN_USR_CTRL_2_DEC_RATE_N_MASK		GENMASK(15, 0)
+diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7405.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7405.yaml
+new file mode 100644
+index 000000000000..57f097025705
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7405.yaml
+@@ -0,0 +1,60 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++# Copyright 2025 Analog Devices Inc.
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/adc/adi,ad7405.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
- /* IO Delays */
- #define ADI_AXI_ADC_REG_DELAY(l)		(0x0800 + (l) * 0x4)
- #define   AXI_ADC_DELAY_CTRL_MASK		GENMASK(4, 0)
-@@ -242,6 +245,19 @@ static int axi_adc_test_pattern_set(struct iio_backend *back,
- 	}
- }
- 
-+static int axi_adc_oversampling_ratio_set(struct iio_backend *back,
-+					  unsigned int chan,
-+					  unsigned int rate)
-+{
-+	struct adi_axi_adc_state *st = iio_backend_get_priv(back);
++title: Analog Devices AD7405 family
 +
-+	return regmap_update_bits(st->regmap,
-+				  ADI_AXI_ADC_REG_CHAN_USR_CTRL_2(chan),
-+				  ADI_AXI_ADC_CHAN_USR_CTRL_2_DEC_RATE_N_MASK,
-+				  FIELD_PREP(ADI_AXI_ADC_CHAN_USR_CTRL_2_DEC_RATE_N_MASK,
-+					     rate));
-+}
++maintainers:
++  - Dragos Bogdan <dragos.bogdan@analog.com>
++  - Pop Ioan Daniel <pop.ioan-daniel@analog.com>
 +
- static int axi_adc_read_chan_status(struct adi_axi_adc_state *st, unsigned int chan,
- 				    unsigned int *status)
- {
-@@ -550,6 +566,7 @@ static const struct iio_backend_ops adi_axi_adc_ops = {
- 	.test_pattern_set = axi_adc_test_pattern_set,
- 	.chan_status = axi_adc_chan_status,
- 	.interface_type_get = axi_adc_interface_type_get,
-+	.oversampling_ratio_set = axi_adc_oversampling_ratio_set,
- 	.debugfs_reg_access = iio_backend_debugfs_ptr(axi_adc_reg_access),
- 	.debugfs_print_chan_status = iio_backend_debugfs_ptr(axi_adc_debugfs_print_chan_status),
- };
++description: |
++  Analog Devices AD7405 is a high performance isolated ADC, 1-channel,
++  16-bit with a second-order Σ-Δ modulator that converts an analog input signal
++  into a high speed, single-bit data stream.
++
++  https://www.analog.com/media/en/technical-documentation/data-sheets/ad7405.pdf
++  https://www.analog.com/media/en/technical-documentation/data-sheets/adum7701.pdf
++  https://www.analog.com/media/en/technical-documentation/data-sheets/adum7702.pdf
++  https://www.analog.com/media/en/technical-documentation/data-sheets/ADuM7703.pdf
++
++properties:
++  compatible:
++    enum:
++      - adi,ad7405
++      - adi,adum7701
++      - adi,adum7702
++      - adi,adum7703
++
++  clocks:
++    maxItems: 1
++
++  vdd1-supply: true
++
++  vdd2-supply: true
++
++  io-backends:
++    maxItems: 1
++
++required:
++  - compatible
++  - clocks
++  - vdd1-supply
++  - vdd2-supply
++  - io-backends
++
++additionalProperties: false
++
++examples:
++  - |
++    adc {
++        compatible = "adi,ad7405";
++        clocks = <&axi_clk_gen 0>;
++        vdd1-supply = <&vdd1>;
++        vdd2-supply = <&vdd2>;
++        io-backends = <&axi_adc>;
++    };
++...
 -- 
 2.34.1
 

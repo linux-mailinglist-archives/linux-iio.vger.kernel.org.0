@@ -1,67 +1,71 @@
-Return-Path: <linux-iio+bounces-20215-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20216-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89934ACE4DD
-	for <lists+linux-iio@lfdr.de>; Wed,  4 Jun 2025 21:36:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73C8FACE4E0
+	for <lists+linux-iio@lfdr.de>; Wed,  4 Jun 2025 21:36:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C02F188FE07
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 35514166C7A
 	for <lists+linux-iio@lfdr.de>; Wed,  4 Jun 2025 19:36:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D098E20E000;
-	Wed,  4 Jun 2025 19:35:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1373320E71E;
+	Wed,  4 Jun 2025 19:36:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="Vv4uIt0X"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="ZBKi84Wv"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx0b-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F004220CCE3;
-	Wed,  4 Jun 2025 19:35:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2903B20DD40;
+	Wed,  4 Jun 2025 19:36:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749065751; cv=none; b=dck3xohe4OoTq34gsP0QLevHguD83hlurgv1UjHkS1cIGFifeu3fq33aC4QchPOuXbntUsCryEbFRolnnZWiEtu7GpGYRluLUWDc2sbP6HI1nh0SqiA63bAn+5VsEKLfnunmhTFR0d2+FPoC/n5oXo0bmpDl3uZNNIGCrKWRjIc=
+	t=1749065762; cv=none; b=ZTu4SVttVl8Z5550ZeQ+O9tlr79FrtvoRseeUh0jsVLMWrVzYqmBO8kpKuefo+H2RiFwi/ENyuTZp1y83sqHns6OEOtcHrJPYb5sayzVu96M9MT2r1nXFmOuwfT16LHWv/V/0k5kR8vWCpw59CSvtiElK+XSCJuatYvF/D7dmKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749065751; c=relaxed/simple;
-	bh=efDFrDLQz/d2Yw77VdfC8b6/5TFj5T5inDk7rIll8jA=;
+	s=arc-20240116; t=1749065762; c=relaxed/simple;
+	bh=Zq0HK+OrSJjWq9DQYIrjT5LRtSOKreJ/I3RDhj5tuq4=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oCtmn+ylyFz+4Yq0R3g/s1PhMKoANDLHWY6ZTAjET8x9xhZuP+zYVnNtpwC26zL8bPC9FCiFCIRFDhdx0970MvxF2UxTunIaGEd+QsNIlVchMBEXxNgFMR4DwHXpALqZqoY7+aV68/0edsrQwovC2nK7kjvz1Nuidt6Z7to8odk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=Vv4uIt0X; arc=none smtp.client-ip=148.163.135.77
+	 MIME-Version:Content-Type; b=f78/wQKSejL8Sqo/3TzKAuwOpGN7o1OOhTiEe0dtJnhy1grHrBRY669U2jJKSryl7G1G4uoFUdMZSZfyFHiyhBYNdQy+Yh50RwU/LGj+8cF/otQ5YaTWSub3W/oQWoRd66A1/C8IpE7iBVw8O/bxIbTggqbzLz9DuQ51j7/iSL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=ZBKi84Wv; arc=none smtp.client-ip=148.163.135.77
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
-Received: from pps.filterd (m0375855.ppops.net [127.0.0.1])
-	by mx0b-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 554Fm0dV030199;
-	Wed, 4 Jun 2025 15:35:40 -0400
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+	by mx0a-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 554FYARY028855;
+	Wed, 4 Jun 2025 15:35:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=DKIM; bh=ls8tu
-	X4nyzu/DDgCutcb6eUVMzFtwW6yazobUynUfGg=; b=Vv4uIt0XjR3g1wbMRGIaV
-	ImLz3do2hlZ/tafHt5QJoEaVOI3ViX/XTlp9vhSs7WVj/ir6PEQRfZOt2abZ+5wn
-	RHX8ZpBC7SpObbzXmPUBR/pgF0AQUEka6zdGDzgDokIbW5QKyajCeEnVsqKspbnM
-	IKtbhQRQoOpHxiB8n3pOLuPN1KclJlMgdynohekQDaoK8BiwTi585LGlsCormR1O
-	Ga/jjROYPTVuG9Af3GrwByzEUOyD5ppVh7tTg17YnukSQ2qxRd9DTp0qjRKgGbdH
-	k8xo0rnC9UELSBw/44jMR7ZlZLt9vsBadcqgLPnPCp9MQkQ2PP03N8o89yTha2SF
+	:message-id:mime-version:references:subject:to; s=DKIM; bh=L8Ll/
+	W6DAvj7/hLj8sJbqcOHmMAtmuwTVjWiIGAUy0s=; b=ZBKi84WvofzNgcb5B5fPt
+	LsM+5n7yT/ljW0MTLX/Eq1p+9EdGK8e5v6+/SqFP1nk7AJzDwdMxPDtK7VqA6n+/
+	ahw6nCXQzyvzwpJE6HuXSOJYf9dWuFYmkXSSOkp/OJDGVB3yitRwr1LPXQ/fYeXc
+	sxhkNs0+Ywhutx+SYtJ2p9WoX7NryuS7coCoDHfhVnbx6j8YZnt+AWbmHZt591ds
+	bVK5Ek6MJQONFEnRTrVAKNInh/yccPMQSOEAtL52H8DWdoppRUBU+6JkXQredSRW
+	JJGghGQPQrsac3OAU+7y4iNH6ppc+a3qjbf19ZXM5YrK6ZyQAg0W0qfwMohQ0qmZ
 	w==
 Received: from nwd2mta3.analog.com ([137.71.173.56])
-	by mx0b-00128a01.pphosted.com (PPS) with ESMTPS id 472p2vhvt8-1
+	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 471g9j42bh-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 04 Jun 2025 15:35:40 -0400 (EDT)
+	Wed, 04 Jun 2025 15:35:54 -0400 (EDT)
 Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
-	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 554JZcR3043835
+	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 554JZrkS043865
 	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Wed, 4 Jun 2025 15:35:38 -0400
-Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by ASHBMBX9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Wed, 4 Jun
- 2025 15:35:38 -0400
+	Wed, 4 Jun 2025 15:35:53 -0400
+Received: from ASHBCASHYB5.ad.analog.com (10.64.17.133) by
+ ASHBMBX9.ad.analog.com (10.64.17.10) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.10; Wed, 4 Jun 2025 15:35:53 -0400
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by
+ ASHBCASHYB5.ad.analog.com (10.64.17.133) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.10; Wed, 4 Jun 2025 15:35:53 -0400
 Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
  (10.64.17.5) with Microsoft SMTP Server id 15.2.1748.10 via Frontend
- Transport; Wed, 4 Jun 2025 15:35:38 -0400
+ Transport; Wed, 4 Jun 2025 15:35:53 -0400
 Received: from JSANTO12-L01.ad.analog.com ([10.65.60.206])
-	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 554JZLMI014301;
-	Wed, 4 Jun 2025 15:35:24 -0400
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 554JZYPx014308;
+	Wed, 4 Jun 2025 15:35:36 -0400
 From: Jonathan Santos <Jonathan.Santos@analog.com>
 To: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
         <linux-kernel@vger.kernel.org>, <linux-gpio@vger.kernel.org>
@@ -71,10 +75,12 @@ CC: Jonathan Santos <Jonathan.Santos@analog.com>, <andy@kernel.org>,
         <krzk+dt@kernel.org>, <conor+dt@kernel.org>,
         <marcelo.schmitt1@gmail.com>, <linus.walleij@linaro.org>,
         <brgl@bgdev.pl>, <lgirdwood@gmail.com>, <broonie@kernel.org>,
-        <jonath4nns@gmail.com>, <dlechner@baylibre.com>
-Subject: [PATCH v10 01/12] iio: adc: ad7768-1: Ensure SYNC_IN pulse minimum timing requirement
-Date: Wed, 4 Jun 2025 16:35:21 -0300
-Message-ID: <d3ee92a533cd1207cf5c5cc4d7bdbb5c6c267f68.1749063024.git.Jonathan.Santos@analog.com>
+        <jonath4nns@gmail.com>, <dlechner@baylibre.com>,
+        "Conor
+ Dooley" <conor.dooley@microchip.com>
+Subject: [PATCH v10 02/12] dt-bindings: trigger-source: add generic GPIO trigger source
+Date: Wed, 4 Jun 2025 16:35:34 -0300
+Message-ID: <84b4f5a18fc1b1b724c96d269511f28e7475be0e.1749063024.git.Jonathan.Santos@analog.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <cover.1749063024.git.Jonathan.Santos@analog.com>
 References: <cover.1749063024.git.Jonathan.Santos@analog.com>
@@ -84,85 +90,130 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjA0MDE1NSBTYWx0ZWRfX02aSiB/grcK/
- jXQKojBz6iaxqZFwbRVmfmltsn5ga62Ev8EZKZVYZG7GJMZDTd6AXqwIb9ptqWYPukzMMjQsbI6
- MJ5yIaeVql/SllvVHcUmo4u7L6yOSD3r9aUI7Ta7QvQnwga+2RN3rYVYj6m44/QPm+9zyvnl8vi
- nIRI2khkNvHOsy3kJ/TP+VlMYJQcH2WaUHc7ei833ANTBlLzyz91fEJWQ/CGp/k/gYdYT7dpgBa
- vkHEjKHg7cIXFgwntWZTcnwFJ6TtjgnqYvS5/V5P/96+kIcgxjbmDjq/GnmsdHQSJG6ooupDpkb
- g+vvAU15NndviC8aaUwO9bKDaZv05z4zUqyG7YlU9NCSG5clA8uaZ8fhnH0hQ/3BuEK7vKruwRB
- cF4E5Qy3UrS4BWRoeYhB7A63iNdnT32cjsoA9QBD3eTT1iyCf/FWsCgXVkebrPtujxPEs5ci
-X-Proofpoint-GUID: -0gOjBYSoDnGXILWY2UVDpY-jZI98bOH
-X-Proofpoint-ORIG-GUID: -0gOjBYSoDnGXILWY2UVDpY-jZI98bOH
-X-Authority-Analysis: v=2.4 cv=CdgI5Krl c=1 sm=1 tr=0 ts=6840a00c cx=c_pps
+X-Proofpoint-GUID: j3r5q3jasY81zHUU4l0d0DOlnyRPZDP7
+X-Authority-Analysis: v=2.4 cv=DfIXqutW c=1 sm=1 tr=0 ts=6840a01a cx=c_pps
  a=PpDZqlmH/M8setHirZLBMw==:117 a=PpDZqlmH/M8setHirZLBMw==:17
- a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=gAnH3GRIAAAA:8 a=vwO0T6k6XbGL632noZEA:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=6IFa9wvqVegA:10 a=VwQbUJbxAAAA:8 a=IpJZQVW2AAAA:8 a=gEfo2CItAAAA:8
+ a=NEAV23lmAAAA:8 a=XYAwZIGsAAAA:8 a=KKAkSRfTAAAA:8 a=gAnH3GRIAAAA:8
+ a=N_fad9SN1wWSt1MqymgA:9 a=IawgGOuG5U0WyFbmm1f5:22 a=sptkURWiP4Gy88Gu7hUp:22
+ a=E8ToXWR_bxluHZ7gmE-Z:22 a=cvBusfyB2V15izCimMoJ:22
+X-Proofpoint-ORIG-GUID: j3r5q3jasY81zHUU4l0d0DOlnyRPZDP7
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjA0MDE1NSBTYWx0ZWRfX8eQkHHi74Mo6
+ /4RPy8DTgm66NUAnolT/6sW7Uavt5G1ZpkSEbJMyagPfacI73EzcKO8fOfxeYK1UwCOhF8YeBwN
+ TwTMR2ZDdZ7evT1gCa9tWjpNzrFiKlu3SrSI86I8S3JkHJjMwRT7B02ylAMEkrL0dq52lio+Ech
+ UvlpaJnGy7nuePbS8oBjrEXgU5+Ge6dF1Q2L/KzJ5NLhgsfQZ6NyV/ynXJ1RezyPH/S95jxR9Qu
+ CRegx34NFcgk1bSMSplnqGWN2zaVr2+1I/eBSzP6G/1waJ9K0rjZXkkEXV5Xpp2IyWkQU76fFkF
+ 9BeQogCPxVuO8unxJ9XwjTC1XMUTUlOHRZUZlCCGGRdJ1JYKD/i7raDLzHPk2wuEwlDYNiZ/uGw
+ ynjDo+IBIeo8hlvx5xGfVUofP+HDMboWflA1bZgwAs3YfSYDWYuGB2oYzYpY2wNQvAqdhCNc
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
  definitions=2025-06-04_04,2025-06-03_02,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 bulkscore=0 lowpriorityscore=0 impostorscore=0
- clxscore=1015 mlxscore=0 adultscore=0 phishscore=0 mlxlogscore=999
- spamscore=0 suspectscore=0 malwarescore=0 classifier=spam authscore=0
- authtc=n/a authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2505280000 definitions=main-2506040155
+ mlxscore=0 malwarescore=0 clxscore=1015 priorityscore=1501 suspectscore=0
+ adultscore=0 mlxlogscore=999 spamscore=0 impostorscore=0 phishscore=0
+ lowpriorityscore=0 bulkscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
+ definitions=main-2506040155
 
-The SYNC_IN pulse width must be at least 1.5 x Tmclk, corresponding to
-~2.5 µs at the lowest supported MCLK frequency. Add a 3 µs delay to
-ensure reliable synchronization timing even for the worst-case scenario.
+Inspired by pwm-trigger, create a new binding for using a GPIO
+line as a trigger source.
 
+Link: https://lore.kernel.org/linux-iio/20250207-dlech-mainline-spi-engine-offload-2-v8-3-e48a489be48c@baylibre.com/
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Reviewed-by: David Lechner <dlechner@baylibre.com>
 Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
 ---
 v10 Changes:
-* New patch.
----
- drivers/iio/adc/ad7768-1.c | 23 +++++++++++++++++++----
- 1 file changed, 19 insertions(+), 4 deletions(-)
+* None.
 
-diff --git a/drivers/iio/adc/ad7768-1.c b/drivers/iio/adc/ad7768-1.c
-index 51134023534a..8b414a102864 100644
---- a/drivers/iio/adc/ad7768-1.c
-+++ b/drivers/iio/adc/ad7768-1.c
-@@ -252,6 +252,24 @@ static const struct regmap_config ad7768_regmap24_config = {
- 	.max_register = AD7768_REG24_COEFF_DATA,
- };
- 
-+static int ad7768_send_sync_pulse(struct ad7768_state *st)
-+{
-+	/*
-+	 * The datasheet specifies a minimum SYNC_IN pulse width of 1.5 × Tmclk,
-+	 * where Tmclk is the MCLK period. The supported MCLK frequencies range
-+	 * from 0.6 MHz to 17 MHz, which corresponds to a minimum SYNC_IN pulse
-+	 * width of approximately 2.5 µs in the worst-case scenario (0.6 MHz).
-+	 *
-+	 * Add a delay to ensure the pulse width is always sufficient to
-+	 * trigger synchronization.
-+	 */
-+	gpiod_set_value_cansleep(st->gpio_sync_in, 1);
-+	fsleep(3);
-+	gpiod_set_value_cansleep(st->gpio_sync_in, 0);
+v9 Changes:
+* No changes.
+
+v8 Changes:
+* No changes.
+
+v7 Changes:
+* File added to MAINTAINERS and Made trigger source generic to include both pwm and gpio.
+
+v6 Changes:
+* Changed description.
+* Fixed typos and replaced GPIO pin with GPIO line.
+* Added link reference for pwm-trigger.
+
+v5 Changes:
+* New patch in v5.
+---
+ .../bindings/trigger-source/gpio-trigger.yaml | 40 +++++++++++++++++++
+ MAINTAINERS                                   |  3 +-
+ 2 files changed, 42 insertions(+), 1 deletion(-)
+ create mode 100644 Documentation/devicetree/bindings/trigger-source/gpio-trigger.yaml
+
+diff --git a/Documentation/devicetree/bindings/trigger-source/gpio-trigger.yaml b/Documentation/devicetree/bindings/trigger-source/gpio-trigger.yaml
+new file mode 100644
+index 000000000000..1331d153ee82
+--- /dev/null
++++ b/Documentation/devicetree/bindings/trigger-source/gpio-trigger.yaml
+@@ -0,0 +1,40 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/trigger-source/gpio-trigger.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+	return 0;
-+}
++title: Generic trigger source using GPIO
 +
- static int ad7768_set_mode(struct ad7768_state *st,
- 			   enum ad7768_conv_mode mode)
- {
-@@ -339,10 +357,7 @@ static int ad7768_set_dig_fil(struct ad7768_state *st,
- 		return ret;
++description: A GPIO used as a trigger source.
++
++maintainers:
++  - Jonathan Santos <Jonathan.Santos@analog.com>
++
++properties:
++  compatible:
++    const: gpio-trigger
++
++  '#trigger-source-cells':
++    const: 0
++
++  gpios:
++    maxItems: 1
++    description: GPIO to be used as a trigger source.
++
++required:
++  - compatible
++  - '#trigger-source-cells'
++  - gpios
++
++additionalProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/gpio/gpio.h>
++
++    trigger {
++        compatible = "gpio-trigger";
++        #trigger-source-cells = <0>;
++        gpios = <&gpio1 15 GPIO_ACTIVE_HIGH>;
++    };
+diff --git a/MAINTAINERS b/MAINTAINERS
+index c02d83560058..d5d14fc69ac0 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -24760,9 +24760,10 @@ W:	https://github.com/srcres258/linux-doc
+ T:	git git://github.com/srcres258/linux-doc.git doc-zh-tw
+ F:	Documentation/translations/zh_TW/
  
- 	/* A sync-in pulse is required every time the filter dec rate changes */
--	gpiod_set_value(st->gpio_sync_in, 1);
--	gpiod_set_value(st->gpio_sync_in, 0);
--
--	return 0;
-+	return ad7768_send_sync_pulse(st);
- }
+-TRIGGER SOURCE - PWM
++TRIGGER SOURCE
+ M:	David Lechner <dlechner@baylibre.com>
+ S:	Maintained
++F:	Documentation/devicetree/bindings/trigger-source/gpio-trigger.yaml
+ F:	Documentation/devicetree/bindings/trigger-source/pwm-trigger.yaml
  
- static int ad7768_set_freq(struct ad7768_state *st,
+ TRUSTED SECURITY MODULE (TSM) ATTESTATION REPORTS
 -- 
 2.34.1
 

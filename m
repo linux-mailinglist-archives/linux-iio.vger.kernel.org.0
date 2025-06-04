@@ -1,48 +1,48 @@
-Return-Path: <linux-iio+bounces-20210-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20211-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F374ACDFC7
-	for <lists+linux-iio@lfdr.de>; Wed,  4 Jun 2025 16:03:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF395ACDFCA
+	for <lists+linux-iio@lfdr.de>; Wed,  4 Jun 2025 16:03:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 34F5C1894180
-	for <lists+linux-iio@lfdr.de>; Wed,  4 Jun 2025 14:03:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B91F31765B0
+	for <lists+linux-iio@lfdr.de>; Wed,  4 Jun 2025 14:03:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C920228FFDB;
-	Wed,  4 Jun 2025 14:03:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DB252900A0;
+	Wed,  4 Jun 2025 14:03:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lMpQ2oB8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QDXGiYGR"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EC6B217F3D;
-	Wed,  4 Jun 2025 14:03:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40F13217F3D;
+	Wed,  4 Jun 2025 14:03:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749045792; cv=none; b=LEST9FOPO+hx42UVlHpa5CSsIm30kIGDL7iZCMQGF4mUzGoxsYK9SzGLZfWOvLek/fJpoSeaNx4on44qdpeii/uy82eaorVHlCSCruSfDXU2F0/JL8ETX8wOmmwmgVahFzhEF+xSqKsOxZIo1nRxCO6/e4bisu9BKdPK03taOeY=
+	t=1749045824; cv=none; b=uqgCoOU0LqtfS1RC9LzRfAcm7/LOCWHz0+XRqy61QSDYK1moWKqVmEqG6wSBmmQDpXG0UcKZiEjaQqqwnw47y8dSUzQdb16euUYan1gzb1xAVEdss1nOvRYYBAjuQFpwpGIGTvZd5N8aHxS8tddZLmqLcTht3ktwS8WvoE2V2R0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749045792; c=relaxed/simple;
-	bh=jOX0OWkMHthLxZlqAHJmk7epo+raL1mcgxAKeKQDmJE=;
+	s=arc-20240116; t=1749045824; c=relaxed/simple;
+	bh=ncioZK0PMhQfysG5PiTjNQ/f3TZHdofSIg4uV3f9yNo=;
 	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=i4WwVlSsnLqKtOiuM6Nag1ii/7X0WoI5W9TdZGcYiHWgy7yh7BEnTmEiMDu/QqIFoilLOR3EuIhhysyvCbUNsbzR/MGM1hEuzjkfLREbFsU/5rbzJ2Ydc76TCTCDRWDeOABg/2XBQFnUfmv2yf20MaZS0yGvbUU4CtTP4hputbk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lMpQ2oB8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23BCCC4CEE4;
-	Wed,  4 Jun 2025 14:03:04 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=cMwa2hLRQKdUMk++G7dabCT1XDOwIPCBCef9ujwg7jPuDPIXpCDr+NnuDJ1MwU8Pe5EFr0XjBGzrycs4Yxdv3Bmlws79F8ohryIXMP8FQNhx/d9rpgELL/wZ1p1AoBs2Dda0wSlllIpWJeqOwnJKpPb3Gi//sFebgeLRwIkKmRE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QDXGiYGR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B74FDC4CEF1;
+	Wed,  4 Jun 2025 14:03:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749045791;
-	bh=jOX0OWkMHthLxZlqAHJmk7epo+raL1mcgxAKeKQDmJE=;
+	s=k20201202; t=1749045824;
+	bh=ncioZK0PMhQfysG5PiTjNQ/f3TZHdofSIg4uV3f9yNo=;
 	h=Date:Subject:To:References:From:In-Reply-To:From;
-	b=lMpQ2oB8JJwDA44NsSUC2mXhaRvVTGDAzPpvPYQ9gh9wTzDypJL9GP8ph9GgVEE7k
-	 YGkZDtwjWg8xAzJ1t49FxyMkEAJK604mQ3i4iHlxNYP+lfVzOgsA22/Y6gVN1dyPFf
-	 /mIlaw/wgqZaoqCx32WdRk48Bd2a/Lo1NAptc1rmyzO8wHADrkQdUKXrZu6uGBJq+Q
-	 aSn4aWRGrx0BuhpRrZ2X3RY47pp1+tDt7GgSUcFs5PutSNlMDZpChNc4oSsGj5buie
-	 b4OYxa5rH++46A1JlUYv9M1xHVXb0pKWA5A5y5Or6E8xR7pdBICjNL0D4P9riEPLSF
-	 n7L1R0URIJt7Q==
-Message-ID: <dcaea307-bbd8-4b6a-ad6c-04f6a2d8e473@kernel.org>
-Date: Wed, 4 Jun 2025 16:03:02 +0200
+	b=QDXGiYGRbFJygIBXqOcram+oTkxNvxzosxkqHlS3w0p9DqlnDwRATpb8CcChn74wz
+	 qutme+ZnggxgMpotaUAUNX3LmCfcYF9mzq6X72o01aiaZcuzmnXV+sHAVZ1bT57wlH
+	 tkngdi241D+aca2kSjS0RKcSsNW0tOGBpVUS7tQYiUmd8v/MAl/WIWRy1ZMDpE6A1e
+	 EX8lzIZjG4TveZd6e4VHptXeH+0IHDKIa2ZBCHF1mJWAf3HLlaJZwEVWCwt79AuZGa
+	 zy0Zzvi53eijloenfh+fjofzg1HHvXzOZNmi9J8twKgVSb993Gao/azouZ9rr6zNXU
+	 jlT43PZxlo+Tw==
+Message-ID: <06f0ffbf-ddff-4038-8b0a-1c67fdf9ec65@kernel.org>
+Date: Wed, 4 Jun 2025 16:03:35 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -50,32 +50,28 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 4/5] dt-bindings: iio: adc: add ad7405
-To: "Ioan-daniel, Pop" <Pop.Ioan-daniel@analog.com>,
+Subject: Re: [PATCH v6 4/5] dt-bindings: iio: adc: add ad7405
+To: Pop Ioan Daniel <pop.ioan-daniel@analog.com>,
  Lars-Peter Clausen <lars@metafoo.de>,
- "Hennerich, Michael" <Michael.Hennerich@analog.com>,
+ Michael Hennerich <Michael.Hennerich@analog.com>,
  Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>,
- "Sa, Nuno" <Nuno.Sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>,
- "Cuciurean, Sergiu" <Sergiu.Cuciurean@analog.com>,
- "Bogdan, Dragos" <Dragos.Bogdan@analog.com>,
- "Miclaus, Antoniu" <Antoniu.Miclaus@analog.com>,
+ =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
+ Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Sergiu Cuciurean <sergiu.cuciurean@analog.com>,
+ Dragos Bogdan <dragos.bogdan@analog.com>,
+ Antoniu Miclaus <antoniu.miclaus@analog.com>,
  Olivier Moysan <olivier.moysan@foss.st.com>,
  Javier Carrasco <javier.carrasco.cruz@gmail.com>,
  Matti Vaittinen <mazziesaccount@gmail.com>,
  Tobias Sperling <tobias.sperling@softing.com>,
+ Marcelo Schmitt <marcelo.schmitt@analog.com>,
  Alisa-Dariana Roman <alisadariana@gmail.com>,
- "Schmitt, Marcelo" <Marcelo.Schmitt@analog.com>,
  AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Trevor Gamblin <tgamblin@baylibre.com>,
- "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <20250602134349.1930891-1-pop.ioan-daniel@analog.com>
- <20250602134349.1930891-5-pop.ioan-daniel@analog.com>
- <c69e4bc3-c665-46ef-8452-b399aa76b815@kernel.org>
- <PH0PR03MB6335ECFCD0C0DEF0230E25B6D16CA@PH0PR03MB6335.namprd03.prod.outlook.com>
+ Trevor Gamblin <tgamblin@baylibre.com>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250604133413.1528693-1-pop.ioan-daniel@analog.com>
+ <20250604133413.1528693-5-pop.ioan-daniel@analog.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -121,40 +117,17 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <PH0PR03MB6335ECFCD0C0DEF0230E25B6D16CA@PH0PR03MB6335.namprd03.prod.outlook.com>
+In-Reply-To: <20250604133413.1528693-5-pop.ioan-daniel@analog.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 04/06/2025 15:05, Ioan-daniel, Pop wrote:
->>
->> On 02/06/2025 15:43, Pop Ioan Daniel wrote:
->>> Add devicetree bindings for ad7405/adum770x family.
->>>
->>> Signed-off-by: Pop Ioan Daniel <pop.ioan-daniel@analog.com>
->>> ---
->>> changes in v5:
->>>  - create an example based on adi,ad7625.yaml that is very similar to this
->> part
->>>  - do not add Reviewed-by tag due to the change that I've made.
->>
->> Which change? I see ZERO differences against version which was reviewed.
+On 04/06/2025 15:34, Pop Ioan Daniel wrote:
+> Add devicetree bindings for ad7405/adum770x family.
 > 
-> Hi! The difference is in the io-backends assignment:
-
-Change in the binding. You just pasted example. What change did you make
-to invalidate review?
-
-> examples:
-> +  - |
-> +    adc {
-> +        compatible = "adi,ad7405";
-> +        clocks = <&axi_clk_gen 0>;
-> +        vdd1-supply = <&vdd1>;
-> +        vdd2-supply = <&vdd2>;
-> +        io-backends = <&axi_adc>;
-> +    };
-> +...
-
+> Signed-off-by: Pop Ioan Daniel <pop.ioan-daniel@analog.com>
+> ---
+> no changes in v6.
+So no changes but also no previous tags?
 
 Best regards,
 Krzysztof

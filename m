@@ -1,133 +1,125 @@
-Return-Path: <linux-iio+bounces-20237-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20238-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDBBEACEA28
-	for <lists+linux-iio@lfdr.de>; Thu,  5 Jun 2025 08:29:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 819A0ACF0B1
+	for <lists+linux-iio@lfdr.de>; Thu,  5 Jun 2025 15:33:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9BA323ABE3E
-	for <lists+linux-iio@lfdr.de>; Thu,  5 Jun 2025 06:28:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A4D79188EE3F
+	for <lists+linux-iio@lfdr.de>; Thu,  5 Jun 2025 13:32:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 307111F2C44;
-	Thu,  5 Jun 2025 06:29:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4C5123FC4C;
+	Thu,  5 Jun 2025 13:29:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FV47raOS"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="VRvrueY8"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFB6E1EF0B0;
-	Thu,  5 Jun 2025 06:29:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEBDE22E402
+	for <linux-iio@vger.kernel.org>; Thu,  5 Jun 2025 13:29:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749104943; cv=none; b=hxoMDqG0qfL/BbOf081PqwPRNf3JOXWtVzOd5zYa0S1HzZMo6F1z/PGRy31B/eLxrtoIvBaDqV5cKaDF+u9bgsxX9mkE1NCdYaqVmlO5SwsEGA/H1ViJ5fOfbLoBHuG7QpPp436blsO4OP9hW7Nwev1Lvotbyw8Xk031/fXtdHY=
+	t=1749130158; cv=none; b=dyBpkmmJQjlXzoBuYKZjVqHeOEFMeZ3S6Fg9mJI5P3T03viydFTOI8QpgfUMQGLqwHLm6M89gvCtBnzxcXQSS3/5YkkKQWqBOshLTt3nGjg6K9dIQ2A5UGSrlfDpnDw3cHNs3P+utX+sMorXK6fV9D3d0RfS1yZb0iAmGJYNZiE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749104943; c=relaxed/simple;
-	bh=KPgkw+cpE46n9HeAcGs5W4JrfY8T0PV4/F8fPzC/J5o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=buKLrfqC7L6bXTThSjXSWwIwDKEd1TI8ntdhVsf3VkyT72vuxn0rHpg1B1TFf82A0pyH5fEPhz3f++qHuNoN4GsDUAFF+k4vEUTn9uf6APEQ0RGScU1E/hmxGlTCpEnKWiumotC2BgpLMfxPqBRAsGs2Brk3zoyZmoTEq/aPEPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FV47raOS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 690FDC4CEE7;
-	Thu,  5 Jun 2025 06:29:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749104942;
-	bh=KPgkw+cpE46n9HeAcGs5W4JrfY8T0PV4/F8fPzC/J5o=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=FV47raOSYYWCH92aLN5czYRrLWcoFWQ9NtupSlh1FmNz/mcdx8qJPWOdrsR34Z/RZ
-	 A8syKdJ5aEwfDNMqum/XHMICjB5pt9uP6cUoP9tAN2JYg4wOk8MMHA1MMf6DcpJizG
-	 FhRKuxkGu5a+KNwHtx0n+EckhlyNQQHnM3jADMDLNr1r8A6rDBnV2gghS2tzBLKVt5
-	 7zrbxxcq9lXfJHz+IF0l+oZgF97GAks/hY7FoSPlUX7CM0o55JrrXWwgawA8XDqekF
-	 stiVh3oqgnghnTvnhD6JYlqUQo1VHt1PqfYLq9xV3VogwD46uojrdrkBRcJHYQhYRF
-	 wfWOQH2PTEjDA==
-Date: Thu, 5 Jun 2025 06:28:59 +0000
-From: Tzung-Bi Shih <tzungbi@kernel.org>
-To: Gwendal Grignou <gwendal@chromium.org>
-Cc: jic23@kernel.org, chrome-platform@lists.linux.dev,
-	linux-iio@vger.kernel.org, Gwendal Grignou <gwendal@google.com>
-Subject: Re: [PATCH v5] iio: cros_ec_sensors: add cros_ec_activity driver
-Message-ID: <aEE5K9DnEOcKZf8P@google.com>
-References: <20250604053903.1376465-1-gwendal@google.com>
+	s=arc-20240116; t=1749130158; c=relaxed/simple;
+	bh=h/yqq5HFi78JCobXR8PcMZdAb80vQUDHwHsEUDOOT5Q=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=qw5iH7aajCR+hp1lNt11DL+QxyTFucK+jkny9mITpQRIsYgMOTZF9lD6mqJYQguLmuy9l1a55FvpIozEUj7Xej3w1KOWMJjb33SVQI2DKkQYl/10hohQr1c3jJP8qYtH8bq4GHyjdRpz7LDWLQI8s0Y8MjEXTkHMspO4F+u+NQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=VRvrueY8; arc=none smtp.client-ip=209.85.167.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-5534edc646dso1074256e87.1
+        for <linux-iio@vger.kernel.org>; Thu, 05 Jun 2025 06:29:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1749130154; x=1749734954; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4GUAkxOIFy9jpQLSmntQ+q8BrdugRJdUj6yz2GA9p8E=;
+        b=VRvrueY81niv9A4KBpHJnqMYu/vk2w7Z1qxHgvP75rDkVvY1kXuf7AYy5nJ3f54D/y
+         E7SMk6+kJ+lZQCz890DmNxVcoCleXmk2BFMeuJLfVTss2lUsYv9E4Uet4wClzb5rCIp/
+         xxmiBRcnezswDdLmlXrMyNXVMEk9M8AJCDxbmxiN2TIUC9UfL7DG47O57CKA5yWwPqFm
+         aH8svGBXySxBVolzWOCPoJ+VoqXcvznCN/7u/QscIVL0HxMW17OHDHeh8zDmqGrHZeNi
+         ThRtD4DCIrZlxjzWqa9CNKS+f4Wq3BvNPctqd2bM6qgRDWS4nlQtjnjynFGQRQJh6ctY
+         fSng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749130154; x=1749734954;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=4GUAkxOIFy9jpQLSmntQ+q8BrdugRJdUj6yz2GA9p8E=;
+        b=UzbhXXpuLzCDC7GH+03Bt3ezBvw1rrlw9l/W9KXu9MEDsWYtYRP6miD0kSIw05RZeM
+         kM9ZBXBlQ5/NaiOoWuzVsYIairHzF7wlHGQSaU26/xLCM9Xkeo06qcwxQCN3dtkKFMwP
+         DVLTDwaXEgO7cIgq0oJuDCi5j3pgDi8ibTUOGB0JhCOADRUo7aR5ZijNR6bWHfUAHIFE
+         FUIqm1CpQg6j+8pwTGtU5TQBgK8hop4iDlLWtSoeZydP4cWpdfT5ODv8mtssZn8Nzrf1
+         g9fylQGcGYlptU8cqcgYZZhs9TtGmw66hS0eJXoHWGfxOUUu2S+Ycg5Gi+ST48UE6qBk
+         DzBg==
+X-Forwarded-Encrypted: i=1; AJvYcCUKLfYwY5FFvfK2GCIbU+/jy3+H5QRC3WDU23iR+qalAoSmrUGck0kXYd66JukdZ+JOxnrELf98lnE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyAoNUMYvtAQMwZsCpaYR2ITXAKMICB8IboirzQiHO2YD+UBRyr
+	0QkBWjVh379IflKUZShC/ix0VtRCQegHXAN7qPNzBpAJJxfbqHsqsxZRKOLhsnjaXF8bRj/WPsj
+	h8HXB3qBeoZQ0hUfQBKR/lUHP2TnIWrnSX5crpK1Utw==
+X-Gm-Gg: ASbGncuIUyiOm0UVh+SSrzgKokNyWn6R8o7E22HSd1740MMkA0hujUO7yqGKEqCCqDQ
+	3kOqhyd7OKB5HGnZC3G0CBxPKWIVrR6GW3Lu82QFvH0Co7rPzLLcD1qxmnpotd1T9AlA84pDO2P
+	TkghXvWpPO0xbcjYwRZqVNI5qSSSVoNh2I
+X-Google-Smtp-Source: AGHT+IHQ5la5bmYfspb0z+rHTezHnXmn8S0sJvRzX+sgZ7IiaN7ipgyy98pOXOBzrw28bsqpF2v0lH7bNQ0EOyTmIHU=
+X-Received: by 2002:a05:6512:3ca8:b0:553:2a56:2e8d with SMTP id
+ 2adb3069b0e04-55356df1dd7mr2038017e87.40.1749130153902; Thu, 05 Jun 2025
+ 06:29:13 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250604053903.1376465-1-gwendal@google.com>
+References: <20250602-rk3576-pwm-v2-0-a6434b0ce60c@collabora.com> <20250602-rk3576-pwm-v2-1-a6434b0ce60c@collabora.com>
+In-Reply-To: <20250602-rk3576-pwm-v2-1-a6434b0ce60c@collabora.com>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Thu, 5 Jun 2025 15:29:03 +0200
+X-Gm-Features: AX0GCFv01J_2f7I-yQlAWEluILmgAXhjV0w8aFTFPw9c58Y0wmETNUPszWxuq5c
+Message-ID: <CACRpkdZRjLFa3Bni=wMG1LBoWnW+Zenj2FVP=_2s+U_1eykt7Q@mail.gmail.com>
+Subject: Re: [PATCH v2 1/7] dt-bindings: pinctrl: rockchip: increase max
+ amount of device functions
+To: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Heiko Stuebner <heiko@sntech.de>, 
+	=?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <ukleinek@kernel.org>, 
+	William Breathitt Gray <wbg@kernel.org>, Sebastian Reichel <sebastian.reichel@collabora.com>, 
+	Kever Yang <kever.yang@rock-chips.com>, Yury Norov <yury.norov@gmail.com>, 
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Dave Ertman <david.m.ertman@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
+	Leon Romanovsky <leon@kernel.org>, Lee Jones <lee@kernel.org>, linux-gpio@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	linux-pwm@vger.kernel.org, linux-iio@vger.kernel.org, kernel@collabora.com, 
+	Jonas Karlman <jonas@kwiboo.se>, Detlev Casanova <detlev.casanova@collabora.com>, 
+	Conor Dooley <conor.dooley@microchip.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jun 03, 2025 at 10:39:03PM -0700, Gwendal Grignou wrote:
-> ChromeOS EC can report activity information derived from the
-> accelerometer:
-> - Reports on-body/off-body as a proximity event.
-> - Reports significant motion as an activity event.
-> 
-> This new sensor is a virtual sensor, included only when the EC firmware
-> is compiled with the appropriate module.
-> 
-> Signed-off-by: Gwendal Grignou <gwendal@google.com>
-> Reviewed-by: Tzung-Bi Shih <tzungbi@kernel.org>
-> ---
-> [...]
-> Changes in v5:
-> - Use guard(mutex), simplify error path.
-> - Use driver name as function prefix.
-> - Remove cros_ec_sensors_remove function.
-> - Remove identation of structure field.
-> - Invert raw value to return 1m when far, 0m when close.
+On Mon, Jun 2, 2025 at 6:20=E2=80=AFPM Nicolas Frattaroli
+<nicolas.frattaroli@collabora.com> wrote:
 
-As v5 changed a bit from v4, it'd be better to drop my R-b tag in v5.
+> With the introduction of the RK3576, the maximum device function ID used
+> increased to 14, as anyone can easily verify for themselves with:
+>
+>   rg -g '*-pinctrl.dtsi' '<\d+\s+RK_P..\s+(?<func>\d+)\s.*>;$' --trim \
+>   -NI -r '$func' arch/arm64/boot/dts/rockchip/ | sort -g | uniq
+>
+> Unfortunately, this wasn't caught by dt-validate as those pins are
+> omit-if-no-ref and we had no reference to them in any tree so far.
+>
+> Once again kick the can down the road by increasing the limit to 14.
+>
+> Acked-by: Conor Dooley <conor.dooley@microchip.com>
+> Signed-off-by: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
 
-Anyway, it overall looks good to me.  Only a few minor comments:
-Reviewed-by: Tzung-Bi Shih <tzungbi@kernel.org>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 
-> +static int cros_ec_activity_read_event_config(struct iio_dev *indio_dev,
-> +					      const struct iio_chan_spec *chan,
-> +					      enum iio_event_type type,
-> +					      enum iio_event_direction dir)
-> +{
-> +	struct cros_ec_sensors_state *st = iio_priv(indio_dev);
-> +	int ret;
-> +
-> +	if (chan->type != IIO_ACTIVITY && chan->type != IIO_PROXIMITY)
-> +		return -EINVAL;
-> +
-> +	guard(mutex)(&st->core.cmd_lock);
-> +	st->core.param.cmd = MOTIONSENSE_CMD_LIST_ACTIVITIES;
-> +	ret = cros_ec_motion_send_host_cmd(&st->core, 0);
-> +	if (ret)
-> +		return ret;
-> +
-> +	switch (chan->type) {
-> +	case IIO_PROXIMITY:
-> +		return !!(st->core.resp->list_activities.enabled &
-> +			 (1 << MOTIONSENSE_ACTIVITY_BODY_DETECTION));
-> +	case IIO_ACTIVITY:
-> +		if (chan->channel2 == IIO_MOD_STILL) {
-> +			return !!(st->core.resp->list_activities.enabled &
-> +				 (1 << MOTIONSENSE_ACTIVITY_SIG_MOTION));
-> +		} else {
-> +			dev_warn(&indio_dev->dev, "Unknown activity: %d\n",
-> +				 chan->channel2);
-> +			return -EINVAL;
-> +		}
+Is this something I can just apply?
 
-By referencing to cros_ec_activity_write_event_config(), maybe consider to
-drop the " else {" and "}".
-
-> +static int cros_ec_activity_write_event_config(struct iio_dev *indio_dev,
-> +					       const struct iio_chan_spec *chan,
-> +					       enum iio_event_type type,
-> +					       enum iio_event_direction dir,
-> +					       int state)
-> +{
-> +	struct cros_ec_sensors_state *st = iio_priv(indio_dev);
-> +
-
-By referencing to cros_ec_activity_read_event_config(), maybe consider to
-exit the function earlier:
-	if (chan->type != IIO_ACTIVITY && chan->type != IIO_PROXIMITY)
+Yours,
+Linus Walleij
 

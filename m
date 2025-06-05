@@ -1,81 +1,54 @@
-Return-Path: <linux-iio+bounces-20236-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20237-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03655ACEA1D
-	for <lists+linux-iio@lfdr.de>; Thu,  5 Jun 2025 08:23:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDBBEACEA28
+	for <lists+linux-iio@lfdr.de>; Thu,  5 Jun 2025 08:29:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D66667A8D07
-	for <lists+linux-iio@lfdr.de>; Thu,  5 Jun 2025 06:22:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9BA323ABE3E
+	for <lists+linux-iio@lfdr.de>; Thu,  5 Jun 2025 06:28:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 092581F1531;
-	Thu,  5 Jun 2025 06:23:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 307111F2C44;
+	Thu,  5 Jun 2025 06:29:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BeXeixm5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FV47raOS"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 293862566;
-	Thu,  5 Jun 2025 06:23:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFB6E1EF0B0;
+	Thu,  5 Jun 2025 06:29:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749104609; cv=none; b=EXrNKt7E2cY0fw8kM23KrUsTNssFizj4rOPrKa8HOE4wmPfBZnZ1ZHF0W24rpALhbqTsB7wIJmJAhBzUBmGd/KbAbRtA+G9KPHJEI+n0y5tUoOxssgJAoQqQckYf3uFP0fPjqw6tOfjwTpvnpSSYXf2jpMiIPSVVinAoX630ZAE=
+	t=1749104943; cv=none; b=hxoMDqG0qfL/BbOf081PqwPRNf3JOXWtVzOd5zYa0S1HzZMo6F1z/PGRy31B/eLxrtoIvBaDqV5cKaDF+u9bgsxX9mkE1NCdYaqVmlO5SwsEGA/H1ViJ5fOfbLoBHuG7QpPp436blsO4OP9hW7Nwev1Lvotbyw8Xk031/fXtdHY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749104609; c=relaxed/simple;
-	bh=jBuHRfP899u5ghZRYqgzJi60BSxq6ObInAOlKjyOpxA=;
+	s=arc-20240116; t=1749104943; c=relaxed/simple;
+	bh=KPgkw+cpE46n9HeAcGs5W4JrfY8T0PV4/F8fPzC/J5o=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=N9HxnmJWUWuYc2uDxV06ZL9yh2fW4/66ug9WW+XAhzZ78lEPGJfaPK2ds+arxfKUx2PuhZGDfKJqyTY1Q3WBy5ccundjW+BvcojdL8NEi4o/GC9u0pjJTGmBdZYiFcEIi2BTBidFWq+jNerIVp+GI62ubLCr4t60FV+oLYnOF+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BeXeixm5; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1749104609; x=1780640609;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=jBuHRfP899u5ghZRYqgzJi60BSxq6ObInAOlKjyOpxA=;
-  b=BeXeixm5JXEt4Tj2HLCwXUy3jR1tSJwybxwN7WEWT3IuBLbcmzL1bEw3
-   Pcc9v1ndD6SLqTJ4q6p+ISxX3/pmFFONvJjg8cNq74crc7ITT+UNV0GmX
-   /86fj7Fb1i6XQ2Kre/wy2eMFREptcXQaPzXHdzAE991If9eNFhs8JR/sN
-   z3hXWxmsRD/h9D3ANJ3UXVVuqDbm6iqMgd2yqiCDaEQ8Ztd7xE0qT46fa
-   LfY8GEnj3MEUnqDqZQD/IIvh5u5Y/+hu2467Uf0BnTfewqv9nvT0wy/L6
-   Ku5AFrPSX7Ryax619zxqMuq2ZXy580ljcdEl0/JTZvumhPSz5oorHhdtu
-   w==;
-X-CSE-ConnectionGUID: GRzo+4xwSVGOMibZ7tfidA==
-X-CSE-MsgGUID: VT206sS9Qsm0swUm4hax4A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11454"; a="51208526"
-X-IronPort-AV: E=Sophos;i="6.16,211,1744095600"; 
-   d="scan'208";a="51208526"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jun 2025 23:23:28 -0700
-X-CSE-ConnectionGUID: UDH0INfzSKqt0MbVQP3xuQ==
-X-CSE-MsgGUID: Uc/yvJtcT2eRs65eCjNlbg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,211,1744095600"; 
-   d="scan'208";a="146351637"
-Received: from smile.fi.intel.com ([10.237.72.52])
-  by fmviesa009.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jun 2025 23:23:24 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1uN40W-00000003mRx-2L5w;
-	Thu, 05 Jun 2025 09:23:20 +0300
-Date: Thu, 5 Jun 2025 09:23:20 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Jonathan Santos <Jonathan.Santos@analog.com>
-Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
-	nuno.sa@analog.com, Michael.Hennerich@analog.com,
-	marcelo.schmitt@analog.com, jic23@kernel.org, robh@kernel.org,
-	krzk+dt@kernel.org, conor+dt@kernel.org, marcelo.schmitt1@gmail.com,
-	linus.walleij@linaro.org, brgl@bgdev.pl, lgirdwood@gmail.com,
-	broonie@kernel.org, jonath4nns@gmail.com, dlechner@baylibre.com
-Subject: Re: [PATCH v10 00/12] iio: adc: ad7768-1: Add features,
- improvements, and fixes
-Message-ID: <aEE32At2OOlbY-xH@smile.fi.intel.com>
-References: <cover.1749063024.git.Jonathan.Santos@analog.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=buKLrfqC7L6bXTThSjXSWwIwDKEd1TI8ntdhVsf3VkyT72vuxn0rHpg1B1TFf82A0pyH5fEPhz3f++qHuNoN4GsDUAFF+k4vEUTn9uf6APEQ0RGScU1E/hmxGlTCpEnKWiumotC2BgpLMfxPqBRAsGs2Brk3zoyZmoTEq/aPEPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FV47raOS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 690FDC4CEE7;
+	Thu,  5 Jun 2025 06:29:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1749104942;
+	bh=KPgkw+cpE46n9HeAcGs5W4JrfY8T0PV4/F8fPzC/J5o=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=FV47raOSYYWCH92aLN5czYRrLWcoFWQ9NtupSlh1FmNz/mcdx8qJPWOdrsR34Z/RZ
+	 A8syKdJ5aEwfDNMqum/XHMICjB5pt9uP6cUoP9tAN2JYg4wOk8MMHA1MMf6DcpJizG
+	 FhRKuxkGu5a+KNwHtx0n+EckhlyNQQHnM3jADMDLNr1r8A6rDBnV2gghS2tzBLKVt5
+	 7zrbxxcq9lXfJHz+IF0l+oZgF97GAks/hY7FoSPlUX7CM0o55JrrXWwgawA8XDqekF
+	 stiVh3oqgnghnTvnhD6JYlqUQo1VHt1PqfYLq9xV3VogwD46uojrdrkBRcJHYQhYRF
+	 wfWOQH2PTEjDA==
+Date: Thu, 5 Jun 2025 06:28:59 +0000
+From: Tzung-Bi Shih <tzungbi@kernel.org>
+To: Gwendal Grignou <gwendal@chromium.org>
+Cc: jic23@kernel.org, chrome-platform@lists.linux.dev,
+	linux-iio@vger.kernel.org, Gwendal Grignou <gwendal@google.com>
+Subject: Re: [PATCH v5] iio: cros_ec_sensors: add cros_ec_activity driver
+Message-ID: <aEE5K9DnEOcKZf8P@google.com>
+References: <20250604053903.1376465-1-gwendal@google.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -84,27 +57,77 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <cover.1749063024.git.Jonathan.Santos@analog.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+In-Reply-To: <20250604053903.1376465-1-gwendal@google.com>
 
-On Wed, Jun 04, 2025 at 04:35:06PM -0300, Jonathan Santos wrote:
-> This patch series introduces some new features, improvements,
-> and fixes for the AD7768-1 ADC driver. 
+On Tue, Jun 03, 2025 at 10:39:03PM -0700, Gwendal Grignou wrote:
+> ChromeOS EC can report activity information derived from the
+> accelerometer:
+> - Reports on-body/off-body as a proximity event.
+> - Reports significant motion as an activity event.
 > 
-> The goal is to support all key functionalities listed in the device
-> datasheet, including filter mode selection, common mode voltage output
-> configuration and GPIO support. Additionally, this includes fixes 
-> for SPI communication and for IIO interface, and also code improvements
-> to enhance maintainability and readability.
+> This new sensor is a virtual sensor, included only when the EC firmware
+> is compiled with the appropriate module.
+> 
+> Signed-off-by: Gwendal Grignou <gwendal@google.com>
+> Reviewed-by: Tzung-Bi Shih <tzungbi@kernel.org>
+> ---
+> [...]
+> Changes in v5:
+> - Use guard(mutex), simplify error path.
+> - Use driver name as function prefix.
+> - Remove cros_ec_sensors_remove function.
+> - Remove identation of structure field.
+> - Invert raw value to return 1m when far, 0m when close.
 
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+As v5 changed a bit from v4, it'd be better to drop my R-b tag in v5.
 
-(Note, some of the lines here and in changelogs all over the series have
- trailing spaces.)
+Anyway, it overall looks good to me.  Only a few minor comments:
+Reviewed-by: Tzung-Bi Shih <tzungbi@kernel.org>
 
--- 
-With Best Regards,
-Andy Shevchenko
+> +static int cros_ec_activity_read_event_config(struct iio_dev *indio_dev,
+> +					      const struct iio_chan_spec *chan,
+> +					      enum iio_event_type type,
+> +					      enum iio_event_direction dir)
+> +{
+> +	struct cros_ec_sensors_state *st = iio_priv(indio_dev);
+> +	int ret;
+> +
+> +	if (chan->type != IIO_ACTIVITY && chan->type != IIO_PROXIMITY)
+> +		return -EINVAL;
+> +
+> +	guard(mutex)(&st->core.cmd_lock);
+> +	st->core.param.cmd = MOTIONSENSE_CMD_LIST_ACTIVITIES;
+> +	ret = cros_ec_motion_send_host_cmd(&st->core, 0);
+> +	if (ret)
+> +		return ret;
+> +
+> +	switch (chan->type) {
+> +	case IIO_PROXIMITY:
+> +		return !!(st->core.resp->list_activities.enabled &
+> +			 (1 << MOTIONSENSE_ACTIVITY_BODY_DETECTION));
+> +	case IIO_ACTIVITY:
+> +		if (chan->channel2 == IIO_MOD_STILL) {
+> +			return !!(st->core.resp->list_activities.enabled &
+> +				 (1 << MOTIONSENSE_ACTIVITY_SIG_MOTION));
+> +		} else {
+> +			dev_warn(&indio_dev->dev, "Unknown activity: %d\n",
+> +				 chan->channel2);
+> +			return -EINVAL;
+> +		}
 
+By referencing to cros_ec_activity_write_event_config(), maybe consider to
+drop the " else {" and "}".
 
+> +static int cros_ec_activity_write_event_config(struct iio_dev *indio_dev,
+> +					       const struct iio_chan_spec *chan,
+> +					       enum iio_event_type type,
+> +					       enum iio_event_direction dir,
+> +					       int state)
+> +{
+> +	struct cros_ec_sensors_state *st = iio_priv(indio_dev);
+> +
+
+By referencing to cros_ec_activity_read_event_config(), maybe consider to
+exit the function earlier:
+	if (chan->type != IIO_ACTIVITY && chan->type != IIO_PROXIMITY)
 

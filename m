@@ -1,57 +1,83 @@
-Return-Path: <linux-iio+bounces-20230-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20231-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EBB8ACE893
-	for <lists+linux-iio@lfdr.de>; Thu,  5 Jun 2025 05:13:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21177ACE997
+	for <lists+linux-iio@lfdr.de>; Thu,  5 Jun 2025 08:04:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E20411757F8
-	for <lists+linux-iio@lfdr.de>; Thu,  5 Jun 2025 03:13:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7768D188DEC7
+	for <lists+linux-iio@lfdr.de>; Thu,  5 Jun 2025 06:04:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A18201F4174;
-	Thu,  5 Jun 2025 03:13:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07ACA1C862B;
+	Thu,  5 Jun 2025 06:04:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gRloyi+d"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XoasEWsE"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54A9D8462;
-	Thu,  5 Jun 2025 03:13:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 075D786337;
+	Thu,  5 Jun 2025 06:04:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749093221; cv=none; b=LdSo/2+qYluGk3qNYzn3IoxRVanTAD3FEUF1jKCEDuXv9TUCmL33F+V0b2i8cE+5L4Cupk+9+J72F7TxNSpSh4q6BlMn/WyYFZ9oq2PWX/QPy6aCmtLFDwXpozsuDmGuDxlnXnWmDnKbsYqkEoo/DiD2iNGoWBr2q35ygZ+AAbE=
+	t=1749103471; cv=none; b=eNbcH9L5b48+Hbi0cAydIJmfDXzJ+Di2Upk7344U7RSNsTMrX7QCGHJy2XwRNl/GGRmOzqPPFyY+RnN7adUVs6AuOhzaNyGBXDe6dzmm1m3ujRuqS0dVQ2mnMqSUwxJJVW+vS8i5l/SoY6Sk4GQ7jClLf+W7lJ7JtSHYTeGLC9k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749093221; c=relaxed/simple;
-	bh=AOHNhwOqdNxFK1UcPWQGWhaA+2VPHL1baOaJFJ5R9SQ=;
+	s=arc-20240116; t=1749103471; c=relaxed/simple;
+	bh=RZxpLfhIRq9MDyCn7PC1IqQd3NaFFgnnFlYQvCjgl1g=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OdBbf2b5J7oRDo/xm9Gptoaz8/7/oLX+UYkbdXHiduuV+vuPKOt/gR5q4kX1InNsUnfhwuRS9lqaxalUZF0g3b/tMsZkqT1JD91cWJ3+4mUGSIKlQtWEGFEd3ZWkqn8vXjQXTZckiTSd8gk7ribuqVriO6eSIwLT7VWMXDf6kPs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gRloyi+d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB772C4CEE4;
-	Thu,  5 Jun 2025 03:13:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749093220;
-	bh=AOHNhwOqdNxFK1UcPWQGWhaA+2VPHL1baOaJFJ5R9SQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gRloyi+dAVCZkdWUyAAczT9xLiSd17d2Di2GR3ieza5VaDMTww+xhDJrL+1BTf1HF
-	 q7xWzDtg3Vq4TwypKNR8bAx3o6srV+wLdB303FsF/YTbR9cnP6AlK+ggj5mQBBUir8
-	 ATUly/gNyqD6E7HAEKpDGHANvgPPtS503al5sYSdy3HiHWWjb5D5acpZZK3fo2Xvmx
-	 1HwsAY335uhI9qg7pPddTPEyAkCZtvHYLi4jlMcRuk0ykHivftK9omCVHQun8xo2mf
-	 hOIWdrVM1kBl/juSv+KNv3SJhYh1Ohwvx7Ye8EoQwUEF8t8stNH3iEWpTDpywpjqiS
-	 RTKstH7D0K/nA==
-Date: Thu, 5 Jun 2025 03:13:37 +0000
-From: Tzung-Bi Shih <tzungbi@kernel.org>
-To: Gwendal Grignou <gwendal@google.com>
-Cc: Jonathan Cameron <jic23@kernel.org>,
-	Gwendal Grignou <gwendal@chromium.org>,
-	chrome-platform@lists.linux.dev, linux-iio@vger.kernel.org
-Subject: Re: [PATCH v4] iio: cros_ec_sensors: add cros_ec_activity driver
-Message-ID: <aEELYUvKZ8FYLqPU@google.com>
-References: <20250523172727.2654957-1-gwendal@google.com>
- <20250525144233.13df701f@jic23-huawei>
- <CAMHSBOUb-HPqmW3CFspipNGQGzbYUV+oqVw-Cbw0Bk4Huwz-QQ@mail.gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=AGiGeQAMhy7dZnEjwzXPrGkpOqSvqPxVMNP7fVU6vH7Q73Mi+FlMbsSkkXY8/Ym4iZHLwbxAAf4DnoOX8HOg7TodZluh1Ns37DElQYmSbkSNkJwzhKEMbeB8Zr08pcEFrHyGFnaIjqL5h+t1I/Eb3Z4+oWMe32lkazNcRfQnt5U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XoasEWsE; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1749103470; x=1780639470;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=RZxpLfhIRq9MDyCn7PC1IqQd3NaFFgnnFlYQvCjgl1g=;
+  b=XoasEWsEb0PwgqCZz+cHCMZkdZRemmNqIPlDJL1G8HUbd1u24JFht+WO
+   EzYTVRbNCmlO+o+RKrSiuvBnI7LQHMwzAGyqo/KF3yvbVPYUuC4Rnoj0d
+   lGx6OHFSQgP5fHUk19ayQMmsmtNJ+gxu+1IFzIlvAADj1DIx/hXtzMIcG
+   PpvdvFxoP3/nhdrV6clAz3mzie9QW/lX3zuqKpS2c3PTDRDIR9mjAqOxW
+   S4vwkuFF4Ik1d1pR41/M9aR6+tzbTtZJ3psrA2Rtxgsph+ESc390LmFeC
+   nuxG4JeACksJ3l81/7SNIzmbaer6t6BFIps8gCjttu0HHhn6jomuQTzVy
+   g==;
+X-CSE-ConnectionGUID: VR2OW/oCQ+uk1ZOrb0d1Ow==
+X-CSE-MsgGUID: UXWvV5SIQ4KkDq7TVDItKw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11454"; a="38837851"
+X-IronPort-AV: E=Sophos;i="6.16,211,1744095600"; 
+   d="scan'208";a="38837851"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jun 2025 23:04:29 -0700
+X-CSE-ConnectionGUID: utlLf4pZQPODm/+M2F+6mA==
+X-CSE-MsgGUID: aKLhIUSCTNmCCS/ak7G/Tw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,211,1744095600"; 
+   d="scan'208";a="145905398"
+Received: from smile.fi.intel.com ([10.237.72.52])
+  by fmviesa010.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jun 2025 23:04:25 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1uN3iA-00000003mBg-218f;
+	Thu, 05 Jun 2025 09:04:22 +0300
+Date: Thu, 5 Jun 2025 09:04:22 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Jonathan Santos <Jonathan.Santos@analog.com>
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
+	Sergiu Cuciurean <sergiu.cuciurean@analog.com>, nuno.sa@analog.com,
+	Michael.Hennerich@analog.com, marcelo.schmitt@analog.com,
+	jic23@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, marcelo.schmitt1@gmail.com,
+	linus.walleij@linaro.org, brgl@bgdev.pl, lgirdwood@gmail.com,
+	broonie@kernel.org, jonath4nns@gmail.com, dlechner@baylibre.com,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: Re: [PATCH v10 07/12] iio: adc: ad7768-1: Add GPIO controller support
+Message-ID: <aEEzZjfLVUW1kyC9@smile.fi.intel.com>
+References: <cover.1749063024.git.Jonathan.Santos@analog.com>
+ <eb48ea5f11503729b15a36ef00c89de3dd37bcc3.1749063024.git.Jonathan.Santos@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -60,48 +86,37 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAMHSBOUb-HPqmW3CFspipNGQGzbYUV+oqVw-Cbw0Bk4Huwz-QQ@mail.gmail.com>
+In-Reply-To: <eb48ea5f11503729b15a36ef00c89de3dd37bcc3.1749063024.git.Jonathan.Santos@analog.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Tue, Jun 03, 2025 at 10:41:25PM -0700, Gwendal Grignou wrote:
-> > > diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-> [...]
-> > > @@ -2716,6 +2728,14 @@ struct ec_params_motion_sense {
-> > >                        */
-> > >                       int16_t hys_degree;
-> > >               } tablet_mode_threshold;
-> > > +
-> > > +             /*
-> > > +              * Used for MOTIONSENSE_CMD_GET_ACTIVITY.
-> >
-> > Single line comment works fine here and fits with local style.
-> >                 /* Used for MOTIONSENSE_CMD_GET_ACTIVITY */
-> >
-> > > +              */
-> > > +             struct __ec_todo_unpacked {
-> > > +                     uint8_t sensor_num;
-> > > +                     uint8_t activity;  /* enum motionsensor_activity */
-> > > +             } get_activity;
-> > >       };
-> > >  } __ec_todo_packed;
-> > >
-> > > @@ -2833,6 +2853,10 @@ struct ec_response_motion_sense {
-> > >                       uint16_t hys_degree;
-> > >               } tablet_mode_threshold;
-> > >
-> > > +             /* USED for MOTIONSENSE_CMD_GET_ACTIVITY. */
-> >
-> > Maybe no fullstop is more consistent with local style? Only a bit visible
-> > in this patch and I'm lazy  :)
-> It is a mix and match in this file. Full stop is supposed to be the
-> norm, but it was not always been the case. Remove full stop to blend
-> with other commands.
+On Wed, Jun 04, 2025 at 04:36:43PM -0300, Jonathan Santos wrote:
+> From: Sergiu Cuciurean <sergiu.cuciurean@analog.com>
+> 
+> The AD7768-1 has the ability to control other local hardware (such as gain
+> stages),to power down other blocks in the signal chain, or read local
+> status signals over the SPI interface.
+> 
+> Add direct mode conditional locks in the gpio callbacks to prevent register
 
-It seems the full stop is still in v5.
+GPIO
 
-Just a side note: people manually synchronizes the header with [1] when
-needed.  I wouldn't bother with the details in the header as long as the
-struct content is the same with [1].  Fix it or leave it as is are both
-fine for me.
+> access when the device is in buffered mode.
+> 
+> This change exports the AD7768-1's four gpios and makes them accessible
 
-[1]: https://chromium.googlesource.com/chromiumos/platform/ec/+/refs/heads/main/include/ec_commands.h
+GPIOs
+
+> at an upper layer.
+
+...
+
+I haven't seen in the commit message nor in the comments why GPIO regmap can't
+be used. (No need to resend, just reply here, but keep in mind in case of a new
+version of the series.)
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
 

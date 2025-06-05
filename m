@@ -1,127 +1,128 @@
-Return-Path: <linux-iio+bounces-20240-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20241-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A252ACF150
-	for <lists+linux-iio@lfdr.de>; Thu,  5 Jun 2025 15:52:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1245ACF21E
+	for <lists+linux-iio@lfdr.de>; Thu,  5 Jun 2025 16:37:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ABE323ACED4
-	for <lists+linux-iio@lfdr.de>; Thu,  5 Jun 2025 13:51:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 678701887251
+	for <lists+linux-iio@lfdr.de>; Thu,  5 Jun 2025 14:36:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A584027465C;
-	Thu,  5 Jun 2025 13:52:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D99315383A;
+	Thu,  5 Jun 2025 14:35:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="epgr8JOB"
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=nicolas.frattaroli@collabora.com header.b="OSILMwkw"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6F132741A4;
-	Thu,  5 Jun 2025 13:52:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749131532; cv=none; b=QS9ri0LBLAft/xFeF3YBpXZL49CZPYzIhRNOD4CkGQUC+czlhsrXVUzvqCNe1MocI8cZOpPw7keU8VJ6eKTgiYVOQ88kkiXi2bxiLADUy6dxsuQiI9LPhFQSKdQUrC6Z/lD/N9ymzljfdAVibVgJe2J2ht+FoJM+2LhFqXaxam0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749131532; c=relaxed/simple;
-	bh=OEi12Lmi5YITJkvxZt4IvCwmlqEWCmXok9rCvTypycg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ueOfNpPZ60biLudq7lhMqT+u7K7cAdYwXIi6IPaNTf8sBdBSJ7w0YM+clCnyP0ge4eNmhmeW38xr4BbFyzjZ1YxhcdZqLTTLwmwSCgrHow8JWckPE/fsRMUhQ3spTwlg0LREQoEtjOlyJUmUNAi2CbwssPI49SgMwH4HrgHQYKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=epgr8JOB; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1749131531; x=1780667531;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=OEi12Lmi5YITJkvxZt4IvCwmlqEWCmXok9rCvTypycg=;
-  b=epgr8JOBLQ+tBWq86j0i7nLhC8POYtHwtDAupvJOYUsFT9j47BnUrd8O
-   DkZlkext23/BugGrggWHbNU2+ogPTW977nia+LFXgFKaqN6Uo3gJVv9Ls
-   cIGANVmyAQYYOW4RAIWGEg1wo/S2df5JLbT4pOc6P5YpdF7eLTM7GExWm
-   91NWGtscaYE+NU+1h1dOUqHaq2qKlPM3X/KrXkHUoDbBmh4gL9p7Y73CJ
-   6DeZbJm5gOBrytTyd2x24X67cDtKM3GomF0W7zBrikw5/DHpdc1LLseAR
-   jfXoMqCRoD79Z6ZM7DePlBN4dR/1xUOWBxPi57MHywN1QCfRhjqnTSyjN
-   g==;
-X-CSE-ConnectionGUID: FjlCWzh7TrqUd2eRXJK75g==
-X-CSE-MsgGUID: ut46IR/YTQ653whvyvWigw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11455"; a="61871057"
-X-IronPort-AV: E=Sophos;i="6.16,212,1744095600"; 
-   d="scan'208";a="61871057"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jun 2025 06:52:10 -0700
-X-CSE-ConnectionGUID: IhciTlgHTfmBlgMyd0MgSw==
-X-CSE-MsgGUID: yV2MX031TjeT3OKJqwBolw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,212,1744095600"; 
-   d="scan'208";a="176476213"
-Received: from smile.fi.intel.com ([10.237.72.52])
-  by orviesa002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jun 2025 06:52:05 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1uNB0k-00000003sSd-16ab;
-	Thu, 05 Jun 2025 16:52:02 +0300
-Date: Thu, 5 Jun 2025 16:52:01 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: "Ioan-daniel, Pop" <Pop.Ioan-daniel@analog.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>,
-	"Hennerich, Michael" <Michael.Hennerich@analog.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	"Sa, Nuno" <Nuno.Sa@analog.com>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	"Cuciurean, Sergiu" <Sergiu.Cuciurean@analog.com>,
-	"Bogdan, Dragos" <Dragos.Bogdan@analog.com>,
-	"Miclaus, Antoniu" <Antoniu.Miclaus@analog.com>,
-	Olivier Moysan <olivier.moysan@foss.st.com>,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Matti Vaittinen <mazziesaccount@gmail.com>,
-	Tobias Sperling <tobias.sperling@softing.com>,
-	Alisa-Dariana Roman <alisadariana@gmail.com>,
-	"Schmitt, Marcelo" <Marcelo.Schmitt@analog.com>,
-	Esteban Blanc <eblanc@baylibre.com>,
-	"linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v6 5/5] iio: adc: ad7405: add ad7405 driver
-Message-ID: <aEGhAa1a9GHPNQjH@smile.fi.intel.com>
-References: <20250604133413.1528693-1-pop.ioan-daniel@analog.com>
- <20250604133413.1528693-6-pop.ioan-daniel@analog.com>
- <aEBlqPqxd0-C7j63@smile.fi.intel.com>
- <PH0PR03MB63350BE9DC927335D0FEBEE2D16FA@PH0PR03MB6335.namprd03.prod.outlook.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38F551527B4;
+	Thu,  5 Jun 2025 14:35:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1749134155; cv=pass; b=HJEr62cWMRBnsEdvSQjdtBz8QbbBAZ83VyggiGm9z6KzirFdp+8Wt17C8X3E6Jz66AW0oWm7NRvOja89gXvtMahOg23/RWbZeXGK62JjyKugkORC/wl84OE8PkTpruyj8BsgasJblEH8Q1CZWSCIuTyeMAmNx0kAGtDDxGn9ga4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1749134155; c=relaxed/simple;
+	bh=zDfM6k/ZV7EA2G43A/d5L8tp0cexa6Lz3lwBsr8Shio=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Q4rE0E2d7ixC8Me7R/T+dPxgavCBOTzorNL50pz+/XtcmKvUTufsiQZ3bVvpwari6RJq+F4iWmV6hQa/3nkszdRbYzg5n5EJ83CrcalaxSh0FNdoOvxyuprH3DjD2HHub5202ITftKuvimn+F06r9mcCU8+wZp9QGmrj/20xLYA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=nicolas.frattaroli@collabora.com header.b=OSILMwkw; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+ARC-Seal: i=1; a=rsa-sha256; t=1749134114; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=NKn+SpOWGZY0QJiLOqY4x5Ai/Yv0TIZeaJezXC5g0ZWILWNQmwGJFWpEwycIA2HzIN1mCmRJ3lrQ+hHCgl6pjkXRIxothuFj2Ag8wxZl4+Ty/ThCLtpKCUsR4cTkTfcd7NP1DlPYr95uR7DP313/2QpjpFOHEQwx04AgqXCylHc=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1749134114; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=0uzu1/EqrenMvPymkgwGDWP8FLVCKuEu8+xxxlpKXEc=; 
+	b=LmLYwrivhz2E1yJeeGrUCihMh7inHsS0qrHwn1M+edFm2h8MYO4b8dGKP2O91A2LYT6yhG/u4seV30tnNEs+I/hgrhTBC7fMw/qyFiP6jdjelXdpn8fHFHGjX+ys+2vHF6bm3aA2cHibTTvwRpciXC+p8Iw4QuSvPDEAif/ZDUk=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=nicolas.frattaroli@collabora.com;
+	dmarc=pass header.from=<nicolas.frattaroli@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1749134114;
+	s=zohomail; d=collabora.com; i=nicolas.frattaroli@collabora.com;
+	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Content-Type:Message-Id:Reply-To;
+	bh=0uzu1/EqrenMvPymkgwGDWP8FLVCKuEu8+xxxlpKXEc=;
+	b=OSILMwkw/0Mp9nvmWRFPhHe7GWjcRXLUfogUADlprLqTFnfGNGmypMwGhjY1dvCe
+	0EmTHbfvP8VDn5JKm/e502sL90mToWYUGwiectxirFIjH5j1AD2h6HDBGLPRN0WzvdN
+	Jbh/ZHimXwKzwzBG6KNOXPJrui4kvu7M+EB3/NPA=
+Received: by mx.zohomail.com with SMTPS id 1749134112355222.8330067732718;
+	Thu, 5 Jun 2025 07:35:12 -0700 (PDT)
+From: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
+To: Linus Walleij <linus.walleij@linaro.org>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Heiko Stuebner <heiko@sntech.de>,
+ Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <ukleinek@kernel.org>,
+ William Breathitt Gray <wbg@kernel.org>,
+ Sebastian Reichel <sebastian.reichel@collabora.com>,
+ Kever Yang <kever.yang@rock-chips.com>, Yury Norov <yury.norov@gmail.com>,
+ Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Dave Ertman <david.m.ertman@intel.com>, Ira Weiny <ira.weiny@intel.com>,
+ Leon Romanovsky <leon@kernel.org>, Lee Jones <lee@kernel.org>,
+ linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org,
+ linux-iio@vger.kernel.org, kernel@collabora.com,
+ Jonas Karlman <jonas@kwiboo.se>,
+ Detlev Casanova <detlev.casanova@collabora.com>,
+ Conor Dooley <conor.dooley@microchip.com>
+Subject:
+ Re: [PATCH v2 1/7] dt-bindings: pinctrl: rockchip: increase max amount of
+ device functions
+Date: Thu, 05 Jun 2025 16:35:05 +0200
+Message-ID: <5876990.GXAFRqVoOG@workhorse>
+In-Reply-To:
+ <CACRpkdZRjLFa3Bni=wMG1LBoWnW+Zenj2FVP=_2s+U_1eykt7Q@mail.gmail.com>
+References:
+ <20250602-rk3576-pwm-v2-0-a6434b0ce60c@collabora.com>
+ <20250602-rk3576-pwm-v2-1-a6434b0ce60c@collabora.com>
+ <CACRpkdZRjLFa3Bni=wMG1LBoWnW+Zenj2FVP=_2s+U_1eykt7Q@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <PH0PR03MB63350BE9DC927335D0FEBEE2D16FA@PH0PR03MB6335.namprd03.prod.outlook.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
 
-On Thu, Jun 05, 2025 at 01:42:50PM +0000, Ioan-daniel, Pop wrote:
-> 
-> > On Wed, Jun 04, 2025 at 04:34:07PM +0300, Pop Ioan Daniel wrote:
-> > > Add support for the AD7405/ADUM770x, a high performance isolated ADC,
-> > > 1-channel, 16-bit with a second-order Σ-Δ modulator that converts an
-> > > analog input signal into a high speed, single-bit data stream.
-> > 
-> > Hmm...
-> > Have you seen these?
-> 
-> Just a question for my clarification. 
-> Except for comment from David Lechner, what should I do in the
-> next patch that is different from this patch regarding your requests?
+On Thursday, 5 June 2025 15:29:03 Central European Summer Time Linus Wallei=
+j wrote:
+> On Mon, Jun 2, 2025 at 6:20=E2=80=AFPM Nicolas Frattaroli
+> <nicolas.frattaroli@collabora.com> wrote:
+>=20
+> > With the introduction of the RK3576, the maximum device function ID used
+> > increased to 14, as anyone can easily verify for themselves with:
+> >
+> >   rg -g '*-pinctrl.dtsi' '<\d+\s+RK_P..\s+(?<func>\d+)\s.*>;$' --trim \
+> >   -NI -r '$func' arch/arm64/boot/dts/rockchip/ | sort -g | uniq
+> >
+> > Unfortunately, this wasn't caught by dt-validate as those pins are
+> > omit-if-no-ref and we had no reference to them in any tree so far.
+> >
+> > Once again kick the can down the road by increasing the limit to 14.
+> >
+> > Acked-by: Conor Dooley <conor.dooley@microchip.com>
+> > Signed-off-by: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
+>=20
+> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+>=20
+> Is this something I can just apply?
+>=20
+> Yours,
+> Linus Walleij
+>=20
 
-I believe those are generic advice, use them in any code you submit.
+Absolutely, there's no harm in it landing early, and is only tangentially
+related to the rest of the series because it came up while I was pinmuxing
+my PWM pins.
 
--- 
-With Best Regards,
-Andy Shevchenko
+Kind regards,
+Nicolas Frattaroli
 
 
 

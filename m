@@ -1,527 +1,191 @@
-Return-Path: <linux-iio+bounces-20276-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20277-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E421AD0724
-	for <lists+linux-iio@lfdr.de>; Fri,  6 Jun 2025 19:02:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB48AAD0855
+	for <lists+linux-iio@lfdr.de>; Fri,  6 Jun 2025 20:55:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C681118999C5
-	for <lists+linux-iio@lfdr.de>; Fri,  6 Jun 2025 17:02:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F7563B3D91
+	for <lists+linux-iio@lfdr.de>; Fri,  6 Jun 2025 18:55:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F04A289356;
-	Fri,  6 Jun 2025 17:02:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A235B1F0E29;
+	Fri,  6 Jun 2025 18:55:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="cV32SNfp"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="St6kZK7N"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09216193077
-	for <linux-iio@vger.kernel.org>; Fri,  6 Jun 2025 17:02:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7F431EDA16;
+	Fri,  6 Jun 2025 18:55:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749229351; cv=none; b=epaLO6qS6EjSPHwyeo2q+2Yh+nJSayt1J0NI5DYcIFj2SCCFuh8Zeb/3zyU28Snp2lbAQOp4YDikadG1XQPoE+wQ0vUvf7ybjzQXw44CN4DTuWTLWOgiMDTa+kj5QoNopNJGKhRX9K56hllZrZcEfbtwzhbu63c1j9/4W3WPT00=
+	t=1749236128; cv=none; b=T/YXSrR2DAuEpe61XQL3KJ+8TIvVZltaVJn54ZQnTkmXEVSzvnP5sOhVyuYtHUXaroQLoHvYgeN1zm0RUkFg31rBQgFSAwiMZsBYyUEvYHdsakb5oz1cnTM5n1tvCbV6UfbQIU6UHEHH0c331OitrknohOweh8w4Jo/ht60lTsQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749229351; c=relaxed/simple;
-	bh=8qt/iLyzfLDt100yn+GEAy/R2dBCWnhApj2bMvTZOmE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ay90zgV5xsvfwB+zf2iBFHZN0LZ/eq+4Cx+LfSg5VWbcfCL3eSJhYnIMcUwjMnMceAgHqsZWMKKivhI2sj4Z1VY8x1Hn+vJNiGumga1q7+pBN7kSoBmlknfENztWhvr/4ACGwfRqZ4GVzS0mUseWiJMyeI2VzFhE0ImsUiX7pPE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=cV32SNfp; arc=none smtp.client-ip=209.85.160.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-4a3db0666f2so48167571cf.1
-        for <linux-iio@vger.kernel.org>; Fri, 06 Jun 2025 10:02:28 -0700 (PDT)
+	s=arc-20240116; t=1749236128; c=relaxed/simple;
+	bh=IdqCPrXq3+jr02GTO/nLSUv665Ny356ciChyjrXweKk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=q5vyaPuvb0w9qBlP1CkR1RSJ+0xvrjbA/EtFfH4J18xRza1mwiEZ3G/i8TcL1/YD0KVFxgY6GzW+0gGI8eTa/kLHrp9xie061gfiBK7Si7YTVtTFgTg8ehyAr4tTAhHP0S+kOk7zwpqxgstYRxF9kSqurVgpTopUGxkK8UksBwI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=St6kZK7N; arc=none smtp.client-ip=209.85.210.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-747fba9f962so2127104b3a.0;
+        Fri, 06 Jun 2025 11:55:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1749229348; x=1749834148; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=2Mr0Oa5vUe1PfY3eK/kBRVEAPyy1M+VggcMcOWiELWk=;
-        b=cV32SNfpisG3unQj+b2h5pMGRuwJh+jLoZyLb1Mnt/X9Yphecsq16KtMw3kgnQG/lb
-         0ARO/sFRV8pb4qhD8oEk+L467U6dNhxRs1DC5sx6/Gct9Cmg/N26Kbit8yTr2UnbrEOo
-         fwpVuhRsW2x9k1QkBfZhTFZqBnAaARCmpBRgUh7UOUqSp56NsxZTCvO9CA6qak5Evahz
-         Y3ALOwnoAtKnqgryrD8p4xGkql2Z7ocpGHieCegc8cBit+Cydydf7dwq67mfBRDzKnuy
-         BUTzA7Xufhidz1a7q21UU9p6A4pYQqobjhRjErUOojTrRgv834dURVkQLRdskt+2K74S
-         Tlow==
+        d=gmail.com; s=20230601; t=1749236126; x=1749840926; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=Es9M+AVV62UY8MMrou2h//EyFErMKtcnspa7i0MthIs=;
+        b=St6kZK7N3MgyBnkDfOupZaTDpvp72Pr91Ufuz51cWAiJ0gGt3xzm3aeLDrt84P+zS/
+         X74PbvpvqUCueWX/++LSjNWt8npOWiEufy7KJO0fMcyNwcAIzVZJ3Ut9AljNW91Q9SV/
+         tDMrcyTQVqr94s+JMDZd8i9ImZXZeMGrkBMKt2DjLpWnhCHj1TWAQfR+Qkxzn3UpJFqn
+         yyFSoIOSDJH/qS2mj5OLaUm5Y5jB/YybXxauxtaiOm17TueSK8xAxGlnnfLunfZ/Pa9r
+         FJhEEtUGw0wYFtuusyrZJQSjrAW6PJSzR+oCOTsjiVbZMHesUsuvF0lm4eNpPdb7F/Ch
+         jFcw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749229348; x=1749834148;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1749236126; x=1749840926;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=2Mr0Oa5vUe1PfY3eK/kBRVEAPyy1M+VggcMcOWiELWk=;
-        b=KMiKeoicwErzCDKoWW9aqtjDEe6qD+GKzcOnWx6j429sXHKoQ0LW50OzWxdjVZJEtI
-         meyolvI64fncO/QQ0oNX3B3LfzizHm3x5ANmK+Zi5Txf4bfcizyCd90P+0eWnHzt1VKO
-         ayqCILLYsh6nK5SE7X7DO8N2418ZU+xywXtuCWG7ZHsOlozvWTj42LyRldiUVlhQG4TP
-         YMVQDWkB4xOMTIVEN/+8AxLYTj77b1jFpoO4iDlwOUDY5ri35mO1DizxhTQBW3KW7QZA
-         fbMQWSb8RFhS7V4Kyjm/4wB2L1T45RQNchr/rQ48tBK4xO8FAIMyIyWeVUwStT1cqPkB
-         U+sA==
-X-Forwarded-Encrypted: i=1; AJvYcCW+1N2FKA90M0Opsy3rl2RC+wkwe8wT832tdhMK2UvOhZR8NmWpf2JcU9F4SylxLQyTu+Q75RSnRXU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzIafxnBi/y+kR5xevmZrif7Q8NnmYtgeJiI7O1FBu/ySUtzeK5
-	Jz6SGPcBe81I2mpUVWJjkPuuFBAkFvcxFEt/1b8nQxeFCE7bkAQGO5rGfzeyJoyp9qAGCWqULPy
-	zcGQ8
-X-Gm-Gg: ASbGnctEzfRwwTa9htBURZn/LE/XBMgTl9e0Cvan4xu8LKxQrZq9zamFY92KTn3QWbv
-	/nXaEUok2mT07382OipfuUu7BMCpIiA5IfTGCa7NiTJQ2HZweCS+TjocvK79clg4iTiU9ENOR8d
-	oxSV4f+c38tBw4MroHU/ZXFHct/MIP3+2QtqDUB30HQMUbLy82/bzw2NQTDjvdmKPsK7NaXt9GR
-	ZBLpWBqhvelcGiHkHm1xIzK2rdTRekOFXmZcMuQjjSy/wvCY6s4kZI9NTQFNTlZjWvYP1RsgZ2o
-	jQtskyDkv2/GMXF9wO9JEYt6oquKvPINQwS0hH7/byUB7cz8KuQsJtSXB3oVLOGJP5cw57ePXTl
-	5aV6e3I+xIi0kzolOa5dq1lu+XqIz
-X-Google-Smtp-Source: AGHT+IE8NoJHBpKyQCe+BPQgFALY795TjOAYV9ePcJVb7TZvrIeAjd7HqD+Oh7oqXl2SCsJ3B0zv3w==
-X-Received: by 2002:a05:6808:2e46:b0:408:e05e:fb47 with SMTP id 5614622812f47-409051e72ccmr2766412b6e.13.1749229336530;
-        Fri, 06 Jun 2025 10:02:16 -0700 (PDT)
-Received: from ?IPV6:2600:8803:e7e4:1d00:6192:9921:d60e:1609? ([2600:8803:e7e4:1d00:6192:9921:d60e:1609])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-40906a2e417sm382344b6e.49.2025.06.06.10.02.14
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 06 Jun 2025 10:02:15 -0700 (PDT)
-Message-ID: <1c7946f1-d712-4baa-8243-be6a55eec528@baylibre.com>
-Date: Fri, 6 Jun 2025 12:02:09 -0500
+        bh=Es9M+AVV62UY8MMrou2h//EyFErMKtcnspa7i0MthIs=;
+        b=Qakp4ThzaY3IakWb4F645oMIduvPEhYpnM0uBRDtJbRpoZ+OPRvqHu3VYy8PTzVGUi
+         TyyIJ+gYAC220y/swoL/f2sTc/CaahPSTFpXlHN4VSjQY2nkdnYJY7lPYCT/AUJwzw6u
+         7tFrx1IC+QIU+IF6kZEGD/tqBHZkF7/Nw8LGjnKF/z3WBAdXgygpcMeYWF9wNedVo9Yz
+         l/35HF6RMzwvReuNmZ92Yh8OPUnp0gX4QhKPLc/1c6txci/2fo9lJVjpCHIk18F0fd09
+         HQJwmaeURlBr4Tq6vwbGFKf5+K7hHXBdZPwv3V9kbSa8o5s8MUjPa4yCRG1hNrIe22WE
+         4Udg==
+X-Forwarded-Encrypted: i=1; AJvYcCUYRb5LnderlJyKUfuGRd0GBV76LAJSsqvBrphvOlEzPuMvy50HoAvLXamuMGC0sRSgtg/tQ+gEJoGzqqYSudpijLU=@vger.kernel.org, AJvYcCUk1OzcoOFVVtq8DVHv3UCBKr1DAelkGFbaiEpxr39A9ziUAUQaGSyYJcVIAClzsj9EmcR/0zrlvUs=@vger.kernel.org, AJvYcCWPFssenc5A6uRBOyNQWASImymfhirFvrAKWARKWHX0wFmkQvWvlkiwyXKxOkPIzuLdRs3Lk2DfK3g=@vger.kernel.org, AJvYcCXBOTS6J9O6WsGV9ZHIiUmRxTm9FN2aBeUka4DxuTnlwueenUPgwGztRePICjwnnpVSZPFTKXne/iKe88Tj@vger.kernel.org
+X-Gm-Message-State: AOJu0YzW+5WBEwISpMGm2GWj3e1cdUr1fYUA8bT/dHI9F+Q3/a4LBiPO
+	BaQG8NQ/vPwDGwEjYCBOOlRTCb8eFNJH5gTHY3a+dF+APY+sXSQB8HiZ
+X-Gm-Gg: ASbGncuDdtm8Iof74St3WOiXHJ4QXiNwkwxF6rn1VmZAimyA4v9w+m/UwffbO1o0GTh
+	OWNEUgI2LkA0USJVdfs25Ee8uLdGUML4sLWgPOMrwI1R7SLZJ9YoQDrq5ywVGAlD/KrP3xPSUJR
+	0WjYqaW9blAQBNHkXVRrPIc4m9kqi8AnXYKJN5qYjisBDqVMy5XF74tqwAXNAk6DcShm2IK9DHF
+	DbSB0kISPVb3p6rQCVFjS/YSahwm3cuc9G9xn09rb0nSEZLFYVLxXCxo1p1eIaPfztScO2iXahp
+	4n+Nit5ZWbyUpqEcCvOFUOEfpATx3VdHMyWRkn/t0Bp786AN6yiq
+X-Google-Smtp-Source: AGHT+IHuyoCrI5BcHlICcXmskDkgOBvo79KGR4zs3JSO9ZUGizxOdvPfSccKAax0CmvGcgczb/g54A==
+X-Received: by 2002:a05:6a20:2449:b0:21a:de8e:5c53 with SMTP id adf61e73a8af0-21ee25affa2mr5896945637.12.1749236125912;
+        Fri, 06 Jun 2025 11:55:25 -0700 (PDT)
+Received: from google.com ([2620:15c:9d:2:b7f5:ce33:d518:3164])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7482b0c5f7fsm1593369b3a.116.2025.06.06.11.55.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 06 Jun 2025 11:55:25 -0700 (PDT)
+Date: Fri, 6 Jun 2025 11:55:21 -0700
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Claudiu <claudiu.beznea@tuxon.dev>, gregkh@linuxfoundation.org, 
+	dakr@kernel.org, len.brown@intel.com, pavel@kernel.org, ulf.hansson@linaro.org, 
+	jic23@kernel.org, daniel.lezcano@linaro.org, linux-kernel@vger.kernel.org, 
+	linux-pm@vger.kernel.org, bhelgaas@google.com, geert@linux-m68k.org, 
+	linux-iio@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
+	fabrizio.castro.jz@renesas.com, Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Subject: Re: [PATCH v3 1/2] PM: domains: Add devres variant for
+ dev_pm_domain_attach()
+Message-ID: <zhjytvj35lknj7v3jhva3n3nbv6qctvqgykwyi5huj6omet7lz@wchd7f4p4dpv>
+References: <20250606111749.3142348-1-claudiu.beznea.uj@bp.renesas.com>
+ <20250606111749.3142348-2-claudiu.beznea.uj@bp.renesas.com>
+ <CAJZ5v0i_Ey+OVpSZHXru=tubMaZi=y-uOh_0M6zmWZ2DqqA7Vg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/2] iio: adc: adding support for PAC194X
-To: marius.cristea@microchip.com, jic23@kernel.org, nuno.sa@analog.com,
- andy@kernel.org
-Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- broonie@kernel.org, linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20250606093929.100118-1-marius.cristea@microchip.com>
- <20250606093929.100118-3-marius.cristea@microchip.com>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <20250606093929.100118-3-marius.cristea@microchip.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJZ5v0i_Ey+OVpSZHXru=tubMaZi=y-uOh_0M6zmWZ2DqqA7Vg@mail.gmail.com>
 
-On 6/6/25 4:39 AM, marius.cristea@microchip.com wrote:
-> From: Marius Cristea <marius.cristea@microchip.com>
+On Fri, Jun 06, 2025 at 06:00:34PM +0200, Rafael J. Wysocki wrote:
+> On Fri, Jun 6, 2025 at 1:18 PM Claudiu <claudiu.beznea@tuxon.dev> wrote:
+> >
+> > From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+> >
+> > The dev_pm_domain_attach() function is typically used in bus code alongside
+> > dev_pm_domain_detach(), often following patterns like:
+> >
+> > static int bus_probe(struct device *_dev)
+> > {
+> >     struct bus_driver *drv = to_bus_driver(dev->driver);
+> >     struct bus_device *dev = to_bus_device(_dev);
+> >     int ret;
+> >
+> >     // ...
+> >
+> >     ret = dev_pm_domain_attach(_dev, true);
+> >     if (ret)
+> >         return ret;
+> >
+> >     if (drv->probe)
+> >         ret = drv->probe(dev);
+> >
+> >     // ...
+> > }
+> >
+> > static void bus_remove(struct device *_dev)
+> > {
+> >     struct bus_driver *drv = to_bus_driver(dev->driver);
+> >     struct bus_device *dev = to_bus_device(_dev);
+> >
+> >     if (drv->remove)
+> >         drv->remove(dev);
+> >     dev_pm_domain_detach(_dev);
+> > }
+> >
+> > When the driver's probe function uses devres-managed resources that depend
+> > on the power domain state, those resources are released later during
+> > device_unbind_cleanup().
+> >
+> > Releasing devres-managed resources that depend on the power domain state
+> > after detaching the device from its PM domain can cause failures.
+> >
+> > For example, if the driver uses devm_pm_runtime_enable() in its probe
+> > function, and the device's clocks are managed by the PM domain, then
+> > during removal the runtime PM is disabled in device_unbind_cleanup() after
+> > the clocks have been removed from the PM domain. It may happen that the
+> > devm_pm_runtime_enable() action causes the device to be runtime-resumed.
 > 
-> This is the iio driver for Microchip PAC194X and PAC195X series of
-> Power Monitors with Accumulator. The PAC194X family supports 9V
-> Full-Scale Range and the PAC195X supports 32V Full-Scale Range.
+> Don't use devm_pm_runtime_enable() then.
+
+What about other devm_ APIs? Are you suggesting that platform drivers
+should not be using devm_clk*(), devm_regulator_*(),
+devm_request_*_irq() and devm_add_action_or_reset()? Because again,
+dev_pm_domain_detach() that is called by platform bus_remove() may shut
+off the device too early, before cleanup code has a chance to execute
+proper cleanup.
+
+The issue is not limited to runtime PM.
+
 > 
-> There are two versions of the PAC194X/5X: the PAC194X/5X-1 devices
-> are for high-side current sensing and the PAC194X/5X-2 devices are
-> for low-side current sensing or floating VBUS applications. The
-> PAC194X/5X-1 is named shortly PAC194X/5X.
+> > If the driver specific runtime PM APIs access registers directly, this
+> > will lead to accessing device registers without clocks being enabled.
+> > Similar issues may occur with other devres actions that access device
+> > registers.
+> >
+> > Add devm_pm_domain_attach(). When replacing the dev_pm_domain_attach() and
+> > dev_pm_domain_detach() in bus probe and bus remove, it ensures that the
+> > device is detached from its PM domain in device_unbind_cleanup(), only
+> > after all driver's devres-managed resources have been release.
+> >
+> > For flexibility, the implemented devm_pm_domain_attach() has 2 state
+> > arguments, one for the domain state on attach, one for the domain state on
+> > detach.
 > 
-> Signed-off-by: Marius Cristea <marius.cristea@microchip.com>
-> ---
->  .../ABI/testing/sysfs-bus-iio-adc-pac1944     |   17 +
->  MAINTAINERS                                   |    7 +
->  drivers/iio/adc/Kconfig                       |   12 +
->  drivers/iio/adc/Makefile                      |    1 +
->  drivers/iio/adc/pac1944.c                     | 2841 +++++++++++++++++
+> dev_pm_domain_attach() is not part driver API and I'm not convinced at
 
-Oof. Very hard to make a review of something this big. Is it possible
-to break it down into more patches? e.g. start with just the basic
-functionality, then add the accumulator in a separate patch, add events
-in a separate patch, etc. It's not always possible, but 500 lines per
-patch is a nice number to aim for.
+Is the concern that devm_pm_domain_attach() will be [ab]used by drivers?
+In that case we can go back to using devres group to enforce ordering,
+but proper ordering is needed.
 
+> all by the arguments above.
 
->  5 files changed, 2878 insertions(+)
->  create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-adc-pac1944
->  create mode 100644 drivers/iio/adc/pac1944.c
-> 
-> diff --git a/Documentation/ABI/testing/sysfs-bus-iio-adc-pac1944 b/Documentation/ABI/testing/sysfs-bus-iio-adc-pac1944
-> new file mode 100644
-> index 000000000000..ae88eac354a4
-> --- /dev/null
-> +++ b/Documentation/ABI/testing/sysfs-bus-iio-adc-pac1944
-> @@ -0,0 +1,17 @@
-> +What:		/sys/bus/iio/devices/iio:deviceX/slow_alert1_cfg
-> +KernelVersion:	6.16
-> +Contact:	linux-iio@vger.kernel.org
-> +Description:
-> +		A read/write property used to route, inside the PAC device, a specific ALERT
-> +		signal to the SLOW/ALERT1 pin. The SLOW/ALERT1 pin must be configured for the
-> +		ALERT function in order to control the device hardware pin (this is the default
-> +		functionality of the device hardware pin).
-> +
-> +What:		/sys/bus/iio/devices/iio:deviceX/gpio_alert2_cfg
-> +KernelVersion:	6.16
-> +Contact:	linux-iio@vger.kernel.org
-> +Description:
-> +		A read/write property used to route, inside the PAC device, a specific ALERT
-> +		signal to the GPIO/ALERT2 hardware pin. The GPIO/ALERT2 pin must be configured
-> +		for ALERT function in order to control the device hardware pin (this is the
-> +		default	functionality of the device hardware pin).
+Please reconsider given the fact that issue is not limited to the
+runtime PM.
 
+Thanks.
 
-What is the use case for needing these? In otherwords, why can't the driver just
-make best use of available resources as it sees fit?
-
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 86a2045ba62e..240e84893ad9 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -15920,6 +15920,13 @@ S:	Supported
->  F:	Documentation/devicetree/bindings/iio/adc/microchip,pac1934.yaml
->  F:	drivers/iio/adc/pac1934.c
->  
-> +MICROCHIP PAC1944 ADC DRIVER
-> +M:	Marius Cristea <marius.cristea@microchip.com>
-> +L:	linux-iio@vger.kernel.org
-> +S:	Supported
-
-Missing the ABI docs, but hopefuly we can get rid of that.
-
-> +F:	Documentation/devicetree/bindings/iio/adc/microchip,pac1944.yaml
-> +F:	drivers/iio/adc/pac1944.c
-> +
->  MICROCHIP PCI1XXXX GP DRIVER
->  M:	Vaibhaav Ram T.L <vaibhaavram.tl@microchip.com>
->  M:	Kumaravel Thiagarajan <kumaravel.thiagarajan@microchip.com>
-> diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-> index 186a453af56c..a608aa6cb9c7 100644
-> --- a/drivers/iio/adc/Kconfig
-> +++ b/drivers/iio/adc/Kconfig
-> @@ -1148,6 +1148,18 @@ config PAC1934
->  	  This driver can also be built as a module. If so, the module
->  	  will be called pac1934.
->  
-> +config PAC1944
-> +	tristate "Microchip Technology PAC1944/PAC1954 driver"
-> +	depends on I2C
-> +	help
-> +	  Say yes here to build support for Microchip Technology's PAC1941,
-> +	  PAC1941-2, PAC1942, PAC1942-2, PAC1943, PAC1944, PAC1951,
-> +	  PAC1951-2, PAC1952, PAC1952-2, PAC1953, PAC1954
-> +	  Single/Multi-Channel Power Monitor with Accumulator.
-> +
-> +	  This driver can also be built as a module. If so, the module
-> +	  will be called pac1944.
-> +
->  config PALMAS_GPADC
->  	tristate "TI Palmas General Purpose ADC"
->  	depends on MFD_PALMAS
-> diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
-> index 09ae6edb2650..ee47d880babf 100644
-> --- a/drivers/iio/adc/Makefile
-> +++ b/drivers/iio/adc/Makefile
-> @@ -103,6 +103,7 @@ obj-$(CONFIG_NCT7201) += nct7201.o
->  obj-$(CONFIG_NPCM_ADC) += npcm_adc.o
->  obj-$(CONFIG_PAC1921) += pac1921.o
->  obj-$(CONFIG_PAC1934) += pac1934.o
-> +obj-$(CONFIG_PAC1944) += pac1944.o
->  obj-$(CONFIG_PALMAS_GPADC) += palmas_gpadc.o
->  obj-$(CONFIG_QCOM_PM8XXX_XOADC) += qcom-pm8xxx-xoadc.o
->  obj-$(CONFIG_QCOM_SPMI_ADC5) += qcom-spmi-adc5.o
-> diff --git a/drivers/iio/adc/pac1944.c b/drivers/iio/adc/pac1944.c
-> new file mode 100644
-> index 000000000000..ce09334b076a
-> --- /dev/null
-> +++ b/drivers/iio/adc/pac1944.c
-> @@ -0,0 +1,2841 @@
-> +// SPDX-License-Identifier: GPL-2.0+
-> +/*
-> + * IIO driver for PAC194X and PAC195X series chips
-> + *
-> + * Copyright (C) 2022-2025 Microchip Technology Inc. and its subsidiaries
-> + *
-> + * Author: Marius Cristea marius.cristea@microchip.com
-> + *
-> + * Datasheet for PAC1941, PAC1942, PAC1943 and PAC1944 can be found here:
-> + * https://ww1.microchip.com/downloads/aemDocuments/documents/MSLD/ProductDocuments/DataSheets/PAC194X-Family-Data-Sheet-DS20006543.pdf
-> + * Datasheet for PAC1951, PAC1952, PAC1953 and PAC1954 can be found here:
-> + * https://ww1.microchip.com/downloads/aemDocuments/documents/MSLD/ProductDocuments/DataSheets/PAC195X-Family-Data-Sheet-DS20006539.pdf
-> + */
-> +
-> +#include <linux/acpi.h>
-> +#include <linux/bitfield.h>
-> +#include <linux/delay.h>
-> +#include <linux/err.h>
-> +#include <linux/i2c.h>
-> +#include <linux/iio/iio.h>
-> +#include <linux/iio/events.h>
-> +#include <linux/iio/sysfs.h>
-> +#include <linux/unaligned.h>
-
-This seems incomplete. Expecting at least linux/module.h, linux/property.h, etc.
-
-
-> +
-> +static const struct pac1944_features pac1944_chip_config[] = {
-
-I know there are lots of existing drivers that use arrays like this, but
-it just makes lots of extra code to read without any practial benifits.
-
-Better is to just make standalone structs for each chip.
-
-> +	/* PAC194X Family */
-> +	[PAC1941] = {
-> +		.phys_channels = 1,
-> +		.prod_id = PAC_PRODUCT_ID_1941,
-> +		.name = "pac1941",
-> +	},
-> +	[PAC1942] = {
-> +		.phys_channels = 2,
-> +		.prod_id = PAC_PRODUCT_ID_1942,
-> +		.name = "pac1942",
-> +	},
-> +	[PAC1943] = {
-> +		.phys_channels = 3,
-> +		.prod_id = PAC_PRODUCT_ID_1943,
-> +		.name = "pac1943",
-> +	},
-> +	[PAC1944] = {
-> +		.phys_channels = 4,
-> +		.prod_id = PAC_PRODUCT_ID_1944,
-> +		.name = "pac1944",
-> +	},
-> +	[PAC1941_2] = {
-> +		.phys_channels = 1,
-> +		.prod_id = PAC_PRODUCT_ID_1941_2,
-> +		.name = "pac1941_2",
-> +	},
-> +	[PAC1942_2] = {
-> +		.phys_channels = 2,
-> +		.prod_id = PAC_PRODUCT_ID_1942_2,
-> +		.name = "pac1942_2",
-> +	},
-> +	/* PAC195X Family */
-> +	[PAC1951] = {
-> +		.phys_channels = 1,
-> +		.prod_id = PAC_PRODUCT_ID_1951,
-> +		.name = "pac1951",
-> +	},
-> +	[PAC1952] = {
-> +		.phys_channels = 2,
-> +		.prod_id = PAC_PRODUCT_ID_1952,
-> +		.name = "pac1952_1",
-
-Odd that this is the only one to have _1.
-
-> +	},
-> +	[PAC1953] = {
-> +		.phys_channels = 3,
-> +		.prod_id = PAC_PRODUCT_ID_1953,
-> +		.name = "pac1953",
-> +	},
-> +	[PAC1954] = {
-> +		.phys_channels = 4,
-> +		.prod_id = PAC_PRODUCT_ID_1954,
-> +		.name = "pac1954",
-> +	},
-> +	[PAC1951_2] = {
-> +		.phys_channels = 1,
-> +		.prod_id = PAC_PRODUCT_ID_1951_2,
-> +		.name = "pac1951_2",
-> +	},
-> +	[PAC1952_2] = {
-> +		.phys_channels = 2,
-> +		.prod_id = PAC_PRODUCT_ID_1952_2,
-> +		.name = "pac1952_2",
-> +	},
-> +};
-> +
-
-...
-
-> +static IIO_DEVICE_ATTR(in_current1_shunt_resistor, 0644,
-> +		       pac1944_shunt_value_show, pac1944_shunt_value_store, 0);
-> +static IIO_DEVICE_ATTR(in_current2_shunt_resistor, 0644,
-> +		       pac1944_shunt_value_show, pac1944_shunt_value_store, 1);
-> +static IIO_DEVICE_ATTR(in_current3_shunt_resistor, 0644,
-> +		       pac1944_shunt_value_show, pac1944_shunt_value_store, 2);
-> +static IIO_DEVICE_ATTR(in_current4_shunt_resistor, 0644,
-> +		       pac1944_shunt_value_show, pac1944_shunt_value_store, 3);
-
-These are specified in the devicetree. Why are there also sysfs attribtes?
-
-> +
-> +static IIO_DEVICE_ATTR(slow_alert1_cfg, 0644, pac1944_slow_alert1_show,
-> +		       pac1944_slow_alert1_store, 0);
-> +static IIO_DEVICE_ATTR(gpio_alert2_cfg, 0644, pac1944_gpio_alert2_show,
-> +		       pac1944_gpio_alert2_store, 0);
-> +
-
-...
-
-> +static int pac1944_frequency_get(struct iio_dev *indio_dev,
-> +				 const struct iio_chan_spec *chan)
-> +{
-> +	struct pac1944_chip_info *info = iio_priv(indio_dev);
-> +
-> +	return info->sampling_mode;
-> +}
-
-Pulled this out of order for context:
-
-> +/* Available Sample Modes */
-> +static const char * const pac1944_frequency_avail[] = {
-> +	"1024_ADAP",
-> +	"256_ADAP",
-> +	"64_ADAP",
-> +	"8_ADAP",
-> +	"1024",
-> +	"256",
-> +	"64",
-> +	"8",
-> +	"single_shot_1x",
-> +	"single_shot_8x",
-> +	"fast",
-> +	"burst",
-> +};
-
-> +
-> +static const struct iio_enum sampling_mode_enum = {
-> +	.items = pac1944_frequency_avail,
-> +	.num_items = ARRAY_SIZE(pac1944_frequency_avail),
-> +	.set = pac1944_frequency_set,
-> +	.get = pac1944_frequency_get,
-> +};
-> +
-> +static const struct iio_chan_spec_ext_info pac1944_ext_info[] = {
-> +	IIO_ENUM("sampling_frequency", IIO_SHARED_BY_ALL, &sampling_mode_enum),
-> +	{
-> +		.name = "sampling_frequency_available",
-> +		.shared = IIO_SHARED_BY_ALL,
-> +		.read = iio_enum_available_read,
-> +		.private = (uintptr_t)&sampling_mode_enum,
-> +	},
-> +	{ }
-> +};
-
-sampling_frequency{_avialable} are already standard attributes in IIO and is
-defined to be a number in Hz. So we will need to find a way to make this
-work with the standard attribute (can use IIO_CHAN_INFO_SAMPLE_FREQ, by the way).
-And figure out how the other parts fit into other existing IIO features.
-
-
-> +
-> +static int pac1944_of_parse_channel_config(struct i2c_client *client,
-> +					   struct pac1944_chip_info *info)
-> +{
-> +	unsigned int current_channel;
-> +	struct device *dev = &client->dev;
-> +	int idx, ret, temp;
-> +	bool is_bipolar, is_half_fsr;
-> +
-> +	current_channel = 1;
-> +
-> +	device_for_each_child_node_scoped(dev, child) {
-> +		ret = fwnode_property_read_u32(child, "reg", &idx);
-> +		if (ret)
-> +			return dev_err_probe(dev, ret, "reading invalid channel index\n");
-> +
-> +		/* adjust idx to match channel index (1 to 4) from the datasheet */
-> +		idx--;
-> +
-> +		if (current_channel >= (info->phys_channels + 1) ||
-> +		    idx >= info->phys_channels || idx < 0)
-> +			return dev_err_probe(dev, -EINVAL, "invalid channel index %d value\n",
-> +					     idx + 1);
-> +
-> +		/* enable channel */
-> +		set_bit(idx, &info->active_channels_mask);
-> +
-> +		ret = fwnode_property_read_u32(child, "shunt-resistor-micro-ohms",
-> +					       &info->shunts[idx]);
-> +		if (ret)
-> +			return dev_err_probe(dev, ret, "%s: invalid shunt-resistor value: %d\n",
-> +					     fwnode_get_name(child), info->shunts[idx]);
-
-If there is an error, then info->shunts[idx] is not set, so doesn't make sense to include
-it in the error message.
-
-> +
-> +		if (fwnode_property_present(child, "label"))
-
-No point in checking if property is present if not checking the return value of
-read_string()
-
-> +			fwnode_property_read_string(child, "label",
-> +						    (const char **)&info->labels[idx]);
-> +
-> +		is_bipolar = false;
-> +		if (fwnode_property_present(child, "microchip,vbus-bipolar"))
-> +			is_bipolar = true;
-
-Just do:
-
-		is_bipolar = fwnode_property_read_bool(child, "microchip,vbus-bipolar");
-
-> +
-> +		is_half_fsr = false;
-> +		if (fwnode_property_present(child, "microchip,vbus-half-range"))
-> +			is_half_fsr = true;
-
-
-ditto
-
-> +
-> +		/* default value is unipolar and Full Scale Range */
-> +		info->chip_reg_data.vbus_mode[idx] = PAC1944_UNIPOLAR_FSR_CFG;
-> +		if (is_half_fsr)
-> +			info->chip_reg_data.vbus_mode[idx] = PAC1944_BIPOLAR_HALF_FSR_CFG;
-> +		else if (is_bipolar)
-> +			info->chip_reg_data.vbus_mode[idx] = PAC1944_BIPOLAR_FSR_CFG;
-> +
-> +		is_bipolar = false;
-> +		if (fwnode_property_present(child, "microchip,vsense-bipolar"))
-> +			is_bipolar = true;
-> +
-> +		is_half_fsr = false;
-> +		if (fwnode_property_present(child, "microchip,vsense-half-range"))
-> +			is_half_fsr = true;
-> +
-> +		/* default value is unipolar and Full Scale Range */
-> +		info->chip_reg_data.vsense_mode[idx] = PAC1944_UNIPOLAR_FSR_CFG;
-> +		if (is_half_fsr)
-> +			info->chip_reg_data.vsense_mode[idx] = PAC1944_BIPOLAR_HALF_FSR_CFG;
-> +		else if (is_bipolar)
-> +			info->chip_reg_data.vsense_mode[idx] = PAC1944_BIPOLAR_FSR_CFG;
-> +
-> +		ret = fwnode_property_read_u32(child, "microchip,accumulation-mode", &temp);
-> +		if (ret)
-> +			return dev_err_probe(dev, ret, "invalid accumulation-mode value on %s\n",
-> +					     fwnode_get_name(child));
-> +		if (temp == PAC1944_ACCMODE_VPOWER ||
-> +		    temp == PAC1944_ACCMODE_VSENSE ||
-> +		    temp == PAC1944_ACCMODE_VBUS) {
-> +			dev_dbg(dev, "Accumulation{%d} mode set to: %d\n", idx, temp);
-> +			info->chip_reg_data.accumulation_mode[idx] = temp;
-> +		} else {
-> +			return dev_err_probe(dev, -EINVAL,
-> +					     "invalid mode for accumulator value on %s\n",
-> +					     fwnode_get_name(child));
-> +		}
-> +		current_channel++;
-> +	}
-> +
-> +	return 0;
-> +}
-
-...
-
-> +
-> +static const struct i2c_device_id pac1944_id[] = {
-> +	{ .name = "pac1941", .driver_data = (kernel_ulong_t)&pac1944_chip_config[PAC1941] },
-> +	{ .name = "pac19412", .driver_data = (kernel_ulong_t)&pac1944_chip_config[PAC1941_2] },
-> +	{ .name = "pac1942", .driver_data = (kernel_ulong_t)&pac1944_chip_config[PAC1942] },
-> +	{ .name = "pac19422", .driver_data = (kernel_ulong_t)&pac1944_chip_config[PAC1942_2] },
-> +	{ .name = "pac1943", .driver_data = (kernel_ulong_t)&pac1944_chip_config[PAC1943] },
-> +	{ .name = "pac1944", .driver_data = (kernel_ulong_t)&pac1944_chip_config[PAC1944] },
-> +	{ .name = "pac1951", .driver_data = (kernel_ulong_t)&pac1944_chip_config[PAC1951] },
-> +	{ .name = "pac19512", .driver_data = (kernel_ulong_t)&pac1944_chip_config[PAC1951_2] },
-> +	{ .name = "pac1952", .driver_data = (kernel_ulong_t)&pac1944_chip_config[PAC1952] },
-> +	{ .name = "pac19522", .driver_data = (kernel_ulong_t)&pac1944_chip_config[PAC1952_2] },
-> +	{ .name = "pac1953", .driver_data = (kernel_ulong_t)&pac1944_chip_config[PAC1953] },
-> +	{ .name = "pac1954", .driver_data = (kernel_ulong_t)&pac1944_chip_config[PAC1954] },
-
-Drop the .name and .driver_data here. Thre is an effort to do this in all drivers so that
-we can eventually get rid of the (kernel_ulong_t) casts.
-
-> +	{ }
-> +};
-> +MODULE_DEVICE_TABLE(i2c, pac1944_id);
-> +
-
-
+-- 
+Dmitry
 

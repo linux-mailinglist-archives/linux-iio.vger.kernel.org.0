@@ -1,435 +1,268 @@
-Return-Path: <linux-iio+bounces-20273-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20274-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB6C2AD063D
-	for <lists+linux-iio@lfdr.de>; Fri,  6 Jun 2025 17:56:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44008AD065C
+	for <lists+linux-iio@lfdr.de>; Fri,  6 Jun 2025 18:00:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E82EC3B2A3B
-	for <lists+linux-iio@lfdr.de>; Fri,  6 Jun 2025 15:53:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 868DF3A8109
+	for <lists+linux-iio@lfdr.de>; Fri,  6 Jun 2025 16:00:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 465791DF269;
-	Fri,  6 Jun 2025 15:54:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 612701DF26E;
+	Fri,  6 Jun 2025 16:00:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="AYUQyrpJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aN/v7igt"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oo1-f51.google.com (mail-oo1-f51.google.com [209.85.161.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8A601925AF
-	for <linux-iio@vger.kernel.org>; Fri,  6 Jun 2025 15:54:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FBBE19D06A;
+	Fri,  6 Jun 2025 16:00:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749225246; cv=none; b=QfkyGhkrnsllN2hNcMAvrW/gyn1n05op8trLjZYjIcN9EIhbfdADQAhV/vKmZgdxBd0EfXnQUw4l2TtTexVe1BcjGCAujf9MtKZxjZzDFgTwefEyhGSv+LGFDePh8U1seJA+jCG4vTet4SF/I6UPRpTb06DYr7RfdtKHRd35HYk=
+	t=1749225647; cv=none; b=JQSbAhwkHxIdOmtXyUs0q/NJP2NolcshPPTYkRAVExTd9mafPbIXTdyJde+vivKb9sIZQ68KGWjyOr2avQtv0D12lunt4093QmQcLS3s8sxNWp9cco0F0m6wuMDichj5Wxx6zG6zbgy6uAm3lR1lalBwueiik34aielky8d9GQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749225246; c=relaxed/simple;
-	bh=O2w1aGCd7C7nRuZWq3b6fRfyCi62Sqnl7KSt5CA2X8w=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=RlfFRm7XIKVZYImgx7u3WgUEQOXNbbZB74RWusbjgOnuwzjOghGhsxn/07NEajDBWRWU9uoIQpSB00KQWRwuVcT4y7NwFarGX+VzVTu5oeAMTmLZGNnE53Xo8i8l3DFF1sgWzIn3D3+Iqd7Y+fhSLgawJ0W4a5C7SvOh95bQhUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=AYUQyrpJ; arc=none smtp.client-ip=209.85.161.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oo1-f51.google.com with SMTP id 006d021491bc7-605f7d3215cso1057074eaf.0
-        for <linux-iio@vger.kernel.org>; Fri, 06 Jun 2025 08:54:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1749225242; x=1749830042; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=A6luCcbvYtAg5246XTNS1y7oe/JVdrZSN0lM+hMsBHc=;
-        b=AYUQyrpJ6qulxlVQnD1JLnpGuwnIh/7UsTChtQcV/q9NeDQt0x9A7BFwiSjBetb9Ov
-         ygGOGuhOEWgfMBbYFX7VVU63A8TdFEH1TKWhymZqpP9O4gShv22PVE+AfBS3oPoDmjzx
-         DPHWKcZoXw/iPnusIw6ZpQq8+ui/ya6K6r5NFOHC9hW+Qs4rTSsK1UqCwrSgeCH9If9m
-         UeZNfNAO/ziM9lj+uG25UAnk5g3g+IZxWeElWyBLoqTU5VeZdRRAYfJgIVZ8oKpuaeHm
-         WzxTzYUFmHkV3N6c8pyNVOidms9/+vZFZX8iBYvF4jZ8dAIo6cL8yupYqozEd3P3xNL+
-         b+5g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749225242; x=1749830042;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=A6luCcbvYtAg5246XTNS1y7oe/JVdrZSN0lM+hMsBHc=;
-        b=EBktx59yh1OOlTAH0UON6xFVc1nqgfHfvavxjZUxrHTuCZfgPmuR4t0txStHF6g04I
-         yatAgmko4O8O13Gso9Yd+wkme1ichvknvmsxCRQMUsaUgLhAFfjHE8ILVYv2j19h5FeO
-         HCu4h9zyDdTLGzGwyai5c+QdfkANqs1DTijuippbtyXTDCtyzkcq+gOvTEfp6u6UDwXi
-         UnXKLFKfMZfyqCwDcWn5oVqaVEzK/UY86hUiyQzjRWLatqLRG0bf9EeH4gUtZnRAMHeq
-         qKSJxVwMO01lX08pNblbGTglHnrgGq6ISv0dJuFRfs6QnjvC7Gva3D6QZCgJ2kIjtmLT
-         EPVQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW2uwTU8ks3efXP46xhluY2sIwXl1zn1bBVM9UblYYByiKroLRcQnDfqx06FqKv2mQRgPkJlSg2Q5M=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwkbphDLnIEoOOo6YjR2frqo4AeWmG7cGGQiAtBTQzl3FfRkVyN
-	WZtECD0k43EH547MpzoIKt9JS7mvJAX7Hq6bMPcx/kKx2DVhlYL9HvcUYd0iYzqMHNw=
-X-Gm-Gg: ASbGncul5PgivUkfjLLSQteux7frL5oQJ+x4WiQcpklJrohFoJU784XDhVg1SeARSIc
-	VUrHcsGADtoizxSYnUd4x5o/+2qvljqmbpEkje8Vy136InXI2srcaZeOAkJoCoNlOIrblF2MjKk
-	EPVhplrp2FIGXSFYB1IedWIk4b7BlI7zwJOAIsx5F0jgN42XOaoW45/Rko0/mUXPl9KSJELkqo3
-	dUeYkhY8YlWfYgESBZ63LXzzMyqkxV2sLGD9OdVbXz121PzQi2mmfcaVRbxDZC/Hg4qyYEZCKo5
-	H2EVONl+qCBf6MtfngDeglPUWhJTS4IXU+YluS5aca/YljBsXkmWdcLg8S5RYjtFdkaIssgD97u
-	GcqYCwkHK0vRxgiyhUASi6zY1Zbfz
-X-Google-Smtp-Source: AGHT+IGRDl1iuFLSRQRDz5i+NYDOwmM7to35b2jr13pv5tXn4xtKTNZw7AvPXElLkQBKingqq9hJnQ==
-X-Received: by 2002:a05:6820:1992:b0:603:f981:5fe4 with SMTP id 006d021491bc7-60f3ce462d5mr2533571eaf.1.1749225241844;
-        Fri, 06 Jun 2025 08:54:01 -0700 (PDT)
-Received: from ?IPV6:2600:8803:e7e4:1d00:6192:9921:d60e:1609? ([2600:8803:e7e4:1d00:6192:9921:d60e:1609])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-60f3e8274c8sm251935eaf.30.2025.06.06.08.53.59
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 06 Jun 2025 08:54:00 -0700 (PDT)
-Message-ID: <92c36ad9-5f8e-4ba7-9af4-9cb640f0aa5c@baylibre.com>
-Date: Fri, 6 Jun 2025 10:53:59 -0500
+	s=arc-20240116; t=1749225647; c=relaxed/simple;
+	bh=0+E08hRwywKhkjx7JnQt4se8cvECsmAoG8+aEI0QaTw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=V+gHVu9XlfDjPuOPCDEXE52RoG6V3UoQ7uPaA5q3TyDJbbGz7jkkNd47EEV1GMXn1+sZcVo3c2rGwtvVR2ksyXxoECv8TqNvLJe7no83ZzlByEC8bA5SmyZIgrpOZqnI69iHX2CjUWoZm2nrJoPQCoIr++Ld070Ql9WT6AlpPvU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aN/v7igt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D41F6C4CEF6;
+	Fri,  6 Jun 2025 16:00:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1749225646;
+	bh=0+E08hRwywKhkjx7JnQt4se8cvECsmAoG8+aEI0QaTw=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=aN/v7igtpEDVhwIJFRhxmY7E4gZfzp/s4XbROI0iBLJbLV+MylVl6it9hyqNkQiWg
+	 Fjol823KWKYUP+c4P4B0Ldc3JaOCL2RUHcG6umTiCiwD2ve0ZNuRuuk8d95c4pOL8j
+	 SB9jsu67mvFHyYraWhBQWv33/WRdXBEj5jbsoTy/k2UkluRNhoy55ThC2M8Ahk1SYj
+	 5Keo1BaKYkYgjA9TxHzyWPHygXFTR6cOrSnIDaPI1Sb/r0CqrG7JsGjdNCylI1A39/
+	 MfWVpv2CReJ8CXeN1A+Q8eZoL17vdRV6eiGMnvaVetJ935abpTNtMIrIpVH6SWp0SB
+	 NiUR6Y/fmo7PQ==
+Received: by mail-oi1-f177.google.com with SMTP id 5614622812f47-4074997ce2bso650153b6e.3;
+        Fri, 06 Jun 2025 09:00:46 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUFBI4OuEr0M23yJvo2SH+0HIjiYpOyZvWZl5J0Rnz1NeDSi43/9pYKxC6T25SuFRxzFgwChzseD8iLfCtd@vger.kernel.org, AJvYcCUQQe9pXdosMGvRooK2J3vDWNP86dNnxZLouBEOjHvAP99kFGKxeEEOn0QTh331nDQZPVL/X+hvPuY=@vger.kernel.org, AJvYcCWP1DHMU6+aIdTXD5BcZqBD+x2FhpM0ajgHYM2MckLma8c3ZrbPouipTvv1YpXDGYLnP/+KYakdRAAFESR5Kgzwk+8=@vger.kernel.org, AJvYcCX8GJ1ptLXKF1O4sV1vZeOw10yIBBjB2CbTQrRrxySiwGSKnQ7G4mMhCHwOP4l3sHB10nq7nDAAUS4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxNxsEKcLbCh4dCGqisl3st1LPfBAeZLahvFGp4DTpvW6r9uCgH
+	PUeLjT/cFUaKDzHQBu8jKj2gk+lJx0fCiuQ6V3AwUaqUDrrldCLjZzrcXNqtX0KKcowBbsm6S65
+	UxSaYHIaBgD2FVVf03Hmk7fVbiddOwm0=
+X-Google-Smtp-Source: AGHT+IG+/p8dPlsG+i+bKyi4+OPGxOvAlCFygsy2kq8Yd4lHK8Rtxzkc4gi25tmt3K47CNUiAhq8jyV80f/PLw6impg=
+X-Received: by 2002:a05:6808:288f:b0:402:b0f:4ccc with SMTP id
+ 5614622812f47-409051d725bmr1988228b6e.16.1749225645925; Fri, 06 Jun 2025
+ 09:00:45 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/2] dt-bindings: iio: adc: adding support for PAC194X
-To: marius.cristea@microchip.com, jic23@kernel.org, nuno.sa@analog.com,
- andy@kernel.org
-Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- broonie@kernel.org, linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20250606093929.100118-1-marius.cristea@microchip.com>
- <20250606093929.100118-2-marius.cristea@microchip.com>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <20250606093929.100118-2-marius.cristea@microchip.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20250606111749.3142348-1-claudiu.beznea.uj@bp.renesas.com> <20250606111749.3142348-2-claudiu.beznea.uj@bp.renesas.com>
+In-Reply-To: <20250606111749.3142348-2-claudiu.beznea.uj@bp.renesas.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Fri, 6 Jun 2025 18:00:34 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0i_Ey+OVpSZHXru=tubMaZi=y-uOh_0M6zmWZ2DqqA7Vg@mail.gmail.com>
+X-Gm-Features: AX0GCFuO1uRWb5NWOssOUUfHKn6m_s_TDNlqKwT50_Lx4DRONBgPCZFQvedB7Bs
+Message-ID: <CAJZ5v0i_Ey+OVpSZHXru=tubMaZi=y-uOh_0M6zmWZ2DqqA7Vg@mail.gmail.com>
+Subject: Re: [PATCH v3 1/2] PM: domains: Add devres variant for dev_pm_domain_attach()
+To: Claudiu <claudiu.beznea@tuxon.dev>
+Cc: gregkh@linuxfoundation.org, rafael@kernel.org, dakr@kernel.org, 
+	len.brown@intel.com, pavel@kernel.org, ulf.hansson@linaro.org, 
+	jic23@kernel.org, daniel.lezcano@linaro.org, dmitry.torokhov@gmail.com, 
+	linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org, bhelgaas@google.com, 
+	geert@linux-m68k.org, linux-iio@vger.kernel.org, 
+	linux-renesas-soc@vger.kernel.org, fabrizio.castro.jz@renesas.com, 
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 6/6/25 4:39 AM, marius.cristea@microchip.com wrote:
-> From: Marius Cristea <marius.cristea@microchip.com>
-> 
-> This is the device tree schema for iio driver for Microchip PAC194X
-> and PAC195X series of Power Monitors with Accumulator. The PAC194X
-> family supports 9V Full-Scale Range and the PAC195X supports 32V
-> Full-Scale Range.
-> 
-> There are two versions of the PAC194X/5X: the PAC194X/5X-1 devices
-> are for high-side current sensing and the PAC194X/5X-2 devices are
-> for low-side current sensing or floating VBUS applications.
-> 
-> The PAC194X/5X-1 is named shortly PAC194X/5X.
-> 
-> Signed-off-by: Marius Cristea <marius.cristea@microchip.com>
+On Fri, Jun 6, 2025 at 1:18=E2=80=AFPM Claudiu <claudiu.beznea@tuxon.dev> w=
+rote:
+>
+> From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+>
+> The dev_pm_domain_attach() function is typically used in bus code alongsi=
+de
+> dev_pm_domain_detach(), often following patterns like:
+>
+> static int bus_probe(struct device *_dev)
+> {
+>     struct bus_driver *drv =3D to_bus_driver(dev->driver);
+>     struct bus_device *dev =3D to_bus_device(_dev);
+>     int ret;
+>
+>     // ...
+>
+>     ret =3D dev_pm_domain_attach(_dev, true);
+>     if (ret)
+>         return ret;
+>
+>     if (drv->probe)
+>         ret =3D drv->probe(dev);
+>
+>     // ...
+> }
+>
+> static void bus_remove(struct device *_dev)
+> {
+>     struct bus_driver *drv =3D to_bus_driver(dev->driver);
+>     struct bus_device *dev =3D to_bus_device(_dev);
+>
+>     if (drv->remove)
+>         drv->remove(dev);
+>     dev_pm_domain_detach(_dev);
+> }
+>
+> When the driver's probe function uses devres-managed resources that depen=
+d
+> on the power domain state, those resources are released later during
+> device_unbind_cleanup().
+>
+> Releasing devres-managed resources that depend on the power domain state
+> after detaching the device from its PM domain can cause failures.
+>
+> For example, if the driver uses devm_pm_runtime_enable() in its probe
+> function, and the device's clocks are managed by the PM domain, then
+> during removal the runtime PM is disabled in device_unbind_cleanup() afte=
+r
+> the clocks have been removed from the PM domain. It may happen that the
+> devm_pm_runtime_enable() action causes the device to be runtime-resumed.
+
+Don't use devm_pm_runtime_enable() then.
+
+> If the driver specific runtime PM APIs access registers directly, this
+> will lead to accessing device registers without clocks being enabled.
+> Similar issues may occur with other devres actions that access device
+> registers.
+>
+> Add devm_pm_domain_attach(). When replacing the dev_pm_domain_attach() an=
+d
+> dev_pm_domain_detach() in bus probe and bus remove, it ensures that the
+> device is detached from its PM domain in device_unbind_cleanup(), only
+> after all driver's devres-managed resources have been release.
+>
+> For flexibility, the implemented devm_pm_domain_attach() has 2 state
+> arguments, one for the domain state on attach, one for the domain state o=
+n
+> detach.
+
+dev_pm_domain_attach() is not part driver API and I'm not convinced at
+all by the arguments above.
+
+Thanks!
+
+> Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 > ---
->  .../bindings/iio/adc/microchip,pac1944.yaml   | 204 ++++++++++++++++++
->  1 file changed, 204 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/adc/microchip,pac1944.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/adc/microchip,pac1944.yaml b/Documentation/devicetree/bindings/iio/adc/microchip,pac1944.yaml
-> new file mode 100644
-> index 000000000000..4a2cf6b64055
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/adc/microchip,pac1944.yaml
-> @@ -0,0 +1,204 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/adc/microchip,pac1944.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+>
+> Changes in v3:
+> - dropped devm_pm_domain_detach_off(), devm_pm_domain_detach_on()
+>   and use a single function devm_pm_domain_detach()
+>
+> Changes in v2:
+> - none; this patch is new
+>
+>  drivers/base/power/common.c | 50 +++++++++++++++++++++++++++++++++++++
+>  include/linux/pm_domain.h   |  6 +++++
+>  2 files changed, 56 insertions(+)
+>
+> diff --git a/drivers/base/power/common.c b/drivers/base/power/common.c
+> index 781968a128ff..82ea20b343f5 100644
+> --- a/drivers/base/power/common.c
+> +++ b/drivers/base/power/common.c
+> @@ -115,6 +115,56 @@ int dev_pm_domain_attach(struct device *dev, bool po=
+wer_on)
+>  }
+>  EXPORT_SYMBOL_GPL(dev_pm_domain_attach);
+>
+> +/**
+> + * devm_pm_domain_detach - devres action for devm_pm_domain_attach() to
+> + * detach a device from its domain.
+> + * @dev: device to detach.
+> + * @res: indicate if the device should be powered off
+> + *
+> + * This function reverse the actions from devm_pm_domain_attach().
+> + * It will be invoked during the remove phase from drivers implicitly.
+> + */
+> +static void devm_pm_domain_detach(struct device *dev, void *res)
+> +{
+> +       bool *power_off =3D res;
 > +
-> +title: Microchip PAC1944 and PAC1954 Power Monitors with Accumulator
+> +       dev_pm_domain_detach(dev, *power_off);
+> +}
 > +
-> +maintainers:
-> +  - Marius Cristea <marius.cristea@microchip.com>
+> +/**
+> + * devm_pm_domain_attach - devres-enabled version of dev_pm_domain_attac=
+h()
+> + * @dev: Device to attach.
+> + * @power_on: Use to indicate whether we should power on the device
+> + *            when attaching.
+> + *
+> + * NOTE: this will also handle calling dev_pm_domain_detach() for
+> + * you during remove phase.
+> + *
+> + * Returns 0 on successfully attached PM domain, or a negative error cod=
+e in
+> + * case of a failure.
+> + */
+> +int devm_pm_domain_attach(struct device *dev, bool power_on)
+> +{
+> +       bool *power_off;
+> +       int ret;
 > +
-> +description: |
-> +  This device is part of the Microchip family of Power Monitors with
-> +  Accumulator. The datasheet for PAC1941-1, PAC1941-1, PAC1942-1, PAC1942-2,
-> +  PAC1943-1 and PAC1944-1 can be found here:
-> +    https://ww1.microchip.com/downloads/aemDocuments/documents/MSLD/ProductDocuments/DataSheets/PAC194X-Family-Data-Sheet-DS20006543.pdf
-> +  The datasheet for PAC1951-1, PAC1951-1, PAC1952-1, PAC1952-2, PAC1953-1 and
-> +  PAC1954-1 can be found here:
-> +    https://ww1.microchip.com/downloads/aemDocuments/documents/MSLD/ProductDocuments/DataSheets/PAC195X-Family-Data-Sheet-DS20006539.pdf
+> +       power_off =3D devres_alloc(devm_pm_domain_detach, sizeof(*power_o=
+ff), GFP_KERNEL);
+> +       if (!power_off)
+> +               return -ENOMEM;
 > +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - microchip,pac1941
-> +      - microchip,pac19412
-> +      - microchip,pac1942
-> +      - microchip,pac19422
-> +      - microchip,pac1943
-> +      - microchip,pac1944
-> +      - microchip,pac1951
-> +      - microchip,pac19512
-> +      - microchip,pac1952
-> +      - microchip,pac19522
-> +      - microchip,pac1953
-> +      - microchip,pac1954
+> +       ret =3D dev_pm_domain_attach(dev, power_on);
+> +       if (ret) {
+> +               devres_free(power_off);
+> +               return ret;
+> +       }
 > +
-> +  reg:
-> +    maxItems: 1
+> +       *power_off =3D power_on;
+> +       devres_add(dev, power_off);
 > +
-> +  vdd-supply: true
+> +       return ret;
+> +}
+> +EXPORT_SYMBOL_GPL(devm_pm_domain_attach);
 > +
-> +  "#address-cells":
-> +    const: 1
+>  /**
+>   * dev_pm_domain_attach_by_id - Associate a device with one of its PM do=
+mains.
+>   * @dev: The device used to lookup the PM domain.
+> diff --git a/include/linux/pm_domain.h b/include/linux/pm_domain.h
+> index 0b18160901a2..f78b6b4dd734 100644
+> --- a/include/linux/pm_domain.h
+> +++ b/include/linux/pm_domain.h
+> @@ -509,6 +509,7 @@ struct device *dev_pm_domain_attach_by_name(struct de=
+vice *dev,
+>  int dev_pm_domain_attach_list(struct device *dev,
+>                               const struct dev_pm_domain_attach_data *dat=
+a,
+>                               struct dev_pm_domain_list **list);
+> +int devm_pm_domain_attach(struct device *dev, bool power_on);
+>  int devm_pm_domain_attach_list(struct device *dev,
+>                                const struct dev_pm_domain_attach_data *da=
+ta,
+>                                struct dev_pm_domain_list **list);
+> @@ -539,6 +540,11 @@ static inline int dev_pm_domain_attach_list(struct d=
+evice *dev,
+>         return 0;
+>  }
+>
+> +static inline int devm_pm_domain_attach(struct device *dev, bool power_o=
+n)
+> +{
+> +       return 0;
+> +}
 > +
-> +  "#size-cells":
-> +    const: 0
-> +
-> +  interrupts:
-> +    maxItems: 2
-> +
-> +  interrupt-names:
-
-Needs minItems: 1 if we want to allow a single named interrupt.
-
-> +    description:
-> +      alert1 indicates a HIGH or LOW limit was exceeded.
-> +      alert2 indicates a THERM limit was exceeded.
-> +    items:
-> +      - const: alert1
-> +      - const: alert2
-> +
-
-I am having deja vu. I just commented on an identical interrupts binding
-in a different series [1]. In this case though, alert1 and alert2 are
-the actual pin names, so that is fine. But each pin can be programmed
-to indicate lots of different things, so drop descriptions or change
-them to describe the pin, not an arbitrary function. I don't even
-see THERM in the datasheet, so I'm guessing that was just a copy/
-paste from something else anyway.
-
-[1]: https://lore.kernel.org/linux-iio/0f68e3f9-cba5-4df3-8e56-2cccbccf35ce@baylibre.com/
-
-
----
-
-Even if the driver doesn't use them (yet), we could consider adding
-gpio-controller and #gpio-cells properties since these chips have pins
-that can operate as GPIOs.
-
-And we could add a powerdown-gpios property for the /PWRDN pin.
-
-We want to try to make the bindings as complete as possible, if we can [2].
-
-[2]: https://docs.kernel.org/devicetree/bindings/writing-bindings.html
-
-> +patternProperties:
-> +  "^channel@[1-4]+$":
-
-Drop the +. Only 1 to 4 are allowed, not 11, 111, etc.
-
-Also, we could further restrict things based on the actual number of
-channels on a chip like this:
-
-allOf:
-  - if:
-      properties:
-        compatible:
-            pattern: "^pac19[45]1"
-    then:
-      properties:
-      	channel@1:
-          reg:
-            items:
-              maximum: 1
-      patternProperties:
-        ^channel@[2-4]$": false
-  - if:
-      properties:
-        compatible:
-            pattern: "^pac19[45]2"
-    then:
-      patternProperties:
-        ^channel@[1-2]$":
-          reg:
-            items:
-              maximum: 2
-      patternProperties:
-        ^channel@[3-4]$": false
-  - if:
-      properties:
-        compatible:
-            pattern: "^pac19[45]3"
-    then:
-      patternProperties:
-        ^channel@[1-3]$":
-          reg:
-            items:
-              maximum: 3
-      properties:
-        channel@4: false
-
-
-
-> +    type: object
-> +    $ref: adc.yaml
-> +    description:
-> +      Represents the external channels which are connected to the ADC.
-> +
-> +    properties:
-> +      reg:
-> +        items:
-> +          minimum: 1
-> +          maximum: 4
-> +
-> +      shunt-resistor-micro-ohms:
-> +        description:
-> +          Value in micro Ohms of the shunt resistor connected between
-> +          the SENSE+ and SENSE- inputs, across which the current is measured.
-> +          Value is needed to compute the scaling of the measured current.
-> +
-> +      microchip,vbus-half-range:
-> +        $ref: /schemas/types.yaml#/definitions/flag
-> +        description: |
-> +          In order to increase measurement resolution and keeping the same
-> +          number the of bits the device has a configurable VBUS full range scale
-> +          (FSR). The range should be set by hardware design and it should not be
-> +          changed during runtime. The bipolar capability for VBUS enables
-> +          accurate offset measurement and correction.
-> +          The VBUS could be configured into the following full scale range:
-> +            - VBUS has unipolar 0V to 32V FSR (default) for PAC195X or 0V to 9V
-> +              (default) for PAC194X.
-> +            - VBUS has bipolar -32V to 32V FSR for PAC195X or -9V to 9V for
-> +              PAC194X. The actual range is limited to about -200 mV due to the
-> +              impact of the ESD structures.
-> +            - VBUS has bipolar -16V to 16V FSR for PAC195X or -4.5V to 4.5V for
-> +              PAC194X. The actual range is limited to about -200 mV due to the
-> +              impact of the ESD structures.
-> +
-> +      microchip,vbus-bipolar:
-> +        $ref: /schemas/types.yaml#/definitions/flag
-> +        description:
-> +          If provided, the channel is to be used in bipolar mode. The
-> +          actual range is limited to about -200 mV due to the impact of the ESD
-> +          structures.
-> +
-
-Using Jonathan's suggestion from v2 to just have a single property with 3 different
-ranges to chose from seems simpler that this. It would only require one property
-and would be self-documenting. The description could be shortened to just a couple
-of lines.
-
-Otherwise, we also need to add:
-
-- if:
-    required:
-      microchip,vbus-half-range
-  then:
-    required:
-      microchip,vbus-bipolar
-
-to validate that that there are only 3 possibilities.
-
-Also, swapping the word order to range-half would be more consistent with
-the existing adi,range-double property that serves a similar purpose.
-
-Same applies to vsense.
-
-> +      microchip,vsense-half-range:
-> +        $ref: /schemas/types.yaml#/definitions/flag
-> +        description: |
-> +          In order to decrease the power dissipation on the shunt resistor and
-> +          in the same time to increase measurement resolution by keeping the
-> +          same number the of bits the device has a configurable VSENSE full
-> +          range scale (FSR). The range should be set by hardware design and it
-> +          should not be changed during runtime.
-> +          The VSENSE could be configured into the following full scale range:
-> +            - VSENSE has unipolar 0V to 100 mV FSR (default)
-> +            - VSENSE has bipolar -100 mV to 100 mV FSR
-> +            - VSENSE has bipolar -50 mV to 50 mV FSR
-> +
-> +      microchip,vsense-bipolar:
-> +        $ref: /schemas/types.yaml#/definitions/flag
-> +        description:
-> +          If provided, the channel is to be used in bipolar mode.
-> +
-> +      microchip,accumulation-mode:
-> +        $ref: /schemas/types.yaml#/definitions/uint32
-> +        description:
-> +          The Hardware Accumulator may be used to accumulate VPOWER, VSENSE or
-> +          VBUS values for any channel. By setting the accumulator for a channel
-> +          to accumulate the VPOWER values gives a measure of accumulated power
-> +          into a time period, which is equivalent to energy. Setting the
-> +          accumulator for a channel to accumulate VSENSE values gives a measure
-> +          of accumulated current, which is equivalent to charge. This allows the
-> +          accumulator to be used as a coulomb counter. For either VSENSE or
-> +          VBUS, many samples may be accumulated on chip and the result collected
-> +          by the host and divided by the accumulator counter count value to
-> +          yield an average value with a very long integration time to reduce
-> +          noise. This feature is also very useful for system calibration,
-> +          allowing many averages to be accumulated for fast averaging/noise
-> +          reduction.
-> +          This functionality needs to be setup once and must not be changed
-> +          during the runtime,
-
-Why not? The datasheet says there is a REFRESH command to allow changing it
-at runtime.
-
-> just in case the user wants to measure the charge
-> +          or the energy consumed from board power up till the user has control
-> +          or during a reboot of the system.
-> +          The Hardware Accumulator could be configured to accumulate
-> +          VPOWER, VSENSE or VBUS
-> +            <0>  -  Accumulator accumulates VPOWER (default)
-> +            <1>  -  Accumulator accumulates VSENSE
-> +            <2>  -  Accumulator accumulates VBUS
-> +        maximum: 2
-> +        default: 0
-> +
-> +    required:
-> +      - reg
-> +      - shunt-resistor-micro-ohms
-> +
-> +    unevaluatedProperties: false
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - vdd-supply
-> +  - "#address-cells"
-> +  - "#size-cells"
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    i2c {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +
-> +        power-monitor@10 {
-> +            compatible = "microchip,pac1954";
-> +            reg = <0x10>;
-> +            vdd-supply = <&vdd>;
-> +
-> +            #address-cells = <1>;
-> +            #size-cells = <0>;
-> +
-> +            channel@1 {
-> +                reg = <0x1>;
-> +                shunt-resistor-micro-ohms = <24900>;
-> +                label = "CPU";
-> +                microchip,vsense-half-range;
-> +                microchip,vsense-bipolar;
-> +            };
-
-Seems odd to leave a channel unconfigured since the shunt resistor
-value is required and there is a 3 channel version of the chip that
-could be used if only 3 channels were wired up.
-
-> +
-> +            channel@3 {
-> +                reg = <0x3>;
-> +                shunt-resistor-micro-ohms = <75000>;
-> +                label = "MEM";
-> +                microchip,vbus-half-range;
-> +                microchip,vbus-bipolar;
-> +                microchip,vsense-half-range;
-> +            };
-> +
-> +            channel@4 {
-> +                reg = <0x4>;
-> +                shunt-resistor-micro-ohms = <100000>;
-> +                label = "NET";
-> +                microchip,vbus-bipolar;
-> +            };
-> +        };
-> +    };
-> +
-> +...
-
+>  static inline int devm_pm_domain_attach_list(struct device *dev,
+>                                              const struct dev_pm_domain_a=
+ttach_data *data,
+>                                              struct dev_pm_domain_list **=
+list)
+> --
+> 2.43.0
+>
 

@@ -1,63 +1,63 @@
-Return-Path: <linux-iio+bounces-20284-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20285-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFD1CAD0D5A
-	for <lists+linux-iio@lfdr.de>; Sat,  7 Jun 2025 14:21:03 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3835AD0D61
+	for <lists+linux-iio@lfdr.de>; Sat,  7 Jun 2025 14:22:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0BA773B127E
-	for <lists+linux-iio@lfdr.de>; Sat,  7 Jun 2025 12:20:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5C3977A261C
+	for <lists+linux-iio@lfdr.de>; Sat,  7 Jun 2025 12:21:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04C4421FF47;
-	Sat,  7 Jun 2025 12:20:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3E1E2206B8;
+	Sat,  7 Jun 2025 12:22:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RgYjn9+w"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FqeHPf/C"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC98F4C8F;
-	Sat,  7 Jun 2025 12:20:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55EB74C8F;
+	Sat,  7 Jun 2025 12:22:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749298857; cv=none; b=e4oN4FjDYoM1zCvjZhJpc4Vh4GIVacgKKm53k74VKkjBqfH6OjFhhBhRqdPta+u828khV6Gkh5CIZp7WYak8w4c+cGan5DIUIO/sKO8wrauTFr11yZfyeMxj38Vmj55r42iuQ9k8DlTSG/e9l9aRVRm6UqoVaMROuWoZLw+s/TQ=
+	t=1749298970; cv=none; b=ACSSK7Dmu9Y6AalPeIKiy6ycSM7uRkXSV5JDXPWIiyG7Zm3TgFYUJn1apPzj+OgjOueZrMiWOVh5ThA1o78EDoxlsumZ2ftOpA4CagrFxdAnd69C6U4FLA2OilwjRHwb665j+4nIS96BlyOuvRTR9aJTEPucH7fB6ysMb6bg3Ho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749298857; c=relaxed/simple;
-	bh=5f3YyO5gNxllnHZXcnnAtqBn30LalHqPG5CQzpVx1LA=;
+	s=arc-20240116; t=1749298970; c=relaxed/simple;
+	bh=3ptY2tgV7V2evTtzjA4beZ9ycyJUvCiShYm+BtCxdKA=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UgME3XvWaROEOduADZqN0v+OpD7aOuu/Z7ExKbnafrgKhQeFRkQRtMmAkTYedsUWtHywOjaAd4kvPz0J/GuEB7R+dAfjxZevV662vgbK716kS2riQ1sTab0KlB9by2DPRj3eM+Caov8fp3e0C+MQw4mmMm8oQVyQmri3GhK0r98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RgYjn9+w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 178F6C4CEE4;
-	Sat,  7 Jun 2025 12:20:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=GDyz8YVlFpchwbnx+X5Xed7z7ZQ/6Kuhxg3Jqgqj0Q/JarYpZu7+5SStb2EYquJyMNNYfm/2Efgp05rfQsh4EkVlXTZYtRO9uVKcjI4Wjpmw6Jiv8m3wYcv89Yf4ob13I++Y3PMdkCrWPBzR0SDgy7A95mVxNbMxxFfL/snX3TM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FqeHPf/C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A02B5C4CEE4;
+	Sat,  7 Jun 2025 12:22:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749298857;
-	bh=5f3YyO5gNxllnHZXcnnAtqBn30LalHqPG5CQzpVx1LA=;
+	s=k20201202; t=1749298969;
+	bh=3ptY2tgV7V2evTtzjA4beZ9ycyJUvCiShYm+BtCxdKA=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=RgYjn9+wqPBMKNEPJXB+dewBvVP/iN607GfQuaC5wMCgBJNRCj2JCvqdkQG6xJFGL
-	 pNPEs4ddMqNBwB9B7HEz6RZHbMeq4wihBr6hD0XT+EwzPYKKJp+sjoy7iO/ykbAICj
-	 k1iLzHdg/EudUFPq/cnJzCgBdbuzQLnDnVzlIY+nBgX5POE57xsiIbXhiv3p76aytz
-	 +CWQgPTMekQlSH0VBkLQk6S+vYNh9WUeL1pDPPvRFR+MpkyRcfe6ehO2V+1XPZAxwo
-	 ds/6HxwiB+6Pu9Zbn8PhQXDF75inrJeoFCmYbJjq+WEoTWSQ4lZYHih4ML6/RdjVDb
-	 f+v9NtDF0HZ7g==
-Date: Sat, 7 Jun 2025 13:20:44 +0100
+	b=FqeHPf/ClNtD9Ye1YqTR2FsONCmVPHn5xu0xys2VhSBHAyjBeJq0LCiy0yMovM87F
+	 ZFlSB1u+WuyJ81UX9kcqKIweJ+uwO2vfd8gcFS8AaQzIWT1s2udOMJvq+WkBq7eHdt
+	 w9bxN6Q5UyZ90ce2UQGgnUiir62JSymdaM1gVKv37c/hbbrbqA4oyPdI8GoSNLRhfc
+	 KJ9RerG7QQxQ2IxF0aXt9whIu9EcU7szc6M8onYgishr+tcWhFSbneRcyEjP7LhOsX
+	 JvR8GEBq3I6T/3hWvmmtkEtOURqE5wb7srWGtRjZNSxis1tmkb5/ZtSTOWB2Be5nQ1
+	 NSuyyHphSp90Q==
+Date: Sat, 7 Jun 2025 13:22:38 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: David Lechner <dlechner@baylibre.com>
 Cc: Jonathan Santos <Jonathan.Santos@analog.com>, linux-iio@vger.kernel.org,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-gpio@vger.kernel.org, nuno.sa@analog.com,
+ linux-gpio@vger.kernel.org, andy@kernel.org, nuno.sa@analog.com,
  Michael.Hennerich@analog.com, marcelo.schmitt@analog.com, robh@kernel.org,
  krzk+dt@kernel.org, conor+dt@kernel.org, marcelo.schmitt1@gmail.com,
  linus.walleij@linaro.org, brgl@bgdev.pl, lgirdwood@gmail.com,
- broonie@kernel.org, jonath4nns@gmail.com, dlechner@baylibre.com
-Subject: Re: [PATCH v10 09/12] iio: adc: ad7768-1: add support for
- Synchronization over SPI
-Message-ID: <20250607132044.39aee667@jic23-huawei>
-In-Reply-To: <aEE0xiCp1IIt9c0M@smile.fi.intel.com>
+ broonie@kernel.org, jonath4nns@gmail.com
+Subject: Re: [PATCH v10 01/12] iio: adc: ad7768-1: Ensure SYNC_IN pulse
+ minimum timing requirement
+Message-ID: <20250607132238.4ce19d54@jic23-huawei>
+In-Reply-To: <57edc6dc-bbf7-4491-a43b-c33b9466d8d0@baylibre.com>
 References: <cover.1749063024.git.Jonathan.Santos@analog.com>
-	<4c8cce58c3f5d84423dffee23c260b94c4cb6c36.1749063024.git.Jonathan.Santos@analog.com>
-	<aEE0xiCp1IIt9c0M@smile.fi.intel.com>
+	<d3ee92a533cd1207cf5c5cc4d7bdbb5c6c267f68.1749063024.git.Jonathan.Santos@analog.com>
+	<57edc6dc-bbf7-4491-a43b-c33b9466d8d0@baylibre.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -65,71 +65,78 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, 5 Jun 2025 09:10:14 +0300
-Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+On Wed, 4 Jun 2025 15:14:59 -0500
+David Lechner <dlechner@baylibre.com> wrote:
 
-> On Wed, Jun 04, 2025 at 04:37:09PM -0300, Jonathan Santos wrote:
-> > The synchronization method using GPIO requires the generated pulse to be
-> > truly synchronous with the base MCLK signal. When it is not possible to
-> > do that in hardware, the datasheet recommends using synchronization over
-> > SPI, where the generated pulse is already synchronous with MCLK. This
-> > requires the SYNC_OUT pin to be connected to the SYNC_IN pin.
-> > 
-> > Use trigger-sources property to enable device synchronization over SPI
-> > and multi-device synchronization while replacing sync-in-gpios property.  
-> 
-> ...
-> 
-> > +static int ad7768_trigger_sources_sync_setup(struct device *dev,
-> > +					     struct fwnode_handle *fwnode,
-> > +					     struct ad7768_state *st)
-> > +{
-> > +	struct fwnode_reference_args args;
-> > +	struct fwnode_handle *ref __free(fwnode_handle) = NULL;
+> On 6/4/25 2:35 PM, Jonathan Santos wrote:
+> > The SYNC_IN pulse width must be at least 1.5 x Tmclk, corresponding to
+> > ~2.5 =C2=B5s at the lowest supported MCLK frequency. Add a 3 =C2=B5s de=
+lay to
+> > ensure reliable synchronization timing even for the worst-case scenario.
+> >=20
+> > Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
+> > --- =20
+>=20
+> Reviewed-by: David Lechner <dlechner@baylibre.com>
+This stands fine on it's own so applied even if I don't yet pick up the
+rest of the series.
 
-Sorry I was slow to reply to v9 discussion but splitting the destructor
-declaration from the constructor isn't an acceptable path.  If
-the general form proposed in the previous version isn't acceptable, spin
-a local version in this driver doing the same thing.
+Applied to the testing branch of iio.git which I'll rebase on rc1 sometime
+early next week.
+
+Thanks,
 
 Jonathan
 
-
-> > +	int ret;
-> > +
-> > +	ret = fwnode_property_get_reference_args(fwnode, "trigger-sources",
-> > +						 "#trigger-source-cells", 0,
-> > +						 AD7768_TRIGGER_SOURCE_SYNC_IDX, &args);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	ref = args.fwnode;
-> > +	/* First, try getting the GPIO trigger source */
-> > +	if (fwnode_device_is_compatible(ref, "gpio-trigger")) {  
-> 
-> > +		st->gpio_sync_in = devm_fwnode_gpiod_get_index(dev, ref, NULL,
-> > +							       0,  
-> 
-> This 0 is close to NULL semantically, please move it to the above line to make
-> the split more logical.
-> 
-> > +							       GPIOD_OUT_LOW,
-> > +							       "sync-in");
-> > +		return PTR_ERR_OR_ZERO(st->gpio_sync_in);
-> > +	}
-> > +
+>=20
+> > v10 Changes:
+> > * New patch.
+> > ---
+> >  drivers/iio/adc/ad7768-1.c | 23 +++++++++++++++++++----
+> >  1 file changed, 19 insertions(+), 4 deletions(-)
+> >=20
+> > diff --git a/drivers/iio/adc/ad7768-1.c b/drivers/iio/adc/ad7768-1.c
+> > index 51134023534a..8b414a102864 100644
+> > --- a/drivers/iio/adc/ad7768-1.c
+> > +++ b/drivers/iio/adc/ad7768-1.c
+> > @@ -252,6 +252,24 @@ static const struct regmap_config ad7768_regmap24_=
+config =3D {
+> >  	.max_register =3D AD7768_REG24_COEFF_DATA,
+> >  };
+> > =20
+> > +static int ad7768_send_sync_pulse(struct ad7768_state *st)
+> > +{
 > > +	/*
-> > +	 * TODO: Support the other cases when we have a trigger subsystem
-> > +	 * to reliably handle other types of devices as trigger sources.
+> > +	 * The datasheet specifies a minimum SYNC_IN pulse width of 1.5 =C3=
+=97 Tmclk,
+> > +	 * where Tmclk is the MCLK period. The supported MCLK frequencies ran=
+ge
+> > +	 * from 0.6 MHz to 17 MHz, which corresponds to a minimum SYNC_IN pul=
+se
+> > +	 * width of approximately 2.5 =C2=B5s in the worst-case scenario (0.6=
+ MHz).
 > > +	 *
-> > +	 * For now, return an error message. For self triggering, omit the
-> > +	 * trigger-sources property.
+> > +	 * Add a delay to ensure the pulse width is always sufficient to
+> > +	 * trigger synchronization.
 > > +	 */
-> > +	return dev_err_probe(dev, -EOPNOTSUPP, "Invalid synchronization trigger source\n");
-> > +}  
-> 
+> > +	gpiod_set_value_cansleep(st->gpio_sync_in, 1);
+> > +	fsleep(3);
+> > +	gpiod_set_value_cansleep(st->gpio_sync_in, 0);
+> > +
+> > +	return 0; =20
+>=20
+> There is no other return, so this could be a void function. In this case,=
+ it is
+> fine because a later patch adds another return. But in the future, be sur=
+e to
+> mention that in the commit message (or below the ---) so that reviewers w=
+ill
+> know why without having to look ahead.
+>=20
+> > +}
+> > + =20
 
 

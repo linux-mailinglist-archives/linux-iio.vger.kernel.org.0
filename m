@@ -1,56 +1,63 @@
-Return-Path: <linux-iio+bounces-20303-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20304-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 703ECAD0E91
-	for <lists+linux-iio@lfdr.de>; Sat,  7 Jun 2025 18:30:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9E9FAD0E93
+	for <lists+linux-iio@lfdr.de>; Sat,  7 Jun 2025 18:33:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2542216BA85
-	for <lists+linux-iio@lfdr.de>; Sat,  7 Jun 2025 16:30:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6B46A188C8E7
+	for <lists+linux-iio@lfdr.de>; Sat,  7 Jun 2025 16:33:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D67A1EB1AF;
-	Sat,  7 Jun 2025 16:30:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 396741E98E3;
+	Sat,  7 Jun 2025 16:33:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SY7GU4AJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KbjyhX+m"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D121A1F0E25;
-	Sat,  7 Jun 2025 16:30:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFC2D3234;
+	Sat,  7 Jun 2025 16:33:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749313803; cv=none; b=Pfb1dzRd3GMd+2A4Ndsekr7T+8UPTA0E23cZJQ0iD3Upxf45g6Wgsy001SWxJQTLu5hYYT33TUw8VMO00WYv1XBU6VUT6IsPPvG5jMSVTNq0tL4qi0Ekkgg5JDTIs8h+NRGgdPUStckUHGyNLshRqsG8VN9AFk9jlu5INyeK8Mo=
+	t=1749314012; cv=none; b=tFDiUdzY4/z4K00S2+qDX1CVwC3vbUwjgSbpxm5MkKV8R0JRhmcsTp17KaFrx7kQHJrRkLJf6j8BeCQ4l+wRNaECEciSI6GPpEtML7mqmR51FWxyUuAraEu4L6xYlFGlSuXUeF1xeCmz/7sM82x3h4KbsL+CGBeLAVuZA8RTqvE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749313803; c=relaxed/simple;
-	bh=mdwuGqZdvgfHob0Ke5t0pInz+LjwXGrddpBQt7quttE=;
+	s=arc-20240116; t=1749314012; c=relaxed/simple;
+	bh=ItlNIMhrEEQrBgbuPGB0ZnEfrVvrrPFCmx6bzFw4fcI=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YHfJv8vjTEPVDajzxUbdzOb6bZ8ld9J6ykIgrq5TvrG/p3Gf/W3plt6OZkYt7iYkaCr2OlRj0alwVKaPxPPpx++twgFs1wmWG6YFWX3JFqQIWS+wJAowJavg/WNI0pMfpj0GvUQAPRoNfLocAMpf6cfML2vyrXyQKInuK+AwGlM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SY7GU4AJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F0E2C4CEE4;
-	Sat,  7 Jun 2025 16:30:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=B7TMT9+otV9BwTEsYIEcJaOpnyQCkUc6wIgz7N7lsS2DdSzhvFEkYYnyf8K1p+fA3QdV4kqdftoYF+hpmt/XLnlOVSrmQussoHIZiARApl/0YT4SAvq0yOSH2xlCLipw+3OTQCvok73InqqXZHsyUuygZffQkr+s//schEuDfQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KbjyhX+m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7C34C4CEE4;
+	Sat,  7 Jun 2025 16:33:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749313803;
-	bh=mdwuGqZdvgfHob0Ke5t0pInz+LjwXGrddpBQt7quttE=;
+	s=k20201202; t=1749314011;
+	bh=ItlNIMhrEEQrBgbuPGB0ZnEfrVvrrPFCmx6bzFw4fcI=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=SY7GU4AJfvsK+1j8n/dGDKwvhcPHOxcBtGjpyj3sl+HTI92tPc6EntDJJryP1iMYI
-	 lWKtAsrRUY2/FX4nlRwtWTBxwmhod2fp6iM5Pyv1+sbTcgh7Sv6q4jZ3b4sF/mQhvv
-	 lbOxyN5rQbyec5RcrbHV0d0y085SFrfrWKuUhCxVRh4aFEIsDOTNTFZ1eeCGWVQ+EP
-	 gN1pGaf0sbPeVkmFrnqcM7Im8vYLax4oyVOmZK0hMYyj4YJ1ageTcjZ1EFZzQtBAN+
-	 N2Y+ocHHwT4T4xy82i+ARisGpcJChWYnLSLO5mhuRHCGJI9coCu1zKKsgDU7DlPA1j
-	 s4lrTPaBAXr4A==
-Date: Sat, 7 Jun 2025 17:29:56 +0100
+	b=KbjyhX+mq0xyAvfxkvjPmS1YtYDGJlFCjXWoNL6X6XwcoRj208tsnnpHOdWXnVS2J
+	 YegLikoroSWZIf29rRH+lCfeCAYpoCCqRi1wjSrPISkdFTvbpxFryjQgpspDJwQbE5
+	 L2dG55xorOm/KcFKImh+DaVUlOWWXsp5vGoKPv6QIw1kpp2KRwKStIhkva7QMWqBbQ
+	 mfXCGampCtaSY35VzJasX4hHCj/BmmcfMxEkvPJZbxZFESYpMf8fIJPpDDIoRob9F5
+	 D7ezTa94/o9pF0R96+LEz0mHxL57WVmfbo4JciCzTzo/Ziqn/qxrZ65cwlRCFjkChO
+	 RPkhXdjmJkC3Q==
+Date: Sat, 7 Jun 2025 17:33:20 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Tzung-Bi Shih <tzungbi@kernel.org>
-Cc: Gwendal Grignou <gwendal@chromium.org>, chrome-platform@lists.linux.dev,
- linux-iio@vger.kernel.org, Gwendal Grignou <gwendal@google.com>
-Subject: Re: [PATCH v5] iio: cros_ec_sensors: add cros_ec_activity driver
-Message-ID: <20250607172956.573b1ed4@jic23-huawei>
-In-Reply-To: <aEE5K9DnEOcKZf8P@google.com>
-References: <20250604053903.1376465-1-gwendal@google.com>
-	<aEE5K9DnEOcKZf8P@google.com>
+To: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+Cc: "Rob Herring (Arm)" <robh@kernel.org>, Marcelo Schmitt
+ <marcelo.schmitt@analog.com>, nuno.sa@analog.com, andy@kernel.org,
+ linus.walleij@linaro.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Michael.Hennerich@analog.com,
+ conor+dt@kernel.org, linux-iio@vger.kernel.org, brgl@bgdev.pl,
+ dlechner@baylibre.com, lars@metafoo.de, krzk+dt@kernel.org,
+ linux-gpio@vger.kernel.org
+Subject: Re: [PATCH v4 01/11] dt-bindings: iio: adc: Add AD4170
+Message-ID: <20250607173320.46e88253@jic23-huawei>
+In-Reply-To: <aD4PD4tBdbTFWNju@debian-BULLSEYE-live-builder-AMD64>
+References: <cover.1748829860.git.marcelo.schmitt@analog.com>
+	<187e038cb9e7dbe3991149885cb0a4b30376660c.1748829860.git.marcelo.schmitt@analog.com>
+	<174886697998.948762.16527380744873036141.robh@kernel.org>
+	<aD4PD4tBdbTFWNju@debian-BULLSEYE-live-builder-AMD64>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -61,97 +68,35 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 5 Jun 2025 06:28:59 +0000
-Tzung-Bi Shih <tzungbi@kernel.org> wrote:
+On Mon, 2 Jun 2025 17:52:31 -0300
+Marcelo Schmitt <marcelo.schmitt1@gmail.com> wrote:
 
-> On Tue, Jun 03, 2025 at 10:39:03PM -0700, Gwendal Grignou wrote:
-> > ChromeOS EC can report activity information derived from the
-> > accelerometer:
-> > - Reports on-body/off-body as a proximity event.
-> > - Reports significant motion as an activity event.
+> On 06/02, Rob Herring (Arm) wrote:
 > > 
-> > This new sensor is a virtual sensor, included only when the EC firmware
-> > is compiled with the appropriate module.
+> > On Mon, 02 Jun 2025 08:36:24 -0300, Marcelo Schmitt wrote:  
+> > > Add device tree documentation for AD4170 and similar sigma-delta ADCs.
+> > > The AD4170 is a 24-bit, multichannel, sigma-delta ADC.
+> > > 
+> > > Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>  
+> >   
+> ...
+> > My bot found errors running 'make dt_binding_check' on your patch:
 > > 
-> > Signed-off-by: Gwendal Grignou <gwendal@google.com>
-> > Reviewed-by: Tzung-Bi Shih <tzungbi@kernel.org>
-> > ---
-> > [...]
-> > Changes in v5:
-> > - Use guard(mutex), simplify error path.
-> > - Use driver name as function prefix.
-> > - Remove cros_ec_sensors_remove function.
-> > - Remove identation of structure field.
-> > - Invert raw value to return 1m when far, 0m when close.  
+> > yamllint warnings/errors:
+> > 
+> > dtschema/dtc warnings/errors:
+> > /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/iio/adc/adi,ad4170.yaml: properties:interrupt-names: 'enum' should not be valid under {'enum': ['const', 'enum', 'exclusiveMaximum', 'exclusiveMinimum', 'minimum', 'maximum', 'multipleOf', 'pattern']}
+> > 	hint: Scalar and array keywords cannot be mixed
+> > 	from schema $id: http://devicetree.org/meta-schemas/keywords.yaml#  
 > 
-> As v5 changed a bit from v4, it'd be better to drop my R-b tag in v5.
-> 
-> Anyway, it overall looks good to me.  Only a few minor comments:
-> Reviewed-by: Tzung-Bi Shih <tzungbi@kernel.org>
-> 
-> > +static int cros_ec_activity_read_event_config(struct iio_dev *indio_dev,
-> > +					      const struct iio_chan_spec *chan,
-> > +					      enum iio_event_type type,
-> > +					      enum iio_event_direction dir)
-> > +{
-> > +	struct cros_ec_sensors_state *st = iio_priv(indio_dev);
-> > +	int ret;
-> > +
-> > +	if (chan->type != IIO_ACTIVITY && chan->type != IIO_PROXIMITY)
-> > +		return -EINVAL;
-> > +
-> > +	guard(mutex)(&st->core.cmd_lock);
-> > +	st->core.param.cmd = MOTIONSENSE_CMD_LIST_ACTIVITIES;
-> > +	ret = cros_ec_motion_send_host_cmd(&st->core, 0);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	switch (chan->type) {
-> > +	case IIO_PROXIMITY:
-> > +		return !!(st->core.resp->list_activities.enabled &
-> > +			 (1 << MOTIONSENSE_ACTIVITY_BODY_DETECTION));
-> > +	case IIO_ACTIVITY:
-> > +		if (chan->channel2 == IIO_MOD_STILL) {
-> > +			return !!(st->core.resp->list_activities.enabled &
-> > +				 (1 << MOTIONSENSE_ACTIVITY_SIG_MOTION));
-> > +		} else {
-> > +			dev_warn(&indio_dev->dev, "Unknown activity: %d\n",
-> > +				 chan->channel2);
-> > +			return -EINVAL;
-> > +		}  
-> 
-> By referencing to cros_ec_activity_write_event_config(), maybe consider to
-> drop the " else {" and "}".
+> Removing maxItems from under interrupt-names seems to solve the issue.
 
-Agreed. I tweaked this.
+As per feedback on v3.  I don't think we should be limiting the max
+of interrupt-names anyway.  We should allow two interrupts if they
+are both wired - it's a driver choice on which one to use.
 
 > 
-> > +static int cros_ec_activity_write_event_config(struct iio_dev *indio_dev,
-> > +					       const struct iio_chan_spec *chan,
-> > +					       enum iio_event_type type,
-> > +					       enum iio_event_direction dir,
-> > +					       int state)
-> > +{
-> > +	struct cros_ec_sensors_state *st = iio_priv(indio_dev);
-> > +  
+> Thanks
 > 
-> By referencing to cros_ec_activity_read_event_config(), maybe consider to
-> exit the function earlier:
-> 	if (chan->type != IIO_ACTIVITY && chan->type != IIO_PROXIMITY)
-In this case we aren't really doing anything before the switch statement, unlike
-read where we read the data from the device.
-
-So I left this one alone.
-
-Needed another couple of tweaks.  Signature of this function now takes
-a bool state and the { }, fix was already present upstream.
-Also some mess in the Makefile due to tracing patch that it seems
-you don't have on your tree.
-
-Please check the result. Pushed out for now as testing but I'll rebase
-on rc1 sometime soon.
-
-Jonathan
-
 
 

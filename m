@@ -1,57 +1,55 @@
-Return-Path: <linux-iio+bounces-20301-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20302-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02802AD0E6E
-	for <lists+linux-iio@lfdr.de>; Sat,  7 Jun 2025 18:13:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F0DCAD0E7E
+	for <lists+linux-iio@lfdr.de>; Sat,  7 Jun 2025 18:20:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 250BD3AE265
-	for <lists+linux-iio@lfdr.de>; Sat,  7 Jun 2025 16:12:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BF738188FCA8
+	for <lists+linux-iio@lfdr.de>; Sat,  7 Jun 2025 16:20:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC7501E412A;
-	Sat,  7 Jun 2025 16:13:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45E8B1D86C6;
+	Sat,  7 Jun 2025 16:19:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IoAZINdU"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tAr1pXmZ"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87BEF1990A7;
-	Sat,  7 Jun 2025 16:13:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F23842F3E;
+	Sat,  7 Jun 2025 16:19:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749312786; cv=none; b=Hlsgalt5/6hC2UsCn+e73klxDxEnXlWFQx3Ne3xytelSOVv+Sr0NNBhKVWzwI3bAT7mxCxCQ5VVxRBReAInAOb8yMwI2bhaRTd3kQ58hBfX74XLth7q1rLVIWaJRjQH45hkhpH5bPHyGmLf/dfX9tbph6uf5DVqrVWFeW5d7u3E=
+	t=1749313198; cv=none; b=LkI9/zfjQE7d38fiJfxFIDXBH4ZV2nPmA4VrHaJBdRVPAekQ8VvYxPAj+nRC/6BfFCTmODnfbmYkgBXjCTPtNzL79ZsIDKbwD3MqTJ/dRDLo3AvR/OxW1Ld/svg22HrvAf79wqCiWeNNIcqfGGYLL7q+yrBSviIJxiIEbVjRlm8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749312786; c=relaxed/simple;
-	bh=xBHJZAq320huSZYVEghWqBlw7mafGQOvvitjx5Lpu1o=;
+	s=arc-20240116; t=1749313198; c=relaxed/simple;
+	bh=74NNiKZaZpH3i8kSiCdtcgfk8bjRj9cArbeqwKkfPD0=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MkyP62vvEKTP8Q/QwdpoGjOfOwzn49S/Td5ighHuQwjKgVGJ7Xij/Bz65KFcsuDw0Q/RebVphALpSy5mNmkUYJpJHbHEE3pgem/+E6H0PiHg0JnWOD/5kwwxBUKwJVFeScGpitKB96xknhvWuL4+CgwcvytY2KSQpzsG0h50gJA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IoAZINdU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D1EDC4CEE4;
-	Sat,  7 Jun 2025 16:13:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=jCJqQj6UzD9/Ld8QDJixlw/CUDdUOULmJIR6xIE5iUNy+VUpfxW8v8v32kPHTf/dN7VDtj+wcHHkyx6QdzSqIuf1ySvKsvPvGa/NAGg6GVT3NELmRo87D0rRl4e4e14Y/z+yeKw5P6rDOhyP+pyw2xgtj+yqwK4BoIalp95fRzE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tAr1pXmZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EC08C4CEE4;
+	Sat,  7 Jun 2025 16:19:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749312786;
-	bh=xBHJZAq320huSZYVEghWqBlw7mafGQOvvitjx5Lpu1o=;
+	s=k20201202; t=1749313197;
+	bh=74NNiKZaZpH3i8kSiCdtcgfk8bjRj9cArbeqwKkfPD0=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=IoAZINdU0n9TTvFqZhJZCSBZfZ5ikvlOm9LNDcmGfZcqgV32Htl6QhCtlRKnRvhK+
-	 HBErwVolsyueSUMgQQb8zSN7pWjIlJ7agQUJAjP7Jq4xXQ68nmnZDHteugDzbjtnQP
-	 6h5ineagJcffTtJviAIOAI3WIIeBg6L7pzWKuvVTOIcL9ndjB6665bpAAdnTH67tst
-	 q5WvD3gIP+wvZpyHusCLpmC6qcIomN2xVa2s4CQvaWnW9gCFXKbm5xN9LlCOmPKeGO
-	 1aTUkFmtd8Is54QfQRTRiWIvMeZoo7LJ66qMXqGe3dYHETC4dRDpBYzM1gA/RP1WbU
-	 Fo5bg4PoQiWJA==
-Date: Sat, 7 Jun 2025 17:13:01 +0100
+	b=tAr1pXmZWnxGIOoAs4kKKOcrTHPJqzOB7W1MRml/xpFJivWg17ERFFCpDe+608f7O
+	 yqOKQNKcH5eZXCeO+we+gnz+CW5CwMHj58gWvCWaIQpmebMi0GiGquazB/+THY3+0A
+	 Pki86t5bwC/2rglOBamCMJeHh6NWbOoJWuWGOLlBUQveEAfZ0yBSsqHcQP4r4CDbQa
+	 5X8aGucPv/UL/4d0NmHP0O5xgwfY+HqCx3tY+X7a2DzGEBozcud4UnEcS6Y02xkQbO
+	 dxBEC4XCJcY0dUlxOeNqJMfYSbBbWxJK06PfrWSTjZnjkA3k/DiA9Z24/sLL4On56g
+	 lwZcsxOb3SHLA==
+Date: Sat, 7 Jun 2025 17:19:50 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Gwendal Grignou <gwendal@google.com>
-Cc: Gwendal Grignou <gwendal@chromium.org>, tzungbi@kernel.org,
- chrome-platform@lists.linux.dev, linux-iio@vger.kernel.org
-Subject: Re: [PATCH v4] iio: cros_ec_sensors: add cros_ec_activity driver
-Message-ID: <20250607171301.537dd168@jic23-huawei>
-In-Reply-To: <CAMHSBOUb-HPqmW3CFspipNGQGzbYUV+oqVw-Cbw0Bk4Huwz-QQ@mail.gmail.com>
-References: <20250523172727.2654957-1-gwendal@google.com>
-	<20250525144233.13df701f@jic23-huawei>
-	<CAMHSBOUb-HPqmW3CFspipNGQGzbYUV+oqVw-Cbw0Bk4Huwz-QQ@mail.gmail.com>
+To: Gwendal Grignou <gwendal@chromium.org>
+Cc: tzungbi@kernel.org, chrome-platform@lists.linux.dev,
+ linux-iio@vger.kernel.org, Gwendal Grignou <gwendal@google.com>
+Subject: Re: [PATCH v5] iio: cros_ec_sensors: add cros_ec_activity driver
+Message-ID: <20250607171950.188dc114@jic23-huawei>
+In-Reply-To: <20250604053903.1376465-1-gwendal@google.com>
+References: <20250604053903.1376465-1-gwendal@google.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -62,35 +60,52 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-> > > +     for_each_set_bit(i, &activities, BITS_PER_LONG) {
-> > > +             /* List all available triggers */
-> > > +             if (i == MOTIONSENSE_ACTIVITY_BODY_DETECTION) {
-> > > +                     channel->type = IIO_PROXIMITY;
-> > > +                     channel->info_mask_separate = BIT(IIO_CHAN_INFO_RAW);
-> > > +                     channel->modified = 0;  
-> >
-> > Not modified is the 'obvious' default so can probably drop that one.
-> >  
-> > > +                     channel->event_spec = cros_ec_body_detect_events;
-> > > +                     channel->num_event_specs =
-> > > +                             ARRAY_SIZE(cros_ec_body_detect_events);
-> > > +                     st->body_detection_channel_index = index;
-> > > +             } else {
-> > > +                     channel->type = IIO_ACTIVITY;  
-> >
-> > This is getting a little creative.  Do we know anything about what the
-> > underlying detection actually is?  Activity sensor are often some form
-> > of magnitude sensor on a specific type of data.  I guess if we have no
-> > idea what this then activity detection makes some sense.  
-> As written earlier, the event is triggered when a threshold is
-> crossed. So contrary to other activity sensors like walking or
-> swimming, there is no confidence level, it just happened that we are
-> not still anymore.
+On Tue,  3 Jun 2025 22:39:03 -0700
+Gwendal Grignou <gwendal@chromium.org> wrote:
 
-The confidence level is a bit of a fiction for all sensors. I just wanted
-the ABI to allow for algorithms getting more clever over time.  Right now
-they all claim to be 0 or 100.
+> ChromeOS EC can report activity information derived from the
+> accelerometer:
+> - Reports on-body/off-body as a proximity event.
+> - Reports significant motion as an activity event.
+> 
+> This new sensor is a virtual sensor, included only when the EC firmware
+> is compiled with the appropriate module.
+> 
+> Signed-off-by: Gwendal Grignou <gwendal@google.com>
+> Reviewed-by: Tzung-Bi Shih <tzungbi@kernel.org>
 
-Anyhow, I don't think that matters anyway.
+Passing comment inline. 
 
+
+
+> diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+> index 64bada1e8678..a47b0cd26bf5 100644
+> --- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+> +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+> @@ -485,10 +485,20 @@ const struct iio_chan_spec_ext_info cros_ec_sensors_ext_info[] = {
+>  		.shared = IIO_SHARED_BY_ALL,
+>  		.read = cros_ec_sensors_id
+>  	},
+> -	{ },
+> +	{ }
+
+Unrelated change. Should really be in a separate patch but meh it's trivial
+so I don't care enough to insist.
+
+>  };
+>  EXPORT_SYMBOL_GPL(cros_ec_sensors_ext_info);
+>  
+> +const struct iio_chan_spec_ext_info cros_ec_sensors_limited_info[] = {
+> +	{
+> +		.name = "id",
+> +		.shared = IIO_SHARED_BY_ALL,
+> +		.read = cros_ec_sensors_id
+> +	},
+> +	{ }
+> +};
+> +EXPORT_SYMBOL_GPL(cros_ec_sensors_limited_info);
+> +
+>  /**
+>   * cros_ec_sensors_idx_to_reg - convert index into offset in shared memory
+>   * @st:		pointer to state information for device
 

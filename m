@@ -1,60 +1,66 @@
-Return-Path: <linux-iio+bounces-20305-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20306-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7801EAD0E9E
-	for <lists+linux-iio@lfdr.de>; Sat,  7 Jun 2025 18:45:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0EE1AD0EA4
+	for <lists+linux-iio@lfdr.de>; Sat,  7 Jun 2025 18:59:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF82B188D206
-	for <lists+linux-iio@lfdr.de>; Sat,  7 Jun 2025 16:45:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 889E616D7F9
+	for <lists+linux-iio@lfdr.de>; Sat,  7 Jun 2025 16:59:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC8FB1F5828;
-	Sat,  7 Jun 2025 16:45:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D13DD1FDA9E;
+	Sat,  7 Jun 2025 16:59:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WslmEZNY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F+n4g9Jk"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BF6FE573;
-	Sat,  7 Jun 2025 16:45:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 795D236D;
+	Sat,  7 Jun 2025 16:59:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749314730; cv=none; b=RBK6d1xxaKq6c2/MjL6p3EqgxSn49lSqqeyfB9qH+rkqXm3hLAO9m8ldBP9jueZ3ANdfbUO4Gzrx84ArmODNA+3t1KePgulPVdrFvCTnaZJKtHsc18giIcKS19NWRxNwO8k5mmZ0G4GO8VMCDJiRrQx38XGuxXfBRG3HB+CtxZk=
+	t=1749315556; cv=none; b=R0GgXWYcKzVHpmu4HNrqpmxV4MYqVWl+eQ9VlX96sb/noDgN19/Te3lgvrv+qIcx+M34RKYBfrRb18E5yk4bN+8g9qeKcWjjArWRSZaLrMC+IihpRqpEyKOg7MqE+cqj0DPiSOHp8fCNbjr4ZuDciTz77Zg2HeEubPfBB0VmRqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749314730; c=relaxed/simple;
-	bh=k+xKV5fZbAc70QC7FeAlBD1nfPEHF0Qe55V3oNTpWCE=;
+	s=arc-20240116; t=1749315556; c=relaxed/simple;
+	bh=Yd7rpYba+Q4AtfrfgdJ46W7L8QFSYgftwPePKTRDz38=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BnrXBM18ds+eXhBNuX82luzDj43aO+KWRCxyfscEOtsFrqMCW5svWGg7iEO0neK9dxgOCkEJ+U7kR9qjhcQhsLoH8wLSikyVqVvTiCY+CmiAsBxxzLfxQX0+PmNFO+q0eWWRiOeKSGfY2M/H10Hh9ileA8d8MP3ViZlKfVRqGQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WslmEZNY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85333C4CEE4;
-	Sat,  7 Jun 2025 16:45:24 +0000 (UTC)
+	 MIME-Version:Content-Type; b=jEEUtW7VYdBt+thrNv5KIRXNEHi2qmb9rWx4DR5wzAOlsceAuBPcJNkzl6aHStG1otHZ2bvem0JbPM1GWXoVHMbQSnsKm1S53fSdl1aZOkWVGMdxT+hxvYQK4jpP5e93M+tY1IiKmRh8+lE/m3vx7UgxGrtWAHFrr/UMw+eiX7A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F+n4g9Jk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 716AEC4CEE4;
+	Sat,  7 Jun 2025 16:59:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749314729;
-	bh=k+xKV5fZbAc70QC7FeAlBD1nfPEHF0Qe55V3oNTpWCE=;
+	s=k20201202; t=1749315555;
+	bh=Yd7rpYba+Q4AtfrfgdJ46W7L8QFSYgftwPePKTRDz38=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=WslmEZNY1Ag19zwrbOw9MiyrTGxaKodJT1yYtt8Zhc9d2OUZ52KYlP02ftzfEyfUI
-	 eM7aeO3v2BYsYWuiIm/kfk51RNKAtyqrOO9HEzcm0psnn83MVZ8ndWmf3tOf6dRPY8
-	 cXrulSq2W7KDr+m+w2imGMXsgISGoYETHuLx9RpRoBdE3lDQJaQXBo4CxmUhpokIxH
-	 HVPmP9OXIpXxz5KUIWX+MGku9xdApwsv90iE7vpqER36CAkBvNMxSxIGn5j5MEj3+c
-	 eE1fcv2fE5ZR6GaOtwGE6dmkLzxYwYXx8HkN/wWuOAEyzIBCEIaJ067VZNemgphXyw
-	 FQIh5LlbQOxnA==
-Date: Sat, 7 Jun 2025 17:45:21 +0100
+	b=F+n4g9JkLDIXpUcOmEt3RcnI5lX0AzFfVQ1LrI9iydTutPYEFPwzcLKe7bc3JVqdA
+	 +GDc7DEpwm/mgAtYLJyTKFM1xCyodYxnRw2t8bnuzakYfkocqJKmyapQE+YGRmnp/Y
+	 rKOuzu/u9D7e76+9m5Mj+RE6ds8EolRrCBwz6iRuT1tOaJKbjDgBfRjlJQN2I+ofUb
+	 RYNwjM/lwjsmFpl3it/Ti3o4zFwk0VG+zd68IJQM7j8uh1gGNCJ533Xknupy4h9T0G
+	 Mxw0hqY1JK+ZWksA+MWkhlZFswIPn6JCeVtpyh+hWVhVSI1IjCXaNmlk/4IzwHcFqJ
+	 1jprErtTtiLFQ==
+Date: Sat, 7 Jun 2025 17:59:04 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Marcelo Schmitt <marcelo.schmitt@analog.com>
-Cc: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
- <linux-gpio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <lars@metafoo.de>, <Michael.Hennerich@analog.com>, <dlechner@baylibre.com>,
- <nuno.sa@analog.com>, <andy@kernel.org>, <robh@kernel.org>,
- <krzk+dt@kernel.org>, <conor+dt@kernel.org>, <linus.walleij@linaro.org>,
- <brgl@bgdev.pl>, <marcelo.schmitt1@gmail.com>
-Subject: Re: [PATCH v4 01/11] dt-bindings: iio: adc: Add AD4170
-Message-ID: <20250607174521.6dee54fb@jic23-huawei>
-In-Reply-To: <187e038cb9e7dbe3991149885cb0a4b30376660c.1748829860.git.marcelo.schmitt@analog.com>
+To: Andy Shevchenko <andy@kernel.org>
+Cc: Marcelo Schmitt <marcelo.schmitt1@gmail.com>, Marcelo Schmitt
+ <marcelo.schmitt@analog.com>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-gpio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Ana-Maria Cusco <ana-maria.cusco@analog.com>,
+ lars@metafoo.de, Michael.Hennerich@analog.com, dlechner@baylibre.com,
+ nuno.sa@analog.com, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, linus.walleij@linaro.org, brgl@bgdev.pl
+Subject: Re: [PATCH v4 02/11] iio: adc: Add basic support for AD4170
+Message-ID: <20250607175904.08d7b994@jic23-huawei>
+In-Reply-To: <aD78Di51VHxtOtJG@smile.fi.intel.com>
 References: <cover.1748829860.git.marcelo.schmitt@analog.com>
-	<187e038cb9e7dbe3991149885cb0a4b30376660c.1748829860.git.marcelo.schmitt@analog.com>
+	<e79f9a126672b33b8a7c01f650fee43a68c74029.1748829860.git.marcelo.schmitt@analog.com>
+	<aD27cobHWeBX8o30@smile.fi.intel.com>
+	<aD3XQfUfxIiz62ZU@debian-BULLSEYE-live-builder-AMD64>
+	<aD6x2caTMd1eBInM@smile.fi.intel.com>
+	<aD7kcFupREh4lW0s@debian-BULLSEYE-live-builder-AMD64>
+	<aD78Di51VHxtOtJG@smile.fi.intel.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -65,272 +71,81 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 2 Jun 2025 08:36:24 -0300
-Marcelo Schmitt <marcelo.schmitt@analog.com> wrote:
+On Tue, 3 Jun 2025 16:43:42 +0300
+Andy Shevchenko <andy@kernel.org> wrote:
 
-> Add device tree documentation for AD4170 and similar sigma-delta ADCs.
-> The AD4170 is a 24-bit, multichannel, sigma-delta ADC.
+> On Tue, Jun 03, 2025 at 09:02:56AM -0300, Marcelo Schmitt wrote:
+> > On 06/03, Andy Shevchenko wrote:  
+> > > On Mon, Jun 02, 2025 at 01:54:25PM -0300, Marcelo Schmitt wrote:  
 > 
-> Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
-> ---
-> Change log v3 -> v4
-> - Dropped sensor-node and most of defs.
-> - Updated external sensor props to have similar name and type of adi,ad4130 ones.
-> - Added constraints to properties related to external bridge sensor excitation.
+> ...
 > 
-> Some explanation about the constraints to weigh scale sensor types.
+> > > > > > +static bool ad4170_setup_eq(struct ad4170_setup *a, struct ad4170_setup *b)
+> > > > > > +{
+> > > > > > +	/*
+> > > > > > +	 * The use of static_assert() here is to make sure that the comparison
+> > > > > > +	 * is adapted whenever struct ad4170_setup is changed.
+> > > > > > +	 */  
+> > Does the reason given in the comment justify the use of static_assert?  
 > 
-> The predefined ACX1, ACX1 negated, ACX2, and ACX2 negated signals are used to AC
-> excite external bridge circuits and are output on GPIO2, GPIO0, GPIO3, and
-> GPIO1, respectively. If only two pins are specified for AC excitation, only ACX1
-> and ACX2 (GPIO2 and GPIO3) are used. Because of that, if AC excitation is
-> specified/requested, then those specific GPIO pins must be used with the bridge.
-> Otherwise, the bridge won't get properly excited and we also cannot guarantee to
-> avoid short-circuit conditions since the level set to GPIOs to DC excite the
-> bridge depends on the GPIO number. See AD4170 datasheet Figure 113 Weigh Scale
-> (AC Excitation) for the reference circuit diagram.
-> Link: https://www.analog.com/media/en/technical-documentation/data-sheets/ad4170-4.pdf#unique_149_Connect_42_ID10354
+> Should I repeat myself? It makes a little sense when no memcmp() is involved.
+
+The intent I think is to reduce the chance of a field being added without
+this match function being updated.   Not a very strong test but maybe
+better than nothing...
+
+Not sure how memcmp() is relevant.
+
 > 
->  .../bindings/iio/adc/adi,ad4170.yaml          | 543 ++++++++++++++++++
->  MAINTAINERS                                   |   7 +
->  2 files changed, 550 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad4170.yaml
+> > > > > > +	static_assert(sizeof(*a) ==
+> > > > > > +		      sizeof(struct {
+> > > > > > +				     u16 misc;
+> > > > > > +				     u16 afe;
+> > > > > > +				     u16 filter;
+> > > > > > +				     u16 filter_fs;
+> > > > > > +				     u32 offset;
+> > > > > > +				     u32 gain;
+> > > > > > +			     }));  
+> > > > > 
+> > > > > I think it doesn't make much sense unless one uses memcpy().  
+> > > > 
+> > > > memcpy() is used to update the setups after reg write succeeds.
+> > > > Also, previously, memcmp() was used to compare setups.
+> > > > Since struct ad4170_setup has only unsigned integers (no floating point fields
+> > > > like ad7124 had [1]), ad4170 works properly when comparing setups with memcmp().
+> > > > Though, it was asked to do explicit field matching on previous reviews [2] so
+> > > > that's how it had been since then. Well, both ways work for ad4170. We can
+> > > > compare setup with memcmp(), or do the comparison field by field. I don't mind
+> > > > changing it again if requested. I guess we only need to reach an agreement about
+> > > > what to go with.  
+> > > 
+> > > The question was "why do you need the static_assert() now?"  
+> > 
+> > To ensure that the comparison function gets updated if struct ad4170_setup is
+> > ever modified? This intends to be similar to what was implemented in ad7124
+> > driver as the chips have similar channel configuration mechanisms. We also
+> > have ad7173 and ad4130 using static_assert for analogous purpose. There was
+> > also a comment about static_assert above.  
 > 
-> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad4170.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad4170.yaml
-> new file mode 100644
-> index 000000000000..87b6e821fdb8
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad4170.yaml
-> @@ -0,0 +1,543 @@
+> Does this won;t work if you changes field types? (Assuming only integers to
+> integers) I believe it doesn't affect the field-by-field comparison.
+> 
+> The other drivers may have different approach, have you studied them? Do they
+> use memcmp()
+> 
+> > > > [1]: https://lore.kernel.org/all/20250303114659.1672695-13-u.kleine-koenig@baylibre.com/
+> > > > [2]: https://lore.kernel.org/linux-iio/20250504192117.5e19f44b@jic23-huawei/
+> > > >   
+> > > > > > +	if (a->misc != b->misc ||
+> > > > > > +	    a->afe != b->afe ||
+> > > > > > +	    a->filter != b->filter ||
+> > > > > > +	    a->filter_fs != b->filter_fs ||
+> > > > > > +	    a->offset != b->offset ||
+> > > > > > +	    a->gain != b->gain)
+> > > > > > +		return false;
+> > > > > > +
+> > > > > > +	return true;
+> > > > > > +}  
+> 
 
-> +
-> +$defs:
-> +  reference-buffer:
-> +    description: |
-> +      Enable precharge buffer, full buffer, or skip reference buffering of
-> +      the positive/negative voltage reference. Because the output impedance
-> +      of the source driving the voltage reference inputs may be dynamic, RC
-
-RC?
-
-> +      combinations of those inputs can cause DC gain errors if the reference
-> +      inputs go unbuffered into the ADC. Enable reference buffering if the
-> +      provided reference source has dynamic high impedance output. Note the
-> +      absolute voltage allowed on REFINn+ and REFINn- inputs is from
-> +      AVSS - 50 mV to AVDD + 50 mV when the reference buffers are disabled
-> +      but narrows to AVSS to AVDD when reference buffering is enabled or in
-> +      precharge mode. The valid options for this property are:
-> +      0: Reference precharge buffer.
-> +      1: Full reference buffering.
-> +      2: Bypass reference buffers (buffering disabled).
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    enum: [0, 1, 2]
-> +    default: 1
-
-> +
-> +  interrupts:
-> +    description:
-> +      Interrupt for signaling the completion of conversion results. The data
-> +      ready signal (RDY) used as interrupt is by default provided on the SDO
-> +      pin. Alternatively, it can be provided on the DIG_AUX1 pin in which case
-> +      the chip disables the RDY function on SDO. Thus, there can be only one
-> +      data ready interrupt enabled at a time.
-> +    maxItems: 1
-> +
-> +  interrupt-names:
-> +    description:
-> +      Specify which pin should be configured as Data Ready interrupt.
-> +    enum:
-> +      - sdo
-> +      - dig_aux1
-> +    maxItems: 1
-> +    default: sdo
-
-I think I'd prefer to see it always provided as there is no strong
-reason to prefer one as the default.
-
->
-> +      adi,excitation-pin-0:
-> +        $ref: '#/$defs/excitation-pin'
-> +
-> +      adi,excitation-pin-1:
-> +        $ref: '#/$defs/excitation-pin'
-> +
-> +      adi,excitation-pin-2:
-> +        $ref: '#/$defs/excitation-pin'
-> +
-> +      adi,excitation-pin-3:
-> +        $ref: '#/$defs/excitation-pin'
-> +
-> +      adi,excitation-current-0-microamp:
-> +        description:
-> +          Excitation current in microamperes to be applied to pin specified in
-> +          adi,excitation-pin-0 while this channel is active.
-> +        enum: [0, 10, 50, 100, 250, 500, 1000, 1500]
-
-What motivated mix of using $ref and here where there is a lot of repetition?
-I don't mind which approach is used, but a mix seems the worst option.
-
-> +        default: 0
-> +
-> +      adi,excitation-current-1-microamp:
-> +        description:
-> +          Excitation current in microamperes to be applied to pin specified in
-> +          adi,excitation-pin-1 while this channel is active.
-> +        enum: [0, 10, 50, 100, 250, 500, 1000, 1500]
-> +        default: 0
-> +
-> +      adi,excitation-current-2-microamp:
-> +        description:
-> +          Excitation current in microamperes to be applied to pin specified in
-> +          adi,excitation-pin-2 while this channel is active.
-> +        enum: [0, 10, 50, 100, 250, 500, 1000, 1500]
-> +        default: 0
-> +
-> +      adi,excitation-current-3-microamp:
-> +        description:
-> +          Excitation current in microamperes to be applied to pin specified in
-> +          adi,excitation-pin-3 while this channel is active.
-> +        enum: [0, 10, 50, 100, 250, 500, 1000, 1500]
-> +        default: 0
-> +
-> +      adi,excitation-ac:
-> +        type: boolean
-> +        description:
-> +          Whether the external sensor has to be AC or DC excited. When omitted,
-> +          it is DC excited.
-
-> +required:
-> +  - compatible
-> +  - reg
-> +  - avdd-supply
-> +  - iovdd-supply
-> +  - spi-cpol
-> +  - spi-cpha
-> +
-> +unevaluatedProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/interrupt-controller/irq.h>
-> +    spi {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +
-> +        adc@0 {
-> +            compatible = "adi,ad4170";
-> +            reg = <0>;
-> +            spi-max-frequency = <20000000>;
-> +            spi-cpol;
-> +            spi-cpha;
-> +            avdd-supply = <&avdd>;
-> +            iovdd-supply = <&iovdd>;
-> +            clocks = <&clk>;
-> +            clock-names = "xtal";
-> +            interrupt-parent = <&gpio_in>;
-
-In examples I don't think we tend to specify interrupt-parent.
-That's covered fine by the interrupt bindings.
-
-As above, I'd prefer to always see interrupt-names as well so
-we have it really visible which one this is.
-
-
-> +            interrupts = <0 IRQ_TYPE_EDGE_FALLING>;
-
-> +            adi,vbias-pins = <7>;
-> +            #address-cells = <1>;
-> +            #size-cells = <0>;
-
-> +        };
-> +    };
-> +  - |
-> +    #include <dt-bindings/interrupt-controller/irq.h>
-> +    spi {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +
-> +        adc@0 {
-> +            compatible = "adi,ad4170";
-> +            reg = <0>;
-> +            spi-max-frequency = <20000000>;
-> +            spi-cpol;
-> +            spi-cpha;
-> +            avdd-supply = <&avdd>;
-> +            iovdd-supply = <&iovdd>;
-> +            #clock-cells = <0>;
-> +            clock-output-names = "ad4170-clk16mhz";
-> +            interrupt-parent = <&gpio_in>;
-> +            interrupts = <0 IRQ_TYPE_EDGE_FALLING>;
-> +            #address-cells = <1>;
-> +            #size-cells = <0>;
-> +
-> +            // Sample AIN0 with respect to AIN1 throughout AVDD/AVSS input range
-> +            // Differential bipolar. If AVSS < 0V, differential true bipolar
-> +            channel@0 {
-> +                reg = <0>;
-> +                bipolar;
-> +                diff-channels = <0 1>;
-> +                adi,reference-select = <3>;
-> +            };
-> +            // Sample AIN2 with respect to DGND throughout AVDD/DGND input range
-> +            // Pseudo-differential unipolar
-> +            channel@1 {
-> +                reg = <1>;
-> +                single-channel = <2>;
-> +                common-mode-channel = <24>;
-> +                adi,reference-select = <3>;
-> +            };
-> +            // Sample AIN3 with respect to 2.5V throughout AVDD/AVSS input range
-> +            // Pseudo-differential bipolar
-> +            channel@2 {
-> +                reg = <2>;
-> +                bipolar;
-> +                single-channel = <3>;
-> +                common-mode-channel = <29>;
-> +                adi,reference-select = <3>;
-> +            };
-> +            // Sample AIN4 with respect to DGND throughout AVDD/AVSS input range
-> +            // Pseudo-differential bipolar
-> +            channel@3 {
-> +                reg = <3>;
-> +                bipolar;
-> +                single-channel = <4>;
-> +                common-mode-channel = <24>;
-> +                adi,reference-select = <3>;
-> +            };
-> +            // Sample AIN5 with respect to 2.5V throughout AVDD/AVSS input range
-> +            // Pseudo-differential unipolar (AD4170 datasheet page 46 example)
-> +            channel@4 {
-> +                reg = <4>;
-> +                single-channel = <5>;
-> +                common-mode-channel = <29>;
-> +                adi,reference-select = <3>;
-> +            };
-> +            // Sample AIN6 with respect to 2.5V throughout REFIN+/REFIN- input range
-> +            // Pseudo-differential bipolar
-> +            channel@5 {
-> +                reg = <5>;
-> +                bipolar;
-> +                single-channel = <6>;
-> +                common-mode-channel = <29>;
-> +                adi,reference-select = <0>;
-> +            };
-> +            // Weigh scale sensor
-> +            channel@6 {
-> +                reg = <6>;
-> +                bipolar;
-> +                diff-channels = <7 8>;
-> +                adi,reference-select = <0>;
-> +                adi,sensor-type = "weighscale";
-> +                adi,excitation-pin-0 = <17>;
-> +                adi,excitation-pin-1 = <18>;
-> +                adi,excitation-pin-2 = <19>;
-> +                adi,excitation-pin-3 = <20>;
-> +                adi,excitation-ac;
-> +            };
-> +        };
-> +    };
-> +...
-> +
 

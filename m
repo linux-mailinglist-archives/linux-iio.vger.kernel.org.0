@@ -1,47 +1,47 @@
-Return-Path: <linux-iio+bounces-20316-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20317-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A85DAD1311
-	for <lists+linux-iio@lfdr.de>; Sun,  8 Jun 2025 17:44:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEDF9AD1336
+	for <lists+linux-iio@lfdr.de>; Sun,  8 Jun 2025 18:08:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5FC387A3824
-	for <lists+linux-iio@lfdr.de>; Sun,  8 Jun 2025 15:43:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8FA0E1699CE
+	for <lists+linux-iio@lfdr.de>; Sun,  8 Jun 2025 16:08:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BA351624CE;
-	Sun,  8 Jun 2025 15:44:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA63B194C96;
+	Sun,  8 Jun 2025 16:08:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y0rGlAHh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xj8w+fMy"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50D3D8633F;
-	Sun,  8 Jun 2025 15:44:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A25E3B19A;
+	Sun,  8 Jun 2025 16:08:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749397466; cv=none; b=dERtBbxuj31YfSasH81Kxw9Psbmoi5fJyU/B2fza81xF7yG/UeOAQg6TsS5Z15bNr1r/s/WKrR5niGb1hHkahV6unx/0XXXAHqBW+O3vrqgjrJ9t4QULRX9yy4QM8o730hXGwKtHlxPCFjhHY/Id5zU9tci74nHj2L4l2FfNFXw=
+	t=1749398910; cv=none; b=cioKllml9T7UmNNN/jdHWAfT8hZVwhfM0Ns2+b55jLBaR07iXKjcbmi98vGiMAlzfPjg93/bs1uAPfyisKMITvyH89JsOTmPPTHibNGIbfP++oD8zF2cJiqSX/7gXOrQEh/b6izb6YUV5pZiKBNhvwZF99gPQYD87K90QvsYNhA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749397466; c=relaxed/simple;
-	bh=ns9qBcVaLvzcW1rZWYw11XjuIVyaBRpd9FC2YddBlOw=;
+	s=arc-20240116; t=1749398910; c=relaxed/simple;
+	bh=zT8pfwQggTwjmmpDXtomNlqsYnWtwB9hIB8F6T6RC+E=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=P5KJ4OaEFGnJ/jjj07ZsGpoepGcnWLRne5JP5jlCs3W3SOtQGwGzIZNmoCwzUiV0IxIESlPBWkSVftHNudJw8wrX0xHPRgprCCCoi5Dya3EJShLbH7VdCSn2DE5FTZ2z8//Ew5JlF4UytHl3Rj0O4qXTswM2pajCpyuhEohTdks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y0rGlAHh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 638FBC4CEEE;
-	Sun,  8 Jun 2025 15:44:21 +0000 (UTC)
+	 MIME-Version:Content-Type; b=asAoavyqFhBglrE7HJcySulLCzO7t7YOptH0wTPdBpMcaogOxly2B8mbfCLnpnVGUrFzFT45UXvfyrhiTQuo0vKjgImIjr/GiqNbdaImc55tyThvLXu3Tsrd1x/Bsc+wwqOSZYAtkHF6D57GwxAo3CsK72p8IVxj1i2HUJMCGX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xj8w+fMy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E69DC4CEEE;
+	Sun,  8 Jun 2025 16:08:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749397465;
-	bh=ns9qBcVaLvzcW1rZWYw11XjuIVyaBRpd9FC2YddBlOw=;
+	s=k20201202; t=1749398910;
+	bh=zT8pfwQggTwjmmpDXtomNlqsYnWtwB9hIB8F6T6RC+E=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Y0rGlAHhl9YxJTWSPIcwR6BRmqqfh2tZ9eB6VpjV/GeC8qbpJwoV0YP07qY1617bf
-	 v0aI+TEqJJiZuV0VBfrPlgHt0ApzNgYOI9grqR8uuw5ToUOO1LoCCH9Vlq0Vbdf7NN
-	 lZ7//49HunW6Eby0Lp7hWYcA42YO3w3u26B7XBak/LGWKyCbRSaxuRF8m4VAp/bQSk
-	 diVrP3KBqyLikvqmXnBnwieEtp/HdCEGtiyNCIrFIY/KvOi9EbQfbkYjpfBQjC+DlN
-	 xP6XPHQ2dB6G51wcxo9auhJ7pOyf/3TT7F2YjhskNyv3xI5s5WmW0srh3if56uatlM
-	 QWCwTg1k2pkeA==
-Date: Sun, 8 Jun 2025 16:44:16 +0100
+	b=Xj8w+fMyKv7xpICegf/+7VHdDm9sO30btmf3HpDcyvX23r097EtVi4JXHIXgd7WND
+	 U+JlaHDLEEhqB/Z4jQaFmJyA/NeBYFS++fd9vgbeQQgUTy5h8RK7XRqgrxIOeUvqsa
+	 JYXOQQQRQoXMGe0C2X9S0kUwnSDaEwTXiOHOpRmZE4f8SoUCwhjDd5XYvTzx4FPvfr
+	 9upcldIwK9Og8I5u9dxGRVPD75kp9NLDxAUs3aQUI95mveS+iLJ9IrQf7dY9+G7R8y
+	 6FVGGNpgupbDp3smUgEDnTv3ECNaurCWBUdmkqH1R/GE6AUgWCMcN7Bq5DvSRje2Br
+	 zH2OSedBg4nqw==
+Date: Sun, 8 Jun 2025 17:08:19 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: Lothar Rubusch <l.rubusch@gmail.com>
 Cc: dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org,
@@ -49,12 +49,11 @@ Cc: dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org,
  Michael.Hennerich@analog.com, bagasdotme@gmail.com,
  linux-iio@vger.kernel.org, linux-doc@vger.kernel.org,
  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 06/11] iio: accel: adxl313: add basic interrupt
- handling for FIFO watermark
-Message-ID: <20250608164416.7a2f3ac0@jic23-huawei>
-In-Reply-To: <20250601172139.59156-7-l.rubusch@gmail.com>
+Subject: Re: [PATCH v4 07/11] iio: accel: adxl313: add activity sensing
+Message-ID: <20250608170819.3de87f4e@jic23-huawei>
+In-Reply-To: <20250601172139.59156-8-l.rubusch@gmail.com>
 References: <20250601172139.59156-1-l.rubusch@gmail.com>
-	<20250601172139.59156-7-l.rubusch@gmail.com>
+	<20250601172139.59156-8-l.rubusch@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -65,231 +64,241 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sun,  1 Jun 2025 17:21:34 +0000
+On Sun,  1 Jun 2025 17:21:35 +0000
 Lothar Rubusch <l.rubusch@gmail.com> wrote:
 
-> Prepare the interrupt handler. Add register entries to evaluate the
-> incoming interrupt. Add functions to clear status registers and reset the
-> FIFO.
+> Add possibilities to set a threshold for activity sensing. Extend the
+> interrupt handler to process activity interrupts. Provide functions to set
+> the activity threshold and to enable/disable activity sensing. Further add
+> a fake channel for having x, y and z axis anded on the iio channel.
 > 
-> Add FIFO watermark configuration and evaluation. Let a watermark to be
-> configured. Evaluate the interrupt accordingly. Read out the FIFO content
-> and push the values to the IIO channel.
+> This is a preparatory patch. Some of the definitions and functions are
+> supposed to be extended for inactivity later on.
 > 
 > Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
-> ---
->  drivers/iio/accel/adxl313.h      |  10 ++
->  drivers/iio/accel/adxl313_core.c | 190 +++++++++++++++++++++++++++++++
->  2 files changed, 200 insertions(+)
-> 
-> diff --git a/drivers/iio/accel/adxl313.h b/drivers/iio/accel/adxl313.h
-> index ab6b9e11fde4..4f4a9fd39f6d 100644
-> --- a/drivers/iio/accel/adxl313.h
-> +++ b/drivers/iio/accel/adxl313.h
-> @@ -53,11 +53,19 @@
->  #define ADXL313_INT_ACTIVITY		BIT(4)
->  #define ADXL313_INT_DREADY		BIT(7)
->  
-> +/* FIFO entries: how many values are stored in the FIFO */
-> +#define ADXL313_REG_FIFO_STATUS_ENTRIES_MSK	GENMASK(5, 0)
-> +/* FIFO samples: number of samples needed for watermark (FIFO mode) */
-> +#define ADXL313_REG_FIFO_CTL_SAMPLES_MSK	GENMASK(4, 0)
->  #define ADXL313_REG_FIFO_CTL_MODE_MSK		GENMASK(7, 6)
->  
->  #define ADXL313_FIFO_BYPASS			0
->  #define ADXL313_FIFO_STREAM			2
->  
-> +#define ADXL313_FIFO_SIZE			32
-> +
-> +#define ADXL313_NUM_AXIS			3
-> +
->  extern const struct regmap_access_table adxl312_readable_regs_table;
->  extern const struct regmap_access_table adxl313_readable_regs_table;
->  extern const struct regmap_access_table adxl314_readable_regs_table;
-> @@ -78,7 +86,9 @@ struct adxl313_data {
->  	struct regmap	*regmap;
->  	const struct adxl313_chip_info *chip_info;
->  	struct mutex	lock; /* lock to protect transf_buf */
-> +	u8 watermark;
->  	__le16		transf_buf __aligned(IIO_DMA_MINALIGN);
-> +	__le16		fifo_buf[ADXL313_NUM_AXIS * ADXL313_FIFO_SIZE + 1];
->  };
->  
->  struct adxl313_chip_info {
-> diff --git a/drivers/iio/accel/adxl313_core.c b/drivers/iio/accel/adxl313_core.c
-> index 31ce1b218488..8a0b5542fb40 100644
-> --- a/drivers/iio/accel/adxl313_core.c
-> +++ b/drivers/iio/accel/adxl313_core.c
-> @@ -10,15 +10,21 @@
->  #include <linux/bitfield.h>
->  #include <linux/interrupt.h>
->  #include <linux/module.h>
-> +#include <linux/overflow.h>
->  #include <linux/property.h>
->  #include <linux/regmap.h>
->  
-> +#include <linux/iio/buffer.h>
-> +#include <linux/iio/kfifo_buf.h>
-> +
->  #include "adxl313.h"
->  
->  #define ADXL313_INT_NONE			U8_MAX
->  #define ADXL313_INT1				1
->  #define ADXL313_INT2				2
->  
-> +#define ADXL313_REG_XYZ_BASE			ADXL313_REG_DATA_AXIS(0)
-> +
->  static const struct regmap_range adxl312_readable_reg_range[] = {
->  	regmap_reg_range(ADXL313_REG_DEVID0, ADXL313_REG_DEVID0),
->  	regmap_reg_range(ADXL313_REG_OFS_AXIS(0), ADXL313_REG_OFS_AXIS(2)),
-> @@ -62,6 +68,7 @@ bool adxl313_is_volatile_reg(struct device *dev, unsigned int reg)
->  	case ADXL313_REG_DATA_AXIS(4):
->  	case ADXL313_REG_DATA_AXIS(5):
->  	case ADXL313_REG_FIFO_STATUS:
-> +	case ADXL313_REG_INT_SOURCE:
-It's always been volatile, whether or  not we were writing it.
 
-Hmm. Given this I'm dropping the regcache patch as I'd missed that was a partial
-list when reviewing that one.
+Hi Lothar,
 
->  		return true;
->  	default:
->  		return false;
-> @@ -363,6 +370,176 @@ static int adxl313_write_raw(struct iio_dev *indio_dev,
+My main question from this read through is whether we need to be quite
+so careful on disabling measurement when configuring events.  It is rather
+unusual if that is necessary and I'm not sure that's what the datasheet
+is implying with the vague bit of advice.
+
+>  static const unsigned long adxl313_scan_masks[] = {
+> @@ -297,6 +331,68 @@ static int adxl313_read_freq_avail(struct iio_dev *indio_dev,
 >  	}
 >  }
 >  
-> +static int adxl313_set_watermark(struct iio_dev *indio_dev, unsigned int value)
+> +static int adxl313_is_act_inact_en(struct adxl313_data *data,
+> +				   enum adxl313_activity_type type)
 > +{
-> +	struct adxl313_data *data = iio_priv(indio_dev);
-> +	const unsigned int fifo_mask = 0x1f, interrupt_mask = 0x02;
-
-Why not just use defines for the fields?  The second one is particularly
-confusing as that is just the mask for the watermark interrupt not of
-a general 'interrupt' field as the name suggests.
-
-
-> +	int ret;
+> +	unsigned int axis_ctrl;
+> +	unsigned int regval;
+> +	int axis_en, int_en, ret;
 > +
-> +	value = min(value, ADXL313_FIFO_SIZE - 1);
-> +
-> +	ret = regmap_update_bits(data->regmap, ADXL313_REG_FIFO_CTL,
-> +				 fifo_mask, value);
+> +	ret = regmap_read(data->regmap, ADXL313_REG_ACT_INACT_CTL, &axis_ctrl);
 > +	if (ret)
 > +		return ret;
 > +
-> +	data->watermark = value;
-> +
-> +	return regmap_update_bits(data->regmap, ADXL313_REG_INT_ENABLE,
-> +				  interrupt_mask, ADXL313_INT_WATERMARK);
+> +	/* Check if axis for activity are enabled */
+> +	if (type != ADXL313_ACTIVITY)
 
-	return regmap_set_bits(data->regmap, ADXL313_REG_INT_ENABLED,
-			       ADXL313_INT_WATERMARK);
+As below - only one value possible, so don't check it.
+
+> +		return 0;
+> +
+> +	axis_en = FIELD_GET(ADXL313_ACT_XYZ_EN, axis_ctrl);
+> +
+> +	/* The axis are enabled, now check if specific interrupt is enabled */
+> +	ret = regmap_read(data->regmap, ADXL313_REG_INT_ENABLE, &regval);
+> +	if (ret)
+> +		return ret;
+> +
+> +	int_en = adxl313_act_int_reg[type] & regval;
+> +
+> +	return axis_en && int_en;
 > +}
-
-
 > +
-> +static int adxl313_buffer_postenable(struct iio_dev *indio_dev)
+> +static int adxl313_set_act_inact_en(struct adxl313_data *data,
+> +				    enum adxl313_activity_type type,
+> +				    bool cmd_en)
 > +{
-> +	struct adxl313_data *data = iio_priv(indio_dev);
+> +	unsigned int axis_ctrl;
+> +	unsigned int threshold;
 > +	int ret;
+> +
+> +	if (type != ADXL313_ACTIVITY)
+
+As the enum only has one value you can drop this check.
+Obviously it's dropped in next patch anyway but better to never
+introduce it.
+
+> +		return 0;
+> +
+> +	axis_ctrl = ADXL313_ACT_XYZ_EN;
 > +
 > +	ret = adxl313_set_measure_en(data, false);
-
-I'd like a comment on why we need to disable measurements
-here.  Some reference to the datasheet probably and that fifo mode
-can only be changed with measurements disabled.
-
 > +	if (ret)
 > +		return ret;
 > +
-> +	ret = regmap_write(data->regmap, ADXL313_REG_FIFO_CTL,
-> +			   FIELD_PREP(ADXL313_REG_FIFO_CTL_SAMPLES_MSK,	data->watermark) |
-> +			   FIELD_PREP(ADXL313_REG_FIFO_CTL_MODE_MSK, ADXL313_FIFO_STREAM));
+> +	ret = regmap_assign_bits(data->regmap, ADXL313_REG_ACT_INACT_CTL,
+> +				 axis_ctrl, cmd_en);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = regmap_read(data->regmap, adxl313_act_thresh_reg[type], &threshold);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = regmap_assign_bits(data->regmap, ADXL313_REG_INT_ENABLE,
+> +				 adxl313_act_int_reg[type],
+> +				 cmd_en && threshold);
 > +	if (ret)
 > +		return ret;
 > +
 > +	return adxl313_set_measure_en(data, true);
 > +}
+> +
+>  static int adxl313_read_raw(struct iio_dev *indio_dev,
+>  			    struct iio_chan_spec const *chan,
+>  			    int *val, int *val2, long mask)
+> @@ -370,6 +466,113 @@ static int adxl313_write_raw(struct iio_dev *indio_dev,
+>  	}
+>  }
 
-> +static int adxl313_push_event(struct iio_dev *indio_dev, int int_stat)
-
-Can we avoid 'event' naming here.  Events in IIO terms would not include
-watermarks used to drain a fifo.
-
+> +
+> +static int adxl313_read_event_value(struct iio_dev *indio_dev,
+> +				    const struct iio_chan_spec *chan,
+> +				    enum iio_event_type type,
+> +				    enum iio_event_direction dir,
+> +				    enum iio_event_info info,
+> +				    int *val, int *val2)
 > +{
 > +	struct adxl313_data *data = iio_priv(indio_dev);
-> +	int samples;
+> +	unsigned int act_threshold;
+> +	int ret;
 > +
-> +	if (FIELD_GET(ADXL313_INT_WATERMARK, int_stat)) {
-> +		samples = adxl313_get_samples(data);
-> +		if (samples < 0)
-> +			return samples;
+> +	/* Measurement stays enabled, reading from regmap cache */
+
+If it isn't safe to read whilst measurements are in progress (as opposed
+to maybe getting a small variation in timing) then this seems more
+fragile than I'd like (to future code changes for example).
+
+Might need an explicit check on it being cached regcache_reg_cached()
+for example though that is very rarely used which makes me dubious
+about using it here.
+
+
 > +
-> +		return adxl313_fifo_push(indio_dev, samples);
+> +	if (type != IIO_EV_TYPE_MAG)
+> +		return -EINVAL;
+> +
+> +	if (info != IIO_EV_INFO_VALUE)
+> +		return -EINVAL;
+> +
+> +	switch (dir) {
+> +	case IIO_EV_DIR_RISING:
+> +		ret = regmap_read(data->regmap,
+> +				  adxl313_act_thresh_reg[ADXL313_ACTIVITY],
+> +				  &act_threshold);
+> +		if (ret)
+> +			return ret;
+> +		*val = act_threshold * 15625;
+> +		*val2 = MICRO;
+> +		return IIO_VAL_FRACTIONAL;
+> +	default:
+> +		return -EINVAL;
 > +	}
-> +
-> +	/* Return error if no event data was pushed to the IIO channel. */
-> +	return -ENOENT;
 > +}
 > +
-> +static irqreturn_t adxl313_irq_handler(int irq, void *p)
+> +static int adxl313_write_event_value(struct iio_dev *indio_dev,
+> +				     const struct iio_chan_spec *chan,
+> +				     enum iio_event_type type,
+> +				     enum iio_event_direction dir,
+> +				     enum iio_event_info info,
+> +				     int val, int val2)
 > +{
-> +	struct iio_dev *indio_dev = p;
 > +	struct adxl313_data *data = iio_priv(indio_dev);
-> +	int int_stat;
+> +	unsigned int regval;
+> +	int ret;
 > +
-> +	if (regmap_read(data->regmap, ADXL313_REG_INT_SOURCE, &int_stat))
-> +		return IRQ_NONE;
+> +	ret = adxl313_set_measure_en(data, false);
+> +	if (ret)
+> +		return ret;
 > +
-> +	if (adxl313_push_event(indio_dev, int_stat))
-> +		goto err;
+> +	if (type != IIO_EV_TYPE_MAG)
+> +		return -EINVAL;
 > +
-> +	if (FIELD_GET(ADXL313_INT_OVERRUN, int_stat))
+> +	if (info != IIO_EV_INFO_VALUE)
+> +		return -EINVAL;
+> +
+> +	/* Scale factor 15.625 mg/LSB */
+> +	regval = DIV_ROUND_CLOSEST(MICRO * val + val2, 15625);
+> +	switch (dir) {
+> +	case IIO_EV_DIR_RISING:
+> +		ret = regmap_write(data->regmap,
+> +				   adxl313_act_thresh_reg[ADXL313_ACTIVITY],
+> +				   regval);
 
-I suspect that we can have watermark and overrun set.  Whether it is appropriate
-to drain the data out and push it to userspace isn't clear to me.  Maybe
-add a comment on that so we can refer to it when considering the logic.
+I'm surprised this can only be set with measurement disabled.
+Maybe a spec reference.   It's common to tweak event values as events
+come in and we generally don't have to stop data flow whilst we do.
 
-> +		goto err;
-> +
-> +	return IRQ_HANDLED;
-> +
-> +err:
-> +	adxl313_fifo_reset(data);
-> +
-> +	return IRQ_HANDLED;
+There are a few specific bits where the datasheet suggests updating
+them has unwanted side effects in measurement mode.  + there is a general
+suggestion to do configuration before enabling measurement mode.  
+I don't see anything saying it is a problem for this register.
+
+> +		if (ret)
+> +			return ret;
+> +		return adxl313_set_measure_en(data, true);
+> +	default:
+> +		return -EINVAL;
+> +	}
 > +}
 > +
->  static int adxl313_reg_access(struct iio_dev *indio_dev, unsigned int reg,
->  			      unsigned int writeval, unsigned int *readval)
+>  static int adxl313_set_watermark(struct iio_dev *indio_dev, unsigned int value)
 >  {
-> @@ -377,6 +554,7 @@ static const struct iio_info adxl313_info = {
->  	.read_raw	= adxl313_read_raw,
->  	.write_raw	= adxl313_write_raw,
->  	.read_avail	= adxl313_read_freq_avail,
-> +	.hwfifo_set_watermark = adxl313_set_watermark,
->  	.debugfs_reg_access = &adxl313_reg_access,
->  };
+>  	struct adxl313_data *data = iio_priv(indio_dev);
+> @@ -502,19 +705,32 @@ static int adxl313_fifo_push(struct iio_dev *indio_dev, int samples)
 >  
-> @@ -487,6 +665,18 @@ int adxl313_core_probe(struct device *dev,
->  					 int_map_msk, int_line == ADXL313_INT2);
->  		if (ret)
->  			return ret;
-> +
-> +		ret = devm_iio_kfifo_buffer_setup(dev, indio_dev,
-> +						  &adxl313_buffer_ops);
-> +		if (ret)
-> +			return ret;
-> +
-> +		ret = devm_request_threaded_irq(dev, irq, NULL,
-> +						&adxl313_irq_handler,
-> +						IRQF_SHARED | IRQF_ONESHOT,
-> +						indio_dev->name, indio_dev);
-> +		if (ret)
-> +			return ret;
->  	} else {
->  		/*
->  		 * FIFO_BYPASSED mode
+>  static int adxl313_push_event(struct iio_dev *indio_dev, int int_stat)
 
+Ah. This does not also have events.  Still it's a mix, so maybe
+adxl313_handle_interrupts() or something like that.
+
+>  {
+> +	s64 ts = iio_get_time_ns(indio_dev);
+>  	struct adxl313_data *data = iio_priv(indio_dev);
+>  	int samples;
+> +	int ret = -ENOENT;
+> +
+> +	if (FIELD_GET(ADXL313_INT_ACTIVITY, int_stat)) {
+> +		ret = iio_push_event(indio_dev,
+> +				     IIO_MOD_EVENT_CODE(IIO_ACCEL, 0,
+> +							IIO_MOD_X_OR_Y_OR_Z,
+> +							IIO_EV_TYPE_MAG,
+> +							IIO_EV_DIR_RISING),
+> +				     ts);
+> +		if (ret)
+> +			return ret;
+> +	}
+>  
+>  	if (FIELD_GET(ADXL313_INT_WATERMARK, int_stat)) {
+>  		samples = adxl313_get_samples(data);
+>  		if (samples < 0)
+>  			return samples;
+>  
+> -		return adxl313_fifo_push(indio_dev, samples);
+> +		ret = adxl313_fifo_push(indio_dev, samples);
+>  	}
+>  
+>  	/* Return error if no event data was pushed to the IIO channel. */
+> -	return -ENOENT;
+> +	return ret;
+This handling works, but as Andy observed maybe the comment is now confusing
+given ret is mostly not an error.  Perhaps put that where ret is declared
+instead, or use a separate mask check at the start to quickly
+error out if no bits that we handle are set.
+>  }
 

@@ -1,106 +1,100 @@
-Return-Path: <linux-iio+bounces-20328-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20329-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF347AD1A99
-	for <lists+linux-iio@lfdr.de>; Mon,  9 Jun 2025 11:30:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FF3CAD1ACB
+	for <lists+linux-iio@lfdr.de>; Mon,  9 Jun 2025 11:39:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B45E416BF82
-	for <lists+linux-iio@lfdr.de>; Mon,  9 Jun 2025 09:30:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC65B163B9C
+	for <lists+linux-iio@lfdr.de>; Mon,  9 Jun 2025 09:39:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E4BF2512C8;
-	Mon,  9 Jun 2025 09:29:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Iff2T7zm"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 463B124EF88;
+	Mon,  9 Jun 2025 09:39:20 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E8921A2630
-	for <linux-iio@vger.kernel.org>; Mon,  9 Jun 2025 09:29:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F40791E51FE
+	for <linux-iio@vger.kernel.org>; Mon,  9 Jun 2025 09:39:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749461361; cv=none; b=M9hQrjP1hIxeyS9EDxL+uw7neoTJEp5aHKMcq93XNi9msQYqaPJdGL0lZ4kKr0V2UxYYIdNtUBLmuXNAONJLxl6J3JDRKQnwG/2NbIFqmObCU9XwpUck0IxJ3K0TZwxbJ/MOfrDdfez9vS+6hMOQ2eHs9QzpXttfJaeKe75O08s=
+	t=1749461960; cv=none; b=soujSPPCbJs0siWCD5Tn79PSVQ/ETQNOe2xJQRIss4fQlf92oKgYGf6Fo8sDpl2s2AgnuIIWFoEL56eeEFK98DITZI9uvOHplWvKn52FstE651ECVmqYs/9JRoJPersDrZ04Gc3Jy21eErPfwWI3xuiHDWi83g8l5nR6gI1YFSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749461361; c=relaxed/simple;
-	bh=WFgA4aVBD639vQcQM37vKiWrUYWZ/AI9jbmvuB8dmE4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FkV76dVJR4dKgqaBnd2tbBLNQ9sCJCP2nlLFS7MHcupixhC6pbnLaWjNlSbp++FEHfDZu7VnMpTE1bWA3UKQ9E5amEIyfHBQuy52D61cOkog+ptDNZNkFQxXAkRqJ4zkEx3feUJlzorWe7t4fiU0OQd3cmQ/4e0n0jL/Rl5YsGY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Iff2T7zm; arc=none smtp.client-ip=209.85.218.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-adb2e9fd208so751765566b.3
-        for <linux-iio@vger.kernel.org>; Mon, 09 Jun 2025 02:29:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749461357; x=1750066157; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=D5VIplWrjXSUhX7O37wVwpO9DW8kvL3AWFxZ7Ytwcxg=;
-        b=Iff2T7zm/Z6BpXMU0xJSvHNCIIB48A4s6yqFRgs1Zu/u2dZ0DU6vXXw/itE1VeT0Ri
-         PfJb4q6sAnd3i/ok/3uW2GWLorDE/sljzIDN3vbajghmlpzmoVwT6A7fQjpSUWyi6mLB
-         f5WmiCMlJKWr/W0Qk841rpqVU9ZdKaTFE5farBOjI0H7Gjk7vhgVIyrJfk+/RGHoRqU+
-         NA7F6UjOK/9IHJ5tJhC5iNnJCnydASuVB3RBgeerh+hAGVjep7KKjpcEhgIum7Xm++CR
-         cyTV3A1VZCarL0KoXW8zoq1+IQM0nrVBXl+LqGCxeMoBnoYI2CFHPnnqDQZ+64sn60Tj
-         OJng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749461357; x=1750066157;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=D5VIplWrjXSUhX7O37wVwpO9DW8kvL3AWFxZ7Ytwcxg=;
-        b=ERXrl423CBHxHDAEB5Akn0tRNoaCbnwG310+HwQK4DlkTOSzel0oFbD0/Vw41c1tKR
-         4sC9HdnWjLEncELaukuVE8T/Pja4C0NLnvPwsXf+dYl8MIuv/yHXI5Pg55ApykhHOi3f
-         8Vci3jCc76g/yyyp6DPw6AIVgoade1MBR5g6yMRMfiVbek2yOnPLiUgrARjrGOy557NA
-         zR70L5hdM5sHr4q47e/Ww0Z8H0NtasQEBtiXUJZ6a0/P5Yxme11rC4o8tuDZC+rDDECc
-         vOQLgrzUpG/RD8QE8V586+gd3oj7nEwh88Adx6iD7ieiAEqyMeyF8AtXW+cqngduotPd
-         Tn5g==
-X-Gm-Message-State: AOJu0YwBeaJsXM8DcRC4u5Sg/mFWkNOgOMurj+k8/s/QMxe281lNJB8p
-	XrqtLI/emfN7mNX4z4FGicDX4Wdtb6oB7qcughu7Yc2FRKJ+O+w1YYEMYediW6sy69sax49mTtG
-	rT7d7fKiwJwl6SXqcAqkoIIqJpoTl5Iw=
-X-Gm-Gg: ASbGncunJ+dcFZrTbIQOBKEosT1v++3j8VJMWUWB42ZdxpR1CrQmq5ROt3XBk+53kTi
-	uUCE2jR76p+wALMX/6CmvQaAIoPPHkIASqbREYFSNJrBuho8+aJ9AlDyK1WEaIp5D2RbTkyARsv
-	w64ppyT96lHEx6oMFm5ltAdp0E7C3+v2g/5AgPjlG1rEJqRiEe1BAhSA==
-X-Google-Smtp-Source: AGHT+IG6Cnsat23Ljhuj43PVMZ8no1nEdVGt6oi6so0bjrXv2QLZ8O4C/oAlrDbdKfAHpd3x61ZVFVAlJ1xcUNu5VHU=
-X-Received: by 2002:a17:907:7282:b0:ad2:2fe3:7074 with SMTP id
- a640c23a62f3a-ade1aa4d687mr1026549666b.14.1749461356585; Mon, 09 Jun 2025
- 02:29:16 -0700 (PDT)
+	s=arc-20240116; t=1749461960; c=relaxed/simple;
+	bh=CJEe92pdBLcL90uVY9SgLzBeqCedPDSU1I9+DZAm8Bo=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=JaJBSXiz9HNReOOzneeOPuvkWjW9x8rcpMWnYNvM48Ph71KPZbk/oAD53ZNNJWObT07uf2zscLDckVlwtepyLoo0yhjMuZQfqt7mn33fcEXduPj2UCvfhjNFG8qzAjwB836NICBVbBI/AVZoCxHLgVonRdmWo9/HnIVjAGNJWr8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4bG6LZ5xkWz6M4qF;
+	Mon,  9 Jun 2025 17:38:46 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+	by mail.maildlp.com (Postfix) with ESMTPS id EE562140519;
+	Mon,  9 Jun 2025 17:39:07 +0800 (CST)
+Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Mon, 9 Jun
+ 2025 11:39:07 +0200
+Date: Mon, 9 Jun 2025 10:39:05 +0100
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+To: Andy Shevchenko <andy.shevchenko@gmail.com>
+CC: Jonathan Cameron <jic23@kernel.org>, <linux-iio@vger.kernel.org>, "David
+ Lechner" <dlechner@baylibre.com>, Nuno =?ISO-8859-1?Q?S=E1?=
+	<nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>
+Subject: Re: [PATCH 2/2] iio: dummy: Drop unused export.h include.
+Message-ID: <20250609103905.00004bee@huawei.com>
+In-Reply-To: <CAHp75Vdovs=REuauj_zU3V_aw+zUjWY-pKV5sEuayJb9By1JkQ@mail.gmail.com>
+References: <20250609070616.3923709-1-jic23@kernel.org>
+	<20250609070616.3923709-3-jic23@kernel.org>
+	<CAHp75Vdovs=REuauj_zU3V_aw+zUjWY-pKV5sEuayJb9By1JkQ@mail.gmail.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250609070616.3923709-1-jic23@kernel.org> <20250609070616.3923709-2-jic23@kernel.org>
-In-Reply-To: <20250609070616.3923709-2-jic23@kernel.org>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Mon, 9 Jun 2025 12:28:40 +0300
-X-Gm-Features: AX0GCFtMs_aoX_vh4XWiSYQ9UkYipB7rOVIIMJBZUJtsOWczkYMfpFhujYjFIyw
-Message-ID: <CAHp75VdxGouo=SB0JnAL6w5ZxQN0C+bBDo5Hh_k+TeoK5pD11g@mail.gmail.com>
-Subject: Re: [PATCH 1/2] iio: potentiometer: Drop unused export.h includes
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: linux-iio@vger.kernel.org, David Lechner <dlechner@baylibre.com>, 
-	=?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Andy Shevchenko <andy@kernel.org>, Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: lhrpeml100009.china.huawei.com (7.191.174.83) To
+ frapeml500008.china.huawei.com (7.182.85.71)
 
-On Mon, Jun 9, 2025 at 10:06=E2=80=AFAM Jonathan Cameron <jic23@kernel.org>=
- wrote:
->
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->
-> Resolves:
->   warning: EXPORT_SYMBOL() is not used, but #include <linux/export.h> is =
-present
+On Mon, 9 Jun 2025 12:27:33 +0300
+Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
 
-With the given context this LGTM,
-Reviewed-by: Andy Shevchenko <andy@kernel.org>
+> On Mon, Jun 9, 2025 at 10:06=E2=80=AFAM Jonathan Cameron <jic23@kernel.or=
+g> wrote:
+> >
+> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> >
+> > Resolves:
+> >   warning: EXPORT_SYMBOL() is not used, but #include <linux/export.h> i=
+s present =20
+>=20
+> While this true...
+>=20
+> >  #include <linux/kernel.h> =20
+>=20
+> ...I prefer a full and not half-baked solution, i.e. revisiting all
+> headers and esp. replacing kernel.h with what is used.
+>=20
+> > -#include <linux/export.h>
+> >  #include <linux/slab.h>
+> >  #include <linux/interrupt.h>
+> >  #include <linux/irq.h> =20
+>=20
+> While doing that, the headers may be sorted (in the same or preparatory p=
+atch).
+>=20
 
+Whilst I agree that more work is need, I also don't like the time it might
+take to get to it and the warnings that might mean more significant issues =
+get
+missed in the wash in the meantime.
 
---=20
-With Best Regards,
-Andy Shevchenko
+Jonathan
 

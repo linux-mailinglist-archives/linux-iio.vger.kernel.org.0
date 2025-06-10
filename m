@@ -1,123 +1,121 @@
-Return-Path: <linux-iio+bounces-20348-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20349-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D50FAD36AE
-	for <lists+linux-iio@lfdr.de>; Tue, 10 Jun 2025 14:39:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ADBEAAD37AB
+	for <lists+linux-iio@lfdr.de>; Tue, 10 Jun 2025 15:00:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DCBD0189AFE0
-	for <lists+linux-iio@lfdr.de>; Tue, 10 Jun 2025 12:39:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A465B189DA3B
+	for <lists+linux-iio@lfdr.de>; Tue, 10 Jun 2025 12:56:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67A3F29AAFE;
-	Tue, 10 Jun 2025 12:33:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42A702980DA;
+	Tue, 10 Jun 2025 12:51:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="J1B5RyP8"
+	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="CNz98/qQ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com [185.132.182.106])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C7C829A9D8
-	for <linux-iio@vger.kernel.org>; Tue, 10 Jun 2025 12:33:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D29B295DB2;
+	Tue, 10 Jun 2025 12:50:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.132.182.106
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749558828; cv=none; b=fD3/CB1dewMk9LrA1wz4lXO76XtVHvGNwUHhyrf76xRmhcDYXOalZ9PqAuoP/uhr8qknOCE0eK/kks/9d75DWtVL0ApSUTolsQacmhw0F0BKhgg5oAHDE2wuPHcib6ySLq88B8eVSUjg9QkSPsDnfCKg1ELXFIC442uEtfJ7KTM=
+	t=1749559861; cv=none; b=uFponuQxzbV2OIujUEFuQYHzctPOPlc2KjW110ekVgz/HkTQ9WCbfdgo6aHCOIv+PoQtQ+PUJnp/8xuIx19yRb3wddWlCnC59+0K4/KTdxP65VBQUCVGKQ1mfIlHc+hnq17NyYzde6S/003oY/u3esU8NG7oUPXawaEiFus1l14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749558828; c=relaxed/simple;
-	bh=khzqFhuuJvV1VhNta3z1is3dc8F8nVkUGfuPadr2COI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BGQeo2CIXGhJI6wFYkjt6bjb6K5XTfUiqbO+RObi+s+bLLW5Yzydr7mNtGwYv1iml8r3kDgJ3182R7M7TCW1X+f1EQTkdcXvIOYcCzotwtTFlJrKEFM0ty4w0uedpqrJ6ocrLwmX21m3KsZpsh4D0hvOIEzhpYkH0kP3LuoVa4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=J1B5RyP8; arc=none smtp.client-ip=209.85.208.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-32ade3723adso41888881fa.0
-        for <linux-iio@vger.kernel.org>; Tue, 10 Jun 2025 05:33:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1749558824; x=1750163624; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=EanlmV0cW1dyyqCiFlmm6H2lcoAcchpMNaepjtxFpoc=;
-        b=J1B5RyP8UxewZj41wWY/OomhqBRNLWuCoUKfm+LWdDeqlECFWixreM9SY+pPrf+cUM
-         fhFPLHZZGGDXmWb2Gt0a+pq7SOkPTu0Njf+PUg1LpBSO7Q01Gg6fMOTY2S1d8TEMMERd
-         yh4yMhNBOesIkkuQHra2Nd7/xAnIucSkaFfBo/wigZqzkvI7azUMnXMjKJiIh1l8xmt4
-         pBhTUdVNx2uWzWSMDRZNAxipd7Czi+bGYQanfyAH1aPi+KAGPqSPZksffrEa4r4KaZBI
-         D5+ApKnbaaNawvfG7KiAGNGOeQTYC3wWIyE3OuaD0sS0vmiB/A2BdrfD0I+TI6rnSD/7
-         SdgQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749558824; x=1750163624;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=EanlmV0cW1dyyqCiFlmm6H2lcoAcchpMNaepjtxFpoc=;
-        b=dmKIZo1SK76GvAWSd/rQ1ZNd14HnuCRiM9ysqUz+++Z7MwByLMOYE5HNuCkQOw3Rlp
-         +05M81SfV9RQ3PgFr9fTb1WkUTQtErTPMNKB8gfyEKFHaKhP+3FaMVDN0iGTOgR64tID
-         rzSzin9+mKmHI2X4d/oH6B766kjUwNsVmCQ5l3jxJMTJdtXZxx3cEt+c7uZWKgTj+vNm
-         2sx34FJ2ZfyE20Wb8El1UUMXpGJb12w+QZuuHvcoCPLJnJ3Wv72B1dpK35MCPwyN9w3B
-         ZGWDZqR5mQNZdo3TXpNZeF5kx5jwEKfgFfhfa89TzMIrzw11oXkeDjh7a6O0IFXMFlWT
-         8wKQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWaFylz0ZiSQA/U/R72bsbJiwb0dRKk28DB9NFrByrcTga8egcY9RQsDRLwDO1Kj8smjYbbPeVfoiI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwcAf1En8A/b7F0H8prNscAIXjwfmZSkb5uIBNAU26oXiYv9wYK
-	iQxlPBEnLzRIPpjTHFuKdnM1HvcOgVbpWqWRISiLaNrqOxdHg5BcM6v/GM7cMY/2lcSYpbtthbR
-	EfK3hLHEmewZrzIKl+ngbisZZxivp54hel4/xJesEDA==
-X-Gm-Gg: ASbGncvrxs2D6F0zbqQCaCpCw41z8rFfoCdL6gZ2l3bXeGR4ZDaSvYUq9JFm9CVhPUl
-	0H3GYvAlHu3LO/BRPZYx4bEYNH3h6vWi1tm0Po7xQE+SY59TkvCuESbrwfHL+eMiC3kBpGABxR+
-	gnd3MTxXH7hj4SgixFCb3fqOoTns92QM+lWWibiSkVgZ4=
-X-Google-Smtp-Source: AGHT+IHH43p0qPfKtj3D38L9rrb9Pek2M3XXCtDSV7pxtgiYmdZWmLIORASeL7bRJw33PL8fU9QHGGRgHJcEcY5qb6k=
-X-Received: by 2002:a05:651c:220a:b0:32a:8591:668f with SMTP id
- 38308e7fff4ca-32adfdd88abmr40233771fa.31.1749558824159; Tue, 10 Jun 2025
- 05:33:44 -0700 (PDT)
+	s=arc-20240116; t=1749559861; c=relaxed/simple;
+	bh=4uAmNwzlF6gH9SKi7JLCPMR8x1PShZgHQjyth9xnt3I=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=PcRGkJ6JmtrK6bTfD0EC7Hc92+D7g7lnfRIN9P7w6TP59/lTTxX6/oXzha+SAAAL99eqKYl6B+9nkbKWaBYfApCDI61ovLxOQWIoeZ3O9mGP0VyN8d//MbrlTxCkS1wJktwdCbS7DJfzgze8EnkwpluUZhQWybsX879+HmxbUsQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=CNz98/qQ; arc=none smtp.client-ip=185.132.182.106
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
+Received: from pps.filterd (m0288072.ppops.net [127.0.0.1])
+	by mx07-00178001.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55ACLDZr012939;
+	Tue, 10 Jun 2025 14:50:43 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=selector1; bh=pJAee28q72qTBjZcGP6IMl
+	+e1YIXch0GS+MmyHTBJTg=; b=CNz98/qQnnuBxhV5Kdj2cMdL+uycW/qV2Hms1h
+	eorEmBev9WP7jPcbcFDXsPIYPve9s14fQhgGE/jHulo6KeZxnr6fVArNtcNxetxQ
+	9AqGhP+WUFAn6ut7ZvoxaHSufPT/Sf9ENU7o8m6yw7YXG++o8QnAzGcGxCTX/jLq
+	69n74N/QxcBN0R7YZzEsd7n6duxGw42+4U7pQ5+KdsCYXn+HLVMTN52NJMa+kf+c
+	xT6fUGTqb5ZV8VIvZ+3KVDA66d6Iww+iJjyEEVrnrzZUXM4YiWLZ6gy2IRD2C6/O
+	PA/EPcnZTOqzJw+iNFpDu5Bo/TDkZzB0TenMNeaT9cNbDkpQ==
+Received: from beta.dmz-ap.st.com (beta.dmz-ap.st.com [138.198.100.35])
+	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 474aumd9u5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 10 Jun 2025 14:50:43 +0200 (MEST)
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+	by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id 64BEB40044;
+	Tue, 10 Jun 2025 14:49:39 +0200 (CEST)
+Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
+	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 7854AB35DBD;
+	Tue, 10 Jun 2025 14:48:59 +0200 (CEST)
+Received: from localhost (10.48.86.132) by SHFDAG1NODE1.st.com (10.75.129.69)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 10 Jun
+ 2025 14:48:59 +0200
+From: Antonio Borneo <antonio.borneo@foss.st.com>
+To: Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Andy Shevchenko
+	<andy@kernel.org>,
+        David Lechner <dlechner@baylibre.com>,
+        Fabrice Gasnier
+	<fabrice.gasnier@foss.st.com>,
+        Gatien Chevallier
+	<gatien.chevallier@foss.st.com>,
+        Jonathan Cameron <jic23@kernel.org>, Lee
+ Jones <lee@kernel.org>,
+        <linux-iio@vger.kernel.org>,
+        =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+        Olivier Moysan
+	<olivier.moysan@foss.st.com>
+CC: Antonio Borneo <antonio.borneo@foss.st.com>,
+        <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        Maxime Coquelin
+	<mcoquelin.stm32@gmail.com>
+Subject: [PATCH 0/5] STM32: Fix build warnings about export.h
+Date: Tue, 10 Jun 2025 14:48:50 +0200
+Message-ID: <20250610124855.269158-1-antonio.borneo@foss.st.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250602-rk3576-pwm-v2-0-a6434b0ce60c@collabora.com> <20250602-rk3576-pwm-v2-1-a6434b0ce60c@collabora.com>
-In-Reply-To: <20250602-rk3576-pwm-v2-1-a6434b0ce60c@collabora.com>
-From: Linus Walleij <linus.walleij@linaro.org>
-Date: Tue, 10 Jun 2025 14:33:32 +0200
-X-Gm-Features: AX0GCFuG7EFwJI0ElFjD6xqtEGmZqjqUSDaqvLfaNuSuiPY4NuX3iwrF0xr505A
-Message-ID: <CACRpkdZKTo8rOUBDqqS6e5FPHnX83U4PfYQ6vsRxDVGEVNzJ7A@mail.gmail.com>
-Subject: Re: [PATCH v2 1/7] dt-bindings: pinctrl: rockchip: increase max
- amount of device functions
-To: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Heiko Stuebner <heiko@sntech.de>, 
-	=?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <ukleinek@kernel.org>, 
-	William Breathitt Gray <wbg@kernel.org>, Sebastian Reichel <sebastian.reichel@collabora.com>, 
-	Kever Yang <kever.yang@rock-chips.com>, Yury Norov <yury.norov@gmail.com>, 
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Dave Ertman <david.m.ertman@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
-	Leon Romanovsky <leon@kernel.org>, Lee Jones <lee@kernel.org>, linux-gpio@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	linux-pwm@vger.kernel.org, linux-iio@vger.kernel.org, kernel@collabora.com, 
-	Jonas Karlman <jonas@kwiboo.se>, Detlev Casanova <detlev.casanova@collabora.com>, 
-	Conor Dooley <conor.dooley@microchip.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SAFCAS1NODE2.st.com (10.75.90.13) To SHFDAG1NODE1.st.com
+ (10.75.129.69)
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-06-10_05,2025-06-10_01,2025-03-28_01
 
-On Mon, Jun 2, 2025 at 6:20=E2=80=AFPM Nicolas Frattaroli
-<nicolas.frattaroli@collabora.com> wrote:
+This series fixes, for the SoC's STM32, the new warnings that
+appear from v6.16-rc1 about mismatch between the include of
+linux/export.h and the use of EXPORT_SYMBOL().
 
-> With the introduction of the RK3576, the maximum device function ID used
-> increased to 14, as anyone can easily verify for themselves with:
->
->   rg -g '*-pinctrl.dtsi' '<\d+\s+RK_P..\s+(?<func>\d+)\s.*>;$' --trim \
->   -NI -r '$func' arch/arm64/boot/dts/rockchip/ | sort -g | uniq
->
-> Unfortunately, this wasn't caught by dt-validate as those pins are
-> omit-if-no-ref and we had no reference to them in any tree so far.
->
-> Once again kick the can down the road by increasing the limit to 14.
->
-> Acked-by: Conor Dooley <conor.dooley@microchip.com>
-> Signed-off-by: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
+Antonio Borneo (5):
+  bus: stm32_firewall: Fix build warnings about export.h
+  iio: adc: stm32-dfsdm: Fix build warnings about export.h
+  iio: trigger: stm32-timer: Fix build warnings about export.h
+  iio: trigger: stm32-lptimer: Fix build warnings about export.h
+  mfd: stm32-timers: Fix build warnings about export.h
 
-This  patch 1/7 applied to the pinctrl git tree for v6.17!
+ drivers/bus/stm32_firewall.c                | 1 +
+ drivers/iio/adc/stm32-dfsdm-adc.c           | 1 +
+ drivers/iio/adc/stm32-dfsdm-core.c          | 1 +
+ drivers/iio/trigger/stm32-lptimer-trigger.c | 1 +
+ drivers/iio/trigger/stm32-timer-trigger.c   | 1 +
+ drivers/mfd/stm32-timers.c                  | 1 +
+ 6 files changed, 6 insertions(+)
 
-Yours,
-Linus Walleij
+
+base-commit: 19272b37aa4f83ca52bdf9c16d5d81bdd1354494
+-- 
+2.34.1
+
 

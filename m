@@ -1,189 +1,201 @@
-Return-Path: <linux-iio+bounces-20365-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20366-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19AD2AD3CBF
-	for <lists+linux-iio@lfdr.de>; Tue, 10 Jun 2025 17:22:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90177AD3D4B
+	for <lists+linux-iio@lfdr.de>; Tue, 10 Jun 2025 17:34:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 69BE917DB3E
-	for <lists+linux-iio@lfdr.de>; Tue, 10 Jun 2025 15:20:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C69DC3AAA20
+	for <lists+linux-iio@lfdr.de>; Tue, 10 Jun 2025 15:27:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15EAC23BCF1;
-	Tue, 10 Jun 2025 15:17:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF5A524728A;
+	Tue, 10 Jun 2025 15:22:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JautMI9p"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="y9z1JJwC"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f51.google.com (mail-ot1-f51.google.com [209.85.210.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0A1D22E3FF;
-	Tue, 10 Jun 2025 15:17:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23009247288
+	for <linux-iio@vger.kernel.org>; Tue, 10 Jun 2025 15:22:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749568637; cv=none; b=t2mtXM+ZxnguWaMrGMB36D6f/ztn6setUsCEsOnfCXTTq8VK3ZlNZnLRV2/r1aPypWQvPOMf5myNqURYxLkxsIzq7su1k+yunQFtFVTmZWGbaaZApfFH+yz4q7bo1+qU53pto2aDQD0OnenCv7CovK36qmANX9c5faBTcoKfoxU=
+	t=1749568960; cv=none; b=U/x/KuRlWwT4tmyjufxSr6dtkjZxuibatWXHOcCGQYjLmOdFy5jtLh2KHOlDR+FZz3L0DZIHD1qKG/Rgo9+T2Dxbz1PzYUH/nnKjv8xKRX9CONSu8LUrrdhIrjerLoKlOP5H6dcYi41g5ealLZWZoJlfdeZ2qG6lmvrke2v3/uU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749568637; c=relaxed/simple;
-	bh=GANCpbbjp1dEyMei37sYfj7Nawi1r4Qtwq/RVj9ktGY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oJ06P6KJSLrcR4WkNAtB8vQ/Trb1acec5eSj3R0GiZWtEazqYAdT1YxTdtsHwThrlMr3Tv+Fe3wvCQyC7ctM1eKYotY6aivqBrgkf5sDXgHi43vr/XBa/4FXZtcS1WAH0JLRlsODt2F0g9GiJFSNq88Heqhrd9aM/l/3HvfHhWA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JautMI9p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 100A8C4CEED;
-	Tue, 10 Jun 2025 15:17:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749568636;
-	bh=GANCpbbjp1dEyMei37sYfj7Nawi1r4Qtwq/RVj9ktGY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=JautMI9p9ONh4STBnvMad/8IOkXxrGXSRniQtStJW5TppexAFWjuo8+6LUw+fzbRD
-	 PV/4ZH5VkK2I/fjGrlBbqsGqa7koGjDPpcI1hN/aPzqCzEs+P5gFgyXnUKnKDwWA5+
-	 qavNk3G10CCqFrsaeaf4++xDYJE9g3WyR7Lnd2slSa54Dnt+2iQ+KKkk7CFWlxXIjX
-	 WqQKFUku/h1+qPQPmLlgPb6L3vZU5gg5D5VBxn8VZWllIOl2OVE0st4B5e381AY3UT
-	 eeH2/uTk8n579lEphACBsROfnbxsP78fZ/wI9fQSL9q7cgO2CNbxXCX87tGRa6YrYj
-	 OhJJj9w1A3Aww==
-Date: Tue, 10 Jun 2025 16:17:11 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Victor.Duicu@microchip.com
-Cc: dlechner@baylibre.com, nuno.sa@analog.com, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, robh@kernel.org, jic23@kernel.org,
-	krzk+dt@kernel.org, andy@kernel.org, linux-kernel@vger.kernel.org,
-	Marius.Cristea@microchip.com, conor+dt@kernel.org
-Subject: Re: [PATCH v2 1/2] dt-bindings: iio: temperature: add support for
- MCP998X
-Message-ID: <20250610-thong-trump-f131522201c4@spud>
-References: <20250529093628.15042-1-victor.duicu@microchip.com>
- <20250529093628.15042-2-victor.duicu@microchip.com>
- <0f68e3f9-cba5-4df3-8e56-2cccbccf35ce@baylibre.com>
- <20250530-dramatize-camisole-0a1aa9a38281@spud>
- <91c1d757a4ac051c115a821779a8c1fba764ea05.camel@microchip.com>
- <20250606-unfeeling-legacy-c7eab453b062@spud>
- <c5de1b615c40cd4d4380cf5f340bda3da23f4069.camel@microchip.com>
+	s=arc-20240116; t=1749568960; c=relaxed/simple;
+	bh=hchnrIDBJ/edKu4zAm3y3cqjcujUW60/YPHrwJKD/zQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bm4jXqOZdpeFqG6fgUN0v1apEMtb2p3K3XZmpnU27UZVk/RDz0XlEKX6TzJfeWRcBTsU3ulhQ7UXLuIC7O6GH9XSVxf8dZQpZPjxLV838afTHWlLGx9/FMjobuSCMeVgoObYzaaoz1x9kATWv9BhudgeewdxCLaToStRvXlObLY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=y9z1JJwC; arc=none smtp.client-ip=209.85.210.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-ot1-f51.google.com with SMTP id 46e09a7af769-72c09f8369cso1616852a34.3
+        for <linux-iio@vger.kernel.org>; Tue, 10 Jun 2025 08:22:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1749568957; x=1750173757; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=WgqBcp898rtX5fY8nnMSJASni1KQNJz9k+MA5T3aUho=;
+        b=y9z1JJwC5WJwde8QMX/hl1Q0JYszJMx8ANeOgfamkQXUvKtvP+ldu2qs+TNvxPWST2
+         MthGnz2ecGVpoQv45pT9FUSxB1Xgh/AQVh1819B+why9An7DxWfs6N6k91GUV+nc/bXx
+         cRvN9GactFc2dSIgVzkxAYM6wsJduwFVhJ1E76GUIeUP27HtpDfYlMjTFriis9GN/beV
+         2jcqT4a7JBU3MY3rTSJqX8JpqWoKmRxh7nqE0qHtqof/F1W8Zf9hbhwAkYNwEfyEesUe
+         Z0vVTPPfkyeK7zrAXtT95BWCT7iyPn14W3gEw0JP+bHOg97tC9SWr2WuejIJSgFKf2tb
+         RU3w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749568957; x=1750173757;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=WgqBcp898rtX5fY8nnMSJASni1KQNJz9k+MA5T3aUho=;
+        b=TrPaYJUzFaO1QIZJcwWmVkm7hUQgRsXBDE/YXM2BJvTTU7hnMuZhi4GDLjVbHSzM6K
+         ytQxNbKZiI1Rn8OOuWt+AxOuxSFZQhB7XVrZ79LhZLKcQatruUQM2dV6nOyWNU/d73hy
+         QHAuGi8rNdr7X9R6pwSdcVCZe9q/iFUpo0sPrAYr3aGce23KtZfamUOrJZL8LXV88evI
+         LCg3iZW0p5aB3mFvvkMyOVA32w2s/zFJqAZyv9hO5ByqXjSZ1V8BFtnP7e4ZG8PkdhOn
+         LVj490AlFYt/X4xxDHCM+jGkpZEQzJewyMUE3ds+0PJ1wvExz7lElLjLV3e74XmtVmfd
+         2U3A==
+X-Forwarded-Encrypted: i=1; AJvYcCX175jENhP2P4B43KZeKgf8VtrGe/ZSpfrwK1YP4QxT/iS8f5ZsmyxLyOBIrL0DenRa93rmo3aKWKs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzuCf3LIvq6cNfSo5y76ClrtZbyQPt4zUp9UIjfs7Q8k4G6sSI3
+	iNYtrgZv9oy1QOatjtBjJ7pXIGDKxZEiu2qSH84pHkg1ob0AVPvc06VLPvzHijr4n50=
+X-Gm-Gg: ASbGncuFpqhP2aA8bF1MzdpWEakvkzB8906V9iuwu3IA7YKwI+9b93XWSi+K/GEaMAc
+	rNshqjlXK7SJfyIDFKdwcWipJi6Umkn62vbkaWtizt4Jg8zecmzJkYvZwixsLR97UrgPhtF/ZFM
+	g6de5q8OFg6KCJV17azoKF6eFHgY3yntzkyPTFYJGmV4z6NFVyd8aD7ecXczFsGM7UBmnr1RrvM
+	26A45gNSgtxtAWjMqHt9fk2UWXHrIW9sbgIqd5MBITqLin0O/Nwy0qiNDmKgFi98ZhqOgIk8w4S
+	TKYU6dfCjsarojpkuvhEvceW2+201QKMssGMqJxBpce9t8e+MuR+7BYRVor6TNPMSknoQGVoZkA
+	m4dYvICVgt2vnO3ZEbwuWCPSG7oFtFO31ELhU
+X-Google-Smtp-Source: AGHT+IHxpTUjNC23qJnebWthwoWgqhpyFQhhpZJFRkAkLQNVpExAu309GNzss51U4GPATJs9EjhXDg==
+X-Received: by 2002:a05:6808:3a05:b0:408:e711:9aa with SMTP id 5614622812f47-40a56b7e0e3mr2114950b6e.37.1749568957142;
+        Tue, 10 Jun 2025 08:22:37 -0700 (PDT)
+Received: from ?IPV6:2600:8803:e7e4:1d00:a49:6255:d8db:1aea? ([2600:8803:e7e4:1d00:a49:6255:d8db:1aea])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7388a08979csm2044314a34.62.2025.06.10.08.22.36
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 10 Jun 2025 08:22:36 -0700 (PDT)
+Message-ID: <db78ac20-9b58-49d1-ba38-cc269eaff254@baylibre.com>
+Date: Tue, 10 Jun 2025 10:22:36 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="TMB2KrwSJzB3PpjT"
-Content-Disposition: inline
-In-Reply-To: <c5de1b615c40cd4d4380cf5f340bda3da23f4069.camel@microchip.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/2] dt-bindings: iio: adc: adding support for PAC194X
+To: Marius.Cristea@microchip.com, jic23@kernel.org, nuno.sa@analog.com,
+ andy@kernel.org
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ broonie@kernel.org, devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20250606093929.100118-1-marius.cristea@microchip.com>
+ <20250606093929.100118-2-marius.cristea@microchip.com>
+ <92c36ad9-5f8e-4ba7-9af4-9cb640f0aa5c@baylibre.com>
+ <d364524bad53f5c665071287f55a96e28dc9b231.camel@microchip.com>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <d364524bad53f5c665071287f55a96e28dc9b231.camel@microchip.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
+On 6/10/25 9:46 AM, Marius.Cristea@microchip.com wrote:
+> Hi David,
+> 
+>    Thank you for the feedback. Please see my comments below...
+> 
 
---TMB2KrwSJzB3PpjT
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+...
 
-On Tue, Jun 10, 2025 at 01:29:01PM +0000, Victor.Duicu@microchip.com wrote:
-> On Fri, 2025-06-06 at 16:15 +0100, Conor Dooley wrote:
-> > Jonathan,
-> >=20
-> > On Mon, Jun 02, 2025 at 02:48:52PM +0000,
-> > Victor.Duicu@microchip.com=A0wrote:
-> > > On Fri, 2025-05-30 at 16:55 +0100, Conor Dooley wrote:
-> > > > On Thu, May 29, 2025 at 01:13:38PM -0500, David Lechner wrote:
-> > > > > On 5/29/25 4:36 AM, victor.duicu@microchip.com=A0wrote:
-> > > > > > From: Victor Duicu <victor.duicu@microchip.com>
-> > > > > > +=A0 microchip,recd12:
-> > > > > > +=A0=A0=A0 description:
-> > > > > > +=A0=A0=A0=A0=A0 Enable resistance error correction for external
-> > > > > > channels 1
-> > > > > > and 2.
-> > > > > > +=A0=A0=A0=A0=A0 Omit this tag to disable REC for channels 1 an=
-d 2.
-> > > > > > +=A0=A0=A0 type: boolean
-> > > > > > +
-> > > > > > +=A0 microchip,recd34:
-> > > > > > +=A0=A0=A0 description:
-> > > > > > +=A0=A0=A0=A0=A0 Enable resistance error correction for external
-> > > > > > channels 3
-> > > > > > and 4.
-> > > > > > +=A0=A0=A0=A0=A0 Omit this tag to disable REC for channels 3 an=
-d 4.
-> > > >=20
-> > > > Why are these two devicetree properties, rather than runtime
-> > > > controls?
-> > >=20
-> > > The parasitic resistance added to the series resistance is
-> > > dependent
-> > > only on the circuit.=A0
-> > > It is possible for the chip and the transistor to be at some
-> > > distance
-> > > from each other. The manufacturer can approximate the error added
-> > > and
-> > > decide if resistance error correction should be applied.
-> >=20
-> > I don't think I buy this line of argument. The property is not
-> > describing the hardware, it's literally being used as a toggle for
-> > some
-> > software feature. It'd be more acceptable if it indicated that the
-> > chip
-> > and transistor were distant, leaving software to make a decision on
-> > what
-> > that meant. One user (say bsd) might want decide that the driver
-> > should
-> > always enable it, but another (say linux) might expose it as a
-> > control
-> > to userspace defaulting based the dt property.
-> > Additionally, the name of the property is pretty awful, and does not
-> > even hint at what it's doing - and there's no mention of why channel
-> > 1/2
-> > and 3/4 are bound together.
-> >=20
-> You are correct that the parameters recd12 and recd34 do not directly
-> describe the hardware, but they control a software feature of the chip
-> itself. Resistance error correction is capable of counterbalancing
-> the parasitic resistance added to the external diodes, which can be
-> significant.
+>>> +  interrupts:
+>>> +    maxItems: 2
+>>> +
+>>> +  interrupt-names:
+>>
+>> Needs minItems: 1 if we want to allow a single named interrupt.
+>>
+> the driver as it is right now it doesn't support any interrupt. I was
+> thinking to add them here, just in case there will be a request to be
+> added later.
+> 
 
-> The manufacturer knows where the chip and diode are and can decide if
-> correction is necessary. The user does not have that insight.
+Making the bindings complete even if the driver isn't using it
+yet is the right thing to do. :-)
 
-The user _may_ not have it. The properties should not be written such
-that they exclude the control of these things from userspace, and just
-indicate that the hardware configuration has the chip and diode
-sufficiently far apart that the feature can help.
+I meant allowing just a single interrupt wired up though. So it
+doesn't matter how the driver would handle it.
 
+> 
+>>> +    description:
+>>> +      alert1 indicates a HIGH or LOW limit was exceeded.
+>>> +      alert2 indicates a THERM limit was exceeded.
+>>> +    items:
+>>> +      - const: alert1
+>>> +      - const: alert2
+>>> +
+>>
 
-> I can change the name of the parameter to something like
-> resistance_err_correction and mention in the description which channels
-> are affected.
+...
 
-No _s are allowed in properties, so bear that in mind. Again, I don't
-think the property should be responsible for turning it on, just
-indicate that there is a parasitic resistance, so and the name should
-really be something that indicates a parasitic resistance. E.g.
-microchip,parasitic-res-on-channel1. Software (be it userspace or
-driver) can then made a decision about turning on the error correction
-with that information.
+>>> +
+>>> +      microchip,vbus-half-range:
+>>> +        $ref: /schemas/types.yaml#/definitions/flag
+>>> +        description: |
+>>> +          In order to increase measurement resolution and keeping
+>>> the same
+>>> +          number the of bits the device has a configurable VBUS
+>>> full range scale
+>>> +          (FSR). The range should be set by hardware design and it
+>>> should not be
+>>> +          changed during runtime. The bipolar capability for VBUS
+>>> enables
+>>> +          accurate offset measurement and correction.
+>>> +          The VBUS could be configured into the following full
+>>> scale range:
+>>> +            - VBUS has unipolar 0V to 32V FSR (default) for
+>>> PAC195X or 0V to 9V
+>>> +              (default) for PAC194X.
+>>> +            - VBUS has bipolar -32V to 32V FSR for PAC195X or -9V
+>>> to 9V for
+>>> +              PAC194X. The actual range is limited to about -200
+>>> mV due to the
+>>> +              impact of the ESD structures.
+>>> +            - VBUS has bipolar -16V to 16V FSR for PAC195X or -
+>>> 4.5V to 4.5V for
+>>> +              PAC194X. The actual range is limited to about -200
+>>> mV due to the
+>>> +              impact of the ESD structures.
+>>> +
+>>> +      microchip,vbus-bipolar:
+>>> +        $ref: /schemas/types.yaml#/definitions/flag
+>>> +        description:
+>>> +          If provided, the channel is to be used in bipolar mode.
+>>> The
+>>> +          actual range is limited to about -200 mV due to the
+>>> impact of the ESD
+>>> +          structures.
+>>> +
+>>
+>> Using Jonathan's suggestion from v2 to just have a single property
+>> with 3 different
+>> ranges to chose from seems simpler that this. It would only require
+>> one property
+>> and would be self-documenting. The description could be shortened to
+>> just a couple
+>> of lines.
+> 
+> I was thinking to add the range for this property, but it looks (for me
+> at least) more complicated from the checking point of view. The driver
+> is supporting two family of devices that has, each, 3 different voltage
+> range as an input.
+> 
 
-> > > The user cannot influence the parasitic resistance nor calculate
-> > > it.
-> >=20
-> > I don't think that's super relevant here, since the property has
-> > nothing
-> > to do with influencing or calculating the value. I meant deciding
-> > whether
-> > or not the correction is applied, just as the dt property you propose
-> > does now.
-> >=20
-> > Cheers,
-> > Conor.
->=20
-> Kind Regards,
-> Victor Duicu
+Usually, having a consistent binding for the same thing among similar
+devices is more important than how easy it is to implement in the driver.
 
---TMB2KrwSJzB3PpjT
-Content-Type: application/pgp-signature; name="signature.asc"
+Since this seems to be a common pattern, we could probably justify an
+iio_property_match_ranges() helper function that would simplify the
+implementation in drivers that would need to use such a property. Then
+in each driver it would just be a matter of making a static const array
+lookup table of ranges for each device and calling the helper function.
 
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaEhMdwAKCRB4tDGHoIJi
-0knNAQD3eZV0z01TD2z03LI5AOH9ZO9lIwOXo6GAjoCVVJhMGwEA1psJeGy8ijEA
-ueWlKRe/8keetXzAuYBeRsXWYOJAAQo=
-=Gp4g
------END PGP SIGNATURE-----
-
---TMB2KrwSJzB3PpjT--
 

@@ -1,237 +1,119 @@
-Return-Path: <linux-iio+bounces-20465-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20466-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF870AD5C5C
-	for <lists+linux-iio@lfdr.de>; Wed, 11 Jun 2025 18:36:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5D5EAD5C72
+	for <lists+linux-iio@lfdr.de>; Wed, 11 Jun 2025 18:39:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 39A9D7A44F3
-	for <lists+linux-iio@lfdr.de>; Wed, 11 Jun 2025 16:35:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7A7073A72A2
+	for <lists+linux-iio@lfdr.de>; Wed, 11 Jun 2025 16:36:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC307221562;
-	Wed, 11 Jun 2025 16:35:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64CDA20468C;
+	Wed, 11 Jun 2025 16:36:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Zs6rp9oZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gr9Tkr4C"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAFBD20766E;
-	Wed, 11 Jun 2025 16:35:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16027199FB2;
+	Wed, 11 Jun 2025 16:36:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749659712; cv=none; b=rUP+hsPcrucijx0w2id7WVUoGf+SghBPfXvTd8ZJGDizdMfzUHEWrClxIprzZsfC3GUAEgaXhCaYv6qZLSB8NRkzqFcepxWtE1SS2n5TpZSs1VVYmEwAZTQ2vcHvRsh92WmtWr2Dg4FtKf9UtiQmSY5FU6XQGdjcTLBVFvrM9VQ=
+	t=1749659783; cv=none; b=tE0EFgBISUcVDm0MU3sFXqDY4IHOFSrqEhfQx68zFeC/AE/4HlJ0yeTTFbF1suRpFYka6j4+Pe0x5CYJLbte4o3FpS0BrMwK6rnhlWsMpm9Y+l4fK8lxZegC8bCaEhSOVPNAJ7zl4ad0T56mwPdxf22TXlja7m+Vb8dPfgDaDMM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749659712; c=relaxed/simple;
-	bh=4T6TefxymGuT/EcWLXnyw9C8XuFwlxDI5hIHJ4PoN8I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Kk6++MDccgx9GT89nVWBURSJBkTDQSDhngDMVyENaP1tG/Jgphb6LOoIAzCu+T/q2VFlyHHZf90Cv/e2Iz/BL7w8/tslXOzSn0rmWSIauulsofU5zzydnuurBwGzGhAiWAA54iqLek2ZjT6NBhX71Wo+8M5HUhmTzIbL9Pm1iK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Zs6rp9oZ; arc=none smtp.client-ip=209.85.214.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-234d366e5f2so220215ad.1;
-        Wed, 11 Jun 2025 09:35:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749659710; x=1750264510; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=moYDdCBKQo1o7OL3pKThQFqO2J9Mz1W/woNo6FWp4v0=;
-        b=Zs6rp9oZniOEPp6xVStk5JjIZy/dPERIQRtjK2uUn9dpJqrIOgqTCUcoXo1KfwnZQ5
-         O+Pdmb4c5j9SPribFns3fKDO4BW1Rh1+4cMJ87ad6tVE0Za+x+6WpbMDzRXX9xX0u49C
-         Psd0PEXrH1i0B9KjdpP3pfJ/taSnrcvVlsOUqPdgpF2LUroN/BMPLePyUBqEtlQjTzzg
-         iPFcjn5juuUXoGjDOiF64K3d8+y0jUqZ5lTeyDurYb8/L8Gsf+y4kEd+2b3+TKs0N2C1
-         V12cBG5fEwBK/xRvOx00qkA8q8JpVpiil1ltStRXIt8qZmo2Lp1z7E+kJAhW+cKQ1uee
-         rVVw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749659710; x=1750264510;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=moYDdCBKQo1o7OL3pKThQFqO2J9Mz1W/woNo6FWp4v0=;
-        b=kjDgq24TiIroAvmYUVZt1RUOQi8yLoJRBozYpu4O0WUpt1hxlzeuN5M9tXXLtnZZOX
-         wKiWPwnPzY5G0RyTg+S74FnMdmlWrJa7vXxfutg9EMxNmw7THdKuCq9PFtHOVAO7mysd
-         3MY3CmY6J2eeyCOTgTxbQQcxUq5NuR8rR2H4c412fLNpDH/6ZaqS5wgsb9GQZ2H/4DIF
-         hibwN32d+0I9UJCI3s9qvL7B3XCtsfSzqPKpMmIco4J9p6uMfm3npJeGVxMmGVBv6k6o
-         4DRFHEhlo8ya+JffKwcQY1sqmttGxGvuv+DP6p54KAYN7PNMcrrxIMy7j3yOet2DPXw4
-         YfRA==
-X-Forwarded-Encrypted: i=1; AJvYcCU1MKPQZk7iPuqx+JWgAPO/WHWJT0qzgRgexsr/3rRjEPJRdupYYPSPzGH5+83lvPwrPgGjQ2sIrzU=@vger.kernel.org, AJvYcCVBfWSA2GVnq9h+mF7/DOTzEXltTNLcRLXOlChwV4ZZUoqc09/ByQ1XaRICkFTf9g5AZi2kxaIYZ5dHiY+eioxf2Ts=@vger.kernel.org, AJvYcCWvAn9sgV+31p2aicamMPngGAL6cFGOUYJO70s2LUYwYtf6M/MyU3/IqnwUGBkRBzXlB8cgyh3RgVhIe0SL@vger.kernel.org, AJvYcCXBQu7iwUbPvHky84f+ca8ZKg0iIglRDTCbirgVhepKTjfePc32W04GhTtAe1HlDKcB6S4UBnKRYLQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyZ/btEA4Mg+gUtoIuTd4XMY4CWAlyad8YXOl3Ih8IaZNRFUxm4
-	zsK4LPIE/r7ZVPSPI54PTevNmg86KTdrvGahICI4h91tugsIQ3OipDkS
-X-Gm-Gg: ASbGncsRsK5Xq7quSFnecf7oTQF5YXu4XRrJI2JDawJVvbOtkBqp+K6TAE60yjOHezL
-	fur+5ehah0bH69Q+rV2/S3Ff8IgM72GF60KLRzFouTochip0HA3SoBOmcjme/38fOQq9w/fjpiA
-	eOYOTrPx9nTIxIA8/6OzNgP5V7M0nqAv9vLU4lX4//BaPeyB1m9RIEEe1w2ZgM9q6Yr9zA8TdSa
-	HepG7NhpiIaIJ9XAEth7H4QO0Q264S4msuvn+0Z4uvU3UN8tK22lu5xbcJqMwWXpeYmqFho20hL
-	vqBfhe+7PSX7XKfdyZVEyBj55jWZbHWB7CR/qJgVnh4kTJ+Eg/kTkdDUiKNJPQ==
-X-Google-Smtp-Source: AGHT+IGFMdjlBJbDVBzlFLVjv8c8nQwxnnks3iI6iwDj44idHGQ1w7rK96VSZvYthFmcR0aZsdS8UA==
-X-Received: by 2002:a17:902:f54c:b0:235:ea0d:ae10 with SMTP id d9443c01a7336-23641a9a44amr62858495ad.12.1749659709804;
-        Wed, 11 Jun 2025 09:35:09 -0700 (PDT)
-Received: from google.com ([2620:15c:9d:2:cc6e:a0f4:a9c8:328])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2360340b735sm89936435ad.190.2025.06.11.09.35.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Jun 2025 09:35:09 -0700 (PDT)
-Date: Wed, 11 Jun 2025 09:35:05 -0700
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Claudiu <claudiu.beznea@tuxon.dev>, gregkh@linuxfoundation.org, dakr@kernel.org, len.brown@intel.com, 
-	pavel@kernel.org, ulf.hansson@linaro.org, daniel.lezcano@linaro.org, 
-	linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org, bhelgaas@google.com, 
-	geert@linux-m68k.org, linux-iio@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
-	fabrizio.castro.jz@renesas.com, Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Subject: Re: [PATCH v3 1/2] PM: domains: Add devres variant for
- dev_pm_domain_attach()
-Message-ID: <yd4nhx4b3dbbsru747l2mxwo66xrz3kbyhjpo5kgiqrfvxbyk4@exebi7owkezd>
-References: <20250606111749.3142348-1-claudiu.beznea.uj@bp.renesas.com>
- <20250606111749.3142348-2-claudiu.beznea.uj@bp.renesas.com>
- <CAJZ5v0i_Ey+OVpSZHXru=tubMaZi=y-uOh_0M6zmWZ2DqqA7Vg@mail.gmail.com>
- <zhjytvj35lknj7v3jhva3n3nbv6qctvqgykwyi5huj6omet7lz@wchd7f4p4dpv>
- <CAJZ5v0hsT-Q2hz=qoBo409oungaCmexJwwGheN7KRLFqz=6_Dw@mail.gmail.com>
- <20250607140600.76e87ea5@jic23-huawei>
- <CAJZ5v0jqZ6gYKb85dpR-X5RwFeUBcbbcJ_b-AOe+JypBXod-MA@mail.gmail.com>
- <20250611172307.37c9b725@jic23-huawei>
+	s=arc-20240116; t=1749659783; c=relaxed/simple;
+	bh=sclz4982E4WzBN3+77UXueLPKjZaQ8E9dIo5KXXJhDU=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=bVZkq38ch0WWZfIgwP219u98OJFEOITnK6KoWk4QO/3PeeKVM37AZ1HeUtUZpimUZW7W6v84rKIHgtJp29H3I79E5J7fhA6dG27mjQXRYC/830OynUQ6pUv5P60RRUyXexTclHbIkc4S2/snJ3/ukkc8bg3K1fz1L7P4gd0evTA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gr9Tkr4C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09B13C4CEE3;
+	Wed, 11 Jun 2025 16:36:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1749659782;
+	bh=sclz4982E4WzBN3+77UXueLPKjZaQ8E9dIo5KXXJhDU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=gr9Tkr4C3a+q0tp1tV/MbnrtfnQ54lTT+lFIVz+Um9u/CfxGTiBksQGPeaBSNpcuL
+	 QHf0m6u+Qkq1y3uabTQOAYtq50kt77CYoQI6606AjD2jLqXpQvuQ+tk91sH2VX1CQt
+	 ZOmg2O4qjTc3U7fYpeqcwn2hSBZlXknZbFI/goyKaXuYMuxAggboykF7fVxYjeJcEU
+	 WqAtS2FEyKpRHvME+bIzdi5fQBPft3FHAPo6yrSlzutch9g582P1FA7SKuUupHK9pH
+	 4n4oFIQaYt0dmEW1yQWah7Lse9ooe1Iyax/nnJBQ4nFIwiM76SLS9nBJr/M+rofH64
+	 Daez8pQNQSlgw==
+Date: Wed, 11 Jun 2025 17:36:13 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+Cc: Antonio Borneo <antonio.borneo@foss.st.com>, Alexandre Torgue
+ <alexandre.torgue@foss.st.com>, Andy Shevchenko <andy@kernel.org>, "David
+ Lechner" <dlechner@baylibre.com>, Gatien Chevallier
+ <gatien.chevallier@foss.st.com>, "Lee Jones" <lee@kernel.org>,
+ <linux-iio@vger.kernel.org>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
+ Olivier Moysan <olivier.moysan@foss.st.com>,
+ <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+ <linux-stm32@st-md-mailman.stormreply.com>, Maxime Coquelin
+ <mcoquelin.stm32@gmail.com>
+Subject: Re: [PATCH 3/5] iio: trigger: stm32-timer: Fix build warnings about
+ export.h
+Message-ID: <20250611173613.492b7fc5@jic23-huawei>
+In-Reply-To: <f8b1adef-10f3-4cff-9e11-10c1a16f6ec5@foss.st.com>
+References: <20250610124855.269158-1-antonio.borneo@foss.st.com>
+	<20250610124855.269158-4-antonio.borneo@foss.st.com>
+	<f8b1adef-10f3-4cff-9e11-10c1a16f6ec5@foss.st.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250611172307.37c9b725@jic23-huawei>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Wed, Jun 11, 2025 at 05:23:07PM +0100, Jonathan Cameron wrote:
-> On Mon, 9 Jun 2025 21:59:57 +0200
-> "Rafael J. Wysocki" <rafael@kernel.org> wrote:
-> 
-> > On Sat, Jun 7, 2025 at 3:06 PM Jonathan Cameron <jic23@kernel.org> wrote:
-> > >
-> > > On Fri, 6 Jun 2025 22:01:52 +0200
-> > > "Rafael J. Wysocki" <rafael@kernel.org> wrote:
-> > >
-> > > Hi Rafael,
-> > >  
-> > > > On Fri, Jun 6, 2025 at 8:55 PM Dmitry Torokhov
-> > > > <dmitry.torokhov@gmail.com> wrote:  
-> > > > >
-> > > > > On Fri, Jun 06, 2025 at 06:00:34PM +0200, Rafael J. Wysocki wrote:  
-> > > > > > On Fri, Jun 6, 2025 at 1:18 PM Claudiu <claudiu.beznea@tuxon.dev> wrote:  
-> > > > > > >
-> > > > > > > From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-> > > > > > >
-> > > > > > > The dev_pm_domain_attach() function is typically used in bus code alongside
-> > > > > > > dev_pm_domain_detach(), often following patterns like:
-> > > > > > >
-> > > > > > > static int bus_probe(struct device *_dev)
-> > > > > > > {
-> > > > > > >     struct bus_driver *drv = to_bus_driver(dev->driver);
-> > > > > > >     struct bus_device *dev = to_bus_device(_dev);
-> > > > > > >     int ret;
-> > > > > > >
-> > > > > > >     // ...
-> > > > > > >
-> > > > > > >     ret = dev_pm_domain_attach(_dev, true);
-> > > > > > >     if (ret)
-> > > > > > >         return ret;
-> > > > > > >
-> > > > > > >     if (drv->probe)
-> > > > > > >         ret = drv->probe(dev);
-> > > > > > >
-> > > > > > >     // ...
-> > > > > > > }
-> > > > > > >
-> > > > > > > static void bus_remove(struct device *_dev)
-> > > > > > > {
-> > > > > > >     struct bus_driver *drv = to_bus_driver(dev->driver);
-> > > > > > >     struct bus_device *dev = to_bus_device(_dev);
-> > > > > > >
-> > > > > > >     if (drv->remove)
-> > > > > > >         drv->remove(dev);
-> > > > > > >     dev_pm_domain_detach(_dev);
-> > > > > > > }
-> > > > > > >
-> > > > > > > When the driver's probe function uses devres-managed resources that depend
-> > > > > > > on the power domain state, those resources are released later during
-> > > > > > > device_unbind_cleanup().
-> > > > > > >
-> > > > > > > Releasing devres-managed resources that depend on the power domain state
-> > > > > > > after detaching the device from its PM domain can cause failures.
-> > > > > > >
-> > > > > > > For example, if the driver uses devm_pm_runtime_enable() in its probe
-> > > > > > > function, and the device's clocks are managed by the PM domain, then
-> > > > > > > during removal the runtime PM is disabled in device_unbind_cleanup() after
-> > > > > > > the clocks have been removed from the PM domain. It may happen that the
-> > > > > > > devm_pm_runtime_enable() action causes the device to be runtime-resumed.  
-> > > > > >
-> > > > > > Don't use devm_pm_runtime_enable() then.  
-> > > > >
-> > > > > What about other devm_ APIs? Are you suggesting that platform drivers
-> > > > > should not be using devm_clk*(), devm_regulator_*(),
-> > > > > devm_request_*_irq() and devm_add_action_or_reset()? Because again,
-> > > > > dev_pm_domain_detach() that is called by platform bus_remove() may shut
-> > > > > off the device too early, before cleanup code has a chance to execute
-> > > > > proper cleanup.
-> > > > >
-> > > > > The issue is not limited to runtime PM.
-> > > > >  
-> > > > > >  
-> > > > > > > If the driver specific runtime PM APIs access registers directly, this
-> > > > > > > will lead to accessing device registers without clocks being enabled.
-> > > > > > > Similar issues may occur with other devres actions that access device
-> > > > > > > registers.
-> > > > > > >
-> > > > > > > Add devm_pm_domain_attach(). When replacing the dev_pm_domain_attach() and
-> > > > > > > dev_pm_domain_detach() in bus probe and bus remove, it ensures that the
-> > > > > > > device is detached from its PM domain in device_unbind_cleanup(), only
-> > > > > > > after all driver's devres-managed resources have been release.
-> > > > > > >
-> > > > > > > For flexibility, the implemented devm_pm_domain_attach() has 2 state
-> > > > > > > arguments, one for the domain state on attach, one for the domain state on
-> > > > > > > detach.  
-> > > > > >
-> > > > > > dev_pm_domain_attach() is not part driver API and I'm not convinced at  
-> > > > >
-> > > > > Is the concern that devm_pm_domain_attach() will be [ab]used by drivers?  
-> > > >
-> > > > Yes, among other things.  
-> > >
-> > > Maybe naming could make abuse at least obvious to spot? e.g.
-> > > pm_domain_attach_with_devm_release()  
+On Tue, 10 Jun 2025 15:05:36 +0200
+Fabrice Gasnier <fabrice.gasnier@foss.st.com> wrote:
+
+> On 6/10/25 14:48, Antonio Borneo wrote:
+> > After commit a934a57a42f6 ("scripts/misc-check: check missing #include
+> > <linux/export.h> when W=1") and commit 7d95680d64ac ("scripts/misc-check:
+> > check unnecessary #include <linux/export.h> when W=1") we get the build
+> > warning with W=1:
 > > 
-> > If I'm not mistaken, it is not even necessary to use devres for this.
+> > drivers/iio/trigger/stm32-timer-trigger.c: warning: EXPORT_SYMBOL() is used, but #include <linux/export.h> is missing
 > > 
-> > You might as well add a dev_pm_domain_detach() call to
-> > device_unbind_cleanup() after devres_release_all().  There is a slight
-> > complication related to the second argument of it, but I suppose that
-> > this can be determined at the attach time and stored in a new device
-> > PM flag, or similar.
+> > Fix it.
+> > 
+> > Signed-off-by: Antonio Borneo <antonio.borneo@foss.st.com>  
 > 
-> That options sounds good to me.  I think this moves dev_pm_domain_detach()
-> call into the the driver core / perhaps device_unbind_cleanup().  It's a noop
-> if a domain was never attached so that should be fine.
+> Hi Antonio,
 > 
-> Given that second parameter, I guess we can't move the dev_pm_domain_attach()
-> into the driver core as well so it is a little odd wrt to balance,
-> but with some documentation that is probably fine.
+> You can add my:
+> Acked-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+Applied to the togreg branch of iio.git - initially pushed out as testing
+as I have some other stuff queued today that needs 0-day to look at it.
 
-It is going to be confusing IMO and might lead to ordering issues again
-if there are more resources allocated by bus probe() before domain
-attach is called.
+Thanks,
 
-I know Rafael does not consider dev_pm_domain_attach() a "driver" API
-(although I do not see much difference between driver and bus probe
-code), but maybe we can solve this by using different name
-(devres_controlled_pm_domain_attach() instead of
-devm_pm_domain_attach()?).
+J
+> 
+> Thanks,
+> Fabrice
+> 
+> > ---
+> >  drivers/iio/trigger/stm32-timer-trigger.c | 1 +
+> >  1 file changed, 1 insertion(+)
+> > 
+> > diff --git a/drivers/iio/trigger/stm32-timer-trigger.c b/drivers/iio/trigger/stm32-timer-trigger.c
+> > index 925b864facca1..3b9a3a6cbb25c 100644
+> > --- a/drivers/iio/trigger/stm32-timer-trigger.c
+> > +++ b/drivers/iio/trigger/stm32-timer-trigger.c
+> > @@ -6,6 +6,7 @@
+> >   *
+> >   */
+> >  
+> > +#include <linux/export.h>
+> >  #include <linux/iio/iio.h>
+> >  #include <linux/iio/sysfs.h>
+> >  #include <linux/iio/timer/stm32-timer-trigger.h>  
 
-OTOH we have devm_pm_domain_attach_list() already which is I guess
-driver-level API...
-
-Thanks.
-
--- 
-Dmitry
 

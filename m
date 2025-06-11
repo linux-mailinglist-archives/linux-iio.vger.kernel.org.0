@@ -1,39 +1,39 @@
-Return-Path: <linux-iio+bounces-20413-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20411-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93F93AD4F25
-	for <lists+linux-iio@lfdr.de>; Wed, 11 Jun 2025 11:02:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 868FBAD4F19
+	for <lists+linux-iio@lfdr.de>; Wed, 11 Jun 2025 11:01:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5D4897ADA34
-	for <lists+linux-iio@lfdr.de>; Wed, 11 Jun 2025 09:00:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7138217F703
+	for <lists+linux-iio@lfdr.de>; Wed, 11 Jun 2025 09:01:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3394D260589;
-	Wed, 11 Jun 2025 09:00:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 787EB25F787;
+	Wed, 11 Jun 2025 09:00:21 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from unicom145.biz-email.net (unicom145.biz-email.net [210.51.26.145])
+Received: from ssh247.corpemail.net (ssh247.corpemail.net [210.51.61.247])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E38B25DAF4;
-	Wed, 11 Jun 2025 09:00:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.51.26.145
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E6A725CC54;
+	Wed, 11 Jun 2025 09:00:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.51.61.247
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749632422; cv=none; b=LX38Ce0kCzeNI0m+6L/hVrkNfqfDNtO1WqU/azinljuQwa10h0XxED3czrvE3yvNXy88lyMzDFTaiLU9+DPgYaLIRseSqlvvHlNV4GKBFzZw1mz03UZi/s86eZc9KTg/LtbVlPBhYLuZ8+p0DpqUEVa6Y/RFpqtrphRCuX/xIvE=
+	t=1749632421; cv=none; b=VaVt4lOxQc97gVHI1zURxZ3QJsoTz3JGVcd0PInMbrHjD4j+FCq1NQKkMwZtkqqQUsRln+56QBD2X7FU69wXHCw5zwKlkeU5ur4sG3WliSawLKEWGJ66mU2hBjp4HU5jjBTIYR0GcG8cWwoKhJLHv0Ftb0VjqCgBTMYUv6oj8eE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749632422; c=relaxed/simple;
-	bh=qdHdY0mYomgUUuP25pEtrs9RUkr6YQXepCL4Tm8nytA=;
+	s=arc-20240116; t=1749632421; c=relaxed/simple;
+	bh=O/+Z1CoNDX/mRDXuev9DfNfUrUDAApxbIMNCdEWUjNE=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=C26FhkngqPdxC30gV92dW4eoNKCe1I205eGXDHQlx3cqcmdJHvZow6XaPteMPdUxQ/ittSIxh+0eECJyvd7MXvWnUWtCQYqwcJtMFZiQaKauG+R33xormzm6Af1y/je7CJ214+WQnDDuyNUx2i05bsM2clZ/en/5RGIVS9hfXOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=inspur.com; spf=pass smtp.mailfrom=inspur.com; arc=none smtp.client-ip=210.51.26.145
+	 MIME-Version:Content-Type; b=dSmYBe2E7KFeVspSAL/EWg1UprkaEPd9ANC58x1vT3D7wusA1Y52LPP+A40r7zEO/ogSej7Qbhupjp2yXGwv+i4W4Vt0+Qvx5KNaDRGhMpDNcCkpAYmKlNocgqrvp/4V/zzP1gSNefjo8L3JTMi1a5JtHPm6J/1VvQLYHIv4+qk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=inspur.com; spf=pass smtp.mailfrom=inspur.com; arc=none smtp.client-ip=210.51.61.247
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=inspur.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=inspur.com
-Received: from jtjnmail201612.home.langchao.com
-        by unicom145.biz-email.net ((D)) with ASMTP (SSL) id 202506111659051048;
+Received: from jtjnmail201611.home.langchao.com
+        by ssh247.corpemail.net ((D)) with ASMTP (SSL) id 202506111659050561;
         Wed, 11 Jun 2025 16:59:05 +0800
 Received: from jtjnmail201607.home.langchao.com (10.100.2.7) by
- jtjnmail201612.home.langchao.com (10.100.2.12) with Microsoft SMTP Server
+ jtjnmail201611.home.langchao.com (10.100.2.11) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
  15.1.2507.39; Wed, 11 Jun 2025 16:59:04 +0800
 Received: from localhost.localdomain.com (10.94.12.179) by
@@ -45,9 +45,9 @@ To: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
 	<jmaneyrol@invensense.com>
 CC: <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>, chuguangqing
 	<chuguangqing@inspur.com>
-Subject: [PATCH 05/10] iio: health: afe4404: convert to use maple tree register cache
-Date: Wed, 11 Jun 2025 16:58:33 +0800
-Message-ID: <20250611085838.4761-6-chuguangqing@inspur.com>
+Subject: [PATCH 06/10] iio: imu: icm42600: convert to use maple tree register cache
+Date: Wed, 11 Jun 2025 16:58:34 +0800
+Message-ID: <20250611085838.4761-7-chuguangqing@inspur.com>
 X-Mailer: git-send-email 2.43.5
 In-Reply-To: <20250611085838.4761-1-chuguangqing@inspur.com>
 References: <20250611085838.4761-1-chuguangqing@inspur.com>
@@ -71,22 +71,31 @@ more appropriate for modern systems than those made by the rbtree cache.
 
 Signed-off-by: chuguangqing <chuguangqing@inspur.com>
 ---
- drivers/iio/health/afe4404.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/imu/inv_icm42600/inv_icm42600_core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/iio/health/afe4404.c b/drivers/iio/health/afe4404.c
-index 99ff68aed27c..b2727effecaa 100644
---- a/drivers/iio/health/afe4404.c
-+++ b/drivers/iio/health/afe4404.c
-@@ -413,7 +413,7 @@ static const struct regmap_config afe4404_regmap_config = {
- 	.val_bits = 24,
- 
- 	.max_register = AFE4404_AVG_LED1_ALED1VAL,
+diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
+index 63d46619ebfa..1fc4fddc2029 100644
+--- a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
++++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
+@@ -83,7 +83,7 @@ const struct regmap_config inv_icm42600_regmap_config = {
+ 	.num_ranges = ARRAY_SIZE(inv_icm42600_regmap_ranges),
+ 	.volatile_table = inv_icm42600_regmap_volatile_accesses,
+ 	.rd_noinc_table = inv_icm42600_regmap_rd_noinc_accesses,
 -	.cache_type = REGCACHE_RBTREE,
 +	.cache_type = REGCACHE_MAPLE,
- 	.volatile_table = &afe4404_volatile_table,
  };
+ EXPORT_SYMBOL_NS_GPL(inv_icm42600_regmap_config, "IIO_ICM42600");
  
+@@ -97,7 +97,7 @@ const struct regmap_config inv_icm42600_spi_regmap_config = {
+ 	.num_ranges = ARRAY_SIZE(inv_icm42600_regmap_ranges),
+ 	.volatile_table = inv_icm42600_regmap_volatile_accesses,
+ 	.rd_noinc_table = inv_icm42600_regmap_rd_noinc_accesses,
+-	.cache_type = REGCACHE_RBTREE,
++	.cache_type = REGCACHE_MAPLE,
+ 	.use_single_write = true,
+ };
+ EXPORT_SYMBOL_NS_GPL(inv_icm42600_spi_regmap_config, "IIO_ICM42600");
 -- 
 2.31.1
 

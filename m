@@ -1,79 +1,79 @@
-Return-Path: <linux-iio+bounces-20511-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20512-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D4ADAD62E6
-	for <lists+linux-iio@lfdr.de>; Thu, 12 Jun 2025 00:47:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6CB1AD62E8
+	for <lists+linux-iio@lfdr.de>; Thu, 12 Jun 2025 00:47:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A1D511886994
-	for <lists+linux-iio@lfdr.de>; Wed, 11 Jun 2025 22:46:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD4011BC33A0
+	for <lists+linux-iio@lfdr.de>; Wed, 11 Jun 2025 22:46:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4B6628D8C2;
-	Wed, 11 Jun 2025 22:42:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2628128DF02;
+	Wed, 11 Jun 2025 22:43:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="WQf4qrRO"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="UppqaxXN"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oi1-f179.google.com (mail-oi1-f179.google.com [209.85.167.179])
+Received: from mail-oi1-f172.google.com (mail-oi1-f172.google.com [209.85.167.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B568286D6F
-	for <linux-iio@vger.kernel.org>; Wed, 11 Jun 2025 22:42:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 392ED286D6F
+	for <linux-iio@vger.kernel.org>; Wed, 11 Jun 2025 22:42:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749681778; cv=none; b=an1muKpfOq3ZSZqgvFxHhyhrNAWOa3iinNz348TbIETPQo6yq4H1PQdPWaMvmeuQ7i1xZV+v1Lt5blr4m12ayor3uSgAt1ajPQZLQKsoWe4XOEEaG7IInE/1imZBAwa0hCpZQ+d+w5+7zDeySbdmwhyUh2G/gj2m2/xshzpZHeQ=
+	t=1749681781; cv=none; b=r78B4P/Tuy9SdwiwaKN+dyFaED9eiFrVkDevxN/Xt4WKqkKg/Ng0M0ITOYBDDGEYtgfdZAqtMvx2mdc899N1NYNQp4z5J9ih5uEkdNAtO5KjpWEGSEYCyejmnSmGHCdvhEJy2ehOzNaagGX57bg/VWPOTCFaW7yGiV8HxzWPzVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749681778; c=relaxed/simple;
-	bh=u68bZZMO/JKUz2mz6KZxBlhHkEylsEbUz83VhCyRYl4=;
+	s=arc-20240116; t=1749681781; c=relaxed/simple;
+	bh=iremmMu1ndnd7A4Ps07xEYpBZI14kNGzGGkmeue7GjM=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=TIM1w7UV4MG3S3Wl9Ac1HvbBzc0hrfl6xeYxXwU401PKSnBjgB7yrhMK7gY0pLVst+EXQr8OgQ678huIaNRfpv897Slm+abmPfYiQWg4LIKAcOaJ4mWZqSrnlQq4uQ1uxGfgDtgaMfm+qKaBOl3kJkex87BNIPwolmsqj0tKAdk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=WQf4qrRO; arc=none smtp.client-ip=209.85.167.179
+	 In-Reply-To:To:Cc; b=rJt1Z2EMtgvAkxdQnwwz6/4ckVliW7nnblefCxrPbIAv9k7dDVr+j1b20k6hComw/J76qm+vNlr9YZnNIj07UoYZ7R+J6f/Yj2690Go8kfzUQwlvKV4FLuZIXHP1jdZOMhn1ymCvyIJrD+wX+r5QK7vN3zEKKXLMDRVoz/jnYUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=UppqaxXN; arc=none smtp.client-ip=209.85.167.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oi1-f179.google.com with SMTP id 5614622812f47-408d7e2ad03so219730b6e.1
-        for <linux-iio@vger.kernel.org>; Wed, 11 Jun 2025 15:42:56 -0700 (PDT)
+Received: by mail-oi1-f172.google.com with SMTP id 5614622812f47-408d7e2ad03so219750b6e.1
+        for <linux-iio@vger.kernel.org>; Wed, 11 Jun 2025 15:42:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1749681776; x=1750286576; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1749681778; x=1750286578; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=O49HniDCuoXMC9eMwPqBiAeGw4w5v2Vl7zSDG8FL1hA=;
-        b=WQf4qrROSO+28EkD5sVWXmK8z2KWV3zG/57mCtH9YdQfzke019dM2V2+sEbj0F/Ig+
-         z4B4S2ut3ED1wHJx/tYaJXbTDxodlkry9AyIs2aV9hngcH0/1GdjppurqeU0dnEZeDeL
-         IW6aBmkvRZMahgHQWqM8mCJTXt5rrNyYy2goz5SoeJBJc8i1unqRtQ0w77w6GWv5GADI
-         HzpEYKyyaCdFrmXiEEZgZzOoeM8wlruPEn4mK0SFK0h2PRq3YvoJnkzFrrITb9AJWh39
-         ccls/fJrWUEMmrZW2Bl9oTdf0UV9r7597UmwlHvoc9OCKT+NxKjCB07VpgJVmj1lJzyh
-         GIrw==
+        bh=7gNeyiiatnOg12pB5RbWcv5kPhqcJXqPYg/9AFCOdp0=;
+        b=UppqaxXNXYQQBK1xtmEkImo9br0NF6WhxmPgCJznezuAsTSdKUxd7Zbu2kGq2UEpmG
+         U9YKjlez62Ur+4CAGF5PUI6bsxZZlZRIJ7hzW8Zg0bqqlYp2nNHLSwnLsPFpLjtSSDRB
+         tH4jd3NOF9EvZ4GjDS5hfZVU6Vu2x+OQjaHp8JepyU8+y4roPl9G8C3QQAoYEcKHc0ZF
+         d0zMJamRxDe2zrU1mBeZNLRZU/WmUD7g6ZCBKR03NnN4PkvAh2w0bAJTLYoFHsRdamNk
+         WjLeG2ZUMT9F6TnAyvsZDIss7nzvdLbSzNqs0GDTiNdJACZVADRAYSdapIH6Mh2OHrHK
+         ov2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749681776; x=1750286576;
+        d=1e100.net; s=20230601; t=1749681778; x=1750286578;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=O49HniDCuoXMC9eMwPqBiAeGw4w5v2Vl7zSDG8FL1hA=;
-        b=HEcY/VEDuJyRRRtamUtHMah9lsjGEMO8qamG43jEwRLcXao2YSELwT2bWAuxGGibaf
-         xPaGKq9Ozkva9bRQQtG+SJxLEXc3YPoYzhlWY64OIydIrQKV9bUDRocl0szI+r9fy17x
-         qcS2I7gQzasmGpVCySh3VhuUHPlAeH/rnNcpggdae/xulYGKz9Lv+fnNljskEUQM93Bt
-         9OdiuS59yUHTzEH8z2Nc2uDokAWfKsTa3QiN9PYAZ9UOpbvGUy+33X8d7RNy1rTSfqVE
-         CiaNMtSPZWPxfROdsN5ji7PWppSpJBfgvf2qxpHfcI00UrRdT9jwKBq02buAcyz5nX1o
-         bvWA==
-X-Gm-Message-State: AOJu0YyQ8IUakBMmb3zI1NSCk97j6FtEo+LCC9YOAfGMZMhQIdUnXRXO
-	BX8b9L8hMVJxfxd7U5etY+ZP0CXVVCmwx2p2eS04CZE52m52gYJdghmKefKLE3dxu+Q=
-X-Gm-Gg: ASbGnctwkBqdqVcrLzH3N9LSrADYj4LYtUxJMDfr076NCF4nGRYwCwO7EE9hdvXkADD
-	TR1lT/CgY8v+q+fbAht4GGSZrJf0YuQ0uEL6tMJh+zh/PSQAmzrLWERUhyPuRpBVQxDuBuSxiy7
-	IcNLViCIABX4Xm3whtHtR9O37R8s7Uf9aGF0fyD+zlKMj4o/74uGU4Y46accmqc6HuMdmhmBI5W
-	wvVMfPtkK2VjTYBth3LpUP6dIvtvAmhf0i5KB/RQ70odnt5aZFHrLtxr0zCT1sIOwFZuxB6+lhx
-	SHHCQbUKdwjGLugN5H8+vESuqs2buPkvqu60pdgsa+mglKIsc9AsJez54LsiCXQnF8Vb
-X-Google-Smtp-Source: AGHT+IEdXlTs5BQlKqDRA2XR9le0U//SvE0Qifl3mfGztXMmWUlblRQ96qzrlkvIsB1m096LadrsCQ==
-X-Received: by 2002:a05:6808:180c:b0:409:f8e:7282 with SMTP id 5614622812f47-40a65f87782mr956229b6e.5.1749681776215;
-        Wed, 11 Jun 2025 15:42:56 -0700 (PDT)
+        bh=7gNeyiiatnOg12pB5RbWcv5kPhqcJXqPYg/9AFCOdp0=;
+        b=SiSeO2rTS8bDX5CQiM0qA3eRt3adVVZXXdnWSl7Rvod98/sxLqh72UNLDFgwJ+bIWC
+         oWfRFGz+emiJVyhqjnhco4peqR+T5xqkR5MJnyKTJrXdnWE2MLPvKGmfu8UqwQqodrNI
+         lH/PtI+4FDxD5NvkYrP9AzH6mpscxt4mVXh64V/+rs0XjBOl2n/6AQmF5YOk+ilMKpz0
+         2i8sCkxbQpAtaN2VwglJkq8ritwIlV5VFGgeVtU8PewcE6E26hqarjDDLxn01f7TwHwO
+         AhwK4Fef8YlB7p93aln1aib67wdj4lhzzhXHGnek9IKz5GI16ZOh9D9AhxtlXbRn9iwM
+         +wYA==
+X-Gm-Message-State: AOJu0YwUQe19yYbVExLuPw0e02Isbf0uv6fCL5LiOFbMtxwkyrhFyGXn
+	+X+tjBJPTJnjBI8JFnWmozyT7bCAxDNUHaUFsuReoo3jk1vuDAmddzDMWpcGL7RM/RY=
+X-Gm-Gg: ASbGncsDlUO7+iWQG5efoQQPM8gw/6OoHpmLYHs9Q2dc+q2+acENdwbe8esIQ5TFlb1
+	W8JlXFllZY77r6RhHYCaIJwfgz47ovk1DZn9M/1/tkaxXOP+7laJDhOqBXFBKp+T1s6Ld+6kCzS
+	BjjhOCiScWJ0CrbkEeqfHVBGWRWAv08RmTOL3DyvBr7bxFZin78uTB69Bw4/Evsa+buCXLVleKB
+	06wGGuG07J9MS/VlQi1G9pzhsHuF+By5Vdwtdz/QRjv0KyP9PB99o1K0Xm57BngQzMuF46YLpNz
+	m96UjIdTSUoJ7/nVFz+l3XmHwgeDhVRBl2pei9MD7MSPEU2dlbG7eJLyvwBBAx2WWFCa
+X-Google-Smtp-Source: AGHT+IF8vLl1oZyRXlNmWN4+7O4lpLib8z/LRQvjmS2nfSR+pVwcY8I2vpYyrg4nGSIO9hYnaIgubg==
+X-Received: by 2002:a05:6808:2395:b0:406:59f3:738d with SMTP id 5614622812f47-40a65f82d85mr1058633b6e.4.1749681778380;
+        Wed, 11 Jun 2025 15:42:58 -0700 (PDT)
 Received: from [127.0.1.1] ([2600:8803:e7e4:1d00:4753:719f:673f:547c])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-40a682fbf05sm24684b6e.32.2025.06.11.15.42.54
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-40a682fbf05sm24684b6e.32.2025.06.11.15.42.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Jun 2025 15:42:55 -0700 (PDT)
+        Wed, 11 Jun 2025 15:42:57 -0700 (PDT)
 From: David Lechner <dlechner@baylibre.com>
-Date: Wed, 11 Jun 2025 17:39:12 -0500
-Subject: [PATCH 20/28] iio: light: opt4060: use = { } instead of memset()
+Date: Wed, 11 Jun 2025 17:39:13 -0500
+Subject: [PATCH 21/28] iio: light: veml6030: use = { } instead of memset()
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -82,7 +82,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250611-iio-zero-init-stack-with-instead-of-memset-v1-20-ebb2d0a24302@baylibre.com>
+Message-Id: <20250611-iio-zero-init-stack-with-instead-of-memset-v1-21-ebb2d0a24302@baylibre.com>
 References: <20250611-iio-zero-init-stack-with-instead-of-memset-v1-0-ebb2d0a24302@baylibre.com>
 In-Reply-To: <20250611-iio-zero-init-stack-with-instead-of-memset-v1-0-ebb2d0a24302@baylibre.com>
 To: Michael Hennerich <michael.hennerich@analog.com>, 
@@ -113,15 +113,15 @@ Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-stm32@st-md-mailman.stormreply.com, 
  David Lechner <dlechner@baylibre.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1055; i=dlechner@baylibre.com;
- h=from:subject:message-id; bh=u68bZZMO/JKUz2mz6KZxBlhHkEylsEbUz83VhCyRYl4=;
- b=owGbwMvMwMV46IwC43/G/gOMp9WSGDK82DgYtDNtb2gx3z7l0jyT+eHvDe25Ny/eC02uWrn1Y
- Ct3oj9PJ6MxCwMjF4OsmCLLG4mb85L4mq/NuZExA2YQKxPYFC5OAZjIHWH2f3bdcxonrJAMav7A
- XffFu02lOFatYYFB7CF7t92HHtwV1csJuGihoZXQqzjn9qFVwQ9lw6WjTz/KejJDP9U9zPVrSVd
- FI6OcwCrLffXZi7bwHns3aafaxnuO18SbZz42r7q3SNX/4t5VaVwdlmdCG1e/YlOZNq/SJHTm1b
- 6D+oXG06fdm+A7z+KTCU+oXc0f3u8ab+avuiHZGW8WcF/yQc2Kvd6bNgqbneTXPqugcUbhajePp
- EmfdwGzmsgpxSwm/ZdqT8JD1yvJaf4XW2u/8qFBW/Mx9Tn3HWZaHeLU2JRZ4bDydVbTlvcc7xlc
- pgl9PKq54uvTWCH/WaeKFt2rffq43yDVPalMb2os24pjAA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=804; i=dlechner@baylibre.com;
+ h=from:subject:message-id; bh=iremmMu1ndnd7A4Ps07xEYpBZI14kNGzGGkmeue7GjM=;
+ b=owEBbQGS/pANAwAKAcLMIAH/AY/AAcsmYgBoSgYP8WsYQcwPg/QZttEVQAubGL55qot8Hvrta
+ PXX1og+vq+JATMEAAEKAB0WIQTsGNmeYg6D1pzYaJjCzCAB/wGPwAUCaEoGDwAKCRDCzCAB/wGP
+ wMjAB/9UreFKkkIj5dONnjnnK8DcB0PP9NwVYQE0mLIdoU7NMfJo1xDYNFB//ohFjvbKA3cP7xn
+ TZULWqPy8UzorusrfpYLqSjNuqe/iSnOJUyt0URfEW+PFO2iBTYLbevM1E3jZs4OP3y1H9P0LkP
+ lzFF9/gmEjEOZ8TX2HDvoHjSthCnmkIbB0rZgSAWzV2CtwsWAbz3cJmYxU45vdgfhXTi5o81ife
+ +AQ7EmHHgG7cy49HOGnvublhmnWgpvoPulkVMW5/n7FkpryUfUCAzJ65gmUs/8B74qZPpycDA+E
+ 4e5skikbdS1v1z198Lxa16R09kc1jTul4iUxmi1lPrhTkD4C
 X-Developer-Key: i=dlechner@baylibre.com; a=openpgp;
  fpr=8A73D82A6A1F509907F373881F8AF88C82F77C03
 
@@ -130,31 +130,24 @@ the code.
 
 Signed-off-by: David Lechner <dlechner@baylibre.com>
 ---
- drivers/iio/light/opt4060.c | 4 +---
+ drivers/iio/light/veml6030.c | 4 +---
  1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/iio/light/opt4060.c b/drivers/iio/light/opt4060.c
-index f4085020e03ebadb2b91db3212449db82d738ebd..3c927149bd256b392ed8d1bfa9847788981ef2f0 100644
---- a/drivers/iio/light/opt4060.c
-+++ b/drivers/iio/light/opt4060.c
-@@ -1083,7 +1083,7 @@ static irqreturn_t opt4060_trigger_handler(int irq, void *p)
- 	struct  {
- 		u32 chan[OPT4060_NUM_CHANS];
- 		aligned_s64 ts;
--	} raw;
-+	} raw = { };
- 	int i = 0;
- 	int chan, ret;
- 
-@@ -1091,8 +1091,6 @@ static irqreturn_t opt4060_trigger_handler(int irq, void *p)
- 	if (iio_trigger_validate_own_device(idev->trig, idev))
- 		opt4060_trigger_new_samples(idev);
- 
--	memset(&raw, 0, sizeof(raw));
+diff --git a/drivers/iio/light/veml6030.c b/drivers/iio/light/veml6030.c
+index 473a9c3e32a3a53f373595a5113b47e795f5366c..0945f146bedbda79511e704158122acaac5e60c1 100644
+--- a/drivers/iio/light/veml6030.c
++++ b/drivers/iio/light/veml6030.c
+@@ -892,9 +892,7 @@ static irqreturn_t veml6030_trigger_handler(int irq, void *p)
+ 	struct {
+ 		u16 chans[2];
+ 		aligned_s64 timestamp;
+-	} scan;
 -
- 	iio_for_each_active_channel(idev, chan) {
- 		if (chan == OPT4060_ILLUM)
- 			ret = opt4060_calc_illuminance(chip, &raw.chan[i++]);
+-	memset(&scan, 0, sizeof(scan));
++	} scan = { };
+ 
+ 	iio_for_each_active_channel(iio, ch) {
+ 		ret = regmap_read(data->regmap, VEML6030_REG_DATA(ch),
 
 -- 
 2.43.0

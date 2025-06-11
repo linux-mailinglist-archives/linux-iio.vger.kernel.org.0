@@ -1,47 +1,47 @@
-Return-Path: <linux-iio+bounces-20466-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20467-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5D5EAD5C72
-	for <lists+linux-iio@lfdr.de>; Wed, 11 Jun 2025 18:39:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA6E6AD5C6F
+	for <lists+linux-iio@lfdr.de>; Wed, 11 Jun 2025 18:39:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7A7073A72A2
-	for <lists+linux-iio@lfdr.de>; Wed, 11 Jun 2025 16:36:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1258E1886EE4
+	for <lists+linux-iio@lfdr.de>; Wed, 11 Jun 2025 16:37:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64CDA20468C;
-	Wed, 11 Jun 2025 16:36:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1C771FBC90;
+	Wed, 11 Jun 2025 16:37:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gr9Tkr4C"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E93oMAjL"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16027199FB2;
-	Wed, 11 Jun 2025 16:36:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F0F919C556;
+	Wed, 11 Jun 2025 16:37:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749659783; cv=none; b=tE0EFgBISUcVDm0MU3sFXqDY4IHOFSrqEhfQx68zFeC/AE/4HlJ0yeTTFbF1suRpFYka6j4+Pe0x5CYJLbte4o3FpS0BrMwK6rnhlWsMpm9Y+l4fK8lxZegC8bCaEhSOVPNAJ7zl4ad0T56mwPdxf22TXlja7m+Vb8dPfgDaDMM=
+	t=1749659850; cv=none; b=WMW0QapOc9Q5p5xV9rCT2YkUbaOLg7s1VqF4cwR5UhUs1xg0pse0p9+fzeSlql8dICmOUP78FyzLSrIqrx1Hj4vigfkYzL4nyhvT07i6dMivI4taA0mnRAw/s5nTk09SeFbumrZuFShpx/XvfF3Sj0amcnPn3riGsmZuJuq2234=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749659783; c=relaxed/simple;
-	bh=sclz4982E4WzBN3+77UXueLPKjZaQ8E9dIo5KXXJhDU=;
+	s=arc-20240116; t=1749659850; c=relaxed/simple;
+	bh=8f17JNCbmwhQzy5mD6f+45j2FzwIQnJv0xmMlafqAEg=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bVZkq38ch0WWZfIgwP219u98OJFEOITnK6KoWk4QO/3PeeKVM37AZ1HeUtUZpimUZW7W6v84rKIHgtJp29H3I79E5J7fhA6dG27mjQXRYC/830OynUQ6pUv5P60RRUyXexTclHbIkc4S2/snJ3/ukkc8bg3K1fz1L7P4gd0evTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gr9Tkr4C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09B13C4CEE3;
-	Wed, 11 Jun 2025 16:36:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BhhSQuWQmx6zasWiZUFrOP3FZ3Rl1I7p6IJMfjU8MONyt5ly4PMZpg1GujAVb9LKcCsnQUr1TDdVaLtR3RYo3J/2ODa8Ny6GIu3OAuTQz7EYJJSTagGeWHumYhwaDqdwgjK14ahz0GcxiX2uc6+jHB4EAhNb3SSGv4ST5Y5QRpU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E93oMAjL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA57FC4CEE3;
+	Wed, 11 Jun 2025 16:37:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749659782;
-	bh=sclz4982E4WzBN3+77UXueLPKjZaQ8E9dIo5KXXJhDU=;
+	s=k20201202; t=1749659850;
+	bh=8f17JNCbmwhQzy5mD6f+45j2FzwIQnJv0xmMlafqAEg=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=gr9Tkr4C3a+q0tp1tV/MbnrtfnQ54lTT+lFIVz+Um9u/CfxGTiBksQGPeaBSNpcuL
-	 QHf0m6u+Qkq1y3uabTQOAYtq50kt77CYoQI6606AjD2jLqXpQvuQ+tk91sH2VX1CQt
-	 ZOmg2O4qjTc3U7fYpeqcwn2hSBZlXknZbFI/goyKaXuYMuxAggboykF7fVxYjeJcEU
-	 WqAtS2FEyKpRHvME+bIzdi5fQBPft3FHAPo6yrSlzutch9g582P1FA7SKuUupHK9pH
-	 4n4oFIQaYt0dmEW1yQWah7Lse9ooe1Iyax/nnJBQ4nFIwiM76SLS9nBJr/M+rofH64
-	 Daez8pQNQSlgw==
-Date: Wed, 11 Jun 2025 17:36:13 +0100
+	b=E93oMAjLUPLSwW/zg0PztdZ7pXCSfwsLe9jNH0prZN9k4mHzriJxiuTnLEoUSUJ9Y
+	 ycRzveSJshLaFIP+pC5gjH6ibNnVfyl9DoNz/n/rGl5EHmO8aY/tgzRHD0Afhb/Pkc
+	 pZyRMPmOrK1o73d3S7vW9xPzekTYYAzR+E9YuTAEBe0rCmqXVDssRvJn0R1sE3rxSG
+	 AF6X0370JwFK8uGCzzYJfMjev3Y7rAnaDD3rIcnbH1re9Z71jy1Nb7Kx70QTOeu40U
+	 YQfEY8hqzDIRh6hKqYujacFnrn5Sx835DZL2FASOyPk7HhA/gk2j8+muKZKMed4Pd5
+	 7Xx3A6Qjhwvtw==
+Date: Wed, 11 Jun 2025 17:37:22 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
 Cc: Antonio Borneo <antonio.borneo@foss.st.com>, Alexandre Torgue
@@ -53,13 +53,13 @@ Cc: Antonio Borneo <antonio.borneo@foss.st.com>, Alexandre Torgue
  <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
  <linux-stm32@st-md-mailman.stormreply.com>, Maxime Coquelin
  <mcoquelin.stm32@gmail.com>
-Subject: Re: [PATCH 3/5] iio: trigger: stm32-timer: Fix build warnings about
- export.h
-Message-ID: <20250611173613.492b7fc5@jic23-huawei>
-In-Reply-To: <f8b1adef-10f3-4cff-9e11-10c1a16f6ec5@foss.st.com>
+Subject: Re: [PATCH 4/5] iio: trigger: stm32-lptimer: Fix build warnings
+ about export.h
+Message-ID: <20250611173722.1f78b841@jic23-huawei>
+In-Reply-To: <ccde5e45-9541-499f-b248-08cd6fad9a19@foss.st.com>
 References: <20250610124855.269158-1-antonio.borneo@foss.st.com>
-	<20250610124855.269158-4-antonio.borneo@foss.st.com>
-	<f8b1adef-10f3-4cff-9e11-10c1a16f6ec5@foss.st.com>
+	<20250610124855.269158-5-antonio.borneo@foss.st.com>
+	<ccde5e45-9541-499f-b248-08cd6fad9a19@foss.st.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -70,7 +70,7 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 10 Jun 2025 15:05:36 +0200
+On Tue, 10 Jun 2025 15:05:50 +0200
 Fabrice Gasnier <fabrice.gasnier@foss.st.com> wrote:
 
 > On 6/10/25 14:48, Antonio Borneo wrote:
@@ -79,7 +79,7 @@ Fabrice Gasnier <fabrice.gasnier@foss.st.com> wrote:
 > > check unnecessary #include <linux/export.h> when W=1") we get the build
 > > warning with W=1:
 > > 
-> > drivers/iio/trigger/stm32-timer-trigger.c: warning: EXPORT_SYMBOL() is used, but #include <linux/export.h> is missing
+> > drivers/iio/trigger/stm32-lptimer-trigger.c: warning: EXPORT_SYMBOL() is used, but #include <linux/export.h> is missing
 > > 
 > > Fix it.
 > > 
@@ -89,31 +89,27 @@ Fabrice Gasnier <fabrice.gasnier@foss.st.com> wrote:
 > 
 > You can add my:
 > Acked-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-Applied to the togreg branch of iio.git - initially pushed out as testing
-as I have some other stuff queued today that needs 0-day to look at it.
-
-Thanks,
-
-J
 > 
+Applied.
+
 > Thanks,
 > Fabrice
 > 
 > > ---
-> >  drivers/iio/trigger/stm32-timer-trigger.c | 1 +
+> >  drivers/iio/trigger/stm32-lptimer-trigger.c | 1 +
 > >  1 file changed, 1 insertion(+)
 > > 
-> > diff --git a/drivers/iio/trigger/stm32-timer-trigger.c b/drivers/iio/trigger/stm32-timer-trigger.c
-> > index 925b864facca1..3b9a3a6cbb25c 100644
-> > --- a/drivers/iio/trigger/stm32-timer-trigger.c
-> > +++ b/drivers/iio/trigger/stm32-timer-trigger.c
-> > @@ -6,6 +6,7 @@
-> >   *
+> > diff --git a/drivers/iio/trigger/stm32-lptimer-trigger.c b/drivers/iio/trigger/stm32-lptimer-trigger.c
+> > index 2505ace440b46..c7bab18221c70 100644
+> > --- a/drivers/iio/trigger/stm32-lptimer-trigger.c
+> > +++ b/drivers/iio/trigger/stm32-lptimer-trigger.c
+> > @@ -9,6 +9,7 @@
+> >   * Inspired by Benjamin Gaignard's stm32-timer-trigger driver
 > >   */
 > >  
 > > +#include <linux/export.h>
-> >  #include <linux/iio/iio.h>
-> >  #include <linux/iio/sysfs.h>
-> >  #include <linux/iio/timer/stm32-timer-trigger.h>  
+> >  #include <linux/iio/timer/stm32-lptim-trigger.h>
+> >  #include <linux/mfd/stm32-lptimer.h>
+> >  #include <linux/mod_devicetable.h>  
 
 

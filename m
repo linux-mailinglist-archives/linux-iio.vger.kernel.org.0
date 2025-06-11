@@ -1,142 +1,273 @@
-Return-Path: <linux-iio+bounces-20434-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20435-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B112AD5911
-	for <lists+linux-iio@lfdr.de>; Wed, 11 Jun 2025 16:41:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87904AD593E
+	for <lists+linux-iio@lfdr.de>; Wed, 11 Jun 2025 16:50:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B8FAB17871D
-	for <lists+linux-iio@lfdr.de>; Wed, 11 Jun 2025 14:41:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 44F8E189A8A9
+	for <lists+linux-iio@lfdr.de>; Wed, 11 Jun 2025 14:50:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D5C527BF95;
-	Wed, 11 Jun 2025 14:40:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EC472882DD;
+	Wed, 11 Jun 2025 14:50:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="CM0NakH2"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EQV9tVvu"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ot1-f44.google.com (mail-ot1-f44.google.com [209.85.210.44])
+Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4438913635E
-	for <linux-iio@vger.kernel.org>; Wed, 11 Jun 2025 14:40:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5047E2BB04;
+	Wed, 11 Jun 2025 14:50:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749652831; cv=none; b=lS06R7+WoZ8wrsdePyk5+nvdgX28fyDraLXclt3KFYLyKpgwpmBary7oqgY6q8XdlG9HBZcVyKFNmpKCoKlhms5qM+GBaOqBUHCX8lF/vKGSegHtbJwrGJRtUikQ7w8jybM6L8F/KCBdmCaY4wM5mCzdemU7VBrW79XbFWlEe0E=
+	t=1749653414; cv=none; b=bqzWCwMbQBu4xtDSyJscGstvsW9mIXXK0P/1u7c9GcuFyd6rLQH1AAKPQItJxZMr6fkJaWTHv8uO1iqt/9aocanUSoS1VifopwLMXGvlYaM5UlbK1u7/28sWZSoCYlJ3kG8PtaQJgoMxQ//4tNOkeQDMrkmeb2aW0Zcp3QN5GdI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749652831; c=relaxed/simple;
-	bh=AoNBXfxmjiJwlJyNJTpuHiDBXjwzWldZGbKBWicfIv8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=FWTEPaAVggevP+i+VnBXO7mVSNjV9U/m5lWDSFGuaLQ8eDwGoUUPPSjOFFGU189do7Xpznf0cI+uqcdOUQE4LqqgRUi9uqcSHl4uYSZM20Jd7MBWctIiK8VuMGXULzp4ERUlZOd9+KrkS7Tm3NxnVCn46V8s441XHmkPVp6lUV8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=CM0NakH2; arc=none smtp.client-ip=209.85.210.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ot1-f44.google.com with SMTP id 46e09a7af769-735ac221670so537583a34.0
-        for <linux-iio@vger.kernel.org>; Wed, 11 Jun 2025 07:40:29 -0700 (PDT)
+	s=arc-20240116; t=1749653414; c=relaxed/simple;
+	bh=AEeuE1jrKq9OUFgXvxYNu6QzNg4rrO74sp/X2G3FTmE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=oPaxOx+i1PiIOKvaIu3kn1Kvih329vCrBL3whHmn6Lt6IHP347npyxPo0kclQQqfjZl7GciJx1V27M4eJsJXB7ilI/ZufKRlOmzlFvQjVtujRoYRsExpk6cbCOB+yObxiyV7ulOoC7pCE3cIeOOpwlCzTr5TqOTj8WdyfB43tkg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EQV9tVvu; arc=none smtp.client-ip=209.85.128.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-70e80ba7039so858017b3.3;
+        Wed, 11 Jun 2025 07:50:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1749652828; x=1750257628; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=mLrrcjxPAjeFKi7iUJTxvFP27ls+0S72xIdrAaB/V34=;
-        b=CM0NakH2YsQcYV0RupCN9KJcFRRJniJNLL9imCu3TvckMZDI5ZocGq7sKkWFiBUwfz
-         ZPLV7mDKfW6FqMvWBeAKqhOam3AElSqB0p7S8PdZk//p6+Zz7h/PxlTH2oMI8PBqLt+i
-         AI3R+RUSzlA87zdyBsZ4AakuDcljAiKaB+Lqaat9lQBgvx67qD5X1RALP6BOCdZDV5R/
-         ZyL50DQfDaVxCG1T9bXzdPVk1jStQFD1W4yeB6AUtBp7GGVutzxZkqSVHsLOluTLk2jv
-         NabtAxJCPjjxV8oL92ZhIFv968nS0cNaHXnaiLBLQuv9GEwV2eC6lJuUv8x9QsIAJRcJ
-         2R1Q==
+        d=gmail.com; s=20230601; t=1749653411; x=1750258211; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=K/41rwAS4g+9mbZGS4hIlX3+3rogaqhqNUidcEJYkW8=;
+        b=EQV9tVvusFZt1kKSVpZC+dwdZrITyE+HfqSI3QmjTQF6x6OJj4c7P0KkiijdUaW29Y
+         D1FMoKd8GtYthEF1/EzSv7AMQF63rpnYa/a4Gi1hAqrTZvtXfJigMykSWlOFTe1ggSB+
+         aEFTvIOjWbiYi64DcQ3tD7278hlUQQst4gqKq/UOH1ydLQwRDYbuelqlHwqieHWenVe8
+         Is/TgG8WndIaWZIGvjxKXYcIOJbdVJxPySn598XFxTUWgo2/QyXdeSf9T9L55V+jBiz7
+         Utr3ZFqRIpmthiQ7MqxZmKQ0qCwgKShPJUY2UDwwmzU8SNujpNB6dwne5FvIcAjeyJRN
+         6Hwg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749652828; x=1750257628;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=mLrrcjxPAjeFKi7iUJTxvFP27ls+0S72xIdrAaB/V34=;
-        b=al9Hioa2z2P61z/3KgDIVaWQCnSrzkN1OghAl2Qb7BG+04Ywmhy3irMyuMwLar6mrV
-         R77laFRM9qjaPYZ29vzsij1N5ylvgl5T47K3BebqJoXTAfC8BPp+oRcjhDabwzHQpDrm
-         6vci9mFAtFjIzSLRCkXyFVIJHBkBb9CqlpZBSAQnI31MdeDQ7MxJkzaLe4ytF/gFuCXA
-         JvhEPRPkKsbWmJG6HpYh5vzd6uXnt14ypGaDJLT5bq48++djHC7RW1Q3XSglx7PBhZRl
-         1DYLCd1l2dM7o9t0LyOS3wRzYvNmQkk0i1anTBtIfaPSgwSfjIyrp4A8UZzROtJXKJ6+
-         9sWg==
-X-Gm-Message-State: AOJu0Yx9Tep9kVLvlPjk0vcRXqoT9GkQ+MgycFNRFMxbRGDhBZH9wz4y
-	vF05vZxMpQIL0iyp+Bi/qei7KI+inHOv98ctvlLT6oyS4GVL4mzNH0g/5n8nZMVcd6ZhvfwpXpS
-	XPFTK
-X-Gm-Gg: ASbGncvqIfA1METo2v6g3rACJdKtWsVIDFBB4+B6TYkofjhlYb9g6S2n4BzA+2ro1dT
-	APXND0dEVe8zAab9gUsrrXTVt2JXyrcOdZh5zpej6P4DHP88bL9zejmpFnBXE1RIJoYBL/jKqwi
-	QAQ59ZCcJdIhfX0RNjHYo+n7l5nUdwYEKxUskp7b9+U/uYHtHoMt6HryjYmyiRuYOOz94BvIaDC
-	Np8tS6Ffto+1yCC/ZAQ/sivbz16YfQppVlhMBGABWsjFsegZW3tCm0F+GTgyzlnJ/BFpb/CaAT9
-	TsyN/+e0+TFLPf+914FPg0FuaF8rzQm0XPhGb2hTOBy3e10IbAA0biWDnY5Ao7nsCbY=
-X-Google-Smtp-Source: AGHT+IFr6GLRVZwQuuEJUWf6+gPiIRd12h4YaeLZ8Ur4iNPV4hBUvhA1RQPoqix09J2XDOWzvZobxA==
-X-Received: by 2002:a9d:7d85:0:b0:72b:7dbb:e39d with SMTP id 46e09a7af769-73a0652151bmr1588147a34.1.1749652828260;
-        Wed, 11 Jun 2025 07:40:28 -0700 (PDT)
-Received: from [127.0.1.1] ([2600:8803:e7e4:1d00:eb6c:30d1:632b:494])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-73a06faa7a4sm330735a34.7.2025.06.11.07.40.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Jun 2025 07:40:27 -0700 (PDT)
-From: David Lechner <dlechner@baylibre.com>
-Date: Wed, 11 Jun 2025 09:40:16 -0500
-Subject: [PATCH] iio: adc: ad7173: check return value of spi_setup()
+        d=1e100.net; s=20230601; t=1749653411; x=1750258211;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=K/41rwAS4g+9mbZGS4hIlX3+3rogaqhqNUidcEJYkW8=;
+        b=QvstTrytpfGBxakkmOiokhhmibz4rldanLGcDONiki89ZXOq5FdLTvGuxmTPcNic44
+         mW7PZjplWW9hTV62z2s6tzF3DFi0Am+B5N3y8KcdUiR6txkHb4MwypC1NoI0fV86UJGb
+         ug9xVW4kLzzd5+VMV//sSxHoLGM6dJw13ClJlIM/BfQJiKs1khg+x1m91CUWgGmDRYD1
+         feFLAELIzXfLy0gUTnz6BOy8sDeNn1BbV0P+A2FZarab0+znOjsVoeuhQM2JNvW/a5B0
+         fAcIa+ulLiEQZyx37Xri6gOCmF16baVn/YDdmmFBfWwhynG1Y3J0DuRg2wPFOluTJs4Z
+         Af2g==
+X-Forwarded-Encrypted: i=1; AJvYcCU438q/9UZSF0N2395G/OCkUE3m4rUogXOUafBj7aauRZBpZUNEo0CAaWfLUZRIbRvbtcL5GLI305g=@vger.kernel.org, AJvYcCVDvjlW0wQNTZuHqc02DOHwlZ19ZTX7pbzR0+DF02Of80kWLoDWX3Ck6Q0LscPkiAGS/wJOhHETiMSxf0xw@vger.kernel.org, AJvYcCWhMP3HacU4mcpT8Metxo+fp9NJJ0YPYHKsv8qloQcau8PmGIF7qiNPPUEPkwH2QBG0Iv0kuyRFTdy2@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxw3Cz86K7oqDZoWqWPZm/NQc4Fh3J8RR4hN3pUL9o0RiaDc6kD
+	oc1x37IDEHZT4+ODSdNoOlLGYpZAvuLVPqzIc0RXpsQd8NT4Ltmd2YQ//Oe9fN/YstlnkGFyPy1
+	U1qJc25T5zJpgQScYuGgBkRcd7I+G630=
+X-Gm-Gg: ASbGncu8yHSEJHkDXmZzJ/gC/iL+3qgVl5KbAAaO6QR1jRTPYhaInUNAhh6XGIi7Pz7
+	/fM+P6AM2jpoEtJyXLk7E3VZSO2bfIFG31Lk931SrzRFLNQiYzTJdSY5xRWvh1/nmDCEY+fD3Qx
+	GuRliZ843G12OGdkwRmMUzcAiCOHTlKUso5EDL+L5Ezho=
+X-Google-Smtp-Source: AGHT+IFP3eqHwMz69ch7Kc+Cu181mBk/M7iwnEoL6sRNAx1+7NddD87oDbHgNgk+Oewz7JDlXkzTRI20MWR3eLTqRyk=
+X-Received: by 2002:a05:690c:f87:b0:710:e707:334e with SMTP id
+ 00721157ae682-71140b375eamr22973287b3.9.1749653411094; Wed, 11 Jun 2025
+ 07:50:11 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250611-iio-adc-ad7173-check-spi_setup-return-v1-1-4d6f9ef0a2e4@baylibre.com>
-X-B4-Tracking: v=1; b=H4sIAE+VSWgC/x2NQQrCQAxFr1KyNjCZoQ54FREpaWqDMB0SFaH07
- gYX78Pb/LeDi6k4XIYdTD7qurUQOg3A69QegjqHQ055TGciVN1wmjmoVAvyKvxE73p3eb07Wqw
- 1TDUnqrmMS2GIr26y6Pffud6O4wfDhGBkdwAAAA==
-X-Change-ID: 20250611-iio-adc-ad7173-check-spi_setup-return-072017235f3c
-To: Michael Hennerich <Michael.Hennerich@analog.com>, 
- Jonathan Cameron <jic23@kernel.org>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Andy Shevchenko <andy@kernel.org>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- David Lechner <dlechner@baylibre.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1097; i=dlechner@baylibre.com;
- h=from:subject:message-id; bh=AoNBXfxmjiJwlJyNJTpuHiDBXjwzWldZGbKBWicfIv8=;
- b=owEBbQGS/pANAwAKAcLMIAH/AY/AAcsmYgBoSZVR9M0Y2yJvw8Y3W1UqUwM2S92STPmFTqFkv
- /YhRZ3r+W2JATMEAAEKAB0WIQTsGNmeYg6D1pzYaJjCzCAB/wGPwAUCaEmVUQAKCRDCzCAB/wGP
- wF2KCACFPxTMDj4CL5i7akxNe1PjAzgkhUg2vFq9o2g5vSBsA4+H7uJ4QTe7QtnrkK29QKm/kk9
- K59OyZcHOm3ggA7wQkgWtqtEZ2w084F5bFrMR3kMc6zitxnVxoIo4ESfiU+HsP/wHFekncHaEzt
- UVYgLReJyxkbxtjRSBc4BjBPwnngiDHocpSF2IbN3d+5mYI2t/py9MveadvUr+Bv4sh9EBz5qPQ
- b/jMmCC3krjSWRGuXn6vgKmNVAu3lpr3FGEPAAYig4AGEF4zK/i6L9MSpUZ4DUXSF8z/heeVDs6
- oh6t/dZ8al2+1+O5dnRvDU4vUNckEeo9WpD8BYdKBdp3Mzp4
-X-Developer-Key: i=dlechner@baylibre.com; a=openpgp;
- fpr=8A73D82A6A1F509907F373881F8AF88C82F77C03
+References: <20250601172139.59156-1-l.rubusch@gmail.com> <20250601172139.59156-8-l.rubusch@gmail.com>
+ <CAHp75VemOXhpRp2hfDhvzi3y5j5oL-_0xMmWRWkwEtX7Ks5nMQ@mail.gmail.com>
+In-Reply-To: <CAHp75VemOXhpRp2hfDhvzi3y5j5oL-_0xMmWRWkwEtX7Ks5nMQ@mail.gmail.com>
+From: Lothar Rubusch <l.rubusch@gmail.com>
+Date: Wed, 11 Jun 2025 16:49:34 +0200
+X-Gm-Features: AX0GCFtUretQvWnzRd18WZo3qv7_gg-6ynQ28lJ1vz4r_avJASJoR8-xQOaHeIM
+Message-ID: <CAFXKEHZcS2qpb1zp6kkQm_Pb-MxYHErpjD=q6huuLm1Nq=xjqA@mail.gmail.com>
+Subject: Re: [PATCH v4 07/11] iio: accel: adxl313: add activity sensing
+To: Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: jic23@kernel.org, dlechner@baylibre.com, nuno.sa@analog.com, 
+	andy@kernel.org, corbet@lwn.net, lucas.p.stankus@gmail.com, lars@metafoo.de, 
+	Michael.Hennerich@analog.com, bagasdotme@gmail.com, linux-iio@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Check the return value of spi_setup() and propagate the error in the
-ad7173_probe() function. This is unlikely to happen since virtually
-every SPI controller supports SPI_MODE_3, but still always a good idea
-to check the return value.
+Hi Andy,
 
-Signed-off-by: David Lechner <dlechner@baylibre.com>
----
- drivers/iio/adc/ad7173.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+On Sun, Jun 1, 2025 at 9:38=E2=80=AFPM Andy Shevchenko
+<andy.shevchenko@gmail.com> wrote:
+>
+> On Sun, Jun 1, 2025 at 8:22=E2=80=AFPM Lothar Rubusch <l.rubusch@gmail.co=
+m> wrote:
+> >
+> > Add possibilities to set a threshold for activity sensing. Extend the
+> > interrupt handler to process activity interrupts. Provide functions to =
+set
+> > the activity threshold and to enable/disable activity sensing. Further =
+add
+> > a fake channel for having x, y and z axis anded on the iio channel.
+>
+> IIO
+>
+> And what does the 'anded' mean?
+>
+> > This is a preparatory patch. Some of the definitions and functions are
+> > supposed to be extended for inactivity later on.
+>
+> ...
+>
+> > +static int adxl313_is_act_inact_en(struct adxl313_data *data,
+> > +                                  enum adxl313_activity_type type)
+> > +{
+> > +       unsigned int axis_ctrl;
+> > +       unsigned int regval;
+> > +       int axis_en, int_en, ret;
+> > +
+> > +       ret =3D regmap_read(data->regmap, ADXL313_REG_ACT_INACT_CTL, &a=
+xis_ctrl);
+> > +       if (ret)
+> > +               return ret;
+> > +
+> > +       /* Check if axis for activity are enabled */
+> > +       if (type !=3D ADXL313_ACTIVITY)
+> > +               return 0;
+> > +
+> > +       axis_en =3D FIELD_GET(ADXL313_ACT_XYZ_EN, axis_ctrl);
+>
+> If it's false, it will be false anyway. No need to defer the check:
+>
+>   if (!axis_en)
+>     return false;
+>
+> > +       /* The axis are enabled, now check if specific interrupt is ena=
+bled */
+> > +       ret =3D regmap_read(data->regmap, ADXL313_REG_INT_ENABLE, &regv=
+al);
+> > +       if (ret)
+> > +               return ret;
+> > +
+> > +       int_en =3D adxl313_act_int_reg[type] & regval;
+> > +
+> > +       return axis_en && int_en;
+>
+>   return ... & regval;
+>
+> > +}
+>
+> I have already commented on this a couple of times.
+>
+> ...
+>
+> > +       /* Scale factor 15.625 mg/LSB */
+> > +       regval =3D DIV_ROUND_CLOSEST(MICRO * val + val2, 15625);
+>
+> I would rather do
+>
+> val * MICRO + val2
+>
+> which is read more naturally (we will easily get that the expression
+> uses MICRO scale).
+>
+> ...
+>
+> > +       int ret =3D -ENOENT;
+> > +
+> > +       if (FIELD_GET(ADXL313_INT_ACTIVITY, int_stat)) {
+> > +               ret =3D iio_push_event(indio_dev,
+> > +                                    IIO_MOD_EVENT_CODE(IIO_ACCEL, 0,
+> > +                                                       IIO_MOD_X_OR_Y_=
+OR_Z,
+> > +                                                       IIO_EV_TYPE_MAG=
+,
+> > +                                                       IIO_EV_DIR_RISI=
+NG),
+> > +                                    ts);
+> > +               if (ret)
+> > +                       return ret;
+> > +       }
+> >
+> >         if (FIELD_GET(ADXL313_INT_WATERMARK, int_stat)) {
+> >                 samples =3D adxl313_get_samples(data);
+> >                 if (samples < 0)
+> >                         return samples;
+> >
+> > -               return adxl313_fifo_push(indio_dev, samples);
+> > +               ret =3D adxl313_fifo_push(indio_dev, samples);
+>
+> This is not needed...
+>
 
-diff --git a/drivers/iio/adc/ad7173.c b/drivers/iio/adc/ad7173.c
-index 69de5886474ce2f700bf277ce707b15637113564..911001be368302fb9d7d6e8da3783751fe0f61c5 100644
---- a/drivers/iio/adc/ad7173.c
-+++ b/drivers/iio/adc/ad7173.c
-@@ -1775,7 +1775,9 @@ static int ad7173_probe(struct spi_device *spi)
- 	indio_dev->info = &ad7173_info;
- 
- 	spi->mode = SPI_MODE_3;
--	spi_setup(spi);
-+	ret = spi_setup(spi);
-+	if (ret)
-+		return ret;
- 
- 	ret = ad_sd_init(&st->sd, indio_dev, spi, st->info->sd_info);
- 	if (ret)
+IMHO this will be needed, or shall be needed in the follow up context.
 
----
-base-commit: aff301f37e220970c2f301b5c65a8bfedf52058e
-change-id: 20250611-iio-adc-ad7173-check-spi_setup-return-072017235f3c
+The [going to be renamed] function push_events() shall evaluate the
+interrupt status register for the events the driver can handle and
+also eventually drain the FIFO in case of watermark. It shall
+distinguish between failure, events / drain the FIFO which can be
+handled, and events which cannot be handled so far. It's not a if /
+else, there can be some event, and some fifo data. Therefore I'd like
+not a simple return here, but init a ret var.
 
-Best regards,
--- 
-David Lechner <dlechner@baylibre.com>
+I interpreted your reviews, to change the particular implementation as
+if there was just activity. Then in a follow up patch, rewrite it
+again, now to distinguish just bewteen just activity and inactivity
+e.g. by if/else. Eventually rewrite it by a third approach to
+distinghish activity, inactivity, AC-coupled activity and AC-coupled
+inactivity, might be now switch/case. Eventually you might complain
+that my patches contain way too much modification of every line in
+every patch.
 
+I'd rather like to start right away with the final structure with just
+the first element - e.g. "activity" - leads to results like the above.
+Less churn among patches, but having just one element looks like
+having taken an over-complicated approach.
+
+Perhaps it's my patch split? Unsure, I tried to note in the commit message:
+> This is a preparatory patch. Some of the definitions and functions are
+> supposed to be extended for inactivity later on.
+Perhaps it needs more feedback here?
+
+Another example is seting up the read/write_event_config() or
+read/write_event_value() functions. I mean, eventually this will
+become a switch/case implementation. Of course with just one element
+switch/case seems to be obvious overkill. Going by your advice, I
+changed it to if(!..) return, it's definitely cleaner. Definitely in
+the follow up patches this will be rewritten, though.
+
+Please, let me know what is the best approach or what I can improve to
+avoid such "ping pong patching" as you name it?
+
+Might be that you're right here in this particular case, but then it
+would be better to discuss the final structure, isn't it?
+
+
+> >         }
+> >
+> >         /* Return error if no event data was pushed to the IIO channel.=
+ */
+> > -       return -ENOENT;
+> > +       return ret;
+>
+> ...and this looks wrong.
+
+Well, as I said. Each separate if-condition (not just if-else), could
+be ok or not. If ok, the function still shall continue, might be at
+the end, also a watermark flag is in the status reg and the FIFO needs
+to be drained. It also might be, that some event comes which the
+driver does still not handle, but not necessarily an error
+(missconfiguration). So, draining the FIFO helps in most cases to
+bring a derailed sensor back on track. If not doing so, it silmply
+stops working, you would need to turn off and on again, or even power
+cycle the setup.
+
+Probably you have a better idea here, but pls have a look into the
+final setup. I really appreciate your feedbacks. I understand this is
+a rather problematic part of the code. To me it makes sense like this,
+but I'd highly appreciate your advice.
+
+>
+> Before the case was clear, if we have no respective bit set in the
+> int_stat, we return ENOENT. Now it depends on the other bit. If this
+> is correct behaviour, it needs a comment.
+>
+> --
+> With Best Regards,
+> Andy Shevchenko
 

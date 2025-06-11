@@ -1,61 +1,60 @@
-Return-Path: <linux-iio+bounces-20450-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20451-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E46AAD5B4C
-	for <lists+linux-iio@lfdr.de>; Wed, 11 Jun 2025 17:59:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD3DCAD5B8A
+	for <lists+linux-iio@lfdr.de>; Wed, 11 Jun 2025 18:13:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 741CE7AAE9B
-	for <lists+linux-iio@lfdr.de>; Wed, 11 Jun 2025 15:58:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE98C3A5EAE
+	for <lists+linux-iio@lfdr.de>; Wed, 11 Jun 2025 16:12:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF7351DF270;
-	Wed, 11 Jun 2025 15:59:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AD411E47BA;
+	Wed, 11 Jun 2025 16:12:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SVayobUV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EG1JcfRq"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74B101A8F82;
-	Wed, 11 Jun 2025 15:59:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C5401DF73C;
+	Wed, 11 Jun 2025 16:12:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749657588; cv=none; b=G7HceuA6XXg5UJZGyFwrcn5euhqpHzI3ERd106F0WQMpqK9jzrCkRbQIeuy+VHEUIE6IWrA8dIyFrUgXK4Dz+zuRqYmRDotKOqqgKyEa5huFZT31fBDC6+c8p6thN+ZT08bC/uzfZgxZqrjZMB8HlJo0fhUev5UJbFZsMTBfnAI=
+	t=1749658370; cv=none; b=Q7S1YYHibA8vGMh9nA+ul911wYb9h64OZZv2EyVKhGqsRpvG4+OXUDkY7JfMQ+r7hnjj+qSnBRV15DWsuowsQ8/WFiieqgHl+jfWVe99thJHgVKwcbIY69bLun7Cx8oOld/CiaSnCw785M7Ega6eCHHjpOxetf3KRteVbDfBC18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749657588; c=relaxed/simple;
-	bh=89BiTjHBE1lw2kMhVAJalnI8x+UkGxbeH28FkW7pcDE=;
+	s=arc-20240116; t=1749658370; c=relaxed/simple;
+	bh=c7580VFEVaIrkP10tSaLkEKRkoibaOLPCDVANW0F3Lc=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JXwn4X0qz0E8aWhn0etX5nw6PnYZNXu8meprgD47tlUULZKk7X4oNqFhf+PTWge49xlMPmIzXN4C7qv4j4IbOoA/edAuUNE9TcKOxmyTPeCsfIqEZvQ2SrDBJ0dErijnOce3BQZqe2FpK3zpiDMiQptooBSnnD6f8KyZWw9xSL8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SVayobUV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF130C4CEEA;
-	Wed, 11 Jun 2025 15:59:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=FhyuVUgq3CpOn0G9N3A7/2ReZkJNaRvpD2K4ZirIcPXZ3dJ4iQvpoHJ5s85pkGWH6BlyEQPOeR77TXSRvltHC0tdgqSVgIPwavxqxLLKDnXfIddOqJYPRtWOl/W1KYJflLFogZzg1XGOg/WGE8+BIUkPPyaTiws6SAja69KKxic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EG1JcfRq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54D37C4CEE3;
+	Wed, 11 Jun 2025 16:12:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749657587;
-	bh=89BiTjHBE1lw2kMhVAJalnI8x+UkGxbeH28FkW7pcDE=;
+	s=k20201202; t=1749658369;
+	bh=c7580VFEVaIrkP10tSaLkEKRkoibaOLPCDVANW0F3Lc=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=SVayobUVp3aRvF48EyWbLwH90CUS9XtWd6DT2NJPPfkvZi4/Ej9I43IKWun+HFcb0
-	 nRHltTxYcB6Qxfz61p7XckqnhXfyontfKCIS5mkY8AoLiPX9THBWd1JBhCK+fT8MMZ
-	 So91hBGYyqiJywryQwG23FzmWNoX+YFgmL1mzQ7o/Uj2TBCTh/j6xbjgGMzlK0GZHk
-	 A/Xeguy7nCljEZwEx+wlIvaq16xUqMQwqlEZ+QCyIFqLhc5aIQPHpgiZoakb9odsVT
-	 Z17Jukibctyn3iQJwUA2pW9TNYzuf0Va0YRhuRWZZLuWmO01nmPzeI7I/mhiR65gV+
-	 rCk7FwINZM5TQ==
-Date: Wed, 11 Jun 2025 16:59:39 +0100
+	b=EG1JcfRq6q3wNE33n9fOaw3EvH1Uu1AIiDQYfIYb4zbz21O5nbckx6gtToYpYtUbp
+	 7FRwdg4JXS2UExrtTAtRNHW+ZRHBeci9PcNZP6sjepoJp3/gkOKufpcoCyA0aHbcbI
+	 uRs4RoH22od68UFbItKBsnIuVA6Ed28gbH4fXIXUrDn2qMYVLDpmLDXcJbIqVy59cu
+	 KbZYEr9KqZmX/FDjcqGrCWEL3LAVrIpdk2sYa1O7vDOj6m/H9+T+FFeZJW/9/8SAU0
+	 eNJlY4Z0qIU6xJwQW3lgB/Cy5x0FvpFkNJNaPvl0jMaSaPeQDt5AlzIyJGuq24BjlU
+	 aLglAsW8xa7dg==
+Date: Wed, 11 Jun 2025 17:12:41 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Marius.Cristea@microchip.com, nuno.sa@analog.com, andy@kernel.org,
- robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- broonie@kernel.org, devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org
+To: <Marius.Cristea@microchip.com>
+Cc: <dlechner@baylibre.com>, <nuno.sa@analog.com>, <broonie@kernel.org>,
+ <linux-iio@vger.kernel.org>, <robh@kernel.org>,
+ <linux-kernel@vger.kernel.org>, <andy@kernel.org>, <krzk+dt@kernel.org>,
+ <conor+dt@kernel.org>, <devicetree@vger.kernel.org>
 Subject: Re: [PATCH v3 2/2] iio: adc: adding support for PAC194X
-Message-ID: <20250611165939.45bb50ad@jic23-huawei>
-In-Reply-To: <3d95641d-c1c2-44bc-8478-c60734bcf420@baylibre.com>
+Message-ID: <20250611171241.2c5c9319@jic23-huawei>
+In-Reply-To: <a2d9c24e2f72378d445b40d24bd808f29b87d122.camel@microchip.com>
 References: <20250606093929.100118-1-marius.cristea@microchip.com>
 	<20250606093929.100118-3-marius.cristea@microchip.com>
-	<1c7946f1-d712-4baa-8243-be6a55eec528@baylibre.com>
-	<1b8b10816d1f2f34724e77c68de869422d6c84b6.camel@microchip.com>
-	<3d95641d-c1c2-44bc-8478-c60734bcf420@baylibre.com>
+	<20250607162721.0142ba42@jic23-huawei>
+	<a2d9c24e2f72378d445b40d24bd808f29b87d122.camel@microchip.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -66,252 +65,172 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, 10 Jun 2025 11:11:32 -0500
-David Lechner <dlechner@baylibre.com> wrote:
+On Tue, 10 Jun 2025 15:58:13 +0000
+<Marius.Cristea@microchip.com> wrote:
 
-> On 6/10/25 10:07 AM, Marius.Cristea@microchip.com wrote:
-> > On Fri, 2025-06-06 at 12:02 -0500, David Lechner wrote: =20
+> On Sat, 2025-06-07 at 16:27 +0100, Jonathan Cameron wrote:
+> > EXTERNAL EMAIL: Do not click links or open attachments unless you
+> > know the content is safe
+> >=20
+> > On Fri, 6 Jun 2025 12:39:29 +0300
+> > <marius.cristea@microchip.com> wrote:
+> >  =20
+> > > From: Marius Cristea <marius.cristea@microchip.com>
+> > >=20
+> > > This is the iio driver for Microchip PAC194X and PAC195X series of
+> > > Power Monitors with Accumulator. The PAC194X family supports 9V
+> > > Full-Scale Range and the PAC195X supports 32V Full-Scale Range.
+> > >=20
+> > > There are two versions of the PAC194X/5X: the PAC194X/5X-1 devices
+> > > are for high-side current sensing and the PAC194X/5X-2 devices are
+> > > for low-side current sensing or floating VBUS applications. The
+> > > PAC194X/5X-1 is named shortly PAC194X/5X.
+> > >=20
+> > > Signed-off-by: Marius Cristea <marius.cristea@microchip.com> =20
+> > Hi Marius,
+> >=20
+> > I entirely agree with David on this wanting splitting up into
+> > a base driver + patches that add features to that in order to
+> > make it easier to review.=C2=A0 That also potentially allows me to pick=
+ up
+> > the basic support whilst any more controversial parts are still under
+> > discussion.
+> >=20
+> > Jonathan =20
 >=20
+> I will try to make it smaller and build on that.
+>=20
+> >  =20
+> > > diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
+> > > index 09ae6edb2650..ee47d880babf 100644
+> > > --- a/drivers/iio/adc/Makefile
+> > > +++ b/drivers/iio/adc/Makefile
+> > > @@ -103,6 +103,7 @@ obj-$(CONFIG_NCT7201) +=3D nct7201.o
+> > > =C2=A0obj-$(CONFIG_NPCM_ADC) +=3D npcm_adc.o
+> > > =C2=A0obj-$(CONFIG_PAC1921) +=3D pac1921.o
+> > > =C2=A0obj-$(CONFIG_PAC1934) +=3D pac1934.o
+> > > +obj-$(CONFIG_PAC1944) +=3D pac1944.o
+> > > =C2=A0obj-$(CONFIG_PALMAS_GPADC) +=3D palmas_gpadc.o
+> > > =C2=A0obj-$(CONFIG_QCOM_PM8XXX_XOADC) +=3D qcom-pm8xxx-xoadc.o
+> > > =C2=A0obj-$(CONFIG_QCOM_SPMI_ADC5) +=3D qcom-spmi-adc5.o
+> > > diff --git a/drivers/iio/adc/pac1944.c b/drivers/iio/adc/pac1944.c
+> > > new file mode 100644
+> > > index 000000000000..ce09334b076a
+> > > --- /dev/null
+> > > +++ b/drivers/iio/adc/pac1944.c
+> > > @@ -0,0 +1,2841 @@ =20
+> >=20
+> >  =20
+> > > +/* Available Sample Modes */
+> > > +static const char * const pac1944_frequency_avail[] =3D {
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0 "1024_ADAP",
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0 "256_ADAP", =20
+> >=20
+> > This adaptive mode shouldn't be controlled via this standard
+> > ABI.=C2=A0 That needs to be considered separately.
+> >  =20
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0 "64_ADAP",
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0 "8_ADAP",
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0 "1024",
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0 "256",
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0 "64",
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0 "8", =20
+> > This does not look even close to ABI complaint.
+> >=20
+> > The numbers cases are fine. The others not really. =20
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0 "single_shot_1x", =20
+> >=20
+> > That has nothing directly to do with the sampling frequency.
+> > Some others look suspicious.=C2=A0 I'd stick to normal
+> > sampling_frequency handling and have the discussion about the other
+> > modes in here at a later date.
+> >  =20
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0 "single_shot_8x",
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0 "fast",
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0 "burst",
+> > > +}; =20
+>=20
+> The adaptive mode is used to lower the power consumption of the device
+> and keep the "same" calculation into the driver. I will try to look
+> over an ABI to put the device into a low power mode and in this way I
+> could change the frequency to ADAPTIVE.
+
+We deliberately don't support 'mode' type switches for power saving in
+the ABI. They are just too varied for userspace to 'generically'
+know when to turn them on. Snag here is that it is a straight
+trade off between a clever algorithm which will introduce some error
+and straight forward sampling at high frequency. I don't currently
+have a good idea on how we'd control that.  If we also had
+a dataready trigger involved (rather than accumulating etc) then
+maybe we'd do it via trigger selection, but that's not appropriate
+here given this is about driving the accumulators, not a dataready
+style readback of data (if we did that, we could just accumulate
+in user space instead of the device - a very different thing!).
+
+
+>=20
+> The "single_shot_1x" and "single_shot_8x" is a special case when the
+> user could take only one measurement and that measurement could be
+> triggered/synched.
+
+8x seems to be about oversampling - but on a single trigger.
+In that sense it is a bit unusual.  Looks like we could only do
+it effectively on an external IIO trigger? e.g. hrtimer or something
+like that?
+
+single shot 1x looks like a similar mode to use only on an external
+trigger (or a sysfs read).  Can we just enable that only if we aren't
+using this devices own trigger?
+
+fast vs burst is an open question but taking just say fast
+that ends up being just another sampling frequency, be it one that
+changes with number of enabled channels.
+
+
+
+>=20
+> > >=20
+> > >  =20
 > ...
 >=20
-> >>> diff --git a/Documentation/ABI/testing/sysfs-bus-iio-adc-pac1944
-> >>> b/Documentation/ABI/testing/sysfs-bus-iio-adc-pac1944
-> >>> new file mode 100644
-> >>> index 000000000000..ae88eac354a4
-> >>> --- /dev/null
-> >>> +++ b/Documentation/ABI/testing/sysfs-bus-iio-adc-pac1944
-> >>> @@ -0,0 +1,17 @@
-> >>> +What:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0
-> >>> /sys/bus/iio/devices/iio:deviceX/slow_alert1_cfg
-> >>> +KernelVersion:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 6.16
-> >>> +Contact:=C2=A0=C2=A0=C2=A0=C2=A0 linux-iio@vger.kernel.org
-> >>> +Description:
-> >>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0 A read/write property used to route, inside the PAC
-> >>> device, a specific ALERT
-> >>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0 signal to the SLOW/ALERT1 pin. The SLOW/ALERT1 pin
-> >>> must be configured for the
-> >>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0 ALERT function in order to control the device
-> >>> hardware pin (this is the default
-> >>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0 functionality of the device hardware pin).
-> >>> +
-> >>> +What:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0
-> >>> /sys/bus/iio/devices/iio:deviceX/gpio_alert2_cfg
-> >>> +KernelVersion:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 6.16
-> >>> +Contact:=C2=A0=C2=A0=C2=A0=C2=A0 linux-iio@vger.kernel.org
-> >>> +Description:
-> >>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0 A read/write property used to route, inside the PAC
-> >>> device, a specific ALERT
-> >>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0 signal to the GPIO/ALERT2 hardware pin. The
-> >>> GPIO/ALERT2 pin must be configured
-> >>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0 for ALERT function in order to control the device
-> >>> hardware pin (this is the
-> >>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0 default functionality of the device hardware pin). =20
-> >>
-> >>
-> >> What is the use case for needing these? In otherwords, why can't the
-> >> driver just
-> >> make best use of available resources as it sees fit?
-> >> =20
 > >=20
-> > Here inside the PAC the user could choose what limit to be routeed
-> > outside the chip. For sure, all of the limits could be routed to the
-> > same hardware pin, but there are some use cases where the user will
-> > want to connect that output pin to a safety hardware (e.g. over-current
-> > protection or over-voltage and over-current) and in this case we need a
-> > way to allow the user to do the setup.
-> >  =20
->=20
-> This sounds like it depends on what is wired to the alert pin, so sounds
-> like something that should be specified in the devicetree.
-
-Absolutely agree.
-
-These corners tend to be tricky to handle cleanly
-in either DT or userspace interfaces though and sometimes we've
-just decided not to be fully flexible to keep that sane.
-
->=20
-> I.e. in the devicetree, have a bool property microchip,alert1-is-safety
-> to indicate the ALERT1 pin is wired to the safety hardware. (It could
-> still be also wired as an interrupt input at the same time - or not,
-> doesn't really matter.)
->=20
-> Then, on the event attributes add a boolean "safety" attribute to allow
-> routing the signal to either the pin that was flagged as the safety pin
-> or not. This would allow the user to chose which signals control the
-> safety hardware at runtime without them having to know how the hardware
-> is actually wired up.
-
-I'd question if the use cases are such that it makes sense to expose the
-option to user space. Generally if you have a way to trigger a safety circu=
-it
-it's there for a reason and you want it always on for that reason (i.e.
-you might tweak exactly when a cut off on power usage fires, but you always
-do it on power usage).
-
-We probably want to propose a binding to he DT folk + take a look at
-what the ABI David suggests looks like in the driver. That's
-messy if it isn't double wired to the interrupt controller though as
-we then have events that never fire.
-
-
-> >>
-> >> ...
-> >> =20
-> >>> +static IIO_DEVICE_ATTR(in_current1_shunt_resistor, 0644,
-> >>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 pac1944_shunt_value_show,
-> >>> pac1944_shunt_value_store, 0);
-> >>> +static IIO_DEVICE_ATTR(in_current2_shunt_resistor, 0644,
-> >>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 pac1944_shunt_value_show,
-> >>> pac1944_shunt_value_store, 1);
-> >>> +static IIO_DEVICE_ATTR(in_current3_shunt_resistor, 0644,
-> >>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 pac1944_shunt_value_show,
-> >>> pac1944_shunt_value_store, 2);
-> >>> +static IIO_DEVICE_ATTR(in_current4_shunt_resistor, 0644,
-> >>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 pac1944_shunt_value_show,
-> >>> pac1944_shunt_value_store, 3); =20
-> >>
-> >> These are specified in the devicetree. Why are there also sysfs
-> >> attribtes? =20
 > >=20
-> > Yes, you could put a generic shunt resistor into the device tree but
-> > this resistor will have a tolerance. Because the end user could
-> > calibrate the system, it could also save the calculated/calibrated
-> > shunt resistor somewhere and restore that calibrated value each time
-> > the driver is loaded.
-> >  =20
->=20
-> If changing the resistor value changes the measured raw value, we
-> could probably use one of the existing standard calibration attributes
-> instead, like calibbias or calibscale.
-
-We have precedence for shunt resistor ABI for this reason, so I agree with
-David if we were starting from scratch (and it's a viable option to
-use the calibration attributes) but we can't drop the existing ABI
-and it does limited harm to carry on using it.
-
->=20
-> >  =20
-> >>
-> >> =20
-> >>> +/* Available Sample Modes */
-> >>> +static const char * const pac1944_frequency_avail[] =3D {
-> >>> +=C2=A0=C2=A0=C2=A0=C2=A0 "1024_ADAP",
-> >>> +=C2=A0=C2=A0=C2=A0=C2=A0 "256_ADAP",
-> >>> +=C2=A0=C2=A0=C2=A0=C2=A0 "64_ADAP",
-> >>> +=C2=A0=C2=A0=C2=A0=C2=A0 "8_ADAP",
-> >>> +=C2=A0=C2=A0=C2=A0=C2=A0 "1024",
-> >>> +=C2=A0=C2=A0=C2=A0=C2=A0 "256",
-> >>> +=C2=A0=C2=A0=C2=A0=C2=A0 "64",
-> >>> +=C2=A0=C2=A0=C2=A0=C2=A0 "8",
-> >>> +=C2=A0=C2=A0=C2=A0=C2=A0 "single_shot_1x",
-> >>> +=C2=A0=C2=A0=C2=A0=C2=A0 "single_shot_8x",
-> >>> +=C2=A0=C2=A0=C2=A0=C2=A0 "fast",
-> >>> +=C2=A0=C2=A0=C2=A0=C2=A0 "burst",
-> >>> +}; =20
-> >> =20
-> >>> =20
-> > ... =20
-> >>> +
-> >>> +static const struct iio_chan_spec_ext_info pac1944_ext_info[] =3D {
-> >>> +=C2=A0=C2=A0=C2=A0=C2=A0 IIO_ENUM("sampling_frequency", IIO_SHARED_B=
-Y_ALL,
-> >>> &sampling_mode_enum),
-> >>> +=C2=A0=C2=A0=C2=A0=C2=A0 {
-> >>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0 .name =3D "sampling_frequency_available",
-> >>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0 .shared =3D IIO_SHARED_BY_ALL,
-> >>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0 .read =3D iio_enum_available_read,
-> >>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0 .private =3D (uintptr_t)&sampling_mode_enum,
-> >>> +=C2=A0=C2=A0=C2=A0=C2=A0 },
-> >>> +=C2=A0=C2=A0=C2=A0=C2=A0 { }
-> >>> +}; =20
-> >>
-> >> sampling_frequency{_avialable} are already standard attributes in IIO
-> >> and is
-> >> defined to be a number in Hz. So we will need to find a way to make
-> >> this
-> >> work with the standard attribute (can use IIO_CHAN_INFO_SAMPLE_FREQ,
-> >> by the way).
-> >> And figure out how the other parts fit into other existing IIO
-> >> features. =20
 > >=20
-> > I can change to the standard attributes but I still have some question
-> > related to how to handle the ADAPTIVE sampling frequency that the chip
-> > supports and that it could be used to lower the power consumption of
-> > the chip.
-
-Gah.  Second device to do something like this that we've seen this month.
-(ADXL313 does something similar when enough activity detection modes are
-turned on).  We don't have a good answer yet :(
-
+> >=20
 > >  =20
-> >> =20
+> > > +static struct attribute *pac1944_power_acc_attr[] =3D {
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0 &iio_dev_attr_in_energy1_raw.dev_attr.attr,
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0 &iio_dev_attr_in_energy2_raw.dev_attr.attr,
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0 &iio_dev_attr_in_energy3_raw.dev_attr.attr,
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0 &iio_dev_attr_in_energy4_raw.dev_attr.attr,
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0 &iio_dev_attr_in_energy1_scale.dev_attr.att=
+r,
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0 &iio_dev_attr_in_energy2_scale.dev_attr.att=
+r,
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0 &iio_dev_attr_in_energy3_scale.dev_attr.att=
+r,
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0 &iio_dev_attr_in_energy4_scale.dev_attr.att=
+r, =20
+> >=20
+> > These look like standard read_raw / info_mask based attributes will
+> > work.
+> > So do that, not custom attributes that are both harder to review and
+> > don't work with in kernel consumers (which we may well see for a
+> > power
+> > monitoring chip).
+> >  =20
 >=20
-> From a quick look at one of the datasheets, it sounds like this
-> "adaptive" mode only applies when using an accumulator. And it doesn't
-> actually change the sample rate, but rather other factors, like scale
-> and the accumulator counter incitement. So it seems like it would be
-> a separate custom boolean attribute.
+> Because the device could support different modes of operation for the
+> same accumulator, but only one at a time. I was trying to add to the
+> sysfs only the mode that was set from the device tree.
 
-Generally when I see this sort of thing my first instinct is hide it.
-What use is it for userspace to see that the frequency is changing?
-Maybe we just report the highest (or lowest?) frequency that might
-be going on?  Here it doesn't seem to be coupled to anything else
-though (unlikely the accelerometer) so I'm not sure how the driver
-would guess it makes sense to enable it?
-
->=20
-> Also, I noticed that the fast mode and burst mode make the sampling
-> frequency dependent on the number of enabled channels. So to handle
-> this, normally, that would mean that IIO_CHAN_INFO_SAMP_FREQ would
-> need to be IIO_SEPARATE rather than IIO_SHARED_BY_ALL.
->=20
-> But since these chips support can work both ways (there are modes
-> where sample rate doesn't depend on the number of channels enabled
-> and there are modes where it does), I'm not sure what the right way
-> to handle that would be here. Maybe Jonathan will have some suggestion?
-
-Oh goody a new way to stretch that already much stretched interface.
-It's actually more fun because it's not the sum of the number of channels
-for fast mode but 1 more than that.
-
-Given we can't do both ways of reporting it at the same time we will
-probably have to just do IIO_SHARED_BY_ALL.  We can only then report
-the effective sampling frequency as it is fixed in these modes (so
-we can't attempt to match a userspace request by cranking it down
-if there are fewer channels enabled or similar).
-
-So we need
-sampling_frequency_available where the fastest frequency presented
-changes depending on the enabled channels.  Lower values match
-the 8/64/256/1024 values however many are enabled.
-
-if sampling_frequency =3D=3D top value then we just change it if more
-channels are enabled.  ABI always allows for other attributes to
-change 'randomly' when you touch a different one.  That flexibility
-is a pain for users but necessary for cases like this :(
-
-I'm not sure how we pick between burst and fast mode though
-as seems to be about auto offset stuff.
+Create the iio_chan_spec dynamically instead of the attributes added.
 
 Jonathan
+
+
+>=20
+> >=20
+> >  =20
 
 

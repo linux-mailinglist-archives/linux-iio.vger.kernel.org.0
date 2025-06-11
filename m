@@ -1,216 +1,308 @@
-Return-Path: <linux-iio+bounces-20474-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20475-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E55FAD5CE1
-	for <lists+linux-iio@lfdr.de>; Wed, 11 Jun 2025 19:12:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7604AD5CF1
+	for <lists+linux-iio@lfdr.de>; Wed, 11 Jun 2025 19:18:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ACFF5173C41
-	for <lists+linux-iio@lfdr.de>; Wed, 11 Jun 2025 17:12:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6AC1B1BC27A3
+	for <lists+linux-iio@lfdr.de>; Wed, 11 Jun 2025 17:18:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF9E320CCD3;
-	Wed, 11 Jun 2025 17:12:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB6B420458A;
+	Wed, 11 Jun 2025 17:18:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nWEEMwVy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SvFSriKg"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com [209.85.128.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2540157A67;
-	Wed, 11 Jun 2025 17:12:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 690941DF965;
+	Wed, 11 Jun 2025 17:18:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749661967; cv=none; b=nWNE9yIlPMZCcFybnoYJQNHyv0IOquMmt8bpvrwsYdQI9KtR8HNbL9NeZTQy8/eMwXB0TJF+aR8wJcO1SSTCHBX2w5JHhGCwNfG+Fc8pyHdee/CA039Uc9Jc2MzeBUI9BSNScjhy6il/u+uCBqX1gxPck019VTUiCSsJcPUlGx0=
+	t=1749662308; cv=none; b=XlYrx/ZrjslIknRs8WCJ/e0Ho6ZO+ginbkSKEMJBzc+1j5ZMiPLcc2EHJx5BAuxE+PIDnLyf9QYFknqsNFEeS9rbi9utdljtl8bOaFdC/jMVfCCc3UE9tgEK6EB6wAsQFboTZ/AxLVGdyPp7YsMJb+svo9v4f+dLEFg0uowtxPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749661967; c=relaxed/simple;
-	bh=fo7JC4KScGUQTIQ/w+iOjsTGi3bBJrY6VglgxIlGW/I=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=MlGyQsJoSdHEhY8LZNiAjKrTzArdPO9q8JMswAyV7TDb07c0J15uktE7NxovpsZiWQ5wZY55MNcQALhEAZz8/gTpI7mxGd0IVyHykCX4V7eLMr66K5UV+qyZ7c5jySEYSFudVXjQsIeKaRlFA/jbop5o+1UytcH+OKnqKA9rcQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nWEEMwVy; arc=none smtp.client-ip=209.85.128.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-71101232af5so21127b3.0;
-        Wed, 11 Jun 2025 10:12:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749661964; x=1750266764; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KQ5j+E9v3b7sSvEXVxCoNNdW6tgOp2f2eMuGP+gBZoA=;
-        b=nWEEMwVymJIdNuQmUO28Yw+UQx2xZUHmYTTyVlS5Y0kPiJakoW5BC+gFCJ7POAHiXN
-         AboQDJrwphZjgI0PkgpJ2c9LeHxQpFCIKGGdYwc2nO58soYZ6atF64nUXrQdB/wWcGvz
-         vtUNn7puXHHYd2pY/uFgDry3TxOg7Xk+/85unapoPB0UYSM+2xGt1TWI4BozRCsqgKVm
-         bQKctf53BN8Cfx2yjGZxUijWMW9fG+pwIaHGhkRf4tux3bjwmK9Jwh3UcYhfmJbNNuCZ
-         h50xYw3xIhiM2Ssjpc7H90ZFhNW/WYna7jGck9EZChnEm3n5xz/h5lsDbaAinzvcO8ES
-         xuhg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749661964; x=1750266764;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=KQ5j+E9v3b7sSvEXVxCoNNdW6tgOp2f2eMuGP+gBZoA=;
-        b=Z8akOLb5CQrEA8gZt4t7HokbKBjT33DdnbZJlyebjhBSa9ljkmsfaqZ1ERGi1Zeh6A
-         MKKWzCUvD6thHb/Tdo0ceZ3BrQlu0/ZaWf+lOZvCO/pzKbqDsSgex+KwGW3oibeqXNze
-         yTPJn3gepd6wkbJ3bH6my0ivcQOZ7LBwJmMYDWKLfItL3AWOIDkcARWwZWaNI5Qt7WMJ
-         nTbnLwlZH1Pn1tb3rc5grTm3AMFV6lh1CDzGlZkoeox3BdlMa/FgM7Py3GlwPFeFY3Kk
-         5PKbw1xc+pcAdSO27it9uSg0jYUslozMca7EScqNKeo0VN3WqUKUO4Hu2dCMH6jWrK/m
-         gwtQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWKVuxiNdFtTCZaFdot/IkzajV4SGWhmZX45H8o74IipLL1/FGHG2VC2b/P7oQWg4pqpsPsl0HVK7s=@vger.kernel.org, AJvYcCWQV5BXco38yAesucNo0A/vxCUhVMwvjKE8Ug2U65J0mqyGCCKsbEpzKaxQpypNhWXFCqrzd2ZBIEm/4F8e@vger.kernel.org, AJvYcCWqAIfILHnAO6Gzb8RB5sSdUrDHtIpn35g6pBHyZABV1PrNmwXE3Yu4sjm7YpzoOOnmzvDWBm/CVewu@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxquasnli7tzlvlfQiElA8jboG93NawiFGzFB7lF71TVo7FK4Pe
-	af7kMqoxmlIRq11N0Z4FG1MSdKfvXKucHBXFmTDVfPhFv02h69THDX6pVzSNpk3Q3NYKxn4NLVM
-	Bhmm+HzeXKjQ1OsWcwymx7vCHRnO26YCZIQ==
-X-Gm-Gg: ASbGncvipmx17qAxhnl/xFCXuEl5uBRNyxBz9tJVaQbb3KnyDaABW5OjkoQGsS2DZeK
-	7EYEW0stFOcrDto6DGf16fjKD8TcuUv+E3t15u8LltuOrLmp7nZBLddB6pqXM7JJbyWsUAsS+rG
-	LVii2KuE++usUPFZIcdaZe5EcwMXlt/i9VQ4ZLMrzXKSQ=
-X-Google-Smtp-Source: AGHT+IFrKWrFFkvbxgx2J2LOU1dTY9SksrisaeaMBSed/RqZfvGOG6zzy1YT6frh6KIF+LA2Y6oLj8CrMbFcBLbezXE=
-X-Received: by 2002:a05:690c:6311:b0:70e:7613:e365 with SMTP id
- 00721157ae682-71140a0a4ccmr28108717b3.3.1749661963730; Wed, 11 Jun 2025
- 10:12:43 -0700 (PDT)
+	s=arc-20240116; t=1749662308; c=relaxed/simple;
+	bh=AI6nwtL91L7/jbebmz0uQyJ2i4b8lfSibUAPx0RCDSM=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=bGgZHDOTIDHWYV//Er08v3lBUzfR8uK66t7lSpSD5ZAunZRvIk1sVVw9fkY9XIx5J+uA1DXBKjBysZMzCi2+oIHlBb9zPJguRMYmOm+ea1Q/KsdEFSLSRhBoHK3clOuV2Z8x8o4f0cuWwtrD4pAYwXvt0sUNrx03dV4IKlMpDYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SvFSriKg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3245C4CEE3;
+	Wed, 11 Jun 2025 17:18:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1749662307;
+	bh=AI6nwtL91L7/jbebmz0uQyJ2i4b8lfSibUAPx0RCDSM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=SvFSriKgALRpcmHblJGnGEF0ZVNoMSYVj0v1I6A8ru8pd9KOSXA7ryrOvHmuQjFTV
+	 fTX4g5w/c45kT/VIYdRB5wW1yeF8M6/9R/mS34GYw+7aLFhHulbNOfuaZ/slg8rfDu
+	 qQfJZMCuNSEolPYTai+Sq8uRzZPT/SGQePcICiuQiE4pe6ljNSyrZBeug1psfdp/yO
+	 OkBswwxWcUOtjNcqVW3hrx1vGZKM4IlYtwm88P2P20Evep9qD6fv8fE7UxowZPqoKY
+	 OpQAwe0xotdn5hBCVgZJvR+iuyD1XIb/QWIg9+vNskGXhEzumCVO44f1ioHZv9EmDF
+	 VLIW9sJkQDi6Q==
+Date: Wed, 11 Jun 2025 18:18:18 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Jorge Marques <jorge.marques@analog.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
+ <Michael.Hennerich@analog.com>, Rob Herring <robh@kernel.org>, Krzysztof
+ Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+ Jonathan Corbet <corbet@lwn.net>, David Lechner <dlechner@baylibre.com>,
+ Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, "Andy Shevchenko"
+ <andy@kernel.org>, Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?=
+ <ukleinek@kernel.org>, <linux-iio@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
+ <linux-doc@vger.kernel.org>, <linux-pwm@vger.kernel.org>
+Subject: Re: [PATCH v3 2/8] dt-bindings: iio: adc: Add adi,ad4052
+Message-ID: <20250611181818.14d147c7@jic23-huawei>
+In-Reply-To: <20250610-iio-driver-ad4052-v3-2-cf1e44c516d4@analog.com>
+References: <20250610-iio-driver-ad4052-v3-0-cf1e44c516d4@analog.com>
+	<20250610-iio-driver-ad4052-v3-2-cf1e44c516d4@analog.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250601172139.59156-1-l.rubusch@gmail.com> <20250601172139.59156-11-l.rubusch@gmail.com>
- <CAHp75Ve+f4c-aVD3vMfi1NP7vohJWDFFO+F4ckYCKkw2iYDsFw@mail.gmail.com>
-In-Reply-To: <CAHp75Ve+f4c-aVD3vMfi1NP7vohJWDFFO+F4ckYCKkw2iYDsFw@mail.gmail.com>
-From: Lothar Rubusch <l.rubusch@gmail.com>
-Date: Wed, 11 Jun 2025 19:12:05 +0200
-X-Gm-Features: AX0GCFuio6pOww4OvJeIBcJ4chzgH4vhtj2xAfqZoDBdeLhkTHCy-H6ewenMhoY
-Message-ID: <CAFXKEHYB-JM11tbpdb+sRBZ7pF4oYD5BO5OVxxf1VPU09MXkNQ@mail.gmail.com>
-Subject: Re: [PATCH v4 10/11] iio: accel: adxl313: add AC coupled
- activity/inactivity events
-To: Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: jic23@kernel.org, dlechner@baylibre.com, nuno.sa@analog.com, 
-	andy@kernel.org, corbet@lwn.net, lucas.p.stankus@gmail.com, lars@metafoo.de, 
-	Michael.Hennerich@analog.com, bagasdotme@gmail.com, linux-iio@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hi Andy,
+On Tue, 10 Jun 2025 09:34:35 +0200
+Jorge Marques <jorge.marques@analog.com> wrote:
 
-On Sun, Jun 1, 2025 at 9:54=E2=80=AFPM Andy Shevchenko
-<andy.shevchenko@gmail.com> wrote:
->
-> On Sun, Jun 1, 2025 at 8:22=E2=80=AFPM Lothar Rubusch <l.rubusch@gmail.co=
-m> wrote:
-> >
-> > Add AC coupling activity and inactivity as MAG_ADAPTIVE events. This ad=
-ds
-> > up an additional set of threshold and period handles, verifies matching
-> > disabling functionality and extends setting the link bit to complementa=
-ry
-> > event configurations.
-> >
-> > This means, e.g. either ACTIVITY or ACTIVITY_AC can be enabled. The mos=
-t
-> > recent set will remain configured. Disabling ACTIVITY where ACTIVITY_AC=
- was
-> > enabled is ignored, since it does not match (should be disabling
-> > ACTIVITY_AC). When INACTIVITY or INACTIVITY_AC is also enabled, the lin=
-k
-> > bit will be set. Note, having the link bit and auto-sleep in place acti=
-vity
-> > and inactivity indicate the power save state change and thus will only =
-be
-> > triggered once a state transition occurs. Since there is a separate AC =
-bit
-> > for ACTIVITY and for INACTIVITY, events can be linked independently fro=
-m
-> > each other i.e. ACTIVITY can be linked to INACTIVITY_AC for instance.
-> >
-> > When one of both is disabled, the link bit will be removed. Hence, the
-> > remaining event will not indicate a plain state change anymore, but occ=
-ur
-> > as a periodically triggered inactivity event or for each activity event
-> > above the threshold.
->
-> ...
->
-> > +/**
-> > + * adxl313_is_act_inact_ac() - Check if AC coupling is enabled.
->
-> > + *
->
-> Unneeded blank line.
->
-> > + * @data: The device data.
-> > + * @type: The activity or inactivity type.
-> > + *
-> > + * Provide a type of activity or inactivity, combined with either AC c=
-oupling
-> > + * set, or default to DC coupling. This function verifies, if the comb=
-ination is
-> > + * currently enabled or not.
-> > + *
-> > + * Return if the provided activity type has AC coupling enabled or a n=
-egative
-> > + * error value.
->
-> Missing Return section. Always try kernel-doc validation when adding
-> new kernel-doc descriptions.
->
-> > + */
->
-> ...
->
-> >         unsigned int regval;
-> > +       int coupling;
->
-> Why? Doesn't 'ret' suffice?
->
+> Add dt-bindings for AD4052 family, devices AD4050/AD4052/AD4056/AD4058,
+> low-power with monitor capabilities SAR ADCs. Each variant of the family
+> differs in speed and resolution, resulting in different scan types and
+> spi word sizes, that are matched by the compatible with the chip_info.
 
-the coupling variable here is rather meant to provide kind of a
-semantic context. It shall be checked for being negative (error), or
-used in binary decision logic. In fact, could be done with ret as
-well, but then in case I'd need to comment that in this case the value
-of 'ret' carries either error, or the bool if we have coupling or not.
-I'd like to leave it like this, but let me know if better replace it
-by ret here.
+The bit about what the drive does with this doesn't really belong in a DT
+binding patch description. Stick to just something like.
 
-> >         int axis_en, int_en, ret;
->
-> ...
->
-> > -       int act_en, inact_en;
-> > -       bool en;
-> > +       int act_en, inact_en, act_ac_en, inact_ac_en;
-> > +       bool en, act_inact_ac;
-> >         int ret;
->
-> For all your patches: try really hard to avoid the ping-pong coding,
-> i.e. when you add something in one patch in the series and change in
-> the other for no reason. I.o.w. when the initial code may be written
-> already in a form that doesn't need further changes (e.g., switch-case
-> vs. if).
->
-> This patch is *very* noisy due to the above. So, just slow down, try a
-> new approach that you have less '-' lines in the diff:s all over the
-> code.
+Each variant of the family differs in speed and resolution, reflected
+in word size for SPI messages.
 
-Agree. I tried to follow the review comments. Probably, IMHO it's
-mostly about how to separate the patches. Your reviews seem to be
-quite focussed on the particular patch w/o taking the context of
-follow up patches so much into account. [At least by the way you gave
-me feed back here. Actually, by your vast experience I'm pretty sure
-you have the context of how such a driver shall look and have an
-excellent overview well in mind.]
+> The device contains one input (cnv) and two outputs (gp0, gp1).
+> The outputs can be configured for range of options, such as threshold
+> and data ready.
+> The spi-max-frequency refers to the configuration mode maximum access
+> speed. The ADC mode speed depends on the vio input voltage.
+> 
+> Signed-off-by: Jorge Marques <jorge.marques@analog.com>
+> ---
+>  .../devicetree/bindings/iio/adc/adi,ad4052.yaml    | 167 +++++++++++++++++++++
+>  MAINTAINERS                                        |   6 +
+>  include/dt-bindings/iio/adc/adi,ad4052.h           |  17 +++
+>  3 files changed, 190 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad4052.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad4052.yaml
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..2cf197e2d872d9a3d4f7210121a1e38f784f92dc
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad4052.yaml
+> @@ -0,0 +1,167 @@
+> +
+> +  interrupts:
+> +    items:
+> +      - description: Signal coming from the GP0 pin.
+Description would be better in interrupt-names than here.
+> +      - description: Signal coming from the GP1 pin.
 
-So, I guess you'd like to stress on certain points. I'm wondering if
-it might probably be better to send you this all first in one big
-patch, or say rather bigger patches, and then separate pieces out? Let
-me know what you think. Thank you so much for the reviews, let's see
-how this can be improved here in a v5.
+Also minItems should be specified to allow for just one of these
+being wired I think.
 
-Best,
-L
+> +
+> +  interrupt-names:
+> +    items:
+> +      - const: gp0
+> +      - const: gp1
+> +
+> +  cnv-gpios:
+> +    description: The Convert Input (CNV). If omitted, CNV is tied to SPI CS.
+> +    maxItems: 1
+> +
+> +  pwms:
+> +    maxItems: 1
+> +    description: PWM connected to the CNV pin.
+> +
+> +  trigger-sources:
+> +    minItems: 1
+> +    maxItems: 2
+> +    description:
+> +      Describes the output pin and event associated.
+> +
+> +  "#trigger-source-cells":
+> +    const: 2
+> +    description: |
+> +      Output pins used as trigger source.
+> +
+> +      Cell 0 defines the event:
+> +      * 0 = Data ready
+> +      * 1 = Min threshold
+> +      * 2 = Max threshold
+> +      * 3 = Either threshold
+> +      * 4 = CHOP control
+> +      * 5 = Device enable
+> +      * 6 = Device ready (only GP1)
 
->
-> --
-> With Best Regards,
-> Andy Shevchenko
+Hmm. I'm a bit dubious on why 'what the offload trigger is'
+is a DT thing?  Is that because the IP needs to comprehend
+this?  I guess only data ready is actually supported in
+practice? 
+
+What would the use of Device enable or device ready or chop
+control actually be?
+
+The thresholds are unusual but those I can sort of understand.
+
+Jonathan
+
+> +
+> +      Cell 1 defines which pin:
+> +      * 0 = GP0
+> +      * 1 = GP1
+> +
+> +      For convenience, macros for these values are available in
+> +      dt-bindings/iio/adc/adi,ad4052.h.
+> +
+> +  spi-max-frequency:
+> +    maximum: 83333333
+> +
+> +  vdd-supply:
+> +    description: Analog power supply.
+> +
+> +  vio-supply:
+> +    description: Digital interface logic power supply.
+> +
+> +  ref-supply:
+> +    description: |
+
+Don't need the | as no need to preserve anything about formatting of
+a single paragraph like this.
+
+
+> +      Reference voltage to set the ADC full-scale range. If not present,
+> +      vdd-supply is used as the reference voltage.
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - vdd-supply
+> +  - vio-supply
+> +
+> +allOf:
+> +  - $ref: /schemas/spi/spi-peripheral-props.yaml#
+> +
+> +unevaluatedProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/gpio/gpio.h>
+> +    #include <dt-bindings/interrupt-controller/irq.h>
+> +    #include <dt-bindings/iio/adc/adi,ad4052.h>
+> +
+> +    spi {
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +
+> +        adc@0 {
+> +            compatible = "adi,ad4052";
+> +            reg = <0>;
+> +            vdd-supply = <&vdd>;
+> +            vio-supply = <&vio>;
+> +            ref-supply = <&ref>;
+> +            spi-max-frequency = <83333333>;
+> +
+> +            #trigger-source-cells = <2>;
+> +            trigger-sources = <&adc AD4052_TRIGGER_EVENT_EITHER_THRESH
+> +                                    AD4052_TRIGGER_PIN_GP0
+> +                               &adc AD4052_TRIGGER_EVENT_DATA_READY
+> +                                    AD4052_TRIGGER_PIN_GP1>;
+> +            interrupt-parent = <&gpio>;
+> +            interrupts = <0 0 IRQ_TYPE_EDGE_RISING>,
+> +                         <0 1 IRQ_TYPE_EDGE_FALLING>;
+> +            interrupt-names = "gp0", "gp1";
+> +            cnv-gpios = <&gpio 2 GPIO_ACTIVE_HIGH>;
+> +        };
+> +    };
+> +  - |
+> +    #include <dt-bindings/gpio/gpio.h>
+> +    #include <dt-bindings/interrupt-controller/irq.h>
+> +    #include <dt-bindings/iio/adc/adi,ad4052.h>
+> +
+> +    rx_dma {
+> +            #dma-cells = <1>;
+> +    };
+> +
+> +    spi {
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +
+> +        dmas = <&rx_dma 0>;
+> +        dma-names = "offload0-rx";
+> +        trigger-sources = <&adc AD4052_TRIGGER_EVENT_DATA_READY
+> +                                AD4052_TRIGGER_PIN_GP1>;
+> +
+> +        adc@0 {
+> +            compatible = "adi,ad4052";
+> +            reg = <0>;
+> +            vdd-supply = <&vdd>;
+> +            vio-supply = <&vio>;
+> +            spi-max-frequency = <83333333>;
+> +            pwms = <&adc_trigger 0 10000 0>;
+> +
+> +            #trigger-source-cells = <2>;
+> +            trigger-sources = <&adc AD4052_TRIGGER_EVENT_EITHER_THRESH
+> +                                    AD4052_TRIGGER_PIN_GP0
+> +                               &adc AD4052_TRIGGER_EVENT_DATA_READY
+> +                                    AD4052_TRIGGER_PIN_GP1>;
+> +            interrupt-parent = <&gpio>;
+> +            interrupts = <0 0 IRQ_TYPE_EDGE_RISING>,
+> +                         <0 1 IRQ_TYPE_EDGE_FALLING>;
+> +            interrupt-names = "gp0", "gp1";
+> +            cnv-gpios = <&gpio 2 GPIO_ACTIVE_HIGH>;
+> +        };
+> +    };
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index c02d83560058f7ea75e24509b4d87ef293df6773..d000c7de7ff9eba390f87593bc2b1847f966f48b 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -1337,6 +1337,12 @@ F:	Documentation/devicetree/bindings/iio/adc/adi,ad4030.yaml
+>  F:	Documentation/iio/ad4030.rst
+>  F:	drivers/iio/adc/ad4030.c
+>  
+> +ANALOG DEVICES INC AD4052 DRIVER
+> +M:	Jorge Marques <jorge.marques@analog.com>
+> +S:	Supported
+> +W:	https://ez.analog.com/linux-software-drivers
+> +F:	Documentation/devicetree/bindings/iio/adc/adi,ad4052.yaml
+> +
+>  ANALOG DEVICES INC AD4080 DRIVER
+>  M:	Antoniu Miclaus <antoniu.miclaus@analog.com>
+>  L:	linux-iio@vger.kernel.org
+> diff --git a/include/dt-bindings/iio/adc/adi,ad4052.h b/include/dt-bindings/iio/adc/adi,ad4052.h
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..37db5d9d10e788d5e7fb715c4ba9077e555131d5
+> --- /dev/null
+> +++ b/include/dt-bindings/iio/adc/adi,ad4052.h
+> @@ -0,0 +1,17 @@
+> +/* SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause) */
+> +
+> +#ifndef _DT_BINDINGS_ADI_AD4052_H
+> +#define _DT_BINDINGS_ADI_AD4052_H
+> +
+> +#define AD4052_TRIGGER_EVENT_DATA_READY		0
+> +#define AD4052_TRIGGER_EVENT_MIN_THRESH		1
+> +#define AD4052_TRIGGER_EVENT_MAX_THRESH		2
+> +#define AD4052_TRIGGER_EVENT_EITHER_THRESH	3
+> +#define AD4052_TRIGGER_EVENT_CHOP		4
+> +#define AD4052_TRIGGER_EVENT_DEV_ENABLED	5
+> +#define AD4052_TRIGGER_EVENT_DEV_READY		6
+> +
+> +#define AD4052_TRIGGER_PIN_GP0		0
+> +#define AD4052_TRIGGER_PIN_GP1		1
+> +
+> +#endif /* _DT_BINDINGS_ADI_AD4052_H */
+> 
+
 

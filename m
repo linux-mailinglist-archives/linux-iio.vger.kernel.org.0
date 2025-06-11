@@ -1,308 +1,184 @@
-Return-Path: <linux-iio+bounces-20475-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20476-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7604AD5CF1
-	for <lists+linux-iio@lfdr.de>; Wed, 11 Jun 2025 19:18:35 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1848AD5D61
+	for <lists+linux-iio@lfdr.de>; Wed, 11 Jun 2025 19:43:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6AC1B1BC27A3
-	for <lists+linux-iio@lfdr.de>; Wed, 11 Jun 2025 17:18:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 21AE17A2DFF
+	for <lists+linux-iio@lfdr.de>; Wed, 11 Jun 2025 17:42:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB6B420458A;
-	Wed, 11 Jun 2025 17:18:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FC70221FAC;
+	Wed, 11 Jun 2025 17:43:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SvFSriKg"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bJoUg9EY"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 690941DF965;
-	Wed, 11 Jun 2025 17:18:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED7B413CA97
+	for <linux-iio@vger.kernel.org>; Wed, 11 Jun 2025 17:43:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749662308; cv=none; b=XlYrx/ZrjslIknRs8WCJ/e0Ho6ZO+ginbkSKEMJBzc+1j5ZMiPLcc2EHJx5BAuxE+PIDnLyf9QYFknqsNFEeS9rbi9utdljtl8bOaFdC/jMVfCCc3UE9tgEK6EB6wAsQFboTZ/AxLVGdyPp7YsMJb+svo9v4f+dLEFg0uowtxPQ=
+	t=1749663802; cv=none; b=jPoPgqBfoopg8inCTyZCrKdmqQrumluCapk1kN3SLFzfZ8xkodlqHVd6fwGqwYoxxhZjnfu6o1bAfYUarI0CwGRqhpi2qZKyYCOtbQLmJ9cVCsvIMkNWRCEciRBu0FRPJUrqHckNtSFi+Z9w4TFfYT0D5a42hLnzanjC2Z0d4Bg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749662308; c=relaxed/simple;
-	bh=AI6nwtL91L7/jbebmz0uQyJ2i4b8lfSibUAPx0RCDSM=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bGgZHDOTIDHWYV//Er08v3lBUzfR8uK66t7lSpSD5ZAunZRvIk1sVVw9fkY9XIx5J+uA1DXBKjBysZMzCi2+oIHlBb9zPJguRMYmOm+ea1Q/KsdEFSLSRhBoHK3clOuV2Z8x8o4f0cuWwtrD4pAYwXvt0sUNrx03dV4IKlMpDYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SvFSriKg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3245C4CEE3;
-	Wed, 11 Jun 2025 17:18:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749662307;
-	bh=AI6nwtL91L7/jbebmz0uQyJ2i4b8lfSibUAPx0RCDSM=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=SvFSriKgALRpcmHblJGnGEF0ZVNoMSYVj0v1I6A8ru8pd9KOSXA7ryrOvHmuQjFTV
-	 fTX4g5w/c45kT/VIYdRB5wW1yeF8M6/9R/mS34GYw+7aLFhHulbNOfuaZ/slg8rfDu
-	 qQfJZMCuNSEolPYTai+Sq8uRzZPT/SGQePcICiuQiE4pe6ljNSyrZBeug1psfdp/yO
-	 OkBswwxWcUOtjNcqVW3hrx1vGZKM4IlYtwm88P2P20Evep9qD6fv8fE7UxowZPqoKY
-	 OpQAwe0xotdn5hBCVgZJvR+iuyD1XIb/QWIg9+vNskGXhEzumCVO44f1ioHZv9EmDF
-	 VLIW9sJkQDi6Q==
-Date: Wed, 11 Jun 2025 18:18:18 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Jorge Marques <jorge.marques@analog.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
- <Michael.Hennerich@analog.com>, Rob Herring <robh@kernel.org>, Krzysztof
- Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
- Jonathan Corbet <corbet@lwn.net>, David Lechner <dlechner@baylibre.com>,
- Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, "Andy Shevchenko"
- <andy@kernel.org>, Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?=
- <ukleinek@kernel.org>, <linux-iio@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
- <linux-doc@vger.kernel.org>, <linux-pwm@vger.kernel.org>
-Subject: Re: [PATCH v3 2/8] dt-bindings: iio: adc: Add adi,ad4052
-Message-ID: <20250611181818.14d147c7@jic23-huawei>
-In-Reply-To: <20250610-iio-driver-ad4052-v3-2-cf1e44c516d4@analog.com>
-References: <20250610-iio-driver-ad4052-v3-0-cf1e44c516d4@analog.com>
-	<20250610-iio-driver-ad4052-v3-2-cf1e44c516d4@analog.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1749663802; c=relaxed/simple;
+	bh=3AOFFRjsHG5uqaAONWK42MBEBNvD+Kcggna9rSd6CKY=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=JVPFk7B60VK9T0o9Vraegts4hKm7qwbKZ6EByHC/LSYXgLqnbaxhXjt4xScFTeT0WPplAS+lTpn83sw3YAhI72y90Rc44Ienb2qshhOx2w0BwNEOp67YIkSYxTwkP7u1XbSdpfG72WrVieFKEtGnElkJdq+HtTSB7S3MArU8ti8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bJoUg9EY; arc=none smtp.client-ip=209.85.128.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-70e5d953c0bso531607b3.1
+        for <linux-iio@vger.kernel.org>; Wed, 11 Jun 2025 10:43:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1749663798; x=1750268598; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=5VFf2G5/t0VEq6hrrKlDY76UjCAzz6yxC3wiaGZnHsc=;
+        b=bJoUg9EYkvtRDrMw5i9Y7kmCaXshqJhUkFMpuKRqhihFcWMFHhjiJLEmC9+msDzAoQ
+         NhU+dmylg73ZILvK1BgxBCPngm+yi8rqcXb7HgUcmQEuGnLrMzHrYFhr19ZF74ogl0td
+         7uORttaJV3nrieHcNaTptq60yKMMGRhItUICf5HMktbrr8HbHu3BFeutwOf/rTVwfFsQ
+         Wajb26cO+de29ad4Li3nF0GeJXXxNhoOpXXG3w12hva6t7Nf5sk3i6h/z3OcDgTHVDy/
+         ChBO3na5jBQZDi2MbORspWj5My0OXbxqkASq0SEm985sdl5C2TkJRc5o4VduzD3QujN5
+         kkOw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749663798; x=1750268598;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=5VFf2G5/t0VEq6hrrKlDY76UjCAzz6yxC3wiaGZnHsc=;
+        b=erUowKDIiv0cjPstWbC9vjymaaObT4Wj1/u8BCgG0iJ0D5AH8ZwYBTpFQs/i9EVOj4
+         iSS5FCXkecdqTh3oYJyHT/aysj5YYyexOxfLtmZu0IelNKOZ2LIWpwyPttk8zVCG4KD3
+         K85aK629bueVE78dKlI6/lp9Gb/DM2m2NxYZSbjMn4aaUb1aDqycCYIlchUxMt50Aq/f
+         F/zbxAKsXpcEFLnMiHN1pjxlUXBK5KIdyw+YpGjoM9AxCXz3E8gcSPOUK5kfbDXHdV+F
+         2VH5zX0FGrruZOOwvxBXEWu1vPYEhVIobqDQdIVB7cNGCTS7ZykUJPF+ds38JV9Fo2hj
+         LmKA==
+X-Forwarded-Encrypted: i=1; AJvYcCVSyisuChzZ4+yzXbU/IZp+Zq+PFhHBndZbgBwZZ9I2dlzrHTxjw7BUs4nDHb6lXJLfnmzQydYVwhU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzN3g12WORnfuA3tPPfBFzt/CPRURBP9zG91rm8HO011rHXG5ys
+	Kx1THJX8oYeAivyS1kahCEKVAmv3489pY/xfvlyjx32BTVlxstaO8xkD
+X-Gm-Gg: ASbGncuO8Z5nwtitjiqX3ZDvDRkc0xxIcyrU2vbpoGv15uIRDO1FkaMVhDHBq2ZO0Rk
+	O1cf8OYPR8+RZhxVhcN92Kg/ydYXV7wcthiT5JC53MTurQhshtCsjIjwzPhAwhpDSPZF6SjjFfO
+	kxWRNML3meKkpaB3pSmsfn1iIXjXzgAsFgj3Mb1TGeFpYBVn7LTsVHr00pnJmQ/BvGrTG7mHxvM
+	uMsJ+t1s7zi83IZf7y16v46OOLymaXfuswbcOpJHUdpLh/8T+ibyN+30Jd0C7j9wuKeO96pE3OI
+	HpMO4zXb/yB5f+k/8uYUgmwduZ/uDhGomwzn3UAhATXoRxz1aGBR9N9AHkvu6wg0DhjYp5KifuL
+	zdbMKlFQ/yQ==
+X-Google-Smtp-Source: AGHT+IH7jj/IfHLB3fAcxAnaf/mMSCyuoAs8Zw8pOtdNkP/Pv7r0d38biLrY+Z89+45yJY3fNuz51A==
+X-Received: by 2002:a05:690c:f84:b0:710:edf9:d92e with SMTP id 00721157ae682-7114edbd0ffmr8924407b3.33.1749663797722;
+        Wed, 11 Jun 2025 10:43:17 -0700 (PDT)
+Received: from mintNaitss.semfio.usp.br ([143.107.45.1])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-710f9a0fc34sm20757847b3.97.2025.06.11.10.43.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Jun 2025 10:43:17 -0700 (PDT)
+From: nattan <nattanferreira58@gmail.com>
+To: subhajit.ghosh@tweaklogic.com,
+	jic23@kernel.org
+Cc: lucasantonio.santos@usp.br,
+	Nattan Ferreira <nattanferreira58@gmail.com>,
+	linux-iio@vger.kernel.org
+Subject: [PATCH v4] iio: light: apds9306: Refactor threshold get/set functions to use helper
+Date: Wed, 11 Jun 2025 14:42:53 -0300
+Message-Id: <20250611174253.16578-1-nattanferreira58@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Tue, 10 Jun 2025 09:34:35 +0200
-Jorge Marques <jorge.marques@analog.com> wrote:
+From: Nattan Ferreira <nattanferreira58@gmail.com>
 
-> Add dt-bindings for AD4052 family, devices AD4050/AD4052/AD4056/AD4058,
-> low-power with monitor capabilities SAR ADCs. Each variant of the family
-> differs in speed and resolution, resulting in different scan types and
-> spi word sizes, that are matched by the compatible with the chip_info.
+Refactor the apds9306_event_thresh_get and apds9306_event_thresh_set
+functions to use a helper function (apds9306_get_thresh_reg) for
+obtaining the correct register based on the direction of the event. This
+improves code readability and maintains consistency in accessing
+threshold registers.
 
-The bit about what the drive does with this doesn't really belong in a DT
-binding patch description. Stick to just something like.
+Signed-off-by: Nattan Ferreira <nattanferreira58@gmail.com>
+Co-developed-by: Lucas Antonio <lucasantonio.santos@usp.br>
+Signed-off-by: Lucas Antonio <lucasantonio.santos@usp.br>
 
-Each variant of the family differs in speed and resolution, reflected
-in word size for SPI messages.
+---
 
-> The device contains one input (cnv) and two outputs (gp0, gp1).
-> The outputs can be configured for range of options, such as threshold
-> and data ready.
-> The spi-max-frequency refers to the configuration mode maximum access
-> speed. The ADC mode speed depends on the vio input voltage.
-> 
-> Signed-off-by: Jorge Marques <jorge.marques@analog.com>
-> ---
->  .../devicetree/bindings/iio/adc/adi,ad4052.yaml    | 167 +++++++++++++++++++++
->  MAINTAINERS                                        |   6 +
->  include/dt-bindings/iio/adc/adi,ad4052.h           |  17 +++
->  3 files changed, 190 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad4052.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad4052.yaml
-> new file mode 100644
-> index 0000000000000000000000000000000000000000..2cf197e2d872d9a3d4f7210121a1e38f784f92dc
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad4052.yaml
-> @@ -0,0 +1,167 @@
-> +
-> +  interrupts:
-> +    items:
-> +      - description: Signal coming from the GP0 pin.
-Description would be better in interrupt-names than here.
-> +      - description: Signal coming from the GP1 pin.
+Changes in v4:
+- Noted that the change actually adds four more lines to the driver file,
+  so rephrased description to avoid claiming code line reduction.
+---
+ drivers/iio/light/apds9306.c | 36 ++++++++++++++++++++----------------
+ 1 file changed, 20 insertions(+), 16 deletions(-)
 
-Also minItems should be specified to allow for just one of these
-being wired I think.
-
-> +
-> +  interrupt-names:
-> +    items:
-> +      - const: gp0
-> +      - const: gp1
-> +
-> +  cnv-gpios:
-> +    description: The Convert Input (CNV). If omitted, CNV is tied to SPI CS.
-> +    maxItems: 1
-> +
-> +  pwms:
-> +    maxItems: 1
-> +    description: PWM connected to the CNV pin.
-> +
-> +  trigger-sources:
-> +    minItems: 1
-> +    maxItems: 2
-> +    description:
-> +      Describes the output pin and event associated.
-> +
-> +  "#trigger-source-cells":
-> +    const: 2
-> +    description: |
-> +      Output pins used as trigger source.
-> +
-> +      Cell 0 defines the event:
-> +      * 0 = Data ready
-> +      * 1 = Min threshold
-> +      * 2 = Max threshold
-> +      * 3 = Either threshold
-> +      * 4 = CHOP control
-> +      * 5 = Device enable
-> +      * 6 = Device ready (only GP1)
-
-Hmm. I'm a bit dubious on why 'what the offload trigger is'
-is a DT thing?  Is that because the IP needs to comprehend
-this?  I guess only data ready is actually supported in
-practice? 
-
-What would the use of Device enable or device ready or chop
-control actually be?
-
-The thresholds are unusual but those I can sort of understand.
-
-Jonathan
-
-> +
-> +      Cell 1 defines which pin:
-> +      * 0 = GP0
-> +      * 1 = GP1
-> +
-> +      For convenience, macros for these values are available in
-> +      dt-bindings/iio/adc/adi,ad4052.h.
-> +
-> +  spi-max-frequency:
-> +    maximum: 83333333
-> +
-> +  vdd-supply:
-> +    description: Analog power supply.
-> +
-> +  vio-supply:
-> +    description: Digital interface logic power supply.
-> +
-> +  ref-supply:
-> +    description: |
-
-Don't need the | as no need to preserve anything about formatting of
-a single paragraph like this.
-
-
-> +      Reference voltage to set the ADC full-scale range. If not present,
-> +      vdd-supply is used as the reference voltage.
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - vdd-supply
-> +  - vio-supply
-> +
-> +allOf:
-> +  - $ref: /schemas/spi/spi-peripheral-props.yaml#
-> +
-> +unevaluatedProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/gpio/gpio.h>
-> +    #include <dt-bindings/interrupt-controller/irq.h>
-> +    #include <dt-bindings/iio/adc/adi,ad4052.h>
-> +
-> +    spi {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +
-> +        adc@0 {
-> +            compatible = "adi,ad4052";
-> +            reg = <0>;
-> +            vdd-supply = <&vdd>;
-> +            vio-supply = <&vio>;
-> +            ref-supply = <&ref>;
-> +            spi-max-frequency = <83333333>;
-> +
-> +            #trigger-source-cells = <2>;
-> +            trigger-sources = <&adc AD4052_TRIGGER_EVENT_EITHER_THRESH
-> +                                    AD4052_TRIGGER_PIN_GP0
-> +                               &adc AD4052_TRIGGER_EVENT_DATA_READY
-> +                                    AD4052_TRIGGER_PIN_GP1>;
-> +            interrupt-parent = <&gpio>;
-> +            interrupts = <0 0 IRQ_TYPE_EDGE_RISING>,
-> +                         <0 1 IRQ_TYPE_EDGE_FALLING>;
-> +            interrupt-names = "gp0", "gp1";
-> +            cnv-gpios = <&gpio 2 GPIO_ACTIVE_HIGH>;
-> +        };
-> +    };
-> +  - |
-> +    #include <dt-bindings/gpio/gpio.h>
-> +    #include <dt-bindings/interrupt-controller/irq.h>
-> +    #include <dt-bindings/iio/adc/adi,ad4052.h>
-> +
-> +    rx_dma {
-> +            #dma-cells = <1>;
-> +    };
-> +
-> +    spi {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +
-> +        dmas = <&rx_dma 0>;
-> +        dma-names = "offload0-rx";
-> +        trigger-sources = <&adc AD4052_TRIGGER_EVENT_DATA_READY
-> +                                AD4052_TRIGGER_PIN_GP1>;
-> +
-> +        adc@0 {
-> +            compatible = "adi,ad4052";
-> +            reg = <0>;
-> +            vdd-supply = <&vdd>;
-> +            vio-supply = <&vio>;
-> +            spi-max-frequency = <83333333>;
-> +            pwms = <&adc_trigger 0 10000 0>;
-> +
-> +            #trigger-source-cells = <2>;
-> +            trigger-sources = <&adc AD4052_TRIGGER_EVENT_EITHER_THRESH
-> +                                    AD4052_TRIGGER_PIN_GP0
-> +                               &adc AD4052_TRIGGER_EVENT_DATA_READY
-> +                                    AD4052_TRIGGER_PIN_GP1>;
-> +            interrupt-parent = <&gpio>;
-> +            interrupts = <0 0 IRQ_TYPE_EDGE_RISING>,
-> +                         <0 1 IRQ_TYPE_EDGE_FALLING>;
-> +            interrupt-names = "gp0", "gp1";
-> +            cnv-gpios = <&gpio 2 GPIO_ACTIVE_HIGH>;
-> +        };
-> +    };
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index c02d83560058f7ea75e24509b4d87ef293df6773..d000c7de7ff9eba390f87593bc2b1847f966f48b 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -1337,6 +1337,12 @@ F:	Documentation/devicetree/bindings/iio/adc/adi,ad4030.yaml
->  F:	Documentation/iio/ad4030.rst
->  F:	drivers/iio/adc/ad4030.c
->  
-> +ANALOG DEVICES INC AD4052 DRIVER
-> +M:	Jorge Marques <jorge.marques@analog.com>
-> +S:	Supported
-> +W:	https://ez.analog.com/linux-software-drivers
-> +F:	Documentation/devicetree/bindings/iio/adc/adi,ad4052.yaml
-> +
->  ANALOG DEVICES INC AD4080 DRIVER
->  M:	Antoniu Miclaus <antoniu.miclaus@analog.com>
->  L:	linux-iio@vger.kernel.org
-> diff --git a/include/dt-bindings/iio/adc/adi,ad4052.h b/include/dt-bindings/iio/adc/adi,ad4052.h
-> new file mode 100644
-> index 0000000000000000000000000000000000000000..37db5d9d10e788d5e7fb715c4ba9077e555131d5
-> --- /dev/null
-> +++ b/include/dt-bindings/iio/adc/adi,ad4052.h
-> @@ -0,0 +1,17 @@
-> +/* SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause) */
-> +
-> +#ifndef _DT_BINDINGS_ADI_AD4052_H
-> +#define _DT_BINDINGS_ADI_AD4052_H
-> +
-> +#define AD4052_TRIGGER_EVENT_DATA_READY		0
-> +#define AD4052_TRIGGER_EVENT_MIN_THRESH		1
-> +#define AD4052_TRIGGER_EVENT_MAX_THRESH		2
-> +#define AD4052_TRIGGER_EVENT_EITHER_THRESH	3
-> +#define AD4052_TRIGGER_EVENT_CHOP		4
-> +#define AD4052_TRIGGER_EVENT_DEV_ENABLED	5
-> +#define AD4052_TRIGGER_EVENT_DEV_READY		6
-> +
-> +#define AD4052_TRIGGER_PIN_GP0		0
-> +#define AD4052_TRIGGER_PIN_GP1		1
-> +
-> +#endif /* _DT_BINDINGS_ADI_AD4052_H */
-> 
+diff --git a/drivers/iio/light/apds9306.c b/drivers/iio/light/apds9306.c
+index 69a0d609c..9216d4974 100644
+--- a/drivers/iio/light/apds9306.c
++++ b/drivers/iio/light/apds9306.c
+@@ -744,20 +744,27 @@ static int apds9306_event_period_set(struct apds9306_data *data, int val)
+ 	return regmap_field_write(rf->int_persist_val, val);
+ }
+ 
+-static int apds9306_event_thresh_get(struct apds9306_data *data, int dir,
+-				     int *val)
++static int apds9306_get_thresh_reg(int dir)
+ {
+-	int var, ret;
+-	u8 buff[3];
+-
+ 	if (dir == IIO_EV_DIR_RISING)
+-		var = APDS9306_ALS_THRES_UP_0_REG;
++		return APDS9306_ALS_THRES_UP_0_REG;
+ 	else if (dir == IIO_EV_DIR_FALLING)
+-		var = APDS9306_ALS_THRES_LOW_0_REG;
++		return APDS9306_ALS_THRES_LOW_0_REG;
+ 	else
+ 		return -EINVAL;
++}
++
++static int apds9306_event_thresh_get(struct apds9306_data *data, int dir,
++				     int *val)
++{
++	int reg, ret;
++	u8 buff[3];
+ 
+-	ret = regmap_bulk_read(data->regmap, var, buff, sizeof(buff));
++	reg = apds9306_get_thresh_reg(dir);
++	if (reg < 0)
++		return reg;
++
++	ret = regmap_bulk_read(data->regmap, reg, buff, sizeof(buff));
+ 	if (ret)
+ 		return ret;
+ 
+@@ -769,22 +776,19 @@ static int apds9306_event_thresh_get(struct apds9306_data *data, int dir,
+ static int apds9306_event_thresh_set(struct apds9306_data *data, int dir,
+ 				     int val)
+ {
+-	int var;
++	int reg;
+ 	u8 buff[3];
+ 
+-	if (dir == IIO_EV_DIR_RISING)
+-		var = APDS9306_ALS_THRES_UP_0_REG;
+-	else if (dir == IIO_EV_DIR_FALLING)
+-		var = APDS9306_ALS_THRES_LOW_0_REG;
+-	else
+-		return -EINVAL;
++	reg = apds9306_get_thresh_reg(dir);
++	if (reg < 0)
++		return reg;
+ 
+ 	if (!in_range(val, 0, APDS9306_ALS_THRES_VAL_MAX))
+ 		return -EINVAL;
+ 
+ 	put_unaligned_le24(val, buff);
+ 
+-	return regmap_bulk_write(data->regmap, var, buff, sizeof(buff));
++	return regmap_bulk_write(data->regmap, reg, buff, sizeof(buff));
+ }
+ 
+ static int apds9306_event_thresh_adaptive_get(struct apds9306_data *data, int *val)
+-- 
+2.34.1
 
 

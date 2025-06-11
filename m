@@ -1,80 +1,80 @@
-Return-Path: <linux-iio+bounces-20486-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20487-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80AC7AD6164
-	for <lists+linux-iio@lfdr.de>; Wed, 11 Jun 2025 23:33:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F73FAD616A
+	for <lists+linux-iio@lfdr.de>; Wed, 11 Jun 2025 23:34:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 31AE3164F3C
-	for <lists+linux-iio@lfdr.de>; Wed, 11 Jun 2025 21:33:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D72AC18967CE
+	for <lists+linux-iio@lfdr.de>; Wed, 11 Jun 2025 21:34:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11A54243379;
-	Wed, 11 Jun 2025 21:33:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0FB2246774;
+	Wed, 11 Jun 2025 21:33:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="VkziFPU+"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="ef4zGzub"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oi1-f177.google.com (mail-oi1-f177.google.com [209.85.167.177])
+Received: from mail-oi1-f169.google.com (mail-oi1-f169.google.com [209.85.167.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3606023ABBE
-	for <linux-iio@vger.kernel.org>; Wed, 11 Jun 2025 21:33:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E32024339D
+	for <linux-iio@vger.kernel.org>; Wed, 11 Jun 2025 21:33:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749677628; cv=none; b=VEL6baGhkf0P55IrrjVBldpT87w4sLrhM5LRIgp8yMTfZaTAyoLleCRFKrgVy0PtK7teB9uAqU+LhiQpGmVZ3016LKUqRMVfJgv+ZP8/mVyaeltjKVtWiYr4NH1q2GXQIMiRcXalRzektSOpG3ZDwqVmVykN7UriW1i59utsbjU=
+	t=1749677630; cv=none; b=SdD8/h4v8/QBj770PTO1wQp7CnSmTsSk/SjDpZFbolKtae9vhUftRF7NdirjpQDWw7W7l4pPNNXtPJyCB9C5+znWUgq3i/k+CuPSFD8qqSCht3r3+8DPUuPUSvgMo16rAoz/9/Yqvj3jayrR1R+dfWdYlJ6gDoay0khN5UYTCFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749677628; c=relaxed/simple;
-	bh=FLT2npDkqChFx9TKV+HNT+kp0SfQR8B+ElSxgugH4FU=;
+	s=arc-20240116; t=1749677630; c=relaxed/simple;
+	bh=8nYNZ0t13n9D/8UdTM9a/nnJ6lObjFa3OXzCbnbLuUQ=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Ek9025nxilJ1kWaTRGkq3kL2PTLcZlbF76gmxsEtYFFCVEMNBrmNu6N8nFEoIXZdv4H7OwoczKMbd3MF7gPt8Dwj/D138Xz9tSWNRBLtC4wmpjjt31wsnNOCQNgfIvSOPw4l0SLysq3HKd5s/hmhZdz0EW1lgcxjCbDpF/gH7nU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=VkziFPU+; arc=none smtp.client-ip=209.85.167.177
+	 In-Reply-To:To:Cc; b=quCTj/HlimSgzkX97RgKn30JXb+aoY8WmzuVua01JjxuC9abC0SWUjJ6XebiE0IPBFOV2l5W79fRNrpWg2NdFa/1XwyyX13ewruuLDnmxyxiUOSBnRI5BuHyh1FOBLXWbHvCVik0zbZGh3q4kJK7C5xNJKt3BOEc/GBzZPYdXYw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=ef4zGzub; arc=none smtp.client-ip=209.85.167.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oi1-f177.google.com with SMTP id 5614622812f47-408d14c7ebeso176960b6e.1
-        for <linux-iio@vger.kernel.org>; Wed, 11 Jun 2025 14:33:46 -0700 (PDT)
+Received: by mail-oi1-f169.google.com with SMTP id 5614622812f47-407aac76036so169137b6e.1
+        for <linux-iio@vger.kernel.org>; Wed, 11 Jun 2025 14:33:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1749677626; x=1750282426; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1749677628; x=1750282428; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=QFN97YuN8D7QHIfcx7PEu7cdojzHqHSy2OCjFX9bZVM=;
-        b=VkziFPU+Y/KKJcmwivPIUP2CdVqzbNVaFGJMN3r11GsKULoZho3msT7+e6YSWqkRIC
-         GUdO5WIW7daL6EyCT6OHC2LBSrasNEVinabfRJbM1WEWus9WuqwaMcKxV7aYlOCBcH1z
-         2BIb7zQbFbocQwUHLfpzUWCPNQxxMmZFjvkyO96ovq1lMD/UYtcQEO6DmvtSr9oeJmK8
-         +nK0+f/8SkG+R7emiGOPd6laR/zNZx1b/CN5eSyptVEgrpvlPEB81hOiHOtt5Prfvrgl
-         sG1/xkgg6zJr2XAEA3rRcclOE225rmn8sG1sAGX2egBJHGIKshoLTDxfTn3OHYnRP3Em
-         V0bQ==
+        bh=SzLb/vPlnEIFPDoiLpCdRirb2U4EbQo5sgL+L78nVMk=;
+        b=ef4zGzubYhr2wJ4oAH7a7cuadQ1Fck2VxnZQYI3+7cVt14/zmy2apVOeAqP0/vvpV7
+         ZVHYQ7UZ7JYuzrkRV3E9sbm1fQ11wjB2DbiYo3zlFlRdO0XJh0EgUBHWV8PROvV8Cxl/
+         6aIbPApfB+NKul6LsCT3CO8wGP2wR7pLYe6Z5s0MLXqdmvjKhoBqSgd4jM1LiNSN5hZw
+         hyIG37VhWTaVma6ieT/UyTo88WJ3W+2ULgud/lZeM8JP62sOVlGuKw5A+K0gpofktSfV
+         BI/R3dkYl2mqEaUpXN5q7geYj7T58DYZ3XVapGcJUg86dD4WCOOjjanvoqiv939C+toc
+         piPA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749677626; x=1750282426;
+        d=1e100.net; s=20230601; t=1749677628; x=1750282428;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=QFN97YuN8D7QHIfcx7PEu7cdojzHqHSy2OCjFX9bZVM=;
-        b=IIc4h+L5QqLHn27q2mQNVmHJ5p2X1rSQ3+N8SbKvSTA/0dynGSPZe8NcHpNDNEmwfK
-         oZWo0c7UWxjW05zyoofX5Rc/KgxDeqLM/UijXZAwBOIKRTT2N/sXRJlo6mGLo9RvsxZq
-         gpGXzJRcMpywTmh7HvoNzFVgSpptVS6aekUQzC7f2humlfW8NhGusfGJg4e58hIifgwP
-         CtOm1kF5ASmhYNZ9h+ogQFgCyV4FtlNpompHqPrq8pQzvbeHC4U3DxygTnnRnoRXljYd
-         WPxYGji1ktmq9e/P04ICZvCtQ+LdAp/V5OAFrha5uMWYH4bo2rPMfKIIGergjziuJC8y
-         f4sw==
-X-Gm-Message-State: AOJu0YwDKAIsgmWbUtgZYJztLxTz08/bkBQMBUdgEB2APMMtKj+X+OZ7
-	fdS89IKefDztyfa8WsYSWz83tfnNdXi4kHL8L7iZJ5mmCwf2RbWRW209V4pnbCaDypw=
-X-Gm-Gg: ASbGncs6EiWbe31eqyM9ZED0u9gqpvxgCfrf+EuVSJ+anpTIQ3HV6JzZB/AxbSrL6/f
-	U8kaL1VvDJg9lyzaQC215opB4jMGSTc5at57WuNusPniUZsmVMEETdsBt13azP3Od4TEMFY/bFd
-	v5mZyWJQgRzOpD7e+PkdEe2o1YMaWG/m5+SDHTzIEK68FAqOipuFoonL4zO5GaLAioMBVw4rvfg
-	woDa3FTkKrNTxDkdMIKjVJraDMfhguJFwj1UCveR6dyinWe6lSBpxvgOF6H92T8DB8f8uOdDEjB
-	6OVTRfIcUpZwou52mP1uxvM1pJ8FYcefwar90Gu4J/EFHcJYifvxtFJ3UquSWJ8ZVYd8pOXamcI
-	BZsE=
-X-Google-Smtp-Source: AGHT+IH5i4RvUZM0nPCi7tcfmNvCllRadqHx7du0uAq49bqRQdlg2xae0GaZM3j6FWwZkWAz37bFBQ==
-X-Received: by 2002:a05:6808:1806:b0:408:ed52:c62f with SMTP id 5614622812f47-40a5d0553a5mr3358437b6e.2.1749677626307;
-        Wed, 11 Jun 2025 14:33:46 -0700 (PDT)
+        bh=SzLb/vPlnEIFPDoiLpCdRirb2U4EbQo5sgL+L78nVMk=;
+        b=BCG5L6Oo0Nd+ZhM0y1sLeE2+58eKJyhLhUOhd3PQ+U7b8XtVHkWodeq+1BSuLzsa5F
+         KXdMxM6NnmS5fZ/o6MEd2Xo6y4PVFyWHKRPxStI68414BlpV8LrigFAopLRrE/Zxh5L/
+         smUaDHBlDOXKNgiOWYtI0kqPcdJyf9QF17rSRE4K32fwkbZdEpKtvR5UVGFSY5xoB8Pq
+         la8Zb3CxyCnWi/6zBsgta2md5leHhXIDnf3PrpuEXHIfvNKTztanc9BQBGDSb3ExR8RX
+         tnZdnOM0rD85AvF7NKtk207eQAdST2P6uLXNhAeG016rbRvv3X9249mdKzDrIi84jP2W
+         Tl1g==
+X-Gm-Message-State: AOJu0YwWW3m12+UkO9ZE5QsuXcFLpOgoDCOSPA22ycovccGO7eQaciIK
+	UfR8s6zhOJVC7HDLAogUdEAusm+qwXr1h7SQnXr5qoJKFWV3IrspwfAPgMCV7qu1Dj4=
+X-Gm-Gg: ASbGncuvnuwC5rK/VeZ6tAngvtqRHMEyuTDZneuJtg4JPqpcLGHV8Nanm/Xt6aBr+fG
+	d1Wrj1M1Ow+RN99LTGOdkNeB46EXtEVDE0+xfB9wNDj57aFkkF7NrTNQVz7Fylcq2f5uTCpqHIm
+	MI7MT9Tmh+VJYpPb/Ngycj9X47xaugpvsmuvhGHUrA0VRlgzYDHD+0bFRlvyiw1X/1WAaQtXDOQ
+	Ao4QdzMJPsQwu1uh80moR2aXdAmWsb6LL4Kj64nhpD/47B9jvXZjm7slnZtpUEAQmD8dBRTFhWd
+	XZ70senXN4opZrQoakUm61qn79mHO95Et9bhxowBayQVfDCYutZHq5NmkFx1fUls7AkuSVaWguq
+	vfrA=
+X-Google-Smtp-Source: AGHT+IGfTOk9ozSDpoM+4g4Hm+0DH29OFTfuba3qFwOUQuVKZ2xCg+WwfSm/zL+cIAJIoC2uakHA9Q==
+X-Received: by 2002:a05:6808:2286:b0:406:7a50:947a with SMTP id 5614622812f47-40a66b31f1bmr366446b6e.27.1749677628096;
+        Wed, 11 Jun 2025 14:33:48 -0700 (PDT)
 Received: from [127.0.1.1] ([2600:8803:e7e4:1d00:4753:719f:673f:547c])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-40a682fb0bdsm2262b6e.23.2025.06.11.14.33.44
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-40a682fb0bdsm2262b6e.23.2025.06.11.14.33.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Jun 2025 14:33:44 -0700 (PDT)
+        Wed, 11 Jun 2025 14:33:47 -0700 (PDT)
 From: David Lechner <dlechner@baylibre.com>
-Date: Wed, 11 Jun 2025 16:33:01 -0500
-Subject: [PATCH v3 1/5] iio: amplifiers: ada4250: used dev local variable
+Date: Wed, 11 Jun 2025 16:33:02 -0500
+Subject: [PATCH v3 2/5] iio: amplifiers: ada4250: don't fail on bad chip ID
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -83,7 +83,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250611-iio-amplifiers-ada4250-simplify-data-buffer-in-init-v3-1-bf85ddea79f2@baylibre.com>
+Message-Id: <20250611-iio-amplifiers-ada4250-simplify-data-buffer-in-init-v3-2-bf85ddea79f2@baylibre.com>
 References: <20250611-iio-amplifiers-ada4250-simplify-data-buffer-in-init-v3-0-bf85ddea79f2@baylibre.com>
 In-Reply-To: <20250611-iio-amplifiers-ada4250-simplify-data-buffer-in-init-v3-0-bf85ddea79f2@baylibre.com>
 To: Lars-Peter Clausen <lars@metafoo.de>, 
@@ -94,70 +94,47 @@ To: Lars-Peter Clausen <lars@metafoo.de>,
  Andy Shevchenko <andy@kernel.org>
 Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1839; i=dlechner@baylibre.com;
- h=from:subject:message-id; bh=FLT2npDkqChFx9TKV+HNT+kp0SfQR8B+ElSxgugH4FU=;
- b=owGbwMvMwMV46IwC43/G/gOMp9WSGDI8v4nJy6e4KN3q+uPGPL2VJ/3txzP/j3Wo6vYVTmedH
- FX1Ou5lJ6MxCwMjF4OsmCLLG4mb85L4mq/NuZExA2YQKxPIFAYuTgGYyAQ+9n+am9+av+ffISBq
- pLB42hT7yta9Duxhr/TKJvzVVnsYtTFOqXuBfo7BGQ+5VPkp1U7zPhtxK1h7PpyRl1bgxr2ko0x
- /3tqClNtcF9I9t8wU8N2RYZL9NFbpnXjjY8b6vjsCj+Uj+M0yNt69167HyL4iMLVo/x01wZS3BU
- 5LToQpJS/JEdt/milY79EjzbLV1ytUt3sUm/285cJZXlbAPouxXS5sm5xrkvfG6B0l9pqHTx7hF
- RHlmhSkdNxs+/XX2ktmfGwLbtln8GW/wI0Jy8Trj0Tv0XJaEcnjUnBScp1yQFHxiYsLLl5oZzd9
- cnTXjMOdRRb5FufqrI4JqF/Wry/f0yK1iGlNai/jjDudAA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1278; i=dlechner@baylibre.com;
+ h=from:subject:message-id; bh=8nYNZ0t13n9D/8UdTM9a/nnJ6lObjFa3OXzCbnbLuUQ=;
+ b=owEBbQGS/pANAwAKAcLMIAH/AY/AAcsmYgBoSfYcKVfvHAUfzl0bBKS3Q0CJ5CYc86OmKPceM
+ iLtKwZaC72JATMEAAEKAB0WIQTsGNmeYg6D1pzYaJjCzCAB/wGPwAUCaEn2HAAKCRDCzCAB/wGP
+ wBaFB/4ytHErWauhCNxbfIjhOXWgpbfFh62T8WtVJOGFL/DXdX0uxGAqT/+2k/UhhiJsGO2KQsc
+ azPFnkGeAQtfLJzDQUE0Bxh0mWhCEhHqvj3E+kEMrX0/5wXrm/njroGBuF4Y7p9IC/BGT+Lr+PN
+ frlbQe/EVAuq2DRfHTe20KRF3gxEsg84tYyqOruP0QT63Ooz9/gDzRcnyKoSibLpyRBlrCai2Z9
+ jv6f1Ksv1KLdzBwtM/UcVXukcyUcYj8R4P82LU1VjLEkraCO3pDOowf4LQEWJM6ZrIoP81CxiXy
+ z+vwXtWcNpnpbA0Bas5T+DIjCyNFHfh0VB7OIRrgXUX32teu
 X-Developer-Key: i=dlechner@baylibre.com; a=openpgp;
  fpr=8A73D82A6A1F509907F373881F8AF88C82F77C03
 
-Replace local spi variable with dev in ada4250_init() since spi is not
-used directly.
+Only print an information message instead of error message and failing
+to probe the device if the chip ID is not recognized. Experience shows
+that this can be fragile and some devices may not return the expected
+chip ID even though the driver is still able to work with them.
 
+Suggested-by: Jonathan Cameron <jic23@kernel.org>
+Closes: https://lore.kernel.org/linux-iio/20250421122409.79f5580c@jic23-huawei/
 Signed-off-by: David Lechner <dlechner@baylibre.com>
 ---
- drivers/iio/amplifiers/ada4250.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/iio/amplifiers/ada4250.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/iio/amplifiers/ada4250.c b/drivers/iio/amplifiers/ada4250.c
-index f81438460aa51ce30f8f605c60ee5be5c8c251d3..397c1e1545cfccad9b0ff58b133796d415130064 100644
+index 397c1e1545cfccad9b0ff58b133796d415130064..1bd7c0c3c695b3872b8c389fb4ae89bf5d24f51c 100644
 --- a/drivers/iio/amplifiers/ada4250.c
 +++ b/drivers/iio/amplifiers/ada4250.c
-@@ -299,24 +299,24 @@ static void ada4250_reg_disable(void *data)
+@@ -332,10 +332,8 @@ static int ada4250_init(struct ada4250_state *st)
  
- static int ada4250_init(struct ada4250_state *st)
- {
-+	struct device *dev = &st->spi->dev;
- 	int ret;
- 	u16 chip_id;
--	struct spi_device *spi = st->spi;
- 
--	st->refbuf_en = device_property_read_bool(&spi->dev, "adi,refbuf-enable");
-+	st->refbuf_en = device_property_read_bool(dev, "adi,refbuf-enable");
- 
--	st->reg = devm_regulator_get(&spi->dev, "avdd");
-+	st->reg = devm_regulator_get(dev, "avdd");
- 	if (IS_ERR(st->reg))
--		return dev_err_probe(&spi->dev, PTR_ERR(st->reg),
-+		return dev_err_probe(dev, PTR_ERR(st->reg),
- 				     "failed to get the AVDD voltage\n");
- 
- 	ret = regulator_enable(st->reg);
- 	if (ret) {
--		dev_err(&spi->dev, "Failed to enable specified AVDD supply\n");
-+		dev_err(dev, "Failed to enable specified AVDD supply\n");
- 		return ret;
- 	}
- 
--	ret = devm_add_action_or_reset(&spi->dev, ada4250_reg_disable, st->reg);
-+	ret = devm_add_action_or_reset(dev, ada4250_reg_disable, st->reg);
- 	if (ret)
- 		return ret;
- 
-@@ -333,7 +333,7 @@ static int ada4250_init(struct ada4250_state *st)
  	chip_id = le16_to_cpu(st->reg_val_16);
  
- 	if (chip_id != ADA4250_CHIP_ID) {
--		dev_err(&spi->dev, "Invalid chip ID.\n");
-+		dev_err(dev, "Invalid chip ID.\n");
- 		return -EINVAL;
- 	}
+-	if (chip_id != ADA4250_CHIP_ID) {
+-		dev_err(dev, "Invalid chip ID.\n");
+-		return -EINVAL;
+-	}
++	if (chip_id != ADA4250_CHIP_ID)
++		dev_info(dev, "Invalid chip ID: 0x%02X.\n", chip_id);
  
+ 	return regmap_write(st->regmap, ADA4250_REG_REFBUF_EN,
+ 			    FIELD_PREP(ADA4250_REFBUF_MSK, st->refbuf_en));
 
 -- 
 2.43.0

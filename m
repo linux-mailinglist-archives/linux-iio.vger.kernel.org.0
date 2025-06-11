@@ -1,109 +1,142 @@
-Return-Path: <linux-iio+bounces-20436-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20437-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E1F8AD5957
-	for <lists+linux-iio@lfdr.de>; Wed, 11 Jun 2025 16:55:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06DBDAD595B
+	for <lists+linux-iio@lfdr.de>; Wed, 11 Jun 2025 16:56:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5E1C4176EFE
-	for <lists+linux-iio@lfdr.de>; Wed, 11 Jun 2025 14:55:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 42AEF188327A
+	for <lists+linux-iio@lfdr.de>; Wed, 11 Jun 2025 14:56:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D2C428C2AF;
-	Wed, 11 Jun 2025 14:55:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3BE228A72F;
+	Wed, 11 Jun 2025 14:56:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gLlXrggN"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6CCD27E7C6;
-	Wed, 11 Jun 2025 14:55:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E2D326A1D0;
+	Wed, 11 Jun 2025 14:56:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749653707; cv=none; b=NQW5hli3qAe1+6SM655WWEyE1AaJEW879LjybDb9LoyP8vCe3w9eXJSTfvXOXrUj9CehyUWWnGUBdCTFQg15gCnwV9SXQk4A2Qmsc3pPXT5tWrfMmZnA+553LVAFHBqsz7q+rl9PvXzY8URnaEsumNQ7B3EKrST/0BCWvFBS4SY=
+	t=1749653763; cv=none; b=UNauLKgvC/PhcIEjoD1r7w1W7LlmmALlqCCNoLq2x9PwVNAFC5avLLOLEe/Yp+ddBxFcTS5mFZ/mb0G4TaebicYFTpp5Zbv/ZLJ3kOEjKbf6y3u3mKOpbsoerblj58DYGDMEhLhPHjJP+ZnMAVLE+ZR87VXghUNXaxSpDpnW/ho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749653707; c=relaxed/simple;
-	bh=0KC4yqdkujIUPoyqphhU6iGCrXeEaZzbmhgH+87sGCI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jtwBxcTeHOIJTQKask1PSzpj9Zz3vmJAWKcmefDZdSDemSs6tXpeI1SOLmfho8Lx5HAHS2B6lFQ4uF1dCGz24/WQlZWwG3/xoRuNx+KyKH0eYyU/GGN8OEr6h+zsUl9B9MeQzeBWTN1TN44Pb46Ms+38SEBm/V27AzCaU3h/oLM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=fail smtp.mailfrom=kernel.org; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=kernel.org
-X-CSE-ConnectionGUID: /e7wQRrpSWG9F1l39ZQ9/Q==
-X-CSE-MsgGUID: UVJfOOrZSJ+pkfsX4Skh3g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11461"; a="54429393"
-X-IronPort-AV: E=Sophos;i="6.16,228,1744095600"; 
-   d="scan'208";a="54429393"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jun 2025 07:55:05 -0700
-X-CSE-ConnectionGUID: vqbFfTXEQEu4h3Ec0c21Sg==
-X-CSE-MsgGUID: rvT/XKEGTyCiWsaCj2P5Hg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,228,1744095600"; 
-   d="scan'208";a="152212151"
-Received: from smile.fi.intel.com ([10.237.72.52])
-  by orviesa004.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jun 2025 07:55:01 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
-	(envelope-from <andy@kernel.org>)
-	id 1uPMqv-00000005g14-3eZq;
-	Wed, 11 Jun 2025 17:54:57 +0300
-Date: Wed, 11 Jun 2025 17:54:57 +0300
-From: Andy Shevchenko <andy@kernel.org>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Da Xue <da@libre.computer>, Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Mark Brown <broonie@kernel.org>,
-	Rui Miguel Silva <rmfrfs@gmail.com>,
-	Viresh Kumar <vireshk@kernel.org>, Johan Hovold <johan@kernel.org>,
-	Alex Elder <elder@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-spi@vger.kernel.org, greybus-dev@lists.linaro.org,
-	linux-staging@lists.linux.dev
-Subject: Re: [RFC] spi: expand bits_per_word_mask to 64 bits
-Message-ID: <aEmYwVx73rrgNfN9@smile.fi.intel.com>
-References: <20250611000516.1383268-1-da@libre.computer>
- <71b66cbb-ab2f-44e3-926f-9ae4bcb3aadc@baylibre.com>
+	s=arc-20240116; t=1749653763; c=relaxed/simple;
+	bh=isneXLCqbOruHYkj2ItmtM8OHJUlnBsjO2FCHsL8Jwg=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=asL7gJE914hPEQVhonI0zE88Hoqb8B8fyS6HtgArTv8XBnrrYFeQZkqRQ+TrQBiFBWw4g2SBl+Mg+hA2njqZftJEm9VM7zJWHIG9OicYuwwiVJVgAO4j9koF61i1oSUYnYHA2mllHyF0RSSRnzi47wRdhuDL/T8lC8u8IA69Q3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gLlXrggN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D4ACC4CEE3;
+	Wed, 11 Jun 2025 14:55:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1749653763;
+	bh=isneXLCqbOruHYkj2ItmtM8OHJUlnBsjO2FCHsL8Jwg=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=gLlXrggNR4yholGByFgP2+BgEpfybD5papqiAeDCWY8iyX0kbApFoUNgwe1MCOmzR
+	 py+PK+XYTu+gbK1IIJ62BjDxMjlAienR5W853iWao5od15/h/Sy96lbSLdJrrr1mKu
+	 fEDUFa+7nZBYB99XPNPMN+3BexYeZUgTtNUixEAejdwpIvpy2vrsES6O2qS16G+dND
+	 vaDZrqky2OKmj6f/dUmLtGJsqvcebgiiHUnCJhDBWa1kgOoQItVBUlwmjBwz093RCZ
+	 DUVaK6jA8UkJn5g4EkhBvY7iqRCMawKivdPg0izsUG/Q2XMcYXg8ylbGJibq9Vh7UR
+	 dW0rnyrFB+rlg==
+Date: Wed, 11 Jun 2025 15:55:55 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>
+Cc: Andy Shevchenko <andy@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+ David Lechner <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?=
+ <nuno.sa@analog.com>, linux-iio <linux-iio@vger.kernel.org>, LKML
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v3 1/2] iio: imu: inv_icm42600: add WoM support
+Message-ID: <20250611155555.68ac59e4@jic23-huawei>
+In-Reply-To: <FR3P281MB17573A98ECB6B89306DB8DCBCE6AA@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
+References: <20250418-losd-3-inv-icm42600-add-wom-support-v3-0-7a180af02bfe@tdk.com>
+	<20250418-losd-3-inv-icm42600-add-wom-support-v3-1-7a180af02bfe@tdk.com>
+	<aAPDovuee7hoY1PS@smile.fi.intel.com>
+	<FR3P281MB17573A98ECB6B89306DB8DCBCE6AA@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <71b66cbb-ab2f-44e3-926f-9ae4bcb3aadc@baylibre.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jun 11, 2025 at 09:16:06AM -0500, David Lechner wrote:
-> On 6/10/25 7:05 PM, Da Xue wrote:
+On Tue, 10 Jun 2025 14:13:38 +0000
+Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com> wrote:
 
-...
+> Hello Andy,
+>=20
+> sorry for the very late response, here are my answers.
+>=20
+> Thanks,
+> JB
+>=20
+> >________________________________________
+> >From:=C2=A0Andy Shevchenko <andy@kernel.org>
+> >Sent:=C2=A0Saturday, April 19, 2025 17:39
+> >To:=C2=A0Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>
+> >Cc:=C2=A0Jonathan Cameron <jic23@kernel.org>; Lars-Peter Clausen <lars@m=
+etafoo.de>; David Lechner <dlechner@baylibre.com>; Nuno S=C3=A1 <nuno.sa@an=
+alog.com>; linux-iio@vger.kernel.org <linux-iio@vger.kernel.org>; linux-ker=
+nel@vger.kernel.org <linux-kernel@vger.kernel.org>
+> >Subject:=C2=A0Re: [PATCH v3 1/2] iio: imu: inv_icm42600: add WoM support
+> >=C2=A0
+> >This Message Is From an External Sender
+> >This message came from outside your organization.
+> >=C2=A0
+> >On Fri, Apr 18, 2025 at 06:19:02PM +0200, Jean-Baptiste Maneyrol via B4 =
+Relay wrote: =20
+> >> From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+> >>=20
+> >> Add WoM as accel roc rising x|y|z event. =20
+> >
+> >...
+> > =20
+> >> +static unsigned int inv_icm42600_accel_convert_roc_to_wom(uint64_t ro=
+c,
+> >> +							 =C2=A0int accel_hz, int accel_uhz)
+> >> +{
+> >> +	/* 1000/256mg per LSB converted in =C2=B5m/s=C2=B2 */
+> >> +	const unsigned int convert =3D (1000U * 9807U) / 256U; =20
+> >
+> >Wondering if KILO (or MILLI?) is a good suit here... =20
+>=20
+> This one is a little complex, since we have gravity value in mm/s=C2=B2 m=
+ultiplied
+> by 1000 to go to =C2=B5m/s=C2=B2.
+> If you have an idea of better writing that, I will do.
+ =3D (9807U * (MICRO / MILLI)) / 256U;
 
-> > struct gb_spilib {
+probably best way to express what you've written.  Rely on compiler working
+out the constant for us.
 
-> > -	u32			bits_per_word_mask;
-> > +	u64			bits_per_word_mask;
-> 
-> This is assigned by:
-> 
-> 	spi->bits_per_word_mask = le32_to_cpu(response.bits_per_word_mask);
-> 
-> in gb_spi_get_master_config(), so changing to u64 doesn't have any
-> effect and should likely be omitted to avoid confusion.
-> 
-> (The response struct is defined by a communication protocol and can't be
-> changed, otherwise it would break the communications.)
+> >> +static int inv_icm42600_accel_disable_wom(struct iio_dev *indio_dev)
+> >> +{
+> >> +	struct inv_icm42600_state *st =3D iio_device_get_drvdata(indio_dev);
+> >> +	struct device *pdev =3D regmap_get_device(st->map);
+> >> +	struct inv_icm42600_sensor_conf conf =3D INV_ICM42600_SENSOR_CONF_IN=
+IT;
+> >> +	unsigned int sleep_ms =3D 0;
+> >> +	int ret;
+> >> +
+> >> +	scoped_guard(mutex, &st->lock) { =20
+> > =20
+> >> +		st->apex.wom.enable =3D false;
+> >> +		st->apex.on--; =20
+> >
+> >Hmm... Even if the below fails we consider it successful? Why? =20
+>=20
+> If it fails, there is no easy way to restore functioning. Better consider
+> everything is disabled to not prevent the chip go into sleep (which will
+> disable the feature anyway) and give a chance to reenable it afterward.
+>=20
 
-Perhaps the name of the field should be different to avoid appearance of
-the similar changes in the future (esp. if this series in general makes
-the upstream)?
-
--- 
-With Best Regards,
-Andy Shevchenko
+Maybe add a comment?
 
 
+J
 

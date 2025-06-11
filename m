@@ -1,128 +1,233 @@
-Return-Path: <linux-iio+bounces-20483-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20484-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54EADAD5FC5
-	for <lists+linux-iio@lfdr.de>; Wed, 11 Jun 2025 22:05:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3C00AD60A0
+	for <lists+linux-iio@lfdr.de>; Wed, 11 Jun 2025 23:03:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 466793AA6C6
-	for <lists+linux-iio@lfdr.de>; Wed, 11 Jun 2025 20:04:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3CDB01BC26DF
+	for <lists+linux-iio@lfdr.de>; Wed, 11 Jun 2025 21:03:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A09C2BD5B1;
-	Wed, 11 Jun 2025 20:04:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B76E22417C8;
+	Wed, 11 Jun 2025 21:03:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cwxT3a1D"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hojascee"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B816289E05;
-	Wed, 11 Jun 2025 20:04:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F40919A;
+	Wed, 11 Jun 2025 21:03:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749672296; cv=none; b=EAC9qK2wHv45L1VMVn9n2NkdrGJ0++FLShlMBbF6j6Rj/UJEzB6i+3psmuunCdAYoJzckoTtMZYd2x1oH6+RIQKAdF93W0Qn9vebAvVPo32avTufcSSIlEoTT8Hyr8OKZkurry3Tp7Yjrrna2SsG6WIDJjI3AnQf7Lxi60zsK5k=
+	t=1749675790; cv=none; b=omcPfXVEPBgtge+BLf9Gs/Pkb+eIbJWoIie5JgmuPJ6Y3eVvZOr25fQt7RkwyyxERSPxfbKzgDFv5J1J+aFvPo01swPsiT4S9o1qAApNar8WAGApje1oBo8SxMkESmGeWtPVy1yut8PEdndv6E3ltrljr670I+fAP3FJUmpg3s4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749672296; c=relaxed/simple;
-	bh=YltkNEdDFqNIZZD1BCXWEVlBMgaCkKwjGC0e+Su8vTc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=iKmXvPrm7TApFsN8KFGG+iLsk72RfKQcCdfJu/X/dbt4f8s7aWyec96WGOoPC6mbzeqgX4nqsBO4KzL6cXhKSBujzw2sQPwaszxlCkuXVh9gH3bYVJqV66Ha+IBiIjtXNlMvlG9tVn50Cc0kmm2ySQHcpCfMRCpJbEU54cqeN1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cwxT3a1D; arc=none smtp.client-ip=209.85.128.169
+	s=arc-20240116; t=1749675790; c=relaxed/simple;
+	bh=uhaxMZ7pEvrEqe0KuIX5jDb9dCyw5EALuBZfNdz+7aM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FeD27LIiMzlTRdqpsUn58mf6327ffes/q60TfQFKtEbVigLtwp7EM0uhQCiFE1nn/mXPUIML/qzr0c5LYhRr6pno1BlYA6VkPP+fgFNGPSc+vahq+1q3OHR1L+Y6tjv6WNtOfzLjLVfXzgaBps5myA/29j0l+tJmzDkavMwGnjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hojascee; arc=none smtp.client-ip=209.85.210.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-70cb9ae5479so156917b3.2;
-        Wed, 11 Jun 2025 13:04:54 -0700 (PDT)
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-742caef5896so352515b3a.3;
+        Wed, 11 Jun 2025 14:03:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749672293; x=1750277093; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YltkNEdDFqNIZZD1BCXWEVlBMgaCkKwjGC0e+Su8vTc=;
-        b=cwxT3a1DGb/KjBY1ql1/K0dmhF8CVbifb/r3sAkjyRHxGVHzQer92MEr8RbxHYokO1
-         KdrimtLPUGoCrmQtfdAeJsCYW30bnNpYSJVj/Y4aEi7/Bh/MnPioVvHpDrHQQjb2Ewip
-         OA18liD9nsVE/ZocSEJmQ2O7rCmrYK6tQ86/H2mGClRS9Fje5ccfkJiBjdkmCCSbR01H
-         eQGeEvfoPr1dAFhqSrV4+8jZEoNgc9lLEjEid1kOiCljrFr4byQeaGwvCvQopnRPpWFJ
-         sE0XwzHBazoxmIbEq4AS36luUaz9GYGlaOjeAUcbaeZQyOG2xOPKyuJBVV4UouALhgFT
-         gw9Q==
+        d=gmail.com; s=20230601; t=1749675788; x=1750280588; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=KUQvYGXAJM9vFj/+RVHEyx0Hqdg+1ObhRxvVS6G9TV8=;
+        b=hojascee9YJHkqUhFleUbJlOoi313xMWxXntZazRUw7xI0Wk21NiovQWUWdXDtb10V
+         rTT3fPM7fthcJq4Vt+E9W7ErKIGIx4GM+0feNbWDaB4JjU64/Pi4pWje5KqQaE6kKsZX
+         2j7RrBh9ZSvq1tk/0z2kIHN4tLnkkKmz9+Ctu/IWcNRgGS029ZupNpCaDGHZf1GGlcZU
+         yKkQFQE/22NANbrX1FHZtMoMJCeyKtexf4xf49EhkOI6sXg2ZbFHF2iBLSaLnNgXnBlv
+         l7pO6HFk2ryoFvc0wE4NUFVPBOGlEIyTtaa/8XlF7YDppZpp25m3gMgYT8Tmq9zQEeKZ
+         kc/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749672293; x=1750277093;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=YltkNEdDFqNIZZD1BCXWEVlBMgaCkKwjGC0e+Su8vTc=;
-        b=XUk7Su5i0NrxN0qgQVX1mjQRd2zLCb+vT28iFDHhdhXaphcQxqnkxnThYhr2aU8ETk
-         KJcPKwk3p+5/WqZCzG06Jvkt+7O7Ww118QPcaMQE+JSY2R7JoPxI9SIQck6hqujQLz+z
-         WKkWS1JvkKR2ImYgE/htmFhdY319SM+/IeMjjSYCjhUzsK8YokrEn7alh+EJZYwC33mj
-         hKMV91nU8J+R6/WZnCGa9ywDrJJh1zVUuTtta6XjtVaLr2xmi3Pfl+Rt0oteBpe03QW4
-         HIrenngcqOy8hAup78OOJ/SBpd4oZWxfXDPIGEHjGP+kFfCPgDWJjetdAV6DjFBSTBkv
-         iDDA==
-X-Forwarded-Encrypted: i=1; AJvYcCU1sRZlmw2RyNBa3WmKzJiiHwl0d5KuItGOiZqB5pMN+6qyvzvxhYO3cFfy5sFxmopAP8clM7HRghxw@vger.kernel.org, AJvYcCV7qoN+H8bLBS/32iYIlKPMw8sPnKnC7cdDNV+lpte8CXvRwuwsCOHa26pSi2TBZmSkMblycR5u4qwIMdv6@vger.kernel.org, AJvYcCWDfHs73+imOhQrS5jsGEsuqSnSW2o/NQA7cPagkxxfWoIAZyU4x3menTz2PXOK48tTxQ9uYi60vWQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywa//uQji74bDe2wn2ifKnaKLhv0AjTLcUqR08lFAMNS1nPCR/y
-	0DxsN9cL4QnBvsZILsy2b1skjNk0s2b4O/i81Gz20ilpSzLOQbgxAsDKz0eKuXzdpy41dgRZSB8
-	uL4ZOQV4o5XjpPPYqBdy7vJXhjMENaJ0=
-X-Gm-Gg: ASbGncvupVnl7LYmlgSNXmSzkiawpcOj8KD44nridiFlgGlhBfisbjCy92OOLluV9RQ
-	cvbRoImw8/e4nxIXsOS9l8ob67wz/B+hBEOjfLbWgYENINvThmEb7Aya/Zcbb0hrfEFu46e+qv8
-	PKYY6J7ft0E4eJRXTVRh4ZWrx/y9ARWEC6M2nKPqEF1Rc=
-X-Google-Smtp-Source: AGHT+IFV+AO9HgYFhTTlztYTHVtM7RGHg3xnlcUOyt2aLXZS5Y8CCUoM7JVeqVNE9lcymBg1Kk4aN4BkNSC+LRfHkGI=
-X-Received: by 2002:a05:690c:7242:b0:710:e860:37c5 with SMTP id
- 00721157ae682-71140aca988mr30956227b3.5.1749672293326; Wed, 11 Jun 2025
- 13:04:53 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1749675788; x=1750280588;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KUQvYGXAJM9vFj/+RVHEyx0Hqdg+1ObhRxvVS6G9TV8=;
+        b=IsF59amE5Hc30nMJEvjMsHP+7YECspneAM1T7RGwRNUutXl32D9EV+ZIW5uxxnW32O
+         hXk2RyJ273JC6efKx2w4tkQSgp/qJKEyIf/q6f20xRryu3a8YYySdqTIOjs5TjYC+flX
+         y1no8bsnIobV5xxa3j6Fmx6VrsiawTaVFf50KlSgoOBcVxU3BjDsms794roF0U+bn5ur
+         GFcNk0sZ/18t0d0Up9rvJ1DUcAeboS77p0HTqpclHNXnHDbCyTnW8R098oMHLuCYbuAT
+         Gd1+08FlcTTQ6MPGAZ/6z18iEs6tL49/nVbASN66DalqAQAt+azr3/Bsld6OrfpA2pOH
+         +MGA==
+X-Forwarded-Encrypted: i=1; AJvYcCUiVCu24aIXMWFVl9pWtoKf+eSdFKYQS5PKO+d5qYsNsGGbi+wD+6CTcviIQpDRRmiJ9EgQqxx2Mx0JgA==@vger.kernel.org, AJvYcCV+t+v8EGt1haZywHJFyHvFHFcHdU+n9RFWgEFQBWhwGH0UrZQnX9e6cVtkOzQNR8vnnP9wy6GDq3nu@vger.kernel.org, AJvYcCVYhQ0kk4KFRmQUtbHAugOquaJd+CvpsowVD/MnlguM7V6BbBsv16P23Oytp7KaoSNKRt8Gl5dsEBa0D/A8@vger.kernel.org, AJvYcCWJ0TTb1bZehm09S48NOiVo1N8guwItgni+vd+PEigiuswgWktuz2u/n6rpy2Bkp87nZEiZ8X6w1Irt@vger.kernel.org
+X-Gm-Message-State: AOJu0YwnYCA3R7wMSEroNXbVdn1Ut3SecVZ4HljiYCUxoCYhSjKbaQeO
+	sTyIvWvRzqwnGByT1ULZ8v07QnrvtrGS/kafmILpBES3qX3eGVYX5zfH
+X-Gm-Gg: ASbGncsruh4h2QOZMWp2zkaX+ejL2nolJH9+i+9a2h9b4LQiJehRMJjsKj8mVtdGAde
+	0SRnkdA+/Dy8XtyrDaCZmvGf/uhhDViC5tdnYJHpAb1hQcmChdP5oJsLFBdIqnMDfYk0aLMlKbX
+	obX/AhLcQgWFiCnKjqhvSErG4Nv9I+nuhahlkx2mfHzllSxxmid9qoEeteaAvOcT8lGDZ5rvw/F
+	/jZCop4jRn4bVfnEBy8dA/30qDzy4bH0n4phfCVC7Nn02oon6flEZv0lI0MHx+pe829mUS5K4tC
+	z/zQt06FeDqJtxQU48yvJC2NCC7RiZ8mfb1YDyYnPNluS79SDs3ioE/rGFdL0+dZQYtGOiw=
+X-Google-Smtp-Source: AGHT+IHlK8nHYrKD/bCEgRio+M7EtJzGL+GvmhPnyqnoxAK7qV/Wtjitblya1OljGJE7+lGZIlIjGA==
+X-Received: by 2002:aa7:8882:0:b0:73d:ff02:8d83 with SMTP id d2e1a72fcca58-7486cb21c08mr7368322b3a.3.1749675788093;
+        Wed, 11 Jun 2025 14:03:08 -0700 (PDT)
+Received: from localhost ([2804:30c:4000:5900:b4c4:6073:1a92:4077])
+        by smtp.gmail.com with UTF8SMTPSA id d2e1a72fcca58-748808962b3sm6396b3a.61.2025.06.11.14.03.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Jun 2025 14:03:06 -0700 (PDT)
+Date: Wed, 11 Jun 2025 18:04:49 -0300
+From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Marcelo Schmitt <marcelo.schmitt@analog.com>, linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-gpio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Ana-Maria Cusco <ana-maria.cusco@analog.com>, jic23@kernel.org,
+	lars@metafoo.de, Michael.Hennerich@analog.com,
+	dlechner@baylibre.com, nuno.sa@analog.com, robh@kernel.org,
+	krzk+dt@kernel.org, conor+dt@kernel.org, linus.walleij@linaro.org,
+	brgl@bgdev.pl
+Subject: Re: [PATCH v5 02/11] iio: adc: Add basic support for AD4170
+Message-ID: <aEnvcaP2ZNPLhzXi@debian-BULLSEYE-live-builder-AMD64>
+References: <cover.1749582679.git.marcelo.schmitt@analog.com>
+ <48598c0753cccf515addbe85acba3f883ff8f036.1749582679.git.marcelo.schmitt@analog.com>
+ <aEifWXPV1nsIyWbT@smile.fi.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250601172139.59156-1-l.rubusch@gmail.com> <aDz5WoBFlLiRptza@archie.me>
-In-Reply-To: <aDz5WoBFlLiRptza@archie.me>
-From: Lothar Rubusch <l.rubusch@gmail.com>
-Date: Wed, 11 Jun 2025 22:04:17 +0200
-X-Gm-Features: AX0GCFtHLrO_5QUdGg4rNwkE0hGpJaZsTOIr5EFKX44lHrKyIKyEQZE7GHCLJ-w
-Message-ID: <CAFXKEHZQZuKYS-DJ_KSmHzEO7OAGmKXCeEZ3VaLR-JJdb3Sw6Q@mail.gmail.com>
-Subject: Re: [PATCH v4 00/11] iio: accel: adxl313: add power-save on activity/inactivity
-To: Bagas Sanjaya <bagasdotme@gmail.com>
-Cc: jic23@kernel.org, dlechner@baylibre.com, nuno.sa@analog.com, 
-	andy@kernel.org, corbet@lwn.net, lucas.p.stankus@gmail.com, lars@metafoo.de, 
-	Michael.Hennerich@analog.com, linux-iio@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aEifWXPV1nsIyWbT@smile.fi.intel.com>
 
-Hi Bagas Sanjaya,
+On 06/11, Andy Shevchenko wrote:
+> On Tue, Jun 10, 2025 at 05:31:25PM -0300, Marcelo Schmitt wrote:
+> > From: Ana-Maria Cusco <ana-maria.cusco@analog.com>
+> > 
+> > The AD4170 is a multichannel, low noise, 24-bit precision sigma-delta
+> > analog to digital converter. The AD4170 design offers a flexible data
+> > acquisition solution with crosspoint multiplexed analog inputs,
+> > configurable ADC voltage reference inputs, ultra-low noise integrated PGA,
+> > digital filtering, wide range of configurable output data rates, internal
+> > oscillator and temperature sensor, four GPIOs, and integrated features for
+> > interfacing with load cell weigh scales, RTD, and thermocouple sensors.
+> > 
+> > Add basic support for the AD4170 ADC with the following features:
+> > - Single-shot read.
+> > - Analog front end PGA configuration.
+> > - Differential and pseudo-differential input configuration.
+> 
+> ...
+> 
+> > +	return spi_write(st->spi, st->tx_buf, size + 2);
+> 
+> ... + sizeof(reg) ?
 
-On Mon, Jun 2, 2025 at 3:07=E2=80=AFAM Bagas Sanjaya <bagasdotme@gmail.com>=
- wrote:
->
-> On Sun, Jun 01, 2025 at 05:21:28PM +0000, Lothar Rubusch wrote:
-> > The patch set covers the following topics:
-> > - add debug register and regmap cache
-> > - prepare iio channel scan_type and scan_index
-> > - prepare interrupt handling
-> > - implement fifo with watermark
-> > - add activity/inactivity together with auto-sleep with link bit
-> > - add ac coupled activity/inactivity, integrate with auto-sleep and lin=
-k bit
-> > - documentation
->
-> The series doesn't cleanly apply on iio/testing tree. Base commit or tree=
-?
->
-> Confused...
->
+The size of the specific ADC register is stored in the size variable.
+The result of sizeof(reg) can be different on different machines and will
+probably not be equal to the size of the register in the ADC chip.
 
-I'm sorry for that. My base tree is "testing" here:
-https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git/log/?h=3Dtest=
-ing
+> ...
+> 
+> > +static bool ad4170_setup_eq(struct ad4170_setup *a, struct ad4170_setup *b)
+> > +{
+> > +	/*
+> > +	 * The use of static_assert() here is to make sure that, if
+> > +	 * struct ad4170_setup is ever changed (e.g. a field is added to the
+> > +	 * struct's declaration), the comparison below is adapted to keep
+> > +	 * comparing each of struct ad4170_setup fields.
+> > +	 */
+> 
+> Okay. But this also will trigger the case when the field just changes the type.
+> So, it also brings false positives. I really think this is wrong place to put
+> static_assert(). To me it looks like a solving rare problem, if any.
 
-Since this patch could be applied, I guess it could be a good base commit:
-https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git/commit/?h=3Dt=
-esting&id=3Dd4d10d3535639b946007fb7ffb5bff2d878df921
+I think it is unlikely that struct ad4170_setup declaration will ever change.
+The fields match the registers that are associated with a channel setup and
+the their types match the size of the respective registers. So, I do agree
+that triggering this assert would be something rare.
 
-Thank you for reviewing the documentation, I really appreciate your work.
-Best,
-L
+> 
+> But I leave this to the IIO maintainers.
+> 
+> In my opinion static_assert() makes only sense when memcmp() is being used.
+> Otherwise it has prons and cons.
 
-> --
-> An old man doll... just what I always wanted! - Clara
+I think the most relevant reason to have this static_assert would be to keep
+some consistency with ad4130, ad7124, and ad7173, but no strong opinion about it.
+Actually, I don't get why static_assert() would only matter if memcmp() was
+being used. Would it be better to not bother if the fields change type?
+
+Anyway, I'll go with whatever be IIO maintainer's preference.
+
+> 
+> > +	static_assert(sizeof(*a) ==
+> > +		      sizeof(struct {
+> > +				     u16 misc;
+> > +				     u16 afe;
+> > +				     u16 filter;
+> > +				     u16 filter_fs;
+> > +				     u32 offset;
+> > +				     u32 gain;
+> > +			     }));
+> > +
+> > +	if (a->misc != b->misc ||
+> > +	    a->afe != b->afe ||
+> > +	    a->filter != b->filter ||
+> > +	    a->filter_fs != b->filter_fs ||
+> > +	    a->offset != b->offset ||
+> > +	    a->gain != b->gain)
+> > +		return false;
+> > +
+> > +	return true;
+> > +}
+> 
+> ...
+> 
+> > +	/*
+> > +	 * Some configurations can lead to invalid setups.
+> > +	 * For example, if AVSS = -2.5V, REF_SELECT set to REFOUT (REFOUT/AVSS),
+> > +	 * and pseudo-diff channel configuration set, then the input range
+> > +	 * should go from 0V to +VREF (single-ended - datasheet pg 10), but
+> > +	 * REFOUT/AVSS range would be -2.5V to 0V.
+> > +	 * Check the positive reference is higher than 0V for pseudo-diff
+> > +	 * channels.
+> > +	 */
+> 
+> Right, the Q is, can refp contain an error code here, rather than negative
+> value? The code above hints that in some case it may, but are all those cases
+> were caught up already? (Comment can be extended to explain this)
+
+I don't think refp can contain an error code at this point. All regulators are
+read at ad4170_regulator_setup(). After that setup,
+st->vrefs_uv[AD4170_<SUPPLY>] will either contain the voltage read from the
+regulator framework (which is >= 0) or -ENODEV. Then, we check the supply value
+at the beginning of ad4170_get_input_range() (this function) and error out if
+the value is -ENODEV. Will extend the comment to explain that.
+
+> 
+> > +	if (refp <= 0)
+> > +		return dev_err_probe(dev, -EINVAL,
+> > +				     "REF+ <= GND for pseudo-diff chan %u\n",
+> > +				     ch_reg);
+> 
+...
+> 
+> > +	/* Assume AVSS at GND (0V) if not provided */
+> > +	st->vrefs_uv[AD4170_AVSS_SUP] = ret == -ENODEV ? 0 : -ret;
+> 
+> -ret ?!?!
+
+That's because AVSS is never above system ground level (i.e. AVSS is either GND
+or a negative voltage). But we currently don't have support for reading negative
+voltages with the regulator framework. So, the current AD4170 support reads
+a positive value from the regulator, then inverts signal to make it negative :)
+
+> 
+> Even if you know that *now* it can't have any other error code, it's quite
+> fragile.
+
+Yeah, I guess ADCs that can take bipolar power supplies are not that common.
+I couldn't think of any better way to have that, though.
+
+
+Thanks,
+Marcelo
 

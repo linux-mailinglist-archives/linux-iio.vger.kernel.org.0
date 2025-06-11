@@ -1,184 +1,146 @@
-Return-Path: <linux-iio+bounces-20476-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20477-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1848AD5D61
-	for <lists+linux-iio@lfdr.de>; Wed, 11 Jun 2025 19:43:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8389AD5D69
+	for <lists+linux-iio@lfdr.de>; Wed, 11 Jun 2025 19:48:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 21AE17A2DFF
-	for <lists+linux-iio@lfdr.de>; Wed, 11 Jun 2025 17:42:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 70BD5172F30
+	for <lists+linux-iio@lfdr.de>; Wed, 11 Jun 2025 17:48:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FC70221FAC;
-	Wed, 11 Jun 2025 17:43:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7FE1224AFB;
+	Wed, 11 Jun 2025 17:48:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bJoUg9EY"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LVT/t6Ec"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED7B413CA97
-	for <linux-iio@vger.kernel.org>; Wed, 11 Jun 2025 17:43:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23EC82222BF
+	for <linux-iio@vger.kernel.org>; Wed, 11 Jun 2025 17:48:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749663802; cv=none; b=jPoPgqBfoopg8inCTyZCrKdmqQrumluCapk1kN3SLFzfZ8xkodlqHVd6fwGqwYoxxhZjnfu6o1bAfYUarI0CwGRqhpi2qZKyYCOtbQLmJ9cVCsvIMkNWRCEciRBu0FRPJUrqHckNtSFi+Z9w4TFfYT0D5a42hLnzanjC2Z0d4Bg=
+	t=1749664107; cv=none; b=msV/HYsF7I1X0R5PfzPGP0QqV8IDS/xyJC4ps1hxD+64xXqqMBCDvteTE/lgs3b6X+pAOL2zVr9rjtTidAiOUMYJAH/lw1ocyUp3NwlenBe+9Di104l09JzyL1w65pfZgpdLpZaE3P7IxJAcpLPBJ1lxjKIjF+Q/oiMGJt3vKxA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749663802; c=relaxed/simple;
-	bh=3AOFFRjsHG5uqaAONWK42MBEBNvD+Kcggna9rSd6CKY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=JVPFk7B60VK9T0o9Vraegts4hKm7qwbKZ6EByHC/LSYXgLqnbaxhXjt4xScFTeT0WPplAS+lTpn83sw3YAhI72y90Rc44Ienb2qshhOx2w0BwNEOp67YIkSYxTwkP7u1XbSdpfG72WrVieFKEtGnElkJdq+HtTSB7S3MArU8ti8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bJoUg9EY; arc=none smtp.client-ip=209.85.128.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-70e5d953c0bso531607b3.1
-        for <linux-iio@vger.kernel.org>; Wed, 11 Jun 2025 10:43:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749663798; x=1750268598; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=5VFf2G5/t0VEq6hrrKlDY76UjCAzz6yxC3wiaGZnHsc=;
-        b=bJoUg9EYkvtRDrMw5i9Y7kmCaXshqJhUkFMpuKRqhihFcWMFHhjiJLEmC9+msDzAoQ
-         NhU+dmylg73ZILvK1BgxBCPngm+yi8rqcXb7HgUcmQEuGnLrMzHrYFhr19ZF74ogl0td
-         7uORttaJV3nrieHcNaTptq60yKMMGRhItUICf5HMktbrr8HbHu3BFeutwOf/rTVwfFsQ
-         Wajb26cO+de29ad4Li3nF0GeJXXxNhoOpXXG3w12hva6t7Nf5sk3i6h/z3OcDgTHVDy/
-         ChBO3na5jBQZDi2MbORspWj5My0OXbxqkASq0SEm985sdl5C2TkJRc5o4VduzD3QujN5
-         kkOw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749663798; x=1750268598;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=5VFf2G5/t0VEq6hrrKlDY76UjCAzz6yxC3wiaGZnHsc=;
-        b=erUowKDIiv0cjPstWbC9vjymaaObT4Wj1/u8BCgG0iJ0D5AH8ZwYBTpFQs/i9EVOj4
-         iSS5FCXkecdqTh3oYJyHT/aysj5YYyexOxfLtmZu0IelNKOZ2LIWpwyPttk8zVCG4KD3
-         K85aK629bueVE78dKlI6/lp9Gb/DM2m2NxYZSbjMn4aaUb1aDqycCYIlchUxMt50Aq/f
-         F/zbxAKsXpcEFLnMiHN1pjxlUXBK5KIdyw+YpGjoM9AxCXz3E8gcSPOUK5kfbDXHdV+F
-         2VH5zX0FGrruZOOwvxBXEWu1vPYEhVIobqDQdIVB7cNGCTS7ZykUJPF+ds38JV9Fo2hj
-         LmKA==
-X-Forwarded-Encrypted: i=1; AJvYcCVSyisuChzZ4+yzXbU/IZp+Zq+PFhHBndZbgBwZZ9I2dlzrHTxjw7BUs4nDHb6lXJLfnmzQydYVwhU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzN3g12WORnfuA3tPPfBFzt/CPRURBP9zG91rm8HO011rHXG5ys
-	Kx1THJX8oYeAivyS1kahCEKVAmv3489pY/xfvlyjx32BTVlxstaO8xkD
-X-Gm-Gg: ASbGncuO8Z5nwtitjiqX3ZDvDRkc0xxIcyrU2vbpoGv15uIRDO1FkaMVhDHBq2ZO0Rk
-	O1cf8OYPR8+RZhxVhcN92Kg/ydYXV7wcthiT5JC53MTurQhshtCsjIjwzPhAwhpDSPZF6SjjFfO
-	kxWRNML3meKkpaB3pSmsfn1iIXjXzgAsFgj3Mb1TGeFpYBVn7LTsVHr00pnJmQ/BvGrTG7mHxvM
-	uMsJ+t1s7zi83IZf7y16v46OOLymaXfuswbcOpJHUdpLh/8T+ibyN+30Jd0C7j9wuKeO96pE3OI
-	HpMO4zXb/yB5f+k/8uYUgmwduZ/uDhGomwzn3UAhATXoRxz1aGBR9N9AHkvu6wg0DhjYp5KifuL
-	zdbMKlFQ/yQ==
-X-Google-Smtp-Source: AGHT+IH7jj/IfHLB3fAcxAnaf/mMSCyuoAs8Zw8pOtdNkP/Pv7r0d38biLrY+Z89+45yJY3fNuz51A==
-X-Received: by 2002:a05:690c:f84:b0:710:edf9:d92e with SMTP id 00721157ae682-7114edbd0ffmr8924407b3.33.1749663797722;
-        Wed, 11 Jun 2025 10:43:17 -0700 (PDT)
-Received: from mintNaitss.semfio.usp.br ([143.107.45.1])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-710f9a0fc34sm20757847b3.97.2025.06.11.10.43.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Jun 2025 10:43:17 -0700 (PDT)
-From: nattan <nattanferreira58@gmail.com>
-To: subhajit.ghosh@tweaklogic.com,
-	jic23@kernel.org
-Cc: lucasantonio.santos@usp.br,
-	Nattan Ferreira <nattanferreira58@gmail.com>,
-	linux-iio@vger.kernel.org
-Subject: [PATCH v4] iio: light: apds9306: Refactor threshold get/set functions to use helper
-Date: Wed, 11 Jun 2025 14:42:53 -0300
-Message-Id: <20250611174253.16578-1-nattanferreira58@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1749664107; c=relaxed/simple;
+	bh=j3LIxy3Yv2cVe4aA8rPJhA064ZzRU3i95jmXBaNuqwU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=izmxFAYrMkKCI3kobH3En7epYTWG23iioePxFMHyCrkzc+ysa87IoZTYqiVUSZsOYiPm3XE7AkMMlUtnjYgrT6u1+WwFlH80HxvdIHHmUiSzVtjomPocEQ8rS1CVZt2MboyF3U/CALC7uAJ72hsH1HWJnQsRBSE4qxUb3CAHdD8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LVT/t6Ec; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1749664105; x=1781200105;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=j3LIxy3Yv2cVe4aA8rPJhA064ZzRU3i95jmXBaNuqwU=;
+  b=LVT/t6Ec1to2zuOsji1wQwxMc+6k5mRs8KoFVc/KiDC3G7Yf0bonnqCw
+   jjZGbJQmc/mwbT5/HqJ3RndclLWr4FdUEZpPue27f3MgBY5v5A4bBvQ9W
+   8FPzbFfbzDiIXmDCXD2Q5uQbnPU/LlPpbPoG+WtAHbsta3s8tQJCNclb2
+   BtSYhdI1cQCfONuz6U84yzka5OHkP8tAn9Jmnu0IuastynnG4Sbxtv6Zg
+   +XrRgowigx9vcegVPfMGBt9ICetTuCxbOfE0sTf7pj0dvioJrkRLgXY3A
+   XPmtzH5hdQ/oDdq0ZklA4gLoaTvlbwrVBtrUxF/iM8c4rDagw+vqw50hx
+   A==;
+X-CSE-ConnectionGUID: wU5NCkeOR3aOYstaNhwPlA==
+X-CSE-MsgGUID: fq8Z8ngWRn6bdLagShMU/g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11461"; a="63225765"
+X-IronPort-AV: E=Sophos;i="6.16,228,1744095600"; 
+   d="scan'208";a="63225765"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jun 2025 10:48:25 -0700
+X-CSE-ConnectionGUID: zHTMCpDgTLijR6Ug9JbaqQ==
+X-CSE-MsgGUID: gp9JJyqSQFSXWEH9vMElwg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,228,1744095600"; 
+   d="scan'208";a="147756067"
+Received: from smile.fi.intel.com ([10.237.72.52])
+  by fmviesa010.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jun 2025 10:48:22 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@intel.com>)
+	id 1uPPYi-00000005iZu-0VHd;
+	Wed, 11 Jun 2025 20:48:20 +0300
+Date: Wed, 11 Jun 2025 20:48:19 +0300
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Andy Shevchenko <andy.shevchenko@gmail.com>,
+	linux-iio@vger.kernel.org, David Lechner <dlechner@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>
+Subject: Re: [PATCH 2/2] iio: dummy: Drop unused export.h include.
+Message-ID: <aEnBYwaBVKqvIJ2s@smile.fi.intel.com>
+References: <20250609070616.3923709-1-jic23@kernel.org>
+ <20250609070616.3923709-3-jic23@kernel.org>
+ <CAHp75Vdovs=REuauj_zU3V_aw+zUjWY-pKV5sEuayJb9By1JkQ@mail.gmail.com>
+ <20250609103905.00004bee@huawei.com>
+ <20250611173217.270a3696@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250611173217.270a3696@jic23-huawei>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-From: Nattan Ferreira <nattanferreira58@gmail.com>
+On Wed, Jun 11, 2025 at 05:32:17PM +0100, Jonathan Cameron wrote:
+> On Mon, 9 Jun 2025 10:39:05 +0100
+> Jonathan Cameron <Jonathan.Cameron@huawei.com> wrote:
+> > On Mon, 9 Jun 2025 12:27:33 +0300
+> > Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+> > > On Mon, Jun 9, 2025 at 10:06 AM Jonathan Cameron <jic23@kernel.org> wrote:  
+> > > >
 
-Refactor the apds9306_event_thresh_get and apds9306_event_thresh_set
-functions to use a helper function (apds9306_get_thresh_reg) for
-obtaining the correct register based on the direction of the event. This
-improves code readability and maintains consistency in accessing
-threshold registers.
+> > > > Resolves:
+> > > >   warning: EXPORT_SYMBOL() is not used, but #include <linux/export.h> is present    
+> > > 
+> > > While this true...
+> > >   
+> > > >  #include <linux/kernel.h>    
+> > > 
+> > > ...I prefer a full and not half-baked solution, i.e. revisiting all
+> > > headers and esp. replacing kernel.h with what is used.
+> > >   
+> > > > -#include <linux/export.h>
+> > > >  #include <linux/slab.h>
+> > > >  #include <linux/interrupt.h>
+> > > >  #include <linux/irq.h>    
+> > > 
+> > > While doing that, the headers may be sorted (in the same or preparatory patch).
+> > 
+> > Whilst I agree that more work is need, I also don't like the time it might
+> > take to get to it and the warnings that might mean more significant issues get
+> > missed in the wash in the meantime.
+> 
+> After I wrote this I remembered that this is our 'reference' code so we
+> should hold it to a higher standard.  So I'll try and come back and improve
+> this one sometime soon rather than just papering over the cracks.
 
-Signed-off-by: Nattan Ferreira <nattanferreira58@gmail.com>
-Co-developed-by: Lucas Antonio <lucasantonio.santos@usp.br>
-Signed-off-by: Lucas Antonio <lucasantonio.santos@usp.br>
+Right, I would actually add to whatever TODO exists (written or spelled :-)
+to replace kernel.h with the respective header(s) in whole IIO subsystem.
 
----
+> Given I tend to build with W=1 and right now I'm swamped with pages
+> of these warnings I'm really keen to get rid of them in IIO anyway
+> and I see lots of activity to squash them more generally.
 
-Changes in v4:
-- Noted that the change actually adds four more lines to the driver file,
-  so rephrased description to avoid claiming code line reduction.
----
- drivers/iio/light/apds9306.c | 36 ++++++++++++++++++++----------------
- 1 file changed, 20 insertions(+), 16 deletions(-)
+I am frustrated not less than you, but here we are.
 
-diff --git a/drivers/iio/light/apds9306.c b/drivers/iio/light/apds9306.c
-index 69a0d609c..9216d4974 100644
---- a/drivers/iio/light/apds9306.c
-+++ b/drivers/iio/light/apds9306.c
-@@ -744,20 +744,27 @@ static int apds9306_event_period_set(struct apds9306_data *data, int val)
- 	return regmap_field_write(rf->int_persist_val, val);
- }
- 
--static int apds9306_event_thresh_get(struct apds9306_data *data, int dir,
--				     int *val)
-+static int apds9306_get_thresh_reg(int dir)
- {
--	int var, ret;
--	u8 buff[3];
--
- 	if (dir == IIO_EV_DIR_RISING)
--		var = APDS9306_ALS_THRES_UP_0_REG;
-+		return APDS9306_ALS_THRES_UP_0_REG;
- 	else if (dir == IIO_EV_DIR_FALLING)
--		var = APDS9306_ALS_THRES_LOW_0_REG;
-+		return APDS9306_ALS_THRES_LOW_0_REG;
- 	else
- 		return -EINVAL;
-+}
-+
-+static int apds9306_event_thresh_get(struct apds9306_data *data, int dir,
-+				     int *val)
-+{
-+	int reg, ret;
-+	u8 buff[3];
- 
--	ret = regmap_bulk_read(data->regmap, var, buff, sizeof(buff));
-+	reg = apds9306_get_thresh_reg(dir);
-+	if (reg < 0)
-+		return reg;
-+
-+	ret = regmap_bulk_read(data->regmap, reg, buff, sizeof(buff));
- 	if (ret)
- 		return ret;
- 
-@@ -769,22 +776,19 @@ static int apds9306_event_thresh_get(struct apds9306_data *data, int dir,
- static int apds9306_event_thresh_set(struct apds9306_data *data, int dir,
- 				     int val)
- {
--	int var;
-+	int reg;
- 	u8 buff[3];
- 
--	if (dir == IIO_EV_DIR_RISING)
--		var = APDS9306_ALS_THRES_UP_0_REG;
--	else if (dir == IIO_EV_DIR_FALLING)
--		var = APDS9306_ALS_THRES_LOW_0_REG;
--	else
--		return -EINVAL;
-+	reg = apds9306_get_thresh_reg(dir);
-+	if (reg < 0)
-+		return reg;
- 
- 	if (!in_range(val, 0, APDS9306_ALS_THRES_VAL_MAX))
- 		return -EINVAL;
- 
- 	put_unaligned_le24(val, buff);
- 
--	return regmap_bulk_write(data->regmap, var, buff, sizeof(buff));
-+	return regmap_bulk_write(data->regmap, reg, buff, sizeof(buff));
- }
- 
- static int apds9306_event_thresh_adaptive_get(struct apds9306_data *data, int *val)
+> I'm a bit grumpy that this warning got added without (as far as I saw)
+> any attempt to first clean up upstream.
+
+This is not the first time something like this happened. Because it's `make
+W=1` build, not many complain.
+
 -- 
-2.34.1
+With Best Regards,
+Andy Shevchenko
+
 
 

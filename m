@@ -1,566 +1,178 @@
-Return-Path: <linux-iio+bounces-20481-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20482-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF361AD5F50
-	for <lists+linux-iio@lfdr.de>; Wed, 11 Jun 2025 21:48:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B52CAD5F9D
+	for <lists+linux-iio@lfdr.de>; Wed, 11 Jun 2025 21:59:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7D6433AA768
-	for <lists+linux-iio@lfdr.de>; Wed, 11 Jun 2025 19:48:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A29F189BC4D
+	for <lists+linux-iio@lfdr.de>; Wed, 11 Jun 2025 19:59:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 547CF2874EA;
-	Wed, 11 Jun 2025 19:48:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3ADCC29B23D;
+	Wed, 11 Jun 2025 19:59:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bQf9bM8B"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PEOoeZ7g"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
+Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com [209.85.128.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 213BC2BDC2C;
-	Wed, 11 Jun 2025 19:47:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7105EC8FE;
+	Wed, 11 Jun 2025 19:59:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749671282; cv=none; b=pLep2W3F6M8StkFL0zjeugnaER4IUukEiZZHYV3mDO14SXQkGJpYPCJj7oEaVQVYJgkZP95AtvliUAy7F6vYe0UsJQra2bnQRmuYWwusEoEJQeyLhy3E1DS1LZWqATpplaXU03rirKzJiTusrVir6AfJ3v9jUzQnoD2uT9PtB8s=
+	t=1749671955; cv=none; b=djQER8+uH8uYEk0xz0T3xouvmQlBJNgQ9eC2+xM9Iw+m377H/frILjjReLwwnbO7iCi2ipGh8ChN/pmLwxzKHk23xFMKWFlp3yxuF6MGFmClu3lrDzfa7vuwvBqShSwOYhVXCzbYFmVgB9RkxAaj44YrBbEtHXwDkHqOMB6ItXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749671282; c=relaxed/simple;
-	bh=ySuUknDOu9Ye2nlxzI4/NsiZPAimXndQXRImEuAWrXI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g2x0kE4M/G4IpRfxqnAjIJtwsSdscffjmW7R3UyDkg2LSgY20u9oFcGNlc4OEnyxEzboya/8bSjgxKJBzftuzRuZqeM2O8YTgWJSbUIXoeQiYdUQcoVVrRcZ2fXBenv82csPSxaR++Zpgj+55UL2Axw/M3oAYsJliR8/JocykYM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bQf9bM8B; arc=none smtp.client-ip=209.85.128.176
+	s=arc-20240116; t=1749671955; c=relaxed/simple;
+	bh=g5ZYbYOK1aUC0FTjWb74OVx65hmXOJFd6WWlyHG+nsE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=U6qPDbmCyFkmUneaqg0nNjqZiReQ2lwjQWFdzg/q/USIlAjlD4gI9+C8TKRsab0uuSO8DfEx71FtSGqAkjQSlLQ78YWtycD3h917olbEtU4dInFLJCvRy5RRo5LLyrrxgiT0R+tjdCrDOvWSlR1yi8Qonn7CrgwooDbFiD/fS60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PEOoeZ7g; arc=none smtp.client-ip=209.85.128.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-7086dcab64bso1607507b3.1;
-        Wed, 11 Jun 2025 12:47:59 -0700 (PDT)
+Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-70b684670e7so216857b3.2;
+        Wed, 11 Jun 2025 12:59:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749671279; x=1750276079; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1749671952; x=1750276752; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=AfQ1uSWXIil7J+7zJ57XvDKktzBGNsJQ/2rNxebYhh0=;
-        b=bQf9bM8BDodmumQQwmpPPfWZKQNwcPfkw95Eq5KFbghW1A6J/q8j1Q7rv7CYl9JA+h
-         wG+S+07BB++/lwIrvN72h6cUhvMz1Dw1mQ+udbOSN1uyQHAWy3zeSJXOzMectRLFKDXV
-         5by8Hr//AuiEzdAt5THAAihgdmdzfpsyDnpgYVHD7gGMzSBPoFvE/r6T8hD2BoE0/hHo
-         jUBLculOzIQb0uJiWOkv5Awnxhyke3b3jW8fcGEnkBmWQC9FM7WGPLM2VXY64SMW+LWw
-         WKgmqP/liw5l39qO5BNszAHn1J04VW3exeqy1cjYu1QV/uy2qHTK0i9oUYRPzCsezf+H
-         41aQ==
+        bh=gxFme6q2BwhARk9P34NIeJ60XrHXGwqFtKOjSld0rp4=;
+        b=PEOoeZ7gaLVjb/OaWMqDSwuaNAoCif3iRcbQsq+R+wxKqSQ5+TO7zwvsocTyihgby3
+         Ek3Dzc2u2BNF17bUzsHGPWHgV918OOftsuBXRAryEhvu+MGjXZBEUWCPp56idHP5vHrO
+         RaZX2FwWY7v1ZcYxz+rhFC0zsnpjihr9MrUN+63D5hWELUkvEi/bzKcCNGgwVcZsvD34
+         6TJycGxwIWR5zGoVgB/CNG3wrZom8Lqt+3OMetJX+EP9fsLvKjaY5YHJSACKEZXZbiu1
+         /72tFYasPzjwIgplkNQSUs6YPEAtHt+YELew3x36ySgCzr9A6BU3aemekFz37XW+JJnu
+         E4aQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749671279; x=1750276079;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1749671952; x=1750276752;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=AfQ1uSWXIil7J+7zJ57XvDKktzBGNsJQ/2rNxebYhh0=;
-        b=KusFwD25aJUrl/wrZ+aqh4hl2kFkZ9/2r52tMNfAxNTLByTQSEOfynBRiGvK5SaKRv
-         t61M5oY9fghcAnUOOZEzrn8FCb41WHYtj08EsHHcAnvgV07NMct+YMkUz7TbiSO5wojQ
-         S8z7o/S2orKpNZTx6kb/KFrWnrDNCO6RTvHpysDLmLB+h1ppp0TZZhE1tMqzx2ZxW2HZ
-         WkaGtCCN273lZnSZrJH1WdeN1yw/QX+oRPH+RCcK1nT1BrIbFYFvlcUzuOG4x3Cw9/O8
-         532k1bBOaTo4LKZwG7QgEXklzt4Imr/25WZjJChkKkinI8yIEv9dPeV4F4pREuvIDZD3
-         1UlQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVDq/MC1+YpmB7srSMNJgVyS16Dacp3J87+7wuNsv09CdpYD0qoYfIoa5WWixi7T2e5uPyTyae4esNaGAQR@vger.kernel.org, AJvYcCXFZH1u/9tpeRYpehf03jDtR89OrtD4FPVf0VQJLyFMhyDod0r4StiwOhNXoPC21K5NE1KUJwhcqnI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxMDnDB8gvp4NTQ8HabZgNLWunRF5QFXj0aN4Ow8R+ok8dHDouK
-	aJBAO36engbaMZ3+uPMH9MUxUVk1YvrcElhdTkMxsyaezYcxKbUoKmVP
-X-Gm-Gg: ASbGncu+ix9zBLHPVtp3NngzxktMOg32eRbNN+nhFRN90aoJ+C1At4PtW7SBM2Gl6yr
-	5+74QsLN/bvb7ucWfhz4SK/mYIAHrTJLMTx+qeFM27zlXNf+mfZzKsPP+ZKi5cxtykdD7bYkEsL
-	NxIN5gvEJ3P5h2TsCgiMehszg5Pd4d1eb0pjDPjvU9uXvlblss2dODehPWgaSN8QEnhEWGphWQm
-	RIXv3689O0m8F+vL06NlqwZftKTpplJtjgxPSzsoUUbIrL1TV8ezfiV8ahOLzk2DA9OjpoxM74+
-	1h1Ma1TorYjZabUbS6FVL7NvWFVN8YdxLEEYVbfXqAVA6iqDiE+hyE60ra8iaMYnChm2WPDkAOR
-	YDmTd
-X-Google-Smtp-Source: AGHT+IHYOgSp+DMOamhYZzo+8wdSHUOh6c+TRGHTfZxh9sfPbOHLuysN00DZxUK5MBSoj88eOKlNLg==
-X-Received: by 2002:a05:690c:6aca:b0:710:f55f:7922 with SMTP id 00721157ae682-71150bcd055mr6396627b3.34.1749671278937;
-        Wed, 11 Jun 2025 12:47:58 -0700 (PDT)
-Received: from delta4.semfio.usp.br ([143.107.45.1])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-7115206130csm80587b3.1.2025.06.11.12.47.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Jun 2025 12:47:58 -0700 (PDT)
-From: Andrew Ijano <andrew.ijano@gmail.com>
-X-Google-Original-From: Andrew Ijano <andrew.lopes@alumni.usp.br>
-To: jic23@kernel.org
-Cc: andrew.lopes@alumni.usp.br,
-	gustavobastos@usp.br,
-	dlechner@baylibre.com,
-	nuno.sa@analog.com,
-	andy@kernel.org,
-	jstephan@baylibre.com,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v5 3/3] iio: accel: sca3000: use guard(mutex)() for handling mutex lock
-Date: Wed, 11 Jun 2025 16:39:21 -0300
-Message-ID: <20250611194648.18133-4-andrew.lopes@alumni.usp.br>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250611194648.18133-1-andrew.lopes@alumni.usp.br>
-References: <20250611194648.18133-1-andrew.lopes@alumni.usp.br>
+        bh=gxFme6q2BwhARk9P34NIeJ60XrHXGwqFtKOjSld0rp4=;
+        b=m3FIQ3JHoWFZAa0mWPjsDhBkwaVZfGkGCL+YzuGze54LJuJH1zSOzAV92Fg1ZY/EFi
+         HOB6ePydVvvjUN8IGKglB/uCO3kcLJpCOftvct0Qn9Ezb/sIslCK+b9hye/s4DiveIdZ
+         uBhaPcTO6BD3DU3NZS8WJRxrq4AMq294czu3V/ejBRsJO3lWYoTZHAyIfKMDiEETPsch
+         W2bxNUVpaTkqbuk+GiV2Bcpf8jFxgJ59YFgHlbcWZg8m5ioMNWXvCyYz6Y0psMTfKn1W
+         9aoYTqbfVnbETPJD9mJaICM6LALKmD61VvuM9jdmPTM40rFb3abjQi3nlsXf2OGo96/o
+         gdGA==
+X-Forwarded-Encrypted: i=1; AJvYcCUBP3wUGfJuZgPMi22lmKcxDa4jqYUb0z+lvHAHKv/w1Jd6ArB0nC0TtDvP8ITPdxXKHM5S0NwHBhk=@vger.kernel.org, AJvYcCVjtezlUz0T70aepLpSsqeN2kfYvkuluTKRsH4NboER7rN7HWWWBhln2MlfKWZOkBa2GmGVyzAk8Rwg@vger.kernel.org, AJvYcCXGlhA9TU4YDNwi+RQtC/UkW8pbpsmKZVKxjg4DZPO6POIHsyJajQbcZsY8pdzEh5OgMAy6vip7tMuF0CKg@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx5hKmPz9q0+AHWG9bEJj2ZPsjOSgcIEl+n4d4bUVYeyQXKtKh1
+	699xe4jPv0I9gAjS4A/p1Cqcr5lhCP9rXHAjySrE7+hQpR2MGyYrXGbyYHBIDmUJo0EuCzmOkeL
+	lMd3xrjIOSUSKHJFhw1OXywEjQsRT8R0=
+X-Gm-Gg: ASbGncsuvAt9oCdqfyFNSulfzk5D2yjmdudSJLJP7/8usD8ATrEd9WH+jXJdZDLfYiz
+	5Byb89Po6QLeiO9LhXx+nDG0bdkGEs8cRvr0b6lLYwwNqXCU5MUevFuGOTo8FO+4QPN2NbEB9nT
+	QqX+Cw5r+Fyyw9wZJTlI7H1Oqqd5evURQHbTLzT4WqEt+4NpMGYj4ezg==
+X-Google-Smtp-Source: AGHT+IGgnTLD9FiBr75NlfKlcMt5VyjwhnQidVERWleFWbPgSYjaA7xYm8HM59m3DuvQF61FZiTrWS8pj8XuscbbkK0=
+X-Received: by 2002:a05:690c:60c4:b0:70e:86a2:9b3a with SMTP id
+ 00721157ae682-7114089c3cemr31099857b3.0.1749671952314; Wed, 11 Jun 2025
+ 12:59:12 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250601172139.59156-1-l.rubusch@gmail.com> <20250601172139.59156-11-l.rubusch@gmail.com>
+ <20250608172317.63473b9b@jic23-huawei>
+In-Reply-To: <20250608172317.63473b9b@jic23-huawei>
+From: Lothar Rubusch <l.rubusch@gmail.com>
+Date: Wed, 11 Jun 2025 21:58:36 +0200
+X-Gm-Features: AX0GCFskRJiUUFIn6P0la-7-85XS-DoiKPtts1BFZLCEPQ5xBxG18pp3MvgD2mg
+Message-ID: <CAFXKEHZj7nYOJA7Ztxh8xiOcPpwDNBzNyN830tiKL=7rL0fiug@mail.gmail.com>
+Subject: Re: [PATCH v4 10/11] iio: accel: adxl313: add AC coupled
+ activity/inactivity events
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org, corbet@lwn.net, 
+	lucas.p.stankus@gmail.com, lars@metafoo.de, Michael.Hennerich@analog.com, 
+	bagasdotme@gmail.com, linux-iio@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Use guard(mutex)(&st->lock) for handling mutex lock instead of
-manually locking and unlocking the mutex. This prevents forgotten
-locks due to early exits and remove the need of gotos.
+Hi Jonathan,
 
-Signed-off-by: Andrew Ijano <andrew.lopes@alumni.usp.br>
-Co-developed-by: Gustavo Bastos <gustavobastos@usp.br>
-Signed-off-by: Gustavo Bastos <gustavobastos@usp.br>
-Suggested-by: Jonathan Cameron <jic23@kernel.org>
----
-For this one, there are two cases where the previous implementation
-was a smalllocking portion of the code and now it's locking the whole
-function. I don't know if this is a desired behavior.
+On Sun, Jun 8, 2025 at 6:23=E2=80=AFPM Jonathan Cameron <jic23@kernel.org> =
+wrote:
+>
+> On Sun,  1 Jun 2025 17:21:38 +0000
+> Lothar Rubusch <l.rubusch@gmail.com> wrote:
+>
+> > Add AC coupling activity and inactivity as MAG_ADAPTIVE events. This ad=
+ds
+> > up an additional set of threshold and period handles, verifies matching
+> > disabling functionality and extends setting the link bit to complementa=
+ry
+> > event configurations.
+> >
+> > This means, e.g. either ACTIVITY or ACTIVITY_AC can be enabled. The mos=
+t
+> > recent set will remain configured. Disabling ACTIVITY where ACTIVITY_AC=
+ was
+> > enabled is ignored, since it does not match (should be disabling
+> > ACTIVITY_AC). When INACTIVITY or INACTIVITY_AC is also enabled, the lin=
+k
+> > bit will be set. Note, having the link bit and auto-sleep in place acti=
+vity
+> > and inactivity indicate the power save state change and thus will only =
+be
+> > triggered once a state transition occurs. Since there is a separate AC =
+bit
+> > for ACTIVITY and for INACTIVITY, events can be linked independently fro=
+m
+> > each other i.e. ACTIVITY can be linked to INACTIVITY_AC for instance.
+> >
+> > When one of both is disabled, the link bit will be removed. Hence, the
+> > remaining event will not indicate a plain state change anymore, but occ=
+ur
+> > as a periodically triggered inactivity event or for each activity event
+> > above the threshold.
+> >
+> > Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
+>
+> Minor thought on rereading this.  If we don't have the link bit set
+> (and the paired event) the AC events are more accurately described as
+> MAG_REFERENCED as they are referenced simply to whatever acceleration
+> was going on when they were first enabled.   Only with the link bit
+> set (and the other event type enabled) are they actually adapting
+> (so MAG_ADAPTIVE).
+>
 
- drivers/iio/accel/sca3000.c | 177 ++++++++++++------------------------
- 1 file changed, 57 insertions(+), 120 deletions(-)
+Going by examples, I can follow you as practically I'm aware of the
+difference between a plain inactivity setup and a link-bit enabled
+inactivity(and activity) setup. Initially I thought of MAG and the
+AC-coupled equivalent being MAG_REFERENCED. By your explanation I
+understand why you preferred MAG_ADAPTIVE rather. But still all three
+configurations are possible.
 
-diff --git a/drivers/iio/accel/sca3000.c b/drivers/iio/accel/sca3000.c
-index d41759c68fb4..098d45bad389 100644
---- a/drivers/iio/accel/sca3000.c
-+++ b/drivers/iio/accel/sca3000.c
-@@ -405,17 +405,14 @@ static int sca3000_print_rev(struct iio_dev *indio_dev)
- 	int ret;
- 	struct sca3000_state *st = iio_priv(indio_dev);
- 
--	mutex_lock(&st->lock);
-+	guard(mutex)(&st->lock);
- 	ret = spi_w8r8(st->us, SCA3000_READ_REG(SCA3000_REG_REVID_ADDR));
- 	if (ret < 0)
--		goto error_ret;
-+		return ret;
- 	dev_info(&indio_dev->dev,
- 		 "sca3000 revision major=%lu, minor=%lu\n",
- 		 ret & SCA3000_REG_REVID_MAJOR_MASK,
- 		 ret & SCA3000_REG_REVID_MINOR_MASK);
--error_ret:
--	mutex_unlock(&st->lock);
--
- 	return ret;
- }
- 
-@@ -699,32 +696,25 @@ static int sca3000_read_raw(struct iio_dev *indio_dev,
- 
- 	switch (mask) {
- 	case IIO_CHAN_INFO_RAW:
--		mutex_lock(&st->lock);
-+		guard(mutex)(&st->lock);
- 		if (chan->type == IIO_ACCEL) {
--			if (st->mo_det_use_count) {
--				mutex_unlock(&st->lock);
-+			if (st->mo_det_use_count)
- 				return -EBUSY;
--			}
- 			address = sca3000_addresses[chan->address][0];
- 			ret = spi_w8r16be(st->us, SCA3000_READ_REG(address));
--			if (ret < 0) {
--				mutex_unlock(&st->lock);
-+			if (ret < 0)
- 				return ret;
--			}
- 			*val = sign_extend32(ret >> chan->scan_type.shift,
- 					     chan->scan_type.realbits - 1);
- 		} else {
- 			/* get the temperature when available */
- 			ret = spi_w8r16be(st->us,
- 						SCA3000_READ_REG(SCA3000_REG_TEMP_MSB_ADDR));
--			if (ret < 0) {
--				mutex_unlock(&st->lock);
-+			if (ret < 0)
- 				return ret;
--			}
- 			*val = (ret >> chan->scan_type.shift) &
- 				GENMASK(chan->scan_type.realbits - 1, 0);
- 		}
--		mutex_unlock(&st->lock);
- 		return IIO_VAL_INT;
- 	case IIO_CHAN_INFO_SCALE:
- 		*val = 0;
-@@ -738,14 +728,12 @@ static int sca3000_read_raw(struct iio_dev *indio_dev,
- 		*val2 = 600000;
- 		return IIO_VAL_INT_PLUS_MICRO;
- 	case IIO_CHAN_INFO_SAMP_FREQ:
--		mutex_lock(&st->lock);
-+		guard(mutex)(&st->lock);
- 		ret = sca3000_read_raw_samp_freq(st, val);
--		mutex_unlock(&st->lock);
- 		return ret ? ret : IIO_VAL_INT;
- 	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
--		mutex_lock(&st->lock);
-+		guard(mutex)(&st->lock);
- 		ret = sca3000_read_3db_freq(st, val);
--		mutex_unlock(&st->lock);
- 		return ret;
- 	default:
- 		return -EINVAL;
-@@ -763,22 +751,16 @@ static int sca3000_write_raw(struct iio_dev *indio_dev,
- 	case IIO_CHAN_INFO_SAMP_FREQ:
- 		if (val2)
- 			return -EINVAL;
--		mutex_lock(&st->lock);
--		ret = sca3000_write_raw_samp_freq(st, val);
--		mutex_unlock(&st->lock);
--		return ret;
-+		guard(mutex)(&st->lock);
-+		return sca3000_write_raw_samp_freq(st, val);
- 	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
- 		if (val2)
- 			return -EINVAL;
--		mutex_lock(&st->lock);
--		ret = sca3000_write_3db_freq(st, val);
--		mutex_unlock(&st->lock);
--		return ret;
-+		guard(mutex)(&st->lock);
-+		return sca3000_write_3db_freq(st, val);
- 	default:
- 		return -EINVAL;
- 	}
--
--	return ret;
- }
- 
- /**
-@@ -800,9 +782,8 @@ static ssize_t sca3000_read_av_freq(struct device *dev,
- 	struct sca3000_state *st = iio_priv(indio_dev);
- 	int len = 0, ret;
- 
--	mutex_lock(&st->lock);
-+	guard(mutex)(&st->lock);
- 	ret = spi_w8r8(st->us, SCA3000_READ_REG(SCA3000_REG_MODE_ADDR));
--	mutex_unlock(&st->lock);
- 	if (ret)
- 		return ret;
- 
-@@ -851,10 +832,9 @@ static int sca3000_read_event_value(struct iio_dev *indio_dev,
- 
- 	switch (info) {
- 	case IIO_EV_INFO_VALUE:
--		mutex_lock(&st->lock);
-+		guard(mutex)(&st->lock);
- 		ret = sca3000_read_ctrl_reg(st,
- 					    sca3000_addresses[chan->address][1]);
--		mutex_unlock(&st->lock);
- 		if (ret < 0)
- 			return ret;
- 		*val = 0;
-@@ -918,13 +898,10 @@ static int sca3000_write_event_value(struct iio_dev *indio_dev,
- 			}
- 	}
- 
--	mutex_lock(&st->lock);
--	ret = sca3000_write_ctrl_reg(st,
-+	guard(mutex)(&st->lock);
-+	return sca3000_write_ctrl_reg(st,
- 				     sca3000_addresses[chan->address][1],
- 				     nonlinear);
--	mutex_unlock(&st->lock);
--
--	return ret;
- }
- 
- static struct attribute *sca3000_attributes[] = {
-@@ -969,12 +946,12 @@ static void sca3000_ring_int_process(u8 val, struct iio_dev *indio_dev)
- 	struct sca3000_state *st = iio_priv(indio_dev);
- 	int ret, i, num_available;
- 
--	mutex_lock(&st->lock);
-+	guard(mutex)(&st->lock);
- 
- 	if (val & SCA3000_REG_INT_STATUS_HALF) {
- 		ret = spi_w8r8(st->us, SCA3000_READ_REG(SCA3000_REG_BUF_COUNT_ADDR));
- 		if (ret)
--			goto error_ret;
-+			return;
- 		num_available = ret;
- 		/*
- 		 * num_available is the total number of samples available
-@@ -983,7 +960,7 @@ static void sca3000_ring_int_process(u8 val, struct iio_dev *indio_dev)
- 		ret = sca3000_read_data(st, SCA3000_REG_RING_OUT_ADDR,
- 					num_available * 2);
- 		if (ret)
--			goto error_ret;
-+			return;
- 		for (i = 0; i < num_available / 3; i++) {
- 			/*
- 			 * Dirty hack to cover for 11 bit in fifo, 13 bit
-@@ -995,8 +972,6 @@ static void sca3000_ring_int_process(u8 val, struct iio_dev *indio_dev)
- 			iio_push_to_buffers(indio_dev, st->rx + i * 3 * 2);
- 		}
- 	}
--error_ret:
--	mutex_unlock(&st->lock);
- }
- 
- /**
-@@ -1022,9 +997,8 @@ static irqreturn_t sca3000_event_handler(int irq, void *private)
- 	 * Could lead if badly timed to an extra read of status reg,
- 	 * but ensures no interrupt is missed.
- 	 */
--	mutex_lock(&st->lock);
-+	guard(mutex)(&st->lock);
- 	ret = spi_w8r8(st->us, SCA3000_READ_REG(SCA3000_REG_INT_STATUS_ADDR));
--	mutex_unlock(&st->lock);
- 	if (ret)
- 		goto done;
- 
-@@ -1081,16 +1055,15 @@ static int sca3000_read_event_config(struct iio_dev *indio_dev,
- 	struct sca3000_state *st = iio_priv(indio_dev);
- 	int ret;
- 	/* read current value of mode register */
--	mutex_lock(&st->lock);
-+	guard(mutex)(&st->lock);
- 
- 	ret = spi_w8r8(st->us, SCA3000_READ_REG(SCA3000_REG_MODE_ADDR));
- 	if (ret)
--		goto error_ret;
-+		return ret;
- 
- 	switch (chan->channel2) {
- 	case IIO_MOD_X_AND_Y_AND_Z:
--		ret = !!(ret & SCA3000_REG_MODE_FREE_FALL_DETECT);
--		break;
-+		return !!(ret & SCA3000_REG_MODE_FREE_FALL_DETECT);
- 	case IIO_MOD_X:
- 	case IIO_MOD_Y:
- 	case IIO_MOD_Z:
-@@ -1100,24 +1073,18 @@ static int sca3000_read_event_config(struct iio_dev *indio_dev,
- 		 */
- 		if ((ret & SCA3000_REG_MODE_MODE_MASK)
- 		    != SCA3000_REG_MODE_MEAS_MODE_MOT_DET) {
--			ret = 0;
-+			return 0;
- 		} else {
- 			ret = sca3000_read_ctrl_reg(st,
- 						SCA3000_REG_CTRL_SEL_MD_CTRL);
- 			if (ret < 0)
--				goto error_ret;
-+				return ret;
- 			/* only supporting logical or's for now */
--			ret = !!(ret & sca3000_addresses[chan->address][2]);
-+			return !!(ret & sca3000_addresses[chan->address][2]);
- 		}
--		break;
- 	default:
--		ret = -EINVAL;
-+		return -EINVAL;
- 	}
--
--error_ret:
--	mutex_unlock(&st->lock);
--
--	return ret;
- }
- 
- static int sca3000_freefall_set_state(struct iio_dev *indio_dev, bool state)
-@@ -1220,26 +1187,19 @@ static int sca3000_write_event_config(struct iio_dev *indio_dev,
- 	struct sca3000_state *st = iio_priv(indio_dev);
- 	int ret;
- 
--	mutex_lock(&st->lock);
-+	guard(mutex)(&st->lock);
- 	switch (chan->channel2) {
- 	case IIO_MOD_X_AND_Y_AND_Z:
--		ret = sca3000_freefall_set_state(indio_dev, state);
--		break;
--
-+		return sca3000_freefall_set_state(indio_dev, state);
- 	case IIO_MOD_X:
- 	case IIO_MOD_Y:
- 	case IIO_MOD_Z:
--		ret = sca3000_motion_detect_set_state(indio_dev,
-+		return sca3000_motion_detect_set_state(indio_dev,
- 						      chan->address,
- 						      state);
--		break;
- 	default:
--		ret = -EINVAL;
--		break;
-+		return -EINVAL;
- 	}
--	mutex_unlock(&st->lock);
--
--	return ret;
- }
- 
- static inline
-@@ -1248,23 +1208,19 @@ int __sca3000_hw_ring_state_set(struct iio_dev *indio_dev, bool state)
- 	struct sca3000_state *st = iio_priv(indio_dev);
- 	int ret;
- 
--	mutex_lock(&st->lock);
- 	ret = spi_w8r8(st->us, SCA3000_READ_REG(SCA3000_REG_MODE_ADDR));
- 	if (ret)
--		goto error_ret;
-+		return ret;
-+
- 	if (state) {
- 		dev_info(&indio_dev->dev, "supposedly enabling ring buffer\n");
--		ret = sca3000_write_reg(st,
-+		return sca3000_write_reg(st,
- 			SCA3000_REG_MODE_ADDR,
- 			(ret | SCA3000_REG_MODE_RING_BUF_ENABLE));
--	} else
--		ret = sca3000_write_reg(st,
--			SCA3000_REG_MODE_ADDR,
--			(ret & ~SCA3000_REG_MODE_RING_BUF_ENABLE));
--error_ret:
--	mutex_unlock(&st->lock);
--
--	return ret;
-+	}
-+	return sca3000_write_reg(st,
-+		SCA3000_REG_MODE_ADDR,
-+		(ret & ~SCA3000_REG_MODE_RING_BUF_ENABLE));
- }
- 
- /**
-@@ -1281,26 +1237,18 @@ static int sca3000_hw_ring_preenable(struct iio_dev *indio_dev)
- 	int ret;
- 	struct sca3000_state *st = iio_priv(indio_dev);
- 
--	mutex_lock(&st->lock);
--
-+	guard(mutex)(&st->lock);
- 	/* Enable the 50% full interrupt */
- 	ret = spi_w8r8(st->us, SCA3000_READ_REG(SCA3000_REG_INT_MASK_ADDR));
- 	if (ret)
--		goto error_unlock;
-+		return ret;
- 	ret = sca3000_write_reg(st,
- 				SCA3000_REG_INT_MASK_ADDR,
- 				ret | SCA3000_REG_INT_MASK_RING_HALF);
- 	if (ret)
--		goto error_unlock;
--
--	mutex_unlock(&st->lock);
-+		return ret;
- 
- 	return __sca3000_hw_ring_state_set(indio_dev, 1);
--
--error_unlock:
--	mutex_unlock(&st->lock);
--
--	return ret;
- }
- 
- static int sca3000_hw_ring_postdisable(struct iio_dev *indio_dev)
-@@ -1308,22 +1256,18 @@ static int sca3000_hw_ring_postdisable(struct iio_dev *indio_dev)
- 	int ret;
- 	struct sca3000_state *st = iio_priv(indio_dev);
- 
-+	guard(mutex)(&st->lock);
- 	ret = __sca3000_hw_ring_state_set(indio_dev, 0);
- 	if (ret)
- 		return ret;
- 
- 	/* Disable the 50% full interrupt */
--	mutex_lock(&st->lock);
--
- 	ret = spi_w8r8(st->us, SCA3000_READ_REG(SCA3000_REG_INT_MASK_ADDR));
- 	if (ret)
--		goto unlock;
--	ret = sca3000_write_reg(st,
-+		return ret;
-+	return sca3000_write_reg(st,
- 				SCA3000_REG_INT_MASK_ADDR,
- 				ret & ~SCA3000_REG_INT_MASK_RING_HALF);
--unlock:
--	mutex_unlock(&st->lock);
--	return ret;
- }
- 
- static const struct iio_buffer_setup_ops sca3000_ring_setup_ops = {
-@@ -1343,25 +1287,25 @@ static int sca3000_clean_setup(struct sca3000_state *st)
- {
- 	int ret;
- 
--	mutex_lock(&st->lock);
-+	guard(mutex)(&st->lock);
- 	/* Ensure all interrupts have been acknowledged */
- 	ret = spi_w8r8(st->us, SCA3000_READ_REG(SCA3000_REG_INT_MASK_ADDR));
- 	if (ret)
--		goto error_ret;
-+		return ret;
- 
- 	/* Turn off all motion detection channels */
- 	ret = sca3000_read_ctrl_reg(st, SCA3000_REG_CTRL_SEL_MD_CTRL);
- 	if (ret < 0)
--		goto error_ret;
-+		return ret;
- 	ret = sca3000_write_ctrl_reg(st, SCA3000_REG_CTRL_SEL_MD_CTRL,
- 				     ret & SCA3000_MD_CTRL_PROT_MASK);
- 	if (ret)
--		goto error_ret;
-+		return ret;
- 
- 	/* Disable ring buffer */
- 	ret = sca3000_read_ctrl_reg(st, SCA3000_REG_CTRL_SEL_OUT_CTRL);
- 	if (ret < 0)
--		goto error_ret;
-+		return ret;
- 	ret = sca3000_write_ctrl_reg(st, SCA3000_REG_CTRL_SEL_OUT_CTRL,
- 				     (ret & SCA3000_REG_OUT_CTRL_PROT_MASK)
- 				     | SCA3000_REG_OUT_CTRL_BUF_X_EN
-@@ -1369,17 +1313,17 @@ static int sca3000_clean_setup(struct sca3000_state *st)
- 				     | SCA3000_REG_OUT_CTRL_BUF_Z_EN
- 				     | SCA3000_REG_OUT_CTRL_BUF_DIV_4);
- 	if (ret)
--		goto error_ret;
-+		return ret;
- 	/* Enable interrupts, relevant to mode and set up as active low */
- 	ret = spi_w8r8(st->us, SCA3000_READ_REG(SCA3000_REG_INT_MASK_ADDR));
- 	if (ret)
--		goto error_ret;
-+		return ret;
- 	ret = sca3000_write_reg(st,
- 				SCA3000_REG_INT_MASK_ADDR,
- 				(ret & SCA3000_REG_INT_MASK_PROT_MASK)
- 				| SCA3000_REG_INT_MASK_ACTIVE_LOW);
- 	if (ret)
--		goto error_ret;
-+		return ret;
- 	/*
- 	 * Select normal measurement mode, free fall off, ring off
- 	 * Ring in 12 bit mode - it is fine to overwrite reserved bits 3,5
-@@ -1387,13 +1331,9 @@ static int sca3000_clean_setup(struct sca3000_state *st)
- 	 */
- 	ret = spi_w8r8(st->us, SCA3000_READ_REG(SCA3000_REG_MODE_ADDR));
- 	if (ret)
--		goto error_ret;
--	ret = sca3000_write_reg(st, SCA3000_REG_MODE_ADDR,
-+		return ret;
-+	return sca3000_write_reg(st, SCA3000_REG_MODE_ADDR,
- 				ret & SCA3000_MODE_PROT_MASK);
--
--error_ret:
--	mutex_unlock(&st->lock);
--	return ret;
- }
- 
- static const struct iio_info sca3000_info = {
-@@ -1471,19 +1411,16 @@ static int sca3000_stop_all_interrupts(struct sca3000_state *st)
- {
- 	int ret;
- 
--	mutex_lock(&st->lock);
-+	guard(mutex)(&st->lock);
- 	ret = spi_w8r8(st->us, SCA3000_READ_REG(SCA3000_REG_INT_MASK_ADDR));
- 	if (ret)
--		goto error_ret;
-+		return ret;
- 
--	ret = sca3000_write_reg(st, SCA3000_REG_INT_MASK_ADDR,
-+	return sca3000_write_reg(st, SCA3000_REG_INT_MASK_ADDR,
- 				ret &
- 				~(SCA3000_REG_INT_MASK_RING_THREE_QUARTER |
- 				  SCA3000_REG_INT_MASK_RING_HALF |
- 				  SCA3000_REG_INT_MASK_ALL_INTS));
--error_ret:
--	mutex_unlock(&st->lock);
--	return ret;
- }
- 
- static void sca3000_remove(struct spi_device *spi)
--- 
-2.49.0
+My idea is, the driver implementation supports all cases in parallel,
+at least to a certain extent. I mean, at the current implementation
+someone can configure plain activity, or AC-coupled activity, or
+respectively, their inactivity equivalents - when both, an activity
+type together with an inactivity type are enabled, they will be linked
+counter events. I.e. "adaptive" - and auto-sleep will be turned on for
+the inactivity periods. Built on using just plain IIO API w/o custom
+API calls.
 
+Due to all the possible combinations, this comes at a certain
+complexity. In terms of configuration and for instance mapping to MAG,
+MAG_REFERNCED or MAG_ADAPTIVE. Here I rely on your feedback. On my
+side, I'll try to recycle the automation setup to verify registers are
+configured as I like them to be using the sysfs handles (that's btw
+the reason why I'm glad to have debugfs on board). So, if you tell me,
+to change it rather to MAG_REFERENCED, I'll do it, but then AC-coupled
+events will be all MAG_REFRENCED w/ or w/o link bit. Or we come up
+with a total different approach, like putting link-bit AC on
+MAG_ADAPTIVE and plain AC-coupled on MAG_REFERENCED, but then what
+about MAG events w/ or w/o link-bit? hmm, I think current approach
+seems to be a good compromise. Let me know what you think.
+
+Best,
+L
+
+>
+> Maybe there is room to use that to ultimately control whether the
+> link bit is set or not (putting aside the power aspect of that).
+>
 

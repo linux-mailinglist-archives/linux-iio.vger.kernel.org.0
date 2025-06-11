@@ -1,58 +1,65 @@
-Return-Path: <linux-iio+bounces-20463-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20464-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E67CAD5C44
-	for <lists+linux-iio@lfdr.de>; Wed, 11 Jun 2025 18:34:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C76B3AD5C5F
+	for <lists+linux-iio@lfdr.de>; Wed, 11 Jun 2025 18:37:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A1D0F1BC254D
-	for <lists+linux-iio@lfdr.de>; Wed, 11 Jun 2025 16:34:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E30A3AAC9A
+	for <lists+linux-iio@lfdr.de>; Wed, 11 Jun 2025 16:35:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D496D2192E3;
-	Wed, 11 Jun 2025 16:32:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FD2C202981;
+	Wed, 11 Jun 2025 16:34:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UETb5HbI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R9CJ9dpp"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94F991FDE02
-	for <linux-iio@vger.kernel.org>; Wed, 11 Jun 2025 16:32:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A7FC1F91C8;
+	Wed, 11 Jun 2025 16:34:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749659560; cv=none; b=OxtZZy4RX7bzHIRtkXGDiXDp9MkOI1IRzxIJuOdquYdqD1BZeOzIci/A3a3kuYuGAg7MZwTBBLMVN0ns+PN2h7jI55VyZDApizUwLosQBwnvBCEYk6oIl8D88o56ct1dpSUH5dDocUObJrl9U/0gPU5hcd1eLvdXZ5oR6b1kVqQ=
+	t=1749659683; cv=none; b=syd2T5U2bd6j3nu4nh0+wizyqyFIKIgoNdfsinc8zHq2sqlajakuwJ65/iPduTzcyjOLREnrIzpdr66chBvzgKDYbWpQFPIYEAE20eOfeAFgtgvmKN8MswPiCtfmZDHNdL1jLyq+lLuSCjHPdMN73fbiDeRddFtD7GLXcZMX4RU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749659560; c=relaxed/simple;
-	bh=Wzj+/z2M4Hzz8e5MV0jVxRbk7VIhlc4yCIjlJ1t1k8A=;
+	s=arc-20240116; t=1749659683; c=relaxed/simple;
+	bh=WBdEf0/HZqkhDmCcxbwgGvvd9cOJk0qwHZjEEgt/ZCg=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gORCrw1WWQ/9o8dshzPlwfnKWy3c+wpUeVWruhtToAc4MHSkMPkjxP3s28IrMjk1OqpPkpEWB/+AdqVMntZjKM+gwkdQfWKpTyr9+DK+qycvPEchDI7pqnJM+jBqFchW+TY0+hbMRskFeHqspTmk1GlAH/Oh0MOxD128Sd5iEXQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UETb5HbI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C016C4CEE3;
-	Wed, 11 Jun 2025 16:32:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=E6rxOsopTyLo+k/hdKExEVlPKdphk6XfaF1tBGOAPFs3hRcwrJ/pB5dvKQHahoelxamjJz5HPHvPt0lnCxWJ6cQBF7XBRVOjzfmyyrTn2g1A47/IpzfIaGVPnjAwoVi0jmzMchnvod/GZpiXIj1J4zBAX90YPbucsPk25sS6LKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R9CJ9dpp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C8C1C4CEEA;
+	Wed, 11 Jun 2025 16:34:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749659560;
-	bh=Wzj+/z2M4Hzz8e5MV0jVxRbk7VIhlc4yCIjlJ1t1k8A=;
+	s=k20201202; t=1749659682;
+	bh=WBdEf0/HZqkhDmCcxbwgGvvd9cOJk0qwHZjEEgt/ZCg=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=UETb5HbIan5aW9FyHwOZvu25pes5iv8Cd6dNGgaO99YWgnh2t96R4rIBEAYZw0boT
-	 Rs2Jq8vShkQxxxkLJ/cbFOytFRh6QgADanchL3rOa3JZJXXDqqkfKg1O13X0iemXcI
-	 KCrcLkPTCpTUnw4jg5zA750Tc5HC/F1Y6uIDQPzatbZVuUaIntlefsVvyrC+mbuqVI
-	 oygHh5vT48zN0wsQ2Q79RcBmcl4JwRxxxg8YDYzy9heycsJTDiQs5bl+NUtm4dU8Ry
-	 j80ae1nLlm1rBUEdJHLwcmFTzYEXnSw5pyuTJCSBeTPgVJeWwYgieO7dytJmIJ17G8
-	 HbISg0GzOb05Q==
-Date: Wed, 11 Jun 2025 17:32:33 +0100
+	b=R9CJ9dpp9w5VDPPesK/5/rpC4lTAgov0Lz0m5tWPIwOM1a8pucz2AQJ+RuXpVd+8e
+	 eZ6LuqHLGtrCoDUyNmTpcDWZ5ccxi8xLL2VyhxtUaQaxz9ZL95NpwedI9bbEVyBaH3
+	 lI/i8QKLVE+L9hwXgUMLBUC589xACUwMBSGRO+c5vZdvnHOg2Pa/GijMw2RgcTYDy+
+	 0p8ZFhYrPxPQ6E9FaFC2nnBS5/+Y0G/qGfWs4MmauaK5rrGxb6tSaknwNxLXdUmb1o
+	 +xgBPkQci1eGdMYHTMdfX3VQce/ZOi5dvkf2zOu44OuvtgHnnGpw+2Axs5DpJFhsKS
+	 eqxai+HX0/7Qg==
+Date: Wed, 11 Jun 2025 17:34:33 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: linux-iio@vger.kernel.org, David Lechner <dlechner@baylibre.com>, Nuno
- =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH 1/2] iio: potentiometer: Drop unused export.h includes
-Message-ID: <20250611173233.270dde84@jic23-huawei>
-In-Reply-To: <CAHp75VdxGouo=SB0JnAL6w5ZxQN0C+bBDo5Hh_k+TeoK5pD11g@mail.gmail.com>
-References: <20250609070616.3923709-1-jic23@kernel.org>
-	<20250609070616.3923709-2-jic23@kernel.org>
-	<CAHp75VdxGouo=SB0JnAL6w5ZxQN0C+bBDo5Hh_k+TeoK5pD11g@mail.gmail.com>
+To: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+Cc: Antonio Borneo <antonio.borneo@foss.st.com>, Alexandre Torgue
+ <alexandre.torgue@foss.st.com>, Andy Shevchenko <andy@kernel.org>, "David
+ Lechner" <dlechner@baylibre.com>, Gatien Chevallier
+ <gatien.chevallier@foss.st.com>, "Lee Jones" <lee@kernel.org>,
+ <linux-iio@vger.kernel.org>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
+ Olivier Moysan <olivier.moysan@foss.st.com>,
+ <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+ <linux-stm32@st-md-mailman.stormreply.com>, Maxime Coquelin
+ <mcoquelin.stm32@gmail.com>
+Subject: Re: [PATCH 2/5] iio: adc: stm32-dfsdm: Fix build warnings about
+ export.h
+Message-ID: <20250611173433.430c8eb4@jic23-huawei>
+In-Reply-To: <7600b151-0487-4cb9-ab6e-3cc9c6012bdf@foss.st.com>
+References: <20250610124855.269158-1-antonio.borneo@foss.st.com>
+	<20250610124855.269158-3-antonio.borneo@foss.st.com>
+	<7600b151-0487-4cb9-ab6e-3cc9c6012bdf@foss.st.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -60,25 +67,64 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Mon, 9 Jun 2025 12:28:40 +0300
-Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+On Tue, 10 Jun 2025 15:05:16 +0200
+Fabrice Gasnier <fabrice.gasnier@foss.st.com> wrote:
 
-> On Mon, Jun 9, 2025 at 10:06=E2=80=AFAM Jonathan Cameron <jic23@kernel.or=
-g> wrote:
-> >
-> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> >
-> > Resolves:
-> >   warning: EXPORT_SYMBOL() is not used, but #include <linux/export.h> i=
-s present =20
->=20
-> With the given context this LGTM,
-> Reviewed-by: Andy Shevchenko <andy@kernel.org>
->=20
->=20
+> On 6/10/25 14:48, Antonio Borneo wrote:
+> > After commit a934a57a42f6 ("scripts/misc-check: check missing #include
+> > <linux/export.h> when W=1") and commit 7d95680d64ac ("scripts/misc-check:
+> > check unnecessary #include <linux/export.h> when W=1") we get the build
+> > warnings with W=1:
+> > 
+> > drivers/iio/adc/stm32-dfsdm-adc.c: warning: EXPORT_SYMBOL() is used, but #include <linux/export.h> is missing
+> > drivers/iio/adc/stm32-dfsdm-core.c: warning: EXPORT_SYMBOL() is used, but #include <linux/export.h> is missing
+> > 
+> > Fix them.
+> > 
+> > Signed-off-by: Antonio Borneo <antonio.borneo@foss.st.com>  
+> 
+> Hi Antonio,
+> 
+> You can add my:
+> Acked-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+Applied to the togreg branch of iio.git.
 
-Picked this one up
+Ta.
+
+> 
+> Thanks,
+> Fabrice
+> > ---
+> >  drivers/iio/adc/stm32-dfsdm-adc.c  | 1 +
+> >  drivers/iio/adc/stm32-dfsdm-core.c | 1 +
+> >  2 files changed, 2 insertions(+)
+> > 
+> > diff --git a/drivers/iio/adc/stm32-dfsdm-adc.c b/drivers/iio/adc/stm32-dfsdm-adc.c
+> > index f583924eb16bb..c2d21eecafe79 100644
+> > --- a/drivers/iio/adc/stm32-dfsdm-adc.c
+> > +++ b/drivers/iio/adc/stm32-dfsdm-adc.c
+> > @@ -8,6 +8,7 @@
+> >  
+> >  #include <linux/dmaengine.h>
+> >  #include <linux/dma-mapping.h>
+> > +#include <linux/export.h>
+> >  #include <linux/iio/adc/stm32-dfsdm-adc.h>
+> >  #include <linux/iio/backend.h>
+> >  #include <linux/iio/buffer.h>
+> > diff --git a/drivers/iio/adc/stm32-dfsdm-core.c b/drivers/iio/adc/stm32-dfsdm-core.c
+> > index 041dc9ebc0482..47e2d1338e9e6 100644
+> > --- a/drivers/iio/adc/stm32-dfsdm-core.c
+> > +++ b/drivers/iio/adc/stm32-dfsdm-core.c
+> > @@ -8,6 +8,7 @@
+> >  
+> >  #include <linux/bitfield.h>
+> >  #include <linux/clk.h>
+> > +#include <linux/export.h>
+> >  #include <linux/iio/iio.h>
+> >  #include <linux/iio/sysfs.h>
+> >  #include <linux/interrupt.h>  
+
 

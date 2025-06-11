@@ -1,213 +1,226 @@
-Return-Path: <linux-iio+bounces-20448-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20449-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13F3FAD5A5F
-	for <lists+linux-iio@lfdr.de>; Wed, 11 Jun 2025 17:27:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA1BFAD5AD0
+	for <lists+linux-iio@lfdr.de>; Wed, 11 Jun 2025 17:42:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 292DB1E0430
-	for <lists+linux-iio@lfdr.de>; Wed, 11 Jun 2025 15:25:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 89A741885087
+	for <lists+linux-iio@lfdr.de>; Wed, 11 Jun 2025 15:37:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 703F61AF0CE;
-	Wed, 11 Jun 2025 15:25:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB1201D130E;
+	Wed, 11 Jun 2025 15:37:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="opoaqt25"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jDpVTmX0"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 275011632D7;
-	Wed, 11 Jun 2025 15:25:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E86A61B0412;
+	Wed, 11 Jun 2025 15:37:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749655521; cv=none; b=nLQL+ry1mp5cGkTHdUzH0KEl40mf5k6LCpFQGlJ5fvWL+QR7rIXT42d030dYuWobElDsPfDRKsFIYnL7oEQblOjf67o6/dcOSRSHlPJRMjuNWdJXGVl3CwEwWlL8LesP3oOPWT6WrBy2vmot41lK5CP2d3RCHMMCWNASA7MNaWg=
+	t=1749656248; cv=none; b=PBe6a1VZ0mxrZ6VTdittKI42HikrsEQWPgBHwN1DQ7broOQWj7TXAsnxuouLkJ4f71bTrloogNEPoIQR3YJyvgGK2l6aJvF8XwSQZwHc+wWw4F++8nGcCHjOZmPPvgBrkPzDSfPAb+205PNab9OhO+wtgVPGuJUftF3VBXmV3zU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749655521; c=relaxed/simple;
-	bh=IzxKk/Q/rHFtELufmehQFw1qSKOWCXL50Kire+AoROo=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VhG1CUjj2aRmTmGIFlRQjkv7V10MOm+EWxFCjgr8bm3F2UW4d3FyopAQYfueDtEnN5li1tPGsrM4ctGEw3TxsGCQESh/LbYTRGkWatZtr8pceNQ0Np4iiqIz2lwVCeBn6R6EERZsbKk9Tw7v1UMj8xyGDnyokuOVjDBoQtqIdfk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=opoaqt25; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82BDAC4CEEA;
-	Wed, 11 Jun 2025 15:25:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749655520;
-	bh=IzxKk/Q/rHFtELufmehQFw1qSKOWCXL50Kire+AoROo=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=opoaqt25Ud+nc8M0XmqGGcIvv2RL49TLbsut/GXV3oPsfG7msmMgEHqCc5VMDsDXL
-	 662GVyR78xUmiupTlAah11eTbOlaY3Q3Ax5Nl2PAxAY2ntybsJet/ry/Q4RFkQ72x3
-	 u/AaUSSbE2Nm/PStE9kwj+7b9VtfqrOVq9gRKoTpXjV9LQLUlUgXkJmMDAceABq7D0
-	 SVZayDKYZu39mwY1z7c8nz07mS5Zc9p7d7JTSFU3jHD3/XojW+sdN9untcgSkMzSjH
-	 z/MSmG6NDF7kaJoiWhJqXm+rHB2AJTtJY7eiqomWnmteoChyMImjteUxA98fWQN1A4
-	 XRgZ4QYXvGyKA==
-Date: Wed, 11 Jun 2025 16:25:07 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: "Ioan-daniel, Pop" <Pop.Ioan-daniel@analog.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, "Hennerich, Michael"
- <Michael.Hennerich@analog.com>, David Lechner <dlechner@baylibre.com>, "Sa,
- Nuno" <Nuno.Sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Rob Herring
- <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, "Cuciurean, Sergiu" <Sergiu.Cuciurean@analog.com>,
- "Bogdan, Dragos" <Dragos.Bogdan@analog.com>, "Miclaus, Antoniu"
- <Antoniu.Miclaus@analog.com>, Olivier Moysan <olivier.moysan@foss.st.com>,
- Javier Carrasco <javier.carrasco.cruz@gmail.com>, Matti Vaittinen
- <mazziesaccount@gmail.com>, adureghello <adureghello@baylibre.com>,
- Guillaume Stols <gstols@baylibre.com>, Tobias Sperling
- <tobias.sperling@softing.com>, "Schmitt, Marcelo"
- <Marcelo.Schmitt@analog.com>, Trevor Gamblin <tgamblin@baylibre.com>,
- Alisa-Dariana Roman <alisadariana@gmail.com>, "Nechita, Ramona"
- <Ramona.Nechita@analog.com>, Herve Codina <herve.codina@bootlin.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Thomas Bonnefille <thomas.bonnefille@bootlin.com>, =?UTF-8?B?Sm/Do28=?=
- Paulo =?UTF-8?B?R29uw6dhbHZlcw==?= <joao.goncalves@toradex.com>,
- "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v7 5/5] iio: adc: ad7405: add ad7405 driver
-Message-ID: <20250611162507.6868c8c6@jic23-huawei>
-In-Reply-To: <PH0PR03MB63351F2AA87604CC10BB6EC8D16AA@PH0PR03MB6335.namprd03.prod.outlook.com>
-References: <20250605150948.3091827-1-pop.ioan-daniel@analog.com>
-	<20250605150948.3091827-6-pop.ioan-daniel@analog.com>
-	<20250607164428.7a245af5@jic23-huawei>
-	<PH0PR03MB63351F2AA87604CC10BB6EC8D16AA@PH0PR03MB6335.namprd03.prod.outlook.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1749656248; c=relaxed/simple;
+	bh=zydGsoJ/S/NJH8WtNAq5YLFgUzXRJ6uRpo4oan+dE5A=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=d27tCiXKWKBY5F/Nyzpd9g4UoJ0sH0MiHUPOesXmJXDbO6MHeAjtbOj10Bcl9Dsa1qvZKwYZmQ5r4GoKGfHFXYlHiVRyLyRf4LtFXTDj0ycJEYGMqcs96wbIvpADIk0hC6SbcMxToYsdB065SKrHjPHs1+sLMoATsG3Y6dei6nc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jDpVTmX0; arc=none smtp.client-ip=209.85.128.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-706e7babc4eso700157b3.2;
+        Wed, 11 Jun 2025 08:37:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1749656246; x=1750261046; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Hju1JohcrRegQpVLjL1i+5W7BjQrb1wxNIxsFn7asag=;
+        b=jDpVTmX0+Tn3TG74BlVaQw2XhuKajuU5qva7LkPBMB+8HS+lOzkMoOC4r+PpfDAFwP
+         jB7lfLM9uq08dk22sWDoUHYcxn+VNfoijhwtAZdD+HfDoWj7UJE09qh4BvVOu2B9kP3F
+         TCqiqxYcxkBu/ZJwyc7lcNP4qzmYgyCWh5bNcRJ+L8UYabvG1xrutM62904FnhIt1xkC
+         jDvq6WN7IUcshINmkKJQEcsF1zb4oncwrz/qRJKQOe7h6PYcawnYjv/k1APzTYdcsMhI
+         sTHmz1pqRXWi9zHEuQbqMdO6F7d/3be9uKPQmCwvn5grDwKN5lj14euRRKaUBdfI12FV
+         rpYw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749656246; x=1750261046;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Hju1JohcrRegQpVLjL1i+5W7BjQrb1wxNIxsFn7asag=;
+        b=grgGh8VJwzwHh7IB5S7KR4tW7L/jomuiCUSm121g4dKjvAUIzDNzjDrUh/Us3X/wRL
+         7go9HdW/VOUVULzgWjh3IFO6d9JZLh3XU/wYKA0kw2eNLah6lQDAqnbsn57Uv1J0NkdP
+         v+wipcWm8Bbr5AokTtrlwfhMpK79CgL6XQKJo2gFy8LFySa+qz6LjYZJ+Uga1/MDz/rc
+         d7AwY4diRUiUHir+tT4YcJxP9HVpcOQJFFNVo17AvoAn3zJXVxJbWpnO10tjDvbiOGum
+         SJ5+d1prHlqueCZL+1/nty3RIhBnxO24UY4HVcsUtEeI1vCQ/y+FLmX1jdwK/XowWQp9
+         1XfQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVPnDhpdUOcXfSWCKWDtisb6tYab7RVJEF5c7nNkWErw4aaHDnhD6u6Wm0Jzz96NbzxbxKdg5oeppaQvMe9@vger.kernel.org, AJvYcCWy/vGwsT4BdoRWJJc20ebvsfdXPTwBcTpKC5IvaWWVe5XCnoKhpslVMz4xoEpX1+ZHOs0km3rhkBLg@vger.kernel.org, AJvYcCX+RbN8NiWe8yNiErbCmvARsXiW/NKT7qVudU9YJE1he8wKJOsJAbczcKyOHBTI5CeD7AUKzn6OmP8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxOwYzD0OncYmgA0Bypz585sdb/QFcrcHTBN0EwnlDcysw/C0Rz
+	tytDyCrVWHYAHOmI4CwfjBlilgPch4NeSpFoHYkEsoGsPUJpssrlxwmsU8QV7vJn2sOrZERDCc6
+	NowiD1KIN4aGen9hJ3R9e6KVpbCCFnZq8PA==
+X-Gm-Gg: ASbGnctzfstlmKuTYMRjdGEVFb8cr0fHXhjxCjRwC6Ppqp+SzvGf4vApYgRhw1XXbKN
+	Cao13V4JJg3Jc2Mumm0IDHrcimThdfK+qdv+KeET9ucZ25CpfT+pgS59WoDjufGZaLA6Bsy8F3S
+	faNKz95L5gu+steyKQSshabxiAEbQjErvvqQyrOFjgpp97KKYjoNZ74w==
+X-Google-Smtp-Source: AGHT+IGeMZl5mUz14ekaIyfrS7U2592WmIdqit7bIWdFFD45YhUdnMs7zWOw2JShIWrSV+j10DNVlMgWixfip3MlpYw=
+X-Received: by 2002:a05:690c:45c1:b0:70e:4cdc:6e51 with SMTP id
+ 00721157ae682-711409ee0f4mr24751957b3.1.1749656245706; Wed, 11 Jun 2025
+ 08:37:25 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20250601172139.59156-1-l.rubusch@gmail.com> <20250601172139.59156-9-l.rubusch@gmail.com>
+ <CAHp75Vd=mzfVN_UBUHAkTyj2Ap_tz76AB0LtKEz28pR=WmNzog@mail.gmail.com>
+In-Reply-To: <CAHp75Vd=mzfVN_UBUHAkTyj2Ap_tz76AB0LtKEz28pR=WmNzog@mail.gmail.com>
+From: Lothar Rubusch <l.rubusch@gmail.com>
+Date: Wed, 11 Jun 2025 17:36:49 +0200
+X-Gm-Features: AX0GCFtIOlDEzKGW5nVeQK78ZYYesN_faqmntukiAD9GLJCKsmN4Zdvpv_ZvDus
+Message-ID: <CAFXKEHYP6o5vzsSP24SLUSs+Tu2Oqm=oVf71xy8EKKD5hoCQqg@mail.gmail.com>
+Subject: Re: [PATCH v4 08/11] iio: accel: adxl313: add inactivity sensing
+To: Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: jic23@kernel.org, dlechner@baylibre.com, nuno.sa@analog.com, 
+	andy@kernel.org, corbet@lwn.net, lucas.p.stankus@gmail.com, lars@metafoo.de, 
+	Michael.Hennerich@analog.com, bagasdotme@gmail.com, linux-iio@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, 10 Jun 2025 12:09:22 +0000
-"Ioan-daniel, Pop" <Pop.Ioan-daniel@analog.com> wrote:
+On Sun, Jun 1, 2025 at 9:46=E2=80=AFPM Andy Shevchenko
+<andy.shevchenko@gmail.com> wrote:
+>
+> On Sun, Jun 1, 2025 at 8:22=E2=80=AFPM Lothar Rubusch <l.rubusch@gmail.co=
+m> wrote:
+> >
+> > Extend the interrupt handler to process interrupts as inactivity events=
+.
+> > Add functions to set threshold and period registers for inactivity. Add
+> > functions to enable / disable inactivity. Extend the fake iio channel t=
+o
+>
+> IIO
+>
+> > deal with inactivity events on x, y and z combined with AND.
+>
+> ...
+>
+> > +static int adxl313_set_inact_time_s(struct adxl313_data *data,
+> > +                                   unsigned int val_s)
+> > +{
+> > +       unsigned int max_boundary =3D 255;
+>
+> This is unclear how it's defined. What is the limit behind? Size of a
+> bit field? Decimal value from the datasheet?
+>
+> The forms of (BIT(8) - 1) or GENMASK(7, 0) may be better depending on
+> the answers to the above questions.
+>
+> > +       unsigned int val =3D min(val_s, max_boundary);
+> > +
+> > +       return regmap_write(data->regmap, ADXL313_REG_TIME_INACT, val);
+> > +}
+>
+> ...
+>
+> > -       axis_en =3D FIELD_GET(ADXL313_ACT_XYZ_EN, axis_ctrl);
+> > +       if (type =3D=3D ADXL313_ACTIVITY)
+> > +               axis_en =3D FIELD_GET(ADXL313_ACT_XYZ_EN, axis_ctrl);
+> > +       else
+> > +               axis_en =3D FIELD_GET(ADXL313_INACT_XYZ_EN, axis_ctrl);
+>
+> Even with this change my previous comment stays.
+>
+> ...
+>
+> > +       en =3D cmd_en && threshold;
+> > +       if (type =3D=3D ADXL313_INACTIVITY) {
+> > +               ret =3D regmap_read(data->regmap, ADXL313_REG_TIME_INAC=
+T, &inact_time_s);
+> > +               if (ret)
+> > +                       return ret;
+> > +
+> > +               en =3D en && inact_time_s;
+> > +       }
+>
+> ...
+>
+> > -       if (info !=3D IIO_EV_INFO_VALUE)
+> > -               return -EINVAL;
+> > -
+> > -       /* Scale factor 15.625 mg/LSB */
+> > -       regval =3D DIV_ROUND_CLOSEST(MICRO * val + val2, 15625);
+> > -       switch (dir) {
+> > -       case IIO_EV_DIR_RISING:
+> > -               ret =3D regmap_write(data->regmap,
+> > -                                  adxl313_act_thresh_reg[ADXL313_ACTIV=
+ITY],
+> > -                                  regval);
+>
+> Hmm... This was added by the previous patches, right? Why can't it be
+> done as a switch case to begin with? I remember one of the previous
+> versions had some nested switch-cases, perhaps you need to rethink on
+> how to split the code between functions to avoid too much nesting (add
+> some helper functions?).
 
-> > 
-> > Why do we need this .channel element if all instances use the same one?  If you
-> > are are shortly going to add support for more devices where this will change
-> > then this is ok.  If not, just have one static const channel and use that without
-> > looking it up via these chip_info structures.
-> >  
-> 
-> Hi! I'm not aware of any other parts that use different channel types. It's true that all parts use the same .channel.
-> Should I submit a new patch version with the requested change?
+The point here is, as I mentioned in the other mail:
+Initially, I wanted to build up the final switch/case struct i.e.
+going by MAG/MAG_ADAPTIVE, then INFO_VALUE -> RISING / FALLING and
+PERIOD.
 
-No need - it's an easy tweak (hopefully).  I fixed up the owner thing Nuno noticed
-and applied this diff whilst picking this up.
+This will distinguish properties for four different types of events,
+of course it then also will use separate functions. As I uderstood
+your review, why starting with switch/case, do
+if (!MAG event) then, return right away. I implemented that as I
+understood. For further switch/case-ing, I did the same.
+Now, patch by patch, it grows. Thus the if-not-back-out lines will be
+moved out and replaced by switch/case. Worse, with every level switch
+case, all existing code needs indention, thus reading through the
+patches show (too) many changes.
 
+How can I improve to help you reviewing this or make the feedback more
+useful for me? Or is my approach wrong? I'd like to start with the
+switch case right away, then just add up what comes in with every
+other patch. If so, you'd only see the changes, since the final
+structure of this is already clear, because very similar to all
+iio/accel drivers at least (as you probably know better than me).
 
-diff --git a/drivers/iio/adc/ad7405.c b/drivers/iio/adc/ad7405.c
-index 487d661f9050..9adf85a732ce 100644
---- a/drivers/iio/adc/ad7405.c
-+++ b/drivers/iio/adc/ad7405.c
-@@ -25,7 +25,6 @@ static const unsigned int ad7405_dec_rates_range[] = {
- 
- struct ad7405_chip_info {
-        const char *name;
--       struct iio_chan_spec channel;
-        const unsigned int full_scale_mv;
- };
- 
-@@ -69,7 +68,7 @@ static int ad7405_read_raw(struct iio_dev *indio_dev,
-        switch (info) {
-        case IIO_CHAN_INFO_SCALE:
-                *val = st->info->full_scale_mv;
--               *val2 = st->info->channel.scan_type.realbits - 1;
-+               *val2 = indio_dev->channels[0].scan_type.realbits - 1;
-                return IIO_VAL_FRACTIONAL_LOG2;
-        case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
-                *val = st->dec_rate;
-@@ -78,7 +77,7 @@ static int ad7405_read_raw(struct iio_dev *indio_dev,
-                *val = DIV_ROUND_CLOSEST_ULL(st->ref_frequency, st->dec_rate);
-                return IIO_VAL_INT;
-        case IIO_CHAN_INFO_OFFSET:
--               *val = -(1 << (st->info->channel.scan_type.realbits - 1));
-+               *val = -(1 << (indio_dev->channels[0].scan_type.realbits - 1));
-                return IIO_VAL_INT;
-        default:
-                return -EINVAL;
-@@ -120,48 +119,44 @@ static const struct iio_info ad7405_iio_info = {
-        .read_avail = &ad7405_read_avail,
- };
- 
--#define AD7405_IIO_CHANNEL {                                   \
--       .type = IIO_VOLTAGE,                                    \
--       .info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE) |  \
--                       BIT(IIO_CHAN_INFO_OFFSET),              \
--       .info_mask_shared_by_all = IIO_CHAN_INFO_SAMP_FREQ |    \
--                       BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),  \
--       .info_mask_shared_by_all_available =                    \
--                       BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),  \
--       .indexed = 1,                                           \
--       .channel = 0,                                           \
--       .channel2 = 1,                                          \
--       .differential = 1,                                      \
--       .scan_index = 0,                                        \
--       .scan_type = {                                          \
--               .sign = 'u',                                    \
--               .realbits = 16,                                 \
--               .storagebits = 16,                              \
--       },                                                      \
--}
-+static const struct iio_chan_spec ad7405_channel = {
-+       .type = IIO_VOLTAGE,
-+       .info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE) |
-+                       BIT(IIO_CHAN_INFO_OFFSET),
-+       .info_mask_shared_by_all = IIO_CHAN_INFO_SAMP_FREQ |
-+                       BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),
-+       .info_mask_shared_by_all_available =
-+                       BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),
-+       .indexed = 1,
-+       .channel = 0,
-+       .channel2 = 1,
-+       .differential = 1,
-+       .scan_index = 0,
-+       .scan_type = {
-+               .sign = 'u',
-+               .realbits = 16,
-+               .storagebits = 16,
-+       },
-+};
- 
- static const struct ad7405_chip_info ad7405_chip_info = {
-        .name = "ad7405",
-        .full_scale_mv = 320,
--       .channel = AD7405_IIO_CHANNEL,
- };
- 
- static const struct ad7405_chip_info adum7701_chip_info = {
-        .name = "adum7701",
-        .full_scale_mv = 320,
--       .channel = AD7405_IIO_CHANNEL,
- };
- 
- static const struct ad7405_chip_info adum7702_chip_info = {
-        .name = "adum7702",
-        .full_scale_mv = 64,
--       .channel = AD7405_IIO_CHANNEL,
- };
- 
- static const struct ad7405_chip_info adum7703_chip_info = {
-        .name = "adum7703",
-        .full_scale_mv = 320,
--       .channel = AD7405_IIO_CHANNEL,
- };
- 
- static const char * const ad7405_power_supplies[] = {
-@@ -200,7 +195,7 @@ static int ad7405_probe(struct platform_device *pdev)
-                return -EINVAL;
- 
-        indio_dev->name = st->info->name;
--       indio_dev->channels = &st->info->channel;
-+       indio_dev->channels = &ad7405_channel;
-        indio_dev->num_channels = 1;
-        indio_dev->info = &ad7405_iio_info;
- 
-Let me know if I messed it up.  Pushed out as testing for now.
-
-Thanks,
-
-Jonathan
+>
+> > +       switch (info) {
+> > +       case IIO_EV_INFO_VALUE:
+> > +               /* Scale factor 15.625 mg/LSB */
+> > +               regval =3D DIV_ROUND_CLOSEST(MICRO * val + val2, 15625)=
+;
+> > +               switch (dir) {
+> > +               case IIO_EV_DIR_RISING:
+> > +                       ret =3D regmap_write(data->regmap,
+> > +                                          adxl313_act_thresh_reg[ADXL3=
+13_ACTIVITY],
+> > +                                          regval);
+> > +                       if (ret)
+> > +                               return ret;
+> > +                       return adxl313_set_measure_en(data, true);
+> > +               case IIO_EV_DIR_FALLING:
+> > +                       ret =3D regmap_write(data->regmap,
+> > +                                          adxl313_act_thresh_reg[ADXL3=
+13_INACTIVITY],
+> > +                                          regval);
+> > +                       if (ret)
+> > +                               return ret;
+> > +                       return adxl313_set_measure_en(data, true);
+> > +               default:
+> > +                       return -EINVAL;
+> > +               }
+> > +       case IIO_EV_INFO_PERIOD:
+> > +               ret =3D adxl313_set_inact_time_s(data, val);
+> >                 if (ret)
+> >                         return ret;
+> >                 return adxl313_set_measure_en(data, true);
+>
+> --
+> With Best Regards,
+> Andy Shevchenko
 

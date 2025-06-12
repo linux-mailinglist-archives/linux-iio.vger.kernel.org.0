@@ -1,228 +1,317 @@
-Return-Path: <linux-iio+bounces-20542-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20543-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70ED9AD6FD9
-	for <lists+linux-iio@lfdr.de>; Thu, 12 Jun 2025 14:13:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C932AD6FF3
+	for <lists+linux-iio@lfdr.de>; Thu, 12 Jun 2025 14:16:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 41E4C188440E
-	for <lists+linux-iio@lfdr.de>; Thu, 12 Jun 2025 12:13:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 63E511BC4FA7
+	for <lists+linux-iio@lfdr.de>; Thu, 12 Jun 2025 12:16:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A359C2F432C;
-	Thu, 12 Jun 2025 12:13:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A996F1865EB;
+	Thu, 12 Jun 2025 12:15:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=nicolas.frattaroli@collabora.com header.b="SK7OXUzc"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Dqbsgbss"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52CCA2F432A;
-	Thu, 12 Jun 2025 12:12:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749730380; cv=pass; b=i/5ktvIVLpKsKbXa2RSPONNdq+DHkqdiE/LLW6P19PwuT2KbK6PLOXKtrMwrLwX83EbS4UQat9tyAnN1Fh1AXYQ4xukvSSXv+kNM8l/73Tsevn4sdqP6T8cZB8DzOZmF74bET2vaVG2Q2IsUYd8DbQtji/EnmXOWPw5axyTO82o=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749730380; c=relaxed/simple;
-	bh=+kdiXiiHozxtvIIE7QcPklTRBLEyuoJrKDGLNl7vclA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jhlVHwGs0atC6wFTydq3STswYSrQKfBnrM5VzawB5s4JJ02elAHbydRlrbz4fw+J29ItNU/3G9/hMGxV/EgmDh1LZdNURwnz/ssi/cCmlPpzhss89Mz/ritDJFU7cQFajHoj9NijkjcBS0w6Deg1UPD/8eaTWqQMQeioovuJen8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=nicolas.frattaroli@collabora.com header.b=SK7OXUzc; arc=pass smtp.client-ip=136.143.188.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-ARC-Seal: i=1; a=rsa-sha256; t=1749730279; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=gLVUSH8whkjznJ84HhEKxxnjU2XuDwX04WtVl7Ke0k/VtxuyHepvYyZFEsDsuRxdsOR+mZGQaf6prN0Jl3RFazK5tsm20vUPJNrfC7uMH7EkaAb8x+J6/uAl/jUVupirBlfKqcEg9lOnbR3b7+HuupT2MjpmNEg4RkgTVsrnDEU=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1749730279; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=anKlnwbFl0i8atiPf5c4Ks2L7I/qYyoFEOqCpl8Xjz4=; 
-	b=NnYk+ho5QsNnUw/GyWrBWAlNSFdprVwt/SMpMEjygvo543BdEKRBHtfoDB0IlobqSRFj3aQKnfuW61HRwi3mlbyo7MjKlqvXIxcbmt1jg1nM3R/1ZxeziAGckm4SGc4esonsJ/LIuXqmUTX6AGNZ7pwSisvbKzWfbHfGMTWV5H8=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=nicolas.frattaroli@collabora.com;
-	dmarc=pass header.from=<nicolas.frattaroli@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1749730279;
-	s=zohomail; d=collabora.com; i=nicolas.frattaroli@collabora.com;
-	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Content-Type:Message-Id:Reply-To;
-	bh=anKlnwbFl0i8atiPf5c4Ks2L7I/qYyoFEOqCpl8Xjz4=;
-	b=SK7OXUzcTO6J2OvgkAoNUrfYDQNfzeYE74UjS+nOX7vgUkpRNbgyTF8jQkg2hh0D
-	dUAV/oN8qsLxpnK+Y+fEssRjHR7B+gVr7b2h2PGccmdr2X9JotCuSJJ08Fv1WSCt0fN
-	YQykWtOBwsZmWFYSR+CE0ujPPquYI14ZwNERJFwc=
-Received: by mx.zohomail.com with SMTPS id 1749730276781981.6042234328434;
-	Thu, 12 Jun 2025 05:11:16 -0700 (PDT)
-From: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
-To: David Lechner <dlechner@baylibre.com>, linux-rockchip@lists.infradead.org
-Cc: Michael Hennerich <michael.hennerich@analog.com>,
- Lars-Peter Clausen <lars@metafoo.de>, Jonathan Cameron <jic23@kernel.org>,
- Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
- Andy Shevchenko <andy@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Heiko Stuebner <heiko@sntech.de>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Francesco Dolcini <francesco@dolcini.it>,
- =?UTF-8?B?Sm/Do28gUGF1bG8gR29uw6dhbHZlcw==?=
- <jpaulo.silvagoncalves@gmail.com>,
- Leonard =?UTF-8?B?R8O2aHJz?= <l.goehrs@pengutronix.de>,
- kernel@pengutronix.de, Oleksij Rempel <o.rempel@pengutronix.de>,
- Roan van Dijk <roan@protonic.nl>,
- Tomasz Duszynski <tomasz.duszynski@octakon.com>,
- Jacopo Mondi <jacopo@jmondi.org>,
- Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
- Mudit Sharma <muditsharma.info@gmail.com>,
- Javier Carrasco <javier.carrasco.cruz@gmail.com>,
- =?UTF-8?B?T25kxZllag==?= Jirman <megi@xff.cz>,
- Andreas Klinger <ak@it-klinger.de>,
- Petre Rodan <petre.rodan@subdimension.ro>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-mediatek@lists.infradead.org, linux-rockchip@lists.infradead.org,
- linux-stm32@st-md-mailman.stormreply.com, Pavel Machek <pavel@ucw.cz>
-Subject: Re: [PATCH 00/28] iio: zero init stack with { } instead of memset()
-Date: Thu, 12 Jun 2025 14:11:08 +0200
-Message-ID: <2243943.irdbgypaU6@workhorse>
-In-Reply-To: <aEqbQPvz0FsLXt0Z@duo.ucw.cz>
-References:
- <20250611-iio-zero-init-stack-with-instead-of-memset-v1-0-ebb2d0a24302@baylibre.com>
- <aEqbQPvz0FsLXt0Z@duo.ucw.cz>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8431C2F4338;
+	Thu, 12 Jun 2025 12:15:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1749730524; cv=none; b=d4e25pEN4s5D7WK7bRLknO4DX/wAsiYzw6C7IMm+wPILnxpEVsR1uoo/3tjUM3eULc2Q2bUqxvscRd6NHp9kBxgvDxppo/1VhCBCOth4y/b5bpUiWRU+4Nnvs8pkithOWbM1//t7HvSbjGbCYaZA1VRudySny3T66qFiUJV58V8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1749730524; c=relaxed/simple;
+	bh=SEs2j+fKgl/2ov7h4rZaMSfSjXIEe+/fSs1zEnX0EuY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GR5Q0JINEcqSqPi8DNS+nbVNIrsVhF/1r7lJ1kfs27bfOeBxZivLDKceUvdqFdRal5gvCG/ZTrZUVC7QaaKzY5WqnEsFwz5qShAsCv7SAfOIxoXgZgRoUAx5mXB6OWPsefGgjNIaBA7kZ+sAd042VlrxEJgA/SccqfRCKTVIxi4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Dqbsgbss; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1749730523; x=1781266523;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=SEs2j+fKgl/2ov7h4rZaMSfSjXIEe+/fSs1zEnX0EuY=;
+  b=DqbsgbssxtFJlbegxMJXfTrk09uUaAuEl5W/cEl3ck4kDno+9aOgbz/o
+   eCRUW0Ri0bHopQWa8NTY8mWlW5S0wsKBOzZxjDixFfJtIuMaRKCoUxvoK
+   Tw0espqJIh1XWkpZjBhl2VkIrB1XCHK2laPcSfv+9ZXqxlSZo7++qomYr
+   bkiXxj8PnpWr2UcOC5JUsqK5X/g+MmZFMm1+RFj92yXkxJHEZFs8zUX9h
+   /o6E8JJgTKJHlgcp9/m3upD/dSL5MDXuzp3IiJXqmqdrkikLZRt7tupZ9
+   C644JmevJZRuXgX1HN0cUTnUGlYemlUNxc01Vfe+JwwxmNU2Jvo8DR2Se
+   Q==;
+X-CSE-ConnectionGUID: o25NS/IqTvSmGrqIwR33BA==
+X-CSE-MsgGUID: b19mZ9IaRAC0E91BpaBqNQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11461"; a="55579483"
+X-IronPort-AV: E=Sophos;i="6.16,230,1744095600"; 
+   d="scan'208";a="55579483"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2025 05:15:22 -0700
+X-CSE-ConnectionGUID: mlZxuIRSQL6AppBv1TJt+w==
+X-CSE-MsgGUID: K9pnUkGYRBOhmJ7qtqpzIA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,230,1744095600"; 
+   d="scan'208";a="147410548"
+Received: from smile.fi.intel.com ([10.237.72.52])
+  by orviesa010.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2025 05:15:19 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@intel.com>)
+	id 1uPgpv-00000005wdj-3Lmw;
+	Thu, 12 Jun 2025 15:15:15 +0300
+Date: Thu, 12 Jun 2025 15:15:15 +0300
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Lothar Rubusch <l.rubusch@gmail.com>
+Cc: lars@metafoo.de, Michael.Hennerich@analog.com, jic23@kernel.org,
+	dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org,
+	corbet@lwn.net, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+	eraretuya@gmail.com
+Subject: Re: [PATCH v9 08/11] iio: accel: adxl345: add inactivity feature
+Message-ID: <aErE0xmlm4qBHg03@smile.fi.intel.com>
+References: <20250610215933.84795-1-l.rubusch@gmail.com>
+ <20250610215933.84795-9-l.rubusch@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250610215933.84795-9-l.rubusch@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-Hello,
-
-I thought I'd chime in as someone uninvolved because this seemed
-interesting.
-
-On Thursday, 12 June 2025 11:17:52 Central European Summer Time Pavel Machek wrote:
-> Hi!
+On Tue, Jun 10, 2025 at 09:59:30PM +0000, Lothar Rubusch wrote:
+> Add the inactivity feature of the sensor to the driver. When activity
+> and inactivity are enabled, a link bit will be set linking activity and
+> inactivity handling. Additionally, the auto-sleep mode will be enabled.
+> Due to the link bit the sensor is going to auto-sleep when inactivity
+> was detected.
 > 
-> > Jonathan mentioned recently that he would like to get away from using
-> > memset() to zero-initialize stack memory in the IIO subsystem. And we
-> > have it on good authority that initializing a struct or array with = { }
-> > is the preferred way to do this in the kernel [1]. So here is a series
-> > to take care of that.
+> Inactivity detection needs a threshold to be configured and a period of
+> time in seconds. After, it will transition to inactivity state, if
+> measurements stay below inactivity threshold.
 > 
-> 1) Is it worth the churn?
+> When a ODR is configured the period for inactivity is adjusted with a
+> corresponding reasonable default value, in order to have higher
+> frequencies, lower inactivity times, and lower sample frequency but
+> give more time until inactivity. Both with reasonable upper and lower
+> boundaries, since many of the sensor's features (e.g. auto-sleep) will
+> need to operate between 12.5 Hz and 400 Hz. This is a default setting
+> when actively changing sample frequency, explicitly setting the time
+> until inactivity will overwrite the default.
 > 
-> 2) Will this fail to initialize padding with some obscure compiler?
+> Similarly, setting the g-range will provide a default value for the
+> activity and inactivity thresholds. Both are implicit defaults, but
+> equally can be overwritten to be explicitly configured.
 
-as of right now, the only two C compilers that are supported are
-GCC >= 8.1, and Clang >= 13.0.1. If anyone even manages to get the kernel
-to finish a build with something else, I think the compiler not
-implementing the C standard correctly is the least of their worries.
+...
 
-My bigger worry is that = { } is only guaranteed to be as correct as
-memset on C23, and the kernel's standard right now is C11. For that
-reason alone, I don't think memset should be moved away from for now,
-unless someone can verify that every GCC release >= 8.1 and every
-Clang release >= 13.0.1 does the right thing here regardless.
+> +static const struct iio_event_spec adxl345_fake_chan_events[] = {
+> +	{
+> +		/* inactivity */
+> +		.type = IIO_EV_TYPE_MAG,
+> +		.dir = IIO_EV_DIR_FALLING,
+> +		.mask_separate = BIT(IIO_EV_INFO_ENABLE),
+> +		.mask_shared_by_type = BIT(IIO_EV_INFO_VALUE) |
+> +			BIT(IIO_EV_INFO_PERIOD),
 
-> 
-> 3) Why do you believe that {} is the preffered way? All we have is
-> Kees' email that explains that = {} maybe works in configs he tested.
+Slightly better
 
-= { } is guaranteed to work in C23, as per the standard, but again we're
-not on C23.
+		.mask_shared_by_type =
+			BIT(IIO_EV_INFO_VALUE) |
+			BIT(IIO_EV_INFO_PERIOD),
 
-The reason to prefer this is likely that it's easier for static analysis
-to see the struct as initialised, but that's me making assumptions here.
+> +	},
+> +};
 
-A more human-centric argument is that once we're on a C standards version
-where = { } is guaranteed to be correct, then = { } is much more obviously
-correct to a reader than a memset with a value and a size somewhere later
-in the code. This argument is evident from the number of patches in this
-series where the memset and the declaration are not in the same hunk.
-That's the kind of stuff that keeps me awake at night, sweating profusely.
+And the same for other similar cases.
 
-Kind regards,
-Nicolas Frattaroli
+...
 
-> 
-> BR,
-> 								Pavel
-> 
-> > [1]:
-> > https://lore.kernel.org/linux-iio/202505090942.48EBF01B@keescook/
-> 
-> 
-> 
-> > ---
-> > David Lechner (28):
-> >       iio: accel: adxl372: use = { } instead of memset()
-> >       iio: accel: msa311: use = { } instead of memset()
-> >       iio: adc: dln2-adc: use = { } instead of memset()
-> >       iio: adc: mt6360-adc: use = { } instead of memset()
-> >       iio: adc: rockchip_saradc: use = { } instead of memset()
-> >       iio: adc: rtq6056: use = { } instead of memset()
-> >       iio: adc: stm32-adc: use = { } instead of memset()
-> >       iio: adc: ti-ads1015: use = { } instead of memset()
-> >       iio: adc: ti-ads1119: use = { } instead of memset()
-> >       iio: adc: ti-lmp92064: use = { } instead of memset()
-> >       iio: adc: ti-tsc2046: use = { } instead of memset()
-> >       iio: chemical: scd4x: use = { } instead of memset()
-> >       iio: chemical: scd30: use = { } instead of memset()
-> >       iio: chemical: sunrise_co2: use = { } instead of memset()
-> >       iio: dac: ad3552r: use = { } instead of memset()
-> >       iio: imu: inv_icm42600: use = { } instead of memset()
-> >       iio: imu: inv_mpu6050: use = { } instead of memset()
-> >       iio: light: bh1745: use = { } instead of memset()
-> >       iio: light: ltr501: use = { } instead of memset()
-> >       iio: light: opt4060: use = { } instead of memset()
-> >       iio: light: veml6030: use = { } instead of memset()
-> >       iio: magnetometer: af8133j: use = { } instead of memset()
-> >       iio: pressure: bmp280: use = { } instead of memset()
-> >       iio: pressure: mpl3115: use = { } instead of memset()
-> >       iio: pressure: mprls0025pa: use = { } instead of memset()
-> >       iio: pressure: zpa2326: use = { } instead of memset()
-> >       iio: proximity: irsd200: use = { } instead of memset()
-> >       iio: temperature: tmp006: use = { } instead of memset()
-> > 
-> >  drivers/iio/accel/adxl372.c                       | 3 +--
-> >  drivers/iio/accel/msa311.c                        | 4 +---
-> >  drivers/iio/adc/dln2-adc.c                        | 4 +---
-> >  drivers/iio/adc/mt6360-adc.c                      | 3 +--
-> >  drivers/iio/adc/rockchip_saradc.c                 | 4 +---
-> >  drivers/iio/adc/rtq6056.c                         | 4 +---
-> >  drivers/iio/adc/stm32-adc.c                       | 3 +--
-> >  drivers/iio/adc/ti-ads1015.c                      | 4 +---
-> >  drivers/iio/adc/ti-ads1119.c                      | 4 +---
-> >  drivers/iio/adc/ti-lmp92064.c                     | 4 +---
-> >  drivers/iio/adc/ti-tsc2046.c                      | 3 +--
-> >  drivers/iio/chemical/scd30_core.c                 | 3 +--
-> >  drivers/iio/chemical/scd4x.c                      | 3 +--
-> >  drivers/iio/chemical/sunrise_co2.c                | 6 ++----
-> >  drivers/iio/dac/ad3552r.c                         | 3 +--
-> >  drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c | 5 ++---
-> >  drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c  | 5 ++---
-> >  drivers/iio/imu/inv_mpu6050/inv_mpu_acpi.c        | 4 +---
-> >  drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c        | 6 ++----
-> >  drivers/iio/light/bh1745.c                        | 4 +---
-> >  drivers/iio/light/ltr501.c                        | 4 +---
-> >  drivers/iio/light/opt4060.c                       | 4 +---
-> >  drivers/iio/light/veml6030.c                      | 4 +---
-> >  drivers/iio/magnetometer/af8133j.c                | 4 +---
-> >  drivers/iio/pressure/bmp280-core.c                | 5 +----
-> >  drivers/iio/pressure/mpl3115.c                    | 3 +--
-> >  drivers/iio/pressure/mprls0025pa_i2c.c            | 5 +----
-> >  drivers/iio/pressure/zpa2326.c                    | 4 +---
-> >  drivers/iio/proximity/irsd200.c                   | 3 +--
-> >  drivers/iio/temperature/tmp006.c                  | 4 +---
-> >  30 files changed, 34 insertions(+), 85 deletions(-)
-> > ---
-> > base-commit: 4c6073fec2fee4827fa0dd8a4ab4e6f7bbc05ee6
-> > change-id: 20250611-iio-zero-init-stack-with-instead-of-memset-0d12d41a7ecb
-> > 
-> > Best regards,
-> 
-> 
+> +/**
+> + * adxl345_set_inact_time - Configure inactivity time explicitly or by ODR.
+> + * @st: The sensor state instance.
+> + * @val_s: A desired time value, between 0 and 255.
+> + *
+> + * Inactivity time can be configured between 1 and 255 sec. If a val_s of 0
+> + * is configured by a user, then a default inactivity time will be computed.
+> + *
+> + * In such case, it should take power consumption into consideration. Thus it
+> + * shall be shorter for higher frequencies and longer for lower frequencies.
+> + * Hence, frequencies above 255 Hz shall default to 10 s and frequencies below
+> + * 10 Hz shall result in 255 s to detect inactivity.
+> + *
+> + * The approach simply subtracts the pre-decimal figure of the configured
+> + * sample frequency from 255 s to compute inactivity time [s]. Sub-Hz are thus
+> + * ignored in this estimation. The recommended ODRs for various features
+> + * (activity/inactivity, sleep modes, free fall, etc.) lie between 12.5 Hz and
+> + * 400 Hz, thus higher or lower frequencies will result in the boundary
+> + * defaults or need to be explicitly specified via val_s.
+> + *
+> + * Return: 0 or error value.
+> + */
+> +static int adxl345_set_inact_time(struct adxl345_state *st, u32 val_s)
+> +{
+> +	unsigned int max_boundary = 255;
+> +	unsigned int min_boundary = 10;
+> +	unsigned int val = min(val_s, max_boundary);
+> +	enum adxl345_odr odr;
+> +	unsigned int regval;
+> +	int ret;
+> +
+> +	if (val == 0) {
+> +		ret = regmap_read(st->regmap, ADXL345_REG_BW_RATE, &regval);
+> +		if (ret)
+> +			return ret;
+> +
+> +		odr = FIELD_GET(ADXL345_BW_RATE_MSK, regval);
+
+> +		val = (adxl345_odr_tbl[odr][0] > max_boundary)
+> +			? min_boundary : max_boundary -	adxl345_odr_tbl[odr][0];
+
+clamp() ?
+
+> +	}
+> +
+> +	return regmap_write(st->regmap, ADXL345_REG_TIME_INACT, val);
+> +}
+
+...
+
+>  	if (type == ADXL345_ACTIVITY) {
+>  		axis_ctrl = ADXL345_ACT_X_EN | ADXL345_ACT_Y_EN |
+>  				ADXL345_ACT_Z_EN;
+>  	} else {
+> -		axis_ctrl = 0x00;
+> +		axis_ctrl = ADXL345_INACT_X_EN | ADXL345_INACT_Y_EN |
+> +				ADXL345_INACT_Z_EN;
+>  	}
+
+Now this can be as simple as
+
+	axis_ctrl = ADXL345_ACT_X_EN;
+	if (type == ADXL345_ACTIVITY)
+		axis_ctrl |= ADXL345_ACT_Y_EN | ADXL345_ACT_Z_EN;
+	else
+		axis_ctrl |= ADXL345_INACT_Y_EN | ADXL345_INACT_Z_EN;
+
+Yeah, I don't know how to make the diff better (it gets worse), but the end
+result is better.
+
+One way, which I don't like much is to previously have this conditional written as:
+
+	axis_ctrl = ADXL345_ACT_X_EN;
+	if (type == ADXL345_ACTIVITY)
+		axis_ctrl |= ADXL345_ACT_Y_EN | ADXL345_ACT_Z_EN;
+	else
+		axis_ctrl = 0;
+
+...
+
+> +	ret = regmap_assign_bits(st->regmap, ADXL345_REG_POWER_CTL,
+> +				 (ADXL345_POWER_CTL_AUTO_SLEEP | ADXL345_POWER_CTL_LINK),
+
+Unneeded parentheses.
+
+> +				 en);
+>  	if (ret)
+>  		return ret;
+
+...
+
+>  static int adxl345_set_odr(struct adxl345_state *st, enum adxl345_odr odr)
+>  {
+> -	return regmap_update_bits(st->regmap, ADXL345_REG_BW_RATE,
+> +	int ret;
+> +
+> +	ret = regmap_update_bits(st->regmap, ADXL345_REG_BW_RATE,
+>  				 ADXL345_BW_RATE_MSK,
+>  				 FIELD_PREP(ADXL345_BW_RATE_MSK, odr));
+> +	if (ret)
+> +		return ret;
+> +
+> +	/* update inactivity time by ODR */
+> +	return adxl345_set_inact_time(st, 0);
+
+Okay, in this case the initial form of
+
+	int ret;
+
+	ret = ...
+	if (ret)
+		return ret;
+
+	return 0;
 
 
+will be better with the respectful comment (as Jonathan suggested) in that
+change that this is not optimal as standalone change, but it will help reduce
+churn in the next change(s).
+
+>  }
+
+...
+
+>  static int adxl345_set_range(struct adxl345_state *st, enum adxl345_range range)
+>  {
+> -	return regmap_update_bits(st->regmap, ADXL345_REG_DATA_FORMAT,
+
+Same here.
+
+> +	unsigned int act_threshold, inact_threshold;
+> +	unsigned int range_old;
+> +	unsigned int regval;
+> +	int ret;
+> +
+> +	ret = regmap_read(st->regmap, ADXL345_REG_DATA_FORMAT, &regval);
+> +	if (ret)
+> +		return ret;
+> +	range_old = FIELD_GET(ADXL345_DATA_FORMAT_RANGE, regval);
+> +
+> +	ret = regmap_read(st->regmap,
+> +			  adxl345_act_thresh_reg[ADXL345_ACTIVITY],
+> +			  &act_threshold);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = regmap_read(st->regmap,
+> +			  adxl345_act_thresh_reg[ADXL345_INACTIVITY],
+> +			  &inact_threshold);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = regmap_update_bits(st->regmap, ADXL345_REG_DATA_FORMAT,
+>  				 ADXL345_DATA_FORMAT_RANGE,
+>  				 FIELD_PREP(ADXL345_DATA_FORMAT_RANGE, range));
+> +	if (ret)
+> +		return ret;
+> +
+> +	act_threshold = act_threshold * adxl345_range_factor_tbl[range_old]
+> +		/ adxl345_range_factor_tbl[range];
+> +	act_threshold = min(U8_MAX, max(1, act_threshold));
+> +
+> +	inact_threshold = inact_threshold * adxl345_range_factor_tbl[range_old]
+> +		/ adxl345_range_factor_tbl[range];
+> +	inact_threshold = min(U8_MAX, max(1, inact_threshold));
+> +
+> +	ret = regmap_write(st->regmap, adxl345_act_thresh_reg[ADXL345_ACTIVITY],
+> +			   act_threshold);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return regmap_write(st->regmap, adxl345_act_thresh_reg[ADXL345_INACTIVITY],
+> +			   inact_threshold);
+>  }
+
+-- 
+With Best Regards,
+Andy Shevchenko
 
 
 

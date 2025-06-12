@@ -1,400 +1,204 @@
-Return-Path: <linux-iio+bounces-20575-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20576-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C579AD7C4B
-	for <lists+linux-iio@lfdr.de>; Thu, 12 Jun 2025 22:20:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7391CAD7F3D
+	for <lists+linux-iio@lfdr.de>; Fri, 13 Jun 2025 01:50:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6414D188ED3B
-	for <lists+linux-iio@lfdr.de>; Thu, 12 Jun 2025 20:21:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C50873B9DFF
+	for <lists+linux-iio@lfdr.de>; Thu, 12 Jun 2025 23:48:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE567298CDD;
-	Thu, 12 Jun 2025 20:20:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EB8C2E3386;
+	Thu, 12 Jun 2025 23:44:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="tm8bH2fA"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Rh4BNFVB"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ot1-f47.google.com (mail-ot1-f47.google.com [209.85.210.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61E061D95B3
-	for <linux-iio@vger.kernel.org>; Thu, 12 Jun 2025 20:20:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E24792E2F1D
+	for <linux-iio@vger.kernel.org>; Thu, 12 Jun 2025 23:44:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.184
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749759644; cv=none; b=A/0zPMnXVoujNSEpiYYcadr4GPUDTqsTaPTtdkWnC8W3pJ/z3fKwnLSiq6oTYMcYVikl/DS3KRgDxn67+du4SH5GnH/CAcbSMFtzz0KU8r/lqmhfReg7EA96dds82dNYnk34+OJAsCKwXUM0OEafUPJzbLAtP+/Yw48mFK6/MgA=
+	t=1749771869; cv=none; b=sUHnossfBtZWLSSyLwQL5BAoqRGTM0WadhygDlGBin8SjIUubMiuJaXqk4vOgeOVIB+Vj47LP1bc7Pff6Q1419/f8D+MoEhUyqpqP3PcdK2Bd2K0Y/VQ+27OhteoBoz3mdXyJfsbLRvabaNqKcduJiGNb4yNXrwk/4gKworfeV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749759644; c=relaxed/simple;
-	bh=6Q/PGBvknyPShMaTySM+cqmOkNrRnIyJJHTUlyaDcRg=;
+	s=arc-20240116; t=1749771869; c=relaxed/simple;
+	bh=5JzILznrMxvVRQxf8Hqsu5zni/A7Rt4O3iDHv8KHbJk=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fjNiG5ZdKISK0Sf/rLtnVhXdbYNvX2tkYet+IgPyzQoFxCqUekHXVmxvUNvPgH/FH/I1GHfcUSyHmxEMxgDcZt7Ck/t/BJ62yE1B1s1YT9Nox2rpCqdOZr9wb9SoYxzO011Xb9VAf3c7+fCbhVV5YhqFi8pwEInFsgKVpRc+BeI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=tm8bH2fA; arc=none smtp.client-ip=209.85.210.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ot1-f47.google.com with SMTP id 46e09a7af769-735b2699d5dso766816a34.0
-        for <linux-iio@vger.kernel.org>; Thu, 12 Jun 2025 13:20:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1749759641; x=1750364441; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=LnqQFNNg7S/LY+02Og7P0coplg2HCqvVrychShtmb0Y=;
-        b=tm8bH2fAiv5IUInWReklncngSn1Jtoe0JCWTc00pJMs5xwwkSYX9PKVj+XJt51LOyl
-         Al51SfNuaOJTrqkCoUJBDRt/6+X449+aRIxNyxOg72EAvu5LfnTwxLuXN3fvs+K/TtLf
-         6H+Gok/BevwEBq2bdB1UD5MdXKk9u+Sop/4Y9p1GvPdPQJXyyNo45xYB0UxgExaZHN2L
-         JB5qfh5DFb6Y8I/DNYl85HY1DGCd5NuC0zzaoAXLB7B1/Z/RzhGJ5l/B9Yw18wtbulhy
-         WmzJzRO6Ro8V/gyvmL00UwITZBUQUZqyxsptVsx7FId5Hf99khtNJY7qq5U4lSvhQsTe
-         m6qg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749759641; x=1750364441;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=LnqQFNNg7S/LY+02Og7P0coplg2HCqvVrychShtmb0Y=;
-        b=ZSiBzpu8jkLqXBdibLnjFIHJ/HnlLXGBi5US31TuTpwRFAaHJM4Idu9YoUsbMA7t+c
-         xFTNPH4CbohEbUW+uPcZise2KsZRTB1LM+79TaYvg/t30+jCl9abltmWCdwKMOP1zp0f
-         XDF8oJzccuBJ6d1ZS3dhp9LB8g2+5xakpxi1WT+QIVAtkYYltByhXDgG1VUdoXP4w6Tq
-         XZXF0MP2sX6c/fXSCltlPOTUBT3AFnkNJpczt+0bFriTfQm8MUsUkh4duHtzVYUO8LxG
-         bWoRFhAfNgEd2MigzLMY7nk5Bvur7PqqhtcIT14oF930J/KYf4Vqz/EkkQ93lgG8FqsU
-         x0/Q==
-X-Forwarded-Encrypted: i=1; AJvYcCU1QJlPLHkkZsTycp4hHDH1HFR0Y/k24RlgSeAFhSg6qMbpY5lgORG0JQeNndIMIrjJtBGNsdC7B+I=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwQ7YICUBmv49n6rOHj4+Hd2epnb2jISQjpp/fwwcPFXy59DpKq
-	YMjsl/f96kRwOuVgNuqCzcQegWLtuJaIkYTsbM9y53TkmTXc4uc3XKhz6vzUxMhbzCw=
-X-Gm-Gg: ASbGnctaUiHP2QpZE1SLgbQJbXzlxbmefpMctbaGuTUIFnzFk2rq44A8X/fpnNd+sNe
-	mGzrWrh7M6bvCyMXKl6fbd4fvXXadQGA9U0i4jmIxXupib5BlqP1W8XGUHhyoXfxO3HfuCW86C3
-	umH1qfRJ2bZYpGNKrXWfUDyGl/tawxVUMj4t32B8ZAx4iTcjBKry/AOTQBqZuWM1rxS35oFPnQn
-	94spsvrEslI/PHt6P6TA1iJfmG8gby4TnMVMA9/clMrsKtp57k/pMwmibVrhQpXZroFmW1205TX
-	kKAhWaD+Zv377AfGsC8oJes5D4q6KEraHVr7l1gfSZrvatG8TzkF8SCqpv2RS2q8cOgijxiodPC
-	gla2qFkW8tsFdBdsESHmnaG6VWpvi4jsscW3D
-X-Google-Smtp-Source: AGHT+IGvy63gbdgYzhxx915nytzJrnbOCs/GabFdn8/B1Ozt4U4/eT429+1bpQ6NvozpwiaByThNIA==
-X-Received: by 2002:a05:6830:8009:b0:72a:47ec:12c6 with SMTP id 46e09a7af769-73a2708d702mr121676a34.2.1749759641342;
-        Thu, 12 Jun 2025 13:20:41 -0700 (PDT)
-Received: from ?IPV6:2600:8803:e7e4:1d00:f808:847:b3ae:ff1a? ([2600:8803:e7e4:1d00:f808:847:b3ae:ff1a])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-73a16a57ec5sm392377a34.18.2025.06.12.13.20.40
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 12 Jun 2025 13:20:40 -0700 (PDT)
-Message-ID: <5130be5d-b769-41aa-af2f-b1e16a91e569@baylibre.com>
-Date: Thu, 12 Jun 2025 15:20:40 -0500
+	 In-Reply-To:Content-Type; b=ak0G/2/S2mERPQE98georLLiFMD6xY1xolXI8Hi7B1KJvh9skk8q9FZynOwMRnxpabGV64hHpbzkBLNLrWk2wKnY3y+YLYSfox0TPqVFlZiDBiJSGtjtUxhr1W17Q0kZ7dr37jrOYzGHWJci1/NkMLSUtLuFfdDWAYOwQ4+BRj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Rh4BNFVB; arc=none smtp.client-ip=91.218.175.184
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Message-ID: <dbe26b36-a10c-4afb-88ad-a6f7f9bff440@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1749771854;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8t46q3qqq58O3Iozg3ZVMZkLga+rVEXppYIQU8pZTR0=;
+	b=Rh4BNFVBqPKyzkGEg0VtlBVcGVma+gqZgIWAUmqAsAdlmzUPABYeGR+rU4K4DFugaPTDCH
+	DTvJ0F/BqKuCcM4tgryjopxwu4S87qgFaOcDxAPnhq/TXQ/UAx21rrv7j0uKhy9+F+HcWa
+	havTzu7j2MGZIk2vEYr+o91l1q0qADY=
+Date: Thu, 12 Jun 2025 19:44:09 -0400
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/8] dt-bindings: iio: adc: Add adi,ad4052
-To: Jorge Marques <gastmaier@gmail.com>
-Cc: Jonathan Cameron <jic23@kernel.org>,
- Jorge Marques <jorge.marques@analog.com>,
- Lars-Peter Clausen <lars@metafoo.de>,
- Michael Hennerich <Michael.Hennerich@analog.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
- =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
- Andy Shevchenko <andy@kernel.org>, =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?=
- <ukleinek@kernel.org>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-pwm@vger.kernel.org
-References: <20250610-iio-driver-ad4052-v3-0-cf1e44c516d4@analog.com>
- <20250610-iio-driver-ad4052-v3-2-cf1e44c516d4@analog.com>
- <20250611181818.14d147c7@jic23-huawei>
- <xqkr3rq6ikuiz5wcbxmto4gp7wnccmmogklf2ux2edauotufim@pcuhddxdzjxi>
- <ef0d4038-b665-4ef0-9e7b-7ad2ce154c50@baylibre.com>
- <zd4fvyjbfurgsp3rpslo2ubpxzxn7bh5b2vh5j4j7outxdrcd7@firxlr6bfkic>
+Subject: Re: [PATCH 1/7] dt-bindings: spi: zynqmp-qspi: Split the bus
+To: David Lechner <dlechner@baylibre.com>, Mark Brown <broonie@kernel.org>,
+ Michal Simek <michal.simek@amd.com>, linux-spi@vger.kernel.org
+Cc: Jinjie Ruan <ruanjinjie@huawei.com>,
+ linux-arm-kernel@lists.infradead.org,
+ Amit Kumar Mahapatra <amit.kumar-mahapatra@amd.com>,
+ linux-kernel@vger.kernel.org, Miquel Raynal <miquel.raynal@bootlin.com>,
+ Conor Dooley <conor+dt@kernel.org>, Krzysztof Kozlowski
+ <krzk+dt@kernel.org>, Rob Herring <robh@kernel.org>,
+ devicetree@vger.kernel.org,
+ "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+ Jonathan Cameron <jic23@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?=
+ <nuno.sa@analog.com>
+References: <20250116232118.2694169-1-sean.anderson@linux.dev>
+ <20250116232118.2694169-2-sean.anderson@linux.dev>
+ <9f40295b-484a-48e8-b053-ff8550e589d7@baylibre.com>
+ <46a7eba6-a705-4543-b967-e83ccc89e7d4@linux.dev>
+ <6afc379a-2f9f-4462-ae30-ef6945a83236@baylibre.com>
 Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <zd4fvyjbfurgsp3rpslo2ubpxzxn7bh5b2vh5j4j7outxdrcd7@firxlr6bfkic>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Sean Anderson <sean.anderson@linux.dev>
+In-Reply-To: <6afc379a-2f9f-4462-ae30-ef6945a83236@baylibre.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-On 6/12/25 2:42 PM, Jorge Marques wrote:
-> Hi David,
-> 
-> thank you for chiming in
-> 
-> On Thu, Jun 12, 2025 at 10:03:37AM -0500, David Lechner wrote:
->> On 6/12/25 5:11 AM, Jorge Marques wrote:
->>> On Wed, Jun 11, 2025 at 06:18:18PM +0100, Jonathan Cameron wrote:
->>>> On Tue, 10 Jun 2025 09:34:35 +0200
->>>> Jorge Marques <jorge.marques@analog.com> wrote:
->>>>
->>
->> ...
->>
->>>>> +  trigger-sources:
->>>>> +    minItems: 1
->>>>> +    maxItems: 2
->>>>> +    description:
->>>>> +      Describes the output pin and event associated.
->>
->> trigger-sources would be an input pin connected to an external trigger.
->> For example, the CNV pin could be connected to a trigger-source
->> provider to trigger a conversion. But there aren't any other digital
->> inputs, so I don't know what the 2nd source would be here.
->>
->> As an example, see [1]. We could potentially use the same gpio
->> trigger-source for the conversion pin here. There is already
->> a similar binding for pwm triggers, so we could drop the separate
->> pwms binding as well an just have a single trigger-sources
->> property for the CNV pin that works for both gpio and pwm.
->>
->> [1]: https://lore.kernel.org/linux-iio/cover.1749569957.git.Jonathan.Santos@analog.com/
->>
-> 
-> Quick summary to familiarize myself with this part and driver.
-> 
-> On ad7768-1:
-> ad7768-1.SYNC_OUT is a digital output, ad7768-1.SYNC_IN input, and
-> ad7768-1.GPIO3 (START) configured as input. ad7768-1.GPIO[0..3] are
-> configurable GPIO, GPIO3 as START, or in PIN control mode, the input
-> GPIO[3:0] sets the power mode and modulator freq (MODEx).
-> 
-> On that thread:
-> https://lore.kernel.org/linux-iio/8abca580f43cb31d7088d07a7414b5f7efe91ead.1749569957.git.Jonathan.Santos@analog.com/
-> exposes GPIO[0..3] through gpio_chip if gpio-controller in dt.
-> 
-> https://lore.kernel.org/linux-iio/713fd786010c75858700efaec8bb285274e7057e.1749569957.git.Jonathan.Santos@analog.com/
-> trigger-sources-cells: the cell define the type of signal but *not* its
-> origin, because {DRDY, SYNC_OUT, GPIO3(START)} are dedicated pins, *so
-> there is no need to do so*.
-> 
->>>>> +
->>>>> +  "#trigger-source-cells":
->>>>> +    const: 2
->>>>> +    description: |
->>>>> +      Output pins used as trigger source.
->>>>> +
->>>>> +      Cell 0 defines the event:
->>>>> +      * 0 = Data ready
->>>>> +      * 1 = Min threshold
->>>>> +      * 2 = Max threshold
->>>>> +      * 3 = Either threshold
->>>>> +      * 4 = CHOP control
->>>>> +      * 5 = Device enable
->>>>> +      * 6 = Device ready (only GP1)
->>>>
->>>> Hmm. I'm a bit dubious on why 'what the offload trigger is'
->>>> is a DT thing?  Is that because the IP needs to comprehend
->>>> this?  I guess only data ready is actually supported in
->>>> practice? 
->>>
->>> A trigger can be connected to trigger something other than a spi
->>> offload, it is in the DT because it describes how the device is
->>> connected. When using spi offload, the trigger-source at the spi handle
->>> describes which gpio and event is routed to the offload trigger input.
->>> At the ADC node, trigger-source-cells describe the source gpio and event
->>> for the device driver.
->>>
->>> In practice, in this series, one gpio is Data ready, triggering offload
->>> when buffer enabled, and raw reads, when disabled. And the other is
->>> Either threshold, propagated as an IIO event. Fancy logic can be added
->>> to the driver in future patches to allow other combinations.
->>>
->>> It is also worth to mention that the trigger-source is duplicated for
->>> each node that uses it, as seen in the second dts example:
->>>
->>>    &adc AD4052_TRIGGER_EVENT_DATA_READY AD4052_TRIGGER_PIN_GP1
->>>
->>> Is repeated on both adc and spi node.
->>
->> That sounds wrong. This would only make sense if an output of the
->> ADC was wired back to itself. 
->>
-> 
-> The issue is the lack of way of describing to the driver the function of
-> each gpio, when configurable. Perhaps it is better to use
-> trigger-source-cells to only describe the topology at that node
-> receiving the trigger, e.g.
-> 
->   trigger-sources = <&adc AD4052_TRIGGER_PIN_GP0>;
-> 
-> Below I continue the discussion.
->>>
->>> One last thing, on the driver, for v3, I should handle -ENOENT:
->>>
->>>   ret = of_parse_phandle_with_args(np, "trigger-sources",
->>>   				   "#trigger-source-cells", i,
->>>   				   &trigger_sources);
->>>   if (ret)
->>>   	return ret == -ENOENT ? 0 : ret;
->>>
->>> To assert only when present, since the nodes are not required.
->>> Or, in the driver,
->>> require AD4052_TRIGGER_PIN_GP0 if irq_get_byname finds gp0, and
->>> require AD4052_TRIGGER_PIN_GP1 if irq_get_byname finds gp1?
->>> (I would go with the first option).
->>>>
->>
->> ,,,
->>
->>>>> +examples:
->>>>> +  - |
->>>>> +    #include <dt-bindings/gpio/gpio.h>
->>>>> +    #include <dt-bindings/interrupt-controller/irq.h>
->>>>> +    #include <dt-bindings/iio/adc/adi,ad4052.h>
->>>>> +
->>>>> +    spi {
->>>>> +        #address-cells = <1>;
->>>>> +        #size-cells = <0>;
->>>>> +
->>>>> +        adc@0 {
->>>>> +            compatible = "adi,ad4052";
->>>>> +            reg = <0>;
->>>>> +            vdd-supply = <&vdd>;
->>>>> +            vio-supply = <&vio>;
->>>>> +            ref-supply = <&ref>;
->>>>> +            spi-max-frequency = <83333333>;
->>>>> +
->>>>> +            #trigger-source-cells = <2>;
->>>>> +            trigger-sources = <&adc AD4052_TRIGGER_EVENT_EITHER_THRESH
->>>>> +                                    AD4052_TRIGGER_PIN_GP0
->>>>> +                               &adc AD4052_TRIGGER_EVENT_DATA_READY
->>>>> +                                    AD4052_TRIGGER_PIN_GP1>;
->>
->> This doesn't make sense for the reason given above. These outputs
->> aren't wired back to inputs on the ADC. They are wired to interrupts
->> on the MCU, which is already described below.
->>
-> Below.
->>>>> +            interrupt-parent = <&gpio>;
->>>>> +            interrupts = <0 0 IRQ_TYPE_EDGE_RISING>,
->>>>> +                         <0 1 IRQ_TYPE_EDGE_FALLING>;
->>>>> +            interrupt-names = "gp0", "gp1";
->>>>> +            cnv-gpios = <&gpio 2 GPIO_ACTIVE_HIGH>;
->>>>> +        };
->>>>> +    };
->>>>> +  - |
->>>>> +    #include <dt-bindings/gpio/gpio.h>
->>>>> +    #include <dt-bindings/interrupt-controller/irq.h>
->>>>> +    #include <dt-bindings/iio/adc/adi,ad4052.h>
->>>>> +
->>>>> +    rx_dma {
->>>>> +            #dma-cells = <1>;
->>>>> +    };
->>>>> +
->>>>> +    spi {
->>>>> +        #address-cells = <1>;
->>>>> +        #size-cells = <0>;
->>>>> +
->>>>> +        dmas = <&rx_dma 0>;
->>>>> +        dma-names = "offload0-rx";
->>
->> The dmas aren't related to the ADC, so can be left out of the example.
->>
-> Ack.
->>>>> +        trigger-sources = <&adc AD4052_TRIGGER_EVENT_DATA_READY
->>>>> +                                AD4052_TRIGGER_PIN_GP1>;
->>>>> +
->>>>> +        adc@0 {
->>>>> +            compatible = "adi,ad4052";
->>>>> +            reg = <0>;
->>>>> +            vdd-supply = <&vdd>;
->>>>> +            vio-supply = <&vio>;
->>>>> +            spi-max-frequency = <83333333>;
->>>>> +            pwms = <&adc_trigger 0 10000 0>;
->>>>> +
->>>>> +            #trigger-source-cells = <2>;
->>>>> +            trigger-sources = <&adc AD4052_TRIGGER_EVENT_EITHER_THRESH
->>>>> +                                    AD4052_TRIGGER_PIN_GP0
->>>>> +                               &adc AD4052_TRIGGER_EVENT_DATA_READY
->>>>> +                                    AD4052_TRIGGER_PIN_GP1>;
->>
->> Same as above - the GP pins aren't wired back to the ADC itself.
->>
->>>>> +            interrupt-parent = <&gpio>;
->>>>> +            interrupts = <0 0 IRQ_TYPE_EDGE_RISING>,
->>>>> +                         <0 1 IRQ_TYPE_EDGE_FALLING>;
->>>>> +            interrupt-names = "gp0", "gp1";
->>>>> +            cnv-gpios = <&gpio 2 GPIO_ACTIVE_HIGH>;
->>>>> +        };
->>>>> +    };
-> 
-> Considering the discussion above. As is, in this series GP0 is event
-> Either threshold and GP1 Data ready. A future series would aim to make
-> it truly configurable.
-> 
-> For this series then, do we then drop the second cell of trigger cell
-> and do not provide a way of describing the function of each gpio? e.g.
+Hi David,
 
-The bindings can't be changed later, so no, don't drop the 2nd cell
-if we are going to add it back later.
+I am (finally!) getting around to doing v2 of this series, and I ran
+into a small problem with your proposed solution.
 
-But considering Jonathan's feedback, I am now questioning if we need
-the 2nd cell at all. The way trigger-source consumers work currently
-is that they request a trigger of a certain generic type, like "data
-ready". So this information could be used to determine what function
-needs to be assigned to the pin without having to define that in the
-devicetree.
-
+On 1/23/25 16:59, David Lechner wrote:
+> ---
+> From: David Lechner <dlechner@baylibre.com>
+> Date: Thu, 23 Jan 2025 15:35:19 -0600
+> Subject: [PATCH 2/2] spi: add support for multi-bus controllers
 > 
->   - |
->     #include <dt-bindings/gpio/gpio.h>
->     #include <dt-bindings/interrupt-controller/irq.h>
->     #include <dt-bindings/iio/adc/adi,ad4052.h>
->   
->     rx_dma {
->             #dma-cells = <1>;
->     };
->   
->     spi {
->         #address-cells = <1>;
->         #size-cells = <0>;
->   
->         trigger-sources = <&adc AD4052_TRIGGER_PIN_GP0>;
->   
->         adc@0 {
->             compatible = "adi,ad4052";
->             reg = <0>;
->             vdd-supply = <&vdd>;
->             vio-supply = <&vio>;
->             spi-max-frequency = <83333333>;
->             pwms = <&adc_trigger 0 10000 0>;
->   
->             // --- Other thought ------
->             //adi,gpio-role = <AD4052_TRIGGER_EVENT_EITHER_THRESH
->             //                 AD4052_TRIGGER_EVENT_DATA_READY>;
->             // ------------------------
->             interrupt-parent =  <&gpio>;
->             interrupts = <0 0 IRQ_TYPE_EDGE_RISING>,
->                          <0 1 IRQ_TYPE_EDGE_FALLING>;
->             interrupt-names = "gp0", "gp1";
->             cnv-gpios = <&gpio 2 GPIO_ACTIVE_HIGH>;
->         };
->     };
+> Add support for SPI controllers with multiple physical SPI buses.
 > 
-> Other thought is to add an "adi,gpio-role" property to define gpio
-> function (as commented in the example above, matched with index of
-> interrupts-names). If no interrupt-name.gp0 but trigger-source.GP0,
-> assume role Data ready (no irq for raw read, only buffer offload).
+> This is common in the type of controller that can be used with parallel
+> flash memories, but can be used for general purpose SPI as well.
 > 
-> What is your opinion on this?
+> To indicate support, a controller just needs to set ctlr->num_buses to
+> something greater than 1. Peripherals indicate which bus they are
+> connected to via device tree (ACPI support can be added if needed).
+> 
+> In the future, this can be extended to support peripherals that also
+> have multiple SPI buses to use those buses at the same time by adding
+> a similar bus flags field to struct spi_transfer.
+> 
+> Signed-off-by: David Lechner <dlechner@baylibre.com>
+> ---
+>  drivers/spi/spi.c       | 26 +++++++++++++++++++++++++-
+>  include/linux/spi/spi.h | 13 +++++++++++++
+>  2 files changed, 38 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+> index 10c365e9100a..f7722e5e906d 100644
+> --- a/drivers/spi/spi.c
+> +++ b/drivers/spi/spi.c
+> @@ -2364,7 +2364,7 @@ static void of_spi_parse_dt_cs_delay(struct device_node *nc,
+>  static int of_spi_parse_dt(struct spi_controller *ctlr, struct spi_device *spi,
+>  			   struct device_node *nc)
+>  {
+> -	u32 value, cs[SPI_CS_CNT_MAX];
+> +	u32 value, buses[8], cs[SPI_CS_CNT_MAX];
+>  	int rc, idx;
+>  
+>  	/* Mode (clock phase/polarity/etc.) */
+> @@ -2379,6 +2379,29 @@ static int of_spi_parse_dt(struct spi_controller *ctlr, struct spi_device *spi,
+>  	if (of_property_read_bool(nc, "spi-cs-high"))
+>  		spi->mode |= SPI_CS_HIGH;
+>  
+> +	rc = of_property_read_variable_u32_array(nc, "spi-buses", buses, 1,
+> +						 ARRAY_SIZE(buses));
+> +	if (rc < 0 && rc != -EINVAL) {
+> +		dev_err(&ctlr->dev, "%pOF has invalid 'spi-buses' property (%d)\n",
+> +			nc, rc);
+> +		return rc;
+> +	}
+> +
+> +	if (rc == -EINVAL) {
+> +		/* Default when property is omitted. */
+> +		spi->buses = BIT(0);
 
+For backwards compatibility, the default bus for CS 1 on gqspi must be 1
+and not 0. Ideally there would be some hook for the master to fix things
+up when the slaves are probed, but that doesn't seem to exist. I was
+thinking about doing this with OF changesets. Do you have any better
+ideas?
 
-Usually, we just have the devicetree describe how things are wired up.
-Then the driver looks at how things are wired up and decides how to
-best make use of the available resources. I.e. in the driver add some
-variables in the driver state struct that keeps track of the function
-assigned to each GP pin and use that to make decisions.
+--Sean
 
-In the driver, we would want to make sure to handle triggers first
-since those are less flexible (so set up SPI offload first). This
-would cause one of the GP pins to be assigned to the /RDY function.
-It doesn't matter which one.
-
-Then later, parse the interrupts property. If we see that one of
-the GP pins is already assigned to /RDY, then we know we have to
-use that pin for the /RDY interrupt as well. If both pins are still
-available, then an arbitrary one can be assigned for /RDY.
-
-Then if there is still an unused GP pin left that is actually
-wired up to an interrupt, that can be used for the events interrupt.
-
-Or we could even consider to have everything on one pin since the
-/RDY signal would never be needed at the same time as events as long
-as the events are only ever used in monitor mode.
-
-If we find that there is some case though where the driver really
-can't figure out what to do with the available information, then
-we could probably justify adding a property like you suggested.
-It seems like we could possibly do without it at this point though.
+> +	} else {
+> +		for (idx = 0; idx < rc; idx++) {
+> +			if (buses[idx] >= ctlr->num_buses) {
+> +				dev_err(&ctlr->dev,
+> +					"%pOF has out of range 'spi-buses' property (%d)\n",
+> +					nc, buses[idx]);
+> +				return -EINVAL;
+> +			}
+> +			spi->buses |= BIT(buses[idx]);
+> +		}
+> +	}
+> +
+>  	/* Device DUAL/QUAD mode */
+>  	if (!of_property_read_u32(nc, "spi-tx-bus-width", &value)) {
+>  		switch (value) {
+> @@ -3072,6 +3095,7 @@ struct spi_controller *__spi_alloc_controller(struct device *dev,
+>  	mutex_init(&ctlr->add_lock);
+>  	ctlr->bus_num = -1;
+>  	ctlr->num_chipselect = 1;
+> +	ctlr->num_buses = 1;
+>  	ctlr->slave = slave;
+>  	if (IS_ENABLED(CONFIG_SPI_SLAVE) && slave)
+>  		ctlr->dev.class = &spi_slave_class;
+> diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+> index 4c087009cf97..bc45d70e8c45 100644
+> --- a/include/linux/spi/spi.h
+> +++ b/include/linux/spi/spi.h
+> @@ -187,6 +187,11 @@ struct spi_device {
+>  	struct device		dev;
+>  	struct spi_controller	*controller;
+>  	u32			max_speed_hz;
+> +	/*
+> +	 * Bit flags indicating which buses this device is connected to. Only
+> +	 * applicable to multi-bus controllers.
+> +	 */
+> +	u8 			buses;
+>  	u8			chip_select[SPI_CS_CNT_MAX];
+>  	u8			bits_per_word;
+>  	bool			rt;
+> @@ -570,6 +575,14 @@ struct spi_controller {
+>  	 */
+>  	u16			num_chipselect;
+>  
+> +	/*
+> +	 * Some specialized SPI controllers can have more than one physical
+> +	 * bus interface per controller. This specifies the number of buses
+> +	 * in that case. Other controllers do not need to set this (defaults
+> +	 * to 1).
+> +	 */
+> +	u16			num_buses;
+> +
+>  	/* Some SPI controllers pose alignment requirements on DMAable
+>  	 * buffers; let protocol drivers know about these requirements.
+>  	 */
+> -- 
+> 2.43.0
+> 
+> 
+> 
 

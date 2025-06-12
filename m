@@ -1,190 +1,198 @@
-Return-Path: <linux-iio+bounces-20539-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20540-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6B68AD6D8A
-	for <lists+linux-iio@lfdr.de>; Thu, 12 Jun 2025 12:23:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85EC8AD6E23
+	for <lists+linux-iio@lfdr.de>; Thu, 12 Jun 2025 12:46:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6CA721678AA
-	for <lists+linux-iio@lfdr.de>; Thu, 12 Jun 2025 10:23:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 19CBB3AADDA
+	for <lists+linux-iio@lfdr.de>; Thu, 12 Jun 2025 10:45:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2206522FF37;
-	Thu, 12 Jun 2025 10:23:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MFf6hBGb"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A48223909C;
+	Thu, 12 Jun 2025 10:46:07 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE14F1FBCB0;
-	Thu, 12 Jun 2025 10:23:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED20113C8E8;
+	Thu, 12 Jun 2025 10:46:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749723812; cv=none; b=mNBvM86QP9DiLeJK45ZohWLEthch6hT7g6ncZqF7MQGan547yAcYjgROD7eaWps4lHBpbmEu/1hW/xWFvAJiHMb3HAGOd5OA6iPcS2UfB1ZfnHfh+7iUv1qUowWCQ6cEy6quNRJTzZ0HNz8F4naUHid3UKFtfn4Tc/0/y6puLJ8=
+	t=1749725166; cv=none; b=o+GgXwDXDl52kZLhngsO7H3TA0XKUyvtjbQCyAQ6SQzY3/1CX12QsJhNZKCMNuoRwyXUe7BFgbqGalLjN2IxcW+6YaNKil4JxkRun39mAeausFwu3Y14tJcIuZ2BGIYTDSH0JuEXYC7f45rh84LnFuSvn6iK+ZEAXNHnz6EZMGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749723812; c=relaxed/simple;
-	bh=3MMVItLujo9BX0XUZsJkcFM9onkSYVc+LPAqqaYIECE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XH8Wjk3lAwx3+L23lknXhWdL8U3RxcwDenF21/nGgms+7QL5Mb0kWPgicjf9lry1ats8nXrdNA1gswV4w9AVOlHQcBFRwp9EfsZvknolBHUSauMnALCIROeAIzQ8x6J0oY8Q9K56i97lM1TpMMx6Vl+vKCwWM9jaFzoNyEEUa8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MFf6hBGb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B72ACC4CEEA;
-	Thu, 12 Jun 2025 10:23:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749723812;
-	bh=3MMVItLujo9BX0XUZsJkcFM9onkSYVc+LPAqqaYIECE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=MFf6hBGbXGThFToPLmKAuv9F6ueq6vVtxvCAUbxrx3bO8cDg4rX060zhkudru3+98
-	 AhDU4vBoHpDaShPTjWwQed5bExfFiqB5bOo4FhHmfRytMIhoekZfpmX3gV8hllrxpE
-	 0WfXStCLld2JEuKkLAH21KhehA0MTNHxZp9h2F7sXk4qoct8yA9n8cLQXpcW9e6HPt
-	 w1Co7lx7Dg645AjcTmby9oozCJCRPRSO/q9yussNFXksAmPxHm20fUwDziB96PoxYu
-	 bCfnx0AxwCP6MlhW/zdE8LId2Q8oZ2uiWbkPSnCBzKxQoh40JI2GwIT4dKDU/OvNRb
-	 zApDE2NtYYBNg==
-Message-ID: <af7881b2-811d-4805-b679-25c650a7858a@kernel.org>
-Date: Thu, 12 Jun 2025 12:23:28 +0200
+	s=arc-20240116; t=1749725166; c=relaxed/simple;
+	bh=7yad1GSJQw9Bk8q5ZMOfeOFyJpDchWvUthVVR+3/Fjw=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Ok/0rcj1wrw6fZRsd9cST2HUh+cTBbOGDftt0SwRqUbQf0Ffo3HOOEHXhjnufGC5xegmbq78L9+8msMTkn908k9pQI7fNnDWE3o+OrDvaQd73aj4y5llhKOT37XNuHttcvxMcOZgqDsN9Vdq7/uRlaORUl4gFy2PwNKNvDMpJz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4bHzbl64zPz6L54g;
+	Thu, 12 Jun 2025 18:41:39 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+	by mail.maildlp.com (Postfix) with ESMTPS id 1B8241402A5;
+	Thu, 12 Jun 2025 18:46:01 +0800 (CST)
+Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 12 Jun
+ 2025 12:45:59 +0200
+Date: Thu, 12 Jun 2025 11:45:57 +0100
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+To: Pavel Machek <pavel@ucw.cz>
+CC: David Lechner <dlechner@baylibre.com>, Michael Hennerich
+	<michael.hennerich@analog.com>, Lars-Peter Clausen <lars@metafoo.de>,
+	Jonathan Cameron <jic23@kernel.org>, Nuno =?UTF-8?Q?S=C3=A1?=
+	<nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Matthias Brugger
+	<matthias.bgg@gmail.com>, AngeloGioacchino Del Regno
+	<angelogioacchino.delregno@collabora.com>, Heiko Stuebner <heiko@sntech.de>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, "Alexandre Torgue"
+	<alexandre.torgue@foss.st.com>, Francesco Dolcini <francesco@dolcini.it>,
+	=?UTF-8?Q?Jo=C3=A3o?= Paulo =?UTF-8?Q?Gon=C3=A7al?= =?UTF-8?Q?ves?=
+	<jpaulo.silvagoncalves@gmail.com>, Leonard =?UTF-8?Q?G?=
+ =?UTF-8?Q?=C3=B6hrs?= <l.goehrs@pengutronix.de>, <kernel@pengutronix.de>,
+	Oleksij Rempel <o.rempel@pengutronix.de>, Roan van Dijk <roan@protonic.nl>,
+	Tomasz Duszynski <tomasz.duszynski@octakon.com>, Jacopo Mondi
+	<jacopo@jmondi.org>, Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
+	Mudit Sharma <muditsharma.info@gmail.com>, Javier Carrasco
+	<javier.carrasco.cruz@gmail.com>, =?UTF-8?Q?Ond=C5=99ej?= Jirman
+	<megi@xff.cz>, Andreas Klinger <ak@it-klinger.de>, Petre Rodan
+	<petre.rodan@subdimension.ro>, <linux-iio@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-mediatek@lists.infradead.org>, <linux-rockchip@lists.infradead.org>,
+	<linux-stm32@st-md-mailman.stormreply.com>
+Subject: Re: [PATCH 00/28] iio: zero init stack with { } instead of memset()
+Message-ID: <20250612114557.00007628@huawei.com>
+In-Reply-To: <aEqbQPvz0FsLXt0Z@duo.ucw.cz>
+References: <20250611-iio-zero-init-stack-with-instead-of-memset-v1-0-ebb2d0a24302@baylibre.com>
+	<aEqbQPvz0FsLXt0Z@duo.ucw.cz>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/3] dt-bindings: iio: chemical: Add sharp,gp2y1010au0f
-To: surajsonawane0215@gmail.com, Jonathan Cameron <jic23@kernel.org>
-Cc: David Lechner <dlechner@baylibre.com>, =?UTF-8?Q?Nuno_S=C3=A1?=
- <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20250612100758.13241-1-surajsonawane0215@gmail.com>
- <20250612100758.13241-3-surajsonawane0215@gmail.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
- cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
- JMp7PSyMPzpUXfU12yfcRYVEMQrmplNZssmYhiTeVicuOOypWugZKVLGNm0IweVCaZ/DJDIH
- gNbpvVwjcKYrx85m9cBVEBUGaQP6AT7qlVCkrf50v8bofSIyVa2xmubbAwwFA1oxoOusjPIE
- J3iadrwpFvsZjF5uHAKS+7wHLoW9hVzOnLbX6ajk5Hf8Pb1m+VH/E8bPBNNYKkfTtypTDUCj
- NYcd27tjnXfG+SDs/EXNUAIRefCyvaRG7oRYF3Ec+2RgQDRnmmjCjoQNbFrJvJkFHlPeHaeS
- BosGY+XWKydnmsfY7SSnjAzLUGAFhLd/XDVpb1Een2XucPpKvt9ORF+48gy12FA5GduRLhQU
- vK4tU7ojoem/G23PcowM1CwPurC8sAVsQb9KmwTGh7rVz3ks3w/zfGBy3+WmLg++C2Wct6nM
- Pd8/6CBVjEWqD06/RjI2AnjIq5fSEH/BIfXXfC68nMp9BZoy3So4ZsbOlBmtAPvMYX6U8VwD
- TNeBxJu5Ex0Izf1NV9CzC3nNaFUYOY8KfN01X5SExAoVTr09ewARAQABzSVLcnp5c3p0b2Yg
- S296bG93c2tpIDxrcnprQGtlcm5lbC5vcmc+wsGVBBMBCgA/AhsDBgsJCAcDAgYVCAIJCgsE
- FgIDAQIeAQIXgBYhBJvQfg4MUfjVlne3VBuTQ307QWKbBQJoF1BKBQkWlnSaAAoJEBuTQ307
- QWKbHukP/3t4tRp/bvDnxJfmNdNVn0gv9ep3L39IntPalBFwRKytqeQkzAju0whYWg+R/rwp
- +r2I1Fzwt7+PTjsnMFlh1AZxGDmP5MFkzVsMnfX1lGiXhYSOMP97XL6R1QSXxaWOpGNCDaUl
- ajorB0lJDcC0q3xAdwzRConxYVhlgmTrRiD8oLlSCD5baEAt5Zw17UTNDnDGmZQKR0fqLpWy
- 786Lm5OScb7DjEgcA2PRm17st4UQ1kF0rQHokVaotxRM74PPDB8bCsunlghJl1DRK9s1aSuN
- hL1Pv9VD8b4dFNvCo7b4hfAANPU67W40AaaGZ3UAfmw+1MYyo4QuAZGKzaP2ukbdCD/DYnqi
- tJy88XqWtyb4UQWKNoQqGKzlYXdKsldYqrLHGoMvj1UN9XcRtXHST/IaLn72o7j7/h/Ac5EL
- 8lSUVIG4TYn59NyxxAXa07Wi6zjVL1U11fTnFmE29ALYQEXKBI3KUO1A3p4sQWzU7uRmbuxn
- naUmm8RbpMcOfa9JjlXCLmQ5IP7Rr5tYZUCkZz08LIfF8UMXwH7OOEX87Y++EkAB+pzKZNNd
- hwoXulTAgjSy+OiaLtuCys9VdXLZ3Zy314azaCU3BoWgaMV0eAW/+gprWMXQM1lrlzvwlD/k
- whyy9wGf0AEPpLssLVt9VVxNjo6BIkt6d1pMg6mHsUEVzsFNBFVDXDQBEADNkrQYSREUL4D3
- Gws46JEoZ9HEQOKtkrwjrzlw/tCmqVzERRPvz2Xg8n7+HRCrgqnodIYoUh5WsU84N03KlLue
- MNsWLJBvBaubYN4JuJIdRr4dS4oyF1/fQAQPHh8Thpiz0SAZFx6iWKB7Qrz3OrGCjTPcW6ei
- OMheesVS5hxietSmlin+SilmIAPZHx7n242u6kdHOh+/SyLImKn/dh9RzatVpUKbv34eP1wA
- GldWsRxbf3WP9pFNObSzI/Bo3kA89Xx2rO2roC+Gq4LeHvo7ptzcLcrqaHUAcZ3CgFG88CnA
- 6z6lBZn0WyewEcPOPdcUB2Q7D/NiUY+HDiV99rAYPJztjeTrBSTnHeSBPb+qn5ZZGQwIdUW9
- YegxWKvXXHTwB5eMzo/RB6vffwqcnHDoe0q7VgzRRZJwpi6aMIXLfeWZ5Wrwaw2zldFuO4Dt
- 91pFzBSOIpeMtfgb/Pfe/a1WJ/GgaIRIBE+NUqckM+3zJHGmVPqJP/h2Iwv6nw8U+7Yyl6gU
- BLHFTg2hYnLFJI4Xjg+AX1hHFVKmvl3VBHIsBv0oDcsQWXqY+NaFahT0lRPjYtrTa1v3tem/
- JoFzZ4B0p27K+qQCF2R96hVvuEyjzBmdq2esyE6zIqftdo4MOJho8uctOiWbwNNq2U9pPWmu
- 4vXVFBYIGmpyNPYzRm0QPwARAQABwsF8BBgBCgAmAhsMFiEEm9B+DgxR+NWWd7dUG5NDfTtB
- YpsFAmgXUF8FCRaWWyoACgkQG5NDfTtBYptO0w//dlXJs5/42hAXKsk+PDg3wyEFb4NpyA1v
- qmx7SfAzk9Hf6lWwU1O6AbqNMbh6PjEwadKUk1m04S7EjdQLsj/MBSgoQtCT3MDmWUUtHZd5
- RYIPnPq3WVB47GtuO6/u375tsxhtf7vt95QSYJwCB+ZUgo4T+FV4hquZ4AsRkbgavtIzQisg
- Dgv76tnEv3YHV8Jn9mi/Bu0FURF+5kpdMfgo1sq6RXNQ//TVf8yFgRtTUdXxW/qHjlYURrm2
- H4kutobVEIxiyu6m05q3e9eZB/TaMMNVORx+1kM3j7f0rwtEYUFzY1ygQfpcMDPl7pRYoJjB
- dSsm0ZuzDaCwaxg2t8hqQJBzJCezTOIkjHUsWAK+tEbU4Z4SnNpCyM3fBqsgYdJxjyC/tWVT
- AQ18NRLtPw7tK1rdcwCl0GFQHwSwk5pDpz1NH40e6lU+NcXSeiqkDDRkHlftKPV/dV+lQXiu
- jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
- zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
- XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <20250612100758.13241-3-surajsonawane0215@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100012.china.huawei.com (7.191.174.184) To
+ frapeml500008.china.huawei.com (7.182.85.71)
 
-On 12/06/2025 12:07, surajsonawane0215@gmail.com wrote:
-> +description: |
-> +  Optical dust sensor measuring particulate matter concentration via infrared scattering.
-> +  Requires ADC for analog output and GPIO for pulsed LED control with strict timing.
+On Thu, 12 Jun 2025 11:17:52 +0200
+Pavel Machek <pavel@ucw.cz> wrote:
 
-Wrap according to Linux coding style (so 80).
+> Hi!
+> 
+> > Jonathan mentioned recently that he would like to get away from using
+> > memset() to zero-initialize stack memory in the IIO subsystem. And we
+> > have it on good authority that initializing a struct or array with = { }
+> > is the preferred way to do this in the kernel [1]. So here is a series
+> > to take care of that.  
+> 
+> 1) Is it worth the churn?
+> 
+> 2) Will this fail to initialize padding with some obscure compiler?
+> 
+> 3) Why do you believe that {} is the preffered way? All we have is
+> Kees' email that explains that = {} maybe works in configs he tested.
+> 
+Pavel,
 
-> +  Datasheet: https://global.sharp/products/device/lineup/data/pdf/datasheet/gp2y1010au_appl_e.pdf
-> +
-> +properties:
-> +  compatible:
-> +    const: sharp,gp2y1010au0f
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  vdd-supply: true
-> +
-> +  led-gpios:
-> +    description: GPIO connected to the sensor's LED control pin (V-LED)
-> +    maxItems: 1
-> +
-> +  io-channels:
-> +    description: ADC channel connected to the sensor's analog output (Vo)
-> +    maxItems: 1
-> +
-> +  io-channel-names:
-> +    const: dust
-> +
-> +  sharp,led-on-delay-us:
-> +    description: |
-> +      Delay in microseconds after turning the LED ON before reading ADC.
-> +      The datasheet recommends 280µs after LED ON for accurate measurement.
-> +      (See Section 6-1 of the datasheet: Sampling timing = 0.28ms)
-> +
+I think main thing that matters in Kees email is there is a self test
+that should fire if a compiler ever does this wrong.
 
-Drop blank line
+Using this syntax is definitely not a 'kernel wide' preference yet
+but I do prefer to make some changes like this in IIO just because it
+reduces the amount of code that smells different when reviewing.
+Given how many drivers we now have, sadly people pick different ones
+to cut and paste from so we get a lot of new drivers that look like
+how we preferred to do things 10 years ago :(
 
-> +    default: 280
-> +    minimum: 0
-> +    maximum: 320
-> +
-> +  sharp,measurement-window-us:
-> +    description: |
-> +      Duration in microseconds the LED remains ON for measurement.
-> +      The recommended pulse width is 320µs ±20µs. (See Section 6-1)
+However it is a fair bit of churn. hmm.  Let's let this sit for
+a little while and see if other view points come in.
 
-What is the point of calling something recommended if there is no other
-choice? Your schema here:
+Thanks 
 
-> +
-> +    default: 320
-> +    minimum: 300
-> +    maximum: 340
+Jonathan
+ 
 
-Says 360 is not allowed, so what is the meaning of recommended in such case?
+> BR,
+> 								Pavel
+> 
+> > [1]:
+> > https://lore.kernel.org/linux-iio/202505090942.48EBF01B@keescook/  
+> 
+> 
+> 
+> > ---
+> > David Lechner (28):
+> >       iio: accel: adxl372: use = { } instead of memset()
+> >       iio: accel: msa311: use = { } instead of memset()
+> >       iio: adc: dln2-adc: use = { } instead of memset()
+> >       iio: adc: mt6360-adc: use = { } instead of memset()
+> >       iio: adc: rockchip_saradc: use = { } instead of memset()
+> >       iio: adc: rtq6056: use = { } instead of memset()
+> >       iio: adc: stm32-adc: use = { } instead of memset()
+> >       iio: adc: ti-ads1015: use = { } instead of memset()
+> >       iio: adc: ti-ads1119: use = { } instead of memset()
+> >       iio: adc: ti-lmp92064: use = { } instead of memset()
+> >       iio: adc: ti-tsc2046: use = { } instead of memset()
+> >       iio: chemical: scd4x: use = { } instead of memset()
+> >       iio: chemical: scd30: use = { } instead of memset()
+> >       iio: chemical: sunrise_co2: use = { } instead of memset()
+> >       iio: dac: ad3552r: use = { } instead of memset()
+> >       iio: imu: inv_icm42600: use = { } instead of memset()
+> >       iio: imu: inv_mpu6050: use = { } instead of memset()
+> >       iio: light: bh1745: use = { } instead of memset()
+> >       iio: light: ltr501: use = { } instead of memset()
+> >       iio: light: opt4060: use = { } instead of memset()
+> >       iio: light: veml6030: use = { } instead of memset()
+> >       iio: magnetometer: af8133j: use = { } instead of memset()
+> >       iio: pressure: bmp280: use = { } instead of memset()
+> >       iio: pressure: mpl3115: use = { } instead of memset()
+> >       iio: pressure: mprls0025pa: use = { } instead of memset()
+> >       iio: pressure: zpa2326: use = { } instead of memset()
+> >       iio: proximity: irsd200: use = { } instead of memset()
+> >       iio: temperature: tmp006: use = { } instead of memset()
+> > 
+> >  drivers/iio/accel/adxl372.c                       | 3 +--
+> >  drivers/iio/accel/msa311.c                        | 4 +---
+> >  drivers/iio/adc/dln2-adc.c                        | 4 +---
+> >  drivers/iio/adc/mt6360-adc.c                      | 3 +--
+> >  drivers/iio/adc/rockchip_saradc.c                 | 4 +---
+> >  drivers/iio/adc/rtq6056.c                         | 4 +---
+> >  drivers/iio/adc/stm32-adc.c                       | 3 +--
+> >  drivers/iio/adc/ti-ads1015.c                      | 4 +---
+> >  drivers/iio/adc/ti-ads1119.c                      | 4 +---
+> >  drivers/iio/adc/ti-lmp92064.c                     | 4 +---
+> >  drivers/iio/adc/ti-tsc2046.c                      | 3 +--
+> >  drivers/iio/chemical/scd30_core.c                 | 3 +--
+> >  drivers/iio/chemical/scd4x.c                      | 3 +--
+> >  drivers/iio/chemical/sunrise_co2.c                | 6 ++----
+> >  drivers/iio/dac/ad3552r.c                         | 3 +--
+> >  drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c | 5 ++---
+> >  drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c  | 5 ++---
+> >  drivers/iio/imu/inv_mpu6050/inv_mpu_acpi.c        | 4 +---
+> >  drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c        | 6 ++----
+> >  drivers/iio/light/bh1745.c                        | 4 +---
+> >  drivers/iio/light/ltr501.c                        | 4 +---
+> >  drivers/iio/light/opt4060.c                       | 4 +---
+> >  drivers/iio/light/veml6030.c                      | 4 +---
+> >  drivers/iio/magnetometer/af8133j.c                | 4 +---
+> >  drivers/iio/pressure/bmp280-core.c                | 5 +----
+> >  drivers/iio/pressure/mpl3115.c                    | 3 +--
+> >  drivers/iio/pressure/mprls0025pa_i2c.c            | 5 +----
+> >  drivers/iio/pressure/zpa2326.c                    | 4 +---
+> >  drivers/iio/proximity/irsd200.c                   | 3 +--
+> >  drivers/iio/temperature/tmp006.c                  | 4 +---
+> >  30 files changed, 34 insertions(+), 85 deletions(-)
+> > ---
+> > base-commit: 4c6073fec2fee4827fa0dd8a4ab4e6f7bbc05ee6
+> > change-id: 20250611-iio-zero-init-stack-with-instead-of-memset-0d12d41a7ecb
+> > 
+> > Best regards,  
+> 
 
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - led-gpios
-> +  - io-channels
-> +  - io-channel-names
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/gpio/gpio.h>
-> +
-> +    dust_sensor {
-
-No underscores, see DTS coding style. Not tested either, missing unit
-address and testing would point it out most likely.
-
-
-Best regards,
-Krzysztof
 

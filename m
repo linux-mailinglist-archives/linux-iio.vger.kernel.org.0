@@ -1,172 +1,128 @@
-Return-Path: <linux-iio+bounces-20544-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20545-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C12AAD7060
-	for <lists+linux-iio@lfdr.de>; Thu, 12 Jun 2025 14:29:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90A0CAD709F
+	for <lists+linux-iio@lfdr.de>; Thu, 12 Jun 2025 14:41:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1B3623A143F
-	for <lists+linux-iio@lfdr.de>; Thu, 12 Jun 2025 12:29:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 537C83A0A8A
+	for <lists+linux-iio@lfdr.de>; Thu, 12 Jun 2025 12:41:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A9BE21FF5B;
-	Thu, 12 Jun 2025 12:29:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A78B01DF754;
+	Thu, 12 Jun 2025 12:41:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZA2yUkx8"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Cek8NItr"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E15F1EE033;
-	Thu, 12 Jun 2025 12:29:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D50762F4326;
+	Thu, 12 Jun 2025 12:41:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749731359; cv=none; b=sqRj2KnDLEj0yroHfyJxHKVVG6drFjd5Z6kkVCbe99w3pnZzoPYZcPZ7OFaa7tc0+TfzFfouRAeL++rEnWvBef8vYMHwzlCZeuiJgYRCSyqyyrFf5zZ4iVA/FpekCF769wlS1L9irPSivjo/bsYRVWBoxAEDR4/DlO0umM0Xi80=
+	t=1749732074; cv=none; b=XEUKw0T4h4u3pLR+8XstPPcfJ3U+v7HzPCLfroB0VbjugXSQEs2tVq7GYebS5JanbGkuUDclJKoi0nH5qbBzP37l2/zSI8m+8K/Xu5bjRD4eaoPcZIhO4eHKQHKU3T8Eu7QRHoQL5tEolNAihSC1G12e3MMD9G/7v1mjHqTxQfg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749731359; c=relaxed/simple;
-	bh=NEJs2y5lh32zGmKZ8Qzhu9KFrGD77yTrgBvMh7VvKkA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fd9S5FCoLqx66mbn0iWAAhwjndgtw9GGgnwh8/EPhxzxPY2emVejpmPRYVu088TvqErYYy2lJRepD7vtsnRh55lSlwR3fmRxfq1PndYSArGh4b3HeB7k3R28AsCtE631Z23HuqF2ZBaJFBx7m9l1cuc+HNopdQATwt3mxXtO8HU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZA2yUkx8; arc=none smtp.client-ip=209.85.218.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-ad93ff9f714so158461166b.2;
-        Thu, 12 Jun 2025 05:29:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749731355; x=1750336155; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NEJs2y5lh32zGmKZ8Qzhu9KFrGD77yTrgBvMh7VvKkA=;
-        b=ZA2yUkx8LibcLgiBimfBweWTPVbAexJk/gKyzqQYCob/ptCsM68G7RxgpZBQpw8YVn
-         T6Q/pdbOG/T+RriUUa+FQTyrET8UrQkqptelgRRrfAqZobh5FLEEKeW9OAAHPlvzxWPq
-         U3yB5wVV6gcFQ4Q+9Om/Gcz6s4WQF0pfVXDHQtSNsLfJCx7S8xDFVkZf77IHdoNcnwzz
-         SVfeZCCv8F7QWYOE+3mq05NUQKeoFGy9ErNb7ub1ffmgjrO8vOUxj87DxbAGUBYkWyUr
-         5Q+MvPikylHr6FWY7Vrs/NH8M9APzfSzJuIVrjT1w9bz5w2rMkm1HBpavlK1vWoGGzrU
-         emPw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749731355; x=1750336155;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=NEJs2y5lh32zGmKZ8Qzhu9KFrGD77yTrgBvMh7VvKkA=;
-        b=MFjS1KC6eLG55TyfMwriX91QldMXsSmcGzFiQQXHjdNRKi7M1SX2gNFAjAGTr+RhfY
-         uXmBD7ZY7R3FpJ1UFQnMJCQK82dSPPYUeQJPLLRLkxbtI4059UsYkgZaIL0kyGBSpDVZ
-         2zSgD/+KtqCYxGddyLQM+tZvnI6w+6WTe4IoWfr7czBodIip9oGJGkYKm4UeicGj7J6i
-         g/JH2gud7lvpRaT5ElAE5dJ1krwIK40ZWTJyQ6IjaiPx3XSaGSxXkfOUGxw1Nd5EsUzZ
-         SxrOV+o3EuiGT5740YNhA0bZRe9CYThRTHtLiLIAUaUzh9oXREjaZBrYifqpNWxd9+F/
-         0Zbw==
-X-Forwarded-Encrypted: i=1; AJvYcCUxRD/nyHSdtFydbzOYA9HzZKOt4zcN/0TOUCp7mP2m3rGMkCK0cq01zjil1DpmoYjZU8vnyMcpM3QYzqXu@vger.kernel.org, AJvYcCWQ2deFXTSWqNIrwlsw1OINoahpxMPnph87ZKqAJuTx5kkqbKnAm7z+nd9x6yffHZwcDYgM20+tm1s=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxTkCiEEYMFR7DGoLjHWSq7lm1f0TQ1wWXac3AbFmwc35eyiqzh
-	DvWwfyJhDZgtD+lszGCKBNeSs4lGf2Oy8xmeuDNQ2FPAjP98Md/96RLfuZSzoA4pYYPmXGOe62m
-	6VItF/2HHQNyMPDMwJd3E/HK4qQn8LsA=
-X-Gm-Gg: ASbGncsCkfkZZVPnmQSkxNKjlWrHyxQA6c8Sd2BFv2YfbzJ5XXuxFpTpyGCE96fPeyO
-	D2oeGKcJFKaxlSfdYqqWx2Pl456kH8vKbmMEG3sFj7V3zpdegZNk5mCxmf6PVqGgOkQZsJUDSsx
-	DNqMBOyJKYgBiRWXj3xNdCVl23JFhY1zbihuOib1BtoGc=
-X-Google-Smtp-Source: AGHT+IGlkqMkspvLMpeTjF8aN4KiUGRrevrrBMyqe/WGI6YMF5fU2+dVwFdEvs12L1YJUL60yY3huaWNWMMfCo5r7oM=
-X-Received: by 2002:a17:907:1c9e:b0:ade:5ba:40e1 with SMTP id
- a640c23a62f3a-adea270e2f5mr330585366b.0.1749731354468; Thu, 12 Jun 2025
- 05:29:14 -0700 (PDT)
+	s=arc-20240116; t=1749732074; c=relaxed/simple;
+	bh=GPx47ZNv+igRsgoY9s4VuSgva7jzA22yGk+M8NK0yYI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZyXrUK1pkhLHl/ti7NhJ4ca/xe3zbWaD6iBZRP9hDyoRqsxRmCKXVSoQywjXpkxcE1XiALQFlpK9mi3KywappJAOztlfw36ZdkKkU0HQvQQkTogst9wQ6My8RBwmLlC4jFgBZMcQnchwpTN3bzaXBlw6epPWl1nAqxC1irPbdwQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Cek8NItr; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1749732073; x=1781268073;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=GPx47ZNv+igRsgoY9s4VuSgva7jzA22yGk+M8NK0yYI=;
+  b=Cek8NItrX8Kxm1ZKPVXzHsFkIEDYtTatulUSyOInefYS9BQJfem0XdTI
+   4NlAh6fEOT7TOphXP45uYPrGYoFo6n5Cs4p29gGeKir/QWaZunwGYJ2VS
+   3bNxhfTop8LGBuM0j9MiY42Lelnnq3UhQAu63iVneB4i47YkgmRUmjjCu
+   +TIJWer9oqykU4JAfTSvG8t3SOO3G/Agu3d3esrISfmGWE0Y0/JIquVY3
+   mpMPdm+qUBA7tu3Dg0nLaSRN8sEXz2SG0J8pqzo7WpQqMOeersUH/kKbq
+   JB0x1/bFlFcHyG0z4rarCK3DJ+3dzCbB/YMcV5Nkqf6Wga9qBVny+hQ3v
+   A==;
+X-CSE-ConnectionGUID: yBSG3Ni0SS+YIaGZ0gzvKw==
+X-CSE-MsgGUID: dh+klCrGT5eWlLgJ6RMifw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11462"; a="52004976"
+X-IronPort-AV: E=Sophos;i="6.16,230,1744095600"; 
+   d="scan'208";a="52004976"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2025 05:41:12 -0700
+X-CSE-ConnectionGUID: 5Nu0z7AXSn+5oHtdzU0yBg==
+X-CSE-MsgGUID: Z9bB9wIETAKpC+I4MQv6nA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,230,1744095600"; 
+   d="scan'208";a="147388494"
+Received: from smile.fi.intel.com ([10.237.72.52])
+  by fmviesa007.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2025 05:41:09 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@intel.com>)
+	id 1uPhEw-00000005wzH-3wGa;
+	Thu, 12 Jun 2025 15:41:06 +0300
+Date: Thu, 12 Jun 2025 15:41:06 +0300
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Lothar Rubusch <l.rubusch@gmail.com>
+Cc: Bagas Sanjaya <bagasdotme@gmail.com>, jic23@kernel.org,
+	dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org,
+	corbet@lwn.net, lucas.p.stankus@gmail.com, lars@metafoo.de,
+	Michael.Hennerich@analog.com, linux-iio@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 00/11] iio: accel: adxl313: add power-save on
+ activity/inactivity
+Message-ID: <aErK4ij3I83ETw-X@smile.fi.intel.com>
+References: <20250601172139.59156-1-l.rubusch@gmail.com>
+ <aDz5WoBFlLiRptza@archie.me>
+ <CAFXKEHZQZuKYS-DJ_KSmHzEO7OAGmKXCeEZ3VaLR-JJdb3Sw6Q@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250611-iio-zero-init-stack-with-instead-of-memset-v1-0-ebb2d0a24302@baylibre.com>
- <aEqbQPvz0FsLXt0Z@duo.ucw.cz> <2243943.irdbgypaU6@workhorse>
-In-Reply-To: <2243943.irdbgypaU6@workhorse>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Thu, 12 Jun 2025 15:28:37 +0300
-X-Gm-Features: AX0GCFscYljXh7LJwJGoGDo8-EH4wvCa4kp802_hSw1Ko3S3oAJ3o3w3MKMG3Hc
-Message-ID: <CAHp75VdVB1OogZay+FDYVY0XajxcOx6t8T8LJSs+zSZg8TkaDQ@mail.gmail.com>
-Subject: Re: [PATCH 00/28] iio: zero init stack with { } instead of memset()
-To: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
-Cc: David Lechner <dlechner@baylibre.com>, linux-rockchip@lists.infradead.org, 
-	Michael Hennerich <michael.hennerich@analog.com>, Lars-Peter Clausen <lars@metafoo.de>, 
-	Jonathan Cameron <jic23@kernel.org>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Andy Shevchenko <andy@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Heiko Stuebner <heiko@sntech.de>, 
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
-	Francesco Dolcini <francesco@dolcini.it>, 
-	=?UTF-8?Q?Jo=C3=A3o_Paulo_Gon=C3=A7alves?= <jpaulo.silvagoncalves@gmail.com>, 
-	=?UTF-8?Q?Leonard_G=C3=B6hrs?= <l.goehrs@pengutronix.de>, 
-	kernel@pengutronix.de, Oleksij Rempel <o.rempel@pengutronix.de>, 
-	Roan van Dijk <roan@protonic.nl>, Tomasz Duszynski <tomasz.duszynski@octakon.com>, 
-	Jacopo Mondi <jacopo@jmondi.org>, Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>, 
-	Mudit Sharma <muditsharma.info@gmail.com>, 
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>, =?UTF-8?Q?Ond=C5=99ej_Jirman?= <megi@xff.cz>, 
-	Andreas Klinger <ak@it-klinger.de>, Petre Rodan <petre.rodan@subdimension.ro>, 
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, 
-	linux-stm32@st-md-mailman.stormreply.com, Pavel Machek <pavel@ucw.cz>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAFXKEHZQZuKYS-DJ_KSmHzEO7OAGmKXCeEZ3VaLR-JJdb3Sw6Q@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Thu, Jun 12, 2025 at 3:12=E2=80=AFPM Nicolas Frattaroli
-<nicolas.frattaroli@collabora.com> wrote:
-
-> I thought I'd chime in as someone uninvolved because this seemed
-> interesting.
-
-Welcome! Other opinions on such a topic are always appreciated.
-
-> On Thursday, 12 June 2025 11:17:52 Central European Summer Time Pavel Mac=
-hek wrote:
+On Wed, Jun 11, 2025 at 10:04:17PM +0200, Lothar Rubusch wrote:
+> On Mon, Jun 2, 2025 at 3:07 AM Bagas Sanjaya <bagasdotme@gmail.com> wrote:
 > >
-> > > Jonathan mentioned recently that he would like to get away from using
-> > > memset() to zero-initialize stack memory in the IIO subsystem. And we
-> > > have it on good authority that initializing a struct or array with =
-=3D { }
-> > > is the preferred way to do this in the kernel [1]. So here is a serie=
-s
-> > > to take care of that.
+> > On Sun, Jun 01, 2025 at 05:21:28PM +0000, Lothar Rubusch wrote:
+> > > The patch set covers the following topics:
+> > > - add debug register and regmap cache
+> > > - prepare iio channel scan_type and scan_index
+> > > - prepare interrupt handling
+> > > - implement fifo with watermark
+> > > - add activity/inactivity together with auto-sleep with link bit
+> > > - add ac coupled activity/inactivity, integrate with auto-sleep and link bit
+> > > - documentation
 > >
-> > 1) Is it worth the churn?
+> > The series doesn't cleanly apply on iio/testing tree. Base commit or tree?
 > >
-> > 2) Will this fail to initialize padding with some obscure compiler?
->
-> as of right now, the only two C compilers that are supported are
-> GCC >=3D 8.1, and Clang >=3D 13.0.1. If anyone even manages to get the ke=
-rnel
-> to finish a build with something else, I think the compiler not
-> implementing the C standard correctly is the least of their worries.
->
-> My bigger worry is that =3D { } is only guaranteed to be as correct as
-> memset on C23, and the kernel's standard right now is C11. For that
-> reason alone, I don't think memset should be moved away from for now,
-> unless someone can verify that every GCC release >=3D 8.1 and every
-> Clang release >=3D 13.0.1 does the right thing here regardless.
->
-> >
-> > 3) Why do you believe that {} is the preffered way? All we have is
-> > Kees' email that explains that =3D {} maybe works in configs he tested.
->
-> =3D { } is guaranteed to work in C23, as per the standard, but again we'r=
-e
-> not on C23.
->
-> The reason to prefer this is likely that it's easier for static analysis
-> to see the struct as initialised, but that's me making assumptions here.
->
-> A more human-centric argument is that once we're on a C standards version
-> where =3D { } is guaranteed to be correct, then =3D { } is much more obvi=
-ously
-> correct to a reader than a memset with a value and a size somewhere later
-> in the code. This argument is evident from the number of patches in this
-> series where the memset and the declaration are not in the same hunk.
-> That's the kind of stuff that keeps me awake at night, sweating profusely=
-.
+> > Confused...
+> 
+> I'm sorry for that. My base tree is "testing" here:
+> https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git/log/?h=testing
+> 
+> Since this patch could be applied, I guess it could be a good base commit:
+> https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git/commit/?h=testing&id=d4d10d3535639b946007fb7ffb5bff2d878df921
 
-While all you said seems true and I agree with, the pedantism here is
-not needed as in the Linux kernel we have {} used for ages in tons of
-code and if something went wrong with that we should have had bug
-reports already. Are you aware of such? Personally I haven't heard
-even one related to this. But if you know, I am really more than
-interested to read about (please, give pointers to such a discussion).
+Don't you use --base when creating series?
+If not, use it.
 
---=20
+Bagas, you should refer to the last lines of the (cover letter) message where
+should be base commit written. When you use `b4` tool, it does automatically
+for you find the correct base, so one needs just to call `b4 shazam -M
+$MessageID` on top of the clean vanilla tag, and it will do the rest for you.
+
+-- 
 With Best Regards,
 Andy Shevchenko
+
+
 

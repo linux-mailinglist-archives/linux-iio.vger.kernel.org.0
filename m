@@ -1,243 +1,151 @@
-Return-Path: <linux-iio+bounces-20554-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20555-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF0CDAD7187
-	for <lists+linux-iio@lfdr.de>; Thu, 12 Jun 2025 15:19:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 615F3AD71CD
+	for <lists+linux-iio@lfdr.de>; Thu, 12 Jun 2025 15:27:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 14AF67A4073
-	for <lists+linux-iio@lfdr.de>; Thu, 12 Jun 2025 13:17:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D721D3B5CA3
+	for <lists+linux-iio@lfdr.de>; Thu, 12 Jun 2025 13:22:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D18925B2E3;
-	Thu, 12 Jun 2025 13:15:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86E0453365;
+	Thu, 12 Jun 2025 13:22:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aegjPuSn"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="P4v/MX/S"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F02BF25A62D;
-	Thu, 12 Jun 2025 13:15:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C58B92744D;
+	Thu, 12 Jun 2025 13:22:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749734145; cv=none; b=Usx987s1O2CfkG79RMOuEUloBvKAjZaDNvb7dQrfECt36eslligNnwNaivFJVKNGua2hgc9VjtfBHtdYWUGepW7VpyNPaOXns6PD6uQzAVk17KNY3k0YPVJV4JLJi2XT6Fs+3YyC7IX0ygF3QZLQmWLatLgklGowlP53X2I6fxc=
+	t=1749734579; cv=none; b=sTvLgO4iF6Zu3nwIgEr4Hl3cni55BP3ASmElapOZb8oFwSetCnSf6m7Y61vFhsMpTXv6XO+4/JZXS6KD4+282mGZdggeF75uExaomgcTYgvz8u4TrEFgbCAwo1TAq1lJwj4qyxasJMDoE+H2xaUyafCNSOb1rDSryHI+UZs4SGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749734145; c=relaxed/simple;
-	bh=LMUOc2RdYNDJK4nYvLILKjg7NqLsPsWS+vgJ82GlO9c=;
+	s=arc-20240116; t=1749734579; c=relaxed/simple;
+	bh=z31TFJJA6H9aGmzIDY67vP6/BIVJXmTiHnogd+G0yC4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RMmM753mVP7fAK/0Wn9cwZhRvaY40BMlfTNDU3mrffRzERRGp0T4ePSpq3gJZtKaSSIir8OWk0Tt0zWTxjytTSqVfXtuj3xyXyR4n0g6Q++NB9N9sX3wnJRno7OLgFEyUj/iCl4Zzdzt8seLLIHmMTxX1wWyEV6ptBk4uJIEdKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aegjPuSn; arc=none smtp.client-ip=192.198.163.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=WadQuHd6ANYcr5HfnM9+iof8TCboJ28dVuwwnQi9T3DKmshP9t8d27IfOW/BK7W9RF7+f8RnXotcwlgEyioW2x8+IhiHpkfqwrhHYiTgx743Nui9+rGCBKxG4+NxqpRnjyZoTmLOhxAhzYynGCZzVugwc3PKPvGv9gfUmeBbYso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=P4v/MX/S; arc=none smtp.client-ip=198.175.65.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1749734142; x=1781270142;
+  t=1749734578; x=1781270578;
   h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=LMUOc2RdYNDJK4nYvLILKjg7NqLsPsWS+vgJ82GlO9c=;
-  b=aegjPuSngi5VStxqLTGKAlufNAmKJsBjf+6embY06L1KtEnHPuhATwz8
-   uiAG0GPmHrKWuDlORQsz6LPpdV9uFR4AGiKiB7I5WDSkm0wYVt+mDVZS5
-   w9MsUQpn+5tZl2o/Dk4BivWNk4E1mW+NCuSN+8hQ0dNmLz0lF7GboziJc
-   aHd3Zcn33NzRaDwh+BfV9CbdqGblC0VN9yu8PvMfjFDx9VH3SzkkFGIhQ
-   9WsFHbQClyUwBMWhKVC61x/KnqPehbLHpFDze0ZEVsGEKVhbymvTxtawU
-   KJJlWbnd9aOeJZZQR4xiFSLwwmZcJZWRGcC2/Jcd5pdqxi83USADWHFWk
-   Q==;
-X-CSE-ConnectionGUID: JfP3WiV7Rn2v0IM4uBxyIg==
-X-CSE-MsgGUID: G7+f7ZQDQuSwd9SoN4qwVg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11462"; a="51138991"
+   mime-version:in-reply-to;
+  bh=z31TFJJA6H9aGmzIDY67vP6/BIVJXmTiHnogd+G0yC4=;
+  b=P4v/MX/SE/mapbjkQ5Q8nzXqBOOfHElgxk0cfkUWVZebfgNBFdAuV40V
+   FY48Y4CIOtvwgVbDE6lSSeadaIMQcXRa98kot9xZNdrsvnB4/3vmoM9Sz
+   sZ0T6KaWup/Wm7nDbXhJ0AYYCnj1nGEcNfXhl5mc+RGKQRiwtKgT2zHuw
+   qVymgNphM+/0+XS7ybbq7ylezKTqpLfnxTSl/Sp4JZ3UZy4am+YLNAp7A
+   DuQHXFnp5k5gCdmjGrooLVGSc0jTvhSFDZ0RzD3NNSdMTjZMNjDS3mOfr
+   N0lNqzbkJ5pz+aA4rztp/X/busMuNxOKrZkUcdBvJhHhiSEPK7v7PGdB9
+   g==;
+X-CSE-ConnectionGUID: 0rGfpxluSEiBOuNOFT/9rQ==
+X-CSE-MsgGUID: g+WKv91WT3+8k1KWP1IlsA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11462"; a="51999197"
 X-IronPort-AV: E=Sophos;i="6.16,230,1744095600"; 
-   d="scan'208";a="51138991"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2025 06:15:41 -0700
-X-CSE-ConnectionGUID: YcM4vTLgSe+aq1A9LpR7Ug==
-X-CSE-MsgGUID: 3Xl/sVAJSbytpyaFde8TCA==
+   d="scan'208";a="51999197"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2025 06:22:58 -0700
+X-CSE-ConnectionGUID: e2UBrUH8QLGUjuuspRu4wQ==
+X-CSE-MsgGUID: +EQhxeZQRW2qwWDBtGKd9Q==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,230,1744095600"; 
-   d="scan'208";a="152663513"
+   d="scan'208";a="148409670"
 Received: from smile.fi.intel.com ([10.237.72.52])
-  by fmviesa004.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2025 06:15:38 -0700
+  by fmviesa009.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2025 06:22:54 -0700
 Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
 	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1uPhmK-00000005xQy-1COj;
-	Thu, 12 Jun 2025 16:15:36 +0300
-Date: Thu, 12 Jun 2025 16:15:36 +0300
+	id 1uPhtM-00000005xWB-0lGu;
+	Thu, 12 Jun 2025 16:22:52 +0300
+Date: Thu, 12 Jun 2025 16:22:51 +0300
 From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: surajsonawane0215@gmail.com
-Cc: Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 3/3] iio: chemical: Add driver for Sharp GP2Y1010AU0F
-Message-ID: <aErS-HQkO5pMw3ph@smile.fi.intel.com>
-References: <20250612100758.13241-1-surajsonawane0215@gmail.com>
- <20250612100758.13241-4-surajsonawane0215@gmail.com>
+To: Andrew Ijano <andrew.ijano@gmail.com>
+Cc: jic23@kernel.org, andrew.lopes@alumni.usp.br, gustavobastos@usp.br,
+	dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org,
+	jstephan@baylibre.com, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5 2/3] iio: accel: sca3000: replace usages of internal
+ read data helpers by spi helpers
+Message-ID: <aErUqzdFL9nG6Bxc@smile.fi.intel.com>
+References: <20250611194648.18133-1-andrew.lopes@alumni.usp.br>
+ <20250611194648.18133-3-andrew.lopes@alumni.usp.br>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250612100758.13241-4-surajsonawane0215@gmail.com>
+In-Reply-To: <20250611194648.18133-3-andrew.lopes@alumni.usp.br>
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
  krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Thu, Jun 12, 2025 at 03:37:46PM +0530, surajsonawane0215@gmail.com wrote:
+On Wed, Jun 11, 2025 at 04:39:20PM -0300, Andrew Ijano wrote:
+> Remove usages of sca3000_read_data() and sca3000_read_data_short()
+> functions, replacing it by spi_w8r8() and spi_w8r16be() helpers. Just
+> one case that reads large buffers is left using an internal helper.
 > 
-> Implement support for the Sharp GP2Y1010AU0F optical dust sensor which
-> measures particulate matter concentration using infrared scattering.
-> The sensor requires precise 320μs LED pulses with ADC sampling at 280μs
-> after LED activation (as specified in datasheet section 6-1).
-> 
-> The driver provides:
-> - Raw density readings via IIO_DENSITY channel type
-> - Hardware-agnostic operation via GPIO and IIO ADC interfaces
-> - Power management through regulator framework
-> - Device Tree binding support
-
-> Datasheet: https://global.sharp/products/device/lineup/data/pdf/datasheet/gp2y1010au_appl_e.pdf
-> 
-> Signed-off-by: Suraj Sonawane <surajsonawane0215@gmail.com>
-
-No blank line(s) in the tag block.
-
-> ---
+> This is an old driver that was not making full use of the newer
+> infrastructure.
 
 ...
 
-> config PMS7003
+> +	ret |= (mode & SCA3000_REG_MODE_MODE_MASK);
 
->  	  To compile this driver as a module, choose M here: the module will
->  	  be called pms7003.
-> +
-> +config GP2Y1010AU0F
-
-Shouldn't this be alphabetically ordered?
-
-> +	tristate "Sharp GP2Y1010AU0F optical dust sensor"
-> +	depends on IIO
-
-Is it needed? Nothing is missed?
+Unneeded parentheses.
 
 ...
 
-> +#include <linux/delay.h>
-> +#include <linux/err.h>
-> +#include <linux/gpio/consumer.h>
-> +#include <linux/iio/consumer.h>
-> +#include <linux/iio/iio.h>
-> +#include <linux/init.h>
-> +#include <linux/module.h>
-> +#include <linux/of.h>
+> +			ret = spi_w8r16be(st->us,
+> +						SCA3000_READ_REG(SCA3000_REG_TEMP_MSB_ADDR));
 
-No of.h in a new code, please. Also follow IWYU principle, there are missed inclusionfs.
-
-> +#include <linux/platform_device.h>
-> +#include <linux/regulator/consumer.h>
+Make it simply one line. The above formatting is ugly.
 
 ...
 
-> +struct gp2y1010_data {
-> +	struct gpio_desc *led_gpio;
-> +	struct iio_channel *adc_chan;
-> +	int v_clean;  /* Calibration: voltage in clean air (mV) */
+>  	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+>  	struct sca3000_state *st = iio_priv(indio_dev);
+> -	int len = 0, ret, val;
+> +	int len = 0, ret;
 
-clean_air_uV is much better naming, most of the comment won't be needed with it.
+Ideally it's better to split them and len should never be signed.
+Moreover, the function  should be switched to sysfs_emit_at() if this is part
+of ABI.
 
-> +};
-
-...
-
-> +static int gp2y1010_read_raw(struct iio_dev *indio_dev,
-> +							 struct iio_chan_spec const *chan,
-> +							 int *val, int *val2, long mask)
-> +{
-> +	struct gp2y1010_data *data = iio_priv(indio_dev);
-> +	int ret, voltage_mv;
-
-_mV
-
-Also I recommend to split them as they are not semantically the same.
-
-> +
-> +	if (mask != IIO_CHAN_INFO_RAW)
-> +		return -EINVAL;
-> +
-> +	gpiod_set_value(data->led_gpio, 1);
-> +	udelay(GP2Y1010_SAMPLE_DELAY_US);
-
-flseep() and explain the need of it.
-
-> +
-> +	ret = iio_read_channel_processed(data->adc_chan, &voltage_mv);
-> +
-> +	/* Wait remaining time to complete 320 µs total LED pulse width */
-> +	udelay(GP2Y1010_LED_PULSE_US - GP2Y1010_SAMPLE_DELAY_US);
-
-fsleep()
-
-> +	gpiod_set_value(data->led_gpio, 0);
-> +
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	*val = voltage_mv;
-> +	return IIO_VAL_INT;
-> +}
+>  	mutex_lock(&st->lock);
+> -	ret = sca3000_read_data_short(st, SCA3000_REG_MODE_ADDR, 1);
+> -	val = st->rx[0];
+> +	ret = spi_w8r8(st->us, SCA3000_READ_REG(SCA3000_REG_MODE_ADDR));
+>  	mutex_unlock(&st->lock);
+>  	if (ret)
+>  		return ret;
 
 ...
 
-> +static int gp2y1010_probe(struct platform_device *pdev)
-> +{
-> +	struct device *dev = &pdev->dev;
-> +	struct iio_dev *indio_dev;
-> +	struct gp2y1010_data *data;
-> +	enum iio_chan_type ch_type;
-> +	int ret;
-> +
-> +	indio_dev = devm_iio_device_alloc(dev, sizeof(*data));
-> +	if (!indio_dev)
-> +		return -ENOMEM;
-> +
-> +	data = iio_priv(indio_dev);
-> +	data->v_clean = 900;
+>  		}, {
+>  			.len = len,
+> -			.rx_buf = rx,
+> +			.rx_buf = st->rx,
+>  		}
+>  	};
 
-The default must be defined with a comment as constant.
+> -
 
-> +	data->led_gpio = devm_gpiod_get(dev, "led", GPIOD_OUT_LOW);
-> +	if (IS_ERR(data->led_gpio))
-> +		return dev_err_probe(dev, PTR_ERR(data->led_gpio), "Failed to get LED GPIO\n");
-> +
-> +	ret = devm_regulator_get_enable(dev, "vdd");
-> +	if (ret)
-> +		return ret;
-> +	udelay(100);
-> +
-> +	data->adc_chan = devm_iio_channel_get(dev, "dust");
-> +	if (IS_ERR(data->adc_chan))
-> +		return dev_err_probe(dev, PTR_ERR(data->adc_chan), "Failed to get ADC channel\n");
-> +
-> +	ret = iio_get_channel_type(data->adc_chan, &ch_type);
-> +	if (ret < 0)
-> +		return ret;
-> +	if (ch_type != IIO_DENSITY)
-> +		return dev_err_probe(dev, -EINVAL, "ADC channel is not density type\n");
-> +
-> +	indio_dev->name = dev_name(dev);
-> +	indio_dev->info = &gp2y1010_info;
-> +	indio_dev->channels = gp2y1010_channels;
-> +	indio_dev->num_channels = ARRAY_SIZE(gp2y1010_channels);
-> +	indio_dev->modes = INDIO_DIRECT_MODE;
-> +
-> +	return devm_iio_device_register(dev, indio_dev);
-> +}
+Stray change. Doesn't checkpatch complain on this?
+
+> -			(st->rx[0] | SCA3000_REG_MODE_RING_BUF_ENABLE));
+> +			(ret | SCA3000_REG_MODE_RING_BUF_ENABLE));
+
+> -			(st->rx[0] & ~SCA3000_REG_MODE_RING_BUF_ENABLE));
+> +			(ret & ~SCA3000_REG_MODE_RING_BUF_ENABLE));
+
+In the original code and still now too many parentheses.
 
 -- 
 With Best Regards,

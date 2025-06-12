@@ -1,317 +1,172 @@
-Return-Path: <linux-iio+bounces-20543-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20544-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C932AD6FF3
-	for <lists+linux-iio@lfdr.de>; Thu, 12 Jun 2025 14:16:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C12AAD7060
+	for <lists+linux-iio@lfdr.de>; Thu, 12 Jun 2025 14:29:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 63E511BC4FA7
-	for <lists+linux-iio@lfdr.de>; Thu, 12 Jun 2025 12:16:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1B3623A143F
+	for <lists+linux-iio@lfdr.de>; Thu, 12 Jun 2025 12:29:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A996F1865EB;
-	Thu, 12 Jun 2025 12:15:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A9BE21FF5B;
+	Thu, 12 Jun 2025 12:29:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Dqbsgbss"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZA2yUkx8"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8431C2F4338;
-	Thu, 12 Jun 2025 12:15:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E15F1EE033;
+	Thu, 12 Jun 2025 12:29:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749730524; cv=none; b=d4e25pEN4s5D7WK7bRLknO4DX/wAsiYzw6C7IMm+wPILnxpEVsR1uoo/3tjUM3eULc2Q2bUqxvscRd6NHp9kBxgvDxppo/1VhCBCOth4y/b5bpUiWRU+4Nnvs8pkithOWbM1//t7HvSbjGbCYaZA1VRudySny3T66qFiUJV58V8=
+	t=1749731359; cv=none; b=sqRj2KnDLEj0yroHfyJxHKVVG6drFjd5Z6kkVCbe99w3pnZzoPYZcPZ7OFaa7tc0+TfzFfouRAeL++rEnWvBef8vYMHwzlCZeuiJgYRCSyqyyrFf5zZ4iVA/FpekCF769wlS1L9irPSivjo/bsYRVWBoxAEDR4/DlO0umM0Xi80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749730524; c=relaxed/simple;
-	bh=SEs2j+fKgl/2ov7h4rZaMSfSjXIEe+/fSs1zEnX0EuY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GR5Q0JINEcqSqPi8DNS+nbVNIrsVhF/1r7lJ1kfs27bfOeBxZivLDKceUvdqFdRal5gvCG/ZTrZUVC7QaaKzY5WqnEsFwz5qShAsCv7SAfOIxoXgZgRoUAx5mXB6OWPsefGgjNIaBA7kZ+sAd042VlrxEJgA/SccqfRCKTVIxi4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Dqbsgbss; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1749730523; x=1781266523;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=SEs2j+fKgl/2ov7h4rZaMSfSjXIEe+/fSs1zEnX0EuY=;
-  b=DqbsgbssxtFJlbegxMJXfTrk09uUaAuEl5W/cEl3ck4kDno+9aOgbz/o
-   eCRUW0Ri0bHopQWa8NTY8mWlW5S0wsKBOzZxjDixFfJtIuMaRKCoUxvoK
-   Tw0espqJIh1XWkpZjBhl2VkIrB1XCHK2laPcSfv+9ZXqxlSZo7++qomYr
-   bkiXxj8PnpWr2UcOC5JUsqK5X/g+MmZFMm1+RFj92yXkxJHEZFs8zUX9h
-   /o6E8JJgTKJHlgcp9/m3upD/dSL5MDXuzp3IiJXqmqdrkikLZRt7tupZ9
-   C644JmevJZRuXgX1HN0cUTnUGlYemlUNxc01Vfe+JwwxmNU2Jvo8DR2Se
-   Q==;
-X-CSE-ConnectionGUID: o25NS/IqTvSmGrqIwR33BA==
-X-CSE-MsgGUID: b19mZ9IaRAC0E91BpaBqNQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11461"; a="55579483"
-X-IronPort-AV: E=Sophos;i="6.16,230,1744095600"; 
-   d="scan'208";a="55579483"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2025 05:15:22 -0700
-X-CSE-ConnectionGUID: mlZxuIRSQL6AppBv1TJt+w==
-X-CSE-MsgGUID: K9pnUkGYRBOhmJ7qtqpzIA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,230,1744095600"; 
-   d="scan'208";a="147410548"
-Received: from smile.fi.intel.com ([10.237.72.52])
-  by orviesa010.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2025 05:15:19 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1uPgpv-00000005wdj-3Lmw;
-	Thu, 12 Jun 2025 15:15:15 +0300
-Date: Thu, 12 Jun 2025 15:15:15 +0300
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Lothar Rubusch <l.rubusch@gmail.com>
-Cc: lars@metafoo.de, Michael.Hennerich@analog.com, jic23@kernel.org,
-	dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org,
-	corbet@lwn.net, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-	eraretuya@gmail.com
-Subject: Re: [PATCH v9 08/11] iio: accel: adxl345: add inactivity feature
-Message-ID: <aErE0xmlm4qBHg03@smile.fi.intel.com>
-References: <20250610215933.84795-1-l.rubusch@gmail.com>
- <20250610215933.84795-9-l.rubusch@gmail.com>
+	s=arc-20240116; t=1749731359; c=relaxed/simple;
+	bh=NEJs2y5lh32zGmKZ8Qzhu9KFrGD77yTrgBvMh7VvKkA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=fd9S5FCoLqx66mbn0iWAAhwjndgtw9GGgnwh8/EPhxzxPY2emVejpmPRYVu088TvqErYYy2lJRepD7vtsnRh55lSlwR3fmRxfq1PndYSArGh4b3HeB7k3R28AsCtE631Z23HuqF2ZBaJFBx7m9l1cuc+HNopdQATwt3mxXtO8HU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZA2yUkx8; arc=none smtp.client-ip=209.85.218.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-ad93ff9f714so158461166b.2;
+        Thu, 12 Jun 2025 05:29:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1749731355; x=1750336155; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=NEJs2y5lh32zGmKZ8Qzhu9KFrGD77yTrgBvMh7VvKkA=;
+        b=ZA2yUkx8LibcLgiBimfBweWTPVbAexJk/gKyzqQYCob/ptCsM68G7RxgpZBQpw8YVn
+         T6Q/pdbOG/T+RriUUa+FQTyrET8UrQkqptelgRRrfAqZobh5FLEEKeW9OAAHPlvzxWPq
+         U3yB5wVV6gcFQ4Q+9Om/Gcz6s4WQF0pfVXDHQtSNsLfJCx7S8xDFVkZf77IHdoNcnwzz
+         SVfeZCCv8F7QWYOE+3mq05NUQKeoFGy9ErNb7ub1ffmgjrO8vOUxj87DxbAGUBYkWyUr
+         5Q+MvPikylHr6FWY7Vrs/NH8M9APzfSzJuIVrjT1w9bz5w2rMkm1HBpavlK1vWoGGzrU
+         emPw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749731355; x=1750336155;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=NEJs2y5lh32zGmKZ8Qzhu9KFrGD77yTrgBvMh7VvKkA=;
+        b=MFjS1KC6eLG55TyfMwriX91QldMXsSmcGzFiQQXHjdNRKi7M1SX2gNFAjAGTr+RhfY
+         uXmBD7ZY7R3FpJ1UFQnMJCQK82dSPPYUeQJPLLRLkxbtI4059UsYkgZaIL0kyGBSpDVZ
+         2zSgD/+KtqCYxGddyLQM+tZvnI6w+6WTe4IoWfr7czBodIip9oGJGkYKm4UeicGj7J6i
+         g/JH2gud7lvpRaT5ElAE5dJ1krwIK40ZWTJyQ6IjaiPx3XSaGSxXkfOUGxw1Nd5EsUzZ
+         SxrOV+o3EuiGT5740YNhA0bZRe9CYThRTHtLiLIAUaUzh9oXREjaZBrYifqpNWxd9+F/
+         0Zbw==
+X-Forwarded-Encrypted: i=1; AJvYcCUxRD/nyHSdtFydbzOYA9HzZKOt4zcN/0TOUCp7mP2m3rGMkCK0cq01zjil1DpmoYjZU8vnyMcpM3QYzqXu@vger.kernel.org, AJvYcCWQ2deFXTSWqNIrwlsw1OINoahpxMPnph87ZKqAJuTx5kkqbKnAm7z+nd9x6yffHZwcDYgM20+tm1s=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxTkCiEEYMFR7DGoLjHWSq7lm1f0TQ1wWXac3AbFmwc35eyiqzh
+	DvWwfyJhDZgtD+lszGCKBNeSs4lGf2Oy8xmeuDNQ2FPAjP98Md/96RLfuZSzoA4pYYPmXGOe62m
+	6VItF/2HHQNyMPDMwJd3E/HK4qQn8LsA=
+X-Gm-Gg: ASbGncsCkfkZZVPnmQSkxNKjlWrHyxQA6c8Sd2BFv2YfbzJ5XXuxFpTpyGCE96fPeyO
+	D2oeGKcJFKaxlSfdYqqWx2Pl456kH8vKbmMEG3sFj7V3zpdegZNk5mCxmf6PVqGgOkQZsJUDSsx
+	DNqMBOyJKYgBiRWXj3xNdCVl23JFhY1zbihuOib1BtoGc=
+X-Google-Smtp-Source: AGHT+IGlkqMkspvLMpeTjF8aN4KiUGRrevrrBMyqe/WGI6YMF5fU2+dVwFdEvs12L1YJUL60yY3huaWNWMMfCo5r7oM=
+X-Received: by 2002:a17:907:1c9e:b0:ade:5ba:40e1 with SMTP id
+ a640c23a62f3a-adea270e2f5mr330585366b.0.1749731354468; Thu, 12 Jun 2025
+ 05:29:14 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250610215933.84795-9-l.rubusch@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+References: <20250611-iio-zero-init-stack-with-instead-of-memset-v1-0-ebb2d0a24302@baylibre.com>
+ <aEqbQPvz0FsLXt0Z@duo.ucw.cz> <2243943.irdbgypaU6@workhorse>
+In-Reply-To: <2243943.irdbgypaU6@workhorse>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Thu, 12 Jun 2025 15:28:37 +0300
+X-Gm-Features: AX0GCFscYljXh7LJwJGoGDo8-EH4wvCa4kp802_hSw1Ko3S3oAJ3o3w3MKMG3Hc
+Message-ID: <CAHp75VdVB1OogZay+FDYVY0XajxcOx6t8T8LJSs+zSZg8TkaDQ@mail.gmail.com>
+Subject: Re: [PATCH 00/28] iio: zero init stack with { } instead of memset()
+To: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
+Cc: David Lechner <dlechner@baylibre.com>, linux-rockchip@lists.infradead.org, 
+	Michael Hennerich <michael.hennerich@analog.com>, Lars-Peter Clausen <lars@metafoo.de>, 
+	Jonathan Cameron <jic23@kernel.org>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
+	Andy Shevchenko <andy@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Heiko Stuebner <heiko@sntech.de>, 
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+	Francesco Dolcini <francesco@dolcini.it>, 
+	=?UTF-8?Q?Jo=C3=A3o_Paulo_Gon=C3=A7alves?= <jpaulo.silvagoncalves@gmail.com>, 
+	=?UTF-8?Q?Leonard_G=C3=B6hrs?= <l.goehrs@pengutronix.de>, 
+	kernel@pengutronix.de, Oleksij Rempel <o.rempel@pengutronix.de>, 
+	Roan van Dijk <roan@protonic.nl>, Tomasz Duszynski <tomasz.duszynski@octakon.com>, 
+	Jacopo Mondi <jacopo@jmondi.org>, Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>, 
+	Mudit Sharma <muditsharma.info@gmail.com>, 
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>, =?UTF-8?Q?Ond=C5=99ej_Jirman?= <megi@xff.cz>, 
+	Andreas Klinger <ak@it-klinger.de>, Petre Rodan <petre.rodan@subdimension.ro>, 
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, 
+	linux-stm32@st-md-mailman.stormreply.com, Pavel Machek <pavel@ucw.cz>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jun 10, 2025 at 09:59:30PM +0000, Lothar Rubusch wrote:
-> Add the inactivity feature of the sensor to the driver. When activity
-> and inactivity are enabled, a link bit will be set linking activity and
-> inactivity handling. Additionally, the auto-sleep mode will be enabled.
-> Due to the link bit the sensor is going to auto-sleep when inactivity
-> was detected.
-> 
-> Inactivity detection needs a threshold to be configured and a period of
-> time in seconds. After, it will transition to inactivity state, if
-> measurements stay below inactivity threshold.
-> 
-> When a ODR is configured the period for inactivity is adjusted with a
-> corresponding reasonable default value, in order to have higher
-> frequencies, lower inactivity times, and lower sample frequency but
-> give more time until inactivity. Both with reasonable upper and lower
-> boundaries, since many of the sensor's features (e.g. auto-sleep) will
-> need to operate between 12.5 Hz and 400 Hz. This is a default setting
-> when actively changing sample frequency, explicitly setting the time
-> until inactivity will overwrite the default.
-> 
-> Similarly, setting the g-range will provide a default value for the
-> activity and inactivity thresholds. Both are implicit defaults, but
-> equally can be overwritten to be explicitly configured.
+On Thu, Jun 12, 2025 at 3:12=E2=80=AFPM Nicolas Frattaroli
+<nicolas.frattaroli@collabora.com> wrote:
 
-...
+> I thought I'd chime in as someone uninvolved because this seemed
+> interesting.
 
-> +static const struct iio_event_spec adxl345_fake_chan_events[] = {
-> +	{
-> +		/* inactivity */
-> +		.type = IIO_EV_TYPE_MAG,
-> +		.dir = IIO_EV_DIR_FALLING,
-> +		.mask_separate = BIT(IIO_EV_INFO_ENABLE),
-> +		.mask_shared_by_type = BIT(IIO_EV_INFO_VALUE) |
-> +			BIT(IIO_EV_INFO_PERIOD),
+Welcome! Other opinions on such a topic are always appreciated.
 
-Slightly better
+> On Thursday, 12 June 2025 11:17:52 Central European Summer Time Pavel Mac=
+hek wrote:
+> >
+> > > Jonathan mentioned recently that he would like to get away from using
+> > > memset() to zero-initialize stack memory in the IIO subsystem. And we
+> > > have it on good authority that initializing a struct or array with =
+=3D { }
+> > > is the preferred way to do this in the kernel [1]. So here is a serie=
+s
+> > > to take care of that.
+> >
+> > 1) Is it worth the churn?
+> >
+> > 2) Will this fail to initialize padding with some obscure compiler?
+>
+> as of right now, the only two C compilers that are supported are
+> GCC >=3D 8.1, and Clang >=3D 13.0.1. If anyone even manages to get the ke=
+rnel
+> to finish a build with something else, I think the compiler not
+> implementing the C standard correctly is the least of their worries.
+>
+> My bigger worry is that =3D { } is only guaranteed to be as correct as
+> memset on C23, and the kernel's standard right now is C11. For that
+> reason alone, I don't think memset should be moved away from for now,
+> unless someone can verify that every GCC release >=3D 8.1 and every
+> Clang release >=3D 13.0.1 does the right thing here regardless.
+>
+> >
+> > 3) Why do you believe that {} is the preffered way? All we have is
+> > Kees' email that explains that =3D {} maybe works in configs he tested.
+>
+> =3D { } is guaranteed to work in C23, as per the standard, but again we'r=
+e
+> not on C23.
+>
+> The reason to prefer this is likely that it's easier for static analysis
+> to see the struct as initialised, but that's me making assumptions here.
+>
+> A more human-centric argument is that once we're on a C standards version
+> where =3D { } is guaranteed to be correct, then =3D { } is much more obvi=
+ously
+> correct to a reader than a memset with a value and a size somewhere later
+> in the code. This argument is evident from the number of patches in this
+> series where the memset and the declaration are not in the same hunk.
+> That's the kind of stuff that keeps me awake at night, sweating profusely=
+.
 
-		.mask_shared_by_type =
-			BIT(IIO_EV_INFO_VALUE) |
-			BIT(IIO_EV_INFO_PERIOD),
+While all you said seems true and I agree with, the pedantism here is
+not needed as in the Linux kernel we have {} used for ages in tons of
+code and if something went wrong with that we should have had bug
+reports already. Are you aware of such? Personally I haven't heard
+even one related to this. But if you know, I am really more than
+interested to read about (please, give pointers to such a discussion).
 
-> +	},
-> +};
-
-And the same for other similar cases.
-
-...
-
-> +/**
-> + * adxl345_set_inact_time - Configure inactivity time explicitly or by ODR.
-> + * @st: The sensor state instance.
-> + * @val_s: A desired time value, between 0 and 255.
-> + *
-> + * Inactivity time can be configured between 1 and 255 sec. If a val_s of 0
-> + * is configured by a user, then a default inactivity time will be computed.
-> + *
-> + * In such case, it should take power consumption into consideration. Thus it
-> + * shall be shorter for higher frequencies and longer for lower frequencies.
-> + * Hence, frequencies above 255 Hz shall default to 10 s and frequencies below
-> + * 10 Hz shall result in 255 s to detect inactivity.
-> + *
-> + * The approach simply subtracts the pre-decimal figure of the configured
-> + * sample frequency from 255 s to compute inactivity time [s]. Sub-Hz are thus
-> + * ignored in this estimation. The recommended ODRs for various features
-> + * (activity/inactivity, sleep modes, free fall, etc.) lie between 12.5 Hz and
-> + * 400 Hz, thus higher or lower frequencies will result in the boundary
-> + * defaults or need to be explicitly specified via val_s.
-> + *
-> + * Return: 0 or error value.
-> + */
-> +static int adxl345_set_inact_time(struct adxl345_state *st, u32 val_s)
-> +{
-> +	unsigned int max_boundary = 255;
-> +	unsigned int min_boundary = 10;
-> +	unsigned int val = min(val_s, max_boundary);
-> +	enum adxl345_odr odr;
-> +	unsigned int regval;
-> +	int ret;
-> +
-> +	if (val == 0) {
-> +		ret = regmap_read(st->regmap, ADXL345_REG_BW_RATE, &regval);
-> +		if (ret)
-> +			return ret;
-> +
-> +		odr = FIELD_GET(ADXL345_BW_RATE_MSK, regval);
-
-> +		val = (adxl345_odr_tbl[odr][0] > max_boundary)
-> +			? min_boundary : max_boundary -	adxl345_odr_tbl[odr][0];
-
-clamp() ?
-
-> +	}
-> +
-> +	return regmap_write(st->regmap, ADXL345_REG_TIME_INACT, val);
-> +}
-
-...
-
->  	if (type == ADXL345_ACTIVITY) {
->  		axis_ctrl = ADXL345_ACT_X_EN | ADXL345_ACT_Y_EN |
->  				ADXL345_ACT_Z_EN;
->  	} else {
-> -		axis_ctrl = 0x00;
-> +		axis_ctrl = ADXL345_INACT_X_EN | ADXL345_INACT_Y_EN |
-> +				ADXL345_INACT_Z_EN;
->  	}
-
-Now this can be as simple as
-
-	axis_ctrl = ADXL345_ACT_X_EN;
-	if (type == ADXL345_ACTIVITY)
-		axis_ctrl |= ADXL345_ACT_Y_EN | ADXL345_ACT_Z_EN;
-	else
-		axis_ctrl |= ADXL345_INACT_Y_EN | ADXL345_INACT_Z_EN;
-
-Yeah, I don't know how to make the diff better (it gets worse), but the end
-result is better.
-
-One way, which I don't like much is to previously have this conditional written as:
-
-	axis_ctrl = ADXL345_ACT_X_EN;
-	if (type == ADXL345_ACTIVITY)
-		axis_ctrl |= ADXL345_ACT_Y_EN | ADXL345_ACT_Z_EN;
-	else
-		axis_ctrl = 0;
-
-...
-
-> +	ret = regmap_assign_bits(st->regmap, ADXL345_REG_POWER_CTL,
-> +				 (ADXL345_POWER_CTL_AUTO_SLEEP | ADXL345_POWER_CTL_LINK),
-
-Unneeded parentheses.
-
-> +				 en);
->  	if (ret)
->  		return ret;
-
-...
-
->  static int adxl345_set_odr(struct adxl345_state *st, enum adxl345_odr odr)
->  {
-> -	return regmap_update_bits(st->regmap, ADXL345_REG_BW_RATE,
-> +	int ret;
-> +
-> +	ret = regmap_update_bits(st->regmap, ADXL345_REG_BW_RATE,
->  				 ADXL345_BW_RATE_MSK,
->  				 FIELD_PREP(ADXL345_BW_RATE_MSK, odr));
-> +	if (ret)
-> +		return ret;
-> +
-> +	/* update inactivity time by ODR */
-> +	return adxl345_set_inact_time(st, 0);
-
-Okay, in this case the initial form of
-
-	int ret;
-
-	ret = ...
-	if (ret)
-		return ret;
-
-	return 0;
-
-
-will be better with the respectful comment (as Jonathan suggested) in that
-change that this is not optimal as standalone change, but it will help reduce
-churn in the next change(s).
-
->  }
-
-...
-
->  static int adxl345_set_range(struct adxl345_state *st, enum adxl345_range range)
->  {
-> -	return regmap_update_bits(st->regmap, ADXL345_REG_DATA_FORMAT,
-
-Same here.
-
-> +	unsigned int act_threshold, inact_threshold;
-> +	unsigned int range_old;
-> +	unsigned int regval;
-> +	int ret;
-> +
-> +	ret = regmap_read(st->regmap, ADXL345_REG_DATA_FORMAT, &regval);
-> +	if (ret)
-> +		return ret;
-> +	range_old = FIELD_GET(ADXL345_DATA_FORMAT_RANGE, regval);
-> +
-> +	ret = regmap_read(st->regmap,
-> +			  adxl345_act_thresh_reg[ADXL345_ACTIVITY],
-> +			  &act_threshold);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = regmap_read(st->regmap,
-> +			  adxl345_act_thresh_reg[ADXL345_INACTIVITY],
-> +			  &inact_threshold);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = regmap_update_bits(st->regmap, ADXL345_REG_DATA_FORMAT,
->  				 ADXL345_DATA_FORMAT_RANGE,
->  				 FIELD_PREP(ADXL345_DATA_FORMAT_RANGE, range));
-> +	if (ret)
-> +		return ret;
-> +
-> +	act_threshold = act_threshold * adxl345_range_factor_tbl[range_old]
-> +		/ adxl345_range_factor_tbl[range];
-> +	act_threshold = min(U8_MAX, max(1, act_threshold));
-> +
-> +	inact_threshold = inact_threshold * adxl345_range_factor_tbl[range_old]
-> +		/ adxl345_range_factor_tbl[range];
-> +	inact_threshold = min(U8_MAX, max(1, inact_threshold));
-> +
-> +	ret = regmap_write(st->regmap, adxl345_act_thresh_reg[ADXL345_ACTIVITY],
-> +			   act_threshold);
-> +	if (ret)
-> +		return ret;
-> +
-> +	return regmap_write(st->regmap, adxl345_act_thresh_reg[ADXL345_INACTIVITY],
-> +			   inact_threshold);
->  }
-
--- 
+--=20
 With Best Regards,
 Andy Shevchenko
-
-
 

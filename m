@@ -1,80 +1,81 @@
-Return-Path: <linux-iio+bounces-20563-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20564-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59699AD77A6
-	for <lists+linux-iio@lfdr.de>; Thu, 12 Jun 2025 18:11:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 961DFAD7827
+	for <lists+linux-iio@lfdr.de>; Thu, 12 Jun 2025 18:26:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7EFDB1892C90
-	for <lists+linux-iio@lfdr.de>; Thu, 12 Jun 2025 16:07:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0622C1888735
+	for <lists+linux-iio@lfdr.de>; Thu, 12 Jun 2025 16:23:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B8FC29AAF4;
-	Thu, 12 Jun 2025 16:06:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DDA529A308;
+	Thu, 12 Jun 2025 16:23:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="Re/3dRW2"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="GkdNJFj9"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oa1-f47.google.com (mail-oa1-f47.google.com [209.85.160.47])
+Received: from mail-ot1-f50.google.com (mail-ot1-f50.google.com [209.85.210.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B9C929A9CB
-	for <linux-iio@vger.kernel.org>; Thu, 12 Jun 2025 16:06:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04256221DA8
+	for <linux-iio@vger.kernel.org>; Thu, 12 Jun 2025 16:23:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749744383; cv=none; b=RPJ+eszWa0IEOXiuqW5/cljCQUSLkhJg+2LwfV/qx+O1kUPuvsId87udr6x8xyJmKnkH3QMCivlukdabOuSAYGp8+ImOFmDqDGC7LeRHNy58G5SfgxLC4L/TiC6KLpJXAVjrYJYFTkm7MHB7vJIJxpNiQ4aKfjzWjpGr+KOl/vc=
+	t=1749745386; cv=none; b=WgjR44J5R19no+rP9RzCoy6N0o2ZNJHErrJMbrZCJ6Fo8TeBo9/7OdZYrNBadE/uV8R0mEXI3Q4pxQkjvUjuT8vB7ENNz5iim8/sEwNm1huQWlHG76Hw4OtAZBQ1x8H4LooNv02rWTBKlm9nzaeIetVQYL2hE0EAwt1Kjar6MsI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749744383; c=relaxed/simple;
-	bh=04GkUWrTTqQUp181YEIvcJyQTVFi48opIFB+InHSc5Y=;
+	s=arc-20240116; t=1749745386; c=relaxed/simple;
+	bh=y4WFL2SbvgeV88Dn3pvioaJZuCsarQOzHwGhQ3uefK8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PixowBHjH0L2gKS16tFWDU3dDxcvMqBd2VVDfjxXa1R4NyqX8opQ2EwdBwJX1MXjFVqlyvdo1AlPx2/2rrmRFV6CXPKS/EBCBNROR/owPKQRIpvXSbiIjy1QBrjxml3bj8cnbFmsmjw8RhtvhjtUd50SPOaghHDNTwJIEV9PAqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=Re/3dRW2; arc=none smtp.client-ip=209.85.160.47
+	 In-Reply-To:Content-Type; b=qeBFK62KBlCujSea0yoWpl5bzPUIiKCi7ye3gfzj8XvrWQO1TvqUo3NXyflqIOFHUHQ8YtMM4p/EHpPBE/Wa0sBnqbcNpUkt8ibEYK7GxqlALCfGeI05k2e8gkWqA2GjqK/W9UNELmAf4r5RVA7nzQYXNIXAJWtSeVxnjNbOBN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=GkdNJFj9; arc=none smtp.client-ip=209.85.210.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oa1-f47.google.com with SMTP id 586e51a60fabf-2e95ab2704fso711111fac.3
-        for <linux-iio@vger.kernel.org>; Thu, 12 Jun 2025 09:06:19 -0700 (PDT)
+Received: by mail-ot1-f50.google.com with SMTP id 46e09a7af769-739dcdb012fso279744a34.2
+        for <linux-iio@vger.kernel.org>; Thu, 12 Jun 2025 09:23:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1749744378; x=1750349178; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1749745383; x=1750350183; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=udm2JNtgUVnGtTALc+UG19LJaRFqXt9eusqJiG8Hlj0=;
-        b=Re/3dRW2GO2T1linoO7pdxEfl+o7fEpuCbVNWWkd5ALiX7+bZEHN+0wYnXjYG0gH/8
-         LzTcsFGe3lf9+tJkFMOdtw+aJh+/m7FvZ9C/wssZ+UOyaQW4Z3pXVItVakdu05tkMIMD
-         Es7pZ0QtrV/knk9Y7NTZRt1RG1o+9h+rJHSnN8Wf1QrCh76HJ/1oGs+bEblVJGRw+nvJ
-         TjnlVm9nXofjXRf6LhVZX8BKEyHoxHjWjqULqGVsZmAyw1csSp3nXXEsHTw917ySO2rC
-         82jWsMxiU6OxcMaewmUpKWlxKA1qmIG+94TQ974lZFTyrEMpqbj1P9CKzaqzDnR8z8vD
-         zYuQ==
+        bh=oYwm5KPWdXCHcqPHzjdSfYHQXy0MsNGLcDPBqq6h364=;
+        b=GkdNJFj9bv6/o+n4GP+aLJ6HpkHTVWFSr0x00mj2+Tqn1ojLKNp/itqxkBxNtSB0TD
+         znkS2SImxvPCG1H8/3xJ8MWDMkqrASWn6eTnRRDLoq3naJId4LGIzdNdettKI97BYdJo
+         RK29eeUI6pgknaVjgi3JAX+htiQW5sXqMVDrIdo9JGBC1aXNY7owkyEXYVysCccRrP3O
+         Q8Vkd7z0LHGvSmAjBl3Hg3+LkY2r5e9lZ2D/pKIP9T4rebW101B+YKMURFm2Y37mvgWX
+         aFJo9b4wZYDp9+4dFia2rYLD3vzjrQTgwx5KaGIWqmP1/f2zgM0IaW1OVhMDG/zNPDvX
+         +Ogg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749744378; x=1750349178;
+        d=1e100.net; s=20230601; t=1749745383; x=1750350183;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=udm2JNtgUVnGtTALc+UG19LJaRFqXt9eusqJiG8Hlj0=;
-        b=hTR5wYk+vW1qKEUiFDHg2Zh7GgR6GSVO0br3qZ2jbJbxJ34cM/3nXKtTQpsmMSzT+s
-         fRKHObqLpwRXiHWftmDOFoRzeMuYHHmE0hBnI8XZWMX+QxzYIqz6OrnFVQdvDJptfJF3
-         lR0kZybB4WB1cGtYLtkE95g496iaM//bO1RJlqBTx1YfwBzxPUAGK3C1cgvAoQr4elNq
-         RAo2F6LHW2JWrPMQVerDKDNm1afeLj68KVlSvuySgQGaRgQzP/tr+Ug1xMQSNWpsu3gY
-         4KwdpZ3AjogxnLC+mQDrvUeyKZ1TqtWeQXrD1zql03QQHGNktW0ZS01WYxtNX8vWmuEK
-         X4XA==
-X-Forwarded-Encrypted: i=1; AJvYcCVhYbOYBy9oFl270Ku8t7Q2KKv+ldsFJzyte+qPWb6/tOffpB2tWo6OmrwJXfoTJILk9+j5AOgGyxk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwcDlQCbV+sMGiBqDSpCEOsDb8kePhyJ/jFQ4DRCnw9mUOV0fGd
-	AUMZjni3oV/bydW3lUD6vxd4YSgqdN5bNAgMEK2fO0Vl15cD/lqUiWa9xwHjtFpN58E=
-X-Gm-Gg: ASbGncvKXEWZMgjl459pyL6CRqkKkIR7i+h/mEuXI7vPYs66cQdO4sOGW5XgwbWtG83
-	I1uPJcCVYPUylQceOAKDGTHA0A5hcJoaRBCk6MNQcQd09leD2BUwf7b2OTivA+5Ct+neTndmLBj
-	njWxSdfUGTTLGpwpkXF9DjbceMpjKUuIF9jzIyRN7igzo9tRRpY7fWhnxop6yrDol5j/olwyuOx
-	CK9rmo0DeKAl2qpoNFfEaK/McGtGTfsMs7y+HudNEjoWT9tbqXHgMKH52/fLzGB0tE8Sv1vWYyh
-	d7k7239xkA5JLoNANJqHsFBsKqhgn68t8d7lmAw2EF8LT7ZRhH7fs1gzMjN7hykru5AV7Pbc8zo
-	GT4YYoog2bMDLbwM5qUrVq+R+AGR5PLvjKkoeFdM=
-X-Google-Smtp-Source: AGHT+IF/vr0JdR7BhUZF/CLVXT/7bWNiAbEwT6msbj/HgBgDO3T/ANvkscC5qNafqYzSb/qLbMi0kQ==
-X-Received: by 2002:a05:6870:9c89:b0:29e:74a0:e03f with SMTP id 586e51a60fabf-2eab46e5dd7mr2125102fac.24.1749744378382;
-        Thu, 12 Jun 2025 09:06:18 -0700 (PDT)
+        bh=oYwm5KPWdXCHcqPHzjdSfYHQXy0MsNGLcDPBqq6h364=;
+        b=lkdqCiQ2qlkS6mIurp95bcMTtRoI/MFBYK3A/rV749PyED1W2RGdIev8iaik3JGzL8
+         ZhxHgpk5xtM7DqrwMi7mJNTFHbqn7nmJShaSKHYMQMshPJ66YLD2BmZOap6ySr+6RYEk
+         mllzXHtaIro3PxGy16G8nbNrZEJG0DX0tEivzuNxihytFBsdV6ZkN5uanRvRnwvhoEfW
+         qPK/kHXr80LQbngEHi4BTlNUYsX4gtPpHC7sh1CW673EZRsDf/1TklfW+wRPczujlPtN
+         UgVPJ4ESoFP9UvD5xmkBy+VHjbjZdnyBsv+hhhps+15WgUOcgox2R87oWIerxv/PBYK3
+         nr/g==
+X-Forwarded-Encrypted: i=1; AJvYcCWtKOwLeOiY8qy3/ydRrDWMo7v+7Pvwy+w+86YEoHXUhGPe4ih7OV+V2x/xzkOuv6YyaO1f+90SOgA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyywf3VbRO2zIbVGmG7n5vPllQPNctH4acIX+PKBQ9CujBwmWv5
+	v/JbH2bAyH6BCSkuxMt5yb92yDsI97f3zu5VWd+JCWrlxONAlkQXYXRh4pIkyhART5nY3fAUgzz
+	/bauL
+X-Gm-Gg: ASbGncty0RfEvJy4REEkS3BTnxfHK5KTNLw9HCDN01wMXsWsL4Mxa9O6jt2qE1q8tkf
+	PUVfu2+s92xDV7sCXgczHOOvNH3TIGCbIDbtQ6dMcHITzGtgSgiI2nc0iVfwzmiU2elgrpbEYuL
+	t00JnIMJK+7nk8mxL/ODASbNgICAGiQn9GD5D8rU2bhjPgIK6H9GXhB2wxpvTLcsH7hb4dukZBE
+	4JZto2M0vhi+5NL6hwCBxWDlin1Rl2DDWWBEkcfAzh2+Eakw248PfI38ugK0MApWRH8/1QomfKd
+	wNF7zlr3tmfYAmeHFdWCJnjFgWF24KAYrSfWHZN6I1XLfhuePnzKHKDmerMdt5DfResKDaFoVB9
+	ZWLdqRCoywfZFojCZLQqWUHZXHcXF0UWzoGLpIO0=
+X-Google-Smtp-Source: AGHT+IFTwehji9nh5NvvDQuKE+AZnMrQrDaqD349Jh5toAGXoSpDzkbqFYAG6hYvMWXToSQmqhzzoA==
+X-Received: by 2002:a05:6830:8088:b0:727:3957:8522 with SMTP id 46e09a7af769-73a13ab0ce3mr2638607a34.20.1749745382919;
+        Thu, 12 Jun 2025 09:23:02 -0700 (PDT)
 Received: from ?IPV6:2600:8803:e7e4:1d00:4753:719f:673f:547c? ([2600:8803:e7e4:1d00:4753:719f:673f:547c])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2eac0c17211sm221571fac.18.2025.06.12.09.06.16
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-73a16a2673dsm320209a34.5.2025.06.12.09.23.02
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 12 Jun 2025 09:06:18 -0700 (PDT)
-Message-ID: <1c1c2888-be50-4578-8afd-bfbe4bd9cbae@baylibre.com>
-Date: Thu, 12 Jun 2025 11:06:16 -0500
+        Thu, 12 Jun 2025 09:23:02 -0700 (PDT)
+Message-ID: <9a3731cc-ea6f-45fa-a3e7-c2a33d44ecef@baylibre.com>
+Date: Thu, 12 Jun 2025 11:23:01 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -82,138 +83,78 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 3/3] iio: accel: sca3000: use guard(mutex)() for
- handling mutex lock
-To: kernel test robot <lkp@intel.com>, Andrew Ijano <andrew.ijano@gmail.com>,
- jic23@kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, andrew.lopes@alumni.usp.br,
- gustavobastos@usp.br, nuno.sa@analog.com, andy@kernel.org,
- jstephan@baylibre.com, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20250611194648.18133-4-andrew.lopes@alumni.usp.br>
- <202506122309.FvJPaMhh-lkp@intel.com>
+Subject: Re: [PATCH v2 1/3] iio: Add IIO_DENSITY channel type
+To: surajsonawane0215@gmail.com, Jonathan Cameron <jic23@kernel.org>
+Cc: =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
+ Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250612100758.13241-1-surajsonawane0215@gmail.com>
+ <20250612100758.13241-2-surajsonawane0215@gmail.com>
 Content-Language: en-US
 From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <202506122309.FvJPaMhh-lkp@intel.com>
+In-Reply-To: <20250612100758.13241-2-surajsonawane0215@gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 6/12/25 10:52 AM, kernel test robot wrote:
-> Hi Andrew,
+On 6/12/25 5:07 AM, surajsonawane0215@gmail.com wrote:
+> From: Suraj Sonawane <surajsonawane0215@gmail.com>
 > 
-> kernel test robot noticed the following build errors:
+> Add IIO_DENSITY channel type for particulate matter sensors,
+> with base units of grams per cubic meter (g/m³). This is needed
+> for optical dust sensors like the Sharp GP2Y1010AU0F that measure
+> airborne particle concentration rather than raw voltage.
 > 
-> [auto build test ERROR on jic23-iio/togreg]
-> [also build test ERROR on linus/master v6.16-rc1 next-20250612]
-> [If your patch is applied to the wrong git tree, kindly drop us a note.
-> And when submitting patch, we suggest to use '--base' as documented in
-> https://git-scm.com/docs/git-format-patch#_base_tree_information]
+> Signed-off-by: Suraj Sonawane <surajsonawane0215@gmail.com>
+> ---
+> V2: Initial version introducing IIO_DENSITY channel type
 > 
-> url:    https://github.com/intel-lab-lkp/linux/commits/Andrew-Ijano/iio-accel-sca3000-replace-error_ret-labels-by-simple-returns/20250612-034940
-> base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
-> patch link:    https://lore.kernel.org/r/20250611194648.18133-4-andrew.lopes%40alumni.usp.br
-> patch subject: [PATCH v5 3/3] iio: accel: sca3000: use guard(mutex)() for handling mutex lock
-> config: nios2-randconfig-002-20250612 (https://download.01.org/0day-ci/archive/20250612/202506122309.FvJPaMhh-lkp@intel.com/config)
-> compiler: nios2-linux-gcc (GCC) 8.5.0
-> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250612/202506122309.FvJPaMhh-lkp@intel.com/reproduce)
+>  Documentation/ABI/testing/sysfs-bus-iio | 8 ++++++++
+>  include/uapi/linux/iio/types.h          | 1 +
+>  2 files changed, 9 insertions(+)
 > 
-> If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Closes: https://lore.kernel.org/oe-kbuild-all/202506122309.FvJPaMhh-lkp@intel.com/
-> 
-> All errors (new ones prefixed by >>):
-> 
->    In file included from include/linux/irqflags.h:17,
->                     from include/asm-generic/bitops.h:14,
->                     from ./arch/nios2/include/generated/asm/bitops.h:1,
->                     from include/linux/bitops.h:68,
->                     from include/linux/kernel.h:23,
->                     from include/linux/interrupt.h:6,
->                     from drivers/iio/accel/sca3000.c:10:
->    drivers/iio/accel/sca3000.c: In function 'sca3000_read_raw':
->>> include/linux/cleanup.h:258:2: error: a label can only be part of a statement and a declaration is not a statement
->      class_##_name##_t var __cleanup(class_##_name##_destructor) = \
->      ^~~~~~
->    include/linux/cleanup.h:319:2: note: in expansion of macro 'CLASS'
->      CLASS(_name, __UNIQUE_ID(guard))
->      ^~~~~
->    drivers/iio/accel/sca3000.c:699:3: note: in expansion of macro 'guard'
->       guard(mutex)(&st->lock);
->       ^~~~~
->>> include/linux/cleanup.h:258:2: error: a label can only be part of a statement and a declaration is not a statement
->      class_##_name##_t var __cleanup(class_##_name##_destructor) = \
->      ^~~~~~
->    include/linux/cleanup.h:319:2: note: in expansion of macro 'CLASS'
->      CLASS(_name, __UNIQUE_ID(guard))
->      ^~~~~
->    drivers/iio/accel/sca3000.c:731:3: note: in expansion of macro 'guard'
->       guard(mutex)(&st->lock);
->       ^~~~~
->>> include/linux/cleanup.h:258:2: error: a label can only be part of a statement and a declaration is not a statement
->      class_##_name##_t var __cleanup(class_##_name##_destructor) = \
->      ^~~~~~
->    include/linux/cleanup.h:319:2: note: in expansion of macro 'CLASS'
->      CLASS(_name, __UNIQUE_ID(guard))
->      ^~~~~
->    drivers/iio/accel/sca3000.c:735:3: note: in expansion of macro 'guard'
->       guard(mutex)(&st->lock);
->       ^~~~~
->    drivers/iio/accel/sca3000.c: In function 'sca3000_write_raw':
->    drivers/iio/accel/sca3000.c:748:6: warning: unused variable 'ret' [-Wunused-variable]
->      int ret;
->          ^~~
->    In file included from include/linux/irqflags.h:17,
->                     from include/asm-generic/bitops.h:14,
->                     from ./arch/nios2/include/generated/asm/bitops.h:1,
->                     from include/linux/bitops.h:68,
->                     from include/linux/kernel.h:23,
->                     from include/linux/interrupt.h:6,
->                     from drivers/iio/accel/sca3000.c:10:
->    drivers/iio/accel/sca3000.c: In function 'sca3000_read_event_value':
->>> include/linux/cleanup.h:258:2: error: a label can only be part of a statement and a declaration is not a statement
->      class_##_name##_t var __cleanup(class_##_name##_destructor) = \
->      ^~~~~~
->    include/linux/cleanup.h:319:2: note: in expansion of macro 'CLASS'
->      CLASS(_name, __UNIQUE_ID(guard))
->      ^~~~~
->    drivers/iio/accel/sca3000.c:835:3: note: in expansion of macro 'guard'
->       guard(mutex)(&st->lock);
->       ^~~~~
->    drivers/iio/accel/sca3000.c: In function 'sca3000_write_event_value':
->    drivers/iio/accel/sca3000.c:881:6: warning: unused variable 'ret' [-Wunused-variable]
->      int ret;
->          ^~~
->    drivers/iio/accel/sca3000.c: In function 'sca3000_write_event_config':
->    drivers/iio/accel/sca3000.c:1188:6: warning: unused variable 'ret' [-Wunused-variable]
->      int ret;
->          ^~~
-> 
-> 
-> vim +258 include/linux/cleanup.h
-> 
-> 54da6a0924311c Peter Zijlstra 2023-05-26  256  
-> 54da6a0924311c Peter Zijlstra 2023-05-26  257  #define CLASS(_name, var)						\
-> 54da6a0924311c Peter Zijlstra 2023-05-26 @258  	class_##_name##_t var __cleanup(class_##_name##_destructor) =	\
-> 54da6a0924311c Peter Zijlstra 2023-05-26  259  		class_##_name##_constructor
-> 54da6a0924311c Peter Zijlstra 2023-05-26  260  
-> 54da6a0924311c Peter Zijlstra 2023-05-26  261  
-> 
+> diff --git a/Documentation/ABI/testing/sysfs-bus-iio b/Documentation/ABI/testing/sysfs-bus-iio
+> index 190bfcc1e..9b1b538ce 100644
+> --- a/Documentation/ABI/testing/sysfs-bus-iio
+> +++ b/Documentation/ABI/testing/sysfs-bus-iio
+> @@ -2383,3 +2383,11 @@ Description:
+>  		Value representing the user's attention to the system expressed
+>  		in units as percentage. This usually means if the user is
+>  		looking at the screen or not.
+> +
+> +What:		/sys/bus/iio/devices/iio:deviceX/in_density_raw
+> +KernelVersion:	6.15
+> +Contact:	linux-iio@vger.kernel.org
+> +Description:
+> +		Raw reading from an optical dust sensor.
+> +		This value is proportional to dust density in air,
 
-These error messages aren't particularity helpful, but what I think
-this is try to say is that you have to be careful with guard() in
-switch statements.
+I don't see why density would be specific to dust. We could make
+this description more generic.
 
-The guard() macro is declaring a new local variable, which shouldn't
-be done in a case: statement without enclosing it in a separate scope.
-Some compilers complain and some don't so even if it worked for you
-locally, we need to make it work for all supported compilers.
+> +		with base units of g/m^3.
+> +
+> diff --git a/include/uapi/linux/iio/types.h b/include/uapi/linux/iio/types.h
+> index 3eb0821af..e7d09ec0b 100644
+> --- a/include/uapi/linux/iio/types.h
+> +++ b/include/uapi/linux/iio/types.h
+> @@ -37,6 +37,7 @@ enum iio_chan_type {
+>  	IIO_DISTANCE,
+>  	IIO_VELOCITY,
+>  	IIO_CONCENTRATION,
+> +	IIO_DENSITY,
 
-So the code needs to looks something like this:
+This is part of the userspace ABI, new items have to be added
+to the end. We can't change the meaning of the numeric values.
 
- 	case IIO_CHAN_INFO_SAMP_FREQ: {
-		guard(mutex)(&st->lock);
- 		ret = sca3000_read_raw_samp_freq(st, val);
- 		return ret ? ret : IIO_VAL_INT;
-	}
+>  	IIO_RESISTANCE,
+>  	IIO_PH,
+>  	IIO_UVINDEX,
+
+There are also a couple more places where this new channel needs
+be added as well. See [1] for an example (although density probably
+doesn't need to be added to known events).
+
+[1]: https://lore.kernel.org/all/20241101-hpd-v3-3-e9c80b7c7164@chromium.org/
 

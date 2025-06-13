@@ -1,121 +1,187 @@
-Return-Path: <linux-iio+bounces-20611-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20612-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CECBAD9356
-	for <lists+linux-iio@lfdr.de>; Fri, 13 Jun 2025 19:00:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3115AD9363
+	for <lists+linux-iio@lfdr.de>; Fri, 13 Jun 2025 19:02:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E4AE416FC80
-	for <lists+linux-iio@lfdr.de>; Fri, 13 Jun 2025 17:00:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E9FC16ED00
+	for <lists+linux-iio@lfdr.de>; Fri, 13 Jun 2025 17:02:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D72D1217727;
-	Fri, 13 Jun 2025 17:00:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 705FC215179;
+	Fri, 13 Jun 2025 17:02:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="Utvw4WCZ"
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="J6jcsvJ+";
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="bB+rfBnS"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com [209.85.210.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B90DC54739
-	for <linux-iio@vger.kernel.org>; Fri, 13 Jun 2025 17:00:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F0952E11B3;
+	Fri, 13 Jun 2025 17:02:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749834014; cv=none; b=Fhx14nj8hrwen0tyP3h9dFkqcOay5yAhCqSC3jMMfxt/E7DsXoWzLuUsLfsIOaK+0n2BC7w126FaHUcWygPIrXstkE+tBJOFRTgpo2d/OnBBFBhsDbjxuclXg8seN3h/WM3AY+3xVTQoqrjcDGwdGsoPDQ1tFOpDhZQsdWMCgkk=
+	t=1749834163; cv=none; b=tdkgZOoCl5Cl2jfozly7snOOpDRZG97dWK2F3GjFPG2M6eTWULVV6l99nlFKuGTqjRsYc+TkKkXNLQbnO1Wpo70FCYXF8/pg99rF0kMKrcNCXfPsXosrzN5MJ470Wv0MK94vgV//mRl093ocZlVPgA0FjdrUJMDaiPpxnkn4vrY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749834014; c=relaxed/simple;
-	bh=qFHf05pLwIZBpGvazuZgcxkgWqabzO1YL2jAHuc/neA=;
+	s=arc-20240116; t=1749834163; c=relaxed/simple;
+	bh=pQzWwNs1c1jnqfC8/YmCsQhipvx2mAuPU3qM0U9TB/s=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PW+wQEc1ADIZJxs2Iv1p86/8HsC/Rs44Hxbk9bS9ZmdG6nd4/TC9meORlx2QuSQezEqrVz99/JgnqWrB/ZE0/xOdJ9iQv2Xmp/tnQ31sxg7CQDJ6JXu1E81B1uWwiE3aod8Yyd+g0+6KyQhnnU/a58tGcLGM+Wfs4aPkZE7RaWE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=Utvw4WCZ; arc=none smtp.client-ip=209.85.210.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-72c09f8369cso836043a34.3
-        for <linux-iio@vger.kernel.org>; Fri, 13 Jun 2025 10:00:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1749834012; x=1750438812; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=W4PmbLTdx7bKxmJ58LSBL+52b6YKUjWHxLD3jkqTwUs=;
-        b=Utvw4WCZi1urkBooRT1Cvxk+qwFRfZ65qKh2LkZ12mBRhfipGAdfquzUsR8jtmX/Bq
-         ThQoKCxNxFHgoPYxD3nipFoxgW8EuDlwurwsLZ9/fFrHqqMnlyjcOkQzExEX2L5qb2gh
-         g9mBbdxh+lNpAkNo6jJ79U7yjusivdMHLkK5vY75A1Sjw8TcCy+Sk4b9UEiWjaoICv3D
-         phDSwyW7z7pTyVdTuai1qBlPwvj7943eAwbcOWtNcuMCO2EEur2/Y2LHyLwyK8nOjOH1
-         Napiab14EHuueN/EXia+A70Ke97cS1mc6LmnCfDD20ChK3owKqygRp4kzB1qemed9+2s
-         UFGw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749834012; x=1750438812;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=W4PmbLTdx7bKxmJ58LSBL+52b6YKUjWHxLD3jkqTwUs=;
-        b=KIl54PsHrwHtYm5eiEmCz+3NyzFWBrJ7LBrSCHqNJPWJ6YaM36NBlYXSj/Q4s939yf
-         e1MY+DcbfO79rBImzf6dyUXyAKxK9AhMEOTW7mjVwd2HaNFqGgHh4zYNyz+mj3cafhy3
-         6x8nUJf6aTCkiHAA337gQy7kgp+dvSY7t0qakRquJjrxEbYfOtPC+w1V2OgYJY/Ag+T1
-         rCL9wByTMJCRsCJYwn9sxIq+mTWVLRkAviugR2aiu+YLKx9bm4QLC6yVx2KPMkNh1pQx
-         1TapDW8Cc/NPHvXcnTcT6f854LT576j3JC+bjmuBJI7OeTiYem0f05k8MN18sSBT8KSC
-         HmKg==
-X-Forwarded-Encrypted: i=1; AJvYcCWvGXcglbdXtKbyxOLDkuaG+Kh4bZOAz98Cy5m5mg/iRjFxqSXJa77egK+IfGBdxQdK/ZiS774hbjo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz9oUkgJCFvcwS4/duBH1JSQ+Of0kDw335y55026wEvjY2qIFj3
-	EJldkU3eQvoL76MrrrHL0/BLnfrK+My41fF74ZmiyO7GsfayVzv0cnpEHw6PqEPr6aY=
-X-Gm-Gg: ASbGncv9OmhzNh+Mp4MdTCmjr7Oo8Dk2yY1TDEil3GX8sYNrQJuDBv9A93a8bppaXX6
-	gCKrUJOrWVrfmdzEOfWP1QF4KMXtC/5qH7/4chq9IH3QfaGEXvlUQbABv0RklBTsrffYMKSxCRM
-	T+z4ytua/oS3ufZNO8v7uPJVY6YHwwOOSFgzcQiay2YLJlVAB2rEncfgoq2qCBnkH8LyVVZ3dV2
-	d09NcI7uElIdF/9Tzg5SAb/Jpzy/yMXWV2ndvciu65iSf55w1yEx/KMcx9q59hWJlOxQhg51YpC
-	DHldcwsNyCP10E+NRCaemC8mf56Sf2Ard83j8aPc5E3dDHAFvp90LN/w/wmMI5weVzHuiJZPo+5
-	vIFUCR+RpA+7YToMlJ1jG0d1xJ1o90eMHB85S
-X-Google-Smtp-Source: AGHT+IE7h+SZVToKJUAin3fOr868BbMSOLFocQ+et42SsT9JMuC0JS5qAKXXAH1oH1f2QX3S8vjHvg==
-X-Received: by 2002:a05:6830:210b:b0:72b:94a4:9143 with SMTP id 46e09a7af769-73a3626644bmr315551a34.2.1749834011794;
-        Fri, 13 Jun 2025 10:00:11 -0700 (PDT)
-Received: from ?IPV6:2600:8803:e7e4:1d00:4647:c57:a73c:39d8? ([2600:8803:e7e4:1d00:4647:c57:a73c:39d8])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-73a284ff5f4sm258694a34.43.2025.06.13.10.00.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 13 Jun 2025 10:00:11 -0700 (PDT)
-Message-ID: <46208c8d-8370-4b9e-bca1-7ede7ee9b078@baylibre.com>
-Date: Fri, 13 Jun 2025 12:00:10 -0500
+	 In-Reply-To:Content-Type; b=pXaKk9kZOveWspregyWxyLBfjorW2gERkc6vDLU5Gg/C5/3wQZiyHT+6rHmUhEirnwOLGE46JwF/tSCMVQab6nqA8TggrpfFn/ZuCvTTeaDVv2P3iDNV96d8YMmSFoWf90gXT3ZMdWa8OXSND3bUzAi66JFDzHFmjThXgdUqmUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=J6jcsvJ+; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=bB+rfBnS; arc=none smtp.client-ip=80.241.56.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+Received: from smtp102.mailbox.org (smtp102.mailbox.org [IPv6:2001:67c:2050:b231:465::102])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4bJm0n1mzDz9t9X;
+	Fri, 13 Jun 2025 19:02:33 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1749834153;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Fgy4RPImZQ6te0w0AD2byb84u39inJxHlG6DKwtCVbE=;
+	b=J6jcsvJ+3VTTQWzi3RGjS+qno7Hkm57HIIa+gOmEl5kILqr8xh5Lgt1S3Pl016EED5Ybh9
+	YPfJIiUhfccamBWFCAs5xK34p90cPauRZHHR8CUNAlLlJY6EKUBGWh7g9dQRGQlm6uWQYR
+	Mko+gyVPbWA7Wbp4apF/PV6K8Vy3G5CcKO/3AbbPfPXjvcthoL9V7/qZseSTMaaWqIKmWT
+	PblSH5iJ1a14UE1ALRcBG7xM7w8jf2/WubAlQdyQYLsvLbL7O2QWi4DaUFaiawNtZVz/ch
+	oJjEScNtgL2CXN11not50dqjPjTXrouAxtn4HjFOC+WitjtBhvUr+l9GsY2gmw==
+Message-ID: <8605141c-b615-4e84-9574-81e24590df48@mailbox.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1749834151;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Fgy4RPImZQ6te0w0AD2byb84u39inJxHlG6DKwtCVbE=;
+	b=bB+rfBnSKNSslyEXRXA0cFPfuj+d1ZmwxNgUxxx6oVuCc5vWrVtrYmRtTHak1JdVMFTllq
+	kHgGEJRuf/JjfmjsQ19M9ONgDDYP8KcOxzlK2l6Z1gHb183yMplrnCmMV/Hv/jGO3SLPy2
+	6c7uhZS7/uX5hhnQwDxmHKzRsjj55yN8XbDAqIvJTpOKT3cLVqdY3xOU5EJeDAHZ92Ovdx
+	47WgVr4IQoj7BRK6oG3AcOsYRKEeK762dH81NXnIRJYclgvwpc1VMcm2JfVg+LPNbWQJKS
+	hx4wmwQwiC1GanzPex3+p91n3/QJ/BhqytyEFaSnquBWYZN75g2Ahsk/VXdpCA==
+Date: Fri, 13 Jun 2025 19:02:28 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] iio: adc: stm32-adc: Use dev_fwnode()
-To: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>, jic23@kernel.org
-Cc: tglx@linutronix.de, linux-kernel@vger.kernel.org,
- =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
- Andy Shevchenko <andy@kernel.org>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>, linux-iio@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org
-References: <0ec0fd5e-8fbe-43c4-8aad-f36d2872f280@baylibre.com>
- <20250612084627.217341-1-jirislaby@kernel.org>
+Subject: Re: [PATCH] iio: accel: bmc150: Do not configure IRQ registers if no
+ IRQ connected
+To: Andy Shevchenko <andriy.shevchenko@intel.com>,
+ Marek Vasut <marek.vasut+bmc150@mailbox.org>,
+ Hans de Goede <hansg@kernel.org>
+Cc: linux-iio@vger.kernel.org, =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
+ Andy Shevchenko <andy@kernel.org>, David Lechner <dlechner@baylibre.com>,
+ Jonathan Cameron <jic23@kernel.org>, Julien Stephan <jstephan@baylibre.com>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Salvatore Bonaccorso <carnil@debian.org>, linux-kernel@vger.kernel.org
+References: <20250613124648.14141-1-marek.vasut+bmc150@mailbox.org>
+ <aEw_DcqpCpcsBGd0@smile.fi.intel.com>
 Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <20250612084627.217341-1-jirislaby@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From: Marek Vasut <marek.vasut@mailbox.org>
+In-Reply-To: <aEw_DcqpCpcsBGd0@smile.fi.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-MBO-RS-ID: 2380e27ffcba99d8a1d
+X-MBO-RS-META: nai8ozn4c3ho5f1z9wc3yxbpafzgip16
+X-Rspamd-Queue-Id: 4bJm0n1mzDz9t9X
 
-On 6/12/25 3:46 AM, Jiri Slaby (SUSE) wrote:
-> irq_domain_create_simple() takes fwnode as the first argument. It can be
-> extracted from the struct device using dev_fwnode() helper instead of
-> using of_node with of_fwnode_handle().
+On 6/13/25 5:09 PM, Andy Shevchenko wrote:
+> Strange I don't see Hans in the Cc list, so added.
+> Thanks for the report and patch, my comments below.
 > 
-> So use the dev_fwnode() helper.
+> On Fri, Jun 13, 2025 at 02:45:22PM +0200, Marek Vasut wrote:
+>> The BMC150 on Onemix 2S does not have IRQ line described in ACPI tables,
+>> which leads to bmc150_accel_core_probe() being called with irq=0, which
+>> leads to bmc150_accel_interrupts_setup() never being called, which leads
+>> to struct bmc150_accel_data *data ->interrupts[i].info being left unset
+>> to NULL. Later, userspace can indirectly trigger bmc150_accel_set_interrupt()
+>> which depends on struct bmc150_accel_data *data ->interrupts[i].info being
+>> non-NULL, and which triggers NULL pointer dereference. This is triggered
+>> e.g. from iio-sensor-proxy.
+>>
+>> Fix this by skipping the IRQ register configuration in case there is no
+>> IRQ connected in hardware, in a manner similar to what the driver did in
+>> the very first commit which added the driver.
+>>
+>> ACPI table dump:
 > 
-> Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
-> Cc: Jonathan Cameron <jic23@kernel.org>
-> Cc: David Lechner <dlechner@baylibre.com>
-> Cc: "Nuno Sá" <nuno.sa@analog.com>
-> Cc: Andy Shevchenko <andy@kernel.org>
-> Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>
-> Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>
-> Cc: linux-iio@vger.kernel.org
+>>          Device (BMA2)
+>>          {
+>>              Name (_ADR, Zero)  // _ADR: Address
+>>              Name (_HID, "BOSC0200")  // _HID: Hardware ID
+>>              Name (_CID, "BOSC0200")  // _CID: Compatible ID
+>>              Name (_DDN, "Accelerometer")  // _DDN: DOS Device Name
+>>              Name (_UID, One)  // _UID: Unique ID
+>>              Method (_CRS, 0, NotSerialized)  // _CRS: Current Resource Settings
+>>              {
+>>                  Name (RBUF, ResourceTemplate ()
+>>                  {
+>>                      I2cSerialBusV2 (0x0019, ControllerInitiated, 0x00061A80,
+>>                          AddressingMode7Bit, "\\_SB.PCI0.I2C0",
+>>                          0x00, ResourceConsumer, , Exclusive,
+>>                          )
+>>                  })
+>>                  Return (RBUF) /* \_SB_.PCI0.I2C0.BMA2._CRS.RBUF */
+>>              }
 > 
-> ---
-Reviewed-by: David Lechner <dlechner@baylibre.com>
+> These lines...
+> 
+>>              Method (ROTM, 0, NotSerialized)
+>>              {
+>>                  Name (SBUF, Package (0x03)
+>>                  {
+>>                      "0 1 0",
+>>                      "1 0 0 ",
+>>                      "0 0 1"
+>>                  })
+>>                  Return (SBUF) /* \_SB_.PCI0.I2C0.BMA2.ROTM.SBUF */
+>>              }
+>>
+>>              Method (_STA, 0, NotSerialized)  // _STA: Status
+>>              {
+>>                  Return (0x0F)
+>>              }
+> 
+> ...are irrelevant.
+> 
+>>          }
+>> "
+>>
+>> Splat, collected from debian unstable, probably not very useful:
+> 
+> Oh my gosh, please leave only ~3-5 *important* lines out of this, or move it
+> completely to the comment block (after '---' cutter line).
+> 
+> This is requirement written in Submitting Patches.
+> 
+> ...
+> 
+> As for the solution, are you sure the line is not wired at all?
 
+No . It is some cheap mini-laptop , I have no schematics or any other 
+info really .
+
+Note that I am not really familiar with x86 and ACPI, so there is that.
+
+> IIRC Hans had a broken tales where it was simply forgotten, meaning
+> the Android / Windows driver simply hardcoded needed info.
+> 
+> If it's the case, it should be solved differently around PDx86 special quirk
+> driver for the cases like this.
+There are likely two issues.
+
+First, this driver needs to handle i2c_client->irq == 0 correctly if it 
+should work without IRQ line, which the driver seems to indicate that it 
+does. The current crashing the kernel is not the correct way of handling 
+that. That's this patch, in some form.
+
+Second, if this laptop has some IRQ line for this chip hidden somewhere, 
+then it might need a quirk of sorts, sure. Is there some way to find 
+out, without taking the thing apart and poking around with a scope ?
 

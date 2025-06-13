@@ -1,122 +1,191 @@
-Return-Path: <linux-iio+bounces-20594-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20596-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89A20AD8C9C
-	for <lists+linux-iio@lfdr.de>; Fri, 13 Jun 2025 14:55:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A9F9AD8CB2
+	for <lists+linux-iio@lfdr.de>; Fri, 13 Jun 2025 15:02:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 04AE81E2DB7
-	for <lists+linux-iio@lfdr.de>; Fri, 13 Jun 2025 12:54:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7C5A9189F5AC
+	for <lists+linux-iio@lfdr.de>; Fri, 13 Jun 2025 13:03:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7B30200A3;
-	Fri, 13 Jun 2025 12:54:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FE3986328;
+	Fri, 13 Jun 2025 13:02:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="D1Gq8nO5"
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="S2gvxlbh"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DC861CAA4;
-	Fri, 13 Jun 2025 12:54:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D093F4FA;
+	Fri, 13 Jun 2025 13:02:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749819272; cv=none; b=ZSFRf2+N9lhrzkDImMBBoskmZ1g4XCy1O96p8wyHKgnCvyDPQwwi6Yo/hrR64Oj3XTIwcIwn5/cHUfFYBCYDNhebwocL8W7DaXUv/zhTe0gnHpTzOpnp4BtpPyhPwZ90m8ybCBEGxjg6Mr25/rD9PNM2M2EzW/qReGJ31AAlBss=
+	t=1749819767; cv=none; b=NhZGvM6wafCkcvIEkcwzlj1bbTz05+JO+EApLvZQ+beUPThVFUHE5azfes1wfN5dqGQ6jNNvyLMCg0D7j5LWCtiz49QMLnIAz55IwpR84snZJmDx3BdzwwQwV1HIbOqWduy09nxxRcki45SuF9+97eood2Yba59OWMY6ZTgR0Ik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749819272; c=relaxed/simple;
-	bh=I1quJrY/4Wb61BqLz3/Y0Rl043912WMh95rEDI9InB4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gcPasgENAkkgphlcu16ljapqCLOfAavevhtiE+MOwj+h8Knh+3AI+ySGNUFV5RvfY/vsA/xiQPihbdw1kdm8j/NZ/o3Z/41O2YKmthQzn6wIhGOzFh/5alBDWnVP7y3f9AoO5jfcnf1ClCGKK97HoRQRXOcCRR7sC0/iPPATfNE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=D1Gq8nO5; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1749819767; c=relaxed/simple;
+	bh=Pv3r8fNxSf7s0LT8i/zRgJXPLo+r28eiR/jm2cETKaY=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=HeuwWyBaXIfV6Hf4JNDhp7ogm2Y2ABBAuCH5wv4xkAx8CeqP/WYmVsrD3CFgqm3mZvg9jYupEkcfhczOGGax7BgkEyzcJomJUsOuAgzDXPQ0HFv2e1EX+1rj8YTNJDYdnqbtLv1OEXQnK00aa0zLzSXKnX/93ijhhj1hSzA2ZtQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=S2gvxlbh; arc=none smtp.client-ip=68.232.153.233
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1749819270; x=1781355270;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=I1quJrY/4Wb61BqLz3/Y0Rl043912WMh95rEDI9InB4=;
-  b=D1Gq8nO581QT2E6tubueov8LgUxlIMhkAG0bYTmZCs4T0eONd/EuQkca
-   S8YLrYOnIgVk8sOBlmyGl3zAuOcmbpvunViuAWD7IshZaiCpu6kmBoIv9
-   Wfu2Fwy+HQo3Bg9ltYURLroYvaNpFQOiECnXjJSJ0tyuJrxNElj91adWA
-   /XWbYLpnlXx/kGp0Ez+FjXV6NYJNNpZ5BocxNl+luAcEPGQDtON0bSIA0
-   8hipfJb7Xjhqe9k4IdbEjEWj5ruUxRMulmbv2WDpMCMd+q0zlf3ZoKKFs
-   bVCmykxnHWH5uSPzp3oG3Q6JWg3p0OEm60ePOE2hGbWttOIsp3Kr9a9eJ
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1749819766; x=1781355766;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=Pv3r8fNxSf7s0LT8i/zRgJXPLo+r28eiR/jm2cETKaY=;
+  b=S2gvxlbhPyTFQJiaY8tWgq6R5wzPANk/vAwQKc2qwqSszR7uOZTI/eqN
+   51UOtQWMlIlcNOtjIX2Pl4cGQ2eY2pTVueMvApDVD56IqQ7GhxzMsvAI/
+   O/miA8WuPzXY3aZ54W4L+3k7OzBtUZktTTyF0pDsgkB2aiACApqsFyMlJ
+   Qth5wRFNr7O53T7lt9cPWrKf7bUSngOXcHLGbxknE4Df40Gdl+vfrOAAY
+   a5xMxzArHm/x5Q0KyJr+wxvxq+nz0o3SelkgllH5f3kGVxOQFvTYafzMD
+   q8o+Lod1SvpPYC9wtYqAV3dfDlYtltOLPlYnc9TJMd1x+6wyxm9pVXEZI
    A==;
-X-CSE-ConnectionGUID: l7cnL/BsQ5SsG3uE+Aw0ag==
-X-CSE-MsgGUID: QFZZ7yL4S3O4QyohYOv++w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11463"; a="52128328"
+X-CSE-ConnectionGUID: Q/C0oHGPR/isfC6vMelafQ==
+X-CSE-MsgGUID: 8Z1q9i9vTl2vjc/fSEsedg==
 X-IronPort-AV: E=Sophos;i="6.16,233,1744095600"; 
-   d="scan'208";a="52128328"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jun 2025 05:54:30 -0700
-X-CSE-ConnectionGUID: vyrE4TroS9K8ntiac2XJlg==
-X-CSE-MsgGUID: 9PnAMZTjSPC0tZAR7Bkg5w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,233,1744095600"; 
-   d="scan'208";a="147667503"
-Received: from smile.fi.intel.com ([10.237.72.52])
-  by orviesa006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jun 2025 05:54:28 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1uQ3vN-00000006FVN-0KZU;
-	Fri, 13 Jun 2025 15:54:25 +0300
-Date: Fri, 13 Jun 2025 15:54:24 +0300
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>
-Cc: Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	"linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v4 1/2] iio: imu: inv_icm42600: add WoM support
-Message-ID: <aEwfgP3tiio52Rj-@smile.fi.intel.com>
-References: <20250613-losd-3-inv-icm42600-add-wom-support-v4-0-7e5f554201bf@tdk.com>
- <20250613-losd-3-inv-icm42600-add-wom-support-v4-1-7e5f554201bf@tdk.com>
- <aEvhZiXHLLIRe41-@smile.fi.intel.com>
- <FR3P281MB17578B82AC67F49552E24EB3CE77A@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
- <aEwfUMgLTnQxOh_k@smile.fi.intel.com>
+   d="scan'208";a="274154974"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa5.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 13 Jun 2025 06:02:45 -0700
+Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
+ chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.44; Fri, 13 Jun 2025 06:02:24 -0700
+Received: from vduicu-Virtual-Machine.mshome.net (10.10.85.11) by
+ chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server id
+ 15.1.2507.44 via Frontend Transport; Fri, 13 Jun 2025 06:02:21 -0700
+From: <victor.duicu@microchip.com>
+To: <jic23@kernel.org>, <dlechner@baylibre.com>, <nuno.sa@analog.com>,
+	<andy@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
+	<conor+dt@kernel.org>
+CC: <marius.cristea@microchip.com>, <victor.duicu@microchip.com>,
+	<linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<devicetree@vger.kernel.org>
+Subject: [PATCH v3 0/2] add support for MCP998X
+Date: Fri, 13 Jun 2025 16:02:05 +0300
+Message-ID: <20250613130207.8560-1-victor.duicu@microchip.com>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <aEwfUMgLTnQxOh_k@smile.fi.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+Content-Type: text/plain
 
-On Fri, Jun 13, 2025 at 03:53:36PM +0300, Andy Shevchenko wrote:
-> On Fri, Jun 13, 2025 at 12:46:46PM +0000, Jean-Baptiste Maneyrol wrote:
-> > >From: Andy Shevchenko <andriy.shevchenko@intel.com>
-> > >Sent: Friday, June 13, 2025 10:29
-> > >On Fri, Jun 13, 2025 at 09:34:26AM +0200, Jean-Baptiste Maneyrol via B4 Relay wrote:
+From: Victor Duicu <victor.duicu@microchip.com>
 
-...
+Add support for Microchip MCP998X/33 and MCP998XD/33D
+Multichannel Automotive Temperature Monitor Family.
 
-> > >Overall, looking to this patch again, I think it would be better to prepend it
-> > >by replacing *int*_t types by the respective uXX ones. Because in this patch
-> > >we add dozens of new ones which increases an unneeded churn in the future.
-> > >
-> > In my opinion, to respect the rule don't mix *int*_t and uXX types, it is better
-> > to keep *int*_t types. If it need to be changed, we can change afterward the
-> > whole driver types with a replace tool and send it in a separate patch.
-> 
-> It will be never ending story, sorry. We need someone to solve this tech debt.
-> And since this patch adds more than 3 new users of it, I think it's a candidate
-> to embrace the burden.
+The chips in the family have different numbers of external
+channels, ranging from 1 (MCP9982) to 4 channels (MCP9985).
+Reading diodes in anti-parallel connection is supported
+by MCP9984/85/33 and MCP9984D/85D/33D.
+Dedicated hardware shutdown circuitry is present only
+in MCP998XD and MCP9933D.
 
-For your convenience I can mock-up a change...
+Current version of driver does not support interrupts, events and data
+buffering.
 
+Differences related to previous patch:
+v3:
+- move beta parameters to devicetree.
+- change the name of the interrupts and add
+  check to match them to the device in yaml.
+- remove label for device and remove "0x" from
+  channel registers in example in yaml.
+- edit comments in yaml and driver.
+- add minItems to interrupts in yaml.
+- rename microchip,recd12 and microchip,recd34 to
+  microchip,resistance-comp-ch1-2-enable
+  and microchip,resistance-comp-ch3-4-enable.
+- rename microchip,apdd-state to microchip,enable-anti-parallel.
+- add static to mcp9982_3db_values_map_tbl to fix
+  kernel test robot warning.
+- in mcp9982_init() add check to ensure that hardware
+  shutdown feature can't be overridden.
+- replace div_u64_rem with do_div and add
+  asm/div64.h to includes.
+- remove unused includes.
+- add iio_chan_spec in the macro definition of MCP9982_CHAN.
+- remove MCP9982_EXT_BETA_ENBL.
+- in mcp9982_init() replace regmap_assign_bits
+  with regmap_write when setting beta compensation.
+- remove custom attribute enable_extended_temp_range and
+  map it to IIO_CHAN_INFO_OFFSET.
+- add unsigned to int variables that allow it.
+- reorder parameters in mcp9982_priv, change some
+  from int to bool, add const to labels and add dev_name.
+- add check for chips with "D" in the name to not
+  allow sampling frequencies lower than 1 to
+  prevent overriding of hardware shutdown.
+- remove mcp9982_attributes.
+- move mcp9982_calc_all_3db_values() to before
+  mcp9982_init().
+- use MICRO instead of number constant.
+- in mcp9982_write_raw replace ">=" with "==".
+- rename index2 to idx in mcp9982_read_raw().
+- remove i2c_set_clientdata() in mcp9982_probe().
+- since there are no more custom ABI attributes
+  the testing file was removed.
+
+v2:
+- move hysteresis, extended temperature range and beta parameters
+  from devicetree into user space.
+- edit comments in yaml and driver.
+- remove "|" in descpriptions, remove "+" from PatternProperties in yaml.
+- add default to microchip,ideality-factor, delete blank lines and wrap to
+  80 chars in yaml.
+- remove variables with upper case.
+- add check for microchip,apdd-state and microchip,recd34 in yaml.
+- improve coding style in driver code.
+- add includes for all functions used.
+- rename MCP9982_INT_HIGH_BYTE_ADDR to MCP9982_INT_VALUE_ADDR and
+  MCP9982_INT_LOW_BYTE_ADDR to MCP9982_FRAC_VALUE_ADDR.
+- remove custom attribute running_average_window and
+  running_average_window_available and map them to a low pass filter.
+- update sysfs-bus-iio-temperature-mcp9982 to reflect current
+  driver attributes and point to next kernel version (6.17).
+- use compound literal to define driver channels.
+- replace device_property_read_string() with i2c_get_match_data() to read
+  chip name from devicetree.
+- remove MCP9982_DEV_ATTR and mcp9982_prep_custom_attributes().
+- remove client, chip_name, iio_info from mcp9982_priv.
+- replace sprintf() with sysfs_emit().
+- remove error messages which are triggered by keyboard input.
+- replace devm_kzalloc() with devm_kcalloc(), array mcp9982_chip_config[] with
+  individual structures, device_property_present() with device_property_read_bool().
+- reordered parameters in mcp9982_features and mcp9982_priv to optimize memory
+  allocation.
+- remove .endianness from channel properties.
+- change name of some parameters in mcp9982_priv.
+- add check for reg value 0 from devicetree (channel 0 is for internal temperature
+  and can't be disabled).
+
+v1:
+- inital version.
+
+Victor Duicu (2):
+  dt-bindings: iio: temperature: add support for MCP998X
+  iio: temperature: add support for MCP998X
+
+ .../iio/temperature/microchip,mcp9982.yaml    | 211 +++++
+ MAINTAINERS                                   |   7 +
+ drivers/iio/temperature/Kconfig               |  10 +
+ drivers/iio/temperature/Makefile              |   1 +
+ drivers/iio/temperature/mcp9982.c             | 778 ++++++++++++++++++
+ 5 files changed, 1007 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/temperature/microchip,mcp9982.yaml
+ create mode 100644 drivers/iio/temperature/mcp9982.c
+
+
+base-commit: 0c86e33819785fe50616b6ee3fb35c1e4be406d5
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.48.1
 
 

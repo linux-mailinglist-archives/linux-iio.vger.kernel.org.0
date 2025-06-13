@@ -1,933 +1,353 @@
-Return-Path: <linux-iio+bounces-20597-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20598-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBB5CAD8CB5
-	for <lists+linux-iio@lfdr.de>; Fri, 13 Jun 2025 15:03:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76537AD8D80
+	for <lists+linux-iio@lfdr.de>; Fri, 13 Jun 2025 15:46:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7F0D13BBB69
-	for <lists+linux-iio@lfdr.de>; Fri, 13 Jun 2025 13:02:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7B21F3B9C36
+	for <lists+linux-iio@lfdr.de>; Fri, 13 Jun 2025 13:45:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0AA514D2B7;
-	Fri, 13 Jun 2025 13:02:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4062D188CC9;
+	Fri, 13 Jun 2025 13:44:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="R4rGG08J"
+	dkim=pass (2048-bit key) header.d=tdk.com header.i=@tdk.com header.b="brBqnsvz"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+Received: from mx0b-00549402.pphosted.com (mx0b-00549402.pphosted.com [205.220.178.134])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 110DF60B8A;
-	Fri, 13 Jun 2025 13:02:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749819768; cv=none; b=S2Nq2Sv2/0KU0+vySvFGlhFf0jii4UAdceWCetBmqOll5Bvbct3jUF2OdK1bMyQex27/vixnk4GjWn4RV0/pZwyuNmBPS37CK32K5rLbJ/KzHMJkSwQZ9O7QJgAP5qo34fajSFQ6B5EB+mE3YOEgzgI86OYFj4pX3b5T0aHeAyc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749819768; c=relaxed/simple;
-	bh=2reAc8VrCoNjPEtFIG8NE8GEAn3xRXXZRjTRTsIsR5w=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bEx5MrpWgQ3/bWLYJzYao6BXKjWPz88YM6Et/5FEHiySplHgI1zWOW2jbFMdoijLN9lVEW0kZmbGhyze++6vR/4OjkyP/T6Dd9e1aJLe9AiL7WgwwXZ0bNBi+y27AF82aox4C8vuzlCu8lWGTODOOBw9uQSz8EFgfJbUBQl23Sk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=R4rGG08J; arc=none smtp.client-ip=68.232.153.233
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1749819767; x=1781355767;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=2reAc8VrCoNjPEtFIG8NE8GEAn3xRXXZRjTRTsIsR5w=;
-  b=R4rGG08JzLRdcDv5T11i7pnfTw45a2XFl9JcA4KwBYhxeS/8UXqjm3KJ
-   OTZZX7qJAWfcncLiVOlt+Ywrr+i8eekH7093QX7obCep/IUkYaonpU7HG
-   DFRuOqYRafcVd+bLCn0nRInScV9t6ocn6R3XkbVodXBLuSTBXTdi/R+Nd
-   dIU1wAg3/PPXmVcOgXvZdnW0MEiSvxWw3MkIdXZADnATGVzwK6Iri98Sf
-   XNDeeGAJ/hpxHWDBM7LsnAse/Xn5TN5NAE8/ES8euo1zmmOKCpiw7Aw8j
-   1u2pQwwkQ+09wPCV9mNSP31JUfA61hx9muCD9OxmENNmi7iZzXgkJVqnq
-   Q==;
-X-CSE-ConnectionGUID: Q/C0oHGPR/isfC6vMelafQ==
-X-CSE-MsgGUID: BnTmrFAKR3eOE0al60Rrhw==
-X-IronPort-AV: E=Sophos;i="6.16,233,1744095600"; 
-   d="scan'208";a="274154975"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa5.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 13 Jun 2025 06:02:45 -0700
-Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
- chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44; Fri, 13 Jun 2025 06:02:30 -0700
-Received: from vduicu-Virtual-Machine.mshome.net (10.10.85.11) by
- chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server id
- 15.1.2507.44 via Frontend Transport; Fri, 13 Jun 2025 06:02:27 -0700
-From: <victor.duicu@microchip.com>
-To: <jic23@kernel.org>, <dlechner@baylibre.com>, <nuno.sa@analog.com>,
-	<andy@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
-	<conor+dt@kernel.org>
-CC: <marius.cristea@microchip.com>, <victor.duicu@microchip.com>,
-	<linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<devicetree@vger.kernel.org>
-Subject: [PATCH v3 2/2] iio: temperature: add support for MCP998X
-Date: Fri, 13 Jun 2025 16:02:07 +0300
-Message-ID: <20250613130207.8560-3-victor.duicu@microchip.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250613130207.8560-1-victor.duicu@microchip.com>
-References: <20250613130207.8560-1-victor.duicu@microchip.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 217E0433D9;
+	Fri, 13 Jun 2025 13:44:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.178.134
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1749822278; cv=fail; b=kbVXDNqx/fjtlf6K57f3D7EoOzL5tWu1N5S5fMeA2eP+MduOgABtut92ZhYBpL++eWxhmIxdHvngQBi5NVSNig3jnO25xWxCzbLeJao/RzaD8YZgv4/0CxOFNdG87ZkV2MeyIVHa/WQm+pnFxp1VnzJ3LSWZoW6EbpgkKE3ctOo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1749822278; c=relaxed/simple;
+	bh=Q2WMst5wFVwGw5oNoIFXDfg65RSPR6oHZ9SdqfiwQVg=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=cPTHwKnnAH+BDM+9LrMnjsKtRfD2kFUEgEajsIhNjeQ31qrleHcVVum8wMe8KysFQeiV9zbxKFpGkOaKk1zkmLskpJpEKpOO+43+tsun0BLtLXTIjC08gyEoGmAEma7M0rZ3o52Z1ZsekNWY2U3QYt0m8/0WWILcQp1nZT0EyqU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tdk.com; spf=pass smtp.mailfrom=tdk.com; dkim=pass (2048-bit key) header.d=tdk.com header.i=@tdk.com header.b=brBqnsvz; arc=fail smtp.client-ip=205.220.178.134
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tdk.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tdk.com
+Received: from pps.filterd (m0233779.ppops.net [127.0.0.1])
+	by mx0b-00549402.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55DCmeAf002757;
+	Fri, 13 Jun 2025 13:44:04 GMT
+Received: from fr4p281cu032.outbound.protection.outlook.com (mail-germanywestcentralazon11012042.outbound.protection.outlook.com [40.107.149.42])
+	by mx0b-00549402.pphosted.com (PPS) with ESMTPS id 474esnmtt7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 13 Jun 2025 13:44:03 +0000 (GMT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=DhEx5lzbcT3FOC0lwCy/NpZUXJrx0qJYg7MkGFbMiO0TrSZ8WMmKw5Ag6gmU2TusNCqzPkjkU0en7xiadx4hWTI5kMvO2W0te0XTe4OLvlCyNmdnnDqhDcIAw3b0KFfKEBFi2sxln+LxQmP2SjwDvmatxOajyR+kngAjckN4NvigSVV2ZrFFGKbmtHi13BVaw51zEwmeKKimYWeJ4tspVKpUtIHC5cOgSR/Yciof4SEUYcofTxo9tLatZORIGSkcDdhQOXRiogf3o3dmtkmEfpA21J0GGQ5c0gmuzr4VpTpbiTSOGU5OBiTDjcM8FQqBm4wiiu85qMfeKb2mofC5fw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=6FD2GvJLIa4legIF2pPgGuCE0PQbsQ0KmDAIb0bhSQI=;
+ b=ldEwn9h3OWTLDtR1j5S5WdyGBUQbJX1zYH4XssqLU8kpwbzIl6u/O+KiBX8C3rAyhpZRSuexKf2/OSHZ08LF0TRjmz2fOBS2Mhvaftwa3N+jltzuO4bgmc3rRuceGQEznU6ZNo95+c6sa1/mZCidWM9GVaEB2bqsHWsXnBih3vSL6Y8mHgA18UIUTnEucA/FWqG6N0MJyq+YbhBM2+zVX3VcOwtmjshLRZc9RBpGw+SEh/uVNUbKKDBslNccTaF9ogsqvgy3pjGnvE0ganuPpUKt/xdleRN1wBkKMCZBKZTDdpPP44dZsP2ahrYP8bu2zL6ekCjXNs8B/uvp2BIOIA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=tdk.com; dmarc=pass action=none header.from=tdk.com; dkim=pass
+ header.d=tdk.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tdk.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=6FD2GvJLIa4legIF2pPgGuCE0PQbsQ0KmDAIb0bhSQI=;
+ b=brBqnsvzVIyEyNarMddab94QgxANpM345C7xad3X0lcujoq56/dc4ONxyEhNd2R9DUFBoQUUNsum0Jyo/zM75E/We0sEgMVl49AnyMj1Ajncrt5swT/TSd+0WNkaJEwbYLLq99/IDLUTvizjzL3HYMHc/zGgFAKanSIaiqGi3Is6iKmg78g9IR8KDD/F/KKvvKQOFMtVnAzhJl9jA4i0wLiyqbKHLeBWffp4y+em9VQxKUiOYZhZ3cKCPjeARCyYA9TqekwTh+ThlA8zqZkAE65skIRAV4Z0cehkeRrB5RZplLzqvVfE+bA0psFL101nvDTZvTR5yPNwEwlxu+ZgFQ==
+Received: from FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM (2603:10a6:d10:7c::11)
+ by BE1P281MB2872.DEUP281.PROD.OUTLOOK.COM (2603:10a6:b10:4c::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8835.25; Fri, 13 Jun
+ 2025 13:43:59 +0000
+Received: from FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM
+ ([fe80::53a6:70d:823f:e9ac]) by FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM
+ ([fe80::53a6:70d:823f:e9ac%4]) with mapi id 15.20.8835.023; Fri, 13 Jun 2025
+ 13:43:58 +0000
+From: Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>
+To: Andy Shevchenko <andriy.shevchenko@intel.com>
+CC: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+        David Lechner <dlechner@baylibre.com>,
+        =?iso-8859-1?Q?Nuno_S=E1?=
+	<nuno.sa@analog.com>,
+        Andy Shevchenko <andy@kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v4 1/2] iio: imu: inv_icm42600: add WoM support
+Thread-Topic: [PATCH v4 1/2] iio: imu: inv_icm42600: add WoM support
+Thread-Index: AQHb3DWiaJg6fqmsLkOWVuHD5p4+yLQAwiAAgAA2IOiAABOvAIAAADkAgAAI6ao=
+Date: Fri, 13 Jun 2025 13:43:58 +0000
+Message-ID:
+ <FR3P281MB1757AEF932A3CE2AB9637046CE77A@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
+References:
+ <20250613-losd-3-inv-icm42600-add-wom-support-v4-0-7e5f554201bf@tdk.com>
+ <20250613-losd-3-inv-icm42600-add-wom-support-v4-1-7e5f554201bf@tdk.com>
+ <aEvhZiXHLLIRe41-@smile.fi.intel.com>
+ <FR3P281MB17578B82AC67F49552E24EB3CE77A@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
+ <aEwfUMgLTnQxOh_k@smile.fi.intel.com> <aEwfgP3tiio52Rj-@smile.fi.intel.com>
+In-Reply-To: <aEwfgP3tiio52Rj-@smile.fi.intel.com>
+Accept-Language: en-US, fr-FR
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: FR3P281MB1757:EE_|BE1P281MB2872:EE_
+x-ms-office365-filtering-correlation-id: 72914188-4d3d-42ee-e55c-08ddaa80594e
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|366016|376014|10070799003|1800799024|3613699012|38070700018;
+x-microsoft-antispam-message-info:
+ =?iso-8859-1?Q?SkH4zX1cD5T4WJYmJXil67SX9EveOGbKaV+gwF7HZYGWKcYpWIX9Qbfe49?=
+ =?iso-8859-1?Q?Rsl37ksf9wgudP8JuV1hmYqo26J2La2rpP6gjKAV5qsuksA3weoaShMn2p?=
+ =?iso-8859-1?Q?iq/enPWHFH9JgZidlKTHOKZkEdaWkTZoldO33M+QPJdwcxu/a43XDQxRN4?=
+ =?iso-8859-1?Q?5UmGM8BYHJ8jDelzveVuq1jhGBiL7jtt36FEPhpjlgb/mJa1tegylQuuaV?=
+ =?iso-8859-1?Q?QoAp2QCFtKo+MU+FrPfzNIec6djZ9mUIJdsKR/R5wOtOFzJABRrcUtnq31?=
+ =?iso-8859-1?Q?+9CQtuVxwFBL71TiVhuI+Pdkzqq3yp9OVZAG34eeos/B8lp/szrl5GkQCa?=
+ =?iso-8859-1?Q?n7MXaZp0F3Lx55ZnjWTXF8h5DuNmQ2DTV/CpBffDWZBmsfcbs+QpTgEeWI?=
+ =?iso-8859-1?Q?zhhO98zjxs/z8JF1izo+lHUkslde7AsOe/iuSL9ppqkqfI/cecdd14T/NJ?=
+ =?iso-8859-1?Q?8gf7AzoU37Z3E+jvxG2dtJ6ygi9kGbn5tL5IV53KFH+Wnn51cyKMEVXaHy?=
+ =?iso-8859-1?Q?ju6MYor5XGok6k379HVc7T7DzvVfCY5oIaPXfwKVxpgEJRkLv3alDLZTV2?=
+ =?iso-8859-1?Q?2sUecrVbt3qwtMcUeK9aGR4gix9r06FoVPl9P+cH122W5ceP+j3Ps3F2Og?=
+ =?iso-8859-1?Q?/sbylXF4lG8Ik4tIjHFwyioOCi5zi22GAU3neCaNPKpZ+BgkykIzWpe/fZ?=
+ =?iso-8859-1?Q?IB2W8RCOcNRH2cOa9lZc1OCHLGox5el3WCfHfplyL+DWOprhhb7+fp+sry?=
+ =?iso-8859-1?Q?icr0iJzZwj/6s7RJPja7xWHzxN4GDwTJ2qjed6gxUAB3Dy32SR91zbejnA?=
+ =?iso-8859-1?Q?mvopufuovFSnWCx9I6cDjcI0qVwc0whcZw+L8+2N8vkfrTWHLcYiLAubHH?=
+ =?iso-8859-1?Q?EzHhtsDwnuUsRfpJYj4Z5cGGl4dWeJVJoFDJ/3H/CFpqOu0j2sC46COZm2?=
+ =?iso-8859-1?Q?X5l/9rKIHhYxAGVCPMjbonm4TyURx2uauAQkzZjh7NVXLeVeJFYMnUMvr5?=
+ =?iso-8859-1?Q?hdtOxaxvw79wa5UuXsi75CMa/9t+Zg0f4fapbTjZpw1FvRghYzXOq+Ae6b?=
+ =?iso-8859-1?Q?md5yAWu+V2Ic6TrKiScLjIM+bpBSSozMUFi85iU9Kk++xB962y50Bm0g+t?=
+ =?iso-8859-1?Q?MYGn64PeBJDT4MLs/931lD141hht+h7uT1sIAZhCaMnwBVQHV4WIjExXH9?=
+ =?iso-8859-1?Q?1yrgx+dQTrDu1PHmB80ZDsf7OmAPzvfIeHSngSDu8mrr0zEVRUylXVuwzN?=
+ =?iso-8859-1?Q?6r48uwJjpd7npt7u3oTkrhX+o+JmVWDd1h+zVOiSZ5hOwB04Kw4UffAXw6?=
+ =?iso-8859-1?Q?ArLEX0YAqQKpz5Axa2aCWf7CEqrBmEE1TqnFHicorGfYPvLa6IXm6bPGqw?=
+ =?iso-8859-1?Q?KYJRQSMfvzeEnQXubXXAkSyKRdaWDE+uvFfznBuAVl12zFpIy1DENj+48R?=
+ =?iso-8859-1?Q?cat86vAMtRX4YMQV1jjmvzsGUCYXzBaqekJyRPpivMs0h9Q6td+zJ04N7K?=
+ =?iso-8859-1?Q?fS31nhdamvXJx8KApVqKNsCW04SKYIGBd6Z8HQ2lqXE0h9OrNBTK5DnNs7?=
+ =?iso-8859-1?Q?lhQZUZXF8NEsPjoJqUPad99mEMoC?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(10070799003)(1800799024)(3613699012)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?iso-8859-1?Q?sa0D/Yr7f0HAJ1VvGzCx1q6r4St53/iOMhvWhaQmvciOV1kQyZGhs9hOeM?=
+ =?iso-8859-1?Q?n+DRTW63viTG9NhZH6Lm8xb+sNNVeymS9bRlX8RbcBk3TyY/15zYEbjPOh?=
+ =?iso-8859-1?Q?AU6gb/CfOfe9MaisX+WrSeDTUkcDj2JkrUfAvJYzCcvzJ6Q1vTK9RO+R9F?=
+ =?iso-8859-1?Q?F35kfRheL0UUrCnnjXMFAKLO/rzcrJY6vBuel7+6WwMajRcWALOZYVpu9u?=
+ =?iso-8859-1?Q?HzSJhzOZsZkpPkeK0e77QVqtWAE2JmyxIS6TA7Rbqw5xXYLwKHY0Lo7inN?=
+ =?iso-8859-1?Q?2vO/5yOra6m55YSKw02ea6aW035/6gBzQft/WmSyNWlQbsAWG44V8gvpf6?=
+ =?iso-8859-1?Q?x4y6YZZsYoyZMOqzuD1zUjn67J+X/QF1zGSQd17TeMPcKKyzmGjiLc9oFe?=
+ =?iso-8859-1?Q?8Z9YvvIkbyqKOmhhL5ggHVZiAT5lFBwyMiCAEk04EFfkae9OxXvYvW7ZTP?=
+ =?iso-8859-1?Q?xa4SS/iwtKzVDP0lAHIoPZzOMJslotybVByI1h8XH3VY/ZJY7jscKtdGki?=
+ =?iso-8859-1?Q?JW3YvUz8/yQfWkEF0ne6crGTANaWmby/tgQOBbmrjjpW+HNPOGLC5fLfk2?=
+ =?iso-8859-1?Q?7wCLr+EHqSOrYOsVVg+ErQUikG8/fgYmDWCrfwLZydMCy2hLCRaF6TfjrS?=
+ =?iso-8859-1?Q?9RLMUd+ubc2Eia4luWjkvIVsCgoXFSGMaf6uFwq3Waq65s77FwxUHQtTt+?=
+ =?iso-8859-1?Q?sTxCizDwZ5HoNMB/f3EGEF+t1okFqzc5kRoYwzfB/XQfukYbbaPIxRCr6q?=
+ =?iso-8859-1?Q?b9MKyZsqziQHBbios4dBBZ/0NdTjeGpOOKpJM2mrywyKveaXKm6S3EK1A9?=
+ =?iso-8859-1?Q?U0XO1HuKLe32JxHJdnaWtru0FS5VRohqFCJhjkQmK9tepiWN4EpTx/EX71?=
+ =?iso-8859-1?Q?Mu+5MZlevFVETT3jG11hDlihXzKptbCIrIBZkYe3mVUl+hmFbpFE6VfZou?=
+ =?iso-8859-1?Q?OOS+zeaHmDNS6X8h0dqtyuGUC69yXGrWz6g3AnvjhIcXTNxoCjuqf/uoNu?=
+ =?iso-8859-1?Q?ZXc/MsS4Bu5aLPXHIXghgIBbWkuWny+tRUobdxMoZDQW09LA0LuK+9ccSA?=
+ =?iso-8859-1?Q?llJl8HZkQaK4t1q4ZFZLMh8iEfthDbKDlsDAC6mbQHiZOl4N9sNt1dkW81?=
+ =?iso-8859-1?Q?7jYT8PBdNLOkbFggDjpAg+owNtFJAaPbFgXqmpyFbjAsKOp5akg740qErq?=
+ =?iso-8859-1?Q?BeSHKskvc5XL8yzV+v0d/nWw+zaa2kAy0s0c/chWBgO+syNE6V3UaKwHD1?=
+ =?iso-8859-1?Q?1RdE2iwwxZD4uHVdan6StHpkvHAz94lIScAE0Gq+U3NABq2BJHouWMRqe7?=
+ =?iso-8859-1?Q?GnawYyt60Ds3kVVAUWPvxwUvUe5bUw0zWRYVmLB8AOsnLhA0a6i2zX0Cj9?=
+ =?iso-8859-1?Q?Qeis0yJFRHc8asBUHfaFiZ36A8yNn1igNA3o8eSBO8cOnz2Bk83pJeEhDz?=
+ =?iso-8859-1?Q?IDLmbxWUTxXq5YUzhR8GLChsZEqdndaDQLCnhYsZb+2cLyRvTTPcJs1ByK?=
+ =?iso-8859-1?Q?TCr+gSZ/JBoS7ZSSDPEln9bwg6YbicgqgkcASP18xBiV9vd1HntcYVT68Q?=
+ =?iso-8859-1?Q?nwDCVx55wEqf81df3xAmvaq9MugV4ZXnOe8H0SLFINebg69DpMTDb7+Mrs?=
+ =?iso-8859-1?Q?dVG8PpQzUP9BZoA99mEwUjJVV3nVQ/1q55qdjw1Tx7mDZ4ubrvfBv8YEyx?=
+ =?iso-8859-1?Q?igD1KlEgsAbGHZgBn1tRL8FtXKkAzE+pubWEkWL5pek2zOq4tQ0oqaanps?=
+ =?iso-8859-1?Q?uEng=3D=3D?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+X-OriginatorOrg: tdk.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: 72914188-4d3d-42ee-e55c-08ddaa80594e
+X-MS-Exchange-CrossTenant-originalarrivaltime: 13 Jun 2025 13:43:58.7261
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 7e452255-946f-4f17-800a-a0fb6835dc6c
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: I9dhaOcaLZZQm6h82PQCcZDqoaICCpPFX0gi5UCO9qsgkPk1WN8md8sNi2/JvvOMWU9U0cZsXYTaid+DsE2U59m+FvRZ6HM60XJg8AN1iMc=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BE1P281MB2872
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjEzMDEwMCBTYWx0ZWRfX3VKoRGWiLXH9
+ qJBBFekhJ0skAQbq3/iFVEp8PWFoFKlB2MtPZiJEFUN5y8XaY/2TTTdsKbndEfjnRnok1MolniV
+ hrS7r2n49yRHJURvzdc9PBJjaGiQT+agnkpa7cIu83bTFsYWWKC1HLH1RsFEjUvDR6K4pAu7DxA
+ MgtxxlZ1f7qPdWPV6kDYvlG411l+OEqnKzDPpFuvNHntP979/5Sm5FU7qSO3Lg3OH76WQhej8PU
+ gRXEGb+bupOhAeMJ24B0BasdGLRdui8y+X+40ovLF+eK8aldjhqB8L1i4Rmu7yZc1a00qQMjCcX
+ uQyx/dAGIbJQqFCuBYJkeFJ2VPBIN0bw8U+ODnlsH9ogVZdTi9ST6pBMkajd6pOVkHAnMAhAAc2
+ klqPs7oIs1M6nqqYi3xBhjo5ZpOYRr3orj2AiOFvErBtL53dkC/n7BMbyjxBZv8kB+2ppYEv
+X-Proofpoint-GUID: R0DCU5doaCBdZbRZWoiRaWdbFocRc5C_
+X-Proofpoint-ORIG-GUID: R0DCU5doaCBdZbRZWoiRaWdbFocRc5C_
+X-Authority-Analysis: v=2.4 cv=P6Y6hjAu c=1 sm=1 tr=0 ts=684c2b23 cx=c_pps
+ a=YO+KiMsvsh3rWD89CMFbsA==:117 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19
+ a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19
+ a=xqWC_Br6kY4A:10 a=8nJEP1OIZ-IA:10 a=6IFa9wvqVegA:10 a=Uwzcpa5oeQwA:10
+ a=QyXUC8HyAAAA:8 a=In8RU02eAAAA:8 a=VwQbUJbxAAAA:8 a=IpJZQVW2AAAA:8
+ a=gAnH3GRIAAAA:8 a=5oJRwxC-VJ8zwEdryuYA:9 a=wPNLvfGTeEIA:10
+ a=EFfWL0t1EGez1ldKSZgj:22 a=IawgGOuG5U0WyFbmm1f5:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-06-13_01,2025-06-12_02,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 impostorscore=0
+ adultscore=0 phishscore=0 mlxscore=0 spamscore=0 clxscore=1015 bulkscore=0
+ suspectscore=0 lowpriorityscore=0 malwarescore=0 priorityscore=1501
+ mlxlogscore=999 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
+ definitions=main-2506130100
 
-From: Victor Duicu <victor.duicu@microchip.com>
-
-This is the driver for Microchip MCP998X/33 and MCP998XD/33D
-Multichannel Automotive Temperature Monitor Family.
-
-Signed-off-by: Victor Duicu <victor.duicu@microchip.com>
----
- MAINTAINERS                       |   7 +
- drivers/iio/temperature/Kconfig   |  10 +
- drivers/iio/temperature/Makefile  |   1 +
- drivers/iio/temperature/mcp9982.c | 778 ++++++++++++++++++++++++++++++
- 4 files changed, 796 insertions(+)
- create mode 100644 drivers/iio/temperature/mcp9982.c
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 86a2045ba62e..63573c517603 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -15887,6 +15887,13 @@ S:	Maintained
- F:	Documentation/devicetree/bindings/iio/adc/microchip,mcp3911.yaml
- F:	drivers/iio/adc/mcp3911.c
- 
-+MICROCHIP MCP9982 TEMPERATURE DRIVER
-+M:	Victor Duicu <victor.duicu@microchip.com>
-+L:	linux-iio@vger.kernel.org
-+S:	Supported
-+F:	Documentation/devicetree/bindings/iio/temperature/microchip,mcp9982.yaml
-+F:	drivers/iio/temperature/mcp9982.c
-+
- MICROCHIP MMC/SD/SDIO MCI DRIVER
- M:	Aubin Constans <aubin.constans@microchip.com>
- S:	Maintained
-diff --git a/drivers/iio/temperature/Kconfig b/drivers/iio/temperature/Kconfig
-index 1244d8e17d50..e72b49f95f86 100644
---- a/drivers/iio/temperature/Kconfig
-+++ b/drivers/iio/temperature/Kconfig
-@@ -182,4 +182,14 @@ config MCP9600
- 	  This driver can also be built as a module. If so, the module
- 	  will be called mcp9600.
- 
-+config MCP9982
-+       tristate "Microchip Technology MCP9982 driver"
-+       depends on I2C
-+       help
-+         Say yes here to build support for Microchip Technology's MCP998X/33
-+         and MCP998XD/33D Multichannel Automotive Temperature Monitor Family.
-+
-+         This driver can also be built as a module. If so, the module
-+         will be called mcp9982.
-+
- endmenu
-diff --git a/drivers/iio/temperature/Makefile b/drivers/iio/temperature/Makefile
-index 07d6e65709f7..83f5f4bb4ff3 100644
---- a/drivers/iio/temperature/Makefile
-+++ b/drivers/iio/temperature/Makefile
-@@ -11,6 +11,7 @@ obj-$(CONFIG_MAX30208) += max30208.o
- obj-$(CONFIG_MAX31856) += max31856.o
- obj-$(CONFIG_MAX31865) += max31865.o
- obj-$(CONFIG_MCP9600) += mcp9600.o
-+obj-$(CONFIG_MCP9982) += mcp9982.o
- obj-$(CONFIG_MLX90614) += mlx90614.o
- obj-$(CONFIG_MLX90632) += mlx90632.o
- obj-$(CONFIG_MLX90632) += mlx90635.o
-diff --git a/drivers/iio/temperature/mcp9982.c b/drivers/iio/temperature/mcp9982.c
-new file mode 100644
-index 000000000000..b1ae77c6e691
---- /dev/null
-+++ b/drivers/iio/temperature/mcp9982.c
-@@ -0,0 +1,778 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+/*
-+ * IIO driver for MCP998X/33 and MCP998XD/33D Multichannel Automotive Temperature Monitor Family
-+ *
-+ * Copyright (C) 2025 Microchip Technology Inc. and its subsidiaries
-+ *
-+ * Author: Victor Duicu <victor.duicu@microchip.com>
-+ *
-+ * Datasheet can be found here:
-+ * https://ww1.microchip.com/downloads/aemDocuments/documents/MSLD/ProductDocuments/DataSheets/MCP998X-Family-Data-Sheet-DS20006827.pdf
-+ */
-+
-+#include <asm/div64.h>
-+#include <linux/array_size.h>
-+#include <linux/bitfield.h>
-+#include <linux/bits.h>
-+#include <linux/device/devres.h>
-+#include <linux/dev_printk.h>
-+#include <linux/err.h>
-+#include <linux/i2c.h>
-+#include <linux/iio/iio.h>
-+#include <linux/iio/sysfs.h>
-+#include <linux/property.h>
-+#include <linux/regmap.h>
-+#include <linux/string.h>
-+#include <linux/units.h>
-+
-+/* MCP9982 Registers */
-+#define MCP9982_INT_VALUE_ADDR(index)		(2 * (index))
-+#define MCP9982_FRAC_VALUE_ADDR(index)		(2 * (index) + 1)
-+#define MCP9982_ONE_SHOT_ADDR			0x0A
-+#define MCP9982_INTERNAL_HIGH_LIMIT_ADDR	0x0B
-+#define MCP9982_INTERNAL_LOW_LIMIT_ADDR		0x0C
-+#define MCP9982_EXT1_HIGH_LIMIT_INT_VALUE_ADDR	0x0D
-+#define MCP9982_EXT1_HIGH_LIMIT_FRAC_VALUE_ADDR	0x0E
-+#define MCP9982_EXT1_LOW_LIMIT_INT_VALUE_ADDR	0x0F
-+#define MCP9982_EXT1_LOW_LIMIT_FRAC_VALUE_ADDR	0x10
-+#define MCP9982_INTERNAL_THERM_LIMIT_ADDR	0x1D
-+#define MCP9982_EXT1_THERM_LIMIT_ADDR		0x1E
-+#define MCP9982_CFG_ADDR			0x22
-+#define MCP9982_CONV_ADDR			0x24
-+#define MCP9982_HYS_ADDR			0x25
-+#define MCP9982_CONSEC_ALRT_ADDR		0x26
-+#define MCP9982_ALRT_CFG_ADDR			0x27
-+#define MCP9982_RUNNING_AVG_ADDR		0x28
-+#define MCP9982_HOTTEST_CFG_ADDR		0x29
-+#define MCP9982_STATUS_ADDR			0x2A
-+#define MCP9982_EXT_FAULT_STATUS_ADDR		0x2B
-+#define MCP9982_HIGH_LIMIT_STATUS_ADDR		0x2C
-+#define MCP9982_LOW_LIMIT_STATUS_ADDR		0x2D
-+#define MCP9982_THERM_LIMIT_STATUS_ADDR		0x2E
-+#define MCP9982_HOTTEST_INT_VALUE_ADDR		0x2F
-+#define MCP9982_HOTTEST_FRAC_VALUE_ADDR		0x30
-+#define MCP9982_HOTTEST_STATUS_ADDR		0x31
-+#define MCP9982_THERM_SHTDWN_CFG_ADDR		0x32
-+#define MCP9982_HRDW_THERM_SHTDWN_LIMIT_ADDR	0x33
-+#define MCP9982_EXT_BETA_CFG_ADDR(index)	((index) + 52)
-+#define MCP9982_EXT_IDEAL_ADDR(index)		((index) + 54)
-+
-+/* MCP9982 Bits */
-+#define MCP9982_CFG_MSKAL			BIT(7)
-+#define MCP9982_CFG_RS				BIT(6)
-+#define MCP9982_CFG_ATTHM			BIT(5)
-+#define MCP9982_CFG_RECD12			BIT(4)
-+#define MCP9982_CFG_RECD34			BIT(3)
-+#define MCP9982_CFG_RANGE			BIT(2)
-+#define MCP9982_CFG_DA_ENA			BIT(1)
-+#define MCP9982_CFG_APDD			BIT(0)
-+
-+/* The maximum number of channels a member of the family can have */
-+#define MCP9982_MAX_NUM_CHANNELS		5
-+
-+#define MCP9982_CHAN(index, si, __address) ({						\
-+	struct iio_chan_spec __chan = {							\
-+		.type = IIO_TEMP,							\
-+		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),				\
-+		.info_mask_shared_by_all_available = BIT(IIO_CHAN_INFO_SAMP_FREQ) |	\
-+		BIT(IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY) |			\
-+		BIT(IIO_CHAN_INFO_OFFSET),						\
-+		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SAMP_FREQ) |		\
-+		BIT(IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY) |			\
-+		BIT(IIO_CHAN_INFO_HYSTERESIS) |						\
-+		BIT(IIO_CHAN_INFO_OFFSET),						\
-+		.channel = index,							\
-+		.address = __address,							\
-+		.scan_index = si,							\
-+		.scan_type = {								\
-+			.sign = 'u',							\
-+			.realbits = 8,							\
-+			.storagebits = 8,						\
-+		},									\
-+		.indexed = 1,								\
-+	};										\
-+	__chan;										\
-+})
-+
-+/**
-+ * struct mcp9982_features - features of a mcp9982 instance
-+ * @name:		chip's name
-+ * @phys_channels:	number of physical channels supported by the chip
-+ */
-+struct mcp9982_features {
-+	const char	*name;
-+	u8		phys_channels;
-+};
-+
-+static const struct mcp9982_features mcp9933_chip_config = {
-+	.name = "mcp9933",
-+	.phys_channels = 3,
-+};
-+
-+static const struct mcp9982_features mcp9933d_chip_config = {
-+	.name = "mcp9933d",
-+	.phys_channels = 3,
-+};
-+
-+static const struct mcp9982_features mcp9982_chip_config = {
-+	.name = "mcp9982",
-+	.phys_channels = 2,
-+};
-+
-+static const struct mcp9982_features mcp9982d_chip_config = {
-+	.name = "mcp9982d",
-+	.phys_channels = 2,
-+};
-+
-+static const struct mcp9982_features mcp9983_chip_config = {
-+	.name = "mcp9983",
-+	.phys_channels = 3,
-+};
-+
-+static const struct mcp9982_features mcp9983d_chip_config = {
-+	.name = "mcp9983d",
-+	.phys_channels = 3,
-+};
-+
-+static const struct mcp9982_features mcp9984_chip_config = {
-+	.name = "mcp9984",
-+	.phys_channels = 4,
-+};
-+
-+static const struct mcp9982_features mcp9984d_chip_config = {
-+	.name = "mcp9984d",
-+	.phys_channels = 4,
-+};
-+
-+static const struct mcp9982_features mcp9985_chip_config = {
-+	.name = "mcp9985",
-+	.phys_channels = 5,
-+};
-+
-+static const struct mcp9982_features mcp9985d_chip_config = {
-+	.name = "mcp9985d",
-+	.phys_channels = 5,
-+};
-+
-+static const unsigned int mcp9982_fractional_values[] = {
-+	0,
-+	125000,
-+	250000,
-+	375000,
-+	500000,
-+	625000,
-+	750000,
-+	875000,
-+};
-+
-+static const unsigned int mcp9982_conv_rate[][2] = {
-+	{ 0, 62500 },
-+	{ 0, 125000 },
-+	{ 0, 250000 },
-+	{ 0, 500000 },
-+	{ 1, 0 },
-+	{ 2, 0 },
-+	{ 4, 0 },
-+	{ 8, 0 },
-+	{ 16, 0 },
-+	{ 32, 0 },
-+	{ 64, 0 },
-+};
-+
-+static unsigned int mcp9982_3db_values_map_tbl[11][3][2];
-+static const unsigned int mcp9982_sampl_fr[][2] = {
-+	{ 1, 16 },
-+	{ 1, 8 },
-+	{ 1, 4 },
-+	{ 1, 2 },
-+	{ 1, 1 },
-+	{ 2, 1 },
-+	{ 4, 1 },
-+	{ 8, 1 },
-+	{ 16, 1 },
-+	{ 32, 1 },
-+	{ 64, 1 },
-+};
-+
-+static const unsigned int mcp9982_window_size[3] = {1, 4, 8};
-+
-+/*
-+ * (Sampling_Frequency * 1000000) / (Window_Size * 2)
-+ */
-+static unsigned int mcp9982_calc_all_3db_values(void)
-+{
-+	u32 denominator, remainder;
-+	unsigned int i, j;
-+	u64 numerator;
-+
-+	for (i = 0; i < ARRAY_SIZE(mcp9982_window_size); i++)
-+		for (j = 0; j <  ARRAY_SIZE(mcp9982_sampl_fr); j++) {
-+			numerator = MICRO * mcp9982_sampl_fr[j][0];
-+			denominator = 2 * mcp9982_window_size[i] * mcp9982_sampl_fr[j][1];
-+			remainder = do_div(numerator, denominator);
-+			remainder = do_div(numerator, MICRO);
-+			mcp9982_3db_values_map_tbl[j][i][0] = numerator;
-+			mcp9982_3db_values_map_tbl[j][i][1] = remainder;
-+		}
-+	return 0;
-+}
-+
-+/* mcp9982 regmap configuration */
-+static const struct regmap_range mcp9982_regmap_wr_ranges[] = {
-+	regmap_reg_range(MCP9982_ONE_SHOT_ADDR, MCP9982_EXT1_LOW_LIMIT_FRAC_VALUE_ADDR),
-+	regmap_reg_range(MCP9982_INTERNAL_THERM_LIMIT_ADDR, MCP9982_EXT1_THERM_LIMIT_ADDR),
-+	regmap_reg_range(MCP9982_CFG_ADDR, MCP9982_CFG_ADDR),
-+	regmap_reg_range(MCP9982_CONV_ADDR, MCP9982_HOTTEST_CFG_ADDR),
-+	regmap_reg_range(MCP9982_THERM_SHTDWN_CFG_ADDR, MCP9982_THERM_SHTDWN_CFG_ADDR),
-+	regmap_reg_range(MCP9982_EXT_BETA_CFG_ADDR(0), MCP9982_EXT_IDEAL_ADDR(3)),
-+};
-+
-+static const struct regmap_access_table mcp9982_regmap_wr_table = {
-+	.yes_ranges = mcp9982_regmap_wr_ranges,
-+	.n_yes_ranges = ARRAY_SIZE(mcp9982_regmap_wr_ranges),
-+};
-+
-+static const struct regmap_range mcp9982_regmap_rd_ranges[] = {
-+	regmap_reg_range(MCP9982_INT_VALUE_ADDR(0),
-+			 MCP9982_EXT1_LOW_LIMIT_FRAC_VALUE_ADDR),
-+	regmap_reg_range(MCP9982_INTERNAL_THERM_LIMIT_ADDR, MCP9982_EXT1_THERM_LIMIT_ADDR),
-+	regmap_reg_range(MCP9982_CFG_ADDR, MCP9982_CFG_ADDR),
-+	regmap_reg_range(MCP9982_CONV_ADDR, MCP9982_EXT_IDEAL_ADDR(3)),
-+};
-+
-+static const struct regmap_access_table mcp9982_regmap_rd_table = {
-+	.yes_ranges = mcp9982_regmap_rd_ranges,
-+	.n_yes_ranges = ARRAY_SIZE(mcp9982_regmap_rd_ranges),
-+};
-+
-+static bool mcp9982_is_volatile_reg(struct device *dev, unsigned int reg)
-+{
-+	switch (reg) {
-+	case MCP9982_ONE_SHOT_ADDR:
-+	case MCP9982_INTERNAL_HIGH_LIMIT_ADDR:
-+	case MCP9982_INTERNAL_LOW_LIMIT_ADDR:
-+	case MCP9982_EXT1_HIGH_LIMIT_INT_VALUE_ADDR:
-+	case MCP9982_EXT1_HIGH_LIMIT_FRAC_VALUE_ADDR:
-+	case MCP9982_EXT1_LOW_LIMIT_INT_VALUE_ADDR:
-+	case MCP9982_EXT1_LOW_LIMIT_FRAC_VALUE_ADDR:
-+	case MCP9982_INTERNAL_THERM_LIMIT_ADDR:
-+	case MCP9982_EXT1_THERM_LIMIT_ADDR:
-+	case MCP9982_CFG_ADDR:
-+	case MCP9982_CONV_ADDR:
-+	case MCP9982_HYS_ADDR:
-+	case MCP9982_CONSEC_ALRT_ADDR:
-+	case MCP9982_ALRT_CFG_ADDR:
-+	case MCP9982_RUNNING_AVG_ADDR:
-+	case MCP9982_HOTTEST_CFG_ADDR:
-+	case MCP9982_THERM_SHTDWN_CFG_ADDR:
-+		return false;
-+	default:
-+		return true;
-+	}
-+}
-+
-+static const struct regmap_config mcp9982_regmap_config = {
-+	.reg_bits = 8,
-+	.val_bits = 8,
-+	.rd_table = &mcp9982_regmap_rd_table,
-+	.wr_table = &mcp9982_regmap_wr_table,
-+	.volatile_reg = mcp9982_is_volatile_reg,
-+};
-+
-+/**
-+ * struct mcp9992_priv - information about chip parameters
-+ * @regmap:			device register map
-+ * @num_channels		number of physical channels
-+ * @extended_temp_range		use extended temperature range or not
-+ * @recd34_enable		state of REC on channels 3 and 4
-+ * @recd12_enable		state of REC on channels 1 and 2
-+ * @beta_values			beta compensation value for external channel 1 and 2
-+ * @lock			synchronize access to driver's state members
-+ * @iio_chan			specifications of channels
-+ * @labels			labels of the channels
-+ * @ideality_value		ideality factor value for each external channel
-+ * @sampl_idx			index representing the current sampling frequency
-+ * @dev_name			name of the device
-+ * @apdd_enable			state of anti-parallel diode mode
-+ */
-+struct mcp9982_priv {
-+	struct regmap *regmap;
-+	u8 num_channels;
-+	bool extended_temp_range;
-+	bool recd34_enable;
-+	bool recd12_enable;
-+	unsigned int beta_values[2];
-+	/*
-+	 * Synchronize access to private members, and ensure
-+	 * atomicity of consecutive regmap operations.
-+	 */
-+	struct mutex lock;
-+	struct iio_chan_spec *iio_chan;
-+	const char *labels[MCP9982_MAX_NUM_CHANNELS];
-+	unsigned int ideality_value[4];
-+	unsigned int sampl_idx;
-+	const char *dev_name;
-+	bool apdd_enable;
-+};
-+
-+static int mcp9982_read_avail(struct iio_dev *indio_dev, struct iio_chan_spec const *chan,
-+			      const int **vals, int *type, int *length, long mask)
-+{
-+	struct mcp9982_priv *priv = iio_priv(indio_dev);
-+	static const int offset[2] = {0, -64};
-+
-+	switch (mask) {
-+	case IIO_CHAN_INFO_SAMP_FREQ:
-+		*type = IIO_VAL_INT_PLUS_MICRO;
-+		if (strchr(priv->dev_name, 'd')) {
-+			*vals = mcp9982_conv_rate[4];
-+			*length = (ARRAY_SIZE(mcp9982_conv_rate) - 4) * 2;
-+		} else {
-+			*vals = mcp9982_conv_rate[0];
-+			*length = ARRAY_SIZE(mcp9982_conv_rate) * 2;
-+		}
-+		return IIO_AVAIL_LIST;
-+	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
-+		*type = IIO_VAL_INT_PLUS_MICRO;
-+		*vals = mcp9982_3db_values_map_tbl[priv->sampl_idx][0];
-+		*length = ARRAY_SIZE(mcp9982_3db_values_map_tbl[priv->sampl_idx]) * 2;
-+		return IIO_AVAIL_LIST;
-+	case IIO_CHAN_INFO_OFFSET:
-+		*type = IIO_VAL_INT;
-+		*vals = offset;
-+		*length = 2;
-+		return IIO_AVAIL_LIST;
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static int mcp9982_read_raw(struct iio_dev *indio_dev, struct iio_chan_spec const *chan,
-+			    int *val, int *val2, long mask)
-+{
-+	unsigned int index, idx, tmp_reg;
-+	struct mcp9982_priv *priv = iio_priv(indio_dev);
-+	int ret;
-+
-+	ret = regmap_write(priv->regmap, MCP9982_ONE_SHOT_ADDR, 1);
-+	if (ret)
-+		return ret;
-+
-+	guard(mutex)(&priv->lock);
-+
-+	switch (mask) {
-+	case IIO_CHAN_INFO_RAW:
-+		ret = regmap_read(priv->regmap, MCP9982_INT_VALUE_ADDR(chan->channel), val);
-+		if (ret)
-+			return ret;
-+
-+		/* The extended temperature range is offset by 64 degrees C */
-+		if (priv->extended_temp_range)
-+			*val -= 64;
-+
-+		ret = regmap_read(priv->regmap, MCP9982_FRAC_VALUE_ADDR(chan->channel), val2);
-+		if (ret)
-+			return ret;
-+
-+		/* Only the 3 MSB in fractional registers are used */
-+		*val2 = mcp9982_fractional_values[*val2 >> 5];
-+		return IIO_VAL_INT_PLUS_MICRO;
-+	case IIO_CHAN_INFO_SAMP_FREQ:
-+		*val = mcp9982_conv_rate[priv->sampl_idx][0];
-+		*val2 = mcp9982_conv_rate[priv->sampl_idx][1];
-+		return IIO_VAL_INT_PLUS_MICRO;
-+	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
-+
-+		ret = regmap_read(priv->regmap, MCP9982_RUNNING_AVG_ADDR, &tmp_reg);
-+		if (ret)
-+			return ret;
-+		/*
-+		 * In Filter Selection Register values 1 and 2
-+		 * are mapped to the same setting.
-+		 */
-+		switch (tmp_reg) {
-+		case 0:
-+			idx = 0;
-+			break;
-+		case 1:
-+		case 2:
-+			idx = 1;
-+			break;
-+		default:
-+			idx = 2;
-+			break;
-+		}
-+
-+		*val = mcp9982_3db_values_map_tbl[priv->sampl_idx][idx][0];
-+		*val2 = mcp9982_3db_values_map_tbl[priv->sampl_idx][idx][1];
-+		return IIO_VAL_INT_PLUS_MICRO;
-+	case IIO_CHAN_INFO_HYSTERESIS:
-+		ret = regmap_read(priv->regmap, MCP9982_HYS_ADDR, &index);
-+		if (ret)
-+			return ret;
-+
-+		*val = index;
-+		return IIO_VAL_INT;
-+	case IIO_CHAN_INFO_OFFSET:
-+		if (priv->extended_temp_range)
-+			*val = -64;
-+		else
-+			*val = 0;
-+		return IIO_VAL_INT;
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static int mcp9982_read_label(struct iio_dev *indio_dev, struct iio_chan_spec const *chan,
-+			      char *label)
-+{
-+	struct mcp9982_priv *priv = iio_priv(indio_dev);
-+
-+	if (chan->channel < 0 || chan->channel > 4)
-+		return -EINVAL;
-+
-+	return sysfs_emit(label, "%s\n", priv->labels[chan->channel]);
-+}
-+
-+static int mcp9982_write_raw_get_fmt(struct iio_dev *indio_dev, struct iio_chan_spec const *chan,
-+				     long info)
-+{
-+	switch (info) {
-+	case IIO_CHAN_INFO_SAMP_FREQ:
-+		return IIO_VAL_INT_PLUS_MICRO;
-+	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
-+		return IIO_VAL_INT_PLUS_MICRO;
-+	case IIO_CHAN_INFO_HYSTERESIS:
-+		return IIO_VAL_INT;
-+	case IIO_CHAN_INFO_OFFSET:
-+		return IIO_VAL_INT;
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static int mcp9982_write_raw(struct iio_dev *indio_dev, struct iio_chan_spec const *chan,
-+			     int val, int val2, long mask)
-+{
-+	struct mcp9982_priv *priv = iio_priv(indio_dev);
-+	int ret;
-+	unsigned int i;
-+	unsigned int start = 0;
-+
-+	guard(mutex)(&priv->lock);
-+	switch (mask) {
-+	case IIO_CHAN_INFO_SAMP_FREQ:
-+		/*
-+		 * For MCP998XD and MCP9933D sampling frequency can't
-+		 * be set lower than 1.
-+		 */
-+		if (strchr(priv->dev_name, 'd'))
-+			start = 4;
-+		for (i = start; i < ARRAY_SIZE(mcp9982_conv_rate); i++)
-+			if (val == mcp9982_conv_rate[i][0] && val2 == mcp9982_conv_rate[i][1])
-+				break;
-+
-+		if (i == ARRAY_SIZE(mcp9982_conv_rate))
-+			return -EINVAL;
-+
-+		ret = regmap_write(priv->regmap, MCP9982_CONV_ADDR, i);
-+		if (ret)
-+			return ret;
-+
-+		priv->sampl_idx = i;
-+		return 0;
-+	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
-+		for (i = 0; i < ARRAY_SIZE(mcp9982_3db_values_map_tbl[priv->sampl_idx]); i++)
-+			if (val == mcp9982_3db_values_map_tbl[priv->sampl_idx][i][0] &&
-+			    val2 == mcp9982_3db_values_map_tbl[priv->sampl_idx][i][1])
-+				break;
-+
-+		if (i == ARRAY_SIZE(mcp9982_3db_values_map_tbl[priv->sampl_idx]))
-+			return -EINVAL;
-+
-+		/*
-+		 * In mcp9982_3db_values_map_tbl the second index maps:
-+		 * 0 for filter off
-+		 * 1 for filter at level 1
-+		 * 2 for filter at level 2
-+		 */
-+		if (i == 2)
-+			i = 3;
-+		ret = regmap_write(priv->regmap, MCP9982_RUNNING_AVG_ADDR, i);
-+
-+		return ret;
-+	case IIO_CHAN_INFO_HYSTERESIS:
-+		if (val < 0 || val > 255)
-+			return -EINVAL;
-+
-+		ret = regmap_write(priv->regmap, MCP9982_HYS_ADDR, val);
-+		return ret;
-+	case IIO_CHAN_INFO_OFFSET:
-+		if (val != 0 && val != -64)
-+			return -EINVAL;
-+		priv->extended_temp_range = !(val == 0);
-+		ret = regmap_assign_bits(priv->regmap, MCP9982_CFG_ADDR, MCP9982_CFG_RANGE,
-+					 priv->extended_temp_range);
-+		return ret;
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static const struct iio_info mcp9982_info = {
-+	.read_raw = mcp9982_read_raw,
-+	.read_label = mcp9982_read_label,
-+	.read_avail = mcp9982_read_avail,
-+	.write_raw_get_fmt = mcp9982_write_raw_get_fmt,
-+	.write_raw = mcp9982_write_raw,
-+};
-+
-+static int mcp9982_init(struct mcp9982_priv *priv)
-+{
-+	int ret;
-+	unsigned int i;
-+	u8 val;
-+
-+	/*
-+	 * For chips with "D" in the name
-+	 * set the below parameters to default to
-+	 * ensure that hardware shutdown feature
-+	 * can't be overridden.
-+	 */
-+	if (strchr(priv->dev_name, 'd')) {
-+		priv->recd12_enable = true;
-+		priv->recd34_enable = true;
-+		for (i = 0; i < 2; i++)
-+			priv->beta_values[i] = 16;
-+		for (i = 0; i < 4; i++)
-+			priv->ideality_value[i] = 18;
-+	}
-+
-+	/*
-+	 * Set default values in registers.
-+	 * APDD, RECD12 and RECD34 are active on 0.
-+	 */
-+	val = FIELD_PREP(MCP9982_CFG_MSKAL, 1) | FIELD_PREP(MCP9982_CFG_RS, 1) |
-+	      FIELD_PREP(MCP9982_CFG_ATTHM, 1) |
-+	      FIELD_PREP(MCP9982_CFG_RECD12, !priv->recd12_enable) |
-+	      FIELD_PREP(MCP9982_CFG_RECD34, !priv->recd34_enable) |
-+	      FIELD_PREP(MCP9982_CFG_RANGE, 0) | FIELD_PREP(MCP9982_CFG_DA_ENA, 0) |
-+	      FIELD_PREP(MCP9982_CFG_APDD, !priv->apdd_enable);
-+
-+	ret = regmap_write(priv->regmap, MCP9982_CFG_ADDR, val);
-+	if (ret)
-+		return ret;
-+	priv->extended_temp_range = false;
-+
-+	ret = regmap_write(priv->regmap, MCP9982_CONV_ADDR, 6);
-+	if (ret)
-+		return ret;
-+	priv->sampl_idx = 6;
-+
-+	ret = regmap_write(priv->regmap, MCP9982_HYS_ADDR, 10);
-+	if (ret)
-+		return ret;
-+
-+	ret = regmap_write(priv->regmap, MCP9982_CONSEC_ALRT_ADDR, 112);
-+	if (ret)
-+		return ret;
-+
-+	ret = regmap_write(priv->regmap, MCP9982_RUNNING_AVG_ADDR, 0);
-+	if (ret)
-+		return ret;
-+
-+	ret = regmap_write(priv->regmap, MCP9982_HOTTEST_CFG_ADDR, 0);
-+	if (ret)
-+		return ret;
-+
-+	/* Set beta compensation for channels 1 and 2 */
-+	for (i = 0; i < 2; i++) {
-+		ret = regmap_write(priv->regmap, MCP9982_EXT_BETA_CFG_ADDR(i),
-+				   priv->beta_values[i]);
-+		if (ret)
-+			return ret;
-+	}
-+	/* Set ideality factor for all external channels */
-+	for (i = 0; i < 4; i++) {
-+		ret = regmap_write(priv->regmap, MCP9982_EXT_IDEAL_ADDR(i),
-+				   priv->ideality_value[i]);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	return 0;
-+}
-+
-+static int mcp9982_parse_of_config(struct iio_dev *indio_dev, struct device *dev,
-+				   int device_nr_channels)
-+{
-+	unsigned int reg_nr, iio_idx;
-+	struct mcp9982_priv *priv = iio_priv(indio_dev);
-+
-+	priv->apdd_enable = device_property_read_bool(dev, "microchip,enable-anti-parallel");
-+
-+	priv->recd12_enable = device_property_read_bool(dev,
-+							"microchip,resistance-comp-ch1-2-enable");
-+
-+	priv->recd34_enable = device_property_read_bool(dev,
-+							"microchip,resistance-comp-ch3-4-enable");
-+
-+	priv->beta_values[0] = 16;
-+	priv->beta_values[1] = 16;
-+	device_property_read_u32(dev, "microchip,beta1", &priv->beta_values[0]);
-+	device_property_read_u32(dev, "microchip,beta2", &priv->beta_values[1]);
-+	if (priv->beta_values[0] > 16 || priv->beta_values[1] > 16)
-+		return -EINVAL;
-+
-+	priv->num_channels = device_get_child_node_count(dev) + 1;
-+
-+	if (priv->num_channels > device_nr_channels)
-+		return dev_err_probe(dev, -EINVAL, "More channels than the chip supports\n");
-+
-+	priv->iio_chan = devm_kcalloc(dev, priv->num_channels, sizeof(*priv->iio_chan), GFP_KERNEL);
-+	if (!priv->iio_chan)
-+		return -ENOMEM;
-+
-+	priv->iio_chan[0] = MCP9982_CHAN(0, 0, MCP9982_INT_VALUE_ADDR(0));
-+
-+	priv->labels[0] = "internal diode";
-+	iio_idx++;
-+	device_for_each_child_node_scoped(dev, child) {
-+		fwnode_property_read_u32(child, "reg", &reg_nr);
-+		if (!reg_nr || reg_nr >= device_nr_channels)
-+			return dev_err_probe(dev, -EINVAL,
-+				     "The index of the channels does not match the chip\n");
-+
-+		priv->ideality_value[reg_nr - 1] = 18;
-+		if (fwnode_property_present(child, "microchip,ideality-factor")) {
-+			fwnode_property_read_u32(child, "microchip,ideality-factor",
-+						 &priv->ideality_value[reg_nr - 1]);
-+			if (priv->ideality_value[reg_nr - 1] > 63)
-+				return dev_err_probe(dev, -EINVAL,
-+				     "The ideality value is higher than maximum\n");
-+		}
-+
-+		fwnode_property_read_string(child, "label",
-+					    &priv->labels[reg_nr]);
-+
-+		priv->iio_chan[iio_idx++] = MCP9982_CHAN(reg_nr, reg_nr,
-+							 MCP9982_INT_VALUE_ADDR(reg_nr));
-+	}
-+
-+	return 0;
-+}
-+
-+static int mcp9982_probe(struct i2c_client *client)
-+{
-+	struct device *dev = &client->dev;
-+	struct mcp9982_priv *priv;
-+	struct iio_dev *indio_dev;
-+	const struct mcp9982_features *chip;
-+	int ret;
-+
-+	indio_dev = devm_iio_device_alloc(dev, sizeof(*priv));
-+	if (!indio_dev)
-+		return -ENOMEM;
-+
-+	priv = iio_priv(indio_dev);
-+	priv->regmap = devm_regmap_init_i2c(client, &mcp9982_regmap_config);
-+	if (IS_ERR(priv->regmap))
-+		return dev_err_probe(dev, PTR_ERR(priv->regmap),
-+				     "Cannot initialize register map\n");
-+
-+	ret = devm_mutex_init(dev, &priv->lock);
-+	if (ret)
-+		return ret;
-+
-+	chip = i2c_get_match_data(client);
-+	if (!chip)
-+		return -EINVAL;
-+	priv->dev_name = chip->name;
-+
-+	ret = mcp9982_parse_of_config(indio_dev, &client->dev, chip->phys_channels);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "Parameter parsing error\n");
-+
-+	mcp9982_calc_all_3db_values();
-+	ret = mcp9982_init(priv);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "Cannot initialize device\n");
-+
-+	indio_dev->name = chip->name;
-+	indio_dev->info = &mcp9982_info;
-+	indio_dev->modes = INDIO_DIRECT_MODE;
-+	indio_dev->channels = priv->iio_chan;
-+	indio_dev->num_channels = priv->num_channels;
-+
-+	ret = devm_iio_device_register(dev, indio_dev);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "Cannot register IIO device\n");
-+
-+	return 0;
-+}
-+
-+static const struct i2c_device_id mcp9982_id[] = {
-+	{ .name = "mcp9933", .driver_data = (kernel_ulong_t)&mcp9933_chip_config },
-+	{ .name = "mcp9933d", .driver_data = (kernel_ulong_t)&mcp9933d_chip_config },
-+	{ .name = "mcp9982", .driver_data = (kernel_ulong_t)&mcp9982_chip_config },
-+	{ .name = "mcp9982d", .driver_data = (kernel_ulong_t)&mcp9982d_chip_config },
-+	{ .name = "mcp9983", .driver_data = (kernel_ulong_t)&mcp9983_chip_config },
-+	{ .name = "mcp9983d", .driver_data = (kernel_ulong_t)&mcp9983d_chip_config },
-+	{ .name = "mcp9984", .driver_data = (kernel_ulong_t)&mcp9984_chip_config },
-+	{ .name = "mcp9984d", .driver_data = (kernel_ulong_t)&mcp9984d_chip_config },
-+	{ .name = "mcp9985", .driver_data = (kernel_ulong_t)&mcp9985_chip_config },
-+	{ .name = "mcp9985d", .driver_data = (kernel_ulong_t)&mcp9985d_chip_config },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(i2c, mcp9982_id);
-+
-+static const struct of_device_id mcp9982_of_match[] = {
-+	{
-+		.compatible = "microchip,mcp9933",
-+		.data = &mcp9933_chip_config
-+	}, {
-+		.compatible = "microchip,mcp9933d",
-+		.data = &mcp9933d_chip_config
-+	}, {
-+		.compatible = "microchip,mcp9982",
-+		.data = &mcp9982_chip_config
-+	}, {
-+		.compatible = "microchip,mcp9982d",
-+		.data = &mcp9982d_chip_config
-+	}, {
-+		.compatible = "microchip,mcp9983",
-+		.data = &mcp9983_chip_config
-+	}, {
-+		.compatible = "microchip,mcp9983d",
-+		.data = &mcp9983d_chip_config
-+	}, {
-+		.compatible = "microchip,mcp9984",
-+		.data = &mcp9984_chip_config
-+	}, {
-+		.compatible = "microchip,mcp9984d",
-+		.data = &mcp9984d_chip_config
-+	}, {
-+		.compatible = "microchip,mcp9985",
-+		.data = &mcp9985_chip_config
-+	}, {
-+		.compatible = "microchip,mcp9985d",
-+		.data = &mcp9985d_chip_config
-+	},
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(of, mcp9982_of_match);
-+
-+static struct i2c_driver mcp9982_driver = {
-+	.driver	 = {
-+		.name = "mcp9982",
-+		.of_match_table = mcp9982_of_match,
-+	},
-+	.probe = mcp9982_probe,
-+	.id_table = mcp9982_id,
-+};
-+module_i2c_driver(mcp9982_driver);
-+
-+MODULE_AUTHOR("Victor Duicu <victor.duicu@microchip.com>");
-+MODULE_DESCRIPTION("MCP998X/33 and MCP998XD/33D Multichannel Automotive Temperature Monitor Driver");
-+MODULE_LICENSE("GPL");
--- 
-2.48.1
-
+>________________________________________=0A=
+>From:=A0Andy Shevchenko <andriy.shevchenko@intel.com>=0A=
+>Sent:=A0Friday, June 13, 2025 14:54=0A=
+>To:=A0Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>=0A=
+>Cc:=A0Jonathan Cameron <jic23@kernel.org>; Lars-Peter Clausen <lars@metafo=
+o.de>; David Lechner <dlechner@baylibre.com>; Nuno S=E1 <nuno.sa@analog.com=
+>; Andy Shevchenko <andy@kernel.org>; linux-iio@vger.kernel.org <linux-iio@=
+vger.kernel.org>; linux-kernel@vger.kernel.org <linux-kernel@vger.kernel.or=
+g>=0A=
+>Subject:=A0Re: [PATCH v4 1/2] iio: imu: inv_icm42600: add WoM support=0A=
+>=A0=0A=
+>This Message Is From an External Sender=0A=
+>This message came from outside your organization.=0A=
+>=A0=0A=
+>On Fri, Jun 13, 2025 at 03:53:36PM +0300, Andy Shevchenko wrote:=0A=
+>> On Fri, Jun 13, 2025 at 12:46:46PM +0000, Jean-Baptiste Maneyrol wrote:=
+=0A=
+>> > >From:=A0Andy Shevchenko <andriy.shevchenko@intel.com>=0A=
+>> > >Sent:=A0Friday, June 13, 2025 10:29=0A=
+>> > >On Fri, Jun 13, 2025 at 09:34:26AM +0200, Jean-Baptiste Maneyrol via =
+B4 Relay wrote:=0A=
+>=0A=
+>...=0A=
+>=0A=
+>> > >Overall, looking to this patch again, I think it would be better to p=
+repend it=0A=
+>> > >by replacing *int*_t types by the respective uXX ones. Because in thi=
+s patch=0A=
+>> > >we add dozens of new ones which increases an unneeded churn in the fu=
+ture.=0A=
+>> > >=0A=
+>> > In my opinion, to respect the rule don't mix *int*_t and uXX types, it=
+ is better=0A=
+>> > to keep *int*_t types. If it need to be changed, we can change afterwa=
+rd the=0A=
+>> > whole driver types with a replace tool and send it in a separate patch=
+.=0A=
+>> =0A=
+>> It will be never ending story, sorry. We need someone to solve this tech=
+ debt.=0A=
+>> And since this patch adds more than 3 new users of it, I think it's a ca=
+ndidate=0A=
+>> to embrace the burden.=0A=
+>=0A=
+>For your convenience I can mock-up a change...=0A=
+=0A=
+It looks like there's something I don't understand in the kernel Documentat=
+ion about=0A=
+types then.=0A=
+Quoting Documentation/process/coding-style.rst, section 5.d:=0A=
+---=0A=
+New types which are identical to standard C99 types, in certain exceptional=
+ circumstances.=0A=
+=0A=
+Although it would only take a short amount of time for the eyes and brain t=
+o become accustomed=0A=
+to the standard types like uint32_t, some people object to their use anyway=
+.=0A=
+=0A=
+Therefore, the Linux-specific u8/u16/u32/u64 types and their signed equival=
+ents which are=0A=
+identical to standard types are permitted -- although they are not mandator=
+y in new code=0A=
+of your own.=0A=
+=0A=
+When editing existing code which already uses one or the other set of types=
+, you should=0A=
+conform to the existing choices in that code.=0A=
+---=0A=
+=0A=
+My understanding is that uXX are not mandatory for new code. You can use ty=
+pes like *int*_t.=0A=
+But you need to conform afterward to the existing choice. That's why this d=
+river was=0A=
+done initially with *int*_t types, and that patches are conforming to this =
+choice.=0A=
+=0A=
+By looking at all Linux drivers, there are plenty of them using *int*_t, ev=
+en=0A=
+inside iio:=0A=
+adc/xilinx-xadc.h:	uint16_t threshold[16];=0A=
+adc/xilinx-xadc.h:	uint16_t temp_hysteresis;=0A=
+adc/xilinx-xadc.h:	uint16_t *data;=0A=
+adc/xilinx-xadc.h:	int (*read)(struct xadc *xadc, unsigned int reg, uint16_=
+t *val);=0A=
+adc/xilinx-xadc.h:	int (*write)(struct xadc *xadc, unsigned int reg, uint16=
+_t val);=0A=
+adc/xilinx-xadc.h:	uint16_t *val)=0A=
+adc/xilinx-xadc.h:	uint16_t val)=0A=
+adc/xilinx-xadc.h:	uint16_t *val)=0A=
+adc/xilinx-xadc.h:	uint16_t val)=0A=
+adc/xilinx-xadc-events.c:	uint16_t cfg, old_cfg;=0A=
+adc/xilinx-xadc-core.c:	uint16_t val)=0A=
+adc/xilinx-xadc-core.c:	uint16_t *val)=0A=
+adc/xilinx-xadc-core.c:	uint16_t *val)=0A=
+adc/xilinx-xadc-core.c:	uint16_t val)=0A=
+adc/xilinx-xadc-core.c:	uint16_t mask, uint16_t val)=0A=
+adc/xilinx-xadc-core.c:	uint16_t tmp;=0A=
+adc/xilinx-xadc-core.c:	uint16_t mask, uint16_t val)=0A=
+adc/xilinx-xadc-core.c:	uint16_t val;=0A=
+adc/xilinx-xadc-core.c:	uint16_t val16;=0A=
+adc/xilinx-xadc-core.c:	uint16_t val16;=0A=
+chemical/scd4x.c:static int scd4x_write(struct scd4x_state *state, enum scd=
+4x_cmd cmd, uint16_t arg)=0A=
+chemical/scd4x.c:				uint16_t arg, void *response, int response_sz)=0A=
+chemical/scd4x.c:static int scd4x_read_meas(struct scd4x_state *state, uint=
+16_t *meas)=0A=
+chemical/scd4x.c:		uint16_t val;=0A=
+chemical/scd4x.c:static int scd4x_read_poll(struct scd4x_state *state, uint=
+16_t *buf)=0A=
+chemical/scd4x.c:	uint16_t buf[3];=0A=
+chemical/scd4x.c:	uint16_t value;=0A=
+chemical/scd4x.c:	uint16_t val, arg;=0A=
+chemical/scd4x.c:		uint16_t data[3];=0A=
+dac/ad7303.c:	uint16_t config;=0A=
+dac/ti-dac7612.c:	uint16_t cache[2];=0A=
+dac/ad5766.c:	uint16_t val;=0A=
+dac/ad5766.c:	uint16_t val;=0A=
+dac/ad5766.c:	uint16_t val;=0A=
+dac/ad5449.c:	uint16_t dac_cache[AD5449_MAX_CHANNELS];=0A=
+dac/ad8460.c:	uint16_t sym;=0A=
+gyro/adis16136.c:	uint16_t lot1, lot2, lot3, serial;=0A=
+gyro/adis16136.c:	uint16_t flash_count;=0A=
+gyro/adis16136.c:	uint16_t t;=0A=
+gyro/adis16136.c:	uint16_t val16;=0A=
+gyro/adis16136.c:	uint16_t prod_id;=0A=
+humidity/ens210.c:	uint16_t part_id;=0A=
+imu/adis16400.c:	uint16_t prod_id;=0A=
+imu/adis16400.c:	uint16_t flash_count;=0A=
+imu/adis16400.c:	uint16_t t;=0A=
+imu/adis16400.c:	uint16_t t;=0A=
+imu/adis16400.c:	uint16_t val16;=0A=
+imu/adis16400.c:	uint16_t prod_id, smp_prd;=0A=
+imu/adis16400.c:	int16_t val16;=0A=
+imu/adis16460.c:	uint16_t t;=0A=
+...=0A=
+=0A=
+=0A=
+Then, why it is mandatory to change this driver to use uXX instead?=0A=
+=0A=
+>=0A=
+>-- =0A=
+>With Best Regards,=0A=
+>Andy Shevchenko=0A=
+>=0A=
+=0A=
+Thanks,=0A=
+JB=
 

@@ -1,244 +1,175 @@
-Return-Path: <linux-iio+bounces-20601-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20602-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 523F5AD8FC6
-	for <lists+linux-iio@lfdr.de>; Fri, 13 Jun 2025 16:40:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20F8EAD8FD4
+	for <lists+linux-iio@lfdr.de>; Fri, 13 Jun 2025 16:42:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E7F321893608
-	for <lists+linux-iio@lfdr.de>; Fri, 13 Jun 2025 14:40:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CAAEE17DD24
+	for <lists+linux-iio@lfdr.de>; Fri, 13 Jun 2025 14:42:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 323E81993B9;
-	Fri, 13 Jun 2025 14:40:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5004119CD01;
+	Fri, 13 Jun 2025 14:42:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H5Ov7966"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Yew09Y+L"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE0E1198E8C;
-	Fri, 13 Jun 2025 14:40:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F203192B84;
+	Fri, 13 Jun 2025 14:42:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749825626; cv=none; b=QrHZE3MKcL/IyX6R5kYR+QFLke7Q+fdchC3Ic2ISm8aqp25U8HlFWS7F8RwMeHizVU++EKMP4+6IOjZ39ydZOuT4DSWPYn1MB+LhGNVJODq1DAF18nKkRqZJymHnyRqUqur880MlGKcyEshSuPoQOfxsorQBPDQMkgjLvVCctu8=
+	t=1749825753; cv=none; b=r3IjctX5mn5IEwW7kjeu1fvSsVsULrUHUKfY14LMEhSDr5Tf4/ZZFf34Mg95uqt0mRukrZrl/fKFSU2mxRZvNJmxezJA7EH7dJXpD5rxG1IUPP1Tk0v/DIzCqwhdmddvRDI3jpcSOgQXgoW6kc6odBemcXKmUgZ/vbqJ7oAAkcY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749825626; c=relaxed/simple;
-	bh=G8rFJk861KqPrLLERWkejR/HukON16JAfyXw01ERfwA=;
+	s=arc-20240116; t=1749825753; c=relaxed/simple;
+	bh=/EhcpIn8oZkspRCHdGD8A6ppdJP/935NyccMYNOS7y0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gvoyncSRnre+dcxWdTlY/og4ihZMBowYlHyyVueL/xnH6duezZbQq/wHxpv/JfNWazYhO9qdnqyS9lt5IWWZHmPdwfVuyG5hllb5DoUhkgxPWwrTmTCzetF2OycYC3AdiFjDkszbKQjFIXo2NldSsrQI3Wr/JSDDdEXfwGvMwfM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H5Ov7966; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3544DC4CEED;
-	Fri, 13 Jun 2025 14:40:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749825625;
-	bh=G8rFJk861KqPrLLERWkejR/HukON16JAfyXw01ERfwA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=H5Ov7966R6z4xv/MxB6xeP3MSov3C71Yy6dhRWaVmXU0CRIwm2F81FTy7nWn6BYJR
-	 PfcTjxfe871A+TruQy+g0g2INu3sNALpOSlL/PwzCHV6R9sNVkE24mhpocsxDv29vc
-	 4Ldtjm6RPjOVCOOLk7aEwygkcynzRn7flyEIyMCj85N/YCf0LP+V+XwwvuPbZTJojC
-	 KwEZrmSztugFFB025xw/Tcv36xaFYzz0NWFLFdUzTnUEK9sL6AI/luKlMaecR4Z0YO
-	 qHHqiGFJTAqxfXMn+rJp4CNUdPbyGiwN7Kl4k2TTmoXY4si2zgy+q0nqoMZ/cfad8k
-	 n1QmfXxfSl5tg==
-Date: Fri, 13 Jun 2025 15:40:21 +0100
-From: Conor Dooley <conor@kernel.org>
-To: victor.duicu@microchip.com
-Cc: jic23@kernel.org, dlechner@baylibre.com, nuno.sa@analog.com,
-	andy@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, marius.cristea@microchip.com,
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org
-Subject: Re: [PATCH v3 1/2] dt-bindings: iio: temperature: add support for
- MCP998X
-Message-ID: <20250613-undergo-reviving-a97dca8f3b69@spud>
-References: <20250613130207.8560-1-victor.duicu@microchip.com>
- <20250613130207.8560-2-victor.duicu@microchip.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=DOHd/w+7jABXNBTcyxKB3u3nLthaUYgn6nXAKnMwvydqfsCOcK6mW+huYzoSH0fItDlqW/xRyEgTDzVvpC0bUfd1xcr9VuMPdTE0cKBUK/ZkaHe31IzEH0tkIi4sm3sH02JrnokMmeQLYGg/0tWxSobfGWBH0plHonyE/GpXQ/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Yew09Y+L; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1749825752; x=1781361752;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=/EhcpIn8oZkspRCHdGD8A6ppdJP/935NyccMYNOS7y0=;
+  b=Yew09Y+LL3upH25QsD7nTbxl1pfi3bzPZ1qOBuEMeZRaNpudISTkY2de
+   XYTRpD/2fBWp4BqieZN1u8eyCGgUYnitBnoLLUeaR0uyG6nDmlkh/kdTm
+   79n6yOWGcxVqgJurkr3/CXi1zaL4hCB4Kn/uoJgJ152SxEn+3mdXs+dhC
+   aZqq9JRxecVZGQT6JDPhdhTX7DUiqBDVSBERRV+FxYtCjojaN7SfcgoB8
+   WiLOpyoGpxd12/2LclXw+HNUXOrE1au9aQd4F6JTVKyD5LmC0YYIeYIto
+   ItM0ipl/AURYkBN29Cg83tkXd87LvgB1dVkQuVTRghLztNxgT10eA9K1r
+   g==;
+X-CSE-ConnectionGUID: k/2k6r/eTHWf/2oIofmgig==
+X-CSE-MsgGUID: b8H505LrTAKTWSmrX3smDQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11463"; a="62695415"
+X-IronPort-AV: E=Sophos;i="6.16,234,1744095600"; 
+   d="scan'208";a="62695415"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jun 2025 07:41:53 -0700
+X-CSE-ConnectionGUID: SbKS1l3EShyEXFd005Xpng==
+X-CSE-MsgGUID: 48PhrhZGTlqAX5HpXiOnmg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,234,1744095600"; 
+   d="scan'208";a="148736678"
+Received: from smile.fi.intel.com ([10.237.72.52])
+  by orviesa008.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jun 2025 07:41:51 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@intel.com>)
+	id 1uQ5bI-00000006GwF-0764;
+	Fri, 13 Jun 2025 17:41:48 +0300
+Date: Fri, 13 Jun 2025 17:41:47 +0300
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>
+Cc: Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	"linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v4 1/2] iio: imu: inv_icm42600: add WoM support
+Message-ID: <aEw4q3p12q1iI7vC@smile.fi.intel.com>
+References: <20250613-losd-3-inv-icm42600-add-wom-support-v4-0-7e5f554201bf@tdk.com>
+ <20250613-losd-3-inv-icm42600-add-wom-support-v4-1-7e5f554201bf@tdk.com>
+ <aEvhZiXHLLIRe41-@smile.fi.intel.com>
+ <FR3P281MB17578B82AC67F49552E24EB3CE77A@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
+ <aEwfUMgLTnQxOh_k@smile.fi.intel.com>
+ <aEwfgP3tiio52Rj-@smile.fi.intel.com>
+ <FR3P281MB1757AEF932A3CE2AB9637046CE77A@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="GiFAnyVgEONdrGXM"
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20250613130207.8560-2-victor.duicu@microchip.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <FR3P281MB1757AEF932A3CE2AB9637046CE77A@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
+On Fri, Jun 13, 2025 at 01:43:58PM +0000, Jean-Baptiste Maneyrol wrote:
+> >From: Andy Shevchenko <andriy.shevchenko@intel.com>
+> >Sent: Friday, June 13, 2025 14:54
+> >On Fri, Jun 13, 2025 at 03:53:36PM +0300, Andy Shevchenko wrote:
+> >> On Fri, Jun 13, 2025 at 12:46:46PM +0000, Jean-Baptiste Maneyrol wrote:
+> >> > >From: Andy Shevchenko <andriy.shevchenko@intel.com>
+> >> > >Sent: Friday, June 13, 2025 10:29
+> >> > >On Fri, Jun 13, 2025 at 09:34:26AM +0200, Jean-Baptiste Maneyrol via B4 Relay wrote:
 
---GiFAnyVgEONdrGXM
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+...
 
-On Fri, Jun 13, 2025 at 04:02:06PM +0300, victor.duicu@microchip.com wrote:
-> From: Victor Duicu <victor.duicu@microchip.com>
->=20
-> This is the devicetree schema for Microchip MCP998X/33 and
-> MCP998XD/33D Automotive Temperature Monitor Family.
->=20
-> Signed-off-by: Victor Duicu <victor.duicu@microchip.com>
+> >> > >Overall, looking to this patch again, I think it would be better to prepend it
+> >> > >by replacing *int*_t types by the respective uXX ones. Because in this patch
+> >> > >we add dozens of new ones which increases an unneeded churn in the future.
+> >> > >
+> >> > In my opinion, to respect the rule don't mix *int*_t and uXX types, it is better
+> >> > to keep *int*_t types. If it need to be changed, we can change afterward the
+> >> > whole driver types with a replace tool and send it in a separate patch.
+> >> 
+> >> It will be never ending story, sorry. We need someone to solve this tech debt.
+> >> And since this patch adds more than 3 new users of it, I think it's a candidate
+> >> to embrace the burden.
+> >
+> >For your convenience I can mock-up a change...
+> 
+> It looks like there's something I don't understand in the kernel Documentation about
+> types then.
+> Quoting Documentation/process/coding-style.rst, section 5.d:
 > ---
->  .../iio/temperature/microchip,mcp9982.yaml    | 211 ++++++++++++++++++
->  1 file changed, 211 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/temperature/mic=
-rochip,mcp9982.yaml
->=20
-> diff --git a/Documentation/devicetree/bindings/iio/temperature/microchip,=
-mcp9982.yaml b/Documentation/devicetree/bindings/iio/temperature/microchip,=
-mcp9982.yaml
-> new file mode 100644
-> index 000000000000..ec939d463612
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/temperature/microchip,mcp9982=
-=2Eyaml
-> @@ -0,0 +1,211 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/temperature/microchip,mcp9982.yam=
-l#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Microchip MCP998X/33 and MCP998XD/33D Multichannel Automotive
-> +       Temperature Monitor Family
-> +
-> +maintainers:
-> +  - Victor Duicu <victor.duicu@microchip.com>
-> +
-> +description: |
-> +  The MCP998X/33 and MCP998XD/33D family is a high-accuracy 2-wire multi=
-channel
-> +  automotive temperature monitor.
-> +  The datasheet can be found here:
-> +    https://ww1.microchip.com/downloads/aemDocuments/documents/MSLD/Prod=
-uctDocuments/DataSheets/MCP998X-Family-Data-Sheet-DS20006827.pdf
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - microchip,mcp9933
-> +      - microchip,mcp9933d
-> +      - microchip,mcp9982
-> +      - microchip,mcp9982d
-> +      - microchip,mcp9983
-> +      - microchip,mcp9983d
-> +      - microchip,mcp9984
-> +      - microchip,mcp9984d
-> +      - microchip,mcp9985
-> +      - microchip,mcp9985d
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    minItems: 2
-> +    maxItems: 2
-> +
-> +  interrupt-names:
-> +    description:
-> +      -alert-therm is used to handle a HIGH or LOW limit.
-> +      -therm-addr is used to handle a THERM limit on chips
-> +      without "D" in the name.
-> +      -sys-shutdown is used to handle a THERM limit on chips
-> +      with "D" in the name.
-> +    items:
-> +      - const: alert-therm
-> +      - const: therm-addr
-> +      - const: sys-shutdown
-> +
-> +  "#address-cells":
-> +    const: 1
-> +
-> +  "#size-cells":
-> +    const: 0
-> +
-> +  microchip,enable-anti-parallel:
-> +    description:
-> +      Enable anti-parallel diode mode operation.
-> +      MCP9984/84D/85/85D and MCP9933/33D support reading two external di=
-odes
-> +      in anti-parallel connection on the same set of pins.
-> +    type: boolean
-> +
-> +  microchip,beta1:
-> +    description:
-> +      Set beta compensation value for external channel 1.
-> +      <0> 0.050
-> +      <1> 0.066
-> +      <2> 0.087
-> +      <3> 0.114
-> +      <4> 0.150
-> +      <5> 0.197
-> +      <6> 0.260
-> +      <7> 0.342
-> +      <8> 0.449
-> +      <9> 0.591
-> +      <10> 0.778
-> +      <11> 1.024
-> +      <12> 1.348
-> +      <13> 1.773
-> +      <14> 2.333
-> +      <15> Diode_Mode
-> +      <16> Auto
-> +      - Diode_Mode is used when measuring a discrete thermal diode
-> +      or a CPU diode that functions like a discrete thermal diode.
-> +      - Auto enables beta auto-detection. The chip monitors
-> +      external diode/transistor and determines the optimum
-> +      setting.
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    default: 16
+> New types which are identical to standard C99 types, in certain exceptional circumstances.
+> 
+> Although it would only take a short amount of time for the eyes and brain to become accustomed
+> to the standard types like uint32_t, some people object to their use anyway.
+> 
+> Therefore, the Linux-specific u8/u16/u32/u64 types and their signed equivalents which are
+> identical to standard types are permitted -- although they are not mandatory in new code
+> of your own.
+> 
+> When editing existing code which already uses one or the other set of types, you should
+> conform to the existing choices in that code.
+> ---
+> 
+> My understanding is that uXX are not mandatory for new code. You can use types like *int*_t.
+> But you need to conform afterward to the existing choice. That's why this driver was
+> done initially with *int*_t types, and that patches are conforming to this choice.
 
-Missing max/min constraints on the property.
+This part of the documentation has a lot of room for different interpretations.
+One [1] may consider this as uXX superior, another, like you, that it's okay
+to use.  In any case Greg KH prefers uXX over uintXX_t. And he is also in
+the chain of maintainers here. Feel free to amend the Documentation. But
+be sure all stakeholders will see your proposal (like Greg KH and other
+key maintainers).
 
-> +
-> +  microchip,beta2:
-> +    description:
-> +      Set beta compensation value for external channel 2.
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    default: 16
-> +
-> +  microchip,resistance-comp-ch1-2-enable:
-> +    description:
-> +      Enable resistance error correction(REC) for external channels 1 an=
-d 2.
-> +      The chip internal hardware counterbalances the parasitic resistanc=
-e in
-> +      series with the external diodes. The compensation can be activated=
- or
-> +      disabled in hardware for both channels 1 and 2 at the same time.
-> +    type: boolean
+> By looking at all Linux drivers, there are plenty of them using *int*_t, even
+> inside iio:
 
-On the previous version I objected to this wording for the property,
-where it is being used as an enable, and instead said that it should
-indicate the presence of the parasitic resistance. Did I miss some sort
-of new justification for it still talking about being an enable?
+$ git grep -l 'u\?int[0-9][0-9]\?_t' -- drivers/iio/ | wc -l
+59
+
+$ git ls-files drivers/iio*.c | wc -l
+640
+
+Less than 10%.
+
+> Then, why it is mandatory to change this driver to use uXX instead?
+
+TO be consistent. With the above wording in the documentation I may argue that
+entire subsystem should be consistent and at least in IIO we have tons of patch
+series that are against the whole subsystem to do one style change or another
+(look at the recent memset() vs. {} for initialisation).
+
+[1] https://lore.kernel.org/all/20250409180953.398686-1-matchstick@neverthere.org/
+
+-- 
+With Best Regards,
+Andy Shevchenko
 
 
-> +  microchip,resistance-comp-ch3-4-enable:
-> +    description:
-> +      Enable resistance error correction(REC) for external channels 3 an=
-d 4.
-> +      The chip internal hardware counterbalances the parasitic resistanc=
-e in
-> +      series with the external diodes. The compensation can be activated=
- or
-> +      disabled in hardware for both channels 3 and 4 at the same time.
-> +    type: boolean
-
-Cheers,
-Conor.
-
---GiFAnyVgEONdrGXM
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaEw4VAAKCRB4tDGHoIJi
-0mwmAQDew5SpZ30kpLSUmEH21jXuflCEUQxJr1shipMAysEfxQD/VU4aDW13CHd/
-NSLDi+a1WL4+sorUxL4dtXWJmVWKdQs=
-=e2Hw
------END PGP SIGNATURE-----
-
---GiFAnyVgEONdrGXM--
 

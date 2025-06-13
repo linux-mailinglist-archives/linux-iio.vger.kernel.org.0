@@ -1,204 +1,131 @@
-Return-Path: <linux-iio+bounces-20576-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20579-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7391CAD7F3D
-	for <lists+linux-iio@lfdr.de>; Fri, 13 Jun 2025 01:50:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C2BEAD8413
+	for <lists+linux-iio@lfdr.de>; Fri, 13 Jun 2025 09:34:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C50873B9DFF
-	for <lists+linux-iio@lfdr.de>; Thu, 12 Jun 2025 23:48:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6EE713A0E32
+	for <lists+linux-iio@lfdr.de>; Fri, 13 Jun 2025 07:34:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EB8C2E3386;
-	Thu, 12 Jun 2025 23:44:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02BEE2C3770;
+	Fri, 13 Jun 2025 07:34:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Rh4BNFVB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j0cnVtUt"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E24792E2F1D
-	for <linux-iio@vger.kernel.org>; Thu, 12 Jun 2025 23:44:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADDC8238C26;
+	Fri, 13 Jun 2025 07:34:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749771869; cv=none; b=sUHnossfBtZWLSSyLwQL5BAoqRGTM0WadhygDlGBin8SjIUubMiuJaXqk4vOgeOVIB+Vj47LP1bc7Pff6Q1419/f8D+MoEhUyqpqP3PcdK2Bd2K0Y/VQ+27OhteoBoz3mdXyJfsbLRvabaNqKcduJiGNb4yNXrwk/4gKworfeV4=
+	t=1749800072; cv=none; b=kaWiwQjaVnLpA4rfvZUzmfMfmEZjqIgN4TtHREBG2MAOzXfcWEquBi6zSYC6MOEKpfvQJSWhmJXDBwud+OlumPUzQXBx6l+YnxQL27qcCHVoAXoTeODdDliG7GpBhXKe+V8n4cB9JMJ7vkGLGIGgKgW4iVgIZTtvM8xZ4NVi+SI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749771869; c=relaxed/simple;
-	bh=5JzILznrMxvVRQxf8Hqsu5zni/A7Rt4O3iDHv8KHbJk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ak0G/2/S2mERPQE98georLLiFMD6xY1xolXI8Hi7B1KJvh9skk8q9FZynOwMRnxpabGV64hHpbzkBLNLrWk2wKnY3y+YLYSfox0TPqVFlZiDBiJSGtjtUxhr1W17Q0kZ7dr37jrOYzGHWJci1/NkMLSUtLuFfdDWAYOwQ4+BRj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Rh4BNFVB; arc=none smtp.client-ip=91.218.175.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Message-ID: <dbe26b36-a10c-4afb-88ad-a6f7f9bff440@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1749771854;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8t46q3qqq58O3Iozg3ZVMZkLga+rVEXppYIQU8pZTR0=;
-	b=Rh4BNFVBqPKyzkGEg0VtlBVcGVma+gqZgIWAUmqAsAdlmzUPABYeGR+rU4K4DFugaPTDCH
-	DTvJ0F/BqKuCcM4tgryjopxwu4S87qgFaOcDxAPnhq/TXQ/UAx21rrv7j0uKhy9+F+HcWa
-	havTzu7j2MGZIk2vEYr+o91l1q0qADY=
-Date: Thu, 12 Jun 2025 19:44:09 -0400
+	s=arc-20240116; t=1749800072; c=relaxed/simple;
+	bh=TwO64dudIgSMsHCJyLSriUaJU7jxFNj2lwY1rcJ4tMI=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=kLPCP58aIIoDza3pjrdAD2eNS0tN5ExxIzlNaVIC+RkrUaNWDAfSDrhZryF46p7ZQc39zDmmBSWTOVeM8mmDevKxvUn4mUvHAoA6QtAhZjYXpaCIqZxgT8Guwc/XmccCAzLtQpvEK13k+sgFMSUZPjKRufeROOLK/9PqL23C3PM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j0cnVtUt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 3CECAC4CEE3;
+	Fri, 13 Jun 2025 07:34:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1749800072;
+	bh=TwO64dudIgSMsHCJyLSriUaJU7jxFNj2lwY1rcJ4tMI=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=j0cnVtUti3K+VmYaVL8loJotzc2iwSugPx8Lpms2yx8Q22sTLU03+2xeMvPSxgBBC
+	 2bO8H0kp+p12c6Ckvkw7ot1sLl8fUCGNxoZfgl66YZdO76erPF0xkIO0VocQk1Gg0t
+	 fkWVKADCt05PyfPMTMawdwKcXiqGCZxxgDtxVSsnIV2Yz2m7GOOmOi2sHwkSACaFe4
+	 p4Fn4aHjTVPJBZJR7It0CHlvEyEqNbb7bi34Lqz/GySEufTspBx0C58gCKNwYdAr2u
+	 EDpGubrbkTvnaS8y/brewhPiXlEL9Th7CSL4AEJKDUwu1CEYiNFfAY+gf5V8bXZ+yn
+	 5YGYMAxD70RAw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2BBB6C61DB2;
+	Fri, 13 Jun 2025 07:34:32 +0000 (UTC)
+From: Jean-Baptiste Maneyrol via B4 Relay <devnull+jean-baptiste.maneyrol.tdk.com@kernel.org>
+Subject: [PATCH v4 0/2] Add support for WoM (Wake-on-Motion) feature
+Date: Fri, 13 Jun 2025 09:34:25 +0200
+Message-Id: <20250613-losd-3-inv-icm42600-add-wom-support-v4-0-7e5f554201bf@tdk.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH 1/7] dt-bindings: spi: zynqmp-qspi: Split the bus
-To: David Lechner <dlechner@baylibre.com>, Mark Brown <broonie@kernel.org>,
- Michal Simek <michal.simek@amd.com>, linux-spi@vger.kernel.org
-Cc: Jinjie Ruan <ruanjinjie@huawei.com>,
- linux-arm-kernel@lists.infradead.org,
- Amit Kumar Mahapatra <amit.kumar-mahapatra@amd.com>,
- linux-kernel@vger.kernel.org, Miquel Raynal <miquel.raynal@bootlin.com>,
- Conor Dooley <conor+dt@kernel.org>, Krzysztof Kozlowski
- <krzk+dt@kernel.org>, Rob Herring <robh@kernel.org>,
- devicetree@vger.kernel.org,
- "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
- Jonathan Cameron <jic23@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?=
- <nuno.sa@analog.com>
-References: <20250116232118.2694169-1-sean.anderson@linux.dev>
- <20250116232118.2694169-2-sean.anderson@linux.dev>
- <9f40295b-484a-48e8-b053-ff8550e589d7@baylibre.com>
- <46a7eba6-a705-4543-b967-e83ccc89e7d4@linux.dev>
- <6afc379a-2f9f-4462-ae30-ef6945a83236@baylibre.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Sean Anderson <sean.anderson@linux.dev>
-In-Reply-To: <6afc379a-2f9f-4462-ae30-ef6945a83236@baylibre.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+X-B4-Tracking: v=1; b=H4sIAIHUS2gC/5XNvQ7CIBSG4VsxzB5zeqA/OHkfxqEUUKItDVTUm
+ N676KJuOr7f8Hx3Fk1wJrL14s6CSS46P+QQywXrDu2wN+B0bkZIJRIhnHzUwMENCVzXC6oQodU
+ aLr6HeB5HHybAitAaK7UizrI0BmPd9fWy3eU+uDj5cHudpuK5/uenAhCkkry2sqlkKTaTPq463
+ 7OnnugtiqL8TaQsaiOFtkqSqs23yD/F5jeRZ7FuiwZbi6TshzjP8wO80NbpeAEAAA==
+X-Change-ID: 20250220-losd-3-inv-icm42600-add-wom-support-0620fef9db23
+To: Jonathan Cameron <jic23@kernel.org>, 
+ Lars-Peter Clausen <lars@metafoo.de>, David Lechner <dlechner@baylibre.com>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Andy Shevchenko <andy@kernel.org>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1749800071; l=2005;
+ i=jean-baptiste.maneyrol@tdk.com; s=20240923; h=from:subject:message-id;
+ bh=TwO64dudIgSMsHCJyLSriUaJU7jxFNj2lwY1rcJ4tMI=;
+ b=Pmoj3isAVCMsHd+CoUSknvOHXDcqng1pbj168wEOv4VwC4WH0CffPaQ+h59eUfroh23ux1DkL
+ MTpT4/X8u6vA8XkIbHdpWLAUCoP2m50YmEL+gnHUMcvaUysmaZLS0FV
+X-Developer-Key: i=jean-baptiste.maneyrol@tdk.com; a=ed25519;
+ pk=bRqF1WYk0hR3qrnAithOLXSD0LvSu8DUd+quKLxCicI=
+X-Endpoint-Received: by B4 Relay for
+ jean-baptiste.maneyrol@tdk.com/20240923 with auth_id=218
+X-Original-From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+Reply-To: jean-baptiste.maneyrol@tdk.com
 
-Hi David,
+Similar to feature present in older chip, it compares the magnitude of
+the last 2 accel samples against a threshold and returns an interrupt
+even if the value is higher.
 
-I am (finally!) getting around to doing v2 of this series, and I ran
-into a small problem with your proposed solution.
+WoM maps best to accel x|y|z ROC event. This series add system wakeup
+functionality if WoM is on and wakeup is enabled when system suspends.
 
-On 1/23/25 16:59, David Lechner wrote:
-> ---
-> From: David Lechner <dlechner@baylibre.com>
-> Date: Thu, 23 Jan 2025 15:35:19 -0600
-> Subject: [PATCH 2/2] spi: add support for multi-bus controllers
-> 
-> Add support for SPI controllers with multiple physical SPI buses.
-> 
-> This is common in the type of controller that can be used with parallel
-> flash memories, but can be used for general purpose SPI as well.
-> 
-> To indicate support, a controller just needs to set ctlr->num_buses to
-> something greater than 1. Peripherals indicate which bus they are
-> connected to via device tree (ACPI support can be added if needed).
-> 
-> In the future, this can be extended to support peripherals that also
-> have multiple SPI buses to use those buses at the same time by adding
-> a similar bus flags field to struct spi_transfer.
-> 
-> Signed-off-by: David Lechner <dlechner@baylibre.com>
-> ---
->  drivers/spi/spi.c       | 26 +++++++++++++++++++++++++-
->  include/linux/spi/spi.h | 13 +++++++++++++
->  2 files changed, 38 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-> index 10c365e9100a..f7722e5e906d 100644
-> --- a/drivers/spi/spi.c
-> +++ b/drivers/spi/spi.c
-> @@ -2364,7 +2364,7 @@ static void of_spi_parse_dt_cs_delay(struct device_node *nc,
->  static int of_spi_parse_dt(struct spi_controller *ctlr, struct spi_device *spi,
->  			   struct device_node *nc)
->  {
-> -	u32 value, cs[SPI_CS_CNT_MAX];
-> +	u32 value, buses[8], cs[SPI_CS_CNT_MAX];
->  	int rc, idx;
->  
->  	/* Mode (clock phase/polarity/etc.) */
-> @@ -2379,6 +2379,29 @@ static int of_spi_parse_dt(struct spi_controller *ctlr, struct spi_device *spi,
->  	if (of_property_read_bool(nc, "spi-cs-high"))
->  		spi->mode |= SPI_CS_HIGH;
->  
-> +	rc = of_property_read_variable_u32_array(nc, "spi-buses", buses, 1,
-> +						 ARRAY_SIZE(buses));
-> +	if (rc < 0 && rc != -EINVAL) {
-> +		dev_err(&ctlr->dev, "%pOF has invalid 'spi-buses' property (%d)\n",
-> +			nc, rc);
-> +		return rc;
-> +	}
-> +
-> +	if (rc == -EINVAL) {
-> +		/* Default when property is omitted. */
-> +		spi->buses = BIT(0);
+This series also prepare the driver for supporting further APEX
+features like pedometer, tilt, ... It introduces an apex structure that
+will hold all APEX settings and track the enable state.
 
-For backwards compatibility, the default bus for CS 1 on gqspi must be 1
-and not 0. Ideally there would be some hook for the master to fix things
-up when the slaves are probed, but that doesn't seem to exist. I was
-thinking about doing this with OF changesets. Do you have any better
-ideas?
+Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+---
+Changes in v4:
+- Avoid mix of gotos and scoped_guard()
+- Invert conditionals for better code readability
+- Switch to use devm_device_init_wakeup()
+- Several code readabilities improvements
+- Link to v3: https://lore.kernel.org/r/20250418-losd-3-inv-icm42600-add-wom-support-v3-0-7a180af02bfe@tdk.com
 
---Sean
+Changes in v3:
+- Rewrites following code review
+- Link to v2: https://lore.kernel.org/r/20250415-losd-3-inv-icm42600-add-wom-support-v2-0-de94dfb92b7e@tdk.com
 
-> +	} else {
-> +		for (idx = 0; idx < rc; idx++) {
-> +			if (buses[idx] >= ctlr->num_buses) {
-> +				dev_err(&ctlr->dev,
-> +					"%pOF has out of range 'spi-buses' property (%d)\n",
-> +					nc, buses[idx]);
-> +				return -EINVAL;
-> +			}
-> +			spi->buses |= BIT(buses[idx]);
-> +		}
-> +	}
-> +
->  	/* Device DUAL/QUAD mode */
->  	if (!of_property_read_u32(nc, "spi-tx-bus-width", &value)) {
->  		switch (value) {
-> @@ -3072,6 +3095,7 @@ struct spi_controller *__spi_alloc_controller(struct device *dev,
->  	mutex_init(&ctlr->add_lock);
->  	ctlr->bus_num = -1;
->  	ctlr->num_chipselect = 1;
-> +	ctlr->num_buses = 1;
->  	ctlr->slave = slave;
->  	if (IS_ENABLED(CONFIG_SPI_SLAVE) && slave)
->  		ctlr->dev.class = &spi_slave_class;
-> diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-> index 4c087009cf97..bc45d70e8c45 100644
-> --- a/include/linux/spi/spi.h
-> +++ b/include/linux/spi/spi.h
-> @@ -187,6 +187,11 @@ struct spi_device {
->  	struct device		dev;
->  	struct spi_controller	*controller;
->  	u32			max_speed_hz;
-> +	/*
-> +	 * Bit flags indicating which buses this device is connected to. Only
-> +	 * applicable to multi-bus controllers.
-> +	 */
-> +	u8 			buses;
->  	u8			chip_select[SPI_CS_CNT_MAX];
->  	u8			bits_per_word;
->  	bool			rt;
-> @@ -570,6 +575,14 @@ struct spi_controller {
->  	 */
->  	u16			num_chipselect;
->  
-> +	/*
-> +	 * Some specialized SPI controllers can have more than one physical
-> +	 * bus interface per controller. This specifies the number of buses
-> +	 * in that case. Other controllers do not need to set this (defaults
-> +	 * to 1).
-> +	 */
-> +	u16			num_buses;
-> +
->  	/* Some SPI controllers pose alignment requirements on DMAable
->  	 * buffers; let protocol drivers know about these requirements.
->  	 */
-> -- 
-> 2.43.0
-> 
-> 
-> 
+Changes in v2:
+- change struct order to avoir DMA overflow
+- separate wom enable/disable in 2 functions
+- delete mutex rework
+- Link to v1: https://lore.kernel.org/r/20250220-losd-3-inv-icm42600-add-wom-support-v1-0-9b937f986954@tdk.com
+
+---
+Jean-Baptiste Maneyrol (2):
+      iio: imu: inv_icm42600: add WoM support
+      iio: imu: inv_icm42600: add wakeup functionality for Wake-on-Motion
+
+ drivers/iio/imu/inv_icm42600/inv_icm42600.h        |  56 +++-
+ drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c  | 292 ++++++++++++++++++++-
+ drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c |   2 +-
+ drivers/iio/imu/inv_icm42600/inv_icm42600_core.c   |  97 ++++++-
+ 4 files changed, 433 insertions(+), 14 deletions(-)
+---
+base-commit: 4c6073fec2fee4827fa0dd8a4ab4e6f7bbc05ee6
+change-id: 20250220-losd-3-inv-icm42600-add-wom-support-0620fef9db23
+
+Best regards,
+-- 
+Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+
+
 

@@ -1,115 +1,159 @@
-Return-Path: <linux-iio+bounces-20606-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20607-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E185AAD90DE
-	for <lists+linux-iio@lfdr.de>; Fri, 13 Jun 2025 17:10:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F108EAD924C
+	for <lists+linux-iio@lfdr.de>; Fri, 13 Jun 2025 18:01:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4543D3BAA66
-	for <lists+linux-iio@lfdr.de>; Fri, 13 Jun 2025 15:09:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 916413B79CC
+	for <lists+linux-iio@lfdr.de>; Fri, 13 Jun 2025 15:57:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97C891E0DB0;
-	Fri, 13 Jun 2025 15:10:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8772F1FCF78;
+	Fri, 13 Jun 2025 15:57:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JRAeVeQn"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="IRz3QDl5"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C92EE1ADC90;
-	Fri, 13 Jun 2025 15:10:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ADF619FA93
+	for <linux-iio@vger.kernel.org>; Fri, 13 Jun 2025 15:57:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.186
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749827411; cv=none; b=KOxwLRp1BMXIOzy1Wt8hXJUjCqhbE+RsVQNmOKeDiJI03zx4KvWSJtSSJI38tzg7nY9gGXbd766Br+ICEhBZ7x6FONmDX321JrsoHBlP6s9gsIwtfTHUC6y6eAUXAoaQwpSZIfx4o/6vMFNnys73XRNkLCKXOxFiWBU/DiVD6Yg=
+	t=1749830264; cv=none; b=e2ucKf9oldOHJp5H4TQESko5wiA6iVnKBihZDH8pIO/yGT0GcNijU+dbaV8zlLDxu9o0U1fTRqxAAhQEKkSZYFCK2H8n1dgsME9hfiklquSMGm3JG63klUqr+92PVju4Iu0OXxU5zCPz1/ZxnF1lMC8TTyPtP0Vp8CmvaFL5IEM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749827411; c=relaxed/simple;
-	bh=1q4LLuNBoOm7qovwVHckGrY6ZpW00QK+k9OVNRIclGg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=G7tzW/eYBMPWY02shKnIYArdq5JErDH5uriC5i5cynLRxg3tI3Q1bUNNkz6El5bAzFYCkK6sZqA1uk49HomR1iQgosUhmig7FQfdc2dd9CIg/cPTu8fyx6i8M9zeUh7S6pmjQRTFAhYIfah7i8DrLziCnGatwn8Bp3tm4gsunS4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JRAeVeQn; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1749827410; x=1781363410;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=1q4LLuNBoOm7qovwVHckGrY6ZpW00QK+k9OVNRIclGg=;
-  b=JRAeVeQnD6ILSm4bLYF6Wmobp/bbtUxuPsUb/KwI6l0yOYQEm5gxN87t
-   mVFR3/W7KSj5/s/H3mgcSfCTxCTga7OoG/1pXrwU7atZMFmtCdFKuyZge
-   NY4PdE5bg8QRuFNCUilcy3RQRWnhn6zJy05+pOJ7WCoeIELB3DJClI/W1
-   r0F2g2muyIVnrkAfJe0NsmktdNmT1EUF0kgWuNKWe2W0g/r6Ck/n8mm9P
-   kFdHVBn2nCPFgGH8+j/XpKQckguYj05Vnm263/Wpt0UrbKQ7ohqsaSAKH
-   usVN0AfJDYg/uo1pKChIPL3q/MhjvIaLflC82fHH3lRsodygig29f5qPd
-   w==;
-X-CSE-ConnectionGUID: lLbb/PvwQ7yo2fCf7CSo2A==
-X-CSE-MsgGUID: paVMZ5ygRE2jqH/kjrLf/g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11463"; a="62322705"
-X-IronPort-AV: E=Sophos;i="6.16,234,1744095600"; 
-   d="scan'208";a="62322705"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jun 2025 08:10:01 -0700
-X-CSE-ConnectionGUID: st1U9hqITMex1xpYW26LNw==
-X-CSE-MsgGUID: OsGMEyXwS2eq+wa2xAy8Lg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,234,1744095600"; 
-   d="scan'208";a="147689565"
-Received: from smile.fi.intel.com ([10.237.72.52])
-  by orviesa006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jun 2025 08:09:58 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1uQ62V-00000006HOU-0Xmv;
-	Fri, 13 Jun 2025 18:09:55 +0300
-Date: Fri, 13 Jun 2025 18:09:54 +0300
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: David Lechner <dlechner@baylibre.com>, Hans de Goede <hansg@kernel.org>
-Cc: Marek Vasut <marek.vasut+bmc150@mailbox.org>, linux-iio@vger.kernel.org,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Julien Stephan <jstephan@baylibre.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Salvatore Bonaccorso <carnil@debian.org>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: accel: bmc150: Do not configure IRQ registers if no
- IRQ connected
-Message-ID: <aEw_QrVk9m1TJof3@smile.fi.intel.com>
-References: <20250613124648.14141-1-marek.vasut+bmc150@mailbox.org>
- <8f7656ed-0a28-4ba0-accc-b19817bbb38b@baylibre.com>
+	s=arc-20240116; t=1749830264; c=relaxed/simple;
+	bh=0k0685jiPxrDvImAtuIYSnm0V/jmg0N9/cne/apm2Rw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=mIqU8+4VwWxakLZU7sNCZxETh+GB4RmBMupfJdr3RtSQ3Wr3wUa/uu2p+yK/5JQt2GtZCgTJk3I/Ggcx3hoXIHvFg3QyWPP3XrluyzdYQGs9x1z6c2u2XscIcRhr696XZZ73HcXXBNIzyLWfg4YiG+4GDHL2osJRvCoJeFmfyHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=IRz3QDl5; arc=none smtp.client-ip=91.218.175.186
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Message-ID: <f3160819-f6f4-4079-9562-802caa2fef20@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1749830260;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=27fXVhxsftq5EDoqBWvyXb7dA+Q8HBVNKfdnJWl2xe0=;
+	b=IRz3QDl5Oaf6RGCCivGPUThJ0GToGh3KlZtALUtgQYMqrgWJ+JZK2lZPIfeLG4Ne09vrs6
+	lRM43ovdJrUzgRco9Z9lLR3THckDkWE8OTIG/rXRKwdY6iCB/+Ag2fwNwNI9qKOi2VjhoH
+	+ByATj80xnUHOoEN2OPUX3JxHEPLOXU=
+Date: Fri, 13 Jun 2025 11:57:34 -0400
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8f7656ed-0a28-4ba0-accc-b19817bbb38b@baylibre.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+Subject: Re: [PATCH 1/7] dt-bindings: spi: zynqmp-qspi: Split the bus
+To: David Lechner <dlechner@baylibre.com>, Mark Brown <broonie@kernel.org>,
+ Michal Simek <michal.simek@amd.com>, linux-spi@vger.kernel.org
+Cc: Jinjie Ruan <ruanjinjie@huawei.com>,
+ linux-arm-kernel@lists.infradead.org,
+ Amit Kumar Mahapatra <amit.kumar-mahapatra@amd.com>,
+ linux-kernel@vger.kernel.org, Miquel Raynal <miquel.raynal@bootlin.com>,
+ Conor Dooley <conor+dt@kernel.org>, Krzysztof Kozlowski
+ <krzk+dt@kernel.org>, Rob Herring <robh@kernel.org>,
+ devicetree@vger.kernel.org,
+ "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+ Jonathan Cameron <jic23@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?=
+ <nuno.sa@analog.com>
+References: <20250116232118.2694169-1-sean.anderson@linux.dev>
+ <20250116232118.2694169-2-sean.anderson@linux.dev>
+ <9f40295b-484a-48e8-b053-ff8550e589d7@baylibre.com>
+ <46a7eba6-a705-4543-b967-e83ccc89e7d4@linux.dev>
+ <6afc379a-2f9f-4462-ae30-ef6945a83236@baylibre.com>
+ <dbe26b36-a10c-4afb-88ad-a6f7f9bff440@linux.dev>
+ <4923f49f-273f-4166-94bc-afe39618672c@baylibre.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Sean Anderson <sean.anderson@linux.dev>
+In-Reply-To: <4923f49f-273f-4166-94bc-afe39618672c@baylibre.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
- +Hans here as well.
-
-On Fri, Jun 13, 2025 at 10:03:34AM -0500, David Lechner wrote:
-> On 6/13/25 7:45 AM, Marek Vasut wrote:
-> > The BMC150 on Onemix 2S does not have IRQ line described in ACPI tables,
-> > which leads to bmc150_accel_core_probe() being called with irq=0, which
-> > leads to bmc150_accel_interrupts_setup() never being called, which leads
-> > to struct bmc150_accel_data *data ->interrupts[i].info being left unset
-> > to NULL. Later, userspace can indirectly trigger bmc150_accel_set_interrupt()
-> > which depends on struct bmc150_accel_data *data ->interrupts[i].info being
-> > non-NULL, and which triggers NULL pointer dereference. This is triggered
-> > e.g. from iio-sensor-proxy.
+On 6/13/25 10:20, David Lechner wrote:
+> On 6/12/25 6:44 PM, Sean Anderson wrote:
+>> Hi David,
+>> 
+>> I am (finally!) getting around to doing v2 of this series, and I ran
+>> into a small problem with your proposed solution.
+>> 
+>> On 1/23/25 16:59, David Lechner wrote:
+>>> ---
+>>> From: David Lechner <dlechner@baylibre.com>
+>>> Date: Thu, 23 Jan 2025 15:35:19 -0600
+>>> Subject: [PATCH 2/2] spi: add support for multi-bus controllers
+>>>
+>>> Add support for SPI controllers with multiple physical SPI buses.
+>>>
+>>> This is common in the type of controller that can be used with parallel
+>>> flash memories, but can be used for general purpose SPI as well.
+>>>
+>>> To indicate support, a controller just needs to set ctlr->num_buses to
+>>> something greater than 1. Peripherals indicate which bus they are
+>>> connected to via device tree (ACPI support can be added if needed).
+>>>
+>>> In the future, this can be extended to support peripherals that also
+>>> have multiple SPI buses to use those buses at the same time by adding
+>>> a similar bus flags field to struct spi_transfer.
+>>>
+>>> Signed-off-by: David Lechner <dlechner@baylibre.com>
+>>> ---
+>>>  drivers/spi/spi.c       | 26 +++++++++++++++++++++++++-
+>>>  include/linux/spi/spi.h | 13 +++++++++++++
+>>>  2 files changed, 38 insertions(+), 1 deletion(-)
+>>>
+>>> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+>>> index 10c365e9100a..f7722e5e906d 100644
+>>> --- a/drivers/spi/spi.c
+>>> +++ b/drivers/spi/spi.c
+>>> @@ -2364,7 +2364,7 @@ static void of_spi_parse_dt_cs_delay(struct device_node *nc,
+>>>  static int of_spi_parse_dt(struct spi_controller *ctlr, struct spi_device *spi,
+>>>  			   struct device_node *nc)
+>>>  {
+>>> -	u32 value, cs[SPI_CS_CNT_MAX];
+>>> +	u32 value, buses[8], cs[SPI_CS_CNT_MAX];
+>>>  	int rc, idx;
+>>>  
+>>>  	/* Mode (clock phase/polarity/etc.) */
+>>> @@ -2379,6 +2379,29 @@ static int of_spi_parse_dt(struct spi_controller *ctlr, struct spi_device *spi,
+>>>  	if (of_property_read_bool(nc, "spi-cs-high"))
+>>>  		spi->mode |= SPI_CS_HIGH;
+>>>  
+>>> +	rc = of_property_read_variable_u32_array(nc, "spi-buses", buses, 1,
+>>> +						 ARRAY_SIZE(buses));
+>>> +	if (rc < 0 && rc != -EINVAL) {
+>>> +		dev_err(&ctlr->dev, "%pOF has invalid 'spi-buses' property (%d)\n",
+>>> +			nc, rc);
+>>> +		return rc;
+>>> +	}
+>>> +
+>>> +	if (rc == -EINVAL) {
+>>> +		/* Default when property is omitted. */
+>>> +		spi->buses = BIT(0);
+>> 
+>> For backwards compatibility, the default bus for CS 1 on gqspi must be 1
+>> and not 0. Ideally there would be some hook for the master to fix things
+>> up when the slaves are probed, but that doesn't seem to exist. I was
+>> thinking about doing this with OF changesets. Do you have any better
+>> ideas?
+>> 
 > 
-> Is the interrupt not wired up or is it just missing from the table?
+> Does this work? 
+> 
+> 		spi->buses = BIT(cs[0]);
+> 
+> (would have to move all the new code after cs[0] is assigned of course)
 
-Same Q I just asked :-)
+Yeah, but do we really want to make this the default for all drivers?
+This is really a quirk of the existing gqspi binding and I don't think
+it makes sense in general.
 
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+--Sean
 

@@ -1,342 +1,358 @@
-Return-Path: <linux-iio+bounces-20583-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20584-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7973AD88AC
-	for <lists+linux-iio@lfdr.de>; Fri, 13 Jun 2025 12:02:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1189AAD88B0
+	for <lists+linux-iio@lfdr.de>; Fri, 13 Jun 2025 12:03:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9EA48189C6FF
-	for <lists+linux-iio@lfdr.de>; Fri, 13 Jun 2025 10:02:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7FAFC3A5AF5
+	for <lists+linux-iio@lfdr.de>; Fri, 13 Jun 2025 10:02:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE2BF291C3E;
-	Fri, 13 Jun 2025 10:02:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14D422C159E;
+	Fri, 13 Jun 2025 10:03:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rC49uMoZ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZVVV2n1O"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F3282DA748;
-	Fri, 13 Jun 2025 10:02:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BC5C29B78C;
+	Fri, 13 Jun 2025 10:02:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749808947; cv=none; b=eEu1D5EKUxTQBoiHDbmyGfL7HElt9A/pijvz98yezHSF1p7Qh5k4NFh8JbGCZzUMUffWi1QRkMeN9Mx62crr+qPjt6pHLd1AFpy1P02YOhjiCljSY7kFQZKvQ2uLD7eB4rFZWXnWzY2tvincekjv27J9Dy9RcnE4km+joR7DDTE=
+	t=1749808979; cv=none; b=kzS/HbZGc4GpxIJUbpl9OG02ZAVj9/oWwZy/PmlzkRT0fBZl0oCkL8FxTmMR2pV3PWdMSRZVt3AmENyAxWJwj5X5P1U4p18Z3RCFbA+L+WCEl6IGDtr2NSSj4LL6yCuhBsGnM0bIW84kjg+3DIjf1prXrJHyxbk4WvpvobuJ8iE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749808947; c=relaxed/simple;
-	bh=gRTYPv8n7RPX68ovKWwQpPv6R/EmA7Fk41rJ4kGszzQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UwZTF1VkeJ3bMLu837rjiu6PG3JqpuNrcuq9ILeWkKLtCW2jWhUZzhBciH52q3K/hzlWffYekEO6GYuf0g49Nq/9fR4ySif/1Lm5RvzxA/pYlYWSU3GfR4AwW+FKNDYOnTsjVtdGRw06Rby/v/BtJHG8h/83WuayJSEvQbyhPFs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rC49uMoZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D43AC4CEEB;
-	Fri, 13 Jun 2025 10:02:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749808947;
-	bh=gRTYPv8n7RPX68ovKWwQpPv6R/EmA7Fk41rJ4kGszzQ=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=rC49uMoZNt6COZRusTs2MFq0rcxWSlEJliwKrC2jR+IRWqM7dbWuDxDs83H5TEqd4
-	 1T8v4XmJ7tDoiw6tf7O+2UXpkgjkSEqc67HgSrF/2/E+B9Yfp5zG2II+7lEtRbniiu
-	 BgGXACMnvRJ6bR7L3Ite4ZmJm9R2qEhLXPKSRuDQa0aTQEMfvNn8hzUSVb2YME8Wys
-	 SRiPWsYWB064hIYE/hMXhO/IFiM0dU4N1xTKgbKzDiN0nS7TqwA0QoUWzrskXiqcxn
-	 4MJSJJ0JlUPlgP/R9uZl5cLS6Fh2ER2KSE2njF5uudDXJS20THFK+pFT6gAptG1E+k
-	 4pJsdhKuG3OaQ==
-Received: by mail-oa1-f41.google.com with SMTP id 586e51a60fabf-2e8f84653c3so448575fac.0;
-        Fri, 13 Jun 2025 03:02:27 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVXBWmqYEdCNIzqePhxg45P8nhXoHCTh9ucy+bQ8cmz/O/MQ7NsKFY1xSf9Z5LeglvTCwTLPvrzMAA=@vger.kernel.org, AJvYcCVYfeL1LuBA45q1fYUPhdWmg/LysFZrZkpxApagNO0BubtBAbv1HkGy/c+dcctNGXkgD9VleYEFVI+q7Ni+O7HLoZc=@vger.kernel.org, AJvYcCWA5c2IGuDu03+rzETy7k0zGrQogt9+Ocuxm4S20rFF9tWfMreKTWYvsuCUe2DOir32g1rVMplF/7pVuUdQ@vger.kernel.org, AJvYcCX/r42gvdHQfvWh1M80nzOe8gTRXqqPY5csxt+oSrvGIVHHh7fOvB8oxle8+5X7h3bQqKS11mMIl14=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyCbJ1o+P5KUc/8Y7FliHc/MiGkqLWbXCvv6Lrm87TegW7fXe3Q
-	7YcbSPDWkb6cojmYB0n9/eBH9gzyBvzlrEv6iMVHQ6H1z0fiw2+apseOJYg3CHU6RIV4/GTgiK1
-	Apx7xw8p7VZ7chCPJUW8eJRLnOtoAs/I=
-X-Google-Smtp-Source: AGHT+IG6RV4SKL/zKEETYHAk5xh93JCc+BzoHPReRZCSi6kaiSZR+jx4L3gcXCRQIT8z6bjaF9DodMiBECMSXSOM7V8=
-X-Received: by 2002:a05:6871:a516:b0:2e8:7953:ece7 with SMTP id
- 586e51a60fabf-2ead50ecccdmr1375549fac.24.1749808946553; Fri, 13 Jun 2025
- 03:02:26 -0700 (PDT)
+	s=arc-20240116; t=1749808979; c=relaxed/simple;
+	bh=1He0Fo9SkN9xUrKQXHkWW4Ed7cJbqP+af9I+R0FVlak=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SrO3pKueX9OwGPsU15+7yzk+3kgHr/amLS6wFEEbStpnvsuFeHOadEhwrJeqkZKsEQEWZJgL8iXISK8YwC2dkm4IZEjSEPBjgHwsRaOJR0HBhPAchR6BGM9mg21tHqg3n5XcxwQMzrIQlFdpYV/d4+eRoIBiXRFtFTg4W1Tdke0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZVVV2n1O; arc=none smtp.client-ip=209.85.215.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-b2c2c762a89so1581795a12.0;
+        Fri, 13 Jun 2025 03:02:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1749808977; x=1750413777; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=E4CEJv3p+Vm6KRlJSHF8Wp9jYCnWqhDCGE2YwWaeevg=;
+        b=ZVVV2n1ODqOJyhlP4Nj/Tc+n7kfGjBonrXmfl9AgnoWqkhjT/MeyMUeM1VcZvHu9Kg
+         Z5zY+EY5Lefaqne4rF7V2Dn/UR0PaULY9EX+lQ+NfzSgwV6DdZuRBByiH1id34G3bExk
+         i3dRIjCQwtwdOpezNX6Wy9NwRCLqMlc1D0m0sR1naVUFUbImeWHs+nsDinhrnj8gFevD
+         GkfqDcVLNqymWxnaVxSPDIhua+b7NQdxucj27meXu/DAqa6AA2ujuFKrzB4K9xD3rHCi
+         HrT+5vdJksuQsktFsnobf4uKNt0G29E2PK66kfaOMr+D/E/AjD0oFVPz97FjhdBKQfZS
+         wQ2g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749808977; x=1750413777;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=E4CEJv3p+Vm6KRlJSHF8Wp9jYCnWqhDCGE2YwWaeevg=;
+        b=SXJ26BW3aPNsfIsinlWHW/FlDbJrGvPtepkc7giSMSHQ4TAr0p8or5imElckVdsLGd
+         6RonjXm318A0gnVmmYMI81jRh3aHXIOwwZolCcuAY/Emf+QjMgiq8FvBe8wWxWVIACrC
+         2iXMthBa4BdKgjJSVdEDelzRB+rCQiIccA/VAI2azomVIw6JBfPASPkXBUi8W7xfmdId
+         /Ltb+sRf5zhKboWBskofAPtm/xRIx5s0c6U8dbK4N5F3XKY8cL3QdRWlVr+G/UtqZF3p
+         scBNiCB1QwS4SKL1rYEtBaUJvZzpUaSPd2Zdhq3YkjriAP5VHRq0kbZZCi5/r5pQb0cM
+         ly8g==
+X-Forwarded-Encrypted: i=1; AJvYcCUncoVHui+KvnG0FUkZ1E92QZ54KPeLaJ/QoNECBSG6AsrmFJfxIgr4HcSfQsIpWuQpW+q2G8y3sq6xY46G@vger.kernel.org, AJvYcCVm8k6hehX7J6t/pft80B+2uunEs/ECP6SU+LusW/cax9xEIZhQTbJ0XMvDzkdEhnkN7tEtCYbt+OB8@vger.kernel.org, AJvYcCWhvBb2rTuiz7znACcZvkuq0w3bE7+FNQps/AgSGT3WsgpVvdMmmNYIR9R/eXQj5d62Zuq3ekZC+yH1@vger.kernel.org, AJvYcCX3fVb1awHOO0YyxyWfID5tRVAetacbbMicHEvPzHmsb4448Nm9XuJT9+sIsyJGQu818s3mLhQbPsRu@vger.kernel.org, AJvYcCXJwee0aDvNI/7xGPJmICE7YmawEe+X/GCqQpLw8VrcOOYv8xUjKc+yBNjAIa9f+Z7BkxQxm1aVfArG@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxz0x4q5dyYM8pU83ju/MIROS+qNOYnoGUOlVwCpzdjo+Urg2Fx
+	KsXe7+KSephRKyIoMC7wtzF6zn3pylMsZMdVv7yNNW59PbuJCslk4R77
+X-Gm-Gg: ASbGnct8Cqe68dibHEmP5hdXWC+nrjTecF9NQUmLG/YPup8QFLT/DUsxCEnztZQHtqH
+	9N/YU5LVbqDJw5UxedigLy2j6puCRmS8f5Di7BMukqebHGr0tuA/nmrAKk42nvsJ5pfW3Ri+mMN
+	7VlZ0ngi1a4MqbI30L+d/2x+EJL5DmCQUPf9gIsZ+8kknZ6re7SrfxoRDTBK9dou5HdS5MrZKp8
+	HQFVA9OzclwkG6XaEb3HZLtz/EYZ/73ZGGGnHu9Vi4bJljmWBMSyrSTCUbyMB/I/yylXpLLUDEc
+	/PYGVob7Rvm6vjmKoHBF0w/T8euzevNcjXU5KWQR4by1kb2NwII+f6UToqGhEA9Ik9QTTfrt4VC
+	WXcdrHA==
+X-Google-Smtp-Source: AGHT+IGJo4W5iYXGs2QfKCKVDEJUDaqqQ2ynkAzqBUZEjFuAAF34IIwPQJbwD717UGFYpSeooR1i1Q==
+X-Received: by 2002:a05:6a20:2445:b0:1f5:6878:1a43 with SMTP id adf61e73a8af0-21facbca8dbmr3732040637.14.1749808977229;
+        Fri, 13 Jun 2025 03:02:57 -0700 (PDT)
+Received: from HYB-DlYm71t3hSl.ad.analog.com ([137.71.226.91])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b2fe1680c6asm1098952a12.42.2025.06.13.03.02.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 13 Jun 2025 03:02:56 -0700 (PDT)
+Date: Fri, 13 Jun 2025 12:02:44 +0200
+From: Jorge Marques <gastmaier@gmail.com>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Jorge Marques <jorge.marques@analog.com>, 
+	Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, 
+	Michael Hennerich <Michael.Hennerich@analog.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Jonathan Corbet <corbet@lwn.net>, Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>, 
+	Andy Shevchenko <andy@kernel.org>, Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>, 
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-pwm@vger.kernel.org
+Subject: Re: [PATCH v3 8/8] iio: adc: Add events support to ad4052
+Message-ID: <gvigk6helnl3yeouy636dgvay7tqux7lnxns3256fivzz4l3er@7ts7fz7vitff>
+References: <20250610-iio-driver-ad4052-v3-0-cf1e44c516d4@analog.com>
+ <20250610-iio-driver-ad4052-v3-8-cf1e44c516d4@analog.com>
+ <afc85a4b-1535-406d-ad14-143049267b98@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250606111749.3142348-1-claudiu.beznea.uj@bp.renesas.com>
- <20250606111749.3142348-2-claudiu.beznea.uj@bp.renesas.com>
- <CAJZ5v0i_Ey+OVpSZHXru=tubMaZi=y-uOh_0M6zmWZ2DqqA7Vg@mail.gmail.com>
- <zhjytvj35lknj7v3jhva3n3nbv6qctvqgykwyi5huj6omet7lz@wchd7f4p4dpv>
- <CAJZ5v0hsT-Q2hz=qoBo409oungaCmexJwwGheN7KRLFqz=6_Dw@mail.gmail.com>
- <20250607140600.76e87ea5@jic23-huawei> <CAJZ5v0jqZ6gYKb85dpR-X5RwFeUBcbbcJ_b-AOe+JypBXod-MA@mail.gmail.com>
- <486a1110-5336-42fd-82b8-a7b1452bad65@tuxon.dev>
-In-Reply-To: <486a1110-5336-42fd-82b8-a7b1452bad65@tuxon.dev>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Fri, 13 Jun 2025 12:02:15 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0hqBm4L2V9aUjB0tmW67eRRCnM7FScgdJQ=ihnpAZuMfA@mail.gmail.com>
-X-Gm-Features: AX0GCFvUpM5UGXUCp-G6WAFRkpKl3jKALA_qxwwQX1rDqdDt1ZJwTijYpfyF6q0
-Message-ID: <CAJZ5v0hqBm4L2V9aUjB0tmW67eRRCnM7FScgdJQ=ihnpAZuMfA@mail.gmail.com>
-Subject: Re: [PATCH v3 1/2] PM: domains: Add devres variant for dev_pm_domain_attach()
-To: Claudiu Beznea <claudiu.beznea@tuxon.dev>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Jonathan Cameron <jic23@kernel.org>, 
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>, gregkh@linuxfoundation.org, dakr@kernel.org, 
-	len.brown@intel.com, pavel@kernel.org, ulf.hansson@linaro.org, 
-	daniel.lezcano@linaro.org, linux-kernel@vger.kernel.org, 
-	linux-pm@vger.kernel.org, bhelgaas@google.com, geert@linux-m68k.org, 
-	linux-iio@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
-	fabrizio.castro.jz@renesas.com, 
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <afc85a4b-1535-406d-ad14-143049267b98@baylibre.com>
 
-On Fri, Jun 13, 2025 at 9:39=E2=80=AFAM Claudiu Beznea <claudiu.beznea@tuxo=
-n.dev> wrote:
->
-> Hi, Rafael,
->
-> On 09.06.2025 22:59, Rafael J. Wysocki wrote:
-> > On Sat, Jun 7, 2025 at 3:06=E2=80=AFPM Jonathan Cameron <jic23@kernel.o=
-rg> wrote:
-> >>
-> >> On Fri, 6 Jun 2025 22:01:52 +0200
-> >> "Rafael J. Wysocki" <rafael@kernel.org> wrote:
-> >>
-> >> Hi Rafael,
-> >>
-> >>> On Fri, Jun 6, 2025 at 8:55=E2=80=AFPM Dmitry Torokhov
-> >>> <dmitry.torokhov@gmail.com> wrote:
-> >>>>
-> >>>> On Fri, Jun 06, 2025 at 06:00:34PM +0200, Rafael J. Wysocki wrote:
-> >>>>> On Fri, Jun 6, 2025 at 1:18=E2=80=AFPM Claudiu <claudiu.beznea@tuxo=
-n.dev> wrote:
-> >>>>>>
-> >>>>>> From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-> >>>>>>
-> >>>>>> The dev_pm_domain_attach() function is typically used in bus code =
-alongside
-> >>>>>> dev_pm_domain_detach(), often following patterns like:
-> >>>>>>
-> >>>>>> static int bus_probe(struct device *_dev)
-> >>>>>> {
-> >>>>>>     struct bus_driver *drv =3D to_bus_driver(dev->driver);
-> >>>>>>     struct bus_device *dev =3D to_bus_device(_dev);
-> >>>>>>     int ret;
-> >>>>>>
-> >>>>>>     // ...
-> >>>>>>
-> >>>>>>     ret =3D dev_pm_domain_attach(_dev, true);
-> >>>>>>     if (ret)
-> >>>>>>         return ret;
-> >>>>>>
-> >>>>>>     if (drv->probe)
-> >>>>>>         ret =3D drv->probe(dev);
-> >>>>>>
-> >>>>>>     // ...
-> >>>>>> }
-> >>>>>>
-> >>>>>> static void bus_remove(struct device *_dev)
-> >>>>>> {
-> >>>>>>     struct bus_driver *drv =3D to_bus_driver(dev->driver);
-> >>>>>>     struct bus_device *dev =3D to_bus_device(_dev);
-> >>>>>>
-> >>>>>>     if (drv->remove)
-> >>>>>>         drv->remove(dev);
-> >>>>>>     dev_pm_domain_detach(_dev);
-> >>>>>> }
-> >>>>>>
-> >>>>>> When the driver's probe function uses devres-managed resources tha=
-t depend
-> >>>>>> on the power domain state, those resources are released later duri=
-ng
-> >>>>>> device_unbind_cleanup().
-> >>>>>>
-> >>>>>> Releasing devres-managed resources that depend on the power domain=
- state
-> >>>>>> after detaching the device from its PM domain can cause failures.
-> >>>>>>
-> >>>>>> For example, if the driver uses devm_pm_runtime_enable() in its pr=
-obe
-> >>>>>> function, and the device's clocks are managed by the PM domain, th=
-en
-> >>>>>> during removal the runtime PM is disabled in device_unbind_cleanup=
-() after
-> >>>>>> the clocks have been removed from the PM domain. It may happen tha=
-t the
-> >>>>>> devm_pm_runtime_enable() action causes the device to be runtime-re=
-sumed.
-> >>>>>
-> >>>>> Don't use devm_pm_runtime_enable() then.
-> >>>>
-> >>>> What about other devm_ APIs? Are you suggesting that platform driver=
-s
-> >>>> should not be using devm_clk*(), devm_regulator_*(),
-> >>>> devm_request_*_irq() and devm_add_action_or_reset()? Because again,
-> >>>> dev_pm_domain_detach() that is called by platform bus_remove() may s=
-hut
-> >>>> off the device too early, before cleanup code has a chance to execut=
-e
-> >>>> proper cleanup.
-> >>>>
-> >>>> The issue is not limited to runtime PM.
-> >>>>
-> >>>>>
-> >>>>>> If the driver specific runtime PM APIs access registers directly, =
-this
-> >>>>>> will lead to accessing device registers without clocks being enabl=
-ed.
-> >>>>>> Similar issues may occur with other devres actions that access dev=
-ice
-> >>>>>> registers.
-> >>>>>>
-> >>>>>> Add devm_pm_domain_attach(). When replacing the dev_pm_domain_atta=
-ch() and
-> >>>>>> dev_pm_domain_detach() in bus probe and bus remove, it ensures tha=
-t the
-> >>>>>> device is detached from its PM domain in device_unbind_cleanup(), =
-only
-> >>>>>> after all driver's devres-managed resources have been release.
-> >>>>>>
-> >>>>>> For flexibility, the implemented devm_pm_domain_attach() has 2 sta=
-te
-> >>>>>> arguments, one for the domain state on attach, one for the domain =
-state on
-> >>>>>> detach.
-> >>>>>
-> >>>>> dev_pm_domain_attach() is not part driver API and I'm not convinced=
- at
-> >>>>
-> >>>> Is the concern that devm_pm_domain_attach() will be [ab]used by driv=
-ers?
-> >>>
-> >>> Yes, among other things.
-> >>
-> >> Maybe naming could make abuse at least obvious to spot? e.g.
-> >> pm_domain_attach_with_devm_release()
-> >
-> > If I'm not mistaken, it is not even necessary to use devres for this.
-> >
-> > You might as well add a dev_pm_domain_detach() call to
-> > device_unbind_cleanup() after devres_release_all().  There is a slight
-> > complication related to the second argument of it, but I suppose that
-> > this can be determined at the attach time and stored in a new device
-> > PM flag, or similar.
-> >
->
-> I looked into this solution. I've tested it for all my failure cases and
-> went good.
+Hi David,
+On Thu, Jun 12, 2025 at 02:38:45PM -0500, David Lechner wrote:
+> On 6/10/25 2:34 AM, Jorge Marques wrote:
+> > The AD4052 family supports autonomous monitoring readings for threshold
+> > crossings. Add support for catching the GPIO interrupt and expose as an IIO
+> > event. The device allows to set either, rising and falling directions. Only
+> > either threshold crossing is implemented.
+> > 
+> > Signed-off-by: Jorge Marques <jorge.marques@analog.com>
+> > ---
+> 
+> ...
+> 
+> > +
+> > +static ssize_t ad4052_events_frequency_store(struct device *dev,
+> > +					     struct device_attribute *attr,
+> > +					     const char *buf,
+> > +					     size_t len)
+> > +{
+> > +	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+> > +	struct ad4052_state *st = iio_priv(indio_dev);
+> > +	int ret;
+> > +
+> > +	if (!iio_device_claim_direct(indio_dev))
+> > +		return -EBUSY;
+> > +	if (st->wait_event) {
+> > +		ret = -EBUSY;
+> > +		goto out_release;
+> > +	}
+> 
+> I'm wondering if we should instead have some kind of iio_device_claim_monitor_mode()
+> so that we don't have to implement this manually everywhere. If monitor mode was
+> claimed, then iio_device_claim_direct() and iio_device_claim_buffer_mode() would
+> both return -EBUSY. If buffer mode was claimed, iio_device_claim_monitor_mode()
+> would fail. If direct mode was claimed, iio_device_claim_monitor_mode() would wait.
+> 
+I don't think this would scale with other vendors and devices, it is a
+limitation of ADI:ADC:SPI requiring to enter configuration mode to read
+registers. A deep dive into the other drivers that use IIO Events is
+needed.
+> > +
+> > +	ret = __sysfs_match_string(AD4052_FS(st->chip->grade),
+> > +				   AD4052_FS_LEN(st->chip->grade), buf);
+> > +	if (ret < 0)
+> > +		goto out_release;
+> > +
+> > +	st->events_frequency = ret;
+> > +
+> > +out_release:
+> > +	iio_device_release_direct(indio_dev);
+> > +	return ret ? ret : len;
+> > +}
+> > +
+> > +static IIO_DEVICE_ATTR(sampling_frequency, 0644,
+> > +		       ad4052_events_frequency_show,
+> > +		       ad4052_events_frequency_store, 0);
+> > +
+> > +static ssize_t sampling_frequency_available_show(struct device *dev,
+> > +						 struct device_attribute *attr,
+> > +						 char *buf)
+> > +{
+> > +	struct ad4052_state *st = iio_priv(dev_to_iio_dev(dev));
+> > +	int ret = 0;
+> > +
+> > +	for (u8 i = AD4052_FS_OFFSET(st->chip->grade);
+> > +	     i < AD4052_FS_LEN(st->chip->grade); i++)
+> > +		ret += sysfs_emit_at(buf, ret, "%s ", ad4052_conversion_freqs[i]);
+> > +
+> > +	ret += sysfs_emit_at(buf, ret, "\n");
+> > +	return ret;
+> > +}
+> > +
+> > +static IIO_DEVICE_ATTR_RO(sampling_frequency_available, 0);
+> > +
+> > +static struct attribute *ad4052_event_attributes[] = {
+> > +	&iio_dev_attr_sampling_frequency.dev_attr.attr,
+> > +	&iio_dev_attr_sampling_frequency_available.dev_attr.attr,
+> > +	NULL
+> > +};
+> > +
+> > +static const struct attribute_group ad4052_event_attribute_group = {
+> > +	.attrs = ad4052_event_attributes,
+> > +};
+> > +
+> >  static int ad4052_update_xfer_raw(struct iio_dev *indio_dev,
+> >  				   struct iio_chan_spec const *chan)
+> >  {
+> > @@ -602,6 +699,19 @@ static int ad4052_setup(struct iio_dev *indio_dev, struct iio_chan_spec const *c
+> >  				  val);
+> >  }
+> >  
+> > +static irqreturn_t ad4052_irq_handler_thresh(int irq, void *private)
+> > +{
+> > +	struct iio_dev *indio_dev = private;
+> > +
+> 
+> Can we not read the status register here to find out what the exact
+> event was? I guess that would require taking it out of monitor mode.
+> 
+It requires entering configuration mode and results in a monitoring
+downtime. Earlier versions of this driver would do that, but the
+conclusion was that it was better to have the user disabling events and
+reading registers, so he is explicitly aware of the monitoring downtime.
+> > +	iio_push_event(indio_dev,
+> > +		       IIO_UNMOD_EVENT_CODE(IIO_VOLTAGE, 0,
+> > +					    IIO_EV_TYPE_THRESH,
+> > +					    IIO_EV_DIR_EITHER),
+> > +		       iio_get_time_ns(indio_dev));
+> > +
+> > +	return IRQ_HANDLED;
+> > +}
+> > +
+> >  static irqreturn_t ad4052_irq_handler_drdy(int irq, void *private)
+> >  {
+> >  	struct ad4052_state *st = private;
+> > @@ -616,6 +726,18 @@ static int ad4052_request_irq(struct iio_dev *indio_dev)
+> >  	struct device *dev = &st->spi->dev;
+> >  	int ret;
+> >  
+> > +	ret = fwnode_irq_get_byname(dev_fwnode(&st->spi->dev), "gp0");
+> > +	if (ret > 0) {
+> > +		ret = devm_request_threaded_irq(dev, ret, NULL,
+> > +						ad4052_irq_handler_thresh,
+> > +						IRQF_ONESHOT, indio_dev->name,
+> > +						indio_dev);
+> > +		if (ret)
+> > +			return ret;
+> > +	} else if (ret == -EPROBE_DEFER) {
+> > +		return ret;
+> > +	}
+> 
+> By swapping the order, we can avoid the else. Also, do we really want to
+> ignore all other errors? It seems like there would just be ENODEV or ENOENT
+> that means the interrupt is not there and we would want to pass on other
+> errors.
+> 
+Ack on the swap order.
 
-OK
+If not set on the devicetree, including improper devicetree cases, it
+should continue without. If the driver that manages the irq is not
+probed, defer probe.
 
-> > Note that dev->pm_domain is expected to be cleared by ->detach(), so
-> > this should not cause the domain to be detached twice in a row from
-> > the same device, but that needs to be double-checked.
->
-> The genpd_dev_pm_detach() calls genpd_remove_device() ->
-> dev_pm_domain_set(dev, NULL) which sets the dev->pm_domain =3D NULL. I ca=
-n't
-> find any other detach function in the current code base.
+I tested different devicetrees and got:
 
-There is also acpi_dev_pm_detach() which can be somewhat hard to find,
-but it calls dev_pm_domain_set(dev, NULL) either.
+* any property is missing: -EINVAL
+* wrong interrupt-names: -ENODATA
+* inconsistent array length between properties: -EOVERFLOW
 
-> The code I've tested for this solution is this one:
->
-> diff --git a/drivers/base/dd.c b/drivers/base/dd.c
-> index b526e0e0f52d..5e9750d007b4 100644
-> --- a/drivers/base/dd.c
-> +++ b/drivers/base/dd.c
-> @@ -25,6 +25,7 @@
->  #include <linux/kthread.h>
->  #include <linux/wait.h>
->  #include <linux/async.h>
-> +#include <linux/pm_domain.h>
->  #include <linux/pm_runtime.h>
->  #include <linux/pinctrl/devinfo.h>
->  #include <linux/slab.h>
-> @@ -552,8 +553,11 @@ static void device_unbind_cleanup(struct device *dev=
-)
->         dev->dma_range_map =3D NULL;
->         device_set_driver(dev, NULL);
->         dev_set_drvdata(dev, NULL);
-> -       if (dev->pm_domain && dev->pm_domain->dismiss)
-> -               dev->pm_domain->dismiss(dev);
-> +       if (dev->pm_domain) {
-> +               if (dev->pm_domain->dismiss)
-> +                       dev->pm_domain->dismiss(dev);
-> +               dev_pm_domain_detach(dev, dev->pm_domain->detach_power_of=
-f);
+EPROTO and ENXIO errors are also expected according the method comment,
+the latter seems to be when the system doesn't support dts at all? And
+EPROTO just another user-set dts issue.
+I'm okay with ignoring them silently, or logging if gp0/1 found or not,
+but not micromanage every error.
 
-I would do the "detach" before the "dismiss" to retain the current ordering=
-.
+> > +
+> >  	ret = fwnode_irq_get_byname(dev_fwnode(&st->spi->dev), "gp1");
+> >  	if (ret > 0) {
+> >  		ret = devm_request_threaded_irq(dev, ret, NULL,
+> 
+> 
+> ...
+> 
+> > +
+> > +static int ad4052_monitor_mode_enable(struct ad4052_state *st)
+> > +{
+> > +	int ret;
+> > +
+> > +	ret = pm_runtime_resume_and_get(&st->spi->dev);
+> > +	if (ret)
+> > +		return ret;
+> > +
+> > +	ret = ad4052_conversion_frequency_set(st, st->events_frequency);
+> > +	if (ret)
+> > +		goto out_error;
+> > +
+> > +	ret = ad4052_set_operation_mode(st, AD4052_MONITOR_MODE);
+> > +	if (ret)
+> > +		goto out_error;
+> > +
+> > +	return ret;
+> > +out_error:
+> > +	pm_runtime_mark_last_busy(&st->spi->dev);
+> > +	pm_runtime_put_autosuspend(&st->spi->dev);
+> > +	return ret;
+> > +}
+> > +
+> > +static int ad4052_monitor_mode_disable(struct ad4052_state *st)
+> > +{
+> > +	int ret;
+> > +
+> > +	pm_runtime_mark_last_busy(&st->spi->dev);
+> > +	pm_runtime_put_autosuspend(&st->spi->dev);
+> > +
+> > +	ret = ad4052_exit_command(st);
+> > +	if (ret)
+> > +		return ret;
+> > +	return regmap_write(st->regmap, AD4052_REG_DEVICE_STATUS,
+> > +			    AD4052_REG_DEVICE_STATUS_MAX_FLAG |
+> > +			    AD4052_REG_DEVICE_STATUS_MIN_FLAG);
+> > +}
+> > +
+> 
+> It seems like we need to make sure monitor mode is disabled when the
+> driver is removed. Otherwise we could end up with unbalanced calls to
+> the pm_runtime stuff and leave the chip running.
+> 
+> 
+When monitor mode is enabled, pm is already disabled (won't enter low
+power). I expect the pm to handle the clean-up properly since devm is
+used.
+The .remove() I suggest is reg access to:
 
-Also it is interesting that you ended up calling them both in one
-place.  It kind of indicates that the PM domains attached via
-dev_pm_domain_attach() should be attached earlier and just use the
-->activate() and ->dismiss() callbacks.
+* Put in configuration mode, if not.
+* Put on low power mode, if not.
 
-> +       }
->         pm_runtime_reinit(dev);
->         dev_pm_set_driver_flags(dev, 0);
->  }
-> diff --git a/drivers/base/platform.c b/drivers/base/platform.c
-> index 075ec1d1b73a..2459be6aecf4 100644
-> --- a/drivers/base/platform.c
-> +++ b/drivers/base/platform.c
-> @@ -1400,11 +1400,8 @@ static int platform_probe(struct device *_dev)
->         if (ret)
->                 goto out;
->
-> -       if (drv->probe) {
-> +       if (drv->probe)
->                 ret =3D drv->probe(dev);
-> -               if (ret)
-> -                       dev_pm_domain_detach(_dev, true);
-> -       }
->
->  out:
->         if (drv->prevent_deferred_probe && ret =3D=3D -EPROBE_DEFER) {
-> @@ -1422,7 +1419,6 @@ static void platform_remove(struct device *_dev)
->
->         if (drv->remove)
->                 drv->remove(dev);
-> -       dev_pm_domain_detach(_dev, true);
->  }
->
->  static void platform_shutdown(struct device *_dev)
-> diff --git a/drivers/base/power/common.c b/drivers/base/power/common.c
-> index 781968a128ff..4bd1e3c7f401 100644
-> --- a/drivers/base/power/common.c
-> +++ b/drivers/base/power/common.c
-> @@ -111,6 +111,9 @@ int dev_pm_domain_attach(struct device *dev, bool pow=
-er_on)
->         if (!ret)
->                 ret =3D genpd_dev_pm_attach(dev);
->
-> +       if (dev->pm_domain)
-> +               dev->pm_domain->detach_power_off =3D power_on;
+> > +static int ad4052_read_event_value(struct iio_dev *indio_dev,
+> > +				   const struct iio_chan_spec *chan,
+> > +				   enum iio_event_type type,
+> > +				   enum iio_event_direction dir,
+> > +				   enum iio_event_info info, int *val,
+> > +				   int *val2)
+> > +{
+> > +	struct ad4052_state *st = iio_priv(indio_dev);
+> > +	int ret;
+> > +
+> > +	if (!iio_device_claim_direct(indio_dev))
+> > +		return -EBUSY;
+> > +
+> > +	if (st->wait_event) {
+> > +		ret = -EBUSY;
+> > +		goto out_release;
+> > +	}
+> > +
+> > +	switch (info) {
+> > +	case IIO_EV_INFO_VALUE:
+> > +		ret = __ad4052_read_event_info_value(st, dir, val);
+> > +		break;
+> > +	case IIO_EV_INFO_HYSTERESIS:
+> > +		ret = __ad4052_read_event_info_hysteresis(st, dir, val);
+> > +		break;
+> 
+> These functions don't need __ prefix. There is no name clash.
+> 
+Ack.
 
-This will not work for acpi_general_pm_domain because it is shared by
-all of its users.
-
-It is likely to not work for shared PM domains in general.
-
-I would put the new flag into struct dev_pm_info.
-
-> +
->         return ret < 0 ? ret : 0;
->  }
->  EXPORT_SYMBOL_GPL(dev_pm_domain_attach);
-> diff --git a/include/linux/pm.h b/include/linux/pm.h
-> index f0bd8fbae4f2..12e97e09e85c 100644
-> --- a/include/linux/pm.h
-> +++ b/include/linux/pm.h
-> @@ -748,6 +748,7 @@ struct dev_pm_domain {
->         void (*sync)(struct device *dev);
->         void (*dismiss)(struct device *dev);
->         int (*set_performance_state)(struct device *dev, unsigned int sta=
-te);
-> +       bool detach_power_off;
->  };
->
-> Rafael, Ulf, Dmitry, Jonathan, all,
->
-> Could you please let me know how do you consider this approach?
-
-Please see my comments above.
-
-Thanks!
+Best regards,
+Jorge
+> > +	default:
+> > +		ret = -EINVAL;
+> > +		break;
+> > +	}
+> > +
+> > +out_release:
+> > +	iio_device_release_direct(indio_dev);
+> > +	return ret ? ret : IIO_VAL_INT;
+> > +}
+> > +
 

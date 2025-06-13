@@ -1,103 +1,100 @@
-Return-Path: <linux-iio+bounces-20604-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20605-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 215FAAD90B1
-	for <lists+linux-iio@lfdr.de>; Fri, 13 Jun 2025 17:04:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86A7EAD90D1
+	for <lists+linux-iio@lfdr.de>; Fri, 13 Jun 2025 17:09:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8BA8E3B7C7A
-	for <lists+linux-iio@lfdr.de>; Fri, 13 Jun 2025 15:03:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2D1AD1E3987
+	for <lists+linux-iio@lfdr.de>; Fri, 13 Jun 2025 15:09:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1BDD1ADC90;
-	Fri, 13 Jun 2025 15:03:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7A0D1DF73A;
+	Fri, 13 Jun 2025 15:09:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="2TDEHV0s"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LL5LRNFx"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ot1-f45.google.com (mail-ot1-f45.google.com [209.85.210.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FDBE15573F
-	for <linux-iio@vger.kernel.org>; Fri, 13 Jun 2025 15:03:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C301149DE8;
+	Fri, 13 Jun 2025 15:09:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749827021; cv=none; b=ph1qA+f8Ovsxow1c+pI42fUcZyiRJ/hF/c4/MrUqKVyAGXKRTIfswC+decH4vrqTkLIQ0InScoQmE9c2Uh/Ou7xarnw/iqQBdr9MsspV4rNCTv1ckcC+ontXKNg06aaoMRkzbHzhT6a7P6SkzkfxkVGk9Z5RnxzlvYzqGSHl3vY=
+	t=1749827349; cv=none; b=s9+K4iSwGzFEkmLW0/5EgBEQGqvPPWJIZyQMKbrNnmkCDw7V7BALbGXsiHQoQblsQC3Liv1TlSQNOCmqUTY+URu0vDWYIsjMKTq/IZcKl+7m8GN5gVTypHXvAmfLptwxM9zS5pBLjLeJXdbGul9pdQ3dC5uf+oTj6VMiKZ0Povc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749827021; c=relaxed/simple;
-	bh=pfi0cAVHQN4FKBTbdkOEyZL1+dTywvqOTwhrmU5xJ6M=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=S/mQk4e6do9r4XlMjjL2z37W2MrebYCW1Jv3XIAcmHQqfppUQH0S4rVzMCSi9oc4LWOhvvkF+Q3+zID4vjkRR4Za+z+Sfb9iC9JFFXxAAWuF2rbX2Hd5shEWQunEnX50QK0WpyDDGSnodRMf78OD69Gk7DFc074VH6UYq2qheIk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=2TDEHV0s; arc=none smtp.client-ip=209.85.210.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ot1-f45.google.com with SMTP id 46e09a7af769-7306482f958so1473675a34.0
-        for <linux-iio@vger.kernel.org>; Fri, 13 Jun 2025 08:03:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1749827018; x=1750431818; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=5PIfoLs86QX7qYXR8hEvBNfkC/r2PihnWpdbTtofWd8=;
-        b=2TDEHV0sMJ2lhYeM7RXYUtWcJ2v8+K7zyDOrD6mDTz4VNqBQ39u82GFu0vROxh2U7Q
-         ZWF3oMQMmVC6qqyzMC+402DWipKUtzP7f47O5Fk3SB8RQk6qvERH3xQxDEy044LW7mDy
-         WwDCvKC8elQWqr26G6uMAZg53g54sekgMNPYIdN+vRKg/qcXZJPgGtaYCUCoGBIlyOcx
-         HFjEnapPC6A4nRFviCS5C3fuwHiR5/J7FD1Lx7O9WlXGaOJ+j0s5MrBU+5uKAMQOWar0
-         aE+jKNM7n0E5iZSRw/KwQEntkZ4c0hN9zYTvRxjFfoumiFPwh94RmTBBfcZXkj60VGrF
-         TvNA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749827018; x=1750431818;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=5PIfoLs86QX7qYXR8hEvBNfkC/r2PihnWpdbTtofWd8=;
-        b=HMXfWQeE0bInobCMTNJ5YtRqVu+cJbe6J5S7SAvJceh1pj4VB4ptpj5ZJ5ivm90LGS
-         YkU3UdTn/q/zezuHHRl3SI2zMTm1wmUHqxGN7Up52Eipvh0wxdKpAFtmGrbf6HkXuZZT
-         R5UvGeOfJWXwTv6GykIRzyZ7mXLU69FqNr+yABNbfVV1/baVzMJcRBUhzjp3fpQIAPZw
-         26eAGOyH1ne6d0xPitkwml+jNT7JxsaGAyHNMAwRPOXb/UxGlHQOKlEPjqI/3nPmJJAB
-         6pOvs1UCOb+UAK8K2QGQmCGFZiyo2VuuqPZIN04NcTxd98/nDL3jttUtmXGesUiBzwTB
-         7KDQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXO43Vtutl+tgRWtRHC0z2eG+kBxMgIef7ZmJor4E1Y9wWIafWYJpHhqELyD1JEBUEL9smqa52deOk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyw2Cz6uQ0xdECimLfjSWxoSa1vCOEXZ6sbyHrGR2lrktQ+t++o
-	PO8J1bpK4KlDdTPxBrxC03i5gkmRQ3mpm9S3H0HVgz9CjHrGFwSddmOq5uS2B5Goy10=
-X-Gm-Gg: ASbGnctdVY5OqEt7z3Z6l/aa4GIiCdiqL+ulThXan9dHiAcfTpXOiomKfzR1/kgpOMz
-	vJ1lHQbbH5kaJUMJY708M3B3QUdBlJFaQZnaWB98bMfQArwey/X+EB1m652LYZ1Kxd2ciYJgdC+
-	Nhai/EY8h6ywvUAUDTff3szNqMujkDJzr9FjSRpp9kgusZAJzwrTiNBEjTU89yanoy44+4kvvIJ
-	WsU9O+elcHbOzY02xiDc+Lm5QeSwfgN4kzCPQ3VZCRbhtq4AJrmX8P5eGc7cTb1kg1vjmdQMxfc
-	1bAojJQ8KA8Yg70q51D3KsvOn81g8xkN6PFm8WeeLdsT81pEW4NEix7k3r0V6s5bXqShlxWDOwU
-	6TuMzVvTGRsSfb3nSDOBeMlQnJIgJr+SECSL2WoDgEs50AgM=
-X-Google-Smtp-Source: AGHT+IEAL0ZDPMzjcA/VBiibBkDYEcstjdnXKAWJLVzjTIQf+FnUi+iN07J5DUfE0uU08QRa3dplKA==
-X-Received: by 2002:a05:6830:258b:b0:72b:81df:caf9 with SMTP id 46e09a7af769-73a362cf271mr42624a34.8.1749827018337;
-        Fri, 13 Jun 2025 08:03:38 -0700 (PDT)
-Received: from ?IPV6:2600:8803:e7e4:1d00:4647:c57:a73c:39d8? ([2600:8803:e7e4:1d00:4647:c57:a73c:39d8])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-73a283dc101sm230838a34.4.2025.06.13.08.03.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 13 Jun 2025 08:03:36 -0700 (PDT)
-Message-ID: <8f7656ed-0a28-4ba0-accc-b19817bbb38b@baylibre.com>
-Date: Fri, 13 Jun 2025 10:03:34 -0500
+	s=arc-20240116; t=1749827349; c=relaxed/simple;
+	bh=+jvCD2kowkTgOqSg81LszSYq2ncrCtuKus8a/WXzonI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Dx+ROeslW7sgf4KE7vueXcZmvhXUGU45OAi2nz23lk5O0cwb6xT54nORShNSSXsjlF5iRjLuhe8Z1F8aSYVPZmPmFUIfzBOCGgaQDCTvhBh2AWjE77qwjsiT6qgxAzFXSwrv4GxicGbL7JJqVYV+qLrdcBB/bzQRnQ5HvG2HKUE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LL5LRNFx; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1749827347; x=1781363347;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=+jvCD2kowkTgOqSg81LszSYq2ncrCtuKus8a/WXzonI=;
+  b=LL5LRNFxkK+n+uDitU2AODCGcui2GZmnT9ztDi0s3cNqhlJgM+zCilwL
+   EsWUaaKQeYf1kaPCBtqmNNQu+U7iG2VFYa7hzLZXlLJ38XbQ1IAa6hXGg
+   lyZabSP/gD++TzF9+aVAytY7yIfj9fH1s5sm7k04ineQHoelpAbNhwLZF
+   jQ04LbtKQ87vXr4m5qpSCwIa6Q7dGKWBI2vMVeuFwHFqQMbAon4uQAb0L
+   U5Ycm9dFUAZgBaD9H7g51d8YHBEp7immRoYSUZjakoectbiI5HBmZLVcM
+   6XAOPbHKu7n4pXBngGKq+y3W1OC5Bbbx2u7hPDgvzqKyCzU5PdtB3Rv3L
+   g==;
+X-CSE-ConnectionGUID: PD5xtQstS8+SBLvNza0M0A==
+X-CSE-MsgGUID: fJubu7CsSyydh+wYWiQGlw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11463"; a="74580021"
+X-IronPort-AV: E=Sophos;i="6.16,234,1744095600"; 
+   d="scan'208";a="74580021"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jun 2025 08:09:07 -0700
+X-CSE-ConnectionGUID: ImMIdTIDRsC69PqAeUGuEg==
+X-CSE-MsgGUID: yEqvY+VAR7iEFMmi7VNQHQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,234,1744095600"; 
+   d="scan'208";a="152617176"
+Received: from smile.fi.intel.com ([10.237.72.52])
+  by orviesa003.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jun 2025 08:09:04 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@intel.com>)
+	id 1uQ61d-00000006HNs-1Z1M;
+	Fri, 13 Jun 2025 18:09:01 +0300
+Date: Fri, 13 Jun 2025 18:09:01 +0300
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Marek Vasut <marek.vasut+bmc150@mailbox.org>,
+	Hans de Goede <hansg@kernel.org>
+Cc: linux-iio@vger.kernel.org,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Julien Stephan <jstephan@baylibre.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Salvatore Bonaccorso <carnil@debian.org>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: accel: bmc150: Do not configure IRQ registers if no
+ IRQ connected
+Message-ID: <aEw_DcqpCpcsBGd0@smile.fi.intel.com>
+References: <20250613124648.14141-1-marek.vasut+bmc150@mailbox.org>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] iio: accel: bmc150: Do not configure IRQ registers if no
- IRQ connected
-To: Marek Vasut <marek.vasut+bmc150@mailbox.org>, linux-iio@vger.kernel.org
-Cc: =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
- Andy Shevchenko <andy@kernel.org>, Jonathan Cameron <jic23@kernel.org>,
- Julien Stephan <jstephan@baylibre.com>, Peter Zijlstra
- <peterz@infradead.org>, Salvatore Bonaccorso <carnil@debian.org>,
- linux-kernel@vger.kernel.org
-References: <20250613124648.14141-1-marek.vasut+bmc150@mailbox.org>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 In-Reply-To: <20250613124648.14141-1-marek.vasut+bmc150@mailbox.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On 6/13/25 7:45 AM, Marek Vasut wrote:
+Strange I don't see Hans in the Cc list, so added.
+Thanks for the report and patch, my comments below.
+
+On Fri, Jun 13, 2025 at 02:45:22PM +0200, Marek Vasut wrote:
 > The BMC150 on Onemix 2S does not have IRQ line described in ACPI tables,
 > which leads to bmc150_accel_core_probe() being called with irq=0, which
 > leads to bmc150_accel_interrupts_setup() never being called, which leads
@@ -106,38 +103,74 @@ On 6/13/25 7:45 AM, Marek Vasut wrote:
 > which depends on struct bmc150_accel_data *data ->interrupts[i].info being
 > non-NULL, and which triggers NULL pointer dereference. This is triggered
 > e.g. from iio-sensor-proxy.
-
-Is the interrupt not wired up or is it just missing from the table?
-
 > 
 > Fix this by skipping the IRQ register configuration in case there is no
 > IRQ connected in hardware, in a manner similar to what the driver did in
 > the very first commit which added the driver.
 > 
+> ACPI table dump:
+
+>         Device (BMA2)
+>         {
+>             Name (_ADR, Zero)  // _ADR: Address
+>             Name (_HID, "BOSC0200")  // _HID: Hardware ID
+>             Name (_CID, "BOSC0200")  // _CID: Compatible ID
+>             Name (_DDN, "Accelerometer")  // _DDN: DOS Device Name
+>             Name (_UID, One)  // _UID: Unique ID
+>             Method (_CRS, 0, NotSerialized)  // _CRS: Current Resource Settings
+>             {
+>                 Name (RBUF, ResourceTemplate ()
+>                 {
+>                     I2cSerialBusV2 (0x0019, ControllerInitiated, 0x00061A80,
+>                         AddressingMode7Bit, "\\_SB.PCI0.I2C0",
+>                         0x00, ResourceConsumer, , Exclusive,
+>                         )
+>                 })
+>                 Return (RBUF) /* \_SB_.PCI0.I2C0.BMA2._CRS.RBUF */
+>             }
+
+These lines...
+
+>             Method (ROTM, 0, NotSerialized)
+>             {
+>                 Name (SBUF, Package (0x03)
+>                 {
+>                     "0 1 0",
+>                     "1 0 0 ",
+>                     "0 0 1"
+>                 })
+>                 Return (SBUF) /* \_SB_.PCI0.I2C0.BMA2.ROTM.SBUF */
+>             }
+> 
+>             Method (_STA, 0, NotSerialized)  // _STA: Status
+>             {
+>                 Return (0x0F)
+>             }
+
+...are irrelevant.
+
+>         }
+> "
+> 
+> Splat, collected from debian unstable, probably not very useful:
+
+Oh my gosh, please leave only ~3-5 *important* lines out of this, or move it
+completely to the comment block (after '---' cutter line).
+
+This is requirement written in Submitting Patches.
 
 ...
 
-> diff --git a/drivers/iio/accel/bmc150-accel-core.c b/drivers/iio/accel/bmc150-accel-core.c
-> index 744a034bb8b5..1c3583ade2b4 100644
-> --- a/drivers/iio/accel/bmc150-accel-core.c
-> +++ b/drivers/iio/accel/bmc150-accel-core.c
-> @@ -550,6 +550,9 @@ static int bmc150_accel_set_interrupt(struct bmc150_accel_data *data, int i,
->  	if (ret < 0)
->  		return ret;
->  
+As for the solution, are you sure the line is not wired at all?
+IIRC Hans had a broken tales where it was simply forgotten, meaning
+the Android / Windows driver simply hardcoded needed info.
 
-A comment here explaining why this is needed and what the consequences
-are would be helpful.
+If it's the case, it should be solved differently around PDx86 special quirk
+driver for the cases like this.
 
-The obvious one to me is that we won't get events even when events are enabled.
-It isn't so clear to me though what happens if the watermark interrupt isn't
-enabled during buffered reads.
+-- 
+With Best Regards,
+Andy Shevchenko
 
-> +	if (!info)
-> +		return 0;
-> +
->  	/* map the interrupt to the appropriate pins */
->  	ret = regmap_update_bits(data->regmap, info->map_reg, info->map_bitmask,
->  				 (state ? info->map_bitmask : 0));
 
 

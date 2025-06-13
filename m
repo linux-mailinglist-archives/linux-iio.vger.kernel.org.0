@@ -1,248 +1,351 @@
-Return-Path: <linux-iio+bounces-20586-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20587-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23522AD8B38
-	for <lists+linux-iio@lfdr.de>; Fri, 13 Jun 2025 13:52:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C43BAAD8C62
+	for <lists+linux-iio@lfdr.de>; Fri, 13 Jun 2025 14:45:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 658753BDB1C
-	for <lists+linux-iio@lfdr.de>; Fri, 13 Jun 2025 11:49:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF7F5188E464
+	for <lists+linux-iio@lfdr.de>; Fri, 13 Jun 2025 12:45:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FFA72D5C88;
-	Fri, 13 Jun 2025 11:43:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64A42DDD3;
+	Fri, 13 Jun 2025 12:44:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tdk.com header.i=@tdk.com header.b="Jv8B1YW2"
+	dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b="cliDQcz+"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx0a-00549402.pphosted.com (mx0a-00549402.pphosted.com [205.220.166.134])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDFBB275B16;
-	Fri, 13 Jun 2025 11:43:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.166.134
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749815018; cv=fail; b=oFNGiJptqLB4MlEGb4BLRKAcHmSf2h/DN+rfjsP7eih/rg3qH1vH0YaJSnFJPWkTSH4AoZe+GxhuTG3gnDQUU+Nl1Kn2kekEqyzz8fDVKJKBYy8Q+FmuobsxbVJeFkcCjZl99fb/PSd74/Zmu2wQwlMRQZ4KrjP1uUxMG474kpI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749815018; c=relaxed/simple;
-	bh=aru/dlEdD76M9Jua/7LjmTPDNg7lqx6t2Ya1zdPek68=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=PMHTsu7w410gJuIJyrXcDVa0YXq9QIKQIDnstsVt4E9Qoc1NfW12Th+/6/kvEpebGL2+8nmXCsWCcg0nE2AEaUETY1atRtgz8REDqVCb3sZpsfvDOSvvX28MQJEOACBT7iuH5/Y1nnzvy4TB2s8p2yPN01nf35jjYJXNp957WHA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tdk.com; spf=pass smtp.mailfrom=tdk.com; dkim=pass (2048-bit key) header.d=tdk.com header.i=@tdk.com header.b=Jv8B1YW2; arc=fail smtp.client-ip=205.220.166.134
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tdk.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tdk.com
-Received: from pps.filterd (m0233778.ppops.net [127.0.0.1])
-	by mx0b-00549402.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55CMNqZY002415;
-	Fri, 13 Jun 2025 11:43:04 GMT
-Received: from beup281cu002.outbound.protection.outlook.com (mail-germanynorthazon11010023.outbound.protection.outlook.com [52.101.169.23])
-	by mx0b-00549402.pphosted.com (PPS) with ESMTPS id 474bt34wmq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 13 Jun 2025 11:43:03 +0000 (GMT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=xNbiuSPFenKpliJEBlFqsrETVP6AF1O9P50iAx6ee+HllzYi69Bz0rV/WIWis4ZsJGVParq9RGio+VJWTtfnxlIeKpiNrVSBY5ycAu8T8+bM6Kf1EQUtlePoc5oSQZybwvLVdEtJy0CGrAJTur8O7XC5OemXHu12cbyz4W0Vfiv2gMs1tJp/UaTATQojgZexat1ik1NFQ+jH5s4nTbFW6mwEYSJ2bI1amnRwX5/Qoo3r/quUCeO8CzCPw4FVHhmRabVAkXgIbq2zKlIseAPmCCJNICxfWsorkj6Wg0Mv8RQtmmkhYRghVCJe73NtFRch2OfmlFA0eXV0IdaHMNcpZA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7OLwnC/arTvBmau9X2hAh/Y1cBzuGAvdbmQtXNKO8R4=;
- b=maSe0sSdMu+0ML2Q5msrgQF0wevOIg1W0NKegQo+eY50PMwYefFR/52EjVCk7AouakmYl7zbj7QK9RcYm0hZo3ySb61ychvYCO1zTYQWu+/O5FWGyii7VsT4dgF1CRYFpFf0ttlD8p+Y1g38rI/dMdy4vMauyHA84LRtOpftnHp+IUip0O40Z+QM0GcXoSGh3Cosli61W9rQvLng6cUJ86OoBfEV1N38IZ0SsPDeFCZDTXnHFLsONc79x9WGBsWAHVsKIR94HdRoGUWZUUCBjnSvSos22nFqUbfcXnktnMAScPVoMETt78xZPoY/wLenKSfI2VUKmPsEy4XcVRBqmw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=tdk.com; dmarc=pass action=none header.from=tdk.com; dkim=pass
- header.d=tdk.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tdk.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7OLwnC/arTvBmau9X2hAh/Y1cBzuGAvdbmQtXNKO8R4=;
- b=Jv8B1YW2gxCMcCqUSfAzHNXT8MiqPQA+aefkDMX+8VYu3O6DwdlNmecBClUsmcKYus8YQRMe+JtRGixK2sB79vM8iLyms/G4doXWKcyE6z8EGPQtfy9ZMHQJT+sJSKcU3Dbrsn6wH6a+eVX8vI8F5/Fag7yvoaE5Xasa97zK4w1YQcVWa17IkGFkz034lChLQFUY90PQlmnAtL7xX/NNo6c5UCJHbM+YVIyD5qocrPGgLb/duYjbqwOrP9embAzMmJVfma7g7U8AOrMH54cKraqbAOhjaoKLYOyqZnMMGzs/91aSIyqwBSe7YBM/HooFG477KTrZPDq8Nug4I1ZwhA==
-Received: from FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM (2603:10a6:d10:7c::11)
- by BEZP281MB2643.DEUP281.PROD.OUTLOOK.COM (2603:10a6:b10:72::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8835.25; Fri, 13 Jun
- 2025 11:42:58 +0000
-Received: from FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM
- ([fe80::53a6:70d:823f:e9ac]) by FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM
- ([fe80::53a6:70d:823f:e9ac%4]) with mapi id 15.20.8835.023; Fri, 13 Jun 2025
- 11:42:57 +0000
-From: Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>
-To: Andy Shevchenko <andriy.shevchenko@intel.com>
-CC: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
-        David Lechner <dlechner@baylibre.com>,
-        =?iso-8859-1?Q?Nuno_S=E1?=
-	<nuno.sa@analog.com>,
-        Andy Shevchenko <andy@kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v4 2/2] iio: imu: inv_icm42600: add wakeup functionality
- for Wake-on-Motion
-Thread-Topic: [PATCH v4 2/2] iio: imu: inv_icm42600: add wakeup functionality
- for Wake-on-Motion
-Thread-Index: AQHb3DWhBLWb+8kRKUSVrXddNTem17QAwqgAgAA1S3A=
-Date: Fri, 13 Jun 2025 11:42:57 +0000
-Message-ID:
- <FR3P281MB1757C7DAF6FCF90E117AF45DCE77A@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
-References:
- <20250613-losd-3-inv-icm42600-add-wom-support-v4-0-7e5f554201bf@tdk.com>
- <20250613-losd-3-inv-icm42600-add-wom-support-v4-2-7e5f554201bf@tdk.com>
- <aEvh2My32K9us0Tc@smile.fi.intel.com>
-In-Reply-To: <aEvh2My32K9us0Tc@smile.fi.intel.com>
-Accept-Language: en-US, fr-FR
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: FR3P281MB1757:EE_|BEZP281MB2643:EE_
-x-ms-office365-filtering-correlation-id: 740b8487-c22c-46fd-0523-08ddaa6f7163
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|10070799003|1800799024|366016|376014|38070700018|3613699012;
-x-microsoft-antispam-message-info:
- =?iso-8859-1?Q?JWuGlEopxVNoRXGG8SR9copyz/kutFtlQoBtKgERLGzSmO75mt6ZnsA4mC?=
- =?iso-8859-1?Q?xN0fY+lykZZmrI1wyc73o8SR6lMFQNWdw5U8rucowc2QfZLLdSLTpwQjrs?=
- =?iso-8859-1?Q?ldjq6SuqVXe7JNswYEtmnLdpI2P0JGNBmGifnpJ8bFZ/L4m+D5J5zdxAyU?=
- =?iso-8859-1?Q?QssDQitEeeb2w3z4xoKVBbvFAEm0ilTLaBF8tTUUW3+BWWLVWJO6Nd5MLd?=
- =?iso-8859-1?Q?aGuHscvyk2N1uxCI6UVoU6CXbDHTNi2mqo57xv+/8xeRZL+3M9qe5Yrc2r?=
- =?iso-8859-1?Q?Vxe+EGwunE2IjfBHSO+OgQDEXtrJ8GhuT8j3bBK3vMlea1Fmf3Fsgqwqn7?=
- =?iso-8859-1?Q?kEGzQ5SLEdV8HKEwHl9O5qVlo5u2OwaZMNbiOTdlNu9X4xIxauAZdbO3wF?=
- =?iso-8859-1?Q?uBBWhhIjQ931Fp6J6bwnKmd/DCSUjOraDMwtNt5Qbtt2eki3NnmXeKl4M6?=
- =?iso-8859-1?Q?UsXDYY6TWOZwJNuPxDINHoYUlePxXoCyEI6koVPOb0AbDZ0exwwGg4wHDr?=
- =?iso-8859-1?Q?oTssEoBNwhMjrHk16wEkQDQQnl+UtT7IliaZuUdYiJJafEIhGeZw1St1y5?=
- =?iso-8859-1?Q?UwXGSu6lcNiSGrOkXPNf5B/3NrqS2FNZUDQkhlzEM9WdB94Iy6VfSYW8Xh?=
- =?iso-8859-1?Q?YfPCdC53zHtJTdpKp2XkFWQNM99yiiVrWVHPT9rBIn9sOk5+co0C3TtEuF?=
- =?iso-8859-1?Q?mgxuCRjYfVCRk1QFem1m/lOoedwAtTEziMklQyX3ttO01xf7OByLs/nv1n?=
- =?iso-8859-1?Q?A2TwEHtn3Be3THpaS85xCVUXQ2PmhSdIaCd6Ijhb2vlhCM/U5Oyw5ULHI+?=
- =?iso-8859-1?Q?XiC083DnqaHSkTCEkGxIL8rTeaziLiSIPjmqtIRaOB8PkbXJlkJHvpkYuA?=
- =?iso-8859-1?Q?mgS90k5ARjQc6g5xQ/NUEZBiG4WqCO8wV6I8u7CTe7x3HSW23Yzz3AsLek?=
- =?iso-8859-1?Q?bDiXNje76yN9yY/dD7mIutffn6bpa5Fcl9QI1NlNcezwEe/9C7RlgA+IPy?=
- =?iso-8859-1?Q?GyXSkc39Eh3vrmNxRgddiWDO5AL+mndQ7hkFW7F18SjTsUXubTDzvaNbso?=
- =?iso-8859-1?Q?bASRqAGBTDP++h7lRkfnp3ahEYmqdlQ7N4BKALXY3P+vyY+47Ipcb2QTlg?=
- =?iso-8859-1?Q?Nlj2RaScHOZi59vk/dF0Pwar2ySiX1rS0LyL/7oYQr7NLyJ1vcm5vxrmyq?=
- =?iso-8859-1?Q?GziXmOKpUD8NnJoJwwzJWzlhh78B3QwcvJ2HbAbncfLTZY+0jcGUqgFTKA?=
- =?iso-8859-1?Q?p1Fwrq2K6xoBZG99cPq0r/MmdHqqbWXHKhrFuFnvn1xUnWRC9ASOJR+Ta6?=
- =?iso-8859-1?Q?dl9qXwY1SCOBVrYx7VUrshPTW5NmO3RcO/lqczVE3Ra/0UT+wZcoHjPc9w?=
- =?iso-8859-1?Q?k/0o2wrjZ+mTkLIeOAX1NkhQGvhJfZC26r7BiwvXNr4tFa2JRqYdlJWohK?=
- =?iso-8859-1?Q?m3WMK0l3oCBYKMuuwhcwZmyfnPpHWuI7S/eg6IvL7cI0h2IxPd7FYgv57a?=
- =?iso-8859-1?Q?QoxOAPQfllKUkMFRuVuYI6/q3O0cZKnRR9jEvEGKz9/uhp8fM5te3d4PNU?=
- =?iso-8859-1?Q?zZ1JiDWJMyliBdmW+eind6OOF3CK?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(1800799024)(366016)(376014)(38070700018)(3613699012);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?iso-8859-1?Q?CP8eSKzKKu4LrNKGKrelPudMqpqn6/69z+NUkvPMQE75P2QMZonuSDJEPt?=
- =?iso-8859-1?Q?7KYNC4TGJDYZ6SAzzEI9/pAMNu1qCBdCcBsuCi0m7ucWqB7ME4C2ARlZGx?=
- =?iso-8859-1?Q?/mxj98fNNdP8iqQHaBP4cln1xGSNaLy+pmI7AHEKtoxsWGENl56u/mdDbs?=
- =?iso-8859-1?Q?c3mD643T05ueDFhZAVOc44yyCgkhupta2KmXyU9M3NP/ObHF8vA5vzkENQ?=
- =?iso-8859-1?Q?r42pdYlgDVeRsIFofs8yiIC5l2QREontkReQaoENITn9XXkpiYWYNRGvn4?=
- =?iso-8859-1?Q?DvF8V5u1pILv4AJmJLoh4TfjkdQB/g3xjq5J4FRueCH/K1vNuXqG/1NRV3?=
- =?iso-8859-1?Q?OwnuRF0biQGxFUv4FWm/PySw4Pzn2n0ZNJpprGCfXxrbZHZY+QN7ocbhU5?=
- =?iso-8859-1?Q?lofdqFWjrFKFhfo4VCgW/6UKR819A+jdUIGE4E2L2Kc6IbIN8GavIScFVv?=
- =?iso-8859-1?Q?w0n/n/54DxIH3OqsN/wLmny34mnny+NnisIU4XpHnqGq+1ahjPR+gqSvBB?=
- =?iso-8859-1?Q?v39q+BpPkUgwPuNUKQ/q8MSfB1uEibNZks/2/8xMne8Bz5Oyh1IzWH2Iby?=
- =?iso-8859-1?Q?zp2BmfMlRhKhWVAVD/B1X7EGnIvn160wGQqWmj0oPEytuv21k09ZvhLW/D?=
- =?iso-8859-1?Q?prdomnTpCVzyN89HP7sroBJ2JUdhndaMydr1wdIuiFgZ6ngN33hWsy+EI0?=
- =?iso-8859-1?Q?46U50UCZHQ+bGpBF1bNH5J0wEIskpUKRzM2Dx8eOG5h7+87AQRwBckTEQW?=
- =?iso-8859-1?Q?xLSTDvMoln2tkjZTwRoWi4nwbZxULY6QmZ0m0gW1TC0y+qzW2azu3EW50J?=
- =?iso-8859-1?Q?wRhTVnf0tYfSw+AVAZ9lZg/1rAMbF4Cy/dHOGa+4C4I7J4z9NlEG9e+mR4?=
- =?iso-8859-1?Q?mjXIJuF0ANvnO1rbmY6F2iK91b7JqW05hcqQyYe/JMQNHhQaP9IVliNIlN?=
- =?iso-8859-1?Q?NyKJ/QxyPaD2eNednEHp1ykOA8mpkE4TE+byurPK+cWz3yka9fA6uSaXT5?=
- =?iso-8859-1?Q?h5nxa13ZLWUC2sMBJQGVIlBm5ev99EkoRL7meiP4HS3yJCkrm+l0d+1Mvh?=
- =?iso-8859-1?Q?thvuOylBF+RZK7caac4DZVusjfwVOu+W7qAiCjDmIn4djmq87vaG76zwup?=
- =?iso-8859-1?Q?kI2tUkp0ltr+eFAllqT11Oyd+SjWEv24SYqcXhzFxxueTND7gymwL8Rle8?=
- =?iso-8859-1?Q?Jz4CvTRSulkyZzaD+9WbNkBWbfdhyZxWdjwlKJEBcMwieLswR8nSShybtF?=
- =?iso-8859-1?Q?IA8DpXTYxPXR7YyQRvQuonnamfQykZsgSIDBdVqYeU4EDtdbZ9j+Ibyb4f?=
- =?iso-8859-1?Q?XerYrpuHZYPXNPPKDNfzCl5BUVsk2aW9Y0G9vx9rVPWHmGc7YqAI2E6NcG?=
- =?iso-8859-1?Q?Teb/TxLC/a0vvnyZcPjcTo1DeESyi2Vkijw81KivQ+zaTjP2ATh/GtJGxU?=
- =?iso-8859-1?Q?XW5WsxhjDYOeFD7Yt2Z6b8hta6UpLBNWT0G09HNCMlOEFgaxZKJ2BlKGRY?=
- =?iso-8859-1?Q?TqVtHJd22lQs02V3St4iR5ontVmeOYo6nOSBwAD25VtSvXM6VDKHJSVjyg?=
- =?iso-8859-1?Q?2YHhxrlNUrr9qf9x4UZ9Rp7W++fquqHBEpXnMSaVaxXyPjlwO+X1t4P72J?=
- =?iso-8859-1?Q?Syf5yT2nSoSj1+29nqdJSKJk24LklJTdML8l0ScGbu+ypHYEv0/9mqQo/R?=
- =?iso-8859-1?Q?JfHiTSaC374nTtizSFIkbKo+dlgUmwHHVLU385MHVzr58VMWDwLqm8LG9h?=
- =?iso-8859-1?Q?N4sA=3D=3D?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3D064C97
+	for <linux-iio@vger.kernel.org>; Fri, 13 Jun 2025 12:44:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1749818692; cv=none; b=L15flmyAtQJqV5i3+VKSmrFLCsElIxg6xV+qjep9CsI1K71QYM29gyEH44b4rNJzDHCD3RX8YGszVAGph16kQ/RuOsInQWmW+qOUCbmndoBBuPZUUDH7W0wiPB8NDySTLeNg4F9LQCmbxmwyTPoYmFWifTM937BJRJvlLOe8ViA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1749818692; c=relaxed/simple;
+	bh=VweSG6fdUtHODRk9Mn4GQFkswmVd6nP2SUPa54kMECE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=GYlhL6g2ShHPi48fYzSjD660C0gR0vyoSso899mLD+3El6pyzrsDKMWUmddMTbDMuVqwsahP4gksDo/rBusp0pR9j676aSf52cDsXoi/I/1TAwjoghy3gAg2mwfwq8rKZwH7fyr/5RfLqn1Cr1xvh0yhZoKNdHvi10TbLhl+OrM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev; spf=pass smtp.mailfrom=tuxon.dev; dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b=cliDQcz+; arc=none smtp.client-ip=209.85.218.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tuxon.dev
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-adf34d5e698so52926266b.1
+        for <linux-iio@vger.kernel.org>; Fri, 13 Jun 2025 05:44:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=tuxon.dev; s=google; t=1749818687; x=1750423487; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=OPoL5EqHG6bXenIrDxuxxRFrFkbnUI2271AFY3JaR4M=;
+        b=cliDQcz+YeiAh3r84L5a1Gof9DmXkkuzRrvxMBr9wuH8GlRqvnO0BgxWq1GoCjif5I
+         1+7ZSQyK6r8gxHNtd1gcpRz/lWSIN0D1npqUCsLozwEIUR3DZFToIBitw+kOt0KnRzp/
+         h/TAKB4MopMT9qQeLPwnt8A+c19FmmIdQB7UCpIEdG5BH6UhxYxVAcmxUuzSswtfGr28
+         uCgqOhqDCV44r5XzIcUlINOeGmDtOZLYfX6P5vJPRDg6/32OUGfCJobbq4GmePDM+xQZ
+         0G1hxTpitnn9GmHNH4JbZJSpxp2tODOlMSpoDW/iOtT2oN8SJShcYXS0dT5OecygHtSi
+         TAqw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749818687; x=1750423487;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=OPoL5EqHG6bXenIrDxuxxRFrFkbnUI2271AFY3JaR4M=;
+        b=KX+tuQYhM8g9yaXsMshnkKKvr7RwdC58ae2aj1H5vEWbq43kQWfGikob9OLlnUaJjf
+         4xKipaWbKZKvuGaYIDQrr5fio/oavtF0LXTHncIvpfXT/WYA7KYA0wrqDTVznNWqRWiT
+         8a0Oa4Z5WUdxq5dk9GgP6JIX40rEVzzVlvgtStasdW2C/c/3/FrAkjQdPCJV5L2PhnOq
+         Kuy3SX1ZtBw+rXMkV3uxNdP+dLXcHcJTqRHOJRc59BefWuN0zAo0VK3y8PgwxKdpDI3O
+         tVEUV6n1blRc5VFWsVVh00lfnSKdRBkRX1u+ooR0N5t/Yp8ILyx88xBKq9YLRtU+smEM
+         bQPg==
+X-Forwarded-Encrypted: i=1; AJvYcCV11DoON8BA1XA09jKd3uts17Z8uuXEbzWU4Gx/6ARr61rFR6eFRzO6+J+NsxJokaUX3sBs3MblMMI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz8wN2eB34TtoDjROdsbHLtjZTxk4jAAeLgDN4q8XjF5PlXynoO
+	rIC/CJu9U9Wum4RcausUF9sTcZERlApxjRCc/daA0rVe2T+SYoFGu22SoIbIIWh92XQ=
+X-Gm-Gg: ASbGncvQ0O0G9fajWQ21qpmKAo52e6bu7i48J5qTNevBbDW6YLnudeZ9U5imsf1WKRu
+	6JRnUID0XaVPwdzQgb5oI0wFrPmUD37MMqSsNjs09M9BLJPPL8uxoUrvyrOsS1YsaljQVMR23BM
+	v3eFjoihwzKdpHGJ+ZBZPCeVYVoTCNs+eHvAjWeItAV3LSDOPO+LLeqNxFVrZXX7NGvJaJs/VEV
+	Y77+OXsxBuvior7FlGnZauNTJBwvniIzYoGrmJzMvyvsB7eRetBloVWsmDzcRisAdTVxJohufXr
+	0V6HTvR5c/QYn1wTC3ZE+wRo0AFHMGXCAbNpY4sK68wvwkTgBS7xyJIJduFo5kodn3jj+u0=
+X-Google-Smtp-Source: AGHT+IEiOZ0oxH8aXFWS+MvfSPyWsV0mO2uHgvxgbLa+Cyk0b3UYBQ8VV7zStzG6pYcuXbm734Rh7w==
+X-Received: by 2002:a17:907:6eab:b0:aca:d29e:53f1 with SMTP id a640c23a62f3a-adf54522af0mr59623666b.12.1749818687155;
+        Fri, 13 Jun 2025 05:44:47 -0700 (PDT)
+Received: from [192.168.50.4] ([82.78.167.110])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-adec81c1f04sm124000366b.54.2025.06.13.05.44.45
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 13 Jun 2025 05:44:46 -0700 (PDT)
+Message-ID: <cd049cfa-60da-4607-ad5f-6565d3d0fb8e@tuxon.dev>
+Date: Fri, 13 Jun 2025 15:44:44 +0300
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: tdk.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 740b8487-c22c-46fd-0523-08ddaa6f7163
-X-MS-Exchange-CrossTenant-originalarrivaltime: 13 Jun 2025 11:42:57.6395
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 7e452255-946f-4f17-800a-a0fb6835dc6c
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 3tqkcTzqrnlQ5+UyHBXchZnu0KuBS0kEBkzoLzCiD+4aPEL47N6oB5iUhRDpGJwV/355RXVW8DXSvjcDuoUqaydokglymgcE1IhVmF6W9Nk=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BEZP281MB2643
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjEzMDA4NSBTYWx0ZWRfX5u6Ug9N2YeGP
- 5VFmLsIc3pu80yBSu9hOeRFTgAS9WtecihwOeBKachEJJEkPbFrBhwxQWowMYqEv26j9Bo5dK0p
- hRO8oD7LUPtYqzRQPCMZEjrEeaWG17WQM9YbdUiz8Vw1f6zfviSpgpnW98chipvi9azHfeMOYrh
- 092tWtweWxi8N1uijMAXoqULWzgfZQXOq1e3uk5yyZ6qU2GywH3nRTtkIYUEwH5wvPjVAJI45qF
- c5LJzXv7AuFiIMHWgKGJFY5dpNfE0wiX7PGzPuQ/tQPZ7Wozzz6O0juWZ+605RSAVh7fTdfGI/3
- GuUk8YTLlN5F6XqRWH9+V1QZxZBNU07phH2RUP2jPI47XGGJ2M8a6XColBltO3JAoAkJO23imJg
- qZ6ZCc2kZrCdzsBNXQqLG3byPLSg6iNltV1MFc6o65Rz4DJU9oRPtPH3Wi5Dz8CJM/LGanzC
-X-Proofpoint-GUID: w3NwGgKJURbHlKfBoGheq0QLBkpiu_Ec
-X-Authority-Analysis: v=2.4 cv=Fas3xI+6 c=1 sm=1 tr=0 ts=684c0ec7 cx=c_pps
- a=6MffHZHjCM9XE9olRgKZ0A==:117 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19
- a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19
- a=xqWC_Br6kY4A:10 a=8nJEP1OIZ-IA:10 a=6IFa9wvqVegA:10 a=Uwzcpa5oeQwA:10
- a=QyXUC8HyAAAA:8 a=In8RU02eAAAA:8 a=VwQbUJbxAAAA:8 a=IpJZQVW2AAAA:8
- a=gAnH3GRIAAAA:8 a=6yoErSXb8f44zbpSRBEA:9 a=wPNLvfGTeEIA:10
- a=EFfWL0t1EGez1ldKSZgj:22 a=IawgGOuG5U0WyFbmm1f5:22
-X-Proofpoint-ORIG-GUID: w3NwGgKJURbHlKfBoGheq0QLBkpiu_Ec
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-06-13_01,2025-06-12_02,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0
- bulkscore=0 phishscore=0 impostorscore=0 malwarescore=0 lowpriorityscore=0
- adultscore=0 spamscore=0 suspectscore=0 clxscore=1011 mlxlogscore=999
- priorityscore=1501 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2506130085
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/2] PM: domains: Add devres variant for
+ dev_pm_domain_attach()
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Jonathan Cameron <jic23@kernel.org>,
+ Dmitry Torokhov <dmitry.torokhov@gmail.com>, gregkh@linuxfoundation.org,
+ dakr@kernel.org, len.brown@intel.com, pavel@kernel.org,
+ ulf.hansson@linaro.org, daniel.lezcano@linaro.org,
+ linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org, bhelgaas@google.com,
+ geert@linux-m68k.org, linux-iio@vger.kernel.org,
+ linux-renesas-soc@vger.kernel.org, fabrizio.castro.jz@renesas.com,
+ Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+References: <20250606111749.3142348-1-claudiu.beznea.uj@bp.renesas.com>
+ <20250606111749.3142348-2-claudiu.beznea.uj@bp.renesas.com>
+ <CAJZ5v0i_Ey+OVpSZHXru=tubMaZi=y-uOh_0M6zmWZ2DqqA7Vg@mail.gmail.com>
+ <zhjytvj35lknj7v3jhva3n3nbv6qctvqgykwyi5huj6omet7lz@wchd7f4p4dpv>
+ <CAJZ5v0hsT-Q2hz=qoBo409oungaCmexJwwGheN7KRLFqz=6_Dw@mail.gmail.com>
+ <20250607140600.76e87ea5@jic23-huawei>
+ <CAJZ5v0jqZ6gYKb85dpR-X5RwFeUBcbbcJ_b-AOe+JypBXod-MA@mail.gmail.com>
+ <486a1110-5336-42fd-82b8-a7b1452bad65@tuxon.dev>
+ <CAJZ5v0hqBm4L2V9aUjB0tmW67eRRCnM7FScgdJQ=ihnpAZuMfA@mail.gmail.com>
+From: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+Content-Language: en-US
+In-Reply-To: <CAJZ5v0hqBm4L2V9aUjB0tmW67eRRCnM7FScgdJQ=ihnpAZuMfA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
->=0A=
->________________________________________=0A=
->From:=A0Andy Shevchenko <andriy.shevchenko@intel.com>=0A=
->Sent:=A0Friday, June 13, 2025 10:31=0A=
->To:=A0Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>=0A=
->Cc:=A0Jonathan Cameron <jic23@kernel.org>; Lars-Peter Clausen <lars@metafo=
-o.de>; David Lechner <dlechner@baylibre.com>; Nuno S=E1 <nuno.sa@analog.com=
->; Andy Shevchenko <andy@kernel.org>; linux-iio@vger.kernel.org <linux-iio@=
-vger.kernel.org>; linux-kernel@vger.kernel.org <linux-kernel@vger.kernel.or=
-g>=0A=
->Subject:=A0Re: [PATCH v4 2/2] iio: imu: inv_icm42600: add wakeup functiona=
-lity for Wake-on-Motion=0A=
->=A0=0A=
->This Message Is From an External Sender=0A=
->This message came from outside your organization.=0A=
->=A0=0A=
->On Fri, Jun 13, 2025 at 09:34:27AM +0200, Jean-Baptiste Maneyrol via B4 Re=
-lay wrote:=0A=
->> From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>=0A=
->> =0A=
->> When Wake-on-Motion is on, enable system wakeup and keep the chip on=0A=
->> for waking up the system with an interrupt.=0A=
->=0A=
->...=0A=
->=0A=
->> +	/* accel events are wakeup capable */=0A=
->> +	devm_device_init_wakeup(&indio_dev->dev);=0A=
->=0A=
->No checking for return code? Why is it okay? This needs a really good comm=
-ent,=0A=
->and even better a (info / debug) message when it fails if it's not a fatal=
-=0A=
->error.=0A=
-=0A=
-Sorry, just forgot. I will add it in v5.=0A=
-=0A=
->=0A=
->-- =0A=
->With Best Regards,=0A=
->Andy Shevchenko=0A=
->=0A=
->=0A=
->=
+Hi, Rafael,
+
+On 13.06.2025 13:02, Rafael J. Wysocki wrote:
+> On Fri, Jun 13, 2025 at 9:39 AM Claudiu Beznea <claudiu.beznea@tuxon.dev> wrote:
+>>
+>> Hi, Rafael,
+>>
+>> On 09.06.2025 22:59, Rafael J. Wysocki wrote:
+>>> On Sat, Jun 7, 2025 at 3:06 PM Jonathan Cameron <jic23@kernel.org> wrote:
+>>>>
+>>>> On Fri, 6 Jun 2025 22:01:52 +0200
+>>>> "Rafael J. Wysocki" <rafael@kernel.org> wrote:
+>>>>
+>>>> Hi Rafael,
+>>>>
+>>>>> On Fri, Jun 6, 2025 at 8:55 PM Dmitry Torokhov
+>>>>> <dmitry.torokhov@gmail.com> wrote:
+>>>>>>
+>>>>>> On Fri, Jun 06, 2025 at 06:00:34PM +0200, Rafael J. Wysocki wrote:
+>>>>>>> On Fri, Jun 6, 2025 at 1:18 PM Claudiu <claudiu.beznea@tuxon.dev> wrote:
+>>>>>>>>
+>>>>>>>> From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+>>>>>>>>
+>>>>>>>> The dev_pm_domain_attach() function is typically used in bus code alongside
+>>>>>>>> dev_pm_domain_detach(), often following patterns like:
+>>>>>>>>
+>>>>>>>> static int bus_probe(struct device *_dev)
+>>>>>>>> {
+>>>>>>>>     struct bus_driver *drv = to_bus_driver(dev->driver);
+>>>>>>>>     struct bus_device *dev = to_bus_device(_dev);
+>>>>>>>>     int ret;
+>>>>>>>>
+>>>>>>>>     // ...
+>>>>>>>>
+>>>>>>>>     ret = dev_pm_domain_attach(_dev, true);
+>>>>>>>>     if (ret)
+>>>>>>>>         return ret;
+>>>>>>>>
+>>>>>>>>     if (drv->probe)
+>>>>>>>>         ret = drv->probe(dev);
+>>>>>>>>
+>>>>>>>>     // ...
+>>>>>>>> }
+>>>>>>>>
+>>>>>>>> static void bus_remove(struct device *_dev)
+>>>>>>>> {
+>>>>>>>>     struct bus_driver *drv = to_bus_driver(dev->driver);
+>>>>>>>>     struct bus_device *dev = to_bus_device(_dev);
+>>>>>>>>
+>>>>>>>>     if (drv->remove)
+>>>>>>>>         drv->remove(dev);
+>>>>>>>>     dev_pm_domain_detach(_dev);
+>>>>>>>> }
+>>>>>>>>
+>>>>>>>> When the driver's probe function uses devres-managed resources that depend
+>>>>>>>> on the power domain state, those resources are released later during
+>>>>>>>> device_unbind_cleanup().
+>>>>>>>>
+>>>>>>>> Releasing devres-managed resources that depend on the power domain state
+>>>>>>>> after detaching the device from its PM domain can cause failures.
+>>>>>>>>
+>>>>>>>> For example, if the driver uses devm_pm_runtime_enable() in its probe
+>>>>>>>> function, and the device's clocks are managed by the PM domain, then
+>>>>>>>> during removal the runtime PM is disabled in device_unbind_cleanup() after
+>>>>>>>> the clocks have been removed from the PM domain. It may happen that the
+>>>>>>>> devm_pm_runtime_enable() action causes the device to be runtime-resumed.
+>>>>>>>
+>>>>>>> Don't use devm_pm_runtime_enable() then.
+>>>>>>
+>>>>>> What about other devm_ APIs? Are you suggesting that platform drivers
+>>>>>> should not be using devm_clk*(), devm_regulator_*(),
+>>>>>> devm_request_*_irq() and devm_add_action_or_reset()? Because again,
+>>>>>> dev_pm_domain_detach() that is called by platform bus_remove() may shut
+>>>>>> off the device too early, before cleanup code has a chance to execute
+>>>>>> proper cleanup.
+>>>>>>
+>>>>>> The issue is not limited to runtime PM.
+>>>>>>
+>>>>>>>
+>>>>>>>> If the driver specific runtime PM APIs access registers directly, this
+>>>>>>>> will lead to accessing device registers without clocks being enabled.
+>>>>>>>> Similar issues may occur with other devres actions that access device
+>>>>>>>> registers.
+>>>>>>>>
+>>>>>>>> Add devm_pm_domain_attach(). When replacing the dev_pm_domain_attach() and
+>>>>>>>> dev_pm_domain_detach() in bus probe and bus remove, it ensures that the
+>>>>>>>> device is detached from its PM domain in device_unbind_cleanup(), only
+>>>>>>>> after all driver's devres-managed resources have been release.
+>>>>>>>>
+>>>>>>>> For flexibility, the implemented devm_pm_domain_attach() has 2 state
+>>>>>>>> arguments, one for the domain state on attach, one for the domain state on
+>>>>>>>> detach.
+>>>>>>>
+>>>>>>> dev_pm_domain_attach() is not part driver API and I'm not convinced at
+>>>>>>
+>>>>>> Is the concern that devm_pm_domain_attach() will be [ab]used by drivers?
+>>>>>
+>>>>> Yes, among other things.
+>>>>
+>>>> Maybe naming could make abuse at least obvious to spot? e.g.
+>>>> pm_domain_attach_with_devm_release()
+>>>
+>>> If I'm not mistaken, it is not even necessary to use devres for this.
+>>>
+>>> You might as well add a dev_pm_domain_detach() call to
+>>> device_unbind_cleanup() after devres_release_all().  There is a slight
+>>> complication related to the second argument of it, but I suppose that
+>>> this can be determined at the attach time and stored in a new device
+>>> PM flag, or similar.
+>>>
+>>
+>> I looked into this solution. I've tested it for all my failure cases and
+>> went good.
+> 
+> OK
+> 
+>>> Note that dev->pm_domain is expected to be cleared by ->detach(), so
+>>> this should not cause the domain to be detached twice in a row from
+>>> the same device, but that needs to be double-checked.
+>>
+>> The genpd_dev_pm_detach() calls genpd_remove_device() ->
+>> dev_pm_domain_set(dev, NULL) which sets the dev->pm_domain = NULL. I can't
+>> find any other detach function in the current code base.
+> 
+> There is also acpi_dev_pm_detach() which can be somewhat hard to find,
+> but it calls dev_pm_domain_set(dev, NULL) either.
+
+Thank you for the pointer.
+
+> 
+>> The code I've tested for this solution is this one:
+>>
+>> diff --git a/drivers/base/dd.c b/drivers/base/dd.c
+>> index b526e0e0f52d..5e9750d007b4 100644
+>> --- a/drivers/base/dd.c
+>> +++ b/drivers/base/dd.c
+>> @@ -25,6 +25,7 @@
+>>  #include <linux/kthread.h>
+>>  #include <linux/wait.h>
+>>  #include <linux/async.h>
+>> +#include <linux/pm_domain.h>
+>>  #include <linux/pm_runtime.h>
+>>  #include <linux/pinctrl/devinfo.h>
+>>  #include <linux/slab.h>
+>> @@ -552,8 +553,11 @@ static void device_unbind_cleanup(struct device *dev)
+>>         dev->dma_range_map = NULL;
+>>         device_set_driver(dev, NULL);
+>>         dev_set_drvdata(dev, NULL);
+>> -       if (dev->pm_domain && dev->pm_domain->dismiss)
+>> -               dev->pm_domain->dismiss(dev);
+>> +       if (dev->pm_domain) {
+>> +               if (dev->pm_domain->dismiss)
+>> +                       dev->pm_domain->dismiss(dev);
+>> +               dev_pm_domain_detach(dev, dev->pm_domain->detach_power_off);
+> 
+> I would do the "detach" before the "dismiss" to retain the current ordering.
+
+OK.
+
+> 
+> Also it is interesting that you ended up calling them both in one
+> place.  It kind of indicates that the PM domains attached via
+> dev_pm_domain_attach() should be attached earlier and just use the
+> ->activate() and ->dismiss() callbacks.
+> 
+>> +       }
+>>         pm_runtime_reinit(dev);
+>>         dev_pm_set_driver_flags(dev, 0);
+>>  }
+>> diff --git a/drivers/base/platform.c b/drivers/base/platform.c
+>> index 075ec1d1b73a..2459be6aecf4 100644
+>> --- a/drivers/base/platform.c
+>> +++ b/drivers/base/platform.c
+>> @@ -1400,11 +1400,8 @@ static int platform_probe(struct device *_dev)
+>>         if (ret)
+>>                 goto out;
+>>
+>> -       if (drv->probe) {
+>> +       if (drv->probe)
+>>                 ret = drv->probe(dev);
+>> -               if (ret)
+>> -                       dev_pm_domain_detach(_dev, true);
+>> -       }
+>>
+>>  out:
+>>         if (drv->prevent_deferred_probe && ret == -EPROBE_DEFER) {
+>> @@ -1422,7 +1419,6 @@ static void platform_remove(struct device *_dev)
+>>
+>>         if (drv->remove)
+>>                 drv->remove(dev);
+>> -       dev_pm_domain_detach(_dev, true);
+>>  }
+>>
+>>  static void platform_shutdown(struct device *_dev)
+>> diff --git a/drivers/base/power/common.c b/drivers/base/power/common.c
+>> index 781968a128ff..4bd1e3c7f401 100644
+>> --- a/drivers/base/power/common.c
+>> +++ b/drivers/base/power/common.c
+>> @@ -111,6 +111,9 @@ int dev_pm_domain_attach(struct device *dev, bool power_on)
+>>         if (!ret)
+>>                 ret = genpd_dev_pm_attach(dev);
+>>
+>> +       if (dev->pm_domain)
+>> +               dev->pm_domain->detach_power_off = power_on;
+> 
+> This will not work for acpi_general_pm_domain because it is shared by
+> all of its users.
+> 
+> It is likely to not work for shared PM domains in general.
+> 
+> I would put the new flag into struct dev_pm_info.
+
+OK, I'll do it.
+
+Thank you for your input,
+Claudiu
+
+> 
+>> +
+>>         return ret < 0 ? ret : 0;
+>>  }
+>>  EXPORT_SYMBOL_GPL(dev_pm_domain_attach);
+>> diff --git a/include/linux/pm.h b/include/linux/pm.h
+>> index f0bd8fbae4f2..12e97e09e85c 100644
+>> --- a/include/linux/pm.h
+>> +++ b/include/linux/pm.h
+>> @@ -748,6 +748,7 @@ struct dev_pm_domain {
+>>         void (*sync)(struct device *dev);
+>>         void (*dismiss)(struct device *dev);
+>>         int (*set_performance_state)(struct device *dev, unsigned int state);
+>> +       bool detach_power_off;
+>>  };
+>>
+>> Rafael, Ulf, Dmitry, Jonathan, all,
+>>
+>> Could you please let me know how do you consider this approach?
+> 
+> Please see my comments above.
+> 
+> Thanks!
+
 

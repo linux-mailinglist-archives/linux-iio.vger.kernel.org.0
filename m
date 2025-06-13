@@ -1,159 +1,198 @@
-Return-Path: <linux-iio+bounces-20607-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20608-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F108EAD924C
-	for <lists+linux-iio@lfdr.de>; Fri, 13 Jun 2025 18:01:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE461AD926B
+	for <lists+linux-iio@lfdr.de>; Fri, 13 Jun 2025 18:05:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 916413B79CC
-	for <lists+linux-iio@lfdr.de>; Fri, 13 Jun 2025 15:57:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 78FED16C023
+	for <lists+linux-iio@lfdr.de>; Fri, 13 Jun 2025 16:03:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8772F1FCF78;
-	Fri, 13 Jun 2025 15:57:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 308E920B1F7;
+	Fri, 13 Jun 2025 16:03:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="IRz3QDl5"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="rwv58qo4"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f43.google.com (mail-oo1-f43.google.com [209.85.161.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ADF619FA93
-	for <linux-iio@vger.kernel.org>; Fri, 13 Jun 2025 15:57:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.186
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFD5F1FBE9B
+	for <linux-iio@vger.kernel.org>; Fri, 13 Jun 2025 16:03:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749830264; cv=none; b=e2ucKf9oldOHJp5H4TQESko5wiA6iVnKBihZDH8pIO/yGT0GcNijU+dbaV8zlLDxu9o0U1fTRqxAAhQEKkSZYFCK2H8n1dgsME9hfiklquSMGm3JG63klUqr+92PVju4Iu0OXxU5zCPz1/ZxnF1lMC8TTyPtP0Vp8CmvaFL5IEM=
+	t=1749830611; cv=none; b=bh2w1U43SB4MHIOWyRGQgUJKekfpUWo2VZuBqNh+y90yjtbcQlH2SlhU0KH4M7m7wlgBfTGr6kv01VPJBHuJarqhtzrhUebxG+eWAU8i5brL0MtDN0xGEF7Y9eao5IYPqBKk6Ht8wXxsMNpo/qfSgCNwD6mO1w/YsjVGVj++T5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749830264; c=relaxed/simple;
-	bh=0k0685jiPxrDvImAtuIYSnm0V/jmg0N9/cne/apm2Rw=;
+	s=arc-20240116; t=1749830611; c=relaxed/simple;
+	bh=gF8fryLDgUE7R04Y9/mL18frQKys+kanlKjViPMBr2g=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mIqU8+4VwWxakLZU7sNCZxETh+GB4RmBMupfJdr3RtSQ3Wr3wUa/uu2p+yK/5JQt2GtZCgTJk3I/Ggcx3hoXIHvFg3QyWPP3XrluyzdYQGs9x1z6c2u2XscIcRhr696XZZ73HcXXBNIzyLWfg4YiG+4GDHL2osJRvCoJeFmfyHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=IRz3QDl5; arc=none smtp.client-ip=91.218.175.186
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Message-ID: <f3160819-f6f4-4079-9562-802caa2fef20@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1749830260;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=27fXVhxsftq5EDoqBWvyXb7dA+Q8HBVNKfdnJWl2xe0=;
-	b=IRz3QDl5Oaf6RGCCivGPUThJ0GToGh3KlZtALUtgQYMqrgWJ+JZK2lZPIfeLG4Ne09vrs6
-	lRM43ovdJrUzgRco9Z9lLR3THckDkWE8OTIG/rXRKwdY6iCB/+Ag2fwNwNI9qKOi2VjhoH
-	+ByATj80xnUHOoEN2OPUX3JxHEPLOXU=
-Date: Fri, 13 Jun 2025 11:57:34 -0400
+	 In-Reply-To:Content-Type; b=s4aFh4NlE/kXkBrMrNcG+l4PgFxJPwxEiv32DY7dKd9pXsntUyTKE0WIfZdKRksns1DhCkhZqjY65gruFimlYVMNBZTMlACuzuJm0ia1trH5VP8312LtpCtFxkBUe3GocDSZmHfWmbAqNGyCNwNMd/4ewJDdq6+fRB+I+wbnLCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=rwv58qo4; arc=none smtp.client-ip=209.85.161.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oo1-f43.google.com with SMTP id 006d021491bc7-60d6303a11eso1226620eaf.0
+        for <linux-iio@vger.kernel.org>; Fri, 13 Jun 2025 09:03:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1749830608; x=1750435408; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=3w4DwQ7UKG+tZltk5EBs0uLUOBu/ZiYws0KL7s9WN3A=;
+        b=rwv58qo4n83JoPsWhczCiGTdjd7Yw91HumehZvkXWYVkebCdV3LCSp+SoJaDWT/t7A
+         YTlfr/vV6eOBYsmqfak8xLZkm3Ue4FeogKx4z14+Ap01MH+96O1bNp2rq96K1gx17Qiy
+         MsoXOHVfFkWcFem287dleU7p4Y0mHt5YZyK1ckgJNqiqUPCxVFIqQRdyokd2t6aS07kg
+         iYfodVce04X8SCzARZV3XO7Ms7PqrNX3QY8j65TQOtAOYMyVkulqj1cMLFm+0DR+oqU/
+         IRwLpacH45uN8GBdk/Y2XhKel6qhH3zx0CFhQkhcF+B4ajVjKQhMH/MqekO0X7JTZA72
+         Pl8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749830608; x=1750435408;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=3w4DwQ7UKG+tZltk5EBs0uLUOBu/ZiYws0KL7s9WN3A=;
+        b=NFAF4jHMArEkdEIWCM5eZ7EGNT5CPK3Cj/iDpTFq7z2tUolchNjoUppk8DVANA4fQM
+         qv9lEZ/jc5uVXBgVHuC5BR+JMh2pt5C9/StNiIOGai5ZD/kurC+hPTeOiPvyR2UHpUbw
+         h23q7oVuLjS7QxMA9Oh+PCElbm+Ai7vGQQTp/RMC7rsOt/dDGHxIznNU5DqrPRSy6eeR
+         eg/0hP0wkV07id3m6+JdSggn8ULWrhqgG31EHvSRSusMd2bjKtSshTlOU2Z2rrZjAWGk
+         mFUPHHhaPKzdI0zOBWeqvdteaZDtxQp2GbrlBVYxABx7pOdGUpAUK/zhrS5SZgm7kXut
+         4gNg==
+X-Forwarded-Encrypted: i=1; AJvYcCXYRoety3YWhTtV9Z3Hs/Cd3B/DYHUs+g4ABNQ5WGW2HZzU+vP21bWaPowlhjNeM7nsdcMj9z8RH+M=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywqc7ttMXEMEuSWKlY+polE8Hq1dJs7aabKdi9g9nVdiMAZ5PjM
+	Eg0g5BOyDxw7otbyPPvGVyc08yGQwUx2YBTfeeNg34HZkGeB4wRg4q6VZnUpgonLjIU=
+X-Gm-Gg: ASbGncsBIDSgnuRybIATxCKTnXAwkMONic/+hIfpFrbCZVVOha9UfK1WBHOH3puFMhN
+	azCSKCrk390GfRuodtpuYp98W4EZFaF0ia27FRxGAIj2k9TeTvQmcEyDxksCxrY74eM2oQH/nmr
+	Vq4rBOuUzpAhnL4dmY66gog6ERgROl8NQWI+K6g8wuATOPxc2EXrVKMbTXN+Ox75M3odo0Cf667
+	nCd7vTdQj7jpbbyWvryL12c+Mkg7azMblS7CFou+wM/oHvTblWIAgd6Oio38DREAgd/Q4wQKb7U
+	hUPK+sXgyGLF7I9XNzOhaKJiKKQ0eoRx8zVic6DFcrE5MM4oETxUgcx3tvMa8SEmze7Iw6FT1F7
+	u5uD7gv7knh+LFv3oagiAwLUvxYQ08CYI1Alz
+X-Google-Smtp-Source: AGHT+IG1cpKE0bia+SjE3FQwyZTQRUfn6nnKjTjoQlx5gtEmca7DeH8NU/jmjN2PD3CGmwwp8AHo0Q==
+X-Received: by 2002:a05:6820:221a:b0:60f:3ed8:3984 with SMTP id 006d021491bc7-61110efe2acmr49835eaf.3.1749830607445;
+        Fri, 13 Jun 2025 09:03:27 -0700 (PDT)
+Received: from ?IPV6:2600:8803:e7e4:1d00:4647:c57:a73c:39d8? ([2600:8803:e7e4:1d00:4647:c57:a73c:39d8])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-61108f07e08sm214090eaf.27.2025.06.13.09.03.24
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 13 Jun 2025 09:03:25 -0700 (PDT)
+Message-ID: <fa403d19-13c5-4845-9364-58eea1b62e61@baylibre.com>
+Date: Fri, 13 Jun 2025 11:03:24 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH 1/7] dt-bindings: spi: zynqmp-qspi: Split the bus
-To: David Lechner <dlechner@baylibre.com>, Mark Brown <broonie@kernel.org>,
- Michal Simek <michal.simek@amd.com>, linux-spi@vger.kernel.org
-Cc: Jinjie Ruan <ruanjinjie@huawei.com>,
- linux-arm-kernel@lists.infradead.org,
- Amit Kumar Mahapatra <amit.kumar-mahapatra@amd.com>,
- linux-kernel@vger.kernel.org, Miquel Raynal <miquel.raynal@bootlin.com>,
- Conor Dooley <conor+dt@kernel.org>, Krzysztof Kozlowski
- <krzk+dt@kernel.org>, Rob Herring <robh@kernel.org>,
- devicetree@vger.kernel.org,
- "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
- Jonathan Cameron <jic23@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?=
- <nuno.sa@analog.com>
-References: <20250116232118.2694169-1-sean.anderson@linux.dev>
- <20250116232118.2694169-2-sean.anderson@linux.dev>
- <9f40295b-484a-48e8-b053-ff8550e589d7@baylibre.com>
- <46a7eba6-a705-4543-b967-e83ccc89e7d4@linux.dev>
- <6afc379a-2f9f-4462-ae30-ef6945a83236@baylibre.com>
- <dbe26b36-a10c-4afb-88ad-a6f7f9bff440@linux.dev>
- <4923f49f-273f-4166-94bc-afe39618672c@baylibre.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 8/8] iio: adc: Add events support to ad4052
+To: Jorge Marques <gastmaier@gmail.com>
+Cc: Jorge Marques <jorge.marques@analog.com>,
+ Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+ Michael Hennerich <Michael.Hennerich@analog.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+ =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
+ Andy Shevchenko <andy@kernel.org>, =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?=
+ <ukleinek@kernel.org>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-pwm@vger.kernel.org
+References: <20250610-iio-driver-ad4052-v3-0-cf1e44c516d4@analog.com>
+ <20250610-iio-driver-ad4052-v3-8-cf1e44c516d4@analog.com>
+ <afc85a4b-1535-406d-ad14-143049267b98@baylibre.com>
+ <gvigk6helnl3yeouy636dgvay7tqux7lnxns3256fivzz4l3er@7ts7fz7vitff>
 Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Sean Anderson <sean.anderson@linux.dev>
-In-Reply-To: <4923f49f-273f-4166-94bc-afe39618672c@baylibre.com>
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <gvigk6helnl3yeouy636dgvay7tqux7lnxns3256fivzz4l3er@7ts7fz7vitff>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
 
-On 6/13/25 10:20, David Lechner wrote:
-> On 6/12/25 6:44 PM, Sean Anderson wrote:
->> Hi David,
->> 
->> I am (finally!) getting around to doing v2 of this series, and I ran
->> into a small problem with your proposed solution.
->> 
->> On 1/23/25 16:59, David Lechner wrote:
+On 6/13/25 5:02 AM, Jorge Marques wrote:
+> Hi David,
+> On Thu, Jun 12, 2025 at 02:38:45PM -0500, David Lechner wrote:
+>> On 6/10/25 2:34 AM, Jorge Marques wrote:
+>>> The AD4052 family supports autonomous monitoring readings for threshold
+>>> crossings. Add support for catching the GPIO interrupt and expose as an IIO
+>>> event. The device allows to set either, rising and falling directions. Only
+>>> either threshold crossing is implemented.
+>>>
+>>> Signed-off-by: Jorge Marques <jorge.marques@analog.com>
 >>> ---
->>> From: David Lechner <dlechner@baylibre.com>
->>> Date: Thu, 23 Jan 2025 15:35:19 -0600
->>> Subject: [PATCH 2/2] spi: add support for multi-bus controllers
->>>
->>> Add support for SPI controllers with multiple physical SPI buses.
->>>
->>> This is common in the type of controller that can be used with parallel
->>> flash memories, but can be used for general purpose SPI as well.
->>>
->>> To indicate support, a controller just needs to set ctlr->num_buses to
->>> something greater than 1. Peripherals indicate which bus they are
->>> connected to via device tree (ACPI support can be added if needed).
->>>
->>> In the future, this can be extended to support peripherals that also
->>> have multiple SPI buses to use those buses at the same time by adding
->>> a similar bus flags field to struct spi_transfer.
->>>
->>> Signed-off-by: David Lechner <dlechner@baylibre.com>
->>> ---
->>>  drivers/spi/spi.c       | 26 +++++++++++++++++++++++++-
->>>  include/linux/spi/spi.h | 13 +++++++++++++
->>>  2 files changed, 38 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
->>> index 10c365e9100a..f7722e5e906d 100644
->>> --- a/drivers/spi/spi.c
->>> +++ b/drivers/spi/spi.c
->>> @@ -2364,7 +2364,7 @@ static void of_spi_parse_dt_cs_delay(struct device_node *nc,
->>>  static int of_spi_parse_dt(struct spi_controller *ctlr, struct spi_device *spi,
->>>  			   struct device_node *nc)
->>>  {
->>> -	u32 value, cs[SPI_CS_CNT_MAX];
->>> +	u32 value, buses[8], cs[SPI_CS_CNT_MAX];
->>>  	int rc, idx;
->>>  
->>>  	/* Mode (clock phase/polarity/etc.) */
->>> @@ -2379,6 +2379,29 @@ static int of_spi_parse_dt(struct spi_controller *ctlr, struct spi_device *spi,
->>>  	if (of_property_read_bool(nc, "spi-cs-high"))
->>>  		spi->mode |= SPI_CS_HIGH;
->>>  
->>> +	rc = of_property_read_variable_u32_array(nc, "spi-buses", buses, 1,
->>> +						 ARRAY_SIZE(buses));
->>> +	if (rc < 0 && rc != -EINVAL) {
->>> +		dev_err(&ctlr->dev, "%pOF has invalid 'spi-buses' property (%d)\n",
->>> +			nc, rc);
->>> +		return rc;
->>> +	}
+>>
+>> ...
+>>
 >>> +
->>> +	if (rc == -EINVAL) {
->>> +		/* Default when property is omitted. */
->>> +		spi->buses = BIT(0);
->> 
->> For backwards compatibility, the default bus for CS 1 on gqspi must be 1
->> and not 0. Ideally there would be some hook for the master to fix things
->> up when the slaves are probed, but that doesn't seem to exist. I was
->> thinking about doing this with OF changesets. Do you have any better
->> ideas?
->> 
-> 
-> Does this work? 
-> 
-> 		spi->buses = BIT(cs[0]);
-> 
-> (would have to move all the new code after cs[0] is assigned of course)
+>>> +static ssize_t ad4052_events_frequency_store(struct device *dev,
+>>> +					     struct device_attribute *attr,
+>>> +					     const char *buf,
+>>> +					     size_t len)
+>>> +{
+>>> +	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+>>> +	struct ad4052_state *st = iio_priv(indio_dev);
+>>> +	int ret;
+>>> +
+>>> +	if (!iio_device_claim_direct(indio_dev))
+>>> +		return -EBUSY;
+>>> +	if (st->wait_event) {
+>>> +		ret = -EBUSY;
+>>> +		goto out_release;
+>>> +	}
+>>
+>> I'm wondering if we should instead have some kind of iio_device_claim_monitor_mode()
+>> so that we don't have to implement this manually everywhere. If monitor mode was
+>> claimed, then iio_device_claim_direct() and iio_device_claim_buffer_mode() would
+>> both return -EBUSY. If buffer mode was claimed, iio_device_claim_monitor_mode()
+>> would fail. If direct mode was claimed, iio_device_claim_monitor_mode() would wait.
+>>
+> I don't think this would scale with other vendors and devices, it is a
 
-Yeah, but do we really want to make this the default for all drivers?
-This is really a quirk of the existing gqspi binding and I don't think
-it makes sense in general.
+Why not? I've seen lots of devices that have some sort of monitor mode
+where they are internally continuously comparing measurements to something
+and only signal an interrupt when some condition is met.
 
---Sean
+> limitation of ADI:ADC:SPI requiring to enter configuration mode to read
+
+I don't see how it could be a limitiation exclusive to this combination of
+vendor, sensor type and bus type.
+
+> registers. A deep dive into the other drivers that use IIO Events is
+> needed.
+>>> +
+
+...
+
+>>> +
+>>> +static int ad4052_monitor_mode_disable(struct ad4052_state *st)
+>>> +{
+>>> +	int ret;
+>>> +
+>>> +	pm_runtime_mark_last_busy(&st->spi->dev);
+>>> +	pm_runtime_put_autosuspend(&st->spi->dev);
+>>> +
+>>> +	ret = ad4052_exit_command(st);
+>>> +	if (ret)
+>>> +		return ret;
+>>> +	return regmap_write(st->regmap, AD4052_REG_DEVICE_STATUS,
+>>> +			    AD4052_REG_DEVICE_STATUS_MAX_FLAG |
+>>> +			    AD4052_REG_DEVICE_STATUS_MIN_FLAG);
+>>> +}
+>>> +
+>>
+>> It seems like we need to make sure monitor mode is disabled when the
+>> driver is removed. Otherwise we could end up with unbalanced calls to
+>> the pm_runtime stuff and leave the chip running.
+>>
+>>
+> When monitor mode is enabled, pm is already disabled (won't enter low
+> power). I expect the pm to handle the clean-up properly since devm is
+> used.
+> The .remove() I suggest is reg access to:
+> 
+> * Put in configuration mode, if not.
+> * Put on low power mode, if not.
+> 
+I was just thinking something like:
+
+	if (st->wait_event)
+		ad4052_monitor_mode_disable(st);
+
+Also might need to use devm_add_action_or_reset() instead of .remove
+to get correct ordering.
 

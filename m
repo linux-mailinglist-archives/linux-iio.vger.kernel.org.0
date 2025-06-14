@@ -1,75 +1,59 @@
-Return-Path: <linux-iio+bounces-20643-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20644-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52230AD9CAF
-	for <lists+linux-iio@lfdr.de>; Sat, 14 Jun 2025 14:23:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 777B6AD9CB6
+	for <lists+linux-iio@lfdr.de>; Sat, 14 Jun 2025 14:34:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F8A93B738B
-	for <lists+linux-iio@lfdr.de>; Sat, 14 Jun 2025 12:22:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 07290172E7F
+	for <lists+linux-iio@lfdr.de>; Sat, 14 Jun 2025 12:34:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A4C62C08DE;
-	Sat, 14 Jun 2025 12:23:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEE8F2C15AC;
+	Sat, 14 Jun 2025 12:34:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pgti5zy4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oDNbfp2Z"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAA5014BF89;
-	Sat, 14 Jun 2025 12:23:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 653F222F774;
+	Sat, 14 Jun 2025 12:34:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749903798; cv=none; b=iCnY4VaCU9JmiwYMo52hEgzDK1nWOnjME2vszCRrUzGQOMbt9Xb4jI/IxkFDunRsu9zizAfMyAXQ9pdnAdcqYTzd0Ve48yJLxp5L/zWpCeYN6X1KApGcgU1nssd6AJ7P0CkReiinMLWjY3UB6CkF2JU6BW1D8Z3G1cdtV2/rs7g=
+	t=1749904441; cv=none; b=mFJMuujk+ms/Q2QtILhVcGkKA+x2oMXoblAv26deDqi88fJIcjXXfxpOfMJnn+CiUNY+wA7olo4FXt3uHMzlh7yPtCS8g56EWY8oym1OI/bG1EK+tVuMI99dBDgqB5xSBsalXBhe0JPm6xQ558OLYzBwKEzMkTw6J7ocIgLH8sE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749903798; c=relaxed/simple;
-	bh=avQIQVx7PU9oe/rVrLoBrchrvxBkxtx/0zHOHlcJODc=;
+	s=arc-20240116; t=1749904441; c=relaxed/simple;
+	bh=V/hhGxDiuKJtoDq8go0oysqODmgNazHNjVE/A1L/JQM=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=c/6SOFceayiXtrDylzpme/HkcIxghTFXiNbk1aaSUu9UBxZBfSBk1DRB+ucuQXJMl3yIT0wZlnnCuK4TTQA54EzTqYz2NZoutaUpeLGVMCUp4SXxgmpZe4/6YK5r0zCGe8iOhYXqNHegtQDrIBxCQxFZbTelIz6L6LEcehrekwk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pgti5zy4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2293FC4CEEB;
-	Sat, 14 Jun 2025 12:23:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=G1J7Ic9HcxpFnD4QCwycCfZznPhVNw3Bp/wIva5/nFyW6jJR22JA0tGdm+ZDND3mZAKjbmiulECJngD69Q7o9foxAeyg+5HAsLEyE4hWLEToIcinPMWkTUv9P1OHmMPCCAA/N9hdDcFURiz09TwCjZEyrnrBIJoPGDkf0TORho0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oDNbfp2Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA2FAC4CEEB;
+	Sat, 14 Jun 2025 12:33:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749903796;
-	bh=avQIQVx7PU9oe/rVrLoBrchrvxBkxtx/0zHOHlcJODc=;
+	s=k20201202; t=1749904440;
+	bh=V/hhGxDiuKJtoDq8go0oysqODmgNazHNjVE/A1L/JQM=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Pgti5zy4ItelGapySex+FZlobPH1ZsV8BcOmcj3kvZ6Snf8tCTF9OmjDGY3m/b9Aj
-	 9TOcW6MkYFqsFdxt+Yd8DvskBa347QChTcLoSzKscD/3BPjAM6oDWD4aqEtqGLCFHJ
-	 gfWHC6vIp9nCB2k7zjGv6UrQnDbSalAu/DY9Rn7uorWpFfqbpjRt6sqse2u82ZxUuN
-	 KFqL9+qjeWTWlaQcSqmx8HfFGcjFxDTQdf5vkViKZkNT+3gXdRlvYPjvJGaSam1uEH
-	 jcn/7MjIf2gi+25/9/TexlgWxUj9VGGmJlktRIIxCG1MglzTHDP9SYeq4mFLCL8x9F
-	 PsUHqZaN26mdg==
-Date: Sat, 14 Jun 2025 13:23:02 +0100
+	b=oDNbfp2Z453ar8cK7g8nF+OhDGvrDvZzFQ7JKYfS+NZfgKzFd1FglaWwkh/zZN3yE
+	 MN/qYWwIUT8hYpIyyyMUPONwtqjkQW4P2tYDeCgDU0wp4ybclhjs1DBId6drGadp9P
+	 Zv92/rp4znlqOjlwQ23uqSN2baulcDlZartEYZgI6EX9Pb34GVTP3AawuOPMw8Tp86
+	 5hLrT7ZiJ3nWL/g56igqBfQxb3TDwQFBQD/bUG+7+XW79tMqafd7bOBh0pxTg9fdO3
+	 IMELkVJablSrKZVSdny13t1vf8iZY4D1ZhjOVn2gxbBbIbqvj+uZnsoqdLJ4zDVyvP
+	 Y552g7HhHiObA==
+Date: Sat, 14 Jun 2025 13:33:52 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Michael Hennerich <michael.hennerich@analog.com>, Lars-Peter Clausen
- <lars@metafoo.de>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy
- Shevchenko <andy@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Heiko
- Stuebner <heiko@sntech.de>, Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>, Francesco Dolcini
- <francesco@dolcini.it>, =?UTF-8?B?Sm/Do28=?= Paulo =?UTF-8?B?R29uw6dhbHZl?=
- =?UTF-8?B?cw==?= <jpaulo.silvagoncalves@gmail.com>, Leonard
- =?UTF-8?B?R8O2aHJz?= <l.goehrs@pengutronix.de>, kernel@pengutronix.de,
- Oleksij Rempel <o.rempel@pengutronix.de>, Roan van Dijk <roan@protonic.nl>,
- Tomasz Duszynski <tomasz.duszynski@octakon.com>, Jacopo Mondi
- <jacopo@jmondi.org>, Jean-Baptiste Maneyrol
- <jean-baptiste.maneyrol@tdk.com>, Mudit Sharma
- <muditsharma.info@gmail.com>, Javier Carrasco
- <javier.carrasco.cruz@gmail.com>, =?UTF-8?B?T25kxZllag==?= Jirman
- <megi@xff.cz>, Andreas Klinger <ak@it-klinger.de>, Petre Rodan
- <petre.rodan@subdimension.ro>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-mediatek@lists.infradead.org, linux-rockchip@lists.infradead.org,
- linux-stm32@st-md-mailman.stormreply.com
-Subject: Re: [PATCH 25/28] iio: pressure: mprls0025pa: use = { } instead of
- memset()
-Message-ID: <20250614132302.1e134315@jic23-huawei>
-In-Reply-To: <20250611-iio-zero-init-stack-with-instead-of-memset-v1-25-ebb2d0a24302@baylibre.com>
-References: <20250611-iio-zero-init-stack-with-instead-of-memset-v1-0-ebb2d0a24302@baylibre.com>
-	<20250611-iio-zero-init-stack-with-instead-of-memset-v1-25-ebb2d0a24302@baylibre.com>
+To: surajsonawane0215@gmail.com
+Cc: David Lechner <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 3/3] iio: chemical: Add driver for Sharp GP2Y1010AU0F
+Message-ID: <20250614133352.18cec415@jic23-huawei>
+In-Reply-To: <20250612100758.13241-4-surajsonawane0215@gmail.com>
+References: <20250612100758.13241-1-surajsonawane0215@gmail.com>
+	<20250612100758.13241-4-surajsonawane0215@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -77,42 +61,178 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, 11 Jun 2025 17:39:17 -0500
-David Lechner <dlechner@baylibre.com> wrote:
+On Thu, 12 Jun 2025 15:37:46 +0530
+surajsonawane0215@gmail.com wrote:
 
-> Use { } instead of memset() to zero-initialize stack memory to simplify
-> the code.
-> 
-> The initialize of the cmd value is trivial so it can be moved to the
-> array initializer as well.
-> 
-> Signed-off-by: David Lechner <dlechner@baylibre.com>
-> ---
->  drivers/iio/pressure/mprls0025pa_i2c.c | 5 +----
->  1 file changed, 1 insertion(+), 4 deletions(-)
-> 
-> diff --git a/drivers/iio/pressure/mprls0025pa_i2c.c b/drivers/iio/pressure/mprls0025pa_i2c.c
-> index 1a48f8d43d716b28b8fceb8e1a06d63a73a74a86..79811fd4a02b370b3fde8bd67a5115a3934f8614 100644
-> --- a/drivers/iio/pressure/mprls0025pa_i2c.c
-> +++ b/drivers/iio/pressure/mprls0025pa_i2c.c
-> @@ -44,10 +44,7 @@ static int mpr_i2c_write(struct mpr_data *data, const u8 cmd, const u8 unused)
->  {
->  	int ret;
->  	struct i2c_client *client = to_i2c_client(data->dev);
-> -	u8 wdata[MPR_PKT_SYNC_LEN];
-> -
-> -	memset(wdata, 0, sizeof(wdata));
-> -	wdata[0] = cmd;
-> +	u8 wdata[MPR_PKT_SYNC_LEN] = { cmd };
+> From: Suraj Sonawane <surajsonawane0215@gmail.com>
+>=20
+> Implement support for the Sharp GP2Y1010AU0F optical dust sensor which
+> measures particulate matter concentration using infrared scattering.
+> The sensor requires precise 320=CE=BCs LED pulses with ADC sampling at 28=
+0=CE=BCs
+> after LED activation (as specified in datasheet section 6-1).
+>=20
+> The driver provides:
+> - Raw density readings via IIO_DENSITY channel type
+> - Hardware-agnostic operation via GPIO and IIO ADC interfaces
+> - Power management through regulator framework
+> - Device Tree binding support
+>=20
+> Datasheet: https://global.sharp/products/device/lineup/data/pdf/datasheet=
+/gp2y1010au_appl_e.pdf
+>=20
+> Signed-off-by: Suraj Sonawane <surajsonawane0215@gmail.com>
+A few additional comments from me.
 
-Slight preference for trailing comma after cmd,
+Jonathan
 
->  
->  	ret = i2c_master_send(client, wdata, MPR_PKT_SYNC_LEN);
->  	if (ret < 0)
-> 
+>  obj-$(CONFIG_PMS7003) +=3D pms7003.o
+> diff --git a/drivers/iio/chemical/gp2y1010.c b/drivers/iio/chemical/gp2y1=
+010.c
+> new file mode 100644
+> index 000000000..3a8657035
+> --- /dev/null
+> +++ b/drivers/iio/chemical/gp2y1010.c
+> @@ -0,0 +1,126 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Copyright (c) 2025 Suraj Sonawane <surajsonawane0215@gmail.com>
+> + * Sharp GP2Y1010AU0F Dust Sensor Driver
+> + * Datasheet: https://global.sharp/products/device/lineup/data/pdf/datas=
+heet/gp2y1010au_appl_e.pdf
+> + */
+> +
+> +#include <linux/delay.h>
+> +#include <linux/err.h>
+> +#include <linux/gpio/consumer.h>
+> +#include <linux/iio/consumer.h>
+> +#include <linux/iio/iio.h>
+> +#include <linux/init.h>
+> +#include <linux/module.h>
+> +#include <linux/of.h>
+> +#include <linux/platform_device.h>
+> +#include <linux/regulator/consumer.h>
+> +
+> +/* Timings based on GP2Y1010AU0F datasheet Section 6-1 */
+> +#define GP2Y1010_LED_PULSE_US     320  /* Total LED ON time (0.32 ms) */
+> +#define GP2Y1010_SAMPLE_DELAY_US  280  /* ADC sampling after LED ON (0.2=
+8 ms) */
+> +
+> +struct gp2y1010_data {
+> +	struct gpio_desc *led_gpio;
+> +	struct iio_channel *adc_chan;
+> +	int v_clean;  /* Calibration: voltage in clean air (mV) */
+> +};
+> +
+> +static int gp2y1010_read_raw(struct iio_dev *indio_dev,
+> +							 struct iio_chan_spec const *chan,
+> +							 int *val, int *val2, long mask)
 
+Odd alignment. Aim for under the s of struct. That is immediately after the=
+ bracket.
+
+> +{
+> +	struct gp2y1010_data *data =3D iio_priv(indio_dev);
+> +	int ret, voltage_mv;
+> +
+> +	if (mask !=3D IIO_CHAN_INFO_RAW)
+> +		return -EINVAL;
+> +
+> +	gpiod_set_value(data->led_gpio, 1);
+> +	udelay(GP2Y1010_SAMPLE_DELAY_US);
+> +
+> +	ret =3D iio_read_channel_processed(data->adc_chan, &voltage_mv);
+> +
+> +	/* Wait remaining time to complete 320 =C2=B5s total LED pulse width */
+> +	udelay(GP2Y1010_LED_PULSE_US - GP2Y1010_SAMPLE_DELAY_US);
+> +	gpiod_set_value(data->led_gpio, 0);
+> +
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	*val =3D voltage_mv;
+> +	return IIO_VAL_INT;
+> +}
+> +
+> +static const struct iio_info gp2y1010_info =3D {
+> +	.read_raw =3D gp2y1010_read_raw,
+> +};
+> +
+> +static const struct iio_chan_spec gp2y1010_channels[] =3D {
+> +	{
+> +		.type =3D IIO_DENSITY,
+> +		.info_mask_separate =3D BIT(IIO_CHAN_INFO_RAW),
+> +	},
+
+Where there is only one channel, no need to bother with an array.
+There are lots of drivers that do this, but I'm trying to discourage it
+in new drivers.
+indio_dev->channels =3D &gp271010_channel;
+indio_dev->num_channels =3D 1;
+
+is obvious enough.
+
+> +};
+> +
+> +static int gp2y1010_probe(struct platform_device *pdev)
+> +{
+> +	struct device *dev =3D &pdev->dev;
+> +	struct iio_dev *indio_dev;
+> +	struct gp2y1010_data *data;
+> +	enum iio_chan_type ch_type;
+> +	int ret;
+> +
+> +	indio_dev =3D devm_iio_device_alloc(dev, sizeof(*data));
+> +	if (!indio_dev)
+> +		return -ENOMEM;
+> +
+> +	data =3D iio_priv(indio_dev);
+> +	data->v_clean =3D 900;
+> +
+> +	data->led_gpio =3D devm_gpiod_get(dev, "led", GPIOD_OUT_LOW);
+> +	if (IS_ERR(data->led_gpio))
+> +		return dev_err_probe(dev, PTR_ERR(data->led_gpio), "Failed to get LED =
+GPIO\n");
+> +
+> +	ret =3D devm_regulator_get_enable(dev, "vdd");
+> +	if (ret)
+> +		return ret;
+> +	udelay(100);
+> +
+> +	data->adc_chan =3D devm_iio_channel_get(dev, "dust");
+> +	if (IS_ERR(data->adc_chan))
+> +		return dev_err_probe(dev, PTR_ERR(data->adc_chan), "Failed to get ADC =
+channel\n");
+> +
+> +	ret =3D iio_get_channel_type(data->adc_chan, &ch_type);
+> +	if (ret < 0)
+> +		return ret;
+> +	if (ch_type !=3D IIO_DENSITY)
+> +		return dev_err_probe(dev, -EINVAL, "ADC channel is not density type\n"=
+);
+
+I'm confused.  The ADC channel type providing us a measurement service (as =
+here we
+are the consumer) is going to be voltage (or maybe current) because ADCs do=
+n't measure dust.
+This driver has to do the conversion from voltage to the value needed to re=
+port a density channel.=20
+
+> +
+> +	indio_dev->name =3D dev_name(dev);
+
+Hard code the part number here rather than getting it from elsewhere.  That=
+ makes
+it much easier to see that this is what we expect.
+
+> +	indio_dev->info =3D &gp2y1010_info;
+> +	indio_dev->channels =3D gp2y1010_channels;
+> +	indio_dev->num_channels =3D ARRAY_SIZE(gp2y1010_channels);
+> +	indio_dev->modes =3D INDIO_DIRECT_MODE;
+> +
+> +	return devm_iio_device_register(dev, indio_dev);
+> +}
 

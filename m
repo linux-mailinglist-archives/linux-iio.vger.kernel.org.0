@@ -1,59 +1,62 @@
-Return-Path: <linux-iio+bounces-20646-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20647-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82FF2AD9CC1
-	for <lists+linux-iio@lfdr.de>; Sat, 14 Jun 2025 14:53:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AEBFAD9CD1
+	for <lists+linux-iio@lfdr.de>; Sat, 14 Jun 2025 15:03:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C7C2D3B9EA3
-	for <lists+linux-iio@lfdr.de>; Sat, 14 Jun 2025 12:52:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 025A0179267
+	for <lists+linux-iio@lfdr.de>; Sat, 14 Jun 2025 13:03:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D28AE2C15BD;
-	Sat, 14 Jun 2025 12:53:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0431282EE;
+	Sat, 14 Jun 2025 13:03:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lN1rwov5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qdDWRuX6"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CE7C1DFE8;
-	Sat, 14 Jun 2025 12:53:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 567191FC8;
+	Sat, 14 Jun 2025 13:03:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749905591; cv=none; b=cJVgLq/Tfj+SvnVOfs9smAp+KHiHo8ok1ql7Ise66ytIlQozveA2VV/Qedn1WBaejpr/On5Il5v2XDfmGYREmKlhIzCKrlrKXXu2D1gYKbvGLeNJQs11w2fKnNnTKObT9dymRKOD3iJdVYz5Jo03UxdBJnDhaNKPrLa8XlGF5Cg=
+	t=1749906219; cv=none; b=PPoqn7YVPEAVv80g8jucjgM7brzXL2QZ0nZV7CHHRijjjAUpBg29BkVJkqoQtzubeiphTSZjYRl3xrRWFTlunyabKfQKs5bLUfXeY+96U8Gk11/WrQ783xIS4K8eqn1rC1X//eyBsjSn68CP61AfpU0eFRL/GpnhqkOSB1JeeME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749905591; c=relaxed/simple;
-	bh=abuQZ93iaFL1AULcyejhgQhhpoyGapLheFtvQkM1BR8=;
+	s=arc-20240116; t=1749906219; c=relaxed/simple;
+	bh=nUsMqcgjWlbjfSpgElJGq3ExeK0Rxi+P3UYremNkUTU=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QsGFeRTKufcrzesdL5jItMbDzRcs6z9zNKbAFYUKG/gqqFRaVJdeNr2ZDlLDWqZkyw8cshwCi5mKPKh4egXAPbePhfZ4C2NXtq/opUF5vr0H2WvrfbeO/H+WholxTr0fgFEwUx3n3gvBEfVIQfUerYcaIUXLJ9TR0XQqo53CyK8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lN1rwov5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AE42C4CEEB;
-	Sat, 14 Jun 2025 12:53:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=D2Ur61F/7XBMzKCwmGkxpJRNO51YRyewGp69y5OoOd+LLmichdd1UIURZro54Iaj8sHablhy90xfJBsHRKNkVsTQbUyTZEELBIHWBpiiLDuUp5evY+7T0VPqau4XSoyULVvNseBKTEmN9J5sAT5etTJRNBTosMsS0N14H/+mxic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qdDWRuX6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56A3BC4CEEB;
+	Sat, 14 Jun 2025 13:03:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749905591;
-	bh=abuQZ93iaFL1AULcyejhgQhhpoyGapLheFtvQkM1BR8=;
+	s=k20201202; t=1749906218;
+	bh=nUsMqcgjWlbjfSpgElJGq3ExeK0Rxi+P3UYremNkUTU=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=lN1rwov5+L6UUPH7KKgjPcA1xyBL/EKyGz3OLgzDqzgJNv3qqa2929Ou/AizkXQ8H
-	 TXYnV9J6EgXHSx2TMHEIbtOfi4jsnVuZyCPG62Vlh4aScs5qR5B5RoGmMfyYt+5wDf
-	 yr3QCAuv1n93juC8P5q/6F1NkMaHcCLN3k9XC6MrkQBk6Lbxdq1L0L08ITH2R8kk9d
-	 r0Rf+Lk4YRoSM4dqA7St4+p/m2wX/u+v8f6nniCxwLCnCgolC0q36g7T4JERFzxEJP
-	 FZnQyKtF/a0NKG4ZYlcFZRgMFMfdzHB8MxcezTmCqiUS7Fa5q8KXhsNoWNsljmiTAK
-	 8a/nRqXSRf/2w==
-Date: Sat, 14 Jun 2025 13:53:04 +0100
+	b=qdDWRuX6AgRrVdAK5D23uWkbcxvaJu8jh5m6CJdnWgx16rPQa+O/LfFyUzEPzLKFB
+	 HtgYRsJLbYfx7QStE9SgE1l0bmuYBol+eQFRd620xzcYferYrlt1bJKRjXkaxY9tLb
+	 fCcn3OFD7g+awcIf4ScT5kMo/kRl+pSd8Ir1C8sT5Munmj8Df9kTIxD1Ay1Io+8gku
+	 MnCzkorgP60AH3ASRDaeT8hvhOg2cWfhH8PV6V04CN4YHyPLAEFc9w0BaclH7ILnOl
+	 G24nFa3+aAsfShfJeYBVPe/GcHMUzeWHxkpgIkZdpJ/M16KzeafESu+2eMI5ldSA+f
+	 3ekuyA/JZXFDg==
+Date: Sat, 14 Jun 2025 14:03:30 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Jean-Baptiste Maneyrol via B4 Relay
- <devnull+jean-baptiste.maneyrol.tdk.com@kernel.org>
-Cc: jean-baptiste.maneyrol@tdk.com, Lars-Peter Clausen <lars@metafoo.de>,
- David Lechner <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?=
- <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 1/2] iio: imu: inv_icm42600: add WoM support
-Message-ID: <20250614135304.10d0fee9@jic23-huawei>
-In-Reply-To: <20250613-losd-3-inv-icm42600-add-wom-support-v4-1-7e5f554201bf@tdk.com>
-References: <20250613-losd-3-inv-icm42600-add-wom-support-v4-0-7e5f554201bf@tdk.com>
-	<20250613-losd-3-inv-icm42600-add-wom-support-v4-1-7e5f554201bf@tdk.com>
+To: Marek Vasut <marek.vasut@mailbox.org>
+Cc: Andy Shevchenko <andriy.shevchenko@intel.com>, Marek Vasut
+ <marek.vasut+bmc150@mailbox.org>, Hans de Goede <hansg@kernel.org>,
+ linux-iio@vger.kernel.org, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy
+ Shevchenko <andy@kernel.org>, David Lechner <dlechner@baylibre.com>, Julien
+ Stephan <jstephan@baylibre.com>, Peter Zijlstra <peterz@infradead.org>,
+ Salvatore Bonaccorso <carnil@debian.org>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: accel: bmc150: Do not configure IRQ registers if
+ no IRQ connected
+Message-ID: <20250614140330.31183fd5@jic23-huawei>
+In-Reply-To: <8605141c-b615-4e84-9574-81e24590df48@mailbox.org>
+References: <20250613124648.14141-1-marek.vasut+bmc150@mailbox.org>
+	<aEw_DcqpCpcsBGd0@smile.fi.intel.com>
+	<8605141c-b615-4e84-9574-81e24590df48@mailbox.org>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -64,115 +67,125 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 13 Jun 2025 09:34:26 +0200
-Jean-Baptiste Maneyrol via B4 Relay <devnull+jean-baptiste.maneyrol.tdk.com@kernel.org> wrote:
+On Fri, 13 Jun 2025 19:02:28 +0200
+Marek Vasut <marek.vasut@mailbox.org> wrote:
 
-> From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+> On 6/13/25 5:09 PM, Andy Shevchenko wrote:
+> > Strange I don't see Hans in the Cc list, so added.
+> > Thanks for the report and patch, my comments below.
+> > 
+> > On Fri, Jun 13, 2025 at 02:45:22PM +0200, Marek Vasut wrote:  
+> >> The BMC150 on Onemix 2S does not have IRQ line described in ACPI tables,
+> >> which leads to bmc150_accel_core_probe() being called with irq=0, which
+> >> leads to bmc150_accel_interrupts_setup() never being called, which leads
+> >> to struct bmc150_accel_data *data ->interrupts[i].info being left unset
+> >> to NULL. Later, userspace can indirectly trigger bmc150_accel_set_interrupt()
+> >> which depends on struct bmc150_accel_data *data ->interrupts[i].info being
+> >> non-NULL, and which triggers NULL pointer dereference. This is triggered
+> >> e.g. from iio-sensor-proxy.
+> >>
+> >> Fix this by skipping the IRQ register configuration in case there is no
+> >> IRQ connected in hardware, in a manner similar to what the driver did in
+> >> the very first commit which added the driver.
+> >>
+> >> ACPI table dump:  
+> >   
+> >>          Device (BMA2)
+> >>          {
+> >>              Name (_ADR, Zero)  // _ADR: Address
+> >>              Name (_HID, "BOSC0200")  // _HID: Hardware ID
+> >>              Name (_CID, "BOSC0200")  // _CID: Compatible ID
+> >>              Name (_DDN, "Accelerometer")  // _DDN: DOS Device Name
+> >>              Name (_UID, One)  // _UID: Unique ID
+> >>              Method (_CRS, 0, NotSerialized)  // _CRS: Current Resource Settings
+> >>              {
+> >>                  Name (RBUF, ResourceTemplate ()
+> >>                  {
+> >>                      I2cSerialBusV2 (0x0019, ControllerInitiated, 0x00061A80,
+> >>                          AddressingMode7Bit, "\\_SB.PCI0.I2C0",
+> >>                          0x00, ResourceConsumer, , Exclusive,
+> >>                          )
+> >>                  })
+> >>                  Return (RBUF) /* \_SB_.PCI0.I2C0.BMA2._CRS.RBUF */
+> >>              }  
+> > 
+> > These lines...
+> >   
+> >>              Method (ROTM, 0, NotSerialized)
+> >>              {
+> >>                  Name (SBUF, Package (0x03)
+> >>                  {
+> >>                      "0 1 0",
+> >>                      "1 0 0 ",
+> >>                      "0 0 1"
+> >>                  })
+> >>                  Return (SBUF) /* \_SB_.PCI0.I2C0.BMA2.ROTM.SBUF */
+> >>              }
+> >>
+> >>              Method (_STA, 0, NotSerialized)  // _STA: Status
+> >>              {
+> >>                  Return (0x0F)
+> >>              }  
+> > 
+> > ...are irrelevant.
+> >   
+> >>          }
+> >> "
+> >>
+> >> Splat, collected from debian unstable, probably not very useful:  
+> > 
+> > Oh my gosh, please leave only ~3-5 *important* lines out of this, or move it
+> > completely to the comment block (after '---' cutter line).
+> > 
+> > This is requirement written in Submitting Patches.
+> > 
+> > ...
+> > 
+> > As for the solution, are you sure the line is not wired at all?  
 > 
-> Add WoM as accel roc rising x|y|z event.
+> No . It is some cheap mini-laptop , I have no schematics or any other 
+> info really .
 > 
-> Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-Hi Jean-Baptiste.
+> Note that I am not really familiar with x86 and ACPI, so there is that.
+> 
+> > IIRC Hans had a broken tales where it was simply forgotten, meaning
+> > the Android / Windows driver simply hardcoded needed info.
+> > 
+> > If it's the case, it should be solved differently around PDx86 special quirk
+> > driver for the cases like this.  
+> There are likely two issues.
+> 
+> First, this driver needs to handle i2c_client->irq == 0 correctly if it 
+> should work without IRQ line, which the driver seems to indicate that it 
+> does. The current crashing the kernel is not the correct way of handling 
+> that. That's this patch, in some form.
 
-A couple of comments inline.
-Ideally pull the movement of the timestamp struct to before the DMA safe
-buffers to a precursor patch.   That is a bit subtle to have hiding in here.
+Hi Marek,
 
-The guards thing can be for next time you are doing a cleanup series on this
-driver if you prefer.
+For this, the driver shouldn't be giving the impression it can do either
+events or fifo based capture if it doesn't have an irq.
+(the fifo case could be made to work but that's a complex job).
+Right now the driver only correctly doesn't initialize a trigger
+for data ready use when the interrupt isn't there - it does all the
+rest unconditionally :(
+
+Usual way to do that is to have two iio_info structures and chan spec
+arrays and pick between them.  That should remove any chance of getting
+to the code that messes with the interrupts.  It seems to be using
+the watermark setting to mess with the fifo interrupt so hiding that
+as well in the info structure should block that one and anything that
+indicates there might be a fifo.
+
+What you have here stops it crashing and is sensible defence in depth
+but cutting off the pointless paths at the top is also needed
+to avoid giving userspace the wrong impression.
 
 Jonathan
 
-> ---
->  drivers/iio/imu/inv_icm42600/inv_icm42600.h        |  54 +++-
->  drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c  | 289 ++++++++++++++++++++-
->  drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c |   2 +-
->  drivers/iio/imu/inv_icm42600/inv_icm42600_core.c   |  58 +++++
->  4 files changed, 395 insertions(+), 8 deletions(-)
+
 > 
-> diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600.h b/drivers/iio/imu/inv_icm42600/inv_icm42600.h
-> index f893dbe6996506a33eb5d3be47e6765a923665c9..413a15493bcb880dc00b20da3b3168d5addd32a9 100644
-> --- a/drivers/iio/imu/inv_icm42600/inv_icm42600.h
-> +++ b/drivers/iio/imu/inv_icm42600/inv_icm42600.h
-> @@ -135,6 +135,14 @@ struct inv_icm42600_suspended {
->  	bool temp;
->  };
->  
-> +struct inv_icm42600_apex {
-> +	unsigned int on;
-> +	struct {
-> +		uint64_t value;
-> +		bool enable;
-> +	} wom;
-> +};
-> +
->  /**
->   *  struct inv_icm42600_state - driver state variables
->   *  @lock:		lock for serializing multiple registers access.
-> @@ -148,9 +156,10 @@ struct inv_icm42600_suspended {
->   *  @suspended:		suspended sensors configuration.
->   *  @indio_gyro:	gyroscope IIO device.
->   *  @indio_accel:	accelerometer IIO device.
-> - *  @buffer:		data transfer buffer aligned for DMA.
-> - *  @fifo:		FIFO management structure.
->   *  @timestamp:		interrupt timestamps.
-> + *  @apex:		APEX (Advanced Pedometer and Event detection) management
-> + *  @fifo:		FIFO management structure.
-> + *  @buffer:		data transfer buffer aligned for DMA.
->   */
->  struct inv_icm42600_state {
->  	struct mutex lock;
-> @@ -164,12 +173,13 @@ struct inv_icm42600_state {
->  	struct inv_icm42600_suspended suspended;
->  	struct iio_dev *indio_gyro;
->  	struct iio_dev *indio_accel;
-> -	uint8_t buffer[2] __aligned(IIO_DMA_MINALIGN);
-> -	struct inv_icm42600_fifo fifo;
->  	struct {
->  		int64_t gyro;
->  		int64_t accel;
->  	} timestamp;
-This was a bit subtle and had me going for a minute.
-The timestamp should never have been at this location in the structure because
-it's mid way through various regions with forced alignment.  It isn't actually a bug
-I think though (beyond unnecessary padding) because the fifo struct obeyed c spec rule
-that anything after it must be aligned to it's largest aligned element which was
-IIO_DMA_MINALIGN.
-
-Maybe move this in a precursor patch where you can talk about whether it was a problem
-or not?
-
-> +	struct inv_icm42600_apex apex;
-> +	struct inv_icm42600_fifo fifo;
-> +	uint8_t buffer[3] __aligned(IIO_DMA_MINALIGN);
->  };
->
-> diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
-> index e6cd9dcb0687d19554e63a69dc60f065c58d70ee..9a2089527a9426b70eb796d4e9c234d8804c508b 100644
-> --- a/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
-> +++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
-
-
-
-> @@ -860,6 +911,13 @@ static int inv_icm42600_resume(struct device *dev)
->  	if (ret)
->  		goto out_unlock;
->  
-> +	/* restore APEX features */
-> +	if (st->apex.wom.enable) {
-> +		ret = inv_icm42600_enable_wom(st);
-> +		if (ret)
-> +			goto out_unlock;
-
-One for another day, but this would definitely benefit from some guard() magic
-and there are a few other bits of existing code that would as well.
-
-
-> +	}
-> +
->  	/* restore FIFO data streaming */
->  	if (st->fifo.on) {
->  		inv_sensors_timestamp_reset(&gyro_st->ts);
-> 
+> Second, if this laptop has some IRQ line for this chip hidden somewhere, 
+> then it might need a quirk of sorts, sure. Is there some way to find 
+> out, without taking the thing apart and poking around with a scope ?
 
 

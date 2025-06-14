@@ -1,73 +1,73 @@
-Return-Path: <linux-iio+bounces-20671-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20672-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05C43AD9FF3
-	for <lists+linux-iio@lfdr.de>; Sat, 14 Jun 2025 23:40:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E61BAD9FF5
+	for <lists+linux-iio@lfdr.de>; Sat, 14 Jun 2025 23:51:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9FF9517496B
-	for <lists+linux-iio@lfdr.de>; Sat, 14 Jun 2025 21:40:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 76B1D3B65FA
+	for <lists+linux-iio@lfdr.de>; Sat, 14 Jun 2025 21:50:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C837E1F417F;
-	Sat, 14 Jun 2025 21:40:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E2C51F8AC8;
+	Sat, 14 Jun 2025 21:50:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZfRckyEf"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BunBAmaY"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-vs1-f43.google.com (mail-vs1-f43.google.com [209.85.217.43])
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 099757462;
-	Sat, 14 Jun 2025 21:40:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A67DF8F6E;
+	Sat, 14 Jun 2025 21:50:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749937228; cv=none; b=FncfmUM1SFXZw9Kiq+/IRh7GDCgofnl/qK0CXN2IIzp7RZgig3hoQEQ8mjCVCZScEZZ/a5Jr9s4jXGDg6H+AsXB9mWxhYbwEMeBg1VsutRFU2U8ixHcbTWYZ8UacJETxxn6RifsEB7DN1LgBkSkQr0j23egoY5e+/Sn14fU2yXI=
+	t=1749937840; cv=none; b=ls7vkYMbfSMTw8a3Fd9EiZTxXIgsYRR0Z4Se63aw+num7616U6T1JdcoIIAyI8oef++znuoo2PL4DsPhWGgkN1A5HZjubxiH8rClom6I5jWiVr6PPYvI7arXlvAgUAT00k63B7p5Y/KiEA65OTkXV6sskJF94V6x0WppN5QGalg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749937228; c=relaxed/simple;
-	bh=kd3743nSEbDXUiz922RGfFIOoObfj1ILzw9dt0uTHak=;
+	s=arc-20240116; t=1749937840; c=relaxed/simple;
+	bh=28TxhUesNYNhTIWhDyjUnhlMg6DCd7L8h8mUQz9dKtc=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=G2ozNwlvCfjD9w0cL5LuGmt9x3XvMFJMHSl4NIefNWUvWUFZ5+YJcP/bQZBTBCYTUet1CjEFEskCLbwjqq7MKHB6Uw4VWr4n2P+psHxphAgAli5yZtk0d6sdpoHIUCmkifQMDAmwtDDm3iE1JBsSc4+zyk7RCnFNTFOO/M4mc+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZfRckyEf; arc=none smtp.client-ip=209.85.217.43
+	 To:Cc:Content-Type; b=Y9c09/RNJ5CFvWhnJBqnkzfvtpRTzqKXzHdQu0DpeeZ+eTbgCdSAcDEtUMW3C5uaD9KEptXskn8hl120gVr9qok+jRtW2c16diqp/VTF7biwmpBVilxYjUjHul9tKUdg1fgGCTg+4Fsfzr/4SE3Ox0UGKAks+siSm2ETSDrmIqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BunBAmaY; arc=none smtp.client-ip=209.85.208.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vs1-f43.google.com with SMTP id ada2fe7eead31-4e80d19c7ebso285323137.3;
-        Sat, 14 Jun 2025 14:40:26 -0700 (PDT)
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-60789b450ceso6308429a12.2;
+        Sat, 14 Jun 2025 14:50:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749937226; x=1750542026; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1749937837; x=1750542637; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Gs3ud56tPhQ21R7sW4xLVk6AP0PKjqKuPxbE8YEes4E=;
-        b=ZfRckyEfh6Bh3wwcgtIb1AIz45XjwMB5MGLXiHODA2FTMG8CmxW/tOkUXPJEfKtbis
-         rrcOSzMUC/ldn0Bn3IYe2iCk72tNtWWvN+UmE/cARgECxaR4wdntneECgW94ZZ7pmZiH
-         MPMuJ8vapfDS2u8TKNnajh/p0BGeOL/LyMGzMzwcRlgxi58wrlmNNy8zfWJisBbWWK5s
-         N5h2pZ/AjrfYOnW/9Vh6ZtTrstjKfBEROfgxVCmxU2xRYb2y2KDVkN74SjcLFLwl3Jye
-         8gAf8DqHgmNfeNx0ooc0S5bwN8z4NsgYo6CdszK9apygYGinoNAKmJ7c0X6pNjso/mog
-         IA7w==
+        bh=EQ2JDYGtyZy01pSmrKkInxHeCy/t8KVeDwZZegFmHjE=;
+        b=BunBAmaYNaqTToWxQhTk71LTLEMTUY7Wk8yPzwN9NEp6wo/8tHhXNQJvw73slnkwJ5
+         v6XEdH9Tbc8w/Wfh/wgcn/bseni+MjBfhpR+1HvxUGuzni85R/Ig1Kjg67JAlmR6br85
+         ApjiB+QorwuCMddFjepLsUdzX+BaxG7/8KbugAqmdOPbR6CfR3Cc2HhVwjkldROkflDs
+         JxarU3S1nhNV8ZqNt9kz0CJgkX635ikmAaaNTf5/jEKIEQeJI/OYAYDHqUp9Lctrhj0f
+         ui6drLD3HkEaIT6YqPga0VIa09Pt912qaNjvV8MRuUBKF3VJzqC2KajpqfNgtMe6+a+i
+         cOmA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749937226; x=1750542026;
+        d=1e100.net; s=20230601; t=1749937837; x=1750542637;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Gs3ud56tPhQ21R7sW4xLVk6AP0PKjqKuPxbE8YEes4E=;
-        b=NEzKk+IBBR49GI8eiDWw66XOluS7NvZZfPDbk5uDt5Q8JyMWXOhjMUURXaMBku04JI
-         /6UW4CkqorBca4cmFsIYfdMtA3L5aRwclP8msT3XDwQPdwsuyKiKBzSvvDI/KTNaP5ae
-         IuYpRDyR2RW1ofwhkUUnVJlMcB13J6b3a3v3+VIT/IU8ofoOxgmfM2F6SKNHjIIlhvFL
-         Im2N64KN4+N5yKKmt8fhjjQbcHQIVuepge1MRIZ1g7G4Z0a2THKHQ6PjCw7BYhOMONKr
-         XM4NKKZQc+AWTR4lSpByk/pzmZ+GFdL50XH3UGGPHZcRFFZzfjNVaUw4jq7zQUVe1XK5
-         P03w==
-X-Forwarded-Encrypted: i=1; AJvYcCVvHVqV8iasG6HgS7lwq8NBftIVtDqN0LlFNC6aslZWHYFii7JbGA9Ojcf137msjpdroNopTXSIzI4GvYFw@vger.kernel.org, AJvYcCXUENgzEic1JKNQAfVrAtTs7Gl13WZqAqn3kJEcwt4t1P2EXL/6KcLXfkxxrYHqPlk1HkLhA34fh2s=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw1Fo3Y3XMZFOHXB2qMIR1QGJgOQWXX/vexfCPuKfFdlKmHMzoK
-	+Qh/LapG1uZZdE20+Yx4A9XwGJx/UfDoUL2IRu6RJfxvGria8Ksj6mfm+nPRMyeLz9Y3KJATr4z
-	XegShZlHCDZtkNSI2nqBHrnYdR1p4vQc=
-X-Gm-Gg: ASbGncuY853y6uJkYZRGdZeMzN4Rj9/NGpIc/8VD4LuZoVyl3dgaBVC6EDKglZ2hW0/
-	c7PoAN08XBJGgY9bJ2w27hwFz/TgLrcIsmCdBjArUvwyptUOES7tTDNzG8v5nuhiBicZQBDTQFM
-	+nQY9qSdDiNDF8hBQ4lPaO87GEo3ntYc1YTRx/S4VOmQqBw7z+0GOQ2PVmdA==
-X-Google-Smtp-Source: AGHT+IGIoZF5Ii5VWn9QWYYh/i5PeesWca3iK1OQzLB51j0/8zYJriLJXADUm8mHtJ33L0IXABVdu5gLyquUP5f+DC8=
-X-Received: by 2002:a05:6102:2c09:b0:4dd:b259:ef34 with SMTP id
- ada2fe7eead31-4e7f611b1c9mr3811485137.10.1749937225911; Sat, 14 Jun 2025
- 14:40:25 -0700 (PDT)
+        bh=EQ2JDYGtyZy01pSmrKkInxHeCy/t8KVeDwZZegFmHjE=;
+        b=CnrkMU3NRT1StLfWfk+0Li4isDsid2nU+hhRpra8eKaVxvdc2mOvkdsknl9EEoSAQE
+         46Rkun5lIm+hjzLmLQcfmuANmevghkbNY0wx8SZ6PZCUL4YuV7Vazrk5qV/vQoJIK3VJ
+         FKiFFpAt1eQon8+pAvwy6g7xkh07O0eSQ8lACrZnH8oY0j4GLIif+TlqELw+b9Z5cx+D
+         kzq/YHP5nWulQeG/+Hv1N1Xq6jN2bk5HyTkRH5AQKnTZjBAsv214Tp6a12AFH7/17Y3D
+         qtkCRrG/QRVHNLAbWw72VRVHxk9emGntqogYoMEMpXsBfJWM5gt1qMYeWp9wA4+mKnUr
+         IHfw==
+X-Forwarded-Encrypted: i=1; AJvYcCXG6CiM8QNE2Z/J6/zl6W8VksnE01WUhbPo41DjivLWa2wql6IEygL7sdfX6nKsuDxyMF7h+Tcem9Q=@vger.kernel.org, AJvYcCXX1LCUhS4mWc3crtum8OMamJ+KxHcXhSlmwq2vZhdrrp/+A+dkAFxMtPI3bm0+om5frUWnMyX9XfbA8eB5@vger.kernel.org
+X-Gm-Message-State: AOJu0YyowfWUEGyW+1cgj/4ext7TvT/n8QRJI72XDARN2dq52QrwWegE
+	TRWp7cfo59eU3lUniCa1LyXHg+NbU4kYEx/ZcKxZKHrDHcC38HuA2Dx6VXjCa9cL+MwJGbhkZXi
+	57kad433AObs6Eba8caKveQ/QSa6jSXY=
+X-Gm-Gg: ASbGncuTtX1GnPY8kY9cZoDYMfgy7C4uciGgLUgVQA6PQksIVSr8R3NnpbCHH4MCWQK
+	Eu3RAalvwm+xoxB+AgQ2v/KcwrhxD4ZRACRsOf5IZ4EkP44XLQYBwbZlxLFeN0ciDFrGegCOIgO
+	tPHkqwZs4bTmqdLpfTnBH/D1Qh50AOyL8Vh+eEnIJf0Co=
+X-Google-Smtp-Source: AGHT+IGDIxRrYycGoBMoj/HmdvU0qBmuNl9VTOVZg1KhEIPLtSNofZlui2gdTmhgM6H2mhXv1u/mobLmtpetSddRNoY=
+X-Received: by 2002:a17:907:2d2c:b0:ad9:db54:ba47 with SMTP id
+ a640c23a62f3a-adfad60904bmr406713966b.43.1749937836749; Sat, 14 Jun 2025
+ 14:50:36 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -75,73 +75,65 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20250611194648.18133-1-andrew.lopes@alumni.usp.br>
- <20250611194648.18133-4-andrew.lopes@alumni.usp.br> <20250614130132.220f5f16@jic23-huawei>
-In-Reply-To: <20250614130132.220f5f16@jic23-huawei>
-From: Andrew Ijano <andrew.ijano@gmail.com>
-Date: Sat, 14 Jun 2025 18:40:14 -0300
-X-Gm-Features: AX0GCFuex5943y7wWsKY2jBWOErHaftMtOPudcJYALbHWj_W09DVG4zVa2y4rZA
-Message-ID: <CANZih_RErpueDYAC--XUnq=wUY72WWDsC9mj0n1bfqC0aiRHYg@mail.gmail.com>
-Subject: Re: [PATCH v5 3/3] iio: accel: sca3000: use guard(mutex)() for
- handling mutex lock
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: andrew.lopes@alumni.usp.br, gustavobastos@usp.br, dlechner@baylibre.com, 
+ <20250611194648.18133-3-andrew.lopes@alumni.usp.br> <aErUqzdFL9nG6Bxc@smile.fi.intel.com>
+ <CANZih_RTtcHHP80rtJ5gGkmkL1ohoctUBaGm-2Z2=Xo9VvT-Aw@mail.gmail.com>
+In-Reply-To: <CANZih_RTtcHHP80rtJ5gGkmkL1ohoctUBaGm-2Z2=Xo9VvT-Aw@mail.gmail.com>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Sun, 15 Jun 2025 00:50:00 +0300
+X-Gm-Features: AX0GCFtW7Hyd7Y0XkMtvjgDVITxggRAS2oHIy410dLomCNXlgB5TpjqKqBOLm_o
+Message-ID: <CAHp75VfXw++C859kq58QOEcC5c4z1YdF0yBH1v4vJYujUPT75A@mail.gmail.com>
+Subject: Re: [PATCH v5 2/3] iio: accel: sca3000: replace usages of internal
+ read data helpers by spi helpers
+To: Andrew Ijano <andrew.ijano@gmail.com>
+Cc: Andy Shevchenko <andriy.shevchenko@intel.com>, jic23@kernel.org, 
+	andrew.lopes@alumni.usp.br, gustavobastos@usp.br, dlechner@baylibre.com, 
 	nuno.sa@analog.com, andy@kernel.org, jstephan@baylibre.com, 
 	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Jun 14, 2025 at 9:01=E2=80=AFAM Jonathan Cameron <jic23@kernel.org>=
- wrote:
+On Sun, Jun 15, 2025 at 12:06=E2=80=AFAM Andrew Ijano <andrew.ijano@gmail.c=
+om> wrote:
+> On Thu, Jun 12, 2025 at 10:22=E2=80=AFAM Andy Shevchenko
+> <andriy.shevchenko@intel.com> wrote:
+
+...
+
+> > Moreover, the function  should be switched to sysfs_emit_at() if this i=
+s part
+> > of ABI.
 >
-> On Wed, 11 Jun 2025 16:39:21 -0300
-> Andrew Ijano <andrew.ijano@gmail.com> wrote:
+> Great! I didn't know that.
 >
-> > Use guard(mutex)(&st->lock) for handling mutex lock instead of
-> > manually locking and unlocking the mutex. This prevents forgotten
-> > locks due to early exits and remove the need of gotos.
+> In this case, sca3000_read_av_freq() is described as a "sysfs function
+> to get available frequencies", so I guess it's the case, right?
+> Is your suggestion to replace cases of sprintf() by sysfs_emit_at()
+> then? If so, I could do that in a following patch, it seems that
+> sca3000_show_available_3db_freqs() is also using sprintf().
+
+Yes. This is written in the Documentation.
+
+...
+
+> > >               }, {
+> > >                       .len =3D len,
+> > > -                     .rx_buf =3D rx,
+> > > +                     .rx_buf =3D st->rx,
+> > >               }
+> > >       };
 > >
-> > Signed-off-by: Andrew Ijano <andrew.lopes@alumni.usp.br>
-> > Co-developed-by: Gustavo Bastos <gustavobastos@usp.br>
-> > Signed-off-by: Gustavo Bastos <gustavobastos@usp.br>
-> > Suggested-by: Jonathan Cameron <jic23@kernel.org>
-> > ---
-> > For this one, there are two cases where the previous implementation
-> > was a smalllocking portion of the code and now it's locking the whole
-> > function. I don't know if this is a desired behavior.
+> > > -
+> >
+> > Stray change. Doesn't checkpatch complain on this?
 >
-> I'd call out more specifically that you are going from
->
-> lock
-> stuff
-> unlock
-> call which contains lock over whole useful scope
->
-> to
-> lock
-> stuff
-> call with lock no longer done inside
-> unlock
->
-> In at least one case.  Looks cleaner to me. I'd guess this is a silly
-> bit of code evolution that you are tidying up as that lock dance looks
-> pointless to me.
+> I don't recall getting any warning from checkpatch but I can check
+> again for this next version.
 
-Yes! That's something I noticed when making this change and it looked
-like a clean up for me too.
-What bothered me were cases where we originally had a lock /
-spi_w8r8() / unlock and then several operations like iio_push_event()
-or sprintf(). I found these cases in sca3000_event_handler() and
-sca3000_read_av_freq().
+The problem here is the absence of a blank line between the definition
+block (where variables are declared/defined) and the first line of the
+actual code.
 
-Maybe this isn't as problematic as I'm making them up to be, but it
-seems that applying the suggestion of Nino to use scoped_guard()
-instead in these cases would already solve this problem.
-
->
-> Otherwise just the {} for cases thing needs fixing up.
-
-Great! I'll fix that too.
-
-Thanks,
-Andrew
+--=20
+With Best Regards,
+Andy Shevchenko
 

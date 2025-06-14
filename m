@@ -1,47 +1,47 @@
-Return-Path: <linux-iio+bounces-20642-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20643-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71BDCAD9CAD
-	for <lists+linux-iio@lfdr.de>; Sat, 14 Jun 2025 14:22:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52230AD9CAF
+	for <lists+linux-iio@lfdr.de>; Sat, 14 Jun 2025 14:23:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D63907A605B
-	for <lists+linux-iio@lfdr.de>; Sat, 14 Jun 2025 12:20:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F8A93B738B
+	for <lists+linux-iio@lfdr.de>; Sat, 14 Jun 2025 12:22:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A9A228ECF5;
-	Sat, 14 Jun 2025 12:22:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A4C62C08DE;
+	Sat, 14 Jun 2025 12:23:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ObgiNchW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pgti5zy4"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 157AB1C862E;
-	Sat, 14 Jun 2025 12:22:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAA5014BF89;
+	Sat, 14 Jun 2025 12:23:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749903725; cv=none; b=uybeK5G7FzmbNJblUdq2EdK5FqTx5eLG6mF6G2LHkfutlJgpuBlspFmzSSOuLkSwkpQ1eoBsm9M66FNjAXAaw1Msyl/wAu512w1hcBOLFcH63aSZk4DFyXzCbLkeenlKpl7rpaXpyuwDr/BGldoJTLLSA+SRgKigEnc+LYT5W60=
+	t=1749903798; cv=none; b=iCnY4VaCU9JmiwYMo52hEgzDK1nWOnjME2vszCRrUzGQOMbt9Xb4jI/IxkFDunRsu9zizAfMyAXQ9pdnAdcqYTzd0Ve48yJLxp5L/zWpCeYN6X1KApGcgU1nssd6AJ7P0CkReiinMLWjY3UB6CkF2JU6BW1D8Z3G1cdtV2/rs7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749903725; c=relaxed/simple;
-	bh=rGBMrxAgX1GCHG976Dof9q8HsYSXp+4s7rfg/Gplu5A=;
+	s=arc-20240116; t=1749903798; c=relaxed/simple;
+	bh=avQIQVx7PU9oe/rVrLoBrchrvxBkxtx/0zHOHlcJODc=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YZqb5Pqlj9Fh+t7Fx8Mp9ZrNOjMVYg92HJQ7X43WT7/tBqROK6wKzUSob+AjlE8B8zgf0vhBRGhor4NUeLPpAhFxggjcau2XlG3FhkYH7lJajbMwvO3uMrYWo6oEnZPjVwwjaNg7ArparkU+9xzpdrBB447fbb3zC2GW8o8qI0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ObgiNchW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21CA6C4CEEB;
-	Sat, 14 Jun 2025 12:21:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=c/6SOFceayiXtrDylzpme/HkcIxghTFXiNbk1aaSUu9UBxZBfSBk1DRB+ucuQXJMl3yIT0wZlnnCuK4TTQA54EzTqYz2NZoutaUpeLGVMCUp4SXxgmpZe4/6YK5r0zCGe8iOhYXqNHegtQDrIBxCQxFZbTelIz6L6LEcehrekwk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pgti5zy4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2293FC4CEEB;
+	Sat, 14 Jun 2025 12:23:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749903724;
-	bh=rGBMrxAgX1GCHG976Dof9q8HsYSXp+4s7rfg/Gplu5A=;
+	s=k20201202; t=1749903796;
+	bh=avQIQVx7PU9oe/rVrLoBrchrvxBkxtx/0zHOHlcJODc=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ObgiNchWi3Q5QDAhQdCv9+9wM+/Y73M6FLFMuT1AL13DUqXoevDQbIE7FPcMWErzF
-	 C2sHbXf/5OPnZzoSPF5TfoXuedHe7TK1j/6FNcRGc7mvzemEn8Zavwu6S6xSSz/Sft
-	 zw8KfrwO0JhiVw0cUCtqDIV/gAx5fme+3fzaCgzOYmS2oykxN33M7pl5WD0F4AzNrn
-	 xwKZrlAiL+KvXJpMKO++Tx4aCFA496wFKbZXAnqntqbP6QdHCsBFXVaL0dNk6es71L
-	 mo+Z48ZH+07MZORsjap81CJg82mJ8dVtw+HbLZE+WZAE8XphIYu25AKi45mXs+EgXn
-	 XX+d9+LHp5hBw==
-Date: Sat, 14 Jun 2025 13:21:50 +0100
+	b=Pgti5zy4ItelGapySex+FZlobPH1ZsV8BcOmcj3kvZ6Snf8tCTF9OmjDGY3m/b9Aj
+	 9TOcW6MkYFqsFdxt+Yd8DvskBa347QChTcLoSzKscD/3BPjAM6oDWD4aqEtqGLCFHJ
+	 gfWHC6vIp9nCB2k7zjGv6UrQnDbSalAu/DY9Rn7uorWpFfqbpjRt6sqse2u82ZxUuN
+	 KFqL9+qjeWTWlaQcSqmx8HfFGcjFxDTQdf5vkViKZkNT+3gXdRlvYPjvJGaSam1uEH
+	 jcn/7MjIf2gi+25/9/TexlgWxUj9VGGmJlktRIIxCG1MglzTHDP9SYeq4mFLCL8x9F
+	 PsUHqZaN26mdg==
+Date: Sat, 14 Jun 2025 13:23:02 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: David Lechner <dlechner@baylibre.com>
 Cc: Michael Hennerich <michael.hennerich@analog.com>, Lars-Peter Clausen
@@ -64,12 +64,12 @@ Cc: Michael Hennerich <michael.hennerich@analog.com>, Lars-Peter Clausen
  linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
  linux-mediatek@lists.infradead.org, linux-rockchip@lists.infradead.org,
  linux-stm32@st-md-mailman.stormreply.com
-Subject: Re: [PATCH 16/28] iio: imu: inv_icm42600: use = { } instead of
+Subject: Re: [PATCH 25/28] iio: pressure: mprls0025pa: use = { } instead of
  memset()
-Message-ID: <20250614132150.6f4a29a3@jic23-huawei>
-In-Reply-To: <20250611-iio-zero-init-stack-with-instead-of-memset-v1-16-ebb2d0a24302@baylibre.com>
+Message-ID: <20250614132302.1e134315@jic23-huawei>
+In-Reply-To: <20250611-iio-zero-init-stack-with-instead-of-memset-v1-25-ebb2d0a24302@baylibre.com>
 References: <20250611-iio-zero-init-stack-with-instead-of-memset-v1-0-ebb2d0a24302@baylibre.com>
-	<20250611-iio-zero-init-stack-with-instead-of-memset-v1-16-ebb2d0a24302@baylibre.com>
+	<20250611-iio-zero-init-stack-with-instead-of-memset-v1-25-ebb2d0a24302@baylibre.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -80,76 +80,39 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 11 Jun 2025 17:39:08 -0500
+On Wed, 11 Jun 2025 17:39:17 -0500
 David Lechner <dlechner@baylibre.com> wrote:
 
 > Use { } instead of memset() to zero-initialize stack memory to simplify
 > the code.
-
-This one isn't as obvious as many as the zeroing was in a loop
-and now it's at declaration.
-
-It's fine because we always copy over the same elements.
-
-I'll leave this whole series a little longer in case we are missing
-subtle cases like this. (but ones where it actually does make a difference!)
-
-Jonathan
-
-
+> 
+> The initialize of the cmd value is trivial so it can be moved to the
+> array initializer as well.
 > 
 > Signed-off-by: David Lechner <dlechner@baylibre.com>
 > ---
->  drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c | 5 ++---
->  drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c  | 5 ++---
->  2 files changed, 4 insertions(+), 6 deletions(-)
+>  drivers/iio/pressure/mprls0025pa_i2c.c | 5 +----
+>  1 file changed, 1 insertion(+), 4 deletions(-)
 > 
-> diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
-> index e6cd9dcb0687d19554e63a69dc60f065c58d70ee..dbd315ad3c4d2bd5085f7cd3cdc6de4391b1c896 100644
-> --- a/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
-> +++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
-> @@ -902,7 +902,8 @@ int inv_icm42600_accel_parse_fifo(struct iio_dev *indio_dev)
->  	const int8_t *temp;
->  	unsigned int odr;
->  	int64_t ts_val;
-> -	struct inv_icm42600_accel_buffer buffer;
-> +	/* buffer is copied to userspace, zeroing it to avoid any data leak */
-> +	struct inv_icm42600_accel_buffer buffer = { };
+> diff --git a/drivers/iio/pressure/mprls0025pa_i2c.c b/drivers/iio/pressure/mprls0025pa_i2c.c
+> index 1a48f8d43d716b28b8fceb8e1a06d63a73a74a86..79811fd4a02b370b3fde8bd67a5115a3934f8614 100644
+> --- a/drivers/iio/pressure/mprls0025pa_i2c.c
+> +++ b/drivers/iio/pressure/mprls0025pa_i2c.c
+> @@ -44,10 +44,7 @@ static int mpr_i2c_write(struct mpr_data *data, const u8 cmd, const u8 unused)
+>  {
+>  	int ret;
+>  	struct i2c_client *client = to_i2c_client(data->dev);
+> -	u8 wdata[MPR_PKT_SYNC_LEN];
+> -
+> -	memset(wdata, 0, sizeof(wdata));
+> -	wdata[0] = cmd;
+> +	u8 wdata[MPR_PKT_SYNC_LEN] = { cmd };
+
+Slight preference for trailing comma after cmd,
+
 >  
->  	/* parse all fifo packets */
->  	for (i = 0, no = 0; i < st->fifo.count; i += size, ++no) {
-> @@ -921,8 +922,6 @@ int inv_icm42600_accel_parse_fifo(struct iio_dev *indio_dev)
->  			inv_sensors_timestamp_apply_odr(ts, st->fifo.period,
->  							st->fifo.nb.total, no);
->  
-> -		/* buffer is copied to userspace, zeroing it to avoid any data leak */
-> -		memset(&buffer, 0, sizeof(buffer));
->  		memcpy(&buffer.accel, accel, sizeof(buffer.accel));
->  		/* convert 8 bits FIFO temperature in high resolution format */
->  		buffer.temp = temp ? (*temp * 64) : 0;
-> diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c
-> index b4d7ce1432a4f4d096599877040a89ede0625e0b..4058eca076d8b03a2290535eedffa0a74098d739 100644
-> --- a/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c
-> +++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c
-> @@ -806,7 +806,8 @@ int inv_icm42600_gyro_parse_fifo(struct iio_dev *indio_dev)
->  	const int8_t *temp;
->  	unsigned int odr;
->  	int64_t ts_val;
-> -	struct inv_icm42600_gyro_buffer buffer;
-> +	/* buffer is copied to userspace, zeroing it to avoid any data leak */
-> +	struct inv_icm42600_gyro_buffer buffer = { };
->  
->  	/* parse all fifo packets */
->  	for (i = 0, no = 0; i < st->fifo.count; i += size, ++no) {
-> @@ -825,8 +826,6 @@ int inv_icm42600_gyro_parse_fifo(struct iio_dev *indio_dev)
->  			inv_sensors_timestamp_apply_odr(ts, st->fifo.period,
->  							st->fifo.nb.total, no);
->  
-> -		/* buffer is copied to userspace, zeroing it to avoid any data leak */
-> -		memset(&buffer, 0, sizeof(buffer));
->  		memcpy(&buffer.gyro, gyro, sizeof(buffer.gyro));
->  		/* convert 8 bits FIFO temperature in high resolution format */
->  		buffer.temp = temp ? (*temp * 64) : 0;
+>  	ret = i2c_master_send(client, wdata, MPR_PKT_SYNC_LEN);
+>  	if (ret < 0)
 > 
 
 

@@ -1,59 +1,69 @@
-Return-Path: <linux-iio+bounces-20644-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20645-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 777B6AD9CB6
-	for <lists+linux-iio@lfdr.de>; Sat, 14 Jun 2025 14:34:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 002BAAD9CBB
+	for <lists+linux-iio@lfdr.de>; Sat, 14 Jun 2025 14:41:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 07290172E7F
-	for <lists+linux-iio@lfdr.de>; Sat, 14 Jun 2025 12:34:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E043018946C7
+	for <lists+linux-iio@lfdr.de>; Sat, 14 Jun 2025 12:41:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEE8F2C15AC;
-	Sat, 14 Jun 2025 12:34:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 748A928E604;
+	Sat, 14 Jun 2025 12:41:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oDNbfp2Z"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eUQUu8Tz"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 653F222F774;
-	Sat, 14 Jun 2025 12:34:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B5521BC3F;
+	Sat, 14 Jun 2025 12:41:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749904441; cv=none; b=mFJMuujk+ms/Q2QtILhVcGkKA+x2oMXoblAv26deDqi88fJIcjXXfxpOfMJnn+CiUNY+wA7olo4FXt3uHMzlh7yPtCS8g56EWY8oym1OI/bG1EK+tVuMI99dBDgqB5xSBsalXBhe0JPm6xQ558OLYzBwKEzMkTw6J7ocIgLH8sE=
+	t=1749904893; cv=none; b=fhzQQsYFSGWGDy90c1B+d1scP+R997CPxxJcGE9L1JQQnTueKG4ivZrn1psQY1g7rwjVAUkXZ9s+VExPc8cL3hLi+g6nPkt/0/QxXcJTS7AH/cyxmKIpsGFr+F/EtXDe+cM6qoVwKGIEyTaUJWICms2R1LwAebrmk1FIZvPb17M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749904441; c=relaxed/simple;
-	bh=V/hhGxDiuKJtoDq8go0oysqODmgNazHNjVE/A1L/JQM=;
+	s=arc-20240116; t=1749904893; c=relaxed/simple;
+	bh=VekB320Qeh3glq16VCv4Eu6QdIgbB9LAIgGyitA4WXo=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=G1J7Ic9HcxpFnD4QCwycCfZznPhVNw3Bp/wIva5/nFyW6jJR22JA0tGdm+ZDND3mZAKjbmiulECJngD69Q7o9foxAeyg+5HAsLEyE4hWLEToIcinPMWkTUv9P1OHmMPCCAA/N9hdDcFURiz09TwCjZEyrnrBIJoPGDkf0TORho0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oDNbfp2Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA2FAC4CEEB;
-	Sat, 14 Jun 2025 12:33:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=YF85JSj+J2Kt0/hCn33VTKuas3WQU3JuQnBUz9hNSXNWwPmbQVlCfakqoAWNJWQzmitmEhQpG7+hsxEmzY82KCex1VHYOIWUciJl9jTK1KP2tLvm5tbKl4z/YEt43tQiIvDF2Oh3FWtF9jYYKtstMKoWz8LZIVFrhdAISZw3IKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eUQUu8Tz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5D57C4CEEB;
+	Sat, 14 Jun 2025 12:41:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749904440;
-	bh=V/hhGxDiuKJtoDq8go0oysqODmgNazHNjVE/A1L/JQM=;
+	s=k20201202; t=1749904892;
+	bh=VekB320Qeh3glq16VCv4Eu6QdIgbB9LAIgGyitA4WXo=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=oDNbfp2Z453ar8cK7g8nF+OhDGvrDvZzFQ7JKYfS+NZfgKzFd1FglaWwkh/zZN3yE
-	 MN/qYWwIUT8hYpIyyyMUPONwtqjkQW4P2tYDeCgDU0wp4ybclhjs1DBId6drGadp9P
-	 Zv92/rp4znlqOjlwQ23uqSN2baulcDlZartEYZgI6EX9Pb34GVTP3AawuOPMw8Tp86
-	 5hLrT7ZiJ3nWL/g56igqBfQxb3TDwQFBQD/bUG+7+XW79tMqafd7bOBh0pxTg9fdO3
-	 IMELkVJablSrKZVSdny13t1vf8iZY4D1ZhjOVn2gxbBbIbqvj+uZnsoqdLJ4zDVyvP
-	 Y552g7HhHiObA==
-Date: Sat, 14 Jun 2025 13:33:52 +0100
+	b=eUQUu8TzfJ6qSztE+5TXCpOIAvWa225Te3TsKCWvQ4sG8QzG6kzdkKkI0PD48Y9OM
+	 hsB1qmHBZXGVxvZwN0NFe11xIiU8jIYAB0JT3kLLOCitXxuerzzAwOk8N+hyHqiOhJ
+	 zb29csG75P1JLpJowkwF+rpo6dNr5yj2LxIzvU2lEZ0cDN5dWtDTVDvlBhbcIQ+4+f
+	 HKeSzr7QHiNJKRU/8bCJkCRiwNfNHl7vyKxQqXEpwskKswKRSAJGMzIMjcdfts3tW4
+	 0NpMojkxAEP8ZdAqViUXxHOL5xxSZeEHj0bOaUI9MA8bshLvuVkLMCTwxdsl78NnTd
+	 Vx78trIf9OtHQ==
+Date: Sat, 14 Jun 2025 13:41:25 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: surajsonawane0215@gmail.com
-Cc: David Lechner <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?=
- <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Rob Herring
- <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 3/3] iio: chemical: Add driver for Sharp GP2Y1010AU0F
-Message-ID: <20250614133352.18cec415@jic23-huawei>
-In-Reply-To: <20250612100758.13241-4-surajsonawane0215@gmail.com>
-References: <20250612100758.13241-1-surajsonawane0215@gmail.com>
-	<20250612100758.13241-4-surajsonawane0215@gmail.com>
+To: Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>, Andy Shevchenko
+ <andriy.shevchenko@intel.com>, Lars-Peter Clausen <lars@metafoo.de>, David
+ Lechner <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
+ "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v4 1/2] iio: imu: inv_icm42600: add WoM support
+Message-ID: <20250614134125.1fe5f1cb@jic23-huawei>
+In-Reply-To: <CAHp75VeS8XQbcTaDFLUYTcd4SEdfoVOd4-mht6NGk__exSD0Vg@mail.gmail.com>
+References: <20250613-losd-3-inv-icm42600-add-wom-support-v4-0-7e5f554201bf@tdk.com>
+	<20250613-losd-3-inv-icm42600-add-wom-support-v4-1-7e5f554201bf@tdk.com>
+	<aEvhZiXHLLIRe41-@smile.fi.intel.com>
+	<FR3P281MB17578B82AC67F49552E24EB3CE77A@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
+	<aEwfUMgLTnQxOh_k@smile.fi.intel.com>
+	<aEwfgP3tiio52Rj-@smile.fi.intel.com>
+	<FR3P281MB1757AEF932A3CE2AB9637046CE77A@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
+	<aEw4q3p12q1iI7vC@smile.fi.intel.com>
+	<aEw9Yxhodwhh8BT6@smile.fi.intel.com>
+	<FR3P281MB175722266C119B719FCE9E6CCE77A@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
+	<CAHp75VeS8XQbcTaDFLUYTcd4SEdfoVOd4-mht6NGk__exSD0Vg@mail.gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -64,175 +74,164 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, 12 Jun 2025 15:37:46 +0530
-surajsonawane0215@gmail.com wrote:
+On Sat, 14 Jun 2025 00:02:52 +0300
+Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
 
-> From: Suraj Sonawane <surajsonawane0215@gmail.com>
+> On Fri, Jun 13, 2025 at 8:14=E2=80=AFPM Jean-Baptiste Maneyrol
+> <Jean-Baptiste.Maneyrol@tdk.com> wrote:
+>  >From: Andy Shevchenko <andriy.shevchenko@intel.com> =20
+> > >Sent: Friday, June 13, 2025 17:01
+> > >On Fri, Jun 13, 2025 at 05:41:47PM +0300, Andy Shevchenko wrote: =20
+> > >> On Fri, Jun 13, 2025 at 01:43:58PM +0000, Jean-Baptiste Maneyrol wro=
+te: =20
+> > >> > >From: Andy Shevchenko <andriy.shevchenko@intel.com>
+> > >> > >Sent: Friday, June 13, 2025 14:54
+> > >> > >On Fri, Jun 13, 2025 at 03:53:36PM +0300, Andy Shevchenko wrote: =
+=20
+> > >> > >> On Fri, Jun 13, 2025 at 12:46:46PM +0000, Jean-Baptiste Maneyro=
+l wrote: =20
+> > >> > >> > >From: Andy Shevchenko <andriy.shevchenko@intel.com>
+> > >> > >> > >Sent: Friday, June 13, 2025 10:29
+> > >> > >> > >On Fri, Jun 13, 2025 at 09:34:26AM +0200, Jean-Baptiste Mane=
+yrol via B4 Relay wrote: =20
 >=20
-> Implement support for the Sharp GP2Y1010AU0F optical dust sensor which
-> measures particulate matter concentration using infrared scattering.
-> The sensor requires precise 320=CE=BCs LED pulses with ADC sampling at 28=
-0=CE=BCs
-> after LED activation (as specified in datasheet section 6-1).
+> ...
 >=20
-> The driver provides:
-> - Raw density readings via IIO_DENSITY channel type
-> - Hardware-agnostic operation via GPIO and IIO ADC interfaces
-> - Power management through regulator framework
-> - Device Tree binding support
+> > >> > >> > >Overall, looking to this patch again, I think it would be be=
+tter to prepend it
+> > >> > >> > >by replacing *int*_t types by the respective uXX ones. Becau=
+se in this patch
+> > >> > >> > >we add dozens of new ones which increases an unneeded churn =
+in the future.
+> > >> > >> > > =20
+> > >> > >> > In my opinion, to respect the rule don't mix *int*_t and uXX =
+types, it is better
+> > >> > >> > to keep *int*_t types. If it need to be changed, we can chang=
+e afterward the
+> > >> > >> > whole driver types with a replace tool and send it in a separ=
+ate patch. =20
+> > >> > >>
+> > >> > >> It will be never ending story, sorry. We need someone to solve =
+this tech debt.
+> > >> > >> And since this patch adds more than 3 new users of it, I think =
+it's a candidate
+> > >> > >> to embrace the burden. =20
+> > >> > >
+> > >> > >For your convenience I can mock-up a change... =20
+> > >> >
+> > >> > It looks like there's something I don't understand in the kernel D=
+ocumentation about
+> > >> > types then.
+> > >> > Quoting Documentation/process/coding-style.rst, section 5.d:
+> > >> > ---
+> > >> > New types which are identical to standard C99 types, in certain ex=
+ceptional circumstances.
+> > >> >
+> > >> > Although it would only take a short amount of time for the eyes an=
+d brain to become accustomed
+> > >> > to the standard types like uint32_t, some people object to their u=
+se anyway.
+> > >> >
+> > >> > Therefore, the Linux-specific u8/u16/u32/u64 types and their signe=
+d equivalents which are
+> > >> > identical to standard types are permitted -- although they are not=
+ mandatory in new code
+> > >> > of your own.
+> > >> >
+> > >> > When editing existing code which already uses one or the other set=
+ of types, you should
+> > >> > conform to the existing choices in that code.
+> > >> > ---
+> > >> >
+> > >> > My understanding is that uXX are not mandatory for new code. You c=
+an use types like *int*_t.
+> > >> > But you need to conform afterward to the existing choice. That's w=
+hy this driver was
+> > >> > done initially with *int*_t types, and that patches are conforming=
+ to this choice. =20
+> > >>
+> > >> This part of the documentation has a lot of room for different inter=
+pretations.
+> > >> One [1] may consider this as uXX superior, another, like you, that i=
+t's okay
+> > >> to use.  In any case Greg KH prefers uXX over uintXX_t. And he is al=
+so in
+> > >> the chain of maintainers here. Feel free to amend the Documentation.=
+ But
+> > >> be sure all stakeholders will see your proposal (like Greg KH and ot=
+her
+> > >> key maintainers).
+> > >> =20
+> > >> > By looking at all Linux drivers, there are plenty of them using *i=
+nt*_t, even
+> > >> > inside iio: =20
+> > >>
+> > >> $ git grep -l 'u\?int[0-9][0-9]\?_t' -- drivers/iio/ | wc -l
+> > >> 59
+> > >>
+> > >> $ git ls-files drivers/iio*.c | wc -l
+> > >> 640
+> > >>
+> > >> Less than 10%.
+> > >> =20
+> > >> > Then, why it is mandatory to change this driver to use uXX instead=
+? =20
+> > >>
+> > >> TO be consistent. With the above wording in the documentation I may =
+argue that
+> > >> entire subsystem should be consistent and at least in IIO we have to=
+ns of patch
+> > >> series that are against the whole subsystem to do one style change o=
+r another
+> > >> (look at the recent memset() vs. {} for initialisation).
+> > >>
+> > >> [1] https://urldefense.com/v3/__https://lore.kernel.org/all/20250409=
+180953.398686-1-matchstick@neverthere.org/__;!!FtrhtPsWDhZ6tw!DVTvkgDsymM71=
+32dB-wjei-s0JxYiivZxtzEHfWjsrn_6toqTXA__hm2nPUh7jmectCXcP9Z3OAh0hMm-WD6eQAH=
+OtdiGbYQqsw$[lore[.]kernel[.]org] =20
+> > >
+> > >Oh, this [2] is golden!
+> > >You may found support for your arguments and for mine in that thread, =
+but the
+> > >bottom line is: what do maintainers of IIO prefer? (Taking into accoun=
+t that it
+> > >goes via Greg KH)
+> > >
+> > >[2]: https://urldefense.com/v3/__https://lore.kernel.org/all/202104232=
+30609.13519-1-alx.manpages@gmail.com/__;!!FtrhtPsWDhZ6tw!DVTvkgDsymM7132dB-=
+wjei-s0JxYiivZxtzEHfWjsrn_6toqTXA__hm2nPUh7jmectCXcP9Z3OAh0hMm-WD6eQAHOtdiu=
+Fc54eI$[lore[.]kernel[.]org] =20
+> >
+> > If this is required, I can do it. I would just want to know if this is =
+mandatory
+> > since we already have a couple of drivers merged using standard types a=
+nd
+> > other drivers planned to be merged. =20
 >=20
-> Datasheet: https://global.sharp/products/device/lineup/data/pdf/datasheet=
-/gp2y1010au_appl_e.pdf
+> Let's wait for others to speak up. Especially maintainers.
 >=20
-> Signed-off-by: Suraj Sonawane <surajsonawane0215@gmail.com>
-A few additional comments from me.
+> > Can I do it in the same series or should it be in a separate patch befo=
+re this
+> > series? =20
+>=20
+> Same series, just a prerequisite patch. Note, I have one locally, I
+> just need to send it and you can use it, but the reason why I haven't
+> sent is the same =E2=80=94 I want to know the official position of the IIO
+> subsystem about this.
+>=20
+
+I'm generally not keen on taking strong opinions that add a barrier to
+code submission / new contributors when there are arguments both ways.
+I am getting fussier on style though in my old age - mostly driven by
+just how many drivers we now have and the advantages of consistency
+of arbitrary decisions.
+
+So I'll state a strong preference for the kernel internal types u8 etc
+and would like to see patches converting larger drivers that are
+significantly copied for new code over like this one.
+
+Thanks
 
 Jonathan
 
->  obj-$(CONFIG_PMS7003) +=3D pms7003.o
-> diff --git a/drivers/iio/chemical/gp2y1010.c b/drivers/iio/chemical/gp2y1=
-010.c
-> new file mode 100644
-> index 000000000..3a8657035
-> --- /dev/null
-> +++ b/drivers/iio/chemical/gp2y1010.c
-> @@ -0,0 +1,126 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * Copyright (c) 2025 Suraj Sonawane <surajsonawane0215@gmail.com>
-> + * Sharp GP2Y1010AU0F Dust Sensor Driver
-> + * Datasheet: https://global.sharp/products/device/lineup/data/pdf/datas=
-heet/gp2y1010au_appl_e.pdf
-> + */
-> +
-> +#include <linux/delay.h>
-> +#include <linux/err.h>
-> +#include <linux/gpio/consumer.h>
-> +#include <linux/iio/consumer.h>
-> +#include <linux/iio/iio.h>
-> +#include <linux/init.h>
-> +#include <linux/module.h>
-> +#include <linux/of.h>
-> +#include <linux/platform_device.h>
-> +#include <linux/regulator/consumer.h>
-> +
-> +/* Timings based on GP2Y1010AU0F datasheet Section 6-1 */
-> +#define GP2Y1010_LED_PULSE_US     320  /* Total LED ON time (0.32 ms) */
-> +#define GP2Y1010_SAMPLE_DELAY_US  280  /* ADC sampling after LED ON (0.2=
-8 ms) */
-> +
-> +struct gp2y1010_data {
-> +	struct gpio_desc *led_gpio;
-> +	struct iio_channel *adc_chan;
-> +	int v_clean;  /* Calibration: voltage in clean air (mV) */
-> +};
-> +
-> +static int gp2y1010_read_raw(struct iio_dev *indio_dev,
-> +							 struct iio_chan_spec const *chan,
-> +							 int *val, int *val2, long mask)
-
-Odd alignment. Aim for under the s of struct. That is immediately after the=
- bracket.
-
-> +{
-> +	struct gp2y1010_data *data =3D iio_priv(indio_dev);
-> +	int ret, voltage_mv;
-> +
-> +	if (mask !=3D IIO_CHAN_INFO_RAW)
-> +		return -EINVAL;
-> +
-> +	gpiod_set_value(data->led_gpio, 1);
-> +	udelay(GP2Y1010_SAMPLE_DELAY_US);
-> +
-> +	ret =3D iio_read_channel_processed(data->adc_chan, &voltage_mv);
-> +
-> +	/* Wait remaining time to complete 320 =C2=B5s total LED pulse width */
-> +	udelay(GP2Y1010_LED_PULSE_US - GP2Y1010_SAMPLE_DELAY_US);
-> +	gpiod_set_value(data->led_gpio, 0);
-> +
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	*val =3D voltage_mv;
-> +	return IIO_VAL_INT;
-> +}
-> +
-> +static const struct iio_info gp2y1010_info =3D {
-> +	.read_raw =3D gp2y1010_read_raw,
-> +};
-> +
-> +static const struct iio_chan_spec gp2y1010_channels[] =3D {
-> +	{
-> +		.type =3D IIO_DENSITY,
-> +		.info_mask_separate =3D BIT(IIO_CHAN_INFO_RAW),
-> +	},
-
-Where there is only one channel, no need to bother with an array.
-There are lots of drivers that do this, but I'm trying to discourage it
-in new drivers.
-indio_dev->channels =3D &gp271010_channel;
-indio_dev->num_channels =3D 1;
-
-is obvious enough.
-
-> +};
-> +
-> +static int gp2y1010_probe(struct platform_device *pdev)
-> +{
-> +	struct device *dev =3D &pdev->dev;
-> +	struct iio_dev *indio_dev;
-> +	struct gp2y1010_data *data;
-> +	enum iio_chan_type ch_type;
-> +	int ret;
-> +
-> +	indio_dev =3D devm_iio_device_alloc(dev, sizeof(*data));
-> +	if (!indio_dev)
-> +		return -ENOMEM;
-> +
-> +	data =3D iio_priv(indio_dev);
-> +	data->v_clean =3D 900;
-> +
-> +	data->led_gpio =3D devm_gpiod_get(dev, "led", GPIOD_OUT_LOW);
-> +	if (IS_ERR(data->led_gpio))
-> +		return dev_err_probe(dev, PTR_ERR(data->led_gpio), "Failed to get LED =
-GPIO\n");
-> +
-> +	ret =3D devm_regulator_get_enable(dev, "vdd");
-> +	if (ret)
-> +		return ret;
-> +	udelay(100);
-> +
-> +	data->adc_chan =3D devm_iio_channel_get(dev, "dust");
-> +	if (IS_ERR(data->adc_chan))
-> +		return dev_err_probe(dev, PTR_ERR(data->adc_chan), "Failed to get ADC =
-channel\n");
-> +
-> +	ret =3D iio_get_channel_type(data->adc_chan, &ch_type);
-> +	if (ret < 0)
-> +		return ret;
-> +	if (ch_type !=3D IIO_DENSITY)
-> +		return dev_err_probe(dev, -EINVAL, "ADC channel is not density type\n"=
-);
-
-I'm confused.  The ADC channel type providing us a measurement service (as =
-here we
-are the consumer) is going to be voltage (or maybe current) because ADCs do=
-n't measure dust.
-This driver has to do the conversion from voltage to the value needed to re=
-port a density channel.=20
-
-> +
-> +	indio_dev->name =3D dev_name(dev);
-
-Hard code the part number here rather than getting it from elsewhere.  That=
- makes
-it much easier to see that this is what we expect.
-
-> +	indio_dev->info =3D &gp2y1010_info;
-> +	indio_dev->channels =3D gp2y1010_channels;
-> +	indio_dev->num_channels =3D ARRAY_SIZE(gp2y1010_channels);
-> +	indio_dev->modes =3D INDIO_DIRECT_MODE;
-> +
-> +	return devm_iio_device_register(dev, indio_dev);
-> +}
 

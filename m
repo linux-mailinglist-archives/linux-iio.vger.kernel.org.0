@@ -1,59 +1,59 @@
-Return-Path: <linux-iio+bounces-20660-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20661-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76184AD9D4F
-	for <lists+linux-iio@lfdr.de>; Sat, 14 Jun 2025 16:10:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C478AD9D6B
+	for <lists+linux-iio@lfdr.de>; Sat, 14 Jun 2025 16:18:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CF7811898D91
-	for <lists+linux-iio@lfdr.de>; Sat, 14 Jun 2025 14:10:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 444EC3B74FC
+	for <lists+linux-iio@lfdr.de>; Sat, 14 Jun 2025 14:17:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BF752D9EF0;
-	Sat, 14 Jun 2025 14:10:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42A7F2D9EDB;
+	Sat, 14 Jun 2025 14:17:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YWiHo3cV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u0I+Klij"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 404B72C15AC;
-	Sat, 14 Jun 2025 14:10:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E81EE70808;
+	Sat, 14 Jun 2025 14:17:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749910212; cv=none; b=OFixCgnWo9S6FdEBNlmFdVOCY+9/41SbzWj0qYM8Onx6+HVwFXHE1kAYpIRrGNJvOCVzfPn1dldaUVTRCw3zD4a5BYE54h3LQ9O5PiE+xKnqRKMNrq6w2u3KHv7M3Cs/txazrkEewyc0zaFPZ9z//8UCWZ0m7cfrVxR5ZUkWupI=
+	t=1749910631; cv=none; b=V7v1BcQf619ZtLFiXYCIDda6LBQFm6b94qcV8RUCGkY/U1YZJhGaC6yhQXXNXldMlIlrIwTbL6jbUmtBiOZDosHyybu3rmwDtlXNgf939qA0ctyoktXPzqJIGmJsDm6/OKAG4m299q0GlcLEWqb0K4EyUTfHz6Va4Vx31nvhDNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749910212; c=relaxed/simple;
-	bh=hz1NwYRfhK1h1DV+M51iQjyhNlTu+VaCgtOWpAxOBmQ=;
+	s=arc-20240116; t=1749910631; c=relaxed/simple;
+	bh=Bjaf1tdbvAELd6/YZ7q3IKeF7gZ5dfUUOgR/rJG4v2c=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=vFGmzUjLRWMrXs0R0uNjYEqbGEFMCH4PneergUvKtrQqMGdS1PwX0eP+Hwb3IbT/dDTwBntek+UPRALbJNowbeUgk7U7CeWJdSqr9mpacsf/oFTgSRXFa/i1BbK0T1lhFL57+eg4G1SJe8AYFUDkIzFRsLotAPrZXdaR1xt6gms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YWiHo3cV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D73D2C4CEEB;
-	Sat, 14 Jun 2025 14:10:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hkk9nssG7D3LZ0NZl9KSC0lMzeiqt7hm20eFb/AOskqefo08XtRqrhk//MGXZVqeSgxtEYJC+3AbDO7DkGxXnTXYcfR4qlRNxL2POzNrzkHzw+yvsEv7k4k6Tw9k9qDcdyvx0Z8/X7iFGJozdJ4wrcDU8CBIGE0xJjqhhF5H0wc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u0I+Klij; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7F81C4CEEE;
+	Sat, 14 Jun 2025 14:17:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749910211;
-	bh=hz1NwYRfhK1h1DV+M51iQjyhNlTu+VaCgtOWpAxOBmQ=;
+	s=k20201202; t=1749910630;
+	bh=Bjaf1tdbvAELd6/YZ7q3IKeF7gZ5dfUUOgR/rJG4v2c=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=YWiHo3cVySEuFTA4XL3mfmpCuEE9UyJRk21tT36bE7DyadJa+iTi+i9t08Exm86se
-	 4k6JKqB+wGkGXCeRH/0pmrK5/Oypb4sv14fXOiqfXsNpdGWPcVdkbQSvNc6K9Wdtuv
-	 HxoVYAu8RnwZx38+q2dZHje9TdKE63Nm3RQ4sSlngVy5mZUYJC3Busy+fVa8CRVWHB
-	 xLPmODLMwXGD6/q5oeQm8A+N2QH612I2Tjoj5e3lf0cHDE636w+ef5PW6dMLOlwkEZ
-	 1ahMWnO/yn4aQP4bKMsCN7TjBykFE8+0kmAdGCqYYUsR8mK+T39HUJrakt9CdnnPeB
-	 6ao3KRdDTMZkg==
-Date: Sat, 14 Jun 2025 15:10:02 +0100
+	b=u0I+KlijanW87g35dfr0coFfXQmPh/xMlKuSXjDTJ5QBgBtXF4nztj7GQdpsLQyvW
+	 GgkzGroheCKy0kum23iHX+G24pRB362tVsQ5lBe9TdWfm2+1/N0MaI7WegVvLz9U27
+	 jRNS6sZFv065F7en3tf0qRHTzbQ7aXUx1b8DQwnMLyX6BW7L46U/5XprQiOj1zDRlN
+	 qtEQnTBzByVd8Glp79ZQ9oyTg4Q31SBYo/WAt0X9BQhvGiP13hAv+9ApdV9CgAFTcv
+	 bY7+ItsHybMKtHTUhyeRJ1FKO86JULPfDI4B4TapC5NZdbq32zrFMT1SHaRQISY6TB
+	 lPPD04J5cyetg==
+Date: Sat, 14 Jun 2025 15:17:03 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: Lothar Rubusch <l.rubusch@gmail.com>
 Cc: lars@metafoo.de, Michael.Hennerich@analog.com, dlechner@baylibre.com,
  nuno.sa@analog.com, andy@kernel.org, corbet@lwn.net,
  linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-doc@vger.kernel.org, eraretuya@gmail.com
-Subject: Re: [PATCH v9 10/11] iio: accel: adxl345: extend inactivity time
- for less than 1s
-Message-ID: <20250614151002.1582c732@jic23-huawei>
-In-Reply-To: <20250610215933.84795-11-l.rubusch@gmail.com>
+Subject: Re: [PATCH v9 11/11] docs: iio: add documentation for adxl345
+ driver
+Message-ID: <20250614151703.047e83fe@jic23-huawei>
+In-Reply-To: <20250610215933.84795-12-l.rubusch@gmail.com>
 References: <20250610215933.84795-1-l.rubusch@gmail.com>
-	<20250610215933.84795-11-l.rubusch@gmail.com>
+	<20250610215933.84795-12-l.rubusch@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -64,108 +64,103 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 10 Jun 2025 21:59:32 +0000
+On Tue, 10 Jun 2025 21:59:33 +0000
 Lothar Rubusch <l.rubusch@gmail.com> wrote:
 
-> Inactivity event and free-fall event are actually the same type of sensor
-> events. Hence, inactivity detection using a period of 1 to 255s can be
-> extended to be used for lower periods than 1s for covering free-fall
-> detection.
-> 
-> When lower periods are defined, the driver automatically will setup
-> threshold and period on the free-fall register, while using the
-> inactivity threshold and period for periods above 1s. Using the
-> free-fall register, no link bit will be set, and therefore no auto-sleep
-> can be set in cases where also activity will be enabled.
+> The documentation describes the ADXL345 driver, IIO interface,
+> interface usage and configuration.
+
+Trivial but wrap commit descriptions at 75 chars.
+
+The main comment on this is that, when talking about datasheet terms / settings
+etc it would be good to reflect them back to the IIO controls that actually allow
+us to change them.
+
+Otherwise seems reasonable to me.
+
 > 
 > Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
 
-Approach seems reasonable.  One comment on the code below.
 
->  /**
->   * adxl345_set_inact_time - Configure inactivity time explicitly or by ODR.
->   * @st: The sensor state instance.
-> - * @val_s: A desired time value, between 0 and 255.
-> + * @val_int: The inactivity time, integer part.
-> + * @val_fract: The inactivity time, fractional part when val_int is 0.
->   *
-> - * Inactivity time can be configured between 1 and 255 sec. If a val_s of 0
-> + * Inactivity time can be configured between 1 and 255 sec. If a val_s of 0.00
->   * is configured by a user, then a default inactivity time will be computed.
->   *
->   * In such case, it should take power consumption into consideration. Thus it
-> @@ -355,16 +381,18 @@ static int adxl345_set_measure_en(struct adxl345_state *st, bool en)
->   *
->   * Return: 0 or error value.
->   */
-> -static int adxl345_set_inact_time(struct adxl345_state *st, u32 val_s)
-> +static int adxl345_set_inact_time(struct adxl345_state *st, u32 val_int,
-> +				  u32 val_fract)
->  {
->  	unsigned int max_boundary = 255;
->  	unsigned int min_boundary = 10;
-> -	unsigned int val = min(val_s, max_boundary);
-> +	unsigned int val;
->  	enum adxl345_odr odr;
->  	unsigned int regval;
->  	int ret;
->  
-> -	if (val == 0) {
-> +	if (val_int == 0 && val_fract == 0) {
-> +		/* Generated inactivity time based on ODR */
->  		ret = regmap_read(st->regmap, ADXL345_REG_BW_RATE, &regval);
->  		if (ret)
->  			return ret;
-> @@ -373,9 +401,41 @@ static int adxl345_set_inact_time(struct adxl345_state *st, u32 val_s)
->  
->  		val = (adxl345_odr_tbl[odr][0] > max_boundary)
->  			? min_boundary : max_boundary -	adxl345_odr_tbl[odr][0];
 > +
-> +		st->inact_time_ms = MILLI * val;
+> +Sensor Events
+> +-------------
 > +
-> +		/* Inactivity time in s */
-> +		ret = regmap_write(st->regmap, ADXL345_REG_TIME_INACT, val);
-> +		if (ret)
-> +			return ret;
+> +Particular IIO events will be triggered by the corresponding interrupts. The
+> +sensor driver supports no or one active INT line, where the sensor has two
+> +possible INT IOs. Configure the used INT line in the devicetree. If no INT line
+> +is configured, the sensor falls back to FIFO bypass mode and no events are
+> +possible, only X, Y and Z axis measurements are possible.
 > +
+> +The following table shows the ADXL345 related device files, found in the
+> +specific device folder path ``/sys/bus/iio/devices/iio:deviceX/events``.
+> +Note, the default activity/inactivity is DC coupled. Thus only AC coupled
+> +activity and inactivity are mentioned explicitly.
 
-Perhaps return in the good path here.
+This paragraph probably wants to talk about the mapping of AC coupled to 'adaptive'
+I couldn't relate it directly to the table without that.
 
-> +	} else if (val_int == 0 && val_fract > 0) {
-> +		/* time < 1s, free-fall */
 > +
-> +		/*
-> +		 * Datasheet max. value is 255 * 5000 us = 1.275000 seconds.
-> +		 *
-> +		 * Recommended values between 100ms and 350ms (0x14 to 0x46)
-> +		 */
-> +		st->inact_time_ms = DIV_ROUND_UP(val_fract, MILLI);
+> ++---------------------------------------------+---------------------------------------------+
+> +| Event handle                                | Description                                 |
+> ++---------------------------------------------+---------------------------------------------+
+> +| in_accel_gesture_doubletap_en               | Enable double tap detection on all axis     |
+> ++---------------------------------------------+---------------------------------------------+
+> +| in_accel_gesture_doubletap_reset_timeout    | Double tap window in [us]                   |
+> ++---------------------------------------------+---------------------------------------------+
+> +| in_accel_gesture_doubletap_tap2_min_delay   | Double tap latent in [us]                   |
+> ++---------------------------------------------+---------------------------------------------+
+> +| in_accel_gesture_singletap_timeout          | Single tap duration in [us]                 |
+> ++---------------------------------------------+---------------------------------------------+
+> +| in_accel_gesture_singletap_value            | Single tap threshold value in 62.5/LSB      |
+> ++---------------------------------------------+---------------------------------------------+
+> +| in_accel_mag_falling_period                 | Inactivity time in seconds                  |
+> ++---------------------------------------------+---------------------------------------------+
+> +| in_accel_mag_falling_value                  | Inactivity threshold value in 62.5/LSB      |
+> ++---------------------------------------------+---------------------------------------------+
+> +| in_accel_mag_adaptive_rising_en             | Enable AC coupled activity on X axis        |
+> ++---------------------------------------------+---------------------------------------------+
+> +| in_accel_mag_adaptive_falling_period        | AC coupled inactivity time in seconds       |
+> ++---------------------------------------------+---------------------------------------------+
+> +| in_accel_mag_adaptive_falling_value         | AC coupled inactivity threshold in 62.5/LSB |
+> ++---------------------------------------------+---------------------------------------------+
+> +| in_accel_mag_adaptive_rising_value          | AC coupled activity threshold in 62.5/LSB   |
+> ++---------------------------------------------+---------------------------------------------+
+> +| in_accel_mag_rising_en                      | Enable activity detection on X axis         |
+> ++---------------------------------------------+---------------------------------------------+
+> +| in_accel_mag_rising_value                   | Activity threshold value in 62.5/LSB        |
+> ++---------------------------------------------+---------------------------------------------+
+> +| in_accel_x_gesture_singletap_en             | Enable single tap detection on X axis       |
+> ++---------------------------------------------+---------------------------------------------+
+> +| in_accel_x&y&z_mag_falling_en               | Enable inactivity detection on all axis     |
+> ++---------------------------------------------+---------------------------------------------+
+> +| in_accel_x&y&z_mag_adaptive_falling_en      | Enable AC coupled inactivity on all axis    |
+> ++---------------------------------------------+---------------------------------------------+
+> +| in_accel_y_gesture_singletap_en             | Enable single tap detection on Y axis       |
+> ++---------------------------------------------+---------------------------------------------+
+> +| in_accel_z_gesture_singletap_en             | Enable single tap detection on Z axis       |
+> ++---------------------------------------------+---------------------------------------------+
 > +
-> +		ret = regmap_write(st->regmap, ADXL345_REG_TIME_FF,
-> +				   DIV_ROUND_CLOSEST(val_fract, 5));
-> +		if (ret)
-> +			return ret;
-and here
-
-> +	} else if (val_int > 0) {
-> +		/* Time >= 1s, inactivity */
-> +		st->inact_time_ms = MILLI * val_int;
+> +Find a detailed description of a particular functionality in the sensor
+> +datasheet.
 > +
-> +		ret = regmap_write(st->regmap, ADXL345_REG_TIME_INACT, val_int);
-> +		if (ret)
-> +			return ret;
-and here.
+> +Setting the **ODR** explicitly will result in estimated adjusted default values
 
-> +	} else {
-Or given this covers any case where val_int > 0 do it first
-and error out early?
+Say how to set ODR etc in IIO terms as well perhaps?
 
-> +		/* Do not support negative or wrong input. */
-> +		return -EINVAL;
->  	}
->  
-> -	return regmap_write(st->regmap, ADXL345_REG_TIME_INACT, val);
-> +	return 0;
->  }
+> +for the inactivity time detection, where higher frequencies shall default to
+> +longer wait periods, and vice versa. It is also possible to explicitly
+> +configure inactivity wait times, if the defaulting approach does not match
+> +application requirements. Setting 0 here, will fall back to default setting.
 
+I'm not particularly keen on that 0 aspect as it's unintuitive.  Why do we need
+a means to go back to the default? 
+
+> +
+> +The **g range** configuration also tries to estimate activity and inactivity
+> +thresholds when switching to another g range. The default range will be
+> +factorized by the relation of old range divided by new range. The value never
+> +becomes 0 and will be at least 1 and at most 255 i.e. 62.5g/LSB according to
+> +the datasheet. Nevertheless activity and inactivity thresholds can be
+> +overwritten by explicit values.
 

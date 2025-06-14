@@ -1,62 +1,61 @@
-Return-Path: <linux-iio+bounces-20634-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20635-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE27FAD9C82
-	for <lists+linux-iio@lfdr.de>; Sat, 14 Jun 2025 13:38:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DC0DAD9C86
+	for <lists+linux-iio@lfdr.de>; Sat, 14 Jun 2025 13:40:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 744451711C6
-	for <lists+linux-iio@lfdr.de>; Sat, 14 Jun 2025 11:38:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E4A45179835
+	for <lists+linux-iio@lfdr.de>; Sat, 14 Jun 2025 11:40:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D33BB2C08D7;
-	Sat, 14 Jun 2025 11:38:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A62B2C08D6;
+	Sat, 14 Jun 2025 11:40:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BGraheyN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hIYrMGob"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83CA21F0E58;
-	Sat, 14 Jun 2025 11:38:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46F251F1531;
+	Sat, 14 Jun 2025 11:40:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749901100; cv=none; b=nEPbyEGoBiVWarH3TIpbcDSAQy6bX5u7GwjSnMqjsmXe1hv4mmCT8tdV5ZiIzc94CmcCDou1iNo5eKFpcub24vUNmcc97qQtmTj5/DeG6U+Rzi3+dqQSf3G9q0qL98c4G5iO0cCzzgzj6P9M8RjJmW3ELqqUH/lduARZ4Zc99Fo=
+	t=1749901227; cv=none; b=Gm4x3Km18ZT3UJkqnadPoMTYBLxWRYI9VFG8zzQmNwt0nJyvCeV3R96Jx3dZDOUoRss/V2Zw9GUun8ikDSnnGIeasm6j+IUwmvnoWcQ8zdjayHBudprQYz2ub6pjUEdNVTKqoBRDUMSPFAEJpve7LeQIlIeYiSGTFRzLoFFKA0k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749901100; c=relaxed/simple;
-	bh=fpbBffDgjhog3qXMyHUoM68Q8rOI2jUHMB121Vi9XHs=;
+	s=arc-20240116; t=1749901227; c=relaxed/simple;
+	bh=6My9Wlirf2exQSKlnTmP3+KTjTBj/UNq/AL2IrRVC7g=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Dto1NfXu2KypZXBo5NT4c62V9Ef64oGwYOI1ncF3rtn09EOdzR8qOqvuTJeSnafKv78V9xaRMfFJJ3J7zdkOmwPVidwbIqwZgs3QsbcByB8nYt44ec1CKn+s0yQ12VfG4Ytuqoh5YWqoaFbVPDL3lIGxr6/sjF/8OuWoGhnEfUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BGraheyN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16486C4CEEB;
-	Sat, 14 Jun 2025 11:38:12 +0000 (UTC)
+	 MIME-Version:Content-Type; b=fgl8v1jWz90BipF+9rqqKMMEUTn/V/08iH3VNHjMbPaVTvPA+zSVRHolQyN5E0eS5a7VRYxXfNZJ2BGoOvkCU6nlK2W6hSTYZfnFZB2zzbUU6uyg8DNRHT0Oz41hZqBWXghCoDc1IJtPy+2NhB5RrmmxlGkT9rM4vHN5/FcqdXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hIYrMGob; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B07DDC4CEEB;
+	Sat, 14 Jun 2025 11:40:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749901100;
-	bh=fpbBffDgjhog3qXMyHUoM68Q8rOI2jUHMB121Vi9XHs=;
+	s=k20201202; t=1749901226;
+	bh=6My9Wlirf2exQSKlnTmP3+KTjTBj/UNq/AL2IrRVC7g=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=BGraheyNjgq7rmP2OW6sETnjy1RJVbvX2IrD5bOtFvQE6EagmFOVc244Lm1+7CWOf
-	 BakLQuTykgIh8aaF3eFpPlVXIuQva6lg601038oVgP2YmqkiLgTKoQWwsCg/6v1NjY
-	 Gz0ei/isYqshh4xPqbH1mZNbE+kLaFeaVfVFx+h90/CRcxzN7vSPEcLXxohUeRoa6q
-	 u7IVUWpHorwViXLKdG+jCm3Euoy5Z62HdrnH1oMXpo2WyDtydi/izEMrz/z2wkswpq
-	 JIeHqWnS3PSmnhoRVaW3IVg+9Yxrrh0omYuRtJ9Eq2gz8VcWcIC/Qp0wsaZzTsYoNp
-	 +ZTTPEem4qAZw==
-Date: Sat, 14 Jun 2025 12:38:07 +0100
+	b=hIYrMGob8I9X6ijwrUoUObU9xJu0/o7WSj2ch4icNuILPG6yF9UDL5ZNGmyOVioDz
+	 tXm0bfrm7YtuuLscWcPqjRS4tLLSXq/h10WgmQ6hk4KH1PufbTykqvn1l7vrp2PU1z
+	 u8cVHGCRf9DBszyk4iyU7wr22Dt+7eUGU3Nb4i7qO00Uhb+cdtTx8Q5xgA4lh55w9y
+	 YSNX5vZGvV09uXAojqQPjCBTb18P5hBSyGZRa98Bzjw1iVs87HQGLseRSM6+dLOMBd
+	 bqwrgbeM4h5jtorHh1CoLUQVuTy/eBxyihwIG0wQtTM7hhKbsyEswrOJaIrp2iKEgm
+	 PO0gz2UjjPm3g==
+Date: Sat, 14 Jun 2025 12:40:19 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Jonathan Santos <Jonathan.Santos@analog.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-gpio@vger.kernel.org, andy@kernel.org, nuno.sa@analog.com,
- Michael.Hennerich@analog.com, marcelo.schmitt@analog.com, robh@kernel.org,
- krzk+dt@kernel.org, conor+dt@kernel.org, marcelo.schmitt1@gmail.com,
- linus.walleij@linaro.org, brgl@bgdev.pl, lgirdwood@gmail.com,
- broonie@kernel.org, jonath4nns@gmail.com, dlechner@baylibre.com
-Subject: Re: [PATCH v11 00/11] iio: adc: ad7768-1: Add features,
- improvements, and fixes
-Message-ID: <20250614123807.3ded6764@jic23-huawei>
-In-Reply-To: <aEweNqhLsL_Hg_gl@smile.fi.intel.com>
-References: <cover.1749569957.git.Jonathan.Santos@analog.com>
-	<aEweNqhLsL_Hg_gl@smile.fi.intel.com>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Andy Shevchenko <andy@kernel.org>, Michael Hennerich
+ <Michael.Hennerich@analog.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
+ Da Xue <da@libre.computer>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: adc: ad7949: use spi_is_bpw_supported()
+Message-ID: <20250614124019.114079e0@jic23-huawei>
+In-Reply-To: <1bbee6de-adac-4f28-9a96-fd6480691ac4@baylibre.com>
+References: <20250611-iio-adc-ad7949-use-spi_is_bpw_supported-v1-1-c4e15bfd326e@baylibre.com>
+	<aEmdhV0ATRuUeGaL@smile.fi.intel.com>
+	<851b7d08-3e77-4344-97d1-9d60f1fb8762@baylibre.com>
+	<20250611175506.01d11675@jic23-huawei>
+	<1bbee6de-adac-4f28-9a96-fd6480691ac4@baylibre.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -67,32 +66,56 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 13 Jun 2025 15:48:54 +0300
-Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+On Wed, 11 Jun 2025 12:00:27 -0500
+David Lechner <dlechner@baylibre.com> wrote:
 
-> On Wed, Jun 11, 2025 at 08:49:34AM -0300, Jonathan Santos wrote:
+> On 6/11/25 11:55 AM, Jonathan Cameron wrote:
+> > On Wed, 11 Jun 2025 10:21:56 -0500
+> > David Lechner <dlechner@baylibre.com> wrote:
+> >   
+> >> On 6/11/25 10:15 AM, Andy Shevchenko wrote:  
+> >>> On Wed, Jun 11, 2025 at 10:04:58AM -0500, David Lechner wrote:    
+> >>>> Use spi_is_bpw_supported() instead of directly accessing spi->controller    
+> >>>> ->bits_per_word_mask. bits_per_word_mask may be 0, which implies that    
+> >>>> 8-bits-per-word is supported. spi_is_bpw_supported() takes this into
+> >>>> account while spi_ctrl_mask == SPI_BPW_MASK(8) does not.    
+> >>>     
+> >>>> Closes: https://lore.kernel.org/linux-spi/c8b8a963-6cef-4c9b-bfef-dab2b7bd0b0f@sirena.org.uk/    
+> >>>
+> >>> Reported-by yourself. I'm wondering if the Closes adds a value in this case.
+> >>> Otherwise I can do the same to maybe 10% of my patches, for instance. But
+> >>> I don't think I put Closes tag on whatever improvement potential bug fix
+> >>> I do report (read: notice) myself.    
+> >>
+> >> I included it so that Da Xue will know that this has been resolved and
+> >> doesn't need to do anything more. Normally I would have not included
+> >> it though.  
 > > 
-> > This patch series introduces some new features, improvements,
-> > and fixes for the AD7768-1 ADC driver.
-> > 
-> > The goal is to support all key functionalities listed in the device
-> > datasheet, including filter mode selection, common mode voltage output
-> > configuration and GPIO support. Additionally, this includes fixes
-> > for SPI communication and for IIO interface, and also code improvements
-> > to enhance maintainability and readability.  
+> > If I followed the discussion correctly does this need a fixes tag?  
 > 
-> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> (for all except DT patches)
+> I supposed it doesn't hurt. It could be possible that someone tries to
+> use an older stable kernel with a SPI controller that didn't set the
+> flags, in which case there could be a problem.
 > 
-> The nit-picks can be addressed either in next version (if needed) or whilst
-> applying. Up to maintainers and you.
-> 
+> Fixes: 0b2a740b424e ("iio: adc: ad7949: enable use with non 14/16-bit controllers")
+Applied to the fixes-togreg branch of iio.git.
 
-Applied patches 1-10 (with 10 tweaked as suggested).
-
-For 11 I'll wait on answers to questions.
-
-Thanks,
+I didn't mark it for stable purely because it would have been obvious
+I think if anyone actually hit this.
 
 Jonathan
+
+> 
+> >   
+> >>  
+> >>>     
+> >>>> Signed-off-by: David Lechner <dlechner@baylibre.com>    
+> >>>
+> >>> Code wise LGTM,
+> >>> Reviewed-by: Andy Shevchenko <andy@kernel.org>
+> >>>     
+> >>  
+> >   
+> 
+
 

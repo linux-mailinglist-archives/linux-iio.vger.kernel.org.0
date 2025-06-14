@@ -1,61 +1,56 @@
-Return-Path: <linux-iio+bounces-20635-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20636-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DC0DAD9C86
-	for <lists+linux-iio@lfdr.de>; Sat, 14 Jun 2025 13:40:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7781BAD9C90
+	for <lists+linux-iio@lfdr.de>; Sat, 14 Jun 2025 13:44:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E4A45179835
-	for <lists+linux-iio@lfdr.de>; Sat, 14 Jun 2025 11:40:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 33CAC176918
+	for <lists+linux-iio@lfdr.de>; Sat, 14 Jun 2025 11:44:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A62B2C08D6;
-	Sat, 14 Jun 2025 11:40:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8849B255F26;
+	Sat, 14 Jun 2025 11:44:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hIYrMGob"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AFy+vcSt"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46F251F1531;
-	Sat, 14 Jun 2025 11:40:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48A8328EA76
+	for <linux-iio@vger.kernel.org>; Sat, 14 Jun 2025 11:44:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749901227; cv=none; b=Gm4x3Km18ZT3UJkqnadPoMTYBLxWRYI9VFG8zzQmNwt0nJyvCeV3R96Jx3dZDOUoRss/V2Zw9GUun8ikDSnnGIeasm6j+IUwmvnoWcQ8zdjayHBudprQYz2ub6pjUEdNVTKqoBRDUMSPFAEJpve7LeQIlIeYiSGTFRzLoFFKA0k=
+	t=1749901448; cv=none; b=ohwdyqBZzfhC7wfxSproQqlMmXBOPR4mn2GaryjIuno/v5Dy2SKymGPpJ+aa1D6U7Ec2rA4lAlmUWU3Gtye3vAsDvn/hzpWDscjErXSBsiNWW38kVdknWwGsMmGCG07fAOvH+UGI4A0JY8gjjFmTaTpzQx2x4HVy5KmKx2lU5Pg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749901227; c=relaxed/simple;
-	bh=6My9Wlirf2exQSKlnTmP3+KTjTBj/UNq/AL2IrRVC7g=;
+	s=arc-20240116; t=1749901448; c=relaxed/simple;
+	bh=Stcby+vALzJg6BQc91MKhT4KJS9TKrkcbczfbkXzeL0=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fgl8v1jWz90BipF+9rqqKMMEUTn/V/08iH3VNHjMbPaVTvPA+zSVRHolQyN5E0eS5a7VRYxXfNZJ2BGoOvkCU6nlK2W6hSTYZfnFZB2zzbUU6uyg8DNRHT0Oz41hZqBWXghCoDc1IJtPy+2NhB5RrmmxlGkT9rM4vHN5/FcqdXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hIYrMGob; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B07DDC4CEEB;
-	Sat, 14 Jun 2025 11:40:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=nEj7DQ5uhfVEAIGo8Qi28gmbMFfYqU2F0F7AQAMc0u5IEqHbfpxOV/qxLzSL4Z9PX/ORq4QKeYUQnv8+b4dSh8LuA8VkTGztXHCL0Er/NmCHZE9DsLaZ7lcjeqkRw1EGUStO1FvIfDqM6DBA5f9IFLN+r+VjofoFA/79KkP5ldc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AFy+vcSt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8AD3C4CEEB;
+	Sat, 14 Jun 2025 11:44:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749901226;
-	bh=6My9Wlirf2exQSKlnTmP3+KTjTBj/UNq/AL2IrRVC7g=;
+	s=k20201202; t=1749901447;
+	bh=Stcby+vALzJg6BQc91MKhT4KJS9TKrkcbczfbkXzeL0=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=hIYrMGob8I9X6ijwrUoUObU9xJu0/o7WSj2ch4icNuILPG6yF9UDL5ZNGmyOVioDz
-	 tXm0bfrm7YtuuLscWcPqjRS4tLLSXq/h10WgmQ6hk4KH1PufbTykqvn1l7vrp2PU1z
-	 u8cVHGCRf9DBszyk4iyU7wr22Dt+7eUGU3Nb4i7qO00Uhb+cdtTx8Q5xgA4lh55w9y
-	 YSNX5vZGvV09uXAojqQPjCBTb18P5hBSyGZRa98Bzjw1iVs87HQGLseRSM6+dLOMBd
-	 bqwrgbeM4h5jtorHh1CoLUQVuTy/eBxyihwIG0wQtTM7hhKbsyEswrOJaIrp2iKEgm
-	 PO0gz2UjjPm3g==
-Date: Sat, 14 Jun 2025 12:40:19 +0100
+	b=AFy+vcStovhyNnoQ1slSflPZCG0WhBOmUjA83ZALt59YDvWRlOWJhBfbD8PgYzEpY
+	 +m80b1Sofh7+P4kGkJQs2H52Q9LVMuv5dP52CymCdgYoK+h0XWiMnrQ5nmYwMhDmD8
+	 OAsBHKuKlIbNOoGrnhQtuDGW53O+jVfawqXsVNvABrD6PK3wJzbp506mwxIlT1Dw5I
+	 4PN3r2cpwAC/XgQFiOhViZP09OACP0w5EE+GVqit2jCIRfcyx31hrgfPrfQ5cWg6cA
+	 3cS0UPBnaEZAGeskyvlgAyGZ8oX063U4uSApbrc/IvdPLvt+ftjynrRrsKobRVqgbG
+	 Jz1LC2MoyZSDA==
+Date: Sat, 14 Jun 2025 12:44:01 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Andy Shevchenko <andy@kernel.org>, Michael Hennerich
- <Michael.Hennerich@analog.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
- Da Xue <da@libre.computer>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: adc: ad7949: use spi_is_bpw_supported()
-Message-ID: <20250614124019.114079e0@jic23-huawei>
-In-Reply-To: <1bbee6de-adac-4f28-9a96-fd6480691ac4@baylibre.com>
-References: <20250611-iio-adc-ad7949-use-spi_is_bpw_supported-v1-1-c4e15bfd326e@baylibre.com>
-	<aEmdhV0ATRuUeGaL@smile.fi.intel.com>
-	<851b7d08-3e77-4344-97d1-9d60f1fb8762@baylibre.com>
-	<20250611175506.01d11675@jic23-huawei>
-	<1bbee6de-adac-4f28-9a96-fd6480691ac4@baylibre.com>
+To: nattan <nattanferreira58@gmail.com>
+Cc: subhajit.ghosh@tweaklogic.com, lucasantonio.santos@usp.br,
+ linux-iio@vger.kernel.org
+Subject: Re: [PATCH v4] iio: light: apds9306: Refactor threshold get/set
+ functions to use helper
+Message-ID: <20250614124401.32b17eda@jic23-huawei>
+In-Reply-To: <20250611174253.16578-1-nattanferreira58@gmail.com>
+References: <20250611174253.16578-1-nattanferreira58@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -66,56 +61,102 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 11 Jun 2025 12:00:27 -0500
-David Lechner <dlechner@baylibre.com> wrote:
+On Wed, 11 Jun 2025 14:42:53 -0300
+nattan <nattanferreira58@gmail.com> wrote:
 
-> On 6/11/25 11:55 AM, Jonathan Cameron wrote:
-> > On Wed, 11 Jun 2025 10:21:56 -0500
-> > David Lechner <dlechner@baylibre.com> wrote:
-> >   
-> >> On 6/11/25 10:15 AM, Andy Shevchenko wrote:  
-> >>> On Wed, Jun 11, 2025 at 10:04:58AM -0500, David Lechner wrote:    
-> >>>> Use spi_is_bpw_supported() instead of directly accessing spi->controller    
-> >>>> ->bits_per_word_mask. bits_per_word_mask may be 0, which implies that    
-> >>>> 8-bits-per-word is supported. spi_is_bpw_supported() takes this into
-> >>>> account while spi_ctrl_mask == SPI_BPW_MASK(8) does not.    
-> >>>     
-> >>>> Closes: https://lore.kernel.org/linux-spi/c8b8a963-6cef-4c9b-bfef-dab2b7bd0b0f@sirena.org.uk/    
-> >>>
-> >>> Reported-by yourself. I'm wondering if the Closes adds a value in this case.
-> >>> Otherwise I can do the same to maybe 10% of my patches, for instance. But
-> >>> I don't think I put Closes tag on whatever improvement potential bug fix
-> >>> I do report (read: notice) myself.    
-> >>
-> >> I included it so that Da Xue will know that this has been resolved and
-> >> doesn't need to do anything more. Normally I would have not included
-> >> it though.  
-> > 
-> > If I followed the discussion correctly does this need a fixes tag?  
+> From: Nattan Ferreira <nattanferreira58@gmail.com>
 > 
-> I supposed it doesn't hurt. It could be possible that someone tries to
-> use an older stable kernel with a SPI controller that didn't set the
-> flags, in which case there could be a problem.
-> 
-> Fixes: 0b2a740b424e ("iio: adc: ad7949: enable use with non 14/16-bit controllers")
-Applied to the fixes-togreg branch of iio.git.
+> Refactor the apds9306_event_thresh_get and apds9306_event_thresh_set
+Applied with () added after function names in this description.
 
-I didn't mark it for stable purely because it would have been obvious
-I think if anyone actually hit this.
+Thanks,
 
-Jonathan
-
+J
+> functions to use a helper function (apds9306_get_thresh_reg) for
+> obtaining the correct register based on the direction of the event. This
+> improves code readability and maintains consistency in accessing
+> threshold registers.
 > 
-> >   
-> >>  
-> >>>     
-> >>>> Signed-off-by: David Lechner <dlechner@baylibre.com>    
-> >>>
-> >>> Code wise LGTM,
-> >>> Reviewed-by: Andy Shevchenko <andy@kernel.org>
-> >>>     
-> >>  
-> >   
+> Signed-off-by: Nattan Ferreira <nattanferreira58@gmail.com>
+> Co-developed-by: Lucas Antonio <lucasantonio.santos@usp.br>
+> Signed-off-by: Lucas Antonio <lucasantonio.santos@usp.br>
 > 
+> ---
+> 
+> Changes in v4:
+> - Noted that the change actually adds four more lines to the driver file,
+>   so rephrased description to avoid claiming code line reduction.
+> ---
+>  drivers/iio/light/apds9306.c | 36 ++++++++++++++++++++----------------
+>  1 file changed, 20 insertions(+), 16 deletions(-)
+> 
+> diff --git a/drivers/iio/light/apds9306.c b/drivers/iio/light/apds9306.c
+> index 69a0d609c..9216d4974 100644
+> --- a/drivers/iio/light/apds9306.c
+> +++ b/drivers/iio/light/apds9306.c
+> @@ -744,20 +744,27 @@ static int apds9306_event_period_set(struct apds9306_data *data, int val)
+>  	return regmap_field_write(rf->int_persist_val, val);
+>  }
+>  
+> -static int apds9306_event_thresh_get(struct apds9306_data *data, int dir,
+> -				     int *val)
+> +static int apds9306_get_thresh_reg(int dir)
+>  {
+> -	int var, ret;
+> -	u8 buff[3];
+> -
+>  	if (dir == IIO_EV_DIR_RISING)
+> -		var = APDS9306_ALS_THRES_UP_0_REG;
+> +		return APDS9306_ALS_THRES_UP_0_REG;
+>  	else if (dir == IIO_EV_DIR_FALLING)
+> -		var = APDS9306_ALS_THRES_LOW_0_REG;
+> +		return APDS9306_ALS_THRES_LOW_0_REG;
+>  	else
+>  		return -EINVAL;
+> +}
+> +
+> +static int apds9306_event_thresh_get(struct apds9306_data *data, int dir,
+> +				     int *val)
+> +{
+> +	int reg, ret;
+> +	u8 buff[3];
+>  
+> -	ret = regmap_bulk_read(data->regmap, var, buff, sizeof(buff));
+> +	reg = apds9306_get_thresh_reg(dir);
+> +	if (reg < 0)
+> +		return reg;
+> +
+> +	ret = regmap_bulk_read(data->regmap, reg, buff, sizeof(buff));
+>  	if (ret)
+>  		return ret;
+>  
+> @@ -769,22 +776,19 @@ static int apds9306_event_thresh_get(struct apds9306_data *data, int dir,
+>  static int apds9306_event_thresh_set(struct apds9306_data *data, int dir,
+>  				     int val)
+>  {
+> -	int var;
+> +	int reg;
+>  	u8 buff[3];
+>  
+> -	if (dir == IIO_EV_DIR_RISING)
+> -		var = APDS9306_ALS_THRES_UP_0_REG;
+> -	else if (dir == IIO_EV_DIR_FALLING)
+> -		var = APDS9306_ALS_THRES_LOW_0_REG;
+> -	else
+> -		return -EINVAL;
+> +	reg = apds9306_get_thresh_reg(dir);
+> +	if (reg < 0)
+> +		return reg;
+>  
+>  	if (!in_range(val, 0, APDS9306_ALS_THRES_VAL_MAX))
+>  		return -EINVAL;
+>  
+>  	put_unaligned_le24(val, buff);
+>  
+> -	return regmap_bulk_write(data->regmap, var, buff, sizeof(buff));
+> +	return regmap_bulk_write(data->regmap, reg, buff, sizeof(buff));
+>  }
+>  
+>  static int apds9306_event_thresh_adaptive_get(struct apds9306_data *data, int *val)
 
 

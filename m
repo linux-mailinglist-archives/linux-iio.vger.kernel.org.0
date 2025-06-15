@@ -1,78 +1,78 @@
-Return-Path: <linux-iio+bounces-20689-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20690-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC836ADA45D
-	for <lists+linux-iio@lfdr.de>; Mon, 16 Jun 2025 00:24:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F567ADA45C
+	for <lists+linux-iio@lfdr.de>; Mon, 16 Jun 2025 00:24:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C1BD188608F
-	for <lists+linux-iio@lfdr.de>; Sun, 15 Jun 2025 22:24:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7CEC7168096
+	for <lists+linux-iio@lfdr.de>; Sun, 15 Jun 2025 22:24:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 263EE283159;
-	Sun, 15 Jun 2025 22:23:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EBEA1EA7DF;
+	Sun, 15 Jun 2025 22:23:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ffe6/wse"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PphRo7Zw"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9CCE280A3B;
-	Sun, 15 Jun 2025 22:23:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D52E2281532;
+	Sun, 15 Jun 2025 22:23:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750026193; cv=none; b=ny23u0C7CrO99+tdzU7mCRpvGFiV4WcY/yGC/FBMuuX9gYekq4TnuAc3soblKSjJJptv1wYQJms7PhUoodAjE18fh5s0AFx7Is64QMF1rlSUxN0McxxMBBvf7Pak8Kff77rUxP5ug/FgqzXONzMNnW3rzLi1Y45T+akQzv3Ayb4=
+	t=1750026194; cv=none; b=YkeFTBlOFRmLIpm8yy/2ecRDjmM4FZquC7pQ6ZkbtNEjhvXIxkBY6Swov1lsG00fg8waRt5BGLRFMbWJ27yWTMWNsUPWWbVTUpMMhkL813UfkEHa+EasNPHDB1jQNm9tBVImSYUDNeKVAEdbTojEv75BZQ7GkY55rwsoFNYtlqM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750026193; c=relaxed/simple;
-	bh=CDzC+Dab/5nnNCzsDwpBRd0tqjx1D9QHKg7fh/0UfAY=;
+	s=arc-20240116; t=1750026194; c=relaxed/simple;
+	bh=NAnRvIZtABoeGKL4mT8NGeLUQXUGt3Db1dF5FBbw5Jk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=gaidIQiAGXCMcvMQEHcS0+8rr+LP881MepmHA7VBUz32xZjZPLJITZ0porSKGsQK35TDtnLbXKnEWa5w03GpaiggRKHJPqfegpodnSloRB7pTllUkxyuUjFjpgdxp8l35Nrs0WxECF10DHuUANM+x+qiQfOBqNEX3Ja2UUlxxLo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ffe6/wse; arc=none smtp.client-ip=209.85.208.43
+	 MIME-Version; b=Q3pLxnAuRjtW3QNDUCRYs1cTyy6cdEqXFUCAz6hd1Ph3gU0hERcuTK6jWs6wjZ/eWX7ORQMCkriAuzwP7tAGZWGkH4eIWAsY8UW6crkcv2iZnKfmFPZJtcCLUJU//C0fqVMpZYQ8TOVDmGkDLGHxt3w+NEuh1Zl8FWNsfYumf6Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PphRo7Zw; arc=none smtp.client-ip=209.85.218.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-606c6bb1d03so761278a12.1;
-        Sun, 15 Jun 2025 15:23:11 -0700 (PDT)
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-ade6ef7e6b5so66344066b.3;
+        Sun, 15 Jun 2025 15:23:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750026190; x=1750630990; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1750026191; x=1750630991; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=c/ftbtqWVPSKTntyYUcVvhlj9HI4YnADjK65oS2i45k=;
-        b=ffe6/wseMLyWsaOmDGwTm85rIBd8mt6cHH9vcSfkD1BDjmia5fRp1VWDfxrDSGZTwY
-         U925/n8rEqiz5oEN+ngBZIsVPkOPV1Kcqq9KynwFNhbX5EzxllHA84iOUq3x3rk+ZqYl
-         cpNnB4cqvCju/Agndvlbq79LDOD3zACNoaTponEdEos2z5EJ3HjkWD/QEeL7ZAFBcjbG
-         MPmGeUQQ9rDrpZLdz5qoKUnxsYVnV33vmmmQdjqNslJVGF11al0HoMkswaU//wuEtSpy
-         JtqXF2TXuO6OyOceghov2zK3iCPXOyFvf8fxh2excmNbB68ln9kBA6vIqNYHJ+zNrF5g
-         n0TQ==
+        bh=k7lx5bSlxHCR3yMcw5WqOUP1Em37abE5TKB7VY91trM=;
+        b=PphRo7ZwuYmbC/aLdGr5MqeadFxcVP5Y67xXsudPdEVAYnW1lel0JPTf/zHGRXMMtj
+         enMp9VrrbmgjXnzcLUN4NS/iJAU1YEyS95vb/0y2ODS/PKqzZsi83qVd3wHJxqA6yTAY
+         oTojSWz9WSNj9+28sQe4voC15nM0yGFyKOoHg9/69eUz5VzUeEWs68flIQ2ruWqUdRXQ
+         ZpstcKswrgCdb7n6kdhVXYV2XNACQw/ktLN14uO3HiLbkZRi2xPTK6VtXKSCt+Jgx9pT
+         aqIAGZmJSPSwc9CPJGDRRhvEo6om/n4VGSF2CFm5EZlST7R8R/+LYz+a1Quc/TuHngAY
+         NnNQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750026190; x=1750630990;
+        d=1e100.net; s=20230601; t=1750026191; x=1750630991;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=c/ftbtqWVPSKTntyYUcVvhlj9HI4YnADjK65oS2i45k=;
-        b=OsWN14s8gXbsVuOWUZvSFTExMi8anf6WjPi5iOOB7J9WZw88sPdtTxXjVEgOXYJ6Zt
-         CFtRRe7LjxyikD6LuwF2Rv5R0TCmkvfD5fC0KZlJJXuMqfMddP8AAlVpL0XqUyjdK5Ra
-         q6cNiMviCP2eFQ67fsUgYUAEk4dV3k6oDYNice+/xb8+L7ObyDL5Gr7DFO9nZAE8lDpu
-         gABSUjHU42CPa/ZTj1Hy7wh3PRj4+xIVyBxB4s/haiM4MUitiEQzEOAwp8naUH+gPLOS
-         f1HqcsMR37MgOBj+Rr+hHIvlGD7GbvV36nEzeiaKsJqXuWPUrO/iKGfyECdXpfER2yVe
-         LPHQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUaEkPGiceP3mq3LB4Os9zJZIu5xovTryUmRHGoS3qudyQXLWGoLRYIyP8uI7cF06mI5cjAOxK80og=@vger.kernel.org, AJvYcCVCql2ACjF9hvAxSwQL3EifbubVvrYGEp6mKrPMQg4UCzLOg0OVMfb+2re0Ehd7m4+6EIScQHrDUhZa@vger.kernel.org, AJvYcCX5BYYW+zIwZqBm+BWtiw5hcMK7p/+KPyScDWa7bwP1OH6WLaKt2G9eABFTooUZ8047djlvKtwz3/QTZPvB@vger.kernel.org
-X-Gm-Message-State: AOJu0YwFNZ7xS6oXxvMBwJOg9rHFaqLFOcFQUwZ+aq4YpE/bsIwhTcXC
-	DRXge0H0F+xy9Qg+Hks2fWZZvYxeWRc6UK9mxxpuozk8R/lLJzSdyzjxPuxLmQ==
-X-Gm-Gg: ASbGncvmEFFYlQoiXCaf7k+tAUZRZmPKmbbjXbS655YCcYcXpZ3dD9VYRqmUpg2WzAF
-	0rh2YHln4iISl6YCCw81Se2yP6e47GOrCsv+cM5UtRhnTZWL5sHfwnO1waQfWnngygHhIJlBde0
-	GNSUS6nnKpRBWWpF7P5zCdD0s4j8ColXJa16JO9h9PeEHiRu+v1yf41FFpLVY5L6JygoyZ1livy
-	KNtlRpMZwerQreKEjASmH854zpLP7G2zn+dJN7SraaEIHSZqIdNUG3x5NA2xc79SY1HBsylJA/n
-	7DnyqrP7zg4kH9AJKL2JDa1c1X3E7+PA2VxGYd67LNZCFd7kZGFS46Owl+R/+V4It5PK931GFSg
-	en4dgthYLYLv42nM5qgd/boVfYpzrnUDs
-X-Google-Smtp-Source: AGHT+IEm62cvsAxWVl+gwFFGA56IsUa3Qv87CztVk6WvXnlwbq3Sn3mAbFXaHrg0cq3VYgLhxEemvA==
-X-Received: by 2002:a17:907:9814:b0:ad8:8200:ecfc with SMTP id a640c23a62f3a-adfad37aea7mr234148666b.5.1750026189898;
-        Sun, 15 Jun 2025 15:23:09 -0700 (PDT)
+        bh=k7lx5bSlxHCR3yMcw5WqOUP1Em37abE5TKB7VY91trM=;
+        b=UTBa2IykTvKSP/TtFEZ6KHkoZbzD/mHZDDsRwDdDfxFuBq+/z8x2LBDoulAG17RAP/
+         SJV8sD4LFN9jX9mtyjXbZGFtfPvozb3fMgLgS8SEh8pkXWikVV8kFB/EFXN+LDz7NeD6
+         DGTYHzrBANaZ6s111rZZIE9mtVlYT2sKZYyrJGri26dkJHymNOSJM1Z8P6AbvvQ3a8di
+         MRPc6EDu3t5nYp7EExswMM18WBxhkuagPzFxlqe6nLv7gI3qsKpgWhuGxNfbX+MHngBM
+         SBz8rMMY3HKo+rfpDu6iKobaI06tq3ZVvHXAwyWrFqTmXqHqeysX0b/DfciDfUYnEFNR
+         v2TA==
+X-Forwarded-Encrypted: i=1; AJvYcCVzYPuql11SjGdiwQsLUWz2p3RhLYoYe1mkBaKvKS3lE/YBGHg4D67mgjD9Ah2XAWYELlOwp5SgZ/I=@vger.kernel.org, AJvYcCWGTLPQqMKCgwW8oM19EH/EfZtOKHs45EqIFoqW2l1g3LVP+/BpC/SH20yBXMLaQCpJoC5PEopagRSXSmCr@vger.kernel.org, AJvYcCXuSHGkAEWd6tEyt50M9N9mUnKKEcB9XcgBM3T26Bhv4erSoOPICreyFfxV/bfgA0snpFnfEFTdLK/J@vger.kernel.org
+X-Gm-Message-State: AOJu0YyTSk+y6wA9anAmTSbURyYP3bLXwV6KG7nB1/aTDWyYH3NJ91cd
+	zeHT+bg6wVbHM3MVoIu//S89kZQIDbQzisukfaE2SuIWCbqLijzpP7A+BLWdjg==
+X-Gm-Gg: ASbGnctfgVrCvfD94ghC0CdLiwj3oTYXNSSG2vNhftv2VOHhAeMuoaXVjR8P+x5H8VL
+	DW+3iu4IlEk58uefCbAkZHOvJbe7rjFnJPxF28SQ4HDCOqorCdBGtaGYQIfOvu4Gdmtmd6n4oZ2
+	9RwSFZFBgOkBhvmJmAGl7ozHIWt3PBmJtgzoNYmuiiyrrwYYAiOCbDH/1Wo1VJ4RKkhY4qH+0Xi
+	AWcCTMtEXt5FAFLtrQUehfZjkM/UykQR1JT6OTyoqh9aNvOO2ttQEftfwvAKzpGU9qgok8ULWjE
+	btHMaGS3uTDwavtPem/7CLFXswHWCpCMAIPjd/q3qqmXvFAL+WNIB1MZBWQEfelMFwUg/60QyTH
+	sN8zvVoS7W4wPIsejKcNrdld7tR63kNnb
+X-Google-Smtp-Source: AGHT+IFl1yUBAVahJrUDF2mZttrG/hGvZmBvDQqccpdKN5iF6+AwaUNB728y2v5g7Pxa3ZXHkjmJQg==
+X-Received: by 2002:a17:907:3d88:b0:ad8:8940:b3ad with SMTP id a640c23a62f3a-adfad3a3429mr218352066b.4.1750026191077;
+        Sun, 15 Jun 2025 15:23:11 -0700 (PDT)
 Received: from localhost.localdomain (84-72-156-211.dclient.hispeed.ch. [84.72.156.211])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-adf8b393ea8sm412692766b.159.2025.06.15.15.23.08
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-adf8b393ea8sm412692766b.159.2025.06.15.15.23.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 15 Jun 2025 15:23:09 -0700 (PDT)
+        Sun, 15 Jun 2025 15:23:10 -0700 (PDT)
 From: Lothar Rubusch <l.rubusch@gmail.com>
 To: jic23@kernel.org,
 	dlechner@baylibre.com,
@@ -87,9 +87,9 @@ Cc: l.rubusch@gmail.com,
 	linux-iio@vger.kernel.org,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v5 4/8] iio: accel: adxl313: add activity sensing
-Date: Sun, 15 Jun 2025 22:22:54 +0000
-Message-Id: <20250615222258.117771-5-l.rubusch@gmail.com>
+Subject: [PATCH v5 5/8] iio: accel: adxl313: add inactivity sensing
+Date: Sun, 15 Jun 2025 22:22:55 +0000
+Message-Id: <20250615222258.117771-6-l.rubusch@gmail.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250615222258.117771-1-l.rubusch@gmail.com>
 References: <20250615222258.117771-1-l.rubusch@gmail.com>
@@ -101,341 +101,316 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add support for configuring an activity detection threshold. Extend the
-interrupt handler to process activity-related interrupts, and provide
-functions to set the threshold as well as to enable or disable activity
-sensing. Additionally, introduce a virtual channel that represents the
-logical AND of the x, y, and z axes in the IIO channel.
-
-This patch serves as a preparatory step; some definitions and functions
-introduced here are intended to be extended later to support inactivity
-detection.
+Enhance the interrupt handler to process inactivity events. Introduce
+functions to configure the threshold and period registers for
+inactivity detection, as well as to enable or disable the inactivity
+feature. Extend the fake IIO channel to handle inactivity events by
+combining the x, y, and z axes using a logical AND operation.
 
 Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
 ---
- drivers/iio/accel/adxl313_core.c | 244 +++++++++++++++++++++++++++++++
- 1 file changed, 244 insertions(+)
+ drivers/iio/accel/adxl313.h      |   2 +
+ drivers/iio/accel/adxl313_core.c | 161 ++++++++++++++++++++++++++-----
+ 2 files changed, 137 insertions(+), 26 deletions(-)
 
+diff --git a/drivers/iio/accel/adxl313.h b/drivers/iio/accel/adxl313.h
+index 4f4a9fd39f6d..d7e8cb44855b 100644
+--- a/drivers/iio/accel/adxl313.h
++++ b/drivers/iio/accel/adxl313.h
+@@ -18,6 +18,8 @@
+ #define ADXL313_REG_SOFT_RESET		0x18
+ #define ADXL313_REG_OFS_AXIS(index)	(0x1E + (index))
+ #define ADXL313_REG_THRESH_ACT		0x24
++#define ADXL313_REG_THRESH_INACT	0x25
++#define ADXL313_REG_TIME_INACT		0x26
+ #define ADXL313_REG_ACT_INACT_CTL	0x27
+ #define ADXL313_REG_BW_RATE		0x2C
+ #define ADXL313_REG_POWER_CTL		0x2D
 diff --git a/drivers/iio/accel/adxl313_core.c b/drivers/iio/accel/adxl313_core.c
-index 488680807a8f..b0d14ce60f01 100644
+index b0d14ce60f01..95f52c95682a 100644
 --- a/drivers/iio/accel/adxl313_core.c
 +++ b/drivers/iio/accel/adxl313_core.c
-@@ -13,8 +13,10 @@
- #include <linux/overflow.h>
- #include <linux/property.h>
- #include <linux/regmap.h>
-+#include <linux/units.h>
- 
- #include <linux/iio/buffer.h>
-+#include <linux/iio/events.h>
- #include <linux/iio/kfifo_buf.h>
- 
- #include "adxl313.h"
-@@ -25,6 +27,21 @@
- 
+@@ -28,18 +28,22 @@
  #define ADXL313_REG_XYZ_BASE			ADXL313_REG_DATA_AXIS(0)
  
-+#define ADXL313_ACT_XYZ_EN			GENMASK(6, 4)
-+
-+/* activity/inactivity */
-+enum adxl313_activity_type {
-+	ADXL313_ACTIVITY,
-+};
-+
-+static const unsigned int adxl313_act_int_reg[] = {
-+	[ADXL313_ACTIVITY] = ADXL313_INT_ACTIVITY,
-+};
-+
-+static const unsigned int adxl313_act_thresh_reg[] = {
-+	[ADXL313_ACTIVITY] = ADXL313_REG_THRESH_ACT,
-+};
-+
- static const struct regmap_range adxl312_readable_reg_range[] = {
- 	regmap_reg_range(ADXL313_REG_DEVID0, ADXL313_REG_DEVID0),
- 	regmap_reg_range(ADXL313_REG_OFS_AXIS(0), ADXL313_REG_OFS_AXIS(2)),
-@@ -227,6 +244,15 @@ static const int adxl313_odr_freqs[][2] = {
- 	},								\
- }
+ #define ADXL313_ACT_XYZ_EN			GENMASK(6, 4)
++#define ADXL313_INACT_XYZ_EN			GENMASK(2, 0)
  
-+static const struct iio_event_spec adxl313_activity_events[] = {
+ /* activity/inactivity */
+ enum adxl313_activity_type {
+ 	ADXL313_ACTIVITY,
++	ADXL313_INACTIVITY,
+ };
+ 
+ static const unsigned int adxl313_act_int_reg[] = {
+ 	[ADXL313_ACTIVITY] = ADXL313_INT_ACTIVITY,
++	[ADXL313_INACTIVITY] = ADXL313_INT_INACTIVITY,
+ };
+ 
+ static const unsigned int adxl313_act_thresh_reg[] = {
+ 	[ADXL313_ACTIVITY] = ADXL313_REG_THRESH_ACT,
++	[ADXL313_INACTIVITY] = ADXL313_REG_THRESH_INACT,
+ };
+ 
+ static const struct regmap_range adxl312_readable_reg_range[] = {
+@@ -253,6 +257,16 @@ static const struct iio_event_spec adxl313_activity_events[] = {
+ 	},
+ };
+ 
++static const struct iio_event_spec adxl313_inactivity_events[] = {
 +	{
 +		.type = IIO_EV_TYPE_MAG,
-+		.dir = IIO_EV_DIR_RISING,
++		.dir = IIO_EV_DIR_FALLING,
 +		.mask_separate = BIT(IIO_EV_INFO_ENABLE),
-+		.mask_shared_by_type = BIT(IIO_EV_INFO_VALUE),
++		.mask_shared_by_type = BIT(IIO_EV_INFO_VALUE) |
++			BIT(IIO_EV_INFO_PERIOD),
 +	},
 +};
 +
  enum adxl313_chans {
  	chan_x, chan_y, chan_z,
  };
-@@ -235,6 +261,14 @@ static const struct iio_chan_spec adxl313_channels[] = {
- 	ADXL313_ACCEL_CHANNEL(0, chan_x, X),
- 	ADXL313_ACCEL_CHANNEL(1, chan_y, Y),
- 	ADXL313_ACCEL_CHANNEL(2, chan_z, Z),
+@@ -269,6 +283,14 @@ static const struct iio_chan_spec adxl313_channels[] = {
+ 		.event_spec = adxl313_activity_events,
+ 		.num_event_specs = ARRAY_SIZE(adxl313_activity_events),
+ 	},
 +	{
 +		.type = IIO_ACCEL,
 +		.modified = 1,
-+		.channel2 = IIO_MOD_X_OR_Y_OR_Z,
-+		.scan_index = -1, /* Fake channel for axis OR'ing */
-+		.event_spec = adxl313_activity_events,
-+		.num_event_specs = ARRAY_SIZE(adxl313_activity_events),
++		.channel2 = IIO_MOD_X_AND_Y_AND_Z,
++		.scan_index = -1, /* Fake channel for axis AND'ing */
++		.event_spec = adxl313_inactivity_events,
++		.num_event_specs = ARRAY_SIZE(adxl313_inactivity_events),
 +	},
  };
  
  static const unsigned long adxl313_scan_masks[] = {
-@@ -297,6 +331,73 @@ static int adxl313_read_freq_avail(struct iio_dev *indio_dev,
+@@ -331,6 +353,15 @@ static int adxl313_read_freq_avail(struct iio_dev *indio_dev,
  	}
  }
  
-+static int adxl313_is_act_inact_en(struct adxl313_data *data,
-+				   enum adxl313_activity_type type)
++static int adxl313_set_inact_time_s(struct adxl313_data *data,
++				    unsigned int val_s)
 +{
-+	unsigned int axis_ctrl;
-+	unsigned int regval;
-+	int axis_en, ret;
++	unsigned int max_boundary = U8_MAX; /* by register size */
++	unsigned int val = min(val_s, max_boundary);
 +
-+	ret = regmap_read(data->regmap, ADXL313_REG_ACT_INACT_CTL, &axis_ctrl);
-+	if (ret)
-+		return ret;
-+
-+	axis_en = FIELD_GET(ADXL313_ACT_XYZ_EN, axis_ctrl);
-+
-+	if (!axis_en)
-+		return false;
-+
-+	/* Check if specific interrupt is enabled */
-+	ret = regmap_read(data->regmap, ADXL313_REG_INT_ENABLE, &regval);
-+	if (ret)
-+		return ret;
-+
-+	return adxl313_act_int_reg[type] & regval;
++	return regmap_write(data->regmap, ADXL313_REG_TIME_INACT, val);
 +}
 +
-+static int adxl313_set_act_inact_en(struct adxl313_data *data,
-+				    enum adxl313_activity_type type,
-+				    bool cmd_en)
-+{
-+	unsigned int axis_ctrl;
-+	unsigned int threshold;
-+	int ret;
-+
-+	if (type != ADXL313_ACTIVITY)
-+		return 0;
-+
-+	if (cmd_en) {
-+		/* When turning on, check if threshold is valid */
-+		ret = regmap_read(data->regmap, adxl313_act_thresh_reg[type],
-+				  &threshold);
-+		if (ret)
-+			return ret;
-+
-+		if (!threshold) /* Just ignore the command if threshold is 0 */
-+			return 0;
-+	}
-+
-+	/* Start modifying configuration registers */
-+	ret = adxl313_set_measure_en(data, false);
-+	if (ret)
-+		return ret;
-+
-+	/* Enable axis according to the command */
-+	axis_ctrl = ADXL313_ACT_XYZ_EN;
-+	ret = regmap_assign_bits(data->regmap, ADXL313_REG_ACT_INACT_CTL,
-+				 axis_ctrl, cmd_en);
-+	if (ret)
-+		return ret;
-+
-+	/* Enable the interrupt line, according to the command */
-+	ret = regmap_assign_bits(data->regmap, ADXL313_REG_INT_ENABLE,
-+				 adxl313_act_int_reg[type], cmd_en);
-+	if (ret)
-+		return ret;
-+
-+	return adxl313_set_measure_en(data, true);
-+}
-+
- static int adxl313_read_raw(struct iio_dev *indio_dev,
- 			    struct iio_chan_spec const *chan,
- 			    int *val, int *val2, long mask)
-@@ -370,6 +471,103 @@ static int adxl313_write_raw(struct iio_dev *indio_dev,
- 	}
- }
+ static int adxl313_is_act_inact_en(struct adxl313_data *data,
+ 				   enum adxl313_activity_type type)
+ {
+@@ -342,7 +373,17 @@ static int adxl313_is_act_inact_en(struct adxl313_data *data,
+ 	if (ret)
+ 		return ret;
  
-+static int adxl313_read_event_config(struct iio_dev *indio_dev,
-+				     const struct iio_chan_spec *chan,
-+				     enum iio_event_type type,
-+				     enum iio_event_direction dir)
-+{
-+	struct adxl313_data *data = iio_priv(indio_dev);
-+
-+	if (type != IIO_EV_TYPE_MAG)
-+		return -EINVAL;
-+
-+	switch (dir) {
-+	case IIO_EV_DIR_RISING:
-+		return adxl313_is_act_inact_en(data, ADXL313_ACTIVITY);
+-	axis_en = FIELD_GET(ADXL313_ACT_XYZ_EN, axis_ctrl);
++	/* Check if axis for activity are enabled */
++	switch (type) {
++	case ADXL313_ACTIVITY:
++		axis_en = FIELD_GET(ADXL313_ACT_XYZ_EN, axis_ctrl);
++		break;
++	case ADXL313_INACTIVITY:
++		axis_en = FIELD_GET(ADXL313_INACT_XYZ_EN, axis_ctrl);
++		break;
 +	default:
 +		return -EINVAL;
 +	}
-+}
+ 
+ 	if (!axis_en)
+ 		return false;
+@@ -361,11 +402,9 @@ static int adxl313_set_act_inact_en(struct adxl313_data *data,
+ {
+ 	unsigned int axis_ctrl;
+ 	unsigned int threshold;
++	unsigned int inact_time_s;
+ 	int ret;
+ 
+-	if (type != ADXL313_ACTIVITY)
+-		return 0;
+-
+ 	if (cmd_en) {
+ 		/* When turning on, check if threshold is valid */
+ 		ret = regmap_read(data->regmap, adxl313_act_thresh_reg[type],
+@@ -375,15 +414,33 @@ static int adxl313_set_act_inact_en(struct adxl313_data *data,
+ 
+ 		if (!threshold) /* Just ignore the command if threshold is 0 */
+ 			return 0;
 +
-+static int adxl313_write_event_config(struct iio_dev *indio_dev,
-+				      const struct iio_chan_spec *chan,
-+				      enum iio_event_type type,
-+				      enum iio_event_direction dir,
-+				      bool state)
-+{
-+	struct adxl313_data *data = iio_priv(indio_dev);
++		/* When turning on inactivity, check if inact time is valid */
++		if (type == ADXL313_INACTIVITY) {
++			ret = regmap_read(data->regmap, ADXL313_REG_TIME_INACT, &inact_time_s);
++			if (ret)
++				return ret;
 +
-+	if (type != IIO_EV_TYPE_MAG)
-+		return -EINVAL;
-+
-+	switch (dir) {
-+	case IIO_EV_DIR_RISING:
-+		return adxl313_set_act_inact_en(data, ADXL313_ACTIVITY, state);
++			if (!inact_time_s)
++				return 0;
++		}
+ 	}
+ 
+-	/* Start modifying configuration registers */
+ 	ret = adxl313_set_measure_en(data, false);
+ 	if (ret)
+ 		return ret;
+ 
+ 	/* Enable axis according to the command */
+-	axis_ctrl = ADXL313_ACT_XYZ_EN;
++	switch (type) {
++	case ADXL313_ACTIVITY:
++		axis_ctrl = ADXL313_ACT_XYZ_EN;
++		break;
++	case ADXL313_INACTIVITY:
++		axis_ctrl = ADXL313_INACT_XYZ_EN;
++		break;
 +	default:
 +		return -EINVAL;
 +	}
-+}
-+
-+static int adxl313_read_event_value(struct iio_dev *indio_dev,
-+				    const struct iio_chan_spec *chan,
-+				    enum iio_event_type type,
-+				    enum iio_event_direction dir,
-+				    enum iio_event_info info,
-+				    int *val, int *val2)
-+{
-+	struct adxl313_data *data = iio_priv(indio_dev);
-+	unsigned int act_threshold;
-+	int ret;
-+
-+	if (type != IIO_EV_TYPE_MAG)
-+		return -EINVAL;
-+
-+	if (info != IIO_EV_INFO_VALUE)
-+		return -EINVAL;
-+
-+	switch (dir) {
-+	case IIO_EV_DIR_RISING:
-+		ret = regmap_read(data->regmap,
-+				  adxl313_act_thresh_reg[ADXL313_ACTIVITY],
-+				  &act_threshold);
-+		if (ret)
-+			return ret;
-+		*val = act_threshold * 15625;
-+		*val2 = MICRO;
-+		return IIO_VAL_FRACTIONAL;
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static int adxl313_write_event_value(struct iio_dev *indio_dev,
-+				     const struct iio_chan_spec *chan,
-+				     enum iio_event_type type,
-+				     enum iio_event_direction dir,
-+				     enum iio_event_info info,
-+				     int val, int val2)
-+{
-+	struct adxl313_data *data = iio_priv(indio_dev);
-+	unsigned int regval;
-+
-+	if (type != IIO_EV_TYPE_MAG)
-+		return -EINVAL;
-+
-+	if (info != IIO_EV_INFO_VALUE)
-+		return -EINVAL;
-+
-+	/* Scale factor 15.625 mg/LSB */
-+	regval = DIV_ROUND_CLOSEST(val * MICRO + val2, 15625);
-+	switch (dir) {
-+	case IIO_EV_DIR_RISING:
-+		return regmap_write(data->regmap,
-+				    adxl313_act_thresh_reg[ADXL313_ACTIVITY],
-+				    regval);
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
- static int adxl313_set_watermark(struct iio_dev *indio_dev, unsigned int value)
+ 	ret = regmap_assign_bits(data->regmap, ADXL313_REG_ACT_INACT_CTL,
+ 				 axis_ctrl, cmd_en);
+ 	if (ret)
+@@ -484,6 +541,8 @@ static int adxl313_read_event_config(struct iio_dev *indio_dev,
+ 	switch (dir) {
+ 	case IIO_EV_DIR_RISING:
+ 		return adxl313_is_act_inact_en(data, ADXL313_ACTIVITY);
++	case IIO_EV_DIR_FALLING:
++		return adxl313_is_act_inact_en(data, ADXL313_INACTIVITY);
+ 	default:
+ 		return -EINVAL;
+ 	}
+@@ -503,6 +562,8 @@ static int adxl313_write_event_config(struct iio_dev *indio_dev,
+ 	switch (dir) {
+ 	case IIO_EV_DIR_RISING:
+ 		return adxl313_set_act_inact_en(data, ADXL313_ACTIVITY, state);
++	case IIO_EV_DIR_FALLING:
++		return adxl313_set_act_inact_en(data, ADXL313_INACTIVITY, state);
+ 	default:
+ 		return -EINVAL;
+ 	}
+@@ -517,24 +578,45 @@ static int adxl313_read_event_value(struct iio_dev *indio_dev,
  {
  	struct adxl313_data *data = iio_priv(indio_dev);
-@@ -508,6 +706,25 @@ static int adxl313_fifo_push(struct iio_dev *indio_dev, int samples)
- 	return 0;
- }
+ 	unsigned int act_threshold;
++	unsigned int inact_threshold;
++	unsigned int inact_time_s;
+ 	int ret;
  
-+static int adxl313_push_events(struct iio_dev *indio_dev, int int_stat)
-+{
-+	s64 ts = iio_get_time_ns(indio_dev);
-+	int ret = -ENOENT;
-+
-+	if (FIELD_GET(ADXL313_INT_ACTIVITY, int_stat)) {
+ 	if (type != IIO_EV_TYPE_MAG)
+ 		return -EINVAL;
+ 
+-	if (info != IIO_EV_INFO_VALUE)
+-		return -EINVAL;
+-
+-	switch (dir) {
+-	case IIO_EV_DIR_RISING:
++	switch (info) {
++	case IIO_EV_INFO_VALUE:
++		switch (dir) {
++		case IIO_EV_DIR_RISING:
++			ret = regmap_read(data->regmap,
++					  adxl313_act_thresh_reg[ADXL313_ACTIVITY],
++					  &act_threshold);
++			if (ret)
++				return ret;
++			*val = act_threshold * 15625;
++			*val2 = MICRO;
++			return IIO_VAL_FRACTIONAL;
++		case IIO_EV_DIR_FALLING:
++			ret = regmap_read(data->regmap,
++					  adxl313_act_thresh_reg[ADXL313_INACTIVITY],
++					  &inact_threshold);
++			if (ret)
++				return ret;
++			*val = inact_threshold * 15625;
++			*val2 = MICRO;
++			return IIO_VAL_FRACTIONAL;
++		default:
++			return -EINVAL;
++		}
++	case IIO_EV_INFO_PERIOD:
+ 		ret = regmap_read(data->regmap,
+-				  adxl313_act_thresh_reg[ADXL313_ACTIVITY],
+-				  &act_threshold);
++				  ADXL313_REG_TIME_INACT,
++				  &inact_time_s);
+ 		if (ret)
+ 			return ret;
+-		*val = act_threshold * 15625;
+-		*val2 = MICRO;
+-		return IIO_VAL_FRACTIONAL;
++		*val = inact_time_s;
++		return IIO_VAL_INT;
+ 	default:
+ 		return -EINVAL;
+ 	}
+@@ -553,16 +635,24 @@ static int adxl313_write_event_value(struct iio_dev *indio_dev,
+ 	if (type != IIO_EV_TYPE_MAG)
+ 		return -EINVAL;
+ 
+-	if (info != IIO_EV_INFO_VALUE)
+-		return -EINVAL;
+-
+-	/* Scale factor 15.625 mg/LSB */
+-	regval = DIV_ROUND_CLOSEST(val * MICRO + val2, 15625);
+-	switch (dir) {
+-	case IIO_EV_DIR_RISING:
+-		return regmap_write(data->regmap,
+-				    adxl313_act_thresh_reg[ADXL313_ACTIVITY],
+-				    regval);
++	switch (info) {
++	case IIO_EV_INFO_VALUE:
++		/* Scale factor 15.625 mg/LSB */
++		regval = DIV_ROUND_CLOSEST(MICRO * val + val2, 15625);
++		switch (dir) {
++		case IIO_EV_DIR_RISING:
++			return regmap_write(data->regmap,
++					    adxl313_act_thresh_reg[ADXL313_ACTIVITY],
++					    regval);
++		case IIO_EV_DIR_FALLING:
++			return regmap_write(data->regmap,
++					    adxl313_act_thresh_reg[ADXL313_INACTIVITY],
++					    regval);
++		default:
++			return -EINVAL;
++		}
++	case IIO_EV_INFO_PERIOD:
++		return adxl313_set_inact_time_s(data, val);
+ 	default:
+ 		return -EINVAL;
+ 	}
+@@ -722,6 +812,17 @@ static int adxl313_push_events(struct iio_dev *indio_dev, int int_stat)
+ 			return ret;
+ 	}
+ 
++	if (FIELD_GET(ADXL313_INT_INACTIVITY, int_stat)) {
 +		ret = iio_push_event(indio_dev,
 +				     IIO_MOD_EVENT_CODE(IIO_ACCEL, 0,
-+							IIO_MOD_X_OR_Y_OR_Z,
++							IIO_MOD_X_AND_Y_AND_Z,
 +							IIO_EV_TYPE_MAG,
-+							IIO_EV_DIR_RISING),
++							IIO_EV_DIR_FALLING),
 +				     ts);
 +		if (ret)
 +			return ret;
 +	}
 +
-+	return ret;
-+}
-+
- static irqreturn_t adxl313_irq_handler(int irq, void *p)
- {
- 	struct iio_dev *indio_dev = p;
-@@ -517,6 +734,16 @@ static irqreturn_t adxl313_irq_handler(int irq, void *p)
- 	if (regmap_read(data->regmap, ADXL313_REG_INT_SOURCE, &int_stat))
- 		return IRQ_NONE;
+ 	return ret;
+ }
  
-+	/*
-+	 * In cases of sensor events not handled (still not implemented) by
-+	 * this driver, the FIFO needs to be drained to become operational
-+	 * again. In general the sensor configuration only should issue events
-+	 * which were configured by this driver. Anyway a miss-configuration
-+	 * easily might end up in a hanging sensor FIFO.
-+	 */
-+	if (adxl313_push_events(indio_dev, int_stat))
-+		goto err;
-+
- 	if (FIELD_GET(ADXL313_INT_WATERMARK, int_stat)) {
- 		samples = adxl313_get_samples(data);
- 		if (samples < 0)
-@@ -550,6 +777,10 @@ static int adxl313_reg_access(struct iio_dev *indio_dev, unsigned int reg,
- static const struct iio_info adxl313_info = {
- 	.read_raw	= adxl313_read_raw,
- 	.write_raw	= adxl313_write_raw,
-+	.read_event_config = adxl313_read_event_config,
-+	.write_event_config = adxl313_write_event_config,
-+	.read_event_value = adxl313_read_event_value,
-+	.write_event_value = adxl313_write_event_value,
- 	.read_avail	= adxl313_read_freq_avail,
- 	.hwfifo_set_watermark = adxl313_set_watermark,
- 	.debugfs_reg_access = &adxl313_reg_access,
-@@ -663,6 +894,19 @@ int adxl313_core_probe(struct device *dev,
+@@ -903,6 +1004,14 @@ int adxl313_core_probe(struct device *dev,
  		if (ret)
  			return ret;
  
-+		/*
-+		 * Reset or configure the registers with reasonable default
-+		 * values. As having 0 in most cases may result in undesirable
-+		 * behavior if the interrupts are enabled.
-+		 */
-+		ret = regmap_write(data->regmap, ADXL313_REG_ACT_INACT_CTL, 0x00);
++		ret = regmap_write(data->regmap, ADXL313_REG_TIME_INACT, 5);
 +		if (ret)
 +			return ret;
 +
-+		ret = regmap_write(data->regmap, ADXL313_REG_THRESH_ACT, 0x52);
++		ret = regmap_write(data->regmap, ADXL313_REG_THRESH_INACT, 0x4f);
 +		if (ret)
 +			return ret;
 +
- 		ret = devm_iio_kfifo_buffer_setup(dev, indio_dev,
- 						  &adxl313_buffer_ops);
+ 		ret = regmap_write(data->regmap, ADXL313_REG_THRESH_ACT, 0x52);
  		if (ret)
+ 			return ret;
 -- 
 2.39.5
 

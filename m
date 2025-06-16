@@ -1,162 +1,162 @@
-Return-Path: <linux-iio+bounces-20726-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20727-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8121AADBBBE
-	for <lists+linux-iio@lfdr.de>; Mon, 16 Jun 2025 23:12:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6620EADBDDA
+	for <lists+linux-iio@lfdr.de>; Tue, 17 Jun 2025 01:53:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A8CF3A4FB2
-	for <lists+linux-iio@lfdr.de>; Mon, 16 Jun 2025 21:11:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 641C83B5EEB
+	for <lists+linux-iio@lfdr.de>; Mon, 16 Jun 2025 23:53:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8283921B195;
-	Mon, 16 Jun 2025 21:11:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0BFC231C9F;
+	Mon, 16 Jun 2025 23:53:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="vW48Ws+G"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h5xha2k9"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ot1-f51.google.com (mail-ot1-f51.google.com [209.85.210.51])
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70C7D2192E4
-	for <linux-iio@vger.kernel.org>; Mon, 16 Jun 2025 21:11:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9B4D22F74A;
+	Mon, 16 Jun 2025 23:53:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750108293; cv=none; b=O66R4NFoR2W0SQipNBf8Xb1oDLB20s/vplFcZ1GuOAZdsMNnWOE84RVXFY/wgWt6sMjBXaEaYdG2iaKYumHumHKYXUqUbOS56puwkbYzQ/hAiwUT8V4mPv6aKDXmjDDYCG0Tr20Wm5ezAifNNNsHQaHhHr72bwlK0UotRYWTF6I=
+	t=1750118005; cv=none; b=mu6hqkTdU3QIpPBZFHUcEINHE0+qoA+bc7r0f/JEBxsRLuW4B0DdcycStCgPVAlOPX5tWz0E8ZAt00LfwtH3kDPa1OcAR3kW5/dbV0TYIcMH/Ofi2U3c/lY7WtlJUxkgk5mI4Ci0qlWCyEoxK58DHjc5erX2dsMrm10K/ru1Xzk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750108293; c=relaxed/simple;
-	bh=QDEJC9lNPPxMJgzIsPCXcaBWEEtBKY1BQcD54BSSUUg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jKF63rxkprbLZru1Zm1Cofz8lfch0DRyVIt/MfSuXcfOqgLDzV6vOP57r08IGwk7xpUJZ7i5fbB89/IOL0Tn8ey0w3sk0JFOEbR7amMy5lmtxSoGjH9QSRWaFGjj1yFQ3uBgFHiDaszYsRAPksIyoHN7hxcD8P38NTphoMGsLho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=vW48Ws+G; arc=none smtp.client-ip=209.85.210.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ot1-f51.google.com with SMTP id 46e09a7af769-739f2508ffaso3760124a34.2
-        for <linux-iio@vger.kernel.org>; Mon, 16 Jun 2025 14:11:31 -0700 (PDT)
+	s=arc-20240116; t=1750118005; c=relaxed/simple;
+	bh=Jx97UoH7P/w41US0BD/g6Nys4EWg7n8oWtNxLnSbhm0=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=iAr6bndkz2gzmAzeRK4aIAtgmPldXumTaMQm5HZFji8kQAaXdHputmcgT3iVWoMeRgcSEBoC3uIpplYh2XxR42r0qzf3gOsHr2Nn0iegWRNS1LFgWzpmICg1F/upOwYbpmgvgh2uGNr4gLUlgJ7r7dntSsRxcakMqZ2E5v0aT38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h5xha2k9; arc=none smtp.client-ip=209.85.216.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-312116d75a6so4349348a91.3;
+        Mon, 16 Jun 2025 16:53:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1750108290; x=1750713090; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=qYkNHZ7Min5h27AdAztgUbznbIMSIi9ilTeWa8MhK+E=;
-        b=vW48Ws+GXJxUskFWMuXzMMaakcBhTzo6DQIB4Hnm/eaH2/XJrnM8kfpk+QSoMN6Hml
-         UmyofMcVvMYyz/Y8FD6h//WFwJshRvWvRsviQ6zQhemWgrshK8HvKPj3iXnQehT+LdYZ
-         uhYwEQ2iJPB4Klvzd0boMZclTzEQPaYu160d+jJYQ0I5eDVt8GeetyAkz+aro3mTZbQw
-         udSUS0Ul61J0cYppKjdW8kVV9l8ANeWeDekwx+LC7EUC+rvHrfIgbNDw0qXwh66llwuK
-         r+zK59BasfH+NGffR8AVavN6DWhhNjs1DZgzPQj47WR0Kgjkd0rawP5wKk29DpKuWP/M
-         ft6g==
+        d=gmail.com; s=20230601; t=1750118003; x=1750722803; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=sdL48KiHdZltRPqGUZ1bW91mCWuQPcva+6EqLTRDcDI=;
+        b=h5xha2k9OKVjMQJVhQB/JsluZahOXv06pdJW3plmr0tb38wt4PzBFzKMSfh8W9w9zl
+         u69MpKkAWFU2M+hXrejXJZHe5x9aG3zHfM2Xbs3V0ZoV79b7JFm4LY4h6FGZ4Rb8y2+q
+         ZCWh2agBQwdynMF4rFEFhKF77E4GQfUuZ/5PV6WeeNrd1C+Llqhj884ndtgeQthvqnbi
+         mR9rl6oBUyGBM8oVVzzmol9T1nDJTS92A9+5HQ3QZJcKYcTEFAOYr3Ca08fZAsgTxK4l
+         B0qkpKU1OaOLd/YjOp/0LoUfWusxRPqZAGCWpedJWq9nfWvj39ZW9GYrVnQZCj+qwtcl
+         ROKw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750108290; x=1750713090;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=qYkNHZ7Min5h27AdAztgUbznbIMSIi9ilTeWa8MhK+E=;
-        b=Sd+sJFMk/HG1k26mCJs7gHNNm1+DNKn80OUq93m1kmJBlgnXRpnscluKxWUxFWbaE2
-         eu/EJJa28fxKZRy7rocDyWYZ6eFnaoLpOyIoiBKwtXVy4u0qrq+b5NTLy9PzJtL9jrEr
-         J5g1H6ZStNZjtYqw0cpFkAwrZ2Qbw+zFye8L4I+pNI4b9qiYhWwKPKXI5m6WVJ1o1DAh
-         Qzcl1f51ppAQD6JSg2dHMb/7pprL3OeKJSqLl6PM4GVPdIcqLMKyywHXrDpK5FvqE39+
-         dXyLtgJ6xE6s6wQZYUbgPdBlxBvOu1lz3vYgWaOtmGRCzaw+URWxiN43jRxwOWoFSOGs
-         oNCQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXtwRhSj8jIQQ7Dhhp8wIxZ9qz1mJt27AKedEjaNoD1nONWBc601tfZ1EknIM7wTm4+N7ytWZHaQnM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxhNyUzlwRDVrEfhyquhb9J7VH9U03OTa8i8hVjZ6V4Al3Zykt6
-	UyVCv1RWmxTURDgtcv29SVy0JkOPWlqyvuo9IxSsnr5F8gOuCc4RqwLdxd+RVF7Dtf6/Blw8uSx
-	bAMdU
-X-Gm-Gg: ASbGncvE5YmXJGszZPZznUGSjvnAf+euMj55fyCGSW2e86bKRi9+V+cWpuLt77MD8TB
-	h9FxmqHvguBKCjBB3tHNMnPr+ZIgXTzAcq9MbcGuB7EBJyOIliKMpPy5RgGI5OGI64X3IQ/C/uz
-	u9aD46z6rNoi34d6YfxXctPpedX13YERzmuekozmACHC+dMezGMmANUFF33gns5CSgBi3t/PaTF
-	nVKF7g0FHcoqRB03+fesuL8m///Hc3nTfglxR7IRQ7l07iWC3nKReNwVXTYuep3Nk1uCOMM9gMZ
-	eyFNWq2qvlWXrClaGRMkf3gaY1knl/bB4wil+WvCuS8QaG88PYM76HnEnX5i0U5qXxXBiCTfI9Z
-	N2ajrd+0/2Ko6BcAe84HNHiE18nOW0fYIMJs7WYA=
-X-Google-Smtp-Source: AGHT+IEVfg00pTGaPRzK4Tu/NTTi24yJzRagmZrO6SxeTxUYhm24UeyDhh597dYIx3cwF5Ovt4WWcw==
-X-Received: by 2002:a05:6830:7203:b0:735:afba:ba99 with SMTP id 46e09a7af769-73a363069e3mr6270036a34.4.1750108290314;
-        Mon, 16 Jun 2025 14:11:30 -0700 (PDT)
-Received: from ?IPV6:2600:8803:e7e4:1d00:9583:1e37:58ed:10ae? ([2600:8803:e7e4:1d00:9583:1e37:58ed:10ae])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-73a283dbf9asm1344501a34.12.2025.06.16.14.11.29
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 16 Jun 2025 14:11:29 -0700 (PDT)
-Message-ID: <656c43dd-c39d-4e35-a9d8-70383c0836a0@baylibre.com>
-Date: Mon, 16 Jun 2025 16:11:29 -0500
+        d=1e100.net; s=20230601; t=1750118003; x=1750722803;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=sdL48KiHdZltRPqGUZ1bW91mCWuQPcva+6EqLTRDcDI=;
+        b=BqlWMa36ep0Zk8JsCoyDifZzDySH/GFWBWI+ql//CRpsNtK4ZbUAxQZ2KbrZR6lgxV
+         cA4U5Daj1kd+0pv8fokrK4AuFB6WiwEWACqCqMllsBQpeNc/pbf0tB9927ZQlRBvfO7+
+         2UtQuU5R1/ALI8xwo/zKZcMsLRapmlFRGmcc5sep30tZwfDHFCeipHpX3Oyl+Bx8D51z
+         +UW7XaVSNx98lkgZ39c0X3oJBdTFWC2G2Lvx9uRIYC77fJpJCPj81SFIZDyZb2LCNmlV
+         nnQgrgJnCpsaeVzPrYRidlGRXkTnFI+p4nU/O6wEsRl5VpfayhcqdL2wL0Ba7wqP5Err
+         EEBw==
+X-Forwarded-Encrypted: i=1; AJvYcCVQGpCg7lzZH3mOHEeR3mWfqnAn5sciRvt18oTHpph1iqdtUcPz3DiyexYv6FJWBOvKXnvOL7DY5pS2sDM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxkd6G7uq9GiP+GzlEdLnt+cziyJjamk06z/7TmBXbec8k/lSxK
+	cKrp7InImAofHdyEQXTXM6tXfXKxd0jBwAK1InRwK7QcKQPG9V9FQTlz8/NRvAT7
+X-Gm-Gg: ASbGncvf+Fwsc09vIjjZ3u+k63xKv6yep+u7kEr14ajmVodw5CCOeyqJ0TCC6tYBr5h
+	gfZAqFS+X5tDLUBVSXI78K5pSJ6H5FHiM7Uv/IB87RO2s1J3aVsEsgmO18R97I8gSB98+IzDr9b
+	EyKFTDiSnuqRrKxIQR5VA2SZnzMe4czzF4EOkn4GTmApruqL89OejAgqK/Shn9s8Cz7PP4xDVjA
+	1hRGeO0HmUDCGK8dyWxR1yXf4Z/qiY5S7Qq0KsX4nN1MYCpwA61ilGFJtQllqAbU1emlTvPIBoS
+	nizcP+JgnND6Nmc0V1rCsX63xobHl7BV7DklCTpk1+IqupQr9Z5Vp/5a5iBdwYyQh8HK0gs=
+X-Google-Smtp-Source: AGHT+IEVUyYRT4CmeZBOd/g21z5hS5CoHRLVi+fAxcPwyAxyPfOqy6Tf29XYMOO6CTuuPYiqIz4jCg==
+X-Received: by 2002:a17:90b:4b4b:b0:2ff:58c7:a71f with SMTP id 98e67ed59e1d1-313f1e15230mr14601272a91.32.1750118002641;
+        Mon, 16 Jun 2025 16:53:22 -0700 (PDT)
+Received: from [192.168.0.9] ([2804:14d:90a8:477c:13e7:d349:8af8:5d32])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2365de782d3sm67515395ad.115.2025.06.16.16.53.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 16 Jun 2025 16:53:22 -0700 (PDT)
+From: Gustavo Silva <gustavograzs@gmail.com>
+Subject: [PATCH v3 0/3] BMI270: Add support for step counter and motion
+ events
+Date: Mon, 16 Jun 2025 20:53:08 -0300
+Message-Id: <20250616-bmi270-events-v3-0-16e37588604f@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 07/11] iio: adc: ad4170: Add clock provider support
-To: Marcelo Schmitt <marcelo.schmitt@analog.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-gpio@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Cc: jic23@kernel.org, lars@metafoo.de, Michael.Hennerich@analog.com,
- nuno.sa@analog.com, andy@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, linus.walleij@linaro.org, brgl@bgdev.pl,
- marcelo.schmitt1@gmail.com
-References: <cover.1749582679.git.marcelo.schmitt@analog.com>
- <5ac4b2d54f426d997cbb067530ab8e9af9bdcf16.1749582679.git.marcelo.schmitt@analog.com>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <5ac4b2d54f426d997cbb067530ab8e9af9bdcf16.1749582679.git.marcelo.schmitt@analog.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAGSuUGgC/3WMQQ6CMBBFr0K6tmaY0ta48h7GBZQpTCJgWtJoC
+ He3sNGYuHz/571FRApMUZyLRQRKHHkaM6hDIVxfjx1JbjMLBNRQYSWbgdGCpETjHKWtnCGvfX6
+ UyM4jkOfn3rveMvcc5ym89nwqt/VfKZUSZG2cRTRWkfaXbqj5fnTTILZSwo9tQP/amO1Tgw5sC
+ w5L9W2v6/oGgRUPaugAAAA=
+X-Change-ID: 20250424-bmi270-events-74c6ef5f4243
+To: Alex Lanzano <lanzano.alex@gmail.com>, 
+ Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Andy Shevchenko <andy@kernel.org>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Lothar Rubusch <l.rubusch@gmail.com>, 
+ Gustavo Silva <gustavograzs@gmail.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1750117999; l=2270;
+ i=gustavograzs@gmail.com; s=20250111; h=from:subject:message-id;
+ bh=Jx97UoH7P/w41US0BD/g6Nys4EWg7n8oWtNxLnSbhm0=;
+ b=KCYxHDJsS9OCj6MSZ8oC/gsXgo0NsnrDXpgjsHpeq9sa9Ca8sC2x0DakKu/5uL00wllkyAbNw
+ Lna+IDMAIUrDqsaNed2RzOsxdnY3AWXlLdL9h5swfYuYoj6y0B2FjoT
+X-Developer-Key: i=gustavograzs@gmail.com; a=ed25519;
+ pk=g2TFXpo1jMCOCN+rzVoM9NDFNfSMOgVyY0rlyvk4RTM=
 
-On 6/10/25 3:33 PM, Marcelo Schmitt wrote:
-> The AD4170 chip can use an externally supplied clock at the XTAL2 pin, or
-> an external crystal connected to the XTAL1 and XTAL2 pins. Alternatively,
-> the AD4170 can provide its 16 MHz internal clock at the XTAL2 pin. In
-> addition, the chip has a programmable clock divider that allows dividing
-> the external or internal clock frequency, however, control for that is not
-> provided in this patch. Extend the AD4170 driver so it effectively uses the
-> provided external clock, if any, or supplies its own clock as a clock
-> provider.
-> 
+This series adds support for step counter and motion events using
+interrupts in the BMI270 driver.
 
-...
+The step counter can be enabled, disabled, and configured with a
+watermark, all from userspace.
 
-> +static int ad4170_clock_select(struct iio_dev *indio_dev)
-> +{
-> +	struct ad4170_state *st = iio_priv(indio_dev);
-> +	struct device *dev = &st->spi->dev;
-> +	struct clk *ext_clk;
-> +	int ret;
-> +
-> +	ext_clk = devm_clk_get_optional_enabled(dev, NULL);
-> +	if (IS_ERR(ext_clk))
-> +		return dev_err_probe(dev, PTR_ERR(ext_clk),
-> +				     "Failed to get external clock\n");
-> +
-> +	if (!ext_clk) {
-> +		/* Use internal clock reference */
-> +		st->mclk_hz = AD4170_INT_CLOCK_16MHZ;
-> +		st->clock_ctrl |= FIELD_PREP(AD4170_CLOCK_CTRL_CLOCKSEL_MSK,
-> +					     AD4170_CLOCK_CTRL_CLOCKSEL_INT_OUT);
-> +
-> +		if (!device_property_read_bool(&st->spi->dev, "#clock-cells"))
+Any-motion and no-motion events are generated by detecting changes
+in acceleration on each axis.
 
-This isn't a flag, so device_property_present() is probably more correct.
+Signed-off-by: Gustavo Silva <gustavograzs@gmail.com>
+---
+Changes in v3:
+- Avoid the usage of set_mask_bits() macro on 16-bit integers,
+  use the bitwise operators instead
+- Fix indentation, alignment and style issues
+- Link to v2: https://lore.kernel.org/r/20250605-bmi270-events-v2-0-8b2c07d0c213@gmail.com
 
-> +			return 0;
-> +
-> +		return ad4170_register_clk_provider(indio_dev);
-> +	}
-> +
-> +	/* Read optional clock-names prop to specify the external clock type */
-> +	ret = device_property_match_property_string(dev, "clock-names",
-> +						    ad4170_clk_sel,
-> +						    ARRAY_SIZE(ad4170_clk_sel));
-> +
-> +	ret = ret < 0 ? 0 : ret; /* Default to external clock if no clock-names */
-> +	st->clock_ctrl |= FIELD_PREP(AD4170_CLOCK_CTRL_CLOCKSEL_MSK,
-> +				     AD4170_CLOCK_CTRL_CLOCKSEL_EXT + ret);
-> +
-> +	st->mclk_hz = clk_get_rate(ext_clk);
-> +	if (st->mclk_hz < AD4170_EXT_CLOCK_MHZ_MIN ||
-> +	    st->mclk_hz > AD4170_EXT_CLOCK_MHZ_MAX) {
-> +		return dev_err_probe(dev, -EINVAL,
-> +				     "Invalid external clock frequency %u\n",
-> +				     st->mclk_hz);
-> +	}
-> +
-> +	return 0;
-> +}
+Changes in v2:
+- Reduce the scope of mutex lock when clearing the step counter
+- Change the type of the 'steps_enabled' variable from int to bool
+- Add a new DMA safe variable to the device's private data to access the
+  feature registers
+- Remove unnecessary mutex lock
+- Fix a build error found by the kernel test robot by initializing a
+  local variable in the `bmi270_update_feature_reg()` function
+- Remove dead code in the `bmi270_write_event_config()` function
+- Add macro definitions and corresponding datasheet references for
+  relevant constants: step counter maximum value, step counter factor,
+  and threshold upper limit
+- Remove the event bitmask from the device's private data. Read the
+  registers directly to retrieve this information instead
+- Use IIO_UNMOD_EVENT_CODE instead of IIO_MOD_EVENT_CODE where
+  appropriate
+- Fix shadowed error codes
+- Change motion event to be enabled on a per-axis basis
+- Create pseudo channel of type accel_x&y&z for the no-motion event
+- Change no-motion event type to IIO_EV_TYPE_ROC
+- Link to v1: https://lore.kernel.org/r/20250424-bmi270-events-v1-0-a6c722673e5f@gmail.com
+
+---
+Gustavo Silva (3):
+      iio: imu: bmi270: add channel for step counter
+      iio: imu: bmi270: add step counter watermark event
+      iio: imu: bmi270: add support for motion events
+
+ drivers/iio/imu/bmi270/bmi270_core.c | 603 ++++++++++++++++++++++++++++++++++-
+ 1 file changed, 600 insertions(+), 3 deletions(-)
+---
+base-commit: b475195fecc79a1a6e7fb0846aaaab0a1a4cb2e6
+change-id: 20250424-bmi270-events-74c6ef5f4243
+
+Best regards,
+-- 
+Gustavo Silva <gustavograzs@gmail.com>
 
 

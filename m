@@ -1,129 +1,138 @@
-Return-Path: <linux-iio+bounces-20710-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20711-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30AAEADB076
-	for <lists+linux-iio@lfdr.de>; Mon, 16 Jun 2025 14:43:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19FF9ADB12D
+	for <lists+linux-iio@lfdr.de>; Mon, 16 Jun 2025 15:09:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 357B73AD3D8
-	for <lists+linux-iio@lfdr.de>; Mon, 16 Jun 2025 12:42:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A3C4B1887D9F
+	for <lists+linux-iio@lfdr.de>; Mon, 16 Jun 2025 13:09:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76CF6285CB8;
-	Mon, 16 Jun 2025 12:42:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A68F0292B5B;
+	Mon, 16 Jun 2025 13:08:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g41kp1D5"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="NYjVVVoN"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FCD83C2F;
-	Mon, 16 Jun 2025 12:42:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75D8F292B2C
+	for <linux-iio@vger.kernel.org>; Mon, 16 Jun 2025 13:08:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750077779; cv=none; b=rnd9YrBZGhnafXi913sLCpEXglQx1tIiX/zgomAZ3pNkT6YuUKfylr8v7RaabIZwn3uun9WHztps6K1A2F1mAFlOQV5k5TPL8++NwAZ3hX5sOy5KV4l7SReKgV9sIp0l9RdLfCgeojmMKvEAD1hCzACgZVUcFd+RDB/tjL1dK/w=
+	t=1750079327; cv=none; b=jAcFJIFQ8vHshgfTXTMJvn4wEwU/qt3BVEfjzeHerfn2GGvViY+BCtsI6FXrbo5/Uk2gZPF91WmQDFH9Cky9CGGUErSTNV3ehtEScdF5bKpV2L9xnydkQjD2P93e8eQuaSQr2yuY7z69n4FDS/6usoYlHw7zim4WWi9kjHDS6Us=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750077779; c=relaxed/simple;
-	bh=jq+OyKPUZkG4G8TUH0uPnIYNqEcVvtwLdkEk+C5Nl9o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=EWHroOAzAipu53ClFhvCGH5Uav1VYq/JFncbk91c9kWSy1qq0IvfaDtlFCMJE1VJk1TWwNlSgv9flzrCL12g2vsaoeD5EQnVZ0KaacmqIb2EDr961JxuR5R92jA1wb4T4O7hUbPQbL+g/2maH46Wp9/Uf0z2GQ2jc4O015XbwRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g41kp1D5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82BBEC4CEEA;
-	Mon, 16 Jun 2025 12:42:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750077778;
-	bh=jq+OyKPUZkG4G8TUH0uPnIYNqEcVvtwLdkEk+C5Nl9o=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=g41kp1D5HDtiboxIs47obLnIR30pejpJaJvarLq7HDvWEm/OUWJdTcK5G2mUHsp30
-	 a9Kfr8qBV70ogl6g94yPIcUh41yQZh5+mcr+enVq+xw2lEDGTI797F40hQyw3K5XcE
-	 Z0gRd95w8lLvfa4lmE/UDZRB0N7ri7iFvJ8NWFtwFheP4qk4daytfWIfpZ0DAVDVCM
-	 350cGi8Y2XHbDsKaKKa+FGJG4GAu9fJLDHrM7cSKvL7U+NyXzKuA8PA+o2Ri68XAjG
-	 93XHJxDETvuaxXBa21pGysJMK5nZQ13rbvH2q36fD6Rp1UfQaR44ayNd2BCl4S10Jk
-	 Dt+BbICU4eJ/Q==
-Message-ID: <79946c40-e2ce-4fbc-a6b2-b37f6fd69d1d@kernel.org>
-Date: Mon, 16 Jun 2025 14:42:54 +0200
+	s=arc-20240116; t=1750079327; c=relaxed/simple;
+	bh=ah5rJLZ6Ag5bCpEGVmMK40ONVUS/hIUB8mOhOGYJuYw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Zur8+VqUOMFUGlzORKW6JZ9a5e4mSvXReBb+k4dynsTYVUp0UkaHbUVGlse4qrGVBozYTMWPI9rhF3g9EevlojNfMeq0QJilRkWwK08hHS8q+6hLRi4NyVzVv+bIzNHnMo/EZkl+DBYCpOEOOLhMw+nkx9e0Zja5jw1+8vDNq2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=NYjVVVoN; arc=none smtp.client-ip=209.85.221.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-3a54700a46eso2958545f8f.1
+        for <linux-iio@vger.kernel.org>; Mon, 16 Jun 2025 06:08:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1750079324; x=1750684124; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ah5rJLZ6Ag5bCpEGVmMK40ONVUS/hIUB8mOhOGYJuYw=;
+        b=NYjVVVoNdHkwu2PC368UJbulp3NULBtBfS8pOrfLgPPVNDB3BcHkGt2XN9MUzKt4Ei
+         XawkIEMCciJaEgaqDweI2jwILrTI0yR9gop7Kmf3idGJoRb46gSeZEM+XXWLa3YB/0rL
+         XSkucm3M9UKgxybgjqH581gHRLAC/8R9x8Hvw4tu1nxVQukrrz5bq9FW8dPSe9wfk6pA
+         wBuB9BGoctfZTTkJMGoWfNxxZaq1VNeNtrBxWjyJ8KYejfmDdvuAHqdhof9irCwl45mj
+         lLftbTw6c88mDs7NxzENC8nmQx51pK/WHJhB3QSxmu0G34aJUBVOfhY2iVwJZRuFeUhn
+         WCcw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750079324; x=1750684124;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ah5rJLZ6Ag5bCpEGVmMK40ONVUS/hIUB8mOhOGYJuYw=;
+        b=bpKeAbpI4bMZFu5YOI648Vh/bQ6E1w0tiLnCp4dVTMxxvB6MaUfX/DrpdyBq/V+SQS
+         hONImVa73/fKvxm/fvO5vFk2YrUeGNnt0LiQ7+VZC8z9caYiG9j1mtR9CQWUiSSKyIJe
+         Fzzoo7ww0zIwdkYKrgqZ7BppqRvRzkInDa8e654H2lgXFiboGomWGs9HUCtqUC+1xPL9
+         PDJpwPn92DrRm2/8MiN0uQsVIoE70a/0FHOg1bXn7ziM4txUQvJTgkI7DDoJrSUq94N/
+         7Br7oOqy90Q0DTXED7hjZ0CGBUJW1baLscAjquMXmO0C2r6bSdtABbb1EVJcq9Tiy5Q6
+         KpsQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVoBENp0XhSc1o8mL16DCSuXWTXjEFJoADb/thOJcYht1CgXMzDM6qi9lclJigwP1IUgmGSFvuKRkM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxXHV+fPI7uO1gykBpHa9mZ80eiI+25Z4eWoh0Gs/cUEYR7jdGQ
+	+mDRZqmiiFiBXhBZ9LuAnsiUBYKW7eKozpRdUNx8vM6qLbUPj2KKLkZ3fT/jKAIwBaE=
+X-Gm-Gg: ASbGncv7p0aKz/c+omTsd8GQl57SvVjJRr6YnFVngIqiUi1w2i05zHqXnENpbgDZfDY
+	Hw5CKRQi2MiQy3nZ/npL1L0hKuimoQqOuZdRKdX4G+fZz65wFRHxI0FRBFwV9ZkyRjpLC/xZk68
+	11HUwxM1BvfqKbNxMwzQZaaMPuln3Mgbt0X1zcwxShbIu1PhlzMSmvJkE6c0wUF1/DW/NrAuKdZ
+	GVdIM8ChKav2Mik8w0SBm43aG8PZMfGPnoSv8A794mRbjnmE6SMaxdfa1H72E3S570kv4vXtaFO
+	sVOS6to9FZTsl+YL1N32uuKK1aJaCtEtlYTDWxIwUatUnGHoeEF6axA8hu+bHsuciJ50azBMVtN
+	7lvtC3JxKNmI3IHlnS0fWh0L2f2vk
+X-Google-Smtp-Source: AGHT+IFNPYRALxn7pyrwOurNwG2b2zOxZ8DWDp/HD4Av4lUT1jBW6B1aDoGMobxjeaaXuhPwxcq0HQ==
+X-Received: by 2002:a05:6000:2284:b0:3a4:dd8e:e16b with SMTP id ffacd0b85a97d-3a572371cdcmr9144801f8f.20.1750079323743;
+        Mon, 16 Jun 2025 06:08:43 -0700 (PDT)
+Received: from localhost (p200300f65f13c80400000000000001b9.dip0.t-ipconnect.de. [2003:f6:5f13:c804::1b9])
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3a568b089a7sm10888086f8f.49.2025.06.16.06.08.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 16 Jun 2025 06:08:43 -0700 (PDT)
+Date: Mon, 16 Jun 2025 15:08:41 +0200
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+To: Daniel Lezcano <daniel.lezcano@linaro.org>
+Cc: Biju Das <biju.das.jz@bp.renesas.com>, 
+	Thomas Gleixner <tglx@linutronix.de>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Geert Uytterhoeven <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, linux-iio@vger.kernel.org, 
+	linux-pwm@vger.kernel.org, linux-renesas-soc@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH] dt-bindings: timer: renesas,rz-mtu3: Use #pwm-cells = <3>
+Message-ID: <fmn3mrcbih3oq6hgl45jipdofko46ur2sux5p4lf3nzlpahklr@3tm5molhdfdx>
+References: <20250527205823.377785-2-u.kleine-koenig@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] iio: accel: bmc150: Do not configure IRQ registers if no
- IRQ connected
-To: Marek Vasut <marek.vasut+bmc150@mailbox.org>, linux-iio@vger.kernel.org
-Cc: =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
- Andy Shevchenko <andy@kernel.org>, David Lechner <dlechner@baylibre.com>,
- Jonathan Cameron <jic23@kernel.org>, Julien Stephan <jstephan@baylibre.com>,
- Peter Zijlstra <peterz@infradead.org>,
- Salvatore Bonaccorso <carnil@debian.org>, linux-kernel@vger.kernel.org
-References: <20250613124648.14141-1-marek.vasut+bmc150@mailbox.org>
-Content-Language: en-US, nl
-From: Hans de Goede <hansg@kernel.org>
-In-Reply-To: <20250613124648.14141-1-marek.vasut+bmc150@mailbox.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-
-Hi,
-
-On 13-Jun-25 14:45, Marek Vasut wrote:
-> The BMC150 on Onemix 2S does not have IRQ line described in ACPI tables,
-> which leads to bmc150_accel_core_probe() being called with irq=0, which
-> leads to bmc150_accel_interrupts_setup() never being called, which leads
-> to struct bmc150_accel_data *data ->interrupts[i].info being left unset
-> to NULL. Later, userspace can indirectly trigger bmc150_accel_set_interrupt()
-> which depends on struct bmc150_accel_data *data ->interrupts[i].info being
-> non-NULL, and which triggers NULL pointer dereference. This is triggered
-> e.g. from iio-sensor-proxy.
-> 
-> Fix this by skipping the IRQ register configuration in case there is no
-> IRQ connected in hardware, in a manner similar to what the driver did in
-> the very first commit which added the driver.
-
-...
-
-> Fixes: 8e22f477e143 ("iio: bmc150: refactor interrupt enabling")
-> Signed-off-by: Marek Vasut <marek.vasut+bmc150@mailbox.org>
-> ---
-> Cc: "Nuno Sá" <nuno.sa@analog.com>
-> Cc: Andy Shevchenko <andy@kernel.org>
-> Cc: David Lechner <dlechner@baylibre.com>
-> Cc: Jonathan Cameron <jic23@kernel.org>
-> Cc: Julien Stephan <jstephan@baylibre.com>
-> Cc: Peter Zijlstra <peterz@infradead.org>
-> Cc: Salvatore Bonaccorso <carnil@debian.org>
-> Cc: linux-iio@vger.kernel.org
-> Cc: linux-kernel@vger.kernel.org
-> ---
->  drivers/iio/accel/bmc150-accel-core.c | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/drivers/iio/accel/bmc150-accel-core.c b/drivers/iio/accel/bmc150-accel-core.c
-> index 744a034bb8b5..1c3583ade2b4 100644
-> --- a/drivers/iio/accel/bmc150-accel-core.c
-> +++ b/drivers/iio/accel/bmc150-accel-core.c
-> @@ -550,6 +550,9 @@ static int bmc150_accel_set_interrupt(struct bmc150_accel_data *data, int i,
->  	if (ret < 0)
->  		return ret;
->  
-> +	if (!info)
-> +		return 0;
-> +
->  	/* map the interrupt to the appropriate pins */
->  	ret = regmap_update_bits(data->regmap, info->map_reg, info->map_bitmask,
->  				 (state ? info->map_bitmask : 0));
-
-AFAIK the proper fix would be to not register any IIO-triggers. This fix will
-avoid the problem, but userspace might still try to use non-working triggers
-which will now silently fail.
-
-I'm not an IIO expert, but IIRC other drivers simply skip registering their triggers
-when there is no interrupt support.
-
-Regards,
-
-Hans
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="iilopq2yqcjx7szu"
+Content-Disposition: inline
+In-Reply-To: <20250527205823.377785-2-u.kleine-koenig@baylibre.com>
 
 
+--iilopq2yqcjx7szu
+Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH] dt-bindings: timer: renesas,rz-mtu3: Use #pwm-cells = <3>
+MIME-Version: 1.0
+
+Hello Daniel,
+
+On Tue, May 27, 2025 at 10:58:22PM +0200, Uwe Kleine-K=F6nig wrote:
+> With the goal to unify all PWM bindings to use #pwm-cells =3D <3> update
+> the renesas,rz-mtu3 binding accordingly. Keep <2> documented as a
+> deprecated value at least until the in-tree device trees are fixed
+> accordingly.
+>=20
+> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@baylibre.com>
+
+I would expect that with the positive feedback by Biju Das and Rob
+Herring it's on you to pick up this patch. Or would you prefer that I
+take it via PWM?
+
+Best regards
+Uwe
+
+--iilopq2yqcjx7szu
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmhQF1cACgkQj4D7WH0S
+/k73Rgf/c74I8St/PS/sSA0sdengOBRQFwBTHGS4TSdeSMCM6NOyPPRbdOldZt5W
+q1zo6ebUQPfsmw0PNrLy8+1VM0mo7VODoKzbpzlJbU78nNY6dClrEh1NQhO8l1x/
+AGNrp70au94sZPzQ+Wl5kDjekdgZWRNhTqnvDB6Zr6N0yZQYJTTG8szaHAdn2MBA
+w79oUyr9u4CHCNKeSrmsng+LutRYTWa19H+euEWY6pfNoUevc6KcSLFQjuJFTa8G
+Bcl+0K2D9ds2udo5OX0fC2paLmzIdrNJOXLQdb15x5gtiPNeYUJpRwj/W6wLSGvr
+0kluQjZBdst9MdruqyCa0RRRSxFFRw==
+=CsNM
+-----END PGP SIGNATURE-----
+
+--iilopq2yqcjx7szu--
 

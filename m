@@ -1,180 +1,285 @@
-Return-Path: <linux-iio+bounces-20706-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20707-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21BD2ADAE0A
-	for <lists+linux-iio@lfdr.de>; Mon, 16 Jun 2025 13:10:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2FDDADAE2A
+	for <lists+linux-iio@lfdr.de>; Mon, 16 Jun 2025 13:19:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2BA613B0064
-	for <lists+linux-iio@lfdr.de>; Mon, 16 Jun 2025 11:10:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 93AD516F0B7
+	for <lists+linux-iio@lfdr.de>; Mon, 16 Jun 2025 11:19:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 615E129C326;
-	Mon, 16 Jun 2025 11:10:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C57C12D12EE;
+	Mon, 16 Jun 2025 11:19:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZQG1Ic0M"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GlbwGtG5"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C1D81E501C;
-	Mon, 16 Jun 2025 11:10:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73D0A2D8DC5;
+	Mon, 16 Jun 2025 11:19:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750072220; cv=none; b=kSU3hXDiwe+fWI0YWB8KDlaqYTYxOfAOgw1bLEObThdtiuSMrd1loopSMchpABZaixRBY5V0SYoEdEAHHkpg9tgj8Dr7tHFX9WEdWljQ4xKR2zec94zKd/iPgYpJ89SgV4vyJq6q+amzD8wR3blc9Urh6aM2M9dxmmjxHBdjxMA=
+	t=1750072754; cv=none; b=OYVcfBm2V/juww0BjxYlOJmwBYiwF66ImW404rsBxEPhlQS7h1rqkw9GgsPZNtxRa2RmNeOZ/8/FxqAlSWugiNPtl9fHz4vorde9mc58ls+Mck7oIHESvLLHZTHNxDtrm0zVAgDhyYCDO6kJ2Pvv8GvO613d8pVS95Ikh0PEFKU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750072220; c=relaxed/simple;
-	bh=4fFLkI3dcSAqiA6dgdncycNhf9klmZACMiwYA9Dt0bY=;
+	s=arc-20240116; t=1750072754; c=relaxed/simple;
+	bh=b0CBhy1UUY6RQAjWRK15inB4LGY61RqJvVxUJtTtZug=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FOFA2fIxR4Cpap/PDp933rdRXCN0O5MYf5JBogP8Doztjs+GUnamSl1kTlgJMcT/h8KWMH+4scmgZs6Vmz5j7qG2QWImrMQgpOISgj6T9BX34ZdZpXqHNj/Qe0CL12sxdl850Z4Nhrau21xs5dcsjjSOx6U+5EZVRzE4bX197lI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZQG1Ic0M; arc=none smtp.client-ip=209.85.208.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-60794c43101so6929506a12.1;
-        Mon, 16 Jun 2025 04:10:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750072217; x=1750677017; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hbd6uttja4lI5BY3otJRuMZI44UPQt6xv5Z5Yw1NAe4=;
-        b=ZQG1Ic0MWMlI89uAbmPx2jiHLLCwlyF9nvG0901WUDdlc0pi1P7rU1IR0ndVG4yoxA
-         2ZN/Kq2ppQOAhsAUBVWZs1HvVd8W4zvpcdMEF7IpoSFyKLOIl8ODZ5/sEa04ZKxmrF2G
-         ThkGDEXaElKe3kPaz7g4vVsHvLL0zklVPnltQZqi0tH6XY8ynV/QBVy8o2StAvUdT6Bs
-         qHALkpKIjEu50kdAwHxglFgaA6oJ/u+wxisbeXyIjlWbWyR5jsjecY9rWQnounucNZzp
-         AGUf5dpHhbJp005E/i8YbK8YZiraKx/sOC77Rc0szV4fWRRI7Lnb+Jf5eBxFJubXfxN0
-         44+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750072217; x=1750677017;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=hbd6uttja4lI5BY3otJRuMZI44UPQt6xv5Z5Yw1NAe4=;
-        b=VzBM/zNfMKcChEnhtLZATRn2XniZhu7vEoebQpGQjuZjWWCSAAFko+87Kn4Ju8132M
-         IqZhoPB0Qw4fytrFkGQ1KiCj+rYxDJq/hxYQUFKDJw1j4mDH97OYGUCpSoEPaTVwidPt
-         NEPNGAaAXGWbUPADQP2NpV3omknN3r59WQrgZQLc9Tk8nOxJPXrcZJCQ6YHDnrhu0F8G
-         s9kDiyCvxndmQxwCfnt7Bdaq4Kz5ulxD5p4rIGAgTkPJt5Nt/pA7jy9zAkO1RVQKt6Iq
-         Ft0UsVJU9BkNqy0cG8Pn8UanODSGDk/xxoYmbTwy1JofkrDR+0VHXNCgZffttRT//Eto
-         ZAYg==
-X-Forwarded-Encrypted: i=1; AJvYcCULAJrlsqQfRXydQEvvc03/9vo3QuSkb+YF7O35ZvcaPy14YRMFeyvMd+4RVu/vRtEnuvIh4g797xE=@vger.kernel.org, AJvYcCUnMMVe+hdaNSe2ZfuAKTMghN1ziT4D9AWUr6RG/Oh7xxe0ybU1GdBmwqOjBiYd6vnW/uOid+yT/9345eZU@vger.kernel.org
-X-Gm-Message-State: AOJu0YzHpJXkSbmf5UEbmkerSKNWqeTWkByYPs8NgqwnUtZW7L7deldd
-	Cm2B/N6GTsMLgyEMXU8wBVtPXegk3EGbgGImCb6HxdTpUHUc6YeCZ2UF8ymdTxIfqUD/T4DFbga
-	9ea03lcoCUz/iL/SaQS7SMwyD+TbVTho=
-X-Gm-Gg: ASbGncsnB+l+PXICeTL533hDh0ojsAufzsuUQ0TQdvVgdQeb227sRMxOBDZIOt76ge8
-	PecKHS/EoodRQr/yr5ygWIoeoxOQxZsWUtkhsb77upme/ZZGnUZU0ih6bEdCr3li2/H9EvVfPAf
-	hxiJYPBUv8gAi/QqCqMEDiNCmndhDfuC3fDtIV9nZBr2SMww==
-X-Google-Smtp-Source: AGHT+IH5djo//PgoZzM4cW2EllofwQvtZMXpS8OuCnInkAgxOQ/0dp/YAeXJ0VTTVVZ6/f9axZ4wXunzUGycO2pjodo=
-X-Received: by 2002:a17:907:a893:b0:ad2:313f:f550 with SMTP id
- a640c23a62f3a-adfad412330mr856362966b.29.1750072216601; Mon, 16 Jun 2025
- 04:10:16 -0700 (PDT)
+	 To:Cc:Content-Type; b=G/vZevNLjtHPUA+DlPmQElQSei4gqi90jIQ5c4qeVBFRQ+1p31DK+hUKw3w/8ScRw7+NZ/UklSCDhBe7gxMbVJClbB2rzU0L2nA/cI6dydQZ5YgSor+3EgbhkrW0c7gDxR80Rp6Q8euPxPXt4Gt/TGc0bu6z+GDhAvYyI4hFVL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GlbwGtG5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35F50C4CEF9;
+	Mon, 16 Jun 2025 11:19:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750072754;
+	bh=b0CBhy1UUY6RQAjWRK15inB4LGY61RqJvVxUJtTtZug=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=GlbwGtG5TzzLNZiVwbk8BLn8L4HQdFUlIXQ+V89UxhvAFL8DrgM6HYrPvxvf4QUso
+	 YqKOJ81pPbH6buRPGFiBcEdGVQ8THm2KdlXoDLlLBAZmwkUmiMy8e/nPo2+NGi+omZ
+	 yIV08SMrvNAQyEdQbc9fCos8rddrDKNMg48ssHVA6TtRCklKqP8oTgAwCWbNqv+6La
+	 1EQQ7xZYKfzaTuLnxwTHoXXkrzteqfPcDpUL7/2bpjnDwR3qmuWAaKFZLzW83oBveI
+	 MHILqomGCwvj3RgRJYqhDrxpwLnLARytCKh+ewH/Ox1vLQg06yZbjF5vQj/zODXqSX
+	 zAewjuwgfrRBw==
+Received: by mail-oi1-f179.google.com with SMTP id 5614622812f47-40a8013d961so343892b6e.0;
+        Mon, 16 Jun 2025 04:19:14 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUWeevscf45HMdHzym//8IAIA/N7BCiLvTdxl5w2NGaLKFG+W+tgo+slsgMR8IGMFy41SvZzaFIWxfAYNEm5vBHdwU=@vger.kernel.org, AJvYcCVg1NpYJ4jQsLeIr9rUiRJ4w0bTSuTxrhK5HpUdA60xfsbM1LNXZCCuDeplUHvr+zM0DHf7nev14k4=@vger.kernel.org, AJvYcCX0/+yk3S6pUfF+c5KrhtnP3BJ9v6dJqA/EV+pKcZNbAMIwRtkgi0aEDnJ7AWylZrnOgAJ88Qv89eo=@vger.kernel.org, AJvYcCXkkcXt7YOkz3QB2lsGclAmQvvWIsN9TVoq6LdGFVEaRQJup2c/ovzB+9vwiyjrRXyZoq2OJE6A+BG87Wob@vger.kernel.org
+X-Gm-Message-State: AOJu0YxFP+6UQ7PxICCZwm5QH6kWWDt0Pa51vaaoHKVOkrnWjA//dW0L
+	DknxJtvFLQ+dQDvvqu2oY+80pvg5eH5lootktB1gTsSRC0X3jiHmZmcNCkbAChN+rRxLSjSKBhD
+	GYSe7iu50XYoxAnhfOGlgE2YeEe6QLS8=
+X-Google-Smtp-Source: AGHT+IFIdK/xkxk77cnZy0Cm6/R+PNFce5d8K+8kPQ6q9qb7aLWtfpLTmlk+HjpqwbhEqXt4Pm3+ojMisIzpuo2az5E=
+X-Received: by 2002:a05:6808:2202:b0:402:a5c:906 with SMTP id
+ 5614622812f47-40a7c243137mr6201985b6e.34.1750072753372; Mon, 16 Jun 2025
+ 04:19:13 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250613124648.14141-1-marek.vasut+bmc150@mailbox.org>
- <aEw_DcqpCpcsBGd0@smile.fi.intel.com> <8605141c-b615-4e84-9574-81e24590df48@mailbox.org>
- <aE_aL5dGKZeKBu50@smile.fi.intel.com> <db14331e-193a-4915-990e-7657b5ca0c5b@mailbox.org>
-In-Reply-To: <db14331e-193a-4915-990e-7657b5ca0c5b@mailbox.org>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Mon, 16 Jun 2025 14:09:39 +0300
-X-Gm-Features: AX0GCFsl7HH3ZC8U1dnAudEoJCiM1kf47YKTc03cEpSDAOXzYNb7_qqbfuBMkvA
-Message-ID: <CAHp75VcZ6-WFyyERg7YVXNj3-uggwyNf2fF4mnbhiUZ6xNwYvg@mail.gmail.com>
-Subject: Re: [PATCH] iio: accel: bmc150: Do not configure IRQ registers if no
- IRQ connected
-To: Marek Vasut <marek.vasut@mailbox.org>
-Cc: Andy Shevchenko <andriy.shevchenko@intel.com>, 
-	Marek Vasut <marek.vasut+bmc150@mailbox.org>, Hans de Goede <hansg@kernel.org>, 
-	linux-iio@vger.kernel.org, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Andy Shevchenko <andy@kernel.org>, David Lechner <dlechner@baylibre.com>, 
-	Jonathan Cameron <jic23@kernel.org>, Julien Stephan <jstephan@baylibre.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Salvatore Bonaccorso <carnil@debian.org>, linux-kernel@vger.kernel.org
+References: <20250606111749.3142348-1-claudiu.beznea.uj@bp.renesas.com>
+ <20250606111749.3142348-2-claudiu.beznea.uj@bp.renesas.com>
+ <CAJZ5v0i_Ey+OVpSZHXru=tubMaZi=y-uOh_0M6zmWZ2DqqA7Vg@mail.gmail.com>
+ <zhjytvj35lknj7v3jhva3n3nbv6qctvqgykwyi5huj6omet7lz@wchd7f4p4dpv>
+ <CAJZ5v0hsT-Q2hz=qoBo409oungaCmexJwwGheN7KRLFqz=6_Dw@mail.gmail.com>
+ <20250607140600.76e87ea5@jic23-huawei> <CAJZ5v0jqZ6gYKb85dpR-X5RwFeUBcbbcJ_b-AOe+JypBXod-MA@mail.gmail.com>
+ <486a1110-5336-42fd-82b8-a7b1452bad65@tuxon.dev> <CAJZ5v0hqBm4L2V9aUjB0tmW67eRRCnM7FScgdJQ=ihnpAZuMfA@mail.gmail.com>
+ <4360ee7a-d85a-4fa0-a1d6-d09a3b9d57c0@tuxon.dev>
+In-Reply-To: <4360ee7a-d85a-4fa0-a1d6-d09a3b9d57c0@tuxon.dev>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Mon, 16 Jun 2025 13:18:57 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0jUGf9QO6h6bcBcTX+nUbDeD0XMhWj1Qb-0qAtZ8EbVsA@mail.gmail.com>
+X-Gm-Features: AX0GCFsskiKxdqcuWf29xGUq34Ci2iGQMqSmY7x7YqlG91Fk62ew4emjKZASyuw
+Message-ID: <CAJZ5v0jUGf9QO6h6bcBcTX+nUbDeD0XMhWj1Qb-0qAtZ8EbVsA@mail.gmail.com>
+Subject: Re: [PATCH v3 1/2] PM: domains: Add devres variant for dev_pm_domain_attach()
+To: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Jonathan Cameron <jic23@kernel.org>, 
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>, gregkh@linuxfoundation.org, dakr@kernel.org, 
+	len.brown@intel.com, pavel@kernel.org, ulf.hansson@linaro.org, 
+	daniel.lezcano@linaro.org, linux-kernel@vger.kernel.org, 
+	linux-pm@vger.kernel.org, bhelgaas@google.com, geert@linux-m68k.org, 
+	linux-iio@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
+	fabrizio.castro.jz@renesas.com, 
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jun 16, 2025 at 2:03=E2=80=AFPM Marek Vasut <marek.vasut@mailbox.or=
-g> wrote:
-> On 6/16/25 10:47 AM, Andy Shevchenko wrote:
-> > On Fri, Jun 13, 2025 at 07:02:28PM +0200, Marek Vasut wrote:
-> >> On 6/13/25 5:09 PM, Andy Shevchenko wrote:
-> >>> On Fri, Jun 13, 2025 at 02:45:22PM +0200, Marek Vasut wrote:
-
-...
-
-> >>>> The BMC150 on Onemix 2S does not have IRQ line described in ACPI tab=
-les,
-> >>>> which leads to bmc150_accel_core_probe() being called with irq=3D0, =
-which
-> >>>> leads to bmc150_accel_interrupts_setup() never being called, which l=
-eads
-> >>>> to struct bmc150_accel_data *data ->interrupts[i].info being left un=
-set
-> >>>> to NULL. Later, userspace can indirectly trigger bmc150_accel_set_in=
-terrupt()
-> >>>> which depends on struct bmc150_accel_data *data ->interrupts[i].info=
- being
-> >>>> non-NULL, and which triggers NULL pointer dereference. This is trigg=
-ered
-> >>>> e.g. from iio-sensor-proxy.
-> >>>>
-> >>>> Fix this by skipping the IRQ register configuration in case there is=
- no
-> >>>> IRQ connected in hardware, in a manner similar to what the driver di=
-d in
-> >>>> the very first commit which added the driver.
-> >>>>
-> >>>> ACPI table dump:
-> >>>
-> >>>>           Device (BMA2)
-> >>>>           {
-> >>>>               Name (_ADR, Zero)  // _ADR: Address
-> >>>>               Name (_HID, "BOSC0200")  // _HID: Hardware ID
-> >>>>               Name (_CID, "BOSC0200")  // _CID: Compatible ID
-> >>>>               Name (_DDN, "Accelerometer")  // _DDN: DOS Device Name
-> >>>>               Name (_UID, One)  // _UID: Unique ID
-> >>>>               Method (_CRS, 0, NotSerialized)  // _CRS: Current Reso=
-urce Settings
-> >>>>               {
-> >>>>                   Name (RBUF, ResourceTemplate ()
-> >>>>                   {
-> >>>>                       I2cSerialBusV2 (0x0019, ControllerInitiated, 0=
-x00061A80,
-> >>>>                           AddressingMode7Bit, "\\_SB.PCI0.I2C0",
-> >>>>                           0x00, ResourceConsumer, , Exclusive,
-> >>>>                           )
-> >>>>                   })
-> >>>>                   Return (RBUF) /* \_SB_.PCI0.I2C0.BMA2._CRS.RBUF */
-> >>>>               }
-> >
-> >>>>           }
-
-...
-
-> >>> As for the solution, are you sure the line is not wired at all?
+On Mon, Jun 16, 2025 at 11:37=E2=80=AFAM Claudiu Beznea
+<claudiu.beznea@tuxon.dev> wrote:
+>
+> Hi, Rafael,
+>
+> On 13.06.2025 13:02, Rafael J. Wysocki wrote:
+> > On Fri, Jun 13, 2025 at 9:39=E2=80=AFAM Claudiu Beznea <claudiu.beznea@=
+tuxon.dev> wrote:
 > >>
-> >> No . It is some cheap mini-laptop , I have no schematics or any other =
-info
-> >> really .
-> >
-> >> Note that I am not really familiar with x86 and ACPI, so there is that=
+> >> Hi, Rafael,
+> >>
+> >> On 09.06.2025 22:59, Rafael J. Wysocki wrote:
+> >>> On Sat, Jun 7, 2025 at 3:06=E2=80=AFPM Jonathan Cameron <jic23@kernel=
+.org> wrote:
+> >>>>
+> >>>> On Fri, 6 Jun 2025 22:01:52 +0200
+> >>>> "Rafael J. Wysocki" <rafael@kernel.org> wrote:
+> >>>>
+> >>>> Hi Rafael,
+> >>>>
+> >>>>> On Fri, Jun 6, 2025 at 8:55=E2=80=AFPM Dmitry Torokhov
+> >>>>> <dmitry.torokhov@gmail.com> wrote:
+> >>>>>>
+> >>>>>> On Fri, Jun 06, 2025 at 06:00:34PM +0200, Rafael J. Wysocki wrote:
+> >>>>>>> On Fri, Jun 6, 2025 at 1:18=E2=80=AFPM Claudiu <claudiu.beznea@tu=
+xon.dev> wrote:
+> >>>>>>>>
+> >>>>>>>> From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+> >>>>>>>>
+> >>>>>>>> The dev_pm_domain_attach() function is typically used in bus cod=
+e alongside
+> >>>>>>>> dev_pm_domain_detach(), often following patterns like:
+> >>>>>>>>
+> >>>>>>>> static int bus_probe(struct device *_dev)
+> >>>>>>>> {
+> >>>>>>>>     struct bus_driver *drv =3D to_bus_driver(dev->driver);
+> >>>>>>>>     struct bus_device *dev =3D to_bus_device(_dev);
+> >>>>>>>>     int ret;
+> >>>>>>>>
+> >>>>>>>>     // ...
+> >>>>>>>>
+> >>>>>>>>     ret =3D dev_pm_domain_attach(_dev, true);
+> >>>>>>>>     if (ret)
+> >>>>>>>>         return ret;
+> >>>>>>>>
+> >>>>>>>>     if (drv->probe)
+> >>>>>>>>         ret =3D drv->probe(dev);
+> >>>>>>>>
+> >>>>>>>>     // ...
+> >>>>>>>> }
+> >>>>>>>>
+> >>>>>>>> static void bus_remove(struct device *_dev)
+> >>>>>>>> {
+> >>>>>>>>     struct bus_driver *drv =3D to_bus_driver(dev->driver);
+> >>>>>>>>     struct bus_device *dev =3D to_bus_device(_dev);
+> >>>>>>>>
+> >>>>>>>>     if (drv->remove)
+> >>>>>>>>         drv->remove(dev);
+> >>>>>>>>     dev_pm_domain_detach(_dev);
+> >>>>>>>> }
+> >>>>>>>>
+> >>>>>>>> When the driver's probe function uses devres-managed resources t=
+hat depend
+> >>>>>>>> on the power domain state, those resources are released later du=
+ring
+> >>>>>>>> device_unbind_cleanup().
+> >>>>>>>>
+> >>>>>>>> Releasing devres-managed resources that depend on the power doma=
+in state
+> >>>>>>>> after detaching the device from its PM domain can cause failures=
 .
+> >>>>>>>>
+> >>>>>>>> For example, if the driver uses devm_pm_runtime_enable() in its =
+probe
+> >>>>>>>> function, and the device's clocks are managed by the PM domain, =
+then
+> >>>>>>>> during removal the runtime PM is disabled in device_unbind_clean=
+up() after
+> >>>>>>>> the clocks have been removed from the PM domain. It may happen t=
+hat the
+> >>>>>>>> devm_pm_runtime_enable() action causes the device to be runtime-=
+resumed.
+> >>>>>>>
+> >>>>>>> Don't use devm_pm_runtime_enable() then.
+> >>>>>>
+> >>>>>> What about other devm_ APIs? Are you suggesting that platform driv=
+ers
+> >>>>>> should not be using devm_clk*(), devm_regulator_*(),
+> >>>>>> devm_request_*_irq() and devm_add_action_or_reset()? Because again=
+,
+> >>>>>> dev_pm_domain_detach() that is called by platform bus_remove() may=
+ shut
+> >>>>>> off the device too early, before cleanup code has a chance to exec=
+ute
+> >>>>>> proper cleanup.
+> >>>>>>
+> >>>>>> The issue is not limited to runtime PM.
+> >>>>>>
+> >>>>>>>
+> >>>>>>>> If the driver specific runtime PM APIs access registers directly=
+, this
+> >>>>>>>> will lead to accessing device registers without clocks being ena=
+bled.
+> >>>>>>>> Similar issues may occur with other devres actions that access d=
+evice
+> >>>>>>>> registers.
+> >>>>>>>>
+> >>>>>>>> Add devm_pm_domain_attach(). When replacing the dev_pm_domain_at=
+tach() and
+> >>>>>>>> dev_pm_domain_detach() in bus probe and bus remove, it ensures t=
+hat the
+> >>>>>>>> device is detached from its PM domain in device_unbind_cleanup()=
+, only
+> >>>>>>>> after all driver's devres-managed resources have been release.
+> >>>>>>>>
+> >>>>>>>> For flexibility, the implemented devm_pm_domain_attach() has 2 s=
+tate
+> >>>>>>>> arguments, one for the domain state on attach, one for the domai=
+n state on
+> >>>>>>>> detach.
+> >>>>>>>
+> >>>>>>> dev_pm_domain_attach() is not part driver API and I'm not convinc=
+ed at
+> >>>>>>
+> >>>>>> Is the concern that devm_pm_domain_attach() will be [ab]used by dr=
+ivers?
+> >>>>>
+> >>>>> Yes, among other things.
+> >>>>
+> >>>> Maybe naming could make abuse at least obvious to spot? e.g.
+> >>>> pm_domain_attach_with_devm_release()
+> >>>
+> >>> If I'm not mistaken, it is not even necessary to use devres for this.
+> >>>
+> >>> You might as well add a dev_pm_domain_detach() call to
+> >>> device_unbind_cleanup() after devres_release_all().  There is a sligh=
+t
+> >>> complication related to the second argument of it, but I suppose that
+> >>> this can be determined at the attach time and stored in a new device
+> >>> PM flag, or similar.
+> >>>
+> >>
+> >> I looked into this solution. I've tested it for all my failure cases a=
+nd
+> >> went good.
 > >
-> > Yes, I understand that.
+> > OK
 > >
-> > You can try to monitor the /sys/kernel/debug/pinctrl/*/pins files for a=
-ny
-> > changes that might happen on the sensor events. It might (help to) reve=
-al
-> > the IRQ line.
-> Sooo ... if the IRQ line is not described in ACPI, it could still be
-> connected ? Hum, I'll try to shake the laptop next time I power it up.
+> >>> Note that dev->pm_domain is expected to be cleared by ->detach(), so
+> >>> this should not cause the domain to be detached twice in a row from
+> >>> the same device, but that needs to be double-checked.
+> >>
+> >> The genpd_dev_pm_detach() calls genpd_remove_device() ->
+> >> dev_pm_domain_set(dev, NULL) which sets the dev->pm_domain =3D NULL. I=
+ can't
+> >> find any other detach function in the current code base.
+> >
+> > There is also acpi_dev_pm_detach() which can be somewhat hard to find,
+> > but it calls dev_pm_domain_set(dev, NULL) either.
+> >
+> >> The code I've tested for this solution is this one:
+> >>
+> >> diff --git a/drivers/base/dd.c b/drivers/base/dd.c
+> >> index b526e0e0f52d..5e9750d007b4 100644
+> >> --- a/drivers/base/dd.c
+> >> +++ b/drivers/base/dd.c
+> >> @@ -25,6 +25,7 @@
+> >>  #include <linux/kthread.h>
+> >>  #include <linux/wait.h>
+> >>  #include <linux/async.h>
+> >> +#include <linux/pm_domain.h>
+> >>  #include <linux/pm_runtime.h>
+> >>  #include <linux/pinctrl/devinfo.h>
+> >>  #include <linux/slab.h>
+> >> @@ -552,8 +553,11 @@ static void device_unbind_cleanup(struct device *=
+dev)
+> >>         dev->dma_range_map =3D NULL;
+> >>         device_set_driver(dev, NULL);
+> >>         dev_set_drvdata(dev, NULL);
+> >> -       if (dev->pm_domain && dev->pm_domain->dismiss)
+> >> -               dev->pm_domain->dismiss(dev);
+> >> +       if (dev->pm_domain) {
+> >> +               if (dev->pm_domain->dismiss)
+> >> +                       dev->pm_domain->dismiss(dev);
+> >> +               dev_pm_domain_detach(dev, dev->pm_domain->detach_power=
+_off);
+> >
+> > I would do the "detach" before the "dismiss" to retain the current orde=
+ring.
+>
+> I applied on my local development branch all your suggestions except this
+> one because genpd_dev_pm_detach() as well as acpi_dev_pm_detach() set
+> dev->pm_domain =3D NULL.
+>
+> Due to this I would call first ->dismiss() then ->detach(), as initially
+> proposed. Please let me know if you consider it otherwise.
 
-Yes, it's possible, unfortunately due to the closed / per-product
-nature of the Windows drivers.
-
---=20
-With Best Regards,
-Andy Shevchenko
+This is a matter of adding one more dev->pm_domain check AFAICS, but OK.
 

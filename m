@@ -1,138 +1,144 @@
-Return-Path: <linux-iio+bounces-20711-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20713-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19FF9ADB12D
-	for <lists+linux-iio@lfdr.de>; Mon, 16 Jun 2025 15:09:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 85B0FADB2A1
+	for <lists+linux-iio@lfdr.de>; Mon, 16 Jun 2025 15:56:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A3C4B1887D9F
-	for <lists+linux-iio@lfdr.de>; Mon, 16 Jun 2025 13:09:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A1AF51882E67
+	for <lists+linux-iio@lfdr.de>; Mon, 16 Jun 2025 13:56:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A68F0292B5B;
-	Mon, 16 Jun 2025 13:08:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 861632EAD0E;
+	Mon, 16 Jun 2025 13:54:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="NYjVVVoN"
+	dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b="RtBmYFvs"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75D8F292B2C
-	for <linux-iio@vger.kernel.org>; Mon, 16 Jun 2025 13:08:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4626A2877FC
+	for <linux-iio@vger.kernel.org>; Mon, 16 Jun 2025 13:54:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750079327; cv=none; b=jAcFJIFQ8vHshgfTXTMJvn4wEwU/qt3BVEfjzeHerfn2GGvViY+BCtsI6FXrbo5/Uk2gZPF91WmQDFH9Cky9CGGUErSTNV3ehtEScdF5bKpV2L9xnydkQjD2P93e8eQuaSQr2yuY7z69n4FDS/6usoYlHw7zim4WWi9kjHDS6Us=
+	t=1750082050; cv=none; b=mwRv04OwOX0Bs4vHiUz59OnAI+Ehu1TX3ENw5370wnlhuOry5+UQnP5PGOtZ2brshj5GHNTEp298mGVCJhLPjMh830dhEcq4ilSjyqB0/zTuMmrxhE5Z0JSJ9KgjTicH6wr1sic0rNzNYS58BnczJeuRvpUPx8CLpdeDrCphCgU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750079327; c=relaxed/simple;
-	bh=ah5rJLZ6Ag5bCpEGVmMK40ONVUS/hIUB8mOhOGYJuYw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Zur8+VqUOMFUGlzORKW6JZ9a5e4mSvXReBb+k4dynsTYVUp0UkaHbUVGlse4qrGVBozYTMWPI9rhF3g9EevlojNfMeq0QJilRkWwK08hHS8q+6hLRi4NyVzVv+bIzNHnMo/EZkl+DBYCpOEOOLhMw+nkx9e0Zja5jw1+8vDNq2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=NYjVVVoN; arc=none smtp.client-ip=209.85.221.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-3a54700a46eso2958545f8f.1
-        for <linux-iio@vger.kernel.org>; Mon, 16 Jun 2025 06:08:45 -0700 (PDT)
+	s=arc-20240116; t=1750082050; c=relaxed/simple;
+	bh=WdYsA4gcGJ4whUTHaU62r1/1/AwXMOqpKKD02j5KM2I=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BQeK0MpRJdokJXCI9LM1whdBWCaaO2cFBgJiIilAqEOF4hT0uX0MA1mNBUWcV0vXpQamEbsXpTzG0sAoAqamL4J7ZcngiBbIFo58PfIh6UPBrj8rtU7T/fq9ycVwvR1SXgZSJhk0FRHBO+CJ5cxCbxL3F5QDwXtCS0owKC1ix80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev; spf=pass smtp.mailfrom=tuxon.dev; dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b=RtBmYFvs; arc=none smtp.client-ip=209.85.218.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tuxon.dev
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-ad56cbc7b07so663877166b.0
+        for <linux-iio@vger.kernel.org>; Mon, 16 Jun 2025 06:54:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1750079324; x=1750684124; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ah5rJLZ6Ag5bCpEGVmMK40ONVUS/hIUB8mOhOGYJuYw=;
-        b=NYjVVVoNdHkwu2PC368UJbulp3NULBtBfS8pOrfLgPPVNDB3BcHkGt2XN9MUzKt4Ei
-         XawkIEMCciJaEgaqDweI2jwILrTI0yR9gop7Kmf3idGJoRb46gSeZEM+XXWLa3YB/0rL
-         XSkucm3M9UKgxybgjqH581gHRLAC/8R9x8Hvw4tu1nxVQukrrz5bq9FW8dPSe9wfk6pA
-         wBuB9BGoctfZTTkJMGoWfNxxZaq1VNeNtrBxWjyJ8KYejfmDdvuAHqdhof9irCwl45mj
-         lLftbTw6c88mDs7NxzENC8nmQx51pK/WHJhB3QSxmu0G34aJUBVOfhY2iVwJZRuFeUhn
-         WCcw==
+        d=tuxon.dev; s=google; t=1750082044; x=1750686844; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=xJCI+6qwU3+gkjXsqHZde1TYEMyw88mnCNmjbKL5ih4=;
+        b=RtBmYFvsW6Vw+ZL7FzFrE7wKDDtpCgAP3oBtY45llLJtfuIX5KB6kx+wl6KUVXW0wk
+         AdjTflrSENkq8zVE1hn0C6SP7zMnPPh1FgAIiYI9Jranwe2S5LUJveuHvb2UrJYzH/eq
+         ti2Lp0fuYXFr17hqjopDJRft1CSGHtXGdpyEIDoKKCYZP3FgOyha8/l3Z6oNimZ3doeP
+         MBp12iEZovAIAA2B5T80taXplc7XWAnBMHZz8RWe49gY02aUOZBJ91mgYTftvKMFrQRu
+         YvcI4G22TNevck4mSmfYTuwWsipLdgBLZBqy2PImcpD7i60AQA0wQ4lerrYyHpWIg39B
+         Xa6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750079324; x=1750684124;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ah5rJLZ6Ag5bCpEGVmMK40ONVUS/hIUB8mOhOGYJuYw=;
-        b=bpKeAbpI4bMZFu5YOI648Vh/bQ6E1w0tiLnCp4dVTMxxvB6MaUfX/DrpdyBq/V+SQS
-         hONImVa73/fKvxm/fvO5vFk2YrUeGNnt0LiQ7+VZC8z9caYiG9j1mtR9CQWUiSSKyIJe
-         Fzzoo7ww0zIwdkYKrgqZ7BppqRvRzkInDa8e654H2lgXFiboGomWGs9HUCtqUC+1xPL9
-         PDJpwPn92DrRm2/8MiN0uQsVIoE70a/0FHOg1bXn7ziM4txUQvJTgkI7DDoJrSUq94N/
-         7Br7oOqy90Q0DTXED7hjZ0CGBUJW1baLscAjquMXmO0C2r6bSdtABbb1EVJcq9Tiy5Q6
-         KpsQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVoBENp0XhSc1o8mL16DCSuXWTXjEFJoADb/thOJcYht1CgXMzDM6qi9lclJigwP1IUgmGSFvuKRkM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxXHV+fPI7uO1gykBpHa9mZ80eiI+25Z4eWoh0Gs/cUEYR7jdGQ
-	+mDRZqmiiFiBXhBZ9LuAnsiUBYKW7eKozpRdUNx8vM6qLbUPj2KKLkZ3fT/jKAIwBaE=
-X-Gm-Gg: ASbGncv7p0aKz/c+omTsd8GQl57SvVjJRr6YnFVngIqiUi1w2i05zHqXnENpbgDZfDY
-	Hw5CKRQi2MiQy3nZ/npL1L0hKuimoQqOuZdRKdX4G+fZz65wFRHxI0FRBFwV9ZkyRjpLC/xZk68
-	11HUwxM1BvfqKbNxMwzQZaaMPuln3Mgbt0X1zcwxShbIu1PhlzMSmvJkE6c0wUF1/DW/NrAuKdZ
-	GVdIM8ChKav2Mik8w0SBm43aG8PZMfGPnoSv8A794mRbjnmE6SMaxdfa1H72E3S570kv4vXtaFO
-	sVOS6to9FZTsl+YL1N32uuKK1aJaCtEtlYTDWxIwUatUnGHoeEF6axA8hu+bHsuciJ50azBMVtN
-	7lvtC3JxKNmI3IHlnS0fWh0L2f2vk
-X-Google-Smtp-Source: AGHT+IFNPYRALxn7pyrwOurNwG2b2zOxZ8DWDp/HD4Av4lUT1jBW6B1aDoGMobxjeaaXuhPwxcq0HQ==
-X-Received: by 2002:a05:6000:2284:b0:3a4:dd8e:e16b with SMTP id ffacd0b85a97d-3a572371cdcmr9144801f8f.20.1750079323743;
-        Mon, 16 Jun 2025 06:08:43 -0700 (PDT)
-Received: from localhost (p200300f65f13c80400000000000001b9.dip0.t-ipconnect.de. [2003:f6:5f13:c804::1b9])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3a568b089a7sm10888086f8f.49.2025.06.16.06.08.42
+        d=1e100.net; s=20230601; t=1750082044; x=1750686844;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=xJCI+6qwU3+gkjXsqHZde1TYEMyw88mnCNmjbKL5ih4=;
+        b=wimPG5ZzST6nTxlAg9wH5DJmynuG2v09mvAcqiIj5U6Qf3lZPwWTHtQEQFlX+3eD6l
+         LSLP+Yg4bNwYQw7YwEU/Q8i3FYnuMZTq/5Xmx+ojCmrT/9JpKKZizJzsjDbjif89Tf+4
+         2iL6Nwkh4MiC1TOxGA7AeknYZipQGjVQa/Zr/nvpBuauSGOJzSVTxI9ySoBYVbwhHeD5
+         wud/x0YVEVDQnOkyIaGLoj/DJPZEmib1G59eAW4cywuw6iZ0LvXumL4vJShvkwAzu2kN
+         xfennaQGY5JkGVoQV0h2H/L2DD+cYCdNsrLBu2ZnRQqV6F7iHTZaKPRx4JOeaQ+uK5j9
+         azLw==
+X-Forwarded-Encrypted: i=1; AJvYcCV7irzrOJQajTPuFfwcO/6mVHcVtReV9DaI7H6wbkgYLSvMMNwN+2dcxI1AaAdTmYK2S3ynYbz8JvA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzfTaNQGUR/+PMfDmIDRTn6tzu6LvYcSxYQWrv4XJXS2nrMmpRQ
+	gpLgYXeEaa/fh77u0mP10A1yyjnitu7u1+WeuxQRCLwt0VUiA84go9ZvhrChPjEOpp0=
+X-Gm-Gg: ASbGnctDL8lZH8vLTsRrM7vNrQJF46vKiAI8SdPZugAowyqoBQAdTg90KlbaDdYYvQ5
+	zQp4Q/IA2NW8Yla1TSFd85kZ8rdjer8WwS6PqlMLXohMf2UC2rHklYfXW3b/+LtLGwwGE6CxcqY
+	IO99OMBd9/DlWSMwSEm573aMFOCSm0i02QZhqkL9SkdmsmKHS2jWjxO9F7q4UBw8kryl+I53hKz
+	tPOg4lr8rmEe4csZOgnfStP2b+uX4BS0/2syq3WSidZkkKYUxUw2T9lyeNB+WJlDAOgCwFNWx1h
+	//CeoUtCGeKhYzVP/2F64Bk4KuA+RbYvlOX0QGCX+eCy76KJCzkKcoh41nKM9Jd3d9fzXsKCix/
+	VqMnJyZShTz0n9ySd
+X-Google-Smtp-Source: AGHT+IFIEkskkJG9WLW+Hv9ZKWW2DbdD0zYs82b6WVAC9yGzm6OdzcpBZetxbCKgKVtLW2Au71dzLw==
+X-Received: by 2002:a17:906:c14c:b0:ade:484d:1518 with SMTP id a640c23a62f3a-adfad38b235mr948743466b.26.1750082044401;
+        Mon, 16 Jun 2025 06:54:04 -0700 (PDT)
+Received: from claudiu-X670E-Pro-RS.. ([82.78.167.110])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-adec897a70bsm662748966b.154.2025.06.16.06.54.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Jun 2025 06:08:43 -0700 (PDT)
-Date: Mon, 16 Jun 2025 15:08:41 +0200
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-To: Daniel Lezcano <daniel.lezcano@linaro.org>
-Cc: Biju Das <biju.das.jz@bp.renesas.com>, 
-	Thomas Gleixner <tglx@linutronix.de>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Geert Uytterhoeven <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, linux-iio@vger.kernel.org, 
-	linux-pwm@vger.kernel.org, linux-renesas-soc@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH] dt-bindings: timer: renesas,rz-mtu3: Use #pwm-cells = <3>
-Message-ID: <fmn3mrcbih3oq6hgl45jipdofko46ur2sux5p4lf3nzlpahklr@3tm5molhdfdx>
-References: <20250527205823.377785-2-u.kleine-koenig@baylibre.com>
+        Mon, 16 Jun 2025 06:54:03 -0700 (PDT)
+From: Claudiu <claudiu.beznea@tuxon.dev>
+X-Google-Original-From: Claudiu <claudiu.beznea.uj@bp.renesas.com>
+To: gregkh@linuxfoundation.org,
+	rafael@kernel.org,
+	dakr@kernel.org,
+	len.brown@intel.com,
+	pavel@kernel.org,
+	ulf.hansson@linaro.org,
+	jic23@kernel.org,
+	daniel.lezcano@linaro.org,
+	dmitry.torokhov@gmail.com
+Cc: claudiu.beznea@tuxon.dev,
+	linux-kernel@vger.kernel.org,
+	linux-pm@vger.kernel.org,
+	bhelgaas@google.com,
+	geert@linux-m68k.org,
+	linux-iio@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org,
+	fabrizio.castro.jz@renesas.com,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Subject: [PATCH v4 0/2] PM: domains: Detach on device_unbind_cleanup()
+Date: Mon, 16 Jun 2025 16:53:55 +0300
+Message-ID: <20250616135357.3929441-1-claudiu.beznea.uj@bp.renesas.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="iilopq2yqcjx7szu"
-Content-Disposition: inline
-In-Reply-To: <20250527205823.377785-2-u.kleine-koenig@baylibre.com>
+Content-Transfer-Encoding: 8bit
 
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
---iilopq2yqcjx7szu
-Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH] dt-bindings: timer: renesas,rz-mtu3: Use #pwm-cells = <3>
-MIME-Version: 1.0
+Hi,
 
-Hello Daniel,
+Series drops the dev_pm_domain_detach() from platform bus remove and
+adds it in device_unbind_cleanup() to avoid runtime resumming the device
+after it was detached from its PM domain.
 
-On Tue, May 27, 2025 at 10:58:22PM +0200, Uwe Kleine-K=F6nig wrote:
-> With the goal to unify all PWM bindings to use #pwm-cells =3D <3> update
-> the renesas,rz-mtu3 binding accordingly. Keep <2> documented as a
-> deprecated value at least until the in-tree device trees are fixed
-> accordingly.
->=20
-> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@baylibre.com>
+Please provide your feedback.
 
-I would expect that with the positive feedback by Biju Das and Rob
-Herring it's on you to pick up this patch. Or would you prefer that I
-take it via PWM?
+Thank you,
+Claudiu
 
-Best regards
-Uwe
+Changes in v4:
+- added a flag in dev_pm_info that is saved in dev_pm_domain_attach()
+  and used in device_unbind_cleanup()
 
---iilopq2yqcjx7szu
-Content-Type: application/pgp-signature; name="signature.asc"
+Changes in v3:
+- add devm_pm_domain_attach()
 
------BEGIN PGP SIGNATURE-----
+Changes in v2:
+- dropped the devres group open/close approach and use
+  devm_pm_domain_attach()
+- adjusted patch description to reflect the new approach
 
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmhQF1cACgkQj4D7WH0S
-/k73Rgf/c74I8St/PS/sSA0sdengOBRQFwBTHGS4TSdeSMCM6NOyPPRbdOldZt5W
-q1zo6ebUQPfsmw0PNrLy8+1VM0mo7VODoKzbpzlJbU78nNY6dClrEh1NQhO8l1x/
-AGNrp70au94sZPzQ+Wl5kDjekdgZWRNhTqnvDB6Zr6N0yZQYJTTG8szaHAdn2MBA
-w79oUyr9u4CHCNKeSrmsng+LutRYTWa19H+euEWY6pfNoUevc6KcSLFQjuJFTa8G
-Bcl+0K2D9ds2udo5OX0fC2paLmzIdrNJOXLQdb15x5gtiPNeYUJpRwj/W6wLSGvr
-0kluQjZBdst9MdruqyCa0RRRSxFFRw==
-=CsNM
------END PGP SIGNATURE-----
+Claudiu Beznea (2):
+  PM: domains: Add domain detach_power_off state
+  driver core: platform: Drop dev_pm_domain_detach()
 
---iilopq2yqcjx7szu--
+ drivers/base/dd.c           | 2 ++
+ drivers/base/platform.c     | 6 +-----
+ drivers/base/power/common.c | 3 +++
+ include/linux/pm.h          | 1 +
+ 4 files changed, 7 insertions(+), 5 deletions(-)
+
+-- 
+2.43.0
+
 

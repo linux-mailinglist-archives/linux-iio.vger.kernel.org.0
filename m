@@ -1,230 +1,221 @@
-Return-Path: <linux-iio+bounces-20714-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20715-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBCDAADB2C0
-	for <lists+linux-iio@lfdr.de>; Mon, 16 Jun 2025 15:59:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C72FADB2A7
+	for <lists+linux-iio@lfdr.de>; Mon, 16 Jun 2025 15:57:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C74557A2D5B
-	for <lists+linux-iio@lfdr.de>; Mon, 16 Jun 2025 13:55:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 75B501884C9F
+	for <lists+linux-iio@lfdr.de>; Mon, 16 Jun 2025 13:56:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6F112EBDFF;
-	Mon, 16 Jun 2025 13:54:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 696682877D8;
+	Mon, 16 Jun 2025 13:55:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b="mJs5kc8D"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gb0u3a0g"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7C6A2DBF5C
-	for <linux-iio@vger.kernel.org>; Mon, 16 Jun 2025 13:54:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 699A7285C96;
+	Mon, 16 Jun 2025 13:55:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750082052; cv=none; b=nbCyvW3ZhfDQRhp5Uq4n9aYbNaf96hYv3JHBkn47JO8A4HeFTWP9Gle/cuvyNuBKtrjPu4ghaNh7/m01YfT5z6sMqJfHsK3gQ00RO86OTuxann2+f7fBHbnvlN0b1cmzIQhGCx6op+HGWFbGg0GBjA3/OIWfh9P6Mbm7ymfLb+o=
+	t=1750082104; cv=none; b=hHkbTnAjNhEaBDgZkS+1Pa7XzF0nML7zaDi4ej3hEFHnoMAdjLmC4CHvUql1AMyfJH91Hk5sKqYSB7dAXPhui1GP+bjlCYKLXv/kg3KJnNGfUodbWaN0CnM4fnuJwZar+1Lr0PSbXz/UYAJq3jFa5//ruuyW6h6VTdB7R8iYg4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750082052; c=relaxed/simple;
-	bh=KPy0qoeJ/cuWg3FcjfVl4wS9jR9Yuixd3J4F+C/TP+Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kNwAngikDL+yYPZ6EZ8w16hQYxgDnjnnYWshdSn/CKDZ2iaOGV8dTV96D3lFnVW7GUJ8Nfwuy0eWHo0xhd5o/L72MQKyKQpKEN2JMaO8PxxcerHa3ucXViJ54ckadzs7OjoEZyMLg3hjmosm5Pl0y6uECxkxl4J7yp+KKnvwTW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev; spf=pass smtp.mailfrom=tuxon.dev; dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b=mJs5kc8D; arc=none smtp.client-ip=209.85.218.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tuxon.dev
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-ad89ee255easo835258066b.3
-        for <linux-iio@vger.kernel.org>; Mon, 16 Jun 2025 06:54:09 -0700 (PDT)
+	s=arc-20240116; t=1750082104; c=relaxed/simple;
+	bh=kDrFiJZeByCxQ9YK3OGGhguZw0QHkU2Ev1SlVF6XmxE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WiPIepFyQsXw+v2VcO9tZHTJjD3PEFA9y3hurKUnwdHtv6GFbHrr5bYP6lqLZlwGlcO09NxXlsNQREPF/lJLJTWUp2BDpuCBHhlslu3INGESbodlkApOxZOuagP11Mji+be9c1UIHW5zuAR03CCKAXYYzVXj8lxudo7c8Xe3A0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gb0u3a0g; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-451e2f0d9c2so39300515e9.1;
+        Mon, 16 Jun 2025 06:55:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=tuxon.dev; s=google; t=1750082048; x=1750686848; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=k+LFH2EJZ/euycVAsLwJhPX7xP3RrLri+PWxKx7UufA=;
-        b=mJs5kc8DGArf70tD7LKTbk2Ch48YO19BuG6jqGQLEKfPMUgBoELXMEnEu8Fa3syHrh
-         H/9ZVlHsa7iTsefFDIdNsb4vPKHD/HwM0pjuNoC/h5lj8sNKMwOgliOryxvY7/jNPyvp
-         ASflURqaqPVoGKw/rFQ17bue4hvqJGMundVBTFM+5+XN16fe8EZgDAtAh1/Bsn812eOD
-         CqtRKG/FlSInBHaGHRL2nBJjoahuvEmpkQRC2JESossWbJXfWyiZav/0NJ1kLe2rZ6sI
-         sH5VUbV2vdI7i4CSTko3v0p2ur78t/BHfsJ74QpTGcvXr/507HnnSlwLWByQ+NHYli03
-         xdRg==
+        d=gmail.com; s=20230601; t=1750082101; x=1750686901; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=WuF0uH/IFJVKhc9AHQruIp9YqexDw2XvYvqThHWKXxs=;
+        b=gb0u3a0gXMlCSMfjKTYmAKAI86tnaxedJMxXU/FUk66ip//dne8+ibMScLPJs+Gikz
+         XjDIl4yiWH/5ETU+6k2iPyoxtBTGydDzVCXC883D/Go4TCg34+Whyng1BYbiNaJk+zVY
+         lmKW1SE9XSJ934g1Hm1YdVo6w0Uhsigh1MIoyOH/NbW/ck5LFbzcLtgEInrTO9dFCCZW
+         uT+fH5N8yRHv7BCOvzRhL94XiJPpZRTaGaxHemmQ8jkZuo+5n8UYuZZOP/eVQok6N3z8
+         zd3f2TX8+akvDikcBcAwm4tl64/r3e3XagUZr3m7GHBYswMy9dkXZ8DjzFHAuvyCLNgX
+         D2Vg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750082048; x=1750686848;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=k+LFH2EJZ/euycVAsLwJhPX7xP3RrLri+PWxKx7UufA=;
-        b=nl6LFNtraMpbHnoxzl02WuKZsFlITShZZ2Nb2NUHBnqWyMBiuaBd5GqALkIop+9M18
-         LidTg5cgosTVEWhPi0N15sDIMB/4/QrBSkXjBK8nSI2B46E3b7x/l4d7Uu+0M2tG/CTT
-         wT1tBXHMgyIN5k3wDi8jTBdgSVm47pUqGJOpEqMp4gsi2/0Gg5QDxoH7W7mMjmCmiNj+
-         LBKpa3dAYVlTjn4UgpIlejvklEoekFDPeq3TxgQPt179aoSf/KA0Zler/1YAqLBkNQVY
-         ++7kZnuZjVyeiKuOmGpJU3KotVLKwCh5HvDVRbSZH8GYt7z2uI1qV6aUcS687GnTdyLS
-         Yr/w==
-X-Forwarded-Encrypted: i=1; AJvYcCWfkxWd3sGgqX9bRh8TpJqNCX3O6QSjMSWMKdKqdF53y5PJlbSY8KOO8fXXuRCvve0Ow/VjMIm2YVc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxhDuxnv2UpZ0JqA72V6uIF6wkAkN83mUSRkeGSWvsh3PMHVsc7
-	MCl1No2cllI6PSKhp9gZ08R5LVPsWXB+AwxmBHozLiVGd9X4hF81bunBPX3mHibZtvo=
-X-Gm-Gg: ASbGncsWklOTuVgq8Sas03LzsDVfGvb5xuURMpLbaWXld+JdcLMxJPpRFy5CtlxtNF9
-	ilTo4xNppD2uUkVhhfM7ZlxeqKCYI86lZs+JJKCfGZZ2xrQxcm4bXal6MCtyYR3Y8aNU55rU8QO
-	ss9KwHHhOriy8OvYkmSG3EdoL7fGo3c9sSmXCgNuW0PbNrBg6Ei/DTqUC+ea69JfjxAR4NOsTud
-	uzohzLm1JojGGbL/rYuG0rdrmMq9AFejzpBSO1sRzjQsFh9KT72XbaBzl84rrxw8jNmnjKOY8as
-	uWTCAPUKBsjBd8pqamCREWuFHP+qncIkizumgnskONpjMWSdXoGCI3JPWd3oceA6MWAutvqMymL
-	MaO/4YVQR3bfGZ0KmCnDTwUQN1KY=
-X-Google-Smtp-Source: AGHT+IGkfVytZQOP8rOyQhNTtUZWr9IH2eDQVY0gZwL9P8IewAvv89wj+c+jpi7sVu7bmVbj99zUhQ==
-X-Received: by 2002:a17:907:94cb:b0:ad4:d9b2:6ee4 with SMTP id a640c23a62f3a-adfad65f792mr840462566b.49.1750082048005;
-        Mon, 16 Jun 2025 06:54:08 -0700 (PDT)
-Received: from claudiu-X670E-Pro-RS.. ([82.78.167.110])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-adec897a70bsm662748966b.154.2025.06.16.06.54.06
+        d=1e100.net; s=20230601; t=1750082101; x=1750686901;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WuF0uH/IFJVKhc9AHQruIp9YqexDw2XvYvqThHWKXxs=;
+        b=HjMuFdef2KgRK/YfNkrrdKdfMHzNEVasv+QNQzwXVoNVmTp3PVHdV9hyu3Wzt37n0l
+         an+D7OVbHmPh5vKuvw7szR+KSGrGp91mX69CuDWNrBwA3xy6S6MVABx+qjhge4sqC9Md
+         ui3KNcoiqqQXk44J8CFeDc716az7GvdnFyaua6ColZYlUr1NuGA6VAQZQera01tXN34L
+         oj1G92Dq3DWYcLcIYxRl40iqNrTW2gF+7EgeWd0X5nHCerThCugFHM/CpSDDaECyzMt0
+         ChOJUXicYsbKOfu1DgDAbyFbM56aGzBReguQBdfYSybgVogj3lWDqpuepJSnaJMBZfZ4
+         1EJA==
+X-Forwarded-Encrypted: i=1; AJvYcCVKoqdBHfeQBP+bqra075ioWvl0rp6HMI0bsh5o1a83/zrX7rBYanyN8gV8nhVFz0qDfpJaaBo5ZpN+@vger.kernel.org, AJvYcCVwqW5K/6RBg/3RZT8zH9GxWSftWMf62pzd928i/uNiTRgAaVr2wkjsm12QroaYDqPPwqjCAmaH++3p@vger.kernel.org, AJvYcCXad+EyGFU0NJOfA8Zz7T5OXpP9IyasGd+/0pXnh4IjzG49wuPEXWLGQKaG5WOrQhEVWn0C8cPMuaFyNJ/k@vger.kernel.org, AJvYcCXrSDLF2iAlbT+LV7DM9h7zbyVYZplPxNQX9MrPPM58fQOHjRF/042z6HXKghbNvS9CaLcfdpQ2gcJB@vger.kernel.org, AJvYcCXwtCVFVC/Hf4eMBBMCR/ltXM6EEkKTlvGF65t4UYUyAvYkKkOYcwhnE/Su7TeowOBXJgwjAvXHN7ak@vger.kernel.org
+X-Gm-Message-State: AOJu0YzNPrT3wcNWEWC2PTPTzTCoOt4OI2KhEOfSntqasLApRvYEL6V9
+	qIY9UEbLJ67ag/8AZCRi68w/x0hBTpxeV+LqNCvOMLJsmQ40ivfJ183a
+X-Gm-Gg: ASbGncsRudPxphNq/fFglL+ZUbMkDxDJuAoY69alFdsgXq5lowI+SRIWQaZ2He3QiWd
+	ztqinO1j+RRjf1bzTYAk3r9mEWXsDhkQvlK4w3l7QNgjAN51Xohl4kETC040+sMSozdZ1kJIgtf
+	jepqR7E8tWWUPd9DE5NCtCgTtGY4Pmf9RexkUAOvDzqYWoCOxzsHw4w2U7c0LdNh4IffCl0/ygC
+	BXYIkJKSUqwYB8jtZomO7p241PBNVi3UaEVZo1gJIetKRWxn6ntqMsVmDGReELtx3PXcXkf0TYu
+	NYfJRoAaq8mcN4SqTOL+h8ofd8s0aJsksZlG5MPcDqM0vQnOsFpoukGK9C14gQIqqhKhkzj5K2n
+	2yfnZD4o=
+X-Google-Smtp-Source: AGHT+IEgHOUFMFCgr3FayDvhUXf1wP2ej3MU+MRC9MTMlQ0HxZa9/T+TtlTt+0/ujY4/jQfzKhe7aA==
+X-Received: by 2002:a05:600c:4691:b0:453:aca:4d08 with SMTP id 5b1f17b1804b1-4533cc5cfd1mr84280755e9.1.1750082100305;
+        Mon, 16 Jun 2025 06:55:00 -0700 (PDT)
+Received: from HYB-DlYm71t3hSl.ad.analog.com ([137.71.226.91])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4532e25ec9fsm142381335e9.34.2025.06.16.06.54.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Jun 2025 06:54:07 -0700 (PDT)
-From: Claudiu <claudiu.beznea@tuxon.dev>
-X-Google-Original-From: Claudiu <claudiu.beznea.uj@bp.renesas.com>
-To: gregkh@linuxfoundation.org,
-	rafael@kernel.org,
-	dakr@kernel.org,
-	len.brown@intel.com,
-	pavel@kernel.org,
-	ulf.hansson@linaro.org,
-	jic23@kernel.org,
-	daniel.lezcano@linaro.org,
-	dmitry.torokhov@gmail.com
-Cc: claudiu.beznea@tuxon.dev,
-	linux-kernel@vger.kernel.org,
-	linux-pm@vger.kernel.org,
-	bhelgaas@google.com,
-	geert@linux-m68k.org,
-	linux-iio@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org,
-	fabrizio.castro.jz@renesas.com,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Subject: [PATCH v4 2/2] driver core: platform: Drop dev_pm_domain_detach() call
-Date: Mon, 16 Jun 2025 16:53:57 +0300
-Message-ID: <20250616135357.3929441-3-claudiu.beznea.uj@bp.renesas.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250616135357.3929441-1-claudiu.beznea.uj@bp.renesas.com>
-References: <20250616135357.3929441-1-claudiu.beznea.uj@bp.renesas.com>
+        Mon, 16 Jun 2025 06:54:59 -0700 (PDT)
+Date: Mon, 16 Jun 2025 15:54:56 +0200
+From: Jorge Marques <gastmaier@gmail.com>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Jorge Marques <jorge.marques@analog.com>, 
+	Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
+	David Lechner <dlechner@baylibre.com>, Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>, 
+	Andy Shevchenko <andy@kernel.org>, Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>, 
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-pwm@vger.kernel.org
+Subject: Re: [PATCH v3 8/8] iio: adc: Add events support to ad4052
+Message-ID: <2uknsmgz57wie4cv2tll3ttfyiw7lyjyaryc74nd3o5fteoazk@vbgdt5ofkn5r>
+References: <20250610-iio-driver-ad4052-v3-0-cf1e44c516d4@analog.com>
+ <20250610-iio-driver-ad4052-v3-8-cf1e44c516d4@analog.com>
+ <20250614113616.4663269f@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250614113616.4663269f@jic23-huawei>
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+On Sat, Jun 14, 2025 at 11:36:16AM +0100, Jonathan Cameron wrote:
+> On Tue, 10 Jun 2025 09:34:41 +0200
+> Jorge Marques <jorge.marques@analog.com> wrote:
+> 
+> > The AD4052 family supports autonomous monitoring readings for threshold
+> > crossings. Add support for catching the GPIO interrupt and expose as an IIO
+> > event. The device allows to set either, rising and falling directions. Only
+> > either threshold crossing is implemented.
+> > 
+> > Signed-off-by: Jorge Marques <jorge.marques@analog.com>
+Hi Jonathan,
+> Hi Jorge,
+> 
+> A few comments inline.
+> 
+> Jonathan
+> 
+> >
+> > +
+> > +static int ad4052_write_event_config(struct iio_dev *indio_dev,
+> > +				     const struct iio_chan_spec *chan,
+> > +				     enum iio_event_type type,
+> > +				     enum iio_event_direction dir,
+> > +				     bool state)
+> > +{
+> > +	struct ad4052_state *st = iio_priv(indio_dev);
+> > +	int ret;
+> > +
+> > +	if (!iio_device_claim_direct(indio_dev))
+> > +		return -EBUSY;
+> > +	if (st->wait_event == state) {
+> > +		ret = 0;
+> 
+> Feels like a case where init ret at declaration would be reasonable.
+> 
+Ack.
+> > +		goto out_release;
+> > +	}
+> > +
+> > +	if (state)
+> > +		ret = ad4052_monitor_mode_enable(st);
+> > +	else
+> > +		ret = ad4052_monitor_mode_disable(st);
+> > +
+> > +	if (!ret)
+> > +		st->wait_event = state;
+> > +
+> > +out_release:
+> > +	iio_device_release_direct(indio_dev);
+> > +	return ret;
+> > +}
+> 
+> > +
+> > +static int ad4052_read_event_value(struct iio_dev *indio_dev,
+> > +				   const struct iio_chan_spec *chan,
+> > +				   enum iio_event_type type,
+> > +				   enum iio_event_direction dir,
+> > +				   enum iio_event_info info, int *val,
+> > +				   int *val2)
+> > +{
+> > +	struct ad4052_state *st = iio_priv(indio_dev);
+> > +	int ret;
+> > +
+> > +	if (!iio_device_claim_direct(indio_dev))
+> > +		return -EBUSY;
+> > +
+> > +	if (st->wait_event) {
+> > +		ret = -EBUSY;
+> > +		goto out_release;
+> 
 
-On the Renesas RZ/G3S (and other Renesas SoCs, e.g., RZ/G2{L, LC, UL}),
-clocks are managed through PM domains. These PM domains, registered on
-behalf of the clock controller driver, are configured with
-GENPD_FLAG_PM_CLK. In most of the Renesas drivers used by RZ SoCs, the
-clocks are enabled/disabled using runtime PM APIs. The power domains may
-also have power_on/power_off support implemented. After the device PM
-domain is powered off any CPU accesses to these domains leads to system
-aborts.
+Below are two distinct options with different implications.
+> Not being able to read event parameters whilst monitoring them seems
+> very restrictive.  Can't we cache the values?  Either play games to ensure
+> we get them from the regmap cache or just cache these few values in st.
+> 
+> Checking what you are monitoring for feels like the sort of thing
+> userspace might well do.
 
-During probe, devices are attached to the PM domain controlling their
-clocks and power. Similarly, during removal, devices are detached from the
-PM domain.
+(1)
+I agree, I can investigate regcache_cache_only and the other cache
+options to achieve this. If I come to the conclusion it is not possible,
+storing into st will achieve the same.
 
-The detachment call stack is as follows:
+> 
+> Even blocking changing the monitoring parameters is unusually strict.
+> Why not just drop out of monitor mode, update them and go back in?
+> 
+(2)
+The core point of the blocking behaviour is to not have hidden downtimes
+in the monitoring for the user. An early driver used to do what you
+describe and it was a design decision.
 
-device_driver_detach() ->
-  device_release_driver_internal() ->
-    __device_release_driver() ->
-      device_remove() ->
-        platform_remove() ->
-	  dev_pm_domain_detach()
+Since a custom regmap_bus was necessary to restrict the regmap access
+speed (ADC access is faster), bringing back this by behavior embedding
+it in the custom regmap now seems plausible, with proper explanation in
+the rst page. This should fully dismiss the st->wait_event -> -EBUSY.
 
-During driver unbind, after the device is detached from its PM domain,
-the device_unbind_cleanup() function is called, which subsequently invokes
-devres_release_all(). This function handles devres resource cleanup.
+Considering (1) and (2), what is the preferred approach?
 
-If runtime PM is enabled in driver probe via devm_pm_runtime_enable(), the
-cleanup process triggers the action or reset function for disabling runtime
-PM. This function is pm_runtime_disable_action(), which leads to the
-following call stack of interest when called:
-
-pm_runtime_disable_action() ->
-  pm_runtime_dont_use_autosuspend() ->
-    __pm_runtime_use_autosuspend() ->
-      update_autosuspend() ->
-        rpm_idle()
-
-The rpm_idle() function attempts to resume the device at runtime. However,
-at the point it is called, the device is no longer part of a PM domain
-(which manages clocks and power states). If the driver implements its own
-runtime PM APIs for specific functionalities - such as the rzg2l_adc
-driver - while also relying on the power domain subsystem for power
-management, rpm_idle() will invoke the driver's runtime PM API. However,
-since the device is no longer part of a PM domain at this point, the PM
-domain's runtime PM APIs will not be called. This leads to system aborts on
-Renesas SoCs.
-
-Another identified case is when a subsystem performs various cleanups
-using device_unbind_cleanup(), calling driver-specific APIs in the process.
-A known example is the thermal subsystem, which may call driver-specific
-APIs to disable the thermal device. The relevant call stack in this case
-is:
-
-device_driver_detach() ->
-  device_release_driver_internal() ->
-    device_unbind_cleanup() ->
-      devres_release_all() ->
-        devm_thermal_of_zone_release() ->
-	  thermal_zone_device_disable() ->
-	    thermal_zone_device_set_mode() ->
-	      struct thermal_zone_device_ops::change_mode()
-
-At the moment the driver-specific change_mode() API is called, the device
-is no longer part of its PM domain. Accessing its registers without proper
-power management leads to system aborts.
-
-Drop the call to dev_pm_domain_detach() from the platform bus remove
-function and rely on the newly introduced call in device_unbind_cleanup().
-This ensures the same effect, but the call now occurs after all
-driver-specific devres resources have been freed.
-
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
----
-
-Changes in v4:
-- dropped devm_pm_domain_attach() approach
-- adjusted patch description to reflect this
-
-Changes in v3:
-- adjusted the call to devm_pm_domain_attach() as it now gets
-  2 parameters
-
-Changes in v2:
-- dropped the devres group open/close approach and use
-  devm_pm_domain_attach()
-- adjusted patch description to reflect the new approach
-
- drivers/base/platform.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
-
-diff --git a/drivers/base/platform.c b/drivers/base/platform.c
-index 075ec1d1b73a..2459be6aecf4 100644
---- a/drivers/base/platform.c
-+++ b/drivers/base/platform.c
-@@ -1400,11 +1400,8 @@ static int platform_probe(struct device *_dev)
- 	if (ret)
- 		goto out;
- 
--	if (drv->probe) {
-+	if (drv->probe)
- 		ret = drv->probe(dev);
--		if (ret)
--			dev_pm_domain_detach(_dev, true);
--	}
- 
- out:
- 	if (drv->prevent_deferred_probe && ret == -EPROBE_DEFER) {
-@@ -1422,7 +1419,6 @@ static void platform_remove(struct device *_dev)
- 
- 	if (drv->remove)
- 		drv->remove(dev);
--	dev_pm_domain_detach(_dev, true);
- }
- 
- static void platform_shutdown(struct device *_dev)
--- 
-2.43.0
-
+Regards,
+Jorge
+> > +	}
+> > +
+> > +	switch (info) {
+> > +	case IIO_EV_INFO_VALUE:
+> > +		ret = __ad4052_read_event_info_value(st, dir, val);
+> > +		break;
+> > +	case IIO_EV_INFO_HYSTERESIS:
+> > +		ret = __ad4052_read_event_info_hysteresis(st, dir, val);
+> > +		break;
+> > +	default:
+> > +		ret = -EINVAL;
+> > +		break;
+> > +	}
+> > +
+> > +out_release:
+> > +	iio_device_release_direct(indio_dev);
+> > +	return ret ? ret : IIO_VAL_INT;
+> > +}
 

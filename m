@@ -1,274 +1,223 @@
-Return-Path: <linux-iio+bounces-20701-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20702-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 585BAADAC07
-	for <lists+linux-iio@lfdr.de>; Mon, 16 Jun 2025 11:37:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A7AAADADDF
+	for <lists+linux-iio@lfdr.de>; Mon, 16 Jun 2025 12:59:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0CE5916B833
-	for <lists+linux-iio@lfdr.de>; Mon, 16 Jun 2025 09:37:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8FB473A69B0
+	for <lists+linux-iio@lfdr.de>; Mon, 16 Jun 2025 10:58:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28AB3273814;
-	Mon, 16 Jun 2025 09:37:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DF2E27F178;
+	Mon, 16 Jun 2025 10:59:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b="W7+MozSm"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WO4eQEqU"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD7B51DB92A
-	for <linux-iio@vger.kernel.org>; Mon, 16 Jun 2025 09:37:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A823C1465A5;
+	Mon, 16 Jun 2025 10:59:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750066667; cv=none; b=KuuLpsvNq/bnERfKRZpqRoKHFrNlkcxHD1AM0qSoQdqQNF5ARiloSDOvOLbCGE+cRuVbT5SmDHBphj8MqXy1dbmJcjrzcc5+R+/5fXrPVByDSJVzmOwRMo62hKd82OTOSPRC9kz8oKTVtUHl/aVnWCZRZIxdSAprN79I+DcS3Jw=
+	t=1750071554; cv=none; b=jjlxPvskZeErpzAD7OWOhtXpsbrwknV/HWk4W6hwrKErmQOLZNbso1BboZ1KP/f6FLAW+q64CAI5aCo915yULdJRrTRZeba2b8MXknvtv9OX+w59dAO+YSJfHGkq4dx717pESizcLbvyT7hgRcS3mV6xBJkQQt0pfmYGsYVeGzY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750066667; c=relaxed/simple;
-	bh=v7iwsXmtI/7HuEw8E5jMH8gjGCJ/PmdbDct0UukEscI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=N40Y7uys5535v4NZriwdRDcpc9GFmRKZcxPbyWYbejgyP8yxua/AJ1A8Mpqxi+p8lXctrbFn+RpANTMwiIkzTCGooRfv8m4DQHBTjE3vLTKdEl6BENia7OSgAbUlSMQSWEip3NFdg1nyQAm5B2btRRQBzgoVAeiqXjeKhLi9D7I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev; spf=pass smtp.mailfrom=tuxon.dev; dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b=W7+MozSm; arc=none smtp.client-ip=209.85.208.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tuxon.dev
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-607cc1a2bd8so7513022a12.2
-        for <linux-iio@vger.kernel.org>; Mon, 16 Jun 2025 02:37:45 -0700 (PDT)
+	s=arc-20240116; t=1750071554; c=relaxed/simple;
+	bh=ivAyhqHkPrwFRYJzP0f+A9vzerfjqRCkdprjo4/m3aw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jSQyv8Ff5mMs07PNBex3Yn7LTZZYPRTJ0qxTDochMwaiBmdfr5OBazLN/FytlrYjIxTjzGQA6Y9Pxf4gpJFTrTWE7OLoE/1U4ZslbdFj0Oifr+XswBpm/XcyIKmeb86qIrz9BwvgZKZ2/0rGV8Y/aAKSAOwh+IDLceqLdJ7zgbo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WO4eQEqU; arc=none smtp.client-ip=209.85.218.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-ade4679fba7so800681266b.2;
+        Mon, 16 Jun 2025 03:59:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=tuxon.dev; s=google; t=1750066664; x=1750671464; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=dfP8v62XGv6w7z/ZmGpzfijGDXvy28lSonmS90eMeCc=;
-        b=W7+MozSmJ0KttRNUxdO2NaTes8jsh6mtJkE40GPIZHfMhgoWxq2VW7+1KnpgkdA933
-         bY8dZsdRaZck6xWd/OnGzO+o2NR+cJ+Nx25Mz+OrDcekVJf6zgrAedgZRPV6Tf+FUtDZ
-         xrwLb+8K3BvFq5a0SAywDWXOT75BAc+vVTo7a2uHxTA09UixEhyQFRteBTYH6TmIWfaJ
-         St/CGkf8CZtkZLD5RvoVIz7Y3y0T5JYxd8AfKeK98PDDW6zL1kj+nZYicAa9qERwKJfV
-         UVTwTCUy1RT+Yy9XM32X9TmqVQrFxLb/ik9wd1YqDxyzuyEC242Y5ZJNTBlxp1HgbuZF
-         F/Xg==
+        d=gmail.com; s=20230601; t=1750071551; x=1750676351; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HUerpZOJO73onNYo92QlKelLbykJvFa6HSMQaRUUq74=;
+        b=WO4eQEqUni3TWzTsEdBQRAv6Key5XqbHtvi35OYeBw5HwDZ2HvRSXurSEfjmSiEwiU
+         ITlra45M3QRsQHBx79l1Qe43Hr9EAezgGhX7mElaJ46CzyuP9YP7NRZRDAa7aXydC20Q
+         P/1kzOS33F5TgsuwKNcCcpt4UC2BvZBNJAEQeI2EkXIl6v+0Q+pOCl8nk2Q27IGCaRDb
+         6WKP8xvPZofRvR3DF6RvNSQjLjuaE3PjxAHpR3mRt3ss7Y6KpRbecRc2JnD0TEsWdVME
+         CE46rG3M+nPCpTJkILWADepuTxv2FA3xwPvVsiPxVAUHaEVO9EgIDl/r0IVshDpalkO9
+         /vPA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750066664; x=1750671464;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=dfP8v62XGv6w7z/ZmGpzfijGDXvy28lSonmS90eMeCc=;
-        b=UKUueXfZK4ze//q6stvG9MAouiMV0xWiW4i0fD936D4olVvLNeKDSeoTtTIw3Vv3UW
-         gTMOPZGRgcseIuEdonwyB9KS7NRfbO6jpGrKfKvNOjm5c4AutH1GaJkoUghGYKAyZCzU
-         Fmvz3W4JyI8DlnGTKvY4vrpKJYIKMGjEmrgXSLIDh+yOxrxPRQ/Bteav5xJbOwVfwGjB
-         R9rQ+gvLZ8CAFVqMw+nn4R4Fx2q7OSd+lvpWSKeJKFLeae6q7F9xDsjvxg3VvYGilVjU
-         cCqSOGlLv3vPbmPRpELegqsWdfRx7y56c1rY6Xjyteyxi33t1Pv2sEw8XwAwB7uKwYtL
-         YH3A==
-X-Forwarded-Encrypted: i=1; AJvYcCW3G9m85NKZTWSmIFOGLKFsamJbZtp++IFdJZjODrYjQrFkDPUSL6IrBnLmS86E5pkF4fP3sN4qdIE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyoBkQOxU9IgBdM4psQWUtiBsuQPwJYNMRnheTX6jEV9C4i+41o
-	AynwbNQY7VzePCwtzj9HvrP3VhWF79weFWG5LqDmQVVaE72FlaBiVWOL4Z5/NIzbmf8=
-X-Gm-Gg: ASbGncvVMc2Zf/aybTGExhPA6r0jxmX0a5nG7psDZXmP7x0LL7NjHGJDvpx4eCaFM0m
-	GHWUeE0B/42zzjAyROlbi/DLvkpQFPkVX+bjsaxmTT1rbjRT/dHGvaRkFdv4QK5/ZI4CEQ0Q54M
-	ii5KzUvElMbcITQQWH3DqufEWCzKld9/xfGHXWWIVkneT1MLuWxgDkWfl+0M2qm8HH1LCmktDe1
-	AwsmvZK9n7PIk3fgQwFAc+OIWuuVvWs8L+TrDU5Tja8ARlOA7Xf8a4BGaGbqyuDMmiTTEGcllQe
-	POqtH3Tzar8QdMROgwzPlz4509wewiOEWIf96Gjp/zm7a/6rTCInm20OWK7Wn5GMySw0Aj7eui8
-	BVcCLCw==
-X-Google-Smtp-Source: AGHT+IGstgDvCZ7kkheENEgwtKA2GsdZiS2gQeWTudsZRkiraVvavy0/6m9lYQPhBNBoWFt98BlCYg==
-X-Received: by 2002:a17:906:9f88:b0:ad8:96d2:f3e with SMTP id a640c23a62f3a-adfad326d9cmr714122866b.22.1750066663863;
-        Mon, 16 Jun 2025 02:37:43 -0700 (PDT)
-Received: from [192.168.50.4] ([82.78.167.110])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-adfddc96709sm126821866b.134.2025.06.16.02.37.42
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 16 Jun 2025 02:37:43 -0700 (PDT)
-Message-ID: <4360ee7a-d85a-4fa0-a1d6-d09a3b9d57c0@tuxon.dev>
-Date: Mon, 16 Jun 2025 12:37:41 +0300
+        d=1e100.net; s=20230601; t=1750071551; x=1750676351;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=HUerpZOJO73onNYo92QlKelLbykJvFa6HSMQaRUUq74=;
+        b=qsQTIF1OOLDIOQ1BHNJSkC50EMr1sG+RB4FEw6jd1kcQ/IthiqRjxp8GVQZaE4bRUY
+         aH11gRnBfyYNm4W/8a2hLKQUSMwmrPMdRSqehqAtLxfErSXq+Hnf4xYZTNubQc44tmfa
+         DDXFqUrEoXE6mGmFV+kOWaIMce04M3lR9fWlFp063J/XHIusyZIMtTSVb2d63R8awCLL
+         LoMGPPnH50B0snAKsGX4lQV0z9GjIN4cvBOsmk10eSMjvIQ0XKj6Tmc+u+gW8jDCN0SL
+         VaX5XZf6zkvca4KHifAlX31crJ8yg2wgKs9k6ODCyUVGcfQ8YU5Kl5GTGGQy2QE9rxjl
+         KovA==
+X-Forwarded-Encrypted: i=1; AJvYcCVpfx1MvhQZL/cpzSfCNpJsjoNIXA3w9CwZwKzKaZelfx3Qr5Grrg7Jc0VZ0iqiznF/t4CD0pmU8Cc=@vger.kernel.org, AJvYcCWrOoSVh76FO65EyMMxIDiKkNfa2/8QZN3vVdeZRFeFThl1b4NQf9yBYEe5fsKSiCus/OJi9/dZ3hK5@vger.kernel.org, AJvYcCXKirJA/eU3CENo6/VQHejd4lq4RN8KKTSbC6u7/a/++6RwvjtYw3HKkFm3Zsh6Jus9rwe65a2Xt+KubExk@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw4hUtKHF9F6GgaMk0vt6+3xbGnD9u+tfGw4ZGX3DUYT14SIjdi
+	45fzacM1hsvl+EeeBvrn480bG+n6D+Ipu2AKADIjnfRsYvubP1jlJGl3cv2cZfSD7S3NZ29Xvj6
+	Hs21E6rutng5+HnU+wc8NccGKXqRIQxU=
+X-Gm-Gg: ASbGnct95bWdA/Cy/fEQ03ZCHV/VZQQphmHf4xlMhV3vcbn+HAdkp9VrOwRQBzLgRNP
+	e/Ciy58DsW29okCfhti862X9TbkM0muZ9JAihJEq4rOkXlYTO8CQY9KIzJzkoS8nyPyQNA4zq/k
+	3MIP117IrvyZ5G7zUjpUezKt3VbFg8dhaTZX4BoFachvJCz4vQEk6UNTmo
+X-Google-Smtp-Source: AGHT+IEj0l0JJd/YOnNnj6VYrjKKVCp+t0CG6lxcnBcfrsUbqPiZvWYlOO3jWuW8VuwwavUgBZGYerQdMSELsDjKuPA=
+X-Received: by 2002:a17:907:9285:b0:ad5:5198:b2ad with SMTP id
+ a640c23a62f3a-adfad59ac32mr846089466b.48.1750071550733; Mon, 16 Jun 2025
+ 03:59:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/2] PM: domains: Add devres variant for
- dev_pm_domain_attach()
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Jonathan Cameron <jic23@kernel.org>,
- Dmitry Torokhov <dmitry.torokhov@gmail.com>, gregkh@linuxfoundation.org,
- dakr@kernel.org, len.brown@intel.com, pavel@kernel.org,
- ulf.hansson@linaro.org, daniel.lezcano@linaro.org,
- linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org, bhelgaas@google.com,
- geert@linux-m68k.org, linux-iio@vger.kernel.org,
- linux-renesas-soc@vger.kernel.org, fabrizio.castro.jz@renesas.com,
- Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-References: <20250606111749.3142348-1-claudiu.beznea.uj@bp.renesas.com>
- <20250606111749.3142348-2-claudiu.beznea.uj@bp.renesas.com>
- <CAJZ5v0i_Ey+OVpSZHXru=tubMaZi=y-uOh_0M6zmWZ2DqqA7Vg@mail.gmail.com>
- <zhjytvj35lknj7v3jhva3n3nbv6qctvqgykwyi5huj6omet7lz@wchd7f4p4dpv>
- <CAJZ5v0hsT-Q2hz=qoBo409oungaCmexJwwGheN7KRLFqz=6_Dw@mail.gmail.com>
- <20250607140600.76e87ea5@jic23-huawei>
- <CAJZ5v0jqZ6gYKb85dpR-X5RwFeUBcbbcJ_b-AOe+JypBXod-MA@mail.gmail.com>
- <486a1110-5336-42fd-82b8-a7b1452bad65@tuxon.dev>
- <CAJZ5v0hqBm4L2V9aUjB0tmW67eRRCnM7FScgdJQ=ihnpAZuMfA@mail.gmail.com>
-From: Claudiu Beznea <claudiu.beznea@tuxon.dev>
-Content-Language: en-US
-In-Reply-To: <CAJZ5v0hqBm4L2V9aUjB0tmW67eRRCnM7FScgdJQ=ihnpAZuMfA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20250615222258.117771-1-l.rubusch@gmail.com> <20250615222258.117771-6-l.rubusch@gmail.com>
+In-Reply-To: <20250615222258.117771-6-l.rubusch@gmail.com>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Mon, 16 Jun 2025 13:58:34 +0300
+X-Gm-Features: AX0GCFu4RcbVhsjuRncgzOdsGD5SqBMHKarvEM9c27WzKqfcMa8HYO2IM5SjMgs
+Message-ID: <CAHp75VdWtY6nxFFTucoCRiq+tM5caL5N1yp_15=FSAZ7Vyk_7Q@mail.gmail.com>
+Subject: Re: [PATCH v5 5/8] iio: accel: adxl313: add inactivity sensing
+To: Lothar Rubusch <l.rubusch@gmail.com>
+Cc: jic23@kernel.org, dlechner@baylibre.com, nuno.sa@analog.com, 
+	andy@kernel.org, corbet@lwn.net, lucas.p.stankus@gmail.com, lars@metafoo.de, 
+	Michael.Hennerich@analog.com, bagasdotme@gmail.com, linux-iio@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi, Rafael,
+On Mon, Jun 16, 2025 at 1:23=E2=80=AFAM Lothar Rubusch <l.rubusch@gmail.com=
+> wrote:
+>
+> Enhance the interrupt handler to process inactivity events. Introduce
+> functions to configure the threshold and period registers for
+> inactivity detection, as well as to enable or disable the inactivity
+> feature. Extend the fake IIO channel to handle inactivity events by
+> combining the x, y, and z axes using a logical AND operation.
 
-On 13.06.2025 13:02, Rafael J. Wysocki wrote:
-> On Fri, Jun 13, 2025 at 9:39 AM Claudiu Beznea <claudiu.beznea@tuxon.dev> wrote:
->>
->> Hi, Rafael,
->>
->> On 09.06.2025 22:59, Rafael J. Wysocki wrote:
->>> On Sat, Jun 7, 2025 at 3:06 PM Jonathan Cameron <jic23@kernel.org> wrote:
->>>>
->>>> On Fri, 6 Jun 2025 22:01:52 +0200
->>>> "Rafael J. Wysocki" <rafael@kernel.org> wrote:
->>>>
->>>> Hi Rafael,
->>>>
->>>>> On Fri, Jun 6, 2025 at 8:55 PM Dmitry Torokhov
->>>>> <dmitry.torokhov@gmail.com> wrote:
->>>>>>
->>>>>> On Fri, Jun 06, 2025 at 06:00:34PM +0200, Rafael J. Wysocki wrote:
->>>>>>> On Fri, Jun 6, 2025 at 1:18 PM Claudiu <claudiu.beznea@tuxon.dev> wrote:
->>>>>>>>
->>>>>>>> From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
->>>>>>>>
->>>>>>>> The dev_pm_domain_attach() function is typically used in bus code alongside
->>>>>>>> dev_pm_domain_detach(), often following patterns like:
->>>>>>>>
->>>>>>>> static int bus_probe(struct device *_dev)
->>>>>>>> {
->>>>>>>>     struct bus_driver *drv = to_bus_driver(dev->driver);
->>>>>>>>     struct bus_device *dev = to_bus_device(_dev);
->>>>>>>>     int ret;
->>>>>>>>
->>>>>>>>     // ...
->>>>>>>>
->>>>>>>>     ret = dev_pm_domain_attach(_dev, true);
->>>>>>>>     if (ret)
->>>>>>>>         return ret;
->>>>>>>>
->>>>>>>>     if (drv->probe)
->>>>>>>>         ret = drv->probe(dev);
->>>>>>>>
->>>>>>>>     // ...
->>>>>>>> }
->>>>>>>>
->>>>>>>> static void bus_remove(struct device *_dev)
->>>>>>>> {
->>>>>>>>     struct bus_driver *drv = to_bus_driver(dev->driver);
->>>>>>>>     struct bus_device *dev = to_bus_device(_dev);
->>>>>>>>
->>>>>>>>     if (drv->remove)
->>>>>>>>         drv->remove(dev);
->>>>>>>>     dev_pm_domain_detach(_dev);
->>>>>>>> }
->>>>>>>>
->>>>>>>> When the driver's probe function uses devres-managed resources that depend
->>>>>>>> on the power domain state, those resources are released later during
->>>>>>>> device_unbind_cleanup().
->>>>>>>>
->>>>>>>> Releasing devres-managed resources that depend on the power domain state
->>>>>>>> after detaching the device from its PM domain can cause failures.
->>>>>>>>
->>>>>>>> For example, if the driver uses devm_pm_runtime_enable() in its probe
->>>>>>>> function, and the device's clocks are managed by the PM domain, then
->>>>>>>> during removal the runtime PM is disabled in device_unbind_cleanup() after
->>>>>>>> the clocks have been removed from the PM domain. It may happen that the
->>>>>>>> devm_pm_runtime_enable() action causes the device to be runtime-resumed.
->>>>>>>
->>>>>>> Don't use devm_pm_runtime_enable() then.
->>>>>>
->>>>>> What about other devm_ APIs? Are you suggesting that platform drivers
->>>>>> should not be using devm_clk*(), devm_regulator_*(),
->>>>>> devm_request_*_irq() and devm_add_action_or_reset()? Because again,
->>>>>> dev_pm_domain_detach() that is called by platform bus_remove() may shut
->>>>>> off the device too early, before cleanup code has a chance to execute
->>>>>> proper cleanup.
->>>>>>
->>>>>> The issue is not limited to runtime PM.
->>>>>>
->>>>>>>
->>>>>>>> If the driver specific runtime PM APIs access registers directly, this
->>>>>>>> will lead to accessing device registers without clocks being enabled.
->>>>>>>> Similar issues may occur with other devres actions that access device
->>>>>>>> registers.
->>>>>>>>
->>>>>>>> Add devm_pm_domain_attach(). When replacing the dev_pm_domain_attach() and
->>>>>>>> dev_pm_domain_detach() in bus probe and bus remove, it ensures that the
->>>>>>>> device is detached from its PM domain in device_unbind_cleanup(), only
->>>>>>>> after all driver's devres-managed resources have been release.
->>>>>>>>
->>>>>>>> For flexibility, the implemented devm_pm_domain_attach() has 2 state
->>>>>>>> arguments, one for the domain state on attach, one for the domain state on
->>>>>>>> detach.
->>>>>>>
->>>>>>> dev_pm_domain_attach() is not part driver API and I'm not convinced at
->>>>>>
->>>>>> Is the concern that devm_pm_domain_attach() will be [ab]used by drivers?
->>>>>
->>>>> Yes, among other things.
->>>>
->>>> Maybe naming could make abuse at least obvious to spot? e.g.
->>>> pm_domain_attach_with_devm_release()
->>>
->>> If I'm not mistaken, it is not even necessary to use devres for this.
->>>
->>> You might as well add a dev_pm_domain_detach() call to
->>> device_unbind_cleanup() after devres_release_all().  There is a slight
->>> complication related to the second argument of it, but I suppose that
->>> this can be determined at the attach time and stored in a new device
->>> PM flag, or similar.
->>>
->>
->> I looked into this solution. I've tested it for all my failure cases and
->> went good.
-> 
-> OK
-> 
->>> Note that dev->pm_domain is expected to be cleared by ->detach(), so
->>> this should not cause the domain to be detached twice in a row from
->>> the same device, but that needs to be double-checked.
->>
->> The genpd_dev_pm_detach() calls genpd_remove_device() ->
->> dev_pm_domain_set(dev, NULL) which sets the dev->pm_domain = NULL. I can't
->> find any other detach function in the current code base.
-> 
-> There is also acpi_dev_pm_detach() which can be somewhat hard to find,
-> but it calls dev_pm_domain_set(dev, NULL) either.
-> 
->> The code I've tested for this solution is this one:
->>
->> diff --git a/drivers/base/dd.c b/drivers/base/dd.c
->> index b526e0e0f52d..5e9750d007b4 100644
->> --- a/drivers/base/dd.c
->> +++ b/drivers/base/dd.c
->> @@ -25,6 +25,7 @@
->>  #include <linux/kthread.h>
->>  #include <linux/wait.h>
->>  #include <linux/async.h>
->> +#include <linux/pm_domain.h>
->>  #include <linux/pm_runtime.h>
->>  #include <linux/pinctrl/devinfo.h>
->>  #include <linux/slab.h>
->> @@ -552,8 +553,11 @@ static void device_unbind_cleanup(struct device *dev)
->>         dev->dma_range_map = NULL;
->>         device_set_driver(dev, NULL);
->>         dev_set_drvdata(dev, NULL);
->> -       if (dev->pm_domain && dev->pm_domain->dismiss)
->> -               dev->pm_domain->dismiss(dev);
->> +       if (dev->pm_domain) {
->> +               if (dev->pm_domain->dismiss)
->> +                       dev->pm_domain->dismiss(dev);
->> +               dev_pm_domain_detach(dev, dev->pm_domain->detach_power_off);
-> 
-> I would do the "detach" before the "dismiss" to retain the current ordering.
+...
 
-I applied on my local development branch all your suggestions except this
-one because genpd_dev_pm_detach() as well as acpi_dev_pm_detach() set
-dev->pm_domain = NULL.
+> -       axis_en =3D FIELD_GET(ADXL313_ACT_XYZ_EN, axis_ctrl);
+> +       /* Check if axis for activity are enabled */
+> +       switch (type) {
+> +       case ADXL313_ACTIVITY:
+> +               axis_en =3D FIELD_GET(ADXL313_ACT_XYZ_EN, axis_ctrl);
+> +               break;
+> +       case ADXL313_INACTIVITY:
+> +               axis_en =3D FIELD_GET(ADXL313_INACT_XYZ_EN, axis_ctrl);
+> +               break;
+> +       default:
+> +               return -EINVAL;
+> +       }
+>
+>         if (!axis_en)
+>                 return false;
 
-Due to this I would call first ->dismiss() then ->detach(), as initially
-proposed. Please let me know if you consider it otherwise.
+So, this looks better without a variable?
 
-Thank you,
-Claudiu
+  case FOO:
+     if (!FIELD_GET(...))
+         return false;
+     break;
+
+On the first glance it seems that next changes don't affect this.
+
+...
+
+> -       /* Start modifying configuration registers */
+
+Stray change, the next patch restores this. So why change to  begin with?
+
+>         ret =3D adxl313_set_measure_en(data, false);
+>         if (ret)
+>                 return ret;
+
+...
+
+>         /* Enable axis according to the command */
+> -       axis_ctrl =3D ADXL313_ACT_XYZ_EN;
+> +       switch (type) {
+
+I was wondering if you can use switch-case earlier in the series.
+
+> +       case ADXL313_ACTIVITY:
+> +               axis_ctrl =3D ADXL313_ACT_XYZ_EN;
+> +               break;
+> +       case ADXL313_INACTIVITY:
+> +               axis_ctrl =3D ADXL313_INACT_XYZ_EN;
+> +               break;
+> +       default:
+> +               return -EINVAL;
+> +       }
+
+...
+
+> -       if (info !=3D IIO_EV_INFO_VALUE)
+> -               return -EINVAL;
+> -
+> -       switch (dir) {
+> -       case IIO_EV_DIR_RISING:
+> +       switch (info) {
+> +       case IIO_EV_INFO_VALUE:
+> +               switch (dir) {
+> +               case IIO_EV_DIR_RISING:
+> +                       ret =3D regmap_read(data->regmap,
+> +                                         adxl313_act_thresh_reg[ADXL313_=
+ACTIVITY],
+> +                                         &act_threshold);
+> +                       if (ret)
+> +                               return ret;
+> +                       *val =3D act_threshold * 15625;
+> +                       *val2 =3D MICRO;
+> +                       return IIO_VAL_FRACTIONAL;
+> +               case IIO_EV_DIR_FALLING:
+> +                       ret =3D regmap_read(data->regmap,
+> +                                         adxl313_act_thresh_reg[ADXL313_=
+INACTIVITY],
+> +                                         &inact_threshold);
+> +                       if (ret)
+> +                               return ret;
+
+> +                       *val =3D inact_threshold * 15625;
+> +                       *val2 =3D MICRO;
+> +                       return IIO_VAL_FRACTIONAL;
+> +               default:
+> +                       return -EINVAL;
+> +               }
+> +       case IIO_EV_INFO_PERIOD:
+>                 ret =3D regmap_read(data->regmap,
+> -                                 adxl313_act_thresh_reg[ADXL313_ACTIVITY=
+],
+> -                                 &act_threshold);
+> +                                 ADXL313_REG_TIME_INACT,
+> +                                 &inact_time_s);
+>                 if (ret)
+>                         return ret;
+> -               *val =3D act_threshold * 15625;
+> -               *val2 =3D MICRO;
+> -               return IIO_VAL_FRACTIONAL;
+> +               *val =3D inact_time_s;
+> +               return IIO_VAL_INT;
+>         default:
+>                 return -EINVAL;
+>         }
+
+I still don't get what's wrong with helpers for nested switches?
+Instead of doing ping-pong with so many lines (due to indentation
+changes), just create a helper from the beginning. In this case this
+will look more like
+
+
+  if (nfo =3D=3D IIO_EV_INFO_VALUE)
+    return my_cool_helper_for_THIS_case(...);
+
+Note, I admit that not all the cases may be done like this, but just
+look at this again and perhaps something can be optimised.
+
+--
+With Best Regards,
+Andy Shevchenko
 

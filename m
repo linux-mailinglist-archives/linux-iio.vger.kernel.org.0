@@ -1,113 +1,191 @@
-Return-Path: <linux-iio+bounces-20733-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20734-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF988ADC253
-	for <lists+linux-iio@lfdr.de>; Tue, 17 Jun 2025 08:24:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A5B3ADC26C
+	for <lists+linux-iio@lfdr.de>; Tue, 17 Jun 2025 08:33:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C653A3AC85C
-	for <lists+linux-iio@lfdr.de>; Tue, 17 Jun 2025 06:24:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1D3BF3AB682
+	for <lists+linux-iio@lfdr.de>; Tue, 17 Jun 2025 06:33:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A10EA28B4E0;
-	Tue, 17 Jun 2025 06:24:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D283128BAB9;
+	Tue, 17 Jun 2025 06:33:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RIeAP68m"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="B4CM7Uxl"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1E57C2D1;
-	Tue, 17 Jun 2025 06:24:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E45622116E9;
+	Tue, 17 Jun 2025 06:33:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750141485; cv=none; b=SOEwwqxFkjf7NUp7+Dlsx06Yf44Olun3aLz+lRq+4Gy7WKrPDadVx2MSo0yLQW654lAlKQEu7sOGYZ9r/b+IlwadspwE5MNvYWSLUXk2iErCMk0kplhJrC2GUbjadM4Q/j67xsYBzKiMQDOj3/rPBH+jRpN1Csn0Fav7BuC6xXc=
+	t=1750142016; cv=none; b=mclrOpGc+UUtim9qYRUYLTEL/WbEJ++pOEyjXUN5Q7dUyKpGrwIqnvKNkZK9qxYlyPAM7r3iBoLq4irv5w2FdYX56P/woIph7KRZNXlZBA5MxnRHvTnyJMwcKcrAUJxZj0LRbAqfk4mqccE5z01CJZh2vVVwVsku0N8BYTxmUfY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750141485; c=relaxed/simple;
-	bh=FimawyL6R59yeyleZHcqYiYhCdOgIj10rs3P2dnnxm8=;
+	s=arc-20240116; t=1750142016; c=relaxed/simple;
+	bh=keXtiVN31fKx64oUF/7iPO90TbGTcSFJ55j+G9vybIY=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lGJH1n4IPpHWhZzdqhKVHL39lvFgmYegKHgLsnEYC/9rOwP51fRupc3olEEzZN2ZhA4QwXjRI6oqIlPnYx/gxMZG8pheC3jG+9eAGBsW/JYp/OIJGAK5y/waKZ4P/KkrC8LP4poSj9Ft3Y5WPWQoknpEniCLEiptnnNRPfwkpXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RIeAP68m; arc=none smtp.client-ip=209.85.208.44
+	 To:Cc:Content-Type; b=U/pzqVFuDbyt6VbeNW7WexmsJw/T0dR6eTvzRDMdPUUuYJmEljj3n+WzdSVB8Vgc+28sFgJMw2hk1k5bdL8nvowvwOrwroY/i4XyyNT+M+GlJRY+Ds1P6hiBPLTRm5z8c9sBCFJ7DNdJVzEKr8C2lBjLW92X3exlylMGFMLeQjM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=B4CM7Uxl; arc=none smtp.client-ip=209.85.218.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-60768f080d8so10034950a12.1;
-        Mon, 16 Jun 2025 23:24:43 -0700 (PDT)
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-ade326e366dso977231966b.3;
+        Mon, 16 Jun 2025 23:33:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750141482; x=1750746282; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1750142013; x=1750746813; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Zv52R5nOhn8eM/6uHkKiOhAOsj6LjD2US5K7BMLlrJQ=;
-        b=RIeAP68m7RJQTqb5LosmowMZ/m2TqwY8JyxlmZCqTEJp3SoHxjuO/FIr1nIsZ1Nbhb
-         TnMIZXE/MTchWgOYf27rnO2xNAw6dcey6hjpapjWbyycHc2FdkUAlANWZP/zXG+4Jqwb
-         mwEimBN//7Q1B9+dQcSxN0Y+4XLY0Zg2O3sTKC4TWm7W68DFKNQ98/DVs09cCANEt9VD
-         pEQJlFrl1kp7hpMGu9NxjI4Wu7uzDR8dOdtSmbTRyRVN5hkGmw2pJ5RphfjDcyRYBRJg
-         aL69ygRxzZXn0pVujRQuvF9w04PolVwCwOZ1mo2/ZcsByw+u/He6aaxDXNkMkYYHre7B
-         aKSA==
+        bh=NA0TLB9oKte+OwEm1gowNLenoPqaplJehC52uwcC+A8=;
+        b=B4CM7UxlP3GE188GSYm4ntjeFvvmfM8WyENFmMVTLimXbiK2Pdfe56cAGFrhmX2VtV
+         YAdh55pvvrSiAQ5rCk6DR0jGR1oWG82FiIXHhnzM7ttWsRvbDZPZ7D+CVcKGgoQMoNHF
+         2X5Fa06Qp0Y5oRewjAq/x9OgOQBfJqMONR1ro/BcOZCaDsblPCLX8B3Rubm2llzdhErm
+         41ChbDYsLzk/v/cabcHySoEu/lgO+4bht8dAnI6+Ag72zfwS/xkOEXAUzYIXjUmJMjom
+         eGXjPgwBN5hlctn4rt1ecYTruoEk8fnraRneaM4iFVqDSTdoujTCBXGQnWXzN4KOdKwp
+         jKvQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750141482; x=1750746282;
+        d=1e100.net; s=20230601; t=1750142013; x=1750746813;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Zv52R5nOhn8eM/6uHkKiOhAOsj6LjD2US5K7BMLlrJQ=;
-        b=cZgyFXLrq8VEz1Jd7SYuXCPEX0CVxdEVpUcrzwfhFVDNvsAel7KVQt0WDnQU7K6dOf
-         fbhaGBH6Axdj/xpy8j2zwFc3j7+Qos6JTHU4vp0dm7rTl5gI51hP6L3eoGxdxUMZXE7k
-         vH24BGmzUyk23AeYHvOpVcnYPRWVtxbdKaHZB7tIEA21lqQM2PsAyPjIQPufF1fZogtj
-         UYbRczn2U+Xp/p6wtjMeRmXxZA/fyM06eR9/ZsPklGljqfNqy36fYDRoRdgwJcB7e6N1
-         B/7VrUi8qio+HEHF4VJGBtAdohXcXvwlyIz/jlnm0zu9XFmXesMSYfuzIAdRHHELmrsh
-         EfFA==
-X-Forwarded-Encrypted: i=1; AJvYcCVBnu7BhhGdMxyA4ajp3YhBX5KlYnW3Bp84YT57Qyw+rwgH+mX5Bd0/0R0h+6N6Zdj/M64cMpcnVmev0YL3@vger.kernel.org, AJvYcCVLRsDQa3DRnwMFFhrSlhGcYDOojdiM7/VtbI4FV4SujV4zNIr97UAXNRUgE+OWDNyzYJRbR2mnXyi9zg==@vger.kernel.org, AJvYcCWElzJ+6KjN4NKtT5pvYysSCqh5AyQMW3/Y54E5nyc/cXBSTKggCxSTwJ52h4yp4mz2+sUkUOUWLI77@vger.kernel.org, AJvYcCXweFfEmUl51Y3+L84rk4bTrEADrQ+TICzSFG9GJIgP3HyQsfjSs8A2zPHYJoXEHBE/Xa5AcbvNblKt@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy3ZYf7TshHCevs30LbX9sCQ8Gxl3rGadUgYzaNtNqLjs/s/aHU
-	dS2cGevdu4a4I0Frb14Mz94P+0Va9I2Vch+Alngg5fL6fgoQ7c63yRN0T1Pu9zSc/5byqlWv23h
-	rmOzzz6P2RBYPC2a4fV3c1FLKYX0CUlw=
-X-Gm-Gg: ASbGncvfB3WmDqVMwDotHA46P4ouhCk6L7SIZTfPbXcCNBfGoooyihLifiizaSUMRC2
-	hgbqavX+91UVZoELB+rXSuhhYMktuValopYNG420Hr1mC9myPJ/v0/V7KOc1cFjY5XZ1m4c6gSS
-	q3W7C/fyhNBMKBeVjbc5gJEN4k86Kmi/5jJ0KiSB55CjhY312qC8aDZGfw
-X-Google-Smtp-Source: AGHT+IHcqfTh/AvxtHJoXN0Aouf/N7BBC+fBhy8N8VL7NPaH0I2m/3Xb9qrKuj4B8tBu7moZAtR9qNi91UVwj4kUDc0=
-X-Received: by 2002:a17:906:9fcb:b0:ad8:9e5b:9217 with SMTP id
- a640c23a62f3a-adfad60cb3bmr1179369266b.45.1750141481870; Mon, 16 Jun 2025
- 23:24:41 -0700 (PDT)
+        bh=NA0TLB9oKte+OwEm1gowNLenoPqaplJehC52uwcC+A8=;
+        b=C/cEvK7YrcSno457yXrg1GCfqucnwsCyITY1wFQ9wZ5zx7tbyY7MtcM9ekbFmfdXAW
+         qeEayGrv7x790n3B32ehtwPMk4zcqP5hwGscUnyYLhiZ/7E62qsbHsV8rYEnDcWLFeBa
+         cGce8wYj4GvvV1LrZdBDiQewo6lKjeqLcCejJijr8/EfUsL7YZoSStZ92eeezZkF2/cz
+         13AQyneqKVrbZgwvrcogTE1Qq4E2YkXWfFxGWliDuq1TUQmhN03Um4AlZHMbsJitXjoR
+         2aiDBB9VQtroaFrZgGGNN6SYlizVqhBod+4nnPaotYjXdZXEBev/JRUQp8Ne9Lg+JoiJ
+         /OsQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWdqVeZAe+3hdY+Dz65EyMImN7ep4jdHFjtcj3SmHnQEX+ST9wNdVda/CFxBeDxzzHcffGenF/KTEA=@vger.kernel.org, AJvYcCWvSuEkYsFB6u3yXUCfK6NYQ+FrWvkebb3IWI5jgPd+oCnBPJ11V8WyZQGrkTQlp0drdDWPszXQYEfMXztq@vger.kernel.org
+X-Gm-Message-State: AOJu0YygGhJ3OPuqm49Le2xEspqcr7QsWTw5ei7c1qWuSUKEvmENvuZi
+	SlFV6CIYGckyA3QCNvMVAj6cRVeJ7I0JhyEaI3mQmU+PUN34flYWyk1q/RzaDGygVg/IfhtWy5H
+	IHdh9Oz1SxP8AHcvvpWpoXnbmzM5rN5U=
+X-Gm-Gg: ASbGnctr8Puv0uYpCSlhD82rVKSTVL7la6gSxKpHAS218qXpx0fz1BiOgEPkeFfpOJ9
+	8Xam9sfcAVzlxbelcDEWHd+wj+Y6TEUMhim2oCNSYGKH1b1MP1BCzijh3rOQ/psnLenRyYWX/A4
+	vnj5m0uUlYCDzeTatNCgvCdDtsJA3n21kB+IlegSLcq5Dk/Q==
+X-Google-Smtp-Source: AGHT+IEPibyVVx6ANOKw4K146U1HPHC7bbE3rmky9TQQiRKsFBaiNe2CFrP1DN4lcLRKeGTdSO8sI6qrP8ASCwjEySc=
+X-Received: by 2002:a17:907:7e92:b0:ad8:97d8:a52e with SMTP id
+ a640c23a62f3a-adfad4f40f1mr1188544366b.55.1750142013006; Mon, 16 Jun 2025
+ 23:33:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1749582679.git.marcelo.schmitt@analog.com>
- <5ac4b2d54f426d997cbb067530ab8e9af9bdcf16.1749582679.git.marcelo.schmitt@analog.com>
- <656c43dd-c39d-4e35-a9d8-70383c0836a0@baylibre.com>
-In-Reply-To: <656c43dd-c39d-4e35-a9d8-70383c0836a0@baylibre.com>
+References: <20250616-bmi270-events-v3-0-16e37588604f@gmail.com> <20250616-bmi270-events-v3-3-16e37588604f@gmail.com>
+In-Reply-To: <20250616-bmi270-events-v3-3-16e37588604f@gmail.com>
 From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Tue, 17 Jun 2025 09:24:04 +0300
-X-Gm-Features: AX0GCFtxDmHhNdgXUIjNyDwrmnrpwdMMC-qSKW_2BduktjXGeT0kT7zLcVFr9BY
-Message-ID: <CAHp75Vcx+DY1T03RiLjqo6PEe0C97N3bzW1irvCe_1ZBpO_n6Q@mail.gmail.com>
-Subject: Re: [PATCH v5 07/11] iio: adc: ad4170: Add clock provider support
-To: David Lechner <dlechner@baylibre.com>
-Cc: Marcelo Schmitt <marcelo.schmitt@analog.com>, linux-iio@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-gpio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, jic23@kernel.org, lars@metafoo.de, 
-	Michael.Hennerich@analog.com, nuno.sa@analog.com, andy@kernel.org, 
-	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
-	linus.walleij@linaro.org, brgl@bgdev.pl, marcelo.schmitt1@gmail.com
+Date: Tue, 17 Jun 2025 09:32:56 +0300
+X-Gm-Features: AX0GCFujvum22WkIySIVbQeVbVZg254I-tYPkhT9vPcG30nWAYbTMKR0MrYZHaE
+Message-ID: <CAHp75Ve+6BjG0vFy0ohMsODkybH3L+4EM6RODJYDRw+W6Gdtmg@mail.gmail.com>
+Subject: Re: [PATCH v3 3/3] iio: imu: bmi270: add support for motion events
+To: Gustavo Silva <gustavograzs@gmail.com>
+Cc: Alex Lanzano <lanzano.alex@gmail.com>, Jonathan Cameron <jic23@kernel.org>, 
+	David Lechner <dlechner@baylibre.com>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
+	Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Lothar Rubusch <l.rubusch@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jun 17, 2025 at 12:11=E2=80=AFAM David Lechner <dlechner@baylibre.c=
+On Tue, Jun 17, 2025 at 2:53=E2=80=AFAM Gustavo Silva <gustavograzs@gmail.c=
 om> wrote:
-> On 6/10/25 3:33 PM, Marcelo Schmitt wrote:
-
- ...
-
-> > +             if (!device_property_read_bool(&st->spi->dev, "#clock-cel=
-ls"))
 >
-> This isn't a flag, so device_property_present() is probably more correct.
+> Any-motion event can be enabled on a per-axis basis and triggers a
+> combined event when motion is detected on any axis.
 >
-> > +                     return 0;
+> No-motion event is triggered if the rate of change on all axes falls
+> below a specified threshold for a configurable duration. A fake channel
+> is used to report this event.
+>
+> Threshold and duration can be configured from userspace.
 
-Good catch! +1 to this, it must not be read_bool as it's not a boolean prop=
-erty.
+...
+
+> +#define BMI270_INT_MICRO_TO_RAW(val, val2, scale) ((val) * (scale) + \
+> +                                                 ((val2) * (scale)) / ME=
+GA)
+
+Much easier to read and maintain when it's split logically, i.e.
+
+#define BMI270_INT_MICRO_TO_RAW(val, val2, scale) \
+        ((val) * (scale) + ((val2) * (scale)) / MEGA)
+
+...
+
+> +#define BMI270_RAW_TO_MICRO(raw, scale) ((((raw) % (scale)) * MEGA) / sc=
+ale)
+
+Ditto for the sake of consistency with the above.
+
+...
+
+> +       case IIO_ACCEL:
+> +               switch (type) {
+> +               case IIO_EV_TYPE_ROC:
+> +                       return FIELD_GET(BMI270_INT_MAP_FEAT_NOMOTION_MSK=
+,
+> +                                        regval) ? 1 : 0;
+
+I would do it with logical split despite being longer (than 80) line
+
+                       return
+FIELD_GET(BMI270_INT_MAP_FEAT_NOMOTION_MSK, regval) ?
+                                        1 : 0;
+
+Or even
+                       return
+!!FIELD_GET(BMI270_INT_MAP_FEAT_NOMOTION_MSK, regval);
+
+if 1 is important here, or w/o !! if not.
+
+> +               case IIO_EV_TYPE_MAG_ADAPTIVE:
+> +                       ret =3D bmi270_read_feature_reg(data, BMI270_ANYM=
+O1_REG,
+> +                                                     &motion_reg);
+> +                       if (ret)
+> +                               return ret;
+> +
+> +                       feat_en =3D FIELD_GET(BMI270_INT_MAP_FEAT_ANYMOTI=
+ON_MSK,
+> +                                           regval);
+> +                       switch (chan->channel2) {
+> +                       case IIO_MOD_X:
+> +                               axis_en =3D FIELD_GET(BMI270_FEAT_MOTION_=
+X_EN_MSK,
+> +                                                   motion_reg);
+> +                               break;
+> +                       case IIO_MOD_Y:
+> +                               axis_en =3D FIELD_GET(BMI270_FEAT_MOTION_=
+Y_EN_MSK,
+> +                                                   motion_reg);
+> +                               break;
+> +                       case IIO_MOD_Z:
+> +                               axis_en =3D FIELD_GET(BMI270_FEAT_MOTION_=
+Z_EN_MSK,
+> +                                                   motion_reg);
+> +                               break;
+> +                       default:
+> +                               return -EINVAL;
+> +                       }
+> +                       return (axis_en && feat_en) ? 1 : 0;
+
+Do you expect boolean to be not 1 when it's true? IIRC this is part of
+the C standard.
+
+> +               default:
+> +                       return -EINVAL;
+> +               }
+
+...
+
+> +       int ret, reg;
+>         u16 regval;
+> -       int ret;
+
+Why? And why is reg signed? Also check other cases with reg and
+semantically similar variables.
 
 --=20
 With Best Regards,

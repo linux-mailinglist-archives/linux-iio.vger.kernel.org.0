@@ -1,254 +1,273 @@
-Return-Path: <linux-iio+bounces-20739-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20740-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EA2BADCA0B
-	for <lists+linux-iio@lfdr.de>; Tue, 17 Jun 2025 13:55:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EF7EADD02A
+	for <lists+linux-iio@lfdr.de>; Tue, 17 Jun 2025 16:41:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB9C217581A
-	for <lists+linux-iio@lfdr.de>; Tue, 17 Jun 2025 11:55:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 85A191631E8
+	for <lists+linux-iio@lfdr.de>; Tue, 17 Jun 2025 14:41:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D8FD2DF3F0;
-	Tue, 17 Jun 2025 11:55:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60AC7218E91;
+	Tue, 17 Jun 2025 14:41:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NEkTWDgK"
+	dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b="fdWASFvk"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 848ED2DF3E5;
-	Tue, 17 Jun 2025 11:55:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2F8B20AF62
+	for <linux-iio@vger.kernel.org>; Tue, 17 Jun 2025 14:41:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750161315; cv=none; b=fkUHK3h/+SOD+CXKVQ+LbLLoHH2cGivuplaQSLg2CBxVIFtEnB7TrBnm2ehAm7f1hseExz0QzIIw+pLTSqoNxGfCBYl6C7R79OgPFzYaCsTHvPLwYstI86bu1nCpSUgAKLDSudOeeKFWnJURh85zO3FkJVx0y6O/1LVts0ShccE=
+	t=1750171274; cv=none; b=TdsjxwAvOVfX8n0aCSIRTLVM+Sc4y54oYS/6iGlECBxv9GrMVGjs79Ce4AG0CiwGQhLTZMSAXGGwdGZcwlAl2ZevtDSiHwBdk38bjLe8jklHDSdve1mWmsIjpZH+KX9+LYceWsyhth05QhTx8gjJQ7+ozr1BOrsM1d4V5jwfFQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750161315; c=relaxed/simple;
-	bh=1mdzfzKY2H5RvEK9/I1kxmjAzNzCY7/xCZXh85LBGB4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=bxgbYU+XyHrVFYFCgiNgUXkBce9lNwyzJLhIVzlpru/umPFFy5GiGv0EuAY++DHN3Asc30UX0W1v11W5KNJnXpLv6zZ07xQ2pFaEMTp2zLRt83fTMdY6rRoRJumlTkmoDu8b8rmQl7zdbVcGycxMm1Q0Rw7tdOzQrrPt9lNnrKc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NEkTWDgK; arc=none smtp.client-ip=209.85.218.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-ad88d77314bso1241475066b.1;
-        Tue, 17 Jun 2025 04:55:13 -0700 (PDT)
+	s=arc-20240116; t=1750171274; c=relaxed/simple;
+	bh=KytBL3RgIELtg2bC3Sk3C2iv6mWErtVHz8v9zBmBiI4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=PQGiDJ8jEF6EyInnZSdUaPPvj30ApvpMFq8avipnjzkencaO9tDE3xO4NDkvzWEAUK/J8c+pXaS+9xgGVWG1/YRjyiKD/r6mG5ftKBNToDXmpJxz+SUf3r0woK9GhtER1Wx7Xjxuxq4xKAicPVbiQckzMk9s2tdgmOxhQB96oLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev; spf=pass smtp.mailfrom=tuxon.dev; dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b=fdWASFvk; arc=none smtp.client-ip=209.85.208.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tuxon.dev
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-60707b740a6so8865382a12.0
+        for <linux-iio@vger.kernel.org>; Tue, 17 Jun 2025 07:41:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750161312; x=1750766112; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=O5Oyc6Nb5eleQJDRHBvWia2WFxGzJ8AhQsoAb9pIQzw=;
-        b=NEkTWDgKTZ0pYOJAjnUOTStCbWC8MrqQWVimioPXkYKXEvQNjGWQPIHf0U7hI3I+dQ
-         JiuF7zLmqY0uzx8Q6CSlD7u1tITtOLK0xA8cK1MHi2jiP+ebAVcQeARzc8dtcRgGhZ9x
-         Slt3/2MPSRrButbQU1WeIuFWY03PSfwZGSLRWKGANyBqcXWPgGIHBkOaP0U0mSPooKZ5
-         riXOWSi2fHsRFBDcfPaBuxL6bgESs9LUV7Jw+h04Hbs6tetDEt4p10xzXg97lNBc45hg
-         aQGgxsJ4M3m772vkzNHSdnemGU7zWb1Fg2YNrHmViuen+upoIiDIjBCYHP76jG73a28E
-         HFrg==
+        d=tuxon.dev; s=google; t=1750171269; x=1750776069; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=jS1rvP0TIcJOf4zhH6GncBI8z7cnZ2da/ITssjAxL+Q=;
+        b=fdWASFvkGQFnFqedHQ33o2r/ZyCGrFfv1lr5O/PzCIOIHIn7fuUKrRuHOj5fpfAi6e
+         KXdZyLmymFcmFynLtDTcnv8vYl6nuIOHES61qRlAgqBs5uPdKbv1WuyHJfMyGfjHfHB/
+         nKu0hupTHxh7UrVW8pXpLeXuM2p0nP/5WHwCPkgAFNTU21qTySGEJLbwwHB7Cvseg0On
+         toZkysC2RnRCByuL/htfutrSEMZUEjtdD7/rn8sJV2c2cS4UAHvNChdy15dbHDwLlO10
+         qwu87kfbzhEIzr+mFLCqDi1Vl+0DNu8SPjT/i2jdFAxEY2mjC0O9t2+Cn1dqzQ1tUGE3
+         SNvw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750161312; x=1750766112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=O5Oyc6Nb5eleQJDRHBvWia2WFxGzJ8AhQsoAb9pIQzw=;
-        b=q6bkeD6hf15IlQl1Npb0M6Z5/Clmhlo2qAjCtTkxh7/VB9bKMM+uWo/9ApcyBG8lQw
-         OQ8DP/+pUu6YXB6NQfpX5y2GeWF9LHrPxJITGWg9OB14A5r7CrRkK58WgiOE9isaI8ev
-         w0lQaD/00Qp8YdSsq/z7SIvcQzycxd7X9l/up9BzByuUvawWl4FHuRDTbVNAjgwXiaIs
-         PsJNrsjbKLhid+39RQXM1VjDVnJBw4BLlI8s+UNfw2TjQUcq6KeHob3WPjFKSeS2rvk7
-         Hd5gLJSAQaYjDdPMuQzYt0jFFBcaAbplH8rFZws9P5vmUrN+XD8OaBCCzSZS1LblS03X
-         xhKQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU71Zf3iK+yOvz3afxjwafCiOr9HkRHLrIpW6ET8d7PoABIRwRkWwUHlnJ96/JVdx+scY9O+TVf084=@vger.kernel.org, AJvYcCVIY3tragJ1fqTum7BJjBKLCWOiiNP6Ol+E1xBIfFF2yzfChDQGjZMhf1yO6cv/DkLBEC9L1PcqlpxO@vger.kernel.org, AJvYcCXmRdXTTstQkhm+doXcpCwfpq6I6j2pgQ4jJ+10p+LFTRuRLsM7dE0bInjIhkdtttiAwrTGhDAzCWONLBEF@vger.kernel.org
-X-Gm-Message-State: AOJu0YxE44cJKXjl+PIhRZ15+WPKmuJPL6FBLKomTQBdU+z3dRrkjMTQ
-	FdBVO1ONt77BEgaRI8Ho4pDFSJyksDRtLHvCF4IrnegZ+AIGFEKLDBP6gsUHEnJLh7NVlDoPA8z
-	zrlTxlvfB7q9lDcup8JwkctTl8fwKe5I=
-X-Gm-Gg: ASbGncuPfkpqjDJ3C7rv70X+Pg+pvFoWyiAzwwQQn0UwdvhYlbnDh6+lodjnWcUhITP
-	7u0xBtYQhzzxenU0WNuFX9eXebx9yNdw/IH4Knnc0hGpUH/bdiYlBT80h+dU80s2bXudbKofZIA
-	cyBqyzb6I1/fA4X/onAUhK791yQovFi5XYn2Uga6DijY981A==
-X-Google-Smtp-Source: AGHT+IE6ecDP+jSmXMWWxoAXtXPEY1Y64xRVJKCLhMyqxuvRkxxX5n8x3JBcxUdDDseal6dmwhL67NBQE9f9wzc0CiQ=
-X-Received: by 2002:a17:907:1ca2:b0:add:fa4e:8a61 with SMTP id
- a640c23a62f3a-adfad53d2cdmr1362691666b.38.1750161311622; Tue, 17 Jun 2025
- 04:55:11 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1750171269; x=1750776069;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=jS1rvP0TIcJOf4zhH6GncBI8z7cnZ2da/ITssjAxL+Q=;
+        b=vV2tP+ngiDXAtrTTzhBigTJXJ3S+amFPTUB9t8QUB6NQ/X5wgg6X3CvAg09X/xDwTh
+         JkIDwar8K+rkdg2MBbo93063aPRZrTCsyswn7HyiuXwh6FPMR79InInwUXrbMTzki+px
+         DQIH5QWhyE1GpL3giK7Tw+g0XsvMBE5tN3NHvJC5XeRVTk6mfcJQUrWPxu4xjYdu7r3S
+         dIi6TSbKEZnioF/OEwnOULfDn/1gk6hEBpojbTFXbZET1m1fwhzcCD2zVRsUKmnYiyVf
+         sUO0HMPC9Se9E2v74ETpzW+/vWcx2qdWfnYMyIRnxGE3/95j4ugPC/BJVO6fyLTdh3L1
+         qmzA==
+X-Forwarded-Encrypted: i=1; AJvYcCUjZNPnj1735QnqT3c4Rv+5QyOzNnd363fG9SVeGRqq/dtkx4ama3yVXaWa8kthwm2AtxzD5Bnylig=@vger.kernel.org
+X-Gm-Message-State: AOJu0YygzxJo6UYTLU2pHlRydS7CpqED7egZOiWMat9GViPjznFIYcUB
+	4OPUBoTbWk2g3n5w/71x1rfVvqty8422kFXvstOhaSEnuvHJ6dPsdBSCPB1Q34GWR9c=
+X-Gm-Gg: ASbGnctYHQW2bxM3S0Wal/dbLEtBPjvZpaSslzzdpvvvJb/UjLKP39yCswz4NxX0jO/
+	HkAD30IexNvbTPJA4PHxPDKSQb+gSUbbz7+QD8hgR0VfzI2Uc36RaA0iebbf6Wosfll+2eHABuc
+	eyYNjbJm/US2JKduW21z6bVU+AWe65q4ggVuvtV013xyY6i9LI9M1qSB0dPSd1x3NsBtm2ehjsl
+	8k9OlUHsOrQ809BDZfFmsV0YUGVZCYA8Y98E6wbokE0StWGoj2wI5mABwgkEibiNX02GYiX9laX
+	7YoA+nh3/lG13ZW+M5cEWD2WieQQASf5faxYm/zuYMaOF2lmkIbCVCVhlZ8zPdo2YylbvMsqR6p
+	SyFXmTg==
+X-Google-Smtp-Source: AGHT+IF+3GyIe+nHDzRNJzAEWhYWk4iX7mofrTQBbnjUzhNdEvD74l/4QWZwUnDwU3CtkbwTc3tvxQ==
+X-Received: by 2002:a17:907:3c83:b0:ad2:1b0e:bfe5 with SMTP id a640c23a62f3a-adfad2a1e9bmr1449421266b.7.1750171269056;
+        Tue, 17 Jun 2025 07:41:09 -0700 (PDT)
+Received: from [192.168.50.4] ([82.78.167.110])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-adff0e8574fsm282909866b.42.2025.06.17.07.41.07
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 17 Jun 2025 07:41:08 -0700 (PDT)
+Message-ID: <04a6c53c-8383-4496-b502-149bd261cfdb@tuxon.dev>
+Date: Tue, 17 Jun 2025 17:41:06 +0300
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250615222258.117771-1-l.rubusch@gmail.com> <20250615222258.117771-6-l.rubusch@gmail.com>
- <CAHp75VdWtY6nxFFTucoCRiq+tM5caL5N1yp_15=FSAZ7Vyk_7Q@mail.gmail.com> <CAFXKEHYzaCCNbZo47AUHFEyS=HBFZnVNEHeQG+4VA2jhhT+yEw@mail.gmail.com>
-In-Reply-To: <CAFXKEHYzaCCNbZo47AUHFEyS=HBFZnVNEHeQG+4VA2jhhT+yEw@mail.gmail.com>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Tue, 17 Jun 2025 14:54:35 +0300
-X-Gm-Features: AX0GCFvqVsLjg7NVzpiLV7joBeHOpKz_dSx-5s5g22mcanhHrTnZaIYNIG97mW4
-Message-ID: <CAHp75VeDj1sE55_PdR6=QHAT-Nv0fwv3kss=7oeh8isdmOMoOw@mail.gmail.com>
-Subject: Re: [PATCH v5 5/8] iio: accel: adxl313: add inactivity sensing
-To: Lothar Rubusch <l.rubusch@gmail.com>
-Cc: jic23@kernel.org, dlechner@baylibre.com, nuno.sa@analog.com, 
-	andy@kernel.org, corbet@lwn.net, lucas.p.stankus@gmail.com, lars@metafoo.de, 
-	Michael.Hennerich@analog.com, bagasdotme@gmail.com, linux-iio@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 1/2] PM: domains: Detach on device_unbind_cleanup()
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: gregkh@linuxfoundation.org, dakr@kernel.org, len.brown@intel.com,
+ pavel@kernel.org, ulf.hansson@linaro.org, jic23@kernel.org,
+ daniel.lezcano@linaro.org, dmitry.torokhov@gmail.com,
+ linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org, bhelgaas@google.com,
+ geert@linux-m68k.org, linux-iio@vger.kernel.org,
+ linux-renesas-soc@vger.kernel.org, fabrizio.castro.jz@renesas.com,
+ Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+ linux-i2c <linux-i2c@vger.kernel.org>,
+ Wolfram Sang <wsa+renesas@sang-engineering.com>,
+ "andi.shyti@kernel.org" <andi.shyti@kernel.org>
+References: <20250616135357.3929441-1-claudiu.beznea.uj@bp.renesas.com>
+ <20250616135357.3929441-2-claudiu.beznea.uj@bp.renesas.com>
+ <CAJZ5v0j_nm_z4ma2AsRkjiZn-AJ2bK982+Mwa8+_PoUAveNATQ@mail.gmail.com>
+From: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+Content-Language: en-US
+In-Reply-To: <CAJZ5v0j_nm_z4ma2AsRkjiZn-AJ2bK982+Mwa8+_PoUAveNATQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Tue, Jun 17, 2025 at 1:10=E2=80=AFPM Lothar Rubusch <l.rubusch@gmail.com=
-> wrote:
-> On Mon, Jun 16, 2025 at 12:59=E2=80=AFPM Andy Shevchenko
-> <andy.shevchenko@gmail.com> wrote:
-> > On Mon, Jun 16, 2025 at 1:23=E2=80=AFAM Lothar Rubusch <l.rubusch@gmail=
-.com> wrote:
+Hi, Rafael,
 
-[...]
+On 16.06.2025 20:14, Rafael J. Wysocki wrote:
+> On Mon, Jun 16, 2025 at 3:54 PM Claudiu <claudiu.beznea@tuxon.dev> wrote:
+>>
+>> From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+>>
+>> The dev_pm_domain_attach() function is typically used in bus code alongside
+>> dev_pm_domain_detach(), often following patterns like:
+>>
+>> static int bus_probe(struct device *_dev)
+>> {
+>>     struct bus_driver *drv = to_bus_driver(dev->driver);
+>>     struct bus_device *dev = to_bus_device(_dev);
+>>     int ret;
+>>
+>>     // ...
+>>
+>>     ret = dev_pm_domain_attach(_dev, true);
+>>     if (ret)
+>>         return ret;
+>>
+>>     if (drv->probe)
+>>         ret = drv->probe(dev);
+>>
+>>     // ...
+>> }
+>>
+>> static void bus_remove(struct device *_dev)
+>> {
+>>     struct bus_driver *drv = to_bus_driver(dev->driver);
+>>     struct bus_device *dev = to_bus_device(_dev);
+>>
+>>     if (drv->remove)
+>>         drv->remove(dev);
+>>     dev_pm_domain_detach(_dev);
+>> }
+>>
+>> When the driver's probe function uses devres-managed resources that depend
+>> on the power domain state, those resources are released later during
+>> device_unbind_cleanup().
+>>
+>> Releasing devres-managed resources that depend on the power domain state
+>> after detaching the device from its PM domain can cause failures.
+>>
+>> For example, if the driver uses devm_pm_runtime_enable() in its probe
+>> function, and the device's clocks are managed by the PM domain, then
+>> during removal the runtime PM is disabled in device_unbind_cleanup() after
+>> the clocks have been removed from the PM domain. It may happen that the
+>> devm_pm_runtime_enable() action causes the device to be runtime-resumed.
+>> If the driver specific runtime PM APIs access registers directly, this
+>> will lead to accessing device registers without clocks being enabled.
+>> Similar issues may occur with other devres actions that access device
+>> registers.
+>>
+>> Add detach_power_off member to struct dev_pm_info, to be used later in
+>> device_unbind_cleanup() as the power_off argument for
+>> dev_pm_domain_detach(). This is a preparatory step toward removing
+>> dev_pm_domain_detach() calls from bus remove functions. Since the current
+>> PM domain detach functions (genpd_dev_pm_detach() and acpi_dev_pm_detach())
+>> already set dev->pm_domain = NULL, there should be no issues with bus
+>> drivers that still call dev_pm_domain_detach() in their remove functions.
+>>
+>> Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+>> ---
+>>
+>> Changes in v4:
+>> - save dev->power.detach_power_off in dev_pm_domain_attach() and use
+>>   it in device_unbind_cleanup() when detaching
+>> - adjusted patch description
+>>
+>> Changes in v3:
+>> - dropped devm_pm_domain_detach_off(), devm_pm_domain_detach_on()
+>>   and use a single function devm_pm_domain_detach()
+>>
+>> Changes in v2:
+>> - none; this patch is new
+>>
+>>  drivers/base/dd.c           | 2 ++
+>>  drivers/base/power/common.c | 3 +++
+>>  include/linux/pm.h          | 1 +
+>>  3 files changed, 6 insertions(+)
+>>
+>> diff --git a/drivers/base/dd.c b/drivers/base/dd.c
+>> index b526e0e0f52d..13ab98e033ea 100644
+>> --- a/drivers/base/dd.c
+>> +++ b/drivers/base/dd.c
+>> @@ -25,6 +25,7 @@
+>>  #include <linux/kthread.h>
+>>  #include <linux/wait.h>
+>>  #include <linux/async.h>
+>> +#include <linux/pm_domain.h>
+>>  #include <linux/pm_runtime.h>
+>>  #include <linux/pinctrl/devinfo.h>
+>>  #include <linux/slab.h>
+>> @@ -552,6 +553,7 @@ static void device_unbind_cleanup(struct device *dev)
+>>         dev->dma_range_map = NULL;
+>>         device_set_driver(dev, NULL);
+>>         dev_set_drvdata(dev, NULL);
+>> +       dev_pm_domain_detach(dev, dev->power.detach_power_off);
+>>         if (dev->pm_domain && dev->pm_domain->dismiss)
+>>                 dev->pm_domain->dismiss(dev);
+>>         pm_runtime_reinit(dev);
+>> diff --git a/drivers/base/power/common.c b/drivers/base/power/common.c
+>> index 781968a128ff..a8f302ed27a5 100644
+>> --- a/drivers/base/power/common.c
+>> +++ b/drivers/base/power/common.c
+>> @@ -111,6 +111,9 @@ int dev_pm_domain_attach(struct device *dev, bool power_on)
+>>         if (!ret)
+>>                 ret = genpd_dev_pm_attach(dev);
+>>
+>> +       if (dev->pm_domain)
+>> +               dev->power.detach_power_off = power_on;
+> 
+> I'm assuming that you have checked all of the users of
+> dev_pm_domain_attach() and verified that the "power off" value is the
+> same as the "power on" one for all of them.
 
-> > > +       switch (info) {
-> > > +       case IIO_EV_INFO_VALUE:
-> > > +               switch (dir) {
-> > > +               case IIO_EV_DIR_RISING:
-> > > +                       ret =3D regmap_read(data->regmap,
-> > > +                                         adxl313_act_thresh_reg[ADXL=
-313_ACTIVITY],
-> > > +                                         &act_threshold);
-> > > +                       if (ret)
-> > > +                               return ret;
-> > > +                       *val =3D act_threshold * 15625;
-> > > +                       *val2 =3D MICRO;
-> > > +                       return IIO_VAL_FRACTIONAL;
-> > > +               case IIO_EV_DIR_FALLING:
-> > > +                       ret =3D regmap_read(data->regmap,
-> > > +                                         adxl313_act_thresh_reg[ADXL=
-313_INACTIVITY],
-> > > +                                         &inact_threshold);
-> > > +                       if (ret)
-> > > +                               return ret;
-> >
-> > > +                       *val =3D inact_threshold * 15625;
-> > > +                       *val2 =3D MICRO;
-> > > +                       return IIO_VAL_FRACTIONAL;
-> > > +               default:
-> > > +                       return -EINVAL;
-> > > +               }
-> > > +       case IIO_EV_INFO_PERIOD:
-> > >                 ret =3D regmap_read(data->regmap,
-> > > -                                 adxl313_act_thresh_reg[ADXL313_ACTI=
-VITY],
-> > > -                                 &act_threshold);
-> > > +                                 ADXL313_REG_TIME_INACT,
-> > > +                                 &inact_time_s);
-> > >                 if (ret)
-> > >                         return ret;
-> > > -               *val =3D act_threshold * 15625;
-> > > -               *val2 =3D MICRO;
-> > > -               return IIO_VAL_FRACTIONAL;
-> > > +               *val =3D inact_time_s;
-> > > +               return IIO_VAL_INT;
-> > >         default:
-> > >                 return -EINVAL;
-> > >         }
-> >
-> > I still don't get what's wrong with helpers for nested switches?
-> > Instead of doing ping-pong with so many lines (due to indentation
-> > changes), just create a helper from the beginning. In this case this
-> > will look more like
-> >
-> >   if (nfo =3D=3D IIO_EV_INFO_VALUE)
-> >     return my_cool_helper_for_THIS_case(...);
-> >
-> > Note, I admit that not all the cases may be done like this, but just
-> > look at this again and perhaps something can be optimised.
->
-> First, about helpers dealing with nested switches. The resulting
-> structure then is like
->
-> switch (type) {
-> case IIO_EV_TYPE_MAG:
->     switch (info) {
->     case IIO_EV_INFO_VALUE:
->         switch (dir) {
->         case IIO_EV_DIR_RISING:  // activity
->             ....
->         case IIO_EV_DIR_FALLING: // inactivity
->             ....
->         }
->         case IIO_EV_INFO_PERIOD:
->             ...
->     }
-> case IIO_EV_TYPE_MAG_ADAPTIVE:
->       // same as above, again for _AC events
->  ...
-> }
->
-> Actually I'm using a helper for nested switches. But currently I'm
-> adding it quite late, when I have cases for ACTIVITY, INACTIVITY and
-> ACTIVITY_AC and INACTIVITY_AC, since this results in code duplication.
-> The resulting structure the looks as follows.
->
-> helper_mag(...)
-> {
->     switch (info) {
->     case IIO_EV_INFO_VALUE:
->         switch (dir) {
->         case IIO_EV_DIR_RISING:  // activity
->             ....
->         case IIO_EV_DIR_FALLING: // inactivity
->             ....
->         }
->         case IIO_EV_INFO_PERIOD:
->             ...
->     }
-> }
->
-> switch (type) {
-> case IIO_EV_TYPE_MAG:
->     helper_mag(...);
-> case IIO_EV_TYPE_MAG_ADAPTIVE:
->         // same as above, again for _AC events
->     helper_mag(...);
-> }
->
-> Is this reasonable? For the v6 now, I plan on introducing this helper
-> when adding INACTIVITY sensing, having ACTIVITY already in place. This
-> is, because INACTIVITY as distinguishable type is still not available,
-> but would be needed as function argument as well. Does this make
-> sense? Or, should I start with the helper right at the beginning? Is
-> it ok to have once a nested switch in the helper?
+In v2 it has been discussed to just mirror the power_on acquisition.
 
-Yes, that's what even would propose here, is to make a helper with the
-current code (if it's not empty) and then fill it with the content. In
-any case try and see.
+Double checking now, all the current users of dev_pm_domain_attach() follow
+this rule, except the i2c bus. i2c powers on the domain conditionally:
 
-The (end) idea is to have only one level of the switch-case per
-function in this case and use helpers for the inner ones:
+https://elixir.bootlin.com/linux/v6.15.2/source/drivers/i2c/i2c-core-base.c#L575
 
-foo()
-{
-  if (...)
-    return -EINVAL;
-  switch (dir) {
-  case BAZ:
-    ...
-    break;
-  }
-}
+and powers it off unconditionally:
+https://elixir.bootlin.com/linux/v6.15.2/source/drivers/i2c/i2c-core-base.c#L638
 
-switch (type) {
-case FOO:
-  return _do_foo();
-}
+Should we take this into account ?
 
-> Second question is about the adxl313_read_event_config() functions,
-> I'd like to have here 0 or 1 in regular cases (<0 for error). Is it ok
-> if I adjust the functions slightly to guarantee this? Currently it
-> generally returns >0 in cases of "true" which is correct. But this is
-> most of the times 1, in some cases can be 8 or something. I just like
-> it to be uniform for testing (which is not a valid argumentation). Is
-> this legitimate?
+Thank you,
+Claudiu
 
-If this is an ABI, better to unify this to have the same meaning of
-each of the returned values independently on the functions, if this is
-just an internal, who cares? However, there is, of course, a corner
-case if MSB is set and you will return a (positive) value as an error
-code. So, just look at the functions and decide which path you take.
 
---=20
-With Best Regards,
-Andy Shevchenko
+> 
+>> +
+>>         return ret < 0 ? ret : 0;
+>>  }
+>>  EXPORT_SYMBOL_GPL(dev_pm_domain_attach);
+>> diff --git a/include/linux/pm.h b/include/linux/pm.h
+>> index f0bd8fbae4f2..dcbe2c1ef59b 100644
+>> --- a/include/linux/pm.h
+>> +++ b/include/linux/pm.h
+>> @@ -720,6 +720,7 @@ struct dev_pm_info {
+>>         struct pm_subsys_data   *subsys_data;  /* Owned by the subsystem. */
+>>         void (*set_latency_tolerance)(struct device *, s32);
+>>         struct dev_pm_qos       *qos;
+>> +       bool                    detach_power_off:1;
+> 
+> Please put the new flag under #ifdef CONFIG_PM after memalloc_noio and
+> comment it as "Owned by the driver core".
+
+OK!
+
+Thank you for your review,
+Claudiu
+
+> 
+> Otherwise LGTM.
+> 
+>>  };
+>>
+>>  extern int dev_pm_get_subsys_data(struct device *dev);
+>> --
+>> 2.43.0
+>>
+
 

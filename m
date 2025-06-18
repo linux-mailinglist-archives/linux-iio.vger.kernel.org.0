@@ -1,115 +1,144 @@
-Return-Path: <linux-iio+bounces-20775-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20776-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2D72ADF4BA
-	for <lists+linux-iio@lfdr.de>; Wed, 18 Jun 2025 19:48:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2F99ADF52A
+	for <lists+linux-iio@lfdr.de>; Wed, 18 Jun 2025 19:57:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F09981653A5
-	for <lists+linux-iio@lfdr.de>; Wed, 18 Jun 2025 17:47:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 967781BC4580
+	for <lists+linux-iio@lfdr.de>; Wed, 18 Jun 2025 17:56:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1C00304303;
-	Wed, 18 Jun 2025 17:41:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A62E42F94BA;
+	Wed, 18 Jun 2025 17:55:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SuajJV0x"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V9SDhn13"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC314303816;
-	Wed, 18 Jun 2025 17:41:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DDFE2F5469;
+	Wed, 18 Jun 2025 17:55:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750268485; cv=none; b=Wg/0fj16JcBskcg5LMBulkTBJZ3GO3Ka67N5rfyPx892EOaKugYIg6Rn+L+gu3G+m1d/rVQU4jEVKUr6/bZHdQq0PHhxVcFSL79mhMqt8TKVSoJMpiSNM5Xd5KnpcanQziIiwVkjP2NNfOXEB/YPaTdvEQKMP38BURbhCvV1Ej4=
+	t=1750269316; cv=none; b=new4lKTfSzol/cGUGB7fzxm1lK9nRIplXd//RBoR2y7I41uECNWvQhMfmjDYDjcs2w2oFj2EfDckxTzSMs6mmO7ajxhsRRRHBpfH2yPJk9bfklwBXsUHk3nzes1qMhZcfpopw8lgo2PubkGkmqvjPwGKMshUhUMlMtUcAbAqzDw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750268485; c=relaxed/simple;
-	bh=JMu1Wlmq6ChnFPF7YJWazqaT52K3k8V8s8GmsfUM3nc=;
+	s=arc-20240116; t=1750269316; c=relaxed/simple;
+	bh=5wT0aIrsAha0PXMViQ6wIobYxSVAr6a7EIn8WbcB6Uc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oO/I1dcd8GUbw2q2rLJlvQL/FHO32DVRCYSKaGqXgZbsSLo7PoUo7987fu3aLPoae6cRI7M85MLlCoANoXXZGq3EfpK291+UYoJel3VQW8VSZ5mOub74/xN5Up9WkbLyYAgcEn2jfTNV3+64HO4SE9LfQQChq4u/xQRWwae4ZEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SuajJV0x; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1750268484; x=1781804484;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=JMu1Wlmq6ChnFPF7YJWazqaT52K3k8V8s8GmsfUM3nc=;
-  b=SuajJV0xa/iNwjLmgXXL8LoSbl8dUmoDSIWG7qy1kOLRbgwcRkKb41DL
-   LKgR0gOPu6a/hxko2UZy1UHsZz7NywNEmoPSSKq7ktiDYuOtTyHbvLrBh
-   1aWU9AA0wk6EL/nL4ExFi+OUu0M1VKNhXW1EBV17me9czmkkZK8ZTaLll
-   IT+J627+bhMu5zbOK3Zq8Dq+r/rHGkjpSgML1LluIJJ5kJRDJxuB4YleH
-   y9hnjA7aE7CwfQV5vgnTWfAPivfav9ecO4qhgQ2RjN1RM0zt2JPtpP+E3
-   KETkuF6KOfA4yQJY5QAAPyvlv/CccYz5sZ1kX+by3Hq8qDAFtFiQTxcQL
-   g==;
-X-CSE-ConnectionGUID: HM3vYmksSNmWWbSuwhAxQg==
-X-CSE-MsgGUID: VACEKxoZTcifnIQEBwCzIA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11468"; a="70075607"
-X-IronPort-AV: E=Sophos;i="6.16,246,1744095600"; 
-   d="scan'208";a="70075607"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jun 2025 10:41:22 -0700
-X-CSE-ConnectionGUID: JG/bHWfcRVquepWKjGOfNA==
-X-CSE-MsgGUID: fpjdxPPlS9KTs3wv2NcenA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,246,1744095600"; 
-   d="scan'208";a="180909963"
-Received: from smile.fi.intel.com ([10.237.72.52])
-  by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jun 2025 10:41:19 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1uRwmi-00000007oWR-32Tx;
-	Wed, 18 Jun 2025 20:41:16 +0300
-Date: Wed, 18 Jun 2025 20:41:16 +0300
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Andrew Ijano <andrew.ijano@gmail.com>
-Cc: Andy Shevchenko <andy.shevchenko@gmail.com>, jic23@kernel.org,
-	andrew.lopes@alumni.usp.br, gustavobastos@usp.br,
-	dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org,
-	jstephan@baylibre.com, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v6 0/4] iio: accel: sca3000: simplify by using newer
- infrastructure
-Message-ID: <aFL6PE-8KLLKZun_@smile.fi.intel.com>
-References: <20250618031638.26477-1-andrew.lopes@alumni.usp.br>
- <CAHp75Ve4yAp6sViUWZY+0abRoNZ0W+rQLCmsbijEcrh8kguVOA@mail.gmail.com>
- <CANZih_S9_8OdY=oKyVPBCTSTqYm_z_rkE=xbPym3uHOSsHMv6A@mail.gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=t65YbicfJxsmS2al+B+j2+rRIMqHne2N+K72vuBHDjWPIocDhDhaVuG0dZd7d7VpDEu85QqFS1px0b1d6YblbdhHVkXA+1yradD3a8rVo0dLplp0NRb6BBxiAmB7skGTY2bhakw/KQqhXHQH26PLzQfxTRkisg1anqfcH+7SeIY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V9SDhn13; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41642C4CEE7;
+	Wed, 18 Jun 2025 17:55:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750269314;
+	bh=5wT0aIrsAha0PXMViQ6wIobYxSVAr6a7EIn8WbcB6Uc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=V9SDhn13c0JD2tjlibEUADU/2YTadF28roMpREO+NiAgnQ9xC2FmjSnyGkCpIkQxI
+	 aj4ltT+dQVGJhd/slgNsY4huMq/s9VuWI0iCVJkjQaIVhmA43ZlQCdI36eY9jZbxU8
+	 S5sB5uipNgGj1dkuWSg4+WmAYz1tyS3SG/0it1nGZH/5ftfmneJKpl1lsL62Bb1zOE
+	 gNKYcOZ2R3Z8mF4IUUc7M5aD2cWvO0/XKLyBNtRLkn6NP1Mz8WF5eSnnnhr5KDfYHs
+	 Gy4lSXenkcd4etvjBxXJFBz4i16317pfiN0GkhY1/+tumtO9rgewoi9KYYNMVPxAuD
+	 f6rREnUPhqvvA==
+Date: Wed, 18 Jun 2025 19:55:12 +0200
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+To: Jorge Marques <gastmaier@gmail.com>
+Cc: Jorge Marques <jorge.marques@analog.com>, 
+	Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, 
+	Michael Hennerich <Michael.Hennerich@analog.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Jonathan Corbet <corbet@lwn.net>, David Lechner <dlechner@baylibre.com>, 
+	Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-pwm@vger.kernel.org
+Subject: Re: [PATCH v3 4/8] iio: adc: Add support for ad4052
+Message-ID: <ie44wrnocvisv2ilgds76owbk4u423rr2htpsc5pobykj37zeg@ga5y25gcdjv3>
+References: <20250610-iio-driver-ad4052-v3-0-cf1e44c516d4@analog.com>
+ <20250610-iio-driver-ad4052-v3-4-cf1e44c516d4@analog.com>
+ <yw3n2csu4x4mfed33dtvl75zc5scgkjvkzruqilpw64n7esmdn@3fj77ufzm3c2>
+ <oqibdd7spdxvlimrwcabqo2xryfplk4q6lnwav5grtl5juud5x@vqfego523x7a>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="6n56agevkbvsdqk4"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANZih_S9_8OdY=oKyVPBCTSTqYm_z_rkE=xbPym3uHOSsHMv6A@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
-
-On Wed, Jun 18, 2025 at 09:24:19AM -0300, Andrew Ijano wrote:
-> On Wed, Jun 18, 2025 at 2:56 AM Andy Shevchenko
-> <andy.shevchenko@gmail.com> wrote:
-> > On Wed, Jun 18, 2025 at 6:17 AM Andrew Ijano <andrew.ijano@gmail.com> wrote:
-> > >
-> > > The sca3000 driver is old and could be simplified by using newer
-> > > infrastructure.
-> >
-> > I haven't found any reference to a base commit here. Have you
-> > forgotten to use --base when preparing the series?
-> > In any case, please clarify what this series is based on.
-> 
-> Thank you for pointing this out! I think I forgot to use --base for
-> it. In this case, should I submit a new version of the whole patchset
-> with this information or is there a better way to do it?
-
-For now just reply here what is the base. I asked this question above.
-
--- 
-With Best Regards,
-Andy Shevchenko
+In-Reply-To: <oqibdd7spdxvlimrwcabqo2xryfplk4q6lnwav5grtl5juud5x@vqfego523x7a>
 
 
+--6n56agevkbvsdqk4
+Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v3 4/8] iio: adc: Add support for ad4052
+MIME-Version: 1.0
+
+Hello,
+
+On Tue, Jun 17, 2025 at 05:34:56PM +0200, Jorge Marques wrote:
+> On Tue, Jun 17, 2025 at 04:59:48PM +0200, Uwe Kleine-K=F6nig wrote:
+> > On Tue, Jun 10, 2025 at 09:34:37AM +0200, Jorge Marques wrote:
+> > > +static int ad4052_get_samp_freq(struct iio_dev *indio_dev,
+> > > +				struct iio_chan_spec const *chan,
+> > > +				int *val,
+> > > +				int *val2)
+> > > +{
+> > > +	struct ad4052_state *st =3D iio_priv(indio_dev);
+> > > +
+> > > +	*val =3D DIV_ROUND_UP_ULL(NSEC_PER_SEC, st->pwm_st.period);
+> > > +	return IIO_VAL_INT;
+> >=20
+> > st->pwm_st.period is the period that was requested before. If you want
+> > the real period that is currently emitted, check pwm_get_state_hw().
+>=20
+> I believe only ad4695.c uses this method and the reason for that is if
+> the pwm is disabled we still want to obtain the requested value.
+>=20
+> Reverting slightly to v2, the semantic to allow fetching from hw when
+> enabled, and using the managed state when disabled, would be:
+>=20
+> 	struct pwm_state pwm_st;
+> 	int ret
+>=20
+> 	ret =3D pwm_get_state_hw(st->cnv_pwm, &pwm_st);
+> 	if (ret)
+> 		goto out_release;
+>=20
+> 	if (!pwm_st.enabled)
+> 		pwm_st =3D st->pwm_st;
+>=20
+> 	*val =3D DIV_ROUND_UP_ULL(NSEC_PER_SEC, pwm_st.period);
+>=20
+> Is this ok?
+
+Looks fine to me. I didn't object the original suggested code, just
+wanted to highlight the semantics.
+
+I would expect that the compiler optimizes out the unnecessary
+assignments done in pwm_st =3D st->pwm_st, as only pwm_st.period is used
+later on.
+
+Best regards
+Uwe
+
+--6n56agevkbvsdqk4
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmhS/X0ACgkQj4D7WH0S
+/k6uOggAutqfRasKnyDG4NPZagUBSr3nqLLjatsZLuA3uLLglPffPSkWn906uKQL
+s+GFWFqirMgxqPyT6wi37NJL5Sv0nYvqgN02HBa8uDnSOip3wVtD14B+FI1wC2+A
+puYwXaPwG/0eSZOi+XmtqO5M3bwgsnVb3ev8oH1dF1bkJKaDFnh8b73o2mqPZ2cn
+hSkHzrRTW0tWN6x9T+wUH2CfnTsgGZe/M5twgwYoLUbbPmmvca0lpOS5bxAbKjo+
+735f9Yg65sp7HDsCR8JgVjE/Yr+5No2TkWpIx8JpAMdsbq8lZKEugWPHHs16tu+8
+PWQ+2XLnIVDnEBYpBRenpgEMHFZ2+w==
+=oKT8
+-----END PGP SIGNATURE-----
+
+--6n56agevkbvsdqk4--
 

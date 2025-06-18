@@ -1,111 +1,127 @@
-Return-Path: <linux-iio+bounces-20759-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20760-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BC3EADEC23
-	for <lists+linux-iio@lfdr.de>; Wed, 18 Jun 2025 14:29:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE7E9ADF1A3
+	for <lists+linux-iio@lfdr.de>; Wed, 18 Jun 2025 17:44:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED7D64A2F3F
-	for <lists+linux-iio@lfdr.de>; Wed, 18 Jun 2025 12:24:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A14143A88FF
+	for <lists+linux-iio@lfdr.de>; Wed, 18 Jun 2025 15:44:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AABE9298274;
-	Wed, 18 Jun 2025 12:24:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97D4D2EA178;
+	Wed, 18 Jun 2025 15:44:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aCzebccJ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jmjV/e3n"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-vs1-f51.google.com (mail-vs1-f51.google.com [209.85.217.51])
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05B36136A;
-	Wed, 18 Jun 2025 12:24:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 037A213957E
+	for <linux-iio@vger.kernel.org>; Wed, 18 Jun 2025 15:44:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750249474; cv=none; b=A6TLIfYtd4i8ijXQO0//Jk1xRHm3Wy6j3s+hzMa7ykD80xmEmzLxPLE8CCeeR9Tn27USoEdP0cF9NYe/pkMaGixLMH0H0sALW7/3yJaxfuYeKj2lWeLpqEVoTn+cPZF02XmTm571JbidxRYTqPgdKL6Gk4K+2sasR1DT57Hja3k=
+	t=1750261465; cv=none; b=OSWNafkgdYdA3f8HyQ8g4xJnaFZYWLXzXcngWGZhwi92FnB57cMJN1fvF6oAcHO1ETrQisAuFcoaiVm1r6v37lHs/QIxUwFSnxjm+48iz0Eamg1cEmx0hCQCFSab8ntCBGBlOsl8M2o5VwYoToX736eEU+mfKsvw5Cer7pUGyNg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750249474; c=relaxed/simple;
-	bh=/NYsxYefGuFZoFcbmNjG74D/3sWLBSAsPK2AYHstAwg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KJN17FdLcFC2xwKfpdpQ+2uW5sGrbeJjEHQPSbkJPSRxFkuxri22kp7npE/AR2vIMSCwn4kj5cylSKRz4c9C5OLxkGjH7I4lDBGD5BMuTjDZjkXMC8lEylCm03VqBga2VbYE+dmqIb65y8KAJkivbB91fVNNkpte4F2WokDdXNs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aCzebccJ; arc=none smtp.client-ip=209.85.217.51
+	s=arc-20240116; t=1750261465; c=relaxed/simple;
+	bh=ez/ED55+wNxnbE2c6igkCBZ9HNbPmlf6AY8UtJGMH2g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Nru/0MzKecI60IZVZ1f9fBalpIwxeFWGQJS5OzYL6xPI0AEOb0BLvEJA6Tb/KUxRMJsQ9rhFbT5SKOxiYUEl4BU79kMVNytlH8QuEjUftjNTMoBJjRxLstccXyTIzbXyX2dT50kb1H5VHNBvR6g4sTk1nz5kA1+KFeE5Gp3BQFo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jmjV/e3n; arc=none smtp.client-ip=209.85.214.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vs1-f51.google.com with SMTP id ada2fe7eead31-4e7f4adaedaso1406901137.3;
-        Wed, 18 Jun 2025 05:24:31 -0700 (PDT)
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-237311f5a54so12565735ad.2
+        for <linux-iio@vger.kernel.org>; Wed, 18 Jun 2025 08:44:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750249471; x=1750854271; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/NYsxYefGuFZoFcbmNjG74D/3sWLBSAsPK2AYHstAwg=;
-        b=aCzebccJo6k6U+FpDLeWVUVPLi8neOzP0laB2xNSG40/9PXOdDjxullR2mrxTmqCNw
-         xzb3xGb6VAXWuQB9ujTGyDFRHoy8UPc9U9P7lqlgIyEcZrmosSqQeYvhk7K5ZoLca9GG
-         6Oc4QLSEU1VKLzQiGPT1naWaMVN7uYv+VFCNMguUCgJ3Lio6ys+IQSwl/Qqio8HF7kk3
-         r4sY680mxeYKT71tLQ0qniT+E5MRGjtqKbfgYE490kJucxHyLyIiALvvGyWpxea4D1qg
-         U7OvQwA+nq+ZETexelM1MzvgOBO+wE1wyaGUUhQoKjDBU7cjaqRiEke8hQg7+KpCFEYt
-         2Bmg==
+        d=gmail.com; s=20230601; t=1750261463; x=1750866263; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=NQ1+XG2kXpU434Mzm6ikfZaCql2+RjHXWmUQtNPA1HY=;
+        b=jmjV/e3n370MaGYH8lUUqyAYr+JbzVF0CsHgUJBihj6GSeK4uT3Nb/FWe4XxU2l0r1
+         81OFKGzaigiNvm93WXPNwHppOAsyMw9rGXUYl6k7kDlDMWvJ0LZHgfUj7JOQxTXVeW2j
+         l21swjzAL6EDqSroeRpiV7x5wztm0m0pZPognk7znwWxDwl2dB+/i3MCdNkOgUOcI7od
+         qRcLP6UwOBj5EIlZ7wcgDJRTShiFXYlzZhuI+Ga+y3+3UZslbU5MLCTz1Yt9XIW9WEJe
+         BQql7vm/ydePpygYkTQy+qjClT/+LpOL1gc2QlwG5OswL0HvZ+2Y6vVhvt/Iv3gd1WiV
+         6LJQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750249471; x=1750854271;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=/NYsxYefGuFZoFcbmNjG74D/3sWLBSAsPK2AYHstAwg=;
-        b=l8lJyTr01xrY95duf+cq1qXEL81uJNE/KdpgQNLtb/ZPaQrCXQFNdQdZtFlkUi+vW7
-         j4mEZ3CUGOtXCvCN0cRZPLSz7VWUvXjEvgIXkchbz/ZmrrZUJKp1SYjBBKA4O8283f2d
-         X55p4jqMbrgXeNTcRdtStYDUB8XnufFbCDRYo+p/yNxF9M2oCSUkcCdvoFuX6Li4hb+j
-         tPpqC88TLPyeRY9sFT2GwOOPkmJA6Pa2WcrS4/xrI1BC/ZmUCXJuszfKnVCKnv/owg8P
-         bUMHrYYmH/HSu2lHzNZoS8PV43lP9YJTqozAdnErCaa4fEFwriZ5TIv9KcLwqYQVikXs
-         JoZQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVgNzk95jhxPYDEU5K1U9RktQFSOLpjFK/CgPFGyoR2oqHjNzPj6dpBeV3/cnunC46Vc/Q3wDZr+GXyuv8H@vger.kernel.org, AJvYcCWdvZCBjGILh73Xemf7//qAAeSty2mbrKESjxYvZotYG8hxrmMzDtTZp7NQfz1K3aLGY/74cL+Ibqk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxeP1QfXtfwQczYkYEm9jp8Yr/oqJJS2VsB5wx33nnjx5MmcWt4
-	fnen+dVVcAoT5clbvCVI50mJmU85MtdHVpabLPUq2PYi4wpqxkL1iJAXsJXRCTjzN543okqi4tX
-	/AdSuhd5YNNxnfCRYDOCfYyegFACs3tA=
-X-Gm-Gg: ASbGncsRZ67tmHrfLfgyu4k0O+zPj0kXA5NOSgvzSvT15rKojYF66Og2Drc5VLTPm2F
-	updlaiRZPHwqCVcwKxnVH0KRRDreO/U6+SdHZAZraDy1xG8khyr7gUXRsoh1sZlkd/Nl8MZvr0t
-	YAxYrnti5MSoQ9+Tsv8SZNZ8x700MsHaXE9eTUjd18vis=
-X-Google-Smtp-Source: AGHT+IFKxo5jOdQO8g9bmHrmLYV3o3dtgYq9weUpw6k+6iarraD/Y0etRIlEYIlAgmm4WMsUniD8eUPR7KBarX0bwMk=
-X-Received: by 2002:a05:6102:580e:b0:4e5:9323:d2b9 with SMTP id
- ada2fe7eead31-4e7f60edf76mr14115895137.2.1750249470695; Wed, 18 Jun 2025
- 05:24:30 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1750261463; x=1750866263;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=NQ1+XG2kXpU434Mzm6ikfZaCql2+RjHXWmUQtNPA1HY=;
+        b=dfOTIx9nuH74M4okvtPoNkQVpQpG1KzkUIlYbEYUcksY8jBq4xsXC2r31QVRPO1cKf
+         xTLwTkKx0M/PqGquokCEiIB6BdDJbNIiqHF4Kr0cIBhCm1xPd/+7ukEg/47nS8h0AvuY
+         Yf40otwJR5XC3jVlwv+JmHWIO3FT/wg2k5ZM9d6Yzn2F+mlr/syoC7NAWghmZiicDMzQ
+         4xQ/lkmuTagoQd1Yp4weWGSjz734I41pLmbtta0l1lTllxiudafPI0mfntAr+Vw2Y3al
+         1iIBh4IYeATW+S0aE7oGBUEaS9twuMYifhKuAtbtYrkY0xeAzEMuk6q51BKXPz4v6XsW
+         bJvg==
+X-Forwarded-Encrypted: i=1; AJvYcCWn7b/HUOZgJRmLXkwwAeRlw8nlDLgBH43zIWKJn9bAbpruPBJ1k5fTCeIOhShHsawUQ/CH4J/cf+U=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwmZ3PfOtyTv5ltg97c1L373n6RMqrz84IwmveAw21THESoTrgh
+	0lqyS/RSSMX0ryabuf2vEvN2z8wadIYwuDM+iqjEvb46kFdcNTUTUWx9
+X-Gm-Gg: ASbGncsYLRntT8njsK3F4U+OSXxz4M3pl4MIRcA5fUP4ciertgCRIgUg63X+K2dxQXO
+	E/lZxDD/eti/Z3KN6MqlNpvn6BARmHpVXxcc5rmHqnPeYm/wtZKBL0cMV0DOHHDVhrJ+uNx4MYV
+	8mv1ufQaxT3MZ0GiZS5kmxQM9He1M6VWKNKLvWWP9R5Rq7RVRVuUTKx1FktfM8AuEqV/RXzchvR
+	hpTY8iPg6alwu+V9vHKqaIw/OBUsmibN7VxpcMv2N9gc5+au+A/Tzev9UKtWSmUeQNo8crGrUQa
+	KmhK605H2R+Qi6QxfBMrujUaJz0zjFx9KTZuPLunb5LSM+XLERGVSeNpYZzJOkAaHD6FSzI=
+X-Google-Smtp-Source: AGHT+IHZqVxL2jMfGnFJvCqo3SzVy2B2G7bJ4YQZWAHeR9bu0BQM7AK7qrZR0exetEWBwuc0rGzEgg==
+X-Received: by 2002:a17:903:3c66:b0:235:f45f:ed41 with SMTP id d9443c01a7336-2366b32ce9dmr277329905ad.19.1750261463159;
+        Wed, 18 Jun 2025 08:44:23 -0700 (PDT)
+Received: from localhost ([2804:30c:4000:5900:b4c4:6073:1a92:4077])
+        by smtp.gmail.com with UTF8SMTPSA id d9443c01a7336-2365d88c061sm102134415ad.1.2025.06.18.08.44.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 18 Jun 2025 08:44:22 -0700 (PDT)
+Date: Wed, 18 Jun 2025 12:46:09 -0300
+From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+To: Bianca Costa Galvao <biancagalvao@usp.br>
+Cc: Bianca <biancalvao@gmail.com>, jic23@kernel.org,
+	juliacalixtorosa@usp.br, linux-iio@vger.kernel.org
+Subject: Re: [PATCH v2] iio: magnetometer: mmc35240: unify reg-access
+ predicates
+Message-ID: <aFLfQUw-rgVad_ae@debian-BULLSEYE-live-builder-AMD64>
+References: <20250526120340.16880-1-biancalvao@gmail.com>
+ <aD-6w2Mto5OK187U@debian-BULLSEYE-live-builder-AMD64>
+ <CA+eNY9r9fP50uoMKO_s_Dn3QPY4xy0Hdp_Q7+tX80FdXgx1Scw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250618031638.26477-1-andrew.lopes@alumni.usp.br> <CAHp75Ve4yAp6sViUWZY+0abRoNZ0W+rQLCmsbijEcrh8kguVOA@mail.gmail.com>
-In-Reply-To: <CAHp75Ve4yAp6sViUWZY+0abRoNZ0W+rQLCmsbijEcrh8kguVOA@mail.gmail.com>
-From: Andrew Ijano <andrew.ijano@gmail.com>
-Date: Wed, 18 Jun 2025 09:24:19 -0300
-X-Gm-Features: Ac12FXwGVXWrLr13WRwfmpLhpRnPU-8Xv8LlkIM0z-WiaWBJ6g-XsgAvMY0wBbw
-Message-ID: <CANZih_S9_8OdY=oKyVPBCTSTqYm_z_rkE=xbPym3uHOSsHMv6A@mail.gmail.com>
-Subject: Re: [PATCH v6 0/4] iio: accel: sca3000: simplify by using newer infrastructure
-To: Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: jic23@kernel.org, andrew.lopes@alumni.usp.br, gustavobastos@usp.br, 
-	dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org, 
-	jstephan@baylibre.com, linux-iio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CA+eNY9r9fP50uoMKO_s_Dn3QPY4xy0Hdp_Q7+tX80FdXgx1Scw@mail.gmail.com>
 
-On Wed, Jun 18, 2025 at 2:56=E2=80=AFAM Andy Shevchenko
-<andy.shevchenko@gmail.com> wrote:
->
-> On Wed, Jun 18, 2025 at 6:17=E2=80=AFAM Andrew Ijano <andrew.ijano@gmail.=
-com> wrote:
-> >
-> > The sca3000 driver is old and could be simplified by using newer
-> > infrastructure.
->
-> I haven't found any reference to a base commit here. Have you
-> forgotten to use --base when preparing the series?
-> In any case, please clarify what this series is based on.
+>     *4. Volatile vs. writeable logic*
+>     Rather than inverting is_writeable, would you recommend instead
+> enumerating explicitly only the registers that truly change—for example,
+> status and data registers—while leaving everything else non‑volatile?
 
-Thank you for pointing this out! I think I forgot to use --base for
-it. In this case, should I submit a new version of the whole patchset
-with this information or is there a better way to do it?
+Looks like that's already done at mmc35240_is_volatile_reg(). Since there are
+fewer non-volatile registers, it's more concise to enumerate those.
 
-Thanks,
-Andrew
+> Do you think it’s worthwhile to implement that explicit approach here? If
+> these adjustments look good, I will incorporate them and send PATCH v3
+> later today. Please let me know if you have any further suggestions or
+> questions.
+
+Maybe you could do
+static bool mmc35240_is_writeable_reg(struct device *dev, unsigned int reg)
+{
+	return !mmc35240_is_volatile_reg(...);
+}
+or the other way around. Although, such patches might not worth it since the
+proposed improvement is very small (and questionable) while the upstreaming
+process still requires some effort.
+
+Otherwise, I don't have any improvement suggestion for this driver.
+
+As general (not necessarily good) tip, I'd suggest to look at possible uses of
+FIELD_PREP and FIELD_GET (see include/linux/bitfield.h). Those tend to improve
+code robustness and readability. I don't have any specific suggestion, though.
+
+Best regards,
+Marcelo
 

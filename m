@@ -1,152 +1,174 @@
-Return-Path: <linux-iio+bounces-20787-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20788-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0762AE0A4E
-	for <lists+linux-iio@lfdr.de>; Thu, 19 Jun 2025 17:24:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3167CAE0A93
+	for <lists+linux-iio@lfdr.de>; Thu, 19 Jun 2025 17:36:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 487A116E9AA
-	for <lists+linux-iio@lfdr.de>; Thu, 19 Jun 2025 15:24:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CFCC03A655E
+	for <lists+linux-iio@lfdr.de>; Thu, 19 Jun 2025 15:35:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F302422A4FA;
-	Thu, 19 Jun 2025 15:24:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4958B235068;
+	Thu, 19 Jun 2025 15:35:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="GxD3DMrn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CxrCKAEp"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oo1-f49.google.com (mail-oo1-f49.google.com [209.85.161.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4422E21FF42
-	for <linux-iio@vger.kernel.org>; Thu, 19 Jun 2025 15:24:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEE9518024;
+	Thu, 19 Jun 2025 15:35:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750346678; cv=none; b=Q2Uer8kQI0uHsEaqhSifwR/uI7y3IWCwccaRpA1qDQ3m/IyB62D9HXcsas884r9tJSUfRPCsuPxPVoSs1ux8SKbCxw3ha7YUfzLXKnM0uqNFfexGAyvBKr1yKkwjzWEjFHoL7LoD9kPuCytRKGOvrcG2R1p8W1aCXOirxYR4NuQ=
+	t=1750347355; cv=none; b=KBjOihd693NHUdvuqxyLeI08o5muccwuMRAOVOyg+zzb73UeT0xjpTcmJlp2lug+ZB1z95u2X1PxfyzOiLiOrT6Tgyc5emoq1t3veYntYDCUmkE87aXEvrnJsNTz/claK1zlVmTsEk6Qdbw4L0Nxm2x5SDjN/VaCFV0YVKFdJJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750346678; c=relaxed/simple;
-	bh=NbjRBgHS6N81ErcTQ2zDQ29eXoBt4II91JaNbgMyD+A=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=QPlKDIdkfAqJSskl9k8umNi2R3zdMmmOWibRWhj5qOtR1Hg59JSGF6xsaBU3HNRijBeCSxb2KHWwIUgKXmxugzhuepkzGpTP9BKILg35ZnpSgIY2ONgxvSHfrp3ItTNXCgCF7bU6DD9oll344CGqr//G2qZro8sFKFjVwLwzfzs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=GxD3DMrn; arc=none smtp.client-ip=209.85.161.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oo1-f49.google.com with SMTP id 006d021491bc7-606668f8d51so528109eaf.0
-        for <linux-iio@vger.kernel.org>; Thu, 19 Jun 2025 08:24:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1750346674; x=1750951474; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=oF3I2fMiAeHRxAceaNHB6NVcsL7iUt3p1A5FjN7ZNCM=;
-        b=GxD3DMrn834A3NEC6yNp6TpcVoo4V5ZrAago9S2PzYVl/jLdyEcpU3pLNoNYILJXE+
-         MT2+t0vJo/cjXwQOeBz1LZP+9IyCehBLQuq4zcdZpnvtOfjmT2BJCSjWq8qY5lD8gvCV
-         pHdPELZq+GuPHx6Alz1KeUkKQ46XrUlUeH7/7eXqS+UiA67jeHd32mqmJaMBB1MwlyCa
-         tYMtlbQsHJDEGO4DYd/FDDt6YbcebIH9eV92n0tEIb8AE+QBhM8u341BZKwWYZc1gqih
-         F34i9JoNuWPO2nCyHfWgIlHordaGQ0+MlYQ0qhi9YjqwfaW/uQ0Kh0Ae2qLhQx2qIZxx
-         EYAw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750346674; x=1750951474;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=oF3I2fMiAeHRxAceaNHB6NVcsL7iUt3p1A5FjN7ZNCM=;
-        b=Q8/wNRqTHsEQleH21qBTSFbk/tfl1s64HDqd5eqZ6UrxAIDYchSD2+7dUeHiebvONj
-         wyET7KxLe9TuPlksF9iQQ4as4/l33lRHY7PxX01369V3vBGs44cKobtaH+tuxn7FTuyO
-         T6RUbDC4zCoFGuWkH0cLrlUnNDrf48keBuATCYyhJxMStWCtNl7jMzKfxAYv5DYGHPtt
-         RBMJ4yAkt2RPHGqnhOcYx6hg+iJcTHiuz2k3e/W5bv0R7UG3xus0AsIWPCKtWramsyli
-         /sUgcx/UvFMfLOaBBReRBnvRPCq+srXoFTY2C0EU6JyVIiSqluLX23DMOOty1mNI0pbw
-         ETTw==
-X-Forwarded-Encrypted: i=1; AJvYcCXQKmgkWcULTweryB/tBXd4WrARJOuwPS51iumdVtV6b69LIzcUbu+Qv+TcBZU29U77LVq6WsjhL1E=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzFIz5beGGRWygPnml9SfJxAb+opJNtktzeV3wlN3OSNd5GqCrN
-	q0fjFV2roh6+bHc8sHznka5de4whE/Z12rdW3LynPvsXvfQS2Bx/yHUWW76qReUkjgE=
-X-Gm-Gg: ASbGncuv2mfDM0F7Tg0dg3HfCNjpslfQuGsvBpckFciWyPZ7VrMR1z28XeWGfetXLAD
-	3qXg2jIosoc4k2qnpc6ftv1efnS+o4vUtddphOVgYz0+4bc8OEQTR6Ops3WCfzQz0DdpFXcYrsD
-	TqsXU+0PFXQ+aAOp5vXYrxsCgdaVrTb+1evvqW9NhPzpf84MnyX9Y7PRHvtOZrSk67vZopRnb2M
-	LbE2t2A1HgcaU9PipYvJEUEJ14EQhRlSJjsd0H8/My3JuboxoOEe8jAjPOP6NwQOQVbxY+Nw6ac
-	NqjTb/udfAxzneYb3b4DksVTH1masBZEbAdYUNwVQ1XTf/ALZSlo65ca/AvP6NfZCeEY
-X-Google-Smtp-Source: AGHT+IFfY9+XnMj7opL/quY3CmJs8pbgKYZ2HY0gDux4/arc3IVAcwHByPhAAM5rJJxhkIaBmTx0GQ==
-X-Received: by 2002:a05:6820:618b:b0:60b:c4df:e901 with SMTP id 006d021491bc7-6114e9d914dmr1658054eaf.4.1750346674260;
-        Thu, 19 Jun 2025 08:24:34 -0700 (PDT)
-Received: from [127.0.1.1] ([2600:8803:e7e4:1d00:5504:5211:6fc4:c093])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-6114839c976sm354374eaf.39.2025.06.19.08.24.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Jun 2025 08:24:32 -0700 (PDT)
-From: David Lechner <dlechner@baylibre.com>
-Date: Thu, 19 Jun 2025 10:24:22 -0500
-Subject: [PATCH] iio: adc: ad7380: fix adi,gain-milli property parsing
+	s=arc-20240116; t=1750347355; c=relaxed/simple;
+	bh=FLBk1parzQuTc39wiLqU2V5ewA+xhI87tizdVtgIMjw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BzG5LbjgisYgcPky9cd40NEBf24+XFqxZyhS64yFrdvBl6rk2RIzEsEMe0tWT1H+DZ4U+0RAveMMFZmqjklizQW920NUOtOJIDOPjv2zY4UFWs9w0HI2CCA91IE0PLK0rvW8YgGaALqRHJizG/xtWnmXUw+sFcYkBwEMHzJqvkU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CxrCKAEp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC772C4CEEA;
+	Thu, 19 Jun 2025 15:35:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750347354;
+	bh=FLBk1parzQuTc39wiLqU2V5ewA+xhI87tizdVtgIMjw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=CxrCKAEpIwbv7rSlkUEHuD5SlOJwNU+lOK4Vln6OlpTgpFkkshadG9jpxh7ycaQzM
+	 /Tl3S1cD0ORoe6TcF+xU5SzJO6xKu+ckV0Id9UzoPtVWmHxLYNbnfP+E6DsHvBFLdS
+	 YRnDIeqDQYHt5EaUBs1rrrjWFANG8AwRhOWOybk66aU1PRPsmKnBCIqNwxKW0ePO7v
+	 2fhm68vHeaTQtaJQs95lW/Wgp1IVxz0qsYQ3biL8mhYLY1/7yBY+3udSZl7rDUBOKx
+	 SNSYG2wdggk9ilZDeW9seMaVhnhVeYZHpWpzIt5z8qI3gVgQ1DIyTApNa3S+QccA6p
+	 R17O/E3qNIOjg==
+Date: Thu, 19 Jun 2025 16:35:48 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Marcelo Schmitt <marcelo.schmitt@analog.com>
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
+	jic23@kernel.org, lars@metafoo.de, Michael.Hennerich@analog.com,
+	dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org,
+	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	linus.walleij@linaro.org, brgl@bgdev.pl, broonie@kernel.org,
+	lgirdwood@gmail.com, marcelo.schmitt1@gmail.com
+Subject: Re: [PATCH v6 01/12] dt-bindings: iio: adc: Add AD4170
+Message-ID: <20250619-sitter-uranium-e7298befd733@spud>
+References: <cover.1750258776.git.marcelo.schmitt@analog.com>
+ <6399c1eb6d8e1bbdf720f189a7244b1d75a90ed2.1750258776.git.marcelo.schmitt@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250619-iio-adc-ad7380-fix-adi-gain-milli-parsing-v1-1-4c27fb426860@baylibre.com>
-X-B4-Tracking: v=1; b=H4sIAKUrVGgC/x2NSwrDMAxErxK0rkB2+nF6ldKFiWV3IHWCDaUQc
- veKLgbmwWNmp64N2uk+7NT0g461GrjTQPMr1qKMZExe/EWubmJg5Zhmy20Mwhlfq+ASUfmNZQF
- vsXXUwiFlcT5IPk8j2d7W1Oz/1+N5HD/mktjMewAAAA==
-X-Change-ID: 20250619-iio-adc-ad7380-fix-adi-gain-milli-parsing-8df01280f493
-To: Michael Hennerich <michael.hennerich@analog.com>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Lars-Peter Clausen <lars@metafoo.de>, Jonathan Cameron <jic23@kernel.org>, 
- Julien Stephan <jstephan@baylibre.com>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- David Lechner <dlechner@baylibre.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1560; i=dlechner@baylibre.com;
- h=from:subject:message-id; bh=NbjRBgHS6N81ErcTQ2zDQ29eXoBt4II91JaNbgMyD+A=;
- b=owEBbQGS/pANAwAKAcLMIAH/AY/AAcsmYgBoVCuoZpSj7av0dpZ8IJt3GTeSPdzwJ49Wmo5Hn
- qY29xbWBS+JATMEAAEKAB0WIQTsGNmeYg6D1pzYaJjCzCAB/wGPwAUCaFQrqAAKCRDCzCAB/wGP
- wOuIB/wLlo5NUyfGwiuE6OeIYXz6zBFPzTtljbZDT1dSLJsklLdye5HqJgCoqWCxko1v3rncgG7
- eeSNubseJV4enobHMucl7/uR/Phf8PCdiinQo2WLb+l+ZwrJJ75Ch7e1gwRNoXnDUdLs1vZ69k4
- mrPLS40iO7bCqWlcTUwsp4olUXpPc46+49gp+8qz3En09lsNt8Vz8mMRvPklGI4pDodFR2JIYmY
- Bx1uSDMuL558E7gjVcH7riJHQzFhh80vDsqo5r7QN5G7j9TzAZtWnEA3qCS2Q8HJvdXX7bMpzti
- OUxQYUHJ3jOQQr6wf6Wv8ls0kX4UV4JQL8jjuQ9zsxsSU5z3
-X-Developer-Key: i=dlechner@baylibre.com; a=openpgp;
- fpr=8A73D82A6A1F509907F373881F8AF88C82F77C03
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="9epqL+mz31WyTolT"
+Content-Disposition: inline
+In-Reply-To: <6399c1eb6d8e1bbdf720f189a7244b1d75a90ed2.1750258776.git.marcelo.schmitt@analog.com>
 
-Change the data type of the "adi,gain-milli" property from u32 to u16.
-The devicetree binding specifies it as uint16, so we need to read it as
-such to avoid an -EOVERFLOW error when parsing the property.
 
-Fixes: c904e6dcf402 ("iio: adc: ad7380: add support for adaq4370-4 and adaq4380-4")
-Signed-off-by: David Lechner <dlechner@baylibre.com>
----
- drivers/iio/adc/ad7380.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+--9epqL+mz31WyTolT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/drivers/iio/adc/ad7380.c b/drivers/iio/adc/ad7380.c
-index aef85093eb16cbe9cc062f8cb4239e955c8a21b6..fd17e28e279191c2603537a9bddc7eb9976c144c 100644
---- a/drivers/iio/adc/ad7380.c
-+++ b/drivers/iio/adc/ad7380.c
-@@ -1920,8 +1920,9 @@ static int ad7380_probe(struct spi_device *spi)
- 
- 	if (st->chip_info->has_hardware_gain) {
- 		device_for_each_child_node_scoped(dev, node) {
--			unsigned int channel, gain;
-+			unsigned int channel;
- 			int gain_idx;
-+			u16 gain;
- 
- 			ret = fwnode_property_read_u32(node, "reg", &channel);
- 			if (ret)
-@@ -1933,7 +1934,7 @@ static int ad7380_probe(struct spi_device *spi)
- 						     "Invalid channel number %i\n",
- 						     channel);
- 
--			ret = fwnode_property_read_u32(node, "adi,gain-milli",
-+			ret = fwnode_property_read_u16(node, "adi,gain-milli",
- 						       &gain);
- 			if (ret && ret != -EINVAL)
- 				return dev_err_probe(dev, ret,
+On Wed, Jun 18, 2025 at 02:34:57PM -0300, Marcelo Schmitt wrote:
+> Add device tree documentation for AD4170 and similar sigma-delta ADCs.
+> The AD4170 is a 24-bit, multichannel, sigma-delta ADC.
+>=20
+> Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
+> ---
+> Change log v5 -> v6
+> - Made reference-buffer string type.
+> - Moved required section before patternProperties.
+> - Made avss, refin1n, refin2n documentation open to accepting positive and
+>   negative voltage specifications where appropriate.
+>=20
+> The point of making avss-supply, refin1n-supply and refin2n-supply docume=
+ntation
+> open to negative voltage values is to allow device tree to specify the re=
+gulator
+> true voltage level so the drivers won't need to workaround negative suppl=
+ies in
+> the future.
+>=20
+>  .../bindings/iio/adc/adi,ad4170.yaml          | 558 ++++++++++++++++++
+>  MAINTAINERS                                   |   7 +
+>  2 files changed, 565 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad4170.=
+yaml
+>=20
+> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad4170.yaml b/=
+Documentation/devicetree/bindings/iio/adc/adi,ad4170.yaml
+> new file mode 100644
+> index 000000000000..b7fe664bb87d
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad4170.yaml
+> @@ -0,0 +1,558 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/adc/adi,ad4170.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Analog Devices AD4170 and similar Analog to Digital Converters
+> +
+> +maintainers:
+> +  - Marcelo Schmitt <marcelo.schmitt@analog.com>
+> +
+> +description: |
+> +  Analog Devices AD4170 series of Sigma-delta Analog to Digital Converte=
+rs.
+> +  Specifications can be found at:
+> +    https://www.analog.com/media/en/technical-documentation/data-sheets/=
+ad4170-4.pdf
+> +    https://www.analog.com/media/en/technical-documentation/data-sheets/=
+ad4190-4.pdf
+> +    https://www.analog.com/media/en/technical-documentation/data-sheets/=
+ad4195-4.pdf
+> +
+> +$ref: /schemas/spi/spi-peripheral-props.yaml#
+> +
+> +$defs:
+> +  reference-buffer:
+> +    description: |
+> +      Enable precharge buffer, full buffer, or skip reference buffering =
+of
+> +      the positive/negative voltage reference. Because the output impeda=
+nce
+> +      of the source driving the voltage reference inputs may be dynamic,
+> +      resistive/capacitive combinations of those inputs can cause DC gain
+> +      errors if the reference inputs go unbuffered into the ADC. Enable
+> +      reference buffering if the provided reference source has dynamic h=
+igh
+> +      impedance output. Note the absolute voltage allowed on REFINn+ and=
+ REFINn-
+> +      inputs is from AVSS - 50 mV to AVDD + 50 mV when the reference buf=
+fers are
+> +      disabled but narrows to AVSS to AVDD when reference buffering is e=
+nabled
+> +      or in precharge mode.
 
----
-base-commit: a3245ebdfac846ce0b563a3ed474be2e15381f9f
-change-id: 20250619-iio-adc-ad7380-fix-adi-gain-milli-parsing-8df01280f493
+> The valid options for this property are:
+> +      0: Reference precharge buffer.
+> +      1: Full reference buffering.
+> +      2: Bypass reference buffers (buffering disabled).
 
-Best regards,
--- 
-David Lechner <dlechner@baylibre.com>
+You forgot to remove this text. With that gone, I think this is
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+and that's explicitly an ack not an r-b cos I would like to see the lads
+being happy with what you've done.
 
+--9epqL+mz31WyTolT
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaFQuVAAKCRB4tDGHoIJi
+0i0eAP9nTy+DeSnflGncrmUmx/nnRZMQoDV6L8vWUxd/I6iXqAD+NzVivlD4nott
+ZhLPnuPue3oDTZOrsxZw62s/DeSFrQg=
+=MHbv
+-----END PGP SIGNATURE-----
+
+--9epqL+mz31WyTolT--
 

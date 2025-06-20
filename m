@@ -1,136 +1,180 @@
-Return-Path: <linux-iio+bounces-20795-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20796-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 164D3AE1BEE
-	for <lists+linux-iio@lfdr.de>; Fri, 20 Jun 2025 15:19:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3C79AE1D5A
+	for <lists+linux-iio@lfdr.de>; Fri, 20 Jun 2025 16:31:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 06650189B062
-	for <lists+linux-iio@lfdr.de>; Fri, 20 Jun 2025 13:19:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C8DDE3A8238
+	for <lists+linux-iio@lfdr.de>; Fri, 20 Jun 2025 14:30:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD21128BA91;
-	Fri, 20 Jun 2025 13:19:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6917A28C2B4;
+	Fri, 20 Jun 2025 14:31:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="CI/g0L5a"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="VE8SFfo1"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ot1-f50.google.com (mail-ot1-f50.google.com [209.85.210.50])
+Received: from mail-ot1-f41.google.com (mail-ot1-f41.google.com [209.85.210.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 211BF28C2D6
-	for <linux-iio@vger.kernel.org>; Fri, 20 Jun 2025 13:19:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04E0942A9D
+	for <linux-iio@vger.kernel.org>; Fri, 20 Jun 2025 14:30:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750425557; cv=none; b=kvD1es8YsQw+7+7itowVFlOAMEM8dz8ne8bjbRUkkvgUlwGOnzAOKrRs7CddnkkAnmwoIUo2IF+v03X4G+3xzKIoXTLfAXvm96TcVZ3fGku7tLeihDbzIkL3I+s9g4fEXAwsxFypVA5QYgLfrXcLUBuHdFhnxPGbScSXH7iA84s=
+	t=1750429861; cv=none; b=EymesYfXTLYfFEvAksMuQq6N1IlT38zPTVPeYv2wTIKXnmSJsqEvEq2r8msMoqTYwc7sCGJrznAD2y6klrrLSxjjDW5IEB92OfuYuFAubDUOC7NQYptaoT++6DhD9al0hRpj+hH43IVMvkLj61Abx2x9GSyRHJCnrDXXy8ppBvw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750425557; c=relaxed/simple;
-	bh=UYboRpcf2l6D1iqKjxqKWDn9qWV4TH/OyIbBTGBpKlw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VrsrKkidb6qR9ybys41IOc7NvFfLVA0UcRIZLbd+KXwgk967aATTyPeGfldLMB2Oy0MZSfgd2r91PoreCc5Neq9AMIBxU07hVua2VubrZ+Fu+u+pWwEgxddJUNlBXGqAQ6OwxUf76BzbixVg+xykUIp9s6+wP6Sw+czbEUVyhFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=CI/g0L5a; arc=none smtp.client-ip=209.85.210.50
+	s=arc-20240116; t=1750429861; c=relaxed/simple;
+	bh=d+tBbnXnuP1Aw18tSmzyeeXf7BJTncfiaueZLDk2Uss=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=D7u3dcI8BG0lhuFY6reWs8ibcQm7XMGZllAMvInFKMoxNRzph4gHPOax9LUxy/fln8uhO/hjC8MlPUGYt5wMgXtxA70fueFr3RNKxucwEeFV8AIYnsq49KLRCIvlj6+y05C7ecjYvL5cfV2VGIRZuEFYhGCoDY3HCEwDvd8V0Lk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=VE8SFfo1; arc=none smtp.client-ip=209.85.210.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ot1-f50.google.com with SMTP id 46e09a7af769-73a5c1d9d93so1802530a34.3
-        for <linux-iio@vger.kernel.org>; Fri, 20 Jun 2025 06:19:13 -0700 (PDT)
+Received: by mail-ot1-f41.google.com with SMTP id 46e09a7af769-72c09f8369cso522270a34.3
+        for <linux-iio@vger.kernel.org>; Fri, 20 Jun 2025 07:30:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1750425553; x=1751030353; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=85nsbaEK6Tnb7LEAxhlSFVrthkkPjQvKgGVR+IA4SPA=;
-        b=CI/g0L5a05qTpY6fIJspqv+KDcbRojKqTXEKvoEvLsMiXtDlNpX/PPkXCVxlYLQQ+k
-         3uVTz6AMdzmOcgpsl4Ie5G86u8ieoqyKmz1rkcswhNtVPCmIrNwbsmUFy7OwGgu2+3PV
-         fFlE0Agj2P7aZj2fEXticzdlGXrA4+dX96aZU1nsjfj0FRP+lY9t95nzTYkFcAbCwnd0
-         PE6yqT/0LAozN20Awrg75/Q/Hg6wwNfqyb1NqAov9SPHDpq2vZ66JmMhnbfRctKSUqPn
-         y9Cr3HyI3zy4b6vxjs/klDaHsxElJNlaZ4NY6dp0fZZawTZsAYEwkbljkoin5RIbNr3z
-         ZTNg==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1750429858; x=1751034658; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=tmVzPllUaqBQmdNyvqNOvQadtFWcR0uWxu6A+vRIQOk=;
+        b=VE8SFfo1gK547LrXaAisHzf91EgB/uwaiodpQm638xQ+DO1M3y9m+jRx/F5M9b0JiJ
+         /FXm0oc0Mb1AQ8GBv2R4QbAdD2ksXkjbpgWId5QRnyBTlHnIIX0oBjhdRPgYNcW/F5h7
+         9Vs0UgO4P72Yr6WnW5+9jNQkyiTkF73o4HDgsEV473dGv2Nz8vDlxyYjxI0DXlOZtC7D
+         0qgeyyfhVrjPJn3iHqGhNqsHpet5RlLfNVcPHfOiFQ+w7d6VCyejgfP0lGb7GjnNfy4/
+         J3KaGsCsMmH0sux3k8HaKTZ5XqbPxhm8OwhtmaVxlgEVmcNaFJolF2Cy3SEg1DI0wlv8
+         ZSWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750425553; x=1751030353;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=85nsbaEK6Tnb7LEAxhlSFVrthkkPjQvKgGVR+IA4SPA=;
-        b=vUK9QDiKGW5FLKxugLEyqHwlXLAkGe5rFZSqCIT8qySKXe7NH9IH6XtB12EEwQyOgf
-         SHjiwgUt31tZN8EgHW7Sj8Iek/y6XPFhIWX/l4r/cmk6euS+o9GXOcjicjULMyjRwSHf
-         fthSkKe+wE45HLcn1HNwk2Og1ZWWx6jl+97VxrmKyYoqmeZFYfdSeNp/1Q7TZKKCJy5V
-         c38WKupeaTSnYoqTSQYNzCZPSVIiYI6ptDKedl347TVQaDfR/2Vvyyz1VK+VocZ6hWc4
-         vuRLdBk+3COFM4nlkz4jJXXlCYkf8ot/hm94m9MvFUCXx+cfWLmxZpFxvql8KJkhtrEh
-         5+Cg==
-X-Forwarded-Encrypted: i=1; AJvYcCWlYzZkESm6Pu7egP5yz8FXwOO8HR3uytwnsB5fsDstHWXm8ha03xMliOBedLrfL04m7ue3v69Ob0k=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxbrU52umihEVMyj7RaFsWk2M2iV7cnWh24gWnRu0Ig0528Jf4/
-	7+CxLiEnJ6B0hFeCJYa90LGioE288517QHhMx5U2ZtqkbGIwxwDRK6i+6+p5WIW3tHw=
-X-Gm-Gg: ASbGncuw1phSuN1toGJug2h0hKaThM6z20+WDdkE1mgu3szD2j+ZF7bU53T6xnliHkU
-	vwkYogA8DEnmwNhl0O6cXbyxAO2hnk6G0unSr2lpTX5l58qMD31ON68g5q1SBVFjnLV9hfIWk5f
-	NXXlzG3EOiUxF2YvsZ+mJixD6WBFUyaUeiQCCjtOGcNfahg3RdVecGeHU6tVEqyuI0O5hObao2L
-	DCAoVe0hxtsS1qM+9fiW4XDAfQAfa42lqc/4WBfdfj86nWwmzI65G5+J4BaJzLGPKpjkqxZJKLk
-	QuKP/oTM1FhjOBjNw/NjsZkNiKIxdtniiYw2sLGXGWZPF52ZVX/kvapdeIhE0gRjA1UoW2U6qVL
-	ZBop8qrnzwO54Z8ZGSBULX7u0OXBBDyv0KOTazQg=
-X-Google-Smtp-Source: AGHT+IFB1egOnI3wTOzC6Gt7TYLJB8opelbR9lz+HHIeqFUUdilNUH0J122GTltzseWPkp6skmjj0A==
-X-Received: by 2002:a05:6870:2b12:b0:2df:b3b9:5dfe with SMTP id 586e51a60fabf-2eeee5e5ef9mr2209324fac.29.1750425553093;
-        Fri, 20 Jun 2025 06:19:13 -0700 (PDT)
-Received: from ?IPV6:2600:8803:e7e4:1d00:5504:5211:6fc4:c093? ([2600:8803:e7e4:1d00:5504:5211:6fc4:c093])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2ee8a8e3710sm380533fac.27.2025.06.20.06.19.10
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 20 Jun 2025 06:19:11 -0700 (PDT)
-Message-ID: <2efc99c5-d1ce-43ee-8747-df0e6b0e73c5@baylibre.com>
-Date: Fri, 20 Jun 2025 08:19:09 -0500
+        d=1e100.net; s=20230601; t=1750429858; x=1751034658;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=tmVzPllUaqBQmdNyvqNOvQadtFWcR0uWxu6A+vRIQOk=;
+        b=uKu847QZts+4VEZK5C97gTsFk1BVIDQHUv3qrtKYR+9eZ1j+dj9F6+Dnb1S+NLx4TT
+         /l5B20mie8VCtroFe+cFRHenCguyLegtc1/fFbzZhpbJrU/bqlFcR32SU4FQMZXAOtLQ
+         lS/QxrrHVJwFXgboQTR4RW67s0lryQHXzkyMP8xAisHCTz3vexP4JiRekWcJvsCYFOYD
+         LhIokHgu/s2q9S36tf1jRL4N6JJ5irFWhuu/QaUxsQOLdJbEYHR0HKLfusUUCIqbbVcl
+         yWdAtWgmkeJhkIKAaRIWAjpTLQXDpz8YdXSwZFWwE91IlSnl8+x23JYsNPV3G1zgc7Tr
+         HsZw==
+X-Gm-Message-State: AOJu0YykKzV+ZZXFUkki4gWhqAYfWTik2sAjbZwQcWHM+AVJPUCaPMkJ
+	GCX1HD/tpeZXUvB60yPOtobivNrI07Kx+lzuagicC2I6L4/bjnl6H6qBSvlh+rXUTvI=
+X-Gm-Gg: ASbGnct0J8Je/a5A2zxZbvwNqo9TOCvFNo50wIrlb1K05PqDEU+DHhSfYeirNX85cL7
+	SwW+wZaj36FcY/itKcKv7fBZxM0SQ7kntfZs3woVSm3cLtgqM9koO3BUfNWJmbBw93g0segfdQK
+	3iNvJfnEtED4HlYxewSOMoAGbD4CO/AskMLRBkk0JOENmn2KZ9Yexswg+atzyFvfUsGzmh8OuQR
+	fRpddZtVUKjTdBZBnRqAXof2p31WypEu3549EdJJIUS4LBiYGYQCPnFy+niLWSW34gZv7IbCKyB
+	Do69rstqQN2zjumraxVN6NEsgDKi75QtVjdnqAFS1+9Ij5L60D3+/PT/ueQJqMA4v25t
+X-Google-Smtp-Source: AGHT+IE5BGR5eu1dD9FL/WEy166Q11BDwtcIqP3DcfSqW35EFvZ8EFw5B9tD/CYrVGXprrda6Pe9DA==
+X-Received: by 2002:a05:6870:910e:b0:2ea:1e5d:8ad3 with SMTP id 586e51a60fabf-2eeee4e051cmr1972468fac.22.1750429856053;
+        Fri, 20 Jun 2025 07:30:56 -0700 (PDT)
+Received: from [127.0.1.1] ([2600:8803:e7e4:1d00:c4bf:cf27:203c:f8b0])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2ef38d748acsm94328fac.47.2025.06.20.07.30.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 20 Jun 2025 07:30:54 -0700 (PDT)
+From: David Lechner <dlechner@baylibre.com>
+Date: Fri, 20 Jun 2025 09:30:46 -0500
+Subject: [PATCH] iio: adc: ad7173: simplify clock enable/disable
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 1/2] Add the iio driver for bosch pressure sensor
- bmp390. The bmp390 is a pressure sensor module. It will support SPI and I2C
- protocol based on configuration.
-To: liquancin.mereenamathai@in.bosch.com, linux-iio@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, jic23@kernel.org, nuno.sa@analog.com,
- andy@kernel.org, vassilisamir@gmail.com, marcelo.schmitt1@gmail.com,
- javier.carrasco.cruz@gmail.com, Xu.Zhang@cn.bosch.com,
- Maoting.Bian@cn.bosch.com
-References: <20250620045456.1151-1-liquancin.mereenamathai@in.bosch.com>
- <20250620045456.1151-2-liquancin.mereenamathai@in.bosch.com>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <20250620045456.1151-2-liquancin.mereenamathai@in.bosch.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20250620-iio-adc-ad7173-simplify-clock-enable-disable-v1-1-8bc693b190ec@baylibre.com>
+X-B4-Tracking: v=1; b=H4sIAJVwVWgC/x2NQQrCMBBFr1Jm7cAkoU3xKuIinUx1MCYlAVFK7
+ 27o4vF5m/92aFJVGlyHHap8tGnJXcxlAH6G/BDU2B0s2ZEmS6haMETueOMdNn1vSdcfcir8Qsl
+ hSYJR27mLmyO5mb03BP1yq7Lq98zd7sfxBxNOsfp+AAAA
+X-Change-ID: 20250620-iio-adc-ad7173-simplify-clock-enable-disable-b38d038c7710
+To: Michael Hennerich <Michael.Hennerich@analog.com>, 
+ Jonathan Cameron <jic23@kernel.org>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Andy Shevchenko <andy@kernel.org>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ David Lechner <dlechner@baylibre.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2457; i=dlechner@baylibre.com;
+ h=from:subject:message-id; bh=d+tBbnXnuP1Aw18tSmzyeeXf7BJTncfiaueZLDk2Uss=;
+ b=owEBbQGS/pANAwAKAcLMIAH/AY/AAcsmYgBoVXCXb0etDEOZnBOuv6Q2xcyNDwD1UJcWltQNr
+ luBjK9N5R6JATMEAAEKAB0WIQTsGNmeYg6D1pzYaJjCzCAB/wGPwAUCaFVwlwAKCRDCzCAB/wGP
+ wPA3B/9i74EUAUY8X2yyavKWZpnmUCbbdxISHcQ2OLJIGLjkaRXr6i7vlhoDPfrVn2yJ2621Gwq
+ Ly1erEAknplvwnnEPIaH6oiFq8wca//qb6X9roMLLMFIu3tYg4o9CCnY+OkXlt8pZtP/7YG5gDx
+ Con5qY4rKuB8pWcINB9SA7s2YOObBzGIsSJWqeqFnvBESugvt6Gez+7RDeZXoMZy9Xuvy8f3Vcf
+ zuaZj0HJRhBXPSNt18ilRRdctzouJQt8eqPc4D8IB2cf4s9OhwnZz8897ZXcyn73k1+uMOawJNZ
+ 9ldcSn1r9HnOhV5+sHeynwQWhqoLeu4uz3Co1J5xg4I9Laqn
+X-Developer-Key: i=dlechner@baylibre.com; a=openpgp;
+ fpr=8A73D82A6A1F509907F373881F8AF88C82F77C03
 
-On 6/19/25 11:54 PM, liquancin.mereenamathai@in.bosch.com wrote:
-> From: Liquancin Mereena Mathai <liquancin.mereenamathai@in.bosch.com>
-> 
-> Implemented features:
-> * raw data access for pressure and temp through sysfs
-> * iio buffer tool support for continuous sampling
+Use devm_clk_get_enabled() instead of devm_clk_get(),
+clk_prepare_enable(), devm_add_action_or_reset() to simplify the
+code as it effectively does the same thing.
 
-A driver only doing these two things should be 100s of lines, not
-thousands. Clearly, there is a lot more going on than this.
+We can also drop ext_clk from struct ad7173_state since it is not used
+anywhere else.
 
-So in addition to Krzysztof's advice, please split out the driver into
-separate patches for different features. Ideally a whole series is 1000
-or maybe 1500 lines max and individual patches 500 lines max. This will
-make it much easier to review and it will give you a chance to explain
-things in more detail in each commit message.
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+---
+ drivers/iio/adc/ad7173.c | 24 +++++-------------------
+ 1 file changed, 5 insertions(+), 19 deletions(-)
 
-> 
-> Signed-off-by: Liquancin Mereena Mathai <liquancin.mereenamathai@in.bosch.com>
-> ---
->  MAINTAINERS                                   |    7 +
->  drivers/iio/pressure/Kconfig                  |   26 +
->  drivers/iio/pressure/Makefile                 |    1 +
->  drivers/iio/pressure/bmp390/Kconfig           |   29 +
->  drivers/iio/pressure/bmp390/Makefile          |   32 +
->  drivers/iio/pressure/bmp390/bmp3.c            | 2781 +++++++++++++++++
->  drivers/iio/pressure/bmp390/bmp3.h            |  537 ++++
->  drivers/iio/pressure/bmp390/bmp390_driver.c   | 1604 ++++++++++
->  drivers/iio/pressure/bmp390/bmp390_driver.h   |  232 ++
->  drivers/iio/pressure/bmp390/bmp390_i2c.c      |  328 ++
->  .../iio/pressure/bmp390/bmp390_iio_buffer.c   |  220 ++
->  drivers/iio/pressure/bmp390/bmp390_spi.c      |  286 ++
->  drivers/iio/pressure/bmp390/bmp3_defs.h       |  871 ++++++
->  drivers/iio/pressure/bmp390/bmp3_selftest.c   |  184 ++
->  drivers/iio/pressure/bmp390/bmp3_selftest.h   |   93 +
->  15 files changed, 7231 insertions(+)
+diff --git a/drivers/iio/adc/ad7173.c b/drivers/iio/adc/ad7173.c
+index d75adb88af206f6123f5d556c2f5426dc313b662..dd9fa35555c79ead5a1b88d1dc6cc3db122502be 100644
+--- a/drivers/iio/adc/ad7173.c
++++ b/drivers/iio/adc/ad7173.c
+@@ -228,7 +228,6 @@ struct ad7173_state {
+ 	struct ida cfg_slots_status;
+ 	unsigned long long config_usage_counter;
+ 	unsigned long long *config_cnts;
+-	struct clk *ext_clk;
+ 	struct clk_hw int_clk_hw;
+ 	struct regmap *reg_gpiocon_regmap;
+ 	struct gpio_regmap *gpio_regmap;
+@@ -1344,11 +1343,6 @@ static void ad7173_disable_regulators(void *data)
+ 	regulator_bulk_disable(ARRAY_SIZE(st->regulators), st->regulators);
+ }
+ 
+-static void ad7173_clk_disable_unprepare(void *clk)
+-{
+-	clk_disable_unprepare(clk);
+-}
+-
+ static unsigned long ad7173_sel_clk(struct ad7173_state *st,
+ 				    unsigned int clk_sel)
+ {
+@@ -1718,22 +1712,14 @@ static int ad7173_fw_parse_device_config(struct iio_dev *indio_dev)
+ 					   AD7173_ADC_MODE_CLOCKSEL_INT);
+ 		ad7173_register_clk_provider(indio_dev);
+ 	} else {
++		struct clk *clk;
++
+ 		st->adc_mode |= FIELD_PREP(AD7173_ADC_MODE_CLOCKSEL_MASK,
+ 					   AD7173_ADC_MODE_CLOCKSEL_EXT + ret);
+-		st->ext_clk = devm_clk_get(dev, ad7173_clk_sel[ret]);
+-		if (IS_ERR(st->ext_clk))
+-			return dev_err_probe(dev, PTR_ERR(st->ext_clk),
++		clk = devm_clk_get_enabled(dev, ad7173_clk_sel[ret]);
++		if (IS_ERR(clk))
++			return dev_err_probe(dev, PTR_ERR(clk),
+ 					     "Failed to get external clock\n");
+-
+-		ret = clk_prepare_enable(st->ext_clk);
+-		if (ret)
+-			return dev_err_probe(dev, ret,
+-					     "Failed to enable external clock\n");
+-
+-		ret = devm_add_action_or_reset(dev, ad7173_clk_disable_unprepare,
+-					       st->ext_clk);
+-		if (ret)
+-			return ret;
+ 	}
+ 
+ 	return ad7173_fw_parse_channel_config(indio_dev);
+
+---
+base-commit: 7461179e080df770240850a126cc7dbffad195c8
+change-id: 20250620-iio-adc-ad7173-simplify-clock-enable-disable-b38d038c7710
+
+Best regards,
+-- 
+David Lechner <dlechner@baylibre.com>
+
 

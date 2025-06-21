@@ -1,111 +1,161 @@
-Return-Path: <linux-iio+bounces-20822-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20823-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 133FBAE2A95
-	for <lists+linux-iio@lfdr.de>; Sat, 21 Jun 2025 19:20:30 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42FE1AE2ACC
+	for <lists+linux-iio@lfdr.de>; Sat, 21 Jun 2025 19:25:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 44E9B3BC8D8
-	for <lists+linux-iio@lfdr.de>; Sat, 21 Jun 2025 17:19:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 97BD57A6092
+	for <lists+linux-iio@lfdr.de>; Sat, 21 Jun 2025 17:23:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95F19223715;
-	Sat, 21 Jun 2025 17:19:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96D8A24C068;
+	Sat, 21 Jun 2025 17:24:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k86AvFf0"
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="BZXVOmdc";
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="GUqLV1hf"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46562222580;
-	Sat, 21 Jun 2025 17:19:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A99C1246769;
+	Sat, 21 Jun 2025 17:24:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750526394; cv=none; b=TTYDAoGNQAnTq6+LNKwfs4OLi2xhcrwCrjxAYhgLY5HHdYMApT6ffVRXztQQY36/Ra9SfGrvUUiwlYtPPGvCQGocCtbslmxGw5HhGoD8JYsEQ8HqrT5loZq+CXxhsRC+fSeOZ5HoLZGqrjxjqRg5i/2mt8eQ9E/wDTUdULp4gj4=
+	t=1750526670; cv=none; b=gtGZdSHL9kolGwHGbg4iN1RrRWx5Jtn6KUtyh77CnMw4+vFrjSEPH+PCz6xE01Ul32QAJt0ex4kTEq04hBRhfP3/P1495h1zYoYx4DweXOAR0GmFayrRCkOfuOzbovV/74vdQ4auKdururL7vuRsMLWVZ9mRgXoBCN+DCf5gIuA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750526394; c=relaxed/simple;
-	bh=we+oCKABVV6Skl7RacxNHRk3oYJEl72c2KoaHxAjFO8=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dJxAJr93SCs0Hmgn/x+2UTCNjdeV0exAEMJWvXxsOc5PyFRpiLlI+KEuSur44eUhQDQiLvaZ/sneSQHGKIzFYL1wMWQ+cE9gzlCyRbbzwGSkMYnXOzlg1zEd6+nh+cemjFS7Um77sZlDQjCJw2IiZZM7FRQWRV2W2eOImgExejU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k86AvFf0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71E55C4CEE7;
-	Sat, 21 Jun 2025 17:19:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750526393;
-	bh=we+oCKABVV6Skl7RacxNHRk3oYJEl72c2KoaHxAjFO8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=k86AvFf0EQiihhYED/nfLFgPnowcKfQeHlNPcTB+AoxRuhHyR+9JmFgPVhfs+0PX8
-	 FTIQS7t7+cVWPAJtLPfRs55oKn3wwMISi0glJHroIhtp4AOi6k+rkuWKkrxLvbTqRn
-	 lonf9CvfADNS7zhTnSLsKw1vrhURIrYxNZ7do5lqxXSZldsLEBw0XCuzFZ3VA+5p80
-	 NsjcND4H7hubdiaHz5Dealtl5t8aGi3uPy/cwBDUGIqx+dEBvZ/GbNR4Hfc3gGw+6E
-	 UklkYzYyr0SyqXb89x0kllwsgS0kLsKtwOeVPrBhRJkAURT0IpzOin0pLN5VtOekUC
-	 ubmc378rDU1zA==
-Date: Sat, 21 Jun 2025 18:19:46 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: Victor.Duicu@microchip.com, dlechner@baylibre.com, nuno.sa@analog.com,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org, robh@kernel.org,
- andy@kernel.org, krzk+dt@kernel.org, linux-kernel@vger.kernel.org,
- Marius.Cristea@microchip.com, conor+dt@kernel.org
-Subject: Re: [PATCH v3 2/2] iio: temperature: add support for MCP998X
-Message-ID: <20250621181946.28d831ac@jic23-huawei>
-In-Reply-To: <CAHp75Vc2nueOycoy8+dYyQekAAMPO82wOYSVT0RZOC4yRaE5jA@mail.gmail.com>
-References: <20250613130207.8560-1-victor.duicu@microchip.com>
-	<20250613130207.8560-3-victor.duicu@microchip.com>
-	<CAHp75VdRisP+trez2Ysgrhan_zXMWsmawB3XeW+_ePsbNC4RzQ@mail.gmail.com>
-	<f980b3c1a4fbd60f70dda9670648479a38313439.camel@microchip.com>
-	<CAHp75Vc2nueOycoy8+dYyQekAAMPO82wOYSVT0RZOC4yRaE5jA@mail.gmail.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1750526670; c=relaxed/simple;
+	bh=/dvkpugllr2kB/Z4YTxbkwU2tzsLEtBNrbNIU9jQNsw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=n9jfFQxq18Ywc/d4RH5I/wLY7YzcNbq0TsYOk/wghRo2gdAEMaRjvuwxD2IIVbkDj4Y1VSst77iqDbUNGIUC7pbsu2h6NXczosGM+7hvg51abaijaXZY6na1CwLwqrLfqZnNQk35qv/5nN8MfUPMCfTPH2NBc5KtUKeq4T85a0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=BZXVOmdc; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=GUqLV1hf; arc=none smtp.client-ip=80.241.56.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+Received: from smtp202.mailbox.org (smtp202.mailbox.org [IPv6:2001:67c:2050:b231:465::202])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4bPh6L5kL4z9t7l;
+	Sat, 21 Jun 2025 19:24:26 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1750526666;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=LxQLxg1SC5GL/sLkLv30CRCGpGY4vKeQ9jJV108hObw=;
+	b=BZXVOmdcVtRCR1N3rVLRLKtGwYKmVeGBABsQkuybwYaSD+QmJ/20/+EdoaR/HFxy+GJ3lK
+	EuEVaSbs544aYJ2QYOJ2jAwvTUuNN0Xfgy6EYcSY5LjqpH+6BRKRs64KOdnSIov/0myZr7
+	fjtoph+/Tkhul2sakdhN4UAsuUAM2D7nS+P95AjAF6DdIN3yNeyDB7Ufa5phuCgEyPEnoL
+	i8G55tC+PCmZk3ytFEfzAOUJh5NxcIp6SE/4cMRlewf3fHXUJlJGNDMOu+KF5KHflJ+fr+
+	IManHCwiPlhyl7/qoiogKjb8fjtyt0LJl95c8XJOyCQDlIMSnXCRcBReb+QBPg==
+Message-ID: <07d91b36-dbeb-42b3-8dd7-b0771df9b306@mailbox.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1750526664;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=LxQLxg1SC5GL/sLkLv30CRCGpGY4vKeQ9jJV108hObw=;
+	b=GUqLV1hfZo7rzb3uxA3jnBhUHDmc/9d+PACgXKbd/qmyCj6J10KqHzOak68SpJsFb9Eyz5
+	YUWTXiEm/Ipk9ru3hIL1xY6NKFdHf/L54CplFZGP37admrJolmzonFLQZKjMp+U9HRX8Fz
+	A1lsavfQIQIJiO1oOIqfqxsQ8iogaOnhQQffzvDj9tBT3a0RKOOQ/JnVV4yHDGhQYSVhhg
+	izut2EIkVqovBFCnt7OMGymgJmwI7HEakHpvzwmHMkgd2q3+9o8SXUrlRW8VBLqZGrqYcb
+	t1ENPzE4EYJYx4+X4wQclRekGFxCITx6j+NdBScLdJAPFg0PsFnc/wv03ehKdg==
+Date: Sat, 21 Jun 2025 19:24:22 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH] iio: accel: bmc150: Do not configure IRQ registers if no
+ IRQ connected
+To: Jonathan Cameron <jic23@kernel.org>, Hans de Goede <hansg@kernel.org>
+Cc: Marek Vasut <marek.vasut+bmc150@mailbox.org>, linux-iio@vger.kernel.org,
+ =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
+ Andy Shevchenko <andy@kernel.org>, David Lechner <dlechner@baylibre.com>,
+ Julien Stephan <jstephan@baylibre.com>, Peter Zijlstra
+ <peterz@infradead.org>, Salvatore Bonaccorso <carnil@debian.org>,
+ linux-kernel@vger.kernel.org
+References: <20250613124648.14141-1-marek.vasut+bmc150@mailbox.org>
+ <79946c40-e2ce-4fbc-a6b2-b37f6fd69d1d@kernel.org>
+ <20250621181733.3cb6111e@jic23-huawei>
+Content-Language: en-US
+From: Marek Vasut <marek.vasut@mailbox.org>
+In-Reply-To: <20250621181733.3cb6111e@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-MBO-RS-META: f3isaeah9xzascc7uifdkj8gu7qanwcu
+X-MBO-RS-ID: 360c4c3517a10077c8a
+X-Rspamd-Queue-Id: 4bPh6L5kL4z9t7l
 
-On Thu, 19 Jun 2025 11:29:30 +0300
-Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
-
-> On Thu, Jun 19, 2025 at 10:22=E2=80=AFAM <Victor.Duicu@microchip.com> wro=
-te:
-> > On Sat, 2025-06-14 at 00:50 +0300, Andy Shevchenko wrote: =20
-> > > On Fri, Jun 13, 2025 at 4:02=E2=80=AFPM <victor.duicu@microchip.com> =
-wrote: =20
->=20
-> ...
->=20
-> > > > +MICROCHIP MCP9982 TEMPERATURE DRIVER
-> > > > +M:     Victor Duicu <victor.duicu@microchip.com>
-> > > > +L:     linux-iio@vger.kernel.org
-> > > > +S:     Supported
-> > > > +F:
-> > > > Documentation/devicetree/bindings/iio/temperature/microchip,mcp9982
-> > > > .yaml
-> > > > +F:     drivers/iio/temperature/mcp9982.c =20
-> > >
-> > > So, with the first patch only the dangling file will be present
-> > > without record in MAINTAINERS. Please, make sure that your DT schema
-> > > file is in MAINTAINERS. =20
-> >
-> > Are you referring here to the file sysfs-bus-iio-temperature-mcp9982?
-> > This file was in v2 where there were a few custom attributes. In v3
-> > I removed them, so the driver currently doesn't have custom attributes.
-> > Should I had added it to the files in MAINTAINERS? =20
->=20
-> You should have added the file to the MAINTAINERS in the same patch it
-> appears. Not in some arbitrary change afterwards.
->=20
-
-Perhaps the confusion here is that Andy is talking about 2 lines above, not
-the immediate line above this feedback.  So the one with the dt-binding
-file.  If Victor was reading it as being about the .c file then
-this whole cross discussion makes more sense!
-
-Jonathan
-
-
-
+On 6/21/25 7:17 PM, Jonathan Cameron wrote:
+> On Mon, 16 Jun 2025 14:42:54 +0200
+> Hans de Goede <hansg@kernel.org> wrote:
+> 
+>> Hi,
+>>
+>> On 13-Jun-25 14:45, Marek Vasut wrote:
+>>> The BMC150 on Onemix 2S does not have IRQ line described in ACPI tables,
+>>> which leads to bmc150_accel_core_probe() being called with irq=0, which
+>>> leads to bmc150_accel_interrupts_setup() never being called, which leads
+>>> to struct bmc150_accel_data *data ->interrupts[i].info being left unset
+>>> to NULL. Later, userspace can indirectly trigger bmc150_accel_set_interrupt()
+>>> which depends on struct bmc150_accel_data *data ->interrupts[i].info being
+>>> non-NULL, and which triggers NULL pointer dereference. This is triggered
+>>> e.g. from iio-sensor-proxy.
+>>>
+>>> Fix this by skipping the IRQ register configuration in case there is no
+>>> IRQ connected in hardware, in a manner similar to what the driver did in
+>>> the very first commit which added the driver.
+>>
+>> ...
+>>
+>>> Fixes: 8e22f477e143 ("iio: bmc150: refactor interrupt enabling")
+>>> Signed-off-by: Marek Vasut <marek.vasut+bmc150@mailbox.org>
+>>> ---
+>>> Cc: "Nuno Sá" <nuno.sa@analog.com>
+>>> Cc: Andy Shevchenko <andy@kernel.org>
+>>> Cc: David Lechner <dlechner@baylibre.com>
+>>> Cc: Jonathan Cameron <jic23@kernel.org>
+>>> Cc: Julien Stephan <jstephan@baylibre.com>
+>>> Cc: Peter Zijlstra <peterz@infradead.org>
+>>> Cc: Salvatore Bonaccorso <carnil@debian.org>
+>>> Cc: linux-iio@vger.kernel.org
+>>> Cc: linux-kernel@vger.kernel.org
+>>> ---
+>>>   drivers/iio/accel/bmc150-accel-core.c | 3 +++
+>>>   1 file changed, 3 insertions(+)
+>>>
+>>> diff --git a/drivers/iio/accel/bmc150-accel-core.c b/drivers/iio/accel/bmc150-accel-core.c
+>>> index 744a034bb8b5..1c3583ade2b4 100644
+>>> --- a/drivers/iio/accel/bmc150-accel-core.c
+>>> +++ b/drivers/iio/accel/bmc150-accel-core.c
+>>> @@ -550,6 +550,9 @@ static int bmc150_accel_set_interrupt(struct bmc150_accel_data *data, int i,
+>>>   	if (ret < 0)
+>>>   		return ret;
+>>>   
+>>> +	if (!info)
+>>> +		return 0;
+>>> +
+>>>   	/* map the interrupt to the appropriate pins */
+>>>   	ret = regmap_update_bits(data->regmap, info->map_reg, info->map_bitmask,
+>>>   				 (state ? info->map_bitmask : 0));
+>>
+>> AFAIK the proper fix would be to not register any IIO-triggers. This fix will
+>> avoid the problem, but userspace might still try to use non-working triggers
+>> which will now silently fail.
+>>
+>> I'm not an IIO expert, but IIRC other drivers simply skip registering their triggers
+>> when there is no interrupt support.
+> 
+> Absolutely. It is annoyingly common for devices to have some or none of the interrupt
+> lines actually wired so drivers should not present the interfaces if they aren't.
+> It is acceptable for a new driver to just fail to probe if handling the device with no
+> interrupts is particularly complex but in general at least some functionality tends
+> to be easy to implement so we prefer that.
+I haven't gotten to this again ... yet ... I can try and add some sort 
+of polling fallback maybe ?
 

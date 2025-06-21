@@ -1,64 +1,60 @@
-Return-Path: <linux-iio+bounces-20820-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20821-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E04CAAE2A75
-	for <lists+linux-iio@lfdr.de>; Sat, 21 Jun 2025 19:13:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92F88AE2A7F
+	for <lists+linux-iio@lfdr.de>; Sat, 21 Jun 2025 19:17:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 27826188F882
-	for <lists+linux-iio@lfdr.de>; Sat, 21 Jun 2025 17:14:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F3B3D3B9E91
+	for <lists+linux-iio@lfdr.de>; Sat, 21 Jun 2025 17:17:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AAF321FF21;
-	Sat, 21 Jun 2025 17:13:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC4CE189902;
+	Sat, 21 Jun 2025 17:17:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WtcxbVY5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HUoNbrmi"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9C1039FCE;
-	Sat, 21 Jun 2025 17:13:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA56A5D8F0;
+	Sat, 21 Jun 2025 17:17:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750526028; cv=none; b=t4ZmHU8xLxg6jH0QWlNX6suLksPf5GkJm+IXlfgom+fBYb2q/u+TSZJI4LCW3V4j0b+CoE7jwWi8LQ4zIpxlvvD4tBLS0eQtCiH9XNh4FW2hE6JzfucM14AhtSlDTzaZpUuzt3K7NFkJdUnsyoHdhbJ70H1pbdyPPuovWCE0ROI=
+	t=1750526261; cv=none; b=sp1UGKpas3GLrcdWoVuQDwsZpxCSaSNrPmfbPGMjgaWMSxk6xDZwgK9+ETrkM6nf5gn3I58Nhn4suVk2d19RAw83qHItDkJXlj4Szu8TLSofQ9oCCbf5NgfNAvQ2scWat5Z0h5sn6TrqzJGRBMwRaX96P6e2Uj/UTnpHpcKfsP0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750526028; c=relaxed/simple;
-	bh=lvT6pah/8tMihrRud+kdGk+RX76wGL1s+4E/f+JJp6E=;
+	s=arc-20240116; t=1750526261; c=relaxed/simple;
+	bh=KLsfWzYYLq9bE5juKZSbNnuRVJ0JexNNbqMjR13cHvY=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Fxk1Qj7mayAIKOe08PHFWlE1gYi621MmgLiRfYHdj50ZiaI0MKjbqNX5ZZrVmLY6appEpb7CGPE/pYvD7TJ5mZ0Ey+eQbt4G0XWWGyAGwBoGQ6+TXBp0jN9bZ7I2NNDcUN0zbrQbW6ffJ5IAQx5x1+QHJvEgEUcBammMqxHypwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WtcxbVY5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E6D9C4CEE7;
-	Sat, 21 Jun 2025 17:13:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=sKPjqqD1MBjHJqWC09N/Gjo/4FrlDCiV8my1K/Ef/Yio7TOAKkeKDBYY5JKovBr72KcdlbluJrEiCrr0vruOv5ZPjbjynuSfCZtm7mILYm9pAfQ8EEu8RkSEVLY2RITxWZVekYlJoJfGItL+xoFhe5361q3qhMDXES/qVbHQTpc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HUoNbrmi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 573B1C4CEE7;
+	Sat, 21 Jun 2025 17:17:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750526027;
-	bh=lvT6pah/8tMihrRud+kdGk+RX76wGL1s+4E/f+JJp6E=;
+	s=k20201202; t=1750526261;
+	bh=KLsfWzYYLq9bE5juKZSbNnuRVJ0JexNNbqMjR13cHvY=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=WtcxbVY5LhnLEb5uns95DL0tpvX9bVYV6oBS0yYClNpvNO/dDWJOPcw5o2B9rwL9+
-	 1AyrW/MR1AA2I1F1rCyHzMbWC2DwzTuRbJpUvWyDX88g401CuYw8tmwKwiRM1BHnaT
-	 yHi62bv+n8MeIh0sa/l7SdMMe+iGBo2yBRKqRsjGGDDnfG6UCiITA7oCwMYTSnP6Mu
-	 CTX/mBecaW/0NAznXkvxi/4sphYT1/16H7iiB/4lsnpP26TsGzmR1yEmO/to5en4t/
-	 Xg0zS8mN2cANreRfAoyJVtNChyIMM0y/0srq67TFOHiES5zKMVaXFD2gtioWqhSANS
-	 lZUD/O2OY/coQ==
-Date: Sat, 21 Jun 2025 18:13:39 +0100
+	b=HUoNbrmiix3vYJbIqv+sr1uIPDE7MdcMfjGixDR7FBDGJJPbBBOFCRUnkQYGhkAjm
+	 Ru/ebyVN1qCSaaZzLBkj4Vwlg7Pa4CP/QM2rsJLQAwpljUOQpkRSWIHXwaNQAnX3/+
+	 iREckz371tme76n5ylDyO6fbAAZg7VmiYulSJFyMQ3QkiiTygEoE91PFkp0HYV21Bo
+	 e2ONJM3MCsjaDx75qfNeKpKALxjgR7zbOfGQvTUhzeJodclKi7Riiv2hXh2fuRPxU9
+	 yyPzbCIHZ4mn5hX7Q22t4JKZ3juvKu1KWL8jJHZJSeKEAa0C79t0saEGZTHWPa/T3l
+	 re/Rmrc79NMqw==
+Date: Sat, 21 Jun 2025 18:17:33 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>, Andy Shevchenko
- <andriy.shevchenko@linux.intel.com>, Jonathan Cameron
- <Jonathan.Cameron@huawei.com>, "linux-iio@vger.kernel.org"
- <linux-iio@vger.kernel.org>, "linux-kernel@vger.kernel.org"
- <linux-kernel@vger.kernel.org>, David Lechner <dlechner@baylibre.com>, Nuno
- =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>
-Subject: Re: [PATCH v1 1/1] iio: imu: inv_icm42600: Convert to uXX and sXX
- integer types
-Message-ID: <20250621181339.0331ab8b@jic23-huawei>
-In-Reply-To: <CAHp75Ve0aQLaRS1-J5WoCxUAfX+Y=s2oj4ZkVvUG1XysXopZxw@mail.gmail.com>
-References: <20250616090423.575736-1-andriy.shevchenko@linux.intel.com>
-	<FR3P281MB1757C6A610D39EA737A19EFBCE70A@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
-	<CAHp75Ve68H448v3Tgv930yoMYCCKVC3kefuP+Rermj7SaiP41g@mail.gmail.com>
-	<FR3P281MB175775DBE90C5469637F3C66CE73A@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
-	<CAHp75Ve0aQLaRS1-J5WoCxUAfX+Y=s2oj4ZkVvUG1XysXopZxw@mail.gmail.com>
+To: Hans de Goede <hansg@kernel.org>
+Cc: Marek Vasut <marek.vasut+bmc150@mailbox.org>, linux-iio@vger.kernel.org,
+ Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko
+ <andy@kernel.org>, David Lechner <dlechner@baylibre.com>, Julien Stephan
+ <jstephan@baylibre.com>, Peter Zijlstra <peterz@infradead.org>, Salvatore
+ Bonaccorso <carnil@debian.org>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: accel: bmc150: Do not configure IRQ registers if
+ no IRQ connected
+Message-ID: <20250621181733.3cb6111e@jic23-huawei>
+In-Reply-To: <79946c40-e2ce-4fbc-a6b2-b37f6fd69d1d@kernel.org>
+References: <20250613124648.14141-1-marek.vasut+bmc150@mailbox.org>
+	<79946c40-e2ce-4fbc-a6b2-b37f6fd69d1d@kernel.org>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -69,71 +65,93 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, 17 Jun 2025 21:33:46 +0300
-Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+On Mon, 16 Jun 2025 14:42:54 +0200
+Hans de Goede <hansg@kernel.org> wrote:
 
-> On Tue, Jun 17, 2025 at 5:43=E2=80=AFPM Jean-Baptiste Maneyrol
-> <Jean-Baptiste.Maneyrol@tdk.com> wrote:
-> > >From: Andy Shevchenko <andy.shevchenko@gmail.com>
-> > >Sent: Monday, June 16, 2025 16:33
-> > >On Mon, Jun 16, 2025 at 5:16=E2=80=AFPM Jean-Baptiste Maneyrol
-> > ><Jean-Baptiste.Maneyrol@tdk.com> wrote:
-> > > =20
-> > >> thanks a lot for having done all the work. =20
-> > >
-> > >Please, avoid top-posting!
-> > > =20
-> > >> Do you think it is possible to add a fixes tag so it can be backport=
-ed to ease automatic backport of further patches?
-> > >> Otherwise for sure all further fixes will have to be backported manu=
-ally. =20
-> > >
-> > >The idea behind the series that it may depend on some kind of
-> > >cleanups. In such a case (according to Greg KH) no need to have Fixes
-> > >tag on a cleanup, because it's confusing. On the contrary the
-> > >infrastructure for stable kernels will catch this up. You need to
-> > >follow the Documentation on how to submit for stable (basically the
-> > >main hint is to use stable@ in the Cc line _inside_ the commit
-> > >message, as a tag).
-> > > =20
-> > >> The driver code is full of intXX_t and uintXX_t types which is
-> > >> not the pattern we use in the IIO subsystem. Switch the driver
-> > >> to use kernel internal types for that. No functional changes. =20
+> Hi,
 >=20
-> > >> As noted before the pattern is used in less than 10% files in IIO,
-> > >> So it's safe to assume that IIO prefers uXX/sXX types over C99 ones.=
- =20
-> > > =20
-> >
-> > it is good for me if we can add Cc to stable.
-> > I don't know if I need to add the Cc tag here or when a fixed patch will
-> > require the rework. In doubt, here it is.
-> >
-> > Acked-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-> > Cc: stable@vger.kernel.org =20
+> On 13-Jun-25 14:45, Marek Vasut wrote:
+> > The BMC150 on Onemix 2S does not have IRQ line described in ACPI tables,
+> > which leads to bmc150_accel_core_probe() being called with irq=3D0, whi=
+ch
+> > leads to bmc150_accel_interrupts_setup() never being called, which leads
+> > to struct bmc150_accel_data *data ->interrupts[i].info being left unset
+> > to NULL. Later, userspace can indirectly trigger bmc150_accel_set_inter=
+rupt()
+> > which depends on struct bmc150_accel_data *data ->interrupts[i].info be=
+ing
+> > non-NULL, and which triggers NULL pointer dereference. This is triggered
+> > e.g. from iio-sensor-proxy.
+> >=20
+> > Fix this by skipping the IRQ register configuration in case there is no
+> > IRQ connected in hardware, in a manner similar to what the driver did in
+> > the very first commit which added the driver. =20
 >=20
-> It makes no sense here. This is a standalone change. It's not part of
-> any "fixes" series. You need to attach this patch to your series as
-> patch 1 and mark Cc stable all of the patches.
+> ...
 >=20
+> > Fixes: 8e22f477e143 ("iio: bmc150: refactor interrupt enabling")
+> > Signed-off-by: Marek Vasut <marek.vasut+bmc150@mailbox.org>
+> > ---
+> > Cc: "Nuno S=C3=A1" <nuno.sa@analog.com>
+> > Cc: Andy Shevchenko <andy@kernel.org>
+> > Cc: David Lechner <dlechner@baylibre.com>
+> > Cc: Jonathan Cameron <jic23@kernel.org>
+> > Cc: Julien Stephan <jstephan@baylibre.com>
+> > Cc: Peter Zijlstra <peterz@infradead.org>
+> > Cc: Salvatore Bonaccorso <carnil@debian.org>
+> > Cc: linux-iio@vger.kernel.org
+> > Cc: linux-kernel@vger.kernel.org
+> > ---
+> >  drivers/iio/accel/bmc150-accel-core.c | 3 +++
+> >  1 file changed, 3 insertions(+)
+> >=20
+> > diff --git a/drivers/iio/accel/bmc150-accel-core.c b/drivers/iio/accel/=
+bmc150-accel-core.c
+> > index 744a034bb8b5..1c3583ade2b4 100644
+> > --- a/drivers/iio/accel/bmc150-accel-core.c
+> > +++ b/drivers/iio/accel/bmc150-accel-core.c
+> > @@ -550,6 +550,9 @@ static int bmc150_accel_set_interrupt(struct bmc150=
+_accel_data *data, int i,
+> >  	if (ret < 0)
+> >  		return ret;
+> > =20
+> > +	if (!info)
+> > +		return 0;
+> > +
+> >  	/* map the interrupt to the appropriate pins */
+> >  	ret =3D regmap_update_bits(data->regmap, info->map_reg, info->map_bit=
+mask,
+> >  				 (state ? info->map_bitmask : 0)); =20
+>=20
+> AFAIK the proper fix would be to not register any IIO-triggers. This fix =
+will
+> avoid the problem, but userspace might still try to use non-working trigg=
+ers
+> which will now silently fail.
+>=20
+> I'm not an IIO expert, but IIRC other drivers simply skip registering the=
+ir triggers
+> when there is no interrupt support.
 
-I think this is hypothetical at the moment as the only series outstanding
-is the WOM one which isn't a fix.  So I don't think this patch will
-ever end up carrying a stable tag.  However, first time we get a fix
-that needs it, if Greg etc don't sort it out anyway (they often do!)
-then a simple mail to stable@vger.kernel.org to tell them to pick this
-and the fix will resolve it.
-
-For now I'll queue this patch up and ask for a rebase on the WOM
-series on top of it.
-
-It crossed with David's series doing {} to replace explicit memsets
-so needed a tiny bit of hand tweaking.
-Pushed out as testing for 0-day to look at.
+Absolutely. It is annoyingly common for devices to have some or none of the=
+ interrupt
+lines actually wired so drivers should not present the interfaces if they a=
+ren't.
+It is acceptable for a new driver to just fail to probe if handling the dev=
+ice with no
+interrupts is particularly complex but in general at least some functionali=
+ty tends
+to be easy to implement so we prefer that.
 
 Thanks,
 
 Jonathan
 
+>=20
+> Regards,
+>=20
+> Hans
+>=20
+>=20
 
 

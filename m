@@ -1,134 +1,345 @@
-Return-Path: <linux-iio+bounces-20808-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20809-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B2D9AE282A
-	for <lists+linux-iio@lfdr.de>; Sat, 21 Jun 2025 10:56:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0EB7AE28BD
+	for <lists+linux-iio@lfdr.de>; Sat, 21 Jun 2025 13:16:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF18D3A9C27
-	for <lists+linux-iio@lfdr.de>; Sat, 21 Jun 2025 08:56:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 41F03189D372
+	for <lists+linux-iio@lfdr.de>; Sat, 21 Jun 2025 11:16:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78B5C1E1A16;
-	Sat, 21 Jun 2025 08:56:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34A6B1FF1D5;
+	Sat, 21 Jun 2025 11:16:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JOcAmgTS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TC9pDlRG"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A4181DE3BA;
-	Sat, 21 Jun 2025 08:56:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D782642AB4;
+	Sat, 21 Jun 2025 11:16:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750496195; cv=none; b=Cqta/h3W4gQW4JrK3lhrRsByt6LjdFOamI2uy5TUrd/eT+w/yoZsMUxeNDh9cYGFvS4TdfK/cjtA+EYHqZkAfqEsHmn/GwiO+S8vIgV9ahKYmSCUA/QvRZrltAzd2+8DrRpECyIcm2HFODk1VP2pj4fA3B9HTJUngAL3BGwjR/c=
+	t=1750504562; cv=none; b=TF8XGgHqVYKMvURdTOmgKI8euPG1Y9sogO6/qgv4Io8z4bVc8oLTGpnVi5RV7bEJ7cCom+mgO3AbPn+LA277GYSXOOLpKIqRxzb/BCr6mZ/wW1jsFEhdwkY2YgUhIw0KKClscZdP0cIbQV5PFz3QhhyjKwpe1ob4gdzHthDSEjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750496195; c=relaxed/simple;
-	bh=lozJVjeayu4fuBFr7YB8LDGyPpQu/TGuMPYpYyOubJE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PH0VHptS2mT3JiKrQE3J37/92vEL5QGGzrucI4AeaFBsGbl7fNDpQhhK2fENLJuodMV0Zp2l3UwXwKjOgRvr1xG43uY9NTuu430oR7o8W6ctU6Mog8Iy1FN5qaV5qmBeOZ6mPOMoF6VobUGbu2SpSifuRBTDk8gotJ1TP6x/Vto=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JOcAmgTS; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1750496193; x=1782032193;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=lozJVjeayu4fuBFr7YB8LDGyPpQu/TGuMPYpYyOubJE=;
-  b=JOcAmgTSqsuzUHqVkv4Promp7cQ1Y7544qRf+MlVuq1jRdfogr4JGjbS
-   JkrYz+5rzhg6ZMnlLGmzApW+veItyQvgeFPhgs2JSPcFggwiQrobo30v3
-   AFL6fDSAtPCzNJat4zaGDN7xmxaXCHeNCJHtuDGnmq+BGxR6Rcb5IEXw5
-   3YigTbCaQoN4NW5G7hLbuJ4XsDkAXW+294/GtFSQoW3cAbprLiRy8IiU1
-   XP6PHyyF369qTLXUwJGYM6oNpGkwdE8n2ZwAffLcx/hph2bFRMczNi0Bm
-   qaJg+UHBEu19+9jkQcOgCNEG2PKT24UgOmYlqiePBjepOIT9MVLogongO
-   g==;
-X-CSE-ConnectionGUID: eP5q64BRSwewEkbfn7xvZw==
-X-CSE-MsgGUID: 7Nj52L2aR7m+3LiLzwF3MA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11469"; a="40359655"
-X-IronPort-AV: E=Sophos;i="6.16,253,1744095600"; 
-   d="scan'208";a="40359655"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jun 2025 01:56:33 -0700
-X-CSE-ConnectionGUID: UR9IhsTnQHedEH4bECr6Yg==
-X-CSE-MsgGUID: JcJqLz9gSfy5YSgtYqhRzw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,253,1744095600"; 
-   d="scan'208";a="151256679"
-Received: from lkp-server01.sh.intel.com (HELO e8142ee1dce2) ([10.239.97.150])
-  by fmviesa006.fm.intel.com with ESMTP; 21 Jun 2025 01:56:29 -0700
-Received: from kbuild by e8142ee1dce2 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uSu1T-000MUk-1Q;
-	Sat, 21 Jun 2025 08:56:27 +0000
-Date: Sat, 21 Jun 2025 16:55:56 +0800
-From: kernel test robot <lkp@intel.com>
-To: liquancin.mereenamathai@in.bosch.com, linux-iio@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
-	jic23@kernel.org, dlechner@baylibre.com, nuno.sa@analog.com,
-	andy@kernel.org, vassilisamir@gmail.com, marcelo.schmitt1@gmail.com,
-	javier.carrasco.cruz@gmail.com, Xu.Zhang@cn.bosch.com,
-	Maoting.Bian@cn.bosch.com, Liquancin.MereenaMathai@in.bosch.com
-Subject: Re: [PATCH v1 1/2] Add the iio driver for bosch pressure sensor
- bmp390. The bmp390 is a pressure sensor module. It will support SPI and I2C
- protocol based on configuration.
-Message-ID: <202506211617.KOMMf9eA-lkp@intel.com>
-References: <20250620045456.1151-2-liquancin.mereenamathai@in.bosch.com>
+	s=arc-20240116; t=1750504562; c=relaxed/simple;
+	bh=AglLGwocXb7aYtZZ84ovAUyXmvMiTYg9wjTzyeUCXEM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=f49fQ92mNgGfDgZpC50qqEWcthK2KR+stB1HZoJJuqqv8B4ijU40rDnNhR6MWr4pD9++vpgeQUWRRcrzYWL4E/azkLqajGJvi/wFG2Xz/yc9Qt90j3Hb1hyGs1ZA97nkXjwD6aJSyO75oECUqi/6DRrGs12Ud67Vi8CbGzWijq8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TC9pDlRG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 585FBC4CEEF;
+	Sat, 21 Jun 2025 11:16:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750504561;
+	bh=AglLGwocXb7aYtZZ84ovAUyXmvMiTYg9wjTzyeUCXEM=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=TC9pDlRGvXMO3W1b7lZBugdA7ZJ7Ubj7gFCB6UhpvJ5FtLuKbaFRmEbgSxzd/YM24
+	 uaHc5XUvl1KsW1VANmRUdwdU4y2xLvoPn/rdSczYAk/9pHe49xCaFD80SFzE6Xja16
+	 RtkSGjSOlUlhZ9jV6QsHaurMbMS8j75Yim+1ue2TsFTdyHKt2T300xbJVwNNrmUL6S
+	 vZrncN2zgTBinBnylJ8RMKzcjQxyyqZgkLC+PBP9iBkSYxEPrDOBj2TRcdDFAI5D9+
+	 HIWzF5XHdPsPQSU6/vVPcSNL7TBt7bcM088N9XImVAo+qOx8Z5Mq0Xko5o/10OErYh
+	 7F2Dmfhg4acoQ==
+Received: by mail-oi1-f174.google.com with SMTP id 5614622812f47-40aa391ce1aso689578b6e.2;
+        Sat, 21 Jun 2025 04:16:01 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUGgSI6I972xeiIP77tsWjt2YwJoAwfKjQIpxRdb1u4nYKOeTb4X6rBa9R+rfVTqeLq/Ukunhj2zKZj9QZC4o9BhbQ=@vger.kernel.org, AJvYcCUu/g2Hmf9kYU6l5h5FVL+bbww9FyBMl9eFumaUEfxgHZOLyyD116G3SiX4P2R0e0ZihPBDik5Aavjfj+Xu@vger.kernel.org, AJvYcCW8HfCQ2kNswvFoVrYbdxcCCx2kmlEDoh/K67bfPVox77xFyiK2C/jX89ESMHh6YwkFPyjt2jajkOA=@vger.kernel.org, AJvYcCWPnt5+pkRiTS4whqIdt5Eps7Fg8MG+SpH5lhUioaX82cBLpx2H9+u2Y/2Fcmqp8XuatxjcEyizZdM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxODi5s/dPYcyxVgESG2YMa+6J7s3bTttqDMLe4dOdAbwbp45SR
+	NstW+GyUX8PkH9vXXbwKEhpxaaf3mgrev/pp8VP8OG5yVwoaTy0g3wm3+YNmpL1/mhR9cl6v62h
+	ryWmOgt4v4+HYgj7CVBWbORwskOdJYL8=
+X-Google-Smtp-Source: AGHT+IFGueWEojM0Zq5uPTqJZRx+6Q38CSHBAAndFQkQXqugs5N7VGTk2OIYJ+3bbjPqEMxxrjyzt3bDH+zW6yF9EMA=
+X-Received: by 2002:a05:6870:a54d:b0:2c1:62e9:584b with SMTP id
+ 586e51a60fabf-2eeee65ae81mr3508649fac.39.1750504560571; Sat, 21 Jun 2025
+ 04:16:00 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250620045456.1151-2-liquancin.mereenamathai@in.bosch.com>
+References: <20250606111749.3142348-1-claudiu.beznea.uj@bp.renesas.com>
+ <20250606111749.3142348-2-claudiu.beznea.uj@bp.renesas.com>
+ <CAJZ5v0i_Ey+OVpSZHXru=tubMaZi=y-uOh_0M6zmWZ2DqqA7Vg@mail.gmail.com>
+ <zhjytvj35lknj7v3jhva3n3nbv6qctvqgykwyi5huj6omet7lz@wchd7f4p4dpv>
+ <CAJZ5v0hsT-Q2hz=qoBo409oungaCmexJwwGheN7KRLFqz=6_Dw@mail.gmail.com>
+ <20250607140600.76e87ea5@jic23-huawei> <CAJZ5v0jqZ6gYKb85dpR-X5RwFeUBcbbcJ_b-AOe+JypBXod-MA@mail.gmail.com>
+ <486a1110-5336-42fd-82b8-a7b1452bad65@tuxon.dev> <CAJZ5v0hqBm4L2V9aUjB0tmW67eRRCnM7FScgdJQ=ihnpAZuMfA@mail.gmail.com>
+ <4360ee7a-d85a-4fa0-a1d6-d09a3b9d57c0@tuxon.dev> <CAJZ5v0jUGf9QO6h6bcBcTX+nUbDeD0XMhWj1Qb-0qAtZ8EbVsA@mail.gmail.com>
+ <1b83c587-76c2-4fa1-aef8-f94575a3627a@tuxon.dev> <CAJZ5v0jZNX+FCmu_FeRPS47F37AmyAN25+7LJvzbqRdvs-aGcQ@mail.gmail.com>
+ <CAPDyKFq9at+aA+OG__ZHvhc3AELfUOyOakH7a=MGHrbAjzL8OA@mail.gmail.com>
+In-Reply-To: <CAPDyKFq9at+aA+OG__ZHvhc3AELfUOyOakH7a=MGHrbAjzL8OA@mail.gmail.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Sat, 21 Jun 2025 13:15:45 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0hi2N9iFy-Dh0mkN3zDBytMFXqxosujbPGO5JxnWhBxmg@mail.gmail.com>
+X-Gm-Features: AX0GCFvoJozWLVAwBLoX9Vrp18nN2uNK09JD8vUmh6r6GiFPTGTEkUEj71DQfGc
+Message-ID: <CAJZ5v0hi2N9iFy-Dh0mkN3zDBytMFXqxosujbPGO5JxnWhBxmg@mail.gmail.com>
+Subject: Re: [PATCH v3 1/2] PM: domains: Add devres variant for dev_pm_domain_attach()
+To: Ulf Hansson <ulf.hansson@linaro.org>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
+	Jonathan Cameron <jic23@kernel.org>, Dmitry Torokhov <dmitry.torokhov@gmail.com>, gregkh@linuxfoundation.org, 
+	dakr@kernel.org, len.brown@intel.com, pavel@kernel.org, 
+	daniel.lezcano@linaro.org, linux-kernel@vger.kernel.org, 
+	linux-pm@vger.kernel.org, bhelgaas@google.com, geert@linux-m68k.org, 
+	linux-iio@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
+	fabrizio.castro.jz@renesas.com, 
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi,
+On Thu, Jun 19, 2025 at 2:21=E2=80=AFPM Ulf Hansson <ulf.hansson@linaro.org=
+> wrote:
+>
+> On Mon, 16 Jun 2025 at 13:47, Rafael J. Wysocki <rafael@kernel.org> wrote=
+:
+> >
+> > On Mon, Jun 16, 2025 at 1:37=E2=80=AFPM Claudiu Beznea <claudiu.beznea@=
+tuxon.dev> wrote:
+> > >
+> > >
+> > >
+> > > On 16.06.2025 14:18, Rafael J. Wysocki wrote:
+> > > > On Mon, Jun 16, 2025 at 11:37=E2=80=AFAM Claudiu Beznea
+> > > > <claudiu.beznea@tuxon.dev> wrote:
+> > > >>
+> > > >> Hi, Rafael,
+> > > >>
+> > > >> On 13.06.2025 13:02, Rafael J. Wysocki wrote:
+> > > >>> On Fri, Jun 13, 2025 at 9:39=E2=80=AFAM Claudiu Beznea <claudiu.b=
+eznea@tuxon.dev> wrote:
+> > > >>>>
+> > > >>>> Hi, Rafael,
+> > > >>>>
+> > > >>>> On 09.06.2025 22:59, Rafael J. Wysocki wrote:
+> > > >>>>> On Sat, Jun 7, 2025 at 3:06=E2=80=AFPM Jonathan Cameron <jic23@=
+kernel.org> wrote:
+> > > >>>>>>
+> > > >>>>>> On Fri, 6 Jun 2025 22:01:52 +0200
+> > > >>>>>> "Rafael J. Wysocki" <rafael@kernel.org> wrote:
+> > > >>>>>>
+> > > >>>>>> Hi Rafael,
+> > > >>>>>>
+> > > >>>>>>> On Fri, Jun 6, 2025 at 8:55=E2=80=AFPM Dmitry Torokhov
+> > > >>>>>>> <dmitry.torokhov@gmail.com> wrote:
+> > > >>>>>>>>
+> > > >>>>>>>> On Fri, Jun 06, 2025 at 06:00:34PM +0200, Rafael J. Wysocki =
+wrote:
+> > > >>>>>>>>> On Fri, Jun 6, 2025 at 1:18=E2=80=AFPM Claudiu <claudiu.bez=
+nea@tuxon.dev> wrote:
+> > > >>>>>>>>>>
+> > > >>>>>>>>>> From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+> > > >>>>>>>>>>
+> > > >>>>>>>>>> The dev_pm_domain_attach() function is typically used in b=
+us code alongside
+> > > >>>>>>>>>> dev_pm_domain_detach(), often following patterns like:
+> > > >>>>>>>>>>
+> > > >>>>>>>>>> static int bus_probe(struct device *_dev)
+> > > >>>>>>>>>> {
+> > > >>>>>>>>>>     struct bus_driver *drv =3D to_bus_driver(dev->driver);
+> > > >>>>>>>>>>     struct bus_device *dev =3D to_bus_device(_dev);
+> > > >>>>>>>>>>     int ret;
+> > > >>>>>>>>>>
+> > > >>>>>>>>>>     // ...
+> > > >>>>>>>>>>
+> > > >>>>>>>>>>     ret =3D dev_pm_domain_attach(_dev, true);
+> > > >>>>>>>>>>     if (ret)
+> > > >>>>>>>>>>         return ret;
+> > > >>>>>>>>>>
+> > > >>>>>>>>>>     if (drv->probe)
+> > > >>>>>>>>>>         ret =3D drv->probe(dev);
+> > > >>>>>>>>>>
+> > > >>>>>>>>>>     // ...
+> > > >>>>>>>>>> }
+> > > >>>>>>>>>>
+> > > >>>>>>>>>> static void bus_remove(struct device *_dev)
+> > > >>>>>>>>>> {
+> > > >>>>>>>>>>     struct bus_driver *drv =3D to_bus_driver(dev->driver);
+> > > >>>>>>>>>>     struct bus_device *dev =3D to_bus_device(_dev);
+> > > >>>>>>>>>>
+> > > >>>>>>>>>>     if (drv->remove)
+> > > >>>>>>>>>>         drv->remove(dev);
+> > > >>>>>>>>>>     dev_pm_domain_detach(_dev);
+> > > >>>>>>>>>> }
+> > > >>>>>>>>>>
+> > > >>>>>>>>>> When the driver's probe function uses devres-managed resou=
+rces that depend
+> > > >>>>>>>>>> on the power domain state, those resources are released la=
+ter during
+> > > >>>>>>>>>> device_unbind_cleanup().
+> > > >>>>>>>>>>
+> > > >>>>>>>>>> Releasing devres-managed resources that depend on the powe=
+r domain state
+> > > >>>>>>>>>> after detaching the device from its PM domain can cause fa=
+ilures.
+> > > >>>>>>>>>>
+> > > >>>>>>>>>> For example, if the driver uses devm_pm_runtime_enable() i=
+n its probe
+> > > >>>>>>>>>> function, and the device's clocks are managed by the PM do=
+main, then
+> > > >>>>>>>>>> during removal the runtime PM is disabled in device_unbind=
+_cleanup() after
+> > > >>>>>>>>>> the clocks have been removed from the PM domain. It may ha=
+ppen that the
+> > > >>>>>>>>>> devm_pm_runtime_enable() action causes the device to be ru=
+ntime-resumed.
+> > > >>>>>>>>>
+> > > >>>>>>>>> Don't use devm_pm_runtime_enable() then.
+> > > >>>>>>>>
+> > > >>>>>>>> What about other devm_ APIs? Are you suggesting that platfor=
+m drivers
+> > > >>>>>>>> should not be using devm_clk*(), devm_regulator_*(),
+> > > >>>>>>>> devm_request_*_irq() and devm_add_action_or_reset()? Because=
+ again,
+> > > >>>>>>>> dev_pm_domain_detach() that is called by platform bus_remove=
+() may shut
+> > > >>>>>>>> off the device too early, before cleanup code has a chance t=
+o execute
+> > > >>>>>>>> proper cleanup.
+> > > >>>>>>>>
+> > > >>>>>>>> The issue is not limited to runtime PM.
+> > > >>>>>>>>
+> > > >>>>>>>>>
+> > > >>>>>>>>>> If the driver specific runtime PM APIs access registers di=
+rectly, this
+> > > >>>>>>>>>> will lead to accessing device registers without clocks bei=
+ng enabled.
+> > > >>>>>>>>>> Similar issues may occur with other devres actions that ac=
+cess device
+> > > >>>>>>>>>> registers.
+> > > >>>>>>>>>>
+> > > >>>>>>>>>> Add devm_pm_domain_attach(). When replacing the dev_pm_dom=
+ain_attach() and
+> > > >>>>>>>>>> dev_pm_domain_detach() in bus probe and bus remove, it ens=
+ures that the
+> > > >>>>>>>>>> device is detached from its PM domain in device_unbind_cle=
+anup(), only
+> > > >>>>>>>>>> after all driver's devres-managed resources have been rele=
+ase.
+> > > >>>>>>>>>>
+> > > >>>>>>>>>> For flexibility, the implemented devm_pm_domain_attach() h=
+as 2 state
+> > > >>>>>>>>>> arguments, one for the domain state on attach, one for the=
+ domain state on
+> > > >>>>>>>>>> detach.
+> > > >>>>>>>>>
+> > > >>>>>>>>> dev_pm_domain_attach() is not part driver API and I'm not c=
+onvinced at
+> > > >>>>>>>>
+> > > >>>>>>>> Is the concern that devm_pm_domain_attach() will be [ab]used=
+ by drivers?
+> > > >>>>>>>
+> > > >>>>>>> Yes, among other things.
+> > > >>>>>>
+> > > >>>>>> Maybe naming could make abuse at least obvious to spot? e.g.
+> > > >>>>>> pm_domain_attach_with_devm_release()
+> > > >>>>>
+> > > >>>>> If I'm not mistaken, it is not even necessary to use devres for=
+ this.
+> > > >>>>>
+> > > >>>>> You might as well add a dev_pm_domain_detach() call to
+> > > >>>>> device_unbind_cleanup() after devres_release_all().  There is a=
+ slight
+> > > >>>>> complication related to the second argument of it, but I suppos=
+e that
+> > > >>>>> this can be determined at the attach time and stored in a new d=
+evice
+> > > >>>>> PM flag, or similar.
+> > > >>>>>
+> > > >>>>
+> > > >>>> I looked into this solution. I've tested it for all my failure c=
+ases and
+> > > >>>> went good.
+> > > >>>
+> > > >>> OK
+> > > >>>
+> > > >>>>> Note that dev->pm_domain is expected to be cleared by ->detach(=
+), so
+> > > >>>>> this should not cause the domain to be detached twice in a row =
+from
+> > > >>>>> the same device, but that needs to be double-checked.
+> > > >>>>
+> > > >>>> The genpd_dev_pm_detach() calls genpd_remove_device() ->
+> > > >>>> dev_pm_domain_set(dev, NULL) which sets the dev->pm_domain =3D N=
+ULL. I can't
+> > > >>>> find any other detach function in the current code base.
+> > > >>>
+> > > >>> There is also acpi_dev_pm_detach() which can be somewhat hard to =
+find,
+> > > >>> but it calls dev_pm_domain_set(dev, NULL) either.
+> > > >>>
+> > > >>>> The code I've tested for this solution is this one:
+> > > >>>>
+> > > >>>> diff --git a/drivers/base/dd.c b/drivers/base/dd.c
+> > > >>>> index b526e0e0f52d..5e9750d007b4 100644
+> > > >>>> --- a/drivers/base/dd.c
+> > > >>>> +++ b/drivers/base/dd.c
+> > > >>>> @@ -25,6 +25,7 @@
+> > > >>>>  #include <linux/kthread.h>
+> > > >>>>  #include <linux/wait.h>
+> > > >>>>  #include <linux/async.h>
+> > > >>>> +#include <linux/pm_domain.h>
+> > > >>>>  #include <linux/pm_runtime.h>
+> > > >>>>  #include <linux/pinctrl/devinfo.h>
+> > > >>>>  #include <linux/slab.h>
+> > > >>>> @@ -552,8 +553,11 @@ static void device_unbind_cleanup(struct de=
+vice *dev)
+> > > >>>>         dev->dma_range_map =3D NULL;
+> > > >>>>         device_set_driver(dev, NULL);
+> > > >>>>         dev_set_drvdata(dev, NULL);
+> > > >>>> -       if (dev->pm_domain && dev->pm_domain->dismiss)
+> > > >>>> -               dev->pm_domain->dismiss(dev);
+> > > >>>> +       if (dev->pm_domain) {
+> > > >>>> +               if (dev->pm_domain->dismiss)
+> > > >>>> +                       dev->pm_domain->dismiss(dev);
+> > > >>>> +               dev_pm_domain_detach(dev, dev->pm_domain->detach=
+_power_off);
+> > > >>>
+> > > >>> I would do the "detach" before the "dismiss" to retain the curren=
+t ordering.
+> > > >>
+> > > >> I applied on my local development branch all your suggestions exce=
+pt this
+> > > >> one because genpd_dev_pm_detach() as well as acpi_dev_pm_detach() =
+set
+> > > >> dev->pm_domain =3D NULL.
+> > > >>
+> > > >> Due to this I would call first ->dismiss() then ->detach(), as ini=
+tially
+> > > >> proposed. Please let me know if you consider it otherwise.
+> > > >
+> > > > This is a matter of adding one more dev->pm_domain check AFAICS, bu=
+t OK.
+> > >
+> > > I don't know all the subtleties around this, my concern with adding o=
+ne
+> > > more check on dev->pm_domain was that the
+> > > dev->pm_domain->dismiss() will never be called if the ->detach() func=
+tion
+> > > will be called before ->dismiss() and it will set dev->pm_domain =3D =
+NULL (as
+> > > it does today (though genpd_dev_pm_detach() and acpi_dev_pm_detach())=
+).
+> > >
+> > > For platform drivers that used to call dev_pm_domain_detach() in plat=
+form
+> > > bus remove function, if I'm not wrong, the dev->pm_domain->dismiss() =
+was
+> > > never called previously. If that is a valid scenario, the code propos=
+ed in
+> > > this thread will change the behavior for devices that have ->dismiss(=
+)
+> > > implemented.
+> >
+> > ->dismiss() and ->detach() are supposed to be mutually exclusive, so
+> > this should not be a problem either way and in practice so far the
+> > only user of ->dismiss() has been acpi_lpss_pm_domain which doesn't do
+> > ->detach() at all.
+>
+> May I ask if you know if there remains any real good reasons to keep
+> the ->dismiss() callback around?
+>
+> Can't acpi_lpss_pm_domain() convert to use the ->detach() callback
+> instead? Just thinking that it would be easier, but maybe it doesn't
+> work.
 
-kernel test robot noticed the following build warnings:
-
-[auto build test WARNING on jic23-iio/togreg]
-[also build test WARNING on linus/master v6.16-rc2 next-20250620]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/liquancin-mereenamathai-in-bosch-com/Add-the-iio-driver-for-bosch-pressure-sensor-bmp390-The-bmp390-is-a-pressure-sensor-module-It-will-support-SPI-and-I2C-p/20250620-125832
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
-patch link:    https://lore.kernel.org/r/20250620045456.1151-2-liquancin.mereenamathai%40in.bosch.com
-patch subject: [PATCH v1 1/2] Add the iio driver for bosch pressure sensor bmp390. The bmp390 is a pressure sensor module. It will support SPI and I2C protocol based on configuration.
-config: loongarch-randconfig-r122-20250621 (https://download.01.org/0day-ci/archive/20250621/202506211617.KOMMf9eA-lkp@intel.com/config)
-compiler: loongarch64-linux-gcc (GCC) 15.1.0
-reproduce: (https://download.01.org/0day-ci/archive/20250621/202506211617.KOMMf9eA-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202506211617.KOMMf9eA-lkp@intel.com/
-
-sparse warnings: (new ones prefixed by >>)
->> drivers/iio/pressure/bmp390/bmp390_i2c.c:38:16: sparse: sparse: symbol 'iio_i2c_dev' was not declared. Should it be static?
---
->> drivers/iio/pressure/bmp390/bmp390_iio_buffer.c:41:56: sparse: sparse: dereference of noderef expression
->> drivers/iio/pressure/bmp390/bmp390_iio_buffer.c:41:56: sparse: sparse: dereference of noderef expression
-   drivers/iio/pressure/bmp390/bmp390_iio_buffer.c:44:40: sparse: sparse: dereference of noderef expression
-   drivers/iio/pressure/bmp390/bmp390_iio_buffer.c:44:40: sparse: sparse: dereference of noderef expression
-   drivers/iio/pressure/bmp390/bmp390_iio_buffer.c:47:43: sparse: sparse: dereference of noderef expression
-   drivers/iio/pressure/bmp390/bmp390_iio_buffer.c:47:43: sparse: sparse: dereference of noderef expression
-
-vim +/iio_i2c_dev +38 drivers/iio/pressure/bmp390/bmp390_i2c.c
-
-    33	
-    34	/*********************************************************************/
-    35	/* global variables */
-    36	/*********************************************************************/
-    37	static struct i2c_client *bmp3_i2c_client;
-  > 38	struct iio_dev *iio_i2c_dev;
-    39	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+It will, but let's just not make too many changes in one go.
 

@@ -1,245 +1,151 @@
-Return-Path: <linux-iio+bounces-20830-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20831-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 383F9AE2B21
-	for <lists+linux-iio@lfdr.de>; Sat, 21 Jun 2025 20:16:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19FB4AE2B49
+	for <lists+linux-iio@lfdr.de>; Sat, 21 Jun 2025 20:53:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 859E91898550
-	for <lists+linux-iio@lfdr.de>; Sat, 21 Jun 2025 18:16:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EAEE63B101A
+	for <lists+linux-iio@lfdr.de>; Sat, 21 Jun 2025 18:52:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3554626FD90;
-	Sat, 21 Jun 2025 18:14:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88C9A267B00;
+	Sat, 21 Jun 2025 18:53:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OKW7wi8Z"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="R4TG6upD"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-yb1-f172.google.com (mail-yb1-f172.google.com [209.85.219.172])
+Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D93AB21C9E8;
-	Sat, 21 Jun 2025 18:14:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E24022036ED;
+	Sat, 21 Jun 2025 18:53:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750529690; cv=none; b=pgGRfNZfnbWYbxDiSbGBU0tE73Ovqm0ywXHf4SC9vVgjvSvAfQtwapwl5Y3gWXd7I9Z/8AB+fvlv26/J7YUreD3EnuaUs2Ql+bynRy4kfekzCmGFZAh8uSB/9LsCueguFMwyR2ggrRG1BWaCp97G3Dve3Ls46t96dnfxoyg4R20=
+	t=1750531990; cv=none; b=gXf03W5WgLZxK4CClloeOfq2rEpK08Cm9+0RMYq3EaI5verDzqLZ9HnsNC3Nf85AzbX7ByVt7fvaVhtUPMsuDSXeLAZW+2FfVPMeHpuIzhtpPGWpGwQfIGwoZjuoYbLOZ1C+CoDuq7Kij2tHo84dO/HQpVSgpXZeepRintFdUJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750529690; c=relaxed/simple;
-	bh=1cs0cXbMkZOrpNtAR1gyFyo5vtKD+GK9iev2+1bElYs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NIYkp4/7xTnLHP8kt+UdFL6M+RaEk03fWnkq76ILsKyTuUv37fx6xkXHkovcQlLhTiOTgB6x1fPYWNM/4XcwoPIgcr3O3QiPFCefFfJHbzvJ9noaVYTEmDXgGzVOnTLTwbIRVQ0crigl1cEMKHwaka65+2ayNiXOXHWBJ9u8eqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OKW7wi8Z; arc=none smtp.client-ip=209.85.219.172
+	s=arc-20240116; t=1750531990; c=relaxed/simple;
+	bh=YNKJd0VKgqr5yaVjjFu1/l5WHZ+8KFVf4/a2EGCCWuk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ToE5qd/Yv4Bev0fDaytFA64YQUI+E3VBY7D7tNOuioRP+4E0JqaPaMLTmHQXsTnNd1192OM7FjR6l2laa8KXWHcAU4OXWcJblLkScNCXcwVFjF6F5MC4J5ZogXMBOsT/TAMkxRbA4dAJPGVZjZQQ41LxGcVn7LlFvrf0mF/CsOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=R4TG6upD; arc=none smtp.client-ip=209.85.215.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yb1-f172.google.com with SMTP id 3f1490d57ef6-e81881bdd55so454198276.0;
-        Sat, 21 Jun 2025 11:14:47 -0700 (PDT)
+Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-b31d489a76dso2458479a12.1;
+        Sat, 21 Jun 2025 11:53:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750529687; x=1751134487; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=w2Q+TpFevmaKqs+ZnGNjN0BGT/qoqb8hQl4f0eoBZew=;
-        b=OKW7wi8ZKzplO2RefjIoZ2JiIMizVjHShtTbEt7YMTy9fuZ7OiyHyjS68ySw97sY06
-         J43sGkMEWASvLyxV4hXDtipJBqYcdNlQAxLB1H1n7sfpBn/tC946eYRxg2GDssS0EjSv
-         HJEHWQ++6xO3lapxixsZtGeqUAqJrM9l+GXck97QT9a/ywwVN0ZGalEb0qri/DJ/UQki
-         y5o5WkVIO2vQOG+GdzysZLpmaRQmXcWnQ/VCY82lizWpLL2DYLlI9fOZD7ICoRZmNnKN
-         vQH8b/EByP9216mwqoDlCEL+Um3GVyK0YO2sYMF0a3hdBTtjlSg34BDEWXuGIUMLlbAF
-         FwoQ==
+        d=gmail.com; s=20230601; t=1750531988; x=1751136788; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=c5cZFNuGdSyl5svvXZPVc0fkJaaimEDabqtK2WLJV+k=;
+        b=R4TG6upDMYE8Hx6BaPnco5VxR4r1U1JpcLogrn2bXvH1aU1/z/iFTKrNybCn7VUa6i
+         7XHFogtiutwgTuzZDzX/7ZLFx9lhdUKIq/R6EuJAwidHr0QmxZ2IvR5I4jDx0PO8abB/
+         83z25DT5Cjy5eqjijp2rAjg5BZgL2NKo3SCw2JvAdIkQkUt+Ngl0PJCzJ3SzYBM2zLHe
+         umvE6gIRjxmkjAjOdJX9ep1Q4pcLKptbupvhgmS6TJJ1D209pQvolfcgm5K6xz2KkS3g
+         j9Xhe/YtCnvd+Vt7rErdKseROoohzw1cc/UfTm03+uyCtH203u6T7jakK8CHxi/qD8L2
+         z9PA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750529687; x=1751134487;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=w2Q+TpFevmaKqs+ZnGNjN0BGT/qoqb8hQl4f0eoBZew=;
-        b=DT/I/LQtafMlc5sy60YaZ+zvX4lySoUw23pwX9uImjq+imGGzvSV9ea33LtbmsvVbq
-         86iQJZXaeqizNZxmgFO8Ib8uhQJCIOTpmS73PtjqU5aOcQL7r/3PSz+jmW9x/naqDihr
-         zhfa25Qi1ouy25+LtvOiHcN+cIClbsLHs1Dq8ZX140F8sFH6NqQv24VEF40ZkKdV65wi
-         QWOSRcqxRhp202uhwMcJWCiZcXvdNkeDH0vKj6aqCXf6vHeP2gcTk0Em7u5hZJ/EQ4bB
-         76yoI6FvbKl6IMalWzfnCxOk80STz2gEeAooAcJDtwXjigk2Xe3jsLIoYZi83yRVyN+z
-         roog==
-X-Forwarded-Encrypted: i=1; AJvYcCVS/lovcMZKFT+us/yXBjDl00y9J5TuNB/yvJouUT+48DFyXBHGeWYvGQdbSaibckNCzBttjSLxcbq4bMuX@vger.kernel.org, AJvYcCXFWCLpvR5l7KKRdlAhbcUKCjaJjLvQ836V4x8khyFswh1rNC4BRSttyn6XEAzx5kbHTZFt/bdNIrk=@vger.kernel.org, AJvYcCXYNSI8xn9qqVzeUJRFSiG5nkRhh+RZzrafh+eN67SPSymrzvziS8bsuCGGJ1Us7s+EDFGr/EN9/C8k@vger.kernel.org
-X-Gm-Message-State: AOJu0YwrRXCNgzjsU8tHWhCyRrHr0+6gK7b2MuO+Gf3OxJwd1BN0W8Ix
-	wpxI8dyx7xqNsymf2exPJhre4t5WsfUwaXdByZ0/GjdFf5KolRss9GGYLXcUEDXSFmVcAd9GRFX
-	F8Pf+ycvfOYCjNcAwfoK7JBBZHc7gAUo=
-X-Gm-Gg: ASbGncvabSV8bNoJc3msr6YlS6L5dHa0D8q2gm2Co+Do7pnWUVGw2POsTdX4TJaptyP
-	2U+VAy+kwSrhWdRODfDSKRh7OqdLiNGOEpAXPzRnkYbdXAXryFxX4FYbzr7x1Tgdf90nDh383cI
-	vsD7J0AWQAUOJmVDKPRuXSrIxPsSPVUyIcieRFANgSZrbnUBDXUE9lWw==
-X-Google-Smtp-Source: AGHT+IGA9AGyGrH8+MZOMf2hY13oCcyT6tXGS7nvIUzHT6jvDU8fAF1eZgZWaJWEa2kRbPBhZmU+hgzHnxfEDsIXCuQ=
-X-Received: by 2002:a05:690c:4b10:b0:712:a286:2ca2 with SMTP id
- 00721157ae682-712c654cc21mr48843047b3.7.1750529686775; Sat, 21 Jun 2025
- 11:14:46 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1750531988; x=1751136788;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=c5cZFNuGdSyl5svvXZPVc0fkJaaimEDabqtK2WLJV+k=;
+        b=Nj9zUA5lNFxUMuSmZMY3j/AgotFelkaSPQlza0m0l5W6dBZX6iQL0xQRCjm775p2x5
+         jnhOdFLDQOcupH/vTp/oU+FlyCiDXnK/70OEJoG8wyDD8PyPPw7d0OTgxnveR1tZjqBA
+         hJ9gFNwjfkjVYHwIidS4OMNF3kO/4BmGgQbtclATTAQPlBOzHS0znBckR6LVOB4ToIeP
+         KBMPkieggn1z9FGROUOjn7bnP0GSCsK5/K2gloo3s+sEDSlhH9miZpJuAbKeS6D5IPs/
+         K2gTYfIY28/isW8U9T+ZtXOQpOKx3WL1oYSnoShz4nMnC73oaOx42QQVWSoFYatfCib8
+         bnlA==
+X-Forwarded-Encrypted: i=1; AJvYcCW9904oPgrWXeSbTxxZ0FVrY/tQg47Lw5fuXYgkIBndUVDgBSRThi98WNW8y21/CJYuTqpio6Nw7amC+J+a@vger.kernel.org, AJvYcCXnyXXSG8n54NXv6n1aUhROekSj7npYJjP7oc3zeGwHWN6ko4iwqQGe1f7Z/53lTPI9ojutmGXImIg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzMvc6WudD4zG0potdCafCQP1xbRXV7zHx2801tf9HgaDgPauBY
+	fRgHKE6t50F5464w+fG9ylXwhAvNLWf47fuPrChuAvHNtdRkO8tvAewM
+X-Gm-Gg: ASbGncvWjg8loOFdswPD59/bCvKdA5WfY+wJyIxBygBhv1wZAE7vxfTE0+L5F+5C1ZA
+	WdYM98x66BD2sqEeb/KOixN4/wbw4ZQVEJzwqfLTbJkS/Z43JVNCVAX1yKwzrJKE+eYh0lIuu8a
+	Fp7szlJX9hx9uyQ7VHUrmvf6aAl4nqK+LNs+YtmlvqCJArkorYnlekeJfLeJ1maWLuK/8j4iOjk
+	OFLYCvFkoYFZ4KtLKVav9VbiJ4kJ5w/AIG5ycYRys/jTVZSgbDAB3M8p6/rggn+prsCsHi3PYSt
+	uYUNFxBtYYxq707G7lRZNjbeZiAYeUh5ZmJ6yHsqCoyAqAvQSM4dzawTM3qsBWYDHHfBUGOZAKv
+	5ZCMC2zwwZA==
+X-Google-Smtp-Source: AGHT+IG3qDiusxD+PSHaBKJnh1NwZDOcuLxH1zCfqUODtSQRJQxUNB8T2PUnSKnsGJjStsQ1IMmhfg==
+X-Received: by 2002:a17:903:4b2b:b0:234:e0c3:8406 with SMTP id d9443c01a7336-237d9775527mr117117205ad.1.1750531988057;
+        Sat, 21 Jun 2025 11:53:08 -0700 (PDT)
+Received: from localhost.localdomain ([2804:14d:4c64:81ec:7409:107a:a63b:a3da])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-237d8640c61sm46053545ad.141.2025.06.21.11.53.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 21 Jun 2025 11:53:07 -0700 (PDT)
+From: Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>
+To: jic23@kernel.org,
+	dlechner@baylibre.com,
+	nuno.sa@analog.com,
+	andy@kernel.org,
+	conor@kernel.org
+Cc: ~lkcamp/patches@lists.sr.ht,
+	linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] iio: adc: spear_adc: mask SPEAR_ADC_STATUS_AVG_SAMPLE before setting register
+Date: Sat, 21 Jun 2025 15:41:44 -0300
+Message-ID: <20250621185301.9536-1-rodrigo.gobbi.7@gmail.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250610215933.84795-1-l.rubusch@gmail.com> <20250610215933.84795-2-l.rubusch@gmail.com>
- <20250614144208.363c29cf@jic23-huawei> <CAFXKEHbh=_A9WvEvkBaz9nNEGX5bxWu2sFvbMtqLM-Ag0cdY0A@mail.gmail.com>
- <20250621175540.4520a6b5@jic23-huawei>
-In-Reply-To: <20250621175540.4520a6b5@jic23-huawei>
-From: Lothar Rubusch <l.rubusch@gmail.com>
-Date: Sat, 21 Jun 2025 20:14:10 +0200
-X-Gm-Features: AX0GCFsNDDjLn6YMSBTV1uxtMOIo0Uzp9OlHogY4u2dUzB0-PPE_mCNSP_fcweY
-Message-ID: <CAFXKEHZ_2SJKYzh6i0YauaEdqF8nYdDR-6CY+G3sFtdspsNveA@mail.gmail.com>
-Subject: Re: [PATCH v9 01/11] iio: accel: adxl345: apply scale factor to tap threshold
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: lars@metafoo.de, Michael.Hennerich@analog.com, dlechner@baylibre.com, 
-	nuno.sa@analog.com, andy@kernel.org, corbet@lwn.net, 
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, eraretuya@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Hi Jonathan,
+SPEAR_ADC_STATUS_AVG_SAMPLE info is a bit field coded inside the following
+bits: 5,6,7 and 8 of a device status register. Since the value came from dt,
+mask it in order to avoid touching other register bits.
 
-On Sat, Jun 21, 2025 at 6:55=E2=80=AFPM Jonathan Cameron <jic23@kernel.org>=
- wrote:
->
-> On Mon, 16 Jun 2025 00:20:49 +0200
-> Lothar Rubusch <l.rubusch@gmail.com> wrote:
->
-> > On Sat, Jun 14, 2025 at 3:42=E2=80=AFPM Jonathan Cameron <jic23@kernel.=
-org> wrote:
-> > >
-> > > On Tue, 10 Jun 2025 21:59:23 +0000
-> > > Lothar Rubusch <l.rubusch@gmail.com> wrote:
-> > >
-> > > > The threshold for tap detection was still not scaled. The datasheet=
- sets
-> > > > a scale factor of 62.5mg/LSB. Remove commit about not scaled thresh=
-old
-> > > > for tap detection, and apply scaling to it.
-> > > >
-> > >
-> > > Given tap detection algorithms are not generally well defined and not=
- a simple
-> > > threshold (generally) what scaling should we be aiming for here?
-> > > Even if it were a simple threshold, when a channel provides _raw the
-> > > expectation is that event config is vs _raw, not the base units.
-> > >
-> > > So if this doesn't care about the current fullscale range (which the
-> > > comment implied was the case) it would need to rescale when the
-> > > IIO_INFO_SCALE changes.
-> > >
-> > > That comment is I think indicating we decided to gloss over the
-> > > detail because it's going into a (potentially) non trivial algorithm =
-anyway.
-> > >
-> > > Jonathan
-> > >
-> >
-> > Well, the tap threshold so far was around in "raw" LSB bits. At that
-> > time I only left the comment that the value is not scaled. The current
-> > patch is just putting now the scale factor and the sysfs handle then
-> > will take values of 'g' and not just raw bits. This is like for the
-> > other scaled values such as periods.
->
-> Tricky corner because tap isn't a simple threshold - it it were I'd have
-> a cleaner argument.
->
-> If we were doing this it would need to be scalling to m/s^2 not g but
-> that's not important for this discussion.
->
-> Huh. For thresholds I thought we had this clear in the ABI docs, but we d=
-on't.
-> The ABI doc refers to having _raw_ in the name which I'm not sure has bee=
-n true
-> in a very long time.  The convention is intended to be if the channel
-> has _raw the thresholds are in that unit (i.e. ADC counts) and if not
-> they are in the processed value units.
->
-> It has to be this way because of non linear sensors.  We have cases
-> where there isn't a transform we can sensibly convert in the kernel
-> to set a 'raw' threshold.   (involves cube roots for instance).
-> As a side note, those sensors are one of the few cases where we have
-> both _RAW and _PROCESSED because the thresholds have to relate to _RAW
-> but we need _PROCESSED to give standard units.
->
-> Now for this case where it's kind of tangentially connected by the
-> particular algorithm to the raw reading things are non obvious.
-> The tap detector could just as easily be a threshold on jerk -
-> rate of change of acceleration or some 'score' calculated from
-> a bunch of inputs in which case we couldn't apply a scaling.
->
-> >
-> > I think at the time I left the thresholds a bit out, because for me
-> > it's clear what a time is. But I'm not sure, if actually the
-> > thresholds are going so much by the unit values. So, in particular
-> > what is missing here? Is it just about the commit message, or does it
-> > need technical further adjustments?
->
-> I don't think the patch is needed. For this particular parameter there
-> isn't a clear concept of scale (putting aside that for this particular
-> sensor there is one).  Thus it's a twiddle control. No need to connect
-> it to real world units at all.  Also change this is an ABI change
-> so we should do it only if we are considering the change to be fixing
-> a bug.
->
+Signed-off-by: Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>
+---
+During the submission of patches related to the yaml creation of spear_adc [1],
+there was a discussion about the average-samples value/dt property. It turns out
+that the dt property value is direclty written to a device status register.
+Considering some defines at the .c file, we have this:
 
-Great to hear! To be honest, I was a bit worried that finally I missed
-scaling the threshold to units of g. Then I made it right just by
-chance, using the raw values. Patch will be dropped in v10.
+#define SPEAR_ADC_STATUS_ADC_ENABLE		BIT(4)
+#define SPEAR_ADC_STATUS_AVG_SAMPLE(x)		((x) << 5)
+#define SPEAR_ADC_STATUS_VREF_INTERNAL		BIT(9)
 
-Best,
-L
+SPEAR_ADC_STATUS_AVG_SAMPLE info is a bit field coded inside the following
+bits: 5,6,7 and 8. The bit 9 is a different info, vref in this case.
+Currently, there is no control if the average-samples is outside of allowed
+range, which is 0x15 since the driver exists. There is no documentation about
+how that information is managed by the device, but I`m suggesting to add a mask
+with the max value for those bits before configuring the samples bits.
 
-> Jonathan
->
-> >
-> > Best,
-> > L
-> > >
-> > > > Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
-> > > > ---
-> > > >  drivers/iio/accel/adxl345_core.c | 11 +++++------
-> > > >  1 file changed, 5 insertions(+), 6 deletions(-)
-> > > >
-> > > > diff --git a/drivers/iio/accel/adxl345_core.c b/drivers/iio/accel/a=
-dxl345_core.c
-> > > > index 7c093c0241de..d80efb68d113 100644
-> > > > --- a/drivers/iio/accel/adxl345_core.c
-> > > > +++ b/drivers/iio/accel/adxl345_core.c
-> > > > @@ -697,17 +697,15 @@ static int adxl345_read_event_value(struct ii=
-o_dev *indio_dev,
-> > > >               switch (info) {
-> > > >               case IIO_EV_INFO_VALUE:
-> > > >                       /*
-> > > > -                      * The scale factor would be 62.5mg/LSB (i.e.=
- 0xFF =3D 16g) but
-> > > > -                      * not applied here. In context of this gener=
-al purpose sensor,
-> > > > -                      * what imports is rather signal intensity th=
-an the absolute
-> > > > -                      * measured g value.
-> > > > +                      * Scale factor is 62.5mg/LSB i.e. 0xff =3D 1=
-6g
-> > > >                        */
-> > > >                       ret =3D regmap_read(st->regmap, ADXL345_REG_T=
-HRESH_TAP,
-> > > >                                         &tap_threshold);
-> > > >                       if (ret)
-> > > >                               return ret;
-> > > > -                     *val =3D sign_extend32(tap_threshold, 7);
-> > > > -                     return IIO_VAL_INT;
-> > > > +                     *val =3D 62500 * sign_extend32(tap_threshold,=
- 7);
-> > > > +                     *val2 =3D MICRO;
-> > > > +                     return IIO_VAL_FRACTIONAL;
-> > > >               case IIO_EV_INFO_TIMEOUT:
-> > > >                       *val =3D st->tap_duration_us;
-> > > >                       *val2 =3D 1000000;
-> > > > @@ -746,6 +744,7 @@ static int adxl345_write_event_value(struct iio=
-_dev *indio_dev,
-> > > >       case IIO_EV_TYPE_GESTURE:
-> > > >               switch (info) {
-> > > >               case IIO_EV_INFO_VALUE:
-> > > > +                     val =3D DIV_ROUND_CLOSEST(val * MICRO + val2,=
- 62500);
-> > > >                       ret =3D regmap_write(st->regmap, ADXL345_REG_=
-THRESH_TAP,
-> > > >                                          min(val, 0xFF));
-> > > >                       if (ret)
-> > >
->
+@Conor, I`m considering to add the "Suggested-by:" with your name here due [1].
+Are you ok with that? If you agree, I can submit a v2 with that.
+Tks and regards.
+
+[1] https://lore.kernel.org/linux-devicetree/20250506-equivocal-snooper-8a7d1ce931c8@spud/#t
+---
+ drivers/iio/adc/spear_adc.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/iio/adc/spear_adc.c b/drivers/iio/adc/spear_adc.c
+index e3a865c79686..cf412ece90cf 100644
+--- a/drivers/iio/adc/spear_adc.c
++++ b/drivers/iio/adc/spear_adc.c
+@@ -37,6 +37,8 @@
+ #define SPEAR_ADC_DATA_MASK		0x03ff
+ #define SPEAR_ADC_DATA_BITS		10
+ 
++#define SPEAR_ADC_AVG_SAMPLE_MASK 0x01E0
++
+ #define SPEAR_ADC_MOD_NAME "spear-adc"
+ 
+ #define SPEAR_ADC_CHANNEL_NUM		8
+@@ -158,7 +160,7 @@ static int spear_adc_read_raw(struct iio_dev *indio_dev,
+ 		mutex_lock(&st->lock);
+ 
+ 		status = SPEAR_ADC_STATUS_CHANNEL_NUM(chan->channel) |
+-			SPEAR_ADC_STATUS_AVG_SAMPLE(st->avg_samples) |
++			(SPEAR_ADC_STATUS_AVG_SAMPLE(st->avg_samples) & SPEAR_ADC_AVG_SAMPLE_MASK) |
+ 			SPEAR_ADC_STATUS_START_CONVERSION |
+ 			SPEAR_ADC_STATUS_ADC_ENABLE;
+ 		if (st->vref_external == 0)
+-- 
+2.49.0
+
 

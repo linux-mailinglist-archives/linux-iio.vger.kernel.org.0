@@ -1,215 +1,245 @@
-Return-Path: <linux-iio+bounces-20829-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20830-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E0AAAE2AFC
-	for <lists+linux-iio@lfdr.de>; Sat, 21 Jun 2025 20:07:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 383F9AE2B21
+	for <lists+linux-iio@lfdr.de>; Sat, 21 Jun 2025 20:16:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8F857175F18
-	for <lists+linux-iio@lfdr.de>; Sat, 21 Jun 2025 18:07:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 859E91898550
+	for <lists+linux-iio@lfdr.de>; Sat, 21 Jun 2025 18:16:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A690269AE9;
-	Sat, 21 Jun 2025 18:07:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3554626FD90;
+	Sat, 21 Jun 2025 18:14:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="F/IxeUmN"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OKW7wi8Z"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from mail-yb1-f172.google.com (mail-yb1-f172.google.com [209.85.219.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E23E818B464;
-	Sat, 21 Jun 2025 18:07:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D93AB21C9E8;
+	Sat, 21 Jun 2025 18:14:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750529247; cv=none; b=rBB7DlIjlciIxVv0jr7xsijo0+Oi5eW2Q+hx3lXG+nAfAQ/1859L2x0LaD7R7Vhe73XQHHmPbMQ0uwQSCEjfbG/v56ZxDHTBjR/FD5MfsS8fzPM6Dg1JrOWDUA9XGFOCbdUPKESKXcX1pZjVeBtmljdmxFQh4xQ71nIJVfimT4A=
+	t=1750529690; cv=none; b=pgGRfNZfnbWYbxDiSbGBU0tE73Ovqm0ywXHf4SC9vVgjvSvAfQtwapwl5Y3gWXd7I9Z/8AB+fvlv26/J7YUreD3EnuaUs2Ql+bynRy4kfekzCmGFZAh8uSB/9LsCueguFMwyR2ggrRG1BWaCp97G3Dve3Ls46t96dnfxoyg4R20=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750529247; c=relaxed/simple;
-	bh=vj1ttaPOW9gPULSl6ptE6HmjBxelIsl9MwVWNPFo/pk=;
+	s=arc-20240116; t=1750529690; c=relaxed/simple;
+	bh=1cs0cXbMkZOrpNtAR1gyFyo5vtKD+GK9iev2+1bElYs=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FBNY3yizFxbXMVNSporJNOwpKKXJa9RaGIiMFbaKng0EEQ0BXjxbrpAK03j42kJVMLCPK84gRl70ZDMAofmne3Idy+jt2G1+35rkYm5hirGj64HKbanXU99vNX4/IAHEokWJ/qLCMP1wu0et//jLcOMCNaaZso7zQyuRlIYU++Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=F/IxeUmN; arc=none smtp.client-ip=209.85.219.172
+	 To:Cc:Content-Type; b=NIYkp4/7xTnLHP8kt+UdFL6M+RaEk03fWnkq76ILsKyTuUv37fx6xkXHkovcQlLhTiOTgB6x1fPYWNM/4XcwoPIgcr3O3QiPFCefFfJHbzvJ9noaVYTEmDXgGzVOnTLTwbIRVQ0crigl1cEMKHwaka65+2ayNiXOXHWBJ9u8eqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OKW7wi8Z; arc=none smtp.client-ip=209.85.219.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yb1-f172.google.com with SMTP id 3f1490d57ef6-e8187df27f8so397734276.3;
-        Sat, 21 Jun 2025 11:07:25 -0700 (PDT)
+Received: by mail-yb1-f172.google.com with SMTP id 3f1490d57ef6-e81881bdd55so454198276.0;
+        Sat, 21 Jun 2025 11:14:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750529245; x=1751134045; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=r5cq0xega02GRd00js5T35nyhJCJNHDO5vMWlXDnpfU=;
-        b=F/IxeUmNSY72T+VBZd2NuLgkFfxtzZ1zDQpS2eCdDItWjjXmNw8qnRuK64sX4oHmYw
-         3NwKRWDv6Ur6HC5m23VmevVyXLKKz+URlTELO765hVot/P5Xxcv5FY60msUxL6PRs/MV
-         bQi6li3+7sfkdW46AAWSCoJl6VU8rtJCdD5o5e5hYh9iuiq2dbILvC7AE0ANbu8CLN2B
-         hq/bqWBXm1tqgKYH5eApJlIvTtjYFm1nKUGdSU63gs2l2Nq760/OhsSSXT4VkwocaS/8
-         TbWGIVUnxJKs84FRheCTPUNlQN+b9FCRnsmwEojDT4GyvKAhkH4cVBlVb4tAt0OlD0Iq
-         nFAg==
+        d=gmail.com; s=20230601; t=1750529687; x=1751134487; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=w2Q+TpFevmaKqs+ZnGNjN0BGT/qoqb8hQl4f0eoBZew=;
+        b=OKW7wi8ZKzplO2RefjIoZ2JiIMizVjHShtTbEt7YMTy9fuZ7OiyHyjS68ySw97sY06
+         J43sGkMEWASvLyxV4hXDtipJBqYcdNlQAxLB1H1n7sfpBn/tC946eYRxg2GDssS0EjSv
+         HJEHWQ++6xO3lapxixsZtGeqUAqJrM9l+GXck97QT9a/ywwVN0ZGalEb0qri/DJ/UQki
+         y5o5WkVIO2vQOG+GdzysZLpmaRQmXcWnQ/VCY82lizWpLL2DYLlI9fOZD7ICoRZmNnKN
+         vQH8b/EByP9216mwqoDlCEL+Um3GVyK0YO2sYMF0a3hdBTtjlSg34BDEWXuGIUMLlbAF
+         FwoQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750529245; x=1751134045;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=r5cq0xega02GRd00js5T35nyhJCJNHDO5vMWlXDnpfU=;
-        b=iHYUxuKgSDS7UFMVSarqy6h0OTk8ESxMEWclLquXdJJ7wwnwdRndWhIxzN6ppwykM7
-         VffEOkF3SOopmrMBABtqJXu2Nx8+oORCyG8alnsUFKA5SApLmDpnWDsKKL4Zlb8X0leX
-         DeqaG9VcaGZikELJrLSStdNWPwZZj7IqHoV3n1lNHZEZLYM4qecPr0oZr5BkxuY4FFX6
-         fQQsFYeN8BsRwZDlwmx3BKxv0egeaVoamiHfFNuZTBXDNcn1YenKlSDw9HoKwnEg3cx7
-         JIGNf0c1A88zAJ3xjicTOed96MTnLIH/I3s/BMu/m6UndEX88EWddFdIMt7pRTOHn2dv
-         Xz4g==
-X-Forwarded-Encrypted: i=1; AJvYcCU7YA3p1om6wvehBYuO75ktMnIOxwd8nY3IlBL/yFWmH8+PfSyM01N1XsqdIDOzMEy1ydeFhiAHdFGcwLtC@vger.kernel.org, AJvYcCV4p1IYQM7rjDqd1XoAUb5A938tR6bP7WIw5RNyn9UXZt5tNmulHmjj2+hDbdQEuLPJQq1IB9mrPmE=@vger.kernel.org, AJvYcCWe/c7IrnjslYssvhP6smgsoRPGW1XwfxCbnLDHDfjdyGMsPYVLoBUQiVbUN0AeRCWSMmwu/vvScIzy@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx7nuhCiN6umrq+PVv/ZFe46kpDTMDi/PBJL54ahLp1iFoJeIDG
-	bJMGLUNMYCm1im2OY0gO4WCGd/ke1MrRKZzgVnfmrBecT0IYWaL0f28Rr11MwxNi2niOmCRRKbD
-	uFWHQonfZU1arx/+BaGNL+VEUmkwQH5U=
-X-Gm-Gg: ASbGncs+Be8QUMpOVhDzD6Jp7PaDQZPtRZIvJj2HoO4kVR9exCBt7g0YpMbdQF0ers5
-	4w2Kj5OG+X5jyEXLGVsR77LeJP9rb1NYsIOZxyEbRQmKC5DTneJ84GeCLRaa22RADm+5Col2hXa
-	O+v4cJJ87YD5wtnfmO+3SgkRYGc1qGbsKhUt3fcORkSnc=
-X-Google-Smtp-Source: AGHT+IHNNRZC8v6KOJolb/hRsYMhvGI31oPIqwXOwHUeSNduVlWe/1BA5rv5K3f8QMMG9colY8S1KHr6er6ZLLG3QdY=
-X-Received: by 2002:a05:690c:a0a8:10b0:712:c5f7:1ef9 with SMTP id
- 00721157ae682-712c6767523mr34345407b3.8.1750529244942; Sat, 21 Jun 2025
- 11:07:24 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1750529687; x=1751134487;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=w2Q+TpFevmaKqs+ZnGNjN0BGT/qoqb8hQl4f0eoBZew=;
+        b=DT/I/LQtafMlc5sy60YaZ+zvX4lySoUw23pwX9uImjq+imGGzvSV9ea33LtbmsvVbq
+         86iQJZXaeqizNZxmgFO8Ib8uhQJCIOTpmS73PtjqU5aOcQL7r/3PSz+jmW9x/naqDihr
+         zhfa25Qi1ouy25+LtvOiHcN+cIClbsLHs1Dq8ZX140F8sFH6NqQv24VEF40ZkKdV65wi
+         QWOSRcqxRhp202uhwMcJWCiZcXvdNkeDH0vKj6aqCXf6vHeP2gcTk0Em7u5hZJ/EQ4bB
+         76yoI6FvbKl6IMalWzfnCxOk80STz2gEeAooAcJDtwXjigk2Xe3jsLIoYZi83yRVyN+z
+         roog==
+X-Forwarded-Encrypted: i=1; AJvYcCVS/lovcMZKFT+us/yXBjDl00y9J5TuNB/yvJouUT+48DFyXBHGeWYvGQdbSaibckNCzBttjSLxcbq4bMuX@vger.kernel.org, AJvYcCXFWCLpvR5l7KKRdlAhbcUKCjaJjLvQ836V4x8khyFswh1rNC4BRSttyn6XEAzx5kbHTZFt/bdNIrk=@vger.kernel.org, AJvYcCXYNSI8xn9qqVzeUJRFSiG5nkRhh+RZzrafh+eN67SPSymrzvziS8bsuCGGJ1Us7s+EDFGr/EN9/C8k@vger.kernel.org
+X-Gm-Message-State: AOJu0YwrRXCNgzjsU8tHWhCyRrHr0+6gK7b2MuO+Gf3OxJwd1BN0W8Ix
+	wpxI8dyx7xqNsymf2exPJhre4t5WsfUwaXdByZ0/GjdFf5KolRss9GGYLXcUEDXSFmVcAd9GRFX
+	F8Pf+ycvfOYCjNcAwfoK7JBBZHc7gAUo=
+X-Gm-Gg: ASbGncvabSV8bNoJc3msr6YlS6L5dHa0D8q2gm2Co+Do7pnWUVGw2POsTdX4TJaptyP
+	2U+VAy+kwSrhWdRODfDSKRh7OqdLiNGOEpAXPzRnkYbdXAXryFxX4FYbzr7x1Tgdf90nDh383cI
+	vsD7J0AWQAUOJmVDKPRuXSrIxPsSPVUyIcieRFANgSZrbnUBDXUE9lWw==
+X-Google-Smtp-Source: AGHT+IGA9AGyGrH8+MZOMf2hY13oCcyT6tXGS7nvIUzHT6jvDU8fAF1eZgZWaJWEa2kRbPBhZmU+hgzHnxfEDsIXCuQ=
+X-Received: by 2002:a05:690c:4b10:b0:712:a286:2ca2 with SMTP id
+ 00721157ae682-712c654cc21mr48843047b3.7.1750529686775; Sat, 21 Jun 2025
+ 11:14:46 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250610215933.84795-1-l.rubusch@gmail.com> <20250610215933.84795-8-l.rubusch@gmail.com>
- <aEq_SJMDzPYGSMu6@smile.fi.intel.com>
-In-Reply-To: <aEq_SJMDzPYGSMu6@smile.fi.intel.com>
+References: <20250610215933.84795-1-l.rubusch@gmail.com> <20250610215933.84795-2-l.rubusch@gmail.com>
+ <20250614144208.363c29cf@jic23-huawei> <CAFXKEHbh=_A9WvEvkBaz9nNEGX5bxWu2sFvbMtqLM-Ag0cdY0A@mail.gmail.com>
+ <20250621175540.4520a6b5@jic23-huawei>
+In-Reply-To: <20250621175540.4520a6b5@jic23-huawei>
 From: Lothar Rubusch <l.rubusch@gmail.com>
-Date: Sat, 21 Jun 2025 20:06:49 +0200
-X-Gm-Features: AX0GCFsvJjMw9yKd_0baJrrBmXyMs3ujx1Tb5rt2bS-6bs4zuSqH_fl8jO3Q6Rw
-Message-ID: <CAFXKEHbdeomMfEBwO+Cvkn5dkN4h47CEAMfmEGQC2V82zQ+U8Q@mail.gmail.com>
-Subject: Re: [PATCH v9 07/11] iio: accel: adxl345: add activity event feature
-To: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: lars@metafoo.de, Michael.Hennerich@analog.com, jic23@kernel.org, 
-	dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org, corbet@lwn.net, 
+Date: Sat, 21 Jun 2025 20:14:10 +0200
+X-Gm-Features: AX0GCFsNDDjLn6YMSBTV1uxtMOIo0Uzp9OlHogY4u2dUzB0-PPE_mCNSP_fcweY
+Message-ID: <CAFXKEHZ_2SJKYzh6i0YauaEdqF8nYdDR-6CY+G3sFtdspsNveA@mail.gmail.com>
+Subject: Re: [PATCH v9 01/11] iio: accel: adxl345: apply scale factor to tap threshold
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: lars@metafoo.de, Michael.Hennerich@analog.com, dlechner@baylibre.com, 
+	nuno.sa@analog.com, andy@kernel.org, corbet@lwn.net, 
 	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	linux-doc@vger.kernel.org, eraretuya@gmail.com
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Andy,
+Hi Jonathan,
 
-[...]
-> ...
+On Sat, Jun 21, 2025 at 6:55=E2=80=AFPM Jonathan Cameron <jic23@kernel.org>=
+ wrote:
 >
-> > +static int adxl345_is_act_inact_en(struct adxl345_state *st,
-> > +                                enum adxl345_activity_type type)
-> > +{
-> > +     unsigned int regval;
-> > +     u32 axis_ctrl;
-> > +     bool en;
-> > +     int ret;
-> > +
-> > +     ret = regmap_read(st->regmap, ADXL345_REG_ACT_INACT_CTRL, &axis_ctrl);
-> > +     if (ret)
-> > +             return ret;
-> > +
-> > +     switch (type) {
-> > +     case ADXL345_ACTIVITY:
-> > +             en = FIELD_GET(ADXL345_ACT_X_EN, axis_ctrl) |
-> > +                     FIELD_GET(ADXL345_ACT_Y_EN, axis_ctrl) |
-> > +                     FIELD_GET(ADXL345_ACT_Z_EN, axis_ctrl);
+> On Mon, 16 Jun 2025 00:20:49 +0200
+> Lothar Rubusch <l.rubusch@gmail.com> wrote:
 >
-> Something happened to the indentation.
-> Ditto for several places in the code (upper and lower from this).
+> > On Sat, Jun 14, 2025 at 3:42=E2=80=AFPM Jonathan Cameron <jic23@kernel.=
+org> wrote:
+> > >
+> > > On Tue, 10 Jun 2025 21:59:23 +0000
+> > > Lothar Rubusch <l.rubusch@gmail.com> wrote:
+> > >
+> > > > The threshold for tap detection was still not scaled. The datasheet=
+ sets
+> > > > a scale factor of 62.5mg/LSB. Remove commit about not scaled thresh=
+old
+> > > > for tap detection, and apply scaling to it.
+> > > >
+> > >
+> > > Given tap detection algorithms are not generally well defined and not=
+ a simple
+> > > threshold (generally) what scaling should we be aiming for here?
+> > > Even if it were a simple threshold, when a channel provides _raw the
+> > > expectation is that event config is vs _raw, not the base units.
+> > >
+> > > So if this doesn't care about the current fullscale range (which the
+> > > comment implied was the case) it would need to rescale when the
+> > > IIO_INFO_SCALE changes.
+> > >
+> > > That comment is I think indicating we decided to gloss over the
+> > > detail because it's going into a (potentially) non trivial algorithm =
+anyway.
+> > >
+> > > Jonathan
+> > >
+> >
+> > Well, the tap threshold so far was around in "raw" LSB bits. At that
+> > time I only left the comment that the value is not scaled. The current
+> > patch is just putting now the scale factor and the sysfs handle then
+> > will take values of 'g' and not just raw bits. This is like for the
+> > other scaled values such as periods.
+>
+> Tricky corner because tap isn't a simple threshold - it it were I'd have
+> a cleaner argument.
+>
+> If we were doing this it would need to be scalling to m/s^2 not g but
+> that's not important for this discussion.
+>
+> Huh. For thresholds I thought we had this clear in the ABI docs, but we d=
+on't.
+> The ABI doc refers to having _raw_ in the name which I'm not sure has bee=
+n true
+> in a very long time.  The convention is intended to be if the channel
+> has _raw the thresholds are in that unit (i.e. ADC counts) and if not
+> they are in the processed value units.
+>
+> It has to be this way because of non linear sensors.  We have cases
+> where there isn't a transform we can sensibly convert in the kernel
+> to set a 'raw' threshold.   (involves cube roots for instance).
+> As a side note, those sensors are one of the few cases where we have
+> both _RAW and _PROCESSED because the thresholds have to relate to _RAW
+> but we need _PROCESSED to give standard units.
+>
+> Now for this case where it's kind of tangentially connected by the
+> particular algorithm to the raw reading things are non obvious.
+> The tap detector could just as easily be a threshold on jerk -
+> rate of change of acceleration or some 'score' calculated from
+> a bunch of inputs in which case we couldn't apply a scaling.
+>
+> >
+> > I think at the time I left the thresholds a bit out, because for me
+> > it's clear what a time is. But I'm not sure, if actually the
+> > thresholds are going so much by the unit values. So, in particular
+> > what is missing here? Is it just about the commit message, or does it
+> > need technical further adjustments?
+>
+> I don't think the patch is needed. For this particular parameter there
+> isn't a clear concept of scale (putting aside that for this particular
+> sensor there is one).  Thus it's a twiddle control. No need to connect
+> it to real world units at all.  Also change this is an ABI change
+> so we should do it only if we are considering the change to be fixing
+> a bug.
 >
 
-What is the matter with the indention here? I'm doing `checkpatch.pl
---strict --codespell` on that and don't get an issue? Would you expect
-cases like the FIELD_GET() calls on the next line, linked by a binary
-OR, to be indented by yet another TAB?
+Great to hear! To be honest, I was a bit worried that finally I missed
+scaling the threshold to units of g. Then I made it right just by
+chance, using the raw values. Patch will be dropped in v10.
 
 Best,
 L
 
-> > +             break;
-> > +     default:
-> > +             return -EINVAL;
-> > +     }
-> > +
-> > +     if (!en)
-> > +             return en;
-> > +
-> > +     /* Check if corresponding interrupts are enabled */
-> > +     ret = regmap_read(st->regmap, ADXL345_REG_INT_ENABLE, &regval);
-> > +     if (ret)
-> > +             return ret;
-> > +
-> > +     return adxl345_act_int_reg[type] & regval;
-> > +}
+> Jonathan
 >
-> ...
->
-> > +     if (type == ADXL345_ACTIVITY) {
-> > +             axis_ctrl = ADXL345_ACT_X_EN | ADXL345_ACT_Y_EN |
-> > +                             ADXL345_ACT_Z_EN;
-> > +     } else {
-> > +             axis_ctrl = 0x00;
-> > +     }
->
-> Besides an indentation issue, {} are redundant.
->
-> ...
->
-> > +     en = false;
->
-> This line makes no sense. When it will, it should be there, not in this change.
->
-> > +     switch (type) {
-> > +     case ADXL345_ACTIVITY:
-> > +             en = FIELD_GET(ADXL345_REG_ACT_AXIS_MSK, axis_ctrl) &&
-> > +                     threshold;
-> > +             break;
-> > +     default:
-> > +             return -EINVAL;
-> > +     }
->
-> ...
->
-> >       switch (type) {
-> > +     case IIO_EV_TYPE_MAG:
-> > +             switch (info) {
-> > +             case IIO_EV_INFO_VALUE:
-> > +                     switch (dir) {
-> > +                     case IIO_EV_DIR_RISING:
-> > +                             ret = regmap_read(st->regmap,
-> > +                                               adxl345_act_thresh_reg[ADXL345_ACTIVITY],
-> > +                                               &act_threshold);
-> > +                             if (ret)
-> > +                                     return ret;
-> > +                             *val = 62500 * act_threshold;
-> > +                             *val2 = MICRO;
-> > +                             return IIO_VAL_FRACTIONAL;
-> > +                     default:
-> > +                             return -EINVAL;
-> > +                     }
-> > +             default:
-> > +                     return -EINVAL;
-> > +             }
->
-> As I mentioned before, try to avoid nested switch cases like this. Use helpers
-> to make this gone to 1 level or so.
->
-> >       case IIO_EV_TYPE_GESTURE:
-> >               switch (info) {
-> >               case IIO_EV_INFO_VALUE:
->
-> Ditto for other similar cases.
->
-> ...
->
-> >  static int adxl345_push_event(struct iio_dev *indio_dev, int int_stat,
-> > -                           enum iio_modifier tap_dir)
-> > +                           enum iio_modifier tap_dir,
-> > +                           enum iio_modifier act_dir)
->
-> If the order of parameters is not so important, I would squeeze new one to be
-> before the last argument.
->
-> --
-> With Best Regards,
-> Andy Shevchenko
->
+> >
+> > Best,
+> > L
+> > >
+> > > > Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
+> > > > ---
+> > > >  drivers/iio/accel/adxl345_core.c | 11 +++++------
+> > > >  1 file changed, 5 insertions(+), 6 deletions(-)
+> > > >
+> > > > diff --git a/drivers/iio/accel/adxl345_core.c b/drivers/iio/accel/a=
+dxl345_core.c
+> > > > index 7c093c0241de..d80efb68d113 100644
+> > > > --- a/drivers/iio/accel/adxl345_core.c
+> > > > +++ b/drivers/iio/accel/adxl345_core.c
+> > > > @@ -697,17 +697,15 @@ static int adxl345_read_event_value(struct ii=
+o_dev *indio_dev,
+> > > >               switch (info) {
+> > > >               case IIO_EV_INFO_VALUE:
+> > > >                       /*
+> > > > -                      * The scale factor would be 62.5mg/LSB (i.e.=
+ 0xFF =3D 16g) but
+> > > > -                      * not applied here. In context of this gener=
+al purpose sensor,
+> > > > -                      * what imports is rather signal intensity th=
+an the absolute
+> > > > -                      * measured g value.
+> > > > +                      * Scale factor is 62.5mg/LSB i.e. 0xff =3D 1=
+6g
+> > > >                        */
+> > > >                       ret =3D regmap_read(st->regmap, ADXL345_REG_T=
+HRESH_TAP,
+> > > >                                         &tap_threshold);
+> > > >                       if (ret)
+> > > >                               return ret;
+> > > > -                     *val =3D sign_extend32(tap_threshold, 7);
+> > > > -                     return IIO_VAL_INT;
+> > > > +                     *val =3D 62500 * sign_extend32(tap_threshold,=
+ 7);
+> > > > +                     *val2 =3D MICRO;
+> > > > +                     return IIO_VAL_FRACTIONAL;
+> > > >               case IIO_EV_INFO_TIMEOUT:
+> > > >                       *val =3D st->tap_duration_us;
+> > > >                       *val2 =3D 1000000;
+> > > > @@ -746,6 +744,7 @@ static int adxl345_write_event_value(struct iio=
+_dev *indio_dev,
+> > > >       case IIO_EV_TYPE_GESTURE:
+> > > >               switch (info) {
+> > > >               case IIO_EV_INFO_VALUE:
+> > > > +                     val =3D DIV_ROUND_CLOSEST(val * MICRO + val2,=
+ 62500);
+> > > >                       ret =3D regmap_write(st->regmap, ADXL345_REG_=
+THRESH_TAP,
+> > > >                                          min(val, 0xFF));
+> > > >                       if (ret)
+> > >
 >
 

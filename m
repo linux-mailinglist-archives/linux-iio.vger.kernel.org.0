@@ -1,57 +1,56 @@
-Return-Path: <linux-iio+bounces-20863-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20864-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28C24AE3061
-	for <lists+linux-iio@lfdr.de>; Sun, 22 Jun 2025 16:25:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0179AE3063
+	for <lists+linux-iio@lfdr.de>; Sun, 22 Jun 2025 16:26:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A326116F1AF
-	for <lists+linux-iio@lfdr.de>; Sun, 22 Jun 2025 14:25:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C79016F261
+	for <lists+linux-iio@lfdr.de>; Sun, 22 Jun 2025 14:26:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D1E01E1A05;
-	Sun, 22 Jun 2025 14:25:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31D211E1DEB;
+	Sun, 22 Jun 2025 14:26:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CpE10SOf"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="efE1+PNP"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA3811C2437;
-	Sun, 22 Jun 2025 14:25:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0EAF1C2437;
+	Sun, 22 Jun 2025 14:26:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750602313; cv=none; b=rQ9cW0mHae6q8nilE8EoNVi7DRaikAt4gAA0hPQSmL3mD0l5F5JaSFybKkWyaCHIkel+gZHd43GPoidJ/bIhrKUZIO8MrWII1wUI5jbO+xPQBGLX2usfy4vLyVEN7nQ6usFq8s2hd11pvPuXAO/LEr2mVRWys1+wAjoZxBE64Uc=
+	t=1750602398; cv=none; b=K0Wt2BydBly9ROLyb7jlQY+pikNKrdxLspU3U7vQeTR3SvqW8kVq4cHgM7k+Lg8ODXTmmSd/WAVIO0iWecBWlWJXdkA6rRz876R71nGzGLkvS274pXZ8VYY+RDYxLX9pMC0cRYQHxbAXWJAm/zEhWgxoGz5/cCBvOZ91gaDnkaU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750602313; c=relaxed/simple;
-	bh=QSQaZsnP68Zha4a81cibwIVx+6+SJAUtmzxExMzQ96g=;
+	s=arc-20240116; t=1750602398; c=relaxed/simple;
+	bh=rxMXe7GWBbBeIkqXFyJZDmmgHSr/pPCQ+m3lHill9Y4=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FYyjfmxETNUJ7mjcmz9/dAASBNp+In+YC3gtympTBxU28c0XO0dyzmTtxzhSuk3AB9lryKjuk4NYALEjD3XTOQ9gJ8N+HxrhNzEmAgGzl1QmSUnrqktIcS17uZoZqsfp9X0ziZEbsfflm5hRLtJmDViURdXdU5gyPI2k5fOx5Hw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CpE10SOf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7A93C4CEED;
-	Sun, 22 Jun 2025 14:25:10 +0000 (UTC)
+	 MIME-Version:Content-Type; b=icwfOTJt6aTKA4uZZPjsVotmHHZsYJepBmXcsSUQTGihbmwvrIQaEaMuU3ZQPL8VUKIk+aN3GhWV9aleY7GJUoqdnAC3ZCTsSvqknCPhfw3A89gaELdOby1Z6ZuXVFR23lUjUdzo9TwavjMKHc6HGsfBuI8DDmp617S0ncDlXY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=efE1+PNP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF84FC4CEE3;
+	Sun, 22 Jun 2025 14:26:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750602313;
-	bh=QSQaZsnP68Zha4a81cibwIVx+6+SJAUtmzxExMzQ96g=;
+	s=k20201202; t=1750602397;
+	bh=rxMXe7GWBbBeIkqXFyJZDmmgHSr/pPCQ+m3lHill9Y4=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=CpE10SOf33qnwtH6ssPIYl/K6KoHlFdDl6mABMsgoRy8YTQtfxgROMxPtHD9JW2pA
-	 912Z4oYw9Z33B/qqsN0PzvpM6fxncmWwhaKXWgZdvHtzLK/d6jmpSljSSO5b2tTYOm
-	 DB4Ha+TUoHFAeVCYujTKDtI4J9YB/Wc5Jxqv1XZcGFQZc4Furdh92iTc/gWLu+v1Qc
-	 GFihyPwvF2FI/SpqMNeap+38BV+S/Tqedj+KX73vAU1FJ/v1KhkirphLpY86INYK6A
-	 5KDH64kZMOT/Ez0JgpOglLZfZELEMvWgG7Sw2zmhnRHgnKVc4f2idYy5YE9T32XgCE
-	 YZ3BvZlK8ymEQ==
-Date: Sun, 22 Jun 2025 15:25:06 +0100
+	b=efE1+PNP+hW4cuCuXO7ePwOxSoP7eAPDzTDNNXX1e8aw5xo16MCh4FP8wxXx3i3KP
+	 PtrkLuSmLlDYQ/AlMBF0CnVHOytrXDKA0n09RG0hAwBAqprdpH/Fgx7RzJuuOpf2Ub
+	 jrDr8W+/cy4FPXsMni1+crLNtjM9yBB1ckOtAXFpXx0511G1nQtEaEljXxlUdamRwX
+	 ljBCT/z12are86IvfptXGHZwJZEwE5W1AGtD2AwgYWBsE38BNgTcZA75DPmMcyWUpX
+	 BqLuashAgkaosGGcsAM7AfBQfA71pFdXLiprMdBM2kbm5ta8DbmymW+xKq2xYYRzpS
+	 aEYn93+4LrB1Q==
+Date: Sun, 22 Jun 2025 15:26:29 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: David Lechner <dlechner@baylibre.com>
-Cc: Michael Hennerich <michael.hennerich@analog.com>, Nuno =?UTF-8?B?U8Oh?=
- <nuno.sa@analog.com>, Lars-Peter Clausen <lars@metafoo.de>, Julien Stephan
- <jstephan@baylibre.com>, Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+Cc: Michael Hennerich <Michael.Hennerich@analog.com>, Nuno =?UTF-8?B?U8Oh?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
  linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: adc: ad7380: fix adi,gain-milli property parsing
-Message-ID: <20250622152506.238c1322@jic23-huawei>
-In-Reply-To: <20250619-iio-adc-ad7380-fix-adi-gain-milli-parsing-v1-1-4c27fb426860@baylibre.com>
-References: <20250619-iio-adc-ad7380-fix-adi-gain-milli-parsing-v1-1-4c27fb426860@baylibre.com>
+Subject: Re: [PATCH] iio: adc: ad7173: simplify clock enable/disable
+Message-ID: <20250622152629.70cd864c@jic23-huawei>
+In-Reply-To: <20250620-iio-adc-ad7173-simplify-clock-enable-disable-v1-1-8bc693b190ec@baylibre.com>
+References: <20250620-iio-adc-ad7173-simplify-clock-enable-disable-v1-1-8bc693b190ec@baylibre.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -62,53 +61,20 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 19 Jun 2025 10:24:22 -0500
+On Fri, 20 Jun 2025 09:30:46 -0500
 David Lechner <dlechner@baylibre.com> wrote:
 
-> Change the data type of the "adi,gain-milli" property from u32 to u16.
-> The devicetree binding specifies it as uint16, so we need to read it as
-> such to avoid an -EOVERFLOW error when parsing the property.
+> Use devm_clk_get_enabled() instead of devm_clk_get(),
+> clk_prepare_enable(), devm_add_action_or_reset() to simplify the
+> code as it effectively does the same thing.
 > 
-> Fixes: c904e6dcf402 ("iio: adc: ad7380: add support for adaq4370-4 and adaq4380-4")
+> We can also drop ext_clk from struct ad7173_state since it is not used
+> anywhere else.
+> 
 > Signed-off-by: David Lechner <dlechner@baylibre.com>
-Applied to the fixes-togreg branch of iio.git and marked for stable.
+Applied.
 
 Thanks,
 
-J
-> ---
->  drivers/iio/adc/ad7380.c | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/iio/adc/ad7380.c b/drivers/iio/adc/ad7380.c
-> index aef85093eb16cbe9cc062f8cb4239e955c8a21b6..fd17e28e279191c2603537a9bddc7eb9976c144c 100644
-> --- a/drivers/iio/adc/ad7380.c
-> +++ b/drivers/iio/adc/ad7380.c
-> @@ -1920,8 +1920,9 @@ static int ad7380_probe(struct spi_device *spi)
->  
->  	if (st->chip_info->has_hardware_gain) {
->  		device_for_each_child_node_scoped(dev, node) {
-> -			unsigned int channel, gain;
-> +			unsigned int channel;
->  			int gain_idx;
-> +			u16 gain;
->  
->  			ret = fwnode_property_read_u32(node, "reg", &channel);
->  			if (ret)
-> @@ -1933,7 +1934,7 @@ static int ad7380_probe(struct spi_device *spi)
->  						     "Invalid channel number %i\n",
->  						     channel);
->  
-> -			ret = fwnode_property_read_u32(node, "adi,gain-milli",
-> +			ret = fwnode_property_read_u16(node, "adi,gain-milli",
->  						       &gain);
->  			if (ret && ret != -EINVAL)
->  				return dev_err_probe(dev, ret,
-> 
-> ---
-> base-commit: a3245ebdfac846ce0b563a3ed474be2e15381f9f
-> change-id: 20250619-iio-adc-ad7380-fix-adi-gain-milli-parsing-8df01280f493
-> 
-> Best regards,
-
+Jonathan
 

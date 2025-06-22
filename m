@@ -1,47 +1,47 @@
-Return-Path: <linux-iio+bounces-20842-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20843-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A40FBAE2F8C
-	for <lists+linux-iio@lfdr.de>; Sun, 22 Jun 2025 13:28:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9728BAE2F93
+	for <lists+linux-iio@lfdr.de>; Sun, 22 Jun 2025 13:38:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E69D83B48DF
-	for <lists+linux-iio@lfdr.de>; Sun, 22 Jun 2025 11:28:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 256C5169AF8
+	for <lists+linux-iio@lfdr.de>; Sun, 22 Jun 2025 11:38:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A3E81DE2A5;
-	Sun, 22 Jun 2025 11:28:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68C401DE8A4;
+	Sun, 22 Jun 2025 11:38:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="omg6hZVZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FZmWfT0C"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2115F3597E;
-	Sun, 22 Jun 2025 11:28:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20CEF7494;
+	Sun, 22 Jun 2025 11:38:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750591720; cv=none; b=HHPURaIjlruOFlPOj3rj4SLdXBOEKGNzmYSK+ltcVgN7nkwRZ06ZoOwT/KwwiOgstY04CJzvFeEltCpVgOXzsJXmNG4FVFZ/eG8VCvS192JT9r5RTl/6BvWOmUwq3eTXRRyKtW4gIG80mGKaHhI/Qd7woqmARJMOYjrbrp2AE1I=
+	t=1750592281; cv=none; b=bQhanTLT6SnJ8RujiwpNTx8TltSkX9n+7aekDp9HjN7G6fBkR2eUkGd8Ft1V4lZBpJwqaYnfwV7FyJIzs0/uhtAB7vSZ/yxdrXcykxugzC/CvW2Weekex7nHPqcl1czP2/RbIyXXG95sxLqix83r8/75fGHZKjYGfGspnmbHpKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750591720; c=relaxed/simple;
-	bh=ccM+5sy/6LKqUPj2PgVcorSMUeYj0bS0wfIWWu4+I2s=;
+	s=arc-20240116; t=1750592281; c=relaxed/simple;
+	bh=EVhJHT4BylZuiCv4RkBjMQoFT1U+kck/kqVZcxToo4o=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qxqAUgv0bBNiJ5CmasUYCYr9xb6RQeZFEgpg5F+GGk4hNXiV2F6jUXCTymIU3EIMz34c0NoIH2nkgleTCNOiqhHcZs01y/U2ZF8csI2ULloM75vEptuAmDDf2OlCM8ZOFC9yDKCWiDkYIUwo6rk1/lPTfF8y3J7tFKFMRddG5yU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=omg6hZVZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C22B7C4CEE3;
-	Sun, 22 Jun 2025 11:28:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=lvddCEKJC5jTjcrOYW+3MGp0YPOBoIQZSjJbjNvif1y1kbbifrbHPrh194dzLUgPw/afahJ1Pc3vpnF1n0ZrSE/fR602mfEzuDZXfroNQmBwWUvQsnkntPAk5t78OH6fqR1RBJ6oRF4SL0gnyIVI+G0McVymWLG8qWuVeAvu2Og=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FZmWfT0C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC768C4CEE3;
+	Sun, 22 Jun 2025 11:37:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750591719;
-	bh=ccM+5sy/6LKqUPj2PgVcorSMUeYj0bS0wfIWWu4+I2s=;
+	s=k20201202; t=1750592280;
+	bh=EVhJHT4BylZuiCv4RkBjMQoFT1U+kck/kqVZcxToo4o=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=omg6hZVZho1+29wHipxVg/mmZLJNeKAcFHMMc7/+fYJZCUc33zWXje40rF55SiX3q
-	 re4JgRlYMuotXA+KNmDrUBG5OhIKUocwFVM4wW1t3zlDaE5dPORhCbeQzbKzkkkLXD
-	 3RpjOnxZSim7osLzFQxcvOCDqIqIngZDBlXn8BdDvDXeOQr/tJqPOqTBL+Db1ITC2c
-	 qZSCVOu4MkMHMa/CRcMXLByU6HxI/OaA9TDmCvT8a5ZCGz7JHOIkGHbMdDOaNpvzyz
-	 24HBIkUJWYxUcbp9H2z1m6slSSLVGqPpNqIF9I/6sEzcPzJ+0lwDCGkiYjdZU4xvVT
-	 en2SfLWJJphGA==
-Date: Sun, 22 Jun 2025 12:28:32 +0100
+	b=FZmWfT0Ca9vRcd4BZesfyAfklg8czTZO78M4DSImpOR/ylw7Mr7TXbzDcDe/bhOOG
+	 jB4qcEmKY1WmkH3kE4qtxWGjP3EcIfeh3S70TG+BTc0pN2trECdwksfpcqxxAs1/Y/
+	 zkK+fhbGW4eJ9yRf2zG7pH/a3vvN5LW1IvyovUhBG+mQn+W5sg1mBmZeqxUsrctc4U
+	 KQjtneOiLMaTMDJQ7/woWVh3gAtmPDmFZVv/7lw+5YkNgg8gu0ZJLa7NMHYjrZpuiT
+	 rjlzZTHbhy0UT/Ww3C2jblZLryFpYV/Bqe+eXezJoGb8ddffFycSjbp7beFqBwIst7
+	 XidB66JHfWzpA==
+Date: Sun, 22 Jun 2025 12:37:52 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: Lothar Rubusch <l.rubusch@gmail.com>
 Cc: dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org,
@@ -49,12 +49,12 @@ Cc: dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org,
  Michael.Hennerich@analog.com, bagasdotme@gmail.com,
  linux-iio@vger.kernel.org, linux-doc@vger.kernel.org,
  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 3/8] iio: accel: adxl313: add buffered FIFO watermark
- with interrupt handling
-Message-ID: <20250622122832.5bd40e1a@jic23-huawei>
-In-Reply-To: <20250615222258.117771-4-l.rubusch@gmail.com>
+Subject: Re: [PATCH v5 7/8] iio: accel: adxl313: add AC coupled
+ activity/inactivity events
+Message-ID: <20250622123752.1834fbe2@jic23-huawei>
+In-Reply-To: <20250615222258.117771-8-l.rubusch@gmail.com>
 References: <20250615222258.117771-1-l.rubusch@gmail.com>
-	<20250615222258.117771-4-l.rubusch@gmail.com>
+	<20250615222258.117771-8-l.rubusch@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -62,60 +62,76 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Sun, 15 Jun 2025 22:22:53 +0000
+On Sun, 15 Jun 2025 22:22:57 +0000
 Lothar Rubusch <l.rubusch@gmail.com> wrote:
 
-> Cover the following tasks:
-> =E2=80=93 Add scan_mask and scan_index to the IIO channel configuration. =
-The
-> scan_index sets up buffer usage. According to the datasheet, the ADXL313
-> uses a 13-bit wide data field in full-resolution mode. Set the
-> signedness, number of storage bits, and endianness accordingly.
->=20
-> =E2=80=93 Parse the devicetree for an optional interrupt line and configu=
-re the
-> interrupt mapping based on its presence. If no interrupt line is
-> specified, keep the FIFO in bypass mode as currently implemented.
->=20
-> =E2=80=93 Set up the interrupt handler. Add register access to detect and
-> evaluate interrupts. Implement functions to clear status registers and
-> reset the FIFO.
->=20
-> =E2=80=93 Implement FIFO watermark configuration and handling. Allow the
-> watermark level to be set, evaluate the corresponding interrupt, read
-> the FIFO contents, and push the data to the IIO channel.
->=20
+> Introduce AC-coupled activity and inactivity as MAG_ADAPTIVE events.
+> This adds a new set of threshold and duration configuration options,
+> ensures proper handling of event disabling, and extends the use of the
+> link bit to support complementary event configurations.
+> 
+> For example, either ACTIVITY or ACTIVITY_AC can be enabled, but only the
+> most recently set configuration will remain active. Disabling ACTIVITY
+> will have no effect if ACTIVITY_AC is currently enabled, as the event
+> types must match (i.e., ACTIVITY_AC must be explicitly disabled). When
+> either INACTIVITY or INACTIVITY_AC is enabled alongside an activity
+> event, the link bit is set.
+> 
+> With the link bit and auto-sleep enabled, activity and inactivity events
+> represent changes in the sensor's power-saving state and are only
+> triggered upon actual state transitions. Since AC coupling uses separate
+> bits for activity and inactivity, each can be configured independently.
+> For instance, ACTIVITY can be linked with INACTIVITY_AC.
+> 
+> If one of the linked events is disabled, the link bit is cleared. In
+> that case, the remaining event will no longer reflect a state transition
+> but will instead trigger based on periodic inactivity or whenever the
+> activity threshold is exceeded.
+> 
 > Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
 
-Just the follow on comment that I posted on v4 thread after you sent this.
-(obviously in addition to what you've been discussing with Andy)
+One small suggestion below.
 
-> diff --git a/drivers/iio/accel/adxl313_core.c b/drivers/iio/accel/adxl313=
-_core.c
-> index 99a7f3755031..488680807a8f 100644
-> --- a/drivers/iio/accel/adxl313_core.c
-> +++ b/drivers/iio/accel/adxl313_core.c
+>  
+>  static int adxl313_set_act_inact_linkbit(struct adxl313_data *data, bool en)
+>  {
+> -	int act_en, inact_en;
+> +	int act_en, inact_en, act_ac_en, inact_ac_en;
+>  
+>  	act_en = adxl313_is_act_inact_en(data, ADXL313_ACTIVITY);
+>  	if (act_en < 0)
+>  		return act_en;
+>  
+> +	act_ac_en = adxl313_is_act_inact_en(data, ADXL313_ACTIVITY_AC);
+> +	if (act_ac_en < 0)
+> +		return act_ac_en;
+> +
+> +	act_en = act_en || act_ac_en;
+
+All ends up a little confusing as act_en changes meaning as it is built
+up.  Maybe better to just have act_dc_en in earlier patch then so
+the boolean complexity all in one place?...
 
 > +
-> +static int adxl313_fifo_transfer(struct adxl313_data *data, int samples)
-> +{
-> +	unsigned int i;
-> +	int ret;
+>  	inact_en = adxl313_is_act_inact_en(data, ADXL313_INACTIVITY);
+>  	if (inact_en < 0)
+>  		return inact_en;
+>  
+> +	inact_ac_en = adxl313_is_act_inact_en(data, ADXL313_INACTIVITY_AC);
+> +	if (inact_ac_en < 0)
+> +		return inact_ac_en;
 > +
-> +	for (i =3D 0; i < samples; i++) {
-> +		ret =3D regmap_bulk_read(data->regmap, ADXL313_REG_XYZ_BASE,
-> +				       data->fifo_buf + (i * ADXL313_NUM_AXIS),
-> +				       2 * ADXL313_NUM_AXIS);
-
-the sizeof() thing that I gave a late reply to in v4 thread applies here.
-
-> +		if (ret)
-> +			return ret;
-> +	}
+> +	inact_en = inact_en || inact_ac_en;
 > +
-> +	return 0;
-> +}
+>  	en = en && act_en && inact_en;
+
+	en = en && (act_dc_en || act_ac_en) && (inact_dc_en || inact_ac_en);
+
+>  
+>  	return regmap_assign_bits(data->regmap, ADXL313_REG_POWER_CTL,
+
+
 

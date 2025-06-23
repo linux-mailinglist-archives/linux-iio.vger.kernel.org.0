@@ -1,87 +1,87 @@
-Return-Path: <linux-iio+bounces-20926-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20927-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74FA2AE4E67
-	for <lists+linux-iio@lfdr.de>; Mon, 23 Jun 2025 22:58:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C8D2CAE4E99
+	for <lists+linux-iio@lfdr.de>; Mon, 23 Jun 2025 23:07:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 226D8189EBF5
-	for <lists+linux-iio@lfdr.de>; Mon, 23 Jun 2025 20:58:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 74385189F5F5
+	for <lists+linux-iio@lfdr.de>; Mon, 23 Jun 2025 21:07:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0497214801;
-	Mon, 23 Jun 2025 20:58:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D923922069F;
+	Mon, 23 Jun 2025 21:07:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GPyYVwdK"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="homv4ZlH"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from mail-yb1-f174.google.com (mail-yb1-f174.google.com [209.85.219.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36C932C190;
-	Mon, 23 Jun 2025 20:58:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A52470838;
+	Mon, 23 Jun 2025 21:07:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750712298; cv=none; b=XL7W4Zhw3wecac1Br2WD8nS4tbWVYdvfwaJFbwqK3x1+MtoCZ5THNxv0BRWzYzFET+pRy4tlUPBR3UZtPm0QnfTHdVLS2fcaIegONUMptnmoOBvsYPJKraEsrrEF6AUYhQK5tkkYHNeNsLNDhHiYefXtxUlDi4YrvtXKJYaj+yo=
+	t=1750712842; cv=none; b=Zv8YR6faIvljTZj2K0YUzPVzBwlpvsOkl7fMeApR+P0mItbTsL6R0xHoR+1i71VeVZ/ZoOsRVnvJxOq3lf9x6EN9t69S9NTsspk4TsNsh8mD2vp4ZEu75zGtQ9vLbmP49hSCSd5vJEaKsGFp5CLvMqfmT8Kzc1vdeWTS+ndCKDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750712298; c=relaxed/simple;
-	bh=776wSncQW1xwOP34kmp9xdM/HLTWzzodZmtjjkoBmgs=;
+	s=arc-20240116; t=1750712842; c=relaxed/simple;
+	bh=gj6Nh48Bqa/jpifwytP4nQvcgn7IakDE0lEsrujhtI4=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CiO57bf2gERLdh5h/zxdgqifscmaS7s2rHElpCCmJKPGqkkD+ESBZv0wv4YPRnNpRwTwj1yFNosM0MWbtRuT55jMQWzgJ/lEeX7t14TNB1Bpm1skfeo6TswlkZdzoHBRsL/rjCwxHOXa1VR7hGbs3/yWPlaFDH8yeQXi9yssjUE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GPyYVwdK; arc=none smtp.client-ip=209.85.219.174
+	 To:Cc:Content-Type; b=nHUgJNhGsdDkG4sh0sBtUp1cPAvJ2ift2W/04J2rnzjJDL0/EwLk//5eXRnajMsh9n72rR8K4qt8rkKGB8tdSxo96X+fzxRvS9zXrRPZ3yN53jdcMXuZLLyI8lHwLmO/WB8MaM2WENHJhT+qiGEYymPIRi/mf38xmLVcKv4InTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=homv4ZlH; arc=none smtp.client-ip=209.85.219.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yb1-f174.google.com with SMTP id 3f1490d57ef6-e81e8321f11so554835276.0;
-        Mon, 23 Jun 2025 13:58:16 -0700 (PDT)
+Received: by mail-yb1-f174.google.com with SMTP id 3f1490d57ef6-e7dc7245bcdso589808276.2;
+        Mon, 23 Jun 2025 14:07:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750712296; x=1751317096; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1750712840; x=1751317640; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=RCvTT8wvpYdg449blLDp6fi3HEHpX9BGcZcH416Lr44=;
-        b=GPyYVwdKWh0nc9airPnZnoA+b82oKRgAgIo34TpU8YJzvIKckZ8DEEZxilh8dmguJJ
-         J/S3Zzuq6Trg4XhdzQflMXCZB/Itb7hvYme8SJebVAlvBCPXUKO+Zx21gMctmDlKazbn
-         YrK2hM4GgUhEpJZku2x5KCxwNZaw+t8zBYtqbfiuWBKVpyw4kEdZkEcUuD5+YvaF1Wdu
-         q6naTNV77jvmqOI9qd+9/+RHPZ6HI5XvAJjtdGPIYEg+IW7K//m5WJQrIDCed4GMlkWQ
-         kx6pEx/6ny1Ao9CvQl1EI4S3uPo9XWG4fPq9FwPQlt28V3kcuUGXQBb/xN4mVYzStzDw
-         LG6Q==
+        bh=WIktiIAK8TZ7Hzmpbbme4BqBHTRSvQoT3VFTLZchY+E=;
+        b=homv4ZlHSDX5KbYKoYPNIw+G/TFV0XihyeA8rHKz3hWH/Wd9sGgwulteT1X5zWTRrm
+         Ej3kx4VihFG5kF6arRxAwFfhYAAKPjKHcqWV0znr6vN9mVyP2OJwujzA3yC890u1+7kO
+         6/djr4d/LloqpAP5Uc99D7egXfyxnie7FrAzECj/aFg1h4PWoHD04iagZ2uBtKN30NQz
+         nOSPx1wcm4/NAiZsln4AUVTarBQIHy6wGsTsGk3DWYagZcE7z1w1Mygew5ztGpPxsoOa
+         PovG1ouifiiRSjd7bWQPZhVnYxbifJc7sixVI15nC99hBH4VXvrXsHCh4CkqUIztqjAr
+         6BTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750712296; x=1751317096;
+        d=1e100.net; s=20230601; t=1750712840; x=1751317640;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=RCvTT8wvpYdg449blLDp6fi3HEHpX9BGcZcH416Lr44=;
-        b=UiowfiPRqOjfTzV0OJIVxlYz6esuLHuYkaZPXRbahTD+NkLUI+ZyNIGOrD1ZdJZ0UO
-         6llm+MK715ptSYbDnAikF5XOUHclsAW1PwtJia9YAPUEJG1yA1VK6/rDHWtalh/7mtYR
-         1QrAp0s9qY86S05CWgxNx/fMhnd05b9yrTo+4p3XKWOZr0vpGTCYA43QyS35RQDdSQJa
-         cNKju/AznyuaoJE56T7gNh+cZH8s9ejyKijg2Qfo7NQSFgtG00bTRbjcwhHPpb/Ayq/k
-         poBKlrWcmKhEh73lM5T6fg0mskE835/CCGFhDZPOWnrm3Wh/rqsSh7FIs2oL2fmb/Gk7
-         Fz5w==
-X-Forwarded-Encrypted: i=1; AJvYcCVFHdkBZ3efaz2skN+fZ35JoGUkjCR5JYJwmW1cd4tOj/Z8LYk/qvn1nlF5Q2MmOHCO8g0sX5pb7oo=@vger.kernel.org, AJvYcCVMvojeJR9Osg6cdgx7WpcOdHSt/RL/qR2/BNY/h6EslCCSyox6tc0zmqddABYA5MPobEI5oOLgmQFz@vger.kernel.org, AJvYcCWlflHDhV/C6QNg8yLC1bbryCQoqmP/rkQUrY20OMBwBwMmO0D8qyGiUe4wg79T94HJ8ALpPspt/44zI0GA@vger.kernel.org
-X-Gm-Message-State: AOJu0Yykm1Cnd5+5f6egS5yEFJdRQYi6JrwxZm2bXrEds3pSElgr+U5+
-	kqXsTZkR2YrpdqdbYpaKjhybajXVMl4K05ZOsLJ1Vtwg3yvraDw3Xtvh0u3tHdiFl9X33Ujk3vI
-	eCO64bKi3Qc4rFZBIa1jNuNhwqmnsVuI=
-X-Gm-Gg: ASbGncuJmkJEJG0lkGVsk6v2igdXsZJUNdm+B1JzIx3REvwK6s/MOYAoZZnn0fnfQY9
-	ZvOPDz1xs8IVWWSa6BjN63MK4BlRoLCVbz9zSHJp1r+WkRaOlie0rWoGl77Mu703wf8IzTdDMYb
-	YkEmNFvTkPhyEVj1gYaw43gducGZjQPBraQ94OO4oa6zw=
-X-Google-Smtp-Source: AGHT+IHLCiITHeFFUwoaBxSNyLK4rYf8WdbLwlQxrGcpm/VoZtCB2g+5XkdMP3yvnFePdMAoH9a2s+LwPMMXJAto858=
-X-Received: by 2002:a05:690c:6ac9:b0:710:eb0c:da33 with SMTP id
- 00721157ae682-712c654a9e5mr95110387b3.9.1750712295894; Mon, 23 Jun 2025
- 13:58:15 -0700 (PDT)
+        bh=WIktiIAK8TZ7Hzmpbbme4BqBHTRSvQoT3VFTLZchY+E=;
+        b=nlnZt1hTH7JdARjMsDlBwZ+SUo0c94KM8iszhHRJTefRDtBtzSfgugoUr1p7YKppWQ
+         xj1z0aCMmlXCSW0L3PnTLQ22rzoKvWDwYe9vSsi1Mdp+oMBBdQk0MERxr8S7XYTEqbxm
+         pVB84O93Y1EY+RlldCwhgvpFqP9UHONP0D7D+9MoTFHBNuCdDD7fKOHlFtIRr8yUSMEk
+         C0y9d/en1vUPxWMsRVpX0PWXdQrDyoz2vwnthnZLDrgxpNt7WbRoj8mr4zf07TZhz+vu
+         zTPuSCBdEWS6EOwW3GHncFZG3FeD8wriUqhGeWTgVjiWwqWRIvG34bLs3xq90i5TJ/fW
+         PMOw==
+X-Forwarded-Encrypted: i=1; AJvYcCVoamZ0EjKozIZRsX0MOT/GoOf1tn1Ln1smPD20BM88PbJyE8m/XbIgfaaFr/MQWTfvHvgMb9mctpZJ1Y7A@vger.kernel.org, AJvYcCWG7CO+zfKzOzUDeE8GCoFT81lov6RDiWMNyg4iXTUW48YcxfwZoBCPE7icpogs5WOsvpPwsMUThwo=@vger.kernel.org, AJvYcCWYfEeybcWYCdOaJEmKo7oJJu9wQ6+/2IEqNaOwtamqJJ39Vmf6ruKk/E6ym7hBPrruwkl2cjWCysn6@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw4VkyIqA3Az8YaiuWehoQFb5U7Y2CIk9+CSEbliutkNg3JxNM7
+	E8yFaksRL1CdttdFo8Hh6QICiP/R4DajAKkUDV0Wf+/SIj9JbU0VQX8QZLQxjpE/h35u6IBW+dD
+	eT8ORE9xupRzCiutL13xn57coCg2aqgs=
+X-Gm-Gg: ASbGnctnGE4jxcQIk/4+EvdgHVwhbzW0sRRaopOfun4Cl2CMe/wIH/xt1zq+N5gzggn
+	qGnAK2McMjpharnQKFMjmbmG57LtcSxkb8no4uaqXkiB21i1XKJJ258tavH756P76+NKSdP52EZ
+	v2TXsFKrnmCtbQU3/aAjoaxeFugcvTy33VUeHT68jVUFeMXd6ijJHovA==
+X-Google-Smtp-Source: AGHT+IGX1SLbO7YPV9P3rLFzrIK7XlJWzCsQmcYNF+HsqVHhXA+vDhsos3/+LIZKMZjMKjrOmdNKgPxRcwCSZ3xbWQw=
+X-Received: by 2002:a05:690c:931c:10b0:712:b566:bf7c with SMTP id
+ 00721157ae682-712c6390298mr65387497b3.1.1750712839863; Mon, 23 Jun 2025
+ 14:07:19 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250622155010.164451-1-l.rubusch@gmail.com> <20250622155010.164451-4-l.rubusch@gmail.com>
- <aFkfjAekGJTU5o71@smile.fi.intel.com>
-In-Reply-To: <aFkfjAekGJTU5o71@smile.fi.intel.com>
+References: <20250622155010.164451-1-l.rubusch@gmail.com> <20250622155010.164451-5-l.rubusch@gmail.com>
+ <aFkh-E1dG__p_G4m@smile.fi.intel.com>
+In-Reply-To: <aFkh-E1dG__p_G4m@smile.fi.intel.com>
 From: Lothar Rubusch <l.rubusch@gmail.com>
-Date: Mon, 23 Jun 2025 22:57:39 +0200
-X-Gm-Features: AX0GCFtB93pXClswuiGY716ZjbH1aG0FWIojnaRDxI8nwCzYrny1LzkihVh3GS8
-Message-ID: <CAFXKEHbGThKzMxg=aZMgVEZ2S2hUoGAOoE5wu_vCuzEPqL0+cA@mail.gmail.com>
-Subject: Re: [PATCH v10 3/7] iio: accel: adxl345: add activity event feature
+Date: Mon, 23 Jun 2025 23:06:44 +0200
+X-Gm-Features: AX0GCFusMTwtOEffoDsb82ZqKxDo1D_yxOOF9_FbLOqdgHVtQCU0vg0DRwtC8to
+Message-ID: <CAFXKEHan_7+BVshb12JZLH8CJtSPuwv=H_vC2kUWkS411wsqaA@mail.gmail.com>
+Subject: Re: [PATCH v10 4/7] iio: accel: adxl345: add inactivity feature
 To: Andy Shevchenko <andriy.shevchenko@intel.com>
 Cc: lars@metafoo.de, Michael.Hennerich@analog.com, jic23@kernel.org, 
 	dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org, corbet@lwn.net, 
@@ -90,161 +90,172 @@ Cc: lars@metafoo.de, Michael.Hennerich@analog.com, jic23@kernel.org,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi Andy,
-
-Thank you so much. I really appreciate your quick feedback. I'll try
-to implement
-the changes in another version, as far as needed.
-
-Talking about the 80 characters, let me give an anser inlined down below.
-
-On Mon, Jun 23, 2025 at 11:34=E2=80=AFAM Andy Shevchenko
+On Mon, Jun 23, 2025 at 11:44=E2=80=AFAM Andy Shevchenko
 <andriy.shevchenko@intel.com> wrote:
 >
-> On Sun, Jun 22, 2025 at 03:50:06PM +0000, Lothar Rubusch wrote:
-> > Enable the sensor to detect activity and trigger interrupts accordingly=
-.
-> > Activity events are determined based on a threshold, which is initializ=
-ed
-> > to a sensible default during probe. This default value is adopted from =
-the
-> > legacy ADXL345 input driver to maintain consistent behavior.
+> On Sun, Jun 22, 2025 at 03:50:07PM +0000, Lothar Rubusch wrote:
+> > Add support for the sensor=E2=80=99s inactivity feature in the driver. =
+When both
+> > activity and inactivity detection are enabled, the sensor sets a link b=
+it
+> > that ties the two functions together. This also enables auto-sleep mode=
+,
+> > allowing the sensor to automatically enter sleep state upon detecting
+> > inactivity.
 > >
-> > The combination of activity detection, ODR configuration, and range
-> > settings lays the groundwork for the activity/inactivity hysteresis
-> > mechanism, which will be implemented in a subsequent patch. As such,
-> > portions of this patch prepare switch-case structures to support those
-> > upcoming changes.
+> > Inactivity detection relies on a configurable threshold and a specified
+> > time period. If sensor measurements remain below the threshold for the
+> > defined duration, the sensor transitions to the inactivity state.
+> >
+> > When an Output Data Rate (ODR) is set, the inactivity time period is
+> > automatically adjusted to a sensible default. Higher ODRs result in sho=
+rter
+> > inactivity timeouts, while lower ODRs allow longer durations-within
+> > reasonable upper and lower bounds. This is important because features l=
+ike
+> > auto-sleep operate effectively only between 12.5 Hz and 400 Hz. These
+> > defaults are applied when the sample rate is modified, but users can
+> > override them by explicitly setting a custom inactivity timeout.
+> >
+> > Similarly, configuring the g-range provides default threshold values fo=
+r
+> > both activity and inactivity detection. These are implicit defaults mea=
+nt
+> > to simplify configuration, but they can also be manually overridden as
+> > needed.
 >
 > ...
 >
-> > +static int adxl345_set_act_inact_en(struct adxl345_state *st,
-> > +                                 enum adxl345_activity_type type,
-> > +                                 bool cmd_en)
+> > +static int adxl345_set_inact_time(struct adxl345_state *st, u32 val_s)
 > > +{
-> > +     unsigned int axis_ctrl;
-> > +     unsigned int threshold;
+> > +     int max_boundary =3D U8_MAX;
+> > +     int min_boundary =3D 10;
+> > +     unsigned int val =3D min(val_s, U8_MAX);
+>
+> Wondering if it's possible to refer here to max_boundary?
+> In any case, split this assignment since it will be easier
+> to maintain.
+>
+> > +     enum adxl345_odr odr;
+> > +     unsigned int regval;
 > > +     int ret;
-> > +
-> > +     if (cmd_en) {
-> > +             /* When turning on, check if threshold is valid */
 >
-> > +             ret =3D regmap_read(st->regmap,
-> > +                               adxl345_act_thresh_reg[type],
-> > +                               &threshold);
+>         val =3D min(val_s, max_boundary);
 >
-> Can occupy less LoCs.
->
+
+Well, yes, that's what I had initially. Then min() needed unsigned
+int, where clamp() - down below - needed signed int. At the end of the
+day, I set up min() here, but later this will disappear. I was
+wondering, if it's actually needed anymore, when doing clamp() anyway.
+
+The story is a bit longer, since original version (I think I never
+submitted) I started with clamp(), ran into signed / unsigned and
+difference from max, that I skipped clamp() until when you complained
+about it: "use clamp()"
+
+Long story short, I'll verify this in my tests, but probably I'll
+rather drop a call to min() here.
+
+> > +     if (val =3D=3D 0) {
+> > +             ret =3D regmap_read(st->regmap, ADXL345_REG_BW_RATE, &reg=
+val);
 > > +             if (ret)
 > > +                     return ret;
 > > +
-> > +             if (!threshold) /* Just ignore the command if threshold i=
-s 0 */
-> > +                     return 0;
+> > +             odr =3D FIELD_GET(ADXL345_BW_RATE_MSK, regval);
+> > +             val =3D clamp(max_boundary - adxl345_odr_tbl[odr][0],
+> > +                         min_boundary, max_boundary);
 > > +     }
 > > +
-> > +     /* Start modifying configuration registers */
-> > +     ret =3D adxl345_set_measure_en(st, false);
-> > +     if (ret)
-> > +             return ret;
-> > +
-> > +     /* Enable axis according to the command */
-> > +     switch (type) {
-> > +     case ADXL345_ACTIVITY:
->
-> > +             axis_ctrl =3D ADXL345_ACT_X_EN | ADXL345_ACT_Y_EN |
-> > +                             ADXL345_ACT_Z_EN;
->
-> I think
->
->                 axis_ctrl =3D
->                         ADXL345_ACT_X_EN | ADXL345_ACT_Y_EN | ADXL345_ACT=
-_Z_EN;
->
-> is slightly better to read.
->
-
-Agree.
-
-> > +             break;
-> > +     default:
-> > +             return -EINVAL;
-> > +     }
-> > +
-> > +     ret =3D regmap_assign_bits(st->regmap, ADXL345_REG_ACT_INACT_CTRL=
-,
-> > +                              axis_ctrl, cmd_en);
-> > +     if (ret)
-> > +             return ret;
-> > +
-> > +     /* Enable the interrupt line, according to the command */
-> > +     ret =3D regmap_assign_bits(st->regmap, ADXL345_REG_INT_ENABLE,
-> > +                              adxl345_act_int_reg[type], cmd_en);
-> > +     if (ret)
-> > +             return ret;
-> > +
-> > +     return adxl345_set_measure_en(st, true);
+> > +     return regmap_write(st->regmap, ADXL345_REG_TIME_INACT, val);
 > > +}
 >
 > ...
 >
-> > +     case IIO_EV_TYPE_MAG:
-> > +             return adxl345_read_mag_config(st, dir,
-> > +                                            ADXL345_ACTIVITY);
+> > +     case ADXL345_INACTIVITY:
+> > +             en =3D FIELD_GET(ADXL345_INACT_X_EN, axis_ctrl) |
+> > +                     FIELD_GET(ADXL345_INACT_Y_EN, axis_ctrl) |
+> > +                     FIELD_GET(ADXL345_INACT_Z_EN, axis_ctrl);
 >
-> It looks like you set the editor to wrap at 72 characters, but here the s=
-ingle
-> line less than 80! Note that the limit is *exactly* 80 character.
+> As I pointed out earlier. the indentation is supposed to be on the same c=
+olomn
+> for 'F' letters.
 >
 
-I have my setup adjusted to 80 characters. Anyway, the cases here is
-different, it needs
-to be seen in context of the follow up patches. I tried to prepare the
-patches now in a way
-where changes are mostly "added". Is this correct and desired patch prepara=
-tion?
+Let me allow a stupid question, when you mean on the same column, the
+above is wrong? Can you give me an example here how to fix it?
 
-In the particular case, this patch now adds ACTIVITY. A follow up
-patch will add INACTIVITY.
-Since this is still building up, it will add yet another argument to
-those functions, i.e.
-> > +             return adxl345_write_mag_config(st, dir,
-> > +                                             ADXL345_ACTIVITY,
-
-will become, later
-> >               return adxl345_write_mag_config(st, dir,
-> >                                               ADXL345_ACTIVITY,
-> > +                                             ADXL345_INACTIVITY,
-
-To make the change more additive, I did linebreaks earlier than 80
-characters. Is this
-legitimate in this case?
-
-If so, I'll keep all related formatting as is (and will only change
-the other requests).
-Otherwise, I can do it differently and adopt all the formatting
-changes to prioritize 80 characters.
-
-Please let me know, what you think.
 Best,
 L
 
-
-> ...
->
-> > +     case IIO_EV_TYPE_MAG:
-> > +             return adxl345_write_mag_config(st, dir,
-> > +                                             ADXL345_ACTIVITY,
->
-> Ditto.
+> > +             if (!en)
+> > +                     return false;
+> > +             break;
 >
 > ...
 >
-> > +             return adxl345_read_mag_value(st, dir, info,
-> > +                                           ADXL345_ACTIVITY,
-> > +                                           val, val2);
+> > +                     ret =3D regmap_read(st->regmap,
+> > +                                       ADXL345_REG_TIME_INACT,
+> > +                                       &period);
 >
-> Ditto and so on...
+> There is plenty of room on the previous lines. Depending on the next
+> changes (which I believe unlikely touch this) it may be packed to two
+> lines with a logical split, like
+>
+>                         ret =3D regmap_read(st->regmap,
+>                                           ADXL345_REG_TIME_INACT, &period=
+);
+>
+> It again seems the byproduct of the too strict settings of the wrap limit=
+ in
+> your editor.
+>
+> ...
+>
+> > +     case ADXL345_INACTIVITY:
+> > +             axis_ctrl =3D ADXL345_INACT_X_EN | ADXL345_INACT_Y_EN |
+> > +                             ADXL345_INACT_Z_EN;
+>
+> Consider
+>                 axis_ctrl =3D
+>                         ADXL345_INACT_X_EN | ADXL345_INACT_Y_EN | ADXL345=
+_INACT_Z_EN;
+>
+> (yes, I see that it's longer than 80, but it might worth doing it for the=
+ sake of
+>  consistency with the previous suggestion).
+>
+>
+> ...
+>
+> >  static int adxl345_set_range(struct adxl345_state *st, enum adxl345_ra=
+nge range)
+> >  {
+> > -     return regmap_update_bits(st->regmap, ADXL345_REG_DATA_FORMAT,
+>
+> > +     int ret;
+> > +
+> > +     ret =3D regmap_update_bits(st->regmap, ADXL345_REG_DATA_FORMAT,
+> >                                ADXL345_DATA_FORMAT_RANGE,
+> >                                FIELD_PREP(ADXL345_DATA_FORMAT_RANGE, ra=
+nge));
+> > +     if (ret)
+> > +             return ret;
+>
+> If it's a code from the previous patch, it might make sense to introduce =
+ret
+> there.
+>
+> >  }
+>
+> ...
+>
+> > +     case IIO_EV_INFO_PERIOD:
+> > +             ret =3D regmap_read(st->regmap,
+> > +                               ADXL345_REG_TIME_INACT,
+> > +                               &period);
+>
+> Too short lines.
 >
 > --
 > With Best Regards,

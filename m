@@ -1,82 +1,74 @@
-Return-Path: <linux-iio+bounces-20900-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20901-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92504AE3C24
-	for <lists+linux-iio@lfdr.de>; Mon, 23 Jun 2025 12:22:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8612BAE3D35
+	for <lists+linux-iio@lfdr.de>; Mon, 23 Jun 2025 12:49:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6242418933AA
-	for <lists+linux-iio@lfdr.de>; Mon, 23 Jun 2025 10:23:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 858E31781DB
+	for <lists+linux-iio@lfdr.de>; Mon, 23 Jun 2025 10:45:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85937239E99;
-	Mon, 23 Jun 2025 10:22:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A914423C516;
+	Mon, 23 Jun 2025 10:45:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="a7gPq/Ad"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gvLkYCvl"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE6C023A566;
-	Mon, 23 Jun 2025 10:22:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 274C118A6A7
+	for <linux-iio@vger.kernel.org>; Mon, 23 Jun 2025 10:45:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750674159; cv=none; b=FQl/kWiTB4kh3zmWFb/z+0tq1fdVTP96VJg6q2Aq3xvx8c+tbaGS+ZuZIXV+yEZ2F3Av8jPaD5p0c9QkT8ouhJPvGfTwI/NSPZJMWmZ45kp/e7tSc0xomFJy+b4KA6QQMoWWKQxMlGfL/sE5r5V80WVc1tbHDfo5MRTARGEUqP8=
+	t=1750675513; cv=none; b=m4e2u4zaTzBXI1G5zkQJu29X4BUYVX62watja/Ob+MAiNCYsnioRHGlAjxNvOyQ9u4+7xhBwPFUAiTzk71Sgy5I4pcbha/fFBAZIieMm4QYnUCoivSs3fxNecSLTvRtVy5ftqb/0mPNEFKTW97RkadBelezwFp2jC///KgR3bR0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750674159; c=relaxed/simple;
-	bh=K6ejdeVWXNi1Joy2ps0u8ylB95bhYC8uYvSwet/9+BE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WR4GJTDpWZfTXzGZQNRoH2oJwdpBr+zew1lNT/zIplt1BBEXCCYO/CpuRTJoC1LNXwatTx8SbdbhK+3BWCcXFBE4HeM6HghV3bnrYH7UOL/pu9M4XYBeGq+Vg7oO4NU/0wJJjQPZf/mIfLH+vlB8zOlwIWLPLUz5sNoxZL8o0FI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=a7gPq/Ad; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1750675513; c=relaxed/simple;
+	bh=L06ElXWy8V969egiTxFaIcfw/vBAMHlrYHgw+dk8MhU=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=TgZs4adYEQ51b8cK+vQI83Vrr5U+9fU8RPn6mrj2alP/XduDFw1fWrCgdbYrlN0Wr8XndYR5+R5dYCTd5nMZGwmY0NjO1Upp7Modj8+Qj0NP3pfntrG1ffNTFBlXIV/eARfMfMKNxAGQ4uu5v2+4ue1gNWSSHaBz3iOQmOOcVq0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gvLkYCvl; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1750674158; x=1782210158;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=K6ejdeVWXNi1Joy2ps0u8ylB95bhYC8uYvSwet/9+BE=;
-  b=a7gPq/AdOGVeoJAyfWTAhY3lWb27RHkgb9ARYAM4uGSBQepJUdr9D4Mx
-   F9ZcPPB34bPdIoopiAZN8JmeOLzs3WswxHtJh6fnWScWjpH563yaJhCPl
-   M5W8phRXrg3LtX8+oE+O1qh55nskrdPz1uAlpPEjIVSlF6zHQSAtqxr+v
-   N8UBaaaf0JIqmwCjSaSFmQpNvmQKqT+tfFAr7iMUkocrVXagdUQc5f/QL
-   jfewUipcTQ5Gp4T262dXub9ghmc/H4EL9rFAKjVh+yEVVB0441hGFDd5W
-   lAZ2Hs96ecLtVP2OtJLNIsza095m17Ygi6YucRv5f/40cs1QSw5WxiKOj
-   g==;
-X-CSE-ConnectionGUID: 7Wut/jhIR92lJbJVNBbYWQ==
-X-CSE-MsgGUID: 55iaybUMRKS5ibYLwXrYUw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11472"; a="52845552"
+  t=1750675512; x=1782211512;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=L06ElXWy8V969egiTxFaIcfw/vBAMHlrYHgw+dk8MhU=;
+  b=gvLkYCvlbEqlsCYN2yI7Ffur5Spd4EuxKf8IHYvFDRoeyKC5Iye2VK+7
+   DuDttsSJzkBy4CgIBktn55jL2cw/+B5lhhCrAeYJ37Mf+H1EL8XstN7j3
+   cpxHJKRoLODD0noVAGvy5SecwCPHPosE2EQ4OmsljZgE5SPoVKA7JH8Nw
+   Xmyhb0LLuRN6QKXLGHne7cPweRyGsfQ/CLAkt5wg018KOXoWQOuycZxGe
+   B1lQSeMsaTE9f6WdG321cJBLl6JtZ19i9quXjPcSw49FRB9asWSKJyLuA
+   QCjHJNllm318lcOrGdUAQbW8HG9oqkmyKOB38rkaonMOO2CE6PvSjrdKw
+   A==;
+X-CSE-ConnectionGUID: pS3X+TXmQq6LgW5ornGjow==
+X-CSE-MsgGUID: cYb0wa8iSrGFtED7V2/hmg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11472"; a="56656359"
 X-IronPort-AV: E=Sophos;i="6.16,258,1744095600"; 
-   d="scan'208";a="52845552"
+   d="scan'208";a="56656359"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2025 03:22:38 -0700
-X-CSE-ConnectionGUID: dT4HYpINQ0Kj6SeQmv7yIQ==
-X-CSE-MsgGUID: zwKtq7p2QqG19IGXrl0TUw==
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2025 03:45:11 -0700
+X-CSE-ConnectionGUID: D9ErFu8VSP2hlOm376NByw==
+X-CSE-MsgGUID: nYYidfzvQO+bLM2YQ6V/Xg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,258,1744095600"; 
-   d="scan'208";a="151331475"
-Received: from lkp-server01.sh.intel.com (HELO e8142ee1dce2) ([10.239.97.150])
-  by orviesa009.jf.intel.com with ESMTP; 23 Jun 2025 03:22:34 -0700
-Received: from kbuild by e8142ee1dce2 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uTeJs-000Nwk-0T;
-	Mon, 23 Jun 2025 10:22:32 +0000
-Date: Mon, 23 Jun 2025 18:21:52 +0800
-From: kernel test robot <lkp@intel.com>
-To: David Lechner <dlechner@baylibre.com>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Mark Brown <broonie@kernel.org>
-Cc: oe-kbuild-all@lists.linux.dev, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-spi@vger.kernel.org, David Lechner <dlechner@baylibre.com>
-Subject: Re: [PATCH 8/9] iio: adc: ad_sigma_delta: add SPI offload support
-Message-ID: <202506231738.CgeNexV4-lkp@intel.com>
-References: <20250620-iio-adc-ad7173-add-spi-offload-support-v1-8-0766f6297430@baylibre.com>
+   d="scan'208";a="151336349"
+Received: from smile.fi.intel.com ([10.237.72.52])
+  by orviesa009.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2025 03:45:11 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1uTefj-000000098vz-27gH;
+	Mon, 23 Jun 2025 13:45:07 +0300
+Date: Mon, 23 Jun 2025 13:45:07 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: linux-iio@vger.kernel.org
+Cc: Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>
+Subject: EXPORT_SYMBOL_GPL_FOR_MODULES() heads up
+Message-ID: <aFkwMyQ4v6i4JBG_@smile.fi.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -85,32 +77,16 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250620-iio-adc-ad7173-add-spi-offload-support-v1-8-0766f6297430@baylibre.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-Hi David,
-
-kernel test robot noticed the following build warnings:
-
-[auto build test WARNING on d02f330b0c78bcf76643fbb7d3215a58b181f829]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/David-Lechner/iio-adc-ad_sigma_delta-sort-includes/20250621-063127
-base:   d02f330b0c78bcf76643fbb7d3215a58b181f829
-patch link:    https://lore.kernel.org/r/20250620-iio-adc-ad7173-add-spi-offload-support-v1-8-0766f6297430%40baylibre.com
-patch subject: [PATCH 8/9] iio: adc: ad_sigma_delta: add SPI offload support
-config: x86_64-buildonly-randconfig-004-20250621 (https://download.01.org/0day-ci/archive/20250623/202506231738.CgeNexV4-lkp@intel.com/config)
-compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250623/202506231738.CgeNexV4-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202506231738.CgeNexV4-lkp@intel.com/
-
-All warnings (new ones prefixed by >>, old ones prefixed by <<):
-
->> WARNING: modpost: module ad_sigma_delta uses symbol devm_iio_dmaengine_buffer_setup_with_handle from namespace IIO_DMAENGINE_BUFFER, but does not import it.
+Pay attention to a new commit 707f853d7fa3 ("module: Provide
+EXPORT_SYMBOL_GPL_FOR_MODULES() helper"). This one is what we
+mostly need in IIO.
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+With Best Regards,
+Andy Shevchenko
+
+
 

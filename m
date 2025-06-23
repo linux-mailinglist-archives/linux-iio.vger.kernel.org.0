@@ -1,73 +1,73 @@
-Return-Path: <linux-iio+bounces-20931-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20932-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B42DDAE55BC
-	for <lists+linux-iio@lfdr.de>; Tue, 24 Jun 2025 00:14:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 656D9AE578C
+	for <lists+linux-iio@lfdr.de>; Tue, 24 Jun 2025 00:45:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C8EA27A9927
-	for <lists+linux-iio@lfdr.de>; Mon, 23 Jun 2025 22:13:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1CBF11895D41
+	for <lists+linux-iio@lfdr.de>; Mon, 23 Jun 2025 22:45:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3541A226888;
-	Mon, 23 Jun 2025 22:13:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E25A228CB8;
+	Mon, 23 Jun 2025 22:44:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="Q0WlSs6A"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="Y0bC4H9B"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
+Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3B7D19E7F9
-	for <linux-iio@vger.kernel.org>; Mon, 23 Jun 2025 22:13:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 272FB225792
+	for <linux-iio@vger.kernel.org>; Mon, 23 Jun 2025 22:44:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716838; cv=none; b=Jr7cGjCkF0xnxyYAPQv1RAcypaQkcZ2strJc9j94x99Ud1gnmVPhnhmTC6FtGl/RdmKEpMS47WG7qlU71UhexJ14uMskeZZKa/sJzy9oIl+yA1hxlYQCjzrKL/ytlT/hVKWEvD1OrEo20gu3xhbA+XgRv3x/N72mAjEUl3MPw2Y=
+	t=1750718696; cv=none; b=eN5PO9Wvcy9I0cr+CtknCwVxaoGZcq9ghR9N3otm5P5aFhXHbik0E8mmDmQ7qoSrqAelQHCykpNGV3tD8Z/iJpvhGsIXMSsO4y0Vm9wCynHbuzks6jJIJajd6lunOFyHxWN7ewJLleObiONHJBxGGbCyHWcjmiZNIo2BwoNIqHw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716838; c=relaxed/simple;
-	bh=wJcXCAJECXi5ljAr628OVAHuy8Y9oZqFr2rrCgRpOIE=;
+	s=arc-20240116; t=1750718696; c=relaxed/simple;
+	bh=a5yUtzR8aIYejA5AasM5DgMoIvDkY3cOad1ESXk059c=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=GKYxiAiitX8aZIHbXrV7bWYj8ROnt3IZjd9n8ZyuzTagAUmijev8W5DK7O8fwIwQQMzEJxmu85ugS6OjNZD0t9zKYTsTsOppKf71zpokKsMGkCBi6AxFwY+lZubGDSMN0XGa3f8ch0KBZCB1iQdfwekAbVBeIWM/EO6sXa0Dm+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=Q0WlSs6A; arc=none smtp.client-ip=209.85.208.178
+	 To:Cc:Content-Type; b=Ajs3gJTx5ZgwS+8CirKDuRLJxNOsMCHFikYmMgg5+4MhJ+CPFgFaQiRIQthJAvYZXl0SQ1NoHZARv1n3j4DnHngOeisJzXryg4wiQsn0iBG99fySqCwrjkzS+4UzIlJwwc8zXL/iTDBfQfGYmJoxRZVj8qgb+4D3rUouSerecMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=Y0bC4H9B; arc=none smtp.client-ip=209.85.208.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-32b7f41d3e6so41758981fa.1
-        for <linux-iio@vger.kernel.org>; Mon, 23 Jun 2025 15:13:56 -0700 (PDT)
+Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-32b7fd20f99so49302821fa.0
+        for <linux-iio@vger.kernel.org>; Mon, 23 Jun 2025 15:44:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1750716835; x=1751321635; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1750718692; x=1751323492; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=NnxqDoaRj0errePw2QkBpLowRG+RBieBmvdQlxqNJus=;
-        b=Q0WlSs6AR5lX2jteOzh1KOz7woh17NPJcmkrPj9aav2Psarn1+tj7qk2t9gFYOUtTs
-         YeB2Q6zURhSKL+O8lXVrUtm3NJsqLi7Z4cnutdJ7QqZLvB5pr0cx3rnOLik35DMr0R0N
-         gctKGajjxnpwvr0FAjcrJdzytbGBIEXHT8tcBDPceTpAasMbUDJ5mAg6bBHU53zTBiAS
-         Uz2yxJCiF+u9OoHiJewJxAuokAdsdiNhoJJfJEBKLD6v1+VAhyldrBvkQ/J83ZD+WGpE
-         Ywu+HZupTQMRnv1LWjqeiIB7HkDiLqtioQU/0204E9dZd0OsrhiTnrqc3KhJzKgIUjFq
-         dw9w==
+        bh=BsZod9XeehDSe+a5i5dEhZqfmDuleKr3HZqeh2BVFUw=;
+        b=Y0bC4H9Biwyghs1nA2kv5P11/jXFekPBAFzZ/5VOkGsj1eHcmMty5bPBUzJBKVZPvM
+         /kIZ0mQnAP8Q7MPIokBSv39KtD2vAjpW/sGu7rAnhJ5XiCT1mP+t5p5WI6Qbky8bWXsY
+         QO1CHcDIHGp9B7qK/4Gb9+oPvv3rm4VsgE2r2y8hN7LpxNp6gftjsvElqw7MCKQtWCae
+         lOauGt0S5VqHMZlin4d0DFIuE9lSWL+Mhd++Yx+N8IXVkyUr5xi06FZec569h8wnynjh
+         dMT/cCliZ1ttHiS+z3cuUPi9L4SIU9d0r7bxMveE9Cm9vuWqpg0uH6PWz7BlVW6d+Xty
+         CN8A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750716835; x=1751321635;
+        d=1e100.net; s=20230601; t=1750718692; x=1751323492;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=NnxqDoaRj0errePw2QkBpLowRG+RBieBmvdQlxqNJus=;
-        b=d4+B8q0CjsO4ZZ1qx3lcooXbF5drcjM/b6QkXLkeBKccG0hWcGekjuuI9FZNWeFo7o
-         w8fTiqyvMRBHv9eec9z/MGvraDMAuN2NkCZ95k58oUVbDSUo5t3+No7edTdR37iD1UQt
-         ltZTrIFFqdkhXSpBo1FTbRhvqvt189TaiZDTzFqPuy0SvVz+ruHYWiYTty+09mGGEpIV
-         qdTDtuMBEOlAJJtmvLr8U7cwlM9pwqpd+XEw8/BPE5tv0HdmADfJq6UJlPUF9yWbaZlV
-         J5vlwSVGYJcOqYHVwCkodzveODbVbYKhrtCYUgLGplFuE7WKWX3w/s5L4nGqRmJZBU3u
-         PGpQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWvNlbX9IhvaCliQVuJFq2bm8Z6HXbVx8zW1i5hHA9pXSFaYDpjD1nLzOkEPK6Sk/bULn2b3tEf6lw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy4Cv1JLPFzsErZ4c8dcHLDdBZ1WrMgkTog8M27Ki6+s9whJpua
-	j3JlLy9C/ZNl+tgFJegbwzO4RhESRGApbELmWHVnTIXsYGRTI5J16Ih9VnhrsQ3nteZQIj08UQF
-	tg37BnrouINwkjRkWJ5Smn7d1Gg2j2xeZiKXq9ipe5Q==
-X-Gm-Gg: ASbGncsTuv9JFp7iNyvHEoEkcy3b8WBQGvSsjWUXOuLHvLimx/xmeVhRvH9Q14Zww5f
-	MYuf1KyQ3WrTWfHLeBwLv9k1wu+T7FrVot1J7/pXondLJ1alBUQV0SWOp4NYhUxCi6uFiKiI4W8
-	MrvcU698Oazm7En59hx9/38PqwNJDq46j403Q3ZVajA7MP
-X-Google-Smtp-Source: AGHT+IHifSn0eVzJmS5BrditIB7BKsqxt1CMhoSsnvDLbPgVU43kS75EDseT2mI+y8tbUM6L8NVyQ6zt4qA+TyhW1vk=
-X-Received: by 2002:a05:651c:1488:b0:32a:e7b9:1dc9 with SMTP id
- 38308e7fff4ca-32cb958b0bemr2452311fa.3.1750716834720; Mon, 23 Jun 2025
- 15:13:54 -0700 (PDT)
+        bh=BsZod9XeehDSe+a5i5dEhZqfmDuleKr3HZqeh2BVFUw=;
+        b=w5oam/YVrngfahvcZHNm4ewm8DOZ9JvfnL8LpL0nwXM9jIuMaK/as0E98K1/6K70p3
+         6n9SLqAdOn8qvOrxg8+Xf14GK0Wwe4kleJzjwaERQhXiC/0seuY6fyXQxpGU+t/442ZH
+         WCVi6czqhOdhziPqyV7OaC8KSTaWvJd5fX/ehTx7FGCRPFsHZFvsk48dxqBsySXWygIk
+         QYYaSRyQt6aFxS7ZbkpfAjqvJ/MWZF6CTD3ze4nS635zrBq7YP55ERIrsfCsQRAXchad
+         VmV/47oO5GKpZxibj0dJ760xvEE02sBB5N4Okb0vxsMBiM2qcQWinM5+lq3GUPeamlEe
+         PqJg==
+X-Forwarded-Encrypted: i=1; AJvYcCV2f1t9S1YvYCPYDUi13AQT3TzrIoOvcLYmQhbK8KOeScGP54BxK96mD8m93glALstCjHfFXc+ljG4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyCfUTgd5YqHiAMrB1WEbuRVxWOzzKSxV7V3OcNJOp6QtMo3YzD
+	BALHnx8yq5rL+pGmQzcULqncSp+JGqmm+dbqMEiKO20+5iVmjdQ6Bhpn12Mmf6DPzM3o+uJwuzt
+	z1DYxPY1D5rq82BYbfqT61mOb3EDPHoh5PCSCzC18gw==
+X-Gm-Gg: ASbGncvZA7HLSos7vnC7vUFuvsPcoEC6aHafl3OBfshA3QCrbIZfZJk9qdkDtzhhDoB
+	sBjv8XxLxWxK+8/KD2OGCNbaJEGsTj21jwT/VtCiKhRIbQad0UA1VsLaPVExzwMmj1P7ZOgTxMr
+	fPHfbFZfVOBE6HsYylx9XO3LjhsFgdRTqtHZKmEVjKWx7q
+X-Google-Smtp-Source: AGHT+IFEv/RGHeBCLRnW1DXwkC+VJSgGLx7prppFBg88rivJWosk723ecnxZL7IbB4HR3d0OB8US84nKea08bmcjAKg=
+X-Received: by 2002:a2e:beac:0:b0:329:1712:c38d with SMTP id
+ 38308e7fff4ca-32cb95b50a6mr3638601fa.5.1750718691946; Mon, 23 Jun 2025
+ 15:44:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -75,14 +75,13 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20250623-losd-3-inv-icm42600-add-wom-support-v5-0-4b3b33e028fe@tdk.com>
- <20250623-losd-3-inv-icm42600-add-wom-support-v5-1-4b3b33e028fe@tdk.com>
-In-Reply-To: <20250623-losd-3-inv-icm42600-add-wom-support-v5-1-4b3b33e028fe@tdk.com>
+ <20250623-losd-3-inv-icm42600-add-wom-support-v5-2-4b3b33e028fe@tdk.com>
+In-Reply-To: <20250623-losd-3-inv-icm42600-add-wom-support-v5-2-4b3b33e028fe@tdk.com>
 From: David Lechner <dlechner@baylibre.com>
-Date: Mon, 23 Jun 2025 16:13:43 -0600
-X-Gm-Features: AX0GCFvR_nDSyo7IJDHgSyfc6fnSxZDup-RqSeIBBq3gfaSlt7C4LZkW-8tJYiI
-Message-ID: <CAMknhBEpkWrZdWSrhQS6E1GnENCipf+LxNNSNUyZrm8Gme2f_Q@mail.gmail.com>
-Subject: Re: [PATCH v5 1/3] iio: imu: inv_icm42600: move structure DMA buffers
- at the end
+Date: Mon, 23 Jun 2025 16:44:41 -0600
+X-Gm-Features: AX0GCFsuSsTxw0IHWVuoRFxoAWC28ru0cW0dczEUfiobRKwGF-pHyUXB99AbMh0
+Message-ID: <CAMknhBHaSBF-a9nLZ0ZxB2-9HzYkPMBqUr4Aa4TthNnJMwtFgg@mail.gmail.com>
+Subject: Re: [PATCH v5 2/3] iio: imu: inv_icm42600: add WoM support
 To: jean-baptiste.maneyrol@tdk.com
 Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
 	Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
@@ -94,64 +93,193 @@ On Mon, Jun 23, 2025 at 6:56=E2=80=AFAM Jean-Baptiste Maneyrol via B4 Relay
 >
 > From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
 >
-> Move DMA buffers at the end of the structure to avoid overflow
-> bugs with unexpected effect.
+> Add WoM as accel roc rising x|y|z event.
+>
 
-If there is an overflow bug, we should fix that rather than hiding it.
+...
 
-If I misunderstood the problem and timestamp and fifo should not be in
-the DMA aligned area and there is a problem with DMA cache writing
-over them, then I think we should reword the commit message.
+> +static int inv_icm42600_accel_enable_wom(struct iio_dev *indio_dev)
+> +{
+> +       struct inv_icm42600_state *st =3D iio_device_get_drvdata(indio_de=
+v);
+> +       struct inv_icm42600_sensor_state *accel_st =3D iio_priv(indio_dev=
+);
+> +       struct device *pdev =3D regmap_get_device(st->map);
+> +       struct inv_icm42600_sensor_conf conf =3D INV_ICM42600_SENSOR_CONF=
+_INIT;
+> +       unsigned int sleep_ms =3D 0;
+> +       int ret;
+> +
+> +       ret =3D pm_runtime_resume_and_get(pdev);
+> +       if (ret)
+> +               return ret;
+> +
+> +       scoped_guard(mutex, &st->lock) {
+> +               /* turn on accel sensor */
+> +               conf.mode =3D accel_st->power_mode;
+> +               conf.filter =3D accel_st->filter;
+> +               ret =3D inv_icm42600_set_accel_conf(st, &conf, &sleep_ms)=
+;
+> +       }
+> +       if (ret)
+> +               goto error_suspend;
+> +       if (sleep_ms)
+> +               msleep(sleep_ms);
+> +
+> +       scoped_guard(mutex, &st->lock) {
+> +               ret =3D inv_icm42600_enable_wom(st);
+> +               if (ret)
+> +                       break;
 
->
-> struct inv_icm42600_fifo has a DMA buffer at the end.
->
-> Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-> ---
->  drivers/iio/imu/inv_icm42600/inv_icm42600.h | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
->
-> diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600.h b/drivers/iio/im=
-u/inv_icm42600/inv_icm42600.h
-> index 55ed1ddaa8cb5dd410d17db3866fa0f22f18e9d2..9b2cce172670c5513f18d5979=
-a5ff563e9af4cb3 100644
-> --- a/drivers/iio/imu/inv_icm42600/inv_icm42600.h
-> +++ b/drivers/iio/imu/inv_icm42600/inv_icm42600.h
-> @@ -148,9 +148,9 @@ struct inv_icm42600_suspended {
->   *  @suspended:                suspended sensors configuration.
->   *  @indio_gyro:       gyroscope IIO device.
->   *  @indio_accel:      accelerometer IIO device.
-> - *  @buffer:           data transfer buffer aligned for DMA.
-> - *  @fifo:             FIFO management structure.
->   *  @timestamp:                interrupt timestamps.
-> + *  @fifo:             FIFO management structure.
-> + *  @buffer:           data transfer buffer aligned for DMA.
->   */
->  struct inv_icm42600_state {
->         struct mutex lock;
-> @@ -164,12 +164,12 @@ struct inv_icm42600_state {
->         struct inv_icm42600_suspended suspended;
->         struct iio_dev *indio_gyro;
->         struct iio_dev *indio_accel;
-> -       u8 buffer[2] __aligned(IIO_DMA_MINALIGN);
-> -       struct inv_icm42600_fifo fifo;
->         struct {
->                 s64 gyro;
->                 s64 accel;
->         } timestamp;
-> +       struct inv_icm42600_fifo fifo;
+I reviewed this from the bottom up, so see comments on similar code below.
 
-I didn't look at how the drivers use timestamp and fifo, but if they
-are passed as a buffer to SPI, then they need to stay in the DMA
-aligned area of the struct.
+> +               st->apex.on++;
+> +               st->apex.wom.enable =3D true;
+> +       }
+> +       if (ret)
+> +               goto error_suspend;
+> +
+> +       return 0;
+> +
+> +error_suspend:
+> +       pm_runtime_mark_last_busy(pdev);
+> +       pm_runtime_put_autosuspend(pdev);
+> +       return ret;
+> +}
+> +
+> +static int inv_icm42600_accel_disable_wom(struct iio_dev *indio_dev)
+> +{
+> +       struct inv_icm42600_state *st =3D iio_device_get_drvdata(indio_de=
+v);
+> +       struct device *pdev =3D regmap_get_device(st->map);
+> +       struct inv_icm42600_sensor_conf conf =3D INV_ICM42600_SENSOR_CONF=
+_INIT;
+> +       unsigned int sleep_ms =3D 0;
+> +       int ret;
+> +
+> +       scoped_guard(mutex, &st->lock) {
+> +               /*
+> +                * Consider that turning off WoM is always working to avo=
+id
+> +                * blocking the chip in on mode and prevent going back to=
+ sleep.
+> +                * If there is an error, the chip will anyway go back to =
+sleep
+> +                * and the feature will not work anymore.
+> +                */
+> +               st->apex.wom.enable =3D false;
+> +               st->apex.on--;
+> +               ret =3D inv_icm42600_disable_wom(st);
+> +               if (ret)
+> +                       break;
 
-> +       u8 buffer[2] __aligned(IIO_DMA_MINALIGN);
->  };
->
->
->
-> --
-> 2.49.0
->
->
+The fact that scoped_guard() uses a for loop is an implementation
+detail so using break here makes this look like improper C code. I
+think this would be better to split out the protected section to a
+separate function and just use the regular guard() macro.
+
+> +               /* turn off accel sensor if not used */
+> +               if (!st->apex.on && !iio_buffer_enabled(indio_dev)) {
+> +                       conf.mode =3D INV_ICM42600_SENSOR_MODE_OFF;
+> +                       ret =3D inv_icm42600_set_accel_conf(st, &conf, &s=
+leep_ms);
+> +                       if (ret)
+> +                               break;
+> +               }
+> +       }
+> +
+> +       if (sleep_ms)
+> +               msleep(sleep_ms);
+
+Probably don't need the if here. msleep() won't sleep if we pass 0 to it.
+
+> +       pm_runtime_mark_last_busy(pdev);
+> +       pm_runtime_put_autosuspend(pdev);
+> +
+> +       return ret;
+> +}
+> +
+
+...
+
+> +static int inv_icm42600_accel_write_event_config(struct iio_dev *indio_d=
+ev,
+> +                                                const struct iio_chan_sp=
+ec *chan,
+> +                                                enum iio_event_type type=
+,
+> +                                                enum iio_event_direction=
+ dir,
+> +                                                bool state)
+> +{
+> +       struct inv_icm42600_state *st =3D iio_device_get_drvdata(indio_de=
+v);
+> +
+> +       /* handle only WoM (roc rising) event */
+> +       if (type !=3D IIO_EV_TYPE_ROC || dir !=3D IIO_EV_DIR_RISING)
+> +               return -EINVAL;
+> +
+> +       scoped_guard(mutex, &st->lock) {
+> +               if (st->apex.wom.enable =3D=3D state)
+> +                       return 0;
+> +       }
+> +
+> +       if (state)
+> +               return inv_icm42600_accel_enable_wom(indio_dev);
+> +       else
+
+This is redundant else and can be removed.
+
+> +               return inv_icm42600_accel_disable_wom(indio_dev);
+> +}
+> +
+
+...
+
+> +static int inv_icm42600_accel_write_event_value(struct iio_dev *indio_de=
+v,
+> +                                               const struct iio_chan_spe=
+c *chan,
+> +                                               enum iio_event_type type,
+> +                                               enum iio_event_direction =
+dir,
+> +                                               enum iio_event_info info,
+> +                                               int val, int val2)
+> +{
+> +       struct inv_icm42600_state *st =3D iio_device_get_drvdata(indio_de=
+v);
+> +       struct device *dev =3D regmap_get_device(st->map);
+> +       u64 value;
+> +       unsigned int accel_hz, accel_uhz;
+> +       int ret;
+> +
+> +       /* handle only WoM (roc rising) event value */
+> +       if (type !=3D IIO_EV_TYPE_ROC || dir !=3D IIO_EV_DIR_RISING)
+> +               return -EINVAL;
+> +
+> +       if (val < 0 || val2 < 0)
+> +               return -EINVAL;
+> +
+> +       value =3D (u64)val * MICRO + (u64)val2;
+> +       pm_runtime_get_sync(dev);
+> +       scoped_guard(mutex, &st->lock) {
+> +               ret =3D inv_icm42600_accel_read_odr(st, &accel_hz, &accel=
+_uhz);
+> +               if (ret >=3D 0)
+> +                       ret =3D inv_icm42600_accel_set_wom_threshold(st, =
+value,
+> +                                                                  accel_=
+hz, accel_uhz);
+
+At least we aren't using break here, but still this could be better
+split out to a separate function so that we can use the regular return
+on error pattern.
+
+> +       }
+> +       pm_runtime_mark_last_busy(dev);
+> +       pm_runtime_put_autosuspend(dev);
+> +
+> +       return ret;
+> +}
+> +
 

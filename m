@@ -1,189 +1,140 @@
-Return-Path: <linux-iio+bounces-20883-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20884-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE291AE32D1
-	for <lists+linux-iio@lfdr.de>; Mon, 23 Jun 2025 00:34:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB9C3AE35E7
+	for <lists+linux-iio@lfdr.de>; Mon, 23 Jun 2025 08:40:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5AA311886CEF
-	for <lists+linux-iio@lfdr.de>; Sun, 22 Jun 2025 22:35:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7B508170708
+	for <lists+linux-iio@lfdr.de>; Mon, 23 Jun 2025 06:40:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FE941E0DEA;
-	Sun, 22 Jun 2025 22:34:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A820E1E5B8A;
+	Mon, 23 Jun 2025 06:40:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KYqhQsge"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lLtJ9a0M"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2236B18A6A7;
-	Sun, 22 Jun 2025 22:34:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1D451E5B90;
+	Mon, 23 Jun 2025 06:40:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750631686; cv=none; b=Ep6yGwtkP+9AZrbkCuq/vtOmJ+m4gNqQKoWRU/7veq+BsyFlxO/FnR4h8t7rBxh8Pa9L5XgLVvNkUbanCm2o8hu0ZDYrhj2qsIiq8ZCkJR0qLdzCTvy7HwrBGV1HXL6VYnH2hZDBOFPykdRPde10E32YIR5xy4cJE3aaTpsdQXk=
+	t=1750660803; cv=none; b=VxQK2DdYzlKqllOHkJCaOsVm1HZ6Q23nHXxmRZdOso08zcXpK15C36klrwp/DN8EytnMsNYj2ei9oR36Pmeoo0fNlbu/94locA9lApeNyO7sWVCf1IZilA4nJorJhJQeo8PmFyKVfgQfQeyor40RJvHsmNQJqar6mxvzMXJQmtg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750631686; c=relaxed/simple;
-	bh=56FZmOTINatnI4N0dc4uZPzjt2cQHrnFdILnNRAdDig=;
+	s=arc-20240116; t=1750660803; c=relaxed/simple;
+	bh=AkQsXjCKBE0FDDEmr6BLKHKqMfKtoslc3CQ/TntZLjM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=t5a7fGr2ykubB0/OBJXzgHKYXi0vCqBQLRsxYFPW9vp3CfMIEAqVy2YjT7yo4lnufcEz73FJYYmZWrBiKnXAl80Ih97PtyrihNpxrOm9fg/VQZ7wAVDBdqL3QB7f9A9eoh8VyvkmlIrjgcIvyCAjrPUG42fIcoWQa02RF30i5CU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KYqhQsge; arc=none smtp.client-ip=209.85.221.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-3a4ef2c2ef3so2812535f8f.2;
-        Sun, 22 Jun 2025 15:34:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750631683; x=1751236483; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=6dyzT+DnAtOOjIPu21CtuI3EkXm3MN9Tfc0lly+C/6s=;
-        b=KYqhQsge/q0Xwjccco8+BhsIldnc2B/RQOxOd0jqbINbjslNx/xnrvCNXSG1vMDR4k
-         nSgedjogQF1bVI3IxvM39G1P4ufM6d4l1mekL4Ipx0jSJQ3sY6vQpTRytzCNmgaOQKQx
-         BtRPdDlRrTCDmVHkt3NuA0H5CutSL5RlFTbwVRtCJSlJweS813O4IiAcKHQAMsjZb+zM
-         SqLrd/yxKebffirCqaVsxBuUUScKJgo+9xrIRU7jUIMFGl5ii4O5Kp5dD0GpbzYvYRpx
-         YPnjiA7v/hm8Xu9RYZzsYjOCfZ2/p7GN5R/HmVaOM5etqBesS0mh09WSDCVeJMEtZzcc
-         0wKA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750631683; x=1751236483;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6dyzT+DnAtOOjIPu21CtuI3EkXm3MN9Tfc0lly+C/6s=;
-        b=Phk94sSlIMj7Fu3DkTFjIUiQr0v0Wuy9zW4weMiiONIWlXuh8yU3pZA2XWDfC4vAe7
-         5Be60QN4jjMnLvkq81orE4Pw6/j/Cb3RsWaVZjahC89/yFZf+Mq7nJYV9QKkbxtF+42N
-         bUharXVlf1pGO0t5flciRb9xnVZjZfqJ4XiR9OA8n0xU/htNSELj+buYN0Did0/ozlh3
-         /W8KKj2JHnsdqSfgt3oPYdjWhrTuRlmgoEaBvapnwZnOb1WHp0z+pcOcxGS4sryufE9z
-         BBiLF+CyxgBoPYtwJltHr3jkaEhG2i2Dm3uwlJvwkVuLPjqGD+1WaUp2F+Ck4lpYra1U
-         FwpA==
-X-Forwarded-Encrypted: i=1; AJvYcCVdRsI04va+PV+hN0JW39+GM5mWp/Y0NqwrM4p7eMmeEQ7tiksVkxzIO4Ct+qU2VctyXGUmixOKf9k=@vger.kernel.org, AJvYcCXLFqGb+W33LqAGbd+Pog2PTdf++CRFawtLw1NQ2QRdHEtxdOzm+IvDLzyUamdoKA7Yeufynm5P5zh4raEc@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywe0dHbtXSbCB0Jc+cHV7Zd/yXQv1wXXDDefPslH8UJRnDBhFpf
-	YrHk8syunQfG0SsHhGaaf5MFZx7qBVP/nqDFulgAvYv9ZkkTXWgLF2Te
-X-Gm-Gg: ASbGncvThWKT2i4doK/By4bQd70TqwJd2qiG6WTpLnOlFp8ofZr9se2jfJbMn5eft/X
-	ZtvOmyZuvC/w0qzQUJ4So1rgR7e5SUr7ZdWMi9OxTpTSsfRn6awo3e48u9UGifFq9Lw9JJ7L5Mi
-	67YsMV+qFzUKRtbbeNAqaVjPCRG4A4gs0rze8H0WBMIR6QdXv2GQunD+H6x5AtVOaWe7np+Qz8r
-	MdlJhPnzvTvkOEGcSKJa/zP90Qq5JCA/WCZJTnddW12kAineMgILM4dxAY/qz1KIx0nOnfzklD0
-	L7beF7XKYQev30BxqSbBieRHb+O48zhwyoiZDvQbChHRM4enQHnPusbjOLIuFBeFNV9xmjyC/2k
-	xxwNuXA==
-X-Google-Smtp-Source: AGHT+IF9BKjS8kYWw0g6v/2eyrOc8smZVIaGMFgbkK+T3A0YK8lvhJPTkhIWJaHaC2S7zAWDIBQlMA==
-X-Received: by 2002:a05:6000:188c:b0:3a5:39e9:7997 with SMTP id ffacd0b85a97d-3a6d12de854mr7826876f8f.34.1750631683033;
-        Sun, 22 Jun 2025 15:34:43 -0700 (PDT)
-Received: from vamoirid-laptop ([2a04:ee41:82:7577:67ea:4395:411c:f77])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45364708297sm92052065e9.35.2025.06.22.15.34.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 22 Jun 2025 15:34:42 -0700 (PDT)
-Date: Mon, 23 Jun 2025 00:34:40 +0200
-From: Vasileios Amoiridis <vassilisamir@gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=jSrhaCIx+J6lYR+DMWRFUShBNmtjmMB/ctSHwA3wKNVqqNX7goi61tUyobTeHUHebEvZE1f2d74eGp0qw8zpTpRpR7snwV40p0ooohFPiqtgYwgPRprTcmVtVSjOsjf7sq9zGKALQI5VHllpMgxfD3z4DXo/9dGYVK0Y3859+7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lLtJ9a0M; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1750660802; x=1782196802;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=AkQsXjCKBE0FDDEmr6BLKHKqMfKtoslc3CQ/TntZLjM=;
+  b=lLtJ9a0MEi9Dh4GmsXcMPQl7l3SpB9RD0Gfe2e2la1kjykNAjZDpe541
+   nFda4sSWTPXFfSyiibHfRBvgLG3Kdh6pqufXgceasXbikyABgptd34vMP
+   eafSWf0r21kbXL1CzpQrJ5fsctyAxO23lJ2OQfn1GRqfebTFe7Vj+JF+8
+   mmUNFfAZOclph47RSHvxv+R/efBQ82DBgK7FfQZZI6mAWWWOZeTBgHiF7
+   dMFhG2jY4T87XGEKZ7u9lkDg4RUGYQ9GLLDbOa/s2CJn223fFxnzbf3ti
+   X6aK98oygqyPMwW7SQi4SrKThyTXrost6mJSEr7oCNw8gy1QOs/TJnXu9
+   g==;
+X-CSE-ConnectionGUID: 5pEVYpVESHq7OztEm5I9lQ==
+X-CSE-MsgGUID: BWLAIfykSU+obN33FZjohw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11472"; a="70422079"
+X-IronPort-AV: E=Sophos;i="6.16,258,1744095600"; 
+   d="scan'208";a="70422079"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2025 23:40:01 -0700
+X-CSE-ConnectionGUID: Ri1QsT2OQQW8b4ytEfKyjw==
+X-CSE-MsgGUID: gI6CSArtRD2oNNdTMqXLHQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,258,1744095600"; 
+   d="scan'208";a="182378616"
+Received: from smile.fi.intel.com ([10.237.72.52])
+  by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2025 23:39:59 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1uTaqR-000000095Kk-3mBi;
+	Mon, 23 Jun 2025 09:39:55 +0300
+Date: Mon, 23 Jun 2025 09:39:55 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To: Jonathan Cameron <jic23@kernel.org>
-Cc: liquancin.mereenamathai@in.bosch.com, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, dlechner@baylibre.com,
-	nuno.sa@analog.com, andy@kernel.org, marcelo.schmitt1@gmail.com,
-	javier.carrasco.cruz@gmail.com, Xu.Zhang@cn.bosch.com,
-	Maoting.Bian@cn.bosch.com
-Subject: Re: [PATCH v1 0/2] Add BMP390 IIO driver, device tree bindings and
- support
-Message-ID: <aFiFACUn2z5jD3WN@vamoirid-laptop>
-References: <20250620045456.1151-1-liquancin.mereenamathai@in.bosch.com>
- <20250622160637.554b1953@jic23-huawei>
+Cc: Andy Shevchenko <andy.shevchenko@gmail.com>,
+	Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	"linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>
+Subject: Re: [PATCH v1 1/1] iio: imu: inv_icm42600: Convert to uXX and sXX
+ integer types
+Message-ID: <aFj2u3Tv4o72Hqi8@smile.fi.intel.com>
+References: <20250616090423.575736-1-andriy.shevchenko@linux.intel.com>
+ <FR3P281MB1757C6A610D39EA737A19EFBCE70A@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
+ <CAHp75Ve68H448v3Tgv930yoMYCCKVC3kefuP+Rermj7SaiP41g@mail.gmail.com>
+ <FR3P281MB175775DBE90C5469637F3C66CE73A@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
+ <CAHp75Ve0aQLaRS1-J5WoCxUAfX+Y=s2oj4ZkVvUG1XysXopZxw@mail.gmail.com>
+ <20250621181339.0331ab8b@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250622160637.554b1953@jic23-huawei>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250621181339.0331ab8b@jic23-huawei>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Sun, Jun 22, 2025 at 04:06:37PM +0100, Jonathan Cameron wrote:
-> On Fri, 20 Jun 2025 10:24:53 +0530
-> <liquancin.mereenamathai@in.bosch.com> wrote:
-> 
-> > From: Liquancin Mereena Mathai <liquancin.mereenamathai@in.bosch.com>
+On Sat, Jun 21, 2025 at 06:13:39PM +0100, Jonathan Cameron wrote:
+> On Tue, 17 Jun 2025 21:33:46 +0300
+> Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+> > On Tue, Jun 17, 2025 at 5:43 PM Jean-Baptiste Maneyrol
+> > <Jean-Baptiste.Maneyrol@tdk.com> wrote:
+> > > >From: Andy Shevchenko <andy.shevchenko@gmail.com>
+> > > >Sent: Monday, June 16, 2025 16:33
+
+...
+
+> > > it is good for me if we can add Cc to stable.
+> > > I don't know if I need to add the Cc tag here or when a fixed patch will
+> > > require the rework. In doubt, here it is.
+> > >
+> > > Acked-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+> > > Cc: stable@vger.kernel.org  
 > > 
-> > This patch series adds support for the Bosch BMP390 pressure sensor to the
-> > Linux IIO subsystem. It includes the main driver implementation as well as
-> > the necessary device tree bindings for integration on supported platforms.
+> > It makes no sense here. This is a standalone change. It's not part of
+> > any "fixes" series. You need to attach this patch to your series as
+> > patch 1 and mark Cc stable all of the patches.
 > 
-> Hi Liquancin, 
+> I think this is hypothetical at the moment as the only series outstanding
+> is the WOM one which isn't a fix.  So I don't think this patch will
+> ever end up carrying a stable tag.  However, first time we get a fix
+> that needs it, if Greg etc don't sort it out anyway (they often do!)
+> then a simple mail to stable@vger.kernel.org to tell them to pick this
+> and the fix will resolve it.
 > 
-> Great to see this driver.  However, it is huge which will make it very challenging
-> to review.  I'll take a first look but in general you need to break this up
-> into more manageable steps of building up driver complexity.  The driver
-> must work and be useful at each step, but the usual approach is to introduce
-> first a fairly minimal driver that does basic measurements only and then build
-> up from there.  If any patch is getting substantially over 1000 lines of code
-> then it becomes unmanageable without reviewers dedicating a significant chunk
-> of their day to that review and hence them finding that time can take a while
-> if it happens at all.
+> For now I'll queue this patch up and ask for a rebase on the WOM
+> series on top of it.
 > 
-> Only exception to this is that the dt binding should be as complete
-> as possible from the start.
-> 
-> Jonathan
-> 
+> It crossed with David's series doing {} to replace explicit memsets
+> so needed a tiny bit of hand tweaking.
+> Pushed out as testing for 0-day to look at.
 
-Hi all,
+Thanks, Jonathan!
 
-The BMP39x sensor is almost 100% identical to the BMP38x sensor for
-which there is a driver under drivers/iio/pressure/bmp280-core.c. This
-driver also supports the previous BMP28x, the next generation BMP58x and
-the humidity sensor BME280.
+-- 
+With Best Regards,
+Andy Shevchenko
 
-The register maps betweem BMP384, BMP388 and BMP390 look almost 100%
-identical. You can check also here [1,2,3].
 
-Liquacin, did you try to see if you could use the aforementioned driver
-to control your BMP390 device?
-
-Cheers,
-Vasilis
-
-[1]: https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bmp384-ds003.pdf#page=29
-[2]: https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bmp388-ds001.pdf#page=30
-[3]: https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bmp390-ds002.pdf#page=30
-
-> > 
-> > Patch 1 adds the IIO driver for the BMP390 pressure sensor.
-> > Patch 2 introduces the device tree bindings documentation.
-> > 
-> > Liquancin Mereena Mathai (2):
-> >   Add the iio driver for bosch pressure sensor bmp390. The bmp390 is a
-> >     pressure sensor module. It will support SPI and I2C protocol based
-> >     on configuration.
-> >   dt-bindings: iio driver: Add BMP390 pressure sensor device tree
-> >     binding
-> > 
-> >  .../bindings/iio/pressure/bosch,bmp390.yaml   |   65 +
-> >  MAINTAINERS                                   |    7 +
-> >  drivers/iio/pressure/Kconfig                  |   26 +
-> >  drivers/iio/pressure/Makefile                 |    1 +
-> >  drivers/iio/pressure/bmp390/Kconfig           |   29 +
-> >  drivers/iio/pressure/bmp390/Makefile          |   32 +
-> >  drivers/iio/pressure/bmp390/bmp3.c            | 2781 +++++++++++++++++
-> >  drivers/iio/pressure/bmp390/bmp3.h            |  537 ++++
-> >  drivers/iio/pressure/bmp390/bmp390_driver.c   | 1604 ++++++++++
-> >  drivers/iio/pressure/bmp390/bmp390_driver.h   |  232 ++
-> >  drivers/iio/pressure/bmp390/bmp390_i2c.c      |  328 ++
-> >  .../iio/pressure/bmp390/bmp390_iio_buffer.c   |  220 ++
-> >  drivers/iio/pressure/bmp390/bmp390_spi.c      |  286 ++
-> >  drivers/iio/pressure/bmp390/bmp3_defs.h       |  871 ++++++
-> >  drivers/iio/pressure/bmp390/bmp3_selftest.c   |  184 ++
-> >  drivers/iio/pressure/bmp390/bmp3_selftest.h   |   93 +
-> >  16 files changed, 7296 insertions(+)
-> >  create mode 100644 Documentation/devicetree/bindings/iio/pressure/bosch,bmp390.yaml
-> >  create mode 100644 drivers/iio/pressure/bmp390/Kconfig
-> >  create mode 100644 drivers/iio/pressure/bmp390/Makefile
-> >  create mode 100644 drivers/iio/pressure/bmp390/bmp3.c
-> >  create mode 100644 drivers/iio/pressure/bmp390/bmp3.h
-> >  create mode 100644 drivers/iio/pressure/bmp390/bmp390_driver.c
-> >  create mode 100644 drivers/iio/pressure/bmp390/bmp390_driver.h
-> >  create mode 100644 drivers/iio/pressure/bmp390/bmp390_i2c.c
-> >  create mode 100644 drivers/iio/pressure/bmp390/bmp390_iio_buffer.c
-> >  create mode 100644 drivers/iio/pressure/bmp390/bmp390_spi.c
-> >  create mode 100644 drivers/iio/pressure/bmp390/bmp3_defs.h
-> >  create mode 100644 drivers/iio/pressure/bmp390/bmp3_selftest.c
-> >  create mode 100644 drivers/iio/pressure/bmp390/bmp3_selftest.h
-> > 
-> 
 

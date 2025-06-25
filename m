@@ -1,335 +1,113 @@
-Return-Path: <linux-iio+bounces-20956-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20957-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF03DAE7CB9
-	for <lists+linux-iio@lfdr.de>; Wed, 25 Jun 2025 11:28:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90526AE84C2
+	for <lists+linux-iio@lfdr.de>; Wed, 25 Jun 2025 15:32:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0CA77162842
-	for <lists+linux-iio@lfdr.de>; Wed, 25 Jun 2025 09:28:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8BF6518918C6
+	for <lists+linux-iio@lfdr.de>; Wed, 25 Jun 2025 13:28:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 487FF2D9EC8;
-	Wed, 25 Jun 2025 09:19:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CDD1262FC8;
+	Wed, 25 Jun 2025 13:28:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NRE0Or1/"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 990472E7637
-	for <linux-iio@vger.kernel.org>; Wed, 25 Jun 2025 09:19:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E053263F22
+	for <linux-iio@vger.kernel.org>; Wed, 25 Jun 2025 13:27:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750843144; cv=none; b=J27r3dtNVSBm4swWbsbKhhESj51eFLRlb/g3iZYu0hDOfteI96VCVtVQgVum208Ay+jVyqu5yVueBmMuBVrBqlAYoKX+z26Gx+PhkjiVmMD1yhsUmiEsIYMkT1oHTmQ+karYzDYwTUvdLD4zGCABydaYXtl1yFfJjcf20PK5aSU=
+	t=1750858079; cv=none; b=PwYfG5wDg81pZMqHPkTFHhYupBHpV1UVJbfH/WEa3+YcVy4RFm9toaTFowLRRDbKSuPVMUyUkqXJzCpZ7F9deJTq7rgd0zgynqGwuJXT2PgDuwfmgJOuRfGK981fylJGN26n9wkQKRbqlYFVQr7v0aJsDcsJrse+0H6NXMAc2M8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750843144; c=relaxed/simple;
-	bh=bXgR0gZq4E/6i1KFejw3gtvHwWbAUkDJvpL8kBM5pR0=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=X3Nc1C9M//tKwfDANzEYWIpPhHBXqsfApr2zcpTEKBcVnRx9zRjWjKLeC3muwEJWuiZ5OxeerHh/yUQZ7If1a61V60jpHHSv7PjPi7FIEUxX+aULX5wrpeSbT5BgVXe0QNNHQDyZPsXGTMycJZSfP3Jhg6+lWfy0/WbkFPAS4+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4bRx7T4Qr3z6GFbW;
-	Wed, 25 Jun 2025 17:18:13 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
-	by mail.maildlp.com (Postfix) with ESMTPS id 163401404C5;
-	Wed, 25 Jun 2025 17:18:59 +0800 (CST)
-Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
- (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Wed, 25 Jun
- 2025 11:18:58 +0200
-Date: Wed, 25 Jun 2025 10:18:57 +0100
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-To: Gabriel Lima de Moraes <gabriellimamoraes@gmail.com>
-CC: <linux-iio@vger.kernel.org>, <gabriellimamoraes@ime.usp.br>, Vitor Marques
-	<vitor.marques@ime.usp.br>, Gabriel =?ISO-8859-1?Q?Jos=E9?=
-	<gabrieljpe@ime.usp.br>
-Subject: Re: [PATCH] iio: light : veml6030 Remove code duplication
-Message-ID: <20250625101857.00004dbf@huawei.com>
-In-Reply-To: <20250623201539.16148-1-gabriellimamoraes@gmail.com>
-References: <20250623201539.16148-1-gabriellimamoraes@gmail.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	s=arc-20240116; t=1750858079; c=relaxed/simple;
+	bh=iZiyrGXuB1+YEUvdSzJFXqhAzKfxcBsiF4u9GyhejzQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=BdFlza08KlYKL4gOqt6YVkj8CaZC/APirSiLjpSMLRE/bHlkumWhvk1fcQScq84zyz0RQtMrG7VQSxdM6aCB24tp0baSbiHbkk/fUUGw4MaV5hZxMbxEBYhrdPjdPjwLoPz9bsvSsA1B1WV2vQH4YlJg1pAK3vnqef0z0KzkPCA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NRE0Or1/; arc=none smtp.client-ip=209.85.216.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-3122368d7c4so1531817a91.1
+        for <linux-iio@vger.kernel.org>; Wed, 25 Jun 2025 06:27:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1750858078; x=1751462878; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=iZiyrGXuB1+YEUvdSzJFXqhAzKfxcBsiF4u9GyhejzQ=;
+        b=NRE0Or1/9BGneWZ8WV4gDjogJCq0EP17gfA2ORq9s76BxgtbszWrpRPc3YUQcjEqDQ
+         r4XxIfPLjcF5MOOl4ewFfQwN9I9QT+e1ijHvba1zKW0bSsqcu5bltSJQYRzfImihU8F7
+         ElLQAlxeYbJBvIwChS8ybG3MA0zOi1QErYJISBcXB2X5/V1+fmvW5h2Tf2zjFrNQYwYi
+         2vSA1cK9SkzLXVAt2Dk8OOfU91FIoVxtYoI9yMBVcw3LEVWiHwgg0/7DV3Jwr2nQ7CFu
+         48EUrOW7GxIhjs1UK9w/7hLuEnfuwieBH1MRMPTt+crwYiV0vlRKR7sZi7GQqGRFRQpj
+         42CA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750858078; x=1751462878;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=iZiyrGXuB1+YEUvdSzJFXqhAzKfxcBsiF4u9GyhejzQ=;
+        b=DZM81G/J9PGilwA+vySfMdgCRn2aIP4tN4xM/P3U48t188mnwtSTDh3L/wjnlLu9B2
+         IF93Ea5/5EmE/rBAwZDjynSIViGXTOlUwBp/4HxEqtf3L1l2d+yhX6akAGBE5h55RShs
+         lX4MxwYC6E085W/4Y3aiRPyRrUpLYfFxYRWwadoM0huSn88UTwAh+hOFmcqrCXXYFZaz
+         jYVYVjtO4fSErJVC5hW4R7Eq2N0jW9ymLaqic0ZwAGXGt9Ad5xqOJgihgWtZIxeijWHS
+         MrQEVAWKcVxW1I9jfLwN/HxGvh0g2siloYsJAdWnUgAlOPHysOULyC457tm43lX0vc4/
+         3zxA==
+X-Forwarded-Encrypted: i=1; AJvYcCWXYuB174d7igMWqlIowr1u/YCVAWnWvU9Lihn5KIkuniAwaqhX2I4v5Fkjy83zfr9dvp/VcejP4jM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxSztABUiEXENmdir3dNa0ogoHj30LBjD92UniV4r0bM9kvaEO2
+	OEaRklVSuEM2VglkvcH8kDZC2GTn9szViuFi3iqGicCVv3IKv37ZbsDvuyyaWtI9tZQ=
+X-Gm-Gg: ASbGncs8SEYBXovwCwGM7x8CFDi+rsSg6Y/R4wztFj8ZonVRWBA/0y6Zo+17/Hykxkn
+	Vfs9wsjCq9ZpoCxF7nUDLzaCIzqTeoNFSfBNyXCs20E1BlIwWYWp7Xkur5RKma0BMQnA8ZijO4k
+	WHjd+mpTmD7z1Qu6ZysbKMeZ7Si3rwoap6pvrEKJRMUPSwa51y3Xc05aR+T6s6fKnxqApqpBtYz
+	eDOt2/M93kKCqgqKiIpDXWrQVEnpeU2ZQLyo/SLj0kxikvEUUJ8S0Zh57P2JAs6t2y/7KnRZ+jB
+	6/zlU7RJwXoPSVH4mvk8fnwH3LItm1AEPJED/V3A3Log7NseLMNqIUBLzqc65uY708gI98iLI3x
+	AdEITq9IZJA==
+X-Google-Smtp-Source: AGHT+IGXjDW5Lk/76OL0bOqeo3bP28jGXGOoVqizNK+Jcnk+3xWy4NvMCTuNHsvcxEi9dXpgy/SAGg==
+X-Received: by 2002:a17:90b:51c3:b0:301:9f62:a944 with SMTP id 98e67ed59e1d1-315f26b8549mr5935537a91.33.1750858077498;
+        Wed, 25 Jun 2025 06:27:57 -0700 (PDT)
+Received: from c-sar-augusto-LOQ-15IRH8.. ([2804:14c:73:90b8:4644:12b1:f06e:93a5])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-315f544050csm1882195a91.42.2025.06.25.06.27.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 25 Jun 2025 06:27:57 -0700 (PDT)
+From: "=?UTF-8?q?C=C3=A9sar=20Bispo?=" <dm.cesaraugusto@gmail.com>
+X-Google-Original-From: =?UTF-8?q?C=C3=A9sar=20Bispo?= <cesar.bispo@ime.usp.br>
+To: jonathan.cameron@huawei.com
+Cc: cesar.bispo@ime.usp.br,
+	dm.cesaraugusto@gmail.com,
+	gabrielfsouza.araujo@usp.br,
+	jic23@kernel.org,
+	linux-iio@vger.kernel.org
+Subject: Re: [PATCH v1] iio: adc: qcom-pm8xxx-xoadc: Use devm_iio_device_register() and dev_err_probe()
+Date: Wed, 25 Jun 2025 10:27:27 -0300
+Message-ID: <20250625132747.104782-1-cesar.bispo@ime.usp.br>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250625101119.00003c34@huawei.com>
+References: <20250625101119.00003c34@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: lhrpeml100006.china.huawei.com (7.191.160.224) To
- frapeml500008.china.huawei.com (7.182.85.71)
+Content-Transfer-Encoding: 8bit
 
-On Mon, 23 Jun 2025 17:15:39 -0300
-Gabriel Lima de Moraes <gabriellimamoraes@gmail.com> wrote:
+From: Cesar Bispo <cesar.bispo@ime.usp.br>
 
-> From: Vitor Marques <vitor.marques@ime.usp.br>
->=20
-> veml6030_hw_init() and veml6035_hw_init() have very similar bodies.
->=20
-> Reduce code duplication by creating a common initialization function veml=
-603x_hw_common_init().
->=20
-> Signed-off-by: Vitor Marques <vitor.marques@ime.usp.br>
-> Co-developed-by: Gabriel Lima <gabriellimamoraes@ime.usp.br>
-> Co-developed-by: Gabriel Jos=E9 <gabrieljpe@ime.usp.br>
-> ---
->  drivers/iio/light/veml6030.c | 187 ++++++++++++++++++-----------------
+Hi Jonathan,
 
-When a patch removing duplication ends up adding code it might not be
-such a good idea...
+Thanks for your feedback.
 
-A few comments inline, but in general there isn't a convincing argument
-that I can see for this code unification.  So drop this.
+Just to clarify, the use of `devm_iio_device_register()` in this patch was based on your previous suggestion [1], so I assumed it would be appropriate in this context.
 
+I now understand there might be a risk of userspace-visible interfaces persisting after the device is powered off, which could lead to race conditions.
 
->  1 file changed, 95 insertions(+), 92 deletions(-)
->=20
-> diff --git a/drivers/iio/light/veml6030.c b/drivers/iio/light/veml6030.c
-> index 473a9c3e32a3..7959075b1ae8 100644
-> --- a/drivers/iio/light/veml6030.c
-> +++ b/drivers/iio/light/veml6030.c
-> @@ -33,6 +33,18 @@
->  #include <linux/iio/trigger_consumer.h>
->  #include <linux/iio/triggered_buffer.h>
-> =20
-> +int veml603x_hw_common_init(
-> +    struct iio_dev *indio_dev,=20
-> +    struct device *dev,
-> +    int iio_init_val1,
-> +    int iio_init_val2,
-> +    const struct iio_gain_sel_pair *gain_sel,
-> +    size_t gain_sel_size,
-> +    const struct iio_itime_sel_mul *it_sel,
-> +    size_t it_sel_size,
-> +    int als_conf_val2
-> +);
+Would you recommend dropping the `devm_` conversion for now and only keeping the `dev_err_probe()` change?
 
-You have defined the function before it is used so why do you need
-a forwards declaration?
+I'm happy to send a v2 accordingly.
 
-> +
->  /* Device registers */
->  #define VEML6030_REG_ALS_CONF   0x00
->  #define VEML6030_REG_ALS_WH     0x01
-> @@ -248,6 +260,66 @@ static void veml6030_als_shut_down_action(void *data)
->  	veml6030_als_shut_down(data);
->  }
-> =20
-> +int veml603x_hw_common_init(
-> +    struct iio_dev *indio_dev,=20
-> +    struct device *dev,
-> +    int iio_init_val1,
-> +    int iio_init_val2,
-
-These parameters have names that managed to obscure what is going on
-generally making this patch a bad idea.
-
-> +    const struct iio_gain_sel_pair *gain_sel,
-> +    size_t gain_sel_size,
-> +    const struct iio_itime_sel_mul *it_sel,
-> +    size_t it_sel_size,
-> +    int als_conf_val2
-Why 2?
-
-> +)
-> +{
-> +	int ret, val;
-> +	struct veml6030_data *data =3D iio_priv(indio_dev);
-> +
-> +	ret =3D devm_iio_init_iio_gts(dev, iio_init_val1, iio_init_val2,
-> +			gain_sel, gain_sel_size,
-> +			it_sel, it_sel_size,
-> +			&data->gts);
-> +	if (ret)
-> +	return dev_err_probe(dev, ret, "failed to init iio gts\n");
-
-Looks like you have some big formatting issues in here.
-
-> +
-> +	ret =3D veml6030_als_shut_down(data);
-> +	if (ret)
-> +	return dev_err_probe(dev, ret, "can't shutdown als\n");
-> +
-> +	ret =3D regmap_write(data->regmap, VEML6030_REG_ALS_CONF, als_conf_val2=
-);
-
-Wrapping this up doesn't provide any real advantage, requiring as it does
-the reviewer to look at this function AND where the value is set rather
-than seeing them in one place.
-
-> +	if (ret)
-> +	return dev_err_probe(dev, ret, "can't setup als configs\n");
-> +
-> +	ret =3D regmap_update_bits(data->regmap, VEML6030_REG_ALS_PSM,
-> +		VEML6030_PSM | VEML6030_PSM_EN, 0x03);
-> +	if (ret)
-> +	return dev_err_probe(dev, ret, "can't setup default PSM\n");
-> +
-> +	ret =3D regmap_write(data->regmap, VEML6030_REG_ALS_WH, 0xFFFF);
-> +	if (ret)
-> +	return dev_err_probe(dev, ret, "can't setup high threshold\n");
-> +
-> +	ret =3D regmap_write(data->regmap, VEML6030_REG_ALS_WL, 0x0000);
-> +	if (ret)
-> +	return dev_err_probe(dev, ret, "can't setup low threshold\n");
-> +
-> +	ret =3D veml6030_als_pwr_on(data);
-> +	if (ret)
-> +	return dev_err_probe(dev, ret, "can't poweron als\n");
-> +
-> +	ret =3D devm_add_action_or_reset(dev, veml6030_als_shut_down_action, da=
-ta);
-> +	if (ret < 0)
-> +	return ret;
-> +
-> +	/* Clear stale interrupt status bits if any during start */
-> +	ret =3D regmap_read(data->regmap, VEML6030_REG_ALS_INT, &val);
-> +	if (ret < 0)
-> +	return dev_err_probe(dev, ret,
-> +			"can't clear als interrupt status\n");
-> +
-> +	return ret;
-> +}
-> +
->  static const struct iio_event_spec veml6030_event_spec[] =3D {
->  	{
->  		.type =3D IIO_EV_TYPE_THRESH,
-> @@ -973,52 +1045,17 @@ static int veml6030_regfield_init(struct iio_dev *=
-indio_dev)
->   */
->  static int veml6030_hw_init(struct iio_dev *indio_dev, struct device *de=
-v)
->  {
-> -	int ret, val;
-> -	struct veml6030_data *data =3D iio_priv(indio_dev);
-> -
-> -	ret =3D devm_iio_init_iio_gts(dev, 2, 150400000,
-> -				    veml6030_gain_sel, ARRAY_SIZE(veml6030_gain_sel),
-> -				    veml6030_it_sel, ARRAY_SIZE(veml6030_it_sel),
-> -				    &data->gts);
-> -	if (ret)
-> -		return dev_err_probe(dev, ret, "failed to init iio gts\n");
-> -
-> -	ret =3D veml6030_als_shut_down(data);
-> -	if (ret)
-> -		return dev_err_probe(dev, ret, "can't shutdown als\n");
-> -
-> -	ret =3D regmap_write(data->regmap, VEML6030_REG_ALS_CONF, 0x1001);
-> -	if (ret)
-> -		return dev_err_probe(dev, ret, "can't setup als configs\n");
-> -
-> -	ret =3D regmap_update_bits(data->regmap, VEML6030_REG_ALS_PSM,
-> -				 VEML6030_PSM | VEML6030_PSM_EN, 0x03);
-> -	if (ret)
-> -		return dev_err_probe(dev, ret, "can't setup default PSM\n");
-> -
-> -	ret =3D regmap_write(data->regmap, VEML6030_REG_ALS_WH, 0xFFFF);
-> -	if (ret)
-> -		return dev_err_probe(dev, ret, "can't setup high threshold\n");
-> -
-> -	ret =3D regmap_write(data->regmap, VEML6030_REG_ALS_WL, 0x0000);
-> -	if (ret)
-> -		return dev_err_probe(dev, ret, "can't setup low threshold\n");
-> -
-> -	ret =3D veml6030_als_pwr_on(data);
-> -	if (ret)
-> -		return dev_err_probe(dev, ret, "can't poweron als\n");
-> -
-> -	ret =3D devm_add_action_or_reset(dev, veml6030_als_shut_down_action, da=
-ta);
-> -	if (ret < 0)
-> -		return ret;
-> -
-> -	/* Clear stale interrupt status bits if any during start */
-> -	ret =3D regmap_read(data->regmap, VEML6030_REG_ALS_INT, &val);
-> -	if (ret < 0)
-> -		return dev_err_probe(dev, ret,
-> -				     "can't clear als interrupt status\n");
-> -
-> -	return ret;
-> +	return veml603x_hw_common_init(
-> +		indio_dev,
-> +		dev,
-> +		2,
-> +		150400000,
-> +		veml6030_gain_sel,
-> +		ARRAY_SIZE(veml6030_gain_sel),
-> +		veml6030_it_sel,
-> +		ARRAY_SIZE(veml6030_it_sel),
-> +		0x1001
-> +	);
->  }
-> =20
->  /*
-> @@ -1029,52 +1066,18 @@ static int veml6030_hw_init(struct iio_dev *indio=
-_dev, struct device *dev)
->   * update registers and then power on the sensor.
->   */
->  static int veml6035_hw_init(struct iio_dev *indio_dev, struct device *de=
-v)
-> -{
-> -	int ret, val;
-> -	struct veml6030_data *data =3D iio_priv(indio_dev);
-> -
-> -	ret =3D devm_iio_init_iio_gts(dev, 0, 409600000,
-> -				    veml6035_gain_sel, ARRAY_SIZE(veml6035_gain_sel),
-> -				    veml6030_it_sel, ARRAY_SIZE(veml6030_it_sel),
-> -				    &data->gts);
-> -	if (ret)
-> -		return dev_err_probe(dev, ret, "failed to init iio gts\n");
-> -
-> -	ret =3D veml6030_als_shut_down(data);
-> -	if (ret)
-> -		return dev_err_probe(dev, ret, "can't shutdown als\n");
-> -
-> -	ret =3D regmap_write(data->regmap, VEML6030_REG_ALS_CONF,
-> -			   VEML6035_SENS | VEML6035_CHAN_EN | VEML6030_ALS_SD);
-> -	if (ret)
-> -		return dev_err_probe(dev, ret, "can't setup als configs\n");
-> -
-> -	ret =3D regmap_update_bits(data->regmap, VEML6030_REG_ALS_PSM,
-> -				 VEML6030_PSM | VEML6030_PSM_EN, 0x03);
-> -	if (ret)
-> -		return dev_err_probe(dev, ret, "can't setup default PSM\n");
-> -
-> -	ret =3D regmap_write(data->regmap, VEML6030_REG_ALS_WH, 0xFFFF);
-> -	if (ret)
-> -		return dev_err_probe(dev, ret, "can't setup high threshold\n");
-> -
-> -	ret =3D regmap_write(data->regmap, VEML6030_REG_ALS_WL, 0x0000);
-> -	if (ret)
-> -		return dev_err_probe(dev, ret, "can't setup low threshold\n");
-> -
-> -	ret =3D veml6030_als_pwr_on(data);
-> -	if (ret)
-> -		return dev_err_probe(dev, ret, "can't poweron als\n");
-> -
-> -	ret =3D devm_add_action_or_reset(dev, veml6030_als_shut_down_action, da=
-ta);
-> -	if (ret < 0)
-> -		return ret;
-> -
-> -	/* Clear stale interrupt status bits if any during start */
-> -	ret =3D regmap_read(data->regmap, VEML6030_REG_ALS_INT, &val);
-> -	if (ret < 0)
-> -		return dev_err_probe(dev, ret,
-> -				     "can't clear als interrupt status\n");
-> +{=09
-> +	veml603x_hw_common_init(
-> +        indio_dev,
-> +        dev,
-> +        0,
-> +        409600000,
-> +        veml6035_gain_sel,
-> +        ARRAY_SIZE(veml6035_gain_sel),
-> +        veml6030_it_sel,
-> +        ARRAY_SIZE(veml6030_it_sel),
-> +        VEML6035_SENS | VEML6035_CHAN_EN | VEML6030_ALS_SD
-> +	);
-> =20
->  	return 0;
->  }
-
+[1] https://lore.kernel.org/linux-iio/20250607163353.47e83e77@jic23-huawei/
 

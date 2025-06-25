@@ -1,141 +1,118 @@
-Return-Path: <linux-iio+bounces-20959-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20960-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF0B1AE8679
-	for <lists+linux-iio@lfdr.de>; Wed, 25 Jun 2025 16:29:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96B75AE8B29
+	for <lists+linux-iio@lfdr.de>; Wed, 25 Jun 2025 19:08:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 145777BA1C7
-	for <lists+linux-iio@lfdr.de>; Wed, 25 Jun 2025 14:26:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E0604174A73
+	for <lists+linux-iio@lfdr.de>; Wed, 25 Jun 2025 17:07:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5E73264A7C;
-	Wed, 25 Jun 2025 14:27:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 264513074AC;
+	Wed, 25 Jun 2025 17:02:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mU+nKfkS"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SC4pTVQY"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30FF120C00B;
-	Wed, 25 Jun 2025 14:27:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DACA2877CD;
+	Wed, 25 Jun 2025 17:02:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750861646; cv=none; b=KnAHctbdQfbhhpcFXVLcVEkO8dE83wAkLBiO/pRH3TUox8ynXsJSiHuUaeoDRhJOheAVgL+nh9SFqN7Kk+GzPTZqlRsYsAo6qEs7oSApjcapIGhbRECTZhTMJqqC8tSt1dIshCX4HUUKrivwXlF6XfuakZg0K/oEHxwI3+qX/h8=
+	t=1750870954; cv=none; b=Yno0TrB5OqVp3PYb98G939eggLw+vC0CblWGRU/xxQagPLfSaQjEiDesvnqF8FTx1S7+pI3Azhhelijostm2AVwOUi6ggy7ptj87cZhQx6+rETKU2Ad5zvWS4V1TYbDJD71I0DUU22jPZN99kpLBQuV1cgIpryktcAVrT65+/TA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750861646; c=relaxed/simple;
-	bh=aiCBfShnv6jIIgQ4bpuIfMp5r40wbfensHpHCEm3pBM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tH+XbgzH4Xd4WC8txwHpcxlRtJ6iRfhXEwKRdEAdiORO7jebIr4ddHigFYA3Ei2fN+iv0MC/mVCJedk3awUdzKrF2VQrtqmhfHHx78e2vCYHoATTC1RVXY31kpbKaJfcB0l83/wD8N+8UjQFYAL74hZ1yxYXxmuCXR7/JUaIu80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mU+nKfkS; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1750861646; x=1782397646;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=aiCBfShnv6jIIgQ4bpuIfMp5r40wbfensHpHCEm3pBM=;
-  b=mU+nKfkS2z3z9O0xwUk5kQ0cuEPjqmKzxvvq/Z6FYVrq5C0CRu0lhWOO
-   cCK6bv2XpjmAqbQNMzHYaVwZdSBZvv+zLtbAInNunTJubqF/ggWsjhap6
-   fLM6KbYWKdVlq7NWUEy/1wUCigXjUpaZKk8Hc40U46XCAKaivobECZK0j
-   ZGo/oyMsoLasZt4fv+Xoi728oJcA01PN2b6hJlKCwy+2JI3WzHKzfrQmM
-   zhfTQf0+pnFQCgdYMxcCKTk53Df/IMWMDtV8MjTFsd1ShedmPA6ko3cdF
-   uo3T97eUKQnoXdbJ+4+6KAPKE0IwQKscvTu8zqIvJWBVq68F1Ze9URKaS
-   A==;
-X-CSE-ConnectionGUID: dkxlRjhbQqC2rBspwRddlA==
-X-CSE-MsgGUID: XVwLUXiITWqaTCLDJbXwwg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11475"; a="56920079"
-X-IronPort-AV: E=Sophos;i="6.16,264,1744095600"; 
-   d="scan'208";a="56920079"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2025 07:27:25 -0700
-X-CSE-ConnectionGUID: NYVNjaqgRd2C28PhusN2oA==
-X-CSE-MsgGUID: Vm3m4nwNToS9MwdDCSPhkw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,264,1744095600"; 
-   d="scan'208";a="175877583"
-Received: from smile.fi.intel.com ([10.237.72.52])
-  by fmviesa002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2025 07:27:21 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1uUR5q-00000009nnt-1JQk;
-	Wed, 25 Jun 2025 17:27:18 +0300
-Date: Wed, 25 Jun 2025 17:27:18 +0300
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Cc: jic23@kernel.org, dlechner@baylibre.com, nuno.sa@analog.com,
-	andy@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, matthias.bgg@gmail.com,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org, kernel@collabora.com
-Subject: Re: [PATCH v1 4/5] iio: adc: mt6359: Add support for MediaTek MT6363
- PMIC AUXADC
-Message-ID: <aFwHRigf95hPKTE7@smile.fi.intel.com>
-References: <20250623120028.108809-1-angelogioacchino.delregno@collabora.com>
- <20250623120028.108809-5-angelogioacchino.delregno@collabora.com>
- <aFlk-l5LhgO8dnXK@smile.fi.intel.com>
- <1b173e16-f681-4256-8dd2-92db2e90ca73@collabora.com>
+	s=arc-20240116; t=1750870954; c=relaxed/simple;
+	bh=khscqqJradz4nhQ0yEyM8taDMs1UnvFJVIztRC52SI0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=CkprsFhj7kF0PIDB6+3g/5N+5lh4jgrElxulDqAefSd/9sO8NkGO/0pOssiE5bFqTVP3biKZHm7XlUuAj6KhvDZWQi3rTa2gfiXvEj6sUsPX/taL42IKxpHDRpS6A2dnqhmtwZtnbAspVQS0M+dGXZqZC1t9syf5LpHnbLrwM0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SC4pTVQY; arc=none smtp.client-ip=209.85.218.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-adb2bb25124so2471966b.1;
+        Wed, 25 Jun 2025 10:02:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1750870951; x=1751475751; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=LUcw6tqkXAGg4kfEd6zI2DgoXo0mXCRnCqCpiS51750=;
+        b=SC4pTVQYWLXl4LJt3oADmh1Y0F3iq3GQn1/hFWYZxU7FjZ/g01OXkc0fs31+gFyNZe
+         lY5MaamalvmOjZgVaANZyGhLrQeEpG7jt7hieMbatUfln96CFvMhVvVUByd4gYYjMi7J
+         oqNmSGSA20Tc5Zwcmq9CiZQamEcKFW7xXZo2xDTIQItSICGKfxIIWEvg9UmzABHcaOTa
+         Q/wYYTKvVO4fArVTE+za1mQngJsGxgp14reU+USEIdNxN+Xu4BZ5X8F4eN+CYIGmSIO4
+         BYZ+CPF39uVTu2WOn8+NInzqbAxDNejwyfwqMFgZES09uYTRMOLAgwrqxFmffmERk8lJ
+         aBrQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750870951; x=1751475751;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=LUcw6tqkXAGg4kfEd6zI2DgoXo0mXCRnCqCpiS51750=;
+        b=kJcR7FXSqr6XzeKAxgKaCcMcrQA8j03QpDXroBLwW+OFru8okanG6y1dMMxZ9EVVC0
+         qVColORzcqeHFxCoqDAKY52KhE4mdDINeo7G7tchzVVpIZ8Ec5yjAVNqJ05hufFxaZ6t
+         WMzVM2L+QTogBbyR9b3Rq/zXFeoLWsbvrzKB5lAYhMtVkx6C+CPABrhKu9jfLETkghrP
+         TDGVDZcJ0IMjciIYTWoQsI+BClBgwOQFHrb56Na7tac4I/xjb4W0ZHI7qM1tZdATxS8o
+         PdBlH9arejC9ADkR77gAigefLQXbGU38RTma7toO0Wr1CoKhC1rL/3SUC5yeHZly6Lug
+         o65w==
+X-Forwarded-Encrypted: i=1; AJvYcCWCDXzIZ71gR3c09cLvOsUI2ewgG2np0xprtgUxC8t9EM3OsdLfzPkYFcIFiK0Cn+q4ePG83/qxjdxccHU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzRz76DEoyxq5tDpSxIDJ4xY2FOHe6UUsnuu3xvK79/sXH6cpWf
+	fHqdPH18rMBy+kIewwMOr5XAD4tEoSOxufnaJQNeGVNd0uBUkm7B44Qs
+X-Gm-Gg: ASbGncu+TonMw3ZPQX0A0U5YkeKjwWSA30EB+VXh77WqCo27p8y5bNLjQ+vghZR1dtO
+	rSkMNX7h3eEpML5r5Y0frLbLDthNmhrwH8ZJa3HtHqHByHEAAAHWkXO0SD77Y/rm+V+rf+L0nOT
+	BtGZ7zlbbWWqCJyYZctzICVUvsPSN2yhsJiWLFOS9Ase/qgRqvU56mz7v5lqIbuZ3dOtwi3DCk8
+	+B1OmlBfFqUc/VvhoFw7hPIwsLyAM8AwT8asQG6F5OcO0ARQdqOKO85pu+bSOYYZ5ohdTnDX/sx
+	TJgzLuMNo8gu5zoBT/GmtAJxQxno4CknyGj/n3VmGd1DAqA4eDUDDCEqDGVaHlqBV3iHvkRx9HJ
+	xIOKtAPbLokx9zGrzbgOKIvz5jTNRRmQX
+X-Google-Smtp-Source: AGHT+IEnJFUloNus4XSLlG5TNZkgdP8zIdePN0zuhU9JG6MGun8pTC9DkBCPxNDgdW/TGZyK/hkMGg==
+X-Received: by 2002:a17:906:9c82:b0:ade:902e:7b4b with SMTP id a640c23a62f3a-ae0bec50615mr107921466b.7.1750870949591;
+        Wed, 25 Jun 2025 10:02:29 -0700 (PDT)
+Received: from localhost.localdomain (84-72-156-211.dclient.hispeed.ch. [84.72.156.211])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae0cb358618sm69249766b.102.2025.06.25.10.02.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 25 Jun 2025 10:02:29 -0700 (PDT)
+From: Lothar Rubusch <l.rubusch@gmail.com>
+To: mazziesaccount@gmail.com,
+	jic23@kernel.org,
+	dlechner@baylibre.com,
+	nuno.sa@analog.com,
+	andy@kernel.org
+Cc: linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	l.rubusch@gmail.com
+Subject: [PATCH v1 0/2] iio: adc: ti-adc128s052: add support for TI's ADC121s021
+Date: Wed, 25 Jun 2025 17:02:16 +0000
+Message-Id: <20250625170218.545654-1-l.rubusch@gmail.com>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1b173e16-f681-4256-8dd2-92db2e90ca73@collabora.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+Content-Transfer-Encoding: 8bit
 
-On Wed, Jun 25, 2025 at 03:29:47PM +0200, AngeloGioacchino Del Regno wrote:
-> Il 23/06/25 16:30, Andy Shevchenko ha scritto:
-> > On Mon, Jun 23, 2025 at 02:00:27PM +0200, AngeloGioacchino Del Regno wrote:
+- Add support for ADC121s021 and related (single channel).
 
-...
+This adds support for the 1-channel variants ADC121s021/051/101.
 
-> > > +	if (MTK_AUXADC_HAS_FLAG(cinfo, IS_SPMI)) {
-> > > +		/* If the previous read succeeded, this can't fail */
-> > > +		regmap_read(regmap, reg - 1, &lval);
-> > 
-> > No error check? lval may contain garbage here, right?
-> 
-> No, because if the previous read succeeded, this can't fail, and also cannot ever
-> possibly contain garbage (and if it does, - but again, that can't happen - there is
-> no way to validate that because valid values are [0x00..0xff] anyway).
+I'm not certain whether this patch is truly necessary, or if there's a
+more general solution for single-channel ADCs that would make this patch
+obsolete. If such a solution exists, please let me know. Hence, this is
+perhaps more of a question than a formal request to accept the patch.
 
-Never say never. Any regmap_*() call that performs I/O might fail. You can't
-predict with 100% guarantee the HW behaviour in all possible scenarios.
+Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
+---
+Lothar Rubusch (2):
+  iio: adc: ti-adc128s052: add support for adc121s021
+  iio: adc: ti-adc128s052: replace literal by unit expression
 
-> > > +		val = (val << 8) | lval;
-> > 
-> > Is it guaranteed that lval is always less than 256 (if unsigned)?
-> 
-> Yes, with SPMI that is guaranteed.
-> 
-> > > +	}
+ drivers/iio/adc/ti-adc128s052.c | 20 ++++++++++++++++++--
+ 1 file changed, 18 insertions(+), 2 deletions(-)
 
-...
 
-> > > +		regmap_update_bits(regmap, cinfo->regs[desc->ext_sel_idx],
-> > > +				   MT6363_EXT_PURES_MASK, ext_sel);
-> > 
-> > No  error check?
-> 
-> No, because if the previous reads and/or writes succeeded, it is impossible for
-> this to fail :-)
-
-Ditto.
-
-I.o.w. the failed regmap_*() call can be a signal that something on the
-communication channel with the HW went wrong, Depending on the severity of this
-call the device driver may decide what to do next.
-
+base-commit: b57cb7c47e31244bef6612f271c5dc390f761e17
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.39.5
 
 

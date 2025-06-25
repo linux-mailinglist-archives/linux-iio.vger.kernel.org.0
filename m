@@ -1,138 +1,173 @@
-Return-Path: <linux-iio+bounces-20951-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20952-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 885C1AE7268
-	for <lists+linux-iio@lfdr.de>; Wed, 25 Jun 2025 00:45:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFB64AE73AF
+	for <lists+linux-iio@lfdr.de>; Wed, 25 Jun 2025 02:17:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B13A07A8E76
-	for <lists+linux-iio@lfdr.de>; Tue, 24 Jun 2025 22:43:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AAA563B8D10
+	for <lists+linux-iio@lfdr.de>; Wed, 25 Jun 2025 00:16:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03C1725B66A;
-	Tue, 24 Jun 2025 22:45:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35FEB17C77;
+	Wed, 25 Jun 2025 00:17:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="XJchwPpw"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LibxaPiS"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-io1-f53.google.com (mail-io1-f53.google.com [209.85.166.53])
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EB942185B1
-	for <linux-iio@vger.kernel.org>; Tue, 24 Jun 2025 22:44:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AB0030748D;
+	Wed, 25 Jun 2025 00:17:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750805101; cv=none; b=Y4Qm3upVTo98xjjTy60ZxASxgd31UcacUqvyhj68cu3fZItSUWosGB1AX/00BZtXl7uIWjsvlf3+lcjGazW2TQhSiAhL9GjE7sfRfDQsrFFGtCtRx+Tg45G4Nhf2CyYHtT9JGS/TCnzhvysHi7OXGWabBzp2BDnosP4Y1Sn4V5s=
+	t=1750810639; cv=none; b=u6zgqc9GKy7JHLaY/mjiNv5xdDAJCbxwSmjcuExpSJxyyGfK70NbYiaAwSf11iGGinRbtHzjgF7hPC+jsP+MT1l03mCsqaNR6Dgq4lPL6tlvYDSKFZ+53Bpidu4uefGufzaY7crPgnoc0cd8ldlR39lzxXDkhumMjMeVZPAJeiI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750805101; c=relaxed/simple;
-	bh=mcJFllEeRF+yE7slrMbAaaS2eHVpby7as1ptgR6ihnM=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=uLHZwm7rat6uPrdJGiZXb6NnzPWHJBTa1ER6xzblYhSbndoKEvqgoE95Udh1c9Xk/b6CDCIgMjwXL0Y2gWPC2oPknhRESUUo0fbB/lAeuS9KA6raDyMg3uD/5MDcLfUAAigeV4MgNMD2LyYwMEEVq8rJF7Gvfa7/fUIqsMIfJqo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=XJchwPpw; arc=none smtp.client-ip=209.85.166.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-io1-f53.google.com with SMTP id ca18e2360f4ac-86d01686196so35354039f.1
-        for <linux-iio@vger.kernel.org>; Tue, 24 Jun 2025 15:44:59 -0700 (PDT)
+	s=arc-20240116; t=1750810639; c=relaxed/simple;
+	bh=8F+5VJe6FB70M4AQuQJYZ1+ifX1/9f77z7JvHI4bcog=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sFWuRhd097VBVeG8pSrf1UOPAWNRTRQSsF/ZFthoFJ7qZQZm1okb6hu9Hccs9HtkNgPTrudrHrKv02b135E2deh7O/VO/3A4dKVOsVjqSY+VhTR+gbqeVr76+FyWVOVSoDzhmz+NInpe9uz9i7YH67lv+13OnD+sC4BB+lbLvgI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LibxaPiS; arc=none smtp.client-ip=209.85.210.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-742c3d06de3so6844208b3a.0;
+        Tue, 24 Jun 2025 17:17:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1750805098; x=1751409898; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=PRXMbmGHv5qc0+GRIglNxAEcLatX5Y9+ZZFfOH/sgcc=;
-        b=XJchwPpww2xDUEi/0t2Go4QNJyfs6gmyh+Z391LHtt1DZvm0jenF9v/wcIE5si5uq4
-         gvdLh7LX+dEqjvzmyblna39xz5ScBmfNT5CW3Y25CZFqRU73Izu2iMYPVMxeHZsBLQEU
-         nqFmsorqSX8vts3ZzSiw4FrcjO5XMkj4S0YVPd7WxM5o4vT7MFxI2R15hU9tNzzYDL2Y
-         GA6ZoxAx2/bX1n7qLjm8+sc3v3ElIAeQd1AtzV6k56OfrgFcM2rL6F4OoOB9erYxbIEl
-         PKtr61OJpnPuGIRbnmQnfsanxJiJfkI7IDqg/vyUc+1ZL35HOi5PRWeR4pS0XJd583qH
-         myYg==
+        d=gmail.com; s=20230601; t=1750810637; x=1751415437; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=SMuWEhNS0QYEHfBsmjFKrwhF+mL6kz9BNUIZdfev/+U=;
+        b=LibxaPiSbH9gM/Q2z8ZANqaxEdfT9f2yKyrb0cdWtjmNq84nR8A8//D5AuIWN7exD5
+         WxzmWzfsW0OG2RjFLdntRv0yHq7XGKasZ311Eg0rXVpWs5ED8jzNB2Fsubokg4XHAnrV
+         4B8aOFamN1ScWEmtuUhwP75XKYZetVl9m5W0y68EQMU8jPQXww62Tm9V+zg9govlXXGn
+         8KY+Z38L4eC5LUdSrEG9HxZC5+csu59Gr7GeSIxAe4gaFNs/F6dFsalaJUEChVh0ueM9
+         ff0KzpYdrqvLtCaYKj+cfZS2+f7F++jUycYTKz0JOpOG0GYkF0OnJgf+TQcP4HSfEjDJ
+         f9Ug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750805098; x=1751409898;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=PRXMbmGHv5qc0+GRIglNxAEcLatX5Y9+ZZFfOH/sgcc=;
-        b=l67czRQbt2JUioXVAJC/8Ml7f0HS1OMnGds6w5ZCzCAc85sxvWzuOTurOCJsSkPyFq
-         B2VY1lNdqkEBY5sqGDlwVfHERtp7x2lL0SDijs2wO3tq/wNUi3l/AmArPJPcoXa9KHhH
-         gnuIun/J8LoYRuk3OInKxbcJ4bJ0A776KWVFp7VAMw0hdeyXGtTdbY3y0rZfPnQqHaX6
-         F1jrnEpKrTvLtzqSYquSzYO2rFnIOqBbF0HNAyWxxExWNOOWJAUm7+uUxrr9OfVAUZf7
-         FrOu8e5fhVjA2SfNAedQMOXtq0zRCKT1GpcmaJDzALRbX09Bx+ASptXNQiR7XbpWb94K
-         yT/Q==
-X-Gm-Message-State: AOJu0YytT21pZlkZg3cWk5zknkEW3XpV/MqXTXEWCtW2IIYxLSNG5gZs
-	udnCz7of4HXQ3fQiQcTx7XkvrvksRu7/McuZlDNv0QQD5UemfYFdWkqBkYiWKB9UxHw=
-X-Gm-Gg: ASbGncsNf9YC0cQaOVXqIvc2NQmfxUEe7pW5P1L400kwYX+uChdmX4Sdt1csOJa2EAf
-	KLpVNAWupuZjgJce5cfKevDxyMJyvmhPnWhApgF7hzux4JWsofiaimjG8Qk4Wp3R7zM21iQEjk1
-	73ffRwulhQy/wHKczLajdPu9CVRR70SJgkc8vzHlNhPcM7tHco7eNDCQNb0agzoqpOZ2HIuOK0v
-	ymNgGgsT88v4lUOCUb/FVm1bUkJrNZDdI+yQquY1PIZQXunPKOUOAU2gRqJl5MqVrYGZJA8gu3C
-	qdYcAvKtkPNnwXluV+hUT/4mvhdef2TJnjfOkK80PeMcPQpRIcge7yiT8+q9pq6o
-X-Google-Smtp-Source: AGHT+IH7S88HndQYh/y+AH2dYPlp+bphbSdHifv9VXqm4+49L6EVcl77epJmUEAPqt5lk9I3IFqEcg==
-X-Received: by 2002:a05:6602:378e:b0:86d:61:ce7e with SMTP id ca18e2360f4ac-8766b4212damr169849139f.0.1750805098487;
-        Tue, 24 Jun 2025 15:44:58 -0700 (PDT)
-Received: from [127.0.1.1] ([208.115.91.129])
-        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-501c9248983sm1086444173.11.2025.06.24.15.44.57
+        d=1e100.net; s=20230601; t=1750810637; x=1751415437;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SMuWEhNS0QYEHfBsmjFKrwhF+mL6kz9BNUIZdfev/+U=;
+        b=MN9bkPiOgzXgXpaKwrCWpdxexqrVXSGCuU9o/oPoQGe+TCJzLyGHP/YkZYDdVvJcRt
+         /lEI8h4gjTn3NcwPSxpne9C2D2POy2tkLShvD5GofvfibyXHLI3ubGJukH7/xatZqQka
+         kJ1ODaC24FdlK8XhY4iC6ezTNNLQdqQgXJJdln2LR/bLszkULS+LKda+ciujXukwYOj6
+         YLZMQBtElZhY4kkD0Fiikafiynrvd32/EwyLZzEhBEvUDJTU/DCY1BuZhCFFOz9NQxcR
+         pE0t0Zlp0Ghu8ReatfxKR7qRZVCs9lkgYI4BRrDGWQmFFQX6YLKaysEj6fAPsDY6Rx/p
+         zV9Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUvLnioPS4cCgZpZVcUohOn6Y1LHwaCowEBmPk0q/HZBwrRmZ4+b8sD3ZykvfWYLUiamK7vMjDEnsHxL22T@vger.kernel.org, AJvYcCVPESUOwtLqbEtAog9Fs1jlL/MvR+zzDparsq46VxjiB3m9EENaq4lTWs4iLbrJBOZ0HPk5fCCjCjk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw3cOxULx4RV7S1tHtWPaguhGagQaEMFHXL84vgDeiLWjbwUMtJ
+	uw8KCBE/YyooJX6GSZcOMcU9AHBE3qKQF0O1a+hkjuo7EUwS/X368Oti
+X-Gm-Gg: ASbGncs2pckBdXFtQzpPg7w3Tc0wTseNU4OZmoBJY3IC/P2qzvw0WqNszTNpjbeikJA
+	DyGvFYk+4c7JtdtUDj8K6ERtsHZs/NOvNKjeVtIhj0T8LsbCX2tXPh5LdFXbwKMQy0PVHHU2iRo
+	Li7W5GImsEJZ46UyN7DXJYfpgVDTdDhH4E/qvyoIgJ0QjTldT0y3qKVc8JDhFvoaZVOuufAPwqc
+	jiYgggBToJMWXEDGjtsEPGniEVDYu4ET8wsGF3hbA/NfWYbAM2QG9+R9BJMHeiJy0XXSjWktCb3
+	9rxN+B3RP5Byb6nm191oU+O7UgvYvF6DnGnEm8xWz9rNwUisc50RBwtag7WA5L+XeQ==
+X-Google-Smtp-Source: AGHT+IGrnaMXw6owasaNuxUam8tvd0LaSbXuxrDukfAd4n+I/N8D50xe/q8P4mWxhhtFqkTPTOJ+zQ==
+X-Received: by 2002:a05:6a21:9991:b0:21c:fc27:aee6 with SMTP id adf61e73a8af0-2207f2b44ffmr1365642637.22.1750810636620;
+        Tue, 24 Jun 2025 17:17:16 -0700 (PDT)
+Received: from archlinux ([2804:14d:90a8:477c:f086:933f:4c16:eb28])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-749c882cd77sm2856632b3a.88.2025.06.24.17.17.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Jun 2025 15:44:58 -0700 (PDT)
-From: David Lechner <dlechner@baylibre.com>
-Date: Tue, 24 Jun 2025 22:44:51 +0000
-Subject: [PATCH] iio: adc: ad7380: remove unused oversampling_ratio getter
+        Tue, 24 Jun 2025 17:17:16 -0700 (PDT)
+Date: Tue, 24 Jun 2025 21:17:03 -0300
+From: Gustavo Silva <gustavograzs@gmail.com>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Alex Lanzano <lanzano.alex@gmail.com>, 
+	David Lechner <dlechner@baylibre.com>, Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>, 
+	Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Lothar Rubusch <l.rubusch@gmail.com>
+Subject: Re: [PATCH v3 3/3] iio: imu: bmi270: add support for motion events
+Message-ID: <d5kbjtjofknv4qkbak7ujr2lyckpio5kly55hpqlcrkajjzlzn@vr3c27deyumc>
+References: <20250616-bmi270-events-v3-0-16e37588604f@gmail.com>
+ <20250616-bmi270-events-v3-3-16e37588604f@gmail.com>
+ <20250622144240.02845c0a@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250624-iio-adc-ad7380-remove-unused-oversampling_ratio-getter-v1-1-26cbee356860@baylibre.com>
-X-B4-Tracking: v=1; b=H4sIAGIqW2gC/x2NUQqDMBBEryL73YUYo5ZepUgJZk0XaiKbKAXx7
- l36MTAPHjMnFBKmAo/mBKGDC+ek0N4amN8+RUIOymCN7c1gHTJn9GHWjN3doNCaD8I97YUCapX
- i1+3DKb7EV3Uj1UqC1DvXdoMdFzKg45vQwt//8XO6rh/EybYUiAAAAA==
-X-Change-ID: 20250624-iio-adc-ad7380-remove-unused-oversampling_ratio-getter-e54413627fe0
-To: Michael Hennerich <michael.hennerich@analog.com>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Jonathan Cameron <jic23@kernel.org>, Andy Shevchenko <andy@kernel.org>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- David Lechner <dlechner@baylibre.com>
-X-Mailer: b4 0.14.2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250622144240.02845c0a@jic23-huawei>
 
-Remove a call to ad7380_get_osr() in ad7380_init_offload_msg. The
-returned value is never used.
+On Sun, Jun 22, 2025 at 02:42:40PM +0100, Jonathan Cameron wrote:
+> Hi Gustavo,
+> 
+> Main question in here is about the scaling of the motion threshold.
+> It seems to be based on units of g.  We use m/s^2 for IIO acceleration channels
+> and also the expectation is that threshold events match scaling of the main channels
+> (_scale applies to them).  Hence here we will need to do something a little
+> fiddly to maintain the threshold scale if the main channel scaling changes.
+>
+Hi Jonathan,
 
-Signed-off-by: David Lechner <dlechner@baylibre.com>
----
-I wrote this a while back but it looks like it never got sent so here
-it is now.
----
- drivers/iio/adc/ad7380.c | 5 -----
- 1 file changed, 5 deletions(-)
+Thanks for the review.
+> 
+> Jonathan
+> 
+> 
+> > @@ -114,6 +134,10 @@
+> >  #define BMI270_STEP_COUNTER_FACTOR			20
+> >  #define BMI270_STEP_COUNTER_MAX				20460
+> >  
+> > +#define BMI270_INT_MICRO_TO_RAW(val, val2, scale) ((val) * (scale) + \
+> > +						  ((val2) * (scale)) / MEGA)
+> > +#define BMI270_RAW_TO_MICRO(raw, scale) ((((raw) % (scale)) * MEGA) / scale)
+> 
+> I'm struggling a bit with what this is doing.  Perhaps a comment?
+> 
+These macros convert register values to the range defined in
+'in_accel_{period,value}_available' and vice versa.
+The same macros are defined in the bmi323 driver, so I used them here
+for the sake of consistency.
+> 
+> 
+> 
+> > @@ -827,6 +977,20 @@ static int bmi270_read_avail(struct iio_dev *indio_dev,
+> >  	}
+> >  }
+> >  
+> > +static IIO_CONST_ATTR(in_accel_value_available, "[0.0 0.00049 1.0]");
+> This aligns with below.  Scaling definitely shouldn't be in g and is likely more
+> complex because of the relationship expected with the overall channels scaling
+> controls.
+> 
+> > @@ -848,21 +1016,58 @@ static int bmi270_read_event_config(struct iio_dev *indio_dev,
+> >  				    enum iio_event_direction dir)
+> >  {
+> 
+> 
+> > +	switch (info) {
+> > +	case IIO_EV_INFO_VALUE:
+> > +		ret = bmi270_read_feature_reg(data, reg, &regval);
+> > +		if (ret)
+> > +			return ret;
+> > +
+> > +		raw = FIELD_GET(BMI270_FEAT_MOTION_THRESHOLD_MSK, regval);
+> > +		*val = raw / BMI270_MOTION_THRES_SCALE;
+> > +		*val2 = BMI270_RAW_TO_MICRO(raw, BMI270_MOTION_THRES_SCALE);
+> 
+> Why this particular scaling? Is effectively just dividing 1g / number of
+> values and hence providing a scaling to g?
+> 
+That's correct. In the bmi323 there's an actual scaling factor of 512 to
+the register value. In the bmi270 the register value is not scaled.
 
-diff --git a/drivers/iio/adc/ad7380.c b/drivers/iio/adc/ad7380.c
-index d96bd12dfea632b62475d6537c8d6601b042de1f..abcd4cc70074723303b9b67e2b89b0c4b43c6884 100644
---- a/drivers/iio/adc/ad7380.c
-+++ b/drivers/iio/adc/ad7380.c
-@@ -1165,7 +1165,6 @@ static int ad7380_init_offload_msg(struct ad7380_state *st,
- 	struct spi_transfer *xfer = &st->offload_xfer;
- 	struct device *dev = &st->spi->dev;
- 	const struct iio_scan_type *scan_type;
--	int oversampling_ratio;
- 	int ret;
- 
- 	scan_type = iio_get_current_scan_type(indio_dev,
-@@ -1195,10 +1194,6 @@ static int ad7380_init_offload_msg(struct ad7380_state *st,
- 		}
- 	}
- 
--	ret = ad7380_get_osr(st, &oversampling_ratio);
--	if (ret)
--		return ret;
--
- 	xfer->bits_per_word = scan_type->realbits;
- 	xfer->offload_flags = SPI_OFFLOAD_XFER_RX_STREAM;
- 	xfer->len = AD7380_SPI_BYTES(scan_type) * st->chip_info->num_simult_channels;
-
----
-base-commit: b57cb7c47e31244bef6612f271c5dc390f761e17
-change-id: 20250624-iio-adc-ad7380-remove-unused-oversampling_ratio-getter-e54413627fe0
-
-Best regards,
--- 
-David Lechner <dlechner@baylibre.com>
-
+> Full scale is described as being 1G.
+> As this device is providing _RAW data for the relevant channels I'd
+> expect this to be scaled to match that. That will be a little fiddly here as
+> this is apparently always 0-1g whereas the scaling of the channel varies.
+> Thus irritatingly we'd need to adjust the scaling of this so it remains
+> consistent as the full scale changes.
+> 
+> The events ABI documentation is rather weak / wrong on this as it refers to
+> both _input_ and _raw_ thresholds whereas the true ABI just has one with
+> the scaling always being to match _raw if that is present. So _threshold * _scale
+> should be in the standards base units of m/s^2.
+> 
+Thanks for the clarification. I'll work on that in v4.
+> 
 

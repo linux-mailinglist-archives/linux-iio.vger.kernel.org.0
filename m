@@ -1,113 +1,179 @@
-Return-Path: <linux-iio+bounces-20957-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20958-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90526AE84C2
-	for <lists+linux-iio@lfdr.de>; Wed, 25 Jun 2025 15:32:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA527AE84CC
+	for <lists+linux-iio@lfdr.de>; Wed, 25 Jun 2025 15:33:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8BF6518918C6
-	for <lists+linux-iio@lfdr.de>; Wed, 25 Jun 2025 13:28:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E25431896731
+	for <lists+linux-iio@lfdr.de>; Wed, 25 Jun 2025 13:30:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CDD1262FC8;
-	Wed, 25 Jun 2025 13:28:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1FF7262FC8;
+	Wed, 25 Jun 2025 13:29:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NRE0Or1/"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="ay5NlWkn"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E053263F22
-	for <linux-iio@vger.kernel.org>; Wed, 25 Jun 2025 13:27:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B706D25D1ED;
+	Wed, 25 Jun 2025 13:29:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750858079; cv=none; b=PwYfG5wDg81pZMqHPkTFHhYupBHpV1UVJbfH/WEa3+YcVy4RFm9toaTFowLRRDbKSuPVMUyUkqXJzCpZ7F9deJTq7rgd0zgynqGwuJXT2PgDuwfmgJOuRfGK981fylJGN26n9wkQKRbqlYFVQr7v0aJsDcsJrse+0H6NXMAc2M8=
+	t=1750858192; cv=none; b=tJzglMGzi3gm5OzqE+MCvt4oWJMQKa6VEyd8TzPysNHA0xjfELiKLfnNGx/sju7YnqO+3DCjevEoqSI/vmQTRCiYlW0r1IHvDkJbJwy8bbAbp/l+TB3w1ElkeslMyMqjSMXUZ4+GX77mvrcX3+VV3HNe7X8u6Wk+hUjgV7nbAJ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750858079; c=relaxed/simple;
-	bh=iZiyrGXuB1+YEUvdSzJFXqhAzKfxcBsiF4u9GyhejzQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BdFlza08KlYKL4gOqt6YVkj8CaZC/APirSiLjpSMLRE/bHlkumWhvk1fcQScq84zyz0RQtMrG7VQSxdM6aCB24tp0baSbiHbkk/fUUGw4MaV5hZxMbxEBYhrdPjdPjwLoPz9bsvSsA1B1WV2vQH4YlJg1pAK3vnqef0z0KzkPCA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NRE0Or1/; arc=none smtp.client-ip=209.85.216.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-3122368d7c4so1531817a91.1
-        for <linux-iio@vger.kernel.org>; Wed, 25 Jun 2025 06:27:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750858078; x=1751462878; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=iZiyrGXuB1+YEUvdSzJFXqhAzKfxcBsiF4u9GyhejzQ=;
-        b=NRE0Or1/9BGneWZ8WV4gDjogJCq0EP17gfA2ORq9s76BxgtbszWrpRPc3YUQcjEqDQ
-         r4XxIfPLjcF5MOOl4ewFfQwN9I9QT+e1ijHvba1zKW0bSsqcu5bltSJQYRzfImihU8F7
-         ElLQAlxeYbJBvIwChS8ybG3MA0zOi1QErYJISBcXB2X5/V1+fmvW5h2Tf2zjFrNQYwYi
-         2vSA1cK9SkzLXVAt2Dk8OOfU91FIoVxtYoI9yMBVcw3LEVWiHwgg0/7DV3Jwr2nQ7CFu
-         48EUrOW7GxIhjs1UK9w/7hLuEnfuwieBH1MRMPTt+crwYiV0vlRKR7sZi7GQqGRFRQpj
-         42CA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750858078; x=1751462878;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=iZiyrGXuB1+YEUvdSzJFXqhAzKfxcBsiF4u9GyhejzQ=;
-        b=DZM81G/J9PGilwA+vySfMdgCRn2aIP4tN4xM/P3U48t188mnwtSTDh3L/wjnlLu9B2
-         IF93Ea5/5EmE/rBAwZDjynSIViGXTOlUwBp/4HxEqtf3L1l2d+yhX6akAGBE5h55RShs
-         lX4MxwYC6E085W/4Y3aiRPyRrUpLYfFxYRWwadoM0huSn88UTwAh+hOFmcqrCXXYFZaz
-         jYVYVjtO4fSErJVC5hW4R7Eq2N0jW9ymLaqic0ZwAGXGt9Ad5xqOJgihgWtZIxeijWHS
-         MrQEVAWKcVxW1I9jfLwN/HxGvh0g2siloYsJAdWnUgAlOPHysOULyC457tm43lX0vc4/
-         3zxA==
-X-Forwarded-Encrypted: i=1; AJvYcCWXYuB174d7igMWqlIowr1u/YCVAWnWvU9Lihn5KIkuniAwaqhX2I4v5Fkjy83zfr9dvp/VcejP4jM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxSztABUiEXENmdir3dNa0ogoHj30LBjD92UniV4r0bM9kvaEO2
-	OEaRklVSuEM2VglkvcH8kDZC2GTn9szViuFi3iqGicCVv3IKv37ZbsDvuyyaWtI9tZQ=
-X-Gm-Gg: ASbGncs8SEYBXovwCwGM7x8CFDi+rsSg6Y/R4wztFj8ZonVRWBA/0y6Zo+17/Hykxkn
-	Vfs9wsjCq9ZpoCxF7nUDLzaCIzqTeoNFSfBNyXCs20E1BlIwWYWp7Xkur5RKma0BMQnA8ZijO4k
-	WHjd+mpTmD7z1Qu6ZysbKMeZ7Si3rwoap6pvrEKJRMUPSwa51y3Xc05aR+T6s6fKnxqApqpBtYz
-	eDOt2/M93kKCqgqKiIpDXWrQVEnpeU2ZQLyo/SLj0kxikvEUUJ8S0Zh57P2JAs6t2y/7KnRZ+jB
-	6/zlU7RJwXoPSVH4mvk8fnwH3LItm1AEPJED/V3A3Log7NseLMNqIUBLzqc65uY708gI98iLI3x
-	AdEITq9IZJA==
-X-Google-Smtp-Source: AGHT+IGXjDW5Lk/76OL0bOqeo3bP28jGXGOoVqizNK+Jcnk+3xWy4NvMCTuNHsvcxEi9dXpgy/SAGg==
-X-Received: by 2002:a17:90b:51c3:b0:301:9f62:a944 with SMTP id 98e67ed59e1d1-315f26b8549mr5935537a91.33.1750858077498;
-        Wed, 25 Jun 2025 06:27:57 -0700 (PDT)
-Received: from c-sar-augusto-LOQ-15IRH8.. ([2804:14c:73:90b8:4644:12b1:f06e:93a5])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-315f544050csm1882195a91.42.2025.06.25.06.27.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Jun 2025 06:27:57 -0700 (PDT)
-From: "=?UTF-8?q?C=C3=A9sar=20Bispo?=" <dm.cesaraugusto@gmail.com>
-X-Google-Original-From: =?UTF-8?q?C=C3=A9sar=20Bispo?= <cesar.bispo@ime.usp.br>
-To: jonathan.cameron@huawei.com
-Cc: cesar.bispo@ime.usp.br,
-	dm.cesaraugusto@gmail.com,
-	gabrielfsouza.araujo@usp.br,
-	jic23@kernel.org,
-	linux-iio@vger.kernel.org
-Subject: Re: [PATCH v1] iio: adc: qcom-pm8xxx-xoadc: Use devm_iio_device_register() and dev_err_probe()
-Date: Wed, 25 Jun 2025 10:27:27 -0300
-Message-ID: <20250625132747.104782-1-cesar.bispo@ime.usp.br>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250625101119.00003c34@huawei.com>
-References: <20250625101119.00003c34@huawei.com>
+	s=arc-20240116; t=1750858192; c=relaxed/simple;
+	bh=VfXy1sSzFunuddiHtM+uLU9xQdYDLn8lHfOI5lG9CX8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=QnUMfyzsl9HReKsKyQSLAPjXdnwP8fuWNClE5keMUURrx8YeYnJMvsxWAIY2GxBJSwCvENEP/8VJW04b8+0PqGWv8AODktXuTY1Uqy00Hz0jM3ZF/p0Vz3TMliziy5gkoR5k1BZtDfJH5zfe4kJ+CBPPB8P/bdD8k3vChsLGDM4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=ay5NlWkn; arc=none smtp.client-ip=148.251.105.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1750858188;
+	bh=VfXy1sSzFunuddiHtM+uLU9xQdYDLn8lHfOI5lG9CX8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=ay5NlWknYmbxfUNMTCn2HwLL3f2bys3CsMz/fE6gTs4BL02RAjzY1dc+wa8Zlv8tN
+	 rmAn9zLzGZHzpdmK+IPMgiJAdU8IFvV1sgTtNaexjHB9VyTqjtAvJNyGw1q9L0PLhw
+	 +JI3qniO5tV6R/2VfDvXxK5rJNgbbSMqq6om7XiCXw4uogKZSrW3sHQAU9GLAYOyKd
+	 iLeQDZpXQ3zBTo5iLBCM3zgzHSmRc/WFcy8dVvXWrqSbMFaduwebS84xoMSalyfpEM
+	 aHglPIB0GyhRFbBBVly56RfEh1q3qqsUY91pA38V2/swHnoWhxf6bOj9YDdWCL7ZNv
+	 QPr36ygolnnGg==
+Received: from [192.168.1.100] (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: kholk11)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id EE09A17E1465;
+	Wed, 25 Jun 2025 15:29:47 +0200 (CEST)
+Message-ID: <1b173e16-f681-4256-8dd2-92db2e90ca73@collabora.com>
+Date: Wed, 25 Jun 2025 15:29:47 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 4/5] iio: adc: mt6359: Add support for MediaTek MT6363
+ PMIC AUXADC
+To: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: jic23@kernel.org, dlechner@baylibre.com, nuno.sa@analog.com,
+ andy@kernel.org, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ matthias.bgg@gmail.com, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
+ kernel@collabora.com
+References: <20250623120028.108809-1-angelogioacchino.delregno@collabora.com>
+ <20250623120028.108809-5-angelogioacchino.delregno@collabora.com>
+ <aFlk-l5LhgO8dnXK@smile.fi.intel.com>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Content-Language: en-US
+In-Reply-To: <aFlk-l5LhgO8dnXK@smile.fi.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: Cesar Bispo <cesar.bispo@ime.usp.br>
+Il 23/06/25 16:30, Andy Shevchenko ha scritto:
+> On Mon, Jun 23, 2025 at 02:00:27PM +0200, AngeloGioacchino Del Regno wrote:
+>> MediaTek MT6363 is a PMIC found on MT8196/MT6991 board designs
+>> and communicates with the SoC over SPMI.
+>>
+>> This PMIC integrates an Auxiliary ADC (AUXADC) which has a grand
+>> total of 54 ADC channels: 49 PMIC-internal channels, 2 external
+>> NTC thermistor channels and 2 generic ADC channels (mapped to 7
+>> PMIC ADC external inputs).
+>>
+>> To use a generic ADC channel it is necessary to enable one of
+>> the PMIC ADC inputs at a time and only then start the reading,
+>> so in this case it is possible to read only one external input
+>> for each generic ADC channel.
+>>
+>> Due to the lack of documentation, this implementation supports
+>> using only one generic ADC channel, hence supports reading only
+>> one external input at a time.
+> 
+>> +#define MT6363_EXT_CHAN_MASK		GENMASK(2, 0)
+>> +#define MT6363_EXT_PURES_MASK		GENMASK(4, 3)
+>> + #define MT6363_PULLUP_RES_100K		0
+>> + #define MT6363_PULLUP_RES_OPEN		3
+> 
+> I would rather expect the two spaces after #define. This most likely will break
+> syntax highlighting in (some of) the editors.
+> 
 
-Hi Jonathan,
+I can change that no problem (or if this can be changed while applying, that'd
+buy me some time and I'd appreciate that a lot)
 
-Thanks for your feedback.
+> ...
+> 
+>> +#define MTK_PMIC_ADC_EXT_CHAN(_ch_idx, _req_idx, _req_bit, _rdy_idx, _rdy_bit,	\
+>> +			      _ext_sel_idx, _ext_sel_ch, _ext_sel_pu,		\
+>> +			      _samples, _rnum, _rdiv)				\
+> 
+> Wondering, and it's out of scope here, if we can go to use a macro for
+> initialization of struct *_fract.
+> 
+>>   	[PMIC_AUXADC_CHAN_##_ch_idx] = {					\
+>>   		.req_idx = _req_idx,						\
+>>   		.req_mask = BIT(_req_bit),					\
+>>   		.rdy_idx = _rdy_idx,						\
+>>   		.rdy_mask = BIT(_rdy_bit),					\
+>> +		.ext_sel_idx = _ext_sel_idx,					\
+>> +		.ext_sel_ch = _ext_sel_ch,					\
+>> +		.ext_sel_pu = _ext_sel_pu,					\
+>>   		.num_samples = _samples,					\
+>>   		.r_ratio = { _rnum, _rdiv }					\
+>>   	}
+> 
+> Perhaps something in math.h as
+> 
+> #define INIT_STRUCT_FRACT_UXX(n, d) ...
 
-Just to clarify, the use of `devm_iio_device_register()` in this patch was based on your previous suggestion [1], so I assumed it would be appropriate in this context.
+Not sure... honestly, at a first glance it looks like a macro would only make
+a longer line and nothing else...
 
-I now understand there might be a risk of userspace-visible interfaces persisting after the device is powered off, which could lead to race conditions.
+...but - effectively - I can see a benefit for a INIT_CONST_STRUCT_FRACT_Uxx(n, d)
+where we could perform a build-time check for division by zero.
 
-Would you recommend dropping the `devm_` conversion for now and only keeping the `dev_err_probe()` change?
+I'm not sure how many users would there be of such a macro, ideas?
 
-I'm happy to send a v2 accordingly.
+> 
+> ...
+> 
+>> +	if (MTK_AUXADC_HAS_FLAG(cinfo, IS_SPMI)) {
+>> +		/* If the previous read succeeded, this can't fail */
+>> +		regmap_read(regmap, reg - 1, &lval);
+> 
+> No error check? lval may contain garbage here, right?
+> 
 
-[1] https://lore.kernel.org/linux-iio/20250607163353.47e83e77@jic23-huawei/
+No, because if the previous read succeeded, this can't fail, and also cannot ever
+possibly contain garbage (and if it does, - but again, that can't happen - there is
+no way to validate that because valid values are [0x00..0xff] anyway).
+
+>> +		val = (val << 8) | lval;
+> 
+> Is it guaranteed that lval is always less than 256 (if unsigned)?
+> 
+
+Yes, with SPMI that is guaranteed.
+
+>> +	}
+> 
+> ...
+> 
+>> +		regmap_update_bits(regmap, cinfo->regs[desc->ext_sel_idx],
+>> +				   MT6363_EXT_PURES_MASK, ext_sel);
+> 
+> No  error check?
+> 
+
+No, because if the previous reads and/or writes succeeded, it is impossible for
+this to fail :-)
+
+Cheers,
+Angelo
+
 

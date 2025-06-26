@@ -1,98 +1,89 @@
-Return-Path: <linux-iio+bounces-20982-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20983-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A471AEA884
-	for <lists+linux-iio@lfdr.de>; Thu, 26 Jun 2025 22:58:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C08D6AEA8D8
+	for <lists+linux-iio@lfdr.de>; Thu, 26 Jun 2025 23:28:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CFEB8164F11
-	for <lists+linux-iio@lfdr.de>; Thu, 26 Jun 2025 20:57:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 66FD57B52B3
+	for <lists+linux-iio@lfdr.de>; Thu, 26 Jun 2025 21:26:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70FA625A2B3;
-	Thu, 26 Jun 2025 20:57:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FC8725F967;
+	Thu, 26 Jun 2025 21:27:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="H2xrVoGt"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="blMbvF+F"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA7E925A334;
-	Thu, 26 Jun 2025 20:57:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A717202990;
+	Thu, 26 Jun 2025 21:27:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750971465; cv=none; b=tyWguNuaKPbDgN/okFFoCC/JYOXy9ebo1HFqVnKHF2M/Kr8Ht2wDV04GqEAJ1xqQF0A/M9VY5QEjhemMsa10rPoTcAcpLjIYGcrv8h3eZLAVCtonaM0GUI+gTESrPh8NyoY5CC1Z+Pr2Z1EPoc7fwAyO/max+Jy8O8bEW2EM0N4=
+	t=1750973272; cv=none; b=JbqHbhQFp29DHS5tR1o36N7kLUV4WUfkldNCz8N7YLn3o6GA+CoJLBf7g18vBwCC9Xw0SKvTcEpllz9pYSiJUPZAHBWL+SOn+eb2sojsiffVXQDm0GEl4ybNqwYfjzRFNURnAO/yO4GvnBDLZkNCJp6PHE9hsawHFqvth1untC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750971465; c=relaxed/simple;
-	bh=fboFooiv5nQCNWPaoV3T7R8k3RIvcK1dRe+5TeMQ214=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p+QHU/oR0LUvEV9mVutzD3OVhMrZeWYn0zN1YqKlQXqYxPo4G3oiHbuvgK3w9vCMUUIf+r6jod8huzAlXM7CSX2vC/9vj6FEVT35WveT8O9Fad0UdRCaJVIvm9VqVbR3B4jO4yKFJbq6pJFUemQz0yc5whoIEmXhTH4LPbhKpRU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=H2xrVoGt; arc=none smtp.client-ip=209.85.210.178
+	s=arc-20240116; t=1750973272; c=relaxed/simple;
+	bh=ykeXd6ls3tnEV82l6ImWU/KsrXMtWOeQGKe8+LIKueQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uU/+zP+7tARCY9RQ58f0YG86S/zt1SSOcJmjX3qrhOzSqmauWP4xkHbJwEt5VYDXHPaudYirowYhpEHq1RuQYTcgS82XoaS9sN/rafuzPOuAu04VX2BhznwCBkfW8OTQXlDpTsM/2R+6Sh47Nk2+1mxuk7MqtCc0nHyN5IAWjAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=blMbvF+F; arc=none smtp.client-ip=209.85.214.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-74af4af04fdso412653b3a.1;
-        Thu, 26 Jun 2025 13:57:43 -0700 (PDT)
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2353a2bc210so15498275ad.2;
+        Thu, 26 Jun 2025 14:27:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750971463; x=1751576263; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fboFooiv5nQCNWPaoV3T7R8k3RIvcK1dRe+5TeMQ214=;
-        b=H2xrVoGtgqABU379MSLXy5p/OM/FRfEwUmcEsFAe+w58Br0lcAqUfaA5/9CrMYSzA5
-         7VBQ93LUwa56h6eh2fW2g8SOGtfwCJZGyzC4kvz44NNcrftBuixxahibMYTguZXGazVM
-         BJkAtWV12J/Mk0yvm2tI08hzQ5LmldgXVAGMwBozjPpLQNih6KAsBgMbGs4T2RjP3fPX
-         y86lKf+/ugAtFDpBzSmKpGL56ficg82/yq4feT64nj3LUT51SX4qq9mOARzeDP9FbI2M
-         HUg17VYaGc0IiOSEXY8SqWLEo075z+k0wUJ/s4u/y5yQQVH14c+db7wL72c6BHB/xo0r
-         5Pzg==
+        d=gmail.com; s=20230601; t=1750973271; x=1751578071; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=m0s7KK7JU2bDuLIyFJ/GkGSEJsjX5YQL6lW6EbLOBJQ=;
+        b=blMbvF+F6MLk5gd0jHFoSWq0eiijKVXonYQ1Y/e2HFtGxJRYw+X0hOlCxKKyDhkOiP
+         WogOQUXUpk8OrpeN+X8cr3T7jgT/l3Ypd00CRDobrTvLGCaZZHMJCaj5ZObWGXDOWspI
+         euqW6UGyox3gCqfZS4ROEFX8Fb3GmlkrxhG0pXLIPsgSktfe+DVDf43d9zke7piYgz3G
+         1qkOTnMW13K0Q4lkwSjmN0apx2lc6CJLsGMvWXSvz2Q7scG5p7iFYbCSVeAz3jqDfGbb
+         1R6poLdqo13+aFH6yqoubKyn/qB8n2xjM3ylhihDgoVn56NjvdU5ahFeoBTJvYOJmzQ9
+         lY0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750971463; x=1751576263;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=fboFooiv5nQCNWPaoV3T7R8k3RIvcK1dRe+5TeMQ214=;
-        b=r67qgQ2URV44PY+3AsqSofHenpTS1MeFTrD1ne3EbMA0m7PbrQKj01Kw2p68ru6a9Z
-         eEETEvuWf4whyoUNGdkA2y2/3iMcyZzAyF3yeSs2PpNTxcOC4CA9/I9zt/P6KGS4xxJd
-         h5J30YUUt8z4DVAQrpQ3UHc0GOZjhSskCBU+lfjOz77+nHAmPLQbx5nYB2DzJcojYC8F
-         qPNVH5UdRHu1NHYj21WGjyZwNlRoOGPT3XC31okRW7ZdY8/nGoJ6x9ag4wiVNu78UfDE
-         UoY98+ow/2sQ69fOikHeCxCvlhMWOnDvBOtA6WvOuuUMYh4U5Ek+sg+JzOi/fH+S8MNh
-         UP1A==
-X-Forwarded-Encrypted: i=1; AJvYcCU36tVT6BOJzj9K/V2cVGMjhuCOqz7RTcOeAiVZxwybGv7KmyHeNBlO2qhyqR6r6KtlMcjzdOMmYz+SWVxg@vger.kernel.org, AJvYcCU5KfiEa4MJXsC73gq3Ppbz1u6ufov7MKhxlhjUEoxl7T/yB6tDeW8r9yWy+1lEuNo0cuplpRy7bT06@vger.kernel.org, AJvYcCUZDQ7/DnNxtxSvJab6tG6v0rPeerqEvDVXYv6NzJDPqZyEVEQVcT6Z4udDWArFl3dpdeuRr3QaA1pk@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy7c+D6zSiwPWaeJoVTrwnyUcaLto2eHNv1q20a/KTo0OYR0nqR
-	tZNs3QkM7LdIthE9NGQvwx7r25InxLimn/hjbWHcRlU1dIKAGvQvEqJo
-X-Gm-Gg: ASbGncs7hNLSOvNRq/CwSab9PVuOxLoRO4G26xHZjbCq4FwlJm6/zGj/U5PMOhWUI8I
-	x0QF/0jQSRZedET5cpCBkKiW3owTaeVgFl7GSJY7LaGJaRil9zt2pXSoV2K8/8pgnoK2qPnwBTq
-	ICDFz0NdyaGRhvw72R7koYhqO8Of/I4N+8r9mKNmy6W/oiCXZy1j4U3J7EruDn8qsRrxLlTMXtz
-	li080t3SGRDM1oWdxBA/l/vNm4jVBM3xUQC7ErRw6LgkbwcnED55s/8dWu/073jE+em1tWN/WIx
-	Wzh91ogJu8R9uWnLCEXzD7LlNkHYCyCw0bqZ7Dmlv3wZk1ixcyrP0c6xKRynHoYMyhDQ9XlS/z9
-	XZEDl5OtMoxuIBrWwkOY=
-X-Google-Smtp-Source: AGHT+IHOMStf689VxqL03BfuyX0jEndQjIUPRMfj87Aj79T5t0yVc3e26PVqXcYYXZ9eoinzT1hcnw==
-X-Received: by 2002:a05:6a00:8ca:b0:749:1e60:bdd with SMTP id d2e1a72fcca58-74af7893218mr609513b3a.2.1750971463012;
-        Thu, 26 Jun 2025 13:57:43 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1750973271; x=1751578071;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=m0s7KK7JU2bDuLIyFJ/GkGSEJsjX5YQL6lW6EbLOBJQ=;
+        b=aKYaV/OZd3Sb+73QpsewAzs6KcffYyuVCE6zr7DCuj8ujHv0iJglPpUWQEUCD0XN8F
+         qUq6HU65xC86AV12kVW13426F2cVmSd+NhqDkDN69Qobmgj/eNStkmMrpKuganCbKCSg
+         eUxwudoCQ3qxccAmCutQ34xFzjUN3rGugLwk4JwXuLWcrPt3mcPvAzd6HbNCRZxtfmKk
+         H2elzrIbexUFGucWTmpOEe90AEwb4eCDd4zskr8NvAlR9osu5+Z7Nibum5BjwE/xc7tZ
+         TfFeulW1kn4+lrM/4N5g7/Ey6ax5v1Yu9BV5pKWzRB6JrlTEdOU14rePFwB8GrlGtI5I
+         oACA==
+X-Forwarded-Encrypted: i=1; AJvYcCURFva6kSDIEDwCi3vNc/Z32SMcGpapjpLaM5gumvVCTcqSe/bYZO46rg6m3SBYWZ4vEGrMWrKMqUI=@vger.kernel.org, AJvYcCWIVZ+gYrepOKLQKpV3lv8GhCaIhkM3n+oSA9iwUHOKsjgd03l+AZmh36M8judIHrqzYGxdESH6sTJgY45U@vger.kernel.org
+X-Gm-Message-State: AOJu0YxBLcRDkYpfy9jJu5dMtg88Q3HENAMuLJHVJTNtr+8p25c49rpv
+	mC7vScZqI5P8C8F7dUJ3UPQc26XMX3ZC0S4b9lEb13tWH1VfDVm9o58E
+X-Gm-Gg: ASbGncs5SYg8dElxuTlvl20zL2IIXOgOMvhZVYFNzPaDS4nA3hs3w9MbPcwtXPgTdbk
+	qDeWw9FO46lqtfi3EQucdZnDfhTaNjt8jcVfCMa5jDsAsstZ7GLPgJQrTSNU6B3u2kigK2ztf/c
+	+X4fl6fpvwV7XhrMaawVfH/eghJokxbHtpFgs50wEfwMGRGBlPNWenGU3aDIMuO66sIHwgdddiK
+	qqvWeNu+cDh1JFIMZ54+zddgj3yBKk3A8fBrQM0b5FSSX7+fwYt/8/PLLzzOA680A3B7Kf1BRtX
+	GlZi6rjovS2nZPufJHyT6INqlyr1qbrZnvXjA61yfVkVjexL8myxUbG1DbN9bz6g4+VLXcOt1sK
+	swkqrSv74
+X-Google-Smtp-Source: AGHT+IFt22B8S/w/uHxF+/JhLbCBWrfUJv5NGtM9va65TQ9tCmxr7/6SqJzztotgo2sb+buNtWsiTw==
+X-Received: by 2002:a17:903:60e:b0:234:c2e7:a103 with SMTP id d9443c01a7336-23ac4605976mr6973195ad.33.1750973270670;
+        Thu, 26 Jun 2025 14:27:50 -0700 (PDT)
 Received: from localhost.localdomain ([2804:14d:4c64:81ec:4ff:1626:32b1:712a])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-74af57ef669sm498169b3a.158.2025.06.26.13.57.38
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23acb3c4b2esm153615ad.211.2025.06.26.14.27.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Jun 2025 13:57:42 -0700 (PDT)
+        Thu, 26 Jun 2025 14:27:50 -0700 (PDT)
 From: Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>
-To: conor@kernel.org
-Cc: andy@kernel.org,
-	conor+dt@kernel.org,
-	devicetree@vger.kernel.org,
+To: jic23@kernel.org,
 	dlechner@baylibre.com,
-	jic23@kernel.org,
-	krzk+dt@kernel.org,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
 	nuno.sa@analog.com,
-	robh@kernel.org,
-	rodrigo.gobbi.7@gmail.com,
-	~lkcamp/patches@lists.sr.ht
-Subject: Re: [PATCH v3] dt-bindings: iio: adc: st,spear600-adc: txt to yaml format conversion.
-Date: Thu, 26 Jun 2025 17:54:01 -0300
-Message-ID: <20250626205733.6354-1-rodrigo.gobbi.7@gmail.com>
+	andy@kernel.org,
+	jmaneyrol@invensense.com
+Cc: ~lkcamp/patches@lists.sr.ht,
+	linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] dt-bindings: iio: pressure: invensense,icp101xx: add binding
+Date: Thu, 26 Jun 2025 18:12:25 -0300
+Message-ID: <20250626212742.7986-1-rodrigo.gobbi.7@gmail.com>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250526-overtake-charger-6c5ffcc2bc09@spud>
-References: <20250526-overtake-charger-6c5ffcc2bc09@spud>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -101,9 +92,84 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Hi, all,
+There is no txt file for it, add yaml for invensense,icp101xx family
+which is already used in the driver.
 
-Just a gentle ping here since it was already been reviewed.
-If there is any other concerns, let me know.
-Tks and regards.
+Signed-off-by: Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>
+---
+Very simple yaml for a i2c device with psu. The pin out for the rest of
+the family (the other PNs) doesn`t change anything here, since the diff
+were RESV pins (unused).
+
+This yaml file falls in the same `category` as others that I`ve submitted, the
+driver author, which might be still interested at this hardware, is no long contributing
+(at least for what I`ve looked). Also, it`s email is still "at invensense", not "at tdk", either
+way I`ll ping him here due the mention at the "maintainers" field:
+
+Dear @Jean-Baptiste Maneyrol, I`ve noticed that since the driver was added,
+there was no binding doc for it and this is what this patch is addressing.
+In this case, a maintainer ref is required inside the .yaml file and I would
+like to ask if I can add you in this case.
+I would appreciate your comment or suggestion over this topic.
+
+Tks all and regards.
+---
+ .../iio/pressure/invensense,icp101xx.yaml     | 45 +++++++++++++++++++
+ 1 file changed, 45 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/pressure/invensense,icp101xx.yaml
+
+diff --git a/Documentation/devicetree/bindings/iio/pressure/invensense,icp101xx.yaml b/Documentation/devicetree/bindings/iio/pressure/invensense,icp101xx.yaml
+new file mode 100644
+index 000000000000..439f8aaafbd2
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/pressure/invensense,icp101xx.yaml
+@@ -0,0 +1,45 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/pressure/invensense,icp101xx.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: InvenSense ICP-101xx Barometric Pressure Sensors
++
++maintainers:
++  - Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>
++
++description: |
++  Support for ICP-101xx family: ICP-10100, ICP-10101, ICP-10110, ICP-10111.
++  Those devices uses a simple I2C communication bus, measuring the pressure
++  in a ultra-low noise at the lowest power.
++  Datasheet: https://product.tdk.com/system/files/dam/doc/product/sensor/pressure/capacitive-pressure/data_sheet/ds-000186-icp-101xx.pdf
++
++properties:
++  compatible:
++    const: invensense,icp10100
++
++  reg:
++    maxItems: 1
++
++  vdd-supply: true
++
++required:
++  - compatible
++  - reg
++  - vdd-supply
++
++additionalProperties: false
++
++examples:
++  - |
++    i2c {
++        #address-cells = <1>;
++        #size-cells = <0>;
++        pressure@63 {
++            compatible = "invensense,icp10100";
++            reg = <0x63>;
++            vdd-supply = <&vdd_1v8>;
++        };
++    };
++...
+-- 
+2.49.0
+
 

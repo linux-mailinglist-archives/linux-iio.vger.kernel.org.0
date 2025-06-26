@@ -1,59 +1,55 @@
-Return-Path: <linux-iio+bounces-20975-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20976-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B642AEA561
-	for <lists+linux-iio@lfdr.de>; Thu, 26 Jun 2025 20:28:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9462AEA578
+	for <lists+linux-iio@lfdr.de>; Thu, 26 Jun 2025 20:36:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 318A85644FA
-	for <lists+linux-iio@lfdr.de>; Thu, 26 Jun 2025 18:27:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D162D1C43790
+	for <lists+linux-iio@lfdr.de>; Thu, 26 Jun 2025 18:36:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3808C2EE5FE;
-	Thu, 26 Jun 2025 18:28:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F137201278;
+	Thu, 26 Jun 2025 18:35:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mn+X2vUp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="daOF0gNg"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7CA1267F53;
-	Thu, 26 Jun 2025 18:28:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1E0120FABC
+	for <linux-iio@vger.kernel.org>; Thu, 26 Jun 2025 18:35:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750962491; cv=none; b=Y3rAWjHRJSOPCyohbU1+WRaRgURTIYlca6fUx5/IdpEAZzkl6fv4QIWeiYDGM7NFKutF5m0gTTZv2SGJ3DAUJ2Us4NAC9OKQanyBhHoD+4yaWT0GT2ufpGDYNRmRV5GtSxI3vaOX0ENIfH5S+ANrhXXnRQ+z+NFJGVZ2kI8AYnQ=
+	t=1750962955; cv=none; b=WKApJcctQL/fQFGeI/c5F/yziFfXX5ZKXxE3sCM0EfA3qYPdFC0keP+44G1LN5ZEcy1nslYfCFHHEYkl8piV74oqW++Zu+T3471ONXir3v51l1jZX4x+ubBw4J9wkhdcUidn17Jae66HH52Dk9ekqEzsNI/jrInYv2MlUQ65lp4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750962491; c=relaxed/simple;
-	bh=C67qEJM9v5AY+XsQ4MwWqlTDL/IrPPvkZHheDP+YMRM=;
+	s=arc-20240116; t=1750962955; c=relaxed/simple;
+	bh=mmdI8GK0E6kDYd3PSgw+JlKtLQKlwS1OiTOWv20xT6A=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=m1PVZBUdSa2Bup0UvK/+V3zf0o0V0dMyfLYhUZaLikw2r4t5k+VuxVzmC5MbHtIEwcjzU7YuDsmhSG9+1t6kxbQkSL65fqtMddzgplO7eFR8QrIDAWe68raFpMi1obhYd6aMJX4D3aHW1WitYGojpZ9TGUEO7a3DJ41V3c03ZsQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mn+X2vUp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6298AC4CEEB;
-	Thu, 26 Jun 2025 18:28:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qrm1SgNtUm3bI1NDOFUxACQ6FEKnsTc7Zbarqf3axU0Ip3gsK+x4hJFRt6dBiGDu6KcT4C2yXPU41jT7twoJnjfJDCSm6luc625UO10ZiISxwDAoQ4QNME1FRJr9Rv/CD6snX6GTguJLre2WCYrnPZs5MB5Bgy/aJpcKoC3O8z4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=daOF0gNg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BBE2C4CEEB;
+	Thu, 26 Jun 2025 18:35:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750962490;
-	bh=C67qEJM9v5AY+XsQ4MwWqlTDL/IrPPvkZHheDP+YMRM=;
+	s=k20201202; t=1750962955;
+	bh=mmdI8GK0E6kDYd3PSgw+JlKtLQKlwS1OiTOWv20xT6A=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=mn+X2vUpAmQrkjPBZ97SVG3D4RtZwtrrXGLvyVCUrgNjzsssBp7u9p1MgoapJToWB
-	 5byiyz8JJwtqBdlgnMkA/9f/5z7T3JuO8LKTwkapqZescaLi4iyQ2h0hxvN9GQSol1
-	 H1T1eMgt62KyUNm4qr64EBcde8CG935CouU5++/0idIeo9G0/W12NEvnfCXbxkMvkJ
-	 rDXHH4W0/s75b7FIW/BzNZzXD+Zov6kpNcK96QTLzqVmvO9k/J1d6ECdIkBBuAKmf9
-	 md7GE6Z5X+1LnupsZTKCeNj6f9/QLQswmDk72gbSAYEn3wXQomr63C448mbnnPJmmA
-	 X/WIpD+rAVAJA==
-Date: Thu, 26 Jun 2025 19:28:02 +0100
+	b=daOF0gNgl6iK7HlZFDf837ZlFdWTzzYnXrvbR15QchDxwKbXGTGmP/eSXo3b2MfSB
+	 ZO346QvZsuGFCKUg/HlciT+aMy9q6xzLfl1GKfW2uIPcV6o2F8B/NsKS7zha8joWcZ
+	 t76xJbLn7NzsO0dqWl6PgqUb/FpMR50qe+zoUshMnZA/N5zcdWEPZsGT0m27nognVJ
+	 cHHMv7Qul8lAbhklPbOjHx8+gBZw8njfKFtwKQrMB57D0BhcLcMyIj2Ci2iTqAMmYF
+	 mZO5yd3IdhtfZgr+LQwfylfjrp8mVOLaFtPh/8L086Mv9fKnGig3KHn/sCG51Rkkws
+	 08/XCaA+/L8GQ==
+Date: Thu, 26 Jun 2025 19:35:49 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Matti Vaittinen <mazziesaccount@gmail.com>
-Cc: Lothar Rubusch <l.rubusch@gmail.com>, dlechner@baylibre.com,
- nuno.sa@analog.com, andy@kernel.org, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, Sukrut Bellary <sbellary@baylibre.com>
-Subject: Re: [PATCH v1 1/2] iio: adc: ti-adc128s052: add support for
- adc121s021
-Message-ID: <20250626192802.0079d579@jic23-huawei>
-In-Reply-To: <8eb80697-e76e-412d-82a9-5a95d4ca4f2a@gmail.com>
-References: <20250625170218.545654-1-l.rubusch@gmail.com>
-	<20250625170218.545654-2-l.rubusch@gmail.com>
-	<8eb80697-e76e-412d-82a9-5a95d4ca4f2a@gmail.com>
+To: Gabriel Souza Araujo <gabrielfsouza.araujo@gmail.com>
+Cc: linux-iio@vger.kernel.org, Cesar Bispo <cesar.bispo@ime.usp.br>
+Subject: Re: [PATCH v4] iio: adc: Modernize single regulator call
+Message-ID: <20250626193549.74b7b197@jic23-huawei>
+In-Reply-To: <20250607163353.47e83e77@jic23-huawei>
+References: <20250607011846.50362-1-gabrielfsouza.araujo@gmail.com>
+	<20250607163353.47e83e77@jic23-huawei>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -64,111 +60,101 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 26 Jun 2025 08:24:41 +0300
-Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+On Sat, 7 Jun 2025 16:33:53 +0100
+Jonathan Cameron <jic23@kernel.org> wrote:
 
-> Hi Lothar,
+> On Fri,  6 Jun 2025 22:15:22 -0300
+> Gabriel Souza Araujo <gabrielfsouza.araujo@gmail.com> wrote:
 > 
-> On 25/06/2025 20:02, Lothar Rubusch wrote:
-> > Add support for the single channel variant(s) of this ADC.
+> > Replace a single instance of legacy regulator with devm_regulator_get_enable().
+> > This change improves code clarity and aligns with modern kernel APIs.  
+> I made one final change whilst applying which was to include the driver name in the patch title.
+> 
+> Applied but I'll be rebasing my tree on rc1 once available so for now it will only go out
+> as testing.
+> 
+> Ideally follow up with a patch to use devm_iio_device_register() and get rid of the remove()
+> callback entirely.
+> 
 > > 
-> > Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>  
-> 
-> Thanks for this addition. In principle, this looks good to me but I am 
-> afraid there is another colliding series being worked on:
-> 
-> https://lore.kernel.org/all/20250614091504.575685-3-sbellary@baylibre.com/
-> 
-> Maybe you can align the effort with Sukrut?
-+CC Sukrut.
+> > Signed-off-by: Gabriel Souza Araujo <gabrielfsouza.araujo@gmail.com>
+> > Co-developed-by: Cesar Bispo <cesar.bispo@ime.usp.br>
+> > Signed-off-by: Cesar Bispo <cesar.bispo@ime.usp.br>
 
-> 
-> What I specifically like (and think is the right thing to do) in 
-> Sukrut's series is replacing the 'adc122s021_channels' -array with 
-> individual structures. In my opinion the array is just unnecessary 
-> complexity and individual structures are simpler.
-> 
-> Other than that, this looks good to me.
+After looking again via your other patch I notice this is wrong and I've dropped it for
+now.  Look again at what devm_ does and consider the remove() callback for this function.
 
+If you want to continue please send a little series with both patches in it that resolves
+the problem (hint drop the regulator_disable in remove() as it will be disabled by the
+devm_ at the right point in the remove sequence.
 
-Sukrut, perhaps you could add this to the end of your series, rebased
-to those changes?  Would save a synchronization step for your v5 (and
-later if needed)
-
-No problem if not, but I agree with Matti that we should take your
-series first.
+Thanks,
 
 Jonathan
 
-
-> 
-> Yours,
-> 	-- Matti
-> 
-> 
 > > ---
-> >   drivers/iio/adc/ti-adc128s052.c | 17 ++++++++++++++++-
-> >   1 file changed, 16 insertions(+), 1 deletion(-)
+> > The first version [1] did not compile due to incorrect use of pointers and improper
+> > parameterization of the devm_regulator_get_enable() function. 
+> > These issues have been fixed, and the code now compiles successfully.
+> > Additionally, version two [2] had an incomplete patch, which has also 
+> > been addressed in this version. In version three [3], dev_err_probe() is used for improved error handling.
 > > 
-> > diff --git a/drivers/iio/adc/ti-adc128s052.c b/drivers/iio/adc/ti-adc128s052.c
-> > index 1b46a8155803..cf271c39e663 100644
-> > --- a/drivers/iio/adc/ti-adc128s052.c
-> > +++ b/drivers/iio/adc/ti-adc128s052.c
-> > @@ -7,6 +7,7 @@
-> >    * https://www.ti.com/lit/ds/symlink/adc128s052.pdf
-> >    * https://www.ti.com/lit/ds/symlink/adc122s021.pdf
-> >    * https://www.ti.com/lit/ds/symlink/adc124s021.pdf
-> > + * https://www.ti.com/lit/ds/symlink/adc121s021.pdf
-> >    */
-> >   
-> >   #include <linux/cleanup.h>
-> > @@ -110,6 +111,10 @@ static const struct iio_chan_spec adc128s052_channels[] = {
-> >   	ADC128_VOLTAGE_CHANNEL(7),
-> >   };
-> >   
-> > +static const struct iio_chan_spec adc121s021_channels[] = {
-> > +	ADC128_VOLTAGE_CHANNEL(0),
-> > +};
-> > +
-> >   static const struct iio_chan_spec adc122s021_channels[] = {
-> >   	ADC128_VOLTAGE_CHANNEL(0),
-> >   	ADC128_VOLTAGE_CHANNEL(1),
-> > @@ -143,6 +148,10 @@ static const struct adc128_configuration adc128_config[] = {
-> >   		.refname = "vdd",
-> >   		.other_regulators = &bd79104_regulators,
-> >   		.num_other_regulators = 1,
-> > +	}, {
-> > +		.channels = adc121s021_channels,
-> > +		.num_channels = ARRAY_SIZE(adc121s021_channels),
-> > +		.refname = "vref",
-> >   	},
-> >   };  
+> > [1] https://lore.kernel.org/linux-iio/20250429160526.5934-1-cesar.bispo@ime.usp.br/
+> > [2] https://lore.kernel.org/linux-iio/20250514185239.10078-1-gabrielfsouza.araujo@gmail.com/
+> > [3] https://lore.kernel.org/linux-iio/20250521185807.139828-1-gabrielfsouza.araujo@gmail.com/
+> > 
+> >  drivers/iio/adc/qcom-pm8xxx-xoadc.c | 17 ++++-------------
+> >  1 file changed, 4 insertions(+), 13 deletions(-)
+> > 
+> > diff --git a/drivers/iio/adc/qcom-pm8xxx-xoadc.c b/drivers/iio/adc/qcom-pm8xxx-xoadc.c
+> > index 31f88cf7f7f1..ab1ed79f9f39 100644
+> > --- a/drivers/iio/adc/qcom-pm8xxx-xoadc.c
+> > +++ b/drivers/iio/adc/qcom-pm8xxx-xoadc.c
+> > @@ -911,21 +911,15 @@ static int pm8xxx_xoadc_probe(struct platform_device *pdev)
+> >  	adc->map = map;
+> >  
+> >  	/* Bring up regulator */
+> > -	adc->vref = devm_regulator_get(dev, "xoadc-ref");
+> > -	if (IS_ERR(adc->vref))
+> > -		return dev_err_probe(dev, PTR_ERR(adc->vref),
+> > -				     "failed to get XOADC VREF regulator\n");
+> > -	ret = regulator_enable(adc->vref);
+> > +	ret = devm_regulator_get_enable(dev, "xoadc-ref");
+> >  	if (ret) {
+> > -		dev_err(dev, "failed to enable XOADC VREF regulator\n");
+> > -		return ret;
+> > +		return dev_err_probe(dev, ret, "failed to enable XOADC VREF regulator\n");
+> >  	}
+> >  
+> >  	ret = devm_request_threaded_irq(dev, platform_get_irq(pdev, 0),
+> >  			pm8xxx_eoc_irq, NULL, 0, variant->name, indio_dev);
+> >  	if (ret) {
+> > -		dev_err(dev, "unable to request IRQ\n");
+> > -		goto out_disable_vref;
+> > +		return dev_err_probe(dev, ret, "unable to request IRQ\n");
+> >  	}
+> >  
+> >  	indio_dev->name = variant->name;
+> > @@ -936,7 +930,7 @@ static int pm8xxx_xoadc_probe(struct platform_device *pdev)
+> >  
+> >  	ret = iio_device_register(indio_dev);
+> >  	if (ret)
+> > -		goto out_disable_vref;
+> > +		return ret;
+> >  
+> >  	ret = pm8xxx_calibrate_device(adc);
+> >  	if (ret)
+> > @@ -948,9 +942,6 @@ static int pm8xxx_xoadc_probe(struct platform_device *pdev)
+> >  
+> >  out_unreg_device:
+> >  	iio_device_unregister(indio_dev);
+> > -out_disable_vref:
+> > -	regulator_disable(adc->vref);
+> > -
+> >  	return ret;
+> >  }
+> >    
 > 
-> I'd love seeing this array split to individual structs.
-> 
-> >   
-> > @@ -207,7 +216,10 @@ static const struct of_device_id adc128_of_match[] = {
-> >   	{ .compatible = "ti,adc124s051", .data = &adc128_config[2] },
-> >   	{ .compatible = "ti,adc124s101", .data = &adc128_config[2] },
-> >   	{ .compatible = "rohm,bd79104", .data = &adc128_config[3] },
-> > -	{ }
-> > +	{ .compatible = "ti,adc121s021", .data = &adc128_config[4] },
-> > +	{ .compatible = "ti,adc121s051", .data = &adc128_config[4] },
-> > +	{ .compatible = "ti,adc121s101", .data = &adc128_config[4] },
-> > +	{ },
-> >   };
-> >   MODULE_DEVICE_TABLE(of, adc128_of_match);
-> >   
-> > @@ -220,6 +232,9 @@ static const struct spi_device_id adc128_id[] = {
-> >   	{ "adc124s051", (kernel_ulong_t)&adc128_config[2] },
-> >   	{ "adc124s101", (kernel_ulong_t)&adc128_config[2] },
-> >   	{ "bd79104", (kernel_ulong_t)&adc128_config[3] },
-> > +	{ "adc121s021", (kernel_ulong_t)&adc128_config[4] },
-> > +	{ "adc121s051", (kernel_ulong_t)&adc128_config[4] },
-> > +	{ "adc121s101", (kernel_ulong_t)&adc128_config[4] },
-> >   	{ }
-> >   };
-> >   MODULE_DEVICE_TABLE(spi, adc128_id);  
 > 
 
 

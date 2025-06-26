@@ -1,175 +1,237 @@
-Return-Path: <linux-iio+bounces-20983-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20984-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C08D6AEA8D8
-	for <lists+linux-iio@lfdr.de>; Thu, 26 Jun 2025 23:28:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 634F4AEA8E6
+	for <lists+linux-iio@lfdr.de>; Thu, 26 Jun 2025 23:34:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 66FD57B52B3
-	for <lists+linux-iio@lfdr.de>; Thu, 26 Jun 2025 21:26:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D45BB3BD890
+	for <lists+linux-iio@lfdr.de>; Thu, 26 Jun 2025 21:33:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FC8725F967;
-	Thu, 26 Jun 2025 21:27:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2733625E839;
+	Thu, 26 Jun 2025 21:34:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="blMbvF+F"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gtWbIZdl"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com [209.85.128.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A717202990;
-	Thu, 26 Jun 2025 21:27:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57CBC25E477;
+	Thu, 26 Jun 2025 21:34:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750973272; cv=none; b=JbqHbhQFp29DHS5tR1o36N7kLUV4WUfkldNCz8N7YLn3o6GA+CoJLBf7g18vBwCC9Xw0SKvTcEpllz9pYSiJUPZAHBWL+SOn+eb2sojsiffVXQDm0GEl4ybNqwYfjzRFNURnAO/yO4GvnBDLZkNCJp6PHE9hsawHFqvth1untC0=
+	t=1750973645; cv=none; b=Mg3KQ5i4iqlmPW1sa7PTjtqnmiQw+twUqP1bPf0gFZ6hR3XajitpIlhyHiwMjLFfz3hz5x9Hv6lqI4I37nq7j6Dw1uXQv/G13TJVI6mAQQZMsWLFFcxVBInvpupBx4Dta//LoBZ7E1N0uN8cBLESobn0h69JnI+VhiflXj4vfsw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750973272; c=relaxed/simple;
-	bh=ykeXd6ls3tnEV82l6ImWU/KsrXMtWOeQGKe8+LIKueQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uU/+zP+7tARCY9RQ58f0YG86S/zt1SSOcJmjX3qrhOzSqmauWP4xkHbJwEt5VYDXHPaudYirowYhpEHq1RuQYTcgS82XoaS9sN/rafuzPOuAu04VX2BhznwCBkfW8OTQXlDpTsM/2R+6Sh47Nk2+1mxuk7MqtCc0nHyN5IAWjAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=blMbvF+F; arc=none smtp.client-ip=209.85.214.170
+	s=arc-20240116; t=1750973645; c=relaxed/simple;
+	bh=UqwVh0VzHPjDoOcfLqeUhiCeDs12oOBqFDk7yOKVZ+k=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=uBUU25AcQrCPZlgvM2B7novq9DE3gv4sdWqkcVtQXcxElFbzBYA4FVuJCpALcyxAavZ/8RMzW/RDSP9k5hM38O2nM7Gyed0oeJAm4rWVc5VgFiewl/RKAq/yqzAOFkvvNFZTyIpncDrPzfCQNtUfQFNjhPLSOdKSRwWQtgmYaQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gtWbIZdl; arc=none smtp.client-ip=209.85.128.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2353a2bc210so15498275ad.2;
-        Thu, 26 Jun 2025 14:27:51 -0700 (PDT)
+Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-7111c6b0f1dso1968547b3.1;
+        Thu, 26 Jun 2025 14:34:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750973271; x=1751578071; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=m0s7KK7JU2bDuLIyFJ/GkGSEJsjX5YQL6lW6EbLOBJQ=;
-        b=blMbvF+F6MLk5gd0jHFoSWq0eiijKVXonYQ1Y/e2HFtGxJRYw+X0hOlCxKKyDhkOiP
-         WogOQUXUpk8OrpeN+X8cr3T7jgT/l3Ypd00CRDobrTvLGCaZZHMJCaj5ZObWGXDOWspI
-         euqW6UGyox3gCqfZS4ROEFX8Fb3GmlkrxhG0pXLIPsgSktfe+DVDf43d9zke7piYgz3G
-         1qkOTnMW13K0Q4lkwSjmN0apx2lc6CJLsGMvWXSvz2Q7scG5p7iFYbCSVeAz3jqDfGbb
-         1R6poLdqo13+aFH6yqoubKyn/qB8n2xjM3ylhihDgoVn56NjvdU5ahFeoBTJvYOJmzQ9
-         lY0w==
+        d=gmail.com; s=20230601; t=1750973643; x=1751578443; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=quWoYzJCcSriVdkCnPfzLQECG4bIA9g0dURyf59YLC8=;
+        b=gtWbIZdl96Ec3Lr7FlAHDSOvbUxTRCbB/Zpyz7X990Qy8J+TGWKzWnABMR3YpDV3qh
+         Xvab0UUFYl3Z82tRBUEhR4HtQ1p7N6ThMYMiubZZD+wRt+P5Rtcr+4hyL/aTAYYzFyPN
+         pdLSoDonuIG9Y5Z6sGG1ueGl5FqWXamnUHSEeJrYXHmWP73EiOhNh155BOSIROs0r53n
+         Xa9KElFCXk0RBaXJrmJPz5wFOeMXQfLV1cfN+KUaEkCv3NIgeQ33WE/3DYmgxddgRw1J
+         ed8peRh4h8MFS6cWqOyv2Keow7NDBekmjY0vibEtxWgCQ5A8DijXDoAU55Yp+w2TZnWo
+         gE6w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750973271; x=1751578071;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=m0s7KK7JU2bDuLIyFJ/GkGSEJsjX5YQL6lW6EbLOBJQ=;
-        b=aKYaV/OZd3Sb+73QpsewAzs6KcffYyuVCE6zr7DCuj8ujHv0iJglPpUWQEUCD0XN8F
-         qUq6HU65xC86AV12kVW13426F2cVmSd+NhqDkDN69Qobmgj/eNStkmMrpKuganCbKCSg
-         eUxwudoCQ3qxccAmCutQ34xFzjUN3rGugLwk4JwXuLWcrPt3mcPvAzd6HbNCRZxtfmKk
-         H2elzrIbexUFGucWTmpOEe90AEwb4eCDd4zskr8NvAlR9osu5+Z7Nibum5BjwE/xc7tZ
-         TfFeulW1kn4+lrM/4N5g7/Ey6ax5v1Yu9BV5pKWzRB6JrlTEdOU14rePFwB8GrlGtI5I
-         oACA==
-X-Forwarded-Encrypted: i=1; AJvYcCURFva6kSDIEDwCi3vNc/Z32SMcGpapjpLaM5gumvVCTcqSe/bYZO46rg6m3SBYWZ4vEGrMWrKMqUI=@vger.kernel.org, AJvYcCWIVZ+gYrepOKLQKpV3lv8GhCaIhkM3n+oSA9iwUHOKsjgd03l+AZmh36M8judIHrqzYGxdESH6sTJgY45U@vger.kernel.org
-X-Gm-Message-State: AOJu0YxBLcRDkYpfy9jJu5dMtg88Q3HENAMuLJHVJTNtr+8p25c49rpv
-	mC7vScZqI5P8C8F7dUJ3UPQc26XMX3ZC0S4b9lEb13tWH1VfDVm9o58E
-X-Gm-Gg: ASbGncs5SYg8dElxuTlvl20zL2IIXOgOMvhZVYFNzPaDS4nA3hs3w9MbPcwtXPgTdbk
-	qDeWw9FO46lqtfi3EQucdZnDfhTaNjt8jcVfCMa5jDsAsstZ7GLPgJQrTSNU6B3u2kigK2ztf/c
-	+X4fl6fpvwV7XhrMaawVfH/eghJokxbHtpFgs50wEfwMGRGBlPNWenGU3aDIMuO66sIHwgdddiK
-	qqvWeNu+cDh1JFIMZ54+zddgj3yBKk3A8fBrQM0b5FSSX7+fwYt/8/PLLzzOA680A3B7Kf1BRtX
-	GlZi6rjovS2nZPufJHyT6INqlyr1qbrZnvXjA61yfVkVjexL8myxUbG1DbN9bz6g4+VLXcOt1sK
-	swkqrSv74
-X-Google-Smtp-Source: AGHT+IFt22B8S/w/uHxF+/JhLbCBWrfUJv5NGtM9va65TQ9tCmxr7/6SqJzztotgo2sb+buNtWsiTw==
-X-Received: by 2002:a17:903:60e:b0:234:c2e7:a103 with SMTP id d9443c01a7336-23ac4605976mr6973195ad.33.1750973270670;
-        Thu, 26 Jun 2025 14:27:50 -0700 (PDT)
-Received: from localhost.localdomain ([2804:14d:4c64:81ec:4ff:1626:32b1:712a])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23acb3c4b2esm153615ad.211.2025.06.26.14.27.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Jun 2025 14:27:50 -0700 (PDT)
-From: Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>
-To: jic23@kernel.org,
-	dlechner@baylibre.com,
-	nuno.sa@analog.com,
-	andy@kernel.org,
-	jmaneyrol@invensense.com
-Cc: ~lkcamp/patches@lists.sr.ht,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] dt-bindings: iio: pressure: invensense,icp101xx: add binding
-Date: Thu, 26 Jun 2025 18:12:25 -0300
-Message-ID: <20250626212742.7986-1-rodrigo.gobbi.7@gmail.com>
-X-Mailer: git-send-email 2.49.0
+        d=1e100.net; s=20230601; t=1750973643; x=1751578443;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=quWoYzJCcSriVdkCnPfzLQECG4bIA9g0dURyf59YLC8=;
+        b=c/hw4vve5XUrdeLzCEq8UjIWgpsz4dztLEDpg9p+6YI+huT2qJ8Cxf/EE3BAnU20Qv
+         gYJYalCFQUEsPoqSiDUjRga55E0FiP949fqJ8jRVCXw6xFfyBDE5vL/OawKlthFNlrjM
+         AOEcXOQzwp6sT9eegY8ICKotz0hajm2vryORi4UQ+wMyDZSZ+XBu+P1/PKCfZsdKAi7H
+         rWqQlIPNBe5coJdeeX4viPtXBsopUUruS5T80vHmrEj9y7UUgRdiOypoQO3VDH+lMo8D
+         RKa+WeD3SqwVV52/4dLqvoswZ7Evn8Xz1Zr8Emopd7esQr3S4mUmG6lkphJiTMggXsaV
+         RGeA==
+X-Forwarded-Encrypted: i=1; AJvYcCUqxtI6wMosHQ58jvxs/IMPopxaOfQ2h2Ti8u29sRhRdylDO34KvkruRZIVXmbv3sWWb3PqVwJcc3SZtzo6@vger.kernel.org, AJvYcCVAWOakg8OsdObNGzjdbR3HAYYVWugXgEzJABZzOJBUQDMnxbxUuOIuYbYHcb/QBwQfRnjA5hPr5dQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxzYxaOwK/Ga9+pEmAARmZSf4teTIbMlxCMYQ6ndk2LB5M/8uzn
+	WGZjBeh/HGzVuJOPs4p2wvES7xS2xMJ9ri/CzimDQASwnj23gMtXSH7tMWrB/CSBd2alJD7rrEU
+	vS91aWkZxOCm31C6Ik1+B8GmkNXSu8nY=
+X-Gm-Gg: ASbGncumXMz5MXluUIzasLz1QcxrQlRkwx8z3fJ929PjyKMZTjFsm7v308n/N3s39nH
+	s9TqZmGWTJyvf5rbOMZLu5Q9pn+W1clzwrH09d0Bq7t0ZE185CVxXFG3lMgzWiWyfaVkX7jmsJN
+	YLc6LgQJcPsO8pdWl5t9BSFc8r44AlDpr1anx7Fe2z4kw=
+X-Google-Smtp-Source: AGHT+IFEOnHnywGMqHgq36/2c4omUJAsLuMvqZI+biAtd0YlYQ4nHxtzi0X0hTJhHdAL1m0L+TSQM99Rp3RMHXeWIpc=
+X-Received: by 2002:a05:690c:5506:10b0:70f:9fcd:2eb8 with SMTP id
+ 00721157ae682-71517150767mr4449327b3.1.1750973643064; Thu, 26 Jun 2025
+ 14:34:03 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250625170218.545654-1-l.rubusch@gmail.com> <20250625170218.545654-2-l.rubusch@gmail.com>
+ <8eb80697-e76e-412d-82a9-5a95d4ca4f2a@gmail.com> <20250626192802.0079d579@jic23-huawei>
+In-Reply-To: <20250626192802.0079d579@jic23-huawei>
+From: Lothar Rubusch <l.rubusch@gmail.com>
+Date: Thu, 26 Jun 2025 23:33:25 +0200
+X-Gm-Features: Ac12FXxUxKxWoNM9LYSC-0yDaqFLVCO8AQYpvZo-XuCNf2T_QtZ61Qn_mKaSh7E
+Message-ID: <CAFXKEHZ8zDEXLT57BD5Dg1mTN-Gj0Z7uhxX5Xx=XH0wFeAhe6g@mail.gmail.com>
+Subject: Re: [PATCH v1 1/2] iio: adc: ti-adc128s052: add support for adc121s021
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Matti Vaittinen <mazziesaccount@gmail.com>, dlechner@baylibre.com, nuno.sa@analog.com, 
+	andy@kernel.org, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Sukrut Bellary <sbellary@baylibre.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-There is no txt file for it, add yaml for invensense,icp101xx family
-which is already used in the driver.
+Hi guys,
 
-Signed-off-by: Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>
----
-Very simple yaml for a i2c device with psu. The pin out for the rest of
-the family (the other PNs) doesn`t change anything here, since the diff
-were RESV pins (unused).
+I absolutely agree and won't send further versions of this.
 
-This yaml file falls in the same `category` as others that I`ve submitted, the
-driver author, which might be still interested at this hardware, is no long contributing
-(at least for what I`ve looked). Also, it`s email is still "at invensense", not "at tdk", either
-way I`ll ping him here due the mention at the "maintainers" field:
+Hi Sukrut, if you find some possibility to use it, great. If not, nevermind=
+.
 
-Dear @Jean-Baptiste Maneyrol, I`ve noticed that since the driver was added,
-there was no binding doc for it and this is what this patch is addressing.
-In this case, a maintainer ref is required inside the .yaml file and I would
-like to ask if I can add you in this case.
-I would appreciate your comment or suggestion over this topic.
+Thank you all, for the feedback. One small question below.
 
-Tks all and regards.
----
- .../iio/pressure/invensense,icp101xx.yaml     | 45 +++++++++++++++++++
- 1 file changed, 45 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/iio/pressure/invensense,icp101xx.yaml
+On Thu, Jun 26, 2025 at 8:28=E2=80=AFPM Jonathan Cameron <jic23@kernel.org>=
+ wrote:
+>
+> On Thu, 26 Jun 2025 08:24:41 +0300
+> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+>
+> > Hi Lothar,
+> >
+> > On 25/06/2025 20:02, Lothar Rubusch wrote:
+> > > Add support for the single channel variant(s) of this ADC.
+> > >
+> > > Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
+> >
+> > Thanks for this addition. In principle, this looks good to me but I am
+> > afraid there is another colliding series being worked on:
+> >
+> > https://lore.kernel.org/all/20250614091504.575685-3-sbellary@baylibre.c=
+om/
+> >
+> > Maybe you can align the effort with Sukrut?
+> +CC Sukrut.
+>
 
-diff --git a/Documentation/devicetree/bindings/iio/pressure/invensense,icp101xx.yaml b/Documentation/devicetree/bindings/iio/pressure/invensense,icp101xx.yaml
-new file mode 100644
-index 000000000000..439f8aaafbd2
---- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/pressure/invensense,icp101xx.yaml
-@@ -0,0 +1,45 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/iio/pressure/invensense,icp101xx.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: InvenSense ICP-101xx Barometric Pressure Sensors
-+
-+maintainers:
-+  - Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>
-+
-+description: |
-+  Support for ICP-101xx family: ICP-10100, ICP-10101, ICP-10110, ICP-10111.
-+  Those devices uses a simple I2C communication bus, measuring the pressure
-+  in a ultra-low noise at the lowest power.
-+  Datasheet: https://product.tdk.com/system/files/dam/doc/product/sensor/pressure/capacitive-pressure/data_sheet/ds-000186-icp-101xx.pdf
-+
-+properties:
-+  compatible:
-+    const: invensense,icp10100
-+
-+  reg:
-+    maxItems: 1
-+
-+  vdd-supply: true
-+
-+required:
-+  - compatible
-+  - reg
-+  - vdd-supply
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    i2c {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+        pressure@63 {
-+            compatible = "invensense,icp10100";
-+            reg = <0x63>;
-+            vdd-supply = <&vdd_1v8>;
-+        };
-+    };
-+...
--- 
-2.49.0
+Hi Matti,
 
+Perhaps just one little question here to you. You used the regulator
+name "vdd" where others
+before used "vref". At the end, this seems to be pretty free,
+depending on how it is set in the
+DT or how you name it in the DT (in my case it was "5v0", but I wanted
+to keep the convention,
+if so).
+
+So, my question is, is there a naming convention what to take for a,
+say, default
+regulator naming or fixed 5V regulator?
+
+Best,
+L
+
+
+
+> >
+> > What I specifically like (and think is the right thing to do) in
+> > Sukrut's series is replacing the 'adc122s021_channels' -array with
+> > individual structures. In my opinion the array is just unnecessary
+> > complexity and individual structures are simpler.
+> >
+> > Other than that, this looks good to me.
+>
+>
+> Sukrut, perhaps you could add this to the end of your series, rebased
+> to those changes?  Would save a synchronization step for your v5 (and
+> later if needed)
+>
+> No problem if not, but I agree with Matti that we should take your
+> series first.
+>
+> Jonathan
+>
+>
+> >
+> > Yours,
+> >       -- Matti
+> >
+> >
+> > > ---
+> > >   drivers/iio/adc/ti-adc128s052.c | 17 ++++++++++++++++-
+> > >   1 file changed, 16 insertions(+), 1 deletion(-)
+> > >
+> > > diff --git a/drivers/iio/adc/ti-adc128s052.c b/drivers/iio/adc/ti-adc=
+128s052.c
+> > > index 1b46a8155803..cf271c39e663 100644
+> > > --- a/drivers/iio/adc/ti-adc128s052.c
+> > > +++ b/drivers/iio/adc/ti-adc128s052.c
+> > > @@ -7,6 +7,7 @@
+> > >    * https://www.ti.com/lit/ds/symlink/adc128s052.pdf
+> > >    * https://www.ti.com/lit/ds/symlink/adc122s021.pdf
+> > >    * https://www.ti.com/lit/ds/symlink/adc124s021.pdf
+> > > + * https://www.ti.com/lit/ds/symlink/adc121s021.pdf
+> > >    */
+> > >
+> > >   #include <linux/cleanup.h>
+> > > @@ -110,6 +111,10 @@ static const struct iio_chan_spec adc128s052_cha=
+nnels[] =3D {
+> > >     ADC128_VOLTAGE_CHANNEL(7),
+> > >   };
+> > >
+> > > +static const struct iio_chan_spec adc121s021_channels[] =3D {
+> > > +   ADC128_VOLTAGE_CHANNEL(0),
+> > > +};
+> > > +
+> > >   static const struct iio_chan_spec adc122s021_channels[] =3D {
+> > >     ADC128_VOLTAGE_CHANNEL(0),
+> > >     ADC128_VOLTAGE_CHANNEL(1),
+> > > @@ -143,6 +148,10 @@ static const struct adc128_configuration adc128_=
+config[] =3D {
+> > >             .refname =3D "vdd",
+> > >             .other_regulators =3D &bd79104_regulators,
+> > >             .num_other_regulators =3D 1,
+> > > +   }, {
+> > > +           .channels =3D adc121s021_channels,
+> > > +           .num_channels =3D ARRAY_SIZE(adc121s021_channels),
+> > > +           .refname =3D "vref",
+> > >     },
+> > >   };
+> >
+> > I'd love seeing this array split to individual structs.
+> >
+> > >
+> > > @@ -207,7 +216,10 @@ static const struct of_device_id adc128_of_match=
+[] =3D {
+> > >     { .compatible =3D "ti,adc124s051", .data =3D &adc128_config[2] },
+> > >     { .compatible =3D "ti,adc124s101", .data =3D &adc128_config[2] },
+> > >     { .compatible =3D "rohm,bd79104", .data =3D &adc128_config[3] },
+> > > -   { }
+> > > +   { .compatible =3D "ti,adc121s021", .data =3D &adc128_config[4] },
+> > > +   { .compatible =3D "ti,adc121s051", .data =3D &adc128_config[4] },
+> > > +   { .compatible =3D "ti,adc121s101", .data =3D &adc128_config[4] },
+> > > +   { },
+> > >   };
+> > >   MODULE_DEVICE_TABLE(of, adc128_of_match);
+> > >
+> > > @@ -220,6 +232,9 @@ static const struct spi_device_id adc128_id[] =3D=
+ {
+> > >     { "adc124s051", (kernel_ulong_t)&adc128_config[2] },
+> > >     { "adc124s101", (kernel_ulong_t)&adc128_config[2] },
+> > >     { "bd79104", (kernel_ulong_t)&adc128_config[3] },
+> > > +   { "adc121s021", (kernel_ulong_t)&adc128_config[4] },
+> > > +   { "adc121s051", (kernel_ulong_t)&adc128_config[4] },
+> > > +   { "adc121s101", (kernel_ulong_t)&adc128_config[4] },
+> > >     { }
+> > >   };
+> > >   MODULE_DEVICE_TABLE(spi, adc128_id);
+> >
+>
 

@@ -1,148 +1,134 @@
-Return-Path: <linux-iio+bounces-20966-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20967-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6274DAE90F7
-	for <lists+linux-iio@lfdr.de>; Thu, 26 Jun 2025 00:20:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D644AE950D
+	for <lists+linux-iio@lfdr.de>; Thu, 26 Jun 2025 07:07:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 43D89189D6C0
-	for <lists+linux-iio@lfdr.de>; Wed, 25 Jun 2025 22:20:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 974D44A4AB3
+	for <lists+linux-iio@lfdr.de>; Thu, 26 Jun 2025 05:07:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 714B42F3643;
-	Wed, 25 Jun 2025 22:20:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A758202990;
+	Thu, 26 Jun 2025 05:07:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="oDW9APQE"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TmQdOPgv"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-106102.protonmail.ch (mail-106102.protonmail.ch [79.135.106.102])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F9AE1F419B;
-	Wed, 25 Jun 2025 22:20:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.102
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C5BB1CAA79;
+	Thu, 26 Jun 2025 05:07:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750890021; cv=none; b=q7rab89RP7puqJR7ADTF1r7VSPC/Vfvn/4S/B84J8Y0dAzY1RkZ2/6G/B4T2Abuj5sCNQ6LzZvEmxMUAiUelEeQLkqyyZaqJKLSk+EatnkGZZIlAvAgNwfO0W+uActXOpqG+xaAUtBrWSjdbcyNwyJi/zyh26QWXG6bScVPj81A=
+	t=1750914446; cv=none; b=Zsunos+5oD8bjmnAEA9UZdS66DB1guk7I4YrnTECtNoSSobcnuTsj9TP660RWC7e5erAXn18hDtO1csGm5ys5hZgjBza0nokkLBovaUIiaBu/y5fw8hQrHKp/urhs5sXDIii3+h2JPkldIroeqfqxWTPktEWKGmZhYFn0gESBhY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750890021; c=relaxed/simple;
-	bh=E2X8JFzbatE1FCWlY5YF6I83d2kqH95jUGI4Wns86t8=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XZ2H6YvRYdwnh/8xm1U7nGmTEgGXCgqLC2iE7CXkvmZkPZdzPFGBo9O0aM/pIVueMH9t/KF1RS0vBXKG44UjEIgDgn21uFJ6Enp/6Q1wfNlOnJEQUcaM9y2HtjVrcxdipQERqLQW5+EjmLYlaTf+1PmjPlSmvwt55Tq+dG/Dz/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=oDW9APQE; arc=none smtp.client-ip=79.135.106.102
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-	s=protonmail3; t=1750890011; x=1751149211;
-	bh=E2X8JFzbatE1FCWlY5YF6I83d2kqH95jUGI4Wns86t8=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=oDW9APQEaPN0TF9Pbt6GIgp1fNrQT6QgvtjS6i7PVCoh7VEIsUvk6Lt6iUCuh4C8I
-	 FRi4/y3YXUj+CmU4Un++R5RuYbR1eCYa0f2ToJp7S5h/Hh+cQyRmnrja1O9ti8jDQl
-	 fPkwRn6A5kJ4WJFD6fOsH0GXUgXqvRGkDfLm45m51eF0ZXp34ayUOXa3iEUhc83GVm
-	 p1heVjNaZrEHpqfITArKh+T+Rw8MhUCs0ieNTG+obos1E5hkfBc+pdoCQ99ufxRYwz
-	 THT+32eC163nLE44gpE5zzKvvwuGyX5aG4MeA0YRc0perPypZnqKqvBK+W9UhtyslT
-	 ykjNJ1SNrQEmQ==
-Date: Wed, 25 Jun 2025 22:20:01 +0000
-To: Jonathan Cameron <jic23@kernel.org>
-From: Yassine Oudjana <y.oudjana@protonmail.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas.schier@linux.dev>, Alexander Sverdlin <alexander.sverdlin@gmail.com>, Sean Nyekjaer <sean@geanix.com>, Javier Carrasco <javier.carrasco.cruz@gmail.com>, Matti Vaittinen <mazziesaccount@gmail.com>, Antoniu Miclaus <antoniu.miclaus@analog.com>, Ramona Gradinariu <ramona.gradinariu@analog.com>, "Yo-Jung (Leo) Lin" <0xff07@gmail.com>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Neil Armstrong <neil.armstrong@linaro.org>, =?utf-8?Q?Barnab=C3=A1s_Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>, Danila Tikhonov
-	<danila@jiaxyga.com>, Antoni Pokusinski <apokusinski01@gmail.com>, Vasileios Amoiridis <vassilisamir@gmail.com>, Petar Stoykov <pd.pstoykov@gmail.com>, shuaijie wang <wangshuaijie@awinic.com>, Yasin Lee <yasin.lee.x@gmail.com>, "Borislav Petkov (AMD)" <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, Tony Luck <tony.luck@intel.com>, Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, Ingo Molnar <mingo@kernel.org>, Yassine Oudjana <yassine.oudjana@gmail.com>, linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org, linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org, linux-kbuild@vger.kernel.org
-Subject: Re: [PATCH 1/3] net: qrtr: Turn QRTR into a bus
-Message-ID: <ZUlOGBxe4Dky-Qo1EtYMuS0kDRjYdkqex3qgSiFBkFwIdEUpHjsD2pcl3VvMPjD-ZAeqcP5P40AsSfHtv4fJ8Z8stUu4nwYFw0qt3vtf7yc=@protonmail.com>
-In-Reply-To: <20250406170111.7a11437a@jic23-huawei>
-References: <20250406140706.812425-1-y.oudjana@protonmail.com> <20250406140706.812425-2-y.oudjana@protonmail.com> <20250406170111.7a11437a@jic23-huawei>
-Feedback-ID: 6882736:user:proton
-X-Pm-Message-ID: db9bb8d33409b840d6eaf22ce2cef2153ee0ccda
+	s=arc-20240116; t=1750914446; c=relaxed/simple;
+	bh=0CV28ZMxCqWrFNwMSnXsVg+W9CcpMnVsE4Pz/y/owk4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=uEukC4JHaIwNoofdB7wcQpCfBwdbBRHBzD1QirF78WOt+h+zJWhru/CteGXZJ4J5DzNS58o+kJEM71dhYwgY9Ev+kFnjmLVqRB0qJH4lB//OiJkGyb2zBFF1Nd5asKxmax/AKwvaPENli64V6lH96DCS0GHiF8Vl2x/dM0ulSh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TmQdOPgv; arc=none smtp.client-ip=209.85.208.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-32b553e33e6so4761331fa.2;
+        Wed, 25 Jun 2025 22:07:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1750914443; x=1751519243; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ucuge3haHIUEqqktbb0yFSyoz0sNgFSmLZz0cdZIMeY=;
+        b=TmQdOPgvOJWhiYjeKwXuJ3g372zXnC7S+HTBMCHCdvXJE2X3en5QyTVUONqucSQ5ew
+         h++HuneYNCjQUmOHmrHkG0ZGvuqwIZPKvBrnwBXhXDv0iU2b4/6bKXMQ1L+71n9HBqgS
+         0DfO8WLdmSm/WqjUdYFUnGRN+YFJPGgvN1tPkNdlpkWGS75Udyq6ZjPBsfGs0z1uak8G
+         SFXhhBNtgJ+iHAu6FL1Gb8kfW8EPYb6QPIeKEsVutsB6qrS+9TVgB/qRU8/fdbh/UI11
+         tGP6WHKCavyTuUDJNr/bXC8apgboZP6ui6GjuYKootuuQrhOwiz9IQWQslTkxawei85/
+         qsGA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750914443; x=1751519243;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ucuge3haHIUEqqktbb0yFSyoz0sNgFSmLZz0cdZIMeY=;
+        b=oovOgywCsiTwg7m0C41y086owh3TY9sAUk9fk9JSBhpec/UMTDSotCVhJ6J/Lv6Bt7
+         6E+r2y1EXrrPS40qTvK4n2Cbt9VLHFf0mc3ZRUGv4ITqpVWFnHLugmvfS7l96jZTvbC1
+         iinzdMyNUxr/b+lb5fBT7N6vHP+GUdFu13w4Nu3pm4SWrC+dPwJNQXcsrFMJ0L9rntsf
+         RSKglqdWCspMMIC1KVDTPv9qityXS7MC07mZRp9WWC98znQdYuSTdhjVQLjl9KBJ1ZiF
+         q+++WL9j/iMBZ1Fms0McNWwlj9s2xIBKemP+AxEYTojNJaH36MB8SnWubCGkfNbyGGc4
+         5+hg==
+X-Forwarded-Encrypted: i=1; AJvYcCVi6qAEMsUhuah63yRNd21Wwy+WQLwdwlykmS4ThUCiFW3iOzMk8xT2GSZecnLJL6YZnHHnRIcHiZQefBQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy/Fabr5nKnNPEqIgVS223Ws9DIShw4huJJv08oKfLKORWGbQi2
+	An/CcKvrl3SUrxCeU7Tv9vEtjPA2iPIH+cn3h03QLIDvxHatsqpAP6Uzqrtz8Lq9
+X-Gm-Gg: ASbGncv5JRxs26gwxclEc2OKwud3pdzoM1QwcbrO1yLmXL6M4rnKNauQgB6JYtZLjLv
+	ulw6B0zrjb71Hla8Pp+z7cUrH2AD2v49NGlHRtjtK83K7g2CIG9INPbTFpoE37JEf5cheZof/fd
+	1tMKqv1e0EFUEUQfpRAvTJNAYG6YJpCEhxErTEVQHaFQskZl06CPITkoDF7cyqatbBzpUXaakX4
+	h5SUaeQZ+jkp/mCkvk5XKQGfYM8+M8bfcEB50VlKFVXcAYCWQhxFLfy4F2tl11WYVy8j+g6Ynu1
+	o9oCAgxXaoJfH8065ByTykC7Qa9+ZXk4qtibnxOA2g2EF850GBZdwhgV2tgQxb08xefVJfm5wbn
+	Vmr8nxu3EbN6wOTPjZvjDvH+uuxGHRBPHt3qYijDZ8nU=
+X-Google-Smtp-Source: AGHT+IFi6kv6BxFmh3WNqUo+5CW2mT0uKzXUz80kdXBfAnLTfpXObCinsf9ESupWnoDuQxZ6ayJAxg==
+X-Received: by 2002:a2e:a01b:0:b0:32b:9652:2c13 with SMTP id 38308e7fff4ca-32cc6547c26mr14480021fa.26.1750914442414;
+        Wed, 25 Jun 2025 22:07:22 -0700 (PDT)
+Received: from ?IPV6:2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703? ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-32cd2eff571sm1041011fa.92.2025.06.25.22.07.19
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 25 Jun 2025 22:07:20 -0700 (PDT)
+Message-ID: <c97e840e-fe8e-40e9-baef-0a18103848fd@gmail.com>
+Date: Thu, 26 Jun 2025 08:07:19 +0300
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 2/2] iio: adc: ti-adc128s052: replace literal by unit
+ expression
+To: Lothar Rubusch <l.rubusch@gmail.com>, jic23@kernel.org,
+ dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250625170218.545654-1-l.rubusch@gmail.com>
+ <20250625170218.545654-3-l.rubusch@gmail.com>
+Content-Language: en-US, en-AU, en-GB, en-BW
+From: Matti Vaittinen <mazziesaccount@gmail.com>
+In-Reply-To: <20250625170218.545654-3-l.rubusch@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
+On 25/06/2025 20:02, Lothar Rubusch wrote:
+> Replace the literal number 1000 by MILLI from linux/units.h
+> 
+> Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
+> ---
+>   drivers/iio/adc/ti-adc128s052.c | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/iio/adc/ti-adc128s052.c b/drivers/iio/adc/ti-adc128s052.c
+> index cf271c39e663..67bc7fbd52bc 100644
+> --- a/drivers/iio/adc/ti-adc128s052.c
+> +++ b/drivers/iio/adc/ti-adc128s052.c
+> @@ -18,6 +18,7 @@
+>   #include <linux/property.h>
+>   #include <linux/regulator/consumer.h>
+>   #include <linux/spi/spi.h>
+> +#include <linux/units.h>
+>   
+>   struct adc128_configuration {
+>   	const struct iio_chan_spec	*channels;
+> @@ -189,7 +190,7 @@ static int adc128_probe(struct spi_device *spi)
+>   				     "failed to read '%s' voltage",
+>   				     config->refname);
+>   
+> -	adc->vref_mv = ret / 1000;
+> +	adc->vref_mv = ret / MILLI;
 
-On Sunday, April 6th, 2025 at 5:01 PM, Jonathan Cameron <jic23@kernel.org> =
-wrote:
+This makes no sense to me. What does it mean we divide the micro volts 
+by 'milli'? It is clear when we divide micro volts by 1000 that we get 
+milli volts. Also, the mv suffix in variable makes units clear already, 
+division by MILLI just obfuscates things. I'd keep it as 1000.
 
-> On Sun, 06 Apr 2025 14:07:43 +0000
-> Yassine Oudjana y.oudjana@protonmail.com wrote:
->=20
-> > Implement a QRTR bus to allow for creating drivers for individual QRTR
-> > services. With this in place, devices are dynamically registered for QR=
-TR
-> > services as they become available, and drivers for these devices are
-> > matched using service and instance IDs.
-> >=20
-> > In smd.c, replace all current occurences of qdev with qsdev in order to
-> > distinguish between the newly added QRTR device which represents a QRTR
-> > service with the existing QRTR SMD device which represents the endpoint
-> > through which services are provided.
-> >=20
-> > Signed-off-by: Yassine Oudjana y.oudjana@protonmail.com
->=20
-> Hi Yassine
->=20
-> Just took a quick look through.
->=20
-> It might make more sense to do this with an auxiliary_bus rather
-> than defining a new bus.
->=20
-> I'd also split out the renames as a precursor patch.
->=20
-> Various other comments inline.
->=20
-> Jonathan
+I would just drop this unless Jonathan disagrees.
 
-<...>
-
-> > + if (!del_server)
-> > + return -ENOMEM;
-> > +
-> > + del_server->parent =3D qsdev;
-> > + del_server->port =3D port;
-> > +
-> > + INIT_WORK(&del_server->work, qcom_smd_qrtr_del_device_worker);
-> > + schedule_work(&del_server->work);
-> > +
-> > + return 0;
-> > +}
-> > +
-> > +static int qcom_smd_qrtr_device_unregister(struct device *dev, void *d=
-ata)
-> > +{
-> > + device_unregister(dev);
->=20
->=20
-> One option that may simplify this is to do the device_unregister() handli=
-ng
-> a devm_action_or_reset() handler that is using the parent device as it's =
-dev
-> but unregistering the children. That way the unregister is called in the
-> reverse order of setup and you only register a handler for those devices
-> registered (rather walking children). I did this in the CXL pmu driver
-> for instance.
-
-Not sure I understand this correctly. This function is called for all child=
-ren when
-the parent (the bus) is removed in order to unregister them, so its called =
-for all
-registered devices under the parent. It's just a wrapper for device_unregis=
-ter so
-that it can be used with device_for_each_child. If I register a handler wit=
-h
-devm_add_action_or_reset using the parent device then it seems to me like I=
- will
-have to add a new function used as handler for that which in turn goes over=
- the
-children and unregisters them (we always unregister all children since the =
-parent
-will be no more) then I will only be adding an extra layer. I checked the C=
-XL PMU
-driver but I only found devm_add_action_or_reset used for cleaning up objec=
-ts
-associated with the device, not removing child devices.
-
+Yours,
+	-- Matti
 

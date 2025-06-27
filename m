@@ -1,119 +1,133 @@
-Return-Path: <linux-iio+bounces-20995-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20996-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 479ACAEBC0F
-	for <lists+linux-iio@lfdr.de>; Fri, 27 Jun 2025 17:37:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F7B6AEBC8E
+	for <lists+linux-iio@lfdr.de>; Fri, 27 Jun 2025 17:54:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 23F1E1897E31
-	for <lists+linux-iio@lfdr.de>; Fri, 27 Jun 2025 15:37:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 422361C62DAC
+	for <lists+linux-iio@lfdr.de>; Fri, 27 Jun 2025 15:54:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34C8E2E92C7;
-	Fri, 27 Jun 2025 15:37:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 634542EA744;
+	Fri, 27 Jun 2025 15:52:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="BKTlSKeH"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Yend658O"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oa1-f43.google.com (mail-oa1-f43.google.com [209.85.160.43])
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A2BC19D087
-	for <linux-iio@vger.kernel.org>; Fri, 27 Jun 2025 15:37:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7018A2E88A6;
+	Fri, 27 Jun 2025 15:52:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751038625; cv=none; b=oLcaAZF2O9DwHsEI4vzz2oHbQZcV+cB+cfDmQoIWbKdppOdqV8kuSEBeqFn9QJ+sJb3DWm30Fg6NNaYC0FYgHK5RbiSPsND18wr0vBVMQMmvxyj+/qLz3ReyyN3MBqBcMZEQm78dIOA7CJnvMAmwiA2gSxcD16i9OQv9vGPn0SQ=
+	t=1751039563; cv=none; b=lA5Fafi+PmwK/VY0HnkheOQj7wMILOPyMKYf5XWob5c3t/1IKAXSuyGvipZ9LZqNA5akua8zZGiiuOH/SZ6Qiiysi6fTXBb7anzvwA1opBVIllRJ1b8XcOxZTJGGQaJQoA5l85/zZsQMzhaW8neO2u/TY2K1xIQNg+FH5ar7lVc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751038625; c=relaxed/simple;
-	bh=L05rnOXndZLVhMfQ3qJRQh4M1A5e37elmf2Cr01wvaY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UtOZL1P0zrBqXQaMnCRZxKlpkha63pDhVpZ/TRR65NONjotyX4M1krRIQCNwZfHsqwTT2MgvmScHNbqwEcE6abjq+IRbr6wyBFopy0oBcNZ0gsAZ40hZZeSufA8hntYUdcw87FckBLEj31Bqn06XYW+PxkkrJnTUM+cyzLo8fYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=BKTlSKeH; arc=none smtp.client-ip=209.85.160.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oa1-f43.google.com with SMTP id 586e51a60fabf-2efc0ed41efso726155fac.1
-        for <linux-iio@vger.kernel.org>; Fri, 27 Jun 2025 08:37:02 -0700 (PDT)
+	s=arc-20240116; t=1751039563; c=relaxed/simple;
+	bh=XeKZz/4St1n12AJxYNX8W2/v+ZmZ2gValMKIHPpMaxY=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=cUJWN487m/wg5vzze9AeNTrGRqm1Fbqai4bLFlOV0K/lxQ0Yj3knP/N6VnTv8dKfHNh4huNHswF9XoK118h8yQdMlkcdZ6j6PKMeSt2wONDQw8fGQG5co0KeIctvKZz4niniufm+kxrQ6mAYw0GF6h7wcyFeT18P1x7XPBwqI98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Yend658O; arc=none smtp.client-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4538bc1cffdso435685e9.0;
+        Fri, 27 Jun 2025 08:52:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1751038621; x=1751643421; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=CyWXwWd7tjA4+PxkuP84RvmXNMOjKMwgfrHx1dR9kgU=;
-        b=BKTlSKeHlsVM097kn1vRpvY6MJSIB1GQOFVDrUltrC3rVHLxUvlO1ZeyTfw4QjHIKO
-         53kMHNpGXT6EQv06X6ckv+EA0o3sdkEuiDOqhqUhYgn+4Taviu+hxLINhuaYt8rITGFW
-         972ZeI7/s4X7y/fVd575e74sfw3NYTVfG9oQ1uagn01J8K3GCfRJpppWgkC6asOVKm8T
-         16RylRktuN3YunfRgnVhoRO97jNoJNjV/0lKvDMST++VLiP4Js4khf2GOZXobZno3q/o
-         HNcxxjze5sW6kkySAxyy1j48TebCdqrzYjOKgU65OBzQabpSh7HK16POh2UeQ6cnve+Z
-         p65Q==
+        d=gmail.com; s=20230601; t=1751039559; x=1751644359; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:to:from:subject:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2aROkZFIKLQ+lbqzVC7RQG9Yy2SLndEIotjckE9EqPY=;
+        b=Yend658O83RddFkACc91Iz+z/WVWNc99CCIXgHWM2uL8O0wNdq4jF7bowFEGxvWa42
+         cB9NgL4YRSY07wEoS3UwINy3LW9Ofm/0ddA9JDaC19h/NxhN5Dn4vM8r0lAZBlOnpl33
+         g9U8qnNygXtHqTf9MzGQ/Z0L0Vk7EVwL1bUF2VaFV911pfa+JY4Ypmmeer2E3noDIPD5
+         P9M9I8KZTdFa/2aO9tbRKTcRBq6c9yWaAQ41uoJQtyWjTN3ScvkYh3lUP7ztKQ72leju
+         5TzINy29DyQA4biuGX7/j4kVdYlp5ZPmbRu8Zw7MHEBYt9BO7OM3jOWF9/sDkTbdTuUS
+         aMSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751038621; x=1751643421;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=CyWXwWd7tjA4+PxkuP84RvmXNMOjKMwgfrHx1dR9kgU=;
-        b=Zo5/xAamzMBgwrOT6YOJYaJ8yXCB6ZFv11yXB+6LtVFnodgyE7sj5YyqwFHo2b2+27
-         V9l/l4A3rKRWSn28htcI7yhuBHO9rTSjQzi4e1Pv9iQ0/rKOwqMYkmCPBVgbspap2vsp
-         0xWGJZJtUpzWASJ6DYPjam4b0obhUtj6mH5IOBhZK6RaRc5MeABraGWc3W6D1ZlLL77J
-         HOxb3hWyIBkI7RIazmdPND1r42KbHcCEwOwTsw6X1U0MUvTh28mFx91VJPhAddxF2NUG
-         fM8eOAyVmhlpnnVI6PpYmut7ie6XImnfdzshPJyJ5GxFBkluzFOznOu3hdOonxWu34m0
-         dqVA==
-X-Forwarded-Encrypted: i=1; AJvYcCU3Bi2XidfNknJ7n1iPjXtyK2MJHsfwVCIOqxxXt/vOm1dQ7P/2EfnXlU1KOvvvKKQ1atsq+0nt2j8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzVeEgYZhw5AOm6kj8EKBzfftYZLwo4GmjS2EN9MrReADY6Bm44
-	UnMLCEIik/bvtLaOk485WKgw7ifVfEIpJ7rEJeYZDyLlTjj73muAPTyGqoyfv0FtfGM=
-X-Gm-Gg: ASbGncvqqlm/W0zkhDn+OZYGeU4A0Icsed2pRKz79aiHNGbpAdz5flYCNlVaQ6n/pwc
-	4FC0IElJ+jBrTa2MAEDe2SPl5QumtH/GyUTV4JB+0vfSnAsv+2JWasEkkOZcINDp11U1IHePzep
-	ry1juRHFCtB5WN1OyEFvd//X6pM0KNrwCjJoZHXoW8uTpLly2yROd/Dyp00icMdxE8TKZ1WAwJc
-	SqskWl0CWmOkWO+LfpuavDMmbBCC3K40b9fVs/o+oGdbvp9AMJcUwIkY/QNrhIfKfMOeDbuyyas
-	h+0L4Uqb3zC5QSTF3NYnuADeT0l3Nkf9Qf6+GlI1UncMOl0Lz6vhQOJD++mllllFPIgmPa6SAw8
-	BGz2jJVjTKHMQb+bZODCMuAX2DhgiFWsFTNW4
-X-Google-Smtp-Source: AGHT+IEXULvmX1+HiFngSX9gyyWo3QBqzKcaZv/DBB4h7Y17r+wCqk9ECg0zGCfRQS8yTSjQl9UgtQ==
-X-Received: by 2002:a05:6870:e985:b0:2d5:b2ae:2ebd with SMTP id 586e51a60fabf-2efed7767c5mr2441247fac.34.1751038621367;
-        Fri, 27 Jun 2025 08:37:01 -0700 (PDT)
-Received: from ?IPV6:2600:8803:e7e4:1d00:1715:453e:e133:7d6? ([2600:8803:e7e4:1d00:1715:453e:e133:7d6])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-611b857b8dcsm250770eaf.26.2025.06.27.08.37.00
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 27 Jun 2025 08:37:00 -0700 (PDT)
-Message-ID: <fb2b64bc-a1b1-4486-9766-7c72ada7dd5a@baylibre.com>
-Date: Fri, 27 Jun 2025 10:37:00 -0500
+        d=1e100.net; s=20230601; t=1751039559; x=1751644359;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:to:from:subject:message-id:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=2aROkZFIKLQ+lbqzVC7RQG9Yy2SLndEIotjckE9EqPY=;
+        b=kxRb0SzBKN0r4yL544YffP23J0fRnS+mIkucTgsfKFhJ7PBKoAruKIaApAqaZsr5aK
+         1w9X0ionxC9CG6fm7tw7ZJ2Y5jjf1s4vwz4pqatAfvkxa2V9Zr/nLrMCe7RWpLYB8l6t
+         qvw8OVaI3ujiXPkNbGwfBL9X4xszfFgg93BAlFh9IoWBufXeNMENimgttTBvRq/sDY1b
+         dZMc1KcNBuVMJbtD7TsgPkFNgNjch/F0j2+lSbuWKsvvQJb574EurN/sxDhPSyFbs4k5
+         ssnemRo56ZGLAFTX+gBayo+2FwiydGkbUr48MWeGbmbEkDu2yACk2Kir4Td/gDj2LDsD
+         LE3g==
+X-Forwarded-Encrypted: i=1; AJvYcCUmcW28UScv0fQ/kfz4f0SCFaPldbxugPk0N4b8QLcm4ndRPj9qh0/C+bH2RU+sN9Vu0hMIHHY4w9YDbMT1@vger.kernel.org, AJvYcCVTQri+UtHpDE4pMUJPB+FiBQxFvzPDvsNWNx10GT6Zw+hgXOj4c6d9Ohszw/7lt1yAYWZ5GOuG03oR@vger.kernel.org, AJvYcCXlQBD5RgGsw6Q2jUZzZ1eAq/QdL81AXJNeufZxStxINNn77BCIP3GNsJUgYjjDPiSnBOc3+lR9afOz@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz7Sikwg7FmyMUAXWcLzyLCvfh9Kpd50MFj2HunP+fomaBBgbJu
+	6yhCfQ/RP8JyL1Xy63kp7LZADobjrgcCRvju+wvHIGsV9Cm4flB/GrGrmUDE2QQpfd0=
+X-Gm-Gg: ASbGncv1LzlJImiP7Lerqmt5MZHWZTPTrD82OXq+Oj1CB0BAfIc6P146xg+UOZDR1Ra
+	JLfec8QobhMeRDRFGCVXzDmwJotRzH+MJLkkwmtPL1/X9k+Z1tT15GPyKelej4NebFZtcInMML/
+	QJNerdsTn0XxO52gDj/nA0g/1lGDKRKwxYHSPELWLZGwnhmwG2Y+qKL7mw2XHeL+Exi2woAaclF
+	mgx6V0Gt0bmPzhD+Kmj2IScjor+6M4jlgbART3EzFhRcYpCieudpf8YKz8iuGprM/I3CRFd39hj
+	q2ePsIrV6dBRlkDrOodR0ySZnp6vf7j9JEkLuuwPOZkvvYicxrHIh0kzrlivmxoQ3cPRnA==
+X-Google-Smtp-Source: AGHT+IEpHPb17jwWV2U9yKDNsQX8hcJa/WEXDos5SeCcUccgjeuX2QhCUbhn2Cb9K3JGOmuqmM2qLg==
+X-Received: by 2002:a05:600c:c0d7:b0:453:59c2:e4f8 with SMTP id 5b1f17b1804b1-4538f284df8mr27008625e9.1.1751039559287;
+        Fri, 27 Jun 2025 08:52:39 -0700 (PDT)
+Received: from [192.168.1.187] ([161.230.67.253])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45388888533sm63173355e9.21.2025.06.27.08.52.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 27 Jun 2025 08:52:39 -0700 (PDT)
+Message-ID: <301b3c390b417c1268c0c1d3014d52f8b8660aba.camel@gmail.com>
+Subject: Re: [PATCH 2/2] iio: adc: ad4851: add spi 3-wire support
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: Antoniu Miclaus <antoniu.miclaus@analog.com>, jic23@kernel.org, 
+	robh@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org, 
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Fri, 27 Jun 2025 16:52:49 +0100
+In-Reply-To: <20250626104024.8645-2-antoniu.miclaus@analog.com>
+References: <20250626104024.8645-1-antoniu.miclaus@analog.com>
+	 <20250626104024.8645-2-antoniu.miclaus@analog.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] iio: dac: ad3530r: Fix incorrect masking for channels 4-7
- in powerdown mode
-To: Kim Seer Paller <kimseer.paller@analog.com>,
- Lars-Peter Clausen <lars@metafoo.de>,
- Michael Hennerich <Michael.Hennerich@analog.com>,
- Jonathan Cameron <jic23@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?=
- <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20250626-bug_fix-v1-1-eb3c2b370f10@analog.com>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <20250626-bug_fix-v1-1-eb3c2b370f10@analog.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
-On 6/26/25 3:38 AM, Kim Seer Paller wrote:
-> In the current implementation of ad3530r_set_dac_powerdown() function,
-> the macro AD3530R_OP_MODE_CHAN_MSK(chan->channel) is used to generate
-> the bitmask for the operating mode of a specific channel. However, this
-> macro does not account for channels 4-7, which map to the second
-> register AD3530R_OUTPUT_OPERATING_MODE_1 for the 8 channeled device. As
-> a result, the bitmask is incorrectly calculated for these channels,
-> leading to improper configuration of the powerdown mode. Resolve this
-> issue by adjusting the channel index for channels 4-7 by subtracting 4
-> before applying the macro. This ensures that the correct bitmask is
-> generated for the second register.
-> 
-> Fixes: 93583174a3df ("iio: dac: ad3530r: Add driver for AD3530R and AD3531R")
-> Signed-off-by: Kim Seer Paller <kimseer.paller@analog.com>
+On Thu, 2025-06-26 at 13:40 +0300, Antoniu Miclaus wrote:
+> Add support for 3-wire configuration within the driver.
+> By default 4-wire configuration is used.
+>=20
+> Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
 > ---
 
-Reviewed-by: David Lechner <dlechner@baylibre.com>
+Had to look twice :). Commit message could have been better by saying that =
+reset
+value is 3-wire. Anyways:
 
+Reviewed-by: Nuno S=C3=A1 <nuno.sa@analog.com>
+
+> =C2=A0drivers/iio/adc/ad4851.c | 10 ++++++----
+> =C2=A01 file changed, 6 insertions(+), 4 deletions(-)
+>=20
+> diff --git a/drivers/iio/adc/ad4851.c b/drivers/iio/adc/ad4851.c
+> index 31e1e02c0ce3..1ad77f2a4580 100644
+> --- a/drivers/iio/adc/ad4851.c
+> +++ b/drivers/iio/adc/ad4851.c
+> @@ -444,10 +444,12 @@ static int ad4851_setup(struct ad4851_state *st)
+> =C2=A0	if (ret)
+> =C2=A0		return ret;
+> =C2=A0
+> -	ret =3D regmap_write(st->regmap, AD4851_REG_INTERFACE_CONFIG_A,
+> -			=C2=A0=C2=A0 AD4851_SDO_ENABLE);
+> -	if (ret)
+> -		return ret;
+> +	if (!(st->spi->mode & SPI_3WIRE)) {
+> +		ret =3D regmap_write(st->regmap, AD4851_REG_INTERFACE_CONFIG_A,
+> +				=C2=A0=C2=A0 AD4851_SDO_ENABLE);
+> +		if (ret)
+> +			return ret;
+> +	}
+> =C2=A0
+> =C2=A0	ret =3D regmap_read(st->regmap, AD4851_REG_PRODUCT_ID_L, &product_=
+id);
+> =C2=A0	if (ret)
 

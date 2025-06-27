@@ -1,193 +1,247 @@
-Return-Path: <linux-iio+bounces-21003-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21004-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEE67AEBE5D
-	for <lists+linux-iio@lfdr.de>; Fri, 27 Jun 2025 19:20:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8F8FAEBE9A
+	for <lists+linux-iio@lfdr.de>; Fri, 27 Jun 2025 19:51:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 03D9D16513C
-	for <lists+linux-iio@lfdr.de>; Fri, 27 Jun 2025 17:20:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4745F1C61D7B
+	for <lists+linux-iio@lfdr.de>; Fri, 27 Jun 2025 17:51:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0034D299AB3;
-	Fri, 27 Jun 2025 17:20:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9015A2EAB8C;
+	Fri, 27 Jun 2025 17:51:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="vPute5QG"
+	dkim=pass (1024-bit key) header.d=sesame.org.jo header.i=@sesame.org.jo header.b="ZyBUfD7D"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oa1-f54.google.com (mail-oa1-f54.google.com [209.85.160.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11023088.outbound.protection.outlook.com [40.107.162.88])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F3492E8E08
-	for <linux-iio@vger.kernel.org>; Fri, 27 Jun 2025 17:19:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.54
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751044799; cv=none; b=djXYRIsNgX/5Iz8FE+U+Bde0gCrtoUZENR3KMVujCqkY6c64kT6T7PR6AGGALYOCtwv8mNbH0ss1/nNaWW2VWnZre/nz4D0b/IJEkQ+KJ7lo2wLkZNuWRqKFrsjEF+opX6+qdpfgIEbgXux/SAgdvVeg5n/KPhv/ggxz9OgW1Go=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751044799; c=relaxed/simple;
-	bh=tEgg4yLq8nCzAwv3QHxo1pvvJEaNwghf7L7c/Jfil0o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=juVrlX5mtfvzTAqjR6rMFVrm+MMvFHgiOCKWIHbHWU/WuUAvUlnEWb62k5Rxn0KtbH1t8FOQGr38raPJKHpBFqj0rPV4JHb1VGzeVQQAtUNddG1NRhqQYMfuoy593AX3pDCHEpmVYTfwhEAx/bH3IqhHV2wc17n1R1fz2aepTFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=vPute5QG; arc=none smtp.client-ip=209.85.160.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oa1-f54.google.com with SMTP id 586e51a60fabf-2c6ed7efb1dso73557fac.2
-        for <linux-iio@vger.kernel.org>; Fri, 27 Jun 2025 10:19:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1751044796; x=1751649596; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=UJvljz9Tnw+ULEBiMWy1DRf4iuiUFI2ZolKXoPlMGY8=;
-        b=vPute5QGwAg9NLuWrbR+nMo2G/v9pU0AUduABDNXzx9W1vlU8A8cz6KeT4Y4JQmoNB
-         48RFyA4RB3LQ2lW5LMbZJeQSWYqDIyNv7BrRYiuR1Zi6+GQ0GD/9eGzrWNQYeuM5HqAJ
-         SeCTlR8ANzyk6OAHQRnvUxb01B1hzxghH8fsSZnagaBqbzmMInHsAtdW9qL/YoVIUnYi
-         gZ1mbHsIonmJQleafG0LJUXxMfeTUvc4Bx/S2/TK7znXyo7DR0RCAI68uYQSVh/xhwU5
-         d/KJ3JBd7f1PAldQseSF5OInaZKELctPWj42UEzutHX0TpbnksI2Aa8a5LbxblSuXTdK
-         3M0w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751044796; x=1751649596;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=UJvljz9Tnw+ULEBiMWy1DRf4iuiUFI2ZolKXoPlMGY8=;
-        b=WMczUuky+Tz/a4geI1EvBjJ7rMru0AznLdv3quVCSs98bSjVUbKOsnSClb0OyuDRA1
-         whxXXvZfIPCL79JFo5dpj1R6AXhBd5GXHurIYjkAI4I3s7dulTMU93FEXrp0IFRjZfmC
-         GQrVpAwXh6pvNILY2Ij9mqT6I6HKwzZQ6Q9/zw9FsA2lGd1uvlrvApwY+Ro6UoO1uQJo
-         2j08eIzW8DUakXguOrGk3VXTWH62fyHOf0zWgj63/knOaap3YhQ0Q/s+Kq3OWdawLz0i
-         t94qc2x0ir8CzXrkZhjXwVVwSfsYmMrvWgk63Aj2iMFcOyjVFFHKYOROR+TB4KPpUDsq
-         Dg5A==
-X-Forwarded-Encrypted: i=1; AJvYcCVnu1SSPA/hJckZ0vf0BHdw7Kn1SukrUsIpJRbVV/kmbzMJOCbovzArDDPSHZTGV99deA8K92VYBsc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzRSZK7mwX4CACeNbb8miXg2RC/O+n9W9vwkve1CysJmKRXWa7h
-	7URsBm7JaAnx4qD99h6QNcM0Lse5wWeGSmUfgrdqM3Qgb3JXXdTJwXjJ0+uiCQmmEG0=
-X-Gm-Gg: ASbGncs1n/A+AiCKi2kpVuRkdFuYI2CfE6jscjlV5WYgvz0HmyxlJSLChY572Swjd6D
-	kTj6sAehF/c2BzFYHG6XFr4UQV3Op1vcclyTl2AUlmaLv6+6dK9CQmJTQDVabiG3FZXVKfC6jJf
-	KhIRBbqVBaTvUCWSrK5Y1ypOkn2Oa7Gohzgow5ObsAiLW1ijV/Y0YixbuoijH48Dvo7Txe4ENlk
-	5fZEzSL9VCEVdY/CT/eydFceyiqMmjrsM5BR1NbTh+hkYgdGcBTDHf5kHz4aIIfzJ/9bc5BXvms
-	o67YO/MWOTmSSkyjdZHA8hQz+OxUPoQLaGjwu0JhBexDDGCQpdCxLb/RIod+5O1GwDmR9bdZt+n
-	AxwnYnzmBQjvF8bcv8o4515c2YmcR2G2xgIO+
-X-Google-Smtp-Source: AGHT+IEG9uoHCw9dQX9tnWLEPlVN6igI5NvBDX4j1okMsWLkf0rxcatw94D+p/TGVWL+XFpFr/Vvjg==
-X-Received: by 2002:a05:6870:65a2:b0:2d5:336f:1b5c with SMTP id 586e51a60fabf-2efed7782ecmr2779602fac.34.1751044796466;
-        Fri, 27 Jun 2025 10:19:56 -0700 (PDT)
-Received: from ?IPV6:2600:8803:e7e4:1d00:1715:453e:e133:7d6? ([2600:8803:e7e4:1d00:1715:453e:e133:7d6])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2efd50f7d89sm972808fac.34.2025.06.27.10.19.55
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 27 Jun 2025 10:19:56 -0700 (PDT)
-Message-ID: <6152da6f-84a1-40e0-9fe8-248a2835de6e@baylibre.com>
-Date: Fri, 27 Jun 2025 12:19:55 -0500
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8E4E2EA148;
+	Fri, 27 Jun 2025 17:51:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.88
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1751046688; cv=fail; b=jc9jYd5bxYqIlwxj1c4xk5rLiQCZHCnvQDPdIz2YXU+1b5p6EEqtHbB1+p47QP2Kz/a+Zm/sQM2LpTbn5ZjsXz6Gvz1SQTujO3v8DEtvOjU0GmVB9pUHjW1E45mgY7hTTvDVDquTIHzhtGKJYI6b9pZZT7CkFIjMOH3wPMl/Fh0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1751046688; c=relaxed/simple;
+	bh=B5LbD6sfzcRd4pwEStTdKe6tMaI8Dnjp9K7t1Ggr1w8=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=miBto7vzYKx803EWCOYKeX2m3bgsolh5l/4OIxo3FvYOngF24MYQn+H9vwbtOKphskrEBizFcebeeJpZq5vqhBzz6ACf0pD9VXkMZX1C5kq8StUz+J1fhkq7zyOsKgAok5e9sRNtiuFTE/8xiJUVfv5gjPAn7Iq8+/3DM7HFbUk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sesame.org.jo; spf=pass smtp.mailfrom=sesame.org.jo; dkim=pass (1024-bit key) header.d=sesame.org.jo header.i=@sesame.org.jo header.b=ZyBUfD7D; arc=fail smtp.client-ip=40.107.162.88
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sesame.org.jo
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sesame.org.jo
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=WtdJKNfwXNeCiFxgKUXfBftcssM4yP8Z6XNu73OuMTedTQqpnw9htW4PBux4EXFYelGzFcLxe6fwArSqwnTNC+jrcW25SaTji3iXsSC4vpOP78kt+8nxto53RfhUfq2FCToxZZPF523YpoRWqMkILnIpvcMX23ewh8aT/HOaQzrIvNaQ02HgykKO5LPGZVxGJc8NBBCOqw69RiMWj/CsRDWBO+k3yr1GvagDLyoAZEitloaIwqH4/QLZNvYQROgd4huow12/JJRhgrp+PBHsdtBjAr7gKNYK9wRK6F2OUNMdWfomaZPWnePllRjwJHY6xB2j9Xkygaf1WDCZlZgGiw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=KESVAxK5UpgNFFfS1dic0yDQrcUFcwdvtxMXpBfymMU=;
+ b=iHGhsoHz7vEyjc49BRs3WOZWV19GiBobsvErbyKS1juEwrtFYbnUZByVl0QgkQnykSxKZQX6nsOVuqPVtMX+7w7XhyepWFZmO4b8jO8UJ1Ru4oHKSWD7c0WYJrFKx+cnSc5gb39hev3Qq2vudbKYCtYxaMKKG5oRu+CTV4QaIlBXqITXTmTi0+3CaLhAWBAzsgAl3tvBPPoDF7D1Q16DnLLEVkbpd9kWvkwVF8P/mtJmkgCKa7B6npIiguh46DmD9ktbMsU2cdV0C0cwx4tvteJ0nHmbWRUUKjWGo9TXoU/UOKUyJgOKTCPivg8HUkziGQv1lrGgSQLMedPjMat6jw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 80.90.171.68) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=sesame.org.jo;
+ dmarc=bestguesspass action=none header.from=sesame.org.jo; dkim=none (message
+ not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sesame.org.jo;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=KESVAxK5UpgNFFfS1dic0yDQrcUFcwdvtxMXpBfymMU=;
+ b=ZyBUfD7DnKpifSaVymAxFmGcf2wTeM/JpddADrL9agFSzeAlViHmvpb+Vvow7yyTQ+Sv8Hp+tm+qw88aN4aAqOmpQjOPwF9bWZdk/QtIpwo7jtvnOK92nMYDxJlUY2vfGuIZ2HGCXME8wEo8J5WNmLOJn7Z8qHlbY/6ag9HmYpM=
+Received: from AM0PR06CA0083.eurprd06.prod.outlook.com (2603:10a6:208:fa::24)
+ by PAWPR08MB9541.eurprd08.prod.outlook.com (2603:10a6:102:2eb::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8880.17; Fri, 27 Jun
+ 2025 17:51:21 +0000
+Received: from AM4PEPF00025F9C.EURPRD83.prod.outlook.com
+ (2603:10a6:208:fa:cafe::58) by AM0PR06CA0083.outlook.office365.com
+ (2603:10a6:208:fa::24) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8880.23 via Frontend Transport; Fri,
+ 27 Jun 2025 17:51:21 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 80.90.171.68)
+ smtp.mailfrom=sesame.org.jo; dkim=none (message not signed)
+ header.d=none;dmarc=bestguesspass action=none header.from=sesame.org.jo;
+Received-SPF: Pass (protection.outlook.com: domain of sesame.org.jo designates
+ 80.90.171.68 as permitted sender) receiver=protection.outlook.com;
+ client-ip=80.90.171.68; helo=SESAME-SMTP.SESAME.LOCAL; pr=C
+Received: from SESAME-SMTP.SESAME.LOCAL (80.90.171.68) by
+ AM4PEPF00025F9C.mail.protection.outlook.com (10.167.16.11) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8922.1 via Frontend Transport; Fri, 27 Jun 2025 17:51:20 +0000
+Received: from sesame-smtp.sesame.local ([10.1.100.13]) by SESAME-SMTP.SESAME.LOCAL with Microsoft SMTPSVC(10.0.14393.4169);
+	 Fri, 27 Jun 2025 20:51:35 +0300
+From: Abdalla Al-Dalleh <abdalla.ahmad@sesame.org.jo>
+To: Lars-Peter Clausen <lars@metafoo.de>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Gabriel Shahrouzi <gshahrouzi@gmail.com>,
+	Abdalla Al-Dalleh <abdalla.ahmad@sesame.org.jo>,
+	linux-kernel@vger.kernel.org (open list),
+	linux-iio@vger.kernel.org (open list:IIO SUBSYSTEM AND DRIVERS),
+	linux-staging@lists.linux.dev (open list:STAGING SUBSYSTEM)
+Subject: [PATCH] drivers: staging: iio: frequency: ad9832.h: Fixed TODO note.
+Date: Fri, 27 Jun 2025 20:51:14 +0300
+Message-ID: <20250627175114.548076-1-abdalla.ahmad@sesame.org.jo>
+X-Mailer: git-send-email 2.50.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 1/3] iio: imu: inv_icm42600: move structure DMA buffers
- at the end
-To: Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>,
- Jonathan Cameron <jic23@kernel.org>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, =?UTF-8?Q?Nuno_S=C3=A1?=
- <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
- "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <20250623-losd-3-inv-icm42600-add-wom-support-v5-0-4b3b33e028fe@tdk.com>
- <20250623-losd-3-inv-icm42600-add-wom-support-v5-1-4b3b33e028fe@tdk.com>
- <CAMknhBEpkWrZdWSrhQS6E1GnENCipf+LxNNSNUyZrm8Gme2f_Q@mail.gmail.com>
- <FR3P281MB175703F651131703019D7295CE78A@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
- <20250626194838.55c5eca4@jic23-huawei>
- <FR3P281MB175744F24BDD93870BB32ED0CE45A@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <FR3P281MB175744F24BDD93870BB32ED0CE45A@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-OriginalArrivalTime: 27 Jun 2025 17:51:35.0923 (UTC) FILETIME=[20334430:01DBE78C]
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM4PEPF00025F9C:EE_|PAWPR08MB9541:EE_
+Content-Type: text/plain
+X-MS-Office365-Filtering-Correlation-Id: db27b0ef-3458-4889-1c75-08ddb5a339de
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|41320700013|376014|36860700013|1800799024|921020;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?XNQkPo9Yb+ZEU+EpxhdOzanrbfET6h2tZyJForUQkjIcAta9fld6MyNeI1ot?=
+ =?us-ascii?Q?5G9Ayw2rtzEaBJ/Cc04nPRgZNwPxbaNzHPZAhBWn9Yv69HJQv9bb7fW+3qFy?=
+ =?us-ascii?Q?JeaGi9wXil6vwMJYmJiBnI4Z3/mH3uTmXAR/CJfAVKmY5De88UprmqxFSTgX?=
+ =?us-ascii?Q?z2mU/erM+brUloMlfAyZcQJ44F1sFdEULCV9BE3wjBWRgsKgS2t2fjQxbImI?=
+ =?us-ascii?Q?9SPLIRg4JjMi+TjmxCL8Vq7E2PjTSTILsuN8MpeSSXAbQwFKzubL/Csn4doQ?=
+ =?us-ascii?Q?Wbxo5B1XVYCnxXZGFdpJoRgB7NvAPuyy52ZeEDqNWnkMCsQ4Fuqvwhe/Nwf/?=
+ =?us-ascii?Q?Fynyj73y4SHJi2EV4sm00UYRr/n3HQ/AaVE2HIvQpmeRmzdl/JySzXSdFGDP?=
+ =?us-ascii?Q?M1dzGdJ3v3hrQ0E3yBEgzKXKBri6bHkFUiIA80De5rbb/pWALKt+fabb7/iO?=
+ =?us-ascii?Q?bXCtlc/n1qEH19vthI8Mi/5ajIpImhdhPanbd19g4knaTFlx0PcghWX/ZAbh?=
+ =?us-ascii?Q?eMx7SuFXpNvBH0UbONwpyylO3XTBu+DwP3FnHHUV6yNhm2giE9renNEapNoU?=
+ =?us-ascii?Q?QmtqGoszWEKD1lC99A3hBrDJJpTT4p2MDPEO6kilOY2m9tzZMwPtFASNyFRT?=
+ =?us-ascii?Q?lF1MzVW4R2AxcHM8hzY4NmeroEIcrZQBQ3UljuD4ddyVntBQr6kc65YxO0Zm?=
+ =?us-ascii?Q?RTO3bTidLprD8DiWcbJeVXpUWWatJfkmWRTe+lj0UMCPDLxO3iyW2u4ms93e?=
+ =?us-ascii?Q?7qXNJQ5t9dbheXnwtiAbxAggf+OSC+ABd9aVpSdEke3hQHhEPpBGPOOLzkFF?=
+ =?us-ascii?Q?W3D3/bQzyQaUBhFCivthtjiTtFoDe/t/XUQkJvzk6n0zwyniBJnXAtjKEkQO?=
+ =?us-ascii?Q?AICYUJx0mipWKT65mEbdzzg9KB9eUh8UPou7dMZkwGUgY/dG4tAebO9q5W+y?=
+ =?us-ascii?Q?ezVov/zKR7AFsFVSjUYvRQ+r+VKGTLozFScBmWJlRsO6nrXhbvDnBbsALNie?=
+ =?us-ascii?Q?YLTEeaGxV/OmwyEiDJE/rGSzsdKiPbElqMGr8p3yoqtRZaXNuTPRPCkAXEv/?=
+ =?us-ascii?Q?aYBEJ4IimtaznL1oPN4YVOe484oLTwmsPIpRO2QXN1Oi4w2+zc22HpWgpN82?=
+ =?us-ascii?Q?ZtRzaA43TVzCZZn9A7NXR3z5XJs38EHQcZlVb4ZIPFJONeaAX6W3CTOZRC3V?=
+ =?us-ascii?Q?T+QBYJDW0CwNZ9u0wk21ZBkTQVElkig7DyvPnGiYaOS93KKWdxQSx4ROFAMw?=
+ =?us-ascii?Q?/mMC8UsqHoUvCH0QfnxoihBn0kKnNCDKjfZ0lvFRirS4XcbavhFR1UJ0GQLE?=
+ =?us-ascii?Q?FSZ7Q6BjF9lTra3zAGDmUJt569YDRBhoX9d3A9B4ZNryDhEpGOMRqV1DDnsl?=
+ =?us-ascii?Q?AJ0uF+8aeZAXIsrjzzJuauwb1kT+r4l1JrJsli2XVq1SQEewiIjlu4uCpxC8?=
+ =?us-ascii?Q?oWIEHKYuCQKfnD0JjlDUtsTe+BjDPHaFAswgV89tHLCJZdiaP6M3/VSou2ab?=
+ =?us-ascii?Q?jaW1gzHqfuvwr2c=3D?=
+X-Forefront-Antispam-Report:
+	CIP:80.90.171.68;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SESAME-SMTP.SESAME.LOCAL;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(41320700013)(376014)(36860700013)(1800799024)(921020);DIR:OUT;SFP:1102;
+X-OriginatorOrg: sesame.org.jo
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Jun 2025 17:51:20.4598
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: db27b0ef-3458-4889-1c75-08ddb5a339de
+X-MS-Exchange-CrossTenant-Id: 0788906c-6e04-423a-b37e-862cc7808738
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=0788906c-6e04-423a-b37e-862cc7808738;Ip=[80.90.171.68];Helo=[SESAME-SMTP.SESAME.LOCAL]
+X-MS-Exchange-CrossTenant-AuthSource:
+	AM4PEPF00025F9C.EURPRD83.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAWPR08MB9541
 
-On 6/27/25 10:27 AM, Jean-Baptiste Maneyrol wrote:
+- drivers/staging/iio/frequency/ad9832.c: Changed .h file location
+- drivers/staging/iio/frequency/ad9832.h: Removed struct definition
+- include/linux/iio/dac/ad9832.h: Added header file according to the
+  TODO note.
 
-...
+Signed-off-by: Abdalla Al-Dalleh <abdalla.ahmad@sesame.org.jo>
+---
+ drivers/staging/iio/frequency/ad9832.c |  3 +--
+ drivers/staging/iio/frequency/ad9832.h | 23 ------------------
+ include/linux/iio/dac/ad9832.h         | 33 ++++++++++++++++++++++++++
+ 3 files changed, 34 insertions(+), 25 deletions(-)
+ create mode 100644 include/linux/iio/dac/ad9832.h
 
->>>>> diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600.h b/drivers/iio/imu/inv_icm42600/inv_icm42600.h
->>>>> index 55ed1ddaa8cb5dd410d17db3866fa0f22f18e9d2..9b2cce172670c5513f18d5979a5ff563e9af4cb3 100644
->>>>> --- a/drivers/iio/imu/inv_icm42600/inv_icm42600.h
->>>>> +++ b/drivers/iio/imu/inv_icm42600/inv_icm42600.h
->>>>> @@ -148,9 +148,9 @@ struct inv_icm42600_suspended {
->>>>>   *  @suspended:                suspended sensors configuration.
->>>>>   *  @indio_gyro:       gyroscope IIO device.
->>>>>   *  @indio_accel:      accelerometer IIO device.
->>>>> - *  @buffer:           data transfer buffer aligned for DMA.
->>>>> - *  @fifo:             FIFO management structure.
->>>>>   *  @timestamp:                interrupt timestamps.
->>>>> + *  @fifo:             FIFO management structure.
->>>>> + *  @buffer:           data transfer buffer aligned for DMA.
->>>>>   */
->>>>>  struct inv_icm42600_state {
->>>>>         struct mutex lock;
->>>>> @@ -164,12 +164,12 @@ struct inv_icm42600_state {
->>>>>         struct inv_icm42600_suspended suspended;
->>>>>         struct iio_dev *indio_gyro;
->>>>>         struct iio_dev *indio_accel;
->>>>> -       u8 buffer[2] __aligned(IIO_DMA_MINALIGN);
->>>>> -       struct inv_icm42600_fifo fifo;
->>>>>         struct {
->>>>>                 s64 gyro;
->>>>>                 s64 accel;
->>>>>         } timestamp;
->>>>> +       struct inv_icm42600_fifo fifo;  
->>>>
->>>> I didn't look at how the drivers use timestamp and fifo, but if they
->>>> are passed as a buffer to SPI, then they need to stay in the DMA
->>>> aligned area of the struct.  
->>>
->>> struct inv_icm42600_fifo has a buffer at its end that is passed to SPI.
->>> Same things for buffer below. That's why both buffers are DMA
->>> aligned.
->>
->> It's a tiny bit esoteric that this is relying on structure alignment rules
->> that says (iirc) the structure element will be aligned to maximum of it's
->> elements and there is tail padding to that size as well.  Thus the whole
->> struct inv_icm42600 is __aligned(IIO_DMA_MINALIGN) and the buffer in there
->> is itself after padding to ensure that it is __aligned(IIO_DMA_MINALIGN)
->>
->>
->> Anyhow, all I think this actually does is avoid one lot of padding
->> (as well as making it slightly easier to reason about!)
->>
->> outer struct {
->> stuff
->> padding to align #1
->> fifo {
->> 	stuff
->> 	padding to align
->> 	buffer
->> 	padding to fill up align
->> }
->> struct timestamp;
->> ///this bit will go away as it can fit in the padding #1 (probably)
->> Padding to align
->> ////
->> u8 buffer[2] __ailgned(IIO_DMA_MINALIGN)
->>
->>
-> 
-> Hello David and Jonathan,
-> 
-> what should I changed for this patch? Rewrite the commit message?
-> 
-
-I had to go digging through the source code to understand any of this, but
-now I finally do.
-
-What would have made this clear to me in the commit message would be to say
-that:
-
-1. The timestamp <anonymous> struct is not used with DMA so it doesn't
-   belong after __aligned(IIO_DMA_MINALIGN).
-2. struct inv_icm42600_fifo contains it's own __aligned(IIO_DMA_MINALIGN)
-   within it so it should not be after __ailgned(IIO_DMA_MINALIGN) in
-   the outer struct either.
-3. Normally 1 would have been considered a bug, but because of the extra
-   alignment from 2, it actually was OK, but we shouldn't be relying on
-   such quirks.
-
+diff --git a/drivers/staging/iio/frequency/ad9832.c b/drivers/staging/iio/frequency/ad9832.c
+index 49388da5a684..4c7d618b2572 100644
+--- a/drivers/staging/iio/frequency/ad9832.c
++++ b/drivers/staging/iio/frequency/ad9832.c
+@@ -22,8 +22,7 @@
+ 
+ #include <linux/iio/iio.h>
+ #include <linux/iio/sysfs.h>
+-
+-#include "ad9832.h"
++#include <linux/iio/dac/ad9832.h>
+ 
+ #include "dds.h"
+ 
+diff --git a/drivers/staging/iio/frequency/ad9832.h b/drivers/staging/iio/frequency/ad9832.h
+index d0d840edb8d2..a0819042a81e 100644
+--- a/drivers/staging/iio/frequency/ad9832.h
++++ b/drivers/staging/iio/frequency/ad9832.h
+@@ -7,27 +7,4 @@
+ #ifndef IIO_DDS_AD9832_H_
+ #define IIO_DDS_AD9832_H_
+ 
+-/*
+- * TODO: struct ad9832_platform_data needs to go into include/linux/iio
+- */
+-
+-/**
+- * struct ad9832_platform_data - platform specific information
+- * @freq0:		power up freq0 tuning word in Hz
+- * @freq1:		power up freq1 tuning word in Hz
+- * @phase0:		power up phase0 value [0..4095] correlates with 0..2PI
+- * @phase1:		power up phase1 value [0..4095] correlates with 0..2PI
+- * @phase2:		power up phase2 value [0..4095] correlates with 0..2PI
+- * @phase3:		power up phase3 value [0..4095] correlates with 0..2PI
+- */
+-
+-struct ad9832_platform_data {
+-	unsigned long		freq0;
+-	unsigned long		freq1;
+-	unsigned short		phase0;
+-	unsigned short		phase1;
+-	unsigned short		phase2;
+-	unsigned short		phase3;
+-};
+-
+ #endif /* IIO_DDS_AD9832_H_ */
+diff --git a/include/linux/iio/dac/ad9832.h b/include/linux/iio/dac/ad9832.h
+new file mode 100644
+index 000000000000..8259a0b0f981
+--- /dev/null
++++ b/include/linux/iio/dac/ad9832.h
+@@ -0,0 +1,33 @@
++/* SPDX-License-Identifier: GPL-2.0+ */
++/*
++ * AD9832 SPI DDS driver
++ *
++ * Copyright 2011 Analog Devices Inc.
++ */
++#ifndef IIO_DDS_AD9832_H_
++#define IIO_DDS_AD9832_H_
++
++/*
++ * struct ad9832_platform_data moved from drivers/staging/iio/frequency/
++ */
++
++/**
++ * struct ad9832_platform_data - platform specific information
++ * @freq0:		power up freq0 tuning word in Hz
++ * @freq1:		power up freq1 tuning word in Hz
++ * @phase0:		power up phase0 value [0..4095] correlates with 0..2PI
++ * @phase1:		power up phase1 value [0..4095] correlates with 0..2PI
++ * @phase2:		power up phase2 value [0..4095] correlates with 0..2PI
++ * @phase3:		power up phase3 value [0..4095] correlates with 0..2PI
++ */
++
++struct ad9832_platform_data {
++	unsigned long		freq0;
++	unsigned long		freq1;
++	unsigned short		phase0;
++	unsigned short		phase1;
++	unsigned short		phase2;
++	unsigned short		phase3;
++};
++
++#endif /* IIO_DDS_AD9832_H_ */
+-- 
+2.43.0
 
 

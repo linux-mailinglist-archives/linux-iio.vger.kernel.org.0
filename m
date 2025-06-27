@@ -1,97 +1,61 @@
-Return-Path: <linux-iio+bounces-21007-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21008-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E5E3AEC050
-	for <lists+linux-iio@lfdr.de>; Fri, 27 Jun 2025 21:45:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1622BAEC082
+	for <lists+linux-iio@lfdr.de>; Fri, 27 Jun 2025 22:00:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 25547640ACB
-	for <lists+linux-iio@lfdr.de>; Fri, 27 Jun 2025 19:45:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C06B81C458DD
+	for <lists+linux-iio@lfdr.de>; Fri, 27 Jun 2025 20:00:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12159194C96;
-	Fri, 27 Jun 2025 19:45:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34E022E9743;
+	Fri, 27 Jun 2025 19:59:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="QRXI3WYu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jl75e3BH"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oi1-f177.google.com (mail-oi1-f177.google.com [209.85.167.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59A311DE4FB
-	for <linux-iio@vger.kernel.org>; Fri, 27 Jun 2025 19:45:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEC7F212D97;
+	Fri, 27 Jun 2025 19:59:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751053540; cv=none; b=tiWXo3KdnoSOIMAT/Hdt9OVVdYnrVk5gmYvPP0bsv1JkdyPUFJALOrrmJI8RMHsTDCjEZzUyn+t5RDty02RlkgbGA4gqjHYzuglcr7Ijti0HpxnQCy4LIM0nQx/k5mcRwC4MdbbbdrKQNdRAeA4KGc7zHJwFSN1wxY4GsyLg9g0=
+	t=1751054394; cv=none; b=mSK/STpPSdxMOr/FPXM5owd/P2sg+SFiIbZALslxsK2x2TU4kxyrzOTeuXb5O+jqr+PNYpAYodyQPDCEcH/6c/QWc5sl/YYKVgCOAWcnrZk1OcjpuU8+YJLr2125rDD3+LL3OmUvSb00cTZAkVfG+wwQN/mzMxPvucL4qjQfB9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751053540; c=relaxed/simple;
-	bh=QRn5xwx7XJKMLTne51Uubho7iQaz55Fgt6gUQUEa2PM=;
+	s=arc-20240116; t=1751054394; c=relaxed/simple;
+	bh=4mRsa86Oo0RFDcooBdEjv4m67WRLaTXVEDibhrLW7SY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FTATuEU9PHDRaRvZ9+I42s1Xj/m+1fgy+KJSi8O1i6/VX80jfDy2KG/gFQBqMTwNRTtobR0J9bDOukVt6yRWQq/I85TuXKA1ZKXTV/Y0YXtnE3YgoFMZS108MKKPNn5enI8MSTuXw1c1NS6SO43n4qOkH8AJ/dplquu/h/YJQrY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=QRXI3WYu; arc=none smtp.client-ip=209.85.167.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-oi1-f177.google.com with SMTP id 5614622812f47-40a55314d06so855532b6e.1
-        for <linux-iio@vger.kernel.org>; Fri, 27 Jun 2025 12:45:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1751053538; x=1751658338; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=1PHv1VdGkBxI9IqaoEgDKrlQycIIKb+rA84lWs0tETQ=;
-        b=QRXI3WYu0jZnIkPFd6x9XR8k9w54hQre+vuDzfli9td5qEtrvlaU496TjpMvSgSan+
-         Su6yPiHLlIETR+im2sJbTBmN6jmNF+2D1c1bppaJ0pH8uxvUv3NI0xZx4SpbgcE5dr8d
-         f05HJNplmHbjJT1sqBIDO1PpWJNPpYmfOV/Cgap22nMz6EUr40eTPQSrIHUT1T3QoJMk
-         J1aFIKCZfi2CTOLfUKluLZ1/hscJbCo4zY63/LLLNG8sSnSvNcz/XUczxOtf3bIX7ElN
-         Vl2cmFZlns3/ptg1HMAnceWGaa9Aw9AKcbC/vcToI39q1VnobEOeMR0f7bIhyAbv2/5L
-         yYBw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751053538; x=1751658338;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1PHv1VdGkBxI9IqaoEgDKrlQycIIKb+rA84lWs0tETQ=;
-        b=iPRIhlwsTEkzIfiCoZ/UENsAD3blV8V5LdQXD66fkkrgegqQc2wbmFk5mFx2uF6sMD
-         2c1ybw2+hptq3Nxx64n3YdXnnDyLq19ywuXiaEmyXoAtem7MQ9eibYhkrtRaXYR1B9A7
-         Pr0Pw+asFJaeKCG0asuEAmEJkEEE2gYnwiA2eui5V3Fobv+pByvt8ntGSQBWJbHYO/My
-         hvz0M6DE7RZRGm0ms57Mr0u5BD4Yqc1G3tZW0irQ0xq8BP4A7iLLEsCcpvbYvyEnfHoW
-         pbKgRN5J+BU01S0y5cUeMOxWVPZlS7mUp7X5Mh70n6B1ZAH2bwETNWUtGJo2JH5XR/y4
-         cj2g==
-X-Forwarded-Encrypted: i=1; AJvYcCVnI8pTYoOwZJwuj0TpgY4QanHExqRigGpjwg3ee5JOn3iufv7wTtqfS29UY+HyJTdBpLrbkxVCYUc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxL4HXuToDzw2ALs72se0dT2j59WKNGyp6aUJlh3CWCpAUWNDMF
-	esXI4hEVcocTYKYUkGCGMQBtGOQtl/BUaGSzJZJPu0Zj6h7JWgJHLa4RhiVGXZODI20=
-X-Gm-Gg: ASbGncu4dQqbRHEuz5hpTFluesDHbqFoe14v3fAhCHDR3XPfDtO+vpxS5BZs5WYXNUJ
-	3fYiA2OLBrm91q+SM1lWpGOgAh8SCJ/etwJVjptvC/Wg/TctRkKOOxc0nUU5eZ2jGgVC4lFan1X
-	nC+WGUsR8BKRq5ECHuMh8vcsXm1Mq4ygwC+Qf84W6r7MSvXPgCzOg9BIrLu+tV/wuAm1tAl8Fqb
-	aQHpaccNZDrKD9+j1t5aY4dLxWRFi/k8l93EK+HwgedMlwr6DRLFkTiON6oWT7YK8DBf37asmws
-	aip5Wg1UqJW7o1SNUipB5ej8r+7nxTpUdw5eh8VgXCb6iiJGv2Zr2KIRzegamLLsZu2xeA==
-X-Google-Smtp-Source: AGHT+IGOy33iVFqaz2J3YryBDyHCiRkin6krtfcbh3XEjok/Bk15oJetu93it8PEur2H1TKYtZrRnQ==
-X-Received: by 2002:a05:6808:300f:b0:404:c561:6225 with SMTP id 5614622812f47-40b33e4a4ecmr3388652b6e.30.1751053538324;
-        Fri, 27 Jun 2025 12:45:38 -0700 (PDT)
-Received: from localhost ([2603:8080:b800:f700:f3a4:7b11:3bf4:5d7b])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-611b848b3f6sm312396eaf.9.2025.06.27.12.45.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Jun 2025 12:45:37 -0700 (PDT)
-Date: Fri, 27 Jun 2025 22:45:36 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Abdalla Ahmad <Abdalla.Ahmad@sesame.org.jo>
-Cc: Andy Shevchenko <andriy.shevchenko@intel.com>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
+	 Content-Type:Content-Disposition:In-Reply-To; b=F/e1eSWbacYi9qgJWYusqOXIyuhawaXAnLPJ3WZybY7ll28Hb8ZRlp4m+NP6bQ/jH+jPfs3cWk9g14hVyzQPZG38rkivsLVoiZ+U5u1zVmqKU8l2uK4oASsDHvZd6Q31DdrClDFK6Ar662UUAh8Ac/Az5V7DxV4a6auTCUBqzcA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jl75e3BH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A629EC4CEE3;
+	Fri, 27 Jun 2025 19:59:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1751054393;
+	bh=4mRsa86Oo0RFDcooBdEjv4m67WRLaTXVEDibhrLW7SY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=jl75e3BHTr61OF4y9Ruh5ZrjXbWeATtjFLcSR4SLt8Y7t+ldMj3iilKEXNTROseP8
+	 ugBzgD8m/W+9q1q/+7hHmEiV4mwrPx6vyQfXxuxjMMAJtUdhN63fzVt6KiBr+cixed
+	 95ljvUeD31tVeHd9TBFjpPnlda4XFeel3/f8THBjIFion7z6/iQpVqAy+NfCzHWMOE
+	 jwf/vNK9/PPg0Peon5qT+yPaCwTRowUFGMWp+/cFRdb2Nel1A+UlM3R8vv3H2nx0tC
+	 EraGgWC2idAENTo3Cf6NN3DY2jRcpJsz+Ri6C2Xu8RHkscCP2Ou2ItrUSSsIkAXiBz
+	 DucY2roYat2dQ==
+Date: Fri, 27 Jun 2025 14:59:52 -0500
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Michael Hennerich <Michael.Hennerich@analog.com>,
+	Mark Brown <broonie@kernel.org>, linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org, Andy Shevchenko <andy@kernel.org>,
 	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Gabriel Shahrouzi <gshahrouzi@gmail.com>,
-	open list <linux-kernel@vger.kernel.org>,
-	"open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
-	"open list:STAGING SUBSYSTEM" <linux-staging@lists.linux.dev>
-Subject: Re: [PATCH] drivers: staging: iio: frequency: ad9832.h: Fixed TODO
- note.
-Message-ID: <36b382da-dc1c-4aeb-add0-a96082ea71d9@suswa.mountain>
-References: <20250627175114.548076-1-abdalla.ahmad@sesame.org.jo>
- <aF7kW6xRxRb0VN5H@smile.fi.intel.com>
- <AM9PR08MB6114261F0CA8CD89EC443E59A145A@AM9PR08MB6114.eurprd08.prod.outlook.com>
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, linux-spi@vger.kernel.org,
+	Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>
+Subject: Re: [PATCH 6/9] dt-bindings: trigger-source: add ADI Util
+ Sigma-Delta SPI
+Message-ID: <175105439247.4081173.1981785333834339523.robh@kernel.org>
+References: <20250620-iio-adc-ad7173-add-spi-offload-support-v1-0-0766f6297430@baylibre.com>
+ <20250620-iio-adc-ad7173-add-spi-offload-support-v1-6-0766f6297430@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -100,24 +64,22 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <AM9PR08MB6114261F0CA8CD89EC443E59A145A@AM9PR08MB6114.eurprd08.prod.outlook.com>
+In-Reply-To: <20250620-iio-adc-ad7173-add-spi-offload-support-v1-6-0766f6297430@baylibre.com>
 
-On Fri, Jun 27, 2025 at 07:29:36PM +0000, Abdalla Ahmad wrote:
-> Hi
+
+On Fri, 20 Jun 2025 17:20:12 -0500, David Lechner wrote:
+> Add new binding for the ADI Util Sigma-Delta SPI FPGA IP Core.
 > 
-> > Nothing of the above explains "why you are doing this".
+> This is used to trigger a SPI offload based on a RDY signal from the
+> ADC while masking out other signals on the same line.
 > 
-> The original TODO in drivers/staging/iio/frequency/ad9832.h was:
-> > TODO: struct ad9832_platform_data needs to go into include/linux/iio
-> So I guess if it really needs to go into include/linux/iio and ad9832 being a DAC, then include/linux/iio/dac/ is the appropriate place. Otherwise, the TODO note needs to be removed.
->
+> Signed-off-by: David Lechner <dlechner@baylibre.com>
+> ---
+>  .../trigger-source/adi,util-sigma-delta-spi.yaml   | 49 ++++++++++++++++++++++
+>  MAINTAINERS                                        |  5 +++
+>  2 files changed, 54 insertions(+)
+> 
 
-Please, change your email client to line wrap at 74 characters.
-
-The way you quoted Andy's email it weird as well.  You'll want to
-configure your email client to do it properly.
-
-regards,
-dan carpenter
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
 
 

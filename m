@@ -1,92 +1,90 @@
-Return-Path: <linux-iio+bounces-20998-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-20999-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE7BBAEBC93
-	for <lists+linux-iio@lfdr.de>; Fri, 27 Jun 2025 17:55:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04580AEBCA0
+	for <lists+linux-iio@lfdr.de>; Fri, 27 Jun 2025 17:56:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7FAC93AAAF7
-	for <lists+linux-iio@lfdr.de>; Fri, 27 Jun 2025 15:54:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D7AE164679
+	for <lists+linux-iio@lfdr.de>; Fri, 27 Jun 2025 15:56:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28AFB2E973C;
-	Fri, 27 Jun 2025 15:54:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FB272E9751;
+	Fri, 27 Jun 2025 15:56:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fVKxqA29"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ACNE+BzY"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4916819D89B;
-	Fri, 27 Jun 2025 15:54:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BFF219D89B;
+	Fri, 27 Jun 2025 15:56:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751039666; cv=none; b=UIybUva11SO24oivp+zHLTH+8/b0ggd/3/L3oGalvvKpAvi4n/Q/naIZJZlv0vq+gF8BUoTJE75bslFblRKRLRuPQCFPNGb9FCC7RvVfEfu3pEuup+TUFWJY9uPavZojghfZWxc0ck/qSy9DC3BHu5fki2OAbGY7L42gIVRV6r0=
+	t=1751039808; cv=none; b=E4itW3d1yl339q6mLFNVqam9X4hCiQ/SkFJDQKIZ73U0j5m/cvaai5u1g+12QP6qZhc9s7DiPCbwPyPnX5MFdt/iUvjir16dJWGJfobHeB/zSg8e201LPjbreIuweb2en4cSMf4FgLsX9gORluV/jrGFcBNtIlmUPYpAWATDj6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751039666; c=relaxed/simple;
-	bh=Dzk7FkZrP0cI66APZQkjMGI2vyePpXuiq+b5mTMeppg=;
+	s=arc-20240116; t=1751039808; c=relaxed/simple;
+	bh=seh8opfNudjWdQklnYEbjMOaE4msR+OSBfaNqXdugOQ=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=IiNrzCU3jQfj3LiLGQVlGf0fkE7nzuPVPv3cS4i1tbZynGNf4asLRKuzB0Fo7ATlSFByXn9y5Ogp2Wl3C/3uKFKHGiGEjIyXyqPECrG/FCYdzjuyQCtXKkpdiDaQot7eXxZGYqhX3sXMzRnstDA7JtIxP5Ithmt4s00H8XfMdPg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fVKxqA29; arc=none smtp.client-ip=209.85.128.48
+	 Content-Type:MIME-Version; b=QPC6ksEPhjVRFf72h89pFecrJhR3V/ZAsbPW5ZTVivXQ9ml+OdAvPxg92/cdVmALngv3lyGzjOR1tcWvrF6bKQlBGcRiVIb3lr2zqot9oUwosbfoUiIhEicUtmqYfMyQfqnYlOHJdpmMvL25hz/vKfz6SG0eUXIZI9Miv6ucK80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ACNE+BzY; arc=none smtp.client-ip=209.85.221.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-453066fad06so14758545e9.2;
-        Fri, 27 Jun 2025 08:54:25 -0700 (PDT)
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-3a510432236so1825307f8f.0;
+        Fri, 27 Jun 2025 08:56:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1751039664; x=1751644464; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1751039805; x=1751644605; darn=vger.kernel.org;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=tr68OiRxkYNsG7/O5fexvNcA0uazWCS0xz7KV2c9znY=;
-        b=fVKxqA295SDiLFRxtvRmnuqdpCucuXF0URpBsU+GnCJYZuaALAa11yo/guOszb/qkO
-         qyr5J6Pxnzl2BWvx+rjuP2fKjfb8ZzPkWBYwe7w71rPu7Z+6iBY1a8H+ms4CMiwKFxMU
-         P8kFBvZwTvNX/aD+XNiwwcHYSHgJO4oBf+l7urpONY8SfmBZ6JjtnGlRMW6G8spOU3iA
-         7hHD/6pGHrZ9hJpHeuhFUdA0YsTxdffaglXEcZVDSh2g+SiPfcDeLX43MBfPYC7QHbbJ
-         e9yqcdaAQcIatCCsEl8LgZH6+Go17CMQiqINhZVGbdUkCdIjXSdzWG20GBs7nZQUKHAq
-         1qAQ==
+        bh=6O6idYvvd7oXDFef9YBBpW9+f8KvCtTxmkJ8rEx+Gcc=;
+        b=ACNE+BzYelsIwLswq4cj+8sQ7Srcy+NyCyc9pYU7pAfYGgdg4FdJ1Xsd0hVi+4uKC7
+         l3vTEhhouPcSX+CiE2K1RfI7Kyg4Tt9Fd5+LKccLsX4ODldOhvt0mbYKBUi2uSeDpcD0
+         CsCOCXCa3r/R3XL9oAL7vS1mhuh4qF3DZkyhIs6q+Qq0u8tvOHQptYFZy7JFAWWvXRHo
+         kMnDzB3/TMhh51Nxf+cx2/Z+fOTtfp9dl33kSrHqRIK4jaKq/smrSJz3S1vDwcmdpUeq
+         jjJpY1fJeVoK9SOYURZKpvEPr0sUZaSOYqsckSuoqAuFoX4/c+WsOIuP/mRFbeVU+hT5
+         kfrw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751039664; x=1751644464;
+        d=1e100.net; s=20230601; t=1751039805; x=1751644605;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=tr68OiRxkYNsG7/O5fexvNcA0uazWCS0xz7KV2c9znY=;
-        b=ZLc6AE+cc/MvB9vC+90pgGGS95mb/6V6mouaoS6PQ7seT3vchFjbrCOPSSzN2v33sU
-         NPtNAQ+WthNa5J6F9/nzCEOYsqJbj+phZQBObWtqsDYQY0dKdxRsigXwTHmQANP+4hDX
-         plfGaUyWN5Odyyc/Wlv7wA77tXsXubMSm0kYTE6eUPYOXi4hBsdUhyOCDN2qF0UBduku
-         DsjJlSv72DGdcceDNxoNwIo7qOkTOC6cYMHFFvKLSLo6SFwB999Do0OknGFH02Om440Q
-         DiRryFQiJzd8C0OeTTEBSMCGrdmNwjQub7GpJeBl/eCw8/+6cARm7qB4JEYJGs66/8RX
-         6Sbg==
-X-Forwarded-Encrypted: i=1; AJvYcCUQ37ZNU/03AQaJQXmNg5peyo3lotjYyLIw70h/rkMiNBB71QHNPLeYoaMTzxm3e5Ewv6e824eHT8A=@vger.kernel.org, AJvYcCWXkRN/oKGePzxXGIkD19ckLFtszJVTmDgtG3mxUFK8f+RnvU31wyDeuyBYtGR2JyzP/mR5uuz5r5AteoP0@vger.kernel.org
-X-Gm-Message-State: AOJu0YzhbvQHFqs1VVhaRz20g5MuQhf3Ticca0e99MrpEvAbkg/pijGA
-	rEQA/4ZTkim7wkmlD2RuncOjas1sVdgrM7lopzBSUz0s9uYekZ76Y98V
-X-Gm-Gg: ASbGncvlbQcr3PBEOoJtpnY9cLy7FqwbdKyhtShVgQUAwiMYaCemmNG18WIqqiVy/Sm
-	fyj5qgnz+HxOp04qJpamYBfewHOicbYDSFDLMDOnKyHmBdfW2q4Be7iXdEQNvdFN8EWHedxTg0E
-	5dZKOrY481rYFe6IEP7Ur5ytsBiaVxoP0rc+ThVM17+0BT7LJvJTaLOWXMKygmO+OLwambCx+kW
-	g7K2Md1y6eKBvO9/pMBF/LT0/uM+OBu9tB/1vfBkkYPuG31CLqTo8w8fGFjU+kXiSDFI6WG60g5
-	P8OFfzNOXRoo61XuMoSS4P3UL7DebNxNkH0uHhsMUFa/TIFbVwEtyqzPtGY4dkxnOfbT8g==
-X-Google-Smtp-Source: AGHT+IG52LLY5tfp79dpkJwmL3CkYmsnztQvfc0hEH9hajFNoydKgQhJZ+OGgT451bj5FJaXII5dnQ==
-X-Received: by 2002:a05:600c:1c9d:b0:453:c39:d0d0 with SMTP id 5b1f17b1804b1-45392e83a55mr18445845e9.13.1751039663395;
-        Fri, 27 Jun 2025 08:54:23 -0700 (PDT)
+        bh=6O6idYvvd7oXDFef9YBBpW9+f8KvCtTxmkJ8rEx+Gcc=;
+        b=Z6b9dlPRI8ZtrroNc0P4NaM4qB3Gp7zY/3k6/wI+JUaY0Z3IGEkaFYFOJfthcLlg59
+         Eti8bBDHoPHtAWfO1Mk7CU+ZGRJ5v4SCw4CsrgLJwkUtYlFB1laz/Vod0LwaxP89KkZP
+         qnGQw2KY6Oqm6Ecp51Lu7grSAV45NBnfrycmmpH1rLhMXyOBeIB7yVwGdkpTUz2JmUPd
+         Ki6cwJnnLpenL/8MGjqR9JbKpcFj4zwuxfo2pZhBguMC7+JmNv6BHNeXWWI+Mu7n95D/
+         jzbJIDVsfc01fqel4QAA+mMvajImjjOIvrqx+8ahoZ8Q5BHhziEEJHeXwDpDnDN6XarH
+         AkiA==
+X-Forwarded-Encrypted: i=1; AJvYcCUEBSvKsZrQMrUwkXXw9xi3Ve8ACkyPOQodVOGFk9Yo4hgR/zAJM6+yD6LynxfTLaAhH1OTPCUFd5+Gjjk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyfUVTmrqGFPOPJi9nh6ZZZFDrESNQAvKGHCYDUKAQUoPKxi+ui
+	4Yn1cKMofRuvyUOwa90E9RiPxRRaA7PP9knn+NMFsVQsith2PsTjiUP5
+X-Gm-Gg: ASbGncv3Dxymfum5l7HeXebRp5L9nNGl0ddb2T8s/q1gQZsrBy9k/D9W/ZsBRhrNJIt
+	4LY8h4VgWXX0XoEiO/EjT6bmsDgVT/bQ4zfN0BAGUgxqgQ3xhLgzL6F2D24JJDj92l4tLrx64jy
+	Xl58ZAfxRFxY2atg58bp/sk/m6Djb2F85cZP/GhI7wxtdbEaz/bobxpNh09kPMfzTKd8aDn1975
+	cr/1N+B+DYYxGWdzRvjELIuMl545xlUwWHpvZBL0bgvPhqkURpR6rwc+vxVXmMZwWsmCghV7+6r
+	F802nhDGrKjA7vIgtwY8xvKmMBmonyB91icEJsB2HPSpfyF3Zu1xMCsMdMV6BxdYp3FhxQ==
+X-Google-Smtp-Source: AGHT+IE4a4I72nLCTRYleWtFC5YZjODy9qWh87mZgIA844i4/nZGIblwiP9IwslChuceELFRidx+sg==
+X-Received: by 2002:a05:6000:4186:b0:3a5:57b7:cd7b with SMTP id ffacd0b85a97d-3a8f482cf28mr3216991f8f.22.1751039805292;
+        Fri, 27 Jun 2025 08:56:45 -0700 (PDT)
 Received: from [192.168.1.187] ([161.230.67.253])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4538234bc1fsm84064705e9.14.2025.06.27.08.54.22
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a892e52c99sm2995844f8f.49.2025.06.27.08.56.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Jun 2025 08:54:23 -0700 (PDT)
-Message-ID: <c0f4907eb762e618dcf64a6821320f814715be5f.camel@gmail.com>
-Subject: Re: [PATCH] iio: dac: ad3530r: Fix incorrect masking for channels
- 4-7 in powerdown mode
+        Fri, 27 Jun 2025 08:56:45 -0700 (PDT)
+Message-ID: <cd0b9044ce6434e9313a4fddf73897800821aec3.camel@gmail.com>
+Subject: Re: [PATCH] iio: adc: ad7380: remove unused oversampling_ratio
+ getter
 From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Kim Seer Paller <kimseer.paller@analog.com>, Lars-Peter Clausen
-	 <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, 
- Jonathan Cameron
-	 <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, Nuno
- =?ISO-8859-1?Q?S=E1?=
-	 <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- linux-iio@vger.kernel.org, 	linux-kernel@vger.kernel.org
-Date: Fri, 27 Jun 2025 16:54:33 +0100
-In-Reply-To: <20250626-bug_fix-v1-1-eb3c2b370f10@analog.com>
-References: <20250626-bug_fix-v1-1-eb3c2b370f10@analog.com>
+To: David Lechner <dlechner@baylibre.com>, Michael Hennerich	
+ <michael.hennerich@analog.com>, Nuno =?ISO-8859-1?Q?S=E1?=
+ <nuno.sa@analog.com>,  Jonathan Cameron	 <jic23@kernel.org>, Andy
+ Shevchenko <andy@kernel.org>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Fri, 27 Jun 2025 16:56:55 +0100
+In-Reply-To: <20250624-iio-adc-ad7380-remove-unused-oversampling_ratio-getter-v1-1-26cbee356860@baylibre.com>
+References: 
+	<20250624-iio-adc-ad7380-remove-unused-oversampling_ratio-getter-v1-1-26cbee356860@baylibre.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.56.2 
@@ -97,56 +95,58 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-On Thu, 2025-06-26 at 16:38 +0800, Kim Seer Paller wrote:
-> In the current implementation of ad3530r_set_dac_powerdown() function,
-> the macro AD3530R_OP_MODE_CHAN_MSK(chan->channel) is used to generate
-> the bitmask for the operating mode of a specific channel. However, this
-> macro does not account for channels 4-7, which map to the second
-> register AD3530R_OUTPUT_OPERATING_MODE_1 for the 8 channeled device. As
-> a result, the bitmask is incorrectly calculated for these channels,
-> leading to improper configuration of the powerdown mode. Resolve this
-> issue by adjusting the channel index for channels 4-7 by subtracting 4
-> before applying the macro. This ensures that the correct bitmask is
-> generated for the second register.
+On Tue, 2025-06-24 at 22:44 +0000, David Lechner wrote:
+> Remove a call to ad7380_get_osr() in ad7380_init_offload_msg. The
+> returned value is never used.
 >=20
-> Fixes: 93583174a3df ("iio: dac: ad3530r: Add driver for AD3530R and AD353=
-1R")
-> Signed-off-by: Kim Seer Paller <kimseer.paller@analog.com>
+> Signed-off-by: David Lechner <dlechner@baylibre.com>
 > ---
-
-LGTM,
+> I wrote this a while back but it looks like it never got sent so here
+> it is now.
+> ---
 
 Reviewed-by: Nuno S=C3=A1 <nuno.sa@analog.com>
 
-> =C2=A0drivers/iio/dac/ad3530r.c | 4 +++-
-> =C2=A01 file changed, 3 insertions(+), 1 deletion(-)
+> =C2=A0drivers/iio/adc/ad7380.c | 5 -----
+> =C2=A01 file changed, 5 deletions(-)
 >=20
-> diff --git a/drivers/iio/dac/ad3530r.c b/drivers/iio/dac/ad3530r.c
+> diff --git a/drivers/iio/adc/ad7380.c b/drivers/iio/adc/ad7380.c
 > index
-> f9752a571aa53ca0d7e199ed6a78550358185bf9..6134613777b8e1d4516109b74e0b3b7=
-9edb1
-> ae75 100644
-> --- a/drivers/iio/dac/ad3530r.c
-> +++ b/drivers/iio/dac/ad3530r.c
-> @@ -166,7 +166,9 @@ static ssize_t ad3530r_set_dac_powerdown(struct iio_d=
-ev
-> *indio_dev,
-> =C2=A0	=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 AD3530R_OUTPUT_OPERATING_MODE_0 :
-> =C2=A0	=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 AD3530R_OUTPUT_OPERATING_MODE_1;
-> =C2=A0	pdmode =3D powerdown ? st->chan[chan->channel].powerdown_mode : 0;
-> -	mask =3D AD3530R_OP_MODE_CHAN_MSK(chan->channel);
-> +	mask =3D chan->channel < AD3531R_MAX_CHANNELS ?
-> +	=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 AD3530R_OP_MODE_CHAN_MSK(chan->cha=
-nnel) :
-> +	=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 AD3530R_OP_MODE_CHAN_MSK(chan->cha=
-nnel - 4);
-> =C2=A0	val =3D field_prep(mask, pdmode);
+> d96bd12dfea632b62475d6537c8d6601b042de1f..abcd4cc70074723303b9b67e2b89b0c=
+4b43c
+> 6884 100644
+> --- a/drivers/iio/adc/ad7380.c
+> +++ b/drivers/iio/adc/ad7380.c
+> @@ -1165,7 +1165,6 @@ static int ad7380_init_offload_msg(struct ad7380_st=
+ate
+> *st,
+> =C2=A0	struct spi_transfer *xfer =3D &st->offload_xfer;
+> =C2=A0	struct device *dev =3D &st->spi->dev;
+> =C2=A0	const struct iio_scan_type *scan_type;
+> -	int oversampling_ratio;
+> =C2=A0	int ret;
 > =C2=A0
-> =C2=A0	ret =3D regmap_update_bits(st->regmap, reg, mask, val);
+> =C2=A0	scan_type =3D iio_get_current_scan_type(indio_dev,
+> @@ -1195,10 +1194,6 @@ static int ad7380_init_offload_msg(struct ad7380_s=
+tate
+> *st,
+> =C2=A0		}
+> =C2=A0	}
+> =C2=A0
+> -	ret =3D ad7380_get_osr(st, &oversampling_ratio);
+> -	if (ret)
+> -		return ret;
+> -
+> =C2=A0	xfer->bits_per_word =3D scan_type->realbits;
+> =C2=A0	xfer->offload_flags =3D SPI_OFFLOAD_XFER_RX_STREAM;
+> =C2=A0	xfer->len =3D AD7380_SPI_BYTES(scan_type) * st->chip_info-
+> >num_simult_channels;
 >=20
 > ---
-> base-commit: 0a2857e778599c2794dc89c40dc79ead631b34df
-> change-id: 20250626-bug_fix-404361f2f190
+> base-commit: b57cb7c47e31244bef6612f271c5dc390f761e17
+> change-id: 20250624-iio-adc-ad7380-remove-unused-oversampling_ratio-gette=
+r-
+> e54413627fe0
 >=20
 > Best regards,
 

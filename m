@@ -1,58 +1,62 @@
-Return-Path: <linux-iio+bounces-21067-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21068-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9290CAEC94A
-	for <lists+linux-iio@lfdr.de>; Sat, 28 Jun 2025 19:11:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E01B7AEC94E
+	for <lists+linux-iio@lfdr.de>; Sat, 28 Jun 2025 19:12:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 62CEE1894E58
-	for <lists+linux-iio@lfdr.de>; Sat, 28 Jun 2025 17:12:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D3733B8066
+	for <lists+linux-iio@lfdr.de>; Sat, 28 Jun 2025 17:11:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9E33261393;
-	Sat, 28 Jun 2025 17:11:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FBB9264628;
+	Sat, 28 Jun 2025 17:11:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HRWdCVYG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J6rNXZTi"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74BF0155CB3;
-	Sat, 28 Jun 2025 17:11:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26AFA2192F5;
+	Sat, 28 Jun 2025 17:11:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751130699; cv=none; b=PDovr7L8tM0ifSZPt50RDby5O+eYkqRhFLtJTx7LLlcP+/BorNKpTHNRQhajOo/O71lhYuknptHspT/LaRZOIFEyGmbOrUocCmaIlsWmHO9SFrXWxMV7F6OlyfQUEJvRCiFuxBF0RwDf5LqC6gEZXsGEMDqYueVHzjdJnsspylw=
+	t=1751130713; cv=none; b=abXNlxr3R5ZM7no5lvkFnK6G7bbSq+Nx+mvToaojOnyDcT3KBQvlHbyIOvivo34gB7QmD2tb7BSsuUSNd/VmUsHrfLBtGfopD8YMFSGJUZfKsP1PFaHFbi/gckcHG+0KnNDD2Cx9AqxAv04wrJiPS8WYJ01Y9ho56ZovnJD/U78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751130699; c=relaxed/simple;
-	bh=fHiykYGJP1EunXCsYwxhkHiEOe3nWiAfPDrLDIHzYXk=;
+	s=arc-20240116; t=1751130713; c=relaxed/simple;
+	bh=gbX/ADDRKHL1YSumcPD7An9QSnUCnzbwQpd1EUAejBw=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ar0+ZUxc0xzCK29CddN+MfAEFN5ZojtVPMPfc/i9Nw36aue7D60vbJ9mLL82EeuEXpVElqbWOwEAqNixVZ+pHgY4+UzlxRyH0sJqUyeW6tUnBBWrLe3Bm6GdPVnF6M8tQVYgeTG6gLmOsfBRw8QlUVqC5FJkmVXSbh38ZILuoRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HRWdCVYG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E7A4C4CEEA;
-	Sat, 28 Jun 2025 17:11:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=VMQxU2gpLCwzXMWb98CDco5EoeeIuLFmeuB6WoX6co+ktibZXnpKPLwX7Qv8XWhrBabf1xcp4YshVDFssVSbdZRj/IkvvQlz+VaNBWjZv8t9BCPLctRQ0SPF4/XjWrUyiq671a+dV95/D5VznMxqa0VOEBDXwm0EvULO8CnlB24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J6rNXZTi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B240EC4CEEA;
+	Sat, 28 Jun 2025 17:11:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751130696;
-	bh=fHiykYGJP1EunXCsYwxhkHiEOe3nWiAfPDrLDIHzYXk=;
+	s=k20201202; t=1751130712;
+	bh=gbX/ADDRKHL1YSumcPD7An9QSnUCnzbwQpd1EUAejBw=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=HRWdCVYGuGMakdtbS4Sn3E690+F+Zi1yY3MFSXRoA/XzcMBnzgdEZQKxAUOmtPtYU
-	 DiRalHnYPCr1HEgYo7UjUxxCUCCRn8d/g/EvIQXxY3/ahjFGOcLyf+7y+XQpoD3iQ0
-	 c9TAgSNsMDmm1+Nl12UgG3B83jfua86FVFwn60GsiVJtgchU5OqCs4l3tTkYypfWAB
-	 pDQxFPLvV8TwJ2YZ0gLmTTDWbrB9sJuN+PQsdg5TFoNp7DiK95e23nFk3p8jvq0k5m
-	 rEDRw6j05fuqub6SXm4QNKe/0WoMK99hhOYYxJ4m2McAdxqx5TBqEPWE2DJmGLZI6G
-	 ShB07O30b4xKg==
-Date: Sat, 28 Jun 2025 18:11:29 +0100
+	b=J6rNXZTi7ud19aYrGpHvFIT5bVPHvXcdZf/YBYoFr7zNOK5FGCvq0rQMMOrgSt5W0
+	 JfUmfZTCjqfSY4K2ipwjg5mcPLQICN7u82z3sUksEyhqoyoHLhLMiSU1kdleTmtPs7
+	 Z5CURrmEgAglj6MKjdl8rvi9UdH7YsJEHTkDxPaXwKQQLaqBqmPooC6kQeDicaE/Nq
+	 UN16BHziESBPzF+eIpZm9ohQG70AETwrNkJ2lfKad41KeR/EOqkT9Qewr4tBh6vgZu
+	 RCObK5H8BPBGO01jUURK1klYQh+VqlSMSj/JVyhGPN7xTphjwDAoqrOtrZee8qVLeQ
+	 O3TbbkDsUDHsw==
+Date: Sat, 28 Jun 2025 18:11:43 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Waqar Hameed <waqar.hameed@axis.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, <kernel@axis.com>,
- <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH v2 3/3] iio: Add driver for Nicera D3-323-AA PIR sensor
-Message-ID: <20250628181129.08f55227@jic23-huawei>
-In-Reply-To: <pndtt45aq6m.fsf@axis.com>
-References: <cover.1749938844.git.waqar.hameed@axis.com>
-	<5d12fcd6faae86f7280e753f887ea60513b22ea9.1749938844.git.waqar.hameed@axis.com>
-	<20250622120756.3865fc4b@jic23-huawei>
-	<pndtt45aq6m.fsf@axis.com>
+To: Maud Spierings <maudspierings@gocontroll.com>
+Cc: Maud Spierings via B4 Relay
+ <devnull+maudspierings.gocontroll.com@kernel.org>, David Lechner
+ <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy
+ Shevchenko <andy@kernel.org>, Christian Heusel <christian@heusel.eu>, Linus
+ Walleij <linus.walleij@linaro.org>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v4] iio: common: st_sensors: Fix use of uninitialize
+ device structs
+Message-ID: <20250628181143.05d07d89@jic23-huawei>
+In-Reply-To: <5fc05140-76cd-4f19-bbfe-e27e90f21983@gocontroll.com>
+References: <20250527-st_iio_fix-v4-1-12d89801c761@gocontroll.com>
+	<20250531180319.21365159@jic23-huawei>
+	<5fc05140-76cd-4f19-bbfe-e27e90f21983@gocontroll.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,88 +67,55 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-> >> +static int d3323aa_set_lp_filter_freq(struct iio_dev *indio_dev, const int val,
-> >> +				      int val2)
-> >> +{
-> >> +	struct d3323aa_data *data = iio_priv(indio_dev);
-> >> +	size_t idx;
-> >> +
-> >> +	/* Truncate fractional part to one digit. */
-> >> +	val2 /= 100000;
-> >> +
-> >> +	for (idx = 0; idx < ARRAY_SIZE(d3323aa_lp_filter_freq); ++idx) {
-> >> +		int integer = d3323aa_lp_filter_freq[idx][0] /
-> >> +			      d3323aa_lp_filter_freq[idx][1];
-> >> +		int fract = d3323aa_lp_filter_freq[idx][0] %
-> >> +			    d3323aa_lp_filter_freq[idx][1];
-> >> +
-> >> +		if (val == integer && val2 == fract)
-> >> +			break;
-> >> +	}
-> >> +
-> >> +	if (idx == ARRAY_SIZE(d3323aa_lp_filter_freq))
-> >> +		return -ERANGE;  
-> >
-> > It's a patch not a range check, so -EINVAL may make more sense as
-> > a return value.  
-> 
-> Hm, `ERANGE`s message does say "*Numerical result* out of range...",
-> which I can see is not really applicable here (strictly speaking, we are
-> really not "calculating" anything...). However, isn't `EDOM` actually
-> the better alternative here? Consider the following
-> 
->   echo a > in_proximity_hardwaregain
->   sh: write error: Invalid argument
-> 
->   echo 1234 > in_proximity_hardwaregain
->   sh: write error: Numerical argument out of domain
+On Mon, 23 Jun 2025 15:27:44 +0200
+Maud Spierings <maudspierings@gocontroll.com> wrote:
 
-I'd still stick to -EINVAL as correct if not that informative simply
-because EDOM is very rarely used (wasn't one I even knew existed
-until today ;)
-
-> >> +				       data);
-> >> +	if (ret)
-> >> +		return dev_err_probe(
-> >> +			data->dev, ret,
-> >> +			"Could not add disable regulator action\n");  
-> > Odd formatting.
-> >
-> > 		return dev_err_probe(dev, ret,
-> > 				     "Could not add disable regulator action\n");
-> >
-> > It's fine to go a little over 80 chars if it helps readability and here I think
-> > it does. However it is vanishingly unlikely this would fail (as it basically means
-> > memory allocation is failing in which case not much is going to work) so
-> > common practice is not to bother with prints for failed devm_add_action_or_reset().
-> > Those prints do make sense for devm calls that are doing something more complex
-> > though so keep the rest.
-> >
-> > 	if (ret)
-> > 		return ret;
-> >
-> > is fine here.  
+> On 5/31/25 19:03, Jonathan Cameron wrote:
+> > On Tue, 27 May 2025 08:36:08 +0200
+> > Maud Spierings via B4 Relay <devnull+maudspierings.gocontroll.com@kernel.org> wrote:
+> >   
+> >> From: Maud Spierings <maudspierings@gocontroll.com>
+> >>
+> >> Throughout the various probe functions &indio_dev->dev is used before it
+> >> is initialized. This caused a kernel panic in st_sensors_power_enable()
+> >> when the call to devm_regulator_bulk_get_enable() fails and then calls
+> >> dev_err_probe() with the uninitialized device.
+> >>
+> >> This seems to only cause a panic with dev_err_probe(), dev_err(),
+> >> dev_warn() and dev_info() don't seem to cause a panic, but are fixed
+> >> as well.
+> >>
+> >> The issue is reported and traced here: [1]
+> >>
+> >> Link: https://lore.kernel.org/all/AM7P189MB100986A83D2F28AF3FFAF976E39EA@AM7P189MB1009.EURP189.PROD.OUTLOOK.COM/ [1]
+> >> Cc: stable@vger.kernel.org
+> >> Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
+> >> ---
+> >> When I search for general &indio_dev->dev usage, I see quite a lot more
+> >> hits, but I am not sure if there are issues with those too.  
+> > 
+> > For probe error messages I'd like to see them all moved over to the parent
+> > device but more generally it may make sense to use indio_dev->dev
+> > 
+> > As per the earlier discussion I still wonder if we should harden
+> > device_set_deferred_reason() against this condition just as a
+> > defense in depth thing.
+> > 
+> > Anyhow, this is a good change in any case. Applied to the fixes-togreg-for-6.16 branch
+> > that I'll rebase on rc1 once available.  
 > 
-> `clang-format` trying its best here. Let's just remove the print then.
-> 
-> There are a bunch drivers in iio that are printing in this
-> devm_add_action_or_reset()-error-path (though it looks like the majority
-> are not doing that). Probably not really worth changing those; in case
-> someone would really "miss" the (very unlikely) prints.
+> Hi, I've not seen this patch pass by in the stable tree or will this get 
+> submitted for 6.17-rc1?
 
-If they are doing dev_err_probe() it won't print anyway as that only 
-returns -ENOMEM which dev_err_probe() doesn't print on simply because
-you get lots of info if a memory allocation fails anyway.
-
-https://elixir.bootlin.com/linux/v6.15.3/source/drivers/base/core.c#L5017
-
-So on that basis it would be a sensible I think to do a cleanup patch set
-to drop that particular devm_add_action_or_reset() / dev_err_probe()
-combination.  If it were just a case of unlikely (rather than impossible)
-I'd agree that it wasn't worth the churn!
+I'm just being a bit slow this cycle. I'll send a fixes pull request out
+soonish then it'll go into 6.16-rcX and after that get pulled back into stable.
 
 Jonathan
 
-
+> 
+> Sorry if I am being too impatient.
+> 
+> kind regards,
+> Maud
 
 

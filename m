@@ -1,183 +1,200 @@
-Return-Path: <linux-iio+bounces-21061-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21062-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D252AEC8D8
-	for <lists+linux-iio@lfdr.de>; Sat, 28 Jun 2025 18:48:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4760AAEC92E
+	for <lists+linux-iio@lfdr.de>; Sat, 28 Jun 2025 19:02:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D5057189A34D
-	for <lists+linux-iio@lfdr.de>; Sat, 28 Jun 2025 16:48:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB8A5189BCF3
+	for <lists+linux-iio@lfdr.de>; Sat, 28 Jun 2025 17:00:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A4C02356B9;
-	Sat, 28 Jun 2025 16:48:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A414D25C827;
+	Sat, 28 Jun 2025 16:59:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="wQ4iIAc5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BByhqIii"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oi1-f173.google.com (mail-oi1-f173.google.com [209.85.167.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F2B71C8604
-	for <linux-iio@vger.kernel.org>; Sat, 28 Jun 2025 16:48:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5709326B776;
+	Sat, 28 Jun 2025 16:59:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751129287; cv=none; b=nIt660cKlvxQhwU9ClekJG16U3wcjGsJ5nP5mKVnBeVJcZ4KhAuJ2sDGG0IawLHWPoLyllda/UWk+eAmJXPsVrn4E31OR4xhWIX24HV6iOmEZ7MwfhvrBboTtX95JB9Ypdffun/O0VdNY6LVz/kMm4/rZBQV2wT5YTszIZMQm/M=
+	t=1751129972; cv=none; b=bckpDCvI86DQrQe+LyPEYfJ1nV4ni54JMixinMG3h9/wtqsHdYdZ4hQEIDadTjMDOJWMsl3qPApFrceouuIvhyeptzmsgQ3K+z+vRubRc0/QnnNAgYu52oAbblvWh4QkHetrlTpkhFeGTywVbLD/r/pv+OUwNvWGjp2qMO0Qhmo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751129287; c=relaxed/simple;
-	bh=HZ//Y2K0uLB5kUzMtO2XZBj9R2SSfFnWS2P7z4FMbnQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=g66HQnLxEYmrI+m+kDctLfv6Zya3SsKEBqaBuKmkiqrd8b5t1j2P8oKH+mUL1/LbIBxhF2V6KnNgdm7xz5aA22SXZACWCGhn6rTk+97yTGKz0pwxc6sP2TB+LRK/6JczfUQ7CrHyRKt0EsOCowy3Tk6/VggqXJZOTnOsC2JfPYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=wQ4iIAc5; arc=none smtp.client-ip=209.85.167.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oi1-f173.google.com with SMTP id 5614622812f47-40a8013d961so1046976b6e.0
-        for <linux-iio@vger.kernel.org>; Sat, 28 Jun 2025 09:48:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1751129284; x=1751734084; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=gmlFpqHEoG7G1XXNLWfY8kop+YPpWJd3ItpRxDsXJ2k=;
-        b=wQ4iIAc5fHmz4gSbX7oPpz8eMUoQZKqZ7FIdppDpxsPOzhTGQId0JFlvoda+PV63Mw
-         s7I2FnXbbQIPayeuvyBSDYDLfRGXh4crkU3VEs60+utpLecYubJISOoVm4NDqhK8jyp/
-         lBWDfIQ42FdnoQQy+lZHD0GCTG617SfWO5q5tqG7cGs+5q+Rki//BgOAn7rJUXrJUjNA
-         07dLOpewnH7YeFJ4wRPXvHynh19m+nRyNOS7WUD6LuuGRf9Yn7FMfDfxdEK5P3Mgx6gW
-         o/U2oG4idQWmTIdA3TucC3FO77ADlsy2PAbXl+6TqhE7tNveoCYzI3t2q/xsGAK2erIr
-         hazg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751129284; x=1751734084;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=gmlFpqHEoG7G1XXNLWfY8kop+YPpWJd3ItpRxDsXJ2k=;
-        b=GfWIZoX1CPHBRbtA+RyFcvl1B1mpwX64QxmeZu9NqU8u1EfQbzBiX94f+nyRJ+W5YO
-         w8vzhVICeyv9yYXZYHOpWUE1+FjGXGKst1GO6jZNHoPyXiAZEeXab0r10QawbVHQo8FV
-         Oq9aC6H/zMHMpgOeYNTk2ObRieOZSYE70+VO+kK6dfkXSpioVO3zwzMjlpbLKOcbIFpA
-         Gfbg4e0vsQIjDPdvP33/1lUNnAnnREVhTn8ZJsZs/uiMCK+1pQoS75HrogkeRI94fihY
-         yhovf81yb+wcjam0xNkgOEh+sX4oQy0qRI6wKWtMKhStqSISPg501J6MVaiQEE7gdSt3
-         TZTQ==
-X-Gm-Message-State: AOJu0YwJT2O/MTo5GfGqR38I1lbUn8ca+gs91JVNCmXlB1O1VJiWDiUe
-	aJiRuO9C1drP1KW7AgSpiPRLnYRYzTS5f3h+EiPoVJ47KulLYbhZKxiwINjXmQ4meBxJJSMx0P5
-	9KvGFJLQ=
-X-Gm-Gg: ASbGnctNCP/hs+W6xIpqp08OW6pwzzSUiNhi2bXFiiAiujta+aa64/6VHAQsi7ZOLDi
-	LRfc/42GAJld5OxdqWKvSeEPwvE/VaufzHZi8/9VzFrouFMowrhkiKrIT2lgTBIzr4Jlt9IwEtA
-	Y/v6fLDjvodDwmmvKRjsfZPGpUXE4HR3fYpcsf1NySFJWf+vWD8t3FYu/LWGKmhC7svlAUNqaLM
-	gV0O9/HfwacxmhpDejOJEWKfWot2LDWePcd7aLDztPmWpPPmJ+wV1gYNr/ymtnD9Gogw8oUZl1o
-	6yicAaqFxaHoZ6ayRfuw3dR6HkY3/TNa1AKEIFKA+IPBeXYeLgWWRN0dxS6NVnkGs+hV
-X-Google-Smtp-Source: AGHT+IGPhXDekeKt3kh/YkCyfn9XUuo4x3XOBxDW2r6ba/CZMKwPz/iz381Hxp6O2yGCdHwM0lGHZA==
-X-Received: by 2002:a05:6808:23c3:b0:3f9:8b5b:294c with SMTP id 5614622812f47-40b33e49e69mr5400146b6e.31.1751129284179;
-        Sat, 28 Jun 2025 09:48:04 -0700 (PDT)
-Received: from [127.0.1.1] ([2600:8803:e7e4:1d00:3092:a48c:b0c6:cbf4])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-40b322ae48esm876826b6e.13.2025.06.28.09.48.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 28 Jun 2025 09:48:02 -0700 (PDT)
-From: David Lechner <dlechner@baylibre.com>
-Date: Sat, 28 Jun 2025 11:47:53 -0500
-Subject: [PATCH] iio: adc: ti-adc081c: drop use of model array
+	s=arc-20240116; t=1751129972; c=relaxed/simple;
+	bh=Y5Qcyl7nKMYyq3O12CVaaVN37dB7H+wpJaM/exZ7iBY=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=jkD+QFFjbFuRhxgmvr2zUXcfz0V0YQGJbtHGi7y/4gJyz3o1z/Um1SDWjkwuEruSsqRv4uhm6+wXPbKASzClZ0MW36AmtPi74P6EshX9mU51nVzdIO5DX60nYhghQTk3JlP9XAoukW1h7rNcT3F0z2r/E8ghecb50JawarjeDmw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BByhqIii; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86C3BC4CEEA;
+	Sat, 28 Jun 2025 16:59:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1751129971;
+	bh=Y5Qcyl7nKMYyq3O12CVaaVN37dB7H+wpJaM/exZ7iBY=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=BByhqIii/jGyvsPSopSMeO4uvmrBCvtWFj0AfORzaOJZQGm60+2PygB9hmk8ZOMpl
+	 r7M+7dUQUPpNSKAM7wEllE0qRILgDkRQHYQ5TTqCvjcQNbcjmsWLL9ZWn3/zt8tio3
+	 Y5pjAxWcMqHKEdxgVPQqcRmDufxxT+Ge51ZyO6uy9EAZdq26t7M+moajtOub3rdhIL
+	 eTy58yhM3XA38tL+5YZkWw4gSywoiTHWOulc2+ske4b51P85rGeF5aI70O8E+VsKFm
+	 TwjHtm92zevdPHHQtrf5csup3FjVP44QhwZKbI2Ft9c2yR4Uq4gUK4uCaP15Uw7vTG
+	 J6NgDDPBE95yA==
+Date: Sat, 28 Jun 2025 17:59:21 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: "Shen Jianping (ME-SE/EAD2)" <Jianping.Shen@de.bosch.com>
+Cc: "lars@metafoo.de" <lars@metafoo.de>, "robh@kernel.org"
+ <robh@kernel.org>, "krzk+dt@kernel.org" <krzk+dt@kernel.org>,
+ "conor+dt@kernel.org" <conor+dt@kernel.org>, "dima.fedrau@gmail.com"
+ <dima.fedrau@gmail.com>, "marcelo.schmitt1@gmail.com"
+ <marcelo.schmitt1@gmail.com>, "linux-iio@vger.kernel.org"
+ <linux-iio@vger.kernel.org>, "devicetree@vger.kernel.org"
+ <devicetree@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+ <linux-kernel@vger.kernel.org>, "Lorenz Christian (ME-SE/EAD2)"
+ <Christian.Lorenz3@de.bosch.com>, "Frauendorf Ulrike (ME/PJ-SW3)"
+ <Ulrike.Frauendorf@de.bosch.com>, "Dolde Kai (ME-SE/PAE-A3)"
+ <Kai.Dolde@de.bosch.com>
+Subject: Re: [PATCH v2 2/2] iio: imu: smi330: Add driver
+Message-ID: <20250628175921.1db14102@jic23-huawei>
+In-Reply-To: <AM8PR10MB4721C0BBFBAE160FB494482CCD7AA@AM8PR10MB4721.EURPRD10.PROD.OUTLOOK.COM>
+References: <20250513150028.42775-1-Jianping.Shen@de.bosch.com>
+	<20250513150028.42775-3-Jianping.Shen@de.bosch.com>
+	<20250525175157.2446f878@jic23-huawei>
+	<AM8PR10MB4721C0BBFBAE160FB494482CCD7AA@AM8PR10MB4721.EURPRD10.PROD.OUTLOOK.COM>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250628-iio-const-data-11-v1-1-268189459192@baylibre.com>
-X-B4-Tracking: v=1; b=H4sIALgcYGgC/x3MQQqAIBBA0avErBtQIbGuEi1Mp5qNhkoE4t2Tl
- m/xf4VMiSnDMlRI9HDmGDrkOIC7bDgJ2XeDEmoSWhlkjuhiyAW9LRalROn0PpMy1pOH3t2JDn7
- /57q19gGOiqoWYwAAAA==
-X-Change-ID: 20250628-iio-const-data-11-1c6b9e28aded
-To: Jonathan Cameron <jic23@kernel.org>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Andy Shevchenko <andy@kernel.org>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- David Lechner <dlechner@baylibre.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2833; i=dlechner@baylibre.com;
- h=from:subject:message-id; bh=HZ//Y2K0uLB5kUzMtO2XZBj9R2SSfFnWS2P7z4FMbnQ=;
- b=owEBbQGS/pANAwAKAcLMIAH/AY/AAcsmYgBoYBy6uLICagDefVxEIgZfMwEUhPN1xFLCpmfmR
- zLOgJD11WCJATMEAAEKAB0WIQTsGNmeYg6D1pzYaJjCzCAB/wGPwAUCaGAcugAKCRDCzCAB/wGP
- wKELB/95Z85oOsmtBUIwe8GrPfyyxbYD7DOg4KITLqlr23Y0eQeWxoH0B9QUUPhPUDpR9obQF9n
- lbSIFIRoXZm4QZwns6wF3vlFD/SnkmigfGIVUuUq9XluJtFYfj8qF2nDoDFGpd3L3WzarzgYsWg
- 6U1XG/Nm6c6365q/0yFeIZ0Z2rtu+wP9fKS8BIzSDm4xl8Brnt8ZhoomP2EDhW1zUtspCi0LDZy
- 4UikqnV0Pa/AMpcoivZMQdXHgrF92Ng2jKqRF05dImiWrWvVZuMCDZTn42o3sfcKXxn5dZSi40w
- rUZqrYgZyAIAXSs/HU2CqnudNsYfxQibTgK0IenuaSmUS4Uv
-X-Developer-Key: i=dlechner@baylibre.com; a=openpgp;
- fpr=8A73D82A6A1F509907F373881F8AF88C82F77C03
 
-Change the ti-adc081c driver to use individual model structures instead
-of an array. This reduces the verbosity of the code. Also, the data is
-now const as it should have been in the first place.
+On Thu, 26 Jun 2025 09:31:19 +0000
+"Shen Jianping (ME-SE/EAD2)" <Jianping.Shen@de.bosch.com> wrote:
 
-Signed-off-by: David Lechner <dlechner@baylibre.com>
----
- drivers/iio/adc/ti-adc081c.c | 29 ++++++++++-------------------
- 1 file changed, 10 insertions(+), 19 deletions(-)
+> Hi Jonathan,
+> 
+> most findings are already fixed. For 3 findings we still have something unclear. It will be nice if you can give us little bit more indication.
+> 
+> >> +
+> >> +static const struct iio_chan_spec smi330_channels[] = {
+> >> +	SMI330_ACCEL_CHANNEL(IIO_ACCEL, X, SMI330_SCAN_ACCEL_X),
+> >> +	SMI330_ACCEL_CHANNEL(IIO_ACCEL, Y, SMI330_SCAN_ACCEL_Y),
+> >> +	SMI330_ACCEL_CHANNEL(IIO_ACCEL, Z, SMI330_SCAN_ACCEL_Z),
+> >> +	SMI330_GYRO_CHANNEL(IIO_ANGL_VEL, X, SMI330_SCAN_GYRO_X),
+> >> +	SMI330_GYRO_CHANNEL(IIO_ANGL_VEL, Y, SMI330_SCAN_GYRO_Y),
+> >> +	SMI330_GYRO_CHANNEL(IIO_ANGL_VEL, Z, SMI330_SCAN_GYRO_Z),
+> >> +	SMI330_TEMP_CHANNEL(SMI330_TEMP_OBJECT),
+> >> +	IIO_CHAN_SOFT_TIMESTAMP(SMI330_SCAN_TIMESTAMP),
+> >> +};
+> >> +
+> >> +static const struct smi330_sysfs_attr smi330_accel_scale_attr = {
+> >> +	.reg_vals = (int[]){ SMI330_ACCEL_RANGE_2G,  
+> >SMI330_ACCEL_RANGE_4G,  
+> >> +			     SMI330_ACCEL_RANGE_8G,  
+> >SMI330_ACCEL_RANGE_16G },
+> >
+> >Do we need the (int[]) part here?  
+> 
+> Remove it will lead to a compiler warning. 
 
-diff --git a/drivers/iio/adc/ti-adc081c.c b/drivers/iio/adc/ti-adc081c.c
-index 4f514db5c26ea803660087ae02b2cf8ec71911e4..c09f41e8867c45a44a98f4409946c3256d34280f 100644
---- a/drivers/iio/adc/ti-adc081c.c
-+++ b/drivers/iio/adc/ti-adc081c.c
-@@ -112,18 +112,9 @@ DEFINE_ADCxx1C_CHANNELS(adc081c,  8);
- DEFINE_ADCxx1C_CHANNELS(adc101c, 10);
- DEFINE_ADCxx1C_CHANNELS(adc121c, 12);
- 
--/* Model ids are indexes in _models array */
--enum adcxx1c_model_id {
--	ADC081C = 0,
--	ADC101C = 1,
--	ADC121C = 2,
--};
--
--static struct adcxx1c_model adcxx1c_models[] = {
--	ADCxx1C_MODEL(adc081c,  8),
--	ADCxx1C_MODEL(adc101c, 10),
--	ADCxx1C_MODEL(adc121c, 12),
--};
-+static const struct adcxx1c_model adc081c_model = ADCxx1C_MODEL(adc081c,  8);
-+static const struct adcxx1c_model adc101c_model = ADCxx1C_MODEL(adc101c, 10);
-+static const struct adcxx1c_model adc121c_model = ADCxx1C_MODEL(adc121c, 12);
- 
- static const struct iio_info adc081c_info = {
- 	.read_raw = adc081c_read_raw,
-@@ -203,24 +194,24 @@ static int adc081c_probe(struct i2c_client *client)
- }
- 
- static const struct i2c_device_id adc081c_id[] = {
--	{ "adc081c", (kernel_ulong_t)&adcxx1c_models[ADC081C] },
--	{ "adc101c", (kernel_ulong_t)&adcxx1c_models[ADC101C] },
--	{ "adc121c", (kernel_ulong_t)&adcxx1c_models[ADC121C] },
-+	{ "adc081c", (kernel_ulong_t)&adc081c_model },
-+	{ "adc101c", (kernel_ulong_t)&adc101c_model },
-+	{ "adc121c", (kernel_ulong_t)&adc121c_model },
- 	{ }
- };
- MODULE_DEVICE_TABLE(i2c, adc081c_id);
- 
- static const struct acpi_device_id adc081c_acpi_match[] = {
- 	/* Used on some AAEON boards */
--	{ "ADC081C", (kernel_ulong_t)&adcxx1c_models[ADC081C] },
-+	{ "ADC081C", (kernel_ulong_t)&adc081c_model },
- 	{ }
- };
- MODULE_DEVICE_TABLE(acpi, adc081c_acpi_match);
- 
- static const struct of_device_id adc081c_of_match[] = {
--	{ .compatible = "ti,adc081c", .data = &adcxx1c_models[ADC081C] },
--	{ .compatible = "ti,adc101c", .data = &adcxx1c_models[ADC101C] },
--	{ .compatible = "ti,adc121c", .data = &adcxx1c_models[ADC121C] },
-+	{ .compatible = "ti,adc081c", .data = &adc081c_model },
-+	{ .compatible = "ti,adc101c", .data = &adc101c_model },
-+	{ .compatible = "ti,adc121c", .data = &adc121c_model },
- 	{ }
- };
- MODULE_DEVICE_TABLE(of, adc081c_of_match);
+Fair enough.  Would have been good to put the compiler warning here.
+I'd failed to realise you were intialising a pointer not a fixed
+sized array.
 
----
-base-commit: 14071b9cf2d751ff9bc8b5e43fa94fbf08aceea1
-change-id: 20250628-iio-const-data-11-1c6b9e28aded
 
-Best regards,
--- 
-David Lechner <dlechner@baylibre.com>
+> 
+> 
+> >> +
+> >> +	if (*indio_dev->active_scan_mask == SMI330_ALL_CHAN_MSK) {
+> >> +		ret = regmap_bulk_read(data->regmap, SMI330_ACCEL_X_REG,
+> >> +				       data->buf, ARRAY_SIZE(smi330_channels));
+> >> +		if (ret)
+> >> +			goto out;
+> >> +	} else {
+> >> +		iio_for_each_active_channel(indio_dev, chan) {
+> >> +			ret = regmap_read(data->regmap,
+> >> +					  SMI330_ACCEL_X_REG + chan, &sample);  
+> >
+> >Given there is always a trade off between the efficiency of a bulk read and reading
+> >just the channels enabled, we often just set available_scan_masks, read the lot and
+> >let the IIO core worry about resorting the data as needed.  
+> 
+> Is any IIO API available to take care the resorting data?
 
+When you say resorting I'm not totally sure what you mean. If it's simply
+removing entries we don't wan then provide available_scan_masks and the
+IIO core code does it all for you.  If fewer elements are required
+by the consumer (which may be userspace) then it repacks the data to include
+only what you'd expect.
+> 
+> >
+> >For example, if you want all but 1 channel that is almost certainly quicker and that is
+> >more likely to be the common case than you want 1 channel only using the buffer.
+> >
+> >So I'd like some more explanation here on why this path is needed.  
+> 
+> We try to read the data just for activated channel and put them in buffer. If just one channel activated, reading data for all channels leads to unnecessary data transfer on bus.
+
+The trade off is that in many case a loop of regmap_read() calls is much less
+efficient than regmap_bulk_read() even though it may result in less data on the bus.
+
+So the question then becomes how common is it for people to have
+1 channel, 2 channels,  n - 1 channels, n channels.
+
+It is common that reading n - 1 in a loop is slower than reading
+n and dropping one + data mangling to realign everything after the
+missing channel.  Normally we assume that if someone bought a fancy
+device they probably want most of it's channels and optimise for that
+rather than a small subset of channels.
+
+The optimisation you have for all channels made me think that if that
+was worth doing the overheads of separate reads must be significant!
+
+> 
+> >  
+> >> +			if (ret)
+> >> +				goto out;
+> >> +			data->buf[i++] = sample;
+> >> +		}
+> >> +	}
+> >> +
+> >> +	iio_push_to_buffers_with_timestamp(indio_dev, data->buf,
+> >> +					   data->current_timestamp);
+> >> +
+> >> +out:
+> >> +	iio_trigger_notify_done(indio_dev->trig);
+> >> +
+> >> +	return IRQ_HANDLED;
+> >> +}  
+> 
+> 
+> >> +static irqreturn_t smi330_irq_handler(int irq, void *p) {
+> >> +	struct iio_dev *indio_dev = p;
+> >> +	struct smi330_data *data = iio_priv(indio_dev);
+> >> +
+> >> +	atomic64_set(&data->irq_timestamp, iio_get_time_ns(indio_dev));  
+> >
+> >Why do you need the atomic here? If there is a top half / thread race then you could
+> >get garbage data anyway.  
+> 
+> The atomic here is used to prevent simultaneous read (in bottom half) / write (in top half) to the "data->irq_timestamp"
+> This happens if the next interrupt comes too early when the current bottom half is still reading "data->irq_timestamp". 
+> The next top half will interrupt the execution of current bottom half and change the "data->irq_timestamp". 
+> Finally, the current bottom half get a wrong value.
+
+So what you are doing is preventing tearing, not a wrong value in the sense of
+getting the next time stamp.
+
+It's fairly unusual for a complex device to not have some form of explicit ack that stops us getting
+a new interrupt until we've handled the last one (IRQF_ONESHOT can be appropriate as well).
+I think the issue here is that the second interrupt might have nothing to do with data ready (which I'd
+hope does need some form of clear) but we grab a timestamp anyway.  Rather than run the risk of a
+very wrong timestamp it might make more sense to just grab a less accurate timestamp in
+the threaded handler.
+
+Jonathan
 

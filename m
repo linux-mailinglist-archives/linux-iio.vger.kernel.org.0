@@ -1,65 +1,58 @@
-Return-Path: <linux-iio+bounces-21037-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21038-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0023AEC82B
-	for <lists+linux-iio@lfdr.de>; Sat, 28 Jun 2025 17:13:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF3BFAEC83A
+	for <lists+linux-iio@lfdr.de>; Sat, 28 Jun 2025 17:20:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AFB2A1656BA
-	for <lists+linux-iio@lfdr.de>; Sat, 28 Jun 2025 15:13:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C426E1748EA
+	for <lists+linux-iio@lfdr.de>; Sat, 28 Jun 2025 15:20:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C663C247282;
-	Sat, 28 Jun 2025 15:12:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2EEF212B2B;
+	Sat, 28 Jun 2025 15:20:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tgbi/VKD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MnEUKwJ1"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 760EC1401C;
-	Sat, 28 Jun 2025 15:12:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80BC81EB5FD;
+	Sat, 28 Jun 2025 15:20:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751123574; cv=none; b=qUoOxqDw2/JSTt15aoeLjGAWCDv3V73hmowF/Z5NBHzuynoUAf8v7cfo/aLyxud+EzNhELa12V8twO7lTGH5BziWhWL45+5nSS4/SuHi/NIprBNWr2qcJVpazGiXAYGdZS49uzWv1vOB/OEzd/ARxJeOGkVoCxt8JG0b7CaSwxQ=
+	t=1751124031; cv=none; b=mXlJrGq/lQkhu1LlSQam4Wb5BlPqe5yqCk8CLOH/19LqeaFictMBiVSLyWB6uppROXqPDxBl0BkDz9bw3yHtG2gcm6+kdOoAuLVSas4EHWQBa/Q/5VOJp3ie0Am3DPnXmE/ck74deRsn8SBbVvjHYdWaV4HKWVlvkCAu6CzGL74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751123574; c=relaxed/simple;
-	bh=Su952xlJaznvagA5q2zxyjauve2XziNZOY/9Q9A5gTU=;
+	s=arc-20240116; t=1751124031; c=relaxed/simple;
+	bh=/mrdRj2so+n3NyWX7vqnHYBbVjK7lHkTasMH9XQNnkc=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Sq6M3zHj6dRnMORtI/Ko4jPdwyxGr/B2fP8m1mTx5ndDj9dd5XYlOrh7p+78JJ7WxqEQfYlCVsd2J42KFIUGE3HvAUfDpPU9teTzCjFkO6gzyk2R1MWeWlu/83kEQ3oTKtj+faFNW2H+kvuL2VkiTCfXx7FQJNZEltksQEK0OLc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tgbi/VKD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C602FC4CEEA;
-	Sat, 28 Jun 2025 15:12:47 +0000 (UTC)
+	 MIME-Version:Content-Type; b=UKYGM61DXmsQadt69f1hRB+E4EtdyZUcvYAFKRJpwrbZ1k7CiPE30GpaLv5Kwoeo0HsoyNflCI0qHz/Euf6Dy6ob2NFEIsqJ/uj9AQgIjZl09/qqU20aXaXQWbBca1QuoUP3T2zd7dTmNa7Zf2b/lJV8mbuV71DV59+V7Mq3mjE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MnEUKwJ1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E41E4C4CEEA;
+	Sat, 28 Jun 2025 15:20:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751123573;
-	bh=Su952xlJaznvagA5q2zxyjauve2XziNZOY/9Q9A5gTU=;
+	s=k20201202; t=1751124031;
+	bh=/mrdRj2so+n3NyWX7vqnHYBbVjK7lHkTasMH9XQNnkc=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=tgbi/VKDLUu4+JS4AHGA78v8TvfFjPHRMPitEKdY+yjNx7jKFUy4o5Wcazijzz2j0
-	 5NVj0Fqy5k+lAeTJTsyG4kIOEKyvnKAoRTPe60JoKt8dfEGu4ABveZ78g4eYvasSIe
-	 vbZIldflS67MZigHpHt/zUl4um5pQG73CYQgkAJaOD99MtRLFIjGWHS4Bnq0sDbJeo
-	 90a5teY16rWrSnjm3miXNcTcB9Xo+FImqM2f3JjC4Za6HEow0gBnujsELJZ7PFEQ1i
-	 zN9cLcWuxgmvF1AzBl9CLZCdE61kYLe602OAa1dev3NmlO9MfLVjiRgYskbgQdq3CY
-	 lx6FSidkmnBSw==
-Date: Sat, 28 Jun 2025 16:12:41 +0100
+	b=MnEUKwJ13QIqlt2CA+BhCxuZUnMoo/DxIXwckeRgTd+aVbIJPdThsikMCJimk6OJN
+	 sEL+tAv4ZfJEsSvh/ZgmtnvKbjDLGX7AufWy8v1LQ2Vp0SgxP30UUtbMCACBz/Bbww
+	 zddteANFV7U0islVgXkPuYbDtdLsW8AMpfxq3htMhbHZn/1tdWNN3U5NRnN3Jpau7d
+	 Kbbh83bh/4IRVWlcu2GLAzKalG4AC6f2/L65UMfdWoS4DrndjYd/qzpsZIlkD2SwrN
+	 bqCoCOyxgDi6V2kem5v4GAkXASl+zOVMSRHLE2hLzeoNtUZW1fPfkITKro7K3MGfb0
+	 GKOeSKrtj2xnA==
+Date: Sat, 28 Jun 2025 16:20:24 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Abdalla Ahmad <Abdalla.Ahmad@sesame.org.jo>, Andy Shevchenko
- <andriy.shevchenko@intel.com>, Lars-Peter Clausen <lars@metafoo.de>,
- Michael Hennerich <Michael.Hennerich@analog.com>, Nuno =?UTF-8?B?U8Oh?=
- <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, Gabriel Shahrouzi <gshahrouzi@gmail.com>,
- open list <linux-kernel@vger.kernel.org>, "open list:IIO SUBSYSTEM AND
- DRIVERS" <linux-iio@vger.kernel.org>, "open list:STAGING SUBSYSTEM"
- <linux-staging@lists.linux.dev>
-Subject: Re: [PATCH] drivers: staging: iio: frequency: ad9832.h: Fixed TODO
- note.
-Message-ID: <20250628161241.10ad84ef@jic23-huawei>
-In-Reply-To: <364b2846-e299-4be5-aadf-0668445c715d@baylibre.com>
-References: <20250627175114.548076-1-abdalla.ahmad@sesame.org.jo>
-	<aF7kW6xRxRb0VN5H@smile.fi.intel.com>
-	<AM9PR08MB6114261F0CA8CD89EC443E59A145A@AM9PR08MB6114.eurprd08.prod.outlook.com>
-	<364b2846-e299-4be5-aadf-0668445c715d@baylibre.com>
+To: Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>
+Cc: dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org,
+ jmaneyrol@invensense.com, ~lkcamp/patches@lists.sr.ht,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, Jean-Baptiste
+ Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>
+Subject: Re: [PATCH] dt-bindings: iio: pressure: invensense,icp101xx: add
+ binding
+Message-ID: <20250628162024.5316e66e@jic23-huawei>
+In-Reply-To: <20250626212742.7986-1-rodrigo.gobbi.7@gmail.com>
+References: <20250626212742.7986-1-rodrigo.gobbi.7@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -70,36 +63,104 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 27 Jun 2025 15:32:43 -0500
-David Lechner <dlechner@baylibre.com> wrote:
+On Thu, 26 Jun 2025 18:12:25 -0300
+Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com> wrote:
 
-> On 6/27/25 2:29 PM, Abdalla Ahmad wrote:
-> > Hi  
-> 
-> ...
-> 
-> >   
-> >> Ideally this should be dropped from any global header file. If one needs
-> >> something like this, it can be propagated via software nodes.> Well, Including it in include/linux/iio/ made sense to me, would you please elaborate?  
-> >   
-> 
-> No one uses platform data anymore. We use linux/properties.h instead to give
-> named properties for this sort of thing. So the right thing to do would be to
-> create a proper devicetree binding for the chip to define the properties and
-> fix up the driver so that we can move it out of staging. Then the header file
-> would just be deleted as part of these changes when we stop using platform
-> data.
-> 
-> If you don't care about the driver and just want the TODO to go away, then
-> we can just delete the comment since it is no longer applicable. It doesn't
-> make sense to move the header out of staging without moving the rest of the
-> driver out of staging at the same time.
-> 
+> There is no txt file for it, add yaml for invensense,icp101xx family
+> which is already used in the driver.
 
-I think larger, better change would be to also delete the platform data definition
-and the use of it in the driver.  I don't think the content needs to come
-from firmware or board files.
+Don't mention binding in patch title. The dt-bindings prefix makes that obvious.
 
-Jonathan
+> 
+> Signed-off-by: Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>
+> ---
+> Very simple yaml for a i2c device with psu. The pin out for the rest of
+> the family (the other PNs) doesn`t change anything here, since the diff
+> were RESV pins (unused).
+> 
+> This yaml file falls in the same `category` as others that I`ve submitted, the
+> driver author, which might be still interested at this hardware, is no long contributing
+> (at least for what I`ve looked). Also, it`s email is still "at invensense", not "at tdk", either
+> way I`ll ping him here due the mention at the "maintainers" field:
+
+Try a search for their name in recent mails to the list.  +CC Jean-Baptiste at new TDK address.
+People don't always remember to send a mailmap update when their company email
+changes, particularly if it is due to an acquisition.
+
+Jean-Baptiste has been active in the last week so not hard to find!
+
+> 
+> Dear @Jean-Baptiste Maneyrol, I`ve noticed that since the driver was added,
+> there was no binding doc for it and this is what this patch is addressing.
+> In this case, a maintainer ref is required inside the .yaml file and I would
+> like to ask if I can add you in this case.
+> I would appreciate your comment or suggestion over this topic.
+> 
+> Tks all and regards.
+> ---
+>  .../iio/pressure/invensense,icp101xx.yaml     | 45 +++++++++++++++++++
+>  1 file changed, 45 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/pressure/invensense,icp101xx.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/pressure/invensense,icp101xx.yaml b/Documentation/devicetree/bindings/iio/pressure/invensense,icp101xx.yaml
+> new file mode 100644
+> index 000000000000..439f8aaafbd2
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/pressure/invensense,icp101xx.yaml
+> @@ -0,0 +1,45 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/pressure/invensense,icp101xx.yaml#
+
+No wild cards in file names please.  Just pick a device to name the binding
+after.  Wild cards have an annoying habit of getting messed up by companies
+releasing completely non compatible parts in the middle of what we thought
+was a reserved number range.
+
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: InvenSense ICP-101xx Barometric Pressure Sensors
+> +
+> +maintainers:
+> +  - Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>
+
+I'd assume switch to the TDK address +CC but I'll need an Ack or RB from Jean-Baptiste.
+
+> +
+> +description: |
+> +  Support for ICP-101xx family: ICP-10100, ICP-10101, ICP-10110, ICP-10111.
+> +  Those devices uses a simple I2C communication bus, measuring the pressure
+> +  in a ultra-low noise at the lowest power.
+> +  Datasheet: https://product.tdk.com/system/files/dam/doc/product/sensor/pressure/capacitive-pressure/data_sheet/ds-000186-icp-101xx.pdf
+> +
+> +properties:
+> +  compatible:
+> +    const: invensense,icp10100
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  vdd-supply: true
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - vdd-supply
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    i2c {
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +        pressure@63 {
+> +            compatible = "invensense,icp10100";
+> +            reg = <0x63>;
+> +            vdd-supply = <&vdd_1v8>;
+> +        };
+> +    };
+> +...
 
 

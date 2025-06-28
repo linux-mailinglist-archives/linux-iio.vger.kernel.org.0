@@ -1,49 +1,50 @@
-Return-Path: <linux-iio+bounces-21095-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21094-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8108AECAA7
-	for <lists+linux-iio@lfdr.de>; Sun, 29 Jun 2025 00:39:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F7B3AECAAB
+	for <lists+linux-iio@lfdr.de>; Sun, 29 Jun 2025 00:39:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 704163B986B
-	for <lists+linux-iio@lfdr.de>; Sat, 28 Jun 2025 22:38:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D5C0D18834AE
+	for <lists+linux-iio@lfdr.de>; Sat, 28 Jun 2025 22:39:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC2F1220689;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 726E12459D6;
 	Sat, 28 Jun 2025 22:38:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b="K/FNRWU7"
+	dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b="ho9MfSrp"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx3.wp.pl (mx3.wp.pl [212.77.101.10])
+Received: from mx4.wp.pl (mx4.wp.pl [212.77.101.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54C7D1A0703
-	for <linux-iio@vger.kernel.org>; Sat, 28 Jun 2025 22:38:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.77.101.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99995220689
+	for <linux-iio@vger.kernel.org>; Sat, 28 Jun 2025 22:38:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.77.101.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751150332; cv=none; b=TAxUKR+gvSfW37rwl8Pe2EAfh9t2OeUWM2/VblWeoH/iqj3Phwp80bUl7l7yN7qhBEfx7Zhi4YpcFTqHI/i4I5qXOSQUjB/7uxtQMjle01iG1fz1MsxagS/WlwC1DUHqlHWi3HexDs2vrbtMPyOBcshM2gceQoeCL+NE1U3KX1E=
+	t=1751150332; cv=none; b=nzsk3F2EpOD38BRPcjH7XOHyr4LxtfcmlhR8AR8LVu8rG+cnty1ojn8vU0pnU8S0H+iDCVLHqYVXhUTYYpMqbQ7i0GDhJQg4+VB1iA3FxeS3iTEYri0uOOwN1Pm8NcKM2LorQ7Wz5ikPrL1gz7qz4QJRaUq4x5aijCT2/AiKvME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1751150332; c=relaxed/simple;
-	bh=7G0+FpKbZ9GaPLV5BcrFUCj+7GnonYzZAuHe72qYZkI=;
-	h=From:To:Subject:Date:Message-Id:MIME-Version; b=QUFHjLtT0gH7HoYiLoZg+SQrN8BhhI2rAjYoNuGbtKnny/ugd1AdTSJ4DTpc+TMRWKPKgUOMjHrY+wtgI8+jJThvdObBJDDiTiGV7Y4IBA60arbQuG9FooAD/cfg9GzPut0feNBYS7um+tr4PkZ7xQnAXpr2hcgbo13lyxRI/uY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl; spf=pass smtp.mailfrom=wp.pl; dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b=K/FNRWU7; arc=none smtp.client-ip=212.77.101.10
+	bh=HOxtaYcGwe1Dr4Y1WuLiliZlybxYUzGV4lfY449z6QQ=;
+	h=From:To:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=j73nevi8VO2UFNzINSAJIO4bNy7E8PfYIb8Pzp8gk7B6Rho/cVCE8IYrDKSmkMETbpEYPGbA251YGGvixG+oRr/TwboaemU26gGKKunYqpRGMb1wkGPpMz3mH31EGrUEmwJiyDMtmvmyD/9avC2V7Wx6sRPhZUTpFoN+/Ga0ank=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl; spf=pass smtp.mailfrom=wp.pl; dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b=ho9MfSrp; arc=none smtp.client-ip=212.77.101.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wp.pl
-Received: (wp-smtpd smtp.wp.pl 29690 invoked from network); 29 Jun 2025 00:38:39 +0200
+Received: (wp-smtpd smtp.wp.pl 30245 invoked from network); 29 Jun 2025 00:38:42 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=20241105;
-          t=1751150319; bh=1Kv/5FIXJr4w7f7JBuDHHoZ7UQF55jJFpe21AqRti80=;
+          t=1751150322; bh=4x6ilKt5iJmJ+aTcOPfoqYo5nK7rJ62lmNxO5mvvtEE=;
           h=From:To:Subject;
-          b=K/FNRWU7zM9HVqBDxaqZKuZqrcf8NBx4gZQKCR1NaMbM3e8LVAYyZcT8SbFdmVOAF
-           3MfJFhwI2Q6hQRIf43qP2SiZfhebNSe1BVjg8rW8v9NfsBmnnOK8MtoevrRM4Iff3E
-           WJNIPjumyEPJ26UbmwVhk9tjQBUw+OW6vbE3lXxwzWynH9wuygI7DelNq7lmTraXVI
-           HMJ4B0rwju5WHn41jls9oaPfv78qeVbfXokqCs85ufqLZkwcTZ7lxLQbE/2CT5lSa9
-           9OZvSEkdqvI3YMiFDMYn2CN7g9xkTCgOH4Xqw+nR0U6Jb7CYNOeb+sqtwarsWD1yky
-           3C9s35tSRffeg==
+          b=ho9MfSrpJm1Tq1q9xQG60cHTcoy0xqWNNQBRf6smEjqkmqmh03r+oaznAE3MCLXOR
+           1qmy0TMgKCuhybMqGIlXeZBQ4CASBq01cG3czT44FWA/Y6m35b76pXrSPaCwK1imE3
+           OPvx2SwKrJ+WM9bM1Q3Cozk6ODfGfqDVQKl/3PfXk6DxySRgmgG7zYToHcZi53QT1u
+           0bIB4CBBOmkeMREbzCB8MqpFwDs1Ze+ICiYHeMXSodAFjnS2uXrgkc3HQwfVP6eiPs
+           2mP4PQeF4JNRBiSiqfehwu4XYKC1FBZh3e8zowxC5xba1btCrdZ9qeZIz2VCew+37I
+           /QktqBuN1dCBw==
 Received: from 83.24.145.121.ipv4.supernova.orange.pl (HELO laptop-olek.lan) (olek2@wp.pl@[83.24.145.121])
           (envelope-sender <olek2@wp.pl>)
           by smtp.wp.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
-          for <rafael@kernel.org>; 29 Jun 2025 00:38:39 +0200
+          for <rafael@kernel.org>; 29 Jun 2025 00:38:42 +0200
 From: Aleksander Jan Bajkowski <olek2@wp.pl>
 To: rafael@kernel.org,
 	daniel.lezcano@linaro.org,
@@ -66,10 +67,12 @@ To: rafael@kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
 	linux-mediatek@lists.infradead.org
-Subject: [PATCH 0/3] Add thermal sensors support for MT7981
-Date: Sun, 29 Jun 2025 00:38:34 +0200
-Message-Id: <20250628223837.848244-1-olek2@wp.pl>
+Subject: [PATCH 1/3] arm64: dts: mediatek: add thermal sensor support on mt7981
+Date: Sun, 29 Jun 2025 00:38:35 +0200
+Message-Id: <20250628223837.848244-2-olek2@wp.pl>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250628223837.848244-1-olek2@wp.pl>
+References: <20250628223837.848244-1-olek2@wp.pl>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -77,23 +80,71 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-WP-MailID: b810258631e11cb24906138186427c35
+X-WP-MailID: 83e3732595d5e7000e752de9e0de6415
 X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
-X-WP-SPAM: NO 000000A [4TMU]                               
+X-WP-SPAM: NO 0000000 [ceMx]                               
 
-This patch adds support for the temperature sensor in the MT7981 SoC.
-This sensor is exactly the same as the one in the MT7986.
+The temperature sensor in the MT7981 is same as in the MT7986.
 
-Aleksander Jan Bajkowski (3):
-  arm64: dts: mediatek: add thermal sensor support on mt7981
-  thermal/drivers/mediatek: Add support for MT7981 SoC
-  dt-bindings: iio: adc: Add support for MT7981
+Signed-off-by: Aleksander Jan Bajkowski <olek2@wp.pl>
+---
+ arch/arm64/boot/dts/mediatek/mt7981b.dtsi | 29 ++++++++++++++++++++++-
+ 1 file changed, 28 insertions(+), 1 deletion(-)
 
- .../iio/adc/mediatek,mt2701-auxadc.yaml       |  1 +
- arch/arm64/boot/dts/mediatek/mt7981b.dtsi     | 29 ++++++++++++++++++-
- drivers/thermal/mediatek/auxadc_thermal.c     |  4 +++
- 3 files changed, 33 insertions(+), 1 deletion(-)
-
+diff --git a/arch/arm64/boot/dts/mediatek/mt7981b.dtsi b/arch/arm64/boot/dts/mediatek/mt7981b.dtsi
+index 5cbea9cd411f..c2001a82722a 100644
+--- a/arch/arm64/boot/dts/mediatek/mt7981b.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt7981b.dtsi
+@@ -76,7 +76,7 @@ watchdog: watchdog@1001c000 {
+ 			#reset-cells = <1>;
+ 		};
+ 
+-		clock-controller@1001e000 {
++		apmixedsys: clock-controller@1001e000 {
+ 			compatible = "mediatek,mt7981-apmixedsys";
+ 			reg = <0 0x1001e000 0 0x1000>;
+ 			#clock-cells = <1>;
+@@ -184,6 +184,29 @@ spi@1100b000 {
+ 			status = "disabled";
+ 		};
+ 
++		thermal@1100c800 {
++			compatible = "mediatek,mt7981-thermal";
++			reg = <0 0x1100c800 0 0x800>;
++			interrupts = <GIC_SPI 138 IRQ_TYPE_LEVEL_HIGH>;
++			clocks = <&infracfg CLK_INFRA_THERM_CK>,
++				 <&infracfg CLK_INFRA_ADC_26M_CK>;
++			clock-names = "therm", "auxadc";
++			nvmem-cells = <&thermal_calibration>;
++			nvmem-cell-names = "calibration-data";
++			#thermal-sensor-cells = <1>;
++			mediatek,auxadc = <&auxadc>;
++			mediatek,apmixedsys = <&apmixedsys>;
++		};
++
++		auxadc: adc@1100d000 {
++			compatible = "mediatek,mt7981-auxadc";
++			reg = <0 0x1100d000 0 0x1000>;
++			clocks = <&infracfg CLK_INFRA_ADC_26M_CK>;
++			clock-names = "main";
++			#io-channel-cells = <1>;
++			status = "disabled";
++		};
++
+ 		pio: pinctrl@11d00000 {
+ 			compatible = "mediatek,mt7981-pinctrl";
+ 			reg = <0 0x11d00000 0 0x1000>,
+@@ -211,6 +234,10 @@ efuse@11f20000 {
+ 			reg = <0 0x11f20000 0 0x1000>;
+ 			#address-cells = <1>;
+ 			#size-cells = <1>;
++
++			thermal_calibration: calib@274 {
++				reg = <0x274 0xc>;
++			};
+ 		};
+ 
+ 		clock-controller@15000000 {
 -- 
 2.39.5
 

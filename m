@@ -1,136 +1,106 @@
-Return-Path: <linux-iio+bounces-21083-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21084-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C17E6AEC997
-	for <lists+linux-iio@lfdr.de>; Sat, 28 Jun 2025 20:00:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21111AEC9AA
+	for <lists+linux-iio@lfdr.de>; Sat, 28 Jun 2025 20:15:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D356A7A8AB7
-	for <lists+linux-iio@lfdr.de>; Sat, 28 Jun 2025 17:59:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E74621691BF
+	for <lists+linux-iio@lfdr.de>; Sat, 28 Jun 2025 18:15:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5CE01F542A;
-	Sat, 28 Jun 2025 18:00:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AEC928751E;
+	Sat, 28 Jun 2025 18:15:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="RshAk85S"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="oInSwLpU"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oo1-f50.google.com (mail-oo1-f50.google.com [209.85.161.50])
+Received: from mail-ot1-f52.google.com (mail-ot1-f52.google.com [209.85.210.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D47331A239F
-	for <linux-iio@vger.kernel.org>; Sat, 28 Jun 2025 18:00:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B50022727E2
+	for <linux-iio@vger.kernel.org>; Sat, 28 Jun 2025 18:15:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751133635; cv=none; b=KBiLTTovnOF4upENDqNtH26Y8uehokKwJwFaCUkrJsgfnK6mLQYVGnq8vyASKyKsatwqQWQksE+OBLBZJy2Y6bewsamAiogRaNslXFgYxGKTooG0hcqzVH/dolnFZrApUCi2mHN4xdJTcXp56ia4B9CoYLSW2L0sUNZ16joDkKM=
+	t=1751134507; cv=none; b=j9K9eKIHgy2kqcV3oXc9ACRKC0bijT+s+pLXOtk3Cb1Q0XHbWjJiA2IXiaVuhm7YfzYmVv3ltYFv/tfOGfpZMJDf/8csgaKwDKHuRWB80e3Dvv0AAiCtXHrlvjmdjopjAG7rCSucrbGhfclaeY2wxxyTBpJz44QgJHtdTxYUT5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751133635; c=relaxed/simple;
-	bh=Wpd4062Hg4zs8I/RrWFr4ghaFslVhjOJfaz/6/aD9RQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=NndcCo9Xfy23Zz9/8M1jfEXnitk/GWJS8ADSO3U/mVkW3sz9KmqP9vHdBAWXv2FidhuDgpIHnSHvMGcxCsRZFgoOiY2XD76E2B3lsTQDlZjBzKpyaNLHP73SGXRNHw8clegmHtEaM1af1byrdGJhveeQM6RR2odQFEt5WSe/9Vk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=RshAk85S; arc=none smtp.client-ip=209.85.161.50
+	s=arc-20240116; t=1751134507; c=relaxed/simple;
+	bh=HhJu0nej6YkZjmJ541Hrwgt9nV16rqq0gQmZuoI48xM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=uGXW2SG2b5rLVaBol1ckmrT4EcoW7VS2sQTQ2u8lPrkPiGkEeEPDl69Q3AT1Pz9Ukx4oDpacSXsuPyPgpwuHn7vOhQIfH+JPYqM2WaNmZ5PCHlBzT4iOXB02ClttwaEhs2uLEcw4jVoJKH2ZsUGZ9SbgV5EA41D59IjWU9Jw4Lo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=oInSwLpU; arc=none smtp.client-ip=209.85.210.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oo1-f50.google.com with SMTP id 006d021491bc7-60f24b478e3so458994eaf.3
-        for <linux-iio@vger.kernel.org>; Sat, 28 Jun 2025 11:00:33 -0700 (PDT)
+Received: by mail-ot1-f52.google.com with SMTP id 46e09a7af769-72c27166ab3so674792a34.1
+        for <linux-iio@vger.kernel.org>; Sat, 28 Jun 2025 11:15:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1751133633; x=1751738433; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=NWkzZlNmYBpQdzkeKGqAYEk53GZizX7PxwwGKL+egU8=;
-        b=RshAk85SagWUKXBebRzW9fKKTggl1DYSPtYZfe14dt8e3PwhF/lSqP90KbUhSIS6Dh
-         Gmn/ERyUFfivaWPrwUIgUWXBeSSSzrpNFeKJMSsBvNlKpchwxDwoYQD92dj3gEefRkob
-         JJza19Qp4qnGZ4gcTU0VD03zhfvo1XZdHorzltg/OMphalrSoLbD1a/Z4gT3UKS60R1N
-         XdWWbj243nZJtvYOcx0Mj6nLLz3yeBUZPvryfs7sJRzzE1L3/MFJQR30EPPwkHIdstCp
-         Q45UDe+iL5gFCtxVgvnMKJI8L9ZMegqB5Gv0FcthB38ZuDn0ErRVP4l9a1csY91TGr2g
-         d7jg==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1751134503; x=1751739303; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=opMX1Qwlgu2eO59hinQtvPB+M4svOAtsX/gx/lV1xqg=;
+        b=oInSwLpUKI48r+kfhv4mzfGO3WH2llVMu+CkFNv29gm9JTl8hZL+YwC3rbFCzHMCAV
+         h6d3Mj0dQdY2Wq1YRhO0M5vfF+Mzvx4wF0q3f58CNypYQwOOqn0oJwaIdDbkB88z/7m8
+         p8oj31FLBYL6zHAoH8XLsOZG9SFG+Uv3ot6pw8Aalsnc5XyLkbn8y82I1RLIJhQl1hr/
+         O9SNwD/vCuA1NC6vn/xLqq72yyIsSx6CusxukngGLt8NjEo6wtxO30QYGp2r63XCWMU2
+         ut7KC8nmuJeO0Xbmn5rz7M4XnECQOGWZA2vRopmk3YqugpvJG0hsO7GiIoWZuLYNYoue
+         8kVA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751133633; x=1751738433;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=NWkzZlNmYBpQdzkeKGqAYEk53GZizX7PxwwGKL+egU8=;
-        b=g8jYsGfc5TDeXW8TSjpoR/FufUuy6dLbZpYbPv86DM2LrsiuWGrM+Y8cdpQVY6qrdL
-         KsmSs/mEvDnPMxE0c2+X92RO3JRjGsUfVPLpxPJEP/OdFF8LvBRCA77TcZcxO81sDeEx
-         R8YapNAQN1q09IjFGDN/6U5oIdI1yQ9T5vuuuajbt/AtOqWjyHTSgQ57VFHuk8GLPlVV
-         4V9yQD/KJ9XbNr8wQH1zX2oAtWNT1F1DbKc4LvRu8pZhMNTpTwnzz4uPHPttHdw998PG
-         P3/WPIyWpXgMDxNuB8cie1sy7gaEctEXaLU/gghgpVZpvsko6BcDjRWUYQkWg8tbKpR9
-         57fg==
-X-Gm-Message-State: AOJu0YwrPX9IArdJoWYPb128wLyrisv+yPQs411QSmyBTVxmEiBQ8u3b
-	zxEke+9XwcX79LcS/7AEKMgAGSiaXjmItm7PABPFaRZyKrXd6lUXENT6PhmuBo9AUDw=
-X-Gm-Gg: ASbGncuhou264UYifpvC/b4C3ncjwVacOsi3Dj2MBUfwIuPWlP2ZmR4zaXm3zZk2ocw
-	CUt4duCyFdG8hbo1VF1ZQ9tXJu59/6OjFupHVQqvFHzDEa3xnrDF3ydo0alP+FTOUlPa2NP9JEw
-	s4l8q75Lm7Avg+4aq4Dtkc+CvIuzUxUhtjm4xn93SUOW1Q+kpzotMONY1aLd8yHeQz67VsF6F5n
-	QCwDahgvE4fwW1B80qm8k7zfcdZIhLyP4kdXoEuBrr+h7AxwoL+TlhfiId85yvAz9AnG3im6jxq
-	HcvXZL/FH6d54veNqabWpneFZ+vAXO4lhP5DNRhseQpWdZhq3qZQW/OSeqpAqHeUeDP2
-X-Google-Smtp-Source: AGHT+IHeIbhJ0VPsfz11jfIB5EOVE52kX4SaHdgM3QHa2Q2CssMf5SeFCoEo/FbLnt8TxnhDGw3Fkg==
-X-Received: by 2002:a4a:ee17:0:b0:611:b073:7c31 with SMTP id 006d021491bc7-611b9174eb9mr4656001eaf.8.1751133632662;
-        Sat, 28 Jun 2025 11:00:32 -0700 (PDT)
-Received: from [127.0.1.1] ([2600:8803:e7e4:1d00:3092:a48c:b0c6:cbf4])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-73afafee2c0sm901159a34.9.2025.06.28.11.00.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 28 Jun 2025 11:00:32 -0700 (PDT)
-From: David Lechner <dlechner@baylibre.com>
-Date: Sat, 28 Jun 2025 13:00:23 -0500
-Subject: [PATCH] iio: pressure: dlhl60d: make dlh_info_tbl const
+        d=1e100.net; s=20230601; t=1751134503; x=1751739303;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=opMX1Qwlgu2eO59hinQtvPB+M4svOAtsX/gx/lV1xqg=;
+        b=sJ9mnaFbe8YVnxr6x9qnd/NRW+CTZpV/4HRmlQPgPdf0kLEfhjXgoaPIr8RQ0uWauW
+         54NQJdI12ccgS+DTuauRiLkWd4z80UnNd2wMvR2lDylHyhC9WlSt2tNWZeUWNla4WcX6
+         YaVBvWVkjareo6Aqx9YjXO+ldO1eyQxpwcQB8V1x+GP9pJiGAbiq9TkszmX1BpEnL8jR
+         lw8EHaWD6pjbijy/9weWt3udCspx1z5wXBAAJUO2aeNQAoRG5ywjoyt8ucZLe+cc3XfR
+         aP/eZBQHKokAAgOkQUOdyf+NsHT8QKDV0L9sc8O/eG4GOtOZN2TVzKF/FqTv6P32qlL2
+         O+fw==
+X-Gm-Message-State: AOJu0YyKyblxJv8d3h0RwV6mMyKbfVHx3IYhTSCtHffqvFVubVwVqjRt
+	E1QDPO2DYmo8D8dDoG3e9NDZOb7vqn35tZ1ScEbYvFBv9co27GxH1aj+0/laXMjA/oAkwbe6aU0
+	r38Et3EE=
+X-Gm-Gg: ASbGncs3mK+yop0SJ6WZzS7C0ufYPgKecA5CIt8AboXJ7y1fu+k9FkIB0B2d4ZNpuOU
+	1CoO+jp4ri7MMx2zvb1NXcW4RHtJU54gVfROZTwZy03YChSVZ+LrDqInzUL3K2JP8CulXTC+qha
+	bg0C+S+Yfcxhnjyy8+tKHwvon7z+OuoJ5ZsX93uqf3x7KLsdsQJyLIFAyajZn6eAX/FLV0dbnlo
+	3C6ZvRGewmAj/t7MDPw5hx3ABDgDw+9Tdwm/4XdBz4yg7Wltx+CcpHWVgaxdSLcCCOpAo1za28z
+	T0QprnMmPtlbRm09L9g472gSxHA4ejiMGmZvVqfL0Tarz7a/7q8tIszBiki8BTrsJCo4jX/gnZM
+	aFeoSD3eVlNptLKjmK0iFW8sA86Q33U8FscUO8Eg=
+X-Google-Smtp-Source: AGHT+IEEQkM1gJRIew9gOz8gjXb3IwEUoI9QxGNe8m7jXfBjfsS45L+o6phsIwDzLFXqm/Od5/VXeg==
+X-Received: by 2002:a05:6830:8009:b0:735:b9db:5939 with SMTP id 46e09a7af769-73afc3e703emr4147723a34.10.1751134502681;
+        Sat, 28 Jun 2025 11:15:02 -0700 (PDT)
+Received: from ?IPV6:2600:8803:e7e4:1d00:3092:a48c:b0c6:cbf4? ([2600:8803:e7e4:1d00:3092:a48c:b0c6:cbf4])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-73afb01d79csm905055a34.28.2025.06.28.11.15.02
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 28 Jun 2025 11:15:02 -0700 (PDT)
+Message-ID: <bc8d1e7b-bcd4-42de-9011-4e1b6fc3a23a@baylibre.com>
+Date: Sat, 28 Jun 2025 13:15:01 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] iio: pressure: dlhl60d: make dlh_info_tbl const
+To: Jonathan Cameron <jic23@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250628-iio-const-data-24-v1-1-353b97281534@baylibre.com>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <20250628-iio-const-data-24-v1-1-353b97281534@baylibre.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250628-iio-const-data-24-v1-1-353b97281534@baylibre.com>
-X-B4-Tracking: v=1; b=H4sIALYtYGgC/x3MPQqAMAxA4atIZgMa/CleRRxim2qWVloRQby7x
- fEb3nsgS1LJMFUPJLk0awwFbV2B3TlsguqKgRrqm4EMqka0MeQTHZ+M1GHHVgyxGVfvoHRHEq/
- 3/5yX9/0Ah7859WMAAAA=
-X-Change-ID: 20250628-iio-const-data-24-4ace82a87bfd
-To: Jonathan Cameron <jic23@kernel.org>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Andy Shevchenko <andy@kernel.org>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- David Lechner <dlechner@baylibre.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=905; i=dlechner@baylibre.com;
- h=from:subject:message-id; bh=Wpd4062Hg4zs8I/RrWFr4ghaFslVhjOJfaz/6/aD9RQ=;
- b=owEBbQGS/pANAwAKAcLMIAH/AY/AAcsmYgBoYC25C4ncZ9vs5sMtS+5XdGYUbbbz4B6fiWbZD
- fA4wL2gFEeJATMEAAEKAB0WIQTsGNmeYg6D1pzYaJjCzCAB/wGPwAUCaGAtuQAKCRDCzCAB/wGP
- wKXTB/sFWxRKm1a4jF2//AQJMypr/dtiYhWX6ocVKuzfWqntCa2BBFTFG/4V1tcQ1LiARtcw+uZ
- FH5uuR5GZeOxb4iP54xhk6xSk4+QCvjD5dkK+9ZDS34OXXxuDF5pdxp0Fsgzs8/OdI9pBJqybGB
- X0MJtokqvsTSJE3Kf3/Y6a4+s3I6cCDIRFZE5gzARqW7PemwbCB3KEZEtNZQq3DtgoyjnYFaD5u
- k97OjESHgB4AlsxJuGylzYR4g2Iok9DG286AQQmVd7gprzxZqtEVzaeSLzFRkr20+9ho8NVXEwg
- CaG950y/vo+g8+iao1gsXGpt/IwLsK1g/KoPFDDKpTb92s6K
-X-Developer-Key: i=dlechner@baylibre.com; a=openpgp;
- fpr=8A73D82A6A1F509907F373881F8AF88C82F77C03
 
-Add const qualifier to struct dlh_info dlh_info_tbl[]. This is
-read-only data so it can be made const.
+On 6/28/25 1:00 PM, David Lechner wrote:
+> Add const qualifier to struct dlh_info dlh_info_tbl[]. This is
+> read-only data so it can be made const.
+> 
+> Signed-off-by: David Lechner <dlechner@baylibre.com>
+> ---
 
-Signed-off-by: David Lechner <dlechner@baylibre.com>
----
- drivers/iio/pressure/dlhl60d.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/iio/pressure/dlhl60d.c b/drivers/iio/pressure/dlhl60d.c
-index 48afe5c94000b44eb324d7631f3c0db8e3d0079e..1c39b873cecb24c6273720852bb13cf5ce15e518 100644
---- a/drivers/iio/pressure/dlhl60d.c
-+++ b/drivers/iio/pressure/dlhl60d.c
-@@ -50,7 +50,7 @@ struct dlh_state {
- 	u8 rx_buf[DLH_NUM_READ_BYTES];
- };
- 
--static struct dlh_info dlh_info_tbl[] = {
-+static const struct dlh_info dlh_info_tbl[] = {
- 	[dlhl60d] = {
- 		.osdig = 2,
- 		.fss = 120,
-
----
-base-commit: 14071b9cf2d751ff9bc8b5e43fa94fbf08aceea1
-change-id: 20250628-iio-const-data-24-4ace82a87bfd
-
-Best regards,
--- 
-David Lechner <dlechner@baylibre.com>
+I got in too much of a hurry and missed that we can drop the chip info
+array here. So skip ahead to v2 where that is done.
 
 

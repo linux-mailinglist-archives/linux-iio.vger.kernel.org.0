@@ -1,200 +1,160 @@
-Return-Path: <linux-iio+bounces-21062-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21063-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4760AAEC92E
-	for <lists+linux-iio@lfdr.de>; Sat, 28 Jun 2025 19:02:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2960AEC92C
+	for <lists+linux-iio@lfdr.de>; Sat, 28 Jun 2025 19:01:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB8A5189BCF3
-	for <lists+linux-iio@lfdr.de>; Sat, 28 Jun 2025 17:00:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D4385167FF2
+	for <lists+linux-iio@lfdr.de>; Sat, 28 Jun 2025 17:01:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A414D25C827;
-	Sat, 28 Jun 2025 16:59:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A850E285CB5;
+	Sat, 28 Jun 2025 17:01:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BByhqIii"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="kOSzQ18z"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f42.google.com (mail-oa1-f42.google.com [209.85.160.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5709326B776;
-	Sat, 28 Jun 2025 16:59:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CFE5284681
+	for <linux-iio@vger.kernel.org>; Sat, 28 Jun 2025 17:01:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751129972; cv=none; b=bckpDCvI86DQrQe+LyPEYfJ1nV4ni54JMixinMG3h9/wtqsHdYdZ4hQEIDadTjMDOJWMsl3qPApFrceouuIvhyeptzmsgQ3K+z+vRubRc0/QnnNAgYu52oAbblvWh4QkHetrlTpkhFeGTywVbLD/r/pv+OUwNvWGjp2qMO0Qhmo=
+	t=1751130103; cv=none; b=Por6S7hQrX/qSy1ynGjjGyBJhFJJuxQCrihmE0sIgCa9YksZHq5l1TyXbNSCHG0ere22UQAuCJekOXz3BGA9LjxfSUk/fUwmTjraSHYON4iYsLzsiUKSYJiMFnL+adujTWl1znP1Ua17sw6DWDghM3y8Fb4Br42yIyWo4eX/bg0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751129972; c=relaxed/simple;
-	bh=Y5Qcyl7nKMYyq3O12CVaaVN37dB7H+wpJaM/exZ7iBY=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jkD+QFFjbFuRhxgmvr2zUXcfz0V0YQGJbtHGi7y/4gJyz3o1z/Um1SDWjkwuEruSsqRv4uhm6+wXPbKASzClZ0MW36AmtPi74P6EshX9mU51nVzdIO5DX60nYhghQTk3JlP9XAoukW1h7rNcT3F0z2r/E8ghecb50JawarjeDmw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BByhqIii; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86C3BC4CEEA;
-	Sat, 28 Jun 2025 16:59:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751129971;
-	bh=Y5Qcyl7nKMYyq3O12CVaaVN37dB7H+wpJaM/exZ7iBY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=BByhqIii/jGyvsPSopSMeO4uvmrBCvtWFj0AfORzaOJZQGm60+2PygB9hmk8ZOMpl
-	 r7M+7dUQUPpNSKAM7wEllE0qRILgDkRQHYQ5TTqCvjcQNbcjmsWLL9ZWn3/zt8tio3
-	 Y5pjAxWcMqHKEdxgVPQqcRmDufxxT+Ge51ZyO6uy9EAZdq26t7M+moajtOub3rdhIL
-	 eTy58yhM3XA38tL+5YZkWw4gSywoiTHWOulc2+ske4b51P85rGeF5aI70O8E+VsKFm
-	 TwjHtm92zevdPHHQtrf5csup3FjVP44QhwZKbI2Ft9c2yR4Uq4gUK4uCaP15Uw7vTG
-	 J6NgDDPBE95yA==
-Date: Sat, 28 Jun 2025 17:59:21 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: "Shen Jianping (ME-SE/EAD2)" <Jianping.Shen@de.bosch.com>
-Cc: "lars@metafoo.de" <lars@metafoo.de>, "robh@kernel.org"
- <robh@kernel.org>, "krzk+dt@kernel.org" <krzk+dt@kernel.org>,
- "conor+dt@kernel.org" <conor+dt@kernel.org>, "dima.fedrau@gmail.com"
- <dima.fedrau@gmail.com>, "marcelo.schmitt1@gmail.com"
- <marcelo.schmitt1@gmail.com>, "linux-iio@vger.kernel.org"
- <linux-iio@vger.kernel.org>, "devicetree@vger.kernel.org"
- <devicetree@vger.kernel.org>, "linux-kernel@vger.kernel.org"
- <linux-kernel@vger.kernel.org>, "Lorenz Christian (ME-SE/EAD2)"
- <Christian.Lorenz3@de.bosch.com>, "Frauendorf Ulrike (ME/PJ-SW3)"
- <Ulrike.Frauendorf@de.bosch.com>, "Dolde Kai (ME-SE/PAE-A3)"
- <Kai.Dolde@de.bosch.com>
-Subject: Re: [PATCH v2 2/2] iio: imu: smi330: Add driver
-Message-ID: <20250628175921.1db14102@jic23-huawei>
-In-Reply-To: <AM8PR10MB4721C0BBFBAE160FB494482CCD7AA@AM8PR10MB4721.EURPRD10.PROD.OUTLOOK.COM>
-References: <20250513150028.42775-1-Jianping.Shen@de.bosch.com>
-	<20250513150028.42775-3-Jianping.Shen@de.bosch.com>
-	<20250525175157.2446f878@jic23-huawei>
-	<AM8PR10MB4721C0BBFBAE160FB494482CCD7AA@AM8PR10MB4721.EURPRD10.PROD.OUTLOOK.COM>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1751130103; c=relaxed/simple;
+	bh=X2KSmb4HCsHC/HeHjDlqJkqmU0XZcMUMkV1bUX/8/sc=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=qtIxvquQh+cUTyuZHGGucYfkZmGSwL1ern/Ex1CGxQsH8RvBSGKcPnelsKTMUPSNuJLQvAmBTYmjjj2bEDU8T1N9wf45+yBErHuxyjlq3YmPoZpQM4h+ezAAdQ/rGIaGkFJoVDYYrUQN025gIhci5PtVlk2wgZP8KQxBaDq259s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=kOSzQ18z; arc=none smtp.client-ip=209.85.160.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oa1-f42.google.com with SMTP id 586e51a60fabf-2e9a38d2a3aso793908fac.3
+        for <linux-iio@vger.kernel.org>; Sat, 28 Jun 2025 10:01:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1751130100; x=1751734900; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=lNEn7suD+Hd2kWZGGFYZnjdopPtytgcb/jMssPmD/3o=;
+        b=kOSzQ18z5Z9Jfi/4BSfxTCFnyflQT/yAfKOBNd0Hiu0CdY2WgusLSGCfYRdW8eDKL5
+         UjW5Czta8iyd4q2+v/QBR3YdBGbHWVigbViH8Vwe0dsr2K5zooOfwf4lDIG31REV1kDy
+         ZbaSPLd1UaMFkoWyEyY2rxFq0RJCNslOBgnc/9RYRzMZr80H4xDeb1aQQz6mHCmwf0WJ
+         GmEiu8THw5VaRfM5dVlFz2ApKrYViVubd3uOp4Q35nxDr2jyq6K/jYJ4ABKyUbGqichj
+         NrtD/1p3ooKCM531iQxLf+F4buKadsIDFHV2fAV/RhbRSkgdnE4GnHxQ96KR6Hl52HNW
+         /phw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751130100; x=1751734900;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=lNEn7suD+Hd2kWZGGFYZnjdopPtytgcb/jMssPmD/3o=;
+        b=QzIYUQsFp29sJRpnfCuNPfyaV1veIWLn+iE9Vvd1cg6EAuRF546TxKLQUB11ozQiJL
+         a2nAOGh1mj6J8zhA/mqrLlOJgRq0lxICLEJasyYyxmPQ1wHfDXULqiFUJLiWsDVt3t1N
+         80ricH6kXMC1BoLyg1Qi40KfqWEXP98awbaWZJ4vuHS1X8QfBzWgG5wiPCrES45UT8Mb
+         ZEo39LelUDexNswvaVTUHIVPdaommVudq4uoep+5k019HogQVYDOFv53YwXc+/LXpryi
+         GSme34QrA7qXbOOGq7kyg34VXe44IjwqTv3iW6SUqfOuLnqpn/Uo0nh0cxpTOkaBlgAh
+         F5BQ==
+X-Gm-Message-State: AOJu0Yz5XkqmPKRAT5JcdqtoX4Wl56dQi3kk6nO43vpunFpK/+LEktBD
+	vopoUWm3rjUYsvAKtwFknTL8owJMT/Y5sepjGEjCzkhvPzR3wu4y8gohwgOHh9Ev4jE=
+X-Gm-Gg: ASbGncuc/EEzqNzPMtRs4TrwcdumFtPjuzkPd20xqyQ7FVDAS2weW/Cxp6S4+c+Sn/G
+	5hxhNFjSroAwFvgroWu2ev2RPPTdLJTxKJahuWTK+tJyUpERuvDs0/X9ZkK2dO+O7L8xn3idj6b
+	mRnBg6hosyE8NqBf1+pOKr32xrWx4H9jKI1z1nVIt4PccdMMEMVB3DpEkp5faG6skTzmIj56Mfq
+	3loW1ZiaYpa8bvzmRDJ09kYQlmy0pOYFePj4MOyhYrgKqfr0AQ0HDXzXLakh9EtL1nUGjpOg53K
+	FsgNpNauTbRDZVwXvcmOnEVQ5PPACi8yCg9MetYcSqkwgalAK4zETASMJDc5LDE3nN3l
+X-Google-Smtp-Source: AGHT+IEbaYeotjNAcu6yS3Amk18K1Y9pBzRkOkrHYlQBIJjCg3X86HmLN22n85KsVC/LI8XaPnIEyQ==
+X-Received: by 2002:a05:6871:3806:b0:2d5:ba2d:80ed with SMTP id 586e51a60fabf-2efed68536bmr4922110fac.25.1751130100185;
+        Sat, 28 Jun 2025 10:01:40 -0700 (PDT)
+Received: from [127.0.1.1] ([2600:8803:e7e4:1d00:3092:a48c:b0c6:cbf4])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2efd50f852bsm1602028fac.33.2025.06.28.10.01.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 28 Jun 2025 10:01:38 -0700 (PDT)
+From: David Lechner <dlechner@baylibre.com>
+Date: Sat, 28 Jun 2025 12:01:29 -0500
+Subject: [PATCH] iio: accel: adxl345: make ad8366_info const
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20250628-iio-const-data-12-v1-1-88029e48a26b@baylibre.com>
+X-B4-Tracking: v=1; b=H4sIAOgfYGgC/x3MTQqAIBBA4avErBvQ6QfpKtHCcqzZaGhEEN49a
+ fkt3nshcxLOMDUvJL4lSwwVum1gO2zYGcVVAyka1EgGRSJuMeQLnb0sakIyrL3Ra9+PHdTuTOz
+ l+Z/zUsoH2AVrGmMAAAA=
+X-Change-ID: 20250628-iio-const-data-12-28e1f81b4463
+To: Lars-Peter Clausen <lars@metafoo.de>, 
+ Michael Hennerich <Michael.Hennerich@analog.com>, 
+ Jonathan Cameron <jic23@kernel.org>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Andy Shevchenko <andy@kernel.org>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ David Lechner <dlechner@baylibre.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1757; i=dlechner@baylibre.com;
+ h=from:subject:message-id; bh=X2KSmb4HCsHC/HeHjDlqJkqmU0XZcMUMkV1bUX/8/sc=;
+ b=owEBbQGS/pANAwAKAcLMIAH/AY/AAcsmYgBoYB/qZu5zS+DAe4bECmTsxhAWRh9ooM0P8eWRq
+ Ei43wZbnJeJATMEAAEKAB0WIQTsGNmeYg6D1pzYaJjCzCAB/wGPwAUCaGAf6gAKCRDCzCAB/wGP
+ wN+jB/9JVxJpqA1P4b6s0wgjvSyxzFPFRRrF//MhkCSVx8c9nhRqSn9YKDCpMjxRUVYHB+opvRG
+ TBf9mQrilmGQMg2JWBWCD2slnzvyZJjWBsH47mxuZwokQ2EuvfN7x356LLRImXtIBQ4NLjbg93b
+ pnVsfmIjqavJ/Fr5KvMAYypWC+GtpK/7KVJ4pTPrhX9ltcIMduWmuTIwX4fARK248oJsDPg6QNu
+ V/zECi4hBURPeknDVdFkh0u/dcDwd1qRDQt7m1iWN/wsqukt3UuR9rCYx9cS0i2JoXSV3+EwXZ/
+ Gbem147usgwRlvGHZrPZiPMgChJ7bh+nYd/ajaspeOuokYSa
+X-Developer-Key: i=dlechner@baylibre.com; a=openpgp;
+ fpr=8A73D82A6A1F509907F373881F8AF88C82F77C03
 
-On Thu, 26 Jun 2025 09:31:19 +0000
-"Shen Jianping (ME-SE/EAD2)" <Jianping.Shen@de.bosch.com> wrote:
+Add const qualifier to struct ad8366_info ad8366_infos[]. This
+is read-only data so it can be made const.
 
-> Hi Jonathan,
-> 
-> most findings are already fixed. For 3 findings we still have something unclear. It will be nice if you can give us little bit more indication.
-> 
-> >> +
-> >> +static const struct iio_chan_spec smi330_channels[] = {
-> >> +	SMI330_ACCEL_CHANNEL(IIO_ACCEL, X, SMI330_SCAN_ACCEL_X),
-> >> +	SMI330_ACCEL_CHANNEL(IIO_ACCEL, Y, SMI330_SCAN_ACCEL_Y),
-> >> +	SMI330_ACCEL_CHANNEL(IIO_ACCEL, Z, SMI330_SCAN_ACCEL_Z),
-> >> +	SMI330_GYRO_CHANNEL(IIO_ANGL_VEL, X, SMI330_SCAN_GYRO_X),
-> >> +	SMI330_GYRO_CHANNEL(IIO_ANGL_VEL, Y, SMI330_SCAN_GYRO_Y),
-> >> +	SMI330_GYRO_CHANNEL(IIO_ANGL_VEL, Z, SMI330_SCAN_GYRO_Z),
-> >> +	SMI330_TEMP_CHANNEL(SMI330_TEMP_OBJECT),
-> >> +	IIO_CHAN_SOFT_TIMESTAMP(SMI330_SCAN_TIMESTAMP),
-> >> +};
-> >> +
-> >> +static const struct smi330_sysfs_attr smi330_accel_scale_attr = {
-> >> +	.reg_vals = (int[]){ SMI330_ACCEL_RANGE_2G,  
-> >SMI330_ACCEL_RANGE_4G,  
-> >> +			     SMI330_ACCEL_RANGE_8G,  
-> >SMI330_ACCEL_RANGE_16G },
-> >
-> >Do we need the (int[]) part here?  
-> 
-> Remove it will lead to a compiler warning. 
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+---
+I looked into dropping use of the chip info array in this one, but
+removing it isn't trivial. There are several switch statements that
+are using the chip ID still. So we'll save that for another day.
+---
+ drivers/iio/amplifiers/ad8366.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-Fair enough.  Would have been good to put the compiler warning here.
-I'd failed to realise you were intialising a pointer not a fixed
-sized array.
+diff --git a/drivers/iio/amplifiers/ad8366.c b/drivers/iio/amplifiers/ad8366.c
+index e73c9b9833959e498fd03b37f9bedf2226b2f42a..d06ac786501c47518493e382ec2e2ad445349dd6 100644
+--- a/drivers/iio/amplifiers/ad8366.c
++++ b/drivers/iio/amplifiers/ad8366.c
+@@ -45,7 +45,7 @@ struct ad8366_state {
+ 	struct gpio_desc	*reset_gpio;
+ 	unsigned char		ch[2];
+ 	enum ad8366_type	type;
+-	struct ad8366_info	*info;
++	const struct ad8366_info *info;
+ 	/*
+ 	 * DMA (thus cache coherency maintenance) may require the
+ 	 * transfer buffers to live in their own cache lines.
+@@ -53,7 +53,7 @@ struct ad8366_state {
+ 	unsigned char		data[2] __aligned(IIO_DMA_MINALIGN);
+ };
+ 
+-static struct ad8366_info ad8366_infos[] = {
++static const struct ad8366_info ad8366_infos[] = {
+ 	[ID_AD8366] = {
+ 		.gain_min = 4500,
+ 		.gain_max = 20500,
+@@ -163,7 +163,7 @@ static int ad8366_write_raw(struct iio_dev *indio_dev,
+ 			    long mask)
+ {
+ 	struct ad8366_state *st = iio_priv(indio_dev);
+-	struct ad8366_info *inf = st->info;
++	const struct ad8366_info *inf = st->info;
+ 	int code = 0, gain;
+ 	int ret;
+ 
 
+---
+base-commit: 14071b9cf2d751ff9bc8b5e43fa94fbf08aceea1
+change-id: 20250628-iio-const-data-12-28e1f81b4463
 
-> 
-> 
-> >> +
-> >> +	if (*indio_dev->active_scan_mask == SMI330_ALL_CHAN_MSK) {
-> >> +		ret = regmap_bulk_read(data->regmap, SMI330_ACCEL_X_REG,
-> >> +				       data->buf, ARRAY_SIZE(smi330_channels));
-> >> +		if (ret)
-> >> +			goto out;
-> >> +	} else {
-> >> +		iio_for_each_active_channel(indio_dev, chan) {
-> >> +			ret = regmap_read(data->regmap,
-> >> +					  SMI330_ACCEL_X_REG + chan, &sample);  
-> >
-> >Given there is always a trade off between the efficiency of a bulk read and reading
-> >just the channels enabled, we often just set available_scan_masks, read the lot and
-> >let the IIO core worry about resorting the data as needed.  
-> 
-> Is any IIO API available to take care the resorting data?
+Best regards,
+-- 
+David Lechner <dlechner@baylibre.com>
 
-When you say resorting I'm not totally sure what you mean. If it's simply
-removing entries we don't wan then provide available_scan_masks and the
-IIO core code does it all for you.  If fewer elements are required
-by the consumer (which may be userspace) then it repacks the data to include
-only what you'd expect.
-> 
-> >
-> >For example, if you want all but 1 channel that is almost certainly quicker and that is
-> >more likely to be the common case than you want 1 channel only using the buffer.
-> >
-> >So I'd like some more explanation here on why this path is needed.  
-> 
-> We try to read the data just for activated channel and put them in buffer. If just one channel activated, reading data for all channels leads to unnecessary data transfer on bus.
-
-The trade off is that in many case a loop of regmap_read() calls is much less
-efficient than regmap_bulk_read() even though it may result in less data on the bus.
-
-So the question then becomes how common is it for people to have
-1 channel, 2 channels,  n - 1 channels, n channels.
-
-It is common that reading n - 1 in a loop is slower than reading
-n and dropping one + data mangling to realign everything after the
-missing channel.  Normally we assume that if someone bought a fancy
-device they probably want most of it's channels and optimise for that
-rather than a small subset of channels.
-
-The optimisation you have for all channels made me think that if that
-was worth doing the overheads of separate reads must be significant!
-
-> 
-> >  
-> >> +			if (ret)
-> >> +				goto out;
-> >> +			data->buf[i++] = sample;
-> >> +		}
-> >> +	}
-> >> +
-> >> +	iio_push_to_buffers_with_timestamp(indio_dev, data->buf,
-> >> +					   data->current_timestamp);
-> >> +
-> >> +out:
-> >> +	iio_trigger_notify_done(indio_dev->trig);
-> >> +
-> >> +	return IRQ_HANDLED;
-> >> +}  
-> 
-> 
-> >> +static irqreturn_t smi330_irq_handler(int irq, void *p) {
-> >> +	struct iio_dev *indio_dev = p;
-> >> +	struct smi330_data *data = iio_priv(indio_dev);
-> >> +
-> >> +	atomic64_set(&data->irq_timestamp, iio_get_time_ns(indio_dev));  
-> >
-> >Why do you need the atomic here? If there is a top half / thread race then you could
-> >get garbage data anyway.  
-> 
-> The atomic here is used to prevent simultaneous read (in bottom half) / write (in top half) to the "data->irq_timestamp"
-> This happens if the next interrupt comes too early when the current bottom half is still reading "data->irq_timestamp". 
-> The next top half will interrupt the execution of current bottom half and change the "data->irq_timestamp". 
-> Finally, the current bottom half get a wrong value.
-
-So what you are doing is preventing tearing, not a wrong value in the sense of
-getting the next time stamp.
-
-It's fairly unusual for a complex device to not have some form of explicit ack that stops us getting
-a new interrupt until we've handled the last one (IRQF_ONESHOT can be appropriate as well).
-I think the issue here is that the second interrupt might have nothing to do with data ready (which I'd
-hope does need some form of clear) but we grab a timestamp anyway.  Rather than run the risk of a
-very wrong timestamp it might make more sense to just grab a less accurate timestamp in
-the threaded handler.
-
-Jonathan
 

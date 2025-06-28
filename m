@@ -1,146 +1,317 @@
-Return-Path: <linux-iio+bounces-21047-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21048-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDBFCAEC86F
-	for <lists+linux-iio@lfdr.de>; Sat, 28 Jun 2025 18:00:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 470D4AEC871
+	for <lists+linux-iio@lfdr.de>; Sat, 28 Jun 2025 18:01:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 266177AA30A
-	for <lists+linux-iio@lfdr.de>; Sat, 28 Jun 2025 15:59:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 29BAE189E3C3
+	for <lists+linux-iio@lfdr.de>; Sat, 28 Jun 2025 16:01:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85C24221F3E;
-	Sat, 28 Jun 2025 16:00:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E005C219313;
+	Sat, 28 Jun 2025 16:01:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="xrAHte3y"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LphNWFEr"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ot1-f47.google.com (mail-ot1-f47.google.com [209.85.210.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78CFB20D51A
-	for <linux-iio@vger.kernel.org>; Sat, 28 Jun 2025 16:00:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97FD22110;
+	Sat, 28 Jun 2025 16:01:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751126420; cv=none; b=Aquzvy6fYKfQJ0gCKkqf9MztlgtQrOKumk/DGjGOWBaFo0ncSqHSmI2ppPAImtTdo7J2EWTTYNRO8waGJyT5/6OHll7MJtWzjcUZkYIjAJ54Fvb6N41G8UVfcnKeaFvPU7ebGG+ijIC0NfRMEWW+l/kCI33wn0qTVmnQuUIbG7k=
+	t=1751126489; cv=none; b=W5cnhD042s6S828xlP92ku8NmJuCdGJqLphuR4Sq9QXeT+nFNENM5M7P5TrfFNd+TP71vkbIG4dHDmgknyK+W6I04rMkE07ykDj1WOX2BVCWg1FoXta+h9QkM+gdFXB7T19J0JiUgizo6LDxylgTR3IvNm8va2IgB7FQxAHyKEM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751126420; c=relaxed/simple;
-	bh=IVJGIak5i1lqPUyqPDqlGVJI5zTZBXVeYZ74KjBQj6s=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=pObP/+W6tduLdHS0z8RAIi750B8ljL+XQZi1sughTbbblAWl8sATlBrUz/LeK0tF5FLg4wMollrndnzwvD9neDooOR4gTJ8fLKXoU+7EdnsnrY7fW4qzbbmYYIvpoT6dBLYNJpC8yj19X0n1pMWXqZyNd8LL4cOACzGKQThhZwY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=xrAHte3y; arc=none smtp.client-ip=209.85.210.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ot1-f47.google.com with SMTP id 46e09a7af769-73a8d0e3822so1608233a34.2
-        for <linux-iio@vger.kernel.org>; Sat, 28 Jun 2025 09:00:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1751126416; x=1751731216; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=fyLjvDKvqspmdjT3FpklSNY0+sdEyvNzdK0N2B2mPeg=;
-        b=xrAHte3yghHyDS4siaK9OdZOQC+3v2plAZJega2/FbRkKxrtkLCXxE1CEWhcLHEe7j
-         ab8WhiGu416lGzdBFxzGLHXJ/pD5O3pKOyuVdge1sxfwGpuzUezHx7weB7u3h2UZ5d6j
-         l7q0L+csy+M7WiIz3w5a6LfPpn3t1900ebkp5vqE6CVM/0/ojyniIV5ro9x8SFNX0Fqs
-         wbeqZxHR3pe/eZEjSuAA/4h/Y7ocdQXzDk0aM9Xk77CubcG+g6+R5YCHIoGr9Pf5wCsN
-         JTaedSs2UpWr9pbPklaqncPGBstuV3j2ybuql4kWZYdPeEPxjyYHIsza285GDpauvGcg
-         TtcQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751126416; x=1751731216;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=fyLjvDKvqspmdjT3FpklSNY0+sdEyvNzdK0N2B2mPeg=;
-        b=rtILWmmy6EpjKaKphf5PBQf+Ou89ehiR/F8buVsQGmfFTk/CF+tPL7abA4Sk1ZD10I
-         lRKOpAZRJ/h4FlWCVw3ShNx6eUbkzLJ19TDEDvdGyp4sAtp60gLkTYtvkakNzF1vxYPN
-         eERaSGsI8J2XrtWbN4iAK5pBqJUjHO50mb1TrYG9FvI36zGbdqU/JdbRP2+QsB5EuJS5
-         pSMG6bE/qzLwi3CxQmQnAjurnhZqKdtIm4pPlArwBVP0Vo0DG0MIkUGrAnEdcTHnsB0m
-         WVj2naoBh/EQXg1r3ykgYaclTiDuXm2DR/X9jc2A3CJj4JbF4m06c04rXLhh9U4Lt0v1
-         C8OQ==
-X-Gm-Message-State: AOJu0YyrCt8sqZ4Bo9F0cFVsJKWXmEtk363Qu3ZQdXQWzYfJLbXxzS6W
-	4pBL29CPbQjNLjV6pj/+sHtp/eCrSNmX6rGR85Vkfm7Xi4VXS/vZN5VNhjEONlNfDqNvasVJWgf
-	mkNZ9+sQ=
-X-Gm-Gg: ASbGncsZqXFrwX0uEvcmlLluaBT3gwQPLea5cPbP70eentsZMgTghgct3EmvoXPn6uc
-	jSHbqO/mKTwyPsv8PWGEd/xsNbw8JlJzu/f6eMoFQKiExVNpW/4/0n4n2fpZUjEv7kkmQCnbmyS
-	DUNF89sFTa6fnD+R3ev6ovXj4SbuhYjCfY/XcHve8ApkWxgAGfSGpEs+fo8V9lK77a8NWi74ISG
-	P/mnu6F739Y7tvP1Pn5iZv76YCyJ/xlmOL56rKmJnvYHRpHsyWXzcdUKfSC24XbCRQSXqP8rlwO
-	DueovrPknduEOHjj7i93zgjtfl4KEpTNIOWIibF6iTp0ZGHY0APuDlszuUjQ/7thFZkb
-X-Google-Smtp-Source: AGHT+IGCQ29Ecqwd6tMQskL/FRmQkOakxzutOmMQV0OJAEWQqc6XI0yI6ppVmkAzyhHD6J33g8MgQg==
-X-Received: by 2002:a05:6830:8104:b0:72b:7a29:d680 with SMTP id 46e09a7af769-73afc5db063mr4086697a34.10.1751126416505;
-        Sat, 28 Jun 2025 09:00:16 -0700 (PDT)
-Received: from [127.0.1.1] ([2600:8803:e7e4:1d00:3092:a48c:b0c6:cbf4])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-73afb10091esm847348a34.46.2025.06.28.09.00.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 28 Jun 2025 09:00:16 -0700 (PDT)
-From: David Lechner <dlechner@baylibre.com>
-Date: Sat, 28 Jun 2025 11:00:07 -0500
-Subject: [PATCH] iio: accel: mma9553: make mma9553_event_info const
+	s=arc-20240116; t=1751126489; c=relaxed/simple;
+	bh=QNuH3SHReMcWcui0DlPwcrn2+UCUB+hx5I5pQ/AKsOo=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=BDem2yVHFlO9hg9Jy0pe2pHqFJq1TaGQR+CPXr0mE92LDLAZAiUvdPGHemmE9BjDgNqk41Ai24Eq5xuuE0dLZxrEGG7dD++Wnj2s/ciNY1o/KQ6qP76vVWBvB/Okn5AvBT+yPznh9tx72ryIi9evlHiOafaLwSAUdH8zOzqfKR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LphNWFEr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F75EC4CEEA;
+	Sat, 28 Jun 2025 16:01:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1751126489;
+	bh=QNuH3SHReMcWcui0DlPwcrn2+UCUB+hx5I5pQ/AKsOo=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=LphNWFErKGcTmeLC0pcxmr7LPO7iJdYMZVALgSVAKUC4jIMwCRTlNOhVZPEcEOTWh
+	 hHxe/mXdL1CbI9HfaPQLLW7TNYdfslTWrHG6xKRAelIJZPvZZOjckwx8TMk5LReg18
+	 mCvFae0T5KVUpAjX8r34Z5A6uL+jifRDxJTGr/+is2fx0jpljup9GJs1HSk5GUWZYy
+	 ioqUW2iTtlhRTp/P67+q1q3AsxNAM1cnZjvagDf7hGGhTM0lEIQprp+8pXoyd/kssC
+	 ci3VqVs6kcEMracx6v43N2LOyx3KJzwbRWs2sBl9F1/LvekY6VLFQIxkGvS54zErms
+	 3SjitU9iXgaFw==
+Date: Sat, 28 Jun 2025 17:01:18 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Cc: dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org,
+ robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ matthias.bgg@gmail.com, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
+ kernel@collabora.com
+Subject: Re: [PATCH v1 4/5] iio: adc: mt6359: Add support for MediaTek
+ MT6363 PMIC AUXADC
+Message-ID: <20250628170118.2bd3e68b@jic23-huawei>
+In-Reply-To: <20250623120028.108809-5-angelogioacchino.delregno@collabora.com>
+References: <20250623120028.108809-1-angelogioacchino.delregno@collabora.com>
+	<20250623120028.108809-5-angelogioacchino.delregno@collabora.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250628-iio-const-data-2-v1-1-a61da3a0941e@baylibre.com>
-X-B4-Tracking: v=1; b=H4sIAIYRYGgC/x3MPQqAMAxA4atIZgMaUItXEYf+pJqllbaIULy7x
- fEb3quQOQlnWLsKiW/JEkPD2HdgTx0ORnHNQANNw0wKRSLaGHJBp4tGwsWR9sbw4pWCll2JvTz
- /ctvf9wPc001YYgAAAA==
-X-Change-ID: 20250628-iio-const-data-2-7d2afbbe7f88
-To: Jonathan Cameron <jic23@kernel.org>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Andy Shevchenko <andy@kernel.org>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- David Lechner <dlechner@baylibre.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1177; i=dlechner@baylibre.com;
- h=from:subject:message-id; bh=IVJGIak5i1lqPUyqPDqlGVJI5zTZBXVeYZ74KjBQj6s=;
- b=owGbwMvMwMV46IwC43/G/gOMp9WSGDISBNubBC9H31+ozZLN4r5sxuTyXYaym25ME9R6s+SKe
- lhsZuPVTkZjFgZGLgZZMUWWNxI35yXxNV+bcyNjBswgViaQKQxcnAIwkRgB9r/SbR1GVZFnY+93
- 5k7ZVq6gJLXqVVPVB6+fdu+Xb3dSPJeRv2WnXKDJc+cOrbgtccLtGVYZPJcnN+oYzF0lWrK1gkP
- ZubBCOMB/rVTU5YYrnBoBTheaX6i3XOpUehIcbv9D4Y3Fa6VnxsJpLxavFfTuYRZ9+f3gwXfpWz
- 58F46drn0myrInMOLo2aDnpr1eOWJi5kreE64VBDFV+t1Z4W6QeV9v9ZkWocOPTOZOcrIz2uxkk
- L6AcU/fYtNsn4+z+Bp/rJ34/JHR0ktq/Gl7D5z3yrZOWMpn8dXmaN1qgfuVzjN/iTYo1vIZK4Yt
- VO/alLxY9LTYrB87Ngr8+i92rj/KoFu9RfGT5NGv/gaeAA==
-X-Developer-Key: i=dlechner@baylibre.com; a=openpgp;
- fpr=8A73D82A6A1F509907F373881F8AF88C82F77C03
 
-Add const qualifier to struct mma9553_event_info mma9553_event_info[].
-This is read-only data so it can be made const.
+On Mon, 23 Jun 2025 14:00:27 +0200
+AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com> wrote:
 
-Signed-off-by: David Lechner <dlechner@baylibre.com>
----
- drivers/iio/accel/mma9553.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+> MediaTek MT6363 is a PMIC found on MT8196/MT6991 board designs
+> and communicates with the SoC over SPMI.
+> 
+> This PMIC integrates an Auxiliary ADC (AUXADC) which has a grand
+> total of 54 ADC channels: 49 PMIC-internal channels, 2 external
+> NTC thermistor channels and 2 generic ADC channels (mapped to 7
+> PMIC ADC external inputs).
+> 
+> To use a generic ADC channel it is necessary to enable one of
+> the PMIC ADC inputs at a time and only then start the reading,
+> so in this case it is possible to read only one external input
+> for each generic ADC channel.
+> 
+> Due to the lack of documentation, this implementation supports
+> using only one generic ADC channel, hence supports reading only
+> one external input at a time.
+> 
+> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Hi,
 
-diff --git a/drivers/iio/accel/mma9553.c b/drivers/iio/accel/mma9553.c
-index ffb0d6ff37124e5f364168c5c4f348a02d28842a..f85384a7908f253f9ed55dae4e0a41a39ae6016b 100644
---- a/drivers/iio/accel/mma9553.c
-+++ b/drivers/iio/accel/mma9553.c
-@@ -97,7 +97,7 @@ enum activity_level {
- 	ACTIVITY_RUNNING,
- };
- 
--static struct mma9553_event_info {
-+static const struct mma9553_event_info {
- 	enum iio_chan_type type;
- 	enum iio_modifier mod;
- 	enum iio_event_direction dir;
-@@ -152,7 +152,7 @@ static struct mma9553_event_info {
- #define MMA9553_EVENTS_INFO_SIZE ARRAY_SIZE(mma9553_events_info)
- 
- struct mma9553_event {
--	struct mma9553_event_info *info;
-+	const struct mma9553_event_info *info;
- 	bool enabled;
- };
- 
+A few comments that may or may not overlap with Andy's review.
 
----
-base-commit: 14071b9cf2d751ff9bc8b5e43fa94fbf08aceea1
-change-id: 20250628-iio-const-data-2-7d2afbbe7f88
+thanks,
 
-Best regards,
--- 
-David Lechner <dlechner@baylibre.com>
+Jonathan
+
+> ---
+>  drivers/iio/adc/mt6359-auxadc.c | 238 +++++++++++++++++++++++++++++---
+>  1 file changed, 217 insertions(+), 21 deletions(-)
+> 
+> diff --git a/drivers/iio/adc/mt6359-auxadc.c b/drivers/iio/adc/mt6359-auxadc.c
+> index ae7b65f5f551..f49b0b6e78da 100644
+> --- a/drivers/iio/adc/mt6359-auxadc.c
+> +++ b/drivers/iio/adc/mt6359-auxadc.c
+
+> +enum mtk_pmic_auxadc_flags {
+> +	MTK_PMIC_AUXADC_IS_SPMI = BIT(0),
+> +	MTK_PMIC_AUXADC_NO_RESET = BIT(1),
+> +};
+
+With just two bits I think flags obscures what is going on over
+a pair of separate booleans.
+
+>  };
+> @@ -123,7 +155,9 @@ struct mtk_pmic_auxadc_chan {
+>   * @desc:           PMIC AUXADC channel data
+>   * @regs:           List of PMIC specific registers
+>   * @sec_unlock_key: Security unlock key for HK_TOP writes
+> + * @vref_mv:        AUXADC Reference Voltage (VREF) in millivolts
+>   * @imp_adc_num:    ADC channel for battery impedance readings
+> + * @flags:          Feature flags
+>   * @read_imp:       Callback to read impedance channels
+>   */
+>  struct mtk_pmic_auxadc_info {
+> @@ -133,22 +167,33 @@ struct mtk_pmic_auxadc_info {
+>  	const struct mtk_pmic_auxadc_chan *desc;
+>  	const u16 *regs;
+>  	u16 sec_unlock_key;
+> +	u16 vref_mv;
+I'd not worry about the space saving here and instead make this a u32 so that
+can avoid the casting when using this.
+
+>  	u8 imp_adc_num;
+> +	u8 flags;
+
+As above. Pair of bool preferred.
+
+>  	int (*read_imp)(struct mt6359_auxadc *adc_dev,
+>  			const struct iio_chan_spec *chan, int *vbat, int *ibat);
+>  };
+
+>  static void mt6358_stop_imp_conv(struct mt6359_auxadc *adc_dev)
+>  {
+>  	const struct mtk_pmic_auxadc_info *cinfo = adc_dev->chip_info;
+> @@ -379,13 +488,13 @@ static int mt6359_read_imp(struct mt6359_auxadc *adc_dev,
+>  	int ret;
+>  
+>  	/* Start conversion */
+> -	regmap_write(regmap, cinfo->regs[PMIC_AUXADC_IMP0], MT6359_IMP0_CONV_EN);
+> +	regmap_write(regmap, cinfo->regs[desc->req_idx], desc->req_mask);
+
+Given desc->req_idx is not introduced in this patch, why is this needed now
+but not previously?  Maybe this change belongs in a separate patch with
+a description to explain that.
+
+>  	ret = regmap_read_poll_timeout(regmap, cinfo->regs[desc->rdy_idx],
+>  				       val, val & desc->rdy_mask,
+>  				       IMP_POLL_DELAY_US, AUXADC_TIMEOUT_US);
+>  
+>  	/* Stop conversion regardless of the result */
+> -	regmap_write(regmap, cinfo->regs[PMIC_AUXADC_IMP0], 0);
+> +	regmap_write(regmap, cinfo->regs[desc->req_idx], 0);
+>  	if (ret)
+>  		return ret;
+>  
+> @@ -416,6 +525,7 @@ static const struct mtk_pmic_auxadc_info mt6357_chip_info = {
+>  	.regs = mt6357_auxadc_regs,
+>  	.imp_adc_num = MT6357_IMP_ADC_NUM,
+>  	.read_imp = mt6358_read_imp,
+> +	.vref_mv = 1800,
+>  };
+>  
+>  static const struct mtk_pmic_auxadc_info mt6358_chip_info = {
+> @@ -426,6 +536,7 @@ static const struct mtk_pmic_auxadc_info mt6358_chip_info = {
+>  	.regs = mt6358_auxadc_regs,
+>  	.imp_adc_num = MT6358_IMP_ADC_NUM,
+>  	.read_imp = mt6358_read_imp,
+> +	.vref_mv = 1800,
+>  };
+>  
+>  static const struct mtk_pmic_auxadc_info mt6359_chip_info = {
+> @@ -436,6 +547,17 @@ static const struct mtk_pmic_auxadc_info mt6359_chip_info = {
+>  	.regs = mt6359_auxadc_regs,
+>  	.sec_unlock_key = 0x6359,
+>  	.read_imp = mt6359_read_imp,
+> +	.vref_mv = 1800,
+
+Add vref_mv and code using it in a precursor patch.  Not a problem that all
+vref_mv will be 1800 at that point.  That way we can quickly see that it
+has no affect on existing parts, and simplify what is present in this patch.
+
+> +};
+> +
+> +static const struct mtk_pmic_auxadc_info mt6363_chip_info = {
+> +	.model_name = "MT6363",
+> +	.channels = mt6363_auxadc_channels,
+> +	.num_channels = ARRAY_SIZE(mt6363_auxadc_channels),
+> +	.desc = mt6363_auxadc_ch_desc,
+> +	.regs = mt6363_auxadc_regs,
+> +	.flags = MTK_PMIC_AUXADC_IS_SPMI | MTK_PMIC_AUXADC_NO_RESET,
+> +	.vref_mv = 1840,
+>  };
+>  
+>  static void mt6359_auxadc_reset(struct mt6359_auxadc *adc_dev)
+> @@ -464,27 +586,74 @@ static int mt6359_auxadc_read_adc(struct mt6359_auxadc *adc_dev,
+>  	const struct mtk_pmic_auxadc_info *cinfo = adc_dev->chip_info;
+>  	const struct mtk_pmic_auxadc_chan *desc = &cinfo->desc[chan->scan_index];
+>  	struct regmap *regmap = adc_dev->regmap;
+> -	u32 val;
+> +	u32 reg, rdy_mask, val, lval;
+> +	u8 ext_sel;
+>  	int ret;
+>  
+> +	if (desc->ext_sel_idx >= 0) {
+> +		ext_sel = FIELD_PREP(MT6363_EXT_PURES_MASK, desc->ext_sel_pu);
+> +		ext_sel |= FIELD_PREP(MT6363_EXT_CHAN_MASK, desc->ext_sel_ch);
+> +
+> +		ret = regmap_update_bits(regmap, cinfo->regs[desc->ext_sel_idx],
+> +					 MT6363_EXT_PURES_MASK | MT6363_EXT_CHAN_MASK,
+> +					 ext_sel);
+> +		if (ret)
+> +			return ret;
+> +	}
+> +
+>  	/* Request to start sampling for ADC channel */
+>  	ret = regmap_write(regmap, cinfo->regs[desc->req_idx], desc->req_mask);
+>  	if (ret)
+> -		return ret;
+> +		goto end;
+>  
+>  	/* Wait until all samples are averaged */
+>  	fsleep(desc->num_samples * AUXADC_AVG_TIME_US);
+>  
+> -	ret = regmap_read_poll_timeout(regmap,
+> -				       cinfo->regs[PMIC_AUXADC_ADC0] + (chan->address << 1),
+> -				       val, val & PMIC_AUXADC_RDY_BIT,
+> +	reg = cinfo->regs[PMIC_AUXADC_ADC0] + (chan->address << 1);
+> +	rdy_mask = PMIC_AUXADC_RDY_BIT;
+> +
+> +	/*
+> +	 * Even though for both PWRAP and SPMI cases the ADC HW signals that
+> +	 * the data is ready by setting AUXADC_RDY_BIT, for SPMI the register
+> +	 * read is only 8 bits long: for this case, the check has to be done
+> +	 * on the ADC(x)_H register (high bits) and the rdy_mask needs to be
+> +	 * shifted to the right by the same 8 bits.
+> +	 */
+> +	if (MTK_AUXADC_HAS_FLAG(cinfo, IS_SPMI)) {
+
+This is getting close to the point where the complexity for the IS_SPMI case
+is compled enough you'd be better off just splitting the code.  I'd try that
+and see if it ends up neater than this.
+
+> +		rdy_mask >>= 8;
+> +		reg += 1;
+> +	}
+> +
+> +	ret = regmap_read_poll_timeout(regmap, reg, val, val & rdy_mask,
+>  				       AUXADC_POLL_DELAY_US, AUXADC_TIMEOUT_US);
+> -	if (ret)
+> -		return ret;
+> +	if (ret) {
+> +		dev_dbg(adc_dev->dev, "ADC read timeout for chan %lu\n", chan->address);
+> +		goto end;
+> +	}
+> +
+> +	if (MTK_AUXADC_HAS_FLAG(cinfo, IS_SPMI)) {
+> +		/* If the previous read succeeded, this can't fail */
+
+As per discussion with Andy, I don't think we can ever assume that.
+
+> +		regmap_read(regmap, reg - 1, &lval);
+> +		val = (val << 8) | lval;
+> +	}
+>  
+> -	/* Stop sampling */
+
+If you have code that ends up with an internal goto for a specific
+block, that often suggests you should be factoring some code out to simplify
+the flow.
+
+I would take everything between the activiate ADC GPIO and deactivate out
+as another function.  That will still need a goto to get to the stop
+sampling but then we won't have the dance below where we do some
+stuff from the main code flow on error and then exit (with more after
+that not run).
+
+> +end:
+> +	/* Stop sampling unconditionally... */
+>  	regmap_write(regmap, cinfo->regs[desc->req_idx], 0);
+>  
+> +	/* ...and deactivate the ADC GPIO if previously done */
+> +	if (desc->ext_sel_idx >= 0) {
+> +		ext_sel = FIELD_PREP(MT6363_EXT_PURES_MASK, MT6363_PULLUP_RES_OPEN);
+> +
+> +		regmap_update_bits(regmap, cinfo->regs[desc->ext_sel_idx],
+> +				   MT6363_EXT_PURES_MASK, ext_sel);
+> +	}
+> +
+> +	/* Check if we reached this point because of an error or regular flow */
+> +	if (ret)
+> +		return ret;
+> +
+> +	/* Everything went fine, give back the ADC reading */
+>  	*out = val & GENMASK(chan->scan_type.realbits - 1, 0);
+>  	return 0;
+>  }
+> @@ -505,7 +674,7 @@ static int mt6359_auxadc_read_raw(struct iio_dev *indio_dev,
+>  	int ret;
+>  
+>  	if (mask == IIO_CHAN_INFO_SCALE) {
+> -		*val = desc->r_ratio.numerator * AUXADC_VOLT_FULL;
+> +		*val = desc->r_ratio.numerator * (u32)cinfo->vref_mv;
+
+As above.  If vref_mv was already a (u32) no need to cast here.
 
 

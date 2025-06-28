@@ -1,291 +1,241 @@
-Return-Path: <linux-iio+bounces-21091-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21092-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87721AECA35
-	for <lists+linux-iio@lfdr.de>; Sat, 28 Jun 2025 22:02:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B379AECA50
+	for <lists+linux-iio@lfdr.de>; Sat, 28 Jun 2025 22:57:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9DA1F7A34AE
-	for <lists+linux-iio@lfdr.de>; Sat, 28 Jun 2025 20:00:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 560F617AD17
+	for <lists+linux-iio@lfdr.de>; Sat, 28 Jun 2025 20:57:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A09E253B59;
-	Sat, 28 Jun 2025 20:02:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A002F2264AA;
+	Sat, 28 Jun 2025 20:57:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="w+vkzI6t"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="pgouu8mX"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+Received: from mail-oa1-f42.google.com (mail-oa1-f42.google.com [209.85.160.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81BAB1F63F9
-	for <linux-iio@vger.kernel.org>; Sat, 28 Jun 2025 20:01:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 789131ACEA6
+	for <linux-iio@vger.kernel.org>; Sat, 28 Jun 2025 20:57:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751140920; cv=none; b=Pi2OdYSVnb1WmnmRHUM3Zj309SChteiq2MGYFYWBX9ryepSE+OgGeNkrWYFw0FKSDpSAkqc8x177SJ04dI8EmC7bFvwoZU6hH/a1k+fQVX7aTS/3rxadmqXPlNACcRiZc/jvxbL//soNP3XJAGnbyjgFirDoCkmHMi+w/UakeKM=
+	t=1751144263; cv=none; b=eN9mlqWAFPeXPBewJo3C6JHFVg5Ua05uCkJw/khfWccXLUjsKxBe+GeLPYSYHv2Fy0ASNlPo7p3x/8Rc+67uf1TUzlRst71WbROJ/UX+JJjiqunc7V/wZzfwjuLBr9suAJa4iYaRAXrymwdPCVsXvMv6doEBiw11dLWHD1y9MJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751140920; c=relaxed/simple;
-	bh=C25dUvtj5jbXCc2sJQq1wwn+HEsXVicpVUN74cxm2Tc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Za69kGHEV1YeJ/QgOEtRElCExJbwQIRit6AkH96dj9zUUBFE87Eu4RVJ6P1uM451dPMkTcEavaM+EJmlRW4nbhyoddq8flkrXx3MsLOCVvK6nxWMAcYPzPFMrqWodDeM0N+O1K+wRKaS3zExS7Pu77yiXq4w4e3O5biM+efyfS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=w+vkzI6t; arc=none smtp.client-ip=209.85.214.180
+	s=arc-20240116; t=1751144263; c=relaxed/simple;
+	bh=1tIVIotINW9BqG6gxpF/lGBVW8eqCtp9k1Jg907DwXM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=hajNEt3qAAipxuvceX8LWQhAKRHDxpmT9A7eIh/yLQLnwRo4GKL765iqUunxX0+M4R68zJScSBC9qzSmSQbuIxBxWxR+IDvRNpXXHQjUt+X4CKBF35gtNHr3pnrrWB/tloCjQlUdE5NDOisoaXEOb1y6DN09krPtjRPiEQrP1Yo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=pgouu8mX; arc=none smtp.client-ip=209.85.160.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-235ea292956so5814905ad.1
-        for <linux-iio@vger.kernel.org>; Sat, 28 Jun 2025 13:01:57 -0700 (PDT)
+Received: by mail-oa1-f42.google.com with SMTP id 586e51a60fabf-2e95ab2704fso623237fac.3
+        for <linux-iio@vger.kernel.org>; Sat, 28 Jun 2025 13:57:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1751140917; x=1751745717; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=rCb37RSYZzDO3GN3ihbvCvxF6ZjiXzcFRXh0BRgUocI=;
-        b=w+vkzI6tnkiqBACLmMkydF3fCy6gh+QLh8x1bo+8qV7oPp8oEXipe7uOWInSiLD3mp
-         TxeWT/C5PJtS+oyZhn/yLw9ogBA5I2dCyuGLtejRbcuUj0rX8B+pBx1CBsZTNFN0pZJy
-         nfZR3p5zt8cZclh6AvprKORcjsNXFjOhVp+qYDPO71bud+Qd9Gpswb9ZAp5NbfRo8MpS
-         9K5BCg3p9VKxgZ/aZk/m5RD7J0djP2H7hkUemuPwsYz8OWsUYCZi6lIA4dez+bFhbNP/
-         lR3lIInAYmoCggTUKPdptLvTnKmyal9dKt73Zt819fc643YmOjokOlhcCuBjHFNCT9RU
-         ipig==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1751144257; x=1751749057; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=oRSKXsmOI7fubaJSlkAR5RbckHizePnzok9UyZErkTg=;
+        b=pgouu8mX8H+7LuV/tblDzDjKLxqt41cdCVFCLRPUklRSEMflpttpX6gf/K2j+IYk45
+         EKW6QVdlVHpDDWYH+M79EIx6yGHCoqFj3+70Jea5T+72kk3Oa1ZyeWxL6nlR3GqVxx8T
+         0rTQvIIcR8VLcxzPaUjafjznT8DcTkjlfmUTTKOkXq8xtT1gBLu063wXnoO5L5Ahd8Pv
+         egOZFOzDv9/O90ch4Wk8LUyT7y8M1omPfBzfAJCLRf7gSAgOYtmRdirG69cXyKvGpiR0
+         7SwDzXom3TU6i4iWf80YMlwQB4KBr47qtqVJE3Y9TRNsGhtVyi200DtPY+zYOntDlJM2
+         2o+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751140917; x=1751745717;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rCb37RSYZzDO3GN3ihbvCvxF6ZjiXzcFRXh0BRgUocI=;
-        b=uBZP4lHgPaePAE+/SBMLmdtKBYz6Yqp0TV+5oRo2lbAbG7XE17Sb89natU67PnyL7b
-         2PJrYarVEp+V/LVWO/8sLYpVLXqgbETWtn9ebYaOxAwqfpGyW06vv5uq46XErXks5SsV
-         uPdfNE+yaHknAef9AWpr3jTKKPGG6H71Tmk2+D814UqSIAbrbAWszgtDh2R4QtInSYWa
-         ej5g5pnfw/k3d9OegZU499SvMD8j2waR6HvsUwfOfemrz3ARH7ZjGK5HaX6ZjnsGTdYw
-         AQaWmSgoZR7t4UnE7rTvusJwTc1saM6v9J5KD8E0nD8l30HtZSMzbRQqumiogJHzR3KU
-         03dw==
-X-Forwarded-Encrypted: i=1; AJvYcCUgnM4n9qaXG8rM6ZQ3PqenCAG8u/DTwf3niY7dJeYVVbLMSvIK5S3pu/GTGwQHePzuBJtskZz3eOw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzJs1ORRqpZiDjJMru1E5+C3kyhd4gAdE3EiE4fNN+tParpyiii
-	zOOCyYO8qAMNG2oHwp4cp45HHq4rc9BwB3Wk4DMU8wwmIZzxgYqyomb9tTnrL2DMl6E=
-X-Gm-Gg: ASbGncvSwZDn0uZ8YH+s9eJYGgWNLnckRFEyx0Ru92yD+1C7zcQJVZpa+xkjTbT5HML
-	m133QFIu8IGKUGFM7ifyt+isT5PIfMR2uA8/Rpkdk/y9yiKl984VZqNOV3NaW9trGjGtv5seaVo
-	uiPQ1AtSq2mZsM45C/x0qZ5vlMKTNBaplqXxcQ7Bq2v0MGUcBWFnR82gIbCVE58ohWS5ko0NsvM
-	2eJV/tGvGEaPvRnoTu79Wqj14PDsPRSHukltCb45L9GokXVyqScEJ2O0+fkR37tcTE+93/Gw+Aq
-	noGRNWTAfOeyP3OCxcivwVaPXM0qGU85zTBVsoZd4wRvBjDQHNraVTzEdFFcEYDr6SrrZLWgLUU
-	cQkBXtRjLyx3KTiNs19KViw==
-X-Google-Smtp-Source: AGHT+IFJDLrx7ywjg4S4bUF/qUoRM9GFUNFWqz+Q59e4xQXUhehdQBrs0a8xNAd+1AuhXOTd7j4eRg==
-X-Received: by 2002:a17:903:2ecd:b0:236:9d66:ff24 with SMTP id d9443c01a7336-23ac3dec4a2mr106216265ad.8.1751140916690;
-        Sat, 28 Jun 2025 13:01:56 -0700 (PDT)
-Received: from dev-linux (syn-076-088-115-008.res.spectrum.com. [76.88.115.8])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23acb2f17f5sm46210995ad.62.2025.06.28.13.01.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 28 Jun 2025 13:01:56 -0700 (PDT)
-Date: Sat, 28 Jun 2025 13:01:53 -0700
-From: Sukrut Bellary <sbellary@baylibre.com>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: David Lechner <dlechner@baylibre.com>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Matti Vaittinen <mazziesaccount@gmail.com>,
-	Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Angelo Compagnucci <angelo.compagnucci@gmail.com>,
-	Nishanth Menon <nm@ti.com>, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 2/5] iio: adc: ti-adc128s052: Use shift and realbits
-Message-ID: <aGBKMcZGYOcXmKdB@dev-linux>
-References: <20250614091504.575685-1-sbellary@baylibre.com>
- <20250614091504.575685-3-sbellary@baylibre.com>
- <20250614142743.23ee2203@jic23-huawei>
+        d=1e100.net; s=20230601; t=1751144257; x=1751749057;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=oRSKXsmOI7fubaJSlkAR5RbckHizePnzok9UyZErkTg=;
+        b=DKdGZpFFJjwvN7uh/1OACVq5BggyOdz2yvQEH9Okmf50wSq6KotVH07nO0ahCyqErb
+         L60J30uzHelI9jHFwQHsejxafUZKeONliVyp/Z++4nYbTnwy4jpnX3AIqzHC3X8A6BTA
+         h3qK/sLlp81kahSxi8Zt0owqfot/yeQJf37hdtPFou6JoQvuOqmrqf86IDyukjJQ338N
+         i63qKP48eLAmMvbASv/c3ZsNlqlT9Fid9JCqiVNn5Hd3o3fDQi67AoDp9zjixmHNGDjO
+         0EO7QjeUJgLVhcn2/Ci8HSy6H7W/OOoIIEi3UEjXLNCdqFEfmv5u4Iq08Y3sRz1Pj/c5
+         2B4g==
+X-Forwarded-Encrypted: i=1; AJvYcCVybmrW8jaNRbN447bT8sCaLscNfYZXiIDxzkoJF9dCwZPCJs/RuzYUiea3WPAvSASxGMLbN66FWA0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy4mNq8ze7yYEtxY8cIXdUVp1yJBqGKYhzbF8xtKKyP3CnPPNJb
+	q1jTWuGzJW9c1GaA/fBwr8JP8O4AX4FbvzJhTFMCxHNEWcLA8c5KTPo9CtesrqTjmjE=
+X-Gm-Gg: ASbGncsJQ0tVXVFgvwnANu54WRkk11oMde30lkOOgJLlxc2bzm7BqsjaHTzE3Nx7Pvs
+	yTS6sHKkWMznDC6ARwrAauwYkQXkPKPG6CSfaSbKyRO3KNxhU3CGwPXwbr5ErckNM392sD/I51f
+	rs8UaHCiksIeZnUbJFXQajdZ88emiy5l/fM1/u02BaoadTxwxDID0YPQy45D7D9QXegWfQJ1DT1
+	wBM6DGCX2MI9Sov0rLlVE7TfenaZPNmUniwzagspX70DCvLJuVejIuBN1+0eOZWVg5HPlk2sEFV
+	FcQpFwe3KFDKlWU+GWCZ8U0audobJFruWGJQcHyubAG7HCa/RVYyp9Ca6F0ywuntTO1My+PWYDk
+	2tzq0xwh03rbUZGKjVfS5SGGk+l29zSKmP1XLzv8=
+X-Google-Smtp-Source: AGHT+IH9PgkgP3Mn0s2143cT7LH6WVO1hxIQIRM62cbxHZ1C7h8UjjMfsjgL01b5EsGUA+q19PP/6w==
+X-Received: by 2002:a05:6871:e013:b0:2c2:bd31:cf37 with SMTP id 586e51a60fabf-2efed42ac02mr5417996fac.4.1751144257398;
+        Sat, 28 Jun 2025 13:57:37 -0700 (PDT)
+Received: from ?IPV6:2600:8803:e7e4:1d00:3092:a48c:b0c6:cbf4? ([2600:8803:e7e4:1d00:3092:a48c:b0c6:cbf4])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2efd50b4d84sm1681854fac.23.2025.06.28.13.57.34
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 28 Jun 2025 13:57:36 -0700 (PDT)
+Message-ID: <c894cfda-a775-4598-ac3b-b3d35c6a84b3@baylibre.com>
+Date: Sat, 28 Jun 2025 15:57:34 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250614142743.23ee2203@jic23-huawei>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 1/4] iio: pressure: bmp280: Use sleep and forced mode
+ for oneshot captures
+To: ASSI <Stromeko@nexgo.de>, linux-iio@vger.kernel.org,
+ Vasileios Amoiridis <vassilisamir@gmail.com>
+References: <20241017233022.238250-1-vassilisamir@gmail.com>
+ <20241017233022.238250-2-vassilisamir@gmail.com>
+ <875xgfg0wz.fsf@Gerda.invalid>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <875xgfg0wz.fsf@Gerda.invalid>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Sat, Jun 14, 2025 at 02:27:43PM +0100, Jonathan Cameron wrote:
-> On Sat, 14 Jun 2025 02:15:01 -0700
-> Sukrut Bellary <sbellary@baylibre.com> wrote:
+On 6/28/25 1:45 PM, ASSI wrote:
+> Vasileios Amoiridis writes:
+>> The idea is that the sensor is by default in sleep mode, wakes up in
+>> forced mode when a oneshot capture is requested, or in normal mode
+>> when the buffer is enabled. The difference lays in the fact that in
+>> forced mode, the sensor does only one conversion and goes back to sleep
+>> while in normal mode, the sensor does continuous measurements with the
+>> frequency that was set in the ODR registers.
+>>
+>> The bmpX_chip_config() functions which are responsible for applying
+>> the requested configuration to the sensor, are modified accordingly
+>> in order to set the sensor by default in sleep mode.
 > 
-> > This adcxx communicates with a host processor via an SPI/Microwire Bus
-> > interface. The device family responds with 12-bit data, of which the LSB bits
-> > are transmitted by the lower resolution devices as 0. The unavailable bits are
-> > 0 in LSB. Shift is calculated per resolution and used in scaling and raw data
-> > read.
-> > 
-> > Create a separate structure for each device type instead of an array.
-> > These changes help to reuse the driver to support the family of devices with
-> > name ADC<bb><c>S<sss>, where
-> > * bb is the resolution in number of bits (8, 10, 12)
-> > * c is the number of channels (1, 2, 4, 8)
-> > * sss is the maximum conversion speed (021 for 200 kSPS, 051 for 500 kSPS
-> > and 101 for 1 MSPS)
-> > 
-> > Complete datasheets are available at TI's website here:
-> > https://www.ti.com/lit/ds/symlink/adc<bb><c>s<sss>.pdf
-> > 
-> > Co-developed-by: Nishanth Menon <nm@ti.com>
-> > Signed-off-by: Nishanth Menon <nm@ti.com>
-> > Signed-off-by: Sukrut Bellary <sbellary@baylibre.com>
-> > ---
-> >  drivers/iio/adc/ti-adc128s052.c | 115 ++++++++++++++++++--------------
-> >  1 file changed, 66 insertions(+), 49 deletions(-)
-> > 
-> > diff --git a/drivers/iio/adc/ti-adc128s052.c b/drivers/iio/adc/ti-adc128s052.c
-> > index 1b46a8155803..2b206745e53d 100644
-> > --- a/drivers/iio/adc/ti-adc128s052.c
-> > +++ b/drivers/iio/adc/ti-adc128s052.c
-> > @@ -41,13 +41,14 @@ struct adc128 {
-> >  	} __aligned(IIO_DMA_MINALIGN);
-> >  };
-> >  
-> > -static int adc128_adc_conversion(struct adc128 *adc, u8 channel)
-> > +static int adc128_adc_conversion(struct adc128 *adc,
-> > +				 struct iio_chan_spec const *channel)
-> >  {
-> >  	int ret;
-> >  
-> >  	guard(mutex)(&adc->lock);
-> >  
-> > -	adc->buffer[0] = channel << 3;
-> > +	adc->buffer[0] = channel->channel << 3;
-> >  	adc->buffer[1] = 0;
-> >  
-> >  	ret = spi_write(adc->spi, &adc->buffer, sizeof(adc->buffer));
-> > @@ -58,7 +59,10 @@ static int adc128_adc_conversion(struct adc128 *adc, u8 channel)
-> >  	if (ret < 0)
-> >  		return ret;
-> >  
-> > -	return be16_to_cpu(adc->buffer16) & 0xFFF;
-> > +	ret = (be16_to_cpu(adc->buffer16) >> channel->scan_type.shift) &
-> > +	       GENMASK(channel->scan_type.realbits - 1, 0);
-> > +
-> Even though it is a bit long I'd go with
+> Since this change went into 6.13, I've been unable to update the kernel
+> since it breaks usermode quite badly for me.  I am using sysfs to read a
+> BME280 sensor every second (oversampling is set to 1, so there should be
+> no trouble at all to read at that rate) and most of the time the
+> measurement doesn't complete and I get back an error message instead of
+> the expected reading.  The journal is full of these:
 > 
-> 	return (be16_to_cpu(adc->buffer16) >> channel->scan_type.shift) &
-> 		GENMASK();
->
-Thanks for the review.
-I will fix this in v5.
+> Jun 28 08:19:16 Otto kernel: bmp280 1-0076: Measurement cycle didn't complete.
+> Jun 28 08:19:16 Otto kernel: bmp280 1-0076: Measurement cycle didn't complete.
+> Jun 28 08:19:16 Otto kernel: bmp280 1-0076: Measurement cycle didn't complete.
+> 
+> The exact same thing happens if I stop the process that's reading the
+> sensor every second and do a manual read at much longer intervals, so
+> it's indeed not the read rate, but rather that the driver apparently
+> doesn't wait long enough for the measurement to complete.  There is an
+> indication that the wait time is just slightly too short as I have a
+> somewhat higher success rate at reading every second when the load is
+> higher.  Addtionally the read time for all three values from the sensor
+> went from ~7ms to ~28ms with much stronger tailing to longer read times
+> than before.  This sensor is in daisy-chain with a DS3231M RTC and hangs
+> off the DDC of the unsused VGA port provided by an Intel IGP.
+> 
+> I've not found a way to switch the operations mode via sysfs and/or
+> enable the ring buffer, which may or may not solve the problem depending
+> on which mode is used when the trigger arrives.  That's mainly because I
+> couldn't find a complete example of how to use this facility and I've
+> likely done some of the steps in the wrong order or missed one.  I've
+> enabled the scan elements, but trying to enable the buffer tells me
+> "write error: Invalid argument".  For starters, the system I'm on
+> (openSUSE Tumbleweed) doesn't seem to have IIO trigger support enabled
+> via either configfs or sysfs.  But in any case I think oneshot capturing
+> from userland should still work, I just haven't found out how.
+> 
+> So is there some description of how to get the sysfs functionality as
+> before and/or switch the operations mode to avoid this failure?  The
+> easiest would be if the BME280_MEAS_OFFSET value was configurable, but
+> it's a #DEFINE at the moment.
+> 
+> 
+> Regards,
+> Achim.
 
-> > +	return ret;
-> >  }
-> >  
-> >  static int adc128_read_raw(struct iio_dev *indio_dev,
-> > @@ -71,7 +75,7 @@ static int adc128_read_raw(struct iio_dev *indio_dev,
-> >  	switch (mask) {
-> >  	case IIO_CHAN_INFO_RAW:
-> >  
-> > -		ret = adc128_adc_conversion(adc, channel->channel);
-> > +		ret = adc128_adc_conversion(adc, channel);
-> >  		if (ret < 0)
-> >  			return ret;
-> >  
-> > @@ -81,7 +85,7 @@ static int adc128_read_raw(struct iio_dev *indio_dev,
-> >  	case IIO_CHAN_INFO_SCALE:
-> >  
-> >  		*val = adc->vref_mv;
-> > -		*val2 = 12;
-> > +		*val2 = channel->scan_type.realbits;
-> >  		return IIO_VAL_FRACTIONAL_LOG2;
-> >  
-> >  	default:
-> > @@ -90,15 +94,24 @@ static int adc128_read_raw(struct iio_dev *indio_dev,
-> >  
-> >  }
-> >  
-> > -#define ADC128_VOLTAGE_CHANNEL(num)	\
-> > -	{ \
-> > -		.type = IIO_VOLTAGE, \
-> > -		.indexed = 1, \
-> > -		.channel = (num), \
-> > -		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW), \
-> > -		.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE) \
-> > +#define _ADC128_VOLTAGE_CHANNEL(num, real_bits)				\
-> > +	{								\
-> 
-> I would minimise the churn and stick to existing style of one space then \
-> I don't think we have any specific style guidance around this.
->
-I will fix this in v5.
+If this change broke your code, we need to fix it in the kernel, so
+thanks for reporting the regression.
 
-> > +		.type = IIO_VOLTAGE,					\
-> > +		.indexed = 1,						\
-> > +		.channel = (num),					\
-> > +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),		\
-> > +		.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE),	\
-> > +		.scan_index = (num),					\
-> > +		.scan_type = {						\
-> > +			.sign = 'u',					\
-> > +			.realbits = (real_bits),			\
-> > +			.storagebits = 16,				\
-> > +			.shift = (12 - real_bits),			\
-> > +		},							\
-> >  	}
-> >  
-> > +#define ADC128_VOLTAGE_CHANNEL(num) _ADC128_VOLTAGE_CHANNEL(num, 12)
-> 
-> I wonder if it would be clearer to just have the 12 explicit in each entry
-> and skip this two levels of macro thing?
->
-Do you mean to pass realbits to
-ADC128_VOLTAGE_CHANNEL/_ADC128_VOLTAGE_CHANNEL as e.g.,
+It looks like the wait time calculations in bmp280_wait_conv() don't
+match up with the datasheet [1] that I found.
 
-static const struct iio_chan_spec adc122s021_channels[] = {
-        ADC128_VOLTAGE_CHANNEL(0, 12),
-        ADC128_VOLTAGE_CHANNEL(1, 12),
-};
+[1]: https://cdn-shop.adafruit.com/datasheets/BST-BMP280-DS001-11.pdf
 
-I think we added 2nd level macros as ADC082_VOLTAGE_CHANNEL,
-ADC102_VOLTAGE_CHANNEL, etc., to have a visual distinction for a different
-part nos.
-But I am ok if you prefer ADC128_VOLTAGE_CHANNEL with a second parameter
-as real_bits.
+There, table 13 says that if pressure and temperature oversampling
+are bot set to x1, then it could take up to 6.4 ms to complete the
+measurement.
 
-> > +
-> >  static const struct iio_chan_spec adc128s052_channels[] = {
-> >  	ADC128_VOLTAGE_CHANNEL(0),
-> >  	ADC128_VOLTAGE_CHANNEL(1),
-> > @@ -124,26 +137,30 @@ static const struct iio_chan_spec adc124s021_channels[] = {
-> >  
-> >  static const char * const bd79104_regulators[] = { "iovdd" };
-> >  
-> > -static const struct adc128_configuration adc128_config[] = {
-> > -	{
-> > -		.channels = adc128s052_channels,
-> > -		.num_channels = ARRAY_SIZE(adc128s052_channels),
-> > -		.refname = "vref",
-> > -	}, {
-> > -		.channels = adc122s021_channels,
-> > -		.num_channels = ARRAY_SIZE(adc122s021_channels),
-> > -		.refname = "vref",
-> > -	}, {
-> > -		.channels = adc124s021_channels,
-> > -		.num_channels = ARRAY_SIZE(adc124s021_channels),
-> > -		.refname = "vref",
-> > -	}, {
-> > -		.channels = adc128s052_channels,
-> > -		.num_channels = ARRAY_SIZE(adc128s052_channels),
-> > -		.refname = "vdd",
-> > -		.other_regulators = &bd79104_regulators,
-> > -		.num_other_regulators = 1,
-> > -	},
-> > +static const struct adc128_configuration adc122s021_config = {
-> > +	.channels = adc122s021_channels,
-> > +	.num_channels = ARRAY_SIZE(adc122s021_channels),
-> > +	.refname = "vref",
-> > +};
-> 
-> Ideal would be to have this as a precursor patch rather than adding complexity
-> to this one which is focused on the bits related stuff.
-> 
-> It's a good change to have but does make it harder to spot the main
-> content in here.
-> 
->
-I will split this in v5.
+However, in the code, we have:
 
-> > +
-> > +static const struct adc128_configuration adc124s021_config = {
-> > +	.channels = adc124s021_channels,
-> > +	.num_channels = ARRAY_SIZE(adc124s021_channels),
-> > +	.refname = "vref",
-> > +};
-> 
+```
+#define BMP280_MEAS_OFFSET		1250
+#define BMP280_MEAS_DUR			2300
+#define BMP280_PRESS_HUMID_MEAS_OFFSET	575
+```
+
+and 
+
+```
+	/* Check if we are using a BME280 device */
+	if (data->oversampling_humid)
+		meas_time_us = BMP280_PRESS_HUMID_MEAS_OFFSET +
+				BIT(data->oversampling_humid) * BMP280_MEAS_DUR;
+
+	else
+		meas_time_us = 0;
+
+	/* Pressure measurement time */
+	meas_time_us += BMP280_PRESS_HUMID_MEAS_OFFSET +
+			BIT(data->oversampling_press) * BMP280_MEAS_DUR;
+
+	/* Temperature measurement time */
+	meas_time_us += BIT(data->oversampling_temp) * BMP280_MEAS_DUR;
+
+	/* Waiting time according to the BM(P/E)2 Sensor API */
+	fsleep(meas_time_us);
+```
+
+Assuming BIT(*oversampling*) is 1 for x1 oversampling, we get
+
+meas_time_us = (0) + (575 + 1 * 2300) + (1 * 2300) = 5175
+               ^     ^                  ^
+               |     |                  |
+               |     |                  temperature
+               |     pressure
+               humidity
+
+5175 microseconds is less than the 6.4 milliseconds max time, so
+that would explain the error that is seen since the error is
+triggered by the status bit that says the chip is still busy taking
+the measurement.
+
+BMP280_MEAS_OFFSET is unused in the code. But 6400 - 5175 is 1225
+which is very close to 1250. So I think the intention was to include
+that it the calculation like this:
+
+---
+diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
+index 74505c9ec1a0..50c869e3d5c9 100644
+--- a/drivers/iio/pressure/bmp280-core.c
++++ b/drivers/iio/pressure/bmp280-core.c
+@@ -1042,14 +1042,13 @@ static int bmp280_wait_conv(struct bmp280_data *data)
+ 	unsigned int reg, meas_time_us;
+ 	int ret;
+ 
++	meas_time_us = BMP280_MEAS_OFFSET;
++
+ 	/* Check if we are using a BME280 device */
+ 	if (data->oversampling_humid)
+-		meas_time_us = BMP280_PRESS_HUMID_MEAS_OFFSET +
++		meas_time_us += BMP280_PRESS_HUMID_MEAS_OFFSET +
+ 				BIT(data->oversampling_humid) * BMP280_MEAS_DUR;
+ 
+-	else
+-		meas_time_us = 0;
+-
+ 	/* Pressure measurement time */
+ 	meas_time_us += BMP280_PRESS_HUMID_MEAS_OFFSET +
+ 			BIT(data->oversampling_press) * BMP280_MEAS_DUR;
+---
+
+Hopefully you can compile your own kernel and test this. If that fixes it
+we can turn it into a proper patch.
+
 

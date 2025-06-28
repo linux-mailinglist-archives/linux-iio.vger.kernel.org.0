@@ -1,88 +1,89 @@
-Return-Path: <linux-iio+bounces-21028-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21029-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 154B2AEC548
-	for <lists+linux-iio@lfdr.de>; Sat, 28 Jun 2025 08:08:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 503B5AEC7CE
+	for <lists+linux-iio@lfdr.de>; Sat, 28 Jun 2025 16:48:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7B24917D999
-	for <lists+linux-iio@lfdr.de>; Sat, 28 Jun 2025 06:08:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A162717CB8D
+	for <lists+linux-iio@lfdr.de>; Sat, 28 Jun 2025 14:48:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F84721D011;
-	Sat, 28 Jun 2025 06:08:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18377247291;
+	Sat, 28 Jun 2025 14:48:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g57ghAgR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="udFfWHLr"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC09B199E9D;
-	Sat, 28 Jun 2025 06:08:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C09671D7989;
+	Sat, 28 Jun 2025 14:48:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751090929; cv=none; b=eHgtjvs7xfjm0h26OfW0tll8cobL5QjczJaWikYqrC9WcWFcBTY4U2d6i78IUuEb0SbzQRdDNEMbpGHl293Bw6XmHtcmK8DvNB2PxH1cb9ZLERuyzBKlm90OE2mBIFz9bw46qOSybNcuRXnylzswZ+gS5mOOSnX5gfIkYNpu4EY=
+	t=1751122114; cv=none; b=qVgwvz1hsL8IbTZq95wTF3Gb+Vp84dKuOEDf0OuRALUpeg+5MfDbQxMV+yjx4GahVgPDzcCcaa/9Cucb17t1cnGuVn/ZDc4u/A+sa455DmHOxqX2I9dHcy8YTanQ2k4MP2Jz+Ie66zSPwdxD6RJr+s+xzCLl6XR9ucgcnxZeIQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751090929; c=relaxed/simple;
-	bh=FWKzhYGQM7gdwjjfdFj34tQM7NG2yfbSnWb2WAtbmF8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TeXcQuFZhl4yLxFmyCpNOyHX1tFnXUyIO6stePgowmo9sLothlS7NDS0jYDz1ZU62D8p5M0mz2vwjP62ksThSyvtUI6tucoHyGyC6z1zbhphXaiQUF7sHx8Edj/1+ugKeqUTshYmF8m2826vdudernSX+xBkLs22int0WD+A+nY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g57ghAgR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8A61C4CEEA;
-	Sat, 28 Jun 2025 06:08:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751090929;
-	bh=FWKzhYGQM7gdwjjfdFj34tQM7NG2yfbSnWb2WAtbmF8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=g57ghAgRX2EPrbyBT1aB8DNfKOSLox6DnN6/l44bCwaOVrDXusWNAX6uX2qnd9132
-	 cDpcac3CngPfZH/EVvUHJtAo5R9kzZhJDtNPzvuFmliJR9WCOG43cM59wN5TJWUVVV
-	 qHNmgfmuJYThAWcaB15x8HSUB9phxspMnVvXvNdU=
-Date: Sat, 28 Jun 2025 07:08:46 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Abdalla Al-Dalleh <abdalla.ahmad@sesame.org.jo>
-Cc: Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Gabriel Shahrouzi <gshahrouzi@gmail.com>,
-	open list <linux-kernel@vger.kernel.org>,
-	"open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
-	"open list:STAGING SUBSYSTEM" <linux-staging@lists.linux.dev>
-Subject: Re: [PATCH] drivers: staging: iio: frequency: ad9832.h: Fixed TODO
- note.
-Message-ID: <2025062815-resolute-cornflake-48c4@gregkh>
-References: <20250627175114.548076-1-abdalla.ahmad@sesame.org.jo>
+	s=arc-20240116; t=1751122114; c=relaxed/simple;
+	bh=9GNlcn1/ayU2Fno90GeMtMJ4Oah5/9o7XvQ5cqk7ETQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=SHemX+iybmkj0L8vxWBus2aNYlhH4Orb8NX6sLI2y40Qv2gi9APapgJR/hUMyWuBA3AczfIp/Ks4u1Svf3I+6AUSJUU6+zSH9RlVD5hpv1OGYxoKB/nAhCrss2tFq6qkWlo/8QiNV+L+tSyFPnFiaDViqEv6zvXk7YixGegTLlc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=udFfWHLr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAA22C4CEEA;
+	Sat, 28 Jun 2025 14:48:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1751122114;
+	bh=9GNlcn1/ayU2Fno90GeMtMJ4Oah5/9o7XvQ5cqk7ETQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=udFfWHLr6D+YWYNBy1oJysFnUQUuuG6no9ZyS4RfylI2P7nDbemNlxTMlDePhkR4P
+	 ZfB8ElFUkP2FZGaU4bASrnKxUODvmQKrwT+Y/1yRIfVtBuR9IQdrU3hMYFJMm2SGuz
+	 8Jeo6dXoakegu1clEY6+WrWI8pzxqI08VUHOdEn88pMBu1zVgvk06hfcXCe6S86MyX
+	 l+Npbvkm+zuBbrciQOdcLe0clpI7MansYPMMglXyWHOWCYRKKLndtq73dHYI2uLOfY
+	 aDQZRkE81grRP4AH8biduIUYEAvOmx3gdsAf26h8SCik7YKgOqhyPxZNzkzYHHeG/R
+	 6xCoZcLUBBTtQ==
+Date: Sat, 28 Jun 2025 15:48:26 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Conor Dooley <conor@kernel.org>
+Cc: Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>, andy@kernel.org,
+ conor+dt@kernel.org, devicetree@vger.kernel.org, dlechner@baylibre.com,
+ krzk+dt@kernel.org, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, nuno.sa@analog.com, robh@kernel.org,
+ ~lkcamp/patches@lists.sr.ht
+Subject: Re: [PATCH v3] dt-bindings: iio: adc: st,spear600-adc: txt to yaml
+ format conversion.
+Message-ID: <20250628154826.0c6ed66e@jic23-huawei>
+In-Reply-To: <20250627-rage-oat-14141026cf28@spud>
+References: <20250526-overtake-charger-6c5ffcc2bc09@spud>
+	<20250626205733.6354-1-rodrigo.gobbi.7@gmail.com>
+	<20250627-rage-oat-14141026cf28@spud>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250627175114.548076-1-abdalla.ahmad@sesame.org.jo>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Fri, Jun 27, 2025 at 08:51:14PM +0300, Abdalla Al-Dalleh wrote:
-> - drivers/staging/iio/frequency/ad9832.c: Changed .h file location
-> - drivers/staging/iio/frequency/ad9832.h: Removed struct definition
-> - include/linux/iio/dac/ad9832.h: Added header file according to the
->   TODO note.
+On Fri, 27 Jun 2025 16:53:24 +0100
+Conor Dooley <conor@kernel.org> wrote:
+
+> On Thu, Jun 26, 2025 at 05:54:01PM -0300, Rodrigo Gobbi wrote:
+> > Hi, all,
+> > 
+> > Just a gentle ping here since it was already been reviewed.
+> > If there is any other concerns, let me know.
+> > Tks and regards.  
 > 
-> Signed-off-by: Abdalla Al-Dalleh <abdalla.ahmad@sesame.org.jo>
-> ---
->  drivers/staging/iio/frequency/ad9832.c |  3 +--
->  drivers/staging/iio/frequency/ad9832.h | 23 ------------------
->  include/linux/iio/dac/ad9832.h         | 33 ++++++++++++++++++++++++++
+> This is all I see here, a ping with no context is not very
+> helpful. I have to go look it up on lore to see who reviewed it
+> etc. In this case the reviewer in question is me, so you're looking for
+> Jonathan to apply it.
 
-Staging drivers need to be "self-contained" for now.
+Seems I failed to send out a message, but applied this back on 9th June.
 
-Why do you even need a .h file for a single .c file anyway?  Why not
-just remove it?
+Thanks,
 
-thanks,
-
-greg k-h
+Jonathan
 

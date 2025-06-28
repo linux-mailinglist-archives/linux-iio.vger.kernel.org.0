@@ -1,134 +1,138 @@
-Return-Path: <linux-iio+bounces-21045-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21046-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE772AEC85A
-	for <lists+linux-iio@lfdr.de>; Sat, 28 Jun 2025 17:41:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C75D8AEC868
+	for <lists+linux-iio@lfdr.de>; Sat, 28 Jun 2025 17:56:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2EBED6E01D4
-	for <lists+linux-iio@lfdr.de>; Sat, 28 Jun 2025 15:40:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7B22817B32E
+	for <lists+linux-iio@lfdr.de>; Sat, 28 Jun 2025 15:56:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 026D321A445;
-	Sat, 28 Jun 2025 15:41:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4308A21ADA4;
+	Sat, 28 Jun 2025 15:56:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S4g9cMaG"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="QXCT19Pm"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f170.google.com (mail-oi1-f170.google.com [209.85.167.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2B2D1E502;
-	Sat, 28 Jun 2025 15:41:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 110EB1F874F
+	for <linux-iio@vger.kernel.org>; Sat, 28 Jun 2025 15:56:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751125260; cv=none; b=BAH5XUv6vDviXU7iOuPxkz4O76ybTPAeTGad6z4KgE8a0iPKCVSSs6jx4WtvxklvVs645KV3NioW7wUiD2/IU946xuxrip6YdfqR86e6TrhQZxKc0wK9XAadBhgDAqjs96c1npEod2ikKRC26uUSB1N2y5P5+DYktmU4pyz+Feg=
+	t=1751126196; cv=none; b=G5F4eGOfcIsavUBNoP72NdgWjCrsw7bt05504bdHTujWpUlqdGWBPFEBxGw59kh3e6Zv/TgPB7ZdxRV0T9Pw7vfgchbV1AsmL4w+HXJ8BxAU4HVsxSPquCZUn+tHrNVEJ1SmjcDSjohQmldzIHSnwIOWlK5xoPkQ70G2A27eym0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751125260; c=relaxed/simple;
-	bh=1lcgyLVwTfxuqxdF5MYvsRIHyKto1JLmJ3TNgqZ2JRA=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Em+JvzSAAl3ExNtjb+bM6Z5zx9e4sbjAR+Io9mFlJgI5+cX0mY4tlngGsWpUGtA8HrjSJX/yHL+2AD6htBBcOp96cwiJf1X4KDxGtDo9769D6MV5xnvE/yxrB57qBRG6D238jdstTPp1E/InwkRXe9hHzrX9PaxPcGiSEhMOvbU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S4g9cMaG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3641C4CEEA;
-	Sat, 28 Jun 2025 15:40:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751125260;
-	bh=1lcgyLVwTfxuqxdF5MYvsRIHyKto1JLmJ3TNgqZ2JRA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=S4g9cMaGsQbtEqrrcKmHRUmRKvwY4E0fiL6jP6ZFlGfRN2HJUNxgeOyEH8E4wXLDq
-	 HixDQu89vfQPR8Y1aw1Vg3twhs7Yj2CKA8C3S7KicIS3CktKlp3D/nZQhjUUqjucD2
-	 /fUt69WUJJYw/Bk6JtXKkQCdlXeXEMsaXBt7JXZUf0ItYeWKb/xRrovj7SGsWPjFJf
-	 QzBKomAyX+ZTNG0SvEqKGr3jkPEXlSfV20z25zjTC9//vluwKHt2OTvDR94pVkf7sW
-	 /AYjgbXx4nprKZLhgpqZqZAYo2uBRN2KQkOuCxCF+gM0P1ZaUDMbnaNoD765zXypCT
-	 2dj0ekalL5kzA==
-Date: Sat, 28 Jun 2025 16:40:54 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: David Lechner <dlechner@baylibre.com>, jean-baptiste.maneyrol@tdk.com,
- Lars-Peter Clausen <lars@metafoo.de>, Nuno =?UTF-8?B?U8Oh?=
- <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, Julia Lawall
- <Julia.Lawall@inria.fr>
-Subject: Re: [PATCH v5 2/3] iio: imu: inv_icm42600: add WoM support
-Message-ID: <20250628164054.54ae2e7a@jic23-huawei>
-In-Reply-To: <dcf86acc-567e-48e3-ad15-fd9522b46180@sabinyo.mountain>
-References: <20250623-losd-3-inv-icm42600-add-wom-support-v5-0-4b3b33e028fe@tdk.com>
-	<20250623-losd-3-inv-icm42600-add-wom-support-v5-2-4b3b33e028fe@tdk.com>
-	<CAMknhBHaSBF-a9nLZ0ZxB2-9HzYkPMBqUr4Aa4TthNnJMwtFgg@mail.gmail.com>
-	<20250626195323.6336820c@jic23-huawei>
-	<dcf86acc-567e-48e3-ad15-fd9522b46180@sabinyo.mountain>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1751126196; c=relaxed/simple;
+	bh=MpmkYzDw2ENeKfdY7gFPxkRwKR0kz2gYSaXwL/jPWdQ=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=T3JUFBYB5bwogoZLcKZLEbnKXVxgBKTaqqzYeNdqXoImi/Rt/uw1VvAWBKQh5uofOmbE6+VmLtqYsZ6ZKufuDHxF8Pkd02xJLCCgcL84KinR7BKyddNc4PAPjuprcL6Dk+8LPae6plAiBh6h4XFejbk0g5cO7wQxIB42rEqPPYU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=QXCT19Pm; arc=none smtp.client-ip=209.85.167.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oi1-f170.google.com with SMTP id 5614622812f47-40a8013d961so1038494b6e.0
+        for <linux-iio@vger.kernel.org>; Sat, 28 Jun 2025 08:56:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1751126192; x=1751730992; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=KDtJDztfcuj1J6VjhwWfrKLId4IVubmJY2qVBXZS7iY=;
+        b=QXCT19PmxYf41lGlYdqwH7aXfn6qaLTQVDWfW44x0nGPx6QFRS81awof9WtpveIgCr
+         pyxyvWqaSMFUC+OXdGDZOqYNUblFf8zjEC4V09pM9jPa6/6KAHiM7s9rhdyg5wiSKlV3
+         8URhUx1ROzvS/gTtKB/KVE/pmQt9lMv/P9JqMbZXu7hwc7xh1UsP/JxqD89Tk/BZDURw
+         PHBsJ4L8bFLWjgKavp4guvatwggOlYJ8Zw+TIxUlYYZV+oOtf1RAZMzcqrRyrY7u2I7P
+         Z+GbPc7cuUsTbw9xtnscOhS/iPF6hyVhZ3lwbOjgqk/LfQysEFaccUZcfsG1+fTN+zGV
+         XTkw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751126192; x=1751730992;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=KDtJDztfcuj1J6VjhwWfrKLId4IVubmJY2qVBXZS7iY=;
+        b=SGfslZOy3HPjwn7oNrjOHCuNOKtwoB0rY/uzH+F30ntM1rxFqvC+9YnoNpHsK/wzqy
+         QxpG9l+3zGZbjHL8m9C3AI/fBWFnkyfHfrpJ1tZw2GU/27QOrXxsD2+iCK4x4Fb+mWeA
+         kAyzwAIbaXpUsZJ4Iygv9ueys7koIUf7GtjehQXow21LplWS+ClMuWxjgesncIYv8AeT
+         3NcMR7KCVaeBzTdvitHkdoVh6yvVOVM5ZOhzfk1b9U1gCsllPgPVdb2hCNt6sLEEbzVI
+         Jlo9Sd4FQKm+iAHYexWYpvPIRMfsD+8B7v7RREWviSz/Ilj8x1tN0EnQqdadQ11XW541
+         UCoQ==
+X-Gm-Message-State: AOJu0Yz0l/A7OIdomoa7CmYVgIf9bcDL9ye2gfFcttD8nhUddGkt+gtj
+	gBI/gKoKA60ZO8cXp4WNqnPji068JppGZUhhxabtUyd1anlciFkLCqZET3JrLk8qM90=
+X-Gm-Gg: ASbGnct9fp3bXYFzhxLuvFRHwcYTeu2T2gc4+e6PbfMI1C9ZLCwW8qLVdLV4DSQ+tia
+	hIm5lZDZqAKivg23N+yIyT8HA3KYZbr2PW4/lM7yQBdJZ0eB+zEy8WvwlNqoHbT5/SjFlz2JIgD
+	5Qnyh2Xulb/p6nh1WHfE0RYQHZrKGoMbxFaXWs2hpPrOys1NHYxMON0/MTA+1j9VH/UE1lo6/OV
+	v+Zf9MfY54S3v50Nxt8jjHyGX2ll+z0BAe4WpaoBRGo2A77Qg2a/SvIhduIje2/5TEu1DgO9whW
+	Z7eGMqgoyakMCwwGYKG0jXtUjXxBQlKC1untMeFZfnOSP4RgfpRnwRcsE58VJQS4xXac
+X-Google-Smtp-Source: AGHT+IE8h9gJsbwwdHyrIwOBBihC6aQCDDOTYFgRQ5JMP3F/o1/9spJJsCVXPSCaS3Y5KzrGeyHKZA==
+X-Received: by 2002:a05:6808:21a7:b0:409:c6:c147 with SMTP id 5614622812f47-40b33c327f2mr5841613b6e.6.1751126191825;
+        Sat, 28 Jun 2025 08:56:31 -0700 (PDT)
+Received: from [127.0.1.1] ([2600:8803:e7e4:1d00:3092:a48c:b0c6:cbf4])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-40b322b5900sm868652b6e.18.2025.06.28.08.56.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 28 Jun 2025 08:56:31 -0700 (PDT)
+From: David Lechner <dlechner@baylibre.com>
+Date: Sat, 28 Jun 2025 10:56:20 -0500
+Subject: [PATCH] iio: accel: adxl345: make adxl345_events const
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20250628-iio-const-data-1-v1-1-a32d96d01c2f@baylibre.com>
+X-B4-Tracking: v=1; b=H4sIAKMQYGgC/x3MPQqAMAxA4atIZgNNUVGvIg79iZqllbaIIN7d4
+ vgN7z2QOQlnmJsHEl+SJYYKahtwhwk7o/hq0Er3atAjikR0MeSC3hSDhJam0Su1dZ4s1OxMvMn
+ 9L5f1fT9Kt0ruYgAAAA==
+X-Change-ID: 20250628-iio-const-data-1-b198d00f4d1b
+To: Lars-Peter Clausen <lars@metafoo.de>, 
+ Michael Hennerich <Michael.Hennerich@analog.com>, 
+ Jonathan Cameron <jic23@kernel.org>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Andy Shevchenko <andy@kernel.org>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ David Lechner <dlechner@baylibre.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1006; i=dlechner@baylibre.com;
+ h=from:subject:message-id; bh=MpmkYzDw2ENeKfdY7gFPxkRwKR0kz2gYSaXwL/jPWdQ=;
+ b=owEBbQGS/pANAwAKAcLMIAH/AY/AAcsmYgBoYBCny0MAg1Ay3q0OSsM9GfcGSfk1cUjugNqoY
+ sewWD3tvwqJATMEAAEKAB0WIQTsGNmeYg6D1pzYaJjCzCAB/wGPwAUCaGAQpwAKCRDCzCAB/wGP
+ wGTlCACIh85BEBXiCKOJmKZxfXKPdb60mpqCaG4k9c2cpTtzpJ/HWlfTlKpWBvva56GRZWxhokm
+ qRfwxIg4B7QjT0z6mfgBo1K2OFRxaR1Oh2lX5ZuejhLvu7iteLDX4gXPykgoaF3QYvuQtDwk8gh
+ 1HmXoNcIt4ZjYRm+TPw17286K4k9WNtvYE7nJR4E3cL3FsxkYT+FXvU6d+Ch5H5RRSxAORzVJT3
+ fc8f1UJRRvY0Uq+dhV++WWb7x6RTIC4OwyHmedfFPJvuu8k9mslIEz9ms4NJf9jUZ/ZxSrCcQ36
+ J2GAmlIC7QIlMagfeU4rpP93rsAw228sMiU/JkQCvj6wXUe8
+X-Developer-Key: i=dlechner@baylibre.com; a=openpgp;
+ fpr=8A73D82A6A1F509907F373881F8AF88C82F77C03
 
-On Thu, 26 Jun 2025 14:48:10 -0500
-Dan Carpenter <dan.carpenter@linaro.org> wrote:
+Add const qualifier to struct iio_event_spec adxl345_events[]. This
+is read-only data so it can be made const.
 
-> On Thu, Jun 26, 2025 at 07:53:23PM +0100, Jonathan Cameron wrote:
-> > > > +static int inv_icm42600_accel_disable_wom(struct iio_dev *indio_dev)
-> > > > +{
-> > > > +       struct inv_icm42600_state *st = iio_device_get_drvdata(indio_dev);
-> > > > +       struct device *pdev = regmap_get_device(st->map);
-> > > > +       struct inv_icm42600_sensor_conf conf = INV_ICM42600_SENSOR_CONF_INIT;
-> > > > +       unsigned int sleep_ms = 0;
-> > > > +       int ret;
-> > > > +
-> > > > +       scoped_guard(mutex, &st->lock) {
-> > > > +               /*
-> > > > +                * Consider that turning off WoM is always working to avoid
-> > > > +                * blocking the chip in on mode and prevent going back to sleep.
-> > > > +                * If there is an error, the chip will anyway go back to sleep
-> > > > +                * and the feature will not work anymore.
-> > > > +                */
-> > > > +               st->apex.wom.enable = false;
-> > > > +               st->apex.on--;
-> > > > +               ret = inv_icm42600_disable_wom(st);
-> > > > +               if (ret)
-> > > > +                       break;    
-> > > 
-> > > The fact that scoped_guard() uses a for loop is an implementation
-> > > detail so using break here makes this look like improper C code. I
-> > > think this would be better to split out the protected section to a
-> > > separate function and just use the regular guard() macro.  
-> > 
-> > Good catch.  This feels like something we should have some static analysis
-> > around as we definitely don't want code assuming that implementation.
-> > 
-> > +CC Dan / Julia to see if they agree.
-> >   
-> 
-> I feel like the scoped_guard() macro is so complicated because they
-> wanted break statements to work as expected...  (As opposed to how I write
-> half my loop macros using nested for loops so that when I break it only
-> breaks from the inner loop and corrupts memory).
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+---
+ drivers/iio/accel/adxl345_core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Was a while back but don't remember that coming up as a reason.
-I thought the for loop construct was just a way to define the scope in
-a place where the following or preceding code couldn't influence what was
-instantiated.
+diff --git a/drivers/iio/accel/adxl345_core.c b/drivers/iio/accel/adxl345_core.c
+index 45d71940c5ac3e042265615fe95238b9d29855e2..e21ec6c15d15e7342b12226dc8fcbb091324e353 100644
+--- a/drivers/iio/accel/adxl345_core.c
++++ b/drivers/iio/accel/adxl345_core.c
+@@ -143,7 +143,7 @@ struct adxl345_state {
+ 	__le16 fifo_buf[ADXL345_DIRS * ADXL345_FIFO_SIZE + 1] __aligned(IIO_DMA_MINALIGN);
+ };
+ 
+-static struct iio_event_spec adxl345_events[] = {
++static const struct iio_event_spec adxl345_events[] = {
+ 	{
+ 		/* single tap */
+ 		.type = IIO_EV_TYPE_GESTURE,
 
-Anyhow I think breaks in a scoped_guard() is a horrible pattern based on hidden
-implementation details so I'm keen to avoid it at least in IIO. 
-Maybe this will become common enough that I'll revisit that view in a year
-or two. Factoring out the code as a function seems the right answer in this
-case.
+---
+base-commit: 14071b9cf2d751ff9bc8b5e43fa94fbf08aceea1
+change-id: 20250628-iio-const-data-1-b198d00f4d1b
 
-Never mind on checking for it generally if we think it might be something
-that was intended as a feature not a bug.
-
-Thanks
-
-Jonathan
-
-> 
-> regards,
-> dan carpenter
-> 
+Best regards,
+-- 
+David Lechner <dlechner@baylibre.com>
 
 

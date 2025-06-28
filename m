@@ -1,137 +1,150 @@
-Return-Path: <linux-iio+bounces-21066-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21067-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7AB1AEC946
-	for <lists+linux-iio@lfdr.de>; Sat, 28 Jun 2025 19:09:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9290CAEC94A
+	for <lists+linux-iio@lfdr.de>; Sat, 28 Jun 2025 19:11:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 12A8B178AC5
-	for <lists+linux-iio@lfdr.de>; Sat, 28 Jun 2025 17:09:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 62CEE1894E58
+	for <lists+linux-iio@lfdr.de>; Sat, 28 Jun 2025 17:12:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04AEC25F992;
-	Sat, 28 Jun 2025 17:09:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9E33261393;
+	Sat, 28 Jun 2025 17:11:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="wcS2RWTw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HRWdCVYG"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oo1-f41.google.com (mail-oo1-f41.google.com [209.85.161.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AE21155CB3
-	for <linux-iio@vger.kernel.org>; Sat, 28 Jun 2025 17:09:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74BF0155CB3;
+	Sat, 28 Jun 2025 17:11:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751130576; cv=none; b=dbBv5pJqkUVra2x5PnjLrK43chuhWpnS2yeWKd7YA+nIVTZMGiOkBJ/53dwSAp6Xmv/Oh6GZZ+1Ef0FGL4i+gTBqV91dBvn16b+hLqnsm9e/mtCxZgvrdVEQn6PpOB9DrWj/rp3u2kP7WF4QEROdWxoqxy5kV0ZDOWCxy4dtRRI=
+	t=1751130699; cv=none; b=PDovr7L8tM0ifSZPt50RDby5O+eYkqRhFLtJTx7LLlcP+/BorNKpTHNRQhajOo/O71lhYuknptHspT/LaRZOIFEyGmbOrUocCmaIlsWmHO9SFrXWxMV7F6OlyfQUEJvRCiFuxBF0RwDf5LqC6gEZXsGEMDqYueVHzjdJnsspylw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751130576; c=relaxed/simple;
-	bh=1KNuDVWaCyOz/P4MO1S4kStPPU3NA/f7Vmvt7em6yGs=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=OPmC43uC14UgnGXoTcsuJkUnsTFR5vJbTUEDT6hEt5tqKr79pVpHAylbQroE7L33pPCqS8VVsb5iTsLUYPhenwY2nsut5Y6zYKNx5NZKUeURVJU04LgDS/x1wNK08eBeF+QpzwrG+IzK99FdVpqD6QPc3gAgOYQkCAiKpvi1x7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=wcS2RWTw; arc=none smtp.client-ip=209.85.161.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oo1-f41.google.com with SMTP id 006d021491bc7-6113f0cafb2so449139eaf.1
-        for <linux-iio@vger.kernel.org>; Sat, 28 Jun 2025 10:09:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1751130574; x=1751735374; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=2YlrWgTRiRj8fPqf437+eL+u6Wuu8WHCApJJ9YXT3QI=;
-        b=wcS2RWTwvT+WgJLRYeb3ZPJAmaWtC35616pXvOjY10x33qVGy4ZseHhKpfJCge6o6I
-         8MM0otj7CuLV6MnYdszhN2PRk9JO9iOmbeLFuarT7+ynnQ9kDLFXAcW6/vGk22KHt/lg
-         ZuJ8ju+4QUr0RoEWbLyIsbhceIcmpe4BQiqhhl/bxIO7X84PAyqPNWxy3fC9B7778rdK
-         EUErSfdHEQQr9p73AelPBCCyviQtu2uGrvQX/DtMc6GgmT5oL9it4I8n6Ngt4hUC1D4K
-         KeOLbsc7UxN2A+Yo8bSl1ng4CxoXTCR0sO/oWk2Yrev2S8xTyek5bEYHYBAou+tVPLYG
-         NR0w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751130574; x=1751735374;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=2YlrWgTRiRj8fPqf437+eL+u6Wuu8WHCApJJ9YXT3QI=;
-        b=RdBoQNHhMznoXRqqx1Zgsl1adRwk85w/3OHbpzNPoHqCSVC9eMDGlS7iglsxe1GC0k
-         hDIyeDFAjpootCfH2gIpYopPoE7Y0rvtZb6YzDK9lstJBm+F/JZUszNdKpgDe+gwzgyi
-         uZkpHYsUYoh99DZ8sseWDUKgM2ptT71yayEOxIHruhQHty3EEE0B93TY9Xw6Wmv60Ftq
-         pQjBRjdKWgHJnACiTpbl4pKNOGwVwi04IpgkIiuWZt+Cy2qeHMa+BKwWHUDzPbhyJDs/
-         bSe2Vvpyi9FJXkksNY33WeseshrOlDobQfWk3QYO+NIs6aJGb3s6bQZjOeI9+Igw9dKZ
-         320g==
-X-Gm-Message-State: AOJu0YydvmqnHDy7VfmIxRpxT/8F+S4/5d95xXULiUGdFV06qaYJQXe5
-	fwMjaUgUbR7osvPTDdybQIug97AYVJHvLZoS9pm9L+jW0MZ9QTeWCDP3X/TMfdaEINg=
-X-Gm-Gg: ASbGnctsjXnzifTeYYVzmxQ23Tf+UmF3VzfsmGGZwE387f6+gSfWJuw9/K3iAvUYbZQ
-	+p1ix2Ll3xQsRs0PHnK4ONcISYZhlqjjPJb7vkajBsIOLkHjWWIi5IF9YsYKpxJBKVY8kVyE4bc
-	uK0O3jFOPfCr6kUem5Wb0P75jVG2qhD/lvLWrJ7NtFpRRqT1FwdPMNTu/4fbH9/oSo6qX9XMGd/
-	lsad0rHnr36xnc9KiEIBeBpbCzx2WScyznT5Xn3d1HTAw9afvhy9bo1A+X1RAuG2mCt0eFmxCDp
-	RgK218ZruDPbw2SGPRqlIlFIL+Ok+2C/us2dLEE0NmDLaeFruTz43y8sdNEkZMR/iXqW
-X-Google-Smtp-Source: AGHT+IGB0euxoQ6mW2ozZc4Vi6qheiUivTEG6Vn62CJ3QfLZcik/VChd0F2pkQo+LxvlQSBtZwKSJg==
-X-Received: by 2002:a05:6820:1f10:b0:611:31a:6ff5 with SMTP id 006d021491bc7-611b9171be6mr5622294eaf.7.1751130574257;
-        Sat, 28 Jun 2025 10:09:34 -0700 (PDT)
-Received: from [127.0.1.1] ([2600:8803:e7e4:1d00:3092:a48c:b0c6:cbf4])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-611b85a2579sm604341eaf.33.2025.06.28.10.09.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 28 Jun 2025 10:09:33 -0700 (PDT)
-From: David Lechner <dlechner@baylibre.com>
-Date: Sat, 28 Jun 2025 12:09:26 -0500
-Subject: [PATCH] iio: common: hid-sensor-attributes: make unit_conversion
- const
+	s=arc-20240116; t=1751130699; c=relaxed/simple;
+	bh=fHiykYGJP1EunXCsYwxhkHiEOe3nWiAfPDrLDIHzYXk=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Ar0+ZUxc0xzCK29CddN+MfAEFN5ZojtVPMPfc/i9Nw36aue7D60vbJ9mLL82EeuEXpVElqbWOwEAqNixVZ+pHgY4+UzlxRyH0sJqUyeW6tUnBBWrLe3Bm6GdPVnF6M8tQVYgeTG6gLmOsfBRw8QlUVqC5FJkmVXSbh38ZILuoRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HRWdCVYG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E7A4C4CEEA;
+	Sat, 28 Jun 2025 17:11:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1751130696;
+	bh=fHiykYGJP1EunXCsYwxhkHiEOe3nWiAfPDrLDIHzYXk=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=HRWdCVYGuGMakdtbS4Sn3E690+F+Zi1yY3MFSXRoA/XzcMBnzgdEZQKxAUOmtPtYU
+	 DiRalHnYPCr1HEgYo7UjUxxCUCCRn8d/g/EvIQXxY3/ahjFGOcLyf+7y+XQpoD3iQ0
+	 c9TAgSNsMDmm1+Nl12UgG3B83jfua86FVFwn60GsiVJtgchU5OqCs4l3tTkYypfWAB
+	 pDQxFPLvV8TwJ2YZ0gLmTTDWbrB9sJuN+PQsdg5TFoNp7DiK95e23nFk3p8jvq0k5m
+	 rEDRw6j05fuqub6SXm4QNKe/0WoMK99hhOYYxJ4m2McAdxqx5TBqEPWE2DJmGLZI6G
+	 ShB07O30b4xKg==
+Date: Sat, 28 Jun 2025 18:11:29 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Waqar Hameed <waqar.hameed@axis.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, <kernel@axis.com>,
+ <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>
+Subject: Re: [PATCH v2 3/3] iio: Add driver for Nicera D3-323-AA PIR sensor
+Message-ID: <20250628181129.08f55227@jic23-huawei>
+In-Reply-To: <pndtt45aq6m.fsf@axis.com>
+References: <cover.1749938844.git.waqar.hameed@axis.com>
+	<5d12fcd6faae86f7280e753f887ea60513b22ea9.1749938844.git.waqar.hameed@axis.com>
+	<20250622120756.3865fc4b@jic23-huawei>
+	<pndtt45aq6m.fsf@axis.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250628-iio-const-data-14-v1-1-4faa8015e122@baylibre.com>
-X-B4-Tracking: v=1; b=H4sIAMUhYGgC/x2MywqAIBAAfyX23MJqT/qV6GC51l40NCKQ/j3pO
- AwzGRJH4QRTlSHyLUmCL6DqCrbD+J1RbGHQpDvq9YgiAbfg04XWXAZVi2tTFBORcQOU7ozs5Pm
- f8/K+HxOJGH9jAAAA
-X-Change-ID: 20250628-iio-const-data-14-b3250e000af7
-To: Jonathan Cameron <jic23@kernel.org>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Andy Shevchenko <andy@kernel.org>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- David Lechner <dlechner@baylibre.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1048; i=dlechner@baylibre.com;
- h=from:subject:message-id; bh=1KNuDVWaCyOz/P4MO1S4kStPPU3NA/f7Vmvt7em6yGs=;
- b=owEBbQGS/pANAwAKAcLMIAH/AY/AAcsmYgBoYCHG6klvWKejif42jAhakRTvI/VVHXgoSlPvJ
- DxPUINXIfWJATMEAAEKAB0WIQTsGNmeYg6D1pzYaJjCzCAB/wGPwAUCaGAhxgAKCRDCzCAB/wGP
- wLQ7B/9UWF9xz0RNOerT6WAbZyVYiZhutjZaE6DwdZlCZb/xP3KzOli54XwddNuVWAGazk7s9Zk
- Ff4FnVfL2yRi6pdERlVsadwxw2DwEMY+ANZvNgXbpHXzyd2cTyRa4P1ikwIdNvBqpLQVI7Sjp0w
- 0zMVPl4SM3V7KKtxPpKpDP/kRzkjs7dD8xh+7I1vcvtjvYV75L1gc0IhIOLAu/L+DSQD2n+Bz38
- pPnd5k1RKbLkykWE5x2fgxYStvsexoZ1BaPUFrJ0OGsRPIBc0xlEqFngOEe1Bt06wGFU5AN7nIJ
- zD3Qo1mYC8cORpuPrNgfSbpxL2yvNsmvamgH8VQ8pRdGak+3
-X-Developer-Key: i=dlechner@baylibre.com; a=openpgp;
- fpr=8A73D82A6A1F509907F373881F8AF88C82F77C03
 
-Add const qualifier to struct unit_conversion[]. This is read-only data
-so it can be made const.
+> >> +static int d3323aa_set_lp_filter_freq(struct iio_dev *indio_dev, const int val,
+> >> +				      int val2)
+> >> +{
+> >> +	struct d3323aa_data *data = iio_priv(indio_dev);
+> >> +	size_t idx;
+> >> +
+> >> +	/* Truncate fractional part to one digit. */
+> >> +	val2 /= 100000;
+> >> +
+> >> +	for (idx = 0; idx < ARRAY_SIZE(d3323aa_lp_filter_freq); ++idx) {
+> >> +		int integer = d3323aa_lp_filter_freq[idx][0] /
+> >> +			      d3323aa_lp_filter_freq[idx][1];
+> >> +		int fract = d3323aa_lp_filter_freq[idx][0] %
+> >> +			    d3323aa_lp_filter_freq[idx][1];
+> >> +
+> >> +		if (val == integer && val2 == fract)
+> >> +			break;
+> >> +	}
+> >> +
+> >> +	if (idx == ARRAY_SIZE(d3323aa_lp_filter_freq))
+> >> +		return -ERANGE;  
+> >
+> > It's a patch not a range check, so -EINVAL may make more sense as
+> > a return value.  
+> 
+> Hm, `ERANGE`s message does say "*Numerical result* out of range...",
+> which I can see is not really applicable here (strictly speaking, we are
+> really not "calculating" anything...). However, isn't `EDOM` actually
+> the better alternative here? Consider the following
+> 
+>   echo a > in_proximity_hardwaregain
+>   sh: write error: Invalid argument
+> 
+>   echo 1234 > in_proximity_hardwaregain
+>   sh: write error: Numerical argument out of domain
 
-Signed-off-by: David Lechner <dlechner@baylibre.com>
----
- drivers/iio/common/hid-sensors/hid-sensor-attributes.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I'd still stick to -EINVAL as correct if not that informative simply
+because EDOM is very rarely used (wasn't one I even knew existed
+until today ;)
 
-diff --git a/drivers/iio/common/hid-sensors/hid-sensor-attributes.c b/drivers/iio/common/hid-sensors/hid-sensor-attributes.c
-index 2055a03cbeb187743e687c2ce3f8a339a2bd4cfc..a61428bfdce372ea0511fb7c3e80f4c43f427eb4 100644
---- a/drivers/iio/common/hid-sensors/hid-sensor-attributes.c
-+++ b/drivers/iio/common/hid-sensors/hid-sensor-attributes.c
-@@ -11,7 +11,7 @@
- #include <linux/hid-sensor-hub.h>
- #include <linux/iio/iio.h>
- 
--static struct {
-+static const struct {
- 	u32 usage_id;
- 	int unit; /* 0 for default others from HID sensor spec */
- 	int scale_val0; /* scale, whole number */
+> >> +				       data);
+> >> +	if (ret)
+> >> +		return dev_err_probe(
+> >> +			data->dev, ret,
+> >> +			"Could not add disable regulator action\n");  
+> > Odd formatting.
+> >
+> > 		return dev_err_probe(dev, ret,
+> > 				     "Could not add disable regulator action\n");
+> >
+> > It's fine to go a little over 80 chars if it helps readability and here I think
+> > it does. However it is vanishingly unlikely this would fail (as it basically means
+> > memory allocation is failing in which case not much is going to work) so
+> > common practice is not to bother with prints for failed devm_add_action_or_reset().
+> > Those prints do make sense for devm calls that are doing something more complex
+> > though so keep the rest.
+> >
+> > 	if (ret)
+> > 		return ret;
+> >
+> > is fine here.  
+> 
+> `clang-format` trying its best here. Let's just remove the print then.
+> 
+> There are a bunch drivers in iio that are printing in this
+> devm_add_action_or_reset()-error-path (though it looks like the majority
+> are not doing that). Probably not really worth changing those; in case
+> someone would really "miss" the (very unlikely) prints.
 
----
-base-commit: 14071b9cf2d751ff9bc8b5e43fa94fbf08aceea1
-change-id: 20250628-iio-const-data-14-b3250e000af7
+If they are doing dev_err_probe() it won't print anyway as that only 
+returns -ENOMEM which dev_err_probe() doesn't print on simply because
+you get lots of info if a memory allocation fails anyway.
 
-Best regards,
--- 
-David Lechner <dlechner@baylibre.com>
+https://elixir.bootlin.com/linux/v6.15.3/source/drivers/base/core.c#L5017
+
+So on that basis it would be a sensible I think to do a cleanup patch set
+to drop that particular devm_add_action_or_reset() / dev_err_probe()
+combination.  If it were just a case of unlikely (rather than impossible)
+I'd agree that it wasn't worth the churn!
+
+Jonathan
+
+
 
 

@@ -1,65 +1,62 @@
-Return-Path: <linux-iio+bounces-21044-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21045-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9940AEC857
-	for <lists+linux-iio@lfdr.de>; Sat, 28 Jun 2025 17:35:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE772AEC85A
+	for <lists+linux-iio@lfdr.de>; Sat, 28 Jun 2025 17:41:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B99851883055
-	for <lists+linux-iio@lfdr.de>; Sat, 28 Jun 2025 15:35:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2EBED6E01D4
+	for <lists+linux-iio@lfdr.de>; Sat, 28 Jun 2025 15:40:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C23D020125F;
-	Sat, 28 Jun 2025 15:35:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 026D321A445;
+	Sat, 28 Jun 2025 15:41:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a/KUxi2D"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S4g9cMaG"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EC685661;
-	Sat, 28 Jun 2025 15:35:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2B2D1E502;
+	Sat, 28 Jun 2025 15:41:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751124930; cv=none; b=TA63QpWuzAllVH/p4mcvWGa5ivU9REs3VHTxo/yJPPbZph495aDqnwqXjYNnC8CEtSGUR9HiTyH52KW8F9YxKrzr0sLLNHP/sq3xLo7Dcuh7fKYZIZlQOhw1lTZjjCVsjqv3PqCN2fKuiMq2QJFw5sIXZ4PHupilnyT/04ljQ5U=
+	t=1751125260; cv=none; b=BAH5XUv6vDviXU7iOuPxkz4O76ybTPAeTGad6z4KgE8a0iPKCVSSs6jx4WtvxklvVs645KV3NioW7wUiD2/IU946xuxrip6YdfqR86e6TrhQZxKc0wK9XAadBhgDAqjs96c1npEod2ikKRC26uUSB1N2y5P5+DYktmU4pyz+Feg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751124930; c=relaxed/simple;
-	bh=1WWh3CzNqLLBw5WVI5LZj3HPj0OfYYihdha4Uh4arH0=;
+	s=arc-20240116; t=1751125260; c=relaxed/simple;
+	bh=1lcgyLVwTfxuqxdF5MYvsRIHyKto1JLmJ3TNgqZ2JRA=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VAcGcEq06eDeY+B1bWUP8WbRi2Qn7CQIn65qS66NNGZMd+umZgD+OQf40U04y2lTrYCZlCY0LPVNfGSOpWDrktdLkyJIctt85SZyRGvK2tqI8kw0YUIt8Cbq7hmNWT1kiO4KrFPlO6eGAZcl6tcBCXXZJIW16ETbWvdTFStHUKc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a/KUxi2D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E33CC4CEEA;
-	Sat, 28 Jun 2025 15:35:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Em+JvzSAAl3ExNtjb+bM6Z5zx9e4sbjAR+Io9mFlJgI5+cX0mY4tlngGsWpUGtA8HrjSJX/yHL+2AD6htBBcOp96cwiJf1X4KDxGtDo9769D6MV5xnvE/yxrB57qBRG6D238jdstTPp1E/InwkRXe9hHzrX9PaxPcGiSEhMOvbU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S4g9cMaG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3641C4CEEA;
+	Sat, 28 Jun 2025 15:40:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751124930;
-	bh=1WWh3CzNqLLBw5WVI5LZj3HPj0OfYYihdha4Uh4arH0=;
+	s=k20201202; t=1751125260;
+	bh=1lcgyLVwTfxuqxdF5MYvsRIHyKto1JLmJ3TNgqZ2JRA=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=a/KUxi2DnO523t46iThYpDWHFtRyYOjUNd4SuniHYHLRlxHDHTeBoivGpk5P4yXPZ
-	 STJUfh+FpNwQTP+WqnoQ+lRey1KcND2UWwWTzG6TTCkl7wkM0E8tfL7n3kXY+m8mQy
-	 nOeO14HmAY4CZ3Tj5mUn6SuoogJlLaboWlllZqnBGkz/i+e4g5XJxx8mie9ylu3nz0
-	 ly/kT1quCE4zUUJKxOKqDYwLATzyFh0/InlqIWtc0nHyHyxhwFW8gt+DItkNhZ4R12
-	 sWfUaSql1hddWjXFPAD0xwkBvQIbZbahdkCCm1XeCrJHJ32BlX1yp14EMGDEjzMOaN
-	 dwUndvpjr3QGQ==
-Date: Sat, 28 Jun 2025 16:35:21 +0100
+	b=S4g9cMaGsQbtEqrrcKmHRUmRKvwY4E0fiL6jP6ZFlGfRN2HJUNxgeOyEH8E4wXLDq
+	 HixDQu89vfQPR8Y1aw1Vg3twhs7Yj2CKA8C3S7KicIS3CktKlp3D/nZQhjUUqjucD2
+	 /fUt69WUJJYw/Bk6JtXKkQCdlXeXEMsaXBt7JXZUf0ItYeWKb/xRrovj7SGsWPjFJf
+	 QzBKomAyX+ZTNG0SvEqKGr3jkPEXlSfV20z25zjTC9//vluwKHt2OTvDR94pVkf7sW
+	 /AYjgbXx4nprKZLhgpqZqZAYo2uBRN2KQkOuCxCF+gM0P1ZaUDMbnaNoD765zXypCT
+	 2dj0ekalL5kzA==
+Date: Sat, 28 Jun 2025 16:40:54 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>, Lars-Peter
- Clausen <lars@metafoo.de>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy
- Shevchenko <andy@kernel.org>, "linux-iio@vger.kernel.org"
- <linux-iio@vger.kernel.org>, "linux-kernel@vger.kernel.org"
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v5 1/3] iio: imu: inv_icm42600: move structure DMA
- buffers at the end
-Message-ID: <20250628163521.5a0aa1c8@jic23-huawei>
-In-Reply-To: <6152da6f-84a1-40e0-9fe8-248a2835de6e@baylibre.com>
+To: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: David Lechner <dlechner@baylibre.com>, jean-baptiste.maneyrol@tdk.com,
+ Lars-Peter Clausen <lars@metafoo.de>, Nuno =?UTF-8?B?U8Oh?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, Julia Lawall
+ <Julia.Lawall@inria.fr>
+Subject: Re: [PATCH v5 2/3] iio: imu: inv_icm42600: add WoM support
+Message-ID: <20250628164054.54ae2e7a@jic23-huawei>
+In-Reply-To: <dcf86acc-567e-48e3-ad15-fd9522b46180@sabinyo.mountain>
 References: <20250623-losd-3-inv-icm42600-add-wom-support-v5-0-4b3b33e028fe@tdk.com>
-	<20250623-losd-3-inv-icm42600-add-wom-support-v5-1-4b3b33e028fe@tdk.com>
-	<CAMknhBEpkWrZdWSrhQS6E1GnENCipf+LxNNSNUyZrm8Gme2f_Q@mail.gmail.com>
-	<FR3P281MB175703F651131703019D7295CE78A@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
-	<20250626194838.55c5eca4@jic23-huawei>
-	<FR3P281MB175744F24BDD93870BB32ED0CE45A@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
-	<6152da6f-84a1-40e0-9fe8-248a2835de6e@baylibre.com>
+	<20250623-losd-3-inv-icm42600-add-wom-support-v5-2-4b3b33e028fe@tdk.com>
+	<CAMknhBHaSBF-a9nLZ0ZxB2-9HzYkPMBqUr4Aa4TthNnJMwtFgg@mail.gmail.com>
+	<20250626195323.6336820c@jic23-huawei>
+	<dcf86acc-567e-48e3-ad15-fd9522b46180@sabinyo.mountain>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -70,105 +67,68 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 27 Jun 2025 12:19:55 -0500
-David Lechner <dlechner@baylibre.com> wrote:
+On Thu, 26 Jun 2025 14:48:10 -0500
+Dan Carpenter <dan.carpenter@linaro.org> wrote:
 
-> On 6/27/25 10:27 AM, Jean-Baptiste Maneyrol wrote:
-> 
-> ...
-> 
-> >>>>> diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600.h b/drivers/iio/imu/inv_icm42600/inv_icm42600.h
-> >>>>> index 55ed1ddaa8cb5dd410d17db3866fa0f22f18e9d2..9b2cce172670c5513f18d5979a5ff563e9af4cb3 100644
-> >>>>> --- a/drivers/iio/imu/inv_icm42600/inv_icm42600.h
-> >>>>> +++ b/drivers/iio/imu/inv_icm42600/inv_icm42600.h
-> >>>>> @@ -148,9 +148,9 @@ struct inv_icm42600_suspended {
-> >>>>>   *  @suspended:                suspended sensors configuration.
-> >>>>>   *  @indio_gyro:       gyroscope IIO device.
-> >>>>>   *  @indio_accel:      accelerometer IIO device.
-> >>>>> - *  @buffer:           data transfer buffer aligned for DMA.
-> >>>>> - *  @fifo:             FIFO management structure.
-> >>>>>   *  @timestamp:                interrupt timestamps.
-> >>>>> + *  @fifo:             FIFO management structure.
-> >>>>> + *  @buffer:           data transfer buffer aligned for DMA.
-> >>>>>   */
-> >>>>>  struct inv_icm42600_state {
-> >>>>>         struct mutex lock;
-> >>>>> @@ -164,12 +164,12 @@ struct inv_icm42600_state {
-> >>>>>         struct inv_icm42600_suspended suspended;
-> >>>>>         struct iio_dev *indio_gyro;
-> >>>>>         struct iio_dev *indio_accel;
-> >>>>> -       u8 buffer[2] __aligned(IIO_DMA_MINALIGN);
-> >>>>> -       struct inv_icm42600_fifo fifo;
-> >>>>>         struct {
-> >>>>>                 s64 gyro;
-> >>>>>                 s64 accel;
-> >>>>>         } timestamp;
-> >>>>> +       struct inv_icm42600_fifo fifo;    
-> >>>>
-> >>>> I didn't look at how the drivers use timestamp and fifo, but if they
-> >>>> are passed as a buffer to SPI, then they need to stay in the DMA
-> >>>> aligned area of the struct.    
-> >>>
-> >>> struct inv_icm42600_fifo has a buffer at its end that is passed to SPI.
-> >>> Same things for buffer below. That's why both buffers are DMA
-> >>> aligned.  
-> >>
-> >> It's a tiny bit esoteric that this is relying on structure alignment rules
-> >> that says (iirc) the structure element will be aligned to maximum of it's
-> >> elements and there is tail padding to that size as well.  Thus the whole
-> >> struct inv_icm42600 is __aligned(IIO_DMA_MINALIGN) and the buffer in there
-> >> is itself after padding to ensure that it is __aligned(IIO_DMA_MINALIGN)
-> >>
-> >>
-> >> Anyhow, all I think this actually does is avoid one lot of padding
-> >> (as well as making it slightly easier to reason about!)
-> >>
-> >> outer struct {
-> >> stuff
-> >> padding to align #1
-> >> fifo {
-> >> 	stuff
-> >> 	padding to align
-> >> 	buffer
-> >> 	padding to fill up align
-> >> }
-> >> struct timestamp;
-> >> ///this bit will go away as it can fit in the padding #1 (probably)
-> >> Padding to align
-> >> ////
-> >> u8 buffer[2] __ailgned(IIO_DMA_MINALIGN)
-> >>
-> >>  
+> On Thu, Jun 26, 2025 at 07:53:23PM +0100, Jonathan Cameron wrote:
+> > > > +static int inv_icm42600_accel_disable_wom(struct iio_dev *indio_dev)
+> > > > +{
+> > > > +       struct inv_icm42600_state *st = iio_device_get_drvdata(indio_dev);
+> > > > +       struct device *pdev = regmap_get_device(st->map);
+> > > > +       struct inv_icm42600_sensor_conf conf = INV_ICM42600_SENSOR_CONF_INIT;
+> > > > +       unsigned int sleep_ms = 0;
+> > > > +       int ret;
+> > > > +
+> > > > +       scoped_guard(mutex, &st->lock) {
+> > > > +               /*
+> > > > +                * Consider that turning off WoM is always working to avoid
+> > > > +                * blocking the chip in on mode and prevent going back to sleep.
+> > > > +                * If there is an error, the chip will anyway go back to sleep
+> > > > +                * and the feature will not work anymore.
+> > > > +                */
+> > > > +               st->apex.wom.enable = false;
+> > > > +               st->apex.on--;
+> > > > +               ret = inv_icm42600_disable_wom(st);
+> > > > +               if (ret)
+> > > > +                       break;    
+> > > 
+> > > The fact that scoped_guard() uses a for loop is an implementation
+> > > detail so using break here makes this look like improper C code. I
+> > > think this would be better to split out the protected section to a
+> > > separate function and just use the regular guard() macro.  
 > > 
-> > Hello David and Jonathan,
+> > Good catch.  This feels like something we should have some static analysis
+> > around as we definitely don't want code assuming that implementation.
 > > 
-> > what should I changed for this patch? Rewrite the commit message?
+> > +CC Dan / Julia to see if they agree.
 > >   
 > 
-> I had to go digging through the source code to understand any of this, but
-> now I finally do.
-> 
-> What would have made this clear to me in the commit message would be to say
-> that:
-> 
-> 1. The timestamp <anonymous> struct is not used with DMA so it doesn't
->    belong after __aligned(IIO_DMA_MINALIGN).
-> 2. struct inv_icm42600_fifo contains it's own __aligned(IIO_DMA_MINALIGN)
->    within it so it should not be after __ailgned(IIO_DMA_MINALIGN) in
->    the outer struct either.
-> 3. Normally 1 would have been considered a bug, but because of the extra
->    alignment from 2, it actually was OK, but we shouldn't be relying on
->    such quirks.
-> 
-> 
-LGTM. I thought about just applying this with David's message version but
-given you are doing another spin for the other patches in the series I'll
-pick this one up with those.
+> I feel like the scoped_guard() macro is so complicated because they
+> wanted break statements to work as expected...  (As opposed to how I write
+> half my loop macros using nested for loops so that when I break it only
+> breaks from the inner loop and corrupts memory).
 
-Thanks,
+Was a while back but don't remember that coming up as a reason.
+I thought the for loop construct was just a way to define the scope in
+a place where the following or preceding code couldn't influence what was
+instantiated.
+
+Anyhow I think breaks in a scoped_guard() is a horrible pattern based on hidden
+implementation details so I'm keen to avoid it at least in IIO. 
+Maybe this will become common enough that I'll revisit that view in a year
+or two. Factoring out the code as a function seems the right answer in this
+case.
+
+Never mind on checking for it generally if we think it might be something
+that was intended as a feature not a bug.
+
+Thanks
 
 Jonathan
 
+> 
+> regards,
+> dan carpenter
 > 
 
 

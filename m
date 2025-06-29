@@ -1,140 +1,210 @@
-Return-Path: <linux-iio+bounces-21099-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21100-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33776AECAC4
-	for <lists+linux-iio@lfdr.de>; Sun, 29 Jun 2025 01:30:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BE15AECACE
+	for <lists+linux-iio@lfdr.de>; Sun, 29 Jun 2025 02:00:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D75033BC25C
-	for <lists+linux-iio@lfdr.de>; Sat, 28 Jun 2025 23:30:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 54DE818996D5
+	for <lists+linux-iio@lfdr.de>; Sun, 29 Jun 2025 00:01:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92629241664;
-	Sat, 28 Jun 2025 23:30:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8F425227;
+	Sun, 29 Jun 2025 00:00:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="eJMIj9kG"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="zqJMAeKh"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oa1-f45.google.com (mail-oa1-f45.google.com [209.85.160.45])
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ACB121ABA5
-	for <linux-iio@vger.kernel.org>; Sat, 28 Jun 2025 23:30:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92FCA290F
+	for <linux-iio@vger.kernel.org>; Sun, 29 Jun 2025 00:00:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751153434; cv=none; b=qG6QLoudkYfjcjHW1rByOvLtpjX//6/i/mWBimsIUPmdTblzz55G8mwDw4UCWTAJrtQKMFxJTzyO64E/QdZMoXWC0fsSpqJo7I5qxJ31X9rvbihoY7RwoiF+yXkEvA3wqa2ge4xkNgq2ArMK8q8vWb+QmvxMEz1Oag/KmN8T/KY=
+	t=1751155241; cv=none; b=X2uSzdA/lNZIUhmU+kGJTyX6Rp+iVlUHuDHLjmKPP4FTc3iy3oGncgMKp8Tw4F0uEfRhR8ROUC1rfk7J2SJl4cuvhZebjLYv719/XGNXJpKSq/U3vuzSt1r++ceElKHXjVuyPpIJ2p9nHUAfdkEiEJm8jCng9BhRLF4UNdyvvYk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751153434; c=relaxed/simple;
-	bh=0L3TcnOnAT37xurn4zHF7Uelnh1A1OIPxvlh7Hv5QGQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eg0WNXg+Fu/FipeXk5GvknYsQGRJtrvVihMVVtQFfeVJoxcSOUaIGNAyJ9drXu4CFrfcUFbKsEjrP9P1qPF1BZHzB5vftCFy8K+ad1fF38gasE4/9Ba8pka/U222l6E4GdKF74tr+HPsGA8L6snHJU6enhydTkewQ/+akHFE4ok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=eJMIj9kG; arc=none smtp.client-ip=209.85.160.45
+	s=arc-20240116; t=1751155241; c=relaxed/simple;
+	bh=lp6NElhwTfDU/LWo/wfJbtHgIjn1qqaa+v6RzzVUEJk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=o3zQKfRJ/sVUjypHHWxFFETsszePG4uzpuWiu461RuAdBIfFqkpwkK2OBUFHDBLqtUpza9au0V5GteeuTd3xAPGPSUp8giAAGY7wrNMJ2CSbv0eIkCuLDxJqL7NJhNLgLHesrtej2m5V32pz2fix0KHHLSgGLIBf/Q/gz8EV3LU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=zqJMAeKh; arc=none smtp.client-ip=209.85.210.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oa1-f45.google.com with SMTP id 586e51a60fabf-2ef8df09ce9so328615fac.1
-        for <linux-iio@vger.kernel.org>; Sat, 28 Jun 2025 16:30:32 -0700 (PDT)
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-74af4af04fdso2311972b3a.1
+        for <linux-iio@vger.kernel.org>; Sat, 28 Jun 2025 17:00:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1751153431; x=1751758231; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=3LV2whTVcFBv8HGVSk50MOoWwYm/BUMUzIcy7LK/5Gk=;
-        b=eJMIj9kGY+TCzlzUxoZ9vT58J5vLtzhtCwnoVWwn+6IKmnb/QVg08tLzfh9y/rp1/2
-         Kwivh55qtslzt3hnv2QKN7Dx66w89ZV9FKjMQ3EFL0IpVAAzL3qht7hSpuuPZRh7hWco
-         BwUwulm/iZijHB61og4RFmUxP0M3SmJ3OFy24UM2LZS/fLXh3s/JAoojTAoGXZf3SC/X
-         YdfzUdEZa+Nb5bnKW/Ea4NdtjufBok7ESgfYpYel/CNQBDxh0yxKchin48Dk8YWQslTc
-         mROnDP+8iCOBggSrRghyoTr/eSAKebCBLExQWrZCB7VatLAUm8YP8I4aq4k0ckiAsneS
-         iXqQ==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1751155239; x=1751760039; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZAilxmNWyRl4r1PMhugpcq3yEAPzS9qmF0tbTSHWud4=;
+        b=zqJMAeKh4CSB6bKcEYLJSnyQ2tdLkGUC4xli4/Ozj/STrxSveqn03eMZvePYTQEGXt
+         c9h/PpuOLtLm1OLJ1Xz0yIbMDH8ecCfbpHBggj0aU//l59g8DNug6wKmpyg5CIqisvnk
+         TWA94+WVaOKoeRKAbzmpGMmVBx7SiBaw24n+fwI39UrcgtkwVPZQWKrKSZLd71qzUb02
+         BjrVpF+zyLyZp3/AqJTKkLeCvR746wAi/l9OF5xmjZLx60Jkm1LYjhPEsOO5dYz9UJv3
+         Avqo3DNgK9X0sa4BoBEzVk0IJoEbCATHRmz9xchYCFg5KuvYEaTxo3C40CgDh174ZMtl
+         oYxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751153431; x=1751758231;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=3LV2whTVcFBv8HGVSk50MOoWwYm/BUMUzIcy7LK/5Gk=;
-        b=Yr6GKmBfmnfJdjJWqdSgu4eVDevIpBa2ZjkGivGaXJd7ZWKzvNLLvYSnDg1k205qe9
-         EPdoxt2iB8dj9ye2aVeUPjOHoiCLiUKMKwwyGUtFFyWl6lkfQ0ZJa9LBYMTpS0SizvVn
-         rT36MBtKzaL8DIQF/dCB4IwbwKsqScNYMHt0/HLgM19LGaEcNwH09MGFuMLtATWCDys7
-         gVMuXkeh+1rwKzvZj/UviGboNp3K3rF97TheQjOzCpdoMgZqKZng/tX3TS1o967VTklk
-         ZHUhgy3xnzhJpNV1tfnrgOlHfe+Atmq83/BhZyhVjIyZ/SWGgfGOv8q/L4uxMQPkvV6a
-         yXMg==
-X-Forwarded-Encrypted: i=1; AJvYcCX1Yk4VxXPsk6srjrGJxCd9ahs4p2fZZ1y8Z+7SYHOn+rmsGp1qqR7GXOLKjyG51jQl/qCbVRJJVns=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz5yWVYknZE2+l0LWW6rUY6RiFUUqa1D9qRAz1f9nFVX4IoG0rQ
-	Ootzv6gns6zKXbNO+nuo7y9vF6dL8B3a/EePop2G5L3EmZszt7sPUuOgL1w8F2Z3JOg=
-X-Gm-Gg: ASbGncvNXni/0iHll6Rrcszd5tMi/3a3R7T2WuNTRN3udelAx2kK4dPLRmYSUss7vcf
-	8TPj7MSQ/itivYXYF9YxvOltVJqnSBOvLxc9etMr6hdSCkVqHFE1ck/v8ts/GKqbs/aYyePG4Hl
-	fJlUm7TfgwWsMXhAcy7kf6D2pGjjyZMwkNN/NM0ZGa4AiExySljp31z94Y98b/gnTmaLqsYE3G5
-	etBU/Q23ANSKjWWvSgaJiu7eK4R4Red/lV7+DvzTqutlWbEWiuW+yMUJD0qdU0DgLEL6PvfQ+56
-	a1XC0gbyENzIUcj+ylyfWvzJbWKQZtP/najG/P+Ca5ul8RwE4O5aVJGmSKY5vuAWeiYMpZAAhmH
-	dAjEZspcxGC1NTmXhQcPHzsygnceu2zjhI3HNXgE=
-X-Google-Smtp-Source: AGHT+IFPRb5c72fGGjzcl2TWNpxe5UqjFvHdpbDERh59UE43Z4EhY5vjoD630Wsnz6iYSlvBePYWyg==
-X-Received: by 2002:a05:6870:cd89:b0:2ea:7101:7dc1 with SMTP id 586e51a60fabf-2efed73119bmr5062597fac.33.1751153431549;
-        Sat, 28 Jun 2025 16:30:31 -0700 (PDT)
-Received: from ?IPV6:2600:8803:e7e4:1d00:3092:a48c:b0c6:cbf4? ([2600:8803:e7e4:1d00:3092:a48c:b0c6:cbf4])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2efd50fa38asm1750229fac.40.2025.06.28.16.30.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 28 Jun 2025 16:30:30 -0700 (PDT)
-Message-ID: <bd72b92e-bf8d-4fc2-84ae-4f9fd8b40c37@baylibre.com>
-Date: Sat, 28 Jun 2025 18:30:28 -0500
+        d=1e100.net; s=20230601; t=1751155239; x=1751760039;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ZAilxmNWyRl4r1PMhugpcq3yEAPzS9qmF0tbTSHWud4=;
+        b=gFDg9he4R9vhf54APztkjt997BWyWoR2BUaGQjkBiZM1mLAVrCJnErush8Bq2ViY0f
+         I37cgLWIhQlzMEo2Yj5ea6pb8c8p7L+9GW1qXWwM3iVBDsrT0+IC4hnmnl2ewfwGVUj9
+         Sc+k7ANlDiaT45hDH+S3bNBnzjWnQoWfHoowHumW0bQfkY0ov+RJYtCCjrWAp8/dNzK6
+         JWvVdLW/YJ5A99bJVF8l4ce6m1YvI+PEhCNzZ2r4K7tTfrUoBnWa2cWjWUyM63GGsmjg
+         IpZHegxk01/rv5xag+KRzBfRxZ+lNvNMT1OL4O+xSbUThX2VGRFFAAbhR/OCYrHN4X56
+         HLvA==
+X-Forwarded-Encrypted: i=1; AJvYcCW6Bi1WN/hD7mXmfoM5+GTjSCQwHsWzB10mPbYmGFpL5be50tn5Vpeo+O8a0lKhL2cLkfZT62QMAlc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyuw+fLvcou6czMfl15eoKpzEmxpeHeLSlYj8PWFa+VYNarJLEL
+	DwXUFJeit7FLZnIpxrbcMBWOQZhnC/WqvamPQzf5aXRykMTiATqd/K/FHQOHXcxME64=
+X-Gm-Gg: ASbGncvhRK8JqzHfHQPWXavkvn+9QgvHJL4MSfA2ifBtRD4ZK78YYu2gcc7OjMOG1FI
+	CDxhZslNG02bWCnliXqXfOhFoO2NNPfG7zaTQ5oOO2EwV/w3AUgTMB+5qQGXwzI39UyvWOaqhMf
+	4MT4kYq+n2eZdM9OqXk/jmu0BV/wOW7npGNrXNbq+jHo1zosiMtWnZOyS3CK/KSZHBBG+XtvBT/
+	5knwYTUDpz9Fa5ZiaMb00TrytZ/b1P+Z9XFdMaD/EJd6mvGTSfEDY9sqadDEZevZuOdxXD5qA4R
+	mQ8wC778uC1+DQh0tiLs8NWTA2ykSSYznViRE6Sp30NF23MGlhBK+iLIhSZ96loaOfLBXIKM1xS
+	w5H5x4gkzXWqF/ypviMMcsA==
+X-Google-Smtp-Source: AGHT+IHIJf26L5pUx7VLAHRUw0LoxJ15whIvghHSaohPoTHOcQcwEytJ1rs5J54SO/mjzJ3ezQ7YIw==
+X-Received: by 2002:a05:6a20:72a5:b0:220:98bc:e0ce with SMTP id adf61e73a8af0-220a0893136mr13067261637.1.1751155238737;
+        Sat, 28 Jun 2025 17:00:38 -0700 (PDT)
+Received: from dev-linux (syn-076-088-115-008.res.spectrum.com. [76.88.115.8])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b34e31db05fsm4528339a12.66.2025.06.28.17.00.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 28 Jun 2025 17:00:38 -0700 (PDT)
+Date: Sat, 28 Jun 2025 17:00:35 -0700
+From: Sukrut Bellary <sbellary@baylibre.com>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Matti Vaittinen <mazziesaccount@gmail.com>,
+	Lothar Rubusch <l.rubusch@gmail.com>, dlechner@baylibre.com,
+	nuno.sa@analog.com, andy@kernel.org, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1 1/2] iio: adc: ti-adc128s052: add support for
+ adc121s021
+Message-ID: <aGCCIwknL25yAyHL@dev-linux>
+References: <20250625170218.545654-1-l.rubusch@gmail.com>
+ <20250625170218.545654-2-l.rubusch@gmail.com>
+ <8eb80697-e76e-412d-82a9-5a95d4ca4f2a@gmail.com>
+ <20250626192802.0079d579@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 4/5] iio: adc: ti-adc128s052: Add lower resolution
- devices support
-To: Sukrut Bellary <sbellary@baylibre.com>,
- Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Matti Vaittinen <mazziesaccount@gmail.com>,
- =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
- Andy Shevchenko <andy@kernel.org>,
- Angelo Compagnucci <angelo.compagnucci@gmail.com>, Nishanth Menon
- <nm@ti.com>, linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20250614091504.575685-1-sbellary@baylibre.com>
- <20250614091504.575685-5-sbellary@baylibre.com>
- <CAHp75Vf=zQ+pdo5V1fAq2qWEpdUfNfWdO+_iW0wETWSniXisyA@mail.gmail.com>
- <aGB2Fnv797Wrenza@dev-linux>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <aGB2Fnv797Wrenza@dev-linux>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250626192802.0079d579@jic23-huawei>
 
-On 6/28/25 6:09 PM, Sukrut Bellary wrote:
-> On Sat, Jun 14, 2025 at 09:45:43PM +0300, Andy Shevchenko wrote:
->> On Sat, Jun 14, 2025 at 12:15 PM Sukrut Bellary <sbellary@baylibre.com> wrote:
->>>
->>> The adcxx communicates with a host processor via an SPI/Microwire Bus
->>> interface. The device family responds with 12-bit data, of which the LSB bits
->>> are transmitted by the lower resolution devices as 0.
->>> The unavailable bits are 0 in LSB.
->>> Shift is calculated per resolution and used in scaling and raw data read.
->>>
->>> Lets reuse the driver to support the family of devices with name
->>> ADC<bb><c>S<sss>, where
->>
->> I believe it's incorrect, i.e. it's something like ...S<ss><?>, where
->> <?> is something you need to clarify, and <ss> is definitely a speed
->> in kSPS.
->>
-> Thank you for the review.
-> I am not sure about the last s in <sss>.
-> It could be TI's silicon spins versioning.
-> I couldn't find any information about it in any of the datasheets.
-> I can drop the last s or mark it as <ssx> and specify the first two <ss> as
-> maximum speed.
+On Thu, Jun 26, 2025 at 07:28:02PM +0100, Jonathan Cameron wrote:
+> On Thu, 26 Jun 2025 08:24:41 +0300
+> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 > 
-I have a hunch that the last digit has to do with pinout/number of
-power supplies. adc128s052 has two supplies V_A and V_D while the
-others only have V_A.
+> > Hi Lothar,
+> > 
+> > On 25/06/2025 20:02, Lothar Rubusch wrote:
+> > > Add support for the single channel variant(s) of this ADC.
+> > > 
+> > > Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>  
+> > 
+> > Thanks for this addition. In principle, this looks good to me but I am 
+> > afraid there is another colliding series being worked on:
+> > 
+> > https://lore.kernel.org/all/20250614091504.575685-3-sbellary@baylibre.com/
+> > 
+> > Maybe you can align the effort with Sukrut?
+> +CC Sukrut.
+> 
+> > 
+> > What I specifically like (and think is the right thing to do) in 
+> > Sukrut's series is replacing the 'adc122s021_channels' -array with 
+> > individual structures. In my opinion the array is just unnecessary 
+> > complexity and individual structures are simpler.
+> > 
+> > Other than that, this looks good to me.
+> 
+> 
+> Sukrut, perhaps you could add this to the end of your series, rebased
+> to those changes?  Would save a synchronization step for your v5 (and
+> later if needed)
+> 
+> No problem if not, but I agree with Matti that we should take your
+> series first.
+> 
+> Jonathan
+>
+Sure, I will add these adc121s0xx to the end of my v5.
+Thanks.
 
-If this sounds vaguely familiar, it is because it was discussed
-today in this thread [1] that Jonathan CC'ed you in. :-)
-
-[1]: https://lore.kernel.org/linux-iio/20250628162910.1256b220@jic23-huawei/
-
+> 
+> > 
+> > Yours,
+> > 	-- Matti
+> > 
+> > 
+> > > ---
+> > >   drivers/iio/adc/ti-adc128s052.c | 17 ++++++++++++++++-
+> > >   1 file changed, 16 insertions(+), 1 deletion(-)
+> > > 
+> > > diff --git a/drivers/iio/adc/ti-adc128s052.c b/drivers/iio/adc/ti-adc128s052.c
+> > > index 1b46a8155803..cf271c39e663 100644
+> > > --- a/drivers/iio/adc/ti-adc128s052.c
+> > > +++ b/drivers/iio/adc/ti-adc128s052.c
+> > > @@ -7,6 +7,7 @@
+> > >    * https://www.ti.com/lit/ds/symlink/adc128s052.pdf
+> > >    * https://www.ti.com/lit/ds/symlink/adc122s021.pdf
+> > >    * https://www.ti.com/lit/ds/symlink/adc124s021.pdf
+> > > + * https://www.ti.com/lit/ds/symlink/adc121s021.pdf
+> > >    */
+> > >   
+> > >   #include <linux/cleanup.h>
+> > > @@ -110,6 +111,10 @@ static const struct iio_chan_spec adc128s052_channels[] = {
+> > >   	ADC128_VOLTAGE_CHANNEL(7),
+> > >   };
+> > >   
+> > > +static const struct iio_chan_spec adc121s021_channels[] = {
+> > > +	ADC128_VOLTAGE_CHANNEL(0),
+> > > +};
+> > > +
+> > >   static const struct iio_chan_spec adc122s021_channels[] = {
+> > >   	ADC128_VOLTAGE_CHANNEL(0),
+> > >   	ADC128_VOLTAGE_CHANNEL(1),
+> > > @@ -143,6 +148,10 @@ static const struct adc128_configuration adc128_config[] = {
+> > >   		.refname = "vdd",
+> > >   		.other_regulators = &bd79104_regulators,
+> > >   		.num_other_regulators = 1,
+> > > +	}, {
+> > > +		.channels = adc121s021_channels,
+> > > +		.num_channels = ARRAY_SIZE(adc121s021_channels),
+> > > +		.refname = "vref",
+> > >   	},
+> > >   };  
+> > 
+> > I'd love seeing this array split to individual structs.
+> > 
+> > >   
+> > > @@ -207,7 +216,10 @@ static const struct of_device_id adc128_of_match[] = {
+> > >   	{ .compatible = "ti,adc124s051", .data = &adc128_config[2] },
+> > >   	{ .compatible = "ti,adc124s101", .data = &adc128_config[2] },
+> > >   	{ .compatible = "rohm,bd79104", .data = &adc128_config[3] },
+> > > -	{ }
+> > > +	{ .compatible = "ti,adc121s021", .data = &adc128_config[4] },
+> > > +	{ .compatible = "ti,adc121s051", .data = &adc128_config[4] },
+> > > +	{ .compatible = "ti,adc121s101", .data = &adc128_config[4] },
+> > > +	{ },
+> > >   };
+> > >   MODULE_DEVICE_TABLE(of, adc128_of_match);
+> > >   
+> > > @@ -220,6 +232,9 @@ static const struct spi_device_id adc128_id[] = {
+> > >   	{ "adc124s051", (kernel_ulong_t)&adc128_config[2] },
+> > >   	{ "adc124s101", (kernel_ulong_t)&adc128_config[2] },
+> > >   	{ "bd79104", (kernel_ulong_t)&adc128_config[3] },
+> > > +	{ "adc121s021", (kernel_ulong_t)&adc128_config[4] },
+> > > +	{ "adc121s051", (kernel_ulong_t)&adc128_config[4] },
+> > > +	{ "adc121s101", (kernel_ulong_t)&adc128_config[4] },
+> > >   	{ }
+> > >   };
+> > >   MODULE_DEVICE_TABLE(spi, adc128_id);  
+> > 
+> 
 

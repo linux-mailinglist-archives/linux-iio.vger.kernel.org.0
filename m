@@ -1,55 +1,58 @@
-Return-Path: <linux-iio+bounces-21110-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21111-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C12FEAECEC0
-	for <lists+linux-iio@lfdr.de>; Sun, 29 Jun 2025 18:46:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7513AECEC1
+	for <lists+linux-iio@lfdr.de>; Sun, 29 Jun 2025 18:49:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 24FB91894777
-	for <lists+linux-iio@lfdr.de>; Sun, 29 Jun 2025 16:46:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5749F1894C17
+	for <lists+linux-iio@lfdr.de>; Sun, 29 Jun 2025 16:49:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A4F422CBC0;
-	Sun, 29 Jun 2025 16:45:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD512230BEB;
+	Sun, 29 Jun 2025 16:49:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b/7H30jC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AZWB1u5r"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B923E23CE;
-	Sun, 29 Jun 2025 16:45:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 994A66FB9;
+	Sun, 29 Jun 2025 16:49:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751215556; cv=none; b=lasByjt/RwWlUKnxZKoyu59k5bVBhCodL8MP6KrwaSsj71P4f7mwmLjUpTPwItq70pUgAwvOhwQyXChHdejT3NNPjagOqsek+yDiyMeXLDav848iOj5cdszxyW8jNxxF0E4Sa7wR36Y+wSPLPLx5mrtpiLN/zF3DPUK5STPaEmw=
+	t=1751215761; cv=none; b=YJSMavwnO81HsKsmaefMRYPFShKMzeewUJqKrAkuQdCQYYnTVkFG1uuYdEDcRZ3Z0cbQFYve+nYukQQ5sYBGv3ZSD4cM5fhtUVc7/AV0yJ0UgUIezYppkuQxk0d+YzqQmpY3J9O+Cq3RiSI0upLc5toqXtSkvNz20xAo74XLveQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751215556; c=relaxed/simple;
-	bh=YsVeaB+odhd7lEFQCXOGLfgAFP+Pem0GSIU2uvKRT8Q=;
+	s=arc-20240116; t=1751215761; c=relaxed/simple;
+	bh=8OS0yqoShl9eu3bjLrpMehY4QeHWIZLBTSu9YNCh4g4=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=r/Gt/Ls55Gh7PF5gfyXSR2SFCmyqwQVtjB7kb7iuy5vulv6Hi1ZCatKOKeKIz8pOk8ToX2QrYrFOxQo9Cl6ahmJfmS2DqGFgMRETf2Pfn2RFY2cim05ySPnkpOMz5CyM8GBYFaf7dPjR5JIqJhbo7atiKgM0ya7/KoYxos4kqss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b/7H30jC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C1E2C4CEEB;
-	Sun, 29 Jun 2025 16:45:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=mV0seurRAXZBYS1h2pjR11gZvQ43l/xwG/E8KiVT//9wVxFEzfb1+AQn7utoqlViaWMtftVShQhT3ow0wicvKsmFr0dLhArTiHm5oqhFScYwLakApU3WlqNmY3PlZlrrgtzZgMwJPCWMBhBH2UzBTre/WjZJxDmIQH2nQXDPSH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AZWB1u5r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39A6CC4CEEB;
+	Sun, 29 Jun 2025 16:49:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751215556;
-	bh=YsVeaB+odhd7lEFQCXOGLfgAFP+Pem0GSIU2uvKRT8Q=;
+	s=k20201202; t=1751215761;
+	bh=8OS0yqoShl9eu3bjLrpMehY4QeHWIZLBTSu9YNCh4g4=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=b/7H30jCgeK1AeeYl9JeuzSx3xhpKZ48EATJEqa325oWigkWAVBbKncxFC5+2C0kU
-	 8jK7jbWno8I9a/PuC6+snECi8p+EHB4NyQO3RvvTIfIrNeL4N173RQ1ghj8TzWDK+a
-	 bQCnVx79yU9kGZ+oUhNJ0GGyp9rKwTNMtj39JlNwntqnuOUNk9AW0yQDAqRZivh2If
-	 O1mVuooOLoQUs2sCxQXUjAxeQQUJYx4mSygt8hLGriLMu9yEQ/m+SMsfQN+PVAKou/
-	 O8O7Bkzd9df1zVIBdaFI+tji7fy9cwzj529727Q83Ae07he0BML719lDfCuYyxJSXg
-	 5p7/vnetEM7ag==
-Date: Sun, 29 Jun 2025 17:45:49 +0100
+	b=AZWB1u5rgHRoGeHvR5fza9ZuPVuqbWzSPB3yZhDEDxRXQw6S6sxtasrG7ZHgQn3GX
+	 lvdXVGYkJRtfIe4QJr0vuiFyuVhDZZNYC4bOWpzdVMm8P7D1Gkw1Ha2eKT2vz6bLnB
+	 AdKsFia9ZxJpC5mjyylXT3eSX3EU/VpSlsqrG5Pv6feVuagwSyscKzGLpfqxLm+jEC
+	 swniy75NHtXltbU/0RLuES1uLlblKuQshJQhbI1rY214PSzXKnrK838ALxLWnctk1O
+	 ZzqMPBctknMwTH8ZTDsWHNCEGMCkMENJ/Z5DUHy1LRyjCRZ8wHCfCVTrRgSTKhJfAA
+	 9ngWQ0YiGR3iQ==
+Date: Sun, 29 Jun 2025 17:49:12 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: David Lechner <dlechner@baylibre.com>
-Cc: Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko
- <andy@kernel.org>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: accel: mma9553: make mma9553_event_info const
-Message-ID: <20250629174549.1dc6ab33@jic23-huawei>
-In-Reply-To: <20250628-iio-const-data-2-v1-1-a61da3a0941e@baylibre.com>
-References: <20250628-iio-const-data-2-v1-1-a61da3a0941e@baylibre.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
+ <Michael.Hennerich@analog.com>, Marcelo Schmitt
+ <marcelo.schmitt@analog.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
+ Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: adc: ad7091r5: make ad7091r5_init_info const
+Message-ID: <20250629174912.036e6898@jic23-huawei>
+In-Reply-To: <20250628-iio-const-data-3-v1-1-13d3f0af5f3f@baylibre.com>
+References: <20250628-iio-const-data-3-v1-1-13d3f0af5f3f@baylibre.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -60,52 +63,40 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sat, 28 Jun 2025 11:00:07 -0500
+On Sat, 28 Jun 2025 11:06:48 -0500
 David Lechner <dlechner@baylibre.com> wrote:
 
-> Add const qualifier to struct mma9553_event_info mma9553_event_info[].
-> This is read-only data so it can be made const.
+> Add const qualifier to struct ad7091r_init_info ad7091r5_init_info. This
+> is read-only data so it can be made const.
 > 
 > Signed-off-by: David Lechner <dlechner@baylibre.com>
+Applied.
 
-Seems fine to me. Applied to the togreg branch of iio.git
-and pushed out as testing.
-
-This one was a little fiddly to check though so more eyes
-would still be good!
+Thanks,
 
 Jonathan
 
 > ---
->  drivers/iio/accel/mma9553.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+>  drivers/iio/adc/ad7091r5.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/drivers/iio/accel/mma9553.c b/drivers/iio/accel/mma9553.c
-> index ffb0d6ff37124e5f364168c5c4f348a02d28842a..f85384a7908f253f9ed55dae4e0a41a39ae6016b 100644
-> --- a/drivers/iio/accel/mma9553.c
-> +++ b/drivers/iio/accel/mma9553.c
-> @@ -97,7 +97,7 @@ enum activity_level {
->  	ACTIVITY_RUNNING,
->  };
+> diff --git a/drivers/iio/adc/ad7091r5.c b/drivers/iio/adc/ad7091r5.c
+> index b472b9498fd1307e493579e257769ace233eb073..bd4877268689f048eb67e262ac5ea0c1f5c04a76 100644
+> --- a/drivers/iio/adc/ad7091r5.c
+> +++ b/drivers/iio/adc/ad7091r5.c
+> @@ -92,7 +92,7 @@ static void ad7091r5_regmap_init(struct ad7091r_state *st,
+>  	st->map = devm_regmap_init_i2c(i2c, regmap_conf);
+>  }
 >  
-> -static struct mma9553_event_info {
-> +static const struct mma9553_event_info {
->  	enum iio_chan_type type;
->  	enum iio_modifier mod;
->  	enum iio_event_direction dir;
-> @@ -152,7 +152,7 @@ static struct mma9553_event_info {
->  #define MMA9553_EVENTS_INFO_SIZE ARRAY_SIZE(mma9553_events_info)
->  
->  struct mma9553_event {
-> -	struct mma9553_event_info *info;
-> +	const struct mma9553_event_info *info;
->  	bool enabled;
->  };
->  
+> -static struct ad7091r_init_info ad7091r5_init_info = {
+> +static const struct ad7091r_init_info ad7091r5_init_info = {
+>  	.info_irq = &ad7091r5_chip_info_irq,
+>  	.info_no_irq = &ad7091r5_chip_info_noirq,
+>  	.regmap_config = &ad7091r_regmap_config,
 > 
 > ---
 > base-commit: 14071b9cf2d751ff9bc8b5e43fa94fbf08aceea1
-> change-id: 20250628-iio-const-data-2-7d2afbbe7f88
+> change-id: 20250628-iio-const-data-3-fecf1e7698ac
 > 
 > Best regards,
 

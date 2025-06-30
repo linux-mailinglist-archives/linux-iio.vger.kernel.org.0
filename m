@@ -1,71 +1,71 @@
-Return-Path: <linux-iio+bounces-21160-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21161-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F646AEE000
-	for <lists+linux-iio@lfdr.de>; Mon, 30 Jun 2025 16:04:08 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50ABEAEDFF3
+	for <lists+linux-iio@lfdr.de>; Mon, 30 Jun 2025 16:02:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6B96F189C2AB
-	for <lists+linux-iio@lfdr.de>; Mon, 30 Jun 2025 14:02:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 27E307A7F1E
+	for <lists+linux-iio@lfdr.de>; Mon, 30 Jun 2025 14:01:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF0EA28B7FE;
-	Mon, 30 Jun 2025 14:00:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EEC128BABA;
+	Mon, 30 Jun 2025 14:01:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="V1BP4ZBL"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="E1morB8L"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+Received: from mx0b-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8E2F28B7E9;
-	Mon, 30 Jun 2025 14:00:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2FA328B7E9;
+	Mon, 30 Jun 2025 14:01:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751292055; cv=none; b=JaoalQfXo3vHxfm9XbP51ZINBBfLn9pxC5oHLarmRrxlKeCYFc/BugAH2Wz/Sz8A7nGPcdVQXcVFevCHPcmu4/BVDXf0QyQvuI1sf6SE2Jx1C/Flxv19MSckgdhEFJhtX96wWW4yuT2aco6040RTaZi4Fciej21kjWi+SGF867E=
+	t=1751292078; cv=none; b=DyQfLeO5cwojeITwrnfAbtiFAL3cxdFyuopQvqYZcqlm8qKrTzFTDr2YjEt95jh97fWHu8gGDI7IKzeFpEDa9D3ELSTMbRTNdRWlnu4uyk6U+KHyDM1jX9nJ8pQI8hXzkf3JTzpPDbHuJHQUh0ewkN87v2T5aeSuQLO6cmE3XqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751292055; c=relaxed/simple;
-	bh=Fl6zlh+uYcUpdpgt4gWbAQOFr+XRDzVsxHCZzo/hjPw=;
+	s=arc-20240116; t=1751292078; c=relaxed/simple;
+	bh=FPcZ1vLEyLErGb6BmASRsUypJFZAzsK0gcRC7yUSLEM=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZaPZMiRwa9eaE5VLeEz88VpH/RY0ZbeeH2Ld3zNzaUKQdP6YNtjTWE0iB9kNeLP62VsJEF1nvSYxYRugvOGlDrK6NJKe/d2tHIMJh3JgMdJs0H+G0eR5iXLHxjzF6aDp/bqDhsdRmkBM5Uah6BNKpbVt3j2rd/GqwtEs6Hf4Z5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=V1BP4ZBL; arc=none smtp.client-ip=148.163.135.77
+	 MIME-Version:Content-Type; b=LXKxz6Ybz50fMksvruOf3K7HEJw/C/PFc6mmnB/kTOdF2jz9x7XW8zsB4JF9KWS8lSGdbdJSkYbapMlM/l37mprUmYOHD930QJ626TAPJiBLNGjqZZFHjhN4Pi0bD771Xui6xYufgt1UZMLm4ScFS15KXDJxQ5qSv2Hu6Img1kA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=E1morB8L; arc=none smtp.client-ip=148.163.135.77
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
-Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-	by mx0a-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55UCoede011048;
-	Mon, 30 Jun 2025 10:00:34 -0400
+Received: from pps.filterd (m0375855.ppops.net [127.0.0.1])
+	by mx0b-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55UDllEK026511;
+	Mon, 30 Jun 2025 10:00:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=DKIM; bh=HOp4Z
-	ogsM3nggVKZfQ9998bNegJoyQ5GTlcDJBn0HVM=; b=V1BP4ZBLcRiyYSwNSfN00
-	f8YTwobHxOTk/VdxbkoPYqiHU9fVKD4FIA/PKm60/R9iRbGM9QrPQRQJOWTBlTNR
-	hra0QfgSYXwm+RBH/1/3aIEYHiom12hvV2LnVCHypBNGwcDqen10LwqwkHoD2gxN
-	ldGoOCzjn1nJ1W3HdBpLGSnM/g13WC7ZZLQzTkPMU8135LRTztKeJq/58Vts3nup
-	UzRJEQebiyU7DCPm/taP/AvgfRUgjhDetq5RalPLqOqVtSvyqkJTYHpxco97p5ZJ
-	6zK21/ISE9dLUblxzf0/VTycjUU+7aUcJGEt31Sazyfc1GuQqpnpDHwlhqI4jbQR
-	A==
+	:message-id:mime-version:references:subject:to; s=DKIM; bh=a0mXz
+	SQh+Byve8aYvjlNc1VGRmBiX6qc17OIZgRIty4=; b=E1morB8LfGx+myE0s3R2/
+	zCs2CwbZwhWZeoNoJyI/uxSKVPAjQ0zy/IPUjDkwDlbxxt5f0wP4pGq4nIZj7jfh
+	LmWUT4O4M7UnuG24Wdms5ZZqdtCdfV2BILP63KDv3dcP7krarp95xzWs+BB/Xahi
+	gJH28TdB+ylIMprV5cWMHrwpr5mBm8I72VsqG5lJWZyFgWvJzYbKgp8znIaVRC8Q
+	jYdx5AEF0/IMA88fx0yX2Ko7EML93C6RCv8Hzl+gbJ71OsZKhcyroxZrnDqkH0v9
+	6IS6SWv00jMCMQ1mJnRGN/N5JQ1vJVDPjy6K3bK7RNn2vV0+pW3eGiWRLX5mRdhP
+	Q==
 Received: from nwd2mta3.analog.com ([137.71.173.56])
-	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 47kqwj18sc-1
+	by mx0b-00128a01.pphosted.com (PPS) with ESMTPS id 47krqa10jt-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 30 Jun 2025 10:00:33 -0400 (EDT)
+	Mon, 30 Jun 2025 10:00:53 -0400 (EDT)
 Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
-	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 55UE0WEE039705
+	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 55UE0qMq039851
 	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Mon, 30 Jun 2025 10:00:32 -0400
+	Mon, 30 Jun 2025 10:00:52 -0400
 Received: from ASHBCASHYB5.ad.analog.com (10.64.17.133) by
  ASHBMBX8.ad.analog.com (10.64.17.5) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Mon, 30 Jun 2025 10:00:32 -0400
+ 15.2.1748.10; Mon, 30 Jun 2025 10:00:52 -0400
 Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by
  ASHBCASHYB5.ad.analog.com (10.64.17.133) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Mon, 30 Jun 2025 10:00:32 -0400
+ 15.2.1748.10; Mon, 30 Jun 2025 10:00:52 -0400
 Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
  (10.64.17.5) with Microsoft SMTP Server id 15.2.1748.10 via Frontend
- Transport; Mon, 30 Jun 2025 10:00:32 -0400
+ Transport; Mon, 30 Jun 2025 10:00:52 -0400
 Received: from work.ad.analog.com (HYB-hERzalRezfV.ad.analog.com [10.65.205.9])
-	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 55UE0E0s008659;
-	Mon, 30 Jun 2025 10:00:17 -0400
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 55UE0XFo009103;
+	Mon, 30 Jun 2025 10:00:36 -0400
 From: Marcelo Schmitt <marcelo.schmitt@analog.com>
 To: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
         <linux-gpio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
@@ -74,9 +74,9 @@ CC: <jic23@kernel.org>, <lars@metafoo.de>, <Michael.Hennerich@analog.com>,
         <robh@kernel.org>, <krzk+dt@kernel.org>, <conor+dt@kernel.org>,
         <linus.walleij@linaro.org>, <brgl@bgdev.pl>, <broonie@kernel.org>,
         <lgirdwood@gmail.com>, <marcelo.schmitt1@gmail.com>
-Subject: [PATCH v7 07/12] iio: adc: ad4170-4: Add support for buffered data capture
-Date: Mon, 30 Jun 2025 11:00:13 -0300
-Message-ID: <5ac9ffec07b24e75a55caed027a76f7d69f65221.1751289747.git.marcelo.schmitt@analog.com>
+Subject: [PATCH v7 08/12] iio: adc: ad4170-4: Add clock provider support
+Date: Mon, 30 Jun 2025 11:00:32 -0300
+Message-ID: <3373d02579fb3f2c45f845984b2cf9b979221fb8.1751289747.git.marcelo.schmitt@analog.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1751289747.git.marcelo.schmitt@analog.com>
 References: <cover.1751289747.git.marcelo.schmitt@analog.com>
@@ -86,385 +86,282 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
 X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjMwMDExNSBTYWx0ZWRfX2nJCOEKgycoI
- jAn4pzZoHRpaAoP3r9IcisGnO2OYpFfHg8wE6IGntA4hn2E7lfz2lZG0DS5OX6ZKV0R5Pp/k3Df
- uyUNUq9Whr6qiTxOmm3Vpgz9fwAv3GhQbco6/LnMUZPdhFMg32q0FOhYAxUW0YUKrC9HYhuoJhz
- XNKhE3NC9XF9z/4ICcz9wsPfeYqw0CdcxuYTS0fhgKt1O7ILvbI72ZUm1/xYl3fLXRO9L1aNdHL
- YCob3XPJjT9zE+VtNqsrtNH/GWORlmhe2SNzUQteX9IXrTKOvhQI7S0bw3fK6K71N1fE7wW/bqo
- 4wfBGHLjUQIKj0BNErCuCSjluk7pwTnF4m+gkSGSwUlOiVYpr2ppTYgzfCCTII/383+dCwcXHz6
- 4U5+easad+jikJaBr7ODnSwWeUpAaDUmJ9hCb7+pqkBNtjWDiFY/+rH0pzjcg/POLKY60buk
-X-Proofpoint-GUID: JgIYgNt6XCYxceFitQim5Ogft1XWhBKw
-X-Proofpoint-ORIG-GUID: JgIYgNt6XCYxceFitQim5Ogft1XWhBKw
-X-Authority-Analysis: v=2.4 cv=SsiQ6OO0 c=1 sm=1 tr=0 ts=68629881 cx=c_pps
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjMwMDExNSBTYWx0ZWRfXy45lSMYlr7G2
+ cIDlW8SujRYjy+3yHZc49TjQPW/6Fpt+1wo2d6Tv2boFJ43GpdsgCfwW4Zb+uuR+8HXY8GObBeP
+ uFRMp/pVJRR5OddNZl96AuPjeE9A6SGftqes6UMuo/tbf0Tpfsa39IrV8iZvABWQxXQTLM/OzdZ
+ wbbqRbIVXEqEyYhS0PjeK4BsfvZ8hdTiMlu85gCgFOs3AO5+lP/xlyyeAAnNclrf7xGTM6d3pKE
+ IQL9XM1m2wtbEZxm0enZVX0qM6DuAJoQUpdN+tSRomu/88pyuvtPBc1K+tMSfjyhGcmYWjNOLdR
+ AZ9qVos85R2jpEpbEN3aZNtGLFwzKn4GLfrGx8B7RPgJZ06s+qqCbEZnKdmLeLCDhPAjW49mdFq
+ XtqIYf+X2oiMsgw8C7KzwkFnyaKrqx7mKTA7AgxiEbVQiibwKTgFp0aooiXXXBuBjmu8FKvp
+X-Proofpoint-GUID: osX5q-y1O1ZURLfIBEwXZEhq117u8_Hu
+X-Proofpoint-ORIG-GUID: osX5q-y1O1ZURLfIBEwXZEhq117u8_Hu
+X-Authority-Analysis: v=2.4 cv=U8+SDfru c=1 sm=1 tr=0 ts=68629895 cx=c_pps
  a=PpDZqlmH/M8setHirZLBMw==:117 a=PpDZqlmH/M8setHirZLBMw==:17
- a=6IFa9wvqVegA:10 a=gAnH3GRIAAAA:8 a=TEtCmmvL8P_ouh62KQIA:9
+ a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=gAnH3GRIAAAA:8 a=FbnkXhljGIpD8s1dgEMA:9
+ a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
  definitions=2025-06-30_03,2025-06-27_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 priorityscore=1501 malwarescore=0 clxscore=1015 mlxlogscore=999
- spamscore=0 impostorscore=0 adultscore=0 lowpriorityscore=0 suspectscore=0
- bulkscore=0 phishscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ priorityscore=1501 phishscore=0 impostorscore=0 spamscore=0 mlxlogscore=999
+ lowpriorityscore=0 malwarescore=0 mlxscore=0 bulkscore=0 suspectscore=0
+ adultscore=0 clxscore=1015 classifier=spam authscore=0 authtc=n/a authcc=
  route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
  definitions=main-2506300115
 
-Extend the AD4170-4 driver to allow buffered data capture in continuous
-read mode. In continuous read mode, the chip skips the instruction phase
-and outputs just ADC sample data, enabling faster sample rates to be
-reached. The internal channel sequencer always starts sampling from channel
-0 and channel 0 must be enabled if more than one channel is selected for
-data capture. The scan mask validation callback checks if the
-aforementioned condition is met.
+The AD4170-4 chip can use an externally supplied clock at the XTAL2 pin, or
+an external crystal connected to the XTAL1 and XTAL2 pins. Alternatively,
+the AD4170-4 can provide its 16 MHz internal clock at the XTAL2 pin. In
+addition, the chip has a programmable clock divider that allows dividing
+the external or internal clock frequency, however, control for that is not
+provided in this patch. Extend the AD4170-4 driver so it effectively uses
+the provided external clock, if any, or supplies its own clock as a clock
+provider.
 
+Reviewed-by: Nuno Sá <nuno.sa@analog.com>
 Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
 ---
-Change log v6 -> v7
-- Dropped extra assignment of st->trig->dev.parent.
+No changes since v6.
 
- drivers/iio/adc/Kconfig    |   2 +
- drivers/iio/adc/ad4170-4.c | 216 ++++++++++++++++++++++++++++++++++++-
- 2 files changed, 217 insertions(+), 1 deletion(-)
+ drivers/iio/adc/Kconfig    |   1 +
+ drivers/iio/adc/ad4170-4.c | 147 ++++++++++++++++++++++++++++++++++++-
+ 2 files changed, 147 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-index 79fcb9dc680b..538929b3df6e 100644
+index 538929b3df6e..36e506e8d8f1 100644
 --- a/drivers/iio/adc/Kconfig
 +++ b/drivers/iio/adc/Kconfig
-@@ -89,6 +89,8 @@ config AD4170_4
- 	tristate "Analog Device AD4170-4 ADC Driver"
- 	depends on SPI
+@@ -91,6 +91,7 @@ config AD4170_4
  	select REGMAP_SPI
-+	select IIO_BUFFER
-+	select IIO_TRIGGERED_BUFFER
+ 	select IIO_BUFFER
+ 	select IIO_TRIGGERED_BUFFER
++	depends on COMMON_CLK
  	help
  	  Say yes here to build support for Analog Devices AD4170-4 SPI analog
  	  to digital converters (ADC).
 diff --git a/drivers/iio/adc/ad4170-4.c b/drivers/iio/adc/ad4170-4.c
-index abd8a292625b..9202a8dfcc16 100644
+index 9202a8dfcc16..bf261d4ef67d 100644
 --- a/drivers/iio/adc/ad4170-4.c
 +++ b/drivers/iio/adc/ad4170-4.c
-@@ -16,7 +16,11 @@
+@@ -13,6 +13,8 @@
+ #include <linux/bitops.h>
+ #include <linux/bits.h>
+ #include <linux/cleanup.h>
++#include <linux/clk.h>
++#include <linux/clk-provider.h>
  #include <linux/delay.h>
  #include <linux/device.h>
  #include <linux/err.h>
-+#include <linux/iio/buffer.h>
- #include <linux/iio/iio.h>
-+#include <linux/iio/trigger.h>
-+#include <linux/iio/trigger_consumer.h>
-+#include <linux/iio/triggered_buffer.h>
- #include <linux/interrupt.h>
- #include <linux/irq.h>
- #include <linux/math64.h>
-@@ -61,6 +65,7 @@
- #define AD4170_FILTER_FS_REG(x)				(0xC7 + 14 * (x))
- #define AD4170_OFFSET_REG(x)				(0xCA + 14 * (x))
- #define AD4170_GAIN_REG(x)				(0xCD + 14 * (x))
-+#define AD4170_ADC_CTRL_CONT_READ_EXIT_REG		0x200 /* virtual reg */
+@@ -55,6 +57,7 @@
+ #define AD4170_CONFIG_A_REG				0x00
+ #define AD4170_DATA_24B_REG				0x1E
+ #define AD4170_PIN_MUXING_REG				0x69
++#define AD4170_CLOCK_CTRL_REG				0x6B
+ #define AD4170_ADC_CTRL_REG				0x71
+ #define AD4170_CHAN_EN_REG				0x79
+ #define AD4170_CHAN_SETUP_REG(x)			(0x81 + 4 * (x))
+@@ -75,6 +78,9 @@
+ /* AD4170_PIN_MUXING_REG */
+ #define AD4170_PIN_MUXING_DIG_AUX1_CTRL_MSK		GENMASK(5, 4)
  
- #define AD4170_REG_READ_MASK				BIT(14)
- 
-@@ -72,6 +77,7 @@
- 
++/* AD4170_CLOCK_CTRL_REG */
++#define AD4170_CLOCK_CTRL_CLOCKSEL_MSK			GENMASK(1, 0)
++
  /* AD4170_ADC_CTRL_REG */
  #define AD4170_ADC_CTRL_MULTI_DATA_REG_SEL_MSK		BIT(7)
-+#define AD4170_ADC_CTRL_CONT_READ_MSK			GENMASK(5, 4)
- #define AD4170_ADC_CTRL_MODE_MSK			GENMASK(3, 0)
+ #define AD4170_ADC_CTRL_CONT_READ_MSK			GENMASK(5, 4)
+@@ -102,6 +108,12 @@
  
- /* AD4170_CHAN_EN_REG */
-@@ -116,9 +122,13 @@
- #define AD4170_PIN_MUXING_DIG_AUX1_RDY			0x1
+ /* AD4170 register constants */
  
- /* AD4170_ADC_CTRL_REG constants */
-+#define AD4170_ADC_CTRL_MODE_CONT			0x0
- #define AD4170_ADC_CTRL_MODE_SINGLE			0x4
- #define AD4170_ADC_CTRL_MODE_IDLE			0x7
- 
-+#define AD4170_ADC_CTRL_CONT_READ_DISABLE		0x0
-+#define AD4170_ADC_CTRL_CONT_READ_ENABLE		0x1
++/* AD4170_CLOCK_CTRL_REG constants */
++#define AD4170_CLOCK_CTRL_CLOCKSEL_INT			0x0
++#define AD4170_CLOCK_CTRL_CLOCKSEL_INT_OUT		0x1
++#define AD4170_CLOCK_CTRL_CLOCKSEL_EXT			0x2
++#define AD4170_CLOCK_CTRL_CLOCKSEL_EXT_XTAL		0x3
 +
- /* AD4170_FILTER_REG constants */
- #define AD4170_FILTER_FILTER_TYPE_SINC5_AVG		0x0
- #define AD4170_FILTER_FILTER_TYPE_SINC5			0x4
-@@ -150,6 +160,8 @@
+ /* AD4170_CHAN_MAP_REG constants */
+ #define AD4170_CHAN_MAP_AIN(x)			(x)
+ #define AD4170_CHAN_MAP_TEMP_SENSOR		17
+@@ -149,6 +161,8 @@
  
- #define AD4170_GAIN_REG_DEFAULT				0x555555
+ /* Internal and external clock properties */
+ #define AD4170_INT_CLOCK_16MHZ				(16 * HZ_PER_MHZ)
++#define AD4170_EXT_CLOCK_MHZ_MIN			(1 * HZ_PER_MHZ)
++#define AD4170_EXT_CLOCK_MHZ_MAX			(17 * HZ_PER_MHZ)
  
-+#define AD4170_ADC_CTRL_CONT_READ_EXIT			0xA5
-+
- static const unsigned int ad4170_reg_size[] = {
+ #define AD4170_NUM_PGA_OPTIONS				10
+ 
+@@ -166,6 +180,7 @@ static const unsigned int ad4170_reg_size[] = {
  	[AD4170_CONFIG_A_REG] = 1,
  	[AD4170_DATA_24B_REG] = 3,
-@@ -186,6 +198,7 @@ static const unsigned int ad4170_reg_size[] = {
- 	[AD4170_OFFSET_REG(5) ... AD4170_GAIN_REG(5)] = 3,
- 	[AD4170_OFFSET_REG(6) ... AD4170_GAIN_REG(6)] = 3,
- 	[AD4170_OFFSET_REG(7) ... AD4170_GAIN_REG(7)] = 3,
-+	[AD4170_ADC_CTRL_CONT_READ_EXIT_REG] = 0,
+ 	[AD4170_PIN_MUXING_REG] = 2,
++	[AD4170_CLOCK_CTRL_REG] = 2,
+ 	[AD4170_ADC_CTRL_REG] = 2,
+ 	[AD4170_CHAN_EN_REG] = 2,
+ 	/*
+@@ -238,6 +253,10 @@ enum ad4170_regulator {
+ 	AD4170_MAX_SUP,
  };
  
- enum ad4170_ref_buf {
-@@ -320,6 +333,10 @@ struct ad4170_state {
- 	struct spi_device *spi;
- 	struct regmap *regmap;
- 	int sps_tbl[ARRAY_SIZE(ad4170_filt_names)][AD4170_MAX_FS_TBL_SIZE][2];
-+	__be32 bounce_buffer[AD4170_MAX_CHANNELS];
-+	struct spi_message msg;
-+	struct spi_transfer xfer;
-+	struct iio_trigger *trig;
++static const char *const ad4170_clk_sel[] = {
++	"ext-clk", "xtal",
++};
++
+ enum ad4170_int_pin_sel {
+ 	AD4170_INT_PIN_SDO,
+ 	AD4170_INT_PIN_DIG_AUX1,
+@@ -340,6 +359,8 @@ struct ad4170_state {
  	struct completion completion;
  	unsigned int pins_fn[AD4170_NUM_ANALOG_PINS];
  	u32 int_pin_sel;
-@@ -407,6 +424,10 @@ static int ad4170_reg_write(void *context, unsigned int reg, unsigned int val)
- 	case 1:
- 		tx_buf[AD4170_SPI_INST_PHASE_LEN] = val;
- 		break;
-+	case 0:
-+		/* Write continuous read exit code */
-+		tx_buf[0] = AD4170_ADC_CTRL_CONT_READ_EXIT;
-+		return spi_write_then_read(st->spi, tx_buf, 1, NULL, 0);
- 	default:
- 		return -EINVAL;
- 	}
-@@ -800,6 +821,7 @@ static const struct iio_chan_spec ad4170_channel_template = {
- 	.scan_type = {
- 		.realbits = 24,
- 		.storagebits = 32,
-+		.shift = 8,
- 		.endianness = IIO_BE,
- 	},
- };
-@@ -1384,11 +1406,27 @@ static int ad4170_write_raw_get_fmt(struct iio_dev *indio_dev,
- 	}
++	struct clk_hw int_clk_hw;
++	unsigned int clock_ctrl;
+ 	/*
+ 	 * DMA (thus cache coherency maintenance) requires the transfer buffers
+ 	 * to live in their own cache lines.
+@@ -1623,13 +1644,137 @@ static int ad4170_parse_channels(struct iio_dev *indio_dev)
+ 	return 0;
  }
  
-+static int ad4170_update_scan_mode(struct iio_dev *indio_dev,
-+				   const unsigned long *active_scan_mask)
++static struct ad4170_state *clk_hw_to_ad4170(struct clk_hw *hw)
 +{
-+	struct ad4170_state *st = iio_priv(indio_dev);
-+	unsigned int chan_index;
-+	int ret;
-+
-+	iio_for_each_active_channel(indio_dev, chan_index) {
-+		ret = ad4170_set_channel_enable(st, chan_index, true);
-+		if (ret)
-+			return ret;
-+	}
-+	return 0;
++	return container_of(hw, struct ad4170_state, int_clk_hw);
 +}
 +
- static const struct iio_info ad4170_info = {
- 	.read_raw = ad4170_read_raw,
- 	.read_avail = ad4170_read_avail,
- 	.write_raw = ad4170_write_raw,
- 	.write_raw_get_fmt = ad4170_write_raw_get_fmt,
-+	.update_scan_mode = ad4170_update_scan_mode,
- 	.debugfs_reg_access = ad4170_debugfs_reg_access,
- };
- 
-@@ -1683,16 +1721,178 @@ static int ad4170_initial_config(struct iio_dev *indio_dev)
- 				 AD4170_ADC_CTRL_MULTI_DATA_REG_SEL_MSK);
- }
- 
-+static int ad4170_prepare_spi_message(struct ad4170_state *st)
++static unsigned long ad4170_sel_clk(struct ad4170_state *st,
++				    unsigned int clk_sel)
 +{
-+	/*
-+	 * Continuous data register read is enabled on buffer postenable so
-+	 * no instruction phase is needed meaning we don't need to send the
-+	 * register address to read data. Transfer only needs the read buffer.
-+	 */
-+	st->xfer.rx_buf = &st->rx_buf;
-+	st->xfer.len = BITS_TO_BYTES(ad4170_channel_template.scan_type.realbits);
-+
-+	spi_message_init_with_transfers(&st->msg, &st->xfer, 1);
-+
-+	return devm_spi_optimize_message(&st->spi->dev, st->spi, &st->msg);
++	st->clock_ctrl &= ~AD4170_CLOCK_CTRL_CLOCKSEL_MSK;
++	st->clock_ctrl |= FIELD_PREP(AD4170_CLOCK_CTRL_CLOCKSEL_MSK, clk_sel);
++	return regmap_write(st->regmap, AD4170_CLOCK_CTRL_REG, st->clock_ctrl);
 +}
 +
-+static int ad4170_buffer_postenable(struct iio_dev *indio_dev)
++static unsigned long ad4170_clk_recalc_rate(struct clk_hw *hw,
++					    unsigned long parent_rate)
 +{
-+	struct ad4170_state *st = iio_priv(indio_dev);
-+	int ret;
-+
-+	ret = regmap_update_bits(st->regmap, AD4170_ADC_CTRL_REG,
-+				 AD4170_ADC_CTRL_MODE_MSK,
-+				 FIELD_PREP(AD4170_ADC_CTRL_MODE_MSK,
-+					    AD4170_ADC_CTRL_MODE_CONT));
-+	if (ret)
-+		return ret;
-+
-+	/*
-+	 * This enables continuous read of the ADC data register. The ADC must
-+	 * be in continuous conversion mode.
-+	 */
-+	return regmap_update_bits(st->regmap, AD4170_ADC_CTRL_REG,
-+				  AD4170_ADC_CTRL_CONT_READ_MSK,
-+				  FIELD_PREP(AD4170_ADC_CTRL_CONT_READ_MSK,
-+					     AD4170_ADC_CTRL_CONT_READ_ENABLE));
++	return AD4170_INT_CLOCK_16MHZ;
 +}
 +
-+static int ad4170_buffer_predisable(struct iio_dev *indio_dev)
++static int ad4170_clk_output_is_enabled(struct clk_hw *hw)
 +{
-+	struct ad4170_state *st = iio_priv(indio_dev);
-+	unsigned int i;
-+	int ret;
++	struct ad4170_state *st = clk_hw_to_ad4170(hw);
++	u32 clk_sel;
 +
-+	/*
-+	 * Use a high register address (virtual register) to request a write of
-+	 * 0xA5 to the ADC during the first 8 SCLKs of the ADC data read cycle,
-+	 * thus exiting continuous read.
-+	 */
-+	ret = regmap_write(st->regmap, AD4170_ADC_CTRL_CONT_READ_EXIT_REG, 0);
-+	if (ret)
-+		return ret;
-+
-+	ret = regmap_update_bits(st->regmap, AD4170_ADC_CTRL_REG,
-+				 AD4170_ADC_CTRL_CONT_READ_MSK,
-+				 FIELD_PREP(AD4170_ADC_CTRL_CONT_READ_MSK,
-+					    AD4170_ADC_CTRL_CONT_READ_DISABLE));
-+	if (ret)
-+		return ret;
-+
-+	ret = regmap_update_bits(st->regmap, AD4170_ADC_CTRL_REG,
-+				 AD4170_ADC_CTRL_MODE_MSK,
-+				 FIELD_PREP(AD4170_ADC_CTRL_MODE_MSK,
-+					    AD4170_ADC_CTRL_MODE_IDLE));
-+	if (ret)
-+		return ret;
-+
-+	/*
-+	 * The ADC sequences through all the enabled channels (see datasheet
-+	 * page 95). That can lead to incorrect channel being read if a
-+	 * single-shot read (or buffered read with different active_scan_mask)
-+	 * is done after buffer disable. Disable all channels so only requested
-+	 * channels will be read.
-+	 */
-+	for (i = 0; i < indio_dev->num_channels; i++) {
-+		ret = ad4170_set_channel_enable(st, i, false);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	return 0;
++	clk_sel = FIELD_GET(AD4170_CLOCK_CTRL_CLOCKSEL_MSK, st->clock_ctrl);
++	return clk_sel == AD4170_CLOCK_CTRL_CLOCKSEL_INT_OUT;
 +}
 +
-+static bool ad4170_validate_scan_mask(struct iio_dev *indio_dev,
-+				      const unsigned long *scan_mask)
++static int ad4170_clk_output_prepare(struct clk_hw *hw)
 +{
-+	unsigned int masklength = iio_get_masklength(indio_dev);
-+	unsigned int enabled;
++	struct ad4170_state *st = clk_hw_to_ad4170(hw);
 +
-+	/*
-+	 * The channel sequencer cycles through the enabled channels in
-+	 * sequential order, from channel 0 to channel 15, bypassing disabled
-+	 * channels. When more than one channel is enabled, channel 0 must
-+	 * always be enabled. See datasheet channel_en register description at
-+	 * page 95.
-+	 */
-+	enabled = bitmap_weight(scan_mask, masklength);
-+	if (enabled > 1)
-+		return test_bit(0, scan_mask);
-+
-+	return enabled == 1;
++	return ad4170_sel_clk(st, AD4170_CLOCK_CTRL_CLOCKSEL_INT_OUT);
 +}
 +
-+static const struct iio_buffer_setup_ops ad4170_buffer_ops = {
-+	.postenable = ad4170_buffer_postenable,
-+	.predisable = ad4170_buffer_predisable,
-+	.validate_scan_mask = ad4170_validate_scan_mask,
++static void ad4170_clk_output_unprepare(struct clk_hw *hw)
++{
++	struct ad4170_state *st = clk_hw_to_ad4170(hw);
++
++	ad4170_sel_clk(st, AD4170_CLOCK_CTRL_CLOCKSEL_INT);
++}
++
++static const struct clk_ops ad4170_int_clk_ops = {
++	.recalc_rate = ad4170_clk_recalc_rate,
++	.is_enabled = ad4170_clk_output_is_enabled,
++	.prepare = ad4170_clk_output_prepare,
++	.unprepare = ad4170_clk_output_unprepare,
 +};
 +
-+static irqreturn_t ad4170_trigger_handler(int irq, void *p)
++static int ad4170_register_clk_provider(struct iio_dev *indio_dev)
 +{
-+	struct iio_poll_func *pf = p;
-+	struct iio_dev *indio_dev = pf->indio_dev;
 +	struct ad4170_state *st = iio_priv(indio_dev);
-+	unsigned int chan_index;
-+	unsigned int i = 0;
++	struct device *dev = indio_dev->dev.parent;
++	struct clk_init_data init = {};
 +	int ret;
 +
-+	iio_for_each_active_channel(indio_dev, chan_index) {
-+		ret = spi_sync(st->spi, &st->msg);
-+		if (ret)
-+			goto err_out;
-+
-+		memcpy(&st->bounce_buffer[i++], st->rx_buf, ARRAY_SIZE(st->rx_buf));
++	if (device_property_read_string(dev, "clock-output-names", &init.name)) {
++		init.name = devm_kasprintf(dev, GFP_KERNEL, "%pfw",
++					   dev_fwnode(dev));
++		if (!init.name)
++			return -ENOMEM;
 +	}
 +
-+	iio_push_to_buffers(indio_dev, st->bounce_buffer);
-+err_out:
-+	iio_trigger_notify_done(indio_dev->trig);
-+	return IRQ_HANDLED;
++	init.ops = &ad4170_int_clk_ops;
++
++	st->int_clk_hw.init = &init;
++	ret = devm_clk_hw_register(dev, &st->int_clk_hw);
++	if (ret)
++		return ret;
++
++	return devm_of_clk_add_hw_provider(dev, of_clk_hw_simple_get,
++					   &st->int_clk_hw);
 +}
 +
-+static const struct iio_trigger_ops ad4170_trigger_ops = {
-+	.validate_device = iio_trigger_validate_own_device,
-+};
-+
- static irqreturn_t ad4170_irq_handler(int irq, void *dev_id)
- {
- 	struct iio_dev *indio_dev = dev_id;
- 	struct ad4170_state *st = iio_priv(indio_dev);
- 
--	complete(&st->completion);
-+	if (iio_buffer_enabled(indio_dev))
-+		iio_trigger_poll(st->trig);
-+	else
-+		complete(&st->completion);
- 
- 	return IRQ_HANDLED;
- };
- 
-+static int ad4170_trigger_setup(struct iio_dev *indio_dev)
++static int ad4170_clock_select(struct iio_dev *indio_dev)
 +{
 +	struct ad4170_state *st = iio_priv(indio_dev);
 +	struct device *dev = &st->spi->dev;
++	struct clk *ext_clk;
 +	int ret;
 +
-+	st->trig = devm_iio_trigger_alloc(dev, "%s-trig%d",
-+					  indio_dev->name,
-+					  iio_device_id(indio_dev));
-+	if (!st->trig)
-+		return -ENOMEM;
++	ext_clk = devm_clk_get_optional_enabled(dev, NULL);
++	if (IS_ERR(ext_clk))
++		return dev_err_probe(dev, PTR_ERR(ext_clk),
++				     "Failed to get external clock\n");
 +
-+	st->trig->ops = &ad4170_trigger_ops;
++	if (!ext_clk) {
++		/* Use internal clock reference */
++		st->mclk_hz = AD4170_INT_CLOCK_16MHZ;
++		st->clock_ctrl |= FIELD_PREP(AD4170_CLOCK_CTRL_CLOCKSEL_MSK,
++					     AD4170_CLOCK_CTRL_CLOCKSEL_INT_OUT);
 +
-+	iio_trigger_set_drvdata(st->trig, indio_dev);
-+	ret = devm_iio_trigger_register(dev, st->trig);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "Failed to register trigger\n");
++		if (!device_property_present(&st->spi->dev, "#clock-cells"))
++			return 0;
 +
-+	indio_dev->trig = iio_trigger_get(st->trig);
++		return ad4170_register_clk_provider(indio_dev);
++	}
++
++	/* Read optional clock-names prop to specify the external clock type */
++	ret = device_property_match_property_string(dev, "clock-names",
++						    ad4170_clk_sel,
++						    ARRAY_SIZE(ad4170_clk_sel));
++
++	ret = ret < 0 ? 0 : ret; /* Default to external clock if no clock-names */
++	st->clock_ctrl |= FIELD_PREP(AD4170_CLOCK_CTRL_CLOCKSEL_MSK,
++				     AD4170_CLOCK_CTRL_CLOCKSEL_EXT + ret);
++
++	st->mclk_hz = clk_get_rate(ext_clk);
++	if (st->mclk_hz < AD4170_EXT_CLOCK_MHZ_MIN ||
++	    st->mclk_hz > AD4170_EXT_CLOCK_MHZ_MAX) {
++		return dev_err_probe(dev, -EINVAL,
++				     "Invalid external clock frequency %u\n",
++				     st->mclk_hz);
++	}
 +
 +	return 0;
 +}
 +
- static int ad4170_regulator_setup(struct ad4170_state *st)
+ static int ad4170_parse_firmware(struct iio_dev *indio_dev)
  {
+ 	struct ad4170_state *st = iio_priv(indio_dev);
  	struct device *dev = &st->spi->dev;
-@@ -1817,8 +2017,22 @@ static int ad4170_probe(struct spi_device *spi)
- 				       IRQF_ONESHOT, indio_dev->name, indio_dev);
- 		if (ret)
- 			return ret;
-+
-+		ret = ad4170_trigger_setup(indio_dev);
-+		if (ret)
-+			return ret;
- 	}
+ 	int reg_data, ret;
  
-+	ret = ad4170_prepare_spi_message(st);
+-	st->mclk_hz = AD4170_INT_CLOCK_16MHZ;
++	ret = ad4170_clock_select(indio_dev);
 +	if (ret)
-+		return dev_err_probe(dev, ret, "Failed to prepare SPI message\n");
++		return dev_err_probe(dev, ret, "Failed to setup device clock\n");
 +
-+	ret = devm_iio_triggered_buffer_setup(dev, indio_dev, NULL,
-+					      &ad4170_trigger_handler,
-+					      &ad4170_buffer_ops);
++	ret = regmap_write(st->regmap, AD4170_CLOCK_CTRL_REG, st->clock_ctrl);
 +	if (ret)
-+		return dev_err_probe(dev, ret, "Failed to setup read buffer\n");
-+
- 	return devm_iio_device_register(dev, indio_dev);
- }
++		return ret;
  
+ 	/* On power on, device defaults to using SDO pin for data ready signal */
+ 	st->int_pin_sel = AD4170_INT_PIN_SDO;
 -- 
 2.47.2
 

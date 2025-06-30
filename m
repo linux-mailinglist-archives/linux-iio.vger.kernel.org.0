@@ -1,230 +1,331 @@
-Return-Path: <linux-iio+bounces-21171-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21172-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DA20AEE9CA
-	for <lists+linux-iio@lfdr.de>; Mon, 30 Jun 2025 23:57:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B153AEEA7F
+	for <lists+linux-iio@lfdr.de>; Tue,  1 Jul 2025 00:33:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD2723B7A7D
-	for <lists+linux-iio@lfdr.de>; Mon, 30 Jun 2025 21:57:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A408917A37B
+	for <lists+linux-iio@lfdr.de>; Mon, 30 Jun 2025 22:33:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 535F02367B2;
-	Mon, 30 Jun 2025 21:57:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5E1F243953;
+	Mon, 30 Jun 2025 22:33:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=axis.com header.i=@axis.com header.b="NaOouEle"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Cv1mSAXK"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011022.outbound.protection.outlook.com [52.101.65.22])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DDAF1EBA0D;
-	Mon, 30 Jun 2025 21:57:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.22
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751320643; cv=fail; b=CuKV2oEwOzp/eCULgH7xAFFHPpRqbl3m4Mu7+765Og+XYsDveWzNASuw3HL2ws+RnjDqzf6Q02wPyOIGL2kOQ8sIRCXiCItnxdUK7//w6pP+RR2jLdqxUcMQ5Q47XdIGupesaTwolFsSmsOqPuBLHQugXLOUxrAWO3kzH/xy4tQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751320643; c=relaxed/simple;
-	bh=Tfrs51a4eGwLqB7i421A/JzCsuCwI1lXyiJtwkN07WE=;
-	h=From:To:CC:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=jkxszGLiTVLk618titQXDcWiTzHJFPhwWP7o/DI+lh0h3njcdsmumMJsBEPxxnQzRtltxI7xJHiM+R8pmtF/OmIgLJaiE+UzIfcJBEG/kOnu4y26DMyOYJjz14P08cOA00sBwk3s5YJ5sM5+kWTV+yeTg/yEKkw8rpUcE7j8IZM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=axis.com; spf=pass smtp.mailfrom=axis.com; dkim=pass (1024-bit key) header.d=axis.com header.i=@axis.com header.b=NaOouEle; arc=fail smtp.client-ip=52.101.65.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=axis.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=axis.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=YWtWFW/81bQ/DRCHwhvFdY3dyQLAAq9i+SDu4Kp1/IseWYbtneW/Z2JWFJqhroa+w8Q1O1qMtNbiiG/qtwu4S9EtNrBIW6/ux4Eu7o+cDWDUsE5p5p8on8LfxSgPWInkn3gkLMDxx7bOHM5+Kju+lQZsyK7jISH4aD7EphOPHIUm/OvP6Hm7WCbv3rNKv+pX8n8fRe7+q8OyC9hZBnwmPHwAmi9ZeYYSxuyCn7o+OV8dShrc2uQYUOKePPVrrcNOuwlBxKbviK1MyWm7r+ZEBIy8XgakN7WHJX6M2RyeYIhjfV4YJ1kI4izgnS11hwARc6LUg/K9meJjFTzuC5CouA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=PvI5SdHZ2vH6uXPl4tOz/jOYKolnwNoA5iV63jTLY0o=;
- b=XsqSZl5e/pUIHa/aQYKD9sLDR4U2D/kWlgRyFPU+c6QrE0eU4JOvWlJNnEH+jdAxA+p/vBW+x4NNZzs15vmkHuOA3Es7HQT8DcP4hDDo38l7LPSddk2mIOzxTdoxhSnrKoNSWuFWvpLiMz4VnGwT3OTt5FMiAAb+N1coVsHoxq0MRcZa0CPp6g5h1wGm71kjjEQ/qpvzNMgXiFSw0Js73uaq6bYVIMj6p0jtOSizdQ9ZPQleSiiCnkOvDhkiLn4jv2ircjnWq//uHiX+VYFKPkiC0Zhh/0GUjcP5HYXXIv7p2+mpTKphdeUjNvztqsuMakhjn6yj0I6xkX7O0cWh1w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 195.60.68.100) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=axis.com;
- dmarc=pass (p=none sp=none pct=100) action=none header.from=axis.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axis.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=PvI5SdHZ2vH6uXPl4tOz/jOYKolnwNoA5iV63jTLY0o=;
- b=NaOouEleQSEHjwvThvsbcvJQlKDx5oaHKCnNBuUvZ2iRrDGx3TUaPvIpSLpqCRZ4PHIeuMYVJE4mBYgqcU8YR6ju8eKQie5oh+1O44xSznYTpcMLP11LYlax8UdGOVpZicijOz7/mFyaEkdPwlbM5YCACc3RaH87hNRxsR274nU=
-Received: from DUZPR01CA0007.eurprd01.prod.exchangelabs.com
- (2603:10a6:10:3c3::11) by AM9PR02MB7347.eurprd02.prod.outlook.com
- (2603:10a6:20b:3ea::9) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8880.28; Mon, 30 Jun
- 2025 21:57:17 +0000
-Received: from DB3PEPF0000885A.eurprd02.prod.outlook.com
- (2603:10a6:10:3c3:cafe::1e) by DUZPR01CA0007.outlook.office365.com
- (2603:10a6:10:3c3::11) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8880.31 via Frontend Transport; Mon,
- 30 Jun 2025 21:57:20 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 195.60.68.100)
- smtp.mailfrom=axis.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=axis.com;
-Received-SPF: Pass (protection.outlook.com: domain of axis.com designates
- 195.60.68.100 as permitted sender) receiver=protection.outlook.com;
- client-ip=195.60.68.100; helo=mail.axis.com; pr=C
-Received: from mail.axis.com (195.60.68.100) by
- DB3PEPF0000885A.mail.protection.outlook.com (10.167.242.5) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8901.15 via Frontend Transport; Mon, 30 Jun 2025 21:57:17 +0000
-Received: from pc52311-2249 (10.4.0.13) by se-mail01w.axis.com (10.20.40.7)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.44; Mon, 30 Jun
- 2025 23:57:16 +0200
-From: Waqar Hameed <waqar.hameed@axis.com>
-To: Jonathan Cameron <jic23@kernel.org>
-CC: Lars-Peter Clausen <lars@metafoo.de>, <kernel@axis.com>,
-	<linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH v2 3/3] iio: Add driver for Nicera D3-323-AA PIR sensor
-In-Reply-To: <20250628181129.08f55227@jic23-huawei> (Jonathan Cameron's
-	message of "Sat, 28 Jun 2025 18:11:29 +0100")
-References: <cover.1749938844.git.waqar.hameed@axis.com>
-	<5d12fcd6faae86f7280e753f887ea60513b22ea9.1749938844.git.waqar.hameed@axis.com>
-	<20250622120756.3865fc4b@jic23-huawei> <pndtt45aq6m.fsf@axis.com>
-	<20250628181129.08f55227@jic23-huawei>
-User-Agent: a.out
-Date: Mon, 30 Jun 2025 23:57:16 +0200
-Message-ID: <pndqzz07v0j.fsf@axis.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E65C54502F;
+	Mon, 30 Jun 2025 22:33:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.170
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1751322816; cv=none; b=VR8aDgQogD8pLYGolt5zyMCXLpa8gXPZCbsT3Jo8ZhoU2RFHiPlC515pzdBEwjv9YZ8vDIRT31Iytpozs70WcLGw3KxOgVAtiZ95oGWOgDEW5GoYPG+aqqfi8k/0hcQDW/2Kp9LX3swbNz1or3xpnPAkoZdPpz+bSmmHXZOv+Os=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1751322816; c=relaxed/simple;
+	bh=OADl2soM9M+rvnb6BfXcKVp2fdupMqf0U6Td+mqHvCQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=mXVFSmLPJN/ed8+Sy2vRUMc80NHszDNqfc25D2VhmX09KORLiVSDhMdWdPNtN4Is5nziIGzThT8EV10oTDuMPlcpMD/KpMS4DdCxn1sin8WZvEgOje/C3HVK+pzrAoKkpLBi8u6Pi4PDYWNdXbbQXqAI6AlPG1yvX4Sn/MiN1Cs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Cv1mSAXK; arc=none smtp.client-ip=209.85.128.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-7111f616c6bso5579647b3.1;
+        Mon, 30 Jun 2025 15:33:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1751322814; x=1751927614; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fCmXpBNj4pQXixPtaFxMndwyGBDxbGqsm6NfQl0j1Vo=;
+        b=Cv1mSAXKV6xleFSuF4HI8kfEJ5+jib+uowVufWhcKdjIiL57Ac+aHRPokEIBFdANld
+         ei0PujUmP3g8sWUbWlly4VMR/rzDvXGzzLyzMPwLsd/VkB8ffD/1v7yWBVo0W0jVPGZs
+         or3kIqdGwuoo33XGRBXuhOyJChCrhwZh36eEuHyN98ytXDFJ2bXZZkuSuP2Yn3vM5bYJ
+         sEo+DbL5yUrC4pWyptA1lAs72vZvEozuxM4wmrsHgjngja2BGpc9iLoVXk9VN3tsvWUW
+         h43hj0TY07iguC3QiOIxJhYhGRHhypfXD1TLJsZlUr44Z0jYMiVaZRT48o3A9d3wKgTr
+         hw0Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751322814; x=1751927614;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=fCmXpBNj4pQXixPtaFxMndwyGBDxbGqsm6NfQl0j1Vo=;
+        b=AOBaEKmMbASZdaS9Ais+V3+p3OvczCoKk+vc7ZOyRr7BoZl2gMzw59eSHvI6HXXhOs
+         iJ1rB2zhbO5RuR6He1sOiDC0QxN3JlI3nnVxjLpg0JH9NHmlSiUDFpE4H+PJLMCotLmo
+         yA3TOadcIuWJ7DPts2sFw3IifI2VQw0xbtB3ZrIr3nLMYgJ6DUuX1uIgsRfOZ7sidEa1
+         B9PikeKLS+XyikeNJLBIqvdorYcbQILcLbTY3Cp07bRKy+wHTfRFnCv98F/IjWJo5ah8
+         aPcBRlR+almtSf8PosyMrWbsMZVvizNRqrohCfMkbrgNq1xb24eQXVU2TYf2z/1pb5jw
+         vsFw==
+X-Forwarded-Encrypted: i=1; AJvYcCVeiyD2/9LE97L60q+OJCY4qEkEPccXmSVV5pHypR/nxPzvLNLnIqwgC8xyE1rasZUTdDeyYt8g53qY@vger.kernel.org, AJvYcCWH0iSWhl0Pyx3xvw+34ZNlTztsGtzBnDkfj7xjjDjR1tcQBH0Xrj6uMICU4Pmk/gb4yA5LoX4H44GNMDl0@vger.kernel.org, AJvYcCWJjqGMf+qpd86GXA4W2ljEoXmYa6zT5G67EP1MPip1o01ctJGyLuvidVtU4DKdl1OUJoASWED158U=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz7CrnXtMUqwZeoAhvSq/GukPshDmPS8cbkIqeYssbKJLRytWsk
+	Iz077Y6aOnC13tuAILClOg0O1zA/nFsRbe9t5zsz3CbWDfzdpHqH7w6oJlFmfJJbkHYaf4Vh7us
+	MUYM4NvU1toA4cKqAMuWfNE5BezqESMI=
+X-Gm-Gg: ASbGncvu5l8oNyYUirrW37+wpXEZEmUDpb6ud+HPYgLYV7jn6jOBp2/mrVoCsP/2TLJ
+	3BdlKVP//iYfh9hxO30r96vT2H+KPc5H+Paoc41fBNrkhuxaEC3sES0f0rRcDXtYC32mVbc/MK+
+	E84rII02sGM/KvkuZRnTNsDtnr9YJoruoOJTBoWDzAP+Q=
+X-Google-Smtp-Source: AGHT+IHbkkWUdVf+O6zbt3r7Q8jhQXYmB2HzNJF1e4iVs+GsCG+laa97RKFm7JPAMmPMTild9bAOK/UN7QwoZ3cCzXg=
+X-Received: by 2002:a05:690c:6605:b0:712:c55c:4e61 with SMTP id
+ 00721157ae682-7163f79f5e8mr6697807b3.5.1751322813831; Mon, 30 Jun 2025
+ 15:33:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ClientProxiedBy: se-mail01w.axis.com (10.20.40.7) To se-mail01w.axis.com
- (10.20.40.7)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB3PEPF0000885A:EE_|AM9PR02MB7347:EE_
-X-MS-Office365-Filtering-Correlation-Id: 328cd627-b722-448e-6072-08ddb8211473
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|36860700013|1800799024|376014|13003099007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?yRMUYH7DaaxOB3RBQhwkSz9lcii561cTns+6x9SV7WJPeIdd1QBuwbCN50N5?=
- =?us-ascii?Q?Pu3aakmNuy1y3sz1/DiVEn74R3jg6sesy7YUdk7XhmpaPhYYpTwSmb3QBEby?=
- =?us-ascii?Q?RHQ+9+RyjJE7YZrJwNwPLeeyuRqaSX8OTNqyxzg26Ty/cvQe74QPvdY/CQmX?=
- =?us-ascii?Q?BSfGNYi7y59NGF0AI4mbOzjfQSnWG60WruwywLVWCIYXeVVt2PIm4BbK3C0P?=
- =?us-ascii?Q?Kb1vAlQl3TLH+EKkgDWR64x1bKzI1NjRZwOfNUVau0PCwVKcmsHUgB8+0ysr?=
- =?us-ascii?Q?MBx8Ka5Puw0Ex5bcCaFRyHIYiweHvtZ+pX2jNJ2mrl4z5ZneAkFsk9817v3E?=
- =?us-ascii?Q?jhMgX69dLEkoJNjebXy7yW/Zw6/PZHWxu+B4LFE9PUYZxjVG9fna4mXGVXQy?=
- =?us-ascii?Q?ZA9/3eoYVrT63ItcZoou156vWJOnCw3qI8Bm/VP65rjbGrzK9Ba9/AZaaNj/?=
- =?us-ascii?Q?Vvk+bsdqrRGmwkuwflOLodUWq4+4aazD+oiRxMcjn/tUOGPu0j9G5XUvMwC3?=
- =?us-ascii?Q?7MiRqQSWPQHo+dPbMGZ0IVizMQpvX1QQxNxZcxRRV4i+vRrMP8KcpdbXeIee?=
- =?us-ascii?Q?K+b5XU+4WlrdUUNn2bCoMzD4iATKY0N4NbkdTqwkbU65J1qGEGNd7CtePsrw?=
- =?us-ascii?Q?dHBcCWegjh8kfLACwSPW2FNhBmBYocDDG8cgK7qPPkuUOmFA/PYzVoInb2DW?=
- =?us-ascii?Q?yi2/DFAW77eMyp2O+WddAvbpkYpkw7EhAl7Tw1fqMqjG98MLx+s8fmhXuYpV?=
- =?us-ascii?Q?qhvIjcSHY0GFU0B8GbAObNd8/A26p31Jgdj2JqsyqoEJaxKf3++uVR3UyFpy?=
- =?us-ascii?Q?SknNWPmAHMrp1rln3M8imyEBcpgkn/sirCe4n6eXksHEt3y8PSZDMc81wNuE?=
- =?us-ascii?Q?ZuB0Y+40CMSKhIxX7XPKT15N3DFA3DwzXqua1sLtRu32hi11gLeHshmsyC5N?=
- =?us-ascii?Q?5ziAyz+G0wnjw3+rLtcMuXVO8T2Smf2AFz3MkAIE0RHJEFKccVwig/4rQejt?=
- =?us-ascii?Q?Fpvnfp5PO7qT02GRCKX+ExFr+RlnoxbKmAFWFFTS02NZyoZro9dukNr9m+SZ?=
- =?us-ascii?Q?+W05NoCGxUEVKx+3A1x8pQc+2bxHoLbuskPwXfP1d2ngvLL0IwLgeEY2ZxAJ?=
- =?us-ascii?Q?VY46IFXjTcogvO/KlI7OHV11dEQYVXuhn9178aOln+98CpZOH2BmQ5DJwgJZ?=
- =?us-ascii?Q?I6oeHdwcUZMa8qaKbpLJ4mZeCezpGzMzc7x8XD8u1ZGubeKPpgVDRigZMskY?=
- =?us-ascii?Q?ldpr7ck4VnhAryaXWh7q8M5FyDEfOnpirGNpTlPlKCve5C6GlkDUzDYyHpLv?=
- =?us-ascii?Q?Wa+qT6D3aEo4AHJuEYhHnyCHPf67QMcrj6FGQGHPGqSbNilyal86TjwDXAQk?=
- =?us-ascii?Q?gZdRf+TRRY4Bor9eVrkQseuFDc7X8d8KGe0chV2XVl4I/TRnd0GGMhyacBNK?=
- =?us-ascii?Q?0EYjW6cVAzNVkr4LP2fF83TLCwVIzPNm9rIuERsxAve2zeO6PgnECQ=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:195.60.68.100;CTRY:SE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.axis.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(36860700013)(1800799024)(376014)(13003099007);DIR:OUT;SFP:1101;
-X-OriginatorOrg: axis.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jun 2025 21:57:17.2512
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 328cd627-b722-448e-6072-08ddb8211473
-X-MS-Exchange-CrossTenant-Id: 78703d3c-b907-432f-b066-88f7af9ca3af
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=78703d3c-b907-432f-b066-88f7af9ca3af;Ip=[195.60.68.100];Helo=[mail.axis.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	DB3PEPF0000885A.eurprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR02MB7347
+References: <20250622122937.156930-1-l.rubusch@gmail.com> <20250622122937.156930-5-l.rubusch@gmail.com>
+ <20250628182706.2af83c1c@jic23-huawei>
+In-Reply-To: <20250628182706.2af83c1c@jic23-huawei>
+From: Lothar Rubusch <l.rubusch@gmail.com>
+Date: Tue, 1 Jul 2025 00:32:57 +0200
+X-Gm-Features: Ac12FXz8kUDlCOb55lLy8I0PbFN3nkrU_WAb3nA5v345EGO2lIihKeqf5oxKMoE
+Message-ID: <CAFXKEHaYdwvi64+yBEiYuv62Vaa8exYFji2gBXQciJ=CWdhbsw@mail.gmail.com>
+Subject: Re: [PATCH v6 4/8] iio: accel: adxl313: add activity sensing
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org, corbet@lwn.net, 
+	lucas.p.stankus@gmail.com, lars@metafoo.de, Michael.Hennerich@analog.com, 
+	bagasdotme@gmail.com, linux-iio@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sat, Jun 28, 2025 at 18:11 +0100 Jonathan Cameron <jic23@kernel.org> wrote:
-
->> >> +static int d3323aa_set_lp_filter_freq(struct iio_dev *indio_dev, const int val,
->> >> +				      int val2)
->> >> +{
->> >> +	struct d3323aa_data *data = iio_priv(indio_dev);
->> >> +	size_t idx;
->> >> +
->> >> +	/* Truncate fractional part to one digit. */
->> >> +	val2 /= 100000;
->> >> +
->> >> +	for (idx = 0; idx < ARRAY_SIZE(d3323aa_lp_filter_freq); ++idx) {
->> >> +		int integer = d3323aa_lp_filter_freq[idx][0] /
->> >> +			      d3323aa_lp_filter_freq[idx][1];
->> >> +		int fract = d3323aa_lp_filter_freq[idx][0] %
->> >> +			    d3323aa_lp_filter_freq[idx][1];
->> >> +
->> >> +		if (val == integer && val2 == fract)
->> >> +			break;
->> >> +	}
->> >> +
->> >> +	if (idx == ARRAY_SIZE(d3323aa_lp_filter_freq))
->> >> +		return -ERANGE;  
->> >
->> > It's a patch not a range check, so -EINVAL may make more sense as
->> > a return value.  
->> 
->> Hm, `ERANGE`s message does say "*Numerical result* out of range...",
->> which I can see is not really applicable here (strictly speaking, we are
->> really not "calculating" anything...). However, isn't `EDOM` actually
->> the better alternative here? Consider the following
->> 
->>   echo a > in_proximity_hardwaregain
->>   sh: write error: Invalid argument
->> 
->>   echo 1234 > in_proximity_hardwaregain
->>   sh: write error: Numerical argument out of domain
+On Sat, Jun 28, 2025 at 7:27=E2=80=AFPM Jonathan Cameron <jic23@kernel.org>=
+ wrote:
 >
-> I'd still stick to -EINVAL as correct if not that informative simply
-> because EDOM is very rarely used (wasn't one I even knew existed
-> until today ;)
-
-Alright, I don't really have any strong opinions on this. Let's use
-`-EINVAL`.
-
->> >> +				       data);
->> >> +	if (ret)
->> >> +		return dev_err_probe(
->> >> +			data->dev, ret,
->> >> +			"Could not add disable regulator action\n");  
->> > Odd formatting.
->> >
->> > 		return dev_err_probe(dev, ret,
->> > 				     "Could not add disable regulator action\n");
->> >
->> > It's fine to go a little over 80 chars if it helps readability and here I think
->> > it does. However it is vanishingly unlikely this would fail (as it basically means
->> > memory allocation is failing in which case not much is going to work) so
->> > common practice is not to bother with prints for failed devm_add_action_or_reset().
->> > Those prints do make sense for devm calls that are doing something more complex
->> > though so keep the rest.
->> >
->> > 	if (ret)
->> > 		return ret;
->> >
->> > is fine here.  
->> 
->> `clang-format` trying its best here. Let's just remove the print then.
->> 
->> There are a bunch drivers in iio that are printing in this
->> devm_add_action_or_reset()-error-path (though it looks like the majority
->> are not doing that). Probably not really worth changing those; in case
->> someone would really "miss" the (very unlikely) prints.
+> On Sun, 22 Jun 2025 12:29:33 +0000
+> Lothar Rubusch <l.rubusch@gmail.com> wrote:
 >
-> If they are doing dev_err_probe() it won't print anyway as that only 
-> returns -ENOMEM which dev_err_probe() doesn't print on simply because
-> you get lots of info if a memory allocation fails anyway.
+> > Add support for configuring an activity detection threshold. Extend the
+> > interrupt handler to process activity-related interrupts, and provide
+> > functions to set the threshold as well as to enable or disable activity
+> > sensing. Additionally, introduce a virtual channel that represents the
+> > logical AND of the x, y, and z axes in the IIO channel.
+> >
+> > This patch serves as a preparatory step; some definitions and functions
+> > introduced here are intended to be extended later to support inactivity
+> > detection.
+> >
+> > Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
+> Hi Lothar.
 >
-> https://elixir.bootlin.com/linux/v6.15.3/source/drivers/base/core.c#L5017
+> I think this is suffering from function naming evolution and we need
+> to rethink (slightly) what we ended up with.  See inline.
+> I walked into the same trap recently so was on the look out for it.
 >
-> So on that basis it would be a sensible I think to do a cleanup patch set
-> to drop that particular devm_add_action_or_reset() / dev_err_probe()
-> combination.  If it were just a case of unlikely (rather than impossible)
-> I'd agree that it wasn't worth the churn!
+> > ---
+> >  drivers/iio/accel/adxl313_core.c | 326 +++++++++++++++++++++++++++++++
+> >  1 file changed, 326 insertions(+)
+> >
+> > diff --git a/drivers/iio/accel/adxl313_core.c b/drivers/iio/accel/adxl3=
+13_core.c
+> > index ac4cc16399fc..d2c625f27555 100644
+> > --- a/drivers/iio/accel/adxl313_core.c
+> > +++ b/drivers/iio/accel/adxl313_core.c
+> > @@ -13,8 +13,10 @@
+>
+> > +
+> > +static int _adxl313_read_mag_value(struct adxl313_data *data,
+> > +                                enum iio_event_direction dir,
+> > +                                enum adxl313_activity_type type_act,
+> > +                                int *val, int *val2)
+> > +{
+> > +     unsigned int threshold;
+> > +     int ret;
+> > +
+> > +     switch (dir) {
+> > +     case IIO_EV_DIR_RISING:
+> > +             ret =3D regmap_read(data->regmap,
+> > +                               adxl313_act_thresh_reg[type_act],
+> > +                               &threshold);
+> > +             if (ret)
+> > +                     return ret;
+> > +             *val =3D threshold * 15625;
+> > +             *val2 =3D MICRO;
+> > +             return IIO_VAL_FRACTIONAL;
+> > +     default:
+> > +             return -EINVAL;
+> > +     }
+> > +}
+> > +
+> > +static int _adxl313_write_mag_value(struct adxl313_data *data,
+> > +                                 enum iio_event_direction dir,
+> > +                                 enum adxl313_activity_type type_act,
+> > +                                 int val, int val2)
+> > +{
+> > +     unsigned int regval;
+> > +
+> > +     /* Scale factor 15.625 mg/LSB */
+> > +     regval =3D DIV_ROUND_CLOSEST(MICRO * val + val2, 15625);
+> > +     switch (dir) {
+> > +     case IIO_EV_DIR_RISING:
+> > +             return regmap_write(data->regmap,
+> > +                                 adxl313_act_thresh_reg[type_act],
+> > +                                 regval);
+> > +     default:
+> > +             return -EINVAL;
+> > +     }
+> > +}
+> > +
+> > +static int adxl313_read_mag_value(struct adxl313_data *data,
+> > +                               enum iio_event_direction dir,
+> > +                               enum iio_event_info info,
+> > +                               enum adxl313_activity_type type_act,
+> > +                               int *val, int *val2)
+> > +{
+> > +     switch (info) {
+> > +     case IIO_EV_INFO_VALUE:
+> > +             return _adxl313_read_mag_value(data, dir,
+>
+> Same issue as below for read functions.
+>
+> > +                                            type_act,
+> > +                                            val, val2);
+> > +     default:
+> > +             return -EINVAL;
+> > +     }
+> > +}
+> > +
+> > +static int adxl313_write_mag_value(struct adxl313_data *data,
+>
+> This has me a little confused. It's called
+> adxl313_write_mag_value() which seems pretty specific but
+> then calls another level of _adxl313_write_mag_value.
+>
+> In the next patch (assuming diff isn't leading me astray) we have
+>
+> @@ -600,13 +687,17 @@ static int adxl313_write_mag_value(struct adxl313_d=
+ata *data,
+>                                    enum iio_event_direction dir,
+>                                    enum iio_event_info info,
+>                                    enum adxl313_activity_type type_act,
+> +                                  enum adxl313_activity_type type_inact,
+>                                    int val, int val2)
+>  {
+>         switch (info) {
+>         case IIO_EV_INFO_VALUE:
+>                 return _adxl313_write_mag_value(data, dir,
+>                                                 type_act,
+> +                                               type_inact,
+>                                                 val, val2);
+> +       case IIO_EV_INFO_PERIOD:
+> +               return adxl313_set_inact_time_s(data, val);
+>         default:
+>                 return -EINVAL;
+>         }
+>
+>
+> Which is adding PERIOD to something called write_mag_value()
+>
+> Whilst I can see why you ended up with naming as:
+>
+> adxl313_write_mag_value() as the magnitude event specific part of
+> adxl13_event_write_value()
+>
+> and indeed
+>
+> _adxl313_write_mag_value() as the thing that writes IIO_EV_INFO_VALUE
+> value (i.e. the threshold) for the magnitude events.
+>
+> Last time I hit a similar naming stack, I spinkled in some _info
+>
+> So have the inner one called something slightly more specific like
+>
+> adxl313_write_mag_info_value()
+>
+>
+> > +                                enum iio_event_direction dir,
+> > +                                enum iio_event_info info,
+> > +                                enum adxl313_activity_type type_act,
+> > +                                int val, int val2)
+> > +{
+> > +     switch (info) {
+> > +     case IIO_EV_INFO_VALUE:
+> > +             return _adxl313_write_mag_value(data, dir,
+> > +                                             type_act,
+> > +                                             val, val2);
+> > +     default:
+> > +             return -EINVAL;
+> > +     }
+> > +}
+> > +
+> > +static int adxl313_read_event_value(struct iio_dev *indio_dev,
+> > +                                 const struct iio_chan_spec *chan,
+> > +                                 enum iio_event_type type,
+> > +                                 enum iio_event_direction dir,
+> > +                                 enum iio_event_info info,
+> > +                                 int *val, int *val2)
+> > +{
+> > +     struct adxl313_data *data =3D iio_priv(indio_dev);
+> > +
+> > +     switch (type) {
+> > +     case IIO_EV_TYPE_MAG:
+> > +             return adxl313_read_mag_value(data, dir, info,
+> > +                                           ADXL313_ACTIVITY,
+> > +                                           val, val2);
+> > +     default:
+> > +             return -EINVAL;
+> > +     }
+> > +}
+> > +
+> > +static int adxl313_write_event_value(struct iio_dev *indio_dev,
+> > +                                  const struct iio_chan_spec *chan,
+> > +                                  enum iio_event_type type,
+> > +                                  enum iio_event_direction dir,
+> > +                                  enum iio_event_info info,
+> > +                                  int val, int val2)
+> > +{
+> > +     struct adxl313_data *data =3D iio_priv(indio_dev);
+> > +
+> > +     switch (type) {
+> > +     case IIO_EV_TYPE_MAG:
+> > +             return adxl313_write_mag_value(data, dir, info,
+> > +                                            ADXL313_ACTIVITY,
+> > +                                            val, val2);
+> > +     default:
+> > +             return -EINVAL;
+> > +     }
+> > +}
+> > +
+>
+> Otherwise LGTM
+>
 
-Right, I'll send a clean-up patch for those then.
+Hi, I'm about to wrap this up for the final version (let's see...).
+
+I understand that three levels of switch/case are not good. Instead
+here I did a particular function/helper per switch/case level.
+Finally, I ended up with, e.g.
+
+adxl313_write_event_value()  // calls
+  \-> adxl313_write_mag_value()  // calls
+         \-> _adxl313_write_mag_value()
+
+Personally, I think, why not just having the following calls hierarchy:
+
+adxl313_write_event_value()  // calls
+  \-> adxl313_write_mag_value()
+
+First question: Regarding the adxl345 driver, with a little higher
+level of complexity, I adopted such a solution keeping still 2 levels
+of switch case inside the helper. Would this be ok for the ADXL313,
+too? I mean, having just one helper, but that one containing one level
+of nested switch case inside a switch/case?
+
+
+Another question about the naming of the helper. As you saw, I went
+"creative" and used the commonly used name for such functions
+replacing "_event_" by "_mag_". I see this can be confusing, but also
+it might make clear where the (only locally used) helper belongs to.
+
+I understand names with leading '_' are not likely to be a decent
+choice here. But in general in case of adxl313_write_mag_value() -like
+names. What would be a better name for it, or would it be ok?
+
+By the answers given to the above, and if you don't object I would
+like to prepare the single level of helper approach (then having one
+nested switch/case) and keep just the adxl313_*_mag_value() or
+..._config() functions. Let me know what you think.
+
+> Jonathan
 

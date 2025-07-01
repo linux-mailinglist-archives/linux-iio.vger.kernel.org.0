@@ -1,73 +1,141 @@
-Return-Path: <linux-iio+bounces-21179-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21180-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8877AEEB9D
-	for <lists+linux-iio@lfdr.de>; Tue,  1 Jul 2025 02:59:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0E7AAEEFB5
+	for <lists+linux-iio@lfdr.de>; Tue,  1 Jul 2025 09:24:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 34797169EB6
-	for <lists+linux-iio@lfdr.de>; Tue,  1 Jul 2025 00:59:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED047189BE9F
+	for <lists+linux-iio@lfdr.de>; Tue,  1 Jul 2025 07:24:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4CD018BC3D;
-	Tue,  1 Jul 2025 00:59:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35809258CD0;
+	Tue,  1 Jul 2025 07:24:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qXZnEojg"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RAO8BAaH"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 565627262D;
-	Tue,  1 Jul 2025 00:59:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FBEF1EA6F;
+	Tue,  1 Jul 2025 07:24:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751331551; cv=none; b=dLjICVZg2IpkSm5vbK2A9kj4TJXaZ5SypoCEVDfRp8b1upKPr87FgxYQ01yeicyhM+RM0mf85Lx0v/kHNHDMJRFgzdulQxXFdo4PIhdI5FYub40fcugNduBeNUw42N6FHjlvkwpzNoCUPp8H6cWj1Aq3qfgRnLxzzvn4K9seAUc=
+	t=1751354645; cv=none; b=KeLci6bZisVbAw+1y2zzDo9AoExAL5h5m3y2t1ho/IygbbGKe1QvSYh/YIMmRsAKJkaz51XPCP95tmaVG0IBgg/n+AknXPh3wUQZCsHTWUkp4k4vP9mQAyZ7cgFG6R7KYgz+0ZUgEx3o9gb+qIrJo4S/8h9m2HxE2BSfKwampyE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751331551; c=relaxed/simple;
-	bh=lqZ/d95kGaSLsl2/jzzMnDucrl5+IWgYTIBjwR8jwJ8=;
-	h=Content-Type:MIME-Version:In-Reply-To:References:Subject:From:Cc:
-	 To:Date:Message-ID; b=h+ORfv1tTCYjTLqpEspPBwKQZsMW3wyjolzU5y0sKz9EO2oPWYyC7BrR6v0P+ibHG8tVtlZP/gShbbEfIJHryIl8U4ahOZ/GbbQ6ko7KwBq5Jy6HWmKrUlNZmsJo0doWZiZ1yG219NJli9/VLZw+v6imdcWqNCd41bd/b7KO9UU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qXZnEojg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBC21C4CEE3;
-	Tue,  1 Jul 2025 00:59:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751331551;
-	bh=lqZ/d95kGaSLsl2/jzzMnDucrl5+IWgYTIBjwR8jwJ8=;
-	h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
-	b=qXZnEojg2iPLqp84CW5486NOP+M1Uz/S3qIVHb5SrmdWZWr9vKljuwJJDEnu7xARR
-	 nnW+/gBGPOPhra1sx2SbeblTA1uXOJHbirWLQYz+hqnsVtjelIGkHGSsQdLbl8/rhD
-	 fLEC1CpsUQqd1ZuGuJuwcn6jT27ssZteB2QFndfiOuC1zYi+J/jO0+vYC4bK+bjB/D
-	 g+bhM+dUf64WWsPqYyxr/BxNzZ8TF15u3a1MbaV1fLvLIuGGkFmVFPcM1BnZwi8KoA
-	 wgw8ngHOfC878ktOUFDSYFjfqESYz7Bu3p+2ia7wTvlNpXZamkM8vrLCnQZ06t4f4X
-	 H0wXqv0/SErRg==
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1751354645; c=relaxed/simple;
+	bh=HjDtuauV+NnY+Z2hB3G2b2MUF68nvfulxc5469nqt+c=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=JHx7rgBSaKJD2f699hGK56l//ztySEYWRs8TlnAMTVkfCwTPhDvftVIU2SVBng7H1nx5uXIs3VPhwjfJ+HLF0k6tC6wMl2de4A4ML3Edy19Yw3VcuvGkGourLAhUvDHTl9AtKff7aY7G5MYI/RBfVUNumci8qk+ru0xqyxkjhXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RAO8BAaH; arc=none smtp.client-ip=209.85.128.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-7152d8c5602so934697b3.3;
+        Tue, 01 Jul 2025 00:24:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1751354642; x=1751959442; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PD1ojVs/o5EGP3bpZItqlANn0Caes40vz6lO01Z9vf8=;
+        b=RAO8BAaHaTlSr5M/pNuP3SltTOw10ueLiGEAaNQ4I1TP5XUnLPx/ZLDDZfusxCKKRv
+         gMktOxmn724RywcqbIY4Ycfv+brYn6Hxib/ILeSt7xOyYcR7PL0TWz8Q8hIeZYUHYdR5
+         J+YLxxul/NbwB8I8IxQpGx0W7sNc7VKka/I5XcUShPelPTl3zvJUKRyK4/RQhAm7+Uj8
+         lOP9cXnX8BsRTzyFhDreTsesiQH5vD0x7kZc1NUd/NW8y1Vw0vSGXBvg6RrqU/lp8ku3
+         vAC7eoOFzjqwA6vhJSs3Xgo4P0yee3amOEL6AJUUh4OS2f0ReT0IEcdb1LKgxHareOVH
+         6faQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751354642; x=1751959442;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=PD1ojVs/o5EGP3bpZItqlANn0Caes40vz6lO01Z9vf8=;
+        b=I798922YRrUAob9lw/cWdqAhOZrOwEI6OFHCH3T+djCIK9dkcUpvwS+YkY/SnqppkV
+         gtBhrgE3wX4KqLQcryoPBCC5NOTNLxtv1tXUtqRdxeV7d+aaZbeR6nAUlpG43aGET1ID
+         Z2Mod+3iBnQHxIVEt89zvorp3WJo9EVFS5JmtWP0VIZfmB3lzAuDE7cWQUyc6F2nUBND
+         tel3dWM2DCWqnYTAt73HKjBXvBojOva0aQS9s7URF7DhSA0WZVaotZfPiVYKAUvhLQ03
+         43EkL4leU42IffHVUaIL4RG3PVqjIIC/JP+GLzXFnChmXkiqhS1z75gh9zSkTNCN07Xw
+         8teQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUyTB8VWvqdT0nsHsDJ40h/xVgs6g+wrIyRrVa2PrqEOI6MII6v24qOot+NXjTxZrryIHtuBeqCzMJB0O6d@vger.kernel.org, AJvYcCW6FcDrfcpoHQPwbArdIa7O02lyqx98l3PX8WCmCF3xUvNUcBgdTAOMh6wtwsRqhlxrR5h5DPOpwe4l@vger.kernel.org, AJvYcCWzABLWIdbZza11WyGWGBg3RCGXCAOAsWPZXpMhznS8nhBWukw9q3anDWiPVAIZE9cXd9h5wI/XQjE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzP8mqfLSSyPqPrM1hHf4114ZGpsMJGmUGPVy5+8SvOCctQlM8i
+	vdRYcR/2+4A0OsJWrE61ve8Z7eU54ut1JxRi/H4LiaRgMwIpXTfmaqIhj5RKnincXZFjYy/LK/1
+	AThKeJhGU8qcwmI5LJ03vaqsKBbwu2YU=
+X-Gm-Gg: ASbGnctPxBmlrRBcpufvMzyf7e/pEo5d18+dA/M9syQcpF2OKraNNgRrJhiQxbUQ5kC
+	/lbw7SmbHdt63EoKSnnw6+tQb1thwK1rY61BNgxlOItQyaOqFi8+Mm4kEW5o2pykftVbeaR1gJL
+	yytrRTsIUtjXAgo5Eh5ZNQLyxxQRT+DvIvQmhoxzEZwiU=
+X-Google-Smtp-Source: AGHT+IF9Zs+xVGv7NWWeAGJEQldTJ/+ArWtLpje4jFNAtPBQW1QmDtdZ/TG5sZniRJkBIdKlz8QjDtHJ1iVcsohX168=
+X-Received: by 2002:a05:690c:dc6:b0:70f:7bea:5dd with SMTP id
+ 00721157ae682-7163f7a475bmr13322897b3.9.1751354642320; Tue, 01 Jul 2025
+ 00:24:02 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <20250622122937.156930-1-l.rubusch@gmail.com> <20250622122937.156930-4-l.rubusch@gmail.com>
+ <20250628181643.0ce0ed51@jic23-huawei>
+In-Reply-To: <20250628181643.0ce0ed51@jic23-huawei>
+From: Lothar Rubusch <l.rubusch@gmail.com>
+Date: Tue, 1 Jul 2025 09:23:26 +0200
+X-Gm-Features: Ac12FXyuIYmL7BOfvP9uigNF6Ur5ogoR_YGPM0_xQgtI48zhiu_X1NSTPSUUk-w
+Message-ID: <CAFXKEHYS2rRYtPShU-yyEetQQoo+EbCscjUUGcWdWJQA2UwiYA@mail.gmail.com>
+Subject: Re: [PATCH v6 3/8] iio: accel: adxl313: add buffered FIFO watermark
+ with interrupt handling
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org, corbet@lwn.net, 
+	lucas.p.stankus@gmail.com, lars@metafoo.de, Michael.Hennerich@analog.com, 
+	bagasdotme@gmail.com, linux-iio@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20250519-dev-axi-clkgen-limits-v6-7-bc4b3b61d1d4@analog.com>
-References: <20250519-dev-axi-clkgen-limits-v6-0-bc4b3b61d1d4@analog.com> <20250519-dev-axi-clkgen-limits-v6-7-bc4b3b61d1d4@analog.com>
-Subject: Re: [PATCH v6 7/7] clk: clk-axi-clkgen: fix coding style issues
-From: Stephen Boyd <sboyd@kernel.org>
-Cc: Michael Turquette <mturquette@baylibre.com>, Moritz Fischer <mdf@kernel.org>, Wu Hao <hao.wu@intel.com>, Xu Yilun <yilun.xu@intel.com>, Tom Rix <trix@redhat.com>, Vinod Koul <vkoul@kernel.org>, Jean Delvare <jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>, Michael Hennerich <Michael.Hennerich@analog.com>, Jonathan Cameron <jic23@kernel.org>, Trevor Gamblin <tgamblin@baylibre.com>, Uwe =?utf-8?q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>, David Lechner <dlechner@baylibre.com>, Mark Brown <broonie@kernel.org>, Mike Turquette <mturquette@linaro.org>
-To: Nuno =?utf-8?q?S=C3=A1?= via B4 Relay <devnull+nuno.sa.analog.com@kernel.org>, dmaengine@vger.kernel.org, linux-clk@vger.kernel.org, linux-fpga@vger.kernel.org, linux-hwmon@vger.kernel.org, linux-iio@vger.kernel.org, linux-pwm@vger.kernel.org, linux-spi@vger.kernel.org, nuno.sa@analog.com
-Date: Mon, 30 Jun 2025 17:59:12 -0700
-Message-ID: <175133155234.4372.4127844417653528795@lazor>
-User-Agent: alot/0.11
 
-Quoting Nuno S=C3=A1 via B4 Relay (2025-05-19 08:41:12)
-> From: Nuno S=C3=A1 <nuno.sa@analog.com>
->=20
-> This is just cosmetics and so no functional changes intended.
->=20
-> While at it, sort header in alphabetical order.
->=20
-> Signed-off-by: Nuno S=C3=A1 <nuno.sa@analog.com>
-> ---
+On Sat, Jun 28, 2025 at 7:16=E2=80=AFPM Jonathan Cameron <jic23@kernel.org>=
+ wrote:
+>
+> On Sun, 22 Jun 2025 12:29:32 +0000
+> Lothar Rubusch <l.rubusch@gmail.com> wrote:
+>
+> > Cover the following tasks:
+> > - Add scan_mask and scan_index to the IIO channel configuration. The
+> > scan_index sets up buffer usage. According to the datasheet, the ADXL31=
+3
+> > uses a 13-bit wide data field in full-resolution mode. Set the
+> > signedness, number of storage bits, and endianness accordingly.
+> >
+> > - Parse the devicetree for an optional interrupt line and configure the
+> > interrupt mapping based on its presence. If no interrupt line is
+> > specified, keep the FIFO in bypass mode as currently implemented.
+> >
+> > - Set up the interrupt handler. Add register access to detect and
+> > evaluate interrupts. Implement functions to clear status registers and
+> > reset the FIFO.
+> >
+> > - Implement FIFO watermark configuration and handling. Allow the
+> > watermark level to be set, evaluate the corresponding interrupt, read
+> > the FIFO contents, and push the data to the IIO channel.
+> >
+> > Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
+> Hi Lothar,
+>
 
-Applied to clk-next
+Hi Jonathan, there's still one thing about this patch [PATCH v6 3/8],
+I wanted to address:
+
+        struct mutex    lock; /* lock to protect transf_buf */
++       u8 watermark;
+        __le16          transf_buf __aligned(IIO_DMA_MINALIGN);
++       __le16          fifo_buf[ADXL313_NUM_AXIS * ADXL313_FIFO_SIZE + 1];
+ };
+
+Is this correct usage of the IIO_DMA_MINALIGN? My intention here is to
+have transf_buf and fifo_buf[...] aligned with the IIO_DMA_MINALIGN.
+
+Sorry, I should have asked this earlier. I saw the sensor operating,
+but I'm unsure if perhaps DMA usage is setup correctly. Perhaps you
+could drop me a line of feedback here?
+
+Best,
+L
 

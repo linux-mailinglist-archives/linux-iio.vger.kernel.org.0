@@ -1,129 +1,125 @@
-Return-Path: <linux-iio+bounces-21182-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21183-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 164BEAEF6BE
-	for <lists+linux-iio@lfdr.de>; Tue,  1 Jul 2025 13:40:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 188C1AEFB15
+	for <lists+linux-iio@lfdr.de>; Tue,  1 Jul 2025 15:47:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0CE931BC34AB
-	for <lists+linux-iio@lfdr.de>; Tue,  1 Jul 2025 11:40:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 30F0B18854A5
+	for <lists+linux-iio@lfdr.de>; Tue,  1 Jul 2025 13:47:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25C4D27147E;
-	Tue,  1 Jul 2025 11:40:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A461274FF5;
+	Tue,  1 Jul 2025 13:47:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hCZcAFK/"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gN0VgB6a"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70F981DE2CC;
-	Tue,  1 Jul 2025 11:40:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EEB3242D82;
+	Tue,  1 Jul 2025 13:47:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751370003; cv=none; b=oLqDeUw36AKAf/GPO0hH8POEMDTc5xqiLvuxL4a6Bq/h8fvGiKN1w3czUD9VETAzpjBMnJ7FhUfDtpb0CluXt+mhlMKBWCIIQ1Jk+wMNEkF26tM9S+5KB7bx4vQE6yivk54inShU1nqD8JcNZhiNpw+QeR0tE4g0PLgNy5ayWh8=
+	t=1751377632; cv=none; b=eQzEfU+htvAdxobS2znlYT5EduGuoX97hS6UAcpo9Cld/0Ya2SM/dR9Lu5Z15T3obh6ITjx+LWVvEse0cswMaX7SZslFaBE6ZDKt3EIsyFa/92prEXVuKDYGRF1PetaU1SoelPbTXB1lD/fuv15/D0UJwkKCisuQLJpJNVxUaZ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751370003; c=relaxed/simple;
-	bh=9l5vg0GcY01Co1kq0+/y9vh1cnqTAz/iJtRkZx1AFX0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HyJe6kl/MvsJYfmfvXc8rn2V+VUfKIeRHF43NFFf6o+3LahLvx1RL8mFwpdnhtelmQVrrIsOw+2NmC9qdSczRnnKv1ptV5loi28NAnTG2cGO9OGA4rRm4ZCQZ0KbvQ56j701LaTyQ2k5ZSDC8wmUn/bVFZCI4MTVVuofifh6hYE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hCZcAFK/; arc=none smtp.client-ip=209.85.222.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-7d3efcb9bd6so543596285a.1;
-        Tue, 01 Jul 2025 04:40:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1751370001; x=1751974801; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=2X+UMdFXLhLHHKVoJF6IPHYW34klFV8joXsxwqaFG9w=;
-        b=hCZcAFK/V6zmHck4Ceg16pMvK+gkdWYI4nWb5nxyIVSNpkPc+Y+t6o47kGQ/kw1M9A
-         6ad3evqEOJgdmO60Wkq/q8QRe/X4IAMXfCpgrO2ia7dhLx1/882k/pPo5gQK4wW0BnGc
-         IYaMLQ7EqV0DasRudZqpXCFqNh4XH1GGY7DED/QJmPrIkG6SeVanOvSne9niGDFsKa3X
-         oBsNQCzHyuZBUXh9xXVVRsSqgrEBweMBjCad3Cw9dcwOdpIC7WGw5ck1dt1Ri5F1gSI0
-         ZLW23Klun87tQeN/c0ITBw9YMWoeYUk7Uk2cS+XoXosZEkqgJMsyEu0Cx0txjeaGBn9x
-         pFiA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751370001; x=1751974801;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=2X+UMdFXLhLHHKVoJF6IPHYW34klFV8joXsxwqaFG9w=;
-        b=BlOTV0rOLEy47IFVRYcVzGzNZwqTn521wgqyhmOKWFO3/b6SePfcxGZaxFYu1s4uEw
-         nCF3is4dfUzkPwWGwaAcFV6VtOrEi8jc4SoQUtTQtY7mq2+qsqLVYKSuxdjm0LQpPH8a
-         HU6EASPbJ4AH5SSqv0JM0tNAsbLizA7TttrnK5WowWPH2aEk30pvuNmVsD2D2AWB4GN3
-         3yxAfkVx7Jep8jqxluX3P343SxdDxFEh1V3ZspPwQt4Oj2MrFqQsOGBrWzH9ZQyhxlMS
-         GxElJvIPjZSIk/vAM72ykFQdk5WZuIU30P1MpLU0P3Lj3qWnfSGKCSw4x9mr1vHJK3AN
-         cxYg==
-X-Forwarded-Encrypted: i=1; AJvYcCVb4J/kcNxgaxiNGPwuh92tPGUjOIf0ZymMC+dIGTUbOuFW457pfxuRyI9a1Mg3hwSRQ0A4brmbbSr0GeR7@vger.kernel.org, AJvYcCXPASLbdKNJELxCvwXHo0cj2FbGlDYOI/yYoPUXs3rIv2enAPxTr2N5yX7FZ5OoXtfeQZd44j9Snh8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzF0iB9G4XC0SuYWW125s9jchjGLsETGjWvyX2AKJTACpebrm5h
-	VeCjdoOV41ObkenPAXYb6oCOSMyEM0HGr2kOysP5KF45Ai2vawz/6FIu
-X-Gm-Gg: ASbGncvexTjPHlypT3Z8V5mHNyjTpNuw3Cv3bT9ynhvLlx7NxTsNgBSlcHtXlWDhHxo
-	aEayJmjER6GNTLKlUnMxb24Pr92Qb+Mi9RPnSEgRo2mXZtRKVGqa0Lb/MJiPL76R64Q6qNAvVrO
-	OPiwmdzvjUvAsVryKyyBuqQ6+MlsCH41si/Wel2cnDkwKE7Ym6hVJxzvnajB2W/+ktYZzSUdKt9
-	3q0OwS3rbd4O9on+0a3fgxm5crOtUFQXwjng6vnnZZISwACH3RJ6RuWsWHuc5Mx9PEzOd+xzfd+
-	p3mvosUaCh95JqeWrtX6kF9IROQANUhqBsnAxmSowY2mgGffWOVLm9I/AJrSvbUZQQOVLBADTAE
-	nCsXe4nD008k/KjocTtO0m3hgvIhs
-X-Google-Smtp-Source: AGHT+IFJGHJwcNYFSBcCJikH1RuT+bxOvtc8ok6CVLg0qtxrh65lv65EtNaW0sGPVup7EFrdNFxrWw==
-X-Received: by 2002:a05:620a:3709:b0:7d3:f4d7:a583 with SMTP id af79cd13be357-7d4439b745amr2680715885a.49.1751370001144;
-        Tue, 01 Jul 2025 04:40:01 -0700 (PDT)
-Received: from fyre-x-redhat96-client-2.fyre.ibm.com ([129.41.87.1])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7d44324e1e5sm751087185a.117.2025.07.01.04.40.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Jul 2025 04:40:00 -0700 (PDT)
-From: Chelsy Ratnawat <chelsyratnawat2001@gmail.com>
-To: jean-baptiste.maneyrol@tdk.com,
-	jic23@kernel.org
-Cc: dlechner@baylibre.com,
-	nuno.sa@analog.com,
-	andy@kernel.org,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Chelsy Ratnawat <chelsyratnawat2001@gmail.com>
-Subject: [PATCH] iio: imu: inv_mpu6050: Replace scnprintf with sysfs_emit
-Date: Tue,  1 Jul 2025 04:39:45 -0700
-Message-ID: <20250701113945.6865-1-chelsyratnawat2001@gmail.com>
-X-Mailer: git-send-email 2.47.1
+	s=arc-20240116; t=1751377632; c=relaxed/simple;
+	bh=D350Vrkg9Xz85cha9EvWh4Z+W59/p/0wsVvj8UJJp0s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=B4BvZC5Z84wtkdh9qqvI8JekGMiyUnmQZM1hRBD2kp6gwZ1TKkWQz9SIf9IMQh9/IFtMVQ9ngRuWLLSa2ygXPi6EMXa21LRpYDCzyXadfw65f7HvvvLCnzV9d8RokPThNIBtJZIBd/9jGrR5Ysi1sNAFwOTsmhCl8ZZGTGLCyn4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gN0VgB6a; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1751377630; x=1782913630;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=D350Vrkg9Xz85cha9EvWh4Z+W59/p/0wsVvj8UJJp0s=;
+  b=gN0VgB6aLOFlkUvT06CHEVZEd9LFyCJZZmnzw/xazLxu9wwiqBo9ed2x
+   nVnQWZNmtKHtM9GFWLSb+q0cnwwKf+eJJkaekfdODoX/Rk0nBsF8gJXfV
+   FWsT8WBGapIF56Izl1phkZzU3yNbD9x6APoMEbasQFMAvBN5Znt1obzZw
+   dIcGvrRi61+0FSL89uFiR+1TVKSs6KgBrkY69RQRn/gP8276xuWyixXNi
+   RzVszu29jAzIejiuayrVH/CERcgjxqOUgCXsyYZNrdrlg/F2d6s8htnjR
+   3cpWsedl23a28CSa5Alvt8vFKyJR+yCLoS/kJcdKcSOoxDIrgLF5nxDVV
+   Q==;
+X-CSE-ConnectionGUID: liGqwe/ERQKHS44djYiDfA==
+X-CSE-MsgGUID: ICtE89LMRmCwXz7LI8dgeg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11481"; a="53579799"
+X-IronPort-AV: E=Sophos;i="6.16,279,1744095600"; 
+   d="scan'208";a="53579799"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jul 2025 06:47:09 -0700
+X-CSE-ConnectionGUID: Eil3r6hVScSaN7+88oPlvQ==
+X-CSE-MsgGUID: tXLznhzSSCCzlBNPmkzz7A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,279,1744095600"; 
+   d="scan'208";a="153187029"
+Received: from smile.fi.intel.com ([10.237.72.52])
+  by orviesa010.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jul 2025 06:47:06 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@intel.com>)
+	id 1uWbKA-0000000BbvL-3nHQ;
+	Tue, 01 Jul 2025 16:47:02 +0300
+Date: Tue, 1 Jul 2025 16:47:02 +0300
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Jonathan Cameron <jic23@kernel.org>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Mark Brown <broonie@kernel.org>,
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-spi@vger.kernel.org
+Subject: Re: [PATCH v2 04/11] iio: adc: ad_sigma_delta: use BITS_TO_BYTES()
+ macro
+Message-ID: <aGPm1td5sEqp5R9H@smile.fi.intel.com>
+References: <20250627-iio-adc-ad7173-add-spi-offload-support-v2-0-f49c55599113@baylibre.com>
+ <20250627-iio-adc-ad7173-add-spi-offload-support-v2-4-f49c55599113@baylibre.com>
+ <20250628155643.7c18e023@jic23-huawei>
+ <aGJR_YyW5tCMjxUD@smile.fi.intel.com>
+ <e4c7296d-6afe-4edb-b26f-44218e660a80@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e4c7296d-6afe-4edb-b26f-44218e660a80@baylibre.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-Documentation/filesystems/sysfs.rst mentions that show() should only
-use sysfs_emit() or sysfs_emit_at() when formating the value to be
-returned to user space. So replace scnprintf() with sysfs_emit().
+On Mon, Jun 30, 2025 at 08:33:59AM -0500, David Lechner wrote:
+> On 6/30/25 3:59 AM, Andy Shevchenko wrote:
+> > On Sat, Jun 28, 2025 at 03:56:43PM +0100, Jonathan Cameron wrote:
+> >> On Fri, 27 Jun 2025 18:40:00 -0500
+> >> David Lechner <dlechner@baylibre.com> wrote:
 
-Signed-off-by: Chelsy Ratnawat <chelsyratnawat2001@gmail.com>
----
- drivers/iio/imu/inv_mpu6050/inv_mpu_core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+...
 
-diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
-index b8656c02354a..53a315fd0c34 100644
---- a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
-+++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
-@@ -1382,7 +1382,7 @@ inv_fifo_rate_show(struct device *dev, struct device_attribute *attr,
- 	fifo_rate = INV_MPU6050_DIVIDER_TO_FIFO_RATE(st->chip_config.divider);
- 	mutex_unlock(&st->lock);
- 
--	return scnprintf(buf, PAGE_SIZE, "%u\n", fifo_rate);
-+	return sysfs_emit(buf, "%u\n", fifo_rate);
- }
- 
- /*
-@@ -1409,7 +1409,7 @@ static ssize_t inv_attr_show(struct device *dev, struct device_attribute *attr,
- 	case ATTR_ACCL_MATRIX:
- 		m = st->plat_data.orientation;
- 
--		return scnprintf(buf, PAGE_SIZE,
-+		return sysfs_emit(buf,
- 			"%d, %d, %d; %d, %d, %d; %d, %d, %d\n",
- 			m[0], m[1], m[2], m[3], m[4], m[5], m[6], m[7], m[8]);
- 	default:
+> >>> -	samples_buf_size = ALIGN(slot * indio_dev->channels[0].scan_type.storagebits / 8, 8);
+> >>> +	samples_buf_size = ALIGN(slot * BITS_TO_BYTES(scan_type->storagebits), 8);
+> >>
+> >> Ah. You do it here. Fair enough and no problem wrt to patch 1 then.
+> > 
+> > Hmm... Should the second 8 be something like sizeof(unsigned long lone) for
+> > semantic distinguishing with 8-bit bytes?
+> 
+> Yeah, I considered to use sizeof(s64) to match the next line, but it
+> it seems like a separate change, so in the end I decided against doing
+> it in this patch and it seems too small of a thing for a separate patch.
+
+The problem in not the size of the change, the problem is that semantically
+those 8:s are _different_ and code readability will be much better if we make
+them so explicitly.
+
 -- 
-2.47.1
+With Best Regards,
+Andy Shevchenko
+
 
 

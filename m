@@ -1,170 +1,190 @@
-Return-Path: <linux-iio+bounces-21216-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21217-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9225FAF05DB
-	for <lists+linux-iio@lfdr.de>; Tue,  1 Jul 2025 23:42:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82A6DAF067B
+	for <lists+linux-iio@lfdr.de>; Wed,  2 Jul 2025 00:17:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B6FE11C07CB8
-	for <lists+linux-iio@lfdr.de>; Tue,  1 Jul 2025 21:42:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E13764E50B7
+	for <lists+linux-iio@lfdr.de>; Tue,  1 Jul 2025 22:17:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5428630AAAA;
-	Tue,  1 Jul 2025 21:39:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCB74277813;
+	Tue,  1 Jul 2025 22:17:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="uzFV2QfR"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TO7OQvK4"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ot1-f46.google.com (mail-ot1-f46.google.com [209.85.210.46])
+Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96C7C302CCA
-	for <linux-iio@vger.kernel.org>; Tue,  1 Jul 2025 21:39:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03C741E98EF;
+	Tue,  1 Jul 2025 22:17:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751405988; cv=none; b=uK/rYkUQpnngWoUvJXlmKaPdUn5z7vdCMLNH9qg6B9H0vggEYUiommMmWG0AOratqw6UXzGcskCad/ro/OcL93iwg38cB4nM/7SUKgMFMG8XW+x+VCzQl3qDlVNRCEBeU+Ywy0M3vGaZwd7LxiaHf8AKBmzQndIdcLTwiY7sqEQ=
+	t=1751408236; cv=none; b=qdc6LIKsw22ojxni+wN4jEYbnWe5MqqEVv1nwX6OYsbOdBfFIY5GbuXHkaXXU0KQDHrVbl5VtpezyXFQWG4Fm3zBPl9MAQw2J814r/oM8mbE7zTSS2kvpPrDiFocTRAnwAZYXUCcbM82dUghONgKDK9Ce3HB6TwHsXPtaTvR6MA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751405988; c=relaxed/simple;
-	bh=x4deODr2J/B/ZfZk3+/1/BV8bYxvy5G2y6ggy6cAeUc=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=BZZLHvr9yFeVQPtXkU0PQIzcUlTxU5LHQFxKgTcBxUGfBEgd9J4cTpY+msTsg2rgxp7wB9j2Zc0Hi/N7/6H5RluSFMzUXs6Njrw2ITblRS5uuH45BaAKCyM/idv0c9NJ9TvuBsDcPsdJWKBdaBZ+rRkItUwpRGcllRKDmOiRF9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=uzFV2QfR; arc=none smtp.client-ip=209.85.210.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ot1-f46.google.com with SMTP id 46e09a7af769-73afbe149afso2162398a34.1
-        for <linux-iio@vger.kernel.org>; Tue, 01 Jul 2025 14:39:44 -0700 (PDT)
+	s=arc-20240116; t=1751408236; c=relaxed/simple;
+	bh=ViKyait5fPHL8jCnoVnIZA79jdFnWsuRcx4Aa+jEnJQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ABBronaOhj1S2XqT6ga3/TmBCFVKqc+elxikvqxRP28DwPuJpgOpi0HvFiVwzgCB1+d6rG6P5jZNMMpLdOO+UP4G3WWy62ijiXBQdpZM+gudICJ6lYiQpJd67zA6WzHhImWuq9SoP6dvS97JiNUrSiRVzqVHNQtLDKPrd0A5iiE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TO7OQvK4; arc=none smtp.client-ip=209.85.219.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-6facf4d8e9eso37958886d6.1;
+        Tue, 01 Jul 2025 15:17:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1751405983; x=1752010783; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=suln3ZPyOtbgf+467Jl0jyyrQzWY3/ACSgQiyK4V5QE=;
-        b=uzFV2QfR/9O4bbbkOJxLfJ4apFXo+I2UDKekRLkUk2CR62s4ds7TvNdaFJaNr15UV9
-         as/jpcwB9qphSeaOpw+0nyZirN0iBZ/+21NSkzFTlY9vKyriqkDIsTTGUn76ST45j+PL
-         U4F8fyclyDjm/uQeJ5aOMvZB1eegv4aE+CaF3hSJPBypZkguCgesL/zAd027ZMb+LYij
-         qUb/Fdbts06kGmSjvYCwBQeIbF+HLGlCkkYpU2RInFkQcZCCL/lPEjk7ZViE3OA+FeMH
-         dGFz25q0NMAiRxEp4JxBUjleM5GP32g4p/+s5aLh7lnHZQFOd6lR4A8oFEkWLs7Gl8d3
-         QWfw==
+        d=gmail.com; s=20230601; t=1751408233; x=1752013033; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=zLDx1IV4oKSZDGpiKEen/beGqUru582RU0BBzDBbpkQ=;
+        b=TO7OQvK4LgNN4tnMOy1XoPKPLk716A6iC40zTRxRstPnAjOGB7R47R7NIpv/YLQBNm
+         9oV5LeqNFsHD41bMTAx6X2cJ68S8feYuqvJj0vqwkL/6RdBSvKWXk3sBRNvKzP1iA4d5
+         2K8yf201tvPu5jzdPNKQQRqk0JX+BZGMvijCkvxH+xN3qvO9hq5YGS0EggDgo2hnyHda
+         ieXT3hdiKYEm/HMV9eCxBHKDsraK+FmssLPZ4nP0uXzMfq8/hFY3x+E00+p0Y7g92mSX
+         v9a3dsEpRAA1HjeNlfuFad3YhkpYiDLBnz1dU35KPxISqMiRmou6InrrQ9NZC47Fi/JO
+         aZaA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751405983; x=1752010783;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=suln3ZPyOtbgf+467Jl0jyyrQzWY3/ACSgQiyK4V5QE=;
-        b=l3C2IWQhI1sOqhunVUO5LUqxCBRS+qK8Mp6wrSR25TXob+bPdZSXqYoIK3lqwOpIMM
-         catbv9OAgAjXRC4hIymS1QgRE2GWiavcEBCoM8TQk39v2UXm+EBjtqIz8d8wDJFpi33R
-         vMDu9gc11eR7fXNGrmaDbPGN5dnyzheRcVQPt6YA6IV8Qqvs6yqAuznOn4Ydqe6SjLGQ
-         J5Sgr64xZyIbs9vl4v7M6hpAB9vNermWtqA9x1+8g715kkeApOZj87jvdNhEtaFEFN20
-         D1etYLC4sIIEMVosG3falFYYHdano1j4YYv53pEOdde9Rc8q05EIWTSVMH7j6F/tDQyT
-         Rdyw==
-X-Gm-Message-State: AOJu0YxLMCYuwiTIKwhq19CVRsLE5RccGVjX+cd1qN1LrGl7DBCQ8DtS
-	OWuwNl/tpLuqY0gdA8Eq+ceGxjdv2XWMo5oMicTEbW8XQGhsBZolFu+D/Qf3reexONA=
-X-Gm-Gg: ASbGnctYwn7DOckePYovEs0g05zKO9HEFKH2XIVBRZTIK5OfIQ1e8K1/JW4J5w5Hgak
-	PXFZgNyhlXGns1sDaOOrR2cJpFWnpW+MadiP4zj8yQxRQvcAI8RjdsYSCqK4gkXVXA/ov6sZscL
-	BqTVv0ymZkDVgfs/T3eSyK67X5w5Kv1Bl8NCKpo2Ze+73EhtOXDAHgksMYgOY9RZImffXxUZIeS
-	IC/dFLzkxxt4bAXlX2d2aARTEjZ5B6W+z2WXuSa9DAHf2m8HJwx3TNPcjroLjnj+5NS1vCXG/KI
-	wnAzzhRGGh6cfnHDX6TAG7XfvQ0OcQoyp72otLes6eLqWCBHCDRtlxzYKAdQo5wxB+C5
-X-Google-Smtp-Source: AGHT+IF6kRQojTr3O2i9DG8mL7DMuXbV8rMwlD9TonhoHxqzG4+HoL+1QVcxeETXqNSATHlBkNqfyw==
-X-Received: by 2002:a05:6808:1a0e:b0:409:f8e:7274 with SMTP id 5614622812f47-40b88e07cbamr163963b6e.18.1751405983560;
-        Tue, 01 Jul 2025 14:39:43 -0700 (PDT)
-Received: from [127.0.1.1] ([2600:8803:e7e4:1d00:70a7:ca49:a250:f1d5])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-40b3243deeesm2288335b6e.48.2025.07.01.14.39.42
+        d=1e100.net; s=20230601; t=1751408233; x=1752013033;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=zLDx1IV4oKSZDGpiKEen/beGqUru582RU0BBzDBbpkQ=;
+        b=Vj0J1T/fb/y8ousSw/Z4bBkVsMZj1eQFDlsIQliX6hjZOMX0v8pYGVh5lYIrblg6O6
+         QUOgHtOjWCPvcUJ0rwrzDipeHt06imGS/vHYAKfge7wUuIlySZCdCiClm+D2/WfK3K72
+         XhMwsE57UTs5A7hWitX1S+JXRNM6qdHVDqmvaRrXVOu+P1sO6+v92yfi2yznYxpLWgMi
+         +oDZuxaQaFY6ull34Hy9Icq8xIvIZn736srERDA/IbAEKpr9jP2gR4Twx6aAsmBc2JLN
+         VZnGWFEHcy0lqT1+e9uvhcejtMT6Izt7AaoM29HW07SbpY6HuoxuDfyeEUHAuJLvZpdO
+         4Ozw==
+X-Forwarded-Encrypted: i=1; AJvYcCV90lYxnNjmDcudeOCv78pduF+NBswY4vTIn+ytxgKLVfAyfwNt7dUfesRDWzoyH+uC8W5QnEt7659Lyldx@vger.kernel.org, AJvYcCVF3DOVn/w2b7J1k8C1ImvDkVwPYUdRJgjFv1qJWOQFLajlrN1/rm3bfqG7m2JXPW0BkcRnlj91J03N@vger.kernel.org, AJvYcCXu07L149lI2maygjyrVTyMbLOzP4A7ybqQ9W+tJIVXilLYSiL+wp2qor2x8EFQFG0kBXEeQo33i7Hj@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywx7rNKRg6MNiAPqqOKOa67Yg5b7AElY2xQmzjCkx+oCo7iLbvi
+	oB8SEOJ3wafIYpRIUbX6MLP1clFIEj/gYVkCDy1j7lvMjrG79e14bRf5Dsd+9M4XizU=
+X-Gm-Gg: ASbGnctajpBoTDXCsb3uNwXW5wdmQcG7Krb/MRZGDttFQvNxCceOTy21kUbGcGG+cqd
+	EOi1/8nwUqOvQY9mkYsqGH8GBBXlxQbeZOio0/bPlKddLTLUtjJX3Y//P0dG3BzN3s5YJg2iLMs
+	hWbqRxj1cdf/6LAtZCY3dRts67FoEcRa5olQa80yWsfct+c/YBBoKmHoofSpx68Og5YNm++0wDh
+	Rs71v2RCLknZOEdey3R0Gsban2VNdkbB9Vre+6vL2lNaCTDDccBryXIbMEcI0c0yy5P2zpfIy81
+	t/y7Jm/1mbicqkqrZ1L5WAG/H5NPuz/zLqkNBFBA/aV2rN83fw2XC914KLwG35Sp9BJcSU2lEjm
+	uHLQMm726iA==
+X-Google-Smtp-Source: AGHT+IGvNjIWMUl/cLnnB/EuLNLhBKCVzHOoWr7VWH567XXTYD71/DcE2cpc6mrk9FygNRo9rZv+iA==
+X-Received: by 2002:a05:6214:5a0c:b0:6f5:106a:270e with SMTP id 6a1803df08f44-702b1c118e8mr4093046d6.44.1751408232755;
+        Tue, 01 Jul 2025 15:17:12 -0700 (PDT)
+Received: from localhost.localdomain ([2804:14d:4c64:81ec:632c:d5cb:2b3d:e72b])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6fd771bf9a1sm90750216d6.41.2025.07.01.15.17.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Jul 2025 14:39:43 -0700 (PDT)
-From: David Lechner <dlechner@baylibre.com>
-Date: Tue, 01 Jul 2025 16:38:00 -0500
-Subject: [PATCH v3 12/12] iio: adc: ad7173: add SPI offload support
+        Tue, 01 Jul 2025 15:17:11 -0700 (PDT)
+From: Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>
+To: jic23@kernel.org,
+	dlechner@baylibre.com,
+	nuno.sa@analog.com,
+	andy@kernel.org,
+	conor+dt@kernel.org,
+	krzk+dt@kernel.org,
+	robh@kernel.org,
+	jean-baptiste.maneyrol@tdk.com
+Cc: ~lkcamp/patches@lists.sr.ht,
+	linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2] dt-bindings: iio: pressure: add invensense,icp10100
+Date: Tue,  1 Jul 2025 19:05:43 -0300
+Message-ID: <20250701221700.34921-1-rodrigo.gobbi.7@gmail.com>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250701-iio-adc-ad7173-add-spi-offload-support-v3-12-42abb83e3dac@baylibre.com>
-References: <20250701-iio-adc-ad7173-add-spi-offload-support-v3-0-42abb83e3dac@baylibre.com>
-In-Reply-To: <20250701-iio-adc-ad7173-add-spi-offload-support-v3-0-42abb83e3dac@baylibre.com>
-To: Michael Hennerich <Michael.Hennerich@analog.com>, 
- Jonathan Cameron <jic23@kernel.org>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Mark Brown <broonie@kernel.org>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-spi@vger.kernel.org, 
- David Lechner <dlechner@baylibre.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2110; i=dlechner@baylibre.com;
- h=from:subject:message-id; bh=x4deODr2J/B/ZfZk3+/1/BV8bYxvy5G2y6ggy6cAeUc=;
- b=owEBbQGS/pANAwAKAcLMIAH/AY/AAcsmYgBoZFWKFauMI32n+rVJ4X53stwAqiiUvPd+u9cFp
- uvVIaRAIL+JATMEAAEKAB0WIQTsGNmeYg6D1pzYaJjCzCAB/wGPwAUCaGRVigAKCRDCzCAB/wGP
- wE4UCACbCLWfN9b147eeF/3FnSESrviOzb6Fu37NJlnlvMpDCeG1q6ArK8xrmF+fw25/vektB7i
- h24Bm6GTgyEVq+Q0MOPABO9fDJL2uSWaRuVrRrqVr/I9AbRWr5dIfxqQJGtMT/VYQwGAMcVp3h3
- BKUeRv4tRjoETflevaU6psSJMOPzxt3XW7qTSYHuoYAZgWKFvqj9OJqtXTPaBmFuhtx83Jf7WCm
- sjQKKjGVOsn+yZ7Rzlpy34BGCYtFC/SsI1QHMxSe2idYDvGQZlJE5f7SFF9BNCb0VPGmd9A3Rah
- SAjh5D/znRiJRVMB4W6hFq60UKW28JwAD9k7EOd0B3ZEBd/b
-X-Developer-Key: i=dlechner@baylibre.com; a=openpgp;
- fpr=8A73D82A6A1F509907F373881F8AF88C82F77C03
+Content-Transfer-Encoding: 8bit
 
-Enable SPI offload support for the AD7173 ADC driver.
+There is no txt file for it, add yaml for invensense,icp10100
+which is already used in the driver.
 
-The scan_type used for SPI offload is assuming that we are using the
-ad411x_ad717x HDL project [1] which always stores data words in 32-bits.
-
-Link: https://analogdevicesinc.github.io/hdl/projects/ad411x_ad717x/index.html [1]
-Signed-off-by: David Lechner <dlechner@baylibre.com>
+Acked-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+Signed-off-by: Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>
 ---
- drivers/iio/adc/ad7173.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+@Krzysztof and @Jonathan,
 
-diff --git a/drivers/iio/adc/ad7173.c b/drivers/iio/adc/ad7173.c
-index 010339c2b7044da4b36dc894a38a145c2fcccd6a..580d4bf3366b193fa0f13d0a28886d390e1295b8 100644
---- a/drivers/iio/adc/ad7173.c
-+++ b/drivers/iio/adc/ad7173.c
-@@ -748,6 +748,7 @@ static const struct ad_sigma_delta_info ad7173_sigma_delta_info_4_slots = {
- 	.set_mode = ad7173_set_mode,
- 	.has_registers = true,
- 	.has_named_irqs = true,
-+	.supports_spi_offload = true,
- 	.addr_shift = 0,
- 	.read_mask = BIT(6),
- 	.status_ch_mask = GENMASK(3, 0),
-@@ -764,6 +765,7 @@ static const struct ad_sigma_delta_info ad7173_sigma_delta_info_8_slots = {
- 	.set_mode = ad7173_set_mode,
- 	.has_registers = true,
- 	.has_named_irqs = true,
-+	.supports_spi_offload = true,
- 	.addr_shift = 0,
- 	.read_mask = BIT(6),
- 	.status_ch_mask = GENMASK(3, 0),
-@@ -1585,6 +1587,11 @@ static int ad7173_fw_parse_channel_config(struct iio_dev *indio_dev)
- 		if (st->info->data_reg_only_16bit)
- 			chan_arr[chan_index].scan_type = ad4113_scan_type;
- 
-+		if (ad_sigma_delta_has_spi_offload(&st->sd)) {
-+			chan_arr[chan_index].scan_type.storagebits = 32;
-+			chan_arr[chan_index].scan_type.endianness = IIO_CPU;
-+		}
-+
- 		chan_index++;
- 	}
- 
-@@ -1675,6 +1682,12 @@ static int ad7173_fw_parse_channel_config(struct iio_dev *indio_dev)
- 		if (st->info->data_reg_only_16bit)
- 			chan_arr[chan_index].scan_type = ad4113_scan_type;
- 
-+		/* Assuming SPI offload is ad411x_ad717x HDL project. */
-+		if (ad_sigma_delta_has_spi_offload(&st->sd)) {
-+			chan_arr[chan_index].scan_type.storagebits = 32;
-+			chan_arr[chan_index].scan_type.endianness = IIO_CPU;
-+		}
-+
- 		chan_index++;
- 	}
- 	return 0;
+from v1:
+> Filename matching compatible, please.
 
+and:
+> No wild cards in file names please.  Just pick a device to name the binding
+> after.  Wild cards have an annoying habit of getting messed up by companies
+> releasing completely non compatible parts in the middle of what we thought
+> was a reserved number range.
+...understood the point about wildcards, I`ve changed that in this v2.
+I was confused because when I was exploring other files over different trees, noticed
+the same wildcard pattern like: [1] and [2] (maybe there are others).
+
+[1] https://github.com/torvalds/linux/blob/master/Documentation/devicetree/bindings/power/supply/bq2515x.yaml#L81
+[2] https://github.com/torvalds/linux/blob/master/Documentation/devicetree/bindings/i2c/i2c-mt65xx.yaml#L119
+
+I`ve kept the "ICP-101xx" (wildcard) at title and description, if there is a problem with
+that, let me know.
+
+@Jean-Baptiste Maneyrol, tks for the answer and ack!
+Best regards.
+
+Changelog:
+v2: removed wildcard + adding proper maintainer
+v1: https://lore.kernel.org/all/20250626212742.7986-1-rodrigo.gobbi.7@gmail.com/
+---
+ .../iio/pressure/invensense,icp10100.yaml     | 45 +++++++++++++++++++
+ 1 file changed, 45 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/pressure/invensense,icp10100.yaml
+
+diff --git a/Documentation/devicetree/bindings/iio/pressure/invensense,icp10100.yaml b/Documentation/devicetree/bindings/iio/pressure/invensense,icp10100.yaml
+new file mode 100644
+index 000000000000..f4f23dc89481
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/pressure/invensense,icp10100.yaml
+@@ -0,0 +1,45 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/pressure/invensense,icp10100.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: InvenSense ICP-101xx Barometric Pressure Sensors
++
++maintainers:
++  - Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
++
++description: |
++  Support for ICP-101xx family: ICP-10100, ICP-10101, ICP-10110, ICP-10111.
++  Those devices uses a simple I2C communication bus, measuring the pressure
++  in a ultra-low noise at the lowest power.
++  Datasheet: https://product.tdk.com/system/files/dam/doc/product/sensor/pressure/capacitive-pressure/data_sheet/ds-000186-icp-101xx.pdf
++
++properties:
++  compatible:
++    const: invensense,icp10100
++
++  reg:
++    maxItems: 1
++
++  vdd-supply: true
++
++required:
++  - compatible
++  - reg
++  - vdd-supply
++
++additionalProperties: false
++
++examples:
++  - |
++    i2c {
++        #address-cells = <1>;
++        #size-cells = <0>;
++        pressure@63 {
++            compatible = "invensense,icp10100";
++            reg = <0x63>;
++            vdd-supply = <&vdd_1v8>;
++        };
++    };
++...
 -- 
-2.43.0
+2.48.1
 
 

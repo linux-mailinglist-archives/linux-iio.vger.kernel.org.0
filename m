@@ -1,235 +1,266 @@
-Return-Path: <linux-iio+bounces-21224-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21225-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EC39AF0D3C
-	for <lists+linux-iio@lfdr.de>; Wed,  2 Jul 2025 09:54:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03910AF0D49
+	for <lists+linux-iio@lfdr.de>; Wed,  2 Jul 2025 09:57:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9A16D1895621
-	for <lists+linux-iio@lfdr.de>; Wed,  2 Jul 2025 07:54:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B621E440AAB
+	for <lists+linux-iio@lfdr.de>; Wed,  2 Jul 2025 07:56:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77BAD231A23;
-	Wed,  2 Jul 2025 07:54:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF18523026B;
+	Wed,  2 Jul 2025 07:56:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WFmlGPHc"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mkEbQmU+"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CFF1200BA1;
-	Wed,  2 Jul 2025 07:54:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04776211F;
+	Wed,  2 Jul 2025 07:56:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751442862; cv=none; b=dB1c7XXXCXgl0UerEa1O3+p3bKMCDMvJNXZRSYqH/Ct4sAz1jYnPW2YdC01FYVxtJI3/1tfYRLqweQQl+vIM1nvK44xG9Hhi2s7Z7rtScjOQRVMj/gH4pA3aC1+1Ak/f4Z78EvUZE6O/kVxvZ32bS+pgga/rW9vFyWb0DAMh4+I=
+	t=1751443015; cv=none; b=kC/HYumFPY30SZzxcZKvmpCnpvaXHN0Kfyu4y9pPIJWDRl8bFDVmepLRVbMHmbmsyq/VNQAd8V8xvOBQR1fd9lfD6cjYLhO35UwH7YUmvOF//bTXK5LuYU3PfRYSPP3k75p5eXbfkf+Z6tmuh3O11Ft36Nt3FrOhGHaD2cB2NmY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751442862; c=relaxed/simple;
-	bh=rUwUc12CwDq37/2slGik7dRlGZeOaTXSpDsb9W6K1i0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=seWro7qJbYup7GFHmBryUyfZyi21bjRG0TQ+CZ8891D2I9JMrh4nutDvxHDeSGNPrMSsQ+CmWda+BZKloUyPnBbpVUY8UdreAnrSj0KlCxoUkF7kJAqGUyO4dxrMY1LcI5h8kwPyXtaNGAJqyDGt8Uci5l6yvS078UflmaX12Ik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WFmlGPHc; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1751442861; x=1782978861;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=rUwUc12CwDq37/2slGik7dRlGZeOaTXSpDsb9W6K1i0=;
-  b=WFmlGPHcxwX2SUVmyW4anhqDN0rNuxfRwK7E9iwtDHAcNG7n7mt90SIG
-   mK78cNLxHgzP3jnCF5zBRVkB5QsRJEhrlhQmctWpLYDy9hcKUJP6osqIO
-   ITXwPhqMBGIlBPD2tkZ/cmVS0tyfS6Wjljwn5b5AqfAW4+OULwBzvS6Ia
-   VNXeQvB+I9uTDKycbHdAlqDbmLW72LHH0o8b0E1KLE3EpPwUTagjbcNkJ
-   sD5Z8b8zH7l+nmdMuJGYuhw04CIvNLIjNCFTwTpaY5NQuObmC41d0/3rr
-   aJEMHOiMdpkSl/NH+LB91PDo5gtbLJgp6Ar6+xQVimIwHzbUkEPsv6fmh
-   w==;
-X-CSE-ConnectionGUID: erfliI1MQcScn6KMnows+g==
-X-CSE-MsgGUID: 824dVOprSDmNoKTkDgl55Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11481"; a="64326060"
-X-IronPort-AV: E=Sophos;i="6.16,281,1744095600"; 
-   d="scan'208";a="64326060"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2025 00:54:18 -0700
-X-CSE-ConnectionGUID: 98SccRJrQ5yvJqszW1ShBA==
-X-CSE-MsgGUID: 52dATgF7Sy6tK3S06PLKug==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,281,1744095600"; 
-   d="scan'208";a="153636445"
-Received: from smile.fi.intel.com ([10.237.72.52])
-  by fmviesa007.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2025 00:53:58 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1uWsHv-0000000BrCM-1jUQ;
-	Wed, 02 Jul 2025 10:53:51 +0300
-Date: Wed, 2 Jul 2025 10:53:50 +0300
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>
-Cc: Andy Shevchenko <andy.shevchenko@gmail.com>,
-	Waqar Hameed <waqar.hameed@axis.com>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Julien Panis <jpanis@baylibre.com>,
-	William Breathitt Gray <wbg@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>, Peter Rosin <peda@axentia.se>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Cosmin Tanislav <cosmin.tanislav@analog.com>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Matteo Martelli <matteomartelli3@gmail.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Francesco Dolcini <francesco@dolcini.it>,
-	=?iso-8859-1?Q?Jo=E3o_Paulo_Gon=E7alves?= <jpaulo.silvagoncalves@gmail.com>,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-	Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>,
-	Mudit Sharma <muditsharma.info@gmail.com>,
-	Gerald Loacker <gerald.loacker@wolfvision.net>,
-	Song Qiang <songqiang1304521@gmail.com>, Crt Mori <cmo@melexis.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Karol Gugala <kgugala@antmicro.com>,
-	Mateusz Holenko <mholenko@antmicro.com>,
-	Gabriel Somlo <gsomlo@gmail.com>, Joel Stanley <joel@jms.id.au>,
-	Claudiu Manoil <claudiu.manoil@nxp.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Wei Fang <wei.fang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Alim Akhtar <alim.akhtar@samsung.com>,
-	Sebastian Reichel <sre@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Han Xu <han.xu@nxp.com>, Haibo Chen <haibo.chen@nxp.com>,
-	Yogesh Gaur <yogeshgaur.83@gmail.com>,
-	Mark Brown <broonie@kernel.org>, Avri Altman <avri.altman@wdc.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Souradeep Chowdhury <quic_schowdhu@quicinc.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
-	Daniel Baluta <daniel.baluta@nxp.com>,
-	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>,
-	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, kernel@axis.com,
-	linux-iio@vger.kernel.org, linux-omap@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
-	linux-i2c@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org,
-	linux-rockchip@lists.infradead.org, linux-input@vger.kernel.org,
-	linux-mmc@vger.kernel.org, imx@lists.linux.dev,
-	netdev@vger.kernel.org, linux-phy@lists.infradead.org,
-	linux-samsung-soc@vger.kernel.org, linux-pm@vger.kernel.org,
-	linux-pwm@vger.kernel.org, linux-amlogic@lists.infradead.org,
-	linux-spi@vger.kernel.org, linux-scsi@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org, linux-usb@vger.kernel.org,
-	sound-open-firmware@alsa-project.org, linux-sound@vger.kernel.org
-Subject: Re: [PATCH] Remove error prints for devm_add_action_or_reset()
-Message-ID: <aGTljgePpiPJq2xj@smile.fi.intel.com>
-References: <pnd7c0s6ji2.fsf@axis.com>
- <ylr7cuxldwb24ccenen4khtyddzq3owgzzfblbohkdxb7p7eeo@qpuddn6wrz3x>
- <CAHp75Ve=Zas8=6YKoPeTRrvjCaTyyRAyJG1gBLripqZgQpfg7g@mail.gmail.com>
- <zxtyk4vly2salnoy3lng2ni7pzu3wg6qnmucadnclfigrd2m2m@i6xcrmvh34r5>
+	s=arc-20240116; t=1751443015; c=relaxed/simple;
+	bh=Q1X6bbdTEe0yaSMMjkEwghrZRhqOzko97t3w24mThPc=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=RCImwZleXOQb7e/SSQkKcl4hhfp6IJy2CRQaeYqr9RnUnTc6uj09eDfBWt2JZqGdmBN/iYpP/6Aq9h73SnCiNR9+adWW5zca9pks0OKmL9LYD6FO482bREOeQAgPEDpRZdf6WrNcQKyBJBlMQq+G2I8Fx8fsbyIl4mrw7Ar635A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mkEbQmU+; arc=none smtp.client-ip=209.85.221.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-3a582e09144so2990700f8f.1;
+        Wed, 02 Jul 2025 00:56:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1751443012; x=1752047812; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=iV/Ph2dG/u7sFBYK4MRj6qlkNVP0kA9qMDQUm1APqRw=;
+        b=mkEbQmU+nQlsK22g6e36oNoe6ZzTGFVZHw87FMIS0ON3doEKGaUP1XAuCZGtWrZ0Lq
+         8vSVlXHO9Sa0KKcsM3bMgHVboMa36Se+zg8XiZh6xxx8pgS/Bykoul5aMuE+aT/eTiV3
+         FGlK/YIMQIFaGOY4dWjCNsPj/JhIJP1K6Aekp3lo9NqdMcFGGrArzMtkjg/q8PIy1jNX
+         62LfJqljk5PdVLuPImFOecbPfJ2gudutHQumZxolUGN4Jih+67+rAKcRHqYFmIv6wS10
+         lm6Nx/7ZSj9rVtThelgFT3Fh93ih9VPLXK0Q8XFqtyQonuVjlfiz/AFJWZwA9ovyTvCi
+         qZJw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751443012; x=1752047812;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=iV/Ph2dG/u7sFBYK4MRj6qlkNVP0kA9qMDQUm1APqRw=;
+        b=Pjri87IFlsYmwFhtWJOC9EOduC0Ul2c5oJW72D9mZgHZ1spUHRbYumGmzO8r0IrcS0
+         sk7OUzfNMIfq1xxVKqRbBBUEiJq/35srJs3BzLTNwxcUaw87Ivw4uWjKOiL18oB4ucJc
+         mu9iaZJfF5Q3pnPzBtILWdXvpu1OaXkwcBuX4Skky1CwxG5ly8Rn5JgI6G30gYqFDDXF
+         vC5R1p82Xt4Cz7m6ATL605O4af91Bq3GDnqa4ruCNoSxWdhFqKwDWHJpC2W7tYvgszsy
+         +VQb5cNGKiHSeTyHeS48lqk6XyJpRFtdO/KH/xdja/yLPPJfKem8YDD8HGzwexkCrQmz
+         etVA==
+X-Forwarded-Encrypted: i=1; AJvYcCVD4f5YnSWga3tS1cqKTzqD3p2zGcC8FQUFzpzJh3u4ZRBUS/V5GhfrzxOJIixgFaNYMtkUfceyWpox@vger.kernel.org, AJvYcCXGibaYhJtabClwcLiyEmAHVixXogbuVd3NhvghF4+JqEaFLRprCsp7p0byjBeYpCRT15jGH4PNCNh2@vger.kernel.org, AJvYcCXR9zHXKRCiwP2MGEKIRqx/MuBY+Ab5Y2NC97znD5+BqRkKvZNINCfi/b9Oy4A4bHq/nyqP5GlMFQu7VQDC@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy469XOjWD1T7SinwbYwXd8h1AYC8Uw2jN4obMzipS1gJ1yfL+s
+	8Ywm1ov6R2em9JqVgtS0vBSVOOIjhPdboAVWzun4Rm12e+auaiPLG3yizRYIXE4W
+X-Gm-Gg: ASbGncsMB9SB9g8Zdo8nJ5PclWvPy2gtY+UcCHltfrf30svFhfNZGc+o1JIT9AIWDNG
+	kT+rabC6ZhFhzJzVFqrwfsJC6uZwezhIBDS9aoxG0lm+bfIpVetmvt6LVgMQJ5UGZm1eiQNji3p
+	kDpag/w/TmyCPIZRzCabZFzwTqSwslKyWv1RBSUuEnrPTAMq+WCrZhKAZ0fKB39zXNypORC5baj
+	bolsnsfoEJAm41rNtzUy8/32OlNIBu78CDByU/VjCwFtd+d2yxtzvypxckRcHv3p13DRqhppzJw
+	vFg8U8tHdfZgWn2l40pRjTjgYbWHaF/G+9ecSdsshEW7Mnm7oNa+K29IIl6sJjJ6SnY8Ig==
+X-Google-Smtp-Source: AGHT+IGZkSowDuNZoXR+Ii7wVfmX3g9XMV/x4oWBOkv9yus3iBnYI5QLGYpYmv9BhmtvRzH01HlHDQ==
+X-Received: by 2002:adf:8b04:0:b0:3a4:ec23:dba7 with SMTP id ffacd0b85a97d-3b20095cd2bmr746462f8f.31.1751443012005;
+        Wed, 02 Jul 2025 00:56:52 -0700 (PDT)
+Received: from [192.168.1.187] ([161.230.67.253])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4538233c4acsm216227585e9.1.2025.07.02.00.56.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 02 Jul 2025 00:56:51 -0700 (PDT)
+Message-ID: <52c1fe276d16b68b955a00d0417b40902e2aa56e.camel@gmail.com>
+Subject: Re: [PATCH v3 10/12] spi: offload trigger: add ADI Util Sigma-Delta
+ SPI driver
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: David Lechner <dlechner@baylibre.com>, Michael Hennerich
+	 <Michael.Hennerich@analog.com>, Jonathan Cameron <jic23@kernel.org>, Nuno
+ =?ISO-8859-1?Q?S=E1?=
+	 <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Rob Herring
+	 <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+	 <conor+dt@kernel.org>, Mark Brown <broonie@kernel.org>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-spi@vger.kernel.org
+Date: Wed, 02 Jul 2025 08:57:02 +0100
+In-Reply-To: <20250701-iio-adc-ad7173-add-spi-offload-support-v3-10-42abb83e3dac@baylibre.com>
+References: 
+	<20250701-iio-adc-ad7173-add-spi-offload-support-v3-0-42abb83e3dac@baylibre.com>
+	 <20250701-iio-adc-ad7173-add-spi-offload-support-v3-10-42abb83e3dac@baylibre.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <zxtyk4vly2salnoy3lng2ni7pzu3wg6qnmucadnclfigrd2m2m@i6xcrmvh34r5>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Wed, Jul 02, 2025 at 08:10:28AM +0200, Uwe Kleine-König wrote:
-> On Tue, Jul 01, 2025 at 08:57:02PM +0300, Andy Shevchenko wrote:
-> > On Tue, Jul 1, 2025 at 8:44 PM Uwe Kleine-König <ukleinek@kernel.org> wrote:
-> > > On Tue, Jul 01, 2025 at 05:03:33PM +0200, Waqar Hameed wrote:
+On Tue, 2025-07-01 at 16:37 -0500, David Lechner wrote:
+> Add a new driver for the ADI Util Sigma-Delta SPI FPGA IP core.
+>=20
+> This is used to trigger a SPI offload based on a RDY signal from an ADC
+> while masking out other signals on the same line.
+>=20
+> Signed-off-by: David Lechner <dlechner@baylibre.com>
+> ---
+> =C2=A0MAINTAINERS=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 2 +-
+> =C2=A0drivers/spi/Kconfig=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 5 +=
++
+> =C2=A0drivers/spi/Makefile=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 1 +
+> =C2=A0.../spi/spi-offload-trigger-adi-util-sigma-delta.c | 62
+> ++++++++++++++++++++++
+> =C2=A04 files changed, 69 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index
+> 60ba572be7f5b48c0ab1d0d9724e19e335e8761b..4ed4977deb6ddc545be39b5c1d5e995=
+9e9fe
+> 64cf 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -23357,7 +23357,7 @@ F:	include/linux/mtd/spi-nor.h
+> =C2=A0
+> =C2=A0SPI OFFLOAD
+> =C2=A0R:	David Lechner <dlechner@baylibre.com>
+> -F:	drivers/spi/spi-offload-trigger-pwm.c
+> +F:	drivers/spi/spi-offload-trigger-*.c
+> =C2=A0F:	drivers/spi/spi-offload.c
+> =C2=A0F:	include/linux/spi/offload/
+> =C2=A0K:	spi_offload
+> diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+> index
+> c51da3fc3604977b05388687e5e64a58370186c4..e69f060d3875c168a2dc701a372e47b=
+8ffd3
+> 3268 100644
+> --- a/drivers/spi/Kconfig
+> +++ b/drivers/spi/Kconfig
+> @@ -1355,6 +1355,11 @@ if SPI_OFFLOAD
+> =C2=A0
+> =C2=A0comment "SPI Offload triggers"
+> =C2=A0
+> +config SPI_OFFLOAD_TRIGGER_ADI_UTIL_SD
+> +	tristate "SPI offload trigger using ADI sigma-delta utility"
+> +	help
+> +	=C2=A0 SPI offload trigger from ADI sigma-delta utility FPGA IP block.
+> +
+> =C2=A0config SPI_OFFLOAD_TRIGGER_PWM
+> =C2=A0	tristate "SPI offload trigger using PWM"
+> =C2=A0	depends on PWM
+> diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
+> index
+> 4ea89f6fc531625060255ecff237470927e1f041..51f9f16ed734424ff10672a04f2ec16=
+6dc63
+> 7e0b 100644
+> --- a/drivers/spi/Makefile
+> +++ b/drivers/spi/Makefile
+> @@ -170,3 +170,4 @@ obj-$(CONFIG_SPI_SLAVE_SYSTEM_CONTROL)	+=3D spi-slave=
+-
+> system-control.o
+> =C2=A0
+> =C2=A0# SPI offload triggers
+> =C2=A0obj-$(CONFIG_SPI_OFFLOAD_TRIGGER_PWM)	+=3D spi-offload-trigger-pwm.=
+o
+> +obj-$(CONFIG_SPI_OFFLOAD_TRIGGER_ADI_UTIL_SD) +=3D spi-offload-trigger-a=
+di-
+> util-sigma-delta.o
+> diff --git a/drivers/spi/spi-offload-trigger-adi-util-sigma-delta.c
+> b/drivers/spi/spi-offload-trigger-adi-util-sigma-delta.c
+> new file mode 100644
+> index
+> 0000000000000000000000000000000000000000..8468c773713a3d203b2e668f340ee3f=
+477b8
+> fb6c
+> --- /dev/null
+> +++ b/drivers/spi/spi-offload-trigger-adi-util-sigma-delta.c
+> @@ -0,0 +1,62 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/*
+> + * Copyright (C) 2025 Analog Devices Inc.
+> + * Copyright (C) 2025 BayLibre, SAS
+> + */
+> +
+> +#include <linux/clk.h>
+> +#include <linux/dev_printk.h>
+> +#include <linux/err.h>
+> +#include <linux/mod_devicetable.h>
+> +#include <linux/module.h>
+> +#include <linux/platform_device.h>
+> +#include <linux/property.h>
+> +#include <linux/spi/offload/provider.h>
+> +#include <linux/spi/offload/types.h>
+> +#include <linux/types.h>
+> +
+> +static bool adi_util_sigma_delta_match(struct spi_offload_trigger *trigg=
+er,
+> +				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 enum spi_offload_trigger_type t=
+ype,
+> +				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 u64 *args, u32 nargs)
+> +{
+> +	return type =3D=3D SPI_OFFLOAD_TRIGGER_DATA_READY && nargs =3D=3D 0;
+> +}
+> +
+> +static const struct spi_offload_trigger_ops adi_util_sigma_delta_ops =3D=
+ {
+> +	.match =3D adi_util_sigma_delta_match,
+> +};
+> +
+> +static int adi_util_sigma_delta_probe(struct platform_device *pdev)
+> +{
+> +	struct device *dev =3D &pdev->dev;
+> +	struct spi_offload_trigger_info info =3D {
+> +		.fwnode =3D dev_fwnode(dev),
+> +		.ops =3D &adi_util_sigma_delta_ops,
+> +	};
+> +	struct clk *clk;
+> +
+> +	clk =3D devm_clk_get_enabled(dev, NULL);
+> +	if (IS_ERR(clk))
+> +		return dev_err_probe(dev, PTR_ERR(clk), "Failed to get
+> clock\n");
+> +
 
-...
+Small nit. Did you consider enabling/disabling the clock on the trigger
+enable()/disable() callback? I guess the ref clk will be enabled anyways by
+someone else but conceptually kind of makes sense to enable the resource on=
+ly
+when needed.
 
-> > > With that
-> > >
-> > >         ret = devm_add_action_or_reset(dev, meson_pwm_s4_put_clk,
-> > >                                        meson->channels[i].clk);
-> > >         if (ret)
-> > >                 return dev_err_probe(dev, ret,
-> > >                                      "Failed to add clk_put action\n");
-> > >
-> > > from drivers/pwm/pwm-meson.c is optimized to
-> > >
-> > >         ret = devm_add_action_or_reset(dev, meson_pwm_s4_put_clk,
-> > >                                        meson->channels[i].clk);
-> > >         if (ret)
-> > >                 return ret;
-> > >
-> > > .
-> > >
-> > > I would prefer this approach, because a) there is no need to drop all
-> > > dev_err_probe()s after devm_add_action_or_reset() and b) the
-> > > dev_err_probe()s could stay for consistency in the error paths of a
-> > > driver.
-> > 
-> > Why do we need a dev_err_probe() after devm_add_action*()? I would
-> > expect that the original call (if needed) can spit out a message.
-> 
-> I'm not a big fan of API functions that emit an error message.
+Not a big deal (at least to me).
 
-We do have that in devm_ioremap*() family. Just saying...
+- Nuno S=C3=A1
 
-> In general the caller knows better what went wrong (here:
-> devm_add_action_or_reset() doesn't know this to be about the clk_put
-> action), so the error message can be more expressive.
-
-I'm not sure I was clear about my suggestion. What I argued is something like
-this
-
-devm_foo_alloc()
-{
-	ret = foo_alloc();
-	if (ret)
-		return dev_err_probe();
-
-	return devm_add_action_or_reset();
-}
-
-foo_alloc() in my example is left untouched.
-
-> Also in general an API function doesn't know if a failure is fatal or if
-> the consumer handles the failure just well and if the call is part of a
-> driver's .probe() so it's unclear if dev_err_probe() can/should be used.
-> (I admit that the last two probably don't apply to
-> devm_add_action_or_reset() but that's not a good enough reason to
-> make this function special. Every special case is a maintanance burden.)
-
-devm_*() are only supposed to be called in the probe phase. So using
-dev_err_probe() there (implementations) is natural thing to do, if required.
-And see above, we have such cases already.
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+> +	return devm_spi_offload_trigger_register(dev, &info);
+> +}
+> +
+> +static const struct of_device_id adi_util_sigma_delta_of_match_table[] =
+=3D {
+> +	{ .compatible =3D "adi,util-sigma-delta-spi", },
+> +	{ }
+> +};
+> +MODULE_DEVICE_TABLE(of, adi_util_sigma_delta_of_match_table);
+> +
+> +static struct platform_driver adi_util_sigma_delta_driver =3D {
+> +	.probe=C2=A0 =3D adi_util_sigma_delta_probe,
+> +	.driver =3D {
+> +		.name =3D "adi-util-sigma-delta-spi",
+> +		.of_match_table =3D adi_util_sigma_delta_of_match_table,
+> +	},
+> +};
+> +module_platform_driver(adi_util_sigma_delta_driver);
+> +
+> +MODULE_AUTHOR("David Lechner <dlechner@baylibre.com>");
+> +MODULE_DESCRIPTION("ADI Sigma-Delta SPI offload trigger utility driver")=
+;
+> +MODULE_LICENSE("GPL");
 

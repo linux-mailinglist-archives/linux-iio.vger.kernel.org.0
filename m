@@ -1,151 +1,143 @@
-Return-Path: <linux-iio+bounces-21255-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21256-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3A47AF5DA6
-	for <lists+linux-iio@lfdr.de>; Wed,  2 Jul 2025 17:53:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 470DAAF6207
+	for <lists+linux-iio@lfdr.de>; Wed,  2 Jul 2025 20:57:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CFA964E524B
-	for <lists+linux-iio@lfdr.de>; Wed,  2 Jul 2025 15:53:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 672951C46CC7
+	for <lists+linux-iio@lfdr.de>; Wed,  2 Jul 2025 18:57:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9B5A2E718B;
-	Wed,  2 Jul 2025 15:53:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DC952727F7;
+	Wed,  2 Jul 2025 18:57:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="W0KQKoGq"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="l5dIntmv"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oa1-f43.google.com (mail-oa1-f43.google.com [209.85.160.43])
+Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3C562E0413
-	for <linux-iio@vger.kernel.org>; Wed,  2 Jul 2025 15:53:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AC842F7CE2;
+	Wed,  2 Jul 2025 18:57:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751471615; cv=none; b=d3hB7wWBnLlRE7rRudc7CNUeIBsTMyU7Co1Qr3+J7cL7uPFxnbAkCzcUjpT4lAq+8PMqmPcVY0YLUK2hDuloz/LKq9rq26heUdlNHxSYMovULNiUCJWUJ39hxSLE9wKcYegS6gtyj2Yc9WCAsyq4iJeaUCtqh8hSasw/B5ma7Qg=
+	t=1751482635; cv=none; b=T0G3roFewziXUqwpaUGNVvi1vPR0S6pxxggD3g13Dn0IgkkoJOMTf9HpwyCkaTQfYxgUuvpUJ4juMXkkuvaA/pHx7GZdXDWpejia5hUQE2cSfzd3Wst03BiVNn2bBkq7wPIUmbwhcxt2wW0oBfAmm2T7//lLMDTVhqxzv/qnL38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751471615; c=relaxed/simple;
-	bh=SnlgmvXX9oBJ2pQVKACQLITc0HfSCd9SV1QSCI/mbkY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=k/HUeuqZi8Qk1KyuHUclszik/xlRffNpL+pKEAg8z3Xf9jbm+rcZXjH3LZXVItDCYS9SoB1mvEm8FCCZjiJ6RKgH7wGim8YqCSU49Vy7gM0JubBozhAFEZM2S4jgo3e4dU2xzZ7nz6NeYhQVpkE5zmHTZgAAI+dJ9vxNhrt0Wzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=W0KQKoGq; arc=none smtp.client-ip=209.85.160.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oa1-f43.google.com with SMTP id 586e51a60fabf-2eff5d1c7efso2925016fac.2
-        for <linux-iio@vger.kernel.org>; Wed, 02 Jul 2025 08:53:33 -0700 (PDT)
+	s=arc-20240116; t=1751482635; c=relaxed/simple;
+	bh=kC3Ij0+TwzLPJxztlRCaWKRcoSyo8G6Yo4Whg2rzTmk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IeUsI+FHU6tuDjQkRJOd2tse8qvweqzo2g+gG5iJ30Io9KAGniGy3vmLMBtoMJASmW2Ngh8jbNqvBg1txMujzsRqOKahFZqJCOBhi1wsT4ZHOJos4vDtWrRNwFkP23sNRHBgMOWe5Nlo4o9grtgZ9uK3TXINsAWtqF+U4G1aNsQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=l5dIntmv; arc=none smtp.client-ip=209.85.222.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-7d402c901cbso662829385a.3;
+        Wed, 02 Jul 2025 11:57:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1751471613; x=1752076413; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=9Kino+XqZYEqgWvIyTiqrJSAa+M+qswg1+WCL0GmDq8=;
-        b=W0KQKoGqIUOcxiksiji1jTpJYnhg68zabcFq5EA+TFgLq0oWijZKfcg8SrJMDbVj5/
-         4DEDaacT3x4OMNDe3IFKzkhHUQaHS9WBOXFjkHYHSC9Q15hDxmURDuLFGSKjxRooZBYL
-         AYv+sH512FTt8l7yE78pwDS/4bvPlIEc3a4cPoyWTgPV20Zua+bgZIZp5mVpCJtnxpk8
-         RjEqYi01wUJE3unzjytv9c6bvQVvHEGz9VJw06H99wyEAOcP/D7cBzfudl/d0eewSDAJ
-         TL0uE7VXeRbJdBF+CarTyBpGR1+Zo7ADj8FUa2Rssf8EK/Hd/2vOfopsr0VOrGsPBd3s
-         0ASQ==
+        d=gmail.com; s=20230601; t=1751482633; x=1752087433; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=kZIAXJvKauaAlRkK7qxQW9qPzH50AGsUAE8RQQJUH+Y=;
+        b=l5dIntmv5gBD/Be/Dqr/8HjR8lnXUy71WaB8vAxr/KBygeJkh/Ult/xV5NlMMmI4ES
+         8Bua5rVADe9UY4NUj8lE0XayyFo3mkb2sTQ67UYn9jTSIR8QmUlwdeq2XJPcFHX9bgfC
+         6nGHwiEbi4G5kO4Bq2FTpYFm1/x2qMcDlFBlKMunUQrSLfVWhqNeaDgIt19KUuiNeoPn
+         fMUsps6GiiJCLpxmxR2yp5JZszSoTjJaFPjZuRq5SoGU06MC7n+bE4CqNQa6YomG2GsZ
+         BlfOKGX46jR8iYz5lZ6kRM4CDojvqmq5eiMM47q8A3gIcf48Ko4UwxOuXSC062AFQfqJ
+         da0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751471613; x=1752076413;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=9Kino+XqZYEqgWvIyTiqrJSAa+M+qswg1+WCL0GmDq8=;
-        b=cwAcOwB0DlddRWuqYJF6Yhg4uUQjNRlrkkMNqhCbhtfOcrgU94iUOdYi0LS2TJ+gke
-         IhPhfL3crhmIj6od/eUQ5jSPEhOBQgOHsIAtepnbCxRIEF6jDOY/nt4piW6ihVN2hoAo
-         /D6OugYl9HPV76CdEO4rf1cccfV6HnGTw62lftOJJBY+PCfKEldJjY1s0RAFynX4H7kl
-         pwxVq7hajdYw+ncHNCLu51tdOVdfOROnmLJCsFfU4uDZJcX/BZOuxjJT16dpVy5J6foj
-         oUSAq1ITssgR3oPc6aNlNlrqn+CzhrcMoNEAyF3ZoEzmsxOo3PLbP/FpCi6WxCAiZ59t
-         n0cw==
-X-Forwarded-Encrypted: i=1; AJvYcCUc1zX4pZBQbeiRqZjkByRqgsiSKodB28GNozj4R+fswAyf0t1qLjFatfab0yAY4bd6h6LBtobSDCo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YySlYh78/InxzkzcqqqKb2JfT4IkJQdc6a1PPbpfexZm7ewEc8/
-	e/2aVyaztW/PVAte12IF+gXNuHjvhKUTrAVOzr6K/osp6urYDpGHAp5byi715WxXfNY=
-X-Gm-Gg: ASbGnctPA43+PZQqJ09K4U9ajBIWP9TnCN22AOQh8aP5f2+mUQ7eI55kw9qudKIh5GS
-	OdhvY//otuCXYhg9ah+SrsK6SQllH8AurUUI/zrHQUkEf7zpJwMxLaLt0ow9nXzwap9eBjex/59
-	XZ1Wj8IfUFF6LcKmUeRl2xciw3GqTxCHGSsRgAj9PmNQuXGirXIkvVELLYPsonJZgWzHXKvDfas
-	pnQEVzZcnskiGaBsAhKSC8GKKbMFhH5GvfpMQ+8igyx760lGMwx9FKb4ROsJ6A113frMIsvN/6w
-	qLvmwnzv/ybB5Lf9QZezlQEUkYNtFfx6R75nL2eGd6AYrX+I+tuaAD5zB4AZxY/Yh1NcQn+2g+6
-	x7xJ0orsMoa8Zg/L9j0nVKNNtfyIyL644R12yKzbRTC9SzGqNBQ==
-X-Google-Smtp-Source: AGHT+IHqyqv4bHA7mWxBx95w1LJXjzoruqsxFeBP7aW/iw0Ov87EOi4MTilwG8uSt/H50TBf7IQPGg==
-X-Received: by 2002:a05:6870:944c:b0:2d6:667c:511f with SMTP id 586e51a60fabf-2f5a89fd32dmr2992756fac.9.1751471612809;
-        Wed, 02 Jul 2025 08:53:32 -0700 (PDT)
-Received: from ?IPV6:2600:8803:e7e4:1d00:5c00:24f0:997b:5458? ([2600:8803:e7e4:1d00:5c00:24f0:997b:5458])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2efd4eab4e3sm3980916fac.4.2025.07.02.08.53.32
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 02 Jul 2025 08:53:32 -0700 (PDT)
-Message-ID: <3361875b-712e-423f-88ed-baf41af5ad22@baylibre.com>
-Date: Wed, 2 Jul 2025 10:53:31 -0500
+        d=1e100.net; s=20230601; t=1751482633; x=1752087433;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=kZIAXJvKauaAlRkK7qxQW9qPzH50AGsUAE8RQQJUH+Y=;
+        b=eT1sBOTPc/UB5IMSKBDDHT7Q5QoQ9Ai666tY8XKE7xRPeCmPQII+6w42AGCtHaQE6b
+         EXWEwKvP8BdP9wYq86cJQ2vuJrm4klLa+Bp2Y9yuBra5lVQO4NZxTRFZMikbEKm02+1M
+         +p6lnPbpgUt/YI2Akahj4Q6kZXni3STREcfb4CTvSVE9WU5XNPfahhSWtg1b7wZagyfQ
+         cMqY96EZgBxDZlqGT4W7Ypjjt8i2R6EAoQgtxMXMUp8YdFP4/Q20xP/EavU9T7d8l0zk
+         0rlBYKAkP7lBj3S4Y/actHAL6sd1iTS+Bm7UJK5VGDD8j7RLfyATXu0NseB9lr2cuQ6u
+         Tn+w==
+X-Forwarded-Encrypted: i=1; AJvYcCWMLZzbTYm80phW/XUDd+HuKjzKsutGvRf3yiJWeG1ZRScI9NanpEbgiMaD8pOU7HxQzkgsMEm2rV3cRcki@vger.kernel.org, AJvYcCXT7SzJF0GkpuBEVs2HGj2JU0CVtBR73MRHXw4moFFkM8C6C2ZOAwpwdYjAUWt82Z6Z1YEe6Gs0wY8e@vger.kernel.org, AJvYcCXcY7XDKra33ME9vsw4oT8e1wlpK7Un6p58xuvlk4e3AQhNkbisySeyV/mzmA1NhWs8Yaydiuzo3z8o@vger.kernel.org, AJvYcCXqtdGLVkK5wP67CbgcEj810Yr+6UXMGXdN3SYJM9bCfO5Ug1r+kiJls6pMLNU/YE1vVa7gp/D8qXf8qA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyF8o8ivc6vXUNCpAARedPzMa8nHdZbhx8Q3xRpe41b4HkTrt6G
+	RFFCG7dIgrZiJiSvjuVxHrzI9SSf2wVzMTClMoBHbD2NuyrXEXj4DURu
+X-Gm-Gg: ASbGnctNcQVN7HEpDOgKuTTidPY7+CgiCvynako/jMj7eRIR1TZ5IYX0TiSTkZKdJI3
+	aY5zjP6dmMFWkOoWss29L/IGZR+J2yPE8Ndz+NydAgB6xny5C+fQcMYSfcanvn0vQMkFdTeEUrB
+	25zfogu4aABmLoo0WvI9rw9DPHX6Vlmr73PxhLSjxqGUpoOCNDGH4R5kYVFQVMp9Hlw3RpWMQ2C
+	1R+l+GRymWQMBRLQG2BYXnyJKqgUJQws24enmp60wSiptMKUFkfjSHJeYZLrz+Lo6sFTtagVrbi
+	KdTdUCdERVlxljM++xUkbsOf9YyZWMdwp5NTLxUKjQx1FsZxDe6pIJdpDgWw2nr7tegsVg==
+X-Google-Smtp-Source: AGHT+IEDEXEIqda75EtSySR3EUVNGEIZON8yl5WQFsWtxwa8n1GITiIvSiibTZKgp2uaIs7UnnNvOw==
+X-Received: by 2002:a05:620a:4489:b0:7cd:5b2a:979e with SMTP id af79cd13be357-7d5c470457emr455087985a.30.1751482632870;
+        Wed, 02 Jul 2025 11:57:12 -0700 (PDT)
+Received: from localhost ([2804:30c:b15:b200:425a:de22:1d7f:2d4b])
+        by smtp.gmail.com with UTF8SMTPSA id af79cd13be357-7d443139b31sm990700685a.7.2025.07.02.11.57.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 02 Jul 2025 11:57:12 -0700 (PDT)
+Date: Wed, 2 Jul 2025 15:59:12 -0300
+From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+To: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: Marcelo Schmitt <marcelo.schmitt@analog.com>, linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-gpio@vger.kernel.org,
+	linux-kernel@vger.kernel.org, jic23@kernel.org, lars@metafoo.de,
+	Michael.Hennerich@analog.com, dlechner@baylibre.com,
+	nuno.sa@analog.com, andy@kernel.org, robh@kernel.org,
+	krzk+dt@kernel.org, conor+dt@kernel.org, linus.walleij@linaro.org,
+	brgl@bgdev.pl, broonie@kernel.org, lgirdwood@gmail.com
+Subject: Re: [PATCH v7 00/12] iio: adc: Add support for AD4170 series of ADCs
+Message-ID: <aGWBgLLtOzVGwXek@debian-BULLSEYE-live-builder-AMD64>
+References: <cover.1751289747.git.marcelo.schmitt@analog.com>
+ <aGTpNNaW7cXC18Jt@smile.fi.intel.com>
+ <aGUfapky2uh2tsFt@debian-BULLSEYE-live-builder-AMD64>
+ <aGUi7r2dgnbqLOAH@smile.fi.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] iio: st_lsm6dsx: Replace scnprintf with sysfs_emit
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Andy Shevchenko <andriy.shevchenko@intel.com>,
- Akshay Bansod <akbansd@gmail.com>, Lorenzo Bianconi <lorenzo@kernel.org>,
- Jonathan Cameron <jic23@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?=
- <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
- linux-kernel-mentees@lists.linuxfoundation.org, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20250702135855.59955-1-akbansd@gmail.com>
- <f96b68a5-d750-45f0-8cdd-9761b5daca1d@baylibre.com>
- <aGVIcBLgXZj_YR7B@smile.fi.intel.com>
- <e474db53-1b52-48b0-9253-2f62a3861bb4@baylibre.com>
- <20250702163342.00003c66@huawei.com>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <20250702163342.00003c66@huawei.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aGUi7r2dgnbqLOAH@smile.fi.intel.com>
 
-On 7/2/25 10:33 AM, Jonathan Cameron wrote:
-> On Wed, 2 Jul 2025 10:04:23 -0500
-> David Lechner <dlechner@baylibre.com> wrote:
+On 07/02, Andy Shevchenko wrote:
+> On Wed, Jul 02, 2025 at 09:00:42AM -0300, Marcelo Schmitt wrote:
+> > On 07/02, Andy Shevchenko wrote:
+> > > On Mon, Jun 30, 2025 at 10:57:32AM -0300, Marcelo Schmitt wrote:
 > 
->> On 7/2/25 9:55 AM, Andy Shevchenko wrote:
->>> On Wed, Jul 02, 2025 at 09:16:51AM -0500, David Lechner wrote:  
->>>> On 7/2/25 8:58 AM, Akshay Bansod wrote:  
->>>>> Update the sysfs interface for sampling frequency and scale attributes.
->>>>> Replace `scnprintf()` with `sysfs_emit_at()` which is PAGE_SIZE-aware
->>>>> and recommended for use in sysfs.  
->>>
->>> ...
->>>   
->>>>> +		len += sysfs_emit_at(buf, len, "%d.%03d ",
->>>>>  				 odr_table->odr_avl[i].milli_hz / 1000,
->>>>>  				 odr_table->odr_avl[i].milli_hz % 1000);  
->>>>
->>>> Let's keep checkpatch happy and change the indent of the wrapped lines to
->>>> line up with ( since the ( moved.  
->>>
->>> While I see the point, wouldn't be better to have 1000 replaced with MILLI
->>> at the same time?
->>>   
->>
->> For anything with 3 zeros, I don't consider MILLI better (or worse).
->> Science shows that the average human can easily see 3 or 4 things
->> without having to count them [1]. So it is only when we start getting
->> more 0s than that is when I think we should be picky about using macros
->> instead.
->>
->> And in this particular case, we are converting milli to micro so `1000`
->> should be replaced by `(MICRO / MILLI)` if we are going to do that.
-> No we aren't.
+> ...
 > 
-> This one is converting from milli_hz to hz + sticking to milli for the decimal
-> part.
+> > > >  6 files changed, 3601 insertions(+)
+> > > 
+> > > This is weird. At least patches 11 & 12 have '-' lines...
+> > > 
+> > Yeah, sorry about that. These ADCs are fancy such that the base driver is about
+> > 1500 LoCs due to channel setup handling and support for multiple combinations of
+> > voltage references and channel setups.
+> > 
+> > About the '-' lines, I will rework ad4170_parse_channel_node() on earlier
+> > patches to avoid 3 line removals in patch 11. Patch 12 is only makes sense
+> > after patch 7 and I think it would lead to '-' lines if coming before patch 10
+> > since both increment the number of IIO channels. Anyway, I'll see how to further
+> > reduce the number of lines being removed.
 > 
-> Lots of other IIO cases where you would have been right, but I think not here.
+> My point is that the above statistics is mangled and I don't know how I can
+> trust the contents of this series if it already lied about that.
 
-Oops. The %03d instead of %06d should have given it away!
+Looks like git format-patch summarizes the changes from all patches when
+printing the statistics to the cover letter. Also, git format-patch doc [1]
+says the 'changes' dirstat option (default behavior) doesn't count
+rearranged lines as much as other changes. There are cover letters of other
+patch sets where the number of '-' lines don't match the sum of lines
+removed by each patch. [2] and [3] are examples of that.
 
->>
->> [1]: https://www.scientificamerican.com/article/your-brain-finds-it-easy-to-size-up-four-objects-but-not-five-heres-why/
->>
->>
-> 
+[1]: https://git-scm.com/docs/git-format-patch
+[2]: https://lore.kernel.org/linux-iio/20250630-losd-3-inv-icm42600-add-wom-support-v6-0-5bb0c84800d9@tdk.com/
+[3]: https://lore.kernel.org/linux-iio/20250627-iio-adc-ad7173-add-spi-offload-support-v2-0-f49c55599113@baylibre.com/
 
+This set doesn't remove stuff that existed prior to it so I think it makes
+sense the cover letter to show that lines are only being added.
+
+I'll send v8 with the change I mentioned earlier. Unless patches 11 and 12
+already look good the way they are in v7.
+
+Best regards,
+Marcelo
 

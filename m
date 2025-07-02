@@ -1,142 +1,119 @@
-Return-Path: <linux-iio+bounces-21222-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21223-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D981AAF0C10
-	for <lists+linux-iio@lfdr.de>; Wed,  2 Jul 2025 08:57:06 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB7ADAF0CDC
+	for <lists+linux-iio@lfdr.de>; Wed,  2 Jul 2025 09:46:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B8871C03AC7
-	for <lists+linux-iio@lfdr.de>; Wed,  2 Jul 2025 06:57:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9B4B77AC8CD
+	for <lists+linux-iio@lfdr.de>; Wed,  2 Jul 2025 07:44:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E249224244;
-	Wed,  2 Jul 2025 06:57:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A316E1DF97C;
+	Wed,  2 Jul 2025 07:46:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="LwiNaZiM"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fb8oPCif"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDD751FE46D
-	for <linux-iio@vger.kernel.org>; Wed,  2 Jul 2025 06:56:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDCC034CF9;
+	Wed,  2 Jul 2025 07:46:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751439420; cv=none; b=Zxq59vQQqoiKHdcSz05tPsinTC/IbN5PWSYtrQuczeY495OYATnBNvUnRlxwnazZtaeYsJkJBNHivc73HuK7LhQT67ibowZZdI0ngKqWnLkOIu45m3acS3kBAkByYdidFP/KQQqBji4qDK0kWXazyS6GMO5IvF4G6PNlKF8pnVk=
+	t=1751442367; cv=none; b=M4UzwFeSIRQWz9inWcoUA7nrwuE8y192ZtwreOG3YABCC7kxuovaPBzt1EDU2mKJ+yma83sEQtR0tf1DDW1sd9AaHaVWtSGdDL+/ey9t1llLmrMl9fnj7DWUwWBeyJsaCRZ0sHGLvClm97Vq/Ehxef/whBKh+kk6a4Y1xCtw/Eo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751439420; c=relaxed/simple;
-	bh=9eFrBc3CS0s5eRZe4TX90lJvu9nv4qiEyGC/5tT/NJM=;
+	s=arc-20240116; t=1751442367; c=relaxed/simple;
+	bh=a4vRJ7yBBMjckszCtHJaOpdrMjvLtsHTDEJwGzkriUM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=p0SkxRsWcZAS6RBt7mMtmoWgN4TG7FqeEqoQSyh1xPrgxymx6SzkJlV59GQ1MkixdYYncM+8PV3o/dSI41lhodaU3LqaRNs++TMa+ERrgeGItw2qNtN5tolJeCOF3fEueWYm50hkeDX/3zhPshG9/z00GDA3bATVi2cADHOfLmY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=LwiNaZiM; arc=none smtp.client-ip=209.85.218.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-ae0c571f137so1230106566b.0
-        for <linux-iio@vger.kernel.org>; Tue, 01 Jul 2025 23:56:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1751439416; x=1752044216; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=EOe6l+hnnDWpgVQ5T2IRCQobbWufOXU+GDUIqrC5HMg=;
-        b=LwiNaZiMzHhn2KFZckUaLewPH9CeLnf7H8fAHswS8PAbQMmmlA0U7tqphTWKEl8pjS
-         WfdGVoOY68s95unSQSu/2R/YBnFUDRCoGFMRPTkwwlGCg/QQjkYf0RUVB8AacvX613IH
-         D9zGCtEyYbcAckUxBV4sBLnQLVKmhZ8rbU8l3oV82GBktlnUOhvy9QWK6TYJJQyS8IoY
-         Epg0SK1NTQCSB0DDphWVs7WR3DtiZWZQX10n000OGxyJTv/qFOERZCEpCu90f3dzQtQR
-         RUzrr8xiYi54WuUv5e/jeVTWo3NKAyT2ERTyhsi9wb0jmac6kAifg+l3eY98o9bt0rJP
-         3OnA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751439416; x=1752044216;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=EOe6l+hnnDWpgVQ5T2IRCQobbWufOXU+GDUIqrC5HMg=;
-        b=cH1jwA/YLosEa35xIlkWz4VT+tm0e56BZXemUXjTFwz79trvhhyMmPgsnLzh8Pd61U
-         TZguW5mNKOUc6SO0cF6U81EBAHgVoGhAvMwV8VEP379WIGn8bMxf4bJHJ+Xl+5SaS1oZ
-         DGD+v7rfhD64CfqEAm1URnbADTlSCnLnEr4RfvoHer5YgNYPbC+U73oT42w35HRvbjj1
-         5g7QkBlH5Ldm+qhBbNBokzTvsdTN0m8R0lx7QheCnvvKAehgbjsElLO8hnGA22kcMuMN
-         JzEqvr4agEEnJo67VrwnzW2OR8l6fMmNnP8C9illlSxp8QabM2PDF3tcDPg/RUx9yfne
-         N8VA==
-X-Forwarded-Encrypted: i=1; AJvYcCXF0gjoxtT1T0HQdKm5daLiR8U0KyiEZjWDSK6KrsbzF2rL7W7nBv8uByLc+VzIrKR4/7aUsunkndo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzTcz4V22X0Iea7CcN8vKef0yamjnKYxcVhX8AsMHDziiUwKx6N
-	2WjcS1D0pNhXtrcnWE863270k4OQDvQWduXu9egC5E3WLhLctQ2PM8UVPZ+6yMfFyyc=
-X-Gm-Gg: ASbGncuAsv876RffFktauB8IqVUwWQ4PXVFC2NXGOEXOeQVETmylWxRiW0j2GMwG9FY
-	qqIWY3img7RgwyK2ab0C63qsCkylayVL4/ZNwmFS1FJVxNabLMpEdgYWkoXFkhmSfYaD96yvqiC
-	BtNp6wHj3O6XfOZoNoR1PqevE2rpOa+rP0toYaxrQpKPhD6taQpJzh2Uj7heUntN/K0mgVW8gsW
-	n4dKGgWUeVNR7toIngYrkw7mKsqm3+OTtxc75kcjEwPUrAxPe9FEP/Wk08ZxZoAT35rkxXtgUGT
-	1foDhAu6ZVCgK49Yx38U9Qr9KXqT0WxS1yFd5PFa2YkNDXNzQNXQg7FOLR176zq2y1MmyiAnACm
-	Zhl2SEa2JEuHcfe3JvY6Ec2oupCMH
-X-Google-Smtp-Source: AGHT+IFoKsJw94/wzTydj11IzCh3YDjPAxZ2CqM2G/p7cByZKvSoN+eZ45qdXfS7kzmYtM3eR/AecA==
-X-Received: by 2002:a17:907:944e:b0:ad8:9b5d:2c1e with SMTP id a640c23a62f3a-ae3c2c8b851mr173206666b.29.1751439416184;
-        Tue, 01 Jul 2025 23:56:56 -0700 (PDT)
-Received: from localhost (p200300f65f06ab0400000000000001b9.dip0.t-ipconnect.de. [2003:f6:5f06:ab04::1b9])
-        by smtp.gmail.com with UTF8SMTPSA id a640c23a62f3a-ae353c01237sm1039763466b.98.2025.07.01.23.56.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Jul 2025 23:56:55 -0700 (PDT)
-Date: Wed, 2 Jul 2025 08:56:54 +0200
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: David Lechner <dlechner@baylibre.com>, 
-	Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, 
-	Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: adc: ad7124: drop use of chip info array
-Message-ID: <iqs5ktvnz7rkskwgnsdanhezfztdzckcr3e34afk5ece7ap7e6@my2rms6gcrkb>
-References: <20250628-iio-const-data-5-v1-1-9e56c2f77979@baylibre.com>
- <20250629182531.6666f690@jic23-huawei>
- <pmqc36lr7filq6gu6bplg62qb4bx7cc7nx3ylsjuczv52cdlxr@2bdgzwobw3mv>
- <20250701183751.5701fb7e@jic23-huawei>
+	 Content-Type:Content-Disposition:In-Reply-To; b=R2wPGQ3tlGA4x6NBBA7iW90pRWN7yfkUWuaeTai/Nr+PV+2NLmlI5PWOTGIdCAreoFgxVHYxqyYArfRmquE/8Qm9zJrNjo4g254a34m7+Yk/gx1RDqhA5NLLKPrf++TKIlJzS1DKoPPpqYpQGCwFmwL9RpatO7qftlQu1CE26lU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fb8oPCif; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1751442366; x=1782978366;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=a4vRJ7yBBMjckszCtHJaOpdrMjvLtsHTDEJwGzkriUM=;
+  b=fb8oPCifAMV2QoKZ7sEn9hpiVKjj2jBa68GS3aMYdJUs76A8x72S9jNK
+   52FCWPpVBfSDHPZDyHF/yH6WgnOUmaaTD226Coh2NaB6v5lOqfkIdZUU+
+   ELZufGck0bZ2Y8v320tVRn0hcnjG/L5Ju2lP198K1ZGF/ekRbJgb+dsMI
+   w4n7o5PFWwb/e44V605ueVvBRhCJ0ySW6m2S8qnRmoXpclVQ428did1JN
+   r7BSea0b5qtYM0JDuIB+HNtuJv7vb3GmFXFwR1SqGqg/w1vsLOidJLlNA
+   lW19QO70AA5YrVjPThQtL8VNdKpeWoivRr25CduogxDyDSQjI1F7L/iXu
+   Q==;
+X-CSE-ConnectionGUID: N8Sz7D2fQCiCNj9jZ5NpKg==
+X-CSE-MsgGUID: 5WKs+2exSKePR0TkBZ69QQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11481"; a="64420838"
+X-IronPort-AV: E=Sophos;i="6.16,281,1744095600"; 
+   d="scan'208";a="64420838"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2025 00:46:05 -0700
+X-CSE-ConnectionGUID: 7tqtdGTiTrOCENnk7LWVyg==
+X-CSE-MsgGUID: JlsxvKkUSTiOEbfwwBk6Pw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,281,1744095600"; 
+   d="scan'208";a="154732978"
+Received: from smile.fi.intel.com ([10.237.72.52])
+  by fmviesa010.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2025 00:46:03 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@intel.com>)
+	id 1uWsAK-0000000Br5v-0333;
+	Wed, 02 Jul 2025 10:46:00 +0300
+Date: Wed, 2 Jul 2025 10:45:59 +0300
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>
+Cc: jic23@kernel.org, dlechner@baylibre.com, nuno.sa@analog.com,
+	andy@kernel.org, conor@kernel.org, ~lkcamp/patches@lists.sr.ht,
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] iio: adc: spear_adc: mask SPEAR_ADC_STATUS channel
+ and avg sample before setting register
+Message-ID: <aGTjt1D2VFq1WwzA@smile.fi.intel.com>
+References: <20250701213728.32064-1-rodrigo.gobbi.7@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="vfbpqpdlkxekel6h"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250701183751.5701fb7e@jic23-huawei>
+In-Reply-To: <20250701213728.32064-1-rodrigo.gobbi.7@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
+
+On Tue, Jul 01, 2025 at 06:34:05PM -0300, Rodrigo Gobbi wrote:
+> avg sample info is a bit field coded inside the following
+> bits: 5,6,7 and 8 of a device status register.
+> 
+> channel num info the same, but over bits: 1, 2 and 3.
+> 
+> mask both values in order to avoid touching other register bits,
+> since the first info (avg sample), came from dt.
+
+...
+
+> +#define SPEAR_ADC_STATUS_CHANNEL_NUM_MASK    GENMASK(3, 1)
+
+You have a problem with indentation.
+
+...
+
+> +#define SPEAR_ADC_STATUS_AVG_SAMPLE_MASK    GENMASK(8, 5)
+
+Ditto,
+
+...
+
+And I don't want to check all '+' lines in your changes, please make sure your
+editor, mail user agent, other tools you are using, do not mangle the patch and
+setup correctly for the indentation style used in the code.
+
+-- 
+With Best Regards,
+Andy Shevchenko
 
 
---vfbpqpdlkxekel6h
-Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH] iio: adc: ad7124: drop use of chip info array
-MIME-Version: 1.0
-
-Hello Jonathan,
-
-On Tue, Jul 01, 2025 at 06:37:51PM +0100, Jonathan Cameron wrote:
-> On Mon, 30 Jun 2025 10:15:14 +0200
-> Uwe Kleine-K=F6nig <u.kleine-koenig@baylibre.com> wrote:
->=20
-> > [...]
-> > The patch looks fine for me. I remember having considered creating such
-> > a patch, too.
-> >=20
-> > Acked-by: Uwe Kleine-K=F6nig <u.kleine-koenig@baylibre.com>
-> Applied.  Thanks
-
-Huh, I'm surprised. Did you address "Current title kind of sounds like
-you stopped using any chip info at all!" while applying?
-
-Best regards
-Uwe
-
---vfbpqpdlkxekel6h
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmhk2DMACgkQj4D7WH0S
-/k6ldgf8D5R6jn04kD9601IWxrhm0/1ydI1jKkdQJVXQg0urrnxnfosugDc9C00b
-w05kCnwGWQ6zTd9bRe1Hah8aG8amdMNqZM4e/GlzPniEz1Gyr4Fc4RmZkrfGCZH4
-3z7bjTtN5fGFxYRm+eEbIn8fLE/Xlxsui2jQP4HhKCXKSaj7U86aCraYXN5P0pRe
-nnSEFudaUUZPzsEJVLDCIG/iAW3Fqt+OmXTuRE0wtrQhgJ1vZcFsr1TO0+eIpNJe
-Nmdc4cR2mHhhoo4xNl/xSCiI+iRkQSnYvzRcRmZHpJ6Uve/oYJ16THMsJbk1swKy
-XmOtdaXQXVbqdEyuGDqBOT9SblXazg==
-=jPAf
------END PGP SIGNATURE-----
-
---vfbpqpdlkxekel6h--
 

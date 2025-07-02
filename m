@@ -1,147 +1,298 @@
-Return-Path: <linux-iio+bounces-21260-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21261-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4C94AF64B6
-	for <lists+linux-iio@lfdr.de>; Thu,  3 Jul 2025 00:01:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E927AAF65D1
+	for <lists+linux-iio@lfdr.de>; Thu,  3 Jul 2025 01:04:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4B82A7A956A
-	for <lists+linux-iio@lfdr.de>; Wed,  2 Jul 2025 22:00:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7FF011887E1E
+	for <lists+linux-iio@lfdr.de>; Wed,  2 Jul 2025 23:04:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C567824468B;
-	Wed,  2 Jul 2025 22:01:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5661425228C;
+	Wed,  2 Jul 2025 23:03:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="y48xNPQ1"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RlFBQya1"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ot1-f44.google.com (mail-ot1-f44.google.com [209.85.210.44])
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF4941E9B3D
-	for <linux-iio@vger.kernel.org>; Wed,  2 Jul 2025 22:01:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 241D82DE70C;
+	Wed,  2 Jul 2025 23:03:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751493673; cv=none; b=FYT7yzTYgXeZaA2n25BxqW1QibJWTwxZ3QZ7W/oRu7uyRwvotXxgJkRy7F+U4xez4aGsrZZomciX7g8DuI9TCCuBOYYiJa6o1Rp21zEYn85KXXuMVmii7YZBfpjZ/ETgRqrmObxCB6AXQfbw9QbbfXlXN1vKbElgxEgtwUJ2OYg=
+	t=1751497416; cv=none; b=rO94G5dzg1uvYuJ+rwj+0S85zvBEFYt3EgUyirilYPzcDyeaVD0hVmDEuuukDq5g4OFBv4lbjepOF5wwYiyQCE5v9xRjzH5qtKfzF2kf9O0m+9IXCVsg8clZwT6qEza/J1DNOXzGzaC4jsjlcejiLpB9LuJQ7q8yYJzMb5hbMzE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751493673; c=relaxed/simple;
-	bh=hjhHlOolfaZNDUs+RdvLckgniM7ltNQJFdfTBZFssqw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=LWpnTwRMGHPiv8B/zvfdtZH+/ykj/RKBq464zrTJygTMtdJDYeVlFHNYD6exKjdxh74ZV0gCux92BWylTp+QmiM6DINJthCpe233F4fnd2lPPWB9beY4bwkGbeVPQiNsgx4fzRcpvoZEW/26YykHcex7eaJmMhC+49OtTRVtCo4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=y48xNPQ1; arc=none smtp.client-ip=209.85.210.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ot1-f44.google.com with SMTP id 46e09a7af769-73afbe1497bso2718902a34.1
-        for <linux-iio@vger.kernel.org>; Wed, 02 Jul 2025 15:01:09 -0700 (PDT)
+	s=arc-20240116; t=1751497416; c=relaxed/simple;
+	bh=ZBGavM7yNSd7VWz1jZOFoqIrOK1Zz3e0RjDet7tvJ+8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=ESQbZ7ng4DQ4KuxbdcJPqwVkdTOWG1/+PVttiUJu6emdHk4Ne66ZI7ckQqQQvwWXbN37ab+sDerYODexzqC9xtDICIGunGih4BbscMwdsH2YPz/tdVtPpcKzYezhLRL5/pN7hrH8dEhBuszxs1NIocuAavzAR/PYR2BSlJHub78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RlFBQya1; arc=none smtp.client-ip=209.85.208.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-607fbf8acb6so1223464a12.3;
+        Wed, 02 Jul 2025 16:03:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1751493669; x=1752098469; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=DKgWS7/qdk7+Eg50DbHdDl8mGYC2JyCvr3ER8bCDhe0=;
-        b=y48xNPQ1VGFonG90ers22n9CaIGu/U0THcQn5c8nBkrNDl4s9PaFjS+j1I6g9WKNKk
-         AIt90eg9oaV1EgKUwMKqT6KK+6qZm0ycbC3hNp4m6EMABEfx09alAUON+kWaoxtIKcLc
-         KpF0R66j9mNHBxgK3gVzHPFVU3zoE/wqhAbjqow81uQxg+cfY447RdnKngepHdBwkEoA
-         erkhwbWUhLFkvzceqJ0cHWv3nN9vR0F3ZV9QQRRlcAkjmr2yRwkjT/VoCkPEvvC4uya0
-         +4NGqWis8xoTuzKwFm7oiFKXthN/Lw8UdUwMqdkbwyOEA+arjT+4IL8OlrccbhJhMKY1
-         F5nQ==
+        d=gmail.com; s=20230601; t=1751497412; x=1752102212; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=SxMO4pTUs9EKXL/1ocdRdKYDlXOA39qf6es9x3xlsU8=;
+        b=RlFBQya1YXaAqXK67K2MCXANuCDw182ujdueXhwfMRgeLVJr6UKHmBYUgQZ8U09oMZ
+         Tjg0YbvxaXH0EXV8HpHnZKPuj0uMH3Q/n9xBsNMY+G53KTn58oVOn3uN6R5XGUzJiFrW
+         D6xm/A7B/H5rMgNoJwlsP/8OSWo9kMgrgNOaAIIaaMNV7TIRZ1bGpof29BXFkmeDpRnI
+         /IuorbX9EArBH4GrL7HjpI3NGUbqvWFSRIeqqBn+7NUVQAksbgMkaGvKg/plkukadsp1
+         e2y5sfLo2mBBHiOSbUZnFVDQSu/IvhILrw2TMcj6W+K2ae8ZMckY2Xa2j0HuKjk9FWBz
+         P0vQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751493669; x=1752098469;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=DKgWS7/qdk7+Eg50DbHdDl8mGYC2JyCvr3ER8bCDhe0=;
-        b=CDgaGmIlqto5XAKu9+N/jAs5WRiJ750NU69E1PIIN1WLpY5MkqMXR4OrXJO57N1glp
-         m1SsgzNTj6TqukyYfhY79Dn527Ovoj6iICp0oLGHLj2tqJvxZRbicrH/vbRVpLk1UFPo
-         i3NlVFA69QtCMa9sOOZb2xdeL54byuGU/IAjOZxMYf1Uwmb9q+3Kp9A2L4lk1ozm9FH5
-         Zw71h2B9p4gnEtGzwq6RHNYwW8cDNRnkdIvi/wgNB3iuR5M4jn2LgrhT0Zn8qQXM810p
-         o5uMEv/8Arfjyy4cZs312f5OAf0uUt7/6zxyWHyGsHYNRlZ8fJ2tfJ/YbgIFFLBiibe6
-         wcdg==
-X-Forwarded-Encrypted: i=1; AJvYcCWa1yIOoWN9dgLz7WK1V+EHraNr+GpOvKXpLFapCQA1YpXn7emXTCX6z41DIk9fy6LPLtA2NQXcumY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzy8l6m0xw0v+FFGKP8/y1VTCXCEEh5079p6BwMebYYKkSQa6/e
-	1XX8Fp57zUIwebcJpZCmAnYMzhnv7q2hGA3ETtUmQRU9mVv1YoiXUBXF/wUD6J7oqpI=
-X-Gm-Gg: ASbGncuECzKjmCZaE5JhyEi3Tpgu+dxZL/W8d9z1XSJZS41n5BnavczCKWf5/1pUULB
-	ODWxoYeovPnPpKX+IHE0+FOPF6N8RCFPdv2lePnF/UtS5upKcRlERRgbPddF3ZevujOEhH8n4B9
-	AUzhCPcu+4yVaMN2V7VDlTtGlALfkJxlZ9+bAyi7mKbFKwQJs+j03Skwx5v3hq7cU16HoJBen4t
-	9d5isMJ//SCH8b5nBH+n/rD3cbb5SwI016/HG77ey1fwEEQeKXn0LL9x/oZXCYZxZ5y28VEMecu
-	9nUFr7IhR4t9NZfOy1AUOsI1fks+I5vQsUDdfySYuEhkJI7ia3XEEK7KlgverbrBLvhl5AAofB2
-	0/d3lXTGPVah6CVBWlIsXufM+xq1r9QUvzxiN46g=
-X-Google-Smtp-Source: AGHT+IHKZNhePlF0+T6dWuoOeOIoDbpvywH95ABuicUB05Dmc1aVoalsdNueqPirXs97Btv0KkGWcg==
-X-Received: by 2002:a05:6808:e8a:b0:403:3673:65f0 with SMTP id 5614622812f47-40b88b25dc6mr3169424b6e.31.1751493668851;
-        Wed, 02 Jul 2025 15:01:08 -0700 (PDT)
-Received: from ?IPV6:2600:8803:e7e4:1d00:5c00:24f0:997b:5458? ([2600:8803:e7e4:1d00:5c00:24f0:997b:5458])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-40b32420c83sm2747613b6e.36.2025.07.02.15.01.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 02 Jul 2025 15:01:08 -0700 (PDT)
-Message-ID: <a30cbe3a-7d1b-4072-880e-99688657a093@baylibre.com>
-Date: Wed, 2 Jul 2025 17:01:07 -0500
+        d=1e100.net; s=20230601; t=1751497412; x=1752102212;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=SxMO4pTUs9EKXL/1ocdRdKYDlXOA39qf6es9x3xlsU8=;
+        b=RBPoEnzYMnBuaI14bzk7qVrVSarDvWmny7DsEL3RI07rzPIbbqcABCcKOeBc4FYcMQ
+         MoAfK4oJOuS9VzyFbIc95HMnnqvSE23sQEyoPyoFE+hi+idez9UW5JeAQzMnA+ScEPeo
+         2B+j8/n7A6xC7PItGPD05oQGSgx+4FY/jG0oJ5xREEeTcb5zWzFt145W1AsqDchTAjjW
+         YwaGR656eDkGAAGZjOu7+PmZJ307Jm8qnl8Owl34svLoyO9yEvtt/K4TAUNeJJYmhgTf
+         oLTN5QQcu88MMuR0lgM4bLqNU7nFZr4FZortNdjZNluVY6cjZ5Gd61y3406WkGudVCwi
+         zWvw==
+X-Forwarded-Encrypted: i=1; AJvYcCVQpzefJed/mqCKZT+ahaRVb0ZZ6RI0nCmp4r5sNGC0+mTpBXCSQRlcqiwJZ2GLqW3QheBY0yIREvebAtxo@vger.kernel.org, AJvYcCVuO/j1w97YXuc/T2xV6F045mCvcOong4NgXQg7PnB8KUIJ6W9hUXIql64u5ZxQ/g8s0V1kTJAz79U=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwUAbO3gRQGFuJCSvLX8kmhA7uIyhzNL9H7amQX45aK+8N1SRtA
+	OCKYWHzJvJvne6na+yh03oNjhKAoZcvg+8Omg4p6rFAvJjDLXodI4UWY
+X-Gm-Gg: ASbGncsb9EZA1qXo0Dvilp7tP8in6aAnggOJFldlgNO3IjPd9AzetlMapYQhFu7iUac
+	m28EdGBYwzJibKyRiy2mxoJtifexCgF+joqId6l/SYlFiaEyOs+nggFQ5SxQYLUU+IUjXKys5k4
+	9GFCDy7k56BNoSzRfzNk2LaIfhoRIcgJzpJrcoEy7KqgnrNoJAy4X5tiBNUlBiKY8k9g/aM4LC2
+	gNLHhgkfS5oaj2+e/YWKPKLr7QHF16zEgowtGwYOfO/EgwH0ddBr+xjoR6UeuQGlRHkm4SXwV2v
+	oW7HTkyFLWms4PZUBnvZ5Skf8wLiKtjJ6MdG8LA1Ls2eCxjSa1x8wEZQY4/IoPO/1f8RYxJF0iU
+	31ZreEUX0ksMoW4R4G8wwFhkYsa7nbwZD
+X-Google-Smtp-Source: AGHT+IFaucalMX1Aa9eCFTE2Sn+qUco+KZECh+lYnGkQsq7BYJqQdAgVeVsO5QA/3QQ2rqzuVP/JkQ==
+X-Received: by 2002:a05:6402:3585:b0:60c:3cca:6515 with SMTP id 4fb4d7f45d1cf-60e52ccba8dmr1525156a12.4.1751497412013;
+        Wed, 02 Jul 2025 16:03:32 -0700 (PDT)
+Received: from localhost.localdomain (84-72-156-211.dclient.hispeed.ch. [84.72.156.211])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-60c8319e706sm10031469a12.47.2025.07.02.16.03.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 02 Jul 2025 16:03:30 -0700 (PDT)
+From: Lothar Rubusch <l.rubusch@gmail.com>
+To: lars@metafoo.de,
+	Michael.Hennerich@analog.com,
+	jic23@kernel.org,
+	dlechner@baylibre.com,
+	nuno.sa@analog.com,
+	andy@kernel.org,
+	corbet@lwn.net
+Cc: linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	eraretuya@gmail.com,
+	l.rubusch@gmail.com
+Subject: [PATCH v11 0/8] iio: accel: adxl345: add interrupt based sensor events
+Date: Wed,  2 Jul 2025 23:03:07 +0000
+Message-Id: <20250702230315.19297-1-l.rubusch@gmail.com>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] dt-bindings: iio: adc: Add support for MT7981
-To: Aleksander Jan Bajkowski <olek2@wp.pl>, jic23@kernel.org,
- nuno.sa@analog.com, andy@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, matthias.bgg@gmail.com,
- angelogioacchino.delregno@collabora.com, zhiyong.tao@mediatek.com,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-mediatek@lists.infradead.org
-References: <20250702214830.255898-1-olek2@wp.pl>
- <20250702214830.255898-2-olek2@wp.pl>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <20250702214830.255898-2-olek2@wp.pl>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 7/2/25 4:48 PM, Aleksander Jan Bajkowski wrote:
-> The temperature sensor in the MT7981 is same as in the MT7986.
-> Add compatible string for mt7981.
-> 
-> Signed-off-by: Aleksander Jan Bajkowski <olek2@wp.pl>
-> Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-> ---
->  .../devicetree/bindings/iio/adc/mediatek,mt2701-auxadc.yaml      | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/adc/mediatek,mt2701-auxadc.yaml b/Documentation/devicetree/bindings/iio/adc/mediatek,mt2701-auxadc.yaml
-> index b489c984c1bb..ceb914dde15b 100644
-> --- a/Documentation/devicetree/bindings/iio/adc/mediatek,mt2701-auxadc.yaml
-> +++ b/Documentation/devicetree/bindings/iio/adc/mediatek,mt2701-auxadc.yaml
-> @@ -26,6 +26,7 @@ properties:
->            - mediatek,mt2712-auxadc
->            - mediatek,mt6765-auxadc
->            - mediatek,mt7622-auxadc
-> +          - mediatek,mt7981-auxadc
->            - mediatek,mt7986-auxadc
->            - mediatek,mt8173-auxadc
->        - items:
+Add several interrupt based sensor detection events:
+- refactoring and fixes
+- activity/inactivity linked and auto-sleep
+- AC-coupled activity/inactivity
+- Extend inactivity for inactivity under 1s (using free-fall register)
+- documentation
 
-The new compatible with fallback should look like this:
-
-diff --git a/Documentation/devicetree/bindings/iio/adc/mediatek,mt2701-auxadc.yaml b/Documentation/devicetree/bindings/iio/adc/mediatek,mt2701-auxadc.yaml
-index b489c984c1bb..14363389f30a 100644
---- a/Documentation/devicetree/bindings/iio/adc/mediatek,mt2701-auxadc.yaml
-+++ b/Documentation/devicetree/bindings/iio/adc/mediatek,mt2701-auxadc.yaml
-@@ -32,6 +32,10 @@ properties:
-           - enum:
-               - mediatek,mt7623-auxadc
-           - const: mediatek,mt2701-auxadc
-+      - items:
-+          - enum:
-+              - mediatek,mt7981-auxadc
-+          - const: mediatek,mt7986-auxadc
-       - items:
-           - enum:
-               - mediatek,mt6893-auxadc
+Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
 ---
+v10 -> v11:
+- [PATCH v10 1/7]: prefixed `_get_int_line()`
+- [PATCH v10 3/7]: add `ADXL345_ACT_XYZ_EN` to reduce LoC occupation, in
+  cases of added features, the line formatting is actually kept the same as
+  in v10
+- [PATCH v10 4/7]: add `ADXL345_INACT_XYZ_EN` to simplify and reduce LoC
+  ocupation
+- [PATCH v10 5/7]: Break the variable declaration and assignment into two
+  distinct lines
+- [PATCH v10 6/7]: `adxl345_set_inact_time()`: Extract conditional cases
+  into separate helper functions; Use a nested if/else to eliminate
+  redundant val_int == 0sec checks
+- [PATCH v10 7/7]: Separate the documentation sections for free-fall
+  detection and inactivity detection into anothe patch
 
-Then you can validate that the next patch matches the bindings with
-`make CHECK_DTBS=1`. I would expect it to fail currently since the
-binding is specifying a compatible without a fallback but the .dts
-uses a fallback.
+v9 -> v10:
+
+- [PATCH v9 01/11]: Dropped
+- [PATCH v9 02/11]: Applied
+- [PATCH v9 03/11]: Applied
+- [PATCH v9 05/11]: Replace literal number 2 by a `sizeof()` statement.
+- [PATCH v9 06/11]: Applied
+- [PATCH v9 01/11]: Tap scaling patch is kept unmodified, since the
+  threshold has been in raw register values, the patch scales that to
+  g/LSB. There was no other advice (so far/to my understanding) to drop or
+  modify this patch
+- all (remaing) patches: Rephrased commit messages
+- `adxl345_is_act_inact_en()`: Refactor the function; Check for a valid
+  threshold earlier based on the enable flag; incrementally construct the
+  switch/case conditions
+- `adxl345_set_act_inact_en()`: Refactor the function; implement helper
+  functions; group checks at the beginning, return soon in case of `false`,
+  group `cmd_en` using calls to the end
+- `adxl345_read/write_mag_config()`: Introduce the helper functions when
+  activity is added, and prefer using switch/case statements. However,
+  retain the internal nested switch/case structure, as it appears more
+  appropriate in the context of handling other channel values and
+  configurations
+- `adxl345_read/write_mag_value()`: Introduce helpers when activity is
+  added (keep internal nested switch/case)
+- `adxl345_core_probe()`: Rephrase comment on default values
+- `adxl345_set_inact_time()`: Rephrase function description
+- `adxl345_set_act_inact_linkbit()`: Factor link-bit and auto-sleep
+  handling in a separate function
+- `adxl345_set_inact_time()`: Use `clamp()` and convert `min_boundary` and
+  `max_boundary` to int; in cases of `>max_boundary` stay with the clamp
+  behavior for inactive period
+- `adxl345_set_odr()`: The return statement is kept as is, due to several
+  refacs it won't change so `return adxl345_set_inact_time(st, 0);` only
+  becomes `return adxl345_set_inact_time(st, 0, 0);` throughout the patch
+  series
+- `adxl345_set_act_inact_linkbit()`: Apply `ADXL345_POWER_CTL_INACT_MSK`
+  directly
+- `adxl345_is_act_inact_ac()`: Change to use switch/case for clarity
+- `adxl345_set_act_inact_ac()`: Additionally accept `cmd_en` to turn
+  coupling on/off
+- `adxl345_set_inact_time()`: Return from within the conditional cases as
+  of the last source patch [PATCH v9 10/11]
+- documentation: rephrased major parts (ai based rephrasing)
+
+v8 -> v9:
+- githook: apply codespell checks, extend by spellcheck using ispell
+- refac: apply `regmap_assing_bits()` in several places
+- refac: remove ADXL345_POWER_CTL_STANDBY in adxl345.h not needed anymore
+- refac: rename `ADXL345_ACT_INACT_DC/AC` to `ADXL345_COUPLING_DC/AC`
+- refac: remove variable irq from `struct adxl345_state`
+- refac: apply expressions, such as MILLI or MICRO from linux/units.h
+- refac: apply (missing) scaling factor 62.5mg/LSB to tap detection
+- change `IIO_EV_TYPE_MAG_REFERENCED` to `IIO_EV_TYPE_MAG_ADAPTIVE`
+- `adxl345_fifo_transfer()`: eliminate variable for expression count / 2
+- `adxl345_is_act_inact_ac()`: make return boolean, or negative error
+- make activity enable cover x, y and z axis together, while signals come
+  on particular axis
+- `adxl345_read_mag_value()`: separate `MAG` and `MAG_ADAPTIVE` event
+  value read and write function to reduce redundant code
+- `adxl345_read_mag_config()`: separate `MAG` and `MAG_ADAPTIVE` event
+  config read and write functions to reduce redundant code
+- `adxl345_set_act_inact_en()`: move linkbit detection out to
+  `adxl345_set_act_inact_linkbit()`
+- `adxl345_set_act_inact_en()`: fix unsetting register INT ENABLE at
+  disabling feature(s)
+- apply scaling factor 62.5mg/LSB to activity/inactivity
+- apply scaling factor 62.5mg/LSB to activity AC/inactivity AC
+- drop dedicated freefall patch
+- add patch: fix missing scale factor for tap detection
+- add patch: make irq a function local variable
+- add patch: simplify measure enable
+- add patch: simplify interrupt mapping
+- add patch: simplify FIFO reading
+- add patch: replace magic numbers by unit expressions
+- rename `adxl345_set_inact_time_s()` to `adxl345_set_inact_time()`
+- `adxl345_set_inact_time()`: implement inactivity using inactivity
+  register (period 1s or higher), freefall register (below 1s) or let it
+  setup a period based on given ODR (0s provided)
+- doc: update documentation
+
+v7 -> v8:
+- activity/inactivity are MAG events
+- separate AC coupled activity/inactivity events as MAG_REFERENCED events,
+  since AC coupling introduces a (some kind of) reference relation
+- since freefall and inactivity (DC coupled) are then actually identical,
+  this results in a challenging situation for the freefall patch. Thus,
+  the freefall patch is moved to end of this series (before documentation)
+- freefall: provide separate sysfs handles to configure and enable freefall
+- documentation: update sections on activity/inactivity, freefall, event
+  names and examples
+
+v6 -> v7:
+- freefall: add a virtual channel, replace OR'ing the axis by AND'ing them
+- inactivity: add a virtual channel, replace OR'ing the axis by AND'ing them
+
+v5 -> v6:
+- replace bool axis_en for tap and activity/inactivity
+- apply freefall bit mask
+- change `measure_en` to use `regmap_update_bits()` for POWER_CTL register
+- fix comments and update documentation, particularly on inactivity time
+
+v4 -> v5:
+- read_config_value() and write_config_value() now use direct returns,
+  in case of a failure, measurement stays turned off
+- fifo evaluation returns 0 in case of success
+- axis enum turned into three different set of defines for tap, act and inact
+- turn the suppress bit into a separate define macro
+- variable naming, generally use axis_ctrl for similar variables
+
+v3 -> v4:
+- rename patch "add double tap suppress bit" to
+  "set the tap suppress bit permanently" to make it more comprehensive
+- added patch "cleanup regmap return values"
+- added patch "introduce adxl345_push_event function", as a solution
+  to the return value problem, group all int_stat evaluating pieces
+  in the same function
+- tap, act and inact axis enabling are using now regmap cache
+- activity enable depending on individual axis now, as the sensor offers
+  such feature
+- inactivity enable depending on individual axis now, as the sensor offers
+  such feature
+- fix bug in previous patch: separate axis direction in interrupt handler
+  sharing the same variable for tap and activity, if tap and activity
+  enabled together
+- refac of the direction identification of previous patch: only read
+  act/tap axis once now in interrupt handler if both is enabled
+- fix bug in previous patch: return value of pushed event in interrupt
+  handler
+- several cleanups
+
+v2 -> v3:
+- generally introduction of regmap cache for all directly stored 8-bit
+  values, specification of volatile regs and cleanup
+- moving thresholds, unchanged values and flags to regmap cache, in
+  consequence removal of corresponding member values of the state
+  instance
+- removal of intio and int_map member fields due to regmap cache, thus
+  split of set_interrupts() patches in two parts
+- rework documentation
+- rework of ac-bit comment
+
+v1 -> v2:
+- implementation of all events (but tap2 suppress bit) by means IIO ABI
+- add sample frequency / ODR configuration
+- add g ranges configuration
+- add activity/inactivity using auto-sleep and powersave
+- add dynamic adjustment of default values for
+  activity/inactivity thresholds and time for inactivity based on ODR
+  and g range (can be overwritten)
+- add sensor documentation
+---
+Lothar Rubusch (8):
+  iio: accel: adxl345: simplify interrupt mapping
+  iio: accel: adxl345: simplify reading the FIFO
+  iio: accel: adxl345: add activity event feature
+  iio: accel: adxl345: add inactivity feature
+  iio: accel: adxl345: add coupling detection for activity/inactivity
+  iio: accel: adxl345: extend inactivity time for less than 1s
+  docs: iio: add documentation for adxl345 driver
+  docs: iio: describe inactivity and free-fall detection on the ADXL345
+
+ Documentation/iio/adxl345.rst    | 443 +++++++++++++++++
+ Documentation/iio/index.rst      |   1 +
+ drivers/iio/accel/adxl345_core.c | 816 ++++++++++++++++++++++++++++++-
+ 3 files changed, 1237 insertions(+), 23 deletions(-)
+ create mode 100644 Documentation/iio/adxl345.rst
+
+
+base-commit: 42498420746a4db923f03d048a0ebc9bd2371f56
+prerequisite-patch-id: c3c61d8d9cbb12a2d79a094519bf07dfece74318
+-- 
+2.39.5
+
 

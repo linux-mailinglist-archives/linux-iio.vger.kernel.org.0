@@ -1,78 +1,78 @@
-Return-Path: <linux-iio+bounces-21264-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21265-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F8ECAF65D9
-	for <lists+linux-iio@lfdr.de>; Thu,  3 Jul 2025 01:05:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AF84AF65D8
+	for <lists+linux-iio@lfdr.de>; Thu,  3 Jul 2025 01:04:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C01E5188FE5F
-	for <lists+linux-iio@lfdr.de>; Wed,  2 Jul 2025 23:05:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC0234E3B1F
+	for <lists+linux-iio@lfdr.de>; Wed,  2 Jul 2025 23:04:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1D412F5C44;
-	Wed,  2 Jul 2025 23:03:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB4E22F5C53;
+	Wed,  2 Jul 2025 23:03:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S5N8uDs0"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MVXAJsEU"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB4F02EBDC1;
-	Wed,  2 Jul 2025 23:03:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D83E2F5C36;
+	Wed,  2 Jul 2025 23:03:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751497423; cv=none; b=jflLBrHvj+8Yrv/2yhosW96WlvjPdqzkyeEj1gJRuk4b3Z15xYFUTSw2Fj7Xwsxn8QLF4uysHt51aVx6hFGooG17jvz7ocuWhdrqCSffvdCw98iw2NsRKfpH+crz2sGAv05oKX2/GoH/09kgm3O75APYOXve2QJhbYmKkZKaVps=
+	t=1751497425; cv=none; b=AkxV/jxc6fMdiVP3zfe9bf8t34YrmE1RzRab/v+54JgT6nxOHm0EXdBWT+PzKzdoOYxYcD3U0ESBrzLJ0yYmPA8H/AEQ4PXlbIx4J6NbpLKck8jfoAWl8whz5c8nzEAY32Z5VKXN4xkuQC2sT9rG/0zQlbtkC8FLcZ1ZDA0bTMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751497423; c=relaxed/simple;
-	bh=dXSD3Y9CdFOC7DBI5PmdQ8SOqNP4fSCXkxy9goyX044=;
+	s=arc-20240116; t=1751497425; c=relaxed/simple;
+	bh=jXYHJC34ZKsq7HW8RbSyr4i2li1lu9fBhD1SSaaGjQc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=qHkTkp4hIvPQqI4ltAx97mxCRoho/Zm3HMCRVgTeX6Sh+QuyGtppUYESvoioPHVO8vTjlAAlPPWENzSRultab5cCPcL+KRXBoiSRubcSr9fRXKY0QsgG0yDCflQmBjpUee3ONqcFgT1fXnj7jg2P11/qc8TWHfCVbS2Fu0yZCBI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S5N8uDs0; arc=none smtp.client-ip=209.85.208.45
+	 MIME-Version:Content-Type; b=Hw+O7bYtofEeaJUii1UFixr1Gc74MAAaB7dba28LhSnl2zlGMtQaw4VfZn+Ga943jR5yGaBjpBenqFbKHUJ+vbi8ubI9/G0RB1CQukGcMszlt/gXOlEJ64Q+A0k2RBL45v3mWoYs39z9lJXAkvhaF1lAAwu/OBVmC4FsWP9yOUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MVXAJsEU; arc=none smtp.client-ip=209.85.208.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-6070a8f99ffso1434704a12.3;
-        Wed, 02 Jul 2025 16:03:41 -0700 (PDT)
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-60c733792e9so1456573a12.0;
+        Wed, 02 Jul 2025 16:03:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1751497420; x=1752102220; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1751497422; x=1752102222; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=N/t2LXrBhfR6tCe/TVOle2ATEgtYF3+FI/Wh5WPA3/A=;
-        b=S5N8uDs0XLvpsgYHMLMzAFYCt+5R9rsB5r6RdQBP+9l/F6tOOYHILAKSnUPzKEFMCz
-         8fjJ+pHMGMkDTquqpKFJPhbjdRUGcywwPyfPoDm3JAwEFVOYCDDL9TiH2b/Uz1+sB+Ti
-         5mr5tsSgtEz53pgTNaRft9oQeWrMbc1JXEzVc/DPnLthWPuUuSGHYfLi9QPhqVcTffIp
-         Uqd29T+SlfCDIKi22o2yx2xkrC5n3R9XPg3hguL6SB/drB4nujOy9Bu6Tb1xJEAPwKtA
-         Obr1KHYlHr6IXwRT3DAACtrrnC+Qw+oDi4KvajEGR4TWlKHDonAyl4TrXwQrREA1DSJ8
-         0b9w==
+        bh=tLjGk5ziASxVYisS3zzqxUx/r+m2wPJrd4YVdsrp2p8=;
+        b=MVXAJsEUSfkAesQdVywni4vfsaqaAyDIH1TdmI0ZvfMCkX/AHL4sMT3QTH7GFNRz1H
+         OnxDnVCEuIR7PnReRyFqZkcKDIyfjcB1PuMkDjj/tdKC2KRMN4NnznjdOFVBTIen/xx1
+         MFeyp6VoafSRGRbeKGe+FLcMNjKZkLh2VTIueha9iB8Jwsu0i1FnmQnWcCjExa6d3RN0
+         K39xIVyLs3Y9ho9n8svSO3Boy1QCFzjPCdlNNuKRDlEQmEvgkQ2kfee5nyjR4acrRNvN
+         92qFg25bwqFGospdSmBepP14OlyOpmitVjctgcW+Jkpg9GboJUg+jG1RFEzqIaDn9iRf
+         sVrg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751497420; x=1752102220;
+        d=1e100.net; s=20230601; t=1751497422; x=1752102222;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=N/t2LXrBhfR6tCe/TVOle2ATEgtYF3+FI/Wh5WPA3/A=;
-        b=HZDcnl/JtNeZtXf6HtG+3pdVglLQLIu0940JQn1//UYm6VKJT9r/hHleP6s8ItejPp
-         8sOLsRELZmQLlYcXEkOzk+uxDBvVYR+nsWQhZgtk6ABma2mMAoK5EMqx4oQrDSmV33Tj
-         8XEgKc04WYQTGeevkTG09q4ORB0Ve5kvma59EjHkBsw8SDWG4ldQu9ubdBLS6cx8ylFt
-         pqM4HYmBFHyF8ehKR56aNSl8G6CpZjpqMAd6be/YYhR4WvCxKXJ5NX7If2ltVs67Ipky
-         pjbbJrMstUTQEmzOrfnqM8Owv5V11ROX0oxKmX88qUJwuQm2avIgFs49cKgHlCOy4tSa
-         46rw==
-X-Forwarded-Encrypted: i=1; AJvYcCUuSe+3XqHlmhtX4VnZoat+/75I/Tqx2TzOtgozoJlH8TYe0cVnCWXSryugZ0EPhrnRAVkFD+ovb3k=@vger.kernel.org, AJvYcCWMBauNqlFcU8ZGxLHoNkqldeclS3xwiGozoKE0ovuQ4u0aBa87+zrA9nZOGU4IWpkmPGM7X8kF59A4otPT@vger.kernel.org
-X-Gm-Message-State: AOJu0YxYwfPnu1uymbLDIBRFmqSgurf2k17lKtPmD4IrgBXZLRRNvOKt
-	TlzwpPtYJ/eNELfC5A4tPSkLOvXTUJizLhjdY3JaKC6U/hk8JxcB8KsJ
-X-Gm-Gg: ASbGncs8HHe3CDFPFj/iTmiTjKrnvWMuLjA9Gf6htoyFSavE+XXZd8ENz+7gf2lrvxC
-	pDwkyuvXV1mivzl5Q62ti2V2AZCqAIWAMpS8dbFwfxBQv7OCjhAa23qPRbpKZSpptH9iLT5mHEP
-	IWhf+a0W7qrErlCqX9U/g1aa1EAMlblT1oRLkPSknE1uAfLU39VwM9pjeYZlZ4UuiBqriVs0ksN
-	xVVd/tt5MT82+LZ+nTdN4U5DT2tYthmZR0RuRKSRLYn0s+SzngqX3l0KEak0RPpJWlGLbVss66t
-	PxpPtsTo3q8f4CEdS7HUc3LOdbFLky3RuI5WBLq9EszFmQBEzHJVDbEx2DMVXYkYX7Nq30qDDWF
-	TITZIcEx6xC/Ldhai8mr8wfZr+LjLy44P
-X-Google-Smtp-Source: AGHT+IF5DfIZycpfZgNHK6WlGH0ylLbAbMvmhMH5A+iKdVjNJlzqMfw5bh4OQYyBbzsYJ1As0zA4gQ==
-X-Received: by 2002:a05:6402:5487:b0:607:7add:8647 with SMTP id 4fb4d7f45d1cf-60e74514bc3mr77375a12.8.1751497419567;
-        Wed, 02 Jul 2025 16:03:39 -0700 (PDT)
+        bh=tLjGk5ziASxVYisS3zzqxUx/r+m2wPJrd4YVdsrp2p8=;
+        b=sUl50jPiyon3Qoc8guF54f+oHSLQgE7pPf9j1kXyS6CwPuePekCE+nfOUSLwhEhflD
+         8wplhqjQ83j2AgcciLiwuhD1eBxnsFOk4XrEavI95deW7rDPT4oxaAYaslaBmV0acCE4
+         QLa1r1TpBjRGtcSrdZDUUVkfiThDRL27YJxoXdHO5JS+9xvzevC4iTMsJpRT2ShouChE
+         zyImb5JkZh2vGNPrzIUmLoOApWJ8PN9nBj3N/TkIvMKJSnmLpyROsV6ZtKoDdVR9Ti6h
+         jkFYt5xoIbVtmzywPmWDtF+ij40FtvUUUyeGJNBb4Lp+qocoXEMpZm6UJf5k/OfU8osj
+         3DFQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUbvwpQFjl5xKvASHp35Prt8pUBVpGQ97JlXFBEAYPOWWY6detJ6bFuuKiE8GFBPHrDpKd3r5rduew=@vger.kernel.org, AJvYcCWANPVjFgxPcWFMrq/8i1IGpjSrLQ6hafUtlEWo7RiC+qf2SyVo13PjZ+RvJCwRmFOMQzr4MF8ZiEtDIy1U@vger.kernel.org
+X-Gm-Message-State: AOJu0YxT+aqAJULYT7dYGEcMUKvNd/kTXh7CLMR/gVha0W/HAQKahI/3
+	QDN2a1CZeeowV3SH+4/mocckp04V4dKNPgI61iWXs1roqkZDqR+AQWJT
+X-Gm-Gg: ASbGnctX7TRuRQTYk25oeKpG+b99F+qC5ijUOxkeVQj7mvxYYh1hj2QzYTVekL5154t
+	sTpGokAXokBOjmSbZe8KnP63H0B21DwqkdLakJLARUEWVlJbX9wInYE1bhEN6wDkR6T5G7eLq6f
+	wEqnz0JL8x0i4hh3a6id8GVRxlWRCUN/oa3qyiyl0bk7xo1OX3LmQcseoJwAjKv8OOt61nStHLF
+	6V0tIMng3iUPoAH/TqHfluWhgc4fn0YD+OlLToodUUH5egQ9KXFSkjuqN+C5SScZlj4wDPy0yaG
+	KwkDAUsu3I+1n98oabItWl9dH91Hxb6zacaUT0zkeL/3EFySDhFujHC+g8jNamCGgG1gzvSdhHu
+	FQtZc64azwKVuOqh/EVU+EmfSLGCF3y02cyawmjhZMTk=
+X-Google-Smtp-Source: AGHT+IGm27nFP7+gljUyU+4YSG0cWYTSI1EoK+zgG/JIgPdqMym6pjLQkjKJRFMuZrD/A02skZGdHg==
+X-Received: by 2002:a05:6402:4490:b0:608:c773:8b3 with SMTP id 4fb4d7f45d1cf-60e768ebf04mr253a12.7.1751497421546;
+        Wed, 02 Jul 2025 16:03:41 -0700 (PDT)
 Received: from localhost.localdomain (84-72-156-211.dclient.hispeed.ch. [84.72.156.211])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-60c8319e706sm10031469a12.47.2025.07.02.16.03.37
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-60c8319e706sm10031469a12.47.2025.07.02.16.03.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Jul 2025 16:03:38 -0700 (PDT)
+        Wed, 02 Jul 2025 16:03:40 -0700 (PDT)
 From: Lothar Rubusch <l.rubusch@gmail.com>
 To: lars@metafoo.de,
 	Michael.Hennerich@analog.com,
@@ -86,9 +86,9 @@ Cc: linux-iio@vger.kernel.org,
 	linux-doc@vger.kernel.org,
 	eraretuya@gmail.com,
 	l.rubusch@gmail.com
-Subject: [PATCH v11 3/8] iio: accel: adxl345: add activity event feature
-Date: Wed,  2 Jul 2025 23:03:10 +0000
-Message-Id: <20250702230315.19297-4-l.rubusch@gmail.com>
+Subject: [PATCH v11 4/8] iio: accel: adxl345: add inactivity feature
+Date: Wed,  2 Jul 2025 23:03:11 +0000
+Message-Id: <20250702230315.19297-5-l.rubusch@gmail.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250702230315.19297-1-l.rubusch@gmail.com>
 References: <20250702230315.19297-1-l.rubusch@gmail.com>
@@ -98,324 +98,469 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Enable the sensor to detect activity and trigger interrupts accordingly.
-Activity events are determined based on a threshold, which is initialized
-to a sensible default during probe. This default value is adopted from the
-legacy ADXL345 input driver to maintain consistent behavior.
+Add support for the sensor’s inactivity feature in the driver. When both
+activity and inactivity detection are enabled, the sensor sets a link bit
+that ties the two functions together. This also enables auto-sleep mode,
+allowing the sensor to automatically enter sleep state upon detecting
+inactivity.
 
-The combination of activity detection, ODR configuration, and range
-settings lays the groundwork for the activity/inactivity hysteresis
-mechanism, which will be implemented in a subsequent patch. As such,
-portions of this patch prepare switch-case structures to support those
-upcoming changes.
+Inactivity detection relies on a configurable threshold and a specified
+time period. If sensor measurements remain below the threshold for the
+defined duration, the sensor transitions to the inactivity state.
+
+When an Output Data Rate (ODR) is set, the inactivity time period is
+automatically adjusted to a sensible default. Higher ODRs result in shorter
+inactivity timeouts, while lower ODRs allow longer durations-within
+reasonable upper and lower bounds. This is important because features like
+auto-sleep operate effectively only between 12.5 Hz and 400 Hz. These
+defaults are applied when the sample rate is modified, but users can
+override them by explicitly setting a custom inactivity timeout.
+
+Similarly, configuring the g-range provides default threshold values for
+both activity and inactivity detection. These are implicit defaults meant
+to simplify configuration, but they can also be manually overridden as
+needed.
 
 Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
 ---
- drivers/iio/accel/adxl345_core.c | 242 ++++++++++++++++++++++++++++++-
- 1 file changed, 239 insertions(+), 3 deletions(-)
+ drivers/iio/accel/adxl345_core.c | 238 ++++++++++++++++++++++++++++++-
+ 1 file changed, 234 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/iio/accel/adxl345_core.c b/drivers/iio/accel/adxl345_core.c
-index b7dfd0007aa0..eb24ee7c4251 100644
+index eb24ee7c4251..90fef42ac021 100644
 --- a/drivers/iio/accel/adxl345_core.c
 +++ b/drivers/iio/accel/adxl345_core.c
-@@ -36,11 +36,17 @@
- #define ADXL345_REG_TAP_AXIS_MSK	GENMASK(2, 0)
+@@ -37,11 +37,18 @@
  #define ADXL345_REG_TAP_SUPPRESS_MSK	BIT(3)
  #define ADXL345_REG_TAP_SUPPRESS	BIT(3)
-+#define ADXL345_REG_ACT_AXIS_MSK	GENMASK(6, 4)
+ #define ADXL345_REG_ACT_AXIS_MSK	GENMASK(6, 4)
++#define ADXL345_REG_INACT_AXIS_MSK	GENMASK(2, 0)
++#define ADXL345_POWER_CTL_INACT_MSK	(ADXL345_POWER_CTL_AUTO_SLEEP | ADXL345_POWER_CTL_LINK)
  
  #define ADXL345_TAP_Z_EN		BIT(0)
  #define ADXL345_TAP_Y_EN		BIT(1)
  #define ADXL345_TAP_X_EN		BIT(2)
  
-+#define ADXL345_ACT_Z_EN		BIT(4)
-+#define ADXL345_ACT_Y_EN		BIT(5)
-+#define ADXL345_ACT_X_EN		BIT(6)
-+#define ADXL345_ACT_XYZ_EN		(ADXL345_ACT_Z_EN | ADXL345_ACT_Y_EN | ADXL345_ACT_X_EN)
++#define ADXL345_INACT_Z_EN		BIT(0)
++#define ADXL345_INACT_Y_EN		BIT(1)
++#define ADXL345_INACT_X_EN		BIT(2)
++#define ADXL345_INACT_XYZ_EN		(ADXL345_INACT_Z_EN | ADXL345_INACT_Y_EN | ADXL345_INACT_X_EN)
 +
- /* single/double tap */
- enum adxl345_tap_type {
- 	ADXL345_SINGLE_TAP,
-@@ -64,6 +70,19 @@ static const unsigned int adxl345_tap_time_reg[] = {
- 	[ADXL345_TAP_TIME_DUR] = ADXL345_REG_DUR,
+ #define ADXL345_ACT_Z_EN		BIT(4)
+ #define ADXL345_ACT_Y_EN		BIT(5)
+ #define ADXL345_ACT_X_EN		BIT(6)
+@@ -73,14 +80,17 @@ static const unsigned int adxl345_tap_time_reg[] = {
+ /* activity/inactivity */
+ enum adxl345_activity_type {
+ 	ADXL345_ACTIVITY,
++	ADXL345_INACTIVITY,
  };
  
-+/* activity/inactivity */
-+enum adxl345_activity_type {
-+	ADXL345_ACTIVITY,
-+};
-+
-+static const unsigned int adxl345_act_int_reg[] = {
-+	[ADXL345_ACTIVITY] = ADXL345_INT_ACTIVITY,
-+};
-+
-+static const unsigned int adxl345_act_thresh_reg[] = {
-+	[ADXL345_ACTIVITY] = ADXL345_REG_THRESH_ACT,
-+};
-+
+ static const unsigned int adxl345_act_int_reg[] = {
+ 	[ADXL345_ACTIVITY] = ADXL345_INT_ACTIVITY,
++	[ADXL345_INACTIVITY] = ADXL345_INT_INACTIVITY,
+ };
+ 
+ static const unsigned int adxl345_act_thresh_reg[] = {
+ 	[ADXL345_ACTIVITY] = ADXL345_REG_THRESH_ACT,
++	[ADXL345_INACTIVITY] = ADXL345_REG_THRESH_INACT,
+ };
+ 
  enum adxl345_odr {
- 	ADXL345_ODR_0P10HZ = 0,
- 	ADXL345_ODR_0P20HZ,
-@@ -144,6 +163,13 @@ struct adxl345_state {
+@@ -148,6 +158,14 @@ static const int adxl345_fullres_range_tbl[][2] = {
+ 	[ADXL345_16G_RANGE] = { 0, 38312 },
  };
  
- static const struct iio_event_spec adxl345_events[] = {
-+	{
-+		/* activity */
-+		.type = IIO_EV_TYPE_MAG,
-+		.dir = IIO_EV_DIR_RISING,
-+		.mask_shared_by_type = BIT(IIO_EV_INFO_ENABLE) |
-+			BIT(IIO_EV_INFO_VALUE),
-+	},
- 	{
- 		/* single tap */
- 		.type = IIO_EV_TYPE_GESTURE,
-@@ -237,6 +263,87 @@ static int adxl345_set_measure_en(struct adxl345_state *st, bool en)
- 				  ADXL345_POWER_CTL_MEASURE, en);
- }
++/* scaling */
++static const int adxl345_range_factor_tbl[] = {
++	[ADXL345_2G_RANGE]  = 1,
++	[ADXL345_4G_RANGE]  = 2,
++	[ADXL345_8G_RANGE]  = 4,
++	[ADXL345_16G_RANGE] = 8,
++};
++
+ struct adxl345_state {
+ 	const struct adxl345_chip_info *info;
+ 	struct regmap *regmap;
+@@ -214,10 +232,29 @@ enum adxl345_chans {
+ 	chan_x, chan_y, chan_z,
+ };
  
-+/* activity / inactivity */
++static const struct iio_event_spec adxl345_fake_chan_events[] = {
++	{
++		/* inactivity */
++		.type = IIO_EV_TYPE_MAG,
++		.dir = IIO_EV_DIR_FALLING,
++		.mask_separate = BIT(IIO_EV_INFO_ENABLE),
++		.mask_shared_by_type = BIT(IIO_EV_INFO_VALUE) |
++			BIT(IIO_EV_INFO_PERIOD),
++	},
++};
 +
-+static int adxl345_is_act_inact_en(struct adxl345_state *st,
-+				   enum adxl345_activity_type type)
+ static const struct iio_chan_spec adxl345_channels[] = {
+ 	ADXL345_CHANNEL(0, chan_x, X),
+ 	ADXL345_CHANNEL(1, chan_y, Y),
+ 	ADXL345_CHANNEL(2, chan_z, Z),
++	{
++		.type = IIO_ACCEL,
++		.modified = 1,
++		.channel2 = IIO_MOD_X_AND_Y_AND_Z,
++		.scan_index = -1, /* Fake channel */
++		.event_spec = adxl345_fake_chan_events,
++		.num_event_specs = ARRAY_SIZE(adxl345_fake_chan_events),
++	},
+ };
+ 
+ static const unsigned long adxl345_scan_masks[] = {
+@@ -265,6 +302,52 @@ static int adxl345_set_measure_en(struct adxl345_state *st, bool en)
+ 
+ /* activity / inactivity */
+ 
++/**
++ * adxl345_set_inact_time - Configure inactivity time explicitly or by ODR.
++ * @st: The sensor state instance.
++ * @val_s: A desired time value, between 0 and 255.
++ *
++ * Inactivity time can be configured between 1 and 255 seconds. If a user sets
++ * val_s to 0, a default inactivity time is calculated automatically (since 0 is
++ * also invalid and undefined by the sensor).
++ *
++ * In such cases, power consumption should be considered: the inactivity period
++ * should be shorter at higher sampling frequencies and longer at lower ones.
++ * Specifically, for frequencies above 255 Hz, the default is set to 10 seconds;
++ * for frequencies below 10 Hz, it defaults to 255 seconds.
++ *
++ * The calculation method subtracts the integer part of the configured sample
++ * frequency from 255 to estimate the inactivity time in seconds. Sub-Hertz
++ * values are ignored in this approximation. Since the recommended output data
++ * rates (ODRs) for features like activity/inactivity detection, sleep modes,
++ * and free fall range between 12.5 Hz and 400 Hz, frequencies outside this
++ * range will either use the defined boundary defaults or require explicit
++ * configuration via val_s.
++ *
++ * Return: 0 or error value.
++ */
++static int adxl345_set_inact_time(struct adxl345_state *st, u32 val_s)
 +{
-+	unsigned int axis_ctrl;
++	int max_boundary = U8_MAX;
++	int min_boundary = 10;
++	unsigned int val = min(val_s, U8_MAX);
++	enum adxl345_odr odr;
 +	unsigned int regval;
-+	bool en;
 +	int ret;
 +
-+	ret = regmap_read(st->regmap, ADXL345_REG_ACT_INACT_CTRL, &axis_ctrl);
-+	if (ret)
-+		return ret;
-+
-+	/* Check if axis for activity are enabled */
-+	switch (type) {
-+	case ADXL345_ACTIVITY:
-+		en = FIELD_GET(ADXL345_ACT_XYZ_EN, axis_ctrl);
-+		if (!en)
-+			return false;
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	/* Check if specific interrupt is enabled */
-+	ret = regmap_read(st->regmap, ADXL345_REG_INT_ENABLE, &regval);
-+	if (ret)
-+		return ret;
-+
-+	return adxl345_act_int_reg[type] & regval;
-+}
-+
-+static int adxl345_set_act_inact_en(struct adxl345_state *st,
-+				    enum adxl345_activity_type type,
-+				    bool cmd_en)
-+{
-+	unsigned int axis_ctrl;
-+	unsigned int threshold;
-+	int ret;
-+
-+	if (cmd_en) {
-+		/* When turning on, check if threshold is valid */
-+		ret = regmap_read(st->regmap,
-+				  adxl345_act_thresh_reg[type],
-+				  &threshold);
++	if (val == 0) {
++		ret = regmap_read(st->regmap, ADXL345_REG_BW_RATE, &regval);
 +		if (ret)
 +			return ret;
 +
-+		if (!threshold) /* Just ignore the command if threshold is 0 */
-+			return 0;
++		odr = FIELD_GET(ADXL345_BW_RATE_MSK, regval);
++		val = clamp(max_boundary - adxl345_odr_tbl[odr][0],
++			    min_boundary, max_boundary);
 +	}
 +
-+	/* Start modifying configuration registers */
-+	ret = adxl345_set_measure_en(st, false);
-+	if (ret)
-+		return ret;
-+
-+	/* Enable axis according to the command */
-+	switch (type) {
-+	case ADXL345_ACTIVITY:
-+		axis_ctrl = ADXL345_ACT_XYZ_EN;
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	ret = regmap_assign_bits(st->regmap, ADXL345_REG_ACT_INACT_CTRL,
-+				 axis_ctrl, cmd_en);
-+	if (ret)
-+		return ret;
-+
-+	/* Enable the interrupt line, according to the command */
-+	ret = regmap_assign_bits(st->regmap, ADXL345_REG_INT_ENABLE,
-+				 adxl345_act_int_reg[type], cmd_en);
-+	if (ret)
-+		return ret;
-+
-+	return adxl345_set_measure_en(st, true);
++	return regmap_write(st->regmap, ADXL345_REG_TIME_INACT, val);
 +}
 +
- /* tap */
+ static int adxl345_is_act_inact_en(struct adxl345_state *st,
+ 				   enum adxl345_activity_type type)
+ {
+@@ -284,6 +367,11 @@ static int adxl345_is_act_inact_en(struct adxl345_state *st,
+ 		if (!en)
+ 			return false;
+ 		break;
++	case ADXL345_INACTIVITY:
++		en = FIELD_GET(ADXL345_INACT_XYZ_EN, axis_ctrl);
++		if (!en)
++			return false;
++		break;
+ 	default:
+ 		return -EINVAL;
+ 	}
+@@ -296,12 +384,32 @@ static int adxl345_is_act_inact_en(struct adxl345_state *st,
+ 	return adxl345_act_int_reg[type] & regval;
+ }
  
- static int _adxl345_set_tap_int(struct adxl345_state *st,
-@@ -624,6 +731,31 @@ static int adxl345_write_raw(struct iio_dev *indio_dev,
++static int adxl345_set_act_inact_linkbit(struct adxl345_state *st,
++					 enum adxl345_activity_type type,
++					 bool en)
++{
++	int act_en, inact_en;
++
++	act_en = adxl345_is_act_inact_en(st, ADXL345_ACTIVITY);
++	if (act_en < 0)
++		return act_en;
++
++	inact_en = adxl345_is_act_inact_en(st, ADXL345_INACTIVITY);
++	if (inact_en < 0)
++		return inact_en;
++
++	return regmap_assign_bits(st->regmap, ADXL345_REG_POWER_CTL,
++				  ADXL345_POWER_CTL_INACT_MSK,
++				  en && act_en && inact_en);
++}
++
+ static int adxl345_set_act_inact_en(struct adxl345_state *st,
+ 				    enum adxl345_activity_type type,
+ 				    bool cmd_en)
+ {
+ 	unsigned int axis_ctrl;
+ 	unsigned int threshold;
++	unsigned int period;
+ 	int ret;
+ 
+ 	if (cmd_en) {
+@@ -314,6 +422,18 @@ static int adxl345_set_act_inact_en(struct adxl345_state *st,
+ 
+ 		if (!threshold) /* Just ignore the command if threshold is 0 */
+ 			return 0;
++
++		/* When turning on inactivity, check if inact time is valid */
++		if (type == ADXL345_INACTIVITY) {
++			ret = regmap_read(st->regmap,
++					  ADXL345_REG_TIME_INACT,
++					  &period);
++			if (ret)
++				return ret;
++
++			if (!period)
++				return 0;
++		}
+ 	}
+ 
+ 	/* Start modifying configuration registers */
+@@ -326,6 +446,9 @@ static int adxl345_set_act_inact_en(struct adxl345_state *st,
+ 	case ADXL345_ACTIVITY:
+ 		axis_ctrl = ADXL345_ACT_XYZ_EN;
+ 		break;
++	case ADXL345_INACTIVITY:
++		axis_ctrl = ADXL345_INACT_XYZ_EN;
++		break;
+ 	default:
+ 		return -EINVAL;
+ 	}
+@@ -341,6 +464,11 @@ static int adxl345_set_act_inact_en(struct adxl345_state *st,
+ 	if (ret)
+ 		return ret;
+ 
++	/* Set link-bit and auto-sleep only when ACT and INACT are enabled */
++	ret = adxl345_set_act_inact_linkbit(st, type, cmd_en);
++	if (ret)
++		return ret;
++
  	return adxl345_set_measure_en(st, true);
  }
  
-+static int adxl345_read_mag_config(struct adxl345_state *st,
-+				   enum iio_event_direction dir,
-+				   enum adxl345_activity_type type_act)
-+{
-+	switch (dir) {
-+	case IIO_EV_DIR_RISING:
-+		return !!adxl345_is_act_inact_en(st, type_act);
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static int adxl345_write_mag_config(struct adxl345_state *st,
-+				    enum iio_event_direction dir,
-+				    enum adxl345_activity_type type_act,
-+				    bool state)
-+{
-+	switch (dir) {
-+	case IIO_EV_DIR_RISING:
-+		return adxl345_set_act_inact_en(st, type_act, state);
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
- static int adxl345_read_event_config(struct iio_dev *indio_dev,
- 				     const struct iio_chan_spec *chan,
- 				     enum iio_event_type type,
-@@ -634,6 +766,9 @@ static int adxl345_read_event_config(struct iio_dev *indio_dev,
- 	int ret;
+@@ -573,9 +701,16 @@ static int adxl345_find_odr(struct adxl345_state *st, int val,
  
- 	switch (type) {
-+	case IIO_EV_TYPE_MAG:
-+		return adxl345_read_mag_config(st, dir,
-+					       ADXL345_ACTIVITY);
- 	case IIO_EV_TYPE_GESTURE:
- 		switch (dir) {
- 		case IIO_EV_DIR_SINGLETAP:
-@@ -665,6 +800,10 @@ static int adxl345_write_event_config(struct iio_dev *indio_dev,
- 	struct adxl345_state *st = iio_priv(indio_dev);
- 
- 	switch (type) {
-+	case IIO_EV_TYPE_MAG:
-+		return adxl345_write_mag_config(st, dir,
-+						ADXL345_ACTIVITY,
-+						state);
- 	case IIO_EV_TYPE_GESTURE:
- 		switch (dir) {
- 		case IIO_EV_DIR_SINGLETAP:
-@@ -679,6 +818,58 @@ static int adxl345_write_event_config(struct iio_dev *indio_dev,
- 	}
- }
- 
-+static int adxl345_read_mag_value(struct adxl345_state *st,
-+				  enum iio_event_direction dir,
-+				  enum iio_event_info info,
-+				  enum adxl345_activity_type type_act,
-+				  int *val, int *val2)
-+{
-+	unsigned int threshold;
+ static int adxl345_set_odr(struct adxl345_state *st, enum adxl345_odr odr)
+ {
+-	return regmap_update_bits(st->regmap, ADXL345_REG_BW_RATE,
 +	int ret;
 +
-+	switch (info) {
-+	case IIO_EV_INFO_VALUE:
-+		switch (dir) {
-+		case IIO_EV_DIR_RISING:
++	ret = regmap_update_bits(st->regmap, ADXL345_REG_BW_RATE,
+ 				 ADXL345_BW_RATE_MSK,
+ 				 FIELD_PREP(ADXL345_BW_RATE_MSK, odr));
++	if (ret)
++		return ret;
++
++	/* update inactivity time by ODR */
++	return adxl345_set_inact_time(st, 0);
+ }
+ 
+ static int adxl345_find_range(struct adxl345_state *st, int val, int val2,
+@@ -596,9 +731,49 @@ static int adxl345_find_range(struct adxl345_state *st, int val, int val2,
+ 
+ static int adxl345_set_range(struct adxl345_state *st, enum adxl345_range range)
+ {
+-	return regmap_update_bits(st->regmap, ADXL345_REG_DATA_FORMAT,
++	unsigned int act_threshold, inact_threshold;
++	unsigned int range_old;
++	unsigned int regval;
++	int ret;
++
++	ret = regmap_read(st->regmap, ADXL345_REG_DATA_FORMAT, &regval);
++	if (ret)
++		return ret;
++	range_old = FIELD_GET(ADXL345_DATA_FORMAT_RANGE, regval);
++
++	ret = regmap_read(st->regmap,
++			  adxl345_act_thresh_reg[ADXL345_ACTIVITY],
++			  &act_threshold);
++	if (ret)
++		return ret;
++
++	ret = regmap_read(st->regmap,
++			  adxl345_act_thresh_reg[ADXL345_INACTIVITY],
++			  &inact_threshold);
++	if (ret)
++		return ret;
++
++	ret = regmap_update_bits(st->regmap, ADXL345_REG_DATA_FORMAT,
+ 				 ADXL345_DATA_FORMAT_RANGE,
+ 				 FIELD_PREP(ADXL345_DATA_FORMAT_RANGE, range));
++	if (ret)
++		return ret;
++
++	act_threshold = act_threshold * adxl345_range_factor_tbl[range_old]
++		/ adxl345_range_factor_tbl[range];
++	act_threshold = min(U8_MAX, max(1, act_threshold));
++
++	inact_threshold = inact_threshold * adxl345_range_factor_tbl[range_old]
++		/ adxl345_range_factor_tbl[range];
++	inact_threshold = min(U8_MAX, max(1, inact_threshold));
++
++	ret = regmap_write(st->regmap, adxl345_act_thresh_reg[ADXL345_ACTIVITY],
++			   act_threshold);
++	if (ret)
++		return ret;
++
++	return regmap_write(st->regmap, adxl345_act_thresh_reg[ADXL345_INACTIVITY],
++			   inact_threshold);
+ }
+ 
+ static int adxl345_read_avail(struct iio_dev *indio_dev,
+@@ -733,11 +908,14 @@ static int adxl345_write_raw(struct iio_dev *indio_dev,
+ 
+ static int adxl345_read_mag_config(struct adxl345_state *st,
+ 				   enum iio_event_direction dir,
+-				   enum adxl345_activity_type type_act)
++				   enum adxl345_activity_type type_act,
++				   enum adxl345_activity_type type_inact)
+ {
+ 	switch (dir) {
+ 	case IIO_EV_DIR_RISING:
+ 		return !!adxl345_is_act_inact_en(st, type_act);
++	case IIO_EV_DIR_FALLING:
++		return !!adxl345_is_act_inact_en(st, type_inact);
+ 	default:
+ 		return -EINVAL;
+ 	}
+@@ -746,11 +924,14 @@ static int adxl345_read_mag_config(struct adxl345_state *st,
+ static int adxl345_write_mag_config(struct adxl345_state *st,
+ 				    enum iio_event_direction dir,
+ 				    enum adxl345_activity_type type_act,
++				    enum adxl345_activity_type type_inact,
+ 				    bool state)
+ {
+ 	switch (dir) {
+ 	case IIO_EV_DIR_RISING:
+ 		return adxl345_set_act_inact_en(st, type_act, state);
++	case IIO_EV_DIR_FALLING:
++		return adxl345_set_act_inact_en(st, type_inact, state);
+ 	default:
+ 		return -EINVAL;
+ 	}
+@@ -768,7 +949,8 @@ static int adxl345_read_event_config(struct iio_dev *indio_dev,
+ 	switch (type) {
+ 	case IIO_EV_TYPE_MAG:
+ 		return adxl345_read_mag_config(st, dir,
+-					       ADXL345_ACTIVITY);
++					       ADXL345_ACTIVITY,
++					       ADXL345_INACTIVITY);
+ 	case IIO_EV_TYPE_GESTURE:
+ 		switch (dir) {
+ 		case IIO_EV_DIR_SINGLETAP:
+@@ -803,6 +985,7 @@ static int adxl345_write_event_config(struct iio_dev *indio_dev,
+ 	case IIO_EV_TYPE_MAG:
+ 		return adxl345_write_mag_config(st, dir,
+ 						ADXL345_ACTIVITY,
++						ADXL345_INACTIVITY,
+ 						state);
+ 	case IIO_EV_TYPE_GESTURE:
+ 		switch (dir) {
+@@ -822,9 +1005,11 @@ static int adxl345_read_mag_value(struct adxl345_state *st,
+ 				  enum iio_event_direction dir,
+ 				  enum iio_event_info info,
+ 				  enum adxl345_activity_type type_act,
++				  enum adxl345_activity_type type_inact,
+ 				  int *val, int *val2)
+ {
+ 	unsigned int threshold;
++	unsigned int period;
+ 	int ret;
+ 
+ 	switch (info) {
+@@ -839,9 +1024,26 @@ static int adxl345_read_mag_value(struct adxl345_state *st,
+ 			*val = 62500 * threshold;
+ 			*val2 = MICRO;
+ 			return IIO_VAL_FRACTIONAL;
++		case IIO_EV_DIR_FALLING:
 +			ret = regmap_read(st->regmap,
-+					  adxl345_act_thresh_reg[type_act],
++					  adxl345_act_thresh_reg[type_inact],
 +					  &threshold);
 +			if (ret)
 +				return ret;
 +			*val = 62500 * threshold;
 +			*val2 = MICRO;
 +			return IIO_VAL_FRACTIONAL;
-+		default:
-+			return -EINVAL;
-+		}
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static int adxl345_write_mag_value(struct adxl345_state *st,
-+				   enum iio_event_direction dir,
-+				   enum iio_event_info info,
-+				   enum adxl345_activity_type type_act,
-+				   int val, int val2)
-+{
-+	switch (info) {
-+	case IIO_EV_INFO_VALUE:
-+		/* Scaling factor 62.5mg/LSB, i.e. ~16g corresponds to 0xff */
-+		val = DIV_ROUND_CLOSEST(val * MICRO + val2, 62500);
-+		switch (dir) {
-+		case IIO_EV_DIR_RISING:
-+			return regmap_write(st->regmap,
-+					    adxl345_act_thresh_reg[type_act],
-+					    val);
-+		default:
-+			return -EINVAL;
-+		}
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
- static int adxl345_read_event_value(struct iio_dev *indio_dev,
- 				    const struct iio_chan_spec *chan,
- 				    enum iio_event_type type,
-@@ -691,6 +882,10 @@ static int adxl345_read_event_value(struct iio_dev *indio_dev,
- 	int ret;
- 
- 	switch (type) {
-+	case IIO_EV_TYPE_MAG:
-+		return adxl345_read_mag_value(st, dir, info,
-+					      ADXL345_ACTIVITY,
-+					      val, val2);
- 	case IIO_EV_TYPE_GESTURE:
- 		switch (info) {
- 		case IIO_EV_INFO_VALUE:
-@@ -741,6 +936,13 @@ static int adxl345_write_event_value(struct iio_dev *indio_dev,
- 		return ret;
- 
- 	switch (type) {
-+	case IIO_EV_TYPE_MAG:
-+		ret = adxl345_write_mag_value(st, dir, info,
-+					      ADXL345_ACTIVITY,
-+					      val, val2);
+ 		default:
+ 			return -EINVAL;
+ 		}
++	case IIO_EV_INFO_PERIOD:
++		ret = regmap_read(st->regmap,
++				  ADXL345_REG_TIME_INACT,
++				  &period);
 +		if (ret)
 +			return ret;
-+		break;
++		*val = period;
++		return IIO_VAL_INT;
+ 	default:
+ 		return -EINVAL;
+ 	}
+@@ -851,6 +1053,7 @@ static int adxl345_write_mag_value(struct adxl345_state *st,
+ 				   enum iio_event_direction dir,
+ 				   enum iio_event_info info,
+ 				   enum adxl345_activity_type type_act,
++				   enum adxl345_activity_type type_inact,
+ 				   int val, int val2)
+ {
+ 	switch (info) {
+@@ -862,9 +1065,15 @@ static int adxl345_write_mag_value(struct adxl345_state *st,
+ 			return regmap_write(st->regmap,
+ 					    adxl345_act_thresh_reg[type_act],
+ 					    val);
++		case IIO_EV_DIR_FALLING:
++			return regmap_write(st->regmap,
++					    adxl345_act_thresh_reg[type_inact],
++					    val);
+ 		default:
+ 			return -EINVAL;
+ 		}
++	case IIO_EV_INFO_PERIOD:
++		return adxl345_set_inact_time(st, val);
+ 	default:
+ 		return -EINVAL;
+ 	}
+@@ -885,6 +1094,7 @@ static int adxl345_read_event_value(struct iio_dev *indio_dev,
+ 	case IIO_EV_TYPE_MAG:
+ 		return adxl345_read_mag_value(st, dir, info,
+ 					      ADXL345_ACTIVITY,
++					      ADXL345_INACTIVITY,
+ 					      val, val2);
  	case IIO_EV_TYPE_GESTURE:
  		switch (info) {
- 		case IIO_EV_INFO_VALUE:
-@@ -980,7 +1182,8 @@ static int adxl345_fifo_push(struct iio_dev *indio_dev,
- }
- 
- static int adxl345_push_event(struct iio_dev *indio_dev, int int_stat,
--			      enum iio_modifier tap_dir)
-+			      enum iio_modifier tap_dir,
-+			      enum iio_modifier act_dir)
- {
- 	s64 ts = iio_get_time_ns(indio_dev);
- 	struct adxl345_state *st = iio_priv(indio_dev);
-@@ -1007,6 +1210,16 @@ static int adxl345_push_event(struct iio_dev *indio_dev, int int_stat,
+@@ -939,6 +1149,7 @@ static int adxl345_write_event_value(struct iio_dev *indio_dev,
+ 	case IIO_EV_TYPE_MAG:
+ 		ret = adxl345_write_mag_value(st, dir, info,
+ 					      ADXL345_ACTIVITY,
++					      ADXL345_INACTIVITY,
+ 					      val, val2);
+ 		if (ret)
+ 			return ret;
+@@ -1220,6 +1431,17 @@ static int adxl345_push_event(struct iio_dev *indio_dev, int int_stat,
  			return ret;
  	}
  
-+	if (FIELD_GET(ADXL345_INT_ACTIVITY, int_stat)) {
++	if (FIELD_GET(ADXL345_INT_INACTIVITY, int_stat)) {
 +		ret = iio_push_event(indio_dev,
-+				     IIO_MOD_EVENT_CODE(IIO_ACCEL, 0, act_dir,
++				     IIO_MOD_EVENT_CODE(IIO_ACCEL, 0,
++							IIO_MOD_X_AND_Y_AND_Z,
 +							IIO_EV_TYPE_MAG,
-+							IIO_EV_DIR_RISING),
++							IIO_EV_DIR_FALLING),
 +				     ts);
 +		if (ret)
 +			return ret;
@@ -424,60 +569,19 @@ index b7dfd0007aa0..eb24ee7c4251 100644
  	if (FIELD_GET(ADXL345_INT_WATERMARK, int_stat)) {
  		samples = adxl345_get_samples(st);
  		if (samples < 0)
-@@ -1034,6 +1247,7 @@ static irqreturn_t adxl345_irq_handler(int irq, void *p)
- 	struct adxl345_state *st = iio_priv(indio_dev);
- 	unsigned int regval;
- 	enum iio_modifier tap_dir = IIO_NO_MOD;
-+	enum iio_modifier act_dir = IIO_NO_MOD;
- 	u32 axis_ctrl;
- 	int int_stat;
- 	int ret;
-@@ -1042,7 +1256,8 @@ static irqreturn_t adxl345_irq_handler(int irq, void *p)
- 	if (ret)
- 		return IRQ_NONE;
- 
--	if (FIELD_GET(ADXL345_REG_TAP_AXIS_MSK, axis_ctrl)) {
-+	if (FIELD_GET(ADXL345_REG_TAP_AXIS_MSK, axis_ctrl) ||
-+	    FIELD_GET(ADXL345_REG_ACT_AXIS_MSK, axis_ctrl)) {
- 		ret = regmap_read(st->regmap, ADXL345_REG_ACT_TAP_STATUS, &regval);
- 		if (ret)
- 			return IRQ_NONE;
-@@ -1053,12 +1268,19 @@ static irqreturn_t adxl345_irq_handler(int irq, void *p)
- 			tap_dir = IIO_MOD_Y;
- 		else if (FIELD_GET(ADXL345_TAP_X_EN, regval))
- 			tap_dir = IIO_MOD_X;
-+
-+		if (FIELD_GET(ADXL345_ACT_Z_EN, regval))
-+			act_dir = IIO_MOD_Z;
-+		else if (FIELD_GET(ADXL345_ACT_Y_EN, regval))
-+			act_dir = IIO_MOD_Y;
-+		else if (FIELD_GET(ADXL345_ACT_X_EN, regval))
-+			act_dir = IIO_MOD_X;
- 	}
- 
- 	if (regmap_read(st->regmap, ADXL345_REG_INT_SOURCE, &int_stat))
- 		return IRQ_NONE;
- 
--	if (adxl345_push_event(indio_dev, int_stat, tap_dir))
-+	if (adxl345_push_event(indio_dev, int_stat, tap_dir, act_dir))
- 		goto err;
- 
- 	if (FIELD_GET(ADXL345_INT_OVERRUN, int_stat))
-@@ -1226,6 +1448,20 @@ int adxl345_core_probe(struct device *dev, struct regmap *regmap,
+@@ -1458,10 +1680,18 @@ int adxl345_core_probe(struct device *dev, struct regmap *regmap,
  		if (ret)
  			return ret;
  
-+		/*
-+		 * Initialized with sensible default values to streamline
-+		 * sensor operation. These defaults are partly derived from
-+		 * the previous input driver for the ADXL345 and partly
-+		 * based on the recommendations provided in the datasheet.
-+		 */
-+		ret = regmap_write(st->regmap, ADXL345_REG_ACT_INACT_CTRL, 0);
++		ret = regmap_write(st->regmap, ADXL345_REG_TIME_INACT, 0x37);
 +		if (ret)
 +			return ret;
 +
-+		ret = regmap_write(st->regmap, ADXL345_REG_THRESH_ACT, 6);
+ 		ret = regmap_write(st->regmap, ADXL345_REG_THRESH_ACT, 6);
+ 		if (ret)
+ 			return ret;
+ 
++		ret = regmap_write(st->regmap, ADXL345_REG_THRESH_INACT, 4);
 +		if (ret)
 +			return ret;
 +

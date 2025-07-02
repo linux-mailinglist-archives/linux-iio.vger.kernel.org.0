@@ -1,126 +1,130 @@
-Return-Path: <linux-iio+bounces-21248-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21249-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6190CAF5C48
-	for <lists+linux-iio@lfdr.de>; Wed,  2 Jul 2025 17:09:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F30CAF5C8D
+	for <lists+linux-iio@lfdr.de>; Wed,  2 Jul 2025 17:17:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 381FF3B507B
-	for <lists+linux-iio@lfdr.de>; Wed,  2 Jul 2025 15:07:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B7BA91889288
+	for <lists+linux-iio@lfdr.de>; Wed,  2 Jul 2025 15:17:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15F5A30E836;
-	Wed,  2 Jul 2025 15:07:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EA1727A12F;
+	Wed,  2 Jul 2025 15:17:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="rpglmKEv"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AVakEbLi"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oo1-f46.google.com (mail-oo1-f46.google.com [209.85.161.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B58830B9AC
-	for <linux-iio@vger.kernel.org>; Wed,  2 Jul 2025 15:07:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E2EE1C3F02;
+	Wed,  2 Jul 2025 15:17:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751468842; cv=none; b=XUI/DWtTkzyYiJBlJyOn2NVQODr5+skOIVuGQoLTnxA+2kEqbNqcq4P91sDAu0D1GZtP+Xr/dhBFJBw1f2vSvGpMOHXW4FLSk6je3qPRBcEeHY7Mmz5+qYXQLq2P0u15UVHdeme0CTRUgX7rrisaFWmBeVe7DVCubVKYFiW7r+E=
+	t=1751469452; cv=none; b=LAc3810Zlu+avW5A4Dpp8KRSUTT+jhWO/j5JS9mLz2epFRhniWeG27JDcfUdXt1Tbd2z6VUIvC7m42XxaMBr7Gd9Qvlc6tuKzNEgYDHdgmt99mTYE43O3wvg3h0rUY5HhXSbg/in9cATwAvFshTbbHnFA5cf6f2i8zzL4I07C58=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751468842; c=relaxed/simple;
-	bh=cn2NRI5mu8mp2JvptDQmdNR3iEYDCKiW6RwP36IdYcE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=RRgdVd/AXAeTQUQT07LcDnHhdlECfoEQ2BmUCj6N4XHiKLWQTXHqUWmLN9F5ukylfwOICLQ+1srdRsaojo5stbtN1/NkIg3NNESWyzN+i0Is5e6AxOZn88HCXimQFkVazJLCwiRIJlSsKpfoUuyIH4B+MrRDidrMQ05NjaEoVHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=rpglmKEv; arc=none smtp.client-ip=209.85.161.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oo1-f46.google.com with SMTP id 006d021491bc7-6118c1775dbso2082552eaf.1
-        for <linux-iio@vger.kernel.org>; Wed, 02 Jul 2025 08:07:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1751468840; x=1752073640; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Z+yF8Byfsy0CuO73SgfsROHb/6ylMyJG4365Xzkg/tU=;
-        b=rpglmKEvds1+pdW7sRoDilSXNV5TzQif0EQwoG8XN2LeqUU2czx1bgjNhLhrW4lDYo
-         eP+ZKGkcTeq06R/knz5JOXuOfAH6J4HzfFpwDV1OygWgLfshsYK5zD+HoaZahX+vF1qC
-         BkgyYnKmlyUNlwOle0bSVvcKOW5CobavEyL0Pb4ElGjUCGVdWp+e8HO8ZMZCjiSFnT17
-         OBrF1tOZyLob92vmiYSDTZP9ZYqwmuwuEzbZ7kuylC9LSXXSuxNJXnHoKGzo4JQXFAsi
-         O1ZOI2CU91ZqVDCs0Iecuic4KsUe6Duv4c7xidaTRd08/dsNKTg31q3DRM9uv21BAswI
-         ZqtA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751468840; x=1752073640;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Z+yF8Byfsy0CuO73SgfsROHb/6ylMyJG4365Xzkg/tU=;
-        b=LydBJw4CL6Uvt9oJIv0rkVIn1nef02fEvpD0q/OG5huaw110Rj7fBx5/pnxSsVbxYc
-         Exr+WINh3jOQtPGc6dMhY9rimi3kBHshXYR2mYhC5goAZ/JiGCwfAR7F1B0me1EpIL5S
-         yJ5Y25vjVniwrKUVR40kBci0f6tYhumWkn7EDAPy0gACSV53iRkJAZ+t1q5gTeAW7z0f
-         ANGBxLzWUdW6KUAHkBeT1v8UlH5QNmlh1iEU9Q+pLwdmgWHtsDNmmTOVKKuCP5lctwVD
-         v4v+su58IBCaSC07GzQ2oqymQ+RKgPcH7/SIosHY4SGVzpurzCQSYLrPwG4zJUcDwHfd
-         8zfA==
-X-Forwarded-Encrypted: i=1; AJvYcCWHd37wT1KkAAsRs1MkmJSALqudI5FQZg1OaywL8fi+5+S9+Umw1ThfPsC1j2iFOhJy2zYMMVLP7M0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YytyxyCe77r2RrUUS+LVD1TG/69Dhjlj1ChG+NblSZoJ/li1IJu
-	+4cTd4TIftTjf3wtynl4sGMJdKLXKxh0RoB8DHahS74cTEY20jf2e6MWxmTTJY4/MJ4=
-X-Gm-Gg: ASbGnctm+tMvJhFOQyfEqLzAnQpSWCaUEt9tw2IN4oV/EdIBQIaDRJ5H128m31TGvAU
-	46cSq4niENwJaZxLAPKo+bRBn+nWHRhmCYYGkB44QfRJqYWd+aAzuk3dWRU9Xi9iS76GGK2+q5p
-	rDPjmtm+VdbvEKah6Fsj//jDpHbTJ6cQuXkANVYZuPt/wGn0jx0DSA+3Ww3I5HT77mlGtP5rO3x
-	rTgXd6VPQOyO5F6WgoLEI1ddm2WXk5XyK1qq4Nu3Iq6X3nGBvkeYYfpko4aJOnvqc8OZCoOyCT8
-	bJWzNdd6AkB0VjTJof7fyvZ7UoEJdVoAdc5o0xB9AIuaoDvSSJNhWCMm+WdpWNgECTA3OxbN7YA
-	xLHzfjRvh/s4k8OPJzKzd1IiTHTXssLPBA8xeuhk=
-X-Google-Smtp-Source: AGHT+IE1PW5FUH+qwlJtTOdD0wGyWz6EDOBzlYeJCn84Z90rIwVxi1VgT+rOkeUbBg33/zG427zvaQ==
-X-Received: by 2002:a05:6820:1994:b0:611:9a4d:fc44 with SMTP id 006d021491bc7-61201244fcfmr2268633eaf.3.1751468839839;
-        Wed, 02 Jul 2025 08:07:19 -0700 (PDT)
-Received: from ?IPV6:2600:8803:e7e4:1d00:5c00:24f0:997b:5458? ([2600:8803:e7e4:1d00:5c00:24f0:997b:5458])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-611b8474da2sm1700798eaf.6.2025.07.02.08.07.18
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 02 Jul 2025 08:07:18 -0700 (PDT)
-Message-ID: <3778ad13-3b62-4f68-946d-b861b0df4272@baylibre.com>
-Date: Wed, 2 Jul 2025 10:07:17 -0500
+	s=arc-20240116; t=1751469452; c=relaxed/simple;
+	bh=0J/bQNTWUK3CBlRXBmlUER6bfndlkg4+YTtCvX1E1t4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NZPzk/cvSYt0YpzgJXLoRfDDp6ijUFXBbSpJBKpVSeMP0NiVTyfDvkiiN6J+RO5PbMSWrKeXb/6xYimPG/BPBfdTjnZeHtJNxr2KDQ5DDmRvu+nCiShDCdQiEtZNvU1t5kAr0El7R47Y0mB1nPAY8gQ3HwtPUKlYT+iECwnzvVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AVakEbLi; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1751469451; x=1783005451;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=0J/bQNTWUK3CBlRXBmlUER6bfndlkg4+YTtCvX1E1t4=;
+  b=AVakEbLieg6ccSqcjXQKTgaTm2fmg3OEn0oYBj0DVybrdTQj7iQkmRfV
+   omoZvllQPKp072AinHzi07bnbVlZkS5qSxcL7mRK4n2HODz58W3vZi96s
+   L/Rh5po/eAPUt7YVGCrFs7asMYbQ6wQ7Nw3yiQcVcjKQk005gyhmX8TZH
+   UCenPzZ7IuncZWsF5HU0hmvHb2ofiGqsZd4rD1v2LGamo/I7yIPdbdG5a
+   nHjTefmjJ2cJXHFisX9yxRhgg1S1yuLSX0gG4y+yJ+Y3GFjK01yfiwlme
+   0bxRRwDPkWIbd+8kvFhs7sQo/GHb3pwhRhhizIC2b8B/6ROZBcyLuoVem
+   A==;
+X-CSE-ConnectionGUID: cME5MhDNRdiWrFrMk1xthw==
+X-CSE-MsgGUID: cKHl+qIbQd6YwLKgVGKD0Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11482"; a="71341605"
+X-IronPort-AV: E=Sophos;i="6.16,281,1744095600"; 
+   d="scan'208";a="71341605"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2025 08:17:30 -0700
+X-CSE-ConnectionGUID: wEnsnc39Tai9vIOaOuvRTw==
+X-CSE-MsgGUID: 2P04b6y7SBG7QtOLh6hrhA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,281,1744095600"; 
+   d="scan'208";a="153511918"
+Received: from smile.fi.intel.com ([10.237.72.52])
+  by orviesa010.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2025 08:17:27 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@intel.com>)
+	id 1uWzDA-0000000Bx6z-1YDq;
+	Wed, 02 Jul 2025 18:17:24 +0300
+Date: Wed, 2 Jul 2025 18:17:24 +0300
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Robert Budai <robert.budai@analog.com>,
+	Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: imu: adis16550: rework clock range test
+Message-ID: <aGVNhIwn7CXO_lpP@smile.fi.intel.com>
+References: <20250702-iio-imu-adis16550-rework-clock-range-test-v1-1-b45f3a3b0dc1@baylibre.com>
+ <aGVIBVsFPcVw3lN6@smile.fi.intel.com>
+ <aGVJPRmn1-HUBb40@smile.fi.intel.com>
+ <3778ad13-3b62-4f68-946d-b861b0df4272@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] iio: imu: adis16550: rework clock range test
-To: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>,
- Michael Hennerich <Michael.Hennerich@analog.com>,
- Jonathan Cameron <jic23@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?=
- <nuno.sa@analog.com>, Robert Budai <robert.budai@analog.com>,
- Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20250702-iio-imu-adis16550-rework-clock-range-test-v1-1-b45f3a3b0dc1@baylibre.com>
- <aGVIBVsFPcVw3lN6@smile.fi.intel.com> <aGVJPRmn1-HUBb40@smile.fi.intel.com>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <aGVJPRmn1-HUBb40@smile.fi.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3778ad13-3b62-4f68-946d-b861b0df4272@baylibre.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On 7/2/25 9:59 AM, Andy Shevchenko wrote:
-> On Wed, Jul 02, 2025 at 05:53:57PM +0300, Andy Shevchenko wrote:
->> On Wed, Jul 02, 2025 at 09:27:45AM -0500, David Lechner wrote:
->>> Rework the clock rate range test to test if sync_mode_data != NULL
->>> instead of testing if the for loop index variable. This makes it easier
->>> for static analyzers to see that we aren't using an uninitialized
->>> sync_mode_data [1].
->>
->> But at the same time it makes it not to be the usual pattern.,,
+On Wed, Jul 02, 2025 at 10:07:17AM -0500, David Lechner wrote:
+> On 7/2/25 9:59 AM, Andy Shevchenko wrote:
+> > On Wed, Jul 02, 2025 at 05:53:57PM +0300, Andy Shevchenko wrote:
+> >> On Wed, Jul 02, 2025 at 09:27:45AM -0500, David Lechner wrote:
+> >>> Rework the clock rate range test to test if sync_mode_data != NULL
+> >>> instead of testing if the for loop index variable. This makes it easier
+> >>> for static analyzers to see that we aren't using an uninitialized
+> >>> sync_mode_data [1].
+> >>
+> >> But at the same time it makes it not to be the usual pattern.,,
+> > 
+> > Reading the static analyser output I think the first hunk is only what we need,
+> > but this is still false positive and it's problem of that static
+> > analyser. Have you filed a bug there? (My point is that modifying the code for
+> > the advantage of false positives of some static analyser is wrong road to go
+> > in my opinion.)
 > 
-> Reading the static analyser output I think the first hunk is only what we need,
-> but this is still false positive and it's problem of that static
-> analyser. Have you filed a bug there? (My point is that modifying the code for
-> the advantage of false positives of some static analyser is wrong road to go
-> in my opinion.)
+> I agree that we shouldn't fix this _only_ to make the static analyzer
+> happy. But I had to think quite a bit harder to see that the existing
+> code was correct compared to what I have proposed here.
 > 
+> But if this is a common pattern that I just haven't learned to identify
+> at a glance yet and everybody else can easily see that the existing code
+> is correct, then perhaps it isn't worth the change.
 
-I agree that we shouldn't fix this _only_ to make the static analyzer
-happy. But I had to think quite a bit harder to see that the existing
-code was correct compared to what I have proposed here.
+To me checking against index variable (when it's integer, obviously) is correct
+thing to do and regular pattern. OTOH, if the "index" is a pointer and rather
+we call it "iterator", the angle of view is different because in some cases
+it may lead to stale or invalid value which might be mistakenly dereferenced or
+speculated (see more in the discussion about list entry APIs [entry is a
+keyword here] and if list_entry_is_head() is a good approach.)
 
-But if this is a common pattern that I just haven't learned to identify
-at a glance yet and everybody else can easily see that the existing code
-is correct, then perhaps it isn't worth the change.
+-- 
+With Best Regards,
+Andy Shevchenko
+
 
 

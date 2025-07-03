@@ -1,77 +1,78 @@
-Return-Path: <linux-iio+bounces-21315-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21314-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2FFBAF7C99
-	for <lists+linux-iio@lfdr.de>; Thu,  3 Jul 2025 17:42:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02C84AF7CAC
+	for <lists+linux-iio@lfdr.de>; Thu,  3 Jul 2025 17:43:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7CCF516F507
-	for <lists+linux-iio@lfdr.de>; Thu,  3 Jul 2025 15:39:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0AEE918896C9
+	for <lists+linux-iio@lfdr.de>; Thu,  3 Jul 2025 15:39:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C429117D7;
-	Thu,  3 Jul 2025 15:39:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F387E22259F;
+	Thu,  3 Jul 2025 15:39:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b="mg2aorYf"
+	dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b="ZPjJiLDH"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010036.outbound.protection.outlook.com [52.101.84.36])
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010060.outbound.protection.outlook.com [52.101.69.60])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C93ACEEBA;
-	Thu,  3 Jul 2025 15:39:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.36
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F5E015C0;
+	Thu,  3 Jul 2025 15:39:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.60
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751557182; cv=fail; b=iXI09KZZOsn3fXGqgHy73y8GflkjTH3wKgyc2Asv5hCIcnD00Bj6PbQUMxwG93N9lZWoldgp2UQd2GKiXMPsnvw7Od3/23I5pXRq+ZHoR/BJ2pwbGG8ijxl8fw6zx6gIep+dNy0O+7AelESxecQmatHFmgMo87N15hD4aMOKg5Y=
+	t=1751557156; cv=fail; b=KYcSrSlSYyLkskj0h6GWxMnFeZbtDj3u9uzin9aHfl3rSE6arEf5qXeQNQiw9e77oXwLoNwY09DxIiPtYKH33/NCWAy5oYLGqX3MZJLkcdDmFuEsVPXa8YDA2ovAzT+UB8RySyu3OPlGONLKuG7uWfcGvVCyTOxJBAnltxIpBjE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751557182; c=relaxed/simple;
-	bh=ZW0UUH2xR8Zr0y/w/AeQsM9BKRejlKx7ws9L354+qHQ=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=n78IzK47gIe5hFhTUwUGRxTISca2M/5ZQAZ+bcU+5kvss4F0kYFUdoA0efEFdhJ2URF7fo8RgBNRVzpzdFUFxpumrKecfleWyAwegsgYCdRE6Uq2KSAmz6R6LnfH2cjjpVsvXKlkpY/KO01emXkt3enf8bP0tPdbWtrbCu7b7/s=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com; spf=pass smtp.mailfrom=de.bosch.com; dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b=mg2aorYf; arc=fail smtp.client-ip=52.101.84.36
+	s=arc-20240116; t=1751557156; c=relaxed/simple;
+	bh=7elPI6oiWoPlhF6YappRCpwOzRDbrHnP7g7Am/791mY=;
+	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=To8r2NGdB9j2kUga7Mk+jjHPHg64oc09E6DzTWrzzII9N1KoIiYB9x0799ZbChwgx5kTMXdbkde1FiVftRhqMlptF2Fw+LoZ81TNtOhlmj0yQuKjfER+ulMpg0lGanOcQKUfueogFNzzVTuEn2OJZMmjYIg3pHdhjTWjsxwA6cI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com; spf=pass smtp.mailfrom=de.bosch.com; dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b=ZPjJiLDH; arc=fail smtp.client-ip=52.101.69.60
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=de.bosch.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=zJvkD1R0nqYTCgA2OjInklpMCzKq55g6VmWctdHhU+ZKj+4JLAfOJZM5+IwvihjQIAV6GqMwyu8F4BQRHWwQIMYR26UCRo1p+KVxoEdZtaGU1nGiS5Ln/wlLFjbxvB0iduz2qPgdx6vfY9pQ7DEr4l/zFsMh8AvOs4WW6NYXcnEMS5VkdHxMqZN0iMw6D/aeOa81OdwKR3i8V8hc5iH+Uac1L1huv2ezQcl0dURt/+MX9ZTeGLm0omHie4XvY/jvnG/J8pcKOeaDhXY2O5jrToqvz7txxC7N2w2P0sO/QGuA67Lse5YSpv9gJ2sqW/DU/QhM9wbYj97yD0W9D8oClQ==
+ b=cFtnVi70kkZ1y0cMLnnKcNdiPdKajttzfZFPzcbc61z2jZ3hpz/t25bDA6vFe3cZnk9AujE3RNC7kaLuNCCe7VsouuRsWHcPHpO5IZ7DGERaOoYXMczX9YSWjiAYVVOqL5YCR4ECHyfUro/6bXcVzDHGElVyYXyy23xoZ2T8FLVji64G22os3PQhkLNEr7tLcGwRp3gtwg/2kfxUpYetdMKpEngnP4jsv++ZM86JNezy4G39cNxMmTjzzPGBa4sOqa/YahoBDsVLQTzNIl+VHJXN5H0Jt2ybB8iZoF2Tr5iLLplnN6RT9DIubEgclbCLs1SKizbHdzWaIZhIjkCN8Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=fsSA6OAznRAbR8tkV8wl67ovQXJGtsLjTdIAD5RVQcs=;
- b=NVxcdedo/4AqQvxWwzvaOwvTEt6UFZzddKJ+im1m3+Um0XUi+IGMSrkPwzWI6hZ7xRaVfFMacP7NjXBXZbq9/1+TWHzctn7mdu7unGu+n8BcdnNtmL+hQ9dgfciqREyQ5lSda+0pce/o/IfyB00eLtdrSFFEAjFtYH/KDnhTSuaMxFnvC/kQos5/WDBZs8WYKq29T7kL0nRfNRIpMHUobcGOwo02dtRPo9KVxnTeeg8EcZlg5RzJZvKD7Em2zoiq0qNyr/tw97dch7BT9m0SDHytJceAMVzsakASvNd0D/Fx411vi2FoQh2pyFj9l/1VxdmSol3SBo7Kezbo1/0m+g==
+ bh=+RTJIY8bHME0NhyJ8j+UlJlOmZM6Jdi4TW5JSE9W8Xo=;
+ b=UzzOHmELuw/iV39Bw08hlLkxvU9jYkuwqFuapJot0HexRsRaUEEyMSOtdiS+44JDWHonZOSqI3f4flndt5SvOF+jDboHue5l/jQzANTYewDbrR8tMH5wsvtIuYSAVWrh05BrWWGbmGS6TJbbgHrth3XeM1jnzedLJZezcMXVtmLPtcZO4g2zKlfyH9xLvphv4ng0h3fzWw7NL6PIDpNoTODYpDfo6MFPeHhoJ1ax02ifJTRy4UlDR78OS+p5JvaG0oiXsMLJnaSnf+38oQ6hKG+ewnFH3/koo6CE5Qdfhyv2KHS0+73h3J8gjIT4P5BKqEDmBtAhl6bDGHmqm2V8Yg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 139.15.153.206) smtp.rcpttodomain=kernel.org smtp.mailfrom=de.bosch.com;
+ 139.15.153.205) smtp.rcpttodomain=kernel.org smtp.mailfrom=de.bosch.com;
  dmarc=pass (p=reject sp=none pct=100) action=none header.from=de.bosch.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=de.bosch.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=fsSA6OAznRAbR8tkV8wl67ovQXJGtsLjTdIAD5RVQcs=;
- b=mg2aorYfOjgR8vl4wRrxqvJWX4CmtESdDpjiTEp//93BYSMKkC7V7QQKUVyFabWWUkzG0Dqcaj3T15tjNGTs/sRof+neaFZVsqiMe2paDPCrxU8eEnxTHHufnYg5DgmpZ4IoMKYVdWQGUijCP2vnT2l61Dp6WvGDrsNuZUieCy8GuYLOYoak01yukh2ln/KKGAAnzE0We2AXfkd5QWAl2ECkt0Vg7BeTwUTWXW7y6I4g50fnp9ZVv2ZMPDPC1qqE/VFRVGKXl+4gCqPKY1RrWids4gEYICJzFy68KyOO1RdtzWGjowaTvWQoREhbyokbu79VhP6sKYKVLzh0WJ8lvA==
-Received: from DUZPR01CA0149.eurprd01.prod.exchangelabs.com
- (2603:10a6:10:4bd::25) by AM9PR10MB4120.EURPRD10.PROD.OUTLOOK.COM
- (2603:10a6:20b:1f0::17) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8901.20; Thu, 3 Jul
- 2025 15:39:34 +0000
-Received: from DB1PEPF000509F2.eurprd02.prod.outlook.com
- (2603:10a6:10:4bd:cafe::4) by DUZPR01CA0149.outlook.office365.com
- (2603:10a6:10:4bd::25) with Microsoft SMTP Server (version=TLS1_3,
+ bh=+RTJIY8bHME0NhyJ8j+UlJlOmZM6Jdi4TW5JSE9W8Xo=;
+ b=ZPjJiLDHgXOVkwr4MbZxgwJL000gKeSZDGnXZYr5VTdDTDayR1DHOuRkInalwwxEHM/6bteBRRPbrlzOVhZez7mcDi1Bq5Q/YCUGhzeLguTnCD9yft7t32mH2aDQcvG5HUjETUVcyYwirGlfKlLN/xVdnRc36Ow0TycwYUQ4Wh6/3OO6yWH8aZfHzYOwIXLtP/GBz/ArriSMr1gZDifCbC1DPPtAMC26m9L2qq7ytregPM4xOc5II+TFPkHM7EQDF3kq4Uxm1TPO7XPj4C5mP1brr8owv8oSq+5nnljkpfUIga/ZDdsmM5jZLQH/rXBZaa7vuFyFhoOkKgreG8cpOQ==
+Received: from DU2PR04CA0237.eurprd04.prod.outlook.com (2603:10a6:10:2b1::32)
+ by DB8PR10MB3209.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:10:115::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8901.22; Thu, 3 Jul
+ 2025 15:39:09 +0000
+Received: from DU6PEPF0000A7E1.eurprd02.prod.outlook.com
+ (2603:10a6:10:2b1:cafe::78) by DU2PR04CA0237.outlook.office365.com
+ (2603:10a6:10:2b1::32) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.20.8901.21 via Frontend Transport; Thu,
- 3 Jul 2025 15:39:42 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 139.15.153.206)
+ 3 Jul 2025 15:39:09 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 139.15.153.205)
  smtp.mailfrom=de.bosch.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=de.bosch.com;
 Received-SPF: Pass (protection.outlook.com: domain of de.bosch.com designates
- 139.15.153.206 as permitted sender) receiver=protection.outlook.com;
- client-ip=139.15.153.206; helo=eop.bosch-org.com; pr=C
-Received: from eop.bosch-org.com (139.15.153.206) by
- DB1PEPF000509F2.mail.protection.outlook.com (10.167.242.148) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8901.15 via Frontend Transport; Thu, 3 Jul 2025 15:39:34 +0000
-Received: from FE-EXCAS2000.de.bosch.com (10.139.217.199) by eop.bosch-org.com
- (139.15.153.206) with Microsoft SMTP Server (version=TLS1_2,
+ 139.15.153.205 as permitted sender) receiver=protection.outlook.com;
+ client-ip=139.15.153.205; helo=eop.bosch-org.com; pr=C
+Received: from eop.bosch-org.com (139.15.153.205) by
+ DU6PEPF0000A7E1.mail.protection.outlook.com (10.167.8.40) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8901.15 via Frontend Transport; Thu, 3 Jul 2025 15:39:09 +0000
+Received: from SI-EXCAS2000.de.bosch.com (10.139.217.201) by eop.bosch-org.com
+ (139.15.153.205) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.26; Thu, 3 Jul
- 2025 17:39:05 +0200
+ 2025 17:39:06 +0200
 Received: from RNGMBX3003.de.bosch.com (10.124.11.208) by
- FE-EXCAS2000.de.bosch.com (10.139.217.199) with Microsoft SMTP Server
+ SI-EXCAS2000.de.bosch.com (10.139.217.201) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
  15.1.2507.57; Thu, 3 Jul 2025 17:39:05 +0200
 Received: from LR-C-0008DVM.rt.de.bosch.com (10.13.214.229) by
@@ -85,10 +86,12 @@ To: <jic23@kernel.org>, <lars@metafoo.de>, <robh@kernel.org>,
 	<devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
 	<Jianping.Shen@de.bosch.com>, <Christian.Lorenz3@de.bosch.com>,
 	<Ulrike.Frauendorf@de.bosch.com>, <Kai.Dolde@de.bosch.com>
-Subject: [PATCH v3 0/2] iio: imu: smi330: add bosch smi330 driver
-Date: Thu, 3 Jul 2025 17:38:21 +0200
-Message-ID: <20250703153823.806073-1-Jianping.Shen@de.bosch.com>
+Subject: [PATCH v3 1/2] dt-bindings: iio: imu: smi330: Add binding
+Date: Thu, 3 Jul 2025 17:38:22 +0200
+Message-ID: <20250703153823.806073-2-Jianping.Shen@de.bosch.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250703153823.806073-1-Jianping.Shen@de.bosch.com>
+References: <20250703153823.806073-1-Jianping.Shen@de.bosch.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -99,103 +102,161 @@ Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB1PEPF000509F2:EE_|AM9PR10MB4120:EE_
-X-MS-Office365-Filtering-Correlation-Id: f98f047b-2b9e-45fd-f644-08ddba47cf6b
+X-MS-TrafficTypeDiagnostic: DU6PEPF0000A7E1:EE_|DB8PR10MB3209:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5fa6a011-a377-49cf-8082-08ddba47c0ce
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|7416014|376014|1800799024|36860700013|921020;
+	BCL:0;ARA:13230040|82310400026|7416014|376014|36860700013|1800799024|921020;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?min0Pk0ITeSvuFBWq+9HR/Gt6CQVmhuu5vZSpFYH4eU7fDxbkfhBcuf//icj?=
- =?us-ascii?Q?Tszuea6Gqza1bY7NZooZk0lVSWkZuzMXFGGnnG2Yb/KZOGXMZBuu1s5fd9bd?=
- =?us-ascii?Q?7wBMM37QeSzY8ZTHb3zG08DcYPUc31HZnwbtGeL/w9ovBJHLgSZkiOXYUFP6?=
- =?us-ascii?Q?vomQbLPi6GMq5aPr/Qn70TFAxQWCI3TlgdYXPRutz9YUcY/QeBUSuRMitulQ?=
- =?us-ascii?Q?uD3Xzw2Vhp2wwxRejRGfg8LbDxI0cV8UwVJA5/qVR3SUlILz7SlOacghyvol?=
- =?us-ascii?Q?1QWQ1NLxPRSlvbvJd791HrhvEP8hrDM3AUo/b/8HKOR2l6nMuCwXWpfXUGMw?=
- =?us-ascii?Q?epB3SkmTtLDTxbH0c14fFy2OGtZBmEm4iZUGSU42ZJrrMXFoIun2D9vzF57A?=
- =?us-ascii?Q?fPxPp7Lz4lCRJYX+YVHSWmZr/04Mjevkt1GYBEHSivs7nizkjFgrOEQYYVQ+?=
- =?us-ascii?Q?ZSQerQJ5px0bPNO9NHDqP9D92yK5OI8W43Fq5AXME2/0XU9hY8YOze/QtdCU?=
- =?us-ascii?Q?eLy+T0ArxZOLZfxTT0YjN+SQcxvm5UihWMDcIDdfutG+h6IrlgIsSilYfhOy?=
- =?us-ascii?Q?YIAo2VJWUpDQtqJjTEVQPm/k+57p31j/4lHAxM/+c+GrLMZUdKKuhYVCHrBZ?=
- =?us-ascii?Q?se4ej6uSrZBNdXO6XI9mLbxB+oBRupHCJ5VlazaahzUe6didcntluCAVCkQW?=
- =?us-ascii?Q?WSfBIcjInMwPQzPkYkk8437bXduY4fsTgEcN6jrXh1RaN6Xg5Z5u8k/67ShW?=
- =?us-ascii?Q?Uq553mbrBXpuecvVizSt3Wo3pbzWkC82pbyYFdigUcYMT/KhkH04vdyCa6G9?=
- =?us-ascii?Q?5vfzRJdfKeb9xRI1imH9DoBZDB1/sRA5nKBkmD/onzzy9O0DX++88uQ87DIn?=
- =?us-ascii?Q?P+i+yEC7vB9SVZXHHKb6hk+uwsTuIplium6GFagWDg3oEdXkUcFz99AJV27l?=
- =?us-ascii?Q?YrqK/W4LJl5tKfunEhf0rOrgVSz+2UjDvhPFo+pP7TstCfSIxr1jJNXUZvmg?=
- =?us-ascii?Q?RJ6ForkHc6/FtyRVa2SU/V0j9VVKb5o9BoieUS0MiqbOuRl1sxsLL3JinbfT?=
- =?us-ascii?Q?jKy0hz1K3dG1MOT2CsYNmDTMlG2qxOZ9DdD400EuCVC/uTUZE9WSAnbwNXnu?=
- =?us-ascii?Q?LvLFEA51QeX1ZbYPv9TUjsU40Neg/7VYPcnsVlOBCOtUnKn4Bz8iimJcrT6d?=
- =?us-ascii?Q?pa+wfmuHl30S8mdtejHQhTyB/1p8ighkC/eRBiwMPMC+s1C67bGjBqxREEFe?=
- =?us-ascii?Q?y7E8Rq+YnSNr0XXLheF5dcTcCkNU8TE8omhHWm8pBycbRsV8Ba+g/HljrOjg?=
- =?us-ascii?Q?ocNKCMuhpIG29RLDurG5CesdQkSnhfzywBV/Zj4Fs2kQD5QX1mCxT9hZyzHp?=
- =?us-ascii?Q?RAaBvzexQzibsUyEnBp4bzMfGAUpW8eFE89lni4jW+De0+GXGsTMcla53mXg?=
- =?us-ascii?Q?Fj7IXX2lVSXG5ubIDPrpy1mFEHGbhN7CVFAGfpSyS1gRp/iz7wgo6mPkWgER?=
- =?us-ascii?Q?lq4D2rzewzgYml433SDqMkPzBoMrGf39QxJ2HwVblzqtXGw6sxMmpwBgiw?=
- =?us-ascii?Q?=3D=3D?=
+	=?us-ascii?Q?uwfvC91EPhQ2nPOJ3/Nfa95sCIOnCcBYhrMsYS3XXBcXV1R47ouRNtgFU2+k?=
+ =?us-ascii?Q?gZqAN7RejqeChJUIe0mtiEDXAT7D8MwRncdyyX4qLZ4HIVPYbuHY0++2X0eV?=
+ =?us-ascii?Q?vKSB+5UBMlJWo/KJOEpRWZA3rlRW9E0TTMH+yNK5WX8ldduOSIiKC/M3ziKs?=
+ =?us-ascii?Q?TYRNAGODhGDO6cAmjcDJEoXUBA29gGKNC4423K+3hqyPlJXZyVSK/aOVmJsb?=
+ =?us-ascii?Q?QtQ26lQL4WLAHexPuI+urNPHvDvEDUUX+/yt909QwBi/6bOQRdwwdBs+a46j?=
+ =?us-ascii?Q?72CrQ09FyhluCOu4smJ/cQhYqYMEkrjiKowhf5OoA+kA96ALnJl1qRmHaoaW?=
+ =?us-ascii?Q?acBpsFzlNBRbZDNEb+9CDJQXa8Tw+BlUPexA7Xrk0dGVji4r8xMFFGAHsVed?=
+ =?us-ascii?Q?DHPDNBaqruow6inWU/Ed1spe4NPteHxneiRx7lBdpgS/Ucbaxj3FGRfItFA5?=
+ =?us-ascii?Q?0q/HLQRTRMn1Q2IC24pLbjI49qxNONCAnQg/NoBvWMsyySJpuzyCw33UGqnt?=
+ =?us-ascii?Q?avm7tk9QefFH8b7ioJL/RE0T7A/qmeTzFmuGktdRBrH1IgO16QQRQsdW00Qd?=
+ =?us-ascii?Q?kj/x31P+qwGGTxiRxpe0QsdARBFXJIMicMpTq9lNFB8aMn3Vetmq3URGbl8a?=
+ =?us-ascii?Q?KyWdIgBf00bSspld+TX7S2ejFV1LgaRaeDSrf6VfI8ELOca41Hx98FSvu9Rc?=
+ =?us-ascii?Q?mjDXRjEzj76jjEZL2RAT2iBhid7BWVCUky3dEnBXfjvnDhdAhbHx5OjyCL9o?=
+ =?us-ascii?Q?cZEhP0INvdjrZZAfNP9qin26D7cp14xoFtOsWHJnImWila6BJ+M5aXhEuRnT?=
+ =?us-ascii?Q?52brdIwJOefXAoc2vuqhIQvx3FFO9y7iqvRjcvkr8frGa1Turdi5btA0PIzF?=
+ =?us-ascii?Q?MozsyjDpbTldUtMAsx4IAxJdefFM4kt/N4Hiem0wBBjVOUOTUbZwhGGP5RSg?=
+ =?us-ascii?Q?xSp9aWzIHfI4vvCJGn0UMAqHEFM3xBllFfXIlr6cM2dp6Vg/cx0TDNUC92Ar?=
+ =?us-ascii?Q?pVmZg0gYW9sIRNNoqI90RU7J/E0JougaygOKtO6Xx6OjOyKRBebDGl0XJOG9?=
+ =?us-ascii?Q?yZOz/pmVykyu/24pqAEIKi9HROLwN4+f76h/e2K6Kjx8jhmZDvq09mkTFKKx?=
+ =?us-ascii?Q?eQI8T8nI1y+oD1nhqFx3X0GLvCxQSOn34CAwTDgPv7rT3e0zZPCg6DaoymdD?=
+ =?us-ascii?Q?egh+jhoG25fRshx5bgp4JX+kcOp+f1bgclGviO4kLVfmWS9yze1kTDJGEF4v?=
+ =?us-ascii?Q?envwl3iUzPgdRE8x6x7qMWjOgs7CF2hs/iWnzcTgWPRNyjg/9woPbyJ6dhdl?=
+ =?us-ascii?Q?OJxPn0Cthhl3/UcELbMkLofeUlUn3ZOobCYGgLJq4afYYWpbQe9Hb4xfmwPI?=
+ =?us-ascii?Q?0MG57R6xDflcRILKapzUOGhAQfRB1TdTI+gpar4P3IJ558pNAOmhwmNvupYX?=
+ =?us-ascii?Q?B8wrvmjfCzZ4Bh4m7V2tPRpzAQCg+9G3KeND3cRqrwFPbl5njtMsBfu6RDHz?=
+ =?us-ascii?Q?Au3iZPHg79jyovw=3D?=
 X-Forefront-Antispam-Report:
-	CIP:139.15.153.206;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:eop.bosch-org.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(7416014)(376014)(1800799024)(36860700013)(921020);DIR:OUT;SFP:1101;
+	CIP:139.15.153.205;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:eop.bosch-org.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(7416014)(376014)(36860700013)(1800799024)(921020);DIR:OUT;SFP:1101;
 X-OriginatorOrg: de.bosch.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jul 2025 15:39:34.0826
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jul 2025 15:39:09.5693
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: f98f047b-2b9e-45fd-f644-08ddba47cf6b
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5fa6a011-a377-49cf-8082-08ddba47c0ce
 X-MS-Exchange-CrossTenant-Id: 0ae51e19-07c8-4e4b-bb6d-648ee58410f4
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=0ae51e19-07c8-4e4b-bb6d-648ee58410f4;Ip=[139.15.153.206];Helo=[eop.bosch-org.com]
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=0ae51e19-07c8-4e4b-bb6d-648ee58410f4;Ip=[139.15.153.205];Helo=[eop.bosch-org.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	DB1PEPF000509F2.eurprd02.prod.outlook.com
+	DU6PEPF0000A7E1.eurprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR10MB4120
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR10MB3209
 
 From: Jianping Shen <Jianping.Shen@de.bosch.com>
 
-Add the iio driver for bosch imu smi330. The smi330 is a combined
-three axis angular rate and three axis acceleration sensor module.
-This driver provides raw data access for each axis through sysfs, 
-and tiggered buffer for continuous sampling.
+Add devicetree binding for Bosch imu smi330.
+The smi330 is a combined three axis angular rate and
+three axis acceleration sensor module.
 
-dt-bindings:
-v1 -> v2
-    - Add missing type to drive-open-drain
-    - Adapt description of drive-open-drain
-
-v2 -> v3
-    - No Changes
-
-imu driver:
-v1 -> v2
-    - Strip back to a more minimal initial driver
-
-v2 -> v3
-    - reorganize the driver as 1 core module, 1 I2C module, and 1 SPI module.
-    - remove build time INT pin choice
-    - change temperature channel definition
-    - improved reading data from sensor
-    - simplified timestamp acquisition
-    - some other minor finding fixes
-
-Jianping Shen (2):
-  dt-bindings: iio: imu: smi330: Add binding
-  iio: imu: smi330: Add driver
-
- .../bindings/iio/imu/bosch,smi330.yaml        |  90 ++
- drivers/iio/imu/Kconfig                       |   1 +
- drivers/iio/imu/Makefile                      |   1 +
- drivers/iio/imu/smi330/Kconfig                |  39 +
- drivers/iio/imu/smi330/Makefile               |   7 +
- drivers/iio/imu/smi330/smi330.h               | 240 ++++++
- drivers/iio/imu/smi330/smi330_core.c          | 779 ++++++++++++++++++
- drivers/iio/imu/smi330/smi330_i2c.c           | 136 +++
- drivers/iio/imu/smi330/smi330_spi.c           |  91 ++
- 9 files changed, 1384 insertions(+)
+Signed-off-by: Jianping Shen <Jianping.Shen@de.bosch.com>
+---
+ .../bindings/iio/imu/bosch,smi330.yaml        | 90 +++++++++++++++++++
+ 1 file changed, 90 insertions(+)
  create mode 100644 Documentation/devicetree/bindings/iio/imu/bosch,smi330.yaml
- create mode 100644 drivers/iio/imu/smi330/Kconfig
- create mode 100644 drivers/iio/imu/smi330/Makefile
- create mode 100644 drivers/iio/imu/smi330/smi330.h
- create mode 100644 drivers/iio/imu/smi330/smi330_core.c
- create mode 100644 drivers/iio/imu/smi330/smi330_i2c.c
- create mode 100644 drivers/iio/imu/smi330/smi330_spi.c
 
+diff --git a/Documentation/devicetree/bindings/iio/imu/bosch,smi330.yaml b/Documentation/devicetree/bindings/iio/imu/bosch,smi330.yaml
+new file mode 100644
+index 00000000000..0270ca456d2
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/imu/bosch,smi330.yaml
+@@ -0,0 +1,90 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/imu/bosch,smi330.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Bosch SMI330 6-Axis IMU
++
++maintainers:
++  - Stefan Gutmann <stefam.gutmann@de.bosch.com>
++
++description:
++  SMI330 is a 6-axis inertial measurement unit that supports acceleration and
++  gyroscopic measurements with hardware fifo buffering. Sensor also provides
++  events information such as motion, no-motion and tilt detection.
++
++properties:
++  compatible:
++    const: bosch,smi330
++
++  reg:
++    maxItems: 1
++
++  vdd-supply:
++    description: provide VDD power to the sensor.
++
++  vddio-supply:
++    description: provide VDD IO power to the sensor.
++
++  interrupts:
++    minItems: 1
++    maxItems: 2
++
++  interrupt-names:
++    minItems: 1
++    maxItems: 2
++    items:
++      enum:
++        - INT1
++        - INT2
++
++  drive-open-drain:
++    type: boolean
++    description:
++      set if the interrupt pin(s) should be configured as
++      open drain. If not set, defaults to push-pull.
++
++required:
++  - compatible
++  - reg
++
++allOf:
++  - $ref: /schemas/spi/spi-peripheral-props.yaml#
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    // Example for I2C
++    #include <dt-bindings/interrupt-controller/irq.h>
++    i2c {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        imu@68 {
++            compatible = "bosch,smi330";
++            reg = <0x68>;
++            vddio-supply = <&vddio>;
++            vdd-supply = <&vdd>;
++            interrupt-parent = <&gpio>;
++            interrupts = <26 IRQ_TYPE_EDGE_RISING>;
++            interrupt-names = "INT1";
++        };
++    };
++
++    // Example for SPI
++    #include <dt-bindings/interrupt-controller/irq.h>
++    spi {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        imu@0 {
++            compatible = "bosch,smi330";
++            reg = <0>;
++            spi-max-frequency = <10000000>;
++            interrupt-parent = <&gpio>;
++            interrupts = <26 IRQ_TYPE_EDGE_RISING>;
++            interrupt-names = "INT1";
++        };
++    };
 -- 
 2.34.1
 

@@ -1,115 +1,126 @@
-Return-Path: <linux-iio+bounces-21287-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21288-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E8F6AF6E24
-	for <lists+linux-iio@lfdr.de>; Thu,  3 Jul 2025 11:05:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56F70AF7048
+	for <lists+linux-iio@lfdr.de>; Thu,  3 Jul 2025 12:31:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A77DE3AF296
-	for <lists+linux-iio@lfdr.de>; Thu,  3 Jul 2025 09:05:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 605ED1BC1ADB
+	for <lists+linux-iio@lfdr.de>; Thu,  3 Jul 2025 10:31:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83D892D46D8;
-	Thu,  3 Jul 2025 09:05:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49CC42EA159;
+	Thu,  3 Jul 2025 10:27:22 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from fgw22-7.mail.saunalahti.fi (fgw22-7.mail.saunalahti.fi [62.142.5.83])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAC8D2D46D4
-	for <linux-iio@vger.kernel.org>; Thu,  3 Jul 2025 09:05:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.142.5.83
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46FB82E5424;
+	Thu,  3 Jul 2025 10:27:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751533535; cv=none; b=HCloxV8z6N3tRpDi7FwMjqb+H1XT6UQJObSYjM6+RdwpEkK3C7uZ+pvNZJmeoTC53rD/PRbgu+94SizTsYTBFvnSvv+Wu0NZtJxnDfsIbejOx/qo+nYqGBkURBBKe5EcCkKV7iOuwIE39WMtKs2wQUcIWLPtgTI3QtXoec/1jpc=
+	t=1751538442; cv=none; b=fuyheWGJjtaPWm18FLxMwPky5URVsfaPm79wZPBG7CNbHlNVFDWg4rZQEBWmKwjefPzGEnGyfta4go0dM2s3Y8JyDnY/pDBNf0A+92o/sfd1QkkmI/2St4Tj2JFEfUwCKpqOMGuqjz6+WxuRXW0z6bL4MqD4oFat4gx9mc5ysrg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751533535; c=relaxed/simple;
-	bh=X/OtZrHYw9wMzUW+LghhL9+Dxd7vhit5tE+xLb7/ldc=;
-	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bez1JROrVf1GVSfT0r+a9/6yQzHBcyieRQgKRMjTUIqECxYP9iHkppLQmtZiciUMLdY+86mKIFe9dy7FGpuDe/BesvJ0QPHr0vJIaiq9uG/KW7cNgFU57a/ReRpav0tJvSPSZXEgQSqBMPXbgGAYZZe9+mW28/uKNrrdC4ja8c4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com; spf=fail smtp.mailfrom=gmail.com; arc=none smtp.client-ip=62.142.5.83
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=gmail.com
-Received: from localhost (88-113-26-232.elisa-laajakaista.fi [88.113.26.232])
-	by fgw21.mail.saunalahti.fi (Halon) with ESMTP
-	id d4d9889c-57ec-11f0-9796-005056bdd08f;
-	Thu, 03 Jul 2025 12:05:14 +0300 (EEST)
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Thu, 3 Jul 2025 12:05:14 +0300
-To: David Lechner <dlechner@baylibre.com>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Andy Shevchenko <andriy.shevchenko@intel.com>,
-	Akshay Bansod <akbansd@gmail.com>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	linux-kernel-mentees@lists.linuxfoundation.org,
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: st_lsm6dsx: Replace scnprintf with sysfs_emit
-Message-ID: <aGZHyr5zSRLp1m2p@surfacebook.localdomain>
-References: <20250702135855.59955-1-akbansd@gmail.com>
- <f96b68a5-d750-45f0-8cdd-9761b5daca1d@baylibre.com>
- <aGVIcBLgXZj_YR7B@smile.fi.intel.com>
- <e474db53-1b52-48b0-9253-2f62a3861bb4@baylibre.com>
- <20250702163342.00003c66@huawei.com>
- <3361875b-712e-423f-88ed-baf41af5ad22@baylibre.com>
+	s=arc-20240116; t=1751538442; c=relaxed/simple;
+	bh=DjI8oLdMLDrBuy1PxAjHjfkK1mZRk2rczmkFo0BW58g=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=sLz0SJmpP6wwmKX4CKjaI238RrlSU8PspcvSvBDB0vbQcfLoUjLbvhfw7Q7fNPSnSv9N+fBpj3rhOzqiNPWLQMG+VItMWh0E4FAZ8vPT09x9FvLRK6iY0jb8L0U0eoXN7PFWy0cqaF/vMMnj3/n1a5IMr/lWjPgCwNSLdZWA0y0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4bXtGm1MV0z6DKbF;
+	Thu,  3 Jul 2025 18:26:40 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+	by mail.maildlp.com (Postfix) with ESMTPS id E8F231402F0;
+	Thu,  3 Jul 2025 18:27:08 +0800 (CST)
+Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 3 Jul
+ 2025 12:27:08 +0200
+Date: Thu, 3 Jul 2025 11:27:06 +0100
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+To: Andrew Ijano <andrew.ijano@gmail.com>
+CC: Andy Shevchenko <andriy.shevchenko@intel.com>, "Colin King (gmail)"
+	<colin.i.king@gmail.com>, Jonathan Cameron <jic23@kernel.org>, "David
+ Lechner" <dlechner@baylibre.com>, <nuno.sa@analog.com>, Andy Shevchenko
+	<andy@kernel.org>, Gustavo Bastos <gustavobastos@usp.br>, Julien Stephan
+	<jstephan@baylibre.com>, <linux-iio@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: iio: accel: sca3000: dead code issue
+Message-ID: <20250703112706.0000064d@huawei.com>
+In-Reply-To: <CANZih_Rc3aht-ZTuuEytad8A1d5eC8Z_Dq2GQD8K2QiyFjcBZQ@mail.gmail.com>
+References: <1c1e39cb-5fe0-46b3-898e-c65bbb3beb30@gmail.com>
+	<aGUh7uXenHc7NYB2@smile.fi.intel.com>
+	<20250702164022.000027e8@huawei.com>
+	<CANZih_Rc3aht-ZTuuEytad8A1d5eC8Z_Dq2GQD8K2QiyFjcBZQ@mail.gmail.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3361875b-712e-423f-88ed-baf41af5ad22@baylibre.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: lhrpeml500005.china.huawei.com (7.191.163.240) To
+ frapeml500008.china.huawei.com (7.182.85.71)
 
-Wed, Jul 02, 2025 at 10:53:31AM -0500, David Lechner kirjoitti:
-> On 7/2/25 10:33 AM, Jonathan Cameron wrote:
-> > On Wed, 2 Jul 2025 10:04:23 -0500
-> > David Lechner <dlechner@baylibre.com> wrote:
-> >> On 7/2/25 9:55 AM, Andy Shevchenko wrote:
-> >>> On Wed, Jul 02, 2025 at 09:16:51AM -0500, David Lechner wrote:  
-> >>>> On 7/2/25 8:58 AM, Akshay Bansod wrote:  
+On Wed, 2 Jul 2025 23:52:02 -0300
+Andrew Ijano <andrew.ijano@gmail.com> wrote:
 
-...
+> On Wed, Jul 2, 2025 at 12:40=E2=80=AFPM Jonathan Cameron
+> <Jonathan.Cameron@huawei.com> wrote:
+> >
+> > On Wed, 2 Jul 2025 15:11:26 +0300
+> > Andy Shevchenko <andriy.shevchenko@intel.com> wrote:
+> > =20
+> > > On Wed, Jul 02, 2025 at 10:00:55AM +0100, Colin King (gmail) wrote:
+> > > =20
+> > > >                 ret =3D spi_w8r8(st->us,
+> > > > SCA3000_READ_REG(SCA3000_REG_BUF_COUNT_ADDR));
+> > > > =20
+> > > > >>>  the call to spi_w8r8 returns 0 on success or -ve on an error =
+=20
+> > >
+> > > Where did you get this from, please?  Any link to elixir or Git repo?
+> > > =20
+> >
+> > Hmm.  Just for reference the docs of spi_w8r8 are:
+> >
+> > * Return: the (unsigned) eight bit number returned by the
+> > * device, or else a negative error code.
+> >
+> > Not 0 on success (well not unless it is zero.
+> >
+> > So the check indeed looks wrong as should be if (ret < 0)
+> >
+> >
+> > https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git/commit/?h=
+=3Dtesting&id=3Dca66d8208762492df8442a503db568d9aab65f2f
+> > It's in my tree.
+> >
+> > I'll drop the patch when I'm on the right machine.  Andrew, could
+> > you do a new version fixing this up?  If not can make the changes
+> > but will be at least the weekend before I get a chance.
+> > =20
+>=20
+> Hey, guys! Thanks for pointing this out, I totally missed this problem
+> before. I'll try to fix this tomorrow.
+>=20
+> In this case, should I send a new version of the patchset fixing the
+> problem or a single patch following this commit with the fix?
 
-> >>>>> +		len += sysfs_emit_at(buf, len, "%d.%03d ",
-> >>>>>  				 odr_table->odr_avl[i].milli_hz / 1000,
-> >>>>>  				 odr_table->odr_avl[i].milli_hz % 1000);  
-> >>>>
-> >>>> Let's keep checkpatch happy and change the indent of the wrapped lines to
-> >>>> line up with ( since the ( moved.  
-> >>>
-> >>> While I see the point, wouldn't be better to have 1000 replaced with MILLI
-> >>> at the same time?
-> >>
-> >> For anything with 3 zeros, I don't consider MILLI better (or worse).
-> >> Science shows that the average human can easily see 3 or 4 things
-> >> without having to count them [1]. So it is only when we start getting
-> >> more 0s than that is when I think we should be picky about using macros
-> >> instead.
-> >>
-> >> And in this particular case, we are converting milli to micro so `1000`
-> >> should be replaced by `(MICRO / MILLI)` if we are going to do that.
-> > No we aren't.
-> > 
-> > This one is converting from milli_hz to hz + sticking to milli for the decimal
-> > part.
-> > 
-> > Lots of other IIO cases where you would have been right, but I think not here.
-> 
-> Oops. The %03d instead of %06d should have given it away!
+Given there will probably be some fuzz for the later patches, send
+a new version of the whole series.
 
-I'm not sure I got your comment. The '3' vs. '6' will just define
-the minimum amount of printed digits, it does *not* limit the upper
-numbers anyhow (it's limited by the 'd', which is (INT_MIN .. INT_MAX).
+Thanks
 
+Jonathan
 
-> >> [1]: https://www.scientificamerican.com/article/your-brain-finds-it-easy-to-size-up-four-objects-but-not-five-heres-why/
-
--- 
-With Best Regards,
-Andy Shevchenko
-
+>=20
+> Thanks,
+> Andrew
 
 

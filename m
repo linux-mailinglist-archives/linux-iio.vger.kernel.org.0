@@ -1,118 +1,184 @@
-Return-Path: <linux-iio+bounces-21312-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21313-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F03BDAF77CF
-	for <lists+linux-iio@lfdr.de>; Thu,  3 Jul 2025 16:41:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50C8EAF798D
+	for <lists+linux-iio@lfdr.de>; Thu,  3 Jul 2025 17:03:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8581B1C8201B
-	for <lists+linux-iio@lfdr.de>; Thu,  3 Jul 2025 14:41:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 90A654A78C8
+	for <lists+linux-iio@lfdr.de>; Thu,  3 Jul 2025 15:00:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CADE2ED16A;
-	Thu,  3 Jul 2025 14:41:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A1E92EF2B0;
+	Thu,  3 Jul 2025 15:00:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ECrnGc3E"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iO/kITT2"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 638C92D9EEA;
-	Thu,  3 Jul 2025 14:40:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A20362EE97A;
+	Thu,  3 Jul 2025 15:00:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751553660; cv=none; b=CpCwRWg3PeHOLsT1cvv4zQU+sAurtlppd65Tzj0Cch+IUlIC+wbODQw3AOZMH/0Hz4ZusI4vqVSAExQ1eEWKkDNEppoUjVc7AwBUmQDYAiSDVcDLDiNd4KuQ29hC70LOKExr+iCiFxRJngg50guh7j/96UBNeE5HJTC9hBqETKQ=
+	t=1751554829; cv=none; b=DCHc70PU5oTwMNfG3ni3GdkY0Jp+0GaWcEkbdxMw543iAv6ue5CgFm8N++vm4JQdvYWxfXD73N8brwb+E/ihvr35iBzFQXyIN9CrDtGZTjCIOXyzvuk6DqYnG56N9WkqG6FYBVPDH/Wpq/uaHkPcoU5jPiX0IM5VE2qUJ+sL5uw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751553660; c=relaxed/simple;
-	bh=z4NRIUhiE7mvp2Mp3EnicFhxWJQYsP7G97E9kbng+zg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fQ3R8yupHKWZZrMR+gFM94Hdvie/kTNGtUA0FZEJ+erz+qc7/T1O32UpSyE1wyXrDVvZQJfnqxLDTzlS6HvQX938yoaY9hTbbiIGovOY68mDGT43IECiIyl6Z7BiiksmAn8dpj0eXEIx6GI8mPI6pQk1HfI6qd6dHs0yTT2GyrU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ECrnGc3E; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1751553658; x=1783089658;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=z4NRIUhiE7mvp2Mp3EnicFhxWJQYsP7G97E9kbng+zg=;
-  b=ECrnGc3EWnUlfOyXBxSpsOWZmB3DjH+QX9vvLjhOWrsBbB54oDwnJLVE
-   qex8ihNFie+K0TCKacQBaRu4wLA0XEmmpc6M4bV0vCu823AjAOrfArAye
-   VskUfn2+16CnTBdgM/EgC9id28XVcpHbmniisSQKG83ZnnhHrsCjd3xzW
-   Wny4r9KFGA6xHHBt+/LtPWyCSvP5y/AUrBko4VAzllKMuVbdAHBInkxIE
-   C6dkJRbFiYWhhzh4GXzYvhmfvf0I9UTePJE6f2J/sZSjbhVCA2/7bCp4I
-   O6UtVfWLZy7g1uGy5FSpvypR/xreOQc1JYX5NTOy+HLm32wL1MlP9h2ZD
-   g==;
-X-CSE-ConnectionGUID: Aio3o61JTpKTA5gLleeD6w==
-X-CSE-MsgGUID: /ey/Cij1Qviesv7PCW+pNA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11483"; a="57556026"
-X-IronPort-AV: E=Sophos;i="6.16,284,1744095600"; 
-   d="scan'208";a="57556026"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jul 2025 07:40:57 -0700
-X-CSE-ConnectionGUID: TE8+tTSzRjaJUDhXwfxqOw==
-X-CSE-MsgGUID: DKyqnIL4QH2ui/pEZHKn6A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,284,1744095600"; 
-   d="scan'208";a="158430505"
-Received: from smile.fi.intel.com ([10.237.72.52])
-  by fmviesa003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jul 2025 07:40:56 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1uXL7M-0000000CEJV-3MMt;
-	Thu, 03 Jul 2025 17:40:52 +0300
-Date: Thu, 3 Jul 2025 17:40:52 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Lothar Rubusch <l.rubusch@gmail.com>
-Cc: jic23@kernel.org, dlechner@baylibre.com, nuno.sa@analog.com,
-	andy@kernel.org, corbet@lwn.net, lucas.p.stankus@gmail.com,
-	lars@metafoo.de, Michael.Hennerich@analog.com, bagasdotme@gmail.com,
-	linux-iio@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v7 0/8] iio: accel: adxl313: add power-save on
- activity/inactivity
-Message-ID: <aGaWdEto-z3_dKr9@smile.fi.intel.com>
-References: <20250702230819.19353-1-l.rubusch@gmail.com>
+	s=arc-20240116; t=1751554829; c=relaxed/simple;
+	bh=y5Bn/qxeEIbhfA4Ie5xDKGLKZvHhGtzkHdNAYE3pOqM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=WcFAs4904QJ8OBh/YnF5jt66nsxyExvHdi1rxhNAF+Yg3xZjK2XI7tqEGfSJAbEERZYoA6YfKxARK6g8eYSr0sufqtoXZfVH1c8yy1cPZtyrLng2a4yvpiV76tm2WFg9YAnwV3/iqV7Th0wlVIsz4ZCVdlH/XAomVQ8RYt0OHTE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iO/kITT2; arc=none smtp.client-ip=209.85.128.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-7111f616c6bso10179927b3.1;
+        Thu, 03 Jul 2025 08:00:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1751554826; x=1752159626; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Ptb8KthmKGSlL8wUvt0FDDgjb5LSkon5edWESqJxivU=;
+        b=iO/kITT2x1FzXo6ri9UwFIgQpK3DvRSpC/K+04KQff3HPdywCj8yd635tiPn2bGjaH
+         79LGwGVdBlkO3+Facp5PT1tc8hDkb9YiwYwoB8Aw2NrAmi8DnPqjL5KkdPVAlSo3ZZsK
+         ySMhQ8tNKOQLPzZ+1VbLv5ayWMMUboasf6KLcr98AB8c+BEeksvYw2Aui0NdlLwtat0y
+         gMZCpsw9KBJ1KGZ8idQIZp73WOcx+5zPb+UYzl2b2gsn3dW+vGc5ORKiguklK7B9YEZ4
+         JK8Lphis54i9NZut5jjpuIZ0lOUdinFhxVPfywiBEKJpvIf2lZVIPQhlKY19qOMEfTpQ
+         TQPw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751554826; x=1752159626;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Ptb8KthmKGSlL8wUvt0FDDgjb5LSkon5edWESqJxivU=;
+        b=ScK2TkpZPT28lfijQr9fJ+i/gACIjagmy6z+jfuNMfU7nFcMpmd9OrLl8VWw4P6Uzh
+         Y5VGytcls+FKO7on6dn+msbU15DvX5MtMgjNVvRaOvpHqWS9qpaL0xTQGRkc+nHHDpgl
+         s3btJzITiHEb7+r/IS3XxBwN9eetH4NkV12/KVFOQc9iVbqv32w69XJKMTD54T0tuEbe
+         7pa54t2ctNbn5/4s99k6eTJ+i66XCE4sAVygtl28UuTv119XCjJGkubOVwnJCxL+c3OC
+         U5pypGmwAa6eleFqYkuScKcwsvLTJXlgN3xumHGe3k7M1n5hCWeikqW7NDdwtfJSJ5bV
+         76Yw==
+X-Forwarded-Encrypted: i=1; AJvYcCV0rT1qFWBse0POefgNxy9juF07paTP0MTSc+UI278RIlUT8xQ1RKXU2CShqA7FaMrKTsMvIOu3zrk=@vger.kernel.org, AJvYcCVIbK6XFbyWkChW0t+HpgY8pnzHMwe33b0JJPZK7V2x1MsoqLqR+kVtjVJnW5sI5+LQ6lZDEfyhJTJ7@vger.kernel.org, AJvYcCW6//0IxVNc98agnkBKM+L0M42Rzw2eCfyx8by/KVJRgRjq1ZTDopIcVdaGBvduhZqwLVFiylSNL8F+TNNs@vger.kernel.org
+X-Gm-Message-State: AOJu0YwRCFTSCWlw1kobD4TNETyiOncaL62AiZa8W4L6khO7lTa0O1eC
+	ggDE3V1Hbc8fTGHEHJdY1vrweCaJHlkzJgyJUQJDOpu64Nhgp5OWnNOsCEZ80hR/Xhq3QlFoHjo
+	noyFXChxSti+c2T7oYhhvCZDf+fXRX0U=
+X-Gm-Gg: ASbGncuEW9eKXKyWpVg32dcmKNmEtZoTi9EIP2MWSamPol5YBHMrs2BaKEMXCpV6aDk
+	8ksFHpXM09aRrzL4BnUOGFZQZIS973r1/+6T68o8uwpY/zv5YMumR0QkpOU4kDXK/F0YLBQZ1CF
+	AbGPZ6nkAjDONYZZp6m8y1SrEZv1ZiZDz57MYBTo5IcRE=
+X-Google-Smtp-Source: AGHT+IEJUB5T2dZch8L6OTflAWv0/CbLrHQDwfw+YuL8DyN+2SKWnCAuI/UdJ4TilIAaYk4IuUSilswkIWEQlX7CIMI=
+X-Received: by 2002:a05:690c:48c5:b0:712:cc11:af5 with SMTP id
+ 00721157ae682-7165d46e317mr14680987b3.0.1751554826083; Thu, 03 Jul 2025
+ 08:00:26 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250702230819.19353-1-l.rubusch@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+References: <20250702230315.19297-1-l.rubusch@gmail.com> <20250702230315.19297-5-l.rubusch@gmail.com>
+ <aGaTH6gVqHxn9Xct@smile.fi.intel.com>
+In-Reply-To: <aGaTH6gVqHxn9Xct@smile.fi.intel.com>
+From: Lothar Rubusch <l.rubusch@gmail.com>
+Date: Thu, 3 Jul 2025 16:59:50 +0200
+X-Gm-Features: Ac12FXz9rM0PAzHkg-Tc_r3etk-DC0GwYxQkKb6ETriONVfGT8gZjdobROS2SOQ
+Message-ID: <CAFXKEHb4MQk=6hyh-02Fq_XmkQmMiwc-WT4ZSviP6x4XA463mQ@mail.gmail.com>
+Subject: Re: [PATCH v11 4/8] iio: accel: adxl345: add inactivity feature
+To: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: lars@metafoo.de, Michael.Hennerich@analog.com, jic23@kernel.org, 
+	dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org, corbet@lwn.net, 
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, eraretuya@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jul 02, 2025 at 11:08:11PM +0000, Lothar Rubusch wrote:
-> The patch set covers the following topics:
-> - add debug register and regmap cache
-> - prepare iio channel scan_type and scan_index
-> - prepare interrupt handling
-> - implement fifo with watermark
-> - add activity/inactivity together with auto-sleep with link bit
-> - add ac coupled activity/inactivity, integrate with auto-sleep and link bit
-> - documentation
-> 
-> Sorry for the fuzz: when I was about to rebase for submitting I
-> noticed Jonathan actually already applied parts of this. I'd recommend
-> to consider v6 rather over v5.
-> 
-> Since activity and inactivity here are implemented covering all axis, I
-> assumed x&y&z and x|y|z, respectively. Thus the driver uses a fake
-> channel for activity/inactiviy. AC-coupling is similar to other Analog Device
-> accelerometers, so MAG_ADAPTIVE events are chosen. Combinations are
-> documented and functionality tested and verified working.
+Hi Andy, thank you so much for the (almost) immediate feedback!
 
-Overall LGTM, one nit-pick somewhere, otherwise feel free to add
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-to the rest of the series (which has no my tag yet).
+On Thu, Jul 3, 2025 at 4:26=E2=80=AFPM Andy Shevchenko
+<andriy.shevchenko@intel.com> wrote:
+>
+> On Wed, Jul 02, 2025 at 11:03:11PM +0000, Lothar Rubusch wrote:
+> > Add support for the sensor=E2=80=99s inactivity feature in the driver. =
+When both
+> > activity and inactivity detection are enabled, the sensor sets a link b=
+it
+> > that ties the two functions together. This also enables auto-sleep mode=
+,
+> > allowing the sensor to automatically enter sleep state upon detecting
+> > inactivity.
+> >
+> > Inactivity detection relies on a configurable threshold and a specified
+> > time period. If sensor measurements remain below the threshold for the
+> > defined duration, the sensor transitions to the inactivity state.
+> >
+> > When an Output Data Rate (ODR) is set, the inactivity time period is
+> > automatically adjusted to a sensible default. Higher ODRs result in sho=
+rter
+> > inactivity timeouts, while lower ODRs allow longer durations-within
+> > reasonable upper and lower bounds. This is important because features l=
+ike
+> > auto-sleep operate effectively only between 12.5 Hz and 400 Hz. These
+> > defaults are applied when the sample rate is modified, but users can
+> > override them by explicitly setting a custom inactivity timeout.
+> >
+> > Similarly, configuring the g-range provides default threshold values fo=
+r
+> > both activity and inactivity detection. These are implicit defaults mea=
+nt
+> > to simplify configuration, but they can also be manually overridden as
+> > needed.
+>
+> ...
+>
+> >  #define ADXL345_REG_TAP_SUPPRESS_MSK BIT(3)
+> >  #define ADXL345_REG_TAP_SUPPRESS     BIT(3)
+> >  #define ADXL345_REG_ACT_AXIS_MSK     GENMASK(6, 4)
+> > +#define ADXL345_REG_INACT_AXIS_MSK   GENMASK(2, 0)
+> > +#define ADXL345_POWER_CTL_INACT_MSK  (ADXL345_POWER_CTL_AUTO_SLEEP | A=
+DXL345_POWER_CTL_LINK)
+> >
+> >  #define ADXL345_TAP_Z_EN             BIT(0)
+> >  #define ADXL345_TAP_Y_EN             BIT(1)
+> >  #define ADXL345_TAP_X_EN             BIT(2)
+> >
+> > +#define ADXL345_INACT_Z_EN           BIT(0)
+> > +#define ADXL345_INACT_Y_EN           BIT(1)
+> > +#define ADXL345_INACT_X_EN           BIT(2)
+> > +#define ADXL345_INACT_XYZ_EN         (ADXL345_INACT_Z_EN | ADXL345_INA=
+CT_Y_EN | ADXL345_INACT_X_EN)
+> > +
+> >  #define ADXL345_ACT_Z_EN             BIT(4)
+> >  #define ADXL345_ACT_Y_EN             BIT(5)
+> >  #define ADXL345_ACT_X_EN             BIT(6)
+>
+> Now it's even more mess. I am lost in understanding which bits/masks are =
+from
+> the same offset and which are not.
+>
 
--- 
-With Best Regards,
-Andy Shevchenko
+I'm sorry for that. I mean, while the above is supposed to make it
+clear where the "values" are coming from, I also could setup something
+like the following which is shorter.
++#define ADXL345_INACT_XYZ_EN        GENMASK(2,0)
++#define ADXL345_ACT_XYZ_EN        GENMASK(6,4)
 
+As I understand you, you'd rather prefer to see the latter one in the kerne=
+l?
 
+> ...
+>
+> > +             .mask_shared_by_type =3D BIT(IIO_EV_INFO_VALUE) |
+> > +                     BIT(IIO_EV_INFO_PERIOD),
+>
+> Same comment about indentation style.
+>
+
+I'll take it on the list. As I mentioned, "checkpatch --strict" seems
+to complain about function arguments not being aligned, but
+assignments this way are passing nicely, like the one above. Depending
+on what else comes up, I'll put this CR on the list. Thank you.
+
+> --
+> With Best Regards,
+> Andy Shevchenko
+>
+>
 

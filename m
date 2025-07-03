@@ -1,152 +1,166 @@
-Return-Path: <linux-iio+bounces-21318-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21319-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D042AF7E47
-	for <lists+linux-iio@lfdr.de>; Thu,  3 Jul 2025 18:58:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4CDBAF819A
+	for <lists+linux-iio@lfdr.de>; Thu,  3 Jul 2025 21:51:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 024EF483C4E
-	for <lists+linux-iio@lfdr.de>; Thu,  3 Jul 2025 16:57:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 382431CA1BC8
+	for <lists+linux-iio@lfdr.de>; Thu,  3 Jul 2025 19:51:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C866258CDC;
-	Thu,  3 Jul 2025 16:58:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CD402FA63A;
+	Thu,  3 Jul 2025 19:51:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hrf8oxAz"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="s1f6IN/J"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+Received: from mail-oa1-f53.google.com (mail-oa1-f53.google.com [209.85.160.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6AA422CBD8;
-	Thu,  3 Jul 2025 16:58:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37DEE2F431C
+	for <linux-iio@vger.kernel.org>; Thu,  3 Jul 2025 19:51:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751561902; cv=none; b=YzRo9B4z9oZcYTkIGveFAltxlie7Z+D1gJBYZkzFnwZFFBaysgofp8ynkFMrHFLT5jteUbmrs+nnsxOgSAv8pfjABItXBC8wMr9DEOsgEUGet9A8aRBkZpUFA5KwIzSMI/iiENXZ5OIPbDt1l7fQH259zrj1JfiJ8AWxKDRaa3c=
+	t=1751572290; cv=none; b=pAogeD4ApcBkYKMjQtkdlk1zur5lUxgYFNf50aB/ZaxFOoaig6eATAXo+0Z8dQKzFEwMcT75mS0Um0yeqUXUUkzfFhSbenazBvI3a41Ee7vqiiCxatGWurNqdt+fGq3TKZoSooac7gkWLRhJDLSfUmSMD9jH4oFzujz6qcVc0zE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751561902; c=relaxed/simple;
-	bh=gTADXefJfpRuQnZneIMTgmGJqA5Hp6PtGpOLvS7HbS8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Qx5hdniXbIYvxEmMKVdNP6SSLOGbuz0kv37NTGjcM3rCyO4BaBa/pdf6axHS3WdH8c19zsm8xE6vBSf/aHuOoiwOUdcSYVTwT0DdkfRTlQ62jOPB+TGoecyFPl4kvjL+gSWoUtrsW8bBdxHYlVrqElg/VFcSck/xo/1mxF6PHAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hrf8oxAz; arc=none smtp.client-ip=209.85.214.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-23508d30142so2320675ad.0;
-        Thu, 03 Jul 2025 09:58:20 -0700 (PDT)
+	s=arc-20240116; t=1751572290; c=relaxed/simple;
+	bh=8+rfOhAZJ5zpDxo/gHwlDR+PyPMfFHPGV/0Evol3Ukg=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=p9u2gVW9opsFAgotibYVXKhBH0I7KFS20ZwOyySEayKPMPKF5CXfQxJbHisbE+W0DxJxB93fqktLh10g7n4iiqivdvFZE6N2P7lgYoeNToQO2zvc3u00x9Csv5HnW0SwZ2gQe1QzH1pEWLipPcYrtt+abz7DUx5OwGgK512kzXg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=s1f6IN/J; arc=none smtp.client-ip=209.85.160.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oa1-f53.google.com with SMTP id 586e51a60fabf-2ea6dd628a7so239629fac.1
+        for <linux-iio@vger.kernel.org>; Thu, 03 Jul 2025 12:51:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1751561900; x=1752166700; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Nfdd40hGPW9+mSHHbH6Co29MQZFw5Zd3l8gaeJvJ/Dk=;
-        b=hrf8oxAz0nidYYki/3FPZzuhWEmNBIKEGmgnG8BI5LK2e/56CE7MeSVzQ5hm0F3G2a
-         UCAnNbNn6gTnyaGQxvmtCBcQu2X9q2+A5moWeeDpbJrYxhKNE4cdxswKrpMXNfdrFMLB
-         iPtFouGxYLZg6YctAuH8wpQoRfaArI7tLcMFdbZSPn8fj/K7nFq39xDvlX/yxPT+jgi9
-         slYRCwmaWOa+kc/VP2i8i8NsmHsK15mM16pClBahXsqMZNfcTMjR679aEWyw2e88m+F9
-         D8fkw+30TAD8mHiDcUoMBIz3U1OWV8WZA46XwNfqvvcIKS/aah5bNE87KIDwtHiwn0ld
-         1baQ==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1751572286; x=1752177086; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=6qqX46Ikvu2J8+FmRYWool6QuLD9cHW/4YH7HWsozgA=;
+        b=s1f6IN/JT2V8N2QxbthMQM/69KdgCFlL/BUCtxSaLAEYG9y5LVLOzd6VPmC1x4IjvE
+         hsJdRWY//9o2dx8EWWea829ulLarP3l1P+QzBqqS2lhQINdtGKxMbm9HaIOM2IO0+ffP
+         ROHeAqlvZ14Ywu7MwqYzhEGWhDsXJEFxEyMn12h2QpN+OzkUvN1Ek3xI6EFKE+69FB+d
+         wIP0VsEDc2taz6KJL7ArowZDXtf2APaituj7C50YwqLF1LbOkTA5kXmMZRpuMH6VJOQ5
+         AhCWUsVdSl2zgFmu58fIsNASTOMdtqdiihSc2mCWVeX0TP7APc/AH3Cfd1M3Y5+EHdUJ
+         wGMw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751561900; x=1752166700;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Nfdd40hGPW9+mSHHbH6Co29MQZFw5Zd3l8gaeJvJ/Dk=;
-        b=NjO9HjJxDaoazaMpyA8FPPTTp7TDCNOyY16yX+/pQhQSlKMZ3KW9sqB/3gQl1HyDfX
-         ALAZZe3fhhHrC6XcCiZigDL82YncBpQULeyN8aDQHt6Pb0XdpXr2dQxNjxoqhjsbtCO1
-         4UpHEP6svKMM6NMPHXJ5kJ2gnpjtrP65/w2EGudzopSWWFRyPAsAiOGmB8kBBPIJ225V
-         DP1luG3p7I4047tbsr3uh5+EKVsb6fu2Vy8l1gNGZyexjFD80w92Yrh0wQH4W3jJyRgt
-         tZhCtb1WOzzdPXb+o1VSiAyHTgpMHlh0aoufCjuBBIFUwXWQ/HQrMw4MloGWLlpxVL7T
-         mx5A==
-X-Forwarded-Encrypted: i=1; AJvYcCUOw44aqGL3c54oE9g4aNHjsIGYBv3c3+UYlkrK7dy9iztVveGgLyt5KI7D9bZS7YNuiBVckLoFniUGTCW7@vger.kernel.org, AJvYcCXHPEj6fuxZ0+EbdC/cwH1kZB9aIMzFzF8LT28kEQzui+ufHse5pAPxMwY/p53tgmltHbWPDaomGBs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzVTIzBzFiLQnXJni/oaTOvL8N83A45lcu18IleIoJr4iRsRw/L
-	qxk361wgqKSpo4CT9/eQyx6jDZ2G/ylgYL3Md0tud7swtlXluD1QFkRWkkFg2A==
-X-Gm-Gg: ASbGncszp1iY35dvlce8htggvMy7j8dsgLxFhcVxg9ce+kgPUiSieqkwkT7deQUctiP
-	SWEtIWcTKIn8jHfoI4XfsM7wbS8Ydv/pJhFCE3wXvr3r4qIUHiOV9sWxG7wDzagNA6sPpuVrw9e
-	XDnj5awEVnnrbJ1Nee8MACJm9mpCooH8M3ZWPs98YrAm2v/0ZrgStJMUIibo+VJElW2BB+QPApQ
-	5Mu3DRFTeLOc3uvoWFxhLE7/rZ0g7cYFsy/fuoP+qy8cDy0PcjWit6k55imujPHqOJqxSSdCzmI
-	A23hdKHHeDr7Dh60mkKAG0m02UdrO9cJs0WykjDLqauSeTeDngXP/33fCF5Z
-X-Google-Smtp-Source: AGHT+IH8FObvGV7iLQxpoXaMWI/xlTrZYbrAR5aXp8VpSULc6F5ZzAmEgd7yWsFD0hTIxulY4uJk9A==
-X-Received: by 2002:a17:902:f745:b0:235:799:eca5 with SMTP id d9443c01a7336-23c797ab3d4mr64095645ad.44.1751561899962;
-        Thu, 03 Jul 2025 09:58:19 -0700 (PDT)
-Received: from mbox.localnet ([36.50.162.229])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23c8457f308sm292935ad.149.2025.07.03.09.58.15
+        d=1e100.net; s=20230601; t=1751572286; x=1752177086;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=6qqX46Ikvu2J8+FmRYWool6QuLD9cHW/4YH7HWsozgA=;
+        b=BRDgaZzfpySzrQB24wDEekdzq33HQ8FAQ/3usJuXz3Ib8lsGWe8dmuekIlztqDMaCE
+         ovL8dgreU9f4qZ5tadg32n5kJwk0lXZ01ryEVwOx2BhLJebTriHficMAPqHvkGcZ95KP
+         RRrummTJPoh4OW3RFBL2dTraX4UnT4457bkN+hykxBqSVp3L7i+BP19giiVc37Hcjgt1
+         XbC+zifjog4JXQR3izsqZf3wplCTm76XabGSWxSPInHEt5mOPn21qJ8WkkRBeYfdFh9O
+         TCt44s/VB8puSKr+CJryLKD4p4voV9x9sxqX+Xmb7h3EIh8F1IkRYFN1qZQ/GZWf4pvP
+         9UVg==
+X-Forwarded-Encrypted: i=1; AJvYcCXZWiB7F3G+piousAieEpwUUYSqvnxHJ1C+44PW/reUqI97di69tduUBCXGQOvU9lozihUKermto20=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyOoXlDxnONsTk2tli2/njpEhzqv1zs+ovVbgLrrKfBEgpSO1SR
+	ug1dUSRlkh/oG/mU5ah7z0ZXqBKkdn4J3IVPE3L2UimsNZkOh0Vo3iiiifpJ8xgl2Ls=
+X-Gm-Gg: ASbGncvqHtyo+yipQQ0vd1c/ctsSVHQnVAcRqsRN8mHsZJFmFUjt25sDP1L8ML7pvzj
+	9oC/fIVqRNMVD8/rdkgSVstRs3qATwVBikxYvYq32xg1HPJ96y1wqht1MK82CpAQr0hjbod2prb
+	BSBsNxSzSOnfOSAcEDGMjzHpD9gRuP421YMZ49hWaBwrAypPtR7QCo7LB6F+a3Ke1loBAP6QUdT
+	Xly9O+8t0Q3JU/pLl+10MQrbykUKKKyfVhcjEZ9Ez90mmslNvG1rCHL5GFISOFG2odZFmY0gxOo
+	HQxJFZ7HYVDLVGRk50E507O0+vptvWW3Wm50Ksu6QIkofOma2UE7DVBazC3k5k6b60HNnBsF/m/
+	H/hs=
+X-Google-Smtp-Source: AGHT+IGEVogMmfIX4PhvWen00vY0nQ9rDbxfq9pneJ66y5sm0YOfwoo2GUn4GQ2tp656C4Ku5OrIXQ==
+X-Received: by 2002:a05:6870:e243:b0:2c1:e9a3:3ab3 with SMTP id 586e51a60fabf-2f79200f771mr136377fac.33.1751572286178;
+        Thu, 03 Jul 2025 12:51:26 -0700 (PDT)
+Received: from [127.0.1.1] ([2600:8803:e7e4:1d00:4f2b:5167:10f4:c985])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2f790277918sm81451fac.43.2025.07.03.12.51.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Jul 2025 09:58:19 -0700 (PDT)
-From: akshay bansod <akbansd@gmail.com>
-To: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: Lorenzo Bianconi <lorenzo@kernel.org>,
- Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>,
- Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
- Andy Shevchenko <andy@kernel.org>,
- linux-kernel-mentees@lists.linuxfoundation.org, skhan@linuxfoundation.org,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] iio: st_lsm6dsx: Replace scnprintf with sysfs_emit
-Date: Thu, 03 Jul 2025 22:28:13 +0530
-Message-ID: <2413481.ElGaqSPkdT@mbox>
-In-Reply-To: <aGaIMjkYBmfMmCBn@smile.fi.intel.com>
-References:
- <20250703053900.36530-1-akbansd@gmail.com>
- <aGaIMjkYBmfMmCBn@smile.fi.intel.com>
+        Thu, 03 Jul 2025 12:51:25 -0700 (PDT)
+From: David Lechner <dlechner@baylibre.com>
+Date: Thu, 03 Jul 2025 14:51:17 -0500
+Subject: [PATCH] iio: adc: ad7173: fix channels index for syscalib_mode
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250703-iio-adc-ad7173-fix-channels-index-for-syscalib_mode-v1-1-7fdaedb9cac0@baylibre.com>
+X-B4-Tracking: v=1; b=H4sIADTfZmgC/x2NwQrCMBBEf6Xs2YVtGwnxV0QkTba6UBPJQqmU/
+ rurhzk8mDezg3ITVrh0OzReRaUWg/7UQXrG8mCUbAwDDWfyNKJIxZiTxfd+xFk2/BULL4pSMm8
+ 414b60RQXme6vmhldmBw5DoEpgS2/G5v3f73ejuMLtxEHYYUAAAA=
+X-Change-ID: 20250703-iio-adc-ad7173-fix-channels-index-for-syscalib_mode-49b404e99e0c
+To: Lars-Peter Clausen <lars@metafoo.de>, 
+ Michael Hennerich <Michael.Hennerich@analog.com>, 
+ Jonathan Cameron <jic23@kernel.org>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Andy Shevchenko <andy@kernel.org>, 
+ Guillaume Ranquet <granquet@baylibre.com>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ David Lechner <dlechner@baylibre.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2046; i=dlechner@baylibre.com;
+ h=from:subject:message-id; bh=8+rfOhAZJ5zpDxo/gHwlDR+PyPMfFHPGV/0Evol3Ukg=;
+ b=owEBbQGS/pANAwAKAcLMIAH/AY/AAcsmYgBoZt82s9XxXvOtyNI7tjqprD0rw2+0QJKtIROQj
+ sLZ5QbA3YWJATMEAAEKAB0WIQTsGNmeYg6D1pzYaJjCzCAB/wGPwAUCaGbfNgAKCRDCzCAB/wGP
+ wFClB/49Fk+Y36IL7xIqufegNhdCaW1itta5xNGVmm9+fy9Z+L1Dl1nwsHi8bQL1V6waCytIF62
+ 2tbLSwDkmOylBtuGY6vtl4eEaPsQ1ZlL0vSA9aagcuOjcnIt9uDeMtl0kxLs+26yM6SqK/pDRXc
+ 4U2F1+PqKfe4iNxIcvHqFbzURCkd0NVaHy6lRye9gmUDaVwlhDMn6QdYxYw4bRU6WR23tcIOtI1
+ CE4vQhUMSOjA9etS3eniyyAVvNRt27/CtoI4VOJ/JUpvaqNUQXksS/QpMdlnmluOeWR4/lypJKa
+ CoLXT3uRqzPKGGLThwzx8/etYy+UtIzGb/56UEfbBG6ERe9D
+X-Developer-Key: i=dlechner@baylibre.com; a=openpgp;
+ fpr=8A73D82A6A1F509907F373881F8AF88C82F77C03
 
-On Thursday, 3 July 2025 10:12=E2=80=AFpm +0530 Andy Shevchenko wrote:
-> On Thu, Jul 03, 2025 at 11:08:59AM +0530, Akshay Bansod wrote:
-> > Update the sysfs interface for sampling frequency and scale attributes.
-> > Replace `scnprintf()` with `sysfs_emit_at()` which is PAGE_SIZE-aware
-> > and recommended for use in sysfs.
->=20
-> 'must' is stronger than 'recommendation'.
-> Of has the documentation been changed lately?
->=20
-> ...
->=20
-> > st_lsm6dsx_sysfs_sampling_frequency_avail(struct device *dev,
->=20
-> >  	odr_table =3D &sensor->hw->settings->odr_table[sensor->id];
-> >  	for (i =3D 0; i < odr_table->odr_len; i++)
-> > -		len +=3D scnprintf(buf + len, PAGE_SIZE - len, "%d.%03d ",
-> > -				 odr_table->odr_avl[i].milli_hz / 1000,
-> > -				 odr_table->odr_avl[i].milli_hz % 1000);
-> > +		len +=3D sysfs_emit_at(buf, len, "%d.%03d ",
-> > +				     odr_table->odr_avl[i].milli_hz / 1000,
-> > +				     odr_table->odr_avl[i].milli_hz % 1000);
-> >  	buf[len - 1] =3D '\n';
->=20
-> My gosh, this is error prone. I'm wondering when some CIs will start to
-> complain on this line. But this was already before your change...
->=20
-I'm planning to drop It entirely or should I replace it with another `sysfs=
-_emit_at()` ?
-I've seen other device driver returning space terminated buffers. Maybe I'm=
- overlooking
-something.
+Fix the index used to look up the channel when accessing the
+syscalib_mode attribute. The address field is a 0-based index (same
+as scan_index) that it used to access the channel in the
+ad7173_channels array throughout the driver. The channels field, on
+the other hand, may not match the address field depending on the
+channel configuration specified in the device tree and could result
+in an out-of-bounds access.
 
-> >  	return len;
->=20
-> ...
->=20
-> >  	fs_table =3D &hw->settings->fs_table[sensor->id];
-> >  	for (i =3D 0; i < fs_table->fs_len; i++)
-> > -		len +=3D scnprintf(buf + len, PAGE_SIZE - len, "0.%09u ",
-> > -				 fs_table->fs_avl[i].gain);
-> > +		len +=3D sysfs_emit_at(buf, len, "0.%09u ",
-> > +				     fs_table->fs_avl[i].gain);
-> >  	buf[len - 1] =3D '\n';
->=20
-> Ditto.
->=20
->=20
+Fixes: 031bdc8aee01 ("iio: adc: ad7173: add calibration support")
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+---
+ drivers/iio/adc/ad7173.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-regards,
-Akshay Bansod
+diff --git a/drivers/iio/adc/ad7173.c b/drivers/iio/adc/ad7173.c
+index dd9fa35555c79ead5a1b88d1dc6cc3db122502be..03412895f6dc71fcf8a07d09eb9f94a3840f02ef 100644
+--- a/drivers/iio/adc/ad7173.c
++++ b/drivers/iio/adc/ad7173.c
+@@ -318,7 +318,7 @@ static int ad7173_set_syscalib_mode(struct iio_dev *indio_dev,
+ {
+ 	struct ad7173_state *st = iio_priv(indio_dev);
+ 
+-	st->channels[chan->channel].syscalib_mode = mode;
++	st->channels[chan->address].syscalib_mode = mode;
+ 
+ 	return 0;
+ }
+@@ -328,7 +328,7 @@ static int ad7173_get_syscalib_mode(struct iio_dev *indio_dev,
+ {
+ 	struct ad7173_state *st = iio_priv(indio_dev);
+ 
+-	return st->channels[chan->channel].syscalib_mode;
++	return st->channels[chan->address].syscalib_mode;
+ }
+ 
+ static ssize_t ad7173_write_syscalib(struct iio_dev *indio_dev,
+@@ -347,7 +347,7 @@ static ssize_t ad7173_write_syscalib(struct iio_dev *indio_dev,
+ 	if (!iio_device_claim_direct(indio_dev))
+ 		return -EBUSY;
+ 
+-	mode = st->channels[chan->channel].syscalib_mode;
++	mode = st->channels[chan->address].syscalib_mode;
+ 	if (sys_calib) {
+ 		if (mode == AD7173_SYSCALIB_ZERO_SCALE)
+ 			ret = ad_sd_calibrate(&st->sd, AD7173_MODE_CAL_SYS_ZERO,
 
+---
+base-commit: 6742eff60460e77158d4f1b233f17e0345c9e66a
+change-id: 20250703-iio-adc-ad7173-fix-channels-index-for-syscalib_mode-49b404e99e0c
 
+Best regards,
+-- 
+David Lechner <dlechner@baylibre.com>
 
 

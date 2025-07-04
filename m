@@ -1,89 +1,86 @@
-Return-Path: <linux-iio+bounces-21335-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21333-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B655AF8AA0
-	for <lists+linux-iio@lfdr.de>; Fri,  4 Jul 2025 10:06:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD3DFAF8A8C
+	for <lists+linux-iio@lfdr.de>; Fri,  4 Jul 2025 10:04:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 755E51691F7
-	for <lists+linux-iio@lfdr.de>; Fri,  4 Jul 2025 08:03:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B80A51CA2184
+	for <lists+linux-iio@lfdr.de>; Fri,  4 Jul 2025 08:03:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C47A2E2EE6;
-	Fri,  4 Jul 2025 07:54:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F23FE2E11AA;
+	Fri,  4 Jul 2025 07:54:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mOhBYska"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="U4MChP7r"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 129642DECC6;
-	Fri,  4 Jul 2025 07:54:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6E612DFA3F;
+	Fri,  4 Jul 2025 07:54:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751615680; cv=none; b=HeKpA2t8mvhgzAHApBWJrQMcA1mpypCPTzGyL4ttnMEFgI0uCv4MpBao2q0H2SD8n8qgMuqp4tJLQxrrP3QWi9DwBZZHHmXVVOQWbSWCF126ukZwcuKloWqPJfYxjpbxVp9F6bZ/5eyvWHOBhluAHIlNnBDro2i0k/DxymudCo4=
+	t=1751615678; cv=none; b=ihQ3vcdPtPbuv3YnAzJjPhApKBU5+Bp3aI2x1lGjAab/kwI0j9YT1pzq4lrQ2gtBCFUQsndox2dcxX7b7w1lNiSj34muHp8pUSr3WwBIxc20vjj+ixYc5e2x9AzEJLa1J1zdTWwvobPqNqq6/M2lRjQthvteVnMte/AjH6L5Lz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751615680; c=relaxed/simple;
-	bh=KXGcRkCRmz1Yw49o+1krTntMeAh4fibBDbmqTKlKnJc=;
+	s=arc-20240116; t=1751615678; c=relaxed/simple;
+	bh=iZ8uhSvPympr52JRHUIloT5pt7V7PTIo8Iu2f3mqroc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=X2UiKrjX7pWYb1kWglgeWGwFQhZBjuWFP3Zosf7mhM+dO4iVGI3pwhSnJPEg4pe/81l5EsK/SAadHHqpeNQ7xn5P2oaaoU8OnbrI8FDK3knlo7cnRCEFGyUP8+ExAWWcI/frvfIt1cNzPgB+zRodUiq7vZX0TfNlqXyZnZ2u4UQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mOhBYska; arc=none smtp.client-ip=198.175.65.9
+	 MIME-Version; b=RsRdOrgYE7YcIYbhf4BY1q4HnoSYdem6MQe1uRGjWfMqlmd1+tQjoj494HHkf4Cxo3VexS/BlZwsxxldX2DLPM42QiZ+H8U5jGfeEU202walF21F+AwJogGItyYni5Zh6AlVC86oQQmLM4GYs2XCu+ei9U5sE2SWd9zSyxtg1bM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=U4MChP7r; arc=none smtp.client-ip=198.175.65.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1751615678; x=1783151678;
+  t=1751615676; x=1783151676;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=KXGcRkCRmz1Yw49o+1krTntMeAh4fibBDbmqTKlKnJc=;
-  b=mOhBYskac4u/u7hsom1f0v5Q7AsmI4pENvjpevX4wsJKvE6jgDyACe1l
-   i9H9ShyDahabrar7OnWns3a+TAA8GtAD4imR1m9xYID8iS1tiqLz+9FWG
-   2IurM4fspzh7YoChthDhbvzw4pTltFvq0ko6PpcUEWt1fe5Qfnk5jzah9
-   KVZTRfnkIz7cNez+sPOgl25R5fb3CzgS/hTm5YibE9AXQQW9yDXgTjBed
-   3vAnzQhUA9aNmV+/gjHIxhC76XZxy/JXEtMd5XVT/2ZV/nwbbQ3qFrJEl
-   DZvF74X/OECCmIGnaa8OpfUotTTY7xNiB0s2Iyt98VWzGyrNRGTaj0V56
+  bh=iZ8uhSvPympr52JRHUIloT5pt7V7PTIo8Iu2f3mqroc=;
+  b=U4MChP7ryMSj7mfBm1LS09wE196w5SlEnXrgeHaTi8qCcX90q+z3k7zh
+   kTUxNYxjwpJD0ECz2fdLYvcl40KI/FUKLaDGre2tQSndijBYukez1OAUp
+   p44yfRu13XVcdyjOyYhN27i/7SZR9oeWI0Hsr6wPrVt0fKRlfeO1L3uWu
+   r5LaVLbN8m9ui8WmYjHFEurVCzw2jfHf41Q3TED/rQNsy6iS5FwkazWBX
+   GPhsiSgDzLf4ig+41OSDQRF6po0MQxsMCSmQTe3s8H18zUUPO13UE8Wg7
+   krpn958EYie0nGys2WR2ujeuPUkYC6216QGBxXkTBtQdLR4t5xrNlX7zx
    A==;
-X-CSE-ConnectionGUID: VAPZc6yZRHaNzqJG5yHHLg==
-X-CSE-MsgGUID: 6QcJjU9CQDOCKn6tITgE9Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11483"; a="76494767"
+X-CSE-ConnectionGUID: fw2XA+ZxQkae+SMAmmvUkw==
+X-CSE-MsgGUID: YQOFJD05Qmeh2jVFlmG1Xg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11483"; a="76494740"
 X-IronPort-AV: E=Sophos;i="6.16,286,1744095600"; 
-   d="scan'208";a="76494767"
+   d="scan'208";a="76494740"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jul 2025 00:54:33 -0700
-X-CSE-ConnectionGUID: 0Yoxver4SRSwG28kmp1JFg==
-X-CSE-MsgGUID: HXkGrzJVS7uANh8xY2lUDA==
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jul 2025 00:54:32 -0700
+X-CSE-ConnectionGUID: Xx2vY2G3RGeFt+YJuPVp5w==
+X-CSE-MsgGUID: fkSRgt++S62xRvHsdma/qw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,286,1744095600"; 
-   d="scan'208";a="158924290"
+   d="scan'208";a="158924293"
 Received: from jkrzyszt-mobl2.ger.corp.intel.com (HELO svinhufvud.fi.intel.com) ([10.245.244.244])
   by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jul 2025 00:54:28 -0700
 Received: from svinhufvud.lan (localhost [IPv6:::1])
-	by svinhufvud.fi.intel.com (Postfix) with ESMTP id 02D0B4445A;
+	by svinhufvud.fi.intel.com (Postfix) with ESMTP id A6FA044910;
 	Fri,  4 Jul 2025 10:54:26 +0300 (EEST)
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
 From: Sakari Ailus <sakari.ailus@linux.intel.com>
-To: Linus Walleij <linus.walleij@linaro.org>,
-	Jonathan Cameron <jic23@kernel.org>,
+To: Jonathan Cameron <jic23@kernel.org>,
 	David Lechner <dlechner@baylibre.com>,
 	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
 	Andy Shevchenko <andy@kernel.org>,
-	Gerald Loacker <gerald.loacker@wolfvision.net>,
-	=?UTF-8?q?Barnab=C3=A1s=20Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Vasileios Amoiridis <vassilisamir@gmail.com>,
 	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Waqar Hameed <waqar.hameed@axis.com>,
-	Hans de Goede <hansg@kernel.org>,
+	Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
+	Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
 	Peter Zijlstra <peterz@infradead.org>,
-	Jakob Hauser <jahau@rocketmail.com>,
-	David Laight <david.laight@aculab.com>,
-	Al Viro <viro@zeniv.linux.org.uk>
+	Greg KH <gregkh@linuxfoundation.org>,
+	Matti Vaittinen <mazziesaccount@gmail.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>
 Cc: linux-iio@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 35/80] iio: magnetometer: Remove redundant pm_runtime_mark_last_busy() calls
-Date: Fri,  4 Jul 2025 10:54:25 +0300
-Message-Id: <20250704075425.3219648-1-sakari.ailus@linux.intel.com>
+Subject: [PATCH 36/80] iio: pressure: Remove redundant pm_runtime_mark_last_busy() calls
+Date: Fri,  4 Jul 2025 10:54:26 +0300
+Message-Id: <20250704075426.3219792-1-sakari.ailus@linux.intel.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250704075225.3212486-1-sakari.ailus@linux.intel.com>
 References: <20250704075225.3212486-1-sakari.ailus@linux.intel.com>
@@ -112,118 +109,108 @@ rc2:
         git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
                 pm-runtime-6.17-rc1
 
- drivers/iio/magnetometer/ak8974.c        | 2 --
- drivers/iio/magnetometer/ak8975.c        | 1 -
- drivers/iio/magnetometer/als31300.c      | 2 --
- drivers/iio/magnetometer/bmc150_magn.c   | 1 -
- drivers/iio/magnetometer/tmag5273.c      | 2 --
- drivers/iio/magnetometer/yamaha-yas530.c | 2 --
- 6 files changed, 10 deletions(-)
+ drivers/iio/pressure/bmp280-core.c | 5 -----
+ drivers/iio/pressure/icp10100.c    | 1 -
+ drivers/iio/pressure/mpl115.c      | 2 --
+ drivers/iio/pressure/zpa2326.c     | 2 --
+ 4 files changed, 10 deletions(-)
 
-diff --git a/drivers/iio/magnetometer/ak8974.c b/drivers/iio/magnetometer/ak8974.c
-index 947fe8a475f2..68ece700c7ce 100644
---- a/drivers/iio/magnetometer/ak8974.c
-+++ b/drivers/iio/magnetometer/ak8974.c
-@@ -583,7 +583,6 @@ static int ak8974_measure_channel(struct ak8974 *ak8974, unsigned long address,
- 	*val = (s16)le16_to_cpu(hw_values[address]);
- out_unlock:
- 	mutex_unlock(&ak8974->lock);
--	pm_runtime_mark_last_busy(&ak8974->i2c->dev);
- 	pm_runtime_put_autosuspend(&ak8974->i2c->dev);
+diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
+index 74505c9ec1a0..b66f3b905055 100644
+--- a/drivers/iio/pressure/bmp280-core.c
++++ b/drivers/iio/pressure/bmp280-core.c
+@@ -752,7 +752,6 @@ static int bmp280_read_raw(struct iio_dev *indio_dev,
  
- 	return ret;
-@@ -678,7 +677,6 @@ static void ak8974_fill_buffer(struct iio_dev *indio_dev)
- 
-  out_unlock:
- 	mutex_unlock(&ak8974->lock);
--	pm_runtime_mark_last_busy(&ak8974->i2c->dev);
- 	pm_runtime_put_autosuspend(&ak8974->i2c->dev);
- }
- 
-diff --git a/drivers/iio/magnetometer/ak8975.c b/drivers/iio/magnetometer/ak8975.c
-index a1e92b2abffd..3fd0171e5d69 100644
---- a/drivers/iio/magnetometer/ak8975.c
-+++ b/drivers/iio/magnetometer/ak8975.c
-@@ -775,7 +775,6 @@ static int ak8975_read_axis(struct iio_dev *indio_dev, int index, int *val)
- 
- 	mutex_unlock(&data->lock);
- 
--	pm_runtime_mark_last_busy(&data->client->dev);
- 	pm_runtime_put_autosuspend(&data->client->dev);
- 
- 	/* Swap bytes and convert to valid range. */
-diff --git a/drivers/iio/magnetometer/als31300.c b/drivers/iio/magnetometer/als31300.c
-index f72af829715f..03d060995ba6 100644
---- a/drivers/iio/magnetometer/als31300.c
-+++ b/drivers/iio/magnetometer/als31300.c
-@@ -140,7 +140,6 @@ static int als31300_get_measure(struct als31300_data *data,
- 	*z = ALS31300_DATA_Z_GET(buf);
- 
- out:
+ 	pm_runtime_get_sync(data->dev);
+ 	ret = bmp280_read_raw_impl(indio_dev, chan, val, val2, mask);
 -	pm_runtime_mark_last_busy(data->dev);
  	pm_runtime_put_autosuspend(data->dev);
  
  	return ret;
-@@ -401,7 +400,6 @@ static int als31300_probe(struct i2c_client *i2c)
- 	pm_runtime_set_autosuspend_delay(dev, 200);
- 	pm_runtime_use_autosuspend(dev);
+@@ -927,7 +926,6 @@ static int bmp280_write_raw(struct iio_dev *indio_dev,
  
--	pm_runtime_mark_last_busy(dev);
- 	pm_runtime_put_autosuspend(dev);
+ 	pm_runtime_get_sync(data->dev);
+ 	ret = bmp280_write_raw_impl(indio_dev, chan, val, val2, mask);
+-	pm_runtime_mark_last_busy(data->dev);
+ 	pm_runtime_put_autosuspend(data->dev);
  
- 	ret = devm_iio_device_register(dev, indio_dev);
-diff --git a/drivers/iio/magnetometer/bmc150_magn.c b/drivers/iio/magnetometer/bmc150_magn.c
-index 761daead5ada..53d860e640a9 100644
---- a/drivers/iio/magnetometer/bmc150_magn.c
-+++ b/drivers/iio/magnetometer/bmc150_magn.c
-@@ -263,7 +263,6 @@ static int bmc150_magn_set_power_state(struct bmc150_magn_data *data, bool on)
- 	if (on) {
- 		ret = pm_runtime_resume_and_get(data->dev);
- 	} else {
--		pm_runtime_mark_last_busy(data->dev);
- 		ret = pm_runtime_put_autosuspend(data->dev);
- 	}
+ 	return ret;
+@@ -2255,7 +2253,6 @@ static int bmp580_nvmem_read(void *priv, unsigned int offset, void *val,
  
-diff --git a/drivers/iio/magnetometer/tmag5273.c b/drivers/iio/magnetometer/tmag5273.c
-index 2ca5c26f0091..f9ef501249e3 100644
---- a/drivers/iio/magnetometer/tmag5273.c
-+++ b/drivers/iio/magnetometer/tmag5273.c
-@@ -295,7 +295,6 @@ static int tmag5273_read_raw(struct iio_dev *indio_dev,
+ 	pm_runtime_get_sync(data->dev);
+ 	ret = bmp580_nvmem_read_impl(priv, offset, val, bytes);
+-	pm_runtime_mark_last_busy(data->dev);
+ 	pm_runtime_put_autosuspend(data->dev);
  
- 		ret = tmag5273_get_measure(data, &t, &x, &y, &z, &angle, &magnitude);
+ 	return ret;
+@@ -2330,7 +2327,6 @@ static int bmp580_nvmem_write(void *priv, unsigned int offset, void *val,
  
+ 	pm_runtime_get_sync(data->dev);
+ 	ret = bmp580_nvmem_write_impl(priv, offset, val, bytes);
+-	pm_runtime_mark_last_busy(data->dev);
+ 	pm_runtime_put_autosuspend(data->dev);
+ 
+ 	return ret;
+@@ -3120,7 +3116,6 @@ static int bmp280_buffer_postdisable(struct iio_dev *indio_dev)
+ {
+ 	struct bmp280_data *data = iio_priv(indio_dev);
+ 
+-	pm_runtime_mark_last_busy(data->dev);
+ 	pm_runtime_put_autosuspend(data->dev);
+ 
+ 	return 0;
+diff --git a/drivers/iio/pressure/icp10100.c b/drivers/iio/pressure/icp10100.c
+index 1951c1cc84cf..3d83d0098a57 100644
+--- a/drivers/iio/pressure/icp10100.c
++++ b/drivers/iio/pressure/icp10100.c
+@@ -265,7 +265,6 @@ static int icp10100_get_measures(struct icp10100_state *st,
+ 			(be16_to_cpu(measures[1]) >> 8);
+ 	*temperature = be16_to_cpu(measures[2]);
+ 
+-	pm_runtime_mark_last_busy(&st->client->dev);
+ error_measure:
+ 	pm_runtime_put_autosuspend(&st->client->dev);
+ 	return ret;
+diff --git a/drivers/iio/pressure/mpl115.c b/drivers/iio/pressure/mpl115.c
+index 71beb28b7f2c..830a5065c008 100644
+--- a/drivers/iio/pressure/mpl115.c
++++ b/drivers/iio/pressure/mpl115.c
+@@ -108,7 +108,6 @@ static int mpl115_read_raw(struct iio_dev *indio_dev,
+ 		ret = mpl115_comp_pressure(data, val, val2);
+ 		if (ret < 0)
+ 			return ret;
 -		pm_runtime_mark_last_busy(data->dev);
  		pm_runtime_put_autosuspend(data->dev);
  
- 		if (ret)
-@@ -668,7 +667,6 @@ static int tmag5273_probe(struct i2c_client *i2c)
- 	indio_dev->channels = tmag5273_channels;
- 	indio_dev->num_channels = ARRAY_SIZE(tmag5273_channels);
- 
--	pm_runtime_mark_last_busy(dev);
- 	pm_runtime_put_autosuspend(dev);
- 
- 	ret = devm_iio_device_register(dev, indio_dev);
-diff --git a/drivers/iio/magnetometer/yamaha-yas530.c b/drivers/iio/magnetometer/yamaha-yas530.c
-index 340607111d9a..d49e37edcbed 100644
---- a/drivers/iio/magnetometer/yamaha-yas530.c
-+++ b/drivers/iio/magnetometer/yamaha-yas530.c
-@@ -623,7 +623,6 @@ static int yas5xx_read_raw(struct iio_dev *indio_dev,
- 	case IIO_CHAN_INFO_RAW:
- 		pm_runtime_get_sync(yas5xx->dev);
- 		ret = ci->get_measure(yas5xx, &t, &x, &y, &z);
--		pm_runtime_mark_last_busy(yas5xx->dev);
- 		pm_runtime_put_autosuspend(yas5xx->dev);
- 		if (ret)
+ 		return IIO_VAL_INT_PLUS_MICRO;
+@@ -118,7 +117,6 @@ static int mpl115_read_raw(struct iio_dev *indio_dev,
+ 		ret = mpl115_read_temp(data);
+ 		if (ret < 0)
  			return ret;
-@@ -664,7 +663,6 @@ static void yas5xx_fill_buffer(struct iio_dev *indio_dev)
+-		pm_runtime_mark_last_busy(data->dev);
+ 		pm_runtime_put_autosuspend(data->dev);
+ 		*val = ret >> 6;
  
- 	pm_runtime_get_sync(yas5xx->dev);
- 	ret = ci->get_measure(yas5xx, &t, &x, &y, &z);
--	pm_runtime_mark_last_busy(yas5xx->dev);
- 	pm_runtime_put_autosuspend(yas5xx->dev);
- 	if (ret) {
- 		dev_err(yas5xx->dev, "error refilling buffer\n");
+diff --git a/drivers/iio/pressure/zpa2326.c b/drivers/iio/pressure/zpa2326.c
+index 6eef37c0952d..4923a558a26a 100644
+--- a/drivers/iio/pressure/zpa2326.c
++++ b/drivers/iio/pressure/zpa2326.c
+@@ -697,7 +697,6 @@ static void zpa2326_suspend(struct iio_dev *indio_dev)
+ 
+ 	zpa2326_sleep(indio_dev);
+ 
+-	pm_runtime_mark_last_busy(parent);
+ 	pm_runtime_put_autosuspend(parent);
+ }
+ 
+@@ -708,7 +707,6 @@ static void zpa2326_init_runtime(struct device *parent)
+ 	pm_runtime_enable(parent);
+ 	pm_runtime_set_autosuspend_delay(parent, 1000);
+ 	pm_runtime_use_autosuspend(parent);
+-	pm_runtime_mark_last_busy(parent);
+ 	pm_runtime_put_autosuspend(parent);
+ }
+ 
 -- 
 2.39.5
 

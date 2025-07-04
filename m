@@ -1,165 +1,396 @@
-Return-Path: <linux-iio+bounces-21355-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21356-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93BB4AF96C2
-	for <lists+linux-iio@lfdr.de>; Fri,  4 Jul 2025 17:27:26 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F0E1AF9700
+	for <lists+linux-iio@lfdr.de>; Fri,  4 Jul 2025 17:38:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 364FE5A082B
-	for <lists+linux-iio@lfdr.de>; Fri,  4 Jul 2025 15:27:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2BF657B20D0
+	for <lists+linux-iio@lfdr.de>; Fri,  4 Jul 2025 15:36:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 579AE2C325B;
-	Fri,  4 Jul 2025 15:26:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 108B52D5C9C;
+	Fri,  4 Jul 2025 15:37:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XOzUIwOk"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ziC6Hxfi"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76A042BF013;
-	Fri,  4 Jul 2025 15:26:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A899D2E9EAB
+	for <linux-iio@vger.kernel.org>; Fri,  4 Jul 2025 15:37:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751642762; cv=none; b=Q3zm3x0ubi+Y2Ox9FWuwIN5IymPdmZdzk9nuav/s6Ou0VvCoGCV6hJ1xAXONq34KKMUUoOIkQD5JbDG5W+iu0ki5ok4HKtUheNZcMUox+e295UspLHfuVsh79E89IigugdzXOTvkoXMAwuLnNo6rtwuMmIUgrKHMBp+sDlH+Auc=
+	t=1751643471; cv=none; b=NcckmmxEkfXNit34/hXUmpeCuk0KjAZHpvhDjB9Yw1uaJPzhSnQ1Yi5V499qU1whUJcXEuxZWqCSi/sS2+8JUmmDDelEEo+R0zFggny6G8qO1vUwsjW/MSrX8URMnaTe4DgoYEyL0WPaVjDWtJykqbq84XEqYRIcdwYvmWEi3fE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751642762; c=relaxed/simple;
-	bh=hkrris0XIdMZwhPXqZ/D23EFgKNcyFvFnekDIAcLLls=;
-	h=From:Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:
-	 References:In-Reply-To; b=JhAlz13aMr7uGmATsCIcBYrCH5YDuXwRu+0ftQE76KSEXt6pa6PnhFtXWsaWsfLUwAIMh9FKuMos1nvHwtDYItrjNCRQ/aL4Ojr6SWdPqK8iaFnZmBcTrbzdXNnBxXeBmg7eEMq7aq59w22raLwpaXqGZmFbiF+T89Ql0OjWgY4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XOzUIwOk; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4535fbe0299so5877015e9.3;
-        Fri, 04 Jul 2025 08:26:00 -0700 (PDT)
+	s=arc-20240116; t=1751643471; c=relaxed/simple;
+	bh=AqCAt1wI7tAF5McZIeuIhOgu1S/knglyj60+bdPhkbc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NTtLPHQHgSQr+4eEBqAlCE3szUrU05V0n/JwYiXfq6hLZOJ7fEWY3ps4ej1s1Poh8yW+FP+ywxgHo3twrGydu/9sz6f68R9P/m0Z/5sp/C6ym7uNURfvg2/w7aXosJf1N/5zu9GWb7nRPv3uW+IlVRK0YrKsSTjCGhqo6SKodJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ziC6Hxfi; arc=none smtp.client-ip=209.85.210.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-74b56b1d301so698021b3a.1
+        for <linux-iio@vger.kernel.org>; Fri, 04 Jul 2025 08:37:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1751642759; x=1752247559; darn=vger.kernel.org;
-        h=in-reply-to:references:subject:cc:to:message-id:date
-         :content-transfer-encoding:mime-version:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=JBgWCKbdVEBzjfEHgGPgXI3i0E/9SHqAjmNTx+sAHHY=;
-        b=XOzUIwOkQeMcr71Ot3P3jbGNtDnpqRIp5HO9pQbnZK1oXvYDK9FoeO5r5vVaxM7W+U
-         TcrmEUHpFk1dbYoQ+VtjcZWxFuiX8xdpvqRE4vZb2yeDxeNa+PsfqooRFH7cqMf1zxPe
-         teqAVWsKuR1bELRlQxJuNoDEOU6mmHDue4mRe5SZ1Zn1MtC4MeuDhS8EDwYWLdpN8Ccb
-         B1nTtu7WKVRz/VskNSH1ESZXUJzhkUydnL4HgBwyYCitCTNwmZgy9jlBX1TthKTOAjWD
-         Vd1jfNdxepwLQh7bl5b8pN36m1gnXqfaoMj31DMxALWL+pdo6d/6lRA9LZJ6kzZoR71I
-         ANHA==
+        d=linaro.org; s=google; t=1751643466; x=1752248266; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=pfUDmHeepnt8bgi+nNBa1jZtXWQ+k/4Kcm7pPkbYwkQ=;
+        b=ziC6HxfiLCtBqhZc6qt3dRh9L9ae72vgX1Ji1xziuE7879XZZFlH1Ev6cUvMZVzBZ1
+         O92b/dh2zytrc+ZXGOcAoPQH1g8mVBtafQttlkHaGoy1frvu4PF2TWOYe3ObJ04hAHVg
+         bboZhbngbVsriRB8rKU33i1Tw0TkTdaWTD02QE9f8QOjLx8kYvv+e3N+H7vp6E7T+fo/
+         mfUkLX3ryWGvVzsFCbWeXs06y/klclfuBaUCuduiEXNHbtF1cV9s4SS60QxgVaHohdB6
+         d/cp57q63oet12DVmfw7+gKkxEa2Pypkx/e4lGeu7kSm9iYte7J3PMTwlWgdT5qFCUkN
+         RSuw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751642759; x=1752247559;
-        h=in-reply-to:references:subject:cc:to:message-id:date
-         :content-transfer-encoding:mime-version:from:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=JBgWCKbdVEBzjfEHgGPgXI3i0E/9SHqAjmNTx+sAHHY=;
-        b=vFoGhLULQqniVMB+QdX0iAghACcMs1sI/3jxyH1eEz0NDS43rk3Bv7QchE3QUSqms2
-         muA/Qa6z3RRI/6V9cWRyBrU0C2VckFNafbozSFHEtTX3/+8D9jKMtavxuaRXtBtMGmOd
-         1rRvs7Byf1b7eStkLe5XcMVil1HJj6sqLlegqCI+52gFBcSCrPH8C3Tx/xHUZWCSR3r4
-         ecybxyVUHLvJXArQqs4P0dmLkroRlZdY0qTp5LTeFN9WK6w7fgJpTcjY0o5fMjs1vMc3
-         kn/1YyIXOGJBEaHJv5ieW3nMRvpMWXRKUtQRKjqCjZn66VuLiaNYuJqQrUdA/FWX4Acb
-         t3Vg==
-X-Forwarded-Encrypted: i=1; AJvYcCWDYSD8Dx3qej3kFuau4Ru826cHaBEuXzT3yF1CWi8UBeVNrbCO7TpSc9sWdHmJEL7B48fhlT5EKAApYtE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzGStx7zqrmv4ey6OiKPbqm1lCDvi9LXcFRLKdiSJgRcTIgfowG
-	onMyjDP45z0ZuVAujeS97pmtWFn0Scb2AhvWa/QqJ0dtbtlZEn/VEiyW
-X-Gm-Gg: ASbGncsSUl/cZplv8YctAO4H8NY1VK7cwTKFJRMVsGyzhR686RjkCvlaSQXqVryqGla
-	2OoTgpSIgzm3mhxtyeWZgB+RHlz1i6TdVVI5ld7rUNjXv+hbo1x/Owv6xWdF7Jdg8TM+xBp9Nrf
-	Y3LEAq107TAnASSCk9aQ6XBVQ1tTwLr0HNK4S8yE1YqbcRTClGpRPL6Rd6sIJtrix/JDV9Dw494
-	nim1KJ++KSiVP0YBDjIVWrdQqsCpCIAHyjKoxBwibakJqUTM2q1ZINqB4IjclGBnVKupKkVGbKk
-	wnmUrseI9WjsPGOYIi5LjSXqHOUmVz7yldX9vVH07o69CFLuFug5h1aLHdLq9K2gXIQ52Veds36
-	8DPP5Ahne1s16lw==
-X-Google-Smtp-Source: AGHT+IFg9uvqa5LmAr6RLIhel5JMqvuWuppWw508GFdS/XFd61zn07luB9/xERilmez4oszfTjS0kw==
-X-Received: by 2002:a05:600c:a316:b0:442:d9fb:d9f1 with SMTP id 5b1f17b1804b1-454b3b8a485mr22839885e9.4.1751642758465;
-        Fri, 04 Jul 2025 08:25:58 -0700 (PDT)
-Received: from localhost (a95-94-245-170.cpe.netcabo.pt. [95.94.245.170])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-454a9969058sm59249505e9.3.2025.07.04.08.25.57
+        d=1e100.net; s=20230601; t=1751643466; x=1752248266;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pfUDmHeepnt8bgi+nNBa1jZtXWQ+k/4Kcm7pPkbYwkQ=;
+        b=BmuJCGPzwi12Gx7iZPv9z6IMmaOJhrRh+x8W0qjA0MnYsUfz9/SmjZoOD7En6Du/H/
+         ciu4ZczrUjxriuLsE5wWhZm72/Ji9GxDTIGU46Q1Xmeb+UJDOZI1Uz1kdCHZG+0jLfrQ
+         qTHhHP6+WPB4Ytnk1XbqzNwYOGjLCncHa4JEzPdsC+WK2avt/wrkttXVPy0B/x9VX7uk
+         ifvn8m8TLm+GfOF4XQKiWItJqpGCSIaBs0Fjt6Xhws50aP8EhUt5s0rZpdvNfUPG7vYI
+         0f7W3nUyEbkBNDluDF6UcHNb8LXn2sUqO2GsJloAOZEiaPQS9dto08fxNfRj4U6LZ5e+
+         0zNg==
+X-Forwarded-Encrypted: i=1; AJvYcCUDh3DjiRuG8aL575k8R0BUvm/4QjmlMleLM57PIEjtLscy3t6C7PpYeIsGbv7In80+en0nJ9SYiAo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz6DkVviKbmUWedD3p3lgoA4wETMnDMNXNe7zdEBacQY9F3b5Rf
+	nqsJqAQiW2thTty7JUDW26NAMgwyP0rFqKwis8J2Rm7mbzv1zz05jtDa7bbwRqnurpk=
+X-Gm-Gg: ASbGncsy3owhWGRW9hzOmQn0ocbAVIeg3aolGsX3rYWjcvBMjYVnBafCjdDF/lkSSze
+	1855ujDShiP9KsKwiNWRiASGqhBHpiVhIgNibhUpEdTDj9lcducpuSk4sNI2d6j2yuFjBBrMM9c
+	djWPMRkMVVdqs/HK9r9qdUzATXwUWQdYzsCE6LDkLOPmFHZw+zlG1MxzCx7KF/nVn7WFDmG/X7X
+	zNSmsin/7Xkc3/1I2JcytW/TIPzddZsZoFfvRDbtkwcYfnlIQ4xkPKQE4M8Z4yl6Ie8vxguysrx
+	loe0bI+2iAh/ikqYGW4pGPFv+zSTGMzDk69QN0xmtcAXgxnsn5gxZ9zLZGX4PsxniQ==
+X-Google-Smtp-Source: AGHT+IFPI2zhve4aVtUtekaO97BS+JFBRK74WkSk2tLAhK9T3VoR5MF+THO0XUOGjGGiMHNpLBAJwA==
+X-Received: by 2002:a17:90a:d604:b0:312:1143:cf8c with SMTP id 98e67ed59e1d1-31aadd86742mr4003854a91.16.1751643466282;
+        Fri, 04 Jul 2025 08:37:46 -0700 (PDT)
+Received: from p14s ([2604:3d09:148c:c800:ebf3:da99:de93:f600])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-31a9cb7e88esm5358629a91.0.2025.07.04.08.37.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 04 Jul 2025 08:25:57 -0700 (PDT)
-From: Rui Miguel Silva <rmfrfs@gmail.com>
-X-Google-Original-From: "Rui Miguel Silva" <rui.silva@linaro.com>
+        Fri, 04 Jul 2025 08:37:45 -0700 (PDT)
+Date: Fri, 4 Jul 2025 09:37:42 -0600
+From: Mathieu Poirier <mathieu.poirier@linaro.org>
+To: Claudiu <claudiu.beznea@tuxon.dev>
+Cc: linux@armlinux.org.uk, gregkh@linuxfoundation.org,
+	david.m.ertman@intel.com, ira.weiny@intel.com, leon@kernel.org,
+	rafael@kernel.org, dakr@kernel.org, len.brown@intel.com,
+	pavel@kernel.org, andersson@kernel.org, mturquette@baylibre.com,
+	sboyd@kernel.org, maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com,
+	simona@ffwll.ch, wsa+renesas@sang-engineering.com,
+	ulf.hansson@linaro.org, vkoul@kernel.org,
+	yung-chuan.liao@linux.intel.com, pierre-louis.bossart@linux.dev,
+	broonie@kernel.org, robh@kernel.org, jirislaby@kernel.org,
+	saravanak@google.com, jic23@kernel.org, dmitry.torokhov@gmail.com,
+	linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
+	linux-i2c@vger.kernel.org, linux-mmc@vger.kernel.org,
+	linux-remoteproc@vger.kernel.org, linux-sound@vger.kernel.org,
+	linux-spi@vger.kernel.org, linux-serial@vger.kernel.org,
+	bhelgaas@google.com, geert@linux-m68k.org,
+	linux-iio@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+	fabrizio.castro.jz@renesas.com,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Subject: Re: [PATCH v5 1/3] PM: domains: Add flags to specify power on
+ attach/detach
+Message-ID: <aGf1Rjy7WLEuNGme@p14s>
+References: <20250703112708.1621607-1-claudiu.beznea.uj@bp.renesas.com>
+ <20250703112708.1621607-2-claudiu.beznea.uj@bp.renesas.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 04 Jul 2025 16:25:57 +0100
-Message-Id: <DB3DJ9O7DEH9.377Y1IS7ZAVHV@linaro.com>
-To: "Sakari Ailus" <sakari.ailus@linux.intel.com>, "Jonathan Cameron"
- <jic23@kernel.org>, "David Lechner" <dlechner@baylibre.com>,
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, "Andy Shevchenko"
- <andy@kernel.org>, "Rui Miguel Silva" <rmfrfs@gmail.com>, "Linus Walleij"
- <linus.walleij@linaro.org>, "Julien Stephan" <jstephan@baylibre.com>, "Hans
- de Goede" <hansg@kernel.org>, "Waqar Hameed" <waqar.hameed@axis.com>
-Cc: <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 32/80] iio: gyro: Remove redundant
- pm_runtime_mark_last_busy() calls
-References: <20250704075225.3212486-1-sakari.ailus@linux.intel.com>
- <20250704075422.3219401-1-sakari.ailus@linux.intel.com>
-In-Reply-To: <20250704075422.3219401-1-sakari.ailus@linux.intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250703112708.1621607-2-claudiu.beznea.uj@bp.renesas.com>
 
-Hi Sakari,
-Thanks for the patch
-On Fri Jul 4, 2025 at 8:54 AM WEST, Sakari Ailus wrote:
-
-> pm_runtime_put_autosuspend(), pm_runtime_put_sync_autosuspend(),
-> pm_runtime_autosuspend() and pm_request_autosuspend() now include a call
-> to pm_runtime_mark_last_busy(). Remove the now-reduntant explicit call to
-> pm_runtime_mark_last_busy().
->
-> Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+On Thu, Jul 03, 2025 at 02:27:06PM +0300, Claudiu wrote:
+> From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+> 
+> Calling dev_pm_domain_attach()/dev_pm_domain_detach() in bus driver
+> probe/remove functions can affect system behavior when the drivers attached
+> to the bus use devres-managed resources. Since devres actions may need to
+> access device registers, calling dev_pm_domain_detach() too early, i.e.,
+> before these actions complete, can cause failures on some systems. One such
+> example is Renesas RZ/G3S SoC-based platforms.
+> 
+> If the device clocks are managed via PM domains, invoking
+> dev_pm_domain_detach() in the bus driver's remove function removes the
+> device's clocks from the PM domain, preventing any subsequent
+> pm_runtime_resume*() calls from enabling those clocks.
+> 
+> The second argument of dev_pm_domain_attach() specifies whether the PM
+> domain should be powered on during attachment. Likewise, the second
+> argument of dev_pm_domain_detach() indicates whether the domain should be
+> powered off during detachment.
+> 
+> Upcoming commits address the issue described above (initially for the
+> platform bus only) by deferring the call to dev_pm_domain_detach() until
+> after devres_release_all() in device_unbind_cleanup(). The detach_power_off
+> field in struct dev_pm_info stores the detach power off info from the
+> second argument of dev_pm_domain_attach().
+> 
+> Because there are cases where the device's PM domain power-on/off behavior
+> must be conditional (e.g., in i2c_device_probe()), the patch introduces
+> PD_FLAG_ATTACH_POWER_ON and PD_FLAG_DETACH_POWER_OFF flags to be passed to
+> dev_pm_domain_attach().
+> 
+> Finally, dev_pm_domain_attach() and its users are updated to use the newly
+> introduced PD_FLAG_ATTACH_POWER_ON and PD_FLAG_DETACH_POWER_OFF macros.
+> 
+> This is a preparatory commit.
+> 
+> Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 > ---
-> The cover letter of the set can be found here
-> <URL:https://lore.kernel.org/linux-pm/20250704075225.3212486-1-sakari.ail=
-us@linux.intel.com>.
->
-> In brief, this patch depends on PM runtime patches adding marking the las=
-t
-> busy timestamp in autosuspend related functions. The patches are here, on
-> rc2:
->
->         git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git=
- \
->                 pm-runtime-6.17-rc1
->
->  drivers/iio/gyro/bmg160_core.c     | 1 -
->  drivers/iio/gyro/fxas21002c_core.c | 2 --
->  drivers/iio/gyro/mpu3050-core.c    | 3 ---
->  drivers/iio/gyro/mpu3050-i2c.c     | 1 -
->  4 files changed, 7 deletions(-)
->
-> diff --git a/drivers/iio/gyro/bmg160_core.c b/drivers/iio/gyro/bmg160_cor=
-e.c
-> index 781d3e96645f..4dbe3c0cc5eb 100644
-> --- a/drivers/iio/gyro/bmg160_core.c
-> +++ b/drivers/iio/gyro/bmg160_core.c
-> @@ -310,7 +310,6 @@ static int bmg160_set_power_state(struct bmg160_data =
-*data, bool on)
->  	if (on)
->  		ret =3D pm_runtime_get_sync(dev);
->  	else {
-> -		pm_runtime_mark_last_busy(dev);
->  		ret =3D pm_runtime_put_autosuspend(dev);
->  	}
-> =20
-> diff --git a/drivers/iio/gyro/fxas21002c_core.c b/drivers/iio/gyro/fxas21=
-002c_core.c
-> index 754c8a564ba4..a88670207cec 100644
-> --- a/drivers/iio/gyro/fxas21002c_core.c
-> +++ b/drivers/iio/gyro/fxas21002c_core.c
-> @@ -373,8 +373,6 @@ static int  fxas21002c_pm_put(struct fxas21002c_data =
-*data)
+> 
+> Changes in v5:
+> - none; this patch is new
+> 
+>  drivers/amba/bus.c                       |  4 ++--
+>  drivers/base/auxiliary.c                 |  2 +-
+>  drivers/base/platform.c                  |  2 +-
+>  drivers/base/power/common.c              |  6 +++---
+>  drivers/clk/qcom/apcs-sdx55.c            |  2 +-
+>  drivers/gpu/drm/display/drm_dp_aux_bus.c |  2 +-
+>  drivers/i2c/i2c-core-base.c              |  2 +-
+>  drivers/mmc/core/sdio_bus.c              |  2 +-
+>  drivers/rpmsg/rpmsg_core.c               |  2 +-
+
+Reviewed-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+
+>  drivers/soundwire/bus_type.c             |  2 +-
+>  drivers/spi/spi.c                        |  2 +-
+>  drivers/tty/serdev/core.c                |  2 +-
+>  include/linux/pm_domain.h                | 10 ++++++++--
+>  13 files changed, 23 insertions(+), 17 deletions(-)
+> 
+> diff --git a/drivers/amba/bus.c b/drivers/amba/bus.c
+> index 71482d639a6d..74e34a07ef72 100644
+> --- a/drivers/amba/bus.c
+> +++ b/drivers/amba/bus.c
+> @@ -138,7 +138,7 @@ static int amba_read_periphid(struct amba_device *dev)
+>  	void __iomem *tmp;
+>  	int i, ret;
+>  
+> -	ret = dev_pm_domain_attach(&dev->dev, true);
+> +	ret = dev_pm_domain_attach(&dev->dev, PD_FLAG_ATTACH_POWER_ON);
+>  	if (ret) {
+>  		dev_dbg(&dev->dev, "can't get PM domain: %d\n", ret);
+>  		goto err_out;
+> @@ -291,7 +291,7 @@ static int amba_probe(struct device *dev)
+>  		if (ret < 0)
+>  			break;
+>  
+> -		ret = dev_pm_domain_attach(dev, true);
+> +		ret = dev_pm_domain_attach(dev, PD_FLAG_ATTACH_POWER_ON);
+>  		if (ret)
+>  			break;
+>  
+> diff --git a/drivers/base/auxiliary.c b/drivers/base/auxiliary.c
+> index dba7c8e13a53..44cd3f85b659 100644
+> --- a/drivers/base/auxiliary.c
+> +++ b/drivers/base/auxiliary.c
+> @@ -217,7 +217,7 @@ static int auxiliary_bus_probe(struct device *dev)
+>  	struct auxiliary_device *auxdev = to_auxiliary_dev(dev);
+>  	int ret;
+>  
+> -	ret = dev_pm_domain_attach(dev, true);
+> +	ret = dev_pm_domain_attach(dev, PD_FLAG_ATTACH_POWER_ON);
+>  	if (ret) {
+>  		dev_warn(dev, "Failed to attach to PM Domain : %d\n", ret);
+>  		return ret;
+> diff --git a/drivers/base/platform.c b/drivers/base/platform.c
+> index 075ec1d1b73a..df1ec34fdf56 100644
+> --- a/drivers/base/platform.c
+> +++ b/drivers/base/platform.c
+> @@ -1396,7 +1396,7 @@ static int platform_probe(struct device *_dev)
+>  	if (ret < 0)
+>  		return ret;
+>  
+> -	ret = dev_pm_domain_attach(_dev, true);
+> +	ret = dev_pm_domain_attach(_dev, PD_FLAG_ATTACH_POWER_ON);
+>  	if (ret)
+>  		goto out;
+>  
+> diff --git a/drivers/base/power/common.c b/drivers/base/power/common.c
+> index 781968a128ff..fecb85fa85ac 100644
+> --- a/drivers/base/power/common.c
+> +++ b/drivers/base/power/common.c
+> @@ -83,7 +83,7 @@ EXPORT_SYMBOL_GPL(dev_pm_put_subsys_data);
+>  /**
+>   * dev_pm_domain_attach - Attach a device to its PM domain.
+>   * @dev: Device to attach.
+> - * @power_on: Used to indicate whether we should power on the device.
+> + * @flags: indicate whether we should power on/off the device on attach/detach
+>   *
+>   * The @dev may only be attached to a single PM domain. By iterating through
+>   * the available alternatives we try to find a valid PM domain for the device.
+> @@ -100,14 +100,14 @@ EXPORT_SYMBOL_GPL(dev_pm_put_subsys_data);
+>   * Returns 0 on successfully attached PM domain, or when it is found that the
+>   * device doesn't need a PM domain, else a negative error code.
+>   */
+> -int dev_pm_domain_attach(struct device *dev, bool power_on)
+> +int dev_pm_domain_attach(struct device *dev, u32 flags)
 >  {
->  	struct device *dev =3D regmap_get_device(data->regmap);
-> =20
-> -	pm_runtime_mark_last_busy(dev);
-> -
->  	return pm_runtime_put_autosuspend(dev);
+>  	int ret;
+>  
+>  	if (dev->pm_domain)
+>  		return 0;
+>  
+> -	ret = acpi_dev_pm_attach(dev, power_on);
+> +	ret = acpi_dev_pm_attach(dev, !!(flags & PD_FLAG_ATTACH_POWER_ON));
+>  	if (!ret)
+>  		ret = genpd_dev_pm_attach(dev);
+>  
+> diff --git a/drivers/clk/qcom/apcs-sdx55.c b/drivers/clk/qcom/apcs-sdx55.c
+> index 3ba01622d8f0..90dd1f1855c2 100644
+> --- a/drivers/clk/qcom/apcs-sdx55.c
+> +++ b/drivers/clk/qcom/apcs-sdx55.c
+> @@ -111,7 +111,7 @@ static int qcom_apcs_sdx55_clk_probe(struct platform_device *pdev)
+>  	 * driver, there seems to be no better place to do this. So do it here!
+>  	 */
+>  	cpu_dev = get_cpu_device(0);
+> -	ret = dev_pm_domain_attach(cpu_dev, true);
+> +	ret = dev_pm_domain_attach(cpu_dev, PD_FLAG_ATTACH_POWER_ON);
+>  	if (ret) {
+>  		dev_err_probe(dev, ret, "can't get PM domain: %d\n", ret);
+>  		goto err;
+> diff --git a/drivers/gpu/drm/display/drm_dp_aux_bus.c b/drivers/gpu/drm/display/drm_dp_aux_bus.c
+> index 7b9afcf48836..2d279e82922f 100644
+> --- a/drivers/gpu/drm/display/drm_dp_aux_bus.c
+> +++ b/drivers/gpu/drm/display/drm_dp_aux_bus.c
+> @@ -58,7 +58,7 @@ static int dp_aux_ep_probe(struct device *dev)
+>  		container_of(aux_ep, struct dp_aux_ep_device_with_data, aux_ep);
+>  	int ret;
+>  
+> -	ret = dev_pm_domain_attach(dev, true);
+> +	ret = dev_pm_domain_attach(dev, PD_FLAG_ATTACH_POWER_ON);
+>  	if (ret)
+>  		return dev_err_probe(dev, ret, "Failed to attach to PM Domain\n");
+>  
+> diff --git a/drivers/i2c/i2c-core-base.c b/drivers/i2c/i2c-core-base.c
+> index 2ad2b1838f0f..38eabf1173da 100644
+> --- a/drivers/i2c/i2c-core-base.c
+> +++ b/drivers/i2c/i2c-core-base.c
+> @@ -573,7 +573,7 @@ static int i2c_device_probe(struct device *dev)
+>  		goto err_clear_wakeup_irq;
+>  
+>  	do_power_on = !i2c_acpi_waive_d0_probe(dev);
+> -	status = dev_pm_domain_attach(&client->dev, do_power_on);
+> +	status = dev_pm_domain_attach(&client->dev, do_power_on ? PD_FLAG_ATTACH_POWER_ON : 0);
+>  	if (status)
+>  		goto err_clear_wakeup_irq;
+>  
+> diff --git a/drivers/mmc/core/sdio_bus.c b/drivers/mmc/core/sdio_bus.c
+> index b66b637e2d57..656601754966 100644
+> --- a/drivers/mmc/core/sdio_bus.c
+> +++ b/drivers/mmc/core/sdio_bus.c
+> @@ -161,7 +161,7 @@ static int sdio_bus_probe(struct device *dev)
+>  	if (!id)
+>  		return -ENODEV;
+>  
+> -	ret = dev_pm_domain_attach(dev, false);
+> +	ret = dev_pm_domain_attach(dev, 0);
+>  	if (ret)
+>  		return ret;
+>  
+> diff --git a/drivers/rpmsg/rpmsg_core.c b/drivers/rpmsg/rpmsg_core.c
+> index 6ee36adcbdba..bece5e635ee9 100644
+> --- a/drivers/rpmsg/rpmsg_core.c
+> +++ b/drivers/rpmsg/rpmsg_core.c
+> @@ -479,7 +479,7 @@ static int rpmsg_dev_probe(struct device *dev)
+>  	struct rpmsg_endpoint *ept = NULL;
+>  	int err;
+>  
+> -	err = dev_pm_domain_attach(dev, true);
+> +	err = dev_pm_domain_attach(dev, PD_FLAG_ATTACH_POWER_ON);
+>  	if (err)
+>  		goto out;
+>  
+> diff --git a/drivers/soundwire/bus_type.c b/drivers/soundwire/bus_type.c
+> index 75d6f16efced..bc1e653080d9 100644
+> --- a/drivers/soundwire/bus_type.c
+> +++ b/drivers/soundwire/bus_type.c
+> @@ -101,7 +101,7 @@ static int sdw_drv_probe(struct device *dev)
+>  	/*
+>  	 * attach to power domain but don't turn on (last arg)
+>  	 */
+> -	ret = dev_pm_domain_attach(dev, false);
+> +	ret = dev_pm_domain_attach(dev, 0);
+>  	if (ret)
+>  		return ret;
+>  
+> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+> index 1bc0fdbb1bd7..8200b47b2295 100644
+> --- a/drivers/spi/spi.c
+> +++ b/drivers/spi/spi.c
+> @@ -427,7 +427,7 @@ static int spi_probe(struct device *dev)
+>  	if (spi->irq < 0)
+>  		spi->irq = 0;
+>  
+> -	ret = dev_pm_domain_attach(dev, true);
+> +	ret = dev_pm_domain_attach(dev, PD_FLAG_ATTACH_POWER_ON);
+>  	if (ret)
+>  		return ret;
+>  
+> diff --git a/drivers/tty/serdev/core.c b/drivers/tty/serdev/core.c
+> index 0213381fa358..d16c207a1a9b 100644
+> --- a/drivers/tty/serdev/core.c
+> +++ b/drivers/tty/serdev/core.c
+> @@ -399,7 +399,7 @@ static int serdev_drv_probe(struct device *dev)
+>  	const struct serdev_device_driver *sdrv = to_serdev_device_driver(dev->driver);
+>  	int ret;
+>  
+> -	ret = dev_pm_domain_attach(dev, true);
+> +	ret = dev_pm_domain_attach(dev, PD_FLAG_ATTACH_POWER_ON);
+>  	if (ret)
+>  		return ret;
+>  
+> diff --git a/include/linux/pm_domain.h b/include/linux/pm_domain.h
+> index 0b18160901a2..62a35a78ce9b 100644
+> --- a/include/linux/pm_domain.h
+> +++ b/include/linux/pm_domain.h
+> @@ -36,10 +36,16 @@
+>   *				isn't specified, the index just follows the
+>   *				index for the attached PM domain.
+>   *
+> + * PD_FLAG_ATTACH_POWER_ON:	Power on the domain during attach.
+> + *
+> + * PD_FLAG_DETACH_POWER_OFF:	Power off the domain during detach.
+> + *
+>   */
+>  #define PD_FLAG_NO_DEV_LINK		BIT(0)
+>  #define PD_FLAG_DEV_LINK_ON		BIT(1)
+>  #define PD_FLAG_REQUIRED_OPP		BIT(2)
+> +#define PD_FLAG_ATTACH_POWER_ON		BIT(3)
+> +#define PD_FLAG_DETACH_POWER_OFF	BIT(4)
+>  
+>  struct dev_pm_domain_attach_data {
+>  	const char * const *pd_names;
+> @@ -501,7 +507,7 @@ struct generic_pm_domain *of_genpd_remove_last(struct device_node *np)
+>  #endif /* CONFIG_PM_GENERIC_DOMAINS_OF */
+>  
+>  #ifdef CONFIG_PM
+> -int dev_pm_domain_attach(struct device *dev, bool power_on);
+> +int dev_pm_domain_attach(struct device *dev, u32 flags);
+>  struct device *dev_pm_domain_attach_by_id(struct device *dev,
+>  					  unsigned int index);
+>  struct device *dev_pm_domain_attach_by_name(struct device *dev,
+> @@ -518,7 +524,7 @@ int dev_pm_domain_start(struct device *dev);
+>  void dev_pm_domain_set(struct device *dev, struct dev_pm_domain *pd);
+>  int dev_pm_domain_set_performance_state(struct device *dev, unsigned int state);
+>  #else
+> -static inline int dev_pm_domain_attach(struct device *dev, bool power_on)
+> +static inline int dev_pm_domain_attach(struct device *dev, u32 flags)
+>  {
+>  	return 0;
 >  }
-
-LGTM,
-Reviewed-by: Rui Miguel Silva <rui.silva@linaro.org>
-
-Cheers,
-   Rui
+> -- 
+> 2.43.0
+> 
 

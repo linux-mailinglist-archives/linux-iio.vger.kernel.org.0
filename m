@@ -1,194 +1,163 @@
-Return-Path: <linux-iio+bounces-21351-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21352-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADA3CAF94B8
-	for <lists+linux-iio@lfdr.de>; Fri,  4 Jul 2025 15:53:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCFE1AF956D
+	for <lists+linux-iio@lfdr.de>; Fri,  4 Jul 2025 16:24:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C00B34A5DD4
-	for <lists+linux-iio@lfdr.de>; Fri,  4 Jul 2025 13:52:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1CE425A634B
+	for <lists+linux-iio@lfdr.de>; Fri,  4 Jul 2025 14:24:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEAAA30B98B;
-	Fri,  4 Jul 2025 13:51:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4F781C8621;
+	Fri,  4 Jul 2025 14:24:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b="qRfmkpVD"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NKgRU8Hc"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5D4C30AAB5
-	for <linux-iio@vger.kernel.org>; Fri,  4 Jul 2025 13:51:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E03F71C84AB;
+	Fri,  4 Jul 2025 14:24:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751637075; cv=none; b=MQizwTE4in03dZhT0wxJ0OIB0pk9bVMpYs1oBbFuh5u8gAJl+LepauE438/Ik7NoYG1eM5UbyKDw/KT0EddP0+GZx9/F2BMbi01Z7QOAbZKKuUIJLFtLOEZIGiPSptS4Pe5QVen16wj+SicMzcWjqE/cu73e7hAxFG6nNDPXbHY=
+	t=1751639047; cv=none; b=OfE6D8Ilp8r9l6hThiFP9y6Nodr5lMrESdtOKYO1Qm+PoxAsK0DP4/2O9Bwn1J1GFlhBpoYlLeeVvGeDPsoRr94YNBkNtt7EAX40/GUODqb9aihqfLm0mMvsMl6gE8Tu7WXGZd8XBqUQf+/bIAW9I9G31KSBZrD63+iaOeYKJTE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751637075; c=relaxed/simple;
-	bh=miC47NO9VePQREntYQ2C1ptH1JHrH445C2mxs1mptSY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CMQnuctddJVUcPuyDYxMGkvsTazycXygAaY+uQnsAnWsbYiPPr/UjgRAHbTHCt+d3B9U4zyEpsS4puol0DqkfzK8FLG3pjbDuf2xySByr8TFKEC4gN33B40JRVk7nsx1GOHWz/VT+94VfriWOuQhRzmxYHwDoNAbV0DhCpvveKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev; spf=pass smtp.mailfrom=tuxon.dev; dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b=qRfmkpVD; arc=none smtp.client-ip=209.85.218.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tuxon.dev
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-ae0de1c378fso145448266b.3
-        for <linux-iio@vger.kernel.org>; Fri, 04 Jul 2025 06:51:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=tuxon.dev; s=google; t=1751637071; x=1752241871; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=U+4pnbmOXAdM0mHM7kF6SCf+HmJcVo3mHL3EXrsTmvo=;
-        b=qRfmkpVD+xI+Npzbq1OPbfQdUTJO8vOQ9eX5GxigJa2Tqop1BOwVlQj/S9qRHzx5ty
-         viijJo0m9xgO15vGt3QzdtbbE6rX+kxUIf0SNjmKTWN7qsD9gzGXGHe8h/CxP8CoVAsJ
-         00dZtJsEQcSkR1yUpcFoxzwhyoSBPCtnHkiH7pz1pJKL4qKLN2dO55QZKACEisQXU1Gs
-         8cD0wWE1yYcbGiZRGvbY8OXL+JEzvXr/u3E7dDPab3pA1b6ir403KnL3zfp0tKgftnVm
-         C+18Q4E3kv2QP2/PxCrpcfMR1vC5fKkh00Rw/74AUPiotlD/MJ8bM0BoV7i5Hepz2DNo
-         icuw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751637071; x=1752241871;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=U+4pnbmOXAdM0mHM7kF6SCf+HmJcVo3mHL3EXrsTmvo=;
-        b=HZbL6BDcEem/9AZaZPLh+SpGOTNYxEzA7Qn8HXqLKsEDC1oytr8J8J8oncBJH/tiEb
-         yu7rnxbpD09q30rTkhV683H4NCZEW3JhgV45Wt/76ugUmVZ30zmXD6PygFNJcUS3C8zu
-         6o82fX1Fetp8ZWJ20i6R83xmkKWUJXdyVHEsAb6dg6LH5v3BZDHNdcYIkxM9XzB09Hw9
-         I4LgAl5dMdLmB6g+16Fdsefu6kLWeY0j/E1W2qnX0hy6oQbPr8flk32pUxT1XxqFpfmb
-         HKHCzf+qjzxtVvVkP/dLahmg9sbnjugAVKiuIFSZtNTvqJjPJHBom9v0X5Dqw59JGZOw
-         WdjA==
-X-Forwarded-Encrypted: i=1; AJvYcCXH1QusXv/Ds7cl6jLsBxUgkKvAippOZ6yCe1/J30CgsGMN/kWiEHaRSmQKmk4yU3ChhzNX9HVLQks=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyiaIpT3FG848ZnqdxFHea/v45rI4g2yPK5XN1xRI41J2Svr7ff
-	37ijDfmRoGo+j5WIk6ipZNmI8yL1ZdW+8tn642IH0LumzVoOjQ4OEVEQreWjTSon+P8=
-X-Gm-Gg: ASbGncvaOdD3mQC02yTqetHVqRtdlJfsX+qe6PDg9Us6StNdc/zwHpH0/u9eYz8wq8a
-	6AbiNmkJmRi+lOirHVgc4jHgBrfnc/ZxN8EAgbVv+tc4m5pm6Ki5bbPy76NS0q10cisdS3Kvmo8
-	C1XyQPNbbsa9SSOC8bKLhBk1BGSp6e9XAk+HJhXMwZSK3ammyvuxV27vgLLu0ns3++3yCc+XPke
-	mOT7duZgioR1sG11zXRjPwjkO7R/snJz/rNuvdtUNxbjXMvzOPVwrCgDYWzoIl1ZxUensMQSnrZ
-	hShtq3wZzJT89CM/Hbcxji+UwXZkiA7KyBNGirDC9+Ra08ySvpNDTxBOGyus/egU6nsbXw==
-X-Google-Smtp-Source: AGHT+IEKaHL8J9Su0mB3XI0LmZS3jYa1Tv+ttRwStxrwJ7gZXvWH4fgHU4a56M1/TXoMiu+j5EZrtA==
-X-Received: by 2002:a17:907:6d26:b0:ae3:6cc8:e426 with SMTP id a640c23a62f3a-ae3fbc336f7mr270116966b.9.1751637071005;
-        Fri, 04 Jul 2025 06:51:11 -0700 (PDT)
-Received: from [192.168.50.4] ([82.78.167.83])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae3f692ecacsm179199366b.57.2025.07.04.06.51.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 04 Jul 2025 06:51:10 -0700 (PDT)
-Message-ID: <930cf8e2-5716-4a36-8238-e573876db869@tuxon.dev>
-Date: Fri, 4 Jul 2025 16:51:06 +0300
+	s=arc-20240116; t=1751639047; c=relaxed/simple;
+	bh=gqGr7YMNSNGMmPO5TwyjCTxRgNuwtUce0xo5IGee5Nc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NIREuFqk/HdeBpHa8Gf+TlctmsR3JX6zCCHbPg0gJY2VUOFFx8i/jVjs3Y8uco9s0X4csGrvnYirSsBf26BfmY8luAIpmR9KGj4jWUH6oip+eOVkqbF5XMaHhC9GUyyNQVo/TZzLq6k2lSXmuZZUp7bNHK5ktKJ2G9XRs125GwE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NKgRU8Hc; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1751639046; x=1783175046;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=gqGr7YMNSNGMmPO5TwyjCTxRgNuwtUce0xo5IGee5Nc=;
+  b=NKgRU8HcQskjes1wfy0m/h6Wj7TlCFjDNOthhB/qfDa/msyUKNY7aQyj
+   azJ8wlGS7aJz/zo9WkWv3plUUOnhNrEOQ3uJvhSbZFTWXXK5Cr5PmdvHj
+   IZ3rkIvujL8REPUjhrU217xmfRSIDmsxLT4rpgM9Hh+Nm9q+HMfsTCNfq
+   oAN6fVRoxdnbuzObYIERjGXBf+UBrC283weDKNHyyMhKDrn3HiI0yucXL
+   vL91leTZLrVVLex7cK6O1tNX/Z10ueNZCbVKXD/0WwgNj1Y9HjZ993/I/
+   bjHhYEUX0r1F33v6AEbECtdu1QbuUeDyYpKw+fDA2Y/HWgJa0kHBNvujl
+   g==;
+X-CSE-ConnectionGUID: S2Yd6CuoSh+9MgRlTFXLfQ==
+X-CSE-MsgGUID: Ay03D01YR0mGvZPPMFOUSw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11484"; a="53846979"
+X-IronPort-AV: E=Sophos;i="6.16,287,1744095600"; 
+   d="scan'208";a="53846979"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jul 2025 07:24:05 -0700
+X-CSE-ConnectionGUID: 4S/0i2I+QNCR9MadHUaojw==
+X-CSE-MsgGUID: pT61i3k+SwGGxvI3+kg+qw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,287,1744095600"; 
+   d="scan'208";a="154078646"
+Received: from lkp-server01.sh.intel.com (HELO 0b2900756c14) ([10.239.97.150])
+  by orviesa006.jf.intel.com with ESMTP; 04 Jul 2025 07:24:02 -0700
+Received: from kbuild by 0b2900756c14 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uXhKZ-0003nH-1p;
+	Fri, 04 Jul 2025 14:23:59 +0000
+Date: Fri, 4 Jul 2025 22:23:31 +0800
+From: kernel test robot <lkp@intel.com>
+To: Jianping.Shen@de.bosch.com, jic23@kernel.org, lars@metafoo.de,
+	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	dima.fedrau@gmail.com, marcelo.schmitt1@gmail.com,
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Christian.Lorenz3@de.bosch.com,
+	Ulrike.Frauendorf@de.bosch.com, Kai.Dolde@de.bosch.com
+Cc: oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH v3 2/2] iio: imu: smi330: Add driver
+Message-ID: <202507042238.UDo16CzT-lkp@intel.com>
+References: <20250703153823.806073-3-Jianping.Shen@de.bosch.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 0/3] PM: domains: Detach on device_unbind_cleanup()
-To: Ulf Hansson <ulf.hansson@linaro.org>, rafael@kernel.org
-Cc: linux@armlinux.org.uk, gregkh@linuxfoundation.org,
- david.m.ertman@intel.com, ira.weiny@intel.com, leon@kernel.org,
- dakr@kernel.org, len.brown@intel.com, pavel@kernel.org,
- andersson@kernel.org, mturquette@baylibre.com, sboyd@kernel.org,
- maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de,
- airlied@gmail.com, simona@ffwll.ch, wsa+renesas@sang-engineering.com,
- mathieu.poirier@linaro.org, vkoul@kernel.org,
- yung-chuan.liao@linux.intel.com, pierre-louis.bossart@linux.dev,
- broonie@kernel.org, robh@kernel.org, jirislaby@kernel.org,
- saravanak@google.com, jic23@kernel.org, dmitry.torokhov@gmail.com,
- linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
- linux-i2c@vger.kernel.org, linux-mmc@vger.kernel.org,
- linux-remoteproc@vger.kernel.org, linux-sound@vger.kernel.org,
- linux-spi@vger.kernel.org, linux-serial@vger.kernel.org,
- bhelgaas@google.com, geert@linux-m68k.org, linux-iio@vger.kernel.org,
- linux-renesas-soc@vger.kernel.org, fabrizio.castro.jz@renesas.com,
- Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-References: <20250703112708.1621607-1-claudiu.beznea.uj@bp.renesas.com>
- <CAPDyKFoznqfdX7Dvu3VPa5Me10VHGphnRRHrU17w-fie7HrQ5g@mail.gmail.com>
-From: Claudiu Beznea <claudiu.beznea@tuxon.dev>
-Content-Language: en-US
-In-Reply-To: <CAPDyKFoznqfdX7Dvu3VPa5Me10VHGphnRRHrU17w-fie7HrQ5g@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250703153823.806073-3-Jianping.Shen@de.bosch.com>
 
-Hi, Ulf,
+Hi,
 
-On 04.07.2025 14:15, Ulf Hansson wrote:
-> On Thu, 3 Jul 2025 at 13:27, Claudiu <claudiu.beznea@tuxon.dev> wrote:
->>
->> From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
->>
->> Hi,
->>
->> Series drops the dev_pm_domain_detach() from platform bus remove and
->> adds it in device_unbind_cleanup() to avoid runtime resumming the device
->> after it was detached from its PM domain.
->>
->> Please provide your feedback.
->>
->> Thank you,
->> Claudiu
->>
->> Changes in v5:
->> - added PD_FLAG_ATTACH_POWER_ON, PD_FLAG_DETACH_POWER_OFF;
->>   due to this a new patch was introduced
->>   "PM: domains: Add flags to specify power on attach/detach"
->>
->> Changes in v4:
->> - added a flag in dev_pm_info that is saved in dev_pm_domain_attach()
->>   and used in device_unbind_cleanup()
->>
->> Changes in v3:
->> - add devm_pm_domain_attach()
->>
->> Changes in v2:
->> - dropped the devres group open/close approach and use
->>   devm_pm_domain_attach()
->> - adjusted patch description to reflect the new approach
->>
->>
->> Claudiu Beznea (3):
->>   PM: domains: Add flags to specify power on attach/detach
->>   PM: domains: Detach on device_unbind_cleanup()
->>   driver core: platform: Drop dev_pm_domain_detach() call
->>
->>  drivers/amba/bus.c                       |  4 ++--
->>  drivers/base/auxiliary.c                 |  2 +-
->>  drivers/base/dd.c                        |  2 ++
->>  drivers/base/platform.c                  |  9 +++------
->>  drivers/base/power/common.c              |  9 ++++++---
->>  drivers/clk/qcom/apcs-sdx55.c            |  2 +-
->>  drivers/gpu/drm/display/drm_dp_aux_bus.c |  2 +-
->>  drivers/i2c/i2c-core-base.c              |  2 +-
->>  drivers/mmc/core/sdio_bus.c              |  2 +-
->>  drivers/rpmsg/rpmsg_core.c               |  2 +-
->>  drivers/soundwire/bus_type.c             |  2 +-
->>  drivers/spi/spi.c                        |  2 +-
->>  drivers/tty/serdev/core.c                |  2 +-
->>  include/linux/pm.h                       |  1 +
->>  include/linux/pm_domain.h                | 10 ++++++++--
->>  15 files changed, 31 insertions(+), 22 deletions(-)
->>
->> --
->> 2.43.0
->>
-> 
-> The series looks good to me, please add:
-> Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
-> 
-> Rafael, do you intend to pick this via your tree?
-> 
-> Another note, the similar thing that is being done in patch3 from the
-> platform bus, is needed for other buses too (at least the amba bus for
-> sure). Claudiu, are you planning to do that as a step on top - or are
-> you expecting others to help out?
+kernel test robot noticed the following build warnings:
 
-My plan was to take care of it once the approach here (or something
-similar, if any) will end up in a release.
+[auto build test WARNING on jic23-iio/togreg]
+[also build test WARNING on linus/master v6.16-rc4 next-20250704]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Thank you,
-Claudiu
+url:    https://github.com/intel-lab-lkp/linux/commits/Jianping-Shen-de-bosch-com/dt-bindings-iio-imu-smi330-Add-binding/20250703-234441
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
+patch link:    https://lore.kernel.org/r/20250703153823.806073-3-Jianping.Shen%40de.bosch.com
+patch subject: [PATCH v3 2/2] iio: imu: smi330: Add driver
+config: microblaze-randconfig-r073-20250704 (https://download.01.org/0day-ci/archive/20250704/202507042238.UDo16CzT-lkp@intel.com/config)
+compiler: microblaze-linux-gcc (GCC) 8.5.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250704/202507042238.UDo16CzT-lkp@intel.com/reproduce)
 
-> 
-> Kind regards
-> Uffe
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202507042238.UDo16CzT-lkp@intel.com/
 
+All warnings (new ones prefixed by >>):
+
+   drivers/iio/imu/smi330/smi330_i2c.c: In function 'smi330_regmap_i2c_read':
+>> drivers/iio/imu/smi330/smi330_i2c.c:26:11: warning: unused variable 'retry' [-Wunused-variable]
+     int ret, retry;
+              ^~~~~
+
+
+vim +/retry +26 drivers/iio/imu/smi330/smi330_i2c.c
+
+    20	
+    21	static int smi330_regmap_i2c_read(void *context, const void *reg_buf,
+    22					  size_t reg_size, void *val_buf,
+    23					  size_t val_size)
+    24	{
+    25		struct smi330_i2c_priv *priv = context;
+  > 26		int ret, retry;
+    27	
+    28		/*
+    29		 * SMI330 I2C read frame:
+    30		 * <Slave address[6:0], RnW> <x, Register address[6:0]>
+    31		 * <Slave address[6:0], RnW> <Dummy[7:0]> <Dummy[7:0]> <Data_0[7:0]> <Data_1[15:8]>...
+    32		 *                                                     <Data_N[7:0]> <Data_N[15:8]>
+    33		 * Remark: Slave address is not considered part of the frame in the following definitions
+    34		 */
+    35		struct i2c_msg msgs[] = {
+    36			{
+    37				.addr = priv->i2c->addr,
+    38				.flags = priv->i2c->flags,
+    39				.len = reg_size,
+    40				.buf = (u8 *)reg_buf,
+    41			},
+    42			{
+    43				.addr = priv->i2c->addr,
+    44				.flags = priv->i2c->flags | I2C_M_RD,
+    45				.len = SMI330_NUM_DUMMY_BYTES + val_size,
+    46				.buf = priv->rx_buffer,
+    47			},
+    48		};
+    49	
+    50		ret = i2c_transfer(priv->i2c->adapter, msgs, ARRAY_SIZE(msgs));
+    51		if (ret < 0)
+    52			return ret;
+    53	
+    54		memcpy(val_buf, priv->rx_buffer + SMI330_NUM_DUMMY_BYTES, val_size);
+    55	
+    56		return 0;
+    57	}
+    58	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 

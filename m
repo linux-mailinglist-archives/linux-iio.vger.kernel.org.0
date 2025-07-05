@@ -1,73 +1,73 @@
-Return-Path: <linux-iio+bounces-21367-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21368-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22253AF9E00
-	for <lists+linux-iio@lfdr.de>; Sat,  5 Jul 2025 05:03:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDAB5AF9E1A
+	for <lists+linux-iio@lfdr.de>; Sat,  5 Jul 2025 05:17:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 803C95A2916
-	for <lists+linux-iio@lfdr.de>; Sat,  5 Jul 2025 03:03:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 187247A66ED
+	for <lists+linux-iio@lfdr.de>; Sat,  5 Jul 2025 03:16:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4794526E71C;
-	Sat,  5 Jul 2025 03:03:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC11A271444;
+	Sat,  5 Jul 2025 03:17:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RO6hSo/q"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="R0q82ZqK"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-vk1-f171.google.com (mail-vk1-f171.google.com [209.85.221.171])
+Received: from mail-vs1-f41.google.com (mail-vs1-f41.google.com [209.85.217.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA3365383;
-	Sat,  5 Jul 2025 03:03:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BDBC3BBF0;
+	Sat,  5 Jul 2025 03:17:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751684632; cv=none; b=a08Ow02Wg7gqgaUkQeTjC5b88jXbcKEvBW0E9lH3/ZG5RR2DX3KUrHwd4IgkNiFr5qP/UodtNp4s4OhpCfPZXSAoQlr6cetyCNXuwpyOEVeSOni07aGFY+SVYfIyK+zjhaJV5L/PZBbh8Pfd+Mdi1EI9GRRE+PcGdR0dH3M8GNw=
+	t=1751685462; cv=none; b=pIQ0cLhoQvS+eZfY3MwkORIOVSIjF/VIdnntvFafFiVXzXMIYVnWlN8CYtq3zaQ9vyHixEbhexswjOqJv4isUcO1o0qEyQNq1eXRk56kWPlSDN8hAlpuH2pHpnCRufq2di66+zG2/ePNmlNC+wxdj1U4COSXewmDKz33bQV/gK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751684632; c=relaxed/simple;
-	bh=//RnRTXOf51cFekTGGk5Qd0NRZnGCdyz7dD2c7mx1IQ=;
+	s=arc-20240116; t=1751685462; c=relaxed/simple;
+	bh=Hq2bQ3PEoAwFkYXJXEvQ2NC8LYX/H09Gz8ZOBJPcJTU=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=aaCb/xHgm4qzlf6NaQ5d7QSLHYngkNI9uqZn8a9ekjuOHMG+8ExLjEexazES0iv69BZ/LETsDmjnIvYwaRVAZ++D2IXdcuzP2sMaWS7iO63MD5a0oe9LdvpQUQHxmaAj9quVE9uhPhV3GnZTI70AeLvVXtN8m9Uf2llCl1+5Ah4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RO6hSo/q; arc=none smtp.client-ip=209.85.221.171
+	 To:Cc:Content-Type; b=GrxzU5slAtULa/JG5wK+TgiUDCRg4FSoM3IXajeB+knx4lUs7J8Z41W/LCCqSDrGRiu9vO1o+k3hTfzYCpee4VyopzcXqoizoi0b8UgXJiUyTmiXYb5fFvHvznTZ0G+AnQ4jq9xhK6ImVxm7xv6iG6/U5pC6bXp0bRCrYQ6zmNg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=R0q82ZqK; arc=none smtp.client-ip=209.85.217.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vk1-f171.google.com with SMTP id 71dfb90a1353d-5316a5e4c6cso477173e0c.1;
-        Fri, 04 Jul 2025 20:03:49 -0700 (PDT)
+Received: by mail-vs1-f41.google.com with SMTP id ada2fe7eead31-4e7f367ea11so400175137.3;
+        Fri, 04 Jul 2025 20:17:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1751684629; x=1752289429; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1751685460; x=1752290260; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=//RnRTXOf51cFekTGGk5Qd0NRZnGCdyz7dD2c7mx1IQ=;
-        b=RO6hSo/qJT0kSUQMhmP4/ZRsqO0YYvLp8AP9/JnBTAtofosqnzgHb6oqPS9OlJ5sis
-         laxZuDDo4LGXqfzlSPnmZ8Www201v3L70W+/h0EOcTZKYFoxRgWiL6ubbTSHKuiH4SD9
-         GbhfpmTbJXM/ImMvPek6tkI0Pq7dTE9vA45L4K/QAA8lf2kTeh56Zscf0X6X5c3vxKiL
-         tzna8qlDm/+2eRggcidSXq171jDFcuc0k6oUtthhxihICxgLZRteMawwKyzS4CSH84gO
-         lX3I6yQ6WXegESZu/x2OOLANOUEJojCHsbcN7Jawjr6XmeM2mlzdX5IUnCsmhm5f/k71
-         gbNw==
+        bh=BB9dYvDKdxfp8Ws2pyfMbgk0mUslRKRqo78pCObwS20=;
+        b=R0q82ZqK/UsjHWFM0r8PQakTXmOIBcndHTTyyr5Vs6Ck+7Dz3aeSvUPQORacsqK2m+
+         a1eEHz2hqFWnTb4k8ukqL8JVIhG98auxv0ZcS5vrKAI7fhbBXObmEN401+1DeGbTFA0I
+         vh83vjpvE5bPSHV/flhN9IsALsomL9IwcoVaYobzBJB1Ixu7mQQDCzXFVibQ2im1Nsir
+         Ru0CNFMR/tIyuFp3MCJBz+U/dm4uvsgFbwKnIyX0LlumJXev3cycUxHPq/EmBjQlv+0d
+         Vt2q7XpbS72Jj1FA+mF8+SbAMiyisqwU/YpeHidsaWTkPDUgt7laz8CyQtTMOCxZ+QMi
+         XcLg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751684629; x=1752289429;
+        d=1e100.net; s=20230601; t=1751685460; x=1752290260;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=//RnRTXOf51cFekTGGk5Qd0NRZnGCdyz7dD2c7mx1IQ=;
-        b=OfIq+ARIZ9GGAgs0hx4SNz2odzaG9IIsa6bTfLQHV3xD25OAeRFJBMyMTpsb75SpHr
-         E6KynwWABrMynVPeF2ou1OqYj1uwvgewOJYd+Ag5SZAI/qdjr4FieOj28Ad1YI9a4gAq
-         yJmGxkfMmJyOkMuoDOiypkBcxhCZutuOmAgezir1n06Fi4VD00v2OY6vwYevEfeYBzlK
-         sVqGWl4q0i+/ph0+cnDPGaIQfNj/bDU9+BoHpJ/iu/RbF8krSvvFzdMFsHaNo7cmIjyw
-         kU5TwEVsXgnStmmoRVF/9X7s/ia87IA4eea7hMjoajYRtAPO0W+xULG8Xv8aumgp0Qdu
-         g0SQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWOL9RqoR4pSqwW39dUU7mHwDM/j1ITZhQace1rghMJxuFTXGJxqRQyvm3QSa3F2b70yq7wTjRUGG4aBjj/@vger.kernel.org, AJvYcCXywEBc7Y1Bz0xnaQAkJ6mIT/cPe6zFwYLVQJjaFcXUbR+Fwg4lxVu0pg0MIDpPivnLITToXUQ3CJ4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzxpDrZgGPCywQUHu0Ozpj6wkcSyKU+C6imbWalp+0qnm+CJYTv
-	ZDshmUqZF+dFYL5pjO4wVp+MswPhyYJlmmjwPGP+C3ffKXGzBiLiCSPUo6auCUolMRDhhu7FPHZ
-	89pRuT623cDCxSy9Ns9eIYQpn2+Pmps4=
-X-Gm-Gg: ASbGncu6eH8KtXNjcSsc+CrLxvYH/uVBwZS3lnqIWPptZk8Zh5sLMJVhqTjXDB0n1t+
-	a21jQNUjkvxBvaufkez9EW9MLTIidLG5poS4BEfG45VjhoY/dwnl8bZqjnlZUme1PIZ2z+JJbbm
-	A7i5n8dvwBvkqLZz+sBThpiUqyCzvGhmR0v2ps3HTJ7u4=
-X-Google-Smtp-Source: AGHT+IEgs4SB0SvvoGlUCQQGq7ufy5sylQnYc5CbBVAto8sfsCcaB2uDt3bO3c8R7XbK7PhopUA/cmjKsWYjLzEj3dg=
-X-Received: by 2002:a05:6122:134a:b0:531:2afc:463e with SMTP id
- 71dfb90a1353d-534f016f351mr597717e0c.5.1751684628707; Fri, 04 Jul 2025
- 20:03:48 -0700 (PDT)
+        bh=BB9dYvDKdxfp8Ws2pyfMbgk0mUslRKRqo78pCObwS20=;
+        b=O4OVWrDHun3XKVZQNnbm4H1Yr48sc0etWzpwtEXHbjhmwQnybRvSR1jDS5ssImiEa5
+         7tBt9Etn1WGch4Mj/vYYmzitLZIRb9PdYzAlyAKcDtz3fPxGVcEH6D1uWCs9Zv0lXf1m
+         J1JG3sT5L+V6xGb18Btqo1JQInFTnR9IxmYyD7dmzGnwpleW6gmG9Pc6Lx7z+cmh3eZJ
+         iTOI+94cMitfyaPp/qVgBWT7OKwAlpg/aOb5DqkYhF5B7Vt2uUOze5vIf3KRgasapEZv
+         MagDoktDix9B67s/Sk4Usm3QTwES6XMR2JVmXpzuq9QpDje8mUuifNKygTo/LfOGd+5r
+         Z0eg==
+X-Forwarded-Encrypted: i=1; AJvYcCVjDemShTf4pr4s78bEJF9aQPjcD6Bc86yYcNwKIATgwHs1ZuLcGI5zpwtMUnH6W+zGU7TGv4pD8+1UbbFA@vger.kernel.org, AJvYcCW+jIiLplFTFLkWxZAwJUnFc90zxCVWnAG6yO6k6r9BSYr11tjXavZMnKeAnfz/Q4XvwQaW2e3pZJk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyrTzbPD4Qoq/hWi/uoGgwGuNRGXzt5gcaJk8kDcq+vc8En8FHN
+	mXKWOOlDTPHBlJU3xAOThOfc1yl8GsEahGUHxRx+erVfb1GPepXIEcLZQNiFx5Q7K6xY4IKWlGi
+	XNrOqoDVK+SnDgemmOu3CyQzMfjfwJM8=
+X-Gm-Gg: ASbGncuKBAuSv8U8WbjYzAJ4xPPd7xPfdM87nV0NcGynoI7oSzJe7kXSuuUtcmFCp9f
+	uKGZN0WFzgudldw4lULHO7W5KQG1r7TDb0iiQ/FpTOrydaav43xjByohedS4t0lCmPH5eZQ+UBl
+	301Slq9m1Sam2TN0fz77syNU95BQiLG4Zyvw3vmAfbGJ8=
+X-Google-Smtp-Source: AGHT+IGVsZwcGCVZ403CithjNi9WsUXSRPj+ibRR15jU2kltKiFKmRPF2S6nZAT48+6f9AaYRaxXdu43KwoIllQSeLc=
+X-Received: by 2002:a05:6102:38cb:b0:4e9:924f:eea2 with SMTP id
+ ada2fe7eead31-4f3059a4ba7mr531779137.4.1751685460041; Fri, 04 Jul 2025
+ 20:17:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -75,81 +75,99 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20250618031638.26477-1-andrew.lopes@alumni.usp.br>
- <CAHp75Ve4yAp6sViUWZY+0abRoNZ0W+rQLCmsbijEcrh8kguVOA@mail.gmail.com>
- <CANZih_S9_8OdY=oKyVPBCTSTqYm_z_rkE=xbPym3uHOSsHMv6A@mail.gmail.com>
- <aFL6PE-8KLLKZun_@smile.fi.intel.com> <CANZih_QeeA_G5mFOAb=TMNYiR4eo9SUD5iW1G-5LBGL27NpTRw@mail.gmail.com>
- <aFQrgEw4zw9RSAO3@smile.fi.intel.com>
-In-Reply-To: <aFQrgEw4zw9RSAO3@smile.fi.intel.com>
+ <20250618031638.26477-2-andrew.lopes@alumni.usp.br> <20250621183843.2f8bcb48@jic23-huawei>
+In-Reply-To: <20250621183843.2f8bcb48@jic23-huawei>
 From: Andrew Ijano <andrew.ijano@gmail.com>
-Date: Sat, 5 Jul 2025 00:03:37 -0300
-X-Gm-Features: Ac12FXw41CdZZMjWQ7ztZepUfKxGh4nqikLajCCAsmqYaTtVeRdd9R5hqSDnDNg
-Message-ID: <CANZih_S=7-ArpBT3NF54-RH_KYER=mdS9nf1bUO3djEiDY_RWQ@mail.gmail.com>
-Subject: Re: [PATCH v6 0/4] iio: accel: sca3000: simplify by using newer infrastructure
-To: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: Andy Shevchenko <andy.shevchenko@gmail.com>, jic23@kernel.org, andrew.lopes@alumni.usp.br, 
-	gustavobastos@usp.br, dlechner@baylibre.com, nuno.sa@analog.com, 
-	andy@kernel.org, jstephan@baylibre.com, linux-iio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+Date: Sat, 5 Jul 2025 00:17:28 -0300
+X-Gm-Features: Ac12FXxKRY65ztMfLC4bP1FDghvoGqd_5L-OKt8hJ4-wFN29KG-j8SnDLWodtFU
+Message-ID: <CANZih_QAoSAMzPOq=di9=Wk=WK4+B1Sx80FjfCx41z6dYJQLyA@mail.gmail.com>
+Subject: Re: [PATCH v6 1/4] iio: accel: sca3000: replace usages of internal
+ read data helpers by spi helpers
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: andrew.lopes@alumni.usp.br, gustavobastos@usp.br, dlechner@baylibre.com, 
+	nuno.sa@analog.com, andy@kernel.org, jstephan@baylibre.com, 
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jun 19, 2025 at 12:23=E2=80=AFPM Andy Shevchenko
-<andriy.shevchenko@intel.com> wrote:
+On Sat, Jun 21, 2025 at 2:38=E2=80=AFPM Jonathan Cameron <jic23@kernel.org>=
+ wrote:
 >
-> On Wed, Jun 18, 2025 at 03:20:06PM -0300, Andrew Ijano wrote:
-> > On Wed, Jun 18, 2025 at 2:41=E2=80=AFPM Andy Shevchenko
-> > <andriy.shevchenko@intel.com> wrote:
-> > > On Wed, Jun 18, 2025 at 09:24:19AM -0300, Andrew Ijano wrote:
-> > > > On Wed, Jun 18, 2025 at 2:56=E2=80=AFAM Andy Shevchenko
-> > > > <andy.shevchenko@gmail.com> wrote:
-> > > > > On Wed, Jun 18, 2025 at 6:17=E2=80=AFAM Andrew Ijano <andrew.ijan=
-o@gmail.com> wrote:
-> > > > > >
-> > > > > > The sca3000 driver is old and could be simplified by using newe=
-r
-> > > > > > infrastructure.
-> > > > >
-> > > > > I haven't found any reference to a base commit here. Have you
-> > > > > forgotten to use --base when preparing the series?
-> > > > > In any case, please clarify what this series is based on.
-> > > >
-> > > > Thank you for pointing this out! I think I forgot to use --base for
-> > > > it. In this case, should I submit a new version of the whole patchs=
-et
-> > > > with this information or is there a better way to do it?
-> > >
-> > > For now just reply here what is the base. I asked this question above=
-.
+> Hi. I made two related tweaks.  A few comments inline for further possibl=
+e cleanup.
+>
+> Applied to the togreg branch of iio.git and initially pushed out as testi=
+ng
+> for 0-day to take a look at it.
+>
+Thanks. Since there was a problem with my implementation, I'll send a
+new version along with your tweaks too.
+
+> >       if (ret < 0)
+> >               goto error_ret;
+> >       dev_info(&indio_dev->dev,
+> >                "sca3000 revision major=3D%lu, minor=3D%lu\n",
+> > -              st->rx[0] & SCA3000_REG_REVID_MAJOR_MASK,
+> > -              st->rx[0] & SCA3000_REG_REVID_MINOR_MASK);
+> > +              ret & SCA3000_REG_REVID_MAJOR_MASK,
+> > +              ret & SCA3000_REG_REVID_MINOR_MASK);
+> Hmm. doesn't belong in this patch but it is rather odd to not see
+> a shift on one of these.
+>
+> Hmm. Time to miss quote whoever it was who said:
+>
+> "kernel development is like a murder mystery where you try to solve
+>  the crime only to realize you were the murderer."
+>
+> Below I mention using FIELD_GET() in appropriate places as a possible add=
+itional
+> cleanup.  Fix this up when you do that (and note it in the patch descript=
+ion for
+> that patch).
+Ok! I'll do that.
+
+> >       /* mask bottom 2 bits - only ones that are relevant */
+> > -     st->rx[0] &=3D SCA3000_REG_MODE_MODE_MASK;
+> > -     switch (st->rx[0]) {
+> > +     ret &=3D SCA3000_REG_MODE_MODE_MASK;
+> > +     switch (ret) {
+> See discussion below.  This can be simplified as
+>         switch (reg & SCA3000_REG_MODE_MASK)
+> avoiding the modified 'ret' value in place comment.
+>
+> This one I'll tweak as it is easy to avoid the ugly pattern.
+>
+Nice! I'll pay attention to similar cases in the future.
+
 > >
-> > Ok! No problem. So the base for this patchset is the commit
-> > 3c23416f69f2870bea83697d7ab03c6a8497daa7.
+> > -     st->rx[0] &=3D ~SCA3000_REG_MODE_MODE_MASK;
+> > -     st->rx[0] |=3D (mode & SCA3000_REG_MODE_MODE_MASK);
+> > +     ret &=3D ~SCA3000_REG_MODE_MODE_MASK;
 >
-> No such commit in the repository. :-(
-> You are doing something interesting here [1].
+> For a further potential cleanup it would be good to use FIELD_GET() and F=
+IELD_PREP()
+> in appropriate places in this driver. Do that into a separate local varia=
+ble
+> as using ret for all this is a little confusing as quite a bit of the tim=
+e
+> it's not a variable we are ever going to return.
 >
-> So, make sure you are based on the iio/testing or so, make sure that the =
-base
-> commit is the one that may be found on git.kernel.org. Use that in the ne=
-xt
-> version. Due to above this version is ambiguous to even start reviewing i=
-t.
+> As a rule of thumb if we are modifying the ret only a little in a single =
+reuse
+> (i.e. masking out a bit in a parameter being passed to something else) th=
+en
+> a local variable is probably overkill. If we are building up a new regist=
+er
+> value it is not really appropriate to do it into ret.
 >
-> [1] I have connected IIO subsystem as a remote, so I have access to many =
-trees
-> from kernel.org (but not to all of them).
->
+> I'm not asking for changes in this patch though as what you have here
+> is the simplest and easiest to review change.  If you add those extra
+> local variables as part of using FIELD_GET/ FIELD_PREP though that would
+> be great.
 
-Hi, Andy. Sorry for the late response.
-
-Actually, I think I didn't fully understand this part of the
-contribution process and that's what was causing confusion.
-Basically, the base commit appeared in the previous version of this
-patchset but I removed it after it was approved, to prevent it from
-being reviewed again. However, I think I could just add the
-reviewed-by tag.
-
-I'll send a next version with other corrections and the missing commit
-based on iio/testing.
+That's great! I didn't know about FIELD_GET() and FIELD_PREP() before.
+This is really something that would be better in a separate patch, I
+could try to do that later.
 
 Thanks,
 Andrew

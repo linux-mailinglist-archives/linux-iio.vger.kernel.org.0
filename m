@@ -1,141 +1,124 @@
-Return-Path: <linux-iio+bounces-21370-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21371-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E69EAF9E35
-	for <lists+linux-iio@lfdr.de>; Sat,  5 Jul 2025 05:45:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17956AFA125
+	for <lists+linux-iio@lfdr.de>; Sat,  5 Jul 2025 20:19:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 222701C47E07
-	for <lists+linux-iio@lfdr.de>; Sat,  5 Jul 2025 03:45:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 803E048480D
+	for <lists+linux-iio@lfdr.de>; Sat,  5 Jul 2025 18:18:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5475826C382;
-	Sat,  5 Jul 2025 03:45:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OhviOMw7"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8142E1FECAD;
+	Sat,  5 Jul 2025 18:19:07 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-vk1-f178.google.com (mail-vk1-f178.google.com [209.85.221.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fgw22-7.mail.saunalahti.fi (fgw22-7.mail.saunalahti.fi [62.142.5.83])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B4A140856;
-	Sat,  5 Jul 2025 03:45:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A792E134A8
+	for <linux-iio@vger.kernel.org>; Sat,  5 Jul 2025 18:19:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.142.5.83
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751687120; cv=none; b=M2HB/4/E6s0PS4hVLtaoK6rnMmOc3F4Sw4hUDKO3AmTHaIJHZI427Ysfi1q2zGWbAxUEiscgTQL7hiATVsX1/1xFBIdicWeqNORAT2ust6I2jpBBrmPaAndxE2iORKyOX6W2LEqO3JK1Udv54p/tCXgeluDGtmG/NlGQOqDj3jI=
+	t=1751739547; cv=none; b=MIEhfUl/ugnxiQ0nhVtMMARFbOxe06WHoNRwVDz0EL2Si0GnYAGnFPtNwp5s2kDeZx+j/rvz7egDmRDZJ7i7enX6zRkTh3+VKZaQ36Nm90RF1rsk+6nS2L2g1QWIzfHMVfGhu5YnR4xX4nn9jnC550CnGG0R2Hvcb0g1fBegtcA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751687120; c=relaxed/simple;
-	bh=1/qboNFZMRZ/EP/VTle86vBmjRoZx2apjTbAn3IEnXQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=R1cI6e6AvhGDp6sGB5N/k9hD9m2Y7U8bljTRez47wqkjbgFvRkv50q7I0lFmKp7Vyegy4HpzeO8WPEu1vfYsDL6y2tEndNsy321ddXnsmuPkYwQyhlwHZWngggSilGMs0IIlqOL2mEWJonK8fbtRCruWHfcEO/XXGnrqeDK/k9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OhviOMw7; arc=none smtp.client-ip=209.85.221.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vk1-f178.google.com with SMTP id 71dfb90a1353d-531466622beso422300e0c.1;
-        Fri, 04 Jul 2025 20:45:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1751687117; x=1752291917; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Cxn5O9R8zM5uNNIFJkKjTcOoiYIJRVckvhs4gosK+Zg=;
-        b=OhviOMw78hHuHqwIVELlqV07MNijs8suI8RBcHXndEnvFUNEsI1Q2hBVVmf8GRiPAY
-         6S61KIA50n7YHwBRdIC7lEiNzjbXn+anUEnYg7WnWfdjct7HFn9r3Veco29dADdAZVI9
-         1djNOZIn7q7umOZD3uSD0WLd8wlEGyskRU8oFhoDOz8cpIB1V+zJG+N8IORcESI+RU9Q
-         CI7iATiFy5L23ZZLNCaK9oZiH44NXzTnMXvit1QX9/285FDYjE9o9PhzmldCg6kAf4jM
-         H+T+bGYOXQAgIrdcCF+SAoFr8smWuaxSVQCoGGMQeNYHWaXCWSauO4S2Xyhj8X9pSj00
-         ZmQQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751687117; x=1752291917;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Cxn5O9R8zM5uNNIFJkKjTcOoiYIJRVckvhs4gosK+Zg=;
-        b=rGz425APTkdqep+ZfQKbdzmSVLIqBQsA1B3OS/egQXYJU0TjsSI6HGmewVlmJx+e+I
-         MQJankTJif3M+ZwY57pq9UcUdR3mi6sJXCmQZWoiJqkZwDAID4nNqAlyVJKt1SzHdDfE
-         Hlj7EvXVJNATsCqTMhf5vbgTP909nqfAlIbbn9boJalxkaxte9uaxC1n5DdQXStJK3uv
-         g+RuyQng5NHL5cz1gLiJqOlOhEO21a2mJA5PfBHGCi9BVPxMKAna0TBWHhlwzRaM8Qza
-         8sBQsMsCGA0vC9qsLdMTvofxn9BwuXO1MLuJuvNbOJ+NtpFpB+ql/phrAUNAq2+91+gB
-         1ivQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVFZeqZDc8+fGFWfyxK1auiHl/qVGfoXBTljZWN20PJKsBfvQlmNzMzttmmGJI9iNbb0zpKikdyBxMTKV3g@vger.kernel.org, AJvYcCVsAKeEGcjs7KQ0aZ7BdTGgKvf9yun3ViykXFUNvH1ahRZehcTbtxMheXK+wnaVUf9FLQWY4CvEOHM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyn4jMFMtw4rUJ+uCb3BZkH4XTot0L3Gt2AYLac8ganNrpoSbcN
-	JyiSWvoashpqbfRw0XyrbTglyH7AiiL8w9rMWGQ3dpL1N8+MX3L1h2lJT8WKWQaRzNkZLlZ5g6Q
-	vE8B4jpqbSxt15pMyDGXwjN7WzsYJP5Q=
-X-Gm-Gg: ASbGncsSIb1NCrBhRl62AMlpI3IyRXB8W5WmONIRhLO55u7Rl2mQZdyeJwjwxr51MWc
-	RABXh9wRG3cWyPjkZPaVrBNgnW86JDjlTvVvwpzutq5ojPQVtFvu/WB1EBKsKxDbL2Q2IvzjUWn
-	9ac59rNIgjC5CE45yLNPtsdiu4i2sBF5cwK5ZmankAWj0=
-X-Google-Smtp-Source: AGHT+IEsd/2gkkGLE/EI1r1VxK55gqF+R/IGayYk2sj+60uzmX9UpMRv4oN74fB6peBV3OlZpS4Aak5g8kpH3Es502E=
-X-Received: by 2002:a05:6102:440e:b0:4de:81a:7d42 with SMTP id
- ada2fe7eead31-4f3059d1026mr586361137.1.1751687117297; Fri, 04 Jul 2025
- 20:45:17 -0700 (PDT)
+	s=arc-20240116; t=1751739547; c=relaxed/simple;
+	bh=7hthfrc7tTdg4jCbIpZXZsXxRkwD5UHIMJ/9LVWFQrU=;
+	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iwI2EUsFEiOIsy8lRJhHrZFZIrCqWD401KNwet+SJc9Ikan4tJuRxpCsbpyPl6eUKvd+lC+z1b3uw6yD1266HCmvqO5w54E2C7poRfVGBQv9MtABzwq/h5O7yGCHJ1c8EUUI8YiSN4kM2821GvUxGKwK1onSExlJcE/d3fEPpvE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com; spf=fail smtp.mailfrom=gmail.com; arc=none smtp.client-ip=62.142.5.83
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=gmail.com
+Received: from localhost (88-113-26-232.elisa-laajakaista.fi [88.113.26.232])
+	by fgw20.mail.saunalahti.fi (Halon) with ESMTP
+	id 82ce853c-59cc-11f0-a04e-005056bd6ce9;
+	Sat, 05 Jul 2025 21:18:57 +0300 (EEST)
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Sat, 5 Jul 2025 21:18:55 +0300
+To: Andrew Ijano <andrew.ijano@gmail.com>
+Cc: Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Andy Shevchenko <andy.shevchenko@gmail.com>, jic23@kernel.org,
+	andrew.lopes@alumni.usp.br, gustavobastos@usp.br,
+	dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org,
+	jstephan@baylibre.com, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v6 0/4] iio: accel: sca3000: simplify by using newer
+ infrastructure
+Message-ID: <aGlsj1m4TygpRkjt@surfacebook.localdomain>
+References: <20250618031638.26477-1-andrew.lopes@alumni.usp.br>
+ <CAHp75Ve4yAp6sViUWZY+0abRoNZ0W+rQLCmsbijEcrh8kguVOA@mail.gmail.com>
+ <CANZih_S9_8OdY=oKyVPBCTSTqYm_z_rkE=xbPym3uHOSsHMv6A@mail.gmail.com>
+ <aFL6PE-8KLLKZun_@smile.fi.intel.com>
+ <CANZih_QeeA_G5mFOAb=TMNYiR4eo9SUD5iW1G-5LBGL27NpTRw@mail.gmail.com>
+ <aFQrgEw4zw9RSAO3@smile.fi.intel.com>
+ <CANZih_S=7-ArpBT3NF54-RH_KYER=mdS9nf1bUO3djEiDY_RWQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250618031638.26477-1-andrew.lopes@alumni.usp.br>
- <20250618031638.26477-5-andrew.lopes@alumni.usp.br> <20250621185824.69a11319@jic23-huawei>
-In-Reply-To: <20250621185824.69a11319@jic23-huawei>
-From: Andrew Ijano <andrew.ijano@gmail.com>
-Date: Sat, 5 Jul 2025 00:45:05 -0300
-X-Gm-Features: Ac12FXzLQp1RDoG5qPnWWadTRP__sjuPHvBZ1dJbhMZEQVeKR8lz7IW__q6hiBc
-Message-ID: <CANZih_SWg03U1jOn63++A=+_9GkzFhtK7S563hdb2m=tk5SK0A@mail.gmail.com>
-Subject: Re: [PATCH v6 4/4] iio: accel: sca3000: use sysfs_emit_at() instead
- of sprintf()
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: andrew.lopes@alumni.usp.br, gustavobastos@usp.br, dlechner@baylibre.com, 
-	nuno.sa@analog.com, andy@kernel.org, jstephan@baylibre.com, 
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANZih_S=7-ArpBT3NF54-RH_KYER=mdS9nf1bUO3djEiDY_RWQ@mail.gmail.com>
 
-On Sat, Jun 21, 2025 at 2:58=E2=80=AFPM Jonathan Cameron <jic23@kernel.org>=
- wrote:
-> > @@ -423,16 +423,16 @@ sca3000_show_available_3db_freqs(struct device *d=
-ev,
-> >  {
-> >       struct iio_dev *indio_dev =3D dev_to_iio_dev(dev);
-> >       struct sca3000_state *st =3D iio_priv(indio_dev);
-> > -     int len;
-> > +     unsigned int len =3D 0;
->
-> No need to initialize as set on the next line
+Sat, Jul 05, 2025 at 12:03:37AM -0300, Andrew Ijano kirjoitti:
+> On Thu, Jun 19, 2025 at 12:23 PM Andy Shevchenko
+> <andriy.shevchenko@intel.com> wrote:
+> > On Wed, Jun 18, 2025 at 03:20:06PM -0300, Andrew Ijano wrote:
+> > > On Wed, Jun 18, 2025 at 2:41 PM Andy Shevchenko
+> > > <andriy.shevchenko@intel.com> wrote:
+> > > > On Wed, Jun 18, 2025 at 09:24:19AM -0300, Andrew Ijano wrote:
+> > > > > On Wed, Jun 18, 2025 at 2:56 AM Andy Shevchenko
+> > > > > <andy.shevchenko@gmail.com> wrote:
+> > > > > > On Wed, Jun 18, 2025 at 6:17 AM Andrew Ijano <andrew.ijano@gmail.com> wrote:
 
-That makes sense! I=C2=B4ll change that.
+...
 
->
+> > > > > > I haven't found any reference to a base commit here. Have you
+> > > > > > forgotten to use --base when preparing the series?
+> > > > > > In any case, please clarify what this series is based on.
+> > > > >
+> > > > > Thank you for pointing this out! I think I forgot to use --base for
+> > > > > it. In this case, should I submit a new version of the whole patchset
+> > > > > with this information or is there a better way to do it?
+> > > >
+> > > > For now just reply here what is the base. I asked this question above.
+> > >
+> > > Ok! No problem. So the base for this patchset is the commit
+> > > 3c23416f69f2870bea83697d7ab03c6a8497daa7.
 > >
-> > -     len =3D sprintf(buf, "%d", st->info->measurement_mode_3db_freq);
-> > +     len =3D sysfs_emit_at(buf, len, "%d", st->info->measurement_mode_=
-3db_freq);
->
-> sysfs_emit() when you know you are at the start.
->
-Ok! Thanks.
+> > No such commit in the repository. :-(
+> > You are doing something interesting here [1].
+> >
+> > So, make sure you are based on the iio/testing or so, make sure that the base
+> > commit is the one that may be found on git.kernel.org. Use that in the next
+> > version. Due to above this version is ambiguous to even start reviewing it.
+> >
+> > [1] I have connected IIO subsystem as a remote, so I have access to many trees
+> > from kernel.org (but not to all of them).
+> 
+> Actually, I think I didn't fully understand this part of the
+> contribution process and that's what was causing confusion.
+> Basically, the base commit appeared in the previous version of this
+> patchset but I removed it after it was approved, to prevent it from
+> being reviewed again. However, I think I could just add the
+> reviewed-by tag.
+> 
+> I'll send a next version with other corrections and the missing commit
+> based on iio/testing.
 
->
-> >       if (st->info->option_mode_1)
-> > -             len +=3D sprintf(buf + len, " %d",
-> > +             len +=3D sysfs_emit_at(buf, len, " %d",
-> >                              st->info->option_mode_1_3db_freq);
-> Fix alignment.
->
-> >       if (st->info->option_mode_2)
-> > -             len +=3D sprintf(buf + len, " %d",
-> > +             len +=3D sysfs_emit_at(buf, len, " %d",
-> >                              st->info->option_mode_2_3db_freq);
->
-> same here.
+What you just described is a normal process of rebasing your local tree against
+the (updated) upstream branch (in this case we are taling about iio/testing or
+iio/togreg whichever suits better). Hence, if the commit was approved, the new
+base should be provided. Under "approved" means that it made the subsystem tree
+and pending for the upstream.
 
-Actually, both cases are aligned. I checked the code and they have the
-same number of tabs, and in this email they have the same number of
-spaces.
-However, since I'm not reading this diff with a monospaced font, for
-me it appears to be different but this is caused by the difference in
-size of "-" and "+".
-Maybe this is why it appears to be different for you too?
 
-Thanks,
-Andrew
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
 

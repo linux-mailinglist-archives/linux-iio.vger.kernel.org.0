@@ -1,73 +1,73 @@
-Return-Path: <linux-iio+bounces-21368-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21369-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDAB5AF9E1A
-	for <lists+linux-iio@lfdr.de>; Sat,  5 Jul 2025 05:17:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08E87AF9E31
+	for <lists+linux-iio@lfdr.de>; Sat,  5 Jul 2025 05:38:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 187247A66ED
-	for <lists+linux-iio@lfdr.de>; Sat,  5 Jul 2025 03:16:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7BA8B1C82926
+	for <lists+linux-iio@lfdr.de>; Sat,  5 Jul 2025 03:38:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC11A271444;
-	Sat,  5 Jul 2025 03:17:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 596D714D29B;
+	Sat,  5 Jul 2025 03:38:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="R0q82ZqK"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iqwv/OQf"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-vs1-f41.google.com (mail-vs1-f41.google.com [209.85.217.41])
+Received: from mail-vs1-f48.google.com (mail-vs1-f48.google.com [209.85.217.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BDBC3BBF0;
-	Sat,  5 Jul 2025 03:17:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7511C17BCE;
+	Sat,  5 Jul 2025 03:37:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751685462; cv=none; b=pIQ0cLhoQvS+eZfY3MwkORIOVSIjF/VIdnntvFafFiVXzXMIYVnWlN8CYtq3zaQ9vyHixEbhexswjOqJv4isUcO1o0qEyQNq1eXRk56kWPlSDN8hAlpuH2pHpnCRufq2di66+zG2/ePNmlNC+wxdj1U4COSXewmDKz33bQV/gK8=
+	t=1751686680; cv=none; b=qvRZISioUOhuY7ls/LRAKsOy8BhTSkkry1wPT+kjp3ZeGzKrX8uoQRk54LmQRf4zhW12aimmg2YMomXTB4V4+TFLgt7kxgH8DzZaXsQR2hjdPjbp1rHHEBhA202/ngrwq+VQnuJM++UDaqSre3ssEDhmKRhiDlFLPzGpjhTkpYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751685462; c=relaxed/simple;
-	bh=Hq2bQ3PEoAwFkYXJXEvQ2NC8LYX/H09Gz8ZOBJPcJTU=;
+	s=arc-20240116; t=1751686680; c=relaxed/simple;
+	bh=veIEtP5jVvWxQjvJ64riZxjeBaHu/S9oGBCuCx8fmEU=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=GrxzU5slAtULa/JG5wK+TgiUDCRg4FSoM3IXajeB+knx4lUs7J8Z41W/LCCqSDrGRiu9vO1o+k3hTfzYCpee4VyopzcXqoizoi0b8UgXJiUyTmiXYb5fFvHvznTZ0G+AnQ4jq9xhK6ImVxm7xv6iG6/U5pC6bXp0bRCrYQ6zmNg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=R0q82ZqK; arc=none smtp.client-ip=209.85.217.41
+	 To:Cc:Content-Type; b=Z0Eyz0gnEyIbmq9Jv0/Xz57e6qmY9QN8dzMTj8RI6KvWAafvmeVMstEF5yvtXKhtG7APPCVFWF18mDpiPtju96Whj7mFPMC+xg6uJgbmBXiYpSeY/TXLBck6yjoAXp4oM5kLvD1Eddd6wwiAYf2/m5xnPp0qBuBeKOJJv+ZvhX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iqwv/OQf; arc=none smtp.client-ip=209.85.217.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vs1-f41.google.com with SMTP id ada2fe7eead31-4e7f367ea11so400175137.3;
-        Fri, 04 Jul 2025 20:17:40 -0700 (PDT)
+Received: by mail-vs1-f48.google.com with SMTP id ada2fe7eead31-4e7fac85892so369480137.3;
+        Fri, 04 Jul 2025 20:37:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1751685460; x=1752290260; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1751686676; x=1752291476; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=BB9dYvDKdxfp8Ws2pyfMbgk0mUslRKRqo78pCObwS20=;
-        b=R0q82ZqK/UsjHWFM0r8PQakTXmOIBcndHTTyyr5Vs6Ck+7Dz3aeSvUPQORacsqK2m+
-         a1eEHz2hqFWnTb4k8ukqL8JVIhG98auxv0ZcS5vrKAI7fhbBXObmEN401+1DeGbTFA0I
-         vh83vjpvE5bPSHV/flhN9IsALsomL9IwcoVaYobzBJB1Ixu7mQQDCzXFVibQ2im1Nsir
-         Ru0CNFMR/tIyuFp3MCJBz+U/dm4uvsgFbwKnIyX0LlumJXev3cycUxHPq/EmBjQlv+0d
-         Vt2q7XpbS72Jj1FA+mF8+SbAMiyisqwU/YpeHidsaWTkPDUgt7laz8CyQtTMOCxZ+QMi
-         XcLg==
+        bh=z4om3ua96fXvEXIOy3marF7PLT0aH5hzFP+ZLeODrxY=;
+        b=iqwv/OQf9nEJ1bNFs3SA6KDcBsaHta3HOhVhO21AjbuFbMgiTfQ4b7uU0s8XMJuzmj
+         6bO11aR1rKjI+NrIrQFA8VkHJ6Qgnx29HfUcrS1uX+f2niNa6KKBzAcv8aqNcUbOdClt
+         4DQF2ePA8Bri9s3brQifgW5rTLe8O4KbnQBbUlULB0ZMQg1cgAXHFs4JPVDBTQ7/n514
+         rIM7G0bPbE05jtKoe/x9WQk2cfC2TvBYK8prltLUNta7xvUN6qGA0oA1ePAIMBxKdrmh
+         WzLmRV9Zvj2WcaypKBuOQOWC3eOi+lYIn4wYbqyN/AD5b0C2wDGJLxvOve29SBzgQV2G
+         vPyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751685460; x=1752290260;
+        d=1e100.net; s=20230601; t=1751686676; x=1752291476;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=BB9dYvDKdxfp8Ws2pyfMbgk0mUslRKRqo78pCObwS20=;
-        b=O4OVWrDHun3XKVZQNnbm4H1Yr48sc0etWzpwtEXHbjhmwQnybRvSR1jDS5ssImiEa5
-         7tBt9Etn1WGch4Mj/vYYmzitLZIRb9PdYzAlyAKcDtz3fPxGVcEH6D1uWCs9Zv0lXf1m
-         J1JG3sT5L+V6xGb18Btqo1JQInFTnR9IxmYyD7dmzGnwpleW6gmG9Pc6Lx7z+cmh3eZJ
-         iTOI+94cMitfyaPp/qVgBWT7OKwAlpg/aOb5DqkYhF5B7Vt2uUOze5vIf3KRgasapEZv
-         MagDoktDix9B67s/Sk4Usm3QTwES6XMR2JVmXpzuq9QpDje8mUuifNKygTo/LfOGd+5r
-         Z0eg==
-X-Forwarded-Encrypted: i=1; AJvYcCVjDemShTf4pr4s78bEJF9aQPjcD6Bc86yYcNwKIATgwHs1ZuLcGI5zpwtMUnH6W+zGU7TGv4pD8+1UbbFA@vger.kernel.org, AJvYcCW+jIiLplFTFLkWxZAwJUnFc90zxCVWnAG6yO6k6r9BSYr11tjXavZMnKeAnfz/Q4XvwQaW2e3pZJk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyrTzbPD4Qoq/hWi/uoGgwGuNRGXzt5gcaJk8kDcq+vc8En8FHN
-	mXKWOOlDTPHBlJU3xAOThOfc1yl8GsEahGUHxRx+erVfb1GPepXIEcLZQNiFx5Q7K6xY4IKWlGi
-	XNrOqoDVK+SnDgemmOu3CyQzMfjfwJM8=
-X-Gm-Gg: ASbGncuKBAuSv8U8WbjYzAJ4xPPd7xPfdM87nV0NcGynoI7oSzJe7kXSuuUtcmFCp9f
-	uKGZN0WFzgudldw4lULHO7W5KQG1r7TDb0iiQ/FpTOrydaav43xjByohedS4t0lCmPH5eZQ+UBl
-	301Slq9m1Sam2TN0fz77syNU95BQiLG4Zyvw3vmAfbGJ8=
-X-Google-Smtp-Source: AGHT+IGVsZwcGCVZ403CithjNi9WsUXSRPj+ibRR15jU2kltKiFKmRPF2S6nZAT48+6f9AaYRaxXdu43KwoIllQSeLc=
-X-Received: by 2002:a05:6102:38cb:b0:4e9:924f:eea2 with SMTP id
- ada2fe7eead31-4f3059a4ba7mr531779137.4.1751685460041; Fri, 04 Jul 2025
- 20:17:40 -0700 (PDT)
+        bh=z4om3ua96fXvEXIOy3marF7PLT0aH5hzFP+ZLeODrxY=;
+        b=AUCBmCWiCOmlbL8ye/cR+Tw+T0Vqbs5yfUeOy1rJE0B7CJCG0w0GM76QEJA4bbD5JU
+         OMgUEOFWmS3vK7v3i6rnkV5xmHVeOZWpO0c7nKW3QQJG2434fP48fJYyaHZs8FPIoATE
+         3rcCe8yPz5bTzXsiUC+8e2WM645ltecBZRLZ16uSs6ufTl+KUv4acueBtwFDUB4Y3hfK
+         dsz6G5Q4/faWDtJXv7ZmJReCPkVXQC3A3yPZVa7Z1pOyYJwy9ztT23v0LKVryhPc3TzC
+         0oiTSi6f7pBcHCWqaBt8A4ShkPu6suoMpQnYfVOMSRva4qr8tw1Sk3gnVPOe+zlDRmgY
+         sZ2A==
+X-Forwarded-Encrypted: i=1; AJvYcCW/HL39MO9hfcMf9GlBNCxa8ovj4HHwe4/B9votjjY24xpeWwfJJJAT+RMxzDqWD7RrFN45QH7jffNjJTB9@vger.kernel.org, AJvYcCW9sz9SON/3zfOGjWSPASU5mdbEYD+sN8j8kFsUZod477/btcjrDdhC27gdUWY6GShoQznzNLE8DW0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyVLTusemDbQhakPHJgEoI4jVLNKxLEj0YnpgDizY9veHsueqfB
+	MpnHrDuBnOOcD+f5EkrZU7ol0nYt6H4yU6UzRXXQ+BQBRXeDzy5MCbUscmCgSDAG/Qy9GdRSrV5
+	+V52sIS+R0sfYBUPSO9dqEmXWhQzLUw8=
+X-Gm-Gg: ASbGncvim41RLtYBAgKnb3YiPNfRvDXE4Kx6CLCwpMTEOWLIPyeyqpNaMhy3uw5Mkt8
+	yNI4Epzcj4wGAhAYBa6cEsKFFBxpgR4ryTrO5y/6KMPu6sDVTo5IPEJjTzvN0q9n5vBk4NxEd0m
+	3BMCMso0mXB8W5RfA6nwo5Wt9RU2Ja42orCTQvl+Ml3i0=
+X-Google-Smtp-Source: AGHT+IFso5aEBMGJvho4h3Q+6kYELE27l/TQba1W3PGMizii+e4XC6mbx4UIvaE3lML4KoWGPtVx+louUDQgwwKHVFo=
+X-Received: by 2002:a05:6102:4190:b0:4eb:53ca:3cfb with SMTP id
+ ada2fe7eead31-4f305bf46a9mr563012137.25.1751686676345; Fri, 04 Jul 2025
+ 20:37:56 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -75,14 +75,13 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20250618031638.26477-1-andrew.lopes@alumni.usp.br>
- <20250618031638.26477-2-andrew.lopes@alumni.usp.br> <20250621183843.2f8bcb48@jic23-huawei>
-In-Reply-To: <20250621183843.2f8bcb48@jic23-huawei>
+ <20250618031638.26477-4-andrew.lopes@alumni.usp.br> <20250621185550.64aebefa@jic23-huawei>
+In-Reply-To: <20250621185550.64aebefa@jic23-huawei>
 From: Andrew Ijano <andrew.ijano@gmail.com>
-Date: Sat, 5 Jul 2025 00:17:28 -0300
-X-Gm-Features: Ac12FXxKRY65ztMfLC4bP1FDghvoGqd_5L-OKt8hJ4-wFN29KG-j8SnDLWodtFU
-Message-ID: <CANZih_QAoSAMzPOq=di9=Wk=WK4+B1Sx80FjfCx41z6dYJQLyA@mail.gmail.com>
-Subject: Re: [PATCH v6 1/4] iio: accel: sca3000: replace usages of internal
- read data helpers by spi helpers
+Date: Sat, 5 Jul 2025 00:37:45 -0300
+X-Gm-Features: Ac12FXwC2DDSHYAxCddFn2SIuEwLxcjFmHOXQy5APNHRzsxHrY3vOi6VLQPNkbk
+Message-ID: <CANZih_Tm2w5C58tg36LzEMoLrqWgSGaJZQ_nxoDVUXFMJnZBXQ@mail.gmail.com>
+Subject: Re: [PATCH v6 3/4] iio: accel: sca3000: use lock guards
 To: Jonathan Cameron <jic23@kernel.org>
 Cc: andrew.lopes@alumni.usp.br, gustavobastos@usp.br, dlechner@baylibre.com, 
 	nuno.sa@analog.com, andy@kernel.org, jstephan@baylibre.com, 
@@ -90,84 +89,166 @@ Cc: andrew.lopes@alumni.usp.br, gustavobastos@usp.br, dlechner@baylibre.com,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Jun 21, 2025 at 2:38=E2=80=AFPM Jonathan Cameron <jic23@kernel.org>=
+On Sat, Jun 21, 2025 at 2:55=E2=80=AFPM Jonathan Cameron <jic23@kernel.org>=
  wrote:
 >
-> Hi. I made two related tweaks.  A few comments inline for further possibl=
-e cleanup.
+> Please add extra description for where you have pushed locks up
+> a level in the call tree and why that is fine to do.
 >
-> Applied to the togreg branch of iio.git and initially pushed out as testi=
-ng
-> for 0-day to take a look at it.
->
-Thanks. Since there was a problem with my implementation, I'll send a
-new version along with your tweaks too.
-
-> >       if (ret < 0)
-> >               goto error_ret;
-> >       dev_info(&indio_dev->dev,
-> >                "sca3000 revision major=3D%lu, minor=3D%lu\n",
-> > -              st->rx[0] & SCA3000_REG_REVID_MAJOR_MASK,
-> > -              st->rx[0] & SCA3000_REG_REVID_MINOR_MASK);
-> > +              ret & SCA3000_REG_REVID_MAJOR_MASK,
-> > +              ret & SCA3000_REG_REVID_MINOR_MASK);
-> Hmm. doesn't belong in this patch but it is rather odd to not see
-> a shift on one of these.
->
-> Hmm. Time to miss quote whoever it was who said:
->
-> "kernel development is like a murder mystery where you try to solve
->  the crime only to realize you were the murderer."
->
-> Below I mention using FIELD_GET() in appropriate places as a possible add=
-itional
-> cleanup.  Fix this up when you do that (and note it in the patch descript=
-ion for
-> that patch).
 Ok! I'll do that.
 
-> >       /* mask bottom 2 bits - only ones that are relevant */
-> > -     st->rx[0] &=3D SCA3000_REG_MODE_MODE_MASK;
-> > -     switch (st->rx[0]) {
-> > +     ret &=3D SCA3000_REG_MODE_MODE_MASK;
-> > +     switch (ret) {
-> See discussion below.  This can be simplified as
->         switch (reg & SCA3000_REG_MODE_MASK)
-> avoiding the modified 'ret' value in place comment.
+> >       switch (mask) {
+> > -     case IIO_CHAN_INFO_SAMP_FREQ:
+> > +     case IIO_CHAN_INFO_SAMP_FREQ: {
+> > +             guard(mutex)(&st->lock);
+> As below
 >
-> This one I'll tweak as it is easy to avoid the ugly pattern.
+> >               if (val2)
+> >                       return -EINVAL;
+> > -             mutex_lock(&st->lock);
+> > -             ret =3D sca3000_write_raw_samp_freq(st, val);
+> > -             mutex_unlock(&st->lock);
+> > -             return ret;
+> > -     case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
+> > +             return sca3000_write_raw_samp_freq(st, val);
+> > +     }
+> > +     case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY: {
+> > +             guard(mutex)(&st->lock);
+> >               if (val2)
+> >                       return -EINVAL;
+> > -             mutex_lock(&st->lock);
 >
-Nice! I'll pay attention to similar cases in the future.
+> You can keep the old ordering here.  It doesn't matter much but
+> easier to be sure about a patch that makes no functional change.
+Ok!
+
+
+> > -     mutex_lock(&st->lock);
+> > +     guard(mutex)(&st->lock);
+>
+> This is a very large increase in scope.  Use scoped_guard() here instead =
+to avoid
+> holding the lock over a whole load of code that doesn't need it.
+>
+> >       ret =3D spi_w8r8(st->us, SCA3000_READ_REG(SCA3000_REG_INT_STATUS_=
+ADDR));
+> > -     mutex_unlock(&st->lock);
+
+That makes sense! I don't know why I didn't use scoped_guard() in this
+case before.
+
+
+> >       if (state) {
+> >               dev_info(&indio_dev->dev, "supposedly enabling ring buffe=
+r\n");
+> > -             ret =3D sca3000_write_reg(st,
+> > +             return sca3000_write_reg(st,
+> >                       SCA3000_REG_MODE_ADDR,
+> >                       ret | SCA3000_REG_MODE_RING_BUF_ENABLE);
+>
+> This indent was already nasty so as we are touching the code good to clea=
+n it up.
+> For cases like this we can be more relaxed and if it helps readability go=
+ a little
+> over 80 chars (I think this will be 80 ish)
+
+Great! I'll pay attention to that.
 
 > >
-> > -     st->rx[0] &=3D ~SCA3000_REG_MODE_MODE_MASK;
-> > -     st->rx[0] |=3D (mode & SCA3000_REG_MODE_MODE_MASK);
-> > +     ret &=3D ~SCA3000_REG_MODE_MODE_MASK;
+> >
+> >  static int sca3000_hw_ring_postdisable(struct iio_dev *indio_dev)
+> > @@ -1307,22 +1259,18 @@ static int sca3000_hw_ring_postdisable(struct i=
+io_dev *indio_dev)
+> >       int ret;
+> >       struct sca3000_state *st =3D iio_priv(indio_dev);
+> >
+> > +     guard(mutex)(&st->lock);
 >
-> For a further potential cleanup it would be good to use FIELD_GET() and F=
-IELD_PREP()
-> in appropriate places in this driver. Do that into a separate local varia=
-ble
-> as using ret for all this is a little confusing as quite a bit of the tim=
-e
-> it's not a variable we are ever going to return.
->
-> As a rule of thumb if we are modifying the ret only a little in a single =
-reuse
-> (i.e. masking out a bit in a parameter being passed to something else) th=
-en
-> a local variable is probably overkill. If we are building up a new regist=
-er
-> value it is not really appropriate to do it into ret.
->
-> I'm not asking for changes in this patch though as what you have here
-> is the simplest and easiest to review change.  If you add those extra
-> local variables as part of using FIELD_GET/ FIELD_PREP though that would
-> be great.
+> See comment at the top - Making this change is fine but call it out in th=
+e patch
+> description as it isn't simple change to using guards, but instead to hol=
+ding
+> the lock for longer.  Change is fine but point it out as it needs
+> more review than the mechanical changes.
 
-That's great! I didn't know about FIELD_GET() and FIELD_PREP() before.
-This is really something that would be better in a separate patch, I
-could try to do that later.
+Ok!
+
+>
+> >       ret =3D __sca3000_hw_ring_state_set(indio_dev, 0);
+> >       if (ret)
+> >               return ret;
+> >
+> >       /* Disable the 50% full interrupt */
+> > -     mutex_lock(&st->lock);
+> > -
+> >       ret =3D spi_w8r8(st->us, SCA3000_READ_REG(SCA3000_REG_INT_MASK_AD=
+DR));
+> >       if (ret)
+> > -             goto unlock;
+> > -     ret =3D sca3000_write_reg(st,
+> > +             return ret;
+> > +     return sca3000_write_reg(st,
+> >                               SCA3000_REG_INT_MASK_ADDR,
+> >                               ret & ~SCA3000_REG_INT_MASK_RING_HALF);
+>
+> As below.
+>
+> > -unlock:
+> > -     mutex_unlock(&st->lock);
+> > -     return ret;
+> >  }
+>
+> > @@ -1386,13 +1334,9 @@ static int sca3000_clean_setup(struct sca3000_st=
+ate *st)
+> >        */
+> >       ret =3D spi_w8r8(st->us, SCA3000_READ_REG(SCA3000_REG_MODE_ADDR))=
+;
+> >       if (ret)
+> > -             goto error_ret;
+> > -     ret =3D sca3000_write_reg(st, SCA3000_REG_MODE_ADDR,
+> > +             return ret;
+> > +     return sca3000_write_reg(st, SCA3000_REG_MODE_ADDR,
+> >                               ret & SCA3000_MODE_PROT_MASK);
+>
+> As below.
+>
+> > -
+> > -error_ret:
+> > -     mutex_unlock(&st->lock);
+> > -     return ret;
+> >  }
+> >
+> >  static const struct iio_info sca3000_info =3D {
+> > @@ -1470,19 +1414,16 @@ static int sca3000_stop_all_interrupts(struct s=
+ca3000_state *st)
+> >  {
+> >       int ret;
+> >
+> > -     mutex_lock(&st->lock);
+> > +     guard(mutex)(&st->lock);
+> >       ret =3D spi_w8r8(st->us, SCA3000_READ_REG(SCA3000_REG_INT_MASK_AD=
+DR));
+> >       if (ret)
+> > -             goto error_ret;
+> > +             return ret;
+> >
+> > -     ret =3D sca3000_write_reg(st, SCA3000_REG_INT_MASK_ADDR,
+> > +     return sca3000_write_reg(st, SCA3000_REG_INT_MASK_ADDR,
+> This adds a character to this line which means that either the indent of
+> the following lines was previously wrong, or it is now.
+> I think you need to add a space to the following lines.
+>
+> Check for other similar cases.
+>
+> >                               ret &
+> >                               ~(SCA3000_REG_INT_MASK_RING_THREE_QUARTER=
+ |
+> >                                 SCA3000_REG_INT_MASK_RING_HALF |
+> >                                 SCA3000_REG_INT_MASK_ALL_INTS));
+
+Hm, correct me if I'm mistaken but I couldn't find this extra
+character, I used the same number of tabs in both cases. Even in this
+email it shows as having the same number of white spaces.
 
 Thanks,
 Andrew

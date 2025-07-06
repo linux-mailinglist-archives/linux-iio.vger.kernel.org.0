@@ -1,61 +1,61 @@
-Return-Path: <linux-iio+bounces-21409-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21410-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6061AAFA6A2
-	for <lists+linux-iio@lfdr.de>; Sun,  6 Jul 2025 18:57:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20113AFA6B3
+	for <lists+linux-iio@lfdr.de>; Sun,  6 Jul 2025 19:08:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5575E7A1EA4
-	for <lists+linux-iio@lfdr.de>; Sun,  6 Jul 2025 16:56:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D5095189B542
+	for <lists+linux-iio@lfdr.de>; Sun,  6 Jul 2025 17:09:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7446A2882D7;
-	Sun,  6 Jul 2025 16:57:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C864293C42;
+	Sun,  6 Jul 2025 17:08:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RyzsgCY3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Tkoouw2A"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F130CA5A;
-	Sun,  6 Jul 2025 16:57:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5116429188C;
+	Sun,  6 Jul 2025 17:08:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751821053; cv=none; b=ghs/Dc1Myd2OKAcTuH4bjhBc2EuDiW3AqezTrYhSjXJqU1U5xZT6RHTzbo1oqmu074htc5/QHLI45sPVKJ1n8Cvi4thA9AGq9p6VJ1Qi/GhnRUbvGpsHczjsNGbWUcYzJYTKBZbfxrQaHIWCTNegTBSbLOhN3GQZ/vCc2ApP0Pc=
+	t=1751821716; cv=none; b=BJlriCXhBxsIr+q/urlgdrYKu8Rez+M/woIxZ2AzAcWMvwu1hDJAsbp2XfagOjJ+QwPalHUUD8/zV+Q2FcVTNu1XH9VMrUrNvYbVvxb3e/qCYApBTkzmy1Ac3sWYZ93FoA0u3KtHRjTkgo3nGZNlRQebObNl0gVKyL/Pxgi8TfU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751821053; c=relaxed/simple;
-	bh=gpb/EVfKUa4gnUADXJe0IatdMtMGE550muM4uGKqsN8=;
+	s=arc-20240116; t=1751821716; c=relaxed/simple;
+	bh=jGUo/7/3W52plc8HkHQT3J6FKdnd3ZnvZhgvvRpzEE4=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iXdVaUd2nhuQxUGgt9U4nP0afR2qO2+8wHF90vI3PqjS2NRQq2bcUJMksHJ1vAENKWVL448hHYAlFe6jloR88oHzUAK8L+kbDbbjA8viMU7RVMCmRjEDVm/Gdd7EoLsWxtcUS2pcTGEaw9G08GGjtL3qZdjnqnOSLZt8UDBMtcw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RyzsgCY3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B879C4CEEF;
-	Sun,  6 Jul 2025 16:57:29 +0000 (UTC)
+	 MIME-Version:Content-Type; b=WZB0VE2S4J6MOiha9hYTwT4LF3v69tdTSy6WLk6oDulkWSY4Nd8Vd2WjujfanHJEsa+HBB/bxw/+1d4cRmc7GESUj0O7JxpJCwScuTMfjZ5vHmUW0vnod5rpK/UNrBuzV2mDq1lOfLkBjuO5U9gLqP0cwUZYWT7CNZhBXWRP0FA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Tkoouw2A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5BB6C4CEED;
+	Sun,  6 Jul 2025 17:08:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751821051;
-	bh=gpb/EVfKUa4gnUADXJe0IatdMtMGE550muM4uGKqsN8=;
+	s=k20201202; t=1751821715;
+	bh=jGUo/7/3W52plc8HkHQT3J6FKdnd3ZnvZhgvvRpzEE4=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=RyzsgCY3Zuu1lTj+EAE0DDU9aCubOaB18TUMcLFCVXmuRVi1ElcLw2Zg6FK9ISWqR
-	 mhBzYZOV2P+i/q0HwCRAcI/Hcp+usaulyIspLTl1Yda7shndP9NoGcE+4oB5Wg4LTF
-	 5kndqcBecR/OsXFohvgxpI3ZtsPHDbOv2Na32OCntTObux7R71k38ihF+azmNR/n6x
-	 QWsJqT0MjYPz66FgqGJOhe30BVScS6mgwdNzxdYe8tZgsGGHXXq0oxc7GTjcQJ7WC7
-	 eA9cPA0EZlxYqyjEr7GTdQafsQqq3rFPgvLFlSiuAxPNqD9qdBL7BUjJXChsMFD6J+
-	 6lmqJQSqsEs9A==
-Date: Sun, 6 Jul 2025 17:57:25 +0100
+	b=Tkoouw2A6LT2FlqICOuQDGreRKB4cYG9UeONs2pIFe0OpD1Wl3s7N1Q5C8B77T3Kw
+	 96av8TKRW6OHrwxWRRRK9ht0Vf7ygUkZalulpEW2oDSu8foLxFp9EGSnr3f3X07UuS
+	 5mdu8gg2xwLg/JARfvwCUAyS3Aex32NtiI/v8LktGV+7wqMJWQiBYpj9ywaRl4hN7g
+	 G1f3kh32OxkDLNQzbH3lK/VwFIp9Bm2mQdFpVSRI0eqpOC3YyW10Fnq9G9kB7i2c7o
+	 IlYzMwIfSZ0t+5pCI2P873KqMNhuPS3GTRnvhyEWkJIxTMVWIbfh5YohM5J8vOB2eX
+	 ycPF3mAGZY0SA==
+Date: Sun, 6 Jul 2025 18:08:28 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
- <Michael.Hennerich@analog.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
- Andy Shevchenko <andy@kernel.org>, Jonathan Cameron
- <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] iio: adc: ad7173: fix num_slots
-Message-ID: <20250706175725.39e79105@jic23-huawei>
-In-Reply-To: <78342e10-7211-44de-8a92-40872a69b60d@baylibre.com>
-References: <20250704-iio-adc-ad7173-fix-num_slots-on-most-chips-v2-1-a74941609143@baylibre.com>
-	<f023c92b-183c-4157-a6eb-ff722dfd716a@baylibre.com>
-	<20250706111529.360a3095@jic23-huawei>
-	<78342e10-7211-44de-8a92-40872a69b60d@baylibre.com>
+To: Marcelo Schmitt <marcelo.schmitt@analog.com>
+Cc: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+ <linux-gpio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <lars@metafoo.de>, <Michael.Hennerich@analog.com>, <dlechner@baylibre.com>,
+ <nuno.sa@analog.com>, <andy@kernel.org>, <robh@kernel.org>,
+ <krzk+dt@kernel.org>, <conor+dt@kernel.org>, <linus.walleij@linaro.org>,
+ <brgl@bgdev.pl>, <broonie@kernel.org>, <lgirdwood@gmail.com>,
+ <marcelo.schmitt1@gmail.com>, Conor Dooley <conor.dooley@microchip.com>
+Subject: Re: [PATCH v7 01/12] dt-bindings: iio: adc: Add AD4170
+Message-ID: <20250706180828.58fdce32@jic23-huawei>
+In-Reply-To: <e8efb5e4cfbefade6a4d4f5ee4109257a333713b.1751289747.git.marcelo.schmitt@analog.com>
+References: <cover.1751289747.git.marcelo.schmitt@analog.com>
+	<e8efb5e4cfbefade6a4d4f5ee4109257a333713b.1751289747.git.marcelo.schmitt@analog.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -66,109 +66,20 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sun, 6 Jul 2025 11:08:06 -0500
-David Lechner <dlechner@baylibre.com> wrote:
+On Mon, 30 Jun 2025 10:57:59 -0300
+Marcelo Schmitt <marcelo.schmitt@analog.com> wrote:
 
-> On 7/6/25 5:15 AM, Jonathan Cameron wrote:
-> > On Fri, 4 Jul 2025 12:04:04 -0500
-> > David Lechner <dlechner@baylibre.com> wrote:
-> >   
-> >> On 7/4/25 11:21 AM, David Lechner wrote:  
-> >>> Fix the num_slots value for most chips in the ad7173 driver. The correct
-> >>> value is the number of CHANNELx registers on the chip.
-> >>>
-> >>> In commit 4310e15b3140 ("iio: adc: ad7173: don't make copy of
-> >>> ad_sigma_delta_info struct"), we refactored struct ad_sigma_delta_info
-> >>> to be static const data instead of being dynamically populated during
-> >>> driver probe. However, there was an existing bug in commit 76a1e6a42802
-> >>> ("iio: adc: ad7173: add AD7173 driver") where num_slots was incorrectly
-> >>> set to the number of CONFIGx registers instead of the number of
-> >>> CHANNELx registers. This bug was partially propagated to the refactored
-> >>> code in that the 16-channel chips were only given 8 slots instead of
-> >>> 16 although we did managed to fix the 8-channel chips and one of the
-> >>> 4-channel chips in that commit. However, we botched two of the 4-channel
-> >>> chips and ended up incorrectly giving them 8 slots during the
-> >>> refactoring.
-> >>>
-> >>> This patch fixes that mistake on the 4-channel chips and also
-> >>> corrects the 16-channel chips to have 16 slots.
-> >>>
-> >>> Fixes: 4310e15b3140 ("iio: adc: ad7173: don't make copy of ad_sigma_delta_info struct")
-> >>> Signed-off-by: David Lechner <dlechner@baylibre.com>
-> >>> ---
-> >>> Changes in v2:
-> >>> - Improve commit message.
-> >>> - Link to v1: https://lore.kernel.org/r/20250703-iio-adc-ad7173-fix-num_slots-on-most-chips-v1-1-326c5d113e15@baylibre.com
-> >>> ---
-> >>>  drivers/iio/adc/ad7173.c | 37 +++++++++++++++++++++++++++----------
-> >>>  1 file changed, 27 insertions(+), 10 deletions(-)
-> >>>
-> >>> diff --git a/drivers/iio/adc/ad7173.c b/drivers/iio/adc/ad7173.c
-> >>> index dd9fa35555c79ead5a1b88d1dc6cc3db122502be..9c197cea11eb955becf4b9b97246379fa9c5da13 100644
-> >>> --- a/drivers/iio/adc/ad7173.c
-> >>> +++ b/drivers/iio/adc/ad7173.c
-> >>> @@ -771,10 +771,27 @@ static const struct ad_sigma_delta_info ad7173_sigma_delta_info_8_slots = {
-> >>>  	.num_slots = 8,
-> >>>  };
-> >>>  
-> >>> +static const struct ad_sigma_delta_info ad7173_sigma_delta_info_16_slots = {
-> >>> +	.set_channel = ad7173_set_channel,
-> >>> +	.append_status = ad7173_append_status,
-> >>> +	.disable_all = ad7173_disable_all,
-> >>> +	.disable_one = ad7173_disable_one,
-> >>> +	.set_mode = ad7173_set_mode,
-> >>> +	.has_registers = true,
-> >>> +	.has_named_irqs = true,    
-> >>  
-> >>> +	.supports_spi_offload = true,    
-> >>
-> >> Well drat, I was too quick with the update and the bots [1] noticed that
-> >> this conflicts with the in-flight patch that added this field [2].
-> >>
-> >> I guess we can drop this one line, but then the other patch will wait
-> >> until this fix makes its way back into the togreg/testing branches.  
-> > 
-> > I'm lost - what would you prefer we do here?  For now I have [2] on my
-> > tree but can drop just that one patch if it unwinds this complexity.  
+> Add device tree documentation for AD4170 and similar sigma-delta ADCs.
+> The AD4170 is a 24-bit, multichannel, sigma-delta ADC.
 > 
-> I was hoping you would tell me. :-p
-> 
-> In any case, we should apply this patch, with the supports_spi_offload
-> line dropped, first so that it backports cleanly to the stable release(s).
-> 
-> But where to apply this patch depends on if you are planning on doing
-> another fixes-togreg this release cycle or not. Or we could just opt
-> to take the slow path to avoid the dependency dance and just apply
-> both patches to iio/togreg and let it make it's way to stable after
-> the next merge cycle.
+> Acked-by: Conor Dooley <conor.dooley@microchip.com>
+> Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
+Very small tweak whilst applying.  There is a bonus blank line at the
+end of the file that I removed.  Git moans about it otherwise.
+> +    };
+> +...
+> +
 
-I'll almost certainly do another fixes pull, but it might not get into upstream
-of my togreg branch fast enough. 
-
-For now is just dropping patch 12 from the main series enough to avoid the
-conflict?  If so send me a clean version of this and I'll apply that to the
-fixes-togreg branch and we can hopefully get a round trip to pick up patch 12
-on top of it.
-
-Thanks,
-
-Jonathan
-
-> 
-> >>
-> >> [1]: https://lore.kernel.org/linux-iio/202507050018.iWEJiG04-lkp@intel.com/
-> >> [2]: https://lore.kernel.org/linux-iio/20250701-iio-adc-ad7173-add-spi-offload-support-v3-12-42abb83e3dac@baylibre.com/
-> >>  
-> >>> +	.addr_shift = 0,
-> >>> +	.read_mask = BIT(6),
-> >>> +	.status_ch_mask = GENMASK(3, 0),
-> >>> +	.data_reg = AD7173_REG_DATA,
-> >>> +	.num_resetclks = 64,
-> >>> +	.num_slots = 16,
-> >>> +};
-> >>> +    
-> >>  
-> >   
-> 
+This one.
 
 

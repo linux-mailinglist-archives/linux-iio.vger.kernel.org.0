@@ -1,66 +1,59 @@
-Return-Path: <linux-iio+bounces-21373-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21374-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B0CCAFA40A
-	for <lists+linux-iio@lfdr.de>; Sun,  6 Jul 2025 11:34:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 966CFAFA40F
+	for <lists+linux-iio@lfdr.de>; Sun,  6 Jul 2025 11:37:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E1E151898D41
-	for <lists+linux-iio@lfdr.de>; Sun,  6 Jul 2025 09:34:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C0BB37AD177
+	for <lists+linux-iio@lfdr.de>; Sun,  6 Jul 2025 09:35:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C9211F9F61;
-	Sun,  6 Jul 2025 09:34:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E29C61F8EEC;
+	Sun,  6 Jul 2025 09:37:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bF/MP1t2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CDtEi4o+"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DF1C35972;
-	Sun,  6 Jul 2025 09:34:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FFBC2940D;
+	Sun,  6 Jul 2025 09:37:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751794446; cv=none; b=pvrD0VFwJKmUh43I29klg63PIHqXpNmwk5zaM+PwMXKmDYJMI6uahi+biwma9g+ih3duWU9rwSqjPjVNFGuxzSv8b+bhM59HYqK8mdwV/zpArIoK49xjxi1wbJhnrXrjKLBDxLMf64ZzGqWWx6YsIdZgF9Z8uD/IgrgR9P1tYlY=
+	t=1751794637; cv=none; b=ihCIQGzsYtUOKUHsGbhQRhDewZMMdZGzFLbHQkdJLYJIbCckcpB+peUVRWVq2pzzdQvfWHJ6wRUsF79iRWOdskLStJsae1IyPo25lkNcgIEA+Ss5dVW/pWjVIFsMJoPfrN2i74/8FRGxbnCRrE2vVqBg6x0X35zZe4Y14LIM13s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751794446; c=relaxed/simple;
-	bh=aL1Zrrz6z/GX1s92tmOuCSb81YdX/7rki1eHHVMKrxE=;
+	s=arc-20240116; t=1751794637; c=relaxed/simple;
+	bh=Z80WypLVm0mkUvSjn/B1ni17b+YA55+YdZRkkt3U0i0=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uPqlii5NrVOlCxh/eQ5esFdSFSOd9c9Pe5na0xgYfDM7GVCXxMX3BHJcIXcVEfTJCYbFamArYMyJdN9w9WQeKs6Qkvh7G1xclV23s3DcUK7VmBSRcvLvqQxClmcRojVEltO49ACJ0kH0bUlCBxtqiHAjpunozHgsQuChaXE9pf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bF/MP1t2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A745C4CEED;
-	Sun,  6 Jul 2025 09:33:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=azjk7L5jm4WulHGWV+L2Fh4ycYniQIAeb75t8wc/+Bb/khXIo89Vv+eoZLGEsOArIRZZA/5+lv0oHz0Nt+MJYY/fzFmQf8evgTtCpndsOqpcKXmFbo0MUtLrhW/wGmfQDL5RUOU2wCyOYjvz6xhfCWUTuSfB8KCJhy1hiu/Ha/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CDtEi4o+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 345B5C4CEED;
+	Sun,  6 Jul 2025 09:37:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751794445;
-	bh=aL1Zrrz6z/GX1s92tmOuCSb81YdX/7rki1eHHVMKrxE=;
+	s=k20201202; t=1751794636;
+	bh=Z80WypLVm0mkUvSjn/B1ni17b+YA55+YdZRkkt3U0i0=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=bF/MP1t26Fo8B1kKVCql0AarvJq+7AczeYvI/FCYfqAd3D7hCADu7hXFfChh3hmBf
-	 f0Ez0JsQToO1y5kBI7bLmAtU9wkOkba5nIoGlluPu7+wHXHVg6gunnZhna12PhGeyV
-	 AdfzEbIJO4CuVsaCmR7LrJiH/WqjcC9FSt42/6y45ptLvornjfIfvngAcWCNG24v4l
-	 eoQ+R11asgFAsAM6E7bOonyyfzuqHZhq/wnrRg6gR4lfeGeSIqAchbHP1vs0QUeN74
-	 UH87v+GUxNLNN1o1wNlAWa6jnxh5EwRWpo5cf3SHY2pB5+bD/pB/PhQvSktqXmLrJY
-	 uUfbx3dH9g9YA==
-Date: Sun, 6 Jul 2025 10:33:54 +0100
+	b=CDtEi4o+hCd2Z3XtXwHjWBxvSZlEPgugCXcOHVdPkmQ6P5Qi/N23pfT24n32f7F+a
+	 mIK6laxm6VMHoiW4+4eHmBXLsKf5I8uc/sBwWhNuUiSiIrGbzl72n7lKSy87Qs4V29
+	 NxewsWZRmx+EIDfj54JcjnmDNOeekT/xmTXLc/kjVCnPr8WGiWS1J4g5wxDzV95tGp
+	 ZDKQmqx9xokwn6+Ft5CM3Ml9gP/N7bgmwZe67/n2+VcLWLnpf51VqVZIqIzzN6D5N7
+	 4MKiDqBTUclVz4M+soiVrJXgfzCTsziyRcCZyhsMomrR6J3AdD2yLzXqLfWEU+65dy
+	 46E1kjKmyp7Yw==
+Date: Sun, 6 Jul 2025 10:37:08 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Jonathan Santos <jonath4nns@gmail.com>
-Cc: aEwd4cS7j0Vvypg8@smile.fi.intel.com, Andy Shevchenko
- <andriy.shevchenko@intel.com>, Jonathan Santos
- <Jonathan.Santos@analog.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-gpio@vger.kernel.org, andy@kernel.org, nuno.sa@analog.com,
- Michael.Hennerich@analog.com, marcelo.schmitt@analog.com, robh@kernel.org,
- krzk+dt@kernel.org, conor+dt@kernel.org, marcelo.schmitt1@gmail.com,
- linus.walleij@linaro.org, brgl@bgdev.pl, lgirdwood@gmail.com,
- broonie@kernel.org, dlechner@baylibre.com
-Subject: Re: [PATCH v11 11/11] iio: adc: ad7768-1: add low pass -3dB cutoff
- attribute
-Message-ID: <20250706103354.0059d320@jic23-huawei>
-In-Reply-To: <aFGVAWi7CZAy0E8k@JSANTO12-L01.ad.analog.com>
-References: <cover.1749569957.git.Jonathan.Santos@analog.com>
-	<804d66f1858014d7278aec3344d81c223661e878.1749569957.git.Jonathan.Santos@analog.com>
-	<aEwd4cS7j0Vvypg8@smile.fi.intel.com>
-	<aFGVAWi7CZAy0E8k@JSANTO12-L01.ad.analog.com>
+To: Andrew Ijano <andrew.ijano@gmail.com>
+Cc: andrew.lopes@alumni.usp.br, gustavobastos@usp.br, dlechner@baylibre.com,
+ nuno.sa@analog.com, andy@kernel.org, jstephan@baylibre.com,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v6 3/4] iio: accel: sca3000: use lock guards
+Message-ID: <20250706103708.65de7569@jic23-huawei>
+In-Reply-To: <CANZih_Tm2w5C58tg36LzEMoLrqWgSGaJZQ_nxoDVUXFMJnZBXQ@mail.gmail.com>
+References: <20250618031638.26477-1-andrew.lopes@alumni.usp.br>
+	<20250618031638.26477-4-andrew.lopes@alumni.usp.br>
+	<20250621185550.64aebefa@jic23-huawei>
+	<CANZih_Tm2w5C58tg36LzEMoLrqWgSGaJZQ_nxoDVUXFMJnZBXQ@mail.gmail.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -71,57 +64,30 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 17 Jun 2025 13:17:05 -0300
-Jonathan Santos <jonath4nns@gmail.com> wrote:
-
-> On 06/13, Andy Shevchenko wrote:
-> > On Wed, Jun 11, 2025 at 08:52:03AM -0300, Jonathan Santos wrote:  
-> > > Ad7768-1 has a different -3db frequency multiplier depending on
-> > > the filter type configured. The cutoff frequency also varies according
-> > > to the current ODR.
-> > > 
-> > > Add a readonly low pass -3dB frequency cutoff attribute to clarify to
-> > > the user which bandwidth is being allowed depending on the filter
-> > > configurations.  
-> >   
-> > > +/* -3dB cutoff frequency multipliers (relative to ODR) for each filter type. */
-> > > +static const int ad7768_filter_3db_odr_multiplier[] = {
-> > > +	[AD7768_FILTER_SINC5] = 204,		/* 0.204 */
-> > > +	[AD7768_FILTER_SINC3] = 262,		/* 0.2617 */
-> > > +	[AD7768_FILTER_SINC3_REJ60] = 262,	/* 0.2617 */
-> > > +	[AD7768_FILTER_WIDEBAND] = 433,		/* 0.433 */  
-> > 
-> > Just to be sure, is it 0.433 or 0.4333(3) actually? Sometimes datasheets have
-> > rounding that even may lead to problems (see TSC issues for some of the Intel
-> > CPUs in the past). That's behind my question.
-> >   
+> > > -     ret = sca3000_write_reg(st, SCA3000_REG_INT_MASK_ADDR,
+> > > +     return sca3000_write_reg(st, SCA3000_REG_INT_MASK_ADDR,  
+> > This adds a character to this line which means that either the indent of
+> > the following lines was previously wrong, or it is now.
+> > I think you need to add a space to the following lines.
+> >
+> > Check for other similar cases.
+> >  
+> > >                               ret &
+> > >                               ~(SCA3000_REG_INT_MASK_RING_THREE_QUARTER |
+> > >                                 SCA3000_REG_INT_MASK_RING_HALF |
+> > >                                 SCA3000_REG_INT_MASK_ALL_INTS));  
 > 
-> Every reference I have specifies it as 0.433, so I believe that is it.
-> 
-> > > +};  
-> > 
-> > ...
-> >   
-> > > +	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
-> > > +		temp = st->samp_freq * ad7768_filter_3db_odr_multiplier[st->filter_type];
-> > > +		*val = DIV_ROUND_CLOSEST(temp, 1000);  
-> > 
-> > MILLI? KILO/ MICRO/MILLI? ...?
-> >   
-> 
-> Yes, MILLI.
-I fixed this up and added units.h include and applied.
-
+> Hm, correct me if I'm mistaken but I couldn't find this extra
+> character, I used the same number of tabs in both cases. Even in this
+> email it shows as having the same number of white spaces.
+return sca3000_write_reg(
+is one character longer than 
+ret = sca3000_write_reg(
+and seeing as parameters on later lines should align just after this they all
+need one additional space.
 
 > 
 > Thanks,
-> Jonathan S.
-> 
-> > -- 
-> > With Best Regards,
-> > Andy Shevchenko
-> > 
-> >   
-> 
+> Andrew
 
 

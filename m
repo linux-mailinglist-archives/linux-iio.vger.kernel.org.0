@@ -1,215 +1,269 @@
-Return-Path: <linux-iio+bounces-21413-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21414-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7D62AFA6DE
-	for <lists+linux-iio@lfdr.de>; Sun,  6 Jul 2025 19:33:57 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26B74AFA763
+	for <lists+linux-iio@lfdr.de>; Sun,  6 Jul 2025 20:53:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1290717A6D4
-	for <lists+linux-iio@lfdr.de>; Sun,  6 Jul 2025 17:33:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F0B677AD61E
+	for <lists+linux-iio@lfdr.de>; Sun,  6 Jul 2025 18:52:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49595288C1A;
-	Sun,  6 Jul 2025 17:33:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89F3F1FF1C4;
+	Sun,  6 Jul 2025 18:53:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="rsLL81GE"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="GN2QpUd+"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oa1-f51.google.com (mail-oa1-f51.google.com [209.85.160.51])
+Received: from mail-ot1-f51.google.com (mail-ot1-f51.google.com [209.85.210.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DD5D19C54F
-	for <linux-iio@vger.kernel.org>; Sun,  6 Jul 2025 17:33:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6D591DE2C9
+	for <linux-iio@vger.kernel.org>; Sun,  6 Jul 2025 18:53:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751823231; cv=none; b=Yh2oxOqyHtEowLg5MCuvWSBez9dX0TXQw2C2bKoAyIrC8pbCm01zne0EyRaz6RWwivdIUQfq1OKPdKZpwTasvkH31SBpJtjwdyC8nhxXNfTShXm+BnCtGLi3BxG2ibhNTWqVHkpCgmVQgC42tdSyYvEs+deIpCAfakz/MxYT5JE=
+	t=1751828006; cv=none; b=GkEB8g+IcJdD3PQC/1edF7aCC1Pla0Rbiyj39V2MzcI3wrm5ItVTslx4Tf7a6fLTXTMNqMDiLn8d1cj5Uga0c+iyeUdXyxjX+5mnQ4N60IA3iZNAs+YdO2TZGQCnuMXAJsYEwo8eucGafydsJ3IMVYpWBZ6bOC+0TmXy1+oPKtw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751823231; c=relaxed/simple;
-	bh=Cf3yhv/26SqDxXicxC3HfCxus6Z0GxTvozJbfxCLYxU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JWpKBV/5VQzgtkWjWai7YlVFYhSZDj/YHoHmPkPCytjR4umPGceq4clXY8RU1Rf+YvsXH+2texqxOG7EZ4jSDTa6KlqaejBPTtslzwk3cNU550QQfpIxAOlE4gBuq4euMu2J4oZ7Fhh/PznCKHjngmcfOaER0asb24bsbRlL4ps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=rsLL81GE; arc=none smtp.client-ip=209.85.160.51
+	s=arc-20240116; t=1751828006; c=relaxed/simple;
+	bh=RhkFy6ZKHzNXonCQXjQIYuppZ4UiYZk7SXxTyyjmqKM=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=E75Yj+lLIyJkv4CtUv7ngCvHQRf9/SfKExa//mYrHSArmN2e/6LIAVVgNXXXgYZlxqxLHR3iFKRd4mrR7MOEJP14f02d0hwzYsen3uTDQ++RiyMTsq6WCNhkbXIxnz4WI4D0UXqyp4hMqkMzfN5EyHf2vuHyRQc7Bt8ST0Dv7j8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=GN2QpUd+; arc=none smtp.client-ip=209.85.210.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oa1-f51.google.com with SMTP id 586e51a60fabf-2efdd5c22dfso1732922fac.3
-        for <linux-iio@vger.kernel.org>; Sun, 06 Jul 2025 10:33:48 -0700 (PDT)
+Received: by mail-ot1-f51.google.com with SMTP id 46e09a7af769-73b5350980cso2079388a34.1
+        for <linux-iio@vger.kernel.org>; Sun, 06 Jul 2025 11:53:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1751823227; x=1752428027; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=iWYegh6L0RiKIRDn0gigKG9Sgo7nkwUjvpILFMl9qrA=;
-        b=rsLL81GEbrN220e/nBsyOqX1iv6eV5AZrr0ci7op64lpyTUzBg4LThGPlOxpwqIkjF
-         vE115efB+BTDjrY8xHC/eZSuphxGhZGuxawpBzwN9WI12k59QniJURiwEmapSV5KA8Ua
-         cjH1zZyKt+XOswTEQR2D5ae80ELXVHvgUcoS3h//RplZ8NT1rlFWDCOAjPAp5NC6hBHr
-         iCLFOXMfM1YL0Ec0h5APZMLGRuV+r5edYmmeNSvbTu8qU+DkvdglPIdB67dttr2J4kjF
-         YJZ7B6exu5ocOqsL8m1xO5dJVPr79tbSVoySn3TzM8YxDXXLr/ATdGvW7BQ5ujRMyUPb
-         tEGg==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1751828003; x=1752432803; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=xoEeqQqxPj+MY3KyZB24QezFKhBGxLbrFZBnD7WBTKs=;
+        b=GN2QpUd+sprNV3QczNLFJD7Pex5Vy59K3pwjeehkAa+PZJD9hNNAo8dFUK22YSbH31
+         cnNCXThT8iGoBw7/XOyOQD11OBMOVV1DlyX9SGfJMCLuubmoz26lrYBjC2O45HIDImIO
+         VZPiTOfqaJBXqV6hO9KMThw7oNcIooMeksMKmBrM0BUkdjqQp+h91RV3k3sNIW7h6Z+9
+         ZRe42xl2wRvIuaGEVy4TazCidcGFvNFyCYe95fGIgmYg1QxNwLZ80FK5rocCh99Fo38q
+         jIJVWmyl0rKJRBi4Hd4qgbalQgRkkg6wwBxEXFpd3LmdsJ9HCWmC/0iJL0J2h10ihM1g
+         JWcg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751823227; x=1752428027;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=iWYegh6L0RiKIRDn0gigKG9Sgo7nkwUjvpILFMl9qrA=;
-        b=oJCu6hPSJ+F/KudzPr7oo3OTTdN3TK0/UXi/RQ24m7LEc/1gnX6Ci8ryoh8kax3vmx
-         GorvZrOtHyhO5Bo7/FN9JBQ8oqJa+LPufdjXxWdGSSGBFSxQozFi26a2h1GZcQX+h29e
-         VgG/g1HfW1jjngag0qmKq+HpK2ZeaXmL15sahSTZbSnFVJrdM8dV1tlzw4oV68qvuwDB
-         /32gjCM4wgmz0NbFidGApz69Tcoyu/jWV08r/yqFED5n7oMwKhxNH6gdISeCKd+M1hNr
-         WqIuukP/3nW2aCpUsnAzaCbLhDeMu+2lk7mazMOkFfbrdHcUY0gce7LRPDN48zzHrdeT
-         5vcw==
-X-Forwarded-Encrypted: i=1; AJvYcCU+H99wO2gCNwUB5O+s3tyRxTyRAbEVEP1gaUDaXDvKfTsde2JLjFRxf1NU4k0Jwg3jXlakyt0MEfY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwSedRM9kCidDSNp1UgOcUKu7AxXKlfb3OYl+gkBjfuB8v4kDHu
-	CyXrqiasCFdV1LWRTIca21zg+apkRRGQCC2GfO+g8btJmcoT6bT+6GCDnuJ5paRmb1c=
-X-Gm-Gg: ASbGnctnXe9bIKfQWneRMUwX1HVlo3VR/FSNmZTLYGRJfcQh+D5MmahS2PG1iJqrk65
-	h4Kd3HErEjV4wateLBVLOc4SggPvn0wbd0F8zws/MflU9TbO9OLxGHWE4a3Dkr3LLb+/j2uDd6U
-	grbzMGHhjgP2JxIkZPEbDLKY2uC7PGSskcZ3nbt/qpNyf+gq6osOVzJZOsSPWYh99lazNwUeuEb
-	yTItPJnvsJ/2qL4+B3ys2taAgH+IAu3FG9iCIdGSoMKj7hzpbEQ+pcQOK1INAzpcD9L/o1u6pgN
-	rviehnIxqURB650lZUNfg4atxI+fjg2y0Nk/G/b0j5INMADw+Aja3zUABi0eP6mgnKLMwEXMAPV
-	97VzzS1yR4wlRqUYSPeIGi6qkx1kfvKkIjA14
-X-Google-Smtp-Source: AGHT+IGFXI6bzrMrPoRMAhYisjSnluuvr/OOSlltlBlWMiT0l650MkJrGoqM8KrAt/w/j0aJvDYy4g==
-X-Received: by 2002:a05:6870:2406:b0:2d5:2191:c8b3 with SMTP id 586e51a60fabf-2f796dfcf5amr7238271fac.29.1751823227159;
-        Sun, 06 Jul 2025 10:33:47 -0700 (PDT)
-Received: from ?IPV6:2600:8803:e7e4:1d00:29a:290f:4321:4624? ([2600:8803:e7e4:1d00:29a:290f:4321:4624])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2f7901a7a23sm1754154fac.23.2025.07.06.10.33.45
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 06 Jul 2025 10:33:46 -0700 (PDT)
-Message-ID: <c3e6402c-7cfe-45c1-9f28-f131cd94aa05@baylibre.com>
-Date: Sun, 6 Jul 2025 12:33:45 -0500
+        d=1e100.net; s=20230601; t=1751828003; x=1752432803;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=xoEeqQqxPj+MY3KyZB24QezFKhBGxLbrFZBnD7WBTKs=;
+        b=FMV8F4yRzA6UOTmcQwBT1FQd0vZkRV9r49tuIdFyjVO87P1Ok+49+ROdmHlZMZRhd0
+         z5KIrm3WwS4VEnPCfmL/ma1xf1k50NxqzErjSqXd7lIeEUo1h8nwtRf0LqcHxIVJavr8
+         iIjq2pmXdSOhj6WXP5/ITADUrhXM0uyrlA/DcP4jGOchYY/5WAcV4mDod9kpk2pNeKup
+         MVXDpnP65OmV9n5QjgxP/hDXTIdPqyslTgpWOc1NLlehxhFwmmGEvP5Zy5QBGO8vodwR
+         wWTi6U3JrEtsjeiEJ9+MQ/b559za1dJVrcIr9J7uggtwEABrQmk7in6VHsKo8o2/unDw
+         Xeag==
+X-Forwarded-Encrypted: i=1; AJvYcCUeh2vzPJ4Soajcuu53PXHnxE38RDuIPahgYSp7kfHODcdOw4RU3pHNnqaQOdVCR5GLy04YM5XbsgE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyNra8cgfOuC8pBZ16Ym88Q5shgACVs5Ye2V4v4BzwdZoLk2B+0
+	aR5KxRy1BegYhvXWTu5Eip4+KTQlJ7JNGzG0z/6n3TSIKY96lMlMBFQW8B9FbjUD5/u52GjGYEG
+	uVGx6GJc=
+X-Gm-Gg: ASbGnctDsSx1S0fK7+/OjkJZpmhHhVzDgsNv4/JZyG/h2iu00bvjPHF0dpMpy2B0rNa
+	BPPjBv+IAAqgdVnTggm6JYmlT7DnVdBTAIrvXACVpZIpHUIYvqFw8oZyDS5eFxfE+K/Kt7J15Lv
+	MbhQnjWYmBC6C4SOZ5DNwMbm+Ow12NyKurSpoSVbliUFqaAck9TEOatVx69HSSut4v3XRdeo+06
+	SJ/53emMkko9Wru6l8Ovl7Y4+93pfVpTRj6KyLJJ0bjAj0D/2keFLlltksjxqQYIUQ+pmynsGKZ
+	Vp/+wj05bbdopXRdYiK95lOnRqSHlONOy42HSmUFIWK+Ru4mgTXJnelvVKhyrrOerNM=
+X-Google-Smtp-Source: AGHT+IGNMnosMnLuDCwDiCVfDEkplAOFMESlGJyWQYWCAalTZLO4rr9zBl60hy+WzspO4fZitnm1MA==
+X-Received: by 2002:a05:6830:1d4a:b0:735:a61d:5764 with SMTP id 46e09a7af769-73ca057243amr6025969a34.9.1751828002769;
+        Sun, 06 Jul 2025 11:53:22 -0700 (PDT)
+Received: from [127.0.1.1] ([2600:8803:e7e4:1d00:29a:290f:4321:4624])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-73cb3e44ea4sm797587a34.31.2025.07.06.11.53.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 06 Jul 2025 11:53:21 -0700 (PDT)
+From: David Lechner <dlechner@baylibre.com>
+Date: Sun, 06 Jul 2025 13:53:08 -0500
+Subject: [PATCH v3] iio: adc: ad7173: fix num_slots
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] iio: adc: ad7173: fix num_slots
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Lars-Peter Clausen <lars@metafoo.de>,
- Michael Hennerich <Michael.Hennerich@analog.com>,
- =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
- Andy Shevchenko <andy@kernel.org>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20250704-iio-adc-ad7173-fix-num_slots-on-most-chips-v2-1-a74941609143@baylibre.com>
- <f023c92b-183c-4157-a6eb-ff722dfd716a@baylibre.com>
- <20250706111529.360a3095@jic23-huawei>
- <78342e10-7211-44de-8a92-40872a69b60d@baylibre.com>
- <20250706175725.39e79105@jic23-huawei>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <20250706175725.39e79105@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20250706-iio-adc-ad7173-fix-num_slots-on-most-chips-v3-1-d1f5453198a7@baylibre.com>
+X-B4-Tracking: v=1; b=H4sIABPGamgC/52NQQ6CMBBFr2K6dkynLSCuvIcxppQqkwAlLTYSw
+ t0trIw7XcziTX7em1mwnmxgp93MvI0UyPUJ5H7HTKP7hwWqEzPBRcYLLoHIga5NugILCXd6Qf/
+ sbqF1YwDXQ+fCCKahIUBVHoXguRa8QpaEg7dpvsUu18QNhdH5aWtHXL9/ZSICghS5yWpEaTE7V
+ 3pqqfL2YFzH1lIUn3b1k10kuy5UqTDnJSr5ZV+W5Q2hvQ0gRQEAAA==
+X-Change-ID: 20250703-iio-adc-ad7173-fix-num_slots-on-most-chips-b982206a20b1
+To: Lars-Peter Clausen <lars@metafoo.de>, 
+ Michael Hennerich <Michael.Hennerich@analog.com>, 
+ Jonathan Cameron <jic23@kernel.org>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Andy Shevchenko <andy@kernel.org>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ David Lechner <dlechner@baylibre.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6262; i=dlechner@baylibre.com;
+ h=from:subject:message-id; bh=RhkFy6ZKHzNXonCQXjQIYuppZ4UiYZk7SXxTyyjmqKM=;
+ b=owEBbQGS/pANAwAKAcLMIAH/AY/AAcsmYgBoasYXa/D73dyaUyLh+FS5zmtbpm4dkH9FC7cNd
+ 3Ok6U1kM5aJATMEAAEKAB0WIQTsGNmeYg6D1pzYaJjCzCAB/wGPwAUCaGrGFwAKCRDCzCAB/wGP
+ wHbxCAChdsoXyQbyf5hh1ryEabtsK4dQYCz9XQz6rcmI7uucpnWH6r4V4WyWtw/FwWj1YhYM5mn
+ 4S2dmo4nRGycTR0wbBxOFa7a8vj14qBEjjJnnFUShkPJbZlIEY+G3mvnp91ErjARqO1Q4i813UW
+ uEOUoZmjAq+0+E/kQrKvJvaNu4ZtRKOGvEGQNE7C2bAuWVcQohos4y9+0hJT2rSNwQqaMhRog1S
+ DyQovjpTg7ZjDcBRjRRuqP/Rcw1THZREpoRcn7saY6uervx002ntiWrgi9fFL/lqbdoJX9U9RiW
+ cxXcyyoKWc/MhI0R6Yhaqbzbft5lieobS0/aa2Bv8JL9rBky
+X-Developer-Key: i=dlechner@baylibre.com; a=openpgp;
+ fpr=8A73D82A6A1F509907F373881F8AF88C82F77C03
 
-On 7/6/25 11:57 AM, Jonathan Cameron wrote:
-> On Sun, 6 Jul 2025 11:08:06 -0500
-> David Lechner <dlechner@baylibre.com> wrote:
-> 
->> On 7/6/25 5:15 AM, Jonathan Cameron wrote:
->>> On Fri, 4 Jul 2025 12:04:04 -0500
->>> David Lechner <dlechner@baylibre.com> wrote:
->>>   
->>>> On 7/4/25 11:21 AM, David Lechner wrote:  
->>>>> Fix the num_slots value for most chips in the ad7173 driver. The correct
->>>>> value is the number of CHANNELx registers on the chip.
->>>>>
->>>>> In commit 4310e15b3140 ("iio: adc: ad7173: don't make copy of
->>>>> ad_sigma_delta_info struct"), we refactored struct ad_sigma_delta_info
->>>>> to be static const data instead of being dynamically populated during
->>>>> driver probe. However, there was an existing bug in commit 76a1e6a42802
->>>>> ("iio: adc: ad7173: add AD7173 driver") where num_slots was incorrectly
->>>>> set to the number of CONFIGx registers instead of the number of
->>>>> CHANNELx registers. This bug was partially propagated to the refactored
->>>>> code in that the 16-channel chips were only given 8 slots instead of
->>>>> 16 although we did managed to fix the 8-channel chips and one of the
->>>>> 4-channel chips in that commit. However, we botched two of the 4-channel
->>>>> chips and ended up incorrectly giving them 8 slots during the
->>>>> refactoring.
->>>>>
->>>>> This patch fixes that mistake on the 4-channel chips and also
->>>>> corrects the 16-channel chips to have 16 slots.
->>>>>
->>>>> Fixes: 4310e15b3140 ("iio: adc: ad7173: don't make copy of ad_sigma_delta_info struct")
->>>>> Signed-off-by: David Lechner <dlechner@baylibre.com>
->>>>> ---
->>>>> Changes in v2:
->>>>> - Improve commit message.
->>>>> - Link to v1: https://lore.kernel.org/r/20250703-iio-adc-ad7173-fix-num_slots-on-most-chips-v1-1-326c5d113e15@baylibre.com
->>>>> ---
->>>>>  drivers/iio/adc/ad7173.c | 37 +++++++++++++++++++++++++++----------
->>>>>  1 file changed, 27 insertions(+), 10 deletions(-)
->>>>>
->>>>> diff --git a/drivers/iio/adc/ad7173.c b/drivers/iio/adc/ad7173.c
->>>>> index dd9fa35555c79ead5a1b88d1dc6cc3db122502be..9c197cea11eb955becf4b9b97246379fa9c5da13 100644
->>>>> --- a/drivers/iio/adc/ad7173.c
->>>>> +++ b/drivers/iio/adc/ad7173.c
->>>>> @@ -771,10 +771,27 @@ static const struct ad_sigma_delta_info ad7173_sigma_delta_info_8_slots = {
->>>>>  	.num_slots = 8,
->>>>>  };
->>>>>  
->>>>> +static const struct ad_sigma_delta_info ad7173_sigma_delta_info_16_slots = {
->>>>> +	.set_channel = ad7173_set_channel,
->>>>> +	.append_status = ad7173_append_status,
->>>>> +	.disable_all = ad7173_disable_all,
->>>>> +	.disable_one = ad7173_disable_one,
->>>>> +	.set_mode = ad7173_set_mode,
->>>>> +	.has_registers = true,
->>>>> +	.has_named_irqs = true,    
->>>>  
->>>>> +	.supports_spi_offload = true,    
->>>>
->>>> Well drat, I was too quick with the update and the bots [1] noticed that
->>>> this conflicts with the in-flight patch that added this field [2].
->>>>
->>>> I guess we can drop this one line, but then the other patch will wait
->>>> until this fix makes its way back into the togreg/testing branches.  
->>>
->>> I'm lost - what would you prefer we do here?  For now I have [2] on my
->>> tree but can drop just that one patch if it unwinds this complexity.  
->>
->> I was hoping you would tell me. :-p
->>
->> In any case, we should apply this patch, with the supports_spi_offload
->> line dropped, first so that it backports cleanly to the stable release(s).
->>
->> But where to apply this patch depends on if you are planning on doing
->> another fixes-togreg this release cycle or not. Or we could just opt
->> to take the slow path to avoid the dependency dance and just apply
->> both patches to iio/togreg and let it make it's way to stable after
->> the next merge cycle.
-> 
-> I'll almost certainly do another fixes pull, but it might not get into upstream
-> of my togreg branch fast enough. 
-> 
-> For now is just dropping patch 12 from the main series enough to avoid the
-> conflict?  If so send me a clean version of this and I'll apply that to the
-> fixes-togreg branch and we can hopefully get a round trip to pick up patch 12
-> on top of it.
+Fix the num_slots value for most chips in the ad7173 driver. The correct
+value is the number of CHANNELx registers on the chip.
 
-Yes. Drop patch 12 and I will send a new version of both patches. This
-one can be applied to fixes and the other can wait.
+In commit 4310e15b3140 ("iio: adc: ad7173: don't make copy of
+ad_sigma_delta_info struct"), we refactored struct ad_sigma_delta_info
+to be static const data instead of being dynamically populated during
+driver probe. However, there was an existing bug in commit 76a1e6a42802
+("iio: adc: ad7173: add AD7173 driver") where num_slots was incorrectly
+set to the number of CONFIGx registers instead of the number of
+CHANNELx registers. This bug was partially propagated to the refactored
+code in that the 16-channel chips were only given 8 slots instead of
+16 although we did managed to fix the 8-channel chips and one of the
+4-channel chips in that commit. However, we botched two of the 4-channel
+chips and ended up incorrectly giving them 8 slots during the
+refactoring.
 
-> 
-> Thanks,
-> 
-> Jonathan
-> 
->>
->>>>
->>>> [1]: https://lore.kernel.org/linux-iio/202507050018.iWEJiG04-lkp@intel.com/
->>>> [2]: https://lore.kernel.org/linux-iio/20250701-iio-adc-ad7173-add-spi-offload-support-v3-12-42abb83e3dac@baylibre.com/
->>>>  
->>>>> +	.addr_shift = 0,
->>>>> +	.read_mask = BIT(6),
->>>>> +	.status_ch_mask = GENMASK(3, 0),
->>>>> +	.data_reg = AD7173_REG_DATA,
->>>>> +	.num_resetclks = 64,
->>>>> +	.num_slots = 16,
->>>>> +};
->>>>> +    
->>>>  
->>>   
->>
-> 
+This patch fixes that mistake on the 4-channel chips and also
+corrects the 16-channel chips to have 16 slots.
+
+Fixes: 4310e15b3140 ("iio: adc: ad7173: don't make copy of ad_sigma_delta_info struct")
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+---
+Here is the patch that actually compiles on the fixes-togreg branch.
+---
+Changes in v3:
+- Drop supports_spi_offload field.
+- Link to v2: https://lore.kernel.org/r/20250704-iio-adc-ad7173-fix-num_slots-on-most-chips-v2-1-a74941609143@baylibre.com
+
+Changes in v2:
+- Improve commit message.
+- Link to v1: https://lore.kernel.org/r/20250703-iio-adc-ad7173-fix-num_slots-on-most-chips-v1-1-326c5d113e15@baylibre.com
+---
+ drivers/iio/adc/ad7173.c | 36 ++++++++++++++++++++++++++----------
+ 1 file changed, 26 insertions(+), 10 deletions(-)
+
+diff --git a/drivers/iio/adc/ad7173.c b/drivers/iio/adc/ad7173.c
+index 1966a9bc331401af118334a7be4c1a5b8d381473..c41bc5b9ac597f57eea6a097cc3a118de7b42210 100644
+--- a/drivers/iio/adc/ad7173.c
++++ b/drivers/iio/adc/ad7173.c
+@@ -772,10 +772,26 @@ static const struct ad_sigma_delta_info ad7173_sigma_delta_info_8_slots = {
+ 	.num_slots = 8,
+ };
+ 
++static const struct ad_sigma_delta_info ad7173_sigma_delta_info_16_slots = {
++	.set_channel = ad7173_set_channel,
++	.append_status = ad7173_append_status,
++	.disable_all = ad7173_disable_all,
++	.disable_one = ad7173_disable_one,
++	.set_mode = ad7173_set_mode,
++	.has_registers = true,
++	.has_named_irqs = true,
++	.addr_shift = 0,
++	.read_mask = BIT(6),
++	.status_ch_mask = GENMASK(3, 0),
++	.data_reg = AD7173_REG_DATA,
++	.num_resetclks = 64,
++	.num_slots = 16,
++};
++
+ static const struct ad7173_device_info ad4111_device_info = {
+ 	.name = "ad4111",
+ 	.id = AD4111_ID,
+-	.sd_info = &ad7173_sigma_delta_info_8_slots,
++	.sd_info = &ad7173_sigma_delta_info_16_slots,
+ 	.num_voltage_in_div = 8,
+ 	.num_channels = 16,
+ 	.num_configs = 8,
+@@ -797,7 +813,7 @@ static const struct ad7173_device_info ad4111_device_info = {
+ static const struct ad7173_device_info ad4112_device_info = {
+ 	.name = "ad4112",
+ 	.id = AD4112_ID,
+-	.sd_info = &ad7173_sigma_delta_info_8_slots,
++	.sd_info = &ad7173_sigma_delta_info_16_slots,
+ 	.num_voltage_in_div = 8,
+ 	.num_channels = 16,
+ 	.num_configs = 8,
+@@ -818,7 +834,7 @@ static const struct ad7173_device_info ad4112_device_info = {
+ static const struct ad7173_device_info ad4113_device_info = {
+ 	.name = "ad4113",
+ 	.id = AD4113_ID,
+-	.sd_info = &ad7173_sigma_delta_info_8_slots,
++	.sd_info = &ad7173_sigma_delta_info_16_slots,
+ 	.num_voltage_in_div = 8,
+ 	.num_channels = 16,
+ 	.num_configs = 8,
+@@ -837,7 +853,7 @@ static const struct ad7173_device_info ad4113_device_info = {
+ static const struct ad7173_device_info ad4114_device_info = {
+ 	.name = "ad4114",
+ 	.id = AD4114_ID,
+-	.sd_info = &ad7173_sigma_delta_info_8_slots,
++	.sd_info = &ad7173_sigma_delta_info_16_slots,
+ 	.num_voltage_in_div = 16,
+ 	.num_channels = 16,
+ 	.num_configs = 8,
+@@ -856,7 +872,7 @@ static const struct ad7173_device_info ad4114_device_info = {
+ static const struct ad7173_device_info ad4115_device_info = {
+ 	.name = "ad4115",
+ 	.id = AD4115_ID,
+-	.sd_info = &ad7173_sigma_delta_info_8_slots,
++	.sd_info = &ad7173_sigma_delta_info_16_slots,
+ 	.num_voltage_in_div = 16,
+ 	.num_channels = 16,
+ 	.num_configs = 8,
+@@ -875,7 +891,7 @@ static const struct ad7173_device_info ad4115_device_info = {
+ static const struct ad7173_device_info ad4116_device_info = {
+ 	.name = "ad4116",
+ 	.id = AD4116_ID,
+-	.sd_info = &ad7173_sigma_delta_info_8_slots,
++	.sd_info = &ad7173_sigma_delta_info_16_slots,
+ 	.num_voltage_in_div = 11,
+ 	.num_channels = 16,
+ 	.num_configs = 8,
+@@ -894,7 +910,7 @@ static const struct ad7173_device_info ad4116_device_info = {
+ static const struct ad7173_device_info ad7172_2_device_info = {
+ 	.name = "ad7172-2",
+ 	.id = AD7172_2_ID,
+-	.sd_info = &ad7173_sigma_delta_info_8_slots,
++	.sd_info = &ad7173_sigma_delta_info_4_slots,
+ 	.num_voltage_in = 5,
+ 	.num_channels = 4,
+ 	.num_configs = 4,
+@@ -927,7 +943,7 @@ static const struct ad7173_device_info ad7172_4_device_info = {
+ static const struct ad7173_device_info ad7173_8_device_info = {
+ 	.name = "ad7173-8",
+ 	.id = AD7173_ID,
+-	.sd_info = &ad7173_sigma_delta_info_8_slots,
++	.sd_info = &ad7173_sigma_delta_info_16_slots,
+ 	.num_voltage_in = 17,
+ 	.num_channels = 16,
+ 	.num_configs = 8,
+@@ -944,7 +960,7 @@ static const struct ad7173_device_info ad7173_8_device_info = {
+ static const struct ad7173_device_info ad7175_2_device_info = {
+ 	.name = "ad7175-2",
+ 	.id = AD7175_2_ID,
+-	.sd_info = &ad7173_sigma_delta_info_8_slots,
++	.sd_info = &ad7173_sigma_delta_info_4_slots,
+ 	.num_voltage_in = 5,
+ 	.num_channels = 4,
+ 	.num_configs = 4,
+@@ -961,7 +977,7 @@ static const struct ad7173_device_info ad7175_2_device_info = {
+ static const struct ad7173_device_info ad7175_8_device_info = {
+ 	.name = "ad7175-8",
+ 	.id = AD7175_8_ID,
+-	.sd_info = &ad7173_sigma_delta_info_8_slots,
++	.sd_info = &ad7173_sigma_delta_info_16_slots,
+ 	.num_voltage_in = 17,
+ 	.num_channels = 16,
+ 	.num_configs = 8,
+
+---
+base-commit: 731bfc181896a4dfd20a8c219bef1c205dd1d708
+change-id: 20250703-iio-adc-ad7173-fix-num_slots-on-most-chips-b982206a20b1
+
+Best regards,
+-- 
+David Lechner <dlechner@baylibre.com>
 
 

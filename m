@@ -1,60 +1,60 @@
-Return-Path: <linux-iio+bounces-21393-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21394-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4914BAFA48D
-	for <lists+linux-iio@lfdr.de>; Sun,  6 Jul 2025 12:50:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99A64AFA4A0
+	for <lists+linux-iio@lfdr.de>; Sun,  6 Jul 2025 12:51:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0684E189E936
-	for <lists+linux-iio@lfdr.de>; Sun,  6 Jul 2025 10:50:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E416E17B54D
+	for <lists+linux-iio@lfdr.de>; Sun,  6 Jul 2025 10:51:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4BC71F5828;
-	Sun,  6 Jul 2025 10:50:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DC8A203710;
+	Sun,  6 Jul 2025 10:51:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Du7bI8mF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SAvw6c1I"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 829272AE96;
-	Sun,  6 Jul 2025 10:50:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7627202998;
+	Sun,  6 Jul 2025 10:51:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751799011; cv=none; b=KLHpIbhu5McUnE2R65jZwG0vBoGk41OLLbcddPUEXck8b4SyUYbLHMTGr4yYjRTzY4NvVcWqx7OlzyBo/i63gP90c25j6Hqr0Lp8sA+OV1aaVXZArh8O6XBCR1DeXDnB5uZCCPcoVXLS+1JCGje34jbldRRSLLNjSCga6BrMB6g=
+	t=1751799061; cv=none; b=PPspsyVQ98rvI5n4fn/RffJPB31Ewn7OyJPkncSIss5EuHq8WNSEET6cvW5i6cuTPsmDZuNt+p6ts3Sy5Q4QcQN4RaEGPpb5shbBPEmD6uBkxqEnM71ufM1tu2SGu5v8Tm4qZ8yM032AvXRXYhMwXUhGPSjmcJ3jc/Mlg7memLg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751799011; c=relaxed/simple;
-	bh=rnlOCsOx8oCuPmV5KoaTeoAVYCzmPUH79UN0xUbYiqs=;
+	s=arc-20240116; t=1751799061; c=relaxed/simple;
+	bh=ml2b361SMuIDtACK5do4dE6I0wF/3KkJQJg3sV0FNGQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ez7Cye3PC42v+IgKuAKqyDg6ksxKyfrIBxDnXH7ALkDYdH6EHrsGMVJ86zgg4rdw2NsaJjfg62U8yXXuvuqWGDmqrO/1xkChVaLH6RAM50qtHZy+VWgfDZ3kAaZl5K5pUTnfURF1TzS4NaBVgp2sNF5SvLUSnMUYArZIkvt4L6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Du7bI8mF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70B18C4CEED;
-	Sun,  6 Jul 2025 10:50:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=JzaV8sK/ZwUAS4Hg7pFKGvD6iVhD/WM6BZV1OHr5SqSSgL3nFMJpIQfqn+Ds2yLOx8PN0LpV234pMCAa5DHD+WEQrE4M/dE4qhFH8uT4T5H0xoSmfXPLNLpCW6K79pCUJ9FjT6SZ8EN5yP9KvgYUT9yCgHaufarEjh3IifBGZn4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SAvw6c1I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAC93C4CEED;
+	Sun,  6 Jul 2025 10:50:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751799011;
-	bh=rnlOCsOx8oCuPmV5KoaTeoAVYCzmPUH79UN0xUbYiqs=;
+	s=k20201202; t=1751799061;
+	bh=ml2b361SMuIDtACK5do4dE6I0wF/3KkJQJg3sV0FNGQ=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Du7bI8mF3pklE/y4wUYkC+0Swb4+ZE1tnVHV1pau0A5sSa61VWSBKWpVL2czGSeqq
-	 lP9A1hKIDFXO8GV8cQzZ9UFCY1b3qqlB4jivrH9tEhHRkfQVs77ulQopLiVkBrFmUL
-	 xygqxKpX2s3I2hgb/HIHeLDXRvw+8w0X4nIcS7R+KBibZ1DZr1tRQg7LLmZENCi1RQ
-	 i9wXQrwxnKEabvFeT8ncG/gVoLFQ7WrYHy0I5X308DLRppzRgCYb3QLYZCSCjNegV7
-	 thYQv774XI2xsFTcmojrX3GNRaoF60dcqZuLOLdkFeFxKfwC7Ku0Jp630Sz7PWde2R
-	 WCiV6kOCHacVw==
-Date: Sun, 6 Jul 2025 11:50:03 +0100
+	b=SAvw6c1Iurf707yUGFwuEdGsgZeA1ZmXAW3Mx0CaLVDaGs1rrqhZWn+HaF/AyR178
+	 nDFAHUIygoWDqCodhVD/SE5dxxmQ/peTGx+Q0IUkTiFFgHwVkzD/UxuvgxDNKAD8rf
+	 0JVYta5W34r2StsDjZ2RMFfPOa9iPU9xiP4B2nq/a4iEcGMIviCf2fOQETyMW4I/tG
+	 fm/7lXg26mF35iIKiIPe90mpq/mOvgbzXVB/I/oZ5Xhb6WqZGJsaD8OXPkAnXeloZv
+	 w0cryaKKMoA4RxmCzxkEdYx2ADVihuagjwkcie245qQ9MYCpnXORVSnanc+OIg+Esk
+	 Hq5Z+FDqcyM8g==
+Date: Sun, 6 Jul 2025 11:50:53 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: akshay bansod <akbansd@gmail.com>
-Cc: Andy Shevchenko <andriy.shevchenko@intel.com>, Lorenzo Bianconi
- <lorenzo@kernel.org>, David Lechner <dlechner@baylibre.com>, Nuno
- =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
- linux-kernel-mentees@lists.linuxfoundation.org, skhan@linuxfoundation.org,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] iio: st_lsm6dsx: Replace scnprintf with sysfs_emit
-Message-ID: <20250706115003.5752261c@jic23-huawei>
-In-Reply-To: <2413481.ElGaqSPkdT@mbox>
-References: <20250703053900.36530-1-akbansd@gmail.com>
-	<aGaIMjkYBmfMmCBn@smile.fi.intel.com>
-	<2413481.ElGaqSPkdT@mbox>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, Stephen Rothwell
+ <sfr@canb.auug.org.au>, Mark Brown <broonie@kernel.org>, Jonathan Santos
+ <Jonathan.Santos@analog.com>, Linux Kernel Mailing List
+ <linux-kernel@vger.kernel.org>, Linux Next Mailing List
+ <linux-next@vger.kernel.org>, linux-iio@vger.kernel.org
+Subject: Re: linux-next: manual merge of the iio tree with the spi tree
+Message-ID: <20250706115053.368ce9e9@jic23-huawei>
+In-Reply-To: <b0b0443d-143f-4e41-b8b8-91c6726e838f@baylibre.com>
+References: <20250703163824.2f08d866@canb.auug.org.au>
+	<20250703093122.00000684@huawei.com>
+	<b0b0443d-143f-4e41-b8b8-91c6726e838f@baylibre.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -62,77 +62,99 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Thu, 03 Jul 2025 22:28:13 +0530
-akshay bansod <akbansd@gmail.com> wrote:
+On Thu, 3 Jul 2025 07:28:07 -0500
+David Lechner <dlechner@baylibre.com> wrote:
 
-> On Thursday, 3 July 2025 10:12=E2=80=AFpm +0530 Andy Shevchenko wrote:
-> > On Thu, Jul 03, 2025 at 11:08:59AM +0530, Akshay Bansod wrote: =20
-> > > Update the sysfs interface for sampling frequency and scale attribute=
-s.
-> > > Replace `scnprintf()` with `sysfs_emit_at()` which is PAGE_SIZE-aware
-> > > and recommended for use in sysfs. =20
-> >=20
-> > 'must' is stronger than 'recommendation'.
-> > Of has the documentation been changed lately?
-> >=20
-> > ...
-> >  =20
-> > > st_lsm6dsx_sysfs_sampling_frequency_avail(struct device *dev, =20
-> >  =20
-> > >  	odr_table =3D &sensor->hw->settings->odr_table[sensor->id];
-> > >  	for (i =3D 0; i < odr_table->odr_len; i++)
-> > > -		len +=3D scnprintf(buf + len, PAGE_SIZE - len, "%d.%03d ",
-> > > -				 odr_table->odr_avl[i].milli_hz / 1000,
-> > > -				 odr_table->odr_avl[i].milli_hz % 1000);
-> > > +		len +=3D sysfs_emit_at(buf, len, "%d.%03d ",
-> > > +				     odr_table->odr_avl[i].milli_hz / 1000,
-> > > +				     odr_table->odr_avl[i].milli_hz % 1000);
-> > >  	buf[len - 1] =3D '\n'; =20
-> >=20
-> > My gosh, this is error prone. I'm wondering when some CIs will start to
-> > complain on this line. But this was already before your change...
-> >  =20
-> I'm planning to drop It entirely or should I replace it with another `sys=
-fs_emit_at()` ?
-> I've seen other device driver returning space terminated buffers. Maybe I=
-'m overlooking
-> something.
+> On 7/3/25 3:31 AM, Jonathan Cameron wrote:
+> > On Thu, 3 Jul 2025 16:38:24 +1000
+> > Stephen Rothwell <sfr@canb.auug.org.au> wrote:
+> >   
+> >> Hi all,
+> >>
+> >> Today's linux-next merge of the iio tree got a conflict in:
+> >>
+> >>   MAINTAINERS
+> >>
+> >> between commit:
+> >>
+> >>   e47a324d6f07 ("dt-bindings: trigger-source: add ADI Util Sigma-Delta SPI")
+> >>
+> >> from the spi tree and commit:
+> >>
+> >>   0dd88eaa7126 ("dt-bindings: trigger-source: add generic GPIO trigger source")
+> >>
+> >> from the iio tree.
+> >>
+> >> I fixed it up (see below) and can carry the fix as necessary. This
+> >> is now fixed as far as linux-next is concerned, but any non trivial
+> >> conflicts should be mentioned to your upstream maintainer when your tree
+> >> is submitted for merging.  You may also want to consider cooperating
+> >> with the maintainer of the conflicting tree to minimise any particularly
+> >> complex conflicts.
+> >>  
+> > Thanks Stephen,
+> > 
+> > David, do you prefer these merged or kept as separate entries?  
+> 
+> Ah, shoot, I forgot that we had added the gpio one and just made
+> one section like this.
+> 
+> I think it would make sense to also merge the new adi one with
+> the reset to keep things compact.
+> 
+Is there a path to do that cleanly given the multiple trees things are
+coming from?  Maybe this is a let things resolve whatever way this cycle
+and tidy up next?
 
-It is rather ugly currently but not a bug as such as we know we don't actua=
-lly run
-out of space in the page (it would just overwrite last byte in that case so=
- odd
-output, but not a bug) and that we always print something so just as you su=
-ggest
-sysfs_emit_at(buf, len - 1, "\n"); is safe.  It also checks under and overf=
-low
-so that safe + hopefully won't trip up static analysis tools.
-
->=20
-> > >  	return len; =20
-> >=20
-> > ...
-> >  =20
-> > >  	fs_table =3D &hw->settings->fs_table[sensor->id];
-> > >  	for (i =3D 0; i < fs_table->fs_len; i++)
-> > > -		len +=3D scnprintf(buf + len, PAGE_SIZE - len, "0.%09u ",
-> > > -				 fs_table->fs_avl[i].gain);
-> > > +		len +=3D sysfs_emit_at(buf, len, "0.%09u ",
-> > > +				     fs_table->fs_avl[i].gain);
-> > >  	buf[len - 1] =3D '\n'; =20
-> >=20
-> > Ditto.
-> >=20
-> >  =20
->=20
-> regards,
-> Akshay Bansod
->=20
->=20
->=20
->=20
+> > 
+> > I don't think it matters either way in practice though this is the
+> > more complex merge (the other being just putting the blocks in order.
+> > 
+> > We can put a note in the pull request on preference but ultimately Linus
+> > will resolve this however he prefers! 
+> > 
+> > Jonathan
+> > 
+> >   
+> >> -- 
+> >> Cheers,
+> >> Stephen Rothwell
+> >>
+> >> diff --cc MAINTAINERS
+> >> index dd764b947dab,d0809d62ff48..000000000000
+> >> --- a/MAINTAINERS
+> >> +++ b/MAINTAINERS
+> >> @@@ -25333,19 -25201,15 +25341,20 @@@ TRADITIONAL CHINESE DOCUMENTATIO
+> >>   M:	Hu Haowen <2023002089@link.tyut.edu.cn>
+> >>   S:	Maintained
+> >>   W:	https://github.com/srcres258/linux-doc
+> >>  -T:	git git://github.com/srcres258/linux-doc.git doc-zh-tw
+> >>  +T:	git https://github.com/srcres258/linux-doc.git doc-zh-tw
+> >>   F:	Documentation/translations/zh_TW/
+> >>   
+> >> + TRIGGER SOURCE
+> >> + M:	David Lechner <dlechner@baylibre.com>
+> >> + S:	Maintained
+> >> + F:	Documentation/devicetree/bindings/trigger-source/gpio-trigger.yaml
+> >> + F:	Documentation/devicetree/bindings/trigger-source/pwm-trigger.yaml
+> >> + 
+> >>  +TRIGGER SOURCE - ADI UTIL SIGMA DELTA SPI
+> >>  +M:	David Lechner <dlechner@baylibre.com>
+> >>  +S:	Maintained
+> >>  +F:	Documentation/devicetree/bindings/trigger-source/adi,util-sigma-delta-spi.yaml
+> >>  +
+> >> - TRIGGER SOURCE - PWM
+> >> - M:	David Lechner <dlechner@baylibre.com>
+> >> - S:	Maintained
+> >> - F:	Documentation/devicetree/bindings/trigger-source/pwm-trigger.yaml
+> >> - 
+> >>   TRUSTED SECURITY MODULE (TSM) INFRASTRUCTURE
+> >>   M:	Dan Williams <dan.j.williams@intel.com>
+> >>   L:	linux-coco@lists.linux.dev  
+> 
+> 
 
 

@@ -1,55 +1,58 @@
-Return-Path: <linux-iio+bounces-21379-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21380-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD788AFA42B
-	for <lists+linux-iio@lfdr.de>; Sun,  6 Jul 2025 11:53:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F16DAFA433
+	for <lists+linux-iio@lfdr.de>; Sun,  6 Jul 2025 11:58:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A509A189ACE9
-	for <lists+linux-iio@lfdr.de>; Sun,  6 Jul 2025 09:53:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C612C3B808C
+	for <lists+linux-iio@lfdr.de>; Sun,  6 Jul 2025 09:57:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF9141FCD1F;
-	Sun,  6 Jul 2025 09:53:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEE061FCFF1;
+	Sun,  6 Jul 2025 09:58:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JXbKO9Mg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hxBv+itc"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C084145355;
-	Sun,  6 Jul 2025 09:53:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A1453595C;
+	Sun,  6 Jul 2025 09:58:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751795588; cv=none; b=rt6lFrByEN6cwUVVu6Rf1ukKbrWnJWYUkQmdNxvaXcnDBrqeSzowDQTrpSxwLJNAYA1hnsQwNT/XOCQ08BMdOhQU6vxU77lVFlKf5miqR6o5GCc2FKP7dKhaWtTbW/qkmNxy85nOJlu74GEWwilh8kSVISwiS0pBR2Jls2pIp4I=
+	t=1751795881; cv=none; b=mL04beGQ0HMt3zARY9FDZE6IzuzgcvQvR2gSgsX94wcO67AhYeKCGPz6TCYQfFvEVEBAugsRWClXdP+aB/uDYO81Qkz5QxNnUELsdHt9ptbZhsz0OYGEaNtZ1CbirMpydFKtucnNnN/fWVYi16k61OkpVEGe1uL0y6bpoNLQ194=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751795588; c=relaxed/simple;
-	bh=O8KzvpWHk/kIL/b6hsdAACsg+PQkbHBGUpJV8YZRQIE=;
+	s=arc-20240116; t=1751795881; c=relaxed/simple;
+	bh=85c004UtJafh8FGUILtXn17LOQmN/GTnvTeHAjTdZoo=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Gzm8QBzMLFJz1/PHfDBa5e0Nqt05B8mCBGp/7DslebiU9mG6wVK2Z2k5KOLur3VC3ZSUqBFKnCpppg/25PBjsPEuoDvIrubYkgY5gsPT5QxOaup7TM1WSOgbFb6xzUCClgUmbLO1G3/ZiizdzfMtKyLHuZ0OUzcycHRDYwhAWpU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JXbKO9Mg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BED14C4CEED;
-	Sun,  6 Jul 2025 09:53:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ktbNY9ngAly9Myv8oFaRKQKJDO8ZTiwgujtw9IFfMvPK4RUCrW7GcErR6nVL+b6/ePy3cquAKSSXHNoxt8Qx1Uk73YcFi4quHxx5xOjvuGyXJLaZ9FdLEYJV8OGd6a29JHMbaoouoCuJWp6jAXRmbwnn1DpzlLhpnfIq//RpnVY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hxBv+itc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC0CFC4CEED;
+	Sun,  6 Jul 2025 09:57:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751795588;
-	bh=O8KzvpWHk/kIL/b6hsdAACsg+PQkbHBGUpJV8YZRQIE=;
+	s=k20201202; t=1751795881;
+	bh=85c004UtJafh8FGUILtXn17LOQmN/GTnvTeHAjTdZoo=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=JXbKO9MgvZNvuuRSQ5EhgIVwCbVyhf22FkYqSX1IgGh6/adkM1ITCpX6vYBREXXZF
-	 NmdNtBK5LDxxV74DFdlfvUmN4A1kNczcCYenOaUeMJpshZER3djqzizMI07/0H70Aj
-	 pgmY0uVUYGI26HJmjsJi7s7+oDqC6jtGnNVRPeE/a6JK3W2jLS39aKBsnv7r9e24KA
-	 XWlmWUguWwThqZr1dk9bOtYWZfhK2t9/nPTqFtRGITApXmj0Z993fvcMqNXPMGJE4I
-	 NHgZqB3r0xCOUXsrUnP1GJfif6yAuq1fOZv3vrIPSubwDeyZ9+O5qJwIU4QXOXIGPV
-	 Iwe3lt/jX+ynw==
-Date: Sun, 6 Jul 2025 10:53:02 +0100
+	b=hxBv+itcZXme1aiVCOFAekSlJqbuQvaq92ckHHQVkLS6ms/6zRLsNNnZJboCiIIYw
+	 DlB8kY8LygEJ0IdnIjeqHBbGo3lOqiCncC1NYjTubPq2LVnc46soRCoottwdvWNkhe
+	 Gdt0Aj1QeYF7HmDY7ds5TpfiGJAGDt/0L5ep4IApFi7aOZ2X6XDpPCyeUXvNOo8Zjt
+	 jQtod5jz0k4UM3CpuZ9H2NItH/3rHQ5B4N+00MAA1BRM75RfWziBiMenC5rRnjZx2t
+	 BHKQo4bCTna+eToR2OIWftNEhycOEORgcYvPQFQ/qDflbDx+jVqVXhWQ7c7IwglTTa
+	 liwbedbfjhjLQ==
+Date: Sun, 6 Jul 2025 10:57:54 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko
- <andy@kernel.org>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] iio: pressure: dlhl60d: drop use of chip info array
-Message-ID: <20250706105302.6ba58b3c@jic23-huawei>
-In-Reply-To: <20250628-iio-const-data-24-v2-1-1c90073d1323@baylibre.com>
-References: <20250628-iio-const-data-24-v2-1-1c90073d1323@baylibre.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Chelsy Ratnawat <chelsyratnawat2001@gmail.com>,
+ jean-baptiste.maneyrol@tdk.com, dlechner@baylibre.com, nuno.sa@analog.com,
+ andy@kernel.org, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] iio: imu: inv_mpu6050: Replace scnprintf with
+ sysfs_emit
+Message-ID: <20250706105754.1bf09585@jic23-huawei>
+In-Reply-To: <aGQ0re136jUaPN-o@smile.fi.intel.com>
+References: <20250701154720.54276-1-chelsyratnawat2001@gmail.com>
+	<aGQ0re136jUaPN-o@smile.fi.intel.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -60,150 +63,32 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sat, 28 Jun 2025 13:15:10 -0500
-David Lechner <dlechner@baylibre.com> wrote:
+On Tue, 1 Jul 2025 22:19:09 +0300
+Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
 
-> Change the dlhl60d driver to use individual chip info structures instead
-> of an array. This reduces the verbosity of the code. Also, the data is
-> now const as it should have been in the first place.
-Applied with tweaked patch title to Use separate structures rather than an array for chip info.
+> On Tue, Jul 01, 2025 at 08:47:20AM -0700, Chelsy Ratnawat wrote:
+> > Documentation/filesystems/sysfs.rst mentions that show() should only
+> > use sysfs_emit() or sysfs_emit_at() when formating the value to be
+> > returned to user space. So replace scnprintf() with sysfs_emit().  
 > 
-> Signed-off-by: David Lechner <dlechner@baylibre.com>
-> ---
-> Changes in v2:
-> - Changed the patch to drop the chip info array.
-> - Link to v1: https://lore.kernel.org/r/20250628-iio-const-data-24-v1-1-353b97281534@baylibre.com
-> ---
->  drivers/iio/pressure/dlhl60d.c | 47 +++++++++++++++++++-----------------------
->  1 file changed, 21 insertions(+), 26 deletions(-)
+> ...
 > 
-> diff --git a/drivers/iio/pressure/dlhl60d.c b/drivers/iio/pressure/dlhl60d.c
-> index 48afe5c94000b44eb324d7631f3c0db8e3d0079e..6a13cf2eaf50187d4cbd94cd93b1d14ad4de8b26 100644
-> --- a/drivers/iio/pressure/dlhl60d.c
-> +++ b/drivers/iio/pressure/dlhl60d.c
-> @@ -32,35 +32,31 @@
->  /* DLH  timings */
->  #define DLH_SINGLE_DUT_MS   5
->  
-> -enum dhl_ids {
-> -	dlhl60d,
-> -	dlhl60g,
-> -};
-> -
->  struct dlh_info {
-> +	const char *name;   /* chip name */
->  	u8 osdig;           /* digital offset factor */
->  	unsigned int fss;   /* full scale span (inch H2O) */
->  };
->  
->  struct dlh_state {
->  	struct i2c_client *client;
-> -	struct dlh_info info;
-> +	const struct dlh_info *info;
->  	bool use_interrupt;
->  	struct completion completion;
->  	u8 rx_buf[DLH_NUM_READ_BYTES];
->  };
->  
-> -static struct dlh_info dlh_info_tbl[] = {
-> -	[dlhl60d] = {
-> -		.osdig = 2,
-> -		.fss = 120,
-> -	},
-> -	[dlhl60g] = {
-> -		.osdig = 10,
-> -		.fss = 60,
-> -	},
-> +static const struct dlh_info dlhl60d_info = {
-> +	.name = "dlhl60d",
-> +	.osdig = 2,
-> +	.fss = 120,
->  };
->  
-> +static const struct dlh_info dlhl60g_info = {
-> +	.name = "dlhl60g",
-> +	.osdig = 10,
-> +	.fss = 60,
-> +};
->  
->  static int dlh_cmd_start_single(struct dlh_state *st)
->  {
-> @@ -170,7 +166,7 @@ static int dlh_read_raw(struct iio_dev *indio_dev,
->  	case IIO_CHAN_INFO_SCALE:
->  		switch (channel->type) {
->  		case IIO_PRESSURE:
-> -			tmp = div_s64(125LL * st->info.fss * 24909 * 100,
-> +			tmp = div_s64(125LL * st->info->fss * 24909 * 100,
->  				1 << DLH_NUM_PR_BITS);
->  			tmp = div_s64_rem(tmp, 1000000000LL, &rem);
->  			*value = tmp;
-> @@ -188,8 +184,8 @@ static int dlh_read_raw(struct iio_dev *indio_dev,
->  	case IIO_CHAN_INFO_OFFSET:
->  		switch (channel->type) {
->  		case IIO_PRESSURE:
-> -			*value = -125 * st->info.fss * 24909;
-> -			*value2 = 100 * st->info.osdig * 100000;
-> +			*value = -125 * st->info->fss * 24909;
-> +			*value2 = 100 * st->info->osdig * 100000;
->  			return IIO_VAL_FRACTIONAL;
->  
->  		case IIO_TEMP:
-> @@ -281,7 +277,6 @@ static irqreturn_t dlh_interrupt(int irq, void *private)
->  
->  static int dlh_probe(struct i2c_client *client)
->  {
-> -	const struct i2c_device_id *id = i2c_client_get_device_id(client);
->  	struct dlh_state *st;
->  	struct iio_dev *indio_dev;
->  	int ret;
-> @@ -302,11 +297,11 @@ static int dlh_probe(struct i2c_client *client)
->  	i2c_set_clientdata(client, indio_dev);
->  
->  	st = iio_priv(indio_dev);
-> -	st->info = dlh_info_tbl[id->driver_data];
-> +	st->info = i2c_get_match_data(client);
->  	st->client = client;
->  	st->use_interrupt = false;
->  
-> -	indio_dev->name = id->name;
-> +	indio_dev->name = st->info->name;
->  	indio_dev->info = &dlh_info;
->  	indio_dev->modes = INDIO_DIRECT_MODE;
->  	indio_dev->channels =  dlh_channels;
-> @@ -316,7 +311,7 @@ static int dlh_probe(struct i2c_client *client)
->  		ret = devm_request_threaded_irq(&client->dev, client->irq,
->  			dlh_interrupt, NULL,
->  			IRQF_TRIGGER_RISING | IRQF_ONESHOT,
-> -			id->name, indio_dev);
-> +			st->info->name, indio_dev);
->  		if (ret) {
->  			dev_err(&client->dev, "failed to allocate threaded irq");
->  			return ret;
-> @@ -341,15 +336,15 @@ static int dlh_probe(struct i2c_client *client)
->  }
->  
->  static const struct of_device_id dlh_of_match[] = {
-> -	{ .compatible = "asc,dlhl60d" },
-> -	{ .compatible = "asc,dlhl60g" },
-> +	{ .compatible = "asc,dlhl60d", .data = &dlhl60d_info },
-> +	{ .compatible = "asc,dlhl60g", .data = &dlhl60g_info },
->  	{ }
->  };
->  MODULE_DEVICE_TABLE(of, dlh_of_match);
->  
->  static const struct i2c_device_id dlh_id[] = {
-> -	{ "dlhl60d",    dlhl60d },
-> -	{ "dlhl60g",    dlhl60g },
-> +	{ "dlhl60d", (kernel_ulong_t)&dlhl60d_info },
-> +	{ "dlhl60g", (kernel_ulong_t)&dlhl60g_info },
->  	{ }
->  };
->  MODULE_DEVICE_TABLE(i2c, dlh_id);
+> > -		return scnprintf(buf, PAGE_SIZE,
+> > -			"%d, %d, %d; %d, %d, %d; %d, %d, %d\n",
+> > +		return sysfs_emit(buf, "%d, %d, %d; %d, %d, %d; %d, %d, %d\n",
+> >  			m[0], m[1], m[2], m[3], m[4], m[5], m[6], m[7], m[8]);  
 > 
-> ---
-> base-commit: 14071b9cf2d751ff9bc8b5e43fa94fbf08aceea1
-> change-id: 20250628-iio-const-data-24-4ace82a87bfd
+> Ideally second line should be reindented, but I won't be bothered by that
+> right now.
 > 
-> Best regards,
+> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Applied to the togreg branch of iio.git.  I'll initially push that out
+as testing to get some early build testing from 0-day.
+
+Thanks,
+
+Jonathan
+
+> 
 
 

@@ -1,60 +1,58 @@
-Return-Path: <linux-iio+bounces-21395-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21396-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE4DCAFA4A3
-	for <lists+linux-iio@lfdr.de>; Sun,  6 Jul 2025 12:53:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9964DAFA4BB
+	for <lists+linux-iio@lfdr.de>; Sun,  6 Jul 2025 13:11:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 430753A38D4
-	for <lists+linux-iio@lfdr.de>; Sun,  6 Jul 2025 10:53:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2ED993A3C70
+	for <lists+linux-iio@lfdr.de>; Sun,  6 Jul 2025 11:11:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D567F202963;
-	Sun,  6 Jul 2025 10:53:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67C732010EE;
+	Sun,  6 Jul 2025 11:11:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DKKbMx3y"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qG6fo3rh"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F72717BCE;
-	Sun,  6 Jul 2025 10:53:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2489E524F;
+	Sun,  6 Jul 2025 11:11:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751799207; cv=none; b=Po5bti9fAVv5aAP0lqm6N0ScmurEFr2TbtZygcZGo298/CUJgIuv8VpxFuhJbGDQDpw9lYPR5vfU+ZosIgBxbpAWQO6fNMVshomXMX9b4fDNCsBhtJ2UfUo8ahmPatAq67imNTVk8h5wBvJtuq3MrjeC2Xi6VReTE1P2ws+DzAo=
+	t=1751800287; cv=none; b=TMrFNZNCLWBJg708bAKOnb2b3dO631pTzpNg5I89h/jWIu0mGo9Ve6QrxsnZol85MDtckIRXsaxhdmwl9YxZ3W7srdNGxctIFI13OJp0m2EmQUcNjerFAVLSMrUm89lGJSb38NYN671C0jbko6i7jdO/4K1jEGSMjxnnENqoeUo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751799207; c=relaxed/simple;
-	bh=W5pY1T+zdlN10wL2RQ9+j6hVOu2Gs8GqVwOufukVdok=;
+	s=arc-20240116; t=1751800287; c=relaxed/simple;
+	bh=jn1CvRYFUKVjS83qjTIrIRkUMU7XWFA+00g+MENopDI=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DRU/Q54p2Dzw1eeP0u+onQ0qtT+oZ27+xfRjEnSrfDv5VF3JY/tOy8tjnsrTfUdTHXMB9C1vyRp/JPQQbnIRUcsWi5cczudl+nik4v8xCl1OUgN1wqpbqjaVtfiFjVROhoHzwE8WM9NETgchc9NsK9TjtSM+BmR4+QdMceYCA1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DKKbMx3y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F426C4CEED;
-	Sun,  6 Jul 2025 10:53:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Tm9BLVWfIBet8K1JSt9SwDAhL64/S5zP8zLZ+IgfoDg0rjGrX30dcSKRbyWa7auPDEdiNftJUkj4XOUT49VWvdSmC11Iy0qe0MpHXApceFNoh9Z7qwzddYugu14cKsHOuKF5gGFMc7wW0QjOdjEYphixvfU2Xw2SjmAChBCpIOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qG6fo3rh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CA0CC4CEED;
+	Sun,  6 Jul 2025 11:11:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751799207;
-	bh=W5pY1T+zdlN10wL2RQ9+j6hVOu2Gs8GqVwOufukVdok=;
+	s=k20201202; t=1751800286;
+	bh=jn1CvRYFUKVjS83qjTIrIRkUMU7XWFA+00g+MENopDI=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=DKKbMx3yhrxxgII+dWmdbDaE5uLMwSGpds5xKOpZcL2W27400mFASVTCP9j6hZXDE
-	 petvVi4bbRyuuoA8lHLplwkOEpy+pcyx62JANh4XA5ChYoDhcmDmOCn4NoFfVZZcAI
-	 An8u9/jaoaDSGvy2uQ4BQN6IHtIeq7k/0G30SHR0bJfF02gsQUtSBVjJS25c/VoXVo
-	 4+U1Glk25mPXmUth0Qpp/9Oq+PfVHxhGe3Vl5jPjvTOzWwXpOSs9C6L0wvDJzyIa9z
-	 etkCYQb+JwTUXaY7eTVDHmrkJEPARM/1qtj906Hi3f09zrJ8BY3nUkQD5+uC50Dcxs
-	 NkQwhFd0PulWg==
-Date: Sun, 6 Jul 2025 11:53:19 +0100
+	b=qG6fo3rhY+9mo3S+/f23SCi0bt2wscC2TSjAyeXvJqur+LQ+xw+4VAsiPkOtV57PO
+	 koaNVgjv5glpjxZwj+3DYG7ulqVLrCVSQa3HX8u52+5jrc13twDhFowK1JRIImp8AT
+	 K+32b9jKBOHE/WhcW/LPzgZTfoU4gNZ/uFizCYkPWREyTHKHbqX6DHVhvzcc4lLdnU
+	 FLYFvb3xm00sQbfFjgoIuLe/jwobrYIppnAXaAAfSofVu1M5ypu1u+Cq9td4BgF1G1
+	 9kuAalaDa+8sAXJL3/ivCwyBywPUrdSMvqPUe+/Jr/zV0Ua0OTX5wjrsg6RurIjiJG
+	 kRq8yxXmxN5VA==
+Date: Sun, 6 Jul 2025 12:11:17 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: Waqar Hameed <waqar.hameed@axis.com>
 Cc: David Lechner <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?=
- <nuno.sa@analog.com>, "Andy Shevchenko" <andy@kernel.org>, Rob Herring
- <robh@kernel.org>, "Krzysztof Kozlowski" <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, <kernel@axis.com>, <linux-iio@vger.kernel.org>,
- <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v3 2/3] dt-bindings: iio: proximity: Add Nicera
- D3-323-AA PIR sensor
-Message-ID: <20250706115319.4f663960@jic23-huawei>
-In-Reply-To: <19a2744cebaee57fe5349986094168524baa9838.1751636734.git.waqar.hameed@axis.com>
+ <nuno.sa@analog.com>, "Andy Shevchenko" <andy@kernel.org>,
+ <kernel@axis.com>, <linux-kernel@vger.kernel.org>,
+ <linux-iio@vger.kernel.org>
+Subject: Re: [PATCH v3 3/3] iio: Add driver for Nicera D3-323-AA PIR sensor
+Message-ID: <20250706121117.75665bb0@jic23-huawei>
+In-Reply-To: <29f84da1431f4a3f17fdeef27297a4ab14455404.1751636734.git.waqar.hameed@axis.com>
 References: <cover.1751636734.git.waqar.hameed@axis.com>
-	<19a2744cebaee57fe5349986094168524baa9838.1751636734.git.waqar.hameed@axis.com>
+	<29f84da1431f4a3f17fdeef27297a4ab14455404.1751636734.git.waqar.hameed@axis.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -68,85 +66,148 @@ Content-Transfer-Encoding: 7bit
 On Fri, 4 Jul 2025 18:14:38 +0200
 Waqar Hameed <waqar.hameed@axis.com> wrote:
 
-> Nicera D3-323-AA is a PIR sensor for human detection. It has two GPIOs
-> for detection and data communication.
+> Nicera D3-323-AA is a PIR sensor for human detection. It has support for
+> raw data measurements and detection notification. The communication
+> protocol is custom made and therefore needs to be GPIO bit banged.
+> 
+> The device has two main settings that can be configured: a threshold
+> value for detection and a band-pass filter. The configurable parameters
+> for the band-pass filter are the high-pass and low-pass cutoff
+> frequencies and its peak gain. Map these settings to the corresponding
+> parameters in the `iio` framework.
+> 
+> Raw data measurements can be obtained from the device. However, since we
+> rely on bit banging, it will be rather cumbersome with buffer support.
+> The main reason being that the data protocol has strict timing
+> requirements (it's serial like UART), and it's mainly used during
+> debugging since in real-world applications only the event notification
+> is of importance. Therefore, only add support for events (for now).
 > 
 > Signed-off-by: Waqar Hameed <waqar.hameed@axis.com>
+One suggestion inline on providing more information on the 'why' behind
+the regulator handling.
+
+I want to leave this on list anyway to give more time for other reviews,
+but if nothing else comes up and you are happy with my description I can
+tweak this whilst applying.
+
+Jonathan
+
 > ---
->  .../iio/proximity/nicera,d3323aa.yaml         | 62 +++++++++++++++++++
->  1 file changed, 62 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/proximity/nicera,d3323aa.yaml
+>  drivers/iio/proximity/Kconfig   |   9 +
+>  drivers/iio/proximity/Makefile  |   1 +
+>  drivers/iio/proximity/d3323aa.c | 814 ++++++++++++++++++++++++++++++++
+>  3 files changed, 824 insertions(+)
+>  create mode 100644 drivers/iio/proximity/d3323aa.c
 > 
-> diff --git a/Documentation/devicetree/bindings/iio/proximity/nicera,d3323aa.yaml b/Documentation/devicetree/bindings/iio/proximity/nicera,d3323aa.yaml
+> diff --git a/drivers/iio/proximity/Kconfig b/drivers/iio/proximity/Kconfig
+> index a562a78b7d0d..6070974c2c85 100644
+> --- a/drivers/iio/proximity/Kconfig
+> +++ b/drivers/iio/proximity/Kconfig
+> @@ -32,6 +32,15 @@ config CROS_EC_MKBP_PROXIMITY
+>  	  To compile this driver as a module, choose M here: the
+>  	  module will be called cros_ec_mkbp_proximity.
+>  
+> +config D3323AA
+> +	tristate "Nicera (Nippon Ceramic Co.) D3-323-AA PIR sensor"
+> +	depends on GPIOLIB
+> +	help
+> +	  Say Y here to build a driver for the Nicera D3-323-AA PIR sensor.
+> +
+> +	  To compile this driver as a module, choose M here: the module will be
+> +	  called d3323aa.
+> +
+>  config HX9023S
+>  	tristate "TYHX HX9023S SAR sensor"
+>  	select IIO_BUFFER
+> diff --git a/drivers/iio/proximity/Makefile b/drivers/iio/proximity/Makefile
+> index c5e76995764a..152034d38c49 100644
+> --- a/drivers/iio/proximity/Makefile
+> +++ b/drivers/iio/proximity/Makefile
+> @@ -6,6 +6,7 @@
+>  # When adding new entries keep the list in alphabetical order
+>  obj-$(CONFIG_AS3935)		+= as3935.o
+>  obj-$(CONFIG_CROS_EC_MKBP_PROXIMITY) += cros_ec_mkbp_proximity.o
+> +obj-$(CONFIG_D3323AA)		+= d3323aa.o
+>  obj-$(CONFIG_HX9023S)		+= hx9023s.o
+>  obj-$(CONFIG_IRSD200)		+= irsd200.o
+>  obj-$(CONFIG_ISL29501)		+= isl29501.o
+> diff --git a/drivers/iio/proximity/d3323aa.c b/drivers/iio/proximity/d3323aa.c
 > new file mode 100644
-> index 000000000000..65d9b44fcd5e
+> index 000000000000..b1bc3204c0c0
 > --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/proximity/nicera,d3323aa.yaml
-> @@ -0,0 +1,62 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/proximity/nicera,d3323aa.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Nicera D3-323-AA PIR sensor
-> +
-> +maintainers:
-> +  - Waqar Hameed <waqar.hameed@axis.com>
-> +
-> +description: |
-> +  PIR sensor for human detection.
-> +  Datasheet: https://www.endrich.com/Datenbl%C3%A4tter/Sensoren/D3-323-AA_e.pdf
-> +
-> +properties:
-> +  compatible:
-> +    const: nicera,d3323aa
-> +
-> +  vdd-supply:
-> +    description:
-> +      Supply voltage (1.8 to 5.5 V).
-> +
-> +  vout-clk-gpios:
-> +    maxItems: 1
-> +    description:
-> +      GPIO for clock and detection.
-> +      After reset, the device signals with two falling edges on this pin that it
-> +      is ready for configuration (within 1.2 s).
-> +      During configuration, it is used as clock for data reading and writing (on
-> +      data-gpios).
-> +      After all this, when device is in operational mode, it signals on this pin
-> +      for any detections.
+> +++ b/drivers/iio/proximity/d3323aa.c
+> @@ -0,0 +1,814 @@
 
-Don't start a new line for a new sentence. 
 
+> +static void d3323aa_disable_regulator(void *indata)
+> +{
+> +	struct d3323aa_data *data = indata;
+> +	int ret;
 > +
-> +  data-gpios:
-> +    maxItems: 1
-> +    description:
-> +      GPIO for data reading and writing. This is denoted "DO (SI)" in datasheet.
-> +      During configuration, this pin is used for writing and reading
-> +      configuration data (together with vout-clk-gpios as clock).
-> +      After this, during operational mode, the device will output serial data on
-> +      this GPIO.
+> +	/*
+> +	 * During probe() the regulator may be disabled. It is enabled during
+> +	 * device setup (in d3323aa_reset(), where it is also briefly disabled).
+> +	 * The check is therefore needed in order to have balanced
+> +	 * regulator_enable/disable() calls.
+> +	 */
+> +	if (!regulator_is_enabled(data->regulator_vdd))
+> +		return;
 > +
-> +required:
-> +  - compatible
-> +  - vdd-supply
-> +  - vout-clk-gpios
-> +  - data-gpios
+> +	ret = regulator_disable(data->regulator_vdd);
+> +	if (ret)
+> +		dev_err(data->dev, "Could not disable regulator (%d)\n", ret);
+> +}
 > +
-> +additionalProperties: false
+> +static int d3323aa_probe(struct platform_device *pdev)
+> +{
+> +	struct device *dev = &pdev->dev;
+> +	struct d3323aa_data *data;
+> +	struct iio_dev *indio_dev;
+> +	int ret;
 > +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/gpio/gpio.h>
+> +	indio_dev = devm_iio_device_alloc(dev, sizeof(*data));
+> +	if (!indio_dev)
+> +		return dev_err_probe(dev, -ENOMEM,
+> +				     "Could not allocate iio device\n");
 > +
-> +    proximity {
-> +        compatible = "nicera,d3323aa";
-> +        vdd-supply = <&regulator_3v3>;
-> +        vout-clk-gpios = <&gpio 78 GPIO_ACTIVE_HIGH>;
-> +        data-gpios = <&gpio 76 GPIO_ACTIVE_HIGH>;
-> +    };
-> +...
+> +	data = iio_priv(indio_dev);
+> +	data->dev = dev;
+> +
+> +	init_completion(&data->reset_completion);
+> +
+> +	ret = devm_mutex_init(dev, &data->statevar_lock);
+> +	if (ret)
+> +		return dev_err_probe(dev, ret, "Could not initialize mutex\n");
+> +
+> +	data->regulator_vdd = devm_regulator_get_exclusive(dev, "vdd");
+> +	if (IS_ERR(data->regulator_vdd))
+> +		return dev_err_probe(dev, PTR_ERR(data->regulator_vdd),
+> +				     "Could not get regulator\n");
+> +
+> +	/*
+> +	 * The regulator will be enabled during the device setup below (in
+> +	 * d3323aa_reset()). Note that d3323aa_disable_regulator() also checks
+> +	 * for the regulator state.
+
+This comment doesn't explain why you do this here as opposed to after
+reset.  Key is that there are complex paths in which the regulator is disabled
+that are unrelated to probe()/remove()  Talk about those rather than why
+this 'works'.  It's the why that matters in a comment more than the how.
+
+If nothing else comes up in review, I can chagne this to something like
+
+	* The regulator will be enabled for the first time during the
+	* device setup below (in d3323aa_reset()). However parameter changes
+	* from userspace can require a temporary disable of the regulator.
+	* To avoid complex handling of state, use a callback that will disable
+	* the regulator if it happens to be enabled at time of devm unwind.
+	*/
+
+> +	ret = d3323aa_setup(indio_dev, D3323AA_LP_FILTER_FREQ_DEFAULT_IDX,
+> +			    D3323AA_FILTER_GAIN_DEFAULT_IDX,
+> +			    D3323AA_THRESH_DEFAULT_VAL);
+> +	if (ret)
+> +		return ret;
 
 

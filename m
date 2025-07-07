@@ -1,59 +1,61 @@
-Return-Path: <linux-iio+bounces-21436-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21437-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35771AFBA15
-	for <lists+linux-iio@lfdr.de>; Mon,  7 Jul 2025 19:47:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 348A5AFBA18
+	for <lists+linux-iio@lfdr.de>; Mon,  7 Jul 2025 19:48:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5C8D63B2D72
-	for <lists+linux-iio@lfdr.de>; Mon,  7 Jul 2025 17:47:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 784F84A0EB8
+	for <lists+linux-iio@lfdr.de>; Mon,  7 Jul 2025 17:48:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C9DF1B4F09;
-	Mon,  7 Jul 2025 17:47:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF2E621770A;
+	Mon,  7 Jul 2025 17:48:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R7BfBLRh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="os957C1b"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9D1C18BBAE;
-	Mon,  7 Jul 2025 17:47:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 607AF219EB;
+	Mon,  7 Jul 2025 17:48:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751910450; cv=none; b=axMt7nFpSWEofoPTxYB1ftCboJBWTuutdKo3uA7OmZQK85CyyMqHvGpkjtbi7Wl5vN1JTpwJniQt3Bi0TkMI8/PQ64GEzfwPMcmEG3754pbFKhvvpCJNbpue9DWTspAXMorDEY1uvmMn7gmHjmBvsXeK2hDq9VgjkyQ/fvMTBsM=
+	t=1751910508; cv=none; b=CKzTpb8GmYp3B5P/t7R1UJE18zzAGcW+QRjmpgNdyQsiGaGD2B1R/wowBzwhsyXvcRjBW9wymsNYZP13HcudQ4mz238V5j1m77+Ww/beRgLFhzJTSs9lQmTvzI2gUr5qnS0YIjRopJJgJ3RwQCajc/ZWu/RT0oK6gmxYK0HBOFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751910450; c=relaxed/simple;
-	bh=WEbn4fdeKYnXwstffB/UnbRRLMg5J1b7MykCMDCQ+Cg=;
+	s=arc-20240116; t=1751910508; c=relaxed/simple;
+	bh=38upJ0pBmugxSPEcajDjCdYu6uxaRBbEaf1xbSZkXf0=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qUvNkhUTawZTe4Jwb8Ix/Ynn1npu7rt6mA1Ckuxnq+rd21U1z2McBlLDs/hcMwCI5arQ8xMQKBDO4ljvPK4XzBYdftP7khEQIxXRl86omYIPB2rBFXFpl29kldRIdzTwUPGg3hbK2vXc4Fee0cbFcyZLL4CfzCOw1ozB7+8GieA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R7BfBLRh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF0A4C4CEE3;
-	Mon,  7 Jul 2025 17:47:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qocBKYFgGGE0uDjyvdcbShCoITjg4iqp+5Ww+3AwhpY6ZaXwCq7rtb1vTksImboFHKARMQEScf1TmkimBI623FpF7yUbGFz4MlcFHDotHE/btqyzCOFhLlxyyOwFUQn/kkKMBxD0iAMyx2DOmDYOn7mOX1N9z+XmGLui0Am3qp0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=os957C1b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8961C4CEE3;
+	Mon,  7 Jul 2025 17:48:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751910450;
-	bh=WEbn4fdeKYnXwstffB/UnbRRLMg5J1b7MykCMDCQ+Cg=;
+	s=k20201202; t=1751910507;
+	bh=38upJ0pBmugxSPEcajDjCdYu6uxaRBbEaf1xbSZkXf0=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=R7BfBLRhOw3m1S86T8jinmmTSwb5dXtSFNlMDU67529GItm7rXD7o7pLdSAF4do2W
-	 gVRC9jONTWBWyRJvXYFM9sXn5coJ8raK0zlJng8ZYvMX9p6rj0M+Pp9yvJeXGDE/Yb
-	 EtBERaDjqzvHEu3LE4LZl/22bvKNuHMnFANFmNRqFwxa0cEOVbZlIPCmKzoSFNgUBM
-	 n9IDkgMHEhwjCxPpOTVkgfg3B2haMupWUoGAJXodak2cqBWQsEmR4Kv9LBXTQAEc/k
-	 H3yl4O9P5SHRRF2c1eDdTerdPh1ZuIiRnhvXRbI1JbEjCM0JgiyQiKg4Z0836z5jCU
-	 AGr/n9iTte00g==
-Date: Mon, 7 Jul 2025 18:47:18 +0100
+	b=os957C1breH45JkDqec35f+bijw+a347H8WDo7aK13x1cy5gOJd1yWN38gQkRRg+2
+	 ZSPJlwCHTmGB1Xf5WQ97u0/Ix5Hpf3Bll9bfx14z2enp62GBUByr4MiHWZkHwmYStJ
+	 aB6ToCbi2rihE9faNY98tTQIAbtiPwrPeHZrRQOUFX+xpesWNIk4AwNp7du5lxEwyk
+	 iCy6JjMuouIDHF8cTPKbDbflY2Yo30USAgOIRsxCW2aiEoVG0JpCl9zI6J0GWN+VVQ
+	 GalYCFjww5qjDlI2GrISCf4SpHITlq/mDEGeMp7QQESQZ5X0TGFoOH79tsam5Crwtw
+	 EW7yjnRtKR46Q==
+Date: Mon, 7 Jul 2025 18:48:15 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>
-Cc: David Lechner <dlechner@baylibre.com>, Lars-Peter Clausen
- <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, Nuno
- =?UTF-8?B?U8Oh?=	 <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] iio: adc: ad7173: fix num_slots
-Message-ID: <20250707184718.115bdb3a@jic23-huawei>
-In-Reply-To: <fca5a3d0a89b82b2e1a6d9e440cc2fe8896b73af.camel@gmail.com>
-References: <20250706-iio-adc-ad7173-fix-num_slots-on-most-chips-v3-1-d1f5453198a7@baylibre.com>
-	<fca5a3d0a89b82b2e1a6d9e440cc2fe8896b73af.camel@gmail.com>
+To: Marcelo Schmitt <marcelo.schmitt@analog.com>
+Cc: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+ <linux-gpio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <lars@metafoo.de>, <Michael.Hennerich@analog.com>, <dlechner@baylibre.com>,
+ <nuno.sa@analog.com>, <andy@kernel.org>, <andriy.shevchenko@intel.com>,
+ <robh@kernel.org>, <krzk+dt@kernel.org>, <conor+dt@kernel.org>,
+ <linus.walleij@linaro.org>, <brgl@bgdev.pl>, <broonie@kernel.org>,
+ <lgirdwood@gmail.com>, <marcelo.schmitt1@gmail.com>
+Subject: Re: [PATCH v8 00/12] iio: adc: Add support for AD4170 series of
+ ADCs
+Message-ID: <20250707184815.36386379@jic23-huawei>
+In-Reply-To: <cover.1751895245.git.marcelo.schmitt@analog.com>
+References: <cover.1751895245.git.marcelo.schmitt@analog.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -61,202 +63,116 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Mon, 07 Jul 2025 09:06:16 +0100
-Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
+On Mon, 7 Jul 2025 10:49:46 -0300
+Marcelo Schmitt <marcelo.schmitt@analog.com> wrote:
 
-> On Sun, 2025-07-06 at 13:53 -0500, David Lechner wrote:
-> > Fix the num_slots value for most chips in the ad7173 driver. The correct
-> > value is the number of CHANNELx registers on the chip.
-> >=20
-> > In commit 4310e15b3140 ("iio: adc: ad7173: don't make copy of
-> > ad_sigma_delta_info struct"), we refactored struct ad_sigma_delta_info
-> > to be static const data instead of being dynamically populated during
-> > driver probe. However, there was an existing bug in commit 76a1e6a42802
-> > ("iio: adc: ad7173: add AD7173 driver") where num_slots was incorrectly
-> > set to the number of CONFIGx registers instead of the number of
-> > CHANNELx registers. This bug was partially propagated to the refactored
-> > code in that the 16-channel chips were only given 8 slots instead of
-> > 16 although we did managed to fix the 8-channel chips and one of the
-> > 4-channel chips in that commit. However, we botched two of the 4-channel
-> > chips and ended up incorrectly giving them 8 slots during the
-> > refactoring.
-> >=20
-> > This patch fixes that mistake on the 4-channel chips and also
-> > corrects the 16-channel chips to have 16 slots.
-> >=20
-> > Fixes: 4310e15b3140 ("iio: adc: ad7173: don't make copy of ad_sigma_del=
-ta_info
-> > struct")
-> > Signed-off-by: David Lechner <dlechner@baylibre.com>
-> > --- =20
->=20
-> Reviewed-by: Nuno S=C3=A1 <nuno.sa@analog.com>
-As discussed. Dropped patch 12 of the other series.  Applied this one to th=
-e fixes-togreg
-branch of iio.git.  I'll let it soak a couple of days before I do a pull re=
-quest.
+> Hi,
+> 
+> AD4170-4 v8 most significant differences from v7 is the timestamp patch comes
+> earlier in the series and struct ad4170_state fields have been rearranged
+> to better align to cache line boundaries.
+> 
+> Jonathan, I see you have applied v7 to testing. Thank you. Though, if still
+> possible to pick v8 instead, that will provide patches with fewer line removals.
+> Totally fine if you prefer to keep v7, though.
+Ok. Replaced v7 with v8.
 
->=20
-> > Here is the patch that actually compiles on the fixes-togreg branch.
-> > ---
-> > Changes in v3:
-> > - Drop supports_spi_offload field.
-> > - Link to v2:
-> > https://lore.kernel.org/r/20250704-iio-adc-ad7173-fix-num_slots-on-most=
--chips-v2-1-a74941609143@baylibre.com
-> >=20
-> > Changes in v2:
-> > - Improve commit message.
-> > - Link to v1:
-> > https://lore.kernel.org/r/20250703-iio-adc-ad7173-fix-num_slots-on-most=
--chips-v1-1-326c5d113e15@baylibre.com
-> > ---
-> > =C2=A0drivers/iio/adc/ad7173.c | 36 ++++++++++++++++++++++++++----------
-> > =C2=A01 file changed, 26 insertions(+), 10 deletions(-)
-> >=20
-> > diff --git a/drivers/iio/adc/ad7173.c b/drivers/iio/adc/ad7173.c
-> > index
-> > 1966a9bc331401af118334a7be4c1a5b8d381473..c41bc5b9ac597f57eea6a097cc3a1=
-18de7b4
-> > 2210 100644
-> > --- a/drivers/iio/adc/ad7173.c
-> > +++ b/drivers/iio/adc/ad7173.c
-> > @@ -772,10 +772,26 @@ static const struct ad_sigma_delta_info
-> > ad7173_sigma_delta_info_8_slots =3D {
-> > =C2=A0	.num_slots =3D 8,
-> > =C2=A0};
-> > =C2=A0
-> > +static const struct ad_sigma_delta_info ad7173_sigma_delta_info_16_slo=
-ts =3D {
-> > +	.set_channel =3D ad7173_set_channel,
-> > +	.append_status =3D ad7173_append_status,
-> > +	.disable_all =3D ad7173_disable_all,
-> > +	.disable_one =3D ad7173_disable_one,
-> > +	.set_mode =3D ad7173_set_mode,
-> > +	.has_registers =3D true,
-> > +	.has_named_irqs =3D true,
-> > +	.addr_shift =3D 0,
-> > +	.read_mask =3D BIT(6),
-> > +	.status_ch_mask =3D GENMASK(3, 0),
-> > +	.data_reg =3D AD7173_REG_DATA,
-> > +	.num_resetclks =3D 64,
-> > +	.num_slots =3D 16,
-> > +};
-> > +
-> > =C2=A0static const struct ad7173_device_info ad4111_device_info =3D {
-> > =C2=A0	.name =3D "ad4111",
-> > =C2=A0	.id =3D AD4111_ID,
-> > -	.sd_info =3D &ad7173_sigma_delta_info_8_slots,
-> > +	.sd_info =3D &ad7173_sigma_delta_info_16_slots,
-> > =C2=A0	.num_voltage_in_div =3D 8,
-> > =C2=A0	.num_channels =3D 16,
-> > =C2=A0	.num_configs =3D 8,
-> > @@ -797,7 +813,7 @@ static const struct ad7173_device_info ad4111_devic=
-e_info
-> > =3D {
-> > =C2=A0static const struct ad7173_device_info ad4112_device_info =3D {
-> > =C2=A0	.name =3D "ad4112",
-> > =C2=A0	.id =3D AD4112_ID,
-> > -	.sd_info =3D &ad7173_sigma_delta_info_8_slots,
-> > +	.sd_info =3D &ad7173_sigma_delta_info_16_slots,
-> > =C2=A0	.num_voltage_in_div =3D 8,
-> > =C2=A0	.num_channels =3D 16,
-> > =C2=A0	.num_configs =3D 8,
-> > @@ -818,7 +834,7 @@ static const struct ad7173_device_info ad4112_devic=
-e_info
-> > =3D {
-> > =C2=A0static const struct ad7173_device_info ad4113_device_info =3D {
-> > =C2=A0	.name =3D "ad4113",
-> > =C2=A0	.id =3D AD4113_ID,
-> > -	.sd_info =3D &ad7173_sigma_delta_info_8_slots,
-> > +	.sd_info =3D &ad7173_sigma_delta_info_16_slots,
-> > =C2=A0	.num_voltage_in_div =3D 8,
-> > =C2=A0	.num_channels =3D 16,
-> > =C2=A0	.num_configs =3D 8,
-> > @@ -837,7 +853,7 @@ static const struct ad7173_device_info ad4113_devic=
-e_info
-> > =3D {
-> > =C2=A0static const struct ad7173_device_info ad4114_device_info =3D {
-> > =C2=A0	.name =3D "ad4114",
-> > =C2=A0	.id =3D AD4114_ID,
-> > -	.sd_info =3D &ad7173_sigma_delta_info_8_slots,
-> > +	.sd_info =3D &ad7173_sigma_delta_info_16_slots,
-> > =C2=A0	.num_voltage_in_div =3D 16,
-> > =C2=A0	.num_channels =3D 16,
-> > =C2=A0	.num_configs =3D 8,
-> > @@ -856,7 +872,7 @@ static const struct ad7173_device_info ad4114_devic=
-e_info
-> > =3D {
-> > =C2=A0static const struct ad7173_device_info ad4115_device_info =3D {
-> > =C2=A0	.name =3D "ad4115",
-> > =C2=A0	.id =3D AD4115_ID,
-> > -	.sd_info =3D &ad7173_sigma_delta_info_8_slots,
-> > +	.sd_info =3D &ad7173_sigma_delta_info_16_slots,
-> > =C2=A0	.num_voltage_in_div =3D 16,
-> > =C2=A0	.num_channels =3D 16,
-> > =C2=A0	.num_configs =3D 8,
-> > @@ -875,7 +891,7 @@ static const struct ad7173_device_info ad4115_devic=
-e_info
-> > =3D {
-> > =C2=A0static const struct ad7173_device_info ad4116_device_info =3D {
-> > =C2=A0	.name =3D "ad4116",
-> > =C2=A0	.id =3D AD4116_ID,
-> > -	.sd_info =3D &ad7173_sigma_delta_info_8_slots,
-> > +	.sd_info =3D &ad7173_sigma_delta_info_16_slots,
-> > =C2=A0	.num_voltage_in_div =3D 11,
-> > =C2=A0	.num_channels =3D 16,
-> > =C2=A0	.num_configs =3D 8,
-> > @@ -894,7 +910,7 @@ static const struct ad7173_device_info ad4116_devic=
-e_info
-> > =3D {
-> > =C2=A0static const struct ad7173_device_info ad7172_2_device_info =3D {
-> > =C2=A0	.name =3D "ad7172-2",
-> > =C2=A0	.id =3D AD7172_2_ID,
-> > -	.sd_info =3D &ad7173_sigma_delta_info_8_slots,
-> > +	.sd_info =3D &ad7173_sigma_delta_info_4_slots,
-> > =C2=A0	.num_voltage_in =3D 5,
-> > =C2=A0	.num_channels =3D 4,
-> > =C2=A0	.num_configs =3D 4,
-> > @@ -927,7 +943,7 @@ static const struct ad7173_device_info
-> > ad7172_4_device_info =3D {
-> > =C2=A0static const struct ad7173_device_info ad7173_8_device_info =3D {
-> > =C2=A0	.name =3D "ad7173-8",
-> > =C2=A0	.id =3D AD7173_ID,
-> > -	.sd_info =3D &ad7173_sigma_delta_info_8_slots,
-> > +	.sd_info =3D &ad7173_sigma_delta_info_16_slots,
-> > =C2=A0	.num_voltage_in =3D 17,
-> > =C2=A0	.num_channels =3D 16,
-> > =C2=A0	.num_configs =3D 8,
-> > @@ -944,7 +960,7 @@ static const struct ad7173_device_info
-> > ad7173_8_device_info =3D {
-> > =C2=A0static const struct ad7173_device_info ad7175_2_device_info =3D {
-> > =C2=A0	.name =3D "ad7175-2",
-> > =C2=A0	.id =3D AD7175_2_ID,
-> > -	.sd_info =3D &ad7173_sigma_delta_info_8_slots,
-> > +	.sd_info =3D &ad7173_sigma_delta_info_4_slots,
-> > =C2=A0	.num_voltage_in =3D 5,
-> > =C2=A0	.num_channels =3D 4,
-> > =C2=A0	.num_configs =3D 4,
-> > @@ -961,7 +977,7 @@ static const struct ad7173_device_info
-> > ad7175_2_device_info =3D {
-> > =C2=A0static const struct ad7173_device_info ad7175_8_device_info =3D {
-> > =C2=A0	.name =3D "ad7175-8",
-> > =C2=A0	.id =3D AD7175_8_ID,
-> > -	.sd_info =3D &ad7173_sigma_delta_info_8_slots,
-> > +	.sd_info =3D &ad7173_sigma_delta_info_16_slots,
-> > =C2=A0	.num_voltage_in =3D 17,
-> > =C2=A0	.num_channels =3D 16,
-> > =C2=A0	.num_configs =3D 8,
-> >=20
-> > ---
-> > base-commit: 731bfc181896a4dfd20a8c219bef1c205dd1d708
-> > change-id: 20250703-iio-adc-ad7173-fix-num_slots-on-most-chips-b982206a=
-20b1
-> >=20
-> > Best regards, =20
->=20
+Thanks,
+
+J
+> 
+> Thank you to all reviewers of previous versions.
+> 
+> v8 has:
+> 
+> Patch 1 adds device tree documentation for the parts.
+> Patch 2 adds basic device support.
+> Patch 3 adds support for calibration scale.
+> Patch 4 adds support for calibration bias.
+> Patch 5 adds sinc5+avg to filter_type_available IIO ABI documentation.
+> Patch 6 adds support for sample frequency along with filter type configuration.
+> Patch 7 adds support for buffered ADC reading.
+> Patch 8 (was patch 12 on v7) adds timestamp channel
+> Patch 9 adds clock provider support
+> Patch 10 adds GPIO controller support.
+> Patch 11 adds internal temperature sensor support.
+> Patch 12 adds support for external RTD and bridge circuit sensors.
+> 
+> Despite the updates, no functional change has been made in v8.
+> This patch series was generated using the "histogram diff" algorithm
+> (git format-patch --histogram option).
+> 
+> Change log v7 -> v8
+> 
+> [Generic changes]
+> - Update patches to make struct ad4170_state fields align well with both 32
+>   and 64-bit size cache lines after all patches are applied.
+> 
+> [Device tree changes]
+> - Updated device name in patch description (AD4170 -> AD4170-4).
+> - Removed extra blank line at the end of the doc.
+> 
+> [Basic driver patch]
+> - Early declare and use sensor type local variable to reduce diff in ext sensor patch.
+> - Make early check of IIO chan type to reduce diff in temperature support patch.
+> - Dropped 'int_pin_sel' field from struct ad4170_state. int_pin_sel is now local.
+> - Renamed AD4170_MAX_CHANNELS -> AD4170_MAX_ADC_CHANNELS for better readability.
+> 
+> [Timestamp channel patch]
+> - Moved from end of the series to right after buffer support patch.
+> - Reworked timestamp patch so it doesn't add 'num_adc_chans' field to struct ad4170_state.
+> 
+> [Internal temperature sensor patch]
+> - Reduced number of line removals in code diff.
+> 
+> [External sensor patch]
+> - Reworded external sensor support patch description.
+> - Reduced number of line removals in code diff.
+> - Updated ad4170_parse_external_sensor() param: u8 s_type -> unsigned int s_type.
+> 
+> 
+> Link to v7: https://lore.kernel.org/linux-iio/cover.1751289747.git.marcelo.schmitt@analog.com/
+> Link to v6: https://lore.kernel.org/linux-iio/cover.1750258776.git.marcelo.schmitt@analog.com/
+> Link to v5: https://lore.kernel.org/linux-iio/cover.1749582679.git.marcelo.schmitt@analog.com/ 
+> Link to v4: https://lore.kernel.org/linux-iio/cover.1748829860.git.marcelo.schmitt@analog.com/
+> Link to v3: https://lore.kernel.org/linux-iio/cover.1747083143.git.marcelo.schmitt@analog.com/
+> Link to v2: https://lore.kernel.org/linux-iio/cover.1745841276.git.marcelo.schmitt@analog.com/
+> Link to v1: https://lore.kernel.org/linux-iio/cover.1744200264.git.marcelo.schmitt@analog.com/
+> 
+> 
+> Ana-Maria Cusco (1):
+>   iio: adc: Add basic support for AD4170-4
+> 
+> Marcelo Schmitt (11):
+>   dt-bindings: iio: adc: Add AD4170-4
+>   iio: adc: ad4170-4: Add support for calibration gain
+>   iio: adc: ad4170-4: Add support for calibration bias
+>   Documentation: ABI: IIO: Add sinc5+avg to the filter_type_available
+>     list
+>   iio: adc: ad4170-4: Add digital filter and sample frequency config
+>     support
+>   iio: adc: ad4170-4: Add support for buffered data capture
+>   iio: adc: ad4170-4: Add timestamp channel
+>   iio: adc: ad4170-4: Add clock provider support
+>   iio: adc: ad4170-4: Add GPIO controller support
+>   iio: adc: ad4170-4: Add support for internal temperature sensor
+>   iio: adc: ad4170-4: Add support for weigh scale, thermocouple, and RTD
+>     sens
+> 
+>  Documentation/ABI/testing/sysfs-bus-iio       |    1 +
+>  .../bindings/iio/adc/adi,ad4170-4.yaml        |  554 +++
+>  MAINTAINERS                                   |    8 +
+>  drivers/iio/adc/Kconfig                       |   16 +
+>  drivers/iio/adc/Makefile                      |    1 +
+>  drivers/iio/adc/ad4170-4.c                    | 3027 +++++++++++++++++
+>  6 files changed, 3607 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad4170-4.yaml
+>  create mode 100644 drivers/iio/adc/ad4170-4.c
+> 
+> 
+> base-commit: 66ffb9f5accc6769d1ea7b9d7ac4c5ec477f9575
 
 

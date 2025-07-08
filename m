@@ -1,245 +1,179 @@
-Return-Path: <linux-iio+bounces-21441-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21442-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 840A2AFC351
-	for <lists+linux-iio@lfdr.de>; Tue,  8 Jul 2025 08:53:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01B78AFC87F
+	for <lists+linux-iio@lfdr.de>; Tue,  8 Jul 2025 12:35:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9569B562EAA
-	for <lists+linux-iio@lfdr.de>; Tue,  8 Jul 2025 06:51:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BF9771BC1992
+	for <lists+linux-iio@lfdr.de>; Tue,  8 Jul 2025 10:35:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A807231826;
-	Tue,  8 Jul 2025 06:50:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IF1m5ZAg"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6839B2D8383;
+	Tue,  8 Jul 2025 10:35:23 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C92F22F774;
-	Tue,  8 Jul 2025 06:50:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C2D62D837F
+	for <linux-iio@vger.kernel.org>; Tue,  8 Jul 2025 10:35:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751957417; cv=none; b=qix8p9yGx+xOnmLB2IiOWiV1RPQg2WyMaWZgx2d+z1saoqS3h9gtQK3VIFlZZLPdCc1i9SoF1trd2tvn0lRc+JBWxaWkueVf/uQ4NXl6bGbXnXrjQhmVjdL6/Ni7IeOoHiqeIUK7MxehxA178GhydvZddgY23/9uYV/gKhfDgEE=
+	t=1751970923; cv=none; b=OXt6PjcObZ738/mFQbjPWriH9SeKQ6c+pdw9wfuQt0euB4+UpEyqqlph7Kh6q3YWAvu1EJgg41NjcnNHE3V4CoQearLS/ZNgkziq+2VG74ncLcOyvZ2Pw7twoZACa4xYKF7qSqRMHu/IS87rgoLQwB5KzgQINkPdYEDzBra5t4E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751957417; c=relaxed/simple;
-	bh=p7Vczb2qgKmJ1lCdlCQ9oB0YanB7KoIMpQZqJ3Ly4MY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mye0r70gS/rW6JX6xW7R3M8ziRjxmSpOR/q59GI3k/1jQpY2Ghnsor7ZNvvUgV3guOMglMZH9qNhAt9XXTUMGQEYbLvQrKRUEChF/YYyDUCTPwKnMkcixw67WbKqS+GRmUgxivjYrF6YgR1D7YmZ5YmSkmnt1EiAiM3cmpLcCr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IF1m5ZAg; arc=none smtp.client-ip=209.85.210.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-74b50c71b0aso2106015b3a.0;
-        Mon, 07 Jul 2025 23:50:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1751957414; x=1752562214; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=aqugteN2eEIc2l2DBcvL/f8yXrIHgaMnuOSPwTtzdIk=;
-        b=IF1m5ZAgwOml8U4Ig3SGpSN3h5D5P8UiOTFHx0EG9o2asQLzYc3nK4/2uhlBpnP+RQ
-         dSRxudRpSiBqeS14q+TL359T1tZvjqAYyV6OQqTYHgkV2ArGTlKNbwafKDYM15A41yu3
-         YIO5njFp5MVxzT6rXUHCybt7gRmBemOGYlOd+jCcG5lNlsOIF5POLGCLdvluNi2RBGGp
-         oISjCq9VThXv1FlZv35ERIH/O+IKw9PTEJzv8B/kzQWuLxxTv2dHXznhcCijnp5/DiCu
-         EWtj6r95o3TznwxgqX1K/DUCJk4rrMsHFGqi263x/cKG8rg8O5l3FBuVFepUMmOa8oCj
-         LlXA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751957414; x=1752562214;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=aqugteN2eEIc2l2DBcvL/f8yXrIHgaMnuOSPwTtzdIk=;
-        b=p25wEzPtbKMdh2kyucXn7A4kS0eEmCy54SzY5bEq4Bm+lqmNu08OoyVAmWzikdexDZ
-         az+yWIrl7TfpKprlIqrZRG14c7tid7B/OfezRTEsBk9wpWISoGDE8Ck3Do0GU/dentSG
-         Da5Mje9NEnXBm8sAK8gFReyaD7WYGMnBP2I1hklh+bGPObkoYhbV/4yAJD/JWqFIj1Ud
-         dEpQTCi180vbvRENwlq2+l6MP7qv10W0bhrQwCi6jMJGteOLoO7UxHwEQbaIiR/RWSTw
-         E10zKf4c8ZbxGZvP8f4HFZbccRBHY1VwzSViMgoYWeB5YySu3yxd9vmNhatw8By56yrU
-         O8qQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUedMkYxJt7M+6pV99RJ6qo5eRYPoEPEUu+7sMwTXAqIevw5CBEh1WRgVfA/tvfi3dRVy/xHas260E=@vger.kernel.org, AJvYcCV3ZRqu0KWvhhWGnRmHdGStS07ypBGdAcBAeIMKP69I+AVXYHDeUNFLJFExgMcmAvgIEwLZMJljrSt9v8bp@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy8y71TwZma5S5wA3iMKbO9F104GcZslKI6yJEeKHNLa3RGBk4L
-	fS8fIArLuBVgDtH49s3yjMGjDXhbA2HbwWAYTyHwKYYKxZ3eMLisiiM2
-X-Gm-Gg: ASbGncuz/dutxVFZ2ULw6fL9tDCbFFHysR8u05slOS4hqIgADhgqszSsSw3HFQJcjhQ
-	ELj5x1lAUVSGqmaGlZOE2ZSq6jVL1xeS738twTwRZZAwzqDEvaobwIP9IKp2IZWo0jnXpl9hbdV
-	bxnQdE+iSF3w2F59nKwZ3iSTUBh1ti9Bl5CAGr7jMUx1QYxb87LllUoprsqp+IjumuDIrUzpeis
-	mm/eI9hCfFcyanIyucq4el799Evvj75uCZmmb+0w0GtKAF4uv4I2Ec9Gc8P9zTT4SHgKWm3Ve5W
-	0a79WaAYBDwCmN++SMCBcMP+pI1/yLbwIH0Xf0gZCe0ula9yTIp3BAPDWMrW
-X-Google-Smtp-Source: AGHT+IEDnB13/b3LmDOwrFJZtQd45JvmCuztyCFmjCx6EDfkeVSU5wUDDdMIIH9GoBNpGm4oSRkvBg==
-X-Received: by 2002:a05:6a00:1c86:b0:74c:efae:fd8f with SMTP id d2e1a72fcca58-74cefaefdf8mr18459328b3a.15.1751957413474;
-        Mon, 07 Jul 2025 23:50:13 -0700 (PDT)
-Received: from mbox.localnet ([36.50.162.228])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-74ce417dde0sm10402432b3a.73.2025.07.07.23.50.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Jul 2025 23:50:12 -0700 (PDT)
-From: akshay bansod <akbansd@gmail.com>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Andy Shevchenko <andriy.shevchenko@intel.com>,
- Lorenzo Bianconi <lorenzo@kernel.org>, David Lechner <dlechner@baylibre.com>,
- Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
- Andy Shevchenko <andy@kernel.org>,
- linux-kernel-mentees@lists.linuxfoundation.org, skhan@linuxfoundation.org,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] iio: st_lsm6dsx: Replace scnprintf with sysfs_emit
-Date: Tue, 08 Jul 2025 12:20:04 +0530
-Message-ID: <22754870.EfDdHjke4D@mbox>
-In-Reply-To: <20250706115003.5752261c@jic23-huawei>
-References:
- <20250703053900.36530-1-akbansd@gmail.com> <2413481.ElGaqSPkdT@mbox>
- <20250706115003.5752261c@jic23-huawei>
+	s=arc-20240116; t=1751970923; c=relaxed/simple;
+	bh=84yk8TsytVDgvxgXRWlimWjQVoEtVd8QckhPovsJOnc=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=H/7AfjBqGm/liMS3Rbyk85m2lcScSVz7ze7GwycmQnJ3e3XwDmfedM7p2rvV0mTk9dqPx3+sDHvM/Y1UljYQPfgY7xUH+s3lTY2SNX3ewVT5r/hEOpIU0ic6bgQotR+GTU++BLYZiPtU1cuUarmHA3jmwL2ArhD24si3zzHmb5o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4bby8d2drBz6GDNy;
+	Tue,  8 Jul 2025 18:32:01 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+	by mail.maildlp.com (Postfix) with ESMTPS id A640A1402FC;
+	Tue,  8 Jul 2025 18:35:10 +0800 (CST)
+Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Tue, 8 Jul
+ 2025 12:35:10 +0200
+Date: Tue, 8 Jul 2025 11:35:08 +0100
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+To: Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>
+CC: Sean Nyekjaer <sean@geanix.com>, Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>, "linux-iio@vger.kernel.org"
+	<linux-iio@vger.kernel.org>, Andy Shevchenko <andy@kernel.org>
+Subject: Re: [BUG] iio: imu: inv_icm42600: read temperature, Invalid
+ Argument
+Message-ID: <20250708113508.000027fb@huawei.com>
+In-Reply-To: <FR3P281MB1757FE243D78E8F78DA6C576CE4FA@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
+References: <unmlpvhl47vjdx7qqdaabhevhj3loydft4ytwxwsgefcyhbzup@zkqulwwfg37o>
+	<FR3P281MB1757FE243D78E8F78DA6C576CE4FA@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml500010.china.huawei.com (7.191.174.240) To
+ frapeml500008.china.huawei.com (7.182.85.71)
 
-On Sunday, 6 July 2025 10:00=E2=80=AFam +0530 Jonathan Cameron wrote:
-> On Thu, 03 Jul 2025 22:28:13 +0530
-> akshay bansod <akbansd@gmail.com> wrote:
->=20
-> > On Thursday, 3 July 2025 10:12=E2=80=AFpm +0530 Andy Shevchenko wrote:
-> > > On Thu, Jul 03, 2025 at 11:08:59AM +0530, Akshay Bansod wrote: =20
-> > > > Update the sysfs interface for sampling frequency and scale attribu=
-tes.
-> > > > Replace `scnprintf()` with `sysfs_emit_at()` which is PAGE_SIZE-awa=
-re
-> > > > and recommended for use in sysfs. =20
-> > >=20
-> > > 'must' is stronger than 'recommendation'.
-> > > Of has the documentation been changed lately?
-> > >=20
-> > > ...
-> > >  =20
-> > > > st_lsm6dsx_sysfs_sampling_frequency_avail(struct device *dev, =20
-> > >  =20
-> > > >  	odr_table =3D &sensor->hw->settings->odr_table[sensor->id];
-> > > >  	for (i =3D 0; i < odr_table->odr_len; i++)
-> > > > -		len +=3D scnprintf(buf + len, PAGE_SIZE - len, "%d.%03d ",
-> > > > -				 odr_table->odr_avl[i].milli_hz / 1000,
-> > > > -				 odr_table->odr_avl[i].milli_hz % 1000);
-> > > > +		len +=3D sysfs_emit_at(buf, len, "%d.%03d ",
-> > > > +				     odr_table->odr_avl[i].milli_hz / 1000,
-> > > > +				     odr_table->odr_avl[i].milli_hz % 1000);
-> > > >  	buf[len - 1] =3D '\n'; =20
-> > >=20
-> > > My gosh, this is error prone. I'm wondering when some CIs will start =
-to
-> > > complain on this line. But this was already before your change...
-> > >  =20
-> > I'm planning to drop It entirely or should I replace it with another `s=
-ysfs_emit_at()` ?
-> > I've seen other device driver returning space terminated buffers. Maybe=
- I'm overlooking
-> > something.
->=20
-> It is rather ugly currently but not a bug as such as we know we don't act=
-ually run
-> out of space in the page (it would just overwrite last byte in that case =
-so odd
-> output, but not a bug) and that we always print something so just as you =
-suggest
-> sysfs_emit_at(buf, len - 1, "\n"); is safe.  It also checks under and ove=
-rflow
-> so that safe + hopefully won't trip up static analysis tools.
->=20
-understood. I'll revise the patch.
+On Mon, 7 Jul 2025 18:13:33 +0000
+Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com> wrote:
 
-On a sidenode, I see a lot of repetitive code trying to write to a sysfs bu=
-ffer
-from a static array. for example
+> >Hi,
+> >
+> >I'm having some weird issues with reading the temperature of the icm42605.
+> >Kernel version: 6.16.0-rc5
+> >
+> ># cat /sys/bus/iio/devices/iio:device2/name
+> >icm42605-accel
+> >
+> >When reading the temperature I get:
+> ># cat /sys/bus/iio/devices/iio:device2/in_temp_raw
+> >cat: read error: Invalid argument
+> >
+> >But if I read from the accelerometer first, I will go better:
+> ># cat /sys/bus/iio/devices/iio:device2/in_accel_x_raw
+> >-378
+> ># cat /sys/bus/iio/devices/iio:device2/in_temp_raw
+> >600
+> >
+> >Then after "some" time, I re-read the temperature I recieve
+> >"Invalid argument" again.
+> >
+> >I have traced the -EINVAL to inv_icm42600_temp_read() because I receive
+> >INV_ICM42600_DATA_INVALID.
+> >
+> >Register dump diff:
+> >--- invalid-read
+> >+++ ok-read
+> >@@ -10,14 +10,14 @@
+> > 0x1a = 0x00000010
+> > 0x1b = 0x00000000
+> > 0x1c = 0x00000000
+> >-0x1d = 0x00000080
+> >-0x1e = 0x00000000
+> >-0x1f = 0x00000080
+> >-0x20 = 0x00000000
+> >-0x21 = 0x00000080
+> >-0x22 = 0x00000000
+> >-0x23 = 0x00000080
+> >-0x24 = 0x00000000
+> >+0x1d = 0x00000002
+> >+0x1e = 0x00000038
+> >+0x1f = 0x000000fe
+> >+0x20 = 0x00000085
+> >+0x21 = 0x000000fe
+> >+0x22 = 0x000000df
+> >+0x23 = 0x000000f8
+> >+0x24 = 0x0000003a
+> > 0x25 = 0x00000080
+> > 0x26 = 0x00000000
+> > 0x27 = 0x00000080
+> >@@ -26,7 +26,7 @@
+> > 0x2a = 0x00000000
+> > 0x2b = 0x00000000
+> > 0x2c = 0x00000000
+> >-0x2d = 0x00000000
+> >+0x2d = 0x00000008
+> > 0x2e = 0x00000000
+> > 0x2f = 0x00000000
+> > 0x30 = 0x000000ff
+> >@@ -59,11 +59,11 @@
+> > 0x4b = 0x00000000
+> > 0x4c = 0x00000032
+> > 0x4d = 0x00000099
+> >-0x4e = 0x00000000
+> >+0x4e = 0x00000002
+> > 0x4f = 0x00000009
+> > 0x50 = 0x00000009
+> > 0x51 = 0x00000016
+> >-0x52 = 0x00000000
+> >+0x52 = 0x00000060
+> > 0x53 = 0x0000000d
+> > 0x54 = 0x00000031
+> > 0x55 = 0x00000000
+> >
+> >Will the iio core retry a read? If the -EINVAL is returned,
+> >inv_icm42600_accel_read_raw() is call once more.
+> >
+> >One more thing...
+> >When I'm removing the module, the kernel prints this:
+> >inv-icm42600-i2c 1-0068: Runtime PM usage count underflow!
+> >
+> >I will continue investigate this
+> >Br,
+> >Sean  
+> 
+> Hello Sean,
+> 
+> this is expected behavior since the temperature returned is not the external
+> temperature but the temperature of the mechanical component (MEMS). It will
+> only work if the chip is on, meaning accelerometer and/or gyroscope is on.
+> 
+> That's why you can get temperature after reading accel data since it is
+> turning the chip. But after a short while autosuspend is putting the chip
+> back off and you cannot read temperature anymore.
+> 
+> You need to turn one sensor continuously on with a buffer, and then you can
+> read temperature all the time since the chip is running.
+> 
+> Temperature data are here only to do temperature compensation of the accel
+> and gyro data.
 
- drivers/iio/common/st_sensors/st_sensors_core.c:629
- drivers/iio/adc/vf610_adc.c:614
- drivers/iio/accel/adxl372.c:972
-
- ...
-
-What if we export a symbol from industrialio-core.c which does something=20
-similar to
-
- drivers/iio/industrialio-core.c:815
-
- 'iio_format_avail_list(char *buf, const int *vals,
-				     int type, int length)'
-
-
-but rather than taking integer array, it take `void* ptr` and `int stride` =
-as
-parameter. Then iterates from `vals` by `stride` for `count` times and type=
-cast
-the pointer and 'sysfs_emit` it.
-
-static ssize_t iio_format_avail_list(char *buf, void *vals,=20
-			      int stride, int type, int count) {
-
-	// iterate (void*) vals by stride and perform `sysfs_emit`
-=09
-	void* ref =3D vals;
-	for(int i =3D 0; i < count; i++){
-=09
-		ref +=3D stride;
-	=09
-		// typecast and write to buf using sysfs_emit
-		...
-
-	}
-};
-
-
-Thus, drivers can use this as follows.
-
-=2D-- a/drivers/iio/common/st_sensors/st_sensors_core.c
-+++ b/drivers/iio/common/st_sensors/st_sensors_core.c
-@@ -618,20 +618,11 @@ EXPORT_SYMBOL_NS(st_sensors_verify_id, "IIO_ST_SENSOR=
-S");
- ssize_t st_sensors_sysfs_sampling_frequency_avail(struct device *dev,
-                                struct device_attribute *attr, char *buf)
- {
-=2D       int i, len =3D 0;
-        struct iio_dev *indio_dev =3D dev_to_iio_dev(dev);
-        struct st_sensor_data *sdata =3D iio_priv(indio_dev);
-=20
-=2D       for (i =3D 0; i < ST_SENSORS_ODR_LIST_MAX; i++) {
-=2D               if (sdata->sensor_settings->odr.odr_avl[i].hz =3D=3D 0)
-=2D                       break;
-=2D
-=2D               len +=3D scnprintf(buf + len, PAGE_SIZE - len, "%d ",
-=2D                               sdata->sensor_settings->odr.odr_avl[i].hz=
-);
-=2D       }
-=2D       buf[len - 1] =3D '\n';
-=2D
-=2D       return len;
-+       return iio_format_avail_list(buf, &sdata->sensor_settings->odr.odr_=
-avl[0].hz,
-+               sizeof(st_sensor_odr_avl), IIO_VAL_INT, ST_SENSORS_ODR_LIST=
-_MAX);
- }
-
-The details about the various types to cover is still unclear.=20
-But does this sounds feasible ?=20
-
-> >=20
-> > > >  	return len; =20
-> > >=20
-> > > ...
-> > >  =20
-
-=2E..
-
-> >=20
-> >=20
-> >=20
-> >=20
->=20
-
-Regards,=20
-Akshay Bansod
-
-
-
+That is rather non-intuitive behavior.  Could we make a read of the temperature
+channel turn on one of the components?  Given expected use case it shouldn't commonly
+happen but if not too horrendous to implement it would be better to avoid the error
+seen here.
+ 
+> 
+> Thanks,
+> JB
 
 

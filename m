@@ -1,117 +1,110 @@
-Return-Path: <linux-iio+bounces-21445-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21447-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2F39AFCBA8
-	for <lists+linux-iio@lfdr.de>; Tue,  8 Jul 2025 15:17:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C86DAFDA66
+	for <lists+linux-iio@lfdr.de>; Wed,  9 Jul 2025 00:04:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C8E93188FB60
-	for <lists+linux-iio@lfdr.de>; Tue,  8 Jul 2025 13:15:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 92C581898126
+	for <lists+linux-iio@lfdr.de>; Tue,  8 Jul 2025 22:04:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB67B2DE1ED;
-	Tue,  8 Jul 2025 13:14:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB79E23C4FF;
+	Tue,  8 Jul 2025 22:04:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lRAXHFpu"
+	dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b="BVOu1HOE"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+Received: from mx3.wp.pl (mx3.wp.pl [212.77.101.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 281FC2DCBF7;
-	Tue,  8 Jul 2025 13:14:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C36DF2222C4
+	for <linux-iio@vger.kernel.org>; Tue,  8 Jul 2025 22:04:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.77.101.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751980499; cv=none; b=W9KMH3z2i9WtETIns6w3Lvc17wfCHVCvLB7DX3ayoupgURFSfu246J3Uw8f43sAUVOQ4JQgGLzLAuRnHhQEa9CcwrOmX0IozolmG1VrmkssPTHxOHJiuB1jtERLBsP/f4HLp9V1fxApc3B0PFwU6EggXZ3pFg0Pr/dDewXF2/ss=
+	t=1752012257; cv=none; b=uw/TvdSWGseqcskV3lMXlQXa/vGbunKrl9l7VQ1Yt2ZwzUcVVD8sB2kIP2W5GqDQnhU4jKsM09yD5te//v6JKB750iwARqM0D5SXwP4O1C2CbJ4GXmOc8THq9lW5kwh7It+SKoWEo0douTCETJtdsX8mR9z4z595u11+c6wHFwM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751980499; c=relaxed/simple;
-	bh=cU5ByOgwbuwKNQiNsdNv4TRrDApyVT56CFWQGxdiUP0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ToGI+qP9FmNyqcS/JIuX11GqPpqXFHTdINudc4qbr+69kRULTAWNFDmHE/oKf5K2yp4TNDBY6WcXUl0jgE2ddlM8z07UpshDwz0JTB8mJp+haQtJ96XiR1jDK9/UrnSbeA4ViT9IOlyHXaiu/FtkocGCnb8JWGaJow65bCxug3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lRAXHFpu; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1751980498; x=1783516498;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=cU5ByOgwbuwKNQiNsdNv4TRrDApyVT56CFWQGxdiUP0=;
-  b=lRAXHFpuvL2VGnvcE6Bo66yUerp+RmvYvQLlYbdUratVqxlYxwxK9Dfd
-   rGSHJM9mvymRbLL6gF4Hmdc01krGsXGq4Z33DMhrx3W51sjG6yFP00nfE
-   KAKuZyIgyWdGnlWcWo8bSzxKByQX3mR1EUBXHYdxs7LpRluzkKXb5pGgZ
-   IvOaAEAvrbvhrN7CvZZavRvdN6PJpPvk2/3J7+VexQrTxBoYREe6Pm7US
-   G/XBk+PTi8EkS2LauWtPGLc3queIu/6DJiRZJB0H5BZJDlCsmi3TpxHBn
-   cL2KGV2oTLNelnFWIFQQlqzWJ0pKBvrOytIP0Z1VT3rwl959uD/YLxj9A
-   Q==;
-X-CSE-ConnectionGUID: 9IBMOM4LTZaWjjOjWvkjhg==
-X-CSE-MsgGUID: bZbHR59NRO+59Mq8AckSog==
-X-IronPort-AV: E=McAfee;i="6800,10657,11487"; a="53334773"
-X-IronPort-AV: E=Sophos;i="6.16,297,1744095600"; 
-   d="scan'208";a="53334773"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2025 06:14:57 -0700
-X-CSE-ConnectionGUID: 7UxPEPlTTWahGYoQ/ql4JQ==
-X-CSE-MsgGUID: 95M+uA/cSfut1PFofi4xew==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,297,1744095600"; 
-   d="scan'208";a="186514106"
-Received: from smile.fi.intel.com ([10.237.72.52])
-  by orviesa002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2025 06:14:55 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1uZ89s-0000000DZv7-0a3g;
-	Tue, 08 Jul 2025 16:14:52 +0300
-Date: Tue, 8 Jul 2025 16:14:51 +0300
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Sean Nyekjaer <sean@geanix.com>
-Cc: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: imu: inv_icm42600: fix temperature reading if
- accel/gyro is off
-Message-ID: <aG0Zyxno62z1eMXx@smile.fi.intel.com>
-References: <20250708-icm42temp-v1-1-81af60aab82a@geanix.com>
+	s=arc-20240116; t=1752012257; c=relaxed/simple;
+	bh=T1pYAcpD4QD5aNKYoNzNjzWClNCiJm5FqrilVScTEPo=;
+	h=From:To:Subject:Date:Message-Id:MIME-Version:Content-Type; b=UwwoQTK4kXBtWWW35QB8Oq66DbAaFlHmuTgM/x0crpRZrrWDbON9vGYsIkwQzQg6Rfs8T+LN9WNuC59C8J5M0b/djCm+8heLulxK9waCIBJgndZ9ZZ0lwfDHOYRjHt6Lh+kqueQtb//Woig1/Y8yeMSIldZKQgodKArRXpvrO4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl; spf=pass smtp.mailfrom=wp.pl; dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b=BVOu1HOE; arc=none smtp.client-ip=212.77.101.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wp.pl
+Received: (wp-smtpd smtp.wp.pl 7799 invoked from network); 9 Jul 2025 00:04:07 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=20241105;
+          t=1752012247; bh=/Ziyoc6OWfBD4Ber22ISCAG5cMVClEJJdMXo55uffz4=;
+          h=From:To:Subject;
+          b=BVOu1HOEHwN9oqxm64pZbA/fwotlzky4SavZdUIVoyfbQxxctjjt/jr0GtMv+SVF/
+           boVnLuBQZrSMerk9rWxDUGpSKAjdmOq7qQzaMkJuxciNge9NPquP/EHVjXmouKxYWi
+           UrHfy4PQKUh5ddrzWLWu2wPcruMxhOIegmH4YZDSsaDx+q4NMNGn17priedPlQ0MU1
+           DisTBZg5JkjLWrFWzCEc1SCqz5HjZGZrPcP21qNJFsbNeGCdxGOJCSyqaKlOsTIiMS
+           4gNdF6UgctLlGlAoTKCdFOojPGjp9OcgyThg2WTctA7DC1w7OLldbKQp/fVZAK6ldH
+           uZo1aTmAiuofA==
+Received: from 83.24.138.239.ipv4.supernova.orange.pl (HELO laptop-olek.lan) (olek2@wp.pl@[83.24.138.239])
+          (envelope-sender <olek2@wp.pl>)
+          by smtp.wp.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
+          for <rafael@kernel.org>; 9 Jul 2025 00:04:07 +0200
+From: Aleksander Jan Bajkowski <olek2@wp.pl>
+To: rafael@kernel.org,
+	daniel.lezcano@linaro.org,
+	rui.zhang@intel.com,
+	lukasz.luba@arm.com,
+	jic23@kernel.org,
+	dlechner@baylibre.com,
+	nuno.sa@analog.com,
+	andy@kernel.org,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	matthias.bgg@gmail.com,
+	angelogioacchino.delregno@collabora.com,
+	s.hauer@pengutronix.de,
+	olek2@wp.pl,
+	zhiyong.tao@mediatek.com,
+	linux-pm@vger.kernel.org,
+	linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org
+Subject: [PATCH v3 0/3] Add thermal sensors support for MT7981
+Date: Wed,  9 Jul 2025 00:04:02 +0200
+Message-Id: <20250708220405.1072393-1-olek2@wp.pl>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250708-icm42temp-v1-1-81af60aab82a@geanix.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-WP-MailID: c47a9be9f1745f53a3fc4eba447605ae
+X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
+X-WP-SPAM: NO 000000A [ocM0]                               
 
-On Tue, Jul 08, 2025 at 02:09:17PM +0200, Sean Nyekjaer wrote:
-> Avoid return invalid argument if one tries to read the temperature,.
+This patch adds support for the temperature sensor in the MT7981 SoC.
+This sensor is exactly the same as the one in the MT7986.
 
-returning
+CHanges in v3:
+ - added fallback in bindings
 
-(Stray period at the end)
+Changes in v2:
+ - added fallback to an existing compatible string
+ - removed second patch as obsolete
 
-> if both the accelerometer and gyro are off. Power the accelerometer on
-> before reading the temperature.
-> The original state will be restored by runtine_suspend() or the next
-> reading of the accelerometer.
+Aleksander Jan Bajkowski (3):
+  dt-bindings: iio: adc: Add support for MT7981
+  dt-bindings: thermal: mediatek: add falback compatible string for
+    MT7981 and MT8516
+  arm64: dts: mediatek: add thermal sensor support on mt7981
 
-Why don't you use the room on the previous lines, the formatting looks ugly.
-
-...
-
-Does it need a Fixes tag?
-
-...
-
-Code wise LGTM, though.
+ .../iio/adc/mediatek,mt2701-auxadc.yaml       |  4 +++
+ .../bindings/thermal/mediatek,thermal.yaml    | 27 ++++++++++------
+ arch/arm64/boot/dts/mediatek/mt7981b.dtsi     | 31 ++++++++++++++++++-
+ 3 files changed, 51 insertions(+), 11 deletions(-)
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.39.5
 
 

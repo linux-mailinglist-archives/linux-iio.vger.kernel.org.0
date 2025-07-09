@@ -1,66 +1,63 @@
-Return-Path: <linux-iio+bounces-21487-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21488-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AF3EAFEDFF
-	for <lists+linux-iio@lfdr.de>; Wed,  9 Jul 2025 17:47:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A71BAFEE0A
+	for <lists+linux-iio@lfdr.de>; Wed,  9 Jul 2025 17:49:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 63FFC1C40F54
-	for <lists+linux-iio@lfdr.de>; Wed,  9 Jul 2025 15:48:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3B407481139
+	for <lists+linux-iio@lfdr.de>; Wed,  9 Jul 2025 15:49:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E98F2E613F;
-	Wed,  9 Jul 2025 15:47:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3850E2E7647;
+	Wed,  9 Jul 2025 15:49:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f98S8FjN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Cwuh3Xe6"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39B5B3398B;
-	Wed,  9 Jul 2025 15:47:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBBB52DA765;
+	Wed,  9 Jul 2025 15:49:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752076060; cv=none; b=TG4+fBC9jc3h961VklHyacrh8zOIoKSVJqhQwozhPz+FLe3HFzcKmZgCuNRgFj+/wZnReAyr5TV3RiXrSstqeGnaMVxP8PrydrDQ9d3KBe7X1PpL4ej1eiScRK79SpCoAeayCMtimzizNm5jVnuPTNiK41iJ5Su3+vZXUcq+SwA=
+	t=1752076183; cv=none; b=DAuW5/jYOThJnwQi5JIXimZBku2C3DDluKJniqK2+96NVcMKh43h/IuK0/4jzBi14lyXMDlY94dZ3OoXIMSEvpS8rjMmkbHm5a8gL19l4cB8uL0I6YtXR9Yhi+8+nuJpXCJQN1sfW7t/9PAuOZAxoSjNiuAMqTl3HAs1sceTS0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752076060; c=relaxed/simple;
-	bh=GxQO+A5LaGNUuTWx4cQc84EILlf1a57gnRO1KKDBo2g=;
+	s=arc-20240116; t=1752076183; c=relaxed/simple;
+	bh=4eG67VwdY6yryX9Oqb584knMPMQAKXI8QBnDkqUgg/c=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DlrKePCAQhuoAUKxlGlcG4tSrtAE8HasjvmOsWTA9Mba5rvCXIuG6Vmvvzw4sTJH1IKJLgxr/QySzEHSFoOS3pVTroZufZgJ5FKeAggcPtW18yZL0xmhz75NXEivw7RxIbsxxsJH4fOY+lWasiBibznVmUj8WumTe2AyTkEYGMg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f98S8FjN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 987EBC4CEEF;
-	Wed,  9 Jul 2025 15:47:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=iUtTrm6kmRRlxvfYspfwYsHWgxwU8tybYT+fVpTt0FvdMoHbvTr8AYjFcndWzlz8JYX6d7mX0Y3NsdaF1NNBFZsvttr27y/6ijxp2USE343PrsGPdFRUh7OYLWUzNf1TF0RcCAAYMCwAtD3rYWpypSN+GEsspk26LraUiXpPpW8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Cwuh3Xe6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04AF3C4CEEF;
+	Wed,  9 Jul 2025 15:49:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752076059;
-	bh=GxQO+A5LaGNUuTWx4cQc84EILlf1a57gnRO1KKDBo2g=;
+	s=k20201202; t=1752076182;
+	bh=4eG67VwdY6yryX9Oqb584knMPMQAKXI8QBnDkqUgg/c=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=f98S8FjN99dL0RYLKxsfMBvT4ZzYo1g4TrWtyKaAV3Tn1YCBNTuluVkbrhUgc6U/D
-	 W7esn6yU/rpNPT+S9zGOYIGxLJgpE76UdHM1DxqHgGTp52YkFhubSlYpclLpnrU561
-	 zx14ryx7iAc+TAGf1OCb/gdm78b9MMBaePjQqafTNkqcb/mktF0as7wTEPogqmWX2/
-	 pZZvjM8NrRjf5vM5/H+9qUYbpoMnlMfClt5aHWlnUO+kAuCcL5VXnRm+71549vTWDE
-	 npItw2vy+aLUj5I7EkO7jbi2bUST0soIuy7SGLyFSubcKyrGFdrm3ojaPus9gz25Vd
-	 6B4y35bF8HZPQ==
-Date: Wed, 9 Jul 2025 16:47:28 +0100
+	b=Cwuh3Xe61CXjMKNkToIZevUXQzpOfauMU3w1uzfo4otQHWOZURQipbRvGCdThUF2q
+	 ye+BL+7tfamDxzHaO7jA7S7avZDaaw7zxWQGdu2Z8nZlAR36pAQvgnpwX2PHuVDkcB
+	 RTej8EmaA/9GFzRVcJyLhsAyoDuOX4LVihX1tnt5GDO+qrq/9g3oVfa8sCehLBJ3rM
+	 CmHD+UvXKoqROd00XIWOvQBQI0LGobiTS8tdnG/z0v8vPpssCsDOGyQLGffKl/w3Bz
+	 RmUVNmpSsAnRnXBKGECv+Z3/pcxdtMzheiG99XWQM6obd4Z5qxcVxhBd+5MTTc0WQx
+	 v3451WtbhxAmw==
+Date: Wed, 9 Jul 2025 16:49:33 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc: Linus Walleij <linus.walleij@linaro.org>, David Lechner
+To: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: Sakari Ailus <sakari.ailus@linux.intel.com>, David Lechner
  <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy
- Shevchenko <andy@kernel.org>, Gerald Loacker
- <gerald.loacker@wolfvision.net>, =?UTF-8?B?QmFybmFiw6FzIEN6w6ltw6Fu?=
- <barnabas.czeman@mainlining.org>, Krzysztof Kozlowski
- <krzysztof.kozlowski@linaro.org>, Danila Tikhonov <danila@jiaxyga.com>,
- Neil Armstrong <neil.armstrong@linaro.org>, Waqar Hameed
- <waqar.hameed@axis.com>, Peter Zijlstra <peterz@infradead.org>, David
- Laight <david.laight@aculab.com>, Jakob Hauser <jahau@rocketmail.com>, Al
- Viro <viro@zeniv.linux.org.uk>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 09/12] iio: magnetometer: Remove redundant
+ Shevchenko <andy@kernel.org>, Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, Uwe =?UTF-8?B?S2xlaW5l?=
+ =?UTF-8?B?LUvDtm5pZw==?= <u.kleine-koenig@baylibre.com>,
+ linux-iio@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 05/12] iio: dac: Remove redundant
  pm_runtime_mark_last_busy() calls
-Message-ID: <20250709164728.2d01c89d@jic23-huawei>
-In-Reply-To: <20250708231152.971801-1-sakari.ailus@linux.intel.com>
+Message-ID: <20250709164933.47913e22@jic23-huawei>
+In-Reply-To: <aG4sxEtXRw982Z9q@smile.fi.intel.com>
 References: <20250708231144.971170-1-sakari.ailus@linux.intel.com>
-	<20250708231152.971801-1-sakari.ailus@linux.intel.com>
+	<20250708231152.971550-1-sakari.ailus@linux.intel.com>
+	<aG4sxEtXRw982Z9q@smile.fi.intel.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -71,39 +68,50 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed,  9 Jul 2025 02:11:52 +0300
-Sakari Ailus <sakari.ailus@linux.intel.com> wrote:
+On Wed, 9 Jul 2025 11:48:04 +0300
+Andy Shevchenko <andriy.shevchenko@intel.com> wrote:
 
-> pm_runtime_put_autosuspend(), pm_runtime_put_sync_autosuspend(),
-> pm_runtime_autosuspend() and pm_request_autosuspend() now include a call
-> to pm_runtime_mark_last_busy(). Remove the now-reduntant explicit call to
-> pm_runtime_mark_last_busy().
+> On Wed, Jul 09, 2025 at 02:11:52AM +0300, Sakari Ailus wrote:
+> > pm_runtime_put_autosuspend(), pm_runtime_put_sync_autosuspend(),
+> > pm_runtime_autosuspend() and pm_request_autosuspend() now include a call
+> > to pm_runtime_mark_last_busy(). Remove the now-reduntant explicit call to
+> > pm_runtime_mark_last_busy().  
 > 
-> Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+> ...
+> 
+> > -	if (!enable) {
+> > -		pm_runtime_mark_last_busy(dev);
+> > +	if (!enable)
+> >  		pm_runtime_put_autosuspend(dev);
+> > -	}
+> >  
+> >  	return 0;
+> >  
+> >  err_put_pm:
+> > -	if (enable) {
+> > -		pm_runtime_mark_last_busy(dev);
+> > +	if (enable)
+> >  		pm_runtime_put_autosuspend(dev);
+> > -	}
+> >  
+> >  	return ret;  
+> 
+> 
+> Hmm... Why not simply
+> 
+> 	ret = 0;
+It's already zero (as last call was a regmap_update_bits() return value ) so even easier.
+However, switch if (ret < 0) to if (ret) for that regmap call
+to make that more obvious.
 
-> diff --git a/drivers/iio/magnetometer/bmc150_magn.c b/drivers/iio/magnetometer/bmc150_magn.c
-> index 761daead5ada..7c5fef79ad04 100644
-> --- a/drivers/iio/magnetometer/bmc150_magn.c
-> +++ b/drivers/iio/magnetometer/bmc150_magn.c
-> @@ -260,12 +260,10 @@ static int bmc150_magn_set_power_state(struct bmc150_magn_data *data, bool on)
->  #ifdef CONFIG_PM
-This is here just to handle the annoying stub for put_autosuspend which returns
-an error code...  To me not checking that is fine and would allow this
-function to be squashed inline.
-
->  	int ret;
->  
-> -	if (on) {
-> +	if (on)
->  		ret = pm_runtime_resume_and_get(data->dev);
-> -	} else {
-> -		pm_runtime_mark_last_busy(data->dev);
-> +	else
->  		ret = pm_runtime_put_autosuspend(data->dev);
-> -	}
->  
->  	if (ret < 0) {
->  		dev_err(data->dev,
+> 
+> err_put_pm:
+> 	if (enable)
+> 		pm_runtime_put_autosuspend(dev);
+> 
+> 	return ret;
+> 
+> instead of the duplication?
+> 
 
 

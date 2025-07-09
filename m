@@ -1,123 +1,101 @@
-Return-Path: <linux-iio+bounces-21480-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21482-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C82A8AFE910
-	for <lists+linux-iio@lfdr.de>; Wed,  9 Jul 2025 14:36:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB2EFAFEA40
+	for <lists+linux-iio@lfdr.de>; Wed,  9 Jul 2025 15:32:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 29C375A57B9
-	for <lists+linux-iio@lfdr.de>; Wed,  9 Jul 2025 12:35:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD5A61885A87
+	for <lists+linux-iio@lfdr.de>; Wed,  9 Jul 2025 13:32:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A89F2D97BD;
-	Wed,  9 Jul 2025 12:35:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55DAA28A1C6;
+	Wed,  9 Jul 2025 13:32:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b="UVdy09uv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EyMI7rJR"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-106113.protonmail.ch (mail-106113.protonmail.ch [79.135.106.113])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32B562DAFD4
-	for <linux-iio@vger.kernel.org>; Wed,  9 Jul 2025 12:35:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.113
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15440944F
+	for <linux-iio@vger.kernel.org>; Wed,  9 Jul 2025 13:32:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752064537; cv=none; b=dppMRK2TUn7Vqiz8AvuIz6WS4p0CdHnaT7Z0FZV0MQ4QSwQX28U7JZESy4Yw02Kcf3LL/1cgI1p4Ma237vS0AMh8t7/MsygR69UTBDIX0SOlXCG1Dxb1gTtQPhbWZiNyZIF5Ei/dSIP9NmpMyc+/33V+czCbPCxjS2V5HsuvG7k=
+	t=1752067938; cv=none; b=ADODkbfKhfG9vILZ5f0PP6VMrDF5fHxdaQEZ9UrU4Z4Ps2BcnglkcZPUoJBkdDOUOPtP3ZiQ74SF5zhIvt8ywiYiiT73gGyUv9OPC6NOu8OGauGfoCpxad4tZC2wsvQArNmqN6fV39X/O1MLgvIQ6ccFv4dyHzP0pv0QjPcsvFg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752064537; c=relaxed/simple;
-	bh=yjCOvDJQo8WbrkYg41mWfGQdp4nrnuuGCCQs5k4wunU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=dTdPZWttK4fQlPGc+42fo/GRUp0N5ZkqButhGmiyNBThmUOOBg5Jvtze47TkK8jCq1Mr4ARqzI/0xSWkOaH1XFEOGOzw/8F84Ii1ofATlshHA3e38wn+yHLlCMEsSr7FSPJw/Rhfh1jgfTDmeOrIOpKyOok1veGJU040n3pjmIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=geanix.com; spf=pass smtp.mailfrom=geanix.com; dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b=UVdy09uv; arc=none smtp.client-ip=79.135.106.113
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=geanix.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=geanix.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=geanix.com;
-	s=protonmail; t=1752064526; x=1752323726;
-	bh=YD/ZORwhNcjOZSC41mRBp8SECC2d7/ep8mRwBEd2PP4=;
-	h=From:Date:Subject:Message-Id:References:In-Reply-To:To:Cc:From:To:
-	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=UVdy09uvthYUQlJDAP3S7+JWMfBXbtZSheVvHyd1lxzdNUcBE1SMUgAWBlGi8Sogb
-	 uhwwovaqS7vRNs0F62iSdTOGFy5/TaC4IaZkOdRwUj4vlaOQQlUBpm3dkbnZ6iCuLf
-	 EvLl82uEiWn5KYgewhmtR6vjSNg57QFl/++4NesoZL00hm/e2gy69RKgksA9rHBD/8
-	 vlDeoKqWgVQHjdU+pKEI8tH7C3ioFMWMVhzzerPe64GG5phWRVVx9bTTMgWbdTtDxk
-	 IsjDDENHgx04T9y38mEbwo4YfyQKmbijkEyufhtjHeYPeTldoSd50/UIB4AJ4dbUrC
-	 gYpm5xOJedqWA==
-X-Pm-Submission-Id: 4bccrY3dxpz1DDrZ
-From: Sean Nyekjaer <sean@geanix.com>
-Date: Wed, 09 Jul 2025 14:35:14 +0200
-Subject: [PATCH 6/6] iio: imu: inv_icm42600: Avoid configuring if already
- pm_runtime suspended
+	s=arc-20240116; t=1752067938; c=relaxed/simple;
+	bh=EdxvPjbZ3pfqvRK+OHlDIuiEL5jgjtSqmV6K15dJJ8k=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Nsu3bK0PR6P1Kdbh4y1AJ0/Z8v/OBlgd6cNa6PFAioB0MbUJe8mkHFgqQLt20Xx3zYLcfwlhguq/bDfcPqV7rytd5jxi4pXV9+TSKIM3oLseYWErGIht2/puF12URpP8QsHqTPp53GcWBSZenAOUR7XTweS9YPB40V3ykltdRaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EyMI7rJR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7755C4CEF4;
+	Wed,  9 Jul 2025 13:32:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752067936;
+	bh=EdxvPjbZ3pfqvRK+OHlDIuiEL5jgjtSqmV6K15dJJ8k=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=EyMI7rJR0aod6ztV+IjXxBVyh6UegOik0yL6pXG0RQNftfwECMPhaDNL+HtpwFAw/
+	 8ooaubPjn0sCz0PEjEoWiz7pIOP0PYULZlKog9HWk8GZxnjnhMCrwImiDXlae+Qjj/
+	 OB5VR8XtH9kp2k6MKN3VUTqXcvsyeA27Gy/dR8G2fM+i0+GohC7GXrymPt5kWgs9Y5
+	 BqnXqpH16Zpeyr9pmsoDyN+Zg8dQS4hrSDVDfuPc9ZWwIyYM9ExqhVWpt2D7Bek3TI
+	 oW+Vpfp7/8Rw7BIoq1m8LUFOtz4MBUMdSaG99AO7Yuh7BzNffsybiwnNlTZTAdnHir
+	 2akINDw+jTK2A==
+Date: Wed, 9 Jul 2025 14:32:10 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: linux-iio@vger.kernel.org, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
+ Andy Shevchenko <andy@kernel.org>, David Lechner <dlechner@baylibre.com>,
+ Matti Vaittinen <mazziesaccount@gmail.com>, Jonathan Cameron
+ <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH] iio: accel: kionix-kx022a: Apply approximate iwyu
+ principles to includes
+Message-ID: <20250709143210.633ad60a@jic23-huawei>
+In-Reply-To: <aGwlxyxRSm2WLXor@smile.fi.intel.com>
+References: <20250629183649.184479-1-jic23@kernel.org>
+	<aGwlxyxRSm2WLXor@smile.fi.intel.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250709-icm42pmreg-v1-6-3d0e793c99b2@geanix.com>
-References: <20250709-icm42pmreg-v1-0-3d0e793c99b2@geanix.com>
-In-Reply-To: <20250709-icm42pmreg-v1-0-3d0e793c99b2@geanix.com>
-To: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>, 
- Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Andy Shevchenko <andy@kernel.org>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Sean Nyekjaer <sean@geanix.com>
-X-Mailer: b4 0.14.2
 
-Do as in suspend, skip resume configuration steps if the device is already
-pm_runtime suspended. This avoids reconfiguring a device that is already
-in the correct low-power state and ensures that pm_runtimeM handles the
-power state transitions properly.
+On Mon, 7 Jul 2025 22:53:43 +0300
+Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
 
-Fixes: 31c24c1e93c3 ("iio: imu: inv_icm42600: add core of new inv_icm42600 driver")
-Signed-off-by: Sean Nyekjaer <sean@geanix.com>
----
- drivers/iio/imu/inv_icm42600/inv_icm42600_core.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+> On Sun, Jun 29, 2025 at 07:36:49PM +0100, Jonathan Cameron wrote:
+> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > 
+> > Motivated by the W=1 warning about export.h that was introduced this cycle
+> > this is an attempt to apply an approximation of the principles of including
+> > whatever is used in the file directly.
+> > 
+> > Helped by the include-what-you-use tool.
+> > 
+> > Reasoning:
+> > - Drop linux/moduleparam.h as completely unused.
+> > - linux/array_size.h for ARRAY_SIZE()
+> > - linux/bitmap.h for for_each_set_bit
+> > - linux/errno.h for error codes.
+> > - linux/export.h for EXPORT_SYMBOL*()
+> > - linux/math64.h for do_div - alternative would be asm/div64.h
+> > - linux/minmax.h for min()
+> > - linux/sysfs.h for sysfs_emit()
+> > - linux/time64.h for USEC_PER_MSEC
+> > - linux/iio/buffer.h for iio_push_to_buffers_with_timestamp()
+> > - asm/byteorder.h for le16_to_cpu()  
+> 
+> Change LGTM,
+> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> 
 
-diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-index 37b3a7754da1c4e381e38c9871e55a941e19cef4..d745a40b042e1c86b232aaae0820942d11d51c79 100644
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-@@ -824,17 +824,15 @@ static int inv_icm42600_suspend(struct device *dev)
- 	struct device *accel_dev;
- 	bool wakeup;
- 	int accel_conf;
--	int ret;
-+	int ret = 0;
- 
- 	mutex_lock(&st->lock);
- 
- 	st->suspended.gyro = st->conf.gyro.mode;
- 	st->suspended.accel = st->conf.accel.mode;
- 	st->suspended.temp = st->conf.temp_en;
--	if (pm_runtime_suspended(dev)) {
--		ret = 0;
-+	if (pm_runtime_suspended(dev))
- 		goto out_unlock;
--	}
- 
- 	/* disable FIFO data streaming */
- 	if (st->fifo.on) {
-@@ -887,10 +885,13 @@ static int inv_icm42600_resume(struct device *dev)
- 	struct inv_icm42600_sensor_state *accel_st = iio_priv(st->indio_accel);
- 	struct device *accel_dev;
- 	bool wakeup;
--	int ret;
-+	int ret = 0;
- 
- 	mutex_lock(&st->lock);
- 
-+	if (pm_runtime_suspended(dev))
-+		goto out_unlock;
-+
- 	/* check wakeup capability */
- 	accel_dev = &st->indio_accel->dev;
- 	wakeup = st->apex.on && device_may_wakeup(accel_dev);
+Applied.
 
--- 
-2.50.0
+Thanks,
 
+Jonathan
 

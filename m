@@ -1,296 +1,240 @@
-Return-Path: <linux-iio+bounces-21493-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21494-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AA81AFEEE5
-	for <lists+linux-iio@lfdr.de>; Wed,  9 Jul 2025 18:36:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DCA6AFF1F0
+	for <lists+linux-iio@lfdr.de>; Wed,  9 Jul 2025 21:38:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 60C864E3089
-	for <lists+linux-iio@lfdr.de>; Wed,  9 Jul 2025 16:35:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 660A11C26238
+	for <lists+linux-iio@lfdr.de>; Wed,  9 Jul 2025 19:38:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E24EB21CC71;
-	Wed,  9 Jul 2025 16:36:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 532A71F0E50;
+	Wed,  9 Jul 2025 19:38:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="UAyYoSw4"
+	dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b="J1kQIvje"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oi1-f175.google.com (mail-oi1-f175.google.com [209.85.167.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012022.outbound.protection.outlook.com [52.101.66.22])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A4DA21859A
-	for <linux-iio@vger.kernel.org>; Wed,  9 Jul 2025 16:36:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.175
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752078966; cv=none; b=X6UYw2Pk2ZByrb0vhYnaX332J9xHNCLj1QETXJZbV1Ysm0sex/jTjF9TG85xPNByBnhFwdEu3jdAieekIlP28eOnS/bsorKfXv5HC93WGNdr3JhKj1j6w5XBtUbtk4p3aJeiPoZ7drcifpaRRkvNu5sOEsp3F2Bdqvso2pm4KIs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752078966; c=relaxed/simple;
-	bh=T/YxpJHaLl0ZEYjXbomfYbdvkf7AfwrF0GJmnkQ6J0I=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=e90akb2Ah6Jj4J4it7nKHAqIg94K2fGHExdzCKg1hw85IxwVS5z90dvjLb+hvpklj8mvLteVYr3taGhLSvvpmzOl4B7aToUww7NlafwmNnaVWAZxpbq9DBKKXpFRnJgxUlJhGkMSUWhkFtPgippUm1Q58IyhRJ8Ht8Ec4NH7uzA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=UAyYoSw4; arc=none smtp.client-ip=209.85.167.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oi1-f175.google.com with SMTP id 5614622812f47-40ba3d91c35so75090b6e.3
-        for <linux-iio@vger.kernel.org>; Wed, 09 Jul 2025 09:36:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1752078962; x=1752683762; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=M2NCv5ZUnXAsXiQ1y5qCYPVBgj3kCuUiatyrb7NyC8w=;
-        b=UAyYoSw4Me0ZdKOzZDSMfbhCvFuefLVM9glOhZGY9cMKYYN/BXO1OICbWyp+6P/VAr
-         lSi0wpU90YEICWqLoIOQSvP4Qdv2w7wUd01jhJEahC5a9AEJNGG2sIGuEbf4REjUGVCh
-         z5H7iQgF7NauW/8Z8Rn9P7/JLG6bqgIal4Dsr9R0Z8AeHQnbr4EVmrVjlYthHgAy7oG1
-         n6VwIqHvPyQCB+5RIuqjYNfv03txXkwFfLoaSX6wiZV/NEdukT/HplAgeKZ8AZTgN3uA
-         cb1E6d9efF9u3ZeBT/aGveachaInv03xOUE9wUsj7zl62AyV4Hc45QNGc7LqET2n7lHW
-         2+8g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752078962; x=1752683762;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=M2NCv5ZUnXAsXiQ1y5qCYPVBgj3kCuUiatyrb7NyC8w=;
-        b=eWlmNt/1vWMg3wFHJPToF9BcxX81mGZrlnpLqAjdTKKU5QWJuCrdICBg+ntztbLMt7
-         zvrJok32ICNpQEtx1pVw2uU5R8ah43cFb4L66Ho7DP8OSBEGh423xP8eSoBMwe1x6tKa
-         Usd4yL/HHssyCElbDFhvOYWLBdIxa7RpnjAAVM04slL3VDKRTmA+PjwNVymAb9ctK/YV
-         XmMgz3AcHMSPZJc3vpYR/B51i6SlG31s1AHepKDlGB66uw0jC1bO68SBepKlNWCI64o+
-         phEqHqkOD8jAUfmfFbTUK43qMF6lerRXisy097CjEogifn55O+31/rhblIEfZJA4IFs3
-         w9tQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWKVSn4xNQofJHlq61IFUsLs5jQoVsBsoZ1vVV+K8LALqbq4PRaLT9XaZIIEftV3TmBeepSbrOS93g=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwaKTje4o5ZgLzVSqNALJojgXYplBTYmjuDrsbk0fcA2CE8xk+H
-	EtIpRFMRj1+JqWTPjlUrUGmowstycYLiZZGt8U0k9J3pQVAmr5zaCaKR4gA5UDG+bBA=
-X-Gm-Gg: ASbGnctYeCHVYopHpbNz1aZVD80BzHnzj8EU/Hh1cVxC6ii2VwYbIaGYvnOK5MS5ETN
-	n988YeDmOLBBItbu2wt5lKH3lNbFLlbSkHlH6HmwgmVuFj/0ggU+lVQx5IhwboB7K8TU2Nd59RX
-	Fvyy8KrUSHGKFI288pBvVgTlLDwswULtjkmCzfxx4hrfsaHfe7oPx/K9AssCmq3ewB6yBnZ+sCL
-	l4nK+iS2ezU8Gnkfa6eaplF/VUVt3wGS8LkLvqjgeZ6a5G8Q11IJJVe5wGYvgp1IdOGdr+P7kh3
-	Vr58wg51Ag4pnPMxQMOrQDNtNK82jogEUC/an3XDN9P39M6IuhcE7AZdKVxeZtv2dIyU
-X-Google-Smtp-Source: AGHT+IE+a5J4989lV0mNG3uoJIobk1P3f7G6nnrVcQuEoPyM2xrG7xGnluW8sIs1Q7PkyM/QB9HmCg==
-X-Received: by 2002:a05:6808:3012:b0:3f8:d2f8:d735 with SMTP id 5614622812f47-412bcf88924mr1867517b6e.33.1752078961998;
-        Wed, 09 Jul 2025 09:36:01 -0700 (PDT)
-Received: from [127.0.1.1] ([2600:8803:e7e4:1d00:ddc3:43e9:8174:1067])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-40d02ac747dsm2071589b6e.33.2025.07.09.09.36.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Jul 2025 09:36:01 -0700 (PDT)
-From: David Lechner <dlechner@baylibre.com>
-Date: Wed, 09 Jul 2025 11:35:52 -0500
-Subject: [PATCH] iio: adc: ad7173: prevent scan if too many setups
- requested
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7834F1EDA2F;
+	Wed,  9 Jul 2025 19:38:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.22
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752089906; cv=fail; b=J1eJutu6mnzH7vguNYnL1IEgOL1ziy6OoH/JNZ8YVjhySylFm9z6qFlXPW5NbRp2Ez9jh4TRD1RIHz1+1OJr65bXOvpGiNK90FGv3iY9RrS03NI+vTtUbFwGKIwwB8tBHhYgJ9yuPIoL6FPKbZc1MrBc6l5bQ7DUiAqDGtzgbB8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752089906; c=relaxed/simple;
+	bh=du9VsSWsdNJjtNNUeWxBqg4LXW4B7Dy5zao8l6/Jb68=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=XercP5S5B8jLtlhu8IvYQEug9iLgSjORzPptwELNDi2sELt8soVCnmZoZM01CTizit2/Zsi5hwOk7pgPmjr09VTez1wv2m6LeEb+9wCeIZRLv4WqPNPsAU9bI6A1ZkwXplcotOcxYJma6/mt/TSMmeylNxr0iJfvmBreIO+68m0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com; spf=pass smtp.mailfrom=de.bosch.com; dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b=J1kQIvje; arc=fail smtp.client-ip=52.101.66.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=de.bosch.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=LAEPGBAMhebQDr3Qwiaccyl9kH8gdf+BDDp8f8NBN2p9nlZ91gf9jOjafqm8unrWLI8HsoqwdCa/GgGWuVaMtuY4rqGgnm0Rcu7bEcrdGeMejhvfnMYh3tOHI/F7X+8PlQuYxaUPbvatJb2kJu4pbAzk46H9BjR/CvyTzHXGtElFvN8vbqXzyR8tfPdC+GbU8gC5Hrw0p6EHxfhA9+ltcVeFIb6aLSFpxK/hE7adOrVBYoAqsguJULDnW57ovLtptFgL4wLaVamSZ6HgHRRXe8rj0RQ62riEK1s9mONP56ShDNgS5asN2wjsyhdNYHlw67DpTP9A1fJtJbDV5XU5pw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=k8tKjzTDVWNq99JRwdpYGeYuaYeeCcqiVu4WHheYceo=;
+ b=lPCObtUCRAlzKmmnUyWF0f7Q4iZ+y3z95dyaPG3gL1wu+DpVbi3JQ7y1u0fjcvN3Pj9tNtDADDz2w4Tm7tKlHDLNfyb7QqZ0DHfcFFuwX2oKhVAmpNMVwQUqf+U05637PNBJlD3EtVDi/bm3O4+45WoGlQPqiaQKHTq89FeqrulmmelV68TmBHWONZ0NgLUPq8LZq5Gr5FJc3jlOOFWpfm1ouyxERTDeKJTha8JOLu29nMyHu8BMoVrzyAml7Is0yn+oZUYAB7J6ZrJPLzGLCLrgUiiKphtorp6rtnEilFaNELz4ScSTVvl6qDSZ9jj/jqXnLX1nqrQn5k2PqHRERQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=de.bosch.com; dmarc=pass action=none header.from=de.bosch.com;
+ dkim=pass header.d=de.bosch.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=de.bosch.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=k8tKjzTDVWNq99JRwdpYGeYuaYeeCcqiVu4WHheYceo=;
+ b=J1kQIvjeSTlSXF1Nq5Z/H4rGnDvQdtp1XaNn7fEpv7ledfQfG+ADtdA9GRQONoftIZs7G0wyQT5tId4vqExRC/VUF+966z+ob5Tt4n7+i9o48wR/+WR4XvqJ/IyGg53azbWub9iLJpUzryZaI/X8kFaXLvpRx+3yvh8OpRZKNtzgw0+YOVyCJbz5gGSKuYqJ4+j4SxFfUzSn8sU1Q36pfevVdyXha8kpj2lqU4JaNgJnINDGzbNDDddkfTnR+XwfvkcIjGStkJOJqvu/KBaOgGONcdMxHRQjvctiaHXHm2JffOGL+8DKWKB3OrYDU8K1fKzXJDX99IbQZ99QiDFYew==
+Received: from AM8PR10MB4721.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:315::22)
+ by PA1PR10MB8390.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:102:446::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8901.26; Wed, 9 Jul
+ 2025 19:38:18 +0000
+Received: from AM8PR10MB4721.EURPRD10.PROD.OUTLOOK.COM
+ ([fe80::c75f:604a:ce59:8114]) by AM8PR10MB4721.EURPRD10.PROD.OUTLOOK.COM
+ ([fe80::c75f:604a:ce59:8114%6]) with mapi id 15.20.8901.024; Wed, 9 Jul 2025
+ 19:38:18 +0000
+From: "Shen Jianping (ME-SE/EAD2)" <Jianping.Shen@de.bosch.com>
+To: Jonathan Cameron <jic23@kernel.org>
+CC: "lars@metafoo.de" <lars@metafoo.de>, "robh@kernel.org" <robh@kernel.org>,
+	"krzk+dt@kernel.org" <krzk+dt@kernel.org>, "conor+dt@kernel.org"
+	<conor+dt@kernel.org>, "dima.fedrau@gmail.com" <dima.fedrau@gmail.com>,
+	"marcelo.schmitt1@gmail.com" <marcelo.schmitt1@gmail.com>,
+	"linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "Lorenz
+ Christian (ME-SE/EAD2)" <Christian.Lorenz3@de.bosch.com>, "Frauendorf Ulrike
+ (ME/PJ-SW3)" <Ulrike.Frauendorf@de.bosch.com>, "Dolde Kai (ME-SE/PAE-A3)"
+	<Kai.Dolde@de.bosch.com>
+Subject: AW: [PATCH v3 2/2] iio: imu: smi330: Add driver
+Thread-Topic: [PATCH v3 2/2] iio: imu: smi330: Add driver
+Thread-Index: AQHb7DCnxFfdguezA0CMBsJ2vkpDJrQlVJwAgATVpeA=
+Date: Wed, 9 Jul 2025 19:38:18 +0000
+Message-ID:
+ <AM8PR10MB47217D838CA7DDACBE162D15CD49A@AM8PR10MB4721.EURPRD10.PROD.OUTLOOK.COM>
+References: <20250703153823.806073-1-Jianping.Shen@de.bosch.com>
+	<20250703153823.806073-3-Jianping.Shen@de.bosch.com>
+ <20250706175328.7207d847@jic23-huawei>
+In-Reply-To: <20250706175328.7207d847@jic23-huawei>
+Accept-Language: en-US
+Content-Language: de-DE
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=de.bosch.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: AM8PR10MB4721:EE_|PA1PR10MB8390:EE_
+x-ms-office365-filtering-correlation-id: a028adea-02b3-4c19-439b-08ddbf2027ea
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|376014|7416014|366016|1800799024|38070700018;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?tgmTwnfimjUE62zhR/KCP1ICgc0RsM6kysDH0n1g/VkYOSsLQrrTjnC83qkO?=
+ =?us-ascii?Q?G3P+Um+61jtkb6zSM2WSUrDcbaZuxb7G+YkIb8sVLddzPcV12yw3SBq/OjCr?=
+ =?us-ascii?Q?VGrwyGzNx5AXSeAirQdNq42ECMl5KSlWRsRbU5r8yCvD7QBvrtRl3wLuJfll?=
+ =?us-ascii?Q?IS/6yluotowz2b2WC7dK2ItYVAaZEhY+k5lIFKY9Ggu32yKq8buPHUbv73rW?=
+ =?us-ascii?Q?1HGQon8no+NFB/0AylauHHjX6gsAZd31wU5lvH82Ae92lwkPXyoXKfUyQugW?=
+ =?us-ascii?Q?PUQXut/NdGnblA0oDXZRmMnHgbyWQC8+E2u1E4Hve/e3OHdZuAsin0inlC5C?=
+ =?us-ascii?Q?frzckwdawmqtBaJAkk1bw/30VPfYf9t5+JOgGuajVW115eA+9dw/z3JQv1vx?=
+ =?us-ascii?Q?l9+oZT/oov6Mbmhqp0+Vaf09WWXkjYzrUk3WcYzb5KmsucYUDnEyG1aohRlr?=
+ =?us-ascii?Q?s3jLJZzPFbCl9SkC2ZYv/tsipxN34fN32TaXK9QZ8AS8QarMtBuTCjJppB7K?=
+ =?us-ascii?Q?vUkA8AM5lt0xr1zimQTYAPG9lcIqwZJhWgRDAjwQ0YNB9COY9oEmyYcXZ6mu?=
+ =?us-ascii?Q?oW0SM0664z8uaIFwsze+y6C4ZPrEIMFRATYZBhAH02Sfaj848wcS+xsMVtwz?=
+ =?us-ascii?Q?gI8QuczMy5bD2FJwDhpqzo2x72FntkYGJ03ID84vDOPGy4biLCp8Ieah7vWx?=
+ =?us-ascii?Q?ZuyvACqIrqJsGUmmQwrB9p4eRmT/pvlt1fccMhWZkRyrffPlVaGOYrdyjrpz?=
+ =?us-ascii?Q?Np9MlqxNPXP/sjkcV1AVul4BcVmBmcu+MNygrC5jX8Hm7uJJKgd4aowOQw0U?=
+ =?us-ascii?Q?CkVvSj2XFtC2mHk6B325h9PwKWFtXjMAywFGD1s3lTGDjBvDFvUFhp6jgMgT?=
+ =?us-ascii?Q?JH3GqqbUnRn279hWMNtxPmKmsFqQ3b7txDKrlLBU2UDiERQHPHpUeSl0ozK7?=
+ =?us-ascii?Q?1LXeZ9V8jYj9k8Di/JMRvFYa4seWWXP0pKHIV8mAnvh6KfvxWeiaFtG67t94?=
+ =?us-ascii?Q?4ppE/2sELV+Gubgaw935PO8JM7TZyjcz7XHHyP60OIkEpbJYwZwKdOJs6WPH?=
+ =?us-ascii?Q?UeAqHpDb/t1E7/CrSI5YQBbDHI7ph+iqmxyQREfu90MPji+1N4TeG55VDqDf?=
+ =?us-ascii?Q?lj9Hl4CA0N6Luh99882/9EU4wMHJbhw1HSsCR0ZS+w8fCVJ60gGCcxwe79bz?=
+ =?us-ascii?Q?6396UqsOjsLXhUlKqMgXZlxC2Kd6LHwQvfuJksFy8rYxFMToi6IlX/qJb/sN?=
+ =?us-ascii?Q?/eTSLj9Nwf8w2V/ek9Jo04ztg9ZLqy/GY6aioMQl7plrvQZsTOZ9xuvhKYTg?=
+ =?us-ascii?Q?v/2e0B6A+Ce04BEl14dr1VyuAKTQpRBGqrZ3pXEmikaKrFEW50cEzsACUIet?=
+ =?us-ascii?Q?Cl/JmOtFfoXvTF2d8ps4uw5L7/yf2XWrMx6vjM5JqinMmvDVF1Kxy+3eLhrV?=
+ =?us-ascii?Q?OOZCoMrdapACqy2mfPgh0GRL/HWacXGxf9bbZ9LDQeYPTwn2325/Jg=3D=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM8PR10MB4721.EURPRD10.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?/t8R/MN+d3Cg+Ng4yQur1j5E8FfkK9Ifl2HWE4ckO3Pr30LydnzekI0mL5eq?=
+ =?us-ascii?Q?Fgd6u2Y6YEmVmwqdbLFadUk4S/cshmTWAxRcM22qYNHb6fkMKP82Zju2bc9P?=
+ =?us-ascii?Q?MPnXo3e8ZG0TkkDVGdX3Gwey5ZCDBczUimTZHJS34FHVYPdYE8nN+mHYBiw6?=
+ =?us-ascii?Q?hXius1RSfw0k+UaDolA5fzbUz1tsNwVqlJtMjPIw/tm6CvlGNw6JjQRgWg+Q?=
+ =?us-ascii?Q?2yBtKAOJwGKZ1w9hdwywLOQicaySAtmpxLZkyNeG+K/TM6Q/asMl/lNyqTc+?=
+ =?us-ascii?Q?O95bOQV40zkaWohtgMBKwaOv/haDHno4HD1x68WSZwUufITV6hu0WQ7sKapp?=
+ =?us-ascii?Q?JiXoiiKy3NSMXmInpaI4ZZrtQr5oOnT2bZDozRzJuR9n517yPPzvGt/CoFJS?=
+ =?us-ascii?Q?VMkjWo2rZNOpXA/RoXtmYJr+9k+DLfJ/MsM0Mt1VJVre+I59ESgKRrBpoxAz?=
+ =?us-ascii?Q?fJpayk6Wvn5rrXHqmZJGkj9Wk91XQHAcJyfN3QiLdv7mdTGMHVotN4VwESgH?=
+ =?us-ascii?Q?02ko8IdbabBZDACVCYDcPngtToNO3UN7sgaS6EbqQhyR8rvWsaQi3IMw0Tc+?=
+ =?us-ascii?Q?gS9jZ/7T7SmlbO0sANg41KR9rNQgyUHI1T/Be9MKHrj7eH5zdzq3j5TqTYdZ?=
+ =?us-ascii?Q?6JZTo+oRAaeAsiqeXfCLnk08qGs83j0gKZ7rqnO7DMB5asVc9IwE1BYAasLb?=
+ =?us-ascii?Q?Xxa0ohEXRqAPsO9p8gcmyVwensCx/d3nB/FvJqRLlC1WkFSpOYg3VuvKNg/E?=
+ =?us-ascii?Q?8RgDGZ59Gcb+ezIoW8apU3FXa3/d+Pb1sdBaz0FnuRkdSDMPZB2AUCAZdn+b?=
+ =?us-ascii?Q?urS0zCM/LpB2SlGYwH8V/vfbrf+YbNmg+T33X3lRklPf7QX0r33AYGOKl8YD?=
+ =?us-ascii?Q?NcDznAgPmrWkC6vSJykraMrjd3959kb31T7uA8oQGi+dRj9cznPST2LcuZ+M?=
+ =?us-ascii?Q?/SuutuEIvpZi8uByuuVgTXJpYx8cSp9CWe6Al82ErmYlIZ47Qu1bQxB7tXgj?=
+ =?us-ascii?Q?xht9MJlG/yNkf5bq91+gQi4aH26sYQ4NOBBuwsAsGtaPYvvedY//7WNlxnND?=
+ =?us-ascii?Q?CKUCW9yxdUQSUXXS7K+vHpUh4NYLBNl499F0o+hYh6oxvuWytGgdpir/D6jG?=
+ =?us-ascii?Q?9SKIPBkDVtRSplLR/uozdx8PTMDWFz2LAaE859tHWmqNVgoU8zbQgKfxB55J?=
+ =?us-ascii?Q?VteS3hWtnbGAgHlJqpfViUP1AMyDWZkPXOClLn4GmBD4aDkdcuKmg6ru2pRD?=
+ =?us-ascii?Q?vLdRc4s0vQpCKxXStvDGwUD9UNP227xfVa5H/nAuxkDsRsbaDHv3ooZthtVT?=
+ =?us-ascii?Q?+dUwZKoAV4lFfddBYgOywcLKztEX8JeyoCqyiOZ7NkFZxOxEOk5YEQcZ5a2k?=
+ =?us-ascii?Q?kXF47h2vr71T/Fh2u6A2W+UauLSQEzQ7gDkk55k8sgn+W0vw1avrJQlFff1n?=
+ =?us-ascii?Q?GdCGEcq+F37nFWVNA0HjLdbkXKTZ9/DMlLR+2VRVa7k7PNrN9wppB61CnWNi?=
+ =?us-ascii?Q?0/Ya4G4LXV9mjwPV6UHKPsKDRLe4iCtUPqSmIDMG/lRHoQ6GZUyHCN98ocjb?=
+ =?us-ascii?Q?dO7xfhr15lFAHKOoafQ=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250709-iio-adc-ad7173-fix-setup-use-limits-v1-1-e41233029d44@baylibre.com>
-X-B4-Tracking: v=1; b=H4sIAGeabmgC/x2N0QqCQBBFf0XmuYFxQ7f6lfBhdae6UCo7GoL47
- w09nIcDh3t3Mi1Qo1u1U9EvDNPoUp8qGl5pfCoju1OQ0EiUKwMTpzw4sY5nfmBj02WdeTXlNz5
- YjCU1OfRtauNFyJfmot79X+7dcfwALA9yMHUAAAA=
-X-Change-ID: 20250709-iio-adc-ad7173-fix-setup-use-limits-0a5d2b6a6780
-To: Lars-Peter Clausen <lars@metafoo.de>, 
- Michael Hennerich <Michael.Hennerich@analog.com>, 
- Jonathan Cameron <jic23@kernel.org>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Andy Shevchenko <andy@kernel.org>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- David Lechner <dlechner@baylibre.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=7214; i=dlechner@baylibre.com;
- h=from:subject:message-id; bh=T/YxpJHaLl0ZEYjXbomfYbdvkf7AfwrF0GJmnkQ6J0I=;
- b=owEBbQGS/pANAwAKAcLMIAH/AY/AAcsmYgBobppph0m67SJSY5refN+iWtP3CCO+qC4Mi6bGc
- 5WyAu6VjyCJATMEAAEKAB0WIQTsGNmeYg6D1pzYaJjCzCAB/wGPwAUCaG6aaQAKCRDCzCAB/wGP
- wBujB/4za2HUMD8opIpTpE0X3c5+k7wNbl9Y2qcT7EGEYysPLv9oVSRVEw72ZIEoeKTLGIsuClv
- WLgXr+t1KF/Q3R6T073OgUZpLya06ZCpQKh4YCkShSgi8f9QpvZty+3qI58M1iWn+rT0cpJRK6G
- 2+z+NjoxQmpJe4C0Et3OTfuuE/OHLvo+gh3xDWQMEg+RQFNA17JurkNxFABy/Znc8iNvUR61Pj1
- yvToRBdfcX97XmM31uKT40AAjV1vln2S9VdA5bgwh8KqH8F3HkqEYtvz71AIgeRmeWB3HX6xrrH
- bW5sh2tvl64T+Wv7DRzNe3uruADnTioJgnkXlK5w/cfkXu2/
-X-Developer-Key: i=dlechner@baylibre.com; a=openpgp;
- fpr=8A73D82A6A1F509907F373881F8AF88C82F77C03
+X-OriginatorOrg: de.bosch.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: AM8PR10MB4721.EURPRD10.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: a028adea-02b3-4c19-439b-08ddbf2027ea
+X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Jul 2025 19:38:18.5723
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 0ae51e19-07c8-4e4b-bb6d-648ee58410f4
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: R7P25aGS0n6zjUPM0keDWX/l8of3S+ecE07bZZaJI1a/swoImE5spIhHdu9i8SOdtkvVEe4Db2TO57EE7KDJYA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR10MB8390
 
-Add a check to ad7173_update_scan_mode() to ensure that we didn't exceed
-the maximum number of unique channel configurations.
+Hi Jonathan,
 
-In the AD7173 family of chips, there are some chips that have 16
-CHANNELx registers but only 8 setups (combination of CONFIGx, FILTERx,
-GAINx and OFFSETx registers). Since commit 2233378a8c60 ("iio: adc:
-ad7173: fix num_slots"), it is possible to have more than 8 channels
-enabled in a scan at the same time, so it is possible to get a bad
-configuration where more than 8 channels are using unique configurations.
-This happens because the algorithm to allocate the setup slots only
-takes into account which slot has been least recently used and doesn't
-know about the maximum number of slots available.
+"available_scan_masks" works not as expected.  We test it using kernel vers=
+ion v6.16. see the test result inline.
 
-Since the algorithm to allocate the setup slots is quite complex, it is
-simpler to check after the fact if the current state is valid or not.
-So this patch adds a check in ad7173_update_scan_mode() after setting up
-all of the configurations to make sure that the actual setup still
-matches the requested setup for each enabled channel. If not, we prevent
-the scan from being enabled and return an error.
+Best Regards=20
+Jianping=20
 
-The setup comparison is ad7173_setup_equal() is refactored to a separate
-function since we need to call it in two places now.
+>> +
+>> +static irqreturn_t smi330_trigger_handler(int irq, void *p) {
+>> +	struct iio_poll_func *pf =3D p;
+>> +	struct iio_dev *indio_dev =3D pf->indio_dev;
+>> +	struct smi330_data *data =3D iio_priv(indio_dev);
+>> +	int ret, chan;
+>> +	int i =3D 0;
+>> +
+>> +	ret =3D regmap_bulk_read(data->regmap, SMI330_ACCEL_X_REG, data-
+>>buf,
+>> +			       ARRAY_SIZE(smi330_channels));
+>> +	if (ret)
+>> +		goto out;
+>> +
+>> +	if (*indio_dev->active_scan_mask !=3D SMI330_ALL_CHAN_MSK) {
+>> +		iio_for_each_active_channel(indio_dev, chan)
+>> +			data->buf[i++] =3D data->buf[chan];
+>
+>If I follow this correctly you are reading all the channels and just copyi=
+ng out the
+>ones you want.  Just let the IIO core do that for you by setting iio_dev-
+>>available_scan_masks =3D {  SMI330_ALL_CHAN_MSK, 0 }; and push the whole
+>buffer every time.
 
-Fixes: 2233378a8c60 ("iio: adc: ad7173: fix num_slots")
-Signed-off-by: David Lechner <dlechner@baylibre.com>
----
-I know this isn't pretty, but after puzzling over it for a day, this was
-the best I could come up with that didn't involve a complete rewrite of
-the setup allocation algorithm.
+For the most frequent use cases, we define available_scan_masks =3D { SMI33=
+0_ALL_CHAN_MSK, SMI330_ACC_XYZ_MSK, SMI330_GYRO_XYZ_MSK, 0 }; and push the =
+whole buffer every time.
+From the user space we just enable 3 channels gyro_x, gyro_y, and gyro_z. T=
+hen we enable buffer and expect that only the gyro values and timestamp in =
+iio_buffer. Nevertheless, we have 3 accelerometer values and the timestamp =
+in iio_buffer.
+It seems that the iio core does not take care which channel is enabled,  ju=
+st copy the first 3 values (acc x,y,z) into iio_buffer.  Our driver code st=
+ill needs to take care and just copy the enabled channel value to buffer.
 
-I don't really understand why we care about which setup was the least
-recently used - it isn't like we are going to wear out one setup by
-using it too much. Maybe it was just to reduce the number of SPI xfers?
-Anyway, ad7124 has a similar setup allocation algorithm, so it could be
-nice to eventually replace both of these with something common that is
-a bit simpler, e.g. always use SETUP 0 for single transfers and allocate
-the rest of the setups in order for buffered reads with more than one
-channel enabled. And just always re-write the setup each time so we
-don't have to try to keep track of what each slot is programmed with.
+Another side effect after using available_scan_masks is that the active_sca=
+n_masks sometimes does not reflect current channel activation status.
 
-Also, the commit hash this references is currently in iio/fixes-togreg,
-so if that gets rebased, it will need to be updated here.
----
- drivers/iio/adc/ad7173.c | 87 +++++++++++++++++++++++++++++++++++++++++-------
- 1 file changed, 75 insertions(+), 12 deletions(-)
+Is some step missing to properly use available_scan_masks ?  How can a user=
+ find out from user space which channel combination is defined in available=
+_scan_masks ?
 
-diff --git a/drivers/iio/adc/ad7173.c b/drivers/iio/adc/ad7173.c
-index c41bc5b9ac597f57eea6a097cc3a118de7b42210..d1d6c20fb1ee3f8479e8faa2209206e208adb90a 100644
---- a/drivers/iio/adc/ad7173.c
-+++ b/drivers/iio/adc/ad7173.c
-@@ -200,7 +200,7 @@ struct ad7173_channel_config {
- 	/*
- 	 * Following fields are used to compare equality. If you
- 	 * make adaptations in it, you most likely also have to adapt
--	 * ad7173_find_live_config(), too.
-+	 * ad7173_setup_equal(), too.
- 	 */
- 	struct_group(config_props,
- 		bool bipolar;
-@@ -563,12 +563,19 @@ static void ad7173_reset_usage_cnts(struct ad7173_state *st)
- 	st->config_usage_counter = 0;
- }
- 
--static struct ad7173_channel_config *
--ad7173_find_live_config(struct ad7173_state *st, struct ad7173_channel_config *cfg)
-+/**
-+ * ad7173_setup_equal - Compare two channel setups
-+ * @cfg1: First channel configuration
-+ * @cfg2: Second channel configuration
-+ *
-+ * Compares all configuration options that affect the registers connected to
-+ * SETUP_SEL, namely CONFIGx, FILTERx, GAINx and OFFSETx.
-+ *
-+ * Returns: true if the setups are identical, false otherwise
-+ */
-+static bool ad7173_setup_equal(const struct ad7173_channel_config *cfg1,
-+			       const struct ad7173_channel_config *cfg2)
- {
--	struct ad7173_channel_config *cfg_aux;
--	int i;
--
- 	/*
- 	 * This is just to make sure that the comparison is adapted after
- 	 * struct ad7173_channel_config was changed.
-@@ -581,14 +588,22 @@ ad7173_find_live_config(struct ad7173_state *st, struct ad7173_channel_config *c
- 				     u8 ref_sel;
- 			     }));
- 
-+	return cfg1->bipolar == cfg2->bipolar &&
-+	       cfg1->input_buf == cfg2->input_buf &&
-+	       cfg1->odr == cfg2->odr &&
-+	       cfg1->ref_sel == cfg2->ref_sel;
-+}
-+
-+static struct ad7173_channel_config *
-+ad7173_find_live_config(struct ad7173_state *st, struct ad7173_channel_config *cfg)
-+{
-+	struct ad7173_channel_config *cfg_aux;
-+	int i;
-+
- 	for (i = 0; i < st->num_channels; i++) {
- 		cfg_aux = &st->channels[i].cfg;
- 
--		if (cfg_aux->live &&
--		    cfg->bipolar == cfg_aux->bipolar &&
--		    cfg->input_buf == cfg_aux->input_buf &&
--		    cfg->odr == cfg_aux->odr &&
--		    cfg->ref_sel == cfg_aux->ref_sel)
-+		if (cfg_aux->live && ad7173_setup_equal(cfg, cfg_aux))
- 			return cfg_aux;
- 	}
- 	return NULL;
-@@ -1230,7 +1245,7 @@ static int ad7173_update_scan_mode(struct iio_dev *indio_dev,
- 				   const unsigned long *scan_mask)
- {
- 	struct ad7173_state *st = iio_priv(indio_dev);
--	int i, ret;
-+	int i, j, k, ret;
- 
- 	for (i = 0; i < indio_dev->num_channels; i++) {
- 		if (test_bit(i, scan_mask))
-@@ -1241,6 +1256,54 @@ static int ad7173_update_scan_mode(struct iio_dev *indio_dev,
- 			return ret;
- 	}
- 
-+	/*
-+	 * On some chips, there are more channels that setups, so if there were
-+	 * more unique setups requested than the number of available slots,
-+	 * ad7173_set_channel() will have written over some of the slots. We
-+	 * can detect this by making sure each assigned cfg_slot matches the
-+	 * requested configuration. If it doesn't, we know that the slot was
-+	 * overwritten by a different channel.
-+	 */
-+	for_each_set_bit(i, scan_mask, indio_dev->num_channels) {
-+		const struct ad7173_channel_config *cfg1, *cfg2;
-+
-+		cfg1 = &st->channels[i].cfg;
-+
-+		for_each_set_bit(j, scan_mask, indio_dev->num_channels) {
-+			cfg2 = &st->channels[j].cfg;
-+
-+			/*
-+			 * Only compare configs that are assigned to the same
-+			 * SETUP_SEL slot and don't compare channel to itself.
-+			 */
-+			if (i == j || cfg1->cfg_slot != cfg2->cfg_slot)
-+				continue;
-+
-+			/*
-+			 * If we find two different configs trying to use the
-+			 * same SETUP_SEL slot, then we know that the that we
-+			 * have too many unique configurations requested for
-+			 * the available slots and at least one was overwritten.
-+			 */
-+			if (!ad7173_setup_equal(cfg1, cfg2)) {
-+				/*
-+				 * At this point, there isn't a way to tell
-+				 * which setups are actually programmed in the
-+				 * ADC anymore, so we could read them back to
-+				 * see, but it is simpler to just turn off all
-+				 * of the live flags so that everything gets
-+				 * reprogramed on the next attempt read a sample.
-+				 */
-+				for (k = 0; k < st->num_channels; k++)
-+					st->channels[k].cfg.live = false;
-+
-+				dev_err(&st->sd.spi->dev,
-+					"Too many unique channel configurations requested for scan\n");
-+				return -EINVAL;
-+			}
-+		}
-+	}
-+
- 	return 0;
- }
- 
+>
+>The handling the core code is reasonably sophisticated and will use bulk
+>copying where appropriate.
+>
+>If there is a strong reason to not use that, add a comment here so we don'=
+t
+>have anyone 'fix' this code in future.
+>
+>> +	}
+>> +
+>> +	iio_push_to_buffers_with_timestamp(indio_dev, data->buf,
+>> +pf->timestamp);
+>> +
+>> +out:
+>> +	iio_trigger_notify_done(indio_dev->trig);
+>> +
+>> +	return IRQ_HANDLED;
+>> +}
 
----
-base-commit: 2233378a8c606f7f6893d4c16aa6eb6fea027a52
-change-id: 20250709-iio-adc-ad7173-fix-setup-use-limits-0a5d2b6a6780
-
-Best regards,
--- 
-David Lechner <dlechner@baylibre.com>
 
 

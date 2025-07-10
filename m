@@ -1,86 +1,82 @@
-Return-Path: <linux-iio+bounces-21524-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21525-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 864E6AFFDFA
-	for <lists+linux-iio@lfdr.de>; Thu, 10 Jul 2025 11:23:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49078AFFE24
+	for <lists+linux-iio@lfdr.de>; Thu, 10 Jul 2025 11:30:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C7D41164F67
-	for <lists+linux-iio@lfdr.de>; Thu, 10 Jul 2025 09:23:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4A66E1C47BDD
+	for <lists+linux-iio@lfdr.de>; Thu, 10 Jul 2025 09:30:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFE99292B4A;
-	Thu, 10 Jul 2025 09:22:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 726B42BE7B1;
+	Thu, 10 Jul 2025 09:29:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BmzIcBKJ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Pk5TCklL"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DD7928C5D5;
-	Thu, 10 Jul 2025 09:22:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C26CC292B37;
+	Thu, 10 Jul 2025 09:29:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752139377; cv=none; b=JT9WZTnR/mjDpm9csPzoNdjIND00v2By6iNIlKeXz7Plo3JHs57b+1XZnnGNhcxTr1K35zYkJQ8WXmZJJBs9mVv54cdq0MivwLUPCY2KD2iag8kenc7j+fkKcsnUbGVQ7TWgAk49iBYEFP02ckdbQhWrjV698c76zFW1GyA0OQg=
+	t=1752139799; cv=none; b=tdT2U7SBtQwfgCVC2gCXR1E7ccEx8LUCUI/0e92k/Kxm2w/nn5xMDYej96NSjdRWVukQknbR012Ut/aaNiHM7RRe6J1m+LFWTK2CAgF52SW3jHdJf5BfxRRNfAmZ1h+TvTA8ZmOPK1Ty1qV1VTA7frqQ8BTUTvyWyFYEyrsHNTM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752139377; c=relaxed/simple;
-	bh=oMuEnzSiV/0zGJRZTSJdmYqP9+3hpJC5wE7fsmK9ILg=;
+	s=arc-20240116; t=1752139799; c=relaxed/simple;
+	bh=FfyeP/NDyN7nfFZ6wzcvSd4IG6KdqSyCylHKZr3tP1Y=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=P/4qsTkJJJJIiJtNOSOyJmiPolmDdH7BcIBQUiE5qkCGNvBuzQaFXe/rqY6B0NOkjUdjmtlwFQvg31zh4AT99sK3MAdfd5LTWmOTtNmiUH8rQ9wfzDxYf5m8z4z1sDOoVANWZydHHpZ6LgyHqmxH0K96/SgpbxCJXw4kKM/egHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BmzIcBKJ; arc=none smtp.client-ip=198.175.65.20
+	 Content-Type:Content-Disposition:In-Reply-To; b=b+fZ7CcjDNyo3eoXUCaOMgITabVELur15Ho49ACJyNjdqXKz+1DNEUKyp4lFP5FBpCiBPYgNbNwLoHpfRM9Am7QyVidotksZiFNcUyy2Pp9OyeYa20HATF3CQkmHjQ2E3QoTi44u2Yoz+XkdEhkx4yUckUMxudCZjnDY5wurWLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Pk5TCklL; arc=none smtp.client-ip=198.175.65.20
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1752139376; x=1783675376;
+  t=1752139798; x=1783675798;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=oMuEnzSiV/0zGJRZTSJdmYqP9+3hpJC5wE7fsmK9ILg=;
-  b=BmzIcBKJSPDWUEkbTuIvHCW2odvvx5Wu0HF8fPcfTwm0SUsuMIEtFU+t
-   1YeMVnSkoU6+jV1IPe2roXLwDD/y3Z9nlrmiJD/RmimhR+igG5UijrxdN
-   sQn9jJkSYlphb49pu7WsZewwuG8GxWsR0clSXwIFhHil2WymTxtlaRHtj
-   i1etWdnFyDOEapCkpTf2T5MMormHL0zkgQc7+9kkb+z8/TXDIozaiZqoc
-   p7XcLIWEPf41yoKpGi9DpndJJGWNphYQnZwOFQarZwPUxq003ve6Om3jv
-   NVedamKmIg+y4yp4Em3JtbmVpBQkeEPO1DdzwTOfcmZpgdV80ZC5y/sOs
-   A==;
-X-CSE-ConnectionGUID: jGzCO2JTSTyJryShWwXfnQ==
-X-CSE-MsgGUID: aiTRnKNHS3WWeRhNiwsZcQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11489"; a="54130105"
+  bh=FfyeP/NDyN7nfFZ6wzcvSd4IG6KdqSyCylHKZr3tP1Y=;
+  b=Pk5TCklLp/5vP7aGDUqz3G/p6GY0BAlhhjBek8bHHsywkGvM+JDrRLcs
+   bqIbYCP4mWmq96z/t+Q+vaBdXDGTtYyvqY3virPkrZ27kVAJiHMosu9JB
+   3VNkuBa84x+OEMkEh5rhH2PetlC9qmyM7ZBf5Y32eBSITUpXCA6sjblCg
+   7cV6AHCNkqRfOxD4uVllWSmpaLvYxewubVyraxXouALhzq5CvjsvFxnPB
+   pznJZ+LoAPSxMpKwoHQMl9BKnBd2mkOkCWeTI8etBGBCdFfUOk7lKNsyW
+   XkEV1XzphIunZBX21RHQSd01zGfeFxnUglJLmGdiN087Io+FOO3KUcfLy
+   Q==;
+X-CSE-ConnectionGUID: aVs7HyjNTAG21ZkErQw7CQ==
+X-CSE-MsgGUID: xNvCV9aRTxeLzOwu0DtOgA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11489"; a="54130745"
 X-IronPort-AV: E=Sophos;i="6.16,300,1744095600"; 
-   d="scan'208";a="54130105"
+   d="scan'208";a="54130745"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2025 02:22:56 -0700
-X-CSE-ConnectionGUID: p0j4cVbgRGuYdUOREp4FBQ==
-X-CSE-MsgGUID: hsWdMsaBR2aaOXEUBxOdGw==
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2025 02:29:57 -0700
+X-CSE-ConnectionGUID: +Qa7pN1SRby0WTK7MhNp3w==
+X-CSE-MsgGUID: t8ai8+ECQD2mAtDj4NnN9A==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,300,1744095600"; 
-   d="scan'208";a="186994717"
+   d="scan'208";a="186995337"
 Received: from smile.fi.intel.com ([10.237.72.52])
-  by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2025 02:22:51 -0700
+  by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2025 02:29:54 -0700
 Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
 	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1uZnUN-0000000E9eg-1XWN;
-	Thu, 10 Jul 2025 12:22:47 +0300
-Date: Thu, 10 Jul 2025 12:22:46 +0300
+	id 1uZnbD-0000000E9ji-3joE;
+	Thu, 10 Jul 2025 12:29:51 +0300
+Date: Thu, 10 Jul 2025 12:29:51 +0300
 From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Primoz Fiser <primoz.fiser@norik.com>
-Cc: Haibo Chen <haibo.chen@nxp.com>, Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>, Nuno Sa <nuno.sa@analog.com>,
+To: remi.buisson@tdk.com
+Cc: Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
 	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, linux-iio@vger.kernel.org,
-	imx@lists.linux.dev, devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	upstream@lists.phytec.de, andrej.picej@norik.com
-Subject: Re: [PATCH 2/2] iio: adc: imx93: Make calibration parameters
- configurable
-Message-ID: <aG-GZqhABwErcEyM@smile.fi.intel.com>
-References: <20250710073905.1105417-1-primoz.fiser@norik.com>
- <20250710073905.1105417-3-primoz.fiser@norik.com>
+	Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org,
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH v2 2/8] iio: imu: inv_icm45600: add new inv_icm45600
+ driver
+Message-ID: <aG-ID7O3HgVc1EOX@smile.fi.intel.com>
+References: <20250710-add_newport_driver-v2-0-bf76d8142ef2@tdk.com>
+ <20250710-add_newport_driver-v2-2-bf76d8142ef2@tdk.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -89,60 +85,107 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250710073905.1105417-3-primoz.fiser@norik.com>
+In-Reply-To: <20250710-add_newport_driver-v2-2-bf76d8142ef2@tdk.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
  krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Thu, Jul 10, 2025 at 09:39:04AM +0200, Primoz Fiser wrote:
+On Thu, Jul 10, 2025 at 08:57:57AM +0000, Remi Buisson via B4 Relay wrote:
+> From: Remi Buisson <remi.buisson@tdk.com>
 > 
-> Make i.MX93 ADC calibration parameters:
->  - AVGEN: Enable calibration averaging function,
->  - NRSMPL: Select number of calibration samples,
->  - TSAMP: Select sample time of calibration conversions,
+> Core component of a new driver for InvenSense ICM-45600 devices.
+> It includes registers definition, main probe/setup, and device
+> utility functions.
 > 
-> in the MCR register configurable with the corresponding device-tree
-> properties:
->  - nxp,calib-avg-en,
->  - nxp,calib-nr-samples and
->  - nxp,calib-t-sample.
+> ICM-456xx devices are latest generation of 6-axis IMU,
+> gyroscope+accelerometer and temperature sensor. This device
+> includes a 8K FIFO, supports I2C/I3C/SPI, and provides
+> intelligent motion features like pedometer, tilt detection,
+> and tap detection.
 
 ...
 
->  #include <linux/platform_device.h>
->  #include <linux/pm_runtime.h>
->  #include <linux/regulator/consumer.h>
+> +	INV_ICM45600_SENSOR_MODE_NB
+
+What does the _NB stand for? Number of Bullets?
+
+...
+
+> +struct inv_icm45600_sensor_conf {
+> +	int mode;
+> +	int fs;
+> +	int odr;
+> +	int filter;
+
+Any of them can hold negative value?
+
+> +};
+
+...
+
+> +#define INV_ICM45600_SENSOR_CONF_INIT		{-1, -1, -1, -1}
+
+Unused.
+
+
+> +#include <linux/bitfield.h>
+> +#include <linux/delay.h>
+> +#include <linux/device.h>
+> +#include <linux/err.h>
+> +#include <linux/iio/iio.h>
+> +#include <linux/interrupt.h>
+> +#include <linux/irq.h>
+> +#include <linux/module.h>
+> +#include <linux/mutex.h>
+> +#include <linux/pm_runtime.h>
 > +#include <linux/property.h>
-
-Keep it in order.
+> +#include <linux/regmap.h>
+> +#include <linux/regulator/consumer.h>
+> +#include <linux/types.h>
 
 ...
 
-> +	ret = device_property_read_u32(adc->dev, "nxp,calib-avg-en", &val);
-> +	if (!ret) {
-> +		if (val != 0 && val != 1) {
-> +			dev_err(adc->dev, "invalid nxp,calib-avg-en: %d\n", val);
-> +			return -EINVAL;
-> +		}
-> +		reg = val;
-> +		mcr &= ~IMX93_ADC_MCR_AVGEN_MASK;
-> +		mcr |= FIELD_PREP(IMX93_ADC_MCR_AVGEN_MASK, reg);
+> +static int inv_icm45600_ireg_read(struct regmap *map, unsigned int reg,
+> +				   u8 *data, size_t count)
+> +{
+> +	int ret;
+> +	u8 addr[2];
+> +	ssize_t i;
+> +	unsigned int d;
+> +
+> +	addr[0] = FIELD_GET(INV_ICM45600_REG_BANK_MASK, reg);
+> +	addr[1] = FIELD_GET(INV_ICM45600_REG_ADDR_MASK, reg);
+> +
+> +	/* Burst write address. */
+> +	ret = regmap_bulk_write(map, INV_ICM45600_REG_IREG_ADDR, addr, 2);
+
+sizeof()?
+
+> +	udelay(INV_ICM45600_IREG_DELAY_US);
+
+See below. This is also weird.
+
+> +	if (ret)
+> +		return ret;
+> +
+> +	/* Read the data. */
+> +	for (i = 0; i < count; i++) {
+> +		ret = regmap_read(map, INV_ICM45600_REG_IREG_DATA, &d);
+> +		data[i] = d;
+> +		udelay(INV_ICM45600_IREG_DELAY_US);
+
+Can fsleep() be used here?
+
+> +		if (ret)
+> +			return ret;
+
+This is weird. First you assign a garbage to the output, delay and return
+an error. It seems entire code is broken...
+Please, fix all these and try again, I stop my review here.
+
 > +	}
-
-Please, since it's optional, do other way around.
-
-	val = $DEFAUTL;
-	device_property_read_u32(adc->dev, "nxp,calib-avg-en", &val);
-	FIELD_MODIFY(...)
-
-Similar approach may be used for the other properties.
-
-...
-
-> +	/* write calibration settings to MCR */
-> +	writel(mcr, adc->regs + IMX93_ADC_MCR);
-
-Please, factor out this to the function, so we won't see the direct IO in the
-->probe().
+> +
+> +	return 0;
+> +}
 
 -- 
 With Best Regards,

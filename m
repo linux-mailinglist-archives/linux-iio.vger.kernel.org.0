@@ -1,46 +1,46 @@
-Return-Path: <linux-iio+bounces-21538-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21539-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44303B0099F
-	for <lists+linux-iio@lfdr.de>; Thu, 10 Jul 2025 19:11:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A35E2B009A0
+	for <lists+linux-iio@lfdr.de>; Thu, 10 Jul 2025 19:11:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D9D213AFA10
-	for <lists+linux-iio@lfdr.de>; Thu, 10 Jul 2025 17:11:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7276A56723C
+	for <lists+linux-iio@lfdr.de>; Thu, 10 Jul 2025 17:11:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE7BD2F0C63;
-	Thu, 10 Jul 2025 17:11:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 909892F0E54;
+	Thu, 10 Jul 2025 17:11:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OYJPAR4N"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FxNRqaij"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C00F2F0C5D
-	for <linux-iio@vger.kernel.org>; Thu, 10 Jul 2025 17:11:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51F462F0E48
+	for <linux-iio@vger.kernel.org>; Thu, 10 Jul 2025 17:11:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752167484; cv=none; b=C0aa/h2m4JQ/fqbVCMd1IHU5c7btMOT2qSqZ7AOmTTgkumdBxKyGrgIf5GZuJHXm6lkIvu/7thcMw8mhszsLKmoXftp7U2uobUSg9Tq59No0VLHt1UJ9wGM+ta1Lj1nsd9aEoz3pmwMDjwj+9hamHlOMQf6Rqv+tXPGyhOsdpzM=
+	t=1752167486; cv=none; b=BItr6RvVDxPsSyROg1UDdnw4SdI/W0W7gmCxrdw58HhV35gMYsIF51kdNUN0px7qWDZRUD1rQ8Ng0d8ZXTryg+EM67UMr57hsPcTjs65qiGGfFGn6eZgLSOIBhxKvKTsLq57Ed3zg24ddMtoPIn4Uq8jDYrcY8kYfkSAJZAshEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752167484; c=relaxed/simple;
-	bh=YciJCzZOJzYFGbBr+jlTBzZOMkfuBseO48t1mFvzjBw=;
+	s=arc-20240116; t=1752167486; c=relaxed/simple;
+	bh=LlckRpJ+9x+YYl7m9SbyoxNyVStkFOWXA+YtjQ7Ot5s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bxLMqC9KfxBFRSaj9eSG9O700QU8PazkgDKgH0/TtohRfOYTlvDY1GbKdrpn/AP0ak3GPNiZwEatT8ELIguJRtSqdjv6b0dNgpPyUY2i5LFnJb1msZ47QndUCmI3QJDpy2wBL3/Rj/02P5pR6itaL5xc0kNovSNIxA8frsblCwY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OYJPAR4N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 452C1C4CEF4;
-	Thu, 10 Jul 2025 17:11:21 +0000 (UTC)
+	 MIME-Version; b=jFyoG3kMwp3pzaEexq+64g+mrJB74SpVPVcaVnzE3uaADe2Eah628DwHglY5m+wmfN7SUyUy4SUpyqiJh1fo4xsIvnevpog0qvlMASBYOIQXKqI4Gvvy3sC7MQHkblHpJmD0Ev9jY54fW2hGdNVZCF6B9Z5jFnnn9MWmXK/MuGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FxNRqaij; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8544CC4CEF6;
+	Thu, 10 Jul 2025 17:11:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752167484;
-	bh=YciJCzZOJzYFGbBr+jlTBzZOMkfuBseO48t1mFvzjBw=;
+	s=k20201202; t=1752167486;
+	bh=LlckRpJ+9x+YYl7m9SbyoxNyVStkFOWXA+YtjQ7Ot5s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OYJPAR4NQ/aRMi/8OxJTEqn1m6XvIU4WR6KbUX2+K+wFamOxE3F3bZT391iQos+y7
-	 Rh90SJSl3vhx8NvkMoQ3m7TNZoBaK5D1aeiY3jmXVhg9nvmSXfTf37nYkHbfHWdmSy
-	 uqYK+0bH016x8aKOqvRDT9nMfBVh6DeQd3L677yPqPLADznDeMZuzqHK5vJDhjZ259
-	 BAgxPAVafHs06BMLVTC8xIfRmN+168rTQpUBgxy+aHa8YrN2QjmTzWQCVA3WeUlCyt
-	 1ETszdoJlXyxHAd/Qlt2LQ1kUw/fMO62o+o5TLTmzIyiMgPFyhQ4fkhlsCJknh4gQo
-	 guA9jpBfXKLNA==
+	b=FxNRqaij4xM0m3sPDjHms4zcutq+rQTKFEwa/XkpyQMiFgr1eCuy28Q59hSb6RIRC
+	 4PNJWTCqvn/EDBHICR8C+obUpBnL/AL+5KZv9xMi7eX5ihQW8Vnafy4oeSBAHfQFU9
+	 135qgAQW3aBWICivJVrGkEbODzAsR1xKYQq71PaBXX4eO/T0Rj2Y50+WO3lT05AZNt
+	 QHjnGWeZKx7y7e8QgJMXAYFqJZDMEt8vzKzMOt2+nrBPXOMlu0qqCwrctkfukTzpgZ
+	 hoNkCBhX9fQQfrIH0GZZWPNzHcudADw52avW+vPNZS3UE7QC6WPcho19qT2Y7g9GIe
+	 wvI6RaBmwu/1g==
 From: Jonathan Cameron <jic23@kernel.org>
 To: linux-iio@vger.kernel.org,
 	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
@@ -49,9 +49,9 @@ To: linux-iio@vger.kernel.org,
 Cc: Denis Ciocca <denis.ciocca@st.com>,
 	Vasileios Amoiridis <vassilisamir@gmail.com>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 2/7] iio: pressure: zpa2326: Apply iwyu principles to includes
-Date: Thu, 10 Jul 2025 18:11:02 +0100
-Message-ID: <20250710171107.443790-3-jic23@kernel.org>
+Subject: [PATCH 3/7] iio: pressure: mpl115: Apply iwyu principles to includes
+Date: Thu, 10 Jul 2025 18:11:03 +0100
+Message-ID: <20250710171107.443790-4-jic23@kernel.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250710171107.443790-1-jic23@kernel.org>
 References: <20250710171107.443790-1-jic23@kernel.org>
@@ -65,134 +65,102 @@ Content-Transfer-Encoding: 8bit
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Motivated by the new warning when W=1 if linux/exports.h is not included
-but the macros within it are used.  Given the includes need improving go
-the whole way and apply include what you use principles to this driver.
+Motivated by fixing the new W=1 warning for lack of include of
+linux/export.h this reworks all the includes for this driver
+along the lines of approximate include what you use principles.
 
-Reasoning:
-- First sort includes into alphabetical order, keeping the separate iio
-  specific block and asm blocks as appropriate.
-Drop:
-- linux/kernel.h
-Add:
-- asm/byteorder.h for le16_to_cpup()
-- linux/array_size.h for ARRAY_SIZE()
-- linux/bitops.h for test_bit() (also BIT() etc in c files0
-- linux/bits.h for BIT() in the header.
-- linux/completion.h cof complete()
-- linux/device.h for struct device
-- linux/err.h for IS_ERR() and error codes.
-- linux/export.h for EXPORT_SYMBOL*
-- linux/jiffies.h for jiffies and HZ (in param.h)
-- linux/pm.h for SET_RUNTIME_PM_OPS etc
-  Note that the way this driver handles CONFIG_PM is messy but not topic
-  for this series.
-- linux/stddef.h for true / false etc
-- linux/sysfs.h for struct attribute_group
+One question here is what to do about gfp_types.h.
+For now I've added a rule to allow GFP_KERNEL to come from linux/slab.h
+or linux/device.h (for devm_ calls).  In this driver slab.h is
+never used directly so linux/device.h provides the symbol.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/pressure/zpa2326.c     | 20 ++++++++++++++++----
- drivers/iio/pressure/zpa2326.h     |  3 +++
- drivers/iio/pressure/zpa2326_i2c.c |  7 +++++--
- drivers/iio/pressure/zpa2326_spi.c |  6 +++++-
- 4 files changed, 29 insertions(+), 7 deletions(-)
+ drivers/iio/pressure/mpl115.c     | 13 ++++++++++---
+ drivers/iio/pressure/mpl115.h     |  1 +
+ drivers/iio/pressure/mpl115_i2c.c |  8 +++++++-
+ drivers/iio/pressure/mpl115_spi.c |  5 +++++
+ 4 files changed, 23 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/iio/pressure/zpa2326.c b/drivers/iio/pressure/zpa2326.c
-index 6eef37c0952d..34743ee0be07 100644
---- a/drivers/iio/pressure/zpa2326.c
-+++ b/drivers/iio/pressure/zpa2326.c
-@@ -51,20 +51,32 @@
-  *   hardware samples averaging.
+diff --git a/drivers/iio/pressure/mpl115.c b/drivers/iio/pressure/mpl115.c
+index 71beb28b7f2c..448d030d5621 100644
+--- a/drivers/iio/pressure/mpl115.c
++++ b/drivers/iio/pressure/mpl115.c
+@@ -6,11 +6,18 @@
+  *
+  * TODO: synchronization with system suspend
   */
- 
+-
 -#include <linux/module.h>
--#include <linux/kernel.h>
+-#include <linux/iio/iio.h>
 +#include <linux/array_size.h>
-+#include <linux/bitops.h>
-+#include <linux/completion.h>
++#include <linux/bits.h>
  #include <linux/delay.h>
 +#include <linux/device.h>
 +#include <linux/err.h>
 +#include <linux/export.h>
- #include <linux/interrupt.h>
--#include <linux/regulator/consumer.h>
+ #include <linux/gpio/consumer.h>
 +#include <linux/module.h>
-+#include <linux/jiffies.h>
-+#include <linux/pm.h>
- #include <linux/pm_runtime.h>
- #include <linux/regmap.h>
-+#include <linux/regulator/consumer.h>
++#include <linux/mutex.h>
++#include <linux/pm_runtime.h>
 +#include <linux/stddef.h>
-+#include <linux/sysfs.h>
-+#include <linux/unaligned.h>
-+
- #include <linux/iio/iio.h>
- #include <linux/iio/sysfs.h>
- #include <linux/iio/buffer.h>
- #include <linux/iio/trigger.h>
- #include <linux/iio/trigger_consumer.h>
- #include <linux/iio/triggered_buffer.h>
--#include <linux/unaligned.h>
-+
-+#include <asm/byteorder.h>
- #include "zpa2326.h"
++#include <linux/iio/iio.h>
  
- /* 200 ms should be enough for the longest conversion time in one-shot mode. */
-diff --git a/drivers/iio/pressure/zpa2326.h b/drivers/iio/pressure/zpa2326.h
-index 45bd7900975b..a1ab574241eb 100644
---- a/drivers/iio/pressure/zpa2326.h
-+++ b/drivers/iio/pressure/zpa2326.h
-@@ -10,6 +10,9 @@
- #ifndef _ZPA2326_H
- #define _ZPA2326_H
+ #include "mpl115.h"
  
-+#include <linux/bits.h>
+diff --git a/drivers/iio/pressure/mpl115.h b/drivers/iio/pressure/mpl115.h
+index 78a0068a17bb..480ee112f134 100644
+--- a/drivers/iio/pressure/mpl115.h
++++ b/drivers/iio/pressure/mpl115.h
+@@ -7,6 +7,7 @@
+  */
+ 
+ #include <linux/pm_runtime.h>
 +#include <linux/types.h>
-+
- /* Register map. */
- #define ZPA2326_REF_P_XL_REG              (0x8)
- #define ZPA2326_REF_P_L_REG               (0x9)
-diff --git a/drivers/iio/pressure/zpa2326_i2c.c b/drivers/iio/pressure/zpa2326_i2c.c
-index a6034bf05d97..ca05b84f420a 100644
---- a/drivers/iio/pressure/zpa2326_i2c.c
-+++ b/drivers/iio/pressure/zpa2326_i2c.c
-@@ -7,10 +7,13 @@
-  * Author: Gregor Boirie <gregor.boirie@parrot.com>
+ 
+ #ifndef _MPL115_H_
+ #define _MPL115_H_
+diff --git a/drivers/iio/pressure/mpl115_i2c.c b/drivers/iio/pressure/mpl115_i2c.c
+index 3db9ef4e2770..160cf1e5a317 100644
+--- a/drivers/iio/pressure/mpl115_i2c.c
++++ b/drivers/iio/pressure/mpl115_i2c.c
+@@ -9,11 +9,17 @@
+  * Datasheet: http://www.nxp.com/files/sensors/doc/data_sheet/MPL115A2.pdf
   */
  
 -#include <linux/module.h>
--#include <linux/regmap.h>
-+#include <linux/bits.h>
-+#include <linux/device.h>
-+#include <linux/err.h>
++#include <linux/errno.h>
  #include <linux/i2c.h>
++#include <linux/mod_devicetable.h>
 +#include <linux/module.h>
- #include <linux/mod_devicetable.h>
-+#include <linux/regmap.h>
- #include "zpa2326.h"
++#include <linux/pm.h>
++#include <linux/types.h>
  
- /*
-diff --git a/drivers/iio/pressure/zpa2326_spi.c b/drivers/iio/pressure/zpa2326_spi.c
-index af756e2b0f31..14f8b2b809a0 100644
---- a/drivers/iio/pressure/zpa2326_spi.c
-+++ b/drivers/iio/pressure/zpa2326_spi.c
-@@ -7,10 +7,14 @@
-  * Author: Gregor Boirie <gregor.boirie@parrot.com>
+ #include "mpl115.h"
+ 
++struct device;
++
+ static int mpl115_i2c_init(struct device *dev)
+ {
+ 	return 0;
+diff --git a/drivers/iio/pressure/mpl115_spi.c b/drivers/iio/pressure/mpl115_spi.c
+index 4e1d24beff94..26df328769a4 100644
+--- a/drivers/iio/pressure/mpl115_spi.c
++++ b/drivers/iio/pressure/mpl115_spi.c
+@@ -7,8 +7,13 @@
+  * Datasheet: http://www.nxp.com/files/sensors/doc/data_sheet/MPL115A1.pdf
   */
  
-+#include <linux/bits.h>
 +#include <linux/device.h>
-+#include <linux/err.h>
-+#include <linux/minmax.h>
- #include <linux/module.h>
++#include <linux/errno.h>
 +#include <linux/mod_devicetable.h>
- #include <linux/regmap.h>
+ #include <linux/module.h>
++#include <linux/pm.h>
  #include <linux/spi/spi.h>
--#include <linux/mod_devicetable.h>
- #include "zpa2326.h"
++#include <linux/types.h>
  
- /*
+ #include "mpl115.h"
+ 
 -- 
 2.50.0
 

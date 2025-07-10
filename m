@@ -1,88 +1,82 @@
-Return-Path: <linux-iio+bounces-21530-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21531-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B071B00181
-	for <lists+linux-iio@lfdr.de>; Thu, 10 Jul 2025 14:20:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74FEFB00198
+	for <lists+linux-iio@lfdr.de>; Thu, 10 Jul 2025 14:23:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C6233588006
-	for <lists+linux-iio@lfdr.de>; Thu, 10 Jul 2025 12:20:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CBF6B7ADA8D
+	for <lists+linux-iio@lfdr.de>; Thu, 10 Jul 2025 12:21:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3C8D2505BA;
-	Thu, 10 Jul 2025 12:20:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 608042505A9;
+	Thu, 10 Jul 2025 12:23:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="oJBiKqna"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lYcvPgv7"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FE6624DD12;
-	Thu, 10 Jul 2025 12:20:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 973A023B611;
+	Thu, 10 Jul 2025 12:23:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752150014; cv=none; b=rJGdVmQ7Ox0g6ESW/Roj2EgeK7yn/eWFKJMVJe81T4w9JRAtOm7bzSZitIM6wBWFA74o7D9KAdjXX8+jGTeVFM3Gs7WEtAYvDib58mH8VhQ4wO5ZYhB8imoqHVV4/1tHxt94PhrsEkKPCKkY/RR57innuN4SXG6saWTKo1P09os=
+	t=1752150199; cv=none; b=e/BK9cbOUgbelRITfmidlQNCVD/HXfqMpUCnhvbBTQFhCDrLHMt5PYWqlvF7mIWwme36ab9rcSOI4bWAKizje+iPqF6fjgnGOZ1K8fl9YJbrFxbeBHettXYMIPHWu7x7drmhIRUAXkVmiWd6ZEdgVBtMGmMWbcC1/IwvDh8HRKI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752150014; c=relaxed/simple;
-	bh=1Ars87cWfPNJmxmVVHggBVpUXosQcIraO2lesp921A0=;
+	s=arc-20240116; t=1752150199; c=relaxed/simple;
+	bh=zVWfpYG3QSkbW5Yv1qC81j5gVYYyu3l5Xtez9jRwgiM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eAhrUhrpOoCltr04lR/JGDLztVpu7SjXeq20+DvRVZYS27WGZqAFwQGTVHftJ6PYenovP99/dw3LQiOp3YFKuC+oNKNWrn6Y+N1opd4mLAfCmZJ0lSr72t7ARaci5/XWnxIRpkaNrCJE1gex4SEHhjKIX0OSAD0Kz+onW3056Z0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=oJBiKqna; arc=none smtp.client-ip=198.175.65.10
+	 Content-Type:Content-Disposition:In-Reply-To; b=uhkrxFXbTNgyNJxzbSvPyhY6T40tMDYVCXOf1LcGlJBlcVRlJgJbrln8XuHVQcSxWXf/fb/DsQe/idL/yzocUaXkFcJMchMU07rj1QaDVk5tRKmwHuWp2VOu+ybmj+r6YcGp2ALTm7wqGf4cehnTp7H9rnKc+VrtPwVY+SxNju4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lYcvPgv7; arc=none smtp.client-ip=198.175.65.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1752150013; x=1783686013;
+  t=1752150198; x=1783686198;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=1Ars87cWfPNJmxmVVHggBVpUXosQcIraO2lesp921A0=;
-  b=oJBiKqna+//afVa5igz8zN7OT0RSBBv486V4FDd/V4vGpDZEtQ+2vOl0
-   6+m1sBIBQzpV2mJQEGwnO5NRE6XAW2pBBpuAR8U6+TW4cIfmUaXLb8Y52
-   fvFah/ptUZMANt6YYmFCr4DwNYehLxNfVYWQz3PT8mtLbMSZuLYAJLfJh
-   ZAFX8aOFjMtIfddzfCUIJcXnoe0Cd/Z0mf9ATujAvFsfRD8DGuztLejsB
-   F4tmW/b52PpIQXbwPlObGUGQHsildfW7CXkZ4Pmir8hfUeXKutd8Znvw1
-   amqtqzTmpDhLgOwZney8Am7ySenKvwiL2n5Y7APJqnMb2Vjj8NDqpdoYi
-   A==;
-X-CSE-ConnectionGUID: CizJc7eISD2nWtsYFUezwQ==
-X-CSE-MsgGUID: arGY67idTyW/mru3848Pxg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11489"; a="71877347"
+  bh=zVWfpYG3QSkbW5Yv1qC81j5gVYYyu3l5Xtez9jRwgiM=;
+  b=lYcvPgv7C2wt4M/+Yv3+pqDfOT9k0S5zogoHZzxpeILNGbfxm97iQBEf
+   dKTQLaGf4bPYTZQV/WkqqtmFOd4webPhxMOM+zmm3sZDEhofPA0HCWVh3
+   cPhBPlXbrIKk9fwOa2Q8peFIxlXggWgfTjOOzZQOfhUwpvZPlaJ2cwtcO
+   9v3znfz5STOll9JeVd2F2+XKItYTQdrEdsuLrHf6Eol1bRh1RODIxqoxV
+   1ckoCfJ6F6neEsBa9hogy0H6inNllHRB9qzdA474Xxfl+LzVc/lM8y1Op
+   BGatdTbHyj8UAtx6t6S7Gm/Mo/Fp0IP/C8Ikkdmpgk3nKGEpGzVIbLg0L
+   g==;
+X-CSE-ConnectionGUID: PZaE5i7gSs6ohphDjNFY5A==
+X-CSE-MsgGUID: eld9EvEGRBmPkw3ucP3vnA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11489"; a="71877615"
 X-IronPort-AV: E=Sophos;i="6.16,300,1744095600"; 
-   d="scan'208";a="71877347"
+   d="scan'208";a="71877615"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2025 05:20:12 -0700
-X-CSE-ConnectionGUID: GXz77hyaR7K/tYrlBBMkog==
-X-CSE-MsgGUID: kYPUpfJ0QvqQJaA5ZICfig==
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2025 05:23:15 -0700
+X-CSE-ConnectionGUID: sJyY/3A9StGsoBeUBvFUCg==
+X-CSE-MsgGUID: 0Lafm1ImQSa5Cp+SAJ8lWg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,300,1744095600"; 
-   d="scan'208";a="160078428"
+   d="scan'208";a="160078745"
 Received: from smile.fi.intel.com ([10.237.72.52])
-  by fmviesa003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2025 05:20:08 -0700
+  by fmviesa003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2025 05:23:13 -0700
 Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
 	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1uZqFw-0000000EC0t-26Sd;
-	Thu, 10 Jul 2025 15:20:04 +0300
-Date: Thu, 10 Jul 2025 15:20:04 +0300
+	id 1uZqIv-0000000EC3h-45hw;
+	Thu, 10 Jul 2025 15:23:09 +0300
+Date: Thu, 10 Jul 2025 15:23:09 +0300
 From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Primoz Fiser <primoz.fiser@norik.com>
-Cc: Haibo Chen <haibo.chen@nxp.com>, Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>, Nuno Sa <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, linux-iio@vger.kernel.org,
-	imx@lists.linux.dev, devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	upstream@lists.phytec.de, andrej.picej@norik.com
-Subject: Re: [PATCH 2/2] iio: adc: imx93: Make calibration parameters
- configurable
-Message-ID: <aG-v9IxJ-XAxmnyh@smile.fi.intel.com>
-References: <20250710073905.1105417-1-primoz.fiser@norik.com>
- <20250710073905.1105417-3-primoz.fiser@norik.com>
- <aG-GZqhABwErcEyM@smile.fi.intel.com>
- <42dd658e-555a-43f7-a7bf-e5365d508f4a@norik.com>
+To: Sean Nyekjaer <sean@geanix.com>
+Cc: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 4/6] iio: imu: inv_icm42600: Simplify pm_runtime setup
+Message-ID: <aG-wrULBZkMvWZVB@smile.fi.intel.com>
+References: <20250709-icm42pmreg-v1-0-3d0e793c99b2@geanix.com>
+ <20250709-icm42pmreg-v1-4-3d0e793c99b2@geanix.com>
+ <aG-DGEpZOHqFoIY3@smile.fi.intel.com>
+ <p5aiunwdx7vcncsmamq3q7orffrfpmcjzwnrgn2vfczs3y26ak@jxgbwf3bduat>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -91,62 +85,44 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <42dd658e-555a-43f7-a7bf-e5365d508f4a@norik.com>
+In-Reply-To: <p5aiunwdx7vcncsmamq3q7orffrfpmcjzwnrgn2vfczs3y26ak@jxgbwf3bduat>
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
  krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Thu, Jul 10, 2025 at 12:23:58PM +0200, Primoz Fiser wrote:
-> On 10. 07. 25 11:22, Andy Shevchenko wrote:
-> > On Thu, Jul 10, 2025 at 09:39:04AM +0200, Primoz Fiser wrote:
-
-...
-
-> >> +	ret = device_property_read_u32(adc->dev, "nxp,calib-avg-en", &val);
-> >> +	if (!ret) {
-> >> +		if (val != 0 && val != 1) {
-> >> +			dev_err(adc->dev, "invalid nxp,calib-avg-en: %d\n", val);
-> >> +			return -EINVAL;
-> >> +		}
-> >> +		reg = val;
-> >> +		mcr &= ~IMX93_ADC_MCR_AVGEN_MASK;
-> >> +		mcr |= FIELD_PREP(IMX93_ADC_MCR_AVGEN_MASK, reg);
-> >> +	}
+On Thu, Jul 10, 2025 at 10:45:43AM +0000, Sean Nyekjaer wrote:
+> On Thu, Jul 10, 2025 at 12:08:40PM +0100, Andy Shevchenko wrote:
+> > On Wed, Jul 09, 2025 at 02:35:12PM +0200, Sean Nyekjaer wrote:
+> > > Remove unnecessary pm_runtime_get_noresume() and pm_runtime_put()
+> > > calls during probe. These are not required when the device is marked
+> > > active via pm_runtime_set_active() before enabling pm_runtime with
+> > > pm_runtime_enable().
 > > 
-> > Please, since it's optional, do other way around.
+> > Hmm... What will happen if the autosuspend triggers just before going out from
+> > the probe when this change is applied?
+> 
+> Nothing, as pm_runtime is enabled as the last step in probe.
+
+Note, that PM runtime can be enabled by userspace or disabled.
+
+> > > Also remove the redundant pm_runtime_put_sync() call from the cleanup
+> > > path, since the core is not incrementing the usage count beforehand.
 > > 
-> > 	val = $DEFAUTL;
-> > 	device_property_read_u32(adc->dev, "nxp,calib-avg-en", &val);
-> > 	FIELD_MODIFY(...)
+> > This is interesting. Have anybody actually tried to see refcount WARN about this?
 > > 
-> > Similar approach may be used for the other properties.
+> > > This simplifies the PM setup and avoids manipulating the usage counter
+> > > unnecessarily.
+> > 
+> > > Fixes: 31c24c1e93c3 ("iio: imu: inv_icm42600: add core of new inv_icm42600 driver")
+> > > Signed-off-by: Sean Nyekjaer <sean@geanix.com>
+> > 
+> > This should be the first, or close to the beginning of the series, patch.
 > 
-> OK, I guess I could implement it like you suggested to explicitly set
-> the default parameter values.
-> 
-> But in current implementation MCR values are read at the beginning of
-> imx93_adc_calibration(), meaning calibration parameters are register POR
-> defaults. With you suggestion, we put defaults in software rather than
-> reading them from the hw directly.
+> Ok, but help me understand why?
 
-I see, then you need to read, do FIELD_GET()/device_property_read()/FIELD_MODIFY().
-You got the idea.
-
-...
-
-> > Please, factor out this to the function, so we won't see the direct IO in the
-> > ->probe().
-> 
-> Sorry I don't understand this part.
-> 
-> What do you mean by factoring out this writel()?
-> 
-> Do you perhaps suggest to implement function
-> imx93_adc_configure_calibration() and put all our changes into it?
-> 
-> But we are already in imx93_adc_calibration() which is separate from
-> probe().
-
-Ah, sorry for the mistakenly read the function name. Ignore this comment.
+The commits that are marked as Fixes should be easy to backport. When
+the series is started with the refactoring, it's not good as potentially
+backporting material might (even undeliberately) get a dependency on the
+refactoring.
 
 -- 
 With Best Regards,

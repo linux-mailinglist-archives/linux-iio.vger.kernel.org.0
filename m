@@ -1,79 +1,79 @@
-Return-Path: <linux-iio+bounces-21549-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21550-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E4E3B00EA6
-	for <lists+linux-iio@lfdr.de>; Fri, 11 Jul 2025 00:22:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 586F1B00ECB
+	for <lists+linux-iio@lfdr.de>; Fri, 11 Jul 2025 00:40:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 422607B7E59
-	for <lists+linux-iio@lfdr.de>; Thu, 10 Jul 2025 22:20:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8F62F16DAF2
+	for <lists+linux-iio@lfdr.de>; Thu, 10 Jul 2025 22:40:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C45929553A;
-	Thu, 10 Jul 2025 22:22:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 342192BE63F;
+	Thu, 10 Jul 2025 22:40:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="C7ArjtEe"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="KNsu+QWJ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oo1-f46.google.com (mail-oo1-f46.google.com [209.85.161.46])
+Received: from mail-oi1-f171.google.com (mail-oi1-f171.google.com [209.85.167.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF79C8633F
-	for <linux-iio@vger.kernel.org>; Thu, 10 Jul 2025 22:22:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 028EC8633F
+	for <linux-iio@vger.kernel.org>; Thu, 10 Jul 2025 22:40:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752186133; cv=none; b=BqOQgjvWEFdD1ojNxL/ewXiQuqxwfMEmiJ/spmJe8X7tINFhmqw3451MfyoXyEF+07hHm0m0FLomUIpo7Yp2aa337jBT63aZpqrj+f/E5tvc6NffokfFGpRr4rGgST7QxFILqJSMeA0JT1NlTHLBTvy0RdfhiwXQ1b2EfABwm/o=
+	t=1752187239; cv=none; b=Jh1O371AzizEbnIRpUOyT4zB9097jNzddAixkAT8U1/007/W+ozpLBLy9n79QYuZnQ4hQ4EsZP3+7myTukUKmRpgCAofLSVIO4/MNBPG2jWsMU8TBA4ci9uXfzXQxT1XKKs9f+adlTzyGmhtl8O0RTtYGXK2adXrvWohoOFlchc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752186133; c=relaxed/simple;
-	bh=SsrP1cgk5ZxHAw1T5LxKC2jzRBKUCL3UkePoEJyRuqM=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=T5guYsriy2XBy2P6tjnrs97xVRq1CXhclS1uXmolydDICsBg4QfNKdh5W2+JMdKTp6b5ubULSbii47N6Q7eKdtgMJDy/zWxxTwcGFMwyHT2HASrJTAL8gryPlIklGjYmU9inKcAWK2sErIcYtOcWrCQIKsq9o4s/tcMlxRYUJBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=C7ArjtEe; arc=none smtp.client-ip=209.85.161.46
+	s=arc-20240116; t=1752187239; c=relaxed/simple;
+	bh=7t04OBjwHZ+UTchnoJ/u+hKmQ4x1U/HwdOa1mpsishU=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=BG2kCpa63+tqkkWse99gFBEiNgL3L8ufLU8CUYmAzFBraFQ9TMcLhFJ4VgJl1AdG4l6bslbxKVydwdM93Vl/oY4fPoO+yEOTrn6vX88pq4JlyszmAX+e1Er1/TFY2Myy6sUT7fwL0xey9ySJmV58zFu4nqG6AIheMxJWjOy6LT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=KNsu+QWJ; arc=none smtp.client-ip=209.85.167.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oo1-f46.google.com with SMTP id 006d021491bc7-612033bb26cso629829eaf.3
-        for <linux-iio@vger.kernel.org>; Thu, 10 Jul 2025 15:22:11 -0700 (PDT)
+Received: by mail-oi1-f171.google.com with SMTP id 5614622812f47-40a8013d961so419887b6e.0
+        for <linux-iio@vger.kernel.org>; Thu, 10 Jul 2025 15:40:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1752186131; x=1752790931; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Kx73u9VXSxci3zVsfu1OAUwwaENWROKjKLvmUe4fglc=;
-        b=C7ArjtEek9xwxd5fuP8Dvcl+vL8UwtRqL8hZpH+dBAi+5+6r9NtdjXvRfg3VuSFnOf
-         jkfuKWR4o1iSzY/Z4oEuWmjTSRRXGiulTfmmRfhlRE4kqMr8ULoVpXfaJtio0NkWntoc
-         JyldGSjnsB5Q/Zid1HPy9isnytGAYl1BkMyoBAcF6Ry01fs6LrMOIr58oWe6MrCg+Dm2
-         NhOm5pMbm/K9zlyfpEjglz3fUffda5rtAkW7tJfs1tf5QjnS+SzN3hRCxIiaI551k4RP
-         I2hrymBpEcGdGTFpis1dyyEECWa7muXoDj7Whg+CztgDH5wHtceCDirC4cua0ctT9dj1
-         kGMA==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1752187235; x=1752792035; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=mMWTlCBkcYJ7/ria9BlXYNln9Cum5MLQPXIqgZhIUDk=;
+        b=KNsu+QWJHeA8oTRmCtkjY9AuMF/dL2q8rmwiUNUZaYHN49bzMuucROtPvU2MYrLwcT
+         YCINSbPx3oaCr2LHKNuK2nMnhdlW29zXe9xtXrQ0Gqpl7HfAU+KwNIhMydXB38VDj/Z3
+         6Erw9Eyi8eFfBLy9+bgGxHqwo2vsy+acHTLYQQDA+aU8B8J+VNr/lVQ9rqBqkCUufMyY
+         gTuTGmDYf+S+hTgM3ygPYpOiFo/bIjNkyUuZFzC9Le2t1Tac0ofNkQRK2cVILZeGrVdF
+         iCgP1XyGQe1ZSiB7XlSZdzwi5o3tXi0WpA+FngvzQ/7lyxZ62GgfdT3PNLpAittX8whC
+         YzRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752186131; x=1752790931;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1752187235; x=1752792035;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=Kx73u9VXSxci3zVsfu1OAUwwaENWROKjKLvmUe4fglc=;
-        b=g+AYdox0Y+b1joP3B0az2ZBBCN+xAY5CMt3vgy5uUaEtl5pkgnUPj/258pm8Qi+0h/
-         uXDGvlYSq821ecdk9Nyv5VfSc4fpM1EUfRAz/KOb9iiRX/mg07lDqNP53iAjk8QIljqw
-         fuoJA500El0YoIHt7T/kp0/UZDmggHGlmyW0gjLA88QtjrkrITzHHS2jaRNhX4wNfv6c
-         ekX7IHz03S+Ow9ZbctiwgWnVxLh5cgGTsHHfMmpC1QhnBtgBbTU0etdiu883T/6/t9WN
-         QKZmiSRlxYRMleVZBJKLkbE1eJ68LC14CYu36/yElPTzPMv/GRs4BIxRcCTiyJW5JdE2
-         XUng==
-X-Gm-Message-State: AOJu0YxeQkCRAhm+N9FQk8F6bEd3rAzd3nua2+QAryMVvMin33szuu74
-	D6g++jaufhIpT26UhvEpav0zxvI5CMxS4zA3YQO9cJvzx7xEz4xFQUnjT+719M2YVRJmVF5Rm/2
-	Ncs9vmDM=
-X-Gm-Gg: ASbGncsyFyba0m+r7dl4fDAI5cZPDtk2NVckTptc9OYiUxlbVI+fRqZf61Zv4joePcT
-	AM2ihgC+k49oXjkmbZxg7lWWCICCl8I+JcOSE5TIZ/wyvi7KMjvKmW9SSXEaw+8WNGAhWmgaDXp
-	n/9c1Fqk4ZZzfJ7Hsm4Cn5adHVSrMYpzz8TUukEMMkku3sbNdnjY0sZKGF1QKUlX621y4tCKLgT
-	4irg93GVjWcBDrWP5xipkDR9soURD5PXR3dhMLQx0/bZXx4mmNtLNWszF0WpBz5+5jO7QoDWK3g
-	R7w51vBSI3ScJiC+AnsOkuJTlAUWwuJxGq3vYFi6wH+ASbSPLDJl1l3eACu+w8fQbeJpGiXPtgu
-	bHwOtmtyu0/P+e2w0JywmyjYqLqGQpcHjHkTW
-X-Google-Smtp-Source: AGHT+IEc3zIBRrJ1Gk7ZuO0QXFIOJGwMkp/NqiOVJD7kofSvu0fdkrbmripzvrkjUvOsIDs5Q1hHUA==
-X-Received: by 2002:a05:6820:4df3:b0:611:e30a:fa1c with SMTP id 006d021491bc7-613e5eeb902mr502134eaf.1.1752186130755;
-        Thu, 10 Jul 2025 15:22:10 -0700 (PDT)
+        bh=mMWTlCBkcYJ7/ria9BlXYNln9Cum5MLQPXIqgZhIUDk=;
+        b=vTIQ3gzypgL2bNIayP7h9vwFWAYNmygbSyV8PS1L2H/BTSOVd2ca2xdDSyhoK8vZ6O
+         9NtnClHnsJl9bsoSGSrly9oRDSmhfqyPwcEcQMphVfZj4x2nN9fJFLEpaTBP5mDKJCfA
+         P3PpjrGHaxN1f0XVDss73U1+RzRooED830sNxBzsAWw9I0pPEFC0438RDQSUDKjBUrQj
+         gqpPMOwzECEYFg06dN2Tb5q1gIgO58WHfi0rXRMsB0uOeRE3/9z5q0C6TM1iwKNM/s/1
+         REVhinR7WI7OnyUgQ3BNNXiHMg9nVeTmAWyLbJOZDtL1MdHW3IB6lp+2vVlHb6894FGw
+         lnZw==
+X-Gm-Message-State: AOJu0Yx2VZePcdnx0KNXj+B22ymPOi1PiZwT+ErW4adiPEvkkyaLfwQd
+	M3s2vN3u5fs3lncdxIIvDprcamqOIbfsqHaxfzWperwHYU6bBLrVFdWXHqahYK/iPZk=
+X-Gm-Gg: ASbGncvDW2l6AGNy2ejAvHvbV+b9NSd16wVcSY4jGkXMWEKjWmdjC9WsDiKgS1M1Pg0
+	nmYq7EL6mFPRr8zzu8muzAjSs7JphysRGQXT/7nkoGvOig3iRP57CrsaRfNOniSsbRU5TuaTsIU
+	NrokhT1MoEmtUUPqsqPEAme+mMiLkXNWTMR0l7oyqvrVBuRkfPprB3S5vnqh+XU3gIxZa1txX5T
+	AAIlwZy6PxLJwDn27vPy1u3pn89UgBsiWZBxJUuA0vTecRhzA9c8v4N7LVRNaH/LxxGDrtlTJzc
+	Bxop+rRKc6HVuba0G1d48rWlpuq6DHw0BYUmIeg+eVEbwD7BeVsKDKvY6hD8GgJ/7l2akV8lRrp
+	uC42Lad02iiPA3tmcuxPQaoSKU+cDr7JujY0g
+X-Google-Smtp-Source: AGHT+IED1e1R/ISgIGptpuodfAL1KpJEKFMICy/lsOIml+rwfQbZWjvObE8t3FadGwgxvSEf3UWmMQ==
+X-Received: by 2002:a05:6808:6f81:b0:402:a5c:906 with SMTP id 5614622812f47-4151210b9cfmr870158b6e.34.1752187234939;
+        Thu, 10 Jul 2025 15:40:34 -0700 (PDT)
 Received: from [127.0.1.1] ([2600:8803:e7e4:1d00:891b:7836:c92:869])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-613d9f28e35sm310885eaf.39.2025.07.10.15.22.10
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-613d9d950f1sm305944eaf.18.2025.07.10.15.40.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Jul 2025 15:22:10 -0700 (PDT)
+        Thu, 10 Jul 2025 15:40:34 -0700 (PDT)
 From: David Lechner <dlechner@baylibre.com>
-Date: Thu, 10 Jul 2025 17:22:00 -0500
-Subject: [PATCH v4] iio: adc: ad7173: add SPI offload support
+Subject: [PATCH 0/5] iio: adc: ad7137: add filter support
+Date: Thu, 10 Jul 2025 17:39:49 -0500
+Message-Id: <20250710-iio-adc-ad7137-add-filter-support-v1-0-acffe401c4d2@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -82,114 +82,72 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250710-iio-adc-ad7173-add-spi-offload-support-v4-1-536857c4e043@baylibre.com>
-X-B4-Tracking: v=1; b=H4sIAAc9cGgC/13NwQrCMAwG4FcZPRvWddrpXkVEuq3TgG1q04kgv
- rthHgQPIflz+L+XYp/Rs+qrl8r+gYwUJWw3lRqvLl484CRZGW122hoNiARuGmW6pmtlTcAJgeb
- 5Rk7uJSXKBVrjmm4/WGtdq6QsZT/jc4WOp2/O/r6IV77PH9dXK9bp9h+TBohLOPONCgNFCMQFx
- ismhuGwN0ZbZ/TQ9I/VHBx7GCkELH0lPtfZBxKvlt5adsF4Uaf3+wPkmSvLBgEAAA==
-X-Change-ID: 20250620-iio-adc-ad7173-add-spi-offload-support-32a178b666a3
+X-B4-Tracking: v=1; b=H4sIADVBcGgC/32RYWvDIBCG/0rw8w7U1CTmr4xSNJ6dkMRMTeko/
+ e+7rivtRrcPIifH+zx3nljGFDCzvjqxhIeQQ5ypEC8VG97MvEcIjmomuVS8FRxCiGDcQKcVdUu
+ XAx/GggnyuiwxFXDce2O0NH7QjHKWhD4cvxiv22ud8H0lVLk+3kl9deXw+genrYlxhEvbjGOGM
+ Ds8go/E/MiDGYPdTdEhbLTd8A1qjXzoD4I9DvF/9LxOuzzGkiHOMMVcCBaWDFZ3UvLGSG5Ff6i
+ fJ3aPibX4lr1oJVNonzdxELpD1yinLTd/+ulnfhnLusCaEcYwBdLkRjlpG9O0Hf8r6tdv3aNKm
+ PcQXaJFwpKiRdBC6VYSHbubmTVEG+JEuL7ynVfUoaRTLduez593DHYNOAIAAA==
+X-Change-ID: 20250710-iio-adc-ad7137-add-filter-support-d0ffaa92afc9
 To: Michael Hennerich <Michael.Hennerich@analog.com>, 
  Jonathan Cameron <jic23@kernel.org>, 
  =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
  Andy Shevchenko <andy@kernel.org>
 Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
  David Lechner <dlechner@baylibre.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3244; i=dlechner@baylibre.com;
- h=from:subject:message-id; bh=SsrP1cgk5ZxHAw1T5LxKC2jzRBKUCL3UkePoEJyRuqM=;
- b=owGbwMvMwMV46IwC43/G/gOMp9WSGDIKbLm7Oq03/Suv9lbyPZm0VSnTMWyuznupynWeAbGu9
- /Qilyd3MhqzMDByMciKKbK8kbg5L4mv+dqcGxkzYAaxMoFMYeDiFICJvMnhYJhQZsGcGlj8XC5q
- ptJN2Z0sn8T/8XUX8fawz2lXaqlpPXGs4rybXLAL36OWCIMvWd+sMlZ7B9w3rRUNqDox17zr9DP
- m9P9T+U3Ssl6fKWHaEte5KSQwdabRd73Dk+Wsa5ec3bA54PpZ+VeNbbPu8vxfvvb6Y7ZQJ9Y3wu
- uCKic+bdl6X99PfcOajKpWjXuqXo43/Mx4ferqfLvW7qhyyXvrH6Tm139Fb/8+Kcv3s6yW8epOL
- px3/crLq4V67Psz1+Z6Gb1gDD1osyau8uOLZo5Zb8+ZnHj6xN3ML02u6MvXk5phoavnHvZo0PnJ
- HdzW5h6wSOiDW5eMsPaLVBEF8dW85eyVCqoHG1U/5kwEAA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2182; i=dlechner@baylibre.com;
+ h=from:subject:message-id; bh=7t04OBjwHZ+UTchnoJ/u+hKmQ4x1U/HwdOa1mpsishU=;
+ b=owEBbQGS/pANAwAKAcLMIAH/AY/AAcsmYgBocEE4pp29GETvugTpGEczLA05yJd43bXcsRU0A
+ aRkYn+mk+eJATMEAAEKAB0WIQTsGNmeYg6D1pzYaJjCzCAB/wGPwAUCaHBBOAAKCRDCzCAB/wGP
+ wK1iB/9DO19zyd0Q9b4el5eMZZWDgtRzeQbWI8sjKLwKkrXE6jjMZlr3MGf+DeA0YOP+wHMKBOt
+ Q1hGh9wec21KGQ7GJWeixJKVZp8VB38PB6xib/gtjJvxUsDpR+cX5/2Mvpjg2Cf46ivRzN4Cdto
+ 5niohcSfJk0Ca6v5D51T9tJZt3q7F20AuUuOdcLx9+MbtANpDVna4sMoYMA1StDLit0BEHHsL8E
+ UpRnQZde8AH0PNrjKHRMWazFQRv+C5vBz8HcOvBRyDUeuMNGIO+KSq0i1fHBFH8uF1qrsbcI/BI
+ +xtlIGcQCwqhNhUo5qcejlExvhNv5EXkaigk+tTQYJP2R3oq
 X-Developer-Key: i=dlechner@baylibre.com; a=openpgp;
  fpr=8A73D82A6A1F509907F373881F8AF88C82F77C03
 
-Enable SPI offload support for the AD7173 ADC driver.
+Adding yet another feature to the ad7173 driver, this time,
+filter support.
 
-The scan_type used for SPI offload is assuming that we are using the
-ad411x_ad717x HDL project [1] which always stores data words in 32-bits.
+There are a couple of leading patches to rename some stuff to minimize
+the diff in the main patch where filter support is actually added. And
+there is a bonus patch to clean up the ABI docs for filter_type first
+before adding the new filter types introduced in this series.
 
-Link: https://analogdevicesinc.github.io/hdl/projects/ad411x_ad717x/index.html [1]
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: David Lechner <dlechner@baylibre.com>
+This was tested on the EVAL-AD7173-8ARDZ evaluation board.
+
+This series depends on a bunch of fixes, so we'll have to wait for
+those to make it back into iio/testing before we can merge this
+series. There is also an outstanding patch to add SPI offload support
+to this driver, but that doesn't actually have any merge conflicts
+with this series, so they can be applied in any order.
+
 ---
-v3 was applied, but then we had to drop the final patch due to a
-conflicting fix. Here is that patch again with the changes needed to
-adjust it to the changes in the fix.
+David Lechner (5):
+      iio: adc: ad7173: rename ad7173_chan_spec_ext_info
+      iio: adc: ad7173: rename odr field
+      iio: adc: ad7173: support changing filter type
+      iio: ABI: alphabetize filter types
+      iio: ABI: add filter types for ad7173
 
-We'll have to wait for the fix to make it's way back into iio/testing
-before we can apply this patch, so it will have to sit for a while.
-
-v4 changes:
-- Add one more instance of .supports_spi_offload = true,.
-- Picked up Andy's Reviewed-by tag.
----
- drivers/iio/adc/ad7173.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
-
-diff --git a/drivers/iio/adc/ad7173.c b/drivers/iio/adc/ad7173.c
-index 9730fda56186afc45f589899e669c41eb538af6b..3886d2f751d0370994ababf72409f4dcb328641d 100644
---- a/drivers/iio/adc/ad7173.c
-+++ b/drivers/iio/adc/ad7173.c
-@@ -747,6 +747,7 @@ static const struct ad_sigma_delta_info ad7173_sigma_delta_info_4_slots = {
- 	.set_mode = ad7173_set_mode,
- 	.has_registers = true,
- 	.has_named_irqs = true,
-+	.supports_spi_offload = true,
- 	.addr_shift = 0,
- 	.read_mask = BIT(6),
- 	.status_ch_mask = GENMASK(3, 0),
-@@ -763,6 +764,7 @@ static const struct ad_sigma_delta_info ad7173_sigma_delta_info_8_slots = {
- 	.set_mode = ad7173_set_mode,
- 	.has_registers = true,
- 	.has_named_irqs = true,
-+	.supports_spi_offload = true,
- 	.addr_shift = 0,
- 	.read_mask = BIT(6),
- 	.status_ch_mask = GENMASK(3, 0),
-@@ -779,6 +781,7 @@ static const struct ad_sigma_delta_info ad7173_sigma_delta_info_16_slots = {
- 	.set_mode = ad7173_set_mode,
- 	.has_registers = true,
- 	.has_named_irqs = true,
-+	.supports_spi_offload = true,
- 	.addr_shift = 0,
- 	.read_mask = BIT(6),
- 	.status_ch_mask = GENMASK(3, 0),
-@@ -1595,6 +1598,11 @@ static int ad7173_fw_parse_channel_config(struct iio_dev *indio_dev)
- 		if (st->info->data_reg_only_16bit)
- 			chan_arr[chan_index].scan_type = ad4113_scan_type;
- 
-+		if (ad_sigma_delta_has_spi_offload(&st->sd)) {
-+			chan_arr[chan_index].scan_type.storagebits = 32;
-+			chan_arr[chan_index].scan_type.endianness = IIO_CPU;
-+		}
-+
- 		chan_index++;
- 	}
- 
-@@ -1685,6 +1693,12 @@ static int ad7173_fw_parse_channel_config(struct iio_dev *indio_dev)
- 		if (st->info->data_reg_only_16bit)
- 			chan_arr[chan_index].scan_type = ad4113_scan_type;
- 
-+		/* Assuming SPI offload is ad411x_ad717x HDL project. */
-+		if (ad_sigma_delta_has_spi_offload(&st->sd)) {
-+			chan_arr[chan_index].scan_type.storagebits = 32;
-+			chan_arr[chan_index].scan_type.endianness = IIO_CPU;
-+		}
-+
- 		chan_index++;
- 	}
- 	return 0;
-
+ Documentation/ABI/testing/sysfs-bus-iio |  25 ++--
+ drivers/iio/adc/ad7173.c                | 204 +++++++++++++++++++++++++++++---
+ 2 files changed, 205 insertions(+), 24 deletions(-)
 ---
 base-commit: f8f559752d573a051a984adda8d2d1464f92f954
-change-id: 20250620-iio-adc-ad7173-add-spi-offload-support-32a178b666a3
+change-id: 20250710-iio-adc-ad7137-add-filter-support-d0ffaa92afc9
+prerequisite-change-id: 20250703-iio-adc-ad7173-fix-channels-index-for-syscalib_mode-49b404e99e0c:v1
+prerequisite-patch-id: 982dde330c34b57a76a3e48ccfc73ea6977833d1
 prerequisite-change-id: 20250703-iio-adc-ad7173-fix-num_slots-on-most-chips-b982206a20b1:v3
 prerequisite-patch-id: 350fb675f3e0fe494e0ce4ddf5685d9369ffa11a
+prerequisite-change-id: 20250708-iio-adc-ad7313-fix-calibration-channel-198ed65d9b0a:v1
+prerequisite-patch-id: b94476eb0399877093321fd5010965d44738c097
+prerequisite-change-id: 20250709-iio-adc-ad7173-fix-setup-use-limits-0a5d2b6a6780:v1
+prerequisite-patch-id: 8ca40138b61bcf4eac7437b8184276576308536b
+prerequisite-change-id: 20250710-iio-adc-ad7173-fix-setting-odr-in-probe-915972070e8a:v1
+prerequisite-patch-id: 0f79cb2677f8a249283e239ca9ae9ae1a1eeb365
 
 Best regards,
 -- 

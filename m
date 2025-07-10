@@ -1,154 +1,147 @@
-Return-Path: <linux-iio+bounces-21535-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21536-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DA22B00796
-	for <lists+linux-iio@lfdr.de>; Thu, 10 Jul 2025 17:51:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B51DB0099D
+	for <lists+linux-iio@lfdr.de>; Thu, 10 Jul 2025 19:11:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8321B1BC63E0
-	for <lists+linux-iio@lfdr.de>; Thu, 10 Jul 2025 15:47:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C451C3AE9B7
+	for <lists+linux-iio@lfdr.de>; Thu, 10 Jul 2025 17:11:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 949B8244688;
-	Thu, 10 Jul 2025 15:46:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B2BE2F0C4B;
+	Thu, 10 Jul 2025 17:11:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="BxatNQ8z"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rqau8mCg"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oa1-f44.google.com (mail-oa1-f44.google.com [209.85.160.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A8AF1EF39F
-	for <linux-iio@vger.kernel.org>; Thu, 10 Jul 2025 15:46:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDF912F0C47
+	for <linux-iio@vger.kernel.org>; Thu, 10 Jul 2025 17:11:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752162411; cv=none; b=mVUyP3Rk2ruHMeWGgvLxxMk2MF+qTCVUzjYclGuHV7LZ39AdDSE4+xkvD1U7x1qsPSd/0K0mRuyt/cy79CZYEQ8p2nQ6dADdoALm/uEXGiELuoeaNGWbxtxw2JIjvIfeFEDdNgEO5pI7pxbpxUkqqmkmyC0QBQ1L6JdNnX4TP6U=
+	t=1752167481; cv=none; b=El75sY0C598bnTUQK0yf0IZcdIugkyoPTXzyTkVt46nrvlSa5oMmNilrVQRRABgWdpPiJo0m8FqbUVNsZSK2vNcmvHKWkZu9jfHg4iZqSAX+gOmyHk6obiJ+GnjDOmtvCL2FS6cn7TOAC/f5hZ1GvYNHZJDWoowBOdDot8y2nGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752162411; c=relaxed/simple;
-	bh=sk5MkTgT33G126yLu0cU6kvmDkC6SSCYrqJIAgQRCfE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VwTMoaVe5zoNIeRIjTrvtoRMhhNxAnnFgDxB0Ae2EX6fFzT66Z2E16k4130/NJtBcatEV4DuPLjtcEra55d1z3XdWTR3nGrjpqUH9kL2DTpBjoejTCMoGQpiTlz0r5GsHo1GfriPsgt6OP5iUcVrXJ+SYqIBtVym3PN4LaM+/h4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=BxatNQ8z; arc=none smtp.client-ip=209.85.160.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oa1-f44.google.com with SMTP id 586e51a60fabf-2eb6c422828so1224885fac.1
-        for <linux-iio@vger.kernel.org>; Thu, 10 Jul 2025 08:46:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1752162407; x=1752767207; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=SxqC0ATm8XXXx24MpZdy05ScJSWmhlnLQqeCjqghw20=;
-        b=BxatNQ8zTL/D8PDEvT/iYc8wJMHJpQIbwc9w1fofki7ZP55YcdFgbGjrPZbn4G5MWA
-         VNkz5F3GesZ1e7K7IQcr5xy+35mEA4RCZ7lCVk35L+yy4KM9ay3XG54B0a/Wt3o/gAoV
-         7qVVkrCXR+6IfHbGkgA/hl37QIIa0U6TQ0hhKv5Y6eTMyodRNe+I5xnRCtmDmgOG3YHp
-         EIZ/iWxE+7IoPNLxet6Aj5AdX+pmJOrfPukiWBltJLssbBEvx752ywRuzLj+KSl7Y6Gw
-         Ey+3oizZ0wdsuaVnz2CPhEyMUbFXjLgI+4hSsWbxxC++U1QAa3UTJx3JbsK6kUxFig5G
-         vjyQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752162407; x=1752767207;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=SxqC0ATm8XXXx24MpZdy05ScJSWmhlnLQqeCjqghw20=;
-        b=A0YMk3qHsRdAYdVVqvFLfzZNc2WQoAw7gi5hJ87NMLV0Q4uerDVreuaOsGY4Qt4arn
-         SNZ4JUeokhs02G3rMMe6eWOAtoio3RjgqAXAhKJUFCm6YsJZV9S1harLy+bV2RR47xC8
-         /w5I/sO0N3gDH/7vni08tga2s2NExxRZuVJHuGjtNbPeHTvqCtAap3hA0QQY6IQtleMm
-         /AucjIWwvSWhj3fhIkdDG4i52MEb7Zw8R6lT5yB9w2XK4wKJWkqPoN3TvbsDfko7c37W
-         gdV+o45VCjmx8m6MPRpcjjierMfRNixWsFJOb31cLairt7jycNQbz9AyUxCm5R1HMu0w
-         D1og==
-X-Gm-Message-State: AOJu0YyXP2N9WgjVzY9Lemt8x3QRvusQCMEHioc6J7cJunFSJ+o5ZF+7
-	I7roY61TiQe62J+gAVusC8fVAI+kMnYtjxqpHIXuwo8Fif/wnQGNxZ23Y9Ysawq76DA=
-X-Gm-Gg: ASbGncuTM3a3wp5Yf1p6ufvfFhckMmnU+b8odfcqsptuURnxlTEUvjMTDNes7FckEUa
-	EW9PLf9dAy0kLw+lk2yN6GaVi9DzGuNLCiADkDH09t6QgNUgnZwYEZGHmYeFsVc4ba/l04vAXkK
-	b7GpEeukkoJxG9Ed9x1KOo/zJfBuKdKY795eHmmkUDBnEkPrs/BDTxsupSNWPJUuc+MPl+slcox
-	u6cKoVo/GURlMsAORSjC+C0GJGPH95NTtIvC0dXk37BOPgenpLhEELGY3/wk10ELO4oUtD0NrEJ
-	FQmED2scFkZTXE7NlSQidpb0qpEOv2yMAeMlfPwxVJbLec4ZlkVJRUtEuSpG+x1Z9H1MTU8/nrB
-	+EEnyYh4J4TTg5s8VK3JnZY+/h53LVYIyASI5NSU=
-X-Google-Smtp-Source: AGHT+IGGnNYbfg3tRijwYJsTHxFrHe4ec9V4WbLcn63Mw2V3gA0rhenSRI8xr6ktDmmz0UyeTDfVCg==
-X-Received: by 2002:a05:6870:7053:10b0:2eb:9fe5:d06c with SMTP id 586e51a60fabf-2ff0c5af786mr2100280fac.3.1752162407230;
-        Thu, 10 Jul 2025 08:46:47 -0700 (PDT)
-Received: from ?IPV6:2600:8803:e7e4:1d00:6f38:cf8f:abb1:34f7? ([2600:8803:e7e4:1d00:6f38:cf8f:abb1:34f7])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2ff116dd664sm343870fac.42.2025.07.10.08.46.45
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 10 Jul 2025 08:46:46 -0700 (PDT)
-Message-ID: <2bcd758b-c2d0-488a-8ead-ec7fb39f93e2@baylibre.com>
-Date: Thu, 10 Jul 2025 10:46:44 -0500
+	s=arc-20240116; t=1752167481; c=relaxed/simple;
+	bh=TRJUxB4WBpe+QSGife8PyjCShwDx1HSgq8OfCej093s=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EBWb6mrsYCrE+0DzmNRijDQ9VThZHTF+kH5ypfLGr/3ZYj4MZbTXfmz7B0UNS08c/myVj77gg97WAFOb0tW+qawQt4mzFqVKJtyHcPuYm11dFqU2yUUEnz/NAEdiXwCR7u6q0pwNLAZWNCNQgshTCDzXYtal9P6ZbVEovSsbgrk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rqau8mCg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00380C4CEF4;
+	Thu, 10 Jul 2025 17:11:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752167477;
+	bh=TRJUxB4WBpe+QSGife8PyjCShwDx1HSgq8OfCej093s=;
+	h=From:To:Cc:Subject:Date:From;
+	b=rqau8mCgF6co8lAK/Hu4XqULMveRnVnnjmvVqXezI75u4QEJmPZqh8ruLC22ghZ/J
+	 a8/JnhzMwrSIHiMsmr81DuDiOrbTVfnTAw+0P85lcSFMLgKkUxXiVL8vHW4yGX9DEJ
+	 mqkihSwPEBtqhvXIt0MahungTK+j8H+mmN/froEss/AnYtO58pHC+FG5YL9o3GZDSd
+	 YO3FLvp2b01dVUaJWrsUe1jdf+iJiWx6kcaMEx9Et5DSh+XoHntb+7327UZJLeTuJZ
+	 PE2Mwx6bnBaggmYBAteq2XR+WP1TuMDHS75+EQnjEn7hQtiJ0sHidBVa3NypgH7OgX
+	 P8cZxq8hhpHTg==
+From: Jonathan Cameron <jic23@kernel.org>
+To: linux-iio@vger.kernel.org,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	David Lechner <dlechner@baylibre.com>
+Cc: Denis Ciocca <denis.ciocca@st.com>,
+	Vasileios Amoiridis <vassilisamir@gmail.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 0/7] IIO: More application of IWYU principles to includes.
+Date: Thu, 10 Jul 2025 18:11:00 +0100
+Message-ID: <20250710171107.443790-1-jic23@kernel.org>
+X-Mailer: git-send-email 2.50.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] dt-bindings: iio: adc: imx93: Add calibration
- properties
-To: Primoz Fiser <primoz.fiser@norik.com>, Haibo Chen <haibo.chen@nxp.com>,
- Jonathan Cameron <jic23@kernel.org>, Nuno Sa <nuno.sa@analog.com>,
- Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>
-Cc: linux-iio@vger.kernel.org, imx@lists.linux.dev,
- devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, upstream@lists.phytec.de,
- andrej.picej@norik.com
-References: <20250710073905.1105417-1-primoz.fiser@norik.com>
- <20250710073905.1105417-2-primoz.fiser@norik.com>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <20250710073905.1105417-2-primoz.fiser@norik.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 7/10/25 2:39 AM, Primoz Fiser wrote:
-> From: Andrej Picej <andrej.picej@norik.com>
-> 
-> Document i.MX93 ADC calibration properties and how to set them.
-> 
-> Signed-off-by: Andrej Picej <andrej.picej@norik.com>
-> Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
-> ---
->  .../bindings/iio/adc/nxp,imx93-adc.yaml       | 21 +++++++++++++++++++
->  1 file changed, 21 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml b/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
-> index c2e5ff418920..d1c04cf85fe6 100644
-> --- a/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
-> +++ b/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
-> @@ -52,6 +52,27 @@ properties:
->    "#io-channel-cells":
->      const: 1
->  
-> +  nxp,calib-avg-en:
-> +    default: 1
-> +    description:
-> +      Enable or disable calibration averaging function (AVGEN).
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    enum: [ 0, 1 ]
-> +
-> +  nxp,calib-nr-samples:
-> +    default: 512
-> +    description:
-> +      Selects number of samples (NRSMPL) to be used during calibration.
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    enum: [ 16, 32, 128, 512 ]
-> +
-> +  nxp,calib-t-sample:
-> +    default: 22
-> +    description:
-> +      Selects sample time (TSAMP) of calibration conversions in ADC clock cycles
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    enum: [ 8, 16, 22, 32 ]
-> +
->  required:
->    - compatible
->    - reg
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-This seem like things that should be set at runtime rather than
-in the devicetree. Unless there is some justification on why
-these values depend on how the chip is wired up?
+I decided to look at a slightly larger set to continue trying to come
+up with consistent rules (for IIO anyway) on what we want to include
+direclty and what assumptions we can make about a header always including
+another.
+
+As the series goes on reduce the amount of info on particular choices made
+just because the commit descriptions were getting very long.
+
+A few open questions.
+- linux/stddef.h - do we want to included this directly?
+- linux/types.h - do we want to include this directly?
+- linux/dev_printk.h - include even if device.h is needed for other reasons
+  or rely on that as a grouping header if present and only use dev_printk
+  where we don't need device.h.
+
+I'll share a refreshed IWYU config once we come to firmer conclusions
+on the various choices.  I haven't yet figured out now to not include
+anything at all for things like CONFIG*
+
+Jonathan Cameron (7):
+  iio: pressure: bmp280: Apply iwyu principles to includes.
+  iio: pressure: zpa2326: Apply iwyu principles to includes
+  iio: pressure: mpl115: Apply iwyu principles to includes
+  iio: pressure: ms5611: Apply iwyu principles to includes
+  iio: pressure: hsc030pa: Apply IWYU principles to includes.
+  iio: pressure: mprls0025pa: Apply IWYU principles to includes.
+  iio: st_sensors: Apply IWYU principles to includes
+
+ drivers/iio/accel/st_accel_buffer.c           |  6 ++++--
+ drivers/iio/accel/st_accel_core.c             | 12 ++++++++---
+ drivers/iio/accel/st_accel_i2c.c              |  5 ++++-
+ drivers/iio/accel/st_accel_spi.c              |  3 ++-
+ .../iio/common/st_sensors/st_sensors_buffer.c | 15 +++++++++-----
+ .../iio/common/st_sensors/st_sensors_core.c   | 19 ++++++++++++++----
+ .../iio/common/st_sensors/st_sensors_core.h   |  2 ++
+ .../iio/common/st_sensors/st_sensors_i2c.c    |  8 ++++++--
+ .../iio/common/st_sensors/st_sensors_spi.c    | 11 ++++++++--
+ .../common/st_sensors/st_sensors_trigger.c    | 13 +++++++++---
+ drivers/iio/gyro/st_gyro_buffer.c             |  6 ++++--
+ drivers/iio/gyro/st_gyro_core.c               | 11 +++++++---
+ drivers/iio/gyro/st_gyro_i2c.c                |  3 ++-
+ drivers/iio/gyro/st_gyro_spi.c                |  3 ++-
+ drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_core.c  |  5 ++++-
+ drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_i2c.c   |  5 ++---
+ drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_spi.c   |  5 ++---
+ drivers/iio/magnetometer/st_magn_buffer.c     |  5 +++--
+ drivers/iio/magnetometer/st_magn_core.c       | 11 +++++++---
+ drivers/iio/magnetometer/st_magn_i2c.c        |  3 ++-
+ drivers/iio/magnetometer/st_magn_spi.c        |  3 ++-
+ drivers/iio/pressure/bmp280-core.c            | 17 ++++++++++++++--
+ drivers/iio/pressure/bmp280-i2c.c             |  4 ++++
+ drivers/iio/pressure/bmp280-regmap.c          |  6 ++++--
+ drivers/iio/pressure/bmp280-spi.c             |  6 ++++++
+ drivers/iio/pressure/hsc030pa.c               | 12 +++++------
+ drivers/iio/pressure/hsc030pa.h               |  5 ++---
+ drivers/iio/pressure/hsc030pa_i2c.c           |  4 ----
+ drivers/iio/pressure/hsc030pa_spi.c           |  5 -----
+ drivers/iio/pressure/mpl115.c                 | 13 +++++++++---
+ drivers/iio/pressure/mpl115.h                 |  1 +
+ drivers/iio/pressure/mpl115_i2c.c             |  8 +++++++-
+ drivers/iio/pressure/mpl115_spi.c             |  5 +++++
+ drivers/iio/pressure/mprls0025pa.c            |  9 +++++++--
+ drivers/iio/pressure/mprls0025pa.h            |  9 ++-------
+ drivers/iio/pressure/mprls0025pa_i2c.c        |  1 -
+ drivers/iio/pressure/ms5611_core.c            | 15 +++++++++++---
+ drivers/iio/pressure/ms5611_i2c.c             |  5 ++++-
+ drivers/iio/pressure/ms5611_spi.c             |  9 +++++++--
+ drivers/iio/pressure/st_pressure_buffer.c     |  6 ++++--
+ drivers/iio/pressure/st_pressure_core.c       |  9 ++++++---
+ drivers/iio/pressure/st_pressure_i2c.c        |  3 ++-
+ drivers/iio/pressure/st_pressure_spi.c        |  3 ++-
+ drivers/iio/pressure/zpa2326.c                | 20 +++++++++++++++----
+ drivers/iio/pressure/zpa2326.h                |  3 +++
+ drivers/iio/pressure/zpa2326_i2c.c            |  7 +++++--
+ drivers/iio/pressure/zpa2326_spi.c            |  6 +++++-
+ include/linux/iio/common/st_sensors_i2c.h     |  5 ++---
+ include/linux/iio/common/st_sensors_spi.h     |  5 ++---
+ 49 files changed, 249 insertions(+), 106 deletions(-)
+
+-- 
+2.50.0
 
 

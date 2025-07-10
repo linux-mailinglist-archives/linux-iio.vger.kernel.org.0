@@ -1,68 +1,68 @@
-Return-Path: <linux-iio+bounces-21544-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21545-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4D8EB00BD8
-	for <lists+linux-iio@lfdr.de>; Thu, 10 Jul 2025 21:09:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EA96B00BDD
+	for <lists+linux-iio@lfdr.de>; Thu, 10 Jul 2025 21:10:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A9505C37E3
-	for <lists+linux-iio@lfdr.de>; Thu, 10 Jul 2025 19:09:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6B76E5C3CD5
+	for <lists+linux-iio@lfdr.de>; Thu, 10 Jul 2025 19:10:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D68572FCFE0;
-	Thu, 10 Jul 2025 19:09:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F21E2FD586;
+	Thu, 10 Jul 2025 19:09:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aG8U5k44"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IiGtVdm/"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 054A92FCFE4
-	for <linux-iio@vger.kernel.org>; Thu, 10 Jul 2025 19:09:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 584EE2FCFFA
+	for <linux-iio@vger.kernel.org>; Thu, 10 Jul 2025 19:09:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752174554; cv=none; b=mFgCkiGgy86NB9+BAZtARfOaFMefyNwmLiXRfzCjoqvNhREfPqs00UzOQmy0oo2vmjks5/i1CXB18uy047C0Yo/4GKeQovJDxC4JvfvUCL2/iosbQsQDMHnrDmylFN2A55JrK3Qp2qr54TE3wjBpqQqU8ZvOmNSvY6SV0qzhw28=
+	t=1752174598; cv=none; b=GWAijaVALPbCNuicKkFn8K2zCbL6QdoJAc5j5/xUQ8WokzoyaRUXvZDY83iT+D6BCkId5lh5Nnjfs/UQYBUf1K1zxqhBCsn91zwtRB0+1SCh1J4UpCVEicX6R7qfAfrFBvCKnA6VZXWQ70pxKuCa9F/QF4ZnBnuhcSLd5TPMRTk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752174554; c=relaxed/simple;
-	bh=rsJgETqujF6d+yXQeVMGpkZjijHOkU+3mnHBQL9sJjQ=;
+	s=arc-20240116; t=1752174598; c=relaxed/simple;
+	bh=vuxID88Mm6AqLti+nkltCmHl3PcHZ54KBHBfX3cMjho=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QtjiFPTBpFopZEqRwDHEW+RQZnPCGYOsUUWALCLtW6xG4VIV+tGtpRf1IO+EzsozrvBN2QjDPE1J2dT3NVeY15LAoRcvgIaVbMiCwWHb7QRxbp5pPa2AspdqY6RxZMuOHj7d0AzcbWM6M63324Lz24xbV6AcTf+c8RSuDtxifkQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aG8U5k44; arc=none smtp.client-ip=192.198.163.15
+	 Content-Type:Content-Disposition:In-Reply-To; b=eEnv3V/YGyIHQ5whJcYHIrGSo/gmkeQE204bN98HYm7PZ6w3Iz67EYEDjpt3M04y0A7D5u2k4YKFuEV0BCzExVl/R2gPGN2AGC7mc+YJ2jAhp9tdCtxluV35qNt72Al4yCge1l71LvaGQGEjDQpGtqwAaKQXgLibuWtx8metrgs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IiGtVdm/; arc=none smtp.client-ip=192.198.163.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1752174553; x=1783710553;
+  t=1752174596; x=1783710596;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=rsJgETqujF6d+yXQeVMGpkZjijHOkU+3mnHBQL9sJjQ=;
-  b=aG8U5k44bnMW1Yr5qw/pL6b8i4kKSwIhJ2hPqrnsUSqBEX/ZfSExVmuv
-   2x1tcSk6I6+PQKzBF5qS2XdbwtRi7I3eqV5uDNcgIJrdNY/kxphShU2G6
-   4SMMtaDgzWEwVHlR2DMhHT4EHNg7rh5CWb6Bm2jQe9xTcLNkmqIiTYygD
-   3m5xlwlxivvRImeJyYJqNtIspxWVQ9WRq69paTNLh/rSiqp4Vbh9o3hby
-   flRyy7Ut3mAJV7jnINi4FZWAsnxCvg12MhsGW5U9mpAxZEj0MlppNA34L
-   p3FrK7ywdw9lnZBjVmNCNC1RWgx+9o5STwC05pzYvqwNSVcF7LAidy/41
-   A==;
-X-CSE-ConnectionGUID: /ZITfYgsQw6QAfQw996uDw==
-X-CSE-MsgGUID: TA2/TrulQZqDZbVmeOv0Iw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11490"; a="54623010"
+  bh=vuxID88Mm6AqLti+nkltCmHl3PcHZ54KBHBfX3cMjho=;
+  b=IiGtVdm/Ho9rCVE2u0AYElXw4T2GplAyxd6Itqr+VKutYN8jHGJs3IwS
+   5FlxztsojrNtZwKH24kPszldKUXQJGtFofp6y7UcIjYKjqnRIP11zH+oj
+   Rhx0baXiELrG/yWxmS7YMMKs6LCPubGT7PUtjdsT3K5uIhA/tp1/PMr8k
+   U8SF+64t8HyB0MLzBg8dIog5RGEMCTPiWTYiov3pstgSzoEGCWYuwpK2J
+   hIzY7+JmqCXjZDwFgIMFnDKrMo+jQOpksdUasoZStbo6OAypKtsml5h3P
+   2+CZwOytYh4niO0f7yE3TzXAFqBW93oOnlbZTZHE0IRVSQ3vDk6LXB1Pc
+   g==;
+X-CSE-ConnectionGUID: 7C75KEtvRe+iRmkjGu0XWw==
+X-CSE-MsgGUID: amOZY5FZTay+lA3CGDUT8g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11490"; a="65048569"
 X-IronPort-AV: E=Sophos;i="6.16,301,1744095600"; 
-   d="scan'208";a="54623010"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2025 12:09:12 -0700
-X-CSE-ConnectionGUID: Vb70YZpjQ4WTJAx8AcEBZg==
-X-CSE-MsgGUID: xDe9VYqJQSeRuyB4mFSJhg==
+   d="scan'208";a="65048569"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2025 12:09:56 -0700
+X-CSE-ConnectionGUID: ESZpsnasS42W6ywOBwJ/vA==
+X-CSE-MsgGUID: OKaEq2mjQ9iYmntx7UUI1A==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,301,1744095600"; 
-   d="scan'208";a="160727377"
+   d="scan'208";a="155592109"
 Received: from smile.fi.intel.com ([10.237.72.52])
-  by orviesa004.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2025 12:09:10 -0700
+  by orviesa006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2025 12:09:53 -0700
 Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
 	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1uZwdm-0000000EJ6W-2Zh8;
-	Thu, 10 Jul 2025 22:09:06 +0300
-Date: Thu, 10 Jul 2025 22:09:06 +0300
+	id 1uZweU-0000000EJ7F-0nN3;
+	Thu, 10 Jul 2025 22:09:50 +0300
+Date: Thu, 10 Jul 2025 22:09:49 +0300
 From: Andy Shevchenko <andriy.shevchenko@intel.com>
 To: Jonathan Cameron <jic23@kernel.org>
 Cc: linux-iio@vger.kernel.org,
@@ -72,9 +72,11 @@ Cc: linux-iio@vger.kernel.org,
 	Denis Ciocca <denis.ciocca@st.com>,
 	Vasileios Amoiridis <vassilisamir@gmail.com>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH 0/7] IIO: More application of IWYU principles to includes.
-Message-ID: <aHAP0rr1VQX8hWC9@smile.fi.intel.com>
+Subject: Re: [PATCH 1/7] iio: pressure: bmp280: Apply iwyu principles to
+ includes.
+Message-ID: <aHAP_c_7huR3igPC@smile.fi.intel.com>
 References: <20250710171107.443790-1-jic23@kernel.org>
+ <20250710171107.443790-2-jic23@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -83,41 +85,51 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250710171107.443790-1-jic23@kernel.org>
+In-Reply-To: <20250710171107.443790-2-jic23@kernel.org>
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
  krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Thu, Jul 10, 2025 at 06:11:00PM +0100, Jonathan Cameron wrote:
+On Thu, Jul 10, 2025 at 06:11:01PM +0100, Jonathan Cameron wrote:
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > 
-> I decided to look at a slightly larger set to continue trying to come
-> up with consistent rules (for IIO anyway) on what we want to include
-> direclty and what assumptions we can make about a header always including
-> another.
+> The recent introduction of a warning on missing include of
+> linux/export.h when W=1 motivated revisiting the includes in affected
+> drivers.  In general IWYU principles avoid complex include paths that
+> make it hard to refactor headers.
 > 
-> As the series goes on reduce the amount of info on particular choices made
-> just because the commit descriptions were getting very long.
+> - Move linux/unaligned.h entry to appropriate place.
+> - Drop comment on linux/irq.h as we don't generally keep a record
+>   in code of why includes are there.
 > 
-> A few open questions.
-> - linux/stddef.h - do we want to included this directly?
+> Remove
+> - linux/device.h from bmp280-regmap.c as struct device forwards definition
+>   is enough.
+> - linux/module.h from bmp280-regmap.c as the module stuff is all in the
+>   other files.
+> Add all of:
+> - linux/array_size.h for ARRAY_SIZE()
+> - linux/device.h in the i2c and spi drivers
+> - linux/err.h for PTR_ERR() etc and also assume includes errno.h
+> - linux/export.h for EXPORT_SYMBOL*()
+> - linux/jiffies.h for msecs_to_jiffies
+> - linux/log2.h for ilog2()
+> - linux/math64.h for div64_s64
+> - linux/minmax.h for clamp_val()
+> - linux/mod_devicetable.h for spi_device_id etc
+> - linux/mutex.h for various mutex calls
+> - linux/pm.h for pm_ptr()
+> - linux/stddef.h for false / true
+> - linux/string.h for memcpy
+> - linux/string_choices.h for str_enable_disable
+> - linux/time.h for USEC_PER_MSEC
+> - linux/types.h for local bool definition.
+> 
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> ---
+> I'm not sure on whether we should bother with stddef.h or types.h
+> Looking for feedback on any others.
 
-Only if not types.h included.
-
-> - linux/types.h - do we want to include this directly?
-
-Yes.
-
-> - linux/dev_printk.h - include even if device.h is needed for other reasons
->   or rely on that as a grouping header if present and only use dev_printk
->   where we don't need device.h.
-
-I slightly tend to include both as strictly speaking the dev_printk.h should be
-device/printk.h, but that boat already sailed long time ago...
-
-> I'll share a refreshed IWYU config once we come to firmer conclusions
-> on the various choices.  I haven't yet figured out now to not include
-> anything at all for things like CONFIG*
-
-PAGE_SIZE is in asm/page.h.
+types.h is superior.
 
 -- 
 With Best Regards,

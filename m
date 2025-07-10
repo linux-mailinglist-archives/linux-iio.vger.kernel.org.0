@@ -1,240 +1,144 @@
-Return-Path: <linux-iio+bounces-21494-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21495-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DCA6AFF1F0
-	for <lists+linux-iio@lfdr.de>; Wed,  9 Jul 2025 21:38:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0740AFF6B5
+	for <lists+linux-iio@lfdr.de>; Thu, 10 Jul 2025 04:20:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 660A11C26238
-	for <lists+linux-iio@lfdr.de>; Wed,  9 Jul 2025 19:38:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9056C4E6F61
+	for <lists+linux-iio@lfdr.de>; Thu, 10 Jul 2025 02:20:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 532A71F0E50;
-	Wed,  9 Jul 2025 19:38:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27E2E27F166;
+	Thu, 10 Jul 2025 02:20:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b="J1kQIvje"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="Mnt5Fah7"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012022.outbound.protection.outlook.com [52.101.66.22])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f49.google.com (mail-oo1-f49.google.com [209.85.161.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7834F1EDA2F;
-	Wed,  9 Jul 2025 19:38:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.22
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752089906; cv=fail; b=J1eJutu6mnzH7vguNYnL1IEgOL1ziy6OoH/JNZ8YVjhySylFm9z6qFlXPW5NbRp2Ez9jh4TRD1RIHz1+1OJr65bXOvpGiNK90FGv3iY9RrS03NI+vTtUbFwGKIwwB8tBHhYgJ9yuPIoL6FPKbZc1MrBc6l5bQ7DUiAqDGtzgbB8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752089906; c=relaxed/simple;
-	bh=du9VsSWsdNJjtNNUeWxBqg4LXW4B7Dy5zao8l6/Jb68=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=XercP5S5B8jLtlhu8IvYQEug9iLgSjORzPptwELNDi2sELt8soVCnmZoZM01CTizit2/Zsi5hwOk7pgPmjr09VTez1wv2m6LeEb+9wCeIZRLv4WqPNPsAU9bI6A1ZkwXplcotOcxYJma6/mt/TSMmeylNxr0iJfvmBreIO+68m0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com; spf=pass smtp.mailfrom=de.bosch.com; dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b=J1kQIvje; arc=fail smtp.client-ip=52.101.66.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=de.bosch.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=LAEPGBAMhebQDr3Qwiaccyl9kH8gdf+BDDp8f8NBN2p9nlZ91gf9jOjafqm8unrWLI8HsoqwdCa/GgGWuVaMtuY4rqGgnm0Rcu7bEcrdGeMejhvfnMYh3tOHI/F7X+8PlQuYxaUPbvatJb2kJu4pbAzk46H9BjR/CvyTzHXGtElFvN8vbqXzyR8tfPdC+GbU8gC5Hrw0p6EHxfhA9+ltcVeFIb6aLSFpxK/hE7adOrVBYoAqsguJULDnW57ovLtptFgL4wLaVamSZ6HgHRRXe8rj0RQ62riEK1s9mONP56ShDNgS5asN2wjsyhdNYHlw67DpTP9A1fJtJbDV5XU5pw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=k8tKjzTDVWNq99JRwdpYGeYuaYeeCcqiVu4WHheYceo=;
- b=lPCObtUCRAlzKmmnUyWF0f7Q4iZ+y3z95dyaPG3gL1wu+DpVbi3JQ7y1u0fjcvN3Pj9tNtDADDz2w4Tm7tKlHDLNfyb7QqZ0DHfcFFuwX2oKhVAmpNMVwQUqf+U05637PNBJlD3EtVDi/bm3O4+45WoGlQPqiaQKHTq89FeqrulmmelV68TmBHWONZ0NgLUPq8LZq5Gr5FJc3jlOOFWpfm1ouyxERTDeKJTha8JOLu29nMyHu8BMoVrzyAml7Is0yn+oZUYAB7J6ZrJPLzGLCLrgUiiKphtorp6rtnEilFaNELz4ScSTVvl6qDSZ9jj/jqXnLX1nqrQn5k2PqHRERQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=de.bosch.com; dmarc=pass action=none header.from=de.bosch.com;
- dkim=pass header.d=de.bosch.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=de.bosch.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=k8tKjzTDVWNq99JRwdpYGeYuaYeeCcqiVu4WHheYceo=;
- b=J1kQIvjeSTlSXF1Nq5Z/H4rGnDvQdtp1XaNn7fEpv7ledfQfG+ADtdA9GRQONoftIZs7G0wyQT5tId4vqExRC/VUF+966z+ob5Tt4n7+i9o48wR/+WR4XvqJ/IyGg53azbWub9iLJpUzryZaI/X8kFaXLvpRx+3yvh8OpRZKNtzgw0+YOVyCJbz5gGSKuYqJ4+j4SxFfUzSn8sU1Q36pfevVdyXha8kpj2lqU4JaNgJnINDGzbNDDddkfTnR+XwfvkcIjGStkJOJqvu/KBaOgGONcdMxHRQjvctiaHXHm2JffOGL+8DKWKB3OrYDU8K1fKzXJDX99IbQZ99QiDFYew==
-Received: from AM8PR10MB4721.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:315::22)
- by PA1PR10MB8390.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:102:446::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8901.26; Wed, 9 Jul
- 2025 19:38:18 +0000
-Received: from AM8PR10MB4721.EURPRD10.PROD.OUTLOOK.COM
- ([fe80::c75f:604a:ce59:8114]) by AM8PR10MB4721.EURPRD10.PROD.OUTLOOK.COM
- ([fe80::c75f:604a:ce59:8114%6]) with mapi id 15.20.8901.024; Wed, 9 Jul 2025
- 19:38:18 +0000
-From: "Shen Jianping (ME-SE/EAD2)" <Jianping.Shen@de.bosch.com>
-To: Jonathan Cameron <jic23@kernel.org>
-CC: "lars@metafoo.de" <lars@metafoo.de>, "robh@kernel.org" <robh@kernel.org>,
-	"krzk+dt@kernel.org" <krzk+dt@kernel.org>, "conor+dt@kernel.org"
-	<conor+dt@kernel.org>, "dima.fedrau@gmail.com" <dima.fedrau@gmail.com>,
-	"marcelo.schmitt1@gmail.com" <marcelo.schmitt1@gmail.com>,
-	"linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "Lorenz
- Christian (ME-SE/EAD2)" <Christian.Lorenz3@de.bosch.com>, "Frauendorf Ulrike
- (ME/PJ-SW3)" <Ulrike.Frauendorf@de.bosch.com>, "Dolde Kai (ME-SE/PAE-A3)"
-	<Kai.Dolde@de.bosch.com>
-Subject: AW: [PATCH v3 2/2] iio: imu: smi330: Add driver
-Thread-Topic: [PATCH v3 2/2] iio: imu: smi330: Add driver
-Thread-Index: AQHb7DCnxFfdguezA0CMBsJ2vkpDJrQlVJwAgATVpeA=
-Date: Wed, 9 Jul 2025 19:38:18 +0000
-Message-ID:
- <AM8PR10MB47217D838CA7DDACBE162D15CD49A@AM8PR10MB4721.EURPRD10.PROD.OUTLOOK.COM>
-References: <20250703153823.806073-1-Jianping.Shen@de.bosch.com>
-	<20250703153823.806073-3-Jianping.Shen@de.bosch.com>
- <20250706175328.7207d847@jic23-huawei>
-In-Reply-To: <20250706175328.7207d847@jic23-huawei>
-Accept-Language: en-US
-Content-Language: de-DE
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=de.bosch.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: AM8PR10MB4721:EE_|PA1PR10MB8390:EE_
-x-ms-office365-filtering-correlation-id: a028adea-02b3-4c19-439b-08ddbf2027ea
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|376014|7416014|366016|1800799024|38070700018;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?tgmTwnfimjUE62zhR/KCP1ICgc0RsM6kysDH0n1g/VkYOSsLQrrTjnC83qkO?=
- =?us-ascii?Q?G3P+Um+61jtkb6zSM2WSUrDcbaZuxb7G+YkIb8sVLddzPcV12yw3SBq/OjCr?=
- =?us-ascii?Q?VGrwyGzNx5AXSeAirQdNq42ECMl5KSlWRsRbU5r8yCvD7QBvrtRl3wLuJfll?=
- =?us-ascii?Q?IS/6yluotowz2b2WC7dK2ItYVAaZEhY+k5lIFKY9Ggu32yKq8buPHUbv73rW?=
- =?us-ascii?Q?1HGQon8no+NFB/0AylauHHjX6gsAZd31wU5lvH82Ae92lwkPXyoXKfUyQugW?=
- =?us-ascii?Q?PUQXut/NdGnblA0oDXZRmMnHgbyWQC8+E2u1E4Hve/e3OHdZuAsin0inlC5C?=
- =?us-ascii?Q?frzckwdawmqtBaJAkk1bw/30VPfYf9t5+JOgGuajVW115eA+9dw/z3JQv1vx?=
- =?us-ascii?Q?l9+oZT/oov6Mbmhqp0+Vaf09WWXkjYzrUk3WcYzb5KmsucYUDnEyG1aohRlr?=
- =?us-ascii?Q?s3jLJZzPFbCl9SkC2ZYv/tsipxN34fN32TaXK9QZ8AS8QarMtBuTCjJppB7K?=
- =?us-ascii?Q?vUkA8AM5lt0xr1zimQTYAPG9lcIqwZJhWgRDAjwQ0YNB9COY9oEmyYcXZ6mu?=
- =?us-ascii?Q?oW0SM0664z8uaIFwsze+y6C4ZPrEIMFRATYZBhAH02Sfaj848wcS+xsMVtwz?=
- =?us-ascii?Q?gI8QuczMy5bD2FJwDhpqzo2x72FntkYGJ03ID84vDOPGy4biLCp8Ieah7vWx?=
- =?us-ascii?Q?ZuyvACqIrqJsGUmmQwrB9p4eRmT/pvlt1fccMhWZkRyrffPlVaGOYrdyjrpz?=
- =?us-ascii?Q?Np9MlqxNPXP/sjkcV1AVul4BcVmBmcu+MNygrC5jX8Hm7uJJKgd4aowOQw0U?=
- =?us-ascii?Q?CkVvSj2XFtC2mHk6B325h9PwKWFtXjMAywFGD1s3lTGDjBvDFvUFhp6jgMgT?=
- =?us-ascii?Q?JH3GqqbUnRn279hWMNtxPmKmsFqQ3b7txDKrlLBU2UDiERQHPHpUeSl0ozK7?=
- =?us-ascii?Q?1LXeZ9V8jYj9k8Di/JMRvFYa4seWWXP0pKHIV8mAnvh6KfvxWeiaFtG67t94?=
- =?us-ascii?Q?4ppE/2sELV+Gubgaw935PO8JM7TZyjcz7XHHyP60OIkEpbJYwZwKdOJs6WPH?=
- =?us-ascii?Q?UeAqHpDb/t1E7/CrSI5YQBbDHI7ph+iqmxyQREfu90MPji+1N4TeG55VDqDf?=
- =?us-ascii?Q?lj9Hl4CA0N6Luh99882/9EU4wMHJbhw1HSsCR0ZS+w8fCVJ60gGCcxwe79bz?=
- =?us-ascii?Q?6396UqsOjsLXhUlKqMgXZlxC2Kd6LHwQvfuJksFy8rYxFMToi6IlX/qJb/sN?=
- =?us-ascii?Q?/eTSLj9Nwf8w2V/ek9Jo04ztg9ZLqy/GY6aioMQl7plrvQZsTOZ9xuvhKYTg?=
- =?us-ascii?Q?v/2e0B6A+Ce04BEl14dr1VyuAKTQpRBGqrZ3pXEmikaKrFEW50cEzsACUIet?=
- =?us-ascii?Q?Cl/JmOtFfoXvTF2d8ps4uw5L7/yf2XWrMx6vjM5JqinMmvDVF1Kxy+3eLhrV?=
- =?us-ascii?Q?OOZCoMrdapACqy2mfPgh0GRL/HWacXGxf9bbZ9LDQeYPTwn2325/Jg=3D=3D?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM8PR10MB4721.EURPRD10.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?/t8R/MN+d3Cg+Ng4yQur1j5E8FfkK9Ifl2HWE4ckO3Pr30LydnzekI0mL5eq?=
- =?us-ascii?Q?Fgd6u2Y6YEmVmwqdbLFadUk4S/cshmTWAxRcM22qYNHb6fkMKP82Zju2bc9P?=
- =?us-ascii?Q?MPnXo3e8ZG0TkkDVGdX3Gwey5ZCDBczUimTZHJS34FHVYPdYE8nN+mHYBiw6?=
- =?us-ascii?Q?hXius1RSfw0k+UaDolA5fzbUz1tsNwVqlJtMjPIw/tm6CvlGNw6JjQRgWg+Q?=
- =?us-ascii?Q?2yBtKAOJwGKZ1w9hdwywLOQicaySAtmpxLZkyNeG+K/TM6Q/asMl/lNyqTc+?=
- =?us-ascii?Q?O95bOQV40zkaWohtgMBKwaOv/haDHno4HD1x68WSZwUufITV6hu0WQ7sKapp?=
- =?us-ascii?Q?JiXoiiKy3NSMXmInpaI4ZZrtQr5oOnT2bZDozRzJuR9n517yPPzvGt/CoFJS?=
- =?us-ascii?Q?VMkjWo2rZNOpXA/RoXtmYJr+9k+DLfJ/MsM0Mt1VJVre+I59ESgKRrBpoxAz?=
- =?us-ascii?Q?fJpayk6Wvn5rrXHqmZJGkj9Wk91XQHAcJyfN3QiLdv7mdTGMHVotN4VwESgH?=
- =?us-ascii?Q?02ko8IdbabBZDACVCYDcPngtToNO3UN7sgaS6EbqQhyR8rvWsaQi3IMw0Tc+?=
- =?us-ascii?Q?gS9jZ/7T7SmlbO0sANg41KR9rNQgyUHI1T/Be9MKHrj7eH5zdzq3j5TqTYdZ?=
- =?us-ascii?Q?6JZTo+oRAaeAsiqeXfCLnk08qGs83j0gKZ7rqnO7DMB5asVc9IwE1BYAasLb?=
- =?us-ascii?Q?Xxa0ohEXRqAPsO9p8gcmyVwensCx/d3nB/FvJqRLlC1WkFSpOYg3VuvKNg/E?=
- =?us-ascii?Q?8RgDGZ59Gcb+ezIoW8apU3FXa3/d+Pb1sdBaz0FnuRkdSDMPZB2AUCAZdn+b?=
- =?us-ascii?Q?urS0zCM/LpB2SlGYwH8V/vfbrf+YbNmg+T33X3lRklPf7QX0r33AYGOKl8YD?=
- =?us-ascii?Q?NcDznAgPmrWkC6vSJykraMrjd3959kb31T7uA8oQGi+dRj9cznPST2LcuZ+M?=
- =?us-ascii?Q?/SuutuEIvpZi8uByuuVgTXJpYx8cSp9CWe6Al82ErmYlIZ47Qu1bQxB7tXgj?=
- =?us-ascii?Q?xht9MJlG/yNkf5bq91+gQi4aH26sYQ4NOBBuwsAsGtaPYvvedY//7WNlxnND?=
- =?us-ascii?Q?CKUCW9yxdUQSUXXS7K+vHpUh4NYLBNl499F0o+hYh6oxvuWytGgdpir/D6jG?=
- =?us-ascii?Q?9SKIPBkDVtRSplLR/uozdx8PTMDWFz2LAaE859tHWmqNVgoU8zbQgKfxB55J?=
- =?us-ascii?Q?VteS3hWtnbGAgHlJqpfViUP1AMyDWZkPXOClLn4GmBD4aDkdcuKmg6ru2pRD?=
- =?us-ascii?Q?vLdRc4s0vQpCKxXStvDGwUD9UNP227xfVa5H/nAuxkDsRsbaDHv3ooZthtVT?=
- =?us-ascii?Q?+dUwZKoAV4lFfddBYgOywcLKztEX8JeyoCqyiOZ7NkFZxOxEOk5YEQcZ5a2k?=
- =?us-ascii?Q?kXF47h2vr71T/Fh2u6A2W+UauLSQEzQ7gDkk55k8sgn+W0vw1avrJQlFff1n?=
- =?us-ascii?Q?GdCGEcq+F37nFWVNA0HjLdbkXKTZ9/DMlLR+2VRVa7k7PNrN9wppB61CnWNi?=
- =?us-ascii?Q?0/Ya4G4LXV9mjwPV6UHKPsKDRLe4iCtUPqSmIDMG/lRHoQ6GZUyHCN98ocjb?=
- =?us-ascii?Q?dO7xfhr15lFAHKOoafQ=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34C9E27F00E
+	for <linux-iio@vger.kernel.org>; Thu, 10 Jul 2025 02:20:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.49
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752114033; cv=none; b=n5g8EcEeYqBAkOg5wttrxXBT0hI3IqyYlIIzOfn30/ehkdIu8G/fD06PZfqh+417WSbw2PjmyFYfGAAcSiXXEBPeQwC+eCqfuDeax8Is06JHuHZfCbxRIlwgIBRlWf6ARLXMJTLJial1KYIuRn7JdwvU38opaXMqbayf/2QFYcE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752114033; c=relaxed/simple;
+	bh=byk0dIPW8EI6Kypmsp2QYrm0JAnJSTpIQgO0vQYYNL0=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=QEMrcPddNlNTad2NpZi4zpqdQ19uYE+YCtbSiht2aj9uPSVdESC+lEcD5wwfGPA7jCfIp/MnY0gmD8GVmueVjGXLbwUxah2vctTX4Lv8WBkRQEVyztT9bNMPFCzI6QotejpiIZucxSMQctctS5vxYLzVfsr06FgJfn50VqaLJrA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=Mnt5Fah7; arc=none smtp.client-ip=209.85.161.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oo1-f49.google.com with SMTP id 006d021491bc7-611b246727cso266094eaf.0
+        for <linux-iio@vger.kernel.org>; Wed, 09 Jul 2025 19:20:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1752114030; x=1752718830; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=XTsd9cGSO6BVj+ztL8QhdIsCz8olqodjVBaXpuBpzYM=;
+        b=Mnt5Fah7nY+/gSazaSUsy91Qe6Irr799UwgsKE9yhroD4M6JlvspCPFHLspBEef1Gx
+         yCKR2Rg6ujC+RyvPxnYCVAOV7eE2saB5SpjL3ieeSiFVJMcYhN48mmsnm8p8pPWpwEu0
+         9r48K6q1q6buWDDyp4/TgPz+sAK+U9grwfezIFC4LHEiGiOYUi2n42NVvBAgxG6KJZs3
+         z0aXJ4B8/1EzDtkhN8C/cD7Gti4sRUWEuSunhjvH4N3bLTx3mUMJOJuhQlQAiJNMxe1l
+         1/gUjZB9a0/PDbbm0Q/bSefll6XNgduEeX+YnXfz2osXFbVu2WZAFs3xPBBDszfSO61A
+         q5wg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752114030; x=1752718830;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=XTsd9cGSO6BVj+ztL8QhdIsCz8olqodjVBaXpuBpzYM=;
+        b=fmRwhDxicNK2r3K/mB1kZB9fXNEUVSxG0n8GtVJwRou9SZbOP3Y29bvY93uenS0GhQ
+         DrZWzrqL2nYV8liHW01GV7yZgv2aHqHFxFKc2bMeF+ToYvD1EHYaGXkCF8BAxT9hN4QG
+         1eK+BWjoa++hCNzOUFbeBIqmffqfEytMJ1tuqko7i9Ci9CWBww/Z1Ao34CW5/5gXoamH
+         kAfUMTaRw3BZLUnqlTXHPNgoIh/I5KGhzL2+p8phZ/tOW/PqpG2c3lSUMdAXU4fWMblz
+         sbw6ekNyUllxIXt5zzkaxO0aptXhgPpn2UwI+nN+m6cdVWboJvOpTSVzN/Fp0sjfKZaM
+         P2OQ==
+X-Gm-Message-State: AOJu0YzlULrh63MNVvbPzsr6euBnBHSGShJ5fPJmhKcDItoIwO53a4V1
+	QoIZbBGyblD+MdBpGEHTMvKRLcWCQYW2ByYIHgmFfgV5nKlpoyNIsO/tmdo4Bfgp5OaTYo0MZpR
+	5AVeOm0k=
+X-Gm-Gg: ASbGnctNHjN+DivI8fe9YWotpCYZAO0SNHrq8e1jV6solV31SaUHbEp406DptDFzmd4
+	4D0x88VxjK4iXDW8KaTQkYFpX8bQotmKLDA/JLg5kZ4MG18TeHDh7VGCq55r27sU/vFHtEVE2or
+	QpBOnjxpCG5D2vzeiAWZro62+jexrBm1kxWdCj2b6Vz19+7UNQxdNSmfYHmTxfC01cxwL0DVbaj
+	43jvuj4K/6nkANSloCTUD9fM+vvj3V7zXN5W0s3vWv4XM8e3+J7/v81Y63Lf3Oju44GuzhP64Kj
+	l6+B0wj0p6Ocfs2f7C05FuQ6wJQYy3rVE5zCHccfLlRmO0VDveQei/65M4JoLhbak4CE
+X-Google-Smtp-Source: AGHT+IEYerDdvL3f++kvnKr/+HGsrbYuohXXgybSf2S1Plehh85S9qBXWVfJ8hHUrCZ2C94/FmKB6w==
+X-Received: by 2002:a05:6820:2114:b0:611:75a8:f6ca with SMTP id 006d021491bc7-613d9f3f86fmr492387eaf.6.1752114030075;
+        Wed, 09 Jul 2025 19:20:30 -0700 (PDT)
+Received: from [127.0.1.1] ([2600:8803:e7e4:1d00:6f38:cf8f:abb1:34f7])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-613d9f00d46sm66972eaf.22.2025.07.09.19.20.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 09 Jul 2025 19:20:28 -0700 (PDT)
+From: David Lechner <dlechner@baylibre.com>
+Subject: [PATCH v2 0/2] iio: imu: bno055: make bno055_sysfs_attr const
+Date: Wed, 09 Jul 2025 21:19:59 -0500
+Message-Id: <20250709-iio-const-data-19-v2-0-fb3fc9191251@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: de.bosch.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: AM8PR10MB4721.EURPRD10.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: a028adea-02b3-4c19-439b-08ddbf2027ea
-X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Jul 2025 19:38:18.5723
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 0ae51e19-07c8-4e4b-bb6d-648ee58410f4
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: R7P25aGS0n6zjUPM0keDWX/l8of3S+ecE07bZZaJI1a/swoImE5spIhHdu9i8SOdtkvVEe4Db2TO57EE7KDJYA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR10MB8390
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAE8jb2gC/32NSw6DMAxEr4K8rqvYEr+ueg/EIiSmWGpJlSBUh
+ Lh7Uw7Q5ZvRvNkhSVRJcCt2iLJq0jBn4EsBbrLzQ1B9ZmDDpam4QdWALsxpQW8Xi9Qit40zjc/
+ 1WELevaOM+jmdXZ950rSEuJ0XK/3Sf7aVkNBSLbWjaiDm+2C3pw5Rri68oD+O4wuaI4BHtQAAA
+ A==
+X-Change-ID: 20250628-iio-const-data-19-298c08d506f5
+To: Jonathan Cameron <jic23@kernel.org>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Andy Shevchenko <andy@kernel.org>, David Lechner <dlechner@baylibre.com>, 
+ Andrea Merello <andrea.merello@iit.it>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
+ kernel test robot <lkp@intel.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1316; i=dlechner@baylibre.com;
+ h=from:subject:message-id; bh=byk0dIPW8EI6Kypmsp2QYrm0JAnJSTpIQgO0vQYYNL0=;
+ b=owEBbQGS/pANAwAKAcLMIAH/AY/AAcsmYgBobyNSxAszHVBBAjGXg+o+2w0yRlrYzW+KqiLvj
+ a5mkLxPxciJATMEAAEKAB0WIQTsGNmeYg6D1pzYaJjCzCAB/wGPwAUCaG8jUgAKCRDCzCAB/wGP
+ wHopCACR16rhaZo8uG9l5rCqYqNkJ20MOWJ8QxaQ8HBRv68s58fYJuXGfW/svISADRR353EJ1M2
+ PNiZhyDqrwrlkwUZ+B1WCF1xzsIFiNlq/B9IEAR1BgL/Iu/QQfEGFwIJtddeAujr3VkOO9su4FY
+ ou2+k/l8vJLdy31Gk0wqMDI8S1JkmfGaitn/+tYye7SCWVFURF+rWVFvgvJqpKbhrsEe82MiqEV
+ H2qJfIEnBc/VbEqRtoS4KpL1Uaq2f0DBq4dYe+UksuQhjHiqPt2vg9jgyJW942KzzHh9MkKnmjo
+ Ls6z6PvmvqLS5m3BhIpvn3JQHo/crJ8GEzZLCSSs7q2DoQXH
+X-Developer-Key: i=dlechner@baylibre.com; a=openpgp;
+ fpr=8A73D82A6A1F509907F373881F8AF88C82F77C03
 
-Hi Jonathan,
+v1 of this series was already applied, but we got a cryptic error
+message from the 0-day bot [1] that that made me look at the code again.
 
-"available_scan_masks" works not as expected.  We test it using kernel vers=
-ion v6.16. see the test result inline.
+I found a potential bug that could be what triggered the build failure,
+but it is hard to say. I couldn't easily reproduce the issue locally.
+So I've included a new patch to fix this issue along with a v2 of the
+original patch so that we can see what the 0-day bot says about it.
 
-Best Regards=20
-Jianping=20
+I also noticed a mistake in the original patch where I missed one more
+place to add a const qualifier, so that is fixed as well.
 
->> +
->> +static irqreturn_t smi330_trigger_handler(int irq, void *p) {
->> +	struct iio_poll_func *pf =3D p;
->> +	struct iio_dev *indio_dev =3D pf->indio_dev;
->> +	struct smi330_data *data =3D iio_priv(indio_dev);
->> +	int ret, chan;
->> +	int i =3D 0;
->> +
->> +	ret =3D regmap_bulk_read(data->regmap, SMI330_ACCEL_X_REG, data-
->>buf,
->> +			       ARRAY_SIZE(smi330_channels));
->> +	if (ret)
->> +		goto out;
->> +
->> +	if (*indio_dev->active_scan_mask !=3D SMI330_ALL_CHAN_MSK) {
->> +		iio_for_each_active_channel(indio_dev, chan)
->> +			data->buf[i++] =3D data->buf[chan];
->
->If I follow this correctly you are reading all the channels and just copyi=
-ng out the
->ones you want.  Just let the IIO core do that for you by setting iio_dev-
->>available_scan_masks =3D {  SMI330_ALL_CHAN_MSK, 0 }; and push the whole
->buffer every time.
+[1]: https://lore.kernel.org/oe-kbuild-all/202507100510.rGt1YOOx-lkp@intel.com/
 
-For the most frequent use cases, we define available_scan_masks =3D { SMI33=
-0_ALL_CHAN_MSK, SMI330_ACC_XYZ_MSK, SMI330_GYRO_XYZ_MSK, 0 }; and push the =
-whole buffer every time.
-From the user space we just enable 3 channels gyro_x, gyro_y, and gyro_z. T=
-hen we enable buffer and expect that only the gyro values and timestamp in =
-iio_buffer. Nevertheless, we have 3 accelerometer values and the timestamp =
-in iio_buffer.
-It seems that the iio core does not take care which channel is enabled,  ju=
-st copy the first 3 values (acc x,y,z) into iio_buffer.  Our driver code st=
-ill needs to take care and just copy the enabled channel value to buffer.
+---
+Changes in v2:
+- New patch to fix potential issue found by 0-day
+- Add another const qualifier that was missed in v1
+- Link to v1: https://lore.kernel.org/r/20250628-iio-const-data-19-v1-1-a17e7c16b122@baylibre.com
 
-Another side effect after using available_scan_masks is that the active_sca=
-n_masks sometimes does not reflect current channel activation status.
+---
+David Lechner (2):
+      iio: imu: bno055: fix OOB access of hw_xlate array
+      iio: imu: bno055: make bno055_sysfs_attr const
 
-Is some step missing to properly use available_scan_masks ?  How can a user=
- find out from user space which channel combination is defined in available=
-_scan_masks ?
+ drivers/iio/imu/bno055/bno055.c | 56 +++++++++++++++++++++++------------------
+ 1 file changed, 32 insertions(+), 24 deletions(-)
+---
+base-commit: 14071b9cf2d751ff9bc8b5e43fa94fbf08aceea1
+change-id: 20250628-iio-const-data-19-298c08d506f5
 
->
->The handling the core code is reasonably sophisticated and will use bulk
->copying where appropriate.
->
->If there is a strong reason to not use that, add a comment here so we don'=
-t
->have anyone 'fix' this code in future.
->
->> +	}
->> +
->> +	iio_push_to_buffers_with_timestamp(indio_dev, data->buf,
->> +pf->timestamp);
->> +
->> +out:
->> +	iio_trigger_notify_done(indio_dev->trig);
->> +
->> +	return IRQ_HANDLED;
->> +}
-
+Best regards,
+-- 
+David Lechner <dlechner@baylibre.com>
 
 

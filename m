@@ -1,46 +1,46 @@
-Return-Path: <linux-iio+bounces-21537-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21538-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2F45B0099E
-	for <lists+linux-iio@lfdr.de>; Thu, 10 Jul 2025 19:11:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44303B0099F
+	for <lists+linux-iio@lfdr.de>; Thu, 10 Jul 2025 19:11:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C0C423AF0FC
-	for <lists+linux-iio@lfdr.de>; Thu, 10 Jul 2025 17:11:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D9D213AFA10
+	for <lists+linux-iio@lfdr.de>; Thu, 10 Jul 2025 17:11:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5833F2F0C50;
-	Thu, 10 Jul 2025 17:11:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE7BD2F0C63;
+	Thu, 10 Jul 2025 17:11:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NnhQe0pU"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OYJPAR4N"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 190FC21CC56
-	for <linux-iio@vger.kernel.org>; Thu, 10 Jul 2025 17:11:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C00F2F0C5D
+	for <linux-iio@vger.kernel.org>; Thu, 10 Jul 2025 17:11:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752167482; cv=none; b=BrqMeyPfSQRlBadQ0Ws7hzKHtejFh4hnaqQ3X04nKTLR7MqeBvhKijJdeP/T/k202nL/Re2LYLkKTfzZzssvlaMofXWU3KlkO4/kNRhLo3zDgKRSCY+sheO1rEhCFBRZnrF+Es42s/uXuRbiusoUO/IEdf2Qj5W1osKXZc5Odcs=
+	t=1752167484; cv=none; b=C0aa/h2m4JQ/fqbVCMd1IHU5c7btMOT2qSqZ7AOmTTgkumdBxKyGrgIf5GZuJHXm6lkIvu/7thcMw8mhszsLKmoXftp7U2uobUSg9Tq59No0VLHt1UJ9wGM+ta1Lj1nsd9aEoz3pmwMDjwj+9hamHlOMQf6Rqv+tXPGyhOsdpzM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752167482; c=relaxed/simple;
-	bh=/wqJ1noMNLIvSflO+t7Fu11RF8Ng0xG8LO3LHP/l6JU=;
+	s=arc-20240116; t=1752167484; c=relaxed/simple;
+	bh=YciJCzZOJzYFGbBr+jlTBzZOMkfuBseO48t1mFvzjBw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AZxLXFRFoukfaRwXj0jh8juRjRLfk67fzRRIleiJtFjkP5U8XENVNyygung0D/7d9T8nJ+lxvQqhyOcc86jcHIx5mlCf/ZCzV+p5M6GCS7JZ+rpxmeDuCG6hVYf+9dIZXDs+ySx+FkZPYpbUbCNaQMjemUft65/6fVd0B4SGmiU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NnhQe0pU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7630C4CEF6;
-	Thu, 10 Jul 2025 17:11:17 +0000 (UTC)
+	 MIME-Version; b=bxLMqC9KfxBFRSaj9eSG9O700QU8PazkgDKgH0/TtohRfOYTlvDY1GbKdrpn/AP0ak3GPNiZwEatT8ELIguJRtSqdjv6b0dNgpPyUY2i5LFnJb1msZ47QndUCmI3QJDpy2wBL3/Rj/02P5pR6itaL5xc0kNovSNIxA8frsblCwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OYJPAR4N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 452C1C4CEF4;
+	Thu, 10 Jul 2025 17:11:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752167480;
-	bh=/wqJ1noMNLIvSflO+t7Fu11RF8Ng0xG8LO3LHP/l6JU=;
+	s=k20201202; t=1752167484;
+	bh=YciJCzZOJzYFGbBr+jlTBzZOMkfuBseO48t1mFvzjBw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NnhQe0pUWzWhygyFGKKBnxvoKHL/Ot1EwZtaID+jvW+pRwaXHz7UXXg7PhFJ32XTG
-	 GjEZEnmNvRYXU5b6YvWRsYfftFmhW59vG2TPkExkCQeP70zDMcpLRco1NT/j4a521T
-	 xlURqI3n2mueMSNg0Y3bcvsgWU/EuX+BTBJhEh+DNLDL/iI0gVbrImmLTA5UIiW7Cz
-	 kdpHHdlzW5/d6+BpqHOj1Ox5MxFDEMhZd9i/pNG+tcaMc9AHaBoQkaqCP8iPWTfLoV
-	 gr0s7uZwzH/a0qoWGUobLLATNHF7SB7gVS7YzPGsnhloqU5M04A08kd3aMuE6YW+Bg
-	 irhqizIaPZ2Bw==
+	b=OYJPAR4NQ/aRMi/8OxJTEqn1m6XvIU4WR6KbUX2+K+wFamOxE3F3bZT391iQos+y7
+	 Rh90SJSl3vhx8NvkMoQ3m7TNZoBaK5D1aeiY3jmXVhg9nvmSXfTf37nYkHbfHWdmSy
+	 uqYK+0bH016x8aKOqvRDT9nMfBVh6DeQd3L677yPqPLADznDeMZuzqHK5vJDhjZ259
+	 BAgxPAVafHs06BMLVTC8xIfRmN+168rTQpUBgxy+aHa8YrN2QjmTzWQCVA3WeUlCyt
+	 1ETszdoJlXyxHAd/Qlt2LQ1kUw/fMO62o+o5TLTmzIyiMgPFyhQ4fkhlsCJknh4gQo
+	 guA9jpBfXKLNA==
 From: Jonathan Cameron <jic23@kernel.org>
 To: linux-iio@vger.kernel.org,
 	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
@@ -49,9 +49,9 @@ To: linux-iio@vger.kernel.org,
 Cc: Denis Ciocca <denis.ciocca@st.com>,
 	Vasileios Amoiridis <vassilisamir@gmail.com>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 1/7] iio: pressure: bmp280: Apply iwyu principles to includes.
-Date: Thu, 10 Jul 2025 18:11:01 +0100
-Message-ID: <20250710171107.443790-2-jic23@kernel.org>
+Subject: [PATCH 2/7] iio: pressure: zpa2326: Apply iwyu principles to includes
+Date: Thu, 10 Jul 2025 18:11:02 +0100
+Message-ID: <20250710171107.443790-3-jic23@kernel.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250710171107.443790-1-jic23@kernel.org>
 References: <20250710171107.443790-1-jic23@kernel.org>
@@ -65,154 +65,134 @@ Content-Transfer-Encoding: 8bit
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-The recent introduction of a warning on missing include of
-linux/export.h when W=1 motivated revisiting the includes in affected
-drivers.  In general IWYU principles avoid complex include paths that
-make it hard to refactor headers.
+Motivated by the new warning when W=1 if linux/exports.h is not included
+but the macros within it are used.  Given the includes need improving go
+the whole way and apply include what you use principles to this driver.
 
-- Move linux/unaligned.h entry to appropriate place.
-- Drop comment on linux/irq.h as we don't generally keep a record
-  in code of why includes are there.
-
-Remove
-- linux/device.h from bmp280-regmap.c as struct device forwards definition
-  is enough.
-- linux/module.h from bmp280-regmap.c as the module stuff is all in the
-  other files.
-Add all of:
+Reasoning:
+- First sort includes into alphabetical order, keeping the separate iio
+  specific block and asm blocks as appropriate.
+Drop:
+- linux/kernel.h
+Add:
+- asm/byteorder.h for le16_to_cpup()
 - linux/array_size.h for ARRAY_SIZE()
-- linux/device.h in the i2c and spi drivers
-- linux/err.h for PTR_ERR() etc and also assume includes errno.h
-- linux/export.h for EXPORT_SYMBOL*()
-- linux/jiffies.h for msecs_to_jiffies
-- linux/log2.h for ilog2()
-- linux/math64.h for div64_s64
-- linux/minmax.h for clamp_val()
-- linux/mod_devicetable.h for spi_device_id etc
-- linux/mutex.h for various mutex calls
-- linux/pm.h for pm_ptr()
-- linux/stddef.h for false / true
-- linux/string.h for memcpy
-- linux/string_choices.h for str_enable_disable
-- linux/time.h for USEC_PER_MSEC
-- linux/types.h for local bool definition.
+- linux/bitops.h for test_bit() (also BIT() etc in c files0
+- linux/bits.h for BIT() in the header.
+- linux/completion.h cof complete()
+- linux/device.h for struct device
+- linux/err.h for IS_ERR() and error codes.
+- linux/export.h for EXPORT_SYMBOL*
+- linux/jiffies.h for jiffies and HZ (in param.h)
+- linux/pm.h for SET_RUNTIME_PM_OPS etc
+  Note that the way this driver handles CONFIG_PM is messy but not topic
+  for this series.
+- linux/stddef.h for true / false etc
+- linux/sysfs.h for struct attribute_group
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
-I'm not sure on whether we should bother with stddef.h or types.h
-Looking for feedback on any others.
----
- drivers/iio/pressure/bmp280-core.c   | 17 +++++++++++++++--
- drivers/iio/pressure/bmp280-i2c.c    |  4 ++++
- drivers/iio/pressure/bmp280-regmap.c |  6 ++++--
- drivers/iio/pressure/bmp280-spi.c    |  6 ++++++
- 4 files changed, 29 insertions(+), 4 deletions(-)
+ drivers/iio/pressure/zpa2326.c     | 20 ++++++++++++++++----
+ drivers/iio/pressure/zpa2326.h     |  3 +++
+ drivers/iio/pressure/zpa2326_i2c.c |  7 +++++--
+ drivers/iio/pressure/zpa2326_spi.c |  6 +++++-
+ 4 files changed, 29 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
-index 74505c9ec1a0..e5d2de8cd5ef 100644
---- a/drivers/iio/pressure/bmp280-core.c
-+++ b/drivers/iio/pressure/bmp280-core.c
-@@ -30,23 +30,36 @@
+diff --git a/drivers/iio/pressure/zpa2326.c b/drivers/iio/pressure/zpa2326.c
+index 6eef37c0952d..34743ee0be07 100644
+--- a/drivers/iio/pressure/zpa2326.c
++++ b/drivers/iio/pressure/zpa2326.c
+@@ -51,20 +51,32 @@
+  *   hardware samples averaging.
+  */
  
- #define pr_fmt(fmt) "bmp280: " fmt
- 
+-#include <linux/module.h>
+-#include <linux/kernel.h>
 +#include <linux/array_size.h>
- #include <linux/bitops.h>
- #include <linux/bitfield.h>
- #include <linux/cleanup.h>
- #include <linux/completion.h>
++#include <linux/bitops.h>
++#include <linux/completion.h>
  #include <linux/delay.h>
- #include <linux/device.h>
++#include <linux/device.h>
 +#include <linux/err.h>
 +#include <linux/export.h>
- #include <linux/gpio/consumer.h>
  #include <linux/interrupt.h>
--#include <linux/irq.h> /* For irq_get_irq_data() */
-+#include <linux/irq.h>
+-#include <linux/regulator/consumer.h>
++#include <linux/module.h>
 +#include <linux/jiffies.h>
-+#include <linux/log2.h>
-+#include <linux/math64.h>
-+#include <linux/minmax.h>
- #include <linux/module.h>
-+#include <linux/mutex.h>
- #include <linux/nvmem-provider.h>
++#include <linux/pm.h>
  #include <linux/pm_runtime.h>
- #include <linux/property.h>
-+#include <linux/string.h>
-+#include <linux/string_choices.h>
- #include <linux/random.h>
  #include <linux/regmap.h>
- #include <linux/regulator/consumer.h>
++#include <linux/regulator/consumer.h>
 +#include <linux/stddef.h>
-+#include <linux/time64.h>
- #include <linux/types.h>
++#include <linux/sysfs.h>
 +#include <linux/unaligned.h>
- 
- #include <linux/iio/buffer.h>
++
  #include <linux/iio/iio.h>
-@@ -54,7 +67,7 @@
+ #include <linux/iio/sysfs.h>
+ #include <linux/iio/buffer.h>
+ #include <linux/iio/trigger.h>
  #include <linux/iio/trigger_consumer.h>
  #include <linux/iio/triggered_buffer.h>
- 
 -#include <linux/unaligned.h>
++
 +#include <asm/byteorder.h>
+ #include "zpa2326.h"
  
- #include "bmp280.h"
+ /* 200 ms should be enough for the longest conversion time in one-shot mode. */
+diff --git a/drivers/iio/pressure/zpa2326.h b/drivers/iio/pressure/zpa2326.h
+index 45bd7900975b..a1ab574241eb 100644
+--- a/drivers/iio/pressure/zpa2326.h
++++ b/drivers/iio/pressure/zpa2326.h
+@@ -10,6 +10,9 @@
+ #ifndef _ZPA2326_H
+ #define _ZPA2326_H
  
-diff --git a/drivers/iio/pressure/bmp280-i2c.c b/drivers/iio/pressure/bmp280-i2c.c
-index 8e459b6c97ff..6484341af710 100644
---- a/drivers/iio/pressure/bmp280-i2c.c
-+++ b/drivers/iio/pressure/bmp280-i2c.c
-@@ -1,6 +1,10 @@
- // SPDX-License-Identifier: GPL-2.0-only
++#include <linux/bits.h>
++#include <linux/types.h>
++
+ /* Register map. */
+ #define ZPA2326_REF_P_XL_REG              (0x8)
+ #define ZPA2326_REF_P_L_REG               (0x9)
+diff --git a/drivers/iio/pressure/zpa2326_i2c.c b/drivers/iio/pressure/zpa2326_i2c.c
+index a6034bf05d97..ca05b84f420a 100644
+--- a/drivers/iio/pressure/zpa2326_i2c.c
++++ b/drivers/iio/pressure/zpa2326_i2c.c
+@@ -7,10 +7,13 @@
+  * Author: Gregor Boirie <gregor.boirie@parrot.com>
+  */
+ 
+-#include <linux/module.h>
+-#include <linux/regmap.h>
++#include <linux/bits.h>
 +#include <linux/device.h>
 +#include <linux/err.h>
  #include <linux/i2c.h>
- #include <linux/module.h>
-+#include <linux/mod_devicetable.h>
-+#include <linux/pm.h>
- #include <linux/regmap.h>
++#include <linux/module.h>
+ #include <linux/mod_devicetable.h>
++#include <linux/regmap.h>
+ #include "zpa2326.h"
  
- #include "bmp280.h"
-diff --git a/drivers/iio/pressure/bmp280-regmap.c b/drivers/iio/pressure/bmp280-regmap.c
-index b6a7b417c8cf..d34bf89afdda 100644
---- a/drivers/iio/pressure/bmp280-regmap.c
-+++ b/drivers/iio/pressure/bmp280-regmap.c
-@@ -1,9 +1,11 @@
- // SPDX-License-Identifier: GPL-2.0
--#include <linux/device.h>
--#include <linux/module.h>
-+#include <linux/export.h>
- #include <linux/regmap.h>
-+#include <linux/stddef.h>
-+#include <linux/types.h>
- 
- #include "bmp280.h"
-+struct device;
- 
- static bool bmp180_is_writeable_reg(struct device *dev, unsigned int reg)
- {
-diff --git a/drivers/iio/pressure/bmp280-spi.c b/drivers/iio/pressure/bmp280-spi.c
-index 3b90384f17d7..8ac68bfb8110 100644
---- a/drivers/iio/pressure/bmp280-spi.c
-+++ b/drivers/iio/pressure/bmp280-spi.c
-@@ -5,10 +5,16 @@
-  * Inspired by the older BMP085 driver drivers/misc/bmp085-spi.c
+ /*
+diff --git a/drivers/iio/pressure/zpa2326_spi.c b/drivers/iio/pressure/zpa2326_spi.c
+index af756e2b0f31..14f8b2b809a0 100644
+--- a/drivers/iio/pressure/zpa2326_spi.c
++++ b/drivers/iio/pressure/zpa2326_spi.c
+@@ -7,10 +7,14 @@
+  * Author: Gregor Boirie <gregor.boirie@parrot.com>
   */
- #include <linux/bits.h>
+ 
++#include <linux/bits.h>
 +#include <linux/device.h>
- #include <linux/err.h>
++#include <linux/err.h>
++#include <linux/minmax.h>
  #include <linux/module.h>
 +#include <linux/mod_devicetable.h>
-+#include <linux/pm.h>
  #include <linux/regmap.h>
  #include <linux/spi/spi.h>
-+#include <linux/stddef.h>
-+#include <linux/string.h>
-+#include <linux/types.h>
+-#include <linux/mod_devicetable.h>
+ #include "zpa2326.h"
  
- #include "bmp280.h"
- 
+ /*
 -- 
 2.50.0
 

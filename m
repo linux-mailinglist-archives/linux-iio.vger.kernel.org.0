@@ -1,248 +1,209 @@
-Return-Path: <linux-iio+bounces-21497-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21498-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C076AFF6B9
-	for <lists+linux-iio@lfdr.de>; Thu, 10 Jul 2025 04:20:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFC38AFFA06
+	for <lists+linux-iio@lfdr.de>; Thu, 10 Jul 2025 08:44:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E6E316EAEC
-	for <lists+linux-iio@lfdr.de>; Thu, 10 Jul 2025 02:20:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 347025A0515
+	for <lists+linux-iio@lfdr.de>; Thu, 10 Jul 2025 06:44:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EB1519D065;
-	Thu, 10 Jul 2025 02:20:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9FB128750A;
+	Thu, 10 Jul 2025 06:44:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="pGAHSaz/"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="letdZWop"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oo1-f44.google.com (mail-oo1-f44.google.com [209.85.161.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DBF327F4D9
-	for <linux-iio@vger.kernel.org>; Thu, 10 Jul 2025 02:20:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8FDD2E36F1
+	for <linux-iio@vger.kernel.org>; Thu, 10 Jul 2025 06:44:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752114037; cv=none; b=nn6zUQQc95qTIK6rydY4lPGg6jOkb9xbb/VSwWOBwvmk21No0i6Qg+H946bE42qD5jJTEeXKPjfR0DxgQB65tg7t0OgWZj+ND2wzxFimfJt05HlwkZ0CFDbR7DnCZOmyfWNw3xlqxXEkuHH9By03Ik3KtohMwXScPICZxbNclxU=
+	t=1752129872; cv=none; b=Ufr8C5NtBaI4P+RURaoRddGy3dNlyc/q2IsOtvUzPa7Wvx4dhKd+XWpecUdh3oq7PpZpcHyXHJaWYvcPHiOurQZXewA2UJOUd3DdmfRIHsEjpvV+PhAFyV4KHbQjCtNdvdDSAD6iJitsIei0cRlwYp6hLm9f/UsJRUfZylky9YY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752114037; c=relaxed/simple;
-	bh=Xl8o2DtSaigWESa1n7kRRDmN3sTUITSG1wrwo5ezoAU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=sRnT8OIvp0cnezSrRy0xGmYACx2vPAi1fJqyt9ln9d8pvq/m/u11PbOYCpYb0VM6XBSaELvZ4Wn4izCa2mw0YeLS8b9JHx7nM53nK0SFOihIfA7OrTk+86aKYlgQqVZkYtF1Z5bKo3aDh4ZQWIBKVcnMsMj0K+piVOiKylVZhEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=pGAHSaz/; arc=none smtp.client-ip=209.85.161.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oo1-f44.google.com with SMTP id 006d021491bc7-60f0a92391bso306261eaf.0
-        for <linux-iio@vger.kernel.org>; Wed, 09 Jul 2025 19:20:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1752114034; x=1752718834; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=IImpk5jGtMH+w7dUqRTc1wLzrv2Bvf1SOOEFKZMUB0Y=;
-        b=pGAHSaz/WYDUE+LBTGQKz8XKV78ByaCXn8WB/SBg+igS1axmL66v5Hd6UTv6tL9H5n
-         ITC0qL1HpnVSHgREWByQg0aEP+FQ9EVuZpSDuLoze9bFVX+FgFlfmPqWCBglwdU9MJd3
-         o4e7yfk5CsaIsVh2khFtGA4adnpOi9Iofhm/Zf5Kp3Q6f8JRXMBnIuzswUkIkYeo02mD
-         YHO5pJSWSH4Ckr1oMPCNZhDJG5xtlN+XGE2yiTiwtixlPGpNQCfscgTFeolSZVhogeNd
-         lHScxtBaGVrlc9zUEiKP6cSBespGSPa6YlJ8ztPsRBd/zPJfu4SlOi7GpE+sT+Wirgfu
-         l2PA==
+	s=arc-20240116; t=1752129872; c=relaxed/simple;
+	bh=QVm6gocUw5vbbpN7sC6utQja7WJSHwAY1gbJZtArkws=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=dHCsdzCHF16WrrdAznOfq8Mvfa3CoFJyLrE5hZwIaYNh5CMAAyDGrPrs0EhP06JDnMXmnuiDyCwyfMOoL1Jyo+VTjRiCRu2hiWk2LJJxVShojk0ZNAXMLkNiMRx1zbBnDyNLh6qX5X5yNmuwmHnomv/cf977ZZRDtfgT9y60xYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=letdZWop; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56A1Qmua031806
+	for <linux-iio@vger.kernel.org>; Thu, 10 Jul 2025 06:44:30 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	XOFIWBK5P9LJ/AiYhSqbWUOzxNAJ73q76p/zRwAS9iA=; b=letdZWopqpgv2GRE
+	Uip0g2nxruK8ALrQmCj52mb+tGJ/4ggWG6lwYoshb8gW+tWwa+OMl3JXPmR85h9f
+	eRx1GlxowOAnGDz5S3iBsZ4IEVrypHk9EhrUKcri4SXqkgRGSFm3z7/PQGgLL20G
+	ifsGnZZhOuA4q4Lf/9ZdTV3TU2WJ4/7xJFtsmUfs5zt3sgsWS0AsE2eqLBxMfiy2
+	/PkH7SKQiXBoYRYK0ClqzKzU9GUZu/xQnTL6DNDtWtKadqk1Mvo0Tgr2q4MgEffk
+	TQfTJu4tfHlNY2zy2i0CCLtaRmznWF5+dRsCh1sN/71sza93KFlfpq0m2vUXFeXU
+	aQAZZQ==
+Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47pw7qxf2n-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-iio@vger.kernel.org>; Thu, 10 Jul 2025 06:44:29 +0000 (GMT)
+Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-7494999de28so933855b3a.1
+        for <linux-iio@vger.kernel.org>; Wed, 09 Jul 2025 23:44:29 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752114034; x=1752718834;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=IImpk5jGtMH+w7dUqRTc1wLzrv2Bvf1SOOEFKZMUB0Y=;
-        b=kyvDLjVe7g9s2U90RuUOCHLzaGSNJl38uWsyEW6YSaVHLf0fVpcE8YhxahyQtkRrwi
-         7hjBVVK8yPwq6r86lna9+MpmdisvKShRfpaxYHBEfqzYtDJmr2hjod4C/tWfsMVITe2y
-         MVgcTm40YKxhu9hPHzdInsN1SgR9rFX2+xNdGmuvdrPFCkR3uyhLUIcwUA35yP1XVm2J
-         CXfuEiJ9H0tIof2c7nvpQdzGVmh56ivuYu2ZS3h0VUjzic7pT1FrACYRGzuli/otgw30
-         on7UA4R1S/v0VYvNn+aE1W3SBAiLmi+k8AADBenUmLXi9EqyCnHvAydgy35ujMgCoWvo
-         +oLA==
-X-Gm-Message-State: AOJu0YzDFuwFLw9UPblC8y63l8nNU4hDsUVaCHcgYhd90EhIaZ39uJJw
-	YZ4Hdbp/WFQnUVBpyc6Wbcx+FL0MFrbjqcROKVDrF0ud406p40KLqwfzx7V2FNxDjQJgWDEG5k1
-	4SpOgEfY=
-X-Gm-Gg: ASbGncsTP7b1ej9cMQlgzesmcWtvbK5O2c5C9Uq8Rzz+Zq6ibPFBV+5NM5V5Sq4SeFw
-	NhdY3gSORML9/SzdByPIMqztRJi8lVvAQkMjXHTrJ6R3vvaYaPWOCPufdSZ0GdywdfqTmev/iqN
-	9kgqi6Z0olsFVhIgh7BWRPHzJmPbVjGYQgiBcBDi2tOnI1SMczyZtIaYBuNP//G5pjVUqvrCX50
-	QTUw+4y232/dYaUK8ADX5N+4wiTle6I69bV9vEY0T9OtLSFdf7mLBjkaQdSqZG0ui+OrIf8ssvg
-	bySd74GUhy1hn+CrQiIHTKPG6d5RHVvI2K6hnkd6GAOTjKPtE7GQFSRItdNzmVzgSdB+
-X-Google-Smtp-Source: AGHT+IEM0Ysmp21GGMggoZwDFO+qiHN33lKFW/Brnj2s4UMHLtA+QhysRcAWqjOcvP9MWblYhuy33g==
-X-Received: by 2002:a05:6808:16aa:b0:40a:b141:8f57 with SMTP id 5614622812f47-413abe70954mr1688660b6e.3.1752114034470;
-        Wed, 09 Jul 2025 19:20:34 -0700 (PDT)
-Received: from [127.0.1.1] ([2600:8803:e7e4:1d00:6f38:cf8f:abb1:34f7])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-613d9f00d46sm66972eaf.22.2025.07.09.19.20.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Jul 2025 19:20:33 -0700 (PDT)
-From: David Lechner <dlechner@baylibre.com>
-Date: Wed, 09 Jul 2025 21:20:01 -0500
-Subject: [PATCH v2 2/2] iio: imu: bno055: make bno055_sysfs_attr const
+        d=1e100.net; s=20230601; t=1752129869; x=1752734669;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=XOFIWBK5P9LJ/AiYhSqbWUOzxNAJ73q76p/zRwAS9iA=;
+        b=uvK2wGOvK02tQu/QXOLBrm1CAzJRYyMnfev5bvGKq0IkGAzXZIOgZFhSjy8lc4Ld0S
+         pzxDPny3sjR0vybc5qcCYLy+pmiKC1LWekjWEZ5Sg/nBTbxBMb5eawvYnkfN7UHJNK49
+         s53A8stQxu6gZgwGxdMpbAfjEZw5n6cotsshwMQlMziUSbtVZF+RPP87yf4X5H5GZQ9n
+         LAO6RaaUFuSRo0G+4nbXhBNfDpZRbkVkU6+Owiu0ZuqG5AgrGLtpk7w42GdN3PhA9SIa
+         QEYImOpRKBwvQGtWbTLpM2xeUogP3yjcfER7+g8btpQdIhKNMSr+CCH8ZTc5RDip6DRF
+         5CqA==
+X-Forwarded-Encrypted: i=1; AJvYcCVQscnOpSazcnhHnDX2lveA0UvDYmn3J0T7Bi+mCIfpdje8BCeLMgdk43UltGkVfNrJPUZ/AkNLq4k=@vger.kernel.org
+X-Gm-Message-State: AOJu0YznK6oZIVuOBDLl7mUZOGztzxARSPhihIvtAbT6s0vqp0IqqGGf
+	rrWPpH4dVSuYamjgc4gEWnEv9PXoGvOTUnTunC66BHupIt+M/1Wr6/KcPvR9ZNbh3vO0ms33FOm
+	NRg8PDF+a1ayJpHHnGJEmgtkAqfUMzo/eMQC+FCvqLsxj5p3rjudQFrp63CXi2qs=
+X-Gm-Gg: ASbGncsX5iqTrpE1z0TAPyANEsMuk3j2bDV+D8FGcwHxt4CmSl9P5qlNbPANb7s8EPz
+	jfftLLYoMEVr5ID/Ffpef+9vaxbA5pZ2YZrM0bDfo7ZbFL2q7FEk5N39JZDlrSLNW75tLeRfoju
+	KTtJVdm2+lQpNG08w7o8cFqb1A3GMQlcleaw25MfInxOfAGY9CjSZj4fzza2EtAHUX8b7cF3jTR
+	JoQtGtgCADcw+pD4mJ8d7iD9Z7fSvPZlyvpLfh7ebb45EmRrhPqEJD3F1b7iku6Ek9IIdclA4Ey
+	EHej+2Nj+hSTSE/Q4NjhoHAEkjKcSOgyDyyU5H1jn2n5dYcETQ==
+X-Received: by 2002:a05:6a00:bd01:b0:746:26fe:8cdf with SMTP id d2e1a72fcca58-74ea6565669mr9719896b3a.7.1752129868899;
+        Wed, 09 Jul 2025 23:44:28 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGNUGkIgvIR0XHNfY9EJn0oNZm/eQsmtWwXj7UCavkNJerusTiztj5dMVwieTBQBExj4xMDAw==
+X-Received: by 2002:a05:6a00:bd01:b0:746:26fe:8cdf with SMTP id d2e1a72fcca58-74ea6565669mr9719848b3a.7.1752129868432;
+        Wed, 09 Jul 2025 23:44:28 -0700 (PDT)
+Received: from [10.216.20.83] ([202.46.23.19])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b3bbe6bd8f8sm1195890a12.38.2025.07.09.23.44.15
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 09 Jul 2025 23:44:28 -0700 (PDT)
+Message-ID: <5b55acbf-065d-4383-a816-82561bf91273@oss.qualcomm.com>
+Date: Thu, 10 Jul 2025 12:14:13 +0530
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V6 4/5] iio: adc: Add support for QCOM PMIC5 Gen3 ADC
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: robh@kernel.org, krzysztof.kozlowski@linaro.org, krzk+dt@kernel.org,
+        conor+dt@kernel.org, agross@kernel.org, andersson@kernel.org,
+        lumag@kernel.org, dmitry.baryshkov@oss.qualcomm.com,
+        konradybcio@kernel.org, daniel.lezcano@linaro.org, sboyd@kernel.org,
+        amitk@kernel.org, thara.gopinath@gmail.com, lee@kernel.org,
+        rafael@kernel.org, subbaraman.narayanamurthy@oss.qualcomm.com,
+        david.collins@oss.qualcomm.com, anjelique.melendez@oss.qualcomm.com,
+        quic_kamalw@quicinc.com, rui.zhang@intel.com, lukasz.luba@arm.com,
+        devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-pm@vger.kernel.org, cros-qcom-dts-watchers@chromium.org,
+        quic_skakitap@quicinc.com, neil.armstrong@linaro.org,
+        stephan.gerhold@linaro.org
+References: <20250509110959.3384306-1-jishnu.prakash@oss.qualcomm.com>
+ <20250509110959.3384306-5-jishnu.prakash@oss.qualcomm.com>
+ <20250511140418.33171ca3@jic23-huawei>
+ <ff19780e-5bbd-4074-9db3-b4f27922a093@oss.qualcomm.com>
+ <20250628173112.63d9334e@jic23-huawei>
+Content-Language: en-US
+From: Jishnu Prakash <jishnu.prakash@oss.qualcomm.com>
+In-Reply-To: <20250628173112.63d9334e@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250709-iio-const-data-19-v2-2-fb3fc9191251@baylibre.com>
-References: <20250709-iio-const-data-19-v2-0-fb3fc9191251@baylibre.com>
-In-Reply-To: <20250709-iio-const-data-19-v2-0-fb3fc9191251@baylibre.com>
-To: Jonathan Cameron <jic23@kernel.org>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Andy Shevchenko <andy@kernel.org>, David Lechner <dlechner@baylibre.com>, 
- Andrea Merello <andrea.merello@iit.it>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Jonathan Cameron <Jonathan.Cameron@huawei.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4938; i=dlechner@baylibre.com;
- h=from:subject:message-id; bh=Xl8o2DtSaigWESa1n7kRRDmN3sTUITSG1wrwo5ezoAU=;
- b=owEBbQGS/pANAwAKAcLMIAH/AY/AAcsmYgBobyNlraRWW7K8uZDXgQLj+ENEEPzweXxt7C4vB
- NMNfZiH3fOJATMEAAEKAB0WIQTsGNmeYg6D1pzYaJjCzCAB/wGPwAUCaG8jZQAKCRDCzCAB/wGP
- wKpIB/4rRcQqwnTUqv458/jvmUABudUHoudfABuvizaJ6Oq3BD1ZnDUakM7vJe2JkPKFo50Gxhl
- algDuQApJ7dK8m8R99KMgBs0Mj/pBJtRD1SxkeYKLlIZ53bfd9oN6zThGGnnzENuhb+oQcY4mfD
- hS1k36K/k2P+TsCRb08OPApmb9VYKR9UIgpGxY3B29IrCnpQDE84ei8xQU2d0YDVocIa2NY3+4B
- cWzTI2GlRvOymIR1LbkbuwMpjUBCH2CC0/xB56CY8J/VD2bnYro8E102mhhmBPA93rBPzFFPdq1
- 5lM1zq5Jojv74x+aenkeozVXEvEQv+RPS4ne1J0DNI4G5HHU
-X-Developer-Key: i=dlechner@baylibre.com; a=openpgp;
- fpr=8A73D82A6A1F509907F373881F8AF88C82F77C03
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzEwMDA1NiBTYWx0ZWRfXzPs0hkKg+nFb
+ Q+OZN4wzS4veiiCtAHyOkH8/1CUSBC89edaUQBEKTkQTQiHNRzz9uaO3BdFQNrK+merZlM+iaqS
+ SCls0lTOJTopd7rhu/H1jtPWU0cnW/mP+AoDV8/wrz0GZHh0sg9CSEStr+mfiXA1BfqGJmwRmak
+ Gqhz0vIqh3KqXgO0vmhHRrecDfN7YQhEdm7vO4gRKY4NGSSIawECBjZAaqFYaRn8dNtwqAILgjR
+ MzyTQ4fajQRrE7mnDFWf6uhzrRYaNZSteG/LPW/OEFJT6GDHEnI+0dsq8q9SUCATloicnPDU+Me
+ RhVFdvcT5G+a/VXNck+IeW7SRfpxrDcjZTMIicQYchTsX/d8fvAEY/fv1PH0vXmyeFCk0SORNfi
+ vysBNnBQnYS+B6yQUva7Gy+lwgG73wBap+l07RTN1AVoPc5Li6K/nlw/SJUtWGHFaHTkJYV1
+X-Proofpoint-GUID: paDIczXjrYlXW41YeK5pmdVNw3D9RgJ1
+X-Proofpoint-ORIG-GUID: paDIczXjrYlXW41YeK5pmdVNw3D9RgJ1
+X-Authority-Analysis: v=2.4 cv=SOBCVPvH c=1 sm=1 tr=0 ts=686f614d cx=c_pps
+ a=mDZGXZTwRPZaeRUbqKGCBw==:117 a=j4ogTh8yFefVWWEFDRgCtg==:17
+ a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=LnmLInYPsl_4tkCgpz8A:9
+ a=QEXdDO2ut3YA:10 a=zc0IvFSfCIW2DFIPzwfm:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
+ definitions=2025-07-09_05,2025-07-09_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 priorityscore=1501 lowpriorityscore=0 bulkscore=0
+ impostorscore=0 mlxlogscore=528 mlxscore=0 phishscore=0 malwarescore=0
+ adultscore=0 suspectscore=0 spamscore=0 classifier=spam authscore=0
+ authtc=n/a authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2505280000 definitions=main-2507100056
 
-Add const qualifier to struct bno055_sysfs_attr and its array fields.
-All of this is read-only data so it can be made const.
+Hi Jonathan,
 
-Signed-off-by: David Lechner <dlechner@baylibre.com>
----
- drivers/iio/imu/bno055/bno055.c | 49 ++++++++++++++++++++++-------------------
- 1 file changed, 26 insertions(+), 23 deletions(-)
+On 6/28/2025 10:01 PM, Jonathan Cameron wrote:
+> 
+> 
+>>>> +	.hw_settle_1 = (unsigned int [VADC_HW_SETTLE_SAMPLES_MAX])
+>>>> +				{ 15, 100, 200, 300, 400, 500, 600, 700,
+>>>> +				  1000, 2000, 4000, 8000, 16000, 32000,
+>>>> +				  64000, 128000 },  
+>>> Andy often points this out, but I'll do it this time. Fixed numbers (typically power of 2)
+>>> elements per line make it much easier to see which element is which in these arrays.
+>>> Reduce the indent a little to allow that here.  
 
-diff --git a/drivers/iio/imu/bno055/bno055.c b/drivers/iio/imu/bno055/bno055.c
-index 0eb5e1334e5564284c7f4bf560424b5ec734903d..a8e71679ec21dc2cfb0cbbce978fc7cad9929d96 100644
---- a/drivers/iio/imu/bno055/bno055.c
-+++ b/drivers/iio/imu/bno055/bno055.c
-@@ -114,35 +114,35 @@
- #define BNO055_UID_LEN 16
- 
- struct bno055_sysfs_attr {
--	int *vals;
-+	const int *vals;
- 	int len;
--	int *fusion_vals;
--	int *hw_xlate;
-+	const int *fusion_vals;
-+	const int *hw_xlate;
- 	int hw_xlate_len;
- 	int type;
- };
- 
--static int bno055_acc_lpf_vals[] = {
-+static const int bno055_acc_lpf_vals[] = {
- 	7, 810000, 15, 630000, 31, 250000, 62, 500000,
- 	125, 0, 250, 0, 500, 0, 1000, 0,
- };
- 
--static struct bno055_sysfs_attr bno055_acc_lpf = {
-+static const struct bno055_sysfs_attr bno055_acc_lpf = {
- 	.vals = bno055_acc_lpf_vals,
- 	.len = ARRAY_SIZE(bno055_acc_lpf_vals),
--	.fusion_vals = (int[]){62, 500000},
-+	.fusion_vals = (const int[]){62, 500000},
- 	.type = IIO_VAL_INT_PLUS_MICRO,
- };
- 
--static int bno055_acc_range_vals[] = {
-+static const int bno055_acc_range_vals[] = {
-   /* G:    2,    4,    8,    16 */
- 	1962, 3924, 7848, 15696
- };
- 
--static struct bno055_sysfs_attr bno055_acc_range = {
-+static const struct bno055_sysfs_attr bno055_acc_range = {
- 	.vals = bno055_acc_range_vals,
- 	.len = ARRAY_SIZE(bno055_acc_range_vals),
--	.fusion_vals = (int[]){3924}, /* 4G */
-+	.fusion_vals = (const int[]){3924}, /* 4G */
- 	.type = IIO_VAL_INT,
- };
- 
-@@ -166,37 +166,37 @@ static struct bno055_sysfs_attr bno055_acc_range = {
-  *     = hwval * (dps_range/(2^15 * k))
-  * where k is rad-to-deg factor
-  */
--static int bno055_gyr_scale_vals[] = {
-+static const int bno055_gyr_scale_vals[] = {
- 	125, 1877467, 250, 1877467, 500, 1877467,
- 	1000, 1877467, 2000, 1877467,
- };
- 
--static int bno055_gyr_scale_hw_xlate[] = {0, 1, 2, 3, 4};
--static struct bno055_sysfs_attr bno055_gyr_scale = {
-+static const int bno055_gyr_scale_hw_xlate[] = {0, 1, 2, 3, 4};
-+static const struct bno055_sysfs_attr bno055_gyr_scale = {
- 	.vals = bno055_gyr_scale_vals,
- 	.len = ARRAY_SIZE(bno055_gyr_scale_vals),
--	.fusion_vals = (int[]){1, 900},
-+	.fusion_vals = (const int[]){1, 900},
- 	.hw_xlate = bno055_gyr_scale_hw_xlate,
- 	.hw_xlate_len = ARRAY_SIZE(bno055_gyr_scale_hw_xlate),
- 	.type = IIO_VAL_FRACTIONAL,
- };
- 
--static int bno055_gyr_lpf_vals[] = {12, 23, 32, 47, 64, 116, 230, 523};
--static int bno055_gyr_lpf_hw_xlate[] = {5, 4, 7, 3, 6, 2, 1, 0};
--static struct bno055_sysfs_attr bno055_gyr_lpf = {
-+static const int bno055_gyr_lpf_vals[] = {12, 23, 32, 47, 64, 116, 230, 523};
-+static const int bno055_gyr_lpf_hw_xlate[] = {5, 4, 7, 3, 6, 2, 1, 0};
-+static const struct bno055_sysfs_attr bno055_gyr_lpf = {
- 	.vals = bno055_gyr_lpf_vals,
- 	.len = ARRAY_SIZE(bno055_gyr_lpf_vals),
--	.fusion_vals = (int[]){32},
-+	.fusion_vals = (const int[]){32},
- 	.hw_xlate = bno055_gyr_lpf_hw_xlate,
- 	.hw_xlate_len = ARRAY_SIZE(bno055_gyr_lpf_hw_xlate),
- 	.type = IIO_VAL_INT,
- };
- 
--static int bno055_mag_odr_vals[] = {2, 6, 8, 10, 15, 20, 25, 30};
--static struct bno055_sysfs_attr bno055_mag_odr = {
-+static const int bno055_mag_odr_vals[] = {2, 6, 8, 10, 15, 20, 25, 30};
-+static const struct bno055_sysfs_attr bno055_mag_odr = {
- 	.vals = bno055_mag_odr_vals,
- 	.len =  ARRAY_SIZE(bno055_mag_odr_vals),
--	.fusion_vals = (int[]){20},
-+	.fusion_vals = (const int[]){20},
- 	.type = IIO_VAL_INT,
- };
- 
-@@ -553,7 +553,8 @@ static const struct iio_chan_spec bno055_channels[] = {
- };
- 
- static int bno055_get_regmask(struct bno055_priv *priv, int *val, int *val2,
--			      int reg, int mask, struct bno055_sysfs_attr *attr)
-+			      int reg, int mask,
-+			      const struct bno055_sysfs_attr *attr)
- {
- 	const int shift = __ffs(mask);
- 	int hwval, idx;
-@@ -582,7 +583,8 @@ static int bno055_get_regmask(struct bno055_priv *priv, int *val, int *val2,
- }
- 
- static int bno055_set_regmask(struct bno055_priv *priv, int val, int val2,
--			      int reg, int mask, struct bno055_sysfs_attr *attr)
-+			      int reg, int mask,
-+			      const struct bno055_sysfs_attr *attr)
- {
- 	const int shift = __ffs(mask);
- 	int best_delta;
-@@ -763,7 +765,8 @@ static int bno055_read_simple_chan(struct iio_dev *indio_dev,
- 	}
- }
- 
--static int bno055_sysfs_attr_avail(struct bno055_priv *priv, struct bno055_sysfs_attr *attr,
-+static int bno055_sysfs_attr_avail(struct bno055_priv *priv,
-+				   const struct bno055_sysfs_attr *attr,
- 				   const int **vals, int *length)
- {
- 	if (priv->operation_mode != BNO055_OPR_MODE_AMG) {
+...
 
--- 
-2.43.0
+>>>
+>>> It was never worth bothering with release until we had devm managed form but
+>>> now we do the code complexity cost is low enough to make it reasonable.
+>>>   
+>>>> +	indio_dev->name = pdev->name;  
+>>>
+>>> Just to check.  Does that end up as a part number or similar?  
+>>
+>> I printed this name and it appeared like this:
+>>
+>> indio_dev->name: c426000.spmi:pmic@0:adc@9000
+>>
+>> It only gets the DT node names, which are generic, there are 
+>> no part numbers in this name.
+> I thought it might be something along those lines.
+> 
+> indio_dev->name should be the part number so hard code it rather than
+> getting it from the pdev->name
+> 
+
+Actually there would be more than one PMIC which can function as the master PMIC
+for Gen3 ADC functionality, so I don't think I can simply hard code a name here
+based on PMK8550, if we want to keep the part number correct.
+
+Since we can't get the part number directly from the DT node names, we
+could try one of the following ways to add it:
+
+1. Add a devicetree property for the part number
+   This would be simple, but I'm not sure if this is the best way, 
+   if the below method looks good.
+
+2. Add a string in the compatible property for the part number.
+   This means updating the compatible from "qcom,spmi-adc5-gen3"
+   to something like this for PMK8550:
+
+   compatible = "qcom,pmk8550-adc5-gen3", "qcom,spmi-adc5-gen3";
+
+   and then extracting the part number from the first string.
+
+Please let me know which method you would prefer.
+
+In addition, does the below string look fine, to assign to
+indio_dev->name for PMK8550?
+
+pmk8550_adc
+
+Please let me know if you want a different format here.
+
+Thanks,
+Jishnu
+
+> 
+> Jonathan
 
 

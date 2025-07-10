@@ -1,52 +1,53 @@
-Return-Path: <linux-iio+bounces-21501-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21502-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D593AFFB10
-	for <lists+linux-iio@lfdr.de>; Thu, 10 Jul 2025 09:39:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CA9BAFFB12
+	for <lists+linux-iio@lfdr.de>; Thu, 10 Jul 2025 09:39:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D2A0C17003C
-	for <lists+linux-iio@lfdr.de>; Thu, 10 Jul 2025 07:39:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7CA5016CEF9
+	for <lists+linux-iio@lfdr.de>; Thu, 10 Jul 2025 07:39:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EAE528982D;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC42A28A1CC;
 	Thu, 10 Jul 2025 07:39:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=norik.com header.i=@norik.com header.b="JvP0dPmF"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=norik.com header.i=@norik.com header.b="Z0hwItwD"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from cpanel.siel.si (cpanel.siel.si [46.19.9.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C022619E7D1;
-	Thu, 10 Jul 2025 07:39:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E3BF289807;
+	Thu, 10 Jul 2025 07:39:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.9.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752133156; cv=none; b=ESvvC/9qPmYeOt9j6YpD06khUftKuDQ6ImtSuxU1ioLGz+AGW9r8GgxBUxzqOD9j5GgVm1Q9ye2txctDzDY155wvyrSTyjDCaKGSkG0xNRT4rW5/TDudeoPbVbBeomU8WT38g6wPP/ALUBEfT1NJFa8E+GT1zjCnyyvhfeCr1QA=
+	t=1752133156; cv=none; b=K327BpOYUODzSZ3qOyVXCRatipOgf0TZn09hG4w/sMOxjth7+R5m9EiM9kBtpo69xafWHGeMXOMOgE3Jcovikthg8A3rEapynS+Ww95TxSUQOKHu1fx+vwgtgaTVMEQbOWqRAj3PbIRSaTwvYIHXRcXOm0pSW0skI3y81iV1R7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1752133156; c=relaxed/simple;
-	bh=w4taWM7GTvBGEd88jMF9XlMxryMoUI3FMR86s6vtuo4=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=BEESmM50Wzx0FBny92bpPdKmz2wcQ9tck1AGPDukFz/33LSmHvrTM+kV5SfIowWHTmxm6+wKspsyLsh/+Q62Du0SzFz4R2pXDptstQVHC13FGuDmy8Oj+mZq0TgPeH2pDWp3rk7itVATr/V8/Ge0NtbQDHVHcKznWKjMRKIwWeE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=JvP0dPmF; arc=none smtp.client-ip=46.19.9.99
+	bh=oeqGG4I9j4OVhOCiXiLtlfp12mxGfRfIE+hba6dt51A=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=G14oehK32dwqcRpxvrgnq4B67AGWy0neBTXuX8vXSYhcHRhtWuDsqR5RXs5HIHo9EYuJy1V/vxvIUDwwVMNMDQfQWI84ivlBFs84mWrKwJIWiJdMTTPx5xOsPN/t+BcDSvuO7whNhW4B4yYoF00lDUG4pZG1uZ6PUj6eq1WZw1M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=Z0hwItwD; arc=none smtp.client-ip=46.19.9.99
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
-	s=default; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:
-	Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	s=default; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
+	Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=/c6PpFZxX2IwuD64HEN0TwJd8WKn9bagu6C1XSQwuQA=; b=JvP0dPmFYZUVUdl1wgJrXB1SaD
-	rRq2WFj+DH4ZNfKSIRp0zp/79ug8oz9hbuSi4nyKqqLXaa4aQE7cMf+bOPYJPsfDwRrZnp3RDShkQ
-	pY+qc2LaEf+EyKhEOlps0nX9O6gltrDNihJW7sh+u4zp+FrFN11Rp/CJyKW6rhg35QC+93xK+ezdE
-	qmuMM400DBI0SJzzOrDYFgjA/h5uEdPs3gfnoGP8YjEwfZrtUtT03u5jI4CNZGZGi/s/DwGz7qSSi
-	q8o0YT37TG+LC9rLLMM/FY9AtN+zPZc+JHNJPH/wQlIW7UK90m3fyuEZF0mHFd4fEgJAB87BpBKj2
-	5aCntzRA==;
+	bh=0o3ZpWxtZvYJQQGhpqTBpq+m/IPV00LyVOTLAYt/dNs=; b=Z0hwItwDzqmFgHbUrDa6tgxHKR
+	+uphq1RFa+XCKba7eej/wUQe1HRPD2S6lVLmlmkZpAk7LZ4mZYo59GpsDvx5f8wGcC4hjJlrwD9Ud
+	vtJSQJCiMG1Lmt5sc3g7rLJMnvL4ajOGw03JbS/wewlTYTLbQfefTjuMKSL1KU1eu/wbIJZM+G7J4
+	bgzd79vC8pySjEfhTbOxK9DurYCSAmWP8jrVtlfgB1tZUE+ea6Tt92CySt9SNzch+oOVnsTamgNl3
+	gKVWYWkttMOxCAZIwyCtG9X8D7YxCoT5OHctUe97Arhvr0LsP6MHyirANlgdd5/DP5cTT+V/JsUQz
+	pBRnH+pQ==;
 Received: from 89-212-21-243.static.t-2.net ([89.212.21.243]:48064 helo=localhost.localdomain)
 	by cpanel.siel.si with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96.2)
 	(envelope-from <primoz.fiser@norik.com>)
-	id 1uZls3-006IV5-08;
+	id 1uZls3-006IV5-0e;
 	Thu, 10 Jul 2025 09:39:06 +0200
 From: Primoz Fiser <primoz.fiser@norik.com>
 To: Haibo Chen <haibo.chen@nxp.com>,
@@ -68,10 +69,12 @@ Cc: linux-iio@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	upstream@lists.phytec.de,
 	andrej.picej@norik.com
-Subject: [PATCH 0/2] Make i.MX 93 ADC calibration params configurable
-Date: Thu, 10 Jul 2025 09:39:02 +0200
-Message-Id: <20250710073905.1105417-1-primoz.fiser@norik.com>
+Subject: [PATCH 1/2] dt-bindings: iio: adc: imx93: Add calibration properties
+Date: Thu, 10 Jul 2025 09:39:03 +0200
+Message-Id: <20250710073905.1105417-2-primoz.fiser@norik.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250710073905.1105417-1-primoz.fiser@norik.com>
+References: <20250710073905.1105417-1-primoz.fiser@norik.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -90,35 +93,48 @@ X-Source:
 X-Source-Args: 
 X-Source-Dir: 
 
-The i.MX 93 ADC calibration parameters are configurable in the MCR
-(Main Configuration Register). One can tweak bits:
+From: Andrej Picej <andrej.picej@norik.com>
 
- - MCR[AVGEN]: Enable calibration averaging function,
- - MCR[NRSMPL]: Select number of calibration samples,
- - MCR[TSAMP]: Select sample time of calibration conversions, 
+Document i.MX93 ADC calibration properties and how to set them.
 
-Make it possible to configure those parameters via the corresponding
-device-tree properties.
+Signed-off-by: Andrej Picej <andrej.picej@norik.com>
+Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
+---
+ .../bindings/iio/adc/nxp,imx93-adc.yaml       | 21 +++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
-This patch series is based on the one we submitted in March 2024:
-https://lore.kernel.org/linux-arm-kernel/20240320100407.1639082-1-andrej.picej@norik.com/
-
-Changes since the original submission:
-- rebase on linux-next
-- reorder patches (bindings before users)
-- fix checkpatch errors
-- reword commit subject & body
-- implement feedback from reviewers
-
-
-Andrej Picej (2):
-  dt-bindings: iio: adc: imx93: Add calibration properties
-  iio: adc: imx93: Make calibration parameters configurable
-
- .../bindings/iio/adc/nxp,imx93-adc.yaml       | 21 ++++++
- drivers/iio/adc/imx93_adc.c                   | 75 +++++++++++++++++--
- 2 files changed, 91 insertions(+), 5 deletions(-)
-
+diff --git a/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml b/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
+index c2e5ff418920..d1c04cf85fe6 100644
+--- a/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
++++ b/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
+@@ -52,6 +52,27 @@ properties:
+   "#io-channel-cells":
+     const: 1
+ 
++  nxp,calib-avg-en:
++    default: 1
++    description:
++      Enable or disable calibration averaging function (AVGEN).
++    $ref: /schemas/types.yaml#/definitions/uint32
++    enum: [ 0, 1 ]
++
++  nxp,calib-nr-samples:
++    default: 512
++    description:
++      Selects number of samples (NRSMPL) to be used during calibration.
++    $ref: /schemas/types.yaml#/definitions/uint32
++    enum: [ 16, 32, 128, 512 ]
++
++  nxp,calib-t-sample:
++    default: 22
++    description:
++      Selects sample time (TSAMP) of calibration conversions in ADC clock cycles
++    $ref: /schemas/types.yaml#/definitions/uint32
++    enum: [ 8, 16, 22, 32 ]
++
+ required:
+   - compatible
+   - reg
 -- 
 2.34.1
 

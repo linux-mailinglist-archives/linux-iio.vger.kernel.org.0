@@ -1,139 +1,145 @@
-Return-Path: <linux-iio+bounces-21545-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21546-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EA96B00BDD
-	for <lists+linux-iio@lfdr.de>; Thu, 10 Jul 2025 21:10:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17AC7B00C1B
+	for <lists+linux-iio@lfdr.de>; Thu, 10 Jul 2025 21:28:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6B76E5C3CD5
-	for <lists+linux-iio@lfdr.de>; Thu, 10 Jul 2025 19:10:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 33EA25C4EF2
+	for <lists+linux-iio@lfdr.de>; Thu, 10 Jul 2025 19:28:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F21E2FD586;
-	Thu, 10 Jul 2025 19:09:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66B302F0C64;
+	Thu, 10 Jul 2025 19:28:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IiGtVdm/"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="wUucJpP9"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f180.google.com (mail-oi1-f180.google.com [209.85.167.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 584EE2FCFFA
-	for <linux-iio@vger.kernel.org>; Thu, 10 Jul 2025 19:09:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 350742741C6
+	for <linux-iio@vger.kernel.org>; Thu, 10 Jul 2025 19:28:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752174598; cv=none; b=GWAijaVALPbCNuicKkFn8K2zCbL6QdoJAc5j5/xUQ8WokzoyaRUXvZDY83iT+D6BCkId5lh5Nnjfs/UQYBUf1K1zxqhBCsn91zwtRB0+1SCh1J4UpCVEicX6R7qfAfrFBvCKnA6VZXWQ70pxKuCa9F/QF4ZnBnuhcSLd5TPMRTk=
+	t=1752175722; cv=none; b=f+0P2Otz/uKZloQ89dGw89qfhcnLS8tngrljcHrt497ibY2++l3d2YGhp2EkTUlKFf5w5i1yTHOOnqWq5U/oD26F8JQxupSggINAC0M+tSNdWSkMebsXHm1Njbj0JkvUsjG54fveVyEWt/3HjMtOcL1EMDdUMd3XxNkocY2n/kU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752174598; c=relaxed/simple;
-	bh=vuxID88Mm6AqLti+nkltCmHl3PcHZ54KBHBfX3cMjho=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eEnv3V/YGyIHQ5whJcYHIrGSo/gmkeQE204bN98HYm7PZ6w3Iz67EYEDjpt3M04y0A7D5u2k4YKFuEV0BCzExVl/R2gPGN2AGC7mc+YJ2jAhp9tdCtxluV35qNt72Al4yCge1l71LvaGQGEjDQpGtqwAaKQXgLibuWtx8metrgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IiGtVdm/; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1752174596; x=1783710596;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=vuxID88Mm6AqLti+nkltCmHl3PcHZ54KBHBfX3cMjho=;
-  b=IiGtVdm/Ho9rCVE2u0AYElXw4T2GplAyxd6Itqr+VKutYN8jHGJs3IwS
-   5FlxztsojrNtZwKH24kPszldKUXQJGtFofp6y7UcIjYKjqnRIP11zH+oj
-   Rhx0baXiELrG/yWxmS7YMMKs6LCPubGT7PUtjdsT3K5uIhA/tp1/PMr8k
-   U8SF+64t8HyB0MLzBg8dIog5RGEMCTPiWTYiov3pstgSzoEGCWYuwpK2J
-   hIzY7+JmqCXjZDwFgIMFnDKrMo+jQOpksdUasoZStbo6OAypKtsml5h3P
-   2+CZwOytYh4niO0f7yE3TzXAFqBW93oOnlbZTZHE0IRVSQ3vDk6LXB1Pc
-   g==;
-X-CSE-ConnectionGUID: 7C75KEtvRe+iRmkjGu0XWw==
-X-CSE-MsgGUID: amOZY5FZTay+lA3CGDUT8g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11490"; a="65048569"
-X-IronPort-AV: E=Sophos;i="6.16,301,1744095600"; 
-   d="scan'208";a="65048569"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2025 12:09:56 -0700
-X-CSE-ConnectionGUID: ESZpsnasS42W6ywOBwJ/vA==
-X-CSE-MsgGUID: OKaEq2mjQ9iYmntx7UUI1A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,301,1744095600"; 
-   d="scan'208";a="155592109"
-Received: from smile.fi.intel.com ([10.237.72.52])
-  by orviesa006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2025 12:09:53 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1uZweU-0000000EJ7F-0nN3;
-	Thu, 10 Jul 2025 22:09:50 +0300
-Date: Thu, 10 Jul 2025 22:09:49 +0300
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: linux-iio@vger.kernel.org,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Denis Ciocca <denis.ciocca@st.com>,
-	Vasileios Amoiridis <vassilisamir@gmail.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH 1/7] iio: pressure: bmp280: Apply iwyu principles to
- includes.
-Message-ID: <aHAP_c_7huR3igPC@smile.fi.intel.com>
-References: <20250710171107.443790-1-jic23@kernel.org>
- <20250710171107.443790-2-jic23@kernel.org>
+	s=arc-20240116; t=1752175722; c=relaxed/simple;
+	bh=MT7ARmMygMbdpWskLAwrOjSVM4v0Zx7PKH/zOfxM8i8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=VPEm34yRYDxG/AOytADExpmNTrec8uXnYgVkABjoESYFNsDtpJ5FhadUiC/JoF+oOIHBJHwoj9pPXogV7mb59bElI6Ox6kdTWYRi8eQfJUpXSez7CFQ4vyw1Vi/8sOlphtB/l1+86zei61yJPZvolUei/zoTQbsn7GApgc8DFOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=wUucJpP9; arc=none smtp.client-ip=209.85.167.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oi1-f180.google.com with SMTP id 5614622812f47-40ba3c10b3bso490043b6e.1
+        for <linux-iio@vger.kernel.org>; Thu, 10 Jul 2025 12:28:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1752175716; x=1752780516; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=0IFO8LE4ZMmLZJQRob9IaL309a+Oj/RCVEFAUClUxUE=;
+        b=wUucJpP9NWLf2Lminikskhf8/h1shq3ZfbBzOouxzoGwzr6IdU4+nru51HWPEY+iBP
+         uOd84wbvthPSlew/ZnUtR704lQkJa1d1Lzup2QHztdHOsRntR2h12MtzQCFIE9VxAJRJ
+         AKsUwQoZA0rdGXO9QM+t/yDrmxzCThoZKEqCdjvC/oeeg8948e/NGhox1TIdn4Zk1uoB
+         YNcgoSsKmk8bjW9LipDpYE8mk+Rf0K9wCTKtvF37VJg8/a4MvaaBYoVDxSHRc7QTzY5W
+         obA6dBhdKURVz83pkg9eN6sjSlF7XKjGJ9M7VAcID/jbAuyA9Gl7fTgR4ND7sQTI1YOk
+         WAdw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752175716; x=1752780516;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=0IFO8LE4ZMmLZJQRob9IaL309a+Oj/RCVEFAUClUxUE=;
+        b=T6VEn1aiu58BepxYk+xsLCPFzIE5Epk6sezJPQ5x+H0K3s4Rgcs1FE9o5uDXKQCQG3
+         UjVd9cmyCcC/ndCAo0yzp/dzeGX1u+wRB5IErFqGTlzxgi21gzRl/YPE5Y8MxYdUL61K
+         Fi5yt6L8A4nXE2jculqW5nCqv5jBEO4SQTRYpTwMq/9N9u7yKcnQ6eXGXNnUkTPOdmtt
+         srevGIkH/1ofe7sLVOESvutSE95zZIp0SKhZHdpIjiQIUas4rI23q2HtCOrczoio1TS+
+         mwjVXCcro6wmnnm1hSTE4K5xmfN1Pj05PwQalBcSQQky7AoELNn/rbc97bSqRKn4QNc1
+         eGUQ==
+X-Gm-Message-State: AOJu0Yw9IupJYV+3/l17hdoPqOAZY9zOjfibJy4xSmXmomBBqY0D9+LM
+	IzOikxX6jDL7lum4TI7HwKD18HBTw0upIWutYvAZUtDK9OG+VUMg2uqS1Uraj8mQVv8=
+X-Gm-Gg: ASbGncsT5e9TpxnHFYBaJ7rq8rF1mNUvm01jkztLyC6R0KFSe3fQctMVy2WPTtBqzyo
+	urOtpkR4lmO+Ho8noB02U/8UIZNa9kPyFcMNVchPZwnREs5QQcOXOZslvxsu5qCMqCfyuR4+zFs
+	SWSm4/w9dpxWbf4rSXgnN7IatXyyDb8wVT3YyyLblRbKqV8sQgwjnkhVn6NH6Fi1iDFj20WsEMH
+	KdYmTkBJV7c6fLVCH922paJuLoph3Xn/g0Al/rgJ/PwOPrPu0JK/g5dozFgWgI2wr+At3NJzdxN
+	8nW1ngHIm2CnlUPQhfSXV/zc8VJb4oZFE7CLcIwEYQtbonfo8EOkIkxOZknC9MkdamSx7dZ+FMY
+	EWIKTwJhNxdx0YhW5DP0vE8sZwb39v43M8JcLCB+/jwLMBpPA8UU18m1l/LPx551222yvnglnIF
+	DbhPPzOfpp4g==
+X-Google-Smtp-Source: AGHT+IGmb8m8dMOuKESRSXGrD9qmNAJUqNNdJvNj7+xgQgnUYplcgJ9j68WeViPxvM+0dj8Y1hveRw==
+X-Received: by 2002:a05:6808:4fc9:b0:40b:4230:3881 with SMTP id 5614622812f47-4150d645bd4mr609516b6e.7.1752175716029;
+        Thu, 10 Jul 2025 12:28:36 -0700 (PDT)
+Received: from ?IPV6:2600:8803:e7e4:1d00:6f38:cf8f:abb1:34f7? ([2600:8803:e7e4:1d00:6f38:cf8f:abb1:34f7])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-73cf12a4bb8sm304952a34.45.2025.07.10.12.28.34
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 10 Jul 2025 12:28:34 -0700 (PDT)
+Message-ID: <d6e000ac-2967-4784-b3c2-2be7939321b7@baylibre.com>
+Date: Thu, 10 Jul 2025 14:28:33 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250710171107.443790-2-jic23@kernel.org>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/7] IIO: More application of IWYU principles to includes.
+To: Andy Shevchenko <andriy.shevchenko@intel.com>,
+ Jonathan Cameron <jic23@kernel.org>
+Cc: linux-iio@vger.kernel.org, =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
+ Andy Shevchenko <andy@kernel.org>, Denis Ciocca <denis.ciocca@st.com>,
+ Vasileios Amoiridis <vassilisamir@gmail.com>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>
+References: <20250710171107.443790-1-jic23@kernel.org>
+ <aHAP0rr1VQX8hWC9@smile.fi.intel.com>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <aHAP0rr1VQX8hWC9@smile.fi.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Jul 10, 2025 at 06:11:01PM +0100, Jonathan Cameron wrote:
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+On 7/10/25 2:09 PM, Andy Shevchenko wrote:
+> On Thu, Jul 10, 2025 at 06:11:00PM +0100, Jonathan Cameron wrote:
+>>
+>> I decided to look at a slightly larger set to continue trying to come
+>> up with consistent rules (for IIO anyway) on what we want to include
+>> direclty and what assumptions we can make about a header always including
+>> another.
+>>
+>> As the series goes on reduce the amount of info on particular choices made
+>> just because the commit descriptions were getting very long.
+>>
+>> A few open questions.
+>> - linux/stddef.h - do we want to included this directly?
 > 
-> The recent introduction of a warning on missing include of
-> linux/export.h when W=1 motivated revisiting the includes in affected
-> drivers.  In general IWYU principles avoid complex include paths that
-> make it hard to refactor headers.
+> Only if not types.h included.
 > 
-> - Move linux/unaligned.h entry to appropriate place.
-> - Drop comment on linux/irq.h as we don't generally keep a record
->   in code of why includes are there.
+>> - linux/types.h - do we want to include this directly?
 > 
-> Remove
-> - linux/device.h from bmp280-regmap.c as struct device forwards definition
->   is enough.
-> - linux/module.h from bmp280-regmap.c as the module stuff is all in the
->   other files.
-> Add all of:
-> - linux/array_size.h for ARRAY_SIZE()
-> - linux/device.h in the i2c and spi drivers
-> - linux/err.h for PTR_ERR() etc and also assume includes errno.h
-> - linux/export.h for EXPORT_SYMBOL*()
-> - linux/jiffies.h for msecs_to_jiffies
-> - linux/log2.h for ilog2()
-> - linux/math64.h for div64_s64
-> - linux/minmax.h for clamp_val()
-> - linux/mod_devicetable.h for spi_device_id etc
-> - linux/mutex.h for various mutex calls
-> - linux/pm.h for pm_ptr()
-> - linux/stddef.h for false / true
-> - linux/string.h for memcpy
-> - linux/string_choices.h for str_enable_disable
-> - linux/time.h for USEC_PER_MSEC
-> - linux/types.h for local bool definition.
-> 
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> ---
-> I'm not sure on whether we should bother with stddef.h or types.h
-> Looking for feedback on any others.
+> Yes.
 
-types.h is superior.
+Agree. It's rare, but I've had compile failures in some cases if this
+was missing.
 
--- 
-With Best Regards,
-Andy Shevchenko
+> 
+>> - linux/dev_printk.h - include even if device.h is needed for other reasons
+>>   or rely on that as a grouping header if present and only use dev_printk
+>>   where we don't need device.h.
+> 
+> I slightly tend to include both as strictly speaking the dev_printk.h should be
+> device/printk.h, but that boat already sailed long time ago...
 
++1 for not having conditional rules. Just include both.
+
+So I would do the same for linux/stddef.h. Either always include it or
+always use linux/types.h instead. It just makes things simpler to not have
+special cases.
+
+> 
+>> I'll share a refreshed IWYU config once we come to firmer conclusions
+>> on the various choices.  I haven't yet figured out now to not include
+>> anything at all for things like CONFIG*
+> 
+> PAGE_SIZE is in asm/page.h.
+> 
 
 

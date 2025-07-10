@@ -1,145 +1,156 @@
-Return-Path: <linux-iio+bounces-21546-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21547-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17AC7B00C1B
-	for <lists+linux-iio@lfdr.de>; Thu, 10 Jul 2025 21:28:46 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EB64B00D5B
+	for <lists+linux-iio@lfdr.de>; Thu, 10 Jul 2025 22:44:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 33EA25C4EF2
-	for <lists+linux-iio@lfdr.de>; Thu, 10 Jul 2025 19:28:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 15D5C7B086A
+	for <lists+linux-iio@lfdr.de>; Thu, 10 Jul 2025 20:42:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66B302F0C64;
-	Thu, 10 Jul 2025 19:28:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39B0428C017;
+	Thu, 10 Jul 2025 20:43:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="wUucJpP9"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="p8/VNO9l"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oi1-f180.google.com (mail-oi1-f180.google.com [209.85.167.180])
+Received: from mail-ot1-f48.google.com (mail-ot1-f48.google.com [209.85.210.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 350742741C6
-	for <linux-iio@vger.kernel.org>; Thu, 10 Jul 2025 19:28:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9153D20296A
+	for <linux-iio@vger.kernel.org>; Thu, 10 Jul 2025 20:43:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752175722; cv=none; b=f+0P2Otz/uKZloQ89dGw89qfhcnLS8tngrljcHrt497ibY2++l3d2YGhp2EkTUlKFf5w5i1yTHOOnqWq5U/oD26F8JQxupSggINAC0M+tSNdWSkMebsXHm1Njbj0JkvUsjG54fveVyEWt/3HjMtOcL1EMDdUMd3XxNkocY2n/kU=
+	t=1752180238; cv=none; b=FEaoscraTD3Ot6RElYC5ccJYyaEsoRev8ljTVlToENyr7RYjwFXCQ/1JhxQKVLPx6yOZpwFRA/sQPU6zt9hhojh0yV9h5RayLsRHX4yQVh8gZTWFR4zflUIy8U7UThaPApfrvEgyO2f8akuo0R5RJdTTrvgWf6gAh7nkodYOgfM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752175722; c=relaxed/simple;
-	bh=MT7ARmMygMbdpWskLAwrOjSVM4v0Zx7PKH/zOfxM8i8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VPEm34yRYDxG/AOytADExpmNTrec8uXnYgVkABjoESYFNsDtpJ5FhadUiC/JoF+oOIHBJHwoj9pPXogV7mb59bElI6Ox6kdTWYRi8eQfJUpXSez7CFQ4vyw1Vi/8sOlphtB/l1+86zei61yJPZvolUei/zoTQbsn7GApgc8DFOo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=wUucJpP9; arc=none smtp.client-ip=209.85.167.180
+	s=arc-20240116; t=1752180238; c=relaxed/simple;
+	bh=Tq+kcG3CNqTc+WAbHQcKCfcmOeCI9+WqNhfqW8zWLwQ=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=awSJQeKHUSUwBBgFae43mLBfdW0yYibwgPzypMk/gVXi1rwotEjMLpqUQ1mhL3qsk9fDFCX8y/1Ov6e0ADlibc2QA4wy0jZAHx9H1IJvvO8+bslk2GE6yqQJv7U2xLv851Jk27QnCIDMFlnrBn0HJGQvF3f3lzWz/Bv16+abudo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=p8/VNO9l; arc=none smtp.client-ip=209.85.210.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oi1-f180.google.com with SMTP id 5614622812f47-40ba3c10b3bso490043b6e.1
-        for <linux-iio@vger.kernel.org>; Thu, 10 Jul 2025 12:28:36 -0700 (PDT)
+Received: by mail-ot1-f48.google.com with SMTP id 46e09a7af769-73cdff9a27aso338907a34.0
+        for <linux-iio@vger.kernel.org>; Thu, 10 Jul 2025 13:43:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1752175716; x=1752780516; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=0IFO8LE4ZMmLZJQRob9IaL309a+Oj/RCVEFAUClUxUE=;
-        b=wUucJpP9NWLf2Lminikskhf8/h1shq3ZfbBzOouxzoGwzr6IdU4+nru51HWPEY+iBP
-         uOd84wbvthPSlew/ZnUtR704lQkJa1d1Lzup2QHztdHOsRntR2h12MtzQCFIE9VxAJRJ
-         AKsUwQoZA0rdGXO9QM+t/yDrmxzCThoZKEqCdjvC/oeeg8948e/NGhox1TIdn4Zk1uoB
-         YNcgoSsKmk8bjW9LipDpYE8mk+Rf0K9wCTKtvF37VJg8/a4MvaaBYoVDxSHRc7QTzY5W
-         obA6dBhdKURVz83pkg9eN6sjSlF7XKjGJ9M7VAcID/jbAuyA9Gl7fTgR4ND7sQTI1YOk
-         WAdw==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1752180234; x=1752785034; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=CiqjwpdSWDMo+9ZdKh3Q4FHq3twDU9X6sP5x0odekqc=;
+        b=p8/VNO9lfKU6gWMyt9+t1BuVoV8UtwQkThdQFC7ZJSoaeB9/oH2WdOOfM7D1eIkvy2
+         dOYVMCuEDfabwhZgj9dDYHiSwOvtn1sRmS3OuaFbIOSZo0quYR5x1XBKB+E6HFna63W0
+         tvAjSoBrWBQG277fB2kvdL8vGcNp2qH1axhZUF0p3froBSNnwZ+JVjYojeMgT+Tk5PlE
+         DyGQRXlDiB7OneY14MmMUyXXLtFcoDT6NfO/JRn9rB9XHBVM+PtiCgIqgInAKOUfUBSm
+         yBkDbD/Q7umSxzURD5QjBSr/6z7dlfvzmsHH8tBP9VFuGBYRwp3l7cEFPi13c0LJakcP
+         lzuQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752175716; x=1752780516;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=0IFO8LE4ZMmLZJQRob9IaL309a+Oj/RCVEFAUClUxUE=;
-        b=T6VEn1aiu58BepxYk+xsLCPFzIE5Epk6sezJPQ5x+H0K3s4Rgcs1FE9o5uDXKQCQG3
-         UjVd9cmyCcC/ndCAo0yzp/dzeGX1u+wRB5IErFqGTlzxgi21gzRl/YPE5Y8MxYdUL61K
-         Fi5yt6L8A4nXE2jculqW5nCqv5jBEO4SQTRYpTwMq/9N9u7yKcnQ6eXGXNnUkTPOdmtt
-         srevGIkH/1ofe7sLVOESvutSE95zZIp0SKhZHdpIjiQIUas4rI23q2HtCOrczoio1TS+
-         mwjVXCcro6wmnnm1hSTE4K5xmfN1Pj05PwQalBcSQQky7AoELNn/rbc97bSqRKn4QNc1
-         eGUQ==
-X-Gm-Message-State: AOJu0Yw9IupJYV+3/l17hdoPqOAZY9zOjfibJy4xSmXmomBBqY0D9+LM
-	IzOikxX6jDL7lum4TI7HwKD18HBTw0upIWutYvAZUtDK9OG+VUMg2uqS1Uraj8mQVv8=
-X-Gm-Gg: ASbGncsT5e9TpxnHFYBaJ7rq8rF1mNUvm01jkztLyC6R0KFSe3fQctMVy2WPTtBqzyo
-	urOtpkR4lmO+Ho8noB02U/8UIZNa9kPyFcMNVchPZwnREs5QQcOXOZslvxsu5qCMqCfyuR4+zFs
-	SWSm4/w9dpxWbf4rSXgnN7IatXyyDb8wVT3YyyLblRbKqV8sQgwjnkhVn6NH6Fi1iDFj20WsEMH
-	KdYmTkBJV7c6fLVCH922paJuLoph3Xn/g0Al/rgJ/PwOPrPu0JK/g5dozFgWgI2wr+At3NJzdxN
-	8nW1ngHIm2CnlUPQhfSXV/zc8VJb4oZFE7CLcIwEYQtbonfo8EOkIkxOZknC9MkdamSx7dZ+FMY
-	EWIKTwJhNxdx0YhW5DP0vE8sZwb39v43M8JcLCB+/jwLMBpPA8UU18m1l/LPx551222yvnglnIF
-	DbhPPzOfpp4g==
-X-Google-Smtp-Source: AGHT+IGmb8m8dMOuKESRSXGrD9qmNAJUqNNdJvNj7+xgQgnUYplcgJ9j68WeViPxvM+0dj8Y1hveRw==
-X-Received: by 2002:a05:6808:4fc9:b0:40b:4230:3881 with SMTP id 5614622812f47-4150d645bd4mr609516b6e.7.1752175716029;
-        Thu, 10 Jul 2025 12:28:36 -0700 (PDT)
-Received: from ?IPV6:2600:8803:e7e4:1d00:6f38:cf8f:abb1:34f7? ([2600:8803:e7e4:1d00:6f38:cf8f:abb1:34f7])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-73cf12a4bb8sm304952a34.45.2025.07.10.12.28.34
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 10 Jul 2025 12:28:34 -0700 (PDT)
-Message-ID: <d6e000ac-2967-4784-b3c2-2be7939321b7@baylibre.com>
-Date: Thu, 10 Jul 2025 14:28:33 -0500
+        d=1e100.net; s=20230601; t=1752180234; x=1752785034;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=CiqjwpdSWDMo+9ZdKh3Q4FHq3twDU9X6sP5x0odekqc=;
+        b=e7Am2V7UI/kass+XXFV6cH72mvnP3rnMsKCIcLpXiHOj4qWol8FeaJglGhPAJBzZRk
+         zpq6f2dff75dmIxxOKeohMo9seI9dONG/z1WmM481nXJDNwbY39sTUjBxkSNNjr/+SLa
+         /lMEzJyknnLE1y/zAgjr6GfRVJ4JzkaS8WlYg/D9kj+B4GUBDVPBJhu3/PiexfYYb2t/
+         oc8n1j0+Tmqg4t0BezRu5vX/u032AKNnM/cE7uf8b0gnXGCSUFg9pFgbD6bbcvFbm+cv
+         VG45SPcpVd+h7a6ze1WvFHwt643Jn7xza9BNgUv4deMvdrL4lWvcIkW2MVC1oa34VNm4
+         Lddw==
+X-Forwarded-Encrypted: i=1; AJvYcCXJ69uKNzI0pdTNpLNzmo2CSAsawYrAFptlbRs1ilTsauThrtjuJVncHzhQH8KMIvTxFYvBeFCKJr4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywm4RINYfisGPKIfKGsqM+a+HNjNnSrbsTJ4mKIj0xCrIvJ6kCo
+	uPvqPeqAHKNiXoVUUeg2Iv6C9O9//lCXalTQSkbgjIKcajeBvJHqb8eZwd2v3965RoByJAs9l6O
+	qGiiEb4E=
+X-Gm-Gg: ASbGnctNGJExGIIkhX5jjLcZHabzzXejoGtUV+z/sUOjkQRAHsRJHe835+09hdM3yVb
+	UJ5UBqCSAXDm9fU0x5oBye9CgZ58n/uusQZ0Y2ZD3gBxixlRejToCZkXyfrAYjDRSeBefeeT5qS
+	4MqE8d2NqwsV5xvZjHmcVKl5+SVMBeQlKRlirFOWlRHoildTHvOYu9zeCkjaDjDX3fyBp1ljaOl
+	yJ86bNxQBmp+sFc07sy+QmSdrPfBrYJtTKRBQdkLD+//iV/GtfNd7UuHwyml6IoMUBMx2seBlv/
+	lKN/E+sWP45gYUpZ1l2rC9QF3c6Z30hplkZelc09HBtBjv/kejwZW4vxT10lOl+vdKBBBbKfNZj
+	7URDlNGEiSGAGW3obOuw5YBKQrj1TlVnGWSlFjDs=
+X-Google-Smtp-Source: AGHT+IGQJp1xboJLdGXJ3rpaFaP2GJKciMhVlj61Om3Xpq0zgJ8UNj3FzEnCk3b5u1o9qWthNIXjwA==
+X-Received: by 2002:a05:6870:639e:b0:2c1:bc87:9bd7 with SMTP id 586e51a60fabf-2ff269cde53mr631163fac.35.1752180234503;
+        Thu, 10 Jul 2025 13:43:54 -0700 (PDT)
+Received: from [127.0.1.1] ([2600:8803:e7e4:1d00:6f38:cf8f:abb1:34f7])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-73cf12b7448sm328272a34.66.2025.07.10.13.43.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 10 Jul 2025 13:43:54 -0700 (PDT)
+From: David Lechner <dlechner@baylibre.com>
+Date: Thu, 10 Jul 2025 15:43:40 -0500
+Subject: [PATCH] iio: adc: ad7173: fix setting ODR in probe
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/7] IIO: More application of IWYU principles to includes.
-To: Andy Shevchenko <andriy.shevchenko@intel.com>,
- Jonathan Cameron <jic23@kernel.org>
-Cc: linux-iio@vger.kernel.org, =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
- Andy Shevchenko <andy@kernel.org>, Denis Ciocca <denis.ciocca@st.com>,
- Vasileios Amoiridis <vassilisamir@gmail.com>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>
-References: <20250710171107.443790-1-jic23@kernel.org>
- <aHAP0rr1VQX8hWC9@smile.fi.intel.com>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <aHAP0rr1VQX8hWC9@smile.fi.intel.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20250710-iio-adc-ad7173-fix-setting-odr-in-probe-v1-1-78a100fec998@baylibre.com>
+X-B4-Tracking: v=1; b=H4sIAPslcGgC/x2NQQqDQAxFryJZN5AZkVSvUroYndRmMyMZKYJ4d
+ 0MXb/Hg8f8JTUylwdSdYPLTprW4hEcHyzeVVVCzO0SKA3EgVK2Y8uJw4B4/emCTfdeyYs2GWnC
+ zOguOYRg5EpM8E/jaZuLt/+n1vq4bOztx63kAAAA=
+X-Change-ID: 20250710-iio-adc-ad7173-fix-setting-odr-in-probe-915972070e8a
+To: Michael Hennerich <Michael.Hennerich@analog.com>, 
+ Jonathan Cameron <jic23@kernel.org>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Andy Shevchenko <andy@kernel.org>, Dumitru Ceclan <mitrutzceclan@gmail.com>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ David Lechner <dlechner@baylibre.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1951; i=dlechner@baylibre.com;
+ h=from:subject:message-id; bh=Tq+kcG3CNqTc+WAbHQcKCfcmOeCI9+WqNhfqW8zWLwQ=;
+ b=owEBbQGS/pANAwAKAcLMIAH/AY/AAcsmYgBocCYCOhvHguJVU39EN9vGeVxFtXH+FcyPx1r4j
+ 1P4d90+houJATMEAAEKAB0WIQTsGNmeYg6D1pzYaJjCzCAB/wGPwAUCaHAmAgAKCRDCzCAB/wGP
+ wFS/B/0c0a7na+PHJf3QSL13YCocFbIlonhFD9t01Nkns+x0zZtNSmsgxI6T3lRW76elHjkJESr
+ iIU+yW1c1AjKmUuZv133Xhgjolj0x5KL1ksXPJnJE+7YeumCxdi2qPKMjWgc/25wRKGYBe0FhFg
+ 8643hd9lvMvjvZc8Tnk0qdHZVkftI4qKdYDmw3+qL4+b6riZ6FQq6ylo8Nu8IBVOiEMEEZPJ17z
+ dsSmauccAXK98/qr91lidx0JQGBQ32RJAXuXV5bZDHDw3PcdiJ4ETfaBQZjYzkY/RxwED+8tLw7
+ bPgrkC8we4/58uUCwlaLUoIbF4mrvAyIaZykaxITW/k4amhz
+X-Developer-Key: i=dlechner@baylibre.com; a=openpgp;
+ fpr=8A73D82A6A1F509907F373881F8AF88C82F77C03
 
-On 7/10/25 2:09 PM, Andy Shevchenko wrote:
-> On Thu, Jul 10, 2025 at 06:11:00PM +0100, Jonathan Cameron wrote:
->>
->> I decided to look at a slightly larger set to continue trying to come
->> up with consistent rules (for IIO anyway) on what we want to include
->> direclty and what assumptions we can make about a header always including
->> another.
->>
->> As the series goes on reduce the amount of info on particular choices made
->> just because the commit descriptions were getting very long.
->>
->> A few open questions.
->> - linux/stddef.h - do we want to included this directly?
-> 
-> Only if not types.h included.
-> 
->> - linux/types.h - do we want to include this directly?
-> 
-> Yes.
+Fix the setting of the ODR register value in the probe function for
+AD7177. The AD7177 chip has a different ODR value after reset than the
+other chips (0x7 vs. 0x0) and 0 is a reserved value on that chip.
 
-Agree. It's rare, but I've had compile failures in some cases if this
-was missing.
+The driver already has this information available in odr_start_value
+and uses it when checking valid values when writing to the
+sampling_frequency attribute, but failed to set the correct initial
+value in the probe function.
 
-> 
->> - linux/dev_printk.h - include even if device.h is needed for other reasons
->>   or rely on that as a grouping header if present and only use dev_printk
->>   where we don't need device.h.
-> 
-> I slightly tend to include both as strictly speaking the dev_printk.h should be
-> device/printk.h, but that boat already sailed long time ago...
+Fixes: 37ae8381ccda ("iio: adc: ad7173: add support for additional models")
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+---
+ drivers/iio/adc/ad7173.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-+1 for not having conditional rules. Just include both.
+diff --git a/drivers/iio/adc/ad7173.c b/drivers/iio/adc/ad7173.c
+index dd9fa35555c79ead5a1b88d1dc6cc3db122502be..ef074b41332ed912fb281c0903f6cc52077accb4 100644
+--- a/drivers/iio/adc/ad7173.c
++++ b/drivers/iio/adc/ad7173.c
+@@ -1574,6 +1574,7 @@ static int ad7173_fw_parse_channel_config(struct iio_dev *indio_dev)
+ 		chan_st_priv->cfg.bipolar = false;
+ 		chan_st_priv->cfg.input_buf = st->info->has_input_buf;
+ 		chan_st_priv->cfg.ref_sel = AD7173_SETUP_REF_SEL_INT_REF;
++		chan_st_priv->cfg.odr = st->info->odr_start_value;
+ 		chan_st_priv->cfg.openwire_comp_chan = -1;
+ 		st->adc_mode |= AD7173_ADC_MODE_REF_EN;
+ 		if (st->info->data_reg_only_16bit)
+@@ -1640,7 +1641,7 @@ static int ad7173_fw_parse_channel_config(struct iio_dev *indio_dev)
+ 		chan->scan_index = chan_index;
+ 		chan->channel = ain[0];
+ 		chan_st_priv->cfg.input_buf = st->info->has_input_buf;
+-		chan_st_priv->cfg.odr = 0;
++		chan_st_priv->cfg.odr = st->info->odr_start_value;
+ 		chan_st_priv->cfg.openwire_comp_chan = -1;
+ 
+ 		chan_st_priv->cfg.bipolar = fwnode_property_read_bool(child, "bipolar");
 
-So I would do the same for linux/stddef.h. Either always include it or
-always use linux/types.h instead. It just makes things simpler to not have
-special cases.
+---
+base-commit: f8f559752d573a051a984adda8d2d1464f92f954
+change-id: 20250710-iio-adc-ad7173-fix-setting-odr-in-probe-915972070e8a
 
-> 
->> I'll share a refreshed IWYU config once we come to firmer conclusions
->> on the various choices.  I haven't yet figured out now to not include
->> anything at all for things like CONFIG*
-> 
-> PAGE_SIZE is in asm/page.h.
-> 
+Best regards,
+-- 
+David Lechner <dlechner@baylibre.com>
 
 

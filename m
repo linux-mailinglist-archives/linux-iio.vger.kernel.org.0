@@ -1,52 +1,52 @@
-Return-Path: <linux-iio+bounces-21517-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21516-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0786AFFD4B
-	for <lists+linux-iio@lfdr.de>; Thu, 10 Jul 2025 11:00:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D586CAFFD4A
+	for <lists+linux-iio@lfdr.de>; Thu, 10 Jul 2025 10:59:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C3D4D4E5A68
-	for <lists+linux-iio@lfdr.de>; Thu, 10 Jul 2025 08:58:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9D0024E49B2
+	for <lists+linux-iio@lfdr.de>; Thu, 10 Jul 2025 08:58:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F083C2951CB;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9F02294A17;
 	Thu, 10 Jul 2025 08:58:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nxyhOmfA"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M4p+LRal"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 777B6290DBB;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7774B290D98;
 	Thu, 10 Jul 2025 08:58:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752137883; cv=none; b=YZukqRHHBrRRBLtGs6B287wHbiSwmhFjF3xs7W9i+KKPffALLYBag/l9FZOeoSguDoltzOX+LBUBn/DeI5rTkAB8tdeimWI6dRnje4b1dv2xxY2jAOFNDtL3K06z2+rtmpxmWtCwyqTPohp5ykM4aqgq1e3YWXH40aSMKhD2xhg=
+	t=1752137883; cv=none; b=RRYwT0KVCzYTpLJEXNeM6r6+PcO975ovweb3pkYKH2DNcwk+hbbT0rY5TeoqvKQ9XpTIR1wT6EEA3JAsDk92neevYI6dhuAhi7e9uCOteMWvWrhoOPNVhKsCb8v3cdoQhNC08qejFUF/GLusj6/s/xtz3R1nnIfSKcGGcchasYQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1752137883; c=relaxed/simple;
-	bh=c2IX8PPIIZJzerT/aw+ykeihrxVRi5Gp/7XdkvR+5kY=;
+	bh=vsHjZJf51AfU8S+DT+3gZS1r3jeZjtw/LCAGqXyQnIc=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=YPyoF82cCLpP1G3nRU34VNWP1L9jnVwpzWDx+4+wjusYJPuJtkViKhDXxwAh7ZmJR9fmU2BY2l+Ya6v0ux6dqbd7L6uKH3Yr220NEucc20R3Sybcdb4zyohA/3w/vuc5nayehhe9BU34bH9ZyR2+SmTSfSJ7N/ojnlpSJdaayzY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nxyhOmfA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 1F3CEC4CEFF;
+	 In-Reply-To:To:Cc; b=cIpE3yBh501NpItaZqv1AtmTQMP3YG0KzzTrRdgcDIavUTQkdWPRC1x8g+fRtRRBkjhfBU8PC9BBzNyBe2qcu9dXVhIM77i7qqUxJF3zT9iulvOC9jXYN6nxmRsNbQCiGyisceFE2RdqnFniFR3xDpbtu/fbfefraQRM9xs9kq8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M4p+LRal; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 35ECEC4AF0F;
 	Thu, 10 Jul 2025 08:58:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1752137883;
-	bh=c2IX8PPIIZJzerT/aw+ykeihrxVRi5Gp/7XdkvR+5kY=;
+	bh=vsHjZJf51AfU8S+DT+3gZS1r3jeZjtw/LCAGqXyQnIc=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=nxyhOmfAen0rptGqh3s/gkXP/46NVFtkaf3PWr7fyOoFtMQSTXegIZ13o7kNXKZbW
-	 FDK4FCo9DptPbpu/Z3XZ+qbXXj4OnHFpL8nf8Mg61diplSh5cJZ276nnp5PNdYGdxD
-	 YhS5sL35tUAMNRrmenoOk64FEJKQ8+h71911NR99+Aifth/l+yhqEDu5vz+f2gZ3ca
-	 XprqUrFK9vxBRuRkulr4JPhzhl+MvBEvfvS5Gy1/dp9C00xH9QnT5s+y7j4COxsIj4
-	 OCUhQw7fc9RuxsF5/30FiYRDTnSV0Q2eJPXmKMnePOIDKgl1rVi2I3wun05a5gN9Jm
-	 ABAKkml+TzAzg==
+	b=M4p+LRalgj3AeDRhEOYx13ukmHuwmdnNKbKvnhnQZOGN7d7pbeFY7/ab8hFlfIN/+
+	 J/uyzdo8jkC7Db4x6pnX79ZPDfjM8tjQUJ2DRATh8hb2bQeVMgKXd9A1RU2tRHsNod
+	 NxKHCqYlyT15O8lLHS6wpzfM5enk1KG7+KVi9kgxeHRd4iROUHui9LXLHReqmj0tB6
+	 FAUKRbY8eEXHP6ktT3wibvjRj3LRhHhrKYs5zu++twyx86T1mcJ5e6D3F8tTmp3ApZ
+	 LYWefuIZWNZ3YAAGzM7zlV+HgyJqgw5ZRLkOiOz9ann4yYJ3PtA7T9N74ncXPduGm8
+	 Pbv18iB667hBg==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1565AC83F1D;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 253E1C83F20;
 	Thu, 10 Jul 2025 08:58:03 +0000 (UTC)
 From: Remi Buisson via B4 Relay <devnull+remi.buisson.tdk.com@kernel.org>
-Date: Thu, 10 Jul 2025 08:58:01 +0000
-Subject: [PATCH v2 6/8] iio: imu: inv_icm45600: add SPI driver for
+Date: Thu, 10 Jul 2025 08:58:02 +0000
+Subject: [PATCH v2 7/8] iio: imu: inv_icm45600: add I3C driver for
  inv_icm45600 driver
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -56,7 +56,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250710-add_newport_driver-v2-6-bf76d8142ef2@tdk.com>
+Message-Id: <20250710-add_newport_driver-v2-7-bf76d8142ef2@tdk.com>
 References: <20250710-add_newport_driver-v2-0-bf76d8142ef2@tdk.com>
 In-Reply-To: <20250710-add_newport_driver-v2-0-bf76d8142ef2@tdk.com>
 To: Jonathan Cameron <jic23@kernel.org>, 
@@ -68,11 +68,11 @@ To: Jonathan Cameron <jic23@kernel.org>,
 Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org, 
  devicetree@vger.kernel.org, Remi Buisson <remi.buisson@tdk.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1752137881; l=5474;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1752137881; l=4456;
  i=remi.buisson@tdk.com; s=20250411; h=from:subject:message-id;
- bh=hnED/tFv/crwWZzbfKEjfj7vI38mqj6A3J7aBo72i3g=;
- b=8zMYvJUdvn/4xaxyzIY8A4MKjIW43K/AC/8YC3V7cbxAoSi6JuzCrfV0aWEUOXZ62IZVy19pP
- hl/iqsfM1MIChe/NXgib7yVf8/1Uf1+7+tjEhWS3FMHc2gHVMB3wczT
+ bh=4m9qBpGi25U3Cwi+7Mah1nGcPeoIUiDCyFwUUL17ZWI=;
+ b=yYWecN4TqeFNQZ2Uy3aAt7gmjHgxNLAlomKLTC0aFl6Z4lnjDAVRhSTAPXNq2ZvTChTDIMpN0
+ uScb77BPs7iAtOdfexHiwrCfRPLKwVHnFg1K+HZwEBBsReLkcnHfOQH
 X-Developer-Key: i=remi.buisson@tdk.com; a=ed25519;
  pk=yDVMi4C7RpXN4dififo42A7fDDt3THYzoZoNq9lUZuo=
 X-Endpoint-Received: by B4 Relay for remi.buisson@tdk.com/20250411 with
@@ -82,32 +82,32 @@ Reply-To: remi.buisson@tdk.com
 
 From: Remi Buisson <remi.buisson@tdk.com>
 
-Add SPI driver for InvenSense ICM-456000 devices.
+Add I3C driver for InvenSense ICM-45600 devices.
 
 Signed-off-by: Remi Buisson <remi.buisson@tdk.com>
 ---
- drivers/iio/imu/inv_icm45600/Kconfig            |  21 +++++
- drivers/iio/imu/inv_icm45600/Makefile           |   5 +-
- drivers/iio/imu/inv_icm45600/inv_icm45600_spi.c | 106 ++++++++++++++++++++++++
- 3 files changed, 131 insertions(+), 1 deletion(-)
+ drivers/iio/imu/inv_icm45600/Kconfig            | 21 +++++++
+ drivers/iio/imu/inv_icm45600/Makefile           |  3 +
+ drivers/iio/imu/inv_icm45600/inv_icm45600_i3c.c | 82 +++++++++++++++++++++++++
+ 3 files changed, 106 insertions(+)
 
 diff --git a/drivers/iio/imu/inv_icm45600/Kconfig b/drivers/iio/imu/inv_icm45600/Kconfig
-index 5b044a954e952ffa8e44507eea42872e1f3161bc..01399d136a7ea3aa92a3a18ea455c95c0a6578b3 100644
+index 01399d136a7ea3aa92a3a18ea455c95c0a6578b3..dc133402f6d75f8c050100e8475404e00993818b 100644
 --- a/drivers/iio/imu/inv_icm45600/Kconfig
 +++ b/drivers/iio/imu/inv_icm45600/Kconfig
-@@ -26,3 +26,24 @@ config INV_ICM45600_I2C
+@@ -47,3 +47,24 @@ config INV_ICM45600_SPI
  
  	  This driver can be built as a module. The module will be called
- 	  inv-icm45600-i2c.
+ 	  inv-icm45600-spi.
 +
-+config INV_ICM45600_SPI
-+	tristate "InvenSense ICM-456xx SPI driver"
-+	depends on SPI_MASTER
++config INV_ICM45600_I3C
++	tristate "InvenSense ICM-456xx I3C driver"
++	depends on I3C
 +	select INV_ICM45600
-+	select REGMAP_SPI
++	select REGMAP_I3C
 +	help
 +	  This driver supports the InvenSense ICM-456xx motion tracking
-+	  devices over SPI.
++	  devices over I3C.
 +	  Supported devices:
 +	  - ICM-45605
 +	  - ICM-45606
@@ -119,36 +119,33 @@ index 5b044a954e952ffa8e44507eea42872e1f3161bc..01399d136a7ea3aa92a3a18ea455c95c
 +	  - ICM-45689
 +
 +	  This driver can be built as a module. The module will be called
-+	  inv-icm45600-spi.
++	  inv-icm45600-i3c.
 diff --git a/drivers/iio/imu/inv_icm45600/Makefile b/drivers/iio/imu/inv_icm45600/Makefile
-index 371585e29e92e78a30c7d40c1389548fa22a999a..244cc8aa1f79e3367ac6925504cfd9d5b918a0e6 100644
+index 244cc8aa1f79e3367ac6925504cfd9d5b918a0e6..fa646ea8339da3c41eab8aa16e14b484fd884843 100644
 --- a/drivers/iio/imu/inv_icm45600/Makefile
 +++ b/drivers/iio/imu/inv_icm45600/Makefile
-@@ -7,4 +7,7 @@ inv-icm45600-y += inv_icm45600_accel.o
- inv-icm45600-y += inv_icm45600_gyro.o
+@@ -11,3 +11,6 @@ inv-icm45600-i2c-y += inv_icm45600_i2c.o
  
- obj-$(CONFIG_INV_ICM45600_I2C) += inv-icm45600-i2c.o
--inv-icm45600-i2c-y += inv_icm45600_i2c.o
-\ No newline at end of file
-+inv-icm45600-i2c-y += inv_icm45600_i2c.o
+ obj-$(CONFIG_INV_ICM45600_SPI) += inv-icm45600-spi.o
+ inv-icm45600-spi-y += inv_icm45600_spi.o
 +
-+obj-$(CONFIG_INV_ICM45600_SPI) += inv-icm45600-spi.o
-+inv-icm45600-spi-y += inv_icm45600_spi.o
-diff --git a/drivers/iio/imu/inv_icm45600/inv_icm45600_spi.c b/drivers/iio/imu/inv_icm45600/inv_icm45600_spi.c
++obj-$(CONFIG_INV_ICM45600_I3C) += inv-icm45600-i3c.o
++inv-icm45600-i3c-y += inv_icm45600_i3c.o
+diff --git a/drivers/iio/imu/inv_icm45600/inv_icm45600_i3c.c b/drivers/iio/imu/inv_icm45600/inv_icm45600_i3c.c
 new file mode 100644
-index 0000000000000000000000000000000000000000..2fd4ecce24bd60aa2112e1bcae3f7196504df637
+index 0000000000000000000000000000000000000000..9db249ca53ec3fecb0f85792a353d05463f52acb
 --- /dev/null
-+++ b/drivers/iio/imu/inv_icm45600/inv_icm45600_spi.c
-@@ -0,0 +1,106 @@
++++ b/drivers/iio/imu/inv_icm45600/inv_icm45600_i3c.c
+@@ -0,0 +1,82 @@
 +// SPDX-License-Identifier: GPL-2.0-or-later
 +/* Copyright (C) 2025 InvenSense, Inc. */
 +
-+#include <linux/device.h>
 +#include <linux/err.h>
-+#include <linux/module.h>
++#include <linux/i3c/device.h>
++#include <linux/i3c/master.h>
 +#include <linux/mod_devicetable.h>
++#include <linux/module.h>
 +#include <linux/regmap.h>
-+#include <linux/spi/spi.h>
 +
 +#include "inv_icm45600.h"
 +
@@ -157,93 +154,69 @@ index 0000000000000000000000000000000000000000..2fd4ecce24bd60aa2112e1bcae3f7196
 +	.val_bits = 8,
 +};
 +
-+static int inv_icm45600_spi_bus_setup(struct inv_icm45600_state *st)
-+{
-+	/* Set slew rates for SPI. */
-+	return regmap_update_bits(st->map, INV_ICM45600_REG_DRIVE_CONFIG0,
-+				INV_ICM45600_DRIVE_CONFIG0_SPI_MASK,
-+				FIELD_PREP(INV_ICM45600_DRIVE_CONFIG0_SPI_MASK,
-+					INV_ICM45600_SPI_SLEW_RATE_5NS));
-+}
++static const struct i3c_device_id inv_icm45600_i3c_ids[] = {
++	I3C_DEVICE_EXTRA_INFO(0x0235, 0x0000, 0x0011, (void *)NULL),
++	I3C_DEVICE_EXTRA_INFO(0x0235, 0x0000, 0x0084, (void *)NULL),
++	{ /* sentinel */ },
++};
++MODULE_DEVICE_TABLE(i3c, inv_icm45600_i3c_ids);
 +
-+static int inv_icm45600_probe(struct spi_device *spi)
++static const struct inv_icm45600_chip_info *i3c_chip_info[] = {
++	&inv_icm45605_chip_info,
++	&inv_icm45606_chip_info,
++	&inv_icm45608_chip_info,
++	&inv_icm45634_chip_info,
++	&inv_icm45686_chip_info,
++	&inv_icm45687_chip_info,
++	&inv_icm45688p_chip_info,
++	&inv_icm45689_chip_info,
++};
++
++static int inv_icm45600_i3c_probe(struct i3c_device *i3cdev)
 +{
-+	const struct inv_icm45600_chip_info *chip_info;
++	int ret;
++	unsigned int whoami;
 +	struct regmap *regmap;
++	const int nb_chip = ARRAY_SIZE(i3c_chip_info);
++	int chip;
 +
-+	chip_info = spi_get_device_match_data(spi);
-+	if (!chip_info)
-+		return -ENODEV;
-+
-+	/* Use SPI specific regmap. */
-+	regmap = devm_regmap_init_spi(spi, &inv_icm45600_regmap_config);
-+	if (IS_ERR(regmap))
++	regmap = devm_regmap_init_i3c(i3cdev, &inv_icm45600_regmap_config);
++	if (IS_ERR(regmap)) {
++		dev_err(&i3cdev->dev, "Failed to register i3c regmap %ld\n", PTR_ERR(regmap));
 +		return PTR_ERR(regmap);
++	}
 +
-+	return inv_icm45600_core_probe(regmap, chip_info, true,
-+				       inv_icm45600_spi_bus_setup);
++	ret = regmap_read(regmap, INV_ICM45600_REG_WHOAMI, &whoami);
++	if (ret) {
++		dev_err(&i3cdev->dev, "Failed to read part id %d\n", whoami);
++		return ret;
++	}
++
++	for (chip = 0; chip < nb_chip; chip++) {
++		if (whoami == i3c_chip_info[chip]->whoami)
++			break;
++	}
++
++	if (chip == nb_chip) {
++		dev_err(&i3cdev->dev, "Failed to match part id %d\n", whoami);
++		return -ENODEV;
++	}
++
++	return inv_icm45600_core_probe(regmap, i3c_chip_info[chip], false, NULL);
 +}
 +
-+/*
-+ * The device id table is used to identify which device is
-+ * supported by this driver.
-+ */
-+static const struct spi_device_id inv_icm45600_id[] = {
-+	{ "icm45605", (kernel_ulong_t)&inv_icm45605_chip_info },
-+	{ "icm45606", (kernel_ulong_t)&inv_icm45606_chip_info },
-+	{ "icm45608", (kernel_ulong_t)&inv_icm45608_chip_info },
-+	{ "icm45634", (kernel_ulong_t)&inv_icm45634_chip_info },
-+	{ "icm45686", (kernel_ulong_t)&inv_icm45686_chip_info },
-+	{ "icm45687", (kernel_ulong_t)&inv_icm45687_chip_info },
-+	{ "icm45688p", (kernel_ulong_t)&inv_icm45688p_chip_info },
-+	{ "icm45689", (kernel_ulong_t)&inv_icm45689_chip_info },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(spi, inv_icm45600_id);
-+
-+static const struct of_device_id inv_icm45600_of_matches[] = {
-+	{
-+		.compatible = "invensense,icm45605",
-+		.data = &inv_icm45605_chip_info,
-+	}, {
-+		.compatible = "invensense,icm45606",
-+		.data = &inv_icm45606_chip_info,
-+	}, {
-+		.compatible = "invensense,icm45608",
-+		.data = &inv_icm45608_chip_info,
-+	}, {
-+		.compatible = "invensense,icm45634",
-+		.data = &inv_icm45634_chip_info,
-+	}, {
-+		.compatible = "invensense,icm45686",
-+		.data = &inv_icm45686_chip_info,
-+	}, {
-+		.compatible = "invensense,icm45687",
-+		.data = &inv_icm45687_chip_info,
-+	}, {
-+		.compatible = "invensense,icm45688p",
-+		.data = &inv_icm45688p_chip_info,
-+	}, {
-+		.compatible = "invensense,icm45689",
-+		.data = &inv_icm45689_chip_info,
-+	},
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(of, inv_icm45600_of_matches);
-+
-+static struct spi_driver inv_icm45600_driver = {
++static struct i3c_driver inv_icm45600_driver = {
 +	.driver = {
-+		.name = "inv-icm45600-spi",
-+		.of_match_table = inv_icm45600_of_matches,
-+		.pm = pm_ptr(&inv_icm45600_pm_ops),
++		.name = "inv_icm45600_i3c",
++		.pm = pm_sleep_ptr(&inv_icm45600_pm_ops),
 +	},
-+	.id_table = inv_icm45600_id,
-+	.probe = inv_icm45600_probe,
++	.probe = inv_icm45600_i3c_probe,
++	.id_table = inv_icm45600_i3c_ids,
 +};
-+module_spi_driver(inv_icm45600_driver);
++module_i3c_driver(inv_icm45600_driver);
 +
-+MODULE_AUTHOR("InvenSense, Inc.");
-+MODULE_DESCRIPTION("InvenSense ICM-456xx SPI driver");
++MODULE_AUTHOR("Remi Buisson <remi.buisson@tdk.com>");
++MODULE_DESCRIPTION("InvenSense ICM-456xx i3c driver");
 +MODULE_LICENSE("GPL");
 +MODULE_IMPORT_NS("IIO_ICM45600");
 

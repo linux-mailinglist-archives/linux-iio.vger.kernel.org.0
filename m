@@ -1,126 +1,127 @@
-Return-Path: <linux-iio+bounces-21586-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21587-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53DC1B023F0
-	for <lists+linux-iio@lfdr.de>; Fri, 11 Jul 2025 20:42:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 865A5B0241B
+	for <lists+linux-iio@lfdr.de>; Fri, 11 Jul 2025 20:51:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E21F1CC4169
-	for <lists+linux-iio@lfdr.de>; Fri, 11 Jul 2025 18:42:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3633F3BD7E9
+	for <lists+linux-iio@lfdr.de>; Fri, 11 Jul 2025 18:50:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0320E2F7CF9;
-	Fri, 11 Jul 2025 18:38:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AA101D88D7;
+	Fri, 11 Jul 2025 18:50:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="NPZhpJac"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IFgFuuUR"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ot1-f48.google.com (mail-ot1-f48.google.com [209.85.210.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CFDF2F3C2F
-	for <linux-iio@vger.kernel.org>; Fri, 11 Jul 2025 18:38:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B011A42A9D;
+	Fri, 11 Jul 2025 18:50:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752259102; cv=none; b=siECFOAr9CEevX6kp3KRFhhi9kt98x0W/MbxK1CXMzDcIxt46gVUzKhY4yefCCeOmg24kUBA/vbaBSyg8y4VmHhQmlFFE7kwxKZj3mj6WOGrDu/Xk+yiX+wHFPrRbWBwxckT3obiTOzGtmEfSej3i3UqJNHJBEvogimE7VsKkUQ=
+	t=1752259856; cv=none; b=AW+JKS0+Kg40OVK/v2JHpimcEl4y5T8ZC5Qwzh5fRir+iKF+HdvplWtYUtaFMGHbwbz5O3nsAVdX873tosaWswlVzAYbPeNc5JeXVhuHR2uuANgpVasU/veGTzlfvkw+TfI6GcHmyFi3n/u0g2KqSC5JxVid5HUVMy52QWvftBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752259102; c=relaxed/simple;
-	bh=uvayD8eZ81ck5n6ha9xbibj3shBXHK7+L0e+p/CrWS4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sddyLhA9fxC9tI0T4SrLcHGFQGXYFaSvS6IN6hWPkKxZIfLOam5AlCdAVfFTpi1XIzmFRdvBNI+Ynvc0d0fmo6hP2sHv7aYYBmLqgzEy/Bz34EBprINDnRflBKrF4ySAaz0aOSkHtWqGxJSjOK75Kr7vJDsev2ckPdRiRSzLnUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=NPZhpJac; arc=none smtp.client-ip=209.85.210.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ot1-f48.google.com with SMTP id 46e09a7af769-73d0152369fso246410a34.2
-        for <linux-iio@vger.kernel.org>; Fri, 11 Jul 2025 11:38:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1752259098; x=1752863898; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Cp5rlyuG/Vsl7s1cN9TVa6qAclD7pr5ydYSWsYjavKs=;
-        b=NPZhpJacv+Wjhaorv3IPwVvCetG1NqQ9KYjH4QuRYbohA3gc4b9yhG7zdpj+dxbFzB
-         wwrJQ06wHsa0SRDlKRcQfCRQ0O3kKfsibN4TJaC6W0kmifSF25eus+Od+lqCmL/WrmJ+
-         BXKbFJDjeL9cn7Mkf5/F5tELZK6ABwnzmARAefk21v5kAPOWwXOLXSYF7Mjfnv5+1Hx9
-         JdulxnK49klFlJ0gXpy+Y77YqbMfovOCfwUOFENG+uerJ816OkRGf3CZ9TOba59DrfDx
-         wts0zYHv0G9kTSa5tK7fdr0IB4N5r8BvWyNHDJPs7ouv1LPUQZQjMSiY3JeDlHstPQri
-         r8Hg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752259098; x=1752863898;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Cp5rlyuG/Vsl7s1cN9TVa6qAclD7pr5ydYSWsYjavKs=;
-        b=LYwOLRZXO40f+levAyGidADoecixD2x5CWJgFhEGLGMP/ZfLNPgfpmAsEl6meYS63W
-         zV+EG469dHKV+oEj58B85bzRY3eHpXKmnf/gH3L34KyJvkcstbvn7iOvTLx/2ZLpSUaZ
-         i1jhjrIx/LNQDc1T0mu5wWqVjwmenKpG8whtnUw7xeQNuaEGyY04XD7GNLa5PwSpqd4k
-         bs2kG8bF/o2BcSbvIw7LdbPWrMG57q7OTGBfxAk+76eiBtU/ospVRNmckmFvxxNEz7RK
-         195cCXXB5+vC7XzBCxgs17zv7uDjGGL0WwyFJrzxcEbRzWO0ZvZwm5ELDfwB6nfqpadu
-         Y92A==
-X-Forwarded-Encrypted: i=1; AJvYcCUf5BQG3N/uA/T40ojmDiDmr7/1S+PmQyc/eMid3VTQcL2aWO8Lm2X3BHFxVqvUXacMw5CjPaog0SI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxBrhIBbuDs+5qleUMfaqNzJI0cLWjEIQpJgb1uG/w0kwkVD+bu
-	0ZTh9hHtiRa0wAVY67doIFprmcjMPu3rBSy71sCQlhwZ+1TXxhENnafbT2NwLjVFlQg=
-X-Gm-Gg: ASbGncva25cuVMFLjRjo42C4Rr74wk4W9bSczyAfz89f7e+l2C/hFAupHNL4jMwCe3C
-	9xW3y0KoStWVFxl7pWhVS8KKaIX40Je45gDwukeNkoX3phHK6+AJ5F9gVWD+1y0q18xeTL9BDvc
-	YPU3H7HR4lvaDfWqAyONGhS6uao3om9mfCgxYVmN9dCpFtG4Cir4YYVzxQGe5F3jFeHItrInG+L
-	2c/pfxirooEtnCcZyup1lIPY3ya6topwW7gt4fcA4z+CstUgp6j4O/wPvod2vROv1DXfMgVDyjY
-	Vn8VQ0g+IzQwVGKqePwZPJEwwDBl/WxLSBWiRC0er4bUJl+1198+GC0kyLCBLAlujtAQtvjk/wt
-	N6vrZbQcqEIiT3ekAZQsDQNcZxTy1BihzRbh8lRfrWM+OY2LJUS+1rsAcore0p6jPx9RICybRhB
-	0=
-X-Google-Smtp-Source: AGHT+IEx2HrfCirqlgeXyqq1Oi8u5uicmdKq6gt86ygPDIvQhwOI10dt+GHcgiSojjgliobmTZb4NA==
-X-Received: by 2002:a05:6830:d1b:b0:739:fcb4:db17 with SMTP id 46e09a7af769-73cfb1d773dmr3028307a34.15.1752259098518;
-        Fri, 11 Jul 2025 11:38:18 -0700 (PDT)
-Received: from ?IPV6:2600:8803:e7e4:1d00:4601:15f9:b923:d487? ([2600:8803:e7e4:1d00:4601:15f9:b923:d487])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-73cf12b62e8sm649705a34.60.2025.07.11.11.38.17
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 11 Jul 2025 11:38:18 -0700 (PDT)
-Message-ID: <4d41eafc-46b1-48c7-982a-1a3566f9b423@baylibre.com>
-Date: Fri, 11 Jul 2025 13:38:17 -0500
+	s=arc-20240116; t=1752259856; c=relaxed/simple;
+	bh=wtp/a/NrJctPTE/lPv3KvPB67di8uviIwusYH+ddavg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lifWUOI1HfxN14Bcyo7mTgzCyfy0b7mBWQDD0dmh8vdSRsq6XGBCJsPJDAemjTdL6t/Q+CGEKobQ18BSKc2IVFjy2MDpxbxLJCNYg923PjO3D7tF1szelLtwWrPij6TK+rHE2T5+sJ9UcVziwdmLcztEAwhzra6GyAONwAgHfwg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IFgFuuUR; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1752259855; x=1783795855;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=wtp/a/NrJctPTE/lPv3KvPB67di8uviIwusYH+ddavg=;
+  b=IFgFuuURDaM8Wl5jnzXI3GuHa/zziqz2BGzhUGjRjqr/k8yjpxc10zrY
+   Gfsylxr4MJWPsHB2ZzQZsPd2cjt7TEF2oT23Z6pn7dy56wXXDV25Sn9Rd
+   0lvCZayLCxz/6Kt1j1xoUAvEQm98Sfili4y9jNn5m8M5nSLWfXsuKYllA
+   qEym9CpI01ITAC2Qy52NDuuOeobG9rr9QXyRAP2DoBxo2vQWqxbMBfLNH
+   MgO1K/mJADsDdt4k1PRIU75AMVCJMPMkicZXNUH0NkPpWcxfomA/J92i/
+   OEvfPtY/V9XmBZKB42Hmn+je4t/hDmYmOIEKTJKnSs9fnbAmpyrPRHvx7
+   A==;
+X-CSE-ConnectionGUID: AjiX14FhQ7GV+VzJPv66FQ==
+X-CSE-MsgGUID: 4hILPWRFQpysrKw6Wu9GgA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11491"; a="58327717"
+X-IronPort-AV: E=Sophos;i="6.16,304,1744095600"; 
+   d="scan'208";a="58327717"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jul 2025 11:50:54 -0700
+X-CSE-ConnectionGUID: 2WAds0giQxCPMO4Qd3EDOg==
+X-CSE-MsgGUID: mRJD4d+tSsy1HigTxa0eeA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,304,1744095600"; 
+   d="scan'208";a="160765823"
+Received: from smile.fi.intel.com ([10.237.72.52])
+  by orviesa003.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jul 2025 11:50:53 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@intel.com>)
+	id 1uaIpd-0000000Ec7Z-0ifj;
+	Fri, 11 Jul 2025 21:50:49 +0300
+Date: Fri, 11 Jul 2025 21:50:48 +0300
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Jonathan Cameron <jic23@kernel.org>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: temperature: maxim_thermocouple: use
+ IIO_DECLARE_DMA_BUFFER_WITH_TS()
+Message-ID: <aHFdCBGWDs-IRMTC@smile.fi.intel.com>
+References: <20250711-iio-use-more-iio_declare_buffer_with_ts-3-v1-1-f6dd3363fd85@baylibre.com>
+ <aHE-o5_TvGtUyHoI@smile.fi.intel.com>
+ <b564a925-1d17-43fc-86fb-8db0d845de44@baylibre.com>
+ <aHFO7LhWXOuglaoz@smile.fi.intel.com>
+ <4d41eafc-46b1-48c7-982a-1a3566f9b423@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] iio: temperature: maxim_thermocouple: use
- IIO_DECLARE_DMA_BUFFER_WITH_TS()
-To: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?=
- <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20250711-iio-use-more-iio_declare_buffer_with_ts-3-v1-1-f6dd3363fd85@baylibre.com>
- <aHE-o5_TvGtUyHoI@smile.fi.intel.com>
- <b564a925-1d17-43fc-86fb-8db0d845de44@baylibre.com>
- <aHFO7LhWXOuglaoz@smile.fi.intel.com>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <aHFO7LhWXOuglaoz@smile.fi.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4d41eafc-46b1-48c7-982a-1a3566f9b423@baylibre.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On 7/11/25 12:50 PM, Andy Shevchenko wrote:
-> On Fri, Jul 11, 2025 at 12:04:03PM -0500, David Lechner wrote:
->> On 7/11/25 11:41 AM, Andy Shevchenko wrote:
->>> On Fri, Jul 11, 2025 at 10:33:55AM -0500, David Lechner wrote:
-> 
-> ...
-> 
->>>> +#include <asm/byteorder.h>
->>>
->>> Hmm... I see nothing about this change in the commit message.
->>
->> It is for __be16. I kind of assumed that would be obvious, but sure,
->> better to be explicit about it.
-> 
-> Isn't it in types.h?
-> 
+On Fri, Jul 11, 2025 at 01:38:17PM -0500, David Lechner wrote:
+> On 7/11/25 12:50 PM, Andy Shevchenko wrote:
+> > On Fri, Jul 11, 2025 at 12:04:03PM -0500, David Lechner wrote:
+> >> On 7/11/25 11:41 AM, Andy Shevchenko wrote:
+> >>> On Fri, Jul 11, 2025 at 10:33:55AM -0500, David Lechner wrote:
 
-No, only CPU-endian types are in types.h. The actual #define for
- __be16 is in include/uapi/linux/byteorder/big_endian.h. This is
-included in one driver in staging, otherwise it is only included
-in arch/*/include/uapi/asm/byteorder.h. And asm/byteorder.h is what
-Jonathan used for similar in some of his recent IWYU patches as well,
-so I assume that is the preferred way to do it.
+...
+
+> >>>> +#include <asm/byteorder.h>
+> >>>
+> >>> Hmm... I see nothing about this change in the commit message.
+> >>
+> >> It is for __be16. I kind of assumed that would be obvious, but sure,
+> >> better to be explicit about it.
+> > 
+> > Isn't it in types.h?
+> 
+> No, only CPU-endian types are in types.h. The actual #define for
+>  __be16 is in include/uapi/linux/byteorder/big_endian.h.
+
+Huh?!
+
+> This is
+> included in one driver in staging, otherwise it is only included
+> in arch/*/include/uapi/asm/byteorder.h. And asm/byteorder.h is what
+> Jonathan used for similar in some of his recent IWYU patches as well,
+> so I assume that is the preferred way to do it.
+
+include/uapi/linux/types.h:37:typedef __u16 __bitwise __be16;
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
 
 

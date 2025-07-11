@@ -1,78 +1,78 @@
-Return-Path: <linux-iio+bounces-21576-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21577-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B09A6B02211
-	for <lists+linux-iio@lfdr.de>; Fri, 11 Jul 2025 18:42:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D90CB02218
+	for <lists+linux-iio@lfdr.de>; Fri, 11 Jul 2025 18:43:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C18DD188FC49
-	for <lists+linux-iio@lfdr.de>; Fri, 11 Jul 2025 16:42:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 043D8164804
+	for <lists+linux-iio@lfdr.de>; Fri, 11 Jul 2025 16:43:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08FF82EF2A3;
-	Fri, 11 Jul 2025 16:42:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D915D2EF64A;
+	Fri, 11 Jul 2025 16:43:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Nak8GQGc"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SihlU3lV"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 369B917A2EB;
-	Fri, 11 Jul 2025 16:42:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A07A2EF29A;
+	Fri, 11 Jul 2025 16:42:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752252154; cv=none; b=ZT+vO5+y+q0S9L6cCsLC2kuepzJjX6kdhsOIlpv3JUL/d/XzZgkH2/icFLSAs3aBZEF6KaGwhPgv8BWAg97Y9v1rQIUvp6XNlJwE2dq5XuKi4vNQjt+Nw8dFrDpmkL+wYU1KXE4CBHiy374732EYMuVY3I/2k4CKeAbltv7HyHs=
+	t=1752252181; cv=none; b=iIcrmJYCzR3X3ZoyuN00gC2U192C7CyuES3b5su7NomYhS4+ZCUKFUr9GTQE+YRy2xB37166WZIhCZVtcO0VsrmfGYMx+ilIoKlfJZG604UjRTtn6JYsTROh2b5uj93KbEMCN1fmLbQzHs97MgBRJ6vGBNG9CwXS0c79OC2RF4Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752252154; c=relaxed/simple;
-	bh=h4zPent/IXrKYrTksxsvRNxl/wVoLAu+4qLjiY7iKuI=;
+	s=arc-20240116; t=1752252181; c=relaxed/simple;
+	bh=V18VHNC3dz0yIznCjQKV/OQqEvw9YzkaO4pU/94mC70=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sbVCZlb67ourTkD9AOMn8kxfcF06h7s22uc9JQKzihr4xXtcXH026j9rZV4VyGeYI10BPGEkLSivOP75+dsaTqgFnxjMTLkmWiWW+97bGkdmY3EW8S5Ki9Tefx4pwdw+Niii4tudPm6RMHJfjeHk82Z3Fj43acKM0UbNUnB3IQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Nak8GQGc; arc=none smtp.client-ip=192.198.163.17
+	 Content-Type:Content-Disposition:In-Reply-To; b=HTsXjfhSFbiDMhdx15Sf9ymYbndVXu5mB/MvGz8RdYkYIq28D3WuEHgMg1D+W6ZIq3z+oOPFp0/JQCRHOkjbOTtT6X9pzc1YfmIAo5b5iKL+BI41mMT637rT8Z+Afkcv0Ad51my5n50RFeSj/tkSo9lDR3aD06OgcDs6IHHj9GE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SihlU3lV; arc=none smtp.client-ip=192.198.163.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1752252153; x=1783788153;
+  t=1752252180; x=1783788180;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=h4zPent/IXrKYrTksxsvRNxl/wVoLAu+4qLjiY7iKuI=;
-  b=Nak8GQGc7CFNtxaZQii5BsF+GiWYrHSAbQJ6cuyYtz/YwnPTm1t5xrkG
-   na29fOLUKwO7WfyXZ3Euv4bdw7MoLQUl9jWbn5zUsG+1E0E2QuIPyvcwM
-   S83T7MdjA5KrvP24QKyxzyscTAo99Wwhla7IYsM76VXkC6hR4frN4Nq+k
-   J3PkyMGJuXCZwASuZ1swVoDNOwNsSFZagHs6ZyHn6SRgCKgUHiw5IXacL
-   JAiNxWjj4xaxy7BvKYl0rAEUYP39biBJYNOgqHAAlUWStk1RH8hnsd6cJ
-   t5dWIzHXtY7eELw2EhLfSOEkYmq36lA9hYsvTDyNMykm+mozV1J6Y1a/V
-   A==;
-X-CSE-ConnectionGUID: H9gay2qaQsO4jENQY6dA8Q==
-X-CSE-MsgGUID: /kIdOlbBQPmOdZDRjnBqbQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11491"; a="54494260"
+  bh=V18VHNC3dz0yIznCjQKV/OQqEvw9YzkaO4pU/94mC70=;
+  b=SihlU3lVE/YXN4sijzQI27VjYCb6IpI4+e+xB/+QH5CxNSEqBNoxJjs6
+   XgLznNpGbvMCveP/Ix+clPEcBEjjBrvrDPuDH4UgCVvTbuux/of23Dw+C
+   Rj5TJlmZP0qsO3UtLFCWqfJun1nyH2+jW4TRsmWNHsjMwrvwATVEkeCT+
+   4Qwas9VXIoJ8FRpomRNwYmsZVxygaqhZqnqsiaJwhRIygTAWrNyqJukQy
+   QWmFgjKZ4cjd2KuAa8GCVQ1ol7KkF0tcq6qgnOP2c+NYU9ObYuISCpU19
+   0crXlxGVyvg2vwmGt/8qz12i9EOd4b5cewmifXXc1v++mpqoiiwZfOKTq
+   g==;
+X-CSE-ConnectionGUID: QFZl3M1BT5e+aoGwJ9FtlQ==
+X-CSE-MsgGUID: uzzii3WMQ3yp4QPkHPhzRw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11491"; a="53664522"
 X-IronPort-AV: E=Sophos;i="6.16,304,1744095600"; 
-   d="scan'208";a="54494260"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jul 2025 09:42:32 -0700
-X-CSE-ConnectionGUID: 9rM04/EvTCuTtzFgYuwTGg==
-X-CSE-MsgGUID: YjNroAviR0K9x36JsenduA==
+   d="scan'208";a="53664522"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jul 2025 09:43:00 -0700
+X-CSE-ConnectionGUID: G5WucEtgSVWfK0ZfYKYguA==
+X-CSE-MsgGUID: QpwSBHPeTwKZItswR0+t5g==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,304,1744095600"; 
-   d="scan'208";a="156747643"
+   d="scan'208";a="156039743"
 Received: from smile.fi.intel.com ([10.237.72.52])
-  by fmviesa009.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jul 2025 09:42:29 -0700
+  by fmviesa007.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jul 2025 09:42:57 -0700
 Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
 	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1uaGpN-0000000EaKt-242A;
-	Fri, 11 Jul 2025 19:42:25 +0300
-Date: Fri, 11 Jul 2025 19:42:25 +0300
+	id 1uaGpr-0000000EaLf-0yrX;
+	Fri, 11 Jul 2025 19:42:55 +0300
+Date: Fri, 11 Jul 2025 19:42:54 +0300
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To: David Lechner <dlechner@baylibre.com>
 Cc: Jonathan Cameron <jic23@kernel.org>,
 	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
 	Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: proximity: sx9500: use stack allocated buffer for
- scan data
-Message-ID: <aHE-8VDgQ7WuoA_y@smile.fi.intel.com>
-References: <20250711-iio-use-more-iio_declare_buffer_with_ts-4-v1-1-1a1e521cf747@baylibre.com>
+Subject: Re: [PATCH] iio: proximity: sx_common: use stack allocated buffer
+ for scan data
+Message-ID: <aHE_DjbYzyW7CL10@smile.fi.intel.com>
+References: <20250711-iio-use-more-iio_declare_buffer_with_ts-5-v1-1-4209f54e010f@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -81,20 +81,15 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250711-iio-use-more-iio_declare_buffer_with_ts-4-v1-1-1a1e521cf747@baylibre.com>
+In-Reply-To: <20250711-iio-use-more-iio_declare_buffer_with_ts-5-v1-1-4209f54e010f@baylibre.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
  krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Fri, Jul 11, 2025 at 10:47:57AM -0500, David Lechner wrote:
+On Fri, Jul 11, 2025 at 10:55:07AM -0500, David Lechner wrote:
 > Use IIO_DECLARE_BUFFER_WITH_TS() to declare a stack allocated buffer
-> in sx9500_trigger_handler(). Since the scan buffer isn't used outside
-> of this function, it doesn't need to be in struct sx9500_data.
-> 
-> By always allocating enough space for the maximum number of channels,
-> we can avoid having to reallocate the buffer each time buffered reads
-> are enabled.
-
-Ag ood one!
+> in sx_common_trigger_handler(). Since the scan buffer isn't used outside
+> of this function and doesn't need to be DMA-safe, it doesn't need to be
+> in struct sx_common_data.
 
 Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 

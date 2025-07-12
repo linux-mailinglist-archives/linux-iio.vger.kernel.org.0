@@ -1,312 +1,236 @@
-Return-Path: <linux-iio+bounces-21593-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21594-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23F18B02B83
-	for <lists+linux-iio@lfdr.de>; Sat, 12 Jul 2025 16:49:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48976B02BFF
+	for <lists+linux-iio@lfdr.de>; Sat, 12 Jul 2025 18:52:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6B601560160
-	for <lists+linux-iio@lfdr.de>; Sat, 12 Jul 2025 14:49:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59E06A47E77
+	for <lists+linux-iio@lfdr.de>; Sat, 12 Jul 2025 16:52:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C65331DFD96;
-	Sat, 12 Jul 2025 14:49:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EA982882B7;
+	Sat, 12 Jul 2025 16:52:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aTq2glZq"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from ciao.gmane.io (ciao.gmane.io [116.202.254.214])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39D4327FB2A
-	for <linux-iio@vger.kernel.org>; Sat, 12 Jul 2025 14:49:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.202.254.214
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E335286435
+	for <linux-iio@vger.kernel.org>; Sat, 12 Jul 2025 16:52:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752331766; cv=none; b=PMhtAyHnjeUySUOCCv4Bzs3TvEjUSOSuBhXZTGrZeyOoDbU+pY12x07yqpyRO7cQEBSN8XKpvvvRYqVK3XY9dVnWcobHkXoN10npDno9o7EX1uQnIMjZwjB0q9sp61JnButtPYAgOZ1eUuXjez0vZYK/V3X4XXaUlnsPRjhKU5M=
+	t=1752339148; cv=none; b=sz/ivo7Je8DD+DWQdC+U+kWCOQlOiLb5hHHCAuF6VhEMnWFchh7Ag7F+GHEy9r8uws+6Sd3t2XYZxc69nl4rjVCSNVT3Fc52cDwnoOwsisTdSudWoEaelDmBtz1TCMy7wOVInB7RBCVPI92OzTKUUoxxusy/wVpYiIH6FHQef70=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752331766; c=relaxed/simple;
-	bh=joYgwIwJumk8hVsmpEMFt+8rhjZ79GEu9HrwbJjmqEg=;
-	h=To:From:Subject:Date:Message-ID:References:Mime-Version:
-	 Content-Type; b=KAKK7xqlfZ5IocYvkAaloJjqUfyYd8f4kb18uQvzR0bZ58+D/fAphYi2nRaZ20cftpYrp9dCT+g2iNLQNpKNy2MgYp01dC+DOvlRCUwQPI26uPCUjEeYu0/7s3SVnZ4/VhpqaliXSwAg4+8Z0sRzeu9DGDneJnzOFKcwJ03vwI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nexgo.de; spf=pass smtp.mailfrom=m.gmane-mx.org; arc=none smtp.client-ip=116.202.254.214
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nexgo.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=m.gmane-mx.org
-Received: from list by ciao.gmane.io with local (Exim 4.92)
-	(envelope-from <glki-linux-iio@m.gmane-mx.org>)
-	id 1uabXT-00057m-Cf
-	for linux-iio@vger.kernel.org; Sat, 12 Jul 2025 16:49:19 +0200
-X-Injected-Via-Gmane: http://gmane.org/
-To: linux-iio@vger.kernel.org
-From: ASSI <Stromeko@nexgo.de>
-Subject: Re: [PATCH v9 1/4] iio: pressure: bmp280: Use sleep and forced mode for oneshot captures
-Date: Sat, 12 Jul 2025 16:49:13 +0200
-Organization: Linux Private Site
-Message-ID: <875xfx8nx2.fsf@Gerda.invalid>
-References: <20241017233022.238250-1-vassilisamir@gmail.com>
-	<20241017233022.238250-2-vassilisamir@gmail.com>
-	<875xgfg0wz.fsf@Gerda.invalid>
-	<c894cfda-a775-4598-ac3b-b3d35c6a84b3@baylibre.com>
-	<87a55azgdr.fsf@Gerda.invalid>
+	s=arc-20240116; t=1752339148; c=relaxed/simple;
+	bh=QwQmX6+AG7nWGJh3RUQNDyU5Ju2/NoQSHNqsZKRfwPg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=BvwbM8MvF/mKL3RhJfyYHabhQG1wm+BpElYjLC+fDWceNyY/EYPMYAK3AKnucbeflV6r8hnJEEau9MrMXegPEAwyayO9/sfQMczXKbCChXt4eFlAqDfXCLoajjLlv6SCgTES9c3Q1ZQRNAOhw3UA6fm0Sf0Zb7Z3BHxxFm5ZnmU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aTq2glZq; arc=none smtp.client-ip=209.85.167.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-55511c3e203so2971272e87.3
+        for <linux-iio@vger.kernel.org>; Sat, 12 Jul 2025 09:52:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1752339144; x=1752943944; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=t5cEbaljT/9E8afYqR1GvXP7meWetaCzf54VFce+FQ4=;
+        b=aTq2glZqI/tZpad3rV0olWO0gufCYMQ2RjLBf5HgtodNgtlPfd+Z2g7dtg7+wh9ymI
+         xf41OHiFpY0hhIZS/d+xinuZ8wFXA75hg7jV3R3S+/W1ILgSEdpXgrOIyDsINW/gA7uN
+         TrKuieQYDx2ybprZZAN/Ofw1wZHYw8flvOt/Dm/e6iFYqCq+1MpsaYiZB8Yt5nujh9yh
+         7yTQ8LclVHCrwzm2RVqXR31h8GvwVl3IxDwNqKgF897JZPFemsm0/GMJD0F37qJXb9FO
+         JSAz6c2b38PmSMWvkBpj47VwJ5mE8+JRCKFUAjDrImZ4JTBYz87njzDZjE6AkbuDgFhK
+         AG0A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752339144; x=1752943944;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=t5cEbaljT/9E8afYqR1GvXP7meWetaCzf54VFce+FQ4=;
+        b=GG18OtLridbmybLChca8F9PBHYR+iElmBjuGlcD6HUnbSf8o3IbSBxe6azrN/v9IQc
+         bZ708i575E7JJ3Z5BbYwnPB3WUeJogSlfxO5sxcmgdxxEBfynw7hOphHaPkMbpGKfvRf
+         HOzp98jZc950gClTdupHkArS0KwcWOgKl5dEeoS0ZpfHySjLOlLi2OspnO099/t46Hbi
+         hQLaxBVvCiir0K0gEO5PEpn2UCI5dvEdEDLCbuxyKbajJxPnqIcmpPAGwN/OGeo+fw4B
+         1IqqlfYaRSazt7zubIs6bGLedJ2QpPnhI0KXxHL19Yyb6BThm0r/I/sqnSpRTe5AIQ8l
+         UV9w==
+X-Forwarded-Encrypted: i=1; AJvYcCVcRoYE6Hryh+SH0isT7Het3kOjolB4g35BNDy1aigm9BlrY6TKoMih3PdmMd1+DlQ6Euno1KR8WIk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyyJSANMWmcBoY1LPrjEFavlgZFy+QFwKyG+fW67TFKvXzW+5FE
+	f07ms/eTD0Br12fsXHZw5gRniZpzxUGmgD6zCpkhUias9wqepB+FIGGHcFnn7xErmPrKUDQsHVr
+	+83gQvJhApB6/rkTr7UmH+vh2ddUt9flLX3qaNAY=
+X-Gm-Gg: ASbGnctkxJt8NdDopNi94YQeJGAHTxJxBlPxvC+aLgl0gmBqeLRfnL5qORbMxEF5AS8
+	SS4NNUarlGfGW/fwLX0klBY95y5izM3vCFTNVON6tcqMQKS5I6xOuaVdPXhbcwfvV+h1jE2HqMI
+	xCqLP1wEO2rMOEfOJi1oVnPKveu6YOAamW0++1dWZFXnVQcoJXXPoxXW/ZdRN+KCNZ2mSe1gpeb
+	/FmZ86d
+X-Google-Smtp-Source: AGHT+IE/2G/mp5zZ75JmLOjnrEshVBrlfp8McG4gsXHQZknPRTl5Ln/Gv463jlltPhahVO2hs1JLjVUtqL7YGYchf5o=
+X-Received: by 2002:a05:6512:238e:b0:553:50c9:c8a8 with SMTP id
+ 2adb3069b0e04-55a0460c4admr2321374e87.48.1752339144159; Sat, 12 Jul 2025
+ 09:52:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain
-User-Agent: Gnus/5.13 (Gnus v5.13)
-Cancel-Lock: sha1:lFsEGxI2f0DejaACBa4UkupL0rE=
+MIME-Version: 1.0
+References: <20250629183649.184479-1-jic23@kernel.org> <20250629194336.34a03946@jic23-huawei>
+ <aGJp-NYffceeX8bi@smile.fi.intel.com> <20250630150616.000053b1@huawei.com>
+In-Reply-To: <20250630150616.000053b1@huawei.com>
+From: Tanzir Hasan <tanzhasanwork@gmail.com>
+Date: Sat, 12 Jul 2025 12:52:12 -0400
+X-Gm-Features: Ac12FXzRNgD84_vBN3DNstY_Ez8Oj05QV-NjUluiEmVPTUlF7dwu-yBizxdCnos
+Message-ID: <CAF-NGL_2Y2QCkhOY1uZb68BhkAA4HsAKgkSBaQJ9D9G1qhn+KA@mail.gmail.com>
+Subject: Re: [PATCH] iio: accel: kionix-kx022a: Apply approximate iwyu
+ principles to includes
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Andy Shevchenko <andriy.shevchenko@intel.com>, Jonathan Cameron <jic23@kernel.org>, 
+	linux-iio@vger.kernel.org, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
+	Andy Shevchenko <andy@kernel.org>, David Lechner <dlechner@baylibre.com>, 
+	Matti Vaittinen <mazziesaccount@gmail.com>, 
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-ASSI writes:
-> I'll try my suggestion of a tapered wait later, perhaps over the
-> weekend, now that I don't need to reboot to play around with the module
-> code.
+On Mon, Jun 30, 2025 at 10:06=E2=80=AFAM Jonathan Cameron
+<Jonathan.Cameron@huawei.com> wrote:
+>
+> On Mon, 30 Jun 2025 13:42:00 +0300
+> Andy Shevchenko <andriy.shevchenko@intel.com> wrote:
+>
+> > On Sun, Jun 29, 2025 at 07:43:36PM +0100, Jonathan Cameron wrote:
+> > > On Sun, 29 Jun 2025 19:36:49 +0100
+> > > Jonathan Cameron <jic23@kernel.org> wrote:
+> > >
+> > > > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > > >
+> > > > Motivated by the W=3D1 warning about export.h that was introduced t=
+his cycle
+> > > > this is an attempt to apply an approximation of the principles of i=
+ncluding
+> > > > whatever is used in the file directly.
+> > > >
+> > > > Helped by the include-what-you-use tool.
+> > > >
+> > > > Reasoning:
+> > > > - Drop linux/moduleparam.h as completely unused.
+> > > > - linux/array_size.h for ARRAY_SIZE()
+> > > > - linux/bitmap.h for for_each_set_bit
+> > > > - linux/errno.h for error codes.
+> > > > - linux/export.h for EXPORT_SYMBOL*()
+> > > > - linux/math64.h for do_div - alternative would be asm/div64.h
+> > > > - linux/minmax.h for min()
+> > > > - linux/sysfs.h for sysfs_emit()
+> > > > - linux/time64.h for USEC_PER_MSEC
+> > > > - linux/iio/buffer.h for iio_push_to_buffers_with_timestamp()
+> > > > - asm/byteorder.h for le16_to_cpu()
+> > > >
+> > > > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > > > ---
+> > > >
+> > > > I picked this one fairly randomly as an example but longer term I'd=
+ like
+> > > > to look through at least all new drivers with this in mind + all th=
+e ones
+> > > > that are currently messing up my W=3D1 build logs.
+> > > >
+> > > > Note I've been very descriptive in this patch to allow people to su=
+ggest
+> > > > better alternatives for some of the ones that aren't entirely obvio=
+us.
+> > > >
+> > > Helpfully I had a script lying around from 2021:
+> > > https://lore.kernel.org/all/20211003153306.391766-1-jic23@kernel.org/
+> > >
+> > > Just for reference I used iwyu with:
+> > >
+> > > make LLVM=3D1 LOCALVERSION=3D W=3D1 -j12 C=3D1 CHECK=3Dinclude-what-y=
+ou-use CHECKFLAGS=3D"-Xiwyu --no_default_mappings -Xiwyu --mapping_file=3Di=
+io.imp"
+> > >
+> > > where iio.imp is from a few years ago and contains:
+> > >     { include: ["\"linux/sizes.h\"", "private", <linux/sizes.h>, "pub=
+lic"] },
+> > >     { include: ["\"linux/slab.h\"", "private", <linux/slab.h>, "publi=
+c"] },
+> > >     { include: ["\"linux/spinlock.h\"", "private", <linux/spinlock.h>=
+, "public"] },
+> > >     { include: ["\"linux/spinlock_types.h\"", "private", <linux/spinl=
+ock.h>, "public"] },
+> > >     { include: ["\"linux/spi/spi.h\"", "private", <linux/spi/spi.h>, =
+"public"] },
+> > >     { include: ["\"linux/stat.h\"", "private", <linux/stat.h>, "publi=
+c"] },
+> > >     { include: ["\"linux/stdarg.h\"", "private", <linux/stdarg.h>, "p=
+ublic"] },
+> > >     { include: ["\"linux/stddef.h\"", "private", <linux/stddef.h>, "p=
+ublic"] },
+> > >     { include: ["\"linux/string.h\"", "private", <linux/string.h>, "p=
+ublic"] },
+> > >     { include: ["\"linux/stringify.h\"", "private", <linux/stringify.=
+h>, "public"] },
+> > >     { include: ["\"linux/sysfs.h\"", "private", <linux/sysfs.h>, "pub=
+lic"] },
+> > >     { include: ["\"linux/types.h\"", "private", <linux/types.h>, "pub=
+lic"] },
+> > >     { include: ["\"linux/uuid.h\"", "private", <linux/uuid.h>, "publi=
+c"] },
+> > >     { include: ["\"linux/sched.h\"", "private", <linux/sched.h>, "pub=
+lic"] },
+> > >     { include: ["\"linux/wait.h\"", "private", <linux/wait.h>, "publi=
+c"] },
+> > >     { include: ["\"linux/workqueue.h\"", "private", <linux/workqueue.=
+h>, "public"] },
+> > >     { include: ["\"asm-generic/int-ll64.h\"", "private", <linux/types=
+.h>, "public"] },
+> > >     { include: ["\"linux/device.h\"", "private", <linux/device.h>, "p=
+ublic"] },
+> > >     { include: ["\"linux/dev_printk.h\"", "private", <linux/device.h>=
+, "public"] },
+> > >     { include: ["\"linux/device/bus.h\"", "private", <linux/device.h>=
+, "public"] },
+> > >     { include: ["\"linux/device/driver.h\"", "private", <linux/device=
+.h>, "public"] },
+> > >     { include: ["\"linux/bits.h\"", "private", <linux/bits.h>, "publi=
+c"] },
+> > >     { include: ["\"vdso/bits.h\"", "private", <linux/bits.h>, "public=
+"] },
+> > >     { include: ["\"vdso/limits.h\"", "private", <linux/limits.h>, "pu=
+blic"] },
+> > >     { include: ["\"linux/limits.h\"", "private", <linux/limits.h>, "p=
+ublic"] },
+> > >     { include: ["\"vdso/ktime.h\"", "private", <linux/ktime.h>, "publ=
+ic"] },
+> > >     { include: ["\"linux/ktime.h\"", "private", <linux/ktime.h>, "pub=
+lic"] },
+> > >     { include: ["\"vdso/time64.h\"", "private", <linux/time64.h>, "pu=
+blic"] },
+> > >     { include: ["\"linux/time.h\"", "private", <linux/time.h>, "publi=
+c"] },
+> > >     { include: ["\"linux/timer.h\"", "private", <linux/timer.h>, "pub=
+lic"] }
+> > > ]
+> > >
+> > > Clear this needs a few upates, like mutex_types.h -> mutex.h and
+> > > probably devres.h->device.h
+> >
+> > Right, we got a lot of new *_types.h headers.
+> > This is a database (kind of) I was talking about in previous reply.
+> > Can we actually start it as .iwyu or so in the kernel source tree?
+>
+> Nick and Tanzir talked about using iwyu at Plumbers 2023 and probably hav=
+e
+> a much better starting point that this (even more) ancient version.
+> I missed the talk completely at the time, but came across it more recentl=
+y.
+>
+> +CC them both
+>
+> Jonathan
+>
 
-That works and indeed even slightly reduces the acquisition times with
-my slow sensor specimen, so it does not always need the maximum time
-(but very close).  I've also implemented switching off unused channels
-during the read through the simple sysfs interface, which does not
-support to read all channels in a single measurement.  The temperature
-reading is required for both humidity and pressure compensation so it
-can only be set to oversampling=1 but not switched off.  For
-oversampling=1 on all channels unfortunately the overhead of doing this
-almost compensates for the savings made in measurement time, but any
-other setting will be a net win:
-
-| oversampling | max/full | max/skip | time/full | time/skip |
-|              |     [ms] |     [ms] |      [ms] |      [ms] |
-|--------------+----------+----------+-----------+-----------|
-|           16 |      339 |      120 |       315 |       127 |
-|            8 |      174 |       65 |       166 |        76 |
-|            4 |       90 |       38 |        94 |        53 |
-|            2 |       49 |       24 |        59 |        41 |
-|            1 |       28 |       17 |        36 |        33 |
-
-I suspect the overhead at lower oversampling factors is significantly
-lower for SPI interfaced sensors that I cannot currently test.  I've
-left a constant in the code to control the skip threshold if anybody
-wants to play with it, but the final solution will probably be to either
-skip always or make it even more configurable by exposing this facility
-via sysfs.  Getting the original channel config restored on all exit
-paths is a bit stilted and calls for a bit of refactoring (or even a
-goto) but for now this should suffice. Patch:
-
---8<---------------cut here---------------start------------->8---
---- /usr/src/linux-6.15.5-1//drivers/iio/pressure/bmp280-core.c
-+++ bmp280-6.15.5-1/bmp280-core.c
-@@ -618,19 +618,77 @@
- 	struct bmp280_data *data = iio_priv(indio_dev);
- 	int chan_value;
- 	int ret;
-+	int prev_oversampling_humid, prev_oversampling_press, prev_oversampling_temp;
-+	int temp_oversampling_humid, temp_oversampling_press, temp_oversampling_temp;
-+	int switch_off, switch_threshold = -1;
- 
- 	guard(mutex)(&data->lock);
- 
-+	prev_oversampling_humid = temp_oversampling_humid = data->oversampling_humid;
-+	prev_oversampling_press = temp_oversampling_press = data->oversampling_press;
-+	prev_oversampling_temp  = temp_oversampling_temp  = data->oversampling_temp;
-+
- 	switch (mask) {
- 	case IIO_CHAN_INFO_PROCESSED:
-+		/* switch off unused channels */
-+		switch_off = 0;
-+		switch (chan->type) {
-+		case IIO_HUMIDITYRELATIVE:
-+			temp_oversampling_press = 0-1;
-+			switch_off |= (prev_oversampling_press > switch_threshold);
-+			temp_oversampling_temp  = 1-1; /* can't be switched off as it is needed for compensation */
-+			break;
-+		case IIO_PRESSURE:
-+			temp_oversampling_humid = 0-1;
-+			switch_off |= (prev_oversampling_humid > switch_threshold);
-+			temp_oversampling_temp  = 1-1; /* can't be switched off as it is needed for compensation */
-+			break;
-+		case IIO_TEMP:
-+			temp_oversampling_humid = 0-1;
-+			temp_oversampling_press = 0-1;
-+			switch_off = (prev_oversampling_humid > switch_threshold)  |  (prev_oversampling_press > switch_threshold);
-+			break;
-+		default:
-+			return -EINVAL;
-+		}
-+		if (switch_off) {
-+			data->oversampling_humid = temp_oversampling_humid;
-+			data->oversampling_press = temp_oversampling_press;
-+			data->oversampling_temp  = temp_oversampling_temp;
-+			ret = data->chip_info->chip_config(data);
-+			if (ret) {
-+				data->oversampling_humid = prev_oversampling_humid;
-+				data->oversampling_press = prev_oversampling_press;
-+				data->oversampling_temp  = prev_oversampling_temp;
-+				data->chip_info->chip_config(data);
-+				return ret;
-+			}
-+		}
-+
- 		ret = data->chip_info->set_mode(data, BMP280_FORCED);
--		if (ret)
-+		if (ret) {
-+			data->oversampling_humid = prev_oversampling_humid;
-+			data->oversampling_press = prev_oversampling_press;
-+			data->oversampling_temp  = prev_oversampling_temp;
-+			data->chip_info->chip_config(data);
- 			return ret;
-+		}
- 
- 		ret = data->chip_info->wait_conv(data);
- 		if (ret)
- 			return ret;
- 
-+		/* restore channel configuration */
-+		if (switch_off) {
-+			data->oversampling_humid = prev_oversampling_humid;
-+			data->oversampling_press = prev_oversampling_press;
-+			data->oversampling_temp  = prev_oversampling_temp;
-+			ret = data->chip_info->chip_config(data);
-+			if (ret) {
-+				return ret;
-+			}
-+		}
-+
- 		switch (chan->type) {
- 		case IIO_HUMIDITYRELATIVE:
- 			ret = data->chip_info->read_humid(data, &chan_value);
-@@ -660,13 +718,60 @@
- 			return -EINVAL;
- 		}
- 	case IIO_CHAN_INFO_RAW:
--		ret = data->chip_info->set_mode(data, BMP280_FORCED);
--		if (ret)
--			return ret;
-+		/* switch off unused channels */
-+		switch_off = 0;
-+		switch (chan->type) {
-+		case IIO_HUMIDITYRELATIVE:
-+			temp_oversampling_press = 0-1;
-+			switch_off |= (prev_oversampling_press > switch_threshold);
-+			temp_oversampling_temp  = 1-1; /* can't be switched off as it is needed for compensation */
-+			break;
-+		case IIO_PRESSURE:
-+			temp_oversampling_humid = 0-1;
-+			switch_off |= (prev_oversampling_humid > switch_threshold);
-+			temp_oversampling_temp  = 1-1; /* can't be switched off as it is needed for compensation */
-+			break;
-+		case IIO_TEMP:
-+			temp_oversampling_humid = 0-1;
-+			temp_oversampling_press = 0-1;
-+			switch_off = (prev_oversampling_humid > switch_threshold)  |  (prev_oversampling_press > switch_threshold);
-+			break;
-+		default:
-+			return -EINVAL;
-+		}
-+		if (switch_off) {
-+			data->oversampling_humid = temp_oversampling_humid;
-+			data->oversampling_press = temp_oversampling_press;
-+			data->oversampling_temp  = temp_oversampling_temp;
-+			ret = data->chip_info->chip_config(data);
-+			if (ret) {
-+				data->oversampling_humid = prev_oversampling_humid;
-+				data->oversampling_press = prev_oversampling_press;
-+				data->oversampling_temp  = prev_oversampling_temp;
-+				data->chip_info->chip_config(data);
-+				return ret;
-+			}
-+		}
- 
- 		ret = data->chip_info->wait_conv(data);
--		if (ret)
-+		if (ret) {
-+			data->oversampling_humid = prev_oversampling_humid;
-+			data->oversampling_press = prev_oversampling_press;
-+			data->oversampling_temp  = prev_oversampling_temp;
-+			data->chip_info->chip_config(data);
- 			return ret;
-+		}
-+
-+		/* restore channel configuration */
-+		if (switch_off) {
-+			data->oversampling_humid = prev_oversampling_humid;
-+			data->oversampling_press = prev_oversampling_press;
-+			data->oversampling_temp  = prev_oversampling_temp;
-+			ret = data->chip_info->chip_config(data);
-+			if (ret) {
-+				return ret;
-+			}
-+		}
- 
- 		switch (chan->type) {
- 		case IIO_HUMIDITYRELATIVE:
-@@ -1040,15 +1145,15 @@
- {
- 	unsigned int reg, meas_time_us;
- 	int ret;
-+	int meas_cycles = 4;
-+
-+	meas_time_us = BMP280_MEAS_OFFSET;
- 
- 	/* Check if we are using a BME280 device */
- 	if (data->oversampling_humid)
--		meas_time_us = BMP280_PRESS_HUMID_MEAS_OFFSET +
-+		meas_time_us += BMP280_PRESS_HUMID_MEAS_OFFSET +
- 				BIT(data->oversampling_humid) * BMP280_MEAS_DUR;
- 
--	else
--		meas_time_us = 0;
--
- 	/* Pressure measurement time */
- 	meas_time_us += BMP280_PRESS_HUMID_MEAS_OFFSET +
- 			BIT(data->oversampling_press) * BMP280_MEAS_DUR;
-@@ -1056,14 +1161,18 @@
- 	/* Temperature measurement time */
- 	meas_time_us += BIT(data->oversampling_temp) * BMP280_MEAS_DUR;
- 
--	/* Waiting time according to the BM(P/E)2 Sensor API */
--	fsleep(meas_time_us);
-+	do {
-+		/* Waiting time according to the BM(P/E)2 Sensor API */
-+		fsleep(meas_time_us);
-+
-+		ret = regmap_read(data->regmap, BMP280_REG_STATUS, &reg);
-+		if (ret) {
-+			dev_err(data->dev, "failed to read status register.\n");
-+			return ret;
-+		}
- 
--	ret = regmap_read(data->regmap, BMP280_REG_STATUS, &reg);
--	if (ret) {
--		dev_err(data->dev, "failed to read status register.\n");
--		return ret;
--	}
-+		meas_time_us >>= 3;
-+	} while ((reg & BMP280_REG_STATUS_MEAS_BIT) && --meas_cycles);
- 
- 	if (reg & BMP280_REG_STATUS_MEAS_BIT) {
- 		dev_err(data->dev, "Measurement cycle didn't complete.\n");
-
---- /usr/src/linux-6.15.5-1//drivers/iio/pressure/bmp280.0
-+++ bmp280-6.15.5-1/bmp280.h
-@@ -269,9 +269,9 @@
- #define BMP280_MODE_FORCED		1
- #define BMP280_MODE_NORMAL		3
- 
--#define BMP280_MEAS_OFFSET		1250
--#define BMP280_MEAS_DUR			2300
--#define BMP280_PRESS_HUMID_MEAS_OFFSET	575
-+#define BMP280_MEAS_OFFSET		1095 /* ceil(1250/(1+2^-3+2^-6+2^-9) */
-+#define BMP280_MEAS_DUR			2013 /* ceil(2300/(1+2^-3+2^-6+2^-9) */
-+#define BMP280_PRESS_HUMID_MEAS_OFFSET	504  /* ceil( 575/(1+2^-3+2^-6+2^-9) */
- 
- /* BME280 specific registers */
- #define BME280_REG_HUMIDITY_LSB		0xFE
---8<---------------cut here---------------end--------------->8---
-
-
-Regards,
-Achim.
--- 
-+<[Q+ Matrix-12 WAVE#46+305 Neuron microQkb Andromeda XTk Blofeld]>+
-
-Factory and User Sound Singles for Waldorf Q+, Q and microQ:
-http://Synth.Stromeko.net/Downloads.html#WaldorfSounds
-
+Thanks for pinging. Here is a repository with some useful scripts.
+https://github.com/ClangBuiltLinux/IWYUScripts. Forgive the code quality,
+I was an intern at the time.
 

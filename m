@@ -1,324 +1,180 @@
-Return-Path: <linux-iio+bounces-21596-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21597-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99824B02D6F
-	for <lists+linux-iio@lfdr.de>; Sun, 13 Jul 2025 00:16:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 707B5B03103
+	for <lists+linux-iio@lfdr.de>; Sun, 13 Jul 2025 14:45:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C8253167C99
-	for <lists+linux-iio@lfdr.de>; Sat, 12 Jul 2025 22:16:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ECA113BD31D
+	for <lists+linux-iio@lfdr.de>; Sun, 13 Jul 2025 12:44:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 795382AE6A;
-	Sat, 12 Jul 2025 22:16:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A71B38DDB;
+	Sun, 13 Jul 2025 12:45:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PKamApBt"
+	dkim=pass (2048-bit key) header.d=it-klinger.de header.i=@it-klinger.de header.b="tQuPvUIO"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from www571.your-server.de (www571.your-server.de [78.46.3.230])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AE3922094;
-	Sat, 12 Jul 2025 22:16:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CE3314A8E;
+	Sun, 13 Jul 2025 12:45:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.46.3.230
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752358598; cv=none; b=iIB/bSUgpSyI/poXOF46D3kxdvk4EUUbmgHqEKffFVEuyoB7okCyrsEJz5Gr0udc1xAF3WGqUnUlg92IjP/g76lam9hZU/QCtZl4lJ0cx9Ts+Cc59BjC0awWEPziLziuKVIm07PTCT0ttTaOeS5BBJlmK7DMckSChtXYYH7qZmU=
+	t=1752410713; cv=none; b=b06/t+Llww6Gx9a21kKj4HX9AzHS2mxOP5SLCCyejFcnJ6k5B8R+X2kROEdORUabo2YwJVRSgF5ZthNk0Gip7jOiERKO9gtYoR4CkX45N7bk58dzyVRT44l+H+4/oqUu8e+mSc+czRHE/CTuJpCbBlrhucjoq08Er3cie++iQXk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752358598; c=relaxed/simple;
-	bh=F+oHiZeATWk7cH+yoFtp77I/m1u1NJ+hRPH1xEcCvKk=;
+	s=arc-20240116; t=1752410713; c=relaxed/simple;
+	bh=rZBU0y2jqmoOWM0aYmQwhYLn+mZVkvm4nsRsDyNDSDI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=o6WhOWLfB3vbSb9/wDdGJh2P0wchAUIne3RnWyAFJ15dXsooI9yaiIC4zk7ofVVApPhuukIWKjxok8Y7MLTDuECXc/NWF1nbIHDjm7VNW/5gh20ME0CudBRynbO7j3+FicblSnmZBtygWW3FQcYgmzHaPrC+7htOvJLTmOo7gsg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PKamApBt; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1752358597; x=1783894597;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=F+oHiZeATWk7cH+yoFtp77I/m1u1NJ+hRPH1xEcCvKk=;
-  b=PKamApBtgmF32sRcUH2+D8jWvK/P/hRHaGX+mQj3eUMCHqVJrXTm/LFE
-   PYb63IuqEL8gcjW5ZHXL1X+FeCLjgwmk9Ob2kgFPgm3+4yg/cjds4csZE
-   Qp/muf6ZCEeiNAh3KQ8QS5Ftzl5gfFpDSlaBm2F+4q4HFqzu3UzF8aLww
-   lYdyOlxJmavt9nGXnDP3gbtWHQNYvRb6VP3m60x/T6StgPbxJT3GhkGv2
-   8SrPSh9sTW/voMHyW6OR4qsEvb33CTDTfY507gKjlgWmFUQtFhDol3yKl
-   50EvFcU91kSSNBM8wLttCZsN/qO6UXHa5OyJ8qVGIyks4YtWbEZN41gbj
-   w==;
-X-CSE-ConnectionGUID: kumsrj3tQnCR8P9dqjgXoQ==
-X-CSE-MsgGUID: CWf+/X/jTYmB3kcZ5lJwfA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11491"; a="54765920"
-X-IronPort-AV: E=Sophos;i="6.16,307,1744095600"; 
-   d="scan'208";a="54765920"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jul 2025 15:16:36 -0700
-X-CSE-ConnectionGUID: JkkpHCcBQzi6MR0nCWGoiQ==
-X-CSE-MsgGUID: uQdH5NLaRi+fi4KDjJxTvA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,307,1744095600"; 
-   d="scan'208";a="187614569"
-Received: from lkp-server01.sh.intel.com (HELO 9ee84586c615) ([10.239.97.150])
-  by fmviesa001.fm.intel.com with ESMTP; 12 Jul 2025 15:16:29 -0700
-Received: from kbuild by 9ee84586c615 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uaiWA-0007it-21;
-	Sat, 12 Jul 2025 22:16:26 +0000
-Date: Sun, 13 Jul 2025 06:16:04 +0800
-From: kernel test robot <lkp@intel.com>
-To: Antoniu Miclaus <antoniu.miclaus@analog.com>, jic23@kernel.org,
-	robh@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org,
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev,
-	Antoniu Miclaus <antoniu.miclaus@analog.com>
-Subject: Re: [PATCH 3/3] iio: adc: add ade9000 support
-Message-ID: <202507130521.iaXBguXP-lkp@intel.com>
-References: <20250711130241.159143-4-antoniu.miclaus@analog.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=Xx825JZiZLJNGUzZ6E67s7A3Hc+dMqC9x1QcYKS3qtiXr8GeQ88Gbe7ATjC+ziccW952OlZaWGQjV6OQYt/oc8r0D2M1YgX1Mf2eDsCMlbGfysdtv90ts0mAPeqCAbBIFOgiuPdT1pj9+VoEzvt9AUEbDZiRX4f87gyki25nFCM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=it-klinger.de; spf=pass smtp.mailfrom=it-klinger.de; dkim=pass (2048-bit key) header.d=it-klinger.de header.i=@it-klinger.de header.b=tQuPvUIO; arc=none smtp.client-ip=78.46.3.230
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=it-klinger.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=it-klinger.de
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=it-klinger.de; s=default2502; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=F8eV3Cnz2Uq9dxl+U8/UhYbRCkKQscIpnZCFP+5lLkU=; b=tQuPvUIO6eXZZufHyy1NBfmPmw
+	SgopnYzRxn9D1KiGZft2/znqKB2Lb1Brhfha4GGX+iMjtLeYgznDmMI+HRPP1hmQWARqEc1yvsxUx
+	a6XgnkKU8UycGghh03ETQ9Q7pFl1pTZxIyRUlu8nWbR+11uhxH64l6YgBlp1tPQ2CaAKDBN6Ae5Ut
+	YBKgbPKvC4ImGYaziI8eOER8r3B8OQV6jzfcTsNfwrPI6YXiNFdAKCoGIP3P4VKPxa/1RHBAOnTq6
+	arsX39GHrOMkndEf4oR06FOrSWErDzorFLndyUXCNGW6fYRMtkLpt9Rqu+xaUJzPiOQXrpUlCzoYd
+	l6N+Nx3A==;
+Received: from sslproxy08.your-server.de ([78.47.166.52])
+	by www571.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <ak@it-klinger.de>)
+	id 1uavdp-0003bz-0J;
+	Sun, 13 Jul 2025 14:17:13 +0200
+Received: from localhost ([127.0.0.1])
+	by sslproxy08.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ak@it-klinger.de>)
+	id 1uavdp-000B4b-1Q;
+	Sun, 13 Jul 2025 14:17:12 +0200
+Date: Sun, 13 Jul 2025 14:17:11 +0200
+From: Andreas Klinger <ak@it-klinger.de>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Jonathan Cameron <jic23@kernel.org>,
+	Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: proximity: srf08: use stack allocated scan buffer
+Message-ID: <aHOjxzNqW8Yf2kR7@mail.your-server.de>
+References: <20250711-iio-use-more-iio_declare_buffer_with_ts-6-v1-1-25c70b990d6c@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="SiPHZew/0PDaT8Cd"
+Content-Disposition: inline
+In-Reply-To: <20250711-iio-use-more-iio_declare_buffer_with_ts-6-v1-1-25c70b990d6c@baylibre.com>
+X-Virus-Scanned: Clear (ClamAV 1.0.7/27698/Sun Jul 13 10:39:53 2025)
+
+
+--SiPHZew/0PDaT8Cd
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250711130241.159143-4-antoniu.miclaus@analog.com>
+Content-Transfer-Encoding: quoted-printable
 
-Hi Antoniu,
+Reviewed-by: Andreas Klinger <ak@it-klinger.de>
 
-kernel test robot noticed the following build warnings:
+David Lechner <dlechner@baylibre.com> schrieb am Fr, 11. Jul 11:07:
+> Use a stack allocated scan struct in srf08_trigger_handler(). Since the
+> scan buffer isn't used outside of this function and doesn't need to be
+> DMA-safe, it doesn't need to be in struct srf08_data. We can also
+> eliminate an extra local variable for the return value of
+> srf08_read_ranging() by using scan.chan directly.
+>=20
+> Signed-off-by: David Lechner <dlechner@baylibre.com>
+> ---
+>  drivers/iio/proximity/srf08.c | 18 +++++++-----------
+>  1 file changed, 7 insertions(+), 11 deletions(-)
+>=20
+> diff --git a/drivers/iio/proximity/srf08.c b/drivers/iio/proximity/srf08.c
+> index 6e32fdfd161b93a5624f757d5b7de579415b1055..a28efcf324a844a6dca43dff6=
+9e71ca38a2ccc68 100644
+> --- a/drivers/iio/proximity/srf08.c
+> +++ b/drivers/iio/proximity/srf08.c
+> @@ -63,12 +63,6 @@ struct srf08_data {
+>  	int			range_mm;
+>  	struct mutex		lock;
+> =20
+> -	/* Ensure timestamp is naturally aligned */
+> -	struct {
+> -		s16 chan;
+> -		aligned_s64 timestamp;
+> -	} scan;
+> -
+>  	/* Sensor-Type */
+>  	enum srf08_sensor_type	sensor_type;
+> =20
+> @@ -182,16 +176,18 @@ static irqreturn_t srf08_trigger_handler(int irq, v=
+oid *p)
+>  	struct iio_poll_func *pf =3D p;
+>  	struct iio_dev *indio_dev =3D pf->indio_dev;
+>  	struct srf08_data *data =3D iio_priv(indio_dev);
+> -	s16 sensor_data;
+> +	struct {
+> +		s16 chan;
+> +		aligned_s64 timestamp;
+> +	} scan;
+> =20
+> -	sensor_data =3D srf08_read_ranging(data);
+> -	if (sensor_data < 0)
+> +	scan.chan =3D srf08_read_ranging(data);
+> +	if (scan.chan < 0)
+>  		goto err;
+> =20
+>  	mutex_lock(&data->lock);
+> =20
+> -	data->scan.chan =3D sensor_data;
+> -	iio_push_to_buffers_with_ts(indio_dev, &data->scan, sizeof(data->scan),
+> +	iio_push_to_buffers_with_ts(indio_dev, &scan, sizeof(scan),
+>  				    pf->timestamp);
+> =20
+>  	mutex_unlock(&data->lock);
+>=20
+> ---
+> base-commit: f8f559752d573a051a984adda8d2d1464f92f954
+> change-id: 20250711-iio-use-more-iio_declare_buffer_with_ts-6-6ffc8e99552d
+>=20
+> Best regards,
+> --=20
+> David Lechner <dlechner@baylibre.com>
+>=20
 
-[auto build test WARNING on jic23-iio/togreg]
-[also build test WARNING on robh/for-next linus/master v6.16-rc5 next-20250711]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+--=20
+Andreas Klinger
+Grabenreith 27
+84508 Burgkirchen
++49 8623 373
+ak@it-klinger.de
+www.it-klinger.de
+www.grabenreith.de
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Antoniu-Miclaus/iio-add-power-and-energy-measurement-modifiers/20250712-022300
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
-patch link:    https://lore.kernel.org/r/20250711130241.159143-4-antoniu.miclaus%40analog.com
-patch subject: [PATCH 3/3] iio: adc: add ade9000 support
-config: arc-randconfig-r133-20250713 (https://download.01.org/0day-ci/archive/20250713/202507130521.iaXBguXP-lkp@intel.com/config)
-compiler: arc-linux-gcc (GCC) 10.5.0
-reproduce: (https://download.01.org/0day-ci/archive/20250713/202507130521.iaXBguXP-lkp@intel.com/reproduce)
+--SiPHZew/0PDaT8Cd
+Content-Type: application/pgp-signature; name="signature.asc"
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202507130521.iaXBguXP-lkp@intel.com/
+-----BEGIN PGP SIGNATURE-----
 
-sparse warnings: (new ones prefixed by >>)
->> drivers/iio/adc/ade9000.c:1176:40: sparse: sparse: cast truncates bits from constant value (100000 becomes 0)
-   drivers/iio/adc/ade9000.c:1185:40: sparse: sparse: cast truncates bits from constant value (200000 becomes 0)
-   drivers/iio/adc/ade9000.c:1194:40: sparse: sparse: cast truncates bits from constant value (400000 becomes 0)
-   drivers/iio/adc/ade9000.c:1203:40: sparse: sparse: cast truncates bits from constant value (800000 becomes 0)
-   drivers/iio/adc/ade9000.c:1212:40: sparse: sparse: cast truncates bits from constant value (1000000 becomes 0)
-   drivers/iio/adc/ade9000.c:1221:40: sparse: sparse: cast truncates bits from constant value (2000000 becomes 0)
-   drivers/iio/adc/ade9000.c:1230:40: sparse: sparse: cast truncates bits from constant value (40000 becomes 0)
-   drivers/iio/adc/ade9000.c:1249:12: sparse: sparse: context imbalance in 'ade9000_read_raw' - different lock contexts for basic block
->> drivers/iio/adc/ade9000.c:1761:9: sparse: sparse: dereference of noderef expression
->> drivers/iio/adc/ade9000.c:1761:9: sparse: sparse: dereference of noderef expression
+iQGzBAABCgAdFiEE7/NrAFtB/Pj7rTUyyHDM+xwPAVEFAmhzo8YACgkQyHDM+xwP
+AVFE7Qv/Y5OiXVcCdkPhYkWDUbsK+5l+fiDppXaCoD0QEX5Tofr9vxDEAooHOhfP
+2gwJlvEoXLM6tJ1qN/JtrQFMtdIoEXA9U3LLKWXRRgmWbI9UE07DcTqmC/ypcyp/
+owALndBfntvkqiF5kBjhCQ/m0Jyh3xQk+W9w6R43LGNlEHGQO0MBd3A0euh9mcHK
+1gwuFPLk34jd+h8ebiaqhViW0EQkqjOFb6MQvY8D05VMCgYoepRDe3Mknt/2qLnV
+vmq2TwLXqOQyfzSpFuvB8f3HiYgePEPjPU2ENHPruMEFwJurf/fWrkB+v5w8TNsF
+k3hlaqqDqjC2TT8Q/00y7Koik9lzcr0RZIdDPHt2a/HwfJ4Awwz4reDt5+OT2MeT
+vQkCLpDOLFPETE2VjAysb39lMJn4eqJs8sZeDGyyDhXHGozAts1dNGj+nDYwSzs7
+iYZGyNakfk6pN5z5m5I0xin/Iod20eC780oLTgNrkv2Z30cukUyUR2lnmDSmC8N0
+xQyQXBwv
+=4DJL
+-----END PGP SIGNATURE-----
 
-vim +1176 drivers/iio/adc/ade9000.c
-
-  1051	
-  1052	static irqreturn_t ade9000_irq1_thread(int irq, void *data)
-  1053	{
-  1054		struct iio_dev *indio_dev = data;
-  1055		struct ade9000_state *st = iio_priv(indio_dev);
-  1056		unsigned int bit = ADE9000_ST1_CROSSING_FIRST;
-  1057		s64 timestamp = iio_get_time_ns(indio_dev);
-  1058		u32 handled_irq = 0;
-  1059		u32 interrupts;
-  1060		u32 result;
-  1061		u32 status;
-  1062		u32 tmp;
-  1063		int ret;
-  1064	
-  1065		if (!st->rst_done) {
-  1066			ret = regmap_read(st->regmap, ADE9000_REG_STATUS1, &result);
-  1067			if (ret)
-  1068				return ret;
-  1069	
-  1070			if (result & ADE9000_ST1_RSTDONE_BIT)
-  1071				st->rst_done = true;
-  1072			else
-  1073				dev_err(&st->spi->dev, "Error testing reset done");
-  1074	
-  1075			return IRQ_HANDLED;
-  1076		}
-  1077	
-  1078		ret = regmap_read(st->regmap, ADE9000_REG_STATUS1, &status);
-  1079		if (ret)
-  1080			return IRQ_HANDLED;
-  1081	
-  1082		ret = regmap_read(st->regmap, ADE9000_REG_MASK1, &interrupts);
-  1083		if (ret) {
-  1084			dev_err(&st->spi->dev, "IRQ1 read status fail");
-  1085			return IRQ_HANDLED;
-  1086		}
-  1087	
-  1088		for_each_set_bit_from(bit, (unsigned long *)&interrupts,
-  1089				      ADE9000_ST1_CROSSING_DEPTH){
-  1090			tmp = status & BIT(bit);
-  1091	
-  1092			switch (tmp) {
-  1093			case ADE9000_ST1_ZXVA_BIT:
-  1094				iio_push_event(indio_dev,
-  1095					       IIO_UNMOD_EVENT_CODE(IIO_VOLTAGE,
-  1096								    ADE9000_ST1_ZXVA_BIT,
-  1097								    IIO_EV_TYPE_THRESH,
-  1098								    IIO_EV_DIR_EITHER),
-  1099					       timestamp);
-  1100				handled_irq |= ADE9000_ST1_ZXVA_BIT;
-  1101				break;
-  1102			case ADE9000_ST1_ZXTOVA_BIT:
-  1103				iio_push_event(indio_dev,
-  1104					       IIO_UNMOD_EVENT_CODE(IIO_VOLTAGE,
-  1105								    ADE9000_ST1_ZXTOVA_BIT,
-  1106								    IIO_EV_TYPE_THRESH,
-  1107								    IIO_EV_DIR_EITHER),
-  1108					       timestamp);
-  1109				handled_irq |= ADE9000_ST1_ZXTOVA_BIT;
-  1110				break;
-  1111			case ADE9000_ST1_ZXIA_BIT:
-  1112				iio_push_event(indio_dev,
-  1113					       IIO_UNMOD_EVENT_CODE(IIO_CURRENT,
-  1114								    ADE9000_ST1_ZXIA_BIT,
-  1115								    IIO_EV_TYPE_THRESH,
-  1116								    IIO_EV_DIR_EITHER),
-  1117					       timestamp);
-  1118				handled_irq |= ADE9000_ST1_ZXIA_BIT;
-  1119				break;
-  1120			case ADE9000_ST1_ZXVB_BIT:
-  1121				iio_push_event(indio_dev,
-  1122					       IIO_UNMOD_EVENT_CODE(IIO_VOLTAGE,
-  1123								    ADE9000_ST1_ZXVB_BIT,
-  1124								    IIO_EV_TYPE_THRESH,
-  1125								    IIO_EV_DIR_EITHER),
-  1126					       timestamp);
-  1127				handled_irq |= ADE9000_ST1_ZXVB_BIT;
-  1128				break;
-  1129			case ADE9000_ST1_ZXTOVB_BIT:
-  1130				iio_push_event(indio_dev,
-  1131					       IIO_UNMOD_EVENT_CODE(IIO_VOLTAGE,
-  1132								    ADE9000_ST1_ZXTOVB_BIT,
-  1133								    IIO_EV_TYPE_THRESH,
-  1134								    IIO_EV_DIR_EITHER),
-  1135					       timestamp);
-  1136				handled_irq |= ADE9000_ST1_ZXTOVB_BIT;
-  1137				break;
-  1138			case ADE9000_ST1_ZXIB_BIT:
-  1139				iio_push_event(indio_dev,
-  1140					       IIO_UNMOD_EVENT_CODE(IIO_CURRENT,
-  1141								    ADE9000_ST1_ZXIB_BIT,
-  1142								    IIO_EV_TYPE_THRESH,
-  1143								    IIO_EV_DIR_EITHER),
-  1144					       timestamp);
-  1145				handled_irq |= ADE9000_ST1_ZXIB_BIT;
-  1146				break;
-  1147			case ADE9000_ST1_ZXVC_BIT:
-  1148				iio_push_event(indio_dev,
-  1149					       IIO_UNMOD_EVENT_CODE(IIO_VOLTAGE,
-  1150								    ADE9000_ST1_ZXVC_BIT,
-  1151								    IIO_EV_TYPE_THRESH,
-  1152								    IIO_EV_DIR_EITHER),
-  1153					       timestamp);
-  1154				handled_irq |= ADE9000_ST1_ZXVC_BIT;
-  1155				break;
-  1156			case ADE9000_ST1_ZXTOVC_BIT:
-  1157				iio_push_event(indio_dev,
-  1158					       IIO_UNMOD_EVENT_CODE(IIO_VOLTAGE,
-  1159								    ADE9000_ST1_ZXTOVC_BIT,
-  1160								    IIO_EV_TYPE_THRESH,
-  1161								    IIO_EV_DIR_EITHER),
-  1162					       timestamp);
-  1163				handled_irq |= ADE9000_ST1_ZXTOVC_BIT;
-  1164				break;
-  1165			case ADE9000_ST1_ZXIC_BIT:
-  1166				iio_push_event(indio_dev,
-  1167					       IIO_UNMOD_EVENT_CODE(IIO_CURRENT,
-  1168								    ADE9000_ST1_ZXIC_BIT,
-  1169								    IIO_EV_TYPE_THRESH,
-  1170								    IIO_EV_DIR_EITHER),
-  1171					       timestamp);
-  1172				handled_irq |= ADE9000_ST1_ZXIC_BIT;
-  1173				break;
-  1174			case ADE9000_ST1_SWELLA_BIT:
-  1175				iio_push_event(indio_dev,
-> 1176					       IIO_UNMOD_EVENT_CODE(IIO_VOLTAGE,
-  1177								    ADE9000_ST1_SWELLA_BIT,
-  1178								    IIO_EV_TYPE_THRESH,
-  1179								    IIO_EV_DIR_RISING),
-  1180					       timestamp);
-  1181				handled_irq |= ADE9000_ST1_SWELLA_BIT;
-  1182				break;
-  1183			case ADE9000_ST1_SWELLB_BIT:
-  1184				iio_push_event(indio_dev,
-  1185					       IIO_UNMOD_EVENT_CODE(IIO_VOLTAGE,
-  1186								    ADE9000_ST1_SWELLB_BIT,
-  1187								    IIO_EV_TYPE_THRESH,
-  1188								    IIO_EV_DIR_RISING),
-  1189					       timestamp);
-  1190				handled_irq |= ADE9000_ST1_SWELLB_BIT;
-  1191				break;
-  1192			case ADE9000_ST1_SWELLC_BIT:
-  1193				iio_push_event(indio_dev,
-  1194					       IIO_UNMOD_EVENT_CODE(IIO_VOLTAGE,
-  1195								    ADE9000_ST1_SWELLC_BIT,
-  1196								    IIO_EV_TYPE_THRESH,
-  1197								    IIO_EV_DIR_RISING),
-  1198					       timestamp);
-  1199				handled_irq |= ADE9000_ST1_SWELLC_BIT;
-  1200				break;
-  1201			case ADE9000_ST1_DIPA_BIT:
-  1202				iio_push_event(indio_dev,
-  1203					       IIO_UNMOD_EVENT_CODE(IIO_VOLTAGE,
-  1204								    ADE9000_ST1_DIPA_BIT,
-  1205								    IIO_EV_TYPE_THRESH,
-  1206								    IIO_EV_DIR_FALLING),
-  1207					       timestamp);
-  1208				handled_irq |= ADE9000_ST1_DIPA_BIT;
-  1209				break;
-  1210			case ADE9000_ST1_DIPB_BIT:
-  1211				iio_push_event(indio_dev,
-  1212					       IIO_UNMOD_EVENT_CODE(IIO_VOLTAGE,
-  1213								    ADE9000_ST1_DIPB_BIT,
-  1214								    IIO_EV_TYPE_THRESH,
-  1215								    IIO_EV_DIR_FALLING),
-  1216					       timestamp);
-  1217				handled_irq |= ADE9000_ST1_DIPB_BIT;
-  1218				break;
-  1219			case ADE9000_ST1_DIPC_BIT:
-  1220				iio_push_event(indio_dev,
-  1221					       IIO_UNMOD_EVENT_CODE(IIO_VOLTAGE,
-  1222								    ADE9000_ST1_DIPC_BIT,
-  1223								    IIO_EV_TYPE_THRESH,
-  1224								    IIO_EV_DIR_FALLING),
-  1225					       timestamp);
-  1226				handled_irq |= ADE9000_ST1_DIPC_BIT;
-  1227				break;
-  1228			case ADE9000_ST1_SEQERR_BIT:
-  1229				iio_push_event(indio_dev,
-  1230					       IIO_UNMOD_EVENT_CODE(IIO_VOLTAGE,
-  1231								    ADE9000_ST1_SEQERR_BIT,
-  1232								    IIO_EV_TYPE_CHANGE,
-  1233								    IIO_EV_DIR_NONE),
-  1234					       timestamp);
-  1235				handled_irq |= ADE9000_ST1_SEQERR_BIT;
-  1236				break;
-  1237			default:
-  1238				return IRQ_HANDLED;
-  1239			}
-  1240		}
-  1241	
-  1242		ret = regmap_write(st->regmap, ADE9000_REG_STATUS1, handled_irq);
-  1243		if (ret)
-  1244			return ret;
-  1245	
-  1246		return IRQ_HANDLED;
-  1247	}
-  1248	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+--SiPHZew/0PDaT8Cd--
 

@@ -1,59 +1,56 @@
-Return-Path: <linux-iio+bounces-21606-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21607-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCEE6B0314F
-	for <lists+linux-iio@lfdr.de>; Sun, 13 Jul 2025 16:02:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA95CB03155
+	for <lists+linux-iio@lfdr.de>; Sun, 13 Jul 2025 16:04:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 328DC17A823
-	for <lists+linux-iio@lfdr.de>; Sun, 13 Jul 2025 14:02:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 202CE17BB9F
+	for <lists+linux-iio@lfdr.de>; Sun, 13 Jul 2025 14:04:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D67AC1F03D8;
-	Sun, 13 Jul 2025 14:01:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66538202F9C;
+	Sun, 13 Jul 2025 14:04:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JQDacUnR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uPBIczLi"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9472BA920;
-	Sun, 13 Jul 2025 14:01:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 221E113AA20;
+	Sun, 13 Jul 2025 14:04:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752415319; cv=none; b=Z+Y75xAW8Zvq5ii4/r2JQ3wZA39e15vO5rEnB4gWScI699XhdjS6cY0ymqQcl8MPxJbug/GqnVyIgRGrbN0R7tbbz5bSEjcRs0FpkI96skkodoW2b44iTGnnjxFKgTiIJ3G9fwfAYu4Xxx9TmK5g2Fd76Ios6uyEcfh/Uc55UHo=
+	t=1752415493; cv=none; b=lO+Jjhb7ySdpfQxwZ3Dr+ERSq855+GMG7kx5end14g2tCxxZ58abz4xqf63EH8W+clFTyCoO/mtbnpbyKlngYvZ5jC9uAT2EBA6r3jxP3dyCIKq0I7aUi9mi5wNl0oZ3ubQj3j4wC0h6TQCvEI0LkR8UdtGZpIv+mj0MlZ0abPY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752415319; c=relaxed/simple;
-	bh=EiiFDA4oGt9ZZBpT0IJ3IlFrat7RfYA9w3fcGggIXBM=;
+	s=arc-20240116; t=1752415493; c=relaxed/simple;
+	bh=+FYv13QyM3Qc66a/klwxzfTKs0B5TwplrY1FdwFpn+o=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ldOJrHr+Khz5Y6MGhOJro+TStoSToC2kPHQ2N9kpxWB0jlrZ3WYl3Ca4EsAxbj+fEwobMUPvZlwJWV7J/h/7PTge6MvvwbKLiUMM+I5jcAaKeXsACGSmLJS6mOg4Y754EOr5e2mqmeEbOJ6Vpl1PT+q6ESxuwxpIYe/1xFl8VQg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JQDacUnR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6675C4CEE3;
-	Sun, 13 Jul 2025 14:01:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=dAWSj11xfkxyH4p9gPYhtFcb4QXqyqVVGCTFMShVQBex6tMD/xz/KMwO81Xs7/U49dwXZBJ+i3yGh0xO4c10sbFJQrsgISJpXKxISonr0cA86YvJsnUW5SjkCa6TjSU90RVLJ3WU2SlD1DRc7hYUgemxw9SQx1VnSc/XpueK/xM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uPBIczLi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55948C4CEE3;
+	Sun, 13 Jul 2025 14:04:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752415319;
-	bh=EiiFDA4oGt9ZZBpT0IJ3IlFrat7RfYA9w3fcGggIXBM=;
+	s=k20201202; t=1752415492;
+	bh=+FYv13QyM3Qc66a/klwxzfTKs0B5TwplrY1FdwFpn+o=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=JQDacUnR4+4f3snK7EgWRHLzq0y/6XnQBS1+RbAPrXgv8b71cjfNiU7nta909V1fq
-	 OaoaK/BSxgPF/kCH/lSoxU/h0y4Lfct/K2dO7xw8pmW1ixyIJ6HAwQG6ZSSmGo4iv4
-	 mucqTPLh0FWkaigFcrnf9fgxZkvRhmD9/j+1l5ESkF1Mf1wyuzJcSnzvM2wR9LeE4O
-	 ma+DUKFpJb61oifHU1jlnw/ZmUxoLBrsPIfAxvE5IBkHu9/slD4jhM29EbMEnmc7Rs
-	 5Pb/MTGOQZmFsk0KT80sbN+RXVvAg7STOajaDUFuU4mGYHc/QrwPoQvYbR0CiJv1Gx
-	 ajfH2IOGWrlhQ==
-Date: Sun, 13 Jul 2025 15:01:51 +0100
+	b=uPBIczLihuHl1PbCKDG/eOKxiBo2dGDuuxa8fklhbfkhN2KYTaqTkesvF0tMlpHtJ
+	 kMLMbTDXVWUwRiQvgCIXeSz2T2+BGNt1PGcF6Eqa4011hZjxd/zs2qPr961OxQqbJx
+	 fEY3eMPTK+FN+McuD1h+Me5KJFWm8NUib/kL8o5uWukAGxRV3eBk7IiCjB12a5xdhC
+	 /FhEb9B8h1mrFD5FArtgxGGY44jdwx4l8T1R86LTt3bKPUENS/292jsZDozpHV/kxl
+	 WoItoPIA7Z/+/pmXeYiQpV3zdwHtOm3+MB8xwRFtmd0fc8QhTpTocQLTlX/6RZAVp4
+	 Mcv3QBaKvq8Vg==
+Date: Sun, 13 Jul 2025 15:04:45 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: David Lechner <dlechner@baylibre.com>
-Cc: Andy Shevchenko <andriy.shevchenko@intel.com>, Andreas Klinger
- <ak@it-klinger.de>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy
- Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: proximity: srf08: use stack allocated scan buffer
-Message-ID: <20250713150151.17c02007@jic23-huawei>
-In-Reply-To: <3372c362-96cb-4ca7-aeba-89a72e065dea@baylibre.com>
-References: <20250711-iio-use-more-iio_declare_buffer_with_ts-6-v1-1-25c70b990d6c@baylibre.com>
-	<aHE_ecZNTgRW79VU@smile.fi.intel.com>
-	<3372c362-96cb-4ca7-aeba-89a72e065dea@baylibre.com>
+Cc: Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko
+ <andy@kernel.org>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: proximity: isl29501: use scan struct instead of
+ array
+Message-ID: <20250713150445.3965931c@jic23-huawei>
+In-Reply-To: <20250711-iio-use-more-iio_declare_buffer_with_ts-7-v1-1-a3f253ac2e4a@baylibre.com>
+References: <20250711-iio-use-more-iio_declare_buffer_with_ts-7-v1-1-a3f253ac2e4a@baylibre.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -64,32 +61,52 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 11 Jul 2025 12:07:10 -0500
+On Fri, 11 Jul 2025 11:18:13 -0500
 David Lechner <dlechner@baylibre.com> wrote:
 
-> On 7/11/25 11:44 AM, Andy Shevchenko wrote:
-> > On Fri, Jul 11, 2025 at 11:07:20AM -0500, David Lechner wrote:  
-> >> Use a stack allocated scan struct in srf08_trigger_handler(). Since the
-> >> scan buffer isn't used outside of this function and doesn't need to be
-> >> DMA-safe, it doesn't need to be in struct srf08_data. We can also
-> >> eliminate an extra local variable for the return value of
-> >> srf08_read_ranging() by using scan.chan directly.  
-> > 
-> > Why not with macro?
-> >   
+> Replace the scan buffer array with a struct that contains a single u32
+> for the data and an aligned_s64 for the timestamp. This makes it easier
+> to see the intended layout of the buffer and avoids the need to manually
+> calculate the number of extra elements needed for an aligned timestamp.
 > 
-> In cases like this where there are a fixed number of data values
-> read, the existing pattern is to use the struct like this. Furthermore,
-> IIO_DECLARE_BUFFER_WITH_TS() implies an array and usually we try to avoid
-> arrays with only one element.
+> Signed-off-by: David Lechner <dlechner@baylibre.com>
+Why are we using a u32 here?  It's a 16 bit
+read in that isl29501_register_read() call
+and storagebits = 16 in the chan spec.
+
+So to me looks like you found a bug for big endian platforms.
+> ---
+>  drivers/iio/proximity/isl29501.c | 9 ++++++---
+>  1 file changed, 6 insertions(+), 3 deletions(-)
 > 
+> diff --git a/drivers/iio/proximity/isl29501.c b/drivers/iio/proximity/isl29501.c
+> index d1510fe2405088adc0998e28aa9f36e0186fafae..0eed14f66ab700473af10414b25a56458335b381 100644
+> --- a/drivers/iio/proximity/isl29501.c
+> +++ b/drivers/iio/proximity/isl29501.c
+> @@ -938,12 +938,15 @@ static irqreturn_t isl29501_trigger_handler(int irq, void *p)
+>  	struct iio_dev *indio_dev = pf->indio_dev;
+>  	struct isl29501_private *isl29501 = iio_priv(indio_dev);
+>  	const unsigned long *active_mask = indio_dev->active_scan_mask;
+> -	u32 buffer[4] __aligned(8) = {}; /* 1x16-bit + naturally aligned ts */
+> +	struct {
+> +		u32 data;
+> +		aligned_s64 ts;
+> +	} scan;
+>  
+>  	if (test_bit(ISL29501_DISTANCE_SCAN_INDEX, active_mask))
+> -		isl29501_register_read(isl29501, REG_DISTANCE, buffer);
+> +		isl29501_register_read(isl29501, REG_DISTANCE, &scan.data);
+>  
+> -	iio_push_to_buffers_with_timestamp(indio_dev, buffer, pf->timestamp);
+> +	iio_push_to_buffers_with_timestamp(indio_dev, &scan, pf->timestamp);
+>  	iio_trigger_notify_done(indio_dev->trig);
+>  
+>  	return IRQ_HANDLED;
+> 
+> ---
+> base-commit: f8f559752d573a051a984adda8d2d1464f92f954
+> change-id: 20250711-iio-use-more-iio_declare_buffer_with_ts-7-880ddf1d3070
+> 
+> Best regards,
 
-I'd go a little further and say that to me structures are appropriate
-even with multiple channels as long as they location of channels that
-we are naming differently doesn't change.  That normally (but not always)
-means the timestamp channel as the other channels tend to have the same
-type.  So in practice if the channels take up 8 bytes or less before
-the timestamp.
-
-Jonathan
 

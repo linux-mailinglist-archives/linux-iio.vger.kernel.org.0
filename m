@@ -1,79 +1,81 @@
-Return-Path: <linux-iio+bounces-21620-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21621-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F7D1B031EF
-	for <lists+linux-iio@lfdr.de>; Sun, 13 Jul 2025 18:00:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41FF3B031F1
+	for <lists+linux-iio@lfdr.de>; Sun, 13 Jul 2025 18:00:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C7ACA189A82C
-	for <lists+linux-iio@lfdr.de>; Sun, 13 Jul 2025 16:00:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 249111780BF
+	for <lists+linux-iio@lfdr.de>; Sun, 13 Jul 2025 16:00:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7671372625;
-	Sun, 13 Jul 2025 16:00:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0D8727FB28;
+	Sun, 13 Jul 2025 16:00:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="apHS9M+2"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="DAW4C7oP"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73C5827F4D9
-	for <linux-iio@vger.kernel.org>; Sun, 13 Jul 2025 16:00:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 989FC27FB2A
+	for <linux-iio@vger.kernel.org>; Sun, 13 Jul 2025 16:00:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752422405; cv=none; b=fo2ua3UdYF/Sfkoh9mZkpOjxuAFMv9uXIbCh/pXYBBxC5iXJdjtA0QNd9qnb6YD09D9d3eaV3KFz9N95aGAGFHmrd16IjpfgR4VEmTSXK021E3maCPI7fgjdqcq0mIPOtzdXrohF1iNFYpqfUFldq1t3aOhWYmF77h/7Ku3GXfs=
+	t=1752422406; cv=none; b=m/20qb+fn4pEeNpUapJ7e1wtUNjRwcG+zix02qMnmmDcdcP8WW1obCicgnR+ZvGwiKYzMRlJJq3jRqnmXIWR1WTb++KeWJmVgZLCGY1WCSYZemNtenajj88uPepEJ8RPJQdalGS8mvZlZi3lP/e50AnqIj+WDjbEu7LsalUMhr8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752422405; c=relaxed/simple;
-	bh=RNZM7VeiSwJuf1WuWy49f5M7lHoQJIMon8g4vnZ5KpY=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=kdz+fzl8X+VgR32KGO56iBt/DVe9KPxSkVZI033ouYWXTyXQSIaDG4Ggpl9qORy3H4gbAnT2LaJTqEmJaTbDdeIlxcImihzzVnZb4B9FJ8sQE+9miQHtQpOZwABD/Uq06cfjUB9gVgtG6yyxBVfbOjaN0UjsEilGlBpWjHJ8PlY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=apHS9M+2; arc=none smtp.client-ip=209.85.221.44
+	s=arc-20240116; t=1752422406; c=relaxed/simple;
+	bh=uVps96x+owl/k/QEQGecdlA9EabWOuhbfKNHVC9O1UM=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=NCapL93ijrAmYOzhIGTPVsevP6CBFl8r+NEu+7ljJEvjVVGiYF+izDHO1uAG3+bf0GuJOOF+capvIa25UQ9Lp+h+63Sh61tE9I2Ph2HIX1bmpn5aBquYK318BZd7gYJ9YSSK5ef/3iCa6hWEItbwPWNpz+iPpavHhoi23JZeG/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=DAW4C7oP; arc=none smtp.client-ip=209.85.128.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-3a577ab8c34so362324f8f.3
-        for <linux-iio@vger.kernel.org>; Sun, 13 Jul 2025 09:00:03 -0700 (PDT)
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4535fc0485dso4188145e9.0
+        for <linux-iio@vger.kernel.org>; Sun, 13 Jul 2025 09:00:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1752422402; x=1753027202; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=vKkQ/ZqJDOz7LPkwRdAo8RGpwjZ41PyPdFDVt4/XaZs=;
-        b=apHS9M+20pNvlxb9eMqiI2zbKEGuOZ1gRPJd6RB/L9nvPhdnulpyr5afVHIpEOoQiW
-         n1zVYmIQ8UoEa84r5lvnpXVtAyI+KIrxEz5xYb+WznZnm32phNJOV60++VJcJZmTL3k7
-         /V1iI8gm6oiZZtwYMCCgbgQuoR3JIF4YMRVT2N7pJapjtZfzoUl/7Tp4wwdLq0iLPV4Z
-         z967WDoyn1ZpDEP71tLSVR0mTakSh8+UhGEQFqUQ8JqfcWAVP7LKYjr1fE97Aqc6LG7Q
-         kYRxcYfxkD4zkE+BkEmW9g5DLywTus60hb1Ds0R/BV2MGmXRAbi6ZKI8oFiyBeeU/Yu1
-         +mwA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752422402; x=1753027202;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=linaro.org; s=google; t=1752422403; x=1753027203; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=vKkQ/ZqJDOz7LPkwRdAo8RGpwjZ41PyPdFDVt4/XaZs=;
-        b=I0w5PSslAeiRdDG89yflZMY/OkFf7MyNGRqkYejXOwgFqdlQSZXl2qiESs/Q34s7L1
-         FSJC4Jo5czflzw+Jxslx4xvxscp2UZRRKfrO5al69SCSjwKKHBdi5K1dgGpOD8q15SPz
-         eFHRY3sX/kWW9oxfLRhRUb3uWtaYIr1fn3B2jvS2a76RDri3QHxxvu7IkUmYyBYqFnFo
-         +z0ur2pXL667zIZElTC/Kvyh42bsNQ3vCvvWGC9u97Ds4maZusqup0MO4HDGwtRIZnyB
-         r3iLVhJGCVqvxXIOecNbc7hmCYjiY9PPcniqYjU5uNITiYm5aFAHRUIJTEL63sKuBiKQ
-         M7LA==
-X-Gm-Message-State: AOJu0Yx5KvnSrxiSxntM4IIvx5RoRkiiz/XwJZ1eJb8ESHKZ8E5oFllK
-	44ySa+KcaJYJdOjzsKt+8vyWMoLjrjrA6cwNtLmA9jctoFA3Lq8BK+xvfuMPd8xDQaQ=
-X-Gm-Gg: ASbGncvY8bG6Mlz8JFkrf3abko35GfzlWsiOPtyJSaCtkt7tPAwegNms2Yz2A75RrZ6
-	6QjEBLKKDhVXVD/+KT86HveEG4QldSq/iUwF45bz7sCsvhsplEuvoS3lPNCO6iTNiKxMd8teLvb
-	7mk8J5I49agVMiFqGCnHwHJFuXs4f+nv7P3P2YKFeczN/SggPLt5/Eg90O5pTB6uhM+MAUgsSfb
-	ftXSB8ixCmFHhQw3SR07h8kPxa8X3niOgOi8jWCDpFrGHGWeO/vOtyH1Gro1APyZRpdbOI9AUGL
-	6KyUndbjEF67atjYt19bflDi2MqkHzUxvnJcI6pBFzCR4ApifW8fQjAnpl79dYQSqQ/cBBtM2CL
-	XtvX2Butv+tUm3WccRRdKh8SwZBRJdGI3eDvm
-X-Google-Smtp-Source: AGHT+IH78NCUlzVjgglGHThnEAS1j66jKtmv3BfBRuSfPf9oa5qyEFqDD7AlIw7uaMlRAnUpKpJF7Q==
-X-Received: by 2002:a05:6000:430a:b0:3a4:dbdf:7152 with SMTP id ffacd0b85a97d-3b5f2e45924mr2722298f8f.14.1752422401675;
-        Sun, 13 Jul 2025 09:00:01 -0700 (PDT)
+        bh=2z3Hm8MWtD6dyPG2UFKQINb5SAxLFMt52qkT1qEFYCg=;
+        b=DAW4C7oPWq2BEuVQlRXqswb4qi0I1SLfnmZFilJQ/t33BJu7wzRWTk6Jd9aOavLBdd
+         moTKhgCS+PV7/d8rZMRR1SIn91pMnx5SThOZ28XRZjh33dTx9MRgnWbWCRwhwZLWvs7l
+         FrZNW/+XeekXQEMnVdXwE5hvBymEQnb1DtQ51v8mMg5LsK3ixZBYmu7dh6r3gTnizuo9
+         XLm/WUIXFt3Vfer+hufGJSgbi9NyS7SbWocGlwPqBNsfZnLUTIOUq9GN3XAHDPz6zYDK
+         mFSEWP4RsnqjSWgL8o+PpIKRkxrANv6l4CHqLHS7Pdff63pviwMboqeTm/c83IwCaZBp
+         /VGA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752422403; x=1753027203;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=2z3Hm8MWtD6dyPG2UFKQINb5SAxLFMt52qkT1qEFYCg=;
+        b=hPMmSGKW395FFCcnL2Txim+bjxCqYpDqCGmwmPTKM5+t3yahJFL9DTFjY4DLoQ45eA
+         zBhA+bXaGyjjZAzkJ6l2e4KYbkAQPeROKr53R2wSVzZsfV9ZgP4RRJ1CaEPwKSGHlSHz
+         MNupz2VsadDKS+CvhIPAHBqcKttVopwEkulbrbSoa721KRXcRoNeUOLTciV+1DTGw6o6
+         80oveVhH2tqRWjR/vnY12WzeDX8r67TysFG6uatUZIA4E/YKoxe2h3J0i59cQa9KWxAY
+         BLrL5NDT8HfHdlXkZIxiqH4Bxf2KskPDbxmGirBfexVrXPZB9yMWsFsW6SPUlcmANjkC
+         bkGA==
+X-Gm-Message-State: AOJu0Yy/jtijgHxCeKTWDMcMBQDlneYXbZtKk6J76vvky2a8JaIv4vyQ
+	ruJY/oZ4ytX1W22777ncth1xoKLBVWeRjaGwYxcVI6gV1l6myiade+SjOYXojgqvIOQ=
+X-Gm-Gg: ASbGncuvG6OXA98+ifnjq1lVV8PaWbu+h6quwPAaVSE9kbdkoVUOQ6b8fjqwyBcsOQx
+	ovA0IJuNHZ9P89PMQkCDPVvbB1M5Ju4Y4HbExuajUP3KDfUU3BTXHvt9/XQGaGHGiQE6WIsN4aw
+	OvO7Dpq60V0I1fmhklzwdLvk1ynZmULQGjtizWoI/REd9PPTxSW8A01a2YRKj5NLAAWevh41F8c
+	f0PQzFxkCH+LtQyVOSkJB1J+UT9CNfOQeczj7S6Kv1buSJXclk0z05ayPVVjLU7wwX26AWGufJl
+	mo6g8WlDYsEi7tDvHWJ0TZQuBo9BxBpmoQceX/3efUc9HRTedUQUGSNHCtcCO4FyNpqUSD2gZMK
+	80fBec8A8OJ+iHMF5fiM09SIXOYprhttsPhdp
+X-Google-Smtp-Source: AGHT+IG8rNvGIbz7zPQ7M9GshMhyyoX5JtNGscCJWwQHvOhgoqHwi4JHZ7I4oUVNE+n49V4zjOOFvg==
+X-Received: by 2002:a05:6000:1787:b0:3a5:2d42:aa1e with SMTP id ffacd0b85a97d-3b5f2e773dcmr3163576f8f.15.1752422402860;
+        Sun, 13 Jul 2025 09:00:02 -0700 (PDT)
 Received: from [127.0.1.1] ([178.197.222.89])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b5e8dc23cfsm10244123f8f.37.2025.07.13.09.00.00
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b5e8dc23cfsm10244123f8f.37.2025.07.13.09.00.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 13 Jul 2025 09:00:01 -0700 (PDT)
+        Sun, 13 Jul 2025 09:00:02 -0700 (PDT)
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH 0/4] iio: Few cleanups to vf610 and ti-adc12138
-Date: Sun, 13 Jul 2025 17:59:54 +0200
-Message-Id: <20250713-iio-clk-get-enabled-v1-0-70abc1f9ce6c@linaro.org>
+Date: Sun, 13 Jul 2025 17:59:55 +0200
+Subject: [PATCH 1/4] iio: adc: ti-adc12138: Simplify with
+ devm_clk_get_enabled()
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -82,10 +84,9 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAPrXc2gC/x3MQQqAIBBA0avErBtIs5KuEi3KxhoSDY0IorsnL
- d/i/wcSRaYEffFApIsTB58hygLMNvmVkJdskJVsqk7UyBzQuB1XOpH8NDtaUHWtUloabW0NuTw
- iWb7/6zC+7wffaXsNZQAAAA==
-X-Change-ID: 20250713-iio-clk-get-enabled-4764482c8ff3
+Message-Id: <20250713-iio-clk-get-enabled-v1-1-70abc1f9ce6c@linaro.org>
+References: <20250713-iio-clk-get-enabled-v1-0-70abc1f9ce6c@linaro.org>
+In-Reply-To: <20250713-iio-clk-get-enabled-v1-0-70abc1f9ce6c@linaro.org>
 To: Jonathan Cameron <jic23@kernel.org>, 
  David Lechner <dlechner@baylibre.com>, 
  =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
@@ -93,46 +94,131 @@ To: Jonathan Cameron <jic23@kernel.org>,
 Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
  Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=767;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3513;
  i=krzysztof.kozlowski@linaro.org; h=from:subject:message-id;
- bh=RNZM7VeiSwJuf1WuWy49f5M7lHoQJIMon8g4vnZ5KpY=;
- b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBoc9f8v8yLMk2vBXgG1Tj0AT6qGXDzTlR5fo1RF
- 5gjZSjUj5CJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCaHPX/AAKCRDBN2bmhouD
- 18EZD/wIW/wgLIgyWy/YLErgNmhID0SdIWiATp+qMtjml/jCl6IsPp52oBM1Uwyk5wUPkDddL/Y
- 6nktnZgskh/9XD6fKNmvHJujDgVewueutwoCFt2Zzm36+YlSHbt+rqVEpsD5b9xNcoJZkhUydnA
- 5bFdse3dy/UKpT9vH1QxmPLE6zQFlq4S5CRvEC8rIXtUIPsqBt+WkpDSlinfc4fgeXhdPMVdJKs
- hCsvzYoOQBf9PK4CmpDUyys9Izb5CKAEhSmmmTAsXeFl96V7CvPH+IGwpqIdbNpAuAcO191n8VN
- k4yb36EJm+ToiEZp7Cbi9xokQjTsAX6U+9hkJfld6wOAzBg4+8cxZSbU7q0s2CeDaFh475Ywg10
- J9l6qRF53etJCt6/iGza6wxxfKsf3ZCeEJ41DIdFsyEgrHeCklYS9mr2KcSl+3rb9tX3GnqY6cV
- 3bkIRCnmfmAxyGCchSEXfNBvvTOpAiXGjkPtSWCbZ+LsMEAnCNY/nQxpQBHm2Adztidn024b8Jt
- m03uvxvIa6njYZE+89AI7lD5umAaZyoSHkXI6QPxvXPGfexlhrtgOnTnWQikVjx+Gb1RMCF25Lv
- vJc1JsSOOl5E72YucWKxy4dMThT248xuvO+FkGaiFj8uSFNJycaRTFrBy7IbHEoTKMV8L6to74O
- +QYnF8IugQI7EuQ==
+ bh=uVps96x+owl/k/QEQGecdlA9EabWOuhbfKNHVC9O1UM=;
+ b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBoc9f8b4/sA131XgYnDZE1pSb7s14GlZGX2q14+
+ naJlxiIkP2JAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCaHPX/AAKCRDBN2bmhouD
+ 1/nCD/9uQ2t8qPVIqwnsINsnxB8jR5nkNLA7zroD5rVIYgMH6C8FTTKGGSeIsQglcLpzOgO43UO
+ Wc69pR5MYEPGUX3LW4Rwqt5o0xK6RRo2I+jPLcosdQUxVToJpohK0Fw9XAymTAwMc9rO03JqBt3
+ EE+KJXFUL0kJdM8sxN6W9xTa9f1ZXkJPJRbjkX4Vmygai+F8E4RdsArZvq6RDsYlKaVEPx4+l/d
+ V27SmLoIDXxqlShaKtCifv0oNS1ZNE3dkGE+au+YIhqz1at0k7HUo08jJe6AQX75w6V833eXMmw
+ E5KHybtTTMEDpgynSRAKJmMiOVpqeKSf5OeKo2k0lAuJorAUFeMcblwYhP/zTKwwHm1YJsXWoJW
+ Js4Xs3zoGQ6mt5SB8fxsOtut6P90kTJRSfLZQHKtMTGqXTlSJ2cfhhMVeXWk4C/KKujgzUkAZjW
+ 88pXr0tkjHgJilzZmo0d1ToeO3YMPR6im/4NPEnvnqEKusuXrwYB/crcpQ+u1gLYpAerXjzqZAF
+ T2IKzugmF+GRZMwrEy+Z/wyW5lcvyg3YiCQtXmMTnX/+57J99hBfD865CDh9ymZXlAplkKiDkAo
+ YcK0cG75Hp8HygMxScrHf0qesKeU3elHq0OCfGJZOfb+toQywmiqgtcgDCbMrNQwZR8NWWEMNMK
+ LtsJApPcf+V2HNQ==
 X-Developer-Key: i=krzysztof.kozlowski@linaro.org; a=openpgp;
  fpr=9BD07E0E0C51F8D59677B7541B93437D3B41629B
 
-Just few cleanups.  Not tested on hardware.  Only the first patch could
-have an observable effect.
+Driver is getting clock and almost immediately enabling it, with the
+devm_request_irq() as the only relevant code executed between, thus the
+probe path and cleanups can be simplified with devm_clk_get_enabled().
 
-Best regards,
-Krzysztof
+Move devm_request_irq() earlier, so the interrupt handler will be
+registered before clock is enabled.  This might be important in case
+regulator supplies are enabled by other device driver and this device
+raises interrupt immediately after clock sarts ticking.
+
+The change does not reverse cleanup paths - first regulator will be
+disabled, then clock and finally interrupt handler freed.
+
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
 ---
-Krzysztof Kozlowski (4):
-      iio: adc: ti-adc12138: Simplify with devm_clk_get_enabled()
-      iio: adc: vf610: Drop -ENOMEM error message
-      iio: adc: vf610: Simplify with dev_err_probe
-      iio: dac: vf610: Simplify with devm_clk_get_enabled()
 
+Not tested on hardware.
+---
  drivers/iio/adc/ti-adc12138.c | 30 +++++++++++-------------------
- drivers/iio/dac/vf610_dac.c   | 23 +++++------------------
- 2 files changed, 16 insertions(+), 37 deletions(-)
----
-base-commit: a62b7a37e6fcf4a675b1548e7c168b96ec836442
-change-id: 20250713-iio-clk-get-enabled-4764482c8ff3
+ 1 file changed, 11 insertions(+), 19 deletions(-)
 
-Best regards,
+diff --git a/drivers/iio/adc/ti-adc12138.c b/drivers/iio/adc/ti-adc12138.c
+index 9dc465a10ffc8d9f596e34215af685999235d690..e5ec4b073daae33d0e51cf21a3520f0ab2184828 100644
+--- a/drivers/iio/adc/ti-adc12138.c
++++ b/drivers/iio/adc/ti-adc12138.c
+@@ -38,15 +38,13 @@ enum {
+ struct adc12138 {
+ 	struct spi_device *spi;
+ 	unsigned int id;
+-	/* conversion clock */
+-	struct clk *cclk;
+ 	/* positive analog voltage reference */
+ 	struct regulator *vref_p;
+ 	/* negative analog voltage reference */
+ 	struct regulator *vref_n;
+ 	struct mutex lock;
+ 	struct completion complete;
+-	/* The number of cclk periods for the S/H's acquisition time */
++	/* The number of conversion clock periods for the S/H's acquisition time */
+ 	unsigned int acquisition_time;
+ 	/*
+ 	 * Maximum size needed: 16x 2 bytes ADC data + 8 bytes timestamp.
+@@ -400,6 +398,7 @@ static int adc12138_probe(struct spi_device *spi)
+ {
+ 	struct iio_dev *indio_dev;
+ 	struct adc12138 *adc;
++	struct clk *cclk;
+ 	int ret;
+ 
+ 	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*adc));
+@@ -435,9 +434,14 @@ static int adc12138_probe(struct spi_device *spi)
+ 	if (ret)
+ 		adc->acquisition_time = 10;
+ 
+-	adc->cclk = devm_clk_get(&spi->dev, NULL);
+-	if (IS_ERR(adc->cclk))
+-		return PTR_ERR(adc->cclk);
++	ret = devm_request_irq(&spi->dev, spi->irq, adc12138_eoc_handler,
++			       IRQF_TRIGGER_RISING, indio_dev->name, indio_dev);
++	if (ret)
++		return ret;
++
++	cclk = devm_clk_get_enabled(&spi->dev, NULL);
++	if (IS_ERR(cclk))
++		return PTR_ERR(cclk);
+ 
+ 	adc->vref_p = devm_regulator_get(&spi->dev, "vref-p");
+ 	if (IS_ERR(adc->vref_p))
+@@ -454,18 +458,9 @@ static int adc12138_probe(struct spi_device *spi)
+ 			return ret;
+ 	}
+ 
+-	ret = devm_request_irq(&spi->dev, spi->irq, adc12138_eoc_handler,
+-			       IRQF_TRIGGER_RISING, indio_dev->name, indio_dev);
+-	if (ret)
+-		return ret;
+-
+-	ret = clk_prepare_enable(adc->cclk);
+-	if (ret)
+-		return ret;
+-
+ 	ret = regulator_enable(adc->vref_p);
+ 	if (ret)
+-		goto err_clk_disable;
++		return ret;
+ 
+ 	if (!IS_ERR(adc->vref_n)) {
+ 		ret = regulator_enable(adc->vref_n);
+@@ -496,8 +491,6 @@ static int adc12138_probe(struct spi_device *spi)
+ 		regulator_disable(adc->vref_n);
+ err_vref_p_disable:
+ 	regulator_disable(adc->vref_p);
+-err_clk_disable:
+-	clk_disable_unprepare(adc->cclk);
+ 
+ 	return ret;
+ }
+@@ -512,7 +505,6 @@ static void adc12138_remove(struct spi_device *spi)
+ 	if (!IS_ERR(adc->vref_n))
+ 		regulator_disable(adc->vref_n);
+ 	regulator_disable(adc->vref_p);
+-	clk_disable_unprepare(adc->cclk);
+ }
+ 
+ static const struct of_device_id adc12138_dt_ids[] = {
+
 -- 
-Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+2.43.0
 
 

@@ -1,71 +1,67 @@
-Return-Path: <linux-iio+bounces-21598-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21599-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74A64B03130
-	for <lists+linux-iio@lfdr.de>; Sun, 13 Jul 2025 15:32:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFF2DB03138
+	for <lists+linux-iio@lfdr.de>; Sun, 13 Jul 2025 15:42:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4F5AD7AE10D
-	for <lists+linux-iio@lfdr.de>; Sun, 13 Jul 2025 13:30:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E842C177A9B
+	for <lists+linux-iio@lfdr.de>; Sun, 13 Jul 2025 13:42:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BC5C278153;
-	Sun, 13 Jul 2025 13:32:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99F3A27877D;
+	Sun, 13 Jul 2025 13:42:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NAegdKTP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cdivMPP9"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECD752E36EE;
-	Sun, 13 Jul 2025 13:32:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 518C817E4;
+	Sun, 13 Jul 2025 13:42:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752413523; cv=none; b=b1JQan0EgwLp3bOWgDmFnZba54aWusJXuXGoGWPPLh20alCTK3rteNIuFPXEGFFBgxjeeU9kj9bUxVSR+lvbXk1dLF0DH/gIEDwK2BWpQV+7c5umMQKbrpg/1W3wwkOWbPED7c/8//hmxBS2uj1EAZ8pKaCPW+qSJ73N8OZ8FsA=
+	t=1752414142; cv=none; b=Lzs9bPbzddY4HsKfjc8DjPurF+yhmROAz9qtQcF3ahSMcTiOFXdx8QckgNEc+R9otSwQPaYcDl8raqAit3XmULeFAaB2fO8J1xPk2KnItMusq507MChVxlnOtH4WLSlMilL8JkS+xiWX+oBnQbihemsyV2pv18Kx4QSQru/04gM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752413523; c=relaxed/simple;
-	bh=Sb3s9wGLtY+M3hpUawaRjK8gLZhXFTW3DV50k1kRVJ8=;
+	s=arc-20240116; t=1752414142; c=relaxed/simple;
+	bh=FiK8zDiaUXmEFpaObLQbyvo1T/Qz+0i0aynWUyUlYpI=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=H5UlI19pSGRpHBPoEnhsrzEQ9XmBlVx9H4hDW85gh2WJJCAVFTlzxeZCff0GD31EGavpqmPje4/9LnSFczI1h23xnnUTWsmOzAqhcijukPzl252xvspiPYvTCxBfm8FTfbCRqtSTDx8OFA45Kuvv1WGQ/14K0E0uyWUc5kwo31o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NAegdKTP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 777A8C4CEE3;
-	Sun, 13 Jul 2025 13:31:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=pMF6KqA0LzRi/Ome3TSMZqVxy14EVH8Uco4T8JEdnXhS7um6tc80GOrpgdQWc50bbpWrmpkLrRHF1HyCxanFEpte/lfPsfJsPmd9GWutccFbrZhH8F0TZyP+c+i/SVicuOBU6BRLrHHGyy4A6ScnWECCJTDQqtJ0Q/UDCP8mFGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cdivMPP9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56391C4CEE3;
+	Sun, 13 Jul 2025 13:42:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752413522;
-	bh=Sb3s9wGLtY+M3hpUawaRjK8gLZhXFTW3DV50k1kRVJ8=;
+	s=k20201202; t=1752414141;
+	bh=FiK8zDiaUXmEFpaObLQbyvo1T/Qz+0i0aynWUyUlYpI=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=NAegdKTPKXSfJBWKEKnuLJNpg9fH+kLU+vrlCoQ7OP338WeTPONfSThypHjdeSOVT
-	 A95XJ4ylTaepmvs4WD8z4IMQkPw4LAcyrhdjHZlPZEdE9VO7CpR/187EOpglKIg7b5
-	 ZI+Pz3l96kXSCxZasGnWyjDF8CeMbXuiRyMLt23yjFPAEw88mmxbOaWMP0eH8opNoK
-	 4QRZTH9T8y/Ek6EXZcQifKk/HTaVOENHWL6l9Y86JAwzJ/hNOiB367Nx1lqd+nIrc3
-	 CIfWMMgyTItPLY0pISIAHe5MzyBmF0GeeGO5IqioLi0YqWq9G8K+LWb38n6epAeEf5
-	 C610H2UshMx5w==
-Date: Sun, 13 Jul 2025 14:31:49 +0100
+	b=cdivMPP9gmyMal7Nz7Wbd/EGgmLpj9fDl8OwcZ4G+mx29lSB8u6s86519fxpUEi4Z
+	 XVtHYlbWjRcaS8MaQ2xI6SyDaLN0B/5fZbUXxhluZKS8R8FI/68jQpwNyk7RxjeMuX
+	 niU8g8i2Qtrkum09IYF/jhGwEErAQiDrTOkkvcBMJsu9aZhdBuKw1VS7oDNxsmpXQl
+	 rCKFxaYRrAMrI0LuC7Rhn+R9xMdevwEJr9X/fPJXzJYgSvdzAGT8K5pusYzS1MDXAz
+	 hUetqiWXI28yhZx6sDH9HYLSQDmK4wWaeh34OVmB/6R+z55qTKzG5Oxa7t+u28w+P7
+	 8tsZyQLgDNZRQ==
+Date: Sun, 13 Jul 2025 14:42:14 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Jishnu Prakash <jishnu.prakash@oss.qualcomm.com>
-Cc: robh@kernel.org, krzysztof.kozlowski@linaro.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, agross@kernel.org, andersson@kernel.org,
- lumag@kernel.org, dmitry.baryshkov@oss.qualcomm.com,
- konradybcio@kernel.org, daniel.lezcano@linaro.org, sboyd@kernel.org,
- amitk@kernel.org, thara.gopinath@gmail.com, lee@kernel.org,
- rafael@kernel.org, subbaraman.narayanamurthy@oss.qualcomm.com,
- david.collins@oss.qualcomm.com, anjelique.melendez@oss.qualcomm.com,
- quic_kamalw@quicinc.com, rui.zhang@intel.com, lukasz.luba@arm.com,
- devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-pm@vger.kernel.org, cros-qcom-dts-watchers@chromium.org,
- quic_skakitap@quicinc.com, neil.armstrong@linaro.org,
- stephan.gerhold@linaro.org
-Subject: Re: [PATCH V6 4/5] iio: adc: Add support for QCOM PMIC5 Gen3 ADC
-Message-ID: <20250713143149.60763b52@jic23-huawei>
-In-Reply-To: <5b55acbf-065d-4383-a816-82561bf91273@oss.qualcomm.com>
-References: <20250509110959.3384306-1-jishnu.prakash@oss.qualcomm.com>
-	<20250509110959.3384306-5-jishnu.prakash@oss.qualcomm.com>
-	<20250511140418.33171ca3@jic23-huawei>
-	<ff19780e-5bbd-4074-9db3-b4f27922a093@oss.qualcomm.com>
-	<20250628173112.63d9334e@jic23-huawei>
-	<5b55acbf-065d-4383-a816-82561bf91273@oss.qualcomm.com>
+To: "Shen Jianping (ME-SE/EAD2)" <Jianping.Shen@de.bosch.com>
+Cc: "lars@metafoo.de" <lars@metafoo.de>, "robh@kernel.org"
+ <robh@kernel.org>, "krzk+dt@kernel.org" <krzk+dt@kernel.org>,
+ "conor+dt@kernel.org" <conor+dt@kernel.org>, "dima.fedrau@gmail.com"
+ <dima.fedrau@gmail.com>, "marcelo.schmitt1@gmail.com"
+ <marcelo.schmitt1@gmail.com>, "linux-iio@vger.kernel.org"
+ <linux-iio@vger.kernel.org>, "devicetree@vger.kernel.org"
+ <devicetree@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+ <linux-kernel@vger.kernel.org>, "Lorenz Christian (ME-SE/EAD2)"
+ <Christian.Lorenz3@de.bosch.com>, "Frauendorf Ulrike (ME/PJ-SW3)"
+ <Ulrike.Frauendorf@de.bosch.com>, "Dolde Kai (ME-SE/PAE-A3)"
+ <Kai.Dolde@de.bosch.com>
+Subject: Re: [PATCH v3 2/2] iio: imu: smi330: Add driver
+Message-ID: <20250713144214.6ee02f59@jic23-huawei>
+In-Reply-To: <AM8PR10MB47217D838CA7DDACBE162D15CD49A@AM8PR10MB4721.EURPRD10.PROD.OUTLOOK.COM>
+References: <20250703153823.806073-1-Jianping.Shen@de.bosch.com>
+	<20250703153823.806073-3-Jianping.Shen@de.bosch.com>
+	<20250706175328.7207d847@jic23-huawei>
+	<AM8PR10MB47217D838CA7DDACBE162D15CD49A@AM8PR10MB4721.EURPRD10.PROD.OUTLOOK.COM>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -76,97 +72,94 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 10 Jul 2025 12:14:13 +0530
-Jishnu Prakash <jishnu.prakash@oss.qualcomm.com> wrote:
+On Wed, 9 Jul 2025 19:38:18 +0000
+"Shen Jianping (ME-SE/EAD2)" <Jianping.Shen@de.bosch.com> wrote:
 
 > Hi Jonathan,
 > 
-> On 6/28/2025 10:01 PM, Jonathan Cameron wrote:
-> > 
-> >   
-> >>>> +	.hw_settle_1 = (unsigned int [VADC_HW_SETTLE_SAMPLES_MAX])
-> >>>> +				{ 15, 100, 200, 300, 400, 500, 600, 700,
-> >>>> +				  1000, 2000, 4000, 8000, 16000, 32000,
-> >>>> +				  64000, 128000 },    
-> >>> Andy often points this out, but I'll do it this time. Fixed numbers (typically power of 2)
-> >>> elements per line make it much easier to see which element is which in these arrays.
-> >>> Reduce the indent a little to allow that here.    
+> "available_scan_masks" works not as expected.  We test it using kernel version v6.16. see the test result inline.
 > 
-> ...
+> Best Regards 
+> Jianping 
 > 
-> >>>
-> >>> It was never worth bothering with release until we had devm managed form but
-> >>> now we do the code complexity cost is low enough to make it reasonable.
-> >>>     
-> >>>> +	indio_dev->name = pdev->name;    
-> >>>
-> >>> Just to check.  Does that end up as a part number or similar?    
-> >>
-> >> I printed this name and it appeared like this:
-> >>
-> >> indio_dev->name: c426000.spmi:pmic@0:adc@9000
-> >>
-> >> It only gets the DT node names, which are generic, there are 
-> >> no part numbers in this name.  
-> > I thought it might be something along those lines.
-> > 
-> > indio_dev->name should be the part number so hard code it rather than
-> > getting it from the pdev->name
-> >   
+> >> +
+> >> +static irqreturn_t smi330_trigger_handler(int irq, void *p) {
+> >> +	struct iio_poll_func *pf = p;
+> >> +	struct iio_dev *indio_dev = pf->indio_dev;
+> >> +	struct smi330_data *data = iio_priv(indio_dev);
+> >> +	int ret, chan;
+> >> +	int i = 0;
+> >> +
+> >> +	ret = regmap_bulk_read(data->regmap, SMI330_ACCEL_X_REG, data-
+> >>buf,
+> >> +			       ARRAY_SIZE(smi330_channels));
+> >> +	if (ret)
+> >> +		goto out;
+> >> +
+> >> +	if (*indio_dev->active_scan_mask != SMI330_ALL_CHAN_MSK) {
+> >> +		iio_for_each_active_channel(indio_dev, chan)
+> >> +			data->buf[i++] = data->buf[chan];  
+> >
+> >If I follow this correctly you are reading all the channels and just copying out the
+> >ones you want.  Just let the IIO core do that for you by setting iio_dev-  
+> >>available_scan_masks = {  SMI330_ALL_CHAN_MSK, 0 }; and push the whole  
+> >buffer every time.  
 > 
-> Actually there would be more than one PMIC which can function as the master PMIC
-> for Gen3 ADC functionality, so I don't think I can simply hard code a name here
-> based on PMK8550, if we want to keep the part number correct.
-> 
-> Since we can't get the part number directly from the DT node names, we
-> could try one of the following ways to add it:
-> 
-> 1. Add a devicetree property for the part number
->    This would be simple, but I'm not sure if this is the best way, 
->    if the below method looks good.
-Nope as if you need a part number, that's should be via the compatible.
-> 
-> 2. Add a string in the compatible property for the part number.
->    This means updating the compatible from "qcom,spmi-adc5-gen3"
->    to something like this for PMK8550:
-> 
->    compatible = "qcom,pmk8550-adc5-gen3", "qcom,spmi-adc5-gen3";
-> 
->    and then extracting the part number from the first string.
+> For the most frequent use cases, we define available_scan_masks = { SMI330_ALL_CHAN_MSK, SMI330_ACC_XYZ_MSK, SMI330_GYRO_XYZ_MSK, 0 }; and push the whole buffer every time.
+> From the user space we just enable 3 channels gyro_x, gyro_y, and gyro_z. Then we enable buffer and expect that only the gyro values and timestamp in iio_buffer. Nevertheless, we have 3 accelerometer values and the timestamp in iio_buffer.
 
-Do it via a compatible lookup + data in relevant tables rather
-than messing with string break up.  Sometimes we'll get the
-part number of the fallback compatible but I don't really care.
-However, see below - I think spmi-adc5-gen3 is effectively the
-part number for the IP. It just happens to be inside a PMIC
-that has another name.
+> It seems that the iio core does not take care which channel is enabled,  just copy the first 3 values (acc x,y,z) into iio_buffer.  Our driver code still needs to take care and just copy the enabled channel value to buffer.
+
+Look again at how it works.  If you provide ACC_XYZ_MSK, then your driver has to handle it.
+available_scan_masks is saying what your driver supports. The driver can check active_scan_mask
+to find out what is enabled.  So right option here is only
+{ SMI330_ALL_CHAN_MSK, 0, }  In that case the driver never needs to check as there is only
+one option.
+
+Then if any subset of channels is enabled the IIO core copy out just the data that
+is relevant.
+
 
 > 
-> Please let me know which method you would prefer.
+> Another side effect after using available_scan_masks is that the active_scan_masks sometimes does not reflect current channel activation status.
 > 
-> In addition, does the below string look fine, to assign to
-> indio_dev->name for PMK8550?
-> 
-> pmk8550_adc
+> Is some step missing to properly use available_scan_masks ?  How can a user find out from user space which channel combination is defined in available_scan_masks ?
 
-That's ok, though given it's an ADC anyway, pmk8550 should be sufficient
-for this IIO specific name.
-If it makes no practical difference what PMIC it is for this driver
-then simply use spmi-adc5-gem3 or something along those lines.
-So kind of a generic part number for the IP rather than specifics of
-which PMIC it is implemented in.
+Why would userspace want to?  Userspace requested a subset of channels
+and it gets that subset.  So it if asks for the channels that make up
+SMI330_ACC_XYZ_MSK, if available_scan_mask == { SMI330_ALL_CHAN_MSK, 0 } then
+the IIO core handling selects SMI330_ALL_CHAN_MSK (smallest available mask that
+is superset of what we asked for) and sets active_scan_mask to that.  The driver
+follows what active_scan_mask specifies and passes all channel data via
+the iio_push_to_buffers*() call. The demux in the IIO core than takes that
+'scan' and repacks it so that userspace receives just the data it asked for
+formatting exactly as the driver would have done it if you had handled
+each channels separately in the driver.
+
+So the aim is that userspace never knows anything about this.  Just set
+what channels you want and get that data. 
 
 Jonathan
 
 
 > 
-> Please let me know if you want a different format here.
-> 
-> Thanks,
-> Jishnu
-> 
-> > 
-> > Jonathan  
+> >
+> >The handling the core code is reasonably sophisticated and will use bulk
+> >copying where appropriate.
+> >
+> >If there is a strong reason to not use that, add a comment here so we don't
+> >have anyone 'fix' this code in future.
+> >  
+> >> +	}
+> >> +
+> >> +	iio_push_to_buffers_with_timestamp(indio_dev, data->buf,
+> >> +pf->timestamp);
+> >> +
+> >> +out:
+> >> +	iio_trigger_notify_done(indio_dev->trig);
+> >> +
+> >> +	return IRQ_HANDLED;
+> >> +}  
 > 
 > 
 

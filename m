@@ -1,58 +1,58 @@
-Return-Path: <linux-iio+bounces-21602-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21603-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4053B03141
-	for <lists+linux-iio@lfdr.de>; Sun, 13 Jul 2025 15:48:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8DA3B03146
+	for <lists+linux-iio@lfdr.de>; Sun, 13 Jul 2025 15:55:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 87AF07A1A80
-	for <lists+linux-iio@lfdr.de>; Sun, 13 Jul 2025 13:46:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2A851179929
+	for <lists+linux-iio@lfdr.de>; Sun, 13 Jul 2025 13:55:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CEED1F1927;
-	Sun, 13 Jul 2025 13:47:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E47F2233701;
+	Sun, 13 Jul 2025 13:55:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H9NBbMhw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SHn6xIAP"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28131839F4;
-	Sun, 13 Jul 2025 13:47:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A01C54A04;
+	Sun, 13 Jul 2025 13:55:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752414475; cv=none; b=cBDJxLe9wZNTDFwrwK9maveKKW5VoGqOGyiksverchCqbelvlJTdXoFh9XyYihPcXDpJVOBgJ/3FHFveS5seQaWCscTlQSziydZ8HbYVlb+SdTEFXmjQaTUw5L/hSSIfNg8ynfhAEbRtS2/NZlnExUvpE2p4+nLzoBC9N6GREUA=
+	t=1752414940; cv=none; b=ConfcKHxRllM2FKtckXL4nyqFSqs/dsFtLdnT0D9XzppBSl7CiVDDbfcUip8YTq5b7VgX73Unu2eZ4rX3MxBlcckB+S7NglsXXgEWf6zzzM5VcgYftWGNSRqbeNaVREJf/mzKwjd1UAwKBmnW8kpm5Be25jV71QzMzCbA5PX0AI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752414475; c=relaxed/simple;
-	bh=I4Unqd70Pah2uecg7+bI8bE+MM+Yo1QABTmHUyxoGtc=;
+	s=arc-20240116; t=1752414940; c=relaxed/simple;
+	bh=7PqKQzU5B2ABLGwVbAb33x47XXzMnaZFtJvibVZPFIs=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YNvMWwZT87+fTi01wLldRBCKPQvuwqTtY/nJukE1s7gHuLni25Zd/FkNNKToPOcEQfwbxMSD2P8i+8RsWcwGNU68v1uNwY+OLTOFNNthKn0CwWCE+QxJ5OyFBP6wVKUJ1PXkvwoFWCZtR57T5OF0kH9TnuvzmjcVD6TZXnLKRt8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H9NBbMhw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73884C4CEE3;
-	Sun, 13 Jul 2025 13:47:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=YJlNpX0PJE9Mo4/v74GtMIkXV1bveEH2QkQ5RyTjWFPJ8XcvOaORN4TH7M1zWGhS8YX85ko29VpzMahqRK/ztPQAAUCfsgefToYJGsF0sD57IGLx7lL98+GbKJOXVDAYhoDTufFRGytLxnmnTQAcQSTbelyms/linP6nehjC/2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SHn6xIAP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90663C4CEE3;
+	Sun, 13 Jul 2025 13:55:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752414475;
-	bh=I4Unqd70Pah2uecg7+bI8bE+MM+Yo1QABTmHUyxoGtc=;
+	s=k20201202; t=1752414940;
+	bh=7PqKQzU5B2ABLGwVbAb33x47XXzMnaZFtJvibVZPFIs=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=H9NBbMhwSn4KuYASYcIpn2AKaslA4nBbX3Zgbijff23Dt+gWCYI9/jt/UL854FNy1
-	 sLWIT4fRJv+L/J3KsrSZF2alcAaUpbzTUInH76Rho1hnEWnxnX0iEoZYVa+bM1Chsy
-	 Sjg9zeYhyHU7tqe0B6cqe6Kpwjkid6oeZE0JZIhjmOL/AVZ6jEMaNNwc3ZZfkHeCbt
-	 s+PRJFb/pfT/bwDXRRhRkb2n1RJX15Jalbj49GsCa+U5HP0dBRuqE5LLUVq3wa96dR
-	 I73lkAuaAPuRi037nwTZFYjwyMqZSYaYwXCdYhMllQwEFlB0dICgvfk27LynZhr+mH
-	 fhLclxvIzz7rw==
-Date: Sun, 13 Jul 2025 14:47:47 +0100
+	b=SHn6xIAPIiQEbMEaNfK1yUXqIZ3p9jqJsvZ6C/eYYq9YFReR2Wo5/K87y/p4kM+ez
+	 Qsy3vriD+fnmFYqOC/J4N3SxyqWHuWZN2gk/mTp4shUPnO0PZtkhuDpkGsz4DyVDbk
+	 ous1heOkTHsHIF5DREkVfPNTarwU3smr2VI9q8R7SXNkIxL2jm+kux+EDd8Mdk7E0v
+	 dOxzhHWtgIbNxtZhjNZ9ei5r1jg51taP+5GQ5wPCRHoMhmVBn9nE2Y4o868dq3dN7U
+	 /yUZYYzbACUw2sfEGqEjdM/LwUsNb4zI5JXqAUt8BoxjF/9CGNccQuXr0G9d6NNZiB
+	 YTllkR5bUiLDg==
+Date: Sun, 13 Jul 2025 14:55:33 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Sean Nyekjaer <sean@geanix.com>
-Cc: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>, David Lechner
- <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy
- Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: imu: inv_icm42600: fix temperature reading if
- accel/gyro is off
-Message-ID: <20250713144747.667aac5f@jic23-huawei>
-In-Reply-To: <20250708-icm42temp-v1-1-81af60aab82a@geanix.com>
-References: <20250708-icm42temp-v1-1-81af60aab82a@geanix.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: David Lechner <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: proximity: sx9500: use stack allocated buffer for
+ scan data
+Message-ID: <20250713145533.5a3d4336@jic23-huawei>
+In-Reply-To: <aHE-8VDgQ7WuoA_y@smile.fi.intel.com>
+References: <20250711-iio-use-more-iio_declare_buffer_with_ts-4-v1-1-1a1e521cf747@baylibre.com>
+	<aHE-8VDgQ7WuoA_y@smile.fi.intel.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,53 +63,22 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 08 Jul 2025 14:09:17 +0200
-Sean Nyekjaer <sean@geanix.com> wrote:
+On Fri, 11 Jul 2025 19:42:25 +0300
+Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
 
-> Avoid return invalid argument if one tries to read the temperature,.
-> if both the accelerometer and gyro are off. Power the accelerometer on
-> before reading the temperature.
-> The original state will be restored by runtine_suspend() or the next
-> reading of the accelerometer.
-I'm not sure we are going ahead with this anyway given the other thread,
-but if we did, then relying on runtime_put() in read of a different
-channel seems like a bad design. If we think someone is interested
-in reading the temperature of this sensor, are they guaranteed to
-also be reading the acceleration?
+> On Fri, Jul 11, 2025 at 10:47:57AM -0500, David Lechner wrote:
+> > Use IIO_DECLARE_BUFFER_WITH_TS() to declare a stack allocated buffer
+> > in sx9500_trigger_handler(). Since the scan buffer isn't used outside
+> > of this function, it doesn't need to be in struct sx9500_data.
+> > 
+> > By always allocating enough space for the maximum number of channels,
+> > we can avoid having to reallocate the buffer each time buffered reads
+> > are enabled.  
+> 
+> Ag ood one!
+> 
+> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> 
 
-> 
-> Signed-off-by: Sean Nyekjaer <sean@geanix.com>
-> ---
->  drivers/iio/imu/inv_icm42600/inv_icm42600_core.c | 11 ++++++++---
->  1 file changed, 8 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-> index a4d42e7e21807f7954def431e9cf03dffaa5bd5e..f97376bc8bb3dd225236e3f5036fd58af4af35ac 100644
-> --- a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-> +++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-> @@ -399,9 +399,14 @@ int inv_icm42600_set_gyro_conf(struct inv_icm42600_state *st,
->  int inv_icm42600_set_temp_conf(struct inv_icm42600_state *st, bool enable,
->  			       unsigned int *sleep_ms)
->  {
-> -	return inv_icm42600_set_pwr_mgmt0(st, st->conf.gyro.mode,
-> -					  st->conf.accel.mode, enable,
-> -					  sleep_ms);
-> +	enum inv_icm42600_sensor_mode accel = st->conf.accel.mode;
-> +
-> +	if (st->conf.gyro.mode == INV_ICM42600_SENSOR_MODE_OFF &&
-> +	    st->conf.accel.mode == INV_ICM42600_SENSOR_MODE_OFF)
-> +		accel = INV_ICM42600_SENSOR_MODE_LOW_POWER;
-> +
-> +	return inv_icm42600_set_pwr_mgmt0(st, st->conf.gyro.mode, accel,
-> +					  enable, sleep_ms);
->  }
->  
->  int inv_icm42600_enable_wom(struct inv_icm42600_state *st)
-> 
-> ---
-> base-commit: 3e28fa06444e7031aba0b3552cce332b776fe267
-> change-id: 20250708-icm42temp-6292abddb6e6
-> 
-> Best regards,
-
+Applied.
 

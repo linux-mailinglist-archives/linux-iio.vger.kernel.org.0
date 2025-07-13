@@ -1,509 +1,138 @@
-Return-Path: <linux-iio+bounces-21619-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21620-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15940B031D2
-	for <lists+linux-iio@lfdr.de>; Sun, 13 Jul 2025 17:40:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F7D1B031EF
+	for <lists+linux-iio@lfdr.de>; Sun, 13 Jul 2025 18:00:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 50F0C17BFE2
-	for <lists+linux-iio@lfdr.de>; Sun, 13 Jul 2025 15:40:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C7ACA189A82C
+	for <lists+linux-iio@lfdr.de>; Sun, 13 Jul 2025 16:00:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D44427BF85;
-	Sun, 13 Jul 2025 15:40:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7671372625;
+	Sun, 13 Jul 2025 16:00:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iezW1LYE"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="apHS9M+2"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A5DC1EFF96;
-	Sun, 13 Jul 2025 15:40:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73C5827F4D9
+	for <linux-iio@vger.kernel.org>; Sun, 13 Jul 2025 16:00:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752421247; cv=none; b=C0xAlY3MEfRfKHOQddHgVwGJimdh56MicBJ403NlQ8a47upS1WPfgi82ZKxPgJEAH5l0e9ahyGxLPETiLWqJU1DYLrLEfp/JUnRPBKC33rk/Ly6xgooosKQWCLUEARue8MxIjtru3EdkdxaRKtwaw5FrQtdDQjqRCFfTStHD6U4=
+	t=1752422405; cv=none; b=fo2ua3UdYF/Sfkoh9mZkpOjxuAFMv9uXIbCh/pXYBBxC5iXJdjtA0QNd9qnb6YD09D9d3eaV3KFz9N95aGAGFHmrd16IjpfgR4VEmTSXK021E3maCPI7fgjdqcq0mIPOtzdXrohF1iNFYpqfUFldq1t3aOhWYmF77h/7Ku3GXfs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752421247; c=relaxed/simple;
-	bh=WUhaWWvZWlROAQYWxmJ7AIisKbREHb1tosy6iwPFBlg=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GqxlnmCLDv/zk+p2bbpFEqCWWGt1AdFYO27ywWIfMh3zvE8VbuW3mgOGKhu5nzLQnz93rWTGzUEZvnIUO+eQCOklxgzrC4FGGrEtqFM2ZmqNY58I/YSAC4IXsLsCUhz+D/nTzi7Wkx7dicyOHYsspwHAnxR/pYoyY0YcznKHIxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iezW1LYE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CB99C4CEE3;
-	Sun, 13 Jul 2025 15:40:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752421245;
-	bh=WUhaWWvZWlROAQYWxmJ7AIisKbREHb1tosy6iwPFBlg=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=iezW1LYEBM3RL393QRtxsKNQyvaO8ApN3OPB5eW+w7wujux6FtrQdXY5XoptlOXw3
-	 X7sarYWyp02Grm3T122+7EgdnE2xP691DgaL8tw5hs2uID7mBsTnKGm8mh8Li2lZw3
-	 sb1VK9/lozanXf51TwidyZ7hUF+yWUK2gTRElmM6g4PM5eFDq+SlZkST7hjGZyrXbZ
-	 pzlwLOLLrm9WNEzlUTm4kGCvTV7yfIO926XsRjHhlZefmPosA+DNYInk6vCNFvLwEC
-	 +szRJrFIZEdiAhOKP7iLotE37gdTipSwxHZ8xIID3x6Lix/+ccegfvY/TrbaHT5syo
-	 hp6mpWUhtG50g==
-Date: Sun, 13 Jul 2025 16:40:33 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Yassine Oudjana via B4 Relay
- <devnull+y.oudjana.protonmail.com@kernel.org>
-Cc: y.oudjana@protonmail.com, Manivannan Sadhasivam <mani@kernel.org>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Bjorn Andersson
- <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, Masahiro
- Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>,
- Nicolas Schier <nicolas.schier@linux.dev>, David Lechner
- <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy
- Shevchenko <andy@kernel.org>, Luca Weiss <luca@lucaweiss.eu>,
- linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org,
- linux-iio@vger.kernel.org
-Subject: Re: [PATCH v2 4/4] iio: Add Qualcomm Sensor Manager driver
-Message-ID: <20250713164033.3488db3c@jic23-huawei>
-In-Reply-To: <20250710-qcom-smgr-v2-4-f6e198b7aa8e@protonmail.com>
-References: <20250710-qcom-smgr-v2-0-f6e198b7aa8e@protonmail.com>
-	<20250710-qcom-smgr-v2-4-f6e198b7aa8e@protonmail.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1752422405; c=relaxed/simple;
+	bh=RNZM7VeiSwJuf1WuWy49f5M7lHoQJIMon8g4vnZ5KpY=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=kdz+fzl8X+VgR32KGO56iBt/DVe9KPxSkVZI033ouYWXTyXQSIaDG4Ggpl9qORy3H4gbAnT2LaJTqEmJaTbDdeIlxcImihzzVnZb4B9FJ8sQE+9miQHtQpOZwABD/Uq06cfjUB9gVgtG6yyxBVfbOjaN0UjsEilGlBpWjHJ8PlY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=apHS9M+2; arc=none smtp.client-ip=209.85.221.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-3a577ab8c34so362324f8f.3
+        for <linux-iio@vger.kernel.org>; Sun, 13 Jul 2025 09:00:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1752422402; x=1753027202; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=vKkQ/ZqJDOz7LPkwRdAo8RGpwjZ41PyPdFDVt4/XaZs=;
+        b=apHS9M+20pNvlxb9eMqiI2zbKEGuOZ1gRPJd6RB/L9nvPhdnulpyr5afVHIpEOoQiW
+         n1zVYmIQ8UoEa84r5lvnpXVtAyI+KIrxEz5xYb+WznZnm32phNJOV60++VJcJZmTL3k7
+         /V1iI8gm6oiZZtwYMCCgbgQuoR3JIF4YMRVT2N7pJapjtZfzoUl/7Tp4wwdLq0iLPV4Z
+         z967WDoyn1ZpDEP71tLSVR0mTakSh8+UhGEQFqUQ8JqfcWAVP7LKYjr1fE97Aqc6LG7Q
+         kYRxcYfxkD4zkE+BkEmW9g5DLywTus60hb1Ds0R/BV2MGmXRAbi6ZKI8oFiyBeeU/Yu1
+         +mwA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752422402; x=1753027202;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=vKkQ/ZqJDOz7LPkwRdAo8RGpwjZ41PyPdFDVt4/XaZs=;
+        b=I0w5PSslAeiRdDG89yflZMY/OkFf7MyNGRqkYejXOwgFqdlQSZXl2qiESs/Q34s7L1
+         FSJC4Jo5czflzw+Jxslx4xvxscp2UZRRKfrO5al69SCSjwKKHBdi5K1dgGpOD8q15SPz
+         eFHRY3sX/kWW9oxfLRhRUb3uWtaYIr1fn3B2jvS2a76RDri3QHxxvu7IkUmYyBYqFnFo
+         +z0ur2pXL667zIZElTC/Kvyh42bsNQ3vCvvWGC9u97Ds4maZusqup0MO4HDGwtRIZnyB
+         r3iLVhJGCVqvxXIOecNbc7hmCYjiY9PPcniqYjU5uNITiYm5aFAHRUIJTEL63sKuBiKQ
+         M7LA==
+X-Gm-Message-State: AOJu0Yx5KvnSrxiSxntM4IIvx5RoRkiiz/XwJZ1eJb8ESHKZ8E5oFllK
+	44ySa+KcaJYJdOjzsKt+8vyWMoLjrjrA6cwNtLmA9jctoFA3Lq8BK+xvfuMPd8xDQaQ=
+X-Gm-Gg: ASbGncvY8bG6Mlz8JFkrf3abko35GfzlWsiOPtyJSaCtkt7tPAwegNms2Yz2A75RrZ6
+	6QjEBLKKDhVXVD/+KT86HveEG4QldSq/iUwF45bz7sCsvhsplEuvoS3lPNCO6iTNiKxMd8teLvb
+	7mk8J5I49agVMiFqGCnHwHJFuXs4f+nv7P3P2YKFeczN/SggPLt5/Eg90O5pTB6uhM+MAUgsSfb
+	ftXSB8ixCmFHhQw3SR07h8kPxa8X3niOgOi8jWCDpFrGHGWeO/vOtyH1Gro1APyZRpdbOI9AUGL
+	6KyUndbjEF67atjYt19bflDi2MqkHzUxvnJcI6pBFzCR4ApifW8fQjAnpl79dYQSqQ/cBBtM2CL
+	XtvX2Butv+tUm3WccRRdKh8SwZBRJdGI3eDvm
+X-Google-Smtp-Source: AGHT+IH78NCUlzVjgglGHThnEAS1j66jKtmv3BfBRuSfPf9oa5qyEFqDD7AlIw7uaMlRAnUpKpJF7Q==
+X-Received: by 2002:a05:6000:430a:b0:3a4:dbdf:7152 with SMTP id ffacd0b85a97d-3b5f2e45924mr2722298f8f.14.1752422401675;
+        Sun, 13 Jul 2025 09:00:01 -0700 (PDT)
+Received: from [127.0.1.1] ([178.197.222.89])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b5e8dc23cfsm10244123f8f.37.2025.07.13.09.00.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 13 Jul 2025 09:00:01 -0700 (PDT)
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 0/4] iio: Few cleanups to vf610 and ti-adc12138
+Date: Sun, 13 Jul 2025 17:59:54 +0200
+Message-Id: <20250713-iio-clk-get-enabled-v1-0-70abc1f9ce6c@linaro.org>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAPrXc2gC/x3MQQqAIBBA0avErBtIs5KuEi3KxhoSDY0IorsnL
+ d/i/wcSRaYEffFApIsTB58hygLMNvmVkJdskJVsqk7UyBzQuB1XOpH8NDtaUHWtUloabW0NuTw
+ iWb7/6zC+7wffaXsNZQAAAA==
+X-Change-ID: 20250713-iio-clk-get-enabled-4764482c8ff3
+To: Jonathan Cameron <jic23@kernel.org>, 
+ David Lechner <dlechner@baylibre.com>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Andy Shevchenko <andy@kernel.org>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=767;
+ i=krzysztof.kozlowski@linaro.org; h=from:subject:message-id;
+ bh=RNZM7VeiSwJuf1WuWy49f5M7lHoQJIMon8g4vnZ5KpY=;
+ b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBoc9f8v8yLMk2vBXgG1Tj0AT6qGXDzTlR5fo1RF
+ 5gjZSjUj5CJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCaHPX/AAKCRDBN2bmhouD
+ 18EZD/wIW/wgLIgyWy/YLErgNmhID0SdIWiATp+qMtjml/jCl6IsPp52oBM1Uwyk5wUPkDddL/Y
+ 6nktnZgskh/9XD6fKNmvHJujDgVewueutwoCFt2Zzm36+YlSHbt+rqVEpsD5b9xNcoJZkhUydnA
+ 5bFdse3dy/UKpT9vH1QxmPLE6zQFlq4S5CRvEC8rIXtUIPsqBt+WkpDSlinfc4fgeXhdPMVdJKs
+ hCsvzYoOQBf9PK4CmpDUyys9Izb5CKAEhSmmmTAsXeFl96V7CvPH+IGwpqIdbNpAuAcO191n8VN
+ k4yb36EJm+ToiEZp7Cbi9xokQjTsAX6U+9hkJfld6wOAzBg4+8cxZSbU7q0s2CeDaFh475Ywg10
+ J9l6qRF53etJCt6/iGza6wxxfKsf3ZCeEJ41DIdFsyEgrHeCklYS9mr2KcSl+3rb9tX3GnqY6cV
+ 3bkIRCnmfmAxyGCchSEXfNBvvTOpAiXGjkPtSWCbZ+LsMEAnCNY/nQxpQBHm2Adztidn024b8Jt
+ m03uvxvIa6njYZE+89AI7lD5umAaZyoSHkXI6QPxvXPGfexlhrtgOnTnWQikVjx+Gb1RMCF25Lv
+ vJc1JsSOOl5E72YucWKxy4dMThT248xuvO+FkGaiFj8uSFNJycaRTFrBy7IbHEoTKMV8L6to74O
+ +QYnF8IugQI7EuQ==
+X-Developer-Key: i=krzysztof.kozlowski@linaro.org; a=openpgp;
+ fpr=9BD07E0E0C51F8D59677B7541B93437D3B41629B
 
-On Thu, 10 Jul 2025 09:06:30 +0100
-Yassine Oudjana via B4 Relay <devnull+y.oudjana.protonmail.com@kernel.org> wrote:
+Just few cleanups.  Not tested on hardware.  Only the first patch could
+have an observable effect.
 
-> From: Yassine Oudjana <y.oudjana@protonmail.com>
-> 
-> Add a driver for sensors exposed by the Qualcomm Sensor Manager service,
-> which is provided by SLPI or ADSP on Qualcomm SoCs. Supported sensors
-> include accelerometers, gyroscopes, pressure sensors, proximity sensors
-> and magnetometers.
-> 
-> Signed-off-by: Yassine Oudjana <y.oudjana@protonmail.com>
+Best regards,
+Krzysztof
 
-As Andy commented - this is big.  Break it up for v3.
+---
+Krzysztof Kozlowski (4):
+      iio: adc: ti-adc12138: Simplify with devm_clk_get_enabled()
+      iio: adc: vf610: Drop -ENOMEM error message
+      iio: adc: vf610: Simplify with dev_err_probe
+      iio: dac: vf610: Simplify with devm_clk_get_enabled()
 
-So far I haven't understood why a separate accelerometer driver was necessary.
-Some comments in the patch description would perhaps help me understand that.
+ drivers/iio/adc/ti-adc12138.c | 30 +++++++++++-------------------
+ drivers/iio/dac/vf610_dac.c   | 23 +++++------------------
+ 2 files changed, 16 insertions(+), 37 deletions(-)
+---
+base-commit: a62b7a37e6fcf4a675b1548e7c168b96ec836442
+change-id: 20250713-iio-clk-get-enabled-4764482c8ff3
 
-> diff --git a/drivers/iio/accel/qcom_smgr_accel.c b/drivers/iio/accel/qcom_smgr_accel.c
-> new file mode 100644
-> index 0000000000000000000000000000000000000000..ce854312d1d9386300785f1965d5886c16995806
-> --- /dev/null
-> +++ b/drivers/iio/accel/qcom_smgr_accel.c
-> @@ -0,0 +1,138 @@
-
-
-> +static void qcom_smgr_accel_remove(struct platform_device *pdev)
-> +{
-> +	struct qcom_smgr_sensor *sensor = platform_get_drvdata(pdev);
-> +
-> +	sensor->iio_dev = NULL;
-
-Add a comment for why this is needed. I can't immediately spot anything
-explicitly checking it so it doesn't seem to be about safe handling
-of device removal or similar.
-
-
-> +}
-> +
-> +static const struct platform_device_id qcom_smgr_accel_ids[] = {
-> +	{ .name = "qcom-smgr-accel" },
-> +	{ /* sentinel */ }
-> +};
-> +MODULE_DEVICE_TABLE(platform, qcom_smgr_accel_ids);
-> +
-> +static struct platform_driver qcom_smgr_accel_driver = {
-> +	.probe = qcom_smgr_accel_probe,
-> +	.remove = qcom_smgr_accel_remove,
-> +	.driver	= {
-> +		.name = "qcom_smgr_accel",
-> +	},
-> +	.id_table = qcom_smgr_accel_ids,
-> +};
-> +module_platform_driver(qcom_smgr_accel_driver);
-> +
-> +MODULE_AUTHOR("Yassine Oudjana <y.oudjana@protonmail.com>");
-> +MODULE_DESCRIPTION("Qualcomm Sensor Manager accelerometer driver");
-> +MODULE_LICENSE("GPL");
-
-I'm struggling to understand what the relationship between this driver
-the main sensor driver is.
-
-> diff --git a/drivers/iio/common/qcom_smgr/qcom_smgr.c b/drivers/iio/common/qcom_smgr/qcom_smgr.c
-> new file mode 100644
-> index 0000000000000000000000000000000000000000..79d1160f7a5c32f1a9e0a20f29e304e5cb18be8f
-> --- /dev/null
-> +++ b/drivers/iio/common/qcom_smgr/qcom_smgr.c
-> @@ -0,0 +1,840 @@
-
-> +static void qcom_smgr_buffering_report_handler(struct qmi_handle *hdl,
-> +					       struct sockaddr_qrtr *sq,
-> +					       struct qmi_txn *txn,
-> +					       const void *data)
-> +{
-> +	struct qcom_smgr *smgr =
-> +		container_of(hdl, struct qcom_smgr, sns_smgr_hdl);
-> +	const struct sns_smgr_buffering_report_ind *ind = data;
-> +	struct qcom_smgr_sensor *sensor;
-> +	struct qcom_smgr_iio_data iio_data;
-> +	int temp;
-> +	u8 i, j;
-> +
-> +	for (i = 0; i < smgr->sensor_count; ++i) {
-> +		sensor = &smgr->sensors[i];
-> +
-> +		/* Find sensor matching report */
-> +		if (sensor->id == ind->report_id)
-> +			break;
-> +	}
-> +
-> +	if (i == smgr->sensor_count) {
-> +		dev_warn_ratelimited(smgr->dev,
-> +			"Received buffering report with unknown ID: %02x",
-> +			ind->report_id);
-> +		return;
-> +	}
-> +
-> +	/*
-> +	 * Construct data to be passed to IIO. Since we are matching report rate
-> +	 * with sample rate, we only get a single sample in every report.
-> +	 */
-> +	for (j = 0; j < ARRAY_SIZE(ind->samples[0].values); ++j)
-> +		iio_data.values[j] = ind->samples[0].values[j];
-> +
-> +	/*
-> +	 * SMGR reports sensor data in 32-bit fixed-point values, with 16 bits
-> +	 * holding the integer part and the other 16 bits holding the numerator
-> +	 * of a fraction with the denominator 2**16.
-> +	 *
-> +	 * Proximity sensor values are reported differently from other sensors.
-> +	 * The value reported is a boolean (0 or 1, still in the same fixed-point
-> +	 * format) where 1 means the sensor is activated, i.e. something is
-> +	 * within its range. Use the reported range to pass an actual distance
-> +	 * value to IIO. We pass the sensor range when nothing is within range
-> +	 * (sensor maxed out) and 0 when something is within range (assume
-> +	 * sensor is covered).
-> +	 */
-> +	if (sensor->type == SNS_SMGR_SENSOR_TYPE_PROX_LIGHT) {
-> +		temp = le32_to_cpu(iio_data.values[0]);
-> +		temp >>= SMGR_VALUE_DECIMAL_OFFSET;
-> +		temp = ~temp & 1;
-> +		temp *= sensor->data_types[0].range;
-> +		iio_data.values[0] = cpu_to_le32(temp);
-> +	}
-> +
-> +	iio_push_to_buffers(sensor->iio_dev, &iio_data);
-You have a structure with space for timestamps but don't provide one which
-is odd.  Either don't make space, or provide it.
-
-> +}
-
-> +
-> +static int qcom_smgr_sensor_predisable(struct iio_dev *iio_dev)
-> +{
-> +	struct qcom_smgr *smgr = dev_get_drvdata(iio_dev->dev.parent);
-> +	struct qcom_smgr_iio_priv *priv = iio_priv(iio_dev);
-> +	struct qcom_smgr_sensor *sensor = priv->sensor;
-> +
-> +	dev_info(smgr->dev, "disable buffering %02x\n", sensor->id);
-
-Too nosy. dev_dbg()
-
-> +	return qcom_smgr_request_buffering(smgr, sensor, false);
-> +}
-
-> +static int qcom_smgr_iio_read_raw(struct iio_dev *iio_dev,
-> +				  struct iio_chan_spec const *chan, int *val,
-> +				  int *val2, long mask)
-> +{
-> +	struct qcom_smgr_iio_priv *priv = iio_priv(iio_dev);
-> +
-> +	switch (mask) {
-
-No sysfs access at all to data is unusual but not completely unheard of.
-
-> +	case IIO_CHAN_INFO_SAMP_FREQ:
-> +		*val = priv->sensor->data_types[0].cur_sample_rate;
-> +		return IIO_VAL_INT;
-> +	case IIO_CHAN_INFO_SCALE:
-> +		*val = 1;
-> +		*val2 = 1 << SMGR_VALUE_DECIMAL_OFFSET;
-> +		return IIO_VAL_FRACTIONAL;
-> +	default:
-> +		return -EINVAL;
-> +	}
-
-> +
-> +static const struct iio_chan_spec qcom_smgr_pressure_iio_channels[] = {
-> +	{
-> +		.type = IIO_PRESSURE,
-> +		.scan_index = 0,
-> +		.scan_type = {
-> +			.sign = 'u',
-> +			.realbits = 32,
-> +			.storagebits = 32,
-> +			.endianness = IIO_LE,
-> +		},
-> +		.info_mask_separate = BIT(IIO_CHAN_INFO_SCALE) |
-> +				      BIT(IIO_CHAN_INFO_SAMP_FREQ)
-> +	},
-> +	{
-> +		.type = IIO_TIMESTAMP,
-> +		.channel = -1,
-> +		.scan_index = 3,
-
-Why 3?
-
-> +		.scan_type = {
-> +			.sign = 'u',
-> +			.realbits = 32,
-
-If it's realbits 32 and no shift, why not store it in a 32 bit value?
-I assume this is a hardware provided timestamp rather than typical software
-filled in one?  Anyhow, I'm not immediately spotting it being used yet
-so for now perhaps best to drop the channel descriptions.
-
-> +			.storagebits = 64,
-> +			.endianness = IIO_LE,
-> +		},
-> +	}
-> +};
-
-> +static int qcom_smgr_register_sensor(struct qcom_smgr *smgr,
-> +				     struct qcom_smgr_sensor *sensor)
-> +{
-> +	struct iio_dev *iio_dev;
-> +	struct qcom_smgr_iio_priv *priv;
-> +	int ret;
-
-> +	sensor->iio_dev = iio_dev;
-> +
-> +	ret = devm_iio_kfifo_buffer_setup(smgr->dev, iio_dev,
-> +					  &qcom_smgr_buffer_ops);
-> +	if (ret) {
-> +		dev_err(smgr->dev, "Failed to setup buffer: %pe\n",
-
-Use return dev_err_probe() for all errors that occur in code that only
-runs at probe() time.
-
-> +			ERR_PTR(ret));
-> +		return ret;
-> +	}
-> +
-> +	ret = devm_iio_device_register(smgr->dev, iio_dev);
-> +	if (ret) {
-> +		dev_err(smgr->dev, "Failed to register IIO device: %pe\n",
-> +			ERR_PTR(ret));
-> +		return ret;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static int qcom_smgr_probe(struct qrtr_device *qdev)
-> +{
-> +	struct qcom_smgr *smgr;
-> +	int i, j;
-> +	int ret;
-> +
-> +	smgr = devm_kzalloc(&qdev->dev, sizeof(*smgr), GFP_KERNEL);
-> +	if (!smgr)
-> +		return -ENOMEM;
-> +
-> +	smgr->dev = &qdev->dev;
-> +
-> +	smgr->sns_smgr_info.sq_family = AF_QIPCRTR;
-> +	smgr->sns_smgr_info.sq_node = qdev->node;
-> +	smgr->sns_smgr_info.sq_port = qdev->port;
-> +
-> +	dev_set_drvdata(&qdev->dev, smgr);
-This code is a bit random on whether it uses qdev->dev, or smgr->dev
-
-I'd be tempted to just introce
-	struct device *dev = &qdev->dev; and use that pretty much everywhere.
-
-> +
-> +	ret = qmi_handle_init(&smgr->sns_smgr_hdl,
-> +			      SNS_SMGR_SINGLE_SENSOR_INFO_RESP_MAX_LEN, NULL,
-> +			      qcom_smgr_msg_handlers);
-> +	if (ret < 0)
-> +		return dev_err_probe(smgr->dev, ret,
-> +			"Failed to initialize sensor manager handle\n");
-> +
-> +	ret = devm_add_action_or_reset(smgr->dev,
-> +				       (void(*)(void *))qmi_handle_release,
-
-I'd much prefer a local wrapper to casting types of functions.
-
-> +				       &smgr->sns_smgr_hdl);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = qcom_smgr_request_all_sensor_info(smgr, &smgr->sensors);
-> +	if (ret < 0)
-> +		return dev_err_probe(smgr->dev, ret,
-> +			"Failed to get available sensors\n");
-> +
-> +	smgr->sensor_count = ret;
-> +
-> +	/* Get primary and secondary sensors from each sensor ID */
-> +	for (i = 0; i < smgr->sensor_count; i++) {
-> +		ret = qcom_smgr_request_single_sensor_info(smgr,
-> +							   &smgr->sensors[i]);
-> +		if (ret < 0)
-> +			return dev_err_probe(smgr->dev, ret,
-> +				"Failed to get sensors from ID 0x%02x\n",
-> +				smgr->sensors[i].id);
-> +
-> +		for (j = 0; j < smgr->sensors[i].data_type_count; j++) {
-> +			/* Default to maximum sample rate */
-> +			smgr->sensors[i].data_types->cur_sample_rate =
-> +				smgr->sensors[i].data_types->max_sample_rate;
-> +
-> +			dev_dbg(smgr->dev, "0x%02x,%d: %s %s\n",
-> +				smgr->sensors[i].id, j,
-> +				smgr->sensors[i].data_types[j].vendor,
-> +				smgr->sensors[i].data_types[j].name);
-> +		}
-> +
-> +		/* Skip if sensor type is not supported */
-> +		if (smgr->sensors[i]->type == SNS_SMGR_SENSOR_TYPE_UNKNOWN ||
-> +		    !qcom_smgr_sensor_type_iio_channels[smgr->sensors[i]->type])
-> +			continue;
-> +
-> +		ret = qcom_smgr_register_sensor(smgr, &smgr->sensors[i]);
-> +		if (ret)
-> +			return dev_err_probe(smgr->dev, ret,
-> +				"Failed to register sensor 0x%02x\n",
-> +				smgr->sensors[i].id);
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static const struct qrtr_device_id qcom_smgr_qrtr_match[] = {
-> +	{
-> +		.service = SNS_SMGR_QMI_SVC_ID,
-> +		/* Found on MSM8953 */
-> +		.instance = QRTR_INSTANCE_CONST(0, 1)
-> +	},
-> +	{
-> +		.service = SNS_SMGR_QMI_SVC_ID,
-> +		/* Found on MSM8974 and MSM8226 */
-> +		.instance = QRTR_INSTANCE_CONST(1, 0)
-> +	},
-> +	{
-> +		.service = SNS_SMGR_QMI_SVC_ID,
-> +		/* Found on MSM8996 and SDM660 */
-> +		.instance = QRTR_INSTANCE_CONST(1, 50)
-> +	},
-> +	{ },
-
-No comma on a terminating entry like this.
-
-> +};
-> +MODULE_DEVICE_TABLE(qrtr, qcom_smgr_qrtr_match);
-
-
-> +const struct qmi_elem_info sns_smgr_buffering_report_ind_ei[] = {
-> +	{
-> +		.data_type = QMI_UNSIGNED_1_BYTE,
-> +		.elem_len = 1,
-> +		.elem_size = sizeof_field(struct sns_smgr_buffering_report_ind,
-> +					  report_id),
-> +		.array_type = NO_ARRAY,
-> +		.tlv_type = 0x01,
-> +		.offset = offsetof(struct sns_smgr_buffering_report_ind,
-> +				   report_id),
-> +	},
-> +	{
-> +		.data_type = QMI_STRUCT,
-> +		.elem_len = 1,
-> +		.elem_size = sizeof_field(struct sns_smgr_buffering_report_ind,
-> +					  metadata),
-> +		.array_type = NO_ARRAY,
-> +		.tlv_type = 0x02,
-> +		.offset = offsetof(struct sns_smgr_buffering_report_ind,
-> +				   metadata),
-> +		.ei_array = sns_smgr_buffering_report_metadata_ei,
-> +	},
-> +	{
-> +		.data_type = QMI_DATA_LEN,
-> +		.elem_len = 1,
-> +		.elem_size = sizeof_field(struct sns_smgr_buffering_report_ind,
-> +					  samples_len),
-> +		.array_type = NO_ARRAY,
-> +		.tlv_type = 0x03,
-> +		.offset = offsetof(struct sns_smgr_buffering_report_ind,
-> +				   samples_len),
-> +	},
-> +	{
-> +		.data_type = QMI_STRUCT,
-> +		.elem_len = SNS_SMGR_SAMPLES_MAX_LEN,
-> +		.elem_size = sizeof(struct sns_smgr_buffering_report_sample),
-> +		.array_type = VAR_LEN_ARRAY,
-> +		.tlv_type = 0x03,
-> +		.offset =
-> +			offsetof(struct sns_smgr_buffering_report_ind, samples),
-
-I'm fine with slightly over 80 chars to avoid readability issues like this.
-
-
-> diff --git a/include/linux/iio/common/qcom_smgr.h b/include/linux/iio/common/qcom_smgr.h
-> new file mode 100644
-> index 0000000000000000000000000000000000000000..fdd3de12bb0a48f1fb9e51cd0463c9a9b9ed500f
-> --- /dev/null
-> +++ b/include/linux/iio/common/qcom_smgr.h
-> @@ -0,0 +1,80 @@
-> +/* SPDX-License-Identifier: GPL-2.0-only */
-> +
-> +#ifndef __QCOM_SMGR_H__
-> +#define __QCOM_SMGR_H__
-> +
-> +#include <linux/iio/iio.h>
-> +#include <linux/iio/types.h>
-> +#include <linux/soc/qcom/qmi.h>
-> +#include <linux/types.h>
-
-> +
-> +struct qcom_smgr_sensor {
-> +	u8 id;
-> +	enum qcom_smgr_sensor_type type;
-> +
-> +	u8 data_type_count;
-> +	/*
-> +	 * Only SNS_SMGR_DATA_TYPE_PRIMARY is used at the moment, but we store
-> +	 * SNS_SMGR_DATA_TYPE_SECONDARY when available as well for future use.
-> +	 */
-> +	struct qcom_smgr_data_type_item *data_types;
-> +
-> +	struct iio_dev *iio_dev;
-> +};
-> +
-> +struct qcom_smgr_iio_priv {
-> +	struct qcom_smgr_sensor *sensor;
-> +
-> +	int samp_freq_vals[3];
-> +};
-> +
-> +
-> +struct qcom_smgr_iio_data {
-> +	u32 values[3];
-> +	u64 timestamp;
-
-Timestamps in kernel tend to be s64. Also for IIO buffers aligned_s64 required.
-Whilst this will probably never be used on an architecture that doesn't naturally
-align 8 byte variables, we should still code for it.
-
-Given this tends to be used locally maybe just define it where you need it.
-
-
-> +};
-
-> 
+Best regards,
+-- 
+Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
 

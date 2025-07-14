@@ -1,267 +1,200 @@
-Return-Path: <linux-iio+bounces-21631-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21632-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B318B035BF
-	for <lists+linux-iio@lfdr.de>; Mon, 14 Jul 2025 07:29:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDED6B03609
+	for <lists+linux-iio@lfdr.de>; Mon, 14 Jul 2025 07:40:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C0D131890BCD
-	for <lists+linux-iio@lfdr.de>; Mon, 14 Jul 2025 05:29:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 579643BBDB0
+	for <lists+linux-iio@lfdr.de>; Mon, 14 Jul 2025 05:39:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B25601F873E;
-	Mon, 14 Jul 2025 05:29:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A36661FE47B;
+	Mon, 14 Jul 2025 05:39:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b="tu7FzS8Z"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zxdd1Dz2"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-24421.protonmail.ch (mail-24421.protonmail.ch [109.224.244.21])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB43B1DE2A5
-	for <linux-iio@vger.kernel.org>; Mon, 14 Jul 2025 05:29:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AA831F03D9;
+	Mon, 14 Jul 2025 05:39:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752470954; cv=none; b=HT7+yCE7re42YbOChzuOnN7F4QlvRqzZEo5I4aW2JO0pl9mCq36btmYxuNBjavKCYAWKS3y9siuo60Nji/Wt0N6rAxzjWgwE6jgRGRbwFFIahPFVRanDZMk/xsFltHBIJfouZ8I/JOn4q7NWaaHCd9cMtsh5rDGJpnDaNIp3bCc=
+	t=1752471541; cv=none; b=qg4VU7JkVNRvOgjqo7sdMsOmNllvWaxK/knfybjvNm9G4z0MIcso5DaHYkqqx+OYj28C5YRFr2PSB9PjvIiRJy37aWmBPNjW7LCce9OfLGXLIdrYzt6Fjsn7X70Cp/LXXXQAOzj8crZj+0J9mwMEtxpAuGHyFbGSB/VSTLomGWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752470954; c=relaxed/simple;
-	bh=mSnCeloYHS68JOH5vVeOnQ84bGI4KJoaCMuCwtQpfqQ=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qXxCV352l69b6W6OT6m20lINwZAm5U1W4lZ87jjzTAo9RuMmrueBoxUquhVewNxH7u35dFdiBkeDo8JPJzf3JzT8ioclxHYXzjGyb/GEmqYsG3HFML7kTdsC0mhKrdaC9LbtYgxDuLPCHgV21myP2iMnc4Qavl1I+c9NkvsyQhQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=geanix.com; spf=pass smtp.mailfrom=geanix.com; dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b=tu7FzS8Z; arc=none smtp.client-ip=109.224.244.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=geanix.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=geanix.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=geanix.com;
-	s=protonmail; t=1752470947; x=1752730147;
-	bh=XRybO7aiXs2ERiQfc4O9ldG8Am2UZL9/iHzNZbKyUgY=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=tu7FzS8Z5w05MQ6ffY4zTZ7JG/5XqEhnBlHkoWHYTMSI7uMwnci5ilE60Urs91sMi
-	 CNPfPd2PEHlDQ5dodCzUL5L4tcI9x5ymd9V74dbbCFiXVZZwgB+2pNOX08kjkztb3F
-	 lbrZKaRfsHjwfLjHoSwQFLnsVxZFCMBi0IDdwiKlZQhb6btVstlKFoBBiEYMZFVVsP
-	 jwhtyRn2Htf9yt1IYwGFhmQMq3kqLNmrfEQUVOB+ltSQTG5nWAVWzyR4gSQhy8x3/c
-	 Xuiu/OMmNJeVnhKwb9pIftY67lRxa0j9RKWraYXczmyVv52XTJZeWBOpynLo8Rpxxf
-	 DGlkCpasz2Xxw==
-Date: Mon, 14 Jul 2025 05:29:00 +0000
-To: Jonathan Cameron <jic23@kernel.org>
-From: Sean Nyekjaer <sean@geanix.com>
-Cc: Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, David Lechner <dlechner@baylibre.com>, "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>, Andy Shevchenko <andy@kernel.org>
-Subject: Re: [BUG] iio: imu: inv_icm42600: read temperature, Invalid Argument
-Message-ID: <w5ury5pubvk5iavcnu5yc44mp5lplsrvxyet4vwliv3mu3m5y4@sbfiyiy3loov>
-In-Reply-To: <20250713144632.0cd2e88f@jic23-huawei>
-References: <unmlpvhl47vjdx7qqdaabhevhj3loydft4ytwxwsgefcyhbzup@zkqulwwfg37o> <FR3P281MB1757FE243D78E8F78DA6C576CE4FA@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM> <20250708113508.000027fb@huawei.com> <FR3P281MB1757E1352768510879500A3CCE4EA@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM> <20250713144632.0cd2e88f@jic23-huawei>
-Feedback-ID: 134068486:user:proton
-X-Pm-Message-ID: 678549ea66b23336420eaccaa4ee1edec2a59aa4
+	s=arc-20240116; t=1752471541; c=relaxed/simple;
+	bh=xUikFrssxeDjsZahHBVxmdWOPkTepIiKmrUKbN3HYG8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=b2NWme4nLZm7dG96/5QWHMx03D75HujnhgkShPZOp9YLl8jvFIdDuGjCvmY3X/euhwNc55sYkg94Cc6HF8WxqXlxhbAAwj6gFT9wlX2mf2hxBKuCww69Oi2pXnoE8p1rGKFh6sx/4irjPcK/1Gu9mzuT4lyEFcr4c5INd5e6hAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zxdd1Dz2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 602B9C4CEED;
+	Mon, 14 Jul 2025 05:38:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752471540;
+	bh=xUikFrssxeDjsZahHBVxmdWOPkTepIiKmrUKbN3HYG8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Zxdd1Dz2yYFaDzKSb05NfTfc5X61QmEAHYML1YsHiQ9waW30KoQB1GbpFIwkOUiij
+	 xUgbM11GW8Maj76YxLkE6Rh2pQJsfSCxTykua/m+TqVJXicJgdE7zkqRqO19ag11fn
+	 xfK3DY7P3L/kfZDSLi9xHZKma0ICyl8GNcitRPhwzTnrw+C7IkXfHlHkAVAoeDMf/i
+	 s9wZqLPyFZn1n3nVolyQyA3BvQ99iLxsKHxGmIzexEySi7fseHoZI191fx7Sa0LfDS
+	 AjESL0SQ5OcUTqzluQFUfFaNu7vum3KcNUAOqNxufjciSnVVruP5Q9YaWf0HbsKc97
+	 bRwQY2U6ZdPDw==
+Message-ID: <65d7009e-dc4a-44b4-88fe-b5c7e1ecdfc1@kernel.org>
+Date: Mon, 14 Jul 2025 07:38:56 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/8] dt-bindings: iio: imu: Add inv_icm45600
+To: remi.buisson@tdk.com, Jonathan Cameron <jic23@kernel.org>,
+ David Lechner <dlechner@baylibre.com>, =?UTF-8?Q?Nuno_S=C3=A1?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org
+References: <20250710-add_newport_driver-v2-0-bf76d8142ef2@tdk.com>
+ <20250710-add_newport_driver-v2-1-bf76d8142ef2@tdk.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <20250710-add_newport_driver-v2-1-bf76d8142ef2@tdk.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Sun, Jul 13, 2025 at 02:46:32PM +0100, Jonathan Cameron wrote:
-> On Tue, 8 Jul 2025 12:21:39 +0000
-> Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com> wrote:
->=20
-> > >
-> > >________________________________________
-> > >From:=C2=A0Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > >Sent:=C2=A0Tuesday, July 8, 2025 12:35
-> > >To:=C2=A0Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>
-> > >Cc:=C2=A0Sean Nyekjaer <sean@geanix.com>; Jonathan Cameron <jic23@kern=
-el.org>; David Lechner <dlechner@baylibre.com>; linux-iio@vger.kernel.org <=
-linux-iio@vger.kernel.org>; Andy Shevchenko <andy@kernel.org>
-> > >Subject:=C2=A0Re: [BUG] iio: imu: inv_icm42600: read temperature, Inva=
-lid Argument
-> > >=C2=A0
-> > >This Message Is From an External Sender
-> > >This message came from outside your organization.
-> > >=C2=A0
-> > >On Mon, 7 Jul 2025 18:13:33 +0000
-> > >Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com> wrote:
-> > >
-> > >> >Hi,
-> > >> >
-> > >> >I'm having some weird issues with reading the temperature of the ic=
-m42605.
-> > >> >Kernel version: 6.16.0-rc5
-> > >> >
-> > >> ># cat /sys/bus/iio/devices/iio:device2/name
-> > >> >icm42605-accel
-> > >> >
-> > >> >When reading the temperature I get:
-> > >> ># cat /sys/bus/iio/devices/iio:device2/in_temp_raw
-> > >> >cat: read error: Invalid argument
-> > >> >
-> > >> >But if I read from the accelerometer first, I will go better:
-> > >> ># cat /sys/bus/iio/devices/iio:device2/in_accel_x_raw
-> > >> >-378
-> > >> ># cat /sys/bus/iio/devices/iio:device2/in_temp_raw
-> > >> >600
-> > >> >
-> > >> >Then after "some" time, I re-read the temperature I recieve
-> > >> >"Invalid argument" again.
-> > >> >
-> > >> >I have traced the -EINVAL to inv_icm42600_temp_read() because I rec=
-eive
-> > >> >INV_ICM42600_DATA_INVALID.
-> > >> >
-> > >> >Register dump diff:
-> > >> >--- invalid-read
-> > >> >+++ ok-read
-> > >> >@@ -10,14 +10,14 @@
-> > >> > 0x1a =3D 0x00000010
-> > >> > 0x1b =3D 0x00000000
-> > >> > 0x1c =3D 0x00000000
-> > >> >-0x1d =3D 0x00000080
-> > >> >-0x1e =3D 0x00000000
-> > >> >-0x1f =3D 0x00000080
-> > >> >-0x20 =3D 0x00000000
-> > >> >-0x21 =3D 0x00000080
-> > >> >-0x22 =3D 0x00000000
-> > >> >-0x23 =3D 0x00000080
-> > >> >-0x24 =3D 0x00000000
-> > >> >+0x1d =3D 0x00000002
-> > >> >+0x1e =3D 0x00000038
-> > >> >+0x1f =3D 0x000000fe
-> > >> >+0x20 =3D 0x00000085
-> > >> >+0x21 =3D 0x000000fe
-> > >> >+0x22 =3D 0x000000df
-> > >> >+0x23 =3D 0x000000f8
-> > >> >+0x24 =3D 0x0000003a
-> > >> > 0x25 =3D 0x00000080
-> > >> > 0x26 =3D 0x00000000
-> > >> > 0x27 =3D 0x00000080
-> > >> >@@ -26,7 +26,7 @@
-> > >> > 0x2a =3D 0x00000000
-> > >> > 0x2b =3D 0x00000000
-> > >> > 0x2c =3D 0x00000000
-> > >> >-0x2d =3D 0x00000000
-> > >> >+0x2d =3D 0x00000008
-> > >> > 0x2e =3D 0x00000000
-> > >> > 0x2f =3D 0x00000000
-> > >> > 0x30 =3D 0x000000ff
-> > >> >@@ -59,11 +59,11 @@
-> > >> > 0x4b =3D 0x00000000
-> > >> > 0x4c =3D 0x00000032
-> > >> > 0x4d =3D 0x00000099
-> > >> >-0x4e =3D 0x00000000
-> > >> >+0x4e =3D 0x00000002
-> > >> > 0x4f =3D 0x00000009
-> > >> > 0x50 =3D 0x00000009
-> > >> > 0x51 =3D 0x00000016
-> > >> >-0x52 =3D 0x00000000
-> > >> >+0x52 =3D 0x00000060
-> > >> > 0x53 =3D 0x0000000d
-> > >> > 0x54 =3D 0x00000031
-> > >> > 0x55 =3D 0x00000000
-> > >> >
-> > >> >Will the iio core retry a read? If the -EINVAL is returned,
-> > >> >inv_icm42600_accel_read_raw() is call once more.
-> > >> >
-> > >> >One more thing...
-> > >> >When I'm removing the module, the kernel prints this:
-> > >> >inv-icm42600-i2c 1-0068: Runtime PM usage count underflow!
-> > >> >
-> > >> >I will continue investigate this
-> > >> >Br,
-> > >> >Sean
-> > >>
-> > >> Hello Sean,
-> > >>
-> > >> this is expected behavior since the temperature returned is not the =
-external
-> > >> temperature but the temperature of the mechanical component (MEMS). =
-It will
-> > >> only work if the chip is on, meaning accelerometer and/or gyroscope =
-is on.
-> > >>
-> > >> That's why you can get temperature after reading accel data since it=
- is
-> > >> turning the chip. But after a short while autosuspend is putting the=
- chip
-> > >> back off and you cannot read temperature anymore.
-> > >>
-> > >> You need to turn one sensor continuously on with a buffer, and then =
-you can
-> > >> read temperature all the time since the chip is running.
-> > >>
-> > >> Temperature data are here only to do temperature compensation of the=
- accel
-> > >> and gyro data.
-> > >
-> > >That is rather non-intuitive behavior.  Could we make a read of the te=
-mperature
-> > >channel turn on one of the components?  Given expected use case it sho=
-uldn't commonly
-> > >happen but if not too horrendous to implement it would be better to av=
-oid the error
-> > >seen here.
-> >
-> > Hello Jonathan,
-> >
-> > the problem here is which sensor to turn on? Accel or gyro, or accel+gy=
-ro?
-> > And the temperature reported will be completely different if it is acce=
-l
-> > and/or gyro running, since gyro is heating much more than accel.
-> >
-> > This is not a classical temperature sensor, but an internal one for mea=
-suring
-> > temperature of the mechanical part while running. The usual use case on=
- our
-> > side is polling the temperature at low frequency (10Hz, 20Hz) while acc=
-el
-> > and/or gyro are running to do temperature compensation on the data read=
-.
-> >
-> > We generally want to avoid temperature data in the FIFO because reporti=
-ng
-> > temperature at high frequency is not useful, and it is consuming space =
-in
-> > the FIFO. We prefer to have more space in the FIFO for accel and gyro d=
-ata
-> > and do polling of temperature.
-> >
-> > Temperature reporting while the chip is off makes absolutely no sense t=
-hat's
-> > why it is not supported by the chip, even if it can be non-intuitive.
-> >
-> > Perhaps we can use another error returning code rather than invalid val=
-ue?
-> > Otherwise, tell me what you think is the best to do.
->=20
-> Maybe indicate it is a temporary situation that userspace can resolve
-> by reporting -EBUSY?  I'm not sure what the best path forward here is.
->=20
-> Your explanation seems reasonable to me.  Sean, do you still believe
-> we need to make a change here?
+On 10/07/2025 10:57, Remi Buisson via B4 Relay wrote:
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  interrupts:
+> +    minItems: 1
+> +    maxItems: 2
+> +
+> +  interrupt-names:
+> +    minItems: 1
+> +    maxItems: 2
+> +    items:
+> +      enum:
+> +        - INT1
+> +        - INT2
 
-I think -EBUSY would be better, returning -EINVAL required me to read the d=
-river,
-and apply some debug printk's to see where it originated from.
+This can be simpler
 
-Returning -EBUSY and add a comment about the "issue" in
-inv_icm42600_temp_read(), would be a help.
+minItems: 1
+items:
+  - enum: [ int1, int2 ]
+  - const: int 2
 
-/Sean
+and use lowercase anyway.
 
->=20
-> Jonathan
->=20
-> >
-> > Thanks,
-> > JB
-> >
-> > >
-> > >>
-> > >> Thanks,
-> > >> JB
-> > >
-> > >
->=20
+> +    description: Choose chip interrupt pin to be used as interrupt input.
+> +
+> +  drive-open-drain:
+> +    type: boolean
+> +
+> +  vdd-supply:
+> +    description: Regulator that provides power to the sensor
+> +
+> +  vddio-supply:
+> +    description: Regulator that provides power to the bus
+> +
+> +  mount-matrix:
+> +    description: an optional 3x3 mounting rotation matrix
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - interrupts
+> +  - interrupt-names
 
+Missing supplies
+
+> +
+> +allOf:
+> +  - $ref: /schemas/spi/spi-peripheral-props.yaml#
+> +
+> +unevaluatedProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/gpio/gpio.h>
+> +    #include <dt-bindings/interrupt-controller/irq.h>
+> +    i2c {
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +
+> +        icm45605@68 {
+
+It does not look like you tested the DTS against bindings. Please run
+`make dtbs_check W=1` (see
+Documentation/devicetree/bindings/writing-schema.rst or
+https://www.linaro.org/blog/tips-and-tricks-for-validating-devicetree-sources-with-the-devicetree-schema/
+for instructions).
+Maybe you need to update your dtschema and yamllint. Don't rely on
+distro packages for dtschema and be sure you are using the latest
+released dtschema.
+
+(see how other bindings or DTS call this type of device)
+
+> +            compatible = "invensense,icm45605";
+> +            reg = <0x68>;
+> +            interrupt-parent = <&gpio2>;
+> +            interrupt-names = "INT1";
+> +            interrupts = <7 IRQ_TYPE_EDGE_RISING>;
+> +            vdd-supply = <&vdd>;
+> +            vddio-supply = <&vddio>;
+> +            mount-matrix = "0", "-1", "0",
+> +                           "1", "0", "0",
+> +                           "0", "0", "1";
+> +        };
+Best regards,
+Krzysztof
 

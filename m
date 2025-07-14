@@ -1,58 +1,57 @@
-Return-Path: <linux-iio+bounces-21634-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21635-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 192C8B037DF
-	for <lists+linux-iio@lfdr.de>; Mon, 14 Jul 2025 09:25:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BFBCB03835
+	for <lists+linux-iio@lfdr.de>; Mon, 14 Jul 2025 09:43:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 119F9189CC4C
-	for <lists+linux-iio@lfdr.de>; Mon, 14 Jul 2025 07:25:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 606881898EF4
+	for <lists+linux-iio@lfdr.de>; Mon, 14 Jul 2025 07:43:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89E86231C8D;
-	Mon, 14 Jul 2025 07:25:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFB292376E0;
+	Mon, 14 Jul 2025 07:42:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b="GFWtZe1Y"
+	dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b="EkRSI0NF"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from mail-4323.protonmail.ch (mail-4323.protonmail.ch [185.70.43.23])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 885E3236457
-	for <linux-iio@vger.kernel.org>; Mon, 14 Jul 2025 07:25:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2519D23717C
+	for <linux-iio@vger.kernel.org>; Mon, 14 Jul 2025 07:42:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.23
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752477909; cv=none; b=OziLSy6pqchB7PSETd+8Fp7D3XG9fef6wp8sUfpJ1Pzy0pdtsLqj6fs3mv/AbMB6rdanye08P1al8ufh/OtQ4XfvRYmQ51BfMlUZPjCtse3onVVE5jPo5BbSW+t9ldbzbuFvGHv7gI98uBJbFNPA24zLz7XEbWi+gzihv2gfeRA=
+	t=1752478973; cv=none; b=OFTgc39EJQeY6BavJNGpN8O7EBnyAzePnZitqqGEZ6/DvLDDltIeuiYzHTu0jApbbWA92IQggHL9sp1eEHNct5V14mdAXlg2jhx47kF3V/ielRLnzGoY4B/tuZ7fqBVBIcIYHpY6tPVtt/um8aurxs6WdeJcEcauhkIZROa0xJo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752477909; c=relaxed/simple;
-	bh=VS57y2OBSSO+rWrswC7/K7piqJT6Hks2jXVIQBEasUs=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pEFAwBgjPg49xZ2WBrtZLufjeBwAdrtWxhBZ2tV9GG5sW3CnCWfcwOWk8+gFYBLLfyT+nJxd8XsAz5CrVtrDJektyKZ79YB4W/BYoQNmGqqJuqh8/Dq/VhEVEh5XiZlJ7l1FnhDODeXCFgctcx3hGL6Sb5NjFpCc27Ogv+vVMR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=geanix.com; spf=pass smtp.mailfrom=geanix.com; dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b=GFWtZe1Y; arc=none smtp.client-ip=185.70.43.23
+	s=arc-20240116; t=1752478973; c=relaxed/simple;
+	bh=DoMzXC+w2zn7qajDwPvOgE/6aneSaT/9dXBHeIbr9l0=;
+	h=Date:To:From:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=iM/vtmIXh/g7e9lRjWt7HwRSwNV3eDzVDY8t/vYi0sy+9yxC3MdUNU5s4iGxOMfdgTXfYiNGwG4rdzP3NnyEwlhvJrQg0aFxLVTiiLspBMUllfz/M0WhWZXkZnvZ8Q3lMJosOSuHAP8KWgyg40pEFxDgsQnIyrDa+4TY+bhK7P4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=geanix.com; spf=pass smtp.mailfrom=geanix.com; dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b=EkRSI0NF; arc=none smtp.client-ip=185.70.43.23
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=geanix.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=geanix.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=geanix.com;
-	s=protonmail; t=1752477904; x=1752737104;
-	bh=u3s5VDyk7wpkXLKq6wDm6MTLrrItnjf/ovCUks1WDNk=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	s=protonmail; t=1752478969; x=1752738169;
+	bh=DoMzXC+w2zn7qajDwPvOgE/6aneSaT/9dXBHeIbr9l0=;
+	h=Date:To:From:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=GFWtZe1YYJ+e1TFUWPxdpteAT4A60+pQb62P0KVaE9bqy07mpiuvv/GAmWzbLcCo2
-	 X4bzTmXdg5R42HXvU5ztPXbNrnyT7e1rFpSWQkz700SizfKDg1tCtM10/NM50OusDv
-	 05I4emoq8hEbuL6tTm60awkhAmgXZrVpWC8KeEjDSeQOheWKfh/VpcnmtIHR6aqRKf
-	 MuQM/mBEVO8vGEp4I8GRYTHz+bPl3KdIv8vvG7K2gtZk/OG3UaqhC20i6tgRFSUaVk
-	 fyC2YJt4XBMYi2/tLDXd1RdkS1bh4i1X3Il/+PdtaZTdMzW4gxutu3fu9ovKY2aKpj
-	 teCLp8rJfEScQ==
-Date: Mon, 14 Jul 2025 07:24:57 +0000
-To: Jonathan Cameron <jic23@kernel.org>
+	b=EkRSI0NFylmF2Nb58uNdI3bksDPKKDUrWVSvCZtDaLQUTBJgC/IYj97EvgTPbDNeh
+	 0Eq6UxDqSVVf+FLSWY+2s8cnbY9TddiaFNa/QUEgDDA19jiwe/5HhmJBzHfW2twJYF
+	 XeyUXOWiQPcthDG9MQFVArUkMRtOZWAjHSCHh6MA9pj4f6zQpznQ3md14PmSNhhLIx
+	 FKKCBW6CyQj3Zto4d3XNtKVSKyfmATvezPD6sD2GzMy+b8ZnGKAHa4+aZ2VPslc4/l
+	 pSKPwKItq42iUXmCVh19Snvu9TvmTCY235BK4+0N32B5R21d64Y9dNFOY3XF2TRdiG
+	 NdFOGwqBiRKXg==
+Date: Mon, 14 Jul 2025 07:42:43 +0000
+To: Jonathan Cameron <jic23@kernel.org>, Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>, David Lechner <dlechner@baylibre.com>, =?utf-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
 From: Sean Nyekjaer <sean@geanix.com>
-Cc: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>, David Lechner <dlechner@baylibre.com>, =?utf-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
 Subject: Re: [PATCH 4/6] iio: imu: inv_icm42600: Simplify pm_runtime setup
-Message-ID: <ie3zr2mvuss2f7prksw6nuc3wonig5ju6y6hqq46upvkhovwpa@vtfc3tqwz3d5>
-In-Reply-To: <20250713152810.4483c786@jic23-huawei>
-References: <20250709-icm42pmreg-v1-0-3d0e793c99b2@geanix.com> <20250709-icm42pmreg-v1-4-3d0e793c99b2@geanix.com> <20250713152810.4483c786@jic23-huawei>
+Message-ID: <76fnxeuufv56fmfvq6odi5xz2yjtjxymz24t436zk7rtuyst4s@oihlvsoxhllp>
+In-Reply-To: <ie3zr2mvuss2f7prksw6nuc3wonig5ju6y6hqq46upvkhovwpa@vtfc3tqwz3d5>
+References: <20250709-icm42pmreg-v1-0-3d0e793c99b2@geanix.com> <20250709-icm42pmreg-v1-4-3d0e793c99b2@geanix.com> <20250713152810.4483c786@jic23-huawei> <ie3zr2mvuss2f7prksw6nuc3wonig5ju6y6hqq46upvkhovwpa@vtfc3tqwz3d5>
 Feedback-ID: 134068486:user:proton
-X-Pm-Message-ID: 6e0d97c038b625d3e8068a776533457afa012dd9
+X-Pm-Message-ID: 95e49975d778b99823cf689602b396181fbc6f0b
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -62,84 +61,93 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, Jul 13, 2025 at 03:28:10PM +0100, Jonathan Cameron wrote:
-> On Wed, 09 Jul 2025 14:35:12 +0200
-> Sean Nyekjaer <sean@geanix.com> wrote:
+On Mon, Jul 14, 2025 at 07:24:57AM +0100, Sean Nyekjaer wrote:
+> On Sun, Jul 13, 2025 at 03:28:10PM +0100, Jonathan Cameron wrote:
+> > On Wed, 09 Jul 2025 14:35:12 +0200
+> > Sean Nyekjaer <sean@geanix.com> wrote:
+> >=20
+> > > Remove unnecessary pm_runtime_get_noresume() and pm_runtime_put()
+> > > calls during probe. These are not required when the device is marked
+> > > active via pm_runtime_set_active() before enabling pm_runtime with
+> > > pm_runtime_enable().
+> > >
+> > > Also remove the redundant pm_runtime_put_sync() call from the cleanup
+> > > path, since the core is not incrementing the usage count beforehand.
+> > >
+> > > This simplifies the PM setup and avoids manipulating the usage counte=
+r
+> > > unnecessarily.
+> >=20
+> > Could we switch directly to using devm_pm_runtime_enable() for this dri=
+ver?
+> >=20
+> > At first glance looks like this code is missing the disable of autosusp=
+end
+> > that should be there (which devm_pm_runtime_enable() will also handle).
+> >=20
 >=20
-> > Remove unnecessary pm_runtime_get_noresume() and pm_runtime_put()
-> > calls during probe. These are not required when the device is marked
-> > active via pm_runtime_set_active() before enabling pm_runtime with
-> > pm_runtime_enable().
-> >
-> > Also remove the redundant pm_runtime_put_sync() call from the cleanup
-> > path, since the core is not incrementing the usage count beforehand.
-> >
-> > This simplifies the PM setup and avoids manipulating the usage counter
-> > unnecessarily.
+> I have tried to use devm_pm_runtime_enable() but on rmmod it warns
+> "unbalanced disables for regulator"
 >=20
-> Could we switch directly to using devm_pm_runtime_enable() for this drive=
-r?
+> If I remove this:
+> -=09ret =3D devm_add_action_or_reset(dev, inv_icm42600_disable_vddio_reg,=
+ st);
+> -=09if (ret)
+> -=09=09return ret;
 >=20
-> At first glance looks like this code is missing the disable of autosuspen=
-d
-> that should be there (which devm_pm_runtime_enable() will also handle).
+> Everything seems okay again. I have checked with printk's that
+> inv_icm42600_disable_vddio_reg() is called twice with
+> devm_pm_runtime_enable() used.
+> Does it make sense?
 >=20
+> /Sean
 
-I have tried to use devm_pm_runtime_enable() but on rmmod it warns
-"unbalanced disables for regulator"
+with pm_runtime_enable():
+root@v4:/data/root# insmod /tmp/inv-icm42600.ko; insmod /tmp/inv-icm42600-i=
+2c.ko
+[ 3793.713077] inv-icm42600-i2c 1-0068: no INT1 interrupt defined, fallback=
+ to first interrupt
+[ 3793.727728] inv-icm42600-i2c 1-0068: mounting matrix not found: using id=
+entity...
+[ 3793.737660] inv-icm42600-i2c 1-0068: supply vdd not found, using dummy r=
+egulator
+[ 3793.856891] inv-icm42600-i2c 1-0068: supply vddio not found, using dummy=
+ regulator
+[ 3793.866872] inv_icm42600_enable_regulator_vddio() enable vddio
+[ 3793.920739] inv_icm42600_runtime_suspend() disable vddio
+root@v4:/data/root# rmmod inv_icm42600_i2c inv_icm42600
+[ 3796.954850] inv_icm42600_runtime_resume() -> inv_icm42600_enable_regulat=
+or_vddio()
+[ 3796.954910] inv_icm42600_enable_regulator_vddio() enable vddio
+[ 3796.985140] inv_icm42600_disable_vddio_reg() disable vddio
 
-If I remove this:
--=09ret =3D devm_add_action_or_reset(dev, inv_icm42600_disable_vddio_reg, s=
-t);
--=09if (ret)
--=09=09return ret;
+with devm_pm_runtime_enable():
+root@v4:/data/root# insmod /tmp/inv-icm42600.ko; insmod /tmp/inv-icm42600-i=
+2c.ko
+[ 3852.873887] inv-icm42600-i2c 1-0068: no INT1 interrupt defined, fallback=
+ to first interrupt
+[ 3852.888715] inv-icm42600-i2c 1-0068: mounting matrix not found: using id=
+entity...
+[ 3852.898514] inv-icm42600-i2c 1-0068: supply vdd not found, using dummy r=
+egulator
+[ 3853.016890] inv-icm42600-i2c 1-0068: supply vddio not found, using dummy=
+ regulator
+[ 3853.026860] inv_icm42600_enable_regulator_vddio() enable vddio
+[ 3853.080835] inv_icm42600_runtime_suspend() disable vddio
+root@v4:/data/root# rmmod inv_icm42600_i2c inv_icm42600
+[ 3854.448461] inv_icm42600_runtime_resume() -> inv_icm42600_enable_regulat=
+or_vddio()
+[ 3854.448540] inv_icm42600_enable_regulator_vddio() enable vddio
+[ 3854.467061] inv_icm42600_runtime_suspend() disable vddio
+[ 3854.477170] inv_icm42600_disable_vddio_reg() disable vddio
+[ 3854.483835] ------------[ cut here ]------------
+[ 3854.483912] WARNING: CPU: 0 PID: 582 at drivers/regulator/core.c:3016 _r=
+egulator_disable+0x140/0x1a0
+[ 3854.497853] unbalanced disables for regulator
 
-Everything seems okay again. I have checked with printk's that
-inv_icm42600_disable_vddio_reg() is called twice with
-devm_pm_runtime_enable() used.
-Does it make sense?
+Is the way from here to remove the devm_add_action_or_reset(dev,
+inv_icm42600_disable_vddio_reg... ?
 
 /Sean
-
->=20
-> >
-> > Fixes: 31c24c1e93c3 ("iio: imu: inv_icm42600: add core of new inv_icm42=
-600 driver")
-> > Signed-off-by: Sean Nyekjaer <sean@geanix.com>
-> > ---
-> >  drivers/iio/imu/inv_icm42600/inv_icm42600_core.c | 4 +---
-> >  1 file changed, 1 insertion(+), 3 deletions(-)
-> >
-> > diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c b/drivers=
-/iio/imu/inv_icm42600/inv_icm42600_core.c
-> > index 55a29b1e2b11355598b0ede7af22857aed3ae134..1072bea11c73d09a9a0e6ea=
-9d4a5c7a72248dca7 100644
-> > --- a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-> > +++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-> > @@ -708,7 +708,6 @@ static void inv_icm42600_disable_pm(void *_data)
-> >  {
-> >  =09struct device *dev =3D _data;
-> >
-> > -=09pm_runtime_put_sync(dev);
-> >  =09pm_runtime_disable(dev);
-> >  }
-> >
-> > @@ -806,11 +805,10 @@ int inv_icm42600_core_probe(struct regmap *regmap=
-, int chip,
-> >  =09ret =3D pm_runtime_set_active(dev);
-> >  =09if (ret)
-> >  =09=09return ret;
-> > -=09pm_runtime_get_noresume(dev);
-> > +
-> >  =09pm_runtime_enable(dev);
-> >  =09pm_runtime_set_autosuspend_delay(dev, INV_ICM42600_SUSPEND_DELAY_MS=
-);
-> >  =09pm_runtime_use_autosuspend(dev);
-> > -=09pm_runtime_put(dev);
-> >
-> >  =09return devm_add_action_or_reset(dev, inv_icm42600_disable_pm, dev);
-> >  }
-> >
->=20
 
 

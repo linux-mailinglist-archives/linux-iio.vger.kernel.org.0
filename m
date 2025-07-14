@@ -1,225 +1,330 @@
-Return-Path: <linux-iio+bounces-21641-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21642-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61252B0451C
-	for <lists+linux-iio@lfdr.de>; Mon, 14 Jul 2025 18:11:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9C6BB0475F
+	for <lists+linux-iio@lfdr.de>; Mon, 14 Jul 2025 20:24:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 74015175A62
-	for <lists+linux-iio@lfdr.de>; Mon, 14 Jul 2025 16:11:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1631F4A5534
+	for <lists+linux-iio@lfdr.de>; Mon, 14 Jul 2025 18:24:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE98525EFBE;
-	Mon, 14 Jul 2025 16:11:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7D472727F1;
+	Mon, 14 Jul 2025 18:24:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FqRj8qpT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LiGHfQHd"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF4AD256C9C;
-	Mon, 14 Jul 2025 16:11:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63109266B52;
+	Mon, 14 Jul 2025 18:24:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752509482; cv=none; b=NWAjjydOhyHc3IAaqJjAFE7sFzvKULxRcLLnBjqEGODFcFftjuIBygIAMB4YWuaGii5/FPvYpZ0eTq18Fb9o5tllREUY0Ph5Wx/I9ZwzdGHU2QQ4LvVvWId9kLMGfRYa3uGfzNdxEtxqLTnE7dNwKm+z3/cRv1nHZV0wEYazG60=
+	t=1752517480; cv=none; b=dW3iFOA/Da7NHOK42GnH8eoZiOFUk0/adHdM2cLI9phAdUWlqNHUeP3BEY3k+R4Y8MAf7DzMaozBXVmZ9iVl3AWDO+7h8uZGwbV55Hzn2Ygp50lKA33wXVeQPQ4Fh4YLo6lzNOG3BCj+UCx8IN9JhbolEcw1FX/y9riDGxWOrwo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752509482; c=relaxed/simple;
-	bh=nf4vs6nOKYWis7A8F8h4VTZb3Ww/LSePChVIWjjRS4Q=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=t3oOKGde9zSQzzpBRO5+3vIPaN30xhBLjT3UXv+76auKnY2szcP4aZAtxNzVJN/Gu2YsWXRDSHQsYaYlvGD+as0qSCc9G0iBqCBqYnkJkov/1v861N2hLfWgNLNiUQBGpDV7jO7zDxojI1AhtZwfZMRkR00R1mQFacXUmbPZAJw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FqRj8qpT; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4537edf2c3cso46829385e9.3;
-        Mon, 14 Jul 2025 09:11:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752509479; x=1753114279; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=nf4vs6nOKYWis7A8F8h4VTZb3Ww/LSePChVIWjjRS4Q=;
-        b=FqRj8qpTfljob1UkpZE3vtWf+E1l/eArbL7WvKk7mvixVdmNyAQ7ExmDtUUTo8xkoi
-         sgD28dgjWzOt3dROnAciSPTVsab0chtDIBb2Hv/EkULo19Ut6gk8Ayg+Q2bQcuBf+NkV
-         SfuoAt5yC9C/5zj0vszy67xMk9b84BlHtz7qPfKOHjgvkvF05CEHFr7EFZG/2Di18r1f
-         1dgTbiqCBKQIusfjw2qJys92s4QEDBkS7DGZLhHzfzf6m08/dBnOb3IaYe8tOi6TIkEN
-         La2mDqkmH/mOSTfdyU3j17izXP2brL/HdJ5uBI5JkhW05pxFa/+SIaPrpTajBQPQAMA0
-         /sQQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752509479; x=1753114279;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=nf4vs6nOKYWis7A8F8h4VTZb3Ww/LSePChVIWjjRS4Q=;
-        b=pHNlm29bTa8ZzRLR5RIC6OsYGzOscJihTTPUt1dudGg+7HAwNhb4LDF7MAEhrRDN1E
-         gpmq444MwiVmFUX/5IFG7ai7ZaFyBmlzKbLVL+rUDsYRGkburrY9H0puq62MwiuaumEo
-         vnnwuyeY3YfADGVYsA66z/+sG/17EPMWvjkVEcrU3eCiUz13JDzlv/HLqg6mekGvD4Tm
-         AQ3m4rk5Od2iWvM9PWmECQQe8JWID4cQvFWTW0q8P75x68BOcnMoOwgb+VzOQaBQKPri
-         kiiNW8gxYmXCN5b4QVYjTnHu7IiFN0IwZvxHua63MHN/9NVNgdZ6XarYzalVmqaneDCO
-         7mTQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVcHnJLkImaXQUbWQUH6r6LPxP4hupHNM6RmspUhvIe9ic9mFEKHAxLz1qEVSD16vXILyWmc4Gg0AY30MkA@vger.kernel.org, AJvYcCVxlTib/ujdTdahNc+CBxa0jFNEcCS5Tkm6nAlGQm+f0+BDgTfGTCaU9ELGs3lqGOba79xv962+8v7Z@vger.kernel.org, AJvYcCWOlH3jnbveah3de27+K1g2nKfC7yeoNYq23pD786arcL65Yjpin6UhgNS3TC4rdG8EAh0p77zSoR1d@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy7Z9wD6ZfGpk0UW6jzKarWb50Sdi6pHEBfWsOWFUdXQT4po3Pj
-	iARE237uHQ38pH4FW2TLsVUwTPxv5a2X4wyzvENt1d6gElI06T8xU+UA
-X-Gm-Gg: ASbGncsMqVXGZfoudNBaXLHR5tc6ZwyzoH853xW/fa/W/hLRwOym8wHXiX59yPG60NU
-	9fa7bMLP62Lj1ERlsMkUK2n1/8ZsDNWwSzLsCoEEUFQjQpr5i6vycTc+JVSWyu1MNWGqBZzCF6T
-	dWcGXTRPSJUUCN97ryxj9CA/1u0uuMHthFdDeXbWl8v27lImPdzn9pNoQnZrgbi0/XWyVCHxTMc
-	2sp5nOaA4itmOGams4yrM0FzgbfGMb2+T0OgsCVbLjag9iFWwYHwqPxPlHsh5+GZfY4yEuwhWIQ
-	LCqvzQE7HpJS0MbuKKOZN21vKVOJngyD95zDEonIO5tFsNN1GNrrb0qbxvfmKCk8cmmBUJYKcJP
-	OvXcI2tCpZ4YhZr0dUgsNfrm6zBJNUA==
-X-Google-Smtp-Source: AGHT+IGUpToWdSctfAs3OEHNJr6LLvNw1cbXYajG3U/nqh4JtR7+4OuHXsfmXW0g3MdCYO1qHiV4iA==
-X-Received: by 2002:adf:b643:0:b0:3a5:8cc2:10aa with SMTP id ffacd0b85a97d-3b5f188ea13mr9929289f8f.32.1752509478866;
-        Mon, 14 Jul 2025 09:11:18 -0700 (PDT)
-Received: from [192.168.1.187] ([161.230.67.253])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b5e8bd163csm12660465f8f.4.2025.07.14.09.11.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Jul 2025 09:11:18 -0700 (PDT)
-Message-ID: <6b32118a13e9e28b7cf12152af33642c76367c34.camel@gmail.com>
-Subject: Re: [PATCH 1/2] dt-bindings: iio: adc: imx93: Add calibration
- properties
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Primoz Fiser <primoz.fiser@norik.com>, Jonathan Cameron
- <jic23@kernel.org>,  David Lechner <dlechner@baylibre.com>, Haibo Chen
- <haibo.chen@nxp.com>
-Cc: Nuno Sa <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Rob
- Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor
- Dooley	 <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha
- Hauer	 <s.hauer@pengutronix.de>, Pengutronix Kernel Team
- <kernel@pengutronix.de>,  Fabio Estevam <festevam@gmail.com>,
- linux-iio@vger.kernel.org, imx@lists.linux.dev, devicetree@vger.kernel.org,
- 	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	upstream@lists.phytec.de, andrej.picej@norik.com
-Date: Mon, 14 Jul 2025 17:11:31 +0100
-In-Reply-To: <de2c8e15-14e9-4c61-9a13-97ef1ec567a4@norik.com>
-References: <20250710073905.1105417-1-primoz.fiser@norik.com>
-	 <20250710073905.1105417-2-primoz.fiser@norik.com>
-	 <2bcd758b-c2d0-488a-8ead-ec7fb39f93e2@baylibre.com>
-	 <20250713160247.0f22bbfe@jic23-huawei>
-	 <de2c8e15-14e9-4c61-9a13-97ef1ec567a4@norik.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 
+	s=arc-20240116; t=1752517480; c=relaxed/simple;
+	bh=9RyjbSOc+cXEdvPnp5WbhrbiDMJMrl/DPBo4L/XRiCs=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ha63tAZRKE0n3O3lq8fbCRW96qguLnpjeDJWESblrZM0lcHSfO9/Py0+DHSthFoVVBOuuNGjC/lJx/D6rCfTuQ/7WoCFWUHoKt21xcoaG1D8+oWpGldjOuXLrHFTW+hFiv5OOIs5V2VpxEnLCTnbyalXkbtLQcGLKvRDa/xgqTQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LiGHfQHd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44A40C4CEED;
+	Mon, 14 Jul 2025 18:24:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752517479;
+	bh=9RyjbSOc+cXEdvPnp5WbhrbiDMJMrl/DPBo4L/XRiCs=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=LiGHfQHdXapMtabxDwILAcHMbMXEzwO56kV7rxr0ZmGyR8jupn5bxK9V8q5B+orFF
+	 x8MV5q34Cxpqwkr/j50RLwlNDGBwIAS2tJIQuN04L12skGPFZ5Gy6gwY+VlALtxpaV
+	 H1Wm+fGWxDTMlz50A2hnuVIa+BQk0joP6+b9M0fcLToKjus5GdepeaGJDKmNn6sPyt
+	 qrS36IiJl7RPRowE6aKP48SfdqlD3xf0IdKtJ/tvHiEJ5CZyyfG55dvtGu8Ad/nbO3
+	 TElHxO3dZN/gi9RQUM7baDsD7QLQQRrkp5zhd3WmPZ255Ucr7P2mNzs4X07gKuF2d3
+	 xT5A1QaBl1qlg==
+Date: Mon, 14 Jul 2025 19:24:33 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>
+Cc: David Lechner <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?=	
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
+ linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
+Subject: Re: [PATCH] iio: ABI: fix correctness of I and Q modifiers
+Message-ID: <20250714192433.4bc7785d@jic23-huawei>
+In-Reply-To: <d6364e8cf280acd7d4cce0c084ea3325bb2b7fde.camel@gmail.com>
+References: <20250711-iio-abi-fix-i-and-q-modifiers-v1-1-35963c9c8c01@baylibre.com>
+	<d6364e8cf280acd7d4cce0c084ea3325bb2b7fde.camel@gmail.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, 2025-07-14 at 07:56 +0200, Primoz Fiser wrote:
-> Hi all,
->=20
-> On 13. 07. 25 17:02, Jonathan Cameron wrote:
-> > On Thu, 10 Jul 2025 10:46:44 -0500
-> > David Lechner <dlechner@baylibre.com> wrote:
-> >=20
-> > > On 7/10/25 2:39 AM, Primoz Fiser wrote:
-> > > > From: Andrej Picej <andrej.picej@norik.com>
-> > > >=20
-> > > > Document i.MX93 ADC calibration properties and how to set them.
-> > > >=20
-> > > > Signed-off-by: Andrej Picej <andrej.picej@norik.com>
-> > > > Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
-> > > > ---
-> > > > =C2=A0.../bindings/iio/adc/nxp,imx93-adc.yaml=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0 | 21 +++++++++++++++++++
-> > > > =C2=A01 file changed, 21 insertions(+)
-> > > >=20
-> > > > diff --git a/Documentation/devicetree/bindings/iio/adc/nxp,imx93-
-> > > > adc.yaml b/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.=
-yaml
-> > > > index c2e5ff418920..d1c04cf85fe6 100644
-> > > > --- a/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
-> > > > +++ b/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
-> > > > @@ -52,6 +52,27 @@ properties:
-> > > > =C2=A0=C2=A0 "#io-channel-cells":
-> > > > =C2=A0=C2=A0=C2=A0=C2=A0 const: 1
-> > > > =C2=A0
-> > > > +=C2=A0 nxp,calib-avg-en:
-> > > > +=C2=A0=C2=A0=C2=A0 default: 1
-> > > > +=C2=A0=C2=A0=C2=A0 description:
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Enable or disable calibration avera=
-ging function (AVGEN).
-> > > > +=C2=A0=C2=A0=C2=A0 $ref: /schemas/types.yaml#/definitions/uint32
-> > > > +=C2=A0=C2=A0=C2=A0 enum: [ 0, 1 ]
-> > > > +
-> > > > +=C2=A0 nxp,calib-nr-samples:
-> > > > +=C2=A0=C2=A0=C2=A0 default: 512
-> > > > +=C2=A0=C2=A0=C2=A0 description:
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Selects number of samples (NRSMPL) =
-to be used during calibration.
-> > > > +=C2=A0=C2=A0=C2=A0 $ref: /schemas/types.yaml#/definitions/uint32
-> > > > +=C2=A0=C2=A0=C2=A0 enum: [ 16, 32, 128, 512 ]
-> >=20
-> > Allow 1 as a value and drop the enabled above.=C2=A0=C2=A0 Averaging ov=
-er 1 sample
-> > is same as no averaging and gives simpler binding.
-> >=20
-> > > > +
-> > > > +=C2=A0 nxp,calib-t-sample:
-> > > > +=C2=A0=C2=A0=C2=A0 default: 22
-> > > > +=C2=A0=C2=A0=C2=A0 description:
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Selects sample time (TSAMP) of cali=
-bration conversions in ADC
-> > > > clock cycles
-> > > > +=C2=A0=C2=A0=C2=A0 $ref: /schemas/types.yaml#/definitions/uint32
-> > > > +=C2=A0=C2=A0=C2=A0 enum: [ 8, 16, 22, 32 ]
-> > > > +
-> > > > =C2=A0required:
-> > > > =C2=A0=C2=A0 - compatible
-> > > > =C2=A0=C2=A0 - reg=C2=A0=20
-> > >=20
-> > > This seem like things that should be set at runtime rather than
-> > > in the devicetree. Unless there is some justification on why
-> > > these values depend on how the chip is wired up?
->=20
-> It depends how ADC 1.8V Vref is wired up, especially how noisy it is.
->=20
-> >=20
-> > Further to that, I'd like to see some explanation of why we care
-> > to change it at all. Is it ever a bad idea to enable averaging and
-> > pick a large number of samples for calibration?
->=20
-> This is a snippet from the i.MX93 TRM, chapter Analog-to-Digital
-> Converter (SAR_ADC) describing calibration steps:
->=20
-> 1. Wait for deassertion of functional reset.
-> 2. Configure SAR controller operating clock (MCR[ADCLKSE] =3D 0).
-> 3. Bring ADC out of Power-down state (MCR[PWDN] =3D 0).
-> 4. Configure desired calibration settings (default values kept for
-> highest accuracy maximum time).
-> =E2=80=A2 MCR[TSAMP]: Sample time for calibration conversion
-> =E2=80=A2 MCR[NRSMPL]: Number of samples in averaging
-> =E2=80=A2 MCR[AVGEN]: Averaging function enable in calibration
-> 5. Run calibration by writing a one to MCR[CALSTART].
-> 6. Check calibration run status in MSR[CALBUSY]=E2=80=94wait until MSR[CA=
-LBUSY]
-> =3D 0; alternatively, MSR[ADCSTAT] can be
-> used to check status.
-> 7. Check calibration pass/fail status in MSR[CALFAIL] field. If
-> MSR[CALFAIL] =3D 1 then calibration failed. Detailed status
-> can be checked in CALSTAT.
->=20
->=20
-> See point 4).
->=20
-> Not sure why would there be an option to configure i.MX93 ADC
-> calibration parameters if one use-case (max accuracy max time) to rule
-> them all?
->=20
+On Mon, 14 Jul 2025 12:23:54 +0100
+Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
 
-Sometimes HW guys just want to give you some options. Does not mean we have=
- to
-use them all :).
-
-I guess what Jonathan is interested in, is to understand in what conditions=
- the
-defaults are no good for the calibration? If we can have a set of values th=
-at
-should pretty much always work, no need to further complicate the bindings =
-or
-the driver.
-
-- Nuno S=C3=A1=20
-> On the other hand, public TRM doesn't give much more information and
+> On Fri, 2025-07-11 at 15:44 -0500, David Lechner wrote:
+> > Update the IIO ABI documentation to reflect the actual usage of channels
+> > with I and Q modifiers. These are currently only used in a few drivers:
 > >=20
+> > frequency/admv1013 (kernel v5.17):
+> > - in_altvoltageY-altvoltageZ_i_calibphase
+> > - in_altvoltageY-altvoltageZ_q_calibphase
+> > - in_altvoltageY_i_calibbias
+> > - in_altvoltageY_q_calibbias
+> > frequency/admv1014 (kernel v5.18):
+> > - in_altvoltageY_i_phase
+> > - in_altvoltageY_q_phase
+> > - in_altvoltageY_i_offset
+> > - in_altvoltageY_q_offset
+> > - in_altvoltageY_i_calibscale_course
+> > - in_altvoltageY_i_calibscale_fine
+> > - in_altvoltageY_q_calibscale_course
+> > - in_altvoltageY_q_calibscale_fine
+> > frequency/adrf6780 (kernel v5.16):
+> > - out_altvoltageY_i_phase
+> > - out_altvoltageY_q_phase
+> >=20
+> > There are no _raw or _scale attributes in use, so those are all removed.
+> > There are no currentY attributes in use with these modifiers, so those
+> > are also removed. All of the voltageY are changed to altvoltageY since
+> > that is how they are actually used. None of these channels are used
+> > with scan buffers, so all of those attributes are removed as well. And
+> > the {in,out}_altvoltageY_{i,q}_phase attributes were missing so those
+> > are added.
+> >=20
+> > The differential channel names for admv1013 are fixed.
+> >=20
+> > Signed-off-by: David Lechner <dlechner@baylibre.com>
+> > --- =20
+>=20
+> LGTM
+>=20
+> Reviewed-by: Nuno S=C3=A1 <nuno.sa@analog.com>
+Applied.
+
+>=20
+> > Note: the admv1013 calibscale_{course,fine} attributes are already
+> > documented in a device-specific file as they should be since we don't
+> > want to make those standard attributes.
+> > ---
+> > =C2=A0Documentation/ABI/obsolete/sysfs-bus-iio=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 12 -------
+> > =C2=A0Documentation/ABI/testing/sysfs-bus-iio=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 38 ++++-----------------
+> > -
+> > =C2=A0.../ABI/testing/sysfs-bus-iio-frequency-admv1013=C2=A0=C2=A0 |=C2=
+=A0 4 +--
+> > =C2=A03 files changed, 8 insertions(+), 46 deletions(-)
+> >=20
+> > diff --git a/Documentation/ABI/obsolete/sysfs-bus-iio
+> > b/Documentation/ABI/obsolete/sysfs-bus-iio
+> > index
+> > b64394b0b374f2479bab69218f6ad17c6ac651f2..a13523561958b7faf85ac42d965f7=
+8b99993
+> > ffda 100644
+> > --- a/Documentation/ABI/obsolete/sysfs-bus-iio
+> > +++ b/Documentation/ABI/obsolete/sysfs-bus-iio
+> > @@ -48,10 +48,6 @@
+> > What:		/sys/.../iio:deviceX/scan_elements/in_timestamp_en
+> > =C2=A0What:		/sys/.../iio:deviceX/scan_elements/in_voltageY_supply_en
+> > =C2=A0What:		/sys/.../iio:deviceX/scan_elements/in_voltageY_en
+> > =C2=A0What:		/sys/.../iio:deviceX/scan_elements/in_voltageY-voltageZ_en
+> > -What:		/sys/.../iio:deviceX/scan_elements/in_voltageY_i_en
+> > -What:		/sys/.../iio:deviceX/scan_elements/in_voltageY_q_en
+> > -What:		/sys/.../iio:deviceX/scan_elements/in_voltage_i_en
+> > -What:		/sys/.../iio:deviceX/scan_elements/in_voltage_q_en
+> > =C2=A0What:		/sys/.../iio:deviceX/scan_elements/in_incli_x_en
+> > =C2=A0What:		/sys/.../iio:deviceX/scan_elements/in_incli_y_en
+> > =C2=A0What:		/sys/.../iio:deviceX/scan_elements/in_pressureY_en
+> > @@ -73,10 +69,6 @@
+> > What:		/sys/.../iio:deviceX/scan_elements/in_incli_type
+> > =C2=A0What:		/sys/.../iio:deviceX/scan_elements/in_voltageY_type
+> > =C2=A0What:		/sys/.../iio:deviceX/scan_elements/in_voltage_type
+> > =C2=A0What:		/sys/.../iio:deviceX/scan_elements/in_voltageY_supply_type
+> > -What:		/sys/.../iio:deviceX/scan_elements/in_voltageY_i_type
+> > -What:		/sys/.../iio:deviceX/scan_elements/in_voltageY_q_type
+> > -What:		/sys/.../iio:deviceX/scan_elements/in_voltage_i_type
+> > -What:		/sys/.../iio:deviceX/scan_elements/in_voltage_q_type
+> > =C2=A0What:		/sys/.../iio:deviceX/scan_elements/in_timestamp_type
+> > =C2=A0What:		/sys/.../iio:deviceX/scan_elements/in_pressureY_type
+> > =C2=A0What:		/sys/.../iio:deviceX/scan_elements/in_pressure_type
+> > @@ -110,10 +102,6 @@ Description:
+> > =C2=A0
+> > =C2=A0What:		/sys/.../iio:deviceX/scan_elements/in_voltageY_index
+> > =C2=A0What:		/sys/.../iio:deviceX/scan_elements/in_voltageY_supply_index
+> > -What:		/sys/.../iio:deviceX/scan_elements/in_voltageY_i_index
+> > -What:		/sys/.../iio:deviceX/scan_elements/in_voltageY_q_index
+> > -What:		/sys/.../iio:deviceX/scan_elements/in_voltage_i_index
+> > -What:		/sys/.../iio:deviceX/scan_elements/in_voltage_q_index
+> > =C2=A0What:		/sys/.../iio:deviceX/scan_elements/in_accel_x_index
+> > =C2=A0What:		/sys/.../iio:deviceX/scan_elements/in_accel_y_index
+> > =C2=A0What:		/sys/.../iio:deviceX/scan_elements/in_accel_z_index
+> > diff --git a/Documentation/ABI/testing/sysfs-bus-iio
+> > b/Documentation/ABI/testing/sysfs-bus-iio
+> > index
+> > fcc40d211ddf388ad70f489177ba2fcebdb9f8dc..7e31b8cd49b32ea5b58bd99afc2e8=
+105314d
+> > 7a39 100644
+> > --- a/Documentation/ABI/testing/sysfs-bus-iio
+> > +++ b/Documentation/ABI/testing/sysfs-bus-iio
+> > @@ -141,8 +141,6 @@ Description:
+> > =C2=A0
+> > =C2=A0What:		/sys/bus/iio/devices/iio:deviceX/in_voltageY_raw
+> > =C2=A0What:		/sys/bus/iio/devices/iio:deviceX/in_voltageY_supply_raw
+> > -What:		/sys/bus/iio/devices/iio:deviceX/in_voltageY_i_raw
+> > -What:		/sys/bus/iio/devices/iio:deviceX/in_voltageY_q_raw
+> > =C2=A0KernelVersion:	2.6.35
+> > =C2=A0Contact:	linux-iio@vger.kernel.org
+> > =C2=A0Description:
+> > @@ -417,18 +415,14 @@
+> > What:		/sys/bus/iio/devices/iio:deviceX/in_accel_offset
+> > =C2=A0What:		/sys/bus/iio/devices/iio:deviceX/in_accel_x_offset
+> > =C2=A0What:		/sys/bus/iio/devices/iio:deviceX/in_accel_y_offset
+> > =C2=A0What:		/sys/bus/iio/devices/iio:deviceX/in_accel_z_offset
+> > +What:		/sys/bus/iio/devices/iio:deviceX/in_altvoltage_q_offset
+> > +What:		/sys/bus/iio/devices/iio:deviceX/in_altvoltage_i_offset
+> > =C2=A0What:		/sys/bus/iio/devices/iio:deviceX/in_voltageY_offset
+> > =C2=A0What:		/sys/bus/iio/devices/iio:deviceX/in_voltage_offset
+> > =C2=A0What:		/sys/bus/iio/devices/iio:deviceX/in_voltageY_i_offset
+> > =C2=A0What:		/sys/bus/iio/devices/iio:deviceX/in_voltageY_q_offset
+> > -What:		/sys/bus/iio/devices/iio:deviceX/in_voltage_q_offset
+> > -What:		/sys/bus/iio/devices/iio:deviceX/in_voltage_i_offset
+> > =C2=A0What:		/sys/bus/iio/devices/iio:deviceX/in_currentY_offset
+> > =C2=A0What:		/sys/bus/iio/devices/iio:deviceX/in_current_offset
+> > -What:		/sys/bus/iio/devices/iio:deviceX/in_currentY_i_offset
+> > -What:		/sys/bus/iio/devices/iio:deviceX/in_currentY_q_offset
+> > -What:		/sys/bus/iio/devices/iio:deviceX/in_current_q_offset
+> > -What:		/sys/bus/iio/devices/iio:deviceX/in_current_i_offset
+> > =C2=A0What:		/sys/bus/iio/devices/iio:deviceX/in_tempY_offset
+> > =C2=A0What:		/sys/bus/iio/devices/iio:deviceX/in_temp_offset
+> > =C2=A0What:		/sys/bus/iio/devices/iio:deviceX/in_pressureY_offset
+> > @@ -456,21 +450,15 @@ Description:
+> > =C2=A0		to the _raw output.
+> > =C2=A0
+> > =C2=A0What:		/sys/bus/iio/devices/iio:deviceX/in_voltageY_scale
+> > -What:		/sys/bus/iio/devices/iio:deviceX/in_voltageY_i_scale
+> > =C2=A0What:		/sys/bus/iio/devices/iio:deviceX/in_voltageY_q_scale
+> > =C2=A0What:		/sys/bus/iio/devices/iio:deviceX/in_voltageY_supply_scale
+> > =C2=A0What:		/sys/bus/iio/devices/iio:deviceX/in_voltage_scale
+> > -What:		/sys/bus/iio/devices/iio:deviceX/in_voltage_i_scale
+> > -What:		/sys/bus/iio/devices/iio:deviceX/in_voltage_q_scale
+> > =C2=A0What:		/sys/bus/iio/devices/iio:deviceX/in_voltage-voltage_scale
+> > =C2=A0What:		/sys/bus/iio/devices/iio:deviceX/out_voltageY_scale
+> > =C2=A0What:		/sys/bus/iio/devices/iio:deviceX/out_altvoltageY_scale
+> > =C2=A0What:		/sys/bus/iio/devices/iio:deviceX/in_currentY_scale
+> > =C2=A0What:		/sys/bus/iio/devices/iio:deviceX/in_currentY_supply_scale
+> > =C2=A0What:		/sys/bus/iio/devices/iio:deviceX/in_current_scale
+> > -What:		/sys/bus/iio/devices/iio:deviceX/in_currentY_i_scale
+> > -What:		/sys/bus/iio/devices/iio:deviceX/in_currentY_q_scale
+> > -What:		/sys/bus/iio/devices/iio:deviceX/in_current_i_scale
+> > =C2=A0What:		/sys/bus/iio/devices/iio:deviceX/in_current_q_scale
+> > =C2=A0What:		/sys/bus/iio/devices/iio:deviceX/in_accel_scale
+> > =C2=A0What:		/sys/bus/iio/devices/iio:deviceX/in_accel_peak_scale
+> > @@ -603,11 +591,7 @@
+> > What:		/sys/bus/iio/devices/iio:deviceX/in_pressure_calibscale
+> > =C2=A0What:		/sys/bus/iio/devices/iio:deviceX/in_pressureY_calibscale
+> > =C2=A0What:		/sys/bus/iio/devices/iio:deviceX/in_proximity0_calibscale
+> > =C2=A0What:		/sys/bus/iio/devices/iio:deviceX/in_voltage_calibscale
+> > -What:		/sys/bus/iio/devices/iio:deviceX/in_voltage_i_calibscale
+> > -What:		/sys/bus/iio/devices/iio:deviceX/in_voltage_q_calibscale
+> > =C2=A0What:		/sys/bus/iio/devices/iio:deviceX/in_voltageY_calibscale
+> > -What:		/sys/bus/iio/devices/iio:deviceX/in_voltageY_i_calibscale
+> > -What:		/sys/bus/iio/devices/iio:deviceX/in_voltageY_q_calibscale
+> > =C2=A0What:		/sys/bus/iio/devices/iio:deviceX/in_voltageY_supply_calibs=
+cal
+> > e
+> > =C2=A0What:		/sys/bus/iio/devices/iio:deviceX/out_currentY_calibscale
+> > =C2=A0What:		/sys/bus/iio/devices/iio:deviceX/out_voltageY_calibscale
+> > @@ -829,7 +813,11 @@ Description:
+> > =C2=A0		all the other channels, since it involves changing the VCO
+> > =C2=A0		fundamental output frequency.
+> > =C2=A0
+> > +What:		/sys/bus/iio/devices/iio:deviceX/in_altvoltageY_i_phase
+> > +What:		/sys/bus/iio/devices/iio:deviceX/in_altvoltageY_q_phase
+> > =C2=A0What:		/sys/bus/iio/devices/iio:deviceX/out_altvoltageY_phase
+> > +What:		/sys/bus/iio/devices/iio:deviceX/out_altvoltageY_i_phase
+> > +What:		/sys/bus/iio/devices/iio:deviceX/out_altvoltageY_q_phase
+> > =C2=A0KernelVersion:	3.4.0
+> > =C2=A0Contact:	linux-iio@vger.kernel.org
+> > =C2=A0Description:
+> > @@ -1458,10 +1446,6 @@
+> > What:		/sys/.../iio:deviceX/bufferY/in_timestamp_en
+> > =C2=A0What:		/sys/.../iio:deviceX/bufferY/in_voltageY_supply_en
+> > =C2=A0What:		/sys/.../iio:deviceX/bufferY/in_voltageY_en
+> > =C2=A0What:		/sys/.../iio:deviceX/bufferY/in_voltageY-voltageZ_en
+> > -What:		/sys/.../iio:deviceX/bufferY/in_voltageY_i_en
+> > -What:		/sys/.../iio:deviceX/bufferY/in_voltageY_q_en
+> > -What:		/sys/.../iio:deviceX/bufferY/in_voltage_i_en
+> > -What:		/sys/.../iio:deviceX/bufferY/in_voltage_q_en
+> > =C2=A0What:		/sys/.../iio:deviceX/bufferY/in_incli_x_en
+> > =C2=A0What:		/sys/.../iio:deviceX/bufferY/in_incli_y_en
+> > =C2=A0What:		/sys/.../iio:deviceX/bufferY/in_pressureY_en
+> > @@ -1482,10 +1466,6 @@
+> > What:		/sys/.../iio:deviceX/bufferY/in_incli_type
+> > =C2=A0What:		/sys/.../iio:deviceX/bufferY/in_voltageY_type
+> > =C2=A0What:		/sys/.../iio:deviceX/bufferY/in_voltage_type
+> > =C2=A0What:		/sys/.../iio:deviceX/bufferY/in_voltageY_supply_type
+> > -What:		/sys/.../iio:deviceX/bufferY/in_voltageY_i_type
+> > -What:		/sys/.../iio:deviceX/bufferY/in_voltageY_q_type
+> > -What:		/sys/.../iio:deviceX/bufferY/in_voltage_i_type
+> > -What:		/sys/.../iio:deviceX/bufferY/in_voltage_q_type
+> > =C2=A0What:		/sys/.../iio:deviceX/bufferY/in_timestamp_type
+> > =C2=A0What:		/sys/.../iio:deviceX/bufferY/in_pressureY_type
+> > =C2=A0What:		/sys/.../iio:deviceX/bufferY/in_pressure_type
+> > @@ -1523,10 +1503,6 @@ Description:
+> > =C2=A0
+> > =C2=A0What:		/sys/.../iio:deviceX/bufferY/in_voltageY_index
+> > =C2=A0What:		/sys/.../iio:deviceX/bufferY/in_voltageY_supply_index
+> > -What:		/sys/.../iio:deviceX/bufferY/in_voltageY_i_index
+> > -What:		/sys/.../iio:deviceX/bufferY/in_voltageY_q_index
+> > -What:		/sys/.../iio:deviceX/bufferY/in_voltage_i_index
+> > -What:		/sys/.../iio:deviceX/bufferY/in_voltage_q_index
+> > =C2=A0What:		/sys/.../iio:deviceX/bufferY/in_accel_x_index
+> > =C2=A0What:		/sys/.../iio:deviceX/bufferY/in_accel_y_index
+> > =C2=A0What:		/sys/.../iio:deviceX/bufferY/in_accel_z_index
+> > @@ -1716,8 +1692,6 @@ Description:
+> > =C2=A0
+> > =C2=A0What:		/sys/bus/iio/devices/iio:deviceX/in_currentY_raw
+> > =C2=A0What:		/sys/bus/iio/devices/iio:deviceX/in_currentY_supply_raw
+> > -What:		/sys/bus/iio/devices/iio:deviceX/in_currentY_i_raw
+> > -What:		/sys/bus/iio/devices/iio:deviceX/in_currentY_q_raw
+> > =C2=A0KernelVersion:	3.17
+> > =C2=A0Contact:	linux-iio@vger.kernel.org
+> > =C2=A0Description:
+> > diff --git a/Documentation/ABI/testing/sysfs-bus-iio-frequency-admv1013
+> > b/Documentation/ABI/testing/sysfs-bus-iio-frequency-admv1013
+> > index
+> > de1e323e5d4741177e58a8c4058fa00271ea3b29..9cf8cd0dd2dfd5b0b67b5dbf28bbd=
+b6bb4a4
+> > ce7f 100644
+> > --- a/Documentation/ABI/testing/sysfs-bus-iio-frequency-admv1013
+> > +++ b/Documentation/ABI/testing/sysfs-bus-iio-frequency-admv1013
+> > @@ -1,10 +1,10 @@
+> > -What:		/sys/bus/iio/devices/iio:deviceX/in_altvoltage0-
+> > 1_i_calibphase
+> > +What:		/sys/bus/iio/devices/iio:deviceX/in_altvoltage0-
+> > altvoltage1_i_calibphase
+> > =C2=A0KernelVersion:
+> > =C2=A0Contact:	linux-iio@vger.kernel.org
+> > =C2=A0Description:
+> > =C2=A0		Read/write unscaled value for the Local Oscillatior path
+> > quadrature I phase shift.
+> > =C2=A0
+> > -What:		/sys/bus/iio/devices/iio:deviceX/in_altvoltage0-
+> > 1_q_calibphase
+> > +What:		/sys/bus/iio/devices/iio:deviceX/in_altvoltage0-
+> > altvoltage1_q_calibphase
+> > =C2=A0KernelVersion:
+> > =C2=A0Contact:	linux-iio@vger.kernel.org
+> > =C2=A0Description:
+> >=20
+> > ---
+> > base-commit: f8f559752d573a051a984adda8d2d1464f92f954
+> > change-id: 20250711-iio-abi-fix-i-and-q-modifiers-b1e46ddd8d67
+> >=20
+> > Best regards, =20
+
 

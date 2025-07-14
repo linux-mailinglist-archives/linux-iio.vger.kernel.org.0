@@ -1,138 +1,267 @@
-Return-Path: <linux-iio+bounces-21630-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21631-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 443EDB0322C
-	for <lists+linux-iio@lfdr.de>; Sun, 13 Jul 2025 18:48:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B318B035BF
+	for <lists+linux-iio@lfdr.de>; Mon, 14 Jul 2025 07:29:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A9BC03BBA0B
-	for <lists+linux-iio@lfdr.de>; Sun, 13 Jul 2025 16:47:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C0D131890BCD
+	for <lists+linux-iio@lfdr.de>; Mon, 14 Jul 2025 05:29:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28D4D27B4F7;
-	Sun, 13 Jul 2025 16:48:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B25601F873E;
+	Mon, 14 Jul 2025 05:29:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="0uB1+QYA"
+	dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b="tu7FzS8Z"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oa1-f42.google.com (mail-oa1-f42.google.com [209.85.160.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-24421.protonmail.ch (mail-24421.protonmail.ch [109.224.244.21])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0B1A278E77
-	for <linux-iio@vger.kernel.org>; Sun, 13 Jul 2025 16:48:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB43B1DE2A5
+	for <linux-iio@vger.kernel.org>; Mon, 14 Jul 2025 05:29:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752425282; cv=none; b=PoKu6W9SWD7Yfq7q23M5vm2O6/eaDifywrw0ciPJtlqpHHcRMnzBsJIda9XkhgoI0CmuwfWBt/orN8W5wCtKStWlQ6eU2W7ZqdHzWqjgYiDkQUdpZSz+RpcezmvgyUTOeB8sqH0+FMP6xeU2HUea5rjAb0BM0R1iY6L83+YgQds=
+	t=1752470954; cv=none; b=HT7+yCE7re42YbOChzuOnN7F4QlvRqzZEo5I4aW2JO0pl9mCq36btmYxuNBjavKCYAWKS3y9siuo60Nji/Wt0N6rAxzjWgwE6jgRGRbwFFIahPFVRanDZMk/xsFltHBIJfouZ8I/JOn4q7NWaaHCd9cMtsh5rDGJpnDaNIp3bCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752425282; c=relaxed/simple;
-	bh=hsuDJM5tBq44M2esEaL9NRh8SegTJ0ljozMuP/n6p64=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=c2D4ydh9ZT1pZREF0ScXm2kzCNfSefJWLXpher8Ztiumn/BtyRLqbrdy0LE4XoffOFEboL8Z4S2IIvDWyabQHvmrsWfu85pCiQ8k2+W5udahL3vzImKw6YE+1z5KYXEye/witlJuDX4QM2GYTBGOU5nFJW84y1H17s/1II02ckk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=0uB1+QYA; arc=none smtp.client-ip=209.85.160.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oa1-f42.google.com with SMTP id 586e51a60fabf-2eb5cbe41e1so2165203fac.0
-        for <linux-iio@vger.kernel.org>; Sun, 13 Jul 2025 09:48:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1752425280; x=1753030080; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=klnDILl9DT7/vAgjp7ff2b8q2Ve50T0qs6l0XcJXQPk=;
-        b=0uB1+QYA2otgjMkoP4ZE+b12bsxpgbjhdq8CNrCyfJBMXPGjZ43brpG9HMyXVfodz4
-         uYDOco2v2ZktlQGP+CJ/8YFnxO9TdzJxRDDUnrVsjHno1dAikw3jrUyajTt0ztlkD7Lk
-         AGhzGY8IDG9BrVWiiwER7iudgHaNkQEOc30YIDhIUf0E54oNY+F8n0k1CmPHTotDAEVI
-         V4cxUc9Lep7o2KWi7Oy/eqmBsjR8oBe1tOUyevgeYTD8DQ0vUCux9z4NXsIG96+F0Icl
-         QEAUrYFGVGvNu4zPDIFoPn67HYapWGQ4wdwlDeszP96zANyLNg6pB0ayfxiriYzGAtk5
-         YHRw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752425280; x=1753030080;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=klnDILl9DT7/vAgjp7ff2b8q2Ve50T0qs6l0XcJXQPk=;
-        b=o7bdf0TLyfIrXZr01c6Kjxebpo/ozWtid9FUQ12+t+JncGEakZC+y8NBeiKsE/3Z6J
-         L2vKc+6mnocMXMSW+FqR/cJZlweGc9EasdLFaLAg12L/eFYE5hpSLZr9FGzcp0BIqcQh
-         Fmnh6v8OCqfVdFrzd/HrdS/Tm11VqD4tnr+Znc2Lgyyuu2AUPNnEi+45SpHeEKuKRhkU
-         GBp7kiAGH+QfPab4DJr17ER/oAd5D/4Yh5aY828GhAkUxhtzpVgHHbXvbri9WeRt+N2a
-         y3vGYVnM4y56X+5CxD/CcnCoFo5idaOh4k32rgBcA3SJ4K9cWTdQy35h7tFPhKdiMmdc
-         /FpQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWMpnS7aNutrY6vtTAV4W89YMyYtINZRuS1iVY8CZxZ1ZiE49GytKOpg9SOqgqYWXTao963CBKDZzc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzHxLPTC2pEZ5KsVmEmqAyR8KBVZqan53hRTslWJ1Q0tdpNC8wY
-	3QOK8/+mXJR07y2mpti/xUUfTN9PuPDiQ+gBu1W/wbdgCIAMFoFOqvnywC+05ywR9uetu1Eo/2A
-	4KUCEapE=
-X-Gm-Gg: ASbGncsYfgeAceDd6GZc0US22Y1vjgcilwL3eGgN9gpZzr1EYmBnRioB+IaQapRJ2oJ
-	dL28TqjwSPvOclBIdGE7en9/++kStU0ZftdAv1YfNdtln1q7oEae/BjjWnab2qR6NYK4AAlazCP
-	4RGcAu+eVDd96DWCnNUo/XSOfNxsbKVMlnB2VBwwksEMEgMlGfvKWdp+Dxaft/+Xwsyv+x8ESSO
-	r7tZXR9rCR+9Xz/qIjAGTbWGwvzp0bbqRoVJJpqQu2nERUImJRPuKmJHiUIAp+WelZNqa3/kOY/
-	J4wDA8/yeV6AJHmc7FvK9+EK+uGHdBizCtDrxbtzHl9f/sEZ9Q1ULEILnsGtAujHJ+YPAuhhRnZ
-	pGWYKh4s/OByKWm6SQfm9DkSJ4hSoGTh7xVoM5t4T+zdZEnGJcdBmuL93/2smUlyGrVhbf6RFAF
-	k=
-X-Google-Smtp-Source: AGHT+IG9yienyT+BvCs8+5XA27Ba/F/vOq78ZUDrFUpnAOK0uv/NqWP6qp1ugEEG5qLSGkPO8V1v8A==
-X-Received: by 2002:a05:6871:2998:b0:29e:3921:b1ea with SMTP id 586e51a60fabf-2ff269770e4mr7470930fac.30.1752425279898;
-        Sun, 13 Jul 2025 09:47:59 -0700 (PDT)
-Received: from ?IPV6:2600:8803:e7e4:1d00:3743:cf82:e4e8:b2b9? ([2600:8803:e7e4:1d00:3743:cf82:e4e8:b2b9])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2ff11259495sm1598691fac.17.2025.07.13.09.47.56
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 13 Jul 2025 09:47:58 -0700 (PDT)
-Message-ID: <c4d143f1-0649-4f64-ac71-419a4b2b0fca@baylibre.com>
-Date: Sun, 13 Jul 2025 11:47:56 -0500
+	s=arc-20240116; t=1752470954; c=relaxed/simple;
+	bh=mSnCeloYHS68JOH5vVeOnQ84bGI4KJoaCMuCwtQpfqQ=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=qXxCV352l69b6W6OT6m20lINwZAm5U1W4lZ87jjzTAo9RuMmrueBoxUquhVewNxH7u35dFdiBkeDo8JPJzf3JzT8ioclxHYXzjGyb/GEmqYsG3HFML7kTdsC0mhKrdaC9LbtYgxDuLPCHgV21myP2iMnc4Qavl1I+c9NkvsyQhQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=geanix.com; spf=pass smtp.mailfrom=geanix.com; dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b=tu7FzS8Z; arc=none smtp.client-ip=109.224.244.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=geanix.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=geanix.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=geanix.com;
+	s=protonmail; t=1752470947; x=1752730147;
+	bh=XRybO7aiXs2ERiQfc4O9ldG8Am2UZL9/iHzNZbKyUgY=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=tu7FzS8Z5w05MQ6ffY4zTZ7JG/5XqEhnBlHkoWHYTMSI7uMwnci5ilE60Urs91sMi
+	 CNPfPd2PEHlDQ5dodCzUL5L4tcI9x5ymd9V74dbbCFiXVZZwgB+2pNOX08kjkztb3F
+	 lbrZKaRfsHjwfLjHoSwQFLnsVxZFCMBi0IDdwiKlZQhb6btVstlKFoBBiEYMZFVVsP
+	 jwhtyRn2Htf9yt1IYwGFhmQMq3kqLNmrfEQUVOB+ltSQTG5nWAVWzyR4gSQhy8x3/c
+	 Xuiu/OMmNJeVnhKwb9pIftY67lRxa0j9RKWraYXczmyVv52XTJZeWBOpynLo8Rpxxf
+	 DGlkCpasz2Xxw==
+Date: Mon, 14 Jul 2025 05:29:00 +0000
+To: Jonathan Cameron <jic23@kernel.org>
+From: Sean Nyekjaer <sean@geanix.com>
+Cc: Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, David Lechner <dlechner@baylibre.com>, "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>, Andy Shevchenko <andy@kernel.org>
+Subject: Re: [BUG] iio: imu: inv_icm42600: read temperature, Invalid Argument
+Message-ID: <w5ury5pubvk5iavcnu5yc44mp5lplsrvxyet4vwliv3mu3m5y4@sbfiyiy3loov>
+In-Reply-To: <20250713144632.0cd2e88f@jic23-huawei>
+References: <unmlpvhl47vjdx7qqdaabhevhj3loydft4ytwxwsgefcyhbzup@zkqulwwfg37o> <FR3P281MB1757FE243D78E8F78DA6C576CE4FA@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM> <20250708113508.000027fb@huawei.com> <FR3P281MB1757E1352768510879500A3CCE4EA@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM> <20250713144632.0cd2e88f@jic23-huawei>
+Feedback-ID: 134068486:user:proton
+X-Pm-Message-ID: 678549ea66b23336420eaccaa4ee1edec2a59aa4
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] iio: proximity: sx9500: use stack allocated buffer for
- scan data
-To: Jonathan Cameron <jic23@kernel.org>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
- Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20250711-iio-use-more-iio_declare_buffer_with_ts-4-v1-1-1a1e521cf747@baylibre.com>
- <aHE-8VDgQ7WuoA_y@smile.fi.intel.com> <20250713145533.5a3d4336@jic23-huawei>
- <20250713145810.31853bc7@jic23-huawei>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <20250713145810.31853bc7@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On 7/13/25 8:58 AM, Jonathan Cameron wrote:
-> On Sun, 13 Jul 2025 14:55:33 +0100
-> Jonathan Cameron <jic23@kernel.org> wrote:
-> 
->> On Fri, 11 Jul 2025 19:42:25 +0300
->> Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
->>
->>> On Fri, Jul 11, 2025 at 10:47:57AM -0500, David Lechner wrote:  
->>>> Use IIO_DECLARE_BUFFER_WITH_TS() to declare a stack allocated buffer
->>>> in sx9500_trigger_handler(). Since the scan buffer isn't used outside
->>>> of this function, it doesn't need to be in struct sx9500_data.
->>>>
->>>> By always allocating enough space for the maximum number of channels,
->>>> we can avoid having to reallocate the buffer each time buffered reads
->>>> are enabled.    
->>>
->>> Ag ood one!
->>>
->>> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
->>>   
->>
->> Applied.
->>
-> 
-> Actually on second thoughts - why not a more descriptive structure?
-> There are only a max of 4 channels and so the timestamp is always
-> in the same location.
-> 
-> Dropped for now.
-> 
+On Sun, Jul 13, 2025 at 02:46:32PM +0100, Jonathan Cameron wrote:
+> On Tue, 8 Jul 2025 12:21:39 +0000
+> Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com> wrote:
+>=20
+> > >
+> > >________________________________________
+> > >From:=C2=A0Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > >Sent:=C2=A0Tuesday, July 8, 2025 12:35
+> > >To:=C2=A0Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>
+> > >Cc:=C2=A0Sean Nyekjaer <sean@geanix.com>; Jonathan Cameron <jic23@kern=
+el.org>; David Lechner <dlechner@baylibre.com>; linux-iio@vger.kernel.org <=
+linux-iio@vger.kernel.org>; Andy Shevchenko <andy@kernel.org>
+> > >Subject:=C2=A0Re: [BUG] iio: imu: inv_icm42600: read temperature, Inva=
+lid Argument
+> > >=C2=A0
+> > >This Message Is From an External Sender
+> > >This message came from outside your organization.
+> > >=C2=A0
+> > >On Mon, 7 Jul 2025 18:13:33 +0000
+> > >Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com> wrote:
+> > >
+> > >> >Hi,
+> > >> >
+> > >> >I'm having some weird issues with reading the temperature of the ic=
+m42605.
+> > >> >Kernel version: 6.16.0-rc5
+> > >> >
+> > >> ># cat /sys/bus/iio/devices/iio:device2/name
+> > >> >icm42605-accel
+> > >> >
+> > >> >When reading the temperature I get:
+> > >> ># cat /sys/bus/iio/devices/iio:device2/in_temp_raw
+> > >> >cat: read error: Invalid argument
+> > >> >
+> > >> >But if I read from the accelerometer first, I will go better:
+> > >> ># cat /sys/bus/iio/devices/iio:device2/in_accel_x_raw
+> > >> >-378
+> > >> ># cat /sys/bus/iio/devices/iio:device2/in_temp_raw
+> > >> >600
+> > >> >
+> > >> >Then after "some" time, I re-read the temperature I recieve
+> > >> >"Invalid argument" again.
+> > >> >
+> > >> >I have traced the -EINVAL to inv_icm42600_temp_read() because I rec=
+eive
+> > >> >INV_ICM42600_DATA_INVALID.
+> > >> >
+> > >> >Register dump diff:
+> > >> >--- invalid-read
+> > >> >+++ ok-read
+> > >> >@@ -10,14 +10,14 @@
+> > >> > 0x1a =3D 0x00000010
+> > >> > 0x1b =3D 0x00000000
+> > >> > 0x1c =3D 0x00000000
+> > >> >-0x1d =3D 0x00000080
+> > >> >-0x1e =3D 0x00000000
+> > >> >-0x1f =3D 0x00000080
+> > >> >-0x20 =3D 0x00000000
+> > >> >-0x21 =3D 0x00000080
+> > >> >-0x22 =3D 0x00000000
+> > >> >-0x23 =3D 0x00000080
+> > >> >-0x24 =3D 0x00000000
+> > >> >+0x1d =3D 0x00000002
+> > >> >+0x1e =3D 0x00000038
+> > >> >+0x1f =3D 0x000000fe
+> > >> >+0x20 =3D 0x00000085
+> > >> >+0x21 =3D 0x000000fe
+> > >> >+0x22 =3D 0x000000df
+> > >> >+0x23 =3D 0x000000f8
+> > >> >+0x24 =3D 0x0000003a
+> > >> > 0x25 =3D 0x00000080
+> > >> > 0x26 =3D 0x00000000
+> > >> > 0x27 =3D 0x00000080
+> > >> >@@ -26,7 +26,7 @@
+> > >> > 0x2a =3D 0x00000000
+> > >> > 0x2b =3D 0x00000000
+> > >> > 0x2c =3D 0x00000000
+> > >> >-0x2d =3D 0x00000000
+> > >> >+0x2d =3D 0x00000008
+> > >> > 0x2e =3D 0x00000000
+> > >> > 0x2f =3D 0x00000000
+> > >> > 0x30 =3D 0x000000ff
+> > >> >@@ -59,11 +59,11 @@
+> > >> > 0x4b =3D 0x00000000
+> > >> > 0x4c =3D 0x00000032
+> > >> > 0x4d =3D 0x00000099
+> > >> >-0x4e =3D 0x00000000
+> > >> >+0x4e =3D 0x00000002
+> > >> > 0x4f =3D 0x00000009
+> > >> > 0x50 =3D 0x00000009
+> > >> > 0x51 =3D 0x00000016
+> > >> >-0x52 =3D 0x00000000
+> > >> >+0x52 =3D 0x00000060
+> > >> > 0x53 =3D 0x0000000d
+> > >> > 0x54 =3D 0x00000031
+> > >> > 0x55 =3D 0x00000000
+> > >> >
+> > >> >Will the iio core retry a read? If the -EINVAL is returned,
+> > >> >inv_icm42600_accel_read_raw() is call once more.
+> > >> >
+> > >> >One more thing...
+> > >> >When I'm removing the module, the kernel prints this:
+> > >> >inv-icm42600-i2c 1-0068: Runtime PM usage count underflow!
+> > >> >
+> > >> >I will continue investigate this
+> > >> >Br,
+> > >> >Sean
+> > >>
+> > >> Hello Sean,
+> > >>
+> > >> this is expected behavior since the temperature returned is not the =
+external
+> > >> temperature but the temperature of the mechanical component (MEMS). =
+It will
+> > >> only work if the chip is on, meaning accelerometer and/or gyroscope =
+is on.
+> > >>
+> > >> That's why you can get temperature after reading accel data since it=
+ is
+> > >> turning the chip. But after a short while autosuspend is putting the=
+ chip
+> > >> back off and you cannot read temperature anymore.
+> > >>
+> > >> You need to turn one sensor continuously on with a buffer, and then =
+you can
+> > >> read temperature all the time since the chip is running.
+> > >>
+> > >> Temperature data are here only to do temperature compensation of the=
+ accel
+> > >> and gyro data.
+> > >
+> > >That is rather non-intuitive behavior.  Could we make a read of the te=
+mperature
+> > >channel turn on one of the components?  Given expected use case it sho=
+uldn't commonly
+> > >happen but if not too horrendous to implement it would be better to av=
+oid the error
+> > >seen here.
+> >
+> > Hello Jonathan,
+> >
+> > the problem here is which sensor to turn on? Accel or gyro, or accel+gy=
+ro?
+> > And the temperature reported will be completely different if it is acce=
+l
+> > and/or gyro running, since gyro is heating much more than accel.
+> >
+> > This is not a classical temperature sensor, but an internal one for mea=
+suring
+> > temperature of the mechanical part while running. The usual use case on=
+ our
+> > side is polling the temperature at low frequency (10Hz, 20Hz) while acc=
+el
+> > and/or gyro are running to do temperature compensation on the data read=
+.
+> >
+> > We generally want to avoid temperature data in the FIFO because reporti=
+ng
+> > temperature at high frequency is not useful, and it is consuming space =
+in
+> > the FIFO. We prefer to have more space in the FIFO for accel and gyro d=
+ata
+> > and do polling of temperature.
+> >
+> > Temperature reporting while the chip is off makes absolutely no sense t=
+hat's
+> > why it is not supported by the chip, even if it can be non-intuitive.
+> >
+> > Perhaps we can use another error returning code rather than invalid val=
+ue?
+> > Otherwise, tell me what you think is the best to do.
+>=20
+> Maybe indicate it is a temporary situation that userspace can resolve
+> by reporting -EBUSY?  I'm not sure what the best path forward here is.
+>=20
+> Your explanation seems reasonable to me.  Sean, do you still believe
+> we need to make a change here?
+
+I think -EBUSY would be better, returning -EINVAL required me to read the d=
+river,
+and apply some debug printk's to see where it originated from.
+
+Returning -EBUSY and add a comment about the "issue" in
+inv_icm42600_temp_read(), would be a help.
+
+/Sean
+
+>=20
 > Jonathan
+>=20
+> >
+> > Thanks,
+> > JB
+> >
+> > >
+> > >>
+> > >> Thanks,
+> > >> JB
+> > >
+> > >
+>=20
 
-I didn't do that on this one since a variable number of scan
-elements are used. But if you prefer structs for anything up
-to 8 bytes, we can go with that.
 

@@ -1,463 +1,237 @@
-Return-Path: <linux-iio+bounces-21655-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21656-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13D41B04D5F
-	for <lists+linux-iio@lfdr.de>; Tue, 15 Jul 2025 03:22:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 710B2B05130
+	for <lists+linux-iio@lfdr.de>; Tue, 15 Jul 2025 07:46:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F3553B4778
-	for <lists+linux-iio@lfdr.de>; Tue, 15 Jul 2025 01:21:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 931AC1AA7F1A
+	for <lists+linux-iio@lfdr.de>; Tue, 15 Jul 2025 05:47:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E49B420966B;
-	Tue, 15 Jul 2025 01:20:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96F4B2D0C6C;
+	Tue, 15 Jul 2025 05:46:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="c3t1Z7Fs"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=norik.com header.i=@norik.com header.b="aIH7JRcB"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
+Received: from cpanel.siel.si (cpanel.siel.si [46.19.9.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79CAF1FECB0;
-	Tue, 15 Jul 2025 01:20:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 854B069D2B;
+	Tue, 15 Jul 2025 05:46:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.9.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752542448; cv=none; b=Ytf/5fnYBq/+/tXJXDIf9czKev0PCRCFj+EPMvvMd6jmidJmaNECCOEceAT+kX2Jt/ThPEjgUV38HBXlIysO752B0EIhHiwlMjrr0iYYTJz8j8vP1HpiedbrzRipmZDRVlgU+iXaiAcb9k0WDpmyXB3nrQA1lOzJl3rGPtuhnx8=
+	t=1752558410; cv=none; b=s1rR22f24Qzlufc4Zg/eb4aWq2r/kQmmA9Ps+skDF5fBqU+b1rMy4PnjgXe5+PxjfNmHWsFxb+uihiqJx7ZS4Zh3PB2wy6u+7xeFPc4dloLmp4iU/ldtTeaXVRFm76wlts+Bq2YTgiAM/bU0mY7NAWU6AGfyqB0i7wNLNKbjNkQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752542448; c=relaxed/simple;
-	bh=bPfeHgVMRjFo+jzsXSzZgy1MKffh7fIAckyt2QrH5sY=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QrLQcma0yOMrkmDdOQ7CBfC2snJg8ockZDVKLjc74HhqoBv+Yd32SjwbbTSlBBj2brePkuLJySSNMlFpjzwXxKxLU0+nMZBzJA34AQPaaf3li6ty9RDY403WJW929dK466YGJSqIzEajj4T3yv3Eb0CH/qFC7kE67V5by/VQq84=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=c3t1Z7Fs; arc=none smtp.client-ip=95.215.58.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1752542444;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=BY0Ov/6AcGBp5N1Wvrgjij988UEIGtctKJNwWjsdeWI=;
-	b=c3t1Z7FsjopmgBwNhQA6RhPat2/4KSOOba+yiJzxSiHu7cqybNKUAFoPGVaqwPX/nwaPcA
-	bgEvH3f4o2Ds6R4gqYseRMR0RwRQq/3v0NZpbfnwy4vpwed0m9BysSqjJfg4mxbvZQ2QTb
-	UATRNUAK4CFHTFwbVyvDwzWGxBbCQxM=
-From: Sean Anderson <sean.anderson@linux.dev>
-To: Jonathan Cameron <jic23@kernel.org>,
-	Jean Delvare <jdelvare@suse.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	linux-iio@vger.kernel.org,
-	linux-hwmon@vger.kernel.org
-Cc: Andy Shevchenko <andy@kernel.org>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	linux-kernel@vger.kernel.org,
-	David Lechner <dlechner@baylibre.com>,
-	Sean Anderson <sean.anderson@linux.dev>
-Subject: [PATCH 7/7] hwmon: iio: Add alarm support
-Date: Mon, 14 Jul 2025 21:20:23 -0400
-Message-Id: <20250715012023.2050178-8-sean.anderson@linux.dev>
-In-Reply-To: <20250715012023.2050178-1-sean.anderson@linux.dev>
-References: <20250715012023.2050178-1-sean.anderson@linux.dev>
+	s=arc-20240116; t=1752558410; c=relaxed/simple;
+	bh=g8ObzbtsLMh6hIRHoS8hWGgVk9t7E1qWN/EE5RDZ0Ec=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=dLcqVk5eqM3BizJHbZmQO8qxYiXwXX9RHKrHhtRNc26C57CjmbeJXca5DhtRbUCX5J+Gg6VVtBgP7Jn9SFrrjOu0jj5cFxczVyPdjy7Ev0bpp2y3DWlfUz/mChOC2kaammvvq//oxh8xQHoi78BPOAiVXsXM/N29yAFPx5y7cdA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=aIH7JRcB; arc=none smtp.client-ip=46.19.9.99
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
+	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=kB2cLJNy4hPYhqXCKFroTjovGqdHkjo6jWxolFG5Rks=; b=aIH7JRcBnFaTDYDYU0B/+YjYO1
+	Z1AivAp6BGemuHi/coTdiNbfy5cJLpV80/vxnQiEqnMSTvkkJqIAMxBpM1ubIIIBCNWRyWJm/j3Kr
+	FYsMoE4rw7HBQah/RnPQkcXpw+W1lhUwBfLQkCBDkd8ysFhki0gnEhPhvHKxcOz0Wb8eidC9oACAn
+	47bAUJsrC5VhNd5s+jyYorwO5ORVD/q+r4muR10gIJDNLaf0xWK44U3yMN4QMJNr6qq7c0rDnNpU+
+	JiC+D+ly8vSZTQSs4iUnTb8EOu16nB9YCO5fwHkkTPiotPsWIyFkpQlsmUTSb4S4LjKorw/+YafA2
+	LChQLk2A==;
+Received: from 89-212-21-243.static.t-2.net ([89.212.21.243]:33050 helo=[192.168.69.116])
+	by cpanel.siel.si with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96.2)
+	(envelope-from <primoz.fiser@norik.com>)
+	id 1ubYV3-003pbU-2v;
+	Tue, 15 Jul 2025 07:46:45 +0200
+Message-ID: <c9d17343-e4a5-49ab-9a3e-b6da9d591195@norik.com>
+Date: Tue, 15 Jul 2025 07:46:44 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] dt-bindings: iio: adc: imx93: Add calibration
+ properties
+To: Jonathan Cameron <jic23@kernel.org>, David Lechner
+ <dlechner@baylibre.com>, Haibo Chen <haibo.chen@nxp.com>,
+ =?UTF-8?Q?Nuno_S=C3=A1?= <noname.nuno@gmail.com>
+Cc: Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, linux-iio@vger.kernel.org,
+ imx@lists.linux.dev, devicetree@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ upstream@lists.phytec.de, andrej.picej@norik.com
+References: <20250710073905.1105417-1-primoz.fiser@norik.com>
+ <20250710073905.1105417-2-primoz.fiser@norik.com>
+ <2bcd758b-c2d0-488a-8ead-ec7fb39f93e2@baylibre.com>
+ <20250713160247.0f22bbfe@jic23-huawei>
+ <de2c8e15-14e9-4c61-9a13-97ef1ec567a4@norik.com>
+ <6b32118a13e9e28b7cf12152af33642c76367c34.camel@gmail.com>
+Content-Language: en-US
+From: Primoz Fiser <primoz.fiser@norik.com>
+Autocrypt: addr=primoz.fiser@norik.com; keydata=
+ xjMEZrROOxYJKwYBBAHaRw8BAQdAADVOb5tiLVTUAC9nu/FUl4gj/+4fDLqbc3mk0Vz8riTN
+ JVByaW1veiBGaXNlciA8cHJpbW96LmZpc2VyQG5vcmlrLmNvbT7CiQQTFggAMRYhBK2YFSAH
+ ExsBZLCwJGoLbQEHbnBPBQJmtE47AhsDBAsJCAcFFQgJCgsFFgIDAQAACgkQagttAQducE+T
+ gAD+K4fKlIuvH75fAFwGYG/HT3F9mN64majvqJqvp3gTB9YBAL12gu+cm11m9JMyOyN0l6Os
+ jStsQFghPkzBSDWSDN0NzjgEZrROPBIKKwYBBAGXVQEFAQEHQP2xtEOhbgA+rfzvvcFkV1zK
+ 6ym3/c/OUQObCp50BocdAwEIB8J4BBgWCAAgFiEErZgVIAcTGwFksLAkagttAQducE8FAma0
+ TjwCGwwACgkQagttAQducE8ucAD9F1sXtQD4iA7Qu+SwNUAp/9x7Cqr37CSb2p6hbRmPJP8B
+ AMYR91JYlFmOJ+ScPhQ8/MgFO+V6pa7K2ebk5xYqsCgA
+Organization: Norik systems d.o.o.
+In-Reply-To: <6b32118a13e9e28b7cf12152af33642c76367c34.camel@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cpanel.siel.si
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - norik.com
+X-Get-Message-Sender-Via: cpanel.siel.si: authenticated_id: primoz.fiser@norik.com
+X-Authenticated-Sender: cpanel.siel.si: primoz.fiser@norik.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-Add alarm support based on IIO threshold events. The alarm is cleared on
-read, but will be set again if the condition is still present. This is
-detected by disabling and re-enabling the event. The same trick is done
-when creating the attribute to detect already-triggered events.
+Hi Nuno,
 
-The alarms are updated by an event listener. To keep the notifier call
-chain short, we create one listener per iio device, shared across all
-hwmon devices.
+On 14. 07. 25 18:11, Nuno Sá wrote:
+> On Mon, 2025-07-14 at 07:56 +0200, Primoz Fiser wrote:
+>> Hi all,
+>>
+>> On 13. 07. 25 17:02, Jonathan Cameron wrote:
+>>> On Thu, 10 Jul 2025 10:46:44 -0500
+>>> David Lechner <dlechner@baylibre.com> wrote:
+>>>
+>>>> On 7/10/25 2:39 AM, Primoz Fiser wrote:
+>>>>> From: Andrej Picej <andrej.picej@norik.com>
+>>>>>
+>>>>> Document i.MX93 ADC calibration properties and how to set them.
+>>>>>
+>>>>> Signed-off-by: Andrej Picej <andrej.picej@norik.com>
+>>>>> Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
+>>>>> ---
+>>>>>  .../bindings/iio/adc/nxp,imx93-adc.yaml       | 21 +++++++++++++++++++
+>>>>>  1 file changed, 21 insertions(+)
+>>>>>
+>>>>> diff --git a/Documentation/devicetree/bindings/iio/adc/nxp,imx93-
+>>>>> adc.yaml b/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
+>>>>> index c2e5ff418920..d1c04cf85fe6 100644
+>>>>> --- a/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
+>>>>> +++ b/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
+>>>>> @@ -52,6 +52,27 @@ properties:
+>>>>>    "#io-channel-cells":
+>>>>>      const: 1
+>>>>>  
+>>>>> +  nxp,calib-avg-en:
+>>>>> +    default: 1
+>>>>> +    description:
+>>>>> +      Enable or disable calibration averaging function (AVGEN).
+>>>>> +    $ref: /schemas/types.yaml#/definitions/uint32
+>>>>> +    enum: [ 0, 1 ]
+>>>>> +
+>>>>> +  nxp,calib-nr-samples:
+>>>>> +    default: 512
+>>>>> +    description:
+>>>>> +      Selects number of samples (NRSMPL) to be used during calibration.
+>>>>> +    $ref: /schemas/types.yaml#/definitions/uint32
+>>>>> +    enum: [ 16, 32, 128, 512 ]
+>>>
+>>> Allow 1 as a value and drop the enabled above.   Averaging over 1 sample
+>>> is same as no averaging and gives simpler binding.
+>>>
+>>>>> +
+>>>>> +  nxp,calib-t-sample:
+>>>>> +    default: 22
+>>>>> +    description:
+>>>>> +      Selects sample time (TSAMP) of calibration conversions in ADC
+>>>>> clock cycles
+>>>>> +    $ref: /schemas/types.yaml#/definitions/uint32
+>>>>> +    enum: [ 8, 16, 22, 32 ]
+>>>>> +
+>>>>>  required:
+>>>>>    - compatible
+>>>>>    - reg  
+>>>>
+>>>> This seem like things that should be set at runtime rather than
+>>>> in the devicetree. Unless there is some justification on why
+>>>> these values depend on how the chip is wired up?
+>>
+>> It depends how ADC 1.8V Vref is wired up, especially how noisy it is.
+>>
+>>>
+>>> Further to that, I'd like to see some explanation of why we care
+>>> to change it at all. Is it ever a bad idea to enable averaging and
+>>> pick a large number of samples for calibration?
+>>
+>> This is a snippet from the i.MX93 TRM, chapter Analog-to-Digital
+>> Converter (SAR_ADC) describing calibration steps:
+>>
+>> 1. Wait for deassertion of functional reset.
+>> 2. Configure SAR controller operating clock (MCR[ADCLKSE] = 0).
+>> 3. Bring ADC out of Power-down state (MCR[PWDN] = 0).
+>> 4. Configure desired calibration settings (default values kept for
+>> highest accuracy maximum time).
+>> • MCR[TSAMP]: Sample time for calibration conversion
+>> • MCR[NRSMPL]: Number of samples in averaging
+>> • MCR[AVGEN]: Averaging function enable in calibration
+>> 5. Run calibration by writing a one to MCR[CALSTART].
+>> 6. Check calibration run status in MSR[CALBUSY]—wait until MSR[CALBUSY]
+>> = 0; alternatively, MSR[ADCSTAT] can be
+>> used to check status.
+>> 7. Check calibration pass/fail status in MSR[CALFAIL] field. If
+>> MSR[CALFAIL] = 1 then calibration failed. Detailed status
+>> can be checked in CALSTAT.
+>>
+>>
+>> See point 4).
+>>
+>> Not sure why would there be an option to configure i.MX93 ADC
+>> calibration parameters if one use-case (max accuracy max time) to rule
+>> them all?
+>>
+> 
+> Sometimes HW guys just want to give you some options. Does not mean we have to
+> use them all :).
+> 
+> I guess what Jonathan is interested in, is to understand in what conditions the
+> defaults are no good for the calibration? If we can have a set of values that
+> should pretty much always work, no need to further complicate the bindings or
+> the driver.
 
-To avoid dynamic creation of alarms, alarms for all possible events are
-allocated at creation. Lookup is done by a linear scan, as I expect
-events to occur rarely. If performance becomes an issue, a binary search
-could be done instead (or some kind of hash lookup).
+In case you have a noisy Vref you can adjust the parameters to pass the
+calibration and have a working ADC.
 
-Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
----
+The trade-off is a less precise ADC but at least a working one.
 
- drivers/hwmon/iio_hwmon.c | 322 +++++++++++++++++++++++++++++++++++++-
- 1 file changed, 321 insertions(+), 1 deletion(-)
+In ideal case you would have Vref supplied by the dedicated LDO and tons
+of decoupling caps, but in real-world you have it connected to a noisy
+SMPS and you need to adjust the parameters accordingly.
 
-diff --git a/drivers/hwmon/iio_hwmon.c b/drivers/hwmon/iio_hwmon.c
-index 3db4d4b30022..c963bc5452ba 100644
---- a/drivers/hwmon/iio_hwmon.c
-+++ b/drivers/hwmon/iio_hwmon.c
-@@ -8,6 +8,7 @@
- #include <linux/slab.h>
- #include <linux/mod_devicetable.h>
- #include <linux/module.h>
-+#include <linux/notifier.h>
- #include <linux/err.h>
- #include <linux/platform_device.h>
- #include <linux/property.h>
-@@ -15,7 +16,192 @@
- #include <linux/hwmon.h>
- #include <linux/hwmon-sysfs.h>
- #include <linux/iio/consumer.h>
-+#include <linux/iio/events.h>
-+#include <linux/iio/iio.h>
- #include <linux/iio/types.h>
-+#include <uapi/linux/iio/events.h>
-+
-+/* Protects iio_hwmon_listeners and listeners' refcnt */
-+DEFINE_MUTEX(iio_hwmon_listener_lock);
-+LIST_HEAD(iio_hwmon_listeners);
-+
-+/**
-+ * struct iio_hwmon_listener - Listener for IIO events
-+ * @block: Notifier for events
-+ * @ids: Array of IIO event ids, one per alarm
-+ * @alarms: Bitmap of alarms
-+ * @num_alarms: Length of @ids and @alarms
-+ * @indio_dev: Device we are listening to
-+ * @list: List of all listeners
-+ * @refcnt: Reference count
-+ */
-+struct iio_hwmon_listener {
-+	struct notifier_block block;
-+	u64 *ids;
-+	unsigned long *alarms;
-+	size_t num_alarms;
-+
-+	struct iio_dev *indio_dev;
-+	struct list_head list;
-+	unsigned int refcnt;
-+};
-+
-+/**
-+ * iio_hwmon_lookup_alarm() - Find an alarm by id
-+ * @listener: Event listener
-+ * @id: IIO event id
-+ *
-+ * Return: index of @id in @listener->ids, or -1 if not found
-+ */
-+static ssize_t iio_hwmon_lookup_alarm(struct iio_hwmon_listener *listener,
-+				      u64 id)
-+{
-+	ssize_t i;
-+
-+	for (i = 0; i < listener->num_alarms; i++)
-+		if (listener->ids[i] == id)
-+			return i;
-+
-+	return -1;
-+}
-+
-+static int iio_hwmon_listener_callback(struct notifier_block *block,
-+				       unsigned long action, void *data)
-+{
-+	struct iio_hwmon_listener *listener =
-+		container_of(block, struct iio_hwmon_listener, block);
-+	struct iio_event_data *ev = data;
-+	ssize_t i;
-+
-+	if (action != IIO_NOTIFY_EVENT)
-+		return NOTIFY_DONE;
-+
-+	i = iio_hwmon_lookup_alarm(listener, ev->id);
-+	if (i >= 0)
-+		set_bit(i, listener->alarms);
-+	else
-+		dev_warn_once(&listener->indio_dev->dev,
-+			      "unknown event %016llx\n", ev->id);
-+
-+	return NOTIFY_DONE;
-+}
-+
-+/**
-+ * iio_event_id() - Calculate an IIO event id
-+ * @channel: IIO channel for this event
-+ * @type: Event type (theshold, rate-of-change, etc.)
-+ * @dir: Event direction (rising, falling, etc.)
-+ *
-+ * Return: IIO event id corresponding to this event's IIO id
-+ */
-+static u64 iio_event_id(struct iio_chan_spec const *chan,
-+			enum iio_event_type type,
-+			enum iio_event_direction dir)
-+{
-+	if (chan->differential)
-+		return IIO_DIFF_EVENT_CODE(chan->type, chan->channel,
-+					   chan->channel2, type, dir);
-+	if (chan->modified)
-+		return IIO_MOD_EVENT_CODE(chan->type, chan->channel,
-+					  chan->channel2, type, dir);
-+	return IIO_UNMOD_EVENT_CODE(chan->type, chan->channel, type, dir);
-+}
-+
-+/**
-+ * iio_hwmon_listener_get() - Get a listener for an IIO device
-+ * @indio_dev: IIO device to listen to
-+ *
-+ * Look up or create a new listener for @indio_dev. The returned listener is
-+ * registered with @indio_dev, but events still need to be manually enabled.
-+ * You must call iio_hwmon_listener_put() when you are done.
-+ *
-+ * Return: Listener for @indio_dev, or an error pointer
-+ */
-+static struct iio_hwmon_listener *iio_hwmon_listener_get(struct iio_dev *indio_dev)
-+{
-+	struct iio_hwmon_listener *listener;
-+	int err = -ENOMEM;
-+	size_t i, j;
-+
-+	guard(mutex)(&iio_hwmon_listener_lock);
-+	list_for_each_entry(listener, &iio_hwmon_listeners, list) {
-+		if (listener->indio_dev == indio_dev) {
-+			if (likely(listener->refcnt != UINT_MAX))
-+				listener->refcnt++;
-+			return listener;
-+		}
-+	}
-+
-+	listener = kzalloc(sizeof(*listener), GFP_KERNEL);
-+	if (!listener)
-+		goto err_unlock;
-+
-+	listener->refcnt = 1;
-+	listener->indio_dev = indio_dev;
-+	listener->block.notifier_call = iio_hwmon_listener_callback;
-+	for (i = 0; i < indio_dev->num_channels; i++)
-+		listener->num_alarms += indio_dev->channels[i].num_event_specs;
-+
-+	listener->ids = kcalloc(listener->num_alarms, sizeof(*listener->ids),
-+				GFP_KERNEL);
-+	listener->alarms = bitmap_zalloc(listener->num_alarms, GFP_KERNEL);
-+	if (!listener->ids || !listener->alarms)
-+		goto err_listener;
-+
-+	i = 0;
-+	for (j = 0; j < indio_dev->num_channels; j++) {
-+		struct iio_chan_spec const *chan = &indio_dev->channels[j];
-+		size_t k;
-+
-+		for (k = 0; k < chan->num_event_specs; k++)
-+			listener->ids[i++] =
-+				iio_event_id(chan, chan->event_spec[k].type,
-+					     chan->event_spec[k].dir);
-+	}
-+
-+	err = iio_event_register(indio_dev, &listener->block);
-+	if (err)
-+		goto err_alarms;
-+
-+	list_add(&listener->list, &iio_hwmon_listeners);
-+	mutex_unlock(&iio_hwmon_listener_lock);
-+	return listener;
-+
-+err_alarms:
-+	kfree(listener->alarms);
-+	kfree(listener->ids);
-+err_listener:
-+	kfree(listener);
-+err_unlock:
-+	mutex_unlock(&iio_hwmon_listener_lock);
-+	return ERR_PTR(err);
-+}
-+
-+/**
-+ * iio_hwmon_listener_put() - Release a listener
-+ * @data: &struct iio_hwmon_listener to release
-+ *
-+ * For convenience, @data is void.
-+ */
-+static void iio_hwmon_listener_put(void *data)
-+{
-+	struct iio_hwmon_listener *listener = data;
-+
-+	scoped_guard(mutex, &iio_hwmon_listener_lock) {
-+		if (unlikely(listener->refcnt == UINT_MAX))
-+			return;
-+
-+		if (--listener->refcnt)
-+			return;
-+
-+		list_del(&listener->list);
-+		iio_event_unregister(listener->indio_dev, &listener->block);
-+	}
-+
-+	kfree(listener->alarms);
-+	kfree(listener->ids);
-+	kfree(listener);
-+}
- 
- /**
-  * struct iio_hwmon_state - device instance state
-@@ -143,6 +329,68 @@ static ssize_t iio_hwmon_write_event(struct device *dev,
- 	return count;
- }
- 
-+/**
-+ * struct iio_hwmon_alarm_attribute - IIO HWMON alarm attribute
-+ * @dev_attr: Base device attribute
-+ * @listener: Listener for this alarm
-+ * @index: Index of the channel in the IIO HWMON
-+ * @alarm: Index of the alarm within @listener
-+ */
-+struct iio_hwmon_alarm_attribute {
-+	struct device_attribute dev_attr;
-+	struct iio_hwmon_listener *listener;
-+	size_t index;
-+	size_t alarm;
-+};
-+#define to_alarm_attr(_dev_attr) \
-+	container_of(_dev_attr, struct iio_hwmon_alarm_attribute, dev_attr)
-+
-+/**
-+ * iio_hwmon_alarm_toggle() - Turn an event off and back on again
-+ * @chan: Channel of the event
-+ * @dir: Event direction (rising, falling, etc.)
-+ *
-+ * Toggle an event's enable so we get notified if the alarm is already
-+ * triggered. We use this to convert IIO's event-triggered events into
-+ * level-triggered alarms.
-+ *
-+ * Return: 0 on success or negative error on failure
-+ */
-+static int iio_hwmon_alarm_toggle(struct iio_channel *chan,
-+				  enum iio_event_direction dir)
-+{
-+	int ret;
-+
-+	ret = iio_write_event_processed_scale(chan, IIO_EV_TYPE_THRESH, dir,
-+					      IIO_EV_INFO_ENABLE, 0, 1);
-+	if (ret)
-+		return ret;
-+
-+	return iio_write_event_processed_scale(chan, IIO_EV_TYPE_THRESH, dir,
-+					       IIO_EV_INFO_ENABLE, 1, 1);
-+}
-+
-+static ssize_t iio_hwmon_read_alarm(struct device *dev,
-+				    struct device_attribute *attr,
-+				    char *buf)
-+{
-+	struct iio_hwmon_alarm_attribute *sattr = to_alarm_attr(attr);
-+	struct iio_hwmon_state *state = dev_get_drvdata(dev);
-+	struct iio_channel *chan = &state->channels[sattr->index];
-+
-+	if (test_and_clear_bit(sattr->alarm, sattr->listener->alarms)) {
-+		u64 id = sattr->listener->ids[sattr->alarm];
-+		enum iio_event_direction dir = IIO_EVENT_CODE_EXTRACT_DIR(id);
-+
-+		WARN_ON(iio_hwmon_alarm_toggle(chan, dir));
-+		strcpy(buf, "1\n");
-+		return 2;
-+	}
-+
-+	strcpy(buf, "0\n");
-+	return 2;
-+}
-+
- static int add_device_attr(struct device *dev, struct iio_hwmon_state *st,
- 			   ssize_t (*show)(struct device *dev,
- 					   struct device_attribute *attr,
-@@ -205,6 +453,63 @@ static int add_event_attr(struct device *dev, struct iio_hwmon_state *st,
- 	return 0;
- }
- 
-+static int add_alarm_attr(struct device *dev, struct iio_hwmon_state *st,
-+			  int i, enum iio_event_direction dir,
-+			  const char *fmt, ...)
-+{
-+	struct iio_hwmon_alarm_attribute *a;
-+	struct iio_hwmon_listener *listener;
-+	ssize_t alarm;
-+	umode_t mode;
-+	va_list ap;
-+	int ret;
-+
-+	mode = iio_event_mode(&st->channels[i], IIO_EV_TYPE_THRESH, dir,
-+			      IIO_EV_INFO_ENABLE);
-+	if (!(mode & 0200))
-+		return 0;
-+
-+	listener = iio_hwmon_listener_get(st->channels[i].indio_dev);
-+	if (listener == ERR_PTR(-EBUSY))
-+		return 0;
-+	if (IS_ERR(listener))
-+		return PTR_ERR(listener);
-+
-+	ret = devm_add_action_or_reset(dev, iio_hwmon_listener_put, listener);
-+	if (ret)
-+		return ret;
-+
-+	alarm = iio_hwmon_lookup_alarm(listener,
-+				       iio_event_id(st->channels[i].channel,
-+						    IIO_EV_TYPE_THRESH, dir));
-+	if (WARN_ON_ONCE(alarm < 0))
-+		return -ENOENT;
-+
-+	ret = iio_hwmon_alarm_toggle(&st->channels[i], dir);
-+	if (ret)
-+		return ret;
-+
-+	a = devm_kzalloc(dev, sizeof(*a), GFP_KERNEL);
-+	if (!a)
-+		return -ENOMEM;
-+
-+	sysfs_attr_init(&a->dev_attr.attr);
-+	va_start(ap, fmt);
-+	a->dev_attr.attr.name = devm_kvasprintf(dev, GFP_KERNEL, fmt, ap);
-+	va_end(ap);
-+	if (!a->dev_attr.attr.name)
-+		return -ENOMEM;
-+
-+	a->dev_attr.show = iio_hwmon_read_alarm;
-+	a->dev_attr.attr.mode = 0400;
-+	a->listener = listener;
-+	a->index = i;
-+	a->alarm = alarm;
-+
-+	st->attrs[st->num_attrs++] = &a->dev_attr.attr;
-+	return 0;
-+}
-+
- static int iio_hwmon_probe(struct platform_device *pdev)
- {
- 	struct device *dev = &pdev->dev;
-@@ -238,7 +543,7 @@ static int iio_hwmon_probe(struct platform_device *pdev)
- 		st->num_channels++;
- 
- 	st->attrs = devm_kcalloc(dev,
--				 4 * st->num_channels + 1, sizeof(*st->attrs),
-+				 7 * st->num_channels + 1, sizeof(*st->attrs),
- 				 GFP_KERNEL);
- 	if (st->attrs == NULL)
- 		return -ENOMEM;
-@@ -298,6 +603,21 @@ static int iio_hwmon_probe(struct platform_device *pdev)
- 				     "%s%d_max", prefix, n);
- 		if (ret)
- 			return ret;
-+
-+		ret = add_alarm_attr(dev, st, i, IIO_EV_DIR_RISING,
-+				     "%s%d_max_alarm", prefix, n);
-+		if (ret)
-+			return ret;
-+
-+		ret = add_alarm_attr(dev, st, i, IIO_EV_DIR_FALLING,
-+				     "%s%d_min_alarm", prefix, n);
-+		if (ret)
-+			return ret;
-+
-+		ret = add_alarm_attr(dev, st, i, IIO_EV_DIR_EITHER,
-+				     "%s%d_alarm", prefix, n);
-+		if (ret)
-+			return ret;
- 	}
- 
- 	devm_free_pages(dev, (unsigned long)buf);
+That's it :)
+
+BR,
+Primoz
+
 -- 
-2.35.1.1320.gc452695387.dirty
-
+Primoz Fiser
+phone: +386-41-390-545
+email: primoz.fiser@norik.com
+--
+Norik systems d.o.o.
+Your embedded software partner
+Slovenia, EU
+phone: +386-41-540-545
+email: info@norik.com
 

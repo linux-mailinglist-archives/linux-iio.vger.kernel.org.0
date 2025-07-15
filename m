@@ -1,149 +1,275 @@
-Return-Path: <linux-iio+bounces-21682-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21683-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22469B0580F
-	for <lists+linux-iio@lfdr.de>; Tue, 15 Jul 2025 12:42:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D2FAB05874
+	for <lists+linux-iio@lfdr.de>; Tue, 15 Jul 2025 13:09:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 25DA93BFD70
-	for <lists+linux-iio@lfdr.de>; Tue, 15 Jul 2025 10:42:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A61823A637B
+	for <lists+linux-iio@lfdr.de>; Tue, 15 Jul 2025 11:08:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54AEE2D837B;
-	Tue, 15 Jul 2025 10:42:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F319F2D6400;
+	Tue, 15 Jul 2025 11:09:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="C9icJ8Xc"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="j70/9X2H"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66EB61D9A70;
-	Tue, 15 Jul 2025 10:42:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E12E513B7A3;
+	Tue, 15 Jul 2025 11:09:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752576161; cv=none; b=kGz0VWTQBOwzlyAhHwR52Z4hiYd+FQ6xUaCSfxJ09ccUlseVEZMYpmpAP85bVzzLECTWJrBsvaDdxQwuCx05vzLy+lOV/DVHotMXOqXo0qnhatny6etrdtezjtWiP5sfNXI9QYSqstupEV/g5QPsvP856GxAUM0bZ0BW/Fz9/M8=
+	t=1752577743; cv=none; b=e5g55Aaj+mNTtlfv0B5acwz/uwt3mEMC/BohcsPHJoIthwalfAbkfddy67AlF/fjX3ynSo/+C9hU74+BC9ILQAth106JMFLPLXWSxH2emeyAsGSEIQh3s768cwfPwIsRxFq6Zyivcdq9zNR+acPrHq5sdS7ab4DY32qeNbmOKYg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752576161; c=relaxed/simple;
-	bh=qPvGaKZPuwIuu9H/djUeWBfbuZULyNCjjRuj3wYvkwM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aT/kXdk8HNhmWqJ/r3ly/T/cVlNvy73VgiRV2R6xitVotfDddSaDkSUSeVihuVzrJSrAw2ROJe5qBFEOzyMqlHopUB2TjM4UbF6LT8tzorVeJi7CLtctMDmcUlJbvtlCI93SCI3ZeJ/c+DLDv5NNfIuS7xhLjre9tmziEcXqnx8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=C9icJ8Xc; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1752576159; x=1784112159;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=qPvGaKZPuwIuu9H/djUeWBfbuZULyNCjjRuj3wYvkwM=;
-  b=C9icJ8XczebumfsqrngmAleLfW1ZPtclpPsu0HGYcLEgAQTJV2HS8w9H
-   3YyPql/esGM7U1p9PIb2MtBdh9gYcayfY0noNwuVCLW9RdoddNcgjEGkq
-   58aZovJ7wlyuophlKupXKGDGuzZob9dMA2e6g4Y6aAVdfsrH+EgJdW3l9
-   T5NtCcN0R9UPPu09/lmQe04Xf6fIflpJjCVbOPXh0036Zdk8r7JX0Rfga
-   tXkRD9aBOh4wMEo1fsf0qvBXc4mqcdCUrpKEZ62lrsbFHadQICd5Jz4R+
-   eQ2zg4dcsQgDSPCLhqR11E9FhggpUDHSzIB/UeIb+PfYIiO0nZKdEElmc
-   g==;
-X-CSE-ConnectionGUID: c3yobWWxQlysfDzBE7vytw==
-X-CSE-MsgGUID: QV1srw1nRvevSOhcO4z9cA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11491"; a="58445765"
-X-IronPort-AV: E=Sophos;i="6.16,313,1744095600"; 
-   d="scan'208";a="58445765"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jul 2025 03:42:38 -0700
-X-CSE-ConnectionGUID: dmjPbJpiSbiGp3SPSf7lKw==
-X-CSE-MsgGUID: /JEWBtDaS7uWpRZYqR/N6Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,313,1744095600"; 
-   d="scan'208";a="157730369"
-Received: from smile.fi.intel.com ([10.237.72.52])
-  by fmviesa008.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jul 2025 03:42:35 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1ubd7I-0000000Fckz-48BA;
-	Tue, 15 Jul 2025 13:42:32 +0300
-Date: Tue, 15 Jul 2025 13:42:32 +0300
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Remi Buisson <Remi.Buisson@tdk.com>
-Cc: Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
-Subject: Re: [PATCH v2 2/8] iio: imu: inv_icm45600: add new inv_icm45600
- driver
-Message-ID: <aHYwmEv1sCI-qi0T@smile.fi.intel.com>
-References: <20250710-add_newport_driver-v2-0-bf76d8142ef2@tdk.com>
- <20250710-add_newport_driver-v2-2-bf76d8142ef2@tdk.com>
- <aG-ID7O3HgVc1EOX@smile.fi.intel.com>
- <FR2PPF4571F02BC5366477EC02E9C44041A8C4BA@FR2PPF4571F02BC.DEUP281.PROD.OUTLOOK.COM>
- <aHD7zEzvVuwSB9Ke@smile.fi.intel.com>
- <FR2PPF4571F02BC69DF6807BAA188B2B3A08C57A@FR2PPF4571F02BC.DEUP281.PROD.OUTLOOK.COM>
+	s=arc-20240116; t=1752577743; c=relaxed/simple;
+	bh=sBc/dGk2SunpuGidHnud/+ntCTOPh5h9YR2bCR8HyQM=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=GNdGoMeuySlxM7Wm8h7M8U/zkWN6RQjiW8b1HqSNyvl4nxZqCQRk2LctGfjPcS1mCNgJRExKXwm7jJYqzQJ8L/F7QY5EhoMtn2wZwUKX58qiPn+WIYYpb0zxC6iZcXKLIE8izD/Zc0R9sz2Wd9VN8d5vu3dGZrIuzM1YLrIg+nw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=j70/9X2H; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-451d6ade159so38333955e9.1;
+        Tue, 15 Jul 2025 04:09:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1752577740; x=1753182540; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=lkoaFwC3o4Cjedw6YXHTEPphhFtNTv1QfnKgO5oWGDU=;
+        b=j70/9X2HNQz/Hok4fkb2tdjoXlvSz6ESGhmlv0Q3Mcqlf0/8ataM2yYxD0mXfw9Crq
+         JkM5BS/0lzWwoW+GzBI2NMuIqhJqY+etz7aapzHq0MEutGMybObBF5cZc0gK3el4Qavp
+         rs08rNSz5Hq5aAQDTI0R0eIXkJRm4kdKaZwKkzpp3MNP3wcMRSWSxtf+VnBb8Y1CSuvi
+         9H6SSlETcDGdJDhcRjCjRVkF6IoUX3KuqeuL9I35rVQCIPOgpWQMDmcC4PQP5B+64sf4
+         JPJLAqW4gxSUM2YSJiRi+z+iLXJ5X9A8rIV2mDPDM1fYlQ3FOmbSWKU4InDtk7UFIEUf
+         RY+Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752577740; x=1753182540;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=lkoaFwC3o4Cjedw6YXHTEPphhFtNTv1QfnKgO5oWGDU=;
+        b=LSbzHWoX+/+w6gA5FiGpbroZLyYE4CHFuvbvllvIFVR6Ac+2NkT7nP298q4xNpsWyq
+         Ohx7PYeMKKgdpIb6gaz+eIqwURsSsED64SNnZJUF8pKok7q9l8qUcQQmrYk94WNdNTW+
+         m8p58hiUUJB94DHqwA0/Q9Ca4B1H/5J9reYNUwo0jLsqQn9uLk1iU5iVEAv00mtqECm5
+         GzEvtWnXxXQfo4q3Cn6T0sZgIZSdrCkuNDvCX2HVcjk9A9OivjtL6E4yQe+L/0514J//
+         Kk8WNb0SOuv+iCYEq1CQHg47JIyd47sACR7QnuD2BcLT82uFz/cms8abouN8YlFWcdJ4
+         Bt9A==
+X-Forwarded-Encrypted: i=1; AJvYcCUFkVpjEQSW2lmVCIy/hyQB+tjr+d168SXweaRfZfmOQW0Eawqo31oJ2bY9WvQc+2fId5Pm1JMqU172ZA==@vger.kernel.org, AJvYcCVANCPw5OZqQBW1t7rnOyi6Il6VvIG4ZJCtnHNDbcPkdwTcshoRAE7/g/zpoDHvc6W4ab8WF6FGH/2A@vger.kernel.org, AJvYcCVSz+qe8x0UIzrJx32c6LkmysQQDDCBIX0CR93Yo0rcSbCsua+DdDyAorGwPIxPhrhx2s5PMcNP/rkgfo/u@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw3VeBoUCK/dBMLDAREH6PSxRyWGpqth6sqmbqUN4Kz0oefypCL
+	Q2m616qqRQiatWSZV9eE8aW2S/lSa+CA/HGVkuB7rfzMLVIoCenQ/LMp
+X-Gm-Gg: ASbGncsf20p57rpMkc+yhSrtkPIKFSEfONSdWkyZh2jCtRmOuq0CLMC6/RV8gQO7Pc1
+	/RM8QpURCfK1cmo0ppnGdz+E7mFhGX8R74rrms3PmjvJHPbuq1udW1lSCOVDdwnUAJo26ACbWS0
+	Zsy7f4hLrtkwNBdj4ncNuSz1WYa9bpIZr6SrLdXbSrt8MnOR+oogoQ1IFOmaGYzcUbtHYrZDQTg
+	88KqSP/G/9AJfSGzbZjWaT7S6Z3a7b0+tqkOY40kqh+SSmgBJ6w7nbWMZoYZMSmp3xjZi60dvlc
+	VVr/B6hpQ3or3mBH1VQl324y0yI1gklrz5GJiGNYzNdHIE8BY3mCsrGUfPvmDD+ubrjFIXmhOg4
+	lQsDFvC6Iihbah5xH0FlfQA==
+X-Google-Smtp-Source: AGHT+IHPQ16eomMAsvWLTFfSGrzVFPzS9BZ7NSNAmDuKJKXd6lZFfmAoE/8Aq3KTCzDVhvh1HSpO6A==
+X-Received: by 2002:a05:6000:2c09:b0:3a4:f66a:9d31 with SMTP id ffacd0b85a97d-3b5f2dc2becmr12968879f8f.16.1752577739838;
+        Tue, 15 Jul 2025 04:08:59 -0700 (PDT)
+Received: from [10.5.0.2] ([45.94.208.220])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45619fbcff8sm62963825e9.2.2025.07.15.04.08.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 15 Jul 2025 04:08:59 -0700 (PDT)
+Message-ID: <d8e5c8fbeaee42e9e0708460c47bd68053cd8710.camel@gmail.com>
+Subject: Re: [PATCH 3/7] iio: Add in-kernel API for events
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: Sean Anderson <sean.anderson@linux.dev>, Jonathan Cameron
+ <jic23@kernel.org>,  Jean Delvare <jdelvare@suse.com>, Guenter Roeck
+ <linux@roeck-us.net>, linux-iio@vger.kernel.org, 
+	linux-hwmon@vger.kernel.org
+Cc: Andy Shevchenko <andy@kernel.org>, Nuno =?ISO-8859-1?Q?S=E1?=
+	 <nuno.sa@analog.com>, linux-kernel@vger.kernel.org, David Lechner
+	 <dlechner@baylibre.com>
+Date: Tue, 15 Jul 2025 12:09:12 +0100
+In-Reply-To: <20250715012023.2050178-4-sean.anderson@linux.dev>
+References: <20250715012023.2050178-1-sean.anderson@linux.dev>
+	 <20250715012023.2050178-4-sean.anderson@linux.dev>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <FR2PPF4571F02BC69DF6807BAA188B2B3A08C57A@FR2PPF4571F02BC.DEUP281.PROD.OUTLOOK.COM>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Tue, Jul 15, 2025 at 09:11:47AM +0000, Remi Buisson wrote:
-> >From: Andy Shevchenko <andriy.shevchenko@intel.com> 
-> >Sent: Friday, July 11, 2025 1:56 PM
-> >On Fri, Jul 11, 2025 at 11:32:48AM +0000, Remi Buisson wrote:
-> >> >From: Andy Shevchenko andriy.shevchenko@intel.com<mailto:andriy.shevchenko@intel.com>
-> >> >Sent: Thursday, July 10, 2025 11:30 AM
-> >> >On Thu, Jul 10, 2025 at 08:57:57AM +0000, Remi Buisson via B4 Relay wrote:
+On Mon, 2025-07-14 at 21:20 -0400, Sean Anderson wrote:
+> Add an API to notify consumers about events. Events still need to be
+> enabled using the iio_read_event/iio_write_event functions. Of course,
+> userspace can also manipulate the enabled events. I don't think this is
+> too much of an issue, since userspace can also manipulate the event
+> thresholds. But enabling events may cause existing programs to be
+> surprised when they get something unexpected. Maybe we should set the
+> interface as busy when there are any in-kernel listeners?
+>=20
 
-...
+Sensible question. I'm not that familiar with events but I suspect is not
+trivial (if doable) to do a similar approach as with buffers? With buffers,=
+ an
+inkernal consumer get's it's own buffer object (that goes into a list of ac=
+tive
+buffers in the iio device) with all channels enabled and then we demux the
+appropriate channels for each consumer.
 
-> >> >> +#define INV_ICM45600_SENSOR_CONF_INIT                        {-1, -1, -1, -1}
-> >> >
-> >> >Unused.
-> >> This is used in later patch of the serie.
-> >> I will move this definition to the patch using it.
-> >
-> >Yes, unused in this code. You should compile the series incrementally,
-> >so each patch will get a compilation test. This is called compile-time
-> >bisectability. Also run the system each time to confirm no regressions
-> >(this is called run-time bisectability).
+Independent of the above, we can argue that having both inkernel and usersp=
+ace
+changing thresholds is ok (I mean, there's nothing stopping two userspace a=
+pps
+doing that) but we should likely be careful with enabling/disabling. If mul=
+tiple
+consumers enable the same event, one of them disabling it should not disabl=
+e it
+for all the consumers, right?
 
-> Yes I did that for each patch, everything build successfully.
-> In that case, nothing is broken due to this early definition of the macro.
-> But I'll definitely move it to later patch for clarity. 
+- Nuno S=C3=A1
 
-Yeah, the problem is that the (unused) definitions are not warned even when
-`make W=1`. And I guess I understand why. We have tons of unused definitions
-in the drivers that usually substitute (on whatever reasons) the actual
-documentation. It's hard to catch for the definitions like this without reading
-the code.
-
-...
-
-> >> It's probably safer to keep the delay even in case of failure to make sure
-> >> the device is ready before next operation.
-> >
-> >I am not sure about it. Why? This has to be well justified as it's quite
-> >unusual pattern.
-
-> Ok I understand, the hardware needs that delay if the access was actually
-> done on the bus (to not jeopardize next access).  If a regmap error means
-> that no real access occured then the delay is avoidable.
-
-Perhaps you need to have this delay embedded in the IO accessors? Also do
-read _and_ write need this or only one of them?
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+> Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
+> ---
+>=20
+> =C2=A0drivers/iio/industrialio-event.c | 34 +++++++++++++++++++++++++++--=
+---
+> =C2=A0include/linux/iio/consumer.h=C2=A0=C2=A0=C2=A0=C2=A0 | 30 +++++++++=
++++++++++++++++++++
+> =C2=A02 files changed, 59 insertions(+), 5 deletions(-)
+>=20
+> diff --git a/drivers/iio/industrialio-event.c b/drivers/iio/industrialio-
+> event.c
+> index 06295cfc2da8..b9e3ff1cd5c9 100644
+> --- a/drivers/iio/industrialio-event.c
+> +++ b/drivers/iio/industrialio-event.c
+> @@ -12,11 +12,13 @@
+> =C2=A0#include <linux/kernel.h>
+> =C2=A0#include <linux/kfifo.h>
+> =C2=A0#include <linux/module.h>
+> +#include <linux/notifier.h>
+> =C2=A0#include <linux/poll.h>
+> =C2=A0#include <linux/sched.h>
+> =C2=A0#include <linux/slab.h>
+> =C2=A0#include <linux/uaccess.h>
+> =C2=A0#include <linux/wait.h>
+> +#include <linux/iio/consumer.h>
+> =C2=A0#include <linux/iio/iio.h>
+> =C2=A0#include <linux/iio/iio-opaque.h>
+> =C2=A0#include "iio_core.h"
+> @@ -26,6 +28,7 @@
+> =C2=A0/**
+> =C2=A0 * struct iio_event_interface - chrdev interface for an event line
+> =C2=A0 * @wait:		wait queue to allow blocking reads of events
+> + * @notifier:		notifier head for in-kernel event listeners
+> =C2=A0 * @det_events:		list of detected events
+> =C2=A0 * @dev_attr_list:	list of event interface sysfs attribute
+> =C2=A0 * @flags:		file operations related flags including busy flag.
+> @@ -35,6 +38,7 @@
+> =C2=A0 */
+> =C2=A0struct iio_event_interface {
+> =C2=A0	wait_queue_head_t	wait;
+> +	struct atomic_notifier_head notifier;
+> =C2=A0	DECLARE_KFIFO(det_events, struct iio_event_data, 16);
+> =C2=A0
+> =C2=A0	struct list_head	dev_attr_list;
+> @@ -67,18 +71,19 @@ int iio_push_event(struct iio_dev *indio_dev, u64 ev_=
+code,
+> s64 timestamp)
+> =C2=A0{
+> =C2=A0	struct iio_dev_opaque *iio_dev_opaque =3D to_iio_dev_opaque(indio_=
+dev);
+> =C2=A0	struct iio_event_interface *ev_int =3D iio_dev_opaque->event_inter=
+face;
+> -	struct iio_event_data ev;
+> +	struct iio_event_data ev =3D {
+> +		.id =3D ev_code,
+> +		.timestamp =3D timestamp,
+> +	};
+> =C2=A0	int copied;
+> =C2=A0
+> =C2=A0	if (!ev_int)
+> =C2=A0		return 0;
+> =C2=A0
+> +	atomic_notifier_call_chain(&ev_int->notifier, IIO_NOTIFY_EVENT, &ev);
+> +
+> =C2=A0	/* Does anyone care? */
+> =C2=A0	if (iio_event_enabled(ev_int)) {
+> -
+> -		ev.id =3D ev_code;
+> -		ev.timestamp =3D timestamp;
+> -
+> =C2=A0		copied =3D kfifo_put(&ev_int->det_events, ev);
+> =C2=A0		if (copied !=3D 0)
+> =C2=A0			wake_up_poll(&ev_int->wait, EPOLLIN);
+> @@ -223,6 +228,25 @@ static int iio_event_getfd(struct iio_dev *indio_dev=
+)
+> =C2=A0	return fd;
+> =C2=A0}
+> =C2=A0
+> +int iio_event_register(struct iio_dev *indio_dev, struct notifier_block
+> *block)
+> +{
+> +	struct iio_dev_opaque *iio_dev_opaque =3D to_iio_dev_opaque(indio_dev);
+> +	struct iio_event_interface *ev_int =3D iio_dev_opaque->event_interface;
+> +
+> +	return atomic_notifier_chain_register(&ev_int->notifier, block);
+> +}
+> +EXPORT_SYMBOL_GPL(iio_event_register);
+> +
+> +void iio_event_unregister(struct iio_dev *indio_dev,
+> +			=C2=A0 struct notifier_block *block)
+> +{
+> +	struct iio_dev_opaque *iio_dev_opaque =3D to_iio_dev_opaque(indio_dev);
+> +	struct iio_event_interface *ev_int =3D iio_dev_opaque->event_interface;
+> +
+> +	WARN_ON(atomic_notifier_chain_unregister(&ev_int->notifier, block));
+> +}
+> +EXPORT_SYMBOL_GPL(iio_event_unregister);
+> +
+> =C2=A0static const char * const iio_ev_type_text[] =3D {
+> =C2=A0	[IIO_EV_TYPE_THRESH] =3D "thresh",
+> =C2=A0	[IIO_EV_TYPE_MAG] =3D "mag",
+> diff --git a/include/linux/iio/consumer.h b/include/linux/iio/consumer.h
+> index 16e7682474f3..9918e3f7af3d 100644
+> --- a/include/linux/iio/consumer.h
+> +++ b/include/linux/iio/consumer.h
+> @@ -507,4 +507,34 @@ int iio_write_event_processed_scale(struct iio_chann=
+el
+> *chan,
+> =C2=A0				=C2=A0=C2=A0=C2=A0 enum iio_event_info info, int processed,
+> =C2=A0				=C2=A0=C2=A0=C2=A0 unsigned int scale);
+> =C2=A0
+> +struct notifier_block;
+> +enum iio_notifier_val {
+> +	/** IIO_NOTIFY_EVENT: v is a pointer to &struct iio_event_data */
+> +	IIO_NOTIFY_EVENT,
+> +};
+> +
+> +/**
+> + * iio_event_register() - Register a notifier for events
+> + * @indio_dev: Device to be notified of events on
+> + * @block: Notifier block to register
+> + *
+> + * Register a notifier for events on @indio_dev. @v will be a member of =
+&enum
+> + * iio_notifier_val. Notifiers will be called in atomic context. @indio_=
+dev
+> + * must stay valid until you call iio_event_unregister().
+> + *
+> + * Return: 0 on success, or -EEXIST if @block has already been registere=
+d
+> + */
+> +int iio_event_register(struct iio_dev *indio_dev,
+> +		=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct notifier_block *block);
+> +
+> +/**
+> + * iio_event_unregister() - Remove a previously-added notifier
+> + * @indio_dev: Device to be notified of events on
+> + * @block: Notifier previously-registered with iio_event_register()
+> + *
+> + * Remove a previously-added notifier.
+> + */
+> +void iio_event_unregister(struct iio_dev *indio_dev,
+> +			=C2=A0 struct notifier_block *block);
+> +
+> =C2=A0#endif
 

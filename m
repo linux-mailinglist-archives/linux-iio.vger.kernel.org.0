@@ -1,47 +1,47 @@
-Return-Path: <linux-iio+bounces-21654-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21655-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14588B04D59
-	for <lists+linux-iio@lfdr.de>; Tue, 15 Jul 2025 03:21:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13D41B04D5F
+	for <lists+linux-iio@lfdr.de>; Tue, 15 Jul 2025 03:22:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6ECF64A5A80
-	for <lists+linux-iio@lfdr.de>; Tue, 15 Jul 2025 01:21:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F3553B4778
+	for <lists+linux-iio@lfdr.de>; Tue, 15 Jul 2025 01:21:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B814201032;
-	Tue, 15 Jul 2025 01:20:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E49B420966B;
+	Tue, 15 Jul 2025 01:20:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="QpLuphKK"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="c3t1Z7Fs"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
+Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BDA11F7098
-	for <linux-iio@vger.kernel.org>; Tue, 15 Jul 2025 01:20:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79CAF1FECB0;
+	Tue, 15 Jul 2025 01:20:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752542446; cv=none; b=d7BhliykLf6+FWPyjhKlKjTH3WDZGu4teCVubSJUgbshl5M0B2rjRQpfyjMt0QtggEwGbLNuAAVfYLbdMeksxtIiGmpjzZ597lrhFpEhs4t4crvprJZ9xsgPoLhPaGQ9I9Y/8+Ue30etqiuILMvUgblWTRAUi1F1Vm16USf0SL8=
+	t=1752542448; cv=none; b=Ytf/5fnYBq/+/tXJXDIf9czKev0PCRCFj+EPMvvMd6jmidJmaNECCOEceAT+kX2Jt/ThPEjgUV38HBXlIysO752B0EIhHiwlMjrr0iYYTJz8j8vP1HpiedbrzRipmZDRVlgU+iXaiAcb9k0WDpmyXB3nrQA1lOzJl3rGPtuhnx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752542446; c=relaxed/simple;
-	bh=aIZbLBsah3Yw0NJEHGudXnDSIeXYLls3JcTgUq6xWPw=;
+	s=arc-20240116; t=1752542448; c=relaxed/simple;
+	bh=bPfeHgVMRjFo+jzsXSzZgy1MKffh7fIAckyt2QrH5sY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=D8NdiM/glLdR+ozrKy0jYXlF5MytDA5HD/W1Ccos2YV1/iQucPHTHwjUxnXnPnyaC6ntQRm8M7Axv1K4QwmnUovLbq0DMlOwdgMPR/Qy6w13zlT7r0+xE7AoGH64+GqoF29Fjo9FUVGvK2acyuoue8+7V5MCP89wNrfBR1xR780=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=QpLuphKK; arc=none smtp.client-ip=95.215.58.170
+	 MIME-Version:Content-Type; b=QrLQcma0yOMrkmDdOQ7CBfC2snJg8ockZDVKLjc74HhqoBv+Yd32SjwbbTSlBBj2brePkuLJySSNMlFpjzwXxKxLU0+nMZBzJA34AQPaaf3li6ty9RDY403WJW929dK466YGJSqIzEajj4T3yv3Eb0CH/qFC7kE67V5by/VQq84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=c3t1Z7Fs; arc=none smtp.client-ip=95.215.58.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1752542443;
+	t=1752542444;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=xFYh68TfjA4tujo44GWGu2WxKiJwS1euTrgYfJD1Erg=;
-	b=QpLuphKKTLaefpPKmKKtu3LFfoRSjtPkQwaTT+Y4lQZ1Afi/K2oyigstmCt1UFq+umF8Ls
-	gy/RyXVQQrDVtKkjwM1NED7QUYcztxTvz7Y1pQpTB00VoVe8mwsMouGNSq06vqmU1ZnH7F
-	L65SrUR5qzQx3JznxUAolDay1VXxiqg=
+	bh=BY0Ov/6AcGBp5N1Wvrgjij988UEIGtctKJNwWjsdeWI=;
+	b=c3t1Z7FsjopmgBwNhQA6RhPat2/4KSOOba+yiJzxSiHu7cqybNKUAFoPGVaqwPX/nwaPcA
+	bgEvH3f4o2Ds6R4gqYseRMR0RwRQq/3v0NZpbfnwy4vpwed0m9BysSqjJfg4mxbvZQ2QTb
+	UATRNUAK4CFHTFwbVyvDwzWGxBbCQxM=
 From: Sean Anderson <sean.anderson@linux.dev>
 To: Jonathan Cameron <jic23@kernel.org>,
 	Jean Delvare <jdelvare@suse.com>,
@@ -53,9 +53,9 @@ Cc: Andy Shevchenko <andy@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	David Lechner <dlechner@baylibre.com>,
 	Sean Anderson <sean.anderson@linux.dev>
-Subject: [PATCH 6/7] hwmon: iio: Add min/max support
-Date: Mon, 14 Jul 2025 21:20:22 -0400
-Message-Id: <20250715012023.2050178-7-sean.anderson@linux.dev>
+Subject: [PATCH 7/7] hwmon: iio: Add alarm support
+Date: Mon, 14 Jul 2025 21:20:23 -0400
+Message-Id: <20250715012023.2050178-8-sean.anderson@linux.dev>
 In-Reply-To: <20250715012023.2050178-1-sean.anderson@linux.dev>
 References: <20250715012023.2050178-1-sean.anderson@linux.dev>
 Precedence: bulk
@@ -64,93 +64,343 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 
-Add support for minimum/maximum attributes. Like the _input attribute,
-we just need to call into the IIO API.
+Add alarm support based on IIO threshold events. The alarm is cleared on
+read, but will be set again if the condition is still present. This is
+detected by disabling and re-enabling the event. The same trick is done
+when creating the attribute to detect already-triggered events.
+
+The alarms are updated by an event listener. To keep the notifier call
+chain short, we create one listener per iio device, shared across all
+hwmon devices.
+
+To avoid dynamic creation of alarms, alarms for all possible events are
+allocated at creation. Lookup is done by a linear scan, as I expect
+events to occur rarely. If performance becomes an issue, a binary search
+could be done instead (or some kind of hash lookup).
 
 Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
 ---
 
- drivers/hwmon/iio_hwmon.c | 94 ++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 93 insertions(+), 1 deletion(-)
+ drivers/hwmon/iio_hwmon.c | 322 +++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 321 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/hwmon/iio_hwmon.c b/drivers/hwmon/iio_hwmon.c
-index 7dc156d2aea4..3db4d4b30022 100644
+index 3db4d4b30022..c963bc5452ba 100644
 --- a/drivers/hwmon/iio_hwmon.c
 +++ b/drivers/hwmon/iio_hwmon.c
-@@ -95,6 +95,54 @@ static ssize_t iio_hwmon_read_val(struct device *dev,
- 	return sprintf(buf, "%d\n", result);
- }
- 
-+static ssize_t iio_hwmon_read_event(struct device *dev,
-+				    struct device_attribute *attr,
-+				    char *buf)
+@@ -8,6 +8,7 @@
+ #include <linux/slab.h>
+ #include <linux/mod_devicetable.h>
+ #include <linux/module.h>
++#include <linux/notifier.h>
+ #include <linux/err.h>
+ #include <linux/platform_device.h>
+ #include <linux/property.h>
+@@ -15,7 +16,192 @@
+ #include <linux/hwmon.h>
+ #include <linux/hwmon-sysfs.h>
+ #include <linux/iio/consumer.h>
++#include <linux/iio/events.h>
++#include <linux/iio/iio.h>
+ #include <linux/iio/types.h>
++#include <uapi/linux/iio/events.h>
++
++/* Protects iio_hwmon_listeners and listeners' refcnt */
++DEFINE_MUTEX(iio_hwmon_listener_lock);
++LIST_HEAD(iio_hwmon_listeners);
++
++/**
++ * struct iio_hwmon_listener - Listener for IIO events
++ * @block: Notifier for events
++ * @ids: Array of IIO event ids, one per alarm
++ * @alarms: Bitmap of alarms
++ * @num_alarms: Length of @ids and @alarms
++ * @indio_dev: Device we are listening to
++ * @list: List of all listeners
++ * @refcnt: Reference count
++ */
++struct iio_hwmon_listener {
++	struct notifier_block block;
++	u64 *ids;
++	unsigned long *alarms;
++	size_t num_alarms;
++
++	struct iio_dev *indio_dev;
++	struct list_head list;
++	unsigned int refcnt;
++};
++
++/**
++ * iio_hwmon_lookup_alarm() - Find an alarm by id
++ * @listener: Event listener
++ * @id: IIO event id
++ *
++ * Return: index of @id in @listener->ids, or -1 if not found
++ */
++static ssize_t iio_hwmon_lookup_alarm(struct iio_hwmon_listener *listener,
++				      u64 id)
 +{
-+	struct sensor_device_attribute_2 *sattr = to_sensor_dev_attr_2(attr);
-+	struct iio_hwmon_state *state = dev_get_drvdata(dev);
-+	struct iio_channel *chan = &state->channels[sattr->index];
-+	int ret, result, scale;
++	ssize_t i;
 +
-+	scale = iio_hwmon_scale(chan);
-+	if (scale < 0)
-+		return scale;
++	for (i = 0; i < listener->num_alarms; i++)
++		if (listener->ids[i] == id)
++			return i;
 +
-+	ret = iio_read_event_processed_scale(chan, IIO_EV_TYPE_THRESH,
-+					     sattr->nr, IIO_EV_INFO_VALUE,
-+					     &result, scale);
-+	if (ret < 0)
-+		return ret;
-+
-+	return sprintf(buf, "%d\n", result);
++	return -1;
 +}
 +
-+static ssize_t iio_hwmon_write_event(struct device *dev,
-+				     struct device_attribute *attr,
-+				     const char *buf, size_t count)
++static int iio_hwmon_listener_callback(struct notifier_block *block,
++				       unsigned long action, void *data)
 +{
-+	struct sensor_device_attribute_2 *sattr = to_sensor_dev_attr_2(attr);
-+	struct iio_hwmon_state *state = dev_get_drvdata(dev);
-+	struct iio_channel *chan = &state->channels[sattr->index];
-+	int ret, scale, val;
++	struct iio_hwmon_listener *listener =
++		container_of(block, struct iio_hwmon_listener, block);
++	struct iio_event_data *ev = data;
++	ssize_t i;
 +
-+	ret = kstrtoint(buf, 0, &val);
++	if (action != IIO_NOTIFY_EVENT)
++		return NOTIFY_DONE;
++
++	i = iio_hwmon_lookup_alarm(listener, ev->id);
++	if (i >= 0)
++		set_bit(i, listener->alarms);
++	else
++		dev_warn_once(&listener->indio_dev->dev,
++			      "unknown event %016llx\n", ev->id);
++
++	return NOTIFY_DONE;
++}
++
++/**
++ * iio_event_id() - Calculate an IIO event id
++ * @channel: IIO channel for this event
++ * @type: Event type (theshold, rate-of-change, etc.)
++ * @dir: Event direction (rising, falling, etc.)
++ *
++ * Return: IIO event id corresponding to this event's IIO id
++ */
++static u64 iio_event_id(struct iio_chan_spec const *chan,
++			enum iio_event_type type,
++			enum iio_event_direction dir)
++{
++	if (chan->differential)
++		return IIO_DIFF_EVENT_CODE(chan->type, chan->channel,
++					   chan->channel2, type, dir);
++	if (chan->modified)
++		return IIO_MOD_EVENT_CODE(chan->type, chan->channel,
++					  chan->channel2, type, dir);
++	return IIO_UNMOD_EVENT_CODE(chan->type, chan->channel, type, dir);
++}
++
++/**
++ * iio_hwmon_listener_get() - Get a listener for an IIO device
++ * @indio_dev: IIO device to listen to
++ *
++ * Look up or create a new listener for @indio_dev. The returned listener is
++ * registered with @indio_dev, but events still need to be manually enabled.
++ * You must call iio_hwmon_listener_put() when you are done.
++ *
++ * Return: Listener for @indio_dev, or an error pointer
++ */
++static struct iio_hwmon_listener *iio_hwmon_listener_get(struct iio_dev *indio_dev)
++{
++	struct iio_hwmon_listener *listener;
++	int err = -ENOMEM;
++	size_t i, j;
++
++	guard(mutex)(&iio_hwmon_listener_lock);
++	list_for_each_entry(listener, &iio_hwmon_listeners, list) {
++		if (listener->indio_dev == indio_dev) {
++			if (likely(listener->refcnt != UINT_MAX))
++				listener->refcnt++;
++			return listener;
++		}
++	}
++
++	listener = kzalloc(sizeof(*listener), GFP_KERNEL);
++	if (!listener)
++		goto err_unlock;
++
++	listener->refcnt = 1;
++	listener->indio_dev = indio_dev;
++	listener->block.notifier_call = iio_hwmon_listener_callback;
++	for (i = 0; i < indio_dev->num_channels; i++)
++		listener->num_alarms += indio_dev->channels[i].num_event_specs;
++
++	listener->ids = kcalloc(listener->num_alarms, sizeof(*listener->ids),
++				GFP_KERNEL);
++	listener->alarms = bitmap_zalloc(listener->num_alarms, GFP_KERNEL);
++	if (!listener->ids || !listener->alarms)
++		goto err_listener;
++
++	i = 0;
++	for (j = 0; j < indio_dev->num_channels; j++) {
++		struct iio_chan_spec const *chan = &indio_dev->channels[j];
++		size_t k;
++
++		for (k = 0; k < chan->num_event_specs; k++)
++			listener->ids[i++] =
++				iio_event_id(chan, chan->event_spec[k].type,
++					     chan->event_spec[k].dir);
++	}
++
++	err = iio_event_register(indio_dev, &listener->block);
++	if (err)
++		goto err_alarms;
++
++	list_add(&listener->list, &iio_hwmon_listeners);
++	mutex_unlock(&iio_hwmon_listener_lock);
++	return listener;
++
++err_alarms:
++	kfree(listener->alarms);
++	kfree(listener->ids);
++err_listener:
++	kfree(listener);
++err_unlock:
++	mutex_unlock(&iio_hwmon_listener_lock);
++	return ERR_PTR(err);
++}
++
++/**
++ * iio_hwmon_listener_put() - Release a listener
++ * @data: &struct iio_hwmon_listener to release
++ *
++ * For convenience, @data is void.
++ */
++static void iio_hwmon_listener_put(void *data)
++{
++	struct iio_hwmon_listener *listener = data;
++
++	scoped_guard(mutex, &iio_hwmon_listener_lock) {
++		if (unlikely(listener->refcnt == UINT_MAX))
++			return;
++
++		if (--listener->refcnt)
++			return;
++
++		list_del(&listener->list);
++		iio_event_unregister(listener->indio_dev, &listener->block);
++	}
++
++	kfree(listener->alarms);
++	kfree(listener->ids);
++	kfree(listener);
++}
+ 
+ /**
+  * struct iio_hwmon_state - device instance state
+@@ -143,6 +329,68 @@ static ssize_t iio_hwmon_write_event(struct device *dev,
+ 	return count;
+ }
+ 
++/**
++ * struct iio_hwmon_alarm_attribute - IIO HWMON alarm attribute
++ * @dev_attr: Base device attribute
++ * @listener: Listener for this alarm
++ * @index: Index of the channel in the IIO HWMON
++ * @alarm: Index of the alarm within @listener
++ */
++struct iio_hwmon_alarm_attribute {
++	struct device_attribute dev_attr;
++	struct iio_hwmon_listener *listener;
++	size_t index;
++	size_t alarm;
++};
++#define to_alarm_attr(_dev_attr) \
++	container_of(_dev_attr, struct iio_hwmon_alarm_attribute, dev_attr)
++
++/**
++ * iio_hwmon_alarm_toggle() - Turn an event off and back on again
++ * @chan: Channel of the event
++ * @dir: Event direction (rising, falling, etc.)
++ *
++ * Toggle an event's enable so we get notified if the alarm is already
++ * triggered. We use this to convert IIO's event-triggered events into
++ * level-triggered alarms.
++ *
++ * Return: 0 on success or negative error on failure
++ */
++static int iio_hwmon_alarm_toggle(struct iio_channel *chan,
++				  enum iio_event_direction dir)
++{
++	int ret;
++
++	ret = iio_write_event_processed_scale(chan, IIO_EV_TYPE_THRESH, dir,
++					      IIO_EV_INFO_ENABLE, 0, 1);
 +	if (ret)
 +		return ret;
 +
-+	scale = iio_hwmon_scale(chan);
-+	if (scale < 0)
-+		return scale;
++	return iio_write_event_processed_scale(chan, IIO_EV_TYPE_THRESH, dir,
++					       IIO_EV_INFO_ENABLE, 1, 1);
++}
 +
-+	ret = iio_write_event_processed_scale(chan, IIO_EV_TYPE_THRESH,
-+					      sattr->nr, IIO_EV_INFO_VALUE,
-+					      val, scale);
-+	if (ret < 0)
-+		return ret;
++static ssize_t iio_hwmon_read_alarm(struct device *dev,
++				    struct device_attribute *attr,
++				    char *buf)
++{
++	struct iio_hwmon_alarm_attribute *sattr = to_alarm_attr(attr);
++	struct iio_hwmon_state *state = dev_get_drvdata(dev);
++	struct iio_channel *chan = &state->channels[sattr->index];
 +
-+	return count;
++	if (test_and_clear_bit(sattr->alarm, sattr->listener->alarms)) {
++		u64 id = sattr->listener->ids[sattr->alarm];
++		enum iio_event_direction dir = IIO_EVENT_CODE_EXTRACT_DIR(id);
++
++		WARN_ON(iio_hwmon_alarm_toggle(chan, dir));
++		strcpy(buf, "1\n");
++		return 2;
++	}
++
++	strcpy(buf, "0\n");
++	return 2;
 +}
 +
  static int add_device_attr(struct device *dev, struct iio_hwmon_state *st,
  			   ssize_t (*show)(struct device *dev,
  					   struct device_attribute *attr,
-@@ -123,6 +171,40 @@ static int add_device_attr(struct device *dev, struct iio_hwmon_state *st,
+@@ -205,6 +453,63 @@ static int add_event_attr(struct device *dev, struct iio_hwmon_state *st,
  	return 0;
  }
  
-+static int add_event_attr(struct device *dev, struct iio_hwmon_state *st,
++static int add_alarm_attr(struct device *dev, struct iio_hwmon_state *st,
 +			  int i, enum iio_event_direction dir,
 +			  const char *fmt, ...)
 +{
-+	struct sensor_device_attribute_2 *a;
++	struct iio_hwmon_alarm_attribute *a;
++	struct iio_hwmon_listener *listener;
++	ssize_t alarm;
 +	umode_t mode;
 +	va_list ap;
++	int ret;
 +
 +	mode = iio_event_mode(&st->channels[i], IIO_EV_TYPE_THRESH, dir,
-+			      IIO_EV_INFO_VALUE);
-+	if (!mode)
++			      IIO_EV_INFO_ENABLE);
++	if (!(mode & 0200))
 +		return 0;
++
++	listener = iio_hwmon_listener_get(st->channels[i].indio_dev);
++	if (listener == ERR_PTR(-EBUSY))
++		return 0;
++	if (IS_ERR(listener))
++		return PTR_ERR(listener);
++
++	ret = devm_add_action_or_reset(dev, iio_hwmon_listener_put, listener);
++	if (ret)
++		return ret;
++
++	alarm = iio_hwmon_lookup_alarm(listener,
++				       iio_event_id(st->channels[i].channel,
++						    IIO_EV_TYPE_THRESH, dir));
++	if (WARN_ON_ONCE(alarm < 0))
++		return -ENOENT;
++
++	ret = iio_hwmon_alarm_toggle(&st->channels[i], dir);
++	if (ret)
++		return ret;
 +
 +	a = devm_kzalloc(dev, sizeof(*a), GFP_KERNEL);
 +	if (!a)
@@ -163,11 +413,11 @@ index 7dc156d2aea4..3db4d4b30022 100644
 +	if (!a->dev_attr.attr.name)
 +		return -ENOMEM;
 +
-+	a->dev_attr.show = iio_hwmon_read_event;
-+	a->dev_attr.store = iio_hwmon_write_event;
-+	a->dev_attr.attr.mode = mode;
++	a->dev_attr.show = iio_hwmon_read_alarm;
++	a->dev_attr.attr.mode = 0400;
++	a->listener = listener;
 +	a->index = i;
-+	a->nr = dir;
++	a->alarm = alarm;
 +
 +	st->attrs[st->num_attrs++] = &a->dev_attr.attr;
 +	return 0;
@@ -176,27 +426,32 @@ index 7dc156d2aea4..3db4d4b30022 100644
  static int iio_hwmon_probe(struct platform_device *pdev)
  {
  	struct device *dev = &pdev->dev;
-@@ -156,7 +238,7 @@ static int iio_hwmon_probe(struct platform_device *pdev)
+@@ -238,7 +543,7 @@ static int iio_hwmon_probe(struct platform_device *pdev)
  		st->num_channels++;
  
  	st->attrs = devm_kcalloc(dev,
--				 2 * st->num_channels + 1, sizeof(*st->attrs),
-+				 4 * st->num_channels + 1, sizeof(*st->attrs),
+-				 4 * st->num_channels + 1, sizeof(*st->attrs),
++				 7 * st->num_channels + 1, sizeof(*st->attrs),
  				 GFP_KERNEL);
  	if (st->attrs == NULL)
  		return -ENOMEM;
-@@ -206,6 +288,16 @@ static int iio_hwmon_probe(struct platform_device *pdev)
- 			if (ret)
- 				return ret;
- 		}
+@@ -298,6 +603,21 @@ static int iio_hwmon_probe(struct platform_device *pdev)
+ 				     "%s%d_max", prefix, n);
+ 		if (ret)
+ 			return ret;
 +
-+		ret = add_event_attr(dev, st, i, IIO_EV_DIR_FALLING,
-+				     "%s%d_min", prefix, n);
++		ret = add_alarm_attr(dev, st, i, IIO_EV_DIR_RISING,
++				     "%s%d_max_alarm", prefix, n);
 +		if (ret)
 +			return ret;
 +
-+		ret = add_event_attr(dev, st, i, IIO_EV_DIR_RISING,
-+				     "%s%d_max", prefix, n);
++		ret = add_alarm_attr(dev, st, i, IIO_EV_DIR_FALLING,
++				     "%s%d_min_alarm", prefix, n);
++		if (ret)
++			return ret;
++
++		ret = add_alarm_attr(dev, st, i, IIO_EV_DIR_EITHER,
++				     "%s%d_alarm", prefix, n);
 +		if (ret)
 +			return ret;
  	}

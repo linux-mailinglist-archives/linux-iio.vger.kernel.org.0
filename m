@@ -1,55 +1,56 @@
-Return-Path: <linux-iio+bounces-21691-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21692-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D78E8B06368
-	for <lists+linux-iio@lfdr.de>; Tue, 15 Jul 2025 17:47:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74DCFB0638F
+	for <lists+linux-iio@lfdr.de>; Tue, 15 Jul 2025 17:55:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DE18F4E5103
-	for <lists+linux-iio@lfdr.de>; Tue, 15 Jul 2025 15:46:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CF5C41AA3696
+	for <lists+linux-iio@lfdr.de>; Tue, 15 Jul 2025 15:56:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD8771F95C;
-	Tue, 15 Jul 2025 15:47:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D93524677B;
+	Tue, 15 Jul 2025 15:55:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="vmykJ1kj"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="n9xok8/7"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
+Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD9B32528F7
-	for <linux-iio@vger.kernel.org>; Tue, 15 Jul 2025 15:47:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.189
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0605A1F30CC
+	for <linux-iio@vger.kernel.org>; Tue, 15 Jul 2025 15:55:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752594434; cv=none; b=LnSwH91+4rLg+r6vO8z7InvU8SqsnSDGWT1AXJzbRYzkOPON+2csQXJBbSAxL1gtC6UeqCZ9kUgwpQBL792oWYmAiBAkYZy+0p6orvVYf6yp2EEZhqCdeMVK9aYl9zvmt2rKklAlrnKJRxD7ao65yLuRXUha4bBbyiIw6Wg0KBE=
+	t=1752594927; cv=none; b=ruTOpwIYqFaAA1CQSvEn6ktSM4cbk0e55jL4O9tW4+OGUHMafMRnla1KQlXuI254BAOfBHAArCmJcJ6F/cNOzahwdOOvXO3AvbSjS3No4ObyDq+wdKOG8SMBv2Mr9QLi4SdLXVuEKIqB+ndRFo4MWGA+vqMCrESmAkr2iIuadOU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752594434; c=relaxed/simple;
-	bh=vi8S8ruRTzetJaP8Ue9rb3bWnQc963nj7RGuYulfYp4=;
+	s=arc-20240116; t=1752594927; c=relaxed/simple;
+	bh=s18xb8DQGCbajb+5p3Kxf67e/xbfuvlEuY28MZpByFs=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BLPKqFtOLE+8WsbUlxdxqpchv//AlL4f30xFW+lJgpx5E6wlaZJOiJfrKWj3bTJopqndM+IAb8U2tWM1ITIP2oeO1oeYcueJboQGlMzjJ7o9BtFui77jf9dqKJNAEUClRdX2xYD8CtR5RSY4aYxqq7kTjhScVIj7g8uV0mlGq3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=vmykJ1kj; arc=none smtp.client-ip=91.218.175.189
+	 In-Reply-To:Content-Type; b=l3ZKITP1kQMTsiK3+gd6MypOrpy2eqL4F8cdsVoCU+fg/qm3uRTBzbi03Ip36xUauDihrYn2U4Dln2wCAGU7NIJFHiHZJOsDdO7nX0dq/GwD/meZ+GAX/GG12OIs/biaJODnr6nrO54yWVaHpU7mfv6rHbkPE7dCL2sdq4o9TT0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=n9xok8/7; arc=none smtp.client-ip=91.218.175.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Message-ID: <80ed9b12-ba0a-4d1a-bd54-122218edc8a1@linux.dev>
+Message-ID: <b72d009a-9d7d-42cd-af2e-80584bba788d@linux.dev>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1752594430;
+	t=1752594912;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=LiyMJqsKhGS3GFgkxGf+pcdN8gMjr5AqwKeJZu1dOaQ=;
-	b=vmykJ1kj50u6RklubpTnVIJqmft4MIoX3So+wK0Ivm1/XhsfiYwE1c6Coli692WKQwCDGv
-	jlhlf1AW9iBIC904eZpc0JT1oluiVs8NZLnUJLISFWhbjA/42kTl3PpoJFfycPzGLeQDL7
-	PvXHGggrfrWfGdai5cmn/WT3LywO0VI=
-Date: Tue, 15 Jul 2025 11:47:07 -0400
+	bh=7GFZev2aQajHr2SbEEhI2ptvWhufMKyrQIwoam3qrpo=;
+	b=n9xok8/71t3B2Pwx6bL6+uLvBHixfQXmdSH4hJIo3cKD5GrVy+KzMD3xyLH32V6zErHX08
+	CxdmWjjXJ9cTC70TGBDPSQt5NnoNu6IIP0vLLqXklU1tJsXm/lVf8J6lZFLhVmpcmlsnb5
+	ihnwn0+qmf3L+rptnLN5b2N95nAbrAg=
+Date: Tue, 15 Jul 2025 11:55:08 -0400
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH 3/7] iio: Add in-kernel API for events
+Subject: Re: [PATCH 5/7] hwmon: iio: Add helper function for creating
+ attributes
 To: Andy Shevchenko <andriy.shevchenko@intel.com>
 Cc: Jonathan Cameron <jic23@kernel.org>, Jean Delvare <jdelvare@suse.com>,
  Guenter Roeck <linux@roeck-us.net>, linux-iio@vger.kernel.org,
@@ -57,74 +58,88 @@ Cc: Jonathan Cameron <jic23@kernel.org>, Jean Delvare <jdelvare@suse.com>,
  =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, linux-kernel@vger.kernel.org,
  David Lechner <dlechner@baylibre.com>
 References: <20250715012023.2050178-1-sean.anderson@linux.dev>
- <20250715012023.2050178-4-sean.anderson@linux.dev>
- <aHYPYZgq17ogdEgC@smile.fi.intel.com>
+ <20250715012023.2050178-6-sean.anderson@linux.dev>
+ <aHYTcAO7sHsyevDH@smile.fi.intel.com>
 Content-Language: en-US
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Sean Anderson <sean.anderson@linux.dev>
-In-Reply-To: <aHYPYZgq17ogdEgC@smile.fi.intel.com>
+In-Reply-To: <aHYTcAO7sHsyevDH@smile.fi.intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Migadu-Flow: FLOW_OUT
 
-On 7/15/25 04:20, Andy Shevchenko wrote:
-> On Mon, Jul 14, 2025 at 09:20:19PM -0400, Sean Anderson wrote:
->> Add an API to notify consumers about events. Events still need to be
->> enabled using the iio_read_event/iio_write_event functions. Of course,
->> userspace can also manipulate the enabled events. I don't think this is
->> too much of an issue, since userspace can also manipulate the event
->> thresholds. But enabling events may cause existing programs to be
->> surprised when they get something unexpected. Maybe we should set the
->> interface as busy when there are any in-kernel listeners?
+On 7/15/25 04:38, Andy Shevchenko wrote:
+> On Mon, Jul 14, 2025 at 09:20:21PM -0400, Sean Anderson wrote:
+>> Add a helper function to create attributes and initialize their fields.
+>> This reduces repetition when creating several attributes per channel.
 > 
 > ...
 > 
->>  #include <linux/wait.h>
+>> + * @num_attrs:          length of @attrs
 > 
-> While at it...
-> 
-> + blank line here...
-> 
->> +#include <linux/iio/consumer.h>
->>  #include <linux/iio/iio.h>
->>  #include <linux/iio/iio-opaque.h>
-> 
-> ...and here?
-> 
->>  #include "iio_core.h"
+> Other lines use TABs.
 > 
 > ...
-> 
->> +	struct iio_event_data ev = {
->> +		.id = ev_code,
->> +		.timestamp = timestamp,
->> +	};
-> 
-> ...
-> 
->>  	/* Does anyone care? */
->>  	if (iio_event_enabled(ev_int)) {
->> -
->> -		ev.id = ev_code;
->> -		ev.timestamp = timestamp;
->> -
->>  		copied = kfifo_put(&ev_int->det_events, ev);
->>  		if (copied != 0)
->>  			wake_up_poll(&ev_int->wait, EPOLLIN);
-> 
-> Looks like this refactoring can be done before main change.
 
-I think it is clearer to keep this in the same patch as the
-functionality that uses it.
+OK
 
+>> +static int add_device_attr(struct device *dev, struct iio_hwmon_state *st,
+> 
+> This should hint that this is managed:
+> 
+> add_device_managed_attr()
+
+That just makes it more difficult to format the calling code within 80 columns...
+
+> 
+>> +			   ssize_t (*show)(struct device *dev,
+>> +					   struct device_attribute *attr,
+>> +					   char *buf),
+>> +			   int i, const char *fmt, ...)
+> 
+> __printf() attribute is missing.
+
+It's static, so I thought the compiler could infer it but I guess not.
+
+>> +{
+>> +	struct sensor_device_attribute *a;
+>> +	va_list ap;
+>> +
+>> +	a = devm_kzalloc(dev, sizeof(*a), GFP_KERNEL);
+>> +	if (!a)
+>> +		return -ENOMEM;
+>> +
+>> +	sysfs_attr_init(&a->dev_attr.attr);
+>> +	va_start(ap, fmt);
+>> +	a->dev_attr.attr.name = devm_kvasprintf(dev, GFP_KERNEL, fmt, ap);
+>> +	va_end(ap);
+>> +	if (!a->dev_attr.attr.name)
+>> +		return -ENOMEM;
+>> +
+>> +	a->dev_attr.show = show;
+>> +	a->dev_attr.attr.mode = 0444;
+>> +	a->index = i;
+>> +
+>> +	st->attrs[st->num_attrs++] = &a->dev_attr.attr;
+>> +	return 0;
+>> +}
+> 
 > ...
 > 
->> +	WARN_ON(atomic_notifier_chain_unregister(&ev_int->notifier, block));
+>>  	struct device *dev = &pdev->dev;
+>>  	struct iio_hwmon_state *st;
+>> -	struct sensor_device_attribute *a;
+>> -	int ret, i, attr = 0;
+>> +	int ret, i;
 > 
-> Is bug.h already included?
+> Also move it a bit to make it more of a reversed xmas tree ordering?
 
-I assume so. No build errors.
+It's not ordered as-is, and I don't think this subsystem requires it.
+
+>>  	int in_i = 1, temp_i = 1, curr_i = 1, humidity_i = 1, power_i = 1;
+>>  	enum iio_chan_type type;
+>>  	struct iio_channel *channels;
+> 
 
 --Sean
-
 

@@ -1,314 +1,253 @@
-Return-Path: <linux-iio+bounces-21695-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21696-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DA10B0642B
-	for <lists+linux-iio@lfdr.de>; Tue, 15 Jul 2025 18:20:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DE48B064A3
+	for <lists+linux-iio@lfdr.de>; Tue, 15 Jul 2025 18:52:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD42817F546
-	for <lists+linux-iio@lfdr.de>; Tue, 15 Jul 2025 16:20:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6ABD7566EAA
+	for <lists+linux-iio@lfdr.de>; Tue, 15 Jul 2025 16:52:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3D44263F52;
-	Tue, 15 Jul 2025 16:20:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5DCB26E6F1;
+	Tue, 15 Jul 2025 16:52:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="U2ik4K7I"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="cE6kgVqM"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
+Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7650C24A046
-	for <linux-iio@vger.kernel.org>; Tue, 15 Jul 2025 16:20:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 691A0F50F
+	for <linux-iio@vger.kernel.org>; Tue, 15 Jul 2025 16:52:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752596442; cv=none; b=j6DWyuXktvxBsSz2sRJX7aYW4aMrUqR6jPvouQpKF6pswXMmr/b2F82i6n1txh7fwap9wBwJikPapMfz0Wa9rxvL7ymDzYvgjRTPhUL+jVRzFXLazLAtcfrrRObl9938dPS+RUFMXWHEPNPSff77Sbx3eNfZMSgieQop2SFSbf0=
+	t=1752598350; cv=none; b=OIIonRHNyeiZL2TnQwnC3+fTggudwYM7AkY9J/5E+DP8K9ol0tQkvmawp+fF+sAwZm4TbYdb9ejt4a3H8A2LL7lZhYSw//fnEg43g4nrUOxDpl7LGnQriGauqEtpF0/y5kJqpkwdMagjKMqX3cMpJzov6t92/R5E+50sDwNP954=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752596442; c=relaxed/simple;
-	bh=06yesalwqHV8zE2DkczBQBpvVPyzo5fpUk8YlIdky6s=;
+	s=arc-20240116; t=1752598350; c=relaxed/simple;
+	bh=l2q0cNcmaBiUPTwW4hVxutVcZbj6qnkal5ois0b5IzA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kh49Qq5DtAojyClSDNjRg/qRUh42jdP0pOAa4MuStbLVFV7GHytpRWs6ZKgVpxyZz6w6HWhWeU0SAGpD/qYiCR3+NTNdAuitwhi7qSaF/pQcwzzgYAHnQchIMQ3Y3YSVcccap7WSUNnTy/7NhVg7ao+bMcdRqNFX9yF+ZOjMF5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=U2ik4K7I; arc=none smtp.client-ip=91.218.175.171
+	 In-Reply-To:Content-Type; b=YpLRElccAAbcf9fAxngEbPzbUT7OSYoiuuhpEbFAYHqxdT1dklw8JhUc4hTpfO7N2h4CdDE11jqxTCtVp2EJSPU2Lo2NPchL4mCpP8dlYWclsJOK9ecXVTjaNa93BJdZ/AfVMqM3gQGXtg3V3q8MCxxPOgC9hkvYuEQndi4hIXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=cE6kgVqM; arc=none smtp.client-ip=91.218.175.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Message-ID: <3b35b3a7-3f1a-4401-9b60-ba4afda5636e@linux.dev>
+Message-ID: <9b187e7f-a116-4aea-a9a6-b9222562868d@linux.dev>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1752596428;
+	t=1752598343;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=9+/KXgJfq8R20Vlk8EbnswSlV5Trbxu/cuP2QEQUicg=;
-	b=U2ik4K7IDOLheqtcp5wpvNCeQTvhXUOOQK2DFBIy4w4JVCdPClyELN5mSxye7iJRDWcUP9
-	j3TbrWck9BurNumg/wNaKKY3ESMKRzrXecz0TUZuyv3YLYR2Esh/NJj+mCc5rv3jU3GA3M
-	FLwDhDkAjvpaQxbQUCpOZ66pwFDl6II=
-Date: Tue, 15 Jul 2025 12:20:24 -0400
+	bh=PSDwHOwwirTu+5GG5v8MghYDm/bHlnyZneE8eaAnzRo=;
+	b=cE6kgVqMqkYNmdqNY7FAcyrYM4YPAbu6khOmp9RxfojkKLRD4vi7QcIbQtTp4SJkNypQZk
+	5fCWyX3cxZHrzLVFoAiakRNx6ealXhLA6q3JQcTpVdKYUK+G4vpnDzOWs+vv85a1baus+5
+	+iQ+t0NMZWA5ATN1j7kcXbrpUoJDMao=
+Date: Tue, 15 Jul 2025 12:52:19 -0400
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH 7/7] hwmon: iio: Add alarm support
-To: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, Jean Delvare <jdelvare@suse.com>,
+Subject: Re: [PATCH 3/7] iio: Add in-kernel API for events
+To: =?UTF-8?Q?Nuno_S=C3=A1?= <noname.nuno@gmail.com>,
+ Jonathan Cameron <jic23@kernel.org>, Jean Delvare <jdelvare@suse.com>,
  Guenter Roeck <linux@roeck-us.net>, linux-iio@vger.kernel.org,
- linux-hwmon@vger.kernel.org, Andy Shevchenko <andy@kernel.org>,
- =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, linux-kernel@vger.kernel.org,
+ linux-hwmon@vger.kernel.org
+Cc: Andy Shevchenko <andy@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?=
+ <nuno.sa@analog.com>, linux-kernel@vger.kernel.org,
  David Lechner <dlechner@baylibre.com>
 References: <20250715012023.2050178-1-sean.anderson@linux.dev>
- <20250715012023.2050178-8-sean.anderson@linux.dev>
- <aHYWQOjJEWdLjy7H@smile.fi.intel.com>
+ <20250715012023.2050178-4-sean.anderson@linux.dev>
+ <d8e5c8fbeaee42e9e0708460c47bd68053cd8710.camel@gmail.com>
 Content-Language: en-US
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Sean Anderson <sean.anderson@linux.dev>
-In-Reply-To: <aHYWQOjJEWdLjy7H@smile.fi.intel.com>
+In-Reply-To: <d8e5c8fbeaee42e9e0708460c47bd68053cd8710.camel@gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 
-On 7/15/25 04:50, Andy Shevchenko wrote:
-> On Mon, Jul 14, 2025 at 09:20:23PM -0400, Sean Anderson wrote:
->> Add alarm support based on IIO threshold events. The alarm is cleared on
->> read, but will be set again if the condition is still present. This is
->> detected by disabling and re-enabling the event. The same trick is done
->> when creating the attribute to detect already-triggered events.
+On 7/15/25 07:09, Nuno Sá wrote:
+> On Mon, 2025-07-14 at 21:20 -0400, Sean Anderson wrote:
+>> Add an API to notify consumers about events. Events still need to be
+>> enabled using the iio_read_event/iio_write_event functions. Of course,
+>> userspace can also manipulate the enabled events. I don't think this is
+>> too much of an issue, since userspace can also manipulate the event
+>> thresholds. But enabling events may cause existing programs to be
+>> surprised when they get something unexpected. Maybe we should set the
+>> interface as busy when there are any in-kernel listeners?
 >> 
->> The alarms are updated by an event listener. To keep the notifier call
->> chain short, we create one listener per iio device, shared across all
->> hwmon devices.
->> 
->> To avoid dynamic creation of alarms, alarms for all possible events are
->> allocated at creation. Lookup is done by a linear scan, as I expect
->> events to occur rarely. If performance becomes an issue, a binary search
->> could be done instead (or some kind of hash lookup).
 > 
-> ...
-> 
->>  #include <linux/hwmon-sysfs.h>
-> 
-> + blank line here..
+> Sensible question. I'm not that familiar with events but I suspect is not
+> trivial (if doable) to do a similar approach as with buffers? With buffers, an
+> inkernal consumer get's it's own buffer object (that goes into a list of active
+> buffers in the iio device) with all channels enabled and then we demux the
+> appropriate channels for each consumer.
 
-why?
+For in-kernel consumers I think it's reasonable to expect them to handle
+events they didn't explicitly enable. I'm not sure about userspace
+consumers.
 
->>  #include <linux/iio/consumer.h>
->> +#include <linux/iio/events.h>
->> +#include <linux/iio/iio.h>
->>  #include <linux/iio/types.h>
-> 
-> ...and here?
+> Independent of the above, we can argue that having both inkernel and userspace
+> changing thresholds is ok (I mean, there's nothing stopping two userspace apps
+> doing that) but we should likely be careful with enabling/disabling. If multiple
+> consumers enable the same event, one of them disabling it should not disable it
+> for all the consumers, right?
 
-OK
+Right now the HWMON consumer never permanently disable events to avoid this
+issue. It does toggle the enable to determine if an alarm should stay
+enabled:
+             ________
+condition __/        \________
+          _____    ____    ___
+enable         \__/    \__/
 
->> +#include <uapi/linux/iio/events.h>
-> 
-> ...
-> 
->> +static ssize_t iio_hwmon_lookup_alarm(struct iio_hwmon_listener *listener,
->> +				      u64 id)
->> +{
->> +	ssize_t i;
->> +
->> +	for (i = 0; i < listener->num_alarms; i++)
->> +		if (listener->ids[i] == id)
->> +			return i;
-> 
->> +	return -1;
-> 
-> -ENOENT ?
-> This will allow to propagate an error code to the upper layer(s).
+event       |     |
+             __    ____
+alarm     __/  \__/    \_____
 
-I suppose. But I think
+read           1       1    0
 
-alarm = iio_hwmon_lookup_alarm(...);
-if (alarm < 0)
-	return -ENOENT;
-
-is clearer than
-
-alarm = iio_hwmon_lookup_alarm(...);
-if (alarm < 0)
-	return alarm;
-
-because you don't have to read the definition of iio_hwmon_lookup_alarm
-to determine what the return value is.
-
->> +}
-> 
-> ...
-> 
->> +static int iio_hwmon_listener_callback(struct notifier_block *block,
->> +				       unsigned long action, void *data)
->> +{
->> +	struct iio_hwmon_listener *listener =
->> +		container_of(block, struct iio_hwmon_listener, block);
->> +	struct iio_event_data *ev = data;
->> +	ssize_t i;
->> +
->> +	if (action != IIO_NOTIFY_EVENT)
->> +		return NOTIFY_DONE;
->> +
->> +	i = iio_hwmon_lookup_alarm(listener, ev->id);
->> +	if (i >= 0)
->> +		set_bit(i, listener->alarms);
-> 
-> Do you need an atomic set?
-
-Yes. This protects against concurrent access by iio_hwmon_read_alarm.
-
->> +	else
->> +		dev_warn_once(&listener->indio_dev->dev,
->> +			      "unknown event %016llx\n", ev->id);
->> +
->> +	return NOTIFY_DONE;
->> +}
-> 
-> ...
-> 
->> +static struct iio_hwmon_listener *iio_hwmon_listener_get(struct iio_dev *indio_dev)
->> +{
->> +	struct iio_hwmon_listener *listener;
->> +	int err = -ENOMEM;
->> +	size_t i, j;
->> +
->> +	guard(mutex)(&iio_hwmon_listener_lock);
->> +	list_for_each_entry(listener, &iio_hwmon_listeners, list) {
->> +		if (listener->indio_dev == indio_dev) {
->> +			if (likely(listener->refcnt != UINT_MAX))
->> +				listener->refcnt++;
->> +			return listener;
->> +		}
->> +	}
->> +
->> +	listener = kzalloc(sizeof(*listener), GFP_KERNEL);
->> +	if (!listener)
->> +		goto err_unlock;
->> +
->> +	listener->refcnt = 1;
->> +	listener->indio_dev = indio_dev;
->> +	listener->block.notifier_call = iio_hwmon_listener_callback;
->> +	for (i = 0; i < indio_dev->num_channels; i++)
->> +		listener->num_alarms += indio_dev->channels[i].num_event_specs;
->> +
->> +	listener->ids = kcalloc(listener->num_alarms, sizeof(*listener->ids),
->> +				GFP_KERNEL);
->> +	listener->alarms = bitmap_zalloc(listener->num_alarms, GFP_KERNEL);
->> +	if (!listener->ids || !listener->alarms)
->> +		goto err_listener;
->> +
->> +	i = 0;
->> +	for (j = 0; j < indio_dev->num_channels; j++) {
->> +		struct iio_chan_spec const *chan = &indio_dev->channels[j];
->> +		size_t k;
->> +
->> +		for (k = 0; k < chan->num_event_specs; k++)
->> +			listener->ids[i++] =
->> +				iio_event_id(chan, chan->event_spec[k].type,
->> +					     chan->event_spec[k].dir);
->> +	}
->> +
->> +	err = iio_event_register(indio_dev, &listener->block);
->> +	if (err)
->> +		goto err_alarms;
->> +
->> +	list_add(&listener->list, &iio_hwmon_listeners);
-> 
->> +	mutex_unlock(&iio_hwmon_listener_lock);
-> 
-> With guard() ???
-
-Whoops. Missed that when refactoring.
-
->> +	return listener;
->> +
->> +err_alarms:
->> +	kfree(listener->alarms);
->> +	kfree(listener->ids);
->> +err_listener:
->> +	kfree(listener);
->> +err_unlock:
->> +	mutex_unlock(&iio_hwmon_listener_lock);
->> +	return ERR_PTR(err);
-> 
-> What about using __free()?
-
-That works for listener, but not for alarms or ids.
-
->> +}
-> 
-> ...
-> 
->> +static void iio_hwmon_listener_put(void *data)
->> +{
->> +	struct iio_hwmon_listener *listener = data;
->> +
->> +	scoped_guard(mutex, &iio_hwmon_listener_lock) {
->> +		if (unlikely(listener->refcnt == UINT_MAX))
->> +			return;
->> +
->> +		if (--listener->refcnt)
->> +			return;
-> 
-> Can the refcount_t be used with the respective APIs? Or even kref?
-
-Why? We do all the manipulation under a mutex, so there is no point in
-atomic access. Instead of the games refcnt_t has to play to try and
-prevent overflow we can just check for it directly.
-
->> +		list_del(&listener->list);
->> +		iio_event_unregister(listener->indio_dev, &listener->block);
->> +	}
->> +
->> +	kfree(listener->alarms);
->> +	kfree(listener->ids);
->> +	kfree(listener);
->> +}
-> 
-> ...
-> 
->> +static ssize_t iio_hwmon_read_alarm(struct device *dev,
->> +				    struct device_attribute *attr,
->> +				    char *buf)
->> +{
->> +	struct iio_hwmon_alarm_attribute *sattr = to_alarm_attr(attr);
->> +	struct iio_hwmon_state *state = dev_get_drvdata(dev);
->> +	struct iio_channel *chan = &state->channels[sattr->index];
->> +
->> +	if (test_and_clear_bit(sattr->alarm, sattr->listener->alarms)) {
->> +		u64 id = sattr->listener->ids[sattr->alarm];
->> +		enum iio_event_direction dir = IIO_EVENT_CODE_EXTRACT_DIR(id);
->> +
->> +		WARN_ON(iio_hwmon_alarm_toggle(chan, dir));
-> 
->> +		strcpy(buf, "1\n");
->> +		return 2;
-> 
->> +	}
->> +
->> +	strcpy(buf, "0\n");
->> +	return 2;
-> 
-> Better to assign the value and
->
-> 	return sysfs_emit(...);
-> 
-> which will make even easier to recognize that this is supplied to user via
-> sysfs.
-
-:l
-
-the things we do to avoid memcpy...
+I suppose this could also be done by comparing the raw threshold to the
+channel.
 
 --Sean
 
+> 
+>> Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
+>> ---
+>> 
+>>  drivers/iio/industrialio-event.c | 34 +++++++++++++++++++++++++++-----
+>>  include/linux/iio/consumer.h     | 30 ++++++++++++++++++++++++++++
+>>  2 files changed, 59 insertions(+), 5 deletions(-)
+>> 
+>> diff --git a/drivers/iio/industrialio-event.c b/drivers/iio/industrialio-
+>> event.c
+>> index 06295cfc2da8..b9e3ff1cd5c9 100644
+>> --- a/drivers/iio/industrialio-event.c
+>> +++ b/drivers/iio/industrialio-event.c
+>> @@ -12,11 +12,13 @@
+>>  #include <linux/kernel.h>
+>>  #include <linux/kfifo.h>
+>>  #include <linux/module.h>
+>> +#include <linux/notifier.h>
+>>  #include <linux/poll.h>
+>>  #include <linux/sched.h>
+>>  #include <linux/slab.h>
+>>  #include <linux/uaccess.h>
+>>  #include <linux/wait.h>
+>> +#include <linux/iio/consumer.h>
+>>  #include <linux/iio/iio.h>
+>>  #include <linux/iio/iio-opaque.h>
+>>  #include "iio_core.h"
+>> @@ -26,6 +28,7 @@
+>>  /**
+>>   * struct iio_event_interface - chrdev interface for an event line
+>>   * @wait:		wait queue to allow blocking reads of events
+>> + * @notifier:		notifier head for in-kernel event listeners
+>>   * @det_events:		list of detected events
+>>   * @dev_attr_list:	list of event interface sysfs attribute
+>>   * @flags:		file operations related flags including busy flag.
+>> @@ -35,6 +38,7 @@
+>>   */
+>>  struct iio_event_interface {
+>>  	wait_queue_head_t	wait;
+>> +	struct atomic_notifier_head notifier;
+>>  	DECLARE_KFIFO(det_events, struct iio_event_data, 16);
+>>  
+>>  	struct list_head	dev_attr_list;
+>> @@ -67,18 +71,19 @@ int iio_push_event(struct iio_dev *indio_dev, u64 ev_code,
+>> s64 timestamp)
+>>  {
+>>  	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(indio_dev);
+>>  	struct iio_event_interface *ev_int = iio_dev_opaque->event_interface;
+>> -	struct iio_event_data ev;
+>> +	struct iio_event_data ev = {
+>> +		.id = ev_code,
+>> +		.timestamp = timestamp,
+>> +	};
+>>  	int copied;
+>>  
+>>  	if (!ev_int)
+>>  		return 0;
+>>  
+>> +	atomic_notifier_call_chain(&ev_int->notifier, IIO_NOTIFY_EVENT, &ev);
+>> +
+>>  	/* Does anyone care? */
+>>  	if (iio_event_enabled(ev_int)) {
+>> -
+>> -		ev.id = ev_code;
+>> -		ev.timestamp = timestamp;
+>> -
+>>  		copied = kfifo_put(&ev_int->det_events, ev);
+>>  		if (copied != 0)
+>>  			wake_up_poll(&ev_int->wait, EPOLLIN);
+>> @@ -223,6 +228,25 @@ static int iio_event_getfd(struct iio_dev *indio_dev)
+>>  	return fd;
+>>  }
+>>  
+>> +int iio_event_register(struct iio_dev *indio_dev, struct notifier_block
+>> *block)
+>> +{
+>> +	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(indio_dev);
+>> +	struct iio_event_interface *ev_int = iio_dev_opaque->event_interface;
+>> +
+>> +	return atomic_notifier_chain_register(&ev_int->notifier, block);
 >> +}
-> 
-> ...
-> 
->> +static int add_alarm_attr(struct device *dev, struct iio_hwmon_state *st,
->> +			  int i, enum iio_event_direction dir,
->> +			  const char *fmt, ...)
-> 
-> Same comments as per previous patches.
-> 
+>> +EXPORT_SYMBOL_GPL(iio_event_register);
+>> +
+>> +void iio_event_unregister(struct iio_dev *indio_dev,
+>> +			  struct notifier_block *block)
+>> +{
+>> +	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(indio_dev);
+>> +	struct iio_event_interface *ev_int = iio_dev_opaque->event_interface;
+>> +
+>> +	WARN_ON(atomic_notifier_chain_unregister(&ev_int->notifier, block));
+>> +}
+>> +EXPORT_SYMBOL_GPL(iio_event_unregister);
+>> +
+>>  static const char * const iio_ev_type_text[] = {
+>>  	[IIO_EV_TYPE_THRESH] = "thresh",
+>>  	[IIO_EV_TYPE_MAG] = "mag",
+>> diff --git a/include/linux/iio/consumer.h b/include/linux/iio/consumer.h
+>> index 16e7682474f3..9918e3f7af3d 100644
+>> --- a/include/linux/iio/consumer.h
+>> +++ b/include/linux/iio/consumer.h
+>> @@ -507,4 +507,34 @@ int iio_write_event_processed_scale(struct iio_channel
+>> *chan,
+>>  				    enum iio_event_info info, int processed,
+>>  				    unsigned int scale);
+>>  
+>> +struct notifier_block;
+>> +enum iio_notifier_val {
+>> +	/** IIO_NOTIFY_EVENT: v is a pointer to &struct iio_event_data */
+>> +	IIO_NOTIFY_EVENT,
+>> +};
+>> +
+>> +/**
+>> + * iio_event_register() - Register a notifier for events
+>> + * @indio_dev: Device to be notified of events on
+>> + * @block: Notifier block to register
+>> + *
+>> + * Register a notifier for events on @indio_dev. @v will be a member of &enum
+>> + * iio_notifier_val. Notifiers will be called in atomic context. @indio_dev
+>> + * must stay valid until you call iio_event_unregister().
+>> + *
+>> + * Return: 0 on success, or -EEXIST if @block has already been registered
+>> + */
+>> +int iio_event_register(struct iio_dev *indio_dev,
+>> +		       struct notifier_block *block);
+>> +
+>> +/**
+>> + * iio_event_unregister() - Remove a previously-added notifier
+>> + * @indio_dev: Device to be notified of events on
+>> + * @block: Notifier previously-registered with iio_event_register()
+>> + *
+>> + * Remove a previously-added notifier.
+>> + */
+>> +void iio_event_unregister(struct iio_dev *indio_dev,
+>> +			  struct notifier_block *block);
+>> +
+>>  #endif
 

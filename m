@@ -1,47 +1,47 @@
-Return-Path: <linux-iio+bounces-21648-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21649-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8FC3B04D4A
-	for <lists+linux-iio@lfdr.de>; Tue, 15 Jul 2025 03:20:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BE2DB04D4D
+	for <lists+linux-iio@lfdr.de>; Tue, 15 Jul 2025 03:21:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 42CAF7A6B62
-	for <lists+linux-iio@lfdr.de>; Tue, 15 Jul 2025 01:19:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D30093A6C88
+	for <lists+linux-iio@lfdr.de>; Tue, 15 Jul 2025 01:20:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BABF1D514B;
-	Tue, 15 Jul 2025 01:20:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58C951D8DE1;
+	Tue, 15 Jul 2025 01:20:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="wBAHA8ob"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="hmDEIrVI"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from out-187.mta1.migadu.com (out-187.mta1.migadu.com [95.215.58.187])
+Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58C7E1B85FD
-	for <linux-iio@vger.kernel.org>; Tue, 15 Jul 2025 01:20:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.187
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39CCE1CF5C6
+	for <linux-iio@vger.kernel.org>; Tue, 15 Jul 2025 01:20:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752542438; cv=none; b=A5BibqcKm2plD5KwiV2JFif+ZJ/IdxYpLOs0iWv3sWdFtflIELoNNofcJfLLDKaOewRjturEREuzFMbpXLbiLSnikupIF79EEzewgp3YtH5RPzzd7JD9AtJisqsgmxP5OmAmM9T83hj+YNlV+FUJt+/uaYXzNaCiLUV9aie5b70=
+	t=1752542440; cv=none; b=uDUMs/4EHwDWyD//M+9XliXXKy/4+Kr8ySzmVO5VI9k7HzFV7f++tztP/I2S7htd7lcn1x9ZKkGahLkTQgeR/FSCgO/JBUpp19mf+IQmkvdpBEaT3cHjTAHGHNIdxYhlzl7p35fPQS1c4aN87OxrmHuKaN2SiVIPzk+lQeaLCzg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752542438; c=relaxed/simple;
-	bh=+7Okd5KpUl8CR54V8Zek7raTLxtgZ33PvQMeh1OC1AU=;
+	s=arc-20240116; t=1752542440; c=relaxed/simple;
+	bh=c+8O40vCS6Zv4jYYKHa9QC5l4utqpyySh0FTEzw+beA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=uieUISTmJH5or6mmK41GquZLzGB5qEtCd0yW1RSuDXVHTLWcZIVgofdFD3BkOLkqFIRbFBPqWzx2ygiXmlcxzF/i0fZ0g6ckVbGc9aOxLqyiA3qTY/P6FWSXLlfPpx8LhqVfVBRj9IJnvOluAJfTt5pzmJWGlGa1jdZTVWtfPfI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=wBAHA8ob; arc=none smtp.client-ip=95.215.58.187
+	 MIME-Version; b=aVYUzA56jj31cIbKrMFaFnX+RoLyVSpsFCyIIg1NnX15Cq/1cG09SeFPYQgzUWKlbB4rK7MuaGoY6YV4DZBj3IEiYnbJmprRV0eumM9q46CO9DVr/hUjWxkmf1aH8NYoZM7nCBV2Ukgy1tflY6nlPZgVuNtxfngjEYtjXZXe9sc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=hmDEIrVI; arc=none smtp.client-ip=95.215.58.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1752542434;
+	t=1752542435;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=nC77loZfSLoZJvF86FxWCFT8RwnQ5h925nNSe/Ekbps=;
-	b=wBAHA8ob23eW73Y53FTGMwNmEMvdEIGPTKCW0YZPkGylInb3Xdfp2hmsWeDcg6AURYBB5X
-	hx+IqrjGgZxA+WJle+0FK5EZbzGEKMlqfh8OaFmLqI7FUCszJPPEGkD956/nO0RI78Z98y
-	58NG8VvxBAdcR23ZVDYsjOhByy09QI8=
+	bh=a/vDo0Oi4Q6CBGMCM8qIZnQq8tqjyz5IEomz+8B5kek=;
+	b=hmDEIrVI5iLojc3pisw9F/O/Jqdp6NlUtdmaVHSC4DHPJN1if1GxBXxuFy5hzzEPsY9BDn
+	nycYiV3suIjirC1m4cfp+x9lKhY6TzW67zKIuw5WRaFWhdHMuVmbggRZKac0YbDhMQ3WDf
+	a3XnRvTVQIx0/tNYz9Q4l+densbzuFA=
 From: Sean Anderson <sean.anderson@linux.dev>
 To: Jonathan Cameron <jic23@kernel.org>,
 	Jean Delvare <jdelvare@suse.com>,
@@ -53,9 +53,9 @@ Cc: Andy Shevchenko <andy@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	David Lechner <dlechner@baylibre.com>,
 	Sean Anderson <sean.anderson@linux.dev>
-Subject: [PATCH 1/7] math64: Add div64_s64_rem
-Date: Mon, 14 Jul 2025 21:20:17 -0400
-Message-Id: <20250715012023.2050178-2-sean.anderson@linux.dev>
+Subject: [PATCH 2/7] iio: inkern: Add API for reading/writing events
+Date: Mon, 14 Jul 2025 21:20:18 -0400
+Message-Id: <20250715012023.2050178-3-sean.anderson@linux.dev>
 In-Reply-To: <20250715012023.2050178-1-sean.anderson@linux.dev>
 References: <20250715012023.2050178-1-sean.anderson@linux.dev>
 Precedence: bulk
@@ -67,84 +67,293 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 
-Add a function to do signed 64-bit division with remainder. This is
-implemented using div64_u64_rem in the same way that div_s64_rem is
-implemented using div_u64_rem.
+Add an in-kernel API for reading/writing event properties. Like the
+raw-to-processed conversion, with processed-to-raw we only convert the
+integer part, introducing some round-off error.
+
+A common case is for other drivers to re-expose IIO events as sysfs
+properties with a different API. To help out with this, iio_event_mode
+returns the appropriate mode. It can also be used to test for existence
+if the consumer doesn't care about read/write capability.
 
 Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
 ---
 
- include/linux/math64.h | 18 ++++++++++++++++++
- lib/math/div64.c       | 20 ++++++++++++++++++++
- 2 files changed, 38 insertions(+)
+ drivers/iio/inkern.c         | 198 +++++++++++++++++++++++++++++++++++
+ include/linux/iio/consumer.h |  56 ++++++++++
+ 2 files changed, 254 insertions(+)
 
-diff --git a/include/linux/math64.h b/include/linux/math64.h
-index 6aaccc1626ab..0a414446af89 100644
---- a/include/linux/math64.h
-+++ b/include/linux/math64.h
-@@ -57,6 +57,20 @@ static inline u64 div64_u64_rem(u64 dividend, u64 divisor, u64 *remainder)
- 	return dividend / divisor;
+diff --git a/drivers/iio/inkern.c b/drivers/iio/inkern.c
+index c174ebb7d5e6..d3bbd2444fb5 100644
+--- a/drivers/iio/inkern.c
++++ b/drivers/iio/inkern.c
+@@ -1028,3 +1028,201 @@ ssize_t iio_read_channel_label(struct iio_channel *chan, char *buf)
+ 	return do_iio_read_channel_label(chan->indio_dev, chan->channel, buf);
  }
+ EXPORT_SYMBOL_GPL(iio_read_channel_label);
++
++static bool iio_event_exists(struct iio_channel *channel,
++			     enum iio_event_type type,
++			     enum iio_event_direction dir,
++			     enum iio_event_info info)
++{
++	struct iio_chan_spec const *chan = channel->channel;
++	int i;
++
++	if (!channel->indio_dev->info)
++		return false;
++
++	for (i = 0; i < chan->num_event_specs; i++) {
++		if (chan->event_spec[i].type != type)
++			continue;
++		if (chan->event_spec[i].dir != dir)
++			continue;
++		if (chan->event_spec[i].mask_separate & BIT(info))
++			return true;
++	}
++
++	return false;
++}
++
++umode_t iio_event_mode(struct iio_channel *chan, enum iio_event_type type,
++		       enum iio_event_direction dir, enum iio_event_info info)
++{
++	struct iio_dev *indio_dev = chan->indio_dev;
++	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(indio_dev);
++	umode_t mode = 0;
++
++	guard(mutex)(&iio_dev_opaque->info_exist_lock);
++	if (!iio_event_exists(chan, type, dir, info))
++		return 0;
++
++	if (info == IIO_EV_INFO_ENABLE) {
++		if (indio_dev->info->read_event_config)
++			mode |= 0444;
++
++		if (indio_dev->info->write_event_config)
++			mode |= 0200;
++	} else {
++		if (indio_dev->info->read_event_value)
++			mode |= 0444;
++
++		if (indio_dev->info->write_event_value)
++			mode |= 0200;
++	}
++
++	return mode;
++}
++EXPORT_SYMBOL_GPL(iio_event_mode);
++
++int iio_read_event_processed_scale(struct iio_channel *chan,
++				   enum iio_event_type type,
++				   enum iio_event_direction dir,
++				   enum iio_event_info info, int *val,
++				   unsigned int scale)
++{
++	struct iio_dev *indio_dev = chan->indio_dev;
++	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(indio_dev);
++	int ret, raw;
++
++	guard(mutex)(&iio_dev_opaque->info_exist_lock);
++	if (!iio_event_exists(chan, type, dir, info))
++		return -ENODEV;
++
++	if (info == IIO_EV_INFO_ENABLE) {
++		if (!indio_dev->info->read_event_config)
++			return -EINVAL;
++
++		raw = indio_dev->info->read_event_config(indio_dev,
++							 chan->channel, type,
++							 dir);
++		if (raw < 0)
++			return raw;
++
++		*val = raw;
++		return 0;
++	}
++
++	if (!indio_dev->info->read_event_value)
++		return -EINVAL;
++
++	ret = indio_dev->info->read_event_value(indio_dev, chan->channel, type,
++						dir, info, &raw, NULL);
++	if (ret < 0)
++		return ret;
++
++	return iio_convert_raw_to_processed_unlocked(chan, raw, val, scale);
++}
++EXPORT_SYMBOL_GPL(iio_read_event_processed_scale);
++
++static int iio_convert_processed_to_raw_unlocked(struct iio_channel *chan,
++						 int processed, int *raw,
++						 unsigned int scale)
++{
++	int scale_type, scale_val, scale_val2;
++	int offset_type, offset_val, offset_val2;
++	s64 r, scale64, raw64;
++
++	scale_type = iio_channel_read(chan, &scale_val, &scale_val2,
++				      IIO_CHAN_INFO_SCALE);
++	if (scale_type < 0) {
++		raw64 = processed / scale;
++	} else {
++		switch (scale_type) {
++		case IIO_VAL_INT:
++			scale64 = (s64)scale_val * scale;
++			if (scale64 <= INT_MAX && scale64 >= INT_MIN)
++				raw64 = processed / (int)scale64;
++			else
++				raw64 = 0;
++			break;
++		case IIO_VAL_INT_PLUS_MICRO:
++			scale64 = scale_val * scale * 1000000LL + scale_val2;
++			raw64 = div64_s64_rem(processed, scale64, &r);
++			raw64 = raw64 * 1000000 +
++				div64_s64(r * 1000000, scale64);
++			break;
++		case IIO_VAL_INT_PLUS_NANO:
++			scale64 = scale_val * scale * 1000000000LL + scale_val2;
++			raw64 = div64_s64_rem(processed, scale64, &r);
++			raw64 = raw64 * 1000000000 +
++				div64_s64(r * 1000000000, scale64);
++			break;
++		case IIO_VAL_FRACTIONAL:
++			raw64 = div64_s64((s64)processed * scale_val2,
++					  (s64)scale_val * scale);
++			break;
++		case IIO_VAL_FRACTIONAL_LOG2:
++			raw64 = div64_s64((s64)processed << scale_val2,
++					  (s64)scale_val * scale);
++			break;
++		default:
++			return -EINVAL;
++		}
++	}
++
++	offset_type = iio_channel_read(chan, &offset_val, &offset_val2,
++				       IIO_CHAN_INFO_OFFSET);
++	if (offset_type >= 0) {
++		switch (offset_type) {
++		case IIO_VAL_INT:
++		case IIO_VAL_INT_PLUS_MICRO:
++		case IIO_VAL_INT_PLUS_NANO:
++			raw64 -= offset_val;
++			break;
++		case IIO_VAL_FRACTIONAL:
++			raw64 -= offset_val / offset_val2;
++			break;
++		case IIO_VAL_FRACTIONAL_LOG2:
++			raw64 -= offset_val >> offset_val2;
++			break;
++		default:
++			return -EINVAL;
++		}
++	}
++
++	*raw = clamp(raw64, (s64)INT_MIN, (s64)INT_MAX);
++	return 0;
++}
++
++int iio_write_event_processed_scale(struct iio_channel *chan,
++				    enum iio_event_type type,
++				    enum iio_event_direction dir,
++				    enum iio_event_info info, int processed,
++				    unsigned int scale)
++{
++	struct iio_dev *indio_dev = chan->indio_dev;
++	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(chan->indio_dev);
++	int ret, raw;
++
++	guard(mutex)(&iio_dev_opaque->info_exist_lock);
++	if (!iio_event_exists(chan, type, dir, info))
++		return -ENODEV;
++
++	if (info == IIO_EV_INFO_ENABLE) {
++		if (!indio_dev->info->write_event_config)
++			return -EINVAL;
++
++		return indio_dev->info->write_event_config(indio_dev,
++							   chan->channel, type,
++							   dir, processed);
++	}
++
++	if (!indio_dev->info->write_event_value)
++		return -EINVAL;
++
++	ret = iio_convert_processed_to_raw_unlocked(chan, processed, &raw,
++						    scale);
++	if (ret < 0)
++		return ret;
++
++	return indio_dev->info->write_event_value(indio_dev, chan->channel,
++						  type, dir, info, raw, 0);
++}
++EXPORT_SYMBOL_GPL(iio_write_event_processed_scale);
+diff --git a/include/linux/iio/consumer.h b/include/linux/iio/consumer.h
+index 6a4479616479..16e7682474f3 100644
+--- a/include/linux/iio/consumer.h
++++ b/include/linux/iio/consumer.h
+@@ -451,4 +451,60 @@ ssize_t iio_write_channel_ext_info(struct iio_channel *chan, const char *attr,
+  */
+ ssize_t iio_read_channel_label(struct iio_channel *chan, char *buf);
  
 +/**
-+ * div64_s64_rem - signed 64bit divide with 64bit divisor and remainder
-+ * @dividend: signed 64bit dividend
-+ * @divisor: signed 64bit divisor
-+ * @remainder: pointer to signed 64bit remainder
++ * iio_event_mode() - get file mode for an event property
++ * @chan: Channel being queried
++ * @type: Event type (theshold, rate-of-change, etc.)
++ * @dir: Event direction (rising, falling, etc.)
++ * @info: Event property (enable, value, etc.)
 + *
-+ * Return: sets ``*remainder``, then returns dividend / divisor
++ * Determine an appropriate mode for sysfs files derived from this event.
++ *
++ * Return:
++ *   - `0000` if the event is unsupported or otherwise unavailable
++ *   - `0444` if the event is read-only
++ *   - `0200` if the event is write-only
++ *   - `0644` if the event is read-write
 + */
-+static inline s64 div64_s64_rem(s64 dividend, s64 divisor, s64 *remainder)
-+{
-+	*remainder = dividend % divisor;
-+	return dividend / divisor;
-+}
++umode_t iio_event_mode(struct iio_channel *chan, enum iio_event_type type,
++		       enum iio_event_direction dir, enum iio_event_info info);
 +
- /**
-  * div64_u64 - unsigned 64bit divide with 64bit divisor
-  * @dividend: unsigned 64bit dividend
-@@ -102,6 +116,10 @@ extern s64 div_s64_rem(s64 dividend, s32 divisor, s32 *remainder);
- extern u64 div64_u64_rem(u64 dividend, u64 divisor, u64 *remainder);
++/**
++ * iio_read_event_processed_scale() - Read an event property
++ * @chan: Channel being queried
++ * @type: Event type (theshold, rate-of-change, etc.)
++ * @dir: Event direction (rising, falling, etc.)
++ * @info: Event property (enable, value, etc.)
++ * @val: Processed property value
++ * @scale: Factor to scale @val by
++ *
++ * Read a processed (scaled and offset) event property of a given channel.
++ *
++ * Return: 0 on success, or negative error on failure
++ */
++int iio_read_event_processed_scale(struct iio_channel *chan,
++				   enum iio_event_type type,
++				   enum iio_event_direction dir,
++				   enum iio_event_info info, int *val,
++				   unsigned int scale);
++
++/**
++ * iio_write_event_processed_scale() - Read an event property
++ * @chan: Channel being queried
++ * @type: Event type (theshold, rate-of-change, etc.)
++ * @dir: Event direction (rising, falling, etc.)
++ * @info: Event property (enable, value, etc.)
++ * @processed: Processed property value
++ * @scale: Factor to scale @processed by
++ *
++ * Write a processed (scaled and offset) event property of a given channel.
++ *
++ * Return: 0 on success, or negative error on failure
++ */
++int iio_write_event_processed_scale(struct iio_channel *chan,
++				    enum iio_event_type type,
++				    enum iio_event_direction dir,
++				    enum iio_event_info info, int processed,
++				    unsigned int scale);
++
  #endif
- 
-+#ifndef div64_s64_rem
-+s64 div64_s64_rem(s64 dividend, s64 divisor, s64 *remainder);
-+#endif
-+
- #ifndef div64_u64
- extern u64 div64_u64(u64 dividend, u64 divisor);
- #endif
-diff --git a/lib/math/div64.c b/lib/math/div64.c
-index 5faa29208bdb..ccef0db85681 100644
---- a/lib/math/div64.c
-+++ b/lib/math/div64.c
-@@ -124,6 +124,26 @@ u64 div64_u64_rem(u64 dividend, u64 divisor, u64 *remainder)
- EXPORT_SYMBOL(div64_u64_rem);
- #endif
- 
-+#ifndef div_s64_rem
-+s64 div64_s64_rem(s64 dividend, s64 divisor, s64 *remainder)
-+{
-+	u64 quotient;
-+
-+	if (dividend < 0) {
-+		quotient = div64_u64_rem(-dividend, abs(divisor), (u64 *)remainder);
-+		*remainder = -*remainder;
-+		if (divisor > 0)
-+			quotient = -quotient;
-+	} else {
-+		quotient = div64_u64_rem(dividend, abs(divisor), (u64 *)remainder);
-+		if (divisor < 0)
-+			quotient = -quotient;
-+	}
-+	return quotient;
-+}
-+EXPORT_SYMBOL(div64_s64_rem);
-+#endif
-+
- /*
-  * div64_u64 - unsigned 64bit divide with 64bit divisor
-  * @dividend:	64bit dividend
 -- 
 2.35.1.1320.gc452695387.dirty
 

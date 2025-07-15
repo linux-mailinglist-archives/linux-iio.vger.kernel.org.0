@@ -1,58 +1,59 @@
-Return-Path: <linux-iio+bounces-21671-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21672-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55D7AB055AB
-	for <lists+linux-iio@lfdr.de>; Tue, 15 Jul 2025 10:59:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33A13B055AF
+	for <lists+linux-iio@lfdr.de>; Tue, 15 Jul 2025 10:59:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D5D683A5AE3
-	for <lists+linux-iio@lfdr.de>; Tue, 15 Jul 2025 08:58:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 504571AA614B
+	for <lists+linux-iio@lfdr.de>; Tue, 15 Jul 2025 08:59:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A41E52D3EDC;
-	Tue, 15 Jul 2025 08:59:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B42C12D4B67;
+	Tue, 15 Jul 2025 08:59:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=it-klinger.de header.i=@it-klinger.de header.b="Zq87e/iS"
+	dkim=pass (2048-bit key) header.d=it-klinger.de header.i=@it-klinger.de header.b="L8nZPuFO"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from www571.your-server.de (www571.your-server.de [78.46.3.230])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D8F31917F0;
-	Tue, 15 Jul 2025 08:59:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 244C420F088;
+	Tue, 15 Jul 2025 08:59:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.46.3.230
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752569946; cv=none; b=BKAVk+AoDo5hlqqm7NIrzk4Zkblcu6ndmNM94ZDv/tNk1ERLSSLKU0wLy6FTcwDfHtXknoPVtCHEoWWyVUWK+HxZLlC+MwX+X2MA2oejRsgdLEHcbiMDAq6OFShBwwanXAYnRJzonBlT0egsrmM9+Madcs3DbGaqmhtYxnc2Rok=
+	t=1752569947; cv=none; b=EDZ9FcKWdLDmzpjzW0r60GrYGSTSmT4fpGYbZ8pt1iNtsYamUn+31N8lGT2LsP/BaERHXM0b2jIT9qv6rTATX7AchiOmHxHe5vwXhPPxoHrbwd/DNBlPiB/2sME92Zg8FaDYvr51Sn35O0wXwfb6newGfkyMEbv6ibYkLYNf1X4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752569946; c=relaxed/simple;
-	bh=iKMUAmtCdb7rPKw4eZtTd6lyT0NyYrxjSniJ3kxQU1M=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=HuYXMaEcFduOYqhmUJyVawXbGqXpMZPvbF76CZtgq4XM0oOBUQJicSDqiXezzOM3utP3VMApdLVLewk+x77OBPmy6wBw4XLZ+Ag1wseUQM5Fy/HpErD3tVKJC0ueXDQ2V/wDFzLp8CV8+95VlsC5/+1C1EXObxpywXIPo7batMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=it-klinger.de; spf=pass smtp.mailfrom=it-klinger.de; dkim=pass (2048-bit key) header.d=it-klinger.de header.i=@it-klinger.de header.b=Zq87e/iS; arc=none smtp.client-ip=78.46.3.230
+	s=arc-20240116; t=1752569947; c=relaxed/simple;
+	bh=JFXh0UmvB1uXyN+c4SwPO7I3Kv92fk+6q4OTM2LBtxI=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=FS6VjY5TS5o/CzL+ecR7qy8+JldF29sif24+75svQ9TP3dh2Z00LrgGKeqPKbBnAOmvfS1aRlPDnyPybfuN8yK6U1RQCWB4IbYHlPn8Z+hajoz2LbgCmmJNyuhMp+eL5+zqbqvndNeth2AuYE/ADzAJ30lGcB4qEU3R+FqPMRcg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=it-klinger.de; spf=pass smtp.mailfrom=it-klinger.de; dkim=pass (2048-bit key) header.d=it-klinger.de header.i=@it-klinger.de header.b=L8nZPuFO; arc=none smtp.client-ip=78.46.3.230
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=it-klinger.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=it-klinger.de
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=it-klinger.de; s=default2502; h=Content-Transfer-Encoding:MIME-Version:
-	Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References;
-	bh=9RXJXruNUCau64eqsnbcwp67ROSKsLP30uYqLfMi3TM=; b=Zq87e/iSpFlF/f7A0gRsaIpCBz
-	nXaaXhYmEi5sDXFaJ9rqovnMTB2Qz4cFLakPHOjkip3fgqO4SdrvALeju+yaEq+IjeoyAuWajnsiQ
-	+/uVX9/eNh3EqLas7yObWoWKJ4tgVpHQuwAa1wt9RDHW9LB8Dzk98TWuvqnT0rJtB/FWku1c8T9Dr
-	UmUmV7Ucj3kCLHQmUaf+Rm5C5k9a5aUZqrMVpTz25clM1fmznR+LiA6UcdjWohKHEnUacb6iDcgIb
-	g+urh0lgsDl8Bet+WN1dwWuPqf/RJxaSCHISLT+fMaeZukFgNPcXE2PgGUVLrikOM+NBumi/ccV0I
-	aeDrrZPQ==;
+	References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=Z1yjOM7mfQmYrtvU5Bojq8sDhROmKsvPzkPUXkARBXU=; b=L8nZPuFOHGLfMEOsTDgeQywioQ
+	nx2mJeljKE79A3cdfeCSkxwM+n3bM9KJXw0VNtFIcyL7dRb9VRJ8UVw4gembCIDXc0ioG1qM4VrbZ
+	DwTxOg/7tmaVsUD7go+Xj8fjzpTsp3aDL8nPSaPcnVD7Q16CRJeca5iKEt+CRloQK9k4XBgtTtrR7
+	RRQKmWomFaOqjALR9UYl79IaELGyKiMTZU5Kn/Z0CKMDiKq6xRZi6YjmsA3glDdSobFPIOwH+tjTX
+	CHWVJdmZOZHCxVBP0KUPm6/5LUHDuw1aTwRPnyFeearskWrau2MauSh+jkanDCzXHzx9asO09QqKS
+	VRKCuAjA==;
 Received: from sslproxy02.your-server.de ([78.47.166.47])
 	by www571.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.96.2)
 	(envelope-from <ak@it-klinger.de>)
-	id 1ubbUx-000HgA-1z;
-	Tue, 15 Jul 2025 10:58:51 +0200
+	id 1ubbV5-000HjS-20;
+	Tue, 15 Jul 2025 10:58:59 +0200
 Received: from localhost ([127.0.0.1])
 	by sslproxy02.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <ak@it-klinger.de>)
-	id 1ubbUw-000AWe-1b;
-	Tue, 15 Jul 2025 10:58:51 +0200
+	id 1ubbV4-000AWe-1e;
+	Tue, 15 Jul 2025 10:58:59 +0200
 From: Andreas Klinger <ak@it-klinger.de>
 To: jic23@kernel.org,
 	robh@kernel.org,
@@ -71,11 +72,14 @@ Cc: lars@metafoo.de,
 	ak@it-klinger.de,
 	devicetree@vger.kernel.org,
 	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v6 0/3] iio:light: add driver for veml6046x00 RGBIR color sensor
-Date: Tue, 15 Jul 2025 10:58:07 +0200
-Message-Id: <20250715085810.7679-1-ak@it-klinger.de>
+	linux-kernel@vger.kernel.org,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH v6 1/3] dt-bindings: iio: light: veml6046x00: add color sensor
+Date: Tue, 15 Jul 2025 10:58:08 +0200
+Message-Id: <20250715085810.7679-2-ak@it-klinger.de>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250715085810.7679-1-ak@it-klinger.de>
+References: <20250715085810.7679-1-ak@it-klinger.de>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -85,49 +89,73 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Virus-Scanned: Clear (ClamAV 1.0.7/27699/Mon Jul 14 10:54:31 2025)
 
-This patchset adds an IIO driver for Vishay veml6046x00 RGBIR color sensor
+Add a new compatible for Vishay high accuracy RGBIR color sensor
+veml6046x00.
 
-Changes in v6:
-- Thanks to the in-depth review of Andy many datatype improvements were
-  realized.
-- According to Jonathans review change the channel types from IIO_LIGHT to
-  IIO_INTENSITY.
-
-Changes in v5:
-- Thanks to the feedback of Andy and further explanations of Jonathan many
-  improvements could be implemented.
-- add documentation in kernel-doc format
-- iio_push_to_buffers_with_ts() is not used as also testing against
-  linux-stable where it is not available so far.
-
-Changes in v4:
-- implement feedback from Andy and Jonathan
-- implement feedback from vendor (reading interrupt register as bulk read)
-
-Changes in v3:
-- implement a lot of feedback from Jonathan
-- change scale value to real factor of lux per raw count instead of hardware
-  gain
-- optimize code by using more lookup tables
-- remove unimplemented threshold functionality
-
-Changes in v2:
-- fix missing include for example in vishay,veml6046x00.yaml
-
-Andreas Klinger (3):
-  dt-bindings: iio: light: veml6046x00: add color sensor
-  iio: light: add support for veml6046x00 RGBIR color sensor
-  MAINTAINER: add maintainer for veml6046x00
-
- .../iio/light/vishay,veml6046x00.yaml         |   51 +
- MAINTAINERS                                   |    6 +
- drivers/iio/light/Kconfig                     |   13 +
- drivers/iio/light/Makefile                    |    1 +
- drivers/iio/light/veml6046x00.c               | 1037 +++++++++++++++++
- 5 files changed, 1108 insertions(+)
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Andreas Klinger <ak@it-klinger.de>
+---
+ .../iio/light/vishay,veml6046x00.yaml         | 51 +++++++++++++++++++
+ 1 file changed, 51 insertions(+)
  create mode 100644 Documentation/devicetree/bindings/iio/light/vishay,veml6046x00.yaml
- create mode 100644 drivers/iio/light/veml6046x00.c
 
+diff --git a/Documentation/devicetree/bindings/iio/light/vishay,veml6046x00.yaml b/Documentation/devicetree/bindings/iio/light/vishay,veml6046x00.yaml
+new file mode 100644
+index 000000000000..112d448ff0bf
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/light/vishay,veml6046x00.yaml
+@@ -0,0 +1,51 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/light/vishay,veml6046x00.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Vishay VEML6046X00 High accuracy RGBIR color sensor
++
++maintainers:
++  - Andreas Klinger <ak@it-klinger.de>
++
++description:
++  VEML6046X00 datasheet at https://www.vishay.com/docs/80173/veml6046x00.pdf
++
++properties:
++  compatible:
++    enum:
++      - vishay,veml6046x00
++
++  reg:
++    maxItems: 1
++
++  vdd-supply: true
++
++  interrupts:
++    maxItems: 1
++
++required:
++  - compatible
++  - reg
++  - vdd-supply
++
++additionalProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/interrupt-controller/irq.h>
++
++    i2c {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        color-sensor@29 {
++            compatible = "vishay,veml6046x00";
++            reg = <0x29>;
++            vdd-supply = <&vdd_reg>;
++            interrupt-parent = <&gpio2>;
++            interrupts = <3 IRQ_TYPE_EDGE_FALLING>;
++        };
++    };
++...
 -- 
 2.39.5
 

@@ -1,127 +1,131 @@
-Return-Path: <linux-iio+bounces-21710-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21711-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04FE7B06F48
-	for <lists+linux-iio@lfdr.de>; Wed, 16 Jul 2025 09:44:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 07F13B06F4D
+	for <lists+linux-iio@lfdr.de>; Wed, 16 Jul 2025 09:45:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 160CF3A6E25
-	for <lists+linux-iio@lfdr.de>; Wed, 16 Jul 2025 07:44:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1009E3A7ECB
+	for <lists+linux-iio@lfdr.de>; Wed, 16 Jul 2025 07:45:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41EA428D8ED;
-	Wed, 16 Jul 2025 07:44:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E50A7263F52;
+	Wed, 16 Jul 2025 07:45:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gadpyYC3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CKpGWvRD"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C005528A1CA;
-	Wed, 16 Jul 2025 07:44:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F2A417D2;
+	Wed, 16 Jul 2025 07:45:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752651890; cv=none; b=gqAdBIf+/WOkeKUopwzQFX7QnRteWyKNN9FQczDUyCJLAvraycL9l2FXzsMsOPgKWzy3UQgjhRCo2fo7gzOXn7MRxQtXv+X7P0uX70et9/9jMzvbcQuIM2UR65YE4mcIE/+/uQIJrYB5Rp0efxdW/SYb7i2kKt/kWi30e50cuK4=
+	t=1752651938; cv=none; b=tnIGGc1ezFezjV6DdmOtJvl7RTTD4zHGSUybaWd58wP5yd6U35VUcls5XCg/7bGVLHHC8E8I5Vnf3qljYqh68r7uWXmV22ho3O0zNRiYt/oeN2eGvSSOTgSbfo3QIyZmckKxNI8fP7FDKNU09KelzJcU+yxXwrL9DkbgvtJP37o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752651890; c=relaxed/simple;
-	bh=rakUwOidur4ow2ll0FZlBfrzzDi2qZ2wFlnPMfyI4NA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HUiYnFgunyXWREt23RRV6tMUU2hkiDU4QnvAETrh+3y5I0EDBZwInKKkzrHrRImjzyQ27E5FF3wI3PUur4oNVQ663tdkmHfRWuZUkQHvpvqesI0H2dd1j80L5ES4WkyyzNX1uid8QClrv7fLXV6bWOM3Pdo9spuVCQnHbNUW3Ns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gadpyYC3; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1752651888; x=1784187888;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=rakUwOidur4ow2ll0FZlBfrzzDi2qZ2wFlnPMfyI4NA=;
-  b=gadpyYC3uyHYPrtf2MCTJ65tdSEE3lEEXw83eC7OoqaVHvLqntxEGdbA
-   fl9WHk81pwqDMIBU0jfB47TSF92j5aNt8BWknhQwGh+u5Yu32bHvXGN8k
-   jS5jJrfGx5bAvM/SpCIRM9cnqS9GX+6MG661fTxsQrz4nROulgP/l0M/N
-   uJfXwc2Xc401AbOp3vAr3ghRC6HjpyDvd4O/XIFz4QUpmaqyuGq+pXZmL
-   GJMS6ylwiekd20lbAq0ySJXC2EkKV2IB2CXNNj4JcXrVGsiJZcnbu8YHm
-   w0IkHZVGfPB/mXjf4pBpzZV2liJmT7f1n69oQwMqBDdbjovCMENw2wJHU
-   Q==;
-X-CSE-ConnectionGUID: 7kvIwEdCTs2axEGqtYKTDg==
-X-CSE-MsgGUID: GojJPTdXR5aw3LB/lVHKrw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11493"; a="55036700"
-X-IronPort-AV: E=Sophos;i="6.16,315,1744095600"; 
-   d="scan'208";a="55036700"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jul 2025 00:44:47 -0700
-X-CSE-ConnectionGUID: M1j9vfWJRxC+oysMlnebtw==
-X-CSE-MsgGUID: zyEkj1I3QwWjD+2/1+tvcg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,315,1744095600"; 
-   d="scan'208";a="157096427"
-Received: from lkp-server01.sh.intel.com (HELO 9ee84586c615) ([10.239.97.150])
-  by fmviesa007.fm.intel.com with ESMTP; 16 Jul 2025 00:44:44 -0700
-Received: from kbuild by 9ee84586c615 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1ubwok-000C4F-1V;
-	Wed, 16 Jul 2025 07:44:42 +0000
-Date: Wed, 16 Jul 2025 15:44:04 +0800
-From: kernel test robot <lkp@intel.com>
-To: Sean Anderson <sean.anderson@linux.dev>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Jean Delvare <jdelvare@suse.com>,
-	Guenter Roeck <linux@roeck-us.net>, linux-iio@vger.kernel.org,
-	linux-hwmon@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, Andy Shevchenko <andy@kernel.org>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	linux-kernel@vger.kernel.org, David Lechner <dlechner@baylibre.com>,
-	Sean Anderson <sean.anderson@linux.dev>
-Subject: Re: [PATCH 7/7] hwmon: iio: Add alarm support
-Message-ID: <202507161550.frzFNyCa-lkp@intel.com>
-References: <20250715012023.2050178-8-sean.anderson@linux.dev>
+	s=arc-20240116; t=1752651938; c=relaxed/simple;
+	bh=ggvd9ZmR+n+qNcsErbcs+/uxwtG7PkhkvsBTNhvDvVg=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Cf76CDDEfZPtG8H/x16YSOAjVq6tlNw2KlhRAjQbFdMkmCpqzB1VWg0Ya4Xohn1SRDRIkt08URsTQnn8oFS0D9uGtdGKN57TNyfQdbJcRHkZHjHox3M5b8WwD4+8ldcSg7pExzPlUPCndiwWNsoqo2x+8KzWsHK6yoVJEtmoXWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CKpGWvRD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40E25C4CEF0;
+	Wed, 16 Jul 2025 07:45:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752651938;
+	bh=ggvd9ZmR+n+qNcsErbcs+/uxwtG7PkhkvsBTNhvDvVg=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=CKpGWvRDZUOdNjw5gFFtGcpbdUv6WDXcCsr9RYGbiZKBCzxIJtcmlnpmrhP327r5F
+	 X9GPsrOEqtoUbddEHHVyW9qGf75asD5wU3DSWAMrWdWD7oN13MnYBx7ZXLi+CUm3C3
+	 WD0Ql3O69vSsiiJGlYld7UXFWN2kKxfOVyAFsQXgzsUJwUs8trzk69ORBpdk+7+6eJ
+	 vpkjjrrZPGe8l5NnF4tR0XH+ZhsRMO0ct2SNXFl7bU26FoqpPVuD9SmwzGcGjnxyQS
+	 J+G3MeYDz2uzpYpCKHo73PDLED43x7RqMz5zUuo7SxPCG1M/g5Yfzy0/GvQu9Htziq
+	 2WQ/ymqjqlW9Q==
+Date: Wed, 16 Jul 2025 08:45:30 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Michael Hennerich <Michael.Hennerich@analog.com>, Nuno =?UTF-8?B?U8Oh?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Dumitru Ceclan
+ <mitrutzceclan@gmail.com>, Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: adc: ad7173: fix setting ODR in probe
+Message-ID: <20250716084530.50000920@jic23-huawei>
+In-Reply-To: <20250713151450.3816a9c0@jic23-huawei>
+References: <20250710-iio-adc-ad7173-fix-setting-odr-in-probe-v1-1-78a100fec998@baylibre.com>
+	<20250713151450.3816a9c0@jic23-huawei>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250715012023.2050178-8-sean.anderson@linux.dev>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hi Sean,
+On Sun, 13 Jul 2025 15:14:50 +0100
+Jonathan Cameron <jic23@kernel.org> wrote:
 
-kernel test robot noticed the following build warnings:
+> On Thu, 10 Jul 2025 15:43:40 -0500
+> David Lechner <dlechner@baylibre.com> wrote:
+> 
+> > Fix the setting of the ODR register value in the probe function for
+> > AD7177. The AD7177 chip has a different ODR value after reset than the
+> > other chips (0x7 vs. 0x0) and 0 is a reserved value on that chip.
+> > 
+> > The driver already has this information available in odr_start_value
+> > and uses it when checking valid values when writing to the
+> > sampling_frequency attribute, but failed to set the correct initial
+> > value in the probe function.
+> > 
+> > Fixes: 37ae8381ccda ("iio: adc: ad7173: add support for additional models")
+> > Signed-off-by: David Lechner <dlechner@baylibre.com>  
+> Applied and marked for stable.
+>
+ 
+Given I've been very slow to send a final fixes pull and the cross dependencies
+with some of the stuff for the merge window + all the fixes I currently have
+queued are for the ad7173 or ad_sigma_delta, I plan to drag the lot across
+to my pull request for the coming merge window (so the togreg branch).
 
-[auto build test WARNING on jic23-iio/togreg]
-[also build test WARNING on groeck-staging/hwmon-next akpm-mm/mm-nonmm-unstable linus/master v6.16-rc6 next-20250715]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Sorry for the hassle that might occur in getting these backported and the
+delay in getting the fixes merged. Crazy period for one reason and another
+so I've had less time to focus on IIO for a few weeks than I'd normally like.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Sean-Anderson/math64-Add-div64_s64_rem/20250715-092337
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
-patch link:    https://lore.kernel.org/r/20250715012023.2050178-8-sean.anderson%40linux.dev
-patch subject: [PATCH 7/7] hwmon: iio: Add alarm support
-config: i386-randconfig-063-20250716 (https://download.01.org/0day-ci/archive/20250716/202507161550.frzFNyCa-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250716/202507161550.frzFNyCa-lkp@intel.com/reproduce)
+Jonathan
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202507161550.frzFNyCa-lkp@intel.com/
+> > ---
+> >  drivers/iio/adc/ad7173.c | 3 ++-
+> >  1 file changed, 2 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/iio/adc/ad7173.c b/drivers/iio/adc/ad7173.c
+> > index dd9fa35555c79ead5a1b88d1dc6cc3db122502be..ef074b41332ed912fb281c0903f6cc52077accb4 100644
+> > --- a/drivers/iio/adc/ad7173.c
+> > +++ b/drivers/iio/adc/ad7173.c
+> > @@ -1574,6 +1574,7 @@ static int ad7173_fw_parse_channel_config(struct iio_dev *indio_dev)
+> >  		chan_st_priv->cfg.bipolar = false;
+> >  		chan_st_priv->cfg.input_buf = st->info->has_input_buf;
+> >  		chan_st_priv->cfg.ref_sel = AD7173_SETUP_REF_SEL_INT_REF;
+> > +		chan_st_priv->cfg.odr = st->info->odr_start_value;
+> >  		chan_st_priv->cfg.openwire_comp_chan = -1;
+> >  		st->adc_mode |= AD7173_ADC_MODE_REF_EN;
+> >  		if (st->info->data_reg_only_16bit)
+> > @@ -1640,7 +1641,7 @@ static int ad7173_fw_parse_channel_config(struct iio_dev *indio_dev)
+> >  		chan->scan_index = chan_index;
+> >  		chan->channel = ain[0];
+> >  		chan_st_priv->cfg.input_buf = st->info->has_input_buf;
+> > -		chan_st_priv->cfg.odr = 0;
+> > +		chan_st_priv->cfg.odr = st->info->odr_start_value;
+> >  		chan_st_priv->cfg.openwire_comp_chan = -1;
+> >  
+> >  		chan_st_priv->cfg.bipolar = fwnode_property_read_bool(child, "bipolar");
+> > 
+> > ---
+> > base-commit: f8f559752d573a051a984adda8d2d1464f92f954
+> > change-id: 20250710-iio-adc-ad7173-fix-setting-odr-in-probe-915972070e8a
+> > 
+> > Best regards,  
+> 
+> 
 
-sparse warnings: (new ones prefixed by >>)
->> drivers/hwmon/iio_hwmon.c:25:1: sparse: sparse: symbol 'iio_hwmon_listener_lock' was not declared. Should it be static?
->> drivers/hwmon/iio_hwmon.c:26:1: sparse: sparse: symbol 'iio_hwmon_listeners' was not declared. Should it be static?
-
-vim +/iio_hwmon_listener_lock +25 drivers/hwmon/iio_hwmon.c
-
-    23	
-    24	/* Protects iio_hwmon_listeners and listeners' refcnt */
-  > 25	DEFINE_MUTEX(iio_hwmon_listener_lock);
-  > 26	LIST_HEAD(iio_hwmon_listeners);
-    27	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 

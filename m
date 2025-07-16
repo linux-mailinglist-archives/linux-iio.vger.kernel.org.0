@@ -1,150 +1,138 @@
-Return-Path: <linux-iio+bounces-21714-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21715-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BC6FB06FE0
-	for <lists+linux-iio@lfdr.de>; Wed, 16 Jul 2025 10:07:09 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B3E7B07197
+	for <lists+linux-iio@lfdr.de>; Wed, 16 Jul 2025 11:26:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ABBD73A34BD
-	for <lists+linux-iio@lfdr.de>; Wed, 16 Jul 2025 08:06:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2E5857A279D
+	for <lists+linux-iio@lfdr.de>; Wed, 16 Jul 2025 09:24:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B277C28A1C8;
-	Wed, 16 Jul 2025 08:07:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 164F52F002A;
+	Wed, 16 Jul 2025 09:26:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TwwNaPi/"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CDmcV8sT"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DBCC2C190;
-	Wed, 16 Jul 2025 08:07:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11F142BFC85;
+	Wed, 16 Jul 2025 09:26:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752653223; cv=none; b=cNi49o14NPVJkZK3YTt5m0u0BSIhDGKtsF1SUKCBQQben+tix6s+c8DaKydymtly3ovCS8Klaxfqw8IFb+gx2OosJMeIpGKJJhtmnGkzWNU/8G7g2kDMqypcJeCSwZfETpFnt+Skge2ydawgDe3/JYVj7SgpGsmJPaRr5TVYePY=
+	t=1752657968; cv=none; b=eNPSnBlRjrnc5ngDlH027/udcpxdQJGTAMsNLC+ddGUIYp7Dr/c/DuQYkYcU/kviP8ky7PHoAxXWHhWDUqCUVnzAI9ztZHQuRnQWN/xmC1Yc0exx56jQ+efyR42y3wzd6QdvpS/b3f21frXtv4req4V4SWsH2oFGnoYvYHXZBA4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752653223; c=relaxed/simple;
-	bh=DJw9JK/TOdk/9qj+pemHP4UIRhxxYiSVVqha+NcZJLo=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=e5lnwa5TKQ0ae7sz/ME/ML78yQJ6921LAS+usc5oaeCMQq00dUhtR4/0CI4CpYpAQEf2D9hj9leTan8pu2fa9OxYuJBDV8Cj6qZYWsBJf98m3yzAy/Z78ghQdrqgEiyWzHIhcrVz9YxuOOgKxUpIrDRSTl9RaG1tjDS1Lah0LO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TwwNaPi/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47C01C4CEF0;
-	Wed, 16 Jul 2025 08:07:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752653223;
-	bh=DJw9JK/TOdk/9qj+pemHP4UIRhxxYiSVVqha+NcZJLo=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=TwwNaPi/SjGq451dHcV9931uOE1VtkxArZm85J22lc2lwZ9XgKNdRe6AvWM6wplNV
-	 HmffZC7FrrK9oYLzNZJ8DGQC7KabO/MbnYM4sk0hyvubB+CJNcE8frdmO/KyC0UP2w
-	 diNLy+S/aPEmPPgwZCVsJMc+LbwdZTyZNSdO2fAkM7t5tnVJt81J7T/QJKjL8iHOwX
-	 g/eXthXKtCekxbD9xeUhgtff44ivHuAdztfEknA46+ETXK4syaSrUXsacCl7wgnLhd
-	 2Wc10WgcDV8HJHOZQ+WrxX82bX7DIhuUbuE/nUQ4nfOpuJHEeu8r0GIbhevHqQrOU/
-	 BeeCArno+WZ0w==
-Date: Wed, 16 Jul 2025 09:06:55 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Sean Nyekjaer <sean@geanix.com>
-Cc: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>, David Lechner
- <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy
- Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 6/6] iio: imu: inv_icm42600: Avoid configuring if
- already pm_runtime suspended
-Message-ID: <20250716090655.0ba30a2a@jic23-huawei>
-In-Reply-To: <kcrov3lqigiqzea2eds73ibhix46ovqrqkhodfatqwfmjanxya@l2cla3fkl6ow>
-References: <20250709-icm42pmreg-v1-0-3d0e793c99b2@geanix.com>
-	<20250709-icm42pmreg-v1-6-3d0e793c99b2@geanix.com>
-	<20250713153227.08af0a54@jic23-huawei>
-	<kcrov3lqigiqzea2eds73ibhix46ovqrqkhodfatqwfmjanxya@l2cla3fkl6ow>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1752657968; c=relaxed/simple;
+	bh=rfjHtiCeF271t5do673xiX7n1ZAh1z0gfq1XzRBPHvU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kTueEAEitMf5M73iGHsgI6WBklaKzWAgC4bZU1tu8IksT7optloRaoCg/jUi9vZGPGS1w8EQCBXI1E6/LLdm+vfoptMXelU+5fKsSHu8VxbgTC9YNCv9zMoEmc7a1fr7ucOroU3RJs2HC0FI/1uYscpnFGlhInVy5MB2TBe9HeY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CDmcV8sT; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1752657967; x=1784193967;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=rfjHtiCeF271t5do673xiX7n1ZAh1z0gfq1XzRBPHvU=;
+  b=CDmcV8sTO5vcuY2xoMFnPKKdIlgn6UAIaKfxdtQiu00J48XZXU9GrOxE
+   yy8fo9qPeizV989mrzcw4XAjmpfYHUcj4XCMj+ZkBjoN96y0h/HU8fKgR
+   UROHHHzMgpUJkKX0sk2cG0SIA+Mi7Kv5aR53r6rOApnmxA0xqWUw2nmWJ
+   R4l+/sBCTr14ESekFQORwuXHKa1aV/ejbtB8jDqgNWNIfucO6gil9GwPW
+   AufLqKmdPVtSUh+BEURBIXNNo+eyHW3J8u8S7ocyeTsOeaO4OOEp7vfXp
+   4z8dQA+zjFKZyvXn5DHpRkTE0c2KfaIPuCYeAARQ0mYOXqlAUX6DSfQvg
+   w==;
+X-CSE-ConnectionGUID: AQ+zbDSIQsy7P5llT95O/Q==
+X-CSE-MsgGUID: ZKTQvZ1QSe+itnQqMlfydQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11493"; a="54006236"
+X-IronPort-AV: E=Sophos;i="6.16,315,1744095600"; 
+   d="scan'208";a="54006236"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jul 2025 02:26:06 -0700
+X-CSE-ConnectionGUID: zoF5FblBTxWSbMeFy9JXVw==
+X-CSE-MsgGUID: 3VErqQCySQmwwmDWnqiRmg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,315,1744095600"; 
+   d="scan'208";a="161776446"
+Received: from smile.fi.intel.com ([10.237.72.52])
+  by orviesa003.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jul 2025 02:26:03 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@intel.com>)
+	id 1ubyOl-0000000Fth3-3bnN;
+	Wed, 16 Jul 2025 12:25:59 +0300
+Date: Wed, 16 Jul 2025 12:25:59 +0300
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Remi Buisson <Remi.Buisson@tdk.com>
+Cc: Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+Subject: Re: [PATCH v2 2/8] iio: imu: inv_icm45600: add new inv_icm45600
+ driver
+Message-ID: <aHdwJ--tK4ANBlT4@smile.fi.intel.com>
+References: <20250710-add_newport_driver-v2-0-bf76d8142ef2@tdk.com>
+ <20250710-add_newport_driver-v2-2-bf76d8142ef2@tdk.com>
+ <aG-ID7O3HgVc1EOX@smile.fi.intel.com>
+ <FR2PPF4571F02BC5366477EC02E9C44041A8C4BA@FR2PPF4571F02BC.DEUP281.PROD.OUTLOOK.COM>
+ <aHD7zEzvVuwSB9Ke@smile.fi.intel.com>
+ <FR2PPF4571F02BC69DF6807BAA188B2B3A08C57A@FR2PPF4571F02BC.DEUP281.PROD.OUTLOOK.COM>
+ <aHYwmEv1sCI-qi0T@smile.fi.intel.com>
+ <FR2PPF4571F02BC1A8F6E7F098A498E0B9C8C57A@FR2PPF4571F02BC.DEUP281.PROD.OUTLOOK.COM>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <FR2PPF4571F02BC1A8F6E7F098A498E0B9C8C57A@FR2PPF4571F02BC.DEUP281.PROD.OUTLOOK.COM>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Mon, 14 Jul 2025 10:15:59 +0000
-Sean Nyekjaer <sean@geanix.com> wrote:
+On Tue, Jul 15, 2025 at 03:26:48PM +0000, Remi Buisson wrote:
+> >From: Andy Shevchenko <andriy.shevchenko@intel.com> 
+> >Sent: Tuesday, July 15, 2025 12:43 PM
+> >On Tue, Jul 15, 2025 at 09:11:47AM +0000, Remi Buisson wrote:
+> >> >From: Andy Shevchenko <andriy.shevchenko@intel.com> 
+> >> >Sent: Friday, July 11, 2025 1:56 PM
+> >> >On Fri, Jul 11, 2025 at 11:32:48AM +0000, Remi Buisson wrote:
+> >> >> >From: Andy Shevchenko andriy.shevchenko@intel.com<mailto:andriy.shevchenko@intel.com>
+> >> >> >Sent: Thursday, July 10, 2025 11:30 AM
+> >> >> >On Thu, Jul 10, 2025 at 08:57:57AM +0000, Remi Buisson via B4 Relay wrote:
 
-> On Sun, Jul 13, 2025 at 03:32:27PM +0100, Jonathan Cameron wrote:
-> > On Wed, 09 Jul 2025 14:35:14 +0200
-> > Sean Nyekjaer <sean@geanix.com> wrote:
-> >   
-> > > Do as in suspend, skip resume configuration steps if the device is already
-> > > pm_runtime suspended. This avoids reconfiguring a device that is already
-> > > in the correct low-power state and ensures that pm_runtimeM handles the
-> > > power state transitions properly.
-> > >
-> > > Fixes: 31c24c1e93c3 ("iio: imu: inv_icm42600: add core of new inv_icm42600 driver")
-> > > Signed-off-by: Sean Nyekjaer <sean@geanix.com>
-> > > ---  
-> > 
-> > Not really related to what you have here, but this code would really
-> > benefit from using guard(mutex)()
-> > 
-> > Jonathan  
-> 
-> I have converted most of this driver to use guard(mutex).
-> 
-> Does it make sense to use guard(mutex) in functions that still relies on
-> goto error out? Like...
+...
 
-No - general rule is never combine cleanup.h magic like guard with gotos.
+> >> >> It's probably safer to keep the delay even in case of failure to make sure
+> >> >> the device is ready before next operation.
+> >> >
+> >> >I am not sure about it. Why? This has to be well justified as it's quite
+> >> >unusual pattern.
+> >
+> >> Ok I understand, the hardware needs that delay if the access was actually
+> >> done on the bus (to not jeopardize next access).  If a regmap error means
+> >> that no real access occured then the delay is avoidable.
+> >
+> >Perhaps you need to have this delay embedded in the IO accessors? Also do
+> >read _and_ write need this or only one of them?
 
-If you do want to use it in cases like this, factor out the stuff
-> 
-> static int inv_icm42600_temp_read(struct inv_icm42600_state *st, s16 *temp)
-> {
-> 	struct device *dev = regmap_get_device(st->map);
-> 	__be16 *raw;
-> 	int ret;
-> 
-> 	pm_runtime_get_sync(dev);
-> 	mutex_lock(&st->lock);
-> 
+> It's required for both indirect read and write BUT not when writing the first data
+> which need to be done in a single burst.
+> Could you please be more specific on how to add delays to IO accessors?
 
-from here
+I don't remember if regmap core supports already such a delay, but always
+working case is to redefine your own regmap_read()/regmap_write() callbacks.
 
-> 	ret = inv_icm42600_set_temp_conf(st, true, NULL);
-> 	if (ret)
-> 		goto exit;
-> 
-> 	raw = (__be16 *)&st->buffer[0];
-> 	ret = regmap_bulk_read(st->map, INV_ICM42600_REG_TEMP_DATA, raw, sizeof(*raw));
-> 	if (ret)
-> 		goto exit;
-> 
-> 	*temp = (s16)be16_to_cpup(raw);
-> 	if (*temp == INV_ICM42600_DATA_INVALID)
-> 		ret = -EINVAL;
-> 
+-- 
+With Best Regards,
+Andy Shevchenko
 
-to here as a utility function.  Then can use direct returns in that 
-function and there are no gotos to worry about.
-
-> exit:
-> 	mutex_unlock(&st->lock);
-> 	pm_runtime_mark_last_busy(dev);
-> 	pm_runtime_put_autosuspend(dev);
-> 
-> 	return ret;
-> }
-> 
-> 
-> If I use guard_scoped(..) it creates a lot of diff lines...
-The only way to use that here and avoid the issue would be with breaks
-which is ugly.   If we are going to pay the cost of churn, then
-factoring out the guts of the function is much cleaner.
-
-May not be worth bothering though!
-
-Jonathan
-
-> 
-> /Sean
-> 
 
 

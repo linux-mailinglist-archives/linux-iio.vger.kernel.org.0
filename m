@@ -1,81 +1,80 @@
-Return-Path: <linux-iio+bounces-21729-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21730-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF268B07E51
-	for <lists+linux-iio@lfdr.de>; Wed, 16 Jul 2025 21:45:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60D00B07E6C
+	for <lists+linux-iio@lfdr.de>; Wed, 16 Jul 2025 21:52:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E48EC3ACB9A
-	for <lists+linux-iio@lfdr.de>; Wed, 16 Jul 2025 19:44:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A90D95829BF
+	for <lists+linux-iio@lfdr.de>; Wed, 16 Jul 2025 19:52:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA11D2BDC11;
-	Wed, 16 Jul 2025 19:45:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A98A229B20A;
+	Wed, 16 Jul 2025 19:52:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mandelbit.com header.i=@mandelbit.com header.b="e2pQCgjI"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="bbujboPF"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+Received: from mail-ot1-f51.google.com (mail-ot1-f51.google.com [209.85.210.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDA0126B97D
-	for <linux-iio@vger.kernel.org>; Wed, 16 Jul 2025 19:45:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7745A25C713
+	for <linux-iio@vger.kernel.org>; Wed, 16 Jul 2025 19:52:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752695113; cv=none; b=FGHw0XMSdKBzlwW//hh3NueVY9rhSaB55BFWN/RPrs0BQzQ2gbLHU0aaRucpo+HflPJgFShxSvMVM8os9uJUa8WbIrX/SQ23cOgAe/AJ/VOUpzLmzZ0Su8kCHszvX87mXN5bcAH/2ugnNn4hvlnMiF8ETyexgqYUF/ZWEBjGPwA=
+	t=1752695559; cv=none; b=okvMTBOAQLZMgRpyMthbanPWgJUFTEZHqdceNV8FycEEvCPk6WYzjwFakSWUFz3oru2BZJjcb8i9Cr+A2YkpP3lvuq2KLnAZZYGnLFBIU8XwrCktJJE+qrbSQ8RmpwfJ/P+x7MCZQCK98/Q3SGOTpZ85EGDzpJudQVFMWaH9udw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752695113; c=relaxed/simple;
-	bh=RGkOEBpqICnvhmeOYzzN5GVgVhT25gPV8lnMMG3zMmE=;
+	s=arc-20240116; t=1752695559; c=relaxed/simple;
+	bh=YJdnLpqpzajqUOzmpSPLRIbIr0Lze6wjN/+WUb4crgs=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=B+EEZXfqSp0gNEob0i2j79mi6dy+E0OI3TlIgxDqrk8YZUBT368Gzf7dPrrfj/YNVcSf5WaXF+dDvONFdkc3JZ2NP/OFP2Zovbpja+G5+I903T9ApG9qCKrv/Ql67CTxGdWpUv00VixATFW2ZKsBdnI37DarDtvVTTrC364QVmo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandelbit.com; spf=pass smtp.mailfrom=mandelbit.com; dkim=pass (2048-bit key) header.d=mandelbit.com header.i=@mandelbit.com header.b=e2pQCgjI; arc=none smtp.client-ip=209.85.218.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandelbit.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mandelbit.com
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-ae36dc91dc7so36103566b.2
-        for <linux-iio@vger.kernel.org>; Wed, 16 Jul 2025 12:45:11 -0700 (PDT)
+	 In-Reply-To:Content-Type; b=m3LLyY3G7l1PLPz4P4g/09a7wIRlMGjnZAHBLDGRFoL99fWC9mzFk/QlPmiz0oVHhg/Y0qAsiTaZJrV71Mwc0GTaEdwmcCJA6qfBTAaQx9ywVJBW1vasDelblJCAaxDkSWcywbKKhs2GAMddQcoLo2fcFmvhNaLX7K92fNjLElk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=bbujboPF; arc=none smtp.client-ip=209.85.210.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-ot1-f51.google.com with SMTP id 46e09a7af769-73cddf31d10so137256a34.0
+        for <linux-iio@vger.kernel.org>; Wed, 16 Jul 2025 12:52:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mandelbit.com; s=google; t=1752695110; x=1753299910; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=fu3ULFheObCECo8wTxTWjnCgZuWUy7rpHr/QaDan+q4=;
-        b=e2pQCgjIG2ZR3lbAHArPfNWZ69KQzr7SvHoEbeLgeCj3Y3Z5a/ykEpILgUN2d9EHso
-         aTHYl3HhcSsysYSmNRyphvSuahNTd0cu31UsbMIl6B1WVXkSQGzwI7VdOmE2xCsH+D0Y
-         1JQ2WXW5ZrpwN8zUuSSjB0bzESEURjuW5vNbSPGs9vK/c5O5oyini+efrMOvTkSbPlpr
-         h0QjID9ORPnSI6CPagVW1INyr5OTE6HYyD2cFICk0d0bTUhpbMnx/wWCATDSXRKHvlf0
-         c0zcrAt/84kOOMiMZffOlA9gsrPxYN326Ko0lPHje81/KH+YN7xaQS80e4syUK0Q62Z+
-         QEPA==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1752695554; x=1753300354; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=z7ClJ+5SJ5PWZdRoiyTJC8Yhy+OOta4P/UZn7csc5K8=;
+        b=bbujboPFoSo/vBC6oepXj4YWy0kBmEyDmXbeFfd+EiRbk9e4Yo5hTs6eJLU3qu5RMD
+         ViQR85WJePSUlqxx7BAw188I8m4/5AZAbAkPmZyRXTBiEjFozQGLn/tTmt7nkJ/thQ23
+         muOP18hq0LmW0MzLMwUpISKz5rsL1u0rH/7vZ1NYSX6RybOp3Wi2ZaYr41f/a3XThtrm
+         S45Utq0Eyf2Jadg8eIuBaPuia3GtPr3jCHnT1V/OA6moO/JDKUcjLfzYOQZpEyCwOQM1
+         N6wx5ktSA49ivMGu5y7SgOJ5PSlLc/VRC1CiQ2kUnPO1HJoEQhv0td5uGGW7dA5weYHl
+         iqyA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752695110; x=1753299910;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fu3ULFheObCECo8wTxTWjnCgZuWUy7rpHr/QaDan+q4=;
-        b=fFd0DcAj8O4Uh+GXVu9Qif+WDLCBywdu7kDAmnG5pxwK10GMltxDIwggPMJXV1QEHI
-         1NJkvqT+Q/54HtE5cB+KM/ydw8oquM2MFDAIO9HK89CxvTYMbYv8TNqHuBRfUSMHhshj
-         WUK7FnbacQKxU2PLHtjmOstQN3tAdsZIGkVgUqubBYsUI1kM5uj+FcjjTj4IK1jzFfp/
-         qk/ULu+JwZveKLy1NZbHh012RVxFbKzI4ER2M9i+P7Eh+34OAHz3mG1D03RDdTl1jW29
-         hORGPvWU4pSjURtsBb1ibglaLX9Nbujl8Q/loStThZD5asu6Nmxq23/9xMO1p3TEQ8bI
-         M9ww==
-X-Gm-Message-State: AOJu0YzKFwyU+d3/VxYZuXld1lc3BexXgQHkd7zPN5uIgA1LVnoaH/1t
-	VyocFsXF0jxbdUIZFlgUx376oYoTu4h3Vr8Af37pTzHg3pkFli+TdMQpSfxfPSWO3bI=
-X-Gm-Gg: ASbGnctbxAnnx9YskSWeo3ii/CsTCRospDQmxam6972iRCRwR37YdVGen83NjjkWJCl
-	7jn7CbuW5UxaILTCqai6bvhmIXBmBSO67bzFukdYLvmQHXaqns5SuJwJb3Gj7Z0Bo7A35xuokiJ
-	pBmicGiI9BB96RrE6Gpw9COTS6GMXZBKggdXSv4z3AvTpbtsCrhaA7kIt9OvGEnD9NU31HkEhRY
-	JQ1vCVNfhyfKrHQw4xeNObYhG9l1Wr2poyfkTZDPnrzRihqIdF1TZKx96BIqzPAoy+l81l0isRN
-	eHJHRk7cV14V+qF9YwepPfV+ZfjQWm5B3gAwJC4BEkOdK413pReNseYeWMJqIwbru49PIiIDpm/
-	u9VakmEtZpIvm9zWrBNKCsqceovvQBKjWtK6Yv2T1JBuT5OAzcgm/O2M/6tq3FUZW9ImxtKgUbQ
-	==
-X-Google-Smtp-Source: AGHT+IFc3d+mTsUWeTNd+/oR4C/XzLatVh7VB9R1V1EfsKL9AIyUZYvShKQ/9DHyriukFz5fMMVzqA==
-X-Received: by 2002:a17:907:3f95:b0:ae3:4f99:a5aa with SMTP id a640c23a62f3a-ae9cdda865fmr347230566b.4.1752695109860;
-        Wed, 16 Jul 2025 12:45:09 -0700 (PDT)
-Received: from ?IPV6:2001:67c:2fbc:1:a864:eb02:add4:d64a? ([2001:67c:2fbc:1:a864:eb02:add4:d64a])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae6e7e90a42sm1221762766b.27.2025.07.16.12.45.09
+        d=1e100.net; s=20230601; t=1752695554; x=1753300354;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=z7ClJ+5SJ5PWZdRoiyTJC8Yhy+OOta4P/UZn7csc5K8=;
+        b=waFvMcB4hOuEjMSpK7QuiWl7U/oS8mImrR5zThfOdZnlZ0fjIJiTrf1JKRC8V8L91u
+         lEGC3noxOj7/uRORC4GM9E9+DIH35PG9RTO2KD5cq+ChegqzNq3p6miY4X0ppmu6wsdY
+         ldIk6X67VdAavojnPUqBzaojUonLVP8nDILAOq7YtCZrs5GTVYx0nrOUWKWfeyed+Un9
+         NAm8zmVSFlPc3XlIhi1WDnD8SNCy560gtfvrDX7rsK11MAUwrPDTSU7LTQK4tV6wIBK3
+         /3kl4LmdlgTRSYDACDEST6U2tLxomJIBnhiXu7JE8JXDCVOPrUeAMxQohFf03QRw/i3v
+         Xo1g==
+X-Gm-Message-State: AOJu0YwxPfi6x77kHqrKAjpH5MgMBLdSCN5yLTESFrgPmeu7XSljY7Ow
+	2gZQlfPVXKR0MIYIQRn4RjUrVi2XLSB10QQV7Yecr/WQR4RKdLz7/R97mMsfHT0p+DA=
+X-Gm-Gg: ASbGncu+nTmRkfwj5HNFFdz44MYONrhZM5GcYTr9WpYc2EJtHEE6Sp2ORl6WOdYL7LB
+	3dOsXF/GpIpI2RUWo2bShfpu/BnKMfY97kDb7HJuyrlnVRu0XHqqFLdZ0AIyJ1Ifzh43c4Buy8D
+	gGMOX6ckHz2WJ0UekoRDxgIzOnr/Z55jmMkw3LqSOdks04qN3WCTBz15b2IbekrKla7u8sfboaA
+	rIsK4+SFuCQ8jIN0PM1FmWJbhh6WzvLBLMLIP6MakT02sGhx4aUSQCt7bCWzLn63N6eT26f/GB9
+	j0kdshhhggGYSS8MGsrAsqX+F1bpVqR4RRlkyXC3KO1YA5w7iLDWnZoaN05D8/1m7WjK0ERwlct
+	4mpkFNbe3ZGfzDUNj/XDFfMk399USt5cHz3Jo7u0kNWspGosdZzwiynrn2AZ6CGbN/cHkLv/CsG
+	U=
+X-Google-Smtp-Source: AGHT+IEW+HThp8KL7lzm1ZAHEzSiczXEwYg8fdd9tSzIqSDBYSLT8JBCCCwQJNIjxSjlRwObKs/VAQ==
+X-Received: by 2002:a05:6830:8104:b0:73b:1efa:5f6d with SMTP id 46e09a7af769-73e661974a1mr2585090a34.16.1752695554509;
+        Wed, 16 Jul 2025 12:52:34 -0700 (PDT)
+Received: from ?IPV6:2600:8803:e7e4:1d00:3cea:e738:91b9:726c? ([2600:8803:e7e4:1d00:3cea:e738:91b9:726c])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-73cf12725d2sm3271366a34.32.2025.07.16.12.52.33
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 16 Jul 2025 12:45:09 -0700 (PDT)
-Message-ID: <018bf0f9-e123-42f9-8817-bf1a597f1f2b@mandelbit.com>
-Date: Wed, 16 Jul 2025 21:45:08 +0200
+        Wed, 16 Jul 2025 12:52:33 -0700 (PDT)
+Message-ID: <c011f005-de79-4457-804a-d701f315b566@baylibre.com>
+Date: Wed, 16 Jul 2025 14:52:33 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -84,86 +83,72 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH] iio: imu: inv_icm42600: fix 64bit multiplication
-To: Andy Shevchenko <andy.shevchenko@gmail.com>
+To: Antonio Quartulli <antonio@mandelbit.com>,
+ Andy Shevchenko <andy.shevchenko@gmail.com>
 Cc: linux-iio@vger.kernel.org,
  Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
- Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>,
- =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
- Andy Shevchenko <andy@kernel.org>
+ Jonathan Cameron <jic23@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>
 References: <20250716192231.30337-1-antonio@mandelbit.com>
- <CAHp75Vcysq584=nVHEB-PqKBtTaL+CCKMEdkM_X0wNOaYzeU=w@mail.gmail.com>
+ <CAHp75Ve_geZr4+DPLD_g5ZyXF2AmKog-YShnohSAJ=qM5At12A@mail.gmail.com>
+ <63b49206-5e08-4295-bc7a-cd0c54e82f15@mandelbit.com>
 Content-Language: en-US
-From: Antonio Quartulli <antonio@mandelbit.com>
-Autocrypt: addr=antonio@mandelbit.com; keydata=
- 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
-Organization: Mandelbit SRL
-In-Reply-To: <CAHp75Vcysq584=nVHEB-PqKBtTaL+CCKMEdkM_X0wNOaYzeU=w@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <63b49206-5e08-4295-bc7a-cd0c54e82f15@mandelbit.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-On 16/07/2025 21:38, Andy Shevchenko wrote:
-> On Wed, Jul 16, 2025 at 10:22 PM Antonio Quartulli
-> <antonio@mandelbit.com> wrote:
+On 7/16/25 2:44 PM, Antonio Quartulli wrote:
+> On 16/07/2025 21:36, Andy Shevchenko wrote:
+>> On Wed, Jul 16, 2025 at 10:22 PM Antonio Quartulli
+>> <antonio@mandelbit.com> wrote:
+>>>
+>>> In inv_icm42600_accel_convert_wom_to_roc() multiplying
+>>> `threshold` by `convert` may result in a number requiring more
+>>> than 32bit.
+>>> In this case, although `value` is 64bit wide, the result is
+>>> truncated because the multiplication is performed in the
+>>> 32bit domain, due to both operands being 32bit long.
+>>>
+>>> Cast the first operand to u64 to ensure the multiplication is
+>>> performed in the expected domain.
 >>
->> In inv_icm42600_accel_convert_wom_to_roc() multiplying
->> `threshold` by `convert` may result in a number requiring more
->> than 32bit.
+>> Is this a theoretical or practical issue?
 > 
-> 32 bits
-> 
->> In this case, although `value` is 64bit wide, the result is
-> 
-> 64-bit
-> 
->> truncated because the multiplication is performed in the
->> 32bit domain, due to both operands being 32bit long.
-> 
-> 32-bit
-> 32-bit
+> Can't say if it's practical because I don't know how large `threshold` can be.
 
-Thanks for highlighting those.
-Should I send v2?
 
-Regards,
+The code is clear that it is between 0 and 255 inclusive.
 
--- 
-Antonio Quartulli
+unsigned int inv_icm42600_accel_convert_roc_to_wom(...)
+{
+	...
+	if (roc == 0)
+		return 0;
+	...
+	return clamp(value, 1, 255);
+}
 
-CEO and Co-Founder
-Mandelbit Srl
-https://www.mandelbit.com
+threshold = inv_icm42600_accel_convert_roc_to_wom(value, accel_hz, accel_uhz);
+value = inv_icm42600_accel_convert_wom_to_roc(threshold, accel_hz, accel_uhz)
+
+So I would not call this a fix, just making the code more robust against
+any changes in the future.
+
+> 
+> This said, `value` is declared as u64, therefore I assumed the result is expected to be potentially larger than 32 bits.
+> 
+>>
+>>> Fixes: 50cfaa9a46c8 ("iio: imu: inv_icm42600: add WoM support")
+>>
+>>> Address-Coverity-ID: 1647596 ("Integer handling issues (OVERFLOW_BEFORE_WIDEN)")
+>>
+>> Is this tag now official? I can't find where it's documented.
+> 
+> I don't think it's official, but it's what I have found in the git history for other bugs reported by Coverity.
+> I already used it on other accepted patches as well.
+> 
+> Regards,
+> 
 
 

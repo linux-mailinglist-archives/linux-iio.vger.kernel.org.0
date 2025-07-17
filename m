@@ -1,88 +1,94 @@
-Return-Path: <linux-iio+bounces-21756-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21757-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E053B096DC
-	for <lists+linux-iio@lfdr.de>; Fri, 18 Jul 2025 00:16:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31BDFB096ED
+	for <lists+linux-iio@lfdr.de>; Fri, 18 Jul 2025 00:32:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 399124A202E
-	for <lists+linux-iio@lfdr.de>; Thu, 17 Jul 2025 22:15:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B12A11C46327
+	for <lists+linux-iio@lfdr.de>; Thu, 17 Jul 2025 22:32:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DC6A1F7580;
-	Thu, 17 Jul 2025 22:16:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76FB22367DA;
+	Thu, 17 Jul 2025 22:32:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="THmdG1AG"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="no+6tIed"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ua1-f51.google.com (mail-ua1-f51.google.com [209.85.222.51])
+Received: from mail-oo1-f50.google.com (mail-oo1-f50.google.com [209.85.161.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9270A94F;
-	Thu, 17 Jul 2025 22:16:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCE10192598;
+	Thu, 17 Jul 2025 22:32:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752790571; cv=none; b=BEnGBRqymx+x1/Uym38eYxYTtn3uPXQP9SdA+V2QG5iCU3bDJ9O+kRCTC0U5belxgJCvQ8gNUCvpCDOY0RXc1SPbW5UKbwhC/C5aQL177bpj06KPnduEMAdolXqvOp/Z10blBr/qgE5r3I/TWaSreHgF+LswO/R3mYtlzxi58Ms=
+	t=1752791525; cv=none; b=u+OsvnkT1H7UkI4tLGYskKuRiCdxr+tQT6yjET3IgmAO3Zu4u9JGvbO4DT+mxLkMVi4zgIbxewnazXZVQTIE8Wr55XvEzWKwVUqn5uvTex6IcvA7NCPE2mxgJOjAJTY5nIBsyn2cOjqTWeypIzA5Z0yH8iMl26hCwjuheBvQT3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752790571; c=relaxed/simple;
-	bh=DO98KKk6TkBbtWw9sdDFD5hP6OvEG4vWlUK8no64o20=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dT+MmEsx3bLSWwckK6YmSKGGe0AXpnsHxvIkiT2nOtO6VRqUlPuP3olaOpCx/z2UPcGzr0pLp8N50Q0ColHAZU6QExNqRXkePGye0uk7ydaNdtoW7DNZn3WIPr/iB77YggPVn6OAp3JdDDYlX5XpbxZe8qa5klTlmQUzoQB8LHo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=THmdG1AG; arc=none smtp.client-ip=209.85.222.51
+	s=arc-20240116; t=1752791525; c=relaxed/simple;
+	bh=7yzNKlQHR30Aa0DYesmEudSnaqO6t8rw18AiBQYmOcY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=j4UDk/r/d4FAnEJWpzxHiVaJR0WIpbtKOi02kbxA6MJiQUQUrkTubGvmHqa1DHHOU5GRn/B4HNXcrnHXkanHC2VKsAjDWOAJSkAEdpoNVRnwIpzd6uqOkZgSPue0JTKVg09NT7m3OW75vy6/q996cARLUpGD6V+B5ZG1XNks9vY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=no+6tIed; arc=none smtp.client-ip=209.85.161.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ua1-f51.google.com with SMTP id a1e0cc1a2514c-87ec9aee6dbso673128241.0;
-        Thu, 17 Jul 2025 15:16:09 -0700 (PDT)
+Received: by mail-oo1-f50.google.com with SMTP id 006d021491bc7-615a256240bso669110eaf.3;
+        Thu, 17 Jul 2025 15:32:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752790569; x=1753395369; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=h/KvuAqmb5OJh7sVkKdwX8BdncFtM9CZANV2dMSOP0M=;
-        b=THmdG1AGKERASXcOnZ++dTPlIKOLtT4FOrerrfAFZh13ByQ8uNXTaBH8txa17+BUV+
-         myMhmEwOSRNMlQ8Ki+ewi5JMPJsf64m89P49Rt5nQzOu+GMNYMmfF/bY3rdW9wZlpMsL
-         L1uBfPZKyt6GNW/Vf8osg88fWEIyzMbB7KpzDn3PXYWlmPTyk1Apvhh4YoXLiB5N3wWS
-         A5l55QkzGk38NgvPHETGq/LhksAyIAKaTW+eldprXtF0+ggKB49QeCyEmKgLVemc6kCe
-         BzFBxj6nO3LLH7XzV2m1r7n4b5zmb9wnsqNpyN+9RDenItkz1tbqdoy5u4F4MvzJTLjg
-         hKgQ==
+        d=gmail.com; s=20230601; t=1752791523; x=1753396323; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=IXirbcScWLR71U2qxf1CaCd+oxLYJPlVCKx0gOxF//8=;
+        b=no+6tIedPpdFJmdyXeOYOL1jmp6aJOs7MNwuXuJLPyHM2pzBvyaVJ/ItBvDs7RfBle
+         /AwNHhMNCd2+qEkuSbLv7oUt+cLmn5RNpimn6rhFtcZLHvnsiRe+wTBiDFkqOSl+wjtF
+         JudtD6GK5MNJoJ6PZGYjq2QCDAtVMyn3YP2yaoSAGfK9Fsm2NPOMx/A3q6Je71+V3jXW
+         KKbew7j7YQi+Pu015jQNKnUNaZjM6283/QSuY1G92rBm0rwt/7DT18bfDlI5RtJOQuRB
+         OOJm1lvcmf5ll9K/8Iu/g5abZRf2iXOdh2xzytDLb8nudwF9a1p1sDJU5sJVc542e0KJ
+         B3Hg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752790569; x=1753395369;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=h/KvuAqmb5OJh7sVkKdwX8BdncFtM9CZANV2dMSOP0M=;
-        b=jOcwSX5PoVziRfWxxN5h01dfI3OecnIKkydgymd1uWTUfz0MaN2lUX/iab9/Br+ebG
-         FPXEMqsb6UJVegGepIg2jsohNe86rz5rJicaiF/i2rqqdbovN1uxnXSTOzPnwWXjowwl
-         GAQQoJtUhByYnwmBmmGME5YG4uccthx3Nr8hFzASjsR9SamndzdhzcS4SaB+jxT8ejTk
-         uPxd+5EcDTXlRqQ3uwpDLukn7KjomQVCYrIR/a+lXtzBUSxaKo1ln8ykz3Kg6rq4EzsI
-         ktFMhzg1PZuFpo6o47sbjIiDL713gO3HEcCz+pwileFGUwNpW8/GhBbNA+GUd+c9S7xS
-         MOsA==
-X-Forwarded-Encrypted: i=1; AJvYcCXXDMmeC2Cf2Qur5vz2XJ7u/AePxx3OeAhHk8OTOEsCwlV9xj3sGK4KUJVeezmdtRhWlHj7AnSFQ5TFmcfb@vger.kernel.org, AJvYcCXfbE7O5g+4lZgBPCJDI1jUJGazMP0vGmmc3Sbaay27Qe/wfdocZry8WupQDv44QyN2M67Sc1C+RTo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxNEfE+9etpi1Q8r34V9NOvLCSctnV3yHQPC7bV4g9hvsiuoOZA
-	tipGwIhe7awEU9+9DJv+Eh+p2k1Xk3/YXT0Bb+BPSk5t3nYJiPYS2OnT
-X-Gm-Gg: ASbGncvRfwJy+3Acpy6wocS9v3UFgNZc2fA/y4TFLsV9qSU7Y00pnfGglir6bvKBZyT
-	HCCZVa96MiBMoOC6cDNLRMc0iK7MUR35PLyJO23/Sh1Oy8u5Rpb5C3ZCQXEHoe1+c418tTcHDec
-	TfVshFdizct1Ckj76bbn3iNqg8k91bPqk6Mz8EjGjHIxj/PoDxDh0Upzp99Wb44PvkNf4toqo7B
-	JVduyZHMbjUg2M+uvP20J2olL3kg7Ts3y4GpzMCu052xSH20NiwH3egsuAujxWfG75IIghwkDnJ
-	aTdssMB8SybTUxgJktqNoHJByrz3Of0MAhMkt2bfsU95r9r9crYYKiIeFwdoCbiVNODshW8Od/O
-	ha8FnncM/qcrksEt/3REfDPupEX1kbRfmsD9REGgcl2YW6g==
-X-Google-Smtp-Source: AGHT+IFes/nnGXol1/Z3tej2VuhPLC9FlnKxXQigHmxf5UGIdZ9xXSMEdykwPPerMz4W8eJxsY9KWg==
-X-Received: by 2002:a05:6102:3f8e:b0:4e6:e126:6238 with SMTP id ada2fe7eead31-4f8900e56e4mr5333890137.3.1752790568564;
-        Thu, 17 Jul 2025 15:16:08 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1752791523; x=1753396323;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=IXirbcScWLR71U2qxf1CaCd+oxLYJPlVCKx0gOxF//8=;
+        b=kJOVwBpJ6/Z/Rl7Jaz3U1wToAt8i0Yza8ylS9MS73r6u7zGlxm+nlqWu3YutC36U6N
+         sgsPr8vXKf4/R0qx/bw8DpO8pBzx2E1eHpzMBH+NGY9pKwKnkW+od5lJ8qus+mf5LXZH
+         rA9wnL9H4bn9sozh+cdZULC6Jmi88/PXx37FacZbzizNTtYnJMOX7PEST825B4HOBF5N
+         3pDT1f2woEY+rydOTYTV8+NiVkl5MNCEDPVjvaojAZ5DwTA/gUmT4iAMq7sq6RKMCw7n
+         vvP1lWxR0gflxdklPjesAHlewN86Yi/8SEzYlqo13wh+VpAdEi6Wn4fY/UHywHTy2VuO
+         0EmA==
+X-Forwarded-Encrypted: i=1; AJvYcCW3CfuX0dgQUypVfcs/cYo5N4vm2jAumHH0WJGTHOFnPAD5JsUeQvJWzLK8nrLwS7F4mqWt1+zjXZAU@vger.kernel.org, AJvYcCWS87l8jnUh+cM7ehvufde7KH+epEL2B9uIEEmpvrv1goygNkuEwswjGi8ale+o0zLuVvYnKSJ4tuub@vger.kernel.org, AJvYcCX2hKr6UxlenUm9SQsAGUE0DHU5w/XpK0YW8kcbI6uPWGAo82zN3DdvAnxuaRaSxzxENH2LTlOsUluU4kAE@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw6BWzN/8dp2ZW3mK3WH+B42bqrIsumvBCj79wGWF1shoD/NODj
+	0RAFpAgUyOASllYO0kaez5QgnCMMIesffUcpIHkYlS1N4LC3i5vHm/MeaKuYYkp6
+X-Gm-Gg: ASbGncst00jaNdE+VFevVLuD5TlzhrX/TUXj9Lr4o0B13vzQDM2vhYd0v1I670Tnzpx
+	yMcfwPxHYs4iSMo2Fq8gZyN++6CPoICRlsmZsZxvwSyNmJtKLjBgG4wsgxuOIrw7GZgbommTGox
+	0iZffPnA0NgCajD5JV671/+Hv1/gpbIihSvz0qyi8fKDQCGrFz2OmbDXF4+I8slhzn75A2om2RE
+	q0iz2AJFIilVPh3TdXkMkHyLBPbHqcBYG/E0Q2cAhJF2SnnCBQvQMZ5hHQxxjzuF6pJkBxOhVDo
+	1dqgLKBcO4UuGS+ZbzDwU0KOXKTcLCpI39EIr9x6x394+SB6ILBSR5w1lxiCUQk8LnDiufhspsx
+	bAs64vms/JJGVRbXzo3hAec5zeI+HeZkzGj27BTwsQMG9tA==
+X-Google-Smtp-Source: AGHT+IEkFSyhQ0QDE9j5oBLn7J3qMLyDGBUtD6upmQANYknuQtTldz8VL2uV6FCQI2kqkWuAbbN5UA==
+X-Received: by 2002:a05:6870:a44e:b0:29e:3921:b1ea with SMTP id 586e51a60fabf-2ffd25649f4mr3603542fac.30.1752791522812;
+        Thu, 17 Jul 2025 15:32:02 -0700 (PDT)
 Received: from localhost.localdomain ([2804:14d:4c64:81ec:4133:553c:dd2c:6469])
-        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-4f9acdec3f1sm15754137.8.2025.07.17.15.16.04
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-30101784609sm105673fac.9.2025.07.17.15.31.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Jul 2025 15:16:07 -0700 (PDT)
+        Thu, 17 Jul 2025 15:32:01 -0700 (PDT)
 From: Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>
-To: jic23@kernel.org,
-	dlechner@baylibre.com,
-	nuno.sa@analog.com,
-	andy@kernel.org
-Cc: ~lkcamp/patches@lists.sr.ht,
+To: dlechner@baylibre.com
+Cc: conor+dt@kernel.org,
+	devicetree@vger.kernel.org,
+	krzk+dt@kernel.org,
 	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v3] iio: adc: spear_adc: mask SPEAR_ADC_STATUS channel and avg sample before setting register
-Date: Thu, 17 Jul 2025 19:13:49 -0300
-Message-ID: <20250717221559.158872-1-rodrigo.gobbi.7@gmail.com>
+	linux-kernel@vger.kernel.org,
+	robh@kernel.org,
+	rodrigo.gobbi.7@gmail.com,
+	~lkcamp/patches@lists.sr.ht
+Subject: Re: [PATCH] dt-bindings: trivial-devices: Add Garmin lidar-lite-v3
+Date: Thu, 17 Jul 2025 19:24:34 -0300
+Message-ID: <20250717223153.159878-1-rodrigo.gobbi.7@gmail.com>
 X-Mailer: git-send-email 2.48.1
+In-Reply-To: <8f4b72bb-3c5f-4137-a4f9-5ce94631d3c1@baylibre.com>
+References: <8f4b72bb-3c5f-4137-a4f9-5ce94631d3c1@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -91,68 +97,31 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-avg sample info is a bit field coded inside the following
-bits: 5,6,7 and 8 of a device status register.
+> As a general rule of thumb, using the driver as justification for
+> dt-bindings is never a good reason. The bindings describe the hardware,
+> not the driver.
 
-channel num info the same, but over bits: 1, 2 and 3.
+Looks like I`ve failed to double-check the datasheet here, sorry for that,
+I`ll try to remember that in future occasions.
 
-mask both values in order to avoid touching other register bits,
-since the first info (avg sample), came from dt.
+> Assuming I found the correct datasheet [1], I see a power enable pin
+> and a mode control pin, so I would say that this isn't a trivial device.
+> Therefore this will need it's own new file. We could at least add
+> power-gpios and power-supply properties. How to handle the mode pin
+> isn't so clear to me though, so might omit that for now.
 
-Signed-off-by: Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>
----
-About @David comment at v2:
+Agree, actually, I was wondering here if the lidar-lite-v2 ref that I`ve found
+when adding the grmn,lidar-lite-v3 is actually a trivial. 
+It was originally added as trivial over txt file at [1] and then converted to yaml but
+it looks like it is also not a trivial considering some refs at [2] and [3] (not official docs).
+At those refs, I can see the same enable/mode pins.
 
-> For bonus points, a separate patch that cleans up and sorts the existing
-> includes would be appreciated.
+Should we also move that out of trivial in a dedicated binding or should we keep as is
+considering those docs are not official/device is very old?
+Tks and regards!
 
-I`ll change that in a later moment.
-Tks and regards.
-
-Changelog:
-v3: moving up include; fix indentation;
-v2: https://lore.kernel.org/linux-iio/20250701213728.32064-1-rodrigo.gobbi.7@gmail.com/
-v1: https://lore.kernel.org/linux-iio/20250621185301.9536-1-rodrigo.gobbi.7@gmail.com/#t
----
- drivers/iio/adc/spear_adc.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/iio/adc/spear_adc.c b/drivers/iio/adc/spear_adc.c
-index e3a865c79686..0acc65c74221 100644
---- a/drivers/iio/adc/spear_adc.c
-+++ b/drivers/iio/adc/spear_adc.c
-@@ -17,6 +17,7 @@
- #include <linux/clk.h>
- #include <linux/err.h>
- #include <linux/completion.h>
-+#include <linux/bitfield.h>
- 
- #include <linux/iio/iio.h>
- #include <linux/iio/sysfs.h>
-@@ -29,9 +30,9 @@
- 
- /* Bit definitions for SPEAR_ADC_STATUS */
- #define SPEAR_ADC_STATUS_START_CONVERSION	BIT(0)
--#define SPEAR_ADC_STATUS_CHANNEL_NUM(x)		((x) << 1)
-+#define SPEAR_ADC_STATUS_CHANNEL_NUM_MASK	GENMASK(3, 1)
- #define SPEAR_ADC_STATUS_ADC_ENABLE		BIT(4)
--#define SPEAR_ADC_STATUS_AVG_SAMPLE(x)		((x) << 5)
-+#define SPEAR_ADC_STATUS_AVG_SAMPLE_MASK	GENMASK(8, 5)
- #define SPEAR_ADC_STATUS_VREF_INTERNAL		BIT(9)
- 
- #define SPEAR_ADC_DATA_MASK		0x03ff
-@@ -157,8 +158,8 @@ static int spear_adc_read_raw(struct iio_dev *indio_dev,
- 	case IIO_CHAN_INFO_RAW:
- 		mutex_lock(&st->lock);
- 
--		status = SPEAR_ADC_STATUS_CHANNEL_NUM(chan->channel) |
--			SPEAR_ADC_STATUS_AVG_SAMPLE(st->avg_samples) |
-+		status = FIELD_PREP(SPEAR_ADC_STATUS_CHANNEL_NUM_MASK, chan->channel) |
-+			FIELD_PREP(SPEAR_ADC_STATUS_AVG_SAMPLE_MASK, st->avg_samples) |
- 			SPEAR_ADC_STATUS_START_CONVERSION |
- 			SPEAR_ADC_STATUS_ADC_ENABLE;
- 		if (st->vref_external == 0)
--- 
-2.48.1
+[1] https://github.com/torvalds/linux/commit/12280bd3d5d7e1ba1dd60ba0bd4412f4056fc028
+[2] https://www.electrokit.com/upload/product/41013/41013964/lidarlite2DS.pdf
+[3] https://www.14core.com/wp-content/uploads/2017/03/LIDAR-Lite-v2-Datasheet.pdf
 
 

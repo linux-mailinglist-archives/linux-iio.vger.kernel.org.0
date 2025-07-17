@@ -1,80 +1,87 @@
-Return-Path: <linux-iio+bounces-21731-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21732-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F974B07E7F
-	for <lists+linux-iio@lfdr.de>; Wed, 16 Jul 2025 22:03:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52E74B08487
+	for <lists+linux-iio@lfdr.de>; Thu, 17 Jul 2025 08:05:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 114DE504176
-	for <lists+linux-iio@lfdr.de>; Wed, 16 Jul 2025 20:03:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E18513A9A48
+	for <lists+linux-iio@lfdr.de>; Thu, 17 Jul 2025 06:04:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0150B28DF0C;
-	Wed, 16 Jul 2025 20:03:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58FBE205AA8;
+	Thu, 17 Jul 2025 06:04:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mandelbit.com header.i=@mandelbit.com header.b="MDEoCLot"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="ZLV2ZRl3"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10D43288CA3
-	for <linux-iio@vger.kernel.org>; Wed, 16 Jul 2025 20:03:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B2DF1FDE14
+	for <linux-iio@vger.kernel.org>; Thu, 17 Jul 2025 06:04:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752696204; cv=none; b=HdzpzRBOiaXjlIDeqvrWsYyxqucqW2OouAYVYpAoEHhHh8sCAPSqmz/Tq/P51yNTD2czfX+2D5MGkuyWg/IENbHb706cGX1jwBx4FWnNuvAmsvAj9ZmH0qxZeOyByxmQol2a8HzXCligNngz4zsVerbB6d2RogFKgAnyzPaweEo=
+	t=1752732292; cv=none; b=aAzeDSm2/P4YgvRLxe9au+f4UPTSShddaHQyBen7jC+Dz3lruTQCNZ3TbudK4+VTt4anNMSPsxEQ+XxZDqyPvwvc80kEda++ooWL0z2LT9ohTt+YzOZBrBke1abrBgGM+mP/uQGnXQi+wfoYEsa95K0bD1nKFkUjWJSgw3NRaUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752696204; c=relaxed/simple;
-	bh=Yxj+ey9K8wa4n8lniqZddhbfgqDCmM0kyNfW4p7rHQo=;
+	s=arc-20240116; t=1752732292; c=relaxed/simple;
+	bh=/eI8FTCpncUNzSRdBop7/8qiRihLxNb69wVgieMvvy4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sdOTUP1lyO7OVs/7FIcTI8UmwRM82lIY2VqSf0h/YmwiIsubPmPpGRHYZ7Hq2aUs7+W3wyW6cJvoL7KRy4Wu4Y5Snh+sBcYzAzplZE0fdmWyKiqkRbt/FZ2h36TUSc+o+txNupzZlj3bSDAPXUsdrLQxjRMvtt5AMpJO3olccSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandelbit.com; spf=pass smtp.mailfrom=mandelbit.com; dkim=pass (2048-bit key) header.d=mandelbit.com header.i=@mandelbit.com header.b=MDEoCLot; arc=none smtp.client-ip=209.85.218.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandelbit.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mandelbit.com
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-ae360b6249fso36635166b.1
-        for <linux-iio@vger.kernel.org>; Wed, 16 Jul 2025 13:03:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mandelbit.com; s=google; t=1752696201; x=1753301001; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=fpfe0WOLMAls2njOL6yOdqStwbkUoLGErIsNXffP1cw=;
-        b=MDEoCLot4uejvgNaU/1KPaYBD9y2XIgJYA4ZnzvtEf2vv/Tw/DQn8F9aS5CkqEt7Dq
-         z/W5qvPcRYPGfUIgg8Yggm5WEnWiA/BpT4tadULGat8Ret6pUp0FdhD0HQyPkEFi741n
-         2CJbiFJDtHgbLUa6YsHjvaDRrY+o/JcCUKhFa18tyGP15W2Tt0OWt3DsFr3wdLaEOJqh
-         1Q84IUB4HapQbBLrIB5pqdwB6ozFz8i7LcB+O53QO4KBuLj+4hWEUTeAfrRjUHsxOZ/I
-         Zw1pE6kSoos2A2UTF0Oum5Ydocson7HPbDioE8JlFDibD+2jj2SE+kJMTlEs71DMxAsu
-         8UyQ==
+	 In-Reply-To:Content-Type; b=pmAJso3B3EXKwGoUMQ2g2y8ZzHWhQm11JlEwlK2S/6I1jCvnsr6R7fN5WSHHjLWpVI6gGZLtdTnVJbCagJQD98jI9fEWNhKg6P761QS4L5GPGG4vPAeotbQdqOdE3zObGQICKQYBcL49fzK0vZ9HqStxUcV8dXx8ky1qqtidruU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=ZLV2ZRl3; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56H4peOs028059
+	for <linux-iio@vger.kernel.org>; Thu, 17 Jul 2025 06:04:50 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	ectNLSsr0geVGNTSYPuw96/Hkm3S5cAjwHokocTaqA8=; b=ZLV2ZRl3Rg7wgDRP
+	QHagA1gAAS0/iFZO9Pv79mBwHopjmEYU0EToYHuzp8p1PzSAidNDCf+daY/1orXP
+	JeuHLrQ2nzP7Rpax4gt0jUBmdfykWeQhIqslBIaugLjmfkJcKgCMoo6r1NJhtw5z
+	nTUm90E1rgRpXDRchNCkFkmSDv4kXGiYAWDas9VRLAS4OGFe5AI7G7/aZk1V9i6I
+	TyixfZRUj/uJgX8ocsO2BXwG6sfFQT4pe4kQNOFclCgkwQVSQUJ4YMH4Yh/EgPlL
+	MscWNr3p1StnFBB6AD2afK2e1e/JpqFQaVaWYAnV4aeGoFq4m/ly29TS5/zjvZqY
+	JClcIA==
+Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47wnh5xqdc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-iio@vger.kernel.org>; Thu, 17 Jul 2025 06:04:49 +0000 (GMT)
+Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-74b29ee4f8bso636696b3a.2
+        for <linux-iio@vger.kernel.org>; Wed, 16 Jul 2025 23:04:49 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752696201; x=1753301001;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fpfe0WOLMAls2njOL6yOdqStwbkUoLGErIsNXffP1cw=;
-        b=F4sW/AJyQhyliSrfedEjxGQRQt6nXjq1P5J8ClWXCWJanfnOj8Ay0NTwOHnFz7FEmg
-         OTq2oUSlOsG4biY9HO0CMMaIGCSy9jn4YkTFvpw/ypW4HjzUBCqJtoNLIbQbOM53lLrl
-         Nqi8FSndiJawFxmEjEDXZRfG3IGVtbSk47EhIhN09NCQuEJFypdvbxj0d8supIMC+jyE
-         nb9eByIsc72iCXIY56fAlKEykKNNajDIX45L6ebTlD411F8U9EWC1kJBp3fMXEWyYTDt
-         S2m0JAdhkX7tkvjdnltn3DGFLKxRk27HYpq4KAnZ016CN8Kb0qksZdDY0IyoiJ64ulsH
-         rIzQ==
-X-Gm-Message-State: AOJu0YxCbLHVMjGd6Eckn1x21Dn66zfo9mhs6vEkosXX3/e5xB9rOoHl
-	IaG/GfJqUM99+mi27uc/d3RhRLODuRfMWdwq6nesOBJr2HzPItERKy/I/DRwAYR4ppU=
-X-Gm-Gg: ASbGncvZoUDUg0RC+3wWAHHN6qlh77TRHha0afzlM7MKlussG+pYs6bpYo6ZflFZigt
-	Np5r+8jCaR5qhQrKS2HJTPbceEbI/7J1ppm3pbsspJ4gZ42i27TRI4nm26VqaKKwt+nCv9HZEuv
-	6OjdxVhc/nBLoLuaPMc7rBpcs5pvyx3LIdGb/XujidKDBLYt1+5oqBW2I/FKbRVaa2sM9uihVcG
-	jKKgnB1KdwPLYXjSZgU64l5SuNalzXti0+NashGmT/HjpwrsqE4b9dJsEKLW35GwtnsLInA2fVe
-	nej7KXQDKR1FMUGW+Rga8eW6c45Qz9SyDK0dVNl4f6BXr/Js+sUimmgIifbfEoiB0mIzSbfLNSY
-	yw4gibrxE5h+cQQf0uXwlEfPdWvIQzJwkXfar7vsYbkXB9TK5s8BQQVZye4T6Eos=
-X-Google-Smtp-Source: AGHT+IHzUzuPOUxjn4HkaEMG0nrO0boX1DjRQiT2CoT8uS3rciR8p8Nc1sO35hUN371nlh+qz/F7og==
-X-Received: by 2002:a17:907:6d21:b0:ade:43e8:8fa4 with SMTP id a640c23a62f3a-ae9c998704fmr496920666b.18.1752696201206;
-        Wed, 16 Jul 2025 13:03:21 -0700 (PDT)
-Received: from ?IPV6:2001:67c:2fbc:1:a864:eb02:add4:d64a? ([2001:67c:2fbc:1:a864:eb02:add4:d64a])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-61253b999b7sm3737688a12.2.2025.07.16.13.03.20
+        d=1e100.net; s=20230601; t=1752732288; x=1753337088;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ectNLSsr0geVGNTSYPuw96/Hkm3S5cAjwHokocTaqA8=;
+        b=hunYyyBsaWPaXhOhLHqlgAFaKNCXJhjUQ3rqhogY8p7bI5jea5HYjdOllWT1B7PCVG
+         GRnoaEgJCN08NNiBhvClyZTvleKZ+IUrUGVv9Mbvo5t7V4zK5DeplCSeHA6sh1dINJiv
+         LW8kS9uoSg3Avk1z099h3V9KWKkb/OYB0dXN9WCICML1/XAVXM9vTJn9FZdTkU9BrNHN
+         wR2WKll6NZCRSeQvyj/U4z8wonyBOg8eyV895759XmKPAZNu/XAkQ2u1B7kOUzXWG0uG
+         RhAH+bM2SXyLtSqlMuY5eBO7WyOaAvjwfMwZr+6tjHWo13EO0fIaxaYLOqCg6sFvZFcY
+         ujmw==
+X-Forwarded-Encrypted: i=1; AJvYcCX4ffGKG6hPVfUrYVPXPBBS/NZlOjEGk7aFx8gi9+cSv0bW8T7zn9z+ERYX8cGPujBePW0igz1Rlxs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzKwnS/03bpMJDfFZUIme7QFsPByPWm9bKCanxC65LCDF5uY+n0
+	lgofr+Vk4eHiMX2jezJzRZUksYqVxDHSHRHgG+0u/8cWz19JUPU5LV5AGbtsYHEFWY+h3ZiFwCb
+	qjlAKGbMMcT6FlW8rlFRpZ1brnrG4ei8PnW9p0+tk/VO98Z+TutetDo3I2rq092M=
+X-Gm-Gg: ASbGnctQnjbY5gvv1kefopbCyqbHY7UDa3Xy5x7LfmC6b8JggqoA3baeE0JB6sXbYK1
+	t+AAGx6d14/JxrChkDkegJY02mETt7z0BLMtO0lC83opbSJqN02BOQtDYZ/23bwqBrIU5H08gmR
+	2ns8MJIgbVDMuXDxNuZjlyXcn2111dpCT0BhcaIr8TtHzouoVgFG520eaQ6K+HKGprSTN6w0d8F
+	JuxnTVvztXchc6SNHqES52YgCg2UE0vPNUK/78BTTMtWY/4yqz7LPCO8vKUtI8GjZd5qhgzBasV
+	Xs2vS0BOEOSQm5rR8TbPd5/bv6FAcpaxtvDxgJEZAysbv2mfImyzvwda+FLT
+X-Received: by 2002:a05:6a00:1945:b0:736:5f75:4a3b with SMTP id d2e1a72fcca58-75722869626mr7421087b3a.7.1752732288332;
+        Wed, 16 Jul 2025 23:04:48 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFyCadxiKqAnRGrg3kJEgXbKAZ6HS0QuHqlNsqoAGcHtBpNmUUMpDgDD0/MOYYxsR7Y2b2Q5w==
+X-Received: by 2002:a05:6a00:1945:b0:736:5f75:4a3b with SMTP id d2e1a72fcca58-75722869626mr7421020b3a.7.1752732287518;
+        Wed, 16 Jul 2025 23:04:47 -0700 (PDT)
+Received: from [10.216.10.110] ([202.46.23.19])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-74eb9dd73c3sm14960668b3a.7.2025.07.16.23.04.36
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 16 Jul 2025 13:03:20 -0700 (PDT)
-Message-ID: <b27db733-4ad0-4533-a587-391d42ae2af1@mandelbit.com>
-Date: Wed, 16 Jul 2025 22:03:19 +0200
+        Wed, 16 Jul 2025 23:04:47 -0700 (PDT)
+Message-ID: <617d207c-995a-4375-bd5d-2e1e5c459bba@oss.qualcomm.com>
+Date: Thu, 17 Jul 2025 11:34:34 +0530
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -82,117 +89,149 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] iio: imu: inv_icm42600: fix 64bit multiplication
-To: David Lechner <dlechner@baylibre.com>,
- Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: linux-iio@vger.kernel.org,
- Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
- Jonathan Cameron <jic23@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?=
- <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>
-References: <20250716192231.30337-1-antonio@mandelbit.com>
- <CAHp75Ve_geZr4+DPLD_g5ZyXF2AmKog-YShnohSAJ=qM5At12A@mail.gmail.com>
- <63b49206-5e08-4295-bc7a-cd0c54e82f15@mandelbit.com>
- <c011f005-de79-4457-804a-d701f315b566@baylibre.com>
+Subject: Re: [PATCH V6 4/5] iio: adc: Add support for QCOM PMIC5 Gen3 ADC
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: robh@kernel.org, krzysztof.kozlowski@linaro.org, krzk+dt@kernel.org,
+        conor+dt@kernel.org, agross@kernel.org, andersson@kernel.org,
+        lumag@kernel.org, dmitry.baryshkov@oss.qualcomm.com,
+        konradybcio@kernel.org, daniel.lezcano@linaro.org, sboyd@kernel.org,
+        amitk@kernel.org, thara.gopinath@gmail.com, lee@kernel.org,
+        rafael@kernel.org, subbaraman.narayanamurthy@oss.qualcomm.com,
+        david.collins@oss.qualcomm.com, anjelique.melendez@oss.qualcomm.com,
+        quic_kamalw@quicinc.com, rui.zhang@intel.com, lukasz.luba@arm.com,
+        devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-pm@vger.kernel.org, cros-qcom-dts-watchers@chromium.org,
+        quic_skakitap@quicinc.com, neil.armstrong@linaro.org,
+        stephan.gerhold@linaro.org
+References: <20250509110959.3384306-1-jishnu.prakash@oss.qualcomm.com>
+ <20250509110959.3384306-5-jishnu.prakash@oss.qualcomm.com>
+ <20250511140418.33171ca3@jic23-huawei>
+ <ff19780e-5bbd-4074-9db3-b4f27922a093@oss.qualcomm.com>
+ <20250628173112.63d9334e@jic23-huawei>
+ <5b55acbf-065d-4383-a816-82561bf91273@oss.qualcomm.com>
+ <20250713143149.60763b52@jic23-huawei>
 Content-Language: en-US
-From: Antonio Quartulli <antonio@mandelbit.com>
-Autocrypt: addr=antonio@mandelbit.com; keydata=
- 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
-Organization: Mandelbit SRL
-In-Reply-To: <c011f005-de79-4457-804a-d701f315b566@baylibre.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+From: Jishnu Prakash <jishnu.prakash@oss.qualcomm.com>
+In-Reply-To: <20250713143149.60763b52@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Authority-Analysis: v=2.4 cv=dKimmPZb c=1 sm=1 tr=0 ts=68789281 cx=c_pps
+ a=WW5sKcV1LcKqjgzy2JUPuA==:117 a=j4ogTh8yFefVWWEFDRgCtg==:17
+ a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=EUspDBNiAAAA:8 a=rjtObUXQbTieMrY6Fj4A:9
+ a=QEXdDO2ut3YA:10 a=OpyuDcXvxspvyRM73sMx:22
+X-Proofpoint-GUID: 0In9lmCNwrULKdqHkJE2HaoGsdeFilwd
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzE3MDA1MCBTYWx0ZWRfXynP4VOMqznJQ
+ dZDtVgqrXfDox4nDFB4wLxfYlcY7xBIr69Gl7kCRgDoSAtdH8EnEbHTrrYebV3Mqf977HGzNplR
+ CSYr5eve0x9czOrfekZyOnE8TPXx3CfK95Exd0jNEwTfTScPIniFZw8Lm9y6fWOEynbO1vqYAfx
+ zStsVr7/p7/9Pf0vTgv4fTK2dYCaTe3XyYzAraRIyuQzVAFH+ppy7viLqO7GcZbSx8yymHBsFoY
+ 28FZRU2yA/t6bdUCH5iXZv9VfWBijVNmsrbulfI1vgzEYhFB+A5gxJZU9+1LMkophPcWRTSO/cn
+ EIIYVy5JNkLK1Zlst5NY2KzCYOj+vnBuxafmnaCmoZwwedcT46LdgmGubB+Pd/6guuqWCubkh49
+ fMCNHUrTrF69TJ+bEIS4N3N+UDKcM6smzMdmUwgc2Mm8B0nQcrKs4D+xuyV4y1BtVU32Mxs0
+X-Proofpoint-ORIG-GUID: 0In9lmCNwrULKdqHkJE2HaoGsdeFilwd
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-07-17_01,2025-07-16_02,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 clxscore=1015 mlxlogscore=766 mlxscore=0 spamscore=0
+ adultscore=0 impostorscore=0 priorityscore=1501 suspectscore=0 bulkscore=0
+ phishscore=0 lowpriorityscore=0 classifier=spam authscore=0 authtc=n/a
+ authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2505280000 definitions=main-2507170050
 
-On 16/07/2025 21:52, David Lechner wrote:
-> On 7/16/25 2:44 PM, Antonio Quartulli wrote:
->> On 16/07/2025 21:36, Andy Shevchenko wrote:
->>> On Wed, Jul 16, 2025 at 10:22 PM Antonio Quartulli
->>> <antonio@mandelbit.com> wrote:
->>>>
->>>> In inv_icm42600_accel_convert_wom_to_roc() multiplying
->>>> `threshold` by `convert` may result in a number requiring more
->>>> than 32bit.
->>>> In this case, although `value` is 64bit wide, the result is
->>>> truncated because the multiplication is performed in the
->>>> 32bit domain, due to both operands being 32bit long.
->>>>
->>>> Cast the first operand to u64 to ensure the multiplication is
->>>> performed in the expected domain.
->>>
->>> Is this a theoretical or practical issue?
+Hi Jonathan,
+
+On 7/13/2025 7:01 PM, Jonathan Cameron wrote:
+> On Thu, 10 Jul 2025 12:14:13 +0530
+> Jishnu Prakash <jishnu.prakash@oss.qualcomm.com> wrote:
+> 
+>> Hi Jonathan,
 >>
->> Can't say if it's practical because I don't know how large `threshold` can be.
+>> On 6/28/2025 10:01 PM, Jonathan Cameron wrote:
+>>>
+>>>   
+>>>>>> +	.hw_settle_1 = (unsigned int [VADC_HW_SETTLE_SAMPLES_MAX])
+>>>>>> +				{ 15, 100, 200, 300, 400, 500, 600, 700,
+>>>>>> +				  1000, 2000, 4000, 8000, 16000, 32000,
+>>>>>> +				  64000, 128000 },    
+>>>>> Andy often points this out, but I'll do it this time. Fixed numbers (typically power of 2)
+>>>>> elements per line make it much easier to see which element is which in these arrays.
+>>>>> Reduce the indent a little to allow that here.    
+>>
+>> ...
+>>
+>>>>>
+>>>>> It was never worth bothering with release until we had devm managed form but
+>>>>> now we do the code complexity cost is low enough to make it reasonable.
+>>>>>     
+>>>>>> +	indio_dev->name = pdev->name;    
+>>>>>
+>>>>> Just to check.  Does that end up as a part number or similar?    
+>>>>
+>>>> I printed this name and it appeared like this:
+>>>>
+>>>> indio_dev->name: c426000.spmi:pmic@0:adc@9000
+>>>>
+>>>> It only gets the DT node names, which are generic, there are 
+>>>> no part numbers in this name.  
+>>> I thought it might be something along those lines.
+>>>
+>>> indio_dev->name should be the part number so hard code it rather than
+>>> getting it from the pdev->name
+>>>   
+>>
+>> Actually there would be more than one PMIC which can function as the master PMIC
+>> for Gen3 ADC functionality, so I don't think I can simply hard code a name here
+>> based on PMK8550, if we want to keep the part number correct.
+>>
+>> Since we can't get the part number directly from the DT node names, we
+>> could try one of the following ways to add it:
+>>
+>> 1. Add a devicetree property for the part number
+>>    This would be simple, but I'm not sure if this is the best way, 
+>>    if the below method looks good.
+> Nope as if you need a part number, that's should be via the compatible.
+>>
+>> 2. Add a string in the compatible property for the part number.
+>>    This means updating the compatible from "qcom,spmi-adc5-gen3"
+>>    to something like this for PMK8550:
+>>
+>>    compatible = "qcom,pmk8550-adc5-gen3", "qcom,spmi-adc5-gen3";
+>>
+>>    and then extracting the part number from the first string.
+> 
+> Do it via a compatible lookup + data in relevant tables rather
+> than messing with string break up.  Sometimes we'll get the
+> part number of the fallback compatible but I don't really care.
+> However, see below - I think spmi-adc5-gen3 is effectively the
+> part number for the IP. It just happens to be inside a PMIC
+> that has another name.
+> 
+>>
+>> Please let me know which method you would prefer.
+>>
+>> In addition, does the below string look fine, to assign to
+>> indio_dev->name for PMK8550?
+>>
+>> pmk8550_adc
+> 
+> That's ok, though given it's an ADC anyway, pmk8550 should be sufficient
+> for this IIO specific name.
+> If it makes no practical difference what PMIC it is for this driver
+> then simply use spmi-adc5-gem3 or something along those lines.
+> So kind of a generic part number for the IP rather than specifics of
+> which PMIC it is implemented in.
+> 
+
+Thanks for your confirmation. Your above statement is true here, the
+exact PMIC used here does not make any practical difference for the driver's
+functionality, so I'll use the generic part name "spmi-adc5-gen3" for this IP.
+
+Thanks,
+Jishnu
+
+> Jonathan
 > 
 > 
-> The code is clear that it is between 0 and 255 inclusive.
-> 
-> unsigned int inv_icm42600_accel_convert_roc_to_wom(...)
-> {
-> 	...
-> 	if (roc == 0)
-> 		return 0;
-> 	...
-> 	return clamp(value, 1, 255);
-> }
-> 
-> threshold = inv_icm42600_accel_convert_roc_to_wom(value, accel_hz, accel_uhz);
-> value = inv_icm42600_accel_convert_wom_to_roc(threshold, accel_hz, accel_uhz)
-
-Thanks for pointing this out - I overlooked that.
-
-> 
-> So I would not call this a fix, just making the code more robust against
-> any changes in the future.
-
-It's the type being used that convinced me something could be off.
-Maybe threshold could just be u8 and value be u32? (just to improve self 
-documentation)
-Also inv_icm42600_accel_convert_roc_to_wom() could return u8 for 
-consistency.
-
-I any case, this is a bit code cleanup and a bit bike shedding :-)
-I agree there is nothing to "fix" at this point.
-
-Regards,
-
-
--- 
-Antonio Quartulli
-
-CEO and Co-Founder
-Mandelbit Srl
-https://www.mandelbit.com
 
 

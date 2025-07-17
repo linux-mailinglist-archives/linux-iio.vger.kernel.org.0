@@ -1,127 +1,132 @@
-Return-Path: <linux-iio+bounces-21757-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21758-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31BDFB096ED
-	for <lists+linux-iio@lfdr.de>; Fri, 18 Jul 2025 00:32:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D90EB09700
+	for <lists+linux-iio@lfdr.de>; Fri, 18 Jul 2025 00:47:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B12A11C46327
-	for <lists+linux-iio@lfdr.de>; Thu, 17 Jul 2025 22:32:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1B3844E269F
+	for <lists+linux-iio@lfdr.de>; Thu, 17 Jul 2025 22:46:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76FB22367DA;
-	Thu, 17 Jul 2025 22:32:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62C3923ABB7;
+	Thu, 17 Jul 2025 22:47:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="no+6tIed"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="lPRmMcDm"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oo1-f50.google.com (mail-oo1-f50.google.com [209.85.161.50])
+Received: from mail-oi1-f175.google.com (mail-oi1-f175.google.com [209.85.167.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCE10192598;
-	Thu, 17 Jul 2025 22:32:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C738B226541
+	for <linux-iio@vger.kernel.org>; Thu, 17 Jul 2025 22:47:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752791525; cv=none; b=u+OsvnkT1H7UkI4tLGYskKuRiCdxr+tQT6yjET3IgmAO3Zu4u9JGvbO4DT+mxLkMVi4zgIbxewnazXZVQTIE8Wr55XvEzWKwVUqn5uvTex6IcvA7NCPE2mxgJOjAJTY5nIBsyn2cOjqTWeypIzA5Z0yH8iMl26hCwjuheBvQT3s=
+	t=1752792430; cv=none; b=iQib2uUcXQUxNjkqb84094LhvACI1/68l5pomsmPg9w/OMj8vHiFVpugU2LjSpIwU3d8Ss7a8DTgDTz/EoarriOx+R23SR86liJ5k6xHoYky19bwAv6HlnnTtmnLzwmLEpYzgz4T8bKZ8jTJR6wDmE4QPo5a7pNBNYNJ9g2X7FU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752791525; c=relaxed/simple;
-	bh=7yzNKlQHR30Aa0DYesmEudSnaqO6t8rw18AiBQYmOcY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j4UDk/r/d4FAnEJWpzxHiVaJR0WIpbtKOi02kbxA6MJiQUQUrkTubGvmHqa1DHHOU5GRn/B4HNXcrnHXkanHC2VKsAjDWOAJSkAEdpoNVRnwIpzd6uqOkZgSPue0JTKVg09NT7m3OW75vy6/q996cARLUpGD6V+B5ZG1XNks9vY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=no+6tIed; arc=none smtp.client-ip=209.85.161.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oo1-f50.google.com with SMTP id 006d021491bc7-615a256240bso669110eaf.3;
-        Thu, 17 Jul 2025 15:32:03 -0700 (PDT)
+	s=arc-20240116; t=1752792430; c=relaxed/simple;
+	bh=scrt+gOK/kbGk6Sv6A2noeo+XoEO2tdSaff8iaiSZio=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Lob0ib9SoWgYdLJ+ccMv7ZohbmZzDE53aZ6Go8UD9edZhoW/O9SI9eEYUQkNrNd7++IgYhUQNcG1FuHOEoZTe5/yVJCM9Xl1WjCgQwvOJbd7JJgdj1a/rvRhhCcX7dDnKyfTjbAjaGfwBL19v/0cS00hqWUCTflNzOvCk7avEDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=lPRmMcDm; arc=none smtp.client-ip=209.85.167.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oi1-f175.google.com with SMTP id 5614622812f47-41b4ebb15e2so879752b6e.3
+        for <linux-iio@vger.kernel.org>; Thu, 17 Jul 2025 15:47:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752791523; x=1753396323; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=IXirbcScWLR71U2qxf1CaCd+oxLYJPlVCKx0gOxF//8=;
-        b=no+6tIedPpdFJmdyXeOYOL1jmp6aJOs7MNwuXuJLPyHM2pzBvyaVJ/ItBvDs7RfBle
-         /AwNHhMNCd2+qEkuSbLv7oUt+cLmn5RNpimn6rhFtcZLHvnsiRe+wTBiDFkqOSl+wjtF
-         JudtD6GK5MNJoJ6PZGYjq2QCDAtVMyn3YP2yaoSAGfK9Fsm2NPOMx/A3q6Je71+V3jXW
-         KKbew7j7YQi+Pu015jQNKnUNaZjM6283/QSuY1G92rBm0rwt/7DT18bfDlI5RtJOQuRB
-         OOJm1lvcmf5ll9K/8Iu/g5abZRf2iXOdh2xzytDLb8nudwF9a1p1sDJU5sJVc542e0KJ
-         B3Hg==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1752792427; x=1753397227; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=+7a8sDmsJOF6CnYwk1liq/YAJocYNKqXfcnLeyvtqak=;
+        b=lPRmMcDmsuyvOBfPBsy4zSrUnJQmBqr5Zu44FFZ2V3bHi0Zl74zVJDjhUzC2Xyh1qh
+         KRpElvCmgUpK3+fP32GdixwdM89rN4v32JPW01bxd5gJc76PIavpYqqhX3DEMBQwAZ+L
+         mCguDaEeidcw3ZA00FGXCTn87ERqtM28LFfLLBNBBU7tmYoxNJGfzfY0e38ASW7julYG
+         HUbaTCg8T2rZ/hGJQMqbMxvTJlmwMpLb9XcomqgdprLoE6DdQRAksiNfnT61DxGSG/wU
+         hcmWlu16BNmmhpcBgcu5a4O4rL4Rf+7yz+f16KWKWYCLJYb02wShJbyjNWsAa/2lnMEF
+         Wngg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752791523; x=1753396323;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=IXirbcScWLR71U2qxf1CaCd+oxLYJPlVCKx0gOxF//8=;
-        b=kJOVwBpJ6/Z/Rl7Jaz3U1wToAt8i0Yza8ylS9MS73r6u7zGlxm+nlqWu3YutC36U6N
-         sgsPr8vXKf4/R0qx/bw8DpO8pBzx2E1eHpzMBH+NGY9pKwKnkW+od5lJ8qus+mf5LXZH
-         rA9wnL9H4bn9sozh+cdZULC6Jmi88/PXx37FacZbzizNTtYnJMOX7PEST825B4HOBF5N
-         3pDT1f2woEY+rydOTYTV8+NiVkl5MNCEDPVjvaojAZ5DwTA/gUmT4iAMq7sq6RKMCw7n
-         vvP1lWxR0gflxdklPjesAHlewN86Yi/8SEzYlqo13wh+VpAdEi6Wn4fY/UHywHTy2VuO
-         0EmA==
-X-Forwarded-Encrypted: i=1; AJvYcCW3CfuX0dgQUypVfcs/cYo5N4vm2jAumHH0WJGTHOFnPAD5JsUeQvJWzLK8nrLwS7F4mqWt1+zjXZAU@vger.kernel.org, AJvYcCWS87l8jnUh+cM7ehvufde7KH+epEL2B9uIEEmpvrv1goygNkuEwswjGi8ale+o0zLuVvYnKSJ4tuub@vger.kernel.org, AJvYcCX2hKr6UxlenUm9SQsAGUE0DHU5w/XpK0YW8kcbI6uPWGAo82zN3DdvAnxuaRaSxzxENH2LTlOsUluU4kAE@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw6BWzN/8dp2ZW3mK3WH+B42bqrIsumvBCj79wGWF1shoD/NODj
-	0RAFpAgUyOASllYO0kaez5QgnCMMIesffUcpIHkYlS1N4LC3i5vHm/MeaKuYYkp6
-X-Gm-Gg: ASbGncst00jaNdE+VFevVLuD5TlzhrX/TUXj9Lr4o0B13vzQDM2vhYd0v1I670Tnzpx
-	yMcfwPxHYs4iSMo2Fq8gZyN++6CPoICRlsmZsZxvwSyNmJtKLjBgG4wsgxuOIrw7GZgbommTGox
-	0iZffPnA0NgCajD5JV671/+Hv1/gpbIihSvz0qyi8fKDQCGrFz2OmbDXF4+I8slhzn75A2om2RE
-	q0iz2AJFIilVPh3TdXkMkHyLBPbHqcBYG/E0Q2cAhJF2SnnCBQvQMZ5hHQxxjzuF6pJkBxOhVDo
-	1dqgLKBcO4UuGS+ZbzDwU0KOXKTcLCpI39EIr9x6x394+SB6ILBSR5w1lxiCUQk8LnDiufhspsx
-	bAs64vms/JJGVRbXzo3hAec5zeI+HeZkzGj27BTwsQMG9tA==
-X-Google-Smtp-Source: AGHT+IEkFSyhQ0QDE9j5oBLn7J3qMLyDGBUtD6upmQANYknuQtTldz8VL2uV6FCQI2kqkWuAbbN5UA==
-X-Received: by 2002:a05:6870:a44e:b0:29e:3921:b1ea with SMTP id 586e51a60fabf-2ffd25649f4mr3603542fac.30.1752791522812;
-        Thu, 17 Jul 2025 15:32:02 -0700 (PDT)
-Received: from localhost.localdomain ([2804:14d:4c64:81ec:4133:553c:dd2c:6469])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-30101784609sm105673fac.9.2025.07.17.15.31.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Jul 2025 15:32:01 -0700 (PDT)
-From: Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>
-To: dlechner@baylibre.com
-Cc: conor+dt@kernel.org,
-	devicetree@vger.kernel.org,
-	krzk+dt@kernel.org,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	robh@kernel.org,
-	rodrigo.gobbi.7@gmail.com,
-	~lkcamp/patches@lists.sr.ht
-Subject: Re: [PATCH] dt-bindings: trivial-devices: Add Garmin lidar-lite-v3
-Date: Thu, 17 Jul 2025 19:24:34 -0300
-Message-ID: <20250717223153.159878-1-rodrigo.gobbi.7@gmail.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <8f4b72bb-3c5f-4137-a4f9-5ce94631d3c1@baylibre.com>
-References: <8f4b72bb-3c5f-4137-a4f9-5ce94631d3c1@baylibre.com>
+        d=1e100.net; s=20230601; t=1752792427; x=1753397227;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=+7a8sDmsJOF6CnYwk1liq/YAJocYNKqXfcnLeyvtqak=;
+        b=OCKwz61FfGEEvqeLJfPhlwUWRZWLJPAQzuJVEI24p4227WQQIlTZaUZU786qMbxhJk
+         X/IoKSmfbcrvTSucamT7TjM/L3gVE7MQEEp9INUP6I0OKtk7K9sunbxgqS087WWdbUpO
+         53H+6NED0iBS3VyrXpEB4SfLRFK4JjAJa0GAe2RDIlnyR6As87+PfKMhtETHAOypTsML
+         xQ/W2dnhVD9ojX9WgLo+agt1smWGBMRQPZ1XKfS46pYGlztI/JwGEjSMihf3feHH+nRS
+         I6z+ZrwOMs9Iskt02y0xSBylgRGm7jn+6bSHZJYtJRERz//0CKWqXBEg1MlgxmvwKj12
+         xc8Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXwMniryyhhFV8MJcxQZ1NJXR9JIHmYEW22zGw0Uxs6FQ2H0bdKRZ+JUCR+yj1Qm3jPqmqdYqlDjvU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxViS+I7JVI0jqZpeh5VkxPpTKneL/MfYuvrLOE22+uwv+z3p56
+	oP/4+VvyT/wUxGXZiCTy7KpEORbHS6jKU6wl3o4s8f5iMW51FXxPZGaEv2dc+0OPmUk=
+X-Gm-Gg: ASbGncuVDi9RL+HIzSCc6Wqx/11VxxV2ir30IuOJxFiyZ042PYRIrMnT7ZgNKJ/zPVs
+	U+jS0I9l4i52OdvjFFYjZBz67CQ5X9/s7emIxcfpQPd1KnC4DPfab3Prw/H3FzmVmbqRI15+8tj
+	nJDcQTA5uApO1aTtJDuWn5qBaqFqbycTgbu6lgPIRHjAD99kZmMdiz1UsGdKFUPCJPlcbirDk2R
+	C4ukfdzQjxNKtWhTqWQoItQ5dk3BuueVLqDeAmHjfWEvkvdCwpSPo6fl6IfeO47ck7s+zWbGAWa
+	YJ0Z44WKfNlUUozzjQYUq9V8EdMyPljon2b8E8Rvfl+bZ7JX7xc3cK9z7PALKkIsXi1nuGUPMau
+	2WLKIDFXL+ubQ1I7iCtFnxEpRUZBlL2n6aBOMfY4z8/K5No5n05bnCvJhryrx/GxvvJOtkgea
+X-Google-Smtp-Source: AGHT+IHa/+JsaAXuw6L0+Fke+E5C6yqkH/eYphW34HhHpWtknSJEsFWO4B5ebVdCb0FjvbmX0FgLtw==
+X-Received: by 2002:a05:6808:2007:b0:406:701b:254c with SMTP id 5614622812f47-41e4778e803mr3683437b6e.39.1752792426543;
+        Thu, 17 Jul 2025 15:47:06 -0700 (PDT)
+Received: from ?IPV6:2600:8803:e7e4:1d00:b499:5ccf:3f5:ecec? ([2600:8803:e7e4:1d00:b499:5ccf:3f5:ecec])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-41fd10c0ea6sm14231b6e.1.2025.07.17.15.47.05
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 17 Jul 2025 15:47:05 -0700 (PDT)
+Message-ID: <240f464a-5f99-4bef-a811-3bbc083e7f20@baylibre.com>
+Date: Thu, 17 Jul 2025 17:47:05 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] dt-bindings: trivial-devices: Add Garmin lidar-lite-v3
+To: Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>
+Cc: conor+dt@kernel.org, devicetree@vger.kernel.org, krzk+dt@kernel.org,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, robh@kernel.org,
+ ~lkcamp/patches@lists.sr.ht
+References: <8f4b72bb-3c5f-4137-a4f9-5ce94631d3c1@baylibre.com>
+ <20250717223153.159878-1-rodrigo.gobbi.7@gmail.com>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <20250717223153.159878-1-rodrigo.gobbi.7@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-> As a general rule of thumb, using the driver as justification for
-> dt-bindings is never a good reason. The bindings describe the hardware,
-> not the driver.
+On 7/17/25 5:24 PM, Rodrigo Gobbi wrote:
+>> As a general rule of thumb, using the driver as justification for
+>> dt-bindings is never a good reason. The bindings describe the hardware,
+>> not the driver.
+> 
+> Looks like I`ve failed to double-check the datasheet here, sorry for that,
+> I`ll try to remember that in future occasions.
+> 
+>> Assuming I found the correct datasheet [1], I see a power enable pin
+>> and a mode control pin, so I would say that this isn't a trivial device.
+>> Therefore this will need it's own new file. We could at least add
+>> power-gpios and power-supply properties. How to handle the mode pin
+>> isn't so clear to me though, so might omit that for now.
+> 
+> Agree, actually, I was wondering here if the lidar-lite-v2 ref that I`ve found
+> when adding the grmn,lidar-lite-v3 is actually a trivial. 
+> It was originally added as trivial over txt file at [1] and then converted to yaml but
+> it looks like it is also not a trivial considering some refs at [2] and [3] (not official docs).
+> At those refs, I can see the same enable/mode pins.
+> 
+> Should we also move that out of trivial in a dedicated binding or should we keep as is
+> considering those docs are not official/device is very old?
+> Tks and regards!
+> 
+> [1] https://github.com/torvalds/linux/commit/12280bd3d5d7e1ba1dd60ba0bd4412f4056fc028
+> [2] https://www.electrokit.com/upload/product/41013/41013964/lidarlite2DS.pdf
+> [3] https://www.14core.com/wp-content/uploads/2017/03/LIDAR-Lite-v2-Datasheet.pdf
+> 
 
-Looks like I`ve failed to double-check the datasheet here, sorry for that,
-I`ll try to remember that in future occasions.
-
-> Assuming I found the correct datasheet [1], I see a power enable pin
-> and a mode control pin, so I would say that this isn't a trivial device.
-> Therefore this will need it's own new file. We could at least add
-> power-gpios and power-supply properties. How to handle the mode pin
-> isn't so clear to me though, so might omit that for now.
-
-Agree, actually, I was wondering here if the lidar-lite-v2 ref that I`ve found
-when adding the grmn,lidar-lite-v3 is actually a trivial. 
-It was originally added as trivial over txt file at [1] and then converted to yaml but
-it looks like it is also not a trivial considering some refs at [2] and [3] (not official docs).
-At those refs, I can see the same enable/mode pins.
-
-Should we also move that out of trivial in a dedicated binding or should we keep as is
-considering those docs are not official/device is very old?
-Tks and regards!
-
-[1] https://github.com/torvalds/linux/commit/12280bd3d5d7e1ba1dd60ba0bd4412f4056fc028
-[2] https://www.electrokit.com/upload/product/41013/41013964/lidarlite2DS.pdf
-[3] https://www.14core.com/wp-content/uploads/2017/03/LIDAR-Lite-v2-Datasheet.pdf
+I only looked at [3], but it looks reliable enough. It also looks (at a
+quick glance) pin-compatible with v3, so I would make v3 have a fallback
+compatible string to v2. And yeah, put both in the same file since they
+are pretty much the same hardware.
 
 

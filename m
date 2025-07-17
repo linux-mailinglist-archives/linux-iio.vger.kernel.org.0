@@ -1,590 +1,624 @@
-Return-Path: <linux-iio+bounces-21749-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21750-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB25AB08F7F
-	for <lists+linux-iio@lfdr.de>; Thu, 17 Jul 2025 16:33:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74766B08F89
+	for <lists+linux-iio@lfdr.de>; Thu, 17 Jul 2025 16:34:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 587D5584B3E
-	for <lists+linux-iio@lfdr.de>; Thu, 17 Jul 2025 14:31:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2A251169FE7
+	for <lists+linux-iio@lfdr.de>; Thu, 17 Jul 2025 14:33:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 589A72F7CF5;
-	Thu, 17 Jul 2025 14:31:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8125A2D9ED4;
+	Thu, 17 Jul 2025 14:33:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="dxRP0qCh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eQn9RGXJ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-05.mail-europe.com (mail-05.mail-europe.com [85.9.206.169])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC23B14E2E2;
-	Thu, 17 Jul 2025 14:31:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.9.206.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FCE114E2E2;
+	Thu, 17 Jul 2025 14:33:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752762697; cv=none; b=m1tpp0m0lkw3+yAvTlVD+etHU1L8T8tTOuyOa+7+ySFp2yt5sStVD+w5fKPSyhM38zTDD5mWCGvLjIEBpduc1TQSTeOzVwkaSxeVu2eMZ+JRiMPSHn+RGC3y8PbCy4s0kEIw3o7pQOSBVQvmmnep1RDwDDj1jfjOgcDWzvU73h8=
+	t=1752762827; cv=none; b=VblbX6orLZQPY9Dx9Pp34yyfLDc4MQTGlwbrCDAWrNagrlk4bNYuUN63q0QpWpQs3lVpEE/E2IRF8zwNzv6G4nNY3IIhry6wly1agjLCwt5zKiwapXUSV/XUGgoYIxHvsqZqwQJFz/usvClNdSijF9ZQ+E7k3/u+fcdLmSEPCgE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752762697; c=relaxed/simple;
-	bh=NdwNFXWtMogRp4YWUYMbunBRN567VkQcaxeX/3skx4o=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Et8QZ8g9E1GvbRWvjms+wlhVfyj51hZJCYCyGSLHrJpglEOJ0bHWImM69Y6drzrnCx6k0jFhgf8VTH1eOR+Nr12JZmSpTH/k4oJyoeDcZptDZs8ptzo/fVP6a85NiEqMI85dkAKkw8HE3Sd5zPsNEV+Y/7zF94Cp1Z5l5v8iHBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=dxRP0qCh; arc=none smtp.client-ip=85.9.206.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-	s=protonmail3; t=1752762684; x=1753021884;
-	bh=NdwNFXWtMogRp4YWUYMbunBRN567VkQcaxeX/3skx4o=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=dxRP0qCh16Y5Ztd7oq3YG+BllVeTLxAFBOqfvlfxkAl4C6x8jlpc1mu0hVcwdfdXK
-	 lNhbPK/Nhrhr4CnygyNDoTAlyFPBYNXH2bjcOJrXtmxZp5OoBCZ605/p/LRJ4YvynS
-	 J57aAHg0Lcl+Gc5ZB1Qia1ISz9LeHpUnqFS08nTiwu24KdzOXdm+w1JFmTGJ469DdQ
-	 aW/DPYhu4klf1Sl1QpoGTIhfnw2iXHbZk+7rjLaeBshjaA8n7TDmXandybxMgyERLx
-	 I/I7gGvo+xy/zy2qFy3dVtTmwjL82mlr86f6xqZIHwS0DcHRKC8eFHoJeXkMDfKoEj
-	 b60DEl1JHt69g==
-Date: Thu, 17 Jul 2025 14:31:17 +0000
-To: Jonathan Cameron <jic23@kernel.org>
-From: Yassine Oudjana <y.oudjana@protonmail.com>
-Cc: Yassine Oudjana via B4 Relay <devnull+y.oudjana.protonmail.com@kernel.org>, Manivannan Sadhasivam <mani@kernel.org>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas.schier@linux.dev>, David Lechner <dlechner@baylibre.com>, =?utf-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Luca Weiss <luca@lucaweiss.eu>, linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org, linux-iio@vger.kernel.org
-Subject: Re: [PATCH v2 4/4] iio: Add Qualcomm Sensor Manager driver
-Message-ID: <nSoiRmruHeLNNxpRCxJ5M5aQ-Vx7lE3U9wtVwYh6MVZHr0pkk9Cwl5ggSN3xAZ09zA8bk_RJS6mRAgxWkCIrNGogaElh4x8VKaQPO_Rzrqs=@protonmail.com>
-In-Reply-To: <20250713164033.3488db3c@jic23-huawei>
-References: <20250710-qcom-smgr-v2-0-f6e198b7aa8e@protonmail.com> <20250710-qcom-smgr-v2-4-f6e198b7aa8e@protonmail.com> <20250713164033.3488db3c@jic23-huawei>
-Feedback-ID: 6882736:user:proton
-X-Pm-Message-ID: 9b818cdac7c7487394e950d685285a7caa2b039a
+	s=arc-20240116; t=1752762827; c=relaxed/simple;
+	bh=Mk0mrvNVmTEaCN8UAAyUHUuZCbjlFslfuMdpYDLRRk8=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=UuKD5Y9x3+IoO1YUqGoWxrEw5fHL9aVmWlF1YadeqsONxjdv7l3l3aHW4Ipneb6gJ03YHbra8t3FgohL0nKDB9g/Lh8WHaxM3ZMvDtVqvOD3hvG3Mxiy/6Ve1HNq8wpJuPBaqyVAjMjGY53BxxT/dSalEJtOtxjvMDbcAkBfILk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eQn9RGXJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81C57C4CEE3;
+	Thu, 17 Jul 2025 14:33:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752762826;
+	bh=Mk0mrvNVmTEaCN8UAAyUHUuZCbjlFslfuMdpYDLRRk8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=eQn9RGXJJzlTCY8n5Hzpn78jKktsYxS8YaVi/QTynhvoMmPkRQX0/BFw1DjDV656t
+	 gWwvDq3RkzZ5OQFvLZmIiUODfOec5vf/+pq2Ukc8WiL2MFWD43Y0JDoq+OuQFoJHuv
+	 cmPqg6AWa1Wio3rnRo54CnE1pBcI06lhonRUQhIIv1YrsrrmXMVv33/60vSVrPfOHu
+	 2PZme5hBKREPM3XqssYC3fn1smSENKBRPH4Id57lXxZv8NSIa4800npOD0mnXMer0x
+	 0xYUeCzTTC8IoySVo1Rkcskt9+vfjcNTdDZJzoHzstG5CDQ2rdGbMdMbKeNc5kS+ZS
+	 Gz4XQmFbgEHhQ==
+Date: Thu, 17 Jul 2025 15:33:40 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Remi Buisson via B4 Relay <devnull+remi.buisson.tdk.com@kernel.org>
+Cc: remi.buisson@tdk.com, David Lechner <dlechner@baylibre.com>, Nuno
+ =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH v2 3/8] iio: imu: inv_icm45600: add buffer support in
+ iio devices
+Message-ID: <20250717153340.33eb92b4@jic23-huawei>
+In-Reply-To: <20250710-add_newport_driver-v2-3-bf76d8142ef2@tdk.com>
+References: <20250710-add_newport_driver-v2-0-bf76d8142ef2@tdk.com>
+	<20250710-add_newport_driver-v2-3-bf76d8142ef2@tdk.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Sunday, July 13th, 2025 at 4:40 PM, Jonathan Cameron <jic23@kernel.org> =
-wrote:
+On Thu, 10 Jul 2025 08:57:58 +0000
+Remi Buisson via B4 Relay <devnull+remi.buisson.tdk.com@kernel.org> wrote:
 
-> On Thu, 10 Jul 2025 09:06:30 +0100
-> Yassine Oudjana via B4 Relay devnull+y.oudjana.protonmail.com@kernel.org =
-wrote:
->=20
-> > From: Yassine Oudjana y.oudjana@protonmail.com
-> >=20
-> > Add a driver for sensors exposed by the Qualcomm Sensor Manager service=
-,
-> > which is provided by SLPI or ADSP on Qualcomm SoCs. Supported sensors
-> > include accelerometers, gyroscopes, pressure sensors, proximity sensors
-> > and magnetometers.
-> >=20
-> > Signed-off-by: Yassine Oudjana y.oudjana@protonmail.com
->=20
->=20
-> As Andy commented - this is big. Break it up for v3.
+> From: Remi Buisson <remi.buisson@tdk.com>
+> 
+> Add FIFO control functions.
+> Support hwfifo watermark by multiplexing gyro and accel settings.
+> Support hwfifo flush.
+> 
+> Signed-off-by: Remi Buisson <remi.buisson@tdk.com>
+Hi Remi,
 
-Ok
+Sorry for delay - hectic week.
 
->=20
-> So far I haven't understood why a separate accelerometer driver was neces=
-sary.
-> Some comments in the patch description would perhaps help me understand t=
-hat.
+Jonathan
 
-That was not supposed to be here still. My bad.
+> ---
+>  drivers/iio/imu/inv_icm45600/Makefile              |   1 +
+>  drivers/iio/imu/inv_icm45600/inv_icm45600.h        |   4 +
+>  drivers/iio/imu/inv_icm45600/inv_icm45600_buffer.c | 514 +++++++++++++++++++++
+>  drivers/iio/imu/inv_icm45600/inv_icm45600_buffer.h |  99 ++++
+>  drivers/iio/imu/inv_icm45600/inv_icm45600_core.c   | 137 +++++-
+We used to do the buffer / core split a lot but it often ends up more trouble
+that it is worth and we no longer make buffer support a build time option (which was
+what motivated the separate files)  Consider how much simplification you'd get by squashing them into
+one file.  
 
->=20
-> > diff --git a/drivers/iio/accel/qcom_smgr_accel.c b/drivers/iio/accel/qc=
-om_smgr_accel.c
-> > new file mode 100644
-> > index 0000000000000000000000000000000000000000..ce854312d1d9386300785f1=
-965d5886c16995806
-> > --- /dev/null
-> > +++ b/drivers/iio/accel/qcom_smgr_accel.c
-> > @@ -0,0 +1,138 @@
->=20
->=20
->=20
-> > +static void qcom_smgr_accel_remove(struct platform_device *pdev)
-> > +{
-> > + struct qcom_smgr_sensor *sensor =3D platform_get_drvdata(pdev);
-> > +
-> > + sensor->iio_dev =3D NULL;
->=20
->=20
-> Add a comment for why this is needed. I can't immediately spot anything
-> explicitly checking it so it doesn't seem to be about safe handling
-> of device removal or similar.
->=20
-> > +}
-> > +
-> > +static const struct platform_device_id qcom_smgr_accel_ids[] =3D {
-> > + { .name =3D "qcom-smgr-accel" },
-> > + { /* sentinel */ }
-> > +};
-> > +MODULE_DEVICE_TABLE(platform, qcom_smgr_accel_ids);
-> > +
-> > +static struct platform_driver qcom_smgr_accel_driver =3D {
-> > + .probe =3D qcom_smgr_accel_probe,
-> > + .remove =3D qcom_smgr_accel_remove,
-> > + .driver =3D {
-> > + .name =3D "qcom_smgr_accel",
-> > + },
-> > + .id_table =3D qcom_smgr_accel_ids,
-> > +};
-> > +module_platform_driver(qcom_smgr_accel_driver);
-> > +
-> > +MODULE_AUTHOR("Yassine Oudjana y.oudjana@protonmail.com");
-> > +MODULE_DESCRIPTION("Qualcomm Sensor Manager accelerometer driver");
-> > +MODULE_LICENSE("GPL");
->=20
->=20
-> I'm struggling to understand what the relationship between this driver
-> the main sensor driver is.
->=20
-> > diff --git a/drivers/iio/common/qcom_smgr/qcom_smgr.c b/drivers/iio/com=
-mon/qcom_smgr/qcom_smgr.c
-> > new file mode 100644
-> > index 0000000000000000000000000000000000000000..79d1160f7a5c32f1a9e0a20=
-f29e304e5cb18be8f
-> > --- /dev/null
-> > +++ b/drivers/iio/common/qcom_smgr/qcom_smgr.c
-> > @@ -0,0 +1,840 @@
->=20
-> > +static void qcom_smgr_buffering_report_handler(struct qmi_handle *hdl,
-> > + struct sockaddr_qrtr *sq,
-> > + struct qmi_txn *txn,
-> > + const void *data)
-> > +{
-> > + struct qcom_smgr *smgr =3D
-> > + container_of(hdl, struct qcom_smgr, sns_smgr_hdl);
-> > + const struct sns_smgr_buffering_report_ind *ind =3D data;
-> > + struct qcom_smgr_sensor sensor;
-> > + struct qcom_smgr_iio_data iio_data;
-> > + int temp;
-> > + u8 i, j;
-> > +
-> > + for (i =3D 0; i < smgr->sensor_count; ++i) {
-> > + sensor =3D &smgr->sensors[i];
-> > +
-> > + / Find sensor matching report /
-> > + if (sensor->id =3D=3D ind->report_id)
-> > + break;
-> > + }
-> > +
-> > + if (i =3D=3D smgr->sensor_count) {
-> > + dev_warn_ratelimited(smgr->dev,
-> > + "Received buffering report with unknown ID: %02x",
-> > + ind->report_id);
-> > + return;
-> > + }
-> > +
-> > + /
-> > + * Construct data to be passed to IIO. Since we are matching report ra=
-te
-> > + * with sample rate, we only get a single sample in every report.
-> > + /
-> > + for (j =3D 0; j < ARRAY_SIZE(ind->samples[0].values); ++j)
-> > + iio_data.values[j] =3D ind->samples[0].values[j];
-> > +
-> > + /
-> > + * SMGR reports sensor data in 32-bit fixed-point values, with 16 bits
-> > + * holding the integer part and the other 16 bits holding the numerato=
-r
-> > + * of a fraction with the denominator 2**16.
-> > + *
-> > + * Proximity sensor values are reported differently from other sensors=
-.
-> > + * The value reported is a boolean (0 or 1, still in the same fixed-po=
-int
-> > + * format) where 1 means the sensor is activated, i.e. something is
-> > + * within its range. Use the reported range to pass an actual distance
-> > + * value to IIO. We pass the sensor range when nothing is within range
-> > + * (sensor maxed out) and 0 when something is within range (assume
-> > + * sensor is covered).
-> > + */
-> > + if (sensor->type =3D=3D SNS_SMGR_SENSOR_TYPE_PROX_LIGHT) {
-> > + temp =3D le32_to_cpu(iio_data.values[0]);
-> > + temp >>=3D SMGR_VALUE_DECIMAL_OFFSET;
-> > + temp =3D ~temp & 1;
-> > + temp *=3D sensor->data_types[0].range;
-> > + iio_data.values[0] =3D cpu_to_le32(temp);
-> > + }
-> > +
-> > + iio_push_to_buffers(sensor->iio_dev, &iio_data);
->=20
-> You have a structure with space for timestamps but don't provide one whic=
-h
-> is odd. Either don't make space, or provide it.
+>  5 files changed, 754 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/iio/imu/inv_icm45600/Makefile b/drivers/iio/imu/inv_icm45600/Makefile
+> index 4f442b61896e91647c7947a044949792bae06a30..19c521ffba17b0d108a8ecb45ecdea35dff6fd18 100644
+> --- a/drivers/iio/imu/inv_icm45600/Makefile
+> +++ b/drivers/iio/imu/inv_icm45600/Makefile
+> @@ -2,3 +2,4 @@
+>  
+>  obj-$(CONFIG_INV_ICM45600) += inv-icm45600.o
+>  inv-icm45600-y += inv_icm45600_core.o
+> +inv-icm45600-y += inv_icm45600_buffer.o
+> \ No newline at end of file
+Fix that.
 
-I forgot to copy the timestamp into iio_data. Will fix.
+> diff --git a/drivers/iio/imu/inv_icm45600/inv_icm45600.h b/drivers/iio/imu/inv_icm45600/inv_icm45600.h
+> index d56de75ab7f2168f22e25b5816cb361bef457c0d..0b97c54f74b30aef3842e34da098c2443347de00 100644
+> --- a/drivers/iio/imu/inv_icm45600/inv_icm45600.h
+> +++ b/drivers/iio/imu/inv_icm45600/inv_icm45600.h
+> @@ -10,6 +10,8 @@
+>  #include <linux/iio/iio.h>
+>  #include <linux/types.h>
+>  
+> +#include "inv_icm45600_buffer.h"
+> +
+>  #define INV_ICM45600_REG_BANK_MASK	GENMASK(15, 8)
+>  #define INV_ICM45600_REG_ADDR_MASK	GENMASK(7, 0)
+>  
+> @@ -128,6 +130,7 @@ extern const struct inv_icm45600_chip_info inv_icm45689_chip_info;
+>   *  @indio_gyro:	gyroscope IIO device.
+>   *  @indio_accel:	accelerometer IIO device.
+>   *  @timestamp:		interrupt timestamps.
+> + *  @fifo:		FIFO management structure.
+>   *  @buffer:		data transfer buffer aligned for DMA.
+>   */
+>  struct inv_icm45600_state {
+> @@ -144,6 +147,7 @@ struct inv_icm45600_state {
+>  		s64 gyro;
+>  		s64 accel;
+>  	} timestamp;
+> +	struct inv_icm45600_fifo fifo;
 
->=20
-> > +}
->=20
-> > +
-> > +static int qcom_smgr_sensor_predisable(struct iio_dev *iio_dev)
-> > +{
-> > + struct qcom_smgr *smgr =3D dev_get_drvdata(iio_dev->dev.parent);
-> > + struct qcom_smgr_iio_priv *priv =3D iio_priv(iio_dev);
-> > + struct qcom_smgr_sensor *sensor =3D priv->sensor;
-> > +
-> > + dev_info(smgr->dev, "disable buffering %02x\n", sensor->id);
->=20
->=20
-> Too nosy. dev_dbg()
+This has a forced alignment at the end which is going to ensure the next bit
+is pushed out a long way.  It it is possible to squash the definitions here
+so we can see what is going on that would be good.
 
-I added this while debugging and missed it while cleaning up to remove it. =
-Will remove
-entirely.
+>  	union {
+>  		u8 buff[2];
+>  		__le16 u16;
+> diff --git a/drivers/iio/imu/inv_icm45600/inv_icm45600_buffer.c b/drivers/iio/imu/inv_icm45600/inv_icm45600_buffer.c
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..a07affa0e3c64f84330071c92018438882cdf686
+> --- /dev/null
+> +++ b/drivers/iio/imu/inv_icm45600/inv_icm45600_buffer.c
 
->=20
-> > + return qcom_smgr_request_buffering(smgr, sensor, false);
-> > +}
->=20
-> > +static int qcom_smgr_iio_read_raw(struct iio_dev *iio_dev,
-> > + struct iio_chan_spec const *chan, int *val,
-> > + int *val2, long mask)
-> > +{
-> > + struct qcom_smgr_iio_priv *priv =3D iio_priv(iio_dev);
-> > +
-> > + switch (mask) {
->=20
->=20
-> No sysfs access at all to data is unusual but not completely unheard of.
+> +
+> +struct inv_icm45600_fifo_1sensor_packet {
+> +	u8 header;
+> +	struct inv_icm45600_fifo_sensor_data data;
+> +	s8 temp;
+> +} __packed;
+> +#define INV_ICM45600_FIFO_1SENSOR_PACKET_SIZE		8
+> +
+> +struct inv_icm45600_fifo_2sensors_packet {
+> +	u8 header;
+> +	struct inv_icm45600_fifo_sensor_data accel;
+> +	struct inv_icm45600_fifo_sensor_data gyro;
+> +	s8 temp;
+> +	__le16 timestamp;
+> +} __packed;
+> +#define INV_ICM45600_FIFO_2SENSORS_PACKET_SIZE		16
+This definition seems unnecessary given you have
+	sizeof(struct inv_icm45600_fifo_2sensors_packet)
+(or better yet sizeof(instance)) to use for it.
 
-There is no (known) method to request a single reading from the QMI
-service. The only known way to get sensor data is to send a buffering
-request to initiate sending data, then the remoteproc sends QMI
-indications at a regular interval carrying sensor data which I am
-pushing to the IIO buffers. The only way to implement direct sysfs
-access would be to store the last received value somewhere then pass
-it to sysfs when requested. This will also require enabling buffering
-if disabled at the time of reading, then waiting until new data is
-received. I didn't like this solution so I skipped direct sysfs access
-altogether. Buffer access is enough for the current use case with
-iio-sensor-proxy in userspace.
 
->=20
-> > + case IIO_CHAN_INFO_SAMP_FREQ:
-> > + *val =3D priv->sensor->data_types[0].cur_sample_rate;
-> > + return IIO_VAL_INT;
-> > + case IIO_CHAN_INFO_SCALE:
-> > + *val =3D 1;
-> > + *val2 =3D 1 << SMGR_VALUE_DECIMAL_OFFSET;
-> > + return IIO_VAL_FRACTIONAL;
-> > + default:
-> > + return -EINVAL;
-> > + }
->=20
-> > +
-> > +static const struct iio_chan_spec qcom_smgr_pressure_iio_channels[] =
-=3D {
-> > + {
-> > + .type =3D IIO_PRESSURE,
-> > + .scan_index =3D 0,
-> > + .scan_type =3D {
-> > + .sign =3D 'u',
-> > + .realbits =3D 32,
-> > + .storagebits =3D 32,
-> > + .endianness =3D IIO_LE,
-> > + },
-> > + .info_mask_separate =3D BIT(IIO_CHAN_INFO_SCALE) |
-> > + BIT(IIO_CHAN_INFO_SAMP_FREQ)
-> > + },
-> > + {
-> > + .type =3D IIO_TIMESTAMP,
-> > + .channel =3D -1,
-> > + .scan_index =3D 3,
->=20
->=20
-> Why 3?
 
-Because the same struct is used for this and 3-axis sensors, so we should
-skip the unused values.
 
->=20
-> > + .scan_type =3D {
-> > + .sign =3D 'u',
-> > + .realbits =3D 32,
->=20
->=20
-> If it's realbits 32 and no shift, why not store it in a 32 bit value?
-> I assume this is a hardware provided timestamp rather than typical softwa=
-re
-> filled in one? Anyhow, I'm not immediately spotting it being used yet
-> so for now perhaps best to drop the channel descriptions.
+> +void inv_icm45600_buffer_update_fifo_period(struct inv_icm45600_state *st)
+> +{
+> +	u32 period_gyro, period_accel, period;
+> +
+> +	if (st->fifo.en & INV_ICM45600_SENSOR_GYRO)
+> +		period_gyro = inv_icm45600_odr_to_period(st->conf.gyro.odr);
+> +	else
+> +		period_gyro = U32_MAX;
+> +
+> +	if (st->fifo.en & INV_ICM45600_SENSOR_ACCEL)
+> +		period_accel = inv_icm45600_odr_to_period(st->conf.accel.odr);
+> +	else
+> +		period_accel = U32_MAX;
+> +
+> +	if (period_gyro <= period_accel)
+> +		period = period_gyro;
+> +	else
+> +		period = period_accel;
 
-The hardware (or firmware rather) passes an unsigned 32-bit timestamp
-value in a 64-bit QMI field. I was previously passing it as-is to IIO
-but now since I introduced a new struct I can make it 32-bit storagebits.
+	st->fifo.period = min(period_gyro, period_accel);
+saves a few lines.
 
-But below you said s64 for timestamp so which is it going to be?
+> +
+> +	st->fifo.period = period;
+> +}
 
->=20
-> > + .storagebits =3D 64,
-> > + .endianness =3D IIO_LE,
-> > + },
-> > + }
-> > +};
->=20
-> > +static int qcom_smgr_register_sensor(struct qcom_smgr *smgr,
-> > + struct qcom_smgr_sensor *sensor)
-> > +{
-> > + struct iio_dev *iio_dev;
-> > + struct qcom_smgr_iio_priv *priv;
-> > + int ret;
->=20
-> > + sensor->iio_dev =3D iio_dev;
-> > +
-> > + ret =3D devm_iio_kfifo_buffer_setup(smgr->dev, iio_dev,
-> > + &qcom_smgr_buffer_ops);
-> > + if (ret) {
-> > + dev_err(smgr->dev, "Failed to setup buffer: %pe\n",
->=20
->=20
-> Use return dev_err_probe() for all errors that occur in code that only
-> runs at probe() time.
+> +static unsigned int inv_icm45600_wm_truncate(unsigned int watermark, size_t packet_size,
+> +					     unsigned int fifo_period)
+> +{
+> +	size_t watermark_max, grace_samples;
+> +
+> +	/* Keep 20ms for processing FIFO. */
+> +	grace_samples = (20U * 1000000U) / fifo_period;
+> +	if (grace_samples < 1)
+> +		grace_samples = 1;
+> +
+> +	watermark_max = INV_ICM45600_FIFO_SIZE_MAX / packet_size;
+> +	watermark_max -= grace_samples;
+> +
+> +	if (watermark > watermark_max)
+> +		watermark = watermark_max;
 
-Ack
+	return min(watermark, watermark_max);
+> +
+> +	return watermark;
+> +}
+> +
+> +/**
+> + * inv_icm45600_buffer_update_watermark - update watermark FIFO threshold
+> + * @st:	driver internal state
+> + *
+> + * Returns 0 on success, a negative error code otherwise.
+> + *
+> + * FIFO watermark threshold is computed based on the required watermark values
+> + * set for gyro and accel sensors. Since watermark is all about acceptable data
+> + * latency, use the smallest setting between the 2. It means choosing the
+> + * smallest latency but this is not as simple as choosing the smallest watermark
+> + * value. Latency depends on watermark and ODR. It requires several steps:
+> + * 1) compute gyro and accel latencies and choose the smallest value.
+> + * 2) adapt the chosen latency so that it is a multiple of both gyro and accel
+> + *    ones. Otherwise it is possible that you don't meet a requirement. (for
+> + *    example with gyro @100Hz wm 4 and accel @100Hz with wm 6, choosing the
+> + *    value of 4 will not meet accel latency requirement because 6 is not a
+> + *    multiple of 4. You need to use the value 2.)
+> + * 3) Since all periods are multiple of each others, watermark is computed by
+> + *    dividing this computed latency by the smallest period, which corresponds
+> + *    to the FIFO frequency.
 
->=20
-> > + ERR_PTR(ret));
-> > + return ret;
-> > + }
-> > +
-> > + ret =3D devm_iio_device_register(smgr->dev, iio_dev);
-> > + if (ret) {
-> > + dev_err(smgr->dev, "Failed to register IIO device: %pe\n",
-> > + ERR_PTR(ret));
-> > + return ret;
-> > + }
-> > +
-> > + return 0;
-> > +}
-> > +
-> > +static int qcom_smgr_probe(struct qrtr_device *qdev)
-> > +{
-> > + struct qcom_smgr *smgr;
-> > + int i, j;
-> > + int ret;
-> > +
-> > + smgr =3D devm_kzalloc(&qdev->dev, sizeof(*smgr), GFP_KERNEL);
-> > + if (!smgr)
-> > + return -ENOMEM;
-> > +
-> > + smgr->dev =3D &qdev->dev;
-> > +
-> > + smgr->sns_smgr_info.sq_family =3D AF_QIPCRTR;
-> > + smgr->sns_smgr_info.sq_node =3D qdev->node;
-> > + smgr->sns_smgr_info.sq_port =3D qdev->port;
-> > +
-> > + dev_set_drvdata(&qdev->dev, smgr);
->=20
-> This code is a bit random on whether it uses qdev->dev, or smgr->dev
->=20
->=20
-> I'd be tempted to just introce
-> struct device *dev =3D &qdev->dev; and use that pretty much everywhere.
+Nice explanation and clear code. Thanks!
 
-I think smgr->dev is good, as is used everywhere else in the driver.
-Will change this one.
+> + */
+> +int inv_icm45600_buffer_update_watermark(struct inv_icm45600_state *st)
+> +{
+> +	const size_t packet_size = INV_ICM45600_FIFO_2SENSORS_PACKET_SIZE;
+> +	unsigned int wm_gyro, wm_accel, watermark;
+> +	u32 period_gyro, period_accel, period;
+> +	u32 latency_gyro, latency_accel, latency;
+> +
+> +	/* Compute sensors latency, depending on sensor watermark and odr. */
+> +	wm_gyro = inv_icm45600_wm_truncate(st->fifo.watermark.gyro, packet_size,
+> +					   st->fifo.period);
+> +	wm_accel = inv_icm45600_wm_truncate(st->fifo.watermark.accel, packet_size,
+> +					    st->fifo.period);
+> +	/* Use us for odr to avoid overflow using 32 bits values. */
+> +	period_gyro = inv_icm45600_odr_to_period(st->conf.gyro.odr) / 1000UL;
+> +	period_accel = inv_icm45600_odr_to_period(st->conf.accel.odr) / 1000UL;
+> +	latency_gyro = period_gyro * wm_gyro;
+> +	latency_accel = period_accel * wm_accel;
+> +
+> +	/* 0 value for watermark means that the sensor is turned off. */
+> +	if (wm_gyro == 0 && wm_accel == 0)
+> +		return 0;
+> +
+> +	if (latency_gyro == 0) {
+> +		watermark = wm_accel;
+> +		st->fifo.watermark.eff_accel = wm_accel;
+> +	} else if (latency_accel == 0) {
+> +		watermark = wm_gyro;
+> +		st->fifo.watermark.eff_gyro = wm_gyro;
+> +	} else {
+> +		/* Compute the smallest latency that is a multiple of both. */
+> +		if (latency_gyro <= latency_accel)
+> +			latency = latency_gyro - (latency_accel % latency_gyro);
+> +		else
+> +			latency = latency_accel - (latency_gyro % latency_accel);
+> +		/* Use the shortest period. */
+> +		if (period_gyro <= period_accel)
+> +			period = period_gyro;
+> +		else
+> +			period = period_accel;
+> +		/* All this works because periods are multiple of each others. */
+> +		watermark = latency / period;
+> +		if (watermark < 1)
+> +			watermark = 1;
+> +		/* Update effective watermark. */
+> +		st->fifo.watermark.eff_gyro = latency / period_gyro;
+> +		if (st->fifo.watermark.eff_gyro < 1)
+> +			st->fifo.watermark.eff_gyro = 1;
+> +		st->fifo.watermark.eff_accel = latency / period_accel;
+> +		if (st->fifo.watermark.eff_accel < 1)
+> +			st->fifo.watermark.eff_accel = 1;
+> +	}
+> +
+> +
+> +	st->buffer.u16 = cpu_to_le16(watermark);
+> +	return regmap_bulk_write(st->map, INV_ICM45600_REG_FIFO_WATERMARK,
+> +				&st->buffer.u16, sizeof(st->buffer.u16));
+> +}
 
->=20
-> > +
-> > + ret =3D qmi_handle_init(&smgr->sns_smgr_hdl,
-> > + SNS_SMGR_SINGLE_SENSOR_INFO_RESP_MAX_LEN, NULL,
-> > + qcom_smgr_msg_handlers);
-> > + if (ret < 0)
-> > + return dev_err_probe(smgr->dev, ret,
-> > + "Failed to initialize sensor manager handle\n");
-> > +
-> > + ret =3D devm_add_action_or_reset(smgr->dev,
-> > + (void(*)(void *))qmi_handle_release,
->=20
->=20
-> I'd much prefer a local wrapper to casting types of functions.
+> +
+> +static int inv_icm45600_buffer_predisable(struct iio_dev *indio_dev)
+> +{
+> +	struct inv_icm45600_state *st = iio_device_get_drvdata(indio_dev);
+> +	unsigned int val;
+> +	int ret;
+> +
+> +	guard(mutex)(&st->lock);
+> +
+> +	/* Exit if there are several sensors using the FIFO. */
+> +	if (st->fifo.on > 1) {
+> +		/* decrease FIFO on counter */
+> +		st->fifo.on--;
+> +		return 0;
+> +	}
+> +
+> +	/* Disable writing sensor data to FIFO. */
+> +	ret = regmap_clear_bits(st->map, INV_ICM45600_REG_FIFO_CONFIG3,
+> +				INV_ICM45600_FIFO_CONFIG3_IF_EN);
+> +	if (ret)
+> +		return ret;
+> +
+> +	/* Set FIFO in bypass mode. */
+> +	val = FIELD_PREP(INV_ICM45600_FIFO_CONFIG0_MODE_MASK,
+> +			INV_ICM45600_FIFO_CONFIG0_MODE_BYPASS);
 
-A function containing a single function call felt unnecessary to
-me but I will add a wrapper if you prefer it that way.
+One more space.  Check for similar.
 
->=20
-> > + &smgr->sns_smgr_hdl);
-> > + if (ret)
-> > + return ret;
-> > +
-> > + ret =3D qcom_smgr_request_all_sensor_info(smgr, &smgr->sensors);
-> > + if (ret < 0)
-> > + return dev_err_probe(smgr->dev, ret,
-> > + "Failed to get available sensors\n");
-> > +
-> > + smgr->sensor_count =3D ret;
-> > +
-> > + /* Get primary and secondary sensors from each sensor ID /
-> > + for (i =3D 0; i < smgr->sensor_count; i++) {
-> > + ret =3D qcom_smgr_request_single_sensor_info(smgr,
-> > + &smgr->sensors[i]);
-> > + if (ret < 0)
-> > + return dev_err_probe(smgr->dev, ret,
-> > + "Failed to get sensors from ID 0x%02x\n",
-> > + smgr->sensors[i].id);
-> > +
-> > + for (j =3D 0; j < smgr->sensors[i].data_type_count; j++) {
-> > + / Default to maximum sample rate /
-> > + smgr->sensors[i].data_types->cur_sample_rate =3D
-> > + smgr->sensors[i].data_types->max_sample_rate;
-> > +
-> > + dev_dbg(smgr->dev, "0x%02x,%d: %s %s\n",
-> > + smgr->sensors[i].id, j,
-> > + smgr->sensors[i].data_types[j].vendor,
-> > + smgr->sensors[i].data_types[j].name);
-> > + }
-> > +
-> > + / Skip if sensor type is not supported /
-> > + if (smgr->sensors[i]->type =3D=3D SNS_SMGR_SENSOR_TYPE_UNKNOWN ||
-> > + !qcom_smgr_sensor_type_iio_channels[smgr->sensors[i]->type])
-> > + continue;
-> > +
-> > + ret =3D qcom_smgr_register_sensor(smgr, &smgr->sensors[i]);
-> > + if (ret)
-> > + return dev_err_probe(smgr->dev, ret,
-> > + "Failed to register sensor 0x%02x\n",
-> > + smgr->sensors[i].id);
-> > + }
-> > +
-> > + return 0;
-> > +}
-> > +
-> > +static const struct qrtr_device_id qcom_smgr_qrtr_match[] =3D {
-> > + {
-> > + .service =3D SNS_SMGR_QMI_SVC_ID,
-> > + / Found on MSM8953 /
-> > + .instance =3D QRTR_INSTANCE_CONST(0, 1)
-> > + },
-> > + {
-> > + .service =3D SNS_SMGR_QMI_SVC_ID,
-> > + / Found on MSM8974 and MSM8226 /
-> > + .instance =3D QRTR_INSTANCE_CONST(1, 0)
-> > + },
-> > + {
-> > + .service =3D SNS_SMGR_QMI_SVC_ID,
-> > + / Found on MSM8996 and SDM660 */
-> > + .instance =3D QRTR_INSTANCE_CONST(1, 50)
-> > + },
-> > + { },
->=20
->=20
-> No comma on a terminating entry like this.
+> +	ret = regmap_update_bits(st->map, INV_ICM45600_REG_FIFO_CONFIG0,
+> +				 INV_ICM45600_FIFO_CONFIG0_MODE_MASK, val);
+> +	if (ret)
+> +		return ret;
+> +
+> +	/* Disable FIFO threshold and full interrupt. */
+> +	ret = regmap_clear_bits(st->map, INV_ICM45600_REG_INT1_CONFIG0,
+> +				INV_ICM45600_INT1_CONFIG0_FIFO_THS_EN |
+> +				INV_ICM45600_INT1_CONFIG0_FIFO_FULL_EN);
+> +	if (ret)
+> +		return ret;
+> +
+> +	/* Flush all FIFO data. */
+> +	ret = regmap_set_bits(st->map, INV_ICM45600_REG_FIFO_CONFIG2,
+> +			   INV_ICM45600_REG_FIFO_CONFIG2_FIFO_FLUSH);
+> +	if (ret)
+> +		return ret;
+> +
+> +	/* Decrease FIFO on counter. */
+> +	st->fifo.on--;
+> +	return 0;
+> +}
 
-Ok. Gotta keep track of all the conventions used in different subsystems.
+> +
+> +static int inv_icm45600_buffer_postdisable(struct iio_dev *indio_dev)
+> +{
+> +	struct inv_icm45600_state *st = iio_device_get_drvdata(indio_dev);
+> +	struct device *dev = regmap_get_device(st->map);
+> +	unsigned int sensor;
+> +	unsigned int *watermark;
+> +	unsigned int sleep;
+> +	int ret;
+> +
+> +	if (indio_dev == st->indio_gyro) {
+> +		sensor = INV_ICM45600_SENSOR_GYRO;
+> +		watermark = &st->fifo.watermark.gyro;
+> +	} else if (indio_dev == st->indio_accel) {
+> +		sensor = INV_ICM45600_SENSOR_ACCEL;
+> +		watermark = &st->fifo.watermark.accel;
+> +	} else {
+> +		return -EINVAL;
+> +	}
+> +
+> +	scoped_guard(mutex, &st->lock)
+> +		ret = _inv_icm45600_buffer_postdisable(st, sensor, watermark, &sleep);
+> +
+> +	/* Sleep required time. */
+> +	if (sleep)
 
->=20
-> > +};
-> > +MODULE_DEVICE_TABLE(qrtr, qcom_smgr_qrtr_match);
->=20
->=20
->=20
-> > +const struct qmi_elem_info sns_smgr_buffering_report_ind_ei[] =3D {
-> > + {
-> > + .data_type =3D QMI_UNSIGNED_1_BYTE,
-> > + .elem_len =3D 1,
-> > + .elem_size =3D sizeof_field(struct sns_smgr_buffering_report_ind,
-> > + report_id),
-> > + .array_type =3D NO_ARRAY,
-> > + .tlv_type =3D 0x01,
-> > + .offset =3D offsetof(struct sns_smgr_buffering_report_ind,
-> > + report_id),
-> > + },
-> > + {
-> > + .data_type =3D QMI_STRUCT,
-> > + .elem_len =3D 1,
-> > + .elem_size =3D sizeof_field(struct sns_smgr_buffering_report_ind,
-> > + metadata),
-> > + .array_type =3D NO_ARRAY,
-> > + .tlv_type =3D 0x02,
-> > + .offset =3D offsetof(struct sns_smgr_buffering_report_ind,
-> > + metadata),
-> > + .ei_array =3D sns_smgr_buffering_report_metadata_ei,
-> > + },
-> > + {
-> > + .data_type =3D QMI_DATA_LEN,
-> > + .elem_len =3D 1,
-> > + .elem_size =3D sizeof_field(struct sns_smgr_buffering_report_ind,
-> > + samples_len),
-> > + .array_type =3D NO_ARRAY,
-> > + .tlv_type =3D 0x03,
-> > + .offset =3D offsetof(struct sns_smgr_buffering_report_ind,
-> > + samples_len),
-> > + },
-> > + {
-> > + .data_type =3D QMI_STRUCT,
-> > + .elem_len =3D SNS_SMGR_SAMPLES_MAX_LEN,
-> > + .elem_size =3D sizeof(struct sns_smgr_buffering_report_sample),
-> > + .array_type =3D VAR_LEN_ARRAY,
-> > + .tlv_type =3D 0x03,
-> > + .offset =3D
-> > + offsetof(struct sns_smgr_buffering_report_ind, samples),
->=20
->=20
-> I'm fine with slightly over 80 chars to avoid readability issues like thi=
-s.
+Is there a case where sleep is 0?  If not just do it unconditionally perhaps.
 
-Ok
 
->=20
-> > diff --git a/include/linux/iio/common/qcom_smgr.h b/include/linux/iio/c=
-ommon/qcom_smgr.h
-> > new file mode 100644
-> > index 0000000000000000000000000000000000000000..fdd3de12bb0a48f1fb9e51c=
-d0463c9a9b9ed500f
-> > --- /dev/null
-> > +++ b/include/linux/iio/common/qcom_smgr.h
-> > @@ -0,0 +1,80 @@
-> > +/* SPDX-License-Identifier: GPL-2.0-only */
-> > +
-> > +#ifndef QCOM_SMGR_H
-> > +#define QCOM_SMGR_H
-> > +
-> > +#include <linux/iio/iio.h>
-> > +#include <linux/iio/types.h>
-> > +#include <linux/soc/qcom/qmi.h>
-> > +#include <linux/types.h>
->=20
-> > +
-> > +struct qcom_smgr_sensor {
-> > + u8 id;
-> > + enum qcom_smgr_sensor_type type;
-> > +
-> > + u8 data_type_count;
-> > + /*
-> > + * Only SNS_SMGR_DATA_TYPE_PRIMARY is used at the moment, but we store
-> > + * SNS_SMGR_DATA_TYPE_SECONDARY when available as well for future use.
-> > + */
-> > + struct qcom_smgr_data_type_item *data_types;
-> > +
-> > + struct iio_dev *iio_dev;
-> > +};
-> > +
-> > +struct qcom_smgr_iio_priv {
-> > + struct qcom_smgr_sensor *sensor;
-> > +
-> > + int samp_freq_vals[3];
-> > +};
-> > +
-> > +
-> > +struct qcom_smgr_iio_data {
-> > + u32 values[3];
-> > + u64 timestamp;
->=20
->=20
-> Timestamps in kernel tend to be s64. Also for IIO buffers aligned_s64 req=
-uired.
-> Whilst this will probably never be used on an architecture that doesn't n=
-aturally
-> align 8 byte variables, we should still code for it.
->=20
-> Given this tends to be used locally maybe just define it where you need i=
-t.
+> +		msleep(sleep);
+> +
+> +	pm_runtime_put_autosuspend(dev);
+> +
+> +	return ret;
+> +}
+> +
+> +const struct iio_buffer_setup_ops inv_icm45600_buffer_ops = {
+> +	.preenable = inv_icm45600_buffer_preenable,
+> +	.postenable = inv_icm45600_buffer_postenable,
+> +	.predisable = inv_icm45600_buffer_predisable,
+> +	.postdisable = inv_icm45600_buffer_postdisable,
+> +};
+> +
+> +int inv_icm45600_buffer_fifo_read(struct inv_icm45600_state *st,
+> +				  unsigned int max)
+What is max here?  Seems to be passed 0 in the only caller.
+> +{
+> +	const ssize_t packet_size = INV_ICM45600_FIFO_2SENSORS_PACKET_SIZE;
+> +	__le16 *raw_fifo_count;
+> +	size_t fifo_nb, i;
+> +	ssize_t size;
+> +	const struct inv_icm45600_fifo_sensor_data *accel, *gyro;
+> +	const __le16 *timestamp;
+> +	const s8 *temp;
+> +	unsigned int odr;
+> +	int ret;
+> +
+> +	/* Reset all samples counters. */
+> +	st->fifo.count = 0;
+> +	st->fifo.nb.gyro = 0;
+> +	st->fifo.nb.accel = 0;
+> +	st->fifo.nb.total = 0;
+> +
+> +	/* Read FIFO count value. */
+> +	raw_fifo_count = &st->buffer.u16;
+> +	ret = regmap_bulk_read(st->map, INV_ICM45600_REG_FIFO_COUNT,
+> +			       raw_fifo_count, sizeof(*raw_fifo_count));
 
-Ack
+For IIO drivers at least we still operated under some guidance the regmap maintainer
+gave years ago to never assume regmap (for busses that otherwise require DMA safe
+buffers) will always bounce the data.  So bulk reads with SPI buffers need
+DMA safe buffers. Easiest is usually an __aligned(IIO_DMA_MINALIGN) buffer
+(or set of buffers) at the end of st.
 
+In practice last time I checked regmap doesn't bother with the zero copy
+optimization that would need this safety so you won't actually hit this
+issue.
+
+> +	if (ret)
+> +		return ret;
+> +	fifo_nb = le16_to_cpup(raw_fifo_count);
+> +
+> +	/* Check and limit number of samples if requested. */
+> +	if (fifo_nb == 0)
+> +		return 0;
+> +	if (max > 0 && fifo_nb > max)
+> +		fifo_nb = max;
+> +
+> +	/* Try to read all FIFO data in internal buffer. */
+> +	st->fifo.count = fifo_nb * packet_size;
+> +	ret = regmap_noinc_read(st->map, INV_ICM45600_REG_FIFO_DATA,
+> +				st->fifo.data, st->fifo.count);
+> +	if (ret == -ENOTSUPP || ret == -EFBIG) {
+> +		/* Read full fifo is not supported, read samples one by one. */
+
+Interesting. Maybe we could push the fallback to regmap or further given it's
+emulating the big read version.
+
+> +		ret = 0;
+> +		for (i = 0; i < st->fifo.count && ret == 0; i += packet_size)
+> +			ret = regmap_noinc_read(st->map, INV_ICM45600_REG_FIFO_DATA,
+> +							&st->fifo.data[i], packet_size);
+> +	}
+> +	if (ret)
+> +		return ret;
+> +
+> +	for (i = 0; i < st->fifo.count; i += size) {
+> +		size = inv_icm45600_fifo_decode_packet(&st->fifo.data[i],
+> +			&accel, &gyro, &temp, &timestamp, &odr);
+> +		if (size <= 0)
+> +			break;
+> +		if (gyro != NULL && inv_icm45600_fifo_is_data_valid(gyro))
+> +			st->fifo.nb.gyro++;
+> +		if (accel != NULL && inv_icm45600_fifo_is_data_valid(accel))
+> +			st->fifo.nb.accel++;
+> +		st->fifo.nb.total++;
+> +	}
+> +
+> +	return 0;
+> +}
+
+> diff --git a/drivers/iio/imu/inv_icm45600/inv_icm45600_buffer.h b/drivers/iio/imu/inv_icm45600/inv_icm45600_buffer.h
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..09595a41cf637a3ba9bc44e4df53a9d0aa11f485
+> --- /dev/null
+> +++ b/drivers/iio/imu/inv_icm45600/inv_icm45600_buffer.h
+> @@ -0,0 +1,99 @@
+
+
+> +/**
+> + * struct inv_icm45600_fifo - FIFO state variables
+> + * @on:		reference counter for FIFO on.
+> + * @en:		bits field of INV_ICM45600_SENSOR_* for FIFO EN bits.
+> + * @period:	FIFO internal period.
+> + * @watermark:	watermark configuration values for accel and gyro.
+> + * @count:	number of bytes in the FIFO data buffer.
+> + * @nb:		gyro, accel and total samples in the FIFO data buffer.
+> + * @data:	FIFO data buffer aligned for DMA (8kB)
+> + */
+> +struct inv_icm45600_fifo {
+> +	unsigned int on;
+> +	unsigned int en;
+> +	u32 period;
+> +	struct {
+> +		unsigned int gyro;
+> +		unsigned int accel;
+> +		unsigned int eff_gyro;
+> +		unsigned int eff_accel;
+> +	} watermark;
+> +	size_t count;
+> +	struct {
+> +		size_t gyro;
+> +		size_t accel;
+> +		size_t total;
+> +	} nb;
+> +	u8 data[8192] __aligned(IIO_DMA_MINALIGN);
+
+Doing this inside an embedded structure isn't great for readability.
+See comment above on putting them next to each other. Also worth thinking
+about structure padding that is going on here - maybe point pahole at the
+result.
+
+> +};
+> +
+> +/* FIFO data packet */
+> +struct inv_icm45600_fifo_sensor_data {
+> +	__le16 x;
+> +	__le16 y;
+> +	__le16 z;
+> +} __packed;
+> +#define INV_ICM45600_FIFO_DATA_INVALID		-32768
+> +
+> +static inline s16 inv_icm45600_fifo_get_sensor_data(__le16 d)
+> +{
+> +	return le16_to_cpu(d);
+> +}
+> +
+> +static inline bool
+> +inv_icm45600_fifo_is_data_valid(const struct inv_icm45600_fifo_sensor_data *s)
+> +{
+> +	s16 x, y, z;
+> +
+> +	x = inv_icm45600_fifo_get_sensor_data(s->x);
+> +	y = inv_icm45600_fifo_get_sensor_data(s->y);
+> +	z = inv_icm45600_fifo_get_sensor_data(s->z);
+> +
+> +	if (x == INV_ICM45600_FIFO_DATA_INVALID &&
+> +	    y == INV_ICM45600_FIFO_DATA_INVALID &&
+> +	    z == INV_ICM45600_FIFO_DATA_INVALID)
+> +		return false;
+> +
+> +	return true;
+> +}
+> +
+> +ssize_t inv_icm45600_fifo_decode_packet(const void *packet,
+> +					const struct inv_icm45600_fifo_sensor_data **accel,
+> +					const struct inv_icm45600_fifo_sensor_data **gyro,
+> +					const s8 **temp,
+> +					const __le16 **timestamp, unsigned int *odr);
+> +
+> +extern const struct iio_buffer_setup_ops inv_icm45600_buffer_ops;
+> +
+> +int inv_icm45600_buffer_init(struct inv_icm45600_state *st);
+> +
+> +void inv_icm45600_buffer_update_fifo_period(struct inv_icm45600_state *st);
+> +
+> +int inv_icm45600_buffer_set_fifo_en(struct inv_icm45600_state *st,
+> +				    unsigned int fifo_en);
+> +
+> +int inv_icm45600_buffer_update_watermark(struct inv_icm45600_state *st);
+> +
+> +int inv_icm45600_buffer_fifo_read(struct inv_icm45600_state *st,
+> +				  unsigned int max);
+> +
+> +int inv_icm45600_buffer_hwfifo_flush(struct inv_icm45600_state *st,
+> +				     unsigned int count);
+
+The comment above about considering a single file was because there is a lot in this header
+rather implying maybe there isn't a good separation of code.
+
+> +
+> +#endif
+> diff --git a/drivers/iio/imu/inv_icm45600/inv_icm45600_core.c b/drivers/iio/imu/inv_icm45600/inv_icm45600_core.c
+> index 022eb9180b5a750e8fba4a1cd873041c27f59880..37487e9174bf53f2fc6583f37ac7542ea31b0643 100644
+> --- a/drivers/iio/imu/inv_icm45600/inv_icm45600_core.c
+> +++ b/drivers/iio/imu/inv_icm45600/inv_icm45600_core.c
+
+
+>  static int inv_icm45600_timestamp_setup(struct inv_icm45600_state *st)
+>  {
+>  	/* Enable timestamps. */
+> @@ -627,6 +717,14 @@ int inv_icm45600_core_probe(struct regmap *regmap, const struct inv_icm45600_chi
+>  	if (ret)
+>  		return ret;
+>  
+> +	ret = inv_icm45600_buffer_init(st);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = inv_icm45600_irq_init(st, irq, irq_type, open_drain);
+> +	if (ret)
+> +		return ret;
+> +
+>  	/* Setup runtime power management. */
+>  	ret = devm_pm_runtime_set_active_enabled(dev);
+>  	if (ret)
+> @@ -658,6 +756,22 @@ static int inv_icm45600_suspend(struct device *dev)
+>  	if (pm_runtime_suspended(dev))
+>  		return 0;
+>  
+> +	/* Disable FIFO data streaming. */
+> +	if (st->fifo.on) {
+> +		unsigned int val;
+> +
+> +		ret = regmap_clear_bits(st->map, INV_ICM45600_REG_FIFO_CONFIG3,
+> +					INV_ICM45600_FIFO_CONFIG3_IF_EN);
+> +		if (ret)
+> +			return ret;
+> +		val = FIELD_PREP(INV_ICM45600_FIFO_CONFIG0_MODE_MASK,
+> +			INV_ICM45600_FIFO_CONFIG0_MODE_BYPASS);
+
+Align second line after (
+
+> +		ret = regmap_update_bits(st->map, INV_ICM45600_REG_FIFO_CONFIG0,
+> +					 INV_ICM45600_FIFO_CONFIG0_MODE_MASK, val);
+> +		if (ret)
+> +			return ret;
+> +	}
+> +
+>  	ret = inv_icm45600_set_pwr_mgmt0(st, INV_ICM45600_SENSOR_MODE_OFF,
+>  					 INV_ICM45600_SENSOR_MODE_OFF, NULL);
+>  	if (ret)
 

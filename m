@@ -1,116 +1,132 @@
-Return-Path: <linux-iio+bounces-21744-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21747-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5301DB08E28
-	for <lists+linux-iio@lfdr.de>; Thu, 17 Jul 2025 15:26:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D76BCB08E59
+	for <lists+linux-iio@lfdr.de>; Thu, 17 Jul 2025 15:35:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE0FC1AA4982
-	for <lists+linux-iio@lfdr.de>; Thu, 17 Jul 2025 13:26:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 28E04584D7B
+	for <lists+linux-iio@lfdr.de>; Thu, 17 Jul 2025 13:35:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADE972E5B26;
-	Thu, 17 Jul 2025 13:26:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2260E2EBDC6;
+	Thu, 17 Jul 2025 13:35:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KIxM8KGw"
+	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="RWiUZ0uQ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-244102.protonmail.ch (mail-244102.protonmail.ch [109.224.244.102])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 653212E54BF;
-	Thu, 17 Jul 2025 13:26:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D464E2EBBB0;
+	Thu, 17 Jul 2025 13:35:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.102
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752758765; cv=none; b=bC6SzK9IiyeuuVIHtyQRWEXzrgq+8/0WwwKlYuWGf1hdEJSASm9bygsfPqk8B2c+2Ow0z6lW9hkoYAgbPuDLmv6WPV3Fr8VWqMyjLd0AwW69WDpe1+mXejkMkPB5gNzuvNL5JRWW9MfVCUjaiwwapJVEEvaR62hI3aJ7FhEQe5I=
+	t=1752759307; cv=none; b=GzDDwtCCmWhV1VW1vD5CmBuCFYKHBov0WG0G7i4txfBhS7FgWwffwaveY+jmh4qsBVWPR5etBRWaFVT1rZATl93ve78xjPGllDPRok9UX01BY+kMB/5LuOXK9xGZuKUQTKTtqAaPWnnRNqFklJjbUs7LroGAUBQzD6c+gUpPZ0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752758765; c=relaxed/simple;
-	bh=DSLa9aPeM077q6gvw6PURI/pH8PombVAOR3qpaCktpg=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ZQ+DLt8SCV6Ua8DqieG0d5X5OjgMYVWH4mUZQvxsTiw0SzsQBUq9ViRETo9shJQ3H9/Jsrr5I1NZILS57C/S5mccaqdyue0al3mfNir9QpNQv5qcfFwjVYfD8n49hrMImd9i+2LecKYLdEwdLXY5J7qdsyvK686Fs8vGJRYa1sQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KIxM8KGw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id DF96CC16AAE;
-	Thu, 17 Jul 2025 13:26:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752758764;
-	bh=DSLa9aPeM077q6gvw6PURI/pH8PombVAOR3qpaCktpg=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=KIxM8KGw/o3vWJ9ANjxrG4XGzJuQH4lvFyhbF6I+QU+uZwvA650isFQrmBA1KHkA5
-	 fV4IuB9YAvsSQJh9mP00VjNch6RtMlodRxwpLsB+fpUEjX2kixzM35QlT6cwJtkt6o
-	 78m8K46Ib/9KFuRaGjaT3P0RORzLzksSN4XRH3LS/cJuLgSQHMahtXXF7dRNLJy3RL
-	 Ejjkoi3Pa60wkfniTI3wCSrUXrv6DWoVtv77dTJQEtWPNlKmrX+sCAM4wWAfntHFJ/
-	 BqQxzRRSUI4Y6WpX8vVbDPcRjFdNQJZXqIOrtLT57M1Y8TIUUx4h7yZzPJ0p7duKKg
-	 ZYjaoSI4oaKOA==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D72CBC83F3B;
-	Thu, 17 Jul 2025 13:26:04 +0000 (UTC)
-From: Remi Buisson via B4 Relay <devnull+remi.buisson.tdk.com@kernel.org>
-Date: Thu, 17 Jul 2025 13:26:00 +0000
-Subject: [PATCH v3 8/8] MAINTAINERS: add entry for inv_icm45600 6-axis imu
- sensor
+	s=arc-20240116; t=1752759307; c=relaxed/simple;
+	bh=RdIr93HCsd5trCZ25EtHr2HNHx/dURXjk15kSU7Cvak=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=FnTshRQNG5RqJsIn0VXqPavAiZCqnLYVnZ/lbKZVa2+I+LEMhZL2FXKMEEZVTPbECGfh6vu+J/8Ibcwxnnt0yY8KSlZ2oRDnKuilDDEiL+wOU6ydqXxQIHljEFEvWMVJiEwvX+QRrodIsJaRzV6FooztwciNWO1PssmWCcpQNyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=RWiUZ0uQ; arc=none smtp.client-ip=109.224.244.102
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+	s=protonmail3; t=1752758834; x=1753018034;
+	bh=RdIr93HCsd5trCZ25EtHr2HNHx/dURXjk15kSU7Cvak=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=RWiUZ0uQfyAcrEe4uC78ctOycMxATF1QqEFoVWdRELQWKjHGq3nHke4+j1yaArEns
+	 iAGE9Xj8OSSaw/j96tbZj7cReZ5fqYI5lwexJJUjCKTO9ehDUyTs/XYMMsH4UfUnxn
+	 aAMYTnsypInC1qCjcCPnSpciMr2o21hfLOGrKsQwfzw/OWzl8Jlvf7FehPmG4oJ5OP
+	 cwpiocJ2X3LJGHqvB8grYV70EWSu6GTIDxdCYt4t7hiifEoetdiaK/sYi57OfwcfSz
+	 UlmlCTbThqB4EUCrRzVPbjoyMbPbmVwU1kUOxma+Qe5MKetD9Wjop5xT/rh5JeWU+z
+	 0aDi08/rDqV8A==
+Date: Thu, 17 Jul 2025 13:27:08 +0000
+To: Simon Horman <horms@kernel.org>
+From: Yassine Oudjana <y.oudjana@protonmail.com>
+Cc: Manivannan Sadhasivam <mani@kernel.org>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas.schier@linux.dev>, Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, =?utf-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Luca Weiss <luca@lucaweiss.eu>, linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org, linux-iio@vger.kernel.org
+Subject: Re: [PATCH v2 0/4] QRTR bus and Qualcomm Sensor Manager IIO drivers
+Message-ID: <o9POEVj6j_JoTCM8BNtkY-tPUh1jfHXyAgY7SHyws3zOuRqlaXZZsrDoaYxGtVjWyQdrFxAH1ztg4OD-Szh9ZdlYSe_3NbEMrY54DaqZYi4=@protonmail.com>
+In-Reply-To: <20250710112208.GR721198@horms.kernel.org>
+References: <20250710-qcom-smgr-v2-0-f6e198b7aa8e@protonmail.com> <20250710112208.GR721198@horms.kernel.org>
+Feedback-ID: 6882736:user:proton
+X-Pm-Message-ID: d6c5cc2a5bde08cc4748ec2dd9e771e78efe4bcc
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250717-add_newport_driver-v3-8-c6099e02c562@tdk.com>
-References: <20250717-add_newport_driver-v3-0-c6099e02c562@tdk.com>
-In-Reply-To: <20250717-add_newport_driver-v3-0-c6099e02c562@tdk.com>
-To: Jonathan Cameron <jic23@kernel.org>, 
- David Lechner <dlechner@baylibre.com>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org, 
- devicetree@vger.kernel.org, Remi Buisson <remi.buisson@tdk.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1752758762; l=945;
- i=remi.buisson@tdk.com; s=20250411; h=from:subject:message-id;
- bh=8YxNmTOrgJXwqprkXECUw3/UJ3Lll4HOZd/QYkpH/Pw=;
- b=CRISjZffD+SMhq03XiO/aPRwjozD/Iq3lIPbjJZ7AFMF16jdUTKaZhGQIW3Pr+EfbdOc5DKtJ
- aZYj2vp/2YtCuYmDqZvNODY9OgEl9hNTt0+fjTVo2H6ctP5NuqHLsrR
-X-Developer-Key: i=remi.buisson@tdk.com; a=ed25519;
- pk=yDVMi4C7RpXN4dififo42A7fDDt3THYzoZoNq9lUZuo=
-X-Endpoint-Received: by B4 Relay for remi.buisson@tdk.com/20250411 with
- auth_id=372
-X-Original-From: Remi Buisson <remi.buisson@tdk.com>
-Reply-To: remi.buisson@tdk.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-From: Remi Buisson <remi.buisson@tdk.com>
+On Thursday, July 10th, 2025 at 12:22 PM, Simon Horman <horms@kernel.org> w=
+rote:
 
-Add MAINTAINERS entry for InvenSense ICM-45600 IMU device.
+> On Thu, Jul 10, 2025 at 09:06:26AM +0100, Yassine Oudjana via B4 Relay wr=
+ote:
+>=20
+> > Sensor Manager is a QMI service available on several Qualcomm SoCs whic=
+h
+> > exposes available sensors and allows for getting data from them. This
+> > service is provided by either:
+> >=20
+> > - SSC (Snapdragon Sensor Core): Also known as SLPI (Sensor Low Power
+> > Island). Has its own set of pins and peripherals to which sensors are
+> > connected. These peripherals are generally inaccessible from the AP,
+> > meaning sensors need to be operated exclusively through SSC. The only
+> > known SoCs in this category are MSM8996 and MSM8998 (and their
+> > derivatives).
+> > - ADSP (Audio DSP): Shares pins and peripherals with the AP. At least o=
+n
+> > some devices, these pins could be configured as GPIOs which allows the =
+AP
+> > to access sensors by bit-banging their interfaces. Some SoCs in this
+> > category are SDM630/660, MSM8953, MSM8974 and MSM8226.
+> >=20
+> > Before Sensor Manager becomes accessible, another service known as Sens=
+or
+> > Registry needs to be provided by the AP. The remote processor that prov=
+ides
+> > Sensor Manager will then request data from it, and once that process is
+> > done, will expose several services including Sensor Manager.
+> >=20
+> > This series adds a kernel driver for the Sensor Manager service, exposi=
+ng
+> > sensors accessible through it as IIO devices. To facilitate probing of =
+this
+> > driver, QRTR is turned into a bus, with services being exposed as devic=
+es.
+> > Once the Sensor Manager service becomes available, the kernel attaches =
+its
+> > device to the driver added in this series. This allows for dynamic prob=
+ing
+> > of Sensor Manager without the need for static DT bindings, which would =
+also
+> > not be ideal because they would be describing software rather than
+> > hardware. Sensor Manager is given as a working example of the QRTR bus.
+> > Kernel drivers for other services may also be able to benefit from this
+> > change.
+>=20
+>=20
+> ...
+>=20
+> Hi Yassine,
+>=20
+> This series both adds an IIO driver and updates Networking code.
+>=20
+> I'd suggest splitting the series so that the Networking updates can be
+> targeted at net-next, while the IIO driver is targeted at a different tre=
+e.
+>=20
+> Also, I note that this series does not compile against current net-next.
+> This seems like it should be addressed, at least for the Networking
+> changes.
 
-Signed-off-by: Remi Buisson <remi.buisson@tdk.com>
----
- MAINTAINERS | 8 ++++++++
- 1 file changed, 8 insertions(+)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index e3b0109a23045926d6a7e9659afdab0a6dbf7bed..c4aa2102ef398130074d20dd5b9367ce3fa51968 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -12621,6 +12621,14 @@ F:	Documentation/ABI/testing/sysfs-bus-iio-inv_icm42600
- F:	Documentation/devicetree/bindings/iio/imu/invensense,icm42600.yaml
- F:	drivers/iio/imu/inv_icm42600/
- 
-+INVENSENSE ICM-456xx IMU DRIVER
-+M:	Remi Buisson <remi.buisson@tdk.com>
-+L:	linux-iio@vger.kernel.org
-+S:	Maintained
-+W:	https://invensense.tdk.com/
-+F:	Documentation/devicetree/bindings/iio/imu/invensense,icm45600.yaml
-+F:	drivers/iio/imu/inv_icm45600/
-+
- INVENSENSE MPU-3050 GYROSCOPE DRIVER
- M:	Linus Walleij <linus.walleij@linaro.org>
- L:	linux-iio@vger.kernel.org
-
--- 
-2.34.1
-
+I targeted linux-next. By including the IIO driver my idea was to show
+an example of using the QRTR bus, but if it has to target different trees
+then sure, I'll split it.
 
 

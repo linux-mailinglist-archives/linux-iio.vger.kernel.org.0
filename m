@@ -1,55 +1,55 @@
-Return-Path: <linux-iio+bounces-21754-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21755-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5A32B091A8
-	for <lists+linux-iio@lfdr.de>; Thu, 17 Jul 2025 18:24:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F899B0921C
+	for <lists+linux-iio@lfdr.de>; Thu, 17 Jul 2025 18:43:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 960EB7A30EB
-	for <lists+linux-iio@lfdr.de>; Thu, 17 Jul 2025 16:22:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A00A54A6304
+	for <lists+linux-iio@lfdr.de>; Thu, 17 Jul 2025 16:42:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E94792FCE01;
-	Thu, 17 Jul 2025 16:24:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C39992FBFE9;
+	Thu, 17 Jul 2025 16:42:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="iHnxNFs+"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="m8fg2IKA"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
+Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74D442FCE00
-	for <linux-iio@vger.kernel.org>; Thu, 17 Jul 2025 16:24:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A558145348;
+	Thu, 17 Jul 2025 16:42:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752769447; cv=none; b=YKMzEvcABGp7CzR33aDTcYd/a++Y5u/0hN9w7D6Xn+HseNCMhPPul0k+Obeekc4WuVNhUyiTWoR0RN1ZB8+GlYAgCNWGSq47bUJOcvVpUqvRNu7kHfIW4V4dffmcX+fHvUdyxRRL5xA5BP78xVKw6AP6vpJEBqDCd9p01C0Q6bQ=
+	t=1752770546; cv=none; b=oppIK/s0sGOO5daOEJBAAnsOemWq8whRQA/fahgglgK/WGFD70dh27IQyzgNOA8E1yILTLEKXu0g2F0eq66m+OU+IFZtJ4eM9jw4QRiwSheyKn7E7UadVdZwG2b0zVOoEYltewydvVwNQ0KNeSHbdVaoaxO29t+kjPnr3MutX8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752769447; c=relaxed/simple;
-	bh=YHuSeGyuzFj9eRs/8QVHHlbOr1O51SW1Pl4XyCBBqt8=;
+	s=arc-20240116; t=1752770546; c=relaxed/simple;
+	bh=pwzmXDwJ4zUMLHJozgllRu/mzzAcAPdj9GK36HNatug=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KzfqfeRD7h9izsT5/xHoTcXkKwI3mNR/Lo4VI/zw93AKBLsgVMcHWfQiyxLUU32UgRyyJXcCkGKJx6cNgaCInLIkUul1J1OhsQ0XuTDf3L8D2e/xgCWqwQx6j7KMzbZEXFUb2rq9dLzgVRrXQneSR5PQpvLY+ZEcJmUyodA1ey4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=iHnxNFs+; arc=none smtp.client-ip=95.215.58.171
+	 In-Reply-To:Content-Type; b=YEkXf7V9UV+onMPrb/7C18BjGPzaSnPbeZnZhQIA4MN+9PlJ240xUNh5F1yBvIoo2Ea1YfwwXqbu5EYaYCPg80YJNyK6CHtbJchuyBmIoe23EKLPzEVTf4FDinXw/A6/JyY2b/oDrx7kcZGNE+FE4hkyTu1NXxDMqGVy6VSmSzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=m8fg2IKA; arc=none smtp.client-ip=95.215.58.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Message-ID: <e4894ab6-dd75-45d5-a49f-832c64b89eaf@linux.dev>
+Message-ID: <f180b5ac-131f-474a-be5e-70787972a772@linux.dev>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1752769443;
+	t=1752770541;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=n7vMLMzdSHL/tgeYa8YW+cdNWD5F1hvYoUcll8af0rA=;
-	b=iHnxNFs+8qvF6hO4DdUrh0ge01fM5hEh1n5K2U1wXr+pU3ZlIW8XScPlK8vTGjNGuWk+5t
-	xToIfuoSbl4ifZDfmb5xnnlVZJ2gRySLuqDdwrgSRZxY9MPG6llW6TDvsrOm6Qv1wCQ2M4
-	N+JFY00fT1xqfPJQRu+XKX/anERv13M=
-Date: Thu, 17 Jul 2025 12:23:58 -0400
+	bh=I57bGWW9HkB2BD1T3Qt5kgqxhjLDrfo2Pvi/xORSNyE=;
+	b=m8fg2IKADa4qU9gIaAHsRTO2qJ11Wiblg7fZdxmnZZ4N9E9weBx+d5aaL/MFgkSieN0onb
+	yceX37QtsrrwWTo4DeQQ97vjAE35CGMvLn16a+4kdvA4SmG7GHO/jiR72M+xcEGi/Aees7
+	qyybYucPF9Oo9NtlJ47+98oKRR3xKGs=
+Date: Thu, 17 Jul 2025 12:42:13 -0400
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH 7/7] hwmon: iio: Add alarm support
+Subject: Re: [PATCH 2/7] iio: inkern: Add API for reading/writing events
 To: Andy Shevchenko <andriy.shevchenko@intel.com>
 Cc: Jonathan Cameron <jic23@kernel.org>, Jean Delvare <jdelvare@suse.com>,
  Guenter Roeck <linux@roeck-us.net>, linux-iio@vger.kernel.org,
@@ -57,184 +57,61 @@ Cc: Jonathan Cameron <jic23@kernel.org>, Jean Delvare <jdelvare@suse.com>,
  =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, linux-kernel@vger.kernel.org,
  David Lechner <dlechner@baylibre.com>
 References: <20250715012023.2050178-1-sean.anderson@linux.dev>
- <20250715012023.2050178-8-sean.anderson@linux.dev>
- <aHYWQOjJEWdLjy7H@smile.fi.intel.com>
- <3b35b3a7-3f1a-4401-9b60-ba4afda5636e@linux.dev>
- <aHd6NEHcCa6aqJB5@smile.fi.intel.com>
+ <20250715012023.2050178-3-sean.anderson@linux.dev>
+ <aHYOuzdQ_jSKA898@smile.fi.intel.com>
+ <8bb7d291-f94a-4e96-b3ec-93fbe06c8407@linux.dev>
+ <aHdwzFk-688ASRx2@smile.fi.intel.com>
 Content-Language: en-US
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Sean Anderson <sean.anderson@linux.dev>
-In-Reply-To: <aHd6NEHcCa6aqJB5@smile.fi.intel.com>
+In-Reply-To: <aHdwzFk-688ASRx2@smile.fi.intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Migadu-Flow: FLOW_OUT
 
-On 7/16/25 06:08, Andy Shevchenko wrote:
-> On Tue, Jul 15, 2025 at 12:20:24PM -0400, Sean Anderson wrote:
->> On 7/15/25 04:50, Andy Shevchenko wrote:
->> > On Mon, Jul 14, 2025 at 09:20:23PM -0400, Sean Anderson wrote:
+On 7/16/25 05:28, Andy Shevchenko wrote:
+> On Tue, Jul 15, 2025 at 11:42:05AM -0400, Sean Anderson wrote:
+>> On 7/15/25 04:18, Andy Shevchenko wrote:
+>> > On Mon, Jul 14, 2025 at 09:20:18PM -0400, Sean Anderson wrote:
 > 
 > ...
 > 
->> >>  #include <linux/hwmon-sysfs.h>
+>> >> +EXPORT_SYMBOL_GPL(iio_event_mode);
 >> > 
->> > + blank line here..
+>> > Can we move this to namespace? Otherwise it will be never ending story...
+>> > Ditto for other new APIs.
 >> 
->> why?
+>> Never ending story of what?
 > 
-> To group the subsystem related headers (which are more custom and less generic).
-> This allows to follow what the subsystems are in use and what APIs / types are
-> taken.
+> Of converting IIO core to use exported namespaces.
 
-Then you should send a patch for coding-style.rst.
+What's the purpose?
 
->> >>  #include <linux/iio/consumer.h>
->> >> +#include <linux/iio/events.h>
->> >> +#include <linux/iio/iio.h>
->> >>  #include <linux/iio/types.h>
+>> >> +			if (scale64 <= INT_MAX && scale64 >= INT_MIN)
+>> >> +				raw64 = processed / (int)scale64;
 >> > 
->> > ...and here?
+>> > Do you need the casting? (I mean if the compiler is dumb enough to not see this)
 >> 
->> OK
->> 
->> >> +#include <uapi/linux/iio/events.h>
+>> AIUI 64-bit division is not available on 32-bit platforms. The cast
+>> ensures we get 32-bit division.
 > 
-> As similar here, to visually split uAPI and the rest. This increases
-> readability and maintenance.
-> 
-> ...
-> 
->> >> +static ssize_t iio_hwmon_lookup_alarm(struct iio_hwmon_listener *listener,
->> >> +				      u64 id)
->> >> +{
->> >> +	ssize_t i;
->> >> +
->> >> +	for (i = 0; i < listener->num_alarms; i++)
->> >> +		if (listener->ids[i] == id)
->> >> +			return i;
+> I put specifically a remark in the parentheses. So, the Q is if the compiler
+> doesn't recognize that. Can you confirm that 32-bit compilation without cast
+> is broken?
+
+inkern.c:(.text.iio_write_event_processed_scale+0x14c): undefined reference to `__aeabi_ldivmod'
+
+>> >> +	*raw = clamp(raw64, (s64)INT_MIN, (s64)INT_MAX);
 >> > 
->> >> +	return -1;
->> > 
->> > -ENOENT ?
->> > This will allow to propagate an error code to the upper layer(s).
+>> > You already have similar approach here...
 >> 
->> I suppose. But I think
->> 
->> alarm = iio_hwmon_lookup_alarm(...);
->> if (alarm < 0)
->> 	return -ENOENT;
->> 
->> is clearer than
+>> Well, I can spell it 0x7fffffffLL if you'd like...
 > 
-> I disagree. This makes it worth as it shadows other possible code(s), if any,
-> and makes harder to follow as reader has to check the callee implementation.
-> 
-> The shadow error codes need a justification.
+> Nope, I like to have named constants instead of magics, but actually are those
+> castings needed for the clamp()?
 
-OK, I will return a bool next time to avoid any misconceptions that the return
-code means anything other than "found" or "not found"
+Apparently not. The checks in __clamp_once are only for matching signedness. And
+the ints are promoted to s64s when the comparison is made.
 
->> alarm = iio_hwmon_lookup_alarm(...);
->> if (alarm < 0)
->> 	return alarm;
->> 
->> because you don't have to read the definition of iio_hwmon_lookup_alarm
->> to determine what the return value is.
-> 
-> Exactly my point!
-
-your point is that you want readers to have to read the definition of
-iio_hwmon_lookup_alarm in order to determine that ENOENT is a possible
-error from add_alarm_attr? I don't follow.
-
->> >> +}
-> 
-> ...
-> 
->> >> +err_alarms:
->> >> +	kfree(listener->alarms);
->> >> +	kfree(listener->ids);
->> >> +err_listener:
->> >> +	kfree(listener);
->> >> +err_unlock:
->> >> +	mutex_unlock(&iio_hwmon_listener_lock);
->> >> +	return ERR_PTR(err);
->> > 
->> > What about using __free()?
->> 
->> That works for listener, but not for alarms or ids.
-> 
-> Why not?
-> 
-> ...
-> 
->> >> +static void iio_hwmon_listener_put(void *data)
->> >> +{
->> >> +	struct iio_hwmon_listener *listener = data;
->> >> +
->> >> +	scoped_guard(mutex, &iio_hwmon_listener_lock) {
->> >> +		if (unlikely(listener->refcnt == UINT_MAX))
->> >> +			return;
->> >> +
->> >> +		if (--listener->refcnt)
->> >> +			return;
->> > 
->> > Can the refcount_t be used with the respective APIs? Or even kref?
->> 
->> Why? We do all the manipulation under a mutex, so there is no point in
->> atomic access. Instead of the games refcnt_t has to play to try and
->> prevent overflow we can just check for it directly.
-> 
-> refcount_t provides a facility of overflow/underflow.
-
-refcount_t can't prevent underflow because it's atomic. All it can do is
-warn after the fact. And of course overflow is handled properly here.
-But it can't occur in practice unless you specifically load multiple
-devicetrees at runtime. So we don't need it anyway.
-
-> Also it gives better
-> understanding from the data type to see which value and how does that.
-
-That's why I named the variable "refcnt".
-
->> >> +		list_del(&listener->list);
->> >> +		iio_event_unregister(listener->indio_dev, &listener->block);
->> >> +	}
->> >> +
->> >> +	kfree(listener->alarms);
->> >> +	kfree(listener->ids);
->> >> +	kfree(listener);
->> >> +}
-> 
-> ...
-> 
->> >> +	if (test_and_clear_bit(sattr->alarm, sattr->listener->alarms)) {
->> >> +		u64 id = sattr->listener->ids[sattr->alarm];
->> >> +		enum iio_event_direction dir = IIO_EVENT_CODE_EXTRACT_DIR(id);
->> >> +
->> >> +		WARN_ON(iio_hwmon_alarm_toggle(chan, dir));
->> > 
->> >> +		strcpy(buf, "1\n");
->> >> +		return 2;
->> > 
->> >> +	}
->> >> +
->> >> +	strcpy(buf, "0\n");
->> >> +	return 2;
->> > 
->> > Better to assign the value and
->> >
->> > 	return sysfs_emit(...);
->> > 
->> > which will make even easier to recognize that this is supplied to user via
->> > sysfs.
->> 
->> :l
->> 
->> the things we do to avoid memcpy...
-> 
-> ...for the cost of readability. Also this is a slow path.
-
-
-
+--Sean
 

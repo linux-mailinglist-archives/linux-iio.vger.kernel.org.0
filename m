@@ -1,143 +1,151 @@
-Return-Path: <linux-iio+bounces-21781-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21782-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D30EB0B1A7
-	for <lists+linux-iio@lfdr.de>; Sat, 19 Jul 2025 21:45:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01D25B0B1C2
+	for <lists+linux-iio@lfdr.de>; Sat, 19 Jul 2025 22:37:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 32DD61707AA
-	for <lists+linux-iio@lfdr.de>; Sat, 19 Jul 2025 19:45:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ADD9F189E5E4
+	for <lists+linux-iio@lfdr.de>; Sat, 19 Jul 2025 20:37:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 548EF1E520B;
-	Sat, 19 Jul 2025 19:45:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 708BE21C173;
+	Sat, 19 Jul 2025 20:37:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Toiuy2fH"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="y7aU6BVm"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C409E84A2B
-	for <linux-iio@vger.kernel.org>; Sat, 19 Jul 2025 19:45:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7FC9191484;
+	Sat, 19 Jul 2025 20:37:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752954329; cv=none; b=a1e6K9QbmSTFw88l/LoBwUqs+yTP0DfIL84sUzutgdyiDLHLFXH91WJvftt7s83U5HG6Q+aGAcFYvGAhzYeb43t3Qjn4BjofYwNg4XlkZR7ufM8pELtnQ0hqV2p5THiOlraEebYJu5fUQCGY1etJfD+pt2CdwylbnBuEd9yVDZA=
+	t=1752957455; cv=none; b=B986bCrQNkICETPa7Es7Jnri0/66KD+A9lwzJ3JtaAkiUym1bzPmX+eIGZVyXzhC4VkrNbDNNj2PQvCD4eDJsLsoWExFMyo1dn1y0gRzbGc+ahkszeikCvq+BmuR6IKKoRavkf4k/UkKuKa1JKcPGrMvi9gGICGl7FCKWV7+doU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752954329; c=relaxed/simple;
-	bh=AN2b6BQuocjE9x5tw1wI8h+nxEosHescELJRFiMmvNk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ulxvrqfg8c+fAyok5qZFdY9u+nyvLxRzWg/DINa6pjyP/1bNVsvrFqzapGeVm1EwktgLkiXpJXQkGgOHjN9tqfR+2Aay+CxzMz/OESaD+Qu64ByJMKVaDgbH9ZSK3LpQiClJ5LPFymF+prCEWzcuzB/0oOgtgRls1HH15nm/sas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Toiuy2fH; arc=none smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-23c703c471dso44477355ad.0
-        for <linux-iio@vger.kernel.org>; Sat, 19 Jul 2025 12:45:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752954327; x=1753559127; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=J0OHn8KQ12Gdebl0tLkn/OQhtqK2uHFAQyh5Xl6vrBQ=;
-        b=Toiuy2fH9vpYpNq+R/VqufmMzQWKvDhH2SwXUe049SivpXyfV0k+ywImclneJ6Z9CH
-         QK4C68YhhwgIszoMciqtfrWre7m5AIw8AbehAx5WjDlkzRd1WW/E2bKmwYQVsjQRCNha
-         Ad7JKSgkuVdkW3x8fUElrlGUghnN/i1DR7s26RsZZEJQ+yfTnAoGsPmZkhhhVJooix4K
-         TslOes6w7h8OoVHxAqKgw3ru0qZUHCZVhLMmztWmzBvpgVPFXNJFoNq8tyCk28S0ApxZ
-         lYKBn7aLvmXuMsiHUsKpyuKvIFMmKZSyhEzoq012UYB4dJHMpx+dMwfBsCREXPB77mlG
-         1s6g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752954327; x=1753559127;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=J0OHn8KQ12Gdebl0tLkn/OQhtqK2uHFAQyh5Xl6vrBQ=;
-        b=GIyKq3ZilQ5HFzDNJCCBJi3osv5gVALVnMT3n35+e7cg1BKVZBl43tStr5YqNsrmaq
-         Ykbarb/JXK2SMHVDz3F5J6Pa2u1N9B7b1gkuaDwXXRrY8Ti3h6vWHX8zz05Qb9Au2gjH
-         3O34C7Yl8NisUCL0xMQRbxurHZaHi2hePUlmb1zwxiD05kG3nzNRisuReXIOFnNHEIG/
-         EZsp5DheTk/MxQ/lf2pDP+YDrhkb7s9sjs+Csrt6B1v4v/ZEH929rPg327Ms7kAoMk4e
-         5CNsGgU9n24DP8jjIGbgM5ZZO+1UXzby30z1Nc+SleMgPrKO5P+GuxBfekM07KUw0xab
-         qvtw==
-X-Forwarded-Encrypted: i=1; AJvYcCVJPsPc0dlSnfJDhefvvZeOcX7VwEK2PPrZQzEHH2XL5kU77WVSQrtz0nbfkhSykCeQKBNA+RQ/6M0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwV8AyNVCDQpBG+ulSI5XL73ORnZU+X+o5Y6X6bWtUZHAf7yBXW
-	orI7NrUTV44fZaZkgtAh+0GVlOXJyvZ2cz0TlfkSEj21CfrkFRT0gGc5
-X-Gm-Gg: ASbGncutesXLw5UvRmDxlgWqEADpQ+RY0+TApA2LjLn8Nm2lpw1u/IMqfO+eNWB+RYc
-	2cW8ot3ukUXAnx5m9K/IU9I7YqE8dJ5x/OE1EHNZqgRk5THRSDaCdPLmVq3PnRhLI7JSefY4oY7
-	9jU1XD5ppE+ej1FtQ4n2dC835fQ44XlUy7qUt1+H73p1GbUGfP59RcQDgegWCSjEQpjK+tOHlOd
-	KLXR8xqN+9AP3sQ0QcIoQ4tAXlxSTm5JgZBV5rlKJjE5imrIJE/PyNDJSanmVR4vEsJa8IkNFKE
-	S9X3SJPawJQeNAkawJF4u/s4KTGi1jPp5VrFXrQUTzbqQXXALnd8Uo3D/Dz8TEocXVRTT+okaCv
-	Nfe0p/ccEW3a27QdAiMEjAyEKVLblgdempUUyRgou
-X-Google-Smtp-Source: AGHT+IHLHhwEi7GS5AyGp5sLChIyGx7+N+QSJpXjaLBcTTckMIYgHbzMDo7NngTcK8FE6bJNhSI+/A==
-X-Received: by 2002:a17:903:4505:b0:231:9817:6ec1 with SMTP id d9443c01a7336-23e2f72dcd2mr152665355ad.17.1752954326869;
-        Sat, 19 Jul 2025 12:45:26 -0700 (PDT)
-Received: from localhost ([2804:30c:b15:b200:425a:de22:1d7f:2d4b])
-        by smtp.gmail.com with UTF8SMTPSA id d9443c01a7336-23e3b6ef4b8sm32487745ad.194.2025.07.19.12.45.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 19 Jul 2025 12:45:25 -0700 (PDT)
-Date: Sat, 19 Jul 2025 16:47:37 -0300
-From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Dan Carpenter <dan.carpenter@linaro.org>,
-	Marcelo Schmitt <marcelo.schmitt@analog.com>,
-	linux-iio@vger.kernel.org
-Subject: Re: [bug report] iio: adc: ad4170-4: Add digital filter and sample
- frequency config support
-Message-ID: <aHv2WbZ5DhdCui4g@debian-BULLSEYE-live-builder-AMD64>
-References: <c6e54942-5b42-484b-be53-9d4606fd25c4@sabinyo.mountain>
- <20250719131556.1ecbdf5a@jic23-huawei>
+	s=arc-20240116; t=1752957455; c=relaxed/simple;
+	bh=d1y7Y/qXdjcx7CdL+FADat6eddsAFGpX2OE/zDSRinM=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=OiV6RrynlFs+fvyATxJc99dX1MSs/oiq5/o85c2ZzRvQp+yXGRD2wk6rl0aY20/2Ie+SGAqs0g3fpXKb+rLwPc4WP+TKiHpFHEGtxyMSaqHsxMVYuRQL7nmQZ3FXVwobhqCIVboRyXiJ6z9K/VZdLSi0/QfGsKmYS9Zunp0epTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=y7aU6BVm; arc=none smtp.client-ip=148.163.135.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+	by mx0a-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56JJPANx008103;
+	Sat, 19 Jul 2025 16:37:04 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=DKIM; bh=5VhNeZaGVO+KPeewbNqaIdq0o85
+	MTUTPES/xWee+v8U=; b=y7aU6BVmKTGDHLCODdfO1M8kFaUBKO6ATkNyJEyKucx
+	rtdlqtOyXmLzedVBEjpHXOcZj3ZZnIBoeLHUOT87yiH5Ntmm6nUN8GC/F0i3aplb
+	uvEn3b1+Xu+9Z7802NeeWJgajM1ymhl9DI4LxLqqsKIuilKPLIq9prPZIv+e6XbL
+	qnbo2gr4/X3+1Juy6NRxMZvf4L1jPlNkvZExsYrN4yTN09dar8OyGpB18LGR4ak/
+	FVUYU0P5XoMj0PP8y9V9BDjQ4LcZG2nw2ZYWh3Cvw8HdHQ7qI+bbGm/shiiugEKD
+	8TTSempyumsinELkIl+DhttdNxemyqa1jg954RTcCRw==
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 480b6p98p9-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sat, 19 Jul 2025 16:37:04 -0400 (EDT)
+Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
+	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 56JKb2GE054515
+	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Sat, 19 Jul 2025 16:37:02 -0400
+Received: from ASHBCASHYB5.ad.analog.com (10.64.17.133) by
+ ASHBMBX8.ad.analog.com (10.64.17.5) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.10; Sat, 19 Jul 2025 16:37:02 -0400
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by
+ ASHBCASHYB5.ad.analog.com (10.64.17.133) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.10; Sat, 19 Jul 2025 16:37:02 -0400
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server id 15.2.1748.10 via Frontend
+ Transport; Sat, 19 Jul 2025 16:37:02 -0400
+Received: from work.ad.analog.com (HYB-hERzalRezfV.ad.analog.com [10.65.205.9])
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 56JKalu6019557;
+	Sat, 19 Jul 2025 16:36:50 -0400
+From: Marcelo Schmitt <marcelo.schmitt@analog.com>
+To: <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC: <jic23@kernel.org>, <dan.carpenter@linaro.org>, <lars@metafoo.de>,
+        <Michael.Hennerich@analog.com>, <dlechner@baylibre.com>,
+        <nuno.sa@analog.com>, <andy@kernel.org>, <marcelo.schmitt1@gmail.com>
+Subject: [PATCH] iio: adc: ad4170-4: Correctly update filter_fs after filter type change
+Date: Sat, 19 Jul 2025 17:36:42 -0300
+Message-ID: <7b2fec30e9c6a80630a5fc08fb061d17417eb350.1752956751.git.marcelo.schmitt@analog.com>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250719131556.1ecbdf5a@jic23-huawei>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-ORIG-GUID: 8LB8axdSLzkqH8-K2XkpZKq-z1Mf46h-
+X-Proofpoint-GUID: 8LB8axdSLzkqH8-K2XkpZKq-z1Mf46h-
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzE5MDIwNSBTYWx0ZWRfX6dRS8Xa+wJeO
+ b1gBfdTgeIg/i7O3mYTYa7oYbSPzH3mLWqShkSQo1U2BqTfpN1e1+WIBLfH0jaqUY6ohrvYpIBt
+ P1Mr/dDcAYGPFAmM1ZoZZ+g3/h3/uNKcXSVCOSXWf/VxR0HPaTlheUNuceKBFrPsoN4U92GJPPh
+ Aaz/mD1l+KBGPE3/tgVxVEf4aDlRHqdTD9lI8XTZeAf9ea/4I42At/xjdPi3ysK2c7sonZK501t
+ ka6Q+byexasflmyjsSxlv+B//dVvsohvKNjgcmLRhZVyio2TELe5dEgV8b9jRsvv+ZRR9WDvnpG
+ OKtdQEbeSv0rAceAz8x1vpBjStw8ez5uFMHPxWJevvk2ojFVnCkQLM+ldcMoRQ06KQHdiyHUc3N
+ j+PhBfBErJ3nxfFZqFW7lNytcbt4r2QQQg/KpTZHKvP2OUv1wEdUQGnghuQDnqSADGhZxACj
+X-Authority-Analysis: v=2.4 cv=KKdaDEFo c=1 sm=1 tr=0 ts=687c01f0 cx=c_pps
+ a=3WNzaoukacrqR9RwcOSAdA==:117 a=3WNzaoukacrqR9RwcOSAdA==:17
+ a=Wb1JkmetP80A:10 a=VwQbUJbxAAAA:8 a=KKAkSRfTAAAA:8 a=gAnH3GRIAAAA:8
+ a=dFwZVDRm2i14ZgZprooA:9 a=cvBusfyB2V15izCimMoJ:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-07-19_02,2025-07-17_02,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0 mlxlogscore=999 clxscore=1011 malwarescore=0
+ impostorscore=0 bulkscore=0 spamscore=0 priorityscore=1501 suspectscore=0
+ phishscore=0 mlxscore=0 adultscore=0 classifier=spam authscore=0 authtc=n/a
+ authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2505280000 definitions=main-2507190205
 
-Hi Dan,
+Previously, the driver was directly using the filter type value to update
+the filter frequency (filter_fs) configuration. That caused the driver to
+switch to the lowest filter_fs configuration (highest sampling frequency)
+on every update to the filter type. Correct the filter_fs colateral update
+by clampling it to the range of supported values instead of mistakenly
+using the filter type to update the filter_fs.
 
-Thanks for the bug report. The filter_fs update was indeed buggy.
-I've prepared a patch to fix that.
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/linux-iio/c6e54942-5b42-484b-be53-9d4606fd25c4@sabinyo.mountain/
+Suggested-by: Jonathan Cameron <jic23@kernel.org>
+Fixes: 8ab7434734cd ("iio: adc: ad4170-4: Add digital filter and sample frequency config support")
+Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
+---
+Didn't find a bug report in https://bugzilla.kernel.org/ to link with a
+Closes: tag so added a Link: tag instead.
 
-On 07/19, Jonathan Cameron wrote:
-> On Tue, 15 Jul 2025 18:00:03 -0500
-> Dan Carpenter <dan.carpenter@linaro.org> wrote:
-> 
-> > Hello Marcelo Schmitt,
-> > 
-> > Commit 6b648c49d491 ("iio: adc: ad4170-4: Add digital filter and
-> > sample frequency config support") from Jul 7, 2025 (linux-next),
-> > leads to the following (unpublished) Smatch static checker warning:
-> > 
-...
-> >     881 
-> >     882                 if (val == AD4170_SINC5_AVG || val == AD4170_SINC3)
-> >                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-> > So "val" can either be 0 or 2.
-> > 
-> > --> 883                         setup->filter_fs = clamp(val, AD4170_SINC3_MIN_FS,  
-> >                                                               ^^^^^^^^^^^^^^^^^^^
-> >     884                                                  AD4170_SINC3_MAX_FS);
-> >                                                          ^^^^^^^^^^^^^^^^^^^
-> > and we clamp it to 4-65532.  Since filter_fs is always 4 in the end, why
-> > not just say "setup->filter_fs = AD4170_SINC3_MIN_FS;"?
-> 
-> Code is weird.  My 'guess' from comments is intent is actually trying to tweak
-> setup->filter_fs in event of the previous value now being impossible for the new
-> filter type.
-> 
-> 				setup->filter_fs = clamp(setup->filter_fs, AD4170_SINC_MIN_FS,
-> 							 AD4170_SINC3_MAX_FS)
-> 
-> etc.
-> 
-> Marcelo?
+ drivers/iio/adc/ad4170-4.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-Hi Jonathan,
+diff --git a/drivers/iio/adc/ad4170-4.c b/drivers/iio/adc/ad4170-4.c
+index 6cd84d6fb08b..de35cef85a6e 100644
+--- a/drivers/iio/adc/ad4170-4.c
++++ b/drivers/iio/adc/ad4170-4.c
+@@ -880,10 +880,12 @@ static int ad4170_set_filter_type(struct iio_dev *indio_dev,
+ 			return -EBUSY;
+ 
+ 		if (val == AD4170_SINC5_AVG || val == AD4170_SINC3)
+-			setup->filter_fs = clamp(val, AD4170_SINC3_MIN_FS,
++			setup->filter_fs = clamp(setup->filter_fs,
++						 AD4170_SINC3_MIN_FS,
+ 						 AD4170_SINC3_MAX_FS);
+ 		else
+-			setup->filter_fs = clamp(val, AD4170_SINC5_MIN_FS,
++			setup->filter_fs = clamp(setup->filter_fs,
++						 AD4170_SINC5_MIN_FS,
+ 						 AD4170_SINC5_MAX_FS);
+ 
+ 		setup->filter &= ~AD4170_FILTER_FILTER_TYPE_MSK;
 
-That's correct, the idea there is just to update filter_fs to a value that's
-actually supported by the newly selected filter type. Thanks for your suggestion.
-Hope I may come up with fixes earlier on next bug reports.
+base-commit: cd2731444ee4e35db76f4fb587f12d327eec5446
+-- 
+2.47.2
 
-Best regards,
-Marcelo 
 

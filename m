@@ -1,179 +1,143 @@
-Return-Path: <linux-iio+bounces-21780-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21781-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFFFAB0B10E
-	for <lists+linux-iio@lfdr.de>; Sat, 19 Jul 2025 19:19:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D30EB0B1A7
+	for <lists+linux-iio@lfdr.de>; Sat, 19 Jul 2025 21:45:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EBAF1189A050
-	for <lists+linux-iio@lfdr.de>; Sat, 19 Jul 2025 17:19:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 32DD61707AA
+	for <lists+linux-iio@lfdr.de>; Sat, 19 Jul 2025 19:45:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3DD021C165;
-	Sat, 19 Jul 2025 17:19:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 548EF1E520B;
+	Sat, 19 Jul 2025 19:45:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lsy82JPl"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Toiuy2fH"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70A4D42AA4;
-	Sat, 19 Jul 2025 17:19:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C409E84A2B
+	for <linux-iio@vger.kernel.org>; Sat, 19 Jul 2025 19:45:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752945568; cv=none; b=LJxzw/Z2Fv3ARDtbm5nBye3EWJHCtFFSrm5r1yu4U5RpTAZuJfHY7RUzOvq4nzL+FI7Wmq2QfTYvAjGWc2PPUbTXMuHsWy3/OTG9+b3uUAswZ4lNPnMqQ9nLmD5kNDfO4Vjl6Z3DemDnxLFrBA0gZjG2Hlsf0ySjIf3vkxAHUCo=
+	t=1752954329; cv=none; b=a1e6K9QbmSTFw88l/LoBwUqs+yTP0DfIL84sUzutgdyiDLHLFXH91WJvftt7s83U5HG6Q+aGAcFYvGAhzYeb43t3Qjn4BjofYwNg4XlkZR7ufM8pELtnQ0hqV2p5THiOlraEebYJu5fUQCGY1etJfD+pt2CdwylbnBuEd9yVDZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752945568; c=relaxed/simple;
-	bh=e5rgUdJo2dK/e+OmbOI/EEyI0Fxk0Q4aGrlatS6p2ok=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dUq94xyyaTOjkCdTvI6lfUxw7cnrA1ZPPUHrV8F77r1C+6/gh2jm15fK66ptwrqXa4FeMu9Ied3+SJIF+c+6fTOQ8Oqapb8ECW9qbvnwWoD5DRAxVvimUcD9doOZC7pF7yD+M9m6NkwR/TOEQeoN9s7gZeZKlpK7IiLtAXUytoI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lsy82JPl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37CD5C4CEE3;
-	Sat, 19 Jul 2025 17:19:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752945567;
-	bh=e5rgUdJo2dK/e+OmbOI/EEyI0Fxk0Q4aGrlatS6p2ok=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=lsy82JPlf8Wai9HWzJKO1NQn6YwlCKng9fQBt6r64/v8Qng6dDOKMM8omkS9D1cdr
-	 Py0yF3kh5CrW3WVJgfnUSyhqsWJCoGJdQT3hJNuHDkdPigYPhkyMESUQEjwiJ0IX8i
-	 U0pRV5dVS27OunE/EaSL/0fsviyeKdudIulg/C+CWeFmkg0gfO0TKH72VEoUcgNzzc
-	 UD/XM2u9HtVQ4mCBrw54k1zW390nZAX0zRjUaqqRNs0vAtnNOzKtKFT2tpscjre1q7
-	 vTGGVzkQeYpi1cfjS0Vz3wg6HqkdbchW2BDuP4pX5Vm8eA+Xm7TaduV+GFiEu32x8J
-	 Chxuw66Q8E03Q==
-Date: Sat, 19 Jul 2025 18:19:15 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Yassine Oudjana <y.oudjana@protonmail.com>
-Cc: Yassine Oudjana via B4 Relay
- <devnull+y.oudjana.protonmail.com@kernel.org>, Manivannan Sadhasivam
- <mani@kernel.org>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Bjorn Andersson
- <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, Masahiro
- Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>,
- Nicolas Schier <nicolas.schier@linux.dev>, David Lechner
- <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy
- Shevchenko <andy@kernel.org>, Luca Weiss <luca@lucaweiss.eu>,
- linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org,
- linux-iio@vger.kernel.org
-Subject: Re: [PATCH v2 4/4] iio: Add Qualcomm Sensor Manager driver
-Message-ID: <20250719181915.499d5c4d@jic23-huawei>
-In-Reply-To: <nSoiRmruHeLNNxpRCxJ5M5aQ-Vx7lE3U9wtVwYh6MVZHr0pkk9Cwl5ggSN3xAZ09zA8bk_RJS6mRAgxWkCIrNGogaElh4x8VKaQPO_Rzrqs=@protonmail.com>
-References: <20250710-qcom-smgr-v2-0-f6e198b7aa8e@protonmail.com>
-	<20250710-qcom-smgr-v2-4-f6e198b7aa8e@protonmail.com>
-	<20250713164033.3488db3c@jic23-huawei>
-	<nSoiRmruHeLNNxpRCxJ5M5aQ-Vx7lE3U9wtVwYh6MVZHr0pkk9Cwl5ggSN3xAZ09zA8bk_RJS6mRAgxWkCIrNGogaElh4x8VKaQPO_Rzrqs=@protonmail.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1752954329; c=relaxed/simple;
+	bh=AN2b6BQuocjE9x5tw1wI8h+nxEosHescELJRFiMmvNk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ulxvrqfg8c+fAyok5qZFdY9u+nyvLxRzWg/DINa6pjyP/1bNVsvrFqzapGeVm1EwktgLkiXpJXQkGgOHjN9tqfR+2Aay+CxzMz/OESaD+Qu64ByJMKVaDgbH9ZSK3LpQiClJ5LPFymF+prCEWzcuzB/0oOgtgRls1HH15nm/sas=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Toiuy2fH; arc=none smtp.client-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-23c703c471dso44477355ad.0
+        for <linux-iio@vger.kernel.org>; Sat, 19 Jul 2025 12:45:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1752954327; x=1753559127; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=J0OHn8KQ12Gdebl0tLkn/OQhtqK2uHFAQyh5Xl6vrBQ=;
+        b=Toiuy2fH9vpYpNq+R/VqufmMzQWKvDhH2SwXUe049SivpXyfV0k+ywImclneJ6Z9CH
+         QK4C68YhhwgIszoMciqtfrWre7m5AIw8AbehAx5WjDlkzRd1WW/E2bKmwYQVsjQRCNha
+         Ad7JKSgkuVdkW3x8fUElrlGUghnN/i1DR7s26RsZZEJQ+yfTnAoGsPmZkhhhVJooix4K
+         TslOes6w7h8OoVHxAqKgw3ru0qZUHCZVhLMmztWmzBvpgVPFXNJFoNq8tyCk28S0ApxZ
+         lYKBn7aLvmXuMsiHUsKpyuKvIFMmKZSyhEzoq012UYB4dJHMpx+dMwfBsCREXPB77mlG
+         1s6g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752954327; x=1753559127;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=J0OHn8KQ12Gdebl0tLkn/OQhtqK2uHFAQyh5Xl6vrBQ=;
+        b=GIyKq3ZilQ5HFzDNJCCBJi3osv5gVALVnMT3n35+e7cg1BKVZBl43tStr5YqNsrmaq
+         Ykbarb/JXK2SMHVDz3F5J6Pa2u1N9B7b1gkuaDwXXRrY8Ti3h6vWHX8zz05Qb9Au2gjH
+         3O34C7Yl8NisUCL0xMQRbxurHZaHi2hePUlmb1zwxiD05kG3nzNRisuReXIOFnNHEIG/
+         EZsp5DheTk/MxQ/lf2pDP+YDrhkb7s9sjs+Csrt6B1v4v/ZEH929rPg327Ms7kAoMk4e
+         5CNsGgU9n24DP8jjIGbgM5ZZO+1UXzby30z1Nc+SleMgPrKO5P+GuxBfekM07KUw0xab
+         qvtw==
+X-Forwarded-Encrypted: i=1; AJvYcCVJPsPc0dlSnfJDhefvvZeOcX7VwEK2PPrZQzEHH2XL5kU77WVSQrtz0nbfkhSykCeQKBNA+RQ/6M0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwV8AyNVCDQpBG+ulSI5XL73ORnZU+X+o5Y6X6bWtUZHAf7yBXW
+	orI7NrUTV44fZaZkgtAh+0GVlOXJyvZ2cz0TlfkSEj21CfrkFRT0gGc5
+X-Gm-Gg: ASbGncutesXLw5UvRmDxlgWqEADpQ+RY0+TApA2LjLn8Nm2lpw1u/IMqfO+eNWB+RYc
+	2cW8ot3ukUXAnx5m9K/IU9I7YqE8dJ5x/OE1EHNZqgRk5THRSDaCdPLmVq3PnRhLI7JSefY4oY7
+	9jU1XD5ppE+ej1FtQ4n2dC835fQ44XlUy7qUt1+H73p1GbUGfP59RcQDgegWCSjEQpjK+tOHlOd
+	KLXR8xqN+9AP3sQ0QcIoQ4tAXlxSTm5JgZBV5rlKJjE5imrIJE/PyNDJSanmVR4vEsJa8IkNFKE
+	S9X3SJPawJQeNAkawJF4u/s4KTGi1jPp5VrFXrQUTzbqQXXALnd8Uo3D/Dz8TEocXVRTT+okaCv
+	Nfe0p/ccEW3a27QdAiMEjAyEKVLblgdempUUyRgou
+X-Google-Smtp-Source: AGHT+IHLHhwEi7GS5AyGp5sLChIyGx7+N+QSJpXjaLBcTTckMIYgHbzMDo7NngTcK8FE6bJNhSI+/A==
+X-Received: by 2002:a17:903:4505:b0:231:9817:6ec1 with SMTP id d9443c01a7336-23e2f72dcd2mr152665355ad.17.1752954326869;
+        Sat, 19 Jul 2025 12:45:26 -0700 (PDT)
+Received: from localhost ([2804:30c:b15:b200:425a:de22:1d7f:2d4b])
+        by smtp.gmail.com with UTF8SMTPSA id d9443c01a7336-23e3b6ef4b8sm32487745ad.194.2025.07.19.12.45.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 19 Jul 2025 12:45:25 -0700 (PDT)
+Date: Sat, 19 Jul 2025 16:47:37 -0300
+From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Dan Carpenter <dan.carpenter@linaro.org>,
+	Marcelo Schmitt <marcelo.schmitt@analog.com>,
+	linux-iio@vger.kernel.org
+Subject: Re: [bug report] iio: adc: ad4170-4: Add digital filter and sample
+ frequency config support
+Message-ID: <aHv2WbZ5DhdCui4g@debian-BULLSEYE-live-builder-AMD64>
+References: <c6e54942-5b42-484b-be53-9d4606fd25c4@sabinyo.mountain>
+ <20250719131556.1ecbdf5a@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250719131556.1ecbdf5a@jic23-huawei>
 
-> > > +static int qcom_smgr_iio_read_raw(struct iio_dev *iio_dev,
-> > > + struct iio_chan_spec const *chan, int *val,
-> > > + int *val2, long mask)
-> > > +{
-> > > + struct qcom_smgr_iio_priv *priv = iio_priv(iio_dev);
-> > > +
-> > > + switch (mask) {  
-> > 
-> > 
-> > No sysfs access at all to data is unusual but not completely unheard of.  
+Hi Dan,
+
+Thanks for the bug report. The filter_fs update was indeed buggy.
+I've prepared a patch to fix that.
+
+On 07/19, Jonathan Cameron wrote:
+> On Tue, 15 Jul 2025 18:00:03 -0500
+> Dan Carpenter <dan.carpenter@linaro.org> wrote:
 > 
-> There is no (known) method to request a single reading from the QMI
-> service. The only known way to get sensor data is to send a buffering
-> request to initiate sending data, then the remoteproc sends QMI
-> indications at a regular interval carrying sensor data which I am
-> pushing to the IIO buffers. The only way to implement direct sysfs
-> access would be to store the last received value somewhere then pass
-> it to sysfs when requested. This will also require enabling buffering
-> if disabled at the time of reading, then waiting until new data is
-> received. I didn't like this solution so I skipped direct sysfs access
-> altogether. Buffer access is enough for the current use case with
-> iio-sensor-proxy in userspace.
-
-This is absolutely fine.   I have mulled in the past implementing core
-code to deal with cases where we are in buffered mode but want to still
-provide sysfs access.  That applies for cases like ADCs where a couple
-of channels are used for a touchscreen but where there is a hardware
-restriction on accessing other channels on a oneshot basis whilst streaming
-data on the others.  Maybe one day we'll have that support and it will
-also help here, but it's not a high priority thing.
-
-> > > +static const struct iio_chan_spec qcom_smgr_pressure_iio_channels[] = {
-> > > + {
-> > > + .type = IIO_PRESSURE,
-> > > + .scan_index = 0,
-> > > + .scan_type = {
-> > > + .sign = 'u',
-> > > + .realbits = 32,
-> > > + .storagebits = 32,
-> > > + .endianness = IIO_LE,
-> > > + },
-> > > + .info_mask_separate = BIT(IIO_CHAN_INFO_SCALE) |
-> > > + BIT(IIO_CHAN_INFO_SAMP_FREQ)
-> > > + },
-> > > + {
-> > > + .type = IIO_TIMESTAMP,
-> > > + .channel = -1,
-> > > + .scan_index = 3,  
+> > Hello Marcelo Schmitt,
 > > 
+> > Commit 6b648c49d491 ("iio: adc: ad4170-4: Add digital filter and
+> > sample frequency config support") from Jul 7, 2025 (linux-next),
+> > leads to the following (unpublished) Smatch static checker warning:
 > > 
-> > Why 3?  
-> 
-> Because the same struct is used for this and 3-axis sensors, so we should
-> skip the unused values.
-
-I'm not sure how that is related to this value.  These are effectively monotonic
-but shouldn't be used to index anything driver side.  So there is nothing
-wrong with the value 3, it's just a bit odd.
-
-> 
-> >   
-> > > + .scan_type = {
-> > > + .sign = 'u',
-> > > + .realbits = 32,  
+...
+> >     881 
+> >     882                 if (val == AD4170_SINC5_AVG || val == AD4170_SINC3)
+> >                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> > So "val" can either be 0 or 2.
 > > 
-> > 
-> > If it's realbits 32 and no shift, why not store it in a 32 bit value?
-> > I assume this is a hardware provided timestamp rather than typical software
-> > filled in one? Anyhow, I'm not immediately spotting it being used yet
-> > so for now perhaps best to drop the channel descriptions.  
+> > --> 883                         setup->filter_fs = clamp(val, AD4170_SINC3_MIN_FS,  
+> >                                                               ^^^^^^^^^^^^^^^^^^^
+> >     884                                                  AD4170_SINC3_MAX_FS);
+> >                                                          ^^^^^^^^^^^^^^^^^^^
+> > and we clamp it to 4-65532.  Since filter_fs is always 4 in the end, why
+> > not just say "setup->filter_fs = AD4170_SINC3_MIN_FS;"?
 > 
-> The hardware (or firmware rather) passes an unsigned 32-bit timestamp
-> value in a 64-bit QMI field. I was previously passing it as-is to IIO
-> but now since I introduced a new struct I can make it 32-bit storagebits.
+> Code is weird.  My 'guess' from comments is intent is actually trying to tweak
+> setup->filter_fs in event of the previous value now being impossible for the new
+> filter type.
 > 
-> But below you said s64 for timestamp so which is it going to be?
-
-I wasn't sure if it was a software or hardware timestamp. Given it's coming
-from the QMI thing it's 'hardware' so 32 bit is correct here.
-
+> 				setup->filter_fs = clamp(setup->filter_fs, AD4170_SINC_MIN_FS,
+> 							 AD4170_SINC3_MAX_FS)
 > 
-> > > + {
-> > > + .service = SNS_SMGR_QMI_SVC_ID,
-> > > + / Found on MSM8996 and SDM660 */
-> > > + .instance = QRTR_INSTANCE_CONST(1, 50)
-> > > + },
-> > > + { },  
-> > 
-> > 
-> > No comma on a terminating entry like this.  
+> etc.
 > 
-> Ok. Gotta keep track of all the conventions used in different subsystems.
-I'm curious - have you ever had anyone request the comma?
+> Marcelo?
 
-I know some don't care, but it seems like an odd thing to insist on.
+Hi Jonathan,
 
-> 
-> >   
-> > > +};
-> > > +MODULE_DEVICE_TABLE(qrtr, qcom_smgr_qrtr_match);  
+That's correct, the idea there is just to update filter_fs to a value that's
+actually supported by the newly selected filter type. Thanks for your suggestion.
+Hope I may come up with fixes earlier on next bug reports.
 
-Jonathan
+Best regards,
+Marcelo 
 

@@ -1,57 +1,55 @@
-Return-Path: <linux-iio+bounces-21775-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21776-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87C96B0AFB2
-	for <lists+linux-iio@lfdr.de>; Sat, 19 Jul 2025 14:10:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2725B0AFC4
+	for <lists+linux-iio@lfdr.de>; Sat, 19 Jul 2025 14:16:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3D1F51C20628
-	for <lists+linux-iio@lfdr.de>; Sat, 19 Jul 2025 12:11:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C201E3B17D4
+	for <lists+linux-iio@lfdr.de>; Sat, 19 Jul 2025 12:15:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91A99224227;
-	Sat, 19 Jul 2025 12:10:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBEF627B4E1;
+	Sat, 19 Jul 2025 12:16:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uexWTw21"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MB6G+IYt"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E26C72629;
-	Sat, 19 Jul 2025 12:10:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD64A27A931
+	for <linux-iio@vger.kernel.org>; Sat, 19 Jul 2025 12:16:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752927044; cv=none; b=YRibO0MRXL1jY7aLXKGQ4UBxLcDJXWLTUhlpie/nj2fA+BhDdRf0EIsYmlHqBTaYsze0ox6dyjL+4mXp/irV6zTGAZxlEOdZabpDC77QvVQiWrw9JCW1RrdGrflPoZDYKYKJahdo65G1vL1YiMHRbcNPLUONgd5K1x8W24r8j9Q=
+	t=1752927364; cv=none; b=q1qADGgCPdhZJyp6AcUd6J3qi4IlOmBwGDH15QI+edQ7MACnrwMnwdmYViXEoTsqCsjxNkAUC0gJlH3FBrB4AUdtBBsWx8FjGRsvHGso2o3x+j90eWwNB9Ms7mIqT/VATalzaGOl8Js9DqbGxUou5DGAMB954hy1WLMYMzcKLkc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752927044; c=relaxed/simple;
-	bh=VMUOM21ZepW7cAEO8KjJ/sFW2pU+FeWUcisSB3jueEo=;
+	s=arc-20240116; t=1752927364; c=relaxed/simple;
+	bh=7sHOMcyju39vj0iC2jjIDhKXntfiz6deY4blHFaNwNc=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qu7NzcVVhWFImj6tulrKyfASRikM6aLiDChZjye5bQcAEJXVdLfeAE7gBjODdJNgTkCz1tgqudbkzPCd3JVyvel1MxqIuMmOZW+5Aq0AbUvNnOMpFXuaPkstubslus6CESdzxDkHb4jeeivmKIjKlPT24mACOPa8PN299Jlb/R8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uexWTw21; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43655C4CEE3;
-	Sat, 19 Jul 2025 12:10:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hZIlD0/W6mrIj8r9F2BUzBDznkGzR12QogiXA0eR6r/QMl/8zvEtfUa5kuctW5DOdcSZr5UinFkX1lq2//PYEvRFq5DEZcqq3RLS/9fMIqee01ZhDabNnqpkR027AEhzpVGVhf/MSgFiNS0OTWhA4Anb/7EP5GDwuceFLh303eQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MB6G+IYt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 714A7C4CEE3;
+	Sat, 19 Jul 2025 12:16:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752927043;
-	bh=VMUOM21ZepW7cAEO8KjJ/sFW2pU+FeWUcisSB3jueEo=;
+	s=k20201202; t=1752927364;
+	bh=7sHOMcyju39vj0iC2jjIDhKXntfiz6deY4blHFaNwNc=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=uexWTw21wXX6pAXiS/mD3x5wF0sNXGLqmKeOXlmAKg7+0CCTdR2FxhQkWpQj4KgrG
-	 82YmIx5NFXsjRmq9zfXzh1JhxUW4pUqVO891SjI9n11/2KT60yfdJYc8D7gE9cZXLQ
-	 k4PFI1jWHEGtBS1IBCkVuvZKnZv4GMkm3F+8vhErLt8Fixzjq+3aHmJqP6iuFGy6PY
-	 vG0l4yqQxFiYaf91WE5NYgxXp+JB3i3xwgbf9mU9XcVPUzdulj2JRwI9VGtOZIKFIk
-	 OqbyPWTu/toUcd1vDNDUew7napwO/1+qWTEMp4W6/rlM5ZaQWaiOa+40ohsitQiOAp
-	 fk7V+gRIzOJ2A==
-Date: Sat, 19 Jul 2025 13:10:39 +0100
+	b=MB6G+IYtPS3V8i0wn1pE935/RqeEDkV6Px05DMngro+T6PvnDewRCBin2zcCNf0lw
+	 K8eUOLnBp+V1VOt0ufGadf46/inpIj62adkMOL1pOO5X+AqnoD5ymjv2M7H3wbJKNK
+	 6GRSVRGY5tt7m4/IDH/BvE4eStvRfOu7cGiJGG6TOhGiQBNzx+Ee7jv/QDtHEJZZQF
+	 aNVkny8i3IVhxNIMAjjMUzjyveLMlhT1rgCVRQW7MWSFFQD9DzfpOuEdkhCGhYU5DZ
+	 0o9aeptlHMG90aVAJ1Fq9OniZKFV4jc4MU19GP7sdy4oCP0NcOsD2mU+6q+geVX4Hj
+	 c7MV5efGWk7QQ==
+Date: Sat, 19 Jul 2025 13:15:56 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>
-Cc: dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org,
- ~lkcamp/patches@lists.sr.ht, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] iio: adc: spear_adc: mask SPEAR_ADC_STATUS channel
- and avg sample before setting register
-Message-ID: <20250719131039.07a5fb24@jic23-huawei>
-In-Reply-To: <20250717221559.158872-1-rodrigo.gobbi.7@gmail.com>
-References: <20250717221559.158872-1-rodrigo.gobbi.7@gmail.com>
+To: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: Marcelo Schmitt <marcelo.schmitt@analog.com>, linux-iio@vger.kernel.org
+Subject: Re: [bug report] iio: adc: ad4170-4: Add digital filter and sample
+ frequency config support
+Message-ID: <20250719131556.1ecbdf5a@jic23-huawei>
+In-Reply-To: <c6e54942-5b42-484b-be53-9d4606fd25c4@sabinyo.mountain>
+References: <c6e54942-5b42-484b-be53-9d4606fd25c4@sabinyo.mountain>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -62,78 +60,74 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 17 Jul 2025 19:13:49 -0300
-Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com> wrote:
+On Tue, 15 Jul 2025 18:00:03 -0500
+Dan Carpenter <dan.carpenter@linaro.org> wrote:
 
-> avg sample info is a bit field coded inside the following
-> bits: 5,6,7 and 8 of a device status register.
+> Hello Marcelo Schmitt,
 > 
-> channel num info the same, but over bits: 1, 2 and 3.
+> Commit 6b648c49d491 ("iio: adc: ad4170-4: Add digital filter and
+> sample frequency config support") from Jul 7, 2025 (linux-next),
+> leads to the following (unpublished) Smatch static checker warning:
 > 
-> mask both values in order to avoid touching other register bits,
-> since the first info (avg sample), came from dt.
+> drivers/iio/adc/ad4170-4.c:883 ad4170_set_filter_type()	warn: always clamps to 4
+> drivers/iio/adc/ad4170-4.c:886 ad4170_set_filter_type() warn: always clamps to 1
 > 
-I read this as meaning this is a hardening change against bad DT rather
-than a bug fix?
+> drivers/iio/adc/ad4170-4.c
+>     870         /*
+>     871          * The filters provide the same ODR for a given filter_fs value but
+>     872          * there are different minimum and maximum filter_fs limits for each
+>     873          * filter. The filter_fs value will be adjusted if the current filter_fs
+>     874          * is out of the limits of the just requested filter. Since the
+>     875          * filter_fs value affects the ODR (sampling_frequency), changing the
+>     876          * filter may lead to a change in the sampling frequency.
+>     877          */
+>     878         scoped_guard(mutex, &st->lock) {
+>     879                 if (!iio_device_claim_direct(indio_dev))
+>     880                         return -EBUSY;
+>     881 
+>     882                 if (val == AD4170_SINC5_AVG || val == AD4170_SINC3)
+>                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> So "val" can either be 0 or 2.
+> 
+> --> 883                         setup->filter_fs = clamp(val, AD4170_SINC3_MIN_FS,  
+>                                                               ^^^^^^^^^^^^^^^^^^^
+>     884                                                  AD4170_SINC3_MAX_FS);
+>                                                          ^^^^^^^^^^^^^^^^^^^
+> and we clamp it to 4-65532.  Since filter_fs is always 4 in the end, why
+> not just say "setup->filter_fs = AD4170_SINC3_MIN_FS;"?
 
-As such applied for next cycle to the testing branch of iio.git.
+Code is weird.  My 'guess' from comments is intent is actually trying to tweak
+setup->filter_fs in event of the previous value now being impossible for the new
+filter type.
 
-Thanks,
+				setup->filter_fs = clamp(setup->filter_fs, AD4170_SINC_MIN_FS,
+							 AD4170_SINC3_MAX_FS)
 
-Jonathan
+etc.
 
-> Signed-off-by: Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>
-> ---
-> About @David comment at v2:
+Marcelo?
+
 > 
-> > For bonus points, a separate patch that cleans up and sorts the existing
-> > includes would be appreciated.  
+>     885                 else
+>     886                         setup->filter_fs = clamp(val, AD4170_SINC5_MIN_FS,
+>                                                          ^^^
+> On this path "val" can only be AD4170_SINC5 (1)
 > 
-> I`ll change that in a later moment.
-> Tks and regards.
+>     887                                                  AD4170_SINC5_MAX_FS);
+>     888 
+>     889                 setup->filter &= ~AD4170_FILTER_FILTER_TYPE_MSK;
+>     890                 setup->filter |= FIELD_PREP(AD4170_FILTER_FILTER_TYPE_MSK,
+>     891                                             filter_type_conf);
+>     892 
+>     893                 ret = ad4170_write_channel_setup(st, chan->address, false);
+>     894                 iio_device_release_direct(indio_dev);
+>     895         }
+>     896 
+>     897         return ret;
+>     898 }
 > 
-> Changelog:
-> v3: moving up include; fix indentation;
-> v2: https://lore.kernel.org/linux-iio/20250701213728.32064-1-rodrigo.gobbi.7@gmail.com/
-> v1: https://lore.kernel.org/linux-iio/20250621185301.9536-1-rodrigo.gobbi.7@gmail.com/#t
-> ---
->  drivers/iio/adc/spear_adc.c | 9 +++++----
->  1 file changed, 5 insertions(+), 4 deletions(-)
+> regards,
+> dan carpenter
 > 
-> diff --git a/drivers/iio/adc/spear_adc.c b/drivers/iio/adc/spear_adc.c
-> index e3a865c79686..0acc65c74221 100644
-> --- a/drivers/iio/adc/spear_adc.c
-> +++ b/drivers/iio/adc/spear_adc.c
-> @@ -17,6 +17,7 @@
->  #include <linux/clk.h>
->  #include <linux/err.h>
->  #include <linux/completion.h>
-> +#include <linux/bitfield.h>
->  
->  #include <linux/iio/iio.h>
->  #include <linux/iio/sysfs.h>
-> @@ -29,9 +30,9 @@
->  
->  /* Bit definitions for SPEAR_ADC_STATUS */
->  #define SPEAR_ADC_STATUS_START_CONVERSION	BIT(0)
-> -#define SPEAR_ADC_STATUS_CHANNEL_NUM(x)		((x) << 1)
-> +#define SPEAR_ADC_STATUS_CHANNEL_NUM_MASK	GENMASK(3, 1)
->  #define SPEAR_ADC_STATUS_ADC_ENABLE		BIT(4)
-> -#define SPEAR_ADC_STATUS_AVG_SAMPLE(x)		((x) << 5)
-> +#define SPEAR_ADC_STATUS_AVG_SAMPLE_MASK	GENMASK(8, 5)
->  #define SPEAR_ADC_STATUS_VREF_INTERNAL		BIT(9)
->  
->  #define SPEAR_ADC_DATA_MASK		0x03ff
-> @@ -157,8 +158,8 @@ static int spear_adc_read_raw(struct iio_dev *indio_dev,
->  	case IIO_CHAN_INFO_RAW:
->  		mutex_lock(&st->lock);
->  
-> -		status = SPEAR_ADC_STATUS_CHANNEL_NUM(chan->channel) |
-> -			SPEAR_ADC_STATUS_AVG_SAMPLE(st->avg_samples) |
-> +		status = FIELD_PREP(SPEAR_ADC_STATUS_CHANNEL_NUM_MASK, chan->channel) |
-> +			FIELD_PREP(SPEAR_ADC_STATUS_AVG_SAMPLE_MASK, st->avg_samples) |
->  			SPEAR_ADC_STATUS_START_CONVERSION |
->  			SPEAR_ADC_STATUS_ADC_ENABLE;
->  		if (st->vref_external == 0)
 
 

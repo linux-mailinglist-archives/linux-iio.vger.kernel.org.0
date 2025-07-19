@@ -1,160 +1,186 @@
-Return-Path: <linux-iio+bounces-21767-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21768-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2A86B0AB56
-	for <lists+linux-iio@lfdr.de>; Fri, 18 Jul 2025 23:19:00 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 386B3B0AE04
+	for <lists+linux-iio@lfdr.de>; Sat, 19 Jul 2025 06:40:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 78AA0AA1F2C
-	for <lists+linux-iio@lfdr.de>; Fri, 18 Jul 2025 21:18:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0836E7BA940
+	for <lists+linux-iio@lfdr.de>; Sat, 19 Jul 2025 04:38:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E51142192FA;
-	Fri, 18 Jul 2025 21:18:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 471991FBEB6;
+	Sat, 19 Jul 2025 04:40:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gAVdk8dE"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZfJjV7vA"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+Received: from mail-ua1-f50.google.com (mail-ua1-f50.google.com [209.85.222.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A1D5C2C9;
-	Fri, 18 Jul 2025 21:18:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BED01E520B
+	for <linux-iio@vger.kernel.org>; Sat, 19 Jul 2025 04:40:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752873535; cv=none; b=c/1BqxydOGX650IPBEIJek0YXRWZ52P0JoxxadX8uTQStCurb85dTE8jGJvAjzd2v09vZQ3Q6DorCG+6vlG/CSa5/3BWE/YUfzQ3GcmdP4bxFXPV6BkfkmJ93rDTx3vQtr11Z+QlYqNjwXb+92bXFF1FKzB7uvuaVq+nMBoyBC8=
+	t=1752900014; cv=none; b=OB4eMX3bkxO1ZGk3S4PWIX6s5Ct3md+grTZiTDeoe3YtT02Ti5l2nvtYMAanRXjko9wsYWq0ioI5qB+IfgxJFV3eAAiGU3lipZDW6srFnOW2czuFt7hvKqRCX0yBlfI3HLs547NK3/D5f3+S2j7AizmwJ1278XmWA5+HZJEfzB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752873535; c=relaxed/simple;
-	bh=fWPyLr2u0e/upu/Qc98ELRPuwmvoHvniezdOE0ovjOQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DQk0eeNEZQdn1kHa20DuWnc3Hfr7qgraN5iqvfNvTE7mMu3kmj1S/ZWSY8U+FVOFdY9SBTIo0+biDrLwdczSH+v37dqIM7UmVrHGYowXZ1DAwPywzlcKV1n7zHbYLaph2W3Can7PBKk+X8FtbFZ8/wRcUerOK85mOgat5K61GMc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gAVdk8dE; arc=none smtp.client-ip=209.85.128.48
+	s=arc-20240116; t=1752900014; c=relaxed/simple;
+	bh=JWQpy8X82m/JStzsP0rk6dzkdEcCfivwpHQuJwzmN5o=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bnWEgv5l6Dpd+QjR6cZW1DYr41GrZz5o6SHBVed3WkFWDk5y4Uuu1WykS4pxQ6OoIjbqbdS8bO9oheEXLSSILB5xSs0/4crWZlzBTZnlwGIK3mfryjRpTYYnl3GoNH6dCeztPYxL4zio+bWS+GeEBtQmPznNMCfUOHhJGaF0dm8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZfJjV7vA; arc=none smtp.client-ip=209.85.222.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-455b00339c8so19040435e9.3;
-        Fri, 18 Jul 2025 14:18:53 -0700 (PDT)
+Received: by mail-ua1-f50.google.com with SMTP id a1e0cc1a2514c-886c8de5d90so1390587241.0
+        for <linux-iio@vger.kernel.org>; Fri, 18 Jul 2025 21:40:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752873532; x=1753478332; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lv8zMOirvwvGeIIrS8G65KegHf3y7D5W5iCC493QCh0=;
-        b=gAVdk8dEoch/mt2Uu8eyZFa+lgKEOqo6h6Q/Lmzt2KYSV1TNsHSGMaPdzZ4SGKNJbL
-         rf+FpHyXM6r5lDoVAzjmpsWZ2d7fFtu6QSVqgYoY1WxXIOQXy69aIAuhEnJkVv9YJ0ma
-         Lw8x69cDcBwV1b0ZkaObcjNmgW6B2zTX3V0l7WAFrIIgX67Pn9tjIrLyVwsOYHcZU/E3
-         6UPSNJx8U2mgnsajI0O1PniULMhuncIRiJl7UBrK3pKkcd7f4M9t9xRzPOTqDkeR+15M
-         cDRrDendnfpX6DH/3kU1Y7h9U6iITTx3MNmZPoNUYn0baYPTRvekPgpxjs3GTrPDsJL0
-         Pmvg==
+        d=gmail.com; s=20230601; t=1752900011; x=1753504811; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ax75U152bwiZG3aw8FVC8Y3ue2q9AR8hk8SGP4CHnVI=;
+        b=ZfJjV7vAvcgoTk03xSKexW5jjjP2R/OqLvyNXMTNWtvSIMBycfo2ksskQJWPKK+hID
+         0SEH2vf7aiWQxAHcefLhrJY671WsbaA/+6nYUYpmuogMHLMAUSl3dzSY6j9TmLxufMsW
+         rve8La6vigUmMwu2ZcB0C01p60JSNP9kFMJy+2h3Y3M8J0cLhSypvne3xb7dTMlJ4kyU
+         WivZf8NMwEbYlKdSedUY/m0aRH6bTcmKMPYhCiuJfMWxyq1g9GfnN3P6+7hblPq6I98q
+         GMNQ1Nqyj5c3M+hZg2EsXqhVHTXFqz1nc+Gt7rvFPX7YmCSYTETxn944CJpI1I37gKAh
+         Z3ZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752873532; x=1753478332;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=lv8zMOirvwvGeIIrS8G65KegHf3y7D5W5iCC493QCh0=;
-        b=hJzyTmVBpoTkuqHA48PFxcg7kVYyAXkCNsD+IQWRH3MqQR0blgOv7K8QtoktFFw09A
-         8+9Dt2Fmk1gP8HXKUn0BwInWXA9O+NEal78UTOxZvrpXzUStocAEfn9FYnryMp2p5Cwt
-         OziY5VxWncmOWQndWIHMIYPuz8D4P9+/fqsM0ky1jstnQeBWpVb8XtnbRximK1O8uztQ
-         8jgxvcMqHYoyraT82vxF6RUIz5uZhL/KlZclK5sLo08C5/gapeyP+ToDxmKWcdleGje/
-         M2eRjrHvysRvaPaVPH2NEIEZkSyvQBbuRW1xdIh4cMhuBL9CuILsaZ3Owa5YOOzFLqiM
-         TU7g==
-X-Forwarded-Encrypted: i=1; AJvYcCXFx5htwTk9f+P9OGKbl/reSAhEpm5K7xBgj5HxTOuQV+LaqCIybkx0e+vsVDEunUQp7CCBYlarwno=@vger.kernel.org, AJvYcCXgYJbPRCGptMRdrYvUT21C4exN5q6UBXNxaKpBa+uwlUhJoC3q6hCxZt4oUcQhG88vYFsBUp9ard9lyyiA@vger.kernel.org
-X-Gm-Message-State: AOJu0YyAoz96nk4VNcHfBsByQAWhq3d/mr1riy9uS7CCwbRePTKOmkTl
-	88uJqgkJ975K0mF58rR4qqN0Vk3LbOUHjJTs56aacyQTQWCr/lCjuWfB
-X-Gm-Gg: ASbGncttCjH1lVbABOETt9CTLiY3xSS4jxzcmYzDPfMWHcCjkZEUlxf9CQ1K94Hshw8
-	g/+o4PJZQ4JveQ9y8y9cBz9NWg/sh1V/A+zS9klnJHaSQm+/HP9QN7nO8Y1fFFWWgZmITK4yL9C
-	YT/O+QWT2CZbsLiRv2MOoeS9tMm+Hy83+jZ0Eeh6E/Rb/0BnLhg2c4XR0ZjpOXTsqBzS2HtZl8R
-	5Xe+/L41iiwylBHYjyxyiIDN6JlRuZjm5SupZcNv8tC3pthaNaRpBJd/cYajnBesE+S1hFBVlVA
-	tB4OCK46WZ8uaR6nJqztx8J6xxEvDYVSGUnITgDvSbVwoc0FV/mDAQd6ZxXwpu9uOHj8GeQwTaK
-	4ESWxLLpemHD++/bYAHt8PYIs7lSGxfJZTA73Pk3mrz7HfxKfbFpQAulJ9VAwCgXRfQNRgK8=
-X-Google-Smtp-Source: AGHT+IHLW11lHbgsOO5isXja+wIRHQxH3gL8kHNDXGYklnoRUieezkTgOpouBBwFNC5AerCk31FDzA==
-X-Received: by 2002:a05:600c:a316:b0:456:2066:5747 with SMTP id 5b1f17b1804b1-4562e3411b3mr117824475e9.10.1752873532053;
-        Fri, 18 Jul 2025 14:18:52 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4562e89c308sm88278035e9.30.2025.07.18.14.18.51
+        d=1e100.net; s=20230601; t=1752900011; x=1753504811;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ax75U152bwiZG3aw8FVC8Y3ue2q9AR8hk8SGP4CHnVI=;
+        b=lbns3/0G4dRjHtF1ZHai8Dh4g/uVc35FtOuhdNbIY4ZmjP3zKwKOgBhNmL621PpX5/
+         Awk7eS4cJl3qjn62HUwixsO8C+RlEfozSvGf0ZOOu2eSmtkYEoO1d4mzsBi8O6gCURAr
+         xm9b2+iMBJvkLOf3tQxu8jP+wIUwc2/xJD6M5dlGaXykg1C/GewRA4u5taP+VMPNN3vl
+         8lJK70Vxl5RMLSRLQDDWuL1BTqyGafuYse8kPBPfegJuwF5wMbcAs4Nj5EQE3h647YVW
+         g0f00DXOmV4KG9RI0IxpFo/N/XxSU7TirecPxNoRKhgkTGS7oG1ggXvQqNCrlA6ZEWmY
+         X93A==
+X-Gm-Message-State: AOJu0YypJ/9wRFUz2JTnMZK3YuD/BhYMqk9GJow7h72zSPgZxzRw6Ier
+	e5xeGl8VJzWBU4AKnp85J9QH9hy6LtQZ1EtAUZ8q1d41wzNhVOEn4nchfibgf94exik=
+X-Gm-Gg: ASbGncumndV+ERMUOgduMg9XitYkmtaUgRSNwdM+yIOrz6DyPt9AekGfAa8IXWOjrjT
+	vgCJ+VSFuJ0zEYpDicR7fJlMuNWkos1M0HaFN8BYldCGiyge9Ccz/NsFafYyeHNvHVk2rcKHOgc
+	A4DxfM+B9e4WgXS6J9lu1+CEUTMd1deh0P4Wijsjb91Dk7GsTPf1E1KgoD5RJvKa7qyGcjRwyzP
+	HS3eckZ0lXkO6P/14mcNyL4fiJQBj/pg+yEIAwLUR/WYWMnAP+me/v9l0HpYWxT5U5huETa9FlR
+	e1n9wD07k2d0fHYjK4Yhl7ZZMp88oZwKQ45b87DJ+3tN9d4fmGB5kpcZIDirWSAnIRf5gd+r6Cj
+	y0qbgcR7+omx9OAHIxxs0hBjpAdvdQRwnyNE=
+X-Google-Smtp-Source: AGHT+IEamk4mSICtzhoGWd/ysJXUkrXUSeaxI8UgE5HnAD8dHt5lXoFvk1E9pWpTzqQl/TK9L6rICA==
+X-Received: by 2002:a05:6102:290c:b0:4e6:a338:a421 with SMTP id ada2fe7eead31-4f955ad58c5mr6749920137.6.1752900006309;
+        Fri, 18 Jul 2025 21:40:06 -0700 (PDT)
+Received: from alkaleus ([168.0.235.31])
+        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-4f9ad0ec8a4sm1005623137.25.2025.07.18.21.40.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Jul 2025 14:18:51 -0700 (PDT)
-Date: Fri, 18 Jul 2025 22:18:50 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: David Lechner <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?=
- <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: proximity: isl29501: use scan struct instead of
- array
-Message-ID: <20250718221850.614d05b3@pumpkin>
-In-Reply-To: <20250713150445.3965931c@jic23-huawei>
-References: <20250711-iio-use-more-iio_declare_buffer_with_ts-7-v1-1-a3f253ac2e4a@baylibre.com>
-	<20250713150445.3965931c@jic23-huawei>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+        Fri, 18 Jul 2025 21:40:05 -0700 (PDT)
+From: Andre Luiz da Nobrega <andreluizrodriguescastro@gmail.com>
+To: linux-iio@vger.kernel.org
+Cc: jic23@kernel.org,
+	Andre Luiz da Nobrega <andreluizrodriguescastro@gmail.com>
+Subject: [PATCH] backlight: lm3630a: Use scoped iterator to simplify error handling
+Date: Sat, 19 Jul 2025 01:21:02 -0300
+Message-ID: <20250719042641.134628-5-andreluizrodriguescastro@gmail.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Sun, 13 Jul 2025 15:04:45 +0100
-Jonathan Cameron <jic23@kernel.org> wrote:
+This avoids the need to manually call fwnode_handle_put() in error paths.
+Prevents potential memory leaks if future error paths forget the cleanup.
 
-> On Fri, 11 Jul 2025 11:18:13 -0500
-> David Lechner <dlechner@baylibre.com> wrote:
-> 
-> > Replace the scan buffer array with a struct that contains a single u32
-> > for the data and an aligned_s64 for the timestamp. This makes it easier
-> > to see the intended layout of the buffer and avoids the need to manually
-> > calculate the number of extra elements needed for an aligned timestamp.
-> > 
-> > Signed-off-by: David Lechner <dlechner@baylibre.com>  
-> Why are we using a u32 here?  It's a 16 bit
-> read in that isl29501_register_read() call
-> and storagebits = 16 in the chan spec.
-> 
-> So to me looks like you found a bug for big endian platforms.
+Signed-off-by: Andre Luiz da Nobrega <andreluizrodriguescastro@gmail.com>
+---
+ drivers/video/backlight/lm3630a_bl.c | 121 +++++++++++++--------------
+ 1 file changed, 56 insertions(+), 65 deletions(-)
 
-Maybe not - it looks like there is a read on one place and write in another.
-Both are passed the same address.
-The interface looks very strange though.
-
-But the updated code is writing uninitialised stack.
-
-	David
+diff --git a/drivers/video/backlight/lm3630a_bl.c b/drivers/video/backlight/lm3630a_bl.c
+index 37651c2b9393..35a13bd38133 100644
+--- a/drivers/video/backlight/lm3630a_bl.c
++++ b/drivers/video/backlight/lm3630a_bl.c
+@@ -16,29 +16,29 @@
+ #include <linux/pwm.h>
+ #include <linux/platform_data/lm3630a_bl.h>
  
-> > ---
-> >  drivers/iio/proximity/isl29501.c | 9 ++++++---
-> >  1 file changed, 6 insertions(+), 3 deletions(-)
-> > 
-> > diff --git a/drivers/iio/proximity/isl29501.c b/drivers/iio/proximity/isl29501.c
-> > index d1510fe2405088adc0998e28aa9f36e0186fafae..0eed14f66ab700473af10414b25a56458335b381 100644
-> > --- a/drivers/iio/proximity/isl29501.c
-> > +++ b/drivers/iio/proximity/isl29501.c
-> > @@ -938,12 +938,15 @@ static irqreturn_t isl29501_trigger_handler(int irq, void *p)
-> >  	struct iio_dev *indio_dev = pf->indio_dev;
-> >  	struct isl29501_private *isl29501 = iio_priv(indio_dev);
-> >  	const unsigned long *active_mask = indio_dev->active_scan_mask;
-> > -	u32 buffer[4] __aligned(8) = {}; /* 1x16-bit + naturally aligned ts */
-> > +	struct {
-> > +		u32 data;
-> > +		aligned_s64 ts;
-> > +	} scan;
-> >  
-> >  	if (test_bit(ISL29501_DISTANCE_SCAN_INDEX, active_mask))
-> > -		isl29501_register_read(isl29501, REG_DISTANCE, buffer);
-> > +		isl29501_register_read(isl29501, REG_DISTANCE, &scan.data);
-> >  
-> > -	iio_push_to_buffers_with_timestamp(indio_dev, buffer, pf->timestamp);
-> > +	iio_push_to_buffers_with_timestamp(indio_dev, &scan, pf->timestamp);
-> >  	iio_trigger_notify_done(indio_dev->trig);
-> >  
-> >  	return IRQ_HANDLED;
-> > 
-> > ---
-> > base-commit: f8f559752d573a051a984adda8d2d1464f92f954
-> > change-id: 20250711-iio-use-more-iio_declare_buffer_with_ts-7-880ddf1d3070
-> > 
-> > Best regards,  
-> 
-> 
+-#define REG_CTRL	0x00
+-#define REG_BOOST	0x02
+-#define REG_CONFIG	0x01
+-#define REG_BRT_A	0x03
+-#define REG_BRT_B	0x04
+-#define REG_I_A		0x05
+-#define REG_I_B		0x06
+-#define REG_INT_STATUS	0x09
+-#define REG_INT_EN	0x0A
+-#define REG_FAULT	0x0B
+-#define REG_PWM_OUTLOW	0x12
+-#define REG_PWM_OUTHIGH	0x13
+-#define REG_FILTER_STRENGTH	0x50
+-#define REG_MAX		0x50
+-
+-#define INT_DEBOUNCE_MSEC	10
+-
+-#define LM3630A_BANK_0		0
+-#define LM3630A_BANK_1		1
+-
+-#define LM3630A_NUM_SINKS	2
+-#define LM3630A_SINK_0		0
+-#define LM3630A_SINK_1		1
++#define REG_CTRL 0x00
++#define REG_BOOST 0x02
++#define REG_CONFIG 0x01
++#define REG_BRT_A 0x03
++#define REG_BRT_B 0x04
++#define REG_I_A 0x05
++#define REG_I_B 0x06
++#define REG_INT_STATUS 0x09
++#define REG_INT_EN 0x0A
++#define REG_FAULT 0x0B
++#define REG_PWM_OUTLOW 0x12
++#define REG_PWM_OUTHIGH 0x13
++#define REG_FILTER_STRENGTH 0x50
++#define REG_MAX 0x50
++
++#define INT_DEBOUNCE_MSEC 10
++
++#define LM3630A_BANK_0 0
++#define LM3630A_BANK_1 1
++
++#define LM3630A_NUM_SINKS 2
++#define LM3630A_SINK_0 0
++#define LM3630A_SINK_1 1
+ 
+ 
+@@ -479,12 +473,10 @@ static int lm3630a_parse_node(struct lm3630a_chip *pchip,
+ 			      struct lm3630a_platform_data *pdata)
+ {
+ 	int ret = -ENODEV, seen_led_sources = 0;
+-	struct fwnode_handle *node;
+ 
+-	device_for_each_child_node(pchip->dev, node) {
++	device_for_each_child_node_scoped(pchip->dev, node) {
+ 		ret = lm3630a_parse_bank(pdata, node, &seen_led_sources);
+ 		if (ret) {
+-			fwnode_handle_put(node);
+ 			return ret;
+ 		}
+ 	}
+
+
+
+
+ MODULE_DEVICE_TABLE(i2c, lm3630a_id);
+ 
+ static const struct of_device_id lm3630a_match_table[] = {
+-	{ .compatible = "ti,lm3630a", },
+-	{ },
++	{
++		.compatible = "ti,lm3630a",
++	},
++	{},
+ };
+ 
+ MODULE_DEVICE_TABLE(of, lm3630a_match_table);
+-- 
+2.50.1
 
 

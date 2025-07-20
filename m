@@ -1,166 +1,185 @@
-Return-Path: <linux-iio+bounces-21787-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21788-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23321B0B7A2
-	for <lists+linux-iio@lfdr.de>; Sun, 20 Jul 2025 20:26:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C70D6B0B7B0
+	for <lists+linux-iio@lfdr.de>; Sun, 20 Jul 2025 20:36:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 696157A833B
-	for <lists+linux-iio@lfdr.de>; Sun, 20 Jul 2025 18:25:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5FB2F1898E8C
+	for <lists+linux-iio@lfdr.de>; Sun, 20 Jul 2025 18:37:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0788222585;
-	Sun, 20 Jul 2025 18:26:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E072821C9E8;
+	Sun, 20 Jul 2025 18:36:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NsRIpAty"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VJ+dmip1"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
+Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com [209.85.128.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B739382;
-	Sun, 20 Jul 2025 18:26:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EC0D1459FA;
+	Sun, 20 Jul 2025 18:36:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753036003; cv=none; b=d0xUuWYU2z2hp6SGzl9N5MqKbiue3C5c4yEebgr4LnOgIdCUWNdgxPTGUZBW5soI76IV3oN9JiVcdKMRRC/HrF1BPSGWRpkF92IUyM1htswKbjU7NTEcrIW27dVLojBTBK9tJzCezfb18G903Cx51pRwk8G41X/fPQnO0vPmVNM=
+	t=1753036608; cv=none; b=tvGMenJ+sqAJSzyeT4ngJpRtutXyGX1DTlPDYpBxW59TjyNl1s8g+QrRzirJ/yTmap69YZc7s7Hr1K49ZcE0enJkvsgjlbhDHoSlE6UbnCCyy9JfFoCBvTraJjTqYOSZzjmD2vszJx1ILWnvvHb9PZ80D9odgSMc/mgBi/BD9uw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753036003; c=relaxed/simple;
-	bh=CO3t+aMRXC7TDnBUj622dh5JiJ7sh0cr37a/whpbhqE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=j7DB1Nvz/gxi5p8TgCy87YO+het2Clue+Tlb/B5pxvTRdod0Ub8+Cs2nASu271vepbbLZZR4UyclmsB9H/bShkLAutVaLGLQwit9UQBZa9ahE0LSZqj/LUXhZUay3hVHdiwgLORk/RZvH+AyxIwUhyXNi04N3GIZhRUmloxNqmo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NsRIpAty; arc=none smtp.client-ip=209.85.215.174
+	s=arc-20240116; t=1753036608; c=relaxed/simple;
+	bh=DJ8fpwvqGbH0eiKdcuuzCSyQZ51thn4iGXRCPZTCASU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=QM4rQSkD9Ve568eyP9qwDNzd2yuX6rrfNuxCgAC7qasaHBoA8F17+zgxpUKQCuqvIBRyg2iXOoCkuBKKp1bsjJYP10kibOaGurh0xDWsK0OwsGFuapdTWozYV7fhU8+LKzGbPkxK5ZkDxXn+iSDUdOppnysxIHMygVqVt75jDwE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VJ+dmip1; arc=none smtp.client-ip=209.85.128.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-b34a78bb6e7so2687703a12.3;
-        Sun, 20 Jul 2025 11:26:42 -0700 (PDT)
+Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-717ac642cfbso3712267b3.3;
+        Sun, 20 Jul 2025 11:36:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753036001; x=1753640801; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1753036606; x=1753641406; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=sHZe9EgIX5bHoOn1lRHIIocbOcsSd7x7FE0vB7xjsvo=;
-        b=NsRIpAtysxZ+CnQmXAUmRUq0cjOQ4FHpgiqasbnD6bBzw0ppXcJGIgD8oK6BCya6ml
-         ye2+G4/YI/8w1GxAL6cnyS3+RIN8+bFA5ZkLIDDmdJPSb4euXe93AW5vE6ocaqDHX/1c
-         1CK8Y+aqdq/wGAYUBblM2mg/3Csowff7j9GowMqoelaKpyNFb8Bbybi3TjS09mqAEepI
-         qPSjhzzzR5B7OvbJEGXsUgUlV7bgSYAiLFeVv7RoCJhZDfkD3sFMp6pL9/YGAC6r8O2o
-         o7Jtrm3BZPdeVTH/RPkQXXxSuqV9ps8E8gVge6z+eDYUpzY3jpWHEcZYsFPC/MUk/SxQ
-         yNDQ==
+        bh=QEnR0xjEBXLuUSkPPs3JYg/bzf1JdRSdDrp8t3GgG8I=;
+        b=VJ+dmip1mZcRAD/8O8sUiXdLYv9TZ3V5c9p1Mnynaa/D7aMPPYnfnur+hw9WcE8Ajh
+         4eOxxJ5wBoyA/rNEw6gjS7TqsKQDUZR3P7G6Sghdv0waNAdJeLXDyRirbKiERTXOr0+s
+         b9q4c1pvuu+vJ6OKVQVpyFORNsL7rFC+dOvglDLfggYJYK5pyDvUtV8JWHGNaOoJs9tv
+         1JAL7s5QadEt5cE3HMGN7zu0MTXn/QCdL6UwF+Ab8Bwy7uvSBtcrgGR9+WCqzoR1oc6G
+         zvrCI5aXzX+SOHicwG3iqXLhQ6ZhQF8Yy8L9f/N9//ey+m0hRBCC16oHPHUi5zLWC2rr
+         h2eg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753036001; x=1753640801;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1753036606; x=1753641406;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=sHZe9EgIX5bHoOn1lRHIIocbOcsSd7x7FE0vB7xjsvo=;
-        b=ZJpadqZSXPPEtvfhjkQGmrfku5KD5+pWUVRNsl1j5THzZA3xu//upvZGs3txI+TSVq
-         f2j1qc4BrGesy8RfU7iec5baySVgJnrUpqvpvBU046skWAf4PLE3GiL4tC9jBrY3kHZa
-         pVAAmDZL1HV96uA3NcdvRkmc6gIK+JVXJzhpA1l7oSSdCV58/RaTnhPZB4jmqtbRZd+e
-         bsyxZMJbo32ZXmhZeDAXDObQN8LwKeWdAtHq55haTYXJw/u6UbdFPaxWv8Q5X+q2yvid
-         ctsAK2Dc/qd9Biqks7nTcz6c+MFP5+gnqg6AzIyH1xCGJZ3R2hq9m8CAExZtIPKKo6i5
-         3qtQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUzUUMtVJbGVTfmnHnQWRttWQOqEUQFfqr6Z1DoGGIsoUmSmLnAmf5r4HWRIm3jOfL5403mS+DpSZLo@vger.kernel.org, AJvYcCVqVGnYCR5B0f8ZAuhw5KLEWU7WOBGsKDgrdS/kAakAkLisT8ky606Q/+IS5KbRKuJ/nL5FNEgA@vger.kernel.org, AJvYcCWe56ew7cJ6GsMfPehI1TP6XdpLUi5rhWeHY26tS45JF2RH+x7GZDcG3X7bTr0IbV9ZtMhKqIUhhNuC@vger.kernel.org
-X-Gm-Message-State: AOJu0YyoAmiHKit08htGSSAWG7XbTCOVAE+NVqrDtaIHEdSesY90fD7J
-	ApWBSxqKn61MlpiCuvxbpzxuqds6MB/K14CLcEpY9L2H62bXbxrqEzvFe90G+9xxH9U=
-X-Gm-Gg: ASbGncvq1LJvaKKWIF0QseBFV2nMgKEA6NWK7fYxYeBAQpT956aZUxa7DhpDNVG4urI
-	ywrI2iG6UKIy7Zm5x3TmqXuPkbSjWCVVMvWyaH03EJ7SFO08WwA6tznAFRoGKGiB2vw3hbEmUvb
-	L2iUDGr4rrBetzIUnoavPjNSukI/JDAlv20NE4SiyugFGViSmzKwLPzR/QqedSUKfaJqki0G8gi
-	D/mNzbUZsYeAcogizgS86ERd/AEoc7yblkVKlH9fnHGpEua3o0krmjrM7fVUyabc81VPIClCZgR
-	aAbzT/fVdXRHkOZRdue16mLF0by4pDB6BJKWkeczaVjGWmK2uzvGdlFDFdPD+CvlpVHytg==
-X-Google-Smtp-Source: AGHT+IGoGfPH4SczPPgpunZElQl0pQIPgpNF56UBU7IRRaCJpTzKmfW9fc9yllKz3BFHUR8wc4vQBw==
-X-Received: by 2002:a17:90b:4b4d:b0:312:e445:fdd9 with SMTP id 98e67ed59e1d1-31c9f3df4d6mr27338628a91.10.1753036001293;
-        Sun, 20 Jul 2025 11:26:41 -0700 (PDT)
-Received: from km-host.. ([49.207.192.227])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23e3b6d2a82sm44634475ad.156.2025.07.20.11.26.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 20 Jul 2025 11:26:41 -0700 (PDT)
-From: ">" <sanjaysuthar661996@gmail.com>
-X-Google-Original-From: Sanjay Suthar sanjaysuthar661996@gmail.com>
-To: linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-iio@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-amlogic@lists.infradead.org
-Cc: ribalda@kernel.org,
-	jic23@kernel.org,
-	dlechner@baylibre.com,
-	nuno.sa@analog.com,
-	andy@kernel.org,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	neil.armstrong@linaro.org,
-	khilman@baylibre.com,
-	jbrunet@baylibre.com,
-	martin.blumenstingl@googlemail.com,
-	sanjay suthar <sanjaysuthar661996@gmail.com>
-Subject: 
-Date: Sun, 20 Jul 2025 23:56:27 +0530
-Message-Id: <20250720182627.39384-1-sanjaysuthar661996@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <CADU64hCr7mshqfBRE2Wp8zf4BHBdJoLLH=VJt2MrHeR+zHOV4w@mail.gmail.com>
-References: <CADU64hCr7mshqfBRE2Wp8zf4BHBdJoLLH=VJt2MrHeR+zHOV4w@mail.gmail.com>
+        bh=QEnR0xjEBXLuUSkPPs3JYg/bzf1JdRSdDrp8t3GgG8I=;
+        b=L95U6rRH2DmNwF1UIQzEIBs2M3v9v77ycjzi3jwxP1tyDq0ryVAXm/kMkderCu1/0J
+         NMTq83hj5BGaU4wgpPgEvA47wwLstL0Eeg0VyZF+HQrrj5UCDLniUJ62qk47igN305C2
+         XzdqKyXsskG+MDt5wckp4wbjin9DHulxDV1qMY2nc9uDzEIU2mCko5k6uHw4UfFJzjsf
+         bOhfVXBEnzhvlpdQNW8o3h9Pn1V6rfY4OZPg+l4N9oBnJDM0T+/hKJF+cQ70nu6flXHN
+         Y4HaJd//befo+oBXrkNlCBva14xvb38vSkcO02X6dkv43tG+9T9E1I36KkcWOPwaFr7w
+         5TGA==
+X-Forwarded-Encrypted: i=1; AJvYcCU7af8tJCnnQavaIKn3XfQ3NZU12Ts0vyPU6wdtIntWh1RrXls5qiPMeEzKc4akYqeTJEly2DGmgiDO@vger.kernel.org, AJvYcCUhmGhvHa6G2PRB+OaQbJW2iqk7Kh54Ui0F6n4Bqmfiz8gEoqpKKvCilG/0rqrU72YZMq9nYrXbtgs=@vger.kernel.org, AJvYcCX90d78qT2cYC4bx4COPnfNXrUD6U4y1XN232PR2GX2jCuoSWwkUZ8me4Np269Wfm+77RHJ85i559ZomQzz@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw5xTh1nCrDDTY21ZW9G+FD424v2Q0pRf/MnZzpihn6HacGSQTb
+	a5MQeq3RPoH6je6gH4EIJTERa0OChUzh26TtermmXQY3Pq0J2Jg0ZD3/FQbWb3vid0/Ujf+Swgk
+	NxotIEk6luev9r9Zt0VO/Q23eQoGwO+A=
+X-Gm-Gg: ASbGnctTmWY6cYgDEKb0BgFz0m2vwFc5g09ggzAxjhDJZV7plQu5Q9PM0cpcqyw31fc
+	p1dUDtiQMJV3TKYL3HwgrmQ/5qwbby6p0SCsxWpt2j8R4spYVK+X4Y0znWIZdq72MJPD50tXZdH
+	wffVkfmw79cwo7JPo+sw9AsvXwcUHLv5VIQzAGfU8xqdyZ/yXnLQPGi2uuKXo8Hic7Y5hnQ6vjV
+	XAQ7ik=
+X-Google-Smtp-Source: AGHT+IGFpCFwFLpD4YMqUWtzH7u8MC3ScHb+AzrjGdRxkKrji597zG3dpMKDi595Mv309tQn0g3xqCQSiww+ZRfpWas=
+X-Received: by 2002:a05:690c:6c0c:b0:70f:9fcd:2eb8 with SMTP id
+ 00721157ae682-71834f5507fmr109984767b3.1.1753036606068; Sun, 20 Jul 2025
+ 11:36:46 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250702230315.19297-1-l.rubusch@gmail.com> <20250702230315.19297-4-l.rubusch@gmail.com>
+ <aGaSkQHQKCqfrVXF@smile.fi.intel.com> <20250706170916.17417514@jic23-huawei>
+In-Reply-To: <20250706170916.17417514@jic23-huawei>
+From: Lothar Rubusch <l.rubusch@gmail.com>
+Date: Sun, 20 Jul 2025 20:36:09 +0200
+X-Gm-Features: Ac12FXwzCJKlmymgO6Tj4uf0ucI0vUrdPmbW2MJgwWMNCE8FGoBeble7gcVJpVY
+Message-ID: <CAFXKEHY61+OqwpOUJau+9afn3C6dya6AkAjfmrf+F=2bnFE-vQ@mail.gmail.com>
+Subject: Re: [PATCH v11 3/8] iio: accel: adxl345: add activity event feature
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Andy Shevchenko <andriy.shevchenko@intel.com>, lars@metafoo.de, 
+	Michael.Hennerich@analog.com, dlechner@baylibre.com, nuno.sa@analog.com, 
+	andy@kernel.org, corbet@lwn.net, linux-iio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, eraretuya@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Changes in v2:
-- Fixed commit message grammar
-- Fixed subject line style as per DT convention
-- Added missing reviewers/maintainers in CC
+Hi, I appologize for late replying on this topic.
 
-From 5c00524cbb47e30ee04223fe9502af2eb003ddf1 Mon Sep 17 00:00:00 2001
-From: sanjay suthar <sanjaysuthar661996@gmail.com>
-Date: Sun, 20 Jul 2025 01:11:00 +0530
-Subject: [PATCH v2] dt-bindings: cleanup: fix duplicated 'is is' in YAML docs
+On Sun, Jul 6, 2025 at 6:09=E2=80=AFPM Jonathan Cameron <jic23@kernel.org> =
+wrote:
+>
+> On Thu, 3 Jul 2025 17:24:17 +0300
+> Andy Shevchenko <andriy.shevchenko@intel.com> wrote:
+>
+> > On Wed, Jul 02, 2025 at 11:03:10PM +0000, Lothar Rubusch wrote:
+> > > Enable the sensor to detect activity and trigger interrupts according=
+ly.
+> > > Activity events are determined based on a threshold, which is initial=
+ized
+> > > to a sensible default during probe. This default value is adopted fro=
+m the
+> > > legacy ADXL345 input driver to maintain consistent behavior.
+> > >
+> > > The combination of activity detection, ODR configuration, and range
+> > > settings lays the groundwork for the activity/inactivity hysteresis
+> > > mechanism, which will be implemented in a subsequent patch. As such,
+> > > portions of this patch prepare switch-case structures to support thos=
+e
+> > > upcoming changes.
+> >
+> > >  #define ADXL345_REG_TAP_AXIS_MSK   GENMASK(2, 0)
+> > >  #define ADXL345_REG_TAP_SUPPRESS_MSK       BIT(3)
+> > >  #define ADXL345_REG_TAP_SUPPRESS   BIT(3)
+> > > +#define ADXL345_REG_ACT_AXIS_MSK   GENMASK(6, 4)
+> > >
+> > >  #define ADXL345_TAP_Z_EN           BIT(0)
+> > >  #define ADXL345_TAP_Y_EN           BIT(1)
+> > >  #define ADXL345_TAP_X_EN           BIT(2)
+> > >
+> > > +#define ADXL345_ACT_Z_EN           BIT(4)
+> > > +#define ADXL345_ACT_Y_EN           BIT(5)
+> > > +#define ADXL345_ACT_X_EN           BIT(6)
+> > > +#define ADXL345_ACT_XYZ_EN         (ADXL345_ACT_Z_EN | ADXL345_ACT_Y=
+_EN | ADXL345_ACT_X_EN)
+> >
+> > I'm trying to understand the logic behind the placement of the masks an=
+d bits.
+> > To me it sounds that the above should be rather
+> >
+> > #define ADXL345_REG_TAP_AXIS_MSK      GENMASK(2, 0)
+> > #define ADXL345_TAP_Z_EN              BIT(0)
+> > #define ADXL345_TAP_Y_EN              BIT(1)
+> > #define ADXL345_TAP_X_EN              BIT(2)
+> > #define ADXL345_REG_TAP_SUPPRESS_MSK  BIT(3) // Do we need this at all?
+> > #define ADXL345_REG_TAP_SUPPRESS      BIT(3) // or actually this? One i=
+s enough, no?
+> > #define ADXL345_REG_ACT_AXIS_MSK      GENMASK(6, 4)
+> > #define ADXL345_ACT_Z_EN              BIT(4)
+> > #define ADXL345_ACT_Y_EN              BIT(5)
+> > #define ADXL345_ACT_X_EN              BIT(6)
+> > #define ADXL345_ACT_XYZ_EN            (ADXL345_ACT_Z_EN | ADXL345_ACT_Y=
+_EN | ADXL345_ACT_X_EN)
+> >
+> > (Yes, I know that the mess is preexisted, but try to keep some order in=
+ the
+> >  pieces you add here.)
+>
+> FWIW I fully agree on keeping field definitions and field break up togeth=
+er.
+>
+> The ACT_MSK is a little odd as thing as then we'd expect there to be bits
+> within that. So that FIELD_GET(a, ADXL345_REG_ACT_AXIS_MSK) would return
+> a value from a list of things like
+> ADXL345_REG_ACT_AXIS_VALUE_A and similar.
+>
+> So I'd not define that as a mask a tall but just use the
+> ACT_XYZ_EN for it as then it's clear you are checking for any of the
+> 3 bits being set.
+>
 
-Fix minor grammatical issues by removing duplicated "is" in two devicetree
-binding documents:
+The reason is that ADXL345_REG_ACT_AXIS_MSK is used in the evaluation
+of the incoming interrupt status register for "activity" events, and
+ADXL345_ACT_XYZ_EN is supposed to group the enabled axis, when
+enabling the sensor feature "activity" in the enable register. At the
+end of the day, using only one of them would work for both, but
+there's a semantic difference.
 
-- net/amlogic,meson-dwmac.yaml
-- iio/dac/ti,dac7612.yaml
+Given this explanation, would you prefer to see a separate
+ADXL345_REG_ACT_AXIS_MSK and ADXL345_ACT_XYZ_EN as presented here, or
+just one ADXL345_ACT_XYZ_EN covering both cases, i.e. the evaluation
+of the interrupt status, and enabling activity axis?
 
-Signed-off-by: sanjay suthar <sanjaysuthar661996@gmail.com>
----
- Documentation/devicetree/bindings/iio/dac/ti,dac7612.yaml      | 2 +-
- Documentation/devicetree/bindings/net/amlogic,meson-dwmac.yaml | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/Documentation/devicetree/bindings/iio/dac/ti,dac7612.yaml b/Documentation/devicetree/bindings/iio/dac/ti,dac7612.yaml
-index 20dd1370660d..624c640be4c8 100644
---- a/Documentation/devicetree/bindings/iio/dac/ti,dac7612.yaml
-+++ b/Documentation/devicetree/bindings/iio/dac/ti,dac7612.yaml
-@@ -9,7 +9,7 @@ title: Texas Instruments DAC7612 family of DACs
- description:
-   The DAC7612 is a dual, 12-bit digital-to-analog converter (DAC) with
-   guaranteed 12-bit monotonicity performance over the industrial temperature
--  range. Is is programmable through an SPI interface.
-+  range. It is programmable through an SPI interface.
- 
- maintainers:
-   - Ricardo Ribalda Delgado <ricardo@ribalda.com>
-diff --git a/Documentation/devicetree/bindings/net/amlogic,meson-dwmac.yaml b/Documentation/devicetree/bindings/net/amlogic,meson-dwmac.yaml
-index 0cd78d71768c..5c91716d1f21 100644
---- a/Documentation/devicetree/bindings/net/amlogic,meson-dwmac.yaml
-+++ b/Documentation/devicetree/bindings/net/amlogic,meson-dwmac.yaml
-@@ -149,7 +149,7 @@ properties:
-       - description:
-           The first register range should be the one of the DWMAC controller
-       - description:
--          The second range is is for the Amlogic specific configuration
-+          The second range is for the Amlogic specific configuration
-           (for example the PRG_ETHERNET register range on Meson8b and newer)
- 
-   interrupts:
--- 
-2.34.1
-
+> Jonathan
+>
+...
+Best,
+L
 

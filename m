@@ -1,155 +1,165 @@
-Return-Path: <linux-iio+bounces-21783-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21784-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E9D4B0B2F9
-	for <lists+linux-iio@lfdr.de>; Sun, 20 Jul 2025 02:20:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2115B0B451
+	for <lists+linux-iio@lfdr.de>; Sun, 20 Jul 2025 10:49:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C81961898DD9
-	for <lists+linux-iio@lfdr.de>; Sun, 20 Jul 2025 00:21:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EF39B17560B
+	for <lists+linux-iio@lfdr.de>; Sun, 20 Jul 2025 08:49:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B2AFDF71;
-	Sun, 20 Jul 2025 00:20:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2CAF1D5141;
+	Sun, 20 Jul 2025 08:48:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gp/L4yUe"
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="YoAYaHjM"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout.web.de (mout.web.de [212.227.15.3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07C7815A8;
-	Sun, 20 Jul 2025 00:20:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55CF9125D6;
+	Sun, 20 Jul 2025 08:48:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752970847; cv=none; b=bdliAp7R8+2mWdd8i+nVCKYxKVKj4mMfeaACMf1DFIJVBREUhSRI6jQNt5iPx028EyYUrq6zXbbTVxDIf1xr2KB9RwoOn7lQxgt1/f9YxkGoHsLO4zBuRSCNwJbyYb5Wwi6h9V540FdLkXaVScyI6tNmQALWf13Ga36EUFUxIFE=
+	t=1753001338; cv=none; b=bD4r0WY9yZeAjowisJnJ4zOCy8/3Oj7w9PeOQSNhU4uNX5R0AcXoREfyoEr4aNEUaIgaarGeG//M7885hnsJskRthVMlRBijSWk4pp6dwNvMQQ4rx0ZLz24VbhDqf6AsvHKDUsrJhGfqXULeJhAMu3ar15+xltT5s6fuB5wRZOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752970847; c=relaxed/simple;
-	bh=OtFSKnQJLty8pNLNiDG+01ViY9iOpad5TmroInGnKcw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oJTFZUSHxbx3356YFalhtkTTNo2d181UTWXY5Lln8e07Qw7tIf9QJJ3N2ZzODX8rMzAzWwCmfKYZv5Vyr8w6cOATA1TtzOrnICVr7sWtYPHdHQjnLOe75LStJIgguOLCr69LJvPJg0QZYyav3Wh3YvMelNM5qwe/vEZ7b+vNuM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gp/L4yUe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF514C4CEE3;
-	Sun, 20 Jul 2025 00:20:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752970846;
-	bh=OtFSKnQJLty8pNLNiDG+01ViY9iOpad5TmroInGnKcw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gp/L4yUeeuj6moNS7hE8ns2uEdOo4Nyg0bhcpd4SZ0ID+jaFjSLW4qjENp5xWKOxs
-	 ba8zlU3l729BseY5uWou352gHYh1h/FgxSDKWrIyUfnCsVExiTxOQCXPXTKSGHn04e
-	 Fr3B4B8EjJUZLppBfVeGODlDFcqnQerC6JLGlTJwFzDf40DACNofGhMJwffixr24qK
-	 FwoRyYbnlLpwGXOo84BbZQj899W/CBoVmQerDv65bcQvKrpeCxCNx0T8uYn5Lmm4MC
-	 jc7IQ/t1Ct51Hz605ZImGBeZZVVmGfcYGybqxA/S9eHoRo4jldYV/1sAIKwwqnd4gF
-	 2yghXXgl36L3w==
-From: William Breathitt Gray <wbg@kernel.org>
-To: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
-Cc: William Breathitt Gray <wbg@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Heiko Stuebner <heiko@sntech.de>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	Kever Yang <kever.yang@rock-chips.com>,
-	Yury Norov <yury.norov@gmail.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Dave Ertman <david.m.ertman@intel.com>,
-	Ira Weiny <ira.weiny@intel.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Lee Jones <lee@kernel.org>,
-	linux-gpio@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-rockchip@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-pwm@vger.kernel.org,
-	linux-iio@vger.kernel.org,
-	kernel@collabora.com,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Detlev Casanova <detlev.casanova@collabora.com>
-Subject: Re: [PATCH v2 6/7] counter: Add rockchip-pwm-capture driver
-Date: Sun, 20 Jul 2025 09:20:15 +0900
-Message-ID: <20250720002024.696040-1-wbg@kernel.org>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250602-rk3576-pwm-v2-6-a6434b0ce60c@collabora.com>
-References: 
+	s=arc-20240116; t=1753001338; c=relaxed/simple;
+	bh=No2sk2IuIhzjEyWFsf9BPzEmRbKad5ko+vVn9iKWiWU=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=eBKfKSxn5KDn4ab1iGfT620RHLv0aHzuEFo3d6GLTTv3aIAQxz7HIB7/5r1zlQIapIt0lH94DisvyRY7rF4G3Js+tSvh9Am1KgJWfMttBBxEAALVtOYOyogdRPOVhQxhrA9+7wDeR1RP5v1KYWdNc6WcapeRLYeqTtZ90yKxntc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=YoAYaHjM; arc=none smtp.client-ip=212.227.15.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1753001324; x=1753606124; i=markus.elfring@web.de;
+	bh=rscPHLErhSJ8FVJqx7sMwbc1IoevGkE751ziuG863K0=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
+	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 cc:content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=YoAYaHjMSmcWx6DluHTfBXdvU2iTsQGph+0Tz0pPqTuj5J0EehxvY95q3vbtrZup
+	 R6+w7xscIebELg6wMitGa+Aw5VTa56lvDie9gqRG6vOPtLP1RcVYjHppFz1eGFmsF
+	 Gq7tv9Uol13Gy2b0YYTt+gEgncCuuzgUSnYVuwuf94j5zmEphQe5RsVx/VjNFwlN1
+	 k8lThY4SGZbgJut0DNiWzp5sw/2LE8y37JfYegFMjy52ugDTchH1dvu+dvgwk4aO2
+	 sw52+12zQZOl40AimZdKso1RDI6TIiIqEMXtBpH1oxyE0YPmowrdM1BsVmo4dyB+b
+	 R123Ohc9AOO4op6ffA==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.29] ([94.31.69.216]) by smtp.web.de (mrweb006
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1MZB01-1u8wP437xZ-00IGzN; Sun, 20
+ Jul 2025 10:48:43 +0200
+Message-ID: <43ed8918-0116-4e8b-943c-2e62906b1fdb@web.de>
+Date: Sun, 20 Jul 2025 10:48:41 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3362; i=wbg@kernel.org; h=from:subject; bh=OtFSKnQJLty8pNLNiDG+01ViY9iOpad5TmroInGnKcw=; b=owGbwMvMwCW21SPs1D4hZW3G02pJDBk1ZoZ8Gz+aTdhw53D1hbVX5Nc3ZaxsPTyL8/YuN56Cw FKrq62WHaUsDGJcDLJiiiy95mfvPrikqvHjxfxtMHNYmUCGMHBxCsBEli5g+GcXl79B3f4I/867 8fImitd+ThGcE1JmLzIzvlMjR/6602qG/9H/Jmx+MC3/sEbhh10T7266ybuXNelCScrmxZ2RmW0 3XnMBAA==
-X-Developer-Key: i=wbg@kernel.org; a=openpgp; fpr=8D37CDDDE0D22528F8E89FB6B54856CABE12232B
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+To: Marcelo Schmitt <marcelo.schmitt@analog.com>, linux-iio@vger.kernel.org
+Cc: Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
+ LKML <linux-kernel@vger.kernel.org>, Andy Shevchenko <andy@kernel.org>,
+ Dan Carpenter <dan.carpenter@linaro.org>,
+ David Lechner <dlechner@baylibre.com>, Jonathan Cameron <jic23@kernel.org>,
+ Lars-Peter Clausen <lars@metafoo.de>, =?UTF-8?Q?Nuno_S=C3=A1?=
+ <nuno.sa@analog.com>, Michael Hennerich <michael.hennerich@analog.com>
+References: <7b2fec30e9c6a80630a5fc08fb061d17417eb350.1752956751.git.marcelo.schmitt@analog.com>
+Subject: Re: [PATCH] iio: adc: ad4170-4: Correctly update filter_fs after
+ filter type change
+Content-Language: en-GB, de-DE
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <7b2fec30e9c6a80630a5fc08fb061d17417eb350.1752956751.git.marcelo.schmitt@analog.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:LmihGFOT270cJbHbLAS4lGTrz9J/5b57tnDBSVFRjmDk1pIo6vU
+ svolSANHv7W7mpTLfwSUpuiuKLAAVf/BKbd0v/hi3vJmZ4LwEJU2xvegNvhQRlapXrMdirM
+ QUOd7xaxJYIIt9sfUD6Fz4d43KkU7SKvqFo2pMSc2yW/u4cYCK/Q8i3RD+FgtVkfFSOUqil
+ RQUL9atgBLMFuIDDLc+QA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:JzGbNqcT7jQ=;7IwtuAMD2GwwjRPavG3cqkYakxi
+ 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
 
-On Mon, Jun 02, 2025 at 06:19:17PM +0200, Nicolas Frattaroli wrote:
-> Among many other things, Rockchip's new PWMv4 IP in the RK3576 supports
-> PWM capture functionality.
-> 
-> Add a basic driver for this that works to capture period and duty cycle
-> values and return them as nanoseconds to the user. It's quite basic, but
-> works well enough to demonstrate the device function exclusion stuff
-> that mfpwm does, in order to eventually support all the functions of
-> this device in drivers within their appropriate subsystems, without them
-> interfering with each other.
-> 
-> Once enabled, the counter driver waits for enough high-to-low and
-> low-to-high interrupt signals to arrive, and then writes the cycle count
-> register values into some atomic members of the driver instance's state
-> struct. The read callback can then do the conversion from cycle count to
-> the more useful period and duty cycle nanosecond values, which require
-> knowledge of the clock rate, which requires a call that the interrupt
-> handler cannot make itself because said call may sleep.
-> 
-> To detect the condition of a PWM signal disappearing, i.e. turning off,
-> we modify the delay value of a delayed worker whose job it is to simply
-> set those atomic members to zero. Should the "timeout" so to speak be
-> reached, we assume the PWM signal is off. This isn't perfect; it
-> obviously introduces a latency between it being off and the counter
-> reporting it as such. Because there isn't a way to reset the internal
-> double-buffered cycle count in the hardware, we filter out unreliable
-> periods above the timeout value in the counter read callback.
-> 
-> Signed-off-by: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
+=E2=80=A6
+> +++ b/drivers/iio/adc/ad4170-4.c
+> @@ -880,10 +880,12 @@ static int ad4170_set_filter_type(struct iio_dev *=
+indio_dev,
+>  			return -EBUSY;
+> =20
+>  		if (val =3D=3D AD4170_SINC5_AVG || val =3D=3D AD4170_SINC3)
+> -			setup->filter_fs =3D clamp(val, AD4170_SINC3_MIN_FS,
+> +			setup->filter_fs =3D clamp(setup->filter_fs,
+> +						 AD4170_SINC3_MIN_FS,
+>  						 AD4170_SINC3_MAX_FS);
+>  		else
+> -			setup->filter_fs =3D clamp(val, AD4170_SINC5_MIN_FS,
+> +			setup->filter_fs =3D clamp(setup->filter_fs,
+> +						 AD4170_SINC5_MIN_FS,
+>  						 AD4170_SINC5_MAX_FS);
+> =20
+>  		setup->filter &=3D ~AD4170_FILTER_FILTER_TYPE_MSK;
 
-Hi Nicolas,
+How do you think about to use the following code variant?
 
-Would you help me understand the computations in this driver?
+		setup->filter_fs =3D (val =3D=3D AD4170_SINC5_AVG || val =3D=3D AD4170_S=
+INC3)
+				   ? clamp(setup->filter_fs,
+					   AD4170_SINC3_MIN_FS, AD4170_SINC3_MAX_FS)
+				   : clamp(setup->filter_fs,
+					   AD4170_SINC5_MIN_FS, AD4170_SINC5_MAX_FS);
 
-If I understand the purpose of this driver correctly, it's meant to
-compute the period and duty cycle of a PWM signal. What do LPC and HPC
-represent? I'm guessing they are the low period count (LPC) and the high
-period count (HPC). So then you calculate the total period by adding
-LPC and HPC, whereas the duty cycle derives from HPC.
 
-Am I understanding the algorithm correctly? What are the units of HPC
-and LPC; are they ticks from the core clock? Are PWMV4_INT_LPC and
-PWM4_INT_HPC the change-of-state interrupts for LPC and HPC
-respectively?
-
-The Counter subsystem can be used to derive the period and duty cycle of
-a signal, but I believe there's a more idiomatic way to implement this.
-Existing counter drivers such as microchip-tcb-capture achieve this by
-leveraging Counter events exposed via the Counter chrdev interface.
-
-The basic idea would be:
-    * Expose LPC and HPC as count0 and count1;
-    * Push the PWMV4_INT_LPC and PWMV4_INT_HPC interrupts as
-      COUNTER_EVENT_CHANGE_OF_STATE events on channel 0 and channel 1
-      respectively;
-    * Register Counter watches in userspace to capture LPC and HPC on
-      each interrupt;
-
-The Counter chrdev interface records a timestamp in nanoseconds with
-each event capture. So to compute period and duty cycle, you would
-subtract the difference between two HPC/LPC captures; the difference in
-the timestamps gives you the elapsed time between the two captures in
-nanoseconds.
-
-Would that design work for your use case?
-
-William Breathitt Gray
+Regards,
+Markus
 

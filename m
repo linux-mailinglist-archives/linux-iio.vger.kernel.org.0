@@ -1,151 +1,155 @@
-Return-Path: <linux-iio+bounces-21782-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21783-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01D25B0B1C2
-	for <lists+linux-iio@lfdr.de>; Sat, 19 Jul 2025 22:37:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E9D4B0B2F9
+	for <lists+linux-iio@lfdr.de>; Sun, 20 Jul 2025 02:20:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ADD9F189E5E4
-	for <lists+linux-iio@lfdr.de>; Sat, 19 Jul 2025 20:37:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C81961898DD9
+	for <lists+linux-iio@lfdr.de>; Sun, 20 Jul 2025 00:21:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 708BE21C173;
-	Sat, 19 Jul 2025 20:37:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B2AFDF71;
+	Sun, 20 Jul 2025 00:20:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="y7aU6BVm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gp/L4yUe"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7FC9191484;
-	Sat, 19 Jul 2025 20:37:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07C7815A8;
+	Sun, 20 Jul 2025 00:20:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752957455; cv=none; b=B986bCrQNkICETPa7Es7Jnri0/66KD+A9lwzJ3JtaAkiUym1bzPmX+eIGZVyXzhC4VkrNbDNNj2PQvCD4eDJsLsoWExFMyo1dn1y0gRzbGc+ahkszeikCvq+BmuR6IKKoRavkf4k/UkKuKa1JKcPGrMvi9gGICGl7FCKWV7+doU=
+	t=1752970847; cv=none; b=bdliAp7R8+2mWdd8i+nVCKYxKVKj4mMfeaACMf1DFIJVBREUhSRI6jQNt5iPx028EyYUrq6zXbbTVxDIf1xr2KB9RwoOn7lQxgt1/f9YxkGoHsLO4zBuRSCNwJbyYb5Wwi6h9V540FdLkXaVScyI6tNmQALWf13Ga36EUFUxIFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752957455; c=relaxed/simple;
-	bh=d1y7Y/qXdjcx7CdL+FADat6eddsAFGpX2OE/zDSRinM=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=OiV6RrynlFs+fvyATxJc99dX1MSs/oiq5/o85c2ZzRvQp+yXGRD2wk6rl0aY20/2Ie+SGAqs0g3fpXKb+rLwPc4WP+TKiHpFHEGtxyMSaqHsxMVYuRQL7nmQZ3FXVwobhqCIVboRyXiJ6z9K/VZdLSi0/QfGsKmYS9Zunp0epTw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=y7aU6BVm; arc=none smtp.client-ip=148.163.135.77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
-Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-	by mx0a-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56JJPANx008103;
-	Sat, 19 Jul 2025 16:37:04 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
-	:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=DKIM; bh=5VhNeZaGVO+KPeewbNqaIdq0o85
-	MTUTPES/xWee+v8U=; b=y7aU6BVmKTGDHLCODdfO1M8kFaUBKO6ATkNyJEyKucx
-	rtdlqtOyXmLzedVBEjpHXOcZj3ZZnIBoeLHUOT87yiH5Ntmm6nUN8GC/F0i3aplb
-	uvEn3b1+Xu+9Z7802NeeWJgajM1ymhl9DI4LxLqqsKIuilKPLIq9prPZIv+e6XbL
-	qnbo2gr4/X3+1Juy6NRxMZvf4L1jPlNkvZExsYrN4yTN09dar8OyGpB18LGR4ak/
-	FVUYU0P5XoMj0PP8y9V9BDjQ4LcZG2nw2ZYWh3Cvw8HdHQ7qI+bbGm/shiiugEKD
-	8TTSempyumsinELkIl+DhttdNxemyqa1jg954RTcCRw==
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 480b6p98p9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 19 Jul 2025 16:37:04 -0400 (EDT)
-Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
-	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 56JKb2GE054515
-	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Sat, 19 Jul 2025 16:37:02 -0400
-Received: from ASHBCASHYB5.ad.analog.com (10.64.17.133) by
- ASHBMBX8.ad.analog.com (10.64.17.5) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Sat, 19 Jul 2025 16:37:02 -0400
-Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by
- ASHBCASHYB5.ad.analog.com (10.64.17.133) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Sat, 19 Jul 2025 16:37:02 -0400
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server id 15.2.1748.10 via Frontend
- Transport; Sat, 19 Jul 2025 16:37:02 -0400
-Received: from work.ad.analog.com (HYB-hERzalRezfV.ad.analog.com [10.65.205.9])
-	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 56JKalu6019557;
-	Sat, 19 Jul 2025 16:36:50 -0400
-From: Marcelo Schmitt <marcelo.schmitt@analog.com>
-To: <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC: <jic23@kernel.org>, <dan.carpenter@linaro.org>, <lars@metafoo.de>,
-        <Michael.Hennerich@analog.com>, <dlechner@baylibre.com>,
-        <nuno.sa@analog.com>, <andy@kernel.org>, <marcelo.schmitt1@gmail.com>
-Subject: [PATCH] iio: adc: ad4170-4: Correctly update filter_fs after filter type change
-Date: Sat, 19 Jul 2025 17:36:42 -0300
-Message-ID: <7b2fec30e9c6a80630a5fc08fb061d17417eb350.1752956751.git.marcelo.schmitt@analog.com>
-X-Mailer: git-send-email 2.39.2
+	s=arc-20240116; t=1752970847; c=relaxed/simple;
+	bh=OtFSKnQJLty8pNLNiDG+01ViY9iOpad5TmroInGnKcw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=oJTFZUSHxbx3356YFalhtkTTNo2d181UTWXY5Lln8e07Qw7tIf9QJJ3N2ZzODX8rMzAzWwCmfKYZv5Vyr8w6cOATA1TtzOrnICVr7sWtYPHdHQjnLOe75LStJIgguOLCr69LJvPJg0QZYyav3Wh3YvMelNM5qwe/vEZ7b+vNuM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gp/L4yUe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF514C4CEE3;
+	Sun, 20 Jul 2025 00:20:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752970846;
+	bh=OtFSKnQJLty8pNLNiDG+01ViY9iOpad5TmroInGnKcw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=gp/L4yUeeuj6moNS7hE8ns2uEdOo4Nyg0bhcpd4SZ0ID+jaFjSLW4qjENp5xWKOxs
+	 ba8zlU3l729BseY5uWou352gHYh1h/FgxSDKWrIyUfnCsVExiTxOQCXPXTKSGHn04e
+	 Fr3B4B8EjJUZLppBfVeGODlDFcqnQerC6JLGlTJwFzDf40DACNofGhMJwffixr24qK
+	 FwoRyYbnlLpwGXOo84BbZQj899W/CBoVmQerDv65bcQvKrpeCxCNx0T8uYn5Lmm4MC
+	 jc7IQ/t1Ct51Hz605ZImGBeZZVVmGfcYGybqxA/S9eHoRo4jldYV/1sAIKwwqnd4gF
+	 2yghXXgl36L3w==
+From: William Breathitt Gray <wbg@kernel.org>
+To: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
+Cc: William Breathitt Gray <wbg@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Heiko Stuebner <heiko@sntech.de>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Kever Yang <kever.yang@rock-chips.com>,
+	Yury Norov <yury.norov@gmail.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Dave Ertman <david.m.ertman@intel.com>,
+	Ira Weiny <ira.weiny@intel.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Lee Jones <lee@kernel.org>,
+	linux-gpio@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-rockchip@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-pwm@vger.kernel.org,
+	linux-iio@vger.kernel.org,
+	kernel@collabora.com,
+	Jonas Karlman <jonas@kwiboo.se>,
+	Detlev Casanova <detlev.casanova@collabora.com>
+Subject: Re: [PATCH v2 6/7] counter: Add rockchip-pwm-capture driver
+Date: Sun, 20 Jul 2025 09:20:15 +0900
+Message-ID: <20250720002024.696040-1-wbg@kernel.org>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20250602-rk3576-pwm-v2-6-a6434b0ce60c@collabora.com>
+References: 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3362; i=wbg@kernel.org; h=from:subject; bh=OtFSKnQJLty8pNLNiDG+01ViY9iOpad5TmroInGnKcw=; b=owGbwMvMwCW21SPs1D4hZW3G02pJDBk1ZoZ8Gz+aTdhw53D1hbVX5Nc3ZaxsPTyL8/YuN56Cw FKrq62WHaUsDGJcDLJiiiy95mfvPrikqvHjxfxtMHNYmUCGMHBxCsBEli5g+GcXl79B3f4I/867 8fImitd+ThGcE1JmLzIzvlMjR/6602qG/9H/Jmx+MC3/sEbhh10T7266ybuXNelCScrmxZ2RmW0 3XnMBAA==
+X-Developer-Key: i=wbg@kernel.org; a=openpgp; fpr=8D37CDDDE0D22528F8E89FB6B54856CABE12232B
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-ORIG-GUID: 8LB8axdSLzkqH8-K2XkpZKq-z1Mf46h-
-X-Proofpoint-GUID: 8LB8axdSLzkqH8-K2XkpZKq-z1Mf46h-
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzE5MDIwNSBTYWx0ZWRfX6dRS8Xa+wJeO
- b1gBfdTgeIg/i7O3mYTYa7oYbSPzH3mLWqShkSQo1U2BqTfpN1e1+WIBLfH0jaqUY6ohrvYpIBt
- P1Mr/dDcAYGPFAmM1ZoZZ+g3/h3/uNKcXSVCOSXWf/VxR0HPaTlheUNuceKBFrPsoN4U92GJPPh
- Aaz/mD1l+KBGPE3/tgVxVEf4aDlRHqdTD9lI8XTZeAf9ea/4I42At/xjdPi3ysK2c7sonZK501t
- ka6Q+byexasflmyjsSxlv+B//dVvsohvKNjgcmLRhZVyio2TELe5dEgV8b9jRsvv+ZRR9WDvnpG
- OKtdQEbeSv0rAceAz8x1vpBjStw8ez5uFMHPxWJevvk2ojFVnCkQLM+ldcMoRQ06KQHdiyHUc3N
- j+PhBfBErJ3nxfFZqFW7lNytcbt4r2QQQg/KpTZHKvP2OUv1wEdUQGnghuQDnqSADGhZxACj
-X-Authority-Analysis: v=2.4 cv=KKdaDEFo c=1 sm=1 tr=0 ts=687c01f0 cx=c_pps
- a=3WNzaoukacrqR9RwcOSAdA==:117 a=3WNzaoukacrqR9RwcOSAdA==:17
- a=Wb1JkmetP80A:10 a=VwQbUJbxAAAA:8 a=KKAkSRfTAAAA:8 a=gAnH3GRIAAAA:8
- a=dFwZVDRm2i14ZgZprooA:9 a=cvBusfyB2V15izCimMoJ:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-07-19_02,2025-07-17_02,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 mlxlogscore=999 clxscore=1011 malwarescore=0
- impostorscore=0 bulkscore=0 spamscore=0 priorityscore=1501 suspectscore=0
- phishscore=0 mlxscore=0 adultscore=0 classifier=spam authscore=0 authtc=n/a
- authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2505280000 definitions=main-2507190205
 
-Previously, the driver was directly using the filter type value to update
-the filter frequency (filter_fs) configuration. That caused the driver to
-switch to the lowest filter_fs configuration (highest sampling frequency)
-on every update to the filter type. Correct the filter_fs colateral update
-by clampling it to the range of supported values instead of mistakenly
-using the filter type to update the filter_fs.
+On Mon, Jun 02, 2025 at 06:19:17PM +0200, Nicolas Frattaroli wrote:
+> Among many other things, Rockchip's new PWMv4 IP in the RK3576 supports
+> PWM capture functionality.
+> 
+> Add a basic driver for this that works to capture period and duty cycle
+> values and return them as nanoseconds to the user. It's quite basic, but
+> works well enough to demonstrate the device function exclusion stuff
+> that mfpwm does, in order to eventually support all the functions of
+> this device in drivers within their appropriate subsystems, without them
+> interfering with each other.
+> 
+> Once enabled, the counter driver waits for enough high-to-low and
+> low-to-high interrupt signals to arrive, and then writes the cycle count
+> register values into some atomic members of the driver instance's state
+> struct. The read callback can then do the conversion from cycle count to
+> the more useful period and duty cycle nanosecond values, which require
+> knowledge of the clock rate, which requires a call that the interrupt
+> handler cannot make itself because said call may sleep.
+> 
+> To detect the condition of a PWM signal disappearing, i.e. turning off,
+> we modify the delay value of a delayed worker whose job it is to simply
+> set those atomic members to zero. Should the "timeout" so to speak be
+> reached, we assume the PWM signal is off. This isn't perfect; it
+> obviously introduces a latency between it being off and the counter
+> reporting it as such. Because there isn't a way to reset the internal
+> double-buffered cycle count in the hardware, we filter out unreliable
+> periods above the timeout value in the counter read callback.
+> 
+> Signed-off-by: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
 
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/linux-iio/c6e54942-5b42-484b-be53-9d4606fd25c4@sabinyo.mountain/
-Suggested-by: Jonathan Cameron <jic23@kernel.org>
-Fixes: 8ab7434734cd ("iio: adc: ad4170-4: Add digital filter and sample frequency config support")
-Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
----
-Didn't find a bug report in https://bugzilla.kernel.org/ to link with a
-Closes: tag so added a Link: tag instead.
+Hi Nicolas,
 
- drivers/iio/adc/ad4170-4.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+Would you help me understand the computations in this driver?
 
-diff --git a/drivers/iio/adc/ad4170-4.c b/drivers/iio/adc/ad4170-4.c
-index 6cd84d6fb08b..de35cef85a6e 100644
---- a/drivers/iio/adc/ad4170-4.c
-+++ b/drivers/iio/adc/ad4170-4.c
-@@ -880,10 +880,12 @@ static int ad4170_set_filter_type(struct iio_dev *indio_dev,
- 			return -EBUSY;
- 
- 		if (val == AD4170_SINC5_AVG || val == AD4170_SINC3)
--			setup->filter_fs = clamp(val, AD4170_SINC3_MIN_FS,
-+			setup->filter_fs = clamp(setup->filter_fs,
-+						 AD4170_SINC3_MIN_FS,
- 						 AD4170_SINC3_MAX_FS);
- 		else
--			setup->filter_fs = clamp(val, AD4170_SINC5_MIN_FS,
-+			setup->filter_fs = clamp(setup->filter_fs,
-+						 AD4170_SINC5_MIN_FS,
- 						 AD4170_SINC5_MAX_FS);
- 
- 		setup->filter &= ~AD4170_FILTER_FILTER_TYPE_MSK;
+If I understand the purpose of this driver correctly, it's meant to
+compute the period and duty cycle of a PWM signal. What do LPC and HPC
+represent? I'm guessing they are the low period count (LPC) and the high
+period count (HPC). So then you calculate the total period by adding
+LPC and HPC, whereas the duty cycle derives from HPC.
 
-base-commit: cd2731444ee4e35db76f4fb587f12d327eec5446
--- 
-2.47.2
+Am I understanding the algorithm correctly? What are the units of HPC
+and LPC; are they ticks from the core clock? Are PWMV4_INT_LPC and
+PWM4_INT_HPC the change-of-state interrupts for LPC and HPC
+respectively?
 
+The Counter subsystem can be used to derive the period and duty cycle of
+a signal, but I believe there's a more idiomatic way to implement this.
+Existing counter drivers such as microchip-tcb-capture achieve this by
+leveraging Counter events exposed via the Counter chrdev interface.
+
+The basic idea would be:
+    * Expose LPC and HPC as count0 and count1;
+    * Push the PWMV4_INT_LPC and PWMV4_INT_HPC interrupts as
+      COUNTER_EVENT_CHANGE_OF_STATE events on channel 0 and channel 1
+      respectively;
+    * Register Counter watches in userspace to capture LPC and HPC on
+      each interrupt;
+
+The Counter chrdev interface records a timestamp in nanoseconds with
+each event capture. So to compute period and duty cycle, you would
+subtract the difference between two HPC/LPC captures; the difference in
+the timestamps gives you the elapsed time between the two captures in
+nanoseconds.
+
+Would that design work for your use case?
+
+William Breathitt Gray
 

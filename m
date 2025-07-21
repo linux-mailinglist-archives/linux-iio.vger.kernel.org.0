@@ -1,111 +1,177 @@
-Return-Path: <linux-iio+bounces-21821-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21822-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D78F5B0C38D
-	for <lists+linux-iio@lfdr.de>; Mon, 21 Jul 2025 13:45:07 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27A8AB0C455
+	for <lists+linux-iio@lfdr.de>; Mon, 21 Jul 2025 14:46:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B46A1884FBF
-	for <lists+linux-iio@lfdr.de>; Mon, 21 Jul 2025 11:44:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 68D8B7ACC88
+	for <lists+linux-iio@lfdr.de>; Mon, 21 Jul 2025 12:44:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 292CB2BF006;
-	Mon, 21 Jul 2025 11:43:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C74832BFC65;
+	Mon, 21 Jul 2025 12:46:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="U6rxNg3e"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="kSPo9cv7"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84F2A2BE65C;
-	Mon, 21 Jul 2025 11:43:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA1DE4502F;
+	Mon, 21 Jul 2025 12:46:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753098226; cv=none; b=DfaosuMBSjYg46cpc04I3wVDeTdR9B/53owSyYMYRAgXWiI9sT8lXXd7G6xcMwZHPZChWu1gl5e3rXRFKRf5wt6YjdTIuirqw5su3+Y185C8+grcGg2FQWt1wiuN2Gk1dj4NASCLHpJjkeXCQBpHEmrggvtWOnioM9X2iCGLR7U=
+	t=1753101968; cv=none; b=J7UQQbdoKY26z0zTOSKv2BG/3RT3DajMqj5cOO4DxN1ojgVHugr6NslpgizKW0QEE6tH8ml/HBndHLOoTqC2g561+g9h6YKTj0XoVD5sbbrg1Wd0zxohZJMDyzwJqbiWXuw/mp4LPN1re+45QW4FSgpV9spJiF5EC2DzM5P/HjI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753098226; c=relaxed/simple;
-	bh=E7JZML/DSqmAeDiUgFD6FwOcerC7aKGgGd+21Y5vB1s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=M73c4VJ9PlnxO3w9MwyhNWla5fuIDoIW8QYaxQxjj+mBZ1PeY31nKKEJxSsdgzOX3lDqwS2wzlSqDDvPcD2V5l0tCtdwQrPNFmpJsxKHtuzGwrYe/o94M08+T92SAx044Vj6auNPxb1yPyUU2UPzw3kiosE1u+qu8rOwJGXROi4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=U6rxNg3e; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1753098226; x=1784634226;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=E7JZML/DSqmAeDiUgFD6FwOcerC7aKGgGd+21Y5vB1s=;
-  b=U6rxNg3eFFS1voeOYn+0Jo+1HIOMA6dGXFkjiVEz79WzHbxKchq6+tke
-   95dJad54jqzwCEUeMzjIgXooZZa5dLd8YimMIGGPSOdL3s3NnbQJ0OfI2
-   7aSG3yBMKUc0cybScTjeaJqMJmH9Cw5Vcw3wfCfh7nvYJsa30vK2uscxs
-   G3MpIIFo0J1U5vD7LW7m7F26OW72HOTni5IHyAv+xEjnxeewhsQeq+ECL
-   +OdL1qVa+HlkQGtDzwmAimRFxwgTe2bb6y8h/VvlBDM0nY4nmm54mJ7Ko
-   hzigw9573NtFCETVBsvbsfQdMta4wU+S6UGWdXJmkIBTYrRo063AqxH6a
-   Q==;
-X-CSE-ConnectionGUID: bWi7SvFIR1WmKUdC9beN1A==
-X-CSE-MsgGUID: s3liG3FDQAiLSFAyTCYldw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11498"; a="55190282"
-X-IronPort-AV: E=Sophos;i="6.16,328,1744095600"; 
-   d="scan'208";a="55190282"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jul 2025 04:43:46 -0700
-X-CSE-ConnectionGUID: l2EnZGPbRCuKAMgQuiGhtw==
-X-CSE-MsgGUID: +eSs64p/REmGNdBWbYIJgQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,328,1744095600"; 
-   d="scan'208";a="158878641"
-Received: from smile.fi.intel.com ([10.237.72.52])
-  by fmviesa006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jul 2025 04:43:42 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1udovj-0000000HKRU-0mAT;
-	Mon, 21 Jul 2025 14:43:39 +0300
-Date: Mon, 21 Jul 2025 14:43:38 +0300
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Marcelo Schmitt <marcelo.schmitt@analog.com>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-	jic23@kernel.org, dan.carpenter@linaro.org, lars@metafoo.de,
-	Michael.Hennerich@analog.com, dlechner@baylibre.com,
-	nuno.sa@analog.com, andy@kernel.org, Markus.Elfring@web.de,
-	marcelo.schmitt1@gmail.com
-Subject: Re: [PATCH v2 1/1] iio: adc: ad4170-4: Correctly update filter_fs
- after filter type change
-Message-ID: <aH4n6kMQAN1zZP_V@smile.fi.intel.com>
-References: <1c354ff9f41ff964a66ece44b0d356e0bda3d210.1753024756.git.marcelo.schmitt@analog.com>
+	s=arc-20240116; t=1753101968; c=relaxed/simple;
+	bh=WGUQgDlE1s2YTapj41wUMa0BgEKsNgWIMJNz10NotwM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=IOpX2dO0Im+6qwpknhtgLJX2nygwMqgzmEEY2dS+s44YpRLx5T6WxCfeF/OlaFZKZnOTbzUaZSCCgWPAu9sDXV12aCLT38RxNopGq+MRRU1n+6pH1EV8SLjeYII13O1GwG1GIkfydu8GjS4a063SpNBN+crwPaBENz61ShKb/50=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=kSPo9cv7; arc=none smtp.client-ip=148.251.105.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1753101960;
+	bh=WGUQgDlE1s2YTapj41wUMa0BgEKsNgWIMJNz10NotwM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=kSPo9cv75vw9UZ0CR4OLbjZU8t3subAZ5maiKshA0TNSuGgefVTXxIYzo/HTqAlgl
+	 LIyQd3zMu9eP/O31LM7EpmNAo7PT495/rRzlRj82cqeKI/VrrXYPFmxeiLrX6PuuIP
+	 FCR9FhRLbhFcUXn4dj+LLZYLFUw9GKsIwj9PUOM2iGTpKqPdSIXa/f18ZCZA86UKME
+	 +Z9Ijtncdp/ontJplBRxZ1+jGDXvsgzV1EH1u0r6UTWn6d68hOKx4jkrUJoRPRYeOd
+	 GyogLDsta52fywRoObfEo9lSGMyOW6s0xxYE1qPFDVgWDaYnWQfFay4V3JnABrkBmc
+	 u7FkwJT88NMNw==
+Received: from [192.168.1.100] (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
+	(No client certificate requested)
+	(Authenticated sender: kholk11)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 53ADF17E0CA1;
+	Mon, 21 Jul 2025 14:45:59 +0200 (CEST)
+Message-ID: <b06969d2-0c35-44c7-bb2c-162942186c53@collabora.com>
+Date: Mon, 21 Jul 2025 14:45:58 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1c354ff9f41ff964a66ece44b0d356e0bda3d210.1753024756.git.marcelo.schmitt@analog.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 2/7] nvmem: qcom-spmi-sdam: Migrate to
+ devm_spmi_subdevice_alloc_and_add()
+To: Casey Connolly <casey.connolly@linaro.org>, sboyd@kernel.org
+Cc: jic23@kernel.org, dlechner@baylibre.com, nuno.sa@analog.com,
+ andy@kernel.org, arnd@arndb.de, gregkh@linuxfoundation.org,
+ srini@kernel.org, vkoul@kernel.org, kishon@kernel.org, sre@kernel.org,
+ krzysztof.kozlowski@linaro.org, u.kleine-koenig@baylibre.com,
+ linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-phy@lists.infradead.org,
+ linux-pm@vger.kernel.org, kernel@collabora.com, wenst@chromium.org
+References: <20250721075525.29636-1-angelogioacchino.delregno@collabora.com>
+ <20250721075525.29636-3-angelogioacchino.delregno@collabora.com>
+ <e724e6a2-21a8-436a-8809-ce73c0afa433@linaro.org>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Content-Language: en-US
+In-Reply-To: <e724e6a2-21a8-436a-8809-ce73c0afa433@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Sun, Jul 20, 2025 at 12:37:24PM -0300, Marcelo Schmitt wrote:
-> Previously, the driver was directly using the filter type value to update
-> the filter frequency (filter_fs) configuration. That caused the driver to
-> switch to the lowest filter_fs configuration (highest sampling frequency)
-> on every update to the filter type. Correct the filter_fs collateral update
-> by clamping it to the range of supported values instead of mistakenly
-> using the filter type to update the filter_fs.
+Il 21/07/25 12:44, Casey Connolly ha scritto:
+> Hi Angelo,
 > 
-> Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-> Link: https://lore.kernel.org/linux-iio/c6e54942-5b42-484b-be53-9d4606fd25c4@sabinyo.mountain/
+> On 21/07/2025 09:55, AngeloGioacchino Del Regno wrote:
+>> Some Qualcomm PMICs integrate a SDAM device, internally located in
+>> a specific address range reachable through SPMI communication.
+>>
+>> Instead of using the parent SPMI device (the main PMIC) as a kind
+>> of syscon in this driver, register a new SPMI sub-device for SDAM
+>> and initialize its own regmap with this sub-device's specific base
+>> address, retrieved from the devicetree.
+>>
+>> This allows to stop manually adding the register base address to
+>> every R/W call in this driver, as this can be, and is now, handled
+>> by the regmap API instead.
+> 
+> This is honestly a really nice improvement :D>
 
-You mean Closes: here?
+Thanks! :-D
 
-> Suggested-by: Jonathan Cameron <jic23@kernel.org>
-> Fixes: 8ab7434734cd ("iio: adc: ad4170-4: Add digital filter and sample frequency config support")
-> Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
+>> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+>> ---
+>>   drivers/nvmem/qcom-spmi-sdam.c | 41 +++++++++++++++++++++++++---------
+>>   1 file changed, 30 insertions(+), 11 deletions(-)
+>>
+>> diff --git a/drivers/nvmem/qcom-spmi-sdam.c b/drivers/nvmem/qcom-spmi-sdam.c
+>> index 4f1cca6eab71..1b80e8563a33 100644
+>> --- a/drivers/nvmem/qcom-spmi-sdam.c
+>> +++ b/drivers/nvmem/qcom-spmi-sdam.c
+>> @@ -9,6 +9,7 @@
+>>   #include <linux/nvmem-provider.h>
+>>   #include <linux/platform_device.h>
+>>   #include <linux/regmap.h>
+>> +#include <linux/spmi.h>
+>>   
+>>   #define SDAM_MEM_START			0x40
+>>   #define REGISTER_MAP_ID			0x40
+>> @@ -20,7 +21,6 @@
+>>   struct sdam_chip {
+>>   	struct regmap			*regmap;
+>>   	struct nvmem_config		sdam_config;
+>> -	unsigned int			base;
+>>   	unsigned int			size;
+>>   };
+>>   
+>> @@ -73,7 +73,7 @@ static int sdam_read(void *priv, unsigned int offset, void *val,
+>>   		return -EINVAL;
+>>   	}
+>>   
+>> -	rc = regmap_bulk_read(sdam->regmap, sdam->base + offset, val, bytes);
+>> +	rc = regmap_bulk_read(sdam->regmap, offset, val, bytes);
+>>   	if (rc < 0)
+>>   		dev_err(dev, "Failed to read SDAM offset %#x len=%zd, rc=%d\n",
+>>   						offset, bytes, rc);
+>> @@ -100,7 +100,7 @@ static int sdam_write(void *priv, unsigned int offset, void *val,
+>>   		return -EINVAL;
+>>   	}
+>>   
+>> -	rc = regmap_bulk_write(sdam->regmap, sdam->base + offset, val, bytes);
+>> +	rc = regmap_bulk_write(sdam->regmap, offset, val, bytes);
+>>   	if (rc < 0)
+>>   		dev_err(dev, "Failed to write SDAM offset %#x len=%zd, rc=%d\n",
+>>   						offset, bytes, rc);
+>> @@ -110,28 +110,47 @@ static int sdam_write(void *priv, unsigned int offset, void *val,
+>>   
+>>   static int sdam_probe(struct platform_device *pdev)
+>>   {
+>> +	struct regmap_config sdam_regmap_config = {
+>> +		.reg_bits = 16,
+>> +		.val_bits = 16,
+> 
+> I believe registers are 8 bits wide, at least on Qualcomm platforms.
+> 
 
--- 
-With Best Regards,
-Andy Shevchenko
+I used 16 because usually that's the usual default for SPMI - but if you're sure
+about Qualcomm platforms having 8-bits wide registers and you can confirm that,
+I can change both of those to 8 in a jiffy.
 
+I anyway have to send a v2 because I forgot an error check - so changing this is
+not a problem at all for me.
 
+But.
+
+Before me changing - can you please please please double check and confirm?
+
+If you can also check the register width of the others that I converted, I'd really
+appreciate that (I have no datasheets for qcom so it's a bit of a guessing game for
+me here... :-P), just so that we get everything right from the get-go ... even if
+a mismatch wouldn't really cause issues in the current state of things.
+
+That's because - I just noticed - in qcom-spmi-pmic.c, reg_bits is 16, but val_bits
+is 8 (which basically means "the registers are 16-bits wide, but we always only
+care about the lower 8 bits).
+
+Thanks again!
+
+Cheers,
+Angelo
 

@@ -1,145 +1,253 @@
-Return-Path: <linux-iio+bounces-21792-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21793-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08E3EB0BD00
-	for <lists+linux-iio@lfdr.de>; Mon, 21 Jul 2025 08:52:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4708CB0BDF2
+	for <lists+linux-iio@lfdr.de>; Mon, 21 Jul 2025 09:43:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 42BE2175DC9
-	for <lists+linux-iio@lfdr.de>; Mon, 21 Jul 2025 06:52:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DCBD51892D42
+	for <lists+linux-iio@lfdr.de>; Mon, 21 Jul 2025 07:43:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FCA927FB09;
-	Mon, 21 Jul 2025 06:52:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 132F928468D;
+	Mon, 21 Jul 2025 07:42:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t9G7JeCG"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GIVJ3VQ8"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FC0219DF62;
-	Mon, 21 Jul 2025 06:52:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13F98284685;
+	Mon, 21 Jul 2025 07:42:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753080762; cv=none; b=QZW5EeBnw1l9bLsWFQhgk7ZhtSf4ooJSODtfK6f5/yPWQK5pT3mtY126U5B0gspAdU5iqjj1nhB3jyAPcwQQsY1BWykR22VFM/pSk25dBxTr+4Y7dz/M3Ue+hyLVGrmUit+5sLsTgPko+LI/DtpDyausF0iMJbHrSHqfFl2bqcc=
+	t=1753083771; cv=none; b=eiTwGrF2uwrwdgdRk3tJSg0XKgpBjNQUd14CoJhQjGBhhRa/RfQHmchoqyNUMhyrwzP2aegzOwGcAqKFjeLl/n8CUATYvcD9aGhk24HjBreo2s6b/N8/F0U2Q855Ey75WaIfx+ygSx6AhkYzUNc8I2isO1TIAvyboPlA7gMZDeE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753080762; c=relaxed/simple;
-	bh=Fj2B+JNw6UkLmg+kDNy6fM5RkSwPiSm8KCZnRQSQWss=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XT4YwvO63PCzHXhNnsqHljsc8HrrjkXMeJERAI3wIfAO4bBgtMLHf/FnX5Jy5P1ZQooGaHgVkjBiXbV5xsC9nk3Ii2+d8rUyGo0rqdD5dwChbbDRcqt8APO4kHJHNbPogpAtYz/kctfdh6aXee2plpg5eQrl4RYmDdj4ICnN6KY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t9G7JeCG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8065DC4CEED;
-	Mon, 21 Jul 2025 06:52:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753080761;
-	bh=Fj2B+JNw6UkLmg+kDNy6fM5RkSwPiSm8KCZnRQSQWss=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=t9G7JeCGjETBbBP5rsHRIZo0lCY01I/emLq5/di0udM/ulJsYhAuzB09xkp1atpLt
-	 tZlTpNevJ7rDxKm6EbgqR8Xg66c5aeaQmfKJUuNCY3Hcm0qbLiajaMOGoyUAdv2111
-	 JboHLReaD4JA09x/9Mtfo8/O1W/ZOsduvoOr+4OtTXUUjE7L4YkPjkXqweRaL8hWZK
-	 OivoX+yF0GZTTgxWIJmnpJAe35LDYaFroyXB1e/UvgsCoKnw94F5lxrt06fXHcJaw3
-	 7kiLPSfvKbkWzqpGR1324EyDQ85mBwLyEG7LzbvZtVIhvkZoFPkMNimWFfheBuWbPi
-	 kf6GWNzVquXzg==
-Message-ID: <9574826f-3023-4fe1-9346-eacd70990d73@kernel.org>
-Date: Mon, 21 Jul 2025 08:52:34 +0200
+	s=arc-20240116; t=1753083771; c=relaxed/simple;
+	bh=Q4RBacuprSEIc9pez5OZQhXVT32g2ZtOfNSxEYIpOio=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Xno+K6+SCHLwvkcq6vC62BmNHz2WkCuF0mO5dQJmagghNLYuwaDKyz0tV308XixzeXHxzTvX/4J9WZObWxHAxBXP5GT+KXMY/3iuX9v/FFu6J32gvdx308aqcjgKZ2/w9xc+a1yowTv8iKMhnGS7HnWSGCpsG09mybvJJ3lqy7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GIVJ3VQ8; arc=none smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1753083770; x=1784619770;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Q4RBacuprSEIc9pez5OZQhXVT32g2ZtOfNSxEYIpOio=;
+  b=GIVJ3VQ8RDUfJzvYVZs6KkV47FlFyjRztWZfSFkwfIczBrPOdYIT50tg
+   QuP+7WcVPwJlQyLRAP8nJnxEsjCPqTT1LMn0/9+sDSlV6yOtrSDa1zDyF
+   rNRFtMW0xCLnWsAlnMvlx/xQb9UxYwDoHRbhUhWQ9s2W7C4uyKn9XET2z
+   H75IFBnskQypK1rHpVRQihme4Mp6ejqFp6jnHby5pPESXt/XG1Cd72fBH
+   vWvUwOmFtwI15/rLE/wntsVLDWh6FvHqJM3iQpxdg9K61vJpjWGuQpfau
+   v3DoCkzlMYYP1o+mAnqRVyKJVHHX43amsURkz4v0lO8f3WJdlrWkhIQyY
+   w==;
+X-CSE-ConnectionGUID: geES7QqTR9ij1zXr7lk8pg==
+X-CSE-MsgGUID: pr3SWbTpQ/yDNKEFeEF4ug==
+X-IronPort-AV: E=McAfee;i="6800,10657,11498"; a="55444609"
+X-IronPort-AV: E=Sophos;i="6.16,328,1744095600"; 
+   d="scan'208";a="55444609"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jul 2025 00:42:49 -0700
+X-CSE-ConnectionGUID: rc6vbhyTSyqvAelJSe+wOw==
+X-CSE-MsgGUID: Kp+L3q7rRMOBCfw6bfXsqg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,328,1744095600"; 
+   d="scan'208";a="158885160"
+Received: from smile.fi.intel.com ([10.237.72.52])
+  by orviesa007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jul 2025 00:42:47 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@intel.com>)
+	id 1udlAZ-0000000HHbP-37cp;
+	Mon, 21 Jul 2025 10:42:43 +0300
+Date: Mon, 21 Jul 2025 10:42:43 +0300
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Sean Anderson <sean.anderson@linux.dev>
+Cc: Jonathan Cameron <jic23@kernel.org>, Jean Delvare <jdelvare@suse.com>,
+	Guenter Roeck <linux@roeck-us.net>, linux-iio@vger.kernel.org,
+	linux-hwmon@vger.kernel.org, Andy Shevchenko <andy@kernel.org>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	linux-kernel@vger.kernel.org, David Lechner <dlechner@baylibre.com>
+Subject: Re: [PATCH 7/7] hwmon: iio: Add alarm support
+Message-ID: <aH3vcye29TrG8s2Z@smile.fi.intel.com>
+References: <20250715012023.2050178-1-sean.anderson@linux.dev>
+ <20250715012023.2050178-8-sean.anderson@linux.dev>
+ <aHYWQOjJEWdLjy7H@smile.fi.intel.com>
+ <3b35b3a7-3f1a-4401-9b60-ba4afda5636e@linux.dev>
+ <aHd6NEHcCa6aqJB5@smile.fi.intel.com>
+ <e4894ab6-dd75-45d5-a49f-832c64b89eaf@linux.dev>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re:
-To: David Lechner <dlechner@baylibre.com>, ">"
- <sanjaysuthar661996@gmail.com>, linux-kernel@vger.kernel.org,
- devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
- netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-amlogic@lists.infradead.org
-Cc: ribalda@kernel.org, jic23@kernel.org, nuno.sa@analog.com,
- andy@kernel.org, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, neil.armstrong@linaro.org,
- khilman@baylibre.com, jbrunet@baylibre.com,
- martin.blumenstingl@googlemail.com
-References: <CADU64hCr7mshqfBRE2Wp8zf4BHBdJoLLH=VJt2MrHeR+zHOV4w@mail.gmail.com>
- <20250720182627.39384-1-sanjaysuthar661996@gmail.com>
- <84ad0f66-311e-4560-870d-851852c6f902@baylibre.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <84ad0f66-311e-4560-870d-851852c6f902@baylibre.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e4894ab6-dd75-45d5-a49f-832c64b89eaf@linux.dev>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On 20/07/2025 21:30, David Lechner wrote:
->>    - Ricardo Ribalda Delgado <ricardo@ribalda.com>
->> diff --git a/Documentation/devicetree/bindings/net/amlogic,meson-dwmac.yaml b/Documentation/devicetree/bindings/net/amlogic,meson-dwmac.yaml
->> index 0cd78d71768c..5c91716d1f21 100644
->> --- a/Documentation/devicetree/bindings/net/amlogic,meson-dwmac.yaml
->> +++ b/Documentation/devicetree/bindings/net/amlogic,meson-dwmac.yaml
->> @@ -149,7 +149,7 @@ properties:
->>        - description:
->>            The first register range should be the one of the DWMAC controller
->>        - description:
->> -          The second range is is for the Amlogic specific configuration
->> +          The second range is for the Amlogic specific configuration
->>            (for example the PRG_ETHERNET register range on Meson8b and newer)
->>  
->>    interrupts:
+On Thu, Jul 17, 2025 at 12:23:58PM -0400, Sean Anderson wrote:
+> On 7/16/25 06:08, Andy Shevchenko wrote:
+> > On Tue, Jul 15, 2025 at 12:20:24PM -0400, Sean Anderson wrote:
+> >> On 7/15/25 04:50, Andy Shevchenko wrote:
+> >> > On Mon, Jul 14, 2025 at 09:20:23PM -0400, Sean Anderson wrote:
+
+...
+
+> >> >>  #include <linux/hwmon-sysfs.h>
+> >> > 
+> >> > + blank line here..
+> >> 
+> >> why?
+> > 
+> > To group the subsystem related headers (which are more custom and less generic).
+> > This allows to follow what the subsystems are in use and what APIs / types are
+> > taken.
 > 
-> I would be tempted to split this into two patches. It's a bit odd to have
+> Then you should send a patch for coding-style.rst.
+
+Does any of the common sense approach need to be written in the documentation?
+
+> >> >>  #include <linux/iio/consumer.h>
+> >> >> +#include <linux/iio/events.h>
+> >> >> +#include <linux/iio/iio.h>
+> >> >>  #include <linux/iio/types.h>
+> >> > 
+> >> > ...and here?
+> >> 
+> >> OK
+> >> 
+> >> >> +#include <uapi/linux/iio/events.h>
+> > 
+> > As similar here, to visually split uAPI and the rest. This increases
+> > readability and maintenance.
+
+...
+
+> >> >> +static ssize_t iio_hwmon_lookup_alarm(struct iio_hwmon_listener *listener,
+> >> >> +				      u64 id)
+> >> >> +{
+> >> >> +	ssize_t i;
+> >> >> +
+> >> >> +	for (i = 0; i < listener->num_alarms; i++)
+> >> >> +		if (listener->ids[i] == id)
+> >> >> +			return i;
+> >> > 
+> >> >> +	return -1;
+> >> > 
+> >> > -ENOENT ?
+> >> > This will allow to propagate an error code to the upper layer(s).
+> >> 
+> >> I suppose. But I think
+> >> 
+> >> alarm = iio_hwmon_lookup_alarm(...);
+> >> if (alarm < 0)
+> >> 	return -ENOENT;
+> >> 
+> >> is clearer than
+> > 
+> > I disagree. This makes it worth as it shadows other possible code(s), if any,
+> > and makes harder to follow as reader has to check the callee implementation.
+> > 
+> > The shadow error codes need a justification.
+> 
+> OK, I will return a bool next time to avoid any misconceptions that the return
+> code means anything other than "found" or "not found"
+
+This makes sense. And IIRC it's even documented.
+
+> >> alarm = iio_hwmon_lookup_alarm(...);
+> >> if (alarm < 0)
+> >> 	return alarm;
+> >> 
+> >> because you don't have to read the definition of iio_hwmon_lookup_alarm
+> >> to determine what the return value is.
+> > 
+> > Exactly my point!
+> 
+> your point is that you want readers to have to read the definition of
+> iio_hwmon_lookup_alarm in order to determine that ENOENT is a possible
+> error from add_alarm_attr? I don't follow.
+
+No, my point is that readers should not care about error code. If it's
+propagated to the upper layer, the upper layer will decide on how to proceed.
+And -ENOENT is de facto standard for "entity not found".
+
+> >> >> +}
+
+...
+
+> >> >> +err_alarms:
+> >> >> +	kfree(listener->alarms);
+> >> >> +	kfree(listener->ids);
+> >> >> +err_listener:
+> >> >> +	kfree(listener);
+> >> >> +err_unlock:
+> >> >> +	mutex_unlock(&iio_hwmon_listener_lock);
+> >> >> +	return ERR_PTR(err);
+> >> > 
+> >> > What about using __free()?
+> >> 
+> >> That works for listener, but not for alarms or ids.
+> > 
+> > Why not?
+
+No answer? Have you checked how cleanup.h suggests to avoid cleaning the memory
+when it's supposed to be used later on?
+
+...
+
+> >> >> +static void iio_hwmon_listener_put(void *data)
+> >> >> +{
+> >> >> +	struct iio_hwmon_listener *listener = data;
+> >> >> +
+> >> >> +	scoped_guard(mutex, &iio_hwmon_listener_lock) {
+> >> >> +		if (unlikely(listener->refcnt == UINT_MAX))
+> >> >> +			return;
+> >> >> +
+> >> >> +		if (--listener->refcnt)
+> >> >> +			return;
+> >> > 
+> >> > Can the refcount_t be used with the respective APIs? Or even kref?
+> >> 
+> >> Why? We do all the manipulation under a mutex, so there is no point in
+> >> atomic access. Instead of the games refcnt_t has to play to try and
+> >> prevent overflow we can just check for it directly.
+> > 
+> > refcount_t provides a facility of overflow/underflow.
+> 
+> refcount_t can't prevent underflow because it's atomic. All it can do is
+> warn after the fact. And of course overflow is handled properly here.
+> But it can't occur in practice unless you specifically load multiple
+> devicetrees at runtime. So we don't need it anyway.
+
+It will warn the user in such cases. Your code won't do it, even if it's not a
+big deal or never happens situation, it's still better to use in-kernel
+standard ways of handling these things.
+
+> > Also it gives better
+> > understanding from the data type to see which value and how does that.
+> 
+> That's why I named the variable "refcnt".
+
+Yes, and that's why I asked about existing interface / API / type to use.
+
+> >> >> +		list_del(&listener->list);
+> >> >> +		iio_event_unregister(listener->indio_dev, &listener->block);
+> >> >> +	}
+> >> >> +
+> >> >> +	kfree(listener->alarms);
+> >> >> +	kfree(listener->ids);
+> >> >> +	kfree(listener);
+> >> >> +}
+
+-- 
+With Best Regards,
+Andy Shevchenko
 
 
-No, it's a churn to split this into more than one patch.
-
-> a single patch touching two unrelated bindings.
-
-
-
-
-Best regards,
-Krzysztof
 

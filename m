@@ -1,116 +1,207 @@
-Return-Path: <linux-iio+bounces-21846-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21847-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF5B8B0CC34
-	for <lists+linux-iio@lfdr.de>; Mon, 21 Jul 2025 23:01:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE5EBB0CD2E
+	for <lists+linux-iio@lfdr.de>; Tue, 22 Jul 2025 00:13:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1481B7AC5A8
-	for <lists+linux-iio@lfdr.de>; Mon, 21 Jul 2025 21:00:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 772DF7A90E5
+	for <lists+linux-iio@lfdr.de>; Mon, 21 Jul 2025 22:11:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E260E220F4B;
-	Mon, 21 Jul 2025 21:01:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CA9623E25A;
+	Mon, 21 Jul 2025 22:13:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="M1Ro/V2u"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="Aisdd/y3"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oi1-f175.google.com (mail-oi1-f175.google.com [209.85.167.175])
+Received: from mail-ot1-f46.google.com (mail-ot1-f46.google.com [209.85.210.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A29971EF1D
-	for <linux-iio@vger.kernel.org>; Mon, 21 Jul 2025 21:01:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CD97566A
+	for <linux-iio@vger.kernel.org>; Mon, 21 Jul 2025 22:12:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753131684; cv=none; b=YXpUfStGf2rk7uqvZNSgfrwTuj2qbOzYqpt9uPLTLT5GvXexYVT2Bs3RZLIgCB8KehruCQoS5RKUs+zGm2IPwlXHUkYTiF817/VqE8tIqjQilHzeoDlUrsg8GLo0ZHNHjywccErCtwTjdfWLf32vmiR7kwOoPmXCdQC3/X9PArs=
+	t=1753135980; cv=none; b=h+q88Y1JcJosYpATSkyfymdEqmP2gwD8CcpuQh17oUh4g/Z4JocMmnraJ1jp031CIL+XldL5jnIRzXlfLf87a6vLJ7Xjg4dQVwvPJLzHWYCj4aecmdZ8CpcUTwDZOlqtOAy4hcunfgj3II4dOx5SqRorKbzFyUyb3BZscMiS+so=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753131684; c=relaxed/simple;
-	bh=CMKwmcoyYWnuqYTxRDyFEXVj/77a1Rs4755k1CQKGi4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BDgnwksF9HuYVTSzNNfDtU1pVVNpMc7toRKjckm63dxxGXXsH9oKHFy+bvaQ/bFKx1gZep35GDsxPPrIhZzLFIegubh4lwQUeynJ5vCyRWwHHKn6FG9wEXtF/Dv2Um3L6uy/FQ4QV2HCQmLFC5391pmAB/IG8kuxFACRiZkpkmU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=M1Ro/V2u; arc=none smtp.client-ip=209.85.167.175
+	s=arc-20240116; t=1753135980; c=relaxed/simple;
+	bh=FlH/ND2z8RUlY+3y2sTU47dSU+1M5otXT+HK7pDuHn0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=ujSi95l4Z06to39ggD79GhtumuvUusjEw6T+gUP0ZEooJ7gmw8flI5yQtrG88mJLbPXzGk842VleYiMU/wWPQ04/yJvlpUkiKBixxlR2QdhQJvcf9PgsEtKggzIUDnh6E4Y+dS+Eqy7QraL1vx/qITQoiG1DHmTagOq6pWeRjGE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=Aisdd/y3; arc=none smtp.client-ip=209.85.210.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oi1-f175.google.com with SMTP id 5614622812f47-41b4ebb15e2so2313540b6e.3
-        for <linux-iio@vger.kernel.org>; Mon, 21 Jul 2025 14:01:22 -0700 (PDT)
+Received: by mail-ot1-f46.google.com with SMTP id 46e09a7af769-73e62d692fbso2714044a34.2
+        for <linux-iio@vger.kernel.org>; Mon, 21 Jul 2025 15:12:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1753131682; x=1753736482; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=rXWBks1EUAciZOD3ioE8/iGRBfqG2hakCkxED7hvB1Y=;
-        b=M1Ro/V2uwKxv6dVzBOR1jZZV9E1W6+EfXzG0Zz+kjen9gwjQdCbcNsiDjawHrw54it
-         jmFWXN86sZk9+Mdxt1v+mHsSsv6vwc2hgqmgB7DCvp67M2QRyEow6DzI1kR58KlSy4X9
-         8P0XiB723gHrJxR81eAAPYj8KJX/ydz/EiXyWOqxXEeNB3ZQdO5QxIIMjvvpCZpBQwtV
-         ZjCunRU+Ay1xCCmEihOgNw4mPGsjrwvDxA4RrhczHnZepZb5Irnu32fHUYe13/jlFeaA
-         B19VasqxPi7YdXI9NgzMPGyyKXiE2mO4XEq5JsphrnfekhjfEpnFJN0cwZpg4Gu64eTV
-         il0A==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1753135977; x=1753740777; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=+4QUqhtmhxV/A0o/IDCP/S2tsnQrmpkfM9PaU4Oxm2c=;
+        b=Aisdd/y3bghN/NV1cW426hY0DkDTaDORs7/O9jFwGYU/qg895FApdCiWyUtWaDlQjq
+         KwQ8HmMqinMSw++q3+aW1LMSLiG/246QjgFPS1hCDMElmCwjMSV86IkXgHSwzMlcFeaS
+         vgAsKCU66iN6lxx0Ts4I9UkPMxw27WeiUoUmfTsHv7vb+en4glqGoAkChv0PhZuF1gFD
+         4F+fy6WFITgUofYUbep1f4vS6kBJOA5Avc93arRstzdV6B5EJ2xhTAYdofrfHnjYhDe4
+         O8YcXdVCwafw2R9obGM/8L1lSkV32ATDwC9h0uO8vRvUKR2Bg7o7UeXyAt1KKRR2OAJ8
+         7VNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753131682; x=1753736482;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=rXWBks1EUAciZOD3ioE8/iGRBfqG2hakCkxED7hvB1Y=;
-        b=fh/q6MD8QeoORNBz3oHpyl4/pGBkszGccsbKC4wxud28gR87YGNQzg6OoFTRJ/IXUN
-         bpVH3bcGoOX6tm4LprfyHXza19ZyRL7Y86n0xDqKn0j4ancwuu1NYAU7cYug+hl6UOtF
-         Cr/5MtSHAGc+bKh5qOicmTa7o7A/qAjZDJEurjrlPfF5ytqqXsu9YlqmVRG4Fou27T3J
-         DxX/QI1X4rzyKjRzHz7loJRRZdziPF9lwyVF9dPGktK9dMg5p4W/ykWDuL5o8yQwXpO0
-         x13K1OMHi6hQX7NvX6GDongxY4I/vm2evk1HU6SwoPOqhTYLCC66R5U1oBlM8G4TlWMe
-         YUGA==
-X-Forwarded-Encrypted: i=1; AJvYcCXgPiEXaM343aAYBD+JkYU/V94HhH1MyDltKEWwzn3qKE5/PTh6w4VEHIC7gBav/fU7xM2sOnHyGig=@vger.kernel.org
-X-Gm-Message-State: AOJu0YywOPIyC2t0DrIvBiR2aznW9fhHs9W9k6aEUuAY+zEDJ1sA/YN9
-	A6TJ3HNaRRh7us8PuhroLJbMhRkjT9A5Pjt/cQ9QRjZa/J2Op3szELZxXqakuSEeeZ0=
-X-Gm-Gg: ASbGncuke7aItKhaKdDsWc5iUyh53C5YTldo/hf+urRpC0wMSP3NZuPbKbOcNd+nJFe
-	XLaIZQhAdpIzlJ2Z4cTf0S1n8b83mu5CKgEPrSryIyBme9hEuzgkZKBHkdOXIH83gJB2yH//gwP
-	osOq+dRI7e6O2e0JATPyqNbW8e+hCeuvaixtAH47YisfOzEb25teHaPfROrInxb2ZKnHxnyWXrz
-	lRnZ7SI9uWvYyKlt5HiR7r1fPTQE5nWG3kqzX+Y+7vnKbxqKgaC8ESMtUj9Z+MkKzdK2ShAGSSd
-	5TXbXWOTX6LNJIOk+W93cUTZs3U2ID2UwXQpPAzoNAZFyJqSAJmGFZZJ0qOWj3/KZ+Nmy4ON69R
-	wtC1ijFWea+ovg6VvxYLQbvsN1SYODAW9vp31NixB0ggVFfCc5FDfjd6lqqkNs18z2x6d9xLtuH
-	MN+K9EvX6UsA==
-X-Google-Smtp-Source: AGHT+IEPt2O2BlG+TVDknWLjyVyFRxHH6uNruZppfA/oxvYn8tf3hlEwc1xHZLSg37PVYVenHK/2vA==
-X-Received: by 2002:a05:6808:30a9:b0:40b:2b2e:89f4 with SMTP id 5614622812f47-41e4500b356mr12724226b6e.10.1753131681608;
-        Mon, 21 Jul 2025 14:01:21 -0700 (PDT)
-Received: from ?IPV6:2600:8803:e7e4:1d00:3bea:f296:60f2:c6cb? ([2600:8803:e7e4:1d00:3bea:f296:60f2:c6cb])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-41fd10c0ea6sm2827533b6e.1.2025.07.21.14.01.20
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 21 Jul 2025 14:01:21 -0700 (PDT)
-Message-ID: <83798680-8e3f-4899-8c58-d7da5587653e@baylibre.com>
-Date: Mon, 21 Jul 2025 16:01:20 -0500
+        d=1e100.net; s=20230601; t=1753135977; x=1753740777;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=+4QUqhtmhxV/A0o/IDCP/S2tsnQrmpkfM9PaU4Oxm2c=;
+        b=jMJUqBvi75uqaQhsF26XnHh1D6Hvqm7UYdnkIo6HeN9PXm2s7UHkd65sP3hEdevZ4N
+         dlHFFKt+7vaC+6dIyYc7gxMkyn9Ua2tmyNBmThpIEDf4dr95+M9uQ31oLT9sPS47l64x
+         KvRTPdujF4E9lN0xfo9LB3o3UtXLV7aum8ArnqIHREffVxChMWmx4ggkHmBfed4HSanh
+         n9yoYAugG6v2gHPYXpbzUMyJl2hVQUMws8Ebmavd/XEtAxZSn9Y3tG4276H2Rx4kDRF3
+         LVZMnyCfwryOj2eEtqcSAZGGroRoD/UBfOpCrJ/J+3csI1HR8pO6S1v67umkhNmwdd1y
+         Phiw==
+X-Gm-Message-State: AOJu0YxhD9IpGpW7AtJh/xj73NaK0+EyUgXYDBR5AgZ6W8xyim7p56w1
+	DYWrGelY9W1nCzEvsMHLTyhdKveSjJ2EKhKeH0Exe9od8wBw1gnOcNBtZpheelN5aiM=
+X-Gm-Gg: ASbGncuZOpph6ruc1wABoREFBGCRQ7fudOhV04fnrWWCkXkuV5loxOfH9dtTCtvkD2B
+	wSKF9Avt8hUukI3Ytmk0jNC/avhC+peI0lmAzdH9/vDdShusgjVQAMYuLwBjHNh05TKgS5VhN1P
+	BANR9D5yY95LdDsYjMx5MnBn4V7tiXJ6h11FvXtyyTsO0WdMXHxL1Youi+Vj9Lc11uKT6hdz/ta
+	wbVzX+iWdK+TbcBhCIntZG9dFWsReCx/ySyL8xqJzZ1VIgOoZBBL6KgxBv6M0oN3rTc2FuCUJx3
+	+D/0xltBeILRwzTuSHVKNu0fG/B1qWEmQTQTtuE1wMRxOQXEY4TZKhGn2JEwUs8FvpPN2C0YU6C
+	O9i8mr4UktQKg5y68cVgFjQI4lknL
+X-Google-Smtp-Source: AGHT+IFthgWSVSfgVwt6XwHTFSI4mZWckkpu17WIbzx4acXXViP8dTaXTcaVrb+dPf4d/8DZcXkItA==
+X-Received: by 2002:a05:6830:6c8d:b0:72c:320b:fc8c with SMTP id 46e09a7af769-73e64abb03dmr16573659a34.21.1753135977532;
+        Mon, 21 Jul 2025 15:12:57 -0700 (PDT)
+Received: from [127.0.1.1] ([2600:8803:e7e4:1d00:2a79:4b55:6a01:85d7])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-73e90ce0b42sm2518764a34.43.2025.07.21.15.12.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 21 Jul 2025 15:12:57 -0700 (PDT)
+From: David Lechner <dlechner@baylibre.com>
+Date: Mon, 21 Jul 2025 17:12:47 -0500
+Subject: [PATCH v2] iio: adc: ti-adc081c: use individual model structures
+ instead of array
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] iio: imu: lsm6dsx: Add shutdown callback support for I3C
- interface
-To: Andy Shevchenko <andriy.shevchenko@intel.com>,
- Manikanta Guntupalli <manikanta.guntupalli@amd.com>
-Cc: git@amd.com, michal.simek@amd.com, lorenzo@kernel.org, jic23@kernel.org,
- nuno.sa@analog.com, andy@kernel.org, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, radhey.shyam.pandey@amd.com,
- srinivas.goud@amd.com, manion05gk@gmail.com
-References: <20250721110741.2380963-1-manikanta.guntupalli@amd.com>
- <aH4mwkh80TUTNXtS@smile.fi.intel.com>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <aH4mwkh80TUTNXtS@smile.fi.intel.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20250721-iio-const-data-11-v2-1-c3fec12511ee@baylibre.com>
+X-B4-Tracking: v=1; b=H4sIAF67fmgC/32NQQrCMBBFr1Jm7Ugz2JK48h6lizQZ7YA2kpRgK
+ bm7sQdw+R7893dIHIUTXJsdImdJEpYKdGrAzXZ5MIqvDNRS1/akUSSgC0ta0dvVolKoXD8ZJm0
+ 9e6i7d+S7fI7mMFaeJa0hbsdFVj/7r5ZrEKnXSptLZ5Sh22S3p0yRzy68YCylfAEkLvsBtQAAA
+ A==
+X-Change-ID: 20250628-iio-const-data-11-1c6b9e28aded
+To: Jonathan Cameron <jic23@kernel.org>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Andy Shevchenko <andy@kernel.org>, David Lechner <dlechner@baylibre.com>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3328; i=dlechner@baylibre.com;
+ h=from:subject:message-id; bh=FlH/ND2z8RUlY+3y2sTU47dSU+1M5otXT+HK7pDuHn0=;
+ b=owEBbQGS/pANAwAKAcLMIAH/AY/AAcsmYgBofrtguNZPRR8KLpLKDaiAPcFIgaCGjY+rBqVUp
+ DB9jY6qkqmJATMEAAEKAB0WIQTsGNmeYg6D1pzYaJjCzCAB/wGPwAUCaH67YAAKCRDCzCAB/wGP
+ wFcCB/4tjTVD04WHlbyez7ozsf0hv+2cO42jF1uFTOanXoY5wjqeL9QMbj2FGa+4L55Ew5VkXol
+ 1krlHy50hQRwo4IucSijziN64qr2Kduenm5NEFGLb4tMgCwTnjZp8uB9Hl8K3ZxKA65Auo/2eRv
+ 8++FCnqkNRxGEsXAHZIVJHQEnnkqEr97dOG4i3+tQo/Yca3Ge8hn+S4nL0B4X3NVReji2SzKTVL
+ ShOhJAvBCJV0WlMrPUiETuJWbtC/YxY86nwrhnwb2/BCpfsTX2FnroxnYjUV05kupDxa27fZmp0
+ EROgI14L1ENkt/hA67LJt9AF0SCFQMu1YGoKqcD8PYEfJkOK
+X-Developer-Key: i=dlechner@baylibre.com; a=openpgp;
+ fpr=8A73D82A6A1F509907F373881F8AF88C82F77C03
 
-On 7/21/25 6:38 AM, Andy Shevchenko wrote:
-> On Mon, Jul 21, 2025 at 04:37:41PM +0530, Manikanta Guntupalli wrote:
->> Add a shutdown handler for the ST LSM6DSx I3C driver to perform a hardware
->> reset during system shutdown. This ensures the sensor is placed in a
->> well-defined reset state, preventing issues during subsequent reboots,
->> such as kexec, where the device may fail to respond correctly during
->> enumeration.
-> 
-> Do you imply that tons of device drivers missing this? I don't think we have
-> even 5% of the drivers implementing the feature.
-> 
-In the IIO drivers I've worked on, we always do reset in the probe()
-function. The shutdown() function might not run, e.g. if the board
-loses power, so it doesn't fix 100% of the cases.
+Change the ti-adc081c driver to use individual model structures instead
+of an array. This reduces the verbosity of the code. Also, the data is
+now const as it should have been in the first place. The ADCxx1C_MODEL()
+macro is dropped to be consistent with similar model definitions in
+other drivers.
+
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+---
+Changes in v2:
+- Drop use of ADCxx1C_MODEL() macro.
+- Link to v1: https://lore.kernel.org/r/20250628-iio-const-data-11-v1-1-268189459192@baylibre.com
+---
+ drivers/iio/adc/ti-adc081c.c | 40 ++++++++++++++++++----------------------
+ 1 file changed, 18 insertions(+), 22 deletions(-)
+
+diff --git a/drivers/iio/adc/ti-adc081c.c b/drivers/iio/adc/ti-adc081c.c
+index 4f514db5c26ea803660087ae02b2cf8ec71911e4..8ef51c57912de62b1d6a6913372b2cc8c6d463ae 100644
+--- a/drivers/iio/adc/ti-adc081c.c
++++ b/drivers/iio/adc/ti-adc081c.c
+@@ -102,27 +102,23 @@ struct adcxx1c_model {
+ 	int bits;
+ };
+ 
+-#define ADCxx1C_MODEL(_name, _bits)					\
+-	{								\
+-		.channels = _name ## _channels,				\
+-		.bits = (_bits),					\
+-	}
+-
+ DEFINE_ADCxx1C_CHANNELS(adc081c,  8);
+ DEFINE_ADCxx1C_CHANNELS(adc101c, 10);
+ DEFINE_ADCxx1C_CHANNELS(adc121c, 12);
+ 
+-/* Model ids are indexes in _models array */
+-enum adcxx1c_model_id {
+-	ADC081C = 0,
+-	ADC101C = 1,
+-	ADC121C = 2,
++static const struct adcxx1c_model adc081c_model = {
++	.channels = adc081c_channels,
++	.bits = 8,
++};
++
++static const struct adcxx1c_model adc101c_model = {
++	.channels = adc101c_channels,
++	.bits = 10,
+ };
+ 
+-static struct adcxx1c_model adcxx1c_models[] = {
+-	ADCxx1C_MODEL(adc081c,  8),
+-	ADCxx1C_MODEL(adc101c, 10),
+-	ADCxx1C_MODEL(adc121c, 12),
++static const struct adcxx1c_model adc121c_model = {
++	.channels = adc121c_channels,
++	.bits = 12,
+ };
+ 
+ static const struct iio_info adc081c_info = {
+@@ -203,24 +199,24 @@ static int adc081c_probe(struct i2c_client *client)
+ }
+ 
+ static const struct i2c_device_id adc081c_id[] = {
+-	{ "adc081c", (kernel_ulong_t)&adcxx1c_models[ADC081C] },
+-	{ "adc101c", (kernel_ulong_t)&adcxx1c_models[ADC101C] },
+-	{ "adc121c", (kernel_ulong_t)&adcxx1c_models[ADC121C] },
++	{ "adc081c", (kernel_ulong_t)&adc081c_model },
++	{ "adc101c", (kernel_ulong_t)&adc101c_model },
++	{ "adc121c", (kernel_ulong_t)&adc121c_model },
+ 	{ }
+ };
+ MODULE_DEVICE_TABLE(i2c, adc081c_id);
+ 
+ static const struct acpi_device_id adc081c_acpi_match[] = {
+ 	/* Used on some AAEON boards */
+-	{ "ADC081C", (kernel_ulong_t)&adcxx1c_models[ADC081C] },
++	{ "ADC081C", (kernel_ulong_t)&adc081c_model },
+ 	{ }
+ };
+ MODULE_DEVICE_TABLE(acpi, adc081c_acpi_match);
+ 
+ static const struct of_device_id adc081c_of_match[] = {
+-	{ .compatible = "ti,adc081c", .data = &adcxx1c_models[ADC081C] },
+-	{ .compatible = "ti,adc101c", .data = &adcxx1c_models[ADC101C] },
+-	{ .compatible = "ti,adc121c", .data = &adcxx1c_models[ADC121C] },
++	{ .compatible = "ti,adc081c", .data = &adc081c_model },
++	{ .compatible = "ti,adc101c", .data = &adc101c_model },
++	{ .compatible = "ti,adc121c", .data = &adc121c_model },
+ 	{ }
+ };
+ MODULE_DEVICE_TABLE(of, adc081c_of_match);
+
+---
+base-commit: cd2731444ee4e35db76f4fb587f12d327eec5446
+change-id: 20250628-iio-const-data-11-1c6b9e28aded
+
+Best regards,
+-- 
+David Lechner <dlechner@baylibre.com>
+
 

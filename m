@@ -1,178 +1,229 @@
-Return-Path: <linux-iio+bounces-21807-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21808-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC442B0C1A2
-	for <lists+linux-iio@lfdr.de>; Mon, 21 Jul 2025 12:46:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A452B0C228
+	for <lists+linux-iio@lfdr.de>; Mon, 21 Jul 2025 13:08:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 162763BBC9E
-	for <lists+linux-iio@lfdr.de>; Mon, 21 Jul 2025 10:46:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 66BCA178794
+	for <lists+linux-iio@lfdr.de>; Mon, 21 Jul 2025 11:08:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60B39298269;
-	Mon, 21 Jul 2025 10:44:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28AEF292B4A;
+	Mon, 21 Jul 2025 11:07:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="uKMwD7tk"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="g0zzrGj9"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2077.outbound.protection.outlook.com [40.107.223.77])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11F10298CAC
-	for <linux-iio@vger.kernel.org>; Mon, 21 Jul 2025 10:44:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753094672; cv=none; b=tERF/RMQUb2MVUgwP34jtKFo4k7deAcQIAs3h58Nvwfq6nMx9FikqANYftOGyHkQif/Lkd/8rwHm2STGuKe1lsuaUwtg2QoPFOdOozI8RbXq9mocP2fxvHG+BpjV0m1cY+qti3EeRtXhBLJ0ckNHFr5qdTMV8jFBY8/Yb8Rpt3M=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753094672; c=relaxed/simple;
-	bh=Jyg9VIduqhzzijMHnSKAC2B6G1xD8WFdq0kn3G+RX/E=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SuAhFUj6oTCjgy8jPqz+y9KQg7mJ/lHXRW8jIKXEEvtsLQF4EaQ8IV2J0hfj8ZOjCC2NJMwQMeGs9HrOmMI1NVNUc25zggbHKe2WrF8Y9KF9jhEgUATKgPrFiWv1tjlM/t8F4Gj3d6Bgup7OVmSqIzcSWPlYL2VfZCmydkQyodM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=uKMwD7tk; arc=none smtp.client-ip=209.85.221.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-3a528243636so2499725f8f.3
-        for <linux-iio@vger.kernel.org>; Mon, 21 Jul 2025 03:44:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1753094668; x=1753699468; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Jv8CKZAnBLUK/0fb5CiuD7Hp6E+b8QPJo8tRAQ5ZhDg=;
-        b=uKMwD7tkDvM6y1ai4Cu5EVRzwrIwC83suT5zEhID5qe2mwleN7zru6IM8MNu7+SUbd
-         vgX4l23PX6jIuXULkaJ+TZ3rQ8DgvCSmsxzitnTo+2P+xR1z05kAhjPbNO6apTwr4DNw
-         GmJgdxYa2PqJOo0U+EiI1aiKju5Ov4DsUZBp//Q+IZKwDwDBHfy4Cs5PN/+snhj940Cs
-         s+wcZA+nsqI0Ywhwe7pY9zH8/gYB6FboDPs8KArN3fVKdyB6hxVxGyqOE8f/YxHjxS5k
-         Qq3uIYladgqRGv6yBgyWOrT1rgbsPT1QMm9kqMQdY3DKEFtIM0h0D4TmxlDxvzaX1xRg
-         musA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753094668; x=1753699468;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Jv8CKZAnBLUK/0fb5CiuD7Hp6E+b8QPJo8tRAQ5ZhDg=;
-        b=Ck39vNFZkykpmxor85fJ6Np6rsS7NIVNZAWbjC/xwBYgV+zCtxN2SIYgSiIud+o/fK
-         3podA7Agg2zDJvk5Az/vOxtTJCQ/ukVWQ/4XpZ0HYsdPdow2bhGZsHbZqnK1DiZPQRTp
-         XAfKST6wAPzK4rsg6mL0FCfB1PiMkwlowIKGGigsuE0L2pyOZ4kLwyL7Izpr73vSXK8/
-         t409jUoYq8eS7DCHrTijioKhd+bk8IJzJMH2J+jHkF6DiCrT+ygpgcZZg7+KwSYqkxYn
-         2oMhb8hcy9amw548bihEahYorvDGaDoockdBzp32WEeR7U+yNG6b+h+Av7IkSuRkSYoE
-         Abvg==
-X-Forwarded-Encrypted: i=1; AJvYcCWH2lE7PadDDslJBBwQrqVOJkYbv+oQpOMm5gDbamB/gs0w+NNVMcFB8maS8mVaz69d8XiWqUKDBpI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzejsu4uGEoBKQn2wLtnoazY1SjwWQ3BFiQ8KR9bzxRh07joDrJ
-	o8tEdZw5sopC6CjjM4Uxk5foO+bmHj0mwZ65n+QUyc8tlRgDM+QHXomr0Uc4+eW9ir0=
-X-Gm-Gg: ASbGncuBCZsPXe4Oon9TMTSCtddwjqQLJshS9ygbxt3L4qHHg0QRX4KRGwWp482VSwT
-	xOLfpJ3YusWYdsdWSqZyQET8ZRS6g/QIOCd+6B/2ckcLRMTjQ5WBkKeXrjdEXMYPOAlVKjYUPEJ
-	DrEV+ChVLz0eJra7HQ42X3j9tG79P6Yb3SC8hWRj59m7sqei9BZ54cc7WsASY/iMBQsMckWueJ4
-	w/dE3SlLUDPedwy0KZ5LRNzqw/PH/qx2qx37viLFtvKHFuulOufE36qxrNnfWytUI0zSNizhKQz
-	RAMkakhOVFHHXb+FJqigQtjjm+L38AFxhr9WhhhcCuk97P3AjXiwhfStOHuN7kT8lYqmxUbFa/V
-	yLnUUxX3dvojHgiyonN/UuHfK44IrmbHLvFLxTzGZAK2y07boeKqpyT6gSjb6FEDsuZWINxtv2w
-	==
-X-Google-Smtp-Source: AGHT+IHsr6BfHmmGvAFEpmk7FK7MXUXtHfZVvvvivtdI5mefMv0lLuRMGQqdMBTcEDjNOnr/mFRYmQ==
-X-Received: by 2002:a05:6000:4108:b0:3a4:dc42:a0c3 with SMTP id ffacd0b85a97d-3b61b22ec16mr7504872f8f.56.1753094668208;
-        Mon, 21 Jul 2025 03:44:28 -0700 (PDT)
-Received: from [192.168.1.36] (p549d4bd0.dip0.t-ipconnect.de. [84.157.75.208])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b61ca48c40sm10159988f8f.58.2025.07.21.03.44.26
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 21 Jul 2025 03:44:27 -0700 (PDT)
-Message-ID: <e724e6a2-21a8-436a-8809-ce73c0afa433@linaro.org>
-Date: Mon, 21 Jul 2025 12:44:26 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 583B9292B29;
+	Mon, 21 Jul 2025 11:07:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.223.77
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1753096077; cv=fail; b=NagFfIMRgm/jhYh/dCOWo2QG18OJYFtgxNupOrOXmewV2alYv0FUS/2PeqMApIRwHCdoD2LjZvhuOOMjEeD8kmOt9yLFAtKtSO9RkkQsimksejMZSqz6ih2C9GDqXBitpwSqYFbj248d037x5+B5Oked059g3QNUJG/jvTiEAWI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1753096077; c=relaxed/simple;
+	bh=TJN8frEXo6XVv5nG5lsiYg8LYjDktR7fCzupjpxpxVE=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=mtoOgdJIDdgNpKz3VtcXlew6AV2+o6kc2Ca1urw20OWeSPJ8lpqOo1xsYJazdwcb8WTFnFMmUy6KVu6tImwSWzXnzI5zXdbdFsu0hl2/v+Gl0+LuyyK0eyXy3IuCck1tf/B8BfUCssP0MJUb0rJULid89QJ/KLI2RL5UCC7Iaic=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=g0zzrGj9; arc=fail smtp.client-ip=40.107.223.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=hI303BT3i9/rAHUBh0pxWOfdzXgTfegzyFuPLfWmTHLfx0LAJraVZniJb2NIyI+lOuj4x8wcpDAShK7ZnKi+MoX+0NNLFbPjwOxxT1lGsZEwYUG5JiK2beWHdYijvwrZ7bk0FE4g7JgD+uZ+1d6Icp4Z23d1+YAJ21jEuI4HnvvDyJMfY8R7yxlyQiExZte1GSvILPMMY61LbZuJjSiAm+fMO95j6nrpv06aHFgBrCan7VTgjVErJL1ndsRD50a/2MGk+qsuu5yD39QL8Yl9cTNgRDis2GCcGKcVdQ8CkxYOW6Jvh82KS4wGK8hKEzpFG85Ffc1rMR/OMbnSWUv1qw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=xn7mUwCcqtIMeVFqJ/xCOT+L0StFwuTWdYRRotMQoG0=;
+ b=C+tYk7RjAMSzfYNhzUauY9Lg21ITd5ThFA2IuFm1ny38GPvoRj0uE1Nprlk2A1edBuDj00qk5Nnd0UD1VWQnrpB22ZL2mux7RUVvCyNKutNftBNF66FA9TwW8HNkDdZoNlO0b/niyzrldQB6FwT+tr5UDVP96uNX8LbsnI0ejaw6dIiUUfV5GY2CGUVYtzz2f+FPotI1OoMThRBVoBlPfDzCHodLGrWw+H7dBj8F/GN28vocoCU/IY68ofJ9zlllGOynfOBgN/Ondq8oFTz0tGNtm+53OEiyAZY3xpT7ufNw+Szt+sn4QREb30YPMhisBe1xT4JKNi5/9VM57UVffw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=xn7mUwCcqtIMeVFqJ/xCOT+L0StFwuTWdYRRotMQoG0=;
+ b=g0zzrGj9EPABfNEMMzeLJVYZBQp/Qszz6ZYLnVnsWmTw6sVMSf97gLJaO54dvzGI+OhLBpADn3jQmGotGLIVnaenVXWNrgRtVDCIEszI4qEoGLls6fT//DYZHpES4CvmzgcABSHcAnJtZaqgZcwMTkNANOiIOrXa35nK9R6JJ+U=
+Received: from BLAPR03CA0161.namprd03.prod.outlook.com (2603:10b6:208:32f::8)
+ by BY5PR12MB4051.namprd12.prod.outlook.com (2603:10b6:a03:20c::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8943.30; Mon, 21 Jul
+ 2025 11:07:53 +0000
+Received: from BN1PEPF00006001.namprd05.prod.outlook.com
+ (2603:10b6:208:32f:cafe::5a) by BLAPR03CA0161.outlook.office365.com
+ (2603:10b6:208:32f::8) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8943.29 via Frontend Transport; Mon,
+ 21 Jul 2025 11:07:52 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ BN1PEPF00006001.mail.protection.outlook.com (10.167.243.233) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8964.20 via Frontend Transport; Mon, 21 Jul 2025 11:07:52 +0000
+Received: from SATLEXMB06.amd.com (10.181.40.147) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 21 Jul
+ 2025 06:07:49 -0500
+Received: from SATLEXMB03.amd.com (10.181.40.144) by SATLEXMB06.amd.com
+ (10.181.40.147) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 21 Jul
+ 2025 06:07:47 -0500
+Received: from xhdradheys41.xilinx.com (10.180.168.240) by SATLEXMB03.amd.com
+ (10.181.40.144) with Microsoft SMTP Server id 15.1.2507.39 via Frontend
+ Transport; Mon, 21 Jul 2025 06:07:44 -0500
+From: Manikanta Guntupalli <manikanta.guntupalli@amd.com>
+To: <git@amd.com>, <michal.simek@amd.com>, <lorenzo@kernel.org>,
+	<jic23@kernel.org>, <dlechner@baylibre.com>, <nuno.sa@analog.com>,
+	<andy@kernel.org>, <linux-iio@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+CC: <radhey.shyam.pandey@amd.com>, <srinivas.goud@amd.com>,
+	<manion05gk@gmail.com>, Manikanta Guntupalli <manikanta.guntupalli@amd.com>
+Subject: [PATCH] iio: imu: lsm6dsx: Add shutdown callback support for I3C interface
+Date: Mon, 21 Jul 2025 16:37:41 +0530
+Message-ID: <20250721110741.2380963-1-manikanta.guntupalli@amd.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 2/7] nvmem: qcom-spmi-sdam: Migrate to
- devm_spmi_subdevice_alloc_and_add()
-Content-Language: en-US
-To: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- sboyd@kernel.org
-Cc: jic23@kernel.org, dlechner@baylibre.com, nuno.sa@analog.com,
- andy@kernel.org, arnd@arndb.de, gregkh@linuxfoundation.org,
- srini@kernel.org, vkoul@kernel.org, kishon@kernel.org, sre@kernel.org,
- krzysztof.kozlowski@linaro.org, u.kleine-koenig@baylibre.com,
- linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-phy@lists.infradead.org,
- linux-pm@vger.kernel.org, kernel@collabora.com, wenst@chromium.org
-References: <20250721075525.29636-1-angelogioacchino.delregno@collabora.com>
- <20250721075525.29636-3-angelogioacchino.delregno@collabora.com>
-From: Casey Connolly <casey.connolly@linaro.org>
-In-Reply-To: <20250721075525.29636-3-angelogioacchino.delregno@collabora.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN1PEPF00006001:EE_|BY5PR12MB4051:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1e86c955-31ff-4c3e-ce19-08ddc846d67e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|82310400026|36860700013;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?cqS7Li5Drmby2jSuoeFD0WgLQBgMJQrC3RV0DU+4kLhMSGhVeWNPLvyvelM6?=
+ =?us-ascii?Q?1aS2kuq+57i1g9lipQI7EQotWAvtO7LJI2ZaKe9evLyvd7rC0eRcOzEsVdji?=
+ =?us-ascii?Q?yJSJlo9f5uEbwxRvKnfdhkyDQHxB/dfhZJAJ9WTTO2p+SEgrlpL/lXmpBy5l?=
+ =?us-ascii?Q?H5ycy2NTo6SXl4VSR0q7U8q7peWGbRYXoVEvUv21TlZJ976Vw1/USHq1jKXG?=
+ =?us-ascii?Q?xb5lAHlaGuBnQaaflMVx1Bb0CWptOmewbzCcmJur2oYpp0OjfH8pMtjjqbBA?=
+ =?us-ascii?Q?z4mw4UQqJjOqT7oTpQM1De9OjfWPzyeqXLQbEEgOIeOJWM0nr9dtINpGIcU2?=
+ =?us-ascii?Q?Jfvg/vzFRTwmAekJO6nks7Hu3OW1Jo0DRFqNMvw8rwdGVPfUU8mAwwSo5XQ7?=
+ =?us-ascii?Q?BBVPtI3Lx7aIVHzvh2tNf6mftlDv9F4oeTTRVD8xW73ic87FrQidgbEyhErW?=
+ =?us-ascii?Q?54l3OvAcWfUYDoOw4DoJD114IkGN5QLVvso1IuGmkL6oRjqPyzn+lF/A6iY2?=
+ =?us-ascii?Q?AQJm7Lixs9bsO3EDf8pP5zaJvLvY4Rczr9bjp6ZjpmSoOahhwq7LSZVW4mUr?=
+ =?us-ascii?Q?qxTAmAditYtLr7Kjb4dzH6dFHLzPGYgTVb0IeYytIy434pveJccykOV5TnlJ?=
+ =?us-ascii?Q?JxoOhlGI4r9BgVo2oEku0I1m7lYPdcD+mlqs+5zxGxjQ1rWYcCVhXb+Dwf02?=
+ =?us-ascii?Q?Imx5QnZZO+MCDFMzoWyh7FmiSkQ0DVcz5K0CrnZ6+7x2SsUp14WE3hhmNSLX?=
+ =?us-ascii?Q?pD6TDlfD+MhRfAU1zvswWuGEqqa533My+0BxM5pC2ZEn1RfVNsSUTGpHlk1N?=
+ =?us-ascii?Q?ffComzZpN7ThfmIlpJWoCnl1D1iAi+OugBMDArXqS2RMkNeIjib5FAFJ6cQ7?=
+ =?us-ascii?Q?nv8QTgl/dVST37qKcklvZzDaRz9z2fXnWGay0Tc1tKaPCSg8nVgR8UoJoFYj?=
+ =?us-ascii?Q?Joholb9Oi9BzqEUk5lTKscESTNIADYP6C3omp/O7NmHXhsJBFZvR/4EZcbDZ?=
+ =?us-ascii?Q?FSPa95upb28lb/kp6I4aHtdDqi+suwbUhfM4NwdDdXKc/HKGC457I5eI+UiR?=
+ =?us-ascii?Q?tygn83ZpHc1b3uP3RWxAVtzvCM9sGRerjWLTvFhCu7D37UQQ5/fr0pYoN6AV?=
+ =?us-ascii?Q?0iEdcrx+vqnZEFmtF2I7w9nIiIzyn0OmYHU0OFAL/kIrNkhodRACMNReyjH4?=
+ =?us-ascii?Q?jOx4shM6NvvrQXBAQAefmgr5Xv+HjoEgztr150R4Nm6I80iPivgGMr3Kc3zM?=
+ =?us-ascii?Q?d4dRLWLmtU20vfRu8OkHDtiULIY/6nJljl6c9DjAC/s/IqeRyenF4+A5hjMa?=
+ =?us-ascii?Q?QxcyRzc/IX9uO0mK9qp09ZBLQdA+/VGeOy4Bo/cseys9pNLBq3aj0Tzdz3t4?=
+ =?us-ascii?Q?bcOI7jjiuAT/XMagK6bRzL6LiS+VsYdHWEtXhu9d11S2xKXelYimV7NQNcvb?=
+ =?us-ascii?Q?S1ncIgCKibRr/ivTH+pT/7Xouv6CZuBA9qyOHllmbTciaat/qhlhehdPxDAp?=
+ =?us-ascii?Q?Znd8GKyR7J/mE+FFyxJ4jLtThSn59fCsIWr5?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(376014)(82310400026)(36860700013);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Jul 2025 11:07:52.7955
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1e86c955-31ff-4c3e-ce19-08ddc846d67e
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN1PEPF00006001.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4051
 
-Hi Angelo,
+Add a shutdown handler for the ST LSM6DSx I3C driver to perform a hardware
+reset during system shutdown. This ensures the sensor is placed in a
+well-defined reset state, preventing issues during subsequent reboots,
+such as kexec, where the device may fail to respond correctly during
+enumeration.
 
-On 21/07/2025 09:55, AngeloGioacchino Del Regno wrote:
-> Some Qualcomm PMICs integrate a SDAM device, internally located in
-> a specific address range reachable through SPMI communication.
-> 
-> Instead of using the parent SPMI device (the main PMIC) as a kind
-> of syscon in this driver, register a new SPMI sub-device for SDAM
-> and initialize its own regmap with this sub-device's specific base
-> address, retrieved from the devicetree.
-> 
-> This allows to stop manually adding the register base address to
-> every R/W call in this driver, as this can be, and is now, handled
-> by the regmap API instead.
+To support this, the previously static st_lsm6dsx_reset_device() function
+is now exported via EXPORT_SYMBOL_NS() under the IIO_LSM6DSX namespace,
+allowing it to be invoked from the I3C-specific driver.
 
-This is honestly a really nice improvement :D>
-> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-> ---
->  drivers/nvmem/qcom-spmi-sdam.c | 41 +++++++++++++++++++++++++---------
->  1 file changed, 30 insertions(+), 11 deletions(-)
-> 
-> diff --git a/drivers/nvmem/qcom-spmi-sdam.c b/drivers/nvmem/qcom-spmi-sdam.c
-> index 4f1cca6eab71..1b80e8563a33 100644
-> --- a/drivers/nvmem/qcom-spmi-sdam.c
-> +++ b/drivers/nvmem/qcom-spmi-sdam.c
-> @@ -9,6 +9,7 @@
->  #include <linux/nvmem-provider.h>
->  #include <linux/platform_device.h>
->  #include <linux/regmap.h>
-> +#include <linux/spmi.h>
->  
->  #define SDAM_MEM_START			0x40
->  #define REGISTER_MAP_ID			0x40
-> @@ -20,7 +21,6 @@
->  struct sdam_chip {
->  	struct regmap			*regmap;
->  	struct nvmem_config		sdam_config;
-> -	unsigned int			base;
->  	unsigned int			size;
->  };
->  
-> @@ -73,7 +73,7 @@ static int sdam_read(void *priv, unsigned int offset, void *val,
->  		return -EINVAL;
->  	}
->  
-> -	rc = regmap_bulk_read(sdam->regmap, sdam->base + offset, val, bytes);
-> +	rc = regmap_bulk_read(sdam->regmap, offset, val, bytes);
->  	if (rc < 0)
->  		dev_err(dev, "Failed to read SDAM offset %#x len=%zd, rc=%d\n",
->  						offset, bytes, rc);
-> @@ -100,7 +100,7 @@ static int sdam_write(void *priv, unsigned int offset, void *val,
->  		return -EINVAL;
->  	}
->  
-> -	rc = regmap_bulk_write(sdam->regmap, sdam->base + offset, val, bytes);
-> +	rc = regmap_bulk_write(sdam->regmap, offset, val, bytes);
->  	if (rc < 0)
->  		dev_err(dev, "Failed to write SDAM offset %#x len=%zd, rc=%d\n",
->  						offset, bytes, rc);
-> @@ -110,28 +110,47 @@ static int sdam_write(void *priv, unsigned int offset, void *val,
->  
->  static int sdam_probe(struct platform_device *pdev)
->  {
-> +	struct regmap_config sdam_regmap_config = {
-> +		.reg_bits = 16,
-> +		.val_bits = 16,
+Signed-off-by: Manikanta Guntupalli <manikanta.guntupalli@amd.com>
+---
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h      |  1 +
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c |  3 ++-
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i3c.c  | 14 ++++++++++++++
+ 3 files changed, 17 insertions(+), 1 deletion(-)
 
-I believe registers are 8 bits wide, at least on Qualcomm platforms.
-
-Kind regards,
+diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
+index c225b246c8a5..42c0dcfbad49 100644
+--- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
++++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
+@@ -466,6 +466,7 @@ extern const struct dev_pm_ops st_lsm6dsx_pm_ops;
+ 
+ int st_lsm6dsx_probe(struct device *dev, int irq, int hw_id,
+ 		     struct regmap *regmap);
++int st_lsm6dsx_reset_device(struct st_lsm6dsx_hw *hw);
+ int st_lsm6dsx_sensor_set_enable(struct st_lsm6dsx_sensor *sensor,
+ 				 bool enable);
+ int st_lsm6dsx_fifo_setup(struct st_lsm6dsx_hw *hw);
+diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+index c65ad49829e7..929b30985d41 100644
+--- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
++++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+@@ -2267,7 +2267,7 @@ static int st_lsm6dsx_init_hw_timer(struct st_lsm6dsx_hw *hw)
+ 	return 0;
+ }
+ 
+-static int st_lsm6dsx_reset_device(struct st_lsm6dsx_hw *hw)
++int st_lsm6dsx_reset_device(struct st_lsm6dsx_hw *hw)
+ {
+ 	const struct st_lsm6dsx_reg *reg;
+ 	int err;
+@@ -2302,6 +2302,7 @@ static int st_lsm6dsx_reset_device(struct st_lsm6dsx_hw *hw)
+ 
+ 	return 0;
+ }
++EXPORT_SYMBOL_NS(st_lsm6dsx_reset_device, "IIO_LSM6DSX");
+ 
+ static int st_lsm6dsx_init_device(struct st_lsm6dsx_hw *hw)
+ {
+diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i3c.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i3c.c
+index cb5c5d7e1f3d..f3d9cdd5a743 100644
+--- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i3c.c
++++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i3c.c
+@@ -41,10 +41,24 @@ static int st_lsm6dsx_i3c_probe(struct i3c_device *i3cdev)
+ 	return st_lsm6dsx_probe(dev, 0, (uintptr_t)id->data, regmap);
+ }
+ 
++static void st_lsm6dsx_i3c_shutdown(struct device *dev)
++{
++	struct st_lsm6dsx_hw *hw = dev_get_drvdata(dev);
++
++	/*
++	 * Perform device reset to ensure the sensor is in a known
++	 * good state for subsequent re-initialization or power cycles.
++	 * This addresses issues where the sensor might not enumerate
++	 * correctly after a warm reboot (e.g., kexec).
++	 */
++	st_lsm6dsx_reset_device(hw);
++}
++
+ static struct i3c_driver st_lsm6dsx_driver = {
+ 	.driver = {
+ 		.name = "st_lsm6dsx_i3c",
+ 		.pm = pm_sleep_ptr(&st_lsm6dsx_pm_ops),
++		.shutdown = st_lsm6dsx_i3c_shutdown,
+ 	},
+ 	.probe = st_lsm6dsx_i3c_probe,
+ 	.id_table = st_lsm6dsx_i3c_ids,
 -- 
-// Casey (she/her)
+2.34.1
 
 

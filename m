@@ -1,80 +1,81 @@
-Return-Path: <linux-iio+bounces-21826-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21827-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D3BFB0C5A1
-	for <lists+linux-iio@lfdr.de>; Mon, 21 Jul 2025 15:57:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FD9AB0C5D8
+	for <lists+linux-iio@lfdr.de>; Mon, 21 Jul 2025 16:09:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F111F541944
-	for <lists+linux-iio@lfdr.de>; Mon, 21 Jul 2025 13:57:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A8EFF3B5E5F
+	for <lists+linux-iio@lfdr.de>; Mon, 21 Jul 2025 14:09:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCA4F2D9EDF;
-	Mon, 21 Jul 2025 13:56:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9B932D9ED3;
+	Mon, 21 Jul 2025 14:09:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="WhYyygO8"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="z5K6lEMl"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+Received: from mail-ot1-f48.google.com (mail-ot1-f48.google.com [209.85.210.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 739622D97AC
-	for <linux-iio@vger.kernel.org>; Mon, 21 Jul 2025 13:56:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A54692DA77F
+	for <linux-iio@vger.kernel.org>; Mon, 21 Jul 2025 14:09:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753106219; cv=none; b=GiKY27XX7TBZurWXYhsSE949W2c1g255bIIiWikhjj5rElktiZGA5J1frMMMAMWCpgf4AmWIe7G7wbjuBPuErL1DrrppoWWq8/okR3d1vowQ1u0IpeNaS94LOHYgPDQSMmZro7km/KEI57jexFWflvDoFMeKzxYta5eqM2c9NIk=
+	t=1753106966; cv=none; b=ef4d/yfUrPBjZjvz1pYUgZ1ADmLg2VtR1HAXf9iULT9NSWWi8KGJQ94H0o+RTkdWnFAb35Br0/2W1I9l0UoPWivCPTjmLF/7OsZjk6IcXv9h4tmAKjL0cvgkRTRw7fFGQmBPH1BzwuOHXaR7Q5KFwiJbkEDBQJjm+dZxgCMKwKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753106219; c=relaxed/simple;
-	bh=rHLuKPZS15Ci3FRNHUt3wjlIpfOccnEveLsn8wj5Hzw=;
+	s=arc-20240116; t=1753106966; c=relaxed/simple;
+	bh=++Ox7gKvHdwky39WdQJFmk0HB160GJNorAa3/n8tZP0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iYmZfVoFlbFEnDIkHAql6Zk5pGfo9H7Lebu4YBDOKrxWygBtpENL6O4z9UOsuJXsyFiSR6RqD6DOkQx65xThfvKYE9yVjnvbL0w3duc1OhMKhhVsEdSDc6+UAYvzPAj2XGsHdqGHBdgRNA4pizprOXvLBoDFUb+M70UZxAXituk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=WhYyygO8; arc=none smtp.client-ip=209.85.128.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-45555e3317aso25567295e9.3
-        for <linux-iio@vger.kernel.org>; Mon, 21 Jul 2025 06:56:57 -0700 (PDT)
+	 In-Reply-To:Content-Type; b=nKIAddIY8QK+AZOSCg28OUg9ubk3GiuVyjbKtydjc+NtNcTOZgvQm04nj22ErpUsjD98r9Xv6MQa5Fyen+rgzDtsDDseWdRp5dXVQQ6L76wKqpa1m8CXwmBYFLyaed7UO9vVn+C4xLR1o+gh3NHMyaBsxh/wXYQ5Pv6MtXeiBbA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=z5K6lEMl; arc=none smtp.client-ip=209.85.210.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-ot1-f48.google.com with SMTP id 46e09a7af769-73e82d2ec52so429586a34.1
+        for <linux-iio@vger.kernel.org>; Mon, 21 Jul 2025 07:09:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1753106216; x=1753711016; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1753106964; x=1753711764; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=JHT+Ky9a2/UvB6vMaIGkjzmNbUyHiZwcZw1UdHqqBQM=;
-        b=WhYyygO8jgGzYI+zkSc+DW7KHpdJolupUWNMnoXZO9w4t/kEKBLwxtsEYKC918bc9W
-         yOtksjzd+qwKmn2sVZ+nvf2nHjSGq4459z6ls0xJ3XIuHTFUPESfb1Ac3gRVmEA1WRiT
-         q5Mvj5yyFsY3d/8cCcukAD7Yzg/SPYsnWK8rwyCzICQilZMpc7uFnicEXh0vdAoVJ3VJ
-         kFNFiRvuHR3oGrn8RQtJokNY+7/QkAurx5uB3nFqUYf7T0/MYolXouQCUt/nJgc+dBKT
-         Nqib2YMojLqI2lRu3MjuKC3dZvWlroLH32cAWKLZZmIAphW5A89lJmJdR4m2n0D/KFNM
-         xaWQ==
+        bh=+LnLWJUsAr+JAkpxUkcXadAzf96B3tnYqEVcIVAbTvg=;
+        b=z5K6lEMl8JmkEUT/7Ok1G0iQxZb6TAGi9hc3Gt48hT/ZgTT3YKcTBUai8YkopcbpvF
+         mxwi6k1EJkqez7O7uD4BgGZ7bNeUo3YQOtlDZryCx1vrQgytASP0vndrc4qV+EzSgYVa
+         q85iw736SXmkEWipZjlY8XWTfXrmuGuCOpxPP+WXzKV/gm2Z1ebR6O8cr4VwacvuBUHR
+         HozkpzdGWoDNtbon+i2/X23UkBHg4DyGoWViVKDFhDjmsK82gsrHWVa+WCK9xAG7J+my
+         xwz+Kn1/h20pFzhx08zQ77QjYGLqFopn4maqP15AGb+y+zHxZmskqM/RbJdyWSlx9YZv
+         51TQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753106216; x=1753711016;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1753106964; x=1753711764;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=JHT+Ky9a2/UvB6vMaIGkjzmNbUyHiZwcZw1UdHqqBQM=;
-        b=UH3dRYe5pyvwivjVHd/3saCtYDLs+LsmCA5glvoMOuD77vXYtBvZHwcdSeZDiemx1R
-         FxyIOrPghqnJ/0T1cOrDLnc8hM0CcCU+PoSYPJi4R9ZVPkxHXz6H0ElSPXLZuzhB2EQV
-         I73dmEQlNCoqa+pajumf+GD2kHQO39uiqpHtf41bEV4znw952KeW4ol83HXdg5E+jReC
-         JkXpq56yyQgkXmdQI3gjdnNgLBhBAHxh9GVfN7iEEDd1EA957ZrCvJsPWL/zF9EPDtuL
-         O9h+8Jym3vp1hgFT/DYY8kz6ocNkumYS9dE+CpEiwD+JFD0cvv7wBWYMxcbuLw5M6w5c
-         X1NA==
-X-Forwarded-Encrypted: i=1; AJvYcCVvEf5fF7soEzbYoEfymJIRUO12hnKKg/hqOKZYz0Vh6ZN7ne5XothKlaELUM41XsUBtSdGEBXtBdQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwDJ5yrRtWoO7GdBgKooylGE21Rgfak1RSbL7ce9iSGUvb7Vs1w
-	M7Xp9lIHKYh7zOtC+5sCz6tx+KhBtopy3DdVfcOrqYCFU4wLz6SUuShx0e3MQPGfiGc=
-X-Gm-Gg: ASbGncvMR9Y/2Od1A1OLeIVttbaWNrj0lxU7JfJ6ycCO5Z6FkKDXJCb1iNnL8kNB0H3
-	ViznubZrp8TCw5iNIOPFqL42DJ0BANdrwxizNLybxUi+wZqQt8I0cBgKMSDatCZpQ6VPDditajS
-	WkEHvRpEsbHLCglBlbk3Kw5opvxksLogwvvhdiOEnlalNf3RDqXMpvRk7aCb6iVx12da0JyxB1W
-	iSGnJyee8OZluPbsIg37KKqVIvJ5HpND3+B7DuCTJ0MF1oRuIPr04jK9x18JpppcITF3TgxPlIV
-	XwI3x3slijCF07ywH7vjBgW002cVi7XldLC+Nat8izIM6GIW6/YzrRVMMlv5Rahnvlm4iARvCOu
-	vdrR/hr4nr9+gQyyLa9cRpPMWSZzgfCNgW5FVtMSbI3EDSYdrOinbPF1vGi0/imY=
-X-Google-Smtp-Source: AGHT+IEnENRwxRTagl2ObT85GvHrjPuSySOktSH3L1SkrP+cMadSvWvWuVZBD4+Hw6mPbY0X9wHrDg==
-X-Received: by 2002:a05:600c:4706:b0:456:19eb:2e09 with SMTP id 5b1f17b1804b1-4562edaa08cmr189313405e9.8.1753106215717;
-        Mon, 21 Jul 2025 06:56:55 -0700 (PDT)
-Received: from [192.168.1.36] (p549d4bd0.dip0.t-ipconnect.de. [84.157.75.208])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4563b74f9c0sm102889435e9.28.2025.07.21.06.56.54
+        bh=+LnLWJUsAr+JAkpxUkcXadAzf96B3tnYqEVcIVAbTvg=;
+        b=fVZ4u2DmoGhC3KHUnaeoNDnTRKPGQcbVyN/eUhyWA5Aybz0zRYwshQaAad0Gek5cqb
+         zg1tC+SnMN7vz0gFox5OFBEbQnZD1NwpI12XgBzNd4k5eNz9HEz6Pw3jvOo19UXiUh+c
+         sPqSQByXgBkgalPkEpA0/uob5is5bfHA5r/ZsqeU7wdLic2kUxLIc6iQv3yIZ+7E69Pl
+         M6ONWGrriWA4j9nxMv98LTw99RGb3UMZABl3vVG99aK0O3RBdko/Fz3nV2yP7fAHRwh1
+         oil3C7WblFf+LZw4eG4MKNG/XVOlQybJIwbzrG7khAa4DKUwBr70KrBn0AWW+Tejvw1H
+         j77A==
+X-Forwarded-Encrypted: i=1; AJvYcCXIC4/QKx1xttfIEzeIVPUTVn+ik6BN2JLtEx9xyhYfwx4zBs6L++vA9/8H3ibtFMNKoIy/ZflLkRU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxTZ9bb8sxxSlkNg6LdxWF/j8iuYDP0WSNYumMA9a5XCUkuI5M6
+	IfqQ0atIMzQzSmJGrI30gMBF/0L49rYIlm/VfUid+iF3XfuRgw4SNfK48ERQdfRpu+s=
+X-Gm-Gg: ASbGncs1h4j/eDaOdhilYL1ISSN0+k5CU6/mRH808HmqVQDqeKbFg9gSySmsqjilDAs
+	7fyz0nr7dcAg2rkM1JF/ePRTeiT4jLPY8WiMs3q128bvXqiUCsXX8+SztChxV5qkc/TI/LKtqEI
+	tnAYdcrvgIuC39kQjIGEF4VffL+5sLWX2rPmygUUH9+fGOYT73rRenVeeruCguM3wV8fvozGd4g
+	QXtT9PQ9KqUeH/+B8EiR+jU//zXqLvSPZkXfLUC9KkhbbYZx7iPT+Lk2rjHwuEfEfu+J9aaL5Nn
+	WXofI8+hld3zmOskipG4xpiKorhpje4x0FbNbJj1EhU446kdoxsbkd8NRuhsxGRPnlwv0ZwsYn1
+	ubDlhOdvjpTYoIlwk4FxlTPeZzvPoy2kmBHXyrpaeOarkAB6yBxR6yt00YSmcHLLOJeZRp0WxuQ
+	M=
+X-Google-Smtp-Source: AGHT+IEYJ69qw8hWrbyhfCDdoYCGwahdtxo+pfFxwMph5mSmiJShT9DMVnokAtIY6hWFVoiT1iMVrw==
+X-Received: by 2002:a05:6830:3e8b:b0:735:af51:5ea5 with SMTP id 46e09a7af769-73e665b9181mr11113510a34.22.1753106963677;
+        Mon, 21 Jul 2025 07:09:23 -0700 (PDT)
+Received: from ?IPV6:2600:8803:e7e4:1d00:3bea:f296:60f2:c6cb? ([2600:8803:e7e4:1d00:3bea:f296:60f2:c6cb])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-73e83bf667fsm2820418a34.65.2025.07.21.07.09.22
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 21 Jul 2025 06:56:54 -0700 (PDT)
-Message-ID: <c21ff3ce-c81a-4419-84fd-d394d0a06af6@linaro.org>
-Date: Mon, 21 Jul 2025 15:56:53 +0200
+        Mon, 21 Jul 2025 07:09:23 -0700 (PDT)
+Message-ID: <35eba285-2c49-49ac-9da2-29636e257196@baylibre.com>
+Date: Mon, 21 Jul 2025 09:09:22 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -82,155 +83,59 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 2/7] nvmem: qcom-spmi-sdam: Migrate to
- devm_spmi_subdevice_alloc_and_add()
+Subject: Re:
+To: Sanjay Suthar <sanjaysuthar661996@gmail.com>,
+ Krzysztof Kozlowski <krzk@kernel.org>
+Cc: linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-iio@vger.kernel.org, netdev@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-amlogic@lists.infradead.org,
+ ribalda@kernel.org, jic23@kernel.org, nuno.sa@analog.com, andy@kernel.org,
+ robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, neil.armstrong@linaro.org,
+ khilman@baylibre.com, jbrunet@baylibre.com,
+ martin.blumenstingl@googlemail.com
+References: <CADU64hCr7mshqfBRE2Wp8zf4BHBdJoLLH=VJt2MrHeR+zHOV4w@mail.gmail.com>
+ <20250720182627.39384-1-sanjaysuthar661996@gmail.com>
+ <84ad0f66-311e-4560-870d-851852c6f902@baylibre.com>
+ <9574826f-3023-4fe1-9346-eacd70990d73@kernel.org>
+ <CADU64hDZeyaCpHXBmSG1rtHjpxmjejT7asK9oGBUMF55eYeh4w@mail.gmail.com>
 Content-Language: en-US
-To: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- sboyd@kernel.org
-Cc: jic23@kernel.org, dlechner@baylibre.com, nuno.sa@analog.com,
- andy@kernel.org, arnd@arndb.de, gregkh@linuxfoundation.org,
- srini@kernel.org, vkoul@kernel.org, kishon@kernel.org, sre@kernel.org,
- krzysztof.kozlowski@linaro.org, u.kleine-koenig@baylibre.com,
- linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-phy@lists.infradead.org,
- linux-pm@vger.kernel.org, kernel@collabora.com, wenst@chromium.org
-References: <20250721075525.29636-1-angelogioacchino.delregno@collabora.com>
- <20250721075525.29636-3-angelogioacchino.delregno@collabora.com>
- <e724e6a2-21a8-436a-8809-ce73c0afa433@linaro.org>
- <b06969d2-0c35-44c7-bb2c-162942186c53@collabora.com>
-From: Casey Connolly <casey.connolly@linaro.org>
-In-Reply-To: <b06969d2-0c35-44c7-bb2c-162942186c53@collabora.com>
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <CADU64hDZeyaCpHXBmSG1rtHjpxmjejT7asK9oGBUMF55eYeh4w@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-
-
-On 21/07/2025 14:45, AngeloGioacchino Del Regno wrote:
-> Il 21/07/25 12:44, Casey Connolly ha scritto:
->> Hi Angelo,
+On 7/21/25 5:15 AM, Sanjay Suthar wrote:
+> On Mon, Jul 21, 2025 at 12:22 PM Krzysztof Kozlowski <krzk@kernel.org <mailto:krzk@kernel.org>> wrote:
 >>
->> On 21/07/2025 09:55, AngeloGioacchino Del Regno wrote:
->>> Some Qualcomm PMICs integrate a SDAM device, internally located in
->>> a specific address range reachable through SPMI communication.
->>>
->>> Instead of using the parent SPMI device (the main PMIC) as a kind
->>> of syscon in this driver, register a new SPMI sub-device for SDAM
->>> and initialize its own regmap with this sub-device's specific base
->>> address, retrieved from the devicetree.
->>>
->>> This allows to stop manually adding the register base address to
->>> every R/W call in this driver, as this can be, and is now, handled
->>> by the regmap API instead.
+>> On 20/07/2025 21:30, David Lechner wrote:
+>> >>    - Ricardo Ribalda Delgado <ricardo@ribalda.com <mailto:ricardo@ribalda.com>>
+>> >> diff --git a/Documentation/devicetree/bindings/net/amlogic,meson-dwmac.yaml b/Documentation/devicetree/bindings/net/amlogic,meson-dwmac.yaml
+>> >> index 0cd78d71768c..5c91716d1f21 100644
+>> >> --- a/Documentation/devicetree/bindings/net/amlogic,meson-dwmac.yaml
+>> >> +++ b/Documentation/devicetree/bindings/net/amlogic,meson-dwmac.yaml
+>> >> @@ -149,7 +149,7 @@ properties:
+>> >>        - description:
+>> >>            The first register range should be the one of the DWMAC controller
+>> >>        - description:
+>> >> -          The second range is is for the Amlogic specific configuration
+>> >> +          The second range is for the Amlogic specific configuration
+>> >>            (for example the PRG_ETHERNET register range on Meson8b and newer)
+>> >>
+>> >>    interrupts:
+>> >
+>> > I would be tempted to split this into two patches. It's a bit odd to have
 >>
->> This is honestly a really nice improvement :D>
-> 
-> Thanks! :-D
-> 
->>> Signed-off-by: AngeloGioacchino Del Regno
->>> <angelogioacchino.delregno@collabora.com>
->>> ---
->>>   drivers/nvmem/qcom-spmi-sdam.c | 41 +++++++++++++++++++++++++---------
->>>   1 file changed, 30 insertions(+), 11 deletions(-)
->>>
->>> diff --git a/drivers/nvmem/qcom-spmi-sdam.c b/drivers/nvmem/qcom-
->>> spmi-sdam.c
->>> index 4f1cca6eab71..1b80e8563a33 100644
->>> --- a/drivers/nvmem/qcom-spmi-sdam.c
->>> +++ b/drivers/nvmem/qcom-spmi-sdam.c
->>> @@ -9,6 +9,7 @@
->>>   #include <linux/nvmem-provider.h>
->>>   #include <linux/platform_device.h>
->>>   #include <linux/regmap.h>
->>> +#include <linux/spmi.h>
->>>     #define SDAM_MEM_START            0x40
->>>   #define REGISTER_MAP_ID            0x40
->>> @@ -20,7 +21,6 @@
->>>   struct sdam_chip {
->>>       struct regmap            *regmap;
->>>       struct nvmem_config        sdam_config;
->>> -    unsigned int            base;
->>>       unsigned int            size;
->>>   };
->>>   @@ -73,7 +73,7 @@ static int sdam_read(void *priv, unsigned int
->>> offset, void *val,
->>>           return -EINVAL;
->>>       }
->>>   -    rc = regmap_bulk_read(sdam->regmap, sdam->base + offset, val,
->>> bytes);
->>> +    rc = regmap_bulk_read(sdam->regmap, offset, val, bytes);
->>>       if (rc < 0)
->>>           dev_err(dev, "Failed to read SDAM offset %#x len=%zd,
->>> rc=%d\n",
->>>                           offset, bytes, rc);
->>> @@ -100,7 +100,7 @@ static int sdam_write(void *priv, unsigned int
->>> offset, void *val,
->>>           return -EINVAL;
->>>       }
->>>   -    rc = regmap_bulk_write(sdam->regmap, sdam->base + offset, val,
->>> bytes);
->>> +    rc = regmap_bulk_write(sdam->regmap, offset, val, bytes);
->>>       if (rc < 0)
->>>           dev_err(dev, "Failed to write SDAM offset %#x len=%zd,
->>> rc=%d\n",
->>>                           offset, bytes, rc);
->>> @@ -110,28 +110,47 @@ static int sdam_write(void *priv, unsigned int
->>> offset, void *val,
->>>     static int sdam_probe(struct platform_device *pdev)
->>>   {
->>> +    struct regmap_config sdam_regmap_config = {
->>> +        .reg_bits = 16,
->>> +        .val_bits = 16,
 >>
->> I believe registers are 8 bits wide, at least on Qualcomm platforms.
+>> No, it's a churn to split this into more than one patch.
 >>
 > 
-> I used 16 because usually that's the usual default for SPMI - but if
-> you're sure
-> about Qualcomm platforms having 8-bits wide registers and you can
-> confirm that,
-> I can change both of those to 8 in a jiffy.
-
-reg_bits should be 16, only val_bits needs changing.
-
+> Thanks for the reply. Since there are suggestions on patch split as it is touching different subsystems, still not clear if I should split the patch or single patch is fine. I would appreciate if you can guide on the next steps to be taken
 > 
-> I anyway have to send a v2 because I forgot an error check - so changing
-> this is
-> not a problem at all for me.
-> 
-> But.
-> 
-> Before me changing - can you please please please double check and confirm?
-> 
-> If you can also check the register width of the others that I converted,
-> I'd really
-> appreciate that (I have no datasheets for qcom so it's a bit of a
-> guessing game for
-> me here... :-P), just so that we get everything right from the get-
-> go ... even if
-> a mismatch wouldn't really cause issues in the current state of things.
-> 
-> That's because - I just noticed - in qcom-spmi-pmic.c, reg_bits is 16,
-> but val_bits
-> is 8 (which basically means "the registers are 16-bits wide, but we
-> always only
-> care about the lower 8 bits).
+> Best Regards,
+> Sanjay Suthar
 
-yeah that's right, so as of today where we don't have the subdevices we
-always get 8 bit values from the registers.
-
-I don't have so much access to docs anymore but I only ever remember
-seeing 8 bit wide registers on Qualcomm PMICs, I've never seen anything
-wider, I can think of a few drivers where changing this to 16 would for
-sure cause havoc.
-
-Kind regards,
-
-> 
-> Thanks again!
-> 
-> Cheers,
-> Angelo
--- 
-// Casey (she/her)
-
+Krzysztof is one of the devicetree maintainers and I am not, so you
+should do what Krzysztof says - leave it as one patch. :-)
 

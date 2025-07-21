@@ -1,137 +1,182 @@
-Return-Path: <linux-iio+bounces-21834-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21835-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEE82B0C950
-	for <lists+linux-iio@lfdr.de>; Mon, 21 Jul 2025 19:15:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02D67B0CA2B
+	for <lists+linux-iio@lfdr.de>; Mon, 21 Jul 2025 19:59:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 941131C21361
-	for <lists+linux-iio@lfdr.de>; Mon, 21 Jul 2025 17:15:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8844A1889995
+	for <lists+linux-iio@lfdr.de>; Mon, 21 Jul 2025 17:59:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FDDB2E11D6;
-	Mon, 21 Jul 2025 17:15:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 175AE2C08D0;
+	Mon, 21 Jul 2025 17:59:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KoUHjnpC"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="PakhYktd"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f172.google.com (mail-oi1-f172.google.com [209.85.167.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FD8328F95E;
-	Mon, 21 Jul 2025 17:14:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13B1C1607A4
+	for <linux-iio@vger.kernel.org>; Mon, 21 Jul 2025 17:59:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753118099; cv=none; b=O3aOURKazZTlf2uRIbjAjAeaag5hYyi8Bj7VDXyod2jPits6FiMPBroP0xiD5BF1FyypSEVudmhuPHHWns9BOVIXlDZoH++0Y71GLLrBRLCwdki19Ji/sAm0YMPHYe1rJiFIW/xmGvoeYxXbYplTr9Pi4KasIKGPXb61SRefhqM=
+	t=1753120749; cv=none; b=hKrnX/NZHQh98J7TCy9AyvuZunxy+qiF+keeMelJJT5ZCvsgPx9unAfAcltOb7suieUJwrtm0SXlr5s6sU5FZvg4r8OtMAg40wxn7bZQtP0KpOEOC3cpOv6RrkNC3iFldCmByRJE+vdrq2a3dLTjRoU5+HovF0IuNKxIOhEswiU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753118099; c=relaxed/simple;
-	bh=EDwVEG1YcLrzyGWM3/+Lk5Mp3z0nij43S1kN6uWIoBs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TwTvXc8uZE+EFuXNf951t2oV+OgQ5fW4BVgkpMzmeeMHEdcdVome5kBB+uk611/3ntpnzeqDyhbxUnb83iazxtsGdYpMFahb029KDwB6L1wDxHovcwZSObDbRxkdTqZeuQZGdsOT5/y7CVZsfK4El+HT8Mb5L5olY0kYb2ZHRbs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KoUHjnpC; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1753118099; x=1784654099;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=EDwVEG1YcLrzyGWM3/+Lk5Mp3z0nij43S1kN6uWIoBs=;
-  b=KoUHjnpCEyHwO+V6s+lsdpf28u1D1Lj7JBw2Dxrz9KP/5w8i4L1HEWWz
-   FmDyMHEpxbp8RCGiD6f0HyZDkuGGUdQNqvl1yYou2mwaq5/4pA2cCburR
-   SlTNi4KDGNcfnO1axOS+RnMiH8NG5k8EXpVJJ4XFuSmP+hUfunKdEpCA3
-   FGfr2aNOTFTHFALwGwBGSMyQdnwiSZZPtUabmawvNAOiVbB7+xznaM6UM
-   QBtHeq3XZSZj/AeiNSfts3VbTDsWECCyX8S/KrBhwZJRrpv1RWF6IY7ge
-   j14q80skWN0ZjxO4/4l4F97V/9d7EaHbnISyimQXJFihCRg7XXbw7Qq0k
-   g==;
-X-CSE-ConnectionGUID: +v+C/ls0TviENcPYHlAQ6w==
-X-CSE-MsgGUID: gQAA4+yhQnKsFW4cvNSwzw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11499"; a="65909270"
-X-IronPort-AV: E=Sophos;i="6.16,329,1744095600"; 
-   d="scan'208";a="65909270"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jul 2025 10:14:58 -0700
-X-CSE-ConnectionGUID: mE54dbTTSJWW6EhWVJ6OfA==
-X-CSE-MsgGUID: xIwlqI3hRfmb47Xue2ydPg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,329,1744095600"; 
-   d="scan'208";a="163196999"
-Received: from smile.fi.intel.com ([10.237.72.52])
-  by fmviesa005.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jul 2025 10:14:53 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1udu6D-0000000HOKx-2u52;
-	Mon, 21 Jul 2025 20:14:49 +0300
-Date: Mon, 21 Jul 2025 20:14:49 +0300
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Cc: sboyd@kernel.org, jic23@kernel.org, dlechner@baylibre.com,
-	nuno.sa@analog.com, andy@kernel.org, arnd@arndb.de,
-	gregkh@linuxfoundation.org, srini@kernel.org, vkoul@kernel.org,
-	kishon@kernel.org, sre@kernel.org, krzysztof.kozlowski@linaro.org,
-	u.kleine-koenig@baylibre.com, linux-arm-msm@vger.kernel.org,
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-phy@lists.infradead.org, linux-pm@vger.kernel.org,
-	kernel@collabora.com, wenst@chromium.org
-Subject: Re: [PATCH v1 3/7] power: reset: qcom-pon: Migrate to
- devm_spmi_subdevice_alloc_and_add()
-Message-ID: <aH51idxbwW1SAExG@smile.fi.intel.com>
-References: <20250721075525.29636-1-angelogioacchino.delregno@collabora.com>
- <20250721075525.29636-4-angelogioacchino.delregno@collabora.com>
- <aH4mWfgQt_Q0O-7S@smile.fi.intel.com>
- <f5d529c3-b898-48ac-8e5a-f587db72dc82@collabora.com>
+	s=arc-20240116; t=1753120749; c=relaxed/simple;
+	bh=T5guu2QPuE/A1iamSqRr2YPKDo8sEtIbICaOWhYZZQI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=b1dOjLfjOm6mtqo4HM7fvP2sBbHb+e8yzx6P8UsOrzSwTcOkZSVwymjn6sKCwQkHxyoDy9jDCF9yKx+DH3+DNtpY/jBMIbgMX3HZsGANA3EVh4xhZk5cJhYEiuoTeaFhOUBC4J2cFc7d+E+YgxJWeuHbH7VvaWDoOMEpO32K4Yw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=PakhYktd; arc=none smtp.client-ip=209.85.167.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oi1-f172.google.com with SMTP id 5614622812f47-41eaf6805ebso2009155b6e.3
+        for <linux-iio@vger.kernel.org>; Mon, 21 Jul 2025 10:59:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1753120746; x=1753725546; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=P7hl6QIgCfgw9wGmzX4fBBBDbussEjoveKf9kwN4pyg=;
+        b=PakhYktdIzdKsa6cfeQQJvOGZyLB/7d/ygksRgITLMsWHdeFD11ZMR3v2TzAUBOtyL
+         7i523sWSZJqDUy5uNJ22MDUXsycWbRVuo2peR3M68QoqTAa6D9OAtDtO+G3NkE952Bs6
+         RAPIMGo6YHOItKdN3/OH0+UwSvN+w2TC5gUetntPFGoaqnMit2MNHABGOOuzPIH39Mhk
+         w0saFLnrVsL+GSymK21NFO8w6dQmhTyQve2kGs7qgiHXIFPTPQMG7PPMES+cr3Ijj8+T
+         5X/83X3k0XJsLIQsGY3GpwPzs0scTqmcsIZ2EEt8kbZLDDluw4OqCF2SGMc/aYsexhCL
+         nsDw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753120746; x=1753725546;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=P7hl6QIgCfgw9wGmzX4fBBBDbussEjoveKf9kwN4pyg=;
+        b=Sbor+eNHVAr3c162DBqd4XzKcGlskolGCCPXhMoHkB9FWhiIppIJbMS4BtXMmE8GAv
+         lNyZB8fyyOJ9IVJlSzNp/7bcasVMvtAOkie7Aj7KXOiLn55+7i+16J4INzX9G4oqLEIT
+         8BZyYH2+MD7gbfZFSQx2b3c+FqetXwGhgTu8RX9gstpdPZQ68Ehqpcdq0XvCMOr/04Ak
+         T1qk4SkJuqEZPxQGnJTO6zOxf1aHEYvLFz6e+eo7uwyGTCM14HgMPUTo9HB1WbhIsRJ7
+         5hWUUSC1xgaC3yYUc1s7oMyOb/wlUmf/zN0RHlhGGIK3y1JRcUt4oH0gAzwfHfPau4zC
+         q4aA==
+X-Forwarded-Encrypted: i=1; AJvYcCX4xoX7bWcte+J7d61EYoH9vJ6qpgwQc2j5zXnxTOATsJauSuum2sMeljZqaXC8KJ5uRQF4r+jcYOA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxWh2tM/elau3B5YY7sJGb6tYx8kJ0j3MIz2vMcevv7gTkMwVEP
+	4pJr7mfd+rjbzo7h0avSdO+n/AuRrK0OUdMWMRj19pipcmeagmXs7k2Y9My2pmJkIT4=
+X-Gm-Gg: ASbGncu+Sg16wGB7EA0vwHDeSO5Ca/3i3nK3D8yOQSpXU6s1487NLgJ/30TBeTujbXv
+	qMU/RF043mdteo+u1p7x5zNfC5Czz5IC0jr1ShIsujz2fVZAr0p497DCel0F19Otl9L7uWhzq0r
+	kfTc4qxxxIeE6KPjdy+V/NE1/hiPsFuzddUrzS5rTkQarEtP0Rbdwi45OZ1Xr2yO9I810uH7kmH
+	P/HipGchbW4RupCrpNlzxJg3zkY8skgCJc08uBXp+O18DaIloplgLBnDMzEpqufUlboQR6fw8Pc
+	5RBC3qwQtpHpY6rrPwqcVVYb8wi5fZL47NXUqkPPp1d6Lppk6Fla0xP5aDJ2IUJk8tY/WCLfSyo
+	LZYCyBaGKuyI35bvznQcbUVmLtk74UKg6oyCx9OMXi5mNZvpj2lPcddf43JpyY6AbgbhzjjLNOT
+	g=
+X-Google-Smtp-Source: AGHT+IF+V8Vo9s+uN5JpwnzGcq8Tsy3wfotf/BIAZd1AeC27xeQxm2FOV4VJH2qcTb6jBXfKi/AsgA==
+X-Received: by 2002:a05:6808:1308:b0:410:f243:a502 with SMTP id 5614622812f47-41cee2765c8mr14499777b6e.8.1753120745654;
+        Mon, 21 Jul 2025 10:59:05 -0700 (PDT)
+Received: from ?IPV6:2600:8803:e7e4:1d00:3bea:f296:60f2:c6cb? ([2600:8803:e7e4:1d00:3bea:f296:60f2:c6cb])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-41fd536d613sm2691362b6e.36.2025.07.21.10.59.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 21 Jul 2025 10:59:04 -0700 (PDT)
+Message-ID: <73409000-c68b-4c22-966e-aaa56ca3744b@baylibre.com>
+Date: Mon, 21 Jul 2025 12:59:03 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f5d529c3-b898-48ac-8e5a-f587db72dc82@collabora.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/2] iio: Improve iio_read_channel_processed_scale()
+ precision
+To: Hans de Goede <hansg@kernel.org>, Jonathan Cameron <jic23@kernel.org>
+Cc: =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
+ Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org,
+ Linus Walleij <linus.walleij@linaro.org>
+References: <20250721150614.51918-1-hansg@kernel.org>
+ <20250721150614.51918-2-hansg@kernel.org>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <20250721150614.51918-2-hansg@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, Jul 21, 2025 at 03:05:46PM +0200, AngeloGioacchino Del Regno wrote:
-> Il 21/07/25 13:36, Andy Shevchenko ha scritto:
-> > On Mon, Jul 21, 2025 at 09:55:21AM +0200, AngeloGioacchino Del Regno wrote:
-
-...
-
-> > > +	if (!pdev->dev.parent)
-> > > +		return -ENODEV;
-> > 
-> > You can start using
-> > 
-> > 	struct device *dev = &pdev->dev;
-> > 
-> > here and perhaps one may convert the rest to it...
-> > 
-> > ...
-> > 
-> > >   	error = of_property_read_u32(pdev->dev.of_node, "reg",
-> > 
-> > ...including, but not limited to, use of device_property_read_u32(dev, ...) here.
-> > 
+On 7/21/25 10:06 AM, Hans de Goede wrote:
+> Before this change iio_read_channel_processed_scale() always assumes that
+> channels which advertise IIO_CHAN_INFO_PROCESSED capability return
+> IIO_VAL_INT on success.
 > 
-> I didn't do that for one single reason: I did not want to add noise to the commits
-> and wanted those to exclusively migrate the drivers to the new API, literally
-> without doing *anything* else unnecessary, even if I have located some almost
-> effortless improvements that I could've done to those drivers.
+> Ignoring any fractional values from drivers which return
+> IIO_VAL_INT_PLUS_MICRO / IIO_VAL_INT_PLUS_NANO. These fractional values
+> might become non fractional after scaling so these should be taken into
+> account.
 > 
-> Please - I prefer to keep it this way: these are the first commits that add the
-> usage of the new functions and of the concept of SPMI subdevices, and I really
-> want those to contain just that and nothing else - because I suspect that these
-> will be taken as example and will be read by the next person that is implementing
-> a new SPMI (sub)driver or converting any remaining ones to subdevice.
+> While at it also error out for IIO_VAL_* values which
+> iio_read_channel_processed_scale() does not know how to handle.
+> 
+> Signed-off-by: Hans de Goede <hansg@kernel.org>
+> ---
+> Changes in v2:
+> - New patch in v3 of this patch-series
+> ---
+>  drivers/iio/inkern.c | 24 +++++++++++++++++++++---
+>  1 file changed, 21 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/iio/inkern.c b/drivers/iio/inkern.c
+> index c174ebb7d5e6..e9669f552eb3 100644
+> --- a/drivers/iio/inkern.c
+> +++ b/drivers/iio/inkern.c
+> @@ -714,18 +714,36 @@ int iio_read_channel_processed_scale(struct iio_channel *chan, int *val,
+>  				     unsigned int scale)
+>  {
+>  	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(chan->indio_dev);
+> -	int ret;
+> +	int ret, val2;
+>  
+>  	guard(mutex)(&iio_dev_opaque->info_exist_lock);
+>  	if (!chan->indio_dev->info)
+>  		return -ENODEV;
+>  
+>  	if (iio_channel_has_info(chan->channel, IIO_CHAN_INFO_PROCESSED)) {
+> -		ret = iio_channel_read(chan, val, NULL,
+> +		ret = iio_channel_read(chan, val, &val2,
+>  				       IIO_CHAN_INFO_PROCESSED);
+>  		if (ret < 0)
+>  			return ret;
+> -		*val *= scale;
+> +
+> +		switch (ret) {
+> +		case IIO_VAL_INT:
+> +			*val *= scale;
+> +			break;
 
-You can introduce a temporary variable in this change and use it only in the
-lines you have added/touched. We have similar approach in several drivers.
-Then somebody (not specifically should be you) can move it forward.
+Just return 0 here.
 
--- 
-With Best Regards,
-Andy Shevchenko
+> +		case IIO_VAL_INT_PLUS_MICRO:
+> +			*val *= scale;
+> +			*val += div_u64((u64)val2 * scale, 1000000LLU);
 
+If the processed value is between 0 and -1, then val2 will be negative
+(val is 0 in this case, which can't be negative so val2 contains the
+sign), so casting without checking the sign first isn't safe.
+
+Also, would just use MICRO from linux/units.h instead of 1000000LLU.
+
+> +			break;
+> +		case IIO_VAL_INT_PLUS_NANO:
+> +			*val *= scale;
+> +			*val += div_u64((u64)val2 * scale, 1000000000LLU);
+
+Same applies here of course.
+
+> +			break;
+> +		default:
+> +			dev_err_once(&chan->indio_dev->dev,
+> +				     "unsupported processed IIO-val-type: %d\n",
+> +				     ret);
+> +			return -EINVAL;
+> +		}
+>  
+>  		return ret;
+
+And drop this return as all cases should return directly.
+
+>  	} else {
 
 

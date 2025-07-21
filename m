@@ -1,164 +1,210 @@
-Return-Path: <linux-iio+bounces-21790-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21791-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C227B0B7F1
-	for <lists+linux-iio@lfdr.de>; Sun, 20 Jul 2025 21:30:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21B21B0BB09
+	for <lists+linux-iio@lfdr.de>; Mon, 21 Jul 2025 04:56:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 06EB77A312F
-	for <lists+linux-iio@lfdr.de>; Sun, 20 Jul 2025 19:29:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BF6981896640
+	for <lists+linux-iio@lfdr.de>; Mon, 21 Jul 2025 02:56:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A00CD2236EE;
-	Sun, 20 Jul 2025 19:30:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CBA91E9B19;
+	Mon, 21 Jul 2025 02:55:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="XQxvSgoj"
+	dkim=pass (2048-bit key) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.b="RURl3D1h"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oo1-f44.google.com (mail-oo1-f44.google.com [209.85.161.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1928F221734
-	for <linux-iio@vger.kernel.org>; Sun, 20 Jul 2025 19:30:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38FBB76025;
+	Mon, 21 Jul 2025 02:55:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753039821; cv=none; b=XMnWC1m1zSHykp0jBJnbzy19DKEpuZOzfIUxt5Nq8lRrtEuazgPeWgbk5R4HF3IoPCbDcGn1phiD4UobMgmEyTkYo7Qdxdic+v1eW+qjBecHj9pcm3KWc2n60SyLLoLo+r86oFdXEBgLcPP362zrTjuvIa6KcLUyY/9UaMN3PzE=
+	t=1753066553; cv=none; b=dLwKZN9P5iO+Wk7c83tlV37jekrZ5V0428e/kL40l/p+MXALCj8Orn9N3aFNs1zIs5L9mwXFVD7lSxF/gr1wMD/XuBuKxjbrpp7OcI7s7IUDesKuEBz/dxJlne3bt6u3e8ojlAp3Lf6aX6oOWXilHcjwToXGHo5qnvWdpSQcCs0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753039821; c=relaxed/simple;
-	bh=ghqmh3TE//hyt6GyPI3uOU0dAX4yL2Qg3jl94n9vAgM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gMy1TnZW37WB36T95//O0sDcBXsS3ZqrDaef7O0X8zsEUpnfHnFKbS//3m3AcliPu1IZ0hNezotQ9KkVuheQY4/c4LDOz9qvRm02uwtkIovnDd9Nb1EIQS/UZhgcuIR6uc8LemkZiSVc6VJH9+0lwzvBOY62wlEhpJGoz6PTzbA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=XQxvSgoj; arc=none smtp.client-ip=209.85.161.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oo1-f44.google.com with SMTP id 006d021491bc7-615a68bd0efso776079eaf.2
-        for <linux-iio@vger.kernel.org>; Sun, 20 Jul 2025 12:30:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1753039817; x=1753644617; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=mgCpQGFdNKfFxGlOj3n44UsvhM4SmScTq7fqsGjnsnI=;
-        b=XQxvSgojdrlJ21QWdBTOuapCEdefjUdjFVmdcooUGxYYoVvl+jd5P1/Gh9cUw1F76A
-         T0VgutCbLTiCFHY9EXtJA6Qfyz8MIZ+uJGf8OyMVFhz25wWATipL3LFwww4WLersOdIL
-         k6PhbyusX6enIWkJnngy9c6lJATV+Nz656vrWDrJQKe6FICsMtZ+F+T04HNqIoMCmGvv
-         yTkH4q//MrXAZhl1fxHo/g+Rl9xuHVqUfx4E1kP8qN9iukC21kg0+bHt2zBIsdSnB3uh
-         yI9qEmE9AII3rSaeukC/mot907rJA6jM47MvwTmwh14pZW7GcMt5sfHS/03R3UpzI7lx
-         FgOQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753039817; x=1753644617;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=mgCpQGFdNKfFxGlOj3n44UsvhM4SmScTq7fqsGjnsnI=;
-        b=XRMgBS0PI+prIZC5eyDAcb56hQna7CzyDI5y4SLvMxF/4T1Gt+8uId1qWZq/6TvNyF
-         OET1+2ToeqqNEPdCRULPIIqlUq+fOCdh3xLCj6rjnzC8KtoXuVLRNnqTBzLXDEQtVdjN
-         P8eUZOWP6XRewrG/Guqe6hL/cY6UUnQ2ZFhVm2Qtsad0MwXlAHzL++Wtu8QcL0dVhrSC
-         wEKMiqP3JJ0+01t3fjsuNf6GE1BOkwG6xC7HYIjHPat0ytKD6YnQd2XcwYEdxNWHP1UR
-         9nvVzVpflJw8wGC89B8RSNSQMJ45fY1s/R1tXH7Xh7pMAc6X41djtp0BxXvqWQ4OQCH8
-         YLVQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWUIRDlodCeBTvaCKXg/E/2byxdY/YjWqji1x2NMs2Vot/8DQzVD+NNFbtwm5dlH62LsEeIgabWKVk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyK5b66mQnBlCNRRA2k+d8hnHs0lpXIRxCZ1flGbnsKwaYbaxcP
-	rRtlim1uv8dOnwVvwhXJAFFKq2s+dcMVSQZPaBTFmg15vwRDYLAfo6nehKk8X6ThPsU=
-X-Gm-Gg: ASbGncssqw4a/RhGYcBG1Jd/RLNJFsinOz3kHQTq0vKvIQ3ULHd9eTxdWLj86m6BuAs
-	tIGmCDsDLeSkG3BAXFvOWewcmtIXMwP7sCaKmcHj1TShLgzP+r8kl1R8AUT/ajfprMJT12p+J9y
-	vQrFitx65ifCwFLlPx+gusbtJLKHKEDwSfO8HjKRRCe3zgdqiMeLzuN2aax5ummXjAe2fdgN8sP
-	sVrN/RHseJTkPcJWtOXPVtn/zXjZ+tgtYWEIol1Dexy19Rcnz3omVeRRPcDreLCCA7bFglf/Vus
-	mY34QLAeao6K5CzolQ3M5aSecjRDKkwDYhJsvFDxw06zdwJej8X8uSOL5dzN3loUeIWTYSC2Psb
-	PHWSQR2kM/MJw9Q1q5952h0O8kjvID+LHQaUku9rm1A6TPshXXIOnDWBwkuf/wQza3ys1DoqYCo
-	Q=
-X-Google-Smtp-Source: AGHT+IHYlwxJWcEbEzE218c+xTVkYKK8Z8wtqJxL+cWGCmY4FshNpm6DDdkY0i7NRft8/tk1CqodKQ==
-X-Received: by 2002:a05:6830:2aac:b0:727:423c:95d5 with SMTP id 46e09a7af769-73e66114315mr14839191a34.3.1753039816972;
-        Sun, 20 Jul 2025 12:30:16 -0700 (PDT)
-Received: from ?IPV6:2600:8803:e7e4:1d00:6b9c:951d:3d17:9e9d? ([2600:8803:e7e4:1d00:6b9c:951d:3d17:9e9d])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-73e83be07c4sm2291733a34.61.2025.07.20.12.30.15
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 20 Jul 2025 12:30:16 -0700 (PDT)
-Message-ID: <84ad0f66-311e-4560-870d-851852c6f902@baylibre.com>
-Date: Sun, 20 Jul 2025 14:30:15 -0500
+	s=arc-20240116; t=1753066553; c=relaxed/simple;
+	bh=A9TfaQq6g4fpPuFG3zk9UUsbH8e0HjUsNBi7GH7YvJI=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=p6OFr0HRw0XXwrtZcdTi5elJA23OMLh0l5OEldXmtQBr43Plv2+fzaJFZMImWviusTrJRC35P7ckzUPtMsPaX87h//sZJbu2AIaoBYzRpgn7X42cpKA51T0fnZMaCFZtCzt2yVcQKKCFvXnwKyzRWTFsLO1Ldt6Dbt1uP6wjjnA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au; spf=pass smtp.mailfrom=canb.auug.org.au; dkim=pass (2048-bit key) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.b=RURl3D1h; arc=none smtp.client-ip=150.107.74.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canb.auug.org.au
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
+	s=202503; t=1753066398;
+	bh=l3w3kZ+rbtUg5hgkSE788X2h1S7cieDnuzEy3BkD9Ow=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=RURl3D1hEbUOggxyugfW9BT08TsbeNAxgTh1z2nITPDR/Q6TmJZBZgRMD17G5cL0/
+	 xSftPyzL9BAHlRdqRBp+0C2Ym1JGHBomg530DNDXEh99XqWw67QYsCdWtY/pfYlUXE
+	 +51Jg+iaYFNHOormE/kl+puivlAyCp/ALR0/Kn9Rpee80zHlWCmmdy6McKu5tqPS51
+	 LN8/NsSKAKjtSsMxUv29QXK+acxJKYK1ZHzu3zBd/QZvwPWRX+J8/YENhIsNkZ9Rrb
+	 bDfqVkRKroH43kkDdNR86E7YROOnBKqHt8F1oZ/GxuU2Kc05z0EJUTtVB9hx6/TGf5
+	 Vu3Ri62RYdQnA==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4bllMJ25ryz4wcd;
+	Mon, 21 Jul 2025 12:53:15 +1000 (AEST)
+Date: Mon, 21 Jul 2025 12:55:45 +1000
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+To: Mark Brown <broonie@kernel.org>, Greg KH <greg@kroah.com>, Arnd Bergmann
+ <arnd@arndb.de>
+Cc: David Lechner <dlechner@baylibre.com>, Jonathan Cameron
+ <jic23@kernel.org>, Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Jonathan Santos <Jonathan.Santos@analog.com>, Linux Kernel Mailing List
+ <linux-kernel@vger.kernel.org>, Linux Next Mailing List
+ <linux-next@vger.kernel.org>, linux-iio@vger.kernel.org
+Subject: Re: linux-next: manual merge of the iio tree with the spi tree
+Message-ID: <20250721125545.6db07df5@canb.auug.org.au>
+In-Reply-To: <ca0be466-6673-425d-97ab-292791253a63@baylibre.com>
+References: <20250703163824.2f08d866@canb.auug.org.au>
+	<20250703093122.00000684@huawei.com>
+	<b0b0443d-143f-4e41-b8b8-91c6726e838f@baylibre.com>
+	<20250706115053.368ce9e9@jic23-huawei>
+	<ca0be466-6673-425d-97ab-292791253a63@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re:
-To: ">" <sanjaysuthar661996@gmail.com>, linux-kernel@vger.kernel.org,
- devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
- netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-amlogic@lists.infradead.org
-Cc: ribalda@kernel.org, jic23@kernel.org, nuno.sa@analog.com,
- andy@kernel.org, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, neil.armstrong@linaro.org,
- khilman@baylibre.com, jbrunet@baylibre.com,
- martin.blumenstingl@googlemail.com
-References: <CADU64hCr7mshqfBRE2Wp8zf4BHBdJoLLH=VJt2MrHeR+zHOV4w@mail.gmail.com>
- <20250720182627.39384-1-sanjaysuthar661996@gmail.com>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <20250720182627.39384-1-sanjaysuthar661996@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; boundary="Sig_/wgLcO60fZwqhqxUyPp5Z9m.";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 
-On 7/20/25 1:26 PM, > wrote:
-> Changes in v2:
-> - Fixed commit message grammar
-> - Fixed subject line style as per DT convention
-> - Added missing reviewers/maintainers in CC
-> 
+--Sig_/wgLcO60fZwqhqxUyPp5Z9m.
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-By placing this before the headers, our email clients think this
-message doesn't have a subject. It should go after the ---.
+Hi all,
 
-> From 5c00524cbb47e30ee04223fe9502af2eb003ddf1 Mon Sep 17 00:00:00 2001
-> From: sanjay suthar <sanjaysuthar661996@gmail.com>
-> Date: Sun, 20 Jul 2025 01:11:00 +0530
-> Subject: [PATCH v2] dt-bindings: cleanup: fix duplicated 'is is' in YAML docs
-> 
-> Fix minor grammatical issues by removing duplicated "is" in two devicetree
-> binding documents:
-> 
-> - net/amlogic,meson-dwmac.yaml
-> - iio/dac/ti,dac7612.yaml
-> 
-> Signed-off-by: sanjay suthar <sanjaysuthar661996@gmail.com>
-> ---
+On Sun, 6 Jul 2025 11:15:14 -0500 David Lechner <dlechner@baylibre.com> wro=
+te:
+>
+> On 7/6/25 5:50 AM, Jonathan Cameron wrote:
+> > On Thu, 3 Jul 2025 07:28:07 -0500
+> > David Lechner <dlechner@baylibre.com> wrote:
+> >  =20
+> >> On 7/3/25 3:31 AM, Jonathan Cameron wrote: =20
+> >>> On Thu, 3 Jul 2025 16:38:24 +1000
+> >>> Stephen Rothwell <sfr@canb.auug.org.au> wrote:
+> >>>    =20
+> >>>> Today's linux-next merge of the iio tree got a conflict in:
+> >>>>
+> >>>>   MAINTAINERS
+> >>>>
+> >>>> between commit:
+> >>>>
+> >>>>   e47a324d6f07 ("dt-bindings: trigger-source: add ADI Util Sigma-Del=
+ta SPI")
+> >>>>
+> >>>> from the spi tree and commit:
+> >>>>
+> >>>>   0dd88eaa7126 ("dt-bindings: trigger-source: add generic GPIO trigg=
+er source")
+> >>>>
+> >>>> from the iio tree.
+> >>>>
+> >>>> I fixed it up (see below) and can carry the fix as necessary. This
+> >>>> is now fixed as far as linux-next is concerned, but any non trivial
+> >>>> conflicts should be mentioned to your upstream maintainer when your =
+tree
+> >>>> is submitted for merging.  You may also want to consider cooperating
+> >>>> with the maintainer of the conflicting tree to minimise any particul=
+arly
+> >>>> complex conflicts.
+> >>>>   =20
+> >>> Thanks Stephen,
+> >>>
+> >>> David, do you prefer these merged or kept as separate entries?   =20
+> >>
+> >> Ah, shoot, I forgot that we had added the gpio one and just made
+> >> one section like this.
+> >>
+> >> I think it would make sense to also merge the new adi one with
+> >> the reset to keep things compact.
+> >> =20
+> > Is there a path to do that cleanly given the multiple trees things are
+> > coming from?  Maybe this is a let things resolve whatever way this cycle
+> > and tidy up next? =20
+>=20
+> Agree, waiting seems the simplest option.
+>=20
+> >  =20
+> >>>
+> >>> I don't think it matters either way in practice though this is the
+> >>> more complex merge (the other being just putting the blocks in order.
+> >>>
+> >>> We can put a note in the pull request on preference but ultimately Li=
+nus
+> >>> will resolve this however he prefers!=20
+> >>>
+> >>> Jonathan
+> >>>
+> >>>    =20
+> >>>> --=20
+> >>>> Cheers,
+> >>>> Stephen Rothwell
+> >>>>
+> >>>> diff --cc MAINTAINERS
+> >>>> index dd764b947dab,d0809d62ff48..000000000000
+> >>>> --- a/MAINTAINERS
+> >>>> +++ b/MAINTAINERS
+> >>>> @@@ -25333,19 -25201,15 +25341,20 @@@ TRADITIONAL CHINESE DOCUMENTAT=
+IO
+> >>>>   M:	Hu Haowen <2023002089@link.tyut.edu.cn>
+> >>>>   S:	Maintained
+> >>>>   W:	https://github.com/srcres258/linux-doc
+> >>>>  -T:	git git://github.com/srcres258/linux-doc.git doc-zh-tw
+> >>>>  +T:	git https://github.com/srcres258/linux-doc.git doc-zh-tw
+> >>>>   F:	Documentation/translations/zh_TW/
+> >>>>  =20
+> >>>> + TRIGGER SOURCE
+> >>>> + M:	David Lechner <dlechner@baylibre.com>
+> >>>> + S:	Maintained
+> >>>> + F:	Documentation/devicetree/bindings/trigger-source/gpio-trigger.y=
+aml
+> >>>> + F:	Documentation/devicetree/bindings/trigger-source/pwm-trigger.ya=
+ml
+> >>>> +=20
+> >>>>  +TRIGGER SOURCE - ADI UTIL SIGMA DELTA SPI
+> >>>>  +M:	David Lechner <dlechner@baylibre.com>
+> >>>>  +S:	Maintained
+> >>>>  +F:	Documentation/devicetree/bindings/trigger-source/adi,util-sigma=
+-delta-spi.yaml
+> >>>>  +
+> >>>> - TRIGGER SOURCE - PWM
+> >>>> - M:	David Lechner <dlechner@baylibre.com>
+> >>>> - S:	Maintained
+> >>>> - F:	Documentation/devicetree/bindings/trigger-source/pwm-trigger.ya=
+ml
+> >>>> -=20
+> >>>>   TRUSTED SECURITY MODULE (TSM) INFRASTRUCTURE
+> >>>>   M:	Dan Williams <dan.j.williams@intel.com>
+> >>>>   L:	linux-coco@lists.linux.dev   =20
 
-This is where the changelog belongs.
+This is now a conflict between the char-misc tree and the spi tree.
 
->  Documentation/devicetree/bindings/iio/dac/ti,dac7612.yaml      | 2 +-
->  Documentation/devicetree/bindings/net/amlogic,meson-dwmac.yaml | 2 +-
->  2 files changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/dac/ti,dac7612.yaml b/Documentation/devicetree/bindings/iio/dac/ti,dac7612.yaml
-> index 20dd1370660d..624c640be4c8 100644
-> --- a/Documentation/devicetree/bindings/iio/dac/ti,dac7612.yaml
-> +++ b/Documentation/devicetree/bindings/iio/dac/ti,dac7612.yaml
-> @@ -9,7 +9,7 @@ title: Texas Instruments DAC7612 family of DACs
->  description:
->    The DAC7612 is a dual, 12-bit digital-to-analog converter (DAC) with
->    guaranteed 12-bit monotonicity performance over the industrial temperature
-> -  range. Is is programmable through an SPI interface.
-> +  range. It is programmable through an SPI interface.
->  
->  maintainers:
->    - Ricardo Ribalda Delgado <ricardo@ribalda.com>
-> diff --git a/Documentation/devicetree/bindings/net/amlogic,meson-dwmac.yaml b/Documentation/devicetree/bindings/net/amlogic,meson-dwmac.yaml
-> index 0cd78d71768c..5c91716d1f21 100644
-> --- a/Documentation/devicetree/bindings/net/amlogic,meson-dwmac.yaml
-> +++ b/Documentation/devicetree/bindings/net/amlogic,meson-dwmac.yaml
-> @@ -149,7 +149,7 @@ properties:
->        - description:
->            The first register range should be the one of the DWMAC controller
->        - description:
-> -          The second range is is for the Amlogic specific configuration
-> +          The second range is for the Amlogic specific configuration
->            (for example the PRG_ETHERNET register range on Meson8b and newer)
->  
->    interrupts:
+--=20
+Cheers,
+Stephen Rothwell
 
-I would be tempted to split this into two patches. It's a bit odd to have
-a single patch touching two unrelated bindings.
+--Sig_/wgLcO60fZwqhqxUyPp5Z9m.
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmh9rDEACgkQAVBC80lX
+0GySkAf/fjk0UMRpWWchqAdo+Ps6HxpVLFdfeIOA3fn0uxuMgk90qJWSmnnzi/s0
+kXoe2UvCGFAQVfjCQuU+T9W7mLdVr4s0H3YrJXwbTPKxSiljNyG1CN7ia0bsLotg
+BSJTTrLwDv00P1ps74sBRxye0HitZeq4ApvNav3WVTzW2umUjzFBInWjoGp69aEy
+LmRC8P23INTVKcEBmUIJYY5LPOpfGIP9rKDeAZHpo/XlXnq9avB6+4xA3M4hyLtW
+fhxMHr2a2raQkWTcuXj5yfiRQVuzzF+xyKm9oubE24u+/4/n+tWdxDXdmSw+sQ8i
+uvtXECB8ONdhVfKhK8CcoulTfTxjRQ==
+=ScdC
+-----END PGP SIGNATURE-----
+
+--Sig_/wgLcO60fZwqhqxUyPp5Z9m.--
 

@@ -1,229 +1,251 @@
-Return-Path: <linux-iio+bounces-21808-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21809-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A452B0C228
-	for <lists+linux-iio@lfdr.de>; Mon, 21 Jul 2025 13:08:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B465DB0C244
+	for <lists+linux-iio@lfdr.de>; Mon, 21 Jul 2025 13:10:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 66BCA178794
-	for <lists+linux-iio@lfdr.de>; Mon, 21 Jul 2025 11:08:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8422A18C33CD
+	for <lists+linux-iio@lfdr.de>; Mon, 21 Jul 2025 11:10:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28AEF292B4A;
-	Mon, 21 Jul 2025 11:07:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8007329A31A;
+	Mon, 21 Jul 2025 11:09:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="g0zzrGj9"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="WjIwYztp"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2077.outbound.protection.outlook.com [40.107.223.77])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 583B9292B29;
-	Mon, 21 Jul 2025 11:07:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.223.77
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753096077; cv=fail; b=NagFfIMRgm/jhYh/dCOWo2QG18OJYFtgxNupOrOXmewV2alYv0FUS/2PeqMApIRwHCdoD2LjZvhuOOMjEeD8kmOt9yLFAtKtSO9RkkQsimksejMZSqz6ih2C9GDqXBitpwSqYFbj248d037x5+B5Oked059g3QNUJG/jvTiEAWI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753096077; c=relaxed/simple;
-	bh=TJN8frEXo6XVv5nG5lsiYg8LYjDktR7fCzupjpxpxVE=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=mtoOgdJIDdgNpKz3VtcXlew6AV2+o6kc2Ca1urw20OWeSPJ8lpqOo1xsYJazdwcb8WTFnFMmUy6KVu6tImwSWzXnzI5zXdbdFsu0hl2/v+Gl0+LuyyK0eyXy3IuCck1tf/B8BfUCssP0MJUb0rJULid89QJ/KLI2RL5UCC7Iaic=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=g0zzrGj9; arc=fail smtp.client-ip=40.107.223.77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=hI303BT3i9/rAHUBh0pxWOfdzXgTfegzyFuPLfWmTHLfx0LAJraVZniJb2NIyI+lOuj4x8wcpDAShK7ZnKi+MoX+0NNLFbPjwOxxT1lGsZEwYUG5JiK2beWHdYijvwrZ7bk0FE4g7JgD+uZ+1d6Icp4Z23d1+YAJ21jEuI4HnvvDyJMfY8R7yxlyQiExZte1GSvILPMMY61LbZuJjSiAm+fMO95j6nrpv06aHFgBrCan7VTgjVErJL1ndsRD50a/2MGk+qsuu5yD39QL8Yl9cTNgRDis2GCcGKcVdQ8CkxYOW6Jvh82KS4wGK8hKEzpFG85Ffc1rMR/OMbnSWUv1qw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=xn7mUwCcqtIMeVFqJ/xCOT+L0StFwuTWdYRRotMQoG0=;
- b=C+tYk7RjAMSzfYNhzUauY9Lg21ITd5ThFA2IuFm1ny38GPvoRj0uE1Nprlk2A1edBuDj00qk5Nnd0UD1VWQnrpB22ZL2mux7RUVvCyNKutNftBNF66FA9TwW8HNkDdZoNlO0b/niyzrldQB6FwT+tr5UDVP96uNX8LbsnI0ejaw6dIiUUfV5GY2CGUVYtzz2f+FPotI1OoMThRBVoBlPfDzCHodLGrWw+H7dBj8F/GN28vocoCU/IY68ofJ9zlllGOynfOBgN/Ondq8oFTz0tGNtm+53OEiyAZY3xpT7ufNw+Szt+sn4QREb30YPMhisBe1xT4JKNi5/9VM57UVffw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=xn7mUwCcqtIMeVFqJ/xCOT+L0StFwuTWdYRRotMQoG0=;
- b=g0zzrGj9EPABfNEMMzeLJVYZBQp/Qszz6ZYLnVnsWmTw6sVMSf97gLJaO54dvzGI+OhLBpADn3jQmGotGLIVnaenVXWNrgRtVDCIEszI4qEoGLls6fT//DYZHpES4CvmzgcABSHcAnJtZaqgZcwMTkNANOiIOrXa35nK9R6JJ+U=
-Received: from BLAPR03CA0161.namprd03.prod.outlook.com (2603:10b6:208:32f::8)
- by BY5PR12MB4051.namprd12.prod.outlook.com (2603:10b6:a03:20c::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8943.30; Mon, 21 Jul
- 2025 11:07:53 +0000
-Received: from BN1PEPF00006001.namprd05.prod.outlook.com
- (2603:10b6:208:32f:cafe::5a) by BLAPR03CA0161.outlook.office365.com
- (2603:10b6:208:32f::8) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8943.29 via Frontend Transport; Mon,
- 21 Jul 2025 11:07:52 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- BN1PEPF00006001.mail.protection.outlook.com (10.167.243.233) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8964.20 via Frontend Transport; Mon, 21 Jul 2025 11:07:52 +0000
-Received: from SATLEXMB06.amd.com (10.181.40.147) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 21 Jul
- 2025 06:07:49 -0500
-Received: from SATLEXMB03.amd.com (10.181.40.144) by SATLEXMB06.amd.com
- (10.181.40.147) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 21 Jul
- 2025 06:07:47 -0500
-Received: from xhdradheys41.xilinx.com (10.180.168.240) by SATLEXMB03.amd.com
- (10.181.40.144) with Microsoft SMTP Server id 15.1.2507.39 via Frontend
- Transport; Mon, 21 Jul 2025 06:07:44 -0500
-From: Manikanta Guntupalli <manikanta.guntupalli@amd.com>
-To: <git@amd.com>, <michal.simek@amd.com>, <lorenzo@kernel.org>,
-	<jic23@kernel.org>, <dlechner@baylibre.com>, <nuno.sa@analog.com>,
-	<andy@kernel.org>, <linux-iio@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-CC: <radhey.shyam.pandey@amd.com>, <srinivas.goud@amd.com>,
-	<manion05gk@gmail.com>, Manikanta Guntupalli <manikanta.guntupalli@amd.com>
-Subject: [PATCH] iio: imu: lsm6dsx: Add shutdown callback support for I3C interface
-Date: Mon, 21 Jul 2025 16:37:41 +0530
-Message-ID: <20250721110741.2380963-1-manikanta.guntupalli@amd.com>
-X-Mailer: git-send-email 2.34.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 345AA293C56
+	for <linux-iio@vger.kernel.org>; Mon, 21 Jul 2025 11:09:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1753096146; cv=none; b=es/Z2pA/kke0tqyX53F843M+UeCnomxNcbcp3Nt7rD65En/kLIwgHbDhd+F15YneAeOtzQKuOv1lbbESnJEsqdLwTsqI3QvDOjr2xojIMiU/JLN7P41rN/3KYVT56mVgO79v4tvC8S0B5YrguzqmcnprDf/UXPI0lqJQcRw046g=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1753096146; c=relaxed/simple;
+	bh=SsD61A8hR5q9MQ8QKFckZ6cN9hCMs+AKO11xNPKYjkA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=q/ZyOd+RCodER9+VQmSEKIiLFPvJETxl1nzB2N3k0oJv1rh+5p2daobXRS65j9SG/Ux7DjtXrHXzpHZf24kzufq8Mb7IFrSIFt/X6PQk5rFX1juHIHldMV40Qz189C/kosBo9z619PKkOvy5CN9DRR+hd7cdRyxgX7lXLO+4G90=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=WjIwYztp; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-45619d70c72so39483255e9.0
+        for <linux-iio@vger.kernel.org>; Mon, 21 Jul 2025 04:09:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1753096141; x=1753700941; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=KmtXN5LOpsy9wnbFF88f1TFJAOYpmO6pOglF7c6OjGE=;
+        b=WjIwYztphIyNa3/uYZOZTtxJcn7ek7HtPzVIWEzMj0zXwnLZfy5p3X72oOCPdJzP2V
+         uiIa2taSc2Gb3PIvaNbDVedfyUPhT1IdGGFnl11ayRDQlOcyw5pLovDkCrV33b+TynG+
+         fJuSXgYxR5xGpyqN2YGXNYqV0buURma4ZGlDStiMkOZjTTLUUtXP8fp8S2vK582ZufQT
+         YybMsb6p/+q3+jTw+8xI67H2uGWWnYQUixh9zsBE1zwABUwgLLOPW7LLck8f9E89T0pm
+         6tLCcTHk4KaLmgZaLVOGOw7M7g2oBiFtZTpQOCSa10CCfNxnhEI+Mi8pTG1U6uREzA4p
+         ffEQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753096141; x=1753700941;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=KmtXN5LOpsy9wnbFF88f1TFJAOYpmO6pOglF7c6OjGE=;
+        b=HtYdCglRdkfr8kaq4Hr51zym23/jHu7mbjYsEVWKmZxVl0oSq440mQ/44QHwkAsVgg
+         cVzlAzxYfqxQCAn1kh7aT9SFvlBaiNhEy4MsOjLy8U9LJDURRt9BC4PHcan/Rfzkuecb
+         6q8GFfUjOwEvlCfjLKvPErP4KlGxs2zM58eWxs3ljmb+mhJ/QlayAj31b/YeeRQPynxx
+         RyK3dhvB6RPsTgAmJOfT/cHV/nSs0qQT/sDkE8+zznCvWJUkgxNustCcVJqk3ucxv059
+         VKPKRr2MPOXWVyxiMkFGrad8RiKc7HK20oKCdyYcmRaANZVYV8EEDmC5Wmvdg9BBqs1n
+         VHNg==
+X-Forwarded-Encrypted: i=1; AJvYcCXixx1fUgRxZUO4OGhEww6Y/6b8jsegBOmeSwrnkYWwPMyx6I3qfFcLBo3qDVbQDqlfs1Q8WMNbGfc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy0d/R7Smsl8FERyNFscs+bfb3OzMB3RqXloxHfNK/3Lq7dw3uu
+	EMoUZlwDEPar5ECpkyjUjYiaeikYVi2Rqv/xlxbly58W3xPFHGZczfum9xN5M3PXGEnlYKVk2JB
+	eyanv
+X-Gm-Gg: ASbGncs6ocjXjgFn41hZ2tIwF+phGYoKPK/WoY6MvbARgd/kqDshEj0ysFI75Rv04CB
+	Z39DqJ2iQERBs2Lluh/r5p4lX6BUNsYFnVQi6NUAzBCUsKVfzExaIFKA6cYrdD+G9OgZpMgd/zG
+	y0zCVKFm6TDqHVxjv+L1XQr+GF6wa7DRwfI78mAB5D1HfA3g5qlnLBe7loszJ8nnRuloWoo/vkz
+	GnPlFI0NbhyxsLgCrHYeH342fbWVnEl37QNz/xKmZW4AuRP/7s33Wz4tcAWBdLX4w9gEvBlGxXR
+	bY9+iRqifCs14n8Rgdhu3hFjL/uvdOeb1i0DnRamQMOjemVSJbVXlIACJg5SdhdIr3IzbyuCQkm
+	pK1lTbDFi65e/P+o49UCG+1l/nWFCdIbOBox0EPuk5lCJAbzWpdN2v35GW0v+ul4=
+X-Google-Smtp-Source: AGHT+IF/p9/8BzW3lB8bZPpYYHRczY58A+Ne9dELqgeiVrztj+TKGERiYVH004vi+cnHyij4U7BDBg==
+X-Received: by 2002:a05:600c:c4a6:b0:455:f7b8:235c with SMTP id 5b1f17b1804b1-456348c644emr159193895e9.14.1753096141413;
+        Mon, 21 Jul 2025 04:09:01 -0700 (PDT)
+Received: from [192.168.1.36] (p549d4bd0.dip0.t-ipconnect.de. [84.157.75.208])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b61ca5c813sm10201962f8f.84.2025.07.21.04.08.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 21 Jul 2025 04:09:00 -0700 (PDT)
+Message-ID: <68251793-d1d2-4f7d-be00-a47a4fd5f80e@linaro.org>
+Date: Mon, 21 Jul 2025 13:08:59 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN1PEPF00006001:EE_|BY5PR12MB4051:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1e86c955-31ff-4c3e-ce19-08ddc846d67e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|82310400026|36860700013;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?cqS7Li5Drmby2jSuoeFD0WgLQBgMJQrC3RV0DU+4kLhMSGhVeWNPLvyvelM6?=
- =?us-ascii?Q?1aS2kuq+57i1g9lipQI7EQotWAvtO7LJI2ZaKe9evLyvd7rC0eRcOzEsVdji?=
- =?us-ascii?Q?yJSJlo9f5uEbwxRvKnfdhkyDQHxB/dfhZJAJ9WTTO2p+SEgrlpL/lXmpBy5l?=
- =?us-ascii?Q?H5ycy2NTo6SXl4VSR0q7U8q7peWGbRYXoVEvUv21TlZJ976Vw1/USHq1jKXG?=
- =?us-ascii?Q?xb5lAHlaGuBnQaaflMVx1Bb0CWptOmewbzCcmJur2oYpp0OjfH8pMtjjqbBA?=
- =?us-ascii?Q?z4mw4UQqJjOqT7oTpQM1De9OjfWPzyeqXLQbEEgOIeOJWM0nr9dtINpGIcU2?=
- =?us-ascii?Q?Jfvg/vzFRTwmAekJO6nks7Hu3OW1Jo0DRFqNMvw8rwdGVPfUU8mAwwSo5XQ7?=
- =?us-ascii?Q?BBVPtI3Lx7aIVHzvh2tNf6mftlDv9F4oeTTRVD8xW73ic87FrQidgbEyhErW?=
- =?us-ascii?Q?54l3OvAcWfUYDoOw4DoJD114IkGN5QLVvso1IuGmkL6oRjqPyzn+lF/A6iY2?=
- =?us-ascii?Q?AQJm7Lixs9bsO3EDf8pP5zaJvLvY4Rczr9bjp6ZjpmSoOahhwq7LSZVW4mUr?=
- =?us-ascii?Q?qxTAmAditYtLr7Kjb4dzH6dFHLzPGYgTVb0IeYytIy434pveJccykOV5TnlJ?=
- =?us-ascii?Q?JxoOhlGI4r9BgVo2oEku0I1m7lYPdcD+mlqs+5zxGxjQ1rWYcCVhXb+Dwf02?=
- =?us-ascii?Q?Imx5QnZZO+MCDFMzoWyh7FmiSkQ0DVcz5K0CrnZ6+7x2SsUp14WE3hhmNSLX?=
- =?us-ascii?Q?pD6TDlfD+MhRfAU1zvswWuGEqqa533My+0BxM5pC2ZEn1RfVNsSUTGpHlk1N?=
- =?us-ascii?Q?ffComzZpN7ThfmIlpJWoCnl1D1iAi+OugBMDArXqS2RMkNeIjib5FAFJ6cQ7?=
- =?us-ascii?Q?nv8QTgl/dVST37qKcklvZzDaRz9z2fXnWGay0Tc1tKaPCSg8nVgR8UoJoFYj?=
- =?us-ascii?Q?Joholb9Oi9BzqEUk5lTKscESTNIADYP6C3omp/O7NmHXhsJBFZvR/4EZcbDZ?=
- =?us-ascii?Q?FSPa95upb28lb/kp6I4aHtdDqi+suwbUhfM4NwdDdXKc/HKGC457I5eI+UiR?=
- =?us-ascii?Q?tygn83ZpHc1b3uP3RWxAVtzvCM9sGRerjWLTvFhCu7D37UQQ5/fr0pYoN6AV?=
- =?us-ascii?Q?0iEdcrx+vqnZEFmtF2I7w9nIiIzyn0OmYHU0OFAL/kIrNkhodRACMNReyjH4?=
- =?us-ascii?Q?jOx4shM6NvvrQXBAQAefmgr5Xv+HjoEgztr150R4Nm6I80iPivgGMr3Kc3zM?=
- =?us-ascii?Q?d4dRLWLmtU20vfRu8OkHDtiULIY/6nJljl6c9DjAC/s/IqeRyenF4+A5hjMa?=
- =?us-ascii?Q?QxcyRzc/IX9uO0mK9qp09ZBLQdA+/VGeOy4Bo/cseys9pNLBq3aj0Tzdz3t4?=
- =?us-ascii?Q?bcOI7jjiuAT/XMagK6bRzL6LiS+VsYdHWEtXhu9d11S2xKXelYimV7NQNcvb?=
- =?us-ascii?Q?S1ncIgCKibRr/ivTH+pT/7Xouv6CZuBA9qyOHllmbTciaat/qhlhehdPxDAp?=
- =?us-ascii?Q?Znd8GKyR7J/mE+FFyxJ4jLtThSn59fCsIWr5?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(376014)(82310400026)(36860700013);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Jul 2025 11:07:52.7955
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1e86c955-31ff-4c3e-ce19-08ddc846d67e
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BN1PEPF00006001.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4051
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/4] QRTR bus and Qualcomm Sensor Manager IIO drivers
+Content-Language: en-US
+To: y.oudjana@protonmail.com, Manivannan Sadhasivam <mani@kernel.org>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>,
+ Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor
+ <nathan@kernel.org>, Nicolas Schier <nicolas.schier@linux.dev>,
+ Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>,
+ =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
+ Andy Shevchenko <andy@kernel.org>, Luca Weiss <luca@lucaweiss.eu>
+Cc: linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org,
+ linux-iio@vger.kernel.org
+References: <20250710-qcom-smgr-v2-0-f6e198b7aa8e@protonmail.com>
+From: Casey Connolly <casey.connolly@linaro.org>
+In-Reply-To: <20250710-qcom-smgr-v2-0-f6e198b7aa8e@protonmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Add a shutdown handler for the ST LSM6DSx I3C driver to perform a hardware
-reset during system shutdown. This ensures the sensor is placed in a
-well-defined reset state, preventing issues during subsequent reboots,
-such as kexec, where the device may fail to respond correctly during
-enumeration.
+Hi Yassine,
 
-To support this, the previously static st_lsm6dsx_reset_device() function
-is now exported via EXPORT_SYMBOL_NS() under the IIO_LSM6DSX namespace,
-allowing it to be invoked from the I3C-specific driver.
+On 10/07/2025 10:06, Yassine Oudjana via B4 Relay wrote:
+> Sensor Manager is a QMI service available on several Qualcomm SoCs which
+> exposes available sensors and allows for getting data from them. This
+> service is provided by either:
+> 
+> - SSC (Snapdragon Sensor Core): Also known as SLPI (Sensor Low Power
+>   Island). Has its own set of pins and peripherals to which sensors are
+>   connected. These peripherals are generally inaccessible from the AP,
+>   meaning sensors need to be operated exclusively through SSC. The only
+>   known SoCs in this category are MSM8996 and MSM8998 (and their
+>   derivatives).
+> - ADSP (Audio DSP): Shares pins and peripherals with the AP. At least on
+>   some devices, these pins could be configured as GPIOs which allows the AP
+>   to access sensors by bit-banging their interfaces. Some SoCs in this
+>   category are SDM630/660, MSM8953, MSM8974 and MSM8226.
+> 
+> Before Sensor Manager becomes accessible, another service known as Sensor
+> Registry needs to be provided by the AP. The remote processor that provides
+> Sensor Manager will then request data from it, and once that process is
+> done, will expose several services including Sensor Manager.
 
-Signed-off-by: Manikanta Guntupalli <manikanta.guntupalli@amd.com>
----
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h      |  1 +
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c |  3 ++-
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i3c.c  | 14 ++++++++++++++
- 3 files changed, 17 insertions(+), 1 deletion(-)
+arguably a bit of a nit pick, but it might be worth clarifying that
+newer SoCs starting with sdm845 also work in much the same way, except
+the actual data is packed into protobuf messages which are sent over
+QMI, rather than using QMI itself for the sensor data (and hence aren't
+supported by this series).
 
-diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-index c225b246c8a5..42c0dcfbad49 100644
---- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-+++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-@@ -466,6 +466,7 @@ extern const struct dev_pm_ops st_lsm6dsx_pm_ops;
- 
- int st_lsm6dsx_probe(struct device *dev, int irq, int hw_id,
- 		     struct regmap *regmap);
-+int st_lsm6dsx_reset_device(struct st_lsm6dsx_hw *hw);
- int st_lsm6dsx_sensor_set_enable(struct st_lsm6dsx_sensor *sensor,
- 				 bool enable);
- int st_lsm6dsx_fifo_setup(struct st_lsm6dsx_hw *hw);
-diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-index c65ad49829e7..929b30985d41 100644
---- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-+++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-@@ -2267,7 +2267,7 @@ static int st_lsm6dsx_init_hw_timer(struct st_lsm6dsx_hw *hw)
- 	return 0;
- }
- 
--static int st_lsm6dsx_reset_device(struct st_lsm6dsx_hw *hw)
-+int st_lsm6dsx_reset_device(struct st_lsm6dsx_hw *hw)
- {
- 	const struct st_lsm6dsx_reg *reg;
- 	int err;
-@@ -2302,6 +2302,7 @@ static int st_lsm6dsx_reset_device(struct st_lsm6dsx_hw *hw)
- 
- 	return 0;
- }
-+EXPORT_SYMBOL_NS(st_lsm6dsx_reset_device, "IIO_LSM6DSX");
- 
- static int st_lsm6dsx_init_device(struct st_lsm6dsx_hw *hw)
- {
-diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i3c.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i3c.c
-index cb5c5d7e1f3d..f3d9cdd5a743 100644
---- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i3c.c
-+++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i3c.c
-@@ -41,10 +41,24 @@ static int st_lsm6dsx_i3c_probe(struct i3c_device *i3cdev)
- 	return st_lsm6dsx_probe(dev, 0, (uintptr_t)id->data, regmap);
- }
- 
-+static void st_lsm6dsx_i3c_shutdown(struct device *dev)
-+{
-+	struct st_lsm6dsx_hw *hw = dev_get_drvdata(dev);
-+
-+	/*
-+	 * Perform device reset to ensure the sensor is in a known
-+	 * good state for subsequent re-initialization or power cycles.
-+	 * This addresses issues where the sensor might not enumerate
-+	 * correctly after a warm reboot (e.g., kexec).
-+	 */
-+	st_lsm6dsx_reset_device(hw);
-+}
-+
- static struct i3c_driver st_lsm6dsx_driver = {
- 	.driver = {
- 		.name = "st_lsm6dsx_i3c",
- 		.pm = pm_sleep_ptr(&st_lsm6dsx_pm_ops),
-+		.shutdown = st_lsm6dsx_i3c_shutdown,
- 	},
- 	.probe = st_lsm6dsx_i3c_probe,
- 	.id_table = st_lsm6dsx_i3c_ids,
+That said, this is really awesome :D
+
+Kind regards,>
+> This series adds a kernel driver for the Sensor Manager service, exposing
+> sensors accessible through it as IIO devices. To facilitate probing of this
+>  driver, QRTR is turned into a bus, with services being exposed as devices.
+> Once the Sensor Manager service becomes available, the kernel attaches its
+> device to the driver added in this series. This allows for dynamic probing
+> of Sensor Manager without the need for static DT bindings, which would also
+> not be ideal because they would be describing software rather than
+> hardware. Sensor Manager is given as a working example of the QRTR bus.
+> Kernel drivers for other services may also be able to benefit from this
+> change.
+> 
+> As previously mentioned, a Sensor Registry server must run on the AP to
+> provide the remote processor (either SLPI or ADSP) with necessary data.
+> A userspace implementation of this server is made[1]. The server can be
+> supplied with the necessary data in the form of a plain-text configuration
+> file that can be pulled from the Android vendor partition (sample[2]), or
+> generated from a binary file that can be pulled from the persist partition.
+> A more recently developed kernel implementation of the Sensor Registry
+> server[3] can also be used. This last implementation only supports reading
+> data from the binary file pulled from persist. Sensor Registry remains out
+> of the scope of this patch series, as the Sensor Registry server and Sensor
+> Manager client (this series) are fully independent components.
+> 
+> Due to the total lack of documentation on Sensor Manager, this driver was
+> almost entirely the result of a process of capturing transactions between
+> SSC and the proprietary Android daemons with several methods and manually
+> decoding and interpreting them, sometimes by comparing with values acquired
+> from Android APIs. A blog post[4] describes part of this process more
+> detail. A little piece of downstream Android open-source code[5] was also
+> used as reference during later stages of development. All of this, as well
+> as a lack of time on my side for the last couple of years, meant that this
+> driver had to go through a slow and intermittent development process for
+> more than 3 years before reaching its current state.
+> 
+> Currently supported sensor types include accelerometers, gyroscopes,
+> magentometers, proximity and pressure sensors. Other types (namely
+> light and temperature sensors) are close to being implemented.
+> 
+> Some testing instructions may also be found here[6].
+> 
+> [1] https://gitlab.com/msm8996-mainline/sns-reg
+> [2] https://github.com/nian0114/android_vendor_xiaomi_scorpio/blob/mkn-mr1/proprietary/etc/sensors/sensor_def_qcomdev.conf
+> [3] https://github.com/sdm660-mainline/linux/pull/57
+> [4] https://emainline.gitlab.io/2022/04/08/Unlocking_SSC_P2.html
+> [5] https://android.googlesource.com/platform/system/chre/+/android-8.0.0_r2/platform/slpi
+> [6] https://gitlab.postmarketos.org/postmarketOS/pmaports/-/merge_requests/4118
+> 
+> Changes since v1:
+> - Split qdev renaming into separate patch
+> - Export new QRTR symbols with namespace
+> - Change struct initialization style
+> - Remove redundant NULL initialization of qdev->dev.driver
+> - Remove redundant devm_kfree
+> - Use variable in sizeof rather than type
+> - Change error return style in qcom_smd_qrtr_init
+> - Change order of operations in qcom_smd_qrtr_exit
+> - Use FIELD_PREP and GENMASK in QRTR_INSTANCE macro and add a CONST variant
+> - Remove per-sensor subdrivers and eliminate use of platform devices
+> - Put year range in copyright statements
+> - Use dev_err_probe for error messages in probe
+> - Remove unused include of linux/of.h
+> - Avoid casting away const in qcom_smgr_buffering_report_handler
+> - Use iio_push_to_buffers instead of iio_push_to_buffers_with_timestamp
+> - Preprocess proximity sensor data before pushing to buffer
+> - Add warning message for report with unknown ID received
+> - Change sentinel value style in array of struct initialization
+> - Refuse to set sampling frequency when buffer enabled
+> - Return -EINVAL inside default case in all applicable switch statements
+> - Move samp_freq_vals in qcom_smgr_iio_read_avail to priv and fix maximum
+> - Add devm_add_action_or_reset for releasing QMI handle and get rid of
+>   qcom_smgr_remove
+> - Add service versions and instance IDs found on some platforms to QRTR
+>   match table
+> - Fix null pointer dereference on registering unsupported sensor
+> 
+> Signed-off-by: Yassine Oudjana <y.oudjana@protonmail.com>
+> ---
+> Yassine Oudjana (4):
+>       net: qrtr: smd: Rename qdev to qsdev
+>       net: qrtr: Turn QRTR into a bus
+>       net: qrtr: Define macro to convert QMI version and instance to QRTR instance
+>       iio: Add Qualcomm Sensor Manager driver
+> 
+>  MAINTAINERS                                     |  13 +
+>  drivers/iio/accel/qcom_smgr_accel.c             | 138 ++++
+>  drivers/iio/common/Kconfig                      |   1 +
+>  drivers/iio/common/Makefile                     |   1 +
+>  drivers/iio/common/qcom_smgr/Kconfig            |  16 +
+>  drivers/iio/common/qcom_smgr/Makefile           |   8 +
+>  drivers/iio/common/qcom_smgr/qcom_smgr.c        | 840 ++++++++++++++++++++++++
+>  drivers/iio/common/qcom_smgr/qmi/Makefile       |   3 +
+>  drivers/iio/common/qcom_smgr/qmi/qmi_sns_smgr.c | 713 ++++++++++++++++++++
+>  drivers/iio/common/qcom_smgr/qmi/qmi_sns_smgr.h | 161 +++++
+>  drivers/soc/qcom/qmi_interface.c                |   5 +-
+>  include/linux/iio/common/qcom_smgr.h            |  80 +++
+>  include/linux/mod_devicetable.h                 |   9 +
+>  include/linux/soc/qcom/qrtr.h                   |  46 ++
+>  net/qrtr/af_qrtr.c                              |  23 +-
+>  net/qrtr/qrtr.h                                 |   3 +
+>  net/qrtr/smd.c                                  | 252 ++++++-
+>  scripts/mod/devicetable-offsets.c               |   4 +
+>  scripts/mod/file2alias.c                        |  10 +
+>  19 files changed, 2302 insertions(+), 24 deletions(-)
+> ---
+> base-commit: 835244aba90de290b4b0b1fa92b6734f3ee7b3d9
+> change-id: 20250710-qcom-smgr-8db96d370b10
+> 
+> Best regards,
+
 -- 
-2.34.1
+// Casey (she/her)
 
 

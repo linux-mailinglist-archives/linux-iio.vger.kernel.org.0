@@ -1,53 +1,53 @@
-Return-Path: <linux-iio+bounces-21798-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21799-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 859C0B0BE39
-	for <lists+linux-iio@lfdr.de>; Mon, 21 Jul 2025 09:56:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B1BFB0BE3D
+	for <lists+linux-iio@lfdr.de>; Mon, 21 Jul 2025 09:56:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E57BA7AC60D
-	for <lists+linux-iio@lfdr.de>; Mon, 21 Jul 2025 07:55:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4086516E1D2
+	for <lists+linux-iio@lfdr.de>; Mon, 21 Jul 2025 07:56:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B2A62877E1;
-	Mon, 21 Jul 2025 07:55:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F96F288532;
+	Mon, 21 Jul 2025 07:55:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="b9THtPyF"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="n8Sp8bxo"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A4EF286D52;
-	Mon, 21 Jul 2025 07:55:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5684E28726D;
+	Mon, 21 Jul 2025 07:55:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753084547; cv=none; b=GEQWABRJPNqhW6+IDxdHWu98D9hVPO01coueBWgclU1vwCITXZzxs4czXeR+TGr5QcWkxS0DugT3CR7DD75ybcush1AWDDV+5EoWbFIOXsZy27xv9V/F6kXQ78XvVXUlyu6kGQTPh95muBKW28jXyhp3ddoHrbiW3n9rnM2wfVI=
+	t=1753084548; cv=none; b=B3smrn7lgI0hcbJBDIC952TVET6Z7kPllGMVvVhQTFiNCQgdWhlVpXFrb/bg1z13uVMkbXQc5yx9w+DG3EPaStRwEct5AVoi+u0iqm1uJewygz0WZz2zm8/mgZ8nroQ+gSgIqUTyrT2krDXxO3JKWdZgkyOgI5mw4HUvS/7H0Hc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753084547; c=relaxed/simple;
-	bh=EWrSyZWJqNf9vZ/4yt+3iqdg/iKzq/YpQ3Klm8c4kUU=;
+	s=arc-20240116; t=1753084548; c=relaxed/simple;
+	bh=fi7nmGU0pf9xh3UMutM9r5Cb3QhwcNCUIt79J9c8H3g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HTlekeo1OcA3c3Oc1Q18Hvci6oiqorgrswa7LXM9stZ3+OX85N4G/qKJxeupHl81t62wF90wzausH8MzInXj20jJ3u0xLHothjgDXhkVu0Wq8bbx7p59QMil+wxBy38JCYIxU17H8qQyNqgjI0B+3LUtG3pS5gg0P58Ye7CF3Do=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=b9THtPyF; arc=none smtp.client-ip=148.251.105.195
+	 MIME-Version; b=VEZYitTGK7KPTl4RNPi2veeJLbSh6scvK57vu+0/IqrzGpPFjOy3nV7E1u8/NPQOHdwbpmpiSOyNA2H1QzFoVN+Ni52QQvgAsO3bqS2jscuS+7lqq+j/bgFdnexLOD+3w6roPWA4QHyVlPXXkGdBTOXJizIWBYL9HYZlsdFDHGQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=n8Sp8bxo; arc=none smtp.client-ip=148.251.105.195
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1753084543;
-	bh=EWrSyZWJqNf9vZ/4yt+3iqdg/iKzq/YpQ3Klm8c4kUU=;
+	s=mail; t=1753084544;
+	bh=fi7nmGU0pf9xh3UMutM9r5Cb3QhwcNCUIt79J9c8H3g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b9THtPyFdNeegoD4oJ00q2hB7oXRYfxQ70HRv1f/P/nFjQVYmByytc1tfCUtDL8Ln
-	 4PRl4w0f5UDPwqrnI3b7wRuz1EM9naJHkoHR2hTM1Qomj4d9if+bLMD1EwkHVVIuw2
-	 e8h8Jur+lA6YgJ5KeaIzhOdKYSc7A2VdfoGbdAsb9JQWcP90tXlV7NISE7otpwr03W
-	 JiTRriujzo+3fJUWeMru6Xcvk37/Gp66T3YOZmL6yOfy2025smmRqxbR5ycb8FZoHQ
-	 o8ES/DDbOdXWWYGxuyHYjr2LpkdlCua6ZoILGMmA49SEtNX9GY+NsmmLOgpb8TRpOQ
-	 bbG//2p7qvqvA==
+	b=n8Sp8bxokZDcYtg86Gd+NAbWvBaXnRI83Jr3txsBY5EcbElzP+G5LGDsFAF8YpuNO
+	 Rf4K13yhHX+13P94Of5Cf5f42jAZcdSwsLM7VUuE4pK2EY7NOQf9mmCXYRa5JV9Cfs
+	 tOFY9zCfW6iijjhpwvEpy132bsaDfDhWqvYdf9sPD1rALE7ogX0Vk1cVOQ+57SfXmY
+	 vVld8/smN3Ous0d9qC1/r4mQ2CE46rtfKlier2H0+UHH7Wh2qim5gnFEbqsI4ignrr
+	 tYeSjutL8IA9sUSonNTFTlXCc6BS9Hh+rx+VL6F5p+4SLX8vxC2koo4TcQfutZPBkU
+	 sRxxSnOdZe7bQ==
 Received: from IcarusMOD.eternityproject.eu (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
 	(Authenticated sender: kholk11)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 4385A17E1541;
-	Mon, 21 Jul 2025 09:55:42 +0200 (CEST)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 924CC17E1544;
+	Mon, 21 Jul 2025 09:55:43 +0200 (CEST)
 From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 To: sboyd@kernel.org
 Cc: jic23@kernel.org,
@@ -70,9 +70,9 @@ Cc: jic23@kernel.org,
 	linux-pm@vger.kernel.org,
 	kernel@collabora.com,
 	wenst@chromium.org
-Subject: [PATCH v1 3/7] power: reset: qcom-pon: Migrate to devm_spmi_subdevice_alloc_and_add()
-Date: Mon, 21 Jul 2025 09:55:21 +0200
-Message-ID: <20250721075525.29636-4-angelogioacchino.delregno@collabora.com>
+Subject: [PATCH v1 4/7] phy: qualcomm: eusb2-repeater: Migrate to devm_spmi_subdevice_alloc_and_add()
+Date: Mon, 21 Jul 2025 09:55:22 +0200
+Message-ID: <20250721075525.29636-5-angelogioacchino.delregno@collabora.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250721075525.29636-1-angelogioacchino.delregno@collabora.com>
 References: <20250721075525.29636-1-angelogioacchino.delregno@collabora.com>
@@ -84,11 +84,12 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Some Qualcomm PMICs integrates a Power On device supporting pwrkey
-and resin along with the Android reboot reason action identifier.
+Some Qualcomm PMICs integrate an USB Repeater device, used to
+convert between eUSB2 and USB 2.0 signaling levels, reachable
+in a specific address range over SPMI.
 
 Instead of using the parent SPMI device (the main PMIC) as a kind
-of syscon in this driver, register a new SPMI sub-device for PON
+of syscon in this driver, register a new SPMI sub-device for EUSB2
 and initialize its own regmap with this sub-device's specific base
 address, retrieved from the devicetree.
 
@@ -98,90 +99,142 @@ by the regmap API instead.
 
 Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 ---
- drivers/power/reset/qcom-pon.c | 33 ++++++++++++++++++++++++++-------
- 1 file changed, 26 insertions(+), 7 deletions(-)
+ .../phy/qualcomm/phy-qcom-eusb2-repeater.c    | 45 +++++++++++--------
+ 1 file changed, 26 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/power/reset/qcom-pon.c b/drivers/power/reset/qcom-pon.c
-index 7e108982a582..bd7e7e04ff02 100644
---- a/drivers/power/reset/qcom-pon.c
-+++ b/drivers/power/reset/qcom-pon.c
-@@ -11,6 +11,7 @@
- #include <linux/reboot.h>
- #include <linux/reboot-mode.h>
+diff --git a/drivers/phy/qualcomm/phy-qcom-eusb2-repeater.c b/drivers/phy/qualcomm/phy-qcom-eusb2-repeater.c
+index e0f2acc8109c..f65437a85924 100644
+--- a/drivers/phy/qualcomm/phy-qcom-eusb2-repeater.c
++++ b/drivers/phy/qualcomm/phy-qcom-eusb2-repeater.c
+@@ -9,6 +9,7 @@
  #include <linux/regmap.h>
+ #include <linux/of.h>
+ #include <linux/phy/phy.h>
 +#include <linux/spmi.h>
  
- #define PON_SOFT_RB_SPARE		0x8f
- 
-@@ -22,7 +23,6 @@
- struct qcom_pon {
- 	struct device *dev;
- 	struct regmap *regmap;
--	u32 baseaddr;
- 	struct reboot_mode_driver reboot_mode;
- 	long reason_shift;
+ /* eUSB2 status registers */
+ #define EUSB2_RPTR_STATUS		0x08
+@@ -55,7 +56,6 @@ struct eusb2_repeater {
+ 	struct phy *phy;
+ 	struct regulator_bulk_data *vregs;
+ 	const struct eusb2_repeater_cfg *cfg;
+-	u32 base;
+ 	enum phy_mode mode;
  };
-@@ -35,7 +35,7 @@ static int qcom_pon_reboot_mode_write(struct reboot_mode_driver *reboot,
+ 
+@@ -110,7 +110,6 @@ static int eusb2_repeater_init(struct phy *phy)
+ 	struct eusb2_repeater *rptr = phy_get_drvdata(phy);
+ 	struct device_node *np = rptr->dev->of_node;
+ 	struct regmap *regmap = rptr->regmap;
+-	u32 base = rptr->base;
+ 	u32 poll_val;
  	int ret;
+ 	u8 val;
+@@ -119,25 +118,25 @@ static int eusb2_repeater_init(struct phy *phy)
+ 	if (ret)
+ 		return ret;
  
- 	ret = regmap_update_bits(pon->regmap,
--				 pon->baseaddr + PON_SOFT_RB_SPARE,
-+				 PON_SOFT_RB_SPARE,
- 				 GENMASK(7, pon->reason_shift),
- 				 magic << pon->reason_shift);
- 	if (ret < 0)
-@@ -46,27 +46,46 @@ static int qcom_pon_reboot_mode_write(struct reboot_mode_driver *reboot,
+-	regmap_write(regmap, base + EUSB2_EN_CTL1, EUSB2_RPTR_EN);
++	regmap_write(regmap, EUSB2_EN_CTL1, EUSB2_RPTR_EN);
  
- static int qcom_pon_probe(struct platform_device *pdev)
+ 	/* Write registers from init table */
+ 	for (int i = 0; i < rptr->cfg->init_tbl_num; i++)
+-		regmap_write(regmap, base + rptr->cfg->init_tbl[i].reg,
++		regmap_write(regmap, rptr->cfg->init_tbl[i].reg,
+ 			     rptr->cfg->init_tbl[i].value);
+ 
+ 	/* Override registers from devicetree values */
+ 	if (!of_property_read_u8(np, "qcom,tune-usb2-amplitude", &val))
+-		regmap_write(regmap, base + EUSB2_TUNE_USB2_PREEM, val);
++		regmap_write(regmap, EUSB2_TUNE_USB2_PREEM, val);
+ 
+ 	if (!of_property_read_u8(np, "qcom,tune-usb2-disc-thres", &val))
+-		regmap_write(regmap, base + EUSB2_TUNE_HSDISC, val);
++		regmap_write(regmap, EUSB2_TUNE_HSDISC, val);
+ 
+ 	if (!of_property_read_u8(np, "qcom,tune-usb2-preem", &val))
+-		regmap_write(regmap, base + EUSB2_TUNE_IUSB2, val);
++		regmap_write(regmap, EUSB2_TUNE_IUSB2, val);
+ 
+ 	/* Wait for status OK */
+-	ret = regmap_read_poll_timeout(regmap, base + EUSB2_RPTR_STATUS, poll_val,
++	ret = regmap_read_poll_timeout(regmap, EUSB2_RPTR_STATUS, poll_val,
+ 				       poll_val & RPTR_OK, 10, 5);
+ 	if (ret)
+ 		dev_err(rptr->dev, "initialization timed-out\n");
+@@ -150,7 +149,6 @@ static int eusb2_repeater_set_mode(struct phy *phy,
  {
-+	struct regmap_config qcom_pon_regmap_config = {
+ 	struct eusb2_repeater *rptr = phy_get_drvdata(phy);
+ 	struct regmap *regmap = rptr->regmap;
+-	u32 base = rptr->base;
+ 
+ 	switch (mode) {
+ 	case PHY_MODE_USB_HOST:
+@@ -159,8 +157,8 @@ static int eusb2_repeater_set_mode(struct phy *phy,
+ 		 * per eUSB 1.2 Spec. Below implement software workaround until
+ 		 * PHY and controller is fixing seen observation.
+ 		 */
+-		regmap_write(regmap, base + EUSB2_FORCE_EN_5, F_CLK_19P2M_EN);
+-		regmap_write(regmap, base + EUSB2_FORCE_VAL_5, V_CLK_19P2M_EN);
++		regmap_write(regmap, EUSB2_FORCE_EN_5, F_CLK_19P2M_EN);
++		regmap_write(regmap, EUSB2_FORCE_VAL_5, V_CLK_19P2M_EN);
+ 		break;
+ 	case PHY_MODE_USB_DEVICE:
+ 		/*
+@@ -169,8 +167,8 @@ static int eusb2_repeater_set_mode(struct phy *phy,
+ 		 * repeater doesn't clear previous value due to shared
+ 		 * regulators (say host <-> device mode switch).
+ 		 */
+-		regmap_write(regmap, base + EUSB2_FORCE_EN_5, 0);
+-		regmap_write(regmap, base + EUSB2_FORCE_VAL_5, 0);
++		regmap_write(regmap, EUSB2_FORCE_EN_5, 0);
++		regmap_write(regmap, EUSB2_FORCE_VAL_5, 0);
+ 		break;
+ 	default:
+ 		return -EINVAL;
+@@ -195,11 +193,18 @@ static const struct phy_ops eusb2_repeater_ops = {
+ 
+ static int eusb2_repeater_probe(struct platform_device *pdev)
+ {
++	struct regmap_config eusb2_regmap_config = {
 +		.reg_bits = 16,
 +		.val_bits = 16,
 +		.max_register = 0x100,
 +		.fast_io = true
 +	};
-+	struct spmi_subdevice *sub_sdev;
 +	struct spmi_device *sparent;
- 	struct qcom_pon *pon;
- 	long reason_shift;
- 	int error;
+ 	struct eusb2_repeater *rptr;
++	struct spmi_subdevice *sub_sdev;
+ 	struct device *dev = &pdev->dev;
+ 	struct phy_provider *phy_provider;
+ 	struct device_node *np = dev->of_node;
+-	u32 res;
+ 	int ret;
  
-+	if (!pdev->dev.parent)
-+		return -ENODEV;
-+
- 	pon = devm_kzalloc(&pdev->dev, sizeof(*pon), GFP_KERNEL);
- 	if (!pon)
- 		return -ENOMEM;
+ 	rptr = devm_kzalloc(dev, sizeof(*rptr), GFP_KERNEL);
+@@ -213,15 +218,17 @@ static int eusb2_repeater_probe(struct platform_device *pdev)
+ 	if (!rptr->cfg)
+ 		return -EINVAL;
  
- 	pon->dev = &pdev->dev;
- 
--	pon->regmap = dev_get_regmap(pdev->dev.parent, NULL);
--	if (!pon->regmap) {
--		dev_err(&pdev->dev, "failed to locate regmap\n");
-+	sparent = to_spmi_device(pdev->dev.parent);
-+	if (!sparent)
- 		return -ENODEV;
--	}
-+
+-	rptr->regmap = dev_get_regmap(dev->parent, NULL);
+-	if (!rptr->regmap)
+-		return -ENODEV;
 +	sub_sdev = devm_spmi_subdevice_alloc_and_add(&pdev->dev, sparent);
 +	if (IS_ERR(sub_sdev))
 +		return PTR_ERR(sub_sdev);
  
- 	error = of_property_read_u32(pdev->dev.of_node, "reg",
--				     &pon->baseaddr);
-+				     &qcom_pon_regmap_config.reg_base);
- 	if (error)
- 		return error;
+-	ret = of_property_read_u32(np, "reg", &res);
++	ret = of_property_read_u32(np, "reg", &eusb2_regmap_config.reg_base);
+ 	if (ret < 0)
+ 		return ret;
  
-+	pon->regmap = devm_regmap_init_spmi_ext(&sub_sdev->sdev, &qcom_pon_regmap_config);
-+	if (!pon->regmap) {
-+		dev_err(&pdev->dev, "failed to locate regmap\n");
+-	rptr->base = res;
++	rptr->regmap = devm_regmap_init_spmi_ext(&sub_sdev->sdev, &eusb2_regmap_config);
++	if (IS_ERR(rptr->regmap))
 +		return -ENODEV;
-+	}
-+
- 	reason_shift = (long)of_device_get_match_data(&pdev->dev);
  
- 	if (reason_shift != NO_REASON_SHIFT) {
+ 	ret = eusb2_repeater_init_vregs(rptr);
+ 	if (ret < 0) {
 -- 
 2.50.1
 

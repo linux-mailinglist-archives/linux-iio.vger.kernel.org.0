@@ -1,171 +1,148 @@
-Return-Path: <linux-iio+bounces-21884-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21885-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39F28B0E54D
-	for <lists+linux-iio@lfdr.de>; Tue, 22 Jul 2025 23:16:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8A1BB0E5BE
+	for <lists+linux-iio@lfdr.de>; Tue, 22 Jul 2025 23:52:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 604D35430B8
-	for <lists+linux-iio@lfdr.de>; Tue, 22 Jul 2025 21:16:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 68D8F1C85F87
+	for <lists+linux-iio@lfdr.de>; Tue, 22 Jul 2025 21:53:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B76A8285066;
-	Tue, 22 Jul 2025 21:16:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E938D273D6C;
+	Tue, 22 Jul 2025 21:52:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="dR/h70qX"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="s0HNFwpy"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oi1-f180.google.com (mail-oi1-f180.google.com [209.85.167.180])
+Received: from mail-ot1-f45.google.com (mail-ot1-f45.google.com [209.85.210.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A25C06F06B
-	for <linux-iio@vger.kernel.org>; Tue, 22 Jul 2025 21:15:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ECC9239E96
+	for <linux-iio@vger.kernel.org>; Tue, 22 Jul 2025 21:52:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753218960; cv=none; b=dMdVGX0VWqyoURQng/4o7Zca/KnKKaxoG8kImK7xMQdgM6xfGbmig/8QRF3QpPezF8aPa4dK6yRAQQevv3vJZ4q7d7bh77v29HgF93cguz53bBJZ4giDBJZ5x9P5XLbeLo3sCGverAy9T87I472mscvyGSW3PmnL/emdDU14GOI=
+	t=1753221172; cv=none; b=XoefhyMSQoRWJ+brsZPJRpzaCrpdkrzKoAVRgIREIB8DSjIBPgepmfJEyjb1dXwr0J/XoYntk47iTaH7oQxr+Ikj8Ng9wwC8x4nmNs+qXxoertZHwVd8WzXmmaov6V7yOrBcC/AujTctpuOw514zFwroH2Ku50lgExO6C39azQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753218960; c=relaxed/simple;
-	bh=ZE/TOpGowbJekPnqxX6irREBLFL8rXFZ6e7QbrxGlDM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dLGJgrmOknGo12wUCQZ1I/Foum5th6EzfGZTyKs6YpzZxjV+2IiyvHyz1w5hljcW6ahhfHCHcPPwFdcUX8WNDBm+aqBLh9mqMPXexoJ+MHug4jwYfv+w1by1Cz5lrSEwH2B+Ex7O/5RtOBGepgga1nQccdS60+grQL0vY0o0k+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=dR/h70qX; arc=none smtp.client-ip=209.85.167.180
+	s=arc-20240116; t=1753221172; c=relaxed/simple;
+	bh=v2pwjQAwjOfWGq6TF4yQLTbl29WrWOQKd4awONVQcV0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=L7ODFcvl7efQr8s12aop2pgjhpFlSo0uvdnW9ey7YCCtmc/2KG04xrweOzV10osPQ/ceIi2Np5qaDvdYfLn4oJuZJ6Z9kK6Arw2LNLNHgwrvMpa5ZmH54rPxROYrPLhlCcXtucENQwsAGuC+L+8hFjW1k3mqqDePgwL42ytlRvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=s0HNFwpy; arc=none smtp.client-ip=209.85.210.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oi1-f180.google.com with SMTP id 5614622812f47-401c43671ecso152908b6e.0
-        for <linux-iio@vger.kernel.org>; Tue, 22 Jul 2025 14:15:58 -0700 (PDT)
+Received: by mail-ot1-f45.google.com with SMTP id 46e09a7af769-73e88bc3728so875442a34.0
+        for <linux-iio@vger.kernel.org>; Tue, 22 Jul 2025 14:52:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1753218958; x=1753823758; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=8tgutpM3+ecON5U1EZ4+3DOjCX70RNyAOS0oE4ZvgFA=;
-        b=dR/h70qX7TRr9M3x9YPz7vh0fSeYSeZlFtseFjkIoB5CdYME/qXI59iNzVcTubSQf8
-         y4sFus+kr0Ez5vuX+0MApU29KsS0kXTmobo3xC8wml2BXzPbEox6h8UksqX8LHg1lnFp
-         bqo71t9x8DeNfD91jns0DAwftYvTM+xmmajX+wgQJW2OtnyEAPSVdz+MiA3rbxHG+Qlo
-         G8LDtteVjHoUhyfvxSEClQevDcHY9lHR7TxdPmn5R+VGIE0pbJU7W2YASuswqqVRm6VT
-         XkRHNAd1CDhcK5BSkyY/By48zcP3AVOoXzFE3+cgDycuz/OzNoXqaIA73GaOBFstrnmo
-         jIFQ==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1753221169; x=1753825969; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=N3kD/kRLVYiXI7+ZhtS27j1tuw14/H2/ab2GI6uG6k0=;
+        b=s0HNFwpy/Lc6GCnVgkXNi5NMAKr+uzkx5QTHkmBu0656nJAOF/eZMx4M1ZQVF3Q3b7
+         e0tAe3y579rrjxQjwSoL6vYaOMv0+DObVdPDURg9++y6PjG95CC/9EdZ4TCKL+lnXhtq
+         OfvMg/RaxcauI6DoYwLphpkvhjA6NeE9d+a+S6zVjkBmK5hVVRN2sY8EJqotij40yoRR
+         W6sWbrvv/bXQs8P5KHnMKLXGjH0dMK0IvXtaemI/ifs/MjLzFSjvBvo2wK4EnO5fKhlZ
+         tUbFBRT1bI32BYwyjHnGpmaa0GvldZt+svNUFCLR9oX7KYEzJR+GMuh7WiKihu2sMuBB
+         1yDA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753218958; x=1753823758;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=8tgutpM3+ecON5U1EZ4+3DOjCX70RNyAOS0oE4ZvgFA=;
-        b=oy7KpZ2K1tMXKjvN7WxXM65FzqU77viiZVsmUE70Txb2LHZhh+CNE2ClJh81ED3hFI
-         s2KicG1AyZbpemDnPbCHQv4P8Tax5t1T6O1K+olUWdeANw0k2uVBBusC7gzkHoDFoWfT
-         LCuiBu+16ijKrpKoQNSbjwXmjURo6blpp7qf+fI2wc6IATf0q+FtS2HIoSz++4dlo9KQ
-         26zPBPioOCFhNIk25kPfyHZFK5cw7koDUS6ecR6kpDioqRGLBYz3G2j5xkTPUkeO7WZM
-         OR6JrsJpG8/oc7c/8c1EPZMiqOcA/x/NSjYgfaUATqAcI70Q5N1RDJ8yy6cPbW4NhozQ
-         OLig==
-X-Forwarded-Encrypted: i=1; AJvYcCWFa0c0Fc47s3XC0nJ1i7rnuqyLlyn/8VTIAWfRossnU8ZmBbau/bJ5nH7ArS+c7IrYuwMuCODc3J0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyGaDMuW13rlqJDNSMVTcKxisEFHTFk7ZLoEct4xncixsAXTaFY
-	+CNAjGtdKIRtFg/FOs/oXB8rw7HtsNmeQDSwjBsM+o+w/EwjsbIf3bIi5TghYGXovIs=
-X-Gm-Gg: ASbGncvLCYn5eyKtPYoUP1vE8g7eH2PvlVBTj9vfob9Hogv4Y5lHOqy/QVr5CxJXHSJ
-	GMdM8FD6qkL6PkbDIPUTue5UNq77sCsw0ZgN/Qgm761vC2zDUapyjLak4vVkEaK40sQGD/tdS/4
-	8WcpVoJfDekWiVbRLTkCDc4zkGIhVH8G8jPz5JD0TR1aHGSrgEJNWo/vykR5hrGYc2FzjkzVYbV
-	r+cSVA87U8FEWlUdl1/JUNoQE/AZpwgBdy9uJheejmBqVMV7Y2T/2EPIfJuP+XTBjoxuVps5zOe
-	zouMkBYP6kfQuPtGcKIZGNfAZDd3ryE+kpVK7AqGt3QUScaV5+fSmmtcbTabgbivJBlpF6REem/
-	pSInzN9DKmkPxPQ/IeDVCakdrKWMtwC5bANsSRfuoiU7eeNg7pXt/8biDvqdpDTCURWe6Zwl+3A
-	o=
-X-Google-Smtp-Source: AGHT+IErYsEQlXxI7pFpPraI6RvhcDBUJh8XyJwxt2mUeS7ZpHZNeZWE1+cTKbIWmSYhMxEmYfWCLQ==
-X-Received: by 2002:a05:6808:4f21:b0:40b:1826:34c1 with SMTP id 5614622812f47-4272f778a68mr362949b6e.6.1753218957671;
-        Tue, 22 Jul 2025 14:15:57 -0700 (PDT)
-Received: from ?IPV6:2600:8803:e7e4:1d00:2a79:4b55:6a01:85d7? ([2600:8803:e7e4:1d00:2a79:4b55:6a01:85d7])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-41fd565d35csm3361010b6e.40.2025.07.22.14.15.55
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 22 Jul 2025 14:15:57 -0700 (PDT)
-Message-ID: <8f924da6-c5f6-4f88-9cb1-3e7e1aae491b@baylibre.com>
-Date: Tue, 22 Jul 2025 16:15:55 -0500
+        d=1e100.net; s=20230601; t=1753221169; x=1753825969;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=N3kD/kRLVYiXI7+ZhtS27j1tuw14/H2/ab2GI6uG6k0=;
+        b=RivIQVTjZU2KF1p5IwYTMEATen2IqDEbGlFM9st5wfY02Coh33E+q0GpqChoyCS0pe
+         IL/37LHswV9+4krXtiBv/2/Z3AbqnS0HZzRDjUF/i2/F2klWcEfWcqkLQGHEC1RwGtsw
+         m/1bU7M9133FGQjO3s+RYg7qVhu5ZRVEZg1H1ROo1EVZiL1NsWSePGywqjZYAGhdSCGt
+         ow9v/6Fe6nkcudHHCr/3SaAN2s4/mOCoeGdSzskIVggvvEgUAQoH6MK0Vfkh2gR2kTdf
+         zmde263qKikpOlZCCnSl8vODxiuneNANCBtF3zQ2uTxOw8/LSpdGoVwRfjQN8vJoHe1s
+         f1AQ==
+X-Gm-Message-State: AOJu0YxVg/AvJUv3uuUwAedRlu9WmcyyAOlC/xd4ok1pnPISYwI+ZMKX
+	K/BNEGQlNZolrnlJGdO6jpnV44K0QihQ+rW/7VMYJZ0/0pQ++c2iSyIuxK1keQDaS1lsliGqo/1
+	Mtkzs
+X-Gm-Gg: ASbGncsvrd8wLBWK4RYrKA7M15/zQ7jbycpGPP1gjFf5gYRyFuE9X6E72GkKXlgdTgN
+	zaehwCcOIIc9TluZQSXdR2WgMchcQ/nG+zf3R3PmdVvW+ckcb3HcHTg4Y31zA5sUWzp7GSTzYA2
+	2i9QZ4S9B9b+PbvAqxiWD4POPHp2zsMhDzXb5egi2r2+Rl/dEaeOMdlbi0TJMtVTkusIebGwTLt
+	rF8Nq2Kom2IYbOlI8l9aQLl0CSABPm9LDRT4E9R+y38ar51cg3vG00BGe9ASfI1oMa+jbFIzeVU
+	6tMg523Yq5ash9JTbNSKm66Yln0akrmBMfOoo22GpzA/O8lRigN9EfdIO7oZ65/nI5E62IPUbah
+	tKCPkfQ8a81qix/Vvk1XPT3vr6NQh
+X-Google-Smtp-Source: AGHT+IHWtbFwx4H3f8oW0ot6nPWB5iPqH7dGagqR2/1ALDB69cOPsol6TVnxS7tDf3BrrWgjUR1hXg==
+X-Received: by 2002:a05:6830:6484:b0:727:3957:8522 with SMTP id 46e09a7af769-74088ac1d3emr562275a34.20.1753221169379;
+        Tue, 22 Jul 2025 14:52:49 -0700 (PDT)
+Received: from [127.0.1.1] ([2600:8803:e7e4:1d00:2a79:4b55:6a01:85d7])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-73e83b06444sm3793483a34.37.2025.07.22.14.52.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 22 Jul 2025 14:52:49 -0700 (PDT)
+From: David Lechner <dlechner@baylibre.com>
+Date: Tue, 22 Jul 2025 16:52:38 -0500
+Subject: [PATCH] iio: fix iio_push_to_buffers_with_ts() typo
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] iio: light: ltr390: Add sysfs attribute to report
- data freshness
-To: Akshay Jindal <akshayaj.lkd@gmail.com>
-Cc: anshulusr@gmail.com, jic23@kernel.org, nuno.sa@analog.com,
- andy@kernel.org, shuah@kernel.org, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20250721195419.526920-1-akshayaj.lkd@gmail.com>
- <a88e1a8e-d29c-41e7-b3cd-5db965a055df@baylibre.com>
- <CAE3SzaTG-re2HPRAcPWuo2YmM9mxLWndpN_SQOAZg7MP_B3xDg@mail.gmail.com>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <CAE3SzaTG-re2HPRAcPWuo2YmM9mxLWndpN_SQOAZg7MP_B3xDg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250722-iio-fix-iio_push_to_buffer_with_ts-typo-v1-1-6ac9efb856d3@baylibre.com>
+X-B4-Tracking: v=1; b=H4sIACUIgGgC/x3NzQqDMBAE4FeRPXdBE1Toq5QSot3oXkzIxj/Ed
+ ++2p+E7zMwFQplJ4FldkGlj4bgomkcF4+yXiZA/ajC1aeveGGSOGPj4pUurzK5EN6whUHY7F6V
+ gOVPEfgjW+sZ727WgaymT1v5Pr/d9fwFEaa+YeQAAAA==
+X-Change-ID: 20250722-iio-fix-iio_push_to_buffer_with_ts-typo-7bf33a1aa365
+To: Jonathan Cameron <jic23@kernel.org>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Andy Shevchenko <andy@kernel.org>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ David Lechner <dlechner@baylibre.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1812; i=dlechner@baylibre.com;
+ h=from:subject:message-id; bh=v2pwjQAwjOfWGq6TF4yQLTbl29WrWOQKd4awONVQcV0=;
+ b=owEBbQGS/pANAwAKAcLMIAH/AY/AAcsmYgBogAgqdI7JJBtJw3v1RcJC2522e/JBY0UJ9elrR
+ g+k7EmgsSuJATMEAAEKAB0WIQTsGNmeYg6D1pzYaJjCzCAB/wGPwAUCaIAIKgAKCRDCzCAB/wGP
+ wKyECACUBQV+eb2DpCP9F0cppawj/hci0Ds/tz9YQfkbGhGiA9g7oryJIMB3UOw2oiuMe8gXySx
+ 0j2SIPrRxwbrdxvs22QD3iLC9l3Pq09c4Pif/lszDF0zSZtSDw+yIQxy923FiFny+7MRotGAH20
+ u90nR6UZqs04pUaiLzDY7AiFIVI5ClsbzOEgwhzVD0xkMvh9PR4lJS3gPF4LNNVhUzX9Zfrd9xn
+ q2mQka9qhn85hKfmhgXthtuOR5B/v2y4uA0dnii7JuwW3ZzrcBRDfXPhCxy0CS+TLMdAtyEDsij
+ wsjr/XsxiLMA7drfXEgfY2nIbeuLAhas5hhYGwF5MvuSz31g
+X-Developer-Key: i=dlechner@baylibre.com; a=openpgp;
+ fpr=8A73D82A6A1F509907F373881F8AF88C82F77C03
 
-On 7/21/25 10:55 PM, Akshay Jindal wrote:
-> Thanks David for the swift and valuable feedback. Please find replies inline.
-> 
-> On Tue, Jul 22, 2025 at 1:55 AM David Lechner <dlechner@baylibre.com> wrote:
->>
->> For debugging, using debugfs would make more sense.
-> Will it make sense if I simply give register access via debugfs?
-> Something like this:
-> static const struct iio_info ad7606_info_sw_mode = {
->     .read_raw = &ad7606_read_raw,
->     .write_raw = &ad7606_write_raw,
->     .debugfs_reg_access = &ad7606_reg_access,<---------
->     .validate_trigger = &ad7606_validate_trigger,
->     .update_scan_mode = &ad7606_update_scan_mode,
-> };
-> This way the information about data status will be available on demand,
-> without exposing any special sysfs attribute.
+Replace iio_push_to_buffer_with_ts() with iio_push_to_buffers_with_ts()
+in some documentation comments in iio.h. The latter is the correct name
+of the function, the former doesn't exist.
 
-Yes, this would be fine.
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+---
+ include/linux/iio/iio.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
->>
->> For application level filtering, why does it matter if we have
->> read the same value before or not? The sampling_frequency is
->> available, so the application should be able to deduce when
->> fresh data should be available based on time.
-> Agreed.
->>
->> I could see maybe polling this in the kernel in order to implement
->> a buffered capture mode, but not sure passing this on to userspace
->> is the best way to go about it.
-> I had sent 2 patches. This was my PATCH 1 of 2. In patch 2 of 2,
-> I have done something similar to what you mentioned, not exactly polling,
+diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
+index d11668f14a3e17654fcf17a4e853d4b493205019..2f5560646ee49052deaaaae1dd2b92b21c4d4fd5 100644
+--- a/include/linux/iio/iio.h
++++ b/include/linux/iio/iio.h
+@@ -779,7 +779,7 @@ static inline void *iio_device_get_drvdata(const struct iio_dev *indio_dev)
+  * them safe for use with non-coherent DMA.
+  *
+  * A number of drivers also use this on buffers that include a 64-bit timestamp
+- * that is used with iio_push_to_buffer_with_ts(). Therefore, in the case where
++ * that is used with iio_push_to_buffers_with_ts(). Therefore, in the case where
+  * DMA alignment is not sufficient for proper timestamp alignment, we align to
+  * 8 bytes instead.
+  */
+@@ -794,7 +794,7 @@ static inline void *iio_device_get_drvdata(const struct iio_dev *indio_dev)
+  * @name: identifier name of the buffer
+  * @count: number of elements in the buffer
+  *
+- * Declares a buffer that is safe to use with iio_push_to_buffer_with_ts(). In
++ * Declares a buffer that is safe to use with iio_push_to_buffers_with_ts(). In
+  * addition to allocating enough space for @count elements of @type, it also
+  * allocates space for a s64 timestamp at the end of the buffer and ensures
+  * proper alignment of the timestamp.
 
-Here is what the IIO docs have to say about it (reading the in_light_raw
-attribute is considered INDIO_DIRECT_MODE):
+---
+base-commit: cd2731444ee4e35db76f4fb587f12d327eec5446
+change-id: 20250722-iio-fix-iio_push_to_buffer_with_ts-typo-7bf33a1aa365
 
- * @INDIO_DIRECT_MODE: There is an access to either:
- * a) The last single value available for devices that do not provide
- *    on-demand reads.
- * b) A new value after performing an on-demand read otherwise.
- * On most devices, this is a single-shot read. On some devices with data
- * streams without an 'on-demand' function, this might also be the 'last value'
- * feature. Above all, this mode internally means that we are not in any of the
- * other modes, and sysfs reads should work.
- * Device drivers should inform the core if they support this mode.
-
-So I don't think the current implementation is really in violation
-of this.
-
-Additionally, changes you proposed in patch 2/2 would break existing
-users by returning an error when it didn't used to, so we couldn't
-accept that.
-
-If this was a new driver, we might consider having the raw read
-poll for fresh data so that each read was guaranteed to be new
-data, but even that change in timing could break existing users,
-so probably not something we would want to do now.
-
-
-I still think there is a reasonable workaround of just having userspace
-wait for the sample period between reads to guarantee fresh data
-without changing the driver at all.
-
-
-> but reading the data status bit before reading actual data.
-> Both patches are independent. Please have a look at that as well.
-> 
-> Thanks,
-> Akshay
+Best regards,
+-- 
+David Lechner <dlechner@baylibre.com>
 
 

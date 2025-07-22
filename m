@@ -1,204 +1,185 @@
-Return-Path: <linux-iio+bounces-21863-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21864-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9AABB0D5E7
-	for <lists+linux-iio@lfdr.de>; Tue, 22 Jul 2025 11:25:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD7CFB0D706
+	for <lists+linux-iio@lfdr.de>; Tue, 22 Jul 2025 12:13:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B7A277A6842
-	for <lists+linux-iio@lfdr.de>; Tue, 22 Jul 2025 09:23:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B0573B0E7B
+	for <lists+linux-iio@lfdr.de>; Tue, 22 Jul 2025 10:13:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A75E2DCBF5;
-	Tue, 22 Jul 2025 09:24:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B8502E0907;
+	Tue, 22 Jul 2025 10:13:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZyYMQuTx"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="ivd4Ms00"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8611D2DCBEC;
-	Tue, 22 Jul 2025 09:24:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FC0C19DF62;
+	Tue, 22 Jul 2025 10:13:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753176287; cv=none; b=f27Qmod5Z8hsvrcbki8PtX+yD+zj/Pu6mWOezJaD+YdKMlpscEYYufzRxbYq3kD/ak6+NkgHWcL4QsLOG/wBKDhxaYibECNp2PfECsvK7RzDcv+MpB9hcgMjQiAJ/wOCctSY4WJ+NdMmkoe3xg4pVxBd5DLauVCd6ufg+r/AA98=
+	t=1753179208; cv=none; b=rz61h9SNY8KwwJmkWDSRdSiM22mkhFTrLVD0sgnofuZQZ5M1dBVgFvubqLcquMrzdBzk7MffoXdrMyobtwj2XpFk3EBoHjHGeWiBF++vCpYKcstezuf+POR5x2iuuPC5hk7R4yFfm/m7D7TB6r8oMo3J9Su7Op7TsVJJYl/7PCg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753176287; c=relaxed/simple;
-	bh=vq9nwGCbpNJCvIIWiXBqGK2FeNXxXaFw/7Fny809tjE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=h7K1G/FLnCew3e/yScjBVdUrke1DZQe3VQub2gECzjgZoGMYquzHy8+Je/78osegldvTOKff9qJujBZzldVMAf2gNvIiMVmSetinj6I6cK5nLadMXcaTeSmDbzvEZnCObbGHASewKjVSHAHJ+xom7WvdXUjg64DrMdQw+B+rywE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZyYMQuTx; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-45629702e52so23182135e9.2;
-        Tue, 22 Jul 2025 02:24:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753176284; x=1753781084; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=D+//jYCN9fJ3UKB3gQrh8TeOMN1LQzo1k6VYys+m57I=;
-        b=ZyYMQuTxvzAIOYmTkb9Bpm+4l7FXviKmQF29wYHJ2/lWOWkUzOR+T1oATvrh22EveH
-         BQzjr4zZ20A8nGcw/qV31vFAzNSmjUJcl6xNrBfesexnfTA8nXk3bb1vjGRz5hpwj5cZ
-         730HeCjY+XF1vvtUUG7f733jC/Tt0PWKtcVaoO+RwXhLPn7m0YnTx9aevaW42QUNw2tn
-         pxIhKIxJNKAokpoDjfozelB3h07ovyDvvu+7051UWZCaBX7itdyhxFBJxHRo6Jn/pp6Y
-         r+41db+9AOpvZzcDJKYYyVqxB+MTOh4yvt4yfS4nQBc8i8RNHbS7b8UEPLAQcavcFQ7l
-         +WDw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753176284; x=1753781084;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=D+//jYCN9fJ3UKB3gQrh8TeOMN1LQzo1k6VYys+m57I=;
-        b=d7/hUfjUY0ixhfNOKPwPZrpOX21X5EkjtokRYZtXwXgqI3vqvYLRVXvam2z6IB6CE5
-         ENUoa5jcAxVOszPo61/khXNDXM6IZ40ZEVJKuvUbu3htJQMzop/orWc3RyWRf/wOh5ON
-         vqbILLoEVqYqMyOrfvXi5bGUX8iltmJB027IQ2oyP8Lew+PF4HeM1rqYUoftbMYsuVaM
-         5zqi3eJ35zjM/RM0cBHL1WYqNoLcE5KUfR2yH4VNy/GlMf6q/l6CY6hNbkgl8y8mkUCR
-         d0UsVQLhjC3nbQTYRav6DSp7b7TKpi858A4+dHYV4I8NeZafTAf2SdfVRsvg4eUC93xS
-         DCUA==
-X-Forwarded-Encrypted: i=1; AJvYcCURKIS6O5C1YgEnAIFZBc0lKNBomCU2YsUP2SsZ1GSpF7zcvHjPY8Fkha0lkqnLBXTFe8pKmGVrqho=@vger.kernel.org, AJvYcCWlhJtjhHkGusAmu+cR6mFz9jEflWsQedO2R42deQWAXY7YJlEcqkM7k9gmzSgspQ9mvitWtFH1yk2wBreQ@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx3AlUikif8WhXifIlUKr1cdSwd2UikXMMPe4VgrUBLoh74fc90
-	YDhEKhlUiAuHsfJdRD1fcTRmXwJDv6T0UuYzdjiw73ZLFCImhaaf5Af4
-X-Gm-Gg: ASbGnctmbJuCIq0Gvh+ubhC1yENt9IQq11K+GzdfX5Q5x8FSk/nQNfCNbpdTnlBe0MZ
-	cP5v8p4UKyjBpOr8RGEbRY3Q0nBoo+j6A2JT09+QaWyoJbb4WPd9ZWCY99AkmCa5GYtJU8s5jcC
-	qGefsQpIGli0BakvHOabA/MMoxpCzjApLuMXdCINrhsGWeA3q7rZ/+lstmN3AG8ooL87oGcDx/f
-	EOttCglrCG28Ml0TbDyqUmHIMGADbQQNKcpdF8eqsK70yHBo29BrZdW1rx/4iRhuhH+lUMPhEkY
-	7xmdPhwn/ZbXcyizjd7HeDBt8NWXNtmLl5BHKofmQQ0YseWuXkmNhov9TPd/Sb9aFFDckrfZPDm
-	S5q14xiO2gA==
-X-Google-Smtp-Source: AGHT+IFS4JFdYUjRXvwa6PQG6LzBe+yHOPx1nP72j3LNTxLgT1+qD+QgeFECSpuWPgbAAOPMEXKNLA==
-X-Received: by 2002:a05:6000:420f:b0:3a3:5f36:33ee with SMTP id ffacd0b85a97d-3b60e4f2d43mr18277380f8f.32.1753176283506;
-        Tue, 22 Jul 2025 02:24:43 -0700 (PDT)
-Received: from nsa ([89.40.212.7])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b61ca2bac1sm12944186f8f.25.2025.07.22.02.24.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Jul 2025 02:24:43 -0700 (PDT)
-Date: Tue, 22 Jul 2025 10:24:56 +0100
-From: Nuno =?utf-8?B?U8Oh?= <noname.nuno@gmail.com>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, 
-	Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, 
-	Matt Ranostay <mranostay@gmail.com>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] iio: temperature: maxim_thermocouple: use DMA-safe
- buffer for spi_read()
-Message-ID: <pj2pzpd33covkhi2ho3nsoazqqqpfeiy6n42fkmada6drpr6bj@2dm4iqxdhotj>
-References: <20250721-iio-use-more-iio_declare_buffer_with_ts-3-v2-1-0c68d41ccf6c@baylibre.com>
- <bd5c1587-c830-40e6-90d5-be7fad215cef@baylibre.com>
+	s=arc-20240116; t=1753179208; c=relaxed/simple;
+	bh=963RdGEbtN6pVtOsnahKRKmPTAcKJFsBWCunaa6yuxs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gfPAuCK7mKvZrK/pF2DUVhOKX6mvhF3MqASuveBz8n+Pnj5IO1pb6l4ztqjWJpNWNyLmHvjKtXpUSoaQmZH/XXF0NVMtj5SyDVwn3sjDn8pid2BB167ATS35iaGPe71lXXNUynz8vjPzmypp6vKNyBMb+wZd2yWyHwfz6W1o+qQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=ivd4Ms00; arc=none smtp.client-ip=148.251.105.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1753179204;
+	bh=963RdGEbtN6pVtOsnahKRKmPTAcKJFsBWCunaa6yuxs=;
+	h=From:To:Cc:Subject:Date:From;
+	b=ivd4Ms00xPAZrb6qsS7ImkVywhM68D0nSXqsjd8jV6LT2rBBoHa4ftpU4h0bPhuAR
+	 EGi5pkCvbBdU6KSiJ4ELBaYiY2VpyBHhmATKikwxYWQqek2SLaq5MPQpUeDIDnADfE
+	 Ie/sbsY+4eYYRA6aNskol7Nm6bPO5to/A7zpHExYL6YM7a/XpesrC04BHQYdjYhC3Q
+	 gklM1FqlpMB2iFGZyjPyXn5aNxVbIf8s2uhjIVCPOqUMb48lQ2X/LExMLtj4GpudDk
+	 e6WHfvcf4u8sfCr1Vql9w/MuJzhYzBHXDRJD+d14pRoJrgSknunT1FetSn276Dm1H8
+	 u/5JZ2Vr6Eyqw==
+Received: from IcarusMOD.eternityproject.eu (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: kholk11)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 15E9817E1301;
+	Tue, 22 Jul 2025 12:13:23 +0200 (CEST)
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+To: sboyd@kernel.org
+Cc: jic23@kernel.org,
+	dlechner@baylibre.com,
+	nuno.sa@analog.com,
+	andy@kernel.org,
+	arnd@arndb.de,
+	gregkh@linuxfoundation.org,
+	srini@kernel.org,
+	vkoul@kernel.org,
+	kishon@kernel.org,
+	sre@kernel.org,
+	krzysztof.kozlowski@linaro.org,
+	u.kleine-koenig@baylibre.com,
+	angelogioacchino.delregno@collabora.com,
+	linux-arm-msm@vger.kernel.org,
+	linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-phy@lists.infradead.org,
+	linux-pm@vger.kernel.org,
+	kernel@collabora.com,
+	wenst@chromium.org,
+	casey.connolly@linaro.org
+Subject: [PATCH v2 0/7] SPMI: Implement sub-devices and migrate drivers
+Date: Tue, 22 Jul 2025 12:13:10 +0200
+Message-ID: <20250722101317.76729-1-angelogioacchino.delregno@collabora.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <bd5c1587-c830-40e6-90d5-be7fad215cef@baylibre.com>
 
-On Mon, Jul 21, 2025 at 06:06:39PM -0500, David Lechner wrote:
-> On 7/21/25 6:04 PM, David Lechner wrote:
-> > Replace using stack-allocated buffers with a DMA-safe buffer for use
-> > with spi_read(). This allows the driver to be safely used with
-> > DMA-enabled SPI controllers.
-> > 
-> > The buffer array is also converted to a struct with a union to make the
-> > usage of the memory in the buffer more clear and ensure proper alignment.
-> > 
-> > Fixes: 1f25ca11d84a ("iio: temperature: add support for Maxim thermocouple chips")
-> > Signed-off-by: David Lechner <dlechner@baylibre.com>
-> > ---
-> > Changes in v2:
-> > - This is a new patch since when looking at it again, I noticed a bug
-> >   with passing stack-allocated memory to spi_read(). So now the primary
-> >   purpose is a fix and converting the array to a struct comes free with
-> >   it.
-> > - Link to v1: https://lore.kernel.org/r/20250711-iio-use-more-iio_declare_buffer_with_ts-3-v1-1-f6dd3363fd85@baylibre.com
-> > ---
-> >  drivers/iio/temperature/maxim_thermocouple.c | 26 ++++++++++++++++----------
-> >  1 file changed, 16 insertions(+), 10 deletions(-)
-> > 
-> > diff --git a/drivers/iio/temperature/maxim_thermocouple.c b/drivers/iio/temperature/maxim_thermocouple.c
-> > index cae8e84821d7fd521d59432580d51def939fa4d1..fa648a6542a4e2f08adb556c776b68331ae69631 100644
-> > --- a/drivers/iio/temperature/maxim_thermocouple.c
-> > +++ b/drivers/iio/temperature/maxim_thermocouple.c
-> > @@ -11,6 +11,7 @@
-> >  #include <linux/module.h>
-> >  #include <linux/err.h>
-> >  #include <linux/spi/spi.h>
-> > +#include <linux/types.h>
-> >  #include <linux/iio/iio.h>
-> >  #include <linux/iio/sysfs.h>
-> >  #include <linux/iio/trigger.h>
-> > @@ -121,8 +122,15 @@ struct maxim_thermocouple_data {
-> >  	struct spi_device *spi;
-> >  	const struct maxim_thermocouple_chip *chip;
-> >  	char tc_type;
-> > -
-> > -	u8 buffer[16] __aligned(IIO_DMA_MINALIGN);
-> > +	/* Buffer for reading up to 2 hardware channels. */
-> > +	struct {
-> > +		union {
-> > +			__be16 raw16;
-> > +			__be32 raw32;
-> > +			__be16 raw[2];
-> > +		};
-> > +		aligned_s64 timestamp;
-> > +	} buffer __aligned(IIO_DMA_MINALIGN);
-> >  };
-> >  
-> >  static int maxim_thermocouple_read(struct maxim_thermocouple_data *data,
-> > @@ -130,18 +138,16 @@ static int maxim_thermocouple_read(struct maxim_thermocouple_data *data,
-> >  {
-> >  	unsigned int storage_bytes = data->chip->read_size;
-> >  	unsigned int shift = chan->scan_type.shift + (chan->address * 8);
-> > -	__be16 buf16;
-> > -	__be32 buf32;
-> >  	int ret;
-> >  
-> >  	switch (storage_bytes) {
-> >  	case 2:
-> > -		ret = spi_read(data->spi, (void *)&buf16, storage_bytes);
-> > -		*val = be16_to_cpu(buf16);
-> > +		ret = spi_read(data->spi, &data->buffer.raw16, storage_bytes);
-> > +		*val = be16_to_cpu(data->buffer.raw16);
-> >  		break;
-> >  	case 4:
-> > -		ret = spi_read(data->spi, (void *)&buf32, storage_bytes);
-> > -		*val = be32_to_cpu(buf32);
-> > +		ret = spi_read(data->spi, &data->buffer.raw32, storage_bytes);
-> > +		*val = be32_to_cpu(data->buffer.raw32);
-> >  		break;
-> >  	default:
-> >  		ret = -EINVAL;
-> > @@ -166,9 +172,9 @@ static irqreturn_t maxim_thermocouple_trigger_handler(int irq, void *private)
-> >  	struct maxim_thermocouple_data *data = iio_priv(indio_dev);
-> >  	int ret;
-> >  
-> > -	ret = spi_read(data->spi, data->buffer, data->chip->read_size);
-> > +	ret = spi_read(data->spi, &data->buffer.raw, data->chip->read_size);
-> 
-> Compile check didn't catch this. Need to drop the &.
-> data->buffer.raw is already an array.
+Changes in v2:
+ - Fixed missing `sparent` initialization in phy-qcom-eusb2-repeater
+ - Changed val_bits to 8 in all Qualcomm drivers to ensure
+   compatibility as suggested by Casey
+ - Added struct device pointer in all conversion commits as suggested
+   by Andy
+ - Exported newly introduced functions with a new "SPMI" namespace
+   and imported the same in all converted drivers as suggested by Andy
+ - Added missing error checking for dev_set_name() call in spmi.c
+   as suggested by Andy
+ - Added comma to last entry of regmap_config as suggested by Andy
 
-Neither did I :). I should have looked into this email __before__ (and
-not after) sending my tag. Anyways, consider the tag with the above
-fixed.
+While adding support for newer MediaTek platforms, featuring complex
+SPMI PMICs, I've seen that those SPMI-connected chips are internally
+divided in various IP blocks, reachable in specific contiguous address
+ranges... more or less like a MMIO, but over a slow SPMI bus instead.
 
-- Nuno Sá
+I recalled that Qualcomm had something similar... and upon checking a
+couple of devicetrees, yeah - indeed it's the same over there.
 
-> 
-> 
-> >  	if (!ret) {
-> > -		iio_push_to_buffers_with_ts(indio_dev, data->buffer,
-> > +		iio_push_to_buffers_with_ts(indio_dev, &data->buffer,
-> >  					    sizeof(data->buffer),
-> >  					    iio_get_time_ns(indio_dev));
-> >  	}
-> > 
-> > ---
-> > base-commit: cd2731444ee4e35db76f4fb587f12d327eec5446
-> > change-id: 20250711-iio-use-more-iio_declare_buffer_with_ts-3-2cc387a66bdc
-> > 
-> > Best regards,
-> 
+What I've seen then is a common pattern of reading the "reg" property
+from devicetree in a struct member and then either
+ A. Wrapping regmap_{read/write/etc}() calls in a function that adds
+    the register base with "base + ..register", like it's done with
+    writel()/readl() calls; or
+ B. Doing the same as A. but without wrapper functions.
+
+Even though that works just fine, in my opinion it's wrong.
+
+The regmap API is way more complex than MMIO-only readl()/writel()
+functions for multiple reasons (including supporting multiple busses
+like SPMI, of course) - but everyone seemed to forget that regmap
+can manage register base offsets transparently and automatically in
+its API functions by simply adding a `reg_base` to the regmap_config
+structure, which is used for initializing a `struct regmap`.
+
+So, here we go: this series implements the software concept of an SPMI
+Sub-Device (which, well, also reflects how Qualcomm and MediaTek's
+actual hardware is laid out anyway).
+
+               SPMI Controller
+                     |                ______
+                     |               /       Sub-Device 1
+                     V              /
+              SPMI Device (PMIC) ----------- Sub-Device 2
+                                    \
+                                     \______ Sub-Device 3
+
+As per this implementation, an SPMI Sub-Device can be allocated/created
+and added in any driver that implements a... well.. subdevice (!) with
+an SPMI "main" device as its parent: this allows to create and finally
+to correctly configure a regmap that is specific to the sub-device,
+operating on its specific address range and reading, and writing, to
+its registers with the regmap API taking care of adding the base address
+of a sub-device's registers as per regmap API design.
+
+All of the SPMI Sub-Devices are therefore added as children of the SPMI
+Device (usually a PMIC), as communication depends on the PMIC's SPMI bus
+to be available (and the PMIC to be up and running, of course).
+
+Summarizing the dependency chain (which is obvious to whoever knows what
+is going on with Qualcomm and/or MediaTek SPMI PMICs):
+    "SPMI Sub-Device x...N" are children "SPMI Device"
+    "SPMI Device" is a child of "SPMI Controller"
+
+(that was just another way to say the same thing as the graph above anyway).
+
+Along with the new SPMI Sub-Device registration functions, I have also
+performed a conversion of some Qualcomm SPMI drivers and only where the
+actual conversion was trivial.
+
+I haven't included any conversion of more complex Qualcomm SPMI drivers
+because I don't have the required bandwidth to do so (and besides, I think,
+but haven't exactly verified, that some of those require SoCs that I don't
+have for testing anyway).
+
+AngeloGioacchino Del Regno (7):
+  spmi: Implement spmi_subdevice_alloc_and_add() and devm variant
+  nvmem: qcom-spmi-sdam: Migrate to devm_spmi_subdevice_alloc_and_add()
+  power: reset: qcom-pon: Migrate to devm_spmi_subdevice_alloc_and_add()
+  phy: qualcomm: eusb2-repeater: Migrate to
+    devm_spmi_subdevice_alloc_and_add()
+  misc: qcom-coincell: Migrate to devm_spmi_subdevice_alloc_and_add()
+  iio: adc: qcom-spmi-iadc: Migrate to
+    devm_spmi_subdevice_alloc_and_add()
+  iio: adc: qcom-spmi-iadc: Remove regmap R/W wrapper functions
+
+ drivers/iio/adc/qcom-spmi-iadc.c              | 113 ++++++++----------
+ drivers/misc/qcom-coincell.c                  |  44 +++++--
+ drivers/nvmem/qcom-spmi-sdam.c                |  43 +++++--
+ .../phy/qualcomm/phy-qcom-eusb2-repeater.c    |  51 +++++---
+ drivers/power/reset/qcom-pon.c                |  37 ++++--
+ drivers/spmi/spmi-devres.c                    |  23 ++++
+ drivers/spmi/spmi.c                           |  83 +++++++++++++
+ include/linux/spmi.h                          |  16 +++
+ 8 files changed, 302 insertions(+), 108 deletions(-)
+
+-- 
+2.50.1
+
 

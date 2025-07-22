@@ -1,155 +1,286 @@
-Return-Path: <linux-iio+bounces-21872-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21873-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3047BB0D7F1
-	for <lists+linux-iio@lfdr.de>; Tue, 22 Jul 2025 13:12:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6285FB0DDF6
+	for <lists+linux-iio@lfdr.de>; Tue, 22 Jul 2025 16:21:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1EAD4164879
-	for <lists+linux-iio@lfdr.de>; Tue, 22 Jul 2025 11:12:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 32511AC3FA5
+	for <lists+linux-iio@lfdr.de>; Tue, 22 Jul 2025 14:14:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56CFE28C5B4;
-	Tue, 22 Jul 2025 11:12:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="kuDjK8lV"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 292802ECEA2;
+	Tue, 22 Jul 2025 14:09:41 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA51828981C
-	for <linux-iio@vger.kernel.org>; Tue, 22 Jul 2025 11:12:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B28C22ECE94;
+	Tue, 22 Jul 2025 14:09:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753182728; cv=none; b=qyj6V4IYsWSCxw7KbSS1oWO+ChAKDUyklEdanzPEuy8h5/eTw9djiGf0z6NZpsP/7Mc2LliSDC98Z48WHLtJ6uz+It/SkwB04IYLcNKHdjJqYF+iPAa0z2vdLpRCraZxydxLTDPDXUWnEPkfDo+pTaA0/sk6k8UtXaYuiVLEkMw=
+	t=1753193381; cv=none; b=bX4IX3MOQD7+feUjTAQJAhJ87D1/wn6S0tYxtuMFOjbp4/IewuWCOOKdQHWFqauWa11ly2VXHYuyeKLQ2l/Bat3WiT++mf31yESZ3Du+qn30jpFYiC8A7T5z8U06B/DdmyJ/w0kOxM3/AcUN7jqpUsaiAx+/pXsw8kZllbLFJlA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753182728; c=relaxed/simple;
-	bh=AdS/HEGQYIwXAPgGKh/dj7/4HJqP4YWiQMnvmpzNaGA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JBNujKx4roZcdruEShuXL86POozcDvskMB6pXWK1geSu7nJkHSTKdc1HTLR1yg08Qf5da6JVNSAtZNMS7V0B1vMcFcHSSoEecuu/Cn0P1s4CnpGjw1HVUWqUlQKjx2WqlP76vuW6TDagnNb9+vr6HcMhSiCDGqnM4GOXCpTIRHA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=kuDjK8lV; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56M3VXgE016585
-	for <linux-iio@vger.kernel.org>; Tue, 22 Jul 2025 11:12:05 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	Lp9oCAfC0uqs28+yLNSlWvHOEvpNJYHHvb1kBs8yoFw=; b=kuDjK8lVrMQ29mM2
-	NnvkBJtssHyZ940GjxnoRNMKZIaxrrUx8OXjNq0M/7BtxrF5bJvbBeYk6ggjByLo
-	PwzeE6UzPYbeH2HjAjXIWWUlV2lGbdSN2XiTlUTL9IgR/r9Zn7QKGAkBaD9K5lyN
-	RIKWxENkALQGIO+ipEuOmfCiHWx3pFg+M73KWyqTq/Rz26jIV2vpsG6lgUxrkti2
-	Lh3UHvoSbhksgHnFKlfDBWl+tzn/5QD0hSvpBlrkZIXA2MLcqD25MBwTkjLj/obA
-	SmTVTcuY9IMCN16lD/Tackv2Syvpf+s7q0WFRV6BqDaEkCr62XhpKPUTbzRoxzuf
-	HnrRrQ==
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com [209.85.222.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48048s195b-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-iio@vger.kernel.org>; Tue, 22 Jul 2025 11:12:05 +0000 (GMT)
-Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-7deca3ef277so11257185a.1
-        for <linux-iio@vger.kernel.org>; Tue, 22 Jul 2025 04:12:05 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753182724; x=1753787524;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Lp9oCAfC0uqs28+yLNSlWvHOEvpNJYHHvb1kBs8yoFw=;
-        b=Q6Lg32neZeCsQK/BwiZyxXqBkh5WWxpUVFu9Izh58W1+nJTG4G2H4UAbCA9reVpUxv
-         gyq/NnNN9urBPxtxU80m5dPk2icb4+km0sOVqCLtXx2T25QTtQJYHBdgEa0qjJa03lvJ
-         k4o4Dv65SmqFGBa+G993qNkrJOGKQxo1bvzrht04Thzw0TzZG46aUvnSt3Oh9FsYjHiJ
-         3hrP8WOoTTTr5wwCqNtGXf5aRbChxbFqXda9oJYeFIXddzosWWgbnnFzrMNkowSww5EX
-         fqq2Ad5A2GOFXkb1qSOsBhn/RzQF23mvqbEbxkxPrkRdhgx9FPRsKfgcFvFhtN1MSxXT
-         Dw8A==
-X-Forwarded-Encrypted: i=1; AJvYcCUNVwSb4E1KiHA4CPIJu1YLY9Ft22ZCf7bHkwj+x4aBCFCxY+noLhLummoq9jo4CbEmNxuo/8DRU2o=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxNlFRQRWhd9dvRazCZQT8hJbXBDxPASVk6gkPN15OxQ6HnuWo/
-	cj7hn//n3jS6roJpm7qflub2g+RM83e25nT8bVmwpv6DU5+CMuIp1uiDKDwqPU6eRBzyTi2eLLr
-	27FMC8swNLxNkbgFE81SXNb8W/BddiGVc31ECW9yIPeNl2TDYrJh5An8fR4Q70Wg=
-X-Gm-Gg: ASbGncuEOAqlS29G4keypqeddo7eH8Y0kiDdsDSHlYBCQkl/B246myU4Z00oKXahS0u
-	zgmbG4semTNFByRWXOUMeYs5yVME+JlBfZL3ybF+mq/cLDkFE7OWT/Ci2gN61E1t9TYr/fe/Xcs
-	fl4s/Ybot3bMBipGUNqXvCEdu3CewACV6I+wcREFX3mC9Yft94v8bpojoBQmAJblpMGkys8lGjp
-	1BNQQdF5wdUddW78DwnOt44JzDpMj6Q/WBUt3p1hXkcWnfJ9VEh4/4EJ7vxRq5x8IiAJtYMMGFI
-	FNwVuK9QmI7GOa5TJfyNtFiUgwhpnLKT0rqKCe9vlxiuaF8CDpAtbFLAxBxUVz0OBBSChQyjbZz
-	UTg3agasux57+ldg350L4
-X-Received: by 2002:a05:620a:4894:b0:7e3:2c3a:aac5 with SMTP id af79cd13be357-7e342b70ea4mr1315162385a.12.1753182724458;
-        Tue, 22 Jul 2025 04:12:04 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGsVndy6GfF1/rbOfATVToveGOqPm5CxByBr7sl2oaOgD0x8vxoWl1Wqyb/DMzWWuenDTrgHg==
-X-Received: by 2002:a05:620a:4894:b0:7e3:2c3a:aac5 with SMTP id af79cd13be357-7e342b70ea4mr1315159785a.12.1753182723749;
-        Tue, 22 Jul 2025 04:12:03 -0700 (PDT)
-Received: from [192.168.143.225] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-612c8f36f96sm6863713a12.23.2025.07.22.04.12.00
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 22 Jul 2025 04:12:02 -0700 (PDT)
-Message-ID: <41dda9bd-12c8-485a-a6d0-69d040d724cd@oss.qualcomm.com>
-Date: Tue, 22 Jul 2025 13:11:59 +0200
+	s=arc-20240116; t=1753193381; c=relaxed/simple;
+	bh=PQbJ9nekolxPAktW5mDMSSTldp2ptas8ZeWIr2Slddk=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=GNWwjMDhXhj+EtA4ugYjQMd9yvxyDIaiJ/da8b1CT1FovFRkZMtCOVmp9pRqiYkLh1MW83/iDHFLkQr7DfLlKwN97mQhmISU+oyYOLWNGUxpPmVtLBB84dFvaLGLcNByBebl0sLaNgrEg83hi6TZ5wunjHwaFSzTGam5qxzYWVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4bmfHZ0kkCz6H7XD;
+	Tue, 22 Jul 2025 22:08:10 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+	by mail.maildlp.com (Postfix) with ESMTPS id 17F4B140446;
+	Tue, 22 Jul 2025 22:09:34 +0800 (CST)
+Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Tue, 22 Jul
+ 2025 16:09:32 +0200
+Date: Tue, 22 Jul 2025 15:09:30 +0100
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+To: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+CC: <sboyd@kernel.org>, <jic23@kernel.org>, <dlechner@baylibre.com>,
+	<nuno.sa@analog.com>, <andy@kernel.org>, <arnd@arndb.de>,
+	<gregkh@linuxfoundation.org>, <srini@kernel.org>, <vkoul@kernel.org>,
+	<kishon@kernel.org>, <sre@kernel.org>, <krzysztof.kozlowski@linaro.org>,
+	<u.kleine-koenig@baylibre.com>, <linux-arm-msm@vger.kernel.org>,
+	<linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-phy@lists.infradead.org>, <linux-pm@vger.kernel.org>,
+	<kernel@collabora.com>, <wenst@chromium.org>, <casey.connolly@linaro.org>
+Subject: Re: [PATCH v2 1/7] spmi: Implement spmi_subdevice_alloc_and_add()
+ and devm variant
+Message-ID: <20250722150930.00000a2f@huawei.com>
+In-Reply-To: <20250722101317.76729-2-angelogioacchino.delregno@collabora.com>
+References: <20250722101317.76729-1-angelogioacchino.delregno@collabora.com>
+	<20250722101317.76729-2-angelogioacchino.delregno@collabora.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/7] nvmem: qcom-spmi-sdam: Migrate to
- devm_spmi_subdevice_alloc_and_add()
-To: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-        sboyd@kernel.org
-Cc: jic23@kernel.org, dlechner@baylibre.com, nuno.sa@analog.com,
-        andy@kernel.org, arnd@arndb.de, gregkh@linuxfoundation.org,
-        srini@kernel.org, vkoul@kernel.org, kishon@kernel.org, sre@kernel.org,
-        krzysztof.kozlowski@linaro.org, u.kleine-koenig@baylibre.com,
-        linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-phy@lists.infradead.org,
-        linux-pm@vger.kernel.org, kernel@collabora.com, wenst@chromium.org,
-        casey.connolly@linaro.org
-References: <20250722101317.76729-1-angelogioacchino.delregno@collabora.com>
- <20250722101317.76729-3-angelogioacchino.delregno@collabora.com>
-Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <20250722101317.76729-3-angelogioacchino.delregno@collabora.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="US-ASCII"
 Content-Transfer-Encoding: 7bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzIyMDA5MSBTYWx0ZWRfX4Tn5ErJ1KqZU
- RbWHhfwgKyNn7uVr7mlu4qZ2V+JJt5iS8ce47h4bdwPoGW0Xb7CeIkQcnsjXcIxiR8FWd33es58
- AZdoeb250637D4RhSEtY2n9N8M3hvk0bTacpHp3zF3I3ndPd/SxUxXmiYHV5I+RsYOP31O6qIKL
- 7kFl67AhnCrsRYan5WzuV0e2B5Cr0brqbVtGO/sKcjDHNulLI+6t0iufegPQ8pSFD0fsQLVbXak
- SfamKtfo6M5ErXYhP/n+208LX/XIP80Jn2zf4r5Y4xolR+xqECudVpot9KpCq44casA72bNMRgn
- y7yNWdA3LibLItwJQBALChA9h6ZeXUBmihzoViCWSX+Uh0sItFr7RbnH1HC+8P0fBX5GIQ5nV97
- yTerrFWCVlpLGvlyTmZZws7cn6HEcsHKgV9mlD4l+Co528MTuFJvyaL2oki6e37iMy4JtZsb
-X-Proofpoint-ORIG-GUID: HE_bqsOxTt26WpZiNNOy10_Xbew9IifR
-X-Proofpoint-GUID: HE_bqsOxTt26WpZiNNOy10_Xbew9IifR
-X-Authority-Analysis: v=2.4 cv=OPUn3TaB c=1 sm=1 tr=0 ts=687f7205 cx=c_pps
- a=hnmNkyzTK/kJ09Xio7VxxA==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
- a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=QX4gbG5DAAAA:8 a=EUspDBNiAAAA:8
- a=Y_nGuXgBD960inqFf4MA:9 a=QEXdDO2ut3YA:10 a=PEH46H7Ffwr30OY-TuGO:22
- a=AbAUZ8qAyYyZVLSsDulk:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-07-22_02,2025-07-21_02,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 clxscore=1015 mlxlogscore=754 lowpriorityscore=0 suspectscore=0
- spamscore=0 mlxscore=0 bulkscore=0 priorityscore=1501 phishscore=0
- malwarescore=0 impostorscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2507220091
+X-ClientProxiedBy: lhrpeml500011.china.huawei.com (7.191.174.215) To
+ frapeml500008.china.huawei.com (7.182.85.71)
 
-On 7/22/25 12:13 PM, AngeloGioacchino Del Regno wrote:
-> Some Qualcomm PMICs integrate a SDAM device, internally located in
-> a specific address range reachable through SPMI communication.
+On Tue, 22 Jul 2025 12:13:11 +0200
+AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com> wrote:
+
+> Some devices connected over the SPMI bus may be big, in the sense
+> that those may be a complex of devices managed by a single chip
+> over the SPMI bus, reachable through a single SID.
 > 
-> Instead of using the parent SPMI device (the main PMIC) as a kind
-> of syscon in this driver, register a new SPMI sub-device for SDAM
-> and initialize its own regmap with this sub-device's specific base
-> address, retrieved from the devicetree.
+> Add new functions aimed at managing sub-devices of a SPMI device
+> spmi_subdevice_alloc_and_add() and a spmi_subdevice_put_and_remove()
+> for adding a new subdevice and removing it respectively, and also
+> add their devm_* variants.
 > 
-> This allows to stop manually adding the register base address to
-> every R/W call in this driver, as this can be, and is now, handled
-> by the regmap API instead.
+> The need for such functions comes from the existance of	those
+> complex Power Management ICs (PMICs), which feature one or many
+> sub-devices, in some cases with these being even addressable on
+> the chip in form of SPMI register ranges.
+> 
+> Examples of those devices can be found in both Qualcomm platforms
+> with their PMICs having PON, RTC, SDAM, GPIO controller, and other
+> sub-devices, and in newer MediaTek platforms showing similar HW
+> features and a similar layout with those also having many subdevs.
+> 
+> Also, instead of generally exporting symbols, export them with a
+> new "SPMI" namespace: all users will have to import this namespace
+> to make use of the newly introduced exports.
 > 
 > Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 > ---
+>  drivers/spmi/spmi-devres.c | 23 +++++++++++
+>  drivers/spmi/spmi.c        | 83 ++++++++++++++++++++++++++++++++++++++
+>  include/linux/spmi.h       | 16 ++++++++
+>  3 files changed, 122 insertions(+)
+> 
+> diff --git a/drivers/spmi/spmi-devres.c b/drivers/spmi/spmi-devres.c
+> index 62c4b3f24d06..7e00e38be2ff 100644
+> --- a/drivers/spmi/spmi-devres.c
+> +++ b/drivers/spmi/spmi-devres.c
+> @@ -60,5 +60,28 @@ int devm_spmi_controller_add(struct device *parent, struct spmi_controller *ctrl
+>  }
+>  EXPORT_SYMBOL_GPL(devm_spmi_controller_add);
+>  
+> +static void devm_spmi_subdevice_remove(void *res)
+> +{
+> +	spmi_subdevice_remove((struct spmi_subdevice *)res);
 
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Why the cast?  Implicit casts are fine for void * to any other pointer type
+so
+	spmi_subdevice_remove(res);
+should be fine.
 
-Konrad
+
+> +}
+
+>  MODULE_LICENSE("GPL");
+>  MODULE_DESCRIPTION("SPMI devres helpers");
+> diff --git a/drivers/spmi/spmi.c b/drivers/spmi/spmi.c
+> index 3cf8d9bd4566..62bb782b2bbc 100644
+> --- a/drivers/spmi/spmi.c
+> +++ b/drivers/spmi/spmi.c
+> @@ -19,6 +19,7 @@
+>  
+>  static bool is_registered;
+>  static DEFINE_IDA(ctrl_ida);
+> +static DEFINE_IDA(spmi_subdevice_ida);
+>  
+>  static void spmi_dev_release(struct device *dev)
+>  {
+> @@ -31,6 +32,18 @@ static const struct device_type spmi_dev_type = {
+>  	.release	= spmi_dev_release,
+>  };
+>  
+> +static void spmi_subdev_release(struct device *dev)
+> +{
+> +	struct spmi_device *sdev = to_spmi_device(dev);
+> +	struct spmi_subdevice *sub_sdev = container_of(sdev, struct spmi_subdevice, sdev);
+> +
+> +	kfree(sub_sdev);
+> +}
+> +
+> +static const struct device_type spmi_subdev_type = {
+> +	.release	= spmi_subdev_release,
+> +};
+> +
+>  static void spmi_ctrl_release(struct device *dev)
+>  {
+>  	struct spmi_controller *ctrl = to_spmi_controller(dev);
+> @@ -90,6 +103,19 @@ void spmi_device_remove(struct spmi_device *sdev)
+>  }
+>  EXPORT_SYMBOL_GPL(spmi_device_remove);
+>  
+> +/**
+> + * spmi_subdevice_remove() - Remove an SPMI subdevice
+> + * @sub_sdev:	spmi_device to be removed
+> + */
+> +void spmi_subdevice_remove(struct spmi_subdevice *sub_sdev)
+> +{
+> +	struct spmi_device *sdev = &sub_sdev->sdev;
+> +
+> +	device_unregister(&sdev->dev);
+> +	ida_free(&spmi_subdevice_ida, sub_sdev->devid);
+
+Why not make the ida free part of the release? If not
+the device_unregister could (I think) result in a reference
+count drop and freeing of sub_sdev before you dereference it here.
+
+
+> +}
+> +EXPORT_SYMBOL_NS_GPL(spmi_subdevice_remove, "SPMI");
+> +
+>  static inline int
+>  spmi_cmd(struct spmi_controller *ctrl, u8 opcode, u8 sid)
+>  {
+> @@ -431,6 +457,63 @@ struct spmi_device *spmi_device_alloc(struct spmi_controller *ctrl)
+>  }
+>  EXPORT_SYMBOL_GPL(spmi_device_alloc);
+>  
+> +/**
+> + * spmi_subdevice_alloc_and_add(): Allocate and add a new SPMI sub-device
+> + * @sparent:	SPMI parent device with previously registered SPMI controller
+> + *
+> + * Returns:
+> + * Pointer to newly allocated SPMI sub-device for success or negative ERR_PTR.
+> + */
+> +struct spmi_subdevice *spmi_subdevice_alloc_and_add(struct spmi_device *sparent)
+> +{
+> +	struct spmi_subdevice *sub_sdev;
+> +	struct spmi_device *sdev;
+> +	int ret;
+> +
+> +	if (!sparent)
+> +		return ERR_PTR(-EINVAL);
+
+Is this protecting against a real possibility? Feels like something went
+very wrong if you are allocating a subdevice of 'nothing'.
+If it's just defensive programming I'd drop it.
+
+> +
+> +	sub_sdev = kzalloc(sizeof(*sub_sdev), GFP_KERNEL);
+> +	if (!sub_sdev)
+> +		return ERR_PTR(-ENOMEM);
+> +
+> +	ret = ida_alloc(&spmi_subdevice_ida, GFP_KERNEL);
+
+> +	if (ret < 0)
+> +		goto err_ida_alloc;
+> +
+> +	sdev = &sub_sdev->sdev;
+> +	sdev->ctrl = sparent->ctrl;
+> +	device_initialize(&sdev->dev);
+
+Read the device_initialize() documentation for what you need to do
+if an error occurs after this point. Specifically the last 'NOTE'.
+
+
+> +	sdev->dev.parent = &sparent->dev;
+> +	sdev->dev.bus = &spmi_bus_type;
+> +	sdev->dev.type = &spmi_subdev_type;
+> +
+> +	sub_sdev->devid = ret;
+> +	sdev->usid = sparent->usid;
+> +
+> +	ret = dev_set_name(&sdev->dev, "%d-%02x.%d.auto",
+> +			   sdev->ctrl->nr, sdev->usid, sub_sdev->devid);
+> +	if (ret)
+> +		goto err_set_name;
+> +
+> +	ret = device_add(&sdev->dev);
+> +	if (ret) {
+> +		dev_err(&sdev->dev, "Can't add %s, status %d\n",
+> +			dev_name(&sdev->dev), ret);
+> +		put_device(&sdev->dev);
+> +		return ERR_PTR(ret);
+> +	}
+> +
+> +	return sub_sdev;
+> +
+> +err_set_name:
+> +	ida_free(&ctrl_ida, sub_sdev->devid);
+> +err_ida_alloc:
+> +	kfree(sub_sdev);
+> +	return ERR_PTR(ret);
+> +}
+> +EXPORT_SYMBOL_NS_GPL(spmi_subdevice_alloc_and_add, "SPMI");
+> +
+>  /**
+>   * spmi_controller_alloc() - Allocate a new SPMI controller
+>   * @parent:	parent device
+> diff --git a/include/linux/spmi.h b/include/linux/spmi.h
+> index 28e8c8bd3944..7cea0a5b034b 100644
+> --- a/include/linux/spmi.h
+> +++ b/include/linux/spmi.h
+> @@ -69,6 +69,22 @@ int spmi_device_add(struct spmi_device *sdev);
+>  
+>  void spmi_device_remove(struct spmi_device *sdev);
+>  
+> +/**
+> + * struct spmi_subdevice - Basic representation of an SPMI sub-device
+> + * @sdev:	Sub-device representation of an SPMI device
+> + * @devid:	Platform Device ID of an SPMI sub-device
+> + */
+> +struct spmi_subdevice {
+> +	struct spmi_device	sdev;
+
+Having something called a subdevice containing an instance of a device
+does seem a little odd.  Maybe the spmi_device naming is inappropriate after
+this patch?
+
+> +	unsigned int		devid;
+> +};
+> +
+> +struct spmi_subdevice *spmi_subdevice_alloc_and_add(struct spmi_device *sparent);
+> +void spmi_subdevice_remove(struct spmi_subdevice *sdev);
+> +
+> +struct spmi_subdevice *devm_spmi_subdevice_alloc_and_add(struct device *dev,
+> +							 struct spmi_device *sparent);
 

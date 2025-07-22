@@ -1,120 +1,168 @@
-Return-Path: <linux-iio+bounces-21882-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21883-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEB72B0E44E
-	for <lists+linux-iio@lfdr.de>; Tue, 22 Jul 2025 21:38:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4344EB0E520
+	for <lists+linux-iio@lfdr.de>; Tue, 22 Jul 2025 22:55:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB4F41C82658
-	for <lists+linux-iio@lfdr.de>; Tue, 22 Jul 2025 19:39:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A1CDB547CD1
+	for <lists+linux-iio@lfdr.de>; Tue, 22 Jul 2025 20:54:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFF04284678;
-	Tue, 22 Jul 2025 19:38:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A28C7285C8C;
+	Tue, 22 Jul 2025 20:54:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="ENtn9vxk"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="RB/3EyAj"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+Received: from mail-oa1-f44.google.com (mail-oa1-f44.google.com [209.85.160.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2208F156677;
-	Tue, 22 Jul 2025 19:38:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C629285C8F
+	for <linux-iio@vger.kernel.org>; Tue, 22 Jul 2025 20:54:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753213124; cv=none; b=OfuaPreOMPeo2lBRLHhmbQDCdz8S4/y2EluMVZmNAXC9/eRKmycOx50GpBniiXpe3tA6ra7R+QjNPYuAm18B6SNqlZV8S+0Bj0uhegYw7K/LHfzQg6UlqhMjBLwD2rpS0nmLa/QDIspOfGuKdLJE6Hu7D17uE+gsx/ltBwfGxGo=
+	t=1753217673; cv=none; b=rn6h2YC5zNLGd81Pnr3eCDIOjd7wernhfSa3AwqYjoJs0qZmTQGHKedjRv7DP6enJLjfLPud1pnIxEtW4yL7YzyUYXFQrtBbc1/ishfUETEXLjk7lL0OmEipiDvjZlu9TlEpdR2zrv6gNU7i2nXLHCl929jp9QlkLtfUba1SD+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753213124; c=relaxed/simple;
-	bh=jwyAwao4oPJjdf7FpSRPigfPtomo1g/hUFFqJP0uxSg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lxeykqw2su8VDeZ1VOhWUToTA14ue5U4Qr6J47Ep9iXXFzvc9s/i2OMyBO9tl1YBh1IxwG0HuauJXCTB68fomPDwV0nSL6Ke6zXWAlg3yO9kOnxFJtwsmWlA4e1Tm4LoTpxctN2QlqaBj2e98mScQAtQusc4VxWYfRnpG6LLv8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=ENtn9vxk; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-237311f5a54so47651465ad.2;
-        Tue, 22 Jul 2025 12:38:41 -0700 (PDT)
+	s=arc-20240116; t=1753217673; c=relaxed/simple;
+	bh=NnWRWqBvReMHmWJs47rzjgvayXdAyRE7j16CS2mN938=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=onMm+grs3fFpYa2DL2UKniqOsAqFWJwh6Ljhe0/b0sx4KSvPCPIQuEpNLxxBdJR4eAkopblMsaHHu2LTNploPRtlwLFesHjIblNZS7uco0jUvMGfK6DgPR6rqWWtgV+okbLmfEZDIqAQWqSRU7Xorq9zjGuD5TwyY3WKBEcMNHI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=RB/3EyAj; arc=none smtp.client-ip=209.85.160.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oa1-f44.google.com with SMTP id 586e51a60fabf-2e95f0b6cb7so2198693fac.3
+        for <linux-iio@vger.kernel.org>; Tue, 22 Jul 2025 13:54:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20230601; t=1753213121; x=1753817921; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jwyAwao4oPJjdf7FpSRPigfPtomo1g/hUFFqJP0uxSg=;
-        b=ENtn9vxkNbAHTvF8nf6gvg4A9xEj6fv+YiZOODFR9eEd+uctWkcbJqSNhiPO6ZngRc
-         ZE1zHORCcjRND+pwU2VZguvVVhj8WizxXzNorjGZ+Aqrfa4KlMZvLm2BFv01GK2QJND2
-         nVGWxRnShKMH/NWesnbsPcer5DX/v5GwUDqUYd5IJWV/KiYH4jcv7lBIqkf1kcZziKuN
-         xAVCqx0nMYddGWqZCNMPOic388Sh7fXeipLx0yeIjmgLI/yf1Nin3Y6pU78rZQ2qZVh0
-         C85VuN4iYcwj4wzdihSuI2++xG1kVTmIvXyHO4ptxR95/SO/0lVSQRM4GBoVjQ4pFxMi
-         P/QA==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1753217670; x=1753822470; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=jtYLUVKT3EJ2aCiWti9B6lnDSXEv36NupqDq3ze/PBs=;
+        b=RB/3EyAj6QDKMHA53diEIas6ipDkeTTwRcfKIE/gKW+u+via1zhIVSYNI/ZBPVmExC
+         JqfKhVCItLTpYhhf5Vsc+rMyC8kIwKYAiyMzwPdVgQDCS3+wY4/WO9m7Gb1ArW7Hh2ZV
+         7714Mbw/e3DqW5QXczX7Af4SLhuxLajlLp6IOzliGpKIvMskDoRIdk+l7nODYNBRc39n
+         cB3MAhueFBJOjSLyhRiIwhI1RWpl1XFa4UAnEW4flPxvvQyuC3/IT9YhnzgxDlbEe1Cr
+         bEvfbbGaYKrcHwHt4QRUJPd4r2+D+QvOrCdhWVDR8xDxiOWBsvSckVpsNXIDJnaRjpZT
+         DgFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753213121; x=1753817921;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=jwyAwao4oPJjdf7FpSRPigfPtomo1g/hUFFqJP0uxSg=;
-        b=la0EqY7UpYRC5ABE7amlHIVHxd0HJOPQL3u3VdOLy+E52PrlA2LNjB4ec9Gy0l5f/u
-         QDzrRhXFQyriIEgBKZgUd0SubKFjyTcQnFZD8yLthgMbqIZcPcW3aYDeWLPukojGAiJe
-         XL+1eivNJn4zjMG+cuTO5KULzcGKYnv0Kl1LhuzTVzz2h3/F3sYiragFwqr+ogc6LlIP
-         vQFS1Q8h3YZyDVxI4sA38lguaLFm65ms70ZmB+esyWEMOHD3agePZQnhul6Mt1EY3mg8
-         HmEfN28sroh75wn9YB4phoCk5z9W1TAJtPAuhJLLwaP+84LGJMW0t76re1VQgjiH56P3
-         u1kw==
-X-Forwarded-Encrypted: i=1; AJvYcCVJG2vs/ZAG3gFDC8FKIDyl+vP2SFpxKc0eFGB9gqx1XIh217o86/NB+wql5oBbboT+frpqzvHiDNVC@vger.kernel.org, AJvYcCWwV8Blj1V/fDukFtIVMG+LLwzsYut9SQG39PNKDKYXWgdj7JkITIVjdVw1eSbQYhDY8rLT2fyQ@vger.kernel.org, AJvYcCXa8BcBJZLs9YUmk6vZPB7bYjBUcBpzA9SosNCEQgtRlwpzYtauhTbn0Yy4osIFfm3tCicpmRE3ylVJ@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw9qMVIqXxXmSKtud9ytkZVMOgQzTizcP43jIG9K+JfcJbz81r6
-	lb5COPSEyU1Pm5d9FjFzYfftb9tA1ZL8XNdPiwoexfYvsBwk2yKwzWxATE42YzpGJ2omuDc1bCM
-	qJgUcnSv6JJmOTfBcLbXRY75q1mcsT5E=
-X-Gm-Gg: ASbGncsrBlaxx/uKj90e0L6Dh5PHVCVafxeLeFYryV04WCMAub8OrPLCvs/ZQlfOHKj
-	urkXwJ6kwHKj2+6jzUTjLlBy3eSfTEUzE7e9G/3lO78vFNhvNoL20TubquOsMaDq4QqPD9EwY2d
-	Y5LOLOCtiHVW5Huz1Ht4wASRiqaCU1yFjcEDR7BXbu3ttIQnsQVsx01k711izU3YIwVaXyLf6Yt
-	lPU8cPUnlwZQ+ItYb8hew==
-X-Google-Smtp-Source: AGHT+IGsEsP2+Lauu71M+oW4n4HRG//Lxp5u7eb8uK45PKFMboS8RYf4aGCjOdXnbHCp/CGkWd7DOfhjjO/CU0YvNwA=
-X-Received: by 2002:a17:902:cec4:b0:23d:fa76:5c3b with SMTP id
- d9443c01a7336-23f9814e9a7mr3452365ad.22.1753213121296; Tue, 22 Jul 2025
- 12:38:41 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1753217670; x=1753822470;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=jtYLUVKT3EJ2aCiWti9B6lnDSXEv36NupqDq3ze/PBs=;
+        b=a6Zb3Yjrpa2tUBBoiAh73PS596N1PUmRq7xi0lsCyE43ALlpbDS6b4wICkJvZkLcaF
+         k/9qqKcFYTG9fxYu59/dCI/E45TeOTxxOE9f9ha/hNJ2W5U8HvqmcgPJ4sGqhctZxDfd
+         5ldh8cB5LKTTuNmIYOBuPShGrl6vgDm2G45hXL1ttpC52PUSpCfxvWuaXXT9BLUIkEEJ
+         AlJ+QJuWp/rhKWlOmdQmsEDMCpCYFVAz91KQ9zk+vkCshBzyjaNQabVWV7+dPLjrgxfW
+         2wPXubt9eRIvYUsalwE7M+r8m1i1PH0jdzGAM9Ub1F6vF9XRriP9cTJtpOco+Kzp8/Us
+         pTOA==
+X-Gm-Message-State: AOJu0YyEqlEJ4kN/Ws7lSuJ4MIwTnBc0S1hKKJ3pP7MTDq6UxMA3TYwC
+	WNTG11u4DwqfHgP4BAOz6ZxI9tzycipkTyQnt8ByHCdSlAKZQSnjEIGXPCPhK1nicBg=
+X-Gm-Gg: ASbGncsctlo9D23+BUQo7Fi9sDZpIPBj9Uyz6pDx80zUZ1n33wlCQZJ7w/3YmFk/CIA
+	0d6H3X51dX3XmSZlZfZN0PvZuLAP/Ui8nd+oQsFqCpiM2RSb/T7GuB0SpgsvKKFLFme8tKdmlCo
+	7LhTMBhAm76X72vqXyHyrX2s+BzRU3QnT3KePb8tfcdfMK249vkNcv6RxpBS1Vvd3aNlT6NzAd3
+	pLt0Y4o2ArbXXQvJzEZOtZy21xzA0J9eA41ceExluBB3Ork1hZKe3ww7l/pgPgTd48orEZQ3qVa
+	yC2hi5oh0pga4+QlXcmVkXc3hZn5or2h/4YgUQ1Ljd+uF0fj8vf8iuEWbZ2Ktapc1cyDJKiB+NQ
+	NgyoPmFTgbkjaAWZV1vluNnqBKX+PN2m5VeeXOHE=
+X-Google-Smtp-Source: AGHT+IFNPX9fsChpVJmdX+dZS4oONm0mg+uzGXO2ed5W1O5w6MGHprAcem1dwesjGge9QOuX0kCmQQ==
+X-Received: by 2002:a05:6871:79b:b0:306:bd25:6d34 with SMTP id 586e51a60fabf-306c727a354mr328144fac.29.1753217670159;
+        Tue, 22 Jul 2025 13:54:30 -0700 (PDT)
+Received: from [127.0.1.1] ([2600:8803:e7e4:1d00:2a79:4b55:6a01:85d7])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-30101ccfbdbsm4690173fac.10.2025.07.22.13.54.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 22 Jul 2025 13:54:29 -0700 (PDT)
+From: David Lechner <dlechner@baylibre.com>
+Date: Tue, 22 Jul 2025 15:54:21 -0500
+Subject: [PATCH v2] iio: proximity: isl29501: fix buffered read on
+ big-endian systems
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250722170513.5854-1-sanjaysuthar661996@gmail.com>
-In-Reply-To: <20250722170513.5854-1-sanjaysuthar661996@gmail.com>
-From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Date: Tue, 22 Jul 2025 21:38:30 +0200
-X-Gm-Features: Ac12FXwCtPAOsiQDY47hJ2_tvejllz9nr8xSmIyDW7TLGWTLqhLQAI8E9IianHU
-Message-ID: <CAFBinCCmsw=XGPtrk1XbphOu=OwhxmAiZ+2h4x_M-_f64Vo-7A@mail.gmail.com>
-Subject: Re: [PATCH v3] dt-bindings: cleanup: fix duplicated 'is is' in YAML docs
-To: Sanjay Suthar <sanjaysuthar661996@gmail.com>
-Cc: linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-iio@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-amlogic@lists.infradead.org, 
-	ribalda@kernel.org, jic23@kernel.org, dlechner@baylibre.com, 
-	nuno.sa@analog.com, andy@kernel.org, robh@kernel.org, krzk+dt@kernel.org, 
-	conor+dt@kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net, 
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
-	neil.armstrong@linaro.org, khilman@baylibre.com, jbrunet@baylibre.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250722-iio-use-more-iio_declare_buffer_with_ts-7-v2-1-d3ebeb001ed3@baylibre.com>
+X-B4-Tracking: v=1; b=H4sIAHz6f2gC/53NQQ6CMBCF4auQrh3TFgnElfcwpCl0KpMANVNAC
+ eHuFo7g8nuL928iIhNGcc82wbhQpDAm6Esm2s6OLwRyyUJLXchSKSAKMEeEITAeMA7b3jKaZvY
+ e2Xxo6swUoYSqks555XJZSpH+3oyevmfrWSd3FKfA65le1LH+U1kUKLC510VuW403+2js2lPDe
+ G3DIOp9338lQAdG5QAAAA==
+X-Change-ID: 20250711-iio-use-more-iio_declare_buffer_with_ts-7-880ddf1d3070
+To: Jonathan Cameron <jic23@kernel.org>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Andy Shevchenko <andy@kernel.org>, Mathieu Othacehe <othacehe@gnu.org>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
+ David Lechner <dlechner@baylibre.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2369; i=dlechner@baylibre.com;
+ h=from:subject:message-id; bh=NnWRWqBvReMHmWJs47rzjgvayXdAyRE7j16CS2mN938=;
+ b=owGbwMvMwMV46IwC43/G/gOMp9WSGDLqf9V5H+uIZ+VkYJHLyjyo9HJn4iTjgHNiJ9PLbqSdr
+ 5tcwB3YyWjMwsDIxSArpsjyRuLmvCS+5mtzbmTMgBnEygQyhYGLUwAmUhXN/odzrmVJTuQL5/z1
+ mVtWntnJ7t78gvlh0TQTzXd/FttJ14THpfAWqi267Muw6N6ywG3Wr91YriSsSQjxsnxx0GqvTfp
+ RfwbhhVMvblYRi3uscyH0UtG3pTfFTHYw+7JHTlqefNhVOeVoq7NjXI+rQEnY9uqo6ftzgjaf7e
+ de9USk+PXTYzy5c+YeZi5+cac7LKc39r6Wqpu3iOY5y9We/pdY5e1CvYq7t3Uz/XPfNGW1ebCSl
+ JSp5vb5XNuczzYmMMU5yt3W//12d+vL4x6/zc9Omx/iW5a496pntFtdy4rGzp7fT0pZm4oPqTz1
+ Nvudy+Rjov7YnoVjNutHkS9yrFpT3qgn3t9gGf7QfrUGAA==
+X-Developer-Key: i=dlechner@baylibre.com; a=openpgp;
+ fpr=8A73D82A6A1F509907F373881F8AF88C82F77C03
 
-On Tue, Jul 22, 2025 at 7:06=E2=80=AFPM Sanjay Suthar
-<sanjaysuthar661996@gmail.com> wrote:
->
-> Fix minor grammatical issues by removing duplicated "is" in two devicetre=
-e
-> binding documents:
->
-> - net/amlogic,meson-dwmac.yaml
-> - iio/dac/ti,dac7612.yaml
->
-> Signed-off-by: Sanjay Suthar <sanjaysuthar661996@gmail.com>
-Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Fix passing a u32 value as a u16 buffer scan item. This works on little-
+endian systems, but not on big-endian systems.
 
-Thank you for spotting and fixing this!
+A new local variable is introduced for getting the register value and
+the array is changed to a struct to make the data layout more explicit
+rather than just changing the type and having to recalculate the proper
+length needed for the timestamp.
 
-To my knowledge nobody else is currently working on amlogic,meson-dwmac cha=
-nges.
-Meaning: with an ACK from the netdev or iio maintainers this patch can
-go through any tree (iio, netdev, devicetree).
+Fixes: 1c28799257bc ("iio: light: isl29501: Add support for the ISL29501 ToF sensor.")
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+---
+Changes in v2:
+- Use u16 to match channel scan_type and introduce new local u32 variable
+  for getting the register value.
+- Reword subject and commit message since we now consider this a bug fix.
+- Fix not zero-initializing the new struct.
+- Link to v1: https://lore.kernel.org/r/20250711-iio-use-more-iio_declare_buffer_with_ts-7-v1-1-a3f253ac2e4a@baylibre.com
+---
+ drivers/iio/proximity/isl29501.c | 16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
 
+diff --git a/drivers/iio/proximity/isl29501.c b/drivers/iio/proximity/isl29501.c
+index d1510fe2405088adc0998e28aa9f36e0186fafae..f69db6f2f380313b8444ee21399ee3a9faed6f04 100644
+--- a/drivers/iio/proximity/isl29501.c
++++ b/drivers/iio/proximity/isl29501.c
+@@ -938,12 +938,18 @@ static irqreturn_t isl29501_trigger_handler(int irq, void *p)
+ 	struct iio_dev *indio_dev = pf->indio_dev;
+ 	struct isl29501_private *isl29501 = iio_priv(indio_dev);
+ 	const unsigned long *active_mask = indio_dev->active_scan_mask;
+-	u32 buffer[4] __aligned(8) = {}; /* 1x16-bit + naturally aligned ts */
+-
+-	if (test_bit(ISL29501_DISTANCE_SCAN_INDEX, active_mask))
+-		isl29501_register_read(isl29501, REG_DISTANCE, buffer);
++	u32 value;
++	struct {
++		u16 data;
++		aligned_s64 ts;
++	} scan = { };
++
++	if (test_bit(ISL29501_DISTANCE_SCAN_INDEX, active_mask)) {
++		isl29501_register_read(isl29501, REG_DISTANCE, &value);
++		scan.data = value;
++	}
+ 
+-	iio_push_to_buffers_with_timestamp(indio_dev, buffer, pf->timestamp);
++	iio_push_to_buffers_with_timestamp(indio_dev, &scan, pf->timestamp);
+ 	iio_trigger_notify_done(indio_dev->trig);
+ 
+ 	return IRQ_HANDLED;
+
+---
+base-commit: cd2731444ee4e35db76f4fb587f12d327eec5446
+change-id: 20250711-iio-use-more-iio_declare_buffer_with_ts-7-880ddf1d3070
 
 Best regards,
-Martin
+-- 
+David Lechner <dlechner@baylibre.com>
+
 

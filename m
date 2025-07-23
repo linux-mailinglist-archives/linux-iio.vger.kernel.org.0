@@ -1,81 +1,82 @@
-Return-Path: <linux-iio+bounces-21908-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21909-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56D48B0F56F
-	for <lists+linux-iio@lfdr.de>; Wed, 23 Jul 2025 16:36:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD2E4B0F57D
+	for <lists+linux-iio@lfdr.de>; Wed, 23 Jul 2025 16:38:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A8287AC5032
-	for <lists+linux-iio@lfdr.de>; Wed, 23 Jul 2025 14:34:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E7A38176B86
+	for <lists+linux-iio@lfdr.de>; Wed, 23 Jul 2025 14:38:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 152B52F49FC;
-	Wed, 23 Jul 2025 14:34:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EEE72EF9BD;
+	Wed, 23 Jul 2025 14:37:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="efwwPUby"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NwbgEh0K"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5376D23BD1F;
-	Wed, 23 Jul 2025 14:34:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D7A118E3F;
+	Wed, 23 Jul 2025 14:37:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753281293; cv=none; b=R8IHjK8OBaypyQs3U2PH3xJ95OLyww9x6C2ywoA7za+wTgOFIZCIls0w7asX1CmB6oCccZV4XyB8tEQgS/PzL3UVNnRQw0Zw7o2X1ja7dxQ/LWPlsBIz/DDYD04m3lRNnfCIWIijUW/pXsxBp7mS85eYxcvp6MmmEQMkEjvRflQ=
+	t=1753281479; cv=none; b=dTg779sVKZhy44Fh0/+IP+O4Hrq6VmAzKxNARw/2ZnY88MAxdF1jx/7pc4DoNkcISuCKcsFQ5h2VF89B1Oyv+5C4beqZRXhWfnUJEmG3Hq4SWTHcn/BOI+iwNu7HWnOOllKuVNaL+bYBdiAXXXx6R50rbCvjj1n/ztSAYAsZ/PI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753281293; c=relaxed/simple;
-	bh=a7Wl6Hu1yG6irRzac4k+rBoiFOJEo/rF0YecZangH3w=;
+	s=arc-20240116; t=1753281479; c=relaxed/simple;
+	bh=n2Ip6P1bDLbugzsbfTChU2rFmhWngseqqiPKszd5RG8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pEM/GZvPPcNGZn+ZyIanrq9VdqS58vVotEBdvVc3De227E2J09KD/eO6Unnr9psfuB3/ovYSenT+VC9CIg4ljH3RarkKMMwe5TZ0WjUlkunwflDdXgLG2LmXYZpDJwtSpNDRwZFajNbFkCiE7tUcQ24R57+NR5dkP2Ng+asn17U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=efwwPUby; arc=none smtp.client-ip=192.198.163.13
+	 Content-Type:Content-Disposition:In-Reply-To; b=SmXRcQhNlL2v1iZZZCj2Lwy5SItKADvvZqmgfz5CVM/G8a3gN0JdGEEjID8bcmuK8zMA7Wi3TzidPX8ugA4yHWd/AB5+mIugLLMLutnNDN3qjxLxVDI0+ELaNgQrds6Y4qfgOMp+oGT/OrJuo/0mk2UkbMVnIy8EiKRENQJr5Mw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NwbgEh0K; arc=none smtp.client-ip=192.198.163.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1753281292; x=1784817292;
+  t=1753281477; x=1784817477;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=a7Wl6Hu1yG6irRzac4k+rBoiFOJEo/rF0YecZangH3w=;
-  b=efwwPUbysLuVKSyf8OBjEnkKn3pLYmnETBGmtko9il1EG9zQpUPejwY3
-   FZAFRokdAytLrChs1SOJr/uiSRWPrRecknUB8getGPPx8yngJrvD9Br9r
-   TWEAWh0d00Id00jLfqLjGuL9F939KWxfm5CutsO2019P6y5MmadCueKCt
-   PDj5qj9rcKeYwV4dEpdxkpvv0JBJTW8RRAoVWLPRMj60z5SMkwRWnJ7Sn
-   x+VorENeR0xjcwUIho3qpYVxwHlvVR4zZGogeSLskukSGFB7pkUA0ytbD
-   Tqj5m3xrOgS56Ip/6ZNljkqiDXMuLxbUAyiLZC+1mPulgJsbWD4lhLzo6
-   g==;
-X-CSE-ConnectionGUID: tQiZY6wSRcia+3k/9xoFyw==
-X-CSE-MsgGUID: QKo7/3ZaQCSmvQyPOfcMDQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11501"; a="58181307"
+  bh=n2Ip6P1bDLbugzsbfTChU2rFmhWngseqqiPKszd5RG8=;
+  b=NwbgEh0Kcq4pYs/jK0IDo4RF/sKUNgJi8ljt2/7xBiggVwBdw2tP+sFQ
+   bde8JK22avGEf/FxGv7PRpIuio25vjEflwet+HePA+Xw/Apg2lnUw2uEi
+   SsCua+2o0rn/xE0V81OFvHXkvj12y12Xm57n7tjpSau5KNh5GU/soGUIj
+   4DrdEc945ZtVnKpvXLeJ87eYTsRtf5xaWpkKLanZ2FODTxp/g5kh25Fd1
+   S7W8NNToT1KQOviZVizgW88UTLSV7glbInBGQ9pywWLZMsw1om9YKg/ek
+   XYGAGVCQ9a9uJf+O458mssI1m1YX3j23M5TYhtl5BLP9YkQbTnZL6OQuK
+   Q==;
+X-CSE-ConnectionGUID: o5qj3ihxQw6RgB1q0cK8vg==
+X-CSE-MsgGUID: jxoEpU6aSSevh1O21yLIhA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11501"; a="81013939"
 X-IronPort-AV: E=Sophos;i="6.16,333,1744095600"; 
-   d="scan'208";a="58181307"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jul 2025 07:34:48 -0700
-X-CSE-ConnectionGUID: +h2Bk6JjS5GJYf9LBIIeqA==
-X-CSE-MsgGUID: cLHVUgJJS3qfaeqWk31VoQ==
+   d="scan'208";a="81013939"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jul 2025 07:37:54 -0700
+X-CSE-ConnectionGUID: QsZZcSX+S6S1i9sCZCGK5w==
+X-CSE-MsgGUID: OeHGZhkCS2u9SPCiuSvmRg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,333,1744095600"; 
-   d="scan'208";a="159565064"
+   d="scan'208";a="190495622"
 Received: from smile.fi.intel.com ([10.237.72.52])
-  by fmviesa006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jul 2025 07:34:46 -0700
+  by orviesa002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jul 2025 07:37:52 -0700
 Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
 	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1ueaYN-00000000JX5-0sst;
-	Wed, 23 Jul 2025 17:34:43 +0300
-Date: Wed, 23 Jul 2025 17:34:42 +0300
+	id 1ueabN-00000000JZg-0sFt;
+	Wed, 23 Jul 2025 17:37:49 +0300
+Date: Wed, 23 Jul 2025 17:37:48 +0300
 From: Andy Shevchenko <andriy.shevchenko@intel.com>
 To: David Lechner <dlechner@baylibre.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Jonathan Cameron <jic23@kernel.org>,
+Cc: Jonathan Cameron <jic23@kernel.org>,
 	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
 	Andy Shevchenko <andy@kernel.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] iio: adc: ad7173: prevent scan if too many setups
- requested
-Message-ID: <aIDzAiQT0S0-ZcQo@smile.fi.intel.com>
-References: <20250722-iio-adc-ad7173-fix-setup-use-limits-v2-1-8e96bdb72a9c@baylibre.com>
+	Yasin Lee <yasin.lee.x@gmail.com>, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH] iio: proximity: hx9023s: fix scan_type endianness
+Message-ID: <aIDzvNYIaJnSuzOa@smile.fi.intel.com>
+References: <20250722-iio-proximity-hx9023c-fix-scan_type-endianness-v1-1-48f5dc156895@baylibre.com>
+ <823a28d6-e612-4e32-976a-cb99945848ce@baylibre.com>
+ <aIDuEcHhaGtz2klP@smile.fi.intel.com>
+ <795dffe0-51cf-49a8-bbb1-1585edddf5ba@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -84,40 +85,45 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250722-iio-adc-ad7173-fix-setup-use-limits-v2-1-8e96bdb72a9c@baylibre.com>
+In-Reply-To: <795dffe0-51cf-49a8-bbb1-1585edddf5ba@baylibre.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
  krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Tue, Jul 22, 2025 at 02:20:07PM -0500, David Lechner wrote:
-> Add a check to ad7173_update_scan_mode() to ensure that we didn't exceed
-> the maximum number of unique channel configurations.
+On Wed, Jul 23, 2025 at 09:29:37AM -0500, David Lechner wrote:
+> On 7/23/25 9:13 AM, Andy Shevchenko wrote:
+> > On Tue, Jul 22, 2025 at 06:08:37PM -0500, David Lechner wrote:
+> >> On 7/22/25 6:07 PM, David Lechner wrote:
+> >>> Change the scan_type endianness from IIO_BE to IIO_LE. This matches
+> >>> the call to cpu_to_le16() in hx9023s_trigger_handler() that formats
+> >>> the data before pushing it to the IIO buffer.
+> > 
+> >> It is odd to have data already in CPU-endian and convert it to LE
+> >> before pushing to buffers. So I'm a bit tempted to do this instead
+> >> since it probably isn't likely anyone is using this on a big-endian
+> >> system:
+> > 
+> > I can say that first of all, we need to consult with the datasheet for the
+> > actual HW endianess. And second, I do not believe that CPU endianess may be
+> > used, 
 > 
-> In the AD7173 family of chips, there are some chips that have 16
-> CHANNELx registers but only 8 setups (combination of CONFIGx, FILTERx,
-> GAINx and OFFSETx registers). Since commit 92c247216918 ("iio: adc:
-> ad7173: fix num_slots"), it is possible to have more than 8 channels
-> enabled in a scan at the same time, so it is possible to get a bad
-> configuration when more than 8 channels are using unique configurations.
-> This happens because the algorithm to allocate the setup slots only
-> takes into account which slot has been least recently used and doesn't
-> know about the maximum number of slots available.
+> Why not? Lot's of IIO drivers use IIO_CPU in their scan buffers.
 > 
-> Since the algorithm to allocate the setup slots is quite complex, it is
-> simpler to check after the fact if the current state is valid or not.
-> So this patch adds a check in ad7173_update_scan_mode() after setting up
-> all of the configurations to make sure that the actual setup still
-> matches the requested setup for each enabled channel. If not, we prevent
-> the scan from being enabled and return an error.
+> > I can't imagine when this (discrete?) component can be integrated in such
+> > a way. That said, I think your second approach even worse.
 > 
-> The setup comparison in ad7173_setup_equal() is refactored to a separate
-> function since we need to call it in two places now.
+> hx9023s_sample() is calling get_unaligned_le16() on all of the data
+> read over the bus, so in the driver, all data is stored CPU-endian
+> already rather than passing actual raw bus data to the buffer.
 
-...
+I see, now it makes a lot of sense. Thanks for clarifying this to me.
 
-> + * ad7173_setup_equal - Compare two channel setups
+> So it seems a waste of CPU cycles to convert it back to little-endian
+> to push to the buffer only for consumers to have to convert it back
+> to CPU-endian again. But since most systems are little-endian already
+> this doesn't really matter since no actual conversion is done in this
+> case.
 
-Better naming is
-ad7173_is_setup_equal().
+Right, but it's buggy on BE, isn't it?
 
 -- 
 With Best Regards,

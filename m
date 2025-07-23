@@ -1,159 +1,136 @@
-Return-Path: <linux-iio+bounces-21923-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21924-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6030B0F785
-	for <lists+linux-iio@lfdr.de>; Wed, 23 Jul 2025 17:56:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B345B0F821
+	for <lists+linux-iio@lfdr.de>; Wed, 23 Jul 2025 18:30:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 96BB81C80791
-	for <lists+linux-iio@lfdr.de>; Wed, 23 Jul 2025 15:56:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EEE193A6A0B
+	for <lists+linux-iio@lfdr.de>; Wed, 23 Jul 2025 16:29:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEE8E1E3DD7;
-	Wed, 23 Jul 2025 15:56:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DE3B1F9406;
+	Wed, 23 Jul 2025 16:30:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VO0pS5qq"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="idHk2KEl"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A10678F4F;
-	Wed, 23 Jul 2025 15:56:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 356FD1F5617;
+	Wed, 23 Jul 2025 16:30:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753286183; cv=none; b=KYTxjb78pnLSy9qkmlEWVsUzMX/HUIz0ZeuSjL5f8jLAzi0q6zSBXzduFIgOsTjlXAYU5pwvQCYG3urR/MTTnybq/D9prutzFTyGbl9BwQ7lJeH/aOb9eobSG9iVV3rIxQfLwMBJ1Dh+AYbRyMv4guCqreD9otnTl1Ak9SFyCSk=
+	t=1753288207; cv=none; b=cJ6Ds/s2JM466osNcNoTSGrXRTtY/cceec47pDFioZhDpZ7rAiJ2QgUeneIL6WuOPF0u62UUBjE+2DQga24X7C7H//EMNFNWipvcAL3/k/pv02ZKtBNENn/TWkHh8JwmKctdTfjFtBwXx0un5jQEIaCawnNv4iTk82HGTSwaFmk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753286183; c=relaxed/simple;
-	bh=EN9+m3bH+TJpgrCM7uWfTcM91Em9VgRtsgV5GqA5fd0=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IqHynS1aDq55bKvlZkOIn7pydqjflXxyypgyyuullEXq0ef/3nR6M80n2LEzShI3XG9NYguMMDd50MhAI9glyPO1RKoB38loBq/1BvQRMt2OqNtPJhdqKIYFWV/2D9A7fKYUj8rRE0JXVp37Y1dMzskdP73I5927rFt2YaskOGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VO0pS5qq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC551C4CEE7;
-	Wed, 23 Jul 2025 15:56:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753286183;
-	bh=EN9+m3bH+TJpgrCM7uWfTcM91Em9VgRtsgV5GqA5fd0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=VO0pS5qqAgPXx/o6Dbu03y1edTLCWVAh7/ig9hegmLZdW0EOucz+0u2C1vPTkAH7T
-	 l92gy6ZShIsxyeVvSdQoOVZ23dr5F/avulMGaQB5mBGMkDsQZ2ntwEJE4KGeneavDU
-	 Fh6QdwHl3Az7F06SbFSUO7lb8mdigE8EvftzQJOI8bCdhkFPtEof4JJJ4ofyasSEYb
-	 iH8uYrO9XFgXB+mWW0dzILZQu7QZOwUTuLy/ZCXQToFgZ+xTUZN3XY8K0Q7Fppw16D
-	 E9bhruIy7uHq/ZLv8vRhADQUKNJTJPOWRkJ5pIqSjIyT43xA6OwGj/2bXok63CYAxr
-	 8e0XObngroXEQ==
-Date: Wed, 23 Jul 2025 16:56:15 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Andy Shevchenko <andriy.shevchenko@intel.com>, Nuno =?UTF-8?B?U8Oh?=
- <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Yasin Lee
- <yasin.lee.x@gmail.com>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, Jonathan Cameron
- <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH] iio: proximity: hx9023s: fix scan_type endianness
-Message-ID: <20250723165615.67969881@jic23-huawei>
-In-Reply-To: <f74d6542-cc4e-40dd-8ef9-2a766d0b51ef@baylibre.com>
-References: <20250722-iio-proximity-hx9023c-fix-scan_type-endianness-v1-1-48f5dc156895@baylibre.com>
-	<823a28d6-e612-4e32-976a-cb99945848ce@baylibre.com>
-	<aIDuEcHhaGtz2klP@smile.fi.intel.com>
-	<795dffe0-51cf-49a8-bbb1-1585edddf5ba@baylibre.com>
-	<aIDzvNYIaJnSuzOa@smile.fi.intel.com>
-	<7ca7e0b9-a77d-4de8-92b1-fea3250e8155@baylibre.com>
-	<aID6jfjULn2kvvQJ@smile.fi.intel.com>
-	<f74d6542-cc4e-40dd-8ef9-2a766d0b51ef@baylibre.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1753288207; c=relaxed/simple;
+	bh=XRzabo+DQu+h1F9L/ij9Knih9rrXww9H/tsvoJcdIO0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ruM9t7e5Ay7OdZNAyDT4XsIHkS0JHHcala+ipT+h4uu3RSf7LuCcGoG5l06ty66t8mygPT4G+SfBw+vhNz/6zAJ8/S/L9uT+hYo+FDj9LHnvVF/UdtWRjeCAOgvKlbIXCo4N3FTIdCdcevMLbgTIderwJPrm+P3buBu7IHhqpFA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=idHk2KEl; arc=none smtp.client-ip=209.85.215.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-b2c4e46a89fso117686a12.2;
+        Wed, 23 Jul 2025 09:30:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1753288204; x=1753893004; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=2oLVQ+wEF7L0i9K+mBIHWmF3qtu8o6QfrkYubSnBjN0=;
+        b=idHk2KElHuGiaT65Uxir7hVuA/aTE8ftiOiOIe/53wKIEv2jMlDBGlKTeH9ryL5XyR
+         hqjpB4rnF6/Z4tvPdFutc+OulGMhYLSJ5pSjv1eeKRjPXz2/CnMlIR8gTDVcQyFjDZ7F
+         o9C9K7MpXIYHxQjWTqMsNYlYhU503CTYR+2wPWXfYzDZohQx4A/8BrWfMw5EfWvMpfLt
+         VrRkEkLNbERVak55aYraor0bkMd41Ri7yPa1b0SkUuIppb3JB93JpfS8QsWq/8I80yX0
+         tvK84EIiVQVMbtJ7XEFi10yK4RegrHG0uMe3LYdn/yr3Y/9zQmrBXXOI1EBzGr6bL2YF
+         05VQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753288204; x=1753893004;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=2oLVQ+wEF7L0i9K+mBIHWmF3qtu8o6QfrkYubSnBjN0=;
+        b=AKRP+gEl9R8c5vf0GuKYB5NFFwyBVns1O0yBCUaNhWp9v/ilteTQKmoVkIB1yO7me1
+         opbNdZ/FzsX3Tw5vKUJQM7EHdEI8lHlqX4lqUPXMJfSwzojuZWBtcoBj76ADhhkF622a
+         RuQBEGMUUSPhyT0fEBsT/5x73USIouhOHJZEFraTuG976r5wPlKWx9QB03oZORIi/0qV
+         DnVkG6QKB6addKXFn5JicufW4ENDmlZ3WaL42KNKXegAS7xFKrr7Q2wJojLIfcLK+lrL
+         cwRqZ5eXTqCq0uKjYo7x8higU45hQOZQ/6OYZyWYl+L8D1WT2CKZd5yf5P8yFRsa6WA9
+         /18Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUTdVbVlBz7cp9JXAs0vs571sIr7Wp0KLMsj83DW0GiWQyK49qLhvExEBZZiylOVgY7Qlh3d2Ys@vger.kernel.org, AJvYcCWETsKtvOiSn20V6YthZR2Kbp02Pe62/9VuFDDab7nSvzcwdDs6sPkjUAXMn4Zxy2295aNscer9e7u2@vger.kernel.org, AJvYcCX/SXpu2hhuKxO977HJUK33sQGBJb4yxmQPrRcJlWk0P3OTCJMnaiZc/Rwf3IqyUVUEbNDrs22ieuNZ@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxwkca31ntSGxNcrx3C+65Cx7AsvZWfcC51ORoF18BaPdqzGTt2
+	xNj1sT2JL5u/AkICjm6zJY0R/NIiEOgawtv46ZscZilauUrq4Q7G8xC+
+X-Gm-Gg: ASbGncsFzTEyH3CZiinn5W7THuWJy0RNaFVlcamJ5IaWYlMZD+VgZQW8lqzy29Dm3gr
+	USWJTYHvux2d0PTWK7IdiZuALRTG/QiICZKNSP5Ho53xmLzX3tKW/5D8jK+3v8HirWwUDrtr+oY
+	eYWYHz+JewLdYDIPRR8gLzNpCCZpKT6R+02gG6S/BME0osiEc9mQtr9YYt3kfJZR605t0d/glmt
+	jGeDYo4nuYmazCtnvlS1gznkMGqZ1E6rzwgIOXAzJw1QXzNYjDuJ8lTjXEzyBcFjKCNEd6sbI3+
+	mbwVCdk74OaHBGRwzlhNEchD8zCLsJklRXOmPjHpafe40O/DoQMnxn6mEf9+2AVE1BNjO4efaff
+	yJuYbexQ5gBNog1vTGOkr9eiBFMKNLCZAmWyK4lI=
+X-Google-Smtp-Source: AGHT+IE8R/cLesETtxNTKi6GADIN03ysXQ0xFDkmBNduvgzLi3IKVKIBX5o6E4+QQ7bIBNKgOSkiiw==
+X-Received: by 2002:a17:90b:3f8d:b0:311:e8cc:424c with SMTP id 98e67ed59e1d1-31e507cdcebmr5060289a91.25.1753288204285;
+        Wed, 23 Jul 2025 09:30:04 -0700 (PDT)
+Received: from [192.168.1.143] ([49.207.192.227])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-31e519b11d1sm2037415a91.5.2025.07.23.09.29.56
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 23 Jul 2025 09:30:03 -0700 (PDT)
+Message-ID: <8e5e1d09-0706-42b3-8ae1-00a0e2f5139a@gmail.com>
+Date: Wed, 23 Jul 2025 21:59:53 +0530
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] dt-bindings: cleanup: fix duplicated 'is is' in YAML
+ docs
+To: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Cc: linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-iio@vger.kernel.org, netdev@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-amlogic@lists.infradead.org,
+ ribalda@kernel.org, jic23@kernel.org, dlechner@baylibre.com,
+ nuno.sa@analog.com, andy@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ neil.armstrong@linaro.org, khilman@baylibre.com, jbrunet@baylibre.com
+References: <20250722170513.5854-1-sanjaysuthar661996@gmail.com>
+ <CAFBinCCmsw=XGPtrk1XbphOu=OwhxmAiZ+2h4x_M-_f64Vo-7A@mail.gmail.com>
+Content-Language: en-US
+From: Sanjay Suthar <sanjaysuthar661996@gmail.com>
+In-Reply-To: <CAFBinCCmsw=XGPtrk1XbphOu=OwhxmAiZ+2h4x_M-_f64Vo-7A@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Wed, 23 Jul 2025 10:11:50 -0500
-David Lechner <dlechner@baylibre.com> wrote:
+On 23/07/25 01:08, Martin Blumenstingl wrote:
 
-> On 7/23/25 10:06 AM, Andy Shevchenko wrote:
-> > On Wed, Jul 23, 2025 at 09:57:58AM -0500, David Lechner wrote:  
-> >> On 7/23/25 9:37 AM, Andy Shevchenko wrote:  
-> >>> On Wed, Jul 23, 2025 at 09:29:37AM -0500, David Lechner wrote:  
-> >>>> On 7/23/25 9:13 AM, Andy Shevchenko wrote:  
-> >>>>> On Tue, Jul 22, 2025 at 06:08:37PM -0500, David Lechner wrote:  
-> >>>>>> On 7/22/25 6:07 PM, David Lechner wrote:  
-> >>>>>>> Change the scan_type endianness from IIO_BE to IIO_LE. This matches
-> >>>>>>> the call to cpu_to_le16() in hx9023s_trigger_handler() that formats
-> >>>>>>> the data before pushing it to the IIO buffer.  
-> >>>>>  
-> >>>>>> It is odd to have data already in CPU-endian and convert it to LE
-> >>>>>> before pushing to buffers. So I'm a bit tempted to do this instead
-> >>>>>> since it probably isn't likely anyone is using this on a big-endian
-> >>>>>> system:  
-> >>>>>
-> >>>>> I can say that first of all, we need to consult with the datasheet for the
-> >>>>> actual HW endianess. And second, I do not believe that CPU endianess may be
-> >>>>> used,   
-> >>>>
-> >>>> Why not? Lot's of IIO drivers use IIO_CPU in their scan buffers.
-> >>>>  
-> >>>>> I can't imagine when this (discrete?) component can be integrated in such
-> >>>>> a way. That said, I think your second approach even worse.  
-> >>>>
-> >>>> hx9023s_sample() is calling get_unaligned_le16() on all of the data
-> >>>> read over the bus, so in the driver, all data is stored CPU-endian
-> >>>> already rather than passing actual raw bus data to the buffer.  
-> >>>
-> >>> I see, now it makes a lot of sense. Thanks for clarifying this to me.
-> >>>  
-> >>>> So it seems a waste of CPU cycles to convert it back to little-endian
-> >>>> to push to the buffer only for consumers to have to convert it back
-> >>>> to CPU-endian again. But since most systems are little-endian already
-> >>>> this doesn't really matter since no actual conversion is done in this
-> >>>> case.  
-> >>>
-> >>> Right, but it's buggy on BE, isn't it?
-> >>>  
-> >>
-> >> Right now, the driver is buggy everywhere. The scan info says that the
-> >> scan data is BE, but in reality, it is LE (no matter the CPU-endianness).
-> >>
-> >> With the simple patch, it fixes the scan info to reflect reality that
-> >> the data is LE in the buffer. This works on BE systems. They just have
-> >> an extra conversion from BE to LE in the kernel when pushing to the
-> >> buffer and userspace would have to convert back to BE to do math on it.
-> >>
-> >> With the alternate patch you didn't like, the forced conversion to LE
-> >> when pushing to buffers is dropped, so nothing would change on LE
-> >> systems but BE systems wouldn't have the extra order swapping.  
-> > 
-> > But do they need that? If you supply CPU order (and it is already in a such
-> > after get_unaligned_*() calls) then everything would be good, no?
-> >   
-> 
-> It doesn't make sense to my why, but the existing code is changing
-> back to LE before pushing to buffers for some reason.
-> 
-> 
-> 	iio_for_each_active_channel(indio_dev, bit) {
-> 		index = indio_dev->channels[bit].channel;
-> 		data->buffer.channels[i++] = cpu_to_le16(data->ch_data[index].diff);
-> 	}
-> 
-> 	iio_push_to_buffers_with_ts(indio_dev, &data->buffer,
-> 				    sizeof(data->buffer), pf->timestamp);
-> 
-> I agree that it seems unnecessary which is why I suggested the
-> alternate patch to drop the cpu_to_le16() and just leave it
-> CPU-endian when pushing to the buffers.
-> 
+> On Tue, Jul 22, 2025 at 7:06 PM Sanjay Suthar
+> <sanjaysuthar661996@gmail.com> wrote:
+>> Fix minor grammatical issues by removing duplicated "is" in two devicetree
+>> binding documents:
+>>
+>> - net/amlogic,meson-dwmac.yaml
+>> - iio/dac/ti,dac7612.yaml
+>>
+>> Signed-off-by: Sanjay Suthar <sanjaysuthar661996@gmail.com>
+> Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+>
+> Thank you for spotting and fixing this!
+>
+> To my knowledge nobody else is currently working on amlogic,meson-dwmac changes.
+> Meaning: with an ACK from the netdev or iio maintainers this patch can
+> go through any tree (iio, netdev, devicetree).
+>
+>
+> Best regards,
+> Martin
 
-This one was seriously odd and went though a lot of discussions around
-endian conversions during review.  Definitely wait for Yasin to reply.
+Thanks for reviewing the patch. So you mentioned, now the patch can go 
+through any of above mentioned tree, Is there any Action item left on my 
+end related to this patch? Also will I be notified about when the patch 
+will be approved and merged by the respective owner?
 
-That's not to say I can recall how we ended up with the dance that
-you are seeing now (and I'm too far behind on reviews to get to digging
-through threads to refresh my memory).
+Best regards,
 
-Jonathan
-
+Sanjay Suthar
 
 

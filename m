@@ -1,158 +1,133 @@
-Return-Path: <linux-iio+bounces-21906-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21907-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 708A0B0F504
-	for <lists+linux-iio@lfdr.de>; Wed, 23 Jul 2025 16:14:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC1DEB0F54A
+	for <lists+linux-iio@lfdr.de>; Wed, 23 Jul 2025 16:29:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2CC04582AE4
-	for <lists+linux-iio@lfdr.de>; Wed, 23 Jul 2025 14:14:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A5921584E52
+	for <lists+linux-iio@lfdr.de>; Wed, 23 Jul 2025 14:29:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6825E2E88A5;
-	Wed, 23 Jul 2025 14:14:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D32BD2EF9BD;
+	Wed, 23 Jul 2025 14:29:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="E+nA1J2C"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="JOThtsR6"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+Received: from mail-ot1-f45.google.com (mail-ot1-f45.google.com [209.85.210.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0E2E2E54A1;
-	Wed, 23 Jul 2025 14:14:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B4372EF676
+	for <linux-iio@vger.kernel.org>; Wed, 23 Jul 2025 14:29:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753280053; cv=none; b=WHxqMQmb9lrwm2YfzuQbWPS9aM/s9aVZMY0bp1vF67n1pP1fFFMrd2L+cNVaHxUjBVaeL7XPak+6dslCWRRIYpLDjc/b4IyRAGCEvle26a3Tu9OOP/axxHdOthkaCj1PPvArTxQMJbKFnEBK7xcn9URZ+2IP4Jss1dEtMkpOJIA=
+	t=1753280982; cv=none; b=pTVCL+mBgF9HSimOvPGNJBeCwRh6rC2AZu9RtNrPcUboyRrt4pJL84EE5gxuS5ySUivvYAmhfSQPyXwQ7xYhibAcRuGNOhshnrpSTWGdkjYGC9hm5/J16rIh+fGLcmmSMXbZPI01MCAxdE0KDLkXtgmAZwLglLIYW2D16jd0D8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753280053; c=relaxed/simple;
-	bh=HGX2VLgyyt0GtxeLZpC1unio0AwmsC5hJT7R2JwR87U=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ST/EMF1I9Prt5dwJ/4d1lbMn3Q2Iz4/eGx8xkeo8kqpmkiH4aJl/ym3aLxoEhqUtklcLNDLg++uf/FuykHrdCn63u6OLHKps1CgT8MgoAnaX0w0qrypb/qYfs5e5YEe2rclj3OZEVNzMl9eM48dC3ydv+ga/cjw/iP/iu9Fl5MI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=E+nA1J2C; arc=none smtp.client-ip=209.85.210.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-748e378ba4fso7887393b3a.1;
-        Wed, 23 Jul 2025 07:14:11 -0700 (PDT)
+	s=arc-20240116; t=1753280982; c=relaxed/simple;
+	bh=PPsQ8mITnmr3I8UwjYrUNojkeRQJSFbKPS7aIH5+wFM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=YDcvKT9EUGFAOapgqZtzHkfkVLueWemp2sZQCnNRnQcG4XetQjeSP9bRKooXQCQWlmNROfEIte0ehoLZ0Bf/wt/2GcM1zkhwi2w1DBmXuJvdgMCsIkal4Sdx3xrdy38leOrtk/n5ZrI4/Ilk0SBpvr9X+5Y2NLiNR2l7mrwlw3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=JOThtsR6; arc=none smtp.client-ip=209.85.210.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-ot1-f45.google.com with SMTP id 46e09a7af769-740ecfff873so582196a34.2
+        for <linux-iio@vger.kernel.org>; Wed, 23 Jul 2025 07:29:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753280051; x=1753884851; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=nGCHphQckRxgoSh5w4iIxG/Rjxd4ND4u2+j5qV3kR94=;
-        b=E+nA1J2C9zDw5eCWa93hrNYk/1/zq45CoMTFtEUHkx0Rj3BZgZ4b9En6A8Lu1OBSYz
-         8iI9Sihn+HlRz+RiKNo0qWtnqxdfgcJ0IJtFyV2A0+BSYIGTGAufUGUiJuyB1KuwzqjE
-         VKmQEuD13FavC+T1NzJBp5O3Szh3bUriFp7ualOcc3Em7cYlymafChWga4sPcsgt/P1f
-         OH6ag7TsmcH9Y779UeswqeGrbOWTxJPE46+ibVl6Dy67KT4ZTj5CQByvbAhp+VN19H5/
-         lVKJATEhK2DHtaUNwOgZ0aD1Q1+w3jic/MLjRkEClPcmy2Jcv5/VFb9fnH9KxuqU8aeV
-         e2Lg==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1753280980; x=1753885780; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=qLButLoj9620WR1DJqpTFbSFouv61wpEe6LAYSZOeEA=;
+        b=JOThtsR6TbgWZeX5KPd3BqmLWIZbHsN1//ttNycSg68BtYN5kfFCQRgooFg4TXF9PG
+         hoHc0TzWi3Oy7ZXqsPXILo+qsNvvR9xPyH8g+oQd55q6n9FYW8ampZZbwGS3MpYKWukV
+         vyDLyQvsM82+ASZzLnYg5i6du2P56Ay0Fub76/hf2HDxQcXpqFTAePfeJqvDhe2Dt8MQ
+         8fHVbyVxSlnw5fp4tak+lP19764VDKxegD9l3triAK817tPvOsxHZlaSOrSss/2nk3VF
+         xZ1LT3NjZZ3imuqd+TH8N2EcC8c2lTJ+WP1A3S4JhxCXLX9JUwbSj4nUfeMp657GNltB
+         7tKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753280051; x=1753884851;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=nGCHphQckRxgoSh5w4iIxG/Rjxd4ND4u2+j5qV3kR94=;
-        b=Gmv+t+L666xHT2hw6wOLMaHJAhm5Fvzf7eV0+fFlVqqqREG3CykfKMauQY1XmEOpsx
-         CQuRkNizbqbUfBNAlq4HRy+KtHIh6bMWirTsBljX4mmfd9KpFTBSDnaOUK8EAxXEJadU
-         WfB5+wQCAy5vjtH2N0YeTycOVIRq3JFk3u25rlY5Q6dW7WdtxrOxMI3dCEUmEKHwtW/j
-         EPKRqBs4hpCa5vs1JKKLx1+GijVljuLyhAHFEeqCWFHqyiErhZb9VUW+txq2zFqwDkCf
-         Psx1FTDgPYvoGtNMEdA9B0HSlke5GgGd7vE60LRmDmc06Z7vc8t6TyDN9wORKt9G+vHw
-         ZufQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUcJhsizbAvyjS2YYYWh1a9kPJ/U6gDPqGJM9zJOqOHTVjl1FFvW/0kUX3H/uCX1ONY1JzDBF5+DLXFClkW@vger.kernel.org, AJvYcCX1CCnpdKnbBP2rsDUDAiAXXlV/uKwoeOfjON2NnW/sIariPJjnbf/mCnHwpU9of1gvRWI4LpiSH3s=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyyGKpeQWtgAtzoFVusluKiyFH77eza0rG/CTHnkEIgXua0SHAs
-	wgj1KYk92dj/JEHsvXGnxufpFK7Hh5ez32PfAD3D6vOgOPxYDBaS2a43
-X-Gm-Gg: ASbGncu2oFbkwv8EkDeznh89vcSAW/PBsv4ihLvN3afbKfIYwUpym1kErhpeL0lxTOu
-	G6JYX8P6nFA+JTkeuWYwh+mKJI154CeQ+1lLLfnIXfVfYZHVmfweIVtNq6P/b1KS0ivzmJfJf7k
-	oZldRKLOxkSg/80Qr2uQCdXMu36osnFvnjuSFgXEpiLXSHo8pjP/XWuhvMIWc3vLhDc3R35WTWD
-	7N381/R5XOYN3WlfLYkcPlJqwpJUZPQ1wT5wc4qE+xjRfafQZiPaAr6QpYIO4oWY8Jf2D8rktn4
-	abAc9mWLW7WqlqbkPnO5BTxEqRnwlt972fpNz6NroerfmKS/SGN/Qq0oRH6531nWIm91oflbcbh
-	zKhPSJS95mN0LM7cCzILQ4KW/BGJSZek=
-X-Google-Smtp-Source: AGHT+IE4qt3w/6LB9AAk6kh3kI6NFSk1U9uQtp2nJwSH2r8ih8tpWOApCnByotT7eWt9IywTghyJwA==
-X-Received: by 2002:a05:6a00:138f:b0:74e:ac15:10ff with SMTP id d2e1a72fcca58-76034c57330mr5352435b3a.4.1753280050818;
-        Wed, 23 Jul 2025 07:14:10 -0700 (PDT)
-Received: from localhost.localdomain ([103.49.233.38])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-759cb154006sm9655287b3a.76.2025.07.23.07.14.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Jul 2025 07:14:10 -0700 (PDT)
-From: Akshay Bansod <akbansd@gmail.com>
-To: Lorenzo Bianconi <lorenzo@kernel.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>
-Cc: linux-kernel-mentees@lists.linuxfoundation.org,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v3] iio: st_lsm6dsx: Replace scnprintf with sysfs_emit
-Date: Wed, 23 Jul 2025 19:43:59 +0530
-Message-ID: <20250723141359.11723-1-akbansd@gmail.com>
-X-Mailer: git-send-email 2.49.0
+        d=1e100.net; s=20230601; t=1753280980; x=1753885780;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=qLButLoj9620WR1DJqpTFbSFouv61wpEe6LAYSZOeEA=;
+        b=YNTQl8fro7u7S8AxRLwfSymfX7sub+iWDykGHP+OFORmLOMz0amt54UbbP8N0zYf63
+         fLRadkDTzoqY4+boooXAlt6e20162C9sTHMWI9sjJdFEilMgLpHAEdlva3sgJTPHaan5
+         xl93K/q512kaGIACETsfM+te1jeYoSLPkYrtkvIsA45DQmaHoDOwsnaWGj5dw9jrNVR9
+         hnGbLmk+VymWtCeazkTiT3/Do3Z4E0LY6JZQz9mRjOL7Z+iZ/vlOKu3WTuuvfv9gmiLh
+         XLrrOxXGlOzEKcx5CeMz05AylfYYy2Pf3ePFkEdpvlakFJGDArhZTf1aAIF4eyg7EDZY
+         mjmg==
+X-Forwarded-Encrypted: i=1; AJvYcCXrj28WytWEyuEY0Otgnk4cv/VdOR05UDjfykERlTBU9IwSFnA5VkSJSSdSgLFbhnVmLE/1rarY/II=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxRuveUYVPKavNoeMkPKS3mdGZJllJa4fKKEBv+/6ABBL7JGum/
+	/hYwA7kMs1bBqiyk9T/Ibs9l3vdITuYJBQ/WCsg504I7skkoQHEBHXrZ1RuRlPH57qM=
+X-Gm-Gg: ASbGnctux4OP8dkO2MHBNh/9fz1MFFzONzpTzltqFvUWHk2CdbIBzWGW2Otbq7xf5wV
+	20cR7gFkAceBtbCAiXUvKflyW5/I1gWhcG1lEaF3JEjTPQVBrKCEu9Vq/GgZ++6Imn/GZIpSkFS
+	eTLt3Y8lbSmgnvYU1OYXx7z1Pnio06nBMYSejw7UkcjemdZMGl6mZE3iPD2J7uw4XXS0uFmMsUc
+	t3SN9ZXYrLRdKo90pZVmT89ntvhByds41P58koXXe13gp80jUVnLcHFHzPdoWMYh36Ko79SRT1M
+	qHcZ5U+sU3L/2AUhH4C1HapygTs3CaTNZNGOVfxNLZveic7mZjs/xkO7ed0LDMEZ/gbOgsKb609
+	a9l+JI8hpQnU/coFZ7se6+O5RjmaVsNtRz4Nh6Irt4ktpz3IGutxzU/zSFyt3Vf2M4CEbBjdr
+X-Google-Smtp-Source: AGHT+IHlFVxr5zkaRfw2DOyo7XDcQNlbMyDdVec8aX5LzzNWMDYfM7aa0GQ0k+Ct91dsFVc5t0tkCA==
+X-Received: by 2002:a05:6830:2a90:b0:735:bab9:c5c1 with SMTP id 46e09a7af769-74088abe8a6mr2512656a34.22.1753280979582;
+        Wed, 23 Jul 2025 07:29:39 -0700 (PDT)
+Received: from ?IPV6:2600:8803:e7e4:1d00:11dd:c0f5:968d:e96? ([2600:8803:e7e4:1d00:11dd:c0f5:968d:e96])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-73e8fc51467sm3447840a34.31.2025.07.23.07.29.37
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 23 Jul 2025 07:29:39 -0700 (PDT)
+Message-ID: <795dffe0-51cf-49a8-bbb1-1585edddf5ba@baylibre.com>
+Date: Wed, 23 Jul 2025 09:29:37 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] iio: proximity: hx9023s: fix scan_type endianness
+To: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: Jonathan Cameron <jic23@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
+ Yasin Lee <yasin.lee.x@gmail.com>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Jonathan Cameron <Jonathan.Cameron@huawei.com>
+References: <20250722-iio-proximity-hx9023c-fix-scan_type-endianness-v1-1-48f5dc156895@baylibre.com>
+ <823a28d6-e612-4e32-976a-cb99945848ce@baylibre.com>
+ <aIDuEcHhaGtz2klP@smile.fi.intel.com>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <aIDuEcHhaGtz2klP@smile.fi.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Update the sysfs interface for sampling frequency and scale attributes.
-Replace `scnprintf()` with `sysfs_emit_at()` which is PAGE_SIZE-aware
-and recommended for use in sysfs.
+On 7/23/25 9:13 AM, Andy Shevchenko wrote:
+> On Tue, Jul 22, 2025 at 06:08:37PM -0500, David Lechner wrote:
+>> On 7/22/25 6:07 PM, David Lechner wrote:
+>>> Change the scan_type endianness from IIO_BE to IIO_LE. This matches
+>>> the call to cpu_to_le16() in hx9023s_trigger_handler() that formats
+>>> the data before pushing it to the IIO buffer.
+> 
+>> It is odd to have data already in CPU-endian and convert it to LE
+>> before pushing to buffers. So I'm a bit tempted to do this instead
+>> since it probably isn't likely anyone is using this on a big-endian
+>> system:
+> 
+> I can say that first of all, we need to consult with the datasheet for the
+> actual HW endianess. And second, I do not believe that CPU endianess may be
+> used, 
 
-Signed-off-by: Akshay Bansod <akbansd@gmail.com>
----
+Why not? Lot's of IIO drivers use IIO_CPU in their scan buffers.
 
-changes in v3:
-- Use `sysfs_emit_at(buf, len - 1, "\n")` instead of directly modifying `buf[len - 1]`
-  for newline termination, aligning with `sysfs_emit_at()` usage.
-- Link to v2: https://lore.kernel.org/linux-iio/20250703053900.36530-1-akbansd@gmail.com/
+> I can't imagine when this (discrete?) component can be integrated in such
+> a way. That said, I think your second approach even worse.
+> 
 
-changes in v2:
-- Fixed indentation for line wrap
-- Link to v1: https://lore.kernel.org/linux-iio/20250702135855.59955-1-akbansd@gmail.com/
+hx9023s_sample() is calling get_unaligned_le16() on all of the data
+read over the bus, so in the driver, all data is stored CPU-endian
+already rather than passing actual raw bus data to the buffer.
 
-Testing:
-- Built the driver (`st_lsm6dsx_i2c`) as a module.
-- Tested using `i2c-stub` to mock the device.
-- Verified that reading sysfs attributes like `sampling_frequency_available`
-  works correctly and shows no change in functionality.
+So it seems a waste of CPU cycles to convert it back to little-endian
+to push to the buffer only for consumers to have to convert it back
+to CPU-endian again. But since most systems are little-endian already
+this doesn't really matter since no actual conversion is done in this
+case.
 
-
----
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
-
-diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-index c65ad4982..f0aab41f3 100644
---- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-+++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-@@ -2035,10 +2035,10 @@ st_lsm6dsx_sysfs_sampling_frequency_avail(struct device *dev,
- 
- 	odr_table = &sensor->hw->settings->odr_table[sensor->id];
- 	for (i = 0; i < odr_table->odr_len; i++)
--		len += scnprintf(buf + len, PAGE_SIZE - len, "%d.%03d ",
--				 odr_table->odr_avl[i].milli_hz / 1000,
--				 odr_table->odr_avl[i].milli_hz % 1000);
--	buf[len - 1] = '\n';
-+		len += sysfs_emit_at(buf, len, "%d.%03d ",
-+				     odr_table->odr_avl[i].milli_hz / 1000,
-+				     odr_table->odr_avl[i].milli_hz % 1000);
-+	sysfs_emit_at(buf, len - 1, "\n");
- 
- 	return len;
- }
-@@ -2054,9 +2054,10 @@ static ssize_t st_lsm6dsx_sysfs_scale_avail(struct device *dev,
- 
- 	fs_table = &hw->settings->fs_table[sensor->id];
- 	for (i = 0; i < fs_table->fs_len; i++)
--		len += scnprintf(buf + len, PAGE_SIZE - len, "0.%09u ",
--				 fs_table->fs_avl[i].gain);
--	buf[len - 1] = '\n';
-+		len += sysfs_emit_at(buf, len, "0.%09u ",
-+				     fs_table->fs_avl[i].gain);
-+
-+	sysfs_emit_at(buf, len - 1, "\n");
- 
- 	return len;
- }
--- 
-2.49.0
 
 

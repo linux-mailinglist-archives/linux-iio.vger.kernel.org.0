@@ -1,111 +1,158 @@
-Return-Path: <linux-iio+bounces-21905-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21906-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99EF3B0F502
-	for <lists+linux-iio@lfdr.de>; Wed, 23 Jul 2025 16:13:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 708A0B0F504
+	for <lists+linux-iio@lfdr.de>; Wed, 23 Jul 2025 16:14:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AFC781888B7B
-	for <lists+linux-iio@lfdr.de>; Wed, 23 Jul 2025 14:14:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2CC04582AE4
+	for <lists+linux-iio@lfdr.de>; Wed, 23 Jul 2025 14:14:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FE652D948B;
-	Wed, 23 Jul 2025 14:13:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6825E2E88A5;
+	Wed, 23 Jul 2025 14:14:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ql4MVv8d"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="E+nA1J2C"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 657E81FC3;
-	Wed, 23 Jul 2025 14:13:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0E2E2E54A1;
+	Wed, 23 Jul 2025 14:14:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753280024; cv=none; b=htnxtVw1IJuQBBwUPdZ9xJaP3mRzwOxzVjD0mxkUSkbjlI75hzgqYjg839ix2lhzOB/jFh2VaHspq5eT2GLYlV7KXhRVrvINgVozPYiolYzmd9CBllbPYcRh7EO9szAv9KKZAoWnDHYEdmcGWpK5U6VCHGfHWSw9OfQ1Wb/JhCc=
+	t=1753280053; cv=none; b=WHxqMQmb9lrwm2YfzuQbWPS9aM/s9aVZMY0bp1vF67n1pP1fFFMrd2L+cNVaHxUjBVaeL7XPak+6dslCWRRIYpLDjc/b4IyRAGCEvle26a3Tu9OOP/axxHdOthkaCj1PPvArTxQMJbKFnEBK7xcn9URZ+2IP4Jss1dEtMkpOJIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753280024; c=relaxed/simple;
-	bh=ZVUk/VpfWAG9sWna1cr3CUOKZxgGMG2dxSear7Keiow=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VVWjkjLklmsKf9TudIY8Hb75A8zw+tnlLK7eCwpPDRJUCRpPSNYSC1wyG6GJF5bznyOQ71K9cXoTfNKEqnhz4vOwaW0dLYwijcZ9oVxOKJv58E1kEoNyU58Vdyh0fbmIkYDTT1E3OGbk9nYK+kuXkbt4x7H54mvuyXYZCehnXH8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ql4MVv8d; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1753280024; x=1784816024;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=ZVUk/VpfWAG9sWna1cr3CUOKZxgGMG2dxSear7Keiow=;
-  b=Ql4MVv8dD6rsc+d6ltvuKwVFIdi5zTFPW+CaerVTfqpjbw7Xhc2gz/HD
-   hLzrKCRHrID6y2B1a2+nS7/R5FtnovGjh9YJgO0Gk+nstiE+/POM7rhFK
-   Ke2fdpXqmApaKt0cQK2XRngKTBsfZ1HeWj/mGOMvop6RrzZkbw6gGBgq4
-   oNEYraGZlXyUEj4A1KJEN7yR7eljkuGmkVu6IHuf8vmlgsZjzLanTLklC
-   f8kPUDvrA1qr9jl0G3y1A3G7aBV0myLCauwJyRQzQDimGUd7RurfFcc0E
-   hRw8nrIdxtGECu5zgcIDILWhie/pBB2d6a3K6ZX9XnJeTtS5PoqOOszxF
-   Q==;
-X-CSE-ConnectionGUID: BgsmCRiPQbKdvoq/nA9+RA==
-X-CSE-MsgGUID: fmGwJcfORxiPNDYHXJZZCw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11501"; a="59221539"
-X-IronPort-AV: E=Sophos;i="6.16,333,1744095600"; 
-   d="scan'208";a="59221539"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jul 2025 07:13:43 -0700
-X-CSE-ConnectionGUID: Az+SUBGkTmygDAf/64dl8w==
-X-CSE-MsgGUID: s+w0q+SYSq+pBmBnP3OwcQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,333,1744095600"; 
-   d="scan'208";a="190534620"
-Received: from smile.fi.intel.com ([10.237.72.52])
-  by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jul 2025 07:13:40 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1ueaDx-00000000JGY-3x6z;
-	Wed, 23 Jul 2025 17:13:37 +0300
-Date: Wed, 23 Jul 2025 17:13:37 +0300
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Jonathan Cameron <jic23@kernel.org>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Yasin Lee <yasin.lee.x@gmail.com>, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH] iio: proximity: hx9023s: fix scan_type endianness
-Message-ID: <aIDuEcHhaGtz2klP@smile.fi.intel.com>
-References: <20250722-iio-proximity-hx9023c-fix-scan_type-endianness-v1-1-48f5dc156895@baylibre.com>
- <823a28d6-e612-4e32-976a-cb99945848ce@baylibre.com>
+	s=arc-20240116; t=1753280053; c=relaxed/simple;
+	bh=HGX2VLgyyt0GtxeLZpC1unio0AwmsC5hJT7R2JwR87U=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ST/EMF1I9Prt5dwJ/4d1lbMn3Q2Iz4/eGx8xkeo8kqpmkiH4aJl/ym3aLxoEhqUtklcLNDLg++uf/FuykHrdCn63u6OLHKps1CgT8MgoAnaX0w0qrypb/qYfs5e5YEe2rclj3OZEVNzMl9eM48dC3ydv+ga/cjw/iP/iu9Fl5MI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=E+nA1J2C; arc=none smtp.client-ip=209.85.210.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-748e378ba4fso7887393b3a.1;
+        Wed, 23 Jul 2025 07:14:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1753280051; x=1753884851; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=nGCHphQckRxgoSh5w4iIxG/Rjxd4ND4u2+j5qV3kR94=;
+        b=E+nA1J2C9zDw5eCWa93hrNYk/1/zq45CoMTFtEUHkx0Rj3BZgZ4b9En6A8Lu1OBSYz
+         8iI9Sihn+HlRz+RiKNo0qWtnqxdfgcJ0IJtFyV2A0+BSYIGTGAufUGUiJuyB1KuwzqjE
+         VKmQEuD13FavC+T1NzJBp5O3Szh3bUriFp7ualOcc3Em7cYlymafChWga4sPcsgt/P1f
+         OH6ag7TsmcH9Y779UeswqeGrbOWTxJPE46+ibVl6Dy67KT4ZTj5CQByvbAhp+VN19H5/
+         lVKJATEhK2DHtaUNwOgZ0aD1Q1+w3jic/MLjRkEClPcmy2Jcv5/VFb9fnH9KxuqU8aeV
+         e2Lg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753280051; x=1753884851;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=nGCHphQckRxgoSh5w4iIxG/Rjxd4ND4u2+j5qV3kR94=;
+        b=Gmv+t+L666xHT2hw6wOLMaHJAhm5Fvzf7eV0+fFlVqqqREG3CykfKMauQY1XmEOpsx
+         CQuRkNizbqbUfBNAlq4HRy+KtHIh6bMWirTsBljX4mmfd9KpFTBSDnaOUK8EAxXEJadU
+         WfB5+wQCAy5vjtH2N0YeTycOVIRq3JFk3u25rlY5Q6dW7WdtxrOxMI3dCEUmEKHwtW/j
+         EPKRqBs4hpCa5vs1JKKLx1+GijVljuLyhAHFEeqCWFHqyiErhZb9VUW+txq2zFqwDkCf
+         Psx1FTDgPYvoGtNMEdA9B0HSlke5GgGd7vE60LRmDmc06Z7vc8t6TyDN9wORKt9G+vHw
+         ZufQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUcJhsizbAvyjS2YYYWh1a9kPJ/U6gDPqGJM9zJOqOHTVjl1FFvW/0kUX3H/uCX1ONY1JzDBF5+DLXFClkW@vger.kernel.org, AJvYcCX1CCnpdKnbBP2rsDUDAiAXXlV/uKwoeOfjON2NnW/sIariPJjnbf/mCnHwpU9of1gvRWI4LpiSH3s=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyyGKpeQWtgAtzoFVusluKiyFH77eza0rG/CTHnkEIgXua0SHAs
+	wgj1KYk92dj/JEHsvXGnxufpFK7Hh5ez32PfAD3D6vOgOPxYDBaS2a43
+X-Gm-Gg: ASbGncu2oFbkwv8EkDeznh89vcSAW/PBsv4ihLvN3afbKfIYwUpym1kErhpeL0lxTOu
+	G6JYX8P6nFA+JTkeuWYwh+mKJI154CeQ+1lLLfnIXfVfYZHVmfweIVtNq6P/b1KS0ivzmJfJf7k
+	oZldRKLOxkSg/80Qr2uQCdXMu36osnFvnjuSFgXEpiLXSHo8pjP/XWuhvMIWc3vLhDc3R35WTWD
+	7N381/R5XOYN3WlfLYkcPlJqwpJUZPQ1wT5wc4qE+xjRfafQZiPaAr6QpYIO4oWY8Jf2D8rktn4
+	abAc9mWLW7WqlqbkPnO5BTxEqRnwlt972fpNz6NroerfmKS/SGN/Qq0oRH6531nWIm91oflbcbh
+	zKhPSJS95mN0LM7cCzILQ4KW/BGJSZek=
+X-Google-Smtp-Source: AGHT+IE4qt3w/6LB9AAk6kh3kI6NFSk1U9uQtp2nJwSH2r8ih8tpWOApCnByotT7eWt9IywTghyJwA==
+X-Received: by 2002:a05:6a00:138f:b0:74e:ac15:10ff with SMTP id d2e1a72fcca58-76034c57330mr5352435b3a.4.1753280050818;
+        Wed, 23 Jul 2025 07:14:10 -0700 (PDT)
+Received: from localhost.localdomain ([103.49.233.38])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-759cb154006sm9655287b3a.76.2025.07.23.07.14.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 23 Jul 2025 07:14:10 -0700 (PDT)
+From: Akshay Bansod <akbansd@gmail.com>
+To: Lorenzo Bianconi <lorenzo@kernel.org>,
+	Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>
+Cc: linux-kernel-mentees@lists.linuxfoundation.org,
+	linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v3] iio: st_lsm6dsx: Replace scnprintf with sysfs_emit
+Date: Wed, 23 Jul 2025 19:43:59 +0530
+Message-ID: <20250723141359.11723-1-akbansd@gmail.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <823a28d6-e612-4e32-976a-cb99945848ce@baylibre.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+Content-Transfer-Encoding: 8bit
 
-On Tue, Jul 22, 2025 at 06:08:37PM -0500, David Lechner wrote:
-> On 7/22/25 6:07 PM, David Lechner wrote:
-> > Change the scan_type endianness from IIO_BE to IIO_LE. This matches
-> > the call to cpu_to_le16() in hx9023s_trigger_handler() that formats
-> > the data before pushing it to the IIO buffer.
+Update the sysfs interface for sampling frequency and scale attributes.
+Replace `scnprintf()` with `sysfs_emit_at()` which is PAGE_SIZE-aware
+and recommended for use in sysfs.
 
-> It is odd to have data already in CPU-endian and convert it to LE
-> before pushing to buffers. So I'm a bit tempted to do this instead
-> since it probably isn't likely anyone is using this on a big-endian
-> system:
+Signed-off-by: Akshay Bansod <akbansd@gmail.com>
+---
 
-I can say that first of all, we need to consult with the datasheet for the
-actual HW endianess. And second, I do not believe that CPU endianess may be
-used, I can't imagine when this (discrete?) component can be integrated in such
-a way. That said, I think your second approach even worse.
+changes in v3:
+- Use `sysfs_emit_at(buf, len - 1, "\n")` instead of directly modifying `buf[len - 1]`
+  for newline termination, aligning with `sysfs_emit_at()` usage.
+- Link to v2: https://lore.kernel.org/linux-iio/20250703053900.36530-1-akbansd@gmail.com/
 
+changes in v2:
+- Fixed indentation for line wrap
+- Link to v1: https://lore.kernel.org/linux-iio/20250702135855.59955-1-akbansd@gmail.com/
+
+Testing:
+- Built the driver (`st_lsm6dsx_i2c`) as a module.
+- Tested using `i2c-stub` to mock the device.
+- Verified that reading sysfs attributes like `sampling_frequency_available`
+  works correctly and shows no change in functionality.
+
+
+---
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+index c65ad4982..f0aab41f3 100644
+--- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
++++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+@@ -2035,10 +2035,10 @@ st_lsm6dsx_sysfs_sampling_frequency_avail(struct device *dev,
+ 
+ 	odr_table = &sensor->hw->settings->odr_table[sensor->id];
+ 	for (i = 0; i < odr_table->odr_len; i++)
+-		len += scnprintf(buf + len, PAGE_SIZE - len, "%d.%03d ",
+-				 odr_table->odr_avl[i].milli_hz / 1000,
+-				 odr_table->odr_avl[i].milli_hz % 1000);
+-	buf[len - 1] = '\n';
++		len += sysfs_emit_at(buf, len, "%d.%03d ",
++				     odr_table->odr_avl[i].milli_hz / 1000,
++				     odr_table->odr_avl[i].milli_hz % 1000);
++	sysfs_emit_at(buf, len - 1, "\n");
+ 
+ 	return len;
+ }
+@@ -2054,9 +2054,10 @@ static ssize_t st_lsm6dsx_sysfs_scale_avail(struct device *dev,
+ 
+ 	fs_table = &hw->settings->fs_table[sensor->id];
+ 	for (i = 0; i < fs_table->fs_len; i++)
+-		len += scnprintf(buf + len, PAGE_SIZE - len, "0.%09u ",
+-				 fs_table->fs_avl[i].gain);
+-	buf[len - 1] = '\n';
++		len += sysfs_emit_at(buf, len, "0.%09u ",
++				     fs_table->fs_avl[i].gain);
++
++	sysfs_emit_at(buf, len - 1, "\n");
+ 
+ 	return len;
+ }
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.49.0
 
 

@@ -1,57 +1,58 @@
-Return-Path: <linux-iio+bounces-21974-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21975-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 106C2B10B3B
-	for <lists+linux-iio@lfdr.de>; Thu, 24 Jul 2025 15:20:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26E42B10B49
+	for <lists+linux-iio@lfdr.de>; Thu, 24 Jul 2025 15:23:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5BDC67A78AD
-	for <lists+linux-iio@lfdr.de>; Thu, 24 Jul 2025 13:18:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D76F1CE3D43
+	for <lists+linux-iio@lfdr.de>; Thu, 24 Jul 2025 13:24:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 655BE2D5C68;
-	Thu, 24 Jul 2025 13:20:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAC822D6408;
+	Thu, 24 Jul 2025 13:23:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="THlV4AAh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RSBej+rC"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23493267B9B;
-	Thu, 24 Jul 2025 13:20:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A01F2AF03
+	for <linux-iio@vger.kernel.org>; Thu, 24 Jul 2025 13:23:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753363208; cv=none; b=Cauv5NMoWh+ubi/SHxsYfXhAYnj+tqIhD/diKwML2uyMINppwkph3v6hO0oCy0vIJNbbgTcnNOgVMSmJhwjMUoNcVbln4y3gtkbkWnfcR++bGT7RH67e+r5zNbDJnwc+BNjPY4DPQha5Koh9XEw7wRlQxsV7yPC6PI5aGMA8aik=
+	t=1753363431; cv=none; b=KIxC8Q6mYrzj/XzUSyNPG9Yb7MpweIUKvkm24pvFNTOTickAQvQXczbg3kyh8EJHhth/LQBmkkcc5R5hHLuispnhu79Ebm4DEsQM2tisQJlogmbfNZuo9trvsXxRyfUN44kquOfyImq/Iz13m26Vo3MXmBPV6hHF/dtkEBckXos=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753363208; c=relaxed/simple;
-	bh=eNHSlB2zYs8BcvVYhN7PaMANEevtRiQ35ueUwQErWcQ=;
+	s=arc-20240116; t=1753363431; c=relaxed/simple;
+	bh=5RhohfjJ/KdRL3QkojqNSbnIdzOcM80/W5Yp3J8Elp0=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dFwCj28k0Unly+0ANxrUzeKVcCEkyvEEr5XZZRzZNYK1Ae3udnQ+GxB73XdetEtPlbFUP4QUYDrSkRhI3HfpGGlkM9n9m9qErUs8nEcds60t3OuN7AMJnQKxJac+yqKsN/XdQ+cZjzNSwCjtCN4kHyGP0FWQQEzNYcYZit/1RIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=THlV4AAh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3578C4CEED;
-	Thu, 24 Jul 2025 13:20:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=XYxQKDB3fyLIfQQSamF7q05gk5cHwvuAxsxQ/exMU8IkneNt+YOx9y0/KIx/MhHJq6TSpjcKYUmz28hEfMvAhZ0ME4qdDz8XtsCH7+qjigxkaJucc0Qdh+drcBE8YLeGzR3TRHbVWub0gxMYzJ2eZAwzU07OymcTttWrERxy73I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RSBej+rC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D5ABC4CEED;
+	Thu, 24 Jul 2025 13:23:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753363207;
-	bh=eNHSlB2zYs8BcvVYhN7PaMANEevtRiQ35ueUwQErWcQ=;
+	s=k20201202; t=1753363431;
+	bh=5RhohfjJ/KdRL3QkojqNSbnIdzOcM80/W5Yp3J8Elp0=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=THlV4AAhpLSQn8ln3JUPQaLD/3P1wfu3nnmh1Z1rNNJfCCsR6q1jjQMrGZH7jg0KU
-	 TRWMoB2VmBo0ny5RjZKhlHlF+yhePg3xjMCQ+yvXaMxFrb14e8BLu8wieX/YmLE4mj
-	 diwgY0jIWQ0YJQPFxsmGG+EiveVWz2CaxjFRgNbqxRezmeJf6YGJAWg4Dlpyju1sBC
-	 0rCKWnU9qQSgAqeGLp+RbwHMcjI5R0oBgmnhYoZjzORpGYcAMU2Y11TruBn2BY6TzO
-	 aDbk+T9/ylUH9AYYsHsruXmcIW1ZjKP+QjWgSgwkmaZksM22+wcMPl43NBkT07nf2V
-	 swTKadpfpMOug==
-Date: Thu, 24 Jul 2025 14:20:01 +0100
+	b=RSBej+rChGrWO393/EtFKDF6DRMEyIeYYLa+mqcIz8Him95w6IQI+XVds7r0lxh7O
+	 sh4x05C7qnaj3QWL1E2gwD1GSvy1RQPajnIlbUlc3X/lhNy/R0z/jiqozdk30HuIlg
+	 U+kYfBNeGveHUxFp1jwOanmH+wJpOQnqkGbtDNWt8vds98Oy3KTOxTta9ofqq8w5o3
+	 Knjz4ABYfpfnXBcTZ5nPsmFZjxQr3EWUvGotrf+Ah1j1i9z/msTMrZftv/VTyKzu40
+	 aqG4yCiWajinqd/OnuRNXsLn6FT87MUiZ7xNkGxbbp3t7jYG99A42Q6nr3mqUxC2JD
+	 iVq+7fOq4gyVA==
+Date: Thu, 24 Jul 2025 14:23:44 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Michael Hennerich <Michael.Hennerich@analog.com>, Nuno =?UTF-8?B?U8Oh?=
- <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/5] iio: adc: ad7137: add filter support
-Message-ID: <20250724142001.72181c21@jic23-huawei>
-In-Reply-To: <29786806-6495-4423-9172-e924c60b93d6@baylibre.com>
-References: <20250710-iio-adc-ad7137-add-filter-support-v1-0-acffe401c4d2@baylibre.com>
-	<29786806-6495-4423-9172-e924c60b93d6@baylibre.com>
+To: Hans de Goede <hansg@kernel.org>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org
+Subject: Re: [PATCH] iio: adc: Add Intel Dollar Cove TI PMIC ADC driver
+Message-ID: <20250724142344.08067925@jic23-huawei>
+In-Reply-To: <68cac85c-d19e-4de8-b06b-1b82d30906fd@kernel.org>
+References: <20241219230028.55987-1-hdegoede@redhat.com>
+	<20241220194249.434244e0@jic23-huawei>
+	<a0d1bcf9-74e1-43cb-9f4f-1fb6f5b20724@kernel.org>
+	<20250719120417.7bef0731@jic23-huawei>
+	<68cac85c-d19e-4de8-b06b-1b82d30906fd@kernel.org>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -62,41 +63,57 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 10 Jul 2025 17:47:14 -0500
-David Lechner <dlechner@baylibre.com> wrote:
+On Sat, 19 Jul 2025 18:17:15 +0200
+Hans de Goede <hansg@kernel.org> wrote:
 
-> On 7/10/25 5:39 PM, David Lechner wrote:
-> > Adding yet another feature to the ad7173 driver, this time,
-> > filter support.
+> Hi Jonathan,
+> 
+> On 19-Jul-25 1:04 PM, Jonathan Cameron wrote:
+> >>>> +	ret = wait_event_timeout(info->wait, info->conversion_done, 5 * HZ);
+> >>>> +	if (ret == 0) {
+> >>>> +		dev_err(info->dev, "Error sample timeout\n");
+> >>>> +		ret = -ETIMEDOUT;
+> >>>> +		goto disable_adc;
+> >>>> +	}
+> >>>> +
+> >>>> +	ret = regmap_read(info->regmap, chan->address, &msb);
+> >>>> +	if (ret)
+> >>>> +		goto disable_adc;
+> >>>> +
+> >>>> +	ret = regmap_read(info->regmap, chan->address + 1, &lsb);    
+> >>> bulk read and an endian conversion + mask?    
+> >>
+> >> This chip only supports reading 1 register at a time, I'll add
+> >> a comment about this.  
 > > 
-> > There are a couple of leading patches to rename some stuff to minimize
-> > the diff in the main patch where filter support is actually added. And
-> > there is a bonus patch to clean up the ABI docs for filter_type first
-> > before adding the new filter types introduced in this series.
-> > 
-> > This was tested on the EVAL-AD7173-8ARDZ evaluation board.
-> > 
-> > This series depends on a bunch of fixes, so we'll have to wait for
-> > those to make it back into iio/testing before we can merge this
-> > series. There is also an outstanding patch to add SPI offload support
-> > to this driver, but that doesn't actually have any merge conflicts
-> > with this series, so they can be applied in any order.
-> > 
-> > ---
-> > David Lechner (5):
-> >       iio: adc: ad7173: rename ad7173_chan_spec_ext_info
-> >       iio: adc: ad7173: rename odr field
-> >       iio: adc: ad7173: support changing filter type
-> >       iio: ABI: alphabetize filter types
-> >       iio: ABI: add filter types for ad7173
-> >   
-> I don't know why, but I really struggle to write this part number
-> correctly. The subject of this cover letter is wrong, but at least
-> I got it right in all of the patch subject lines.
+> > Set regmap_config.use_single_read and bulk reads should be fine.  
+> 
+> Interesting, I did not know about that flag.
+> 
+> But I'm afraid that I've already ending up spending more time
+> then planned on supporting this old PMIC. fixing all other remarks
+> from you and Linus W.
+> 
+> And I also hit an i2c-core regression which I've just finished
+> debugging...
+> 
+> So I'm going to keep the multiple reg-reads as is (it won't
+> matter for what happens on the I2C bus anyways) I hope this is ok.
+
+Sure.
+
+
+> 
+> I did also write an interesting iio-core patch to make
+> iio_read_channel_processed_scale() more precise :)
+> 
+> I plan to post a a new series including this tomorrow.
+> 
+> Regards,
+> 
+> Hans
+> 
+> 
 > 
 
-Series look good to me. Give me a poke if it looks like I've forgotten
-to pick this up after the precursor fix is in my tree.
-
-Jonathan
 

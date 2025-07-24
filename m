@@ -1,48 +1,48 @@
-Return-Path: <linux-iio+bounces-21933-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21934-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC691B10528
-	for <lists+linux-iio@lfdr.de>; Thu, 24 Jul 2025 11:02:35 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id F396EB10538
+	for <lists+linux-iio@lfdr.de>; Thu, 24 Jul 2025 11:06:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 55E793BEE22
-	for <lists+linux-iio@lfdr.de>; Thu, 24 Jul 2025 08:58:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 361CB7BD0DA
+	for <lists+linux-iio@lfdr.de>; Thu, 24 Jul 2025 09:01:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5263C2750E2;
-	Thu, 24 Jul 2025 08:58:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 318EE2750E2;
+	Thu, 24 Jul 2025 09:03:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Kau44+7l"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qR8wZUg2"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 088EAD2FB;
-	Thu, 24 Jul 2025 08:58:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF7D917996;
+	Thu, 24 Jul 2025 09:03:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753347486; cv=none; b=TIn5udf6aS744cTHvmb+6uwvDSVc0wIyZ3KS5IOTVZynqfeP6LqQZReZAn6ohaCh3EiyDJd1YlZGZYwhnGtS4nIyNZbQKeOZ8lCgPxARd6rYcXdBejDDatqkoclaTQIoj5h0AeCbeB/9qY3jx8a53vNBt5TY5Z7HtdqrDP/SB6M=
+	t=1753347787; cv=none; b=KH0g7ZxG5R+TeI2Dv402p20gtozTAD/6HPNwJakSHHfcr5jDFEA5wB4wVSaEEhm7aetnLvYSMNXbTTeCDe7suDAw7/rr1WPDPE+gmCrJ/bcfUOvF/RcdkIhTRr9yvKRHFWhu6C++QxfB9SZWz5zsfbMwJZAjhgJ1M7wKvFKJN48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753347486; c=relaxed/simple;
-	bh=GuZPM20+5KNyABcyXSsAV2hVlyTNXPHB+gGjfUh/g9o=;
+	s=arc-20240116; t=1753347787; c=relaxed/simple;
+	bh=PxzwG0gXXRflyI0Y8xrQQzzEp28aI6sOScugqA9mOV4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QzozTqJIjWs+qkJjyS8JCBZDAlbvTp/UG03+U1s/6Vsu5SI3wK5OFgvpGEN6oknXmW0LWV4iheT2u9f92jwRDOjXUAlzkfjb3ZY5ixCtszG7HLAjxN35JVfjXm+c63DNdshvDdLBs+vuog9SwXzhGEyhYLBdNzBIreGxc01ftrw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Kau44+7l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD855C4CEED;
-	Thu, 24 Jul 2025 08:58:00 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=rqx20Dx9Mre9wWC6lql+VosWP6ckfs57IbC60+t7eqZ68qOp21iBvxYXiGC1S8ZsrQhWSJKveKnXsQehM8AUc/YEGiEPh+rWHtYLgoQ2hdVnk7VC8AwmVAAmjwgyjyj822mSmTCyatHphB3g74vabJ+GeniQS9hC7mjiKf33Xc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qR8wZUg2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5EDFC4CEED;
+	Thu, 24 Jul 2025 09:03:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753347485;
-	bh=GuZPM20+5KNyABcyXSsAV2hVlyTNXPHB+gGjfUh/g9o=;
+	s=k20201202; t=1753347785;
+	bh=PxzwG0gXXRflyI0Y8xrQQzzEp28aI6sOScugqA9mOV4=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Kau44+7laZSUwDctOmhk2uk5IS70MS4G8D9YzNuxq4XXoToKr5/pJuBxHCtxR4ohL
-	 Xs1zl2+mKJQhpZCfVSNRvsnFiyjrBwqNEaBvTxn+U2OtTMf3RO6x7wXJ6yD3HYl7wp
-	 R15X95pmBHOp5E1PAYxqi72BdBd2c0WqywQYzmIO/6mTZQeGWR91XUke7x4OgMTbnz
-	 lH1HqNCEIMknPCh7BftDLNRF0TilEsFlBRtUwAxj2nODbVQV/PS3/CHxcz2DrfTlxz
-	 p9U05DfFxVxUIP5SAa11caM12wFgNMTjRMU7ORxaLkAyV6JAm4mqIwHqz1PQ0Si9Y+
-	 B/WCvpGjO21rA==
-Message-ID: <e8b6a6bf-fe4a-4ff3-addf-142212368903@kernel.org>
-Date: Thu, 24 Jul 2025 10:57:58 +0200
+	b=qR8wZUg23F2cxVS3krxhN76dgS+hR3IcRYzEchL0nchepTuFECZQ+BQ+YUxEioiWC
+	 yWAE9lOT+ZQdH98r4gdjZshTVnXf5FtDp1ZL1KsozBiR5zHDHViAh+eJudJekhYwSs
+	 HbvXFhC7W7gX1AiZNbeVkfs4n0DodB/xaqLCjFS+pN3fG5AWCpuzwvCp4V6zJLahsZ
+	 s+mBaGmwOAk6/UIotFUX/Xh6cLGaHe8XkZ33T0SfSqhxv4e6R1LvSejgNzamMddams
+	 gGazOgyCR3QPJvTp5Zx20BvlIsgjB2c27A0Mu9E7OJDDyw0aTdQtRbGe0X1TXiFZnk
+	 vMZ+oJYzzCdOA==
+Message-ID: <184bf60f-f803-48a0-a854-badc14584e53@kernel.org>
+Date: Thu, 24 Jul 2025 11:02:58 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -50,8 +50,8 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] iio: temperature: Add driver for NXP P3T175x
- temperature sensor.
+Subject: Re: [PATCH 1/2] dt-bindings: iio: temperature: Add NXP P3T175x
+ support.
 To: Lakshay Piplani <lakshay.piplani@nxp.com>, linux-kernel@vger.kernel.org,
  linux-iio@vger.kernel.org, jic23@kernel.org, dlechner@baylibre.com,
  nuno.sa@analog.com, andy@kernel.org, marcelo.schmitt1@gmail.com,
@@ -62,7 +62,6 @@ Cc: vikash.bansal@nxp.com, priyanka.jain@nxp.com,
  shashank.rebbapragada@nxp.com, Frank.Li@nxp.com, carlos.song@nxp.com,
  xiaoning.wang@nxp.com, haibo.chen@nxp.com
 References: <20250724083951.2273717-1-lakshay.piplani@nxp.com>
- <20250724083951.2273717-2-lakshay.piplani@nxp.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -108,138 +107,132 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <20250724083951.2273717-2-lakshay.piplani@nxp.com>
+In-Reply-To: <20250724083951.2273717-1-lakshay.piplani@nxp.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 24/07/2025 10:39, Lakshay Piplani wrote:
-> +
-> +static void p3t1755_ibi_handler(struct i3c_device *dev,
-> +				const struct i3c_ibi_payload *payload)
-> +{
-> +	struct iio_dev *indio_dev = dev_get_drvdata(&dev->dev);
-> +
-> +	dev_dbg(&dev->dev, "IBI received, handling threshold event\n");
+> Add bindings for the NXP P3T175x (P3T1755/P3T1750)
+> digital temperature sensor, supporting both I2C &
+> I3C interfaces.
+> 
 
-Drop
 
-> +
-> +	// Handle threshold event via helper
-> +	p3t1755_push_thresh_event(indio_dev);
-> +}
-> +
-> +/*
-> + * Both P3T1755 and P3T1750 share the same I3C
-> + * PID (0x011B:0x152A), making runtime differentiation
-> + * impossible, so a common "p3t175x" name in sysfs
-> + * and IIO for I3C based instances.
-> + */
-> +static const struct i3c_device_id p3t1755_i3c_ids[] = {
-> +	I3C_DEVICE(0x011B, 0x152A, (void *)&p3t175x_channels_info),
-> +	{ /* sentinel */ },
-> +};
-> +
-> +MODULE_DEVICE_TABLE(i3c, p3t1755_i3c_ids);
-> +
-> +static int p3t1755_i3c_probe(struct i3c_device *i3cdev)
-> +{
-> +	const struct regmap_config p3t1755_i3c_regmap_config = {
-> +	.reg_bits = 8,
-> +	.val_bits = 8,
-> +	};
-> +
-> +	const struct i3c_device_id *id = i3c_device_match_id(i3cdev, p3t1755_i3c_ids);
-> +	const struct p3t17xx_info *chip = &p3t175x_channels_info;
-> +	struct device_node *np = i3cdev->dev.of_node;
-> +	bool alert_active_high = false;
-> +	struct i3c_ibi_setup ibi_setup;
-> +	struct regmap *regmap;
-> +	bool tm_mode = false;
-> +	int fq_bits = -1;
-> +	int ret;
-> +
-> +	regmap = devm_regmap_init_i3c(i3cdev, &p3t1755_i3c_regmap_config);
-> +	if (IS_ERR(regmap)) {
-> +		dev_err_probe(&i3cdev->dev, PTR_ERR(regmap),
-> +			      "Failed to register I3C regmap %ld\n", PTR_ERR(regmap));
-> +		return PTR_ERR(regmap);
+Please wrap commit message according to Linux coding style / submission
+process (neither too early nor over the limit):
+https://elixir.bootlin.com/linux/v6.4-rc1/source/Documentation/process/submitting-patches.rst#L597
 
-Syntax is return dev_err_probe
+Subject: drop full stop.
 
-> +	}
-> +
-> +	/* Parse optional device tree property for alert polarity */
-> +	alert_active_high = of_property_read_bool(np, "nxp,alert-active-high");
-> +
-> +	/* Parse optional device tree property for thermostat mode */
-> +	tm_mode = of_property_read_bool(np, "nxp,interrupt-mode");
-> +
-> +	/* Optional fault queue length */
-> +	if (np) {
-> +		u32 fq;
-> +
-> +		if (!of_property_read_u32(np, "nxp,fault-queue", &fq)) {
-> +			fq_bits = p3t1755_fault_queue_to_bits(fq);
-> +			if (fq_bits < 0) {
-> +				dev_err_probe(&i3cdev->dev, fq_bits,
-> +					      "invalid nxp,fault-queue %u (1/2/4/6)\n", fq);
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - nxp,p3t1755
+> +      - nxp,p3t1750
 
-Syntax is return dev_err_probe
-
-> +				return fq_bits;
-> +			}
-> +		}
-> +	}
-> +
-> +	dev_info(&i3cdev->dev, "Using TM mode: %s\n", tm_mode ? "Interrupt" : "Comparator");
-> +	dev_info(&i3cdev->dev, "Alert polarity: %s\n",
-> +		 alert_active_high ? "Active-High" : "Active-Low");
-
-Drivers should be silent on success. See coding style as well.
+Keep the list sorted.
 
 > +
-> +	if (id && id->data)
-> +		chip = (const struct p3t17xx_info *)id->data;
+> +  interrupts:
+> +    maxItems: 1
 > +
-> +	ret = p3t1755_probe(&i3cdev->dev, chip, regmap, tm_mode, alert_active_high, fq_bits);
-> +	if (ret) {
-> +		dev_err_probe(&i3cdev->dev, ret, "p3t175x probe failed: %d\n", ret);
-> +		return ret;
-> +	}
+> +  reg:
+> +    maxItems: 1
+> +    description: |
+> +      In I2C mode, the device supports up to 32 static addresses.
+> +      In I3C mode, the 'reg' property encodes a triplet of
+> +      <static-address BCR PID> used for device matching.
+> +      Static address is optional if matching is done via PID.
 > +
-> +	if (!tm_mode) {
-> +		dev_warn(&i3cdev->dev, "IBI not supported in comparator mode, skipping IBI registration\n");
-> +		return 0;
-> +	}
+> +  nxp,interrupt-mode:
+> +    type: boolean
+> +    description: |
+> +      Enables interrupt mode (TM = 1), where alerts are latched until
+> +      cleared by a register read.
+> +      Required for IBI support over I3C. On I2C, both interrupt and
+> +      comparator mode support events.
+
+Both properties are redundant because they are implied by the bus, no?
+
 > +
-> +	ibi_setup.handler = p3t1755_ibi_handler;
-> +	ibi_setup.num_slots = 4;
-> +	ibi_setup.max_payload_len = 0;
+> +  nxp,alert-active-high:
+> +    type: boolean
+> +    description: |
+> +      Only applicable for I2C mode.
+> +      Sets the polarity of ALERT pin to active high, if true.
+
+Why are you encoding standard interrupt flags as a new property?
+
+> +      Ignored in I3C mode (which uses IBI signaling).
 > +
-> +	ret = i3c_device_request_ibi(i3cdev, &ibi_setup);
-> +	if (ret) {
-> +		dev_err_probe(&i3cdev->dev, ret, "Failed to request IBI: %d\n", ret);
+> +  nxp,fault-queue:
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    enum: [1, 2, 4, 6]
+> +    description: |
+> +      Number of consecutive temperature limit
+> +      violations required before an alert is triggered.
+> +      valid values:- 1, 2, 4 or 6.
+> +      If unspecified, hardware default (2) is used.
 
-Syntax is return dev_err_probe
+Why would that be board level configuration?
 
-> +		return ret;
-> +	}
 > +
-> +	ret = i3c_device_enable_ibi(i3cdev);
-> +	if (ret) {
-> +		dev_err_probe(&i3cdev->dev, ret, "Failed to enable IBI: %d\n", ret);
+> +  assigned-address:
 
-Syntax is return dev_err_probe
+:true
 
-> +		i3c_device_free_ibi(i3cdev);
-> +		return ret;
-> +	}
+and that's it... unless you want to make sure it has a type also for I2C
+case? How other I3C device binding solve it?
+
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    minimum: 0x1
+> +    maximum: 0xff
+> +    description: |
+> +      Dynamic address to be assigned to this device. In case static address is
+> +      present (first cell of the reg property != 0), this address is assigned
+> +      through SETDASA. If static address is not present, this address is assigned
+> +      through SETNEWDA after assigning a temporary address via ENTDAA.
+
+But for sure no need to duplicate common schema.
+
 > +
-> +	dev_info(&i3cdev->dev, "IBI successfully registered\n");
+> +required:
+> +  - compatible
+> +  - reg
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/interrupt-controller/irq.h>
+> +    i2c {
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +
+> +        temp-sensor@48 {
+> +            compatible = "nxp,p3t1755";
+> +            reg = <0x48>;
+> +            nxp,interrupt-mode;
+> +            nxp,fault-queue = <6>;
+> +            interrupt-parent = <&gpio2>;
+> +            interrupts = <3 IRQ_TYPE_EDGE_FALLING>;
+> +        };
+> +    };
+> +
+> +  - |
+> +    i3c {
+> +      #address-cells = <3>;
+> +      #size-cells = <0>;
+> +      temp-sensor@48,236152a00 {
+> +        reg = <0x48 0x236 0x152a00>;
+> +        assigned-address = <0x50>;
+> +      };
+> +    };
+> +
+> +  - |
+> +    i3c {
 
-Drivers should be silent on success. See coding style as well.
-
-Same comments for all your other drivers here.
+Drop this example.
 
 
 Best regards,

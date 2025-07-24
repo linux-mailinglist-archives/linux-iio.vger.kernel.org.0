@@ -1,182 +1,355 @@
-Return-Path: <linux-iio+bounces-21956-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21958-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 127AAB10919
-	for <lists+linux-iio@lfdr.de>; Thu, 24 Jul 2025 13:22:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13D14B1092A
+	for <lists+linux-iio@lfdr.de>; Thu, 24 Jul 2025 13:28:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 42FD8171FB0
-	for <lists+linux-iio@lfdr.de>; Thu, 24 Jul 2025 11:22:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F2A623BABB4
+	for <lists+linux-iio@lfdr.de>; Thu, 24 Jul 2025 11:27:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1464C27057C;
-	Thu, 24 Jul 2025 11:22:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B337271A94;
+	Thu, 24 Jul 2025 11:28:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="V+zTJRhD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PESIvLOb"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from ixit.cz (ip-94-112-25-9.bb.vodafone.cz [94.112.25.9])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 719CC27055A;
-	Thu, 24 Jul 2025 11:22:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.112.25.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9E892701DA;
+	Thu, 24 Jul 2025 11:28:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753356162; cv=none; b=ujaKW7d70gbLYpkyDkBqqH/AhWbQOXt7BKlDZ5jxrRQg4SHne0+iKysUmZQk6YKOT+u3A52cW1ep3zTYLOJsV+jyczkcL5y63i5xezVB5Mtn7VKPl/jQj/Dm/n3hoE4JVRMfcHbbhcvGlmo+7T5VxraUA5hJ6pxBH2soE+V2okw=
+	t=1753356497; cv=none; b=F37KNs5Ao0iUho8kBho/7u9DSyYQANlqtQ5tdKdVZh/4YsCUrFlF5YTmU5JAyOgAvbuAqWAmEj3LM9Bm++VU2T42i677vQTdtfNJK9VRaO9dkF2F56OWcWDBE2CmUbZ/bLg3LGEbC7q5FfAMAhxIrSgAEe3kzXefmZQQKBz24YU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753356162; c=relaxed/simple;
-	bh=ncQWBKwI6E8yMwJouaUCSKjj7KYKskxzt07O77RrEYY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:Cc:From:
-	 In-Reply-To:Content-Type; b=fwU+G7NT+Jqj4Wp0YoGsnEQv6jbtDRQziszD9UQc+Tmq6f985vFRS0u3U2fkaHcHR+MGnWHkixwJZsrcdrojgOV58/mdRNfmMl0fW2JC/pz9qrybTlLZHQYeaJ6+nO4OAy8R3Sq0UdcNO0xHxDWc22jhrm0+o8OQYX5eYDiohLY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=V+zTJRhD; arc=none smtp.client-ip=94.112.25.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
-Received: from [192.168.6.83] (office.icewarp.com [82.113.48.146])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id 25826161193;
-	Thu, 24 Jul 2025 13:22:37 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1753356157;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=zk+cD+vGoFFprH1JsPNoZZcojBrn4oW2cTrpdNOuWYI=;
-	b=V+zTJRhD9IxgO6eAU2f73Q6zmgZuL/s30d7j1lY0zcy3d+WBbOZ5HrkgP76c3rBCMTIK+S
-	eEKeiRU20oNV/FfFdSfJcgtS3cxzHp8H6rk6ESmLKYWA1A5e5y58Dha/qdqdzGiQHxbABK
-	dJPUbBfYk42jDWkqvQgkaFi7Sb1Ov/g=
-Message-ID: <623783cf-d1ca-424c-9e71-e14acb9c3204@ixit.cz>
-Date: Thu, 24 Jul 2025 13:22:36 +0200
+	s=arc-20240116; t=1753356497; c=relaxed/simple;
+	bh=dxI+/4zumLVFOrfjuxZXLvotdarsWSE+MJn9iLy7KUo=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=pwl33bDmn6qgrg/iB9FfU83IgUn3YOi+ZJTMxUatkbc4Eej2rzvuB0Ly+fXPbOwpBfBUcnxgeZwmkDu+NiEs/JaFIyGIpK+L+dNvAqBsGt0omFtMpjXWrsQJVpmMrBrfZOFu5jT/jODU8X6eHTpSdVJ83VZ7AgQzWHTEBjiAuvc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PESIvLOb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 276E6C4CEED;
+	Thu, 24 Jul 2025 11:28:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753356497;
+	bh=dxI+/4zumLVFOrfjuxZXLvotdarsWSE+MJn9iLy7KUo=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=PESIvLOb2BswDZyzn3ghE6QRLz6u37ETWPTxxhleowkA49P24Bn9zFyUHq7BDwR1r
+	 7mASsjY5nY/EtM2jttJVYG1h4AqkVoo+MFf7HloEiyUb6ft/Pe0fsWnGjFfVo0pECP
+	 uA4B0uCLGqLHAcEhG2LW7rD5FyAdrmUdZEsapaQGx6XZgLvebAIOg6mICZr53i2iLA
+	 X1ESQaoBBURrHejaNeQJy95unl8psK+5svSupl9hS/ig7Wuj5flVijZYKx9PISiXEE
+	 +6RJdzRI4bn3/pnCW/jhf+xwGROtSqGqnBB18c66iZ0Ns1AqS6hFrX/rmDBMlU4wLS
+	 8W591rD+/t4qQ==
+Date: Thu, 24 Jul 2025 12:28:09 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>
+Cc: Salah Triki <salah.triki@gmail.com>, Lars-Peter Clausen
+ <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, David
+ Lechner <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: adc: ad7280a: Remove unused macros
+Message-ID: <20250724122809.11971471@jic23-huawei>
+In-Reply-To: <5j6qcum4oi4cgnzplmnd4xqx2aothhqpk5votscc6v56xdnlwa@gt6x3ugjyr45>
+References: <aIIQ3xxCNfpTouxQ@pc>
+	<5j6qcum4oi4cgnzplmnd4xqx2aothhqpk5votscc6v56xdnlwa@gt6x3ugjyr45>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/4] dt-bindings: iio: light: Simplify interrupts property
- in the example
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>
-References: <20250724111345.47889-5-krzysztof.kozlowski@linaro.org>
- <20250724111345.47889-8-krzysztof.kozlowski@linaro.org>
-Content-Language: en-US
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Andy Shevchenko <andy@kernel.org>,
- Ceclan Dumitru <dumitru.ceclan@analog.com>,
- Michael Hennerich <Michael.Hennerich@analog.com>,
- Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org,
- Alexandru Lazar <alazar@startmail.com>,
- linux-arm-kernel@lists.infradead.org, Bjorn Andersson
- <andersson@kernel.org>, Stephan Gerhold <stephan@gerhold.net>,
- Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
- Angelo Compagnucci <angelo.compagnucci@gmail.com>,
- Marcelo Schmitt <marcelo.schmitt@analog.com>, =?UTF-8?Q?Ond=C5=99ej_Jirman?=
- <megi@xff.cz>, David Lechner <dlechner@baylibre.com>,
- linux-iio@vger.kernel.org, Matti Vaittinen <mazziesaccount@gmail.com>,
- Mike Looijmans <mike.looijmans@topic.nl>,
- Puranjay Mohan <puranjay@kernel.org>, Manivannan Sadhasivam
- <mani@kernel.org>, Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
- linux-samsung-soc@vger.kernel.org, Alim Akhtar <alim.akhtar@samsung.com>,
- Dan Robertson <dan@dlrobertson.com>, Linus Walleij
- <linus.walleij@linaro.org>, Stefan Popa <stefan.popa@analog.com>,
- Dragos Bogdan <dragos.bogdan@analog.com>,
- Alexandru Tachici <alexandru.tachici@analog.com>,
- =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
- Jonathan Cameron <jic23@kernel.org>,
- Lucas Stankus <lucas.p.stankus@gmail.com>, linux-kernel@vger.kernel.org,
- Andreas Klinger <ak@it-klinger.de>, Andy Gross <agross@kernel.org>
-From: David Heidelberg <david@ixit.cz>
-Autocrypt: addr=david@ixit.cz; keydata=
- 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
-In-Reply-To: <20250724111345.47889-8-krzysztof.kozlowski@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-Thank you,
+On Thu, 24 Jul 2025 12:06:20 +0100
+Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
 
-Reviewed-by: David Heidelberg <david@ixit.cz>
+> On Thu, Jul 24, 2025 at 11:54:23AM +0100, Salah Triki wrote:
+> > This is to fix the following warnings when compiling the ad7280a driver=
+ using
+> > LLVM=3D1 and W=3D2:
+> >=20
+> > drivers/iio/adc/ad7280a.c:60:13: warning: macro is not used [-Wunused-m=
+acros]
+> >    60 | #define     AD7280A_CTRL_HB_CONV_AVG_4                         =
+ 2
+> >       |             ^
+> > drivers/iio/adc/ad7280a.c:97:9: warning: macro is not used [-Wunused-ma=
+cros]
+> >    97 | #define AD7280A_CB4_TIMER_REG                   0x18 /* D7 to D=
+0, Read/write */
+> >       |         ^
+> > drivers/iio/adc/ad7280a.c:120:9: warning: macro is not used [-Wunused-m=
+acros]
+> >   120 | #define AD7280A_TRANS_READ_CRC_MSK              GENMASK(9, 2)
+> >       |         ^
+> > drivers/iio/adc/ad7280a.c:33:9: warning: macro is not used [-Wunused-ma=
+cros]
+> >    33 | #define AD7280A_CELL_VOLTAGE_5_REG              0x4  /* D11 to =
+D0, Read only */
+> >       |         ^
+> > drivers/iio/adc/ad7280a.c:99:9: warning: macro is not used [-Wunused-ma=
+cros]
+> >    99 | #define AD7280A_CB6_TIMER_REG                   0x1A /* D7 to D=
+0, Read/write */
+> >       |         ^
+> > drivers/iio/adc/ad7280a.c:30:9: warning: macro is not used [-Wunused-ma=
+cros]
+> >    30 | #define AD7280A_CELL_VOLTAGE_2_REG              0x1  /* D11 to =
+D0, Read only */
+> >       |         ^
+> > drivers/iio/adc/ad7280a.c:52:13: warning: macro is not used [-Wunused-m=
+acros]
+> >    52 | #define     AD7280A_CTRL_HB_CONV_RREAD_6CELL                   =
+ 2
+> >       |             ^
+> > drivers/iio/adc/ad7280a.c:58:13: warning: macro is not used [-Wunused-m=
+acros]
+> >    58 | #define     AD7280A_CTRL_HB_CONV_AVG_DIS                       =
+ 0
+> >       |             ^
+> > drivers/iio/adc/ad7280a.c:59:13: warning: macro is not used [-Wunused-m=
+acros]
+> >    59 | #define     AD7280A_CTRL_HB_CONV_AVG_2                         =
+ 1
+> >       |             ^
+> > drivers/iio/adc/ad7280a.c:46:13: warning: macro is not used [-Wunused-m=
+acros]
+> >    46 | #define     AD7280A_CTRL_HB_CONV_INPUT_6CELL_AUX1_3_5          =
+ 1
+> >       |             ^
+> > drivers/iio/adc/ad7280a.c:37:9: warning: macro is not used [-Wunused-ma=
+cros]
+> >    37 | #define AD7280A_AUX_ADC_3_REG                   0x8  /* D11 to =
+D0, Read only */
+> >       |         ^
+> > drivers/iio/adc/ad7280a.c:39:9: warning: macro is not used [-Wunused-ma=
+cros]
+> >    39 | #define AD7280A_AUX_ADC_5_REG                   0xA  /* D11 to =
+D0, Read only */
+> >       |         ^
+> > drivers/iio/adc/ad7280a.c:32:9: warning: macro is not used [-Wunused-ma=
+cros]
+> >    32 | #define AD7280A_CELL_VOLTAGE_4_REG              0x3  /* D11 to =
+D0, Read only */
+> >       |         ^
+> > drivers/iio/adc/ad7280a.c:41:9: warning: macro is not used [-Wunused-ma=
+cros]
+> >    41 | #define AD7280A_SELF_TEST_REG                   0xC  /* D11 to =
+D0, Read only */
+> >       |         ^
+> > drivers/iio/adc/ad7280a.c:96:9: warning: macro is not used [-Wunused-ma=
+cros]
+> >    96 | #define AD7280A_CB3_TIMER_REG                   0x17 /* D7 to D=
+0, Read/write */
+> >       |         ^
+> > drivers/iio/adc/ad7280a.c:98:9: warning: macro is not used [-Wunused-ma=
+cros]
+> >    98 | #define AD7280A_CB5_TIMER_REG                   0x19 /* D7 to D=
+0, Read/write */
+> >       |         ^
+> > drivers/iio/adc/ad7280a.c:85:13: warning: macro is not used [-Wunused-m=
+acros]
+> >    85 | #define     AD7280A_ALERT_REMOVE_AUX3_AUX5              BIT(1)
+> >       |             ^
+> > drivers/iio/adc/ad7280a.c:138:9: warning: macro is not used [-Wunused-m=
+acros]
+> >   138 | #define AD7280A_DEVADDR_ALL             0x1F
+> >       |         ^
+> > drivers/iio/adc/ad7280a.c:100:9: warning: macro is not used [-Wunused-m=
+acros]
+> >   100 | #define AD7280A_PD_TIMER_REG                    0x1B /* D7 to D=
+0, Read/write */
+> >       |         ^
+> > drivers/iio/adc/ad7280a.c:74:11: warning: macro is not used [-Wunused-m=
+acros]
+> >    74 | #define   AD7280A_CTRL_LB_INC_DEV_ADDR_MSK              BIT(1)
+> >       |           ^
+> > drivers/iio/adc/ad7280a.c:61:13: warning: macro is not used [-Wunused-m=
+acros]
+> >    61 | #define     AD7280A_CTRL_HB_CONV_AVG_8                         =
+ 3
+> >       |             ^
+> > drivers/iio/adc/ad7280a.c:31:9: warning: macro is not used [-Wunused-ma=
+cros]
+> >    31 | #define AD7280A_CELL_VOLTAGE_3_REG              0x2  /* D11 to =
+D0, Read only */
+> >       |         ^
+> > drivers/iio/adc/ad7280a.c:51:13: warning: macro is not used [-Wunused-m=
+acros]
+> >    51 | #define     AD7280A_CTRL_HB_CONV_RREAD_6CELL_AUX1_3_5          =
+ 1
+> >       |             ^
+> > drivers/iio/adc/ad7280a.c:47:13: warning: macro is not used [-Wunused-m=
+acros]
+> >    47 | #define     AD7280A_CTRL_HB_CONV_INPUT_6CELL                   =
+ 2
+> >       |             ^
+> > drivers/iio/adc/ad7280a.c:84:13: warning: macro is not used [-Wunused-m=
+acros]
+> >    84 | #define     AD7280A_ALERT_REMOVE_AUX5                   BIT(0)
+> >       |             ^
+> > drivers/iio/adc/ad7280a.c:103:9: warning: macro is not used [-Wunused-m=
+acros]
+> >   103 | #define AD7280A_CNVST_CTRL_REG                  0x1D /* D7 to D=
+0, Read/write */
+> >       |         ^
+> > drivers/iio/adc/ad7280a.c:55:13: warning: macro is not used [-Wunused-m=
+acros]
+> >    55 | #define     AD7280A_CTRL_HB_CONV_START_CNVST                   =
+ 0
+> >       |             ^
+> > drivers/iio/adc/ad7280a.c:36:9: warning: macro is not used [-Wunused-ma=
+cros]
+> >    36 | #define AD7280A_AUX_ADC_2_REG                   0x7  /* D11 to =
+D0, Read only */
+> >       |         ^
+> > drivers/iio/adc/ad7280a.c:119:9: warning: macro is not used [-Wunused-m=
+acros]
+> >   119 | #define AD7280A_TRANS_READ_WRITE_ACK_MSK        BIT(10)
+> >       |         ^
+> > drivers/iio/adc/ad7280a.c:38:9: warning: macro is not used [-Wunused-ma=
+cros]
+> >    38 | #define AD7280A_AUX_ADC_4_REG                   0x9  /* D11 to =
+D0, Read only */
+> >       |         ^
+> > drivers/iio/adc/ad7280a.c:95:9: warning: macro is not used [-Wunused-ma=
+cros]
+> >    95 | #define AD7280A_CB2_TIMER_REG                   0x16 /* D7 to D=
+0, Read/write */
+> >       |         ^
+> > drivers/iio/adc/ad7280a.c:48:13: warning: macro is not used [-Wunused-m=
+acros]
+> >    48 | #define     AD7280A_CTRL_HB_CONV_INPUT_SELF_TEST               =
+ 3
+> >       |             ^
+> >  =20
+>=20
+> Please crop the commit message. No need to past all the compiler output
+> to make your point valid. This bloats the commit message a lot :)
+>=20
+> > Signed-off-by: Salah Triki <salah.triki@gmail.com>
+> > --- =20
+>=20
+> Some people do like to have all of the register map defined even if not
+> used. I personally don't... So, with the commit message improved:
 
-On 24/07/2025 13:13, Krzysztof Kozlowski wrote:
-> dynaimage,al3010 and dynaimage,al3320a are I2C devices, so their
-> interrupts are not routed to GIC and rarely first interrupt cell is <0>.
-> This looks like copy-paste from some SoC block, so drop it and also for
-> readability use known defines instead of hard-coding interrupt flag.
-> 
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> ---
->   .../devicetree/bindings/iio/light/dynaimage,al3010.yaml         | 2 +-
->   .../devicetree/bindings/iio/light/dynaimage,al3320a.yaml        | 2 +-
->   2 files changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/light/dynaimage,al3010.yaml b/Documentation/devicetree/bindings/iio/light/dynaimage,al3010.yaml
-> index f1048c30e73e..1472c997c16f 100644
-> --- a/Documentation/devicetree/bindings/iio/light/dynaimage,al3010.yaml
-> +++ b/Documentation/devicetree/bindings/iio/light/dynaimage,al3010.yaml
-> @@ -42,6 +42,6 @@ examples:
->               compatible = "dynaimage,al3010";
->               reg = <0x1c>;
->               vdd-supply = <&vdd_reg>;
-> -            interrupts = <0 99 4>;
-> +            interrupts = <99 IRQ_TYPE_LEVEL_HIGH>;
->           };
->       };
-> diff --git a/Documentation/devicetree/bindings/iio/light/dynaimage,al3320a.yaml b/Documentation/devicetree/bindings/iio/light/dynaimage,al3320a.yaml
-> index 8249be99cff9..d06db737cd9e 100644
-> --- a/Documentation/devicetree/bindings/iio/light/dynaimage,al3320a.yaml
-> +++ b/Documentation/devicetree/bindings/iio/light/dynaimage,al3320a.yaml
-> @@ -40,6 +40,6 @@ examples:
->               compatible = "dynaimage,al3320a";
->               reg = <0x1c>;
->               vdd-supply = <&vdd_reg>;
-> -            interrupts = <0 99 4>;
-> +            interrupts = <99 IRQ_TYPE_LEVEL_HIGH>;
->           };
->       };
+I take the view this is up to a driver submitter when it comes to register
+maps.  As such I'd rather we didn't go dropping these.
+This is particularly true when it results in a partial register definition
+which some of these do.
 
--- 
-David Heidelberg
+Building with W=3D2 is optimistic :)  I want IIO to be W=3D1 clean but
+stuff gets stuck under there (like the exports.h missing include thing)
+because they are annoying to normal people!
+
+Jonathan
+
+>=20
+> Reviewed-by: Nuno S=C3=A1 <nuno.sa@analog.com>
+>=20
+> >  drivers/iio/adc/ad7280a.c | 32 --------------------------------
+> >  1 file changed, 32 deletions(-)
+> >=20
+> > diff --git a/drivers/iio/adc/ad7280a.c b/drivers/iio/adc/ad7280a.c
+> > index dda2986ccda0..cf2d70c959b3 100644
+> > --- a/drivers/iio/adc/ad7280a.c
+> > +++ b/drivers/iio/adc/ad7280a.c
+> > @@ -27,38 +27,19 @@
+> >  /* Registers */
+> > =20
+> >  #define AD7280A_CELL_VOLTAGE_1_REG		0x0  /* D11 to D0, Read only */
+> > -#define AD7280A_CELL_VOLTAGE_2_REG		0x1  /* D11 to D0, Read only */
+> > -#define AD7280A_CELL_VOLTAGE_3_REG		0x2  /* D11 to D0, Read only */
+> > -#define AD7280A_CELL_VOLTAGE_4_REG		0x3  /* D11 to D0, Read only */
+> > -#define AD7280A_CELL_VOLTAGE_5_REG		0x4  /* D11 to D0, Read only */
+> >  #define AD7280A_CELL_VOLTAGE_6_REG		0x5  /* D11 to D0, Read only */
+> >  #define AD7280A_AUX_ADC_1_REG			0x6  /* D11 to D0, Read only */
+> > -#define AD7280A_AUX_ADC_2_REG			0x7  /* D11 to D0, Read only */
+> > -#define AD7280A_AUX_ADC_3_REG			0x8  /* D11 to D0, Read only */
+> > -#define AD7280A_AUX_ADC_4_REG			0x9  /* D11 to D0, Read only */
+> > -#define AD7280A_AUX_ADC_5_REG			0xA  /* D11 to D0, Read only */
+> >  #define AD7280A_AUX_ADC_6_REG			0xB  /* D11 to D0, Read only */
+> > -#define AD7280A_SELF_TEST_REG			0xC  /* D11 to D0, Read only */
+> > =20
+> >  #define AD7280A_CTRL_HB_REG			0xD  /* D15 to D8, Read/write */
+> >  #define   AD7280A_CTRL_HB_CONV_INPUT_MSK		GENMASK(7, 6)
+> >  #define     AD7280A_CTRL_HB_CONV_INPUT_ALL			0
+> > -#define     AD7280A_CTRL_HB_CONV_INPUT_6CELL_AUX1_3_5		1
+> > -#define     AD7280A_CTRL_HB_CONV_INPUT_6CELL			2
+> > -#define     AD7280A_CTRL_HB_CONV_INPUT_SELF_TEST		3
+> >  #define   AD7280A_CTRL_HB_CONV_RREAD_MSK		GENMASK(5, 4)
+> >  #define     AD7280A_CTRL_HB_CONV_RREAD_ALL			0
+> > -#define     AD7280A_CTRL_HB_CONV_RREAD_6CELL_AUX1_3_5		1
+> > -#define     AD7280A_CTRL_HB_CONV_RREAD_6CELL			2
+> >  #define     AD7280A_CTRL_HB_CONV_RREAD_NO		        3
+> >  #define   AD7280A_CTRL_HB_CONV_START_MSK		BIT(3)
+> > -#define     AD7280A_CTRL_HB_CONV_START_CNVST			0
+> >  #define     AD7280A_CTRL_HB_CONV_START_CS			1
+> >  #define   AD7280A_CTRL_HB_CONV_AVG_MSK			GENMASK(2, 1)
+> > -#define     AD7280A_CTRL_HB_CONV_AVG_DIS			0
+> > -#define     AD7280A_CTRL_HB_CONV_AVG_2				1
+> > -#define     AD7280A_CTRL_HB_CONV_AVG_4			        2
+> > -#define     AD7280A_CTRL_HB_CONV_AVG_8			        3
+> >  #define   AD7280A_CTRL_HB_PWRDN_SW			BIT(0)
+> > =20
+> >  #define AD7280A_CTRL_LB_REG			0xE  /* D7 to D0, Read/write */
+> > @@ -71,7 +52,6 @@
+> >  #define   AD7280A_CTRL_LB_MUST_SET			BIT(4)
+> >  #define   AD7280A_CTRL_LB_THERMISTOR_MSK		BIT(3)
+> >  #define   AD7280A_CTRL_LB_LOCK_DEV_ADDR_MSK		BIT(2)
+> > -#define   AD7280A_CTRL_LB_INC_DEV_ADDR_MSK		BIT(1)
+> >  #define   AD7280A_CTRL_LB_DAISY_CHAIN_RB_MSK		BIT(0)
+> > =20
+> >  #define AD7280A_CELL_OVERVOLTAGE_REG		0xF  /* D7 to D0, Read/write */
+> > @@ -81,8 +61,6 @@
+> > =20
+> >  #define AD7280A_ALERT_REG			0x13 /* D7 to D0, Read/write */
+> >  #define   AD7280A_ALERT_REMOVE_MSK			GENMASK(3, 0)
+> > -#define     AD7280A_ALERT_REMOVE_AUX5			BIT(0)
+> > -#define     AD7280A_ALERT_REMOVE_AUX3_AUX5		BIT(1)
+> >  #define     AD7280A_ALERT_REMOVE_VIN5			BIT(2)
+> >  #define     AD7280A_ALERT_REMOVE_VIN4_VIN5		BIT(3)
+> >  #define   AD7280A_ALERT_GEN_STATIC_HIGH			BIT(6)
+> > @@ -92,15 +70,8 @@
+> >  #define  AD7280A_CELL_BALANCE_CHAN_BITMAP_MSK		GENMASK(7, 2)
+> >  #define AD7280A_CB1_TIMER_REG			0x15 /* D7 to D0, Read/write */
+> >  #define  AD7280A_CB_TIMER_VAL_MSK			GENMASK(7, 3)
+> > -#define AD7280A_CB2_TIMER_REG			0x16 /* D7 to D0, Read/write */
+> > -#define AD7280A_CB3_TIMER_REG			0x17 /* D7 to D0, Read/write */
+> > -#define AD7280A_CB4_TIMER_REG			0x18 /* D7 to D0, Read/write */
+> > -#define AD7280A_CB5_TIMER_REG			0x19 /* D7 to D0, Read/write */
+> > -#define AD7280A_CB6_TIMER_REG			0x1A /* D7 to D0, Read/write */
+> > -#define AD7280A_PD_TIMER_REG			0x1B /* D7 to D0, Read/write */
+> >  #define AD7280A_READ_REG			0x1C /* D7 to D0, Read/write */
+> >  #define   AD7280A_READ_ADDR_MSK				GENMASK(7, 2)
+> > -#define AD7280A_CNVST_CTRL_REG			0x1D /* D7 to D0, Read/write */
+> > =20
+> >  /* Transfer fields */
+> >  #define AD7280A_TRANS_WRITE_DEVADDR_MSK		GENMASK(31, 27)
+> > @@ -116,8 +87,6 @@
+> >  #define AD7280A_TRANS_READ_CONV_DATA_MSK	GENMASK(22, 11)
+> >  #define AD7280A_TRANS_READ_REG_REGADDR_MSK	GENMASK(26, 21)
+> >  #define AD7280A_TRANS_READ_REG_DATA_MSK		GENMASK(20, 13)
+> > -#define AD7280A_TRANS_READ_WRITE_ACK_MSK	BIT(10)
+> > -#define AD7280A_TRANS_READ_CRC_MSK		GENMASK(9, 2)
+> > =20
+> >  /* Magic value used to indicate this special case */
+> >  #define AD7280A_ALL_CELLS				(0xAD << 16)
+> > @@ -135,7 +104,6 @@
+> >  					     (c) - AD7280A_CELLS_PER_DEV)
+> > =20
+> >  #define AD7280A_DEVADDR_MASTER		0
+> > -#define AD7280A_DEVADDR_ALL		0x1F
+> > =20
+> >  static const unsigned short ad7280a_n_avg[4] =3D {1, 2, 4, 8};
+> >  static const unsigned short ad7280a_t_acq_ns[4] =3D {470, 1030, 1510, =
+1945};
+> > --=20
+> > 2.43.0
+> >  =20
 
 

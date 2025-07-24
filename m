@@ -1,61 +1,64 @@
-Return-Path: <linux-iio+bounces-21979-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21980-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBF39B10BD5
-	for <lists+linux-iio@lfdr.de>; Thu, 24 Jul 2025 15:47:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F0ACB10BDC
+	for <lists+linux-iio@lfdr.de>; Thu, 24 Jul 2025 15:49:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C6CA51CC73B0
-	for <lists+linux-iio@lfdr.de>; Thu, 24 Jul 2025 13:48:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DC5C87B5752
+	for <lists+linux-iio@lfdr.de>; Thu, 24 Jul 2025 13:48:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC7612D8367;
-	Thu, 24 Jul 2025 13:47:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4299D2DA757;
+	Thu, 24 Jul 2025 13:49:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ANbxX7AD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rrRHwbsv"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 941F42405F5;
-	Thu, 24 Jul 2025 13:47:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED71C2D6614;
+	Thu, 24 Jul 2025 13:49:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753364865; cv=none; b=UncfJSA45EGNRN3EH0/aF8o3w3fRHRlMEa47fc10gKkg8LvppIwCLThkdY37l9AQGa3a4dHz2Fd0FGth9XlcPlNG0BMhwh9dLZUHG2VAx6vTbjpFpRrlwN+PR2aQIwzFd1ceIa5Yy6jxCE8obSWFhT927jJPkt3h4u1t0AlZbxw=
+	t=1753364965; cv=none; b=sNZo4dyfZ85OtYdRo7TP2d27/Nkh6Hv/pcwkSGENruN7howaQbi4IhGf0IqSvVGPwZcq7CdwNGSgsMyFXbdNrwJOALGn1FJBm1MwxMnox7XgSHv+oxAIplDi284evUh2jdn+0PMBvqLbEVq3j+jr5WBkoEyR03xrXabZZ9wPfs0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753364865; c=relaxed/simple;
-	bh=T7mTc756K4A4iujyDowIYqpyD7zuMTFqZk+H5sCd9/M=;
+	s=arc-20240116; t=1753364965; c=relaxed/simple;
+	bh=C+VK9E45zhavmmZ7zZic1kk5tDmpgiK9enCL/Nt6HJs=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Nfek8EiayjMbP/c2N1FEuyiv1wo+dtSPid0jlwh9AusQSrcf+w6UHgMl1qNHt1Mip30qnuQL6oGd9YjiOanjI7zrLOk4lMJ6+oaykyMJqbqD9d00OGGEuTN9cRRh1PZY4NaFFpzTSVQsxt58RbSdaSWaEMq602kBxysnAq+j6zk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ANbxX7AD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A507C4CEED;
-	Thu, 24 Jul 2025 13:47:41 +0000 (UTC)
+	 MIME-Version:Content-Type; b=HPB66f+9jGPIJbztIDv/6sxpuWkTthwyqOuIa1FPR4gPirUQkzW8eOJUpp1oL1sHBsa6yi3bFZznfJ2SIhkEc3OJyhJ9k+wXeNlsZCKDGno/j2lup+WtgB9/7MoswUR1JPUpr4hdBHYLLPMrffpHIOHG+qWCj7kwi/+jHQAjZSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rrRHwbsv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85087C4CEED;
+	Thu, 24 Jul 2025 13:49:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753364865;
-	bh=T7mTc756K4A4iujyDowIYqpyD7zuMTFqZk+H5sCd9/M=;
+	s=k20201202; t=1753364964;
+	bh=C+VK9E45zhavmmZ7zZic1kk5tDmpgiK9enCL/Nt6HJs=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ANbxX7ADhECryySFBP6Lbo6hXw00bnr60O1SLhbyGIdn3fuCEPBB4cwgsBhfE1Qs6
-	 23PvilF4IcqHqi0D76bPutdiWojfGuSfLgV/jFuGr6voE6hK4ZQmC3WF5tpK1wnmbG
-	 j+6qN8KsHokjUCRlUzjTR2m3CcOGOiTiZ3MBkoPtek0dv0DMwMPTNg98/z+ZQLNyBM
-	 5h3KLV7iDjNF9WFEisjObrZcXbm2NrRmuNDBjwenyYHkhi+/qgD6jRJzAmve3vy2fo
-	 cTEM/970d9ChAgOXIPeqQG+CWz73/I8y5EA57cS1Raa1m9RNW2PYofEPOUsUJeqwZM
-	 7PWqFSz9FKPeA==
-Date: Thu, 24 Jul 2025 14:47:38 +0100
+	b=rrRHwbsvmewjuO2ODNtc+AEDzbQmkZsspvR0lgt22HLbV72077LKMYJGX6N9SYQzv
+	 tEoOom6onnC92EgJrJsjklwRNA/6swPlLgGR+YD6ElI1ggekTURly1ra10+fPAagIG
+	 c3WZftDOL/IfhCaqUdlvL1jVs2vD2xd6ZCkYcZI1aHqvaji7sFsB7CwsTW2w1FOB5r
+	 Px+MvvORNXGm08eSC+VF+F0L/ehJaP7OSBRRSUZOdZkpZMZkwmPCxrYv+NI4hcIdy7
+	 /lE4WqXD39vBvdp6NoO9zSmi+87F9d2XW1O6+9haPIlDEWzmzUbHOemlP5uIVZLkpa
+	 KwV1Y2wxeDVag==
+Date: Thu, 24 Jul 2025 14:49:16 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Lothar Rubusch <l.rubusch@gmail.com>
-Cc: eraretuya@gmail.com, lars@metafoo.de, Michael.Hennerich@analog.com,
- dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org, corbet@lwn.net,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org
-Subject: Re: [PATCH v11 8/8] docs: iio: describe inactivity and free-fall
- detection on the ADXL345
-Message-ID: <20250724144738.77024c1d@jic23-huawei>
-In-Reply-To: <CAFXKEHa4M-Tp-y4dvNeWgYtUGo_ymyS7kqGbkhf+NJnmrrRxqg@mail.gmail.com>
-References: <20250702230315.19297-1-l.rubusch@gmail.com>
-	<20250702230315.19297-9-l.rubusch@gmail.com>
-	<20250706171611.7b4ae1a1@jic23-huawei>
-	<CAFXKEHa4M-Tp-y4dvNeWgYtUGo_ymyS7kqGbkhf+NJnmrrRxqg@mail.gmail.com>
+To: Stephen Rothwell <sfr@canb.auug.org.au>
+Cc: Mark Brown <broonie@kernel.org>, Greg KH <greg@kroah.com>, Arnd Bergmann
+ <arnd@arndb.de>, David Lechner <dlechner@baylibre.com>, Jonathan Cameron
+ <Jonathan.Cameron@huawei.com>, Jonathan Santos
+ <Jonathan.Santos@analog.com>, Linux Kernel Mailing List
+ <linux-kernel@vger.kernel.org>, Linux Next Mailing List
+ <linux-next@vger.kernel.org>, linux-iio@vger.kernel.org
+Subject: Re: linux-next: manual merge of the iio tree with the spi tree
+Message-ID: <20250724144916.436a29b3@jic23-huawei>
+In-Reply-To: <20250721125545.6db07df5@canb.auug.org.au>
+References: <20250703163824.2f08d866@canb.auug.org.au>
+	<20250703093122.00000684@huawei.com>
+	<b0b0443d-143f-4e41-b8b8-91c6726e838f@baylibre.com>
+	<20250706115053.368ce9e9@jic23-huawei>
+	<ca0be466-6673-425d-97ab-292791253a63@baylibre.com>
+	<20250721125545.6db07df5@canb.auug.org.au>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,115 +66,119 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Sun, 20 Jul 2025 20:49:48 +0200
-Lothar Rubusch <l.rubusch@gmail.com> wrote:
+On Mon, 21 Jul 2025 12:55:45 +1000
+Stephen Rothwell <sfr@canb.auug.org.au> wrote:
 
-> Hi
->=20
-> On Sun, Jul 6, 2025 at 6:16=E2=80=AFPM Jonathan Cameron <jic23@kernel.org=
-> wrote:
+> Hi all,
+> 
+> On Sun, 6 Jul 2025 11:15:14 -0500 David Lechner <dlechner@baylibre.com> wrote:
 > >
-> > On Wed,  2 Jul 2025 23:03:15 +0000
-> > Lothar Rubusch <l.rubusch@gmail.com> wrote:
-> > =20
-> > > Describe the inactivity detection additionally using the free-fall
-> > > register. Due to the controversial discussions on the mailing list, t=
-his
-> > > section of the documentation will be committed separately to allow fo=
-r a
-> > > more focused and detailed elaboration of the topic.
-> > >
-> > > Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
-> > > ---
-> > >  Documentation/iio/adxl345.rst | 25 +++++++++++++++++++++++++
-> > >  1 file changed, 25 insertions(+)
-> > >
-> > > diff --git a/Documentation/iio/adxl345.rst b/Documentation/iio/adxl34=
-5.rst
-> > > index 8ee01b8b87f4..c5525267ea12 100644
-> > > --- a/Documentation/iio/adxl345.rst
-> > > +++ b/Documentation/iio/adxl345.rst
-> > > @@ -150,6 +150,31 @@ functions, so that one follows the other. The au=
-to-sleep function puts the
-> > >  sensor into sleep mode when inactivity is detected, reducing power c=
-onsumption
-> > >  to the sub-12.5=E2=80=AFHz rate.
-> > >
-> > > +The inactivity time is configurable between 1 and 255 seconds. In ad=
-dition to
-> > > +inactivity detection, the sensor also supports free-fall detection, =
-which, from
-> > > +the IIO perspective, is treated as a fall in magnitude across all ax=
-es. In
-> > > +sensor terms, free-fall is defined using an inactivity period rangin=
-g from 0.000
-> > > +to 1.000 seconds.
-> > > +
-> > > +The driver behaves as follows:
-> > > +* If the configured inactivity period is 1 second or more, the drive=
-r uses the
-> > > +  sensor's inactivity register. This allows the event to be linked w=
-ith
-> > > +  activity detection, use auto-sleep, and be either AC- or DC-couple=
-d.
-> > > +
-> > > +* If the inactivity period is less than 1 second, the event is treat=
-ed as plain
-> > > +  inactivity or free-fall detection. In this case, auto-sleep and co=
-upling
-> > > +  (AC/DC) are not applied.
-> > > +
-> > > +* If an inactivity time of 0 seconds is configured, the driver selec=
-ts a
-> > > +  heuristically determined default period (greater than 1 second) to=
- optimize
-> > > +  power consumption. This also uses the inactivity register.
-> > > +
-> > > +Note: It is recommended to use the activity, inactivity, or free-fal=
-l registers
-> > > +when operating with an ODR between 12.5=E2=80=AFHz and 400=E2=80=AFH=
-z. =20
-> >
-> > This seems a tiny bit backwards.   It is recommend that the activity, i=
-nactivity or
-> > free-fall registers are only used when operating with an ODR...
-> > =20
->=20
-> Ehm, Doesn't the sensor always have an ODR?=20
-I was lazy. The ODR... was meant to be ODR between 12.5 Hz and 400 Hz (so o=
-riginal text
-for that bit).
+> > On 7/6/25 5:50 AM, Jonathan Cameron wrote:  
+> > > On Thu, 3 Jul 2025 07:28:07 -0500
+> > > David Lechner <dlechner@baylibre.com> wrote:
+> > >     
+> > >> On 7/3/25 3:31 AM, Jonathan Cameron wrote:    
+> > >>> On Thu, 3 Jul 2025 16:38:24 +1000
+> > >>> Stephen Rothwell <sfr@canb.auug.org.au> wrote:
+> > >>>       
+> > >>>> Today's linux-next merge of the iio tree got a conflict in:
+> > >>>>
+> > >>>>   MAINTAINERS
+> > >>>>
+> > >>>> between commit:
+> > >>>>
+> > >>>>   e47a324d6f07 ("dt-bindings: trigger-source: add ADI Util Sigma-Delta SPI")
+> > >>>>
+> > >>>> from the spi tree and commit:
+> > >>>>
+> > >>>>   0dd88eaa7126 ("dt-bindings: trigger-source: add generic GPIO trigger source")
+> > >>>>
+> > >>>> from the iio tree.
+> > >>>>
+> > >>>> I fixed it up (see below) and can carry the fix as necessary. This
+> > >>>> is now fixed as far as linux-next is concerned, but any non trivial
+> > >>>> conflicts should be mentioned to your upstream maintainer when your tree
+> > >>>> is submitted for merging.  You may also want to consider cooperating
+> > >>>> with the maintainer of the conflicting tree to minimise any particularly
+> > >>>> complex conflicts.
+> > >>>>      
+> > >>> Thanks Stephen,
+> > >>>
+> > >>> David, do you prefer these merged or kept as separate entries?      
+> > >>
+> > >> Ah, shoot, I forgot that we had added the gpio one and just made
+> > >> one section like this.
+> > >>
+> > >> I think it would make sense to also merge the new adi one with
+> > >> the reset to keep things compact.
+> > >>    
+> > > Is there a path to do that cleanly given the multiple trees things are
+> > > coming from?  Maybe this is a let things resolve whatever way this cycle
+> > > and tidy up next?    
+> > 
+> > Agree, waiting seems the simplest option.
+> >   
+> > >     
+> > >>>
+> > >>> I don't think it matters either way in practice though this is the
+> > >>> more complex merge (the other being just putting the blocks in order.
+> > >>>
+> > >>> We can put a note in the pull request on preference but ultimately Linus
+> > >>> will resolve this however he prefers! 
+> > >>>
+> > >>> Jonathan
+> > >>>
+> > >>>       
+> > >>>> -- 
+> > >>>> Cheers,
+> > >>>> Stephen Rothwell
+> > >>>>
+> > >>>> diff --cc MAINTAINERS
+> > >>>> index dd764b947dab,d0809d62ff48..000000000000
+> > >>>> --- a/MAINTAINERS
+> > >>>> +++ b/MAINTAINERS
+> > >>>> @@@ -25333,19 -25201,15 +25341,20 @@@ TRADITIONAL CHINESE DOCUMENTATIO
+> > >>>>   M:	Hu Haowen <2023002089@link.tyut.edu.cn>
+> > >>>>   S:	Maintained
+> > >>>>   W:	https://github.com/srcres258/linux-doc
+> > >>>>  -T:	git git://github.com/srcres258/linux-doc.git doc-zh-tw
+> > >>>>  +T:	git https://github.com/srcres258/linux-doc.git doc-zh-tw
+> > >>>>   F:	Documentation/translations/zh_TW/
+> > >>>>   
+> > >>>> + TRIGGER SOURCE
+> > >>>> + M:	David Lechner <dlechner@baylibre.com>
+> > >>>> + S:	Maintained
+> > >>>> + F:	Documentation/devicetree/bindings/trigger-source/gpio-trigger.yaml
+> > >>>> + F:	Documentation/devicetree/bindings/trigger-source/pwm-trigger.yaml
+> > >>>> + 
+> > >>>>  +TRIGGER SOURCE - ADI UTIL SIGMA DELTA SPI
+> > >>>>  +M:	David Lechner <dlechner@baylibre.com>
+> > >>>>  +S:	Maintained
+> > >>>>  +F:	Documentation/devicetree/bindings/trigger-source/adi,util-sigma-delta-spi.yaml
+> > >>>>  +
+> > >>>> - TRIGGER SOURCE - PWM
+> > >>>> - M:	David Lechner <dlechner@baylibre.com>
+> > >>>> - S:	Maintained
+> > >>>> - F:	Documentation/devicetree/bindings/trigger-source/pwm-trigger.yaml
+> > >>>> - 
+> > >>>>   TRUSTED SECURITY MODULE (TSM) INFRASTRUCTURE
+> > >>>>   M:	Dan Williams <dan.j.williams@intel.com>
+> > >>>>   L:	linux-coco@lists.linux.dev      
+> 
+> This is now a conflict between the char-misc tree and the spi tree.
 
-> The real question is which
-> ODR should be configured. There are recommendations for specific
-> features. I may have either misunderstood or misdocumented this part.
->=20
-> > As currently written it seems to be recommending that if you want those=
- sampling
-> > frequencies you should also enable one of these detectors.
-> > =20
->=20
-> Ah, no. The other way around, when someone wants one of events
-> detected, the recommended frequencies should be used. I'll have a look
-> at it.
+Ah. Sorry Greg, I meant to mention this in the pull request.
+In earlier discussion we concluded that best bet was to let it resolve as
+separate entries (as Stephen has) and then we'll clean it up next cycle
+if it makes sense to unify more of them.
 
-Sounds like you got my rubbish explanation.
+Thanks Stephen for dealing with our mess!
 
->=20
-> > Reminds me of the classic London underground sign that said "Dogs must =
-be
-> > carried." which raised the question of how people with out dogs were me=
-ant to travel.
-> >
-> > Otherwise this new section looks good to me.  Thanks,
-> >
-> > Jonathan
-> >... =20
->=20
-> Best,
-> Lothar
+Jonathan
+
+> 
 
 

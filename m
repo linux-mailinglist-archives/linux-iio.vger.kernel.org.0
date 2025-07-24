@@ -1,58 +1,56 @@
-Return-Path: <linux-iio+bounces-21937-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21938-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EFACB107A1
-	for <lists+linux-iio@lfdr.de>; Thu, 24 Jul 2025 12:23:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 163D6B107C4
+	for <lists+linux-iio@lfdr.de>; Thu, 24 Jul 2025 12:27:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C78B1AA19AD
-	for <lists+linux-iio@lfdr.de>; Thu, 24 Jul 2025 10:23:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 96DA41CE306D
+	for <lists+linux-iio@lfdr.de>; Thu, 24 Jul 2025 10:27:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACB25262FE2;
-	Thu, 24 Jul 2025 10:23:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A51B265CC8;
+	Thu, 24 Jul 2025 10:26:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZMfOANyf"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MaFjsDL3"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6766325D549;
-	Thu, 24 Jul 2025 10:23:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 381D6265CA8;
+	Thu, 24 Jul 2025 10:26:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753352605; cv=none; b=SG71NObagBNo0+tU2fMiL35mxNMy8wnuHboCDKNpETeDRuix7PuPU2U4EV0/rmOQ+nxW/HYNuXoeBJO6Z3fEsk91W78JOybdvyxQejPemG5Os4h8EkUcZM7oKjwWiNHcWvzi7nOdtc0cb3yJUWzN3E9Wrn7KGg56RMyUEWicNLY=
+	t=1753352795; cv=none; b=fG3KjU9KY3c5rLE7WPNul+lUFid0Pb/tsCJB7DXsJXYdJoyOEYQGRFYSkmsPGSB6P2PhmNOdwZBVWXUZKSGDDbnasdRh/CjDQ8a4FOvjrD+2U1nU9phbb/HQrMsZbA2g+65+SL4yn2hhTw6f3U4wp2gE9IS5TJMp/Kd0y4Hlzrs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753352605; c=relaxed/simple;
-	bh=I3vc9qIadyoA2Oy+WG9mC7O7L+Uss7M1nJsjNCA2cHA=;
+	s=arc-20240116; t=1753352795; c=relaxed/simple;
+	bh=LRBCAEGXv6b2SitvLniBUi4TIUWofOnD0awItm30X0E=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XmQmS8ZSxnSMppmo1F9+MiGhEBVJNG0EH7QBubcIB5PNyPMmqPVypKwP/qxrdZwgvEKBieXUpJmGA4KibncpUGaG9Oo95f8E1Yn9JKF5JhDSqpl/qbp2LUfsjukixQKQXVL/uMZ24oUJKVPpexmIq0IuPU7+HmD8HTpgS5ZplxQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZMfOANyf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94224C4CEED;
-	Thu, 24 Jul 2025 10:23:22 +0000 (UTC)
+	 MIME-Version:Content-Type; b=px3+dfOZVR/ZOUtM2DJyEtlHwxHyDhGtwFhY+14eRGKE8/iJuZYlGehsxPrQ46sbirXiYiWXY9s/rmuo/VUAmYBGkQBoQ874bFKsbTkMuPjq+FjeFbYalvQbS+tKMr/CIJyiTFCHgToknD7qBJL00BILsEsGYdNba8Kf2i6eCnA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MaFjsDL3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53418C4CEF4;
+	Thu, 24 Jul 2025 10:26:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753352604;
-	bh=I3vc9qIadyoA2Oy+WG9mC7O7L+Uss7M1nJsjNCA2cHA=;
+	s=k20201202; t=1753352794;
+	bh=LRBCAEGXv6b2SitvLniBUi4TIUWofOnD0awItm30X0E=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ZMfOANyfxBbXqayAEtdGW95tbNw0ftxMFv9caUNSfvDSg77M0D8AJYS3HioUCTIdD
-	 pqrTgjbrOCr6TPLf8jTKiaQ9LrrzE3IMB/ZXkePt5IIAPjrVy+wSDXFbpkVAMm7G2p
-	 lk1sihGP2gY/lAR8RrynKfY6oqa/+M01ZqRJOYaVLvblQBGDj+aoiMPpVCY3l8Zjit
-	 4ChOp3eZZpQS1rUoevVLJ++z4/fOt+Y2NpwiPKIdYLh54M3bTecjycD1HzoxLtASkw
-	 K+l5GM0grK1Fp28gUPkWG8IokJngJYcQhuwFC/rCbjUokeReHHTkcW5JKhIKiwVE4O
-	 B0focFBRPpxnw==
-Date: Thu, 24 Jul 2025 11:23:17 +0100
+	b=MaFjsDL3jFUFFZPsz5DTWpV5wf4wVo13ruSZtvYQ6DIYhBiFO8uKV6bBNOIL8H4Iz
+	 Kuz1Gx/EXh7v0hQ5INHv2Krr0SMaZwSiHchXmrwMRizH7Zz7EPU1LRYaxpX5f+eTnQ
+	 ULb3KT69EBfq9mSF9qSKnTmjGB+RDcU7nZka2Vnuy0RXnYfnr3qxZShhlgsqemZkFN
+	 pbLCnrB0zterkjKTYm74iyVtcA4lYnd+aNgExrI/2fI1B52ygFZYkUoFnNIp2ub5Dt
+	 s7BbKcPVCsnCxjtd4m38fq94Fj2xLMQb+RdT8y3pAGviTrR4bGsJUjqHSHTWjKUlwf
+	 pVzTA33wJpxkA==
+Date: Thu, 24 Jul 2025 11:26:28 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: David Lechner <dlechner@baylibre.com>
-Cc: Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko
- <andy@kernel.org>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- Yasin Lee <yasin.lee.x@gmail.com>
-Subject: Re: [PATCH] iio: proximity: hx9023s: use
- IIO_DECLARE_BUFFER_WITH_TS()
-Message-ID: <20250724112317.0c9b561b@jic23-huawei>
-In-Reply-To: <57e16589-3d9c-49c1-ba91-abae23143803@baylibre.com>
-References: <20250722-iio-use-more-iio_declare_buffer_with_ts-8-v1-1-36188a3f214f@baylibre.com>
-	<57e16589-3d9c-49c1-ba91-abae23143803@baylibre.com>
+Cc: Andreas Klinger <ak@it-klinger.de>, Nuno =?UTF-8?B?U8Oh?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: proximity: mb1232: use stack allocated scan struct
+Message-ID: <20250724112628.565aac47@jic23-huawei>
+In-Reply-To: <20250722-iio-proximity-mb1232-use-stack-allocated-scan-struct-v1-1-b4ef77e9ddea@baylibre.com>
+References: <20250722-iio-proximity-mb1232-use-stack-allocated-scan-struct-v1-1-b4ef77e9ddea@baylibre.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,79 +61,71 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 23 Jul 2025 10:07:55 -0500
+On Tue, 22 Jul 2025 17:39:17 -0500
 David Lechner <dlechner@baylibre.com> wrote:
 
-> On 7/22/25 5:54 PM, David Lechner wrote:
-> > Use stack-allocated IIO_DECLARE_BUFFER_WITH_TS() to declare the buffer
-> > that gets used with iio_push_to_buffers_with_ts().
-> > 
-> > We change from a struct to IIO_DECLARE_BUFFER_WITH_TS() since
-> > HX9023S_CH_NUM is 5 making channels[] larger than 8 bytes and therefore
-> > the timestamp is not always as the same position depending on the number
-> > of channels enabled in the scan.
-> > 
-> > And since the data structure is not used outside of the scope of the
-> > interrupt handler, the array does not need to be in the driver state
-> > struct and can just be stack-allocated.
-> > 
-> > Signed-off-by: David Lechner <dlechner@baylibre.com>
-Given the type issue you fix in next patch, I'll sit on this one for now
-(otherwise I'd just have fixed up the below initialization that you call out)
+> Use a stack allocated struct for the scan data instead of using the
+> driver state to store the struct. The scan data is not used outside of
+> the interrupt handler function so the struct does not need to exist
+> outside of that scope.
+> 
+> Signed-off-by: David Lechner <dlechner@baylibre.com>
+Hi David,
 
-+CC Yasin
+Applied to the testing branch of iio.git.
 
-> > ---
-> >  drivers/iio/proximity/hx9023s.c | 13 ++++---------
-> >  1 file changed, 4 insertions(+), 9 deletions(-)
-> > 
-> > diff --git a/drivers/iio/proximity/hx9023s.c b/drivers/iio/proximity/hx9023s.c
-> > index 33781c3147286fb3e2f022201ccf7e908d0b6b12..1203fa4bc7512ea85b55d537e2459104b52407b9 100644
-> > --- a/drivers/iio/proximity/hx9023s.c
-> > +++ b/drivers/iio/proximity/hx9023s.c
-> > @@ -143,12 +143,6 @@ struct hx9023s_data {
-> >  	unsigned long chan_in_use;
-> >  	unsigned int prox_state_reg;
-> >  	bool trigger_enabled;
-> > -
-> > -	struct {
-> > -		__le16 channels[HX9023S_CH_NUM];
-> > -		aligned_s64 ts;
-> > -	} buffer;
-> > -
-> >  	/*
-> >  	 * Serialize access to registers below:
-> >  	 * HX9023S_PROX_INT_LOW_CFG,
-> > @@ -928,6 +922,7 @@ static const struct iio_trigger_ops hx9023s_trigger_ops = {
-> >  
-> >  static irqreturn_t hx9023s_trigger_handler(int irq, void *private)
-> >  {
-> > +	IIO_DECLARE_BUFFER_WITH_TS(__le16, channels, HX9023S_CH_NUM);  
+I don't suppose you fancy a follow up to take that irqnr local to probe?
+If not I'll get to it at some point maybe.
+
+Thanks,
+
+Jonathan
+
+> ---
+>  drivers/iio/proximity/mb1232.c | 15 +++++++--------
+>  1 file changed, 7 insertions(+), 8 deletions(-)
 > 
-> Ooof. I remembered to zero-initialize all of the scan structs in the other
-> similar patches, but forgot we need to do the same with the array to avoid
-> leaking uninitialized stack to usespace.
+> diff --git a/drivers/iio/proximity/mb1232.c b/drivers/iio/proximity/mb1232.c
+> index 01783486bc7df34ec3b38b1d0ad5f52e3eae6c92..34b49c54e68b0a11bac0287c65cb368c9e956da4 100644
+> --- a/drivers/iio/proximity/mb1232.c
+> +++ b/drivers/iio/proximity/mb1232.c
+> @@ -42,11 +42,6 @@ struct mb1232_data {
+>  	 */
+>  	struct completion	ranging;
+>  	int			irqnr;
+> -	/* Ensure correct alignment of data to push to IIO buffer */
+> -	struct {
+> -		s16 distance;
+> -		aligned_s64 ts;
+> -	} scan;
+>  };
+>  
+>  static irqreturn_t mb1232_handle_irq(int irq, void *dev_id)
+> @@ -120,12 +115,16 @@ static irqreturn_t mb1232_trigger_handler(int irq, void *p)
+>  	struct iio_poll_func *pf = p;
+>  	struct iio_dev *indio_dev = pf->indio_dev;
+>  	struct mb1232_data *data = iio_priv(indio_dev);
+> +	struct {
+> +		s16 distance;
+> +		aligned_s64 ts;
+> +	} scan = { };
+>  
+> -	data->scan.distance = mb1232_read_distance(data);
+> -	if (data->scan.distance < 0)
+> +	scan.distance = mb1232_read_distance(data);
+> +	if (scan.distance < 0)
+>  		goto err;
+>  
+> -	iio_push_to_buffers_with_ts(indio_dev, &data->scan, sizeof(data->scan),
+> +	iio_push_to_buffers_with_ts(indio_dev, &scan, sizeof(scan),
+>  				    pf->timestamp);
+>  
+>  err:
 > 
-> 	IIO_DECLARE_BUFFER_WITH_TS(__le16, channels, HX9023S_CH_NUM) = { };
+> ---
+> base-commit: cd2731444ee4e35db76f4fb587f12d327eec5446
+> change-id: 20250722-iio-proximity-mb1232-use-stack-allocated-scan-struct-e0f051595dfe
 > 
-> >  	struct iio_poll_func *pf = private;
-> >  	struct iio_dev *indio_dev = pf->indio_dev;
-> >  	struct hx9023s_data *data = iio_priv(indio_dev);
-> > @@ -950,11 +945,11 @@ static irqreturn_t hx9023s_trigger_handler(int irq, void *private)
-> >  
-> >  	iio_for_each_active_channel(indio_dev, bit) {
-> >  		index = indio_dev->channels[bit].channel;
-> > -		data->buffer.channels[i++] = cpu_to_le16(data->ch_data[index].diff);
-> > +		channels[i++] = cpu_to_le16(data->ch_data[index].diff);
-> >  	}
-> >  
-> > -	iio_push_to_buffers_with_ts(indio_dev, &data->buffer,
-> > -				    sizeof(data->buffer), pf->timestamp);
-> > +	iio_push_to_buffers_with_ts(indio_dev, channels, sizeof(channels),
-> > +				    pf->timestamp);
-> >  
-> >  out:
-> >  	iio_trigger_notify_done(indio_dev->trig);
-> >   
+> Best regards,
 
 

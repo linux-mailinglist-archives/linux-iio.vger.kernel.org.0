@@ -1,125 +1,140 @@
-Return-Path: <linux-iio+bounces-21995-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21996-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1369CB10FFA
-	for <lists+linux-iio@lfdr.de>; Thu, 24 Jul 2025 18:55:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62697B11035
+	for <lists+linux-iio@lfdr.de>; Thu, 24 Jul 2025 19:08:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C1FBC3B1DD1
-	for <lists+linux-iio@lfdr.de>; Thu, 24 Jul 2025 16:55:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 63879189AE00
+	for <lists+linux-iio@lfdr.de>; Thu, 24 Jul 2025 17:08:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 038702EAB66;
-	Thu, 24 Jul 2025 16:55:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85E152EA730;
+	Thu, 24 Jul 2025 17:08:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hMojyAsW"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mtrt+9Or"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1287B2EA723;
-	Thu, 24 Jul 2025 16:55:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2CB81E04BD;
+	Thu, 24 Jul 2025 17:08:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753376130; cv=none; b=F031NcYTZt7MTkBGuvLodGSS9LkUSk0CP3Wu39Fj56x+dScUuefKgiWhQg6vLS1e5ABHhJVS41UJgo8EoOGAYRr90eM1KzYQbMXvVX+WyRrKre1JlwKYib0T9A5d4u88HebgbpRbVsASnad6OhSnJ5tJ3oiVy0A9jfUMgkv/KQ8=
+	t=1753376909; cv=none; b=oWl3hXNsPqPQ/toz5uKOxBitRk7iktZr08BeBBlxgLnQyNTsFuX8l5+9ezRpuQf/cBCR1wIGIME9d0F5KFIp9zl2Wy2s8CF0ztYELSTNaWYWaL39iWt1OJvzXup4M9jTGLic3jcB65fC+z2MpmdNgO+oLAw4uw2lnKRXHQi6/d4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753376130; c=relaxed/simple;
-	bh=vDYA1NhhThENwjZWZ4Eoud7CZqi+pj8rM+pGYQRjuYw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=JqqhmCrdBVDyJDDyGL7dn6Tezq4OXW52NNGYG328wg/37NGrI0B1p1HDpXho8HcM0/Eyu37tcUZMN+vpJt6guiqfCo9Xe2GDp3Q1X7Gn7Ok/kpBiFyVLlMZLVWrmbxIUDw7SeCRHgaVr/cq80Lo9oJ8/CW2zZArbjfj74wAg7dE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hMojyAsW; arc=none smtp.client-ip=209.85.208.169
+	s=arc-20240116; t=1753376909; c=relaxed/simple;
+	bh=qYSnfnL2VgMMjK8m+ljl891kemuRYs9JU2Qv0COLK9E=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tsb5U4HOz9hr5rBqwXmZLp8Kb7gxoxtDwgLOn0btN4V0dIhj8YYizq2+cGROKwnFwoW08iMQJhtu8/2fRH8rlfyIQIWstOJ3wsqIkRMvo5tiDGPc9yLh5yM6y83G86vZ8H7QYJDN5dLdZBzW7PsQ19QFQSX+pRDOfIIdKOZuzhQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mtrt+9Or; arc=none smtp.client-ip=209.85.214.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-32f2947ab0bso9803191fa.3;
-        Thu, 24 Jul 2025 09:55:28 -0700 (PDT)
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-23694cec0feso12831155ad.2;
+        Thu, 24 Jul 2025 10:08:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753376127; x=1753980927; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=j+At4Ui3pp582i3bB5s4tY3mBzGHPgBqGnhbfW5ZsDA=;
-        b=hMojyAsWwqia6FI/hTEAHBnScXjAezRJZtzrQ54rtAewhSGDqzdlEa0Q0Zxjjf1gb5
-         Pcm5DeQPHOB/GVkPhmqMePNLvecmVqqthSO7fuKqs83040KYQtNdTNlsk828CQniLcbq
-         OZVnlTYcuE6PFMYPTFtZwtMw1qANHe+MC2d3lmo6OAKUAwMhfo29TWcdGJ3kaHNc2Gi5
-         Onrq7I/H4aEJK1zPD96mD/WBbVHbJk/DFlLJWTwEW+PzgB5nwPAXCLBYkmbLe/HoutvM
-         Q6gmIpIH6JVrnshHxHh3SfzHiHe3U0WGtGbB4lFs7hgvj8ZkPdCcI7EQj012khKcF+Lp
-         ukfA==
+        d=gmail.com; s=20230601; t=1753376907; x=1753981707; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=fGE95oQU+G3JZiNfJBXGaa5iowQ3KE+3XsZUyctMNlw=;
+        b=mtrt+9OrFPT1hUVVtmb3yKXOi11UU7SXOWI50lys/pLral8JzyoH23n1h83W9pW5Tn
+         eMu9O0ULQLRXB4FgjqI7CV/n636pjwuLNKM8Jwfy02pIAwZ02YqW9y+fbizpzWa5R8Hx
+         3zYCZ57ClVNUDwg1rC3AqATnPzKzZyE36pt25rQGjQrWJvit/ohNPSWzgh7FFDfE1TuB
+         ykjuNljw6iAWzhwloHnyoY5hBt+UjgjegD01Ko/ytM82FME8/3SsaZpUdowYhls34l5z
+         hnsK8N5fylRPo8kzgbbqgljNuZQ5qqoz+F5hsunesMWIThHQabEWcn7rSXw7XntfvPhI
+         4H7g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753376127; x=1753980927;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=j+At4Ui3pp582i3bB5s4tY3mBzGHPgBqGnhbfW5ZsDA=;
-        b=jnVDMTEJmNMz+G+3TIJZxyyOeIc8ZUB4+xGpnkCRtr0jnZCNUVn5/rhtSbXpNVbfEH
-         tKmXhYGKtgrj6e/f0wPVuJPqctYMJVCE5Aj73OMTyx0ZI47IKYpHftZyZe7/Tbp2HZcq
-         sEWqBxlCU50AqF5eR36M7wEN9F7f/EN23s3Ly8QCf8JeefRfv+b+jQpigYOsZEuoBKrk
-         K6fJnAnNJ3T0AjLhlcrOEig9IoangmC8XdJJDR3zulcAMNEs5m+SiCLLGYMujqh1Cz8s
-         ZZYsd+gcjIRtueDxHQeQ3fGQ8aKKHHn8TyIcDTw3jiY3WCBzoLhpECutlZMnG1SM7gzL
-         K4tw==
-X-Forwarded-Encrypted: i=1; AJvYcCWcGccQVJpNsbUmRpnvBRWdmzUJG/fds6zZ3QT8XmdkHuvlIGhsm4nGSACvLL8GiuHbTQV2EyTLBzw=@vger.kernel.org, AJvYcCWdyWK63MTZGSGiMfYUj6LEgO/Op7Mj9JGchmyGaw/mvaB+rHWPI6cXKElMeMlvog/UeDZVlDl01HUkgmBH@vger.kernel.org
-X-Gm-Message-State: AOJu0YyLlX/NjI4Mro51OuRLH8ZrnIyNeQvz/s7tdvlxUYEU1/8Ii14O
-	4QHMdAf1waG/0w3UibcMToWxecL8keyQzfWOo+5xTKOuroTyURyAptF4jubTu+pu3eaKnhwj0/b
-	8EUth/Fi9dKMEb56bR5Wykr8IY4lMFB8=
-X-Gm-Gg: ASbGncs/qVTAcv6LIBlPB81dKU5Z7BtcT6kJQU5lXgMJDSVUgZZPPXCDZT0vFrVWP90
-	ZNj2XKM12PS4CiqtWVcA4PXQ37dtV+cYeqs1CRlPXbxMebOXs6OFa3HSq7FSd7YTiUAoqprTvj+
-	ot/kguwo2lv3WJs97VpOBGRBqE/VfDaC6yLYiRtyNFAajKgcUBCevF7Y+DVyhewsfVgc884t1mQ
-	ACQzBHg18Op/upofbQOPuxeknWxXlNoyLww1qGvMA==
-X-Google-Smtp-Source: AGHT+IEqhLOp6yHUH5dQsCSfTeUo0stQF5I9wo3pzXXCIkAjrmH+erexTep2dBedqzmkJfJ+H7RGIW1nvJX4qsVZd3k=
-X-Received: by 2002:a05:651c:516:b0:32c:ab57:126b with SMTP id
- 38308e7fff4ca-330dfd15a37mr24115001fa.16.1753376126720; Thu, 24 Jul 2025
- 09:55:26 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1753376907; x=1753981707;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=fGE95oQU+G3JZiNfJBXGaa5iowQ3KE+3XsZUyctMNlw=;
+        b=tGcP0+1y6G8F1fxqas5O7UKYkLoqLG6ZuAau0BxjwqCoP67G699vEPBcqcAbTVKoC3
+         WIYmd5eJr/B7M+dLyNVBuhs9bmfLmdNCl1bo4yRA/i8uhplKlgx8BPjI4tPudLgk74bb
+         j8GPQPipDmI3baKgifsCyVKvFIeiKKWsKTUOVp8MUrAy47Sn7ozxoJ4fuB5YphHMTOW0
+         +w/Ht8tdMZNKNzEdwLSIPSuHADxVVoEDZ5w5U7jRk940XwBM3sx8NKBKmK+qwEBCG8wo
+         EKEeREpLBM7wF8VsqPV1KcZ298qFLLv09Eotlpkv4WXreLCVCdlI08h7wwZJVvi+fdwk
+         oiaQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWbuo9mVAu3yXrz8MVwqRwnzke6froydE33WzW0V9xdsIqaRaGKnVbHCmLCPCr9txMlyZT+m+CJ@vger.kernel.org, AJvYcCWnBDjOcIDgA7jhgQkUGqCw3wOyYauGJSUZngfB3lj8JqdEJ2+S7/2GcN+RWy/MAEY14jodBYi981VK@vger.kernel.org, AJvYcCXBkbgAHGEXF6+EZUP2fqWrFeMoJYFbssAFcR998ikWavEgTUIbRZ3dTzxcjB+PBIo/zbDkDywFkIzd@vger.kernel.org
+X-Gm-Message-State: AOJu0YwD/FcKVQ4kK3uzTbTg6Ox0Q/oOKprVLHRg5ihEnDhnXPaqKPo3
+	wyKRMgacsUfuHsWb6u/K+yATIbwRjXC8soI1C3g6AgQW+z+TAf6K+TlXmnOq4liBNs4=
+X-Gm-Gg: ASbGnctrtKDVZ0hKEZ/tQ+oBFh7lkTdv+4yxZbIO/1H/rXyln4SsznXjx84oOWMijT7
+	/wpK3BhTxFwKcQpPHq0ihxczq3N/bC7S8ujl8H9z4EagoVb0yys1zzUdL/uI/HH2OZODdyC49DH
+	J7flgs6OCmlwSvWavcQv/FjdS45isU7jpiiKKucFaQqGPF+oBe1yamz3bk9r3IX/YEXMbUkoe/J
+	kCMbEix6KPFPoMfVziF9pe/9bE1d/LkL1reG8gPI6FLiciC67/J9U6Wr9lXfKw4lu0zNzMXmzKr
+	ZKYhn5Oj+sh6YjLEIxadZjRJTB3DOhXMrsmZmb29PKm4mg3reAdR34nozyr17jzMLb3fYdK9Koz
+	ogRtgDn3+MQGIqvHqPNYHt7mWdmRCWUKgAxEdloY=
+X-Google-Smtp-Source: AGHT+IECIHPgvbnvMyXkL6JhqYISUuCy4X6A0DDs5uMshC624UH9yIdwB+tffpJsfG2tPfQ34zHI+g==
+X-Received: by 2002:a17:903:3d10:b0:235:eb8d:7fff with SMTP id d9443c01a7336-23f981bb92bmr94356815ad.28.1753376907010;
+        Thu, 24 Jul 2025 10:08:27 -0700 (PDT)
+Received: from [192.168.1.134] ([49.207.192.227])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23fa48dd816sm19783735ad.136.2025.07.24.10.08.19
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 24 Jul 2025 10:08:26 -0700 (PDT)
+Message-ID: <8f4358e8-ecd6-4d86-8326-25d21c3a4ea2@gmail.com>
+Date: Thu, 24 Jul 2025 22:38:14 +0530
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250721195419.526920-1-akshayaj.lkd@gmail.com>
- <a88e1a8e-d29c-41e7-b3cd-5db965a055df@baylibre.com> <CAE3SzaTG-re2HPRAcPWuo2YmM9mxLWndpN_SQOAZg7MP_B3xDg@mail.gmail.com>
- <8f924da6-c5f6-4f88-9cb1-3e7e1aae491b@baylibre.com> <20250724133933.220d00e4@jic23-huawei>
-In-Reply-To: <20250724133933.220d00e4@jic23-huawei>
-From: Akshay Jindal <akshayaj.lkd@gmail.com>
-Date: Thu, 24 Jul 2025 22:25:14 +0530
-X-Gm-Features: Ac12FXwNOOTQfqAMLiC95ekt7KZ72Z90WciZ_CBjMj_dmSO7lB5A3HTpo4t-zuc
-Message-ID: <CAE3SzaQcsuHihe2-7VTnXAKYab03Cyu1kAPsA2-E4d1kQzCCNQ@mail.gmail.com>
-Subject: Re: [PATCH 1/2] iio: light: ltr390: Add sysfs attribute to report
- data freshness
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] dt-bindings: cleanup: fix duplicated 'is is' in YAML
+ docs
 To: Jonathan Cameron <jic23@kernel.org>
-Cc: David Lechner <dlechner@baylibre.com>, anshulusr@gmail.com, nuno.sa@analog.com, 
-	andy@kernel.org, shuah@kernel.org, linux-iio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Cc: linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-iio@vger.kernel.org, netdev@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-amlogic@lists.infradead.org,
+ ribalda@kernel.org, dlechner@baylibre.com, nuno.sa@analog.com,
+ andy@kernel.org, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, neil.armstrong@linaro.org,
+ khilman@baylibre.com, jbrunet@baylibre.com,
+ martin.blumenstingl@googlemail.com
+References: <20250722170513.5854-1-sanjaysuthar661996@gmail.com>
+ <20250724111247.669d6955@jic23-huawei>
+Content-Language: en-US
+From: Sanjay Suthar <sanjaysuthar661996@gmail.com>
+In-Reply-To: <20250724111247.669d6955@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Thu, Jul 24, 2025 at 6:09=E2=80=AFPM Jonathan Cameron <jic23@kernel.org>=
- wrote:
-> Agreed.  Is the interrupt wired on this board?  If it is and you
-> want to do filtering with the knowledge that the data is fresh then
-> add a data ready trigger and buffered capture support.
-> It's a much bigger job, but it is standard ABI and as such of more
-> general use.
+On 24/07/25 15:42, Jonathan Cameron wrote:
+> On Tue, 22 Jul 2025 22:35:13 +0530
+> Sanjay Suthar <sanjaysuthar661996@gmail.com> wrote:
 >
-> Jonathan
->
-Yes, the interrupt is wired in and enabled.
+>> Fix minor grammatical issues by removing duplicated "is" in two devicetree
+>> binding documents:
+>>
+>> - net/amlogic,meson-dwmac.yaml
+>> - iio/dac/ti,dac7612.yaml
+>>
+>> Signed-off-by: Sanjay Suthar <sanjaysuthar661996@gmail.com>
+> I'd have no problem with the argument that this can go through either
+> tree if there was any interaction between the files or the changes, but
+> here there isn't. This is just causing potential mess if either tree ends
+> up with other changes overlapping this for no benefit.  Please split into
+> two patches, one for each subsystem.  You should be fine to keep the
+> various tags given here for the new patches.
 
-For LTR390, data_freshness is not the same as data-ready.
-Here the sensor does not support a data-ready interrupt.
-It only supports threshold violation interrupts where thresholds are
-configurable.
-LTR390 datasheet Pg 17:
-https://optoelectronics.liteon.com/upload/download/DS86-2015-0004/LTR-390UV=
-_Final_%20DS_V1%201.pdf
+Thanks for the review. I understand your concern regarding splitting the 
+changes. My intention was that, since the fix is a trivial and identical 
+grammatical correction across both subsystems, it didn’t seem necessary 
+to separate them.
 
-Correct me, if I am wrong, but as per my understanding, trigger based inter=
-rupts
-are more appropriate where the application requires storing multiple sample=
-s
-in a buffer at specific time intervals, provided the sensor supports
-data-ready interrupts.
+However, I’m open to either approach — keeping it as a single patch or 
+splitting it if that's preferred. As I’m still new to this process, I’ll 
+defer to @krzysztof and the DT maintainers for the final call on how 
+this should be handled.
 
+Please let me know the preferred direction, and I’ll be happy to update 
+accordingly.
 
-Thanks,
-Akshay
+Best regards,
+
+Sanjay Suthar
+
 

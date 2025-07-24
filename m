@@ -1,85 +1,83 @@
-Return-Path: <linux-iio+bounces-22000-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22001-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3986EB11315
-	for <lists+linux-iio@lfdr.de>; Thu, 24 Jul 2025 23:26:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41E84B1133B
+	for <lists+linux-iio@lfdr.de>; Thu, 24 Jul 2025 23:40:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 377B71C27820
-	for <lists+linux-iio@lfdr.de>; Thu, 24 Jul 2025 21:27:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 682E016D4A6
+	for <lists+linux-iio@lfdr.de>; Thu, 24 Jul 2025 21:40:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 034252EE973;
-	Thu, 24 Jul 2025 21:26:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E54F623AB8D;
+	Thu, 24 Jul 2025 21:40:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iYCq2Bn9"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cfjQx0Pu"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51E1C2EE962;
-	Thu, 24 Jul 2025 21:26:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 080DD23958A;
+	Thu, 24 Jul 2025 21:40:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753392403; cv=none; b=kkFFHZ9XbuSkH3x20np4WgM3IXJ4hdCQO5BRZ/KVD1dWroCPKymLz9IHVlm+56nvjGIvmi0N/izqGdnJEgY8GLZwUZN+msXfGzHpFdx/xveRrKKh3tsk+cRJ9TgfjsTdU08j9ppVQO2tOWMXlwZt1CgPgPqlI6lfsjPZeniULFM=
+	t=1753393218; cv=none; b=SPzIEectOTdva/YF5cntlzoIR8Q8wEiE/H12ZdHgVAqPX2vtZLQu6t5EGTpBKW/BuHD9U1MvGvI3NF/lG0hb0B6tbyumKBtPqkYZNsGcYVRw1vY8Sj3ngDzxU5+1Jb43Ity+IU6s8XvpAQ3EVm5P24Y49Gs5pZ804koLyw/XOpg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753392403; c=relaxed/simple;
-	bh=EfX6aQqkaAynLlfF++u2MHxnMAbP6JMoA+Q8z6ldujQ=;
+	s=arc-20240116; t=1753393218; c=relaxed/simple;
+	bh=neZ4nhTci/OztAR0grO1PqnyUkXOKJlgcFsWnc1vRHY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=P14KbbIUEo0OIhCFGKN1FabNjchOT8oDD9KFBL1C8ktNB06FKKYH5FL6ST2djKxBKX4ceIwUbjsZLM8/oIiovsh+1rrq90BXff/k8bQ65mLtM4WrMhUQDyY5OlhWBHVsrb9W7LDf7TI5qdd9LCdP2WbiGTCIl1FJMS/CVMuipsc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iYCq2Bn9; arc=none smtp.client-ip=198.175.65.16
+	 Content-Type:Content-Disposition:In-Reply-To; b=oHJeaaQexX721vm6zikF0YBQ7lbIlTgbhKhbwK0slf50ZjrMumOEfmmhMuEBbvAm31oqPWDA5vOnpusMjdygrpZYAn2WzHrZdkTnH5/1kXN7CUzUHJrH1dTBbSf1Wvzs/QFr6KvIu4TfAvHJDGNVwFd4vOmFGsnY7uKUX1S93hc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cfjQx0Pu; arc=none smtp.client-ip=192.198.163.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1753392403; x=1784928403;
+  t=1753393217; x=1784929217;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=EfX6aQqkaAynLlfF++u2MHxnMAbP6JMoA+Q8z6ldujQ=;
-  b=iYCq2Bn9NAe8GZUBLLMoU1CTW8Q1UJ+yKE/i1Zvxr1t3uCsTg2LyT7r5
-   wgqftSUNyuARDyoNKgEtOQki5jMV+RgJTAO4JYBFxBycfLf0I2nntjEsv
-   IHoXdH5/waG5AE/UQ1ul7N1O7UFv0yC18m+r5UQBRQVmNwSzuDRTVbX4r
-   Q22SVbiEYQlOhGqVY686zE/0vXCjN5167X91Lj6qzelCzNhmlEwITueds
-   ETJT6eiF5CJr2sT3cwo6QMsF6ZJwKODJAtWs9EDXh0A4dXGXWOHswthrn
-   noQNmmSYkjpQHvbqVdPRCAXBcIyj9kg+sfZ0+U6oIHb2jHeng/5rcLPot
-   w==;
-X-CSE-ConnectionGUID: 8a6LtsSnT2iTPnsK4uroCg==
-X-CSE-MsgGUID: x848tIYkTKCCx2N3I5TQrg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11501"; a="55873279"
+  bh=neZ4nhTci/OztAR0grO1PqnyUkXOKJlgcFsWnc1vRHY=;
+  b=cfjQx0Pup2NGYN0uH5Ca6kV2GvOyfBsO52XQILmQycnuZQS3AD7ooiMT
+   x9+rCu0nYRsmb5i43etDVfo1/xdVykkgzIbcVaHr4FKmrEL6yiL/bPjpC
+   dt3DkgaPl6Enw2YiPjyp9sliJ/GC7nipO3woSpXdqT+DX3PSusoi2lg0/
+   zHgAksXrYG8Ekt3sQx7Mhitygr638cYAdAMdxL4yoQcpnEBNqYmDLsg1x
+   IhF2cgnAcKv8D6bkj+tFmo47tNiPvoLTXBWJTBpA8ovOvGVrb0z1Sbsxg
+   u72SM2a1DmLy4e2//MLzkDMc1ghuwFSJqqUy6AoSO2YYy9Nr3NeO08QaK
+   g==;
+X-CSE-ConnectionGUID: zgd6fwwLTJugowJDUswRFg==
+X-CSE-MsgGUID: JLff8pQCSTWZMjax1wDXhA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11501"; a="67078124"
 X-IronPort-AV: E=Sophos;i="6.16,337,1744095600"; 
-   d="scan'208";a="55873279"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jul 2025 14:26:41 -0700
-X-CSE-ConnectionGUID: iUGxf4nrSSuoV6KIJxKKfA==
-X-CSE-MsgGUID: UNW5t2e0QFSJsUyt8+v7CQ==
+   d="scan'208";a="67078124"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jul 2025 14:40:16 -0700
+X-CSE-ConnectionGUID: am3gpL4CTQ+F++tC4OhfVw==
+X-CSE-MsgGUID: GKXt7Mp8RxCertJvEzhVlQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,337,1744095600"; 
-   d="scan'208";a="184134516"
-Received: from smile.fi.intel.com ([10.237.72.52])
-  by fmviesa002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jul 2025 14:26:38 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1uf3SV-00000000fr7-3O11;
-	Fri, 25 Jul 2025 00:26:35 +0300
-Date: Fri, 25 Jul 2025 00:26:35 +0300
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Gustavo Silva <gustavograzs@gmail.com>,
-	Alex Lanzano <lanzano.alex@gmail.com>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Lothar Rubusch <l.rubusch@gmail.com>
-Subject: Re: [PATCH v4 3/3] iio: imu: bmi270: add support for motion events
-Message-ID: <aIKlC-HlP3nX-ERA@smile.fi.intel.com>
-References: <20250711-bmi270-events-v4-0-53ec7da35046@gmail.com>
- <20250711-bmi270-events-v4-3-53ec7da35046@gmail.com>
- <aHYFMf8QGDNt-5Nf@smile.fi.intel.com>
- <aHYIBReTFqJMtiXW@smile.fi.intel.com>
- <vlpqd3jeszhgpcob7qyzp5vljdowwu26my7xuwuvfftf54zg35@czxhsjejgdkm>
- <aHd2s987EMCdgdrJ@smile.fi.intel.com>
- <20250724162227.065d20a0@jic23-huawei>
+   d="scan'208";a="164728880"
+Received: from lkp-server01.sh.intel.com (HELO 9ee84586c615) ([10.239.97.150])
+  by fmviesa005.fm.intel.com with ESMTP; 24 Jul 2025 14:40:12 -0700
+Received: from kbuild by 9ee84586c615 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uf3fd-000KqZ-15;
+	Thu, 24 Jul 2025 21:40:09 +0000
+Date: Fri, 25 Jul 2025 05:39:09 +0800
+From: kernel test robot <lkp@intel.com>
+To: Lakshay Piplani <lakshay.piplani@nxp.com>, linux-kernel@vger.kernel.org,
+	linux-iio@vger.kernel.org, jic23@kernel.org, dlechner@baylibre.com,
+	nuno.sa@analog.com, andy@kernel.org, marcelo.schmitt1@gmail.com,
+	gregkh@linuxfoundation.org, viro@zeniv.linux.org.uk,
+	peterz@infradead.org, jstephan@baylibre.com, robh@kernel.org,
+	krzk+dt@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, vikash.bansal@nxp.com,
+	priyanka.jain@nxp.com, shashank.rebbapragada@nxp.com,
+	Frank.Li@nxp.com, carlos.song@nxp.com, xiaoning.wang@nxp.com,
+	haibo.chen@nxp.com, Lakshay Piplani <lakshay.piplani@nxp.com>
+Subject: Re: [PATCH 1/2] dt-bindings: iio: temperature: Add NXP P3T175x
+ support.
+Message-ID: <202507250514.dtLcgKZ2-lkp@intel.com>
+References: <20250724083951.2273717-1-lakshay.piplani@nxp.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -88,56 +86,39 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250724162227.065d20a0@jic23-huawei>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+In-Reply-To: <20250724083951.2273717-1-lakshay.piplani@nxp.com>
 
-On Thu, Jul 24, 2025 at 04:22:27PM +0100, Jonathan Cameron wrote:
-> On Wed, 16 Jul 2025 12:53:55 +0300
-> Andy Shevchenko <andriy.shevchenko@intel.com> wrote:
-> > On Tue, Jul 15, 2025 at 08:55:35PM -0300, Gustavo Silva wrote:
-> > > On Tue, Jul 15, 2025 at 10:49:25AM +0300, Andy Shevchenko wrote:  
-> > > > On Tue, Jul 15, 2025 at 10:37:22AM +0300, Andy Shevchenko wrote:  
-> > > > > On Fri, Jul 11, 2025 at 08:36:03PM -0300, Gustavo Silva wrote:  
+Hi Lakshay,
 
-...
+kernel test robot noticed the following build warnings:
 
-> > > > > > +/* 9.81 * 1000000 m/s^2 */
-> > > > > > +#define BMI270_G_MEGA_M_S_2				9810000  
-> > > > > 
-> > > > > I thought this is MICRO...  
-> > > > 
-> > > > Btw, what if we use the device on poles and on equator (or even on orbital
-> > > > station)? I'm wondering if this constant should be defined in units.h or
-> > > > even in uAPI that user space may add a correction if needed.
-> > > >   
-> > > I certainly hadn't thought about these scenarios.
-> > > FWIW, the accelerometer scale values also assume g = 9.81 m/s^2.
-> > > For example, 0.000598 = 2 * 9.81 / 32768  
-> > 
-> > Right, but this should be supplied to user space somehow. OTOH the measure error
-> > may be high enough (what is the precision of the measurements by the way?) that
-> > it will neglect the differences in the 'g' constant.
-> > 
-> > All the details are given in [1].
-> > 
-> > [1]: https://en.wikipedia.org/wiki/Gravity_of_Earth#:~:text=The%20precise%20strength%20of%20Earth's,/s2)%20by%20definition.
-> 
-> These sensors don't measure relative to g.
+[auto build test WARNING on jic23-iio/togreg]
+[also build test WARNING on linus/master v6.16-rc7 next-20250724]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-What do they measure? Any links for me to study?
+url:    https://github.com/intel-lab-lkp/linux/commits/Lakshay-Piplani/iio-temperature-Add-driver-for-NXP-P3T175x-temperature-sensor/20250724-165936
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
+patch link:    https://lore.kernel.org/r/20250724083951.2273717-1-lakshay.piplani%40nxp.com
+patch subject: [PATCH 1/2] dt-bindings: iio: temperature: Add NXP P3T175x support.
+config: arc-randconfig-052-20250725 (https://download.01.org/0day-ci/archive/20250725/202507250514.dtLcgKZ2-lkp@intel.com/config)
+compiler: arc-linux-gcc (GCC) 8.5.0
+dtschema version: 2025.6.2.dev4+g8f79ddd
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250725/202507250514.dtLcgKZ2-lkp@intel.com/reproduce)
 
-> That's annoying marketing which is why I held firm for m/s^2 for IIO :)
-> So what they measure for a given acceleration does not change depending
-> on where we are on earth. You should use a 'fixed' standard value for
-> conversion from marketing values in g to m/s^2..
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202507250514.dtLcgKZ2-lkp@intel.com/
 
-Hmm... But shouldn't that marketing value be exposed to user space?
+All warnings (new ones prefixed by >>):
 
+>> Warning: Duplicate compatible "nxp,p3t1755" found in schemas matching "$id":
+   	http://devicetree.org/schemas/iio/temperature/nxp,p3t1755.yaml#
+   	http://devicetree.org/schemas/hwmon/lm75.yaml#
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 

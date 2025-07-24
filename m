@@ -1,58 +1,57 @@
-Return-Path: <linux-iio+bounces-21971-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-21972-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D9B6B10AF5
-	for <lists+linux-iio@lfdr.de>; Thu, 24 Jul 2025 15:10:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4449B10B14
+	for <lists+linux-iio@lfdr.de>; Thu, 24 Jul 2025 15:12:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 20A5D1CE1EC4
-	for <lists+linux-iio@lfdr.de>; Thu, 24 Jul 2025 13:10:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0AF857A9F34
+	for <lists+linux-iio@lfdr.de>; Thu, 24 Jul 2025 13:11:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08ACA2D640F;
-	Thu, 24 Jul 2025 13:09:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98CF72D5425;
+	Thu, 24 Jul 2025 13:12:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u6Eehoxq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M4PaeJpx"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B25472BE64D;
-	Thu, 24 Jul 2025 13:09:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55F092BE643;
+	Thu, 24 Jul 2025 13:12:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753362586; cv=none; b=qM8vRQEXmdO61lEM9QgYPHv73qsaL1geWnmzUtktyLTB95p0GNX0dfhqtnewacd9n/6RBRxJ6md75dva4ERi5+a4cj88ZGb3ZImWNFum1Nn94LHiyWY8torXTyrYPlboH20mUKnQECap1F5Nbo2xCbC+4aPDWT1wT4U//7Vzb/w=
+	t=1753362742; cv=none; b=vDHak8HF57c8ZS80X5s2sEU9T21otm5gSkMLYmRTr2voRHDfDJbVHodXqRXeI+3u/jaT1yQLg33/wv675SRqMxXsTMvSC8zQj91Dn+Xalbb4jGYz27WY4cDN22bvgeshNDwaVg2IZ4wr9VvjLa3aZ53QiJhtbyva/PlYQcAeyCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753362586; c=relaxed/simple;
-	bh=jHNW7RDukm860OgDTe9udnSJui/uXJQFBX78Vj/nqtM=;
+	s=arc-20240116; t=1753362742; c=relaxed/simple;
+	bh=OkPRL57kOfmY931OTFdFQJUDqRwpx+07WG3VjlUybmQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=i8nFtzLx2fa+k+uhyqt6/LzWsQRmTf1+gP7nacBJiA6afwRbqCz4OhJbUwQYdhRHnaGNGOk5xwd7ysDu45Rey0sH4v2Rfmd/xieG97HMDsF96oJUh+u5xWh9ugMU6Ar5BVdCsctYsqlDVclIxslABUNUekAOnl5EWLotMXMmK1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u6Eehoxq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2C17C4CEF5;
-	Thu, 24 Jul 2025 13:09:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=AWPMIQM9AN63uzalsOq/kMaPYHfoeTt+n6oryePS+9MW8dugPYgs5ytrZUiW9rCtZZ7PWpo8cW3TZTXFIQmgq2Lq5m/9LPh98liZX5MlA5Oi+sla3JU/CRXhRjZXVqFkBUhuY4oAw1amiYzN5e0tzYTNSvW5M3dovruygogV4pM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M4PaeJpx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D640C4CEED;
+	Thu, 24 Jul 2025 13:12:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753362586;
-	bh=jHNW7RDukm860OgDTe9udnSJui/uXJQFBX78Vj/nqtM=;
+	s=k20201202; t=1753362742;
+	bh=OkPRL57kOfmY931OTFdFQJUDqRwpx+07WG3VjlUybmQ=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=u6EehoxqAOzTsGOmobZ78OLKNI/pYR13QnMLZE2oXZb9s/9kcapv7nsBWg8y1EeEg
-	 RPJHg8wK8Q/7+WZLsuySc4zp6DcgceeQoL4tE/ZjQ2dVfsn7IVA0EGcjkFe0rs8NnA
-	 LVFXpPdJe/py/6R7XkFY53lojAWcIVXaGsa8YD2Zf4+GlG8QXNBZ2qBzD8Q6a7wGK5
-	 r9a06kjLHfddRFMDzi03wTod9BIuS9fvca39EnGtxNfiohoKJFlshmWz1zvGOrpY6p
-	 zutuid5i4/IKebzZODjGrSrcyHcm/MnjJJ6y91bcA2nhFIh9pq/J44ZD0daFuP/fwP
-	 g+x7EjEbz+63w==
-Date: Thu, 24 Jul 2025 14:09:40 +0100
+	b=M4PaeJpxE6uMFL1q2YUVr2cgXRWLbbkoYrXYlb8yzhRfzMNSrj0WlzLvnn6R+YzX2
+	 WAye9TZdsnJqZV41ogGMSnrJ+4HzCn6/iA0rqJi3WVBiIOIzWbHeGsXpyZwi7GwBjj
+	 xZFyVApBaVjKEEZsdCm9ZhDUhFYHfRN4z4y89Z92KSX7M3ZWdJVTUQBERHM+Jw0QE6
+	 nEhX7CsrCXR3lhyD7HXeGPP04z/FO7pURMf/a2P3a6ACc/nAIw4nBZzB+FPB0Prfu2
+	 UVxQ6vhfolxh9YsdSD1NdWQfVSktIqAWSJiAz88TJlmgWpNe1LIWklhuI8k1D9BMIr
+	 A8BbPpHI18C+Q==
+Date: Thu, 24 Jul 2025 14:12:15 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: David Lechner <dlechner@baylibre.com>
-Cc: Antoniu Miclaus <antoniu.miclaus@analog.com>, robh@kernel.org,
- conor+dt@kernel.org, devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/3] iio: add power and energy measurement modifiers
-Message-ID: <20250724140940.2d9b4a1f@jic23-huawei>
-In-Reply-To: <1ead013c-56ef-4f11-afb9-2b11e0de7eb2@baylibre.com>
-References: <20250711130241.159143-1-antoniu.miclaus@analog.com>
-	<20250711130241.159143-2-antoniu.miclaus@analog.com>
-	<1ead013c-56ef-4f11-afb9-2b11e0de7eb2@baylibre.com>
+Cc: Michael Hennerich <Michael.Hennerich@analog.com>, Nuno =?UTF-8?B?U8Oh?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, Andy Shevchenko
+ <andriy.shevchenko@linux.intel.com>
+Subject: Re: [PATCH v4] iio: adc: ad7173: add SPI offload support
+Message-ID: <20250724141215.07319298@jic23-huawei>
+In-Reply-To: <20250710-iio-adc-ad7173-add-spi-offload-support-v4-1-536857c4e043@baylibre.com>
+References: <20250710-iio-adc-ad7173-add-spi-offload-support-v4-1-536857c4e043@baylibre.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,96 +62,101 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 11 Jul 2025 14:23:14 -0500
+On Thu, 10 Jul 2025 17:22:00 -0500
 David Lechner <dlechner@baylibre.com> wrote:
 
-> On 7/11/25 8:02 AM, Antoniu Miclaus wrote:
-> > Add new IIO modifiers to support power and energy measurement devices:
-> >
-
-Sorry I'm late to the game.  Busy few weeks :(
- 
-> > Power modifiers:
-> > - IIO_MOD_ACTIVE: Real power consumed by the load
-> > - IIO_MOD_REACTIVE: Power that oscillates between source and load
-> > - IIO_MOD_APPARENT: Magnitude of complex power  
+> Enable SPI offload support for the AD7173 ADC driver.
 > 
-> These make sense a modifiers since they are components of a single
-> measured value.
-
-Agreed. Oddly I thought we already had these.  Maybe there was a proposal
-at some point that never got adopted. Maybe I just had a nightmare
-
-
-
+> The scan_type used for SPI offload is assuming that we are using the
+> ad411x_ad717x HDL project [1] which always stores data words in 32-bits.
 > 
-> > - IIO_MOD_FUND_REACTIVE: Reactive power at fundamental frequency  
+> Link: https://analogdevicesinc.github.io/hdl/projects/ad411x_ad717x/index.html [1]
+> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Signed-off-by: David Lechner <dlechner@baylibre.com>
+I'm going to be optimistic that we don't have any clashes in this new feature
+patches with the fix I just queued up.
+
+Applied to the testing branch of iio.git.
+
+thanks,
+
+Jonathan
+
+> ---
+> v3 was applied, but then we had to drop the final patch due to a
+> conflicting fix. Here is that patch again with the changes needed to
+> adjust it to the changes in the fix.
 > 
-> This one seems like there should just be a separate channel
-> with IIO_POWER + IIO_MOD_REACTIVE since it is measuring a different
-> value.
-
-Hmm. This one is new to me. A separate channels sounds fine to me
-with a label to provide the info on what it is.
-
+> We'll have to wait for the fix to make it's way back into iio/testing
+> before we can apply this patch, so it will have to sit for a while.
 > 
-> > - IIO_MOD_FACTOR: Power factor (ratio of active to apparent power)  
+> v4 changes:
+> - Add one more instance of .supports_spi_offload = true,.
+> - Picked up Andy's Reviewed-by tag.
+> ---
+>  drivers/iio/adc/ad7173.c | 14 ++++++++++++++
+>  1 file changed, 14 insertions(+)
 > 
-> Power factor seems like it should be a IIO_CHAN_INFO_ rather than
-> IIO_MOD_. It is also unitless, so doesn't make sense to be part
-> of power_raw which would imply that it shuold be converted to Watts.
-
-Agreed.
-
+> diff --git a/drivers/iio/adc/ad7173.c b/drivers/iio/adc/ad7173.c
+> index 9730fda56186afc45f589899e669c41eb538af6b..3886d2f751d0370994ababf72409f4dcb328641d 100644
+> --- a/drivers/iio/adc/ad7173.c
+> +++ b/drivers/iio/adc/ad7173.c
+> @@ -747,6 +747,7 @@ static const struct ad_sigma_delta_info ad7173_sigma_delta_info_4_slots = {
+>  	.set_mode = ad7173_set_mode,
+>  	.has_registers = true,
+>  	.has_named_irqs = true,
+> +	.supports_spi_offload = true,
+>  	.addr_shift = 0,
+>  	.read_mask = BIT(6),
+>  	.status_ch_mask = GENMASK(3, 0),
+> @@ -763,6 +764,7 @@ static const struct ad_sigma_delta_info ad7173_sigma_delta_info_8_slots = {
+>  	.set_mode = ad7173_set_mode,
+>  	.has_registers = true,
+>  	.has_named_irqs = true,
+> +	.supports_spi_offload = true,
+>  	.addr_shift = 0,
+>  	.read_mask = BIT(6),
+>  	.status_ch_mask = GENMASK(3, 0),
+> @@ -779,6 +781,7 @@ static const struct ad_sigma_delta_info ad7173_sigma_delta_info_16_slots = {
+>  	.set_mode = ad7173_set_mode,
+>  	.has_registers = true,
+>  	.has_named_irqs = true,
+> +	.supports_spi_offload = true,
+>  	.addr_shift = 0,
+>  	.read_mask = BIT(6),
+>  	.status_ch_mask = GENMASK(3, 0),
+> @@ -1595,6 +1598,11 @@ static int ad7173_fw_parse_channel_config(struct iio_dev *indio_dev)
+>  		if (st->info->data_reg_only_16bit)
+>  			chan_arr[chan_index].scan_type = ad4113_scan_type;
+>  
+> +		if (ad_sigma_delta_has_spi_offload(&st->sd)) {
+> +			chan_arr[chan_index].scan_type.storagebits = 32;
+> +			chan_arr[chan_index].scan_type.endianness = IIO_CPU;
+> +		}
+> +
+>  		chan_index++;
+>  	}
+>  
+> @@ -1685,6 +1693,12 @@ static int ad7173_fw_parse_channel_config(struct iio_dev *indio_dev)
+>  		if (st->info->data_reg_only_16bit)
+>  			chan_arr[chan_index].scan_type = ad4113_scan_type;
+>  
+> +		/* Assuming SPI offload is ad411x_ad717x HDL project. */
+> +		if (ad_sigma_delta_has_spi_offload(&st->sd)) {
+> +			chan_arr[chan_index].scan_type.storagebits = 32;
+> +			chan_arr[chan_index].scan_type.endianness = IIO_CPU;
+> +		}
+> +
+>  		chan_index++;
+>  	}
+>  	return 0;
 > 
-> > 
-> > Energy modifiers:
-> > - IIO_MOD_ACTIVE_ACCUM: Accumulated active energy
-> > - IIO_MOD_APPARENT_ACCUM: Accumulated apparent energy
-> > - IIO_MOD_REACTIVE_ACCUM: Accumulated reactive energy  
+> ---
+> base-commit: f8f559752d573a051a984adda8d2d1464f92f954
+> change-id: 20250620-iio-adc-ad7173-add-spi-offload-support-32a178b666a3
+> prerequisite-change-id: 20250703-iio-adc-ad7173-fix-num_slots-on-most-chips-b982206a20b1:v3
+> prerequisite-patch-id: 350fb675f3e0fe494e0ce4ddf5685d9369ffa11a
 > 
-> As below, this one seems like there should be a separate
-> energy channel for accumulated energy.
-
-What sort of energy measurement isn't accumulated?  If it's
-divided by time then it's power anyway.
-
-
-> 
-> > 
-> > Signal quality modifiers:
-> > - IIO_MOD_RMS: Root Mean Square value  
-> 
-> Suprised we don't have something like this already. altvoltageY isn't
-> clear about if the value is peak-to-peak or RMS.
-
-Hohum.. My vague recollection is peak to peak, but oops we should
-have documented that better.  Someone want to audit existing drivers?
-
-> 
-> > - IIO_MOD_SWELL: Voltage swell detection
-> > - IIO_MOD_DIP: Voltage dip (sag) detection  
-> 
-> These sound like events, not modifiers.
-Agreed.  Those look fun.
-
-
-> >  What:		/sys/bus/iio/devices/iio:deviceX/in_capacitanceY_raw
-> >  KernelVersion:	3.2
-> >  Contact:	linux-iio@vger.kernel.org
-> > @@ -1593,6 +1603,12 @@ Description:
-> >  
-> >  What:		/sys/.../iio:deviceX/in_energy_input
-> >  What:		/sys/.../iio:deviceX/in_energy_raw
-> > +What:		/sys/.../iio:deviceX/in_energyY_active_raw
-> > +What:		/sys/.../iio:deviceX/in_energyY_reactive_raw
-> > +What:		/sys/.../iio:deviceX/in_energyY_apparent_raw
-> > +What:		/sys/.../iio:deviceX/in_energyY_active_accum_raw
-> > +What:		/sys/.../iio:deviceX/in_energyY_reactive_accum_raw
-> > +What:		/sys/.../iio:deviceX/in_energyY_apparent_accum_raw  
-> 
-> I think the accumulated would just be a separate channel, not a modifier.
-
-I'm confused what energy is vs accumulated energy. 
+> Best regards,
 
 

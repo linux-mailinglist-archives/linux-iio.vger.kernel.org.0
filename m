@@ -1,88 +1,89 @@
-Return-Path: <linux-iio+bounces-22014-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22016-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BDEDB11A32
-	for <lists+linux-iio@lfdr.de>; Fri, 25 Jul 2025 10:47:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2468CB11A77
+	for <lists+linux-iio@lfdr.de>; Fri, 25 Jul 2025 11:04:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A673C5614C3
-	for <lists+linux-iio@lfdr.de>; Fri, 25 Jul 2025 08:47:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC59FAE1472
+	for <lists+linux-iio@lfdr.de>; Fri, 25 Jul 2025 09:03:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF1E81F2BA4;
-	Fri, 25 Jul 2025 08:47:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E62CC2594BD;
+	Fri, 25 Jul 2025 09:04:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AvilkJGh"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Xdl9VBcV"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C7DC219E0;
-	Fri, 25 Jul 2025 08:47:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15B17254873
+	for <linux-iio@vger.kernel.org>; Fri, 25 Jul 2025 09:04:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753433261; cv=none; b=YavHiaG0TdPGdupAyDaeWbn4uqNw6lz2saM2ImToFJGeoSd4TF2PgyvB7QAdCx/V1Oj/iJQFRCSscgfQDfaTIgQDuU48c79C5zh9aazQYaCR7HzKmLtJSCZNljUaB8crHNWBqFLJOERr7M8HPoSu54VBp/Bn9YJickYlI2qjzqg=
+	t=1753434260; cv=none; b=OnuTWefVBHXZMk0FmSqGywShTGptelKkaC2bg30pJuaWyxxPjHpsd1VClINwudLTX0Yy0fFdb20ZJcSlw1CwS6fXiIyCwQkJi3geNU+RsSI4G61YjWZW95yBq8kHOP1P/LSc1PAjtdLkjKeTK819x4rEb/c7hegl9thQENRfsq0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753433261; c=relaxed/simple;
-	bh=RVJNoS3jyMJS/crUCJ3f96RXEEdmuCA1baA7ilUD9YA=;
+	s=arc-20240116; t=1753434260; c=relaxed/simple;
+	bh=SdTce27tnNl2VaQZ34uRuiDgpAETwj3Q5UHnB/ZeIF4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VSW1GY5BYs2sTQyL0QhXIAWlW7XeK3qnGlFlADgTJJVc86EByGWfH+cT9aLJ01NzijA1DZj8qO5+q+mMVOaQCa1UO/CyLhWZnkuoinM0r0KmcefvBlhXAjlAQhmyRw9emr+RDvvDecO3yg9XmAONJGcMSsPh79V5Jhv4iTV9ynQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AvilkJGh; arc=none smtp.client-ip=209.85.208.46
+	 Content-Type:Content-Disposition:In-Reply-To; b=fe36WM3MNin9PPxlAxQ3zxjgJ0vSFloNSWC6nzkmRcWP4gEjgaVe3cA/BWfKQyleNKilBSd7oEIcaWWlPdX4puJxthvbGDeOpYNCJL3KzqTVcZL+EmfmFsx4LG83w0yEgGrPMqS+z8HGes7119vvwVFK+T3c/Hj7PbCxDNowJjA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Xdl9VBcV; arc=none smtp.client-ip=209.85.218.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-607cf70b00aso3709985a12.2;
-        Fri, 25 Jul 2025 01:47:39 -0700 (PDT)
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-ae0de1c378fso258102866b.3
+        for <linux-iio@vger.kernel.org>; Fri, 25 Jul 2025 02:04:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753433258; x=1754038058; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1753434257; x=1754039057; darn=vger.kernel.org;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=OxSGf1Goj9vGw9/2w7ljaHJCx8os9pgI+QhLw0k/kP8=;
-        b=AvilkJGhQRzzA+6p4R0i6Et5fXeKR7+C6bgTf7ps1qbaKBV31HB5LBLoGfLEm+Od0J
-         pG3asr+rrhFHxw6ryP+B7DlYZYhdDECxBJY+jcB2vJDvJuCZe4q45zcfrhE9Q9YoudvV
-         97XkxfLwTBmVGPJwi8C83xcVczN6VRp+81Y4s06BGqOWhTLJTxSoxHKoprVrFnngb80N
-         fye0vxvV/ZBVb1N0dLmWNzxFxFlClbd38mAUUwbybsbCfuHufoIcXPfZ+myu9KG6mAdh
-         gqnJ9TJpcNLAa3PNnfEEwS7+gTGBDtiFezjxd4ZRcwDsA2cWVfxn/TM35r3Zsyr80hIq
-         Fj4A==
+        bh=m3QCs/VNwfIL6R6Be8bLzCAikzZ01MpzWZBS7upZ78s=;
+        b=Xdl9VBcV5bV5+jJzAuxV6fFJaaDPMYozBHHAjbyfyEuz86G8kv10T69GJXmrAn+kDv
+         Uh5E7r/3cOIp9MB8sOi10e+5+5hp4eB4xwjQAhNln7eqChCFp2b4Y+/rjvhcLY3ts30o
+         sW6n2b8ob2H9TKefGF6QucypsOLQvdky7rOkezkqeP9PWn1jkjLjQH9RbxdCPUBWBzC7
+         5En8MvQnITAlSGy7DhXaEqDj2fikOvmyUpQA63L1rwhf+uNXMfk9mS+wBr+QIknh3DKV
+         U+E11L2Rzk140fAVnaLO6pj/c7Kn/Ok/uPVr8NL83a6Mfkv46AWasDfKBK/O4I394i/G
+         KB6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753433258; x=1754038058;
+        d=1e100.net; s=20230601; t=1753434257; x=1754039057;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=OxSGf1Goj9vGw9/2w7ljaHJCx8os9pgI+QhLw0k/kP8=;
-        b=p7xea4t+9FUK7sgx5N0irTlyJSxWS1wFSE7XB70qlRKEPmVPA86neG7N604ZkGH5HX
-         +9yoSuz1FTyJc4oRXe2qaPbNkxoSTV91S01xQg49U2BeqPY0uwfhsiv9fZIP9dJzyK3J
-         Bi4W0fa2gPC7L5ziRrjj3YpmhpVeTzTs2FvaMHuzhuhItX3o2NGSH4HMBUPlKeyZBXsc
-         brVo+FhiojMbGDFTJKOGY/mBW4WEYJajT3KesNnj2gA5PFf9mcQpzZFJvj6Cpb9uT0J+
-         lbqxDSSHw1CLNY6iJPSA6wxu1OOT1TVVk89vuqdm0Y6qiQfTtgALgEpKvELq0t32G0VB
-         l/cQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUgkEwqoi5tXVXqGMeuk9jQU6MBipGggFtTIK8RW+tEYLlSpmpG6BIlXJ7K5IIKyuZUBTKHsV5xPUI=@vger.kernel.org, AJvYcCX/sHxzPNyVorbJ11PcPCcIthRPhyGkOyGYDLTlbg0P/exxLA4Mc09VZHbiQyZAfqyny1L4m/KDsPqHTSBW@vger.kernel.org
-X-Gm-Message-State: AOJu0YxYwFeePPHe//E6FUTej0dQrurFR2tTvy7vx0/Vl4srTf/UExOA
-	aQCyh0qA1Ej0L1Aocw9AqYhBFPcaEaRyiobQ5isFlxoLgmykzdMZLxli
-X-Gm-Gg: ASbGncvNstVmuq/xNP7wY2P9JbWzV5n8q7xLJGC7Dfq8VuaO4K35p78cEt8eCctle7T
-	gPuhrqEhGhtxLpqC+gDjvD/rtOLzucVM2jVYKGXWZEVwvOqZCPGfRlETGpWrh3xqMcjC1326LJf
-	1EbP140JB3gHzbFX9pTMjFj88rX1Cs+o7plGR2B5aoY08yiy3p+8V999lpTXgrm967PeF7mkNd8
-	oJKFiPuYppvqCuQ/pBJMN2r1HtosTKb4Z8a87sx8kMuKvQwkFrjCZs+ILTn9AJZn/vKB5xOyPgG
-	TYjFOjHcPAxacK1BvLmOhqxeneNH6mi8kenzHAxlST6d6P0WGynRn/G/jVHhVzSRR8pTBOSqAOh
-	0DpX7nQnhzXpL
-X-Google-Smtp-Source: AGHT+IEZ78rgBh+lHnbAs1v1snWgdnx+Hl+1pexireJcJpcmozaTqnmRUgtavqI6Ncne3VvzfJ93Iw==
-X-Received: by 2002:a17:907:e84b:b0:ae7:ec3:ef41 with SMTP id a640c23a62f3a-af61950b3f4mr161895966b.45.1753433258008;
-        Fri, 25 Jul 2025 01:47:38 -0700 (PDT)
+        bh=m3QCs/VNwfIL6R6Be8bLzCAikzZ01MpzWZBS7upZ78s=;
+        b=lplbniGAcYZkHs7VfUvfdjtM1sWD07QjmvzE+OirNj6ZjkvKBwhXY+tUv0a84VUlOr
+         JjPrFT6rHIINK+FJGvnfsgqxrUx2SMR7QXgsFdI5fAQn2OO9acwoAJusmid4BXmIz2Wc
+         jfKNzvSYjRRJeQkQ2SsjOEOsrAMxhg0pcQRJPerskUvYxSaY9G+J3m5Ij8GHgdibGO3L
+         vd8afGkLt67FvyfxuGb+Ng1crpOYKKD4Jh7cwhA5Kj6q2jEX2NbSLl4mB8aHrjpiVj7v
+         jP8iyJO79OGNCIpKH+jKyAwkWMI6Rw1Kw3gQGKp01Ky6Ea60xll2TVLhmNUP9/qVUjXv
+         lTdw==
+X-Forwarded-Encrypted: i=1; AJvYcCXoAWfl6eZdQVomXUmK+4YpWKY4P3KizWei3XeQRKeJ0rAilc6mTyPeNQ3OnEmW2qQREmarhJph4PQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzXYgxF+0BGpr1ONUxIYzXsFLbMEfCSWzy64v9GSWQPf68M/H3y
+	aE36tbGIfM74j8/eqEpTkHEN/n3t/TpR8C551Ri05mbyGZFJSyDwU0gz
+X-Gm-Gg: ASbGncvcYWM41tS4Vs+/EuYIflx9P5IrBrZNmm+/3MhSojxSQHrdXnwlYMZ/Us0uPEm
+	bCZ04PxyktZTjLKWzEXaaPctElzRp3vJ+Kvye8J/b51paMGOvtu8D/ohKqg3ab4uSil0Jpvfo8A
+	0RmOLenW7XQARG14CsJ6Qt/h190tTHnGMJZs5A9cRZfsUZGxE95R33IyfuHmb6BCj7RemAWJ3+S
+	8q6ukcUqmrQTDoAxUa4darnmwraMwVbQ+ZAoPYIIxQFjXkZu1g6I2eA3DLt+lrE0lpQCW2twlPP
+	3ltBhnJ/47bsZGX7RsHqgbNXiRB6XBovIUAHiEJksicuzVETw8m8jEADG3uak6JOFrP3jJ+yhNc
+	xYaaK4CV+SvGZ
+X-Google-Smtp-Source: AGHT+IHuKTotlwqmHtchQ1r4AuwoD113uhcuP2DWu5wXiVttc9/+mQpdDyFrLylleOAQmI14LyZ6Dw==
+X-Received: by 2002:a17:907:dab:b0:ae3:53b3:b67d with SMTP id a640c23a62f3a-af61b0f99demr132731866b.1.1753434256870;
+        Fri, 25 Jul 2025 02:04:16 -0700 (PDT)
 Received: from nsa ([95.214.217.20])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-af47f44dfdasm238002966b.85.2025.07.25.01.47.36
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-af47c58bbaesm233252966b.30.2025.07.25.02.04.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Jul 2025 01:47:37 -0700 (PDT)
-Date: Fri, 25 Jul 2025 09:47:51 +0100
+        Fri, 25 Jul 2025 02:04:16 -0700 (PDT)
+Date: Fri, 25 Jul 2025 10:04:30 +0100
 From: Nuno =?utf-8?B?U8Oh?= <noname.nuno@gmail.com>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Michael Hennerich <Michael.Hennerich@analog.com>, 
-	Jonathan Cameron <jic23@kernel.org>, Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>, 
-	Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/5] iio: adc: ad7137: add filter support
-Message-ID: <itmrmxm5s4y3ytpcfuofwl4luhy6i6girzeaww5aiom6pjxhwe@dhrkgh6pcvzu>
-References: <20250710-iio-adc-ad7137-add-filter-support-v1-0-acffe401c4d2@baylibre.com>
- <29786806-6495-4423-9172-e924c60b93d6@baylibre.com>
+To: Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: nuno.sa@analog.com, linux-iio@vger.kernel.org, 
+	Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
+	Andy Shevchenko <andy@kernel.org>
+Subject: Re: [PATCH] iio: buffer: buffer-cb: drop double initialization of
+ demux list
+Message-ID: <5yxun6jqws6j63vcaf7sxgyqevwt2nl47vdptm6vpgsffb5ro4@kledo6joqctj>
+References: <20250725-iio-minor-cleanup-v1-1-4e561372142e@analog.com>
+ <CAHp75Ve-ra-SbLv0aV=xaC8pLxGUh54v8rx6GHU4yeDtm8=Cbg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -92,41 +93,43 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <29786806-6495-4423-9172-e924c60b93d6@baylibre.com>
+In-Reply-To: <CAHp75Ve-ra-SbLv0aV=xaC8pLxGUh54v8rx6GHU4yeDtm8=Cbg@mail.gmail.com>
 
-On Thu, Jul 10, 2025 at 05:47:14PM -0500, David Lechner wrote:
-> On 7/10/25 5:39 PM, David Lechner wrote:
-> > Adding yet another feature to the ad7173 driver, this time,
-> > filter support.
-> > 
-> > There are a couple of leading patches to rename some stuff to minimize
-> > the diff in the main patch where filter support is actually added. And
-> > there is a bonus patch to clean up the ABI docs for filter_type first
-> > before adding the new filter types introduced in this series.
-> > 
-> > This was tested on the EVAL-AD7173-8ARDZ evaluation board.
-> > 
-> > This series depends on a bunch of fixes, so we'll have to wait for
-> > those to make it back into iio/testing before we can merge this
-> > series. There is also an outstanding patch to add SPI offload support
-> > to this driver, but that doesn't actually have any merge conflicts
-> > with this series, so they can be applied in any order.
-> > 
-> > ---
-> > David Lechner (5):
-> >       iio: adc: ad7173: rename ad7173_chan_spec_ext_info
-> >       iio: adc: ad7173: rename odr field
-> >       iio: adc: ad7173: support changing filter type
-> >       iio: ABI: alphabetize filter types
-> >       iio: ABI: add filter types for ad7173
-> > 
-> I don't know why, but I really struggle to write this part number
-> correctly. The subject of this cover letter is wrong, but at least
-> I got it right in all of the patch subject lines.
+On Fri, Jul 25, 2025 at 10:47:19AM +0200, Andy Shevchenko wrote:
+> On Fri, Jul 25, 2025 at 9:32 AM Nuno Sá via B4 Relay
+> <devnull+nuno.sa.analog.com@kernel.org> wrote:
+> >
+> > From: Nuno Sá <nuno.sa@analog.com>
+> >
+> > Drop the call to INIT_LIST_HEAD(&cb_buff->buffer.demux_list). That's
+> > already done in iio_buffer_init(&cb_buff->buffer).
+> 
+> LGTM,
+> Reviewed-by: Andy Shevchenko <andy@kernel.org>
+> 
+> ...
+> 
+> >         cb_buff->buffer.access = &iio_cb_access;
+> > -       INIT_LIST_HEAD(&cb_buff->buffer.demux_list);
+> 
+> Looking at this I think ideally it would be nice to have the buffer
+> type to be hidden from the users and only available via
+> getters/setters.
 
-Series looks good. Just some (apparent) typos and some other thing that
-you may or may not change. So, at least with the typos fixed:
+I would say it's arguable at the very least. The buffer callback is
+itself a buffer implementation (extends the inner buffer object) so it
+kind of make senses it can access it's internals via buffer_impl.h.
 
-Reviewed-by: Nuno Sá <nuno.sa@analog.com>
+Note that 'struct iio_buffer buffer' is not a pointer in 'struct
+iio_cb_buffer'...
 
+- Nuno Sá
+
+> 
+> >         cb_buff->channels = iio_channel_get_all(dev);
+> 
+> 
+> -- 
+> With Best Regards,
+> Andy Shevchenko
 

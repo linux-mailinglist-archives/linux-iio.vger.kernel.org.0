@@ -1,47 +1,47 @@
-Return-Path: <linux-iio+bounces-22036-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22037-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DF42B12F71
-	for <lists+linux-iio@lfdr.de>; Sun, 27 Jul 2025 14:24:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E94AAB12F75
+	for <lists+linux-iio@lfdr.de>; Sun, 27 Jul 2025 14:29:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9EA8D7A4C6A
-	for <lists+linux-iio@lfdr.de>; Sun, 27 Jul 2025 12:23:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 60964176FDD
+	for <lists+linux-iio@lfdr.de>; Sun, 27 Jul 2025 12:29:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39EAB20B7FE;
-	Sun, 27 Jul 2025 12:24:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41E952135DD;
+	Sun, 27 Jul 2025 12:29:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qS3he+nd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T/arjZke"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E54FF86329;
-	Sun, 27 Jul 2025 12:24:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA9A486329;
+	Sun, 27 Jul 2025 12:29:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753619088; cv=none; b=rogExKDRV12zCOg6D6DNmnto7kKoZUdX4fhy2okZoTNaOUbScygj1XUI9/y7AHw4P0H+67YF9eval3xhAtph+7SsIZ8wd29MEZPb3bzBtNZQeWDf6KS8YpRx5SXYTEmNb5hzlIF4vzXUY2C83sOXELjdKTa2m5QxYILvoTATleI=
+	t=1753619367; cv=none; b=Bm9DRtuFEw5LQZs0jbbjqjFrOt10t3fVMfVqe/dPzkrFsnxyM9Dt+iI7+jCHL/LX0ZCvPoWvEmf8L6ubrL+iAXpiDCr2ocbfpmSRI9zYpTjTITQuo19yMlh5sV6NaWuR/LbWsTPxxy1836A6PK8Ha3yMFqz8in+ckTRggnb0sD0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753619088; c=relaxed/simple;
-	bh=mP57AqouNPy8gt/qQcdld+p77sRqtt0Tv1mU+i7fIuI=;
+	s=arc-20240116; t=1753619367; c=relaxed/simple;
+	bh=tMd4CZJTltaQuHDXkARYYaauBeKUx1e3VzDgy/Lq9/k=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aStuBG1JoLbg6EqRprvZSG7EHMpclpvvJCb5rffLiyGvz0AC9+TiObZUcP3Ma3UB6BeasniJ1r9PBKQOXKOe/R+jf9kRJV865Pk0r1obujQ+pF4xxLJ7I/+DQjfHrBx8iFy3tTmyk8g6P3K5wnvGO5+IFUPiWq3T+EXG7JWkZWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qS3he+nd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BC76C4CEEB;
-	Sun, 27 Jul 2025 12:24:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=dSjAbP5z7sn9z7w31QzeUxTRjQllWy4eKcQ38kyYEnDFJR97QeHsR0fKLa56Sbuf8k2Us9z78YvYiRuyStClGzFTvmu47rqFPqbwAukDybtjYxWdRrn4B9eX5Go6NlA7Gz8dD0f9mtN1MG4CG7ZdIkuTE9HR5xpq18qwnbwD+bo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T/arjZke; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92950C4CEEB;
+	Sun, 27 Jul 2025 12:29:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753619087;
-	bh=mP57AqouNPy8gt/qQcdld+p77sRqtt0Tv1mU+i7fIuI=;
+	s=k20201202; t=1753619366;
+	bh=tMd4CZJTltaQuHDXkARYYaauBeKUx1e3VzDgy/Lq9/k=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=qS3he+ndjzZlJwXlxVN+KqEhQA95Ts2b9fAW46oh+p8FSuEGojFGoVQ8cE4VwZjkz
-	 6+Rw2XLkHxYamogVlfdnpXREFbqbechW8jN4esuzQ08ULfEWv/Ydqenr4p1AL/ydoe
-	 lbyI1M3nnNLCAR2c+LpzpzVtL86yMyOeHgEDrcyE8Bm7nLywPByDyYxOGsKuv/LK5u
-	 ShZUNfSX1D8TEDIW4qqdhtRW1rmMRnJIw4dOqXqRgsZJSTuuEcZgvyu0vwSx4rnwwu
-	 WdEofjMcz9ewXiqO8GrgCIhMQ9nyoSAEuT0yXuJ/9yzirWpyeRkVhWPcgG/WnC6Z18
-	 Q2mgEqVom7WUQ==
-Date: Sun, 27 Jul 2025 13:24:39 +0100
+	b=T/arjZkeni9bFV5ALp2u7z92w2BmtA9vvb9Vz1FbTjEtHy+SSKeEM7Irh4dvnVgHQ
+	 q7nOqPmld+opBjk+fI5WjF1wNsPGvQ5lYEWnXmelxBb0wxgh0fxoK0G+1WZzSJdqil
+	 7GD0Vc2IuvkKymaJ02xnwwTLhg67yHXzxAWhxuLtSmP5AE6aypdkLtcif8KsEQ/BYv
+	 OMqGRIPy8K8TFQdtL4ZGjQf4cWs9oTb9XKgyzYlVhci2XFnhitLMi/jm0x6haOowxk
+	 +5sFGfdwX/7pBCEmP3Au8gTw0utB1H0hSv6EiVRnZrZc4Ih3tUvj7xW9FXyTjJMPPC
+	 L3n1FKE6mNMlA==
+Date: Sun, 27 Jul 2025 13:29:16 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: David Lechner <dlechner@baylibre.com>
 Cc: Michael Hennerich <Michael.Hennerich@analog.com>, Nuno =?UTF-8?B?U8Oh?=
@@ -49,11 +49,11 @@ Cc: Michael Hennerich <Michael.Hennerich@analog.com>, Nuno =?UTF-8?B?U8Oh?=
  <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
  <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/4] iio: adc: ad7124: add external clock support
-Message-ID: <20250727132439.775523b1@jic23-huawei>
-In-Reply-To: <20250724-iio-adc-ad7124-proper-clock-support-v1-3-88f35db2fcaf@baylibre.com>
+Subject: Re: [PATCH 4/4] iio: adc: ad7124: add clock output support
+Message-ID: <20250727132916.609755f4@jic23-huawei>
+In-Reply-To: <20250724-iio-adc-ad7124-proper-clock-support-v1-4-88f35db2fcaf@baylibre.com>
 References: <20250724-iio-adc-ad7124-proper-clock-support-v1-0-88f35db2fcaf@baylibre.com>
-	<20250724-iio-adc-ad7124-proper-clock-support-v1-3-88f35db2fcaf@baylibre.com>
+	<20250724-iio-adc-ad7124-proper-clock-support-v1-4-88f35db2fcaf@baylibre.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -64,115 +64,98 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 24 Jul 2025 18:25:24 -0500
+On Thu, 24 Jul 2025 18:25:25 -0500
 David Lechner <dlechner@baylibre.com> wrote:
 
-> Add support for an external clock source to the AD7124 ADC driver.
+> Add support for the AD7124's internal clock output. If the #clock-cells
+> property is present, turn on the internal clock output during probe.
 > 
-> Previously, the driver only supported using the internal clock and had
-> bad devicetree bindings that used a fake clock to essentially select
-> the power mode. This is preserved for backwards compatibility.
-> 
-> If the clock is not named "mclk", then we know that the devicetree is
-> using the correct bindings and we can configure the chip to use an
-> external clock source rather than internal.
-> 
-> Also drop a redundant comment when configuring the register fields
-> instead of adding more.
+> If both the clocks and #clock-names properties are present (not allowed
+> by devicetree bindings), assume that an external clock is being used so
+> that we don't accidentally have two outputs fighting each other.
 > 
 > Signed-off-by: David Lechner <dlechner@baylibre.com>
-Hi David,
-
-A few trivial things inline.
-
 > ---
->  drivers/iio/adc/ad7124.c | 42 ++++++++++++++++++++++++++++++++++++++++--
->  1 file changed, 40 insertions(+), 2 deletions(-)
+> 
+> We could make this fancier and only turn on the output on demand of a
+> clock consumer, but then we have to deal with locking of the SPI bus
+> to be able to write to the register. So I opted for the simpler
+> solution of always turning it on during probe. This would only be used
+> for synchronizing with other similar ADCs, so implementing the functions
+> for a more general-purpose clock seems a bit overkill.
+Seems reasonable.  One comment inline.
+> ---
+>  drivers/iio/adc/ad7124.c | 35 ++++++++++++++++++++++++++++++++---
+>  1 file changed, 32 insertions(+), 3 deletions(-)
 > 
 > diff --git a/drivers/iio/adc/ad7124.c b/drivers/iio/adc/ad7124.c
-> index f587574e8a24040540a470e13fed412ec9c81971..b0b03f838eed730347a3afcd759be7c1a8ab201e 100644
+> index b0b03f838eed730347a3afcd759be7c1a8ab201e..b18229ff037596c6e98e12dc22b1552bf13fdc4e 100644
 > --- a/drivers/iio/adc/ad7124.c
 > +++ b/drivers/iio/adc/ad7124.c
-> @@ -18,6 +18,7 @@
->  #include <linux/property.h>
->  #include <linux/regulator/consumer.h>
->  #include <linux/spi/spi.h>
-> +#include <linux/units.h>
+> @@ -7,6 +7,7 @@
+>  #include <linux/bitfield.h>
+>  #include <linux/bitops.h>
+>  #include <linux/clk.h>
+> +#include <linux/clk-provider.h>
+>  #include <linux/delay.h>
+>  #include <linux/device.h>
+>  #include <linux/err.h>
+> @@ -125,10 +126,12 @@ static const unsigned int ad7124_reg_size[] = {
+>  	3, 3, 3, 3, 3
+>  };
 >  
->  #include <linux/iio/iio.h>
->  #include <linux/iio/adc/ad_sigma_delta.h>
-> @@ -44,6 +45,11 @@
->  #define AD7124_STATUS_POR_FLAG			BIT(4)
+> +#define AD7124_INT_CLK_HZ 614400
+> +
+>  static const int ad7124_master_clk_freq_hz[3] = {
+> -	[AD7124_LOW_POWER] = 76800,
+> -	[AD7124_MID_POWER] = 153600,
+> -	[AD7124_FULL_POWER] = 614400,
+> +	[AD7124_LOW_POWER] = AD7124_INT_CLK_HZ / 8,
+> +	[AD7124_MID_POWER] = AD7124_INT_CLK_HZ / 4,
+> +	[AD7124_FULL_POWER] = AD7124_INT_CLK_HZ,
+>  };
 >  
->  /* AD7124_ADC_CONTROL */
-> +#define AD7124_ADC_CONTROL_CLK_SEL		GENMASK(1, 0)
-> +#define AD7124_ADC_CONTROL_CLK_SEL_INT			0
-> +#define AD7124_ADC_CONTROL_CLK_SEL_INT_OUT		1
-> +#define AD7124_ADC_CONTROL_CLK_SEL_EXT			2
-> +#define AD7124_ADC_CONTROL_CLK_SEL_EXT_DIV4		3
->  #define AD7124_ADC_CONTROL_MODE			GENMASK(5, 2)
->  #define AD7124_ADC_CONTROL_MODE_CONTINUOUS		0
->  #define AD7124_ADC_CONTROL_MODE_SINGLE			1
-> @@ -1112,7 +1118,7 @@ static int ad7124_parse_channel_config(struct iio_dev *indio_dev,
->  static int ad7124_setup(struct ad7124_state *st)
->  {
->  	struct device *dev = &st->sd.spi->dev;
-> -	unsigned int power_mode;
-> +	unsigned int power_mode, clk_sel;
->  	struct clk *mclk;
->  	int i, ret;
->  
-> @@ -1155,9 +1161,41 @@ static int ad7124_setup(struct ad7124_state *st)
->  			if (ret)
->  				return dev_err_probe(dev, ret, "Failed to set mclk rate\n");
+>  static const char * const ad7124_ref_names[] = {
+> @@ -1163,6 +1166,32 @@ static int ad7124_setup(struct ad7124_state *st)
 >  		}
-> +
-> +		clk_sel = AD7124_ADC_CONTROL_CLK_SEL_INT;
-> +	} else {
-> +		struct clk *clk;
-> +
-> +		clk = devm_clk_get_optional_enabled(dev, NULL);
-> +		if (IS_ERR(clk))
-> +			return dev_err_probe(dev, PTR_ERR(clk), "Failed to get external clock\n");
-
-Somme very long lines here where breaks won't hurt readability.
-
-> +			return dev_err_probe(dev, PTR_ERR(clk),
-					     "Failed to get external clock\n");
-
-> +
-> +		if (clk) {
-> +			unsigned long clk_hz;
-> +
-> +			clk_hz = clk_get_rate(clk);
-> +			if (!clk_hz)
-> +				return dev_err_probe(dev, -EINVAL, "Failed to get external clock rate\n");
-
-Add a break.
-
-> +
-> +			/*
-> +			 * The external clock may be 4x the nominal clock rate,
-> +			 * in which case the ADC needs to be configured to
-> +			 * divide it by 4. Using MEGA is a bit arbitrary, but
-> +			 * the expected clock rates are either 614.4 kHz or
-> +			 * 2.4576 MHz, so this should work.
-> +			 */
-> +			if (clk_hz > MEGA)
-> +				clk_sel = AD7124_ADC_CONTROL_CLK_SEL_EXT_DIV4;
-> +			else
-> +				clk_sel = AD7124_ADC_CONTROL_CLK_SEL_EXT;
-> +		} else {
-> +			clk_sel = AD7124_ADC_CONTROL_CLK_SEL_INT;
-> +		}
->  	}
 >  
-> -	/* Set the power mode */
-> +	st->adc_control &= ~AD7124_ADC_CONTROL_CLK_SEL;
-> +	st->adc_control |= FIELD_PREP(AD7124_ADC_CONTROL_CLK_SEL, clk_sel);
+>  		clk_sel = AD7124_ADC_CONTROL_CLK_SEL_INT;
+> +	} else if (!device_property_present(dev, "clocks") &&
+> +		   device_property_present(dev, "clock-names")) {
+> +		struct clk_hw *clk_hw;
+> +		char *name;
 > +
->  	st->adc_control &= ~AD7124_ADC_CONTROL_POWER_MODE;
->  	st->adc_control |= FIELD_PREP(AD7124_ADC_CONTROL_POWER_MODE, power_mode);
+> +		name = devm_kasprintf(dev, GFP_KERNEL, "%s-clk",
+> +				      fwnode_get_name(dev_fwnode(dev)));
+
+I think for anything that isn't const the clock core will copy the name
+during registration.  Ultimately __clk_register()
+https://elixir.bootlin.com/linux/v6.15.8/source/drivers/clk/clk.c#L4342
+
+As such tying this to devm lifespans is excessive.  Should be fine
+using a __free(kfree) to clean it up at the end of this scope.
+
+> +		if (!name)
+> +			return -ENOMEM;
+> +
+> +		clk_hw = devm_clk_hw_register_fixed_rate(dev, name, NULL, 0,
+> +							 AD7124_INT_CLK_HZ);
+> +		if (IS_ERR(clk_hw))
+> +			return dev_err_probe(dev, PTR_ERR(clk_hw), "Failed to register clock provider\n");
+> +
+> +		ret = devm_of_clk_add_hw_provider(dev, of_clk_hw_simple_get,
+> +						  clk_hw);
+> +		if (ret)
+> +			return dev_err_probe(dev, ret, "Failed to add clock provider\n");
+> +
+> +		/*
+> +		 * Treat the clock as always on. This way we don't have to deal
+> +		 * with someone trying to enable/disable the clock while we are
+> +		 * reading samples.
+> +		 */
+> +		clk_sel = AD7124_ADC_CONTROL_CLK_SEL_INT_OUT;
+>  	} else {
+>  		struct clk *clk;
 >  
 > 
 

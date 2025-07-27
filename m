@@ -1,65 +1,63 @@
-Return-Path: <linux-iio+bounces-22053-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22054-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21A8DB1302A
-	for <lists+linux-iio@lfdr.de>; Sun, 27 Jul 2025 17:49:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20BB8B13035
+	for <lists+linux-iio@lfdr.de>; Sun, 27 Jul 2025 17:55:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D9FD173627
-	for <lists+linux-iio@lfdr.de>; Sun, 27 Jul 2025 15:49:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 505EC174A8D
+	for <lists+linux-iio@lfdr.de>; Sun, 27 Jul 2025 15:55:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F41621A426;
-	Sun, 27 Jul 2025 15:49:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0878A21B9F0;
+	Sun, 27 Jul 2025 15:55:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JffGy/vu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UsQKsuZa"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFBFB188000;
-	Sun, 27 Jul 2025 15:49:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5C4A7E9;
+	Sun, 27 Jul 2025 15:55:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753631360; cv=none; b=XQPjiJqbbjHsGlcBXiBY1aIfRFMVTh1PTbIE8tCXWF6YqOOS4E0PNW12TjNo0dqefk4ggZ4OUtGBCeFySor3AYPZrUivgQxhuSxfNONqGNk5cHulHlh1hf1i444GVPOmoiWQ9ha3j04nGYZBQXkMgAWaxyC/7zIhWY5omj2IWXs=
+	t=1753631741; cv=none; b=O6lCqIngjzpxcRqXtb9gDvlxadoaFND4SfenyL5P9jcdEMQwQPyoJNQZg7WyMcfBiLg1KBlvvyh9rSHFSQ5yE1bcIRCVRnZye9sayONDNT82xGv2Zgzd05hPDYqXVEIxt0PleyCX10d2ixLW3njDicqcz3UWd1XcIayh/0HfKDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753631360; c=relaxed/simple;
-	bh=ucj4qPcgvz282NusIKgE8khiyMabwuonkaXUh2ZglTM=;
+	s=arc-20240116; t=1753631741; c=relaxed/simple;
+	bh=4E/KRtZYGRkw/On1zyg435iCeUBt3QLAeXe84TnbRzM=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=R4kR97KhR9gKjr8kz+r+tHwBn6tKC//EYP1I+oBoqY7oCHP2L57RNuq0Kn3ET2yYgj9gbF3X4uxCJIpG0+RvFZhJ4eLf1fT+OoI+nxHdAUe0hfj8qU3HC7xhzKooNYislaBoBGHAOdIYVcNDWXnlnFAZg5g45bUyhliHglMtfEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JffGy/vu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D816C4CEEB;
-	Sun, 27 Jul 2025 15:49:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Zzq1eeNGbjaRVixl1GLA8mp1N4w6gKw+SKj3erVGEp1Tgs69spQICbMuEC/3JXLoNredv0wYUkUv7fnttPal+zM8ANulyeoISI+JUKuiSIJOd4HU1mf4U5419u9B3uk0/TWrcaCIkNgyGrFuscBgn3pyMoTFnTlPNXKNZiQFJaI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UsQKsuZa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B730C4CEEB;
+	Sun, 27 Jul 2025 15:55:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753631358;
-	bh=ucj4qPcgvz282NusIKgE8khiyMabwuonkaXUh2ZglTM=;
+	s=k20201202; t=1753631741;
+	bh=4E/KRtZYGRkw/On1zyg435iCeUBt3QLAeXe84TnbRzM=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=JffGy/vuE+BvXG+YgI0M4Xw27rC+KVnMaj9Cz23tHrOzulQUSzzC7hHi2HEk6LzSB
-	 5a4yXrKMi6Biuqk/84FAqXvbLOwhyjh3zAhSXgMcubKCFQ8PwasExZiheB4+vVvv3q
-	 RGlPxH/lfzZHJhHLKB3QpGxAhZs7+EeHORebo4n9hNIiR1AiqpztACZVPrfVuhuu3A
-	 NX/2na/VMeHTizVfMB+ykQeEkh7P3n1UZXBalHnE6x6lYT31HiqwDrQSPxSV9roSXN
-	 7iZngLRSvyISnAWc2VViJ5ghvtHACMQcIX1Cgc5pqcLdmYJNCuTFidP2wuvew1nAF9
-	 9KLyLFHSdBRhg==
-Date: Sun, 27 Jul 2025 16:49:09 +0100
+	b=UsQKsuZaJ3Fid87NzhJinDZGxvZaYIp30vjkpopcFkJXlDO5sqLui6Z5ih5hFEKkO
+	 FRvef05NdoLKNnk1VaLqbvFh/AEv63RLmttMvorGRtJfplsnSkR26oQ5GqKw0+T3FO
+	 r/busCDMVzVmTCO0yZQu7byR0fCxt/zbM9MhQ5PaJ41ZvArGC+K/cRNbLZYafdrJC3
+	 eHNkyssceRIcYlMUnHQ9AdAztspVjDGGlq4R76cmWEu3T0toahadNtwkVsGAey6o0i
+	 4zOLYRbpKDN6/9fiZgS4TPDegYIXSQhs/J2hro/zWCCK/Jp6xH+nCJk65GNlymZ3Ma
+	 g8lkJmfdoRL5g==
+Date: Sun, 27 Jul 2025 16:55:34 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: Gustavo Silva <gustavograzs@gmail.com>, Alex Lanzano
- <lanzano.alex@gmail.com>, David Lechner <dlechner@baylibre.com>, Nuno
- =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, Lothar Rubusch
- <l.rubusch@gmail.com>
-Subject: Re: [PATCH v4 3/3] iio: imu: bmi270: add support for motion events
-Message-ID: <20250727164909.1833c4bc@jic23-huawei>
-In-Reply-To: <aIKlC-HlP3nX-ERA@smile.fi.intel.com>
-References: <20250711-bmi270-events-v4-0-53ec7da35046@gmail.com>
-	<20250711-bmi270-events-v4-3-53ec7da35046@gmail.com>
-	<aHYFMf8QGDNt-5Nf@smile.fi.intel.com>
-	<aHYIBReTFqJMtiXW@smile.fi.intel.com>
-	<vlpqd3jeszhgpcob7qyzp5vljdowwu26my7xuwuvfftf54zg35@czxhsjejgdkm>
-	<aHd2s987EMCdgdrJ@smile.fi.intel.com>
-	<20250724162227.065d20a0@jic23-huawei>
-	<aIKlC-HlP3nX-ERA@smile.fi.intel.com>
+To: Sean Anderson <sean.anderson@linux.dev>
+Cc: Andy Shevchenko <andriy.shevchenko@intel.com>, Jean Delvare
+ <jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>,
+ linux-iio@vger.kernel.org, linux-hwmon@vger.kernel.org, Andy Shevchenko
+ <andy@kernel.org>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
+ linux-kernel@vger.kernel.org, David Lechner <dlechner@baylibre.com>
+Subject: Re: [PATCH 2/7] iio: inkern: Add API for reading/writing events
+Message-ID: <20250727165534.6756b052@jic23-huawei>
+In-Reply-To: <f180b5ac-131f-474a-be5e-70787972a772@linux.dev>
+References: <20250715012023.2050178-1-sean.anderson@linux.dev>
+	<20250715012023.2050178-3-sean.anderson@linux.dev>
+	<aHYOuzdQ_jSKA898@smile.fi.intel.com>
+	<8bb7d291-f94a-4e96-b3ec-93fbe06c8407@linux.dev>
+	<aHdwzFk-688ASRx2@smile.fi.intel.com>
+	<f180b5ac-131f-474a-be5e-70787972a772@linux.dev>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -70,66 +68,67 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 25 Jul 2025 00:26:35 +0300
-Andy Shevchenko <andriy.shevchenko@intel.com> wrote:
+On Thu, 17 Jul 2025 12:42:13 -0400
+Sean Anderson <sean.anderson@linux.dev> wrote:
 
-> On Thu, Jul 24, 2025 at 04:22:27PM +0100, Jonathan Cameron wrote:
-> > On Wed, 16 Jul 2025 12:53:55 +0300
-> > Andy Shevchenko <andriy.shevchenko@intel.com> wrote:  
-> > > On Tue, Jul 15, 2025 at 08:55:35PM -0300, Gustavo Silva wrote:  
-> > > > On Tue, Jul 15, 2025 at 10:49:25AM +0300, Andy Shevchenko wrote:    
-> > > > > On Tue, Jul 15, 2025 at 10:37:22AM +0300, Andy Shevchenko wrote:    
-> > > > > > On Fri, Jul 11, 2025 at 08:36:03PM -0300, Gustavo Silva wrote:    
-> 
-> ...
-> 
-> > > > > > > +/* 9.81 * 1000000 m/s^2 */
-> > > > > > > +#define BMI270_G_MEGA_M_S_2				9810000    
-> > > > > > 
-> > > > > > I thought this is MICRO...    
-> > > > > 
-> > > > > Btw, what if we use the device on poles and on equator (or even on orbital
-> > > > > station)? I'm wondering if this constant should be defined in units.h or
-> > > > > even in uAPI that user space may add a correction if needed.
-> > > > >     
-> > > > I certainly hadn't thought about these scenarios.
-> > > > FWIW, the accelerometer scale values also assume g = 9.81 m/s^2.
-> > > > For example, 0.000598 = 2 * 9.81 / 32768    
-> > > 
-> > > Right, but this should be supplied to user space somehow. OTOH the measure error
-> > > may be high enough (what is the precision of the measurements by the way?) that
-> > > it will neglect the differences in the 'g' constant.
-> > > 
-> > > All the details are given in [1].
-> > > 
-> > > [1]: https://en.wikipedia.org/wiki/Gravity_of_Earth#:~:text=The%20precise%20strength%20of%20Earth's,/s2)%20by%20definition.  
+> On 7/16/25 05:28, Andy Shevchenko wrote:
+> > On Tue, Jul 15, 2025 at 11:42:05AM -0400, Sean Anderson wrote:  
+> >> On 7/15/25 04:18, Andy Shevchenko wrote:  
+> >> > On Mon, Jul 14, 2025 at 09:20:18PM -0400, Sean Anderson wrote:  
 > > 
-> > These sensors don't measure relative to g.  
+> > ...
+> >   
+> >> >> +EXPORT_SYMBOL_GPL(iio_event_mode);  
+> >> > 
+> >> > Can we move this to namespace? Otherwise it will be never ending story...
+> >> > Ditto for other new APIs.  
+> >> 
+> >> Never ending story of what?  
+> > 
+> > Of converting IIO core to use exported namespaces.  
 > 
-> What do they measure? Any links for me to study?
-m/s^2 (well actually not, but they derive that from change in properties of a capacitor like structure as it bends under
-the force generated by the acceleration.  Which in the vertical direction is g if the device isn't moving.
+> What's the purpose?
 
-https://www.analog.com/en/resources/technical-articles/accelerometer-and-gyroscopes-sensors-operation-sensing-and-applications.html
-looks good as an intro from a very quick glance.
+Aim here is in general to reduce the massive exposed ABI by applying some
+namespaces so that only drivers that opt in to specific functionality
+can use particular symbols.
 
+We've used it extensively for groups of related drivers and to some
+libraries and the DMA buffers, but so far not pushed it into the IIO core.
+
+I'd be fine with these new functions all being under IIO_CONSUMER or similar.
+
+Quite a bit of feedback on this set will be of the lines of don't do it
+the way we did it before as now we know better!
+
+ 
 > 
-> > That's annoying marketing which is why I held firm for m/s^2 for IIO :)
-> > So what they measure for a given acceleration does not change depending
-> > on where we are on earth. You should use a 'fixed' standard value for
-> > conversion from marketing values in g to m/s^2..  
+> >> >> +			if (scale64 <= INT_MAX && scale64 >= INT_MIN)
+> >> >> +				raw64 = processed / (int)scale64;  
+> >> > 
+> >> > Do you need the casting? (I mean if the compiler is dumb enough to not see this)  
+> >> 
+> >> AIUI 64-bit division is not available on 32-bit platforms. The cast
+> >> ensures we get 32-bit division.  
+> > 
+> > I put specifically a remark in the parentheses. So, the Q is if the compiler
+> > doesn't recognize that. Can you confirm that 32-bit compilation without cast
+> > is broken?  
 > 
-> Hmm... But shouldn't that marketing value be exposed to user space?
-
-yes, but its 9.81 where ever you are. Or whatever the datasheet says they use.
-These things are rarely that well calibrated, so the exact value gets lost in the
-errors!
-
-Jonathan
-
-
-
+> inkern.c:(.text.iio_write_event_processed_scale+0x14c): undefined reference to `__aeabi_ldivmod'
 > 
+> >> >> +	*raw = clamp(raw64, (s64)INT_MIN, (s64)INT_MAX);  
+> >> > 
+> >> > You already have similar approach here...  
+> >> 
+> >> Well, I can spell it 0x7fffffffLL if you'd like...  
+> > 
+> > Nope, I like to have named constants instead of magics, but actually are those
+> > castings needed for the clamp()?  
 > 
+> Apparently not. The checks in __clamp_once are only for matching signedness. And
+> the ints are promoted to s64s when the comparison is made.
+> 
+> --Sean
 
 

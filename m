@@ -1,65 +1,63 @@
-Return-Path: <linux-iio+bounces-22042-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22043-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AE34B12FA2
-	for <lists+linux-iio@lfdr.de>; Sun, 27 Jul 2025 15:08:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C2D5AB12FAA
+	for <lists+linux-iio@lfdr.de>; Sun, 27 Jul 2025 15:12:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8250B7AA6B4
-	for <lists+linux-iio@lfdr.de>; Sun, 27 Jul 2025 13:07:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DCC6E7A137D
+	for <lists+linux-iio@lfdr.de>; Sun, 27 Jul 2025 13:11:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BED5B213E85;
-	Sun, 27 Jul 2025 13:08:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBFD7202963;
+	Sun, 27 Jul 2025 13:12:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NXaDpZkG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mLHePozj"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FDFF13D8B1;
-	Sun, 27 Jul 2025 13:08:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8A6A11185;
+	Sun, 27 Jul 2025 13:12:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753621722; cv=none; b=hysgLQ94JSqPS88utBGB5/3l4i839pM5M3hs6C/8xPrRzxZD2jZjeg3WKLr8mCz9HDGxOsfXSdLVTxnCxZ4iALMGyP7DVrRI6hXHfrr8fteepYF1h9Ww5OMbo9rjQNQRZFu4pQI33ETZJI4zzs9TMCdSnOSQwCAFuM44SAWPoes=
+	t=1753621948; cv=none; b=R50RwRiTM8862p31WDEGoDKupaQBjAm6vWMuH3+9Jmx96/QHHlHGv+7yRN/QF9px+tnKii3IjEbijbOi8DX0pFtB03t+ta5fGUEHR4JqqIozbeRF8yiszAwvG+0mf5x7vJLSq2SRq6pPqH3Fy13sm+4OJLct+N7fCotPaiClEQs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753621722; c=relaxed/simple;
-	bh=hN9LDjd6CLq5G10VnQYY9Dgif1+I33fW6zwuL/KlJ70=;
+	s=arc-20240116; t=1753621948; c=relaxed/simple;
+	bh=ISfxmyXu3POhbKCDLt7yo/hOLdlMw5IXiQdiNy0b5OU=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=A3avQgEqBvPG1RM5LdfA/rbnC0UcUG8gid4ZxppSVRNM1FCUn1yPqShQ46uE3P+oy22RtdDtIZO88F2hVWpeIjgY+UEE1YJQPMHL6/nFvXbeLzqFBgFKG0f3gJ1pWKbG2o6F6UTle0queYuHI0jwhdBgv4lYCZQHNUt1zcksK1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NXaDpZkG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE4FBC4CEEB;
-	Sun, 27 Jul 2025 13:08:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=pWKQ6v7lIINFcIxf59K9s+z7hEhritOkiimsq/Jc8iFCS5YD+FRCrsSVjayeLyapmMr7olOhlxASPx4XSp4pUnUuJBfIcBx4n3vLqceDDyKuX4vYWtGaiK3LQjWVm/79equY9r5vBzH7RxWHwF/t7uky5HRXNyrHkXmmxtJ2Dww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mLHePozj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 091FBC4CEEB;
+	Sun, 27 Jul 2025 13:12:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753621722;
-	bh=hN9LDjd6CLq5G10VnQYY9Dgif1+I33fW6zwuL/KlJ70=;
+	s=k20201202; t=1753621948;
+	bh=ISfxmyXu3POhbKCDLt7yo/hOLdlMw5IXiQdiNy0b5OU=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=NXaDpZkGOTrdczLzZtFLw5a5TR8K0054fptr52ejiMIh1u4w9pSTseGI5EM4ABgBI
-	 KFEGCpfdanCIdw4ssb8+lXrAxDEZH6PMFvAyOo8d63kNZs0+YAnKq9LMdy4RrngvVI
-	 BWUiXIe9yz3irGRVtZiy2dzWcTogwYzAz+X3CraVX+FXuWBeMXnK8qtT+9cjkbvs8m
-	 sDkT32CjuFhHf4Ftpfk1qvX4vHGSy3R44Y3gmk21n/6zqAIMgygoGGfvZ5sqhlw1+i
-	 84Hx8Q54byOG/8Y97zfDS30QwogWcARAyel32hT+Rp/BGSN5r18AzUKP6JuDoDfnPq
-	 9cxXOLprtOFfA==
-Date: Sun, 27 Jul 2025 14:08:28 +0100
+	b=mLHePozjnyLse2SvoUDzIzs6n+KXpLopc81cFZHM0P7vKoqjljYNPZGakCmOyq8mo
+	 68cFZXQSTqDqAoas8T7P4io83hxEKvmYth1WmqspwjRHfamSiFtewu054apeqf3zJU
+	 NmydhUAVlcaJaR8DHpUGiudapysWWltlYZk5qBN/Af1w18M47+Y8hCwnLzgE6KLhE1
+	 KqGiNz+P778kOTZZOxMs/4RJFcx9nVzpaVfDU/oGm2B4po62jN4SuceLicqbJBW2Hz
+	 ekM0zLi3EZ4UTjp0d/aMeYySIowtoRGh0guvK76wSp9Ao42iF0p0tE5Vgiwcyn5Nvv
+	 szKCQiukHsIOw==
+Date: Sun, 27 Jul 2025 14:12:21 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Sanjay Suthar <sanjaysuthar661996@gmail.com>
-Cc: linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
- linux-iio@vger.kernel.org, netdev@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-amlogic@lists.infradead.org,
- ribalda@kernel.org, dlechner@baylibre.com, nuno.sa@analog.com,
- andy@kernel.org, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, neil.armstrong@linaro.org,
- khilman@baylibre.com, jbrunet@baylibre.com,
- martin.blumenstingl@googlemail.com
-Subject: Re: [PATCH v3] dt-bindings: cleanup: fix duplicated 'is is' in YAML
- docs
-Message-ID: <20250727140828.4893fc51@jic23-huawei>
-In-Reply-To: <8f4358e8-ecd6-4d86-8326-25d21c3a4ea2@gmail.com>
-References: <20250722170513.5854-1-sanjaysuthar661996@gmail.com>
-	<20250724111247.669d6955@jic23-huawei>
-	<8f4358e8-ecd6-4d86-8326-25d21c3a4ea2@gmail.com>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Akshay Jindal <akshayaj.lkd@gmail.com>, anshulusr@gmail.com,
+ nuno.sa@analog.com, andy@kernel.org, shuah@kernel.org,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] iio: light: ltr390: Add sysfs attribute to report
+ data freshness
+Message-ID: <20250727141221.40e1824e@jic23-huawei>
+In-Reply-To: <7e70075d-f91f-4ea8-b5e5-ccec6fba425d@baylibre.com>
+References: <20250721195419.526920-1-akshayaj.lkd@gmail.com>
+	<a88e1a8e-d29c-41e7-b3cd-5db965a055df@baylibre.com>
+	<CAE3SzaTG-re2HPRAcPWuo2YmM9mxLWndpN_SQOAZg7MP_B3xDg@mail.gmail.com>
+	<8f924da6-c5f6-4f88-9cb1-3e7e1aae491b@baylibre.com>
+	<20250724133933.220d00e4@jic23-huawei>
+	<CAE3SzaQcsuHihe2-7VTnXAKYab03Cyu1kAPsA2-E4d1kQzCCNQ@mail.gmail.com>
+	<7e70075d-f91f-4ea8-b5e5-ccec6fba425d@baylibre.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -70,61 +68,45 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, 24 Jul 2025 22:38:14 +0530
-Sanjay Suthar <sanjaysuthar661996@gmail.com> wrote:
+On Thu, 24 Jul 2025 12:41:48 -0500
+David Lechner <dlechner@baylibre.com> wrote:
 
-> On 24/07/25 15:42, Jonathan Cameron wrote:
-> > On Tue, 22 Jul 2025 22:35:13 +0530
-> > Sanjay Suthar <sanjaysuthar661996@gmail.com> wrote:
-> > =20
-> >> Fix minor grammatical issues by removing duplicated "is" in two device=
-tree
-> >> binding documents:
+> On 7/24/25 11:55 AM, Akshay Jindal wrote:
+> > On Thu, Jul 24, 2025 at 6:09=E2=80=AFPM Jonathan Cameron <jic23@kernel.=
+org> wrote: =20
+> >> Agreed.  Is the interrupt wired on this board?  If it is and you
+> >> want to do filtering with the knowledge that the data is fresh then
+> >> add a data ready trigger and buffered capture support.
+> >> It's a much bigger job, but it is standard ABI and as such of more
+> >> general use.
 > >>
-> >> - net/amlogic,meson-dwmac.yaml
-> >> - iio/dac/ti,dac7612.yaml
-> >>
-> >> Signed-off-by: Sanjay Suthar <sanjaysuthar661996@gmail.com> =20
-> > I'd have no problem with the argument that this can go through either
-> > tree if there was any interaction between the files or the changes, but
-> > here there isn't. This is just causing potential mess if either tree en=
-ds
-> > up with other changes overlapping this for no benefit.  Please split in=
-to
-> > two patches, one for each subsystem.  You should be fine to keep the
-> > various tags given here for the new patches. =20
+> >> Jonathan
+> >> =20
+> > Yes, the interrupt is wired in and enabled.
+> >=20
+> > For LTR390, data_freshness is not the same as data-ready.
+> > Here the sensor does not support a data-ready interrupt.
+> > It only supports threshold violation interrupts where thresholds are
+> > configurable.
+> > LTR390 datasheet Pg 17:
+> > https://optoelectronics.liteon.com/upload/download/DS86-2015-0004/LTR-3=
+90UV_Final_%20DS_V1%201.pdf
+> >=20
+> > Correct me, if I am wrong, but as per my understanding, trigger based i=
+nterrupts
+> > are more appropriate where the application requires storing multiple sa=
+mples
+> > in a buffer at specific time intervals, provided the sensor supports
+> > data-ready interrupts.
+> >  =20
 >=20
-> Thanks for the review. I understand your concern regarding splitting the=
-=20
-> changes. My intention was that, since the fix is a trivial and identical=
-=20
-> grammatical correction across both subsystems, it didn=E2=80=99t seem nec=
-essary=20
-> to separate them.
+> Interrupts works just as well for single samples when devices have a
+> data ready signal. But you are right, that doesn't help us here
+> since the interrupt is just for threshold alerts.
 >=20
-> However, I=E2=80=99m open to either approach =E2=80=94 keeping it as a si=
-ngle patch or=20
-> splitting it if that's preferred. As I=E2=80=99m still new to this proces=
-s, I=E2=80=99ll=20
-> defer to @krzysztof and the DT maintainers for the final call on how=20
-> this should be handled.
->=20
-> Please let me know the preferred direction, and I=E2=80=99ll be happy to =
-update=20
-> accordingly.
 
-DT bindings ultimately go through the subsystem trees (in vast majority of
-cases) to avoid churn issues and keep them aligned with driver changes.
-So split it.
-
-Thanks
+Yeah.  I got thrown by the adfruit docs that say the interrupt can serve
+this purpose. Clearly not from the datasheet.
 
 Jonathan
-
->=20
-> Best regards,
->=20
-> Sanjay Suthar
->=20
-
 

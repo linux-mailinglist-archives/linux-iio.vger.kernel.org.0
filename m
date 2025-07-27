@@ -1,63 +1,58 @@
-Return-Path: <linux-iio+bounces-22054-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22055-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20BB8B13035
-	for <lists+linux-iio@lfdr.de>; Sun, 27 Jul 2025 17:55:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04DF1B1304F
+	for <lists+linux-iio@lfdr.de>; Sun, 27 Jul 2025 18:14:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 505EC174A8D
-	for <lists+linux-iio@lfdr.de>; Sun, 27 Jul 2025 15:55:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 777A43B081E
+	for <lists+linux-iio@lfdr.de>; Sun, 27 Jul 2025 16:13:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0878A21B9F0;
-	Sun, 27 Jul 2025 15:55:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA3D521B9F1;
+	Sun, 27 Jul 2025 16:13:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UsQKsuZa"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pNJ0R9oj"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5C4A7E9;
-	Sun, 27 Jul 2025 15:55:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7079686337;
+	Sun, 27 Jul 2025 16:13:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753631741; cv=none; b=O6lCqIngjzpxcRqXtb9gDvlxadoaFND4SfenyL5P9jcdEMQwQPyoJNQZg7WyMcfBiLg1KBlvvyh9rSHFSQ5yE1bcIRCVRnZye9sayONDNT82xGv2Zgzd05hPDYqXVEIxt0PleyCX10d2ixLW3njDicqcz3UWd1XcIayh/0HfKDo=
+	t=1753632834; cv=none; b=bU9EZuIVoE3u1P7wrWkqCC1e4slAzaEOjrWXTkOn6hjHq7DWmdsiAzdxUtPahLFBt0lQhtNZs5SRg/e+fzJQqgTgSOiv+6W5+PGU9vn9ouNHRt8rC1lEwgfsrhDqmtaltN9I+1q/RpaezPHfQBY4xFcw+38VgF4duOZrkE9VExI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753631741; c=relaxed/simple;
-	bh=4E/KRtZYGRkw/On1zyg435iCeUBt3QLAeXe84TnbRzM=;
+	s=arc-20240116; t=1753632834; c=relaxed/simple;
+	bh=UHmAc462e38aBUPTK4SctjnMx407u356UEsrj9uxrk8=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Zzq1eeNGbjaRVixl1GLA8mp1N4w6gKw+SKj3erVGEp1Tgs69spQICbMuEC/3JXLoNredv0wYUkUv7fnttPal+zM8ANulyeoISI+JUKuiSIJOd4HU1mf4U5419u9B3uk0/TWrcaCIkNgyGrFuscBgn3pyMoTFnTlPNXKNZiQFJaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UsQKsuZa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B730C4CEEB;
-	Sun, 27 Jul 2025 15:55:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=IBbMQ3QsEB6yiZ5yWEWjc2VbAfspjr3EU/3Eh6+UaX8/ZblFmPZ1VsMuEK4DNmfjbl3CxRqSyY+pFT9AW++zx04jIdpYprOOKySzU1yAy+eZ7H1zkxMX5ugtlwMqLCe9qTx2xLDDV6Nvrptyw6Vu22+qjF1yU9jbeQkR2BDpf0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pNJ0R9oj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84377C4CEEB;
+	Sun, 27 Jul 2025 16:13:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753631741;
-	bh=4E/KRtZYGRkw/On1zyg435iCeUBt3QLAeXe84TnbRzM=;
+	s=k20201202; t=1753632833;
+	bh=UHmAc462e38aBUPTK4SctjnMx407u356UEsrj9uxrk8=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=UsQKsuZaJ3Fid87NzhJinDZGxvZaYIp30vjkpopcFkJXlDO5sqLui6Z5ih5hFEKkO
-	 FRvef05NdoLKNnk1VaLqbvFh/AEv63RLmttMvorGRtJfplsnSkR26oQ5GqKw0+T3FO
-	 r/busCDMVzVmTCO0yZQu7byR0fCxt/zbM9MhQ5PaJ41ZvArGC+K/cRNbLZYafdrJC3
-	 eHNkyssceRIcYlMUnHQ9AdAztspVjDGGlq4R76cmWEu3T0toahadNtwkVsGAey6o0i
-	 4zOLYRbpKDN6/9fiZgS4TPDegYIXSQhs/J2hro/zWCCK/Jp6xH+nCJk65GNlymZ3Ma
-	 g8lkJmfdoRL5g==
-Date: Sun, 27 Jul 2025 16:55:34 +0100
+	b=pNJ0R9ojqZZjfNn8kwYWTSsSMPzhd5+jyOR/1CQfTjb3LlQC44u7rk/u9W7d0XpJ9
+	 IySnSvDo/+aLodQaae8MK8voljeCkJoCGw8bQBHsqZKGVowVVyO5xqklDmb/O+LY0u
+	 qQJp5HyT0513kJD2P/GVIjuYALlTQYz1/qe8KXRxf//kS1ZJ+/iNTXYKzRPB9fKxlY
+	 joTHfHeNsrzBfAJQGrcg/7z5UQrouJ/8bjMWaI6f5PSKrn3AWK2osTP7ihyT9D9GRi
+	 wWwsAV+RvDp8FfuRfymAaDu640OBDBy6U9N35L1rGpPxz3GdlWqz7DF7umPEE/bSsv
+	 vMCNrfuQ0z8ag==
+Date: Sun, 27 Jul 2025 17:13:47 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: Sean Anderson <sean.anderson@linux.dev>
-Cc: Andy Shevchenko <andriy.shevchenko@intel.com>, Jean Delvare
- <jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>,
+Cc: Jean Delvare <jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>,
  linux-iio@vger.kernel.org, linux-hwmon@vger.kernel.org, Andy Shevchenko
  <andy@kernel.org>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
  linux-kernel@vger.kernel.org, David Lechner <dlechner@baylibre.com>
 Subject: Re: [PATCH 2/7] iio: inkern: Add API for reading/writing events
-Message-ID: <20250727165534.6756b052@jic23-huawei>
-In-Reply-To: <f180b5ac-131f-474a-be5e-70787972a772@linux.dev>
+Message-ID: <20250727171347.61a97f83@jic23-huawei>
+In-Reply-To: <20250715012023.2050178-3-sean.anderson@linux.dev>
 References: <20250715012023.2050178-1-sean.anderson@linux.dev>
 	<20250715012023.2050178-3-sean.anderson@linux.dev>
-	<aHYOuzdQ_jSKA898@smile.fi.intel.com>
-	<8bb7d291-f94a-4e96-b3ec-93fbe06c8407@linux.dev>
-	<aHdwzFk-688ASRx2@smile.fi.intel.com>
-	<f180b5ac-131f-474a-be5e-70787972a772@linux.dev>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -68,67 +63,240 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 17 Jul 2025 12:42:13 -0400
+On Mon, 14 Jul 2025 21:20:18 -0400
 Sean Anderson <sean.anderson@linux.dev> wrote:
 
-> On 7/16/25 05:28, Andy Shevchenko wrote:
-> > On Tue, Jul 15, 2025 at 11:42:05AM -0400, Sean Anderson wrote:  
-> >> On 7/15/25 04:18, Andy Shevchenko wrote:  
-> >> > On Mon, Jul 14, 2025 at 09:20:18PM -0400, Sean Anderson wrote:  
-> > 
-> > ...
-> >   
-> >> >> +EXPORT_SYMBOL_GPL(iio_event_mode);  
-> >> > 
-> >> > Can we move this to namespace? Otherwise it will be never ending story...
-> >> > Ditto for other new APIs.  
-> >> 
-> >> Never ending story of what?  
-> > 
-> > Of converting IIO core to use exported namespaces.  
+> Add an in-kernel API for reading/writing event properties. Like the
+> raw-to-processed conversion, with processed-to-raw we only convert the
+> integer part, introducing some round-off error.
 > 
-> What's the purpose?
+> A common case is for other drivers to re-expose IIO events as sysfs
+> properties with a different API. To help out with this, iio_event_mode
+> returns the appropriate mode. It can also be used to test for existence
+> if the consumer doesn't care about read/write capability.
+> 
+> Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
+Hi Sean,
 
-Aim here is in general to reduce the massive exposed ABI by applying some
-namespaces so that only drivers that opt in to specific functionality
-can use particular symbols.
+A few minor comments inline.
 
-We've used it extensively for groups of related drivers and to some
-libraries and the DMA buffers, but so far not pushed it into the IIO core.
+> ---
+> 
+>  drivers/iio/inkern.c         | 198 +++++++++++++++++++++++++++++++++++
+>  include/linux/iio/consumer.h |  56 ++++++++++
+>  2 files changed, 254 insertions(+)
+> 
+> diff --git a/drivers/iio/inkern.c b/drivers/iio/inkern.c
+> index c174ebb7d5e6..d3bbd2444fb5 100644
+> --- a/drivers/iio/inkern.c
+> +++ b/drivers/iio/inkern.c
+> @@ -1028,3 +1028,201 @@ ssize_t iio_read_channel_label(struct iio_channel *chan, char *buf)
+>  	return do_iio_read_channel_label(chan->indio_dev, chan->channel, buf);
+>  }
+>  EXPORT_SYMBOL_GPL(iio_read_channel_label);
 
-I'd be fine with these new functions all being under IIO_CONSUMER or similar.
+> +umode_t iio_event_mode(struct iio_channel *chan, enum iio_event_type type,
+> +		       enum iio_event_direction dir, enum iio_event_info info)
+> +{
+> +	struct iio_dev *indio_dev = chan->indio_dev;
+> +	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(indio_dev);
+> +	umode_t mode = 0;
+> +
+> +	guard(mutex)(&iio_dev_opaque->info_exist_lock);
+> +	if (!iio_event_exists(chan, type, dir, info))
+> +		return 0;
+> +
+> +	if (info == IIO_EV_INFO_ENABLE) {
+> +		if (indio_dev->info->read_event_config)
+> +			mode |= 0444;
+> +
+> +		if (indio_dev->info->write_event_config)
+> +			mode |= 0200;
+> +	} else {
+> +		if (indio_dev->info->read_event_value)
+> +			mode |= 0444;
+> +
+> +		if (indio_dev->info->write_event_value)
+> +			mode |= 0200;
+> +	}
+> +
+> +	return mode;
+> +}
+> +EXPORT_SYMBOL_GPL(iio_event_mode);
+> +
+> +int iio_read_event_processed_scale(struct iio_channel *chan,
+> +				   enum iio_event_type type,
+> +				   enum iio_event_direction dir,
+> +				   enum iio_event_info info, int *val,
 
-Quite a bit of feedback on this set will be of the lines of don't do it
-the way we did it before as now we know better!
+Maybe rename info to ev_info or similar to avoid confusion with
+indio_dev->info
 
- 
-> 
-> >> >> +			if (scale64 <= INT_MAX && scale64 >= INT_MIN)
-> >> >> +				raw64 = processed / (int)scale64;  
-> >> > 
-> >> > Do you need the casting? (I mean if the compiler is dumb enough to not see this)  
-> >> 
-> >> AIUI 64-bit division is not available on 32-bit platforms. The cast
-> >> ensures we get 32-bit division.  
-> > 
-> > I put specifically a remark in the parentheses. So, the Q is if the compiler
-> > doesn't recognize that. Can you confirm that 32-bit compilation without cast
-> > is broken?  
-> 
-> inkern.c:(.text.iio_write_event_processed_scale+0x14c): undefined reference to `__aeabi_ldivmod'
-> 
-> >> >> +	*raw = clamp(raw64, (s64)INT_MIN, (s64)INT_MAX);  
-> >> > 
-> >> > You already have similar approach here...  
-> >> 
-> >> Well, I can spell it 0x7fffffffLL if you'd like...  
-> > 
-> > Nope, I like to have named constants instead of magics, but actually are those
-> > castings needed for the clamp()?  
-> 
-> Apparently not. The checks in __clamp_once are only for matching signedness. And
-> the ints are promoted to s64s when the comparison is made.
-> 
-> --Sean
+> +				   unsigned int scale)
+> +{
+> +	struct iio_dev *indio_dev = chan->indio_dev;
+> +	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(indio_dev);
+> +	int ret, raw;
+> +
+> +	guard(mutex)(&iio_dev_opaque->info_exist_lock);
+> +	if (!iio_event_exists(chan, type, dir, info))
+> +		return -ENODEV;
+> +
+Perhaps a local variable 
+	struct iio_info info;
+
+	info = indio_dev->info;
+
+> +	if (info == IIO_EV_INFO_ENABLE) {
+> +		if (!indio_dev->info->read_event_config)
+> +			return -EINVAL;
+> +
+> +		raw = indio_dev->info->read_event_config(indio_dev,
+		raw = info->read_event_config(indio_dev, chan->channel,
+					      type, dir);
+
+> +							 chan->channel, type,
+> +							 dir);
+> +		if (raw < 0)
+> +			return raw;
+> +
+> +		*val = raw;
+> +		return 0;
+> +	}
+> +
+> +	if (!indio_dev->info->read_event_value)
+> +		return -EINVAL;
+> +
+> +	ret = indio_dev->info->read_event_value(indio_dev, chan->channel, type,
+> +						dir, info, &raw, NULL);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	return iio_convert_raw_to_processed_unlocked(chan, raw, val, scale);
+> +}
+> +EXPORT_SYMBOL_GPL(iio_read_event_processed_scale);
+
+> +
+> +int iio_write_event_processed_scale(struct iio_channel *chan,
+> +				    enum iio_event_type type,
+> +				    enum iio_event_direction dir,
+> +				    enum iio_event_info info, int processed,
+> +				    unsigned int scale)
+> +{
+> +	struct iio_dev *indio_dev = chan->indio_dev;
+> +	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(chan->indio_dev);
+> +	int ret, raw;
+> +
+> +	guard(mutex)(&iio_dev_opaque->info_exist_lock);
+> +	if (!iio_event_exists(chan, type, dir, info))
+> +		return -ENODEV;
+> +
+> +	if (info == IIO_EV_INFO_ENABLE) {
+> +		if (!indio_dev->info->write_event_config)
+> +			return -EINVAL;
+> +
+> +		return indio_dev->info->write_event_config(indio_dev,
+
+Similar to above, feels like a local variable to shorten these would be good,
+
+> +							   chan->channel, type,
+> +							   dir, processed);
+> +	}
+> +
+> +	if (!indio_dev->info->write_event_value)
+> +		return -EINVAL;
+> +
+> +	ret = iio_convert_processed_to_raw_unlocked(chan, processed, &raw,
+> +						    scale);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	return indio_dev->info->write_event_value(indio_dev, chan->channel,
+> +						  type, dir, info, raw, 0);
+> +}
+> +EXPORT_SYMBOL_GPL(iio_write_event_processed_scale);
+> diff --git a/include/linux/iio/consumer.h b/include/linux/iio/consumer.h
+> index 6a4479616479..16e7682474f3 100644
+> --- a/include/linux/iio/consumer.h
+> +++ b/include/linux/iio/consumer.h
+> @@ -451,4 +451,60 @@ ssize_t iio_write_channel_ext_info(struct iio_channel *chan, const char *attr,
+>   */
+>  ssize_t iio_read_channel_label(struct iio_channel *chan, char *buf);
+>  
+> +/**
+> + * iio_event_mode() - get file mode for an event property
+
+Can we name this something more specific.  Sounds like it might be
+the mode of the events, not the mode of the file.
+
+> + * @chan: Channel being queried
+> + * @type: Event type (theshold, rate-of-change, etc.)
+> + * @dir: Event direction (rising, falling, etc.)
+> + * @info: Event property (enable, value, etc.)
+> + *
+> + * Determine an appropriate mode for sysfs files derived from this event.
+
+This isn't precise unfortunately as if we have a mix of read only and rw
+for different events (maybe some thresholds fixed and others not).
+We should maybe say that it may indicate more control than actually possible.
+In most cases it'll be right though.
+
+> + *
+> + * Return:
+> + *   - `0000` if the event is unsupported or otherwise unavailable
+> + *   - `0444` if the event is read-only
+> + *   - `0200` if the event is write-only
+> + *   - `0644` if the event is read-write
+> + */
+
+So here is one of those bits of "don't do it the way we currently do it".
+Move the docs next to the implementation in the c file rather than the header.
+We are horribly inconsistent in IIO mostly because of younger me making a mess
+of it.  General thinking today is that we are much less likely to forget
+to update docs if they are next to the code.
+
+
+> +umode_t iio_event_mode(struct iio_channel *chan, enum iio_event_type type,
+> +		       enum iio_event_direction dir, enum iio_event_info info);
+> +
+> +/**
+> + * iio_read_event_processed_scale() - Read an event property
+> + * @chan: Channel being queried
+> + * @type: Event type (theshold, rate-of-change, etc.)
+> + * @dir: Event direction (rising, falling, etc.)
+> + * @info: Event property (enable, value, etc.)
+> + * @val: Processed property value
+> + * @scale: Factor to scale @val by
+> + *
+> + * Read a processed (scaled and offset) event property of a given channel.
+> + *
+> + * Return: 0 on success, or negative error on failure
+> + */
+> +int iio_read_event_processed_scale(struct iio_channel *chan,
+> +				   enum iio_event_type type,
+> +				   enum iio_event_direction dir,
+> +				   enum iio_event_info info, int *val,
+> +				   unsigned int scale);
+> +
+> +/**
+> + * iio_write_event_processed_scale() - Read an event property
+> + * @chan: Channel being queried
+> + * @type: Event type (theshold, rate-of-change, etc.)
+> + * @dir: Event direction (rising, falling, etc.)
+> + * @info: Event property (enable, value, etc.)
+> + * @processed: Processed property value
+> + * @scale: Factor to scale @processed by
+> + *
+> + * Write a processed (scaled and offset) event property of a given channel.
+> + *
+> + * Return: 0 on success, or negative error on failure
+> + */
+> +int iio_write_event_processed_scale(struct iio_channel *chan,
+> +				    enum iio_event_type type,
+> +				    enum iio_event_direction dir,
+> +				    enum iio_event_info info, int processed,
+> +				    unsigned int scale);
+> +
+>  #endif
 
 

@@ -1,285 +1,709 @@
-Return-Path: <linux-iio+bounces-22061-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22062-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D1D6B130C8
-	for <lists+linux-iio@lfdr.de>; Sun, 27 Jul 2025 18:53:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E836FB13178
+	for <lists+linux-iio@lfdr.de>; Sun, 27 Jul 2025 21:09:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 41DD21786E8
-	for <lists+linux-iio@lfdr.de>; Sun, 27 Jul 2025 16:53:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E573B7A13B9
+	for <lists+linux-iio@lfdr.de>; Sun, 27 Jul 2025 19:07:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C32C72185B8;
-	Sun, 27 Jul 2025 16:53:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K1D9qJlw"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 014901CAA85;
+	Sun, 27 Jul 2025 19:08:57 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from ciao.gmane.io (ciao.gmane.io [116.202.254.214])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8315FDDA9
-	for <linux-iio@vger.kernel.org>; Sun, 27 Jul 2025 16:53:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 114BE19A2A3
+	for <linux-iio@vger.kernel.org>; Sun, 27 Jul 2025 19:08:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.202.254.214
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753635189; cv=none; b=pZ5yStaeZDyB2GfveDFRtdv1dUBSgieWk5XfqvTouEsqtmT5nNFX2gCXiTOAwaahSOaB+P2nBMo8C6JUbZssmhu4hYxPUCuN/YkXbQv6nFq6jfxWR48UQ5ik88pW9V5Wz4qRPIsfS0J3rizjyB4AHbQTBrFcOwfPfk7Z0vF1TNI=
+	t=1753643336; cv=none; b=hRf3XZ6IFrCVLMrg3kf8InxMpZyRQ3CmlEg9Uy1FjgHO36FiQXCKJg4Wr4K8L/PrQvYy6OY6pvSIMh8TrKoDqhV3YXo4oMQSI5R+DIAtc4WB0V+EJDn1se6KRP+TpuF6QlWJk5LuKRhlpxpWHIk7CyQSQZ9UWR4PjkjNwnkUrz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753635189; c=relaxed/simple;
-	bh=nEKGES25I+b0lftuct4CDI6klEfiomM1NvcT1dlmkM0=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GaO19zHXp4mc4M1p+7NI5SPSOWSGU6K+7b7SW2wAaRB1tpvMeTSWKILM3Nesgyxn9mNV1q2IB178PZNPdngMjM/f+L1NIMAkFt1i++JIIcSZmgLnvArLtZJAWmyB7EOcTrPxQ9pP2Ws9WTLdL6zlIAqh6JNsLOKK5oqJy6elAZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K1D9qJlw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81CA9C4CEEB;
-	Sun, 27 Jul 2025 16:53:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753635188;
-	bh=nEKGES25I+b0lftuct4CDI6klEfiomM1NvcT1dlmkM0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=K1D9qJlwuSSR0TDjBDmXdTeQIQCK95LgxnH1hx+9fH7Pl9Bpsyo+G0fMolU0Y6RH0
-	 DTh6UHXb0Ao2LOIAO6FhXbXdw7WaZLDspLp40X4D50U+QlgoCARtUkr1tNyXAGLwk9
-	 +5gqlbZ/xeZchSEpo1v0QsAG3djPHe9hIU/BYBZrBC5f5iQJ9jq5+LhEuDzuzzfFhK
-	 /hWhcQYmzjZEIqa6TrgQFERN54RXW2Fze8iFc72TThOrPN2WIMLZK9NKO8rFhJeHg0
-	 8BW/MpV8ANVlvGm3ygCN2QNJQb0GQ2feD6iYk7IlrYJ/ejQvm8akNRtpF6GoO7VGdI
-	 BqpWohNgGw62Q==
-Date: Sun, 27 Jul 2025 17:53:02 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Sean Nyekjaer <sean@geanix.com>
-Cc: Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>, Jonathan
- Cameron <Jonathan.Cameron@huawei.com>, David Lechner
- <dlechner@baylibre.com>, "linux-iio@vger.kernel.org"
- <linux-iio@vger.kernel.org>, Andy Shevchenko <andy@kernel.org>
-Subject: Re: [BUG] iio: imu: inv_icm42600: read temperature, Invalid
- Argument
-Message-ID: <20250727175302.7cb89b57@jic23-huawei>
-In-Reply-To: <w5ury5pubvk5iavcnu5yc44mp5lplsrvxyet4vwliv3mu3m5y4@sbfiyiy3loov>
-References: <unmlpvhl47vjdx7qqdaabhevhj3loydft4ytwxwsgefcyhbzup@zkqulwwfg37o>
-	<FR3P281MB1757FE243D78E8F78DA6C576CE4FA@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
-	<20250708113508.000027fb@huawei.com>
-	<FR3P281MB1757E1352768510879500A3CCE4EA@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
-	<20250713144632.0cd2e88f@jic23-huawei>
-	<w5ury5pubvk5iavcnu5yc44mp5lplsrvxyet4vwliv3mu3m5y4@sbfiyiy3loov>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1753643336; c=relaxed/simple;
+	bh=zxK9vf2HAXuqZuJqxUUfW0oxpcW67KzqUaMiF12bYNE=;
+	h=To:From:Subject:Date:Message-ID:References:Mime-Version:
+	 Content-Type; b=HhFR86uCFVXyvLRFw9G7bA1BQt3DhER3xdukTGn0uG0jrNszip5YsCeeviMkGXLEjDRhfZt7Lu59cp8pQgankEmiPDQS6Bojn7XJmeZbOE/A7i70TfBO7Jvey5rO9cKHSnL5KyQIEWESLmwOCgOHVf58FPeHxmtwoWXBfDs2Ni4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=nexgo.de; spf=pass smtp.mailfrom=m.gmane-mx.org; arc=none smtp.client-ip=116.202.254.214
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=nexgo.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=m.gmane-mx.org
+Received: from list by ciao.gmane.io with local (Exim 4.92)
+	(envelope-from <glki-linux-iio@m.gmane-mx.org>)
+	id 1ug6jl-000ADX-4n
+	for linux-iio@vger.kernel.org; Sun, 27 Jul 2025 21:08:45 +0200
+X-Injected-Via-Gmane: http://gmane.org/
+To: linux-iio@vger.kernel.org
+From: ASSI <Stromeko@nexgo.de>
+Subject: Re: [PATCH v9 1/4] iio: pressure: bmp280: Use sleep and forced mode for oneshot captures
+Date: Sun, 27 Jul 2025 21:08:39 +0200
+Organization: Linux Private Site
+Message-ID: <87ldo9wix4.fsf@Gerda.invalid>
+References: <20241017233022.238250-1-vassilisamir@gmail.com>
+	<20241017233022.238250-2-vassilisamir@gmail.com>
+	<875xgfg0wz.fsf@Gerda.invalid>
+	<c894cfda-a775-4598-ac3b-b3d35c6a84b3@baylibre.com>
+	<87a55azgdr.fsf@Gerda.invalid> <875xfx8nx2.fsf@Gerda.invalid>
+	<87pldm244b.fsf@Gerda.invalid>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+User-Agent: Gnus/5.13 (Gnus v5.13)
+Cancel-Lock: sha1:fYerhLk7TUXnNm+K5T/k8M51x38=
 
-On Mon, 14 Jul 2025 05:29:00 +0000
-Sean Nyekjaer <sean@geanix.com> wrote:
+ASSI writes:
+> ASSI writes:
+> Since the BMx280 don't actually have a frequency setting and need to set
+> standby times between measurements instead (for which I haven't found an
+> easily usable parameter in the IIO framework), the permissible frequency
+> settings are calculated for the lowest possible measurement time
+> (oversampling=1 for all channels).  The actual frequencies could be
+> caclulated from the current settings and made available on read, but I
+> haven't implemented that yet -- at the moment you'll get back the value
+> you have set independent of the actual oversampling ratios.
 
-> On Sun, Jul 13, 2025 at 02:46:32PM +0100, Jonathan Cameron wrote:
-> > On Tue, 8 Jul 2025 12:21:39 +0000
-> > Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com> wrote:
-> >  =20
-> > > >
-> > > >________________________________________
-> > > >From:=C2=A0Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > > >Sent:=C2=A0Tuesday, July 8, 2025 12:35
-> > > >To:=C2=A0Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>
-> > > >Cc:=C2=A0Sean Nyekjaer <sean@geanix.com>; Jonathan Cameron <jic23@ke=
-rnel.org>; David Lechner <dlechner@baylibre.com>; linux-iio@vger.kernel.org=
- <linux-iio@vger.kernel.org>; Andy Shevchenko <andy@kernel.org>
-> > > >Subject:=C2=A0Re: [BUG] iio: imu: inv_icm42600: read temperature, In=
-valid Argument
-> > > >=C2=A0
-> > > >This Message Is From an External Sender
-> > > >This message came from outside your organization.
-> > > >=C2=A0
-> > > >On Mon, 7 Jul 2025 18:13:33 +0000
-> > > >Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com> wrote:
-> > > > =20
-> > > >> >Hi,
-> > > >> >
-> > > >> >I'm having some weird issues with reading the temperature of the =
-icm42605.
-> > > >> >Kernel version: 6.16.0-rc5
-> > > >> >
-> > > >> ># cat /sys/bus/iio/devices/iio:device2/name
-> > > >> >icm42605-accel
-> > > >> >
-> > > >> >When reading the temperature I get:
-> > > >> ># cat /sys/bus/iio/devices/iio:device2/in_temp_raw
-> > > >> >cat: read error: Invalid argument
-> > > >> >
-> > > >> >But if I read from the accelerometer first, I will go better:
-> > > >> ># cat /sys/bus/iio/devices/iio:device2/in_accel_x_raw
-> > > >> >-378
-> > > >> ># cat /sys/bus/iio/devices/iio:device2/in_temp_raw
-> > > >> >600
-> > > >> >
-> > > >> >Then after "some" time, I re-read the temperature I recieve
-> > > >> >"Invalid argument" again.
-> > > >> >
-> > > >> >I have traced the -EINVAL to inv_icm42600_temp_read() because I r=
-eceive
-> > > >> >INV_ICM42600_DATA_INVALID.
-> > > >> >
-> > > >> >Register dump diff:
-> > > >> >--- invalid-read
-> > > >> >+++ ok-read
-> > > >> >@@ -10,14 +10,14 @@
-> > > >> > 0x1a =3D 0x00000010
-> > > >> > 0x1b =3D 0x00000000
-> > > >> > 0x1c =3D 0x00000000
-> > > >> >-0x1d =3D 0x00000080
-> > > >> >-0x1e =3D 0x00000000
-> > > >> >-0x1f =3D 0x00000080
-> > > >> >-0x20 =3D 0x00000000
-> > > >> >-0x21 =3D 0x00000080
-> > > >> >-0x22 =3D 0x00000000
-> > > >> >-0x23 =3D 0x00000080
-> > > >> >-0x24 =3D 0x00000000
-> > > >> >+0x1d =3D 0x00000002
-> > > >> >+0x1e =3D 0x00000038
-> > > >> >+0x1f =3D 0x000000fe
-> > > >> >+0x20 =3D 0x00000085
-> > > >> >+0x21 =3D 0x000000fe
-> > > >> >+0x22 =3D 0x000000df
-> > > >> >+0x23 =3D 0x000000f8
-> > > >> >+0x24 =3D 0x0000003a
-> > > >> > 0x25 =3D 0x00000080
-> > > >> > 0x26 =3D 0x00000000
-> > > >> > 0x27 =3D 0x00000080
-> > > >> >@@ -26,7 +26,7 @@
-> > > >> > 0x2a =3D 0x00000000
-> > > >> > 0x2b =3D 0x00000000
-> > > >> > 0x2c =3D 0x00000000
-> > > >> >-0x2d =3D 0x00000000
-> > > >> >+0x2d =3D 0x00000008
-> > > >> > 0x2e =3D 0x00000000
-> > > >> > 0x2f =3D 0x00000000
-> > > >> > 0x30 =3D 0x000000ff
-> > > >> >@@ -59,11 +59,11 @@
-> > > >> > 0x4b =3D 0x00000000
-> > > >> > 0x4c =3D 0x00000032
-> > > >> > 0x4d =3D 0x00000099
-> > > >> >-0x4e =3D 0x00000000
-> > > >> >+0x4e =3D 0x00000002
-> > > >> > 0x4f =3D 0x00000009
-> > > >> > 0x50 =3D 0x00000009
-> > > >> > 0x51 =3D 0x00000016
-> > > >> >-0x52 =3D 0x00000000
-> > > >> >+0x52 =3D 0x00000060
-> > > >> > 0x53 =3D 0x0000000d
-> > > >> > 0x54 =3D 0x00000031
-> > > >> > 0x55 =3D 0x00000000
-> > > >> >
-> > > >> >Will the iio core retry a read? If the -EINVAL is returned,
-> > > >> >inv_icm42600_accel_read_raw() is call once more.
-> > > >> >
-> > > >> >One more thing...
-> > > >> >When I'm removing the module, the kernel prints this:
-> > > >> >inv-icm42600-i2c 1-0068: Runtime PM usage count underflow!
-> > > >> >
-> > > >> >I will continue investigate this
-> > > >> >Br,
-> > > >> >Sean =20
-> > > >>
-> > > >> Hello Sean,
-> > > >>
-> > > >> this is expected behavior since the temperature returned is not th=
-e external
-> > > >> temperature but the temperature of the mechanical component (MEMS)=
-. It will
-> > > >> only work if the chip is on, meaning accelerometer and/or gyroscop=
-e is on.
-> > > >>
-> > > >> That's why you can get temperature after reading accel data since =
-it is
-> > > >> turning the chip. But after a short while autosuspend is putting t=
-he chip
-> > > >> back off and you cannot read temperature anymore.
-> > > >>
-> > > >> You need to turn one sensor continuously on with a buffer, and the=
-n you can
-> > > >> read temperature all the time since the chip is running.
-> > > >>
-> > > >> Temperature data are here only to do temperature compensation of t=
-he accel
-> > > >> and gyro data. =20
-> > > >
-> > > >That is rather non-intuitive behavior.  Could we make a read of the =
-temperature
-> > > >channel turn on one of the components?  Given expected use case it s=
-houldn't commonly
-> > > >happen but if not too horrendous to implement it would be better to =
-avoid the error
-> > > >seen here. =20
-> > >
-> > > Hello Jonathan,
-> > >
-> > > the problem here is which sensor to turn on? Accel or gyro, or accel+=
-gyro?
-> > > And the temperature reported will be completely different if it is ac=
-cel
-> > > and/or gyro running, since gyro is heating much more than accel.
-> > >
-> > > This is not a classical temperature sensor, but an internal one for m=
-easuring
-> > > temperature of the mechanical part while running. The usual use case =
-on our
-> > > side is polling the temperature at low frequency (10Hz, 20Hz) while a=
-ccel
-> > > and/or gyro are running to do temperature compensation on the data re=
-ad.
-> > >
-> > > We generally want to avoid temperature data in the FIFO because repor=
-ting
-> > > temperature at high frequency is not useful, and it is consuming spac=
-e in
-> > > the FIFO. We prefer to have more space in the FIFO for accel and gyro=
- data
-> > > and do polling of temperature.
-> > >
-> > > Temperature reporting while the chip is off makes absolutely no sense=
- that's
-> > > why it is not supported by the chip, even if it can be non-intuitive.
-> > >
-> > > Perhaps we can use another error returning code rather than invalid v=
-alue?
-> > > Otherwise, tell me what you think is the best to do. =20
-> >=20
-> > Maybe indicate it is a temporary situation that userspace can resolve
-> > by reporting -EBUSY?  I'm not sure what the best path forward here is.
-> >=20
-> > Your explanation seems reasonable to me.  Sean, do you still believe
-> > we need to make a change here? =20
->=20
-> I think -EBUSY would be better, returning -EINVAL required me to read the=
- driver,
-> and apply some debug printk's to see where it originated from.
->=20
-> Returning -EBUSY and add a comment about the "issue" in
-> inv_icm42600_temp_read(), would be a help.
+Implemented and that actually helped find another bug hiding in plain
+sight in the original code…
 
-Anyone want to spin a patch?  I'm marking this thread closed in patchwork
-in the meantime.
+> Another issue I found while perusing the sources is that the filter has
+> a fixed setting of 4 for these chips, which might be made changeable by
+> using the filter_coefficient.  Not looked at what that entails,
+> though.
 
-Thanks,
+Implemented.
 
-Jonathan
+> I've got a sparse checkout of the kernel repo now, so if you think that
+> this may be acceptable I can work on getting that into the form you are
+> expecting (either a single commit or a series) and iron out any kinks
+> you see.
 
->=20
-> /Sean
->=20
-> >=20
-> > Jonathan
-> >  =20
-> > >
-> > > Thanks,
-> > > JB
-> > > =20
-> > > > =20
-> > > >>
-> > > >> Thanks,
-> > > >> JB =20
-> > > >
-> > > > =20
-> >  =20
->=20
+I have a patch series that checkpatch.pl no longer complains about, but
+I'll probably go over it at least one more time before submission.
+
+Full patch for anybody wanting to give it a try (BMx[135]80 need testing
+since I don't have any):
+
+--8<---------------cut here---------------start------------->8---
+diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
+index f37f20776c89..22a49356ca9c 100644
+--- a/drivers/iio/pressure/bmp280-core.c
++++ b/drivers/iio/pressure/bmp280-core.c
+@@ -64,7 +64,32 @@
+  */
+ enum { AC1, AC2, AC3, AC4, AC5, AC6, B1, B2, MB, MC, MD };
+ 
++enum bmp280_odr {
++	BMP280_ODR_0HZ,		/* MODE_FORCED */
++	BMP280_ODR_110HZ,	/* t_sb =  0.5ms */
++	BMP280_ODR_14HZ,	/* t_sb = 62.5ms */
++	BMP280_ODR_7_5HZ,	/* t_sb =  125ms */
++	BMP280_ODR_3_85HZ,	/* t_sb =  250ms */
++	BMP280_ODR_1_96HZ,	/* t_sb =  500ms */
++	BMP280_ODR_0_99HZ,	/* t_sb = 1000ms */
++	BMP280_ODR_0_49HZ,	/* t_sb = 2000ms */
++	BMP280_ODR_0_24HZ,	/* t_sb = 4000ms */
++};
++
++enum bme280_odr {
++	BME280_ODR_0HZ,		/* MODE_FORCED */
++	BME280_ODR_110HZ,	/* t_sb =  0.5ms */
++	BME280_ODR_14HZ,	/* t_sb = 62.5ms */
++	BME280_ODR_7_5HZ,	/* t_sb =  125ms */
++	BME280_ODR_3_85HZ,	/* t_sb =  250ms */
++	BME280_ODR_1_96HZ,	/* t_sb =  500ms */
++	BME280_ODR_0_99HZ,	/* t_sb = 1000ms */
++	BME280_ODR_51HZ,	/* t_sb =   10ms */
++	BME280_ODR_34HZ,	/* t_sb =   20ms */
++};
++
+ enum bmp380_odr {
++	BMP380_ODR_0HZ,		/* MODE_FORCED */
+ 	BMP380_ODR_200HZ,
+ 	BMP380_ODR_100HZ,
+ 	BMP380_ODR_50HZ,
+@@ -86,6 +111,7 @@ enum bmp380_odr {
+ };
+ 
+ enum bmp580_odr {
++	BMP580_ODR_0HZ,		/* MODE_FORCED */
+ 	BMP580_ODR_240HZ,
+ 	BMP580_ODR_218HZ,
+ 	BMP580_ODR_199HZ,
+@@ -159,6 +185,8 @@ static const struct iio_chan_spec bmp280_channels[] = {
+ 				      BIT(IIO_CHAN_INFO_RAW) |
+ 				      BIT(IIO_CHAN_INFO_SCALE) |
+ 				      BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),
++		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SAMP_FREQ) |
++					   BIT(IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY),
+ 		.scan_index = 0,
+ 		.scan_type = {
+ 			.sign = 'u',
+@@ -174,6 +202,8 @@ static const struct iio_chan_spec bmp280_channels[] = {
+ 				      BIT(IIO_CHAN_INFO_RAW) |
+ 				      BIT(IIO_CHAN_INFO_SCALE) |
+ 				      BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),
++		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SAMP_FREQ) |
++					   BIT(IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY),
+ 		.scan_index = 1,
+ 		.scan_type = {
+ 			.sign = 's',
+@@ -193,6 +223,8 @@ static const struct iio_chan_spec bme280_channels[] = {
+ 				      BIT(IIO_CHAN_INFO_RAW) |
+ 				      BIT(IIO_CHAN_INFO_SCALE) |
+ 				      BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),
++		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SAMP_FREQ) |
++					   BIT(IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY),
+ 		.scan_index = 0,
+ 		.scan_type = {
+ 			.sign = 'u',
+@@ -208,6 +240,8 @@ static const struct iio_chan_spec bme280_channels[] = {
+ 				      BIT(IIO_CHAN_INFO_RAW) |
+ 				      BIT(IIO_CHAN_INFO_SCALE) |
+ 				      BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),
++		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SAMP_FREQ) |
++					   BIT(IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY),
+ 		.scan_index = 1,
+ 		.scan_type = {
+ 			.sign = 's',
+@@ -223,6 +257,8 @@ static const struct iio_chan_spec bme280_channels[] = {
+ 				      BIT(IIO_CHAN_INFO_RAW) |
+ 				      BIT(IIO_CHAN_INFO_SCALE) |
+ 				      BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),
++		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SAMP_FREQ) |
++					   BIT(IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY),
+ 		.scan_index = 2,
+ 		.scan_type = {
+ 			.sign = 'u',
+@@ -612,6 +648,45 @@ static int bme280_read_humid(struct bmp280_data *data, u32 *comp_humidity)
+ 	return 0;
+ }
+ 
++static unsigned int bmp280_calc_meas_time_us(struct bmp280_data *data)
++{
++	unsigned int meas_time_us = BMP280_MEAS_OFFSET;
++
++	meas_time_us = BMP280_MEAS_OFFSET;
++
++	/* Check if we are using a BME280 device */
++	if (data->chip_info->oversampling_humid_avail)
++		meas_time_us += BMP280_PRESS_HUMID_MEAS_OFFSET +
++				BIT(data->oversampling_humid) * BMP280_MEAS_DUR;
++
++	/* Pressure measurement time */
++	meas_time_us += BMP280_PRESS_HUMID_MEAS_OFFSET +
++			BIT(data->oversampling_press) * BMP280_MEAS_DUR;
++
++	/* Temperature measurement time */
++	meas_time_us += BIT(data->oversampling_temp) * BMP280_MEAS_DUR;
++
++	/* nominal value */
++	return meas_time_us;
++}
++
++static void bmp280_calc_sampling_frequency(struct bmp280_data *data, int *val, int *val2)
++{
++	unsigned int cycle_time_us;
++	unsigned long freq_uHz;
++
++	if (data->chip_info->sampling_freq_tstby) {
++		cycle_time_us  = bmp280_calc_meas_time_us(data);
++		cycle_time_us += data->chip_info->sampling_freq_tstby[data->sampling_freq];
++		freq_uHz = 1000000000000L / cycle_time_us;
++		*val  = freq_uHz / 1000000L;
++		*val2 = freq_uHz % 1000000L;
++	} else {
++		*val  = data->chip_info->sampling_freq_avail[data->sampling_freq][0];
++		*val2 = data->chip_info->sampling_freq_avail[data->sampling_freq][1];
++	}
++}
++
+ static int bmp280_read_raw_impl(struct iio_dev *indio_dev,
+ 				struct iio_chan_spec const *chan,
+ 				int *val, int *val2, long mask)
+@@ -619,55 +694,68 @@ static int bmp280_read_raw_impl(struct iio_dev *indio_dev,
+ 	struct bmp280_data *data = iio_priv(indio_dev);
+ 	int chan_value;
+ 	int ret;
++	int prev_oversampling_humid, prev_oversampling_press, prev_oversampling_temp;
++	int temp_oversampling_humid, temp_oversampling_press, temp_oversampling_temp;
++	int switch_off, switch_threshold = -1;
++	int raw = 0;
+ 
+ 	guard(mutex)(&data->lock);
+ 
++	prev_oversampling_humid = temp_oversampling_humid = data->oversampling_humid;
++	prev_oversampling_press = temp_oversampling_press = data->oversampling_press;
++	prev_oversampling_temp  = temp_oversampling_temp  = data->oversampling_temp;
++
++	data->op_mode = data->sampling_freq ? BMP280_NORMAL : BMP280_FORCED;
++
+ 	switch (mask) {
++	case IIO_CHAN_INFO_RAW:
++		raw = 1;
++		fallthrough;
+ 	case IIO_CHAN_INFO_PROCESSED:
+-		ret = data->chip_info->set_mode(data, BMP280_FORCED);
+-		if (ret)
+-			return ret;
++		switch_off = 0;
++		if (data->op_mode == BMP280_FORCED) {
++			/* switch off unused channels */
++			switch (chan->type) {
++			case IIO_HUMIDITYRELATIVE:
++				temp_oversampling_press = 0-1;
++				switch_off |= (prev_oversampling_press > switch_threshold);
++				temp_oversampling_temp  = 1-1; /* can't be switched off as it is needed for compensation */
++				break;
++			case IIO_PRESSURE:
++				temp_oversampling_humid = 0-1;
++				switch_off |= (prev_oversampling_humid > switch_threshold);
++				temp_oversampling_temp  = 1-1; /* can't be switched off as it is needed for compensation */
++				break;
++			case IIO_TEMP:
++				temp_oversampling_humid = 0-1;
++				temp_oversampling_press = 0-1;
++				switch_off = (prev_oversampling_humid > switch_threshold)  |  (prev_oversampling_press > switch_threshold);
++				break;
++			default:
++				return -EINVAL;
++			}
++		}
++		if (switch_off) {
++			data->oversampling_humid = temp_oversampling_humid;
++			data->oversampling_press = temp_oversampling_press;
++			data->oversampling_temp  = temp_oversampling_temp;
++			ret = data->chip_info->chip_config(data);
++			if (ret)
++				goto restore;
++		}
+ 
+ 		ret = data->chip_info->wait_conv(data);
+ 		if (ret)
+-			return ret;
++			goto restore;
+ 
+-		switch (chan->type) {
+-		case IIO_HUMIDITYRELATIVE:
+-			ret = data->chip_info->read_humid(data, &chan_value);
+-			if (ret)
+-				return ret;
+-
+-			*val = data->chip_info->humid_coeffs[0] * chan_value;
+-			*val2 = data->chip_info->humid_coeffs[1];
+-			return data->chip_info->humid_coeffs_type;
+-		case IIO_PRESSURE:
+-			ret = data->chip_info->read_press(data, &chan_value);
+-			if (ret)
+-				return ret;
+-
+-			*val = data->chip_info->press_coeffs[0] * chan_value;
+-			*val2 = data->chip_info->press_coeffs[1];
+-			return data->chip_info->press_coeffs_type;
+-		case IIO_TEMP:
+-			ret = data->chip_info->read_temp(data, &chan_value);
++		if (switch_off) {
++			data->oversampling_humid = prev_oversampling_humid;
++			data->oversampling_press = prev_oversampling_press;
++			data->oversampling_temp  = prev_oversampling_temp;
++			ret = data->chip_info->chip_config(data);
+ 			if (ret)
+ 				return ret;
+-
+-			*val = data->chip_info->temp_coeffs[0] * chan_value;
+-			*val2 = data->chip_info->temp_coeffs[1];
+-			return data->chip_info->temp_coeffs_type;
+-		default:
+-			return -EINVAL;
+ 		}
+-	case IIO_CHAN_INFO_RAW:
+-		ret = data->chip_info->set_mode(data, BMP280_FORCED);
+-		if (ret)
+-			return ret;
+-
+-		ret = data->chip_info->wait_conv(data);
+-		if (ret)
+-			return ret;
+ 
+ 		switch (chan->type) {
+ 		case IIO_HUMIDITYRELATIVE:
+@@ -675,22 +763,40 @@ static int bmp280_read_raw_impl(struct iio_dev *indio_dev,
+ 			if (ret)
+ 				return ret;
+ 
+-			*val = chan_value;
+-			return IIO_VAL_INT;
++			if (raw) {
++				*val = chan_value;
++				return IIO_VAL_INT;
++			} else {
++				*val = data->chip_info->humid_coeffs[0] * chan_value;
++				*val2 = data->chip_info->humid_coeffs[1];
++				return data->chip_info->humid_coeffs_type;
++			}
+ 		case IIO_PRESSURE:
+ 			ret = data->chip_info->read_press(data, &chan_value);
+ 			if (ret)
+ 				return ret;
+ 
+-			*val = chan_value;
+-			return IIO_VAL_INT;
++			if (raw) {
++				*val = chan_value;
++				return IIO_VAL_INT;
++			} else {
++				*val = data->chip_info->press_coeffs[0] * chan_value;
++				*val2 = data->chip_info->press_coeffs[1];
++				return data->chip_info->press_coeffs_type;
++			}
+ 		case IIO_TEMP:
+ 			ret = data->chip_info->read_temp(data, &chan_value);
+ 			if (ret)
+ 				return ret;
+ 
+-			*val = chan_value;
+-			return IIO_VAL_INT;
++			if (raw) {
++				*val = chan_value;
++				return IIO_VAL_INT;
++			} else {
++				*val = data->chip_info->temp_coeffs[0] * chan_value;
++				*val2 = data->chip_info->temp_coeffs[1];
++				return data->chip_info->temp_coeffs_type;
++			}
+ 		default:
+ 			return -EINVAL;
+ 		}
+@@ -728,19 +834,26 @@ static int bmp280_read_raw_impl(struct iio_dev *indio_dev,
+ 	case IIO_CHAN_INFO_SAMP_FREQ:
+ 		if (!data->chip_info->sampling_freq_avail)
+ 			return -EINVAL;
+-
+-		*val = data->chip_info->sampling_freq_avail[data->sampling_freq][0];
+-		*val2 = data->chip_info->sampling_freq_avail[data->sampling_freq][1];
++		bmp280_calc_sampling_frequency(data, val, val2);
+ 		return IIO_VAL_INT_PLUS_MICRO;
+ 	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
+ 		if (!data->chip_info->iir_filter_coeffs_avail)
+ 			return -EINVAL;
+ 
+-		*val = (1 << data->iir_filter_coeff) - 1;
++		*val = data->chip_info->iir_filter_coeffs_avail[data->iir_filter_coeff];
+ 		return IIO_VAL_INT;
+ 	default:
+ 		return -EINVAL;
+ 	}
++	restore:
++	if (switch_off) {
++	/* restore channel configuration */
++		data->oversampling_humid = prev_oversampling_humid;
++		data->oversampling_press = prev_oversampling_press;
++		data->oversampling_temp  = prev_oversampling_temp;
++		data->chip_info->chip_config(data);
++	}
++	return ret;
+ }
+ 
+ static int bmp280_read_raw(struct iio_dev *indio_dev,
+@@ -852,6 +965,10 @@ static int bmp280_write_sampling_frequency(struct bmp280_data *data,
+ 				data->chip_info->chip_config(data);
+ 				return ret;
+ 			}
++			ret = data->chip_info->set_mode(data, (i ? BMP280_NORMAL : BMP280_FORCED));
++			if (ret)
++				return ret;
++
+ 			return 0;
+ 		}
+ 	}
+@@ -866,7 +983,7 @@ static int bmp280_write_iir_filter_coeffs(struct bmp280_data *data, int val)
+ 	int i;
+ 
+ 	for (i = 0; i < n; i++) {
+-		if (avail[i] - 1  == val) {
++		if (avail[i]  == val) {
+ 			prev = data->iir_filter_coeff;
+ 			data->iir_filter_coeff = i;
+ 
+@@ -988,6 +1105,54 @@ static const unsigned long bme280_avail_scan_masks[] = {
+ 	0
+ };
+ 
++static const int bmp280_odr_table[][2] = {
++	[BMP280_ODR_0HZ]	= {0,       0}, /* MODE_FORCED */
++	[BMP280_ODR_110HZ]	= {110,     0},
++	[BMP280_ODR_14HZ]	= {14,      0},
++	[BMP280_ODR_7_5HZ]	= {7,  500000},
++	[BMP280_ODR_3_85HZ]	= {3,  850000},
++	[BMP280_ODR_1_96HZ]	= {1,  960000},
++	[BMP280_ODR_0_99HZ]	= {0,  990000},
++	[BMP280_ODR_0_49HZ]	= {0,  490000},
++	[BMP280_ODR_0_24HZ]	= {0,  240000},
++};
++/* must be the same size as the ODR table */
++static const int bmp280_tstby_table[] = {
++	[BMP280_ODR_0HZ]	=       0,
++	[BMP280_ODR_110HZ]	=     500,
++	[BMP280_ODR_14HZ]	=   62500,
++	[BMP280_ODR_7_5HZ]	=  125000,
++	[BMP280_ODR_3_85HZ]	=  250000,
++	[BMP280_ODR_1_96HZ]	=  500000,
++	[BMP280_ODR_0_99HZ]	= 1000000,
++	[BMP280_ODR_0_49HZ]	= 2000000,
++	[BMP280_ODR_0_24HZ]	= 4000000,
++};
++
++static const int bme280_odr_table[][2] = {
++	[BME280_ODR_0HZ]	= {0,       0}, /* MODE_FORCED */
++	[BME280_ODR_110HZ]	= {110,     0},
++	[BME280_ODR_14HZ]	= {14,      0},
++	[BME280_ODR_7_5HZ]	= {7,  500000},
++	[BME280_ODR_3_85HZ]	= {3,  850000},
++	[BME280_ODR_1_96HZ]	= {1,  960000},
++	[BME280_ODR_0_99HZ]	= {0,  990000},
++	[BME280_ODR_51HZ]	= {51,      0},
++	[BME280_ODR_34HZ]	= {34,      0},
++};
++/* must be the same size as the ODR table */
++static const int bme280_tstby_table[] = {
++	[BME280_ODR_0HZ]	=       0,
++	[BME280_ODR_110HZ]	=     500,
++	[BME280_ODR_14HZ]	=   62500,
++	[BME280_ODR_7_5HZ]	=  125000,
++	[BME280_ODR_3_85HZ]	=  250000,
++	[BME280_ODR_1_96HZ]	=  500000,
++	[BME280_ODR_0_99HZ]	= 1000000,
++	[BME280_ODR_51HZ]	=   10000,
++	[BME280_ODR_34HZ]	=   20000,
++};
++
+ static int bmp280_preinit(struct bmp280_data *data)
+ {
+ 	struct device *dev = data->dev;
+@@ -1025,6 +1190,8 @@ static int bmp280_set_mode(struct bmp280_data *data, enum bmp280_op_mode mode)
+ {
+ 	int ret;
+ 
++	data->op_mode = BMP280_SLEEP;
++
+ 	ret = regmap_write_bits(data->regmap, BMP280_REG_CTRL_MEAS,
+ 				BMP280_MODE_MASK, bmp280_operation_mode[mode]);
+ 	if (ret) {
+@@ -1041,30 +1208,32 @@ static int bmp280_wait_conv(struct bmp280_data *data)
+ {
+ 	unsigned int reg, meas_time_us;
+ 	int ret;
++	int meas_cycles = 4;
+ 
+-	/* Check if we are using a BME280 device */
+-	if (data->oversampling_humid)
+-		meas_time_us = BMP280_PRESS_HUMID_MEAS_OFFSET +
+-				BIT(data->oversampling_humid) * BMP280_MEAS_DUR;
++	/* is this really necessary or can we skip if op_mode is already BMP280_NORMAL? */
++	ret = data->chip_info->set_mode(data, data->op_mode);
++	if (ret)
++		return ret;
+ 
+-	else
+-		meas_time_us = 0;
++	if (data->op_mode == BMP280_NORMAL)
++		return 0;
+ 
+-	/* Pressure measurement time */
+-	meas_time_us += BMP280_PRESS_HUMID_MEAS_OFFSET +
+-			BIT(data->oversampling_press) * BMP280_MEAS_DUR;
++	meas_time_us = bmp280_calc_meas_time_us(data);
+ 
+-	/* Temperature measurement time */
+-	meas_time_us += BIT(data->oversampling_temp) * BMP280_MEAS_DUR;
++	do {
++		/* Waiting time according to the BM(P/E)2 Sensor API */
++		fsleep(meas_time_us);
+ 
+-	/* Waiting time according to the BM(P/E)2 Sensor API */
+-	fsleep(meas_time_us);
++		ret = regmap_read(data->regmap, BMP280_REG_STATUS, &reg);
++		if (ret) {
++			dev_err(data->dev, "failed to read status register.\n");
++			return ret;
++		}
+ 
+-	ret = regmap_read(data->regmap, BMP280_REG_STATUS, &reg);
+-	if (ret) {
+-		dev_err(data->dev, "failed to read status register.\n");
+-		return ret;
+-	}
++		meas_time_us >>= 3;
++	} while ((reg & BMP280_REG_STATUS_MEAS_BIT) && --meas_cycles);
++
++       	data->op_mode = BMP280_SLEEP;
+ 
+ 	if (reg & BMP280_REG_STATUS_MEAS_BIT) {
+ 		dev_err(data->dev, "Measurement cycle didn't complete.\n");
+@@ -1078,6 +1247,7 @@ static int bmp280_chip_config(struct bmp280_data *data)
+ {
+ 	u8 osrs = FIELD_PREP(BMP280_OSRS_TEMP_MASK, data->oversampling_temp + 1) |
+ 		  FIELD_PREP(BMP280_OSRS_PRESS_MASK, data->oversampling_press + 1);
++	u8 tstby = FIELD_PREP(BMP280_TSTBY_MASK, (data->sampling_freq ? data->sampling_freq - 1 : 0));
+ 	int ret;
+ 
+ 	ret = regmap_write_bits(data->regmap, BMP280_REG_CTRL_MEAS,
+@@ -1091,8 +1261,9 @@ static int bmp280_chip_config(struct bmp280_data *data)
+ 	}
+ 
+ 	ret = regmap_update_bits(data->regmap, BMP280_REG_CONFIG,
++				 BMP280_TSTBY_MASK |
+ 				 BMP280_FILTER_MASK,
+-				 BMP280_FILTER_4X);
++				 tstby | data->iir_filter_coeff);
+ 	if (ret) {
+ 		dev_err(data->dev, "failed to write config register\n");
+ 		return ret;
+@@ -1157,6 +1328,7 @@ static const int bmp280_oversampling_avail[] = { 1, 2, 4, 8, 16 };
+ static const u8 bmp280_chip_ids[] = { BMP280_CHIP_ID };
+ static const int bmp280_temp_coeffs[] = { 10, 1 };
+ static const int bmp280_press_coeffs[] = { 1, 256000 };
++static const int bmp280_iir_filter_coeffs_avail[] = { 0, 2, 4, 8, 16 };
+ 
+ const struct bmp280_chip_info bmp280_chip_info = {
+ 	.id_reg = BMP280_REG_ID,
+@@ -1186,6 +1358,15 @@ const struct bmp280_chip_info bmp280_chip_info = {
+ 	.num_oversampling_press_avail = ARRAY_SIZE(bmp280_oversampling_avail),
+ 	.oversampling_press_default = BMP280_OSRS_PRESS_16X - 1,
+ 
++	.sampling_freq_tstby = bmp280_tstby_table,
++	.sampling_freq_avail = bmp280_odr_table,
++	.num_sampling_freq_avail = ARRAY_SIZE(bmp280_odr_table) * 2,
++	.sampling_freq_default = BMP280_ODR_0HZ, /* MODE_FORCED */
++
++	.iir_filter_coeffs_avail = bmp280_iir_filter_coeffs_avail,
++	.num_iir_filter_coeffs_avail = ARRAY_SIZE(bmp280_iir_filter_coeffs_avail),
++	.iir_filter_coeff_default = 2,
++
+ 	.temp_coeffs = bmp280_temp_coeffs,
+ 	.temp_coeffs_type = IIO_VAL_FRACTIONAL,
+ 	.press_coeffs = bmp280_press_coeffs,
+@@ -1371,6 +1552,15 @@ const struct bmp280_chip_info bme280_chip_info = {
+ 	.num_oversampling_humid_avail = ARRAY_SIZE(bmp280_oversampling_avail),
+ 	.oversampling_humid_default = BME280_OSRS_HUMIDITY_16X - 1,
+ 
++	.sampling_freq_tstby = bme280_tstby_table,
++	.sampling_freq_avail = bme280_odr_table,
++	.num_sampling_freq_avail = ARRAY_SIZE(bme280_odr_table) * 2,
++	.sampling_freq_default = BME280_ODR_0HZ, /* MODE_FORCED */
++
++	.iir_filter_coeffs_avail = bmp280_iir_filter_coeffs_avail,
++	.num_iir_filter_coeffs_avail = ARRAY_SIZE(bmp280_iir_filter_coeffs_avail),
++	.iir_filter_coeff_default = 2,
++
+ 	.temp_coeffs = bmp280_temp_coeffs,
+ 	.temp_coeffs_type = IIO_VAL_FRACTIONAL,
+ 	.press_coeffs = bmp280_press_coeffs,
+@@ -1701,6 +1891,11 @@ static int bmp380_wait_conv(struct bmp280_data *data)
+ 	unsigned int reg;
+ 	int ret, meas_time_us;
+ 
++	/* is this really necessary or can we skip if op_mode is already BMP280_NORMAL? */
++	ret = data->chip_info->set_mode(data, data->op_mode);
++	if (ret)
++		return ret;
++
+ 	/* Offset measurement time */
+ 	meas_time_us = BMP380_MEAS_OFFSET;
+ 
+@@ -1954,7 +2149,7 @@ static irqreturn_t bmp380_trigger_handler(int irq, void *p)
+ }
+ 
+ static const int bmp380_oversampling_avail[] = { 1, 2, 4, 8, 16, 32 };
+-static const int bmp380_iir_filter_coeffs_avail[] = { 1, 2, 4, 8, 16, 32, 64, 128};
++static const int bmp380_iir_filter_coeffs_avail[] = { 0, 1, 3, 7, 15, 31, 63, 127 };
+ static const u8 bmp380_chip_ids[] = { BMP380_CHIP_ID, BMP390_CHIP_ID };
+ static const int bmp380_temp_coeffs[] = { 10, 1 };
+ static const int bmp380_press_coeffs[] = { 1, 100000 };
+@@ -2435,6 +2630,12 @@ static int bmp580_wait_conv(struct bmp280_data *data)
+ 		21840,
+ 	};
+ 	int meas_time_us;
++	int ret;
++
++	/* is this really necessary or can we skip if op_mode is already BMP280_NORMAL? */
++	ret = data->chip_info->set_mode(data, data->op_mode);
++	if (ret)
++		return ret;
+ 
+ 	meas_time_us = 4 * USEC_PER_MSEC +
+ 		       time_conv_temp[data->oversampling_temp] +
+diff --git a/drivers/iio/pressure/bmp280.h b/drivers/iio/pressure/bmp280.h
+index 25bb9c743a05..990ccb38da13 100644
+--- a/drivers/iio/pressure/bmp280.h
++++ b/drivers/iio/pressure/bmp280.h
+@@ -248,6 +248,16 @@
+ #define BMP280_FILTER_8X		3
+ #define BMP280_FILTER_16X		4
+ 
++#define BMP280_TSTBY_MASK		GENMASK(7, 5)
++#define BMP280_TSTBY_0_5		0
++#define BMP280_TSTBY_62_5		1
++#define BMP280_TSTBY_125		2
++#define BMP280_TSTBY_250		3
++#define BMP280_TSTBY_500		4
++#define BMP280_TSTBY_1000		5
++#define BMP280_TSTBY_2000		6
++#define BMP280_TSTBY_4000		7
++
+ #define BMP280_OSRS_TEMP_MASK		GENMASK(7, 5)
+ #define BMP280_OSRS_TEMP_SKIP		0
+ #define BMP280_OSRS_TEMP_1X		1
+@@ -269,9 +279,9 @@
+ #define BMP280_MODE_FORCED		1
+ #define BMP280_MODE_NORMAL		3
+ 
+-#define BMP280_MEAS_OFFSET		1250
+-#define BMP280_MEAS_DUR			2300
+-#define BMP280_PRESS_HUMID_MEAS_OFFSET	575
++#define BMP280_MEAS_OFFSET		1095 /* ceil(1250/(1+2^-3+2^-6+2^-9) */
++#define BMP280_MEAS_DUR			2013 /* ceil(2300/(1+2^-3+2^-6+2^-9) */
++#define BMP280_PRESS_HUMID_MEAS_OFFSET	504  /* ceil( 575/(1+2^-3+2^-6+2^-9) */
+ 
+ /* BME280 specific registers */
+ #define BME280_REG_HUMIDITY_LSB		0xFE
+@@ -294,6 +304,16 @@
+ 
+ #define BME280_CONTIGUOUS_CALIB_REGS	7
+ 
++#define BME280_TSTBY_MASK		GENMASK(7, 5)
++#define BME280_TSTBY_0_5		0
++#define BME280_TSTBY_62_5		1
++#define BME280_TSTBY_125		2
++#define BME280_TSTBY_250		3
++#define BME280_TSTBY_500		4
++#define BME280_TSTBY_1000		5
++#define BME280_TSTBY_1			6
++#define BME280_TSTBY_20			7
++
+ #define BME280_OSRS_HUMIDITY_MASK	GENMASK(2, 0)
+ #define BME280_OSRS_HUMIDITY_SKIP	0
+ #define BME280_OSRS_HUMIDITY_1X		1
+@@ -501,6 +521,7 @@ struct bmp280_chip_info {
+ 	int num_iir_filter_coeffs_avail;
+ 	int iir_filter_coeff_default;
+ 
++	const int *sampling_freq_tstby;
+ 	const int (*sampling_freq_avail)[2];
+ 	int num_sampling_freq_avail;
+ 	int sampling_freq_default;
+--8<---------------cut here---------------end--------------->8---
+
+
+Regards,
+Achim.
+-- 
++<[Q+ Matrix-12 WAVE#46+305 Neuron microQkb Andromeda XTk Blofeld]>+
+
 
 

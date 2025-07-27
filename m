@@ -1,63 +1,65 @@
-Return-Path: <linux-iio+bounces-22052-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22053-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48019B1301F
-	for <lists+linux-iio@lfdr.de>; Sun, 27 Jul 2025 17:43:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21A8DB1302A
+	for <lists+linux-iio@lfdr.de>; Sun, 27 Jul 2025 17:49:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C2C3B3B9E41
-	for <lists+linux-iio@lfdr.de>; Sun, 27 Jul 2025 15:43:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D9FD173627
+	for <lists+linux-iio@lfdr.de>; Sun, 27 Jul 2025 15:49:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D2AC218821;
-	Sun, 27 Jul 2025 15:43:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F41621A426;
+	Sun, 27 Jul 2025 15:49:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NNSDAQOK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JffGy/vu"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B2E470825;
-	Sun, 27 Jul 2025 15:43:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFBFB188000;
+	Sun, 27 Jul 2025 15:49:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753631026; cv=none; b=s1LVSJDmBOdwvlVw/6dSmfz2IncWuQSqrClJULT4JADJiv6fKU+l5NzQ5zSuW9Un0iIGvER23F1a6mNTssTn8C6F/3ampvhHL9RmY0ze3wKpHGFnrMyJ2cfTLf1uvsLdZrdi0BJjIaSys+NjH/XV+YnvWEL7Km0iw7xtWZ6P+9E=
+	t=1753631360; cv=none; b=XQPjiJqbbjHsGlcBXiBY1aIfRFMVTh1PTbIE8tCXWF6YqOOS4E0PNW12TjNo0dqefk4ggZ4OUtGBCeFySor3AYPZrUivgQxhuSxfNONqGNk5cHulHlh1hf1i444GVPOmoiWQ9ha3j04nGYZBQXkMgAWaxyC/7zIhWY5omj2IWXs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753631026; c=relaxed/simple;
-	bh=zoz469+SQa2Dc1zsiysjdo7V3MLdODW25CN/F08aRPk=;
+	s=arc-20240116; t=1753631360; c=relaxed/simple;
+	bh=ucj4qPcgvz282NusIKgE8khiyMabwuonkaXUh2ZglTM=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sUQhqu6mEb9V1J1i33RU6K62NOo/Sz0ocLF7KTrDtmcoamEXssEw0YFqV/v5RX4e87/Q6XsWnpvGyBAe8HYIw4YQJfpoQ4dCfhycQ6G2ef8hctFFbepv0oYNm5f0A98eQXqRHSUT4pcn7N//t46VDonsqrseofJfIYDfr2A9U0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NNSDAQOK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AB12C4CEEB;
-	Sun, 27 Jul 2025 15:43:40 +0000 (UTC)
+	 MIME-Version:Content-Type; b=R4kR97KhR9gKjr8kz+r+tHwBn6tKC//EYP1I+oBoqY7oCHP2L57RNuq0Kn3ET2yYgj9gbF3X4uxCJIpG0+RvFZhJ4eLf1fT+OoI+nxHdAUe0hfj8qU3HC7xhzKooNYislaBoBGHAOdIYVcNDWXnlnFAZg5g45bUyhliHglMtfEE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JffGy/vu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D816C4CEEB;
+	Sun, 27 Jul 2025 15:49:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753631025;
-	bh=zoz469+SQa2Dc1zsiysjdo7V3MLdODW25CN/F08aRPk=;
+	s=k20201202; t=1753631358;
+	bh=ucj4qPcgvz282NusIKgE8khiyMabwuonkaXUh2ZglTM=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=NNSDAQOKCwm/+WN0tGh0gq4l2b+lBKfp1MpmkK7LUJJ9K5gLUXVLUfex6A4F3bg0A
-	 BfaFyUWY75W7CMPyR8rSS0Ye5N2fOuDVJjFhmWiUQJVpCCgUsl7AMm8b5mjidc1qUK
-	 +qPF02BQFdjJ4wRK79Uk/xpkGzUKUovuu5k6JXc8bJW4Ydx+cbT/EScImRPcKoc2Qi
-	 V4HuZFeCTxJlMKjbrBXy2VRifrTGU4HfTe+aH+d5lrtc+eZ3znb28IFJugYNG5Our2
-	 Fa8gGY4QhltOQTYgSmudIC/r+JYKP/wW6KiiiAEfljSZkwQU3mYwJrYwvXLoUdUkpJ
-	 /bwdAykUXa1Hw==
-Date: Sun, 27 Jul 2025 16:43:36 +0100
+	b=JffGy/vuE+BvXG+YgI0M4Xw27rC+KVnMaj9Cz23tHrOzulQUSzzC7hHi2HEk6LzSB
+	 5a4yXrKMi6Biuqk/84FAqXvbLOwhyjh3zAhSXgMcubKCFQ8PwasExZiheB4+vVvv3q
+	 RGlPxH/lfzZHJhHLKB3QpGxAhZs7+EeHORebo4n9hNIiR1AiqpztACZVPrfVuhuu3A
+	 NX/2na/VMeHTizVfMB+ykQeEkh7P3n1UZXBalHnE6x6lYT31HiqwDrQSPxSV9roSXN
+	 7iZngLRSvyISnAWc2VViJ5ghvtHACMQcIX1Cgc5pqcLdmYJNCuTFidP2wuvew1nAF9
+	 9KLyLFHSdBRhg==
+Date: Sun, 27 Jul 2025 16:49:09 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Michal Simek <michal.simek@amd.com>
-Cc: Sean Anderson <sean.anderson@linux.dev>, Salih Erim
- <salih.erim@amd.com>, "O'Griofa, Conall" <conall.ogriofa@amd.com>, Anand
- Ashok Dumbre <anand.ashok.dumbre@xilinx.com>, linux-iio@vger.kernel.org,
- David Lechner <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?=
- <nuno.sa@analog.com>, linux-arm-kernel@lists.infradead.org, Andy Shevchenko
- <andy@kernel.org>, Manish Narani <manish.narani@xilinx.com>,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: xilinx-ams: Unmask interrupts after updating
- alarms
-Message-ID: <20250727164336.385dda93@jic23-huawei>
-In-Reply-To: <3a77d5db-eeb4-43df-9de0-e6bafea4d9ea@amd.com>
-References: <20250715002847.2035228-1-sean.anderson@linux.dev>
-	<20250724163219.0098ced6@jic23-huawei>
-	<3a77d5db-eeb4-43df-9de0-e6bafea4d9ea@amd.com>
+To: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: Gustavo Silva <gustavograzs@gmail.com>, Alex Lanzano
+ <lanzano.alex@gmail.com>, David Lechner <dlechner@baylibre.com>, Nuno
+ =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, Lothar Rubusch
+ <l.rubusch@gmail.com>
+Subject: Re: [PATCH v4 3/3] iio: imu: bmi270: add support for motion events
+Message-ID: <20250727164909.1833c4bc@jic23-huawei>
+In-Reply-To: <aIKlC-HlP3nX-ERA@smile.fi.intel.com>
+References: <20250711-bmi270-events-v4-0-53ec7da35046@gmail.com>
+	<20250711-bmi270-events-v4-3-53ec7da35046@gmail.com>
+	<aHYFMf8QGDNt-5Nf@smile.fi.intel.com>
+	<aHYIBReTFqJMtiXW@smile.fi.intel.com>
+	<vlpqd3jeszhgpcob7qyzp5vljdowwu26my7xuwuvfftf54zg35@czxhsjejgdkm>
+	<aHd2s987EMCdgdrJ@smile.fi.intel.com>
+	<20250724162227.065d20a0@jic23-huawei>
+	<aIKlC-HlP3nX-ERA@smile.fi.intel.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -68,45 +70,66 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 25 Jul 2025 06:47:16 +0200
-Michal Simek <michal.simek@amd.com> wrote:
+On Fri, 25 Jul 2025 00:26:35 +0300
+Andy Shevchenko <andriy.shevchenko@intel.com> wrote:
 
-> On 7/24/25 17:32, Jonathan Cameron wrote:
-> > On Mon, 14 Jul 2025 20:28:47 -0400
-> > Sean Anderson <sean.anderson@linux.dev> wrote:
-> >   
-> >> To convert level-triggered alarms into edge-triggered IIO events, alarms
-> >> are masked when they are triggered. To ensure we catch subsequent
-> >> alarms, we then periodically poll to see if the alarm is still active.
-> >> If it isn't, we unmask it. Active but masked alarms are stored in
-> >> current_masked_alarm.
-> >>
-> >> If an active alarm is disabled, it will remain set in
-> >> current_masked_alarm until ams_unmask_worker clears it. If the alarm is
-> >> re-enabled before ams_unmask_worker runs, then it will never be cleared
-> >> from current_masked_alarm. This will prevent the alarm event from being
-> >> pushed even if the alarm is still active.
-> >>
-> >> Fix this by recalculating current_masked_alarm immediately when enabling
-> >> or disabling alarms.
-> >>
-> >> Fixes: d5c70627a794 ("iio: adc: Add Xilinx AMS driver")
-> >> Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
-> >> ---  
-> > Anand?
+> On Thu, Jul 24, 2025 at 04:22:27PM +0100, Jonathan Cameron wrote:
+> > On Wed, 16 Jul 2025 12:53:55 +0300
+> > Andy Shevchenko <andriy.shevchenko@intel.com> wrote:  
+> > > On Tue, Jul 15, 2025 at 08:55:35PM -0300, Gustavo Silva wrote:  
+> > > > On Tue, Jul 15, 2025 at 10:49:25AM +0300, Andy Shevchenko wrote:    
+> > > > > On Tue, Jul 15, 2025 at 10:37:22AM +0300, Andy Shevchenko wrote:    
+> > > > > > On Fri, Jul 11, 2025 at 08:36:03PM -0300, Gustavo Silva wrote:    
+> 
+> ...
+> 
+> > > > > > > +/* 9.81 * 1000000 m/s^2 */
+> > > > > > > +#define BMI270_G_MEGA_M_S_2				9810000    
+> > > > > > 
+> > > > > > I thought this is MICRO...    
+> > > > > 
+> > > > > Btw, what if we use the device on poles and on equator (or even on orbital
+> > > > > station)? I'm wondering if this constant should be defined in units.h or
+> > > > > even in uAPI that user space may add a correction if needed.
+> > > > >     
+> > > > I certainly hadn't thought about these scenarios.
+> > > > FWIW, the accelerometer scale values also assume g = 9.81 m/s^2.
+> > > > For example, 0.000598 = 2 * 9.81 / 32768    
+> > > 
+> > > Right, but this should be supplied to user space somehow. OTOH the measure error
+> > > may be high enough (what is the precision of the measurements by the way?) that
+> > > it will neglect the differences in the 'g' constant.
+> > > 
+> > > All the details are given in [1].
+> > > 
+> > > [1]: https://en.wikipedia.org/wiki/Gravity_of_Earth#:~:text=The%20precise%20strength%20of%20Earth's,/s2)%20by%20definition.  
 > > 
-> > This seems fine to me, but I'm not that familiar with the hardware or driver.  
+> > These sensors don't measure relative to g.  
 > 
-> Anand left some time ago. Salih or Conall should be able to provide some input.
-> 
-> Thanks,
-> Michal
-> 
+> What do they measure? Any links for me to study?
+m/s^2 (well actually not, but they derive that from change in properties of a capacitor like structure as it bends under
+the force generated by the acceleration.  Which in the vertical direction is g if the device isn't moving.
 
-Hi Michal,
+https://www.analog.com/en/resources/technical-articles/accelerometer-and-gyroscopes-sensors-operation-sensing-and-applications.html
+looks good as an intro from a very quick glance.
 
-Thanks for letting me know.  Would be good to have a MAINTAINERS update patch
-to remove Anand + ideally add someone else.  If not to mark it orphaned
-(will still be covered by the top level IIO entry).
+> 
+> > That's annoying marketing which is why I held firm for m/s^2 for IIO :)
+> > So what they measure for a given acceleration does not change depending
+> > on where we are on earth. You should use a 'fixed' standard value for
+> > conversion from marketing values in g to m/s^2..  
+> 
+> Hmm... But shouldn't that marketing value be exposed to user space?
+
+yes, but its 9.81 where ever you are. Or whatever the datasheet says they use.
+These things are rarely that well calibrated, so the exact value gets lost in the
+errors!
+
+Jonathan
+
+
+
+> 
+> 
 
 

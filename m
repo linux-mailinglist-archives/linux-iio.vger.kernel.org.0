@@ -1,60 +1,57 @@
-Return-Path: <linux-iio+bounces-22102-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22103-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D94ECB13BEC
-	for <lists+linux-iio@lfdr.de>; Mon, 28 Jul 2025 15:49:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F576B13C25
+	for <lists+linux-iio@lfdr.de>; Mon, 28 Jul 2025 15:56:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CAABD1720E0
-	for <lists+linux-iio@lfdr.de>; Mon, 28 Jul 2025 13:49:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 53CCE188C5C8
+	for <lists+linux-iio@lfdr.de>; Mon, 28 Jul 2025 13:55:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA7E626A0EB;
-	Mon, 28 Jul 2025 13:49:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC9DC27280F;
+	Mon, 28 Jul 2025 13:53:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GlaUkiCe"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mXf2/+nF"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3C4F263892;
-	Mon, 28 Jul 2025 13:49:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A1B6272804;
+	Mon, 28 Jul 2025 13:53:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753710551; cv=none; b=WEXeANZZ1vma4PRISgOge9PNHi5DpupgcEkmiIwndzSLnNdCpMkCIeBFq7WnJ7A1BaVPGB10zVUQWZHlYTFJHZZ3RlHsYqtSD/dRlVq/hmwBSQl2VIH4jnhifqJk7nGEVb45IZhpatISxtwTmCq9lbhhUk3Ke+ISgxyUcld3tlc=
+	t=1753710787; cv=none; b=UtJhK659EVBZy+tAECamozaQ8feku//cq5qsK5f60gu13soJEB77c+JFrz5T4w1s+sL80ELcu81k61LQ07XaqpaIei7zqqDHn8vepX7wPlXVrtsvj+ofGBPkO2Dl/Q89gxghGigZSnpEjaUT6jKKkfOdxm1vSp1nljZdtVxdxY0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753710551; c=relaxed/simple;
-	bh=od5DlWzr8ZxOGKLJlF8DEQL3SKzHtIKCKx+PtzJGfwA=;
+	s=arc-20240116; t=1753710787; c=relaxed/simple;
+	bh=0o84i38T9pvqjzCREHxuGnFLiFQbUiNjH/f+5BHtDW4=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aC19B1wEy2fpvVpci89GjBWTStHDIxTQL5kl2DsklxprqWXadbp6oOJa76aL7j+3mT78jas4Bk8kwaBslLKAeEGJlyxNv8rYebc2AUSQ8PGiHhX7U6WVVfEPeQUhVHXO7XW7CXzTxg2cKscAxG8DI5jHyIj2171vr/4C1zG6cGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GlaUkiCe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20B72C4CEE7;
-	Mon, 28 Jul 2025 13:49:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=jWQ7d76ieRe4dLRCMqB2pqSK7zdZ+D91LLkrEmpi89Z7ij3+J305ujeSJ/zm7+M7wN0mahR8fvw9k6ckZXy/c3tMznQzeZdgNytROW5LXUivWSdvwnMNbUCTxnzhGrPkHGfs4h9BEhC41tomGrM6YnlYIM/rWKr7suW7yjRyEwE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mXf2/+nF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3824C4CEF7;
+	Mon, 28 Jul 2025 13:53:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753710551;
-	bh=od5DlWzr8ZxOGKLJlF8DEQL3SKzHtIKCKx+PtzJGfwA=;
+	s=k20201202; t=1753710787;
+	bh=0o84i38T9pvqjzCREHxuGnFLiFQbUiNjH/f+5BHtDW4=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=GlaUkiCe205QUnF7uZXQbPWlhqYyDHMDtN4UHPm4gcX7/1UTDXx+JEdhzpbKHJwbY
-	 bKeTMSZnT68AMrf0KCFJtNn56Xx82ZS3F3jxNOBeNwjejo898se8sjf3tg0WQD3Ipf
-	 CsjQbcakcyCtSUFxxk+QvBeiZKxFEo9RiOt9JKmyWiGHFO5loXY1d10e9nia5oCsln
-	 lfndmOHBBhNROdbnPJC19q9kXlqcHYSQXD4NWcOiIo2qjTFN/DlTycQgLS2DpcEkm6
-	 7xVRZ5FEKKSKWHrFO0EoQDepBBxsAKsCqQyQb4DhCGtYTco/H96XdIMZkPYx7XM3aZ
-	 HlyMEIuJ5p7sw==
-Date: Mon, 28 Jul 2025 14:49:01 +0100
+	b=mXf2/+nFzENtmd8fC5UgIzY2kp+Z0Ba6ihP8jFcz6FdFxf+pR9vEEjPnCEcNxYXAK
+	 QeMbVhBM232KoS87rF5q8N4tNBz0zvbd7pWzwL2PdpVI0nkap62+tdHmqoVNAgfQJG
+	 SSGqV9R2SdvM3UXf1Z9tyyS1bQUo4VYNdiazeFK71YcUaats3lYiuAHNqs8+92W2or
+	 kHl7E+tkowhR9+y1el99IPsm4/K97g0tLEyjKnLsxvQmSpccbU59n3VkTIzvp6RmfQ
+	 AhNYY4RQtZSOCzAp8DczociipCwA0XuBIz+1X++nZzJpGa/Hh1cTxY2fXHqKnj3VLJ
+	 iqI11dksnXHJw==
+Date: Mon, 28 Jul 2025 14:52:59 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
- <Michael.Hennerich@analog.com>, David Lechner <dlechner@baylibre.com>, Nuno
- =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Marcelo Schmitt
- <marcelo.schmitt@analog.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] dt-bindings: iio: Replace bouncing Analog emails
-Message-ID: <20250728144901.3f646a4c@jic23-huawei>
-In-Reply-To: <20250724113826.61998-2-krzysztof.kozlowski@linaro.org>
-References: <20250724113826.61998-2-krzysztof.kozlowski@linaro.org>
+To: Akshay Jindal <akshayaj.lkd@gmail.com>
+Cc: anshulusr@gmail.com, dlechner@baylibre.com, nuno.sa@analog.com,
+ andy@kernel.org, shuah@kernel.org, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] iio: light: ltr390: Add debugfs register access
+ support
+Message-ID: <20250728145259.753b3999@jic23-huawei>
+In-Reply-To: <20250724143945.636380-1-akshayaj.lkd@gmail.com>
+References: <20250724143945.636380-1-akshayaj.lkd@gmail.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -65,129 +62,69 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 24 Jul 2025 13:38:27 +0200
-Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
+On Thu, 24 Jul 2025 20:09:39 +0530
+Akshay Jindal <akshayaj.lkd@gmail.com> wrote:
 
-> Emails to stefan.popa@analog.com and alexandru.tachici@analog.com bounce
-> permanently:
+> Add support for debugfs_reg_access through the driver's iio_info structure
+> to enable low-level register read/write access for debugging.
 > 
->   Remote Server returned '550 5.1.10 RESOLVER.ADR.RecipientNotFound; Recipient not found by SMTP address lookup'
-> 
-> so replace them with Marcelo Schmitt from Analog where appropriate.
-> 
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> 
-> ---
-> 
-> I don't know who from Analog should maintain these devices, so I chosen
-> author from Analog of one of last commits.
-> 
-> Marcelo Schmitt, could you confirm that you are okay (or not) with this?
+> Signed-off-by: Akshay Jindal <akshayaj.lkd@gmail.com>
 
-Nuno, Michael, other ADI folk.  Can someone confirm if we are making these Marcelo's
-problem?
+>  drivers/iio/light/ltr390.c | 53 ++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 53 insertions(+)
+> 
+> diff --git a/drivers/iio/light/ltr390.c b/drivers/iio/light/ltr390.c
+> index ee59bbb8aa09..b1028d027e1b 100644
+> --- a/drivers/iio/light/ltr390.c
+> +++ b/drivers/iio/light/ltr390.c
+> @@ -38,12 +38,21 @@
+>  #define LTR390_ALS_UVS_GAIN		0x05
+>  #define LTR390_PART_ID			0x06
+>  #define LTR390_MAIN_STATUS		0x07
+> +
+>  #define LTR390_ALS_DATA			0x0D
+> +#define LTR390_ALS_DATA_BYTE(n)		((LTR390_ALS_DATA) + (n))
+						(LTR390_ALS_DATA + (n))
+
+etc  There is no benefit in brackets around the bit that isn't a parameter
+of the macro that I can see.
+
+
+> +
+>  #define LTR390_UVS_DATA			0x10
+> +#define LTR390_UVS_DATA_BYTE(n)		((LTR390_UVS_DATA) + (n))
+> +
+>  #define LTR390_INT_CFG			0x19
+>  #define LTR390_INT_PST			0x1A
+> +
+>  #define LTR390_THRESH_UP		0x21
+> +#define LTR390_THRESH_UP_BYTE(n)	((LTR390_THRESH_UP) + (n))
+> +
+>  #define LTR390_THRESH_LOW		0x24
+> +#define LTR390_THRESH_LOW_BYTE(n)	((LTR390_THRESH_LOW) + (n))
+>  
+>  #define LTR390_PART_NUMBER_ID		0xb
+>  #define LTR390_ALS_UVS_GAIN_MASK	GENMASK(2, 0)
+> @@ -98,11 +107,40 @@ struct ltr390_data {
+>  	int int_time_us;
+>  };
+>  
+> +static const struct regmap_range ltr390_readable_reg_ranges[] = {
+> +	regmap_reg_range(LTR390_MAIN_CTRL, LTR390_MAIN_CTRL),
+> +	regmap_reg_range(LTR390_ALS_UVS_MEAS_RATE, LTR390_MAIN_STATUS),
+> +	regmap_reg_range(LTR390_ALS_DATA_BYTE(0), LTR390_ALS_DATA_BYTE(2)),
+> +	regmap_reg_range(LTR390_UVS_DATA_BYTE(0), LTR390_UVS_DATA_BYTE(2)),
+
+If we are doing maximum length ranges can we not combine the two above?
+Looks to be 0xd,0xe,0xf,0x10,0x11 and 0x012, so a continuous range similar
+to the thresholds below.
+
+> +	regmap_reg_range(LTR390_INT_CFG, LTR390_INT_PST),
+> +	regmap_reg_range(LTR390_THRESH_UP_BYTE(0), LTR390_THRESH_LOW_BYTE(2)),
+> +};
+
+Thanks,
 
 Jonathan
-
-> ---
->  Documentation/devicetree/bindings/iio/accel/adi,adis16240.yaml | 2 +-
->  Documentation/devicetree/bindings/iio/accel/adi,adxl372.yaml   | 2 +-
->  Documentation/devicetree/bindings/iio/adc/adi,ad7124.yaml      | 2 +-
->  Documentation/devicetree/bindings/iio/adc/lltc,ltc2496.yaml    | 1 -
->  Documentation/devicetree/bindings/iio/dac/adi,ad5770r.yaml     | 2 +-
->  Documentation/devicetree/bindings/iio/frequency/adf4371.yaml   | 2 +-
->  Documentation/devicetree/bindings/iio/imu/adi,adis16480.yaml   | 2 +-
->  7 files changed, 6 insertions(+), 7 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/accel/adi,adis16240.yaml b/Documentation/devicetree/bindings/iio/accel/adi,adis16240.yaml
-> index 3dc973b98f81..40e9a40a7a60 100644
-> --- a/Documentation/devicetree/bindings/iio/accel/adi,adis16240.yaml
-> +++ b/Documentation/devicetree/bindings/iio/accel/adi,adis16240.yaml
-> @@ -7,7 +7,7 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
->  title: ADIS16240 Programmable Impact Sensor and Recorder driver
->  
->  maintainers:
-> -  - Alexandru Tachici <alexandru.tachici@analog.com>
-> +  - Marcelo Schmitt <marcelo.schmitt@analog.com>
->  
->  description: |
->    ADIS16240 Programmable Impact Sensor and Recorder driver that supports
-> diff --git a/Documentation/devicetree/bindings/iio/accel/adi,adxl372.yaml b/Documentation/devicetree/bindings/iio/accel/adi,adxl372.yaml
-> index 88aa67bf2280..55e44c9292cf 100644
-> --- a/Documentation/devicetree/bindings/iio/accel/adi,adxl372.yaml
-> +++ b/Documentation/devicetree/bindings/iio/accel/adi,adxl372.yaml
-> @@ -7,7 +7,7 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
->  title: Analog Devices ADXL372 3-Axis, +/-(200g) Digital Accelerometer
->  
->  maintainers:
-> -  - Stefan Popa <stefan.popa@analog.com>
-> +  - Marcelo Schmitt <marcelo.schmitt@analog.com>
->  
->  description: |
->    Analog Devices ADXL372 3-Axis, +/-(200g) Digital Accelerometer that supports
-> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7124.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7124.yaml
-> index 7146a654ae38..958a37def56c 100644
-> --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7124.yaml
-> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7124.yaml
-> @@ -8,7 +8,7 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
->  title: Analog Devices AD7124 ADC device driver
->  
->  maintainers:
-> -  - Stefan Popa <stefan.popa@analog.com>
-> +  - Marcelo Schmitt <marcelo.schmitt@analog.com>
->  
->  description: |
->    Bindings for the Analog Devices AD7124 ADC device. Datasheet can be
-> diff --git a/Documentation/devicetree/bindings/iio/adc/lltc,ltc2496.yaml b/Documentation/devicetree/bindings/iio/adc/lltc,ltc2496.yaml
-> index 5207c919abe0..eac48166fe72 100644
-> --- a/Documentation/devicetree/bindings/iio/adc/lltc,ltc2496.yaml
-> +++ b/Documentation/devicetree/bindings/iio/adc/lltc,ltc2496.yaml
-> @@ -9,7 +9,6 @@ title: Linear Technology / Analog Devices LTC2496 ADC
->  maintainers:
->    - Lars-Peter Clausen <lars@metafoo.de>
->    - Michael Hennerich <Michael.Hennerich@analog.com>
-> -  - Stefan Popa <stefan.popa@analog.com>
->  
->  properties:
->    compatible:
-> diff --git a/Documentation/devicetree/bindings/iio/dac/adi,ad5770r.yaml b/Documentation/devicetree/bindings/iio/dac/adi,ad5770r.yaml
-> index 82b0eed6a7b7..058df4c8ddf8 100644
-> --- a/Documentation/devicetree/bindings/iio/dac/adi,ad5770r.yaml
-> +++ b/Documentation/devicetree/bindings/iio/dac/adi,ad5770r.yaml
-> @@ -8,7 +8,7 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
->  title: Analog Devices AD5770R DAC device driver
->  
->  maintainers:
-> -  - Alexandru Tachici <alexandru.tachici@analog.com>
-> +  - Marcelo Schmitt <marcelo.schmitt@analog.com>
->  
->  description: |
->    Bindings for the Analog Devices AD5770R current DAC device. Datasheet can be
-> diff --git a/Documentation/devicetree/bindings/iio/frequency/adf4371.yaml b/Documentation/devicetree/bindings/iio/frequency/adf4371.yaml
-> index 53d607441612..031b1657cde1 100644
-> --- a/Documentation/devicetree/bindings/iio/frequency/adf4371.yaml
-> +++ b/Documentation/devicetree/bindings/iio/frequency/adf4371.yaml
-> @@ -7,7 +7,7 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
->  title: Analog Devices ADF4371/ADF4372 Wideband Synthesizers
->  
->  maintainers:
-> -  - Popa Stefan <stefan.popa@analog.com>
-> +  - Marcelo Schmitt <marcelo.schmitt@analog.com>
->  
->  description: |
->    Analog Devices ADF4371/ADF4372 SPI Wideband Synthesizers
-> diff --git a/Documentation/devicetree/bindings/iio/imu/adi,adis16480.yaml b/Documentation/devicetree/bindings/iio/imu/adi,adis16480.yaml
-> index 7a1a74fec281..e49d5e6fab61 100644
-> --- a/Documentation/devicetree/bindings/iio/imu/adi,adis16480.yaml
-> +++ b/Documentation/devicetree/bindings/iio/imu/adi,adis16480.yaml
-> @@ -7,7 +7,7 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
->  title: Analog Devices ADIS16480 and similar IMUs
->  
->  maintainers:
-> -  - Alexandru Tachici <alexandru.tachici@analog.com>
-> +  - Marcelo Schmitt <marcelo.schmitt@analog.com>
->  
->  properties:
->    compatible:
 
 

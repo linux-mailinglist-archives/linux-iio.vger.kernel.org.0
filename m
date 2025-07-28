@@ -1,115 +1,169 @@
-Return-Path: <linux-iio+bounces-22108-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22109-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 410DEB13CFE
-	for <lists+linux-iio@lfdr.de>; Mon, 28 Jul 2025 16:23:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 546A3B13DAA
+	for <lists+linux-iio@lfdr.de>; Mon, 28 Jul 2025 16:51:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 80D89188BB90
-	for <lists+linux-iio@lfdr.de>; Mon, 28 Jul 2025 14:24:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7DEE017A061
+	for <lists+linux-iio@lfdr.de>; Mon, 28 Jul 2025 14:51:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D004826B2DC;
-	Mon, 28 Jul 2025 14:23:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0A4C26FDA5;
+	Mon, 28 Jul 2025 14:51:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DB98i78u"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Fo2RM2mc"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f179.google.com (mail-vk1-f179.google.com [209.85.221.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80CF61E4AE;
-	Mon, 28 Jul 2025 14:23:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02AE6263F5F;
+	Mon, 28 Jul 2025 14:51:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753712633; cv=none; b=BuJ73XtjBKbWSUIGiIzu6M0rpcC896F1MEAa8daoo2wrVjWABbKa+yDEurIw4n9TjV4PVbWsZqiPejQTA0fnBq9x6CNf1FWlWVjzD6WLWZCvTcUIEruKJ9dHsw2Aej7j2GIYQgTcYfqu0JDPkgkxhe4+nxuR5pXsO+ya4QTWMWQ=
+	t=1753714276; cv=none; b=QNS8+3KwXoayb33GO/pEMlu5P4E7/1fH7UHOGu6keAodUrUTKq1nroZKoAK7RzyqTBu6kO7OaAT5P7eRS7DNw25B6PAiSFWhy3iaS3jCl2zotdK3g9DVYAkzx+miJa+ffafiwaaDhtxT8AWDdkNowe9uTY29c5bTzq1uymIww+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753712633; c=relaxed/simple;
-	bh=rH8pR2ddL3a4Jy+QTC0sirjYo/PizRCw+rOm0uYcG7U=;
+	s=arc-20240116; t=1753714276; c=relaxed/simple;
+	bh=YMNkAdfSnpybMoSu3nas3zKS2+bfNtLNz/RZJ32Z1OI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gmwUiN76niR+/IIVYeTFl1DmUT8QQOWV4/qi/E15nipSaHR1v8GaoOoAAaHf6swmCUGLhUkwFR8ijIKlZ04kTl9FRyBBRBrWtElLxtbNYshaPlI8iPLifWactsP7D3EUKgqjg5bU2bnqLH7+JavNTnLoT5nKeYHBbIBTQhm/yU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DB98i78u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6269EC4CEE7;
-	Mon, 28 Jul 2025 14:23:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753712633;
-	bh=rH8pR2ddL3a4Jy+QTC0sirjYo/PizRCw+rOm0uYcG7U=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=DB98i78udR890RvkvpZWfYdQol0FIHGtFcytgTGR4hUpO10/i/kBPUYrg7MF/0OTq
-	 15jjpmOMzZmTKiI53bHvzwdOJcWCeZbjflZmwSlVcykIlZErVnPuFcbNJv9pKBuIu+
-	 lbiWqV+tvjAnUtCuwqVR7eFo7ShwZdV7HoP0bsV4=
-Date: Mon, 28 Jul 2025 16:23:49 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Akhilesh Patil <akhilesh@ee.iitb.ac.in>
-Cc: lars@metafoo.de, Michael.Hennerich@analog.com, jic23@kernel.org,
-	dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org,
-	marcelo.schmitt1@gmail.com, gshahrouzi@gmail.com,
-	hridesh699@gmail.com, linux-iio@vger.kernel.org,
-	linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org,
-	akhileshpatilvnit@gmail.com, skhan@linuxfoundation.org
-Subject: Re: [PATCH] staging: iio: ad5933: Fix implicit fall-through in
- switch()
-Message-ID: <2025072808-evict-snorkel-8998@gregkh>
-References: <aIdKAJVnskdAVUMi@bhairav-test.ee.iitb.ac.in>
- <2025072835-singer-penny-a421@gregkh>
- <aIeDDsRurrgXqRQn@bhairav-test.ee.iitb.ac.in>
+	 Content-Type:Content-Disposition:In-Reply-To; b=ICPoWgbLEeMktPt1KW8a98t5ybPW3QZnR6e9HqiCpVP12nyY/P9u/A8KtYmDvk1U0uByrLY8AlywDZWAd+WnM6Jg+UtrryzEP1DoC0src6C2zSmlpY0jxYrCbYLMtaTOCHN1YJHR7dNqPLeWXFkbGAE1Kh68EmGHiRFXD4V3fU0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Fo2RM2mc; arc=none smtp.client-ip=209.85.221.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vk1-f179.google.com with SMTP id 71dfb90a1353d-5315acf37b6so1686587e0c.2;
+        Mon, 28 Jul 2025 07:51:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1753714274; x=1754319074; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=ykcVTDfyqleDLnWkxo8GtSsNTgqCVqgO9KSgQDHfHEA=;
+        b=Fo2RM2mcQQQtfxEBVH0ozlJKx/xWn3IYPnCQxOg3R6r99gT5JfSeNTw9lYmRl1g1Uw
+         as4fBd6JQgI5Mq3YCDmS2ba/K+1vJJ4Cv5q7Ij14M6Zhajh7ijw+4oZBBtyGHqVqac8R
+         vfyWN7vEEOPLzPGdih1WXSFDoS3rJVyzIz9oQlNQFetFa6hyM99b0L2COEJ1kZanW+ln
+         N6pnoHUTj+40mtrb7300J/WNmXIZZwcUK2O4bdYKsYivyIvXzYNWmYb/DExCcdS6Ha4k
+         w2ZtqqOx8fGketZ83tf4Z90AzNRGfMGvI3Bsd5WpcVYpezS0DBRg5482mz61g/1ugc93
+         4m/g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753714274; x=1754319074;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ykcVTDfyqleDLnWkxo8GtSsNTgqCVqgO9KSgQDHfHEA=;
+        b=qOPBp+I72p79mUYTMLQbAimCtB1oZ9mzY8UOPg33oAxQEOCRRDDPbZUWl/Cop8KmYf
+         zz6Al4LRvfA86f2zy1LC0duh+QcpIalVFgDpU/wCA5VOGZU4am4jPYpEMZvABtwX+RS/
+         f1/bvpXheEXBe4JrWgCKvkAWa3M+ilBOAkVvQvqR058xOVwMQS2GSX5i/M+WGSpN1doy
+         jgFnRFvDz0uEmU3R/rah8OPyjdcROb0qkHhnQSN6l48NDQc9plmqkFzSaOvrXGxhIumb
+         uocKcFDuanibVlIKhiIfuakNdIQIqdHccsJcRJy5EtoCtSoqZsfKgpZrrs4YVIiLvsAn
+         xq8A==
+X-Forwarded-Encrypted: i=1; AJvYcCUFqdjEhsSXUX8H6Cmc5kN+p8xDCaClX5KA/kpzD+LcgqAYWeABw+hEmj4taLAh+B6DZIIF8PhthZFK@vger.kernel.org, AJvYcCVp5dgUButtuN97v4F8mu8BTHJE1uU1aJwfJ9hDG3zS2dj5n2BbPNRliA3H/J6Vve82vn6U1TS5goVoKNP1@vger.kernel.org, AJvYcCWp5unnccvkQvC6LeSskVVIxCRomCSuWcEnKUY/VQRwObgwoi16Gwn5bvSabbjsQautt+7WM6cSpI5k@vger.kernel.org
+X-Gm-Message-State: AOJu0YzSwWgrlBXN/QBl3SvJ+qX7ngtzVZZEPoGIlXEkQWT2S3YHAdW2
+	OpzJrd7J15wUaJPUkM/51ODkt7F2PWInZpUx/mzk+vVOOvSU94px2Nhk
+X-Gm-Gg: ASbGncu+ickkG6fa4OKa1HGhT6yVQ4K3qpt+YhAKr1dba4Wm5O3/nu3bz2XA0tc3A2R
+	A+/FjBMUXFSSaWeYp4YWPkGBkpZUotGtc0btXsj7betG0o0Q039rJ9uTP+QI4FlnYnpp0h0cyOB
+	nyfgNQ1fVR+DWjUoV2MzYJYRwWmciO/564ShFB+3wBax5FiNnm/uAVwBUbDht2uNWug/O8AHwMb
+	PmNopbWT0pGyN/vQuul0JI5wCBF8ZwPalt3DqeifU5CKPPOsxHsNQ6zDWHC8mUBFXvMf6ZWXrCC
+	SCzd3oO4MLbwxk8AItXLQ8P9p0v8cwIH17coyKjhl5I0+FnXsSj8QSytF66NtnvDBfmBowl3NYA
+	FqL4CPTLqTqfx7MWRQRmyZ/U=
+X-Google-Smtp-Source: AGHT+IHHYK2+megbvRbd3rAUtT0UkE14DkFGQlSeCmnxbzV3RePQ+PdCSvBsisz1dyJLv5C7ZOYe5g==
+X-Received: by 2002:a05:6122:8290:b0:534:3644:a4e9 with SMTP id 71dfb90a1353d-538db5280f7mr4032184e0c.3.1753714273575;
+        Mon, 28 Jul 2025 07:51:13 -0700 (PDT)
+Received: from nsa ([45.144.113.55])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-538e2858d8csm1459302e0c.25.2025.07.28.07.51.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 28 Jul 2025 07:51:13 -0700 (PDT)
+Date: Mon, 28 Jul 2025 15:51:25 +0100
+From: Nuno =?utf-8?B?U8Oh?= <noname.nuno@gmail.com>
+To: Ioana Risteiu <Ioana.Risteiu@analog.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, 
+	Michael Hennerich <Michael.Hennerich@analog.com>, Jonathan Cameron <jic23@kernel.org>, 
+	David Lechner <dlechner@baylibre.com>, Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>, 
+	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Ramona Nechita <ramona.nechita@analog.com>, linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/4] iio: adc: adi-axi-adc: Add support for ad777x
+Message-ID: <jnwhdddmz3voorm7ywsxlax336leapxh4nhfwivvp7mjnrdi3e@f5v3ygkpwrjs>
+References: <20250728134340.3644-1-Ioana.Risteiu@analog.com>
+ <20250728134340.3644-3-Ioana.Risteiu@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <aIeDDsRurrgXqRQn@bhairav-test.ee.iitb.ac.in>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250728134340.3644-3-Ioana.Risteiu@analog.com>
 
-On Mon, Jul 28, 2025 at 07:32:54PM +0530, Akhilesh Patil wrote:
-> On Mon, Jul 28, 2025 at 12:39:21PM +0200, Greg KH wrote:
-> > On Mon, Jul 28, 2025 at 03:29:28PM +0530, Akhilesh Patil wrote:
-> > > Add default case in switch() codeblock in ad5933_read_raw().
-> > > Convert implicit error return due to switch fallthrough to explicit return
-> > > to make intent clear. Follow kernel switch fall-thorugh guidelines at
-> > > Documentation/process/deprecated.rst
-> > > 
-> > > Signed-off-by: Akhilesh Patil <akhilesh@ee.iitb.ac.in>
-> > > ---
-> > > Checked build for 6.16.0 kernel with ad5933
-> > > ---
-> > >  drivers/staging/iio/impedance-analyzer/ad5933.c | 3 ++-
-> > >  1 file changed, 2 insertions(+), 1 deletion(-)
-> > > 
-> > > diff --git a/drivers/staging/iio/impedance-analyzer/ad5933.c b/drivers/staging/iio/impedance-analyzer/ad5933.c
-> > > index 85a4223295cd..6547a259b8a0 100644
-> > > --- a/drivers/staging/iio/impedance-analyzer/ad5933.c
-> > > +++ b/drivers/staging/iio/impedance-analyzer/ad5933.c
-> > > @@ -533,9 +533,10 @@ static int ad5933_read_raw(struct iio_dev *indio_dev,
-> > >  		*val = 1000;
-> > >  		*val2 = 5;
-> > >  		return IIO_VAL_FRACTIONAL_LOG2;
-> > > +	default:
-> > > +		return -EINVAL;
-> > 
-> > What tool is requiring this to be added?  It's totally redundant and
-> > needs to have the tool fixed instead.
+On Mon, Jul 28, 2025 at 04:43:34PM +0300, Ioana Risteiu wrote:
+> Add new compatible string and corresponding iio_backend_ops for AD777x
+> axi family.
 > 
-> This patch is not inspired by any tool as such.
-> I observed this code pattern while manually reading the staging area iio
-> code. From my eyes, there is implicit intention to return from switch block if
-> no match is found which can be improved in readibility by explicit
-> default block returning error.
-> I agree this is redundant and will not have any functional impact.
-> However, imo - this can help support kernel wide efforts to
-> clarify switch() blocks.
+> Signed-off-by: Ioana Risteiu <Ioana.Risteiu@analog.com>
+> ---
+>  drivers/iio/adc/adi-axi-adc.c | 25 +++++++++++++++++++++++++
+>  1 file changed, 25 insertions(+)
 > 
-> The motivation for this patch is from a035d552 which talks about
-> eleminating ambiguity by clearly defining swich() case blocks.
+> diff --git a/drivers/iio/adc/adi-axi-adc.c b/drivers/iio/adc/adi-axi-adc.c
+> index 2d86bb0e08a7..c4b8ec6d9397 100644
+> --- a/drivers/iio/adc/adi-axi-adc.c
+> +++ b/drivers/iio/adc/adi-axi-adc.c
+> @@ -670,6 +670,25 @@ static const struct iio_backend_info axi_ad408x = {
+>  	.ops = &adi_ad408x_ops,
+>  };
+>  
+> +static const struct iio_backend_ops adi_ad777x_ops = {
+> +	.enable = axi_adc_enable,
+> +	.disable = axi_adc_disable,
+> +	.chan_enable = axi_adc_chan_enable,
+> +	.chan_disable = axi_adc_chan_disable,
+> +	.request_buffer = axi_adc_request_buffer,
+> +	.free_buffer = axi_adc_free_buffer,
+> +	.data_sample_trigger = axi_adc_data_sample_trigger,
+> +	.chan_status = axi_adc_chan_status,
+> +	.debugfs_reg_access = iio_backend_debugfs_ptr(axi_adc_reg_access),
+> +	.debugfs_print_chan_status = iio_backend_debugfs_ptr(axi_adc_debugfs_print_chan_status),
+> +	.num_lanes_set = axi_adc_num_lanes_set,
+> +};
 
-Yes, but the code right after this does the "default return", so that is
-now dead code.
+Hmm looking at the above I wonder about the specific compatible? We
+could add one if we want to have more strict validation on the possible 'num_lanes' passed
+into axi_adc_num_lanes_set().
 
-I'd recommend the "pattern" that the current code is in, it's simpler.
+- Nuno Sá
 
-thanks,
-
-greg k-h
+> +
+> +static const struct iio_backend_info axi_ad777x = {
+> +	.name = "axi-ad777x",
+> +	.ops = &adi_ad777x_ops,
+> +};
+> +
+>  static int adi_axi_adc_probe(struct platform_device *pdev)
+>  {
+>  	struct adi_axi_adc_state *st;
+> @@ -790,12 +809,18 @@ static const struct axi_adc_info adi_axi_ad408x = {
+>  	.backend_info = &axi_ad408x,
+>  };
+>  
+> +static const struct axi_adc_info adi_axi_ad777x = {
+> +	.version = ADI_AXI_PCORE_VER(10, 0, 'a'),
+> +	.backend_info = &axi_ad777x,
+> +};
+> +
+>  /* Match table for of_platform binding */
+>  static const struct of_device_id adi_axi_adc_of_match[] = {
+>  	{ .compatible = "adi,axi-adc-10.0.a", .data = &adc_generic },
+>  	{ .compatible = "adi,axi-ad408x", .data = &adi_axi_ad408x },
+>  	{ .compatible = "adi,axi-ad485x", .data = &adi_axi_ad485x },
+>  	{ .compatible = "adi,axi-ad7606x", .data = &adc_ad7606 },
+> +	{ .compatible = "adi,axi-ad777x", .data = &adi_axi_ad777x},
+>  	{ }
+>  };
+>  MODULE_DEVICE_TABLE(of, adi_axi_adc_of_match);
+> -- 
+> 2.47.2
+> 
 

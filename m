@@ -1,131 +1,139 @@
-Return-Path: <linux-iio+bounces-22084-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22085-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39A3AB134F4
-	for <lists+linux-iio@lfdr.de>; Mon, 28 Jul 2025 08:33:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A867B135EC
+	for <lists+linux-iio@lfdr.de>; Mon, 28 Jul 2025 09:55:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 87CEE16C5EC
-	for <lists+linux-iio@lfdr.de>; Mon, 28 Jul 2025 06:33:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8128A17891B
+	for <lists+linux-iio@lfdr.de>; Mon, 28 Jul 2025 07:55:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1911C2222C2;
-	Mon, 28 Jul 2025 06:33:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 550F22222A3;
+	Mon, 28 Jul 2025 07:55:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jCrnNDKN"
+	dkim=pass (2048-bit key) header.d=it-klinger.de header.i=@it-klinger.de header.b="udgmHHNq"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from www571.your-server.de (www571.your-server.de [78.46.3.230])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BA7E2185AA;
-	Mon, 28 Jul 2025 06:33:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 468FD21CC68;
+	Mon, 28 Jul 2025 07:55:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.46.3.230
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753684423; cv=none; b=ldBa4f3yBztGMot6LrF1jkmoxFwjmF7aQVfoxQN9ufIuPWjaLMZ+j5bwpk2YqM5a1tqbs76tPLpdFu1a+t7gweSmfS5eNXgsE2u34+I4bh/61bgZ7dYNH8TYvrajOiOgDJeoU3bJ4XUiHjbtGOjoo+BjebyghAyeCCJ/7lsEZeY=
+	t=1753689324; cv=none; b=ujVhwHMoNHuEJgWgfnYom2FQx1NEDu8ShcnLZ1PI5R0RJ/prwwunkiCcbIvqPwE4rWoUYU6Lk1faAK112C95JgIZ6PWskrkzVPXtOne0V0lGt85jGj71YLi16FWqFbALRhe6XbPwYtgEql31UqRidWpTdNBUt0j65w2oyzHUHsk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753684423; c=relaxed/simple;
-	bh=NXmtPkpsI9DOkNG7xkMutzA58JXeOtft4Hp936H8kRM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=sNRN9VfQ0UVmMBg4MbwXNUjMUHqKRpaNx4Otomz3/2x88pStvlMB7lQpUBHlqT8fNhHSLWfuiHh7DE7U3S5VCvkM/rUPRDOW94ETL6bVb0VZZTh3mg87vKnG1zbtR0TLxnjNY9bXtIezMKlOflw4jrYL6/KyreedASO7XmIC9h0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jCrnNDKN; arc=none smtp.client-ip=209.85.167.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-55516abe02cso5108645e87.0;
-        Sun, 27 Jul 2025 23:33:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753684420; x=1754289220; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=BdNOR8NXUxquHEOai7Jddyqm3K6j5St2h4nt9NmtQPk=;
-        b=jCrnNDKNX1mdEKRqIcMhr3Rd2oHXkQYJbd8L4F5Lwt1hERwpLchIZ2+OrS3cEYeI/P
-         oq/hOoYBGbzql+2lgeJsfnp4+ET9R2DI3zy0Z60ZhnpW7lYQKWKHPlD3XsTTZFJIpOOt
-         pMsAt8Yny038rgMl47dFO7wXdcXkLeBNKpPZX7V6Ewv6EbWVPopoieJOnvGcuAts96lU
-         stwazJkqKkP2HKKIx0mdIo76JkiB6liO7nycYFG9G1F9sDxljVtrGUenmTYAVcw/fBCt
-         n/4B6fRWcdKriM6jtwp8BJb9L8U7LdyzQ+AG4qTNCxfBL6ZNhucSyz3TNUyMFSEM4zt1
-         dEHA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753684420; x=1754289220;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=BdNOR8NXUxquHEOai7Jddyqm3K6j5St2h4nt9NmtQPk=;
-        b=BMxBoz+0S3L/E5B0CEMTuoOxuDuZJ1HxjJy6CyyyFl4pDUz42sTl4Z94keMG3g/WXA
-         eM6m2liZ8SosDMWHV5h14Gn96xwmjVd/NJl0d9OR//GgDUWdoO4mMNvLe+FCiuqpELHl
-         6gM1Z0iuDfMcsTZWl0bdIi7GzpBoSKISoS8xd3KSymer+gyDLJIZ76g7oiCQoSVxzwGn
-         m7pcfbSnuvC1tO36wfcEBymheRARg55aV7YV2o/qkuDEmEcYekSMuyHPV89VuABwZT44
-         V+Y+v86pWDDPez7W6Kvj3M7hNxut0mO/ch+SFkdr+OE90TiJoDMnhFSVNFDayGnZwE7N
-         DQ3Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVJFgehUtlGjLgdMm6G1HCkUEGi4CG3oCm2IxZpbMlMRHtm3TzACnSNnQqqRU7poeQ/OKSo8LiWXbCQ@vger.kernel.org, AJvYcCW6G9u3rwxeSzVxhwtAP/dU9LfZ4AVOTyr1wheteR5+SF3jNJHHI9mx3jgDkS0ccjPrn8/F9QocVjuhtLUS1wGlJe0=@vger.kernel.org, AJvYcCWKC0KR2T5ozAakkR28Va8zlsKfHdxS9iApYK4oe4iwy+rJQKOYWP0DOJUYH6uP5Y07VNx48QL4hty8p32l@vger.kernel.org, AJvYcCXZbsturPkM1mozlIW6KWQ0rfHG0j0Y2DA+Zka9MV30+mMfyNmq1LkGOnD2GOwlPU1Vut8QtnEpggRQ@vger.kernel.org
-X-Gm-Message-State: AOJu0YyIFlcauO8Elef+V6uj/mQzzMjPYW3ReVubIpdji8RNGjdHDRnV
-	47bPrTxuBxGekZOCKFb0/VYjVeGTOqu11iydkA11puVozq4D2qqhZXr2
-X-Gm-Gg: ASbGnctu82y62rNazz5chpUE2sWAigj8Xc2UamzV8Pjow1zXXeGY9JoFTqAxUI8Q27p
-	zTDxhH5GvqFXh+blzxZPnU7ffyavkwedoxvHKdsKDqhfG8FMF4F5niE7bk7fCX1ycRZKmM319O/
-	XaN1P6qH1ZIWOERMZLTrp/WXcgODtDIgxM36l7qVkxgFRDt67cgYDhrbHcWS02Gtvk69+elRQks
-	Zbit+DTBjYDBvUNxvS4rajENEQpZoJHZTJ9FZ90ryLzeMH41q8L6ay3otgzRwRXDkAID0bpt5ce
-	jVOqGvhfdwWVZSJ/zQp6xX+ifOOgiwkuMRPnWAqH14aJ+bmj0GQklzD6exiAPICLKRGm4HtCzrk
-	5ccLIPyIgXd4pWL7tU7vITm/qJW0dJV2RRIbxxtZKuWKy
-X-Google-Smtp-Source: AGHT+IFFMGvFbpsHTpgyMTjNhjVZn0guX9tOqWVxwLzxKoFlR6LjQnKCPbPvhLmPFm3kqHCiJmT+Aw==
-X-Received: by 2002:a05:6512:4028:b0:558:f939:4435 with SMTP id 2adb3069b0e04-55b558b8ed8mr4360723e87.13.1753684419849;
-        Sun, 27 Jul 2025 23:33:39 -0700 (PDT)
-Received: from [172.16.183.77] ([213.255.186.46])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-55b631a7e13sm1127133e87.76.2025.07.27.23.33.38
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 27 Jul 2025 23:33:39 -0700 (PDT)
-Message-ID: <272b1700-7ebd-4693-829f-8d842e6eece7@gmail.com>
-Date: Mon, 28 Jul 2025 09:33:37 +0300
+	s=arc-20240116; t=1753689324; c=relaxed/simple;
+	bh=vyTswW5mBU8qP9UGZBd+Yz7rbpkaOC9CmV5ZJm37XsE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=p6+odBz4tF3TdL/NMkYcJD6ie2gYJdFyYVQ/FLukihTQLygXk/11I8qx658T2sh5itynU1aUykuSt+bE3MPcb/qNkfEJYW7f43YJIHnnLZ+1USWps5GR/DAPi6hHSGk4meMMLAlzseYbEZxrqsh6AAa9ZbnW/hWLK0fhrDpOtaI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=it-klinger.de; spf=pass smtp.mailfrom=it-klinger.de; dkim=pass (2048-bit key) header.d=it-klinger.de header.i=@it-klinger.de header.b=udgmHHNq; arc=none smtp.client-ip=78.46.3.230
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=it-klinger.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=it-klinger.de
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=it-klinger.de; s=default2502; h=Content-Transfer-Encoding:MIME-Version:
+	Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References;
+	bh=Bkr0VA2OrZmPbs1hb5HnRRtZ9Uq4gXLZICTeByE38r0=; b=udgmHHNqU6niL8ZaLUpM+juNr9
+	pQ3QrVUSALGs5td5djdjQN5jKpmxIngs8hiDghH/Za1XH8vdZJhxm1FkgRtOtIKKe81AE3r7BKf4F
+	hsLjTTkp3718ZtW5L6ki+W639CW1OJhMy4CDljvz2e8aJtLsuajiEsjUUo9M9fc0l6qWKT4kbxy7G
+	9F9dlrXvJ9EIvkFyXozlky8T0a4eUjd79HRu8FDUKZHVhOI3tT5/VQmbV1/OWWgxJ1lrAYGQWnoMF
+	70gCdCdFu0wK6NusoZ6yKtr1xK3idIu9Buzr6Gu3jONg2vLtEt8myKLPBz+Cts0UWzK2/QskO5eaJ
+	jVwXl5VA==;
+Received: from sslproxy01.your-server.de ([78.46.139.224])
+	by www571.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <ak@it-klinger.de>)
+	id 1ugIhR-0004Wh-04;
+	Mon, 28 Jul 2025 09:55:09 +0200
+Received: from localhost ([127.0.0.1])
+	by sslproxy01.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ak@it-klinger.de>)
+	id 1ugIhQ-0006b7-0N;
+	Mon, 28 Jul 2025 09:55:08 +0200
+From: Andreas Klinger <ak@it-klinger.de>
+To: jic23@kernel.org,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org
+Cc: lars@metafoo.de,
+	javier.carrasco.cruz@gmail.com,
+	mazziesaccount@gmail.com,
+	andriy.shevchenko@linux.intel.com,
+	arthur.becker@sentec.com,
+	perdaniel.olsson@axis.com,
+	mgonellabolduc@dimonoff.com,
+	muditsharma.info@gmail.com,
+	clamor95@gmail.com,
+	emil.gedenryd@axis.com,
+	ak@it-klinger.de,
+	devicetree@vger.kernel.org,
+	linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v7 0/3] iio:light: add driver for veml6046x00 RGBIR color sensor
+Date: Mon, 28 Jul 2025 09:54:43 +0200
+Message-Id: <20250728075447.338725-1-ak@it-klinger.de>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/4] dt-bindings: iio: Drop unused header includes in
- examples
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
- Lars-Peter Clausen <lars@metafoo.de>,
- Michael Hennerich <Michael.Hennerich@analog.com>,
- Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>,
- =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
- Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Lucas Stankus <lucas.p.stankus@gmail.com>,
- Puranjay Mohan <puranjay@kernel.org>, Dan Robertson <dan@dlrobertson.com>,
- Marcelo Schmitt <marcelo.schmitt@analog.com>,
- Alim Akhtar <alim.akhtar@samsung.com>,
- Dragos Bogdan <dragos.bogdan@analog.com>,
- Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
- =?UTF-8?Q?Ond=C5=99ej_Jirman?= <megi@xff.cz>,
- Alexandru Tachici <alexandru.tachici@analog.com>,
- Stefan Popa <stefan.popa@analog.com>,
- Linus Walleij <linus.walleij@linaro.org>,
- Stephan Gerhold <stephan@gerhold.net>,
- Ceclan Dumitru <dumitru.ceclan@analog.com>,
- Alexandru Lazar <alazar@startmail.com>, Andy Gross <agross@kernel.org>,
- Bjorn Andersson <andersson@kernel.org>,
- Angelo Compagnucci <angelo.compagnucci@gmail.com>,
- Mike Looijmans <mike.looijmans@topic.nl>, David Heidelberg <david@ixit.cz>,
- Manivannan Sadhasivam <mani@kernel.org>,
- Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
- Andreas Klinger <ak@it-klinger.de>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-samsung-soc@vger.kernel.org
-References: <20250724111345.47889-5-krzysztof.kozlowski@linaro.org>
-Content-Language: en-US, en-AU, en-GB, en-BW
-From: Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <20250724111345.47889-5-krzysztof.kozlowski@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: Clear (ClamAV 1.0.7/27712/Sun Jul 27 10:35:17 2025)
 
-On 24/07/2025 14:13, Krzysztof Kozlowski wrote:
-> Drop includes of headers which example code does not use.  No functional
-> impact.
-> 
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+This patchset adds an IIO driver for Vishay veml6046x00 RGBIR color sensor.
 
-FWIW:
-Acked-by: Matti Vaittinen <mazziesaccount@gmail.com>
+Changes in v7:
+- Thanks to the reviews of Jonathan and Andy improvements in the PM could be
+  implemented like removal of pm_runtime_mark_last_busy() and consistency in PM
+  handling in some functions.
+
+Changes in v6:
+- Thanks to the in-depth review of Andy many datatype improvements were
+  realized.
+- According to Jonathans review change the channel types from IIO_LIGHT to
+  IIO_INTENSITY.
+
+Changes in v5:
+- Thanks to the feedback of Andy and further explanations of Jonathan many
+  improvements could be implemented.
+- add documentation in kernel-doc format
+- iio_push_to_buffers_with_ts() is not used as also testing against
+  linux-stable where it is not available so far.
+
+Changes in v4:
+- implement feedback from Andy and Jonathan
+- implement feedback from vendor (reading interrupt register as bulk read)
+
+Changes in v3:
+- implement a lot of feedback from Jonathan
+- change scale value to real factor of lux per raw count instead of hardware
+  gain  
+- optimize code by using more lookup tables
+- remove unimplemented threshold functionality
+
+Changes in v2:
+- fix missing include for example in vishay,veml6046x00.yaml
+
+Andreas Klinger (3):
+  dt-bindings: iio: light: veml6046x00: add color sensor
+  iio: light: add support for veml6046x00 RGBIR color sensor
+  MAINTAINER: add maintainer for veml6046x00
+
+ .../iio/light/vishay,veml6046x00.yaml         |   51 +
+ MAINTAINERS                                   |    6 +
+ drivers/iio/light/Kconfig                     |   13 +
+ drivers/iio/light/Makefile                    |    1 +
+ drivers/iio/light/veml6046x00.c               | 1031 +++++++++++++++++
+ 5 files changed, 1102 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/light/vishay,veml6046x00.yaml
+ create mode 100644 drivers/iio/light/veml6046x00.c
+
+-- 
+2.39.5
 
 

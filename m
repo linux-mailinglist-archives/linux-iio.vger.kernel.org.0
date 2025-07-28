@@ -1,79 +1,79 @@
-Return-Path: <linux-iio+bounces-22109-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22110-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 546A3B13DAA
-	for <lists+linux-iio@lfdr.de>; Mon, 28 Jul 2025 16:51:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31360B13DF6
+	for <lists+linux-iio@lfdr.de>; Mon, 28 Jul 2025 17:11:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7DEE017A061
-	for <lists+linux-iio@lfdr.de>; Mon, 28 Jul 2025 14:51:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 85DEE3B1753
+	for <lists+linux-iio@lfdr.de>; Mon, 28 Jul 2025 15:10:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0A4C26FDA5;
-	Mon, 28 Jul 2025 14:51:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F52A270548;
+	Mon, 28 Jul 2025 15:11:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Fo2RM2mc"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O7azJp4O"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-vk1-f179.google.com (mail-vk1-f179.google.com [209.85.221.179])
+Received: from mail-vs1-f48.google.com (mail-vs1-f48.google.com [209.85.217.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02AE6263F5F;
-	Mon, 28 Jul 2025 14:51:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1617126FDB6;
+	Mon, 28 Jul 2025 15:11:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753714276; cv=none; b=QNS8+3KwXoayb33GO/pEMlu5P4E7/1fH7UHOGu6keAodUrUTKq1nroZKoAK7RzyqTBu6kO7OaAT5P7eRS7DNw25B6PAiSFWhy3iaS3jCl2zotdK3g9DVYAkzx+miJa+ffafiwaaDhtxT8AWDdkNowe9uTY29c5bTzq1uymIww+o=
+	t=1753715480; cv=none; b=Wx70ekrurq5Md1VB5sFmADnAoYvLzE/QVZRPeklXeoFUCmojwsb6dOV5RiNrnJC3BMRWwZTl8cW94PuwqjvDehpwBklFtSpcLHeb6EGrVtyWFrSA3EUZrverg7ne+7DVjtfN9l4R4wgnIyZ3hIzOlTJammOWfnIio8YVE/njddI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753714276; c=relaxed/simple;
-	bh=YMNkAdfSnpybMoSu3nas3zKS2+bfNtLNz/RZJ32Z1OI=;
+	s=arc-20240116; t=1753715480; c=relaxed/simple;
+	bh=zm5sdjWwncistV0GSdXwbbW5in+4ManQo1eSDpiEaW8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ICPoWgbLEeMktPt1KW8a98t5ybPW3QZnR6e9HqiCpVP12nyY/P9u/A8KtYmDvk1U0uByrLY8AlywDZWAd+WnM6Jg+UtrryzEP1DoC0src6C2zSmlpY0jxYrCbYLMtaTOCHN1YJHR7dNqPLeWXFkbGAE1Kh68EmGHiRFXD4V3fU0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Fo2RM2mc; arc=none smtp.client-ip=209.85.221.179
+	 Content-Type:Content-Disposition:In-Reply-To; b=cSMO4q9jnS90YpW6OBxe0qPacyZJhPsJ1vK1w0m8LSqaKMLlYp5E9UK/PVcif+OeH5ogOxTruzWnbctvd203aJ/3AjL0uJvRsnfXdPvukEbCDpBy+LD2C1/d1/1QljavkXN+8L6mZBG+4kV4UdRvtFGyrxQ9Rb+lOS2l4msOvbA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O7azJp4O; arc=none smtp.client-ip=209.85.217.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vk1-f179.google.com with SMTP id 71dfb90a1353d-5315acf37b6so1686587e0c.2;
-        Mon, 28 Jul 2025 07:51:14 -0700 (PDT)
+Received: by mail-vs1-f48.google.com with SMTP id ada2fe7eead31-4e8135adfccso1447291137.1;
+        Mon, 28 Jul 2025 08:11:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753714274; x=1754319074; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1753715477; x=1754320277; darn=vger.kernel.org;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=ykcVTDfyqleDLnWkxo8GtSsNTgqCVqgO9KSgQDHfHEA=;
-        b=Fo2RM2mcQQQtfxEBVH0ozlJKx/xWn3IYPnCQxOg3R6r99gT5JfSeNTw9lYmRl1g1Uw
-         as4fBd6JQgI5Mq3YCDmS2ba/K+1vJJ4Cv5q7Ij14M6Zhajh7ijw+4oZBBtyGHqVqac8R
-         vfyWN7vEEOPLzPGdih1WXSFDoS3rJVyzIz9oQlNQFetFa6hyM99b0L2COEJ1kZanW+ln
-         N6pnoHUTj+40mtrb7300J/WNmXIZZwcUK2O4bdYKsYivyIvXzYNWmYb/DExCcdS6Ha4k
-         w2ZtqqOx8fGketZ83tf4Z90AzNRGfMGvI3Bsd5WpcVYpezS0DBRg5482mz61g/1ugc93
-         4m/g==
+        bh=tH7ZZVnJEgCpl86bvJHk2RXOFtUWZuabqU+n8qdMLmA=;
+        b=O7azJp4OdpkDlO/MnSBEvFk97dK+s5AuA0/Z+mvq0I/6Te7nrmLponQLMKGLMno8TF
+         lU0JyNYRlWG+sR+JD4XjaBkfCo7Eqaw3ERclNMk5y/KmJWyYXHWzLrvzJv0Wv3OribMr
+         DWFrI3+i4v3/YLJWI11M6s0vpTAB6n+Gw5qVVfx6X3tptDsP8qnwv/bzYlBdFV9gF2Gr
+         eD/5m2dzSR+jlj8QTxyQt5b+ojFMU5SM8gMSk8NnpAKMNppen5akg4iBFxCchP5gpzK/
+         jJTZ3ihmkh/R8OVdz4VPrztF/R/yhdivBIeoRIgzdruS2+rUBo40tHqzNkNdOe6fm5qM
+         B4eQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753714274; x=1754319074;
+        d=1e100.net; s=20230601; t=1753715477; x=1754320277;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ykcVTDfyqleDLnWkxo8GtSsNTgqCVqgO9KSgQDHfHEA=;
-        b=qOPBp+I72p79mUYTMLQbAimCtB1oZ9mzY8UOPg33oAxQEOCRRDDPbZUWl/Cop8KmYf
-         zz6Al4LRvfA86f2zy1LC0duh+QcpIalVFgDpU/wCA5VOGZU4am4jPYpEMZvABtwX+RS/
-         f1/bvpXheEXBe4JrWgCKvkAWa3M+ilBOAkVvQvqR058xOVwMQS2GSX5i/M+WGSpN1doy
-         jgFnRFvDz0uEmU3R/rah8OPyjdcROb0qkHhnQSN6l48NDQc9plmqkFzSaOvrXGxhIumb
-         uocKcFDuanibVlIKhiIfuakNdIQIqdHccsJcRJy5EtoCtSoqZsfKgpZrrs4YVIiLvsAn
-         xq8A==
-X-Forwarded-Encrypted: i=1; AJvYcCUFqdjEhsSXUX8H6Cmc5kN+p8xDCaClX5KA/kpzD+LcgqAYWeABw+hEmj4taLAh+B6DZIIF8PhthZFK@vger.kernel.org, AJvYcCVp5dgUButtuN97v4F8mu8BTHJE1uU1aJwfJ9hDG3zS2dj5n2BbPNRliA3H/J6Vve82vn6U1TS5goVoKNP1@vger.kernel.org, AJvYcCWp5unnccvkQvC6LeSskVVIxCRomCSuWcEnKUY/VQRwObgwoi16Gwn5bvSabbjsQautt+7WM6cSpI5k@vger.kernel.org
-X-Gm-Message-State: AOJu0YzSwWgrlBXN/QBl3SvJ+qX7ngtzVZZEPoGIlXEkQWT2S3YHAdW2
-	OpzJrd7J15wUaJPUkM/51ODkt7F2PWInZpUx/mzk+vVOOvSU94px2Nhk
-X-Gm-Gg: ASbGncu+ickkG6fa4OKa1HGhT6yVQ4K3qpt+YhAKr1dba4Wm5O3/nu3bz2XA0tc3A2R
-	A+/FjBMUXFSSaWeYp4YWPkGBkpZUotGtc0btXsj7betG0o0Q039rJ9uTP+QI4FlnYnpp0h0cyOB
-	nyfgNQ1fVR+DWjUoV2MzYJYRwWmciO/564ShFB+3wBax5FiNnm/uAVwBUbDht2uNWug/O8AHwMb
-	PmNopbWT0pGyN/vQuul0JI5wCBF8ZwPalt3DqeifU5CKPPOsxHsNQ6zDWHC8mUBFXvMf6ZWXrCC
-	SCzd3oO4MLbwxk8AItXLQ8P9p0v8cwIH17coyKjhl5I0+FnXsSj8QSytF66NtnvDBfmBowl3NYA
-	FqL4CPTLqTqfx7MWRQRmyZ/U=
-X-Google-Smtp-Source: AGHT+IHHYK2+megbvRbd3rAUtT0UkE14DkFGQlSeCmnxbzV3RePQ+PdCSvBsisz1dyJLv5C7ZOYe5g==
-X-Received: by 2002:a05:6122:8290:b0:534:3644:a4e9 with SMTP id 71dfb90a1353d-538db5280f7mr4032184e0c.3.1753714273575;
-        Mon, 28 Jul 2025 07:51:13 -0700 (PDT)
+        bh=tH7ZZVnJEgCpl86bvJHk2RXOFtUWZuabqU+n8qdMLmA=;
+        b=TXPZeCyR3GJpyVeaSwkCdnIjjUEinhjvn4jjoiuO39eLeNz8LuTyL3I/jFDmOdiVjv
+         KnOJUR3Ux1G7vCjcBdU6A4TCUfygKC/FOMpJ4/yFBbGRkGCU8ZPUqwUhsnYhStMDQU1C
+         /ykm4x4RM2nyrQa3WExeXFL28LwBh4RTlIjqDf6HdSXe7/nFnnuVECtz3/Km7L4Nux1d
+         Jv0i1HOxwFVNzH2vYBqC02pwKPBLxOjxDvjzmqWOhYY7CND7Q3+9sMypRcjXOPssZ70M
+         H8xVnaf/jNJc2OWon9ymuBxroDoZYpTGbeillY/UmAIdi/1iVSgL5AOx4lm8Tal+g1L7
+         pOJQ==
+X-Forwarded-Encrypted: i=1; AJvYcCViajMtQgdKHDKmqjSzmwEV/Gl0p8dM+Alwj1RcAeETXynhYmesAXdN++eQ7nAhQq7ClFPl+x8eDAnK@vger.kernel.org, AJvYcCXbYGGMnWWixD23vXK/uwFxzR6W+AfXZcB5Vi88CbXIexb6XpZEDdhqNqDPXxJzzu26a6F5pzARDzeSpjHZ@vger.kernel.org, AJvYcCXogJgfLiLznkIAstThXnNiVmfwyeI0KADK6dkz5ZOQD6trOXeMGx4TjFSb+SjAcC0p2tCNhfOxzRS3@vger.kernel.org
+X-Gm-Message-State: AOJu0YyoQIUqpnGYCK6FWexxIuAtzlYDKljknef0DYPPKmDes6ozT8h6
+	d+yjVCB3vfrT8mkafqxcpTNDVC+93CbeOSsiXMNzIHBNH/hMFGdzgOaD
+X-Gm-Gg: ASbGncvlDPQLlwYL8XrnZarDIayI0PLDq9RRcsq6SBPR9nPED7UAS4w9BW/eyNAQ0h+
+	RFMvxMgR+ibIcBrwbEjO66Uan7IeO1+PhweT/r5LQ0892IUxDu1MEktXyf0qDtPy1xs5U8ebn6m
+	zesxPyjqIEWDm2Nyekhy5Y2fcmW7shBP9ECMJL5Uz/1lX1iVbeba8osRmYq4l0Hg6DaVYO+epLt
+	XkBT+4l16I2NQp2/iIjzpJonl+bmB55uZawuar8GJawhnkMaHjyQfctUviQ6T9KOQfL/kY/fvov
+	p9Ltsb84NxnI08HqkMG/LN3/KFUCjNLA6lYNUeg+Jsv2Cb3llB3GIi57BncQ7gYRdEAAf7PdUcC
+	01HRIGIap3+Ub
+X-Google-Smtp-Source: AGHT+IEktxSaOubwonI1LDHN4dky8p+eSpxFJaJ2x9Pjpl/WoHpCkNhg4nmMGVmyJ1FxhrYcjItIMg==
+X-Received: by 2002:a67:e7c9:0:b0:4ec:c548:e10e with SMTP id ada2fe7eead31-4fa3fa53ca2mr5355743137.3.1753715476640;
+        Mon, 28 Jul 2025 08:11:16 -0700 (PDT)
 Received: from nsa ([45.144.113.55])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-538e2858d8csm1459302e0c.25.2025.07.28.07.51.10
+        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-4fa46d0745fsm1165742137.5.2025.07.28.08.11.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Jul 2025 07:51:13 -0700 (PDT)
-Date: Mon, 28 Jul 2025 15:51:25 +0100
+        Mon, 28 Jul 2025 08:11:16 -0700 (PDT)
+Date: Mon, 28 Jul 2025 16:11:28 +0100
 From: Nuno =?utf-8?B?U8Oh?= <noname.nuno@gmail.com>
 To: Ioana Risteiu <Ioana.Risteiu@analog.com>
 Cc: Lars-Peter Clausen <lars@metafoo.de>, 
@@ -83,10 +83,10 @@ Cc: Lars-Peter Clausen <lars@metafoo.de>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
 	Ramona Nechita <ramona.nechita@analog.com>, linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/4] iio: adc: adi-axi-adc: Add support for ad777x
-Message-ID: <jnwhdddmz3voorm7ywsxlax336leapxh4nhfwivvp7mjnrdi3e@f5v3ygkpwrjs>
+Subject: Re: [PATCH 4/4] iio: adc: Update ad7779 to use IIO backend
+Message-ID: <uwente5i2eztozco5qeaglgvtuamewytxijaqjzaaxlbvdsoyj@fuko4wpwbztl>
 References: <20250728134340.3644-1-Ioana.Risteiu@analog.com>
- <20250728134340.3644-3-Ioana.Risteiu@analog.com>
+ <20250728134340.3644-5-Ioana.Risteiu@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -96,74 +96,311 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250728134340.3644-3-Ioana.Risteiu@analog.com>
+In-Reply-To: <20250728134340.3644-5-Ioana.Risteiu@analog.com>
 
-On Mon, Jul 28, 2025 at 04:43:34PM +0300, Ioana Risteiu wrote:
-> Add new compatible string and corresponding iio_backend_ops for AD777x
-> axi family.
+On Mon, Jul 28, 2025 at 04:43:36PM +0300, Ioana Risteiu wrote:
+> Add a new functionality to ad7779 driver that streams data through data
+> output interface using IIO backend interface.
 > 
 > Signed-off-by: Ioana Risteiu <Ioana.Risteiu@analog.com>
 > ---
->  drivers/iio/adc/adi-axi-adc.c | 25 +++++++++++++++++++++++++
->  1 file changed, 25 insertions(+)
+>  drivers/iio/adc/ad7779.c | 299 +++++++++++++++++++++++++++++++++------
+>  1 file changed, 256 insertions(+), 43 deletions(-)
 > 
-> diff --git a/drivers/iio/adc/adi-axi-adc.c b/drivers/iio/adc/adi-axi-adc.c
-> index 2d86bb0e08a7..c4b8ec6d9397 100644
-> --- a/drivers/iio/adc/adi-axi-adc.c
-> +++ b/drivers/iio/adc/adi-axi-adc.c
-> @@ -670,6 +670,25 @@ static const struct iio_backend_info axi_ad408x = {
->  	.ops = &adi_ad408x_ops,
+> diff --git a/drivers/iio/adc/ad7779.c b/drivers/iio/adc/ad7779.c
+> index 845adc510239..872c551eadf6 100644
+> --- a/drivers/iio/adc/ad7779.c
+> +++ b/drivers/iio/adc/ad7779.c
+> @@ -31,6 +31,8 @@
+>  #include <linux/iio/triggered_buffer.h>
+>  #include <linux/iio/trigger_consumer.h>
+>  
+> +#include <linux/iio/backend.h>
+> +
+>  #define AD7779_SPI_READ_CMD			BIT(7)
+>  
+>  #define AD7779_DISABLE_SD			BIT(7)
+> @@ -116,6 +118,12 @@
+>  #define AD7779_CRC8_POLY			0x07
+>  DECLARE_CRC8_TABLE(ad7779_crc8_table);
+>
+
+...
+
+>  
+> +static const struct iio_chan_spec_ext_info ad7779_ext_info_filter[] = {
+> +	IIO_ENUM("data_lines", IIO_SHARED_BY_ALL, &ad7779_data_lines_enum),
+> +	IIO_ENUM_AVAILABLE("data_lines", IIO_SHARED_BY_ALL,
+> +			   &ad7779_data_lines_enum),
+> +	IIO_ENUM("filter_type", IIO_SHARED_BY_ALL, &ad7779_filter_enum),
+> +	IIO_ENUM_AVAILABLE("filter_type", IIO_SHARED_BY_ALL,
+> +			   &ad7779_filter_enum),
+> +	{ }
+> +};
+> +
+
+I guess this can get simpler... Do we really want to control data_lanes
+at runtime? From my experience that's a DT parameter and it's not
+something you can change at runtime. Often is a synthesis parameter on
+the IP core (backend side).
+
+
+>  #define AD777x_CHAN_S(index, _ext_info)					\
+>  	{								\
+>  		.type = IIO_VOLTAGE,					\
+> @@ -669,11 +788,34 @@ static const struct iio_chan_spec_ext_info ad7779_ext_filter[] = {
+>  		},							\
+>  	}
+>  
+> +#define AD777X_CHAN(index, _ext_info)					       \
+> +	{								       \
+> +		.type = IIO_VOLTAGE,					       \
+> +		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SAMP_FREQ),       \
+> +		.address = (index),					       \
+> +		.indexed = 1,						       \
+> +		.channel = (index),					       \
+> +		.scan_index = (index),					       \
+> +		.ext_info = (_ext_info),				       \
+> +		.scan_type = {						       \
+> +			.sign = 's',					       \
+> +			.realbits = 24,					       \
+> +			.storagebits = 32,				       \
+> +		},							       \
+> +	}
+> +
+>  #define AD777x_CHAN_NO_FILTER_S(index)					\
+>  	AD777x_CHAN_S(index, NULL)
+>  
+> +#define AD777X_CHAN_NO_FILTER(index)					       \
+> +	AD777X_CHAN(index, ad7779_ext_info)
+> +
+>  #define AD777x_CHAN_FILTER_S(index)					\
+>  	AD777x_CHAN_S(index, ad7779_ext_filter)
+> +
+> +#define AD777X_CHAN_FILTER(index)					       \
+> +	AD777X_CHAN(index, ad7779_ext_info_filter)
+> +
+>  static const struct iio_chan_spec ad7779_channels[] = {
+>  	AD777x_CHAN_NO_FILTER_S(0),
+>  	AD777x_CHAN_NO_FILTER_S(1),
+> @@ -686,6 +828,17 @@ static const struct iio_chan_spec ad7779_channels[] = {
+>  	IIO_CHAN_SOFT_TIMESTAMP(8),
 >  };
 >  
-> +static const struct iio_backend_ops adi_ad777x_ops = {
-> +	.enable = axi_adc_enable,
-> +	.disable = axi_adc_disable,
-> +	.chan_enable = axi_adc_chan_enable,
-> +	.chan_disable = axi_adc_chan_disable,
-> +	.request_buffer = axi_adc_request_buffer,
-> +	.free_buffer = axi_adc_free_buffer,
-> +	.data_sample_trigger = axi_adc_data_sample_trigger,
-> +	.chan_status = axi_adc_chan_status,
-> +	.debugfs_reg_access = iio_backend_debugfs_ptr(axi_adc_reg_access),
-> +	.debugfs_print_chan_status = iio_backend_debugfs_ptr(axi_adc_debugfs_print_chan_status),
-> +	.num_lanes_set = axi_adc_num_lanes_set,
+> +static const struct iio_chan_spec ad7779_channels_data[] = {
+> +	AD777X_CHAN_NO_FILTER(0),
+> +	AD777X_CHAN_NO_FILTER(1),
+> +	AD777X_CHAN_NO_FILTER(2),
+> +	AD777X_CHAN_NO_FILTER(3),
+> +	AD777X_CHAN_NO_FILTER(4),
+> +	AD777X_CHAN_NO_FILTER(5),
+> +	AD777X_CHAN_NO_FILTER(6),
+> +	AD777X_CHAN_NO_FILTER(7),
 > +};
+> +
+>  static const struct iio_chan_spec ad7779_channels_filter[] = {
+>  	AD777x_CHAN_FILTER_S(0),
+>  	AD777x_CHAN_FILTER_S(1),
+> @@ -698,6 +851,17 @@ static const struct iio_chan_spec ad7779_channels_filter[] = {
+>  	IIO_CHAN_SOFT_TIMESTAMP(8),
+>  };
+>  
+> +static const struct iio_chan_spec ad7779_channels_filter_data[] = {
+> +	AD777X_CHAN_FILTER(0),
+> +	AD777X_CHAN_FILTER(1),
+> +	AD777X_CHAN_FILTER(2),
+> +	AD777X_CHAN_FILTER(3),
+> +	AD777X_CHAN_FILTER(4),
+> +	AD777X_CHAN_FILTER(5),
+> +	AD777X_CHAN_FILTER(6),
+> +	AD777X_CHAN_FILTER(7),
+> +};
+> +
+>  static const struct iio_buffer_setup_ops ad7779_buffer_setup_ops = {
+>  	.preenable = ad7779_buffer_preenable,
+>  	.postdisable = ad7779_buffer_postdisable,
+> @@ -752,6 +916,91 @@ static int ad7779_conf(struct ad7779_state *st, struct gpio_desc *start_gpio)
+>  	return 0;
+>  }
+>  
+> +static int ad7779_register_irq(struct ad7779_state *st, struct iio_dev *indio_dev)
+> +{
+> +	int ret;
+> +	struct device *dev = &st->spi->dev;
+> +
+> +	indio_dev->info = &ad7779_info;
+> +	indio_dev->channels = st->chip_info->channels;
+> +	indio_dev->num_channels = ARRAY_SIZE(ad7779_channels);
+> +
 
-Hmm looking at the above I wonder about the specific compatible? We
-could add one if we want to have more strict validation on the possible 'num_lanes' passed
-into axi_adc_num_lanes_set().
+We might be able to get the above in a generic way... See below.
+
+> +	st->trig = devm_iio_trigger_alloc(dev, "%s-dev%d", indio_dev->name,
+> +					  iio_device_id(indio_dev));
+> +	if (!st->trig)
+> +		return -ENOMEM;
+> +
+> +	st->trig->ops = &ad7779_trigger_ops;
+> +
+> +	iio_trigger_set_drvdata(st->trig, st);
+> +
+> +	ret = devm_request_irq(dev, st->spi->irq, iio_trigger_generic_data_rdy_poll,
+> +			       IRQF_ONESHOT | IRQF_NO_AUTOEN, indio_dev->name,
+> +			       st->trig);
+> +	if (ret)
+> +		return dev_err_probe(dev, ret, "request IRQ %d failed\n",
+> +					st->spi->irq);
+> +
+> +	ret = devm_iio_trigger_register(dev, st->trig);
+> +	if (ret)
+> +		return ret;
+> +
+> +	indio_dev->trig = iio_trigger_get(st->trig);
+> +
+> +	init_completion(&st->completion);
+> +
+> +	ret = devm_iio_triggered_buffer_setup(dev, indio_dev,
+> +					      &iio_pollfunc_store_time,
+> +					      &ad7779_trigger_handler,
+> +					      &ad7779_buffer_setup_ops);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = ad7779_spi_write_mask(st, AD7779_REG_DOUT_FORMAT,
+> +				    AD7779_DCLK_CLK_DIV_MSK,
+> +				    FIELD_PREP(AD7779_DCLK_CLK_DIV_MSK, 7));
+> +	if (ret)
+> +		return ret;
+> +
+> +	return devm_iio_device_register(dev, indio_dev);
+> +}
+> +
+> +static int ad7779_register_back(struct ad7779_state *st, struct iio_dev *indio_dev)
+> +{
+> +	struct device *dev = &st->spi->dev;
+> +	int ret = -EINVAL;
+> +
+> +	indio_dev->info = &ad7779_info_data;
+> +
+> +	if (strcmp(st->chip_info->name, "ad7771") == 0) {
+> +		indio_dev->channels = ad7779_channels_filter_data;
+> +		indio_dev->num_channels = ARRAY_SIZE(ad7779_channels_filter_data);
+> +	} else {
+> +		indio_dev->channels = ad7779_channels_data;
+> +		indio_dev->num_channels = ARRAY_SIZE(ad7779_channels_data);
+> +	}
+
+I wonder if it makes sense to add a new compatible since our userspace
+interface will be considerable different (similar to what was done in
+[1]? This would make things easier to handle for the above. If not, I
+would likely introduce a "has_filter" boolean in chip info for the
+above.
+
+> +
+> +	st->back = devm_iio_backend_get(dev, NULL);
+> +	if (IS_ERR(st->back)) {
+> +		dev_err_probe(dev, ret, "failed to get iio backend");
+> +		return PTR_ERR(st->back);
+> +	}
+> +
+> +	ret = devm_iio_backend_request_buffer(dev, st->back, indio_dev);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = devm_iio_backend_enable(dev, st->back);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = iio_backend_num_lanes_set(st->back, 4);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return devm_iio_device_register(dev, indio_dev);
+
+The above is repeated in ad7779_register_irq(). You can take it out and
+do it in ad7779_probe().
+
+> +}
+> +
+>  static int ad7779_probe(struct spi_device *spi)
+>  {
+>  	struct iio_dev *indio_dev;
+> @@ -760,8 +1009,8 @@ static int ad7779_probe(struct spi_device *spi)
+>  	struct device *dev = &spi->dev;
+>  	int ret = -EINVAL;
+>  
+> -	if (!spi->irq)
+> -		return dev_err_probe(dev, ret, "DRDY irq not present\n");
+
+The above could be a cleanup patch. I mean just drop the check and let
+devm_request_irq() in case an interrupt is not present.
+
+> +	if (!spi->irq && !device_property_present(dev, "io-backends"))
+> +		return dev_err_probe(dev, ret, "Either DRDY interrupt or io-backends property required\n");
+
+Then, we could just use device_property_present() to decide which
+probing path to follow.
+
+>  
+>  	indio_dev = devm_iio_device_alloc(dev, sizeof(*st));
+>  	if (!indio_dev)
+> @@ -804,49 +1053,12 @@ static int ad7779_probe(struct spi_device *spi)
+>  		return ret;
+>  
+>  	indio_dev->name = st->chip_info->name;
+> -	indio_dev->info = &ad7779_info;
+>  	indio_dev->modes = INDIO_DIRECT_MODE;
+> -	indio_dev->channels = st->chip_info->channels;
+> -	indio_dev->num_channels = ARRAY_SIZE(ad7779_channels);
+> -
+> -	st->trig = devm_iio_trigger_alloc(dev, "%s-dev%d", indio_dev->name,
+> -					  iio_device_id(indio_dev));
+> -	if (!st->trig)
+> -		return -ENOMEM;
+> -
+> -	st->trig->ops = &ad7779_trigger_ops;
+> -
+> -	iio_trigger_set_drvdata(st->trig, st);
+> -
+> -	ret = devm_request_irq(dev, spi->irq, iio_trigger_generic_data_rdy_poll,
+> -			       IRQF_ONESHOT | IRQF_NO_AUTOEN, indio_dev->name,
+> -			       st->trig);
+> -	if (ret)
+> -		return dev_err_probe(dev, ret, "request IRQ %d failed\n",
+> -				     st->spi->irq);
+> -
+> -	ret = devm_iio_trigger_register(dev, st->trig);
+> -	if (ret)
+> -		return ret;
+> -
+> -	indio_dev->trig = iio_trigger_get(st->trig);
+> -
+> -	init_completion(&st->completion);
+> -
+> -	ret = devm_iio_triggered_buffer_setup(dev, indio_dev,
+> -					      &iio_pollfunc_store_time,
+> -					      &ad7779_trigger_handler,
+> -					      &ad7779_buffer_setup_ops);
+> -	if (ret)
+> -		return ret;
+>  
+> -	ret = ad7779_spi_write_mask(st, AD7779_REG_DOUT_FORMAT,
+> -				    AD7779_DCLK_CLK_DIV_MSK,
+> -				    FIELD_PREP(AD7779_DCLK_CLK_DIV_MSK, 7));
+> -	if (ret)
+> -		return ret;
+device_property_present> -
+> -	return devm_iio_device_register(dev, indio_dev);
+
+Arguably, ad7779_register_irq() could be introduced in a precursor
+patch.
+
+> +	if (spi->irq)
+> +		return ad7779_register_irq(st, indio_dev);
+> +	else
+> +		return ad7779_register_back(st, indio_dev);
+
+Redundante else...
 
 - Nuno Sá
-
-> +
-> +static const struct iio_backend_info axi_ad777x = {
-> +	.name = "axi-ad777x",
-> +	.ops = &adi_ad777x_ops,
-> +};
-> +
->  static int adi_axi_adc_probe(struct platform_device *pdev)
->  {
->  	struct adi_axi_adc_state *st;
-> @@ -790,12 +809,18 @@ static const struct axi_adc_info adi_axi_ad408x = {
->  	.backend_info = &axi_ad408x,
->  };
->  
-> +static const struct axi_adc_info adi_axi_ad777x = {
-> +	.version = ADI_AXI_PCORE_VER(10, 0, 'a'),
-> +	.backend_info = &axi_ad777x,
-> +};
-> +
->  /* Match table for of_platform binding */
->  static const struct of_device_id adi_axi_adc_of_match[] = {
->  	{ .compatible = "adi,axi-adc-10.0.a", .data = &adc_generic },
->  	{ .compatible = "adi,axi-ad408x", .data = &adi_axi_ad408x },
->  	{ .compatible = "adi,axi-ad485x", .data = &adi_axi_ad485x },
->  	{ .compatible = "adi,axi-ad7606x", .data = &adc_ad7606 },
-> +	{ .compatible = "adi,axi-ad777x", .data = &adi_axi_ad777x},
->  	{ }
->  };
->  MODULE_DEVICE_TABLE(of, adi_axi_adc_of_match);
-> -- 
-> 2.47.2
-> 
 

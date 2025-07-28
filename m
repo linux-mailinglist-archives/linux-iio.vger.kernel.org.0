@@ -1,406 +1,242 @@
-Return-Path: <linux-iio+bounces-22110-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22111-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31360B13DF6
-	for <lists+linux-iio@lfdr.de>; Mon, 28 Jul 2025 17:11:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9F29B13FA9
+	for <lists+linux-iio@lfdr.de>; Mon, 28 Jul 2025 18:15:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 85DEE3B1753
-	for <lists+linux-iio@lfdr.de>; Mon, 28 Jul 2025 15:10:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E25771885621
+	for <lists+linux-iio@lfdr.de>; Mon, 28 Jul 2025 16:15:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F52A270548;
-	Mon, 28 Jul 2025 15:11:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0C612741C2;
+	Mon, 28 Jul 2025 16:15:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O7azJp4O"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="l/f9zBTb"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-vs1-f48.google.com (mail-vs1-f48.google.com [209.85.217.48])
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1617126FDB6;
-	Mon, 28 Jul 2025 15:11:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 241E2272E55;
+	Mon, 28 Jul 2025 16:15:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753715480; cv=none; b=Wx70ekrurq5Md1VB5sFmADnAoYvLzE/QVZRPeklXeoFUCmojwsb6dOV5RiNrnJC3BMRWwZTl8cW94PuwqjvDehpwBklFtSpcLHeb6EGrVtyWFrSA3EUZrverg7ne+7DVjtfN9l4R4wgnIyZ3hIzOlTJammOWfnIio8YVE/njddI=
+	t=1753719306; cv=none; b=R0gtKVqw9tcmr9aoeE+r0TEh+gjdp5BW01ROpfGibwMCQi+jIyrzfD4QlVHImOGaRuuwIKFj5swX9dhzTejQwREILjwrIHr50kyXUbUIqD2LWOLtQxvsSIyT5HOtNvhTDUzfMc48/5OrmCJjgewQxFrJvPpLpTsdZnb9Z/Iyqc4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753715480; c=relaxed/simple;
-	bh=zm5sdjWwncistV0GSdXwbbW5in+4ManQo1eSDpiEaW8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cSMO4q9jnS90YpW6OBxe0qPacyZJhPsJ1vK1w0m8LSqaKMLlYp5E9UK/PVcif+OeH5ogOxTruzWnbctvd203aJ/3AjL0uJvRsnfXdPvukEbCDpBy+LD2C1/d1/1QljavkXN+8L6mZBG+4kV4UdRvtFGyrxQ9Rb+lOS2l4msOvbA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O7azJp4O; arc=none smtp.client-ip=209.85.217.48
+	s=arc-20240116; t=1753719306; c=relaxed/simple;
+	bh=MEtXJi8fsHcU7CbD/0I9wLTMAo1y0ij4wL521LjXJw8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=D9fGzluzzPQrRMNybw9iKttRZkEDrOkR1TS6cRNj/NtR6dQQdEy0J+DI0s9S+shqShf3QY3hltoIWBV7EaNJatGhVituzJ4uhGfyYLgMMfbYxTTIuFobRRhSRsRWfYpE0Z1qvXs1OmIT6XCOo0UwXSqd4+H4JpdarjcRUmleHbA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=l/f9zBTb; arc=none smtp.client-ip=209.85.210.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vs1-f48.google.com with SMTP id ada2fe7eead31-4e8135adfccso1447291137.1;
-        Mon, 28 Jul 2025 08:11:17 -0700 (PDT)
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-74b50c71b0aso2707414b3a.0;
+        Mon, 28 Jul 2025 09:15:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753715477; x=1754320277; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=tH7ZZVnJEgCpl86bvJHk2RXOFtUWZuabqU+n8qdMLmA=;
-        b=O7azJp4OdpkDlO/MnSBEvFk97dK+s5AuA0/Z+mvq0I/6Te7nrmLponQLMKGLMno8TF
-         lU0JyNYRlWG+sR+JD4XjaBkfCo7Eqaw3ERclNMk5y/KmJWyYXHWzLrvzJv0Wv3OribMr
-         DWFrI3+i4v3/YLJWI11M6s0vpTAB6n+Gw5qVVfx6X3tptDsP8qnwv/bzYlBdFV9gF2Gr
-         eD/5m2dzSR+jlj8QTxyQt5b+ojFMU5SM8gMSk8NnpAKMNppen5akg4iBFxCchP5gpzK/
-         jJTZ3ihmkh/R8OVdz4VPrztF/R/yhdivBIeoRIgzdruS2+rUBo40tHqzNkNdOe6fm5qM
-         B4eQ==
+        d=gmail.com; s=20230601; t=1753719304; x=1754324104; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=IIgoubiaOXZokJLLdXEo+GMPCF72BsATxsxBrun6GRU=;
+        b=l/f9zBTbjUAupBv4jVRWG0RoCR3J9XT7qj40p5Fkc79pEDlqtwr1wgssIDVU+UnO7r
+         isYW96H+ioMco73a1aXs7a7NpD7to2nG2sRQq/XKwSMU0xYH7hxiQnWd8AqGHkWnCwd+
+         HovxCY61YMRwD4H1bGXntjrut9QR2yogcWpNKL9Bwo3pUC1/L1HeSAr/sjoWoBoko0h4
+         p1FFgYOlcL3zsZlzfQbkD0Uiki/O+DpHzfUstTmR2p5H/5YRfXPrOkb/SpeJXG0TYUv0
+         ka9uNH2S8teyPWlRaTWHU2o5CVrsfEWHvtywvGo40QX9TbDxyj9BXBZ0bGi51BrIGmRG
+         M0mA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753715477; x=1754320277;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=tH7ZZVnJEgCpl86bvJHk2RXOFtUWZuabqU+n8qdMLmA=;
-        b=TXPZeCyR3GJpyVeaSwkCdnIjjUEinhjvn4jjoiuO39eLeNz8LuTyL3I/jFDmOdiVjv
-         KnOJUR3Ux1G7vCjcBdU6A4TCUfygKC/FOMpJ4/yFBbGRkGCU8ZPUqwUhsnYhStMDQU1C
-         /ykm4x4RM2nyrQa3WExeXFL28LwBh4RTlIjqDf6HdSXe7/nFnnuVECtz3/Km7L4Nux1d
-         Jv0i1HOxwFVNzH2vYBqC02pwKPBLxOjxDvjzmqWOhYY7CND7Q3+9sMypRcjXOPssZ70M
-         H8xVnaf/jNJc2OWon9ymuBxroDoZYpTGbeillY/UmAIdi/1iVSgL5AOx4lm8Tal+g1L7
-         pOJQ==
-X-Forwarded-Encrypted: i=1; AJvYcCViajMtQgdKHDKmqjSzmwEV/Gl0p8dM+Alwj1RcAeETXynhYmesAXdN++eQ7nAhQq7ClFPl+x8eDAnK@vger.kernel.org, AJvYcCXbYGGMnWWixD23vXK/uwFxzR6W+AfXZcB5Vi88CbXIexb6XpZEDdhqNqDPXxJzzu26a6F5pzARDzeSpjHZ@vger.kernel.org, AJvYcCXogJgfLiLznkIAstThXnNiVmfwyeI0KADK6dkz5ZOQD6trOXeMGx4TjFSb+SjAcC0p2tCNhfOxzRS3@vger.kernel.org
-X-Gm-Message-State: AOJu0YyoQIUqpnGYCK6FWexxIuAtzlYDKljknef0DYPPKmDes6ozT8h6
-	d+yjVCB3vfrT8mkafqxcpTNDVC+93CbeOSsiXMNzIHBNH/hMFGdzgOaD
-X-Gm-Gg: ASbGncvlDPQLlwYL8XrnZarDIayI0PLDq9RRcsq6SBPR9nPED7UAS4w9BW/eyNAQ0h+
-	RFMvxMgR+ibIcBrwbEjO66Uan7IeO1+PhweT/r5LQ0892IUxDu1MEktXyf0qDtPy1xs5U8ebn6m
-	zesxPyjqIEWDm2Nyekhy5Y2fcmW7shBP9ECMJL5Uz/1lX1iVbeba8osRmYq4l0Hg6DaVYO+epLt
-	XkBT+4l16I2NQp2/iIjzpJonl+bmB55uZawuar8GJawhnkMaHjyQfctUviQ6T9KOQfL/kY/fvov
-	p9Ltsb84NxnI08HqkMG/LN3/KFUCjNLA6lYNUeg+Jsv2Cb3llB3GIi57BncQ7gYRdEAAf7PdUcC
-	01HRIGIap3+Ub
-X-Google-Smtp-Source: AGHT+IEktxSaOubwonI1LDHN4dky8p+eSpxFJaJ2x9Pjpl/WoHpCkNhg4nmMGVmyJ1FxhrYcjItIMg==
-X-Received: by 2002:a67:e7c9:0:b0:4ec:c548:e10e with SMTP id ada2fe7eead31-4fa3fa53ca2mr5355743137.3.1753715476640;
-        Mon, 28 Jul 2025 08:11:16 -0700 (PDT)
-Received: from nsa ([45.144.113.55])
-        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-4fa46d0745fsm1165742137.5.2025.07.28.08.11.13
+        d=1e100.net; s=20230601; t=1753719304; x=1754324104;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=IIgoubiaOXZokJLLdXEo+GMPCF72BsATxsxBrun6GRU=;
+        b=uu+oDhm5kcpZFCbBYX7jZQ7QTAhkaKTKWmGeqOlu5NJr3dulC4XeJ00WZK3Oh+6oX+
+         doRghdP9zGNyGtsq8wDISbRTh5YEh4fnhiHbZ97bOKlaJuOE/T7H0dvvgKj7T2ebtP4y
+         NBrJ8F6aRc/6GLYz/8iBodVMDpHdyadqfEsHoD4v5Ohc+B6pyZCazr+HPfON7T+S2JsC
+         872IZaP90ASSgZd8FzpwebKTJdOqR5mYMGevMgjp0n7amMIUvANzgHMlcXLRh2BjFY1j
+         Y/txK1qdwbPqgsehXYBklY5LfVLAKH49AtROc/hzckl1/qraTE9sf2OM0CXyN/i7h8Nb
+         QlSA==
+X-Forwarded-Encrypted: i=1; AJvYcCUpLjHbGNho9xGNG5BxRrsh7to1hI7erTkL96znuky/7q+DNiEcntEsUzftmo2R0uM/6sWFTqH+Yv8YsSVx@vger.kernel.org, AJvYcCW8wH7HCBdgD6746225DVLuWH81DSZI6X+0kX/aC0P+iFtsbNW21cVFCBYLvSqmhl75kzpu/GORBDs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyxsIUTmmGO85FxfUXqupOYokOd9jULQUmUJanA+wEZAV2Ac8xR
+	xsk3veuD+mVlGqi6/yDk6vCKTKK/v3O0zFC53g8GE3P2D6Zzuoj2f63/Td1QCA==
+X-Gm-Gg: ASbGncsArVGrXF331LbcTl3tdR/SRPrSNFYCCOZHeRHP62bpFYpkSGT5rrZB7N6lOVI
+	l7i89qXbNMwilsfRcFrDM/OCRFqgvbMbf6xHvg0vDKN0EgoQAIF88LMMdG0d8RItBJGRaO50Qzh
+	/jvtz4uBxXVVwvzp/kYxLGgGYNZblVgBOg1XctxOUS9yuQv/ffZhABx/BweoG3tQD/GludWclD+
+	ume7CKqmBfzxF3eKxkltRztOggO+pRf755bGBPXmJ5dwvnXI9WNza66l5BjuoZJKJxEJLcgNKHV
+	lCthlXFWSikb0l2AhrVfT+PPkpj+uomz2Obu2tq/K5mRsdjGwmngCH96aR7jR262gfVu8TYU0He
+	59gjiij8K4ZZCvr7gHkdYdmdGrdTYwNzKsvAnnQ==
+X-Google-Smtp-Source: AGHT+IFFBJ9MGrtJTObeSKvBpq83ULkcuLQ5PXp1rKGdr47Vxxrf1b3FYSXj7jSFi923GXhmD/jNzQ==
+X-Received: by 2002:a05:6a00:234b:b0:748:f854:b765 with SMTP id d2e1a72fcca58-76332282dc2mr18848585b3a.4.1753719304164;
+        Mon, 28 Jul 2025 09:15:04 -0700 (PDT)
+Received: from akshayaj-lenovo.. ([2401:4900:8838:5dc9:f81a:1a92:3aa2:c5b2])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7640b8b0beesm5901361b3a.125.2025.07.28.09.14.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Jul 2025 08:11:16 -0700 (PDT)
-Date: Mon, 28 Jul 2025 16:11:28 +0100
-From: Nuno =?utf-8?B?U8Oh?= <noname.nuno@gmail.com>
-To: Ioana Risteiu <Ioana.Risteiu@analog.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, 
-	Michael Hennerich <Michael.Hennerich@analog.com>, Jonathan Cameron <jic23@kernel.org>, 
-	David Lechner <dlechner@baylibre.com>, Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>, 
-	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Ramona Nechita <ramona.nechita@analog.com>, linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
+        Mon, 28 Jul 2025 09:15:03 -0700 (PDT)
+From: Akshay Jindal <akshayaj.lkd@gmail.com>
+To: anshulusr@gmail.com,
+	jic23@kernel.org,
+	dlechner@baylibre.com,
+	nuno.sa@analog.com,
+	andy@kernel.org
+Cc: Akshay Jindal <akshayaj.lkd@gmail.com>,
+	shuah@kernel.org,
+	linux-iio@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 4/4] iio: adc: Update ad7779 to use IIO backend
-Message-ID: <uwente5i2eztozco5qeaglgvtuamewytxijaqjzaaxlbvdsoyj@fuko4wpwbztl>
-References: <20250728134340.3644-1-Ioana.Risteiu@analog.com>
- <20250728134340.3644-5-Ioana.Risteiu@analog.com>
+Subject: [PATCH v4] iio: light: ltr390: Add debugfs register access support
+Date: Mon, 28 Jul 2025 21:44:41 +0530
+Message-ID: <20250728161445.13261-1-akshayaj.lkd@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250728134340.3644-5-Ioana.Risteiu@analog.com>
 
-On Mon, Jul 28, 2025 at 04:43:36PM +0300, Ioana Risteiu wrote:
-> Add a new functionality to ad7779 driver that streams data through data
-> output interface using IIO backend interface.
-> 
-> Signed-off-by: Ioana Risteiu <Ioana.Risteiu@analog.com>
-> ---
->  drivers/iio/adc/ad7779.c | 299 +++++++++++++++++++++++++++++++++------
->  1 file changed, 256 insertions(+), 43 deletions(-)
-> 
-> diff --git a/drivers/iio/adc/ad7779.c b/drivers/iio/adc/ad7779.c
-> index 845adc510239..872c551eadf6 100644
-> --- a/drivers/iio/adc/ad7779.c
-> +++ b/drivers/iio/adc/ad7779.c
-> @@ -31,6 +31,8 @@
->  #include <linux/iio/triggered_buffer.h>
->  #include <linux/iio/trigger_consumer.h>
->  
-> +#include <linux/iio/backend.h>
-> +
->  #define AD7779_SPI_READ_CMD			BIT(7)
->  
->  #define AD7779_DISABLE_SD			BIT(7)
-> @@ -116,6 +118,12 @@
->  #define AD7779_CRC8_POLY			0x07
->  DECLARE_CRC8_TABLE(ad7779_crc8_table);
->
+Add support for debugfs_reg_access through the driver's iio_info structure
+to enable low-level register read/write access for debugging.
 
-...
+Signed-off-by: Akshay Jindal <akshayaj.lkd@gmail.com>
+---
 
->  
-> +static const struct iio_chan_spec_ext_info ad7779_ext_info_filter[] = {
-> +	IIO_ENUM("data_lines", IIO_SHARED_BY_ALL, &ad7779_data_lines_enum),
-> +	IIO_ENUM_AVAILABLE("data_lines", IIO_SHARED_BY_ALL,
-> +			   &ad7779_data_lines_enum),
-> +	IIO_ENUM("filter_type", IIO_SHARED_BY_ALL, &ad7779_filter_enum),
-> +	IIO_ENUM_AVAILABLE("filter_type", IIO_SHARED_BY_ALL,
-> +			   &ad7779_filter_enum),
-> +	{ }
-> +};
-> +
+Changes since v3:
+=================
+- Merged the regmap_range of LTR390_ALS_DATA with LTR390_UVS_DATA.
+- Keep only macro parameters in parenthesis. Removed from others.
+- Replaced testing details with testing summary.
 
-I guess this can get simpler... Do we really want to control data_lanes
-at runtime? From my experience that's a DT parameter and it's not
-something you can change at runtime. Often is a synthesis parameter on
-the IP core (backend side).
+Changes since v2:
+================
+- merged the regmap_range of LTR390_UP_THRESH with LTR390_LOW_THRESH.
 
+Changes since v1:
+=================
+- Replaced _[0|1|2] macros with a respective common parameterized macro.
+- Retained base macros to avoid churn.
+- Swapped regmap_write with regmap_read to avoid negate operator.
+- Simplified debugfs function by directly returning return value of
+  regmap_[read|write].
+- Replaced [readable|writeable]_reg with regmap ranges by using
+  [rd|wr]_table property of regmap_config.
+- Updated the testing details with v2 changes.
 
->  #define AD777x_CHAN_S(index, _ext_info)					\
->  	{								\
->  		.type = IIO_VOLTAGE,					\
-> @@ -669,11 +788,34 @@ static const struct iio_chan_spec_ext_info ad7779_ext_filter[] = {
->  		},							\
->  	}
->  
-> +#define AD777X_CHAN(index, _ext_info)					       \
-> +	{								       \
-> +		.type = IIO_VOLTAGE,					       \
-> +		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SAMP_FREQ),       \
-> +		.address = (index),					       \
-> +		.indexed = 1,						       \
-> +		.channel = (index),					       \
-> +		.scan_index = (index),					       \
-> +		.ext_info = (_ext_info),				       \
-> +		.scan_type = {						       \
-> +			.sign = 's',					       \
-> +			.realbits = 24,					       \
-> +			.storagebits = 32,				       \
-> +		},							       \
-> +	}
-> +
->  #define AD777x_CHAN_NO_FILTER_S(index)					\
->  	AD777x_CHAN_S(index, NULL)
->  
-> +#define AD777X_CHAN_NO_FILTER(index)					       \
-> +	AD777X_CHAN(index, ad7779_ext_info)
-> +
->  #define AD777x_CHAN_FILTER_S(index)					\
->  	AD777x_CHAN_S(index, ad7779_ext_filter)
-> +
-> +#define AD777X_CHAN_FILTER(index)					       \
-> +	AD777X_CHAN(index, ad7779_ext_info_filter)
-> +
->  static const struct iio_chan_spec ad7779_channels[] = {
->  	AD777x_CHAN_NO_FILTER_S(0),
->  	AD777x_CHAN_NO_FILTER_S(1),
-> @@ -686,6 +828,17 @@ static const struct iio_chan_spec ad7779_channels[] = {
->  	IIO_CHAN_SOFT_TIMESTAMP(8),
->  };
->  
-> +static const struct iio_chan_spec ad7779_channels_data[] = {
-> +	AD777X_CHAN_NO_FILTER(0),
-> +	AD777X_CHAN_NO_FILTER(1),
-> +	AD777X_CHAN_NO_FILTER(2),
-> +	AD777X_CHAN_NO_FILTER(3),
-> +	AD777X_CHAN_NO_FILTER(4),
-> +	AD777X_CHAN_NO_FILTER(5),
-> +	AD777X_CHAN_NO_FILTER(6),
-> +	AD777X_CHAN_NO_FILTER(7),
-> +};
-> +
->  static const struct iio_chan_spec ad7779_channels_filter[] = {
->  	AD777x_CHAN_FILTER_S(0),
->  	AD777x_CHAN_FILTER_S(1),
-> @@ -698,6 +851,17 @@ static const struct iio_chan_spec ad7779_channels_filter[] = {
->  	IIO_CHAN_SOFT_TIMESTAMP(8),
->  };
->  
-> +static const struct iio_chan_spec ad7779_channels_filter_data[] = {
-> +	AD777X_CHAN_FILTER(0),
-> +	AD777X_CHAN_FILTER(1),
-> +	AD777X_CHAN_FILTER(2),
-> +	AD777X_CHAN_FILTER(3),
-> +	AD777X_CHAN_FILTER(4),
-> +	AD777X_CHAN_FILTER(5),
-> +	AD777X_CHAN_FILTER(6),
-> +	AD777X_CHAN_FILTER(7),
-> +};
-> +
->  static const struct iio_buffer_setup_ops ad7779_buffer_setup_ops = {
->  	.preenable = ad7779_buffer_preenable,
->  	.postdisable = ad7779_buffer_postdisable,
-> @@ -752,6 +916,91 @@ static int ad7779_conf(struct ad7779_state *st, struct gpio_desc *start_gpio)
->  	return 0;
->  }
->  
-> +static int ad7779_register_irq(struct ad7779_state *st, struct iio_dev *indio_dev)
-> +{
-> +	int ret;
-> +	struct device *dev = &st->spi->dev;
-> +
-> +	indio_dev->info = &ad7779_info;
-> +	indio_dev->channels = st->chip_info->channels;
-> +	indio_dev->num_channels = ARRAY_SIZE(ad7779_channels);
-> +
+Testing details (done for v2):
+==============================
+-> Tested on Raspberrypi 4B. Following tests were performed.
 
-We might be able to get the above in a generic way... See below.
+1. Disable sensor via debugfs, verify from i2cget and debugfs.
+2. Disable sensor via debugfs and read data status via debugfs.
+3. Re-enable sensor via debugfs and read data status via debugfs.
+4. Enable interrupts via sysfs and verify via debugfs.
+5. Write falling threshold via debugfs, verify the threshold written via sysfs.
+6. Block light and verify interrupts getting generated. Generated
+interrupts by blocking light.
+7. write value to a non-writeable reg via debugfs.
+8. read value from a non-readable reg via debugfs.
+9. do simple raw reads from debugfs.
+-> reading raw value via sysfs
+-> reading via debugfs (should be in the same ballpark of sysfs)
+10. Testing reads on registers beyond max_register.
 
-> +	st->trig = devm_iio_trigger_alloc(dev, "%s-dev%d", indio_dev->name,
-> +					  iio_device_id(indio_dev));
-> +	if (!st->trig)
-> +		return -ENOMEM;
-> +
-> +	st->trig->ops = &ad7779_trigger_ops;
-> +
-> +	iio_trigger_set_drvdata(st->trig, st);
-> +
-> +	ret = devm_request_irq(dev, st->spi->irq, iio_trigger_generic_data_rdy_poll,
-> +			       IRQF_ONESHOT | IRQF_NO_AUTOEN, indio_dev->name,
-> +			       st->trig);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret, "request IRQ %d failed\n",
-> +					st->spi->irq);
-> +
-> +	ret = devm_iio_trigger_register(dev, st->trig);
-> +	if (ret)
-> +		return ret;
-> +
-> +	indio_dev->trig = iio_trigger_get(st->trig);
-> +
-> +	init_completion(&st->completion);
-> +
-> +	ret = devm_iio_triggered_buffer_setup(dev, indio_dev,
-> +					      &iio_pollfunc_store_time,
-> +					      &ad7779_trigger_handler,
-> +					      &ad7779_buffer_setup_ops);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = ad7779_spi_write_mask(st, AD7779_REG_DOUT_FORMAT,
-> +				    AD7779_DCLK_CLK_DIV_MSK,
-> +				    FIELD_PREP(AD7779_DCLK_CLK_DIV_MSK, 7));
-> +	if (ret)
-> +		return ret;
-> +
-> +	return devm_iio_device_register(dev, indio_dev);
-> +}
-> +
-> +static int ad7779_register_back(struct ad7779_state *st, struct iio_dev *indio_dev)
-> +{
-> +	struct device *dev = &st->spi->dev;
-> +	int ret = -EINVAL;
-> +
-> +	indio_dev->info = &ad7779_info_data;
-> +
-> +	if (strcmp(st->chip_info->name, "ad7771") == 0) {
-> +		indio_dev->channels = ad7779_channels_filter_data;
-> +		indio_dev->num_channels = ARRAY_SIZE(ad7779_channels_filter_data);
-> +	} else {
-> +		indio_dev->channels = ad7779_channels_data;
-> +		indio_dev->num_channels = ARRAY_SIZE(ad7779_channels_data);
-> +	}
+ drivers/iio/light/ltr390.c | 52 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 52 insertions(+)
 
-I wonder if it makes sense to add a new compatible since our userspace
-interface will be considerable different (similar to what was done in
-[1]? This would make things easier to handle for the above. If not, I
-would likely introduce a "has_filter" boolean in chip info for the
-above.
+diff --git a/drivers/iio/light/ltr390.c b/drivers/iio/light/ltr390.c
+index ee59bbb8aa09..7733830dca67 100644
+--- a/drivers/iio/light/ltr390.c
++++ b/drivers/iio/light/ltr390.c
+@@ -38,12 +38,21 @@
+ #define LTR390_ALS_UVS_GAIN		0x05
+ #define LTR390_PART_ID			0x06
+ #define LTR390_MAIN_STATUS		0x07
++
+ #define LTR390_ALS_DATA			0x0D
++#define LTR390_ALS_DATA_BYTE(n)		(LTR390_ALS_DATA + (n))
++
+ #define LTR390_UVS_DATA			0x10
++#define LTR390_UVS_DATA_BYTE(n)		(LTR390_UVS_DATA + (n))
++
+ #define LTR390_INT_CFG			0x19
+ #define LTR390_INT_PST			0x1A
++
+ #define LTR390_THRESH_UP		0x21
++#define LTR390_THRESH_UP_BYTE(n)	(LTR390_THRESH_UP + (n))
++
+ #define LTR390_THRESH_LOW		0x24
++#define LTR390_THRESH_LOW_BYTE(n)	(LTR390_THRESH_LOW + (n))
+ 
+ #define LTR390_PART_NUMBER_ID		0xb
+ #define LTR390_ALS_UVS_GAIN_MASK	GENMASK(2, 0)
+@@ -98,11 +107,39 @@ struct ltr390_data {
+ 	int int_time_us;
+ };
+ 
++static const struct regmap_range ltr390_readable_reg_ranges[] = {
++	regmap_reg_range(LTR390_MAIN_CTRL, LTR390_MAIN_CTRL),
++	regmap_reg_range(LTR390_ALS_UVS_MEAS_RATE, LTR390_MAIN_STATUS),
++	regmap_reg_range(LTR390_ALS_DATA_BYTE(0), LTR390_UVS_DATA_BYTE(2)),
++	regmap_reg_range(LTR390_INT_CFG, LTR390_INT_PST),
++	regmap_reg_range(LTR390_THRESH_UP_BYTE(0), LTR390_THRESH_LOW_BYTE(2)),
++};
++
++static const struct regmap_access_table ltr390_readable_reg_table = {
++	.yes_ranges = ltr390_readable_reg_ranges,
++	.n_yes_ranges = ARRAY_SIZE(ltr390_readable_reg_ranges),
++};
++
++static const struct regmap_range ltr390_writeable_reg_ranges[] = {
++	regmap_reg_range(LTR390_MAIN_CTRL, LTR390_MAIN_CTRL),
++	regmap_reg_range(LTR390_ALS_UVS_MEAS_RATE, LTR390_ALS_UVS_GAIN),
++	regmap_reg_range(LTR390_INT_CFG, LTR390_INT_PST),
++	regmap_reg_range(LTR390_THRESH_UP_BYTE(0), LTR390_THRESH_LOW_BYTE(2)),
++};
++
++static const struct regmap_access_table ltr390_writeable_reg_table = {
++	.yes_ranges = ltr390_writeable_reg_ranges,
++	.n_yes_ranges = ARRAY_SIZE(ltr390_writeable_reg_ranges),
++};
++
+ static const struct regmap_config ltr390_regmap_config = {
+ 	.name = "ltr390",
+ 	.reg_bits = 8,
+ 	.reg_stride = 1,
+ 	.val_bits = 8,
++	.max_register = LTR390_THRESH_LOW_BYTE(2),
++	.rd_table = &ltr390_readable_reg_table,
++	.wr_table = &ltr390_writeable_reg_table,
+ };
+ 
+ /* Sampling frequency is in mili Hz and mili Seconds */
+@@ -586,6 +623,20 @@ static int ltr390_write_event_config(struct iio_dev *indio_dev,
+ 	}
+ }
+ 
++static int ltr390_debugfs_reg_access(struct iio_dev *indio_dev,
++						unsigned int reg, unsigned int writeval,
++						unsigned int *readval)
++{
++	struct ltr390_data *data = iio_priv(indio_dev);
++
++	guard(mutex)(&data->lock);
++
++	if (readval)
++		return regmap_read(data->regmap, reg, readval);
++
++	return regmap_write(data->regmap, reg, writeval);
++}
++
+ static const struct iio_info ltr390_info = {
+ 	.read_raw = ltr390_read_raw,
+ 	.write_raw = ltr390_write_raw,
+@@ -594,6 +645,7 @@ static const struct iio_info ltr390_info = {
+ 	.read_event_config = ltr390_read_event_config,
+ 	.write_event_value = ltr390_write_event_value,
+ 	.write_event_config = ltr390_write_event_config,
++	.debugfs_reg_access = ltr390_debugfs_reg_access,
+ };
+ 
+ static irqreturn_t ltr390_interrupt_handler(int irq, void *private)
+-- 
+2.43.0
 
-> +
-> +	st->back = devm_iio_backend_get(dev, NULL);
-> +	if (IS_ERR(st->back)) {
-> +		dev_err_probe(dev, ret, "failed to get iio backend");
-> +		return PTR_ERR(st->back);
-> +	}
-> +
-> +	ret = devm_iio_backend_request_buffer(dev, st->back, indio_dev);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = devm_iio_backend_enable(dev, st->back);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = iio_backend_num_lanes_set(st->back, 4);
-> +	if (ret)
-> +		return ret;
-> +
-> +	return devm_iio_device_register(dev, indio_dev);
-
-The above is repeated in ad7779_register_irq(). You can take it out and
-do it in ad7779_probe().
-
-> +}
-> +
->  static int ad7779_probe(struct spi_device *spi)
->  {
->  	struct iio_dev *indio_dev;
-> @@ -760,8 +1009,8 @@ static int ad7779_probe(struct spi_device *spi)
->  	struct device *dev = &spi->dev;
->  	int ret = -EINVAL;
->  
-> -	if (!spi->irq)
-> -		return dev_err_probe(dev, ret, "DRDY irq not present\n");
-
-The above could be a cleanup patch. I mean just drop the check and let
-devm_request_irq() in case an interrupt is not present.
-
-> +	if (!spi->irq && !device_property_present(dev, "io-backends"))
-> +		return dev_err_probe(dev, ret, "Either DRDY interrupt or io-backends property required\n");
-
-Then, we could just use device_property_present() to decide which
-probing path to follow.
-
->  
->  	indio_dev = devm_iio_device_alloc(dev, sizeof(*st));
->  	if (!indio_dev)
-> @@ -804,49 +1053,12 @@ static int ad7779_probe(struct spi_device *spi)
->  		return ret;
->  
->  	indio_dev->name = st->chip_info->name;
-> -	indio_dev->info = &ad7779_info;
->  	indio_dev->modes = INDIO_DIRECT_MODE;
-> -	indio_dev->channels = st->chip_info->channels;
-> -	indio_dev->num_channels = ARRAY_SIZE(ad7779_channels);
-> -
-> -	st->trig = devm_iio_trigger_alloc(dev, "%s-dev%d", indio_dev->name,
-> -					  iio_device_id(indio_dev));
-> -	if (!st->trig)
-> -		return -ENOMEM;
-> -
-> -	st->trig->ops = &ad7779_trigger_ops;
-> -
-> -	iio_trigger_set_drvdata(st->trig, st);
-> -
-> -	ret = devm_request_irq(dev, spi->irq, iio_trigger_generic_data_rdy_poll,
-> -			       IRQF_ONESHOT | IRQF_NO_AUTOEN, indio_dev->name,
-> -			       st->trig);
-> -	if (ret)
-> -		return dev_err_probe(dev, ret, "request IRQ %d failed\n",
-> -				     st->spi->irq);
-> -
-> -	ret = devm_iio_trigger_register(dev, st->trig);
-> -	if (ret)
-> -		return ret;
-> -
-> -	indio_dev->trig = iio_trigger_get(st->trig);
-> -
-> -	init_completion(&st->completion);
-> -
-> -	ret = devm_iio_triggered_buffer_setup(dev, indio_dev,
-> -					      &iio_pollfunc_store_time,
-> -					      &ad7779_trigger_handler,
-> -					      &ad7779_buffer_setup_ops);
-> -	if (ret)
-> -		return ret;
->  
-> -	ret = ad7779_spi_write_mask(st, AD7779_REG_DOUT_FORMAT,
-> -				    AD7779_DCLK_CLK_DIV_MSK,
-> -				    FIELD_PREP(AD7779_DCLK_CLK_DIV_MSK, 7));
-> -	if (ret)
-> -		return ret;
-device_property_present> -
-> -	return devm_iio_device_register(dev, indio_dev);
-
-Arguably, ad7779_register_irq() could be introduced in a precursor
-patch.
-
-> +	if (spi->irq)
-> +		return ad7779_register_irq(st, indio_dev);
-> +	else
-> +		return ad7779_register_back(st, indio_dev);
-
-Redundante else...
-
-- Nuno Sá
 

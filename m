@@ -1,136 +1,344 @@
-Return-Path: <linux-iio+bounces-22138-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22139-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 076CAB15323
-	for <lists+linux-iio@lfdr.de>; Tue, 29 Jul 2025 20:52:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 624D8B1533A
+	for <lists+linux-iio@lfdr.de>; Tue, 29 Jul 2025 21:05:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 57F4318A2AD0
-	for <lists+linux-iio@lfdr.de>; Tue, 29 Jul 2025 18:52:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 80EC6541461
+	for <lists+linux-iio@lfdr.de>; Tue, 29 Jul 2025 19:05:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8D8B251795;
-	Tue, 29 Jul 2025 18:51:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2EA623FC42;
+	Tue, 29 Jul 2025 19:05:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="eWoWvQgG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I976hoEi"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oo1-f42.google.com (mail-oo1-f42.google.com [209.85.161.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FF9C24DD00
-	for <linux-iio@vger.kernel.org>; Tue, 29 Jul 2025 18:51:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75B0F46447;
+	Tue, 29 Jul 2025 19:05:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753815112; cv=none; b=dtKENhU1jnCInL+1zt0KCAaYUskTkWy2iptTNIZh3GkyQV31eaqH0rvzPxQAQJVVcdAi5Hq4/YoStKfDxLKfR+0JRuWND7lTBH0BkGwxikcBauIBU29fYbz84e0Ku6T+27lK6Ta+3R4POPjNEQp01Kt2bW9cFb1OvlLJOTEdW4k=
+	t=1753815922; cv=none; b=TFGYK/HYiZGdld4rvcRmlm++g84VvbK+siLbkJDIIw6sC9TmUvaU87rSW3PbuYf8yoiHPxDS6oOgllNfqN1TW4p8LLLxjpa/gMYcaTskagaOp9CPjfEaPzY1VYOvsmg9BM2d28y+0vxexNfS/mwK8zaDQ7Tc27spGoP0MhFg5u8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753815112; c=relaxed/simple;
-	bh=tkYPqG6hSoExZpavosByUWQQZFauHqgD4v+3OLU6+vA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=RczZEdrA26Cb2t2lwPxoHIV/R2dB+0sm8uPUQmV/tHQXiK6+yH5mBeO8zxBXd3I8ce63Xr5UJUc2Ai02pcg3MdAnaYko0KH1z/dDhARB5lwkiiKlwJSLFJgZEUefzlaoSlEOvjR2ZmnaeUYCwOOX4+TFIkqqKjezKhWxzK0PGg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=eWoWvQgG; arc=none smtp.client-ip=209.85.161.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oo1-f42.google.com with SMTP id 006d021491bc7-6195f7f9b67so8136eaf.3
-        for <linux-iio@vger.kernel.org>; Tue, 29 Jul 2025 11:51:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1753815109; x=1754419909; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=nW9OX3dqh3cJ18q/aTepV16/WtzibItMr8FPMWEaO5Q=;
-        b=eWoWvQgGmSw/LedIqS0RAsjf2f96H6SXm2qrV1E3YImdwNYrC4KL+OaFYJ/ORBlB4Z
-         vXJAfpn/Hy6wUJS1fhjg8oziAM1n66uvow67qTii0vibNkggNBug/8UvyZyrOiOZTIsC
-         nz3YqjR2hZ+Nm8j3kfpHI4uJw7uJKj1TW1oLIQ5619ERq81Qib8qP/XWUEcVe0GkZ5E7
-         s/WUN9SqY5lShafbzTNvaq0vaiUu3aovD9qUnbDe8g/asgURbbYFTa6mDmidKakmnacJ
-         PWnH7g9H0PzYBsxihcwfyscBJkiPCHWepWio2ETipmp5ZVaLO1RZZ46bc9SezrH3MEIs
-         i9RQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753815109; x=1754419909;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=nW9OX3dqh3cJ18q/aTepV16/WtzibItMr8FPMWEaO5Q=;
-        b=Rj1dJxhtt6P5Tvql0qe4o4FDym1qLIvsOa0Brbvd+Tpnd8goL6KAPXHhFKheSbfCIK
-         WrVLCwUVay+2lFQLJvSLYorgHStbW08D2i+Cf1huFJ4OJqrHztQa4VdlZ9bLxq503zhl
-         6tVMjvYyALqUSU/AwxEYYKjxBehtOyI/8739KTAABniZui+uPhibDdt1JbqXy1U3+BL6
-         wSkAn1lqDipVUS+XcvS8Qe6Q3l28xHfx2GS8EkjSBocaqScOCDoxE2hMWAHSDuTk4E3K
-         snoGoj8rpHrKfdQtahGCfRIrp/S0/uHxbuYaLa2FC9eR1/83MjI7G3G4Xq7fVgop4gCn
-         MjQg==
-X-Forwarded-Encrypted: i=1; AJvYcCXTmmv5M4fS7ymnyrIm0/SK5bZWJIiDkC4IjWvsLn+p1CHEeVITsUycBi8rvhssi64aqM/ueolXo6A=@vger.kernel.org
-X-Gm-Message-State: AOJu0YytplFTZymQmn6g1Xcb0R2CsXzP5dgrZzVGpZ6wXiQrTAcAn9Xg
-	G3vAbGFOc+eYk+F+VIvFO3xbjEYLWkLPSjHcyU+ENswkMoHtTnjhmRstFff+3hfscEE=
-X-Gm-Gg: ASbGncuvsGyrKt4vNMvsR/IVTh4GOI4dWzm5Mj7vBFpXM7ZIun6wrkUzxxK1sZR2Mgf
-	NqnNYD7FcnEE3yMWHP0eRxXQZ5hP4AUDfmtiM23BeuVp+ittxVYXcEKj8ZZYI+uSmIoyttnjgBi
-	p8JMBHf+cCxvNZ9bdjVyZCFAjTmYOGBVGP5VNL7etswCa8Q3JtmHFJjGI6iLrqPtLFnB31EDOPH
-	F0nGpEBMVv6W1+KWn6rRi87irR/14AS6Me4z+F+y6ZHp4e+2xwELSLtI2uFuI4hn4SN+DipEL5c
-	7PkJwdowtnTqzvLo25qAYfPD/11UbpuYIyqTKMOwDJLjO+Tq+kvZ+yFjhwYJOGqIOzS3reuKPSa
-	O20S6VuwzLjGzVuoWWDO38OAzotyiu3Ppvn90c+kzNa/u3ZnEjMOZ4A9Nd5VeHZ+SGFsEtdcOdL
-	w=
-X-Google-Smtp-Source: AGHT+IEk1VUBACKAVfd3nk/GnuDKx7Ws203xpDX0qSmk0ah3tw52EhxFHTI+yXJat0ciadah+dzUgQ==
-X-Received: by 2002:a05:6808:2393:b0:40b:3530:98bb with SMTP id 5614622812f47-43199d7a01cmr506635b6e.9.1753815109508;
-        Tue, 29 Jul 2025 11:51:49 -0700 (PDT)
-Received: from ?IPV6:2600:8803:e7e4:1d00:c7d5:61e1:68d6:dd54? ([2600:8803:e7e4:1d00:c7d5:61e1:68d6:dd54])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-42c7b843b74sm1634782b6e.16.2025.07.29.11.51.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 29 Jul 2025 11:51:49 -0700 (PDT)
-Message-ID: <f5b46109-ad53-4d03-937e-ac4fc868755f@baylibre.com>
-Date: Tue, 29 Jul 2025 13:51:48 -0500
+	s=arc-20240116; t=1753815922; c=relaxed/simple;
+	bh=yxH+FULZ86o67g8LSiDf9ZC187TQ4TjAq094yJ7LAXs=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=lFd73WW4P7g9qToQYZcPs2THv3Cp5n99P8Ji2JIQNjgJ2Soyjbi7XGxhs8rLEDfSjCW/2k6dsKe9UwB3EZHepFCRYJB4oIZ+M0BjMIWG+VW+hXdt77EwZcqHRUuwfEq856+CgwTzzKSBPfYjCt7plVosOk8UQguonr4QH2kXGpM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I976hoEi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D74CC4CEEF;
+	Tue, 29 Jul 2025 19:05:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753815922;
+	bh=yxH+FULZ86o67g8LSiDf9ZC187TQ4TjAq094yJ7LAXs=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=I976hoEiVTNqqmojBTOTca/IRNa8rVO0DHreW6OvAWDJYt2uGQhpSaUCvwSLl/BIw
+	 +QP696300upZaM904rfXCj3POg8LowIXZvBjGf/HBnCHGsgheKEQmOXxnKbf4ZTgat
+	 uNRbl03uMlz4eW91+CsRILMoaVVGNdz3k8FhiHutGO9OFSyfm7xux+5Pvam7ChztMS
+	 OLpisAKiW16MZeY+wy7RqMY3VJzd+8oi3Qizcov2ORQb7sAlvupkQlth0K6vK9biuG
+	 4lq+FAnasEMYaXKJUPmVhyvxKKQqq13uVxKosAHnPC82VNk1fUBAF4Ot2qW2R+NNYF
+	 YoRwMElX/O6hQ==
+Date: Tue, 29 Jul 2025 20:05:13 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Dixit Parmar <dixitparmar19@gmail.com>
+Cc: David Lechner <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, linux-kernel@vger.kernel.org,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH 1/2] iio: magnetometer: add support for Infineon TLV493D
+ 3D Magentic sensor
+Message-ID: <20250729200513.275e0d98@jic23-huawei>
+In-Reply-To: <aIhE5zwrPljqHqGX@dixit>
+References: <20250726-tlv493d-sensor-v6_16-rc5-v1-0-deac027e6f32@gmail.com>
+	<20250726-tlv493d-sensor-v6_16-rc5-v1-1-deac027e6f32@gmail.com>
+	<20250727140559.1f6c1668@jic23-huawei>
+	<aIhE5zwrPljqHqGX@dixit>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] iio: magnetometer: add support for Infineon TLV493D
- 3D Magentic sensor
-To: Dixit Parmar <dixitparmar19@gmail.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?=
- <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org
-References: <20250726-tlv493d-sensor-v6_16-rc5-v1-0-deac027e6f32@gmail.com>
- <20250726-tlv493d-sensor-v6_16-rc5-v1-1-deac027e6f32@gmail.com>
- <141967ee-22f4-4b15-a8da-e8cef25828b4@baylibre.com> <aIg_SClXq0pO69iH@dixit>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <aIg_SClXq0pO69iH@dixit>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
 
-On 7/28/25 10:26 PM, Dixit Parmar wrote:
+On Tue, 29 Jul 2025 09:19:59 +0530
+Dixit Parmar <dixitparmar19@gmail.com> wrote:
 
-...
+> On Sun, Jul 27, 2025 at 02:05:59PM +0100, Jonathan Cameron wrote:
+> > On Sat, 26 Jul 2025 15:07:01 +0530
+> > Dixit Parmar <dixitparmar19@gmail.com> wrote:
+> >=20
+> > Hi Dixit,
+> >=20
+> > Very clean driver for a v1. Nice.
+> >  =20
+> > > The Infineon TLV493D is a Low-Power 3D Magnetic Sensor. The Sensor =20
+> >=20
+> > Slightly odd wrap.  Aim for 75 chars for patch descriptions.
+> > =20
+> Okay, 75.
+> > > applications includes joysticks, control elements (white goods,
+> > > multifunction knops), or electric meters (anti tampering) and any
+> > > other application that requires accurate angular measurements at
+> > > low power consumptions.
+> > >=20
+> > > The Sensor is configured over I2C, and as part of Sensor measurement
+> > > data it provides 3-Axis magnetic fields and temperature core measurem=
+ent.
+> > >=20
+> > > The driver supports raw value read and buffered input via external tr=
+igger
+> > > to allow streaming values with the same sensing timestamp.
+> > >=20
+> > > The device can be configured in to different operating modes by optio=
+nal
+> > > device-tree "mode" property. Also, the temperature sensing part requi=
+res
+> > > raw offset captured at 25=C2=B0C and that can be specified by "temp-o=
+ffset"
+> > > optional device-tree property.
+> > >=20
+> > > While sensor has interrupt pin multiplexed with I2C SCL pin. But for =
+bus
+> > > configurations interrupt(INT) is not recommended, unless timing const=
+raints
+> > > between I2C data transfers and interrupt pulses are monitored and ali=
+gned.
+> > >=20
+> > > The Sensor's I2C register map and mode information is described in pr=
+oduct
+> > > User Manual[1].
+> > >=20
+> > > Datasheet: https://www.infineon.com/assets/row/public/documents/24/49=
+/infineon-tlv493d-a1b6-datasheet-en.pdf =20
+> > Tag, so in the tags block (no blank line to the SoB) =20
+> Sorry, didn't quite get it.
 
->>> +	case IIO_CHAN_INFO_SCALE:
->>> +		switch (chan->type) {
->>> +		case IIO_MAGN:
->>> +			/*
->>> +			 * Magnetic field scale: 0.0098 mTesla (i.e. 9.8 µT)
->>> +			 * Expressed as fractional: 98/10 = 9.8 µT.
->>> +			 */
->>> +			*val = 98;
->>> +			*val2 = 10;
->> We use SI units, so this needs to be gauss, not tesela.
->>
-> Sure, Is there any documentation/reference this details are mentioned?
->>> +			return IIO_VAL_FRACTIONAL;
+You should have it as Datasheet: <link>
+That will then be a formal 'tag' so belongs alongside the Signed-off-by: et=
+c with no blank
+lines in that block.
+
+Datasheet: https://www.infineon.com/assets/row/public/documents/24/49/infin=
+eon-tlv493d-a1b6-datasheet-en.pdf=20
+Link: https://www.mouser.com/pdfDocs/Infineon-TLV493D-A1B6_3DMagnetic-UserM=
+anual-v01_03-EN.pdf #1
+Signed-off-by: Dixit Parmar <dixitparmar19@gmail.com>
+
+> > > [1] https://www.mouser.com/pdfDocs/Infineon-TLV493D-A1B6_3DMagnetic-U=
+serManual-v01_03-EN.pdf =20
+> > Link: https://www.mouser.com/pdfDocs/Infineon-TLV493D-A1B6_3DMagnetic-U=
+serManual-v01_03-EN.pdf #1
+> >=20
+> > So make it a tag with a trailing comment to give the reference number.
+> >  =20
+> > >=20
+> > > Signed-off-by: Dixit Parmar <dixitparmar19@gmail.com> =20
+
+> > > +
+> > > +#define TLV493D_DATA_X_GET(b)	\
+> > > +	sign_extend32(FIELD_GET(TLV493D_VAL_MAG_X_AXIS_MSB, b[TLV493D_RD_RE=
+G_BX]) << 4 | \
+> > > +			(FIELD_GET(TLV493D_VAL_MAG_X_AXIS_LSB, b[TLV493D_RD_REG_BX2]) >> =
+4), 11) =20
+> >=20
+> > These are odd enough I'd make them c functions rather than macros. Burn=
+ a few lines
+> > for better readability.=20
+> >  =20
+> I saw this kind of data retrival and formation from registers as macros s=
+o I sticked to
+> it. Having all these as function will also require a seperate function
+> for each channel coz the masks and the layout of the bits changes over
+> the register. Do you still recommend it as c functions?
+
+Is it more than 4 short functions?  I'd burn the few lines that costs.
+
+s32 tlv493d_data_y_get(u8 *buff)
+{
+	u16 val =3D FIELD_GET(TLV493D_VAL_MAG_Y_AXIS_MSB, b[TLV493D_RD_REG_BY]) <<=
+ 4 |
+		  FIELD_GET(TLV493D_VAL_MAG_Y_AXIS_LSB, b[TLV493D_RD_REG_BX2]);
+
+	return sign_extend32(val, 11);
+}
+> > > +/*
+> > > + * The datasheet mentions the sensor supports only direct byte-strea=
+m write starting from
+> > > + * register address 0x0. So for any modification to be made to any w=
+rite registers, it must
+> > > + * be written starting from the register address 0x0.
+> > > + * I2C write operation should not contain register address in the I2=
+C frame, it should
+> > > + * contains only raw byte stream for the write registers. As below,
+> > > + * I2C Frame: |S|SlaveAddr Wr|Ack|Byte[0]|Ack|Byte[1]|Ack|.....|Sp|
+> > > + */
+> > > +static int tlv493d_write_all_regs(struct tlv493d_data *data)
+> > > +{
+> > > +	int ret;
+> > > +
+> > > +	if (!data || !data->client)
+> > > +		return -EINVAL;
+> > > +
+> > > +	/*
+> > > +	 * As regmap does not provide raw write API which perform I2C write=
+ without
+> > > +	 * specifying register address, direct i2c_master_send() API is use=
+d.
+> > > +	 */
+> > > +	ret =3D i2c_master_send(data->client, data->wr_regs, ARRAY_SIZE(dat=
+a->wr_regs)); =20
+> >=20
+> > Given we have to do this, I'm a bit doubtful about regmap usage in gene=
+ral in here.
+> > Maybe it's just not a good fit and we should stick to direct use of the=
+ i2c stuff
+> > like here?
+> >  =20
+> Sorry, didn't get entirely? From what I understood, you meant we could
+> drop regmap from this driver entirely and use direct I2C APIs. I believe
+> that would be too much, coz of the frequency we perform operations and
+> regmap is easier and clean imo.
+
+The mixture is nasty though :(=20
+> Also, we could have used regmap_raw_write() API by specifying register
+> 0x0 as address and rest of the 3 bytes as data. regmap will perform raw
+> write of these byte stream over the I2C the same way sensor expects. But
+> the problem with that approach is we are not using it as per the API
+> convention. let me know your thoughts? Is it a good option, it'll look
+> like this:
+> regmap_raw_write(data->map, data->wr_regs[0], &data->wr_regs[1],
+> ARRAY_SIZE(data->wr_regs) - 1);
+
+I'm not keen on that either.
+
+If you really want to mix i2c and regmap then that's fine, I was just dubio=
+us
+whether we were getting value for money from regmap here.
+
+> > > +	if (ret < 0) {
+> > > +		dev_err(data->dev, "failed to write registers. error %d\n", ret);
+> > > +		return ret;
+> > > +	}
+> > > +
+> > > +	return 0;
+> > > +}
+> > > +	*x =3D TLV493D_DATA_X_GET(buff);
+> > > +	*y =3D TLV493D_DATA_Y_GET(buff);
+> > > +	*z =3D TLV493D_DATA_Z_GET(buff);
+> > > +	*t =3D TLV493D_DATA_TEMP_GET(buff);
+> > > +
+> > > +out:
+> > > +	pm_runtime_mark_last_busy(data->dev); =20
+> >=20
+> > As below  This should get simpler.
+> >=20
+> > Not directly relevant to this patch:
+> >=20
+> > If this cycle is quiet I plan to propose some cleanup.h based handling =
+for runtime
+> > pm as it's annoying how often we need a goto for it.  The new ACQUIRE()=
+  / ACQUIRE_ERR()
+> > should work for this.=20
+> >  =20
+> Does this need any modifications with current codebase?
+
+Needs a bunch of work to show generality across many drivers and
+convincing Rafael (PM maintainer) it's a good idea.
+Don't try to do it in this series!
+
+> >  =20
+> > > +	pm_runtime_put_autosuspend(data->dev);
+> > > +	return ret;
+> > > +}
+> > > +
+> > > +static int tlv493d_init(struct tlv493d_data *data)
+> > > +{
+> > > +	int ret;
+> > > +	u8 buff[TLV493D_RD_REG_MAX];
+> > > +
+> > > +	if (!data)
+> > > +		return -EINVAL;
+> > > +
+> > > +	/*
+> > > +	 * The sensor initialization requires below steps to be followed,
+> > > +	 * 1. Power-up sensor.
+> > > +	 * 2. Read and store read-registers map (0x0-0x9).
+> > > +	 * 3. Copy values from read reserved registers to write reserved fi=
+elds (0x0-0x3).
+> > > +	 * 4. Set operating mode.
+> > > +	 * 5. Write to all registers.
+> > > +	 */
+> > > +	ret =3D regmap_bulk_read(data->map, TLV493D_RD_REG_BX, buff, ARRAY_=
+SIZE(buff));
+> > > +	if (ret) {
+> > > +		dev_err(data->dev, "bulk read failed, error %d\n", ret);
+> > > +		return ret;
+> > > +	}
+> > > +
+> > > +	data->wr_regs[0] =3D 0; /* Write register 0x0 is reserved. Does not=
+ require to be updated.*/
+> > > +	data->wr_regs[1] =3D buff[TLV493D_RD_REG_RES1] & TLV493D_RD_REG_RES=
+1_WR_MASK;
+> > > +	data->wr_regs[2] =3D buff[TLV493D_RD_REG_RES2] & TLV493D_RD_REG_RES=
+2_WR_MASK;
+> > > +	data->wr_regs[3] =3D buff[TLV493D_RD_REG_RES3] & TLV493D_RD_REG_RES=
+3_WR_MASK;
+> > > +
+> > > +	ret =3D tlv493d_set_operating_mode(data, data->mode);
+> > > +	if (ret < 0) {
+> > > +		dev_err(data->dev, "failed to set operating mode\n");
+> > > +		return ret;
+> > > +	}
+> > > +
+> > > +	return ret; =20
+> > return 0? =20
+> Its the same though. ret from tlv493d_set_operating_mode is 0 on
+> success and -ve on failure.
+
+Then return 0 to make it explicit that if we get here we only return 0.
+That can be useful to compilers.
+
+Also check above as if (ret) is cleaner still.
 
 
-Most of the sysfs attribute documentation is in 
-Documentation/ABI/testing/sysfs-bus-iio. Specifically for this
-case, it says:
+> > > +	if (ret)
+> > > +		val =3D 340;
+> > > +	/*
+> > > +	 * The above is a raw offset; however, IIO expects a single effecti=
+ve offset.
+> > > +	 * Since final temperature includes an additional fixed 25=C2=B0C (=
+i.e. 25000 m=C2=B0C),
+> > > +	 * we compute a combined offset using scale =3D 1100 (1.1 * 1000).
+> > > +	 */
+> > > +	data->temp_offset =3D -val + (s32)div_u64(25000, 1100);
+> > > +
+> > > +	return 0;
+> > > +}
+> > > +
+> > > +static int tlv493d_read_raw(struct iio_dev *indio_dev, const struct =
+iio_chan_spec *chan, =20
+> >=20
+> > wrap to keep this under 80.  Doesn't look like it will hurt readability.
+> >  =20
+> Ack. Is 80 standard for whole kernel or iio only?
 
+It's kind of the the 'old' standard.  Used to be a fairly hard limit, but
+over time there has been some relaxation.  So, if your code is nice and rea=
+dable
+you will rarely get anyone complaining if you stick to 80 chars.
 
-What:		/sys/bus/iio/devices/iio:deviceX/in_magn_x_raw
-What:		/sys/bus/iio/devices/iio:deviceX/in_magn_y_raw
-What:		/sys/bus/iio/devices/iio:deviceX/in_magn_z_raw
-KernelVersion:	2.6.35
-Contact:	linux-iio@vger.kernel.org
-Description:
-		Magnetic field along axis x, y or z (may be arbitrarily
-		assigned).  Data converted by application of offset
-		then scale to Gauss.
+>=20
+> Thank you for such detailed review. Appriciate it,
+You are welcome.
+
+J
+> Dixit
+
 

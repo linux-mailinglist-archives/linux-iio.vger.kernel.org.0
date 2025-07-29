@@ -1,82 +1,83 @@
-Return-Path: <linux-iio+bounces-22118-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22119-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D263FB1468F
-	for <lists+linux-iio@lfdr.de>; Tue, 29 Jul 2025 05:03:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AC64B14695
+	for <lists+linux-iio@lfdr.de>; Tue, 29 Jul 2025 05:06:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 21F943BCA38
-	for <lists+linux-iio@lfdr.de>; Tue, 29 Jul 2025 03:03:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C41C0169C68
+	for <lists+linux-iio@lfdr.de>; Tue, 29 Jul 2025 03:06:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2416821884A;
-	Tue, 29 Jul 2025 03:03:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51E1A218AB4;
+	Tue, 29 Jul 2025 03:06:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Nm3sBIS2"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Jc0vPuO8"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BCC31E521A;
-	Tue, 29 Jul 2025 03:03:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4E8D5FDA7;
+	Tue, 29 Jul 2025 03:06:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753758219; cv=none; b=th38JqbXnf3fFYgnjG6yNc7fsfvDybQBEXAD6kYeoBaOZu5g1U+qa+LB1wyIaP1dNU2EaBxn49GtyG+eb+b8RBkDdjRQ1ugRVxB1foG7CLAzhjUBthxossGBDpHoDnkm388B5SmSSxH3aN65Rm6CRvfsfcKrlOfG999mwkiUW/Y=
+	t=1753758362; cv=none; b=hajuG18OvCr7gFqxjEGydud+SAiFQAgYySLDvDy9iD7cdD8OBBT9ZvBroK9o+FChFxeP65+msy2bLx1OBPbxWut19QMIyiZsuRfeRCRrxezMhXXzrxXBUf2M1qJohDnCgTwfO2oAJ/pQLlZu6a2dekoQ2r26q4E1De+gQ+uZnFs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753758219; c=relaxed/simple;
-	bh=LSV/pQdJC+fneSAPB5inQCEKAEeIukrh2KJW3iiP7qk=;
+	s=arc-20240116; t=1753758362; c=relaxed/simple;
+	bh=S6AJWyqZXrHlcQ9fpC1c5eF/E6HmSXH5c0vFDcK3/sk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Hcc47ks4QY2hEimCIHcgZlVd5d6vvY0SVfwOP2nTLomcN/lxSwE6KperEoVmw26dBfpWPTOSqjKkSAf2+vYCQso+RunhFEr+Ix9PGPUYJV9t8Wl2sT2cJ7DwG2lu0EKQ1SdeDhNLAFAgb5HnU3hoo7LHDIaReF4Ja0/i4q4ppqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Nm3sBIS2; arc=none smtp.client-ip=209.85.215.175
+	 Content-Type:Content-Disposition:In-Reply-To; b=LLY26LtVhuu9GJS1C7qF0585t2vtJwPra2axqaSVxJxyHUeDK+LgBBE1vBccjWxpAVZOPwDzyCmutStV4ydjqwb5D5aH+c4i3zk/deFO7fWIP9qKMXlo3i1Fl7jtaBgRZ3crDl9Z5QvRYMPSSF26oeEAQSMkxbBlseEqff2+4qs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Jc0vPuO8; arc=none smtp.client-ip=209.85.214.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-b3f80661991so391973a12.0;
-        Mon, 28 Jul 2025 20:03:38 -0700 (PDT)
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-24022261323so5584905ad.1;
+        Mon, 28 Jul 2025 20:06:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753758218; x=1754363018; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1753758360; x=1754363160; darn=vger.kernel.org;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=IXO12M/CDdwgzfu3NadcSVolSn34grMG/o4SmHRmEBo=;
-        b=Nm3sBIS2yb/M06Hffa6xIRd7B47o15Is9xz6LKkYQn/MrCcx0lxe651VS2AhAGl/b0
-         8xhKM29+fhZp7a+mBvJ2myUdZaVLvKOkgqqZsR7Hof/oaFdEFSSri35ctsRHSAqYX/Eo
-         MGSxG+kKEPNNjUmtUHZjPBR4LZQpvy/dGtBLLgI2tlaswLIVdm7ClWAkBpSTRpu0N/zC
-         s7wlYpFcskBQ47vyvV+tCIyoF+jsD+h0BGm4JlZa/MzoMG8r3IgAIS3dqZViIx4UmeeD
-         W7KKkZeivvaqXaxNMnZqbvBHFQ3pQF/BF338O+gTLLRLQcF4T48AYq2eF4gD0d0DSnig
-         HtGA==
+        bh=XBWVY361NxLRBMd0q21v+u+vCUkiXioFgT08lF5XMIA=;
+        b=Jc0vPuO8pZ9B2JnIJ6o/ZKJLDm53GcXx7pO/MnXoVyR9h3X46Ou80cI8UcE7Z1kb4H
+         v54VB44nC0MXx6yK98BzGRmtdegjwIKpVYehGwU7e8/wW5lNO4mDSzIOqxkeG/+01zlX
+         TCYfAF7kNaEy7f89ZUeLvB/bTkpqAjxsQOFntz0QI7rI565yPzrTCJ0HLZtETJPRh6dX
+         1JwVwfV4auNkbZnDmUKg4Me5yR7HMdqz6rroimaEzKb4EW5baaMUt59NLBMmDD0AYLi1
+         rOdrXpfumpQqb31Z6/CHWrUKCVy+oM36sqZen+jKYO8VbXlpmFNNvFWbZJFdjJd0g9JZ
+         sSZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753758218; x=1754363018;
+        d=1e100.net; s=20230601; t=1753758360; x=1754363160;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=IXO12M/CDdwgzfu3NadcSVolSn34grMG/o4SmHRmEBo=;
-        b=ahhPZ9pIs4CNYeKHTug+cfdHei0TjmxlXD3WPMDBfCm9Xiz73laApjaZIHi95BEwAw
-         SC1319IOu8y4EL5bCySkFPZNTCJ7hormQrCG5mXWulvNa7Bp5aS7hHDNH/AdD54hWBKH
-         TNYls2mppKSeX8DVHSynDFDgLn/fuOGgPjLIN2mHausJvHKB2T4Ok96vkRO/fA5ygFpy
-         FRZfawo+WnLCq0jO7J6uoTDcKJbSIOMQbWv9Rmf6v60s3QjHjEnIBrTBopauCa+OJQ74
-         ZmiXXZQ8MSof1XgCPz7UGu0U230PuWokFry3Cflij/SdcMfSL1xgIFmZDH6mm6UX0s8O
-         JeOQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUrlIV2xLZmtMSavsxZdKTdEoOOnmtHEwaPDg4xHV9sh94J0dCQNimhtHx/0mTcRxPWAh0p322AzEq6/c3a@vger.kernel.org, AJvYcCVPpEsAtIBU1SimBkgzn8FLlZbsvjG8HBEtIcvvagYP0zcyQrCSDTYUqq8AKgoLFsBiev2kxbP4Pslp@vger.kernel.org, AJvYcCXHANqvDJBx7rQiGnubH+2jz4EmwJL69QGj1wjB/Yc5letb4sQTI/PPtSewVJXlN8VosIxeC0n/OacU@vger.kernel.org
-X-Gm-Message-State: AOJu0YxplkiXCrcFNGB3x2+j0YrzYcgoMHMAPQ9lCAxfpK3hdeJE2YWY
-	yWrLN89U06k/vQVe3rK3CVpRWAyUTkK0qjzEU1BiWEiGKwocHeAVjiWOPc6yLfSg
-X-Gm-Gg: ASbGncvXLciLcS+s7KBqldiaLs/Y/OyRS/MG8K+s9zivrSxaLa3/d2qOrku4zwrPuej
-	Y7QrvX9w8z0mEZAl6430snR3C/rXjg15M56uARR5g+WbXfT5s8j+u3Q2QMuhRcRiAVkqfxZIPsl
-	KMxcHLjNB+l8wSu9MjSevNVQZqR40+mEu4LdEhAa6T2lOZbcBgNBj8BYZGBAHP2Iq+Cws6+rRKw
-	tzDJponh7cRdSGhRlg+RCnzklWSbCmo6YSrxl0VjGDYzi1zAkUqSh1e1bE8q7xK9YnrKr5hKNYK
-	3l/RT09VapsY56POg4v+B4KEiPotCF6PSadtcLg4r/eVzHDdlsiCeTeM+nbUhHcUX0nXllhn3en
-	hio2YehHJMOMtJuDXiEq5cw==
-X-Google-Smtp-Source: AGHT+IEqOh9O6CEC2CimcyCWQJcx0A9whkEtqsd1I4BC5ZOa9k3+eaMNONrPVjoFtxLUrmQTLjsvdg==
-X-Received: by 2002:a17:90b:2d8e:b0:31e:934b:d00b with SMTP id 98e67ed59e1d1-31f28c920dfmr2367584a91.7.1753758217535;
-        Mon, 28 Jul 2025 20:03:37 -0700 (PDT)
+        bh=XBWVY361NxLRBMd0q21v+u+vCUkiXioFgT08lF5XMIA=;
+        b=p5P13jMC4Cpkrw3DbIQ48BzfgAgHMap8BYgl71gF4tutBclhYsZ2GwMHdjt6YSgqpV
+         IFLnWpRobPyUULBofGh3+JXQ2E7uWRIqtJ8bcxxoWoCOMmLvLF6kEsygkbImHX4AVu7r
+         TilMZhDyTqkC/9IFEaezPUMwlseziwcJf086o8tcJNm2L1n5mrFGAKP5EqRk4i6oi3DN
+         ICzzoNt59GuNYFgaSdAFB2hO7RpVKSM/IjYs5bqIUalaDpGTPEEDTvqpUgOtQufGdcZH
+         F8pFjNaosclabmU2rmecdJMlkGoNGNdPeNYc+ZFmEPWS2XG+UeEPityDoTSADbMpE///
+         Gy/w==
+X-Forwarded-Encrypted: i=1; AJvYcCUDjY0UAMpFcCfEJZl8/Wwsz10uiPc07LIWM7pD4x7XbUkeElwixMfCuZKMx5w3lYlyn79Dxvk/iNeI@vger.kernel.org, AJvYcCUxKqOyuJWx2DrzghAdXF35iX+LspFugEcZNBpm6twE81Hb8dd44V8zJSbAe0VJScEBn5C8SpDukVafNCmw@vger.kernel.org, AJvYcCWugu7q2ez3YPdszjqtln8Q+Xwr3g6aDRw9UVxLglfMeVz9iTGy3xeIY+i4ZnXLqtP+JNVxxFtj0vFB@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw0BU+O0QM9Kbt8pCGLpNXfFu+ljF66LGqKZ56bag4DW0OUT6mL
+	1A8pJO4QPtb3pme6DL5+vhWEdDow9ayUiJe9kQUTE1DrJ5/CJOCLkKyR
+X-Gm-Gg: ASbGncv0bwakWGFSYuehxOYtrU0BQYmFj3gWVHAME/BwIbLV0XdIaCayYr8oXNbqLjg
+	bUeNUaA9VbdB8viVn59LzEh2CJaHv5MOhEepRiEpcM+S4YduEEv9ZJc+WncYfPbW75fI+YQoRZZ
+	cXlfIKU7rMt6OKJQ6K4POc+KMV2CJhyARmuE1RrASulv94hq1wTK/aAGnKKyfSH/W4wrAc8xxlv
+	3eF3LUH8C0cjTpW/X8Wk6jylTzMlrHqO9q08JCjkitj3Gww0GR51VhyKOnCFbiu4UlY4pLQ80on
+	7h50oc8YCfDkFYYfcYkaC5PDyxP0npcFXOQ/TRTCkQ4bKnvkUKRPUuheJcv1XwugqSHDA3ttOQl
+	PbAfvk1tLnxxXqqls811YphuLIslIC82s
+X-Google-Smtp-Source: AGHT+IF+7ifC/K0CBtC2UqGCUR7HzYNsiRhrR+1SW9wClRoC9QVqboz3Aoq48IFhJTM5mAVIKEaqJg==
+X-Received: by 2002:a17:902:f68a:b0:240:9d6:4554 with SMTP id d9443c01a7336-24063d8c05amr26581695ad.21.1753758359717;
+        Mon, 28 Jul 2025 20:05:59 -0700 (PDT)
 Received: from dixit ([2401:4900:1c7e:9464:4ee2:7e58:1508:18c])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-31f328a0ac5sm273689a91.7.2025.07.28.20.03.32
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23ffa37f078sm46436565ad.115.2025.07.28.20.05.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Jul 2025 20:03:36 -0700 (PDT)
-Date: Tue, 29 Jul 2025 08:33:27 +0530
+        Mon, 28 Jul 2025 20:05:59 -0700 (PDT)
+Date: Tue, 29 Jul 2025 08:35:49 +0530
 From: Dixit Parmar <dixitparmar19@gmail.com>
-To: David Lechner <dlechner@baylibre.com>
+To: Krzysztof Kozlowski <krzk@kernel.org>
 Cc: Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
 	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
 	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -84,10 +85,10 @@ Cc: Jonathan Cameron <jic23@kernel.org>,
 	linux-iio@vger.kernel.org, devicetree@vger.kernel.org
 Subject: Re: [PATCH 2/2] dt-bindings: iio: magnetometer: document Infineon
  TLV493D 3D Magnetic sensor
-Message-ID: <aIg5_x4UMLjRk4dn@dixit>
+Message-ID: <aIg6jRj6haYISlgj@dixit>
 References: <20250726-tlv493d-sensor-v6_16-rc5-v1-0-deac027e6f32@gmail.com>
  <20250726-tlv493d-sensor-v6_16-rc5-v1-2-deac027e6f32@gmail.com>
- <455141b2-e82f-45fd-b30f-5d9436aa861b@baylibre.com>
+ <acdc8d41-94b3-47a5-b67e-58def060a378@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -97,14 +98,18 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <455141b2-e82f-45fd-b30f-5d9436aa861b@baylibre.com>
+In-Reply-To: <acdc8d41-94b3-47a5-b67e-58def060a378@kernel.org>
 
-On Sat, Jul 26, 2025 at 03:43:56PM -0500, David Lechner wrote:
-> On 7/26/25 4:37 AM, Dixit Parmar wrote:
+On Sun, Jul 27, 2025 at 11:23:04AM +0200, Krzysztof Kozlowski wrote:
+> On 26/07/2025 11:37, Dixit Parmar wrote:
 > > Document the bindings for Infineon TLV493D Low-Power 3D Magnetic Sensor
 > > controlled by I2C interface. Main applications includes joysticks, control
 > > elements (white goods, multifunction knops), or electric meters (anti
 > > tampering).
+> 
+> You are duplicating existing binding, need to remove it as well.
+>
+Yeah, looks like some previous stalled entry is there. I will remove it.
 > > 
 > > The device can be configured in to different operating modes by optional
 > > device-tree "mode" property. Also, the temperature sensing part requires
@@ -147,14 +152,14 @@ On Sat, Jul 26, 2025 at 03:43:56PM -0500, David Lechner wrote:
 > > +
 > > +  vdd-supply:
 > > +    description: 2.8V to 3.5V supply
-> 
-> The SDA pin can also be a /INT signal, so we need to have an
-> optional interrupts property as well.
->
-Okay. Will add it.
 > > +
 > > +  mode:
 > > +    description: Sensor operating mode. Must be one of the defined enum values.
+> 
+> Why is this board level property? I imagine you want to change it runtime.
+> 
+Acked.
+> 
 > > +    $ref: /schemas/types.yaml#/definitions/uint32
 > > +    enum:
 > > +      - 0 # Power Down Mode. No measurement.
@@ -163,57 +168,34 @@ Okay. Will add it.
 > > +      - 3 # Ultra Low-Power Mode
 > > +      - 4 # Master Controlled Mode
 > > +    default: 4
-> 
-> This is not the sort of thing that really belongs in a devicetree.
-> We should be describing here how the chip is wired up, and only
-> control how it works based on that.
-> 
-> If there are any wiring conditions that could affect this setting,
-> they could go here. For example, if the power supply doesn't have
-> enough current, then we can only operate in one of the low power
-> modes. Otherwise generally we just stick to the best performing
-> mode. And specifying the power down mode here really doesn't make
-> sense - you could never use the sensor!
-> 
-Got it. Will remove it.
 > > +
 > > +  temp-offset:
 > > +    description: Raw temperature offset at 25°C to apply before applying scale and correction.
+> 
+> Does not look wrapped according to Linux coding style.
+> 
+As mentioned in previous thread, the property will get removed.
 > > +    $ref: /schemas/types.yaml#/definitions/uint32
 > > +    default: 340
 > 
-> This is another one that likely doesn't belong in the devicetree.
-> There is a standard *_calibbias attribute that can be used for
-> such a calibration if needed.
+> Missing vendor prefix, missing unit suffix. I am also not sure what is
+> the board design choice to offset it.
 > 
-Its factory setting so I thought if there is any deviation from that
-than we can handle it like this but as you pointed out, its not the
-right way, so will stick to 340 default factory value as per the
-datasheet.
+> 
+> 
 > > +
 > > +required:
 > > +  - compatible
 > > +  - reg
 > 
-> Power supplies are usually required.
+> Missing supplies.
 > 
 Ack.
-> > +
-> > +additionalProperties: false
-> > +
-> > +example:
-> > +  - |
-> > +    i2c {
-> > +      #address-cells = <1>;
-> > +      #size-cells = <0>;
-> > +      magnetometer@5e {
-> > +        compatible = "infineon,tlv493d-a1b6";
-> > +        reg = <0x5e>;
-> > +        vdd = <&hall_vcc>;
-> > +      };
-> > +    };
-> > 
 > 
+> 
+> Best regards,
+> Krzysztof
+
 Thanks for the review,
 Dixit
 

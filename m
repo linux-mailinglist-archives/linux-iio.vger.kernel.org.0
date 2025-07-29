@@ -1,225 +1,187 @@
-Return-Path: <linux-iio+bounces-22128-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22129-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6BDFB14DE1
-	for <lists+linux-iio@lfdr.de>; Tue, 29 Jul 2025 14:49:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F9C7B150ED
+	for <lists+linux-iio@lfdr.de>; Tue, 29 Jul 2025 18:09:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A8ECE54413D
-	for <lists+linux-iio@lfdr.de>; Tue, 29 Jul 2025 12:49:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7FC753A4AA7
+	for <lists+linux-iio@lfdr.de>; Tue, 29 Jul 2025 16:09:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76C5A1D6AA;
-	Tue, 29 Jul 2025 12:49:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 163DA299944;
+	Tue, 29 Jul 2025 16:08:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Tn3qDQ2c"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="MNFZOA4c"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+Received: from mail-ot1-f41.google.com (mail-ot1-f41.google.com [209.85.210.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D8FB182D0;
-	Tue, 29 Jul 2025 12:49:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 862AA296163
+	for <linux-iio@vger.kernel.org>; Tue, 29 Jul 2025 16:08:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753793371; cv=none; b=GdTseqNRIBF89eFx2s6QgrC5bBICftgfypTINOWyCo4MNw67aFC6l2cP6HIuICPD5zh099C0+S940YWDvB2Vw9CsIMlae3YA+PR/466C2Ld5Xeo1UMnvBAfqC9IBkNNCrOOy+xFjJw02A7ig8ztMpOPJIk+lMIEQh7W74SWkCkA=
+	t=1753805314; cv=none; b=eAAcP4bcW3tEfmy0UDos2NmGvhAjg3W63TXEt6tLKJWLtX0Ec+Vu2R36bRIgjtzGXxQXV8ygAeyuuugzlr9+v62SP9J+c56kti7AwAgojl4tPcv8bE49FBRM2ca9/FRezBKSMyyO7F5GmDhfUXkGsxn00aOm0R1BL0InYeudP0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753793371; c=relaxed/simple;
-	bh=l5P0dNeZ5wcvR4EUiVuiINTGf7hsTEkrz1gyFJ8cNLI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QybFxpt9HeSxThfxhetnzZnBoAPGfPD5A+UrCVgEd1oresJS/AwnMERyApejFJUCygrLcbpt0qNUYySE+mrN/hQ0W+1HCFyFrSwCAFhFF2SPc010YKaA5WGdsOXkjRiTlU5QEXdgeBRgsc/MCVdavw+THhPBwdovyeUeb714EIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Tn3qDQ2c; arc=none smtp.client-ip=209.85.128.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-451dbe494d6so60351735e9.1;
-        Tue, 29 Jul 2025 05:49:29 -0700 (PDT)
+	s=arc-20240116; t=1753805314; c=relaxed/simple;
+	bh=Y9zplbesg+n+uaqGf/jqos/my3gJKcrm77xTP40xPCs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=YhJHuJlAji7oxLeuaVckaK1lbf6gUuAaovvj/j1sN/4BVCMhsDr1TgfSpIY82BK7uv0L94wn+vTIpN6TjTGTBxhjMdCp+kViWnBVQ/olhR1R9oawTUMkdB1B+Hqp9jPcNUkysNXrmvRpeG7IJbHM8QCemJ3qjSL6aCKSat4GCFo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=MNFZOA4c; arc=none smtp.client-ip=209.85.210.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-ot1-f41.google.com with SMTP id 46e09a7af769-73e5792cb9dso1964194a34.2
+        for <linux-iio@vger.kernel.org>; Tue, 29 Jul 2025 09:08:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753793368; x=1754398168; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=VqGsps1bpTn3A7l4UO8XlQOO9RuaumaS8UOurdem0XM=;
-        b=Tn3qDQ2cYqCu2Yy/e9LhokFZwjLyOy5lyjYODR70lQ3cw9Jk8wbb+MEAvRcFdVeGLI
-         O9xHgK6MyonS85gcSghHqA9KTqHxPNUa8p2fLeWj44gNkt9u9JSN2LqWB7GDeyOVRG0u
-         /P7MamFrgsciBvC6rQKvUrvo9614Ji8DBmndUpNeQoSYSUktLjFd/JHph+Oq8z1t3Ygr
-         CQsywK3rvVpz6W5i3JYKJ4gGffaJx6LktsHnae5j3qJeRgOLL1Nep5Rf8imN/UYGHO8S
-         FHEdZGRr/4z/toqc6LQyus2zjKgIeuwSUfWYZ38zdFMzAaSXDvdcLRfzovAZOFVqo7gy
-         p9pg==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1753805311; x=1754410111; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=iisZZW4Cr/AQvtrcy4WRz8ws+tzToFhKZHiBGfmsH9Y=;
+        b=MNFZOA4cBh3Z4tnXgHSr8ZmPVZs+VILKkMJQHgDriuNUJnkUOhxop6HK6Z5PcMtpZH
+         A7SlM+/ULh3b0W4yUpqMiDg6uIt+tW5uazk/hktbFiXogGM7l66a8woXVTdnc1ZNt847
+         FLicGF0T5i+KxOQ8nzS+jDK79lBwLqcQJW10cYJ0yaDOLkqdY2QOgXrIr1Lrzt00amS8
+         xV1ZelKLz8XoL7gnJGb0oksgYtHB9mIZBJOohE9w5E7n+nkPuK8nzA3ktC4SyAV05sA8
+         AZMBqxXz0yOhkquTVNjkG59ZQ1eqP3d2fDsuJPH50dtl8YcY/dIxZuEueGN12AV7TRff
+         BlOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753793368; x=1754398168;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
+        d=1e100.net; s=20230601; t=1753805311; x=1754410111;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=VqGsps1bpTn3A7l4UO8XlQOO9RuaumaS8UOurdem0XM=;
-        b=WVWp+2gBRPAAlCFVMFWCAP90yQBM+5aMM9/iQgGUuEjDLVbVgCfvYWWNr1dhJ5TxlL
-         ZKDrZfjTvd5w2rJr1oWA1sIo8hpGtq9hWn+0Ayx5BHtw73UMgkc/An1p1pQWqF4F1VJs
-         VQej9eASkm/0mdG+3pat9Hxw0egHT9Zzj+aMyOnAFkF3vHpYo00oUyhFLMWwhlCwadMy
-         GYCZUxbAbZMVjb5cWR+N04BeNf4AjWBKPJ+FBBsxUOCegTOeT14c3OG2o9voEeSbH7K0
-         EqrKPNGtP8IW1NElG8qnL8e8MQFx3nBphTbdEXvZgM9rYU4GoMhIMWku3gMXSBpYYNo7
-         mOeA==
-X-Forwarded-Encrypted: i=1; AJvYcCW+rdizO7ryGQP+2eS1l4Y6O3rlQv7EOlLecY3YoSoQhntCl1ud4n0cLerYb/8xZyfowDoIPTCZTEU=@vger.kernel.org, AJvYcCXWxNMlil3mzD/ficyUcOTqi+dctxgsIsCLtMm/CZGVWzLz8JarOJxEzphflJVBS6Loj750FmlHKCe2D1wC@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz5a/E9xbUzXlD4yLlE7M8E/g6uJOMn4Td5hiAR3Ghh8d4gmfiY
-	cuqK0+Va18IZ8ttIi9jcfiDtHXsaawcMMO7YULjfj/BadqcL+mc1Y3m2
-X-Gm-Gg: ASbGncshvWYBHBQm0axt2ZEYhPfFUFiltsd8lCYj0kA3KOfCL0EkyHtZWLerUgFsprt
-	WONvN6WZlpLzOmLaDlf5x2AkicaHQwDHYcwi67v/RACFnJMBmOx6nuId2syIHDQMuxMaGMmq80h
-	nZNvy9tcotPXo+cUbfwIGODTfVAkpCMcmSW+w1W3GkT4Ky+uRmRHkN/7gJTUWFtnSlNHyqPpR7/
-	Uyukf8/mem9ypXiTNill7FT8OKoXKJo0QOI8CzeEVH5WwPzrpaEoipFzAvBYa9sgKRgBku8Ph96
-	rOnbFI8Vm+188NhLvZJl/Q8rzEBgAcmN9cmwC/kpXT/KuzbOfh9QYb1o+4xN+nHgRg7G/UMqHFl
-	scEC7GaSwJVpKXE8OtmUJauQxOHWjaYywYd9Bt+rUoA4=
-X-Google-Smtp-Source: AGHT+IFD7B43eEU2jm0IpByGFoMGJ8ott9UA/rXP+woI9geBR9xtKpcmGIxrLSMuA3OA46DdjK/42Q==
-X-Received: by 2002:a05:600c:3e10:b0:458:6733:fb5d with SMTP id 5b1f17b1804b1-458838ca95cmr74959765e9.32.1753793367370;
-        Tue, 29 Jul 2025 05:49:27 -0700 (PDT)
-Received: from HYB-DlYm71t3hSl.ad.analog.com ([137.71.226.91])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4588e5d05f0sm24379625e9.21.2025.07.29.05.49.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Jul 2025 05:49:27 -0700 (PDT)
-Date: Tue, 29 Jul 2025 14:49:23 +0200
-From: Jorge Marques <gastmaier@gmail.com>
-To: "Guntupalli, Manikanta" <manikanta.guntupalli@amd.com>
-Cc: David Lechner <dlechner@baylibre.com>, 
-	Andy Shevchenko <andriy.shevchenko@intel.com>, "git (AMD-Xilinx)" <git@amd.com>, 
-	"Simek, Michal" <michal.simek@amd.com>, "lorenzo@kernel.org" <lorenzo@kernel.org>, 
-	"jic23@kernel.org" <jic23@kernel.org>, "nuno.sa@analog.com" <nuno.sa@analog.com>, 
-	"andy@kernel.org" <andy@kernel.org>, "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "Pandey, Radhey Shyam" <radhey.shyam.pandey@amd.com>, 
-	"Goud, Srinivas" <srinivas.goud@amd.com>, "manion05gk@gmail.com" <manion05gk@gmail.com>
-Subject: Re: [PATCH] iio: imu: lsm6dsx: Add shutdown callback support for I3C
- interface
-Message-ID: <5pmqumpue7h4us265co6pya37434t4jvf3b655gtjcohlyhash@3ggx7e2maud6>
-References: <20250721110741.2380963-1-manikanta.guntupalli@amd.com>
- <aH4mwkh80TUTNXtS@smile.fi.intel.com>
- <83798680-8e3f-4899-8c58-d7da5587653e@baylibre.com>
- <DM4PR12MB61095749195041654F6D560D8C5CA@DM4PR12MB6109.namprd12.prod.outlook.com>
- <3d7w3rczrdics77nt7lig5rsj2bmfubpwzhffarzlxmo5w2g4a@baewpltdovhk>
- <DM4PR12MB610930805348D91ACAE876A18C25A@DM4PR12MB6109.namprd12.prod.outlook.com>
+        bh=iisZZW4Cr/AQvtrcy4WRz8ws+tzToFhKZHiBGfmsH9Y=;
+        b=RbFEciYccit5YjqEb617bH4/n3jBLIBp1uuefjkY0GXUk90HxH5AyvweWhWhBQz/5q
+         B3y5GaTvgjZwb0WkItv+O5Yu7C2M1FJPit7AZyR7N9dNTo/XzhHZXPOEUG+Nx+Cn3ZVd
+         I9Ui6BDQjvoU3whe1tJYrRdxTV0e24i10v19l1szCtH2Dodc+eJ4E0Zmfc6TwqgHOZmx
+         pZ/iQXopXXv6KnMFUQlN8SW/QKq95OjMqYgVkFls4y51on03urFHcjhxciynJ/MAuoGh
+         nOY/vOkTJF2NH4pbvPp574HB7dcNLY1x95xqRpRMir+45O7/nMaNvUlJQ5TsV45c+kNi
+         JAxg==
+X-Forwarded-Encrypted: i=1; AJvYcCWrDdRitFS9bM0YJfgJ2HN9dckSxaQR8VdvoAcUgOk02reON1v56tTAOl3U8Hu3eg+JB0881e4dAl4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YySj7iKl9Z+avmZzIi5L0VUfOOgrr/MyEVWZDL/DT+8pSo1VRSm
+	PKgl5NHDx4oWNtAsGlspl5y+uMtaknN6BTy3sTVsPJ4K+Fa80O5AoqxukkM7LE2/RW8=
+X-Gm-Gg: ASbGncvX6s8nIgzfxxjGTJHl+JAL4eCtZQjV1B0FDGRTjKrA/sVB0vGmFe6VZwboPat
+	8yjGTUsNdmDaeBkuJvzqwGNX+EZ5GGtGM8n97ORfr6GccwqvhZAcrP/npKIrhwsVjg/PT8sQ/KO
+	d0PLVkkfJsPlqtq0iBOZiX10ejXncAHQLP9L5xVWftI/I8ss9j9H63iMtyaCRyF4SUdUo2XDfyx
+	MDSezr2cwMCw3Vyrlqe0pE4NQIzCZieOn7qbIVc0lEqDLNVRxWwWMKOvdrrSmtFtW+C1oDl6seC
+	P+mVjCPJhuBMQfbLcSAK9o81k4/WuvSJxBB1C0CCroKGvtV01KbFSOkQUrlcq3EMOz3pCDHNaER
+	2hcKxAYXNF1xG0ughgXKQ34qZLiqDWb9WOIdP/fcziRAY6uiO5n3ilZNHVP9ZwhWukPjYDY6bSp
+	0=
+X-Google-Smtp-Source: AGHT+IFDGl5SETxkBjW/H31hwu1U5JxJwMyDzgnv3ruh05bOarPZvWxXwwo3/ACHAvk332S0oYi2Fg==
+X-Received: by 2002:a05:6830:4d8b:10b0:727:3111:1416 with SMTP id 46e09a7af769-74177ca43d4mr203693a34.24.1753805311343;
+        Tue, 29 Jul 2025 09:08:31 -0700 (PDT)
+Received: from ?IPV6:2600:8803:e7e4:1d00:c7d5:61e1:68d6:dd54? ([2600:8803:e7e4:1d00:c7d5:61e1:68d6:dd54])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-74147f9460csm1597928a34.17.2025.07.29.09.08.30
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 29 Jul 2025 09:08:30 -0700 (PDT)
+Message-ID: <1c897cf7-dc31-4e39-84c1-f8ab4b3e0aa8@baylibre.com>
+Date: Tue, 29 Jul 2025 11:08:29 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <DM4PR12MB610930805348D91ACAE876A18C25A@DM4PR12MB6109.namprd12.prod.outlook.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/4] iio: adc: ad7124: do not require mclk
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Michael Hennerich <Michael.Hennerich@analog.com>,
+ =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
+ Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250724-iio-adc-ad7124-proper-clock-support-v1-0-88f35db2fcaf@baylibre.com>
+ <20250724-iio-adc-ad7124-proper-clock-support-v1-2-88f35db2fcaf@baylibre.com>
+ <20250727132143.35a44547@jic23-huawei>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <20250727132143.35a44547@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Jul 29, 2025 at 12:02:56PM +0000, Guntupalli, Manikanta wrote:
-> [AMD Official Use Only - AMD Internal Distribution Only]
+On 7/27/25 7:21 AM, Jonathan Cameron wrote:
+> On Thu, 24 Jul 2025 18:25:23 -0500
+> David Lechner <dlechner@baylibre.com> wrote:
 > 
-> Hi @Jorge Marques,
-> 
-> > -----Original Message-----
-> > From: Jorge Marques <gastmaier@gmail.com>
-> > Sent: Tuesday, July 22, 2025 1:27 PM
-> > To: Guntupalli, Manikanta <manikanta.guntupalli@amd.com>
-> > Cc: David Lechner <dlechner@baylibre.com>; Andy Shevchenko
-> > <andriy.shevchenko@intel.com>; git (AMD-Xilinx) <git@amd.com>; Simek, Michal
-> > <michal.simek@amd.com>; lorenzo@kernel.org; jic23@kernel.org;
-> > nuno.sa@analog.com; andy@kernel.org; linux-iio@vger.kernel.org; linux-
-> > kernel@vger.kernel.org; Pandey, Radhey Shyam
-> > <radhey.shyam.pandey@amd.com>; Goud, Srinivas <srinivas.goud@amd.com>;
-> > manion05gk@gmail.com
-> > Subject: Re: [PATCH] iio: imu: lsm6dsx: Add shutdown callback support for I3C
-> > interface
-> >
-> > On Tue, Jul 22, 2025 at 07:32:54AM +0000, Guntupalli, Manikanta wrote:
-> > > [AMD Official Use Only - AMD Internal Distribution Only]
-> > >
-> > > Hi @David Lechner,
-> > >
-> > > > -----Original Message-----
-> > > > From: David Lechner <dlechner@baylibre.com>
-> > > > Sent: Tuesday, July 22, 2025 2:31 AM
-> > > > To: Andy Shevchenko <andriy.shevchenko@intel.com>; Guntupalli,
-> > > > Manikanta <manikanta.guntupalli@amd.com>
-> > > > Cc: git (AMD-Xilinx) <git@amd.com>; Simek, Michal
-> > > > <michal.simek@amd.com>; lorenzo@kernel.org; jic23@kernel.org;
-> > > > nuno.sa@analog.com; andy@kernel.org; linux-iio@vger.kernel.org;
-> > > > linux-kernel@vger.kernel.org; Pandey, Radhey Shyam
-> > > > <radhey.shyam.pandey@amd.com>; Goud, Srinivas
-> > > > <srinivas.goud@amd.com>; manion05gk@gmail.com
-> > > > Subject: Re: [PATCH] iio: imu: lsm6dsx: Add shutdown callback
-> > > > support for I3C interface
-> > > >
-> > > > On 7/21/25 6:38 AM, Andy Shevchenko wrote:
-> > > > > On Mon, Jul 21, 2025 at 04:37:41PM +0530, Manikanta Guntupalli wrote:
-> > > > >> Add a shutdown handler for the ST LSM6DSx I3C driver to perform a
-> > > > >> hardware reset during system shutdown. This ensures the sensor is
-> > > > >> placed in a well-defined reset state, preventing issues during
-> > > > >> subsequent reboots, such as kexec, where the device may fail to
-> > > > >> respond correctly during enumeration.
-> > > > >
-> > > > > Do you imply that tons of device drivers missing this? I don't
-> > > > > think we have even 5% of the drivers implementing the feature.
-> > > > >
-> > > > In the IIO drivers I've worked on, we always do reset in the probe()
-> > > > function. The
-> > > > shutdown() function might not run, e.g. if the board loses power, so
-> > > > it doesn't fix 100% of the cases.
-> > >
-> > > Thank you for the input.
-> > >
-> > > You're absolutely right — shutdown() may not cover all cases like power loss.
-> > However, in scenarios such as a warm reboot (kexec), the situation is different.
-> > >
-> > > Before the probe is called in the next boot, device enumeration takes place. During
-> > this process, the I3C framework compares the device’s PID, BCR, and DCR values
-> > against the ones registered in the driver:
-> > >
-> > > static const struct i3c_device_id st_lsm6dsx_i3c_ids[] = {
-> > >         I3C_DEVICE(0x0104, 0x006C, (void *)ST_LSM6DSO_ID),
-> > >         I3C_DEVICE(0x0104, 0x006B, (void *)ST_LSM6DSR_ID),
-> > >         { }
-> > > };
-> > >
-> > > Only if this matching succeeds, the probe will be invoked.
-> > >
-> > > Since the sensor reset logic is placed inside the probe, the device must be in a
-> > responsive state during enumeration. In the case of kexec, we observed that the
-> > sensor does not respond correctly unless it is explicitly reset during shutdown().
-> > Hence, adding the reset in shutdown() addresses this specific case where the probe
-> > isn't reached due to failed enumeration.
-> > >
-> > Hi Manikanta,
-> >
-> > During i3c bus init, the CCC RSTDAA is emitted to reset all DAs of all devices in the
-> > bus (drivers/i3c/master.c@i3c_master_bus_init -> i3c_master_rstdaa_locked). Is the
-> > LSM6DSX not compliant with that?
-> LSM6DSX is compliant with RSTDAA CCC.
-> 
-> >
-> > I get your solution but find odd to use the same method as in the probe.
-> > In the probe, you would, in general, reset the device logic, but leave the i3c
-> > peripheral logic intact, because you don't want to undo whatever the controller has
-> > set-up for the current bus attached devices (ibi config, da, max devices speed, all the
-> > good i3c stuff).
-> > For this device, the st_lsm6dsx_reset_device seems to flush a FIFO, do a software
-> > reset, and reload a trimming parameter; which are necessary to solve the bug you
-> > are observed?
-> Only software reset necessary to solve the bug.
-> 
-> >
-> > If possible, please explain better why the device won't enumerate correctly after a
-> > reboot without the reset. If it is a device bug, explicitly state that and that it is not
-> > compliant. Also, take a look at fig.100 of the i3c spec basic 1.1.1.
-> >
-> > Thank you for looking into this, this type of corner case is usually overlooked.
-> It appears that the sensor device is entering a deep sleep or low-power state and is not responding to CCC commands. However, after a software reset, the sensor starts responding to CCCs as expected.
-It should, from the silicon pov, definitely respond to CCCs, even on
-low-power states.
-Could you confirm with stm32 the behaviour you are observing?
-Inform them if it occurs under under i2c/i3c dual support, only i3c, or
-both.
-It sounds a little the messages are being filtered by the spike filter
-when it shouldn't?
-> 
-> Shall we proceed with only the software reset changes along with an improved description, or do you recommend any additional modifications?
-Confirm if this is a silicon issue first, if so, a note from st should
-be issued also.
-> 
-> Thanks,
-> Manikanta.
 
-Best regards,
-Jorge
+...
+
+>> @@ -1111,21 +1112,49 @@ static int ad7124_parse_channel_config(struct iio_dev *indio_dev,
+>>  static int ad7124_setup(struct ad7124_state *st)
+>>  {
+>>  	struct device *dev = &st->sd.spi->dev;
+>> -	unsigned int fclk, power_mode;
+>> +	unsigned int power_mode;
+>> +	struct clk *mclk;
+>>  	int i, ret;
+>>  
+>> -	fclk = clk_get_rate(st->mclk);
+>> -	if (!fclk)
+>> -		return dev_err_probe(dev, -EINVAL, "Failed to get mclk rate\n");
+>> +	/*
+>> +	 * Always use full power mode for max performance. If needed, the driver
+>> +	 * could be adapted to use a dynamic power mode based on the requested
+>> +	 * output data rate.
+>> +	 */
+>> +	power_mode = AD7124_ADC_CONTROL_POWER_MODE_FULL;
+>>  
+>> -	/* The power mode changes the master clock frequency */
+>> -	power_mode = ad7124_find_closest_match(ad7124_master_clk_freq_hz,
+>> -					ARRAY_SIZE(ad7124_master_clk_freq_hz),
+>> -					fclk);
+>> -	if (fclk != ad7124_master_clk_freq_hz[power_mode]) {
+>> -		ret = clk_set_rate(st->mclk, fclk);
+>> -		if (ret)
+>> -			return dev_err_probe(dev, ret, "Failed to set mclk rate\n");
+>> +	/*
+>> +	 * HACK: This "mclk" business is needed for backwards compatibility with
+> 
+> I'd drop the HACK bit of this. Whilst I understand the spirit of the comment
+> that term tends to make people try to 'fix' things ;)
+> 
+>> +	 * old devicetrees that specified a fake clock named "mclk" to select
+>> +	 * the power mode.
+>> +	 */
+>> +	mclk = devm_clk_get_optional_enabled(dev, "mclk");
+>> +	if (IS_ERR(mclk))
+>> +		return dev_err_probe(dev, PTR_ERR(mclk), "Failed to get mclk\n");
+>> +
+>> +	if (mclk) {
+>> +		unsigned long mclk_hz;
+>> +
+>> +		mclk_hz = clk_get_rate(mclk);
+>> +		if (!mclk_hz)
+>> +			return dev_err_probe(dev, -EINVAL, "Failed to get mclk rate\n");
+>> +
+>> +		/*
+>> +		 * This logic is a bit backwards, which is why it is considered
+>> +		 * a hack and is only here for backwards compatibility. The
+>> +		 * driver should be able to set the power mode as it sees fit
+>> +		 * and the f_clk/mclk rate should be dynamic accordingly. But
+>> +		 * here, we are selecting a fixed power mode based on the given
+>> +		 * "mclk" rate.
+> 
+> My assumption is that someone had a board with a fixed rate clock on this pin.
+> So it might not be possible to have the driver do that adjustment.
+> If anyone ever adds that support, we'll have to be careful about handling fixed
+> clocks.
+
+In order to use an external clock, you have to program a register field to
+allow that. Since the driver isn't doing that, we can be sure that even if
+someone had an external clock, the driver was still using the internal clock.
+
+> 
+> This looks fine though.
+> 
+>> +		 */
+>> +		power_mode = ad7124_find_closest_match(ad7124_master_clk_freq_hz,
+>> +			ARRAY_SIZE(ad7124_master_clk_freq_hz), mclk_hz);
+>> +
+>> +		if (mclk_hz != ad7124_master_clk_freq_hz[power_mode]) {
+>> +			ret = clk_set_rate(mclk, mclk_hz);
+>> +			if (ret)
+>> +				return dev_err_probe(dev, ret, "Failed to set mclk rate\n");
+>> +		}
+>>  	}
 
